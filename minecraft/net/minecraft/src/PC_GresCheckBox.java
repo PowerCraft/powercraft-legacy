@@ -8,6 +8,10 @@ public class PC_GresCheckBox extends PC_GresWidget {
 	public PC_GresCheckBox(String title){
 		super(title);
 		canAddWidget = false;
+		color[textColorEnabled] = 0x000000;
+		color[textColorShadowEnabled] = 0xAAAAAA;
+		color[textColorDisabled] = 0x707070;
+		color[textColorShadowDisabled] = 0xAAAAAA;
 	}
 	
 	public boolean isChecked() {
@@ -53,9 +57,9 @@ public class PC_GresCheckBox extends PC_GresWidget {
 		drawPoint(xOffset + x + WIDTH - 1, yOffset + y, c3);
 		
 		if (checked)
-			drawString(fontRenderer, "x", xOffset + x + 3, yOffset + y + 1, 0x000000);
+			drawString("x", xOffset + x + 3, yOffset + y + 1);
 		
-		drawString(fontRenderer, label, xOffset + x + WIDTH + 3, yOffset + y + 1, 0x000000);
+		drawString(label, xOffset + x + WIDTH + 3, yOffset + y + 1);
 	}
 
 	@Override

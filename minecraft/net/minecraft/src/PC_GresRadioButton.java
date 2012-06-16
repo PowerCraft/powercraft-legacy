@@ -10,7 +10,10 @@ public class PC_GresRadioButton extends PC_GresWidget {
 	public PC_GresRadioButton(String title, PC_GresRadioButton otherRadio){
 		super(title);
 		canAddWidget = false;
-		
+		color[textColorEnabled] = 0x000000;
+		color[textColorShadowEnabled] = 0xAAAAAA;
+		color[textColorDisabled] = 0x707070;
+		color[textColorShadowDisabled] = 0xAAAAAA;
 		if(otherRadio!=null){
 			next = otherRadio.next;
 			otherRadio.next = this;
@@ -86,9 +89,9 @@ public class PC_GresRadioButton extends PC_GresWidget {
 		drawPoint(xOffset + x + WIDTH - 3, yOffset + y + WIDTH - 2, c2);
 		
 		if (checked)
-			drawString(fontRenderer, "o", xOffset + x + 3, yOffset + y + 1, 0x000000);
+			drawString("o", xOffset + x + 3, yOffset + y + 1);
 		
-		drawString(fontRenderer, label, xOffset + x + WIDTH + 3, yOffset + y + 1, 0x000000);
+		drawString(label, xOffset + x + WIDTH + 3, yOffset + y + 1);
 	}
 
 	@Override

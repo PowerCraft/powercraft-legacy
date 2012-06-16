@@ -52,6 +52,12 @@ public abstract class PC_GresWidget extends Gui {
 		STRETCH
 	}
 	
+	@SuppressWarnings("javadoc")
+	public static final int textColorEnabled = 0, textColorShadowEnabled = 1, textColorDisabled = 2, textColorShadowDisabled = 3;
+
+	/** Array of text colors */
+	protected int color[] = {0xff000000, 0x00000000, 0xff000000, 0x00000000};
+	
 	/** Parent widget */
 	protected PC_GresWidget parent = null;
 	/** List of children */
@@ -98,6 +104,7 @@ public abstract class PC_GresWidget extends Gui {
 		height = size[1];
 		minWidth = size[0];
 		minHeight = size[1];
+		
 	}
 	
 	/**
@@ -353,6 +360,54 @@ public abstract class PC_GresWidget extends Gui {
 		childs.add(newwidget);
 		calcChildPositions();
 		return this; //newwidget;
+	}
+	
+	public PC_GresWidget remove(PC_GresWidget removewidget){
+		if(!childs.remove(removewidget))
+			for(int i=0; i<childs.size(); i++)
+				childs.get(i).remove(removewidget);
+		calcChildPositions();
+		return this;
+	}
+	
+	public PC_GresWidget removeAll(){
+		childs.removeAll(childs);
+		if(parent!=null)
+			parent.calcChildPositions();
+		return this;
+	}
+		
+	public PC_GresWidget setColor(int colorIndex, int color){
+		if(colorIndex<0||colorIndex>3)
+			return this;
+		this.color[colorIndex] = color;
+		return this;
+	}
+	
+	public int getColor(int colorIndex){
+		if(colorIndex<0||colorIndex>3)
+			return 0;
+		return color[colorIndex];
+	}
+	
+	protected int getStringLength(String text){
+		if(fontRenderer!=null)
+			return fontRenderer.getStringWidth(text);
+		else
+			return PC_Utils.mc().fontRenderer.getStringWidth(text);
+	}
+	
+	protected void drawString(String text, int x, int y){
+		if(fontRenderer!=null){
+			if(color[enabled?textColorShadowEnabled:textColorShadowDisabled]!=0)
+				fontRenderer.drawString(text, x + 1, y + 1, color[enabled?textColorShadowEnabled:textColorShadowDisabled]);
+			fontRenderer.drawString(text, x, y, color[enabled?textColorEnabled:textColorDisabled]);
+		}else{
+			if(color[enabled?textColorShadowEnabled:textColorShadowDisabled]!=0)
+				PC_Utils.mc().fontRenderer.drawString(text, x + 1, y + 1, color[enabled?textColorShadowEnabled:textColorShadowDisabled]);
+			PC_Utils.mc().fontRenderer.drawString(text, x, y, color[enabled?textColorEnabled:textColorDisabled]);
+		}
+		
 	}
 	
 	public void updateRenderer(int xOffset, int yOffset){
