@@ -1,10 +1,9 @@
 package net.minecraft.src;
 
 public class PC_GresLabel extends PC_GresWidget {
-	int color = 0x000000;
 
-	public PC_GresLabel(String title){
-		super(title);
+	public PC_GresLabel(String label){
+		super(label);
 		canAddWidget = false;
 	}
 	
@@ -17,11 +16,7 @@ public class PC_GresLabel extends PC_GresWidget {
 
 	@Override
 	protected void render(int xOffset, int yOffset) {
-		if(fontRenderer!=null){
-			fontRenderer.drawStringWithShadow(label, xOffset + x, yOffset + y, color);
-		}else{
-			PC_Utils.mc().fontRenderer.drawString(label, xOffset + x, yOffset + y, color);
-		}
+		drawString(label, xOffset + x, yOffset + y);
 	}
 
 	@Override

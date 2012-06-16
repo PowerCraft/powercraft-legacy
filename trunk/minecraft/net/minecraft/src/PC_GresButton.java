@@ -4,8 +4,8 @@ public class PC_GresButton extends PC_GresWidget {
 	
 	private boolean isClicked = false;
 	
-	public PC_GresButton(String title){
-		super(title);
+	public PC_GresButton(String label){
+		super(label);
 		canAddWidget = false;
 	}
 	
@@ -28,7 +28,7 @@ public class PC_GresButton extends PC_GresWidget {
 	@Override
 	protected void render(int xOffset, int yOffset) {
 		
-		int state = (!enabled)?0:(isMouseOver?2:1);
+		int state = (!enabled)?0:(isClicked?3:(isMouseOver?2:1));
 		
 		int txC = 0xe0e0e0;
 		
@@ -36,7 +36,7 @@ public class PC_GresButton extends PC_GresWidget {
 		{
 			txC = 0xffa0a0a0;
 		}
-		else if (state == 2)
+		else if (state > 1)
 		{
 			txC = 0xffffa0;
 		}
@@ -59,11 +59,13 @@ public class PC_GresButton extends PC_GresWidget {
 	
 	@Override
 	public boolean mouseClick(int x, int y, int key) {
-		if(isClicked && key==0){
+		if(!enabled)
+			return false;
+		if(isClicked && key==-1){
 			isClicked = false;
 			return true;
 		}
-		isClicked = key==0?false:true;
+		isClicked = key==-1?false:true;
 		return false;
 	}
 
