@@ -1,5 +1,7 @@
 package net.minecraft.src;
 
+import org.lwjgl.opengl.GL11;
+
 public class PC_GresCheckBox extends PC_GresWidget {
 
 	private static final int WIDTH = 11;
@@ -26,7 +28,7 @@ public class PC_GresCheckBox extends PC_GresWidget {
 	@Override
 	public PC_CoordI calcSize() {
 		FontRenderer fontRenderer = getFontRenderer();
-		size.setTo(fontRenderer.getStringWidth(label),fontRenderer.FONT_HEIGHT).add(WIDTH+3,0);
+		size.setTo(fontRenderer.getStringWidth(text),fontRenderer.FONT_HEIGHT).add(WIDTH+3,0);
 
 		if(size.y<WIDTH)
 			size.y = WIDTH;
@@ -45,21 +47,19 @@ public class PC_GresCheckBox extends PC_GresWidget {
 
 	@Override
 	protected void render(PC_CoordI offsetPos) {
-		int c1 = 0xff555555, c2 = 0xffffffff, c3 = 0xff8b8b8b;
 		
-		drawHorizontalLine(offsetPos.x + pos.x, offsetPos.x + pos.x + WIDTH - 2, offsetPos.y + pos.y, c1);
-		drawHorizontalLine(offsetPos.x + pos.x + 1, offsetPos.x + pos.x + WIDTH - 1, offsetPos.y + pos.y + WIDTH - 1, c2);
+		String texture = mod_PCcore.getImgDir() + "gui-elements.png";
+		GL11.glBindTexture(GL11.GL_TEXTURE_2D, mc.renderEngine.getTexture(texture));
+		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 		
-		drawVerticalLine(offsetPos.x + pos.x, offsetPos.y + pos.y, offsetPos.y + pos.y + WIDTH - 1, c1);
-		drawVerticalLine(offsetPos.x + pos.x + WIDTH - 1, offsetPos.y + pos.y, offsetPos.y + pos.y + WIDTH - 1, c2);
+		int state = 0;
+		if(isChecked()) state=1;
+		if(!isEnabled()) state += 2;
 		
-		drawPoint(new PC_CoordI(offsetPos.x + pos.x, offsetPos.y + pos.y + WIDTH - 1), c3);
-		drawPoint(new PC_CoordI(offsetPos.x + pos.x + WIDTH - 1, offsetPos.y + pos.y), c3);
+		drawTexturedModalRect(pos.x+offsetPos.x, pos.y+offsetPos.y, WIDTH*state, 0, WIDTH, WIDTH);
 		
-		if (checked)
-			drawString("x", offsetPos.x + pos.x + 3, offsetPos.y + pos.y + 1);
 		
-		drawString(label, offsetPos.x + pos.x + WIDTH + 3, offsetPos.y + pos.y + 1);
+		drawString(text, offsetPos.x + pos.x + WIDTH + 3, offsetPos.y + pos.y + 2);
 	}
 
 	@Override
@@ -82,8 +82,8 @@ public class PC_GresCheckBox extends PC_GresWidget {
 	}
 
 	@Override
-	public void keyTyped(char c, int key) {
-		
+	public boolean keyTyped(char c, int key) {
+		return false;
 	}
 	
 }

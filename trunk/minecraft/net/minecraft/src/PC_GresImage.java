@@ -58,8 +58,8 @@ public class PC_GresImage extends PC_GresWidget {
 	}
 
 	@Override
-	public void keyTyped(char c, int key) {
-		
+	public boolean keyTyped(char c, int key) {
+		return false;
 	}
 
 	@Override

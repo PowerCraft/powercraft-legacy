@@ -1,5 +1,7 @@
 package net.minecraft.src;
 
+import org.lwjgl.input.Keyboard;
+
 /**
  * 
  * GuiScreen class
@@ -11,7 +13,7 @@ package net.minecraft.src;
 public class PC_GresGui extends GuiScreen implements PC_IGresGui {
 
 	private PC_IGresBase gui;
-	private PC_GresVGroup child;
+	private PC_GresLayoutV child;
 	private PC_GresWidget lastFocus;
 	private boolean pauseGame=false;
 	
@@ -29,7 +31,7 @@ public class PC_GresGui extends GuiScreen implements PC_IGresGui {
 	}
 	
 	@Override
-	public void setPauseGame(boolean b){
+	public void setPausesGame(boolean b){
 		pauseGame = b;
 	}
 	
@@ -41,13 +43,14 @@ public class PC_GresGui extends GuiScreen implements PC_IGresGui {
 	
 	@Override
 	public void updateScreen() {
-		if(lastFocus!=null)
+		if(lastFocus!=null){
 			lastFocus.updateCursorCounter();
+		}
 	}
 	
 	@Override
 	public void initGui() {
-		child = new PC_GresVGroup();
+		child = new PC_GresLayoutV();
 		child.setFontRenderer(fontRenderer);
 		child.setSize(width, height);
 		gui.initGui(this);
@@ -60,11 +63,21 @@ public class PC_GresGui extends GuiScreen implements PC_IGresGui {
 	
 	@Override
 	protected void keyTyped(char c, int i) {
+		
+		boolean consumed = false;
+		
 		if(lastFocus!=null){
-			if(gui.isKeyValid(c, i, lastFocus, this)){
-				lastFocus.keyTyped(c, i);
+			if(lastFocus.keyTyped(c, i)){
 				gui.actionPerformed(lastFocus, this);
+				consumed = true;
 			}
+		}
+		
+		
+		if(!consumed && i == Keyboard.KEY_ESCAPE){
+			gui.onEscapePressed(this);
+		}else if(!consumed && i == Keyboard.KEY_RETURN){
+			gui.onReturnPressed(this);
 		}
 	}
 
@@ -81,6 +94,7 @@ public class PC_GresGui extends GuiScreen implements PC_IGresGui {
 				newFocus.setFocus(true);
 			lastFocus = newFocus;
 		}
+		
 		if(newFocus!=null){
 			PC_CoordI fpos = newFocus.getPositionOnScreen();
 			if(newFocus.mouseClick(new PC_CoordI(i - fpos.x, j - fpos.y), k)){

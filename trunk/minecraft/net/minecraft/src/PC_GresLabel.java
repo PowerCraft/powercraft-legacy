@@ -10,13 +10,13 @@ public class PC_GresLabel extends PC_GresWidget {
 	@Override
 	public PC_CoordI calcSize() {
 		FontRenderer fontRenderer = getFontRenderer();
-		size.setTo(fontRenderer.getStringWidth(label), fontRenderer.FONT_HEIGHT);
+		size.setTo(fontRenderer.getStringWidth(text), fontRenderer.FONT_HEIGHT);
 		return size.copy();
 	}
 
 	@Override
 	protected void render(PC_CoordI offsetPos) {
-		drawString(label, offsetPos.x+pos.x, offsetPos.y+pos.y);
+		drawString(text, offsetPos.x+pos.x, offsetPos.y+pos.y);
 	}
 
 	@Override
@@ -30,8 +30,8 @@ public class PC_GresLabel extends PC_GresWidget {
 	}
 
 	@Override
-	public void keyTyped(char c, int key) {
-
+	public boolean keyTyped(char c, int key) {
+		return false;
 	}
 
 	@Override

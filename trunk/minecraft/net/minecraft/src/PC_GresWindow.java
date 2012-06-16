@@ -30,7 +30,7 @@ public class PC_GresWindow extends PC_GresWidget {
 
 	@Override
 	public PC_CoordI calcSize() {
-		int textWidth = PC_Utils.mc().fontRenderer.getStringWidth(label);
+		int textWidth = PC_Utils.mc().fontRenderer.getStringWidth(text);
 		if (size.x < textWidth + distanceToFrame * 2 + 12) {
 			size.x = textWidth + distanceToFrame * 2 + 12;
 		}
@@ -44,11 +44,11 @@ public class PC_GresWindow extends PC_GresWidget {
 		renderTextureSliced(offsetPos, mod_PCcore.getImgDir() + "dialog.png", size, new PC_CoordI(0, 0), new PC_CoordI(256, 256));
 
 		if (fontRenderer != null) {
-			fontRenderer.drawString(label, offsetPos.x + pos.x + (size.x) / 2 - fontRenderer.getStringWidth(label) / 2, offsetPos.y + pos.y
+			fontRenderer.drawString(text, offsetPos.x + pos.x + (size.x) / 2 - fontRenderer.getStringWidth(text) / 2, offsetPos.y + pos.y
 					+ 8, 0xff000000);
 		} else {
-			PC_Utils.mc().fontRenderer.drawString(label,
-					offsetPos.x + pos.x + (size.x) / 2 - PC_Utils.mc().fontRenderer.getStringWidth(label) / 2, offsetPos.y + pos.y + 6,
+			PC_Utils.mc().fontRenderer.drawString(text,
+					offsetPos.x + pos.x + (size.x) / 2 - PC_Utils.mc().fontRenderer.getStringWidth(text) / 2, offsetPos.y + pos.y + 6,
 					0xff000000);
 		}
 
@@ -65,8 +65,8 @@ public class PC_GresWindow extends PC_GresWidget {
 	}
 
 	@Override
-	public void keyTyped(char c, int key) {
-
+	public boolean keyTyped(char c, int key) {
+		return false;
 	}
 
 	@Override

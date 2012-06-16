@@ -42,6 +42,24 @@ public class PC_Utils {
 	public static boolean areObjectsEqual(Object a, Object b) {
 		return a == null ? b == null : a.equals(b);
 	}
+	
+	/**
+	 * Open Resizable GUI Screen for player
+	 * @param entityplayer
+	 * @param gres resizable GUI
+	 */
+	public static void openGres(EntityPlayer entityplayer, PC_IGresBase gres){
+		ModLoader.openGUI(entityplayer, new PC_GresGui(gres));
+	}
+	
+	/**
+	 * Open Minecraft GUI Screen for player
+	 * @param entityplayer
+	 * @param gui ordinary GUI
+	 */
+	public static void openGui(EntityPlayer entityplayer, GuiScreen gui){
+		ModLoader.openGUI(entityplayer, gui);
+	}
 
 	/**
 	 * Write PC_INBT object to NBT compound tag, creating a wrapping compound tag for it.
