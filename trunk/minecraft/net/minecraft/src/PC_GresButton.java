@@ -28,18 +28,22 @@ public class PC_GresButton extends PC_GresWidget {
 	@Override
 	protected void render(int xOffset, int yOffset) {
 		
-		int state = (!enabled)?0:(isClicked?3:(isMouseOver?2:1));
-		
-		int txC = 0xe0e0e0;
-		
-		if (state == 0)
-		{
-			txC = 0xffa0a0a0;
+		int state;
+		if(!enabled){
+			state = 0; //disabled
+		}else if(isClicked){
+			state = 3; // enabled and clicked
+		}else if(isMouseOver){
+			state = 2; // enabled and hover
+		}else{
+			state = 1; // enabled and not hover
 		}
-		else if (state > 1)
-		{
-			txC = 0xffffa0;
-		}
+		
+		int txC;
+		
+		if(state == 0) txC = 0xa0a0a0; // dark
+		if(state == 1) txC = 0xe0e0e0; // light
+		if (state > 1) txC = 0xffffa0; // yellow
 
 		renderTextureSliced(xOffset, yOffset, mod_PCcore.getImgDir()+"button.png", width, height, 0, state*50, 256, 50, 5, 5);
 		
