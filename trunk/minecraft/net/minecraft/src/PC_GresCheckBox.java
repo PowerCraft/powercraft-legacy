@@ -30,8 +30,13 @@ public class PC_GresCheckBox extends PC_GresWidget {
 		FontRenderer fontRenderer = getFontRenderer();
 		size.setTo(fontRenderer.getStringWidth(text),fontRenderer.FONT_HEIGHT).add(WIDTH+3,0);
 
-		if(size.y<WIDTH)
+		if(size.y<WIDTH){
 			size.y = WIDTH;
+		}
+		
+		if(size.x<minSize.x){
+			size.x = minSize.x;
+		}
 		return size.copy();
 	}
 	

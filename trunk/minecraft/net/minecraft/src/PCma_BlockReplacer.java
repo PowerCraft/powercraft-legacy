@@ -61,7 +61,7 @@ public class PCma_BlockReplacer extends BlockContainer implements PC_ISwapTerrai
 	@Override
 	public void onBlockPlacedBy(World world, int i, int j, int k, EntityLiving entityliving) {
 		super.onBlockPlacedBy(world, i, j, k, entityliving);
-//
+
 //		if(entityliving instanceof EntityPlayer){
 //			EntityPlayer entityplayer = (EntityPlayer)entityliving;
 //			PCma_TileEntityReplacer tileentity = (PCma_TileEntityReplacer) world.getBlockTileEntity(i, j, k);

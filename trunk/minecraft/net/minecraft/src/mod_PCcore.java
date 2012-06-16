@@ -612,7 +612,8 @@ public class mod_PCcore extends PC_Module implements PC_IActivatorListener {
 
 		if (pos.getId(world) == Block.mobSpawner.blockID) {
 
-			ModLoader.openGUI(player, new PCco_GuiSpawnerEditor((TileEntityMobSpawner) pos.getTileEntity(world)));
+			PC_Utils.openGres(player, new PCco_GuiSpawnerEditor((TileEntityMobSpawner) pos.getTileEntity(world)));
+			
 			stack.damageItem(1, player);
 
 			return true;
