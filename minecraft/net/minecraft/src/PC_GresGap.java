@@ -1,23 +1,19 @@
 package net.minecraft.src;
 
-public class PC_GresLabel extends PC_GresWidget {
+public class PC_GresGap extends PC_GresWidget {
 
-	public PC_GresLabel(String label){
-		super(label);
+	public PC_GresGap(int width, int height){
+		super(width, height);
 		canAddWidget = false;
 	}
 	
 	@Override
 	public PC_CoordI calcSize() {
-		FontRenderer fontRenderer = getFontRenderer();
-		size.setTo(fontRenderer.getStringWidth(text), fontRenderer.FONT_HEIGHT);
-		if(size.x < minSize.x) size.x = minSize.x;
-		return size.copy();
+		return minSize.copy();
 	}
 
 	@Override
-	protected void render(PC_CoordI offsetPos) {
-		drawString(text, offsetPos.x+pos.x, offsetPos.y+pos.y);
+	protected void render(PC_CoordI offsetPos) {		
 	}
 
 	@Override

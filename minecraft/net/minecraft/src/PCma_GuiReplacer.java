@@ -1,9 +1,6 @@
 package net.minecraft.src;
 
-import net.minecraft.src.PC_GresRadioButton.PC_GresRadioGroup;
 import net.minecraft.src.PC_GresWidget.PC_GresAlignH;
-import net.minecraft.src.PC_GresWidget.PC_GresAlignV;
-
 import org.lwjgl.input.Keyboard;
 
 

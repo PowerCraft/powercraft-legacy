@@ -15,7 +15,9 @@ import org.lwjgl.opengl.GL11;
  * 
  */
 public abstract class PC_GresWidget extends Gui {
-	
+
+
+
 	/** Minecraft instance */
 	protected static Minecraft mc = PC_Utils.mc();
 
@@ -65,48 +67,54 @@ public abstract class PC_GresWidget extends Gui {
 
 	/** Parent widget */
 	protected PC_GresWidget parent = null;
-	
+
+
 	/** List of children */
 	protected ArrayList<PC_GresWidget> childs = new ArrayList<PC_GresWidget>();
-	
+
 	/** Font renderer */
 	protected FontRenderer fontRenderer = null;
-	
+
 	/** pos of left top corner */
-	protected PC_CoordI pos = new PC_CoordI(0,0);
-	
+	protected PC_CoordI pos = new PC_CoordI(0, 0);
+
 	/** Widget size */
-	protected PC_CoordI size = new PC_CoordI(0,0);
-	
+	protected PC_CoordI size = new PC_CoordI(0, 0);
+
 	/** Minimal allowed widget size */
-	protected PC_CoordI minSize = new PC_CoordI(0,0);
-	
+	protected PC_CoordI minSize = new PC_CoordI(0, 0);
+
 	/** Distance from other widgets in group. */
 	protected int widgetMargin = 5;
-	
+
 	/** Counter used for the automatic resizing */
 	protected int cursorCounter = 0;
-	
+
 	/** Can add child widgets */
 	protected boolean canAddWidget = true;
-	
+
 	/** Is mouse over this widget? */
 	protected boolean isMouseOver = false;
-	
+
 	/** Is widget enabled = clickable */
 	protected boolean enabled = true;
-	
+
 	/** Is widget focused (used mainly for text edits) */
 	protected boolean hasFocus = false;
-	
+
 	/** Widget's label (text in title or on button or whatever) */
 	protected String text = "";
-	
+
 	/** Horizontal Align */
 	protected PC_GresAlignH alignH = PC_GresAlignH.CENTER;
-	
+
 	/** Vertical Align */
 	protected PC_GresAlignV alignV = PC_GresAlignV.CENTER;
+
+	/** Widget ID */
+	public int id = -1;
+	
+	
 
 	/**
 	 * A widget
@@ -136,7 +144,7 @@ public abstract class PC_GresWidget extends Gui {
 	 * @param height widget minHeight
 	 */
 	public PC_GresWidget(int width, int height) {
-		PC_CoordI minSize = new PC_CoordI(width,height);
+		PC_CoordI minSize = new PC_CoordI(width, height);
 		this.size = minSize.copy();
 		this.minSize = minSize.copy();
 	}
@@ -152,14 +160,36 @@ public abstract class PC_GresWidget extends Gui {
 		this(width, height);
 		this.text = label;
 	}
-	
-	
+
+
+	/**
+	 * Set widget ID
+	 * 
+	 * @param id
+	 * @return
+	 */
+	public PC_GresWidget setId(int id) {
+		this.id = id;
+		return this;
+	}
+
+	/**
+	 * Get widget ID
+	 * 
+	 * @param id
+	 * @return
+	 */
+	public int getId() {
+		return this.id;
+	}
+
+
 
 	/**
 	 * @return widget's font renderer
 	 */
 	public FontRenderer getFontRenderer() {
-		if(fontRenderer == null) return mc.fontRenderer;
+		if (fontRenderer == null) return mc.fontRenderer;
 		return fontRenderer;
 	}
 
@@ -264,6 +294,14 @@ public abstract class PC_GresWidget extends Gui {
 	public abstract PC_CoordI getMinSize();
 
 	/**
+	 * @param minSize the minSize to set
+	 */
+	public PC_GresWidget setMinSize(PC_CoordI minSize) {
+		this.minSize = minSize;
+		return this;
+	}
+
+	/**
 	 * @return newly calculated size, {width, height}
 	 */
 	public abstract PC_CoordI calcSize();
@@ -319,7 +357,7 @@ public abstract class PC_GresWidget extends Gui {
 	 * @return this
 	 */
 	public PC_GresWidget setPosition(int x, int y) {
-		this.pos.setTo(x,y);
+		this.pos.setTo(x, y);
 		return this;
 	}
 
@@ -401,8 +439,8 @@ public abstract class PC_GresWidget extends Gui {
 	 * @return this
 	 */
 	public PC_GresWidget remove(PC_GresWidget removewidget) {
-		if (!childs.remove(removewidget)){
-			for (int i = 0; i < childs.size(); i++){	
+		if (!childs.remove(removewidget)) {
+			for (int i = 0; i < childs.size(); i++) {
 				childs.get(i).remove(removewidget);
 			}
 		}
@@ -412,6 +450,7 @@ public abstract class PC_GresWidget extends Gui {
 
 	/**
 	 * Remove all children
+	 * 
 	 * @return this
 	 */
 	public PC_GresWidget removeAll() {
@@ -422,6 +461,7 @@ public abstract class PC_GresWidget extends Gui {
 
 	/**
 	 * Set color to index
+	 * 
 	 * @param colorIndex color index (constant)
 	 * @param color the color, eg. 0xFFFFFF.
 	 * @return this
@@ -434,6 +474,7 @@ public abstract class PC_GresWidget extends Gui {
 
 	/**
 	 * Get color for index
+	 * 
 	 * @param colorIndex color index (constant)
 	 * @return color number, eg. 0xFFFFFF
 	 */
@@ -444,6 +485,7 @@ public abstract class PC_GresWidget extends Gui {
 
 	/**
 	 * Get string length from font renderer
+	 * 
 	 * @param text the string
 	 * @return length in pixels
 	 */
@@ -461,7 +503,7 @@ public abstract class PC_GresWidget extends Gui {
 	 */
 	protected void drawString(String text, int x, int y) {
 		FontRenderer fr = getFontRenderer();
-		if (color[enabled ? textColorShadowEnabled : textColorShadowDisabled] != 0){
+		if (color[enabled ? textColorShadowEnabled : textColorShadowDisabled] != 0) {
 			fr.drawString(text, x + 1, y + 1, color[enabled ? textColorShadowEnabled : textColorShadowDisabled]);
 		}
 		fr.drawString(text, x, y, color[enabled ? textColorEnabled : textColorDisabled]);
@@ -470,6 +512,7 @@ public abstract class PC_GresWidget extends Gui {
 
 	/**
 	 * Render this and all children at correct positions
+	 * 
 	 * @param posOffset offset from top left
 	 */
 	public void updateRenderer(PC_CoordI posOffset) {
@@ -480,12 +523,14 @@ public abstract class PC_GresWidget extends Gui {
 
 	/**
 	 * Do render this widget
+	 * 
 	 * @param posOffset offset from top left
 	 */
 	protected abstract void render(PC_CoordI posOffset);
 
 	/**
 	 * Get the widget under mouse cursor. First tries children, then self, null at last.
+	 * 
 	 * @param mousePos mouse absolute x
 	 * @return the widget under mouse
 	 */
@@ -496,32 +541,32 @@ public abstract class PC_GresWidget extends Gui {
 		// mouse not over this widget
 		if (mpos.x < 0 || mpos.x >= size.x || mpos.y < 0 || mpos.y >= size.y || mouseOver(mpos) == false) {
 			this.isMouseOver = false;
-			
-			if (childs != null){
-				for (int i = 0; i < childs.size(); i++) {			
-					childs.get(i).getWidgetUnderMouse(new PC_CoordI(-1,-1));
+
+			if (childs != null) {
+				for (int i = 0; i < childs.size(); i++) {
+					childs.get(i).getWidgetUnderMouse(new PC_CoordI(-1, -1));
 				}
 			}
-			
+
 			return null;
 		}
-		
+
 		this.isMouseOver = true;
-		
-		if (childs != null){
-			for (int i = 0; i < childs.size(); i++) {		
-				
+
+		if (childs != null) {
+			for (int i = 0; i < childs.size(); i++) {
+
 				widget = childs.get(i).getWidgetUnderMouse(mpos);
 				if (widget != null) {
 					for (i++; i < childs.size(); i++) {
-						childs.get(i).getWidgetUnderMouse(new PC_CoordI(-1,-1));
+						childs.get(i).getWidgetUnderMouse(new PC_CoordI(-1, -1));
 					}
 					return widget;
 				}
-				
+
 			}
 		}
-		
+
 		if (mouseOver(mpos) == false) {
 			this.isMouseOver = false;
 			return null;
@@ -531,6 +576,7 @@ public abstract class PC_GresWidget extends Gui {
 
 	/**
 	 * Get absolute position on screen
+	 * 
 	 * @return { x, y}
 	 */
 	public PC_CoordI getPositionOnScreen() {
@@ -538,7 +584,7 @@ public abstract class PC_GresWidget extends Gui {
 		if (parent != null) {
 			position = parent.getPositionOnScreen().offset(pos);
 
-		} else{
+		} else {
 			position = pos.copy();
 		}
 		return position;
@@ -567,17 +613,15 @@ public abstract class PC_GresWidget extends Gui {
 	protected void renderTextureSliced(PC_CoordI offset, String texture, PC_CoordI rectSize, PC_CoordI imgOffset, PC_CoordI imageSize) {
 		GL11.glBindTexture(GL11.GL_TEXTURE_2D, mc.renderEngine.getTexture(texture));
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-		
-		
+
+
 		/*
 		 * AAAAA BBBBB
 		 * AAAAA BBBBB
 		 * AAAAA BBBBB
-		 * 
 		 * CCCCC DDDDD
 		 * CCCCC DDDDD
-		 * CCCCC DDDDD 
-		 * 
+		 * CCCCC DDDDD
 		 */
 
 		// @formatter:off
@@ -630,6 +674,7 @@ public abstract class PC_GresWidget extends Gui {
 
 	/**
 	 * is mouse over widget?
+	 * 
 	 * @param mousePos mouse position
 	 * @return is over
 	 */
@@ -640,7 +685,8 @@ public abstract class PC_GresWidget extends Gui {
 	public abstract void mouseMove(PC_CoordI mousePos);
 
 	/**
-	 * On key pressed. 
+	 * On key pressed.
+	 * 
 	 * @param c character of the key
 	 * @param key key index
 	 * @return true if key was valid and was used.
@@ -649,6 +695,7 @@ public abstract class PC_GresWidget extends Gui {
 
 	/**
 	 * Draw point on screen
+	 * 
 	 * @param point the point pos
 	 * @param c color
 	 */

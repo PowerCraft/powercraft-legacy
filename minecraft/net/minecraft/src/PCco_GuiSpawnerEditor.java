@@ -1,6 +1,6 @@
 package net.minecraft.src;
 
-import org.lwjgl.opengl.GL11;
+import net.minecraft.src.PC_GresWidget.PC_GresAlignH;
 
 /**
  * GUI for editing spawned mob from spawner.<br>
@@ -10,17 +10,15 @@ import org.lwjgl.opengl.GL11;
  * @copy (c) 2012
  * 
  */
-public class PCco_GuiSpawnerEditor extends GuiScreen {
+public class PCco_GuiSpawnerEditor implements PC_IGresBase {
 
 	private TileEntityMobSpawner spawner;
 
-	private PC_GuiCheckBox checkDangerous;
+	private PC_GresCheckBox checkDangerous;
 
-	private GuiButton[] buttons = new GuiButton[24];
+	private PC_GresWidget[] buttons = new PC_GresWidget[25];
 
 	private static String[] mapping = { "Creeper", "Skeleton", "Spider", "CaveSpider", "Zombie", "PigZombie", "Enderman", "Silverfish", "Slime", "LavaSlime", "Ghast", "Blaze", "SnowMan", "VillagerGolem", "Villager", "Pig", "Sheep", "Cow", "Chicken", "Squid", "Wolf", "MushroomCow", "Ozelot", "EnderDragon" };
-
-	private static String[] names;
 
 	/**
 	 * Spawner mob editor
@@ -33,9 +31,11 @@ public class PCco_GuiSpawnerEditor extends GuiScreen {
 		spawner.getMobID();
 	}
 
-	private void loadNames() {
+	@Override
+	public void initGui(PC_IGresGui gui) {
+
 		// @formatter:off
-		names = new String[]{
+		String[] names = new String[]{
 			PC_Lang.tr("entity.Creeper.name"),
 			PC_Lang.tr("entity.Skeleton.name"),
 			PC_Lang.tr("entity.Spider.name"),
@@ -61,110 +61,86 @@ public class PCco_GuiSpawnerEditor extends GuiScreen {
 			PC_Lang.tr("entity.Ozelot.name"),
 			PC_Lang.tr("entity.EnderDragon.name") };
 		// @formatter:on
-	}
 
-	@Override
-	public void updateScreen() {
+		PC_GresWidget w = new PC_GresWindow(230, 100, PC_Lang.tr("tile.mobSpawner.name")).setAlignH(PC_GresAlignH.STRETCH);
+		w.widgetMargin = 1;
+		PC_GresLayoutH hg = new PC_GresLayoutH();
 
-		buttons[10].enabled = buttons[11].enabled = buttons[23].enabled = checkDangerous.isChecked();
-
-	}
-
-	@SuppressWarnings("unchecked")
-	@Override
-	public void initGui() {
-		loadNames();
-		controlList.clear();
-
-		int row = 3;
-		int bwidth = 77;
-		int bheight = 20;
-		int hGap = 1;
-		int vGap = 2;
+		int maxw = 0;
+		int hgTotalWidth = 0;
 
 		for (int i = 0; i < mapping.length; i++) {
-			GuiButton but = new GuiButton(i, (width / 2) + 1 - ((row * (bwidth + hGap)) / 2) + (i % row) * (bwidth + hGap), (height / 2)
-					- 90 + (int) Math.floor(i / row) * (bheight + vGap), names[i]);
-			but.width = bwidth;
+			if (i % 3 == 0) hg = new PC_GresLayoutH();
+			hg.widgetMargin = 1;
+			buttons[i] = new PC_GresButton(names[i]).setId(i);
 
-			controlList.add(but);
+			maxw = Math.max(buttons[i].getMinSize().x, maxw);
 
-			buttons[i] = but;
+			hg.add(buttons[i]);
+			if (i % 3 == 2) {
+				w.add(hg);
+			}
 		}
 
-		PC_GuiButtonAligner.alignSingleToRight(controlList, 24, "pc.gui.cancel", bwidth, height / 2 + 88, width / 2 + 120 - 10);
+		hgTotalWidth = maxw * 3 + 2;
 
-		checkDangerous = new PC_GuiCheckBox(this, fontRenderer, width / 2 - 100, height / 2 + 94, false,
-				PC_Lang.tr("pc.gui.spawnerEditor.enableDangerous"));
-
-		buttons[10].enabled = buttons[11].enabled = buttons[23].enabled = false;
-
-	}
-
-	@Override
-	public void onGuiClosed() {}
-
-	@Override
-	protected void actionPerformed(GuiButton guibutton) {
-		if (!guibutton.enabled) { return; }
-
-		if (guibutton.id < 24) {
-			spawner.setMobID(mapping[guibutton.id]);
+		for (int i = 0; i < mapping.length; i++) {
+			buttons[i].setMinSize(new PC_CoordI(maxw, 1));
 		}
 
-		mc.displayGuiScreen(null);
-		mc.setIngameFocus();
+		w.add(new PC_GresGap(10, 3));
+
+		hg = new PC_GresLayoutH();
+		hg.widgetMargin = 1;
+
+		hg.add(checkDangerous = new PC_GresCheckBox(PC_Lang.tr("pc.gui.spawnerEditor.enableDangerous")));
+		hg.add(new PC_GresGap(hgTotalWidth - (maxw + checkDangerous.getMinSize().x + 2), 3));
+		hg.add(buttons[24] = new PC_GresButton(PC_Lang.tr("pc.gui.cancel")).setId(24).setMinSize(new PC_CoordI(maxw, 1)));
+
+		w.add(hg);
+
+		gui.add(w);
+
+		setDangerousEnabled(false);
+	}
+
+	@Override
+	public void onGuiClosed(PC_IGresGui gui) {
+	}
+
+	private void setDangerousEnabled(boolean state) {
+		buttons[10].enabled = buttons[11].enabled = buttons[23].enabled = state;
+	}
+
+	@Override
+	public void actionPerformed(PC_GresWidget widget, PC_IGresGui gui) {
+
+		if (widget == checkDangerous) {
+			setDangerousEnabled(checkDangerous.isChecked());
+			return;
+		}
+
+		if (widget.getId() == 24) {
+			gui.close();
+			return;
+		}
+
+		if (widget.getId() < 24) {
+			spawner.setMobID(mapping[widget.getId()]);
+			gui.close();
+			return;
+		}
 
 	}
 
 	@Override
-	public boolean doesGuiPauseGame() {
-		return false;
+	public void onEscapePressed(PC_IGresGui gui) {
+		gui.close();
 	}
 
 	@Override
-	protected void keyTyped(char c, int i) {}
-
-	@Override
-	protected void mouseClicked(int i, int j, int k) {
-		super.mouseClicked(i, j, k);
-		checkDangerous.mouseClicked(i, j, k);
-	}
-
-	@Override
-	public void drawScreen(int i, int j, float f) {
-		drawDefaultBackground();
-
-		drawGuiBackgroundLayer(f);
-
-		GL11.glPushMatrix();
-
-		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-		GL11.glDisable(32826 /* GL_RESCALE_NORMAL_EXT */);
-		RenderHelper.disableStandardItemLighting();
-		GL11.glDisable(2896 /* GL_LIGHTING */);
-		GL11.glDisable(2929 /* GL_DEPTH_TEST */);
-
-		String title = PC_Lang.tr("tile.mobSpawner.name");
-
-		fontRenderer.drawString(title, width / 2 - (fontRenderer.getStringWidth(title) / 2), (height / 2) - 105, 0x000000);
-
-		GL11.glPopMatrix();
-
-		super.drawScreen(i, j, f);
-		checkDangerous.drawCheckBox();
-
-		GL11.glEnable(2896 /* GL_LIGHTING */);
-		GL11.glEnable(2929 /* GL_DEPTH_TEST */);
-	}
-
-	private void drawGuiBackgroundLayer(float f) {
-		int i = mc.renderEngine.getTexture(mod_PCcore.getImgDir() + "dialog-large.png");
-		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-		mc.renderEngine.bindTexture(i);
-		int j = (width) / 2;
-		int k = (height) / 2;
-		drawTexturedModalRect(j - 115 - 5, k - 115, 0, 0, 240, 230);
+	public void onReturnPressed(PC_IGresGui gui) {
+		gui.close();
 	}
 
 }
