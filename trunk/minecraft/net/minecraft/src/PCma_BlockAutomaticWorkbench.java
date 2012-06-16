@@ -11,7 +11,7 @@ import net.minecraft.src.forge.ITextureProvider;
  * @copy (c) 2012
  * 
  */
-public class PCma_BlockAutomaticWorkbench extends BlockContainer implements PC_IBlockType, PC_ISwapTerrain, PC_IInvTextures,
+public class PCma_BlockAutomaticWorkbench extends BlockContainer implements PC_IBlockType, PC_ISwapTerrain, PC_ISpecialInventoryTextures,
 		ITextureProvider {
 	private static final int TXDOWN = 109, TXTOP = 154, TXSIDE = 138, TXFRONT = 106, TXBACK = 122;
 

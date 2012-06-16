@@ -10,7 +10,7 @@ import net.minecraft.src.forge.ITextureProvider;
  * @author MightyPork
  * @copy (c) 2012
  */
-public class PCma_BlockBlockBuilder extends BlockContainer implements PC_ISwapTerrain, PC_IBlockType, PC_IInvTextures, ITextureProvider {
+public class PCma_BlockBlockBuilder extends BlockContainer implements PC_ISwapTerrain, PC_IBlockType, PC_ISpecialInventoryTextures, ITextureProvider {
 	private static final int TXDOWN = 109, TXTOP = 156, TXSIDE = 140, TXFRONT = 108, TXBACK = 124;
 
 	@Override

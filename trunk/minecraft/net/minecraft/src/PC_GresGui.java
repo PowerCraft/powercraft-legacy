@@ -76,9 +76,9 @@ public class PC_GresGui extends GuiScreen implements PC_IGresGui {
 		
 		if(newFocus != lastFocus){
 			if(lastFocus!=null)
-				lastFocus.setFokus(false);
+				lastFocus.setFocus(false);
 			if(newFocus!=null)
-				newFocus.setFokus(true);
+				newFocus.setFocus(true);
 			lastFocus = newFocus;
 		}
 		if(newFocus!=null){

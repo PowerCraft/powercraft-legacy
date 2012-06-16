@@ -11,7 +11,7 @@ public class PC_GresButton extends PC_GresWidget {
 	
 	@Override
 	public int[] calcSize() {
-		width = PC_Utils.mc().fontRenderer.getStringWidth(title);
+		width = PC_Utils.mc().fontRenderer.getStringWidth(label);
 		height = PC_Utils.mc().fontRenderer.FONT_HEIGHT;
 		width += 12;
 		height += 12;
@@ -44,9 +44,9 @@ public class PC_GresButton extends PC_GresWidget {
 		renderTextureSliced(xOffset, yOffset, mod_PCcore.getImgDir()+"button.png", width, height, 0, state*50, 256, 50, 5, 5);
 		
 		if(fontRenderer!=null)
-			drawCenteredString(fontRenderer, title, xOffset + x + width / 2, yOffset + y + (height - 8) / 2, txC);
+			drawCenteredString(fontRenderer, label, xOffset + x + width / 2, yOffset + y + (height - 8) / 2, txC);
 		else
-			drawCenteredString(PC_Utils.mc().fontRenderer, title, xOffset + x + width / 2, yOffset + y + (height - 8) / 2, txC);
+			drawCenteredString(PC_Utils.mc().fontRenderer, label, xOffset + x + width / 2, yOffset + y + (height - 8) / 2, txC);
 	}
 
 	@Override

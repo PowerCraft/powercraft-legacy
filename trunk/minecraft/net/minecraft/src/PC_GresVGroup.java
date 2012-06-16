@@ -28,14 +28,14 @@ public class PC_GresVGroup extends PC_GresWidget {
 				calcChildPositions();
 				return;
 			}
-			ySize += size[1] + widgetDistance;
+			ySize += size[1] + widgetMargin;
 		}
-		ySize -= widgetDistance;
+		ySize -= widgetMargin;
 		for(int i=0; i<childs.size(); i++){
 			int[] size = childs.get(i).getSize();
 			int xPos=0;
 			int yPos=0;
-			switch(alignerHorizontal){
+			switch(alignH){
 				case LEFT:
 					xPos = 0;
 					break;
@@ -50,7 +50,7 @@ public class PC_GresVGroup extends PC_GresWidget {
 					childs.get(i).setSize(width, childs.get(i).getSize()[1], false);
 					break;
 			}
-			switch(alignerVertical){
+			switch(alignV){
 				case TOP:
 					yPos = yy;
 					break;
@@ -65,7 +65,7 @@ public class PC_GresVGroup extends PC_GresWidget {
 					break;
 			}
 			childs.get(i).setPosition(xPos, yPos);
-			yy += size[1] + widgetDistance;
+			yy += size[1] + widgetMargin;
 		}
 	}
 

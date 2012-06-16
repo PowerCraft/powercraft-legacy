@@ -12,7 +12,7 @@ import net.minecraft.src.forge.ITextureProvider;
  * @copy (c) 2012
  * 
  */
-public class PCma_BlockHarvester extends Block implements PC_ISwapTerrain, PC_IBlockType, PC_IInvTextures, ITextureProvider,
+public class PCma_BlockHarvester extends Block implements PC_ISwapTerrain, PC_IBlockType, PC_ISpecialInventoryTextures, ITextureProvider,
 		PC_IBeamHandler {
 	private static final int TXDOWN = 109, TXTOP = 155, TXSIDE = 139, TXFRONT = 107, TXBACK = 123;
 

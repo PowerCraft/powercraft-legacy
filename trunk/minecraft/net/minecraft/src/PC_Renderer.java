@@ -243,9 +243,9 @@ public class PC_Renderer {
 		Tessellator tessellator = Tessellator.instance;
 
 		int[] textures = new int[6];
-		if (block instanceof PC_IInvTextures) {
+		if (block instanceof PC_ISpecialInventoryTextures) {
 			for (int a = 0; a < 6; a++) {
-				textures[a] = ((PC_IInvTextures) block).getInvTexture(a, meta);
+				textures[a] = ((PC_ISpecialInventoryTextures) block).getInvTexture(a, meta);
 			}
 		} else {
 			for (int a = 0; a < 6; a++) {

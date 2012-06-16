@@ -5,7 +5,7 @@ package net.minecraft.src;
  * 
  * @author MightyPork
  */
-public interface PC_IInvTextures {
+public interface PC_ISpecialInventoryTextures {
 
 	/**
 	 * get inventory block texture for side and metadata

@@ -10,7 +10,7 @@ public class PC_GresLabel extends PC_GresWidget {
 	
 	@Override
 	public int[] calcSize() {
-		width = PC_Utils.mc().fontRenderer.getStringWidth(title);
+		width = PC_Utils.mc().fontRenderer.getStringWidth(label);
 		height = PC_Utils.mc().fontRenderer.FONT_HEIGHT;
 		return new int[]{width, height};
 	}
@@ -18,9 +18,9 @@ public class PC_GresLabel extends PC_GresWidget {
 	@Override
 	protected void render(int xOffset, int yOffset) {
 		if(fontRenderer!=null){
-			fontRenderer.drawStringWithShadow(title, xOffset + x, yOffset + y, color);
+			fontRenderer.drawStringWithShadow(label, xOffset + x, yOffset + y, color);
 		}else{
-			PC_Utils.mc().fontRenderer.drawString(title, xOffset + x, yOffset + y, color);
+			PC_Utils.mc().fontRenderer.drawString(label, xOffset + x, yOffset + y, color);
 		}
 	}
 
