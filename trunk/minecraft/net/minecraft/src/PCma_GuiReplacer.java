@@ -49,6 +49,9 @@ public class PCma_GuiReplacer implements PC_IGresBase {
 		hg.add(new PC_GresRadioButton("Radio 1", group));
 		hg.add(new PC_GresRadioButton("Radio 2",group));
 		hg.add(new PC_GresRadioButton("Radio 3",group));
+		hg.add(new PC_GresRadioButton("Radio 4", group));
+		hg.add(new PC_GresRadioButton("Radio 5",group));
+		hg.add(new PC_GresRadioButton("Radio 6",group));
 		w.add(hg);
 		
 		hg = new PC_GresHGroup().setAlignH(PC_GresAlignH.CENTER);
