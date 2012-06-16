@@ -41,7 +41,7 @@ public class PC_GresWindow extends PC_GresWidget {
 	@Override
 	public void render(PC_CoordI offsetPos) {
 
-		renderTextureSliced(offsetPos, mod_PCcore.getImgDir() + "dialog.png", size, new PC_CoordI(0, 0), new PC_CoordI(256, 256));
+		renderTextureSliced(offsetPos, mod_PCcore.getImgDir() + "gres/dialog.png", size, new PC_CoordI(0, 0), new PC_CoordI(256, 256));
 
 		if (fontRenderer != null) {
 			fontRenderer.drawString(text, offsetPos.x + pos.x + (size.x) / 2 - fontRenderer.getStringWidth(text) / 2, offsetPos.y + pos.y

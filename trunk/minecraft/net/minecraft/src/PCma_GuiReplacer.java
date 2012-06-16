@@ -26,12 +26,41 @@ public class PCma_GuiReplacer implements PC_IGresBase {
 		PC_GresWidget hg;
 		PC_GresWidget vg;
 
+		PC_GresWidget lblx, lbly, lblz;
+
+
 
 		hg = new PC_GresLayoutH();
-		hg.add(new PC_GresLabel(" X:")).add(textedit[0] = new PC_GresTextEdit("" + teReplacer.coordOffset[0], 4, 1));
-		hg.add(new PC_GresLabel(" Y:")).add(textedit[1] = new PC_GresTextEdit("" + teReplacer.coordOffset[1], 4, 1));
-		hg.add(new PC_GresLabel(" Z:")).add(textedit[2] = new PC_GresTextEdit("" + teReplacer.coordOffset[2], 4, 1));
+		hg.add(lblx = new PC_GresLabel("X:"));
+		hg.add(textedit[0] = (PC_GresTextEdit) new PC_GresTextEdit("" + teReplacer.coordOffset[0], 4, 1).setMinWidth(100));
+		hg.add(new PC_GresButton("-").setId(101).setMinWidth(16));
+		hg.add(new PC_GresButton("+").setId(102).setMinWidth(16));
 		w.add(hg);
+
+		hg = new PC_GresLayoutH();
+		hg.add(lbly = new PC_GresLabel("Y:"));
+		hg.add(textedit[1] = (PC_GresTextEdit) new PC_GresTextEdit("" + teReplacer.coordOffset[1], 4, 1).setMinWidth(100));
+		hg.add(new PC_GresButton("-").setId(201).setMinWidth(16));
+		hg.add(new PC_GresButton("+").setId(202).setMinWidth(16));
+		w.add(hg);
+
+		hg = new PC_GresLayoutH();
+		hg.add(lblz = new PC_GresLabel("Z:"));
+		hg.add(textedit[2] = (PC_GresTextEdit) new PC_GresTextEdit("" + teReplacer.coordOffset[2], 4, 1).setMinWidth(100));
+		hg.add(new PC_GresButton("-").setId(301).setMinWidth(16));
+		hg.add(new PC_GresButton("+").setId(302).setMinWidth(16));
+		w.add(hg);
+
+		int labelmaxw = 0;
+		labelmaxw = Math.max(labelmaxw, lblx.getMinSize().x);
+		labelmaxw = Math.max(labelmaxw, lbly.getMinSize().x);
+		labelmaxw = Math.max(labelmaxw, lblz.getMinSize().x);
+
+		lblx.setMinWidth(labelmaxw);
+		lbly.setMinWidth(labelmaxw);
+		lblz.setMinWidth(labelmaxw);
+
+		w.add(new PC_GresGap(0, 6));
 
 		hg = new PC_GresLayoutH().setAlignH(PC_GresAlignH.CENTER);
 		hg.add(errorLabel = new PC_GresLabel(""));
@@ -39,12 +68,13 @@ public class PCma_GuiReplacer implements PC_IGresBase {
 		w.add(hg);
 
 
-		hg = new PC_GresLayoutH().setAlignH(PC_GresAlignH.RIGHT);
+		hg = new PC_GresLayoutH().setAlignH(PC_GresAlignH.CENTER);
 		hg.add(button[0] = new PC_GresButton(PC_Lang.tr("pc.gui.cancel")));
 		hg.add(button[1] = new PC_GresButton(PC_Lang.tr("pc.gui.ok")));
 		w.add(hg);
 
 		gui.add(w);
+		w.calcChildPositions();
 	}
 
 	@Override
@@ -100,6 +130,41 @@ public class PCma_GuiReplacer implements PC_IGresBase {
 			if (valid) errorLabel.setText("");
 
 			button[1].enable(valid);
+		} else {
+
+			if (widget instanceof PC_GresButton) {
+				int id = widget.getId();
+				String number;
+				PC_GresWidget edit = null;
+				int num;
+
+				if (id == 101 || id == 102) {
+					edit = textedit[0];
+				} else if (id == 201 || id == 202) {
+					edit = textedit[1];
+				} else if (id == 301 || id == 302) {
+					edit = textedit[2];
+				}
+
+				if (edit == null) return;
+
+				number = edit.getText();
+				try {
+					num = Integer.parseInt(number);
+				} catch (NumberFormatException e) {
+					return;
+				}
+
+				if (id % 100 == 1) num--;
+				if (id % 100 == 2) num++;
+
+				if (num < -16) num = -16;
+				if (num > 16) num = 16;
+
+				edit.setText(num + "");
+
+			}
+
 		}
 	}
 

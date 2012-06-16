@@ -81,7 +81,7 @@ public class PCco_GuiCraftingTool extends GuiContainer {
 
 	@Override
 	protected void drawGuiContainerBackgroundLayer(float f, int i, int j) {
-		int k = mc.renderEngine.getTexture("/PowerCraft/core/large-container.png");
+		int k = mc.renderEngine.getTexture("/PowerCraft/core/gui_craftingtool.png");
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 		mc.renderEngine.bindTexture(k);
 		int l = (width - xSize) / 2;

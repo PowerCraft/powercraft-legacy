@@ -1,20 +1,20 @@
 package net.minecraft.src;
 
-public class PC_GresButton extends PC_GresWidget {
+public class PC_GresLink extends PC_GresWidget {
 	
 	private boolean isClicked = false;
 	
-	public PC_GresButton(String label){
+	public PC_GresLink(String label){
 		super(label);
 		canAddWidget = false;
-		minSize.setTo(60,0);
+		minSize.setTo(10,0);
 	}
 	
 	@Override
 	public PC_CoordI calcSize() {
 		FontRenderer fontRenderer = getFontRenderer();
 		
-		size.setTo(fontRenderer.getStringWidth(text),fontRenderer.FONT_HEIGHT).add(12,12);
+		size.setTo(fontRenderer.getStringWidth(text),fontRenderer.FONT_HEIGHT).add(2,0);
 		
 		if(size.x < minSize.x) size.x = minSize.x;
 		
@@ -40,15 +40,14 @@ public class PC_GresButton extends PC_GresWidget {
 			state = 1; // enabled and not hover
 		}
 		
-		int txC = 0xe0e0e0;
+		int textColor = 0x000000;
 		
-		if(state == 0) txC = 0xa0a0a0; // dark
-		if(state == 1) txC = 0xe0e0e0; // light
-		if (state > 1) txC = 0xffffa0; // yellow
-
-		renderTextureSliced(offsetPos, mod_PCcore.getImgDir()+"gres/button.png", size, new PC_CoordI(0, state*50), new PC_CoordI(256, 50));
+		if(state == 0) textColor = 0xa0a0a0; // gray
+		if(state == 1) textColor = 0x000000; // black
+		if(state == 2) textColor = 0x0000ff; // blue, hover
+		if(state == 3) textColor = 0xff0000; // red, activated
 		
-		drawCenteredString(getFontRenderer(), text, offsetPos.x + pos.x + size.x / 2, offsetPos.y + pos.y + (size.y - 8) / 2, txC);
+		drawStringColor(text, offsetPos.x+pos.x, offsetPos.y+pos.y, textColor);
 	}
 
 	@Override

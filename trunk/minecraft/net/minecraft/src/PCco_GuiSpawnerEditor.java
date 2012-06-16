@@ -85,7 +85,7 @@ public class PCco_GuiSpawnerEditor implements PC_IGresBase {
 		hgTotalWidth = maxw * 3 + 2;
 
 		for (int i = 0; i < mapping.length; i++) {
-			buttons[i].setMinSize(new PC_CoordI(maxw, 1));
+			buttons[i].setMinWidth(maxw);
 		}
 
 		w.add(new PC_GresGap(10, 3));
@@ -95,7 +95,7 @@ public class PCco_GuiSpawnerEditor implements PC_IGresBase {
 
 		hg.add(checkDangerous = new PC_GresCheckBox(PC_Lang.tr("pc.gui.spawnerEditor.enableDangerous")));
 		hg.add(new PC_GresGap(hgTotalWidth - (maxw + checkDangerous.getMinSize().x + 2), 3));
-		hg.add(buttons[24] = new PC_GresButton(PC_Lang.tr("pc.gui.cancel")).setId(24).setMinSize(new PC_CoordI(maxw, 1)));
+		hg.add(buttons[24] = new PC_GresButton(PC_Lang.tr("pc.gui.cancel")).setId(24).setMinWidth(maxw));
 
 		w.add(hg);
 

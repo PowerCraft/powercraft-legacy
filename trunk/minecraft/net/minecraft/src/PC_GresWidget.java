@@ -63,7 +63,7 @@ public abstract class PC_GresWidget extends Gui {
 	public static final int textColorEnabled = 0, textColorShadowEnabled = 1, textColorDisabled = 2, textColorShadowDisabled = 3;
 
 	/** Array of text colors */
-	protected int color[] = { 0xff000000, 0x00000000, 0xff000000, 0x00000000 };
+	protected int color[] = { 0xff000000, 0x00000000, 0xff333333, 0x00000000 };
 
 	/** Parent widget */
 	protected PC_GresWidget parent = null;
@@ -302,6 +302,37 @@ public abstract class PC_GresWidget extends Gui {
 	}
 
 	/**
+	 * set min size
+	 * @param w width
+	 * @param h height
+	 * @return this
+	 */
+	public PC_GresWidget setMinSize(int w, int h) {
+		this.minSize.setTo(w, h);
+		return this;
+	}
+	
+	/**
+	 * set min size width
+	 * @param w width
+	 * @return this
+	 */
+	public PC_GresWidget setMinWidth(int w) {
+		this.minSize.setTo(w, this.minSize.y);
+		return this;
+	}
+	
+	/**
+	 * set min size height
+	 * @param h height
+	 * @return this
+	 */
+	public PC_GresWidget setMinHeight(int h) {
+		this.minSize.setTo(this.minSize.x, h);
+		return this;
+	}
+
+	/**
 	 * @return newly calculated size, {width, height}
 	 */
 	public abstract PC_CoordI calcSize();
@@ -507,7 +538,22 @@ public abstract class PC_GresWidget extends Gui {
 			fr.drawString(text, x + 1, y + 1, color[enabled ? textColorShadowEnabled : textColorShadowDisabled]);
 		}
 		fr.drawString(text, x, y, color[enabled ? textColorEnabled : textColorDisabled]);
-
+	}
+	
+	/**
+	 * Draw string, using overide color
+	 * 
+	 * @param text text to draw (usually the label)
+	 * @param x pos x
+	 * @param y pos y
+	 * @param colorOverride custom color
+	 */
+	protected void drawStringColor(String text, int x, int y, int colorOverride) {
+		FontRenderer fr = getFontRenderer();
+		if (color[enabled ? textColorShadowEnabled : textColorShadowDisabled] != 0) {
+			fr.drawString(text, x + 1, y + 1, color[enabled ? textColorShadowEnabled : textColorShadowDisabled]);
+		}
+		fr.drawString(text, x, y, colorOverride);
 	}
 
 	/**
