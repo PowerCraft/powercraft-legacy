@@ -24,7 +24,7 @@ public class PCma_GuiReplacer implements PC_IGresBase {
 	
 	@Override
 	public void initGui(PC_IGresGui gui) {
-		PC_GresWidget w = new PC_GresWindow(225, 50, PC_Lang.tr("pc.gui.blockReplacer.title"), "/PowerCraft/betterGui/MP_Overlay.png")
+		PC_GresWidget w = new PC_GresWindow(225, 50, PC_Lang.tr("pc.gui.blockReplacer.title"))
 				.setAlignH(PC_GresAlignH.STRETCH);
 		
 		PC_GresWidget hg;
