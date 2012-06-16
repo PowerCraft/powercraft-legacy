@@ -34,7 +34,7 @@ public class mod_PCcore extends PC_Module implements PC_IActivatorListener {
 	 * Since this is static final, it is replaced by it's value during compilation, thus all modules keep their compile-time version and
 	 * aren't affected by current core version.
 	 */
-	public static final String VERSION = "3.4p3";
+	public static final String VERSION = "3.4p4";
 
 	/** Location of the file with updates */
 	public static final String updateInfoPath = "http://bit.ly/Ld7sOI"; // "http://dl.dropbox.com/u/64454818/POWERCRAFT_DATA/info.xml";
