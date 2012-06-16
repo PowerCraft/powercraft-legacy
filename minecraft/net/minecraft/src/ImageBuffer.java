@@ -4,5 +4,5 @@ import java.awt.image.BufferedImage;
 
 public interface ImageBuffer
 {
-	public abstract BufferedImage parseUserSkin(BufferedImage bufferedimage);
+    public abstract BufferedImage parseUserSkin(BufferedImage bufferedimage);
 }
