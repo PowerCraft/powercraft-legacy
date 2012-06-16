@@ -147,22 +147,26 @@ public class PC_CoordD implements PC_ICoord, PC_INBT {
 	 * @param x
 	 * @param y
 	 * @param z
+	 * @return this
 	 */
-	public void setTo(double x, double y, double z) {
+	public PC_CoordD setTo(double x, double y, double z) {
 		this.x = x;
 		this.y = y;
 		this.z = z;
+		return this;
 	}
 
 	/**
 	 * Use coords from given coord
 	 * 
 	 * @param src source coord
+	 * @return this
 	 */
-	public void setTo(PC_CoordD src) {
+	public PC_CoordD setTo(PC_CoordD src) {
 		this.x = src.x;
 		this.y = src.y;
 		this.z = src.z;
+		return this;
 	}
 
 	/**
@@ -171,22 +175,26 @@ public class PC_CoordD implements PC_ICoord, PC_INBT {
 	 * @param x
 	 * @param y
 	 * @param z
+	 * @return this
 	 */
-	public void setTo(float x, float y, float z) {
+	public PC_CoordD setTo(float x, float y, float z) {
 		this.x = x;
 		this.y = y;
 		this.z = z;
+		return this;
 	}
 
 	/**
 	 * Use coords from given coord
 	 * 
 	 * @param src source coord
+	 * @return this
 	 */
-	public void setTo(PC_CoordF src) {
+	public PC_CoordD setTo(PC_CoordF src) {
 		this.x = src.x;
 		this.y = src.y;
 		this.z = src.z;
+		return this;
 	}
 
 	/**
@@ -195,22 +203,26 @@ public class PC_CoordD implements PC_ICoord, PC_INBT {
 	 * @param x
 	 * @param y
 	 * @param z
+	 * @return this
 	 */
-	public void setTo(int x, int y, int z) {
+	public PC_CoordD setTo(int x, int y, int z) {
 		this.x = x;
 		this.y = y;
 		this.z = z;
+		return this;
 	}
 
 	/**
 	 * Use coords from given coord
 	 * 
 	 * @param src source coord
+	 * @return this
 	 */
-	public void setTo(PC_CoordI src) {
+	public PC_CoordD setTo(PC_CoordI src) {
 		this.x = src.x;
 		this.y = src.y;
 		this.z = src.z;
+		return this;
 	}
 
 	/**
@@ -219,11 +231,13 @@ public class PC_CoordD implements PC_ICoord, PC_INBT {
 	 * @param x
 	 * @param y
 	 * @param z
+	 * @return this
 	 */
-	public void setTo(long x, long y, long z) {
+	public PC_CoordD setTo(long x, long y, long z) {
 		this.x = x;
 		this.y = y;
 		this.z = z;
+		return this;
 	}
 
 	/**
@@ -248,11 +262,127 @@ public class PC_CoordD implements PC_ICoord, PC_INBT {
 	 * Add a coord to this one
 	 * 
 	 * @param added added coord
+	 * @return this
 	 */
-	public void add(PC_CoordD added) {
+	public PC_CoordD add(PC_CoordD added) {
 		x += added.x;
 		y += added.y;
 		z += added.z;
+		return this;
+	}
+	
+	/**
+	 * Add a coordinates to this coord
+	 * 
+	 * @param x 
+	 * @param y 
+	 * @param z
+	 * @return this
+	 */
+	public PC_CoordD add(int x, int y, int z) {
+		this.x += x;
+		this.y += y;
+		this.z += z;
+		return this;
+	}
+
+	/**
+	 * Add a coordinates to this coord
+	 * 
+	 * @param x 
+	 * @param y
+	 * @return this
+	 */
+	public PC_CoordD add(int x, int y) {
+		this.x += x;
+		this.y += y;
+		return this;
+	}
+	
+	/**
+	 * Add a coordinates to this coord
+	 * 
+	 * @param x 
+	 * @param y 
+	 * @param z
+	 * @return this
+	 */
+	public PC_CoordD add(double x, double y, double z) {
+		this.x += x;
+		this.y += y;
+		this.z += z;
+		return this;
+	}
+
+	/**
+	 * Add a coordinates to this coord
+	 * 
+	 * @param x 
+	 * @param y
+	 * @return this
+	 */
+	public PC_CoordD add(double x, double y) {
+		this.x += x;
+		this.y += y;
+		return this;
+	}
+	
+	
+	/**
+	 * Add a coordinates to this coord
+	 * 
+	 * @param x 
+	 * @param y 
+	 * @param z
+	 * @return this
+	 */
+	public PC_CoordD add(float x, float y, float z) {
+		this.x += x;
+		this.y += y;
+		this.z += z;
+		return this;
+	}
+
+	/**
+	 * Add a coordinates to this coord
+	 * 
+	 * @param x 
+	 * @param y
+	 * @return this
+	 */
+	public PC_CoordD add(float x, float y) {
+		this.x += x;
+		this.y += y;
+		return this;
+	}
+	
+	
+	/**
+	 * Add a coordinates to this coord
+	 * 
+	 * @param x 
+	 * @param y 
+	 * @param z
+	 * @return this
+	 */
+	public PC_CoordD add(long x, long y, long z) {
+		this.x += x;
+		this.y += y;
+		this.z += z;
+		return this;
+	}
+
+	/**
+	 * Add a coordinates to this coord
+	 * 
+	 * @param x 
+	 * @param y
+	 * @return this
+	 */
+	public PC_CoordD add(long x, long y) {
+		this.x += x;
+		this.y += y;
+		return this;
 	}
 
 	/**
@@ -368,6 +498,37 @@ public class PC_CoordD implements PC_ICoord, PC_INBT {
 	 */
 	public PC_CoordD setZ(double zz) {
 		return new PC_CoordD(x, y, zz);
+	}
+	
+	/**
+	 * Calculate distance to another coordinate
+	 * 
+	 * @param pos
+	 * @return distance
+	 */
+	public double distanceTo(PC_CoordD pos) {
+		return Math.sqrt((x - pos.x) * (x - pos.x) + (y - pos.y) * (y - pos.y) + (z - pos.z) * (z - pos.z));
+	}
+	
+	/**
+	 * Make vector from two points
+	 * 
+	 * @param pos
+	 * @return distance
+	 */
+	public PC_CoordD getVectorTo(PC_CoordD pos) {
+		return new PC_CoordD(pos.x-x, pos.y-y, pos.z-z);
+	}
+	
+	/**
+	 * Make vector from two points
+	 * 
+	 * @param pos1 first position
+	 * @param pos2 second position
+	 * @return the vector A-B
+	 */
+	public static PC_CoordD getVector(PC_CoordD pos1, PC_CoordD pos2) {
+		return new PC_CoordD(pos2.x-pos1.x, pos2.y-pos1.y, pos2.z-pos1.z);
 	}
 
 

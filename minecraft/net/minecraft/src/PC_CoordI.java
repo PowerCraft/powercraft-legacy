@@ -1,8 +1,10 @@
 package net.minecraft.src;
 
+import paulscode.sound.Vector3D;
+
 /**
  * Integer coordinate class, can be used to hold information about position or a
- * simple movement vector.
+ * simple movement vector. Can also work in 2D.
  * 
  * @author MightyPork
  */
@@ -42,6 +44,18 @@ public class PC_CoordI implements PC_ICoord, PC_INBT {
 		y = b;
 		z = c;
 	}
+	
+	/**
+	 * Create coordinate [x,y,0]
+	 * 
+	 * @param a x
+	 * @param b y
+	 */
+	public PC_CoordI(int a, int b) {
+		x = a;
+		y = b;
+		z = 0;
+	}
 
 	/**
 	 * Create coordinate [x,y,z]
@@ -54,6 +68,18 @@ public class PC_CoordI implements PC_ICoord, PC_INBT {
 		x = (int) a;
 		y = (int) b;
 		z = (int) c;
+	}
+	
+	/**
+	 * Create coordinate [x,y,0]
+	 * 
+	 * @param a x
+	 * @param b y
+	 */
+	public PC_CoordI(long a, long b) {
+		x = (int) a;
+		y = (int) b;
+		z = 0;
 	}
 
 	/**
@@ -100,22 +126,39 @@ public class PC_CoordI implements PC_ICoord, PC_INBT {
 	 * @param x
 	 * @param y
 	 * @param z
+	 * @return this
 	 */
-	public void setTo(int x, int y, int z) {
+	public PC_CoordI setTo(int x, int y, int z) {
 		this.x = x;
 		this.y = y;
 		this.z = z;
+		return this;
+	}
+	
+	/**
+	 * Set coordinates 2D
+	 * 
+	 * @param x
+	 * @param y
+	 * @return this
+	 */
+	public PC_CoordI setTo(int x, int y) {
+		this.x = x;
+		this.y = y;
+		return this;
 	}
 
 	/**
 	 * Use coords from given coord
 	 * 
 	 * @param src source coord
+	 * @return this
 	 */
-	public void setTo(PC_CoordI src) {
+	public PC_CoordI setTo(PC_CoordI src) {
 		this.x = src.x;
 		this.y = src.y;
 		this.z = src.z;
+		return this;
 	}
 
 	/**
@@ -124,11 +167,26 @@ public class PC_CoordI implements PC_ICoord, PC_INBT {
 	 * @param x
 	 * @param y
 	 * @param z
+	 * @return this
 	 */
-	public void setTo(long x, long y, long z) {
+	public PC_CoordI setTo(long x, long y, long z) {
 		this.x = (int) x;
 		this.y = (int) y;
 		this.z = (int) z;
+		return this;
+	}
+
+	/**
+	 * Set coordinates 2D
+	 * 
+	 * @param x
+	 * @param y
+	 * @return this
+	 */
+	public PC_CoordI setTo(long x, long y) {
+		this.x = (int) x;
+		this.y = (int) y;
+		return this;
 	}
 
 
@@ -151,11 +209,71 @@ public class PC_CoordI implements PC_ICoord, PC_INBT {
 	 * Add a coord to this one
 	 * 
 	 * @param added added coord
+	 * @return this
 	 */
-	public void add(PC_CoordI added) {
+	public PC_CoordI add(PC_CoordI added) {
 		x += added.x;
 		y += added.y;
 		z += added.z;
+		return this;
+	}
+
+	/**
+	 * Add a coordinates to this coord
+	 * 
+	 * @param x 
+	 * @param y 
+	 * @param z
+	 * @return this
+	 */
+	public PC_CoordI add(int x, int y, int z) {
+		this.x += x;
+		this.y += y;
+		this.z += z;
+		return this;
+	}
+
+	/**
+	 * Add a coordinates to this coord
+	 * 
+	 * @param x 
+	 * @param y
+	 * @return this
+	 */
+	public PC_CoordI add(int x, int y) {
+		this.x += x;
+		this.y += y;
+		return this;
+	}
+	
+	
+	
+	/**
+	 * Add a coordinates to this coord
+	 * 
+	 * @param x 
+	 * @param y 
+	 * @param z
+	 * @return this
+	 */
+	public PC_CoordI add(long x, long y, long z) {
+		this.x += x;
+		this.y += y;
+		this.z += z;
+		return this;
+	}
+
+	/**
+	 * Add a coordinates to this coord
+	 * 
+	 * @param x 
+	 * @param y
+	 * @return this
+	 */
+	public PC_CoordI add(long x, long y) {
+		this.x += x;
+		this.y += y;
+		return this;
 	}
 
 
@@ -173,7 +291,6 @@ public class PC_CoordI implements PC_ICoord, PC_INBT {
 	public PC_CoordD offset(PC_CoordD added) {
 		return new PC_CoordD(x + added.x, y + added.y, z + added.z);
 	}
-
 
 	@Override
 	public PC_CoordI offset(int xm, int ym, int zm) {
@@ -193,6 +310,46 @@ public class PC_CoordI implements PC_ICoord, PC_INBT {
 	@Override
 	public PC_CoordI offset(long xm, long ym, long zm) {
 		return new PC_CoordI(x + xm, y + ym, z + zm);
+	}
+
+	/**
+	 * offset 2D
+	 * @param xm x offset
+	 * @param ym y offset
+	 * @return offset coord
+	 */
+	public PC_CoordI offset(int xm, int ym) {
+		return new PC_CoordI(x + xm, y + ym, z);
+	}
+
+	/**
+	 * offset 2D
+	 * @param xm x offset
+	 * @param ym y offset
+	 * @return offset coord
+	 */
+	public PC_CoordF offset(float xm, float ym) {
+		return new PC_CoordF(x + xm, y + ym, z);
+	}
+
+	/**
+	 * offset 2D
+	 * @param xm x offset
+	 * @param ym y offset
+	 * @return offset coord
+	 */
+	public PC_CoordD offset(double xm, double ym) {
+		return new PC_CoordD(x + xm, y + ym, z);
+	}
+	
+	/**
+	 * offset 2D
+	 * @param xm x offset
+	 * @param ym y offset
+	 * @return offset coord
+	 */
+	public PC_CoordI offset(long xm, long ym) {
+		return new PC_CoordI(x + xm, y + ym, z);
 	}
 
 	/**
@@ -322,6 +479,27 @@ public class PC_CoordI implements PC_ICoord, PC_INBT {
 	 */
 	public double distanceTo(PC_CoordI pos) {
 		return Math.sqrt((x - pos.x) * (x - pos.x) + (y - pos.y) * (y - pos.y) + (z - pos.z) * (z - pos.z));
+	}
+	
+	/**
+	 * Make vector from two points
+	 * 
+	 * @param pos
+	 * @return distance
+	 */
+	public PC_CoordD getVectorTo(PC_CoordI pos) {
+		return new PC_CoordD(pos.x-x, pos.y-y, pos.z-z);
+	}
+	
+	/**
+	 * Make vector from two points
+	 * 
+	 * @param pos1 first position
+	 * @param pos2 second position
+	 * @return the vector A-B
+	 */
+	public static PC_CoordD getVector(PC_CoordI pos1, PC_CoordI pos2) {
+		return new PC_CoordD(pos2.x-pos1.x, pos2.y-pos1.y, pos2.z-pos1.z);
 	}
 
 	/**

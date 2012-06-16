@@ -8,24 +8,24 @@ public class PC_GresLabel extends PC_GresWidget {
 	}
 	
 	@Override
-	public int[] calcSize() {
-		width = PC_Utils.mc().fontRenderer.getStringWidth(label);
-		height = PC_Utils.mc().fontRenderer.FONT_HEIGHT;
-		return new int[]{width, height};
+	public PC_CoordI calcSize() {
+		FontRenderer fontRenderer = getFontRenderer();
+		size.setTo(fontRenderer.getStringWidth(label), fontRenderer.FONT_HEIGHT);
+		return size.copy();
 	}
 
 	@Override
-	protected void render(int xOffset, int yOffset) {
-		drawString(label, xOffset + x, yOffset + y);
+	protected void render(PC_CoordI offsetPos) {
+		drawString(label, offsetPos.x+pos.x, offsetPos.y+pos.y);
 	}
 
 	@Override
-	public boolean mouseOver(int x, int y) {
+	public boolean mouseOver(PC_CoordI mpos) {
 		return false;
 	}
 
 	@Override
-	public boolean mouseClick(int x, int y, int key) {
+	public boolean mouseClick(PC_CoordI mpos, int key) {
 		return false;
 	}
 
@@ -40,12 +40,12 @@ public class PC_GresLabel extends PC_GresWidget {
 	}
 
 	@Override
-	public void mouseMove(int x, int y) {
+	public void mouseMove(PC_CoordI mpos) {
 
 	}
 
 	@Override
-	public int[] getMinSize() {
+	public PC_CoordI getMinSize() {
 		return calcSize();
 	}
 

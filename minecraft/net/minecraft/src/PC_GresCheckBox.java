@@ -24,17 +24,17 @@ public class PC_GresCheckBox extends PC_GresWidget {
 	}
 	
 	@Override
-	public int[] calcSize() {
-		width = PC_Utils.mc().fontRenderer.getStringWidth(label);
-		height = PC_Utils.mc().fontRenderer.FONT_HEIGHT;
-		width += WIDTH + 3;
-		if(height<WIDTH)
-			height = WIDTH;
-		return new int[]{width, height};
+	public PC_CoordI calcSize() {
+		FontRenderer fontRenderer = getFontRenderer();
+		size.setTo(fontRenderer.getStringWidth(label),fontRenderer.FONT_HEIGHT).add(WIDTH+3,0);
+
+		if(size.y<WIDTH)
+			size.y = WIDTH;
+		return size.copy();
 	}
 	
 	@Override
-	public int[] getMinSize() {
+	public PC_CoordI getMinSize() {
 		return calcSize();
 	}
 
@@ -44,31 +44,31 @@ public class PC_GresCheckBox extends PC_GresWidget {
 	}
 
 	@Override
-	protected void render(int xOffset, int yOffset) {
+	protected void render(PC_CoordI offsetPos) {
 		int c1 = 0xff555555, c2 = 0xffffffff, c3 = 0xff8b8b8b;
 		
-		drawHorizontalLine(xOffset + x, xOffset + x + WIDTH - 2, yOffset + y, c1);
-		drawHorizontalLine(xOffset + x + 1, xOffset + x + WIDTH - 1, yOffset + y + WIDTH - 1, c2);
+		drawHorizontalLine(offsetPos.x + pos.x, offsetPos.x + pos.x + WIDTH - 2, offsetPos.y + pos.y, c1);
+		drawHorizontalLine(offsetPos.x + pos.x + 1, offsetPos.x + pos.x + WIDTH - 1, offsetPos.y + pos.y + WIDTH - 1, c2);
 		
-		drawVerticalLine(xOffset + x, yOffset + y, yOffset + y + WIDTH - 1, c1);
-		drawVerticalLine(xOffset + x + WIDTH - 1, yOffset + y, yOffset + y + WIDTH - 1, c2);
+		drawVerticalLine(offsetPos.x + pos.x, offsetPos.y + pos.y, offsetPos.y + pos.y + WIDTH - 1, c1);
+		drawVerticalLine(offsetPos.x + pos.x + WIDTH - 1, offsetPos.y + pos.y, offsetPos.y + pos.y + WIDTH - 1, c2);
 		
-		drawPoint(xOffset + x, yOffset + y + WIDTH - 1, c3);
-		drawPoint(xOffset + x + WIDTH - 1, yOffset + y, c3);
+		drawPoint(new PC_CoordI(offsetPos.x + pos.x, offsetPos.y + pos.y + WIDTH - 1), c3);
+		drawPoint(new PC_CoordI(offsetPos.x + pos.x + WIDTH - 1, offsetPos.y + pos.y), c3);
 		
 		if (checked)
-			drawString("x", xOffset + x + 3, yOffset + y + 1);
+			drawString("x", offsetPos.x + pos.x + 3, offsetPos.y + pos.y + 1);
 		
-		drawString(label, xOffset + x + WIDTH + 3, yOffset + y + 1);
+		drawString(label, offsetPos.x + pos.x + WIDTH + 3, offsetPos.y + pos.y + 1);
 	}
 
 	@Override
-	public boolean mouseOver(int x, int y) {
+	public boolean mouseOver(PC_CoordI mpos) {
 		return true;
 	}
 
 	@Override
-	public boolean mouseClick(int x, int y, int key) {
+	public boolean mouseClick(PC_CoordI mpos, int key) {
 		if(!enabled)
 			return false;
 		if(key!=-1)
@@ -77,7 +77,7 @@ public class PC_GresCheckBox extends PC_GresWidget {
 	}
 
 	@Override
-	public void mouseMove(int x, int y) {
+	public void mouseMove(PC_CoordI mpos) {
 		
 	}
 

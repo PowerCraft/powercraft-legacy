@@ -4,31 +4,30 @@ import org.lwjgl.opengl.GL11;
 
 public class PC_GresImage extends PC_GresWidget {
 	
-	private int imgWidth = 16, imgHeight = 16;
-	private int imgOffsetX = 0, imgOffsetY = 0;
+	private PC_CoordI imgSize = new PC_CoordI(0,0);
+	private PC_CoordI imgOffset = new PC_CoordI(0,0);
 	private String texture;
 	
 	/**
 	 * Image from a texture file.
 	 * @param texture Name of a texture file inside minecraft.jar. Must be 256x256!
-	 * @param xOffset start of texture x
-	 * @param yOffset start of texture y
-	 * @param w image width
-	 * @param h image height
+	 * @param offsetX start of texture x
+	 * @param offsetY start of texture y
+	 * @param imgW image width
+	 * @param imgH image height
 	 */
-	public PC_GresImage(String texture, int xOffset, int yOffset, int w, int h){
+	public PC_GresImage(String texture, int offsetX, int offsetY, int imgW, int imgH){
 		super("");
-		imgWidth = w; imgHeight = h;
-		imgOffsetX = xOffset; imgOffsetY = yOffset;
+		imgSize.setTo(imgW,imgH);
+		imgOffset.setTo(offsetX,offsetY);
 		canAddWidget = false;
 		this.texture = texture;
 	}
 	
 	@Override
-	public int[] calcSize() {
-		width = imgWidth;
-		height = imgHeight;
-		return new int[]{width, height};
+	public PC_CoordI calcSize() {
+		size.setTo(imgSize);
+		return size.copy();
 	}
 
 	@Override
@@ -37,24 +36,24 @@ public class PC_GresImage extends PC_GresWidget {
 	}
 
 	@Override
-	protected void render(int xOffset, int yOffset) {
+	protected void render(PC_CoordI offsetPos) {
 		
 		GL11.glBindTexture(GL11.GL_TEXTURE_2D, PC_Utils.mc().renderEngine.getTexture(texture));
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 		
-		drawTexturedModalRect(x+xOffset, y+yOffset, imgOffsetX, imgOffsetY, imgWidth, imgHeight);
+		drawTexturedModalRect(pos.x+offsetPos.x, pos.y+offsetPos.y, imgOffset.x, imgOffset.y, imgSize.x, imgSize.y);
 		
 	}
 
 	@Override
-	public boolean mouseOver(int x, int y) {
+	public boolean mouseOver(PC_CoordI mpos) {
 		return true;
 	}
 
 	
 	
 	@Override
-	public boolean mouseClick(int x, int y, int key) {
+	public boolean mouseClick(PC_CoordI mpos, int key) {
 		return false;
 	}
 
@@ -64,11 +63,11 @@ public class PC_GresImage extends PC_GresWidget {
 	}
 
 	@Override
-	public void mouseMove(int x, int y) {
+	public void mouseMove(PC_CoordI mpos) {
 	}
 
 	@Override
-	public int[] getMinSize() {
+	public PC_CoordI getMinSize() {
 		return calcSize();
 	}
 

@@ -72,7 +72,7 @@ public class PC_GresGui extends GuiScreen implements PC_IGresGui {
 	protected void mouseClicked(int i, int j, int k) {
 		super.mouseClicked(i, j, k);
 		
-		PC_GresWidget newFocus = child.getWidgetUnderMouse(i, j);
+		PC_GresWidget newFocus = child.getWidgetUnderMouse(new PC_CoordI(i, j));
 		
 		if(newFocus != lastFocus){
 			if(lastFocus!=null)
@@ -82,25 +82,27 @@ public class PC_GresGui extends GuiScreen implements PC_IGresGui {
 			lastFocus = newFocus;
 		}
 		if(newFocus!=null){
-			int[] pos = newFocus.getPositionOnScreen();
-			if(newFocus.mouseClick(i - pos[0], j - pos[1], k))
+			PC_CoordI fpos = newFocus.getPositionOnScreen();
+			if(newFocus.mouseClick(new PC_CoordI(i - fpos.x, j - fpos.y), k)){
 				gui.actionPerformed(newFocus, this);
+			}
 		}
 	}
 	
 	private void mouseMoved(int i, int j){
 		if(lastFocus!=null){
-			int[] pos = lastFocus.getPositionOnScreen();
-			lastFocus.mouseMove(i - pos[0], j - pos[1]);
+			PC_CoordI fpos = lastFocus.getPositionOnScreen();
+			lastFocus.mouseMove(new PC_CoordI(i - fpos.x, j - fpos.y));
 		}
-		child.getWidgetUnderMouse(i, j);
+		child.getWidgetUnderMouse(new PC_CoordI(i, j));
 	}
 	
 	private void mouseUp(int i, int j, int k){
 		if(lastFocus!=null){
-			int[] pos = lastFocus.getPositionOnScreen();
-			if(lastFocus.mouseClick(i - pos[0], j - pos[1], -1))
+			PC_CoordI fpos = lastFocus.getPositionOnScreen();
+			if(lastFocus.mouseClick(new PC_CoordI(i - fpos.x, j - fpos.y), -1)){
 				gui.actionPerformed(lastFocus, this);
+			}
 		}
 	}
 	
@@ -121,7 +123,7 @@ public class PC_GresGui extends GuiScreen implements PC_IGresGui {
 	@Override
 	public void drawScreen(int i, int j, float f) {
 		drawDefaultBackground();
-		child.updateRenderer(0, 0);
+		child.updateRenderer(new PC_CoordI(0, 0));
 		super.drawScreen(i, j, f);
 	}
 	
