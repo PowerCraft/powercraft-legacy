@@ -39,7 +39,7 @@ public class PC_GresButton extends PC_GresWidget {
 			state = 1; // enabled and not hover
 		}
 		
-		int txC;
+		int txC = 0xe0e0e0;
 		
 		if(state == 0) txC = 0xa0a0a0; // dark
 		if(state == 1) txC = 0xe0e0e0; // light
