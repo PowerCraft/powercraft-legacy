@@ -7,6 +7,7 @@ public class PC_GresButton extends PC_GresWidget {
 	public PC_GresButton(String label){
 		super(label);
 		canAddWidget = false;
+		minSize.setTo(40,0);
 	}
 	
 	@Override

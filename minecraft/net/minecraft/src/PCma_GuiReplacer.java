@@ -1,5 +1,6 @@
 package net.minecraft.src;
 
+import net.minecraft.src.PC_GresRadioButton.PC_GresRadioGroup;
 import net.minecraft.src.PC_GresWidget.PC_GresAlignH;
 
 import org.lwjgl.input.Keyboard;
@@ -32,12 +33,23 @@ public class PCma_GuiReplacer implements PC_IGresBase {
 		
 		hg = new PC_GresHGroup();
 		
-		hg.add(new PC_GresVGroup().add(new PC_GresLabel("X")).add(textedit[0] = new PC_GresTextEdit("" + teReplacer.coordOffset[0], 4)));
-		hg.add(new PC_GresVGroup().add(new PC_GresLabel("Y")).add(textedit[1] = new PC_GresTextEdit("" + teReplacer.coordOffset[1], 4)));
-		hg.add(new PC_GresVGroup().add(new PC_GresLabel("Z")).add(textedit[2] = new PC_GresTextEdit("" + teReplacer.coordOffset[2], 4)));
+		hg.add(new PC_GresLabel(" X:")).add(textedit[0] = new PC_GresTextEdit("" + teReplacer.coordOffset[0], 4));
+		hg.add(new PC_GresLabel(" Y:")).add(textedit[1] = new PC_GresTextEdit("" + teReplacer.coordOffset[1], 4));
+		hg.add(new PC_GresLabel(" Z:")).add(textedit[2] = new PC_GresTextEdit("" + teReplacer.coordOffset[2], 4));
 
 		w.add(hg);
 		
+		hg = new PC_GresHGroup().setAlignH(PC_GresAlignH.LEFT);
+		hg.add(new PC_GresCheckBox("Checkbox 1"));
+		hg.add(new PC_GresCheckBox("Checkbox 2"));
+		w.add(hg);
+		
+		hg = new PC_GresHGroup().setAlignH(PC_GresAlignH.LEFT);
+		PC_GresRadioGroup group = new PC_GresRadioGroup();
+		hg.add(new PC_GresRadioButton("Radio 1", group));
+		hg.add(new PC_GresRadioButton("Radio 2",group));
+		hg.add(new PC_GresRadioButton("Radio 3",group));
+		w.add(hg);
 		
 		hg = new PC_GresHGroup().setAlignH(PC_GresAlignH.CENTER);
 		
