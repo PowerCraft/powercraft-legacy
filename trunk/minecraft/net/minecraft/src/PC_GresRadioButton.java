@@ -12,7 +12,7 @@ public class PC_GresRadioButton extends PC_GresWidget {
 
 	private static final int WIDTH = 11;
 	private boolean checked = false;
-	private Set<PC_GresRadioButton> radioGroup;
+	private PC_GresRadioGroup radioGroup;
 
 	public PC_GresRadioButton(String title, PC_GresRadioGroup group) {
 		super(title);
