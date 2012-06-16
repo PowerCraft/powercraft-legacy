@@ -2,6 +2,8 @@ package net.minecraft.src;
 
 import java.util.ArrayList;
 
+import net.minecraft.client.Minecraft;
+
 import org.lwjgl.opengl.GL11;
 
 /**
@@ -13,6 +15,9 @@ import org.lwjgl.opengl.GL11;
  * 
  */
 public abstract class PC_GresWidget extends Gui {
+	
+	/** Minecraft instance */
+	protected static Minecraft mc = PC_Utils.mc();
 
 	/**
 	 * 
@@ -95,7 +100,7 @@ public abstract class PC_GresWidget extends Gui {
 	protected boolean hasFocus = false;
 	
 	/** Widget's label (text in title or on button or whatever) */
-	protected String label = "";
+	protected String text = "";
 	
 	/** Horizontal Align */
 	protected PC_GresAlignH alignH = PC_GresAlignH.CENTER;
@@ -118,7 +123,7 @@ public abstract class PC_GresWidget extends Gui {
 	 * @param label widget's label / text
 	 */
 	public PC_GresWidget(String label) {
-		this.label = label;
+		this.text = label;
 		PC_CoordI minSize = getMinSize();
 		this.size = minSize.copy();
 		this.minSize = minSize.copy();
@@ -145,14 +150,16 @@ public abstract class PC_GresWidget extends Gui {
 	 */
 	public PC_GresWidget(int width, int height, String label) {
 		this(width, height);
-		this.label = label;
+		this.text = label;
 	}
+	
+	
 
 	/**
 	 * @return widget's font renderer
 	 */
 	public FontRenderer getFontRenderer() {
-		if(fontRenderer == null) return PC_Utils.mc().fontRenderer;
+		if(fontRenderer == null) return mc.fontRenderer;
 		return fontRenderer;
 	}
 
@@ -226,20 +233,20 @@ public abstract class PC_GresWidget extends Gui {
 	}
 
 	/**
-	 * @return widget's label
+	 * @return widget's text / label
 	 */
-	public String getLabel() {
-		return label;
+	public String getText() {
+		return text;
 	}
 
 	/**
 	 * Set widget's label, resize if needed
 	 * 
-	 * @param label new label
+	 * @param text new text / label
 	 * @return this
 	 */
-	public PC_GresWidget setLabel(String label) {
-		this.label = label;
+	public PC_GresWidget setText(String text) {
+		this.text = text;
 		if (parent != null) parent.calcChildPositions();
 		return this;
 	}
@@ -442,7 +449,7 @@ public abstract class PC_GresWidget extends Gui {
 	 */
 	protected int getStringLength(String text) {
 		if (fontRenderer != null) return fontRenderer.getStringWidth(text);
-		else return PC_Utils.mc().fontRenderer.getStringWidth(text);
+		else return mc.fontRenderer.getStringWidth(text);
 	}
 
 	/**
@@ -453,15 +460,11 @@ public abstract class PC_GresWidget extends Gui {
 	 * @param y pos y
 	 */
 	protected void drawString(String text, int x, int y) {
-		if (fontRenderer != null) {
-			if (color[enabled ? textColorShadowEnabled : textColorShadowDisabled] != 0) fontRenderer.drawString(text, x + 1, y + 1,
-					color[enabled ? textColorShadowEnabled : textColorShadowDisabled]);
-			fontRenderer.drawString(text, x, y, color[enabled ? textColorEnabled : textColorDisabled]);
-		} else {
-			if (color[enabled ? textColorShadowEnabled : textColorShadowDisabled] != 0) PC_Utils.mc().fontRenderer.drawString(text, x + 1,
-					y + 1, color[enabled ? textColorShadowEnabled : textColorShadowDisabled]);
-			PC_Utils.mc().fontRenderer.drawString(text, x, y, color[enabled ? textColorEnabled : textColorDisabled]);
+		FontRenderer fr = getFontRenderer();
+		if (color[enabled ? textColorShadowEnabled : textColorShadowDisabled] != 0){
+			fr.drawString(text, x + 1, y + 1, color[enabled ? textColorShadowEnabled : textColorShadowDisabled]);
 		}
+		fr.drawString(text, x, y, color[enabled ? textColorEnabled : textColorDisabled]);
 
 	}
 
@@ -562,7 +565,7 @@ public abstract class PC_GresWidget extends Gui {
 	 * @param borderBottom height of the bottom row appended below the upper part
 	 */
 	protected void renderTextureSliced(PC_CoordI offset, String texture, PC_CoordI rectSize, PC_CoordI imgOffset, PC_CoordI imageSize) {
-		GL11.glBindTexture(GL11.GL_TEXTURE_2D, PC_Utils.mc().renderEngine.getTexture(texture));
+		GL11.glBindTexture(GL11.GL_TEXTURE_2D, mc.renderEngine.getTexture(texture));
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 		
 		
@@ -579,41 +582,47 @@ public abstract class PC_GresWidget extends Gui {
 
 		// @formatter:off
 		
+		int rectxhalf1 = (int)Math.floor(rectSize.x/2F);
+		int rectxhalf2 = (int)Math.ceil(rectSize.x/2F);
+		int rectyhalf1 = (int)Math.floor(rectSize.y/2F);
+		int rectyhalf2 = (int)Math.ceil(rectSize.y/2F);
+		
+		
 		// A
 		drawTexturedModalRect(
 				pos.x + offset.x,
 				pos.y + offset.y,
 				imgOffset.x,
 				imgOffset.y,
-				rectSize.x/2,
-				rectSize.y/2);
+				rectxhalf1,
+				rectyhalf1);
 		
 		// B
 		drawTexturedModalRect(
-				pos.x + offset.x + rectSize.x/2,
+				pos.x + offset.x + rectxhalf1,
 				pos.y + offset.y,
-				imgOffset.x + imageSize.x - rectSize.x/2,
+				imgOffset.x + imageSize.x - rectxhalf2,
 				imgOffset.y,
-				rectSize.x/2,
-				rectSize.y/2);
+				rectxhalf2,
+				rectyhalf1);
 		
 		//left bottom wide
 		drawTexturedModalRect(
 				pos.x + offset.x,
-				pos.y + offset.y + rectSize.y/2,
+				pos.y + offset.y + rectyhalf1,
 				imgOffset.x,
-				imgOffset.y + imageSize.y - rectSize.y/2,
-				rectSize.x/2,
-				rectSize.y/2);
+				imgOffset.y + imageSize.y - rectyhalf2,
+				rectxhalf1,
+				rectyhalf2);
 		
 		//right bottom square
 		drawTexturedModalRect(
-				pos.x + offset.x + rectSize.x/2,
-				pos.y + offset.y + rectSize.y/2,
-				imgOffset.x + imageSize.x - rectSize.x/2,
-				imgOffset.y + imageSize.y - rectSize.y/2,
-				rectSize.x/2,
-				rectSize.y/2);
+				pos.x + offset.x + rectxhalf1,
+				pos.y + offset.y + rectyhalf1,
+				imgOffset.x + imageSize.x - rectxhalf2,
+				imgOffset.y + imageSize.y - rectyhalf2,
+				rectxhalf2,
+				rectyhalf2);
 		
 		// @formatter:on
 	}
@@ -631,11 +640,12 @@ public abstract class PC_GresWidget extends Gui {
 	public abstract void mouseMove(PC_CoordI mousePos);
 
 	/**
-	 * On key pressed
+	 * On key pressed. 
 	 * @param c character of the key
 	 * @param key key index
+	 * @return true if key was valid and was used.
 	 */
-	public abstract void keyTyped(char c, int key);
+	public abstract boolean keyTyped(char c, int key);
 
 	/**
 	 * Draw point on screen

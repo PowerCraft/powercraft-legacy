@@ -33,6 +33,17 @@ public class PC_Color implements PC_INBT {
 		this.g = g;
 		this.b = b;
 	}
+	
+	/**
+	 * Make color of HEX
+	 * 
+	 * @param hex hex color
+	 */
+	public PC_Color(int hex) {
+		this.r = red(hex);
+		this.g = green(hex);
+		this.b = blue(hex);
+	}
 
 	/**
 	 * Get color as copy of another color.

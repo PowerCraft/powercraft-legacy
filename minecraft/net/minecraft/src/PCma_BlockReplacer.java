@@ -5,7 +5,7 @@ import java.util.Random;
 import net.minecraft.src.forge.ITextureProvider;
 
 public class PCma_BlockReplacer extends BlockContainer implements PC_ISwapTerrain, PC_IBlockType, ITextureProvider {
-	private static final int TXDOWN = 125, TXTOP = 125, TXSIDE = 125, TXFRONT = 125, TXBACK = 125;
+	private static final int TXDOWN = 109, TXTOP = 125, TXSIDE = 125, TXFRONT = 125, TXBACK = 125;
 	
 	private int blockOffset[] = {0, 0, 0};
 	
@@ -61,22 +61,34 @@ public class PCma_BlockReplacer extends BlockContainer implements PC_ISwapTerrai
 	@Override
 	public void onBlockPlacedBy(World world, int i, int j, int k, EntityLiving entityliving) {
 		super.onBlockPlacedBy(world, i, j, k, entityliving);
-
-		if(entityliving instanceof EntityPlayer){
-			EntityPlayer entityplayer = (EntityPlayer)entityliving;
-			PCma_TileEntityReplacer tileentity = (PCma_TileEntityReplacer) world.getBlockTileEntity(i, j, k);
-			if (tileentity != null) {
-				ModLoader.openGUI(entityplayer, new PC_GresGui(new PCma_GuiReplacer(entityplayer.inventory, tileentity)));
-			}
-		}
+//
+//		if(entityliving instanceof EntityPlayer){
+//			EntityPlayer entityplayer = (EntityPlayer)entityliving;
+//			PCma_TileEntityReplacer tileentity = (PCma_TileEntityReplacer) world.getBlockTileEntity(i, j, k);
+//			if (tileentity != null) {
+//				ModLoader.openGUI(entityplayer, new PC_GresGui(new PCma_GuiReplacer(entityplayer.inventory, tileentity)));
+//			}
+//		}
 	}
 	
 	@Override
 	public boolean blockActivated(World world, int i, int j, int k, EntityPlayer entityplayer) {
 		
+		ItemStack ihold = entityplayer.getCurrentEquippedItem();
+		if (ihold != null) {
+			if (ihold.getItem() instanceof ItemBlock && ihold.getItem().shiftedIndex != blockID) {
+
+				Block bhold = Block.blocksList[ihold.getItem().shiftedIndex];
+				if (bhold instanceof PC_IBlockType) { return false; }
+
+			}
+		}
+
+		if (world.isRemote) { return true; }
+		
 		PCma_TileEntityReplacer tileentity = (PCma_TileEntityReplacer) world.getBlockTileEntity(i, j, k);
 		if (tileentity != null) {
-			ModLoader.openGUI(entityplayer, new PC_GresGui(new PCma_GuiReplacer(entityplayer.inventory, tileentity)));
+			PC_Utils.openGres(entityplayer, new PCma_GuiReplacer(tileentity));
 		}
 		
 		return true;

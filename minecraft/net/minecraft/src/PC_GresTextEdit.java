@@ -43,6 +43,9 @@ public class PC_GresTextEdit extends PC_GresWidget {
 
 	@Override
 	protected void render(PC_CoordI offsetPos) {
+		
+		if(mouseSelectEnd > text.length()) mouseSelectEnd = text.length();
+		if(mouseSelectStart > text.length()) mouseSelectStart = text.length();
 
 		drawHorizontalLine(offsetPos.x + pos.x, offsetPos.x + pos.x + size.x - 1, offsetPos.y + pos.y, 0xffA0A0A0);
 		drawHorizontalLine(offsetPos.x + pos.x, offsetPos.x + pos.x + size.x - 1, offsetPos.y + pos.y + size.y - 1, 0xffA0A0A0);
@@ -52,7 +55,7 @@ public class PC_GresTextEdit extends PC_GresWidget {
 
 		drawRect(offsetPos.x + pos.x + 1, offsetPos.y + pos.y + 1, offsetPos.x + pos.x + size.x - 1, offsetPos.y + pos.y + size.y - 1, 0xff000000);
 
-		if (label.length() > maxChars) label = label.substring(0, maxChars);
+		if (text.length() > maxChars) text = text.substring(0, maxChars);
 
 		if (mouseSelectStart != mouseSelectEnd && hasFocus) {
 			int s = mouseSelectStart, e = mouseSelectEnd;
@@ -61,18 +64,18 @@ public class PC_GresTextEdit extends PC_GresWidget {
 				s = mouseSelectEnd;
 			}
 
-			drawRect(offsetPos.x + pos.x + getStringLength(label.substring(0, s)) + 6, offsetPos.y + pos.y + 4,
-					offsetPos.x + pos.x + getStringLength(label.substring(0, e)) + 6, offsetPos.y + pos.y + size.y - 5, 0xff3399FF);
+			drawRect(offsetPos.x + pos.x + getStringLength(text.substring(0, s)) + 6, offsetPos.y + pos.y + 4,
+					offsetPos.x + pos.x + getStringLength(text.substring(0, e)) + 6, offsetPos.y + pos.y + size.y - 5, 0xff3399FF);
 
 		}
 
-		drawString(label, offsetPos.x + pos.x + 6, offsetPos.y + pos.y + (size.y - 8) / 2);
+		drawString(text, offsetPos.x + pos.x + 6, offsetPos.y + pos.y + (size.y - 8) / 2);
 
-		if (mouseSelectEnd == label.length()) {
-			if (hasFocus && (cursorCounter / 6) % 2 == 0) drawString("_", offsetPos.x + pos.x + getStringLength(label) + 6, offsetPos.y + pos.y
+		if (mouseSelectEnd == text.length()) {
+			if (hasFocus && (cursorCounter / 6) % 2 == 0) drawString("_", offsetPos.x + pos.x + getStringLength(text) + 6, offsetPos.y + pos.y
 					+ (size.y - 8) / 2);
 		} else if (hasFocus && (cursorCounter / 6) % 2 == 0) drawVerticalLine(
-				offsetPos.x + pos.x + getStringLength(label.substring(0, mouseSelectEnd)) + 5, offsetPos.y + pos.y + 3, offsetPos.y + pos.y + size.y - 5,
+				offsetPos.x + pos.x + getStringLength(text.substring(0, mouseSelectEnd)) + 5, offsetPos.y + pos.y + 3, offsetPos.y + pos.y + size.y - 5,
 				color[enabled ? textColorEnabled : textColorDisabled]);
 
 	}
@@ -85,12 +88,12 @@ public class PC_GresTextEdit extends PC_GresWidget {
 	private int getMousePositionInString(int x) {
 		int charSize;
 		x -= 6;
-		for (int i = 0; i < label.length(); i++) {
-			charSize = getStringLength("" + label.charAt(i));
+		for (int i = 0; i < text.length(); i++) {
+			charSize = getStringLength("" + text.charAt(i));
 			if (x - charSize / 2 < 0) return i;
 			x -= charSize;
 		}
-		return label.length();
+		return text.length();
 	}
 
 	@Override
@@ -112,10 +115,10 @@ public class PC_GresTextEdit extends PC_GresWidget {
 			e = mouseSelectStart;
 			s = mouseSelectEnd;
 		}
-		String s1 = label.substring(0, s);
-		String s2 = label.substring(e);
+		String s1 = text.substring(0, s);
+		String s2 = text.substring(e);
 		if ((s1 + c + s2).length() > maxChars) return;
-		label = s1 + c + s2;
+		text = s1 + c + s2;
 		mouseSelectEnd += 1;
 		mouseSelectStart = mouseSelectEnd;
 	}
@@ -126,9 +129,9 @@ public class PC_GresTextEdit extends PC_GresWidget {
 			e = mouseSelectStart;
 			s = mouseSelectEnd;
 		}
-		String s1 = label.substring(0, s);
-		String s2 = label.substring(e);
-		label = s1 + s2;
+		String s1 = text.substring(0, s);
+		String s2 = text.substring(e);
+		text = s1 + s2;
 		mouseSelectEnd = s;
 		mouseSelectStart = s;
 	}
@@ -139,9 +142,9 @@ public class PC_GresTextEdit extends PC_GresWidget {
 			return;
 		}
 		if (mouseSelectEnd <= 0) return;
-		String s1 = label.substring(0, mouseSelectEnd - 1);
-		String s2 = label.substring(mouseSelectEnd);
-		label = s1 + s2;
+		String s1 = text.substring(0, mouseSelectEnd - 1);
+		String s2 = text.substring(mouseSelectEnd);
+		text = s1 + s2;
 		mouseSelectEnd -= 1;
 		mouseSelectStart = mouseSelectEnd;
 	}
@@ -151,10 +154,10 @@ public class PC_GresTextEdit extends PC_GresWidget {
 			deleteSelected();
 			return;
 		}
-		if (mouseSelectEnd >= label.length()) return;
-		String s1 = label.substring(0, mouseSelectEnd);
-		String s2 = label.substring(mouseSelectEnd + 1);
-		label = s1 + s2;
+		if (mouseSelectEnd >= text.length()) return;
+		String s1 = text.substring(0, mouseSelectEnd);
+		String s2 = text.substring(mouseSelectEnd + 1);
+		text = s1 + s2;
 	}
 
 	private String getSelect() {
@@ -163,7 +166,7 @@ public class PC_GresTextEdit extends PC_GresWidget {
 			e = mouseSelectStart;
 			s = mouseSelectEnd;
 		}
-		return label.substring(s, e);
+		return text.substring(s, e);
 	}
 
 	private void setSelected(String stri) {
@@ -172,8 +175,8 @@ public class PC_GresTextEdit extends PC_GresWidget {
 			e = mouseSelectStart;
 			s = mouseSelectEnd;
 		}
-		String s1 = label.substring(0, s);
-		String s2 = label.substring(e);
+		String s1 = text.substring(0, s);
+		String s2 = text.substring(e);
 		String ss = "";
 		switch (type) {
 			case UNSIGNED_NUMBER:
@@ -182,7 +185,7 @@ public class PC_GresTextEdit extends PC_GresWidget {
 				break;
 				
 			case NUMBER:
-				if (label.length() > 0) if (label.charAt(0) == '-') if (mouseSelectStart == 0 && mouseSelectEnd == 0) break;
+				if (text.length() > 0) if (text.charAt(0) == '-') if (mouseSelectStart == 0 && mouseSelectEnd == 0) break;
 				for (int i = 0; i < stri.length(); i++) {
 					if (i == 0) if (stri.charAt(0) == '-') if (s == 0) ss += stri.charAt(i);
 					if (Character.isDigit(Character.valueOf(stri.charAt(i)))) ss += stri.charAt(i);
@@ -195,64 +198,78 @@ public class PC_GresTextEdit extends PC_GresWidget {
 				break;
 		}
 		if ((s1 + ss + s2).length() > maxChars) return;
-		label = s1 + ss + s2;
+		text = s1 + ss + s2;
 		mouseSelectEnd = s + ss.length();
 		mouseSelectStart = s;
 	}
 
 	@Override
-	public void keyTyped(char c, int key) {
-		if (!enabled || !hasFocus) return;
+	public boolean keyTyped(char c, int key) {
+		if (!enabled || !hasFocus) return false;
 		switch (c) {
 			case 3:
 				GuiScreen.setClipboardString(getSelect());
-				return;
+				return true;
 
 			case 22:
 				setSelected(GuiScreen.getClipboardString());
-				return;
+				return true;
 
 			case 24:
 				GuiScreen.setClipboardString(getSelect());
 				deleteSelected();
-				return;
+				return true;
 		}
 		switch (key) {
+			case Keyboard.KEY_RETURN:
+				return true;
 			case Keyboard.KEY_BACK:
 				key_backspace();
-				break;
+				return true;
 			case Keyboard.KEY_DELETE:
 				key_delete();
-				break;
+				return true;
 			case Keyboard.KEY_LEFT:
 				if (mouseSelectEnd > 0) {
 					mouseSelectEnd -= 1;
 					if (!(Keyboard.isKeyDown(Keyboard.KEY_RSHIFT) || Keyboard.isKeyDown(Keyboard.KEY_LSHIFT))) mouseSelectStart = mouseSelectEnd;
 
 				}
-				break;
+				return true;
 			case Keyboard.KEY_RIGHT:
-				if (mouseSelectEnd < label.length()) {
+				if (mouseSelectEnd < text.length()) {
 					mouseSelectEnd += 1;
 					if (!(Keyboard.isKeyDown(Keyboard.KEY_RSHIFT) || Keyboard.isKeyDown(Keyboard.KEY_LSHIFT))) mouseSelectStart = mouseSelectEnd;
 				}
-				break;
+				return true;
 			default:
 				switch (type) {
 					case UNSIGNED_NUMBER:
-						if (Character.isDigit(Character.valueOf(c))) addKey(c);
-						break;
+						if (Character.isDigit(Character.valueOf(c))){
+							addKey(c);
+							return true;
+						}else{
+							return false;
+						}
+						
 					case NUMBER:
-						if (label.length() > 0) if (label.charAt(0) == '-') if (mouseSelectStart == 0 && mouseSelectEnd == 0) break;
-						if (Character.isDigit(Character.valueOf(c))) addKey(c);
-						else if ((mouseSelectStart == 0 || mouseSelectEnd == 0) && key == Keyboard.KEY_MINUS) addKey(c);
-						break;
+						if (text.length() > 0) if (text.charAt(0) == '-') if (mouseSelectStart == 0 && mouseSelectEnd == 0) return true;
+						if (Character.isDigit(Character.valueOf(c))){
+							addKey(c);
+							return true;
+						}else if ((mouseSelectStart == 0 || mouseSelectEnd == 0) && key == Keyboard.KEY_MINUS){
+							addKey(c);
+							return true;
+						}
+						return false;
 					default:
-						if (ChatAllowedCharacters.isAllowedCharacter(c)) addKey(c);
-						break;
+						if (ChatAllowedCharacters.isAllowedCharacter(c)){
+							addKey(c);
+							return true;
+						}
+						return false;
 				}
-				break;
-		}
+		}		
 	}
 
 	@Override

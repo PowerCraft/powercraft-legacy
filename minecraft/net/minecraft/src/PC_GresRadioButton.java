@@ -4,6 +4,8 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Set;
 
+import org.lwjgl.opengl.GL11;
+
 public class PC_GresRadioButton extends PC_GresWidget {
 	
 	public static class PC_GresRadioGroup extends HashSet<PC_GresRadioButton>{
@@ -30,24 +32,22 @@ public class PC_GresRadioButton extends PC_GresWidget {
 		return checked;
 	}
 
-	public PC_GresRadioButton check() {
-		checked = true;
+	public PC_GresRadioButton check(boolean state) {
+		checked = state;
 		
-		for(PC_GresRadioButton btn : radioGroup){
-			if(btn != this) btn.uncheck();
+		if(checked){
+			for(PC_GresRadioButton btn : radioGroup){
+				if(btn != this) btn.check(false);
+			}
 		}
 		
 		return this;
 	}
 
-	private void uncheck() {
-		checked = false;		
-	}
-
 	@Override
 	public PC_CoordI calcSize() {
 		FontRenderer fontRenderer = getFontRenderer();
-		size.setTo(fontRenderer.getStringWidth(label), fontRenderer.FONT_HEIGHT).add(WIDTH + 3, 0);
+		size.setTo(fontRenderer.getStringWidth(text), fontRenderer.FONT_HEIGHT).add(WIDTH + 3, 0);
 
 		if (size.y < WIDTH) size.y = WIDTH;
 		return size.copy();
@@ -65,29 +65,17 @@ public class PC_GresRadioButton extends PC_GresWidget {
 
 	@Override
 	protected void render(PC_CoordI offsetPos) {
-		int c1 = 0xff555555, c2 = 0xffffffff, c3 = 0xff8b8b8b;
+		String texture = mod_PCcore.getImgDir() + "gui-elements.png";
+		GL11.glBindTexture(GL11.GL_TEXTURE_2D, mc.renderEngine.getTexture(texture));
+		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
+		
+		int state = 0;
+		if(isChecked()) state=1;
+		if(!isEnabled()) state += 2;
+		
+		drawTexturedModalRect(pos.x+offsetPos.x, pos.y+offsetPos.y, WIDTH*state, WIDTH, WIDTH, WIDTH);
 
-		drawHorizontalLine(offsetPos.x + pos.x + 3, offsetPos.x + pos.x + WIDTH - 4, offsetPos.y + pos.y, c1);
-		drawHorizontalLine(offsetPos.x + pos.x + 3, offsetPos.x + pos.x + WIDTH - 4, offsetPos.y + pos.y + WIDTH - 1, c2);
-
-		drawVerticalLine(offsetPos.x + pos.x, offsetPos.y + pos.y + 2, offsetPos.y + pos.y + WIDTH - 3, c1);
-		drawVerticalLine(offsetPos.x + pos.x + WIDTH - 1, offsetPos.y + pos.y + 2, offsetPos.y + pos.y + WIDTH - 3, c2);
-
-		drawPoint(new PC_CoordI(offsetPos.x + pos.x + 1, offsetPos.y + pos.y + 2), c1);
-		drawPoint(new PC_CoordI(offsetPos.x + pos.x + 2, offsetPos.y + pos.y + 1), c1);
-
-		drawPoint(new PC_CoordI(offsetPos.x + pos.x + 1, offsetPos.y + pos.y + WIDTH - 3), c3);
-		drawPoint(new PC_CoordI(offsetPos.x + pos.x + 2, offsetPos.y + pos.y + WIDTH - 2), c3);
-
-		drawPoint(new PC_CoordI(offsetPos.x + pos.x + WIDTH - 2, offsetPos.y + pos.y + 2), c3);
-		drawPoint(new PC_CoordI(offsetPos.x + pos.x + WIDTH - 3, offsetPos.y + pos.y + 1), c3);
-
-		drawPoint(new PC_CoordI(offsetPos.x + pos.x + WIDTH - 2, offsetPos.y + pos.y + WIDTH - 3), c2);
-		drawPoint(new PC_CoordI(offsetPos.x + pos.x + WIDTH - 3, offsetPos.y + pos.y + WIDTH - 2), c2);
-
-		if (checked) drawString("o", offsetPos.x + pos.x + 3, offsetPos.y + pos.y + 1);
-
-		drawString(label, offsetPos.x + pos.x + WIDTH + 3, offsetPos.y + pos.y + 1);
+		drawString(text, offsetPos.x + pos.x + WIDTH + 3, offsetPos.y + pos.y + 2);
 	}
 
 	@Override
@@ -99,7 +87,7 @@ public class PC_GresRadioButton extends PC_GresWidget {
 	public boolean mouseClick(PC_CoordI mpos, int key) {
 		if (!enabled) return false;
 		if (key != -1) {
-			check();
+			check(true);
 			return true;
 		}
 		return false;
@@ -111,8 +99,8 @@ public class PC_GresRadioButton extends PC_GresWidget {
 	}
 
 	@Override
-	public void keyTyped(char c, int key) {
-
+	public boolean keyTyped(char c, int key) {
+		return false;
 	}
 
 }

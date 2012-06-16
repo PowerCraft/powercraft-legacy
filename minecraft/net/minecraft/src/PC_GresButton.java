@@ -14,7 +14,7 @@ public class PC_GresButton extends PC_GresWidget {
 	public PC_CoordI calcSize() {
 		FontRenderer fontRenderer = getFontRenderer();
 		
-		size.setTo(fontRenderer.getStringWidth(label),fontRenderer.FONT_HEIGHT).add(12,12);
+		size.setTo(fontRenderer.getStringWidth(text),fontRenderer.FONT_HEIGHT).add(12,12);
 		
 		if(size.x < minSize.x) size.x = minSize.x;
 		
@@ -49,9 +49,9 @@ public class PC_GresButton extends PC_GresWidget {
 		renderTextureSliced(offsetPos, mod_PCcore.getImgDir()+"button.png", size, new PC_CoordI(0, state*50), new PC_CoordI(256, 50));
 		
 		if(fontRenderer!=null)
-			drawCenteredString(fontRenderer, label, offsetPos.x + pos.x + size.x / 2, offsetPos.y + pos.y + (size.y - 8) / 2, txC);
+			drawCenteredString(fontRenderer, text, offsetPos.x + pos.x + size.x / 2, offsetPos.y + pos.y + (size.y - 8) / 2, txC);
 		else
-			drawCenteredString(PC_Utils.mc().fontRenderer, label, offsetPos.x + pos.x + size.x / 2, offsetPos.y + pos.y + (size.y - 8) / 2, txC);
+			drawCenteredString(PC_Utils.mc().fontRenderer, text, offsetPos.x + pos.x + size.x / 2, offsetPos.y + pos.y + (size.y - 8) / 2, txC);
 	}
 
 	@Override
@@ -74,8 +74,8 @@ public class PC_GresButton extends PC_GresWidget {
 	}
 
 	@Override
-	public void keyTyped(char c, int key) {
-		
+	public boolean keyTyped(char c, int key) {
+		return false;
 	}
 
 	@Override
