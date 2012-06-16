@@ -32,13 +32,13 @@ public class PC_GresTextEdit extends PC_GresWidget {
 		
 		drawRect(xOffset + x + 1, yOffset + y + 1, xOffset + x + width - 1, yOffset + y + height - 1, 0xff000000);
 		
-		if(title.length()>maxChars)
-			title = title.substring(0, maxChars);
+		if(label.length()>maxChars)
+			label = label.substring(0, maxChars);
 		
 		if(fontRenderer!=null)
-			fontRenderer.drawStringWithShadow(title + (hasFocus&& (cursorCounter / 6) % 2 == 0?"_":""), xOffset + x + 6, yOffset + y + (height - 8) / 2, 0xffffffff);
+			fontRenderer.drawStringWithShadow(label + (hasFocus&& (cursorCounter / 6) % 2 == 0?"_":""), xOffset + x + 6, yOffset + y + (height - 8) / 2, 0xffffffff);
 		else
-			PC_Utils.mc().fontRenderer.drawStringWithShadow(title + (hasFocus&& (cursorCounter / 6) % 2 == 0?"_":""), xOffset + x + 6, yOffset + y + (height - 8) / 2, 0xffffffff);
+			PC_Utils.mc().fontRenderer.drawStringWithShadow(label + (hasFocus&& (cursorCounter / 6) % 2 == 0?"_":""), xOffset + x + 6, yOffset + y + (height - 8) / 2, 0xffffffff);
 		
 	}
 
@@ -58,14 +58,14 @@ public class PC_GresTextEdit extends PC_GresWidget {
 			return;
 		switch(key){
 			case Keyboard.KEY_BACK:
-				if(title.length()>1)
-					title = title.substring(0, title.length()-1);
-				else if(title.length()==1)
-					title = "";
+				if(label.length()>1)
+					label = label.substring(0, label.length()-1);
+				else if(label.length()==1)
+					label = "";
 				break;
 			default:
 				if(ChatAllowedCharacters.isAllowedCharacter(c))
-					title += c;
+					label += c;
 				break;
 		}
 	}

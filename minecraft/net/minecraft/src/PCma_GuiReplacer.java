@@ -25,7 +25,7 @@ public class PCma_GuiReplacer implements PC_IGresBase {
 	@Override
 	public void initGui(PC_IGresGui gui) {
 		PC_GresWidget w = new PC_GresWindow(225, 50, PC_Lang.tr("pc.gui.blockReplacer.title"), "/PowerCraft/betterGui/MP_Overlay.png")
-				.setHorizontalAligner(PC_GresAlignH.STRETCH);
+				.setAlignH(PC_GresAlignH.STRETCH);
 		
 		PC_GresWidget hg;
 		
@@ -39,7 +39,7 @@ public class PCma_GuiReplacer implements PC_IGresBase {
 		w.add(hg);
 		
 		
-		hg = new PC_GresHGroup().setHorizontalAligner(PC_GresAlignH.CENTER);
+		hg = new PC_GresHGroup().setAlignH(PC_GresAlignH.CENTER);
 		
 		hg.add(errorLabel = new PC_GresLabel(""));
 		errorLabel.color = 0x990000;
@@ -47,7 +47,7 @@ public class PCma_GuiReplacer implements PC_IGresBase {
 		w.add(hg);
 		
 		
-		hg = new PC_GresHGroup().setHorizontalAligner(PC_GresAlignH.RIGHT);
+		hg = new PC_GresHGroup().setAlignH(PC_GresAlignH.RIGHT);
 		hg.add(button[0] = new PC_GresButton(PC_Lang.tr("pc.gui.cancel")));
 		hg.add(button[1] = new PC_GresButton(PC_Lang.tr("pc.gui.ok")));
 		
@@ -75,47 +75,47 @@ public class PCma_GuiReplacer implements PC_IGresBase {
 		}else if(widget == button[1]){
 			valid = false;
 			for(int count=0; count<=2; count++){
-				if (!textedit[count].getTitle().equals("") && !textedit[count].getTitle().equals("-")) {
-					if(Integer.valueOf(textedit[count].getTitle())<-16 || Integer.valueOf(textedit[count].getTitle())>16){
-						errorLabel.setTitle(PC_Lang.tr("pc.gui.blockReplacer.errWrongValue"));
+				if (!textedit[count].getLabel().equals("") && !textedit[count].getLabel().equals("-")) {
+					if(Integer.valueOf(textedit[count].getLabel())<-16 || Integer.valueOf(textedit[count].getLabel())>16){
+						errorLabel.setLabel(PC_Lang.tr("pc.gui.blockReplacer.errWrongValue"));
 						button[1].enable(false);
 						return;
 					}else{
-						if(Integer.valueOf(textedit[count].getTitle())!=0){
+						if(Integer.valueOf(textedit[count].getLabel())!=0){
 							valid = true;
 						}
 					}
 					
 				} else {
-					errorLabel.setTitle(PC_Lang.tr("pc.gui.blockReplacer.errWrongValue"));
+					errorLabel.setLabel(PC_Lang.tr("pc.gui.blockReplacer.errWrongValue"));
 					button[1].enable(false);
 					return;
 				}
 			}
 			if(valid){
 				for(int count=0; count<=2; count++)
-					teReplacer.coordOffset[count] = Integer.valueOf(textedit[count].getTitle());
+					teReplacer.coordOffset[count] = Integer.valueOf(textedit[count].getLabel());
 				gui.close();
 			}else
-				errorLabel.setTitle(PC_Lang.tr("pc.gui.blockReplacer.err3zeros"));
+				errorLabel.setLabel(PC_Lang.tr("pc.gui.blockReplacer.err3zeros"));
 		}else if(widget == textedit[0] || widget == textedit[1] || widget == textedit[2]){
 			valid=false;
 			
 			try{
 				for(int count=0; count<=2; count++){
-					if (!textedit[count].getTitle().equals("") && !textedit[count].getTitle().equals("-")) {
-						if(Integer.valueOf(textedit[count].getTitle())<-16 || Integer.valueOf(textedit[count].getTitle())>16){
-							errorLabel.setTitle(PC_Lang.tr("pc.gui.blockReplacer.errWrongValue"));
+					if (!textedit[count].getLabel().equals("") && !textedit[count].getLabel().equals("-")) {
+						if(Integer.valueOf(textedit[count].getLabel())<-16 || Integer.valueOf(textedit[count].getLabel())>16){
+							errorLabel.setLabel(PC_Lang.tr("pc.gui.blockReplacer.errWrongValue"));
 							button[1].enable(false);
 							return;
 						}else{
-							if(Integer.valueOf(textedit[count].getTitle())!=0){
+							if(Integer.valueOf(textedit[count].getLabel())!=0){
 								valid = true;
 							}
 						}
 						
 					} else {
-						errorLabel.setTitle(PC_Lang.tr("pc.gui.blockReplacer.errWrongValue"));
+						errorLabel.setLabel(PC_Lang.tr("pc.gui.blockReplacer.errWrongValue"));
 						button[1].enable(false);
 						return;
 					}
@@ -124,9 +124,9 @@ public class PCma_GuiReplacer implements PC_IGresBase {
 				valid = false;
 			}
 			
-			if(!valid){errorLabel.setTitle(PC_Lang.tr("pc.gui.blockReplacer.err3zeros"));}
+			if(!valid){errorLabel.setLabel(PC_Lang.tr("pc.gui.blockReplacer.err3zeros"));}
 			
-			if(valid) errorLabel.setTitle("");
+			if(valid) errorLabel.setLabel("");
 			
 			button[1].enable(valid);
 		}

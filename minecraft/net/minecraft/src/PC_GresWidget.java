@@ -12,12 +12,11 @@ import org.lwjgl.opengl.GL11;
  * @copy (c) 2012
  *
  */
-@SuppressWarnings("javadoc")
 public abstract class PC_GresWidget extends Gui {
 	
 	/**
 	 * 
-	 * aligners horizontal
+	 * align horizontal
 	 * 
 	 * @authors XOR19 & Rapus95
 	 * @copy (c) 2012
@@ -36,7 +35,7 @@ public abstract class PC_GresWidget extends Gui {
 	
 	/**
 	 * 
-	 * aligners vertical
+	 * align vertical
 	 * 
 	 * @authors XOR19 & Rapus95
 	 * @copy (c) 2012
@@ -53,15 +52,46 @@ public abstract class PC_GresWidget extends Gui {
 		STRETCH
 	}
 	
+	/** Parent widget */
 	protected PC_GresWidget parent = null;
+	/** List of children */
 	protected ArrayList<PC_GresWidget> childs = new ArrayList<PC_GresWidget>();
+	/** Font renderer */
 	protected FontRenderer fontRenderer = null;
-	protected int x = 0, y = 0, width = 0, height = 0, minWidth=0, minHeight=0, widgetDistance=5, cursorCounter=0;
-	protected boolean canAddWidget = true, isMouseOver = false, enabled = true, hasFocus = false;
-	protected String title = "";
-	protected PC_GresAlignH alignerHorizontal = PC_GresAlignH.CENTER;
-	protected PC_GresAlignV alignerVertical = PC_GresAlignV.CENTER;
+	/** X pos of left top corner */
+	protected int x = 0;
+	/** Y pos of left top corner */
+	protected int y = 0;
+	/** Widget width */
+	protected int width = 0;
+	/** Widget height */
+	protected int height = 0;
+	/** Minimal allowed widget width */
+	protected int minWidth=0;
+	/** Minimal allowed widget height */
+	protected int minHeight=0;
+	/** Distance from other widgets in group. */
+	protected int widgetMargin=5;
+	/** Counter used for the automatic resizing */
+	protected int cursorCounter=0;
+	/** Can add child widgets */
+	protected boolean canAddWidget = true;
+	/** Is mouse over this widget? */
+	protected boolean isMouseOver = false;
+	/** Is widget enabled = clickable */
+	protected boolean enabled = true;
+	/** Is widget focused (used mainly for text edits) */
+	protected boolean hasFocus = false;
+	/** Widget's label (text in title or on button or whatever) */
+	protected String label = "";
+	/** Horizontal Align */
+	protected PC_GresAlignH alignH = PC_GresAlignH.CENTER;
+	/** Vertical Align */
+	protected PC_GresAlignV alignV = PC_GresAlignV.CENTER;
 	
+	/**
+	 * A widget
+	 */
 	public PC_GresWidget(){
 		int[] size = getMinSize();
 		width = size[0];
@@ -70,8 +100,12 @@ public abstract class PC_GresWidget extends Gui {
 		minHeight = size[1];
 	}
 	
-	public PC_GresWidget(String title){
-		this.title = title;
+	/**
+	 * A widget
+	 * @param label widget's label / text
+	 */
+	public PC_GresWidget(String label){
+		this.label = label;
 		int[] size = getMinSize();
 		width = size[0];
 		height = size[1];
@@ -79,6 +113,11 @@ public abstract class PC_GresWidget extends Gui {
 		minHeight = size[1];
 	}
 	
+	/**
+	 * A widget
+	 * @param width widget minWidth
+	 * @param height widget minHeight
+	 */
 	public PC_GresWidget(int width, int height){
 		this.width = width;
 		this.height = height;
@@ -86,72 +125,137 @@ public abstract class PC_GresWidget extends Gui {
 		minHeight = height;
 	}
 	
-	public PC_GresWidget(int width, int height, String title){
-		this.width = width;
-		this.height = height;
-		minWidth = width;
-		minHeight = height;
-		this.title = title;
+	/**
+	 * A widget
+	 * @param width widget minWidth
+	 * @param height widget minHeight
+	 * @param label widget label / text
+	 */
+	public PC_GresWidget(int width, int height, String label){
+		this(width,height);
+		this.label = label;
 	}
 	
+	/**
+	 * @return widget's font renderer
+	 */
 	public FontRenderer getFontRenderer(){
 		return fontRenderer;
 	}
 	
+	/**
+	 * Set widget's font renderer
+	 * @param fontRenderer the font renderer
+	 * @return this
+	 */
 	public PC_GresWidget setFontRenderer(FontRenderer fontRenderer){
 		this.fontRenderer = fontRenderer;
 		return this;
 	}
 	
-	public PC_GresAlignH getHorizontalAligner(){
-		return alignerHorizontal;
+	/**
+	 * Get horizontal align
+	 * @return horizontal align
+	 */
+	public PC_GresAlignH getAlignH(){
+		return alignH;
 	}
 	
-	public PC_GresWidget setHorizontalAligner(PC_GresAlignH alignerHorizontal){
-		this.alignerHorizontal = alignerHorizontal;
+	/**
+	 * Set horizontal align
+	 * @param alignHorizontal horizontal align
+	 * @return this
+	 */
+	public PC_GresWidget setAlignH(PC_GresAlignH alignHorizontal){
+		this.alignH = alignHorizontal;
 		return this;
 	}
 	
-	public PC_GresAlignV getVerticalAligner(){
-		return alignerVertical;
+	/**
+	 * Get vertical align
+	 * @return vertical align
+	 */
+	public PC_GresAlignV getAlignV(){
+		return alignV;
 	}
 	
-	public PC_GresWidget setVerticalAligner(PC_GresAlignV alignerVertical){
-		this.alignerVertical = alignerVertical;
+	/**
+	 * Set vertical align
+	 * @param alignVertical vertical align
+	 * @return this
+	 */
+	public PC_GresWidget setVerticalAligner(PC_GresAlignV alignVertical){
+		this.alignV = alignVertical;
 		return this;
 	}
 	
-	public boolean getFokus(){
+	/**
+	 * @return has focus
+	 */
+	public boolean getFocus(){
 		return hasFocus;
 	}
 	
-	public PC_GresWidget setFokus(boolean fokus){
-		hasFocus = fokus;
+	/**
+	 * Set focus state
+	 * @param focus focused
+	 * @return this
+	 */
+	public PC_GresWidget setFocus(boolean focus){
+		hasFocus = focus;
 		return this;
 	}
 	
-	public String getTitle(){
-		return title;
+	/**
+	 * @return widget's label
+	 */
+	public String getLabel(){
+		return label;
 	}
 	
-	public PC_GresWidget setTitle(String title){
-		this.title = title;
+	/**
+	 * Set widget's label, resize if needed
+	 * @param label new label
+	 * @return this
+	 */
+	public PC_GresWidget setLabel(String label){
+		this.label = label;
 		if(parent!=null)
 			parent.calcChildPositions();
 		return this;
 	}
 	
+	/**
+	 * Increment cursor counter, used for text field animations
+	 */
 	public void updateCursorCounter(){
 		cursorCounter++;
 	}
 	
+	/**
+	 * @return minimal size, {width,height}
+	 */
 	public abstract int[] getMinSize();
+	/**
+	 * @return newly calculated size, {width, height}
+	 */
 	public abstract int[] calcSize();
 	
+	/**
+	 * Get widget size
+	 * @return {width, height}
+	 */
 	public int[] getSize(){
 		return new int[]{width, height};
 	}
 	
+	/**
+	 * Set widget size
+	 * @param width width
+	 * @param height height
+	 * @param calcParent flag whether to ask parent for position recalculation
+	 * @return this
+	 */
 	public PC_GresWidget setSize(int width, int height, boolean calcParent){
 		this.width = width;
 		this.height = height;
@@ -160,24 +264,48 @@ public abstract class PC_GresWidget extends Gui {
 		return this;
 	}
 	
+	/**
+	 * Set size, recalculate position
+	 * @param width width
+	 * @param height height
+	 * @return this
+	 */
 	public PC_GresWidget setSize(int width, int height){
 		return setSize(width, height, true);
 	}
 	
+	/**
+	 * Get position
+	 * @return {x, y}
+	 */
 	public int[] getPosition(){
 		return new int[]{x, y};
 	}
 	
+	/**
+	 * Set position of the widget
+	 * @param x x
+	 * @param y y
+	 * @return this
+	 */
 	public PC_GresWidget setPosition(int x, int y){
 		this.x = x;
 		this.y = y;
 		return this;
 	}
 	
-	public boolean isEnable(){
+	/**
+	 * @return is enabled?
+	 */
+	public boolean isEnabled(){
 		return enabled;
 	}
 	
+	/**
+	 * set "enabled" flag
+	 * @param enabled state
+	 * @return this
+	 */
 	public PC_GresWidget enable(boolean enabled){
 		this.enabled = enabled;
 		return this;
@@ -205,10 +333,10 @@ public abstract class PC_GresWidget extends Gui {
 				}
 				if(xx + size[0]>width){
 					xx=0;
-					yy+=maxh + widgetDistance;
+					yy+=maxh + widgetMargin;
 				}
 				childs.get(i).setPosition(xx, yy);
-				xx += size[0] + widgetDistance;
+				xx += size[0] + widgetMargin;
 			}
 	}
 	

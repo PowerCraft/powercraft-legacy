@@ -36,7 +36,7 @@ public class PC_GresWindow extends PC_GresWidget {
 	
 	@Override
 	public int[] calcSize() {
-		int textWidth = PC_Utils.mc().fontRenderer.getStringWidth(title);
+		int textWidth = PC_Utils.mc().fontRenderer.getStringWidth(label);
 		if(width<textWidth+distanceToFrame*2 + 12)
 			width = textWidth+distanceToFrame*2 + 12;
 		calcChildPositions();
@@ -48,9 +48,9 @@ public class PC_GresWindow extends PC_GresWidget {
 		renderTextureSliced(xOffset, yOffset, mod_PCcore.getImgDir()+"dialog.png", width, height, 0, 0, 256, 256, 22, 22);
 		
 		if(fontRenderer!=null)
-			fontRenderer.drawString(title, xOffset + x + (width)/2 - fontRenderer.getStringWidth(title)/2, yOffset + y + 6, 0xff000000);
+			fontRenderer.drawString(label, xOffset + x + (width)/2 - fontRenderer.getStringWidth(label)/2, yOffset + y + 6, 0xff000000);
 		else
-			PC_Utils.mc().fontRenderer.drawString(title, xOffset + x + (width)/2 - PC_Utils.mc().fontRenderer.getStringWidth(title)/2, yOffset + y + 6, 0xff000000);
+			PC_Utils.mc().fontRenderer.drawString(label, xOffset + x + (width)/2 - PC_Utils.mc().fontRenderer.getStringWidth(label)/2, yOffset + y + 6, 0xff000000);
 		
 	}
 
@@ -77,15 +77,15 @@ public class PC_GresWindow extends PC_GresWidget {
 			childs.get(i).calcChildPositions();
 			int[] size = childs.get(i).calcSize();
 			int[] minSize = childs.get(i).getMinSize();
-			ySize += size[1] + widgetDistance;
-			minySize += minSize[1] + widgetDistance;
+			ySize += size[1] + widgetMargin;
+			minySize += minSize[1] + widgetMargin;
 			if(maxxSize<size[0])
 				maxxSize = size[0];
 			if(minmaxxSize<minSize[0])
 				minmaxxSize = minSize[0];
 		}
 		
-		if(alignerVertical == PC_GresAlignV.STRETCH){
+		if(alignV == PC_GresAlignV.STRETCH){
 			maxxSize = minmaxxSize;
 			ySize = minySize;
 			for(int i=0; i<childNum; i++){
@@ -104,14 +104,14 @@ public class PC_GresWindow extends PC_GresWidget {
 			return;
 		}
 		
-		ySize -= widgetDistance;
+		ySize -= widgetMargin;
 		
 		for(int i=0; i<childNum; i++){
 			int[] size = childs.get(i).getSize();
 			int xPos=0;
 			int yPos=0;
 			int s=0;
-			switch(alignerHorizontal){
+			switch(alignH){
 				case LEFT:
 					xPos = distanceToFrame;
 					break;
@@ -126,7 +126,7 @@ public class PC_GresWindow extends PC_GresWidget {
 					childs.get(i).setSize(width - distanceToFrame*2, childs.get(i).getSize()[1], false);
 					break;
 			}
-			switch(alignerVertical){
+			switch(alignV){
 				case TOP:
 					yPos = yPlus + yy;
 					break;
@@ -137,13 +137,13 @@ public class PC_GresWindow extends PC_GresWidget {
 					yPos = (height+yPlus-distanceToFrame)/2 - ySize/2 + yy;
 					break;
 				case STRETCH:
-					s = (height - yPlus - distanceToFrame - ySize + widgetDistance - widgetDistance*childNum )/childNum;
+					s = (height - yPlus - distanceToFrame - ySize + widgetMargin - widgetMargin*childNum )/childNum;
 					childs.get(i).setSize(childs.get(i).getSize()[0], childs.get(i).getSize()[1] + s, false);
 					yPos = yPlus + yy;
 					break;
 			}
 			childs.get(i).setPosition(xPos, yPos);
-			yy += size[1] + widgetDistance + s;
+			yy += size[1] + widgetMargin + s;
 		}
 		
 	}

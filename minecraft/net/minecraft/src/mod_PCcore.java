@@ -37,9 +37,9 @@ public class mod_PCcore extends PC_Module implements PC_IActivatorListener {
 	public static final String VERSION = "3.4p4";
 
 	/** Location of the file with updates */
-	public static final String updateInfoPath = "http://bit.ly/Ld7sOI"; // "http://dl.dropbox.com/u/64454818/POWERCRAFT_DATA/info.xml";
+	public static final String updateInfoPath = "http://dl.dropbox.com/u/64454818/POWERCRAFT_DATA/info.xml"; //"http://bit.ly/Ld7sOI";
 	/** Location of latest language pack file */
-	public static final String updateLangPath = "http://bit.ly/Ld7y8S"; // "http://dl.dropbox.com/u/64454818/POWERCRAFT_DATA/lang.zip";
+	public static final String updateLangPath = "http://dl.dropbox.com/u/64454818/POWERCRAFT_DATA/lang.zip"; //"http://bit.ly/Ld7y8S"; 
 
 	/**
 	 * Directory with settings. /something/something<br>
