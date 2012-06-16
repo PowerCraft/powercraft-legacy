@@ -4,31 +4,31 @@ import java.util.Random;
 
 public class EntityAISwimming extends EntityAIBase
 {
-	private EntityLiving theEntity;
+    private EntityLiving theEntity;
 
-	public EntityAISwimming(EntityLiving par1EntityLiving)
-	{
-		theEntity = par1EntityLiving;
-		setMutexBits(4);
-		par1EntityLiving.getNavigator().setCanSwim(true);
-	}
+    public EntityAISwimming(EntityLiving par1EntityLiving)
+    {
+        theEntity = par1EntityLiving;
+        setMutexBits(4);
+        par1EntityLiving.getNavigator().setCanSwim(true);
+    }
 
-	/**
-	 * Returns whether the EntityAIBase should begin execution.
-	 */
-	public boolean shouldExecute()
-	{
-		return theEntity.isInWater() || theEntity.handleLavaMovement();
-	}
+    /**
+     * Returns whether the EntityAIBase should begin execution.
+     */
+    public boolean shouldExecute()
+    {
+        return theEntity.isInWater() || theEntity.handleLavaMovement();
+    }
 
-	/**
-	 * Updates the task
-	 */
-	public void updateTask()
-	{
-		if (theEntity.getRNG().nextFloat() < 0.8F)
-		{
-			theEntity.getJumpHelper().setJumping();
-		}
-	}
+    /**
+     * Updates the task
+     */
+    public void updateTask()
+    {
+        if (theEntity.getRNG().nextFloat() < 0.8F)
+        {
+            theEntity.getJumpHelper().setJumping();
+        }
+    }
 }
