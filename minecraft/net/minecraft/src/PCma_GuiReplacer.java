@@ -42,7 +42,7 @@ public class PCma_GuiReplacer implements PC_IGresBase {
 		hg = new PC_GresHGroup().setAlignH(PC_GresAlignH.CENTER);
 		
 		hg.add(errorLabel = new PC_GresLabel(""));
-		errorLabel.color = 0x990000;
+		errorLabel.setColor(PC_GresWidget.textColorEnabled, 0x990000);
 		
 		w.add(hg);
 		
