@@ -17,21 +17,15 @@ public class PC_GresWindow extends PC_GresWidget {
 	 * distance to the window frame
 	 */
 	static final int distanceToFrame = 10;
-	/**
-	 * Image for the left upper corner
-	 */
-	String overlayFile;
 	
 	/**
 	 * 
 	 * @param minX minimal X size
 	 * @param minY minimal Y size
 	 * @param title title of the window
-	 * @param overlayFile image for the left upper corner
 	 */
-	public PC_GresWindow(int minX, int minY, String title, String overlayFile){
+	public PC_GresWindow(int minX, int minY, String title){
 		super(minX, minY, title);
-		this.overlayFile = overlayFile;
 	}
 	
 	@Override
