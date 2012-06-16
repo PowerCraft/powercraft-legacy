@@ -45,7 +45,7 @@ public class PC_GresWindow extends PC_GresWidget {
 
 		if (fontRenderer != null) {
 			fontRenderer.drawString(label, offsetPos.x + pos.x + (size.x) / 2 - fontRenderer.getStringWidth(label) / 2, offsetPos.y + pos.y
-					+ 6, 0xff000000);
+					+ 8, 0xff000000);
 		} else {
 			PC_Utils.mc().fontRenderer.drawString(label,
 					offsetPos.x + pos.x + (size.x) / 2 - PC_Utils.mc().fontRenderer.getStringWidth(label) / 2, offsetPos.y + pos.y + 6,

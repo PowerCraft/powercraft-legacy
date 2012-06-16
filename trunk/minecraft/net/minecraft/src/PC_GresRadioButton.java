@@ -1,25 +1,29 @@
 package net.minecraft.src;
 
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Set;
+
 public class PC_GresRadioButton extends PC_GresWidget {
+	
+	public static class PC_GresRadioGroup extends HashSet<PC_GresRadioButton>{
+		
+	}
 
 	private static final int WIDTH = 11;
 	private boolean checked = false;
-	private PC_GresRadioButton next = null;
-	private PC_GresRadioButton prev = null;
+	private Set<PC_GresRadioButton> radioGroup = new HashSet<PC_GresRadioButton>();
 
-	public PC_GresRadioButton(String title, PC_GresRadioButton otherRadio) {
+	public PC_GresRadioButton(String title, Set<PC_GresRadioButton> group) {
 		super(title);
 		canAddWidget = false;
 		color[textColorEnabled] = 0x000000;
 		color[textColorShadowEnabled] = 0xAAAAAA;
 		color[textColorDisabled] = 0x707070;
 		color[textColorShadowDisabled] = 0xAAAAAA;
-		if (otherRadio != null) {
-			next = otherRadio.next;
-			otherRadio.next = this;
-			if (next != null) next.prev = this;
-		}
-		prev = otherRadio;
+		
+		radioGroup = group;
+		radioGroup.add(this);
 	}
 
 	public boolean isChecked() {
@@ -28,16 +32,16 @@ public class PC_GresRadioButton extends PC_GresWidget {
 
 	public PC_GresRadioButton check() {
 		checked = true;
-		if (prev != null) prev.uncheck(true);
-		if (next != null) next.uncheck(false);
+		
+		for(PC_GresRadioButton btn : radioGroup){
+			if(btn != this) btn.uncheck();
+		}
+		
 		return this;
 	}
 
-	private void uncheck(boolean toLeft) {
-		checked = false;
-		if (toLeft) {
-			if (prev != null) prev.uncheck(true);
-		} else if (next != null) next.uncheck(false);
+	private void uncheck() {
+		checked = false;		
 	}
 
 	@Override
