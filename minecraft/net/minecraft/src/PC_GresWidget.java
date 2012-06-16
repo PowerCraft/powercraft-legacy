@@ -561,47 +561,59 @@ public abstract class PC_GresWidget extends Gui {
 	 * @param borderRight width of the right-hand-side column appended after the left part
 	 * @param borderBottom height of the bottom row appended below the upper part
 	 */
-	protected void renderTextureSliced(PC_CoordI offset, String texture, PC_CoordI rectSize, PC_CoordI imgOffset, PC_CoordI imageSize, int borderRight, int borderBottom) {
+	protected void renderTextureSliced(PC_CoordI offset, String texture, PC_CoordI rectSize, PC_CoordI imgOffset, PC_CoordI imageSize) {
 		GL11.glBindTexture(GL11.GL_TEXTURE_2D, PC_Utils.mc().renderEngine.getTexture(texture));
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
+		
+		
+		/*
+		 * AAAAA BBBBB
+		 * AAAAA BBBBB
+		 * AAAAA BBBBB
+		 * 
+		 * CCCCC DDDDD
+		 * CCCCC DDDDD
+		 * CCCCC DDDDD 
+		 * 
+		 */
 
 		// @formatter:off
 		
-		// left top huge
+		// A
 		drawTexturedModalRect(
 				pos.x + offset.x,
 				pos.y + offset.y,
 				imgOffset.x,
 				imgOffset.y,
-				rectSize.x - borderRight,
-				rectSize.y - borderBottom);
+				rectSize.x/2,
+				rectSize.y/2);
 		
-		// right top thin
+		// B
 		drawTexturedModalRect(
-				pos.x + offset.x + rectSize.x - borderRight,
+				pos.x + offset.x + rectSize.x/2,
 				pos.y + offset.y,
-				imgOffset.x + imageSize.x - borderRight,
+				imgOffset.x + imageSize.x - rectSize.x/2,
 				imgOffset.y,
-				borderRight,
-				rectSize.y - borderBottom);
+				rectSize.x/2,
+				rectSize.y/2);
 		
 		//left bottom wide
 		drawTexturedModalRect(
 				pos.x + offset.x,
-				pos.y + offset.y + rectSize.y - borderBottom,
+				pos.y + offset.y + rectSize.y/2,
 				imgOffset.x,
-				imgOffset.y + imageSize.y - borderBottom,
-				rectSize.x - borderRight,
-				borderBottom);
+				imgOffset.y + imageSize.y - rectSize.y/2,
+				rectSize.x/2,
+				rectSize.y/2);
 		
 		//right bottom square
 		drawTexturedModalRect(
-				pos.x + offset.x + rectSize.x - borderRight,
-				pos.y + offset.y + rectSize.y - borderBottom,
-				imgOffset.x + imageSize.x - borderRight,
-				imgOffset.y + imageSize.y - borderBottom,
-				borderRight,
-				borderBottom);
+				pos.x + offset.x + rectSize.x/2,
+				pos.y + offset.y + rectSize.y/2,
+				imgOffset.x + imageSize.x - rectSize.x/2,
+				imgOffset.y + imageSize.y - rectSize.y/2,
+				rectSize.x/2,
+				rectSize.y/2);
 		
 		// @formatter:on
 	}

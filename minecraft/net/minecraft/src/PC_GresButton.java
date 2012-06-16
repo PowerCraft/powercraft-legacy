@@ -46,7 +46,7 @@ public class PC_GresButton extends PC_GresWidget {
 		if(state == 1) txC = 0xe0e0e0; // light
 		if (state > 1) txC = 0xffffa0; // yellow
 
-		renderTextureSliced(offsetPos, mod_PCcore.getImgDir()+"button.png", size, new PC_CoordI(0, state*50), new PC_CoordI(256, 50), 6, 6);
+		renderTextureSliced(offsetPos, mod_PCcore.getImgDir()+"button.png", size, new PC_CoordI(0, state*50), new PC_CoordI(256, 50));
 		
 		if(fontRenderer!=null)
 			drawCenteredString(fontRenderer, label, offsetPos.x + pos.x + size.x / 2, offsetPos.y + pos.y + (size.y - 8) / 2, txC);
