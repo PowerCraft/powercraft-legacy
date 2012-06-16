@@ -83,12 +83,12 @@ public class PC_GresGui extends GuiScreen implements PC_IGresGui {
 		}
 		if(newFocus!=null){
 			int[] pos = newFocus.getPositionOnScreen();
-			if(newFocus.mouseClick(i - pos[0], j - pos[1], k + 1))
+			if(newFocus.mouseClick(i - pos[0], j - pos[1], k))
 				gui.actionPerformed(newFocus, this);
 		}
 	}
 	
-	private void mouseMoved(int i, int j, int k){
+	private void mouseMoved(int i, int j){
 		if(lastFocus!=null){
 			int[] pos = lastFocus.getPositionOnScreen();
 			lastFocus.mouseMove(i - pos[0], j - pos[1]);
@@ -99,7 +99,7 @@ public class PC_GresGui extends GuiScreen implements PC_IGresGui {
 	private void mouseUp(int i, int j, int k){
 		if(lastFocus!=null){
 			int[] pos = lastFocus.getPositionOnScreen();
-			if(lastFocus.mouseClick(i - pos[0], j - pos[1], 0))
+			if(lastFocus.mouseClick(i - pos[0], j - pos[1], -1))
 				gui.actionPerformed(lastFocus, this);
 		}
 	}
@@ -110,7 +110,7 @@ public class PC_GresGui extends GuiScreen implements PC_IGresGui {
 		if(k!=-1)
 			mouseUp(i, j, k);
 		else
-			mouseMoved(i, j, k);
+			mouseMoved(i, j);
 	}
 	
 	@Override
