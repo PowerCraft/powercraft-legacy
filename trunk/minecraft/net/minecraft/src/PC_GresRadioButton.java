@@ -12,9 +12,9 @@ public class PC_GresRadioButton extends PC_GresWidget {
 
 	private static final int WIDTH = 11;
 	private boolean checked = false;
-	private Set<PC_GresRadioButton> radioGroup = new HashSet<PC_GresRadioButton>();
+	private Set<PC_GresRadioButton> radioGroup;
 
-	public PC_GresRadioButton(String title, Set<PC_GresRadioButton> group) {
+	public PC_GresRadioButton(String title, PC_GresRadioGroup group) {
 		super(title);
 		canAddWidget = false;
 		color[textColorEnabled] = 0x000000;
