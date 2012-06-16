@@ -210,7 +210,7 @@ public class PC_GresProgressBar extends PC_GresWidget {
 	@Override
 	protected void render(PC_CoordI offsetPos) {
 		
-		String texture = mod_PCcore.getImgDir() + "gui-elements.png";
+		String texture = mod_PCcore.getImgDir() + "gres/widgets.png";
 		
 		renderTextureSliced(offsetPos, texture, size.offset(showLabel?-(labelWidth+3):0,0), new PC_CoordI(0,11*2), new PC_CoordI(256,11));		
 		

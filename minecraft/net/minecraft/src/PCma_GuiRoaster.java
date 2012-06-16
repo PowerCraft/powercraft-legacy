@@ -38,7 +38,7 @@ public class PCma_GuiRoaster extends GuiContainer {
 
 	@Override
 	protected void drawGuiContainerBackgroundLayer(float f, int i, int j) {
-		int k = mc.renderEngine.getTexture("/PowerCraft/core/normal-container.png");
+		int k = mc.renderEngine.getTexture("/PowerCraft/core/gui_container.png");
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 		mc.renderEngine.bindTexture(k);
 		int l = (width - xSize) / 2;

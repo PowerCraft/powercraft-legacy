@@ -130,14 +130,19 @@ public class PCco_GuiUpdateNotification extends GuiScreen {
 
 		fontRenderer.drawString(aa, halfX - (fontRenderer.getStringWidth(aa) / 2), halfY - 75 + 34 + 14, 0x303060);
 
-		@SuppressWarnings("unchecked")
-		List<String> lines = fontRenderer.listFormattedStringToWidth(mod_PCcore.updateText, 220);
-
 		int cnt = 0;
-		for (String s : lines) {
-			if (s.length() > 1) {
-				fontRenderer.drawString(s, halfX - 110, halfY - 75 + 34 + 32 + 12 * cnt, 0x000000);
-				cnt++;
+		
+		String[] lines_nl = mod_PCcore.updateText.split("\n");
+
+		for (String s : lines_nl) {
+			@SuppressWarnings("unchecked")
+			List<String> lines = fontRenderer.listFormattedStringToWidth(s, 220);
+			
+			for(String ss : lines){
+				if (s.length() > 1) {
+					fontRenderer.drawString(ss, halfX - 110, halfY - 75 + 34 + 32 + (fontRenderer.FONT_HEIGHT+1) * cnt, 0x000000);
+					cnt++;
+				}
 			}
 		}
 

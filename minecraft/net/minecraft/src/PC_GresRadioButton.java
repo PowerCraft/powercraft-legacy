@@ -65,7 +65,7 @@ public class PC_GresRadioButton extends PC_GresWidget {
 
 	@Override
 	protected void render(PC_CoordI offsetPos) {
-		String texture = mod_PCcore.getImgDir() + "gui-elements.png";
+		String texture = mod_PCcore.getImgDir() + "gres/widgets.png";
 		GL11.glBindTexture(GL11.GL_TEXTURE_2D, mc.renderEngine.getTexture(texture));
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 		

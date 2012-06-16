@@ -288,9 +288,9 @@ public class mod_PCcore extends PC_Module implements PC_IActivatorListener {
 
 	@Override
 	public void setTextures() {
-		craftingTool.setIconIndex(ModLoader.addOverride("/gui/items.png", getImgDir() + "gatecrafter.png"));
-		activator.setIconIndex(ModLoader.addOverride("/gui/items.png", getImgDir() + "activator.png"));
-		oreSniffer.setIconIndex(ModLoader.addOverride("/gui/items.png", getImgDir() + "sniffer.png"));
+		craftingTool.setIconIndex(ModLoader.addOverride("/gui/items.png", getImgDir() + "item_craftingtool.png"));
+		activator.setIconIndex(ModLoader.addOverride("/gui/items.png", getImgDir() + "item_activator.png"));
+		oreSniffer.setIconIndex(ModLoader.addOverride("/gui/items.png", getImgDir() + "item_sniffer.png"));
 	}
 
 	@Override

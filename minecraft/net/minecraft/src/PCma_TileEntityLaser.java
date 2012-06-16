@@ -302,7 +302,7 @@ public class PCma_TileEntityLaser extends TileEntity implements PC_IBeamHandler 
 
 			hitObjectThisShot = true;
 
-			return false;
+			return true;
 
 		} else if (isKiller()) {
 
