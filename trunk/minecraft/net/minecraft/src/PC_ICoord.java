@@ -15,6 +15,8 @@ public interface PC_ICoord {
 	 */
 	public abstract PC_ICoord getInverted();
 
+	
+	
 	/**
 	 * Get copy moved by offset coord
 	 * 
@@ -79,6 +81,8 @@ public interface PC_ICoord {
 	 */
 	public abstract PC_ICoord offset(float x, float y, float z);
 
+	
+	
 	/**
 	 * Round to integer coordinate.
 	 * 

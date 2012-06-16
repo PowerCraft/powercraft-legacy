@@ -1,98 +1,98 @@
 package net.minecraft.src;
 
+/**
+ * Gui Resizable Vertical Group Layout Widget
+ * 
+ * @copy (c) 2012
+ *
+ */
 public class PC_GresVGroup extends PC_GresWidget {
-	
-	public PC_GresVGroup(){
+
+	public PC_GresVGroup() {
 		super();
 	}
-	
+
 	@Override
-	public int[] calcSize() {
+	public PC_CoordI calcSize() {
 		calcChildPositions();
-		return new int[]{width, height};
+		return size.copy();
 	}
 
 	@Override
 	public void calcChildPositions() {
-		int yy=0, ySize=0;
-		for(int i=0; i<childs.size(); i++){
+		int yy = 0, ySize = 0;
+		for (int i = 0; i < childs.size(); i++) {
 			childs.get(i).calcChildPositions();
-			int[] size = childs.get(i).calcSize();
-			if(size[0]>width||ySize + size[1]>height){
-				if(size[0]>width)
-					width = size[0];
-				if(ySize + size[1]>height)
-					height = ySize + size[1];
-				if(parent!=null)
-					parent.calcChildPositions();
+			PC_CoordI csize = childs.get(i).calcSize();
+			if (csize.x > size.x || ySize + csize.y > size.y) {
+				if (csize.x > size.x) size.x = csize.x;
+				if (ySize + csize.y > size.y) size.y = ySize + csize.y;
+				if (parent != null) parent.calcChildPositions();
 				calcChildPositions();
 				return;
 			}
-			ySize += size[1] + widgetMargin;
+			ySize += csize.y + widgetMargin;
 		}
 		ySize -= widgetMargin;
-		for(int i=0; i<childs.size(); i++){
-			int[] size = childs.get(i).getSize();
-			int xPos=0;
-			int yPos=0;
-			switch(alignH){
+		for (int i = 0; i < childs.size(); i++) {
+			PC_CoordI csize = childs.get(i).getSize();
+			int xPos = 0;
+			int yPos = 0;
+			switch (alignH) {
 				case LEFT:
 					xPos = 0;
 					break;
 				case RIGHT:
-					xPos = width - size[0];
+					xPos = size.x - csize.x;
 					break;
 				case CENTER:
-					xPos = width/2 - size[0]/2;
+					xPos = size.x / 2 - csize.x / 2;
 					break;
 				case STRETCH:
 					xPos = 0;
-					childs.get(i).setSize(width, childs.get(i).getSize()[1], false);
+					childs.get(i).setSize(size.x, childs.get(i).getSize().y, false);
 					break;
 			}
-			switch(alignV){
+			switch (alignV) {
 				case TOP:
 					yPos = yy;
 					break;
 				case BOTTOM:
-					yPos = height - ySize + yy;
+					yPos = size.y - ySize + yy;
 					break;
 				case CENTER:
-					yPos = height/2 - ySize/2 + yy;
+					yPos = size.y / 2 - ySize / 2 + yy;
 					break;
 				case STRETCH:
 					yPos = yy;
 					break;
 			}
 			childs.get(i).setPosition(xPos, yPos);
-			yy += size[1] + widgetMargin;
+			yy += csize.y + widgetMargin;
 		}
 	}
 
 	@Override
-	protected void render(int xOffset, int yOffset) {
-	}
+	protected void render(PC_CoordI pos) {}
 
 	@Override
-	public boolean mouseOver(int x, int y) {
+	public boolean mouseOver(PC_CoordI pos) {
 		return true;
 	}
 
 	@Override
-	public boolean mouseClick(int x, int y, int key) {
+	public boolean mouseClick(PC_CoordI pos, int key) {
 		return false;
 	}
 
 	@Override
-	public void keyTyped(char c, int key) {
-	}
+	public void keyTyped(char c, int key) {}
 
 	@Override
-	public void mouseMove(int x, int y) {
-	}
+	public void mouseMove(PC_CoordI pos) {}
 
 	@Override
-	public int[] getMinSize() {
+	public PC_CoordI getMinSize() {
 		return calcSize();
 	}
 

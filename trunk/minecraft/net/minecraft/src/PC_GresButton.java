@@ -10,14 +10,14 @@ public class PC_GresButton extends PC_GresWidget {
 	}
 	
 	@Override
-	public int[] calcSize() {
-		width = PC_Utils.mc().fontRenderer.getStringWidth(label);
-		height = PC_Utils.mc().fontRenderer.FONT_HEIGHT;
-		width += 12;
-		height += 12;
-		if(width<40)
-			width = 40;
-		return new int[]{width, height};
+	public PC_CoordI calcSize() {
+		FontRenderer fontRenderer = getFontRenderer();
+		
+		size.setTo(fontRenderer.getStringWidth(label),fontRenderer.FONT_HEIGHT).add(12,12);
+		
+		if(size.x < minSize.x) size.x = minSize.x;
+		
+		return size.copy();
 	}
 
 	@Override
@@ -26,7 +26,7 @@ public class PC_GresButton extends PC_GresWidget {
 	}
 
 	@Override
-	protected void render(int xOffset, int yOffset) {
+	protected void render(PC_CoordI offsetPos) {
 		
 		int state;
 		if(!enabled){
@@ -45,24 +45,23 @@ public class PC_GresButton extends PC_GresWidget {
 		if(state == 1) txC = 0xe0e0e0; // light
 		if (state > 1) txC = 0xffffa0; // yellow
 
-		renderTextureSliced(xOffset, yOffset, mod_PCcore.getImgDir()+"button.png", width, height, 0, state*50, 256, 50, 5, 5);
+		renderTextureSliced(offsetPos, mod_PCcore.getImgDir()+"button.png", size, new PC_CoordI(0, state*50), new PC_CoordI(256, 50), 6, 6);
 		
 		if(fontRenderer!=null)
-			drawCenteredString(fontRenderer, label, xOffset + x + width / 2, yOffset + y + (height - 8) / 2, txC);
+			drawCenteredString(fontRenderer, label, offsetPos.x + pos.x + size.x / 2, offsetPos.y + pos.y + (size.y - 8) / 2, txC);
 		else
-			drawCenteredString(PC_Utils.mc().fontRenderer, label, xOffset + x + width / 2, yOffset + y + (height - 8) / 2, txC);
+			drawCenteredString(PC_Utils.mc().fontRenderer, label, offsetPos.x + pos.x + size.x / 2, offsetPos.y + pos.y + (size.y - 8) / 2, txC);
 	}
 
 	@Override
-	public boolean mouseOver(int x, int y) {
+	public boolean mouseOver(PC_CoordI mpos) {
 		isMouseOver = true;
 		return true;
 	}
-
 	
 	
 	@Override
-	public boolean mouseClick(int x, int y, int key) {
+	public boolean mouseClick(PC_CoordI mpos, int key) {
 		if(!enabled)
 			return false;
 		if(isClicked && key==-1){
@@ -79,14 +78,14 @@ public class PC_GresButton extends PC_GresWidget {
 	}
 
 	@Override
-	public void mouseMove(int x, int y) {
-		if(x<0 || x>=width || y<0 || y>=height || mouseOver(x, y)==false){
+	public void mouseMove(PC_CoordI mpos) {
+		if(mpos.x<0 || mpos.x>=size.x || mpos.y<0 || mpos.y>=size.y || mouseOver(mpos)==false){
 			isClicked = false;
 		}
 	}
 
 	@Override
-	public int[] getMinSize() {
+	public PC_CoordI getMinSize() {
 		return calcSize();
 	}
 
