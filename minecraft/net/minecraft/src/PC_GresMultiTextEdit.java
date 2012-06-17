@@ -382,9 +382,25 @@ public class PC_GresMultiTextEdit extends PC_GresWidget {
 				setScrollToCursor();
 				return true;
 			}else if(mousePos.y<size.y-12){
+				if(mousePos.y-1<vScrollPos){
+					scroll.y--;
+					return true;
+				}
+				if(mousePos.y-1>=vScrollPos+vScrollSize){
+					scroll.y++;
+					return true;
+				}
 				mousePressed = 2;
 				return true;
 			}else if(mousePos.x<size.x-12){
+				if(mousePos.x-1<hScrollPos){
+					scroll.x-=5;
+					return true;
+				}
+				if(mousePos.x-1>=hScrollPos+hScrollSize){
+					scroll.x+=5;
+					return true;
+				}
 				mousePressed = 3;
 				return true;
 			}
