@@ -35,8 +35,42 @@ public class PCma_GuiReplacer implements PC_IGresBase {
 		PC_GresWidget lblx, lbly, lblz;
 
 
-
 		hg = new PC_GresLayoutH();
+		vg = new PC_GresLayoutV();
+		PC_GresWidget hg1 = new PC_GresLayoutH();
+		hg1.add(new PC_GresButton("-").setId(101).setMinWidth(16));
+		hg1.add(new PC_GresButton("+").setId(102).setMinWidth(16));
+		vg.add(hg1);
+		hg1 = new PC_GresLayoutH();
+		hg1.add(lblx = new PC_GresLabel("X:"));
+		hg1.add(textedit[0] = (PC_GresTextEdit) new PC_GresTextEdit("" + teReplacer.coordOffset[0], 4, PC_GresInputType.INT));
+		vg.add(hg1);
+		hg.add(vg);
+		
+		vg = new PC_GresLayoutV();
+		hg1 = new PC_GresLayoutH();
+		hg1.add(new PC_GresButton("-").setId(201).setMinWidth(16));
+		hg1.add(new PC_GresButton("+").setId(202).setMinWidth(16));
+		vg.add(hg1);
+		hg1 = new PC_GresLayoutH();
+		hg1.add(lbly = new PC_GresLabel("Y:"));
+		hg1.add(textedit[1] = (PC_GresTextEdit) new PC_GresTextEdit("" + teReplacer.coordOffset[0], 4, PC_GresInputType.INT));
+		vg.add(hg1);
+		hg.add(vg);
+		
+		vg = new PC_GresLayoutV();
+		hg1 = new PC_GresLayoutH();
+		hg1.add(new PC_GresButton("-").setId(301).setMinWidth(16));
+		hg1.add(new PC_GresButton("+").setId(302).setMinWidth(16));
+		vg.add(hg1);
+		hg1 = new PC_GresLayoutH();
+		hg1.add(lblz = new PC_GresLabel("Z:"));
+		hg1.add(textedit[2] = (PC_GresTextEdit) new PC_GresTextEdit("" + teReplacer.coordOffset[0], 4, PC_GresInputType.INT));
+		vg.add(hg1);
+		hg.add(vg);
+		w.add(hg);
+		
+		/*hg = new PC_GresLayoutH();
 		hg.add(lblx = new PC_GresLabel("X:"));
 		hg.add(textedit[0] = (PC_GresTextEdit) new PC_GresTextEdit("" + teReplacer.coordOffset[0], 4, PC_GresInputType.INT).setMinWidth(100));
 		hg.add(new PC_GresButton("-").setId(101).setMinWidth(16));
@@ -55,7 +89,7 @@ public class PCma_GuiReplacer implements PC_IGresBase {
 		hg.add(textedit[2] = (PC_GresTextEdit) new PC_GresTextEdit("" + teReplacer.coordOffset[2], 4, PC_GresInputType.INT).setMinWidth(100));
 		hg.add(new PC_GresButton("-").setId(301).setMinWidth(16));
 		hg.add(new PC_GresButton("+").setId(302).setMinWidth(16));
-		w.add(hg);
+		w.add(hg);*/
 
 		int labelmaxw = 0;
 		labelmaxw = Math.max(labelmaxw, lblx.getMinSize().x);
@@ -66,31 +100,39 @@ public class PCma_GuiReplacer implements PC_IGresBase {
 		lbly.setMinWidth(labelmaxw);
 		lblz.setMinWidth(labelmaxw);
 
-		w.add(new PC_GresGap(0, 6));
-
+		//w.add(new PC_GresGap(0, 6));
+		
 		hg = new PC_GresLayoutH().setAlignH(PC_GresAlign.CENTER);
 		hg.add(errorLabel = new PC_GresLabel(""));
 		errorLabel.setColor(PC_GresWidget.textColorEnabled, 0x990000);
 		w.add(hg);
 
-
-		hg = new PC_GresLayoutH().setAlignH(PC_GresAlign.CENTER);
-		hg.add(button[0] = new PC_GresButton(PC_Lang.tr("pc.gui.cancel")));
-		hg.add(button[1] = new PC_GresButton(PC_Lang.tr("pc.gui.ok")));
-		w.add(hg);
-
-		Slot slot[][] = new Slot[9][3];
+		vg = new PC_GresLayoutV().setAlignH(PC_GresAlign.CENTER).setAlignV(PC_GresAlign.CENTER);
+		Slot slot[][] = new Slot[1][1];
+		slot[0][0] = new Slot(teReplacer, 0, 0, 0);
+		vg.add(new PC_GresInventory(slot));
+		//w.add(hg);
+		
+		//hg = new PC_GresLayoutH().setAlignH(PC_GresAlign.CENTER).setAlignV(PC_GresAlign.TOP);
+		slot = new Slot[9][3];
 		for(int i=0; i<9; i++)
 			for(int j=0; j<3; j++)
 				slot[i][j] = new Slot(player, i+j*9+9, 0, 0);
 		
-		w.add(new PC_GresInventory(slot));
+		vg.add(new PC_GresInventory(slot));
+		//w.add(hg);
 		
+		//hg = new PC_GresLayoutH().setAlignH(PC_GresAlign.CENTER).setAlignV(PC_GresAlign.TOP);
 		slot = new Slot[9][1];
 		for(int i=0; i<9; i++)
 			slot[i][0] = new Slot(player, i, 0, 0);
+		vg.add(new PC_GresInventory(slot));
+		w.add(vg);
 		
-		w.add(new PC_GresInventory(slot));
+		hg = new PC_GresLayoutH().setAlignH(PC_GresAlign.CENTER);
+		hg.add(button[0] = new PC_GresButton(PC_Lang.tr("pc.gui.cancel")));
+		hg.add(button[1] = new PC_GresButton(PC_Lang.tr("pc.gui.ok")));
+		w.add(hg);
 		
 		gui.add(w);
 		

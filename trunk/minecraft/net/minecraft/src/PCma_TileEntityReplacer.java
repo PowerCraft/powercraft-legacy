@@ -2,14 +2,13 @@ package net.minecraft.src;
 
 public class PCma_TileEntityReplacer extends TileEntity implements IInventory, PC_ISelectiveInventory {
 
-	private ItemStack buildBlock;
+	public ItemStack buildBlock;
 	public static final int MAXSTACK = 1;
 	public static final int SIZE = 1;
 	public int coordOffset[] = {0, 1, 0};
 	
 	@Override
 	public boolean canInsertStackTo(int slot, ItemStack stack) {
-		// TODO Auto-generated method stub
 		if(stack.getItem() instanceof ItemBlock)
 			return true;
 		return false;
@@ -17,19 +16,21 @@ public class PCma_TileEntityReplacer extends TileEntity implements IInventory, P
 
 	@Override
 	public int getSizeInventory() {
-		// TODO Auto-generated method stub
 		return SIZE;
 	}
 
 	@Override
 	public ItemStack getStackInSlot(int i) {
-		// TODO Auto-generated method stub
 		return buildBlock;
 	}
 
 	@Override
 	public ItemStack decrStackSize(int i, int j) {
-		// TODO Auto-generated method stub
+		if(j>0){
+			ItemStack itemStack = buildBlock;
+			buildBlock = null;
+			return itemStack;
+		}
 		return null;
 	}
 
@@ -55,8 +56,7 @@ public class PCma_TileEntityReplacer extends TileEntity implements IInventory, P
 
 	@Override
 	public String getInvName() {
-		// TODO Auto-generated method stub
-		return null;
+		return "Block Replacer";
 	}
 
 	@Override
@@ -89,25 +89,21 @@ public class PCma_TileEntityReplacer extends TileEntity implements IInventory, P
 	
 	@Override
 	public int getInventoryStackLimit() {
-		// TODO Auto-generated method stub
 		return MAXSTACK;
 	}
 
 	@Override
 	public boolean isUseableByPlayer(EntityPlayer entityplayer) {
-		// TODO Auto-generated method stub
 		return false;
 	}
 
 	@Override
 	public void openChest() {
-		// TODO Auto-generated method stub
 
 	}
 
 	@Override
 	public void closeChest() {
-		// TODO Auto-generated method stub
 
 	}
 

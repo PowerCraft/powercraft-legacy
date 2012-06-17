@@ -470,7 +470,7 @@ public abstract class PC_GresWidget extends Gui {
 	public PC_GresWidget add(PC_GresWidget newwidget) {
 		if (!canAddWidget) { return null; }
 		newwidget.parent = this;
-		newwidget.setFontRenderer(this.fontRenderer);
+		newwidget.setFontRenderer(fontRenderer);
 		newwidget.setContainerManager(containerManager);
 		childs.add(newwidget);
 		newwidget.callAddedToWidget();
