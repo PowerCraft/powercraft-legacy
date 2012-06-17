@@ -952,12 +952,12 @@ public class PClo_BlockGate extends BlockContainer implements PC_IRotatedBox, PC
 
 		if (getType(world, x, y, z) == PClo_GateType.FIFO_DELAYER) {
 
-			PC_Utils.openGres(player, new PClo_GuiDelayer(getTE(world, x, y, z), true));
+			PC_Utils.openGres(player, new PClo_GuiDelayer(getTE(world, x, y, z), PClo_GuiDelayer.FIFO));
 			return true;
 
 		} else if (getType(world, x, y, z) == PClo_GateType.HOLD_DELAYER) {
 
-			PC_Utils.openGres(player, new PClo_GuiDelayer(getTE(world, x, y, z), false));
+			PC_Utils.openGres(player, new PClo_GuiDelayer(getTE(world, x, y, z), PClo_GuiDelayer.HOLD));
 			return true;
 		}
 
