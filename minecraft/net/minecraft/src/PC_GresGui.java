@@ -1,6 +1,7 @@
 package net.minecraft.src;
 
 import org.lwjgl.input.Keyboard;
+import org.lwjgl.input.Mouse;
 
 /**
  * 
@@ -89,6 +90,8 @@ public class PC_GresGui extends GuiScreen implements PC_IGresGui {
 		
 		PC_GresWidget newFocus = child.getWidgetUnderMouse(new PC_CoordI(i, j));
 		
+		System.out.println(Mouse.getDWheel());
+		
 		if(newFocus != lastFocus){
 			if(lastFocus!=null)
 				lastFocus.setFocus(false);
@@ -106,9 +109,15 @@ public class PC_GresGui extends GuiScreen implements PC_IGresGui {
 	}
 	
 	private void mouseMoved(int i, int j){
+		int wheel = Mouse.getDWheel();
+		if(wheel<0)
+			wheel = -1;
+		if(wheel>0)
+			wheel = 1;
 		if(lastFocus!=null){
 			PC_CoordI fpos = lastFocus.getPositionOnScreen();
 			lastFocus.mouseMove(new PC_CoordI(i - fpos.x, j - fpos.y));
+			lastFocus.mouseWheel(wheel);
 		}
 		child.getWidgetUnderMouse(new PC_CoordI(i, j));
 	}

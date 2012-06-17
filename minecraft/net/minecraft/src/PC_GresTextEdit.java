@@ -140,7 +140,7 @@ public class PC_GresTextEdit extends PC_GresWidget {
 		if (!enabled) return false;
 		if (key != -1) {
 			mouseSelectStart = getMousePositionInString(mpos.x);
-			mouseSelectEnd = getMousePositionInString(mpos.x);
+			mouseSelectEnd = mouseSelectStart;
 			mousePressed = true;
 			return true;
 		}
@@ -362,6 +362,20 @@ public class PC_GresTextEdit extends PC_GresWidget {
 	@Override
 	public PC_CoordI getMinSize() {
 		return new PC_CoordI((maxChars + 1) * 10, getFontRenderer().FONT_HEIGHT + 12);
+	}
+
+	@Override
+	public void mouseWheel(int i) {
+		if(i>0)
+			if (mouseSelectEnd > 0) {
+				mouseSelectEnd -= 1;
+				if (!(Keyboard.isKeyDown(Keyboard.KEY_RSHIFT) || Keyboard.isKeyDown(Keyboard.KEY_LSHIFT))) mouseSelectStart = mouseSelectEnd;
+			}
+		if(i<0)
+			if (mouseSelectEnd < text.length()) {
+				mouseSelectEnd += 1;
+				if (!(Keyboard.isKeyDown(Keyboard.KEY_RSHIFT) || Keyboard.isKeyDown(Keyboard.KEY_LSHIFT))) mouseSelectStart = mouseSelectEnd;
+			}
 	}
 
 }

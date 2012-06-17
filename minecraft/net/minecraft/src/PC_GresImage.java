@@ -83,4 +83,8 @@ public class PC_GresImage extends PC_GresWidget {
 		return calcSize();
 	}
 
+	@Override
+	public void mouseWheel(int i) {
+	}
+
 }

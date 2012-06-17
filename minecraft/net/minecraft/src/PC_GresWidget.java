@@ -780,6 +780,12 @@ public abstract class PC_GresWidget extends Gui {
 	public abstract void mouseMove(PC_CoordI mousePos);
 
 	/**
+	 * On mouse wheel moved. Last focused widget gets wheel move events.
+	 * @param i wheelmoved direction
+	 */
+	public abstract void mouseWheel(int i);
+	
+	/**
 	 * On key pressed.
 	 * 
 	 * @param c character of the key

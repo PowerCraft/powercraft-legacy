@@ -142,4 +142,8 @@ public class PC_GresLabelMultiline extends PC_GresWidget {
 		return minSize;
 	}
 
+	@Override
+	public void mouseWheel(int i) {
+	}
+	
 }
