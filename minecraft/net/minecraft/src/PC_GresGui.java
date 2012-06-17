@@ -90,8 +90,6 @@ public class PC_GresGui extends GuiScreen implements PC_IGresGui {
 		
 		PC_GresWidget newFocus = child.getWidgetUnderMouse(new PC_CoordI(i, j));
 		
-		System.out.println(Mouse.getDWheel());
-		
 		if(newFocus != lastFocus){
 			if(lastFocus!=null)
 				lastFocus.setFocus(false);
