@@ -230,6 +230,22 @@ public class PC_GresTextEdit extends PC_GresWidget {
 				}
 				break;
 				
+			case SIGNED_FLOAT:
+				if (text.length() > 0) if (text.charAt(0) == '-') if (mouseSelectStart == 0 && mouseSelectEnd == 0) break;
+				for (int i = 0; i < stri.length(); i++) {
+					if (i == 0) if (stri.charAt(0) == '-') if (s == 0) ss += stri.charAt(i);
+					if (stri.charAt(i)=='.') if(!(s1.contains(".")||s2.contains(".")||ss.contains(".")))ss+=".";
+					if (Character.isDigit(Character.valueOf(stri.charAt(i)))) ss += stri.charAt(i);
+				}
+				break;
+				
+			case UNSIGNED_FLOAT:
+				for (int i = 0; i < stri.length(); i++) {
+					if (stri.charAt(i)=='.') if(!(s1.contains(".")||s2.contains(".")||ss.contains(".")))ss+=".";
+					if (Character.isDigit(Character.valueOf(stri.charAt(i)))) ss += stri.charAt(i);
+				}
+				break;
+				
 			default:
 				for (int i = 0; i < stri.length(); i++)
 					if (ChatAllowedCharacters.isAllowedCharacter(stri.charAt(i))) ss += stri.charAt(i);
