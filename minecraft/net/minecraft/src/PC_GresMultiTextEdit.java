@@ -654,4 +654,7 @@ public class PC_GresMultiTextEdit extends PC_GresWidget {
 			scroll.y=maxY;
 	}
 	
+	@Override
+	public void addedToWidget() {
+	}
 }

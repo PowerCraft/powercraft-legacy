@@ -165,4 +165,7 @@ public class PC_GresWindow extends PC_GresWidget {
 	public void mouseWheel(int i) {
 	}
 	
+	@Override
+	public void addedToWidget() {
+	}
 }

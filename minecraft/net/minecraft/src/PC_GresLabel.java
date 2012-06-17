@@ -79,5 +79,8 @@ public class PC_GresLabel extends PC_GresWidget {
 	@Override
 	public void mouseWheel(int i) {
 	}
-
+	
+	@Override
+	public void addedToWidget() {
+	}
 }

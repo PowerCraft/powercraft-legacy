@@ -114,4 +114,7 @@ public class PC_GresCheckBox extends PC_GresWidget {
 	public void mouseWheel(int i) {
 	}
 	
+	@Override
+	public void addedToWidget() {
+	}
 }

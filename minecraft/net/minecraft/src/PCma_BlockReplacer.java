@@ -85,7 +85,7 @@ public class PCma_BlockReplacer extends BlockContainer implements PC_ISwapTerrai
 		
 		PCma_TileEntityReplacer tileentity = (PCma_TileEntityReplacer) world.getBlockTileEntity(i, j, k);
 		if (tileentity != null) {
-			PC_Utils.openGres(entityplayer, new PCma_GuiReplacer(tileentity));
+			PC_Utils.openGres(entityplayer, new PCma_GuiReplacer(tileentity, entityplayer.inventory));
 		}
 		
 		return true;
