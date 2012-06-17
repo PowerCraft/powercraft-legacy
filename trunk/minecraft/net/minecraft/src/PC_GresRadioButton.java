@@ -127,4 +127,8 @@ public class PC_GresRadioButton extends PC_GresWidget {
 		return false;
 	}
 
+	@Override
+	public void mouseWheel(int i) {
+	}
+
 }

@@ -100,4 +100,8 @@ public class PC_GresLink extends PC_GresWidget {
 		return calcSize();
 	}
 
+	@Override
+	public void mouseWheel(int i) {
+	}
+	
 }

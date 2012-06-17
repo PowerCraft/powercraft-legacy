@@ -97,4 +97,8 @@ public class PC_GresButton extends PC_GresWidget {
 		return calcSize();
 	}
 
+	@Override
+	public void mouseWheel(int i) {
+	}
+
 }

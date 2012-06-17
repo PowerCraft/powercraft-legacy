@@ -109,5 +109,9 @@ public class PC_GresCheckBox extends PC_GresWidget {
 	public boolean keyTyped(char c, int key) {
 		return false;
 	}
+
+	@Override
+	public void mouseWheel(int i) {
+	}
 	
 }

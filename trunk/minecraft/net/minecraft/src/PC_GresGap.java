@@ -58,4 +58,8 @@ public class PC_GresGap extends PC_GresWidget {
 		return calcSize();
 	}
 
+	@Override
+	public void mouseWheel(int i) {
+	}
+
 }

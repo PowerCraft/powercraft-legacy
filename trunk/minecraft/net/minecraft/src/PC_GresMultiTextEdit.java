@@ -513,4 +513,8 @@ public class PC_GresMultiTextEdit extends PC_GresWidget {
 		}		
 	}
 
+	@Override
+	public void mouseWheel(int i) {
+	}
+	
 }
