@@ -31,7 +31,13 @@ public class PC_GresGui extends GuiContainer implements PC_IGresGui {
 	
 	@Override
 	public PC_GresWidget add(PC_GresWidget widget) {
-		return child.add(widget);
+		PC_GresWidget c = child.add(widget);
+		xSize = child.getSize().x;
+		ySize = child.getSize().y;
+		guiLeft = (width - xSize) / 2;
+	    guiTop = (height - ySize) / 2;
+	    child.setPosition(guiLeft, guiTop);
+		return c;
 	}
 	
 	@Override
@@ -58,17 +64,16 @@ public class PC_GresGui extends GuiContainer implements PC_IGresGui {
 		child = new PC_GresLayoutV();
 		child.setFontRenderer(fontRenderer);
 		child.setContainerManager(containerManager);
-		child.setSize(width, height);
+		child.setSize(0, 0);
 		gui.initGui(this);
 		super.initGui();
-		guiLeft=0;
-		guiTop=0;
 	}
 
 	@Override
 	public void onGuiClosed() {
 		Keyboard.enableRepeatEvents(false);
 		gui.onGuiClosed(this);
+		super.onGuiClosed();
 	}
 	
 	@Override
@@ -139,7 +144,6 @@ public class PC_GresGui extends GuiContainer implements PC_IGresGui {
 	
 	@Override
 	protected void mouseMovedOrUp(int i, int j, int k) {
-		super.mouseMovedOrUp(i, j, k);
 		super.mouseMovedOrUp(i, j, k);
 		if(k!=-1)
 			mouseUp(i, j, k);

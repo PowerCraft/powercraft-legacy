@@ -27,21 +27,24 @@ public class PC_GresLayoutV extends PC_GresWidget {
 	@Override
 	public void calcChildPositions() {
 		int yy = 0, ySize = 0;
-		for (int i = 0; i < childs.size(); i++) {
-			childs.get(i).calcChildPositions();
-			PC_CoordI csize = childs.get(i).calcSize();
+		for (PC_GresWidget w: childs) {
+			w.calcChildPositions();
+			PC_CoordI csize = w.calcSize();
 			if (csize.x > size.x || ySize + csize.y > size.y) {
-				if (csize.x > size.x) size.x = csize.x;
-				if (ySize + csize.y > size.y) size.y = ySize + csize.y;
-				if (parent != null) parent.calcChildPositions();
+				if (csize.x > size.x) 
+					size.x = csize.x;
+				if (ySize + csize.y > size.y) 
+					size.y = ySize + csize.y;
+				if (parent != null) 
+					parent.calcChildPositions();
 				calcChildPositions();
 				return;
 			}
 			ySize += csize.y + widgetMargin;
 		}
 		ySize -= widgetMargin;
-		for (int i = 0; i < childs.size(); i++) {
-			PC_CoordI csize = childs.get(i).getSize();
+		for (PC_GresWidget w: childs) {
+			PC_CoordI csize = w.getSize();
 			int xPos = 0;
 			int yPos = 0;
 			switch (alignH) {
@@ -56,7 +59,7 @@ public class PC_GresLayoutV extends PC_GresWidget {
 					break;
 				case STRETCH:
 					xPos = 0;
-					childs.get(i).setSize(size.x, childs.get(i).getSize().y, false);
+					w.setSize(size.x, w.getSize().y, false);
 					break;
 			}
 			switch (alignV) {
@@ -73,7 +76,7 @@ public class PC_GresLayoutV extends PC_GresWidget {
 					yPos = yy;
 					break;
 			}
-			childs.get(i).setPosition(xPos, yPos);
+			w.setPosition(xPos, yPos);
 			yy += csize.y + widgetMargin;
 		}
 	}
