@@ -10,8 +10,21 @@ package net.minecraft.src;
  */
 public interface PC_IGresGui {
 	
+	/**
+	 * Add a widget
+	 * @param widget widget to add
+	 * @return the child layout
+	 */
 	public abstract PC_GresWidget add(PC_GresWidget widget);
+	
+	/**
+	 * @param b does pause game?
+	 */
 	public abstract void setPausesGame(boolean b);
+	
+	/**
+	 * Close the gui and set in-game focus.
+	 */
 	public abstract void close();
 	
 }
