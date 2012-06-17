@@ -1,5 +1,8 @@
 package net.minecraft.src;
 
+import java.util.ArrayList;
+
+import net.minecraft.src.PC_GresMultiTextEdit.Keyword;
 import net.minecraft.src.PC_GresTextEdit.PC_GresInputType;
 import net.minecraft.src.PC_GresWidget.PC_GresAlign;
 import org.lwjgl.input.Keyboard;
@@ -74,6 +77,13 @@ public class PCma_GuiReplacer implements PC_IGresBase {
 		hg.add(button[1] = new PC_GresButton(PC_Lang.tr("pc.gui.ok")));
 		w.add(hg);
 
+		ArrayList<Keyword> keywordlist = new ArrayList<Keyword>();
+		keywordlist.add(new Keyword("if", 0xff00ff00));
+		keywordlist.add(new Keyword("then", 0xff00ff00));
+		keywordlist.add(new Keyword("else", 0xff00ff00));
+		keywordlist.add(new Keyword("end", 0xff00ff00));
+		w.add(new PC_GresMultiTextEdit("", 10, 40, keywordlist));
+		
 		gui.add(w);
 		w.calcChildPositions();
 	}
