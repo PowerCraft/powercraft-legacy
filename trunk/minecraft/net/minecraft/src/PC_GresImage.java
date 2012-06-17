@@ -47,8 +47,13 @@ public class PC_GresImage extends PC_GresWidget {
 		
 		GL11.glBindTexture(GL11.GL_TEXTURE_2D, PC_Utils.mc().renderEngine.getTexture(texture));
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
+		GL11.glEnable(GL11.GL_BLEND);
+		GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
 		
 		drawTexturedModalRect(pos.x+offsetPos.x, pos.y+offsetPos.y, imgOffset.x, imgOffset.y, imgSize.x, imgSize.y);
+		
+		GL11.glDisable(GL11.GL_BLEND);
+		
 		
 	}
 

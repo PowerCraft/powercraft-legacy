@@ -2,6 +2,8 @@ package net.minecraft.src;
 
 import java.awt.Desktop;
 import java.net.URI;
+
+import net.minecraft.client.Minecraft;
 import net.minecraft.src.PC_GresWidget.PC_GresAlign;
 
 /**
@@ -18,13 +20,13 @@ public class PCco_GuiUpdateNotification implements PC_IGresBase {
 	
 	@Override
 	public void initGui(PC_IGresGui gui) {
-		PC_GresWindow w = new PC_GresWindow(240, 50, "");
+		PC_GresWindow w = new PC_GresWindow(240, 50, PC_Lang.tr("pc.gui.update.title"));
 		w.setAlignH(PC_GresAlign.STRETCH);
 		PC_GresLayoutH hg;
 		
 		hg = new PC_GresLayoutH();
 		hg.setAlignH(PC_GresAlign.CENTER);
-		hg.add(new PC_GresImage(mod_PCcore.getImgDir()+"graphics.png", 0, 0, 200, 20));
+		hg.add(new PC_GresImage(mod_PCcore.getImgDir()+"graphics.png", 0, 0, 195, 24));
 		w.add(hg);
 		
 		hg = new PC_GresLayoutH();
@@ -32,12 +34,16 @@ public class PCco_GuiUpdateNotification implements PC_IGresBase {
 		hg.add(new PC_GresLabel(PC_Lang.tr("pc.gui.update.newVersionAvailable")));
 		hg.add(new PC_GresLink(PC_Lang.tr("pc.gui.update.readMore")).setId(1));
 		w.add(hg);
+		hg = new PC_GresLayoutH();
+		hg.setAlignH(PC_GresAlign.CENTER);
+		hg.add(new PC_GresLabel(PC_Lang.tr("pc.gui.update.version", new String[]{mod_PCcore.instance.getVersion(),Minecraft.getVersion(),mod_PCcore.updateModVersion,mod_PCcore.updateMcVersion})));
+		w.add(hg);
 
 		w.add(new PC_GresSeparatorH(40, 5).setLineColor(0x999999));
 		
 		hg = new PC_GresLayoutH();
 		hg.setAlignH(PC_GresAlign.CENTER);
-		hg.add(new PC_GresLabelMultiline(mod_PCcore.updateText,210).setAlignH(PC_GresAlign.LEFT));
+		hg.add(new PC_GresLabelMultiline(mod_PCcore.updateText,210).setAlignH(PC_GresAlign.LEFT).setColor(PC_GresWidget.textColorEnabled, 0x555599));
 		w.add(hg);
 		
 		w.add(new PC_GresSeparatorH(40, 5).setLineColor(0x999999));

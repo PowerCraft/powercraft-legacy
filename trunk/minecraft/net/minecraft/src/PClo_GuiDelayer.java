@@ -18,7 +18,9 @@ public class PClo_GuiDelayer implements PC_IGresBase {
 	private String errMsg = "";
 
 	private int delayer_type;
+	/** fifo index */
 	public static final int FIFO = 1;
+	/** hold index */
 	public static final int HOLD = 0;
 
 	@SuppressWarnings("unused")
@@ -45,26 +47,21 @@ public class PClo_GuiDelayer implements PC_IGresBase {
 
 		//window
 		PC_GresWindow w = new PC_GresWindow(title);
-		w.setAlignH(PC_GresAlign.STRETCH);
+		w.setAlignH(PC_GresAlign.CENTER);
 		PC_GresWidget hg;
+		PC_GresWidget vg;
 		
 		// layout with the input
-		hg = new PC_GresLayoutH().setAlignH(PC_GresAlign.CENTER);
-		hg.add(new PC_GresLabel(PC_Lang.tr("pc.gui.gate.delay")).setMinWidth(120));
-		w.add(hg);		
-
-		hg = new PC_GresLayoutH().setAlignH(PC_GresAlign.CENTER);
-		hg.add(edit = new PC_GresTextEdit(PC_Utils.floatToString(ticks * 0.05F), 8, PC_GresInputType.SIGNED_FLOAT).setMinWidth(120));
-		w.add(hg);
+		vg = new PC_GresLayoutV().setAlignH(PC_GresAlign.LEFT);
+		vg.add(new PC_GresLabel(PC_Lang.tr("pc.gui.gate.delay")));
+		vg.add(edit = new PC_GresTextEdit(PC_Utils.floatToString(ticks * 0.05F), 8, PC_GresInputType.SIGNED_FLOAT).setMinWidth(120));
+		vg.add(txConverted = new PC_GresLabelMultiline("", 120).setMinRows(2).setColor(PC_GresWidget.textColorEnabled, 0x606060));
+		w.add(vg);
 		
 		
 		// labels
 		hg = new PC_GresLayoutH().setAlignH(PC_GresAlign.CENTER);
 		hg.add(txError = new PC_GresLabel("").setColor(PC_GresWidget.textColorEnabled, 0x990000));
-		w.add(hg);
-
-		hg = new PC_GresLayoutH().setAlignH(PC_GresAlign.CENTER);
-		hg.add(txConverted = new PC_GresLabelMultiline("", 120).setColor(PC_GresWidget.textColorEnabled, 0x606060));
 		w.add(hg);
 		
 		
@@ -135,12 +132,11 @@ public class PClo_GuiDelayer implements PC_IGresBase {
 
 			txError.setText(PC_Lang.tr(errMsg));
 			String conv = "";
-			conv += "= " + ticks + " " + PC_Lang.tr("pc.gui.gate.delayer.ticks");
-			conv += "\n";
-			if(ticks >= 60*20){
-				conv += "= "+PC_Utils.formatTimeTicks(ticks);
-			}else{
-				conv += " ";
+			if(!error){				
+				conv += "= " + ticks + " " + PC_Lang.tr("pc.gui.gate.delayer.ticks");
+				if(ticks >= 60*20){
+					conv += "\n= "+PC_Utils.formatTimeTicks(ticks);
+				}
 			}
 			txConverted.setText(conv);
 

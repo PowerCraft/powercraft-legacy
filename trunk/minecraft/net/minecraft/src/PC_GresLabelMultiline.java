@@ -10,6 +10,8 @@ import java.util.List;
  *
  */
 public class PC_GresLabelMultiline extends PC_GresWidget {
+	
+	private int minRows = 1;
 
 	/**
 	 * Multiline label
@@ -22,6 +24,22 @@ public class PC_GresLabelMultiline extends PC_GresWidget {
 		alignH = PC_GresAlign.LEFT;
 	}
 	
+	/**
+	 * @return the minimal no. rows
+	 */
+	public int getMinRows() {
+		return minRows;
+	}
+
+	/**
+	 * @param minRows set minimal no. of rows
+	 * @return this
+	 */
+	public PC_GresLabelMultiline setMinRows(int minRows) {
+		this.minRows = minRows;
+		return this;
+	}
+
 	@Override
 	public PC_CoordI calcSize() {
 		getMinSize();
@@ -119,7 +137,7 @@ public class PC_GresLabelMultiline extends PC_GresWidget {
 			}
 		}		
 		
-		minSize.setTo(minSize.x, (fontRenderer.FONT_HEIGHT+1)*cnt);
+		minSize.setTo(minSize.x, (fontRenderer.FONT_HEIGHT+1)*Math.max(minRows, cnt));
 		
 		return minSize;
 	}

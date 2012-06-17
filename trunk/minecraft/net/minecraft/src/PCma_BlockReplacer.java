@@ -11,17 +11,14 @@ public class PCma_BlockReplacer extends BlockContainer implements PC_ISwapTerrai
 	
 	protected PCma_BlockReplacer(int par1, int par2, Material par3Material) {
 		super(par1, par2, par3Material);
-		// TODO Auto-generated constructor stub
 	}
 	
 	protected PCma_BlockReplacer(int par1, Material par2Material) {
 		super(par1, par2Material);
-		// TODO Auto-generated constructor stub
 	}
 	
 	protected PCma_BlockReplacer(int par1) {
 		super(par1, Material.ground);
-		// TODO Auto-generated constructor stub
 	}
 	
 	@Override
@@ -109,8 +106,8 @@ public class PCma_BlockReplacer extends BlockContainer implements PC_ISwapTerrai
 	@Override
 	public void updateTick(World world, int i, int j, int k, Random random) {
 		PCma_TileEntityReplacer tileentity = (PCma_TileEntityReplacer) world.getBlockTileEntity(i, j, k);
-		if (tileentity != null) {
-			if (!world.isRemote && isIndirectlyPowered(world, i, j, k))
+		if (tileentity != null && !world.isRemote ) {
+			if (isIndirectlyPowered(world, i, j, k))
 				world.setBlockWithNotify(i + tileentity.coordOffset[0], j + tileentity.coordOffset[1], k + tileentity.coordOffset[2], 1);
 			else
 				world.setBlockWithNotify(i + tileentity.coordOffset[0], j + tileentity.coordOffset[1], k + tileentity.coordOffset[2], 0);
