@@ -26,7 +26,9 @@ public class PC_GresTextEdit extends PC_GresWidget {
 		/** accept unsigned number */
 		UNSIGNED_INT,
 		/** accept signed number with dot */
-		SIGNED_FLOAT;
+		SIGNED_FLOAT,
+		/** accept unsigned number with dot */
+		UNSIGNED_FLOAT;
 	}
 
 	private int maxChars;
@@ -52,12 +54,12 @@ public class PC_GresTextEdit extends PC_GresWidget {
 
 	/**
 	 * Text Edit
-	 * @param label text
+	 * @param initText text
 	 * @param chars max no. of characters
 	 * @param type input type allowed.
 	 */
-	public PC_GresTextEdit(String label, int chars, PC_GresInputType type) {
-		super((chars + 1) * 10, PC_Utils.mc().fontRenderer.FONT_HEIGHT + 12, label);
+	public PC_GresTextEdit(String initText, int chars, PC_GresInputType type) {
+		super((chars + 1) * 10, PC_Utils.mc().fontRenderer.FONT_HEIGHT + 12, initText);
 		maxChars = chars;
 		canAddWidget = false;
 		color[textColorEnabled] = 0xffffffff;
@@ -317,6 +319,22 @@ public class PC_GresTextEdit extends PC_GresWidget {
 							addKey(c);
 							return true;
 						}else if ((mouseSelectStart == 0 || mouseSelectEnd == 0) && c == '-'){
+							addKey(c);
+							return true;
+						}
+						
+						return false;
+						
+					case UNSIGNED_FLOAT:
+						
+						if (c == '.'){
+							if (mouseSelectStart == 0 || mouseSelectEnd == 0) return true;
+							if (text.length() > 0 && text.contains(".")) return true;
+							addKey(c);	
+							return true;
+						}
+						
+						if (Character.isDigit(Character.valueOf(c))){
 							addKey(c);
 							return true;
 						}

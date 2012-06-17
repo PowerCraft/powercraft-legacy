@@ -25,6 +25,21 @@ public class PC_GresWindow extends PC_GresWidget {
 	public PC_GresWindow(int minX, int minY, String title) {
 		super(minX, minY, title);
 	}
+	
+	/**
+	 * Create window of width 240 and height auto.
+	 * @param title title of the window
+	 */
+	public PC_GresWindow(String title) {
+		super(240, 0, title);
+	}
+	
+	/**
+	 * Create window of width 240 and height auto, no title.
+	 */
+	public PC_GresWindow() {
+		super(240, 0, "");
+	}
 
 	@Override
 	public PC_CoordI calcSize() {

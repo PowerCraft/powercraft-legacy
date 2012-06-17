@@ -16,9 +16,9 @@ public interface PC_ISpecialInsertInventory {
 	public boolean insertStackIntoInventory(ItemStack stack);
 	
 	/**
-	 * Hook which should be called after insertStackIntoInventory
+	 * Hook which should be called after insertStackIntoInventory,<br>
+	 * and only if it returned true. Used to reorganize inventory contents etc.
 	 * 
-	 * @param stack stack to store
 	 */
 	public void onStackInserted();
 }
