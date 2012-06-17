@@ -2,6 +2,9 @@ package net.minecraft.src;
 
 import java.util.LinkedHashMap;
 
+import net.minecraft.src.PC_GresTextEdit.PC_GresInputType;
+import net.minecraft.src.PC_GresWidget.PC_GresAlign;
+
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.opengl.GL11;
 
@@ -13,71 +16,95 @@ import org.lwjgl.opengl.GL11;
  * @copy (c) 2012
  * 
  */
-public class PClo_GuiRadioChannel extends GuiScreen {
+public class PClo_GuiRadioChannel implements PC_IGresBase {
+	
+	private String errMsg = "";
+
+	/** receiver index */
+	public static final int RECEIVER = 1;
+	/** transmitter index */
+	public static final int TRANSMITTER = 0;
+	
 	private int type;
 	private PC_CoordI pos;
 	private String oldChannel;
+	private String editedString;
 	private int dim = 0;
-	private String TITLE;
+
+	@SuppressWarnings("unused")
+	private PC_GresWidget buttonOK, buttonCancel;
+	private PC_GresWidget edit;
+	private PC_GresWidget txError;
 
 	/**
 	 * @param dimen Radio device dimension
 	 * @param blockPos block position in world
 	 * @param s device channel
-	 * @param transmitter is transmitter?(true) or receiver? (false)
+	 * @param radiotype transmitter or receiver
 	 */
-	public PClo_GuiRadioChannel(int dimen, PC_CoordI blockPos, String s, boolean transmitter) {
-		EditedString = s;
+	public PClo_GuiRadioChannel(int dimen, PC_CoordI blockPos, String s, int radiotype) {
+		editedString = s;
 		oldChannel = new String(s);
-		type = transmitter ? 0 : 1;
+		type = radiotype;
 		pos = blockPos;
 		dim = dimen;
+	}
 
+	@Override
+	public void initGui(PC_IGresGui gui) {
+		String title = "";
 		if (type == 0) {
-			TITLE = PC_Lang.tr("tile.PCloRadio.tx.name");
+			title = PC_Lang.tr("tile.PCloRadio.tx.name");
 		} else {
-			TITLE = PC_Lang.tr("tile.PCloRadio.rx.name");
+			title = PC_Lang.tr("tile.PCloRadio.rx.name");
 		}
+
+		//window
+		PC_GresWindow w = new PC_GresWindow(title);
+		w.setAlignH(PC_GresAlign.STRETCH);
+		PC_GresWidget hg;
+		
+		// layout with the input
+		hg = new PC_GresLayoutH().setAlignH(PC_GresAlign.CENTER);
+		hg.add(new PC_GresLabel(PC_Lang.tr("pc.gui.radio.channel")).setMinWidth(130));
+		w.add(hg);		
+
+		hg = new PC_GresLayoutH().setAlignH(PC_GresAlign.CENTER);
+		hg.add(edit = new PC_GresTextEdit(editedString, 8, PC_GresInputType.TEXT).setMinWidth(130));
+		w.add(hg);		
+		
+		// eror
+		hg = new PC_GresLayoutH().setAlignH(PC_GresAlign.CENTER);
+		hg.add(txError = new PC_GresLabel("").setColor(PC_GresWidget.textColorEnabled, 0x990000));
+		w.add(hg);		
+		
+		// buttons
+		hg = new PC_GresLayoutH().setAlignH(PC_GresAlign.CENTER);
+		hg.add(buttonCancel = new PC_GresButton(PC_Lang.tr("pc.gui.cancel")).setId(1));
+		hg.add(buttonOK = new PC_GresButton(PC_Lang.tr("pc.gui.ok")).setId(0));
+		w.add(hg);
+
+		gui.add(w);
+		
+
+		gui.setPausesGame(true);
+
+		// refresh labels.
+		actionPerformed(edit, gui);
+
 	}
 
 	@Override
-	public void updateScreen() {
-		textInputField.updateCursorCounter();
-	}
+	public void onGuiClosed(PC_IGresGui gui) {}
 
 	@Override
-	public void initGui() {
-		Keyboard.enableRepeatEvents(true);
-		controlList.clear();
-		LinkedHashMap<Integer, String> btns = new LinkedHashMap<Integer, String>();
-		btns.put(1, "pc.gui.cancel");
-		btns.put(0, "pc.gui.ok");
-		PC_GuiButtonAligner.alignToCenter(controlList, btns, 60, 8, height / 2 + 50 - 24, width / 2);
-		String s = EditedString;
-		textInputField = new GuiTextField(fontRenderer, width / 2 - 100, height / 2 - 50 + 47, 200, 20);
-		textInputField.setText(s);
-		textInputField.setFocused(true); // focused
-		textInputField.setMaxStringLength(32);
-	}
+	public void actionPerformed(PC_GresWidget widget, PC_IGresGui gui) {
 
-	@Override
-	public void onGuiClosed() {
-		Keyboard.enableRepeatEvents(false);
-	}
+		if (widget.getId() == 0) {
 
-	@Override
-	protected void actionPerformed(GuiButton guibutton) {
-		if (!guibutton.enabled) { return; }
-		if (guibutton.id == 1) {
-			// remove the gui
-			mc.displayGuiScreen(null);
-			mc.setIngameFocus();
+			String newChannel = edit.getText().trim();
 
-		} else if (guibutton.id == 0) {
-			String newChannel = textInputField.getText().trim();
-
-
-			PClo_TileEntityRadio ter = PClo_BlockRadio.getTE(mc.theWorld, pos.x, pos.y, pos.z);
+			PClo_TileEntityRadio ter = PClo_BlockRadio.getTE(PC_Utils.mc().theWorld, pos.x, pos.y, pos.z);
 
 			if (type == 0) {
 				PClo_RadioManager.setTransmitterChannel(dim, pos, oldChannel, newChannel, ter.isActive());
@@ -93,75 +120,39 @@ public class PClo_GuiRadioChannel extends GuiScreen {
 			if (type == 1) {
 				ter.active = PClo_RadioManager.getSignalStrength(newChannel) > 0;
 				if (ter.active) {
-					mc.theWorld.setBlockMetadataWithNotify(pos.x, pos.y, pos.z, 1);
+					PC_Utils.mc().theWorld.setBlockMetadataWithNotify(pos.x, pos.y, pos.z, 1);
 				}
 			}
 
-			mc.theWorld.scheduleBlockUpdate(pos.x, pos.y, pos.z, mod_PClogic.radio.blockID, 1);
+			PC_Utils.mc().theWorld.scheduleBlockUpdate(pos.x, pos.y, pos.z, mod_PClogic.radio.blockID, 1);
 
-			mc.displayGuiScreen(null);
-			mc.setIngameFocus();
+			gui.close();
+
+		} else if (widget.getId() == 1) {
+			gui.close();
 		}
-	}
 
-	@Override
-	public boolean doesGuiPauseGame() {
-		return false;
-	}
+		if (widget == edit) {
 
-	@Override
-	protected void keyTyped(char c, int i) {
-		textInputField.textboxKeyTyped(c, i);
-		((GuiButton) controlList.get(0)).enabled = textInputField.getText().trim().length() > 0;
-		if (c == '\r') {
-			actionPerformed((GuiButton) controlList.get(0));
+			if(edit.getText().trim().length() == 0){
+				errMsg = "pc.gui.radio.errChannel";
+				txError.setText(PC_Lang.tr(errMsg));
+			}else{
+				txError.setText("");
+			}
+
 		}
+
 	}
 
 	@Override
-	protected void mouseClicked(int i, int j, int k) {
-		super.mouseClicked(i, j, k);
-		textInputField.mouseClicked(i, j, k);
+	public void onEscapePressed(PC_IGresGui gui) {
+		gui.close();
 	}
 
 	@Override
-	public void drawScreen(int i, int j, float f) {
-		drawDefaultBackground();
-
-		drawGuiRadioBackgroundLayer(f);
-
-		GL11.glPushMatrix();
-		GL11.glRotatef(120F, 1.0F, 0.0F, 0.0F);
-		RenderHelper.enableStandardItemLighting();
-		GL11.glPopMatrix();
-
-		GL11.glPushMatrix();
-
-		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-		GL11.glDisable(32826 /* GL_RESCALE_NORMAL_EXT */);
-		RenderHelper.disableStandardItemLighting();
-		GL11.glDisable(2896 /* GL_LIGHTING */);
-		GL11.glDisable(2929 /* GL_DEPTH_TEST */);
-
-		fontRenderer.drawString(TITLE, width / 2 - (fontRenderer.getStringWidth(TITLE) / 2), (height / 2 - 50) + 20, 0x000000);
-		fontRenderer.drawString(PC_Lang.tr("pc.gui.radio.channel"), width / 2 - 100, (height / 2 - 50) + 35, 0x404040);
-		textInputField.drawTextBox();
-
-		GL11.glPopMatrix();
-		super.drawScreen(i, j, f);
-		GL11.glEnable(2896 /* GL_LIGHTING */);
-		GL11.glEnable(2929 /* GL_DEPTH_TEST */);
+	public void onReturnPressed(PC_IGresGui gui) {
+		actionPerformed(buttonOK, gui);
 	}
 
-	private void drawGuiRadioBackgroundLayer(float f) {
-		int i = mc.renderEngine.getTexture("/PowerCraft/core/dialog-small.png");
-		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-		mc.renderEngine.bindTexture(i);
-		int j = (width - 100) / 2;
-		int k = (height - 50) / 2;
-		drawTexturedModalRect(j - 100 + 30, k - 50 + 30 + 5, 0, 0, 240, 100);
-	}
-
-	private GuiTextField textInputField;
-	private final String EditedString;
 }
