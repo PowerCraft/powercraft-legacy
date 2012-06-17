@@ -1,6 +1,11 @@
 package net.minecraft.src;
 
+import java.awt.Desktop;
+import java.net.URI;
 import java.util.HashMap;
+
+import net.minecraft.src.PC_GresTextEdit.PC_GresInputType;
+import net.minecraft.src.PC_GresWidget.PC_GresAlign;
 
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.opengl.GL11;
@@ -11,16 +16,20 @@ import org.lwjgl.opengl.GL11;
  * @author MightyPork
  * @copy (c) 2012
  */
-public class PClo_GuiDelayer extends GuiScreen {
+public class PClo_GuiDelayer implements PC_IGresBase {
 
 	private PClo_TileEntityGate gateTE;
 
 	private int ticks;
 	private boolean error = false;
+	private String errMsg = ""; 
 
 	private boolean delayer_type;
 	private static final boolean FIFO = true, HOLD = false;
-
+	
+	private PC_GresButton buttonOK, buttonCancel;
+	private PC_GresTextEdit edit;
+	
 	/**
 	 * @param tep Gate tile entity
 	 * @param fifo is the delayer of type FIFO (buffered)?
@@ -32,88 +41,108 @@ public class PClo_GuiDelayer extends GuiScreen {
 	}
 
 	@Override
-	public void updateScreen() {
-		fieldLength.updateCursorCounter();
+	public void initGui(PC_IGresGui gui) {
+		String title="";
+		if(delayer_type == FIFO) title = PC_Lang.tr("tile.PCloLogicGate.buffer.name");
+		if(delayer_type == HOLD)  title = PC_Lang.tr("tile.PCloLogicGate.slowRepeater.name");
+		
+		PC_GresWindow w = new PC_GresWindow(title);
+		w.setAlignH(PC_GresAlign.STRETCH);
+		PC_GresLayoutH hg;
+		
+		//hg = new PC_GresLayoutH();
+		//hg.setAlignH(PC_GresAlign.CENTER);
+		
+		PC_GresLayoutV vg = (PC_GresLayoutV) new PC_GresLayoutV().setAlignH(PC_GresAlign.LEFT).setAlignV(PC_GresAlign.TOP);
+		vg.add(new PC_GresLabel(PC_Lang.tr("pc.gui.gate.delay")));
+		vg.add(edit = new PC_GresTextEdit(PC_Utils.floatToString(ticks * 0.05F), 8, PC_GresInputType.SIGNED_FLOAT));
+		//hg.add(vg);
+		w.add(vg);
+		
+		
+		
+		hg = new PC_GresLayoutH();
+		hg.setAlignH(PC_GresAlign.CENTER);
+		hg.add(buttonCancel = (PC_GresButton) new PC_GresButton(PC_Lang.tr("pc.gui.cancel")).setId(1));
+		hg.add(buttonOK = (PC_GresButton) new PC_GresButton(PC_Lang.tr("pc.gui.ok")).setId(0));
+		w.add(hg);
+		
+		gui.add(w);
+		
+		gui.setPausesGame(true);
+		
 	}
 
 	@Override
-	public void initGui() {
-		Keyboard.enableRepeatEvents(true);
-		controlList.clear();
-
-		HashMap<Integer, String> btns = new HashMap<Integer, String>();
-		btns.put(1, "pc.gui.cancel");
-		btns.put(0, "pc.gui.ok");
-		PC_GuiButtonAligner.alignToCenter(controlList, btns, 60, 8, height / 2 + 50 - 24, width / 2);
-
-		fieldLength = new GuiTextField(fontRenderer, width / 2 - 50, height / 2 - 3, 100, 20);
-		fieldLength.setText(PC_Utils.floatToString(ticks * 0.05F));
-		fieldLength.setFocused(true); // focused
-
-		fieldLength.setMaxStringLength(10);
-	}
+	public void onGuiClosed(PC_IGresGui gui) {}
 
 	@Override
-	public void onGuiClosed() {
-		Keyboard.enableRepeatEvents(false);
-	}
-
-	@Override
-	protected void actionPerformed(GuiButton guibutton) {
-		if (!guibutton.enabled) { return; }
-		if (guibutton.id == 1) {
-			// remove the gui
-			mc.displayGuiScreen(null);
-			mc.setIngameFocus();
-		} else if (guibutton.id == 0) {
-
+	public void actionPerformed(PC_GresWidget widget, PC_IGresGui gui) {
+		
+		if(widget.getId() == 0){
+			
 			if (delayer_type == FIFO) {
 				gateTE.bufferResize(ticks);
 			} else if (delayer_type == HOLD) {
 				gateTE.setRepeaterHoldTime(ticks);
 			}
-
-			mc.displayGuiScreen(null);
-			mc.setIngameFocus();
+			
+			gui.close();
+			
+		}else if(widget.getId() == 1){
+			try {
+				Desktop.getDesktop().browse(
+						URI.create("http://www.minecraftforum.net/topic/842589-125-power-craft-factory-mod/#entry10831808"));
+			} catch (Throwable throwable) {
+				throwable.printStackTrace();
+			}
 		}
+		
+		if(widget == edit){
+			try {
+				double time = Double.parseDouble(fieldLength.getText());
+
+				ticks = PC_Utils.secsToTicks(time);
+
+				error = (ticks < 2) || (ticks > 37000);
+				errMsg = "pc.gui.gate.delayer.errRange";
+
+				buttonOK.enabled = !error;
+
+			} catch (NumberFormatException nfe) {
+
+				buttonOK.enabled = false;
+				error = true;
+				errMsg = "pc.gui.gate.delayer.errNumFormat";
+
+			} catch (NullPointerException npe) {
+
+				buttonOK.enabled = false;
+				error = true;
+
+				errMsg = "pc.gui.gate.delayer.errNumFormat";
+			}
+			
+			if(!error) errMsg = "";
+		}
+		
 	}
 
 	@Override
-	public boolean doesGuiPauseGame() {
-		return false;
+	public void onEscapePressed(PC_IGresGui gui) {
+		gui.close();
 	}
 
 	@Override
-	protected void keyTyped(char c, int i) {
-
-		if (PC_KeyUtils.filterKeyFloat(c, i)) {
-			fieldLength.textboxKeyTyped(c, i);
-		}
-
-		try {
-			double time = Double.parseDouble(fieldLength.getText());
-
-			ticks = PC_Utils.secsToTicks(time);
-
-			error = (ticks < 2) || (ticks > 37000);
-
-			((GuiButton) controlList.get(0)).enabled = !error;
-
-		} catch (NumberFormatException nfe) {
-
-			((GuiButton) controlList.get(0)).enabled = false;
-			error = true;
-
-		} catch (NullPointerException npe) {
-
-			((GuiButton) controlList.get(0)).enabled = false;
-			error = true;
-		}
-
-		if (c == '\r') {
-			actionPerformed((GuiButton) controlList.get(0));
-		}
+	public void onReturnPressed(PC_IGresGui gui) {
+		actionPerformed(buttonOK, gui);
 	}
+	
+	
+	
+
+	
+	
 
 	@Override
 	protected void mouseClicked(int i, int j, int k) {
@@ -140,8 +169,7 @@ public class PClo_GuiDelayer extends GuiScreen {
 		GL11.glDisable(2896 /* GL_LIGHTING */);
 		GL11.glDisable(2929 /* GL_DEPTH_TEST */);
 
-		String title = (delayer_type == FIFO) ? PC_Lang.tr("tile.PCloLogicGate.buffer.name") : PC_Lang
-				.tr("tile.PCloLogicGate.slowRepeater.name");
+		String title = ;
 
 		fontRenderer.drawString(title, width / 2 - (fontRenderer.getStringWidth(title) / 2), (height / 2 - 50) + 20, 0x000000);
 		fontRenderer.drawString(PC_Lang.tr("pc.gui.gate.delay"), width / 2 - 50, (height / 2 - 50) + 35, 0x404040);
