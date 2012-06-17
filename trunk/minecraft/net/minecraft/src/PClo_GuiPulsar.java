@@ -78,7 +78,7 @@ public class PClo_GuiPulsar implements PC_IGresBase {
 		gui.add(w);
 		
 
-		gui.setPausesGame(true);
+		gui.setPausesGame(false);
 
 		// refresh labels.
 		actionPerformed(editHold, gui);

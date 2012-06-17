@@ -74,7 +74,7 @@ public class PClo_GuiDelayer implements PC_IGresBase {
 		gui.add(w);
 		
 
-		gui.setPausesGame(true);
+		gui.setPausesGame(false);
 
 		// refresh labels.
 		actionPerformed(edit, gui);

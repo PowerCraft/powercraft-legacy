@@ -126,7 +126,7 @@ public class PCma_BlockLaser extends BlockContainer implements PC_IBlockType, PC
 			if (world.getBlockId(i, j - 1, k) == mod_PCmachines.roaster.blockID) {
 				te.setType(PCma_LaserType.KILLER);
 			} else {
-				ModLoader.openGUI((EntityPlayer) entityliving, new PCma_GuiLaserTypeDecide(te));
+				PC_Utils.openGres((EntityPlayer) entityliving, new PCma_GuiLaserTypeDecide(te));
 			}
 		}
 	}
