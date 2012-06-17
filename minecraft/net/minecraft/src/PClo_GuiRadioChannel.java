@@ -1,12 +1,7 @@
 package net.minecraft.src;
 
-import java.util.LinkedHashMap;
-
 import net.minecraft.src.PC_GresTextEdit.PC_GresInputType;
 import net.minecraft.src.PC_GresWidget.PC_GresAlign;
-
-import org.lwjgl.input.Keyboard;
-import org.lwjgl.opengl.GL11;
 
 
 /**
@@ -61,17 +56,14 @@ public class PClo_GuiRadioChannel implements PC_IGresBase {
 
 		//window
 		PC_GresWindow w = new PC_GresWindow(title);
-		w.setAlignH(PC_GresAlign.STRETCH);
+		w.setAlignH(PC_GresAlign.CENTER);
 		PC_GresWidget hg;
 		
 		// layout with the input
-		hg = new PC_GresLayoutH().setAlignH(PC_GresAlign.CENTER);
-		hg.add(new PC_GresLabel(PC_Lang.tr("pc.gui.radio.channel")).setMinWidth(130));
-		w.add(hg);		
-
-		hg = new PC_GresLayoutH().setAlignH(PC_GresAlign.CENTER);
-		hg.add(edit = new PC_GresTextEdit(editedString, 8, PC_GresInputType.TEXT).setMinWidth(130));
-		w.add(hg);		
+		PC_GresWidget vg = new PC_GresLayoutV().setAlignH(PC_GresAlign.LEFT);
+		vg.add(new PC_GresLabel(PC_Lang.tr("pc.gui.radio.channel")));
+		vg.add(edit = new PC_GresTextEdit(editedString, 8, PC_GresInputType.TEXT).setMinWidth(130));
+		w.add(vg);		
 		
 		// eror
 		hg = new PC_GresLayoutH().setAlignH(PC_GresAlign.CENTER);

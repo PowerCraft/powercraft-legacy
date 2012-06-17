@@ -620,7 +620,7 @@ public abstract class PC_GresWidget extends Gui {
 	/**
 	 * Get absolute position on screen
 	 * 
-	 * @return { x, y}
+	 * @return coord of top left.
 	 */
 	public PC_CoordI getPositionOnScreen() {
 		PC_CoordI position;
@@ -632,11 +632,54 @@ public abstract class PC_GresWidget extends Gui {
 		}
 		return position;
 	}
+	
+	/**
+	 * Render textured rect with Alpha support at given position.
+	 * 
+	 * @param offset offset relative to root top left
+	 * @param texture texture to render (filename)
+	 * @param rectSize size of the rendered texture
+	 * @param imgOffset offset within the texture image (from top left)
+	 */
+	protected void renderImage(PC_CoordI offset, String texture, PC_CoordI rectSize, PC_CoordI imgOffset){
+		
+		GL11.glBindTexture(GL11.GL_TEXTURE_2D, PC_Utils.mc().renderEngine.getTexture(texture));
+		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
+		GL11.glEnable(GL11.GL_BLEND);
+		GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
+		
+		drawTexturedModalRect(pos.x+offset.x, pos.y+offset.y, imgOffset.x, imgOffset.y, rectSize.x, rectSize.y);
+		
+		GL11.glDisable(GL11.GL_BLEND);
+		
+	}
+	
+	/**
+	 * Render textured rect with Alpha support at given position.
+	 * 
+	 * @param gui the gui being drawed on
+	 * @param texture texture to render (filename)
+	 * @param startPos left top corner absolute position
+	 * @param rectSize size of the rendered texture
+	 * @param imgOffset offset within the texture image (from top left)
+	 */
+	protected static void renderImage_static(Gui gui, String texture, PC_CoordI startPos, PC_CoordI rectSize, PC_CoordI imgOffset){
+		
+		GL11.glBindTexture(GL11.GL_TEXTURE_2D, PC_Utils.mc().renderEngine.getTexture(texture));
+		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
+		GL11.glEnable(GL11.GL_BLEND);
+		GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
+		
+		gui.drawTexturedModalRect(startPos.x, startPos.y, imgOffset.x, imgOffset.y, rectSize.x, rectSize.y);
+		
+		GL11.glDisable(GL11.GL_BLEND);
+		
+	}
 
 	/**
 	 * Render texture using 9patch-like scaling method.<br>
 	 * 
-	 * @param offset offset relative to parent top left
+	 * @param offset offset relative to root top left
 	 * @param texture texture to render (filename)
 	 * @param rectSize rectangle size
 	 * @param imgOffset offset within the texture image (from top left)
@@ -645,6 +688,8 @@ public abstract class PC_GresWidget extends Gui {
 	protected void renderTextureSliced(PC_CoordI offset, String texture, PC_CoordI rectSize, PC_CoordI imgOffset, PC_CoordI imgSize) {
 		GL11.glBindTexture(GL11.GL_TEXTURE_2D, mc.renderEngine.getTexture(texture));
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
+		GL11.glEnable(GL11.GL_BLEND);
+		GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
 
 		int rxh1 = (int) Math.floor(rectSize.x / 2F);
 		int rxh2 = (int) Math.ceil(rectSize.x / 2F);
@@ -664,6 +709,8 @@ public abstract class PC_GresWidget extends Gui {
 		// right bottom square
 		drawTexturedModalRect(pos.x + offset.x + rxh1, pos.y + offset.y + ryh1, imgOffset.x + imgSize.x - rxh2, imgOffset.y + imgSize.y
 				- ryh2, rxh2, ryh2);
+		
+		GL11.glDisable(GL11.GL_BLEND);
 
 	}
 
@@ -681,6 +728,8 @@ public abstract class PC_GresWidget extends Gui {
 			PC_CoordI imgSize) {
 		GL11.glBindTexture(GL11.GL_TEXTURE_2D, mc.renderEngine.getTexture(texture));
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
+		GL11.glEnable(GL11.GL_BLEND);
+		GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
 
 		int rxh1 = (int) Math.floor(rectSize.x / 2F);
 		int rxh2 = (int) Math.ceil(rectSize.x / 2F);
@@ -699,6 +748,9 @@ public abstract class PC_GresWidget extends Gui {
 		// right bottom square
 		gui.drawTexturedModalRect(startPos.x + rxh1, startPos.y + ryh1, imgOffset.x + imgSize.x - rxh2, imgOffset.y + imgSize.y - ryh2,
 				rxh2, ryh2);
+		
+
+		GL11.glDisable(GL11.GL_BLEND);
 
 	}
 

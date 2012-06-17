@@ -318,6 +318,7 @@ public class mod_PCcore extends PC_Module implements PC_IActivatorListener {
 		map.put("pc.sniffer.sniffing", "Sniffing ores...");
 		map.put("pc.sniffer.away", "(far away)");
 		map.put("pc.sniffer.desc", "Portable radar device");
+		map.put("pc.gui.update.title", "Mod Update Notification");
 		map.put("pc.gui.update.newVersionAvailable", "Update available!");
 		map.put("pc.gui.update.readMore", "Read more...");
 		map.put("pc.gui.update.version", "Using %1$s (%2$s), Available %3$s (%4$s)");
