@@ -54,7 +54,7 @@ public class PCma_GuiReplacer implements PC_IGresBase {
 		vg.add(hg1);
 		hg1 = new PC_GresLayoutH();
 		hg1.add(lbly = new PC_GresLabel("Y:"));
-		hg1.add(textedit[1] = (PC_GresTextEdit) new PC_GresTextEdit("" + teReplacer.coordOffset[0], 4, PC_GresInputType.INT));
+		hg1.add(textedit[1] = (PC_GresTextEdit) new PC_GresTextEdit("" + teReplacer.coordOffset[1], 4, PC_GresInputType.INT));
 		vg.add(hg1);
 		hg.add(vg);
 		
@@ -65,7 +65,7 @@ public class PCma_GuiReplacer implements PC_IGresBase {
 		vg.add(hg1);
 		hg1 = new PC_GresLayoutH();
 		hg1.add(lblz = new PC_GresLabel("Z:"));
-		hg1.add(textedit[2] = (PC_GresTextEdit) new PC_GresTextEdit("" + teReplacer.coordOffset[0], 4, PC_GresInputType.INT));
+		hg1.add(textedit[2] = (PC_GresTextEdit) new PC_GresTextEdit("" + teReplacer.coordOffset[2], 4, PC_GresInputType.INT));
 		vg.add(hg1);
 		hg.add(vg);
 		w.add(hg);
