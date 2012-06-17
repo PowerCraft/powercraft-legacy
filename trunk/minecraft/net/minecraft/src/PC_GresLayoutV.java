@@ -1,13 +1,17 @@
 package net.minecraft.src;
 
 /**
- * Gui Resizable Vertical Group Layout Widget
+ * Resizable GUI vertical layout
  * 
+ * @author XOR19
  * @copy (c) 2012
  *
  */
 public class PC_GresLayoutV extends PC_GresWidget {
 
+	/**
+	 * vertical layout
+	 */
 	public PC_GresLayoutV() {
 		super();
 	}

@@ -732,7 +732,7 @@ public class mod_PCcore extends PC_Module implements PC_IActivatorListener {
 	public boolean onTickInGame(float f, Minecraft minecraft) {
 		if (!updateAlreadyShowed && updateAvailable && optUpdateNotify) {
 			updateAlreadyShowed = true;
-			ModLoader.openGUI(mc.thePlayer, new PCco_GuiUpdateNotification());
+			PC_Utils.openGres(mc.thePlayer, new PCco_GuiUpdateNotification());
 			PC_Logger.fine("Openning UPDATE NOTIFICATION screen.");
 		}
 		return false;

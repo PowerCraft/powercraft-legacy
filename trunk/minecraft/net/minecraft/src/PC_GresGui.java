@@ -6,7 +6,7 @@ import org.lwjgl.input.Keyboard;
  * 
  * GuiScreen class
  * 
- * @authors XOR19 & Rapus95
+ * @authors XOR19, Rapus95, MightyPork
  * @copy (c) 2012
  *
  */

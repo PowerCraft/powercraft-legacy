@@ -111,9 +111,9 @@ public class PCma_BlockReplacer extends BlockContainer implements PC_ISwapTerrai
 		PCma_TileEntityReplacer tileentity = (PCma_TileEntityReplacer) world.getBlockTileEntity(i, j, k);
 		if (tileentity != null) {
 			if (!world.isRemote && isIndirectlyPowered(world, i, j, k))
-				world.setBlock(i + tileentity.coordOffset[0], j + tileentity.coordOffset[1], k + tileentity.coordOffset[2], 1);
+				world.setBlockWithNotify(i + tileentity.coordOffset[0], j + tileentity.coordOffset[1], k + tileentity.coordOffset[2], 1);
 			else
-				world.setBlock(i + tileentity.coordOffset[0], j + tileentity.coordOffset[1], k + tileentity.coordOffset[2], 0);
+				world.setBlockWithNotify(i + tileentity.coordOffset[0], j + tileentity.coordOffset[1], k + tileentity.coordOffset[2], 0);
 		}
 	}
 	

@@ -1,9 +1,19 @@
 package net.minecraft.src;
 
+/**
+ * Resizable GUI button
+ * 
+ * @author XOR19, Rapus95, MightyPork
+ * @copy (c) 2012
+ *
+ */
 public class PC_GresButton extends PC_GresWidget {
 	
 	private boolean isClicked = false;
 	
+	/**
+	 * @param label button label
+	 */
 	public PC_GresButton(String label){
 		super(label);
 		canAddWidget = false;

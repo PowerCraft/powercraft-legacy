@@ -2,13 +2,7 @@ package net.minecraft.src;
 
 import java.awt.Desktop;
 import java.net.URI;
-import java.util.HashMap;
-import java.util.List;
-
-import net.minecraft.client.Minecraft;
-
-import org.lwjgl.input.Keyboard;
-import org.lwjgl.opengl.GL11;
+import net.minecraft.src.PC_GresWidget.PC_GresAlign;
 
 /**
  * Gui notifying about an update.
@@ -17,57 +11,63 @@ import org.lwjgl.opengl.GL11;
  * @copy (c) 2012
  * 
  */
-public class PCco_GuiUpdateNotification extends GuiScreen {
-
-	private PC_GuiCheckBox checkDisable;
-
-	private int halfX;
-	private int halfY;
-
-	@SuppressWarnings("unchecked")
+public class PCco_GuiUpdateNotification implements PC_IGresBase {
+	
+	private PC_GresCheckBox checkDisable;
+	private PC_GresWidget buttonOK;
+	
 	@Override
-	public void initGui() {
-		halfX = width / 2;
-		halfY = height / 2;
+	public void initGui(PC_IGresGui gui) {
+		PC_GresWindow w = new PC_GresWindow(240, 50, "");
+		w.setAlignH(PC_GresAlign.STRETCH);
+		PC_GresLayoutH hg;
+		
+		hg = new PC_GresLayoutH();
+		hg.setAlignH(PC_GresAlign.CENTER);
+		hg.add(new PC_GresImage(mod_PCcore.getImgDir()+"graphics.png", 0, 0, 200, 20));
+		w.add(hg);
+		
+		hg = new PC_GresLayoutH();
+		hg.setAlignH(PC_GresAlign.CENTER);
+		hg.add(new PC_GresLabel(PC_Lang.tr("pc.gui.update.newVersionAvailable")));
+		hg.add(new PC_GresLink(PC_Lang.tr("pc.gui.update.readMore")).setId(1));
+		w.add(hg);
 
-		Keyboard.enableRepeatEvents(true);
-		controlList.clear();
-
-
-
-		HashMap<Integer, String> btns = new HashMap<Integer, String>();
-		btns.put(0, "pc.gui.ok");
-		PC_GuiButtonAligner.alignToRight(controlList, btns, 60, 4, halfY + 75 - 30, halfX + 120 - 10);
-
-
-
-		String title = PC_Lang.tr("pc.gui.update.newVersionAvailable");
-
-		String link = PC_Lang.tr("pc.gui.update.readMore");
-
-		GuiButton but2 = (new PC_GuiClickableText(fontRenderer, 1, (halfX + ((fontRenderer.getStringWidth(title + " " + link)) / 2))
-				- fontRenderer.getStringWidth(link), halfY - 75 + 32, link));
-		controlList.add(but2);
-
-		checkDisable = new PC_GuiCheckBox(this, fontRenderer, halfX - 110, halfY + 75 - 30 + 6, false,
-				PC_Lang.tr("pc.gui.update.doNotShowAgain"));
+		w.add(new PC_GresSeparatorH(40, 5).setLineColor(0x999999));
+		
+		hg = new PC_GresLayoutH();
+		hg.setAlignH(PC_GresAlign.CENTER);
+		hg.add(new PC_GresLabelMultiline(mod_PCcore.updateText,210).setAlignH(PC_GresAlign.LEFT));
+		w.add(hg);
+		
+		w.add(new PC_GresSeparatorH(40, 5).setLineColor(0x999999));
+		
+		hg = new PC_GresLayoutH();
+		hg.setAlignH(PC_GresAlign.CENTER);
+		hg.add(checkDisable = new PC_GresCheckBox(PC_Lang.tr("pc.gui.update.doNotShowAgain")));
+		hg.add(new PC_GresGap(10,0));
+		hg.add(buttonOK = new PC_GresButton(PC_Lang.tr("pc.gui.ok")).setId(0));
+		w.add(hg);
+		
+		gui.add(w);
+		
+		gui.setPausesGame(true);
+		
 	}
 
 	@Override
-	public void onGuiClosed() {
-		Keyboard.enableRepeatEvents(false);
-	}
+	public void onGuiClosed(PC_IGresGui gui) {}
 
 	@Override
-	protected void actionPerformed(GuiButton guibutton) {
-		if (!guibutton.enabled) { return; }
-		if (guibutton.id == 0) {
-
+	public void actionPerformed(PC_GresWidget widget, PC_IGresGui gui) {
+		
+		if(widget.getId() == 0){
+			
 			if (checkDisable.isChecked()) {
 				PC_PropertyManager cfg = mod_PCcore.instance.cfg();
 
 				cfg.setValue(mod_PCcore.pk_cfgUpdateIgnored, mod_PCcore.updateModVersion);
-				System.out.println("Setting value " + mod_PCcore.updateModVersion);
+				PC_Logger.finest("Setting last shown update version to: " + mod_PCcore.updateModVersion);
 
 				cfg.enableValidation(false);
 
@@ -75,13 +75,12 @@ public class PCco_GuiUpdateNotification extends GuiScreen {
 
 				cfg.enableValidation(true);
 
-				mod_PCcore.update_last_ignored_version = mod_PCcore.instance.cfg().string(mod_PCcore.pk_cfgUpdateIgnored);
+				mod_PCcore.update_last_ignored_version = mod_PCcore.updateModVersion;
 			}
-
-			mc.displayGuiScreen(null);
-			mc.setIngameFocus();
-		}
-		if (guibutton.id == 1) {
+			
+			gui.close();
+			
+		}else if(widget.getId() == 1){
 			try {
 				Desktop.getDesktop().browse(
 						URI.create("http://www.minecraftforum.net/topic/842589-125-power-craft-factory-mod/#entry10831808"));
@@ -89,80 +88,17 @@ public class PCco_GuiUpdateNotification extends GuiScreen {
 				throwable.printStackTrace();
 			}
 		}
-	}
-
-	@Override
-	public boolean doesGuiPauseGame() {
-		return true;
-	}
-
-	@Override
-	protected void mouseClicked(int i, int j, int k) {
-		super.mouseClicked(i, j, k);
-		checkDisable.mouseClicked(i, j, k);
-	}
-
-	@Override
-	public void drawScreen(int i, int j, float f) {
-		drawDefaultBackground();
-
-		drawGuiBackgroundLayer(f);
-
-		GL11.glPushMatrix();
-
-		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-		GL11.glDisable(32826 /* GL_RESCALE_NORMAL_EXT */);
-		RenderHelper.disableStandardItemLighting();
-		GL11.glDisable(2896 /* GL_LIGHTING */);
-		GL11.glDisable(2929 /* GL_DEPTH_TEST */);
-
-		String title = PC_Lang.tr("pc.gui.update.newVersionAvailable");
-
-		String link = PC_Lang.tr("pc.gui.update.readMore");
-
-		fontRenderer.drawString(title, halfX - (fontRenderer.getStringWidth(title + " " + link) / 2), halfY - 75 + 34, 0x303060);
-
-		String aa;
-
-		aa = PC_Lang
-				.tr("pc.gui.update.version",
-						new String[] { mod_PCcore.instance.getVersion(), Minecraft.getVersion(), mod_PCcore.updateModVersion, mod_PCcore.updateMcVersion });
-
-		fontRenderer.drawString(aa, halfX - (fontRenderer.getStringWidth(aa) / 2), halfY - 75 + 34 + 14, 0x303060);
-
-		int cnt = 0;
 		
-		String[] lines_nl = mod_PCcore.updateText.split("\n");
-
-		for (String s : lines_nl) {
-			@SuppressWarnings("unchecked")
-			List<String> lines = fontRenderer.listFormattedStringToWidth(s, 220);
-			
-			for(String ss : lines){
-				if (s.length() > 1) {
-					fontRenderer.drawString(ss, halfX - 110, halfY - 75 + 34 + 32 + (fontRenderer.FONT_HEIGHT+1) * cnt, 0x000000);
-					cnt++;
-				}
-			}
-		}
-
-		checkDisable.drawCheckBox();
-
-
-		GL11.glPopMatrix();
-
-		super.drawScreen(i, j, f);
-
-		GL11.glEnable(2896 /* GL_LIGHTING */);
-		GL11.glEnable(2929 /* GL_DEPTH_TEST */);
 	}
 
-	private void drawGuiBackgroundLayer(float f) {
-		int i = mc.renderEngine.getTexture("/PowerCraft/core/dialog-update.png");
-		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-		mc.renderEngine.bindTexture(i);
-		int j = (width) / 2;
-		int k = (height) / 2;
-		drawTexturedModalRect(j - 120, k - 75, 0, 0, 240, 150);
+	@Override
+	public void onEscapePressed(PC_IGresGui gui) {
+		gui.close();
 	}
+
+	@Override
+	public void onReturnPressed(PC_IGresGui gui) {
+		actionPerformed(buttonOK, gui);
+	}
+
 }

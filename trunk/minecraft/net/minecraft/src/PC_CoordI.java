@@ -1,7 +1,5 @@
 package net.minecraft.src;
 
-import paulscode.sound.Vector3D;
-
 /**
  * Integer coordinate class, can be used to hold information about position or a
  * simple movement vector. Can also work in 2D.

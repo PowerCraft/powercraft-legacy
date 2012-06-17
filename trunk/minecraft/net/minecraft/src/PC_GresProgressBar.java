@@ -2,6 +2,13 @@ package net.minecraft.src;
 
 import org.lwjgl.opengl.GL11;
 
+/**
+ * Resizable GUI user-editable colorable progress bar widget
+ * 
+ * @author MightyPork
+ * @copy (c) 2012
+ *
+ */
 public class PC_GresProgressBar extends PC_GresWidget {
 	
 	/** Bar fraction (0-1F) */
@@ -55,6 +62,7 @@ public class PC_GresProgressBar extends PC_GresWidget {
 
 	/**
 	 * @param fraction the fraction to set (0-1F)
+	 * @return this
 	 */
 	public PC_GresProgressBar setFraction(float fraction) {
 		this.fraction = fraction;
@@ -70,6 +78,7 @@ public class PC_GresProgressBar extends PC_GresWidget {
 
 	/**
 	 * @param colorHex the hex color to set
+	 * @return this
 	 */
 	public PC_GresProgressBar setColor(int colorHex) {
 		this.colorHex = colorHex;
@@ -86,6 +95,7 @@ public class PC_GresProgressBar extends PC_GresWidget {
 	/**
 	 * Set bar type
 	 * @param type the bar type (0=striped outset, 1=outset, 2=plain) 
+	 * @return this
 	 */
 	public PC_GresProgressBar setType(int type) {
 		this.type = type;
@@ -101,6 +111,7 @@ public class PC_GresProgressBar extends PC_GresWidget {
 
 	/**
 	 * @param showLabel do show label
+	 * @return this
 	 */
 	public PC_GresProgressBar setShowLabel(boolean showLabel) {
 		this.showLabel = showLabel;
@@ -116,6 +127,7 @@ public class PC_GresProgressBar extends PC_GresWidget {
 
 	/**
 	 * @param labelMultiplier the label multiplier (if set to 100, percent sign will be shown)
+	 * @return this
 	 */
 	public PC_GresProgressBar setLabelMultiplier(int labelMultiplier) {
 		this.labelMultiplier = labelMultiplier;
@@ -132,6 +144,7 @@ public class PC_GresProgressBar extends PC_GresWidget {
 	/**
 	 * Set label width (if label shown)
 	 * @param labelWidth the labelWidth to set
+	 * @return this
 	 */
 	public PC_GresProgressBar setLabelWidth(int labelWidth) {
 		this.labelWidth = labelWidth;
@@ -148,6 +161,7 @@ public class PC_GresProgressBar extends PC_GresWidget {
 	/**
 	 * Set minimal bar width
 	 * @param barWidth the bar width to set
+	 * @return this
 	 */
 	public PC_GresProgressBar setBarWidth(int barWidth) {
 		this.barWidth = barWidth;
@@ -163,6 +177,7 @@ public class PC_GresProgressBar extends PC_GresWidget {
 
 	/**
 	 * @param labelAppend the labelAppend to set
+	 * @return this
 	 */
 	public PC_GresProgressBar setLabelAppend(String labelAppend) {
 		this.labelAppend = labelAppend;
@@ -178,16 +193,24 @@ public class PC_GresProgressBar extends PC_GresWidget {
 
 	/**
 	 * @param acceptsInput the acceptsInput to set
+	 * @return this
 	 */
 	public PC_GresProgressBar setEditable(boolean acceptsInput) {
 		this.acceptsInput = acceptsInput;
 		return this;
 	}
 
+	/**
+	 * Configure label on right
+	 * @param append label unit (eg. %, km, t)
+	 * @param longest longest expected text shown on label (eg. 100% or 999km)
+	 * @param multiplier fraction multiplier. The fraction is multiplied by this and rounded before showing as label.
+	 * @return this
+	 */
 	public PC_GresProgressBar configureLabel(String append, String longest, int multiplier){
 		setShowLabel(true);
 		setLabelAppend(append);
-		setLabelWidth(getFontRenderer().getStringWidth(longest));
+		setLabelWidth(getStringWidth(longest));
 		setLabelMultiplier(multiplier);
 		return this;
 	}

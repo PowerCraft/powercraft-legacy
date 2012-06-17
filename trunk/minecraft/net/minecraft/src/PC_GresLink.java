@@ -1,9 +1,20 @@
 package net.minecraft.src;
 
+/**
+ * Resizable GUI hypertext link-like widget
+ * 
+ * @author MightyPork
+ * @copy (c) 2012
+ *
+ */
 public class PC_GresLink extends PC_GresWidget {
 	
 	private boolean isClicked = false;
 	
+	/**
+	 * Link button
+	 * @param label label
+	 */
 	public PC_GresLink(String label){
 		super(label);
 		canAddWidget = false;
@@ -12,9 +23,8 @@ public class PC_GresLink extends PC_GresWidget {
 	
 	@Override
 	public PC_CoordI calcSize() {
-		FontRenderer fontRenderer = getFontRenderer();
 		
-		size.setTo(fontRenderer.getStringWidth(text),fontRenderer.FONT_HEIGHT).add(2,0);
+		size.setTo(getStringWidth(text),getLineHeight()).add(2,0);
 		
 		if(size.x < minSize.x) size.x = minSize.x;
 		
@@ -48,6 +58,10 @@ public class PC_GresLink extends PC_GresWidget {
 		if(state == 3) textColor = 0xff0000; // red, activated
 		
 		drawStringColor(text, offsetPos.x+pos.x, offsetPos.y+pos.y, textColor);
+		
+		int yy = offsetPos.y+pos.y+getFontRenderer().FONT_HEIGHT;
+		
+		drawRect(offsetPos.x+pos.x, yy, offsetPos.x+size.x+pos.x+1, yy+1, textColor|0xff000000);
 	}
 
 	@Override

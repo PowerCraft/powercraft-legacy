@@ -1,6 +1,6 @@
 package net.minecraft.src;
 
-import net.minecraft.src.PC_GresWidget.PC_GresAlignH;
+import net.minecraft.src.PC_GresWidget.PC_GresAlign;
 
 /**
  * GUI for editing spawned mob from spawner.<br>
@@ -62,7 +62,7 @@ public class PCco_GuiSpawnerEditor implements PC_IGresBase {
 			PC_Lang.tr("entity.EnderDragon.name") };
 		// @formatter:on
 
-		PC_GresWidget w = new PC_GresWindow(230, 100, PC_Lang.tr("tile.mobSpawner.name")).setAlignH(PC_GresAlignH.STRETCH);
+		PC_GresWidget w = new PC_GresWindow(230, 100, PC_Lang.tr("tile.mobSpawner.name")).setAlignH(PC_GresAlign.STRETCH);
 		w.widgetMargin = 1;
 		PC_GresLayoutH hg = new PC_GresLayoutH();
 

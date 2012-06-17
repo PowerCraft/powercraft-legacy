@@ -10,7 +10,7 @@ import org.lwjgl.opengl.GL11;
  * 
  * Base class for GUI-system
  * 
- * @authors XOR19 & Rapus95
+ * @authors XOR19, Rapus95, MightyPork
  * @copy (c) 2012
  * 
  */
@@ -23,39 +23,24 @@ public abstract class PC_GresWidget extends Gui {
 
 	/**
 	 * 
-	 * align horizontal
-	 * 
-	 * @authors XOR19 & Rapus95
-	 * @copy (c) 2012
-	 * 
-	 */
-	public enum PC_GresAlignH {
-		/** ALIGNER_LEFT */
-		LEFT,
-		/** ALIGNER_RIGHT */
-		RIGHT,
-		/** ALIGNER_CENTER */
-		CENTER,
-		/** ALIGNER_STRETCH */
-		STRETCH
-	}
-
-	/**
-	 * 
 	 * align vertical
 	 * 
 	 * @authors XOR19 & Rapus95
 	 * @copy (c) 2012
 	 * 
 	 */
-	public enum PC_GresAlignV {
-		/** ALIGNER_TOP */
+	public enum PC_GresAlign {
+		/** LEFT */
+		LEFT,
+		/** RIGHT */
+		RIGHT,
+		/** TOP */
 		TOP,
-		/** ALIGNER_BOTTOM */
+		/** BOTTOM */
 		BOTTOM,
-		/** ALIGNER_CENTER */
+		/** CENTER */
 		CENTER,
-		/** ALIGNER_STRETCH */
+		/** STRETCH */
 		STRETCH
 	}
 
@@ -106,15 +91,15 @@ public abstract class PC_GresWidget extends Gui {
 	protected String text = "";
 
 	/** Horizontal Align */
-	protected PC_GresAlignH alignH = PC_GresAlignH.CENTER;
+	protected PC_GresAlign alignH = PC_GresAlign.CENTER;
 
 	/** Vertical Align */
-	protected PC_GresAlignV alignV = PC_GresAlignV.CENTER;
+	protected PC_GresAlign alignV = PC_GresAlign.CENTER;
 
 	/** Widget ID */
 	public int id = -1;
-	
-	
+
+
 
 	/**
 	 * A widget
@@ -166,7 +151,7 @@ public abstract class PC_GresWidget extends Gui {
 	 * Set widget ID
 	 * 
 	 * @param id
-	 * @return
+	 * @return this
 	 */
 	public PC_GresWidget setId(int id) {
 		this.id = id;
@@ -176,8 +161,7 @@ public abstract class PC_GresWidget extends Gui {
 	/**
 	 * Get widget ID
 	 * 
-	 * @param id
-	 * @return
+	 * @return id
 	 */
 	public int getId() {
 		return this.id;
@@ -209,7 +193,7 @@ public abstract class PC_GresWidget extends Gui {
 	 * 
 	 * @return horizontal align
 	 */
-	public PC_GresAlignH getAlignH() {
+	public PC_GresAlign getAlignH() {
 		return alignH;
 	}
 
@@ -219,7 +203,7 @@ public abstract class PC_GresWidget extends Gui {
 	 * @param alignHorizontal horizontal align
 	 * @return this
 	 */
-	public PC_GresWidget setAlignH(PC_GresAlignH alignHorizontal) {
+	public PC_GresWidget setAlignH(PC_GresAlign alignHorizontal) {
 		this.alignH = alignHorizontal;
 		return this;
 	}
@@ -229,7 +213,7 @@ public abstract class PC_GresWidget extends Gui {
 	 * 
 	 * @return vertical align
 	 */
-	public PC_GresAlignV getAlignV() {
+	public PC_GresAlign getAlignV() {
 		return alignV;
 	}
 
@@ -239,7 +223,7 @@ public abstract class PC_GresWidget extends Gui {
 	 * @param alignVertical vertical align
 	 * @return this
 	 */
-	public PC_GresWidget setAlignV(PC_GresAlignV alignVertical) {
+	public PC_GresWidget setAlignV(PC_GresAlign alignVertical) {
 		this.alignV = alignVertical;
 		return this;
 	}
@@ -295,6 +279,7 @@ public abstract class PC_GresWidget extends Gui {
 
 	/**
 	 * @param minSize the minSize to set
+	 * @return this
 	 */
 	public PC_GresWidget setMinSize(PC_CoordI minSize) {
 		this.minSize = minSize;
@@ -303,6 +288,7 @@ public abstract class PC_GresWidget extends Gui {
 
 	/**
 	 * set min size
+	 * 
 	 * @param w width
 	 * @param h height
 	 * @return this
@@ -311,9 +297,10 @@ public abstract class PC_GresWidget extends Gui {
 		this.minSize.setTo(w, h);
 		return this;
 	}
-	
+
 	/**
 	 * set min size width
+	 * 
 	 * @param w width
 	 * @return this
 	 */
@@ -321,9 +308,10 @@ public abstract class PC_GresWidget extends Gui {
 		this.minSize.setTo(w, this.minSize.y);
 		return this;
 	}
-	
+
 	/**
 	 * set min size height
+	 * 
 	 * @param h height
 	 * @return this
 	 */
@@ -520,9 +508,18 @@ public abstract class PC_GresWidget extends Gui {
 	 * @param text the string
 	 * @return length in pixels
 	 */
-	protected int getStringLength(String text) {
-		if (fontRenderer != null) return fontRenderer.getStringWidth(text);
-		else return mc.fontRenderer.getStringWidth(text);
+	protected int getStringWidth(String text) {
+		FontRenderer fr = getFontRenderer();
+		return fr.getStringWidth(text);
+	}
+	
+	/**
+	 * Get char height
+	 * 
+	 * @return height in pixels
+	 */
+	protected int getLineHeight() {
+		return getFontRenderer().FONT_HEIGHT;
 	}
 
 	/**
@@ -539,7 +536,7 @@ public abstract class PC_GresWidget extends Gui {
 		}
 		fr.drawString(text, x, y, color[enabled ? textColorEnabled : textColorDisabled]);
 	}
-	
+
 	/**
 	 * Draw string, using overide color
 	 * 
@@ -639,95 +636,95 @@ public abstract class PC_GresWidget extends Gui {
 	/**
 	 * Render texture using 9patch-like scaling method.<br>
 	 * 
-	 * <pre>
-	 * +------+--+ 
-	 * |      |  | 
-	 * |      |  | 
-	 * +------+--+ 
-	 * |      |  | 
-	 * +------+--+
-	 * </pre>
-	 * 
 	 * @param offset offset relative to parent top left
 	 * @param texture texture to render (filename)
 	 * @param rectSize rectangle size
 	 * @param imgOffset offset within the texture image (from top left)
-	 * @param imageSize size of the whole "scalable" region in texture file (eg. the whole huge "button" field)
-	 * @param borderRight width of the right-hand-side column appended after the left part
-	 * @param borderBottom height of the bottom row appended below the upper part
+	 * @param imgSize size of the whole "scalable" region in texture file (eg. the whole huge "button" field)
 	 */
-	protected void renderTextureSliced(PC_CoordI offset, String texture, PC_CoordI rectSize, PC_CoordI imgOffset, PC_CoordI imageSize) {
+	protected void renderTextureSliced(PC_CoordI offset, String texture, PC_CoordI rectSize, PC_CoordI imgOffset, PC_CoordI imgSize) {
 		GL11.glBindTexture(GL11.GL_TEXTURE_2D, mc.renderEngine.getTexture(texture));
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 
+		int rxh1 = (int) Math.floor(rectSize.x / 2F);
+		int rxh2 = (int) Math.ceil(rectSize.x / 2F);
+		int ryh1 = (int) Math.floor(rectSize.y / 2F);
+		int ryh2 = (int) Math.ceil(rectSize.y / 2F);
 
-		/*
-		 * AAAAA BBBBB
-		 * AAAAA BBBBB
-		 * AAAAA BBBBB
-		 * CCCCC DDDDD
-		 * CCCCC DDDDD
-		 * CCCCC DDDDD
-		 */
 
-		// @formatter:off
-		
-		int rectxhalf1 = (int)Math.floor(rectSize.x/2F);
-		int rectxhalf2 = (int)Math.ceil(rectSize.x/2F);
-		int rectyhalf1 = (int)Math.floor(rectSize.y/2F);
-		int rectyhalf2 = (int)Math.ceil(rectSize.y/2F);
-		
-		
 		// A
-		drawTexturedModalRect(
-				pos.x + offset.x,
-				pos.y + offset.y,
-				imgOffset.x,
-				imgOffset.y,
-				rectxhalf1,
-				rectyhalf1);
-		
+		drawTexturedModalRect(pos.x + offset.x, pos.y + offset.y, imgOffset.x, imgOffset.y, rxh1, ryh1);
+
 		// B
-		drawTexturedModalRect(
-				pos.x + offset.x + rectxhalf1,
-				pos.y + offset.y,
-				imgOffset.x + imageSize.x - rectxhalf2,
-				imgOffset.y,
-				rectxhalf2,
-				rectyhalf1);
-		
-		//left bottom wide
-		drawTexturedModalRect(
-				pos.x + offset.x,
-				pos.y + offset.y + rectyhalf1,
-				imgOffset.x,
-				imgOffset.y + imageSize.y - rectyhalf2,
-				rectxhalf1,
-				rectyhalf2);
-		
-		//right bottom square
-		drawTexturedModalRect(
-				pos.x + offset.x + rectxhalf1,
-				pos.y + offset.y + rectyhalf1,
-				imgOffset.x + imageSize.x - rectxhalf2,
-				imgOffset.y + imageSize.y - rectyhalf2,
-				rectxhalf2,
-				rectyhalf2);
-		
-		// @formatter:on
+		drawTexturedModalRect(pos.x + offset.x + rxh1, pos.y + offset.y, imgOffset.x + imgSize.x - rxh2, imgOffset.y, rxh2, ryh1);
+
+		// left bottom wide
+		drawTexturedModalRect(pos.x + offset.x, pos.y + offset.y + ryh1, imgOffset.x, imgOffset.y + imgSize.y - ryh2, rxh1, ryh2);
+
+		// right bottom square
+		drawTexturedModalRect(pos.x + offset.x + rxh1, pos.y + offset.y + ryh1, imgOffset.x + imgSize.x - rxh2, imgOffset.y + imgSize.y
+				- ryh2, rxh2, ryh2);
+
+	}
+
+	/**
+	 * Render texture using 9patch-like scaling method.<br>
+	 * 
+	 * @param gui the gui being drawed on
+	 * @param startPos offset relative to parent top left
+	 * @param texture texture to render (filename)
+	 * @param rectSize rectangle size
+	 * @param imgOffset offset within the texture image (from top left)
+	 * @param imgSize size of the whole "scalable" region in texture file (eg. the whole huge "button" field)
+	 */
+	protected static void renderTextureSliced_static(Gui gui, PC_CoordI startPos, String texture, PC_CoordI rectSize, PC_CoordI imgOffset,
+			PC_CoordI imgSize) {
+		GL11.glBindTexture(GL11.GL_TEXTURE_2D, mc.renderEngine.getTexture(texture));
+		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
+
+		int rxh1 = (int) Math.floor(rectSize.x / 2F);
+		int rxh2 = (int) Math.ceil(rectSize.x / 2F);
+		int ryh1 = (int) Math.floor(rectSize.y / 2F);
+		int ryh2 = (int) Math.ceil(rectSize.y / 2F);
+
+		// A
+		gui.drawTexturedModalRect(startPos.x, startPos.y, imgOffset.x, imgOffset.y, rxh1, ryh1);
+
+		// B
+		gui.drawTexturedModalRect(startPos.x + rxh1, startPos.y, imgOffset.x + imgSize.x - rxh2, imgOffset.y, rxh2, ryh1);
+
+		// left bottom wide
+		gui.drawTexturedModalRect(startPos.x, startPos.y + ryh1, imgOffset.x, imgOffset.y + imgSize.y - ryh2, rxh1, ryh2);
+
+		// right bottom square
+		gui.drawTexturedModalRect(startPos.x + rxh1, startPos.y + ryh1, imgOffset.x + imgSize.x - rxh2, imgOffset.y + imgSize.y - ryh2,
+				rxh2, ryh2);
+
 	}
 
 
 	/**
-	 * is mouse over widget?
+	 * Check if mouse is over widget.<br>
+	 * The given coordinate is relative to widget's top left corner.
 	 * 
 	 * @param mousePos mouse position
 	 * @return is over
 	 */
 	public abstract boolean mouseOver(PC_CoordI mousePos);
 
+	/**
+	 * Mouse clicked on widget.
+	 * 
+	 * @param mousePos mouse position
+	 * @param key mouse button index, -1 = mouse up.
+	 * @return event accepted
+	 */
 	public abstract boolean mouseClick(PC_CoordI mousePos, int key);
 
+	/**
+	 * On mouse moved. Last focused widget gets mouse move events.
+	 * @param mousePos current mouse position.
+	 */
 	public abstract void mouseMove(PC_CoordI mousePos);
 
 	/**
@@ -738,15 +735,5 @@ public abstract class PC_GresWidget extends Gui {
 	 * @return true if key was valid and was used.
 	 */
 	public abstract boolean keyTyped(char c, int key);
-
-	/**
-	 * Draw point on screen
-	 * 
-	 * @param point the point pos
-	 * @param c color
-	 */
-	protected void drawPoint(PC_CoordI point, int c) {
-		drawHorizontalLine(point.x, point.x, point.y, c);
-	}
 
 }

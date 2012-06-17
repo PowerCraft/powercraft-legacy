@@ -1,7 +1,18 @@
 package net.minecraft.src;
 
+/**
+ * Resizable GUI plain text label
+ * 
+ * @author XOR19, Rapus95, MightyPork
+ * @copy (c) 2012
+ *
+ */
 public class PC_GresLabel extends PC_GresWidget {
 
+	/**
+	 * Text label
+	 * @param label text
+	 */
 	public PC_GresLabel(String label){
 		super(label);
 		canAddWidget = false;
@@ -9,8 +20,7 @@ public class PC_GresLabel extends PC_GresWidget {
 	
 	@Override
 	public PC_CoordI calcSize() {
-		FontRenderer fontRenderer = getFontRenderer();
-		size.setTo(fontRenderer.getStringWidth(text), fontRenderer.FONT_HEIGHT);
+		size.setTo(getStringWidth(text), getLineHeight());
 		if(size.x < minSize.x) size.x = minSize.x;
 		return size.copy();
 	}
