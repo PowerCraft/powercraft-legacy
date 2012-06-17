@@ -82,7 +82,7 @@ public class PCma_GuiReplacer implements PC_IGresBase {
 		keywordlist.add(new Keyword("then", 0xff00ff00));
 		keywordlist.add(new Keyword("else", 0xff00ff00));
 		keywordlist.add(new Keyword("end", 0xff00ff00));
-		w.add(new PC_GresMultiTextEdit("", 10, 40, keywordlist));
+		w.add(new PC_GresMultiTextEdit("", 10, 60, keywordlist));
 		
 		gui.add(w);
 		w.calcChildPositions();
