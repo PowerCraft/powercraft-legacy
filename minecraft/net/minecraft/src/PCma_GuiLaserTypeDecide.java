@@ -1,17 +1,18 @@
 package net.minecraft.src;
 
-import java.util.LinkedHashMap;
+import net.minecraft.src.PC_GresWidget.PC_GresAlign;
 
-import org.lwjgl.opengl.GL11;
 
 /**
- * GUI where player decides about Laser Subtype
+ * Gui where user decides what laser type he wants. They share the same item.
  * 
  * @author MightyPork
  * @copy (c) 2012
- * 
+ *
  */
-public class PCma_GuiLaserTypeDecide extends GuiScreen {
+public class PCma_GuiLaserTypeDecide implements PC_IGresBase {
+	
+
 	private PCma_TileEntityLaser laser;
 
 	/**
@@ -22,89 +23,52 @@ public class PCma_GuiLaserTypeDecide extends GuiScreen {
 	}
 
 	@Override
-	public void updateScreen() {}
+	public void initGui(PC_IGresGui gui) {
 
+		//window
+		PC_GresWindow w = new PC_GresWindow(PC_Lang.tr("pc.gui.laserTypeDecide.title"));
+		w.setAlignH(PC_GresAlign.CENTER);
+		PC_GresWidget hg;
+		
+		// buttons
+		hg = new PC_GresLayoutH().setAlignH(PC_GresAlign.CENTER);
+		hg.add(new PC_GresButton(PC_Lang.tr("pc.gui.laserTypeDecide.sensor")).setId(0).setMinWidth(70));
+		hg.add(new PC_GresButton(PC_Lang.tr("pc.gui.laserTypeDecide.redstoneSender")).setId(1).setMinWidth(70));
+		hg.add(new PC_GresButton(PC_Lang.tr("pc.gui.laserTypeDecide.redstoneReceiver")).setId(2).setMinWidth(70));
+		w.add(hg);
 
-	@Override
-	public void initGui() {
-		controlList.clear();
-		LinkedHashMap<Integer, String> btns = new LinkedHashMap<Integer, String>();
-		btns.put(0, "pc.gui.laserTypeDecide.sensor");
-		btns.put(1, "pc.gui.laserTypeDecide.redstoneSender");
-		btns.put(2, "pc.gui.laserTypeDecide.redstoneReceiver");
-		PC_GuiButtonAligner.alignToCenter(controlList, btns, 70, 3, height / 2 + 50 - 34, width / 2);
+		gui.add(w);
+
 	}
 
 	@Override
-	public void onGuiClosed() {}
+	public void onGuiClosed(PC_IGresGui gui) {}
 
 	@Override
-	protected void actionPerformed(GuiButton guibutton) {
-		if (!guibutton.enabled) { return; }
+	public void actionPerformed(PC_GresWidget widget, PC_IGresGui gui) {
 
-		switch (guibutton.id) {
-			case 0:
-				laser.setType(PCma_LaserType.SENSOR);
-				break;
-			case 1:
-				laser.setType(PCma_LaserType.RS_SEND);
-				break;
-			case 2:
-				laser.setType(PCma_LaserType.RS_RECEIVE);
-				break;
+		if (widget.getId() == 0) {
+			laser.setType(PCma_LaserType.SENSOR);
+			gui.close();
+			
+		} else if (widget.getId() == 1) {	
+			laser.setType(PCma_LaserType.RS_SEND);
+			gui.close();	
+			
+		} else if (widget.getId() == 2) {
+			laser.setType(PCma_LaserType.RS_RECEIVE);
+			gui.close();	
+			
 		}
 
-		mc.displayGuiScreen(null);
-		mc.setIngameFocus();
-
 	}
 
 	@Override
-	public boolean doesGuiPauseGame() {
-		return false;
+	public void onEscapePressed(PC_IGresGui gui) {
 	}
 
 	@Override
-	protected void keyTyped(char c, int i) {}
-
-	@Override
-	protected void mouseClicked(int i, int j, int k) {
-		super.mouseClicked(i, j, k);
-	}
-
-	@Override
-	public void drawScreen(int i, int j, float f) {
-		drawDefaultBackground();
-
-		drawGuiDecideBackgroundLayer(f);
-
-		GL11.glPushMatrix();
-
-		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-		GL11.glDisable(32826 /* GL_RESCALE_NORMAL_EXT */);
-		RenderHelper.disableStandardItemLighting();
-		GL11.glDisable(2896 /* GL_LIGHTING */);
-		GL11.glDisable(2929 /* GL_DEPTH_TEST */);
-
-
-		String title = PC_Lang.tr("pc.gui.laserTypeDecide.title");
-		fontRenderer.drawString(title, (width - fontRenderer.getStringWidth(title)) / 2, (height / 2 - 50) + 20, 0x000000);
-
-		GL11.glPopMatrix();
-
-		super.drawScreen(i, j, f);
-
-		GL11.glEnable(2896 /* GL_LIGHTING */);
-		GL11.glEnable(2929 /* GL_DEPTH_TEST */);
-	}
-
-	private void drawGuiDecideBackgroundLayer(float f) {
-		int i = mc.renderEngine.getTexture("/PowerCraft/core/dialog-small.png");
-		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-		mc.renderEngine.bindTexture(i);
-		int j = (width - 100) / 2;
-		int k = (height - 50) / 2;
-		drawTexturedModalRect(j - 100 + 30, k - 50 + 30 + 5, 0, 0, 240, 100);
+	public void onReturnPressed(PC_IGresGui gui) {		
 	}
 
 }
