@@ -17,8 +17,9 @@ public class PClo_GuiDelayer implements PC_IGresBase {
 	private boolean error = false;
 	private String errMsg = "";
 
-	private boolean delayer_type;
-	private static final boolean FIFO = true, HOLD = false;
+	private int delayer_type;
+	public static final int FIFO = 1;
+	public static final int HOLD = 0;
 
 	@SuppressWarnings("unused")
 	private PC_GresWidget buttonOK, buttonCancel;
@@ -28,12 +29,12 @@ public class PClo_GuiDelayer implements PC_IGresBase {
 
 	/**
 	 * @param tep Gate tile entity
-	 * @param fifo is the delayer of type FIFO (buffered)?
+	 * @param type 0 = HOLD, 1 = FIFO
 	 */
-	public PClo_GuiDelayer(PClo_TileEntityGate tep, boolean fifo) {
+	public PClo_GuiDelayer(PClo_TileEntityGate tep, int type) {
 		gateTE = tep;
-		ticks = fifo ? gateTE.getDelayBufferLength() : gateTE.repeaterGetHoldTime();
-		delayer_type = fifo;
+		ticks = type == FIFO ? gateTE.getDelayBufferLength() : gateTE.repeaterGetHoldTime();
+		delayer_type = type;
 	}
 
 	@Override
@@ -136,7 +137,11 @@ public class PClo_GuiDelayer implements PC_IGresBase {
 			String conv = "";
 			conv += "= " + ticks + " " + PC_Lang.tr("pc.gui.gate.delayer.ticks");
 			conv += "\n";
-			if(ticks >= 60*20) conv += "= "+PC_Utils.formatTimeTicks(ticks);
+			if(ticks >= 60*20){
+				conv += "= "+PC_Utils.formatTimeTicks(ticks);
+			}else{
+				conv += " ";
+			}
 			txConverted.setText(conv);
 
 		}
