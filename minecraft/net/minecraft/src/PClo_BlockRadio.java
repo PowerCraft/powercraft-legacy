@@ -86,10 +86,10 @@ public class PClo_BlockRadio extends BlockContainer implements PC_IBlockType {
 			}
 		}
 
-		boolean istx = getTE(world, x, y, z).isTransmitter();
+		int rtype = getTE(world, x, y, z).isTransmitter()?PClo_GuiRadioChannel.TRANSMITTER:PClo_GuiRadioChannel.RECEIVER;
 		String channel = getTE(world, x, y, z).getChannel();
 
-		ModLoader.openGUI(entityplayer, new PClo_GuiRadioChannel(entityplayer.dimension, new PC_CoordI(x, y, z), channel, istx));
+		PC_Utils.openGres(entityplayer, new PClo_GuiRadioChannel(entityplayer.dimension, new PC_CoordI(x, y, z), channel, rtype));
 
 		return true;
 	}

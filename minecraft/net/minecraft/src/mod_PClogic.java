@@ -326,6 +326,7 @@ public class mod_PClogic extends PC_Module {
 		map.put("pc.gui.pulsar.errDelay", "Bad delay time!");
 		map.put("pc.gui.pulsar.errHold", "Bad hold time!");
 		map.put("pc.gui.radio.channel", "Channel:");
+		map.put("pc.gui.radio.errChannel", "Invalid channel name.");
 		map.put("pc.pulsar.clickMsg", "Period %s ticks (%s s)");
 		map.put("pc.pulsar.clickMsgTime", "Period %s ticks (%s s), remains %s");
 
