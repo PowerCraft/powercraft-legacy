@@ -84,13 +84,13 @@ public class PCma_GuiReplacer implements PC_IGresBase {
 			for(int j=0; j<3; j++)
 				slot[i][j] = new Slot(player, i+j*9+9, 0, 0);
 		
-		w.add(new PC_GresItemStack(slot));
+		w.add(new PC_GresInventory(slot));
 		
 		slot = new Slot[9][1];
 		for(int i=0; i<9; i++)
 			slot[i][0] = new Slot(player, i, 0, 0);
 		
-		w.add(new PC_GresItemStack(slot));
+		w.add(new PC_GresInventory(slot));
 		
 		gui.add(w);
 		
