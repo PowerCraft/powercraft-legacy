@@ -515,6 +515,16 @@ public class PC_GresMultiTextEdit extends PC_GresWidget {
 
 	@Override
 	public void mouseWheel(int i) {
+	if(i>0){
+		mouseSelectEnd.setTo(lineUp());
+		if (!(Keyboard.isKeyDown(Keyboard.KEY_RSHIFT) || Keyboard.isKeyDown(Keyboard.KEY_LSHIFT))) mouseSelectStart.setTo(mouseSelectEnd);
+		setScrollToCursor();
+	}
+	if(i<0){
+		mouseSelectEnd.setTo(lineDown());
+		if (!(Keyboard.isKeyDown(Keyboard.KEY_RSHIFT) || Keyboard.isKeyDown(Keyboard.KEY_LSHIFT))) mouseSelectStart.setTo(mouseSelectEnd);
+		setScrollToCursor();
+	}
 	}
 	
 }
