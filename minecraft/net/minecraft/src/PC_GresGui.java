@@ -50,6 +50,7 @@ public class PC_GresGui extends GuiScreen implements PC_IGresGui {
 	
 	@Override
 	public void initGui() {
+		Keyboard.enableRepeatEvents(true);
 		child = new PC_GresLayoutV();
 		child.setFontRenderer(fontRenderer);
 		child.setSize(width, height);
@@ -58,6 +59,7 @@ public class PC_GresGui extends GuiScreen implements PC_IGresGui {
 
 	@Override
 	public void onGuiClosed() {
+		Keyboard.enableRepeatEvents(false);
 		gui.onGuiClosed(this);
 	}
 	
