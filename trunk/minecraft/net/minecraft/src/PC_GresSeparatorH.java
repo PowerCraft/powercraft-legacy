@@ -85,4 +85,7 @@ public class PC_GresSeparatorH extends PC_GresWidget {
 	public void mouseWheel(int i) {
 	}
 	
+	@Override
+	public void addedToWidget() {
+	}
 }

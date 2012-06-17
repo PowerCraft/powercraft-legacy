@@ -18,9 +18,11 @@ public class PCma_GuiReplacer implements PC_IGresBase {
 
 	private boolean valid;
 
+	IInventory player;
 
-	public PCma_GuiReplacer(PCma_TileEntityReplacer teReplacer) {
+	public PCma_GuiReplacer(PCma_TileEntityReplacer teReplacer, IInventory player) {
 		this.teReplacer = teReplacer;
+		this.player = player;
 	}
 
 	@Override
@@ -77,14 +79,21 @@ public class PCma_GuiReplacer implements PC_IGresBase {
 		hg.add(button[1] = new PC_GresButton(PC_Lang.tr("pc.gui.ok")));
 		w.add(hg);
 
-		ArrayList<Keyword> keywordlist = new ArrayList<Keyword>();
-		keywordlist.add(new Keyword("if", 0xff00ff00));
-		keywordlist.add(new Keyword("then", 0xff00ff00));
-		keywordlist.add(new Keyword("else", 0xff00ff00));
-		keywordlist.add(new Keyword("end", 0xff00ff00));
-		w.add(new PC_GresMultiTextEdit("", 10, 60, keywordlist));
+		Slot slot[][] = new Slot[9][3];
+		for(int i=0; i<9; i++)
+			for(int j=0; j<3; j++)
+				slot[i][j] = new Slot(player, i+j*9+9, 0, 0);
+		
+		w.add(new PC_GresItemStack(slot));
+		
+		slot = new Slot[9][1];
+		for(int i=0; i<9; i++)
+			slot[i][0] = new Slot(player, i, 0, 0);
+		
+		w.add(new PC_GresItemStack(slot));
 		
 		gui.add(w);
+		
 		w.calcChildPositions();
 	}
 

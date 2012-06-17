@@ -101,4 +101,8 @@ public class PC_GresButton extends PC_GresWidget {
 	public void mouseWheel(int i) {
 	}
 
+	@Override
+	public void addedToWidget() {
+	}
+
 }

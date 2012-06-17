@@ -394,4 +394,7 @@ public class PC_GresTextEdit extends PC_GresWidget {
 			}
 	}
 
+	@Override
+	public void addedToWidget() {
+	}
 }

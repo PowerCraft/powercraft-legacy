@@ -116,4 +116,7 @@ public class PC_GresLayoutH extends PC_GresWidget {
 	public void mouseWheel(int i) {
 	}
 	
+	@Override
+	public void addedToWidget() {
+	}
 }

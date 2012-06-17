@@ -104,4 +104,7 @@ public class PC_GresLink extends PC_GresWidget {
 	public void mouseWheel(int i) {
 	}
 	
+	@Override
+	public void addedToWidget() {
+	}
 }

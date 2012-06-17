@@ -11,11 +11,12 @@ import org.lwjgl.input.Mouse;
  * @copy (c) 2012
  *
  */
-public class PC_GresGui extends GuiScreen implements PC_IGresGui {
+public class PC_GresGui extends GuiContainer implements PC_IGresGui {
 
 	private PC_IGresBase gui;
 	private PC_GresLayoutV child;
 	private PC_GresWidget lastFocus;
+	private PC_GresContainerManager containerManager;
 	private boolean pauseGame=false;
 	
 	/**
@@ -23,7 +24,9 @@ public class PC_GresGui extends GuiScreen implements PC_IGresGui {
 	 * @param gui the gui
 	 */
 	public PC_GresGui(PC_IGresBase gui){
+		super(new PC_GresContainerManager());
 		this.gui = gui;
+		containerManager = (PC_GresContainerManager)inventorySlots;
 	}
 	
 	@Override
@@ -54,8 +57,12 @@ public class PC_GresGui extends GuiScreen implements PC_IGresGui {
 		Keyboard.enableRepeatEvents(true);
 		child = new PC_GresLayoutV();
 		child.setFontRenderer(fontRenderer);
+		child.setContainerManager(containerManager);
 		child.setSize(width, height);
 		gui.initGui(this);
+		super.initGui();
+		guiLeft=0;
+		guiTop=0;
 	}
 
 	@Override
@@ -76,7 +83,8 @@ public class PC_GresGui extends GuiScreen implements PC_IGresGui {
 			}
 		}
 		
-		
+		if(!consumed)
+			super.keyTyped(c, i);
 		if(!consumed && i == Keyboard.KEY_ESCAPE){
 			gui.onEscapePressed(this);
 		}else if(!consumed && i == Keyboard.KEY_RETURN){
@@ -132,6 +140,7 @@ public class PC_GresGui extends GuiScreen implements PC_IGresGui {
 	@Override
 	protected void mouseMovedOrUp(int i, int j, int k) {
 		super.mouseMovedOrUp(i, j, k);
+		super.mouseMovedOrUp(i, j, k);
 		if(k!=-1)
 			mouseUp(i, j, k);
 		else
@@ -142,12 +151,11 @@ public class PC_GresGui extends GuiScreen implements PC_IGresGui {
 	public boolean doesGuiPauseGame() {
 		return pauseGame;
 	}
-	
+
 	@Override
-	public void drawScreen(int i, int j, float f) {
+	protected void drawGuiContainerBackgroundLayer(float f, int i, int j) {
 		drawDefaultBackground();
 		child.updateRenderer(new PC_CoordI(0, 0));
-		super.drawScreen(i, j, f);
 	}
 	
 }

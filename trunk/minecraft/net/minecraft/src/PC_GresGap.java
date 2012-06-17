@@ -61,5 +61,8 @@ public class PC_GresGap extends PC_GresWidget {
 	@Override
 	public void mouseWheel(int i) {
 	}
-
+	
+	@Override
+	public void addedToWidget() {
+	}
 }

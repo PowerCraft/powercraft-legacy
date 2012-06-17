@@ -306,4 +306,7 @@ public class PC_GresProgressBar extends PC_GresWidget {
 	public void mouseWheel(int i) {
 	}
 	
+	@Override
+	public void addedToWidget() {
+	}
 }

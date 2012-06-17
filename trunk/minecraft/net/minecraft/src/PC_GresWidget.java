@@ -96,10 +96,11 @@ public abstract class PC_GresWidget extends Gui {
 	/** Vertical Align */
 	protected PC_GresAlign alignV = PC_GresAlign.CENTER;
 
+	/** Container Manager */
+	protected PC_GresContainerManager containerManager=null;
+	
 	/** Widget ID */
 	public int id = -1;
-
-
 
 	/**
 	 * A widget
@@ -185,6 +186,8 @@ public abstract class PC_GresWidget extends Gui {
 	 */
 	public PC_GresWidget setFontRenderer(FontRenderer fontRenderer) {
 		this.fontRenderer = fontRenderer;
+		for(PC_GresWidget w:childs)
+			w.setFontRenderer(fontRenderer);
 		return this;
 	}
 
@@ -326,6 +329,28 @@ public abstract class PC_GresWidget extends Gui {
 	public abstract PC_CoordI calcSize();
 
 	/**
+	 * Get the Container Manager
+	 * 
+	 * @return the Container Manager
+	 */
+	public PC_GresContainerManager getContainerManager(){
+		return containerManager;
+	}
+	
+	/**
+	 * Set the Container Manager
+	 * 
+	 * @param containerManager the new Container Manager
+	 * @return this
+	 */
+	public PC_GresWidget setContainerManager(PC_GresContainerManager containerManager){
+		this.containerManager = containerManager;
+		for(PC_GresWidget w:childs)
+			w.setContainerManager(containerManager);
+		return this;
+	}
+	
+	/**
 	 * Get widget size
 	 * 
 	 * @return {width, height}
@@ -446,7 +471,9 @@ public abstract class PC_GresWidget extends Gui {
 		if (!canAddWidget) { return null; }
 		newwidget.parent = this;
 		newwidget.setFontRenderer(this.fontRenderer);
+		newwidget.setContainerManager(containerManager);
 		childs.add(newwidget);
+		newwidget.callAddedToWidget();
 		calcChildPositions();
 		return this;
 	}
@@ -794,4 +821,20 @@ public abstract class PC_GresWidget extends Gui {
 	 */
 	public abstract boolean keyTyped(char c, int key);
 
+	/**
+	 * Called when Widget added to another widget
+	 * 
+	 */
+	public void callAddedToWidget(){
+		addedToWidget();
+		for(PC_GresWidget w:childs)
+			w.callAddedToWidget();
+	}
+	
+	/**
+	 * Called when Widget added to another widget
+	 * 
+	 */
+	public abstract void addedToWidget();
+	
 }
