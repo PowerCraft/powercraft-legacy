@@ -1,31 +1,53 @@
 package net.minecraft.src;
 
 /**
- * GUI gap with fixed size
+ * Resizable GUI vertical separation line
  * 
  * @author MightyPork
  * @copy (c) 2012
  *
  */
-public class PC_GresGap extends PC_GresWidget {
+public class PC_GresSeparatorV extends PC_GresWidget {
+	/** Line color (0xrrggbb) */
+	int lineColor = 0x555555;
 
 	/**
-	 * gap
-	 * @param width min width
+	 * vertical separator
+	 * @param width width
 	 * @param height min height
 	 */
-	public PC_GresGap(int width, int height){
+	public PC_GresSeparatorV(int width, int height) {
 		super(width, height);
 		canAddWidget = false;
+		setMinWidth(3);
 	}
-	
+
+	/**
+	 * @return the line color
+	 */
+	public int getLineColor() {
+		return lineColor;
+	}
+
+	/**
+	 * Set line color.
+	 * 
+	 * @param lineColor the line color to set
+	 */
+	public void setLineColor(int lineColor) {
+		this.lineColor = lineColor;
+	}
+
+
 	@Override
 	public PC_CoordI calcSize() {
 		return minSize.copy();
 	}
 
 	@Override
-	protected void render(PC_CoordI offsetPos) {		
+	protected void render(PC_CoordI off) {
+
+		drawRect(off.x + size.x / 2 + pos.x, off.y + pos.y, off.x + size.x / 2 + pos.x, off.y + size.y + pos.y, lineColor | 0xff000000);
 	}
 
 	@Override
@@ -45,7 +67,7 @@ public class PC_GresGap extends PC_GresWidget {
 
 	@Override
 	public void calcChildPositions() {
-		
+
 	}
 
 	@Override

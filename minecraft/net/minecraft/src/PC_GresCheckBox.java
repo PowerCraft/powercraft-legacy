@@ -2,13 +2,24 @@ package net.minecraft.src;
 
 import org.lwjgl.opengl.GL11;
 
+/**
+ * Resizable GUI checkbox
+ * 
+ * @author XOR19, MightyPork
+ * @copy (c) 2012
+ *
+ */
 public class PC_GresCheckBox extends PC_GresWidget {
 
 	private static final int WIDTH = 11;
 	private boolean checked = false;
 	
-	public PC_GresCheckBox(String title){
-		super(title);
+	/**
+	 * Resizable GUI checkbox
+	 * @param label checkbox label
+	 */
+	public PC_GresCheckBox(String label){
+		super(label);
 		canAddWidget = false;
 		color[textColorEnabled] = 0x000000;
 		color[textColorShadowEnabled] = 0xAAAAAA;
@@ -16,10 +27,18 @@ public class PC_GresCheckBox extends PC_GresWidget {
 		color[textColorShadowDisabled] = 0xAAAAAA;
 	}
 	
+	/**
+	 * @return is checkbox checked?
+	 */
 	public boolean isChecked() {
 		return checked;
 	}
 
+	/**
+	 * Set checked state
+	 * @param state checked
+	 * @return this
+	 */
 	public PC_GresCheckBox check(boolean state) {
 		checked = state;
 		return this;
@@ -27,8 +46,8 @@ public class PC_GresCheckBox extends PC_GresWidget {
 	
 	@Override
 	public PC_CoordI calcSize() {
-		FontRenderer fontRenderer = getFontRenderer();
-		size.setTo(fontRenderer.getStringWidth(text),fontRenderer.FONT_HEIGHT).add(WIDTH+3,0);
+		
+		size.setTo(getStringWidth(text),getLineHeight()).add(WIDTH+3,0);
 
 		if(size.y<WIDTH){
 			size.y = WIDTH;

@@ -314,11 +314,9 @@ public class PCmo_GuiMinerConsole extends GuiScreen {
 	}
 
 	protected void drawGuiRadioBackgroundLayer(float f) {
-		int i = mc.renderEngine.getTexture(mod_PCcore.getImgDir() + "dialog-large.png");
-		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-		mc.renderEngine.bindTexture(i);
-		int j = (width) / 2;
-		int k = (height) / 2;
-		drawTexturedModalRect(j - 115 - 5, k - 115, 0, 0, 240, 230);
+
+		PC_GresWidget.renderTextureSliced_static(this, new PC_CoordI((width-240)/2, (height-230)/2), mod_PCcore.getImgDir() + "gres/dialog.png",
+				new PC_CoordI(240, 230), new PC_CoordI(0, 0), new PC_CoordI(256, 256));
+
 	}
 }

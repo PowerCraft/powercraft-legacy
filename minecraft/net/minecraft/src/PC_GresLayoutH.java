@@ -1,7 +1,17 @@
 package net.minecraft.src;
 
+/**
+ * Resizable GUI horizontal layout
+ * 
+ * @author XOR19
+ * @copy (c) 2012
+ *
+ */
 public class PC_GresLayoutH extends PC_GresWidget {
 	
+	/**
+	 * horizontal layout
+	 */
 	public PC_GresLayoutH(){
 		super();
 	}

@@ -27,7 +27,7 @@ public class PC_Lang {
 	 * @return translated.
 	 */
 	public static String tr(String identifier) {
-		return StringTranslate.getInstance().translateKey(identifier);
+		return StringTranslate.getInstance().translateKey(identifier).trim();
 	}
 
 	/**

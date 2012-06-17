@@ -1,6 +1,7 @@
 package net.minecraft.src;
 
-import net.minecraft.src.PC_GresWidget.PC_GresAlignH;
+import net.minecraft.src.PC_GresTextEdit.PC_GresInputType;
+import net.minecraft.src.PC_GresWidget.PC_GresAlign;
 import org.lwjgl.input.Keyboard;
 
 
@@ -21,7 +22,7 @@ public class PCma_GuiReplacer implements PC_IGresBase {
 
 	@Override
 	public void initGui(PC_IGresGui gui) {
-		PC_GresWidget w = new PC_GresWindow(225, 50, PC_Lang.tr("pc.gui.blockReplacer.title")).setAlignH(PC_GresAlignH.STRETCH);
+		PC_GresWidget w = new PC_GresWindow(225, 50, PC_Lang.tr("pc.gui.blockReplacer.title")).setAlignH(PC_GresAlign.STRETCH);
 
 		PC_GresWidget hg;
 		PC_GresWidget vg;
@@ -32,21 +33,21 @@ public class PCma_GuiReplacer implements PC_IGresBase {
 
 		hg = new PC_GresLayoutH();
 		hg.add(lblx = new PC_GresLabel("X:"));
-		hg.add(textedit[0] = (PC_GresTextEdit) new PC_GresTextEdit("" + teReplacer.coordOffset[0], 4, 1).setMinWidth(100));
+		hg.add(textedit[0] = (PC_GresTextEdit) new PC_GresTextEdit("" + teReplacer.coordOffset[0], 4, PC_GresInputType.INT).setMinWidth(100));
 		hg.add(new PC_GresButton("-").setId(101).setMinWidth(16));
 		hg.add(new PC_GresButton("+").setId(102).setMinWidth(16));
 		w.add(hg);
 
 		hg = new PC_GresLayoutH();
 		hg.add(lbly = new PC_GresLabel("Y:"));
-		hg.add(textedit[1] = (PC_GresTextEdit) new PC_GresTextEdit("" + teReplacer.coordOffset[1], 4, 1).setMinWidth(100));
+		hg.add(textedit[1] = (PC_GresTextEdit) new PC_GresTextEdit("" + teReplacer.coordOffset[1], 4, PC_GresInputType.INT).setMinWidth(100));
 		hg.add(new PC_GresButton("-").setId(201).setMinWidth(16));
 		hg.add(new PC_GresButton("+").setId(202).setMinWidth(16));
 		w.add(hg);
 
 		hg = new PC_GresLayoutH();
 		hg.add(lblz = new PC_GresLabel("Z:"));
-		hg.add(textedit[2] = (PC_GresTextEdit) new PC_GresTextEdit("" + teReplacer.coordOffset[2], 4, 1).setMinWidth(100));
+		hg.add(textedit[2] = (PC_GresTextEdit) new PC_GresTextEdit("" + teReplacer.coordOffset[2], 4, PC_GresInputType.INT).setMinWidth(100));
 		hg.add(new PC_GresButton("-").setId(301).setMinWidth(16));
 		hg.add(new PC_GresButton("+").setId(302).setMinWidth(16));
 		w.add(hg);
@@ -62,13 +63,13 @@ public class PCma_GuiReplacer implements PC_IGresBase {
 
 		w.add(new PC_GresGap(0, 6));
 
-		hg = new PC_GresLayoutH().setAlignH(PC_GresAlignH.CENTER);
+		hg = new PC_GresLayoutH().setAlignH(PC_GresAlign.CENTER);
 		hg.add(errorLabel = new PC_GresLabel(""));
 		errorLabel.setColor(PC_GresWidget.textColorEnabled, 0x990000);
 		w.add(hg);
 
 
-		hg = new PC_GresLayoutH().setAlignH(PC_GresAlignH.CENTER);
+		hg = new PC_GresLayoutH().setAlignH(PC_GresAlign.CENTER);
 		hg.add(button[0] = new PC_GresButton(PC_Lang.tr("pc.gui.cancel")));
 		hg.add(button[1] = new PC_GresButton(PC_Lang.tr("pc.gui.ok")));
 		w.add(hg);

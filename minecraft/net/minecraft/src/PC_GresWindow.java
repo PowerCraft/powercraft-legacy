@@ -1,12 +1,10 @@
 package net.minecraft.src;
 
-import org.lwjgl.opengl.GL11;
-
 /**
  * 
  * Window for GUI
  * 
- * @authors XOR19 & Rapus95
+ * @authors XOR19, Rapus95, MightyPork
  * @copy (c) 2012
  * 
  */
@@ -83,7 +81,7 @@ public class PC_GresWindow extends PC_GresWidget {
 			if (minmaxxSize < cminSize.x) minmaxxSize = cminSize.x;
 		}
 
-		if (alignV == PC_GresAlignV.STRETCH) {
+		if (alignV == PC_GresAlign.STRETCH) {
 			maxxSize = minmaxxSize;
 			ySize = minySize;
 			for (int i = 0; i < childNum; i++) {

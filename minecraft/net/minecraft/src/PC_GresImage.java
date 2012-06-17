@@ -2,6 +2,13 @@ package net.minecraft.src;
 
 import org.lwjgl.opengl.GL11;
 
+/**
+ * Resizable GUI image widget
+ * 
+ * @author MightyPork
+ * @copy (c) 2012
+ *
+ */
 public class PC_GresImage extends PC_GresWidget {
 	
 	private PC_CoordI imgSize = new PC_CoordI(0,0);
@@ -19,6 +26,7 @@ public class PC_GresImage extends PC_GresWidget {
 	public PC_GresImage(String texture, int offsetX, int offsetY, int imgW, int imgH){
 		super("");
 		imgSize.setTo(imgW,imgH);
+		size.setTo(imgSize);
 		imgOffset.setTo(offsetX,offsetY);
 		canAddWidget = false;
 		this.texture = texture;
@@ -26,7 +34,6 @@ public class PC_GresImage extends PC_GresWidget {
 	
 	@Override
 	public PC_CoordI calcSize() {
-		size.setTo(imgSize);
 		return size.copy();
 	}
 

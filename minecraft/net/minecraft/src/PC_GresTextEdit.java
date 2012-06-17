@@ -2,16 +2,44 @@ package net.minecraft.src;
 
 import org.lwjgl.input.Keyboard;
 
+/**
+ * Text editor
+ * 
+ * @author XOR19
+ * @copy (c) 2012
+ *
+ */
 public class PC_GresTextEdit extends PC_GresWidget {
 
-	public static final int WORD = 0, NUMBER = 1, UNSIGNED_NUMBER = 2;
+	/**
+	 * Input type for Text Edit field.
+	 * 
+	 * @author MightyPork
+	 * @copy (c) 2012
+	 *
+	 */
+	public enum PC_GresInputType{
+		/** accept all characters */
+		TEXT,
+		/** accept signed number */
+		INT,
+		/** accept unsigned number */
+		UNSIGNED_INT,
+		/** accept signed number with dot */
+		SIGNED_FLOAT;
+	}
 
 	private int maxChars;
 	private int mouseSelectStart = 0;
 	private int mouseSelectEnd = 0;
 	private boolean mousePressed = false;
-	private int type = WORD;
+	private PC_GresInputType type = PC_GresInputType.TEXT;
 
+	/**
+	 * Text Edit
+	 * @param label text
+	 * @param chars max number of characters
+	 */
 	public PC_GresTextEdit(String label, int chars) {
 		super((chars + 1) * 10, PC_Utils.mc().fontRenderer.FONT_HEIGHT + 12, label);
 		maxChars = chars;
@@ -22,7 +50,13 @@ public class PC_GresTextEdit extends PC_GresWidget {
 		color[textColorShadowDisabled] = 0xff383838;
 	}
 
-	public PC_GresTextEdit(String label, int chars, int type) {
+	/**
+	 * Text Edit
+	 * @param label text
+	 * @param chars max no. of characters
+	 * @param type input type allowed.
+	 */
+	public PC_GresTextEdit(String label, int chars, PC_GresInputType type) {
 		super((chars + 1) * 10, PC_Utils.mc().fontRenderer.FONT_HEIGHT + 12, label);
 		maxChars = chars;
 		canAddWidget = false;
@@ -64,18 +98,18 @@ public class PC_GresTextEdit extends PC_GresWidget {
 				s = mouseSelectEnd;
 			}
 
-			drawRect(offsetPos.x + pos.x + getStringLength(text.substring(0, s)) + 6, offsetPos.y + pos.y + 4,
-					offsetPos.x + pos.x + getStringLength(text.substring(0, e)) + 6, offsetPos.y + pos.y + size.y - 5, 0xff3399FF);
+			drawRect(offsetPos.x + pos.x + getStringWidth(text.substring(0, s)) + 6, offsetPos.y + pos.y + 4,
+					offsetPos.x + pos.x + getStringWidth(text.substring(0, e)) + 6, offsetPos.y + pos.y + size.y - 5, 0xff3399FF);
 
 		}
 
 		drawString(text, offsetPos.x + pos.x + 6, offsetPos.y + pos.y + (size.y - 8) / 2);
 
 		if (mouseSelectEnd == text.length()) {
-			if (hasFocus && (cursorCounter / 6) % 2 == 0) drawString("_", offsetPos.x + pos.x + getStringLength(text) + 6, offsetPos.y + pos.y
+			if (hasFocus && (cursorCounter / 6) % 2 == 0) drawString("_", offsetPos.x + pos.x + getStringWidth(text) + 6, offsetPos.y + pos.y
 					+ (size.y - 8) / 2);
 		} else if (hasFocus && (cursorCounter / 6) % 2 == 0) drawVerticalLine(
-				offsetPos.x + pos.x + getStringLength(text.substring(0, mouseSelectEnd)) + 5, offsetPos.y + pos.y + 3, offsetPos.y + pos.y + size.y - 5,
+				offsetPos.x + pos.x + getStringWidth(text.substring(0, mouseSelectEnd)) + 5, offsetPos.y + pos.y + 3, offsetPos.y + pos.y + size.y - 5,
 				color[enabled ? textColorEnabled : textColorDisabled]);
 
 	}
@@ -89,7 +123,7 @@ public class PC_GresTextEdit extends PC_GresWidget {
 		int charSize;
 		x -= 6;
 		for (int i = 0; i < text.length(); i++) {
-			charSize = getStringLength("" + text.charAt(i));
+			charSize = getStringWidth("" + text.charAt(i));
 			if (x - charSize / 2 < 0) return i;
 			x -= charSize;
 		}
@@ -179,12 +213,12 @@ public class PC_GresTextEdit extends PC_GresWidget {
 		String s2 = text.substring(e);
 		String ss = "";
 		switch (type) {
-			case UNSIGNED_NUMBER:
+			case UNSIGNED_INT:
 				for (int i = 0; i < stri.length(); i++)
 					if (Character.isDigit(Character.valueOf(stri.charAt(i)))) ss += stri.charAt(i);
 				break;
 				
-			case NUMBER:
+			case INT:
 				if (text.length() > 0) if (text.charAt(0) == '-') if (mouseSelectStart == 0 && mouseSelectEnd == 0) break;
 				for (int i = 0; i < stri.length(); i++) {
 					if (i == 0) if (stri.charAt(0) == '-') if (s == 0) ss += stri.charAt(i);
@@ -244,7 +278,7 @@ public class PC_GresTextEdit extends PC_GresWidget {
 				return true;
 			default:
 				switch (type) {
-					case UNSIGNED_NUMBER:
+					case UNSIGNED_INT:
 						if (Character.isDigit(Character.valueOf(c))){
 							addKey(c);
 							return true;
@@ -252,16 +286,44 @@ public class PC_GresTextEdit extends PC_GresWidget {
 							return false;
 						}
 						
-					case NUMBER:
-						if (text.length() > 0) if (text.charAt(0) == '-') if (mouseSelectStart == 0 && mouseSelectEnd == 0) return true;
+					case INT:
+						//writing before minus
+						if (text.length() > 0 && text.charAt(0) == '-' && mouseSelectStart == 0 && mouseSelectEnd == 0) return true;
+						
 						if (Character.isDigit(Character.valueOf(c))){
 							addKey(c);
 							return true;
-						}else if ((mouseSelectStart == 0 || mouseSelectEnd == 0) && key == Keyboard.KEY_MINUS){
+						}else if ((mouseSelectStart == 0 || mouseSelectEnd == 0) && c == '-'){
 							addKey(c);
 							return true;
 						}
 						return false;
+						
+					case SIGNED_FLOAT:
+						
+						if (c == '.'){
+							if (mouseSelectStart == 0 || mouseSelectEnd == 0) return true;
+							if (text.length() > 0 && (mouseSelectStart == 1 || mouseSelectEnd == 1) && text.charAt(0) == '-') return true;
+							if (text.length() > 0 && text.contains(".")) return true;
+							addKey(c);	
+							return true;
+						}
+						
+						if (text.length() > 0 && text.charAt(0) == '-' && mouseSelectStart == 0 && mouseSelectEnd == 0){
+							return true;
+						}
+						
+						if (Character.isDigit(Character.valueOf(c))){
+							addKey(c);
+							return true;
+						}else if ((mouseSelectStart == 0 || mouseSelectEnd == 0) && c == '-'){
+							addKey(c);
+							return true;
+						}
+						
+						return false;
+						
+					case TEXT:
 					default:
 						if (ChatAllowedCharacters.isAllowedCharacter(c)){
 							addKey(c);

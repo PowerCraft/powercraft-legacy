@@ -1,13 +1,24 @@
 package net.minecraft.src;
 
-import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Set;
-
 import org.lwjgl.opengl.GL11;
 
+/**
+ * Resizable GUI radio button
+ * 
+ * @author XOR19, MightyPork
+ * @copy (c) 2012
+ *
+ */
 public class PC_GresRadioButton extends PC_GresWidget {
 	
+	/**
+	 * Radio Group for Radio Button
+	 * 
+	 * @author MightyPork
+	 * @copy (c) 2012
+	 *
+	 */
 	public static class PC_GresRadioGroup extends HashSet<PC_GresRadioButton>{
 		
 	}
@@ -16,6 +27,11 @@ public class PC_GresRadioButton extends PC_GresWidget {
 	private boolean checked = false;
 	private PC_GresRadioGroup radioGroup;
 
+	/**
+	 * Radio btn
+	 * @param title label
+	 * @param group radio group
+	 */
 	public PC_GresRadioButton(String title, PC_GresRadioGroup group) {
 		super(title);
 		canAddWidget = false;
@@ -28,10 +44,18 @@ public class PC_GresRadioButton extends PC_GresWidget {
 		radioGroup.add(this);
 	}
 
+	/**
+	 * @return is button selected
+	 */
 	public boolean isChecked() {
 		return checked;
 	}
 
+	/**
+	 * Set selected state, if "true", clear all others.
+	 * @param state on/off
+	 * @return this
+	 */
 	public PC_GresRadioButton check(boolean state) {
 		checked = state;
 		
@@ -46,8 +70,8 @@ public class PC_GresRadioButton extends PC_GresWidget {
 
 	@Override
 	public PC_CoordI calcSize() {
-		FontRenderer fontRenderer = getFontRenderer();
-		size.setTo(fontRenderer.getStringWidth(text), fontRenderer.FONT_HEIGHT).add(WIDTH + 3, 0);
+		
+		size.setTo(getStringWidth(text),getLineHeight()).add(WIDTH + 3, 0);
 
 		if (size.y < WIDTH) size.y = WIDTH;
 		return size.copy();
