@@ -316,7 +316,9 @@ public class mod_PClogic extends PC_Module {
 		map.put("pc.radioRemote.desc", "Channel: %s");
 
 		map.put("pc.gui.gate.delay", "Delay (sec)");
-		map.put("pc.gui.gate.invalid", "invalid!");
+		map.put("pc.gui.gate.delayer.errRange", "Delay time out of range.");
+		map.put("pc.gui.gate.delayer.errNumFormat", "Invalid number format.");
+		map.put("pc.gui.gate.delayer.ticks", "ticks");
 		map.put("pc.gui.pulsar.silent", "Silent");
 		map.put("pc.gui.pulsar.delay", "Delay (sec)");
 		map.put("pc.gui.pulsar.hold", "Hold time (sec)");
