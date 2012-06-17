@@ -16,6 +16,8 @@ public class PC_GresLabel extends PC_GresWidget {
 	public PC_GresLabel(String label){
 		super(label);
 		canAddWidget = false;
+
+		alignH = PC_GresAlign.LEFT;
 	}
 	
 	@Override
@@ -27,7 +29,21 @@ public class PC_GresLabel extends PC_GresWidget {
 
 	@Override
 	protected void render(PC_CoordI offsetPos) {
-		drawString(text, offsetPos.x+pos.x, offsetPos.y+pos.y);
+		int wid = getStringWidth(text);
+		int xstart = offsetPos.x+pos.x;
+		
+		switch(alignH){
+			case LEFT:
+				break;
+			case CENTER:
+				xstart = xstart + size.x/2 - wid/2;
+				break;
+			case RIGHT:
+				xstart = xstart + size.x - wid;
+		}
+		
+		drawString(text, xstart, offsetPos.y+pos.y);
+		
 	}
 
 	@Override

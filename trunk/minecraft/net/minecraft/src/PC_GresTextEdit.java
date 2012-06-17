@@ -71,6 +71,8 @@ public class PC_GresTextEdit extends PC_GresWidget {
 
 	@Override
 	public PC_CoordI calcSize() {
+		size.setTo(getMinSize());
+		if(size.x < minSize.x) size.x = minSize.x;
 		return size.copy();
 	}
 
