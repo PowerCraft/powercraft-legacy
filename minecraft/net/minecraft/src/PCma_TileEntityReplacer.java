@@ -5,7 +5,7 @@ public class PCma_TileEntityReplacer extends TileEntity implements IInventory, P
 	public ItemStack buildBlock;
 	public static final int MAXSTACK = 1;
 	public static final int SIZE = 1;
-	public int coordOffset[] = {0, 1, 0};
+	public PC_CoordI coordOffset = new PC_CoordI(0, 1, 0);
 	
 	@Override
 	public boolean canInsertStackTo(int slot, ItemStack stack) {
@@ -68,13 +68,16 @@ public class PCma_TileEntityReplacer extends TileEntity implements IInventory, P
 			NBTTagCompound nbttagcompound1 = (NBTTagCompound) nbttaglist.tagAt(0);
 			buildBlock = ItemStack.loadItemStackFromNBT(nbttagcompound1);
 		}
-		for(int i=0; i<3; i++)
-			coordOffset[i] = nbttagcompound.getInteger("coordOffset["+i+"]");
+		
+		PC_Utils.readWrappedFromNBT(nbttagcompound, "targetPos", coordOffset);
+		
+		if(coordOffset.equals(new PC_CoordI(0,0,0))) coordOffset.setTo(0,99,0);
 	}
 
 	@Override
 	public void writeToNBT(NBTTagCompound nbttagcompound) {
 		super.writeToNBT(nbttagcompound);
+		
 		NBTTagList nbttaglist = new NBTTagList();
 		if (buildBlock != null) {
 			NBTTagCompound nbttagcompound1 = new NBTTagCompound();
@@ -83,8 +86,8 @@ public class PCma_TileEntityReplacer extends TileEntity implements IInventory, P
 		}
 
 		nbttagcompound.setTag("Items", nbttaglist);
-		for(int i=0; i<3; i++)
-			nbttagcompound.setInteger("coordOffset["+i+"]", coordOffset[i]);
+		
+		PC_Utils.writeWrappedToNBT(nbttagcompound, "targetPos", coordOffset);
 	}
 	
 	@Override

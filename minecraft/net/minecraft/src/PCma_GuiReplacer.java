@@ -39,7 +39,7 @@ public class PCma_GuiReplacer implements PC_IGresBase {
 		vg = new PC_GresLayoutV();
 		PC_GresWidget hg1 = new PC_GresLayoutH();
 		hg1 = new PC_GresLayoutH();
-		hg1.add(textedit[0] = (PC_GresTextEdit) new PC_GresTextEdit("" + teReplacer.coordOffset[0], 4, PC_GresInputType.INT));
+		hg1.add(textedit[0] = (PC_GresTextEdit) new PC_GresTextEdit("" + teReplacer.coordOffset.x, 4, PC_GresInputType.INT));
 		vg.add(hg1);
 		hg1 = new PC_GresLayoutH();
 		hg1.add(new PC_GresButton("-").setId(101).setMinWidth(16));
@@ -50,7 +50,7 @@ public class PCma_GuiReplacer implements PC_IGresBase {
 
 		vg = new PC_GresLayoutV();
 		hg1 = new PC_GresLayoutH();
-		hg1.add(textedit[1] = (PC_GresTextEdit) new PC_GresTextEdit("" + teReplacer.coordOffset[1], 4, PC_GresInputType.INT));
+		hg1.add(textedit[1] = (PC_GresTextEdit) new PC_GresTextEdit("" + teReplacer.coordOffset.y, 4, PC_GresInputType.INT));
 		vg.add(hg1);
 		hg1 = new PC_GresLayoutH();
 		hg1.add(new PC_GresButton("-").setId(201).setMinWidth(16));
@@ -61,7 +61,7 @@ public class PCma_GuiReplacer implements PC_IGresBase {
 
 		vg = new PC_GresLayoutV();
 		hg1 = new PC_GresLayoutH();
-		hg1.add(textedit[2] = (PC_GresTextEdit) new PC_GresTextEdit("" + teReplacer.coordOffset[2], 4, PC_GresInputType.INT));
+		hg1.add(textedit[2] = (PC_GresTextEdit) new PC_GresTextEdit("" + teReplacer.coordOffset.z, 4, PC_GresInputType.INT));
 		vg.add(hg1);
 		hg1 = new PC_GresLayoutH();
 		hg1.add(new PC_GresButton("-").setId(301).setMinWidth(16));
@@ -161,8 +161,12 @@ public class PCma_GuiReplacer implements PC_IGresBase {
 
 		} else if (widget == button[1]) {
 
-			for (int count = 0; count <= 2; count++)
-				teReplacer.coordOffset[count] = Integer.valueOf(textedit[count].getText());
+			int x = Integer.parseInt(textedit[0].getText());
+			int y = Integer.parseInt(textedit[1].getText());
+			int z = Integer.parseInt(textedit[2].getText());
+
+			teReplacer.coordOffset.setTo(x,y,z);
+			
 			gui.close();
 
 		} else if (widget == textedit[0] || widget == textedit[1] || widget == textedit[2]) {
@@ -173,7 +177,7 @@ public class PCma_GuiReplacer implements PC_IGresBase {
 				for (int count = 0; count <= 2; count++) {
 					if (!textedit[count].getText().equals("") && !textedit[count].getText().equals("-")) {
 
-						if (Integer.valueOf(textedit[count].getText()) < -16 || Integer.valueOf(textedit[count].getText()) > 16) {
+						if (Math.abs(Integer.valueOf(textedit[count].getText())) > 16) {
 							errorLabel.setText(PC_Lang.tr("pc.gui.blockReplacer.errWrongValue"));
 							button[1].enable(false);
 							return;
@@ -182,7 +186,6 @@ public class PCma_GuiReplacer implements PC_IGresBase {
 								valid = true;
 							}
 						}
-
 					} else {
 						errorLabel.setText(PC_Lang.tr("pc.gui.blockReplacer.errWrongValue"));
 						button[1].enable(false);
@@ -201,6 +204,8 @@ public class PCma_GuiReplacer implements PC_IGresBase {
 			if (valid) errorLabel.setText("");
 
 			button[1].enable(valid);
+			System.out.println("valid "+valid);
+			
 		} else {
 
 			if (widget instanceof PC_GresButton) {
