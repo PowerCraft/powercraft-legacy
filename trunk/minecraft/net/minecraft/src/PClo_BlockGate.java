@@ -790,9 +790,9 @@ public class PClo_BlockGate extends BlockContainer implements PC_IRotatedBox, PC
 				if(stri.charAt(i)=='(')
 					h++;
 				if(stri.charAt(i)==')'){
+					h--;
 					if(h==0)
 						break;
-					h--;
 				}
 			}
 			if(h>0){
@@ -806,17 +806,22 @@ public class PClo_BlockGate extends BlockContainer implements PC_IRotatedBox, PC
 			switch(stri.charAt(i)){
 			case '(':
 				h--;
+				break;
 			case ')':
 				h++;
+				break;
 			case '&':
 				if(h<=0)
 					return calcGates(stri.substring(0, i), A, B, C) & calcGates(stri.substring(i+1), A, B, C);
+				break;
 			case '|':
 				if(h<=0)
 					return calcGates(stri.substring(0, i), A, B, C) | calcGates(stri.substring(i+1), A, B, C);
+				break;
 			case '^':
 				if(h<=0)
 					return calcGates(stri.substring(0, i), A, B, C) ^ calcGates(stri.substring(i+1), A, B, C);
+				break;
 			}
 		}
 		if(stri.charAt(0)=='!'){
@@ -851,7 +856,7 @@ public class PClo_BlockGate extends BlockContainer implements PC_IRotatedBox, PC
 		if (gateType == PClo_GateType.NOR3) { return !(A | B | C); }
 		if (gateType == PClo_GateType.XOR3) { return (A != B) | (B != C) | (C != A); }
 		if (gateType == PClo_GateType.XNOR3) { return (A == B) && (B == C) && (C == A); }
-		if (gateType == PClo_GateType.PROGRAMMING) { return calcGates(tileEntety.programm, A, B, C); }
+		if (gateType == PClo_GateType.MICROPROCESSOR) { return calcGates(tileEntety.programm, A, B, C); }
 		return false;
 
 	}
@@ -1011,9 +1016,9 @@ public class PClo_BlockGate extends BlockContainer implements PC_IRotatedBox, PC
 			}
 		}
 
-		if (getType(world, x, y, z) == PClo_GateType.PROGRAMMING){
+		if (getType(world, x, y, z) == PClo_GateType.MICROPROCESSOR){
 			
-			PC_Utils.openGres(player, new PClo_GuiProgramming(getTE(world, x, y, z)));
+			PC_Utils.openGres(player, new PClo_GuiMicroprocessor(getTE(world, x, y, z)));
 			boolean outputActive = isOutputActive(world, x, y, z);
 			boolean on = isActive();
 			
