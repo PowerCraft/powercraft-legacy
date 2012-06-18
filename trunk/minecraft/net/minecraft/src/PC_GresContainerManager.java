@@ -56,4 +56,27 @@ public class PC_GresContainerManager extends Container {
         return itemstack;
     }*/
 	
+	public void setSlot(int id, Slot newSlot){
+		if(newSlot!=null){
+			inventorySlots.set(id, newSlot);
+			inventoryItemStacks.set(id, null);
+			newSlot.slotNumber = id;
+		}
+	}
+	
+	public void removeSlot(int id){
+		int i=id;
+		for(; i<inventorySlots.size()-1; i++){
+			Slot s = (Slot) inventorySlots.get(i+1);
+			if(s!=null)
+				s.slotNumber = i;
+			inventorySlots.set(i, s);
+			inventoryItemStacks.set(i, inventorySlots.get(i+1));
+		}
+		if(i<inventorySlots.size()){
+			inventorySlots.remove(i);
+			inventoryItemStacks.remove(i);
+		}
+	}
+	
 }
