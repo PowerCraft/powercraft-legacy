@@ -2714,7 +2714,7 @@ public class PCmo_EntityMiner extends Entity implements IInventory {
 		level = MathHelper.clamp_int(status.getByte("Level"), 1, 8);
 		rotationRemaining = status.getShort("RotationRemaining");
 
-		PC_Utils.loadWrappedFromNBT(status, "target", target);
+		PC_Utils.readWrappedFromNBT(status, "target", target);
 
 		fuelBuffer = status.getInteger("fuelBuffer");
 		fuelAllocated = status.getInteger("fuelAllocated");

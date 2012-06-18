@@ -509,7 +509,7 @@ public class PC_CoordI implements PC_ICoord, PC_INBT {
 	public double distanceHorizontalTo(PC_CoordI pos) {
 		return Math.sqrt((x - pos.x) * (x - pos.x) + (z - pos.z) * (z - pos.z));
 	}
-
+	
 	@Override
 	public void writeToNBT(NBTTagCompound tag) {
 		tag.setInteger("ix", x);

@@ -81,7 +81,7 @@ public class PC_Utils {
 	 * @param wrapperTagName name of the wrapper compound tag, in which the object is stored
 	 * @param loaded object to load
 	 */
-	public static void loadWrappedFromNBT(NBTTagCompound parent, String wrapperTagName, PC_INBT loaded) {
+	public static void readWrappedFromNBT(NBTTagCompound parent, String wrapperTagName, PC_INBT loaded) {
 		loaded.readFromNBT(parent.getCompoundTag(wrapperTagName));
 	}
 
