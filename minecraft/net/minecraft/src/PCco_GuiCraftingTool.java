@@ -324,6 +324,9 @@ public class PCco_GuiCraftingTool implements PC_IGresBase{
 	private PCco_ContainerCraftingTool craftingTool;
 	private PC_GresInventory craftingToolInventory;
 	
+	private static final int invWidth = 16;
+	private static final int invHeight = 6;
+	
 	public PCco_GuiCraftingTool(EntityPlayer player){
 		this.player = player;
 		player.addStat(AchievementList.openInventory, 1);
@@ -336,11 +339,11 @@ public class PCco_GuiCraftingTool implements PC_IGresBase{
 		PC_GresWidget hg;
 		PC_GresWidget vg;
 		
-		craftingToolInventory= new PC_GresInventory(new PC_CoordI(13, 5));
-		for (int i = 0; i < 13; i++){
-			for (int j = 0; j < 5; j++) {
-				int indexInlist = page * 13 * 5 + j * 13 + i;
-				int indexSlot = 13 * 5 + j * 13 + i;
+		craftingToolInventory= new PC_GresInventory(new PC_CoordI(invWidth, invHeight));
+		for (int i = 0; i < invWidth; i++){
+			for (int j = 0; j < invHeight; j++) {
+				int indexInlist = page * invWidth * invHeight + j * invWidth + i;
+				int indexSlot = invWidth * invHeight + j * invWidth + i;
 				if(indexInlist<craftingTool.stacklist.size())
 					craftingToolInventory.setSlot(new PCco_SlotDirectCrafting(player, craftingTool.getItemForSlotNumber(indexInlist), indexSlot, 0, 0), i, j);
 				else
@@ -351,13 +354,13 @@ public class PCco_GuiCraftingTool implements PC_IGresBase{
 		w.add(craftingToolInventory);
 		
 		hg = new PC_GresLayoutH().setAlignV(PC_GresAlign.TOP);
-		hg.add(prev = new PC_GresButton("<<<"));
+		hg.add(prev = (PC_GresButton) new PC_GresButton("<<<").setMinWidth(30));
 		if(page<=0){
 			page=0;
 			prev.enable(false);
 		}
 		vg = new PC_GresLayoutV().setAlignH(PC_GresAlign.CENTER).setAlignV(PC_GresAlign.CENTER);
-		vg.add(new PC_GresLabel(StatCollector.translateToLocal("container.inventory")));
+		//vg.add(new PC_GresLabel(StatCollector.translateToLocal("container.inventory")));
 		PC_GresInventory inventory = new PC_GresInventory(new PC_CoordI(9, 3));
 		
 		for (int i = 0; i < 9; i++){
@@ -373,7 +376,7 @@ public class PCco_GuiCraftingTool implements PC_IGresBase{
 		}
 		vg.add(inventory);
 		hg.add(vg);
-		hg.add(next = new PC_GresButton(">>>"));
+		hg.add(next = (PC_GresButton) new PC_GresButton(">>>").setMinWidth(30));
 		if(page>=getMaxPages()){
 			page = getMaxPages();
 			next.enable(false);
@@ -384,11 +387,11 @@ public class PCco_GuiCraftingTool implements PC_IGresBase{
 	}
 
 	private void recalcInventorySlots(PC_IGresGui gui){
-		for (int i = 0; i < 13; i++){
-			for (int j = 0; j < 5; j++) {
+		for (int i = 0; i < invWidth; i++){
+			for (int j = 0; j < invHeight; j++) {
 
-				int indexInlist = page * 13 * 5 + j * 13 + i;
-				int indexSlot = 13 * 5 + j * 13 + i;
+				int indexInlist = page * invWidth * invHeight + j * invWidth + i;
+				int indexSlot = invWidth * invHeight + j * invWidth + i;
 				if(indexInlist<craftingTool.stacklist.size())
 					craftingToolInventory.setSlot(new PCco_SlotDirectCrafting(player, craftingTool.getItemForSlotNumber(indexInlist), indexSlot, 0, 0), i, j);
 				else
@@ -400,7 +403,7 @@ public class PCco_GuiCraftingTool implements PC_IGresBase{
 	}
 	
 	private int getMaxPages(){
-		return (craftingTool.stacklist.size() / (13*5));
+		return (craftingTool.stacklist.size() / (invWidth*invHeight));
 	}
 	
 	@Override
@@ -408,8 +411,8 @@ public class PCco_GuiCraftingTool implements PC_IGresBase{
 	@Override
 	public void actionPerformed(PC_GresWidget widget, PC_IGresGui gui) {
 		if(widget==craftingToolInventory){
-			for (int i = 0; i < 13; i++){
-				for (int j = 0; j < 5; j++) {
+			for (int i = 0; i < invWidth; i++){
+				for (int j = 0; j < invHeight; j++) {
 					Slot slot = craftingToolInventory.getSlot(i, j);
 					if(slot!=null)
 						((PCco_SlotDirectCrafting)(slot)).updateAvailability();
