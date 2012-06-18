@@ -19,7 +19,7 @@ public class PClo_GuiMicroprocessor implements PC_IGresBase {
 		PC_GresWindow w = new PC_GresWindow("Microprocessor");
 		PC_GresWidget hg;
 		w.add(edit = new PC_GresTextEdit(tileEntity.programm, 10));
-		w.add(txError = new PC_GresLabel(""));
+		w.add(txError = new PC_GresLabel("").setColor(PC_GresWidget.textColorEnabled, 0x990000));
 		hg = new PC_GresLayoutH().setAlignH(PC_GresAlign.CENTER);
 		hg.add(buttonCancel = new PC_GresButton(PC_Lang.tr("pc.gui.cancel")).setId(1));
 		hg.add(buttonOK = new PC_GresButton(PC_Lang.tr("pc.gui.ok")).setId(0));
@@ -30,24 +30,24 @@ public class PClo_GuiMicroprocessor implements PC_IGresBase {
 	@Override
 	public void onGuiClosed(PC_IGresGui gui) {}
 
-	private boolean isProgrammOK(String programm){
+	private int isProgrammOK(String programm){
 		programm =programm.trim();
 		char c;
 		int h=0;
 		if(programm.length()<1){
 			txError.setText("Error");
-			return false;
+			return 1;
 		}
 		if(programm.length()==1){
 			c = programm.charAt(0);
 			if(c=='l'||c=='L')
-				return true;
+				return 0;
 			if(c=='b'||c=='B')
-				return true;
+				return 0;
 			if(c=='r'||c=='R')
-				return true;
+				return 0;
 			txError.setText("Error unknown char '"+c+"'");
-			return false;
+			return 2;
 		}
 		if(programm.charAt(0)=='('){
 			h=1;
@@ -64,7 +64,7 @@ public class PClo_GuiMicroprocessor implements PC_IGresBase {
 				if(programm.charAt(programm.length()-1)==')')
 					return isProgrammOK(programm.substring(1, programm.length()-1));
 				txError.setText("Error Klammern");
-				return false;
+				return 3;
 			}
 		}
 		h=0;
@@ -79,15 +79,35 @@ public class PClo_GuiMicroprocessor implements PC_IGresBase {
 			case '&':
 			case '|':
 			case '^':
-				if(h<=0)
-					return isProgrammOK(programm.substring(0, i)) & isProgrammOK(programm.substring(i+1));
+				if(h<=0){
+					int e1 = isProgrammOK(programm.substring(0, i));
+					int e2 = isProgrammOK(programm.substring(i+1));
+					if(e1==0 && e2==0)
+						return 0;
+					if(e1==1){
+						txError.setText("you need an text bevore '"+programm.charAt(i)+"'");
+						return 6;
+					}
+					if(e2==1){
+						txError.setText("you need an text behind '"+programm.charAt(i)+"'");
+						return 6;
+					}
+					return e1==0?e2:e1;
+				}
 			}
 		}
 		if(programm.charAt(0)=='!'){
-			return isProgrammOK(programm.substring(1));
+			int e = isProgrammOK(programm.substring(1));
+			if(e==0)
+				return 0;
+			if(e==1){
+				txError.setText("you need an text behind '!'");
+				return 5;
+			}
+			return e;
 		}
-		txError.setText("Error");
-		return false;
+		txError.setText("Error unknown string '"+programm+"'");
+		return 4;
 	}
 	
 	@Override
@@ -96,7 +116,7 @@ public class PClo_GuiMicroprocessor implements PC_IGresBase {
 			gui.close();
 		else if(widget==buttonOK){
 			txError.setText("");
-			if(isProgrammOK(edit.getText())){
+			if(isProgrammOK(edit.getText())==0){
 				tileEntity.programm = edit.getText();
 				gui.close();
 			}
