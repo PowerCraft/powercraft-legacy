@@ -266,8 +266,11 @@ public class PClo_BlockGate extends BlockContainer implements PC_IRotatedBox, PC
 		if (getType(world, x, y, z) == PClo_GateType.SPECIAL) { return powered_from_input(world, x, y, z, 0); }
 		if (getType(world, x, y, z) == PClo_GateType.FIFO_DELAYER) { return getTE(world, x, y, z).getBufferOutput(); }
 
-		boolean q = getResult(getType(world, x, y, z), powered_from_input(world, x, y, z, 0), powered_from_input(world, x, y, z, 1),
-				powered_from_input(world, x, y, z, 2));
+		TileEntity tileEntity = world.getBlockTileEntity(x, y, z);
+		boolean q = false;
+		if(tileEntity instanceof PClo_TileEntityGate)
+			q = getResult(getType(world, x, y, z), powered_from_input(world, x, y, z, 0), powered_from_input(world, x, y, z, 1),
+					powered_from_input(world, x, y, z, 2), (PClo_TileEntityGate)tileEntity);
 		return q;
 	}
 
@@ -764,6 +767,64 @@ public class PClo_BlockGate extends BlockContainer implements PC_IRotatedBox, PC
 		return ((rotation == 3 && side == 5) || (rotation == 1 && side == 5 && hasTwoOutputs(getType(iblockaccess, x, y, z))));
 	}
 
+	
+	boolean calcGates(String stri, boolean A, boolean B, boolean C){
+		stri = stri.trim();
+		char c;
+		int h=0;
+		if(stri.length()<1)
+			return false;
+		if(stri.length()==1){
+			c = stri.charAt(0);
+			if(c=='l'||c=='L')
+				return B;
+			if(c=='b'||c=='B')
+				return A;
+			if(c=='r'||c=='R')
+				return C;
+			return false;
+		}
+		if(stri.charAt(0)=='('){
+			h=1;
+			for(int i=1; i<stri.length()-1; i++){
+				if(stri.charAt(i)=='(')
+					h++;
+				if(stri.charAt(i)==')'){
+					if(h==0)
+						break;
+					h--;
+				}
+			}
+			if(h>0){
+				if(stri.charAt(stri.length()-1)==')')
+					return calcGates(stri.substring(1, stri.length()-1), A, B, C);
+				return calcGates(stri.substring(1), A, B, C);
+			}
+			h=0;
+		}
+		for(int i=stri.length()-1; i>=0; i--){
+			switch(stri.charAt(i)){
+			case '(':
+				h--;
+			case ')':
+				h++;
+			case '&':
+				if(h<=0)
+					return calcGates(stri.substring(0, i), A, B, C) & calcGates(stri.substring(i+1), A, B, C);
+			case '|':
+				if(h<=0)
+					return calcGates(stri.substring(0, i), A, B, C) | calcGates(stri.substring(i+1), A, B, C);
+			case '^':
+				if(h<=0)
+					return calcGates(stri.substring(0, i), A, B, C) ^ calcGates(stri.substring(i+1), A, B, C);
+			}
+		}
+		if(stri.charAt(0)=='!'){
+			return !calcGates(stri.substring(1), A, B, C);
+		}
+		return false;
+	}
+	
 	/**
 	 * Calculate logic result of given inputs. Often only A or A,B are needed.
 	 * 
@@ -773,11 +834,10 @@ public class PClo_BlockGate extends BlockContainer implements PC_IRotatedBox, PC
 	 * @param C input C
 	 * @return the result
 	 */
-	private boolean getResult(int gateType, boolean A, boolean B, boolean C) {
+	private boolean getResult(int gateType, boolean A, boolean B, boolean C, PClo_TileEntityGate tileEntety ) {
 		// A = bottom
 		// B = left
 		// C = right
-
 		if (gateType == PClo_GateType.NOT) { return !A; }
 		if (gateType == PClo_GateType.AND) { return B & C; }
 		if (gateType == PClo_GateType.NAND) { return !(B & C); }
@@ -791,6 +851,7 @@ public class PClo_BlockGate extends BlockContainer implements PC_IRotatedBox, PC
 		if (gateType == PClo_GateType.NOR3) { return !(A | B | C); }
 		if (gateType == PClo_GateType.XOR3) { return (A != B) | (B != C) | (C != A); }
 		if (gateType == PClo_GateType.XNOR3) { return (A == B) && (B == C) && (C == A); }
+		if (gateType == PClo_GateType.PROGRAMMING) { return calcGates(tileEntety.programm, A, B, C); }
 		return false;
 
 	}
@@ -950,6 +1011,23 @@ public class PClo_BlockGate extends BlockContainer implements PC_IRotatedBox, PC
 			}
 		}
 
+		if (getType(world, x, y, z) == PClo_GateType.PROGRAMMING){
+			
+			PC_Utils.openGres(player, new PClo_GuiProgramming(getTE(world, x, y, z)));
+			boolean outputActive = isOutputActive(world, x, y, z);
+			boolean on = isActive();
+			
+			if (on && !outputActive) {
+				// turn off
+				changeGateState(false, world, x, y, z);
+			} else if (!on && outputActive) {
+				// turn on
+				changeGateState(true, world, x, y, z);
+			}
+			return true;
+			
+		}
+		
 		if (getType(world, x, y, z) == PClo_GateType.FIFO_DELAYER) {
 
 			PC_Utils.openGres(player, new PClo_GuiDelayer(getTE(world, x, y, z), PClo_GuiDelayer.FIFO));

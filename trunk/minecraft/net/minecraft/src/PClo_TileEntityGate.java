@@ -37,6 +37,8 @@ public class PClo_TileEntityGate extends TileEntity {
 	public boolean zombie = false; // set true if this tile entity was already
 									// destroyed
 
+	public String programm = "";
+	
 	@Override
 	public void updateEntity() {
 		if (zombie) { return; }
@@ -215,6 +217,9 @@ public class PClo_TileEntityGate extends TileEntity {
 
 		}
 
+		if (gateType == PClo_GateType.PROGRAMMING)
+			programm = maintag.getString("programm");
+		
 		if (gateType == PClo_GateType.HOLD_DELAYER) {
 			rHoldTime = maintag.getInteger("RepeaterHoldTime");
 			rRemainingTicks = maintag.getInteger("RepeaterTicksRem");
@@ -248,7 +253,10 @@ public class PClo_TileEntityGate extends TileEntity {
 			maintag.setBoolean("DelayState", dOutputState);
 
 		}
-
+		
+		if (gateType == PClo_GateType.PROGRAMMING)
+			maintag.setString("programm", programm);
+		
 		if (gateType == PClo_GateType.HOLD_DELAYER) {
 			maintag.setInteger("RepeaterHoldTime", rHoldTime);
 			maintag.setInteger("RepeaterTicksRem", rRemainingTicks);
