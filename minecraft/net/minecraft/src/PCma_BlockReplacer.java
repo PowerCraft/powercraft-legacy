@@ -103,6 +103,40 @@ public class PCma_BlockReplacer extends BlockContainer implements PC_ISwapTerrai
 		}
 	}
 	
+	private boolean canHarvestBlock(World world, PC_CoordI pos){
+
+		int id = pos.getMeta(world);
+		int meta = pos.getId(world);
+
+		if(id == 0 || Block.blocksList[id] == null) return true;
+
+		if(pos.getTileEntity(world) != null) return false;
+
+		return true;
+
+	}
+	
+	/**
+	* Return true if a player with SlikTouch can harvest this block directly, and not it's normal drops.
+	*/
+	protected boolean canSilkHarvest(){
+		return renderAsNormalBlock() && !isBlockContainer;
+	}
+
+	/**
+	* Returns an item stack containing a single instance of the current block type. 'i' is the block's subtype/damage
+	* and is ignored for blocks which do not support subtypes. Blocks which cannot be harvested should return null.
+	*/
+	protected ItemStack createStackedBlock(int par1){
+		int i = 0;
+
+		if (blockID >= 0 && blockID < Item.itemsList.length && Item.itemsList[blockID].getHasSubtypes()){
+			i = par1;
+		}
+
+		return new ItemStack(blockID, 1, i);
+	}
+	
 	private void swapBlocks(World world, int x, int y, int z, Random random, PCma_TileEntityReplacer tileentity){
 		if(tileentity.buildBlock != null)
 			if(!(tileentity.buildBlock.getItem() instanceof ItemBlock))
@@ -111,24 +145,31 @@ public class PCma_BlockReplacer extends BlockContainer implements PC_ISwapTerrai
 		int meta = world.getBlockMetadata(x, y, z);
 		ItemStack newItem = null;
 		if(id>0){
-			int dropId = Block.blocksList[id].blockID;
-			int dropMeta = Block.blocksList[id].damageDropped(meta);
-			int dropQuant = Block.blocksList[id].quantityDropped(world.rand);
-	
+			if(canHarvestBlock(world, new PC_CoordI(x, y, z))){
+				int dropId = Block.blocksList[id].blockID;
+				int dropMeta = Block.blocksList[id].damageDropped(meta);
+				int dropQuant = Block.blocksList[id].quantityDropped(world.rand);
+				if (dropId <= 0) {
+					dropId = id;
+				}
+				if (dropQuant <= 0) {
+					dropQuant = 1;
+				}
+				newItem = new ItemStack(dropId, dropQuant, dropMeta);
+			}else if(canSilkHarvest()){
+				newItem = createStackedBlock(meta);
+			}else
+				return;
+		}
+		//if(newItem!=null)
 			/*// play breaking sound and animation
 			if (mod_PCcore.soundsEnabled) {
 				world.playAuxSFX(2001, coord.x, coord.y, coord.z, id + (meta << 12));
 			}*/
-			if (dropId <= 0) {
-				dropId = id;
-			}
-			if (dropQuant <= 0) {
-				dropQuant = 1;
-			}
-			newItem = new ItemStack(dropId, dropQuant, dropMeta);
-		}
 		if(tileentity.buildBlock != null)
 			world.setBlockWithNotify(x, y, z, ((ItemBlock)(tileentity.buildBlock.getItem())).shiftedIndex);
+		else
+			world.setBlockWithNotify(x, y, z, 0);
 		tileentity.buildBlock = newItem;
 	}
 	
