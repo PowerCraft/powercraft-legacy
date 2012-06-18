@@ -35,38 +35,39 @@ public class PCma_GuiReplacer implements PC_IGresBase {
 		PC_GresWidget lblx, lbly, lblz;
 
 
-		hg = new PC_GresLayoutH();
+		hg = new PC_GresLayoutH().setAlignV(PC_GresAlign.TOP);
 		vg = new PC_GresLayoutV();
 		PC_GresWidget hg1 = new PC_GresLayoutH();
+		hg1 = new PC_GresLayoutH();
+		hg1.add(textedit[0] = (PC_GresTextEdit) new PC_GresTextEdit("" + teReplacer.coordOffset[0], 4, PC_GresInputType.INT));
+		vg.add(hg1);
+		hg1 = new PC_GresLayoutH();
 		hg1.add(new PC_GresButton("-").setId(101).setMinWidth(16));
 		hg1.add(new PC_GresButton("+").setId(102).setMinWidth(16));
 		vg.add(hg1);
-		hg1 = new PC_GresLayoutH();
-		hg1.add(lblx = new PC_GresLabel("X:"));
-		hg1.add(textedit[0] = (PC_GresTextEdit) new PC_GresTextEdit("" + teReplacer.coordOffset[0], 4, PC_GresInputType.INT));
-		vg.add(hg1);
+		hg.add(lblx = new PC_GresLabel("X:"));
 		hg.add(vg);
 
 		vg = new PC_GresLayoutV();
+		hg1 = new PC_GresLayoutH();
+		hg1.add(textedit[1] = (PC_GresTextEdit) new PC_GresTextEdit("" + teReplacer.coordOffset[1], 4, PC_GresInputType.INT));
+		vg.add(hg1);
 		hg1 = new PC_GresLayoutH();
 		hg1.add(new PC_GresButton("-").setId(201).setMinWidth(16));
 		hg1.add(new PC_GresButton("+").setId(202).setMinWidth(16));
 		vg.add(hg1);
-		hg1 = new PC_GresLayoutH();
-		hg1.add(lbly = new PC_GresLabel("Y:"));
-		hg1.add(textedit[1] = (PC_GresTextEdit) new PC_GresTextEdit("" + teReplacer.coordOffset[1], 4, PC_GresInputType.INT));
-		vg.add(hg1);
+		hg.add(lbly = new PC_GresLabel("Y:"));
 		hg.add(vg);
 
 		vg = new PC_GresLayoutV();
 		hg1 = new PC_GresLayoutH();
+		hg1.add(textedit[2] = (PC_GresTextEdit) new PC_GresTextEdit("" + teReplacer.coordOffset[2], 4, PC_GresInputType.INT));
+		vg.add(hg1);
+		hg1 = new PC_GresLayoutH();
 		hg1.add(new PC_GresButton("-").setId(301).setMinWidth(16));
 		hg1.add(new PC_GresButton("+").setId(302).setMinWidth(16));
 		vg.add(hg1);
-		hg1 = new PC_GresLayoutH();
-		hg1.add(lblz = new PC_GresLabel("Z:"));
-		hg1.add(textedit[2] = (PC_GresTextEdit) new PC_GresTextEdit("" + teReplacer.coordOffset[2], 4, PC_GresInputType.INT));
-		vg.add(hg1);
+		hg.add(lblz = new PC_GresLabel("Z:"));
 		hg.add(vg);
 		w.add(hg);
 

@@ -103,42 +103,40 @@ public class PCma_BlockReplacer extends BlockContainer implements PC_ISwapTerrai
 		}
 	}
 	
+	private void swapBlocks(World world, int x, int y, int z, Random random, PCma_TileEntityReplacer tileentity){
+		if(tileentity.buildBlock != null)
+			if(!(tileentity.buildBlock.getItem() instanceof ItemBlock))
+				return;
+		int id = world.getBlockId(x, y, z);
+		int meta = world.getBlockMetadata(x, y, z);
+		ItemStack newItem = null;
+		if(id>0){
+			int dropId = Block.blocksList[id].blockID;
+			int dropMeta = Block.blocksList[id].damageDropped(meta);
+			int dropQuant = Block.blocksList[id].quantityDropped(world.rand);
+	
+			/*// play breaking sound and animation
+			if (mod_PCcore.soundsEnabled) {
+				world.playAuxSFX(2001, coord.x, coord.y, coord.z, id + (meta << 12));
+			}*/
+			if (dropId <= 0) {
+				dropId = id;
+			}
+			if (dropQuant <= 0) {
+				dropQuant = 1;
+			}
+			newItem = new ItemStack(dropId, dropQuant, dropMeta);
+		}
+		if(tileentity.buildBlock != null)
+			world.setBlockWithNotify(x, y, z, ((ItemBlock)(tileentity.buildBlock.getItem())).shiftedIndex);
+		tileentity.buildBlock = newItem;
+	}
+	
 	@Override
 	public void updateTick(World world, int i, int j, int k, Random random) {
 		PCma_TileEntityReplacer tileentity = (PCma_TileEntityReplacer) world.getBlockTileEntity(i, j, k);
 		if (tileentity != null && !world.isRemote ) {
-			if (isIndirectlyPowered(world, i, j, k))
-				if(tileentity.buildBlock != null){
-					if(tileentity.buildBlock.getItem() instanceof ItemBlock){
-						world.setBlockWithNotify(i + tileentity.coordOffset[0], 
-								j + tileentity.coordOffset[1], k + tileentity.coordOffset[2], ((ItemBlock)(tileentity.buildBlock.getItem())).shiftedIndex);
-						tileentity.buildBlock = null;
-					}
-				}
-			else
-				if(tileentity.buildBlock == null){
-					int id = world.getBlockId(i + tileentity.coordOffset[0], j + tileentity.coordOffset[1], k + tileentity.coordOffset[2]);
-					int meta = world.getBlockMetadata(i + tileentity.coordOffset[0], j + tileentity.coordOffset[1], k + tileentity.coordOffset[2]);
-					if(id<=0)
-						return;
-					int dropId = Block.blocksList[id].idDropped(id, world.rand, meta);
-					int dropMeta = Block.blocksList[id].damageDropped(meta);
-					int dropQuant = Block.blocksList[id].quantityDropped(world.rand);
-
-					/*// play breaking sound and animation
-					if (mod_PCcore.soundsEnabled) {
-						world.playAuxSFX(2001, coord.x, coord.y, coord.z, id + (meta << 12));
-					}*/
-					if (dropId <= 0) {
-						dropId = id;
-					}
-					if (dropQuant <= 0) {
-						dropQuant = 1;
-					}
-					tileentity.buildBlock = new ItemStack(dropId, dropQuant, dropMeta);
-
-					world.setBlockWithNotify(i + tileentity.coordOffset[0], j + tileentity.coordOffset[1], k + tileentity.coordOffset[2], 0);
-				}
+			swapBlocks(world, i + tileentity.coordOffset[0], j + tileentity.coordOffset[1], k + tileentity.coordOffset[2], random, tileentity);
 		}
 	}
 	
