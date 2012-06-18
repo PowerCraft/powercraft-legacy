@@ -19,7 +19,7 @@ public class PCco_ItemCraftingTool extends Item {
 
 	@Override
 	public ItemStack onItemRightClick(ItemStack itemstack, World world, EntityPlayer entityplayer) {
-		ModLoader.openGUI(entityplayer, new PCco_GuiCraftingTool(entityplayer));
+		PC_Utils.openGres(entityplayer, new PCco_GuiCraftingTool(entityplayer));
 
 		return itemstack;
 	}

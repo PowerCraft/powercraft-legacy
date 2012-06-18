@@ -10,7 +10,7 @@ import java.util.HashMap;
  * @author MightyPork
  * @copy (c) 2012
  */
-public class PCco_ContainerCraftingTool extends Container {
+public class PCco_ContainerCraftingTool /*extends Container*/ {
 
 	private IInventory playerInventory;
 	/** Page the screen was closed at. */
@@ -18,6 +18,8 @@ public class PCco_ContainerCraftingTool extends Container {
 	/** Inventory screen size */
 	private static final int width = 13, height = 7;
 
+	public ArrayList<Slot> inventorySlots = new ArrayList<Slot>();
+	
 	/**
 	 * Create crafting tool container for player.
 	 * 
@@ -37,7 +39,8 @@ public class PCco_ContainerCraftingTool extends Container {
 				int indexInlist = lastPage * width * height + row * width + column;
 				int indexSlot = column + row * width;
 
-				addSlot(new PCco_SlotDirectCrafting(player, getItemForSlotNumber(indexInlist), indexSlot, 8 + column * 18, 18 + row * 18));
+				inventorySlots.add(new PCco_SlotDirectCrafting(player, getItemForSlotNumber(indexInlist), indexSlot, 8 + column * 18, 18 + row * 18));
+				//addSlot(new PCco_SlotDirectCrafting(player, getItemForSlotNumber(indexInlist), indexSlot, 8 + column * 18, 18 + row * 18));
 
 			}
 
@@ -47,14 +50,14 @@ public class PCco_ContainerCraftingTool extends Container {
 		// player inv upper part
 		for (int k = 0; k < 3; k++) {
 			for (int j1 = 0; j1 < 9; j1++) {
-				addSlot(new Slot(playerInventory, j1 + k * 9 + 9, 2 * 18 + 8 + j1 * 18, 103 + k * 18 + i));
+				//addSlot(new Slot(playerInventory, j1 + k * 9 + 9, 2 * 18 + 8 + j1 * 18, 103 + k * 18 + i));
 			}
 
 		}
 
 		// player inv quickbar
 		for (int l = 0; l < 9; l++) {
-			addSlot(new Slot(playerInventory, l, 2 * 18 + 8 + l * 18, 161 + i));
+			//addSlot(new Slot(playerInventory, l, 2 * 18 + 8 + l * 18, 161 + i));
 		}
 
 		mouseClicked();
@@ -130,7 +133,7 @@ public class PCco_ContainerCraftingTool extends Container {
 	 * @param num absolute index (regardless of pages)
 	 * @return the stack or null if not present.
 	 */
-	private ItemStack getItemForSlotNumber(int num) {
+	public ItemStack getItemForSlotNumber(int num) {
 		if (num < stacklist.size()) { return stacklist.get(num); }
 		return null;
 	}
@@ -149,14 +152,14 @@ public class PCco_ContainerCraftingTool extends Container {
 			int indexInlist = pagenum * width * height + index;
 			int indexSlot = index;
 
-			((Slot) inventorySlots.get(indexSlot)).putStack(getItemForSlotNumber(indexInlist));
+			inventorySlots.get(indexSlot).putStack(getItemForSlotNumber(indexInlist));
 
 		}
 	}
 
 
 
-	@Override
+	/*@Override
 	public boolean canInteractWith(EntityPlayer entityplayer) {
 		return playerInventory.isUseableByPlayer(entityplayer);
 	}
@@ -170,6 +173,6 @@ public class PCco_ContainerCraftingTool extends Container {
 	public void onCraftGuiClosed(EntityPlayer entityplayer) {
 		super.onCraftGuiClosed(entityplayer);
 		playerInventory.closeChest();
-	}
+	}*/
 
 }

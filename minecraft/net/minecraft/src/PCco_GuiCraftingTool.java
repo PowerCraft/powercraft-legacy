@@ -1,6 +1,11 @@
 package net.minecraft.src;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+
+import net.minecraft.src.PC_GresWidget.PC_GresAlign;
 
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
@@ -11,7 +16,7 @@ import org.lwjgl.opengl.GL12;
  * @author Ondrej Hruska
  * @copy (c) 2012
  */
-public class PCco_GuiCraftingTool extends GuiContainer {
+/*public class PCco_GuiCraftingTool extends GuiContainer {
 	private int inventoryRows;
 	private GuiButton prev, next;
 	private static int page = 0;
@@ -21,7 +26,7 @@ public class PCco_GuiCraftingTool extends GuiContainer {
 	 * 
 	 * @param player the player
 	 */
-	public PCco_GuiCraftingTool(EntityPlayer player) {
+	/*public PCco_GuiCraftingTool(EntityPlayer player) {
 		super(new PCco_ContainerCraftingTool(player));
 		inventoryRows = 0;
 		allowUserInput = false;
@@ -96,7 +101,7 @@ public class PCco_GuiCraftingTool extends GuiContainer {
 	 * 
 	 * @param slot the slot
 	 */
-	private void drawSlotInventoryCT(Slot slot) {
+	/*private void drawSlotInventoryCT(Slot slot) {
 		int i = slot.xDisplayPosition;
 		int j = slot.yDisplayPosition;
 		ItemStack itemstack = slot.getStack();
@@ -155,7 +160,7 @@ public class PCco_GuiCraftingTool extends GuiContainer {
 	 * This should be in all versions exactly the same as in GuiContainer, I copied it here to make it possible to override
 	 * <b>drawSlotInventory<b>.
 	 */
-	@Override
+	/*@Override
 	public void drawScreen(int par1, int par2, float par3) {
 		drawDefaultBackground();
 		int i = guiLeft;
@@ -294,7 +299,7 @@ public class PCco_GuiCraftingTool extends GuiContainer {
 	 * @param par3 mouse y
 	 * @return is over
 	 */
-	private boolean isMouseOverSlot(Slot par1Slot, int par2, int par3) {
+	/*private boolean isMouseOverSlot(Slot par1Slot, int par2, int par3) {
 		int i = guiLeft;
 		int j = guiTop;
 		par2 -= i;
@@ -309,3 +314,134 @@ public class PCco_GuiCraftingTool extends GuiContainer {
 		((PCco_ContainerCraftingTool) inventorySlots).mouseClicked();
 	}
 }
+*/
+public class PCco_GuiCraftingTool implements PC_IGresBase{
+
+	private int inventoryRows;
+	private PC_GresButton prev, next;
+	private EntityPlayer player;
+	private int page = 0;
+	private PCco_ContainerCraftingTool craftingTool;
+	private PC_GresInventory craftingToolInventory;
+	
+	public PCco_GuiCraftingTool(EntityPlayer player){
+		this.player = player;
+		player.addStat(AchievementList.openInventory, 1);
+		craftingTool = new PCco_ContainerCraftingTool(player);
+	}
+	
+	@Override
+	public void initGui(PC_IGresGui gui) {
+		PC_GresWindow w = new PC_GresWindow(PC_Lang.tr("pc.gui.craftingTool.title"));
+		PC_GresWidget hg;
+		PC_GresWidget vg;
+		
+		craftingToolInventory= new PC_GresInventory(new PC_CoordI(13, 5));
+		for (int i = 0; i < 13; i++){
+			for (int j = 0; j < 5; j++) {
+
+				int indexInlist = page * 13 * 5 + j * 13 + i;
+
+				craftingToolInventory.setSlot(craftingTool.inventorySlots.get(indexInlist), i, j);
+
+			}
+		}
+		w.add(craftingToolInventory);
+		
+		hg = new PC_GresLayoutH().setAlignV(PC_GresAlign.TOP);
+		hg.add(prev = new PC_GresButton("<<<"));
+		if(page<=0){
+			page=0;
+			prev.enable(false);
+		}
+		vg = new PC_GresLayoutV().setAlignH(PC_GresAlign.CENTER).setAlignV(PC_GresAlign.CENTER);
+		vg.add(new PC_GresLabel(StatCollector.translateToLocal("container.inventory")));
+		PC_GresInventory inventory = new PC_GresInventory(new PC_CoordI(9, 3));
+		
+		for (int i = 0; i < 9; i++){
+			for (int j = 0; j < 3; j++){
+				inventory.setSlot(new Slot(player.inventory, i + j * 9 + 9, 0, 0), i, j);
+			}
+		}
+		vg.add(inventory);
+		
+		inventory = new PC_GresInventory(new PC_CoordI(9, 1));
+		for (int i = 0; i < 9; i++){
+			inventory.setSlot(new Slot(player.inventory, i, 0, 0), i, 0);
+		}
+		vg.add(inventory);
+		hg.add(vg);
+		hg.add(next = new PC_GresButton(">>>"));
+		if(page>=getMaxPages()){
+			page = getMaxPages();
+			next.enable(false);
+		}
+		w.add(hg);
+		gui.add(w);
+	}
+
+	private void recalcInventorySlots(){
+		for (int i = 0; i < 13; i++){
+			for (int j = 0; j < 5; j++) {
+
+				int indexInlist = page * 13 * 5 + j * 13 + i;
+				if(indexInlist<craftingTool.inventorySlots.size())
+					craftingToolInventory.setSlot(craftingTool.inventorySlots.get(indexInlist), i, j);
+				else
+					craftingToolInventory.setSlot(null, i, j);
+
+			}
+		}
+	}
+	
+	private int getMaxPages(){
+		return (craftingTool.inventorySlots.size() / (13*5));
+	}
+	
+	@Override
+	public void onGuiClosed(PC_IGresGui gui) {player.inventory.closeChest();}
+	@Override
+	public void actionPerformed(PC_GresWidget widget, PC_IGresGui gui) {
+		if(widget==craftingToolInventory){
+			for (int i = 0; i < 13; i++){
+				for (int j = 0; j < 5; j++) {
+					((PCco_SlotDirectCrafting)(craftingToolInventory.getSlot(i, j))).updateAvailability();
+				}
+			}
+		}else if(widget==prev){
+			page--;
+			if(page<=0){
+				page=0;
+				prev.enable(false);
+			}
+			if(page<getMaxPages()){
+				next.enable(true);
+			}
+			recalcInventorySlots();
+				
+		}else if(widget==next){
+			page++;
+			if(page>=getMaxPages()){
+				page = getMaxPages();
+				next.enable(false);
+			}
+			if(page>0){
+				prev.enable(true);
+			}
+			recalcInventorySlots();
+		}
+	}
+
+	@Override
+	public void onEscapePressed(PC_IGresGui gui) {
+		gui.close();
+	}
+
+	@Override
+	public void onReturnPressed(PC_IGresGui gui) {
+		gui.close();
+	}
+	
+}
+
+
