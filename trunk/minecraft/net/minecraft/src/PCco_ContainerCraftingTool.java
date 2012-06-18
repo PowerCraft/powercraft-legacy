@@ -16,7 +16,7 @@ public class PCco_ContainerCraftingTool /*extends Container*/ {
 	/** Page the screen was closed at. */
 	private static int lastPage = 0;
 	/** Inventory screen size */
-	private static final int width = 13, height = 7;
+	private static final int width = 13, height = 5;
 
 	public ArrayList<Slot> inventorySlots = new ArrayList<Slot>();
 	

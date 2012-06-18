@@ -339,10 +339,12 @@ public class PCco_GuiCraftingTool implements PC_IGresBase{
 		craftingToolInventory= new PC_GresInventory(new PC_CoordI(13, 5));
 		for (int i = 0; i < 13; i++){
 			for (int j = 0; j < 5; j++) {
-
 				int indexInlist = page * 13 * 5 + j * 13 + i;
-
-				craftingToolInventory.setSlot(craftingTool.inventorySlots.get(indexInlist), i, j);
+				int indexSlot = 13 * 5 + j * 13 + i;
+				if(indexInlist<craftingTool.stacklist.size())
+					craftingToolInventory.setSlot(new PCco_SlotDirectCrafting(player, craftingTool.getItemForSlotNumber(indexInlist), indexSlot, 0, 0), i, j);
+				else
+					craftingToolInventory.setSlot(null, i, j);
 
 			}
 		}
@@ -377,25 +379,28 @@ public class PCco_GuiCraftingTool implements PC_IGresBase{
 			next.enable(false);
 		}
 		w.add(hg);
+		actionPerformed(craftingToolInventory, gui);
 		gui.add(w);
 	}
 
-	private void recalcInventorySlots(){
+	private void recalcInventorySlots(PC_IGresGui gui){
 		for (int i = 0; i < 13; i++){
 			for (int j = 0; j < 5; j++) {
 
 				int indexInlist = page * 13 * 5 + j * 13 + i;
-				if(indexInlist<craftingTool.inventorySlots.size())
-					craftingToolInventory.setSlot(craftingTool.inventorySlots.get(indexInlist), i, j);
+				int indexSlot = 13 * 5 + j * 13 + i;
+				if(indexInlist<craftingTool.stacklist.size())
+					craftingToolInventory.setSlot(new PCco_SlotDirectCrafting(player, craftingTool.getItemForSlotNumber(indexInlist), indexSlot, 0, 0), i, j);
 				else
 					craftingToolInventory.setSlot(null, i, j);
 
 			}
 		}
+		actionPerformed(craftingToolInventory, gui);
 	}
 	
 	private int getMaxPages(){
-		return (craftingTool.inventorySlots.size() / (13*5));
+		return (craftingTool.stacklist.size() / (13*5));
 	}
 	
 	@Override
@@ -405,7 +410,9 @@ public class PCco_GuiCraftingTool implements PC_IGresBase{
 		if(widget==craftingToolInventory){
 			for (int i = 0; i < 13; i++){
 				for (int j = 0; j < 5; j++) {
-					((PCco_SlotDirectCrafting)(craftingToolInventory.getSlot(i, j))).updateAvailability();
+					Slot slot = craftingToolInventory.getSlot(i, j);
+					if(slot!=null)
+						((PCco_SlotDirectCrafting)(slot)).updateAvailability();
 				}
 			}
 		}else if(widget==prev){
@@ -417,7 +424,7 @@ public class PCco_GuiCraftingTool implements PC_IGresBase{
 			if(page<getMaxPages()){
 				next.enable(true);
 			}
-			recalcInventorySlots();
+			recalcInventorySlots(gui);
 				
 		}else if(widget==next){
 			page++;
@@ -428,7 +435,7 @@ public class PCco_GuiCraftingTool implements PC_IGresBase{
 			if(page>0){
 				prev.enable(true);
 			}
-			recalcInventorySlots();
+			recalcInventorySlots(gui);
 		}
 	}
 
