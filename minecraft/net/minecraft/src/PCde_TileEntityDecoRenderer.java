@@ -37,7 +37,11 @@ public class PCde_TileEntityDecoRenderer extends TileEntitySpecialRenderer {
 		GL11.glPushMatrix();
 		GL11.glScalef(f, -f, -f);
 			
-		model.setFrameParts(ted.worldObj.getBlockId(ted.xCoord,ted.yCoord+1,ted.zCoord) == Block.torchWood.blockID);
+		model.setFrameParts(0, ted.worldObj.getBlockId(ted.xCoord,ted.yCoord+1,ted.zCoord) == Block.torchWood.blockID);
+		model.setFrameParts(1, ted.worldObj.getBlockId(ted.xCoord+1,ted.yCoord,ted.zCoord) == Block.torchWood.blockID);
+		model.setFrameParts(2, ted.worldObj.getBlockId(ted.xCoord,ted.yCoord,ted.zCoord+1) == Block.torchWood.blockID);
+		model.setFrameParts(3, ted.worldObj.getBlockId(ted.xCoord-1,ted.yCoord,ted.zCoord) == Block.torchWood.blockID);
+		model.setFrameParts(4, ted.worldObj.getBlockId(ted.xCoord,ted.yCoord,ted.zCoord-1) == Block.torchWood.blockID);
 		model.render(ted.type);
 		
 		GL11.glPopMatrix();
