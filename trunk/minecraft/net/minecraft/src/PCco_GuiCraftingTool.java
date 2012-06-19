@@ -19,8 +19,8 @@ public class PCco_GuiCraftingTool implements PC_IGresBase{
 	private PCco_CraftingToolManager craftingToolManager;
 	private static int page = 0;
 	
-	private static final int invWidth = 16;
-	private static final int invHeight = 6;
+	private static final int invWidth = 13;
+	private static final int invHeight = 7;
 	
 	/**
 	 * @param player the player
@@ -38,6 +38,8 @@ public class PCco_GuiCraftingTool implements PC_IGresBase{
 	@Override
 	public void initGui(PC_IGresGui gui) {
 		PC_GresWindow w = new PC_GresWindow(PC_Lang.tr("pc.gui.craftingTool.title"));
+		w.padding.setTo(10,3);
+		w.gapUnderTitle = 8;
 		PC_GresWidget hg;
 		
 		craftingToolManager = new PCco_CraftingToolManager();
