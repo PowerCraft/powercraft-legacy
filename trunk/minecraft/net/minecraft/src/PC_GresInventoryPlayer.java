@@ -43,6 +43,8 @@ public class PC_GresInventoryPlayer extends PC_GresLayoutV {
 		canAddWidget = false;
 		super.addedToWidget();
 	}
+	
+	
 
 
 }

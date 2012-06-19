@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.Hashtable;
 import java.util.List;
 
+import org.lwjgl.input.Keyboard;
+
 /**
  * Direct Crafting slot, used in Crafting Tool.<br>
  * "No matter HOW it works. Just use it."
@@ -46,9 +48,10 @@ public class PCco_SlotDirectCrafting extends Slot {
 	}
 
 	@Override
-	public void onPickupFromSlot(ItemStack itemstack) {
+	public void onPickupFromSlot(ItemStack itemstack) {		
 		// itemstack.onCrafting(thePlayer.worldObj, thePlayer);
 		super.onPickupFromSlot(itemstack);
+		System.out.println("OnPickup");
 
 		doCrafting();
 		updateAvailability();
@@ -56,18 +59,34 @@ public class PCco_SlotDirectCrafting extends Slot {
 
 	@Override
 	public ItemStack decrStackSize(int i) {
-		if (available) { return product.copy(); }
+		if (available) {
+			System.out.println("DecrStackSize");
+			ItemStack output = product.copy();
+			if((PC_Utils.isCreative() || survivalCheating) && (Keyboard.isKeyDown(Keyboard.KEY_LCONTROL) || Keyboard.isKeyDown(Keyboard.KEY_RCONTROL))){
+				output.stackSize = output.getMaxStackSize();				
+			}
+			return output;
+		}
 		return null;
 	}
 
 	@Override
 	public ItemStack getStack() {
-		if (available && product != null) { return product.copy(); }
+		if (available && product != null) {			
+			ItemStack output = product.copy();
+			if((PC_Utils.isCreative() || survivalCheating) && (Keyboard.isKeyDown(Keyboard.KEY_LCONTROL) || Keyboard.isKeyDown(Keyboard.KEY_RCONTROL))){
+				output.stackSize = output.getMaxStackSize();
+			}
+			return output;
+		}
 		return null;
 	}
 
 	@Override
 	public void putStack(ItemStack itemstack) {
+	}
+	
+	public void setProduct(ItemStack itemstack) {
 		product = itemstack;
 	}
 
