@@ -130,6 +130,7 @@ public class PCma_GuiReplacer implements PC_IGresBase {
 		w.add(hg);
 
 		gui.add(w);
+		gui.setCanShiftTransfer(true);
 
 		w.calcChildPositions();
 	}

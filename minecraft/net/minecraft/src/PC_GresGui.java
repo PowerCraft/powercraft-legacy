@@ -17,7 +17,7 @@ import org.lwjgl.opengl.GL12;
  */
 public class PC_GresGui extends GuiContainer implements PC_IGresGui {
 
-	private PC_IGresBase gui;
+	public PC_IGresBase gui;
 	private PC_GresLayoutV child;
 	private PC_GresWidget lastFocus;
 	private PC_GresContainerManager containerManager;

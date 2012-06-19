@@ -337,7 +337,7 @@ public abstract class PC_Module extends BaseMod {
 			list.add(new ItemStack(id, stackSize, dmg));
 		}
 
-		PCco_ContainerCraftingTool.addStacks(group.index, list.toArray(new ItemStack[list.size()]));
+		PCco_CraftingToolManager.addStacks(group.index, list.toArray(new ItemStack[list.size()]));
 	}
 
 	/**
@@ -348,7 +348,7 @@ public abstract class PC_Module extends BaseMod {
 	 * @param stacks array of stacks to add
 	 */
 	public static final void addStacksToCraftingTool(PC_CraftingToolGroup group, ItemStack... stacks) {
-		PCco_ContainerCraftingTool.addStacks(group.index, stacks);
+		PCco_CraftingToolManager.addStacks(group.index, stacks);
 	}
 
 	/**

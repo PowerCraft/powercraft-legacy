@@ -42,7 +42,7 @@ public class PC_GresInventory extends PC_GresWidget {
 		posOnScrren.y -= widgetPos.y;
 		GL11.glBindTexture(GL11.GL_TEXTURE_2D, mc.renderEngine.getTexture(texture));
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-		for(int x=0; x<inventorySize.x; x++)
+		for(int x=0; x<inventorySize.x; x++){
 			for(int y=0; y<inventorySize.y; y++){
 				if(slots[x][y]!=null){
 					slots[x][y].xDisplayPosition = posOnScrren.x + x*18 + 1;
@@ -50,11 +50,12 @@ public class PC_GresInventory extends PC_GresWidget {
 				}
 				drawTexturedModalRect(pos.x + posOffset.x + x*18, pos.y+posOffset.y+ y*18, 0, 66, 18, 18);
 			}
+		}
 	}
 
 	@Override
 	public boolean mouseOver(PC_CoordI mousePos) {
-		return false;
+		return true;
 	}
 
 	@Override
@@ -77,11 +78,21 @@ public class PC_GresInventory extends PC_GresWidget {
 	
 	@Override
 	public void addedToWidget() {
-		if(containerManager!=null)
-			for(int x=0; x<inventorySize.x; x++)
-				for(int y=0; y<inventorySize.y; y++)
-					if(slots[x][y]!=null)
+		
+		if(containerManager!=null && (parent==null || !(parent instanceof PC_GresInventoryPlayer))){		
+			
+			for(int x=0; x<inventorySize.x; x++){				
+				for(int y=0; y<inventorySize.y; y++){
+					
+					if(slots[x][y]!=null){
 						containerManager.addSlot(slots[x][y]);
+					}		
+					
+				}				
+			}
+			
+		}
+		
 	}
 	
 	public PC_GresInventory setSlot(Slot slot, int x, int y){

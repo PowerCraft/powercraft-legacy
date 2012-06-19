@@ -67,7 +67,6 @@ public class PCma_ContainerRoaster extends Container {
 
 	private int getLimit(int a, boolean flag) {
 		if (flag) { return a; }
-		;
 		return a < roasterInventory.getInventoryStackLimit() ? a : roasterInventory.getInventoryStackLimit();
 	}
 
@@ -86,10 +85,7 @@ public class PCma_ContainerRoaster extends Container {
 						&& itemstack1.itemID == itemstack.itemID
 						&& (!itemstack.getHasSubtypes() || itemstack.getItemDamage() == itemstack1.getItemDamage())) {
 					int i1 = itemstack1.stackSize + itemstack.stackSize;
-					if (i1 <= getLimit(itemstack.getMaxStackSize(), flag)) // all
-																			// items
-																			// can
-																			// fit
+					if (i1 <= getLimit(itemstack.getMaxStackSize(), flag))
 					{
 						itemstack.stackSize = 0;
 						itemstack1.stackSize = i1;

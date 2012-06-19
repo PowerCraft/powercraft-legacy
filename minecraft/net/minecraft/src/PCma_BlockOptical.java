@@ -150,7 +150,7 @@ public class PCma_BlockOptical extends BlockContainer implements PC_IBlockType {
 
 				}
 			}
-			if (drop && !PC_Utils.isCreative()) {
+			if (drop) {
 
 				if (isGlassPanelOnSide(world, i, j, k, angle)) {
 
@@ -158,7 +158,7 @@ public class PCma_BlockOptical extends BlockContainer implements PC_IBlockType {
 					if (teo != null) {
 						teo.setPrismSide(angle, false);
 					}
-					dropBlockAsItem_do(world, i, j, k, new ItemStack(Block.thinGlass, 1));
+					if(!PC_Utils.isCreative())	dropBlockAsItem_do(world, i, j, k, new ItemStack(Block.thinGlass, 1));
 
 				}
 
