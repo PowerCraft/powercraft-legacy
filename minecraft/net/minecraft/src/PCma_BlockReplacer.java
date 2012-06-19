@@ -5,7 +5,7 @@ import java.util.Random;
 import net.minecraft.src.forge.ITextureProvider;
 
 public class PCma_BlockReplacer extends BlockContainer implements PC_ISwapTerrain, PC_IBlockType, ITextureProvider {
-	private static final int TXDOWN = 109, TXTOP = 125, TXSIDE = 125, TXFRONT = 125, TXBACK = 125;
+	private static final int TXDOWN = 109, TXTOP = 153, TXSIDE = 137, TXFRONT = 105, TXBACK = 121;
 
 	private int blockOffset[] = { 0, 0, 0 };
 
@@ -47,23 +47,18 @@ public class PCma_BlockReplacer extends BlockContainer implements PC_ISwapTerrai
 		if (s == 0) {
 			return TXDOWN;
 		} else {
-			if (m == s) return TXFRONT;
-			if ((m == 2 && s == 3) || (m == 3 && s == 2) || (m == 4 && s == 5) || (m == 5 && s == 4)) return TXBACK;
 			return TXSIDE;
 		}
 	}
 
 	@Override
-	public void onBlockPlacedBy(World world, int i, int j, int k, EntityLiving entityliving) {
-		super.onBlockPlacedBy(world, i, j, k, entityliving);
-
-		// if(entityliving instanceof EntityPlayer){
-		// EntityPlayer entityplayer = (EntityPlayer)entityliving;
-		// PCma_TileEntityReplacer tileentity = (PCma_TileEntityReplacer) world.getBlockTileEntity(i, j, k);
-		// if (tileentity != null) {
-		// ModLoader.openGUI(entityplayer, new PC_GresGui(new PCma_GuiReplacer(entityplayer.inventory, tileentity)));
-		// }
-		// }
+	public void onBlockClicked(World world, int i, int j, int k, EntityPlayer entityplayer) {
+		
+		PCma_TileEntityReplacer tileentity = (PCma_TileEntityReplacer) world.getBlockTileEntity(i, j, k);
+		if (tileentity != null) {
+			tileentity.aidEnabled = !tileentity.aidEnabled;
+		}
+		
 	}
 
 	@Override
@@ -76,6 +71,20 @@ public class PCma_BlockReplacer extends BlockContainer implements PC_ISwapTerrai
 				Block bhold = Block.blocksList[ihold.getItem().shiftedIndex];
 				if (bhold instanceof PC_IBlockType) { return false; }
 
+			}else if(ihold.getItem().shiftedIndex == Item.stick.shiftedIndex){
+				
+				int l = MathHelper.floor_double(((entityplayer.rotationYaw * 4F) / 360F) + 0.5D) & 3;
+
+				if (PC_Utils.isPlacingReversed()) {
+					l = PC_Utils.reverseSide(l);
+				}
+				
+				if(entityplayer.isSneaking()) l = PC_Utils.isPlacingReversed()?5:4;
+				
+				System.out.println("side="+l);
+				
+				
+				return true;
 			}
 		}
 
@@ -249,7 +258,11 @@ public class PCma_BlockReplacer extends BlockContainer implements PC_ISwapTerrai
 		PCma_TileEntityReplacer ter = (PCma_TileEntityReplacer) world.getBlockTileEntity(i, j, k);
 		
 		if (ter != null && !world.isRemote) {
-			swapBlocks(ter);
+			boolean powered = isIndirectlyPowered(world, i, j, k);
+			if(powered != ter.state){
+				swapBlocks(ter);
+				ter.state = powered;
+			}			
 		}
 	}
 

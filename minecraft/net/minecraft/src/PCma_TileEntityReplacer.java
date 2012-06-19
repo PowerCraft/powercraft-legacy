@@ -1,11 +1,99 @@
 package net.minecraft.src;
 
+import java.util.Random;
+
 public class PCma_TileEntityReplacer extends TileEntity implements IInventory, PC_ISelectiveInventory {
 
 	public ItemStack buildBlock;
 	public static final int MAXSTACK = 1;
 	public static final int SIZE = 1;
 	public PC_CoordI coordOffset = new PC_CoordI(0, 1, 0);
+	public boolean aidEnabled = false;
+	private PC_Color aidcolor;
+	
+	public boolean state = false;
+	private Random rand;
+	private boolean init = false;
+
+	
+	
+	
+	
+	
+	@Override
+	public void updateEntity() {
+		
+		if(!init){
+			init=true;
+			Random rnd = new Random((145896555+xCoord)^yCoord^(zCoord^132));
+			
+			double used = 2D;
+			
+			double r=rnd.nextDouble()*1D;
+			used -= r;
+			double g=rnd.nextDouble()*1D;
+			used -= g;
+			double b=used;
+			
+			if(rnd.nextBoolean()){
+				double f = r; r=g; g=f;
+			}
+			
+			if(rnd.nextBoolean()){
+				double f = g; g=b; b=f;
+			}
+			
+			if(rnd.nextBoolean()){
+				double f = b; b=r; r=f;
+			}
+			
+			aidcolor = new PC_Color(r,g,b);
+			
+			rand = new Random();
+		}
+		
+		if (aidEnabled) {
+			
+			double d = xCoord + rand.nextFloat();
+			double d1 = yCoord + 1.1D;
+			double d2 = zCoord + rand.nextFloat();
+			
+			int a = rand.nextInt(3);
+			int b = rand.nextInt(3);
+			
+			ModLoader.getMinecraftInstance().effectRenderer.addEffect(new PC_EntityLaserParticleFX(worldObj, new PC_CoordD(d,d1,d2), aidcolor, new PC_CoordI(), 0));
+			
+			for(int q=0; q<8; q++){
+			
+				d = xCoord + coordOffset.x + rand.nextFloat();
+				d1 = yCoord + coordOffset.y + rand.nextFloat();
+				d2 = zCoord + coordOffset.z + rand.nextFloat();
+				
+				a = rand.nextInt(3);
+				b = rand.nextInt(3);
+				while(a==b) b = rand.nextInt(3);
+				boolean aa = rand.nextBoolean();
+				boolean bb = rand.nextBoolean();
+				
+				switch(a){
+					case 0: d = aa?Math.floor(d):Math.ceil(d); break;
+					case 1: d1 = aa?Math.floor(d1):Math.ceil(d1); break;
+					case 2: d2 = aa?Math.floor(d2):Math.ceil(d2); break;
+				}
+				
+				switch(b){
+					case 0: d = bb?Math.floor(d):Math.ceil(d); break;
+					case 1: d1 = bb?Math.floor(d1):Math.ceil(d1); break;
+					case 2: d2 = bb?Math.floor(d2):Math.ceil(d2); break;
+				}
+				
+				ModLoader.getMinecraftInstance().effectRenderer.addEffect(new PC_EntityLaserParticleFX(worldObj, new PC_CoordD(d,d1,d2), aidcolor, new PC_CoordI(), 0));
+				
+			}
+		}
+		
+		super.updateEntity();
+	}
 	
 	@Override
 	public boolean canInsertStackTo(int slot, ItemStack stack) {
@@ -70,8 +158,11 @@ public class PCma_TileEntityReplacer extends TileEntity implements IInventory, P
 		}
 		
 		PC_Utils.readWrappedFromNBT(nbttagcompound, "targetPos", coordOffset);
+		state = nbttagcompound.getBoolean("state");
+		aidEnabled = nbttagcompound.getBoolean("aid");
 		
-		if(coordOffset.equals(new PC_CoordI(0,0,0))) coordOffset.setTo(0,99,0);
+		if(coordOffset.equals(new PC_CoordI(0,0,0))) coordOffset.setTo(0,1,0);
+		init=false;
 	}
 
 	@Override
@@ -86,6 +177,8 @@ public class PCma_TileEntityReplacer extends TileEntity implements IInventory, P
 		}
 
 		nbttagcompound.setTag("Items", nbttaglist);
+		nbttagcompound.setBoolean("state", state);
+		nbttagcompound.setBoolean("aid", aidEnabled);
 		
 		PC_Utils.writeWrappedToNBT(nbttagcompound, "targetPos", coordOffset);
 	}

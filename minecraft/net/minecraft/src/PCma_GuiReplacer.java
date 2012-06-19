@@ -200,6 +200,7 @@ public class PCma_GuiReplacer implements PC_IGresBase {
 				if (num > 16) num = 16;
 
 				edit.setText(num + "");
+				actionPerformed(edit, gui);
 
 			}
 
