@@ -166,7 +166,6 @@ public class PClo_BlockSensor extends BlockContainer implements PC_IBlockType, P
 			case 2:
 				return 37;
 		}
-		System.out.println(meta);
 		return 48;
 	}
 

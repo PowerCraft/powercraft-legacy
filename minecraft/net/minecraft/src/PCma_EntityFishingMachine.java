@@ -324,7 +324,6 @@ public class PCma_EntityFishingMachine extends Entity {
 	 */
 	private void checkWaterState() {
 		if (!hasEnoughWater()) {
-			System.out.println("not enough water!");
 			turnIntoBlocks();
 		}
 	}
@@ -334,7 +333,6 @@ public class PCma_EntityFishingMachine extends Entity {
 	 */
 	private void checkBodyState() {
 		if (!isBodyComplete(false)) {
-			System.out.println("body eror");
 			turnIntoBlocks();
 		}
 	}
