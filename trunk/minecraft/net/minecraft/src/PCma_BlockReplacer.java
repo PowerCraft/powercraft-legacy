@@ -81,7 +81,22 @@ public class PCma_BlockReplacer extends BlockContainer implements PC_ISwapTerrai
 				
 				if(entityplayer.isSneaking()) l = PC_Utils.isPlacingReversed()?5:4;
 				
-				System.out.println("side="+l);
+				PCma_TileEntityReplacer tileentity = (PCma_TileEntityReplacer) world.getBlockTileEntity(i, j, k);
+				if (tileentity != null) {
+					PC_CoordI old = tileentity.coordOffset.copy();
+					switch(l){
+						case 0: tileentity.coordOffset.z++; break;
+						case 2: tileentity.coordOffset.z--; break;
+						case 3: tileentity.coordOffset.x++; break;
+						case 1: tileentity.coordOffset.x--; break;
+						case 4: tileentity.coordOffset.y++; break;
+						case 5: tileentity.coordOffset.y--; break;
+					}
+					
+					tileentity.coordOffset.x = MathHelper.clamp_int(tileentity.coordOffset.x, -16, 16);
+					tileentity.coordOffset.y = MathHelper.clamp_int(tileentity.coordOffset.y, -16, 16);
+					tileentity.coordOffset.z = MathHelper.clamp_int(tileentity.coordOffset.z, -16, 16);
+				}
 				
 				
 				return true;
