@@ -102,7 +102,6 @@ public class PCco_GuiCraftingTool implements PC_IGresBase{
 	@Override
 	public void actionPerformed(PC_GresWidget widget, PC_IGresGui gui) {
 		if(widget==craftingToolInventory){
-			System.out.println("action performed on inventory crafting tool.");
 			for (int i = 0; i < invWidth; i++){
 				for (int j = 0; j < invHeight; j++) {
 					Slot slot = craftingToolInventory.getSlot(i, j);

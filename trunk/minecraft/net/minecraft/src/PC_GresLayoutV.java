@@ -27,6 +27,7 @@ public class PC_GresLayoutV extends PC_GresWidget {
 	@Override
 	public void calcChildPositions() {
 		int yy = 0, ySize = 0;
+		int lastmargin = 0;
 		for (PC_GresWidget w: childs) {
 			w.calcChildPositions();
 			PC_CoordI csize = w.calcSize();
@@ -39,10 +40,11 @@ public class PC_GresLayoutV extends PC_GresWidget {
 					parent.calcChildPositions();
 				calcChildPositions();
 				return;
-			}
-			ySize += csize.y + widgetMargin;
+			};
+			lastmargin = w.widgetMargin;
+			ySize += csize.y + w.widgetMargin;
 		}
-		ySize -= widgetMargin;
+		ySize -= lastmargin;
 		for (PC_GresWidget w: childs) {
 			PC_CoordI csize = w.getSize();
 			int xPos = 0;
@@ -77,7 +79,7 @@ public class PC_GresLayoutV extends PC_GresWidget {
 					break;
 			}
 			w.setPosition(xPos, yPos);
-			yy += csize.y + widgetMargin;
+			yy += csize.y + w.widgetMargin;
 		}
 	}
 

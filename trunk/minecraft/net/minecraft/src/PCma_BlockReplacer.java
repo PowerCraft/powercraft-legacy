@@ -91,7 +91,7 @@ public class PCma_BlockReplacer extends BlockContainer implements PC_ISwapTerrai
 
 	@Override
 	public int tickRate() {
-		return 4;
+		return 2;
 	}
 
 	@Override
@@ -163,9 +163,20 @@ public class PCma_BlockReplacer extends BlockContainer implements PC_ISwapTerrai
 		if (!replacer_canPlaceBlockAt(world, itemstack, pos)) return false;
 
 		ItemBlock iblock = (ItemBlock) itemstack.getItem();
+		
+        if (pos.setBlockNoNotify(world, iblock.getBlockID(), iblock.getMetadata(itemstack.getItemDamage())))
+        {
+            if (pos.getId(world) == iblock.getBlockID())
+            {
+            	world.notifyBlockChange(pos.x, pos.y, pos.z, iblock.getBlockID());
+                Block.blocksList[iblock.getBlockID()].onBlockPlaced(world, pos.x, pos.y, pos.z, 0);
+            }
 
-		return iblock.onItemUse(itemstack, new PC_FakePlayer(world), world, pos.x, pos.y+1, pos.z, 0);
+            //world.playSoundEffect((float)par4 + 0.5F, (float)par5 + 0.5F, (float)par6 + 0.5F, block.stepSound.getStepSound(), (block.stepSound.getVolume() + 1.0F) / 2.0F, block.stepSound.getPitch() * 0.8F);
+            itemstack.stackSize--;
+        }
 
+        return true;
 	}
 
 
@@ -206,7 +217,7 @@ public class PCma_BlockReplacer extends BlockContainer implements PC_ISwapTerrai
 			loot = new ItemStack(dropId, dropQuant, dropMeta);
 		}
 
-		pos.setBlock(world,0,0);
+		//pos.setBlock(world,0,0);
 		return loot;
 	}
 

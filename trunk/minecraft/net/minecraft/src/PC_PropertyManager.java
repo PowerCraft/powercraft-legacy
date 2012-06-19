@@ -717,7 +717,6 @@ public class PC_PropertyManager {
 		public void validate() {
 			if (!isValid()) {
 				if (type == PropertyType.BLOCK) {
-					System.out.println(Block.blocksList[num]);
 					PC_Logger.severe("Block ID property \"" + name
 							+ "\" has invalid value (ID out of range, or already used). YOUR MINECRAFT WILL CRASH!");
 				} else if (type == PropertyType.ITEM) {

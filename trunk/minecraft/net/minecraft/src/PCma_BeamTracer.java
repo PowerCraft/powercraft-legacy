@@ -283,7 +283,6 @@ public class PCma_BeamTracer extends PC_BeamTracerBase {
 
 				if (sideCount >= 1) {
 
-					// System.out.println("prism");
 					for (int h = 0; h < sideCount; h++) {
 						PC_CoordI newMove = getPrismOutputMove(side[h]).copy();
 

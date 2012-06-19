@@ -70,7 +70,7 @@ public abstract class PC_GresWidget extends Gui {
 	protected PC_CoordI minSize = new PC_CoordI(0, 0);
 
 	/** Distance from other widgets in group. */
-	protected int widgetMargin = 5;
+	protected int widgetMargin = 4;
 
 	/** Counter used for the automatic resizing */
 	protected int cursorCounter = 0;
@@ -320,6 +320,16 @@ public abstract class PC_GresWidget extends Gui {
 	 */
 	public PC_GresWidget setMinHeight(int h) {
 		this.minSize.setTo(this.minSize.x, h);
+		return this;
+	}
+
+	/**
+	 * Set widget margin
+	 * @param widgetMargin
+	 * @return this
+	 */
+	public PC_GresWidget setWidgetMargin(int widgetMargin) {
+		this.widgetMargin = widgetMargin;
 		return this;
 	}
 

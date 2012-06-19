@@ -51,7 +51,6 @@ public class PCco_SlotDirectCrafting extends Slot {
 	public void onPickupFromSlot(ItemStack itemstack) {		
 		// itemstack.onCrafting(thePlayer.worldObj, thePlayer);
 		super.onPickupFromSlot(itemstack);
-		System.out.println("OnPickup");
 
 		doCrafting();
 		updateAvailability();
@@ -60,7 +59,6 @@ public class PCco_SlotDirectCrafting extends Slot {
 	@Override
 	public ItemStack decrStackSize(int i) {
 		if (available) {
-			System.out.println("DecrStackSize");
 			ItemStack output = product.copy();
 			if((PC_Utils.isCreative() || survivalCheating) && (Keyboard.isKeyDown(Keyboard.KEY_LCONTROL) || Keyboard.isKeyDown(Keyboard.KEY_RCONTROL))){
 				output.stackSize = output.getMaxStackSize();				
