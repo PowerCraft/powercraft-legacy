@@ -15,6 +15,11 @@ public class PClo_GuiMicroprocessor implements PC_IGresBase {
 	}
 	
 	@Override
+	public EntityPlayer getPlayer() {
+		return PC_Utils.mc().thePlayer;
+	}
+	
+	@Override
 	public void initGui(PC_IGresGui gui) {
 		PC_GresWindow w = new PC_GresWindow("Microprocessor");
 		PC_GresWidget hg;

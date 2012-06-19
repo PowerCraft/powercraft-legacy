@@ -35,6 +35,11 @@ public class PClo_GuiPulsar implements PC_IGresBase {
 		delay_ticks = pulsar.delay;
 		hold_ticks = pulsar.holdtime;
 	}
+	
+	@Override
+	public EntityPlayer getPlayer() {
+		return PC_Utils.mc().thePlayer;
+	}
 
 	@Override
 	public void initGui(PC_IGresGui gui) {

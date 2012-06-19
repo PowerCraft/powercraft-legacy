@@ -334,6 +334,11 @@ public class PCco_GuiCraftingTool implements PC_IGresBase{
 	}
 	
 	@Override
+	public EntityPlayer getPlayer() {
+		return PC_Utils.mc().thePlayer;
+	}
+	
+	@Override
 	public void initGui(PC_IGresGui gui) {
 		PC_GresWindow w = new PC_GresWindow(PC_Lang.tr("pc.gui.craftingTool.title"));
 		PC_GresWidget hg;
@@ -344,10 +349,11 @@ public class PCco_GuiCraftingTool implements PC_IGresBase{
 			for (int j = 0; j < invHeight; j++) {
 				int indexInlist = page * invWidth * invHeight + j * invWidth + i;
 				int indexSlot = invWidth * invHeight + j * invWidth + i;
-				if(indexInlist<craftingTool.stacklist.size())
+				if(indexInlist<craftingTool.stacklist.size()){
 					craftingToolInventory.setSlot(new PCco_SlotDirectCrafting(player, craftingTool.getItemForSlotNumber(indexInlist), indexSlot, 0, 0), i, j);
-				else
+				}else{
 					craftingToolInventory.setSlot(null, i, j);
+				}
 
 			}
 		}
@@ -359,23 +365,9 @@ public class PCco_GuiCraftingTool implements PC_IGresBase{
 			page=0;
 			prev.enable(false);
 		}
-		vg = new PC_GresLayoutV().setAlignH(PC_GresAlign.CENTER).setAlignV(PC_GresAlign.CENTER);
-		//vg.add(new PC_GresLabel(StatCollector.translateToLocal("container.inventory")));
-		PC_GresInventory inventory = new PC_GresInventory(new PC_CoordI(9, 3));
 		
-		for (int i = 0; i < 9; i++){
-			for (int j = 0; j < 3; j++){
-				inventory.setSlot(new Slot(player.inventory, i + j * 9 + 9, 0, 0), i, j);
-			}
-		}
-		vg.add(inventory);
+		hg.add(new PC_GresInventoryPlayer(false));
 		
-		inventory = new PC_GresInventory(new PC_CoordI(9, 1));
-		for (int i = 0; i < 9; i++){
-			inventory.setSlot(new Slot(player.inventory, i, 0, 0), i, 0);
-		}
-		vg.add(inventory);
-		hg.add(vg);
 		hg.add(next = (PC_GresButton) new PC_GresButton(">>>").setMinWidth(30));
 		if(page>=getMaxPages()){
 			page = getMaxPages();
@@ -384,6 +376,7 @@ public class PCco_GuiCraftingTool implements PC_IGresBase{
 		w.add(hg);
 		actionPerformed(craftingToolInventory, gui);
 		gui.add(w);
+		gui.setCanShiftTransfer(false);
 	}
 
 	private void recalcInventorySlots(PC_IGresGui gui){

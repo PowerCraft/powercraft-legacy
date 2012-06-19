@@ -21,6 +21,11 @@ public class PCma_GuiLaserTypeDecide implements PC_IGresBase {
 	public PCma_GuiLaserTypeDecide(PCma_TileEntityLaser te) {
 		laser = te;
 	}
+	
+	@Override
+	public EntityPlayer getPlayer() {
+		return PC_Utils.mc().thePlayer;
+	}
 
 	@Override
 	public void initGui(PC_IGresGui gui) {

@@ -19,6 +19,11 @@ public class PCco_GuiUpdateNotification implements PC_IGresBase {
 	private PC_GresWidget buttonOK;
 	
 	@Override
+	public EntityPlayer getPlayer() {
+		return PC_Utils.mc().thePlayer;
+	}
+	
+	@Override
 	public void initGui(PC_IGresGui gui) {
 		PC_GresWindow w = new PC_GresWindow(240, 50, PC_Lang.tr("pc.gui.update.title"));
 		w.setAlignH(PC_GresAlign.STRETCH);
