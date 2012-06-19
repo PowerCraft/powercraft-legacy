@@ -83,7 +83,7 @@ public class PCma_BlockReplacer extends BlockContainer implements PC_ISwapTerrai
 
 		PCma_TileEntityReplacer tileentity = (PCma_TileEntityReplacer) world.getBlockTileEntity(i, j, k);
 		if (tileentity != null) {
-			PC_Utils.openGres(entityplayer, new PCma_GuiReplacer(tileentity, entityplayer.inventory));
+			PC_Utils.openGres(entityplayer, new PCma_GuiReplacer(tileentity, entityplayer));
 		}
 
 		return true;
@@ -181,22 +181,18 @@ public class PCma_BlockReplacer extends BlockContainer implements PC_ISwapTerrai
 		ItemStack loot = null;
 
 		if (!replacer_canHarvestBlockAt(world, pos)){
-			System.out.println("cant harvest "+pos);
 			return null;
 		}
 
 		Block block = Block.blocksList[pos.getId(world)];
 
 		if (block == null){
-			System.out.println("block is null "+pos);
 			return null;
 		}
 
 		if (block.canSilkHarvest()) {
-			System.out.println("silk "+pos);
 			loot = block.createStackedBlock(pos.getMeta(world));
 		} else {
-			System.out.println("nosilk "+pos);
 			int dropId = block.blockID;
 			int dropMeta = block.damageDropped(pos.getMeta(world));
 			int dropQuant = block.quantityDropped(world.rand);
@@ -221,12 +217,10 @@ public class PCma_BlockReplacer extends BlockContainer implements PC_ISwapTerrai
 		if(pos.equals(new PC_CoordI(te.xCoord, te.yCoord, te.zCoord))) return;
 		
 		if(!replacer_canHarvestBlockAt(te.worldObj, pos)){
-			System.out.println("cant harvest  "+pos);
 			return;
 		}
 		
 		if(!replacer_canPlaceBlockAt(te.worldObj, te.buildBlock, pos)){
-			System.out.println("cant place  "+te.buildBlock);
 			return;
 		}
 		

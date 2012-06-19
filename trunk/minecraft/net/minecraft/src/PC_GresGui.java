@@ -22,6 +22,7 @@ public class PC_GresGui extends GuiContainer implements PC_IGresGui {
 	private PC_GresWidget lastFocus;
 	private PC_GresContainerManager containerManager;
 	private boolean pauseGame = false;
+	private boolean shiftTransfer = false;
 
 	/**
 	 * Constructor for creating a gui
@@ -29,9 +30,10 @@ public class PC_GresGui extends GuiContainer implements PC_IGresGui {
 	 * @param gui the gui
 	 */
 	public PC_GresGui(PC_IGresBase gui) {
-		super(new PC_GresContainerManager());
+		super(new PC_GresContainerManager(gui.getPlayer()));
 		this.gui = gui;
 		containerManager = (PC_GresContainerManager) inventorySlots;
+		containerManager.setGresGui(this);
 	}
 
 	@Override
@@ -48,6 +50,16 @@ public class PC_GresGui extends GuiContainer implements PC_IGresGui {
 	@Override
 	public void setPausesGame(boolean b) {
 		pauseGame = b;
+	}	
+
+	@Override
+	public void setCanShiftTransfer(boolean b) {
+		shiftTransfer = b;
+	}
+
+	@Override
+	public boolean canShiftTransfer() {
+		return shiftTransfer;
 	}
 
 	@Override
@@ -379,5 +391,6 @@ public class PC_GresGui extends GuiContainer implements PC_IGresGui {
 		itemRenderer.zLevel = 0.0F;
 		zLevel = 0.0F;
 	}
+
 
 }

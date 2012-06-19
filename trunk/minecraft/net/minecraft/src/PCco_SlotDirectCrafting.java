@@ -62,7 +62,7 @@ public class PCco_SlotDirectCrafting extends Slot {
 
 	@Override
 	public ItemStack getStack() {
-		if (available) { return product.copy(); }
+		if (available && product != null) { return product.copy(); }
 		return null;
 	}
 

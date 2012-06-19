@@ -44,6 +44,11 @@ public class PClo_GuiRadioChannel implements PC_IGresBase {
 		pos = blockPos;
 		dim = dimen;
 	}
+	
+	@Override
+	public EntityPlayer getPlayer() {
+		return PC_Utils.mc().thePlayer;
+	}
 
 	@Override
 	public void initGui(PC_IGresGui gui) {

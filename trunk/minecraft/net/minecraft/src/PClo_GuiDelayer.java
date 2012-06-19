@@ -38,6 +38,11 @@ public class PClo_GuiDelayer implements PC_IGresBase {
 		ticks = type == FIFO ? gateTE.getDelayBufferLength() : gateTE.repeaterGetHoldTime();
 		delayer_type = type;
 	}
+	
+	@Override
+	public EntityPlayer getPlayer() {
+		return PC_Utils.mc().thePlayer;
+	}
 
 	@Override
 	public void initGui(PC_IGresGui gui) {

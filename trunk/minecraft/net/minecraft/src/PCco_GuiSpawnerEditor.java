@@ -30,6 +30,11 @@ public class PCco_GuiSpawnerEditor implements PC_IGresBase {
 
 		spawner.getMobID();
 	}
+	
+	@Override
+	public EntityPlayer getPlayer() {
+		return PC_Utils.mc().thePlayer;
+	}
 
 	@Override
 	public void initGui(PC_IGresGui gui) {

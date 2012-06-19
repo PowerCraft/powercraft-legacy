@@ -8,6 +8,12 @@ package net.minecraft.src;
  *
  */
 public interface PC_IGresBase {
+	
+	/**
+	 * @return player instance who opened the gui
+	 */
+	public abstract EntityPlayer getPlayer();
+
 
 	/**
 	 * Create {@link PC_GresWindow}, fill with widgets and add it to the outer GUI.

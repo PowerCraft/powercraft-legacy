@@ -1,13 +1,17 @@
 package net.minecraft.src;
 
-import java.util.ArrayList;
-
-import net.minecraft.src.PC_GresMultiTextEdit.Keyword;
 import net.minecraft.src.PC_GresTextEdit.PC_GresInputType;
 import net.minecraft.src.PC_GresWidget.PC_GresAlign;
 import org.lwjgl.input.Keyboard;
 
 
+/**
+ * Block replacing machine GUI
+ * 
+ * @author COR19, Rapus, MightyPork
+ * @copy (c) 2012
+ *
+ */
 public class PCma_GuiReplacer implements PC_IGresBase {
 
 	private PCma_TileEntityReplacer teReplacer;
@@ -17,17 +21,22 @@ public class PCma_GuiReplacer implements PC_IGresBase {
 	private PC_GresLabel errorLabel;
 
 	private boolean valid;
+	
+	IInventory playerInv;
 
-	IInventory player;
-
-	public PCma_GuiReplacer(PCma_TileEntityReplacer teReplacer, IInventory player) {
+	public PCma_GuiReplacer(PCma_TileEntityReplacer teReplacer, EntityPlayer entityplayer) {
 		this.teReplacer = teReplacer;
-		this.player = player;
+		this.playerInv = entityplayer.inventory;
+	}
+
+	@Override
+	public EntityPlayer getPlayer() {
+		return PC_Utils.mc().thePlayer;
 	}
 
 	@Override
 	public void initGui(PC_IGresGui gui) {
-		PC_GresWidget w = new PC_GresWindow(225, 50, PC_Lang.tr("pc.gui.blockReplacer.title")).setAlignH(PC_GresAlign.STRETCH);
+		PC_GresWidget w = new PC_GresWindow(225, 50, PC_Lang.tr("pc.gui.blockReplacer.title")).setAlignH(PC_GresAlign.CENTER);
 
 		PC_GresWidget hg;
 		PC_GresWidget vg;
@@ -110,27 +119,10 @@ public class PCma_GuiReplacer implements PC_IGresBase {
 		hg.add(errorLabel = new PC_GresLabel(""));
 		errorLabel.setColor(PC_GresWidget.textColorEnabled, 0x990000);
 		w.add(hg);
+		
+		w.add(new PC_GresInventory(new PC_CoordI(1, 1)).setSlot(new Slot(teReplacer, 0, 0, 0), 0, 0));
 
-		vg = new PC_GresLayoutV().setAlignH(PC_GresAlign.CENTER).setAlignV(PC_GresAlign.CENTER);
-		
-		PC_GresInventory inventory = new PC_GresInventory(new PC_CoordI(1, 1));
-		inventory.setSlot(new Slot(teReplacer, 0, 0, 0), 0, 0);
-		vg.add(inventory);
-		
-		inventory = new PC_GresInventory(new PC_CoordI(9, 3));
-		for (int i = 0; i < 9; i++){
-			for (int j = 0; j < 3; j++){
-				inventory.setSlot(new Slot(player, i + j * 9 + 9, 0, 0), i, j);
-			}
-		}
-		vg.add(inventory);
-		
-		inventory = new PC_GresInventory(new PC_CoordI(9, 1));
-		for (int i = 0; i < 9; i++){
-			inventory.setSlot(new Slot(player, i, 0, 0), i, 0);
-		}
-		vg.add(inventory);
-		w.add(vg);
+		w.add(new PC_GresInventoryPlayer(true));
 
 		hg = new PC_GresLayoutH().setAlignH(PC_GresAlign.CENTER);
 		hg.add(button[0] = new PC_GresButton(PC_Lang.tr("pc.gui.cancel")));
