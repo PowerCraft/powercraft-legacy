@@ -147,7 +147,7 @@ public class PC_GresTextEdit extends PC_GresWidget {
 		return false;
 	}
 
-	private void addKey(char c) {
+	protected void addKey(char c) {
 		int s = mouseSelectStart, e = mouseSelectEnd;
 		if (s > e) {
 			e = mouseSelectStart;
@@ -279,6 +279,12 @@ public class PC_GresTextEdit extends PC_GresWidget {
 				return true;
 			case Keyboard.KEY_BACK:
 				key_backspace();
+				return true;
+			case Keyboard.KEY_HOME:
+				mouseSelectEnd = mouseSelectStart = 0;
+				return true;
+			case Keyboard.KEY_END:
+				mouseSelectEnd = mouseSelectStart = text.length();
 				return true;
 			case Keyboard.KEY_DELETE:
 				key_delete();

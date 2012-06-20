@@ -280,7 +280,8 @@ public class mod_PClogic extends PC_Module {
 		map.put("tile.PCloLogicGate.buffer.name", "Buffered Delayer");
 		map.put("tile.PCloLogicGate.slowRepeater.name", "Slow Repeater");
 		map.put("tile.PCloLogicGate.crossing.name", "Redstone Crossing");
-		map.put("tile.PCloLogicGate.random.name", "Random Gate");
+		map.put("tile.PCloLogicGate.random.name", "Redstone Random Gate");
+		map.put("tile.PCloLogicGate.programmable.name", "Programmable Logic Gate");
 
 
 		// descriptions.
@@ -311,6 +312,7 @@ public class mod_PClogic extends PC_Module {
 		map.put("pc.gate.slowRepeater.desc", "makes pulses longer");
 		map.put("pc.gate.crossing.desc", "lets two wires intersect");
 		map.put("pc.gate.random.desc", "changes state randomly on pulse");
+		map.put("pc.gate.programmable.desc", "gate with custom function");
 
 		map.put("pc.radioRemote.connected", "Portable device connected to channel \"%s\".");
 		map.put("pc.radioRemote.desc", "Channel: %s");
@@ -505,6 +507,11 @@ public class mod_PClogic extends PC_Module {
 				new ItemStack(gateOn, 1, PClo_GateType.CROSSING),
 				new Object[] { " + ", "+++", " + ",
 					'+', Item.redstone });
+		
+		ModLoader.addRecipe(
+				new ItemStack(gateOn, 2, PClo_GateType.PROGRAMMABLE),
+				new Object[] { "+++", "+S+", "+++",
+					'+', Item.redstone, 'S', Block.stone });
 
 		
 		// *** lights ***

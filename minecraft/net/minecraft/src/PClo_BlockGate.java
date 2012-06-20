@@ -856,7 +856,7 @@ public class PClo_BlockGate extends BlockContainer implements PC_IRotatedBox, PC
 		if (gateType == PClo_GateType.NOR3) { return !(A | B | C); }
 		if (gateType == PClo_GateType.XOR3) { return (A != B) | (B != C) | (C != A); }
 		if (gateType == PClo_GateType.XNOR3) { return (A == B) && (B == C) && (C == A); }
-		if (gateType == PClo_GateType.MICROPROCESSOR) { return calcGates(tileEntety.programm, A, B, C); }
+		if (gateType == PClo_GateType.PROGRAMMABLE) { return calcGates(tileEntety.programm, A, B, C); }
 		return false;
 
 	}
@@ -1016,9 +1016,9 @@ public class PClo_BlockGate extends BlockContainer implements PC_IRotatedBox, PC
 			}
 		}
 
-		if (getType(world, x, y, z) == PClo_GateType.MICROPROCESSOR){
+		if (getType(world, x, y, z) == PClo_GateType.PROGRAMMABLE){
 			
-			PC_Utils.openGres(player, new PClo_GuiMicroprocessor(getTE(world, x, y, z)));
+			PC_Utils.openGres(player, new PClo_GuiCustomGate(getTE(world, x, y, z)));
 			boolean outputActive = isOutputActive(world, x, y, z);
 			boolean on = isActive();
 			

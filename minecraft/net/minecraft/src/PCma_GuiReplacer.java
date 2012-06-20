@@ -36,7 +36,7 @@ public class PCma_GuiReplacer implements PC_IGresBase {
 
 	@Override
 	public void initGui(PC_IGresGui gui) {
-		PC_GresWidget w = new PC_GresWindow(225, 50, PC_Lang.tr("pc.gui.blockReplacer.title")).setAlignH(PC_GresAlign.CENTER);
+		PC_GresWidget w = new PC_GresWindow(PC_Lang.tr("pc.gui.blockReplacer.title")).setWidthForInventory().setAlignH(PC_GresAlign.CENTER);
 
 		PC_GresWidget hg;
 		PC_GresWidget vg;

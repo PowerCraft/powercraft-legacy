@@ -1,7 +1,6 @@
 package net.minecraft.src;
 
-import org.lwjgl.opengl.GL11;
-
+import net.minecraft.src.PC_GresWidget.PC_GresAlign;
 
 
 /**
@@ -11,30 +10,57 @@ import org.lwjgl.opengl.GL11;
  * @copy (c) 2012
  * 
  */
-public class PCma_GuiBlockBuilder extends GuiContainer {
+public class PCma_GuiBlockBuilder implements PC_IGresBase {
+	
+	private EntityPlayer player;
+	private IInventory inventory;
 
 	/**
-	 * @param inventoryplayer player inventory
+	 * @param player player
 	 * @param tilee device tile entity
 	 */
-	public PCma_GuiBlockBuilder(InventoryPlayer inventoryplayer, PCma_TileEntityBlockBuilder tilee) {
-		super(new PCma_ContainerBlockBuilder(inventoryplayer, tilee));
+	public PCma_GuiBlockBuilder(EntityPlayer player, PCma_TileEntityBlockBuilder tilee) {
+		this.player = player;
+		inventory = tilee;
+	}
+
+
+	@Override
+	public EntityPlayer getPlayer() {
+		return player;
 	}
 
 	@Override
-	protected void drawGuiContainerForegroundLayer() {
-		String title = PC_Lang.tr("tile.PCmaBlockBuilder.name");
-		fontRenderer.drawString(title, (xSize - fontRenderer.getStringWidth(title)) / 2, 6, 0x404040);
-		fontRenderer.drawString(PC_Lang.tr("container.inventory"), 8, (ySize - 96) + 2, 0x404040);
+	public void initGui(PC_IGresGui gui) {
+		PC_GresWidget w = new PC_GresWindow(PC_Lang.tr("tile.PCmaBlockBuilder.name")).setWidthForInventory();
+		
+		w.setAlignH(PC_GresAlign.CENTER);
+		
+		w.add(new PC_GresInventory(inventory, 3, 3));
+		w.add(new PC_GresInventoryPlayer(true));
+		
+		gui.add(w);
+		gui.setCanShiftTransfer(true);
+
+		w.calcChildPositions();
+		
 	}
 
 	@Override
-	protected void drawGuiContainerBackgroundLayer(float f, int i, int j) {
-		int k = mc.renderEngine.getTexture("/gui/trap.png");
-		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-		mc.renderEngine.bindTexture(k);
-		int l = (width - xSize) / 2;
-		int i1 = (height - ySize) / 2;
-		drawTexturedModalRect(l, i1, 0, 0, xSize, ySize);
+	public void onGuiClosed(PC_IGresGui gui) {
+	}
+
+	@Override
+	public void actionPerformed(PC_GresWidget widget, PC_IGresGui gui) {
+	}
+
+	@Override
+	public void onEscapePressed(PC_IGresGui gui) {
+		gui.close();
+	}
+
+	@Override
+	public void onReturnPressed(PC_IGresGui gui) {
+		gui.close();
 	}
 }

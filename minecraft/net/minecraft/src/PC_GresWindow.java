@@ -45,6 +45,20 @@ public class PC_GresWindow extends PC_GresWidget {
 	public PC_GresWindow() {
 		super(240, 0, "");
 	}
+	
+	/**
+	 * Set standard width and stuff for an inventory screen.<br>
+	 * Used to look exactly like normal inventory screens.
+	 * @return this
+	 */
+	public PC_GresWidget setWidthForInventory(){
+		setMinWidth(176);
+		padding.setTo(7,7);
+		this.size = minSize.copy();
+		this.minSize = minSize.copy();
+		calcSize();
+		return this;
+	}
 
 	@Override
 	public PC_CoordI calcSize() {
@@ -61,7 +75,7 @@ public class PC_GresWindow extends PC_GresWidget {
 
 		renderTextureSliced(offsetPos, mod_PCcore.getImgDir() + "gres/dialog.png", size, new PC_CoordI(0, 0), new PC_CoordI(256, 256));
 
-		if(text.length() > 0) getFontRenderer().drawString(text, offsetPos.x + pos.x + (size.x) / 2 - fontRenderer.getStringWidth(text) / 2, offsetPos.y + pos.y + 8, 0x505050);
+		if(text.length() > 0) getFontRenderer().drawString(text, offsetPos.x + pos.x + (size.x) / 2 - fontRenderer.getStringWidth(text) / 2, offsetPos.y + pos.y + 8, 0x404040);
 
 	}
 

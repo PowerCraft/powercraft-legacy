@@ -1,6 +1,7 @@
 package net.minecraft.src;
 
-import org.lwjgl.opengl.GL11;
+import net.minecraft.src.PC_GresWidget.PC_GresAlign;
+
 
 /**
  * Roaster's GUI screen
@@ -9,41 +10,57 @@ import org.lwjgl.opengl.GL11;
  * @copy (c) 2012
  * 
  */
-public class PCma_GuiRoaster extends GuiContainer {
-	private IInventory roasterinv;
-	private int inventoryRows;
+public class PCma_GuiRoaster implements PC_IGresBase {
+	
+	private EntityPlayer player;
+	private IInventory inventory;
 
 	/**
-	 * Roaster's GUI screen
-	 * 
-	 * @param playerinv
-	 * @param roasterinv
+	 * @param player player
+	 * @param roaster device tile entity
 	 */
-	public PCma_GuiRoaster(IInventory playerinv, IInventory roasterinv) {
-		super(new PCma_ContainerRoaster(playerinv, roasterinv));
-		inventoryRows = 0;
-		this.roasterinv = roasterinv;
-		allowUserInput = false;
-		char c = '\336';
-		int i = c - 108;
-		inventoryRows = roasterinv.getSizeInventory() / 9;
-		ySize = i + inventoryRows * 18;
+	public PCma_GuiRoaster(EntityPlayer player, IInventory roaster) {
+		this.player = player;
+		inventory = roaster;
+	}
+
+
+	@Override
+	public EntityPlayer getPlayer() {
+		return player;
 	}
 
 	@Override
-	protected void drawGuiContainerForegroundLayer() {
-		fontRenderer.drawString(roasterinv.getInvName(), 8, 6, 0x404040);
-		fontRenderer.drawString(StatCollector.translateToLocal("container.inventory"), 8, (ySize - 96) + 2, 0x404040);
+	public void initGui(PC_IGresGui gui) {
+		PC_GresWidget w = new PC_GresWindow(PC_Lang.tr("tile.PCmaBlockRoaster.name")).setWidthForInventory();
+		
+		w.setAlignH(PC_GresAlign.CENTER);
+		
+		w.add(new PC_GresInventory(inventory, 9, 1));
+		w.add(new PC_GresInventoryPlayer(true));
+		
+		gui.add(w);
+		gui.setCanShiftTransfer(true);
+
+		w.calcChildPositions();
+		
 	}
 
 	@Override
-	protected void drawGuiContainerBackgroundLayer(float f, int i, int j) {
-		int k = mc.renderEngine.getTexture("/PowerCraft/core/gui_container.png");
-		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-		mc.renderEngine.bindTexture(k);
-		int l = (width - xSize) / 2;
-		int i1 = (height - ySize) / 2;
-		drawTexturedModalRect(l, i1, 0, 0, xSize, inventoryRows * 18 + 17);
-		drawTexturedModalRect(l, i1 + inventoryRows * 18 + 17, 0, 144, xSize, 96);
+	public void onGuiClosed(PC_IGresGui gui) {
+	}
+
+	@Override
+	public void actionPerformed(PC_GresWidget widget, PC_IGresGui gui) {
+	}
+
+	@Override
+	public void onEscapePressed(PC_IGresGui gui) {
+		gui.close();
+	}
+
+	@Override
+	public void onReturnPressed(PC_IGresGui gui) {
+		gui.close();
 	}
 }

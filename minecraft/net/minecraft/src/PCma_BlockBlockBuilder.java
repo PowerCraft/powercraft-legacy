@@ -124,7 +124,7 @@ public class PCma_BlockBlockBuilder extends BlockContainer implements PC_ISwapTe
 
 		PCma_TileEntityBlockBuilder tileentity = (PCma_TileEntityBlockBuilder) world.getBlockTileEntity(i, j, k);
 		if (tileentity != null) {
-			ModLoader.openGUI(entityplayer, new PCma_GuiBlockBuilder(entityplayer.inventory, tileentity));
+			PC_Utils.openGres(entityplayer, new PCma_GuiBlockBuilder(entityplayer, tileentity));
 		}
 
 		return true;

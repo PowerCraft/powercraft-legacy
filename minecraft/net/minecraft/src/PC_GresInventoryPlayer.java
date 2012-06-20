@@ -10,6 +10,8 @@ package net.minecraft.src;
 public class PC_GresInventoryPlayer extends PC_GresLayoutV {
 	
 	private boolean showLabel = true;
+	
+	/** align of the label on top */
 	protected PC_GresAlign labelAlign = PC_GresAlign.LEFT;
 
 	/**
