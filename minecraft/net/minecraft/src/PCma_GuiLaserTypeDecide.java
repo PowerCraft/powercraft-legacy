@@ -76,4 +76,8 @@ public class PCma_GuiLaserTypeDecide implements PC_IGresBase {
 	public void onReturnPressed(PC_IGresGui gui) {		
 	}
 
+	@Override
+	public void onCraftMatrixChanged(IInventory iinventory) {
+	}
+
 }

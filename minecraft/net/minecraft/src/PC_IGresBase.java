@@ -48,5 +48,8 @@ public interface PC_IGresBase {
 	 * @param gui outer gui
 	 */
 	public abstract void onReturnPressed(PC_IGresGui gui);
+
+
+	public abstract void onCraftMatrixChanged(IInventory iinventory);
 	
 }

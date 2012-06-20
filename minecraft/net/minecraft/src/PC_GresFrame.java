@@ -1,26 +1,21 @@
 package net.minecraft.src;
 
-/**
- * Resizable GUI horizontal layout
- * 
- * @author XOR19
- * @copy (c) 2012
- * 
- */
-public class PC_GresLayoutH extends PC_GresWidget {
-	
+public class PC_GresFrame extends PC_GresWidget {
+
 	/**
 	 * horizontal layout
 	 */
-	public PC_GresLayoutH() {
+	int border = 5;
+	
+	public PC_GresFrame() {
 		super();
 	}
 	
 	@Override
 	public PC_CoordI calcSize() {
 		calcChildPositions();
-		if (size.x < minSize.x) size.x = minSize.x;
-		if (size.y < minSize.y) size.y = minSize.y;
+		if (size.x < minSize.x + border*2) size.x = minSize.x + border*2;
+		if (size.y < minSize.y + border*2) size.y = minSize.y + border*2;
 
 		return size.copy();
 	}
@@ -31,9 +26,9 @@ public class PC_GresLayoutH extends PC_GresWidget {
 		for (PC_GresWidget w: childs) {
 			w.calcChildPositions();
 			PC_CoordI csize = w.calcSize();
-			if (csize.x + xSize > size.x || csize.y > size.y) {
-				if (csize.x + xSize > size.x) size.x = csize.x + xSize;
-				if (csize.y > size.y) size.y = csize.y;
+			if (csize.x + xSize + border*2 > size.x || csize.y > size.y) {
+				if (csize.x + xSize + border*2 > size.x) size.x = csize.x + xSize + border*2;
+				if (csize.y + border*2 > size.y) size.y = csize.y + border*2;
 				if (parent != null) parent.calcChildPositions();
 				calcChildPositions();
 				return;
@@ -82,7 +77,17 @@ public class PC_GresLayoutH extends PC_GresWidget {
 	}
 
 	@Override
-	protected void render(PC_CoordI mpos) {}
+	protected void render(PC_CoordI mpos) {
+		drawHorizontalLine(mpos.x + pos.x, mpos.x + pos.x + size.x - 1, mpos.y + pos.y, 0xffffffff);
+		drawVerticalLine(mpos.x + pos.x, mpos.y + pos.y, mpos.y + pos.y + size.y, 0xffffffff);
+		
+		drawHorizontalLine(mpos.x + pos.x + 1, mpos.x + pos.x + size.x, mpos.y + pos.y + size.y, 0xff373737);
+		drawVerticalLine(mpos.x + pos.x + size.x, mpos.y + pos.y, mpos.y + pos.y + size.y, 0xff373737);
+		
+		drawHorizontalLine(mpos.x + pos.x, mpos.x + pos.x, mpos.y + pos.y + size.y, 0xff8B8B8B);
+		drawHorizontalLine(mpos.x + pos.x + size.x, mpos.x + pos.x + size.x, mpos.y + pos.y, 0xff8B8B8B);
+		
+	}
 
 	@Override
 	public boolean mouseOver(PC_CoordI mpos) {
@@ -112,4 +117,5 @@ public class PC_GresLayoutH extends PC_GresWidget {
 
 	@Override
 	public void addedToWidget() {}
+
 }

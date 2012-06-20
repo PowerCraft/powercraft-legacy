@@ -152,4 +152,8 @@ public class PClo_GuiRadioChannel implements PC_IGresBase {
 		actionPerformed(buttonOK, gui);
 	}
 
+	@Override
+	public void onCraftMatrixChanged(IInventory iinventory) {
+	}
+	
 }

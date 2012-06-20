@@ -112,4 +112,8 @@ public class PCco_GuiUpdateNotification implements PC_IGresBase {
 		actionPerformed(buttonOK, gui);
 	}
 
+	@Override
+	public void onCraftMatrixChanged(IInventory iinventory) {
+	}
+
 }

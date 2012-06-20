@@ -143,6 +143,10 @@ public class PCco_GuiCraftingTool implements PC_IGresBase{
 	public void onReturnPressed(PC_IGresGui gui) {
 		gui.close();
 	}
+
+	@Override
+	public void onCraftMatrixChanged(IInventory iinventory) {
+	}
 	
 }
 

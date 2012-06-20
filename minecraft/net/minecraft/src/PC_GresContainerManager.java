@@ -195,4 +195,9 @@ public class PC_GresContainerManager extends Container {
 		return flag1;
 	}
 
+	@Override
+	public void onCraftMatrixChanged(IInventory iinventory) {
+		gresGui.onCraftMatrixChanged(iinventory);
+	}
+	
 }

@@ -31,7 +31,7 @@ public class PCma_BlockAutomaticWorkbench extends BlockContainer implements PC_I
 
 		PCma_TileEntityAutomaticWorkbench inventory = getTE(world, i, j, k);
 
-		ModLoader.openGUI(entityplayer, new PCma_GuiAutomaticWorkbench(entityplayer.inventory, inventory));
+		PC_Utils.openGres(entityplayer, new PCma_GuiAutomaticWorkbench(entityplayer, inventory));
 		return true;
 	}
 
