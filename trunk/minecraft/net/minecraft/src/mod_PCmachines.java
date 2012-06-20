@@ -277,7 +277,6 @@ public class mod_PCmachines extends PC_Module implements PC_IActivatorListener {
 		map.put("pc.fisher.errWater", "Not enough water!");
 		map.put("pc.fisher.errStructure", "Not a valid Fish Machine structure!");
 		map.put("pc.fisher.errClickedPlanks", "Fence, not planks!");
-		map.put("pc.gui.blockBuilder.title", "Block Builder");
 		map.put("pc.gui.laserTypeDecide.title", "Select Laser Type");
 		map.put("pc.gui.laserTypeDecide.sensor", "Tripwire");
 		map.put("pc.gui.laserTypeDecide.redstoneSender", "Transmitter");

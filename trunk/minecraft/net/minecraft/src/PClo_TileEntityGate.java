@@ -217,7 +217,7 @@ public class PClo_TileEntityGate extends TileEntity {
 
 		}
 
-		if (gateType == PClo_GateType.MICROPROCESSOR)
+		if (gateType == PClo_GateType.PROGRAMMABLE)
 			programm = maintag.getString("programm");
 		
 		if (gateType == PClo_GateType.HOLD_DELAYER) {
@@ -254,7 +254,7 @@ public class PClo_TileEntityGate extends TileEntity {
 
 		}
 		
-		if (gateType == PClo_GateType.MICROPROCESSOR)
+		if (gateType == PClo_GateType.PROGRAMMABLE)
 			maintag.setString("programm", programm);
 		
 		if (gateType == PClo_GateType.HOLD_DELAYER) {

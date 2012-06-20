@@ -100,7 +100,7 @@ public class PCma_BlockRoaster extends BlockContainer implements PC_ISwapTerrain
 
 		PCma_TileEntityRoaster tileentity = (PCma_TileEntityRoaster) world.getBlockTileEntity(i, j, k);
 		if (tileentity != null) {
-			ModLoader.openGUI(entityplayer, new PCma_GuiRoaster(entityplayer.inventory, tileentity));
+			PC_Utils.openGres(entityplayer, new PCma_GuiRoaster(entityplayer, tileentity));
 		}
 
 		return true;
