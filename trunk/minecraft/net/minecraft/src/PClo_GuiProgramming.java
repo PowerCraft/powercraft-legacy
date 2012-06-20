@@ -54,5 +54,9 @@ public class PClo_GuiProgramming implements PC_IGresBase {
 	public void onReturnPressed(PC_IGresGui gui) {
 		actionPerformed(buttonOK, gui);
 	}
-
+	
+	@Override
+	public void onCraftMatrixChanged(IInventory iinventory) {
+	}
+	
 }

@@ -188,5 +188,9 @@ public class PClo_GuiPulsar implements PC_IGresBase {
 		actionPerformed(buttonOK, gui);
 	}
 
+	@Override
+	public void onCraftMatrixChanged(IInventory iinventory) {
+	}
+	
 }
 

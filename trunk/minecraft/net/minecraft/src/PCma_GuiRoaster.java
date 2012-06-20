@@ -63,4 +63,9 @@ public class PCma_GuiRoaster implements PC_IGresBase {
 	public void onReturnPressed(PC_IGresGui gui) {
 		gui.close();
 	}
+	
+	@Override
+	public void onCraftMatrixChanged(IInventory iinventory) {
+	}
+	
 }

@@ -216,5 +216,9 @@ public class PCma_GuiReplacer implements PC_IGresBase {
 	public void onReturnPressed(PC_IGresGui gui) {
 		actionPerformed(button[1], gui);
 	}
-
+	
+	@Override
+	public void onCraftMatrixChanged(IInventory iinventory) {
+	}
+	
 }

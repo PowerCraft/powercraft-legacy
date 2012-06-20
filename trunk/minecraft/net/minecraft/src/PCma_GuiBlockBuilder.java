@@ -63,4 +63,11 @@ public class PCma_GuiBlockBuilder implements PC_IGresBase {
 	public void onReturnPressed(PC_IGresGui gui) {
 		gui.close();
 	}
+
+
+	@Override
+	public void onCraftMatrixChanged(IInventory iinventory) {
+		// TODO Auto-generated method stub
+		
+	}
 }

@@ -148,4 +148,8 @@ public class PCco_GuiSpawnerEditor implements PC_IGresBase {
 		gui.close();
 	}
 
+	@Override
+	public void onCraftMatrixChanged(IInventory iinventory) {
+	}
+
 }

@@ -392,5 +392,15 @@ public class PC_GresGui extends GuiContainer implements PC_IGresGui {
 		zLevel = 0.0F;
 	}
 
+	@Override
+	public void onCraftMatrixChanged(IInventory iinventory) {
+		gui.onCraftMatrixChanged(iinventory);
+	}
+
+	@Override
+	public Container getContainer() {
+		return containerManager;
+	}
+
 
 }

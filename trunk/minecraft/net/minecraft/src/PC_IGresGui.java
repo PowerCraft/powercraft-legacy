@@ -38,5 +38,9 @@ public interface PC_IGresGui {
 	 * Close the gui and set in-game focus.
 	 */
 	public abstract void close();
+
+	public abstract void onCraftMatrixChanged(IInventory iinventory);
+
+	public abstract Container getContainer();
 	
 }
