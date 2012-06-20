@@ -83,7 +83,7 @@ public class PCma_BlockReplacer extends BlockContainer implements PC_ISwapTerrai
 				
 				PCma_TileEntityReplacer tileentity = (PCma_TileEntityReplacer) world.getBlockTileEntity(i, j, k);
 				if (tileentity != null) {
-					PC_CoordI old = tileentity.coordOffset.copy();
+					
 					switch(l){
 						case 0: tileentity.coordOffset.z++; break;
 						case 2: tileentity.coordOffset.z--; break;
@@ -120,9 +120,9 @@ public class PCma_BlockReplacer extends BlockContainer implements PC_ISwapTerrai
 
 	@Override
 	public void onNeighborBlockChange(World world, int i, int j, int k, int l) {
-		if (l > 0 && Block.blocksList[l].canProvidePower()) {
+		/*if (l > 0 && Block.blocksList[l].canProvidePower()) {*/
 			world.scheduleBlockUpdate(i, j, k, blockID, tickRate());
-		}
+		/*}*/
 	}
 
 	private boolean replacer_canHarvestBlockAt(World world, PC_CoordI pos) {

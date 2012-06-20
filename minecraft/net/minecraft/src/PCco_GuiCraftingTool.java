@@ -43,7 +43,7 @@ public class PCco_GuiCraftingTool implements PC_IGresBase{
 		PC_GresWidget hg;
 		
 		craftingToolManager = new PCco_CraftingToolManager();
-		craftingToolInventory = new PC_GresInventory(new PC_CoordI(invWidth, invHeight));
+		craftingToolInventory = new PC_GresInventory(invWidth, invHeight);
 		for (int i = 0; i < invWidth; i++){
 			for (int j = 0; j < invHeight; j++) {				
 				int indexSlot = invWidth * invHeight + j * invWidth + i;				
