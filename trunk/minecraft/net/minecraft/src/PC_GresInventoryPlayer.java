@@ -34,11 +34,11 @@ public class PC_GresInventoryPlayer extends PC_GresLayoutV {
 		PC_GresWidget label = new PC_GresLabel(PC_Lang.tr("container.inventory")).setWidgetMargin(2).setColor(textColorEnabled, 0x404040);
 		if(showLabel) add(label);
 		
-		PC_GresInventory inv1 = new PC_GresInventory(new PC_CoordI(9, 3));
+		PC_GresInventory inv1 = new PC_GresInventory(9, 3);
 		inv1.slots = getContainerManager().inventoryPlayerUpper;
 		add(inv1.setWidgetMargin(4));
 		
-		PC_GresInventory inv2 = new PC_GresInventory(new PC_CoordI(9, 1));
+		PC_GresInventory inv2 = new PC_GresInventory(9, 1);
 		inv2.slots = getContainerManager().inventoryPlayerLower;
 		add(inv2.setWidgetMargin(4));
 		canAddWidget = false;
