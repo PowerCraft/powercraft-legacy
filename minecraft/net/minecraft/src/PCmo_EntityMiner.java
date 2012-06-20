@@ -219,7 +219,7 @@ public class PCmo_EntityMiner extends Entity implements IInventory {
 		setDead();
 
 		// replace opened gui with chest.
-		if (openedGui != null) {
+		if (openedGui) {
 			ModLoader.getMinecraftInstance().thePlayer.closeScreen();
 			ModLoader.openGUI(ModLoader.getMinecraftInstance().thePlayer, new GuiChest(
 					ModLoader.getMinecraftInstance().thePlayer.inventory, inv));
@@ -635,7 +635,7 @@ public class PCmo_EntityMiner extends Entity implements IInventory {
 	 * @return is miner ready for keyboard command
 	 */
 	public boolean canReceiveKeyboardCommand() {
-		if (openedGui != null) { return false; }
+		if (openedGui) { return false; }
 		commandList = commandList.trim();
 		return true;
 	}
@@ -2757,7 +2757,7 @@ public class PCmo_EntityMiner extends Entity implements IInventory {
 	// === PLAYER INTERACTION ===
 
 	/** The Console GUI opened for this miner. */
-	GuiScreen openedGui = null;
+	boolean openedGui = false;
 
 	@Override
 	public boolean interact(EntityPlayer entityplayer) {
@@ -2766,8 +2766,8 @@ public class PCmo_EntityMiner extends Entity implements IInventory {
 		if (!worldObj.isRemote) {
 			if (entityplayer.isSneaking()) {
 				programmingGuiOpen = true;
-				openedGui = new PCmo_GuiMinerConsole(this);
-				ModLoader.openGUI(entityplayer, openedGui);
+				openedGui = true;
+				PC_Utils.openGres(entityplayer, new PCmo_GuiMinerConsole(this));
 				return true;
 			}
 
@@ -2788,8 +2788,8 @@ public class PCmo_EntityMiner extends Entity implements IInventory {
 				PC_Utils.chatMsg("bridge = " + bridgeEnabled + ", mining = " + miningEnabled + ", destroy_flags = " + DESTROY, false);
 
 			} else {
-				openedGui = new GuiChest(entityplayer.inventory, this);
-				ModLoader.openGUI(entityplayer, openedGui);
+				openedGui = true;
+				ModLoader.openGUI(entityplayer, new GuiChest(entityplayer.inventory, this));
 			}
 		}
 		return true;
@@ -2884,7 +2884,7 @@ public class PCmo_EntityMiner extends Entity implements IInventory {
 
 	@Override
 	public void closeChest() {
-		openedGui = null;
+		openedGui = false;
 
 		updateLevel();
 	}

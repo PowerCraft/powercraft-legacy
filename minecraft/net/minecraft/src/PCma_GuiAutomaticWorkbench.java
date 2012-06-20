@@ -60,8 +60,8 @@ public class PCma_GuiAutomaticWorkbench implements PC_IGresBase {
 		
 		int cnt=0;
 		
-		for(int x=0; x<3; x++){
-			for(int y=0; y<3; y++){
+		for(int y=0; y<3; y++){
+			for(int x=0; x<3; x++){
 				i.setSlot(new PCma_SlotAutomaticWorkbenchInventory(tileentity, gui.getContainer(), false, cnt++, 0, 0), x, y);
 			}
 		}
@@ -70,8 +70,8 @@ public class PCma_GuiAutomaticWorkbench implements PC_IGresBase {
 		
 		PC_GresWidget hg1 = new PC_GresFrame();
 		i = new PC_GresInventory(3, 3);
-		for(int x=0; x<3; x++){
-			for(int y=0; y<3; y++){
+		for(int y=0; y<3; y++){
+			for(int x=0; x<3; x++){
 				i.setSlot(new PCma_SlotAutomaticWorkbenchInventory(tileentity, gui.getContainer(), true, cnt++, 0, 0), x, y);
 			}
 		}

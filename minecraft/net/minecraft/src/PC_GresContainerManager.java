@@ -12,18 +12,19 @@ public class PC_GresContainerManager extends Container {
 	public PC_GresContainerManager(EntityPlayer player) {
 		thePlayer = player;
 		this.gresGui = gresGui;
-
-		// lower player inventory
-		for (int i = 0; i < 9; i++) {
-			inventoryPlayerLower[i][0] = new Slot(player.inventory, i, -3000, 0);
-			addSlot(inventoryPlayerLower[i][0]);
-		}
-
-		// upper player inventory
-		for (int i = 0; i < 9; i++) {
-			for (int j = 0; j < 3; j++) {
-				inventoryPlayerUpper[i][j] = new Slot(player.inventory, i + j * 9 + 9, -3000, 0);
-				addSlot(inventoryPlayerUpper[i][j]);
+		if(thePlayer!=null){
+			// lower player inventory
+			for (int i = 0; i < 9; i++) {
+				inventoryPlayerLower[i][0] = new Slot(player.inventory, i, -3000, 0);
+				addSlot(inventoryPlayerLower[i][0]);
+			}
+	
+			// upper player inventory
+			for (int i = 0; i < 9; i++) {
+				for (int j = 0; j < 3; j++) {
+					inventoryPlayerUpper[i][j] = new Slot(player.inventory, i + j * 9 + 9, -3000, 0);
+					addSlot(inventoryPlayerUpper[i][j]);
+				}
 			}
 		}
 
