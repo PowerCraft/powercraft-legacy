@@ -216,7 +216,6 @@ public class mod_PClogic extends PC_Module {
 	@Override
 	public void preloadTextures(List<String> list) {
 		list.add(getTerrainFile());
-		list.add(getImgDir() + "radiogui.png");
 	}
 
 	@Override
