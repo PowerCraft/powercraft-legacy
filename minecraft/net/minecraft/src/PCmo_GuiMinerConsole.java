@@ -346,12 +346,10 @@ public class PCmo_GuiMinerConsole implements PC_IGresBase {
 	private PC_GresLabel errorString;
 	
 	private PC_GresButton quit;
-	private PC_GresButton pgm_clear;
-	private PC_GresButton pgm_run;
-	private PC_GresButton dir_go;
+	private PC_GresWidget pgm_clear;
+	private PC_GresWidget pgm_run;
+	private PC_GresWidget dir_go;
 	private PC_GresButton clear_buffer;
-
-	private static int yCheckboxStart = 45;
 	
 	public PCmo_GuiMinerConsole(PCmo_EntityMiner machine) {
 		miner = machine;
@@ -371,8 +369,8 @@ public class PCmo_GuiMinerConsole implements PC_IGresBase {
 		
 		w.add(new PC_GresLabel(PC_Lang.tr("pc.gui.miner.programCode")));
 		ArrayList<Keyword> keyWords = new ArrayList<Keyword>();
-		int keyWordColor = 0xff00ff00;
-		int operatorColor = 0xff00ff00;
+		int keyWordColor = 0xffff00;
+		int operatorColor = 0x00ff00;
 		keyWords.add(new Keyword("(", operatorColor));
 		keyWords.add(new Keyword(")", operatorColor));
 		keyWords.add(new Keyword("@", operatorColor));
@@ -425,16 +423,16 @@ public class PCmo_GuiMinerConsole implements PC_IGresBase {
 		
 		hg = new PC_GresLayoutH().setAlignH(PC_GresAlign.RIGHT);
 		errorString = new PC_GresLabel("");
-		errorString.setColor(PC_GresWidget.textColorEnabled, 0x770000);
+		errorString.setColor(PC_GresWidget.textColorEnabled, 0x990000);
 		errorString.setColor(PC_GresWidget.textColorShadowEnabled, 0x999999);
 		hg.add(errorString);
-		hg.add(pgm_clear = new PC_GresButton(PC_Lang.tr("pc.gui.miner.clear")));
-		hg.add(pgm_run = new PC_GresButton(PC_Lang.tr("pc.gui.miner.run")));
+		hg.add(pgm_clear = new PC_GresButton(PC_Lang.tr("pc.gui.miner.clear")).setMinWidth(40));
+		hg.add(pgm_run = new PC_GresButton(PC_Lang.tr("pc.gui.miner.run")).setMinWidth(40));
 		w.add(hg);
 
 		hg = new PC_GresLayoutH();
 		hg.add(appendBox = new PC_GresTextEdit("", 20));
-		hg.add(dir_go = new PC_GresButton(PC_Lang.tr("pc.gui.miner.go")));
+		hg.add(dir_go = new PC_GresButton(PC_Lang.tr("pc.gui.miner.go")).setMinWidth(40));
 		w.add(hg);
 		
 		hg = new PC_GresLayoutH();
@@ -531,6 +529,7 @@ public class PCmo_GuiMinerConsole implements PC_IGresBase {
 
 	@Override
 	public void onReturnPressed(PC_IGresGui gui) {
+		gui.close();
 	}
 
 	@Override
