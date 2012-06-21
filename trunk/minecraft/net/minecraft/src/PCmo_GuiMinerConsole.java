@@ -414,6 +414,7 @@ public class PCmo_GuiMinerConsole implements PC_IGresBase {
 		keyWords.add(new Keyword("L", keyWordColor));
 		keyWords.add(new Keyword("lava", keyWordColor));
 		keyWords.add(new Keyword("W", keyWordColor));
+		keyWords.add(new Keyword("water", keyWordColor));
 		keyWords.add(new Keyword("on", keyWordColor));
 		keyWords.add(new Keyword("off", keyWordColor));
 		keyWords.add(new Keyword("loop", keyWordColor));
