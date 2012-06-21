@@ -32,7 +32,7 @@ public class PCma_GuiRoaster implements PC_IGresBase {
 
 	@Override
 	public void initGui(PC_IGresGui gui) {
-		PC_GresWidget w = new PC_GresWindow(PC_Lang.tr("tile.PCmaBlockRoaster.name")).setWidthForInventory();
+		PC_GresWidget w = new PC_GresWindow(PC_Lang.tr("tile.PCmaRoaster.name")).setWidthForInventory();
 		
 		w.setAlignH(PC_GresAlign.CENTER);
 		
