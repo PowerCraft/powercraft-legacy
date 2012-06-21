@@ -53,7 +53,8 @@ public class PClo_GuiCustomGate implements PC_IGresBase {
 		char c;
 		int h=0;
 		if(program.length()<1){
-			txError.setText("Error");
+			txError.setText(PC_Lang.tr("pc.gui.customGate.errProgEq0"));
+			//txError.setText("Error: program need to be longer than 0");
 			return 1;
 		}
 		if(program.length()==1){
@@ -64,7 +65,8 @@ public class PClo_GuiCustomGate implements PC_IGresBase {
 				return 0;
 			if(c=='r'||c=='R')
 				return 0;
-			txError.setText("Error: unknown char '"+c+"'");
+			txError.setText(PC_Lang.tr("pc.gui.customGate.errUnkChar", new String[]{""+c}));
+			//txError.setText("Error: unknown char '"+c+"'");
 			return 2;
 		}
 		if(program.charAt(0)=='('){
@@ -81,7 +83,8 @@ public class PClo_GuiCustomGate implements PC_IGresBase {
 			if(h>0){
 				if(program.charAt(program.length()-1)==')')
 					return isProgrammOK(program.substring(1, program.length()-1));
-				txError.setText("Unclosed bracket");
+				txError.setText(PC_Lang.tr("pc.gui.customGate.errUnclosed"));
+				//txError.setText("Unclosed bracket");
 				return 3;
 			}
 		}
@@ -103,11 +106,13 @@ public class PClo_GuiCustomGate implements PC_IGresBase {
 					if(e1==0 && e2==0)
 						return 0;
 					if(e1==1){
-						txError.setText("You need a text before '"+program.charAt(i)+"'");
+						txError.setText(PC_Lang.tr("pc.gui.customGate.errNoTextBefore", new String[]{""+program.charAt(i)}));
+						//txError.setText("You need a text before '"+program.charAt(i)+"'");
 						return 6;
 					}
 					if(e2==1){
-						txError.setText("You need a text behind '"+program.charAt(i)+"'");
+						txError.setText(PC_Lang.tr("pc.gui.customGate.errNoTextBehind", new String[]{""+program.charAt(i)}));
+						//txError.setText("You need a text behind '"+program.charAt(i)+"'");
 						return 6;
 					}
 					return e1==0?e2:e1;
@@ -119,12 +124,14 @@ public class PClo_GuiCustomGate implements PC_IGresBase {
 			if(e==0)
 				return 0;
 			if(e==1){
-				txError.setText("You need a text behind '!'");
+				txError.setText(PC_Lang.tr("pc.gui.customGate.errNoTextBehind", new String[]{"!"}));
+				//txError.setText("You need a text behind '!'");
 				return 5;
 			}
 			return e;
 		}
-		txError.setText("Error: unknown string '"+program+"'");
+		txError.setText(PC_Lang.tr("pc.gui.customGate.errUnkString", new String[]{program}));
+		//txError.setText("Error: unknown string '"+program+"'");
 		return 4;
 	}
 	
