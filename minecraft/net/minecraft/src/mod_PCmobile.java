@@ -124,8 +124,6 @@ public class mod_PCmobile extends PC_Module implements PC_IActivatorListener {
 
 	@Override
 	public void preloadTextures(List<String> list) {
-		list.add(getTerrainFile());
-		list.add(getImgDir() + "gui_miner.png");
 		list.add(getImgDir() + "miner_base.png");
 		list.add(getImgDir() + "miner_overlay_1.png");
 		list.add(getImgDir() + "miner_overlay_2.png");
