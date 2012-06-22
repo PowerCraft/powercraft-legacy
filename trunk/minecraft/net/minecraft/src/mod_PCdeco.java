@@ -91,13 +91,13 @@ public class mod_PCdeco extends PC_Module {
 	public void registerBlocks(List<Block> list) {
 		// @formatter:off
 		deco = new PCde_BlockDeco(cfg().getInteger(pk_idDecoBlockSolid), 22, Material.rock)
-				.setHardness(2.0F)
+				.setHardness(1.5F)
 				.setResistance(5.0F)
 				.setBlockName("PCdeDecoBlock")
 				.setStepSound(Block.soundMetalFootstep);
 		
 		walkable = new PCde_BlockWalkable(cfg().getInteger(pk_idDecoBlockNonsolid), 22, Material.rock)
-		.setHardness(1.4F)
+		.setHardness(1.5F)
 		.setResistance(5.0F)
 		.setBlockName("PCdeWalkableBlock")
 		.setStepSound(Block.soundMetalFootstep);
@@ -159,7 +159,7 @@ public class mod_PCdeco extends PC_Module {
 					'X', Item.ingotIron });
 		
 		ModLoader.addRecipe(
-				new ItemStack(walkable, 2, 1),
+				new ItemStack(walkable, 8, 1),
 				new Object[] { "X ", " X",
 					'X', new ItemStack(walkable, 1, 0) });		
 		
