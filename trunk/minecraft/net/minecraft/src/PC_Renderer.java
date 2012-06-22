@@ -355,7 +355,7 @@ public class PC_Renderer {
 
 			boolean swapped = swapTerrain(block);
 
-			boolean renderOnSide = ((PC_IRotatedBox) block).renderItemOnSide();
+			boolean renderOnSide = ((PC_IRotatedBox) block).renderItemHorizontal();
 
 			if (renderOnSide) {
 				block.setBlockBoundsForItemRender();

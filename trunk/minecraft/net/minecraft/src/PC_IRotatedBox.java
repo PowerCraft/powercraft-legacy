@@ -16,7 +16,7 @@ public interface PC_IRotatedBox {
 	public int getRotation(int meta); // 0,1,2,3
 
 	/**
-	 * @return Is the item to be rendered on side? (like gates)
+	 * @return Is the item to be rendered horizontally? Return false for vertical renderer, like gates
 	 */
-	public boolean renderItemOnSide();
+	public boolean renderItemHorizontal();
 }

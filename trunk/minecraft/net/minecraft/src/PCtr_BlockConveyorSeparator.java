@@ -24,7 +24,7 @@ public class PCtr_BlockConveyorSeparator extends BlockContainer implements PC_IB
 	public static boolean group_wood_sort;
 
 	@Override
-	public boolean renderItemOnSide() {
+	public boolean renderItemHorizontal() {
 		return true;
 	}
 
