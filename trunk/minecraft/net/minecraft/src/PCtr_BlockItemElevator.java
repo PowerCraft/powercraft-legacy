@@ -8,8 +8,8 @@ import net.minecraft.src.forge.ITextureProvider;
 
 public class PCtr_BlockItemElevator extends Block implements PC_IBlockType, PC_ISwapTerrain, ITextureProvider {
 
-	public static final double MAX_HORIZONTAL_SPEED = PCtr_BlockConveyor.MAX_HORIZONTAL_SPEED * 0.4D;
-	public static final double HORIZONTAL_BOOST = PCtr_BlockConveyor.HORIZONTAL_BOOST * 0.5D;
+	public static final double MAX_HORIZONTAL_SPEED = PCtr_BeltBase.MAX_HORIZONTAL_SPEED * 0.4D;
+	public static final double HORIZONTAL_BOOST = PCtr_BeltBase.HORIZONTAL_BOOST * 0.5D;
 	public static final double BORDERS3 = 0.45D;
 	public static final double BORDERS2 = 0.25D;
 	public static final double BORDERS = 0.1D;
