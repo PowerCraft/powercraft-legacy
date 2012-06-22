@@ -1,14 +1,10 @@
-// Decompiled by Jad v1.5.8g. Copyright 2001 Pavel Kouznetsov.
-// Jad home page: http://www.kpdus.com/jad.html
-// Decompiler options: packimports(3) braces deadcode
-
 package net.minecraft.src;
+
+import java.util.HashSet;
+import java.util.Set;
 
 import net.minecraft.src.forge.ITextureProvider;
 
-// Referenced classes of package net.minecraft.src:
-// Block, Material, Entity, World,
-// AxisAlignedBB
 
 public class PCtr_BlockItemElevator extends Block implements PC_IBlockType, PC_ISwapTerrain, ITextureProvider {
 
@@ -306,20 +302,28 @@ public class PCtr_BlockItemElevator extends Block implements PC_IBlockType, PC_I
 		return getRenderColor(world.getBlockMetadata(i, j, k));
 	}
 
-	//@formatter:off
-	
 	@Override
-	public boolean isTranslucentForLaser(IBlockAccess world, PC_CoordI pos) { return true; }
+	public Set<String> getBlockFlags(World world, PC_CoordI pos) {
+
+		Set<String> set = new HashSet<String>();
+
+		set.add("NO_HARVEST");
+		set.add("TRANSLUCENT");
+		set.add("LIFT");
+		
+		if(pos.getMeta(world)==0){
+			set.add("LIFT_UP");
+		}else{
+			set.add("LIFT_DOWN");
+		}
+
+		return set;
+	}
+
 	@Override
-	public boolean isHarvesterIgnored(IBlockAccess world, PC_CoordI pos) { return true; }
-	@Override
-	public boolean isHarvesterDelimiter(IBlockAccess world, PC_CoordI pos) { return false; }
-	@Override
-	public boolean isBuilderIgnored() { return true; }
-	@Override
-	public boolean isConveyor(IBlockAccess world, PC_CoordI pos){ return false; }
-	@Override
-	public boolean isElevator(IBlockAccess world, PC_CoordI pos) { return true; }
-	
-	//@formatter:on
+	public Set<String> getItemFlags(int damage) {
+		Set<String> set = new HashSet<String>();
+		set.add("NO_BUILD");
+		return set;
+	}
 }

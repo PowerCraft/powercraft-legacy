@@ -1,7 +1,9 @@
 package net.minecraft.src;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.Random;
+import java.util.Set;
 
 import net.minecraft.src.forge.ITextureProvider;
 
@@ -238,11 +240,11 @@ public class PCma_BlockHarvester extends Block implements PC_ISwapTerrain, PC_IB
 				|| id == Block.redstoneWire.blockID || id == Block.lever.blockID || id == Block.button.blockID
 				|| Block.blocksList[id] instanceof BlockRedstoneRepeater || id == Block.pistonStickyBase.blockID
 				|| id == Block.pistonBase.blockID || id == Block.pistonExtension.blockID || id == Block.pistonMoving.blockID
-				|| Block.blocksList[id] instanceof BlockRail || PC_BlockUtils.isHarvesterIgnored(world, coord)) {
+				|| Block.blocksList[id] instanceof BlockRail || PC_BlockUtils.getBlockFlags(world, coord).contains("NO_HARVEST")) {
 
 		return false; }
 
-		if (PC_BlockUtils.isHarvesterDelimiter(world, coord)) { return true; }
+		if (PC_BlockUtils.getBlockFlags(world, coord).contains("HARVEST_STOP")) { return true; }
 
 		// tree - replace with sapling
 		if (PC_TreeHarvestingManager.isBlockTreeWood(id, meta)) {
@@ -453,7 +455,9 @@ public class PCma_BlockHarvester extends Block implements PC_ISwapTerrain, PC_IB
 		EntityItem entityitem = new EntityItem(world, dx, dy - 0.29999999999999999D, dz, itemstack);
 		double throwSpeed = world.rand.nextDouble() * 0.10000000000000001D + 0.20000000000000001D;
 
-		if (PC_BlockUtils.isConveyorOrElevator(world, devPos.offset(dispIncX, 0, dispIncZ))) {
+		Set <String> blocktype = PC_BlockUtils.getBlockFlags(world, devPos.offset(dispIncX, 0, dispIncZ));
+		
+		if (blocktype.contains("BELT") || blocktype.contains("LIFT")) {
 			entityitem.motionX = 0;
 			entityitem.motionY = 0;
 			entityitem.motionZ = 0;
@@ -483,21 +487,24 @@ public class PCma_BlockHarvester extends Block implements PC_ISwapTerrain, PC_IB
 		return 0;
 	}
 
-	//@formatter:off
-	
 	@Override
-	public boolean isTranslucentForLaser(IBlockAccess world, PC_CoordI pos) { return false; }
-	@Override
-	public boolean isHarvesterIgnored(IBlockAccess world, PC_CoordI pos) { return false; }
-	@Override
-	public boolean isHarvesterDelimiter(IBlockAccess world, PC_CoordI pos) { return true; }
-	@Override
-	public boolean isBuilderIgnored() { return true; }
-	@Override
-	public boolean isConveyor(IBlockAccess world, PC_CoordI pos){ return false; }
-	@Override
-	public boolean isElevator(IBlockAccess world, PC_CoordI pos) { return false; }
+	public Set<String> getBlockFlags(World world, PC_CoordI pos) {
 
-	
-	//@formatter:on
+		Set<String> set = new HashSet<String>();
+
+		set.add("NO_HARVEST");
+		set.add("HARVEST_STOP");
+		set.add("HARVESTER");
+		set.add("REDSTONE");
+		set.add("MACHINE");
+
+		return set;
+	}
+
+	@Override
+	public Set<String> getItemFlags(int damage) {
+		Set<String> set = new HashSet<String>();
+		set.add("NO_BUILD");
+		return set;
+	}
 }

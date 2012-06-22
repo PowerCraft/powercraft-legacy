@@ -1,7 +1,9 @@
 package net.minecraft.src;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.Random;
+import java.util.Set;
 
 import net.minecraft.src.forge.ITextureProvider;
 
@@ -19,7 +21,7 @@ public class PCde_BlockDeco extends BlockContainer implements PC_IBlockType, PC_
 	public String getTextureFile() {
 		return getTerrainFile();
 	}
-	
+
 	@Override
 	public TileEntity getBlockEntity() {
 		return new PCde_TileEntityDeco();
@@ -40,70 +42,70 @@ public class PCde_BlockDeco extends BlockContainer implements PC_IBlockType, PC_
 	public PCde_BlockDeco(int i, int j, Material material) {
 		super(i, j, material);
 	}
-	
+
 	@Override
 	public int getBlockTextureFromSideAndMetadata(int side, int meta) {
-		//item + particle
-		if(meta == 0) return 22;
-		if(meta == 1) return 129;
+		// item + particle
+		if (meta == 0) return 22;
+		if (meta == 1) return 129;
 		return 0;
 	}
-	
+
 	@Override
 	public int colorMultiplier(IBlockAccess iblockaccess, int x, int y, int z) {
-		//colors particles
-		PCde_TileEntityDeco ted = getTE(iblockaccess,x,y,z);
-		if(ted.type == 0) return 0xffffff;
-		if(ted.type == 1) return 0xcc0000;
+		// colors particles
+		PCde_TileEntityDeco ted = getTE(iblockaccess, x, y, z);
+		if (ted.type == 0) return 0xffffff;
+		if (ted.type == 1) return 0xcc0000;
 		return 0xffffff;
-		
+
 	}
-	
+
 	@Override
 	public int getRenderColor(int i) {
-		if(i == 0) return 0x999999;
-		if(i == 1) return 0xcc0000;
+		if (i == 0) return 0x999999;
+		if (i == 1) return 0xcc0000;
 		return 0xffffff;
 	}
-	
-	
+
+
 	@Override
 	public void setBlockBoundsBasedOnState(IBlockAccess iblockaccess, int i, int j, int k) {
-		PCde_TileEntityDeco ted = getTE(iblockaccess,i,j,k);
-		
-		//frames
-		if(ted.type == 0){
+		PCde_TileEntityDeco ted = getTE(iblockaccess, i, j, k);
+
+		// frames
+		if (ted.type == 0) {
 			setBlockBounds(0, 0, 0, 1, 1, 1);
 			return;
 		}
-		
-		//storage block RS
-		if(ted.type == 1){
+
+		// storage block RS
+		if (ted.type == 1) {
 			setBlockBounds(0, 0, 0, 1, 1, 1);
 			return;
 		}
-		
+
 		setBlockBounds(0, 0, 0, 1, 1, 1);
-		
-		
+
+
 	}
-	
+
 	@SuppressWarnings("rawtypes")
 	@Override
 	public void getCollidingBoundingBoxes(World world, int x, int y, int z, AxisAlignedBB axisalignedbb, ArrayList arraylist) {
-		
-		PCde_TileEntityDeco ted = getTE(world,x,y,z);
-		
-		if(ted.type == 0 || ted.type == 1){
+
+		PCde_TileEntityDeco ted = getTE(world, x, y, z);
+
+		if (ted.type == 0 || ted.type == 1) {
 			setBlockBounds(0, 0, 0, 1, 1, 1);
 			super.getCollidingBoundingBoxes(world, x, y, z, axisalignedbb, arraylist);
 			return;
 		}
-		
+
 		setBlockBounds(0, 0, 0, 1, 1, 1);
 	}
 
-	
+
 	/**
 	 * Get tile entity at position
 	 * 
@@ -118,22 +120,22 @@ public class PCde_BlockDeco extends BlockContainer implements PC_IBlockType, PC_
 		if (te == null) { return null; }
 		return (PCde_TileEntityDeco) te;
 	}
-	
+
 	@Override
 	public int getBlockTexture(IBlockAccess iblockaccess, int x, int y, int z, int side) {
 		// in world - block
-		PCde_TileEntityDeco ted = getTE(iblockaccess,x,y,z);
-		if(ted.type == 0) return 22;
-		if(ted.type == 1) return 129; // only this used
+		PCde_TileEntityDeco ted = getTE(iblockaccess, x, y, z);
+		if (ted.type == 0) return 22;
+		if (ted.type == 1) return 129; // only this used
 		return 0;
-		
+
 	}
 
 	@Override
 	protected int damageDropped(int i) {
 		return 0;
 	}
-	
+
 	@Override
 	public int quantityDropped(Random par1Random) {
 		return -1;
@@ -144,10 +146,10 @@ public class PCde_BlockDeco extends BlockContainer implements PC_IBlockType, PC_
 		if (iblockaccess.getBlockMetadata(i, j, k) == 0) { return true; }
 		return super.shouldSideBeRendered(iblockaccess, i, j, k, l);
 	}
-	
+
 	@Override
 	public void onBlockRemoval(World world, int x, int y, int z) {
-		
+
 		PCde_TileEntityDeco teg = getTE(world, x, y, z);
 
 		if (teg != null) {
@@ -180,33 +182,31 @@ public class PCde_BlockDeco extends BlockContainer implements PC_IBlockType, PC_
 		return PCde_Renderer.decorativeBlockRenderer;
 	}
 
-	// @formatter:off
-	
+
+
 	@Override
-	public boolean isTranslucentForLaser(IBlockAccess world, PC_CoordI pos) {
-		PCde_TileEntityDeco ted = getTE(world,pos.x,pos.y,pos.z);
-		if(ted==null)return true;
-		return ted.type != 1;		
+	public Set<String> getBlockFlags(World world, PC_CoordI pos) {
+
+		PCde_TileEntityDeco ted = getTE(world, pos.x, pos.y, pos.z);
+
+		Set<String> set = new HashSet<String>();
+
+		set.add("NO_HARVEST");
+		set.add("DECORATIVE");
+		set.add("PASSIVE");
+		
+		
+		if (ted != null && ted.type == 1) set.add("HARVEST_STOP");
+		if (ted != null && ted.type != 1) set.add("TRANSLUCENT");
+
+		return set;
 	}
-	
+
 	@Override
-	public boolean isHarvesterIgnored(IBlockAccess world, PC_CoordI pos) { return true; }
-	
-	@Override
-	public boolean isHarvesterDelimiter(IBlockAccess world, PC_CoordI pos) { 
-		PCde_TileEntityDeco ted = getTE(world,pos.x,pos.y,pos.z);
-		if(ted==null) return false;
-		return ted.type == 1;	
+	public Set<String> getItemFlags(int damage) {
+		Set<String> set = new HashSet<String>();
+		set.add("NO_BUILD");
+		return set;
 	}
-	
-	@Override
-	public boolean isBuilderIgnored() { return true; }
-	
-	@Override
-	public boolean isConveyor(IBlockAccess world, PC_CoordI pos) { return false; }
-	
-	@Override
-	public boolean isElevator(IBlockAccess world, PC_CoordI pos) { return false; }
-	
-	// @formatter:off
+
 }

@@ -204,7 +204,7 @@ public class PCtr_TeleporterHelper {
 
 			PC_CoordI tmp = tc.offset(coords[i]);
 
-			if (PC_BlockUtils.isConveyor(world, tmp) && tmp.getId(world) != mod_PCtransport.teleporter.blockID) {
+			if (PC_BlockUtils.hasFlag(world, tmp, "BELT") && !PC_BlockUtils.hasFlag(world, tmp, "TELEPORTER")) {
 
 				meta = tmp.getMeta(world);
 				rotation = PCtr_BlockConveyor.getRotation_(meta);
@@ -224,6 +224,8 @@ public class PCtr_TeleporterHelper {
 			if (tet.direction.equals(side[i])) {
 				good[i] += 1;
 			}
+			
+			if(PC_BlockUtils.hasFlag(world, tmp, "TELEPORTER")) good[i]=0;
 
 		}
 

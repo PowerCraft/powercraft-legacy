@@ -1,6 +1,8 @@
 package net.minecraft.src;
 
+import java.util.HashSet;
 import java.util.Random;
+import java.util.Set;
 
 public class PCtr_BlockTeleporter extends BlockContainer implements PC_IBlockType {
 	public PCtr_BlockTeleporter(int id, int tindex, Material material) {
@@ -34,7 +36,7 @@ public class PCtr_BlockTeleporter extends BlockContainer implements PC_IBlockTyp
 		}
 
 		PCtr_TileEntityTeleporter te = (PCtr_TileEntityTeleporter) world.getBlockTileEntity(i, j, k);
-		ModLoader.openGUI(entityplayer, new PCtr_GuiTeleporter(te));
+		PC_Utils.openGres(entityplayer, new PCtr_GuiTeleporter(te));
 
 		return true;
 	}
@@ -48,7 +50,7 @@ public class PCtr_BlockTeleporter extends BlockContainer implements PC_IBlockTyp
 
 			if (te == null) { return; }
 
-			ModLoader.openGUI((EntityPlayer) entityliving, new PCtr_GuiTeleporterDecide(te));
+			PC_Utils.openGres((EntityPlayer) entityliving, new PCtr_GuiTeleporterDecide(te));
 		}
 	}
 
@@ -149,20 +151,23 @@ public class PCtr_BlockTeleporter extends BlockContainer implements PC_IBlockTyp
 		return getTE(iblockaccess, i, j, k).isReceiver();
 	}
 
-	//@formatter:off
-	
 	@Override
-	public boolean isTranslucentForLaser(IBlockAccess world, PC_CoordI pos) { return true; }
+	public Set<String> getBlockFlags(World world, PC_CoordI pos) {
+
+		Set<String> set = new HashSet<String>();
+
+		set.add("NO_HARVEST");
+		set.add("TRANSLUCENT");
+		set.add("BELT");
+		set.add("TELEPORTER");
+
+		return set;
+	}
+
 	@Override
-	public boolean isHarvesterIgnored(IBlockAccess world, PC_CoordI pos) { return true; }
-	@Override
-	public boolean isHarvesterDelimiter(IBlockAccess world, PC_CoordI pos) { return false; }
-	@Override
-	public boolean isBuilderIgnored() { return true; }
-	@Override
-	public boolean isConveyor(IBlockAccess world, PC_CoordI pos){ return true; }
-	@Override
-	public boolean isElevator(IBlockAccess world, PC_CoordI pos) { return false; }
-	
-	//@formatter:on
+	public Set<String> getItemFlags(int damage) {
+		Set<String> set = new HashSet<String>();
+		set.add("NO_BUILD");
+		return set;
+	}
 }
