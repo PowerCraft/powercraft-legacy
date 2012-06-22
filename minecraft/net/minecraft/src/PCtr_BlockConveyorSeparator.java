@@ -74,7 +74,7 @@ public class PCtr_BlockConveyorSeparator extends BlockContainer implements PC_IB
 		}
 
 		PCtr_TileEntitySeparationBelt te = (PCtr_TileEntitySeparationBelt) world.getBlockTileEntity(i, j, k);
-		ModLoader.openGUI(entityplayer, new PCtr_GuiConveyorSeparator(entityplayer.inventory, te));
+		PC_Utils.openGres(entityplayer, new PCtr_GuiConveyorSeparator(entityplayer, te));
 		return true;
 	}
 

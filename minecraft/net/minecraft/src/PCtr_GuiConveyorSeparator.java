@@ -10,25 +10,53 @@ import org.lwjgl.opengl.GL11;
 // GuiContainer, ContainerDispenser, FontRenderer, RenderEngine,
 // InventoryPlayer, TileEntityDispenser
 
-public class PCtr_GuiConveyorSeparator extends GuiContainer {
+public class PCtr_GuiConveyorSeparator implements PC_IGresBase {
 
-	public PCtr_GuiConveyorSeparator(InventoryPlayer inventoryplayer, PCtr_TileEntitySeparationBelt tileentityconveyorfilter) {
-		super(new PCtr_ContainerConveyorFilter(inventoryplayer, tileentityconveyorfilter));
+	EntityPlayer player;
+	PCtr_TileEntitySeparationBelt tileentityconveyorfilter;
+	
+	public PCtr_GuiConveyorSeparator(EntityPlayer player, PCtr_TileEntitySeparationBelt tileentityconveyorfilter) {
+		this.player = player;
+		this.tileentityconveyorfilter = tileentityconveyorfilter;
 	}
 
 	@Override
-	protected void drawGuiContainerForegroundLayer() {
-		fontRenderer.drawString(PC_Lang.tr("tile.PCconveyorFilter.name"), 39, 6, 0x404040);
-		fontRenderer.drawString(PC_Lang.tr("container.inventory"), 8, (ySize - 96) + 2, 0x404040);
+	public EntityPlayer getPlayer() {
+		return player;
 	}
 
 	@Override
-	protected void drawGuiContainerBackgroundLayer(float f, int o, int p) {
-		int i = mc.renderEngine.getTexture("/PowerCraft/transport/gui_separator.png");
-		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-		mc.renderEngine.bindTexture(i);
-		int j = (width - xSize) / 2;
-		int k = (height - ySize) / 2;
-		drawTexturedModalRect(j, k, 0, 0, xSize, ySize);
+	public void initGui(PC_IGresGui gui) {
+		PC_GresWindow w = new PC_GresWindow(50, 50, PC_Lang.tr("tile.PCconveyorFilter.name"));
+		PC_GresLayoutH hg = new PC_GresLayoutH();
+		hg.add(new PC_GresImage(mod_PCcore.getImgDir() + "gres/widgets.png", 56, 66, 8, 15));
+		hg.add(new PC_GresInventory(tileentityconveyorfilter, 3, 3));
+		hg.add(new PC_GresInventory(tileentityconveyorfilter, 3, 3, 9, 18));
+		hg.add(new PC_GresImage(mod_PCcore.getImgDir() + "gres/widgets.png", 64, 66, 8, 15));
+		w.add(hg);
+		w.add(new PC_GresInventoryPlayer(true));
+		gui.add(w);
+	}
+
+	@Override
+	public void onGuiClosed(PC_IGresGui gui) {
+	}
+
+	@Override
+	public void actionPerformed(PC_GresWidget widget, PC_IGresGui gui) {
+	}
+
+	@Override
+	public void onEscapePressed(PC_IGresGui gui) {
+		gui.close();
+	}
+
+	@Override
+	public void onReturnPressed(PC_IGresGui gui) {
+		gui.close();
+	}
+
+	@Override
+	public void onCraftMatrixChanged(IInventory iinventory) {
 	}
 }
