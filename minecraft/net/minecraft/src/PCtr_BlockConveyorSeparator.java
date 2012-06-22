@@ -12,13 +12,12 @@ public class PCtr_BlockConveyorSeparator extends BlockContainer implements PC_IB
 	public static final double BORDERS = 0.3D;
 	public static final double BORDER_BOOST = 0.06D;
 
-	public static final float HEIGHT_BOUNDS = PCtr_BlockConveyor.HEIGHT_BOUNDS; // for
+	public static final float HEIGHT_BOUNDS = PCtr_BeltBase.HEIGHT; // for
 																				// detection
-	public static final float HEIGHT_COLLISION = PCtr_BlockConveyor.HEIGHT_COLLISION;// to
+	public static final float HEIGHT_COLLISION = PCtr_BeltBase.HEIGHT_COLLISION;// to
 																						// prevent
 																						// falls
-	public static final float HEIGHT_SELECTED = PCtr_BlockConveyor.HEIGHT_SELECTED;
-	public static final float HEIGHT_MIN = PCtr_BlockConveyor.HEIGHT_MIN;// same
+	public static final float HEIGHT_SELECTED = PCtr_BeltBase.HEIGHT_SELECTED;
 																			// as
 																			// collision.
 
@@ -87,7 +86,7 @@ public class PCtr_BlockConveyorSeparator extends BlockContainer implements PC_IB
 	protected PCtr_BlockConveyorSeparator(int i) {
 		super(i, new PCtr_MaterialConveyor());
 
-		setBlockBounds(0.0F, HEIGHT_MIN, 0.0F, 1.0F, HEIGHT_MIN + HEIGHT_BOUNDS, 1.0F);
+		setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, HEIGHT_BOUNDS, 1.0F);
 		setStepSound(Block.soundPowderFootstep);
 	}
 
@@ -295,7 +294,7 @@ public class PCtr_BlockConveyorSeparator extends BlockContainer implements PC_IB
 	// collision and other stuff
 	@Override
 	public AxisAlignedBB getCollisionBoundingBoxFromPool(World world, int i, int j, int k) {
-		return AxisAlignedBB.getBoundingBoxFromPool(i, HEIGHT_MIN + j, k, (i + 1), (j + HEIGHT_COLLISION + HEIGHT_MIN), (k + 1));
+		return AxisAlignedBB.getBoundingBoxFromPool(i, 0.0F + j, k, (i + 1), (j + HEIGHT_COLLISION + 0.0F), (k + 1));
 	}
 
 	@Override
@@ -306,13 +305,13 @@ public class PCtr_BlockConveyorSeparator extends BlockContainer implements PC_IB
 	@Override
 	public AxisAlignedBB getSelectedBoundingBoxFromPool(World world, int i, int j, int k) {
 		float f = 0;
-		f = HEIGHT_MIN + HEIGHT_SELECTED;
-		return AxisAlignedBB.getBoundingBoxFromPool(i, HEIGHT_MIN + j, k, (i + 1), j + f, (float) k + 1);
+		f = 0.0F + HEIGHT_SELECTED;
+		return AxisAlignedBB.getBoundingBoxFromPool(i, 0.0F + j, k, (i + 1), j + f, (float) k + 1);
 	}
 
 	@Override
 	public void setBlockBoundsBasedOnState(IBlockAccess iblockaccess, int i, int j, int k) {
-		setBlockBounds(0.0F, HEIGHT_MIN, 0.0F, 1.0F, HEIGHT_MIN + HEIGHT_BOUNDS, 1.0F);
+		setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 0.0F + HEIGHT_BOUNDS, 1.0F);
 	}
 
 	@Override

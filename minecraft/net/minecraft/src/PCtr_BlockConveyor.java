@@ -8,18 +8,6 @@ import java.util.Set;
 import net.minecraft.src.forge.ITextureProvider;
 
 public class PCtr_BlockConveyor extends Block implements PC_IBlockType, PC_IRotatedBox, PC_ISwapTerrain, ITextureProvider {
-	public static final double MAX_HORIZONTAL_SPEED = 0.4D;
-	public static final double HORIZONTAL_BOOST = 0.11D;
-	public static final double BORDERS = 0.35D;
-	public static final double BORDER_BOOST = 0.063D;
-
-	public static final float HEIGHT_BOUNDS = 0.0625F;
-	public static final float HEIGHT_COLLISION = HEIGHT_BOUNDS - 0.0125F;// to
-																			// prevent
-																			// falls
-	public static final float HEIGHT_SELECTED = HEIGHT_BOUNDS;
-	public static final float HEIGHT_MIN = 0.0F;
-
 	public PCtr_EnumConv type = PCtr_EnumConv.belt;
 
 	@Override
@@ -34,15 +22,11 @@ public class PCtr_BlockConveyor extends Block implements PC_IBlockType, PC_IRota
 
 	protected PCtr_BlockConveyor(int i, PCtr_EnumConv type) {
 		super(i, new PCtr_MaterialConveyor());
-		setBlockBounds(0.0F, HEIGHT_MIN, 0.0F, 1.0F, HEIGHT_MIN + HEIGHT_BOUNDS, 1.0F);
+		setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, PCtr_BeltBase.HEIGHT, 1.0F);
 		blockIndexInTexture = 0;
 		this.type = type;
 
 		setStepSound(Block.soundPowderFootstep);
-	}
-
-	public boolean getIsBlockSolid(IBlockAccess iblockaccess, int i, int j, int k, int l) {
-		return true;
 	}
 
 	@Override
@@ -925,16 +909,16 @@ public class PCtr_BlockConveyor extends Block implements PC_IBlockType, PC_IRota
 		// speed limit
 		if (entity instanceof EntityItem || entity instanceof EntityXPOrb) {
 			entity.stepHeight = 0.25F;
-			if (entity.motionX > MAX_HORIZONTAL_SPEED) {
+			if (entity.motionX > PCtr_BeltBase.MAX_HORIZONTAL_SPEED) {
 				entity.motionX *= 0.6D;
 			}
-			if (entity.motionX < -MAX_HORIZONTAL_SPEED) {
+			if (entity.motionX < -PCtr_BeltBase.MAX_HORIZONTAL_SPEED) {
 				entity.motionX *= 0.6D;
 			}
-			if (entity.motionZ > MAX_HORIZONTAL_SPEED) {
+			if (entity.motionZ > PCtr_BeltBase.MAX_HORIZONTAL_SPEED) {
 				entity.motionZ *= 0.6D;
 			}
-			if (entity.motionZ < -MAX_HORIZONTAL_SPEED) {
+			if (entity.motionZ < -PCtr_BeltBase.MAX_HORIZONTAL_SPEED) {
 				entity.motionZ *= 0.6D;
 			}
 			if (entity.motionY > 0.3) {
@@ -1074,7 +1058,7 @@ public class PCtr_BlockConveyor extends Block implements PC_IBlockType, PC_IRota
 			}
 		}
 
-		double TMP_MAX_HORIZONTAL_SPEED = MAX_HORIZONTAL_SPEED;
+		double TMP_MAX_HORIZONTAL_SPEED = PCtr_BeltBase.MAX_HORIZONTAL_SPEED;
 		if (type == PCtr_EnumConv.brake) {
 			TMP_MAX_HORIZONTAL_SPEED *= 0.6D;
 		}
@@ -1082,7 +1066,7 @@ public class PCtr_BlockConveyor extends Block implements PC_IBlockType, PC_IRota
 			TMP_MAX_HORIZONTAL_SPEED *= 2.0D;
 		}
 
-		double TMP_HORIZONTAL_BOOST = HORIZONTAL_BOOST;
+		double TMP_HORIZONTAL_BOOST = PCtr_BeltBase.HORIZONTAL_BOOST;
 		if (type == PCtr_EnumConv.brake) {
 			TMP_HORIZONTAL_BOOST *= 0.6D;
 		}
@@ -1090,8 +1074,8 @@ public class PCtr_BlockConveyor extends Block implements PC_IBlockType, PC_IRota
 			TMP_HORIZONTAL_BOOST *= 2.0D;
 		}
 
-		double TMP_BORDERS = BORDERS;
-		double TMP_BORDER_BOOST = BORDER_BOOST;
+		double TMP_BORDERS = PCtr_BeltBase.BORDERS;
+		double TMP_BORDER_BOOST = PCtr_BeltBase.BORDER_BOOST;
 
 		// Z--
 		if ((meta == 0 && redir == 0) || (meta == 1 && redir == 1) || (meta == 3 && redir == -1)) {
@@ -1156,7 +1140,7 @@ public class PCtr_BlockConveyor extends Block implements PC_IBlockType, PC_IRota
 
 	@Override
 	public AxisAlignedBB getCollisionBoundingBoxFromPool(World world, int i, int j, int k) {
-		return AxisAlignedBB.getBoundingBoxFromPool(i, HEIGHT_MIN + j, k, (i + 1), (j + HEIGHT_COLLISION + HEIGHT_MIN), (k + 1));
+		return AxisAlignedBB.getBoundingBoxFromPool(i, 0.0F + j, k, (i + 1), (j + PCtr_BeltBase.HEIGHT_COLLISION + 0.0F), (k + 1));
 	}
 
 	@Override
@@ -1167,13 +1151,13 @@ public class PCtr_BlockConveyor extends Block implements PC_IBlockType, PC_IRota
 	@Override
 	public AxisAlignedBB getSelectedBoundingBoxFromPool(World world, int i, int j, int k) {
 		float f = 0;
-		f = HEIGHT_MIN + HEIGHT_SELECTED;
-		return AxisAlignedBB.getBoundingBoxFromPool(i, HEIGHT_MIN + j, k, (i + 1), j + f, (float) k + 1);
+		f = 0.0F + PCtr_BeltBase.HEIGHT_SELECTED;
+		return AxisAlignedBB.getBoundingBoxFromPool(i, 0.0F + j, k, (i + 1), j + f, (float) k + 1);
 	}
 
 	@Override
 	public void setBlockBoundsBasedOnState(IBlockAccess iblockaccess, int i, int j, int k) {
-		setBlockBounds(0.0F, HEIGHT_MIN, 0.0F, 1.0F, HEIGHT_MIN + HEIGHT_BOUNDS, 1.0F);
+		setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 0.0F + PCtr_BeltBase.HEIGHT, 1.0F);
 	}
 
 	@Override
