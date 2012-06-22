@@ -34,7 +34,7 @@ public class PClo_BlockGate extends BlockContainer implements PC_IRotatedBox, PC
 	}
 
 	@Override
-	public boolean renderItemOnSide() {
+	public boolean renderItemHorizontal() {
 		return false;
 	}
 

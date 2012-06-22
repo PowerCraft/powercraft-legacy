@@ -16,7 +16,7 @@ public class PCtr_BlockConveyor extends Block implements PC_IBlockType, PC_IRota
 	}
 
 	@Override
-	public boolean renderItemOnSide() {
+	public boolean renderItemHorizontal() {
 		return true;
 	}
 
@@ -41,22 +41,7 @@ public class PCtr_BlockConveyor extends Block implements PC_IBlockType, PC_IRota
 
 	@Override
 	public boolean blockActivated(World world, int i, int j, int k, EntityPlayer entityplayer) {
-		// minecart placing.
-		ItemStack stack = entityplayer.getCurrentEquippedItem();
-		if (stack == null) { return false; }
-
-		Item equip_item = stack.getItem();
-
-		if (equip_item instanceof ItemMinecart) {
-			if (!world.isRemote) {
-				world.spawnEntityInWorld(new EntityMinecart(world, i + 0.5F, j + 0.5F, k + 0.5F, ((ItemMinecart) equip_item).minecartType));
-			}
-			if (!ModLoader.getMinecraftInstance().playerController.isInCreativeMode()) {
-				entityplayer.inventory.decrStackSize(entityplayer.inventory.currentItem, 1);
-			}
-			return true;
-		}
-		return false;
+		return PCtr_BeltBase.blockActivated(world, i, j, k, entityplayer);
 	}
 
 	@Override
@@ -68,18 +53,7 @@ public class PCtr_BlockConveyor extends Block implements PC_IBlockType, PC_IRota
 
 	@Override
 	public void onBlockPlacedBy(World world, int i, int j, int k, EntityLiving entityliving) {
-		int l = MathHelper.floor_double(((entityliving.rotationYaw * 4F) / 360F) + 2.5D) & 3;
-
-		if (PC_Utils.isPlacingReversed()) {
-			l = PC_Utils.reverseSide(l);
-		}
-
-		if (l == 2) {
-			l = 8;
-		}
-		if (l == 3) {
-			l = 9;
-		}
+		int l = PCtr_BeltBase.getPlacedMeta(entityliving);
 		world.setBlockMetadataWithNotify(i, j, k, l);
 	}
 
@@ -105,10 +79,10 @@ public class PCtr_BlockConveyor extends Block implements PC_IBlockType, PC_IRota
 					if (!dispenseStackFromMinecart(world, i, j, k)) {
 						tryToDispenseItem(world, i, j, k);
 					}
-					world.setBlockMetadata(i, j, k, getActiveMeta(meta));
+					world.setBlockMetadata(i, j, k, PCtr_BeltBase.getActiveMeta(meta));
 				}
 			} else if (isActive(meta)) {
-				world.setBlockMetadata(i, j, k, getPassiveMeta(meta));
+				world.setBlockMetadata(i, j, k, PCtr_BeltBase.getPassiveMeta(meta));
 			}
 		} else if (type == PCtr_EnumConv.detector && isActive(world, i, j, k)) {
 			setStateIfEntityInteractsWithDetector(world, i, j, k);
@@ -131,10 +105,10 @@ public class PCtr_BlockConveyor extends Block implements PC_IBlockType, PC_IRota
 
 			boolean shallNotify = false;
 			if (isPressed && !isAlreadyActive) { // turn on
-				world.setBlockMetadataWithNotify(i, j, k, getActiveMeta(meta));
+				world.setBlockMetadataWithNotify(i, j, k, PCtr_BeltBase.getActiveMeta(meta));
 				shallNotify = true;
 			} else if (!isPressed && isAlreadyActive) { // turn off
-				world.setBlockMetadataWithNotify(i, j, k, getPassiveMeta(meta));
+				world.setBlockMetadataWithNotify(i, j, k, PCtr_BeltBase.getPassiveMeta(meta));
 				shallNotify = true;
 			}
 
@@ -189,43 +163,16 @@ public class PCtr_BlockConveyor extends Block implements PC_IBlockType, PC_IRota
 	}
 
 	public boolean isActive(int meta) {
-		return meta == getActiveMeta(meta);
+		return meta == PCtr_BeltBase.getActiveMeta(meta);
 	}
 
-	// UTILS
-	public int getActiveMeta(int meta) {
-		switch (meta) {
-			case 0:
-				return 6;
-			case 1:
-				return 7;
-			case 8:
-				return 14;
-			case 9:
-				return 15;
-		}
-		return meta;
-	}
 
-	public int getPassiveMeta(int meta) {
-		switch (meta) {
-			case 6:
-				return 0;
-			case 7:
-				return 1;
-			case 14:
-				return 8;
-			case 15:
-				return 9;
-		}
-		return meta;
-	}
 
 	// ii jj kk are conveyor's coordinates. ijk is for inventory.
 	public static boolean dispenseFromInventoryAt(World world, int i, int j, int k, int beltx, int belty, int beltz) {
 		IInventory inventory = getInventoryAt(world, i, j, k);
 		if (inventory == null) { return false; }
-		if (inventory instanceof PCma_TileEntityAutomaticWorkbench) { return false; }
+		if (inventory instanceof PC_ISpecialInsertInventory) { return false; }
 		return dispenseItem(world, inventory, beltx, belty, beltz);
 	}
 
