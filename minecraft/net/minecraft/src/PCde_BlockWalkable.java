@@ -322,7 +322,7 @@ public class PCde_BlockWalkable extends BlockContainer implements PC_IBlockType,
 		if (teg != null) {
 
 			if (!PC_Utils.isCreative()) {
-				dropBlockAsItem_do(world, x, y, z, new ItemStack(mod_PCdeco.deco, 1, teg.type));
+				dropBlockAsItem_do(world, x, y, z, new ItemStack(mod_PCdeco.walkable, 1, teg.type));
 			}
 		}
 
