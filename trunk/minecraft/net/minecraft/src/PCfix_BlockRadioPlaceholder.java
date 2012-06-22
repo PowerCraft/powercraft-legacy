@@ -1,6 +1,8 @@
 package net.minecraft.src;
 
+import java.util.HashSet;
 import java.util.Random;
+import java.util.Set;
 
 /**
  * Radio device block with tile entity.
@@ -60,25 +62,28 @@ public class PCfix_BlockRadioPlaceholder extends BlockContainer implements PC_IB
 		return 2;
 	}
 
-	//@formatter:off
-	
-	@Override
-	public boolean isTranslucentForLaser(IBlockAccess world, PC_CoordI pos) { return true; }
-	@Override
-	public boolean isHarvesterIgnored(IBlockAccess world, PC_CoordI pos) { return true; }
-	@Override
-	public boolean isHarvesterDelimiter(IBlockAccess world, PC_CoordI pos) { return false; }
-	@Override
-	public boolean isBuilderIgnored() { return true; }
-	@Override
-	public boolean isConveyor(IBlockAccess world, PC_CoordI pos){ return false; }
-	@Override
-	public boolean isElevator(IBlockAccess world, PC_CoordI pos) { return false; }
-
-	//@formatter:on
-
 	@Override
 	public TileEntity getBlockEntity() {
 		return new PCfix_TileEntityRadioPlaceholder();
+	}
+	
+	@Override
+	public Set<String> getBlockFlags(World world, PC_CoordI pos) {
+		// NO_HARVEST, HARVEST_STOP, TRANSLUCENT
+
+		Set<String> set = new HashSet<String>();
+
+		set.add("NO_HARVEST");
+		set.add("TRANSLUCENT");
+		set.add("FIX_RADIO");
+
+		return set;
+	}
+
+	@Override
+	public Set<String> getItemFlags(int damage) {
+		Set<String> set = new HashSet<String>();
+		set.add("NO_BUILD");
+		return set;
 	}
 }

@@ -252,7 +252,7 @@ public class PCma_TileEntityLaser extends TileEntity implements PC_IBeamHandler 
 		// translucent blocks...
 		if (mat == Material.glass || mat == Material.snow || mat == Material.plants || mat == Material.circuits || mat == Material.vine
 				|| id == Block.signPost.blockID || id == Block.signWall.blockID || block instanceof BlockPane
-				|| PC_BlockUtils.isTranslucent(world, coord)) {
+				|| PC_BlockUtils.hasFlag(world, coord, "TRANSLUCENT")) {
 
 			return false;
 

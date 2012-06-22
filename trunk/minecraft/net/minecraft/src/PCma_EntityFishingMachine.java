@@ -354,7 +354,7 @@ public class PCma_EntityFishingMachine extends Entity {
 
 
 		for (int i = 0; i <= 3; i++) {
-			if (PC_BlockUtils.isConveyorOrElevator(worldObj, outputs[i])) {
+			if (PC_BlockUtils.hasFlag(worldObj, outputs[i], "BELT") || PC_BlockUtils.hasFlag(worldObj, outputs[i], "LIFT")) {
 				ejectFish_do(outputs[i], false);
 				return;
 			}

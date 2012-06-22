@@ -1,6 +1,8 @@
 package net.minecraft.src;
 
+import java.util.HashSet;
 import java.util.Random;
+import java.util.Set;
 
 /**
  * Mirror / Prism block
@@ -265,21 +267,29 @@ public class PCma_BlockOptical extends BlockContainer implements PC_IBlockType {
 		if (isMirror(iblockaccess, i, j, k)) { return 0x999999; }
 		return 0xffffcc;
 	}
+	@Override
+	public Set<String> getBlockFlags(World world, PC_CoordI pos) {
 
-	//@formatter:off
-	
+		Set<String> set = new HashSet<String>();
+
+		set.add("NO_HARVEST");
+		set.add("TRANSLUCENT");
+		set.add("OPTICAL");
+		
+		if(isMirror(world, pos.x, pos.y, pos.z)){
+			set.add("MIRROR");
+		}else{
+			set.add("PRISM");
+		}
+
+		return set;
+	}
+
 	@Override
-	public boolean isTranslucentForLaser(IBlockAccess world, PC_CoordI pos) { return true; }
-	@Override
-	public boolean isHarvesterIgnored(IBlockAccess world, PC_CoordI pos) { return true; }
-	@Override
-	public boolean isHarvesterDelimiter(IBlockAccess world, PC_CoordI pos) { return false; }
-	@Override
-	public boolean isBuilderIgnored() { return true; }
-	@Override
-	public boolean isConveyor(IBlockAccess world, PC_CoordI pos){ return false; }
-	@Override
-	public boolean isElevator(IBlockAccess world, PC_CoordI pos) { return false; }
-	
-	//@formatter:on
+	public Set<String> getItemFlags(int damage) {
+		Set<String> set = new HashSet<String>();
+		set.add("NO_BUILD");
+		return set;
+	}
+
 }

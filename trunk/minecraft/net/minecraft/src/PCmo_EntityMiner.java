@@ -1295,7 +1295,7 @@ public class PCmo_EntityMiner extends Entity implements IInventory {
 
 		if (id == 0 || Block.blocksList[id] == null || Block.blocksList[id] instanceof BlockTorch || id == Block.fire.blockID
 				|| id == Block.portal.blockID || id == Block.endPortal.blockID || Block.blocksList[id] instanceof BlockFluid || id == 55
-				|| id == 70 || id == 72 || PC_BlockUtils.isElevator(worldObj, pos) || PC_BlockUtils.isConveyor(worldObj, pos)) { return true; }
+				|| id == 70 || id == 72 || PC_BlockUtils.hasFlag(worldObj, pos, "LIFT") || PC_BlockUtils.hasFlag(worldObj, pos, "BELT")) { return true; }
 
 		boolean flag = false;
 		if (Block.blocksList[id] instanceof PC_ICropBlock) {
@@ -1332,7 +1332,7 @@ public class PCmo_EntityMiner extends Entity implements IInventory {
 	private boolean canHarvestBlockWithCurrentLevel(PC_CoordI pos, int id) {
 		// exception - miner 8 can mine bedrock.
 		if (id == 7 && level == 8) { return true; }
-		if (isBlockUnbreakable(id) || PC_BlockUtils.isHarvesterDelimiter(worldObj, pos)) { return false; }
+		if (isBlockUnbreakable(id) || PC_BlockUtils.hasFlag(worldObj, pos, "HARVEST_STOP")) { return false; }
 		switch (level) {
 			case 1: // all but rocks and iron
 				return Block.blocksList[id].blockMaterial != Material.rock && Block.blocksList[id].blockMaterial != Material.iron
@@ -1604,7 +1604,7 @@ public class PCmo_EntityMiner extends Entity implements IInventory {
 
 		int id = is.itemID;
 
-		if (PC_BlockUtils.isBuilderIgnored(id)) { return false; }
+		if (PC_BlockUtils.hasFlag(is,"NO_BUILD")) { return false; }
 
 		if (id == Block.sand.blockID || id == Block.gravel.blockID) { return false; }
 

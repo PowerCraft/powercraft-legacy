@@ -1,5 +1,8 @@
 package net.minecraft.src;
 
+import java.util.HashSet;
+import java.util.Set;
+
 /**
  * PowerCraft block type tests.<br>
  * Checks block flags at given position in world.
@@ -9,134 +12,62 @@ package net.minecraft.src;
  * 
  */
 public class PC_BlockUtils {
-
+	
 	/**
-	 * Check if block pointed by coordinate in world is conveyor.
-	 * 
-	 * @param pos block coordinate
+	 * Get block flags in world at given position.
 	 * @param world the world
-	 * @return flag
+	 * @param pos the coordinate
+	 * @return set of flags, or empty set if not instance of {@link PC_IBlockType}
 	 */
-	public static boolean isConveyor(IBlockAccess world, PC_CoordI pos) {
-
+	public static Set<String> getBlockFlags(World world, PC_CoordI pos){
+		
 		int id = pos.getId(world);
 
 		if (Block.blocksList[id] != null && Block.blocksList[id] instanceof PC_IBlockType) {
 			PC_IBlockType type = (PC_IBlockType) Block.blocksList[id];
-			return type.isConveyor(world, pos);
+			return type.getBlockFlags(world, pos);
 		}
 
-		return false;
+		return new HashSet<String>();
 	}
-
+	
 	/**
-	 * Check if block pointed by coordinate in world is elevator.
-	 * 
-	 * @param pos block coordinate
+	 * Check if block in world has given type flag
 	 * @param world the world
-	 * @return flag
+	 * @param pos position
+	 * @param flag block flag to check
+	 * @return has flag
 	 */
-	public static boolean isElevator(IBlockAccess world, PC_CoordI pos) {
-
-		int id = pos.getId(world);
-
-		if (Block.blocksList[id] != null && Block.blocksList[id] instanceof PC_IBlockType) {
-			PC_IBlockType type = (PC_IBlockType) Block.blocksList[id];
-			return type.isElevator(world, pos);
-		}
-
-		return false;
+	public static boolean hasFlag(World world, PC_CoordI pos, String flag){
+		return getBlockFlags(world, pos).contains(flag);
 	}
-
+	
 	/**
-	 * Check if block pointed by coordinate in world is conveyor or elevator.
-	 * 
-	 * @param pos block coordinate
-	 * @param world the world
-	 * @return flag
+	 * Check if block in stack has given type flag
+	 * @param stack stack
+	 * @param flag block flag to check
+	 * @return has flag
 	 */
-	public static boolean isConveyorOrElevator(IBlockAccess world, PC_CoordI pos) {
-
-		int id = pos.getId(world);
-
-		if (Block.blocksList[id] != null && Block.blocksList[id] instanceof PC_IBlockType) {
-			PC_IBlockType type = (PC_IBlockType) Block.blocksList[id];
-			return type.isConveyor(world, pos) || type.isElevator(world, pos);
-		}
-
-		return false;
+	public static boolean hasFlag(ItemStack stack, String flag){
+		return getItemFlags(stack).contains(flag);
 	}
-
+	
 	/**
-	 * Check if Block at coordinate in world is ignored by Block Harvester.<br>
-	 * <i>isBlockHarvesterDelimiter</i> can override this.
-	 * 
-	 * @param pos block coordinate
-	 * @param world the world
-	 * @return flag
+	 * Get item-block flags for itemstack.
+	 * @param stack the stack
+	 * @return set of flags, or empty set if block not instance of {@link PC_IBlockType}
 	 */
-	public static boolean isHarvesterIgnored(IBlockAccess world, PC_CoordI pos) {
+	public static Set<String> getItemFlags(ItemStack stack){
+		
+		if(stack == null) return new HashSet<String>();
+		if(stack.getItem() instanceof ItemBlock) return new HashSet<String>();
 
-		int id = pos.getId(world);
-
-		if (Block.blocksList[id] != null && Block.blocksList[id] instanceof PC_IBlockType) {
-			PC_IBlockType type = (PC_IBlockType) Block.blocksList[id];
-			return type.isHarvesterIgnored(world, pos);
+		if (Block.blocksList[stack.getItem().shiftedIndex] != null && Block.blocksList[stack.getItem().shiftedIndex] instanceof PC_IBlockType) {
+			PC_IBlockType type = (PC_IBlockType) Block.blocksList[stack.getItem().shiftedIndex];
+			return type.getItemFlags(stack.getItemDamage());
 		}
 
-		return false;
-	}
-
-	/**
-	 * Check if Block with given ID can't be placed by Block Builder.
-	 * 
-	 * @param id block id
-	 * @return flag
-	 */
-	public static boolean isBuilderIgnored(int id) {
-		if (Block.blocksList[id] != null && Block.blocksList[id] instanceof PC_IBlockType) {
-			PC_IBlockType type = (PC_IBlockType) Block.blocksList[id];
-			return type.isBuilderIgnored();
-		}
-		return false;
-	}
-
-	/**
-	 * Check if block pointed by coordinate in world is End-block for harvester.
-	 * 
-	 * @param world the world
-	 * @param pos block coordinate
-	 * @return flag
-	 */
-	public static boolean isHarvesterDelimiter(IBlockAccess world, PC_CoordI pos) {
-
-		int id = pos.getId(world);
-
-		if (Block.blocksList[id] != null && Block.blocksList[id] instanceof PC_IBlockType) {
-			PC_IBlockType type = (PC_IBlockType) Block.blocksList[id];
-			return type.isHarvesterDelimiter(world, pos);
-		}
-
-		return false;
-	}
-
-	/**
-	 * Check if block pointed by coordinate in world is translucent for laser beam.
-	 * 
-	 * @param pos block coordinate
-	 * @param world the world
-	 * @return flag
-	 */
-	public static boolean isTranslucent(IBlockAccess world, PC_CoordI pos) {
-
-		int id = pos.getId(world);
-
-		if (Block.blocksList[id] != null && Block.blocksList[id] instanceof PC_IBlockType) {
-			PC_IBlockType type = (PC_IBlockType) Block.blocksList[id];
-			return type.isTranslucentForLaser(world, pos);
-		}
-
-		return false;
+		return new HashSet<String>();
 	}
 
 }

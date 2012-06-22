@@ -1,7 +1,9 @@
 package net.minecraft.src;
 
 import java.util.Arrays;
+import java.util.HashSet;
 import java.util.Random;
+import java.util.Set;
 
 import net.minecraft.src.forge.ITextureProvider;
 
@@ -1047,21 +1049,25 @@ public class PClo_BlockGate extends BlockContainer implements PC_IRotatedBox, PC
 		return false;
 	}
 
-	//@formatter:off
-	
 	@Override
-	public boolean isTranslucentForLaser(IBlockAccess world, PC_CoordI pos) { return true; }
+	public Set<String> getBlockFlags(World world, PC_CoordI pos) {
+
+		Set<String> set = new HashSet<String>();
+
+		set.add("NO_HARVEST");
+		set.add("TRANSLUCENT");
+		set.add("REDSTONE");
+		set.add("LOGIC");
+		set.add("GATE");
+
+		return set;
+	}
+
 	@Override
-	public boolean isHarvesterIgnored(IBlockAccess world, PC_CoordI pos) { return true; }
-	@Override
-	public boolean isHarvesterDelimiter(IBlockAccess world, PC_CoordI pos) { return false; }
-	@Override
-	public boolean isBuilderIgnored() { return true; }
-	@Override
-	public boolean isConveyor(IBlockAccess world, PC_CoordI pos){ return false; }
-	@Override
-	public boolean isElevator(IBlockAccess world, PC_CoordI pos) { return false; }
-	
-	//@formatter:on
+	public Set<String> getItemFlags(int damage) {
+		Set<String> set = new HashSet<String>();
+		set.add("NO_BUILD");
+		return set;
+	}
 
 }

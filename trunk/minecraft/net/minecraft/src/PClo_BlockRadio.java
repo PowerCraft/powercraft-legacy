@@ -1,7 +1,9 @@
 package net.minecraft.src;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.Random;
+import java.util.Set;
 
 /**
  * Radio device block with tile entity.
@@ -245,22 +247,26 @@ public class PClo_BlockRadio extends BlockContainer implements PC_IBlockType {
 		return 2;
 	}
 
-	//@formatter:off
-	
 	@Override
-	public boolean isTranslucentForLaser(IBlockAccess world, PC_CoordI pos) { return true; }
-	@Override
-	public boolean isHarvesterIgnored(IBlockAccess world, PC_CoordI pos) { return true; }
-	@Override
-	public boolean isHarvesterDelimiter(IBlockAccess world, PC_CoordI pos) { return false; }
-	@Override
-	public boolean isBuilderIgnored() { return true; }
-	@Override
-	public boolean isConveyor(IBlockAccess world, PC_CoordI pos){ return false; }
-	@Override
-	public boolean isElevator(IBlockAccess world, PC_CoordI pos) { return false; }
+	public Set<String> getBlockFlags(World world, PC_CoordI pos) {
 
-	//@formatter:on
+		Set<String> set = new HashSet<String>();
+
+		set.add("NO_HARVEST");
+		set.add("TRANSLUCENT");
+		set.add("REDSTONE");
+		set.add("LOGIC");
+		set.add("RADIO");
+
+		return set;
+	}
+
+	@Override
+	public Set<String> getItemFlags(int damage) {
+		Set<String> set = new HashSet<String>();
+		set.add("NO_BUILD");
+		return set;
+	}
 
 	@Override
 	public TileEntity getBlockEntity() {

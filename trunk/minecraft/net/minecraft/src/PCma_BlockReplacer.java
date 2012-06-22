@@ -1,6 +1,8 @@
 package net.minecraft.src;
 
+import java.util.HashSet;
 import java.util.Random;
+import java.util.Set;
 
 import net.minecraft.src.forge.ITextureProvider;
 
@@ -156,7 +158,7 @@ public class PCma_BlockReplacer extends BlockContainer implements PC_ISwapTerrai
 
 			if (block == null) return false;
 
-			if (PC_BlockUtils.isBuilderIgnored(block.blockID)) return false;
+			if (PC_BlockUtils.hasFlag(itemstack,"NO_BUILD")) return false;
 
 			if (block.isBlockContainer) return false;
 
@@ -321,38 +323,21 @@ public class PCma_BlockReplacer extends BlockContainer implements PC_ISwapTerrai
 	}
 
 	@Override
-	public boolean isTranslucentForLaser(IBlockAccess world, PC_CoordI pos) {
-		// TODO Auto-generated method stub
-		return false;
+	public Set<String> getBlockFlags(World world, PC_CoordI pos) {
+
+		Set<String> set = new HashSet<String>();
+
+		set.add("NO_HARVEST");
+		set.add("HARVEST_STOP");
+		//set.add("TRANSLUCENT");
+
+		return set;
 	}
 
 	@Override
-	public boolean isHarvesterIgnored(IBlockAccess world, PC_CoordI pos) {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	@Override
-	public boolean isHarvesterDelimiter(IBlockAccess world, PC_CoordI pos) {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	@Override
-	public boolean isBuilderIgnored() {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	@Override
-	public boolean isConveyor(IBlockAccess world, PC_CoordI pos) {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	@Override
-	public boolean isElevator(IBlockAccess world, PC_CoordI pos) {
-		// TODO Auto-generated method stub
-		return false;
+	public Set<String> getItemFlags(int damage) {
+		Set<String> set = new HashSet<String>();
+		set.add("NO_BUILD");
+		return set;
 	}
 }

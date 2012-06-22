@@ -1,6 +1,8 @@
 package net.minecraft.src;
 
+import java.util.HashSet;
 import java.util.Random;
+import java.util.Set;
 
 import net.minecraft.src.forge.ITextureProvider;
 
@@ -181,20 +183,24 @@ public class PCma_BlockAutomaticWorkbench extends BlockContainer implements PC_I
 		return PC_Renderer.swapTerrainRenderer;
 	}
 
-	// @formatter:off
-	
 	@Override
-	public boolean isTranslucentForLaser(IBlockAccess world, PC_CoordI pos) { return false; }
+	public Set<String> getBlockFlags(World world, PC_CoordI pos) {
+
+		Set<String> set = new HashSet<String>();
+
+		set.add("NO_HARVEST");
+		set.add("HARVEST_STOP");
+		set.add("ACT");
+		set.add("REDSTONE");
+		set.add("MACHINE");
+
+		return set;
+	}
+
 	@Override
-	public boolean isHarvesterIgnored(IBlockAccess world, PC_CoordI pos) { return false; }
-	@Override
-	public boolean isHarvesterDelimiter(IBlockAccess world, PC_CoordI pos) { return true; }
-	@Override
-	public boolean isBuilderIgnored() { return true; }
-	@Override
-	public boolean isConveyor(IBlockAccess world, PC_CoordI pos) { return false; }
-	@Override
-	public boolean isElevator(IBlockAccess world, PC_CoordI pos) { return false; }
-	
-	// @formatter:off
+	public Set<String> getItemFlags(int damage) {
+		Set<String> set = new HashSet<String>();
+		set.add("NO_BUILD");
+		return set;
+	}
 }

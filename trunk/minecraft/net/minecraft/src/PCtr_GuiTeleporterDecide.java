@@ -1,103 +1,80 @@
 package net.minecraft.src;
 
-import java.util.LinkedHashMap;
+import net.minecraft.src.PC_GresWidget.PC_GresAlign;
 
-import org.lwjgl.opengl.GL11;
 
-public class PCtr_GuiTeleporterDecide extends GuiScreen {
+/**
+ * Gui where user decides what laser type he wants. They share the same item.
+ * 
+ * @author MightyPork
+ * @copy (c) 2012
+ *
+ */
+public class PCtr_GuiTeleporterDecide implements PC_IGresBase {
+	
+
 	private PCtr_TileEntityTeleporter teleporter;
 
 	public PCtr_GuiTeleporterDecide(PCtr_TileEntityTeleporter te) {
 		teleporter = te;
 	}
-
+	
 	@Override
-	public void updateScreen() {}
-
-	@SuppressWarnings("unchecked")
-	@Override
-	public void initGui() {
-		controlList.clear();
-
-		LinkedHashMap<Integer, String> btns = new LinkedHashMap<Integer, String>();
-		btns.put(0, "pc.gui.teleporter.type.sender");
-		btns.put(1, "pc.gui.teleporter.type.target");
-		PC_GuiButtonAligner.alignToCenter(controlList, btns, 60, 8, height / 2 + 50 - 34, width / 2);
+	public EntityPlayer getPlayer() {
+		return PC_Utils.mc().thePlayer;
 	}
 
 	@Override
-	public void onGuiClosed() {}
+	public void initGui(PC_IGresGui gui) {
+
+		//window
+		PC_GresWindow w = new PC_GresWindow(PC_Lang.tr("pc.gui.teleporter.title"));
+		w.setAlignH(PC_GresAlign.CENTER);
+		PC_GresWidget hg,vg;
+		
+		vg = new PC_GresLayoutV().setAlignH(PC_GresAlign.LEFT);
+		vg.add(new PC_GresLabel(PC_Lang.tr("pc.gui.teleporter.selectType")));
+		vg.add(new PC_GresLabel(PC_Lang.tr("pc.gui.teleporter.selectTypeDescr")));
+		w.add(vg);
+		
+		// buttons
+		hg = new PC_GresLayoutH().setAlignH(PC_GresAlign.CENTER);
+		hg.add(new PC_GresButton(PC_Lang.tr("pc.gui.teleporter.type.sender")).setId(0).setMinWidth(70));
+		hg.add(new PC_GresButton(PC_Lang.tr("pc.gui.teleporter.type.target")).setId(1).setMinWidth(70));
+		w.add(hg);
+
+		gui.add(w);
+
+	}
 
 	@Override
-	protected void actionPerformed(GuiButton guibutton) {
-		if (!guibutton.enabled) { return; }
+	public void onGuiClosed(PC_IGresGui gui) {}
 
-		if (guibutton.id == 0) {
+	@Override
+	public void actionPerformed(PC_GresWidget widget, PC_IGresGui gui) {
 
+		if (widget.getId() == 0) {
 			teleporter.setSender();
-
-		} else if (guibutton.id == 1) {
-
-			teleporter.setReceiver();
+			
+		} else if (widget.getId() == 1) {	
+			teleporter.setReceiver();	
+			
 		}
-
-		teleporter.onInventoryChanged();
-
-		mc.displayGuiScreen(null);
-		mc.setIngameFocus();
-
-		ModLoader.openGUI(mc.thePlayer, new PCtr_GuiTeleporter(teleporter, true));
+		
+		PC_Utils.openGres(getPlayer(), new PCtr_GuiTeleporter(teleporter, true));
 
 	}
 
 	@Override
-	public boolean doesGuiPauseGame() {
-		return false;
+	public void onEscapePressed(PC_IGresGui gui) {
 	}
 
 	@Override
-	protected void keyTyped(char c, int i) {}
-
-	@Override
-	protected void mouseClicked(int i, int j, int k) {
-		super.mouseClicked(i, j, k);
+	public void onReturnPressed(PC_IGresGui gui) {		
 	}
 
 	@Override
-	public void drawScreen(int i, int j, float f) {
-		drawDefaultBackground();
-
-		drawGuiDecideBackgroundLayer(f);
-
-		GL11.glPushMatrix();
-
-		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-		GL11.glDisable(32826 /* GL_RESCALE_NORMAL_EXT */);
-		RenderHelper.disableStandardItemLighting();
-		GL11.glDisable(2896 /* GL_LIGHTING */);
-		GL11.glDisable(2929 /* GL_DEPTH_TEST */);
-
-		String title = PC_Lang.tr("pc.gui.teleporter.title");
-		fontRenderer.drawString(title, width / 2 - (fontRenderer.getStringWidth(title) / 2), (height / 2 - 50) + 20, 0x000000);
-
-		fontRenderer.drawString(PC_Lang.tr("pc.gui.teleporter.selectType"), width / 2 - 100, (height / 2 - 50) + 30 + 4, 0x404040);
-		fontRenderer.drawString(PC_Lang.tr("pc.gui.teleporter.selectTypeDescr"), width / 2 - 100, (height / 2 - 50) + 30 + 14, 0x404040);
-
-		GL11.glPopMatrix();
-
-		super.drawScreen(i, j, f);
-
-		GL11.glEnable(2896 /* GL_LIGHTING */);
-		GL11.glEnable(2929 /* GL_DEPTH_TEST */);
-	}
-
-	protected void drawGuiDecideBackgroundLayer(float f) {
-		int i = mc.renderEngine.getTexture("/PowerCraft/core/dialog-small.png");
-		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-		mc.renderEngine.bindTexture(i);
-		int j = (width - 100) / 2;
-		int k = (height - 50) / 2;
-		drawTexturedModalRect(j - 100 + 30, k - 50 + 30 + 5, 0, 0, 240, 100);
+	public void onCraftMatrixChanged(IInventory iinventory) {
 	}
 
 }
