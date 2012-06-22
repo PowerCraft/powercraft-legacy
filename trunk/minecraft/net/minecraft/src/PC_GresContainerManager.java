@@ -75,6 +75,7 @@ public class PC_GresContainerManager extends Container {
 					return null;
 				}else{
 					slot.onPickupFromSlot(itemstack);
+					
 				}
 				
 			} else if (!mergeItemStack(itemstack1, 0, playerSlots, false)) {

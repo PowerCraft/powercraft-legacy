@@ -245,7 +245,6 @@ public class mod_PCmachines extends PC_Module implements PC_IActivatorListener {
 		list.add(getImgDir() + "mirror.png");
 		list.add(getImgDir() + "laser.png");
 		list.add(getImgDir() + "fisher.png");
-		list.add(getImgDir() + "gui_act.png");
 	}
 
 	@Override

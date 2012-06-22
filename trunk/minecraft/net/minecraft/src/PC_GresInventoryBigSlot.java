@@ -47,13 +47,13 @@ public class PC_GresInventoryBigSlot extends PC_GresWidget {
 		
 		posOnScrren.x -= widgetPos.x;
 		posOnScrren.y -= widgetPos.y;
-		GL11.glBindTexture(GL11.GL_TEXTURE_2D, mc.renderEngine.getTexture(texture));
-		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
+		
 		if(slot!=null){
 			slot.xDisplayPosition = posOnScrren.x + 5;
 			slot.yDisplayPosition = posOnScrren.y + 5;
 		}
-		drawTexturedModalRect(pos.x + posOffset.x, pos.y+posOffset.y, 18, 66, 26, 26);
+		
+		renderImage(posOffset, texture, new PC_CoordI(26,26), new PC_CoordI(18,66));
 	}
 
 	@Override

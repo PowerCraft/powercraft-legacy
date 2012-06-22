@@ -278,7 +278,9 @@ public abstract class PC_GresWidget extends Gui {
 	/**
 	 * @return minimal size, {width,height}
 	 */
-	public abstract PC_CoordI getMinSize();
+	public PC_CoordI getMinSize(){
+		return calcSize().copy();
+	};
 
 	/**
 	 * @param minSize the minSize to set
