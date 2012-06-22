@@ -38,11 +38,11 @@ public class PC_GresLayoutH extends PC_GresWidget {
 				calcChildPositions();
 				return;
 			}
-			xSize += csize.x + widgetMargin;
+			xSize += csize.x + w.widgetMargin;
 			// childs.get(i).setPosition(xx, height/2 - childs.get(i).getSize().y/2);
 			// xx += size.x + widgetDistance;
 		}
-		xSize -= widgetMargin;
+		//xSize -= widgetMargin;
 		for (PC_GresWidget w: childs) {
 			PC_CoordI csize = w.getSize();
 			int xPos = 0;

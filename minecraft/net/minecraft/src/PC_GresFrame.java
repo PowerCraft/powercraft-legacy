@@ -1,12 +1,21 @@
 package net.minecraft.src;
 
+/**
+ * Frame widget with padding and horizontal layout
+ * 
+ * @author MightyPork
+ * @copy (c) 2012
+ *
+ */
 public class PC_GresFrame extends PC_GresWidget {
 
-	/**
-	 * horizontal layout
-	 */
-	int border = 5;
+
+	/** distance from borders to contents. */
+	int framePadding = 5;
 	
+	/**
+	 * frame widget H
+	 */
 	public PC_GresFrame() {
 		super();
 	}
@@ -14,8 +23,8 @@ public class PC_GresFrame extends PC_GresWidget {
 	@Override
 	public PC_CoordI calcSize() {
 		calcChildPositions();
-		if (size.x < minSize.x + border*2) size.x = minSize.x + border*2;
-		if (size.y < minSize.y + border*2) size.y = minSize.y + border*2;
+		if (size.x < minSize.x + framePadding*2) size.x = minSize.x + framePadding*2;
+		if (size.y < minSize.y + framePadding*2) size.y = minSize.y + framePadding*2;
 
 		return size.copy();
 	}
@@ -26,9 +35,9 @@ public class PC_GresFrame extends PC_GresWidget {
 		for (PC_GresWidget w: childs) {
 			w.calcChildPositions();
 			PC_CoordI csize = w.calcSize();
-			if (csize.x + xSize + border*2 > size.x || csize.y > size.y) {
-				if (csize.x + xSize + border*2 > size.x) size.x = csize.x + xSize + border*2;
-				if (csize.y + border*2 > size.y) size.y = csize.y + border*2;
+			if (csize.x + xSize + framePadding*2 > size.x || csize.y > size.y) {
+				if (csize.x + xSize + framePadding*2 > size.x) size.x = csize.x + xSize + framePadding*2;
+				if (csize.y + framePadding*2 > size.y) size.y = csize.y + framePadding*2;
 				if (parent != null) parent.calcChildPositions();
 				calcChildPositions();
 				return;
@@ -78,14 +87,8 @@ public class PC_GresFrame extends PC_GresWidget {
 
 	@Override
 	protected void render(PC_CoordI mpos) {
-		drawHorizontalLine(mpos.x + pos.x, mpos.x + pos.x + size.x - 1, mpos.y + pos.y, 0xffffffff);
-		drawVerticalLine(mpos.x + pos.x, mpos.y + pos.y, mpos.y + pos.y + size.y, 0xffffffff);
 		
-		drawHorizontalLine(mpos.x + pos.x + 1, mpos.x + pos.x + size.x, mpos.y + pos.y + size.y, 0xff373737);
-		drawVerticalLine(mpos.x + pos.x + size.x, mpos.y + pos.y, mpos.y + pos.y + size.y, 0xff373737);
-		
-		drawHorizontalLine(mpos.x + pos.x, mpos.x + pos.x, mpos.y + pos.y + size.y, 0xff8B8B8B);
-		drawHorizontalLine(mpos.x + pos.x + size.x, mpos.x + pos.x + size.x, mpos.y + pos.y, 0xff8B8B8B);
+		renderTextureSliced(mpos, mod_PCcore.getImgDir() + "gres/frame.png", size, new PC_CoordI(0, 0), new PC_CoordI(256, 256));
 		
 	}
 

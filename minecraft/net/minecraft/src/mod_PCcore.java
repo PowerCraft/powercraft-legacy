@@ -284,6 +284,11 @@ public class mod_PCcore extends PC_Module implements PC_IActivatorListener {
 	@Override
 	public void preloadTextures(List<String> list) {
 		list.add(getTerrainFile());
+		list.add(getImgDir()+"gres/dialog.png");
+		list.add(getImgDir()+"gres/widgets.png");
+		list.add(getImgDir()+"gres/frame.png");
+		list.add(getImgDir()+"gres/button.png");
+		list.add(getImgDir()+"graphics.png");
 	}
 
 	@Override
