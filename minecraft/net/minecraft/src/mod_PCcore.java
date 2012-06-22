@@ -218,6 +218,7 @@ public class mod_PCcore extends PC_Module implements PC_IActivatorListener {
 
 		PCco_SlotDirectCrafting.survivalCheating = conf.flag(pk_optCraftCheating);
 		optUpdateNotify = conf.flag(pk_optUpdates);
+		System.out.println("updnotify "+optUpdateNotify);
 		soundsEnabled = !conf.flag(pk_optMuteSound);
 		PCco_BlockPowerCrystal.makeSound = !conf.flag(pk_optSoundCrystal);
 		update_last_ignored_version = conf.string(pk_cfgUpdateIgnored);
@@ -735,15 +736,26 @@ public class mod_PCcore extends PC_Module implements PC_IActivatorListener {
 
 	}
 
-	private static boolean updateAlreadyShowed = false;
+	private static boolean updateAlreadyShown = false;
+	
+	private int inGameTickCounter = 0;
 
 	@Override
-	public boolean onTickInGame(float f, Minecraft minecraft) {
-		if (!updateAlreadyShowed && updateAvailable && optUpdateNotify) {
-			updateAlreadyShowed = true;
-			PC_Utils.openGres(mc.thePlayer, new PCco_GuiUpdateNotification());
-			PC_Logger.fine("Openning UPDATE NOTIFICATION screen.");
-		}
+	public boolean onTickInGame(float f, Minecraft minecraft) {	
+		System.out.println("already shown="+updateAlreadyShown);
+		System.out.println("available="+updateAvailable);
+		System.out.println("optUpdateNotify="+optUpdateNotify);
+		System.out.println("counter="+inGameTickCounter);
+		if (!updateAlreadyShown && updateAvailable && optUpdateNotify) {
+			if(++inGameTickCounter > 20){
+				updateAlreadyShown = true;
+				PC_Utils.openGres(mc.thePlayer, new PCco_GuiUpdateNotification());
+				PC_Logger.fine("Openning UPDATE NOTIFICATION screen.");
+				return false;
+			}else{
+				return true;
+			}
+		}		
 		return false;
 	}
 
