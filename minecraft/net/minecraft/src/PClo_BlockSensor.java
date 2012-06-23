@@ -64,25 +64,13 @@ public class PClo_BlockSensor extends BlockContainer implements PC_IBlockType, P
 			}
 		}
 
-		changeDelay(world, new PC_CoordI(i, j, k), (player.isSneaking() ? -1 : 1));
+		PC_Utils.openGres(player, new PClo_GuiSensor((PClo_TileEntitySensor) new PC_CoordI(i, j, k).getTileEntity(world)));
 		return true;
 	}
 
 	@Override
 	public void onBlockClicked(World world, int i, int j, int k, EntityPlayer entityplayer) {
 		printRange(world, new PC_CoordI(i, j, k));
-	}
-
-	/**
-	 * Change sensor delay (add/subtract one)
-	 * 
-	 * @param world the world
-	 * @param pos position in world
-	 * @param increment (+1/-1)
-	 */
-	public static void changeDelay(World world, PC_CoordI pos, int increment) {
-		PClo_TileEntitySensor ent = (PClo_TileEntitySensor) pos.getTileEntity(world);
-		ent.changeRange(increment);
 	}
 
 	/**
