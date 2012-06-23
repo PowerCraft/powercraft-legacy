@@ -27,7 +27,7 @@ public class PCco_ThreadCheckUpdates extends Thread {
 
 			reader.close();
 
-			mod_PCcore.updateCheckingThreadResult(page);
+			mod_PCcore.onUpdateInfoDownloaded(page);
 
 		} catch (Exception e) {
 			PC_Logger.throwing("PCco_ThreadCheckUpdates", "run", e);

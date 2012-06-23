@@ -57,35 +57,9 @@ public class PCco_ThreadDownloadTranslations extends Thread {
 
 			zin.close();
 			PC_Logger.fine("Language pack updated.\n\n");
-			PC_Logger.fine("Loading translations from updated files.\n");
-
-
-			for (PC_Module module : PC_Module.modules.values()) {
-				PC_Logger.finer("Loading translations for module " + module.getModuleName());
-				if(module.lang != null){
-					module.lang.loadTranstalions();
-				}
-				PC_Logger.finer("\n");
-			}
-
-			PC_Logger.fine("All translations loaded.\n");
-
-			PC_Logger.fine("Saving Language Pack version number to property file CORE.cfg");
-
-			PC_PropertyManager cfg = mod_PCcore.instance.cfg();
-
-			cfg.enableValidation(false);
-			cfg.cfgSilent(true);
-
-			cfg.setValue(mod_PCcore.pk_cfgCurrentLangVersion, mod_PCcore.updateLangVersion);
-			cfg.apply();
-
-			cfg.enableValidation(true);
-			cfg.cfgSilent(false);
-
-
-			PC_Logger.fine("Forcing ModLoader to update Minecraft's list of translations.");
-			ModLoader.setPrivateValue(ModLoader.class, null, "langPack", null);
+			
+			
+			mod_PCcore.onTranslationsUpdated();
 
 
 		} catch (Exception e) {
