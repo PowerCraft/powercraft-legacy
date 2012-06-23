@@ -179,8 +179,8 @@ public class PCtr_TileEntitySeparationBelt extends PC_TileEntity implements IInv
 					break;
 			}
 
-			translate[2] = (PCtr_BlockConveyor.isConveyorOrElevatorAt(worldObj, leftX, yCoord, leftZ) ? -1 : 0);
-			translate[0] = (PCtr_BlockConveyor.isConveyorOrElevatorAt(worldObj, rightX, yCoord, rightZ) ? 1 : 0);
+			translate[2] = (PCtr_BeltBase.isTransporterAt(worldObj, new PC_CoordI(leftX, yCoord, leftZ)) ? -1 : 0);
+			translate[0] = (PCtr_BeltBase.isTransporterAt(worldObj, new PC_CoordI(rightX, yCoord, rightZ)) ? 1 : 0);
 
 			if (translate[0] == translate[2]) {
 				translate[0] = 1;

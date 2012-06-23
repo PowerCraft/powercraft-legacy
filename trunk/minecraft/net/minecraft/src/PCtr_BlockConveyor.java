@@ -70,14 +70,14 @@ public class PCtr_BlockConveyor extends Block implements PC_IBlockType, PC_IRota
 
 	@Override
 	public void updateTick(World world, int i, int j, int k, Random random) {
-		
-		PC_CoordI pos = new PC_CoordI(i,j,k);
-		
+
+		PC_CoordI pos = new PC_CoordI(i, j, k);
+
 		if (type == PCtr_EnumConv.ejector) {
 			int meta = pos.getMeta(world);
 
-			if (pos.isPoweredDirectly(world) || pos.isPoweredIndirectly(world)
-					|| pos.offset(0,-1,0).isPoweredDirectly(world) || pos.offset(0,-1,0).isPoweredIndirectly(world)) {
+			if (pos.isPoweredDirectly(world) || pos.isPoweredIndirectly(world) || pos.offset(0, -1, 0).isPoweredDirectly(world)
+					|| pos.offset(0, -1, 0).isPoweredIndirectly(world)) {
 				if (!PCtr_BeltBase.isActive(meta)) {
 					if (!dispenseStackFromMinecart(world, pos)) {
 						tryToDispenseItem(world, pos);
@@ -132,20 +132,6 @@ public class PCtr_BlockConveyor extends Block implements PC_IBlockType, PC_IRota
 		return;
 	}
 
-	// TESTS
-	public static final boolean isConveyorAt(World world, int i, int j, int k) {
-		return PC_BlockUtils.hasFlag(world, new PC_CoordI(i, j, k), "BELT");
-	}
-
-	public static final boolean isElevatorAt(World world, int i, int j, int k) {
-		return PC_BlockUtils.hasFlag(world, new PC_CoordI(i, j, k), "LIFT");
-	}
-
-	public static final boolean isConveyorOrElevatorAt(World world, int i, int j, int k) {
-		Set<String> set = PC_BlockUtils.getBlockFlags(world, new PC_CoordI(i, j, k));
-		return set.contains("BELT") || set.contains("LIFT");
-	}
-
 	public boolean isActive(World world, int i, int j, int k) {
 		int meta = world.getBlockMetadata(i, j, k);
 		return PCtr_BeltBase.isActive(meta);
@@ -159,69 +145,53 @@ public class PCtr_BlockConveyor extends Block implements PC_IBlockType, PC_IRota
 	}
 
 	public static void tryToDispenseItem(World world, PC_CoordI beltPos) {
-		int rot = getRotation_(beltPos.getMeta(world));
-		
+		int rot = PCtr_BeltBase.getRotation(beltPos.getMeta(world));
+
 		// first try the inventory right behind this belt
-		if (rot == 2 && dispenseFromInventoryAt(world, beltPos.offset(0,0,-1), beltPos)) { return; }
-		if (rot == 3 && dispenseFromInventoryAt(world, beltPos.offset(1,0,0), beltPos)) { return; }
-		if (rot == 0 && dispenseFromInventoryAt(world, beltPos.offset(0,0,1), beltPos)) { return; }
-		if (rot == 1 && dispenseFromInventoryAt(world, beltPos.offset(-1,0,0), beltPos)) { return; }
+		if (rot == 2 && dispenseFromInventoryAt(world, beltPos.offset(0, 0, -1), beltPos)) { return; }
+		if (rot == 3 && dispenseFromInventoryAt(world, beltPos.offset(1, 0, 0), beltPos)) { return; }
+		if (rot == 0 && dispenseFromInventoryAt(world, beltPos.offset(0, 0, 1), beltPos)) { return; }
+		if (rot == 1 && dispenseFromInventoryAt(world, beltPos.offset(-1, 0, 0), beltPos)) { return; }
 
 		// try all the other sides
-		if (rot != 2 && dispenseFromInventoryAt(world, beltPos.offset(0,0,-1), beltPos)) { return; }
-		if (rot != 3 && dispenseFromInventoryAt(world, beltPos.offset(1,0,0), beltPos)) { return; }
-		if (rot != 0 && dispenseFromInventoryAt(world, beltPos.offset(0,0,1), beltPos)) { return; }
-		if (rot != 1 && dispenseFromInventoryAt(world, beltPos.offset(-1,0,0), beltPos)) { return; }
+		if (rot != 2 && dispenseFromInventoryAt(world, beltPos.offset(0, 0, -1), beltPos)) { return; }
+		if (rot != 3 && dispenseFromInventoryAt(world, beltPos.offset(1, 0, 0), beltPos)) { return; }
+		if (rot != 0 && dispenseFromInventoryAt(world, beltPos.offset(0, 0, 1), beltPos)) { return; }
+		if (rot != 1 && dispenseFromInventoryAt(world, beltPos.offset(-1, 0, 0), beltPos)) { return; }
 	}
 
 
 
 	private static boolean dispenseItem(World world, PC_CoordI invPos, IInventory inventory, PC_CoordI beltPos) {
 		ItemStack stack = PC_InvUtils.dispenseFirstStack(inventory);
-		
-		if(stack != null){
-			createEntityItemOnbelt(world, invPos, beltPos, stack);
+
+		if (stack != null) {
+			createEntityItemOnBelt(world, invPos, beltPos, stack);
 			return true;
 		}
 		return false;
 	}
-	
-	private static void createEntityItemOnbelt(World world, PC_CoordI invPos, PC_CoordI beltPos, ItemStack stack){
+
+	private static void createEntityItemOnBelt(World world, PC_CoordI invPos, PC_CoordI beltPos, ItemStack stack) {
 		EntityItem item = new EntityItem(world, beltPos.x + 0.5D, beltPos.y + 0.3D, beltPos.z + 0.5D, stack);
 		item.motionX = 0.0D;
 		item.motionY = 0.0D;
 		item.motionZ = 0.0D;
-		
+
 		PC_CoordD vector = PC_CoordI.getVector(beltPos, invPos);
 		item.posX += 0.43D * vector.x;
 		item.posZ += 0.43D * vector.z;
-		
+
 		item.delayBeforeCanPickup = 7;
 		world.spawnEntityInWorld(item);
 	}
 
-	public static boolean storeEntityItemAt(World world, PC_CoordI inventoryPos, EntityItem entity) {
-		IInventory inventory = PC_InvUtils.getCompositeInventoryAt(world, inventoryPos);
-		if (inventory != null && entity != null && entity.isEntityAlive()) {
-			ItemStack stackToStore = entity.item;
-
-			if (stackToStore != null && PC_InvUtils.storeItemInInventory(inventory, stackToStore)) {
-				PCtr_BeltBase.soundEffectChest(world, inventoryPos);
-				if (stackToStore.stackSize <= 0) {
-					entity.setDead();
-					stackToStore.stackSize = 0;
-					return true;
-				}
-
-			}
-		}
-		return false;
-	}
-
 	@SuppressWarnings("unchecked")
 	public static boolean storeEntityItemIntoMinecart(World world, PC_CoordI beltPos, EntityItem entity) {
-		List<EntityMinecart> hitList = world.getEntitiesWithinAABB(EntityMinecart.class, AxisAlignedBB
-				.getBoundingBoxFromPool(beltPos.x, beltPos.y, beltPos.z, beltPos.x + 1, beltPos.y + 1, beltPos.z + 1).expand(1.0D, 1.0D, 1.0D));
+		List<EntityMinecart> hitList = world.getEntitiesWithinAABB(
+				EntityMinecart.class,
+				AxisAlignedBB.getBoundingBoxFromPool(beltPos.x, beltPos.y, beltPos.z, beltPos.x + 1, beltPos.y + 1, beltPos.z + 1).expand(
+						1.0D, 1.0D, 1.0D));
 
 		if (hitList.size() > 0) {
 			for (EntityMinecart cart : hitList) {
@@ -251,8 +221,10 @@ public class PCtr_BlockConveyor extends Block implements PC_IBlockType, PC_IRota
 
 	@SuppressWarnings("unchecked")
 	public static boolean dispenseStackFromMinecart(World world, PC_CoordI beltPos) {
-		List<EntityMinecart> hitList = world.getEntitiesWithinAABB(net.minecraft.src.EntityMinecart.class, AxisAlignedBB
-				.getBoundingBoxFromPool(beltPos.x, beltPos.y, beltPos.z, beltPos.x+1, beltPos.y+1, beltPos.z+1).expand(1.0D, 1.0D, 1.0D));
+		List<EntityMinecart> hitList = world.getEntitiesWithinAABB(
+				net.minecraft.src.EntityMinecart.class,
+				AxisAlignedBB.getBoundingBoxFromPool(beltPos.x, beltPos.y, beltPos.z, beltPos.x + 1, beltPos.y + 1, beltPos.z + 1).expand(
+						1.0D, 1.0D, 1.0D));
 
 		if (hitList.size() > 0) {
 			for (EntityMinecart cart : hitList) {
@@ -273,7 +245,7 @@ public class PCtr_BlockConveyor extends Block implements PC_IBlockType, PC_IRota
 
 
 	private boolean isBeyondStorageBorder(World world, PC_CoordI beltPos, Entity entity, float border) {
-		switch (getRotation_(beltPos.getMeta(world))) {
+		switch (PCtr_BeltBase.getRotation(beltPos.getMeta(world))) {
 			case 0: // Z--
 				if (entity.posZ > beltPos.z + 1 - border) { return false; }
 				break;
@@ -304,22 +276,23 @@ public class PCtr_BlockConveyor extends Block implements PC_IBlockType, PC_IRota
 		int rot = getRotation(pos.getMeta(world));
 
 
-		if (isBeyondStorageBorder(world, pos, entity, PCtr_BeltBase.STORAGE_BORDER) || (isPowered(world, pos) && type == PCtr_EnumConv.brake)) {
-			if (rot == 0 && storeEntityItemAt(world, pos.offset(0,0,-1), entity)) { return true; }
-			if (rot == 1 && storeEntityItemAt(world, pos.offset(1,0,0), entity)) { return true; }
-			if (rot == 2 && storeEntityItemAt(world, pos.offset(0,0,1), entity)) { return true; }
-			if (rot == 3 && storeEntityItemAt(world, pos.offset(-1,0,0), entity)) { return true; }
-			
-			if (rot != 0 && rot != 2 && storeEntityItemAt(world, pos.offset(0,0,-1), entity)) { return true; }
-			if (rot != 1 && rot != 3 && storeEntityItemAt(world, pos.offset(1,0,0), entity)) { return true; }
-			if (rot != 2 && rot != 0 && storeEntityItemAt(world, pos.offset(0,0,1), entity)) { return true; }
-			if (rot != 3 && rot != 1 && storeEntityItemAt(world, pos.offset(-1,0,0), entity)) { return true; }
+		if (isBeyondStorageBorder(world, pos, entity, PCtr_BeltBase.STORAGE_BORDER)
+				|| (isPowered(world, pos) && type == PCtr_EnumConv.brake)) {
+			if (rot == 0 && PCtr_BeltBase.storeEntityItemAt(world, pos.offset(0, 0, -1), entity)) { return true; }
+			if (rot == 1 && PCtr_BeltBase.storeEntityItemAt(world, pos.offset(1, 0, 0), entity)) { return true; }
+			if (rot == 2 && PCtr_BeltBase.storeEntityItemAt(world, pos.offset(0, 0, 1), entity)) { return true; }
+			if (rot == 3 && PCtr_BeltBase.storeEntityItemAt(world, pos.offset(-1, 0, 0), entity)) { return true; }
 
-			if (storeEntityItemAt(world, pos.offset(0,1,0), entity)) { return true; }
-		
+			if (rot != 0 && rot != 2 && PCtr_BeltBase.storeEntityItemAt(world, pos.offset(0, 0, -1), entity)) { return true; }
+			if (rot != 1 && rot != 3 && PCtr_BeltBase.storeEntityItemAt(world, pos.offset(1, 0, 0), entity)) { return true; }
+			if (rot != 2 && rot != 0 && PCtr_BeltBase.storeEntityItemAt(world, pos.offset(0, 0, 1), entity)) { return true; }
+			if (rot != 3 && rot != 1 && PCtr_BeltBase.storeEntityItemAt(world, pos.offset(-1, 0, 0), entity)) { return true; }
+
+			if (PCtr_BeltBase.storeEntityItemAt(world, pos.offset(0, 1, 0), entity)) { return true; }
+
 			// store under belt if not roaster.
-			if (PC_BlockUtils.hasFlag(world, pos.offset(0,-1,0), "ROASTER")) {
-				if (storeEntityItemAt(world, pos.offset(0,-1,0), entity)) { return true; }
+			if (PC_BlockUtils.hasFlag(world, pos.offset(0, -1, 0), "ROASTER")) {
+				if (PCtr_BeltBase.storeEntityItemAt(world, pos.offset(0, -1, 0), entity)) { return true; }
 			}
 		}
 		return false;
@@ -329,297 +302,139 @@ public class PCtr_BlockConveyor extends Block implements PC_IBlockType, PC_IRota
 
 		if (storeEntityItemIntoMinecart(world, pos, entity)) return true;
 
-		if (storeEntityItemAt(world, pos.offset(0,0,-1), entity)) return true;
-		if (storeEntityItemAt(world, pos.offset(0,0,1), entity)) return true;
-		if (storeEntityItemAt(world, pos.offset(-1,0,0), entity)) return true;
-		if (storeEntityItemAt(world, pos.offset(1,0,0), entity)) return true;
+		if (PCtr_BeltBase.storeEntityItemAt(world, pos.offset(0, 0, -1), entity)) return true;
+		if (PCtr_BeltBase.storeEntityItemAt(world, pos.offset(0, 0, 1), entity)) return true;
+		if (PCtr_BeltBase.storeEntityItemAt(world, pos.offset(-1, 0, 0), entity)) return true;
+		if (PCtr_BeltBase.storeEntityItemAt(world, pos.offset(1, 0, 0), entity)) return true;
 
-		if (storeEntityItemAt(world, pos.offset(0,1,0), entity)) return true;
+		if (PCtr_BeltBase.storeEntityItemAt(world, pos.offset(0, 1, 0), entity)) return true;
 
-		if (!PC_BlockUtils.hasFlag(world, pos.offset(0,-1,0), "ROASTER") && storeEntityItemAt(world, pos.offset(0,-1,0), entity)) return true;
+		if (!PC_BlockUtils.hasFlag(world, pos.offset(0, -1, 0), "ROASTER")
+				&& PCtr_BeltBase.storeEntityItemAt(world, pos.offset(0, -1, 0), entity)) return true;
 		return false;
 	}
 
-	// FILL CAULDRON
-	private boolean try2fillCauldron(World world, int i, int j, int k) {
-		if (world.getBlockId(i, j, k) == Block.cauldron.blockID && world.getBlockMetadata(i, j, k) < 3) {
-			world.setBlockMetadataWithNotify(i, j, k, 3);
-			return true;
-		}
-		return false;
+	private void doSpecialItemAction(World world, PC_CoordI beltPos, EntityItem entity) {
+		if (entity == null || entity.item == null) { return; }
+		boolean flag = false;
+		flag |= entity.item.itemID == Item.bucketWater.shiftedIndex;
+		flag |= entity.item.itemID == Item.bucketEmpty.shiftedIndex;
+		flag |= entity.item.itemID == Item.glassBottle.shiftedIndex;
+		if(!flag) return;
+		
+		do {
+			
+			
+			if (doSpecialItemAction_do(world, beltPos.offset(0, 0, 1), entity)) {
+				break;
+			}
+			if (doSpecialItemAction_do(world, beltPos.offset(0, 0, -1), entity)) {
+				break;
+			}
+			if (doSpecialItemAction_do(world, beltPos.offset(1, 0, 0), entity)) {
+				break;
+			}
+			if (doSpecialItemAction_do(world, beltPos.offset(-1, 0, 0), entity)) {
+				break;
+			}
+			
+			
+			if (doSpecialItemAction_do(world, beltPos.offset(0, -1, 1), entity)) {
+				break;
+			}
+			if (doSpecialItemAction_do(world, beltPos.offset(0, -1, -1), entity)) {
+				break;
+			}
+			if (doSpecialItemAction_do(world, beltPos.offset(1, -1, 0), entity)) {
+				break;
+			}
+			if (doSpecialItemAction_do(world, beltPos.offset(-1, -1, 0), entity)) {
+				break;
+			}
+			
+			
+			if (doSpecialItemAction_do(world, beltPos.offset(0, 1, 0), entity)) {
+				break;
+			}
+			if (doSpecialItemAction_do(world, beltPos.offset(0, -1, 0), entity)) {
+				break;
+			}
+
+		} while (false);
 	}
 
-	public void fillCauldron(World world, int i, int j, int k, EntityItem entity) {
-		if (entity == null || entity.item == null || entity.item.itemID != Item.bucketWater.shiftedIndex) { return; }
-
-		while (true) {
-			if (try2fillCauldron(world, i, j, k - 1)) {
-				break;
+	private boolean doSpecialItemAction_do(World world, PC_CoordI pos, EntityItem entity) {
+		
+		if(entity.item.itemID == Item.bucketWater.shiftedIndex){
+			if (pos.getId(world) == Block.cauldron.blockID && pos.getMeta(world) < 3) {
+				pos.setMeta(world, 3);
+				entity.item.itemID = Item.bucketEmpty.shiftedIndex;
+				return true;
 			}
-			if (try2fillCauldron(world, i, j, k + 1)) {
-				break;
-			}
-			if (try2fillCauldron(world, i - 1, j, k)) {
-				break;
-			}
-			if (try2fillCauldron(world, i + 1, j, k)) {
-				break;
-			}
-			if (try2fillCauldron(world, i, j - 1, k)) {
-				break;
-			}
-			if (try2fillCauldron(world, i, j + 1, k)) {
-				break;
-			}
-			return;
 		}
-
-		entity.item.itemID = Item.bucketEmpty.shiftedIndex;
-	}
-
-	// FILL BUCKET
-	private boolean try2fillBucket(World world, int i, int j, int k) {
-		if (world.getBlockId(i, j, k) == Block.waterStill.blockID || world.getBlockId(i, j, k) == Block.waterMoving.blockID
-				&& world.getBlockMetadata(i, j, k) == 0) {
-			world.setBlockWithNotify(i, j, k, 0);
-			return true;
+		
+		if(entity.item.itemID == Item.bucketEmpty.shiftedIndex){
+			if (pos.getId(world) == Block.waterStill.blockID || pos.getId(world) == Block.waterMoving.blockID
+					&& pos.getMeta(world) == 0) {
+				pos.setBlock(world, 0, 0);
+				entity.item.itemID = Item.bucketWater.shiftedIndex;
+				return true;
+			}
 		}
-		return false;
-	}
+		
+		if(entity.item.itemID == Item.glassBottle.shiftedIndex){
+			if (pos.getId(world) == Block.cauldron.blockID && pos.getId(world) > 0) {
+				// decrease water amount
+				int meta = pos.getMeta(world);
+				pos.setMeta(world, meta - 1);
+				
+				EntityItem entity2 = new EntityItem(world, entity.posX, entity.posY, entity.posZ, new ItemStack(Item.potion.shiftedIndex, 1, 0));
 
-	public void fillBucket(World world, int i, int j, int k, EntityItem entity) {
-		if (entity == null || entity.item == null || entity.item.itemID != Item.bucketEmpty.shiftedIndex) { return; }
+				entity2.motionX = entity.motionX;
+				entity2.motionY = entity.motionY;
+				entity2.motionZ = entity.motionZ;
+				entity2.delayBeforeCanPickup = 7;
+				world.spawnEntityInWorld(entity2);
 
-		while (true) {
-			// low sides
+				entity.item.stackSize--;
 
-			if (try2fillBucket(world, i, j - 1, k - 1)) {
-				break;
-			}
-			if (try2fillBucket(world, i, j - 1, k + 1)) {
-				break;
-			}
-			if (try2fillBucket(world, i - 1, j - 1, k)) {
-				break;
-			}
-			if (try2fillBucket(world, i + 1, j - 1, k)) {
-				break;
-			}
-
-			// direct sides
-			if (try2fillBucket(world, i, j, k - 1)) {
-				break;
-			}
-			if (try2fillBucket(world, i, j, k + 1)) {
-				break;
-			}
-			if (try2fillBucket(world, i - 1, j, k)) {
-				break;
-			}
-			if (try2fillBucket(world, i + 1, j, k)) {
-				break;
-			}
-
-			// above and below
-			if (try2fillBucket(world, i, j - 1, k)) {
-				break;
-			}
-			if (try2fillBucket(world, i, j + 1, k)) {
-				break;
-			}
-			return;
-		}
-
-		entity.item.itemID = Item.bucketWater.shiftedIndex;
-	}
-
-	// FILL BOTTLE
-	private boolean try2fillBottle(World world, int i, int j, int k) {
-		if (world.getBlockId(i, j, k) == Block.cauldron.blockID && world.getBlockMetadata(i, j, k) > 0) {
-			// decrease water amount
-			int meta = world.getBlockMetadata(i, j, k);
-			world.setBlockMetadataWithNotify(i, j, k, meta - 1);
-			return true;
-		}
-		return false;
-	}
-
-	public void fillBottle(World world, int i, int j, int k, EntityItem entity) {
-		if (entity == null || entity.item == null || entity.item.itemID != Item.glassBottle.shiftedIndex) { return; }
-
-		while (true) {
-			if (try2fillBottle(world, i, j, k - 1)) {
-				break;
-			}
-			if (try2fillBottle(world, i, j, k + 1)) {
-				break;
-			}
-			if (try2fillBottle(world, i - 1, j, k)) {
-				break;
-			}
-			if (try2fillBottle(world, i + 1, j, k)) {
-				break;
-			}
-			if (try2fillBottle(world, i, j - 1, k)) {
-				break;
-			}
-			if (try2fillBottle(world, i, j + 1, k)) {
-				break;
-			}
-			return;
-		}
-
-		// spawn new bottle of water
-
-		EntityItem entity2 = new EntityItem(world, entity.posX, entity.posY, entity.posZ, new ItemStack(Item.potion.shiftedIndex, 1, 0));
-
-		entity2.motionX = entity.motionX;
-		entity2.motionY = entity.motionY;
-		entity2.motionZ = entity.motionZ;
-		entity2.delayBeforeCanPickup = 7;
-		world.spawnEntityInWorld(entity2);
-
-		entity.item.stackSize--;
-
-		if (entity.item.stackSize <= 0) {
-			entity.item.stackSize = 0;
-			entity.setDead();
-		}
-	}
-
-	public static boolean isBlocked(World world, int i, int j, int k) {
-		boolean isWall = !world.isAirBlock(i, j, k) && !isConveyorOrElevatorAt(world, i, j, k);
-
-		if (isWall) {
-			Block block = Block.blocksList[world.getBlockId(i, j, k)];
-			if (block != null) {
-				if (!block.blockMaterial.blocksMovement()) {
-					isWall = false;// flower, redstone...
+				if (entity.item.stackSize <= 0) {
+					entity.item.stackSize = 0;
+					entity.setDead();
 				}
+				
+				return true;
 			}
 		}
-		return isWall;
+		
+		return false;
+		
 	}
 
 	// from interface, but also used locally
 	@Override
 	public int getRotation(int meta) {
-		switch (meta) {
-			case 0:
-			case 6:
-				return 0;
-			case 1:
-			case 7:
-				return 1;
-			case 8:
-			case 14:
-				return 2;
-			case 9:
-			case 15:
-				return 3;
-		}
-		return 0;
-	}
-
-	// static one, for compatibility.
-	public static int getRotation_(int meta) {
-		switch (meta) {
-			case 0:
-			case 6:
-				return 0;
-			case 1:
-			case 7:
-				return 1;
-			case 8:
-			case 14:
-				return 2;
-			case 9:
-			case 15:
-				return 3;
-		}
-		return 0;
-	}
-
-	// reduce number of entityitems.
-	@SuppressWarnings("unchecked")
-	public static void packItems(World world, PC_CoordI pos) {
-		List<EntityItem> items = world.getEntitiesWithinAABB(net.minecraft.src.EntityItem.class,
-				AxisAlignedBB.getBoundingBoxFromPool(pos.x, pos.y, pos.z, pos.x+1, pos.y+1, pos.z+1));
-		if (items.size() < 5) { return; }
-
-		// do packing!
-		nextItem:
-		for (EntityItem item1 : items) {
-
-			if (item1 == null || item1.isDead || item1.item == null) {
-				continue nextItem;
-			}
-			if (item1.item.stackSize < 1) {
-				item1.setDead();
-				continue nextItem;
-			}
-			if (item1.item.isItemStackDamageable()) {
-				continue nextItem;
-			} // damageable.
-			if (item1.item.isItemEnchanted()) {
-				continue nextItem;
-			} // enchanted
-			if (!item1.item.isStackable()) {
-				continue nextItem;
-			} // not stackable.
-				// stack stackables up to 255 (byte)
-
-			ItemStack stackTarget = item1.item;
-
-			if (stackTarget.stackSize == stackTarget.getMaxStackSize()) {
-				continue nextItem;
-			}
-
-			for (EntityItem item2 : items) {
-
-				if (item2.isDead) {
-					continue nextItem;
-				}
-				ItemStack stackAdded = item2.item;
-
-				if (item2 == item1) {
-					continue;
-				}
-				if (stackTarget.isItemEqual(stackAdded)) {
-
-					if (stackTarget.stackSize < stackTarget.getMaxStackSize()) {
-						int sizeRemain = stackTarget.getMaxStackSize() - stackTarget.stackSize;
-						if (sizeRemain >= stackAdded.stackSize) {
-							stackTarget.stackSize += stackAdded.stackSize;
-							item2.setDead();
-						} else {
-							stackTarget.stackSize = stackTarget.getMaxStackSize();
-							stackAdded.stackSize -= sizeRemain;
-							continue nextItem;
-						}
-					}
-				}
-			} // inner for
-		}
+		return PCtr_BeltBase.getRotation(meta);
 	}
 
 	private boolean isPowered(World world, PC_CoordI pos) {
-		return pos.isPoweredIndirectly(world) || pos.offset(0,1,0).isPoweredIndirectly(world) || pos.offset(0,-1,0).isPoweredIndirectly(world);
+		return pos.isPoweredIndirectly(world) || pos.offset(0, 1, 0).isPoweredIndirectly(world)
+				|| pos.offset(0, -1, 0).isPoweredIndirectly(world);
 	}
 
 	// -------------MOVEMENT------------------
 	@SuppressWarnings("rawtypes")
 	@Override
 	public void onEntityCollidedWithBlock(World world, int i, int j, int k, Entity entity) {
-		
-		PC_CoordI pos = new PC_CoordI(i,j,k);
+
+		PC_CoordI pos = new PC_CoordI(i, j, k);
 
 		if (!entity.isEntityAlive()) { return; }
 		if (entity instanceof EntityPlayer && ((EntityPlayer) entity).isSneaking()) { return; }
 		if (entity instanceof EntityFX) { return; }
 
 		if (entity instanceof EntityItem) {
-			packItems(world, pos);
+			PCtr_BeltBase.packItems(world, pos);
 		}
 
 		// detector activated
@@ -628,9 +443,7 @@ public class PCtr_BlockConveyor extends Block implements PC_IBlockType, PC_IRota
 		}
 
 		if (entity instanceof EntityItem && type != PCtr_EnumConv.ejector && type != PCtr_EnumConv.speedy) {
-			fillCauldron(world, i, j, k, (EntityItem) entity);
-			fillBucket(world, i, j, k, (EntityItem) entity);
-			fillBottle(world, i, j, k, (EntityItem) entity);
+			doSpecialItemAction(world, pos, (EntityItem) entity);
 			if (storeNearby(world, pos, (EntityItem) entity)) { return; }
 		}
 
@@ -676,33 +489,33 @@ public class PCtr_BlockConveyor extends Block implements PC_IBlockType, PC_IRota
 		if (type == PCtr_EnumConv.redirector && isPowered(world, pos)) {
 			switch (meta) {
 				case 0: // '\0' Z--
-					if (isConveyorOrElevatorAt(world, i + 1, j, k)) {
+					if (PCtr_BeltBase.isTransporterAt(world, pos.offset(1, 0, 0))) {
 						redir = -1;
-					} else if (isConveyorOrElevatorAt(world, i - 1, j, k)) {
+					} else if (PCtr_BeltBase.isTransporterAt(world, pos.offset(-1, 0, 0))) {
 						redir = 1;
 					}
 					break;
 				case 1: // '\001' X++
-					if (isConveyorOrElevatorAt(world, i, j, k + 1)) {
+					if (PCtr_BeltBase.isTransporterAt(world, pos.offset(0, 0, 1))) {
 						redir = -1;
-					} else if (isConveyorOrElevatorAt(world, i, j, k - 1)) {
+					} else if (PCtr_BeltBase.isTransporterAt(world, pos.offset(0, 0, -1))) {
 						redir = 1;
 					}
 					break;
 
 				// 6,7
 				case 2: // '\0' Z++
-					if (isConveyorOrElevatorAt(world, i - 1, j, k)) {
+					if (PCtr_BeltBase.isTransporterAt(world, pos.offset(-1, 0, 0))) {
 						redir = -1;
-					} else if (isConveyorOrElevatorAt(world, i + 1, j, k)) {
+					} else if (PCtr_BeltBase.isTransporterAt(world, pos.offset(1, 0, 0))) {
 						redir = 1;
 					}
 					break;
 
 				case 3: // '\001' X--
-					if (isConveyorOrElevatorAt(world, i, j, k - 1)) {
+					if (PCtr_BeltBase.isTransporterAt(world, pos.offset(0, 0, -1))) {
 						redir = -1;
-					} else if (isConveyorOrElevatorAt(world, i, j, k + 1)) {
+					} else if (PCtr_BeltBase.isTransporterAt(world, pos.offset(0, 0, 1))) {
 						redir = 1;
 					}
 					break;
@@ -712,58 +525,59 @@ public class PCtr_BlockConveyor extends Block implements PC_IBlockType, PC_IRota
 		if (type == PCtr_EnumConv.redirector && redir == 0) { // not powered
 			switch (meta) {
 				case 0: // '\0' Z--
-					if (isConveyorOrElevatorAt(world, i + 1, j, k) && isConveyorOrElevatorAt(world, i - 1, j, k)
-							&& !isConveyorOrElevatorAt(world, i, j, k - 1)) {
+					if (PCtr_BeltBase.isTransporterAt(world, pos.offset(1, 0, 0))
+							&& PCtr_BeltBase.isTransporterAt(world, pos.offset(-1, 0, 0))
+							&& !PCtr_BeltBase.isTransporterAt(world, pos.offset(0, 0, -1))) {
 						redir = 1;
 					}
 					break;
 				case 1: // '\001' X++
-					if (isConveyorOrElevatorAt(world, i, j, k + 1) && isConveyorOrElevatorAt(world, i, j, k - 1)
-							&& !isConveyorOrElevatorAt(world, i + 1, j, k)) {
+					if (PCtr_BeltBase.isTransporterAt(world, pos.offset(0, 0, 1))
+							&& PCtr_BeltBase.isTransporterAt(world, pos.offset(0, 0, -1))
+							&& !PCtr_BeltBase.isTransporterAt(world, pos.offset(1, 0, 0))) {
 						redir = 1;
 					}
 					break;
 
 				case 2: // '\0' Z++
-					if (isConveyorOrElevatorAt(world, i - 1, j, k) && isConveyorOrElevatorAt(world, i + 1, j, k)
-							&& !isConveyorOrElevatorAt(world, i, j, k + 1)) {
+					if (PCtr_BeltBase.isTransporterAt(world, pos.offset(-1, 0, 0))
+							&& PCtr_BeltBase.isTransporterAt(world, pos.offset(1, 0, 0))
+							&& !PCtr_BeltBase.isTransporterAt(world, pos.offset(0, 0, 1))) {
 						redir = 1;
 					}
 					break;
 
 				case 3: // '\001' X--
-					if (isConveyorOrElevatorAt(world, i, j, k - 1) && isConveyorOrElevatorAt(world, i, j, k + 1)
-							&& !isConveyorOrElevatorAt(world, i - 1, j, k)) {
+					if (PCtr_BeltBase.isTransporterAt(world, pos.offset(0, 0, -1))
+							&& PCtr_BeltBase.isTransporterAt(world, pos.offset(0, 0, 1))
+							&& !PCtr_BeltBase.isTransporterAt(world, pos.offset(-1, 0, 0))) {
 						redir = 1;
 					}
 					break;
 			}
 		}
 
-		int i2, j2, k2;
-		i2 = i;
-		j2 = j;
-		k2 = k;
+		PC_CoordI pos2 = pos.copy();
 		switch (meta) {
 			case 0: // Z--
-				k2--;
+				pos2.z--;
 				break;
 
 			case 1: // X++
-				i2++;
+				pos2.x++;
 				break;
 
 			// 6,7
 			case 2: // Z++
-				k2++;
+				pos2.z++;
 				break;
 
 			case 3: // X--
-				i2--;
+				pos2.x--;
 				break;
 		}
 
-		boolean leadsToNowhere = isBlocked(world, i2, j2, k2);
+		boolean leadsToNowhere = PCtr_BeltBase.isBlocked(world, pos2);
 		leadsToNowhere = leadsToNowhere && isBeyondStorageBorder(world, pos, entity, PCtr_BeltBase.STORAGE_BORDER_LONG);
 
 		// longlife!

@@ -207,7 +207,7 @@ public class PCtr_TeleporterHelper {
 			if (PC_BlockUtils.hasFlag(world, tmp, "BELT") && !PC_BlockUtils.hasFlag(world, tmp, "TELEPORTER")) {
 
 				meta = tmp.getMeta(world);
-				rotation = PCtr_BlockConveyor.getRotation_(meta);
+				rotation = PCtr_BeltBase.getRotation(meta);
 				if (rotation == i) {
 					// good rotation, 3 points
 					good[i] = 3;
@@ -216,7 +216,7 @@ public class PCtr_TeleporterHelper {
 					good[i] = 2;
 				}
 
-			} else if (!PCtr_BlockConveyor.isBlocked(world, tmp.x, tmp.y, tmp.z)) {
+			} else if (!PCtr_BeltBase.isBlocked(world, tmp)) {
 				// can pass through, 1 point
 				good[i] = 1;
 			}

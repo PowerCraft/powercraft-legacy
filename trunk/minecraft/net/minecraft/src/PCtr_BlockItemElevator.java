@@ -39,7 +39,7 @@ public class PCtr_BlockItemElevator extends Block implements PC_IBlockType, PC_I
 		
 		PC_CoordI pos = new PC_CoordI(i, j, k);
 		
-		PCtr_BlockConveyor.packItems(world, pos);
+		PCtr_BeltBase.packItems(world, pos);
 
 		boolean down = (pos.getMeta(world) == 1);
 
@@ -159,7 +159,7 @@ public class PCtr_BlockItemElevator extends Block implements PC_IBlockType, PC_I
 			// if(!(entity instanceof EntityPlayer) && !down && entity.posY >
 			// j+0.7D) entity.motionY*= 0.3D;
 			if ((down && entity.posY < j + 0.7D) || (!down && entity.posY > j + 0.1D)) {
-				if (PCtr_BlockConveyor.isConveyorAt(world, i + 1, j, k)) {
+				if (PCtr_BeltBase.isConveyorAt(world, i + 1, j, k)) {
 
 					if (entity.motionX <= MAX_HORIZONTAL_SPEED) {
 						entity.motionX += HORIZONTAL_BOOST * (down ? 1.2D : 1);
@@ -171,7 +171,7 @@ public class PCtr_BlockItemElevator extends Block implements PC_IBlockType, PC_I
 						entity.motionZ += BBOOST;
 					}
 
-				} else if (PCtr_BlockConveyor.isConveyorAt(world, i - 1, j, k)) {
+				} else if (PCtr_BeltBase.isConveyorAt(world, i - 1, j, k)) {
 
 					if (entity.motionX >= -MAX_HORIZONTAL_SPEED) {
 						entity.motionX -= HORIZONTAL_BOOST * (down ? 1.2D : 1);
@@ -183,7 +183,7 @@ public class PCtr_BlockItemElevator extends Block implements PC_IBlockType, PC_I
 						entity.motionZ += BBOOST;
 					}
 
-				} else if (PCtr_BlockConveyor.isConveyorAt(world, i, j, k + 1)) {
+				} else if (PCtr_BeltBase.isConveyorAt(world, i, j, k + 1)) {
 
 					if (entity.motionZ <= MAX_HORIZONTAL_SPEED) {
 						entity.motionZ += HORIZONTAL_BOOST * (down ? 1.2D : 1);
@@ -195,7 +195,7 @@ public class PCtr_BlockItemElevator extends Block implements PC_IBlockType, PC_I
 						entity.motionX += BBOOST;
 					}
 
-				} else if (PCtr_BlockConveyor.isConveyorAt(world, i, j, k - 1)) {
+				} else if (PCtr_BeltBase.isConveyorAt(world, i, j, k - 1)) {
 
 					if (entity.motionZ >= -MAX_HORIZONTAL_SPEED) {
 						entity.motionZ -= HORIZONTAL_BOOST * (down ? 1.2D : 1);

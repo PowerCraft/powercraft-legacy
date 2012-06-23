@@ -195,7 +195,7 @@ public class PCtr_BlockConveyorSeparator extends BlockContainer implements PC_IB
 
 		// Z--
 		if ((meta == 0 && redir == 0) || (meta == 1 && redir == 1) || (meta == 3 && redir == -1)) {
-			if (!PCtr_BlockConveyor.isBlocked(world, i, j, k - 1)) {
+			if (!PCtr_BeltBase.isBlocked(world, pos.offset(0,0,-1))) {
 				longlife(entity, world, i, j, k - 1);
 				if (entity.motionZ >= -MAX_HORIZONTAL_SPEED) {
 					entity.motionZ -= HORIZONTAL_BOOST;
@@ -209,13 +209,13 @@ public class PCtr_BlockConveyorSeparator extends BlockContainer implements PC_IB
 				entity.motionX += BORDER_BOOST;
 			}
 
-			if (entity instanceof EntityItem && PCtr_BlockConveyor.storeEntityItemAt(world, pos.offset(0,0,-1), (EntityItem) entity)) { return; }
+			if (entity instanceof EntityItem && PCtr_BeltBase.storeEntityItemAt(world, pos.offset(0,0,-1), (EntityItem) entity)) { return; }
 			return;
 		}
 
 		// X++
 		if ((meta == 1 && redir == 0) || (meta == 0 && redir == -1) || (meta == 2 && redir == 1)) {
-			if (!PCtr_BlockConveyor.isBlocked(world, i + 1, j, k)) {
+			if (!PCtr_BeltBase.isBlocked(world, pos.offset(1,0,0))) {
 				longlife(entity, world, i + 1, j, k);
 				if (entity.motionX <= MAX_HORIZONTAL_SPEED) {
 					entity.motionX += HORIZONTAL_BOOST;
@@ -228,13 +228,13 @@ public class PCtr_BlockConveyorSeparator extends BlockContainer implements PC_IB
 			if (entity.posZ < k + (1D - BORDERS)) {
 				entity.motionZ += BORDER_BOOST;
 			}
-			if (entity instanceof EntityItem && PCtr_BlockConveyor.storeEntityItemAt(world, pos.offset(1,0,0), (EntityItem) entity)) { return; }
+			if (entity instanceof EntityItem && PCtr_BeltBase.storeEntityItemAt(world, pos.offset(1,0,0), (EntityItem) entity)) { return; }
 			return;
 		}
 
 		// Z++
 		if ((meta == 2 && redir == 0) || (meta == 1 && redir == -1) || (meta == 3 && redir == 1)) {
-			if (!PCtr_BlockConveyor.isBlocked(world, i, j, k + 1)) {
+			if (!PCtr_BeltBase.isBlocked(world, pos.offset(0,0,1))) {
 				longlife(entity, world, i, j, k + 1);
 				if (entity.motionZ <= MAX_HORIZONTAL_SPEED) {
 					entity.motionZ += HORIZONTAL_BOOST;
@@ -248,13 +248,13 @@ public class PCtr_BlockConveyorSeparator extends BlockContainer implements PC_IB
 				entity.motionX += BORDER_BOOST;
 			}
 
-			if (entity instanceof EntityItem && PCtr_BlockConveyor.storeEntityItemAt(world, pos.offset(0,0,1), (EntityItem) entity)) { return; }
+			if (entity instanceof EntityItem && PCtr_BeltBase.storeEntityItemAt(world, pos.offset(0,0,1), (EntityItem) entity)) { return; }
 			return;
 		}
 
 		// X--
 		if ((meta == 3 && redir == 0) || (meta == 0 && redir == 1) || (meta == 2 && redir == -1)) {
-			if (!PCtr_BlockConveyor.isBlocked(world, i - 1, j, k)) {
+			if (!PCtr_BeltBase.isBlocked(world, pos.offset(-1,0,0))) {
 				longlife(entity, world, i - 1, j, k);
 				if (entity.motionX >= -MAX_HORIZONTAL_SPEED) {
 					entity.motionX -= HORIZONTAL_BOOST;
@@ -267,7 +267,7 @@ public class PCtr_BlockConveyorSeparator extends BlockContainer implements PC_IB
 				entity.motionX += BORDER_BOOST;
 			}
 
-			if (entity instanceof EntityItem && PCtr_BlockConveyor.storeEntityItemAt(world, pos.offset(-1,0,0), (EntityItem) entity)) { return; }
+			if (entity instanceof EntityItem && PCtr_BeltBase.storeEntityItemAt(world, pos.offset(-1,0,0), (EntityItem) entity)) { return; }
 			return;
 		}
 	}
