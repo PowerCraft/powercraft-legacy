@@ -330,10 +330,9 @@ public class mod_PClogic extends PC_Module {
 		map.put("pc.gui.radio.errChannel", "Invalid channel name.");
 		map.put("pc.pulsar.clickMsg", "Period %s ticks (%s s)");
 		map.put("pc.pulsar.clickMsgTime", "Period %s ticks (%s s), remains %s");
+		
+		map.put("pc.gui.sensor.range", "Detection distance:");
 
-		map.put("pc.sensor.rangeChanged.1", "Range changed to %s block.");
-		map.put("pc.sensor.rangeChanged.2-4", "Range changed to %s blocks.");
-		map.put("pc.sensor.rangeChanged.5+", "Range changed to %s blocks.");
 
 		map.put("pc.sensor.range.1", "Range: %s block");
 		map.put("pc.sensor.range.2-4", "Range: %s blocks");
