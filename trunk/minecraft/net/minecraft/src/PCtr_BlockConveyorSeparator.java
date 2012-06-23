@@ -168,6 +168,9 @@ public class PCtr_BlockConveyorSeparator extends BlockContainer implements PC_IB
 	// MOVEMENT
 	@Override
 	public void onEntityCollidedWithBlock(World world, int i, int j, int k, Entity entity) {
+		
+		PC_CoordI pos = new PC_CoordI(i,j,k);
+		
 		int redir = 0;
 
 		if (entity instanceof EntityFX) { return; } // no derbish will be moved
@@ -206,7 +209,7 @@ public class PCtr_BlockConveyorSeparator extends BlockContainer implements PC_IB
 				entity.motionX += BORDER_BOOST;
 			}
 
-			if (entity instanceof EntityItem && PCtr_BlockConveyor.storeEntityItemAt(world, i, j, k - 1, (EntityItem) entity)) { return; }
+			if (entity instanceof EntityItem && PCtr_BlockConveyor.storeEntityItemAt(world, pos.offset(0,0,-1), (EntityItem) entity)) { return; }
 			return;
 		}
 
@@ -225,7 +228,7 @@ public class PCtr_BlockConveyorSeparator extends BlockContainer implements PC_IB
 			if (entity.posZ < k + (1D - BORDERS)) {
 				entity.motionZ += BORDER_BOOST;
 			}
-			if (entity instanceof EntityItem && PCtr_BlockConveyor.storeEntityItemAt(world, i + 1, j, k, (EntityItem) entity)) { return; }
+			if (entity instanceof EntityItem && PCtr_BlockConveyor.storeEntityItemAt(world, pos.offset(1,0,0), (EntityItem) entity)) { return; }
 			return;
 		}
 
@@ -245,7 +248,7 @@ public class PCtr_BlockConveyorSeparator extends BlockContainer implements PC_IB
 				entity.motionX += BORDER_BOOST;
 			}
 
-			if (entity instanceof EntityItem && PCtr_BlockConveyor.storeEntityItemAt(world, i, j, k + 1, (EntityItem) entity)) { return; }
+			if (entity instanceof EntityItem && PCtr_BlockConveyor.storeEntityItemAt(world, pos.offset(0,0,1), (EntityItem) entity)) { return; }
 			return;
 		}
 
@@ -264,7 +267,7 @@ public class PCtr_BlockConveyorSeparator extends BlockContainer implements PC_IB
 				entity.motionX += BORDER_BOOST;
 			}
 
-			if (entity instanceof EntityItem && PCtr_BlockConveyor.storeEntityItemAt(world, i - 1, j, k, (EntityItem) entity)) { return; }
+			if (entity instanceof EntityItem && PCtr_BlockConveyor.storeEntityItemAt(world, pos.offset(-1,0,0), (EntityItem) entity)) { return; }
 			return;
 		}
 	}

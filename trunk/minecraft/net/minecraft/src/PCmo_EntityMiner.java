@@ -124,7 +124,7 @@ public class PCmo_EntityMiner extends Entity implements IInventory {
 		find_chest_loop:
 		for (int x = pos.x - 1; x <= pos.x + 1; x++) {
 			for (int z = pos.z - 1; z <= pos.z + 1; z++) {
-				inv = PC_InvUtils.getCompositeInventoryAt(world, x, pos.y + 1, z);
+				inv = PC_InvUtils.getCompositeInventoryAt(world, pos.offset(0,1,0));
 				if (inv != null) {
 					break find_chest_loop;
 				}
@@ -203,7 +203,7 @@ public class PCmo_EntityMiner extends Entity implements IInventory {
 		test:
 		for (int x = xl; x <= xh; x++) {
 			for (int k = zl; k <= zh; k++) {
-				inv = PC_InvUtils.getCompositeInventoryAt(worldObj, x, y + 1, k);
+				inv = PC_InvUtils.getCompositeInventoryAt(worldObj, new PC_CoordI(x, y + 1, k));
 				if (inv != null) {
 					break test;
 				}
@@ -2009,7 +2009,7 @@ public class PCmo_EntityMiner extends Entity implements IInventory {
 		for (int x = x1 - 2; x <= x1 + 1; x++) {
 			for (int y = y1; y <= y1 + 1; y++) {
 				for (int z = z1 - 2; z <= z1 + 1; z++) {
-					IInventory chest = PC_InvUtils.getCompositeInventoryAt(worldObj, x, y, z);
+					IInventory chest = PC_InvUtils.getCompositeInventoryAt(worldObj, new PC_CoordI(x, y, z));
 					if (chest != null) {
 						// cycle through and deposit.
 						for (int i = 0; i < getSizeInventory(); i++) {

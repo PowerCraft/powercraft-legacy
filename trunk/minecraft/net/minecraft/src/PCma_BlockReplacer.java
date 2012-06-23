@@ -249,9 +249,9 @@ public class PCma_BlockReplacer extends BlockContainer implements PC_ISwapTerrai
 
 	private void swapBlocks(PCma_TileEntityReplacer te) {
 	
-		PC_CoordI pos = new PC_CoordI(te.xCoord, te.yCoord, te.zCoord).offset(te.coordOffset);
+		PC_CoordI pos = te.getCoord().offset(te.coordOffset);
 		
-		if(pos.equals(new PC_CoordI(te.xCoord, te.yCoord, te.zCoord))) return;
+		if(pos.equals(te.getCoord())) return;
 		
 		if(!replacer_canHarvestBlockAt(te.worldObj, pos)){
 			return;

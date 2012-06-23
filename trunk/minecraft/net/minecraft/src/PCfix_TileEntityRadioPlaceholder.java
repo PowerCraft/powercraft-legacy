@@ -12,7 +12,7 @@ import java.util.Properties;
  * @copy (c) 2012
  * 
  */
-public class PCfix_TileEntityRadioPlaceholder extends TileEntity {
+public class PCfix_TileEntityRadioPlaceholder extends PC_TileEntity {
 
 	/** Device channel */
 	public String channel = mod_PClogic.default_radio_channel;

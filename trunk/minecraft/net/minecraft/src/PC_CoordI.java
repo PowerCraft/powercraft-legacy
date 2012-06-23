@@ -450,8 +450,26 @@ public class PC_CoordI implements PC_ICoord, PC_INBT {
 	 * @param world the world
 	 * @return tile entity or null
 	 */
-	public TileEntity getTileEntity(World world) {
+	public TileEntity getTileEntity(IBlockAccess world) {
 		return world.getBlockTileEntity(x, y, z);
+	}
+	
+	/**
+	 * Get if worlds block at coord is getting directly powered
+	 * @param world the world
+	 * @return is getting powered
+	 */
+	public boolean isPoweredDirectly(World world){
+		return world.isBlockGettingPowered(x,y,z);
+	}
+	
+	/**
+	 * Get if worlds block at coord is getting indirectly powered, that means at least one of its neighbors is getting directly powered
+	 * @param world the world
+	 * @return is getting indirectly powered
+	 */
+	public boolean isPoweredIndirectly(World world){
+		return world.isBlockIndirectlyGettingPowered(x,y,z);
 	}
 
 	@Override

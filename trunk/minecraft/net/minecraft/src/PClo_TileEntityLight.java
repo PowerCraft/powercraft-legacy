@@ -7,7 +7,7 @@ package net.minecraft.src;
  * @copy (c) 2012
  * 
  */
-public class PClo_TileEntityLight extends TileEntity {
+public class PClo_TileEntityLight extends PC_TileEntity {
 	private int color = 1;
 
 	@Override

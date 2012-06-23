@@ -8,7 +8,7 @@ package net.minecraft.src;
  * @copy (c) 2012
  * 
  */
-public class PCma_TileEntityLaser extends TileEntity implements PC_IBeamHandler {
+public class PCma_TileEntityLaser extends PC_TileEntity implements PC_IBeamHandler {
 
 	private PCma_BeamTracer beamTracer;
 

@@ -12,7 +12,7 @@ import java.util.List;
  * @copy (c) 2012
  * 
  */
-public class PCma_TileEntityAutomaticWorkbench extends TileEntity implements IInventory, PC_IStateReportingInventory, PC_ISpecialInsertInventory {
+public class PCma_TileEntityAutomaticWorkbench extends PC_TileEntity implements IInventory, PC_IStateReportingInventory, PC_ISpecialAccessInventory {
 	private static Container fakeContainer = new PCma_ContainerFake();
 
 	/**
@@ -100,7 +100,7 @@ public class PCma_TileEntityAutomaticWorkbench extends TileEntity implements IIn
 		return true;
 	}
 
-	private boolean isOnStoneBrick() {
+	private boolean redstoneActivatedMode() {
 		return worldObj.getBlockId(xCoord, yCoord - 1, zCoord) == Block.stoneBrick.blockID;
 	}
 
@@ -190,7 +190,7 @@ public class PCma_TileEntityAutomaticWorkbench extends TileEntity implements IIn
 
 		// cycle through slots until they are full or stack is empty.
 		boolean end = false;
-		boolean storedSomething;
+		boolean storedSomething = false;
 		while (!end) {
 			storedSomething = false;
 			for (int i = 0; i < 9; i++) {
@@ -226,15 +226,10 @@ public class PCma_TileEntityAutomaticWorkbench extends TileEntity implements IIn
 				break;
 			}
 		}
-
-		return stack.stackSize <= 0;
-	}
-	
-	/**
-	 * Reorder ACT and do crafting
-	 */
-	public void onStackInserted() {
+		
 		orderAndCraft();
+
+		return storedSomething; //stack.stackSize <= 0;
 	}
 
 	/**
@@ -242,7 +237,7 @@ public class PCma_TileEntityAutomaticWorkbench extends TileEntity implements IIn
 	 */
 	public void orderAndCraft() {
 		reorderACT();
-		if (!isOnStoneBrick()) {
+		if (!redstoneActivatedMode()) {
 			doCrafting();
 		}
 		reorderACT(); // dispense buckets etc.
@@ -270,10 +265,10 @@ public class PCma_TileEntityAutomaticWorkbench extends TileEntity implements IIn
 
 			if (currentStack != null) {
 				if ((forceEject && currentStack.stackSize > 0) || currentStack.stackSize >= currentStack.getMaxStackSize()
-						|| isOnStoneBrick()) {
+						|| redstoneActivatedMode()) {
 					dispenseItem(currentStack);
 					currentStack = null;
-					if (isOnStoneBrick()) { return; }
+					if (redstoneActivatedMode()) { return; }
 				}
 			}
 		}
@@ -479,5 +474,20 @@ public class PCma_TileEntityAutomaticWorkbench extends TileEntity implements IIn
 		} else {
 			return null;
 		}
+	}
+
+	@Override
+	public boolean canInsertStackTo(int slot, ItemStack stack) {
+		return false;
+	}
+
+	@Override
+	public boolean canDispenseStackFrom(int slot) {
+		return slot < 9;
+	}
+
+	@Override
+	public boolean needsSpecialInserter() {
+		return true;
 	}
 }

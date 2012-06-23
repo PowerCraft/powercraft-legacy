@@ -11,10 +11,20 @@ import java.util.Random;
  * @copy (c) 2012
  * 
  */
-public class PCma_TileEntityRoaster extends TileEntity implements IInventory, PC_ISelectiveInventory {
+public class PCma_TileEntityRoaster extends PC_TileEntity implements IInventory, PC_ISpecialAccessInventory {
 	@Override
 	public boolean canInsertStackTo(int slot, ItemStack stack) {
 		return stack != null && (PC_Utils.isFuel(stack) || stack.itemID == Block.netherrack.blockID);
+	}
+
+	@Override
+	public boolean insertStackIntoInventory(ItemStack stack) {
+		return PC_InvUtils.addWholeItemStackToInventory(this, stack);
+	}
+
+	@Override
+	public boolean canDispenseStackFrom(int slot) {
+		return true;
 	}
 
 	private ItemStack roasterContents[];
@@ -380,5 +390,10 @@ public class PCma_TileEntityRoaster extends TileEntity implements IInventory, PC
 		} else {
 			return null;
 		}
+	}
+
+	@Override
+	public boolean needsSpecialInserter() {
+		return false;
 	}
 }

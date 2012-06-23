@@ -7,7 +7,7 @@ package net.minecraft.src;
  * @copy (c) 2012
  * 
  */
-public class PClo_TileEntityPulsar extends TileEntity {
+public class PClo_TileEntityPulsar extends PC_TileEntity {
 
 
 	@Override

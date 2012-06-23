@@ -36,9 +36,12 @@ public class PCtr_BlockItemElevator extends Block implements PC_IBlockType, PC_I
 
 	@Override
 	public void onEntityCollidedWithBlock(World world, int i, int j, int k, Entity entity) {
-		PCtr_BlockConveyor.packItems(world, i, j, k);
+		
+		PC_CoordI pos = new PC_CoordI(i, j, k);
+		
+		PCtr_BlockConveyor.packItems(world, pos);
 
-		boolean down = world.getBlockMetadata(i, j, k) == 1;
+		boolean down = (pos.getMeta(world) == 1);
 
 		// longlife!
 		if (entity instanceof EntityItem) {
@@ -52,7 +55,7 @@ public class PCtr_BlockItemElevator extends Block implements PC_IBlockType, PC_I
 
 			// storing
 
-			if (((PCtr_BlockConveyor) mod_PCtransport.conveyorBelt).storeAllSides(world, i, j, k, (EntityItem) entity)) { return; }
+			if (((PCtr_BlockConveyor) mod_PCtransport.conveyorBelt).storeAllSides(world, pos, (EntityItem) entity)) { return; }
 		}
 
 		if (entity instanceof EntityXPOrb) {

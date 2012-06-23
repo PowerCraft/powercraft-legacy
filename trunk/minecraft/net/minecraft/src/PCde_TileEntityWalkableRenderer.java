@@ -38,13 +38,13 @@ public class PCde_TileEntityWalkableRenderer extends TileEntitySpecialRenderer {
 
 		
 		if(ted.type == 0){
-			boolean[] fences = PCde_BlockWalkable.getFencesShownLedge(ted.worldObj, new PC_CoordI(ted.xCoord,ted.yCoord,ted.zCoord));
+			boolean[] fences = PCde_BlockWalkable.getFencesShownLedge(ted.worldObj, ted.getCoord());
 			model.setLedgeFences(fences[0], fences[1], fences[2], fences[3], fences[4]);
 		}else if(ted.type == 1){
 			int meta = tileentity.worldObj.getBlockMetadata(tileentity.xCoord,tileentity.yCoord,tileentity.zCoord);
 			GL11.glRotatef(90F + 90F*meta, 0, 1, 0);
 			
-			boolean[] fences = PCde_BlockWalkable.getFencesShownStairsRelative(ted.worldObj, new PC_CoordI(ted.xCoord,ted.yCoord,ted.zCoord));
+			boolean[] fences = PCde_BlockWalkable.getFencesShownStairsRelative(ted.worldObj, ted.getCoord());
 			model.setStairsFences(fences[0], fences[1]);
 		}
 		

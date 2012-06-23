@@ -7,7 +7,7 @@ package net.minecraft.src;
  * @copy (c) 2012
  * 
  */
-public class PClo_TileEntitySensor extends TileEntity {
+public class PClo_TileEntitySensor extends PC_TileEntity {
 
 
 	/** Flag that the sensor is active - giving power */
