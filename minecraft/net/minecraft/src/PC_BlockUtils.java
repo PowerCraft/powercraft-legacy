@@ -41,6 +41,7 @@ public class PC_BlockUtils {
 	public static boolean hasFlag(World world, PC_CoordI pos, String flag){
 		return getBlockFlags(world, pos).contains(flag);
 	}
+
 	
 	/**
 	 * Check if block in stack has given type flag

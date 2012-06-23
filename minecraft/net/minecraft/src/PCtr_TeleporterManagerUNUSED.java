@@ -142,9 +142,9 @@ public class PCtr_TeleporterManagerUNUSED {
 			y = tc.y + coords[i].y;
 			z = tc.z + coords[i].z;
 
-			if (PCtr_BlockConveyor.isConveyorAt(world, x, y, z)) {
+			if (PCtr_BeltBase.isConveyorAt(world, x, y, z)) {
 				meta = world.getBlockMetadata(x, y, z);
-				rotation = PCtr_BlockConveyor.getRotation_(meta);
+				rotation = PCtr_BeltBase.getRotation(meta);
 				if (rotation == i) {
 					// good rotation, 3 points
 					good[i] = 3;
@@ -152,7 +152,7 @@ public class PCtr_TeleporterManagerUNUSED {
 					// not reverse rotation, 2 points
 					good[i] = 2;
 				}
-			} else if (!PCtr_BlockConveyor.isBlocked(world, x, y, z)) {
+			} else if (!PCtr_BeltBase.isBlocked(world, new PC_CoordI(x, y, z))) {
 				// can pass through, 1 point
 				good[i] = 1;
 			}
