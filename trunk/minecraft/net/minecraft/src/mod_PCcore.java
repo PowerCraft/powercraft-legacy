@@ -113,6 +113,8 @@ public class mod_PCcore extends PC_Module implements PC_IActivatorListener {
 
 	/** Enable update checking. */
 	private boolean optUpdateNotify;
+	/** Enable language pack updating */
+	private boolean optUpdateLangpack;
 	/** Enable sounds and loud things. */
 	public static boolean soundsEnabled;
 	/** Last update version marked as "ignore this". */
@@ -146,7 +148,8 @@ public class mod_PCcore extends PC_Module implements PC_IActivatorListener {
 	private static final String pk_genCrystalsMaxY = "opt.worldgen.crystals.max_y";
 	private static final String pk_genCrystal_gen = "opt.worldgen.crystals.enabled";
 
-	private static final String pk_optUpdates = "global.checkUpdates";
+	private static final String pk_optUpdateNotify = "global.update.notifications";
+	private static final String pk_optUpdateTranslations = "global.update.translations.autoDownload";
 	private static final String pk_optMuteSound = "global.disableSounds";
 	private static final String pk_optSoundCrystal = "opt.power_crystal.soundEnabled";
 
@@ -177,12 +180,13 @@ public class mod_PCcore extends PC_Module implements PC_IActivatorListener {
 		Thread.setDefaultUncaughtExceptionHandler(new PC_ErrorHandler());
 
 		instance = this;
-
-		(new PCco_ThreadCheckUpdates()).start();
+		
 	}
 
 	@Override
 	public void initProperties(PC_PropertyManager conf) {
+		
+		conf.renameKey("global.checkUpdates", pk_optUpdateNotify);
 
 		conf.putKey(pk_keyReverse, Keyboard.KEY_LCONTROL, "Keyboard key used to place blocks in reversed orientation");
 		conf.putBoolean(pk_optRecRecyclation, true, "Add new recypes allowing easy material recyclation");
@@ -203,8 +207,8 @@ public class mod_PCcore extends PC_Module implements PC_IActivatorListener {
 		conf.putInteger(pk_genCrystalsDepositMaxCount, 4, "Highest crystal count in one deposit");
 		conf.putInteger(pk_genCrystalsMinY, 5, "Min Y coordinate of crystal deposits.");
 		conf.putInteger(pk_genCrystalsMaxY, 15, "Max Y coordinate of crystal deposits.");
-		conf.putBoolean(pk_optUpdates, true,
-				"Checks updates each time the game starts, and informs\nyou via a dialog when a world is loaded.");
+		conf.putBoolean(pk_optUpdateNotify, true, "Enable notifications about PowerCraft updates.");
+		conf.putBoolean(pk_optUpdateTranslations, true, "Enable automatic language files updating.");
 		conf.putBoolean(pk_optMuteSound, false, "Disable all sounds and breaking animations with sounds.");
 		conf.putBoolean(pk_optSoundCrystal, true, "Enable \"jingle\" sounds made by PowerCrystals.");
 
@@ -217,8 +221,8 @@ public class mod_PCcore extends PC_Module implements PC_IActivatorListener {
 		conf.apply();
 
 		PCco_SlotDirectCrafting.survivalCheating = conf.flag(pk_optCraftCheating);
-		optUpdateNotify = conf.flag(pk_optUpdates);
-		System.out.println("updnotify "+optUpdateNotify);
+		optUpdateNotify = conf.flag(pk_optUpdateNotify);
+		optUpdateLangpack = conf.flag(pk_optUpdateTranslations);
 		soundsEnabled = !conf.flag(pk_optMuteSound);
 		PCco_BlockPowerCrystal.makeSound = !conf.flag(pk_optSoundCrystal);
 		update_last_ignored_version = conf.string(pk_cfgUpdateIgnored);
@@ -571,6 +575,10 @@ public class mod_PCcore extends PC_Module implements PC_IActivatorListener {
 		if (optUpdateNotify) {
 			ModLoader.setInGameHook(this, true, false);
 		}
+		
+		if (optUpdateLangpack) {
+			(new PCco_ThreadCheckUpdates()).start();
+		}
 
 	}
 
@@ -663,7 +671,7 @@ public class mod_PCcore extends PC_Module implements PC_IActivatorListener {
 	 * 
 	 * @param file_contents string with the downloaded file contents
 	 */
-	public static void updateCheckingThreadResult(String file_contents) {
+	public static void onUpdateInfoDownloaded(String file_contents) {
 
 		PC_Logger.fine("\n\nUpdate information received from server.");
 
@@ -735,17 +743,51 @@ public class mod_PCcore extends PC_Module implements PC_IActivatorListener {
 		}
 
 	}
+	
+	public static void onTranslationsUpdated() {
+
+		PC_Logger.fine("Loading translations from updated files.\n");
+
+		for (PC_Module module : PC_Module.modules.values()) {
+			PC_Logger.finer("Loading translations for module " + module.getModuleName());
+			if(module.lang != null){
+				module.lang.loadTranstalions();
+			}
+			PC_Logger.finer("\n");
+		}
+
+		PC_Logger.fine("All translations loaded.\n");
+
+		PC_Logger.fine("Saving Language Pack version number to property file CORE.cfg");
+
+		PC_PropertyManager cfg = mod_PCcore.instance.cfg();
+
+		cfg.enableValidation(false);
+		cfg.cfgSilent(true);
+
+		cfg.setValue(mod_PCcore.pk_cfgCurrentLangVersion, mod_PCcore.updateLangVersion);
+		cfg.apply();
+
+		cfg.enableValidation(true);
+		cfg.cfgSilent(false);
+
+
+		PC_Logger.fine("Forcing ModLoader to update Minecraft's list of translations.");
+		try {
+			ModLoader.setPrivateValue(ModLoader.class, null, "langPack", null);
+		} catch (Exception e) {
+			e.printStackTrace();
+			PC_Logger.throwing("mod_PCcore", "onTranslationsUpdated()", e);
+		}
+		
+	}
 
 	private static boolean updateAlreadyShown = false;
 	
 	private int inGameTickCounter = 0;
 
 	@Override
-	public boolean onTickInGame(float f, Minecraft minecraft) {	
-		System.out.println("already shown="+updateAlreadyShown);
-		System.out.println("available="+updateAvailable);
-		System.out.println("optUpdateNotify="+optUpdateNotify);
-		System.out.println("counter="+inGameTickCounter);
+	public boolean onTickInGame(float f, Minecraft minecraft) {
 		if (!updateAlreadyShown && updateAvailable && optUpdateNotify) {
 			if(++inGameTickCounter > 20){
 				updateAlreadyShown = true;
