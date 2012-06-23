@@ -450,6 +450,7 @@ public class PC_PropertyManager {
 
 		// rename keys
 		for (Entry<String, String> entry : keyRename.entrySet()) {
+			if(pr.getProperty(entry.getKey()) == null) continue;
 			pr.setProperty(entry.getValue(), pr.getProperty(entry.getKey()));
 			pr.remove(entry.getKey());
 			needsSave = true;

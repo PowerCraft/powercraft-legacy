@@ -7,7 +7,7 @@ package net.minecraft.src;
  * @copy (c) 2012
  * 
  */
-public class PCma_TileEntityOptical extends TileEntity {
+public class PCma_TileEntityOptical extends PC_TileEntity {
 	/** device type ("MIRROR", "PRISM") */
 	public String type = "MIRROR";
 

@@ -2,7 +2,7 @@ package net.minecraft.src;
 
 import java.util.Random;
 
-public class PCma_TileEntityReplacer extends TileEntity implements IInventory, PC_ISelectiveInventory {
+public class PCma_TileEntityReplacer extends PC_TileEntity implements IInventory, PC_ISpecialAccessInventory {
 
 	public ItemStack buildBlock;
 	public static final int MAXSTACK = 1;
@@ -201,6 +201,21 @@ public class PCma_TileEntityReplacer extends TileEntity implements IInventory, P
 	@Override
 	public void closeChest() {
 
+	}
+
+	@Override
+	public boolean insertStackIntoInventory(ItemStack stack) {
+		return PC_InvUtils.addWholeItemStackToInventory(this, stack);
+	}
+
+	@Override
+	public boolean canDispenseStackFrom(int slot) {
+		return true;
+	}
+
+	@Override
+	public boolean needsSpecialInserter() {
+		return false;
 	}
 
 }

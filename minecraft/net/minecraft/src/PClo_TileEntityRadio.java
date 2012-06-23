@@ -7,7 +7,7 @@ package net.minecraft.src;
  * @copy (c) 2012
  * 
  */
-public class PClo_TileEntityRadio extends TileEntity {
+public class PClo_TileEntityRadio extends PC_TileEntity {
 
 	/** Device channel */
 	public String channel = mod_PClogic.default_radio_channel;

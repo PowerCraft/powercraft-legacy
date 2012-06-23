@@ -7,7 +7,7 @@ package net.minecraft.src;
  * @copy (c) 2012
  * 
  */
-public class PClo_TileEntityGate extends TileEntity {
+public class PClo_TileEntityGate extends PC_TileEntity {
 
 	/**
 	 * For forge: does the entity need update ticks
@@ -281,10 +281,10 @@ public class PClo_TileEntityGate extends TileEntity {
 		int N2 = 2;
 		int N3 = 3;
 
-		if (i1 == N0) { return isFullChestAt(worldObj, xCoord, yCoord, zCoord + 1); }
-		if (i1 == N1) { return isFullChestAt(worldObj, xCoord - 1, yCoord, zCoord); }
-		if (i1 == N2) { return isFullChestAt(worldObj, xCoord, yCoord, zCoord - 1); }
-		if (i1 == N3) { return isFullChestAt(worldObj, xCoord + 1, yCoord, zCoord); }
+		if (i1 == N0) { return isFullChestAt(worldObj, getCoord().offset(0,0,1)); }
+		if (i1 == N1) { return isFullChestAt(worldObj, getCoord().offset(-1,0,0)); }
+		if (i1 == N2) { return isFullChestAt(worldObj, getCoord().offset(0,0,-1)); }
+		if (i1 == N3) { return isFullChestAt(worldObj, getCoord().offset(1,0,0)); }
 		return false;
 	}
 
@@ -301,10 +301,10 @@ public class PClo_TileEntityGate extends TileEntity {
 		int N2 = 2;
 		int N3 = 3;
 
-		if (i1 == N0) { return isEmptyChestAt(worldObj, xCoord, yCoord, zCoord + 1); }
-		if (i1 == N1) { return isEmptyChestAt(worldObj, xCoord - 1, yCoord, zCoord); }
-		if (i1 == N2) { return isEmptyChestAt(worldObj, xCoord, yCoord, zCoord - 1); }
-		if (i1 == N3) { return isEmptyChestAt(worldObj, xCoord + 1, yCoord, zCoord); }
+		if (i1 == N0) { return isEmptyChestAt(worldObj, getCoord().offset(0,0,1)); }
+		if (i1 == N1) { return isEmptyChestAt(worldObj, getCoord().offset(-1,0,0)); }
+		if (i1 == N2) { return isEmptyChestAt(worldObj, getCoord().offset(0,0,-1)); }
+		if (i1 == N3) { return isEmptyChestAt(worldObj, getCoord().offset(1,0,0)); }
 		return true;
 	}
 
@@ -312,13 +312,11 @@ public class PClo_TileEntityGate extends TileEntity {
 	 * Check if the chest at given coords is empty
 	 * 
 	 * @param blockaccess block access
-	 * @param x
-	 * @param y
-	 * @param z
+	 * @param pos 
 	 * @return is full
 	 */
-	private static boolean isEmptyChestAt(IBlockAccess blockaccess, int x, int y, int z) {
-		return PC_InvUtils.isInventoryEmpty(PC_InvUtils.getCompositeInventoryAt(blockaccess, x, y, z));
+	private static boolean isEmptyChestAt(IBlockAccess blockaccess, PC_CoordI pos) {
+		return PC_InvUtils.isInventoryEmpty(PC_InvUtils.getCompositeInventoryAt(blockaccess, pos));
 	}
 
 	/**
@@ -330,8 +328,8 @@ public class PClo_TileEntityGate extends TileEntity {
 	 * @param z
 	 * @return is full
 	 */
-	private static boolean isFullChestAt(IBlockAccess blockaccess, int x, int y, int z) {
-		return PC_InvUtils.isInventoryFull(PC_InvUtils.getCompositeInventoryAt(blockaccess, x, y, z));
+	private static boolean isFullChestAt(IBlockAccess blockaccess, PC_CoordI pos) {
+		return PC_InvUtils.isInventoryFull(PC_InvUtils.getCompositeInventoryAt(blockaccess, pos));
 	}
 
 

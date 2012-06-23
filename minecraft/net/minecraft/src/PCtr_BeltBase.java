@@ -1,15 +1,38 @@
 package net.minecraft.src;
 
+/**
+ * Class providing common methods and constants to all kinds of conveyor belts.
+ * 
+ * @author MightyPork
+ * @copy (c) 2012
+ *
+ */
 public class PCtr_BeltBase {
 
+	/** Max horizontal speed of an item on a belt. Items going slower are accelerated. */
 	public static final double MAX_HORIZONTAL_SPEED = 0.4D;
+	/** Velocity increment added to item on belt, if it is going slower than MAX_HORIZONTAL_SPEED */
 	public static final double HORIZONTAL_BOOST = 0.11D;
+	/** Items this far from belt sides get BORDER_BOOST to stay in the center. */
 	public static final double BORDERS = 0.35D;
+	/** Velocity increment added to item when it gets close to a border, in order to keep it on the belt. */
 	public static final double BORDER_BOOST = 0.063D;
 	
+	/** belts' height in units. 0.0625F = one pixel in vanilla textures. */
 	public static final float HEIGHT = 0.0625F;
-	public static final float HEIGHT_COLLISION = HEIGHT - 0.0125F;
+	/** collision box height - must be smaller than HEIGHT to let the items collide -> get moved */
+	public static final float HEIGHT_COLLISION = HEIGHT;// - 0.0125F;
+	/** selection box height. Affects only the wireframe, does not allow better selection. */
 	public static final float HEIGHT_SELECTED = HEIGHT;
+	
+
+	public static final float STORAGE_BORDER = 0.5F;
+	
+	public static final float STORAGE_BORDER_LONG = 0.8F;
+	
+	/** Vertical storage border - how high above belt the item must be to get stored. */
+	public static final float STORAGE_BORDER_V = 0.6F;
+	
 	
 	/**
 	 * Default blockActivated handler for all conveyor types
@@ -100,5 +123,26 @@ public class PCtr_BeltBase {
 				return 9;
 		}
 		return meta;
+	}
+
+
+	public static void soundEffectChest(World world, PC_CoordI pos) {
+		if (mod_PCcore.soundsEnabled) {
+			world.playSoundEffect(pos.x + 0.5D, pos.y + 0.5D, pos.z + 0.5D, "random.pop", (world.rand.nextFloat() + 0.7F) / 5.0F,
+					0.5F + world.rand.nextFloat() * 0.3F);
+		}
+	}
+
+
+	public static void soundEffectBelt(World world, PC_CoordI pos) {
+		if (mod_PCcore.soundsEnabled) {
+			world.playSoundEffect(pos.x + 0.5D, pos.y + 0.625D, pos.z + 0.5D, "random.wood click", (world.rand.nextFloat() + 0.2F) / 10.0F,
+					1.0F + (world.rand.nextFloat() - world.rand.nextFloat()) * 0.6F);
+		}
+	}
+
+
+	public static boolean isActive(int meta) {
+		return meta == getActiveMeta(meta);
 	}
 }

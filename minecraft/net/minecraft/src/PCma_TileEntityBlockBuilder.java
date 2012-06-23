@@ -11,7 +11,7 @@ import java.util.Random;
  * @copy (c) 2012
  * 
  */
-public class PCma_TileEntityBlockBuilder extends TileEntity implements IInventory {
+public class PCma_TileEntityBlockBuilder extends PC_TileEntity implements IInventory {
 
 	private ItemStack stacks[];
 	private Random rand;

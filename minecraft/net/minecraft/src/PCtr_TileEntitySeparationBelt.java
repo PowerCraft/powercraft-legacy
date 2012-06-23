@@ -4,7 +4,7 @@ import java.util.Enumeration;
 import java.util.Hashtable;
 import java.util.Random;
 
-public class PCtr_TileEntitySeparationBelt extends TileEntity implements IInventory {
+public class PCtr_TileEntitySeparationBelt extends PC_TileEntity implements IInventory {
 
 	Random rand = new Random();
 

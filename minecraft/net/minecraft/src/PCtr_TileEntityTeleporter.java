@@ -2,7 +2,7 @@ package net.minecraft.src;
 
 import java.util.Random;
 
-public class PCtr_TileEntityTeleporter extends TileEntity {
+public class PCtr_TileEntityTeleporter extends PC_TileEntity {
 	Random rand = new Random();
 
 	private static final int SENDER = 1, RECEIVER = 2, INVALID = 0;

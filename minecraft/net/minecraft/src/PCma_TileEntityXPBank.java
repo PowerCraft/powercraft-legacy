@@ -3,7 +3,7 @@ package net.minecraft.src;
 import java.util.List;
 import java.util.Random;
 
-public class PCma_TileEntityXPBank extends TileEntity {
+public class PCma_TileEntityXPBank extends PC_TileEntity {
 	public PCma_TileEntityXPBank() {}
 
 	private Random rand = new Random();

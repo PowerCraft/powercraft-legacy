@@ -7,7 +7,7 @@ package net.minecraft.src;
  * @copy (c) 2012
  * 
  */
-public class PCde_TileEntityWalkable extends TileEntity {
+public class PCde_TileEntityWalkable extends PC_TileEntity {
 	
 	/** block type. */
 	public int type = 0;
