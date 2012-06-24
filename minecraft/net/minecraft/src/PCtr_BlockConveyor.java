@@ -186,29 +186,6 @@ public class PCtr_BlockConveyor extends Block implements PC_IBlockType, PC_IRota
 		world.spawnEntityInWorld(item);
 	}
 
-	private boolean isBeyondStorageBorder(World world, PC_CoordI beltPos, Entity entity, float border) {
-		switch (PCtr_BeltBase.getRotation(beltPos.getMeta(world))) {
-			case 0: // Z--
-				if (entity.posZ > beltPos.z + 1 - border) { return false; }
-				break;
-
-			case 1: // X++
-				if (entity.posX < beltPos.x + border) { return false; }
-				break;
-
-			case 2: // Z++
-
-				if (entity.posZ < beltPos.z + border) { return false; }
-
-				break;
-
-			case 3: // X--
-				if (entity.posX > beltPos.x + 1 - border) { return false; }
-				break;
-		}
-		return true;
-	}
-
 	public boolean storeNearby(World world, PC_CoordI pos, EntityItem entity) {
 
 		if (PCtr_BeltBase.storeItemIntoMinecart(world, pos, entity)) { return true; }
@@ -218,7 +195,7 @@ public class PCtr_BlockConveyor extends Block implements PC_IBlockType, PC_IRota
 		int rot = PCtr_BeltBase.getRotation(pos.getMeta(world));
 
 
-		if (isBeyondStorageBorder(world, pos, entity, PCtr_BeltBase.STORAGE_BORDER)
+		if (PCtr_BeltBase.isBeyondStorageBorder(world, rot, pos, entity, PCtr_BeltBase.STORAGE_BORDER)
 				|| (isPowered(world, pos) && type == PCtr_BeltType.brake)) {
 			if (rot == 0 && PCtr_BeltBase.storeEntityItemAt(world, pos.offset(0, 0, -1), entity)) { return true; }
 			if (rot == 1 && PCtr_BeltBase.storeEntityItemAt(world, pos.offset(1, 0, 0), entity)) { return true; }
@@ -375,7 +352,7 @@ public class PCtr_BlockConveyor extends Block implements PC_IBlockType, PC_IRota
 		if(direction == 4) direction = 0;
 
 		PC_CoordI pos_leading_to = pos.copy();
-		switch (meta) {
+		switch (direction) {
 			case 0: // Z--
 				pos_leading_to.z--;
 				break;
@@ -395,7 +372,7 @@ public class PCtr_BlockConveyor extends Block implements PC_IBlockType, PC_IRota
 		}
 
 		boolean leadsToNowhere = PCtr_BeltBase.isBlocked(world, pos_leading_to);
-		leadsToNowhere = leadsToNowhere && isBeyondStorageBorder(world, pos, entity, PCtr_BeltBase.STORAGE_BORDER_LONG);
+		leadsToNowhere = leadsToNowhere && PCtr_BeltBase.isBeyondStorageBorder(world, direction, pos, entity, PCtr_BeltBase.STORAGE_BORDER_LONG);
 
 		// longlife!
 		if(!leadsToNowhere){

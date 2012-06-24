@@ -653,4 +653,28 @@ public class PCtr_BeltBase {
 		if (storeEntityItemAt(world, pos.offset(0, -1, 0), entity)) return true;
 		return false;
 	}
+
+
+	public static boolean isBeyondStorageBorder(World world, int rotation, PC_CoordI beltPos, Entity entity, float border) {
+		switch (rotation) {
+			case 0: // Z--
+				if (entity.posZ > beltPos.z + 1 - border) { return false; }
+				break;
+	
+			case 1: // X++
+				if (entity.posX < beltPos.x + border) { return false; }
+				break;
+	
+			case 2: // Z++
+	
+				if (entity.posZ < beltPos.z + border) { return false; }
+	
+				break;
+	
+			case 3: // X--
+				if (entity.posX > beltPos.x + 1 - border) { return false; }
+				break;
+		}
+		return true;
+	}
 }
