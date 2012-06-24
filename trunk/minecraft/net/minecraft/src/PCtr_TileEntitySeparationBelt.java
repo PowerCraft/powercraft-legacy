@@ -4,7 +4,7 @@ import java.util.Enumeration;
 import java.util.Hashtable;
 import java.util.Random;
 
-public class PCtr_TileEntitySeparationBelt extends PC_TileEntity implements IInventory {
+public class PCtr_TileEntitySeparationBelt extends PC_TileEntity implements IInventory, PC_ISpecialAccessInventory {
 
 	Random rand = new Random();
 
@@ -42,7 +42,7 @@ public class PCtr_TileEntitySeparationBelt extends PC_TileEntity implements IInv
 		}
 	}
 
-	public int newDirection(Entity entity) {
+	public int getDirection(Entity entity) {
 		boolean notItem = false;
 		ItemStack itemstack = null;
 		if (entity instanceof EntityItem) {
@@ -329,5 +329,25 @@ public class PCtr_TileEntitySeparationBelt extends PC_TileEntity implements IInv
 		} else {
 			return null;
 		}
+	}
+
+	@Override
+	public boolean insertStackIntoInventory(ItemStack stack) {
+		return false;
+	}
+
+	@Override
+	public boolean needsSpecialInserter() {
+		return true;
+	}
+
+	@Override
+	public boolean canInsertStackTo(int slot, ItemStack stack) {
+		return false;
+	}
+
+	@Override
+	public boolean canDispenseStackFrom(int slot) {
+		return false;
 	}
 }
