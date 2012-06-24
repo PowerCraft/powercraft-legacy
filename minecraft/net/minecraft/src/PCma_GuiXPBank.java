@@ -119,9 +119,9 @@ public class PCma_GuiXPBank implements PC_IGresBase {
 	}
 	
 	private void updateCounters(){
-		txPlayerLevel.setText(getPlayer().experienceLevel + "");
-		txPlayerPoints.setText(getPlayer().experienceTotal + "");
-		txStoragePoints.setText(xpbank.xp + "");
+		txPlayerLevel.setText(getPlayer().experienceLevel + "").setMinWidth(0);
+		txPlayerPoints.setText(getPlayer().experienceTotal + "").setMinWidth(0);
+		txStoragePoints.setText(xpbank.xp + "").setMinWidth(0);
 		window.calcSize();
 	}
 	
