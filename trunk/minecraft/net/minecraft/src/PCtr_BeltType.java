@@ -4,6 +4,6 @@
 
 package net.minecraft.src;
 
-public enum PCtr_EnumConv {
+public enum PCtr_BeltType {
 	belt, ejector, detector, speedy, brake, redirector;
 }

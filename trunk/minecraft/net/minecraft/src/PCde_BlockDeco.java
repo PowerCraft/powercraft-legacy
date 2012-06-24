@@ -197,7 +197,7 @@ public class PCde_BlockDeco extends BlockContainer implements PC_IBlockType, PC_
 		
 		
 		if (ted != null && ted.type == 1) set.add("HARVEST_STOP");
-		if (ted != null && ted.type != 1) set.add("TRANSLUCENT");
+		if (ted != null && ted.type == 0) set.add("TRANSLUCENT");
 
 		return set;
 	}

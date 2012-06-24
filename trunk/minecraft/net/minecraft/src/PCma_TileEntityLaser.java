@@ -274,8 +274,11 @@ public class PCma_TileEntityLaser extends PC_TileEntity implements PC_IBeamHandl
 
 				return true;
 			}
+			
+			//PC block, yet not translucent
+			if(PC_BlockUtils.hasFlag(world, coord, "POWERCRAFT")) return true;
 
-			if (Block.blocksList[id].isOpaqueCube()) { return true; }
+			if (Block.blocksList[id].isOpaqueCube() ) { return true; }
 
 		}
 

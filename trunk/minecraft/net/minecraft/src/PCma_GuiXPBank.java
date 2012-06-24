@@ -91,7 +91,7 @@ public class PCma_GuiXPBank implements PC_IGresBase {
 		hg.add(vg);
 		window.add(hg);
 		
-		window.add(new PC_GresGap(0, 6));
+		//window.add(new PC_GresGap(0, 6));
 		
 		hg = new PC_GresLayoutH().setAlignH(PC_GresAlign.CENTER);
 		hg.add(buttonClose = new PC_GresButton(PC_Lang.tr("pc.gui.ok")).setId(0));

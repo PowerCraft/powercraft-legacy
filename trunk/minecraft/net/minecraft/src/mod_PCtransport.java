@@ -148,19 +148,19 @@ public class mod_PCtransport extends PC_Module {
 
 		//@formatter:off
 		
-		conveyorBelt = new PCtr_BlockConveyor(cfg().getInteger(pk_belt), PCtr_EnumConv.belt)
+		conveyorBelt = new PCtr_BlockConveyor(cfg().getInteger(pk_belt), PCtr_BeltType.belt)
 				.setHardness(0.22F)
 				.setResistance(5.0F)
 				.setBlockName("PCconveyorBelt")
 				.setStepSound(Block.soundMetalFootstep);
 
-		ejectionBelt = new PCtr_BlockConveyor(cfg().getInteger(pk_ejector), PCtr_EnumConv.ejector)
+		ejectionBelt = new PCtr_BlockConveyor(cfg().getInteger(pk_ejector), PCtr_BeltType.ejector)
 				.setHardness(0.22F)
 				.setResistance(5.0F)
 				.setBlockName("PCconveyorFurnace")
 				.setStepSound(Block.soundMetalFootstep);
 
-		detectionBelt = new PCtr_BlockConveyor(cfg().getInteger(pk_detector), PCtr_EnumConv.detector)
+		detectionBelt = new PCtr_BlockConveyor(cfg().getInteger(pk_detector), PCtr_BeltType.detector)
 				.setHardness(0.22F)
 				.setResistance(5.0F)
 				.setBlockName("PCconveyorDetector")
@@ -172,13 +172,13 @@ public class mod_PCtransport extends PC_Module {
 				.setBlockName("PCconveyorFilter")
 				.setStepSound(Block.soundMetalFootstep);
 
-		brakeBelt = new PCtr_BlockConveyor(cfg().getInteger(pk_brake), PCtr_EnumConv.brake)
+		brakeBelt = new PCtr_BlockConveyor(cfg().getInteger(pk_brake), PCtr_BeltType.brake)
 				.setHardness(0.22F)
 				.setResistance(5.0F)
 				.setBlockName("PCconveyorBrake")
 				.setStepSound(Block.soundMetalFootstep);
 
-		redirectionBelt = new PCtr_BlockConveyor(cfg().getInteger(pk_redirector), PCtr_EnumConv.redirector)
+		redirectionBelt = new PCtr_BlockConveyor(cfg().getInteger(pk_redirector), PCtr_BeltType.redirector)
 				.setHardness(0.22F)
 				.setResistance(5.0F)
 				.setBlockName("PCconveyorRedirector")
@@ -190,7 +190,7 @@ public class mod_PCtransport extends PC_Module {
 				.setBlockName("PCconveyorItemElevator")
 				.setStepSound(Block.soundMetalFootstep);
 
-		speedyBelt = new PCtr_BlockConveyor(cfg().getInteger(pk_speedybelt), PCtr_EnumConv.speedy)
+		speedyBelt = new PCtr_BlockConveyor(cfg().getInteger(pk_speedybelt), PCtr_BeltType.speedy)
 				.setHardness(0.22F)
 				.setResistance(5.0F)
 				.setBlockName("PCconveyorSpeedBelt")
