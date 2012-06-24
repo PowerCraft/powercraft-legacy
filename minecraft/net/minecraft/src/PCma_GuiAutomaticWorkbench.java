@@ -116,4 +116,7 @@ public class PCma_GuiAutomaticWorkbench implements PC_IGresBase {
 	public void onCraftMatrixChanged(IInventory iinventory) {
 		craftResult.setInventorySlotContents(0, tileentity.getRecipeProduct());
 	}
+
+	@Override
+	public void updateTick(PC_IGresGui gui) {}
 }

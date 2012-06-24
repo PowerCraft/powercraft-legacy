@@ -220,5 +220,8 @@ public class PCma_GuiReplacer implements PC_IGresBase {
 	@Override
 	public void onCraftMatrixChanged(IInventory iinventory) {
 	}
+
+	@Override
+	public void updateTick(PC_IGresGui gui) {}
 	
 }

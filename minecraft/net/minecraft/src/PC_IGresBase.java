@@ -12,7 +12,7 @@ public interface PC_IGresBase {
 	/**
 	 * @return player instance who opened the gui
 	 */
-	public abstract EntityPlayer getPlayer();
+	public EntityPlayer getPlayer();
 
 
 	/**
@@ -20,13 +20,13 @@ public interface PC_IGresBase {
 	 * 
 	 * @param gui the outer gui
 	 */
-	public abstract void initGui(PC_IGresGui gui);
+	public void initGui(PC_IGresGui gui);
 	
 	/**
 	 * Hook called when the GuiScreen is closed
 	 * @param gui
 	 */
-	public abstract void onGuiClosed(PC_IGresGui gui);
+	public void onGuiClosed(PC_IGresGui gui);
 	
 	/**
 	 * On action performed.<br>
@@ -35,21 +35,31 @@ public interface PC_IGresBase {
 	 * @param widget widget generating the action
 	 * @param gui outer gui
 	 */
-	public abstract void actionPerformed(PC_GresWidget widget, PC_IGresGui gui);
+	public void actionPerformed(PC_GresWidget widget, PC_IGresGui gui);
 	
 	/**
 	 * On ESC key pressed  and no widget accepted it
 	 * @param gui outer gui
 	 */
-	public abstract void onEscapePressed(PC_IGresGui gui);
+	public void onEscapePressed(PC_IGresGui gui);
 	
 	/**
 	 * On ENTER key pressed  and no widget accepted it
 	 * @param gui outer gui
 	 */
-	public abstract void onReturnPressed(PC_IGresGui gui);
+	public void onReturnPressed(PC_IGresGui gui);
 
 
-	public abstract void onCraftMatrixChanged(IInventory iinventory);
+	/**
+	 * Called usually when somehting in ivnentory was changed.
+	 * @param iinventory the inventory
+	 */
+	public void onCraftMatrixChanged(IInventory iinventory);
+	
+	/**
+	 * Update tick, can be used to update some numbers, animations etc.
+	 * @param gui
+	 */
+	public void updateTick(PC_IGresGui gui);
 	
 }

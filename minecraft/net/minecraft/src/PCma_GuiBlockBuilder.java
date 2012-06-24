@@ -67,7 +67,8 @@ public class PCma_GuiBlockBuilder implements PC_IGresBase {
 
 	@Override
 	public void onCraftMatrixChanged(IInventory iinventory) {
-		// TODO Auto-generated method stub
-		
 	}
+
+	@Override
+	public void updateTick(PC_IGresGui gui) {}
 }

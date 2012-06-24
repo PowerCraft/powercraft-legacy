@@ -287,6 +287,16 @@ public class mod_PCmachines extends PC_Module implements PC_IActivatorListener {
 		map.put("pc.gui.blockReplacer.title", "Block Replacer");
 		map.put("pc.gui.blockReplacer.errWrongValue", "Expects a value between -16 and 16.");
 		map.put("pc.gui.blockReplacer.err3zeros", "Expects at least 1 value unequal 0.");
+		
+		map.put("pc.gui.xpbank.storagePoints", "Stored XP:");
+		map.put("pc.gui.xpbank.xpUnit", "points");
+		map.put("pc.gui.xpbank.xpLevels", "levels");
+		map.put("pc.gui.xpbank.pointsToWithdraw", "Points to withdraw:");
+		map.put("pc.gui.xpbank.currentPlayerPoints", "Your XP:");
+		map.put("pc.gui.xpbank.currentPlayerLevel", "Your level:");
+		map.put("pc.gui.xpbank.withdrawButton", "Withdraw");
+		map.put("pc.gui.xpbank.pointsToDeposit", "Points to deposit:");
+		map.put("pc.gui.xpbank.depositButton", "Deposit");
 	}
 
 	@Override
@@ -301,7 +311,7 @@ public class mod_PCmachines extends PC_Module implements PC_IActivatorListener {
 		ModLoader.addRecipe(
 				new ItemStack(harvester, 1),
 				new Object[] { "P", "D",
-					'P', Item.pickaxeSteel, 'D', Block.dispenser });
+					'P', Item.ingotIron, 'D', Block.dispenser });
 
 		ModLoader.addRecipe(
 				new ItemStack(roaster, 1),
