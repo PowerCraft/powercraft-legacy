@@ -169,4 +169,7 @@ public class PClo_GuiCustomGate implements PC_IGresBase {
 	public void onCraftMatrixChanged(IInventory iinventory) {
 	}
 
+	@Override
+	public void updateTick(PC_IGresGui gui) {}
+
 }

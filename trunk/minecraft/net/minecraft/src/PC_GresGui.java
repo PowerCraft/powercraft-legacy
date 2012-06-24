@@ -196,6 +196,9 @@ public class PC_GresGui extends GuiContainer implements PC_IGresGui {
 	 */
 	@Override
 	public void drawScreen(int par1, int par2, float par3) {
+		
+		gui.updateTick(this);
+		
 		drawDefaultBackground();
 		int i = guiLeft;
 		int j = guiTop;

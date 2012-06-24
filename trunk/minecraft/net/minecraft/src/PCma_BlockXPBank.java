@@ -37,7 +37,7 @@ public class PCma_BlockXPBank extends BlockContainer implements PC_ISwapTerrain,
 
 	@Override
 	public boolean renderAsNormalBlock() {
-		return false;
+		return true;
 	}
 
 	@Override
@@ -114,11 +114,12 @@ public class PCma_BlockXPBank extends BlockContainer implements PC_ISwapTerrain,
 			}
 		}
 
-		if (!entityplayer.isSneaking()) {
+		PC_Utils.openGres(entityplayer, new PCma_GuiXPBank((PCma_TileEntityXPBank) world.getBlockTileEntity(i, j, k)));
+		/*if (!entityplayer.isSneaking()) {
 			((PCma_TileEntityXPBank) world.getBlockTileEntity(i, j, k)).withdrawXP(entityplayer);
 		} else {
 			((PCma_TileEntityXPBank) world.getBlockTileEntity(i, j, k)).depositXP(entityplayer);
-		}
+		}*/
 		return true;
 	}
 
