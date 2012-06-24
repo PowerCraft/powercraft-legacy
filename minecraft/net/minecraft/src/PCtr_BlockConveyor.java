@@ -8,7 +8,7 @@ import java.util.Set;
 import net.minecraft.src.forge.ITextureProvider;
 
 public class PCtr_BlockConveyor extends Block implements PC_IBlockType, PC_IRotatedBox, PC_ISwapTerrain, ITextureProvider {
-	public PCtr_EnumConv type = PCtr_EnumConv.belt;
+	public PCtr_BeltType type = PCtr_BeltType.belt;
 
 	@Override
 	public String getTextureFile() {
@@ -20,7 +20,7 @@ public class PCtr_BlockConveyor extends Block implements PC_IBlockType, PC_IRota
 		return true;
 	}
 
-	protected PCtr_BlockConveyor(int i, PCtr_EnumConv type) {
+	protected PCtr_BlockConveyor(int i, PCtr_BeltType type) {
 		super(i, new PCtr_MaterialConveyor());
 		setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, PCtr_BeltBase.HEIGHT, 1.0F);
 		blockIndexInTexture = 0;
@@ -36,7 +36,7 @@ public class PCtr_BlockConveyor extends Block implements PC_IBlockType, PC_IRota
 
 	@Override
 	public boolean canProvidePower() {
-		return type == PCtr_EnumConv.detector || type == PCtr_EnumConv.ejector || type == PCtr_EnumConv.brake;
+		return type == PCtr_BeltType.detector || type == PCtr_BeltType.ejector || type == PCtr_BeltType.brake;
 	}
 
 	@Override
@@ -46,7 +46,7 @@ public class PCtr_BlockConveyor extends Block implements PC_IBlockType, PC_IRota
 
 	@Override
 	public void onNeighborBlockChange(World world, int i, int j, int k, int l) {
-		if (type == PCtr_EnumConv.ejector && l > 0) {
+		if (type == PCtr_BeltType.ejector && l > 0) {
 			world.scheduleBlockUpdate(i, j, k, blockID, tickRate());
 		}
 	}
@@ -60,12 +60,12 @@ public class PCtr_BlockConveyor extends Block implements PC_IBlockType, PC_IRota
 	@Override
 	public boolean isPoweringTo(IBlockAccess iblockaccess, int i, int j, int k, int l) {
 		int meta = iblockaccess.getBlockMetadata(i, j, k);
-		return PCtr_BeltBase.isActive(meta) && type == PCtr_EnumConv.detector;
+		return PCtr_BeltBase.isActive(meta) && type == PCtr_BeltType.detector;
 	}
 
 	@Override
 	public boolean isIndirectlyPoweringTo(World world, int i, int j, int k, int l) {
-		return type == PCtr_EnumConv.detector && isActive(world, i, j, k) && l == 1;
+		return type == PCtr_BeltType.detector && isActive(world, i, j, k) && l == 1;
 	}
 
 	@Override
@@ -73,13 +73,13 @@ public class PCtr_BlockConveyor extends Block implements PC_IBlockType, PC_IRota
 
 		PC_CoordI pos = new PC_CoordI(i, j, k);
 
-		if (type == PCtr_EnumConv.ejector) {
+		if (type == PCtr_BeltType.ejector) {
 			int meta = pos.getMeta(world);
 
 			if (pos.isPoweredDirectly(world) || pos.isPoweredIndirectly(world) || pos.offset(0, -1, 0).isPoweredDirectly(world)
 					|| pos.offset(0, -1, 0).isPoweredIndirectly(world)) {
 				if (!PCtr_BeltBase.isActive(meta)) {
-					if (!dispenseStackFromMinecart(world, pos)) {
+					if (!PCtr_BlockConveyor.dispenseStackFromNearbyMinecart(world, pos)) {
 						tryToDispenseItem(world, pos);
 					}
 					pos.setMeta(world, PCtr_BeltBase.getActiveMeta(meta));
@@ -87,7 +87,7 @@ public class PCtr_BlockConveyor extends Block implements PC_IBlockType, PC_IRota
 			} else if (PCtr_BeltBase.isActive(meta)) {
 				pos.setMeta(world, PCtr_BeltBase.getPassiveMeta(meta));
 			}
-		} else if (type == PCtr_EnumConv.detector && isActive(world, i, j, k)) {
+		} else if (type == PCtr_BeltType.detector && isActive(world, i, j, k)) {
 			setStateIfEntityInteractsWithDetector(world, i, j, k);
 		}
 	}
@@ -95,7 +95,7 @@ public class PCtr_BlockConveyor extends Block implements PC_IBlockType, PC_IRota
 
 	@SuppressWarnings("rawtypes")
 	public void setStateIfEntityInteractsWithDetector(World world, int i, int j, int k) {
-		if (type == PCtr_EnumConv.detector) {
+		if (type == PCtr_BeltType.detector) {
 			int meta = world.getBlockMetadata(i, j, k);
 			boolean isAlreadyActive = PCtr_BeltBase.isActive(meta);
 			boolean isPressed = false;
@@ -162,7 +162,7 @@ public class PCtr_BlockConveyor extends Block implements PC_IBlockType, PC_IRota
 
 
 
-	private static boolean dispenseItem(World world, PC_CoordI invPos, IInventory inventory, PC_CoordI beltPos) {
+	static boolean dispenseItem(World world, PC_CoordI invPos, IInventory inventory, PC_CoordI beltPos) {
 		ItemStack stack = PC_InvUtils.dispenseFirstStack(inventory);
 
 		if (stack != null) {
@@ -185,64 +185,6 @@ public class PCtr_BlockConveyor extends Block implements PC_IBlockType, PC_IRota
 		item.delayBeforeCanPickup = 7;
 		world.spawnEntityInWorld(item);
 	}
-
-	@SuppressWarnings("unchecked")
-	public static boolean storeEntityItemIntoMinecart(World world, PC_CoordI beltPos, EntityItem entity) {
-		List<EntityMinecart> hitList = world.getEntitiesWithinAABB(
-				EntityMinecart.class,
-				AxisAlignedBB.getBoundingBoxFromPool(beltPos.x, beltPos.y, beltPos.z, beltPos.x + 1, beltPos.y + 1, beltPos.z + 1).expand(
-						1.0D, 1.0D, 1.0D));
-
-		if (hitList.size() > 0) {
-			for (EntityMinecart cart : hitList) {
-				if (cart.minecartType != 1) {
-					continue;
-				}
-
-				IInventory inventory = cart;
-				if (inventory != null && entity != null && entity.isEntityAlive()) {
-					ItemStack stackToStore = entity.item;
-
-					if (stackToStore != null && PC_InvUtils.storeItemInInventory(inventory, stackToStore)) {
-						PCtr_BeltBase.soundEffectChest(world, beltPos);
-						if (stackToStore.stackSize <= 0) {
-							entity.setDead();
-							stackToStore.stackSize = 0;
-							return true;
-						}
-					}
-				}
-
-			}
-		}
-
-		return false;
-	}
-
-	@SuppressWarnings("unchecked")
-	public static boolean dispenseStackFromMinecart(World world, PC_CoordI beltPos) {
-		List<EntityMinecart> hitList = world.getEntitiesWithinAABB(
-				net.minecraft.src.EntityMinecart.class,
-				AxisAlignedBB.getBoundingBoxFromPool(beltPos.x, beltPos.y, beltPos.z, beltPos.x + 1, beltPos.y + 1, beltPos.z + 1).expand(
-						1.0D, 1.0D, 1.0D));
-
-		if (hitList.size() > 0) {
-			for (EntityMinecart cart : hitList) {
-				if (cart.minecartType != 1) {
-					continue;
-				}
-
-				IInventory inventory = cart;
-				if (inventory != null) {
-					if (dispenseItem(world, new PC_CoordD(cart.posX, cart.posY, cart.posZ).round(), inventory, beltPos)) { return true; }
-				}
-
-			}
-		}
-
-		return false;
-	}
-
 
 	private boolean isBeyondStorageBorder(World world, PC_CoordI beltPos, Entity entity, float border) {
 		switch (PCtr_BeltBase.getRotation(beltPos.getMeta(world))) {
@@ -269,15 +211,15 @@ public class PCtr_BlockConveyor extends Block implements PC_IBlockType, PC_IRota
 
 	public boolean storeNearby(World world, PC_CoordI pos, EntityItem entity) {
 
-		if (storeEntityItemIntoMinecart(world, pos, entity)) { return true; }
+		if (PCtr_BeltBase.storeItemIntoMinecart(world, pos, entity)) { return true; }
 		if (entity.posY > pos.y + 1 - PCtr_BeltBase.STORAGE_BORDER_V) { return false; }
 
 
-		int rot = getRotation(pos.getMeta(world));
+		int rot = PCtr_BeltBase.getRotation(pos.getMeta(world));
 
 
 		if (isBeyondStorageBorder(world, pos, entity, PCtr_BeltBase.STORAGE_BORDER)
-				|| (isPowered(world, pos) && type == PCtr_EnumConv.brake)) {
+				|| (isPowered(world, pos) && type == PCtr_BeltType.brake)) {
 			if (rot == 0 && PCtr_BeltBase.storeEntityItemAt(world, pos.offset(0, 0, -1), entity)) { return true; }
 			if (rot == 1 && PCtr_BeltBase.storeEntityItemAt(world, pos.offset(1, 0, 0), entity)) { return true; }
 			if (rot == 2 && PCtr_BeltBase.storeEntityItemAt(world, pos.offset(0, 0, 1), entity)) { return true; }
@@ -298,119 +240,6 @@ public class PCtr_BlockConveyor extends Block implements PC_IBlockType, PC_IRota
 		return false;
 	}
 
-	public boolean storeAllSides(World world, PC_CoordI pos, EntityItem entity) {
-
-		if (storeEntityItemIntoMinecart(world, pos, entity)) return true;
-
-		if (PCtr_BeltBase.storeEntityItemAt(world, pos.offset(0, 0, -1), entity)) return true;
-		if (PCtr_BeltBase.storeEntityItemAt(world, pos.offset(0, 0, 1), entity)) return true;
-		if (PCtr_BeltBase.storeEntityItemAt(world, pos.offset(-1, 0, 0), entity)) return true;
-		if (PCtr_BeltBase.storeEntityItemAt(world, pos.offset(1, 0, 0), entity)) return true;
-
-		if (PCtr_BeltBase.storeEntityItemAt(world, pos.offset(0, 1, 0), entity)) return true;
-
-		if (!PC_BlockUtils.hasFlag(world, pos.offset(0, -1, 0), "ROASTER")
-				&& PCtr_BeltBase.storeEntityItemAt(world, pos.offset(0, -1, 0), entity)) return true;
-		return false;
-	}
-
-	private void doSpecialItemAction(World world, PC_CoordI beltPos, EntityItem entity) {
-		if (entity == null || entity.item == null) { return; }
-		boolean flag = false;
-		flag |= entity.item.itemID == Item.bucketWater.shiftedIndex;
-		flag |= entity.item.itemID == Item.bucketEmpty.shiftedIndex;
-		flag |= entity.item.itemID == Item.glassBottle.shiftedIndex;
-		if(!flag) return;
-		
-		do {
-			
-			
-			if (doSpecialItemAction_do(world, beltPos.offset(0, 0, 1), entity)) {
-				break;
-			}
-			if (doSpecialItemAction_do(world, beltPos.offset(0, 0, -1), entity)) {
-				break;
-			}
-			if (doSpecialItemAction_do(world, beltPos.offset(1, 0, 0), entity)) {
-				break;
-			}
-			if (doSpecialItemAction_do(world, beltPos.offset(-1, 0, 0), entity)) {
-				break;
-			}
-			
-			
-			if (doSpecialItemAction_do(world, beltPos.offset(0, -1, 1), entity)) {
-				break;
-			}
-			if (doSpecialItemAction_do(world, beltPos.offset(0, -1, -1), entity)) {
-				break;
-			}
-			if (doSpecialItemAction_do(world, beltPos.offset(1, -1, 0), entity)) {
-				break;
-			}
-			if (doSpecialItemAction_do(world, beltPos.offset(-1, -1, 0), entity)) {
-				break;
-			}
-			
-			
-			if (doSpecialItemAction_do(world, beltPos.offset(0, 1, 0), entity)) {
-				break;
-			}
-			if (doSpecialItemAction_do(world, beltPos.offset(0, -1, 0), entity)) {
-				break;
-			}
-
-		} while (false);
-	}
-
-	private boolean doSpecialItemAction_do(World world, PC_CoordI pos, EntityItem entity) {
-		
-		if(entity.item.itemID == Item.bucketWater.shiftedIndex){
-			if (pos.getId(world) == Block.cauldron.blockID && pos.getMeta(world) < 3) {
-				pos.setMeta(world, 3);
-				entity.item.itemID = Item.bucketEmpty.shiftedIndex;
-				return true;
-			}
-		}
-		
-		if(entity.item.itemID == Item.bucketEmpty.shiftedIndex){
-			if (pos.getId(world) == Block.waterStill.blockID || pos.getId(world) == Block.waterMoving.blockID
-					&& pos.getMeta(world) == 0) {
-				pos.setBlock(world, 0, 0);
-				entity.item.itemID = Item.bucketWater.shiftedIndex;
-				return true;
-			}
-		}
-		
-		if(entity.item.itemID == Item.glassBottle.shiftedIndex){
-			if (pos.getId(world) == Block.cauldron.blockID && pos.getId(world) > 0) {
-				// decrease water amount
-				int meta = pos.getMeta(world);
-				pos.setMeta(world, meta - 1);
-				
-				EntityItem entity2 = new EntityItem(world, entity.posX, entity.posY, entity.posZ, new ItemStack(Item.potion.shiftedIndex, 1, 0));
-
-				entity2.motionX = entity.motionX;
-				entity2.motionY = entity.motionY;
-				entity2.motionZ = entity.motionZ;
-				entity2.delayBeforeCanPickup = 7;
-				world.spawnEntityInWorld(entity2);
-
-				entity.item.stackSize--;
-
-				if (entity.item.stackSize <= 0) {
-					entity.item.stackSize = 0;
-					entity.setDead();
-				}
-				
-				return true;
-			}
-		}
-		
-		return false;
-		
-	}
-
 	// from interface, but also used locally
 	@Override
 	public int getRotation(int meta) {
@@ -423,34 +252,29 @@ public class PCtr_BlockConveyor extends Block implements PC_IBlockType, PC_IRota
 	}
 
 	// -------------MOVEMENT------------------
-	@SuppressWarnings("rawtypes")
 	@Override
 	public void onEntityCollidedWithBlock(World world, int i, int j, int k, Entity entity) {
 
 		PC_CoordI pos = new PC_CoordI(i, j, k);
 
-		if (!entity.isEntityAlive()) { return; }
-		if (entity instanceof EntityPlayer && ((EntityPlayer) entity).isSneaking()) { return; }
-		if (entity instanceof EntityFX) { return; }
+		if(PCtr_BeltBase.isEntityIgnored(entity)) return;
 
-		if (entity instanceof EntityItem) {
-			PCtr_BeltBase.packItems(world, pos);
-		}
+		if (entity instanceof EntityItem) PCtr_BeltBase.packItems(world, pos);
 
 		// detector activated
-		if (!isActive(world, i, j, k) && type == PCtr_EnumConv.detector) {
+		if (!isActive(world, i, j, k) && type == PCtr_BeltType.detector) {
 			setStateIfEntityInteractsWithDetector(world, i, j, k);
 		}
 
-		if (entity instanceof EntityItem && type != PCtr_EnumConv.ejector && type != PCtr_EnumConv.speedy) {
-			doSpecialItemAction(world, pos, (EntityItem) entity);
+		if (entity instanceof EntityItem && type != PCtr_BeltType.ejector && type != PCtr_BeltType.speedy) {
+			PCtr_BeltBase.doSpecialItemAction(world, pos, (EntityItem) entity);
 			if (storeNearby(world, pos, (EntityItem) entity)) { return; }
 		}
 
 		if (!entity.isEntityAlive()) { return; }
 
 		// brake activated
-		boolean halted = isPowered(world, pos) && type == PCtr_EnumConv.brake;
+		boolean halted = isPowered(world, pos) && type == PCtr_BeltType.brake;
 
 		if (halted) {
 			if (entity instanceof EntityMinecart && halted) {
@@ -464,21 +288,8 @@ public class PCtr_BlockConveyor extends Block implements PC_IBlockType, PC_IRota
 
 		// speed limit
 		if (entity instanceof EntityItem || entity instanceof EntityXPOrb) {
-			entity.stepHeight = 0.25F;
-			if (entity.motionX > PCtr_BeltBase.MAX_HORIZONTAL_SPEED) {
-				entity.motionX *= 0.6D;
-			}
-			if (entity.motionX < -PCtr_BeltBase.MAX_HORIZONTAL_SPEED) {
-				entity.motionX *= 0.6D;
-			}
-			if (entity.motionZ > PCtr_BeltBase.MAX_HORIZONTAL_SPEED) {
-				entity.motionZ *= 0.6D;
-			}
-			if (entity.motionZ < -PCtr_BeltBase.MAX_HORIZONTAL_SPEED) {
-				entity.motionZ *= 0.6D;
-			}
-			if (entity.motionY > 0.3) {
-				entity.motionY *= 0.3;
+			if (entity.motionY > 0.2) {
+				entity.motionY -= 0.1;
 			}
 		}
 
@@ -486,7 +297,7 @@ public class PCtr_BlockConveyor extends Block implements PC_IBlockType, PC_IRota
 
 		// get redir
 		int redir = 0;
-		if (type == PCtr_EnumConv.redirector && isPowered(world, pos)) {
+		if (type == PCtr_BeltType.redirector && isPowered(world, pos)) {
 			switch (meta) {
 				case 0: // '\0' Z--
 					if (PCtr_BeltBase.isTransporterAt(world, pos.offset(1, 0, 0))) {
@@ -522,7 +333,7 @@ public class PCtr_BlockConveyor extends Block implements PC_IBlockType, PC_IRota
 			}
 		}
 
-		if (type == PCtr_EnumConv.redirector && redir == 0) { // not powered
+		if (type == PCtr_BeltType.redirector && redir == 0) { // not powered
 			switch (meta) {
 				case 0: // '\0' Z--
 					if (PCtr_BeltBase.isTransporterAt(world, pos.offset(1, 0, 0))
@@ -556,143 +367,61 @@ public class PCtr_BlockConveyor extends Block implements PC_IBlockType, PC_IRota
 					break;
 			}
 		}
+		
+		redir = -redir;
+		
+		int direction = meta + redir;
+		if(direction == -1) direction = 3;
+		if(direction == 4) direction = 0;
 
-		PC_CoordI pos2 = pos.copy();
+		PC_CoordI pos_leading_to = pos.copy();
 		switch (meta) {
 			case 0: // Z--
-				pos2.z--;
+				pos_leading_to.z--;
 				break;
 
 			case 1: // X++
-				pos2.x++;
+				pos_leading_to.x++;
 				break;
 
 			// 6,7
 			case 2: // Z++
-				pos2.z++;
+				pos_leading_to.z++;
 				break;
 
 			case 3: // X--
-				pos2.x--;
+				pos_leading_to.x--;
 				break;
 		}
 
-		boolean leadsToNowhere = PCtr_BeltBase.isBlocked(world, pos2);
+		boolean leadsToNowhere = PCtr_BeltBase.isBlocked(world, pos_leading_to);
 		leadsToNowhere = leadsToNowhere && isBeyondStorageBorder(world, pos, entity, PCtr_BeltBase.STORAGE_BORDER_LONG);
 
 		// longlife!
-		if (entity instanceof EntityItem) {
-			if (!halted && !leadsToNowhere) {
-				((EntityItem) entity).delayBeforeCanPickup = 7;
-			}
-			if (((EntityItem) entity).age >= 5000) {
-				if (world.getEntitiesWithinAABBExcludingEntity(null, AxisAlignedBB.getBoundingBoxFromPool(i, j, k, i + 1, j + 1, k + 1))
-						.size() < 40) {
-					((EntityItem) entity).age = 4000;
-				}
-			}
+		if(!leadsToNowhere){
+			PCtr_BeltBase.entityPreventDespawning(world, pos, !halted, entity);
 		}
 
-		if (entity instanceof EntityXPOrb && !leadsToNowhere) {
-			if (((EntityXPOrb) entity).xpOrbAge >= 5000) {
-				if (world.getEntitiesWithinAABBExcludingEntity(null, AxisAlignedBB.getBoundingBoxFromPool(i, j, k, i + 1, j + 1, k + 1))
-						.size() < 40) {
-					((EntityXPOrb) entity).xpOrbAge = 4000;
-				}
-			}
+
+
+		double speed_max = PCtr_BeltBase.MAX_HORIZONTAL_SPEED;
+		if (type == PCtr_BeltType.brake) {
+			speed_max *= 0.6D;
+		}
+		if (type == PCtr_BeltType.speedy) {
+			speed_max *= 2.0D;
 		}
 
-		// sound effect
-		if (!halted && !leadsToNowhere && world.rand.nextInt(35) == 0) {
-			List list = world.getEntitiesWithinAABBExcludingEntity(entity,
-					AxisAlignedBB.getBoundingBoxFromPool(i, j, k, i + 1, j + 1, k + 1));
-			if (list.size() == 0) {
-				PCtr_BeltBase.soundEffectBelt(world, pos);
-			} else {
-				if (world.rand.nextInt(10) == 0) {
-					PCtr_BeltBase.soundEffectBelt(world, pos);
-				}
-			}
+		double boost = PCtr_BeltBase.HORIZONTAL_BOOST;
+		if (type == PCtr_BeltType.brake) {
+			boost *= 0.6D;
 		}
-
-		double TMP_MAX_HORIZONTAL_SPEED = PCtr_BeltBase.MAX_HORIZONTAL_SPEED;
-		if (type == PCtr_EnumConv.brake) {
-			TMP_MAX_HORIZONTAL_SPEED *= 0.6D;
+		if (type == PCtr_BeltType.speedy) {
+			boost *= 2.0D;
 		}
-		if (type == PCtr_EnumConv.speedy) {
-			TMP_MAX_HORIZONTAL_SPEED *= 2.0D;
-		}
+		
+		PCtr_BeltBase.moveEntityOnBelt(world, pos, entity, true, !halted && !leadsToNowhere, direction, speed_max, boost);
 
-		double TMP_HORIZONTAL_BOOST = PCtr_BeltBase.HORIZONTAL_BOOST;
-		if (type == PCtr_EnumConv.brake) {
-			TMP_HORIZONTAL_BOOST *= 0.6D;
-		}
-		if (type == PCtr_EnumConv.speedy) {
-			TMP_HORIZONTAL_BOOST *= 2.0D;
-		}
-
-		double TMP_BORDERS = PCtr_BeltBase.BORDERS;
-		double TMP_BORDER_BOOST = PCtr_BeltBase.BORDER_BOOST;
-
-		// Z--
-		if ((meta == 0 && redir == 0) || (meta == 1 && redir == 1) || (meta == 3 && redir == -1)) {
-			if (entity.motionZ >= -TMP_MAX_HORIZONTAL_SPEED && !halted && !leadsToNowhere) {
-				entity.motionZ -= TMP_HORIZONTAL_BOOST;
-			}
-			if (entity.posX > i + (1D - TMP_BORDERS)) {
-				entity.motionX -= TMP_BORDER_BOOST;
-			}
-			if (entity.posX < i + TMP_BORDERS) {
-				entity.motionX += TMP_BORDER_BOOST;
-			}
-
-			return;
-		}
-
-		// X++
-		if ((meta == 1 && redir == 0) || (meta == 0 && redir == -1) || (meta == 2 && redir == 1)) {
-			if (entity.motionX <= TMP_MAX_HORIZONTAL_SPEED && !halted && !leadsToNowhere) {
-				entity.motionX += TMP_HORIZONTAL_BOOST;
-			}
-			if (entity.posZ > k + TMP_BORDERS) {
-				entity.motionZ -= TMP_BORDER_BOOST;
-			}
-			if (entity.posZ < k + (1D - TMP_BORDERS)) {
-				entity.motionZ += TMP_BORDER_BOOST;
-			}
-
-			return;
-		}
-
-		// Z++
-		if ((meta == 2 && redir == 0) || (meta == 1 && redir == -1) || (meta == 3 && redir == 1)) {
-			if (entity.motionZ <= TMP_MAX_HORIZONTAL_SPEED && !halted && !leadsToNowhere) {
-				entity.motionZ += TMP_HORIZONTAL_BOOST;
-			}
-			if (entity.posX > i + (1D - TMP_BORDERS)) {
-				entity.motionX -= TMP_BORDER_BOOST;
-			}
-			if (entity.posX < i + TMP_BORDERS) {
-				entity.motionX += TMP_BORDER_BOOST;
-			}
-
-			return;
-		}
-
-		// X--
-		if ((meta == 3 && redir == 0) || (meta == 0 && redir == 1) || (meta == 2 && redir == -1)) {
-			if (entity.motionX >= -TMP_MAX_HORIZONTAL_SPEED && !halted && !leadsToNowhere) {
-				entity.motionX -= TMP_HORIZONTAL_BOOST; /* entity.motionY+=0.1; */
-			}// ok
-			if (entity.posZ > k + TMP_BORDERS) {
-				entity.motionZ -= TMP_BORDER_BOOST;
-			}
-			if (entity.posZ < k + (1D - TMP_BORDERS)) {
-				entity.motionZ += TMP_BORDER_BOOST;
-			}
-
-			return;
-		}
 	}
 
 	@Override
@@ -733,12 +462,12 @@ public class PCtr_BlockConveyor extends Block implements PC_IBlockType, PC_IRota
 	}
 
 	public int getIndexTop(int meta) {
-		if (type == PCtr_EnumConv.belt) { return 0; }
-		if (type == PCtr_EnumConv.speedy) { return 4; }
-		if (type == PCtr_EnumConv.ejector) { return 3; }
-		if (type == PCtr_EnumConv.detector) { return 6; }
-		if (type == PCtr_EnumConv.brake) { return 5; }
-		if (type == PCtr_EnumConv.redirector) { return 8; }
+		if (type == PCtr_BeltType.belt) { return 0; }
+		if (type == PCtr_BeltType.speedy) { return 4; }
+		if (type == PCtr_BeltType.ejector) { return 3; }
+		if (type == PCtr_BeltType.detector) { return 6; }
+		if (type == PCtr_BeltType.brake) { return 5; }
+		if (type == PCtr_BeltType.redirector) { return 8; }
 		return 0;
 	}
 
@@ -821,5 +550,35 @@ public class PCtr_BlockConveyor extends Block implements PC_IBlockType, PC_IRota
 		Set<String> set = new HashSet<String>();
 		set.add("NO_BUILD");
 		return set;
+	}
+
+	/**
+	 * Get closest minecraft and dispense stack from it onto this belt.
+	 * @param world
+	 * @param beltPos
+	 * @return
+	 */
+	@SuppressWarnings("unchecked")
+	public static boolean dispenseStackFromNearbyMinecart(World world, PC_CoordI beltPos) {
+		List<EntityMinecart> hitList = world.getEntitiesWithinAABB(
+				net.minecraft.src.EntityMinecart.class,
+				AxisAlignedBB.getBoundingBoxFromPool(beltPos.x, beltPos.y, beltPos.z, beltPos.x + 1, beltPos.y + 1, beltPos.z + 1).expand(
+						1.0D, 1.0D, 1.0D));
+	
+		if (hitList.size() > 0) {
+			for (EntityMinecart cart : hitList) {
+				if (cart.minecartType != 1) {
+					continue;
+				}
+	
+				IInventory inventory = cart;
+				if (inventory != null) {
+					if (dispenseItem(world, new PC_CoordD(cart.posX, cart.posY, cart.posZ).round(), inventory, beltPos)) { return true; }
+				}
+	
+			}
+		}
+	
+		return false;
 	}
 }

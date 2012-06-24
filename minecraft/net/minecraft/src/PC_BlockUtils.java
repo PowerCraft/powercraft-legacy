@@ -13,22 +13,8 @@ import java.util.Set;
  */
 public class PC_BlockUtils {
 	
-	/**
-	 * Get block flags in world at given position.
-	 * @param world the world
-	 * @param pos the coordinate
-	 * @return set of flags, or empty set if not instance of {@link PC_IBlockType}
-	 */
-	public static Set<String> getBlockFlags(World world, PC_CoordI pos){
-		
-		int id = pos.getId(world);
-
-		if (Block.blocksList[id] != null && Block.blocksList[id] instanceof PC_IBlockType) {
-			PC_IBlockType type = (PC_IBlockType) Block.blocksList[id];
-			return type.getBlockFlags(world, pos);
-		}
-
-		return new HashSet<String>();
+	public static boolean isPowerCraftBlock(World world, PC_CoordI pos, String flag){
+		return getBlockFlags(world, pos).contains(flag);
 	}
 	
 	/**
@@ -53,6 +39,29 @@ public class PC_BlockUtils {
 		return getItemFlags(stack).contains(flag);
 	}
 	
+	
+	/**
+	 * Get block flags in world at given position.
+	 * @param world the world
+	 * @param pos the coordinate
+	 * @return set of flags, or empty set if not instance of {@link PC_IBlockType}
+	 */
+	public static Set<String> getBlockFlags(World world, PC_CoordI pos){
+		
+		int id = pos.getId(world);
+
+		if (Block.blocksList[id] != null && Block.blocksList[id] instanceof PC_IBlockType) {
+			PC_IBlockType type = (PC_IBlockType) Block.blocksList[id];
+			Set<String> flags = type.getBlockFlags(world, pos);
+			flags.add("POWERCRAFT");
+			return flags;
+		}
+
+		return new HashSet<String>();
+	}
+	
+
+	
 	/**
 	 * Get item-block flags for itemstack.
 	 * @param stack the stack
@@ -65,7 +74,9 @@ public class PC_BlockUtils {
 
 		if (Block.blocksList[stack.getItem().shiftedIndex] != null && Block.blocksList[stack.getItem().shiftedIndex] instanceof PC_IBlockType) {
 			PC_IBlockType type = (PC_IBlockType) Block.blocksList[stack.getItem().shiftedIndex];
-			return type.getItemFlags(stack.getItemDamage());
+			Set<String> flags = type.getItemFlags(stack.getItemDamage());
+			flags.add("POWERCRAFT");
+			return flags;
 		}
 
 		return new HashSet<String>();

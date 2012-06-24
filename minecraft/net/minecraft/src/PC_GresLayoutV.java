@@ -44,7 +44,7 @@ public class PC_GresLayoutV extends PC_GresWidget {
 			lastmargin = w.widgetMargin;
 			ySize += csize.y + w.widgetMargin;
 		}
-		ySize -= lastmargin;
+		//ySize -= lastmargin;
 		for (PC_GresWidget w: childs) {
 			PC_CoordI csize = w.getSize();
 			int xPos = 0;

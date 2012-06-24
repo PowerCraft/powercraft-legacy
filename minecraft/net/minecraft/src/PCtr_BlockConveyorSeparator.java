@@ -12,14 +12,9 @@ public class PCtr_BlockConveyorSeparator extends BlockContainer implements PC_IB
 	public static final double BORDERS = 0.3D;
 	public static final double BORDER_BOOST = 0.06D;
 
-	public static final float HEIGHT_BOUNDS = PCtr_BeltBase.HEIGHT; // for
-																				// detection
-	public static final float HEIGHT_COLLISION = PCtr_BeltBase.HEIGHT_COLLISION;// to
-																						// prevent
-																						// falls
+	public static final float HEIGHT_BOUNDS = PCtr_BeltBase.HEIGHT;
+	public static final float HEIGHT_COLLISION = PCtr_BeltBase.HEIGHT_COLLISION;
 	public static final float HEIGHT_SELECTED = PCtr_BeltBase.HEIGHT_SELECTED;
-																			// as
-																			// collision.
 
 	public static boolean group_wood_sort;
 

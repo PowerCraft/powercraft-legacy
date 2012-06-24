@@ -106,7 +106,8 @@ public class PCma_TileEntityAutomaticWorkbench extends PC_TileEntity implements 
 
 	// special things.
 	@Override
-	public void onInventoryChanged() {}
+	public void onInventoryChanged() {
+	}
 
 	/**
 	 * Reorder contents of the storage grid to fill as many slots a spossible
@@ -134,7 +135,7 @@ public class PCma_TileEntityAutomaticWorkbench extends PC_TileEntity implements 
 		}
 
 		for (ItemStack stack : stacks) {
-			insertStackIntoInventory(stack);
+			insertStackIntoInventory_do(stack);
 
 			// drop the remainder
 			if (stack.stackSize > 0) {
@@ -175,6 +176,13 @@ public class PCma_TileEntityAutomaticWorkbench extends PC_TileEntity implements 
 
 	@Override
 	public boolean insertStackIntoInventory(ItemStack stack) {
+		boolean flag = insertStackIntoInventory_do(stack);
+		orderAndCraft();
+		return flag;
+	}
+		
+		
+	private boolean insertStackIntoInventory_do(ItemStack stack){
 		if (stack == null) { return false; }
 
 		// prepare table of matching slots.
@@ -227,7 +235,6 @@ public class PCma_TileEntityAutomaticWorkbench extends PC_TileEntity implements 
 			}
 		}
 		
-		orderAndCraft();
 
 		return storedSomething; //stack.stackSize <= 0;
 	}

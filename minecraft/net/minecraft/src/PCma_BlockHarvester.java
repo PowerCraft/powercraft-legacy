@@ -231,6 +231,7 @@ public class PCma_BlockHarvester extends Block implements PC_ISwapTerrain, PC_IB
 			if (underId == Block.dirt.blockID || underId == Block.grass.blockID || underId == Block.mycelium.blockID) { return false; }
 		}
 
+		if (PC_BlockUtils.hasFlag(world, coord, "HARVEST_STOP")) { return true; }
 
 		// SKIP non-breaking
 		if (id == 0 || id == Block.glass.blockID || id == Block.thinGlass.blockID || id == Block.redstoneLampActive.blockID
@@ -244,7 +245,11 @@ public class PCma_BlockHarvester extends Block implements PC_ISwapTerrain, PC_IB
 
 		return false; }
 
-		if (PC_BlockUtils.getBlockFlags(world, coord).contains("HARVEST_STOP")) { return true; }
+		if(PC_BlockUtils.hasFlag(world, coord, "POWERCRAFT")){
+			if(PC_BlockUtils.hasFlag(world, coord, "TRANSLUCENT")) return false;
+		}
+		
+
 
 		// tree - replace with sapling
 		if (PC_TreeHarvestingManager.isBlockTreeWood(id, meta)) {
@@ -455,8 +460,8 @@ public class PCma_BlockHarvester extends Block implements PC_ISwapTerrain, PC_IB
 		EntityItem entityitem = new EntityItem(world, dx, dy - 0.29999999999999999D, dz, itemstack);
 		double throwSpeed = world.rand.nextDouble() * 0.10000000000000001D + 0.20000000000000001D;
 
-		Set <String> blocktype = PC_BlockUtils.getBlockFlags(world, devPos.offset(dispIncX, 0, dispIncZ));
-		
+		Set<String> blocktype = PC_BlockUtils.getBlockFlags(world, devPos.offset(dispIncX, 0, dispIncZ));
+
 		if (blocktype.contains("BELT") || blocktype.contains("LIFT")) {
 			entityitem.motionX = 0;
 			entityitem.motionY = 0;
