@@ -67,11 +67,13 @@ public class PC_Utils {
 	 * @param parent parent compound tag
 	 * @param wrapperTagName name of the wrapper tag, which is later inserted into parent
 	 * @param stored object to store
+	 * @return the compound wrapping tag
 	 */
-	public static void writeWrappedToNBT(NBTTagCompound parent, String wrapperTagName, PC_INBT stored) {
+	public static NBTTagCompound writeWrappedToNBT(NBTTagCompound parent, String wrapperTagName, PC_INBT stored) {
 		NBTTagCompound tag = new NBTTagCompound();
 		stored.writeToNBT(tag);
 		parent.setCompoundTag(wrapperTagName, tag);
+		return tag;
 	}
 
 	/**

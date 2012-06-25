@@ -255,22 +255,24 @@ public class PC_Color implements PC_INBT {
 	}
 
 	@Override
-	public void writeToNBT(NBTTagCompound tag) {
+	public NBTTagCompound writeToNBT(NBTTagCompound tag) {
 		tag.setDouble("r", r);
 		tag.setDouble("g", g);
 		tag.setDouble("b", b);
 		tag.setInteger("xtal_meta", powerCrystalMeta);
 		tag.setBoolean("invisible", invisible);
+		return tag;
 
 	}
 
 	@Override
-	public void readFromNBT(NBTTagCompound tag) {
+	public PC_INBT readFromNBT(NBTTagCompound tag) {
 		r = tag.getDouble("r");
 		g = tag.getDouble("g");
 		b = tag.getDouble("b");
 		powerCrystalMeta = tag.getInteger("xtal_meta");
 		invisible = tag.getBoolean("invisible");
+		return this;
 	}
 
 }
