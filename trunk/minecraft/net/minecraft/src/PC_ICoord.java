@@ -8,7 +8,7 @@ package net.minecraft.src;
  * @copy (c) 2012
  * 
  */
-public interface PC_ICoord {
+public interface PC_ICoord extends PC_INBT{
 
 	/**
 	 * @return copy of this, with coordinates inverted
@@ -103,20 +103,5 @@ public interface PC_ICoord {
 	 * @return rounded
 	 */
 	public abstract PC_CoordI ceil();
-
-	/**
-	 * Write coordinate data into NBT tag
-	 * 
-	 * @param tag
-	 */
-	public abstract void writeToNBT(NBTTagCompound tag);
-
-
-	/**
-	 * Read coordinate data from NBT tag
-	 * 
-	 * @param tag
-	 */
-	public abstract void readFromNBT(NBTTagCompound tag);
 
 }

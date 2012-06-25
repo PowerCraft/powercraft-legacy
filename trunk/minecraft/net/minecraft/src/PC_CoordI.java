@@ -529,16 +529,18 @@ public class PC_CoordI implements PC_ICoord, PC_INBT {
 	}
 	
 	@Override
-	public void writeToNBT(NBTTagCompound tag) {
+	public NBTTagCompound writeToNBT(NBTTagCompound tag) {
 		tag.setInteger("ix", x);
 		tag.setInteger("iy", y);
 		tag.setInteger("iz", z);
+		return tag;
 	}
 
 	@Override
-	public void readFromNBT(NBTTagCompound tag) {
+	public PC_INBT readFromNBT(NBTTagCompound tag) {
 		x = tag.getInteger("ix");
 		y = tag.getInteger("iy");
 		z = tag.getInteger("iz");
+		return this;
 	}
 }
