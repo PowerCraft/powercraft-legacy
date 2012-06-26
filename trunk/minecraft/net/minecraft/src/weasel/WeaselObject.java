@@ -9,7 +9,7 @@ import net.minecraft.src.PC_Utils;
  * 
  * @author MightyPork
  * @copy (c) 2012
- *
+ * 
  */
 public abstract class WeaselObject implements PC_INBT {
 
@@ -25,7 +25,7 @@ public abstract class WeaselObject implements PC_INBT {
 		tag.setInteger("type", type.getIndex());
 		return tag;
 	}
-	
+
 	/**
 	 * @return object type
 	 */
@@ -41,7 +41,7 @@ public abstract class WeaselObject implements PC_INBT {
 	 * @param wrappingTagName
 	 * @return the wrapping tag
 	 */
-	public NBTTagCompound saveWrappedToNBT(NBTTagCompound outerTag, String wrappingTagName){
+	public NBTTagCompound saveWrappedToNBT(NBTTagCompound outerTag, String wrappingTagName) {
 		return PC_Utils.writeWrappedToNBT(outerTag, wrappingTagName, this);
 	}
 
@@ -52,47 +52,57 @@ public abstract class WeaselObject implements PC_INBT {
 	 * @param wrappingTagName
 	 * @return
 	 */
-	public static WeaselObject loadWrappedObjectFromNBT(NBTTagCompound outerTag, String wrappingTagName){
+	public static WeaselObject loadWrappedObjectFromNBT(NBTTagCompound outerTag, String wrappingTagName) {
 		return loadObjectFromNBT(outerTag.getCompoundTag(wrappingTagName));
 	}
 
 	/**
 	 * Load an object from Compound NBT tag, using the proper WeaselObject subtype.
+	 * 
 	 * @param tag the tag with object
 	 * @return the object
 	 */
 	public static WeaselObject loadObjectFromNBT(NBTTagCompound tag) {
 		WeaselObject obj = null;
-	
+
 		switch (WeaselObjectType.getTypeFromIndex(tag.getInteger("type"))) {
-	
+
 			case BOOLEAN:
 				obj = new WeaselBoolean();
 				obj.readFromNBT(tag);
 				break;
-	
+
 			case INTEGER:
 				obj = new WeaselInteger();
 				obj.readFromNBT(tag);
 				break;
-				
+
 			case STRING:
 				obj = new WeaselString();
 				obj.readFromNBT(tag);
 				break;
-	
+
 			case VARIABLE_LIST:
 				obj = new WeaselVariableMap();
 				obj.readFromNBT(tag);
 				break;
-	
+
 			case STACK:
 				obj = new WeaselStack();
 				obj.readFromNBT(tag);
 				break;
-	
+
 		}
-	
+
 		return obj;
 	}
+
+	@Override
+	public abstract String toString();
+
+	@Override
+	public abstract boolean equals(Object obj);
+
+	@Override
+	public abstract int hashCode();
 }

@@ -18,13 +18,13 @@ import net.minecraft.src.PC_INBT;
  */
 public class WeaselVariableMap extends WeaselObject {
 	
-	private LinkedHashMap<String, WeaselObject> variableMap;
+	private LinkedHashMap<String, WeaselObject> map;
 	
 	/**
 	 * clear the map.
 	 */
 	public void clear(){
-		variableMap.clear();
+		map.clear();
 	}
 	
 	/**
@@ -32,7 +32,7 @@ public class WeaselVariableMap extends WeaselObject {
 	 * @param name variable name
 	 */
 	public void unset(String name){
-		variableMap.remove(name);
+		map.remove(name);
 	}
 	
 	/**
@@ -42,13 +42,13 @@ public class WeaselVariableMap extends WeaselObject {
 	 */
 	public void set(String name, WeaselObject object){
 		
-		if(variableMap.get(name) != null){
-			if(variableMap.get(name).getType() != object.getType()){
-				throw new RuntimeException("Trying to store "+object.getType()+" object into a "+variableMap.get(name).getType()+" variable.");
+		if(map.get(name) != null){
+			if(map.get(name).getType() != object.getType()){
+				throw new RuntimeException("Trying to store "+object.getType()+" object into a "+map.get(name).getType()+" variable.");
 			}
 		}
 		
-		variableMap.put(name, object);
+		map.put(name, object);
 	}
 	
 	/**
@@ -57,7 +57,7 @@ public class WeaselVariableMap extends WeaselObject {
 	 * @return variable object
 	 */
 	public WeaselObject get(String name){
-		return variableMap.get(name);
+		return map.get(name);
 	}
 
 	/**
@@ -65,14 +65,14 @@ public class WeaselVariableMap extends WeaselObject {
 	 */
 	public WeaselVariableMap() {
 		super(WeaselObjectType.VARIABLE_LIST);
-		variableMap = new LinkedHashMap<String, WeaselObject>();
+		map = new LinkedHashMap<String, WeaselObject>();
 	}
 
 	@Override
 	public NBTTagCompound writeToNBT(NBTTagCompound tag) {
 		
 		NBTTagList tags = new NBTTagList();
-		for(Entry<String,WeaselObject> entry: variableMap.entrySet()){
+		for(Entry<String,WeaselObject> entry: map.entrySet()){
 			NBTTagCompound tag1 = entry.getValue().writeToNBT(new NBTTagCompound());
 			tag1.setString("VariableName", entry.getKey());
 			tags.appendTag(tag1);
@@ -89,11 +89,52 @@ public class WeaselVariableMap extends WeaselObject {
 		NBTTagList tags = tag.getTagList("VariableMap");
 		for(int i=0; i<tags.tagCount(); i++){
 			NBTTagCompound tag1 = (NBTTagCompound) tags.tagAt(i);
-			variableMap.put(tag1.getString("VariableName"), WeaselObject.loadObjectFromNBT(tag1));
+			map.put(tag1.getString("VariableName"), WeaselObject.loadObjectFromNBT(tag1));
 		}
 		
 		return this;
 		
+	}	
+	
+	@Override
+	public boolean equals(Object obj) {
+		if (obj == null) { return false; }
+		if (!this.getClass().equals(obj.getClass())) { return false; }
+
+		return ((WeaselVariableMap) obj).map == map;
+	}
+	
+	public String toJavaScriptVars(){
+		String tmp = "";
+		for(Entry<String,WeaselObject> entry: map.entrySet()){
+			
+			WeaselObject obj = entry.getValue();
+			
+			switch(obj.getType()){
+				case BOOLEAN:
+					tmp += "var "+entry.getKey()+"="+(((WeaselBoolean)obj).get()?"True":"False")+";";
+					break;
+				case INTEGER:
+					tmp += "var "+entry.getKey()+"="+((WeaselInteger)obj).get()+";";
+					break;
+				case STRING:
+					tmp += "var "+entry.getKey()+"= '"+((WeaselString)obj).get().replace("'", "\'")+"';";
+					break;
+			}			
+			
+		}
+		return tmp;
+	}
+
+
+	@Override
+	public int hashCode() {
+		return map.hashCode();
+	}
+
+	@Override
+	public String toString() {
+		return "VARMAP("+map+")";
 	}	
 	
 

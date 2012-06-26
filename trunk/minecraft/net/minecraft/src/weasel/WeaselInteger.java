@@ -27,15 +27,33 @@ public class WeaselInteger extends WeaselObject {
 
 	@Override
 	public PC_INBT readFromNBT(NBTTagCompound tag) {
-		tag.setInteger("integer", integer);
+		tag.setInteger("i", integer);
 		return this;
 	}
 	
 	@Override
 	public NBTTagCompound writeToNBT(NBTTagCompound tag) {
 		super.writeToNBT(tag);
-		tag.setInteger("integer", integer);
+		tag.setInteger("i", integer);
 		return tag;
 	}
+	
+	@Override
+	public boolean equals(Object obj) {
+		if (obj == null) { return false; }
+		if (!this.getClass().equals(obj.getClass())) { return false; }
 
+		return ((WeaselInteger) obj).integer == integer;
+	}
+
+
+	@Override
+	public int hashCode() {
+		return integer;
+	}
+
+	@Override
+	public String toString() {
+		return "INT("+integer+")";
+	}	
 }
