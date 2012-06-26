@@ -267,8 +267,10 @@ public class PCma_BlockRoaster extends BlockContainer implements PC_ISwapTerrain
 		set.add("HARVEST_STOP");
 		set.add("ROASTER");
 		set.add("FURNACE");
-		
-		if(isBurning(world, pos.x, pos.y, pos.z)) set.add("SMOKE");
+
+		if (isBurning(world, pos.x, pos.y, pos.z)) {
+			set.add("SMOKE");
+		}
 
 		return set;
 	}

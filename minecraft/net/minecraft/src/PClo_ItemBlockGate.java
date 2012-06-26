@@ -27,60 +27,42 @@ public class PClo_ItemBlockGate extends ItemBlock {
 
 	@Override
 	public boolean onItemUse(ItemStack itemstack, EntityPlayer entityplayer, World world, int i, int j, int k, int l) {
-		
+
 		int id = world.getBlockId(i, j, k);
 
-		if (id == Block.snow.blockID)
-		{
+		if (id == Block.snow.blockID) {
 			l = 1;
-		}
-		else if (id != Block.vine.blockID && id != Block.tallGrass.blockID && id != Block.deadBush.blockID)
-		{
-			if (l == 0)
-			{
+		} else if (id != Block.vine.blockID && id != Block.tallGrass.blockID && id != Block.deadBush.blockID) {
+			if (l == 0) {
 				j--;
 			}
 
-			if (l == 1)
-			{
+			if (l == 1) {
 				j++;
 			}
 
-			if (l == 2)
-			{
+			if (l == 2) {
 				k--;
 			}
 
-			if (l == 3)
-			{
+			if (l == 3) {
 				k++;
 			}
 
-			if (l == 4)
-			{
+			if (l == 4) {
 				i--;
 			}
 
-			if (l == 5)
-			{
+			if (l == 5) {
 				i++;
 			}
 		}
 
-		if (itemstack.stackSize == 0)
-		{
-			return false;
-		}
+		if (itemstack.stackSize == 0) { return false; }
 
-		if (!entityplayer.canPlayerEdit(i, j, k))
-		{
-			return false;
-		}
+		if (!entityplayer.canPlayerEdit(i, j, k)) { return false; }
 
-		if (j == 255 && Block.blocksList[getBlockID()].blockMaterial.isSolid())
-		{
-			return false;
-		}
+		if (j == 255 && Block.blocksList[getBlockID()].blockMaterial.isSolid()) { return false; }
 
 		if (world.canBlockBePlacedAt(mod_PClogic.gateOff.blockID, i, j, k, false, l)) {
 			Block block = mod_PClogic.gateOff;

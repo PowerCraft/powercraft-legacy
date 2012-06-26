@@ -11,7 +11,7 @@ import net.minecraft.src.PC_GresWidget.PC_GresAlign;
  * 
  */
 public class PCma_GuiBlockBuilder implements PC_IGresBase {
-	
+
 	private EntityPlayer player;
 	private IInventory inventory;
 
@@ -33,26 +33,24 @@ public class PCma_GuiBlockBuilder implements PC_IGresBase {
 	@Override
 	public void initGui(PC_IGresGui gui) {
 		PC_GresWidget w = new PC_GresWindow(PC_Lang.tr("tile.PCmaBlockBuilder.name")).setWidthForInventory();
-		
+
 		w.setAlignH(PC_GresAlign.CENTER);
-		
+
 		w.add(new PC_GresInventory(inventory, 3, 3));
 		w.add(new PC_GresInventoryPlayer(true));
-		
+
 		gui.add(w);
 		gui.setCanShiftTransfer(true);
 
 		w.calcChildPositions();
-		
+
 	}
 
 	@Override
-	public void onGuiClosed(PC_IGresGui gui) {
-	}
+	public void onGuiClosed(PC_IGresGui gui) {}
 
 	@Override
-	public void actionPerformed(PC_GresWidget widget, PC_IGresGui gui) {
-	}
+	public void actionPerformed(PC_GresWidget widget, PC_IGresGui gui) {}
 
 	@Override
 	public void onEscapePressed(PC_IGresGui gui) {
@@ -66,8 +64,7 @@ public class PCma_GuiBlockBuilder implements PC_IGresBase {
 
 
 	@Override
-	public void onCraftMatrixChanged(IInventory iinventory) {
-	}
+	public void onCraftMatrixChanged(IInventory iinventory) {}
 
 	@Override
 	public void updateTick(PC_IGresGui gui) {}

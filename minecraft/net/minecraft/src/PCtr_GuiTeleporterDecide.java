@@ -8,17 +8,17 @@ import net.minecraft.src.PC_GresWidget.PC_GresAlign;
  * 
  * @author MightyPork
  * @copy (c) 2012
- *
+ * 
  */
 public class PCtr_GuiTeleporterDecide implements PC_IGresBase {
-	
+
 
 	private PCtr_TileEntityTeleporter teleporter;
 
 	public PCtr_GuiTeleporterDecide(PCtr_TileEntityTeleporter te) {
 		teleporter = te;
 	}
-	
+
 	@Override
 	public EntityPlayer getPlayer() {
 		return PC_Utils.mc().thePlayer;
@@ -27,16 +27,16 @@ public class PCtr_GuiTeleporterDecide implements PC_IGresBase {
 	@Override
 	public void initGui(PC_IGresGui gui) {
 
-		//window
+		// window
 		PC_GresWindow w = new PC_GresWindow(PC_Lang.tr("pc.gui.teleporter.title"));
 		w.setAlignH(PC_GresAlign.CENTER);
-		PC_GresWidget hg,vg;
-		
+		PC_GresWidget hg, vg;
+
 		vg = new PC_GresLayoutV().setAlignH(PC_GresAlign.LEFT);
 		vg.add(new PC_GresLabel(PC_Lang.tr("pc.gui.teleporter.selectType")));
 		vg.add(new PC_GresLabel(PC_Lang.tr("pc.gui.teleporter.selectTypeDescr")));
 		w.add(vg);
-		
+
 		// buttons
 		hg = new PC_GresLayoutH().setAlignH(PC_GresAlign.CENTER);
 		hg.add(new PC_GresButton(PC_Lang.tr("pc.gui.teleporter.type.sender")).setId(0).setMinWidth(70));
@@ -55,27 +55,24 @@ public class PCtr_GuiTeleporterDecide implements PC_IGresBase {
 
 		if (widget.getId() == 0) {
 			teleporter.setSender();
-			
-		} else if (widget.getId() == 1) {	
-			teleporter.setReceiver();	
-			
+
+		} else if (widget.getId() == 1) {
+			teleporter.setReceiver();
+
 		}
-		
+
 		PC_Utils.openGres(getPlayer(), new PCtr_GuiTeleporter(teleporter, true));
 
 	}
 
 	@Override
-	public void onEscapePressed(PC_IGresGui gui) {
-	}
+	public void onEscapePressed(PC_IGresGui gui) {}
 
 	@Override
-	public void onReturnPressed(PC_IGresGui gui) {		
-	}
+	public void onReturnPressed(PC_IGresGui gui) {}
 
 	@Override
-	public void onCraftMatrixChanged(IInventory iinventory) {
-	}
+	public void onCraftMatrixChanged(IInventory iinventory) {}
 
 	@Override
 	public void updateTick(PC_IGresGui gui) {}

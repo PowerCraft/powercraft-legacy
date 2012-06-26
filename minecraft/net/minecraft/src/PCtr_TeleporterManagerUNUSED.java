@@ -142,7 +142,7 @@ public class PCtr_TeleporterManagerUNUSED {
 			y = tc.y + coords[i].y;
 			z = tc.z + coords[i].z;
 
-			if (PC_BlockUtils.hasFlag(world, new PC_CoordI(x,y,z), "BELT")) {
+			if (PC_BlockUtils.hasFlag(world, new PC_CoordI(x, y, z), "BELT")) {
 				meta = world.getBlockMetadata(x, y, z);
 				rotation = PCtr_BeltBase.getRotation(meta);
 				if (rotation == i) {

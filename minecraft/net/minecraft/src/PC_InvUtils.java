@@ -30,17 +30,17 @@ public class PC_InvUtils {
 
 		if (id == Block.chest.blockID) {
 
-			if (pos.offset(-1,0,0).getId(world) == Block.chest.blockID) {
-				inv = new InventoryLargeChest("Large chest", (IInventory) pos.offset(-1,0,0).getTileEntity(world), inv);
+			if (pos.offset(-1, 0, 0).getId(world) == Block.chest.blockID) {
+				inv = new InventoryLargeChest("Large chest", (IInventory) pos.offset(-1, 0, 0).getTileEntity(world), inv);
 			}
-			if (pos.offset(1,0,0).getId(world) == Block.chest.blockID) {
-				inv = new InventoryLargeChest("Large chest", inv, (IInventory) pos.offset(1,0,0).getTileEntity(world));
+			if (pos.offset(1, 0, 0).getId(world) == Block.chest.blockID) {
+				inv = new InventoryLargeChest("Large chest", inv, (IInventory) pos.offset(1, 0, 0).getTileEntity(world));
 			}
-			if (pos.offset(0,0,-1).getId(world) == Block.chest.blockID) {
-				inv = new InventoryLargeChest("Large chest", (IInventory) pos.offset(0,0,-1).getTileEntity(world), inv);
+			if (pos.offset(0, 0, -1).getId(world) == Block.chest.blockID) {
+				inv = new InventoryLargeChest("Large chest", (IInventory) pos.offset(0, 0, -1).getTileEntity(world), inv);
 			}
-			if (pos.offset(0,0,1).getId(world) == Block.chest.blockID) {
-				inv = new InventoryLargeChest("Large chest", inv, (IInventory) pos.offset(0,0,1).getTileEntity(world));
+			if (pos.offset(0, 0, 1).getId(world) == Block.chest.blockID) {
+				inv = new InventoryLargeChest("Large chest", inv, (IInventory) pos.offset(0, 0, 1).getTileEntity(world));
 			}
 
 		}
@@ -59,7 +59,8 @@ public class PC_InvUtils {
 	 */
 	public static boolean storeItemInSlot(IInventory inventory, ItemStack stackToStore, int slot) {
 		if (stackToStore == null || stackToStore.stackSize == 0) { return false; }
-		if (inventory instanceof PC_ISpecialAccessInventory && !((PC_ISpecialAccessInventory) inventory).canInsertStackTo(slot, stackToStore)) { return false; }
+		if (inventory instanceof PC_ISpecialAccessInventory
+				&& !((PC_ISpecialAccessInventory) inventory).canInsertStackTo(slot, stackToStore)) { return false; }
 
 		ItemStack destination = inventory.getStackInSlot(slot);
 
@@ -85,15 +86,15 @@ public class PC_InvUtils {
 
 		return false;
 	}
-	
-	private static boolean isSpecialContainer(IInventory inventory){
+
+	private static boolean isSpecialContainer(IInventory inventory) {
 		boolean flag = false;
 		flag |= inventory instanceof TileEntityFurnace;
 		flag |= inventory instanceof TileEntityBrewingStand;
 		return flag;
 	}
-	
-	private static ItemStack dispenseFromSpecialContainer(IInventory inventory){
+
+	private static ItemStack dispenseFromSpecialContainer(IInventory inventory) {
 		if (inventory instanceof TileEntityFurnace) {
 			ItemStack stack = inventory.getStackInSlot(2);
 			if (stack != null && stack.stackSize > 0) {
@@ -102,7 +103,7 @@ public class PC_InvUtils {
 			}
 			return null;
 		}
-		
+
 		if (inventory instanceof TileEntityBrewingStand) {
 
 			// check if brewing finished
@@ -121,29 +122,31 @@ public class PC_InvUtils {
 			}
 			return null;
 		}
-		
+
 		return null;
 	}
-	
-	public static ItemStack dispenseFirstStack(IInventory inventory){
-		
-		if(isSpecialContainer(inventory)) return dispenseFromSpecialContainer(inventory);
-		
+
+	public static ItemStack dispenseFirstStack(IInventory inventory) {
+
+		if (isSpecialContainer(inventory)) { return dispenseFromSpecialContainer(inventory); }
+
 		for (int i = 0, n = inventory.getSizeInventory(); i < n; i++) {
-			
-			if(inventory instanceof PC_ISpecialAccessInventory){
-				if(!((PC_ISpecialAccessInventory)inventory).canDispenseStackFrom(i)) continue;
+
+			if (inventory instanceof PC_ISpecialAccessInventory) {
+				if (!((PC_ISpecialAccessInventory) inventory).canDispenseStackFrom(i)) {
+					continue;
+				}
 			}
-			
+
 			ItemStack stack = inventory.getStackInSlot(i);
 			if (stack != null && stack.stackSize > 0) {
-				
+
 				inventory.setInventorySlotContents(i, null);
 				return stack;
-				
+
 			}
 		}
-		
+
 		return null;
 	}
 
@@ -202,11 +205,13 @@ public class PC_InvUtils {
 	private static int getStackWithFreeSpace(IInventory inv, ItemStack itemstack) {
 
 		for (int slot = 0; slot < inv.getSizeInventory(); slot++) {
-			
-			if(inv instanceof PC_ISpecialAccessInventory){
-				if(!((PC_ISpecialAccessInventory) inv).canInsertStackTo(slot, itemstack)) continue;
+
+			if (inv instanceof PC_ISpecialAccessInventory) {
+				if (!((PC_ISpecialAccessInventory) inv).canInsertStackTo(slot, itemstack)) {
+					continue;
+				}
 			}
-			
+
 			ItemStack stackAt = inv.getStackInSlot(slot);
 			if (stackAt != null && stackAt.itemID == itemstack.itemID && stackAt.isStackable()
 					&& stackAt.stackSize < stackAt.getMaxStackSize() && stackAt.stackSize < inv.getInventoryStackLimit()
@@ -261,20 +266,23 @@ public class PC_InvUtils {
 	private static int getFirstEmptySlot(IInventory inv, ItemStack stackInserted) {
 		for (int i = 0; i < inv.getSizeInventory(); i++) {
 			if (inv.getStackInSlot(i) == null) {
-				
-				if(inv instanceof PC_ISpecialAccessInventory){
-					if(!((PC_ISpecialAccessInventory) inv).canInsertStackTo(i, stackInserted)) continue;
+
+				if (inv instanceof PC_ISpecialAccessInventory) {
+					if (!((PC_ISpecialAccessInventory) inv).canInsertStackTo(i, stackInserted)) {
+						continue;
+					}
 				}
-				
+
 				return i;
 			}
 		}
 
 		return -1;
 	}
-	
+
 	/**
 	 * Store whole stack in inventory; works correctly with special inventory types
+	 * 
 	 * @param inventory the inventory we're storing into
 	 * @param stack the stored stack
 	 * @return stored completely

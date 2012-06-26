@@ -1,23 +1,23 @@
 package net.minecraft.src;
 
-import org.lwjgl.opengl.GL11;
 
 public class PC_GresInventoryBigSlot extends PC_GresWidget {
 
 	/** The slots */
 	public Slot slot;
-	
+
 	/**
 	 * Inventory widget, with empty slot grid. To be filled using setSlot()
+	 * 
 	 * @param width grid width
 	 * @param height grid height
 	 */
-	public PC_GresInventoryBigSlot(Slot slot){
+	public PC_GresInventoryBigSlot(Slot slot) {
 		super(26, 26);
 		canAddWidget = false;
 		this.slot = slot;
 	}
-	
+
 	@Override
 	public PC_CoordI getMinSize() {
 		return calcSize();
@@ -29,8 +29,7 @@ public class PC_GresInventoryBigSlot extends PC_GresWidget {
 	}
 
 	@Override
-	public void calcChildPositions() {
-	}
+	public void calcChildPositions() {}
 
 	@SuppressWarnings("null")
 	@Override
@@ -39,21 +38,21 @@ public class PC_GresInventoryBigSlot extends PC_GresWidget {
 		PC_CoordI posOnScrren = getPositionOnScreen();
 		PC_CoordI widgetPos = null;
 		PC_GresWidget w = this;
-		
-		while(w!=null){
+
+		while (w != null) {
 			widgetPos = w.getPosition();
 			w = w.getParent();
 		}
-		
+
 		posOnScrren.x -= widgetPos.x;
 		posOnScrren.y -= widgetPos.y;
-		
-		if(slot!=null){
+
+		if (slot != null) {
 			slot.xDisplayPosition = posOnScrren.x + 5;
 			slot.yDisplayPosition = posOnScrren.y + 5;
 		}
-		
-		renderImage(posOffset, texture, new PC_CoordI(26,26), new PC_CoordI(18,66));
+
+		renderImage(posOffset, texture, new PC_CoordI(26, 26), new PC_CoordI(18, 66));
 	}
 
 	@Override
@@ -63,46 +62,45 @@ public class PC_GresInventoryBigSlot extends PC_GresWidget {
 
 	@Override
 	public boolean mouseClick(PC_CoordI mousePos, int key) {
-		return key!=-1;
+		return key != -1;
 	}
 
 	@Override
-	public void mouseMove(PC_CoordI mousePos) {
-	}
+	public void mouseMove(PC_CoordI mousePos) {}
 
 	@Override
-	public void mouseWheel(int i) {
-	}
+	public void mouseWheel(int i) {}
 
 	@Override
 	public boolean keyTyped(char c, int key) {
 		return false;
 	}
-	
+
 	@Override
 	public void addedToWidget() {
-		
-		if(containerManager!=null && (parent==null || !(parent instanceof PC_GresInventoryPlayer))){		
+
+		if (containerManager != null && (parent == null || !(parent instanceof PC_GresInventoryPlayer))) {
 			containerManager.addSlot(slot);
 		}
-		
+
 	}
-	
+
 	/**
 	 * Set single slot
+	 * 
 	 * @param slot the slot
 	 * @return this
 	 */
-	public PC_GresInventoryBigSlot setSlot(Slot slot){
-		if(containerManager!=null){
-			if(this.slot==null){
-				if(slot!=null){
+	public PC_GresInventoryBigSlot setSlot(Slot slot) {
+		if (containerManager != null) {
+			if (this.slot == null) {
+				if (slot != null) {
 					containerManager.addSlot(slot);
 				}
-			}else{
-				if(slot==null){
+			} else {
+				if (slot == null) {
 					containerManager.removeSlot(this.slot.slotNumber);
-				}else{
+				} else {
 					containerManager.setSlot(this.slot.slotNumber, slot);
 				}
 			}
@@ -110,14 +108,15 @@ public class PC_GresInventoryBigSlot extends PC_GresWidget {
 		this.slot = slot;
 		return this;
 	}
-	
+
 	/**
 	 * Get slot
+	 * 
 	 * @return Slot
 	 */
-	public Slot getSlot(){
+	public Slot getSlot() {
 		return this.slot;
 	}
-	
+
 
 }

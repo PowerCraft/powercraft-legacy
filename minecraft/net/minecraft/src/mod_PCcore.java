@@ -37,9 +37,9 @@ public class mod_PCcore extends PC_Module implements PC_IActivatorListener {
 	public static final String VERSION = "3.4p4";
 
 	/** Location of the file with updates */
-	public static final String updateInfoPath = "http://dl.dropbox.com/u/64454818/POWERCRAFT_DATA/info.xml"; //"http://bit.ly/Ld7sOI";
+	public static final String updateInfoPath = "http://dl.dropbox.com/u/64454818/POWERCRAFT_DATA/info.xml"; // "http://bit.ly/Ld7sOI";
 	/** Location of latest language pack file */
-	public static final String updateLangPath = "http://dl.dropbox.com/u/64454818/POWERCRAFT_DATA/lang.zip"; //"http://bit.ly/Ld7y8S"; 
+	public static final String updateLangPath = "http://dl.dropbox.com/u/64454818/POWERCRAFT_DATA/lang.zip"; // "http://bit.ly/Ld7y8S";
 
 	/**
 	 * Directory with settings. /something/something<br>
@@ -125,7 +125,7 @@ public class mod_PCcore extends PC_Module implements PC_IActivatorListener {
 	// property keys
 	/** Key used to build in reversed direction */
 	public static final String pk_keyReverse = "global.key.reverse_placing";
-	
+
 	// recipe options
 	private static final String pk_optRecRecyclation = "opt.new_recipes.recyclation";
 	private static final String pk_optRecSpawner = "opt.new_recipes.spawner";
@@ -177,15 +177,26 @@ public class mod_PCcore extends PC_Module implements PC_IActivatorListener {
 	@Override
 	public void preInit() {
 
+		// Weasel testing site
+
+		// Test test = new Test();
+
+		// test.run();
+
+
+		// System.exit(0);
+		// end of weasel;
+
+
 		Thread.setDefaultUncaughtExceptionHandler(new PC_ErrorHandler());
 
 		instance = this;
-		
+
 	}
 
 	@Override
 	public void initProperties(PC_PropertyManager conf) {
-		
+
 		conf.renameKey("global.checkUpdates", pk_optUpdateNotify);
 
 		conf.putKey(pk_keyReverse, Keyboard.KEY_LCONTROL, "Keyboard key used to place blocks in reversed orientation");
@@ -289,11 +300,11 @@ public class mod_PCcore extends PC_Module implements PC_IActivatorListener {
 	@Override
 	public void preloadTextures(List<String> list) {
 		list.add(getTerrainFile());
-		list.add(getImgDir()+"gres/dialog.png");
-		list.add(getImgDir()+"gres/widgets.png");
-		list.add(getImgDir()+"gres/frame.png");
-		list.add(getImgDir()+"gres/button.png");
-		list.add(getImgDir()+"graphics.png");
+		list.add(getImgDir() + "gres/dialog.png");
+		list.add(getImgDir() + "gres/widgets.png");
+		list.add(getImgDir() + "gres/frame.png");
+		list.add(getImgDir() + "gres/button.png");
+		list.add(getImgDir() + "graphics.png");
 	}
 
 	@Override
@@ -575,7 +586,7 @@ public class mod_PCcore extends PC_Module implements PC_IActivatorListener {
 		if (optUpdateNotify) {
 			ModLoader.setInGameHook(this, true, false);
 		}
-		
+
 		if (optUpdateLangpack) {
 			(new PCco_ThreadCheckUpdates()).start();
 		}
@@ -631,7 +642,7 @@ public class mod_PCcore extends PC_Module implements PC_IActivatorListener {
 		if (pos.getId(world) == Block.mobSpawner.blockID) {
 
 			PC_Utils.openGres(player, new PCco_GuiSpawnerEditor((TileEntityMobSpawner) pos.getTileEntity(world)));
-			
+
 			stack.damageItem(1, player);
 
 			return true;
@@ -743,14 +754,17 @@ public class mod_PCcore extends PC_Module implements PC_IActivatorListener {
 		}
 
 	}
-	
+
+	/**
+	 * Method called translation files were downloaded and updated. Reloads the translations and forces modloader to update loaded names.
+	 */
 	public static void onTranslationsUpdated() {
 
 		PC_Logger.fine("Loading translations from updated files.\n");
 
 		for (PC_Module module : PC_Module.modules.values()) {
 			PC_Logger.finer("Loading translations for module " + module.getModuleName());
-			if(module.lang != null){
+			if (module.lang != null) {
 				module.lang.loadTranstalions();
 			}
 			PC_Logger.finer("\n");
@@ -779,25 +793,25 @@ public class mod_PCcore extends PC_Module implements PC_IActivatorListener {
 			e.printStackTrace();
 			PC_Logger.throwing("mod_PCcore", "onTranslationsUpdated()", e);
 		}
-		
+
 	}
 
 	private static boolean updateAlreadyShown = false;
-	
+
 	private int inGameTickCounter = 0;
 
 	@Override
 	public boolean onTickInGame(float f, Minecraft minecraft) {
 		if (!updateAlreadyShown && updateAvailable && optUpdateNotify) {
-			if(++inGameTickCounter > 20){
+			if (++inGameTickCounter > 20) {
 				updateAlreadyShown = true;
 				PC_Utils.openGres(mc.thePlayer, new PCco_GuiUpdateNotification());
 				PC_Logger.fine("Openning UPDATE NOTIFICATION screen.");
 				return false;
-			}else{
+			} else {
 				return true;
 			}
-		}		
+		}
 		return false;
 	}
 

@@ -62,7 +62,7 @@ public class mod_PCtransport extends PC_Module {
 	private static final String pk_elevator = "id.block.elevator";
 	private static final String pk_speedybelt = "id.block.speedy_belt";
 	private static final String pk_teleporter = "id.block.teleporter";
-	
+
 	private static final String pk_teleporter_brightness = "brightness.teleporter";
 
 	private static final String pk_woodTypes = "opt.separation.distinguish_wood_types";

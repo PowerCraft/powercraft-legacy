@@ -287,7 +287,7 @@ public class mod_PCmachines extends PC_Module implements PC_IActivatorListener {
 		map.put("pc.gui.blockReplacer.title", "Block Replacer");
 		map.put("pc.gui.blockReplacer.errWrongValue", "Expects a value between -16 and 16.");
 		map.put("pc.gui.blockReplacer.err3zeros", "Expects at least 1 value unequal 0.");
-		
+
 		map.put("pc.gui.xpbank.storagePoints", "Stored XP:");
 		map.put("pc.gui.xpbank.xpUnit", "points");
 		map.put("pc.gui.xpbank.xpLevels", "levels");
@@ -377,9 +377,8 @@ public class mod_PCmachines extends PC_Module implements PC_IActivatorListener {
 		PC_InveditManager.setDamageRange(optical.blockID, 0, 1);
 		PC_InveditManager.setItemCategory(optical.blockID, "Optical");
 
-		addStacksToCraftingTool(PC_CraftingToolGroup.MACHINES, new ItemStack(harvester), new ItemStack(builder),
-				new ItemStack(replacer), new ItemStack(roaster),
-				new ItemStack(xpbank),	new ItemStack(automaticWorkbench));
+		addStacksToCraftingTool(PC_CraftingToolGroup.MACHINES, new ItemStack(harvester), new ItemStack(builder), new ItemStack(replacer),
+				new ItemStack(roaster), new ItemStack(xpbank), new ItemStack(automaticWorkbench));
 		addStacksToCraftingTool(PC_CraftingToolGroup.OPTICAL, new ItemStack(laser), new ItemStack(optical, 1, 0), new ItemStack(optical, 1,
 				1), new ItemStack(Block.thinGlass));
 	}

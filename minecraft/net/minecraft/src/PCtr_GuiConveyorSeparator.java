@@ -4,7 +4,6 @@
 
 package net.minecraft.src;
 
-import org.lwjgl.opengl.GL11;
 
 // Referenced classes of package net.minecraft.src:
 // GuiContainer, ContainerDispenser, FontRenderer, RenderEngine,
@@ -14,7 +13,7 @@ public class PCtr_GuiConveyorSeparator implements PC_IGresBase {
 
 	EntityPlayer player;
 	PCtr_TileEntitySeparationBelt tileentityconveyorfilter;
-	
+
 	public PCtr_GuiConveyorSeparator(EntityPlayer player, PCtr_TileEntitySeparationBelt tileentityconveyorfilter) {
 		this.player = player;
 		this.tileentityconveyorfilter = tileentityconveyorfilter;
@@ -39,12 +38,10 @@ public class PCtr_GuiConveyorSeparator implements PC_IGresBase {
 	}
 
 	@Override
-	public void onGuiClosed(PC_IGresGui gui) {
-	}
+	public void onGuiClosed(PC_IGresGui gui) {}
 
 	@Override
-	public void actionPerformed(PC_GresWidget widget, PC_IGresGui gui) {
-	}
+	public void actionPerformed(PC_GresWidget widget, PC_IGresGui gui) {}
 
 	@Override
 	public void onEscapePressed(PC_IGresGui gui) {
@@ -57,8 +54,7 @@ public class PCtr_GuiConveyorSeparator implements PC_IGresBase {
 	}
 
 	@Override
-	public void onCraftMatrixChanged(IInventory iinventory) {
-	}
+	public void onCraftMatrixChanged(IInventory iinventory) {}
 
 	@Override
 	public void updateTick(PC_IGresGui gui) {}

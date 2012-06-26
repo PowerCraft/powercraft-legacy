@@ -38,7 +38,7 @@ public class PClo_TileEntityGate extends PC_TileEntity {
 									// destroyed
 
 	public String programm = "";
-	
+
 	@Override
 	public void updateEntity() {
 		if (zombie) { return; }
@@ -217,9 +217,10 @@ public class PClo_TileEntityGate extends PC_TileEntity {
 
 		}
 
-		if (gateType == PClo_GateType.PROGRAMMABLE)
+		if (gateType == PClo_GateType.PROGRAMMABLE) {
 			programm = maintag.getString("programm");
-		
+		}
+
 		if (gateType == PClo_GateType.HOLD_DELAYER) {
 			rHoldTime = maintag.getInteger("RepeaterHoldTime");
 			rRemainingTicks = maintag.getInteger("RepeaterTicksRem");
@@ -253,10 +254,11 @@ public class PClo_TileEntityGate extends PC_TileEntity {
 			maintag.setBoolean("DelayState", dOutputState);
 
 		}
-		
-		if (gateType == PClo_GateType.PROGRAMMABLE)
+
+		if (gateType == PClo_GateType.PROGRAMMABLE) {
 			maintag.setString("programm", programm);
-		
+		}
+
 		if (gateType == PClo_GateType.HOLD_DELAYER) {
 			maintag.setInteger("RepeaterHoldTime", rHoldTime);
 			maintag.setInteger("RepeaterTicksRem", rRemainingTicks);
@@ -281,10 +283,10 @@ public class PClo_TileEntityGate extends PC_TileEntity {
 		int N2 = 2;
 		int N3 = 3;
 
-		if (i1 == N0) { return isFullChestAt(worldObj, getCoord().offset(0,0,1)); }
-		if (i1 == N1) { return isFullChestAt(worldObj, getCoord().offset(-1,0,0)); }
-		if (i1 == N2) { return isFullChestAt(worldObj, getCoord().offset(0,0,-1)); }
-		if (i1 == N3) { return isFullChestAt(worldObj, getCoord().offset(1,0,0)); }
+		if (i1 == N0) { return isFullChestAt(worldObj, getCoord().offset(0, 0, 1)); }
+		if (i1 == N1) { return isFullChestAt(worldObj, getCoord().offset(-1, 0, 0)); }
+		if (i1 == N2) { return isFullChestAt(worldObj, getCoord().offset(0, 0, -1)); }
+		if (i1 == N3) { return isFullChestAt(worldObj, getCoord().offset(1, 0, 0)); }
 		return false;
 	}
 
@@ -301,10 +303,10 @@ public class PClo_TileEntityGate extends PC_TileEntity {
 		int N2 = 2;
 		int N3 = 3;
 
-		if (i1 == N0) { return isEmptyChestAt(worldObj, getCoord().offset(0,0,1)); }
-		if (i1 == N1) { return isEmptyChestAt(worldObj, getCoord().offset(-1,0,0)); }
-		if (i1 == N2) { return isEmptyChestAt(worldObj, getCoord().offset(0,0,-1)); }
-		if (i1 == N3) { return isEmptyChestAt(worldObj, getCoord().offset(1,0,0)); }
+		if (i1 == N0) { return isEmptyChestAt(worldObj, getCoord().offset(0, 0, 1)); }
+		if (i1 == N1) { return isEmptyChestAt(worldObj, getCoord().offset(-1, 0, 0)); }
+		if (i1 == N2) { return isEmptyChestAt(worldObj, getCoord().offset(0, 0, -1)); }
+		if (i1 == N3) { return isEmptyChestAt(worldObj, getCoord().offset(1, 0, 0)); }
 		return true;
 	}
 
@@ -312,7 +314,7 @@ public class PClo_TileEntityGate extends PC_TileEntity {
 	 * Check if the chest at given coords is empty
 	 * 
 	 * @param blockaccess block access
-	 * @param pos 
+	 * @param pos
 	 * @return is full
 	 */
 	private static boolean isEmptyChestAt(IBlockAccess blockaccess, PC_CoordI pos) {

@@ -5,24 +5,25 @@ package net.minecraft.src;
  * 
  * @author MightyPork
  * @copy (c) 2012
- *
+ * 
  */
 public class PC_GresSeparatorH extends PC_GresWidget {
-	
+
 	private int lineColor = 0x555555;
 
 
 	/**
 	 * horizontal line
+	 * 
 	 * @param width min width
 	 * @param height height
 	 */
-	public PC_GresSeparatorH(int width, int height){
+	public PC_GresSeparatorH(int width, int height) {
 		super(width, height);
 		canAddWidget = false;
 		setMinHeight(3);
 	}
-	
+
 	/**
 	 * @return the line color
 	 */
@@ -32,6 +33,7 @@ public class PC_GresSeparatorH extends PC_GresWidget {
 
 	/**
 	 * Set line color.
+	 * 
 	 * @param lineColor the line color to set
 	 * @return this;
 	 */
@@ -40,7 +42,7 @@ public class PC_GresSeparatorH extends PC_GresWidget {
 		return this;
 	}
 
-	
+
 	@Override
 	public PC_CoordI calcSize() {
 		return minSize.copy();
@@ -48,7 +50,8 @@ public class PC_GresSeparatorH extends PC_GresWidget {
 
 	@Override
 	protected void render(PC_CoordI off) {
-		drawRect(off.x+pos.x, off.y+size.y/2+pos.y, off.x+size.x+pos.x+1, off.y+size.y/2+pos.y+1, lineColor|0xff000000);
+		drawRect(off.x + pos.x, off.y + size.y / 2 + pos.y, off.x + size.x + pos.x + 1, off.y + size.y / 2 + pos.y + 1,
+				lineColor | 0xff000000);
 	}
 
 	@Override
@@ -68,7 +71,7 @@ public class PC_GresSeparatorH extends PC_GresWidget {
 
 	@Override
 	public void calcChildPositions() {
-		
+
 	}
 
 	@Override
@@ -82,10 +85,8 @@ public class PC_GresSeparatorH extends PC_GresWidget {
 	}
 
 	@Override
-	public void mouseWheel(int i) {
-	}
-	
+	public void mouseWheel(int i) {}
+
 	@Override
-	public void addedToWidget() {
-	}
+	public void addedToWidget() {}
 }

@@ -1,6 +1,7 @@
 package net.minecraft.src;
 
 import java.util.HashSet;
+
 import org.lwjgl.opengl.GL11;
 
 /**
@@ -8,19 +9,19 @@ import org.lwjgl.opengl.GL11;
  * 
  * @author XOR19, MightyPork
  * @copy (c) 2012
- *
+ * 
  */
 public class PC_GresRadioButton extends PC_GresWidget {
-	
+
 	/**
 	 * Radio Group for Radio Button
 	 * 
 	 * @author MightyPork
 	 * @copy (c) 2012
-	 *
+	 * 
 	 */
-	public static class PC_GresRadioGroup extends HashSet<PC_GresRadioButton>{
-		
+	public static class PC_GresRadioGroup extends HashSet<PC_GresRadioButton> {
+
 	}
 
 	private static final int WIDTH = 11;
@@ -29,6 +30,7 @@ public class PC_GresRadioButton extends PC_GresWidget {
 
 	/**
 	 * Radio btn
+	 * 
 	 * @param title label
 	 * @param group radio group
 	 */
@@ -39,7 +41,7 @@ public class PC_GresRadioButton extends PC_GresWidget {
 		color[textColorShadowEnabled] = 0xAAAAAA;
 		color[textColorDisabled] = 0x707070;
 		color[textColorShadowDisabled] = 0xAAAAAA;
-		
+
 		radioGroup = group;
 		radioGroup.add(this);
 	}
@@ -53,27 +55,32 @@ public class PC_GresRadioButton extends PC_GresWidget {
 
 	/**
 	 * Set selected state, if "true", clear all others.
+	 * 
 	 * @param state on/off
 	 * @return this
 	 */
 	public PC_GresRadioButton check(boolean state) {
 		checked = state;
-		
-		if(checked){
-			for(PC_GresRadioButton btn : radioGroup){
-				if(btn != this) btn.check(false);
+
+		if (checked) {
+			for (PC_GresRadioButton btn : radioGroup) {
+				if (btn != this) {
+					btn.check(false);
+				}
 			}
 		}
-		
+
 		return this;
 	}
 
 	@Override
 	public PC_CoordI calcSize() {
-		
-		size.setTo(getStringWidth(text),getLineHeight()).add(WIDTH + 3, 0);
 
-		if (size.y < WIDTH) size.y = WIDTH;
+		size.setTo(getStringWidth(text), getLineHeight()).add(WIDTH + 3, 0);
+
+		if (size.y < WIDTH) {
+			size.y = WIDTH;
+		}
 		return size.copy();
 	}
 
@@ -92,12 +99,16 @@ public class PC_GresRadioButton extends PC_GresWidget {
 		String texture = mod_PCcore.getImgDir() + "gres/widgets.png";
 		GL11.glBindTexture(GL11.GL_TEXTURE_2D, mc.renderEngine.getTexture(texture));
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-		
+
 		int state = 0;
-		if(isChecked()) state=1;
-		if(!isEnabled()) state += 2;
-		
-		drawTexturedModalRect(pos.x+offsetPos.x, pos.y+offsetPos.y, WIDTH*state, WIDTH, WIDTH, WIDTH);
+		if (isChecked()) {
+			state = 1;
+		}
+		if (!isEnabled()) {
+			state += 2;
+		}
+
+		drawTexturedModalRect(pos.x + offsetPos.x, pos.y + offsetPos.y, WIDTH * state, WIDTH, WIDTH, WIDTH);
 
 		drawString(text, offsetPos.x + pos.x + WIDTH + 3, offsetPos.y + pos.y + 2);
 	}
@@ -109,7 +120,7 @@ public class PC_GresRadioButton extends PC_GresWidget {
 
 	@Override
 	public boolean mouseClick(PC_CoordI mpos, int key) {
-		if (!enabled) return false;
+		if (!enabled) { return false; }
 		if (key != -1) {
 			check(true);
 			return true;
@@ -128,10 +139,8 @@ public class PC_GresRadioButton extends PC_GresWidget {
 	}
 
 	@Override
-	public void mouseWheel(int i) {
-	}
+	public void mouseWheel(int i) {}
 
 	@Override
-	public void addedToWidget() {
-	}
+	public void addedToWidget() {}
 }

@@ -42,7 +42,7 @@ public class PC_CoordI implements PC_ICoord, PC_INBT {
 		y = b;
 		z = c;
 	}
-	
+
 	/**
 	 * Create coordinate [x,y,0]
 	 * 
@@ -67,7 +67,7 @@ public class PC_CoordI implements PC_ICoord, PC_INBT {
 		y = (int) b;
 		z = (int) c;
 	}
-	
+
 	/**
 	 * Create coordinate [x,y,0]
 	 * 
@@ -132,7 +132,7 @@ public class PC_CoordI implements PC_ICoord, PC_INBT {
 		this.z = z;
 		return this;
 	}
-	
+
 	/**
 	 * Set coordinates 2D
 	 * 
@@ -219,8 +219,8 @@ public class PC_CoordI implements PC_ICoord, PC_INBT {
 	/**
 	 * Add a coordinates to this coord
 	 * 
-	 * @param x 
-	 * @param y 
+	 * @param x
+	 * @param y
 	 * @param z
 	 * @return this
 	 */
@@ -234,7 +234,7 @@ public class PC_CoordI implements PC_ICoord, PC_INBT {
 	/**
 	 * Add a coordinates to this coord
 	 * 
-	 * @param x 
+	 * @param x
 	 * @param y
 	 * @return this
 	 */
@@ -243,14 +243,14 @@ public class PC_CoordI implements PC_ICoord, PC_INBT {
 		this.y += y;
 		return this;
 	}
-	
-	
-	
+
+
+
 	/**
 	 * Add a coordinates to this coord
 	 * 
-	 * @param x 
-	 * @param y 
+	 * @param x
+	 * @param y
 	 * @param z
 	 * @return this
 	 */
@@ -264,7 +264,7 @@ public class PC_CoordI implements PC_ICoord, PC_INBT {
 	/**
 	 * Add a coordinates to this coord
 	 * 
-	 * @param x 
+	 * @param x
 	 * @param y
 	 * @return this
 	 */
@@ -312,6 +312,7 @@ public class PC_CoordI implements PC_ICoord, PC_INBT {
 
 	/**
 	 * offset 2D
+	 * 
 	 * @param xm x offset
 	 * @param ym y offset
 	 * @return offset coord
@@ -322,6 +323,7 @@ public class PC_CoordI implements PC_ICoord, PC_INBT {
 
 	/**
 	 * offset 2D
+	 * 
 	 * @param xm x offset
 	 * @param ym y offset
 	 * @return offset coord
@@ -332,6 +334,7 @@ public class PC_CoordI implements PC_ICoord, PC_INBT {
 
 	/**
 	 * offset 2D
+	 * 
 	 * @param xm x offset
 	 * @param ym y offset
 	 * @return offset coord
@@ -339,9 +342,10 @@ public class PC_CoordI implements PC_ICoord, PC_INBT {
 	public PC_CoordD offset(double xm, double ym) {
 		return new PC_CoordD(x + xm, y + ym, z);
 	}
-	
+
 	/**
 	 * offset 2D
+	 * 
 	 * @param xm x offset
 	 * @param ym y offset
 	 * @return offset coord
@@ -453,23 +457,25 @@ public class PC_CoordI implements PC_ICoord, PC_INBT {
 	public TileEntity getTileEntity(IBlockAccess world) {
 		return world.getBlockTileEntity(x, y, z);
 	}
-	
+
 	/**
 	 * Get if worlds block at coord is getting directly powered
+	 * 
 	 * @param world the world
 	 * @return is getting powered
 	 */
-	public boolean isPoweredDirectly(World world){
-		return world.isBlockGettingPowered(x,y,z);
+	public boolean isPoweredDirectly(World world) {
+		return world.isBlockGettingPowered(x, y, z);
 	}
-	
+
 	/**
 	 * Get if worlds block at coord is getting indirectly powered, that means at least one of its neighbors is getting directly powered
+	 * 
 	 * @param world the world
 	 * @return is getting indirectly powered
 	 */
-	public boolean isPoweredIndirectly(World world){
-		return world.isBlockIndirectlyGettingPowered(x,y,z);
+	public boolean isPoweredIndirectly(World world) {
+		return world.isBlockIndirectlyGettingPowered(x, y, z);
 	}
 
 	@Override
@@ -496,7 +502,7 @@ public class PC_CoordI implements PC_ICoord, PC_INBT {
 	public double distanceTo(PC_CoordI pos) {
 		return Math.sqrt((x - pos.x) * (x - pos.x) + (y - pos.y) * (y - pos.y) + (z - pos.z) * (z - pos.z));
 	}
-	
+
 	/**
 	 * Make vector from two points
 	 * 
@@ -504,9 +510,9 @@ public class PC_CoordI implements PC_ICoord, PC_INBT {
 	 * @return distance
 	 */
 	public PC_CoordD getVectorTo(PC_CoordI pos) {
-		return new PC_CoordD(pos.x-x, pos.y-y, pos.z-z);
+		return new PC_CoordD(pos.x - x, pos.y - y, pos.z - z);
 	}
-	
+
 	/**
 	 * Make vector from two points
 	 * 
@@ -515,7 +521,7 @@ public class PC_CoordI implements PC_ICoord, PC_INBT {
 	 * @return the vector A-B
 	 */
 	public static PC_CoordD getVector(PC_CoordI pos1, PC_CoordI pos2) {
-		return new PC_CoordD(pos2.x-pos1.x, pos2.y-pos1.y, pos2.z-pos1.z);
+		return new PC_CoordD(pos2.x - pos1.x, pos2.y - pos1.y, pos2.z - pos1.z);
 	}
 
 	/**
@@ -527,7 +533,7 @@ public class PC_CoordI implements PC_ICoord, PC_INBT {
 	public double distanceHorizontalTo(PC_CoordI pos) {
 		return Math.sqrt((x - pos.x) * (x - pos.x) + (z - pos.z) * (z - pos.z));
 	}
-	
+
 	@Override
 	public NBTTagCompound writeToNBT(NBTTagCompound tag) {
 		tag.setInteger("ix", x);

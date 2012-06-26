@@ -1,6 +1,5 @@
 package net.minecraft.src;
 
-import net.minecraft.src.PC_GresTextEdit.PC_GresInputType;
 import net.minecraft.src.PC_GresWidget.PC_GresAlign;
 
 /**
@@ -24,7 +23,7 @@ public class PClo_GuiSensor implements PC_IGresBase {
 	public PClo_GuiSensor(PClo_TileEntitySensor tes) {
 		sensor = tes;
 	}
-	
+
 	@Override
 	public EntityPlayer getPlayer() {
 		return PC_Utils.mc().thePlayer;
@@ -32,27 +31,33 @@ public class PClo_GuiSensor implements PC_IGresBase {
 
 	@Override
 	public void initGui(PC_IGresGui gui) {
-		
+
 		String title = "";
-		if(sensor.getGroup() == 0) title = PC_Lang.tr("tile.PCloSensorRanged.item.name");
-		if(sensor.getGroup() == 1) title = PC_Lang.tr("tile.PCloSensorRanged.living.name");
-		if(sensor.getGroup() == 2) title = PC_Lang.tr("tile.PCloSensorRanged.player.name");
-		
-		//window
+		if (sensor.getGroup() == 0) {
+			title = PC_Lang.tr("tile.PCloSensorRanged.item.name");
+		}
+		if (sensor.getGroup() == 1) {
+			title = PC_Lang.tr("tile.PCloSensorRanged.living.name");
+		}
+		if (sensor.getGroup() == 2) {
+			title = PC_Lang.tr("tile.PCloSensorRanged.player.name");
+		}
+
+		// window
 		PC_GresWindow w = new PC_GresWindow(title);
 		w.setAlignH(PC_GresAlign.CENTER);
 		PC_GresWidget hg;
 		PC_GresWidget vg;
-		
+
 		// layout with the input
 		vg = new PC_GresLayoutV().setAlignH(PC_GresAlign.LEFT);
 		vg.add(new PC_GresLabel(PC_Lang.tr("pc.gui.sensor.range")));
-		vg.add(slider = new PC_GresProgressBar(0x00ff00,200));
+		vg.add(slider = new PC_GresProgressBar(0x00ff00, 200));
 		slider.configureLabel("", "32", 32);
 		slider.setEditable(true);
-		slider.setFraction(sensor.range/32F);
-		w.add(vg);	
-		
+		slider.setFraction(sensor.range / 32F);
+		w.add(vg);
+
 		// buttons
 		hg = new PC_GresLayoutH().setAlignH(PC_GresAlign.CENTER);
 		hg.add(buttonCancel = new PC_GresButton(PC_Lang.tr("pc.gui.cancel")).setId(1));
@@ -60,7 +65,7 @@ public class PClo_GuiSensor implements PC_IGresBase {
 		w.add(hg);
 
 		gui.add(w);
-		
+
 
 		gui.setPausesGame(false);
 
@@ -74,7 +79,7 @@ public class PClo_GuiSensor implements PC_IGresBase {
 
 		if (widget.getId() == 0) {
 
-			sensor.range = Math.round(slider.getFraction()*32);
+			sensor.range = Math.round(slider.getFraction() * 32);
 
 			gui.close();
 
@@ -95,8 +100,7 @@ public class PClo_GuiSensor implements PC_IGresBase {
 	}
 
 	@Override
-	public void onCraftMatrixChanged(IInventory iinventory) {
-	}
+	public void onCraftMatrixChanged(IInventory iinventory) {}
 
 	@Override
 	public void updateTick(PC_IGresGui gui) {}

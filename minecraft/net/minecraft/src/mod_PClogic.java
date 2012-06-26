@@ -330,7 +330,7 @@ public class mod_PClogic extends PC_Module {
 		map.put("pc.gui.radio.errChannel", "Invalid channel name.");
 		map.put("pc.pulsar.clickMsg", "Period %s ticks (%s s)");
 		map.put("pc.pulsar.clickMsgTime", "Period %s ticks (%s s), remains %s");
-		
+
 		map.put("pc.gui.sensor.range", "Detection distance:");
 
 
@@ -344,7 +344,7 @@ public class mod_PClogic extends PC_Module {
 		map.put("pc.gui.customGate.errNoTextBefore", "You need a text before '%s'");
 		map.put("pc.gui.customGate.errNoTextBehind", "You need a text behind '%s'");
 		map.put("pc.gui.customGate.errUnkString", "unknown string '%s'");
-		
+
 	}
 
 	@Override

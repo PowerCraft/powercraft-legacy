@@ -7,10 +7,10 @@ import org.lwjgl.opengl.GL11;
  * 
  * @author MightyPork
  * @copy (c) 2012
- *
+ * 
  */
 public class PC_GresProgressBar extends PC_GresWidget {
-	
+
 	/** Bar fraction (0-1F) */
 	protected float fraction = 0.2F;
 	/** Color of the bar */
@@ -27,32 +27,34 @@ public class PC_GresProgressBar extends PC_GresWidget {
 	protected String labelAppend = "";
 	/** max width of label number */
 	protected int labelWidth = 0;
-	
+
 	/** Can user change value? */
 	private boolean acceptsInput = false;
-	
+
 	/**
 	 * Image from a texture file
+	 * 
 	 * @param color hex color of the bar
 	 * @param width width of the widget
 	 */
-	public PC_GresProgressBar(int color, int width){
-		super(width,11);
+	public PC_GresProgressBar(int color, int width) {
+		super(width, 11);
 		barWidth = width;
 		canAddWidget = false;
 		this.colorHex = color;
 	}
-	
+
 	/**
 	 * Image from a texture file
+	 * 
 	 * @param color hex color of the bar
 	 */
-	public PC_GresProgressBar(int color){
-		super(100,11);
+	public PC_GresProgressBar(int color) {
+		super(100, 11);
 		canAddWidget = false;
 		this.colorHex = color;
 	}
-	
+
 	/**
 	 * @return the fraction (0-1F)
 	 */
@@ -86,7 +88,7 @@ public class PC_GresProgressBar extends PC_GresWidget {
 	}
 
 	/**
-	 * @return bar type (0=striped outset, 1=outset, 2=plain) 
+	 * @return bar type (0=striped outset, 1=outset, 2=plain)
 	 */
 	public int getType() {
 		return type;
@@ -94,7 +96,8 @@ public class PC_GresProgressBar extends PC_GresWidget {
 
 	/**
 	 * Set bar type
-	 * @param type the bar type (0=striped outset, 1=outset, 2=plain) 
+	 * 
+	 * @param type the bar type (0=striped outset, 1=outset, 2=plain)
 	 * @return this
 	 */
 	public PC_GresProgressBar setType(int type) {
@@ -133,7 +136,7 @@ public class PC_GresProgressBar extends PC_GresWidget {
 		this.labelMultiplier = labelMultiplier;
 		return this;
 	}
-	
+
 	/**
 	 * @return the labelWidth
 	 */
@@ -143,6 +146,7 @@ public class PC_GresProgressBar extends PC_GresWidget {
 
 	/**
 	 * Set label width (if label shown)
+	 * 
 	 * @param labelWidth the labelWidth to set
 	 * @return this
 	 */
@@ -160,6 +164,7 @@ public class PC_GresProgressBar extends PC_GresWidget {
 
 	/**
 	 * Set minimal bar width
+	 * 
 	 * @param barWidth the bar width to set
 	 * @return this
 	 */
@@ -183,7 +188,7 @@ public class PC_GresProgressBar extends PC_GresWidget {
 		this.labelAppend = labelAppend;
 		return this;
 	}
-	
+
 	/**
 	 * @return the acceptsInput
 	 */
@@ -202,12 +207,13 @@ public class PC_GresProgressBar extends PC_GresWidget {
 
 	/**
 	 * Configure label on right
+	 * 
 	 * @param append label unit (eg. %, km, t)
 	 * @param longest longest expected text shown on label (eg. 100% or 999km)
 	 * @param multiplier fraction multiplier. The fraction is multiplied by this and rounded before showing as label.
 	 * @return this
 	 */
-	public PC_GresProgressBar configureLabel(String append, String longest, int multiplier){
+	public PC_GresProgressBar configureLabel(String append, String longest, int multiplier) {
 		setShowLabel(true);
 		setLabelAppend(append);
 		setLabelWidth(getStringWidth(longest));
@@ -217,11 +223,11 @@ public class PC_GresProgressBar extends PC_GresWidget {
 
 	@Override
 	public PC_CoordI calcSize() {
-		
-		if(showLabel){
-			size.setTo(barWidth+labelWidth+3,11);			
+
+		if (showLabel) {
+			size.setTo(barWidth + labelWidth + 3, 11);
 		}
-		
+
 		return size.copy();
 	}
 
@@ -232,31 +238,32 @@ public class PC_GresProgressBar extends PC_GresWidget {
 
 	@Override
 	protected void render(PC_CoordI offsetPos) {
-		
+
 		String texture = mod_PCcore.getImgDir() + "gres/widgets.png";
-		
-		renderTextureSliced(offsetPos, texture, size.offset(showLabel?-(labelWidth+3):0,0), new PC_CoordI(0,11*2), new PC_CoordI(256,11));		
-		
-		GL11.glBindTexture(GL11.GL_TEXTURE_2D, PC_Utils.mc().renderEngine.getTexture(texture));	
-		
-		PC_Color colorRGB = new PC_Color(colorHex);		
-		
-		GL11.glColor4f((float)colorRGB.r, (float)colorRGB.g, (float)colorRGB.b, 1.0F);
-		
-		int inner_x = pos.x+offsetPos.x+1;
-		int inner_y = pos.y+offsetPos.y;
+
+		renderTextureSliced(offsetPos, texture, size.offset(showLabel ? -(labelWidth + 3) : 0, 0), new PC_CoordI(0, 11 * 2), new PC_CoordI(
+				256, 11));
+
+		GL11.glBindTexture(GL11.GL_TEXTURE_2D, PC_Utils.mc().renderEngine.getTexture(texture));
+
+		PC_Color colorRGB = new PC_Color(colorHex);
+
+		GL11.glColor4f((float) colorRGB.r, (float) colorRGB.g, (float) colorRGB.b, 1.0F);
+
+		int inner_x = pos.x + offsetPos.x + 1;
+		int inner_y = pos.y + offsetPos.y;
 		int texture_x = 0;
-		int texture_y = 11*(3+type);
-		int inner_width = Math.round( (size.x - 2 - (showLabel?labelWidth+3:0))*fraction );
+		int texture_y = 11 * (3 + type);
+		int inner_width = Math.round((size.x - 2 - (showLabel ? labelWidth + 3 : 0)) * fraction);
 		int inner_height = 11;
-		
+
 		drawTexturedModalRect(inner_x, inner_y, texture_x, texture_y, inner_width, inner_height);
-		
-		if(showLabel){
-			String lbl = Math.round(fraction*labelMultiplier)+labelAppend;
-			drawString(lbl, pos.x+offsetPos.x + size.offset(-labelWidth,0).x, pos.y+offsetPos.y+2);
+
+		if (showLabel) {
+			String lbl = Math.round(fraction * labelMultiplier) + labelAppend;
+			drawString(lbl, pos.x + offsetPos.x + size.offset(-labelWidth, 0).x, pos.y + offsetPos.y + 2);
 		}
-		
+
 	}
 
 	@Override
@@ -264,24 +271,28 @@ public class PC_GresProgressBar extends PC_GresWidget {
 		return true;
 	}
 
-	
+
 	private boolean dragging = false;
-	
+
 	@Override
 	public boolean mouseClick(PC_CoordI mpos, int key) {
-		
+
 		dragging = (key != -1);
-		
-		int inner_width = Math.round( (size.x - 2 - (showLabel?labelWidth+3:0)) );
-		
-		if(!acceptsInput) return false;
-		
-		if(mpos.x >= 0){
-			fraction = (mpos.x)/(float)inner_width;
-			if(fraction > 1) fraction = 1;
-			if(fraction < 0) fraction = 0;
+
+		int inner_width = Math.round((size.x - 2 - (showLabel ? labelWidth + 3 : 0)));
+
+		if (!acceptsInput) { return false; }
+
+		if (mpos.x >= 0) {
+			fraction = (mpos.x) / (float) inner_width;
+			if (fraction > 1) {
+				fraction = 1;
+			}
+			if (fraction < 0) {
+				fraction = 0;
+			}
 		}
-		
+
 		return true;
 	}
 
@@ -292,7 +303,7 @@ public class PC_GresProgressBar extends PC_GresWidget {
 
 	@Override
 	public void mouseMove(PC_CoordI mpos) {
-		if(dragging){
+		if (dragging) {
 			mouseClick(mpos, 0);
 		}
 	}
@@ -303,10 +314,8 @@ public class PC_GresProgressBar extends PC_GresWidget {
 	}
 
 	@Override
-	public void mouseWheel(int i) {
-	}
-	
+	public void mouseWheel(int i) {}
+
 	@Override
-	public void addedToWidget() {
-	}
+	public void addedToWidget() {}
 }

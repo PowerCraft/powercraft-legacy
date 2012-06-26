@@ -2,6 +2,7 @@ package net.minecraft.src;
 
 import net.minecraft.src.PC_GresTextEdit.PC_GresInputType;
 import net.minecraft.src.PC_GresWidget.PC_GresAlign;
+
 import org.lwjgl.input.Keyboard;
 
 
@@ -10,7 +11,7 @@ import org.lwjgl.input.Keyboard;
  * 
  * @author COR19, Rapus, MightyPork
  * @copy (c) 2012
- *
+ * 
  */
 public class PCma_GuiReplacer implements PC_IGresBase {
 
@@ -21,7 +22,7 @@ public class PCma_GuiReplacer implements PC_IGresBase {
 	private PC_GresLabel errorLabel;
 
 	private boolean valid;
-	
+
 	IInventory playerInv;
 
 	public PCma_GuiReplacer(PCma_TileEntityReplacer teReplacer, EntityPlayer entityplayer) {
@@ -95,8 +96,8 @@ public class PCma_GuiReplacer implements PC_IGresBase {
 		hg.add(errorLabel = new PC_GresLabel(""));
 		errorLabel.setColor(PC_GresWidget.textColorEnabled, 0x990000);
 		w.add(hg);
-		
-		w.add(new PC_GresInventory(teReplacer,0));
+
+		w.add(new PC_GresInventory(teReplacer, 0));
 
 		w.add(new PC_GresInventoryPlayer(true));
 
@@ -128,8 +129,8 @@ public class PCma_GuiReplacer implements PC_IGresBase {
 			int y = Integer.parseInt(textedit[1].getText());
 			int z = Integer.parseInt(textedit[2].getText());
 
-			teReplacer.coordOffset.setTo(x,y,z);
-			
+			teReplacer.coordOffset.setTo(x, y, z);
+
 			gui.close();
 
 		} else if (widget == textedit[0] || widget == textedit[1] || widget == textedit[2]) {
@@ -164,10 +165,12 @@ public class PCma_GuiReplacer implements PC_IGresBase {
 				errorLabel.setText(PC_Lang.tr("pc.gui.blockReplacer.err3zeros"));
 			}
 
-			if (valid) errorLabel.setText("");
+			if (valid) {
+				errorLabel.setText("");
+			}
 
 			button[1].enable(valid);
-			
+
 		} else {
 
 			if (widget instanceof PC_GresButton) {
@@ -184,7 +187,7 @@ public class PCma_GuiReplacer implements PC_IGresBase {
 					edit = textedit[2];
 				}
 
-				if (edit == null) return;
+				if (edit == null) { return; }
 
 				number = edit.getText();
 				try {
@@ -193,11 +196,19 @@ public class PCma_GuiReplacer implements PC_IGresBase {
 					return;
 				}
 
-				if (id % 100 == 1) num--;
-				if (id % 100 == 2) num++;
+				if (id % 100 == 1) {
+					num--;
+				}
+				if (id % 100 == 2) {
+					num++;
+				}
 
-				if (num < -16) num = -16;
-				if (num > 16) num = 16;
+				if (num < -16) {
+					num = -16;
+				}
+				if (num > 16) {
+					num = 16;
+				}
 
 				edit.setText(num + "");
 				actionPerformed(edit, gui);
@@ -216,12 +227,11 @@ public class PCma_GuiReplacer implements PC_IGresBase {
 	public void onReturnPressed(PC_IGresGui gui) {
 		actionPerformed(button[1], gui);
 	}
-	
+
 	@Override
-	public void onCraftMatrixChanged(IInventory iinventory) {
-	}
+	public void onCraftMatrixChanged(IInventory iinventory) {}
 
 	@Override
 	public void updateTick(PC_IGresGui gui) {}
-	
+
 }

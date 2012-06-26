@@ -10,95 +10,116 @@ public class PCma_TileEntityReplacer extends PC_TileEntity implements IInventory
 	public PC_CoordI coordOffset = new PC_CoordI(0, 1, 0);
 	public boolean aidEnabled = false;
 	private PC_Color aidcolor;
-	
+
 	public boolean state = false;
 	private Random rand;
 	private boolean init = false;
 
-	
-	
-	
-	
-	
+
+
+
+
+
 	@Override
 	public void updateEntity() {
-		
-		if(!init){
-			init=true;
-			Random rnd = new Random((145896555+xCoord)^yCoord^(zCoord^132));
-			
+
+		if (!init) {
+			init = true;
+			Random rnd = new Random((145896555 + xCoord) ^ yCoord ^ (zCoord ^ 132));
+
 			double used = 2D;
-			
-			double r=rnd.nextDouble()*1D;
+
+			double r = rnd.nextDouble() * 1D;
 			used -= r;
-			double g=rnd.nextDouble()*1D;
+			double g = rnd.nextDouble() * 1D;
 			used -= g;
-			double b=used;
-			
-			if(rnd.nextBoolean()){
-				double f = r; r=g; g=f;
+			double b = used;
+
+			if (rnd.nextBoolean()) {
+				double f = r;
+				r = g;
+				g = f;
 			}
-			
-			if(rnd.nextBoolean()){
-				double f = g; g=b; b=f;
+
+			if (rnd.nextBoolean()) {
+				double f = g;
+				g = b;
+				b = f;
 			}
-			
-			if(rnd.nextBoolean()){
-				double f = b; b=r; r=f;
+
+			if (rnd.nextBoolean()) {
+				double f = b;
+				b = r;
+				r = f;
 			}
-			
-			aidcolor = new PC_Color(r,g,b);
-			
+
+			aidcolor = new PC_Color(r, g, b);
+
 			rand = new Random();
 		}
-		
+
 		if (aidEnabled) {
-			
+
 			double d = xCoord + rand.nextFloat();
 			double d1 = yCoord + 1.1D;
 			double d2 = zCoord + rand.nextFloat();
-			
+
 			int a = rand.nextInt(3);
 			int b = rand.nextInt(3);
-			
-			ModLoader.getMinecraftInstance().effectRenderer.addEffect(new PC_EntityLaserParticleFX(worldObj, new PC_CoordD(d,d1,d2), aidcolor, new PC_CoordI(), 0));
-			
-			for(int q=0; q<8; q++){
-			
+
+			ModLoader.getMinecraftInstance().effectRenderer.addEffect(new PC_EntityLaserParticleFX(worldObj, new PC_CoordD(d, d1, d2),
+					aidcolor, new PC_CoordI(), 0));
+
+			for (int q = 0; q < 8; q++) {
+
 				d = xCoord + coordOffset.x + rand.nextFloat();
 				d1 = yCoord + coordOffset.y + rand.nextFloat();
 				d2 = zCoord + coordOffset.z + rand.nextFloat();
-				
+
 				a = rand.nextInt(3);
 				b = rand.nextInt(3);
-				while(a==b) b = rand.nextInt(3);
+				while (a == b) {
+					b = rand.nextInt(3);
+				}
 				boolean aa = rand.nextBoolean();
 				boolean bb = rand.nextBoolean();
-				
-				switch(a){
-					case 0: d = aa?Math.floor(d):Math.ceil(d); break;
-					case 1: d1 = aa?Math.floor(d1):Math.ceil(d1); break;
-					case 2: d2 = aa?Math.floor(d2):Math.ceil(d2); break;
+
+				switch (a) {
+					case 0:
+						d = aa ? Math.floor(d) : Math.ceil(d);
+						break;
+					case 1:
+						d1 = aa ? Math.floor(d1) : Math.ceil(d1);
+						break;
+					case 2:
+						d2 = aa ? Math.floor(d2) : Math.ceil(d2);
+						break;
 				}
-				
-				switch(b){
-					case 0: d = bb?Math.floor(d):Math.ceil(d); break;
-					case 1: d1 = bb?Math.floor(d1):Math.ceil(d1); break;
-					case 2: d2 = bb?Math.floor(d2):Math.ceil(d2); break;
+
+				switch (b) {
+					case 0:
+						d = bb ? Math.floor(d) : Math.ceil(d);
+						break;
+					case 1:
+						d1 = bb ? Math.floor(d1) : Math.ceil(d1);
+						break;
+					case 2:
+						d2 = bb ? Math.floor(d2) : Math.ceil(d2);
+						break;
 				}
-				
-				ModLoader.getMinecraftInstance().effectRenderer.addEffect(new PC_EntityLaserParticleFX(worldObj, new PC_CoordD(d,d1,d2), aidcolor, new PC_CoordI(), 0));
-				
+
+				ModLoader.getMinecraftInstance().effectRenderer.addEffect(new PC_EntityLaserParticleFX(worldObj, new PC_CoordD(d, d1, d2),
+						aidcolor, new PC_CoordI(), 0));
+
 			}
 		}
-		
+
 		super.updateEntity();
 	}
-	
+
 	@Override
 	public boolean canInsertStackTo(int slot, ItemStack stack) {
-		if(stack.getItem() instanceof ItemBlock)
-			return true;
+		if (stack.getItem() instanceof ItemBlock) { return true; }
 		return false;
 	}
 
@@ -114,7 +135,7 @@ public class PCma_TileEntityReplacer extends PC_TileEntity implements IInventory
 
 	@Override
 	public ItemStack decrStackSize(int i, int j) {
-		if(j>0){
+		if (j > 0) {
 			ItemStack itemStack = buildBlock;
 			buildBlock = null;
 			return itemStack;
@@ -151,24 +172,26 @@ public class PCma_TileEntityReplacer extends PC_TileEntity implements IInventory
 	public void readFromNBT(NBTTagCompound nbttagcompound) {
 		super.readFromNBT(nbttagcompound);
 		NBTTagList nbttaglist = nbttagcompound.getTagList("Items");
-		
-		if(nbttaglist.tagCount()>0){
+
+		if (nbttaglist.tagCount() > 0) {
 			NBTTagCompound nbttagcompound1 = (NBTTagCompound) nbttaglist.tagAt(0);
 			buildBlock = ItemStack.loadItemStackFromNBT(nbttagcompound1);
 		}
-		
+
 		PC_Utils.readWrappedFromNBT(nbttagcompound, "targetPos", coordOffset);
 		state = nbttagcompound.getBoolean("state");
 		aidEnabled = nbttagcompound.getBoolean("aid");
-		
-		if(coordOffset.equals(new PC_CoordI(0,0,0))) coordOffset.setTo(0,1,0);
-		init=false;
+
+		if (coordOffset.equals(new PC_CoordI(0, 0, 0))) {
+			coordOffset.setTo(0, 1, 0);
+		}
+		init = false;
 	}
 
 	@Override
 	public void writeToNBT(NBTTagCompound nbttagcompound) {
 		super.writeToNBT(nbttagcompound);
-		
+
 		NBTTagList nbttaglist = new NBTTagList();
 		if (buildBlock != null) {
 			NBTTagCompound nbttagcompound1 = new NBTTagCompound();
@@ -179,10 +202,10 @@ public class PCma_TileEntityReplacer extends PC_TileEntity implements IInventory
 		nbttagcompound.setTag("Items", nbttaglist);
 		nbttagcompound.setBoolean("state", state);
 		nbttagcompound.setBoolean("aid", aidEnabled);
-		
+
 		PC_Utils.writeWrappedToNBT(nbttagcompound, "targetPos", coordOffset);
 	}
-	
+
 	@Override
 	public int getInventoryStackLimit() {
 		return MAXSTACK;

@@ -1,6 +1,5 @@
 package net.minecraft.src;
 
-import java.util.List;
 
 /**
  * Replacement ItemBlock for BlockDecorative, which sets the tile entity when placed.
@@ -62,7 +61,7 @@ public class PCde_ItemBlockWalkable extends ItemBlock {
 		if (!entityplayer.canPlayerEdit(i, j, k)) { return false; }
 
 
-		
+
 		// special placing rules for Ledge
 		if (world.getBlockId(i, j - 1, k) == mod_PCdeco.walkable.blockID) {
 			TileEntity te = world.getBlockTileEntity(i, j - 1, k);
@@ -71,33 +70,35 @@ public class PCde_ItemBlockWalkable extends ItemBlock {
 
 				if (tew != null) {
 					int dir = ((MathHelper.floor_double(((entityplayer.rotationYaw * 4F) / 360F) + 0.5D) & 3) + 2) % 4;
-					
-					if(itemstack.getItemDamage() == 0 && PC_Utils.isPlacingReversed()) dir = PC_Utils.reverseSide(dir);
+
+					if (itemstack.getItemDamage() == 0 && PC_Utils.isPlacingReversed()) {
+						dir = PC_Utils.reverseSide(dir);
+					}
 					int meta = world.getBlockMetadata(i, j - 1, k);
-					
+
 					i -= Direction.offsetX[dir];
 					k -= Direction.offsetZ[dir];
 
-					if(tew.type == 1){
-						
-						if(meta == dir){
-							
-							if(!PC_Utils.isPlacingReversed()){						
-								j+=1;
-							}else if(!PC_Utils.isPlacingReversed()){						
-								j+=1;
+					if (tew.type == 1) {
+
+						if (meta == dir) {
+
+							if (!PC_Utils.isPlacingReversed()) {
+								j += 1;
+							} else if (!PC_Utils.isPlacingReversed()) {
+								j += 1;
 							}
-							
-						}else if(PC_Utils.isPlacingReversed() && itemstack.getItemDamage() == 1){
+
+						} else if (PC_Utils.isPlacingReversed() && itemstack.getItemDamage() == 1) {
 							j--;
 						}
-						
-					}else if(tew.type == 0 && itemstack.getItemDamage()==1){
-						if(PC_Utils.isPlacingReversed()){
+
+					} else if (tew.type == 0 && itemstack.getItemDamage() == 1) {
+						if (PC_Utils.isPlacingReversed()) {
 							j--;
 						}
 					}
-					
+
 					j--;
 				}
 			}

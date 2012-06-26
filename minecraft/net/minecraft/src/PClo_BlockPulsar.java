@@ -150,7 +150,7 @@ public class PClo_BlockPulsar extends BlockContainer implements PC_IBlockType {
 			return 0x771111;
 		}
 	}
-	
+
 	@Override
 	public Set<String> getBlockFlags(World world, PC_CoordI pos) {
 
@@ -171,5 +171,5 @@ public class PClo_BlockPulsar extends BlockContainer implements PC_IBlockType {
 		set.add("NO_BUILD");
 		return set;
 	}
-	
+
 }

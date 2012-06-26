@@ -97,8 +97,8 @@ public abstract class PC_GresWidget extends Gui {
 	protected PC_GresAlign alignV = PC_GresAlign.CENTER;
 
 	/** Container Manager */
-	protected PC_GresContainerManager containerManager=null;
-	
+	protected PC_GresContainerManager containerManager = null;
+
 	/** Widget ID */
 	public int id = -1;
 
@@ -174,7 +174,7 @@ public abstract class PC_GresWidget extends Gui {
 	 * @return widget's font renderer
 	 */
 	public FontRenderer getFontRenderer() {
-		if (fontRenderer == null) return mc.fontRenderer;
+		if (fontRenderer == null) { return mc.fontRenderer; }
 		return fontRenderer;
 	}
 
@@ -186,8 +186,9 @@ public abstract class PC_GresWidget extends Gui {
 	 */
 	public PC_GresWidget setFontRenderer(FontRenderer fontRenderer) {
 		this.fontRenderer = fontRenderer;
-		for(PC_GresWidget w:childs)
+		for (PC_GresWidget w : childs) {
 			w.setFontRenderer(fontRenderer);
+		}
 		return this;
 	}
 
@@ -264,7 +265,9 @@ public abstract class PC_GresWidget extends Gui {
 	 */
 	public PC_GresWidget setText(String text) {
 		this.text = text;
-		if (parent != null) parent.calcChildPositions();
+		if (parent != null) {
+			parent.calcChildPositions();
+		}
 		return this;
 	}
 
@@ -278,7 +281,7 @@ public abstract class PC_GresWidget extends Gui {
 	/**
 	 * @return minimal size, {width,height}
 	 */
-	public PC_CoordI getMinSize(){
+	public PC_CoordI getMinSize() {
 		return calcSize().copy();
 	};
 
@@ -327,6 +330,7 @@ public abstract class PC_GresWidget extends Gui {
 
 	/**
 	 * Set widget margin
+	 * 
 	 * @param widgetMargin
 	 * @return this
 	 */
@@ -345,23 +349,24 @@ public abstract class PC_GresWidget extends Gui {
 	 * 
 	 * @return the Container Manager
 	 */
-	public PC_GresContainerManager getContainerManager(){
+	public PC_GresContainerManager getContainerManager() {
 		return containerManager;
 	}
-	
+
 	/**
 	 * Set the Container Manager
 	 * 
 	 * @param containerManager the new Container Manager
 	 * @return this
 	 */
-	public PC_GresWidget setContainerManager(PC_GresContainerManager containerManager){
+	public PC_GresWidget setContainerManager(PC_GresContainerManager containerManager) {
 		this.containerManager = containerManager;
-		for(PC_GresWidget w:childs)
+		for (PC_GresWidget w : childs) {
 			w.setContainerManager(containerManager);
+		}
 		return this;
 	}
-	
+
 	/**
 	 * Get widget size
 	 * 
@@ -381,7 +386,9 @@ public abstract class PC_GresWidget extends Gui {
 	 */
 	public PC_GresWidget setSize(int width, int height, boolean calcParent) {
 		this.size.setTo(width, height);
-		if (parent != null && calcParent) parent.calcChildPositions();
+		if (parent != null && calcParent) {
+			parent.calcChildPositions();
+		}
 		return this;
 	}
 
@@ -445,23 +452,33 @@ public abstract class PC_GresWidget extends Gui {
 	 */
 	public void calcChildPositionsDefault() {
 		int maxh = 0, xx = 0, yy = 0;
-		if (childs != null) for (int i = 0; i < childs.size(); i++) {
-			childs.get(i).calcChildPositions();
-			PC_CoordI childSize = childs.get(i).calcSize();
-			if (childSize.y > maxh) maxh = childSize.y;
-			if (childSize.x > size.x || childSize.y > size.y) {
-				if (childSize.x > size.x) size.x = childSize.x;
-				if (childSize.y > size.y) size.y = childSize.y;
-				if (parent != null) parent.calcChildPositions();
-				calcChildPositions();
-				return;
+		if (childs != null) {
+			for (int i = 0; i < childs.size(); i++) {
+				childs.get(i).calcChildPositions();
+				PC_CoordI childSize = childs.get(i).calcSize();
+				if (childSize.y > maxh) {
+					maxh = childSize.y;
+				}
+				if (childSize.x > size.x || childSize.y > size.y) {
+					if (childSize.x > size.x) {
+						size.x = childSize.x;
+					}
+					if (childSize.y > size.y) {
+						size.y = childSize.y;
+					}
+					if (parent != null) {
+						parent.calcChildPositions();
+					}
+					calcChildPositions();
+					return;
+				}
+				if (xx + size.x > size.x) {
+					xx = 0;
+					yy += maxh + widgetMargin;
+				}
+				childs.get(i).setPosition(xx, yy);
+				xx += size.x + widgetMargin;
 			}
-			if (xx + size.x > size.x) {
-				xx = 0;
-				yy += maxh + widgetMargin;
-			}
-			childs.get(i).setPosition(xx, yy);
-			xx += size.x + widgetMargin;
 		}
 	}
 
@@ -513,7 +530,9 @@ public abstract class PC_GresWidget extends Gui {
 	 */
 	public PC_GresWidget removeAll() {
 		childs.removeAll(childs);
-		if (parent != null) parent.calcChildPositions();
+		if (parent != null) {
+			parent.calcChildPositions();
+		}
 		return this;
 	}
 
@@ -525,7 +544,7 @@ public abstract class PC_GresWidget extends Gui {
 	 * @return this
 	 */
 	public PC_GresWidget setColor(int colorIndex, int color) {
-		if (colorIndex < 0 || colorIndex > 3) return this;
+		if (colorIndex < 0 || colorIndex > 3) { return this; }
 		this.color[colorIndex] = color;
 		return this;
 	}
@@ -537,7 +556,7 @@ public abstract class PC_GresWidget extends Gui {
 	 * @return color number, eg. 0xFFFFFF
 	 */
 	public int getColor(int colorIndex) {
-		if (colorIndex < 0 || colorIndex > 3) return 0;
+		if (colorIndex < 0 || colorIndex > 3) { return 0; }
 		return color[colorIndex];
 	}
 
@@ -551,7 +570,7 @@ public abstract class PC_GresWidget extends Gui {
 		FontRenderer fr = getFontRenderer();
 		return fr.getStringWidth(text);
 	}
-	
+
 	/**
 	 * Get char height
 	 * 
@@ -599,8 +618,11 @@ public abstract class PC_GresWidget extends Gui {
 	 */
 	public void updateRenderer(PC_CoordI posOffset) {
 		this.render(posOffset);
-		if (childs != null) for (int i = 0; i < childs.size(); i++)
-			childs.get(i).updateRenderer(posOffset.offset(pos));
+		if (childs != null) {
+			for (int i = 0; i < childs.size(); i++) {
+				childs.get(i).updateRenderer(posOffset.offset(pos));
+			}
+		}
 	}
 
 	/**
@@ -671,7 +693,7 @@ public abstract class PC_GresWidget extends Gui {
 		}
 		return position;
 	}
-	
+
 	/**
 	 * Render textured rect with Alpha support at given position.
 	 * 
@@ -680,19 +702,19 @@ public abstract class PC_GresWidget extends Gui {
 	 * @param rectSize size of the rendered texture
 	 * @param imgOffset offset within the texture image (from top left)
 	 */
-	protected void renderImage(PC_CoordI offset, String texture, PC_CoordI rectSize, PC_CoordI imgOffset){
-		
+	protected void renderImage(PC_CoordI offset, String texture, PC_CoordI rectSize, PC_CoordI imgOffset) {
+
 		GL11.glBindTexture(GL11.GL_TEXTURE_2D, PC_Utils.mc().renderEngine.getTexture(texture));
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 		GL11.glEnable(GL11.GL_BLEND);
 		GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
-		
-		drawTexturedModalRect(pos.x+offset.x, pos.y+offset.y, imgOffset.x, imgOffset.y, rectSize.x, rectSize.y);
-		
+
+		drawTexturedModalRect(pos.x + offset.x, pos.y + offset.y, imgOffset.x, imgOffset.y, rectSize.x, rectSize.y);
+
 		GL11.glDisable(GL11.GL_BLEND);
-		
+
 	}
-	
+
 	/**
 	 * Render textured rect with Alpha support at given position.
 	 * 
@@ -702,17 +724,17 @@ public abstract class PC_GresWidget extends Gui {
 	 * @param rectSize size of the rendered texture
 	 * @param imgOffset offset within the texture image (from top left)
 	 */
-	protected static void renderImage_static(Gui gui, String texture, PC_CoordI startPos, PC_CoordI rectSize, PC_CoordI imgOffset){
-		
+	protected static void renderImage_static(Gui gui, String texture, PC_CoordI startPos, PC_CoordI rectSize, PC_CoordI imgOffset) {
+
 		GL11.glBindTexture(GL11.GL_TEXTURE_2D, PC_Utils.mc().renderEngine.getTexture(texture));
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 		GL11.glEnable(GL11.GL_BLEND);
 		GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
-		
+
 		gui.drawTexturedModalRect(startPos.x, startPos.y, imgOffset.x, imgOffset.y, rectSize.x, rectSize.y);
-		
+
 		GL11.glDisable(GL11.GL_BLEND);
-		
+
 	}
 
 	/**
@@ -748,7 +770,7 @@ public abstract class PC_GresWidget extends Gui {
 		// right bottom square
 		drawTexturedModalRect(pos.x + offset.x + rxh1, pos.y + offset.y + ryh1, imgOffset.x + imgSize.x - rxh2, imgOffset.y + imgSize.y
 				- ryh2, rxh2, ryh2);
-		
+
 		GL11.glDisable(GL11.GL_BLEND);
 
 	}
@@ -787,7 +809,7 @@ public abstract class PC_GresWidget extends Gui {
 		// right bottom square
 		gui.drawTexturedModalRect(startPos.x + rxh1, startPos.y + ryh1, imgOffset.x + imgSize.x - rxh2, imgOffset.y + imgSize.y - ryh2,
 				rxh2, ryh2);
-		
+
 
 		GL11.glDisable(GL11.GL_BLEND);
 
@@ -814,16 +836,18 @@ public abstract class PC_GresWidget extends Gui {
 
 	/**
 	 * On mouse moved. Last focused widget gets mouse move events.
+	 * 
 	 * @param mousePos current mouse position.
 	 */
 	public abstract void mouseMove(PC_CoordI mousePos);
 
 	/**
 	 * On mouse wheel moved. Last focused widget gets wheel move events.
+	 * 
 	 * @param i wheelmoved direction
 	 */
 	public abstract void mouseWheel(int i);
-	
+
 	/**
 	 * On key pressed.
 	 * 
@@ -837,16 +861,17 @@ public abstract class PC_GresWidget extends Gui {
 	 * Called when Widget added to another widget
 	 * 
 	 */
-	public void callAddedToWidget(){
+	public void callAddedToWidget() {
 		addedToWidget();
-		for(PC_GresWidget w:childs)
+		for (PC_GresWidget w : childs) {
 			w.callAddedToWidget();
+		}
 	}
-	
+
 	/**
 	 * Called when Widget added to another widget
 	 * 
 	 */
 	public abstract void addedToWidget();
-	
+
 }

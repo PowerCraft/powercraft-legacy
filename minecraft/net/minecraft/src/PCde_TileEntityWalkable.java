@@ -8,11 +8,11 @@ package net.minecraft.src;
  * 
  */
 public class PCde_TileEntityWalkable extends PC_TileEntity {
-	
+
 	/** block type. */
 	public int type = 0;
 
-	
+
 	@Override
 	public void updateEntity() {
 		// nothing
@@ -26,17 +26,17 @@ public class PCde_TileEntityWalkable extends PC_TileEntity {
 	public boolean canUpdate() {
 		return false;
 	}
-	
+
 	@Override
-	public void readFromNBT(NBTTagCompound tag) {		
+	public void readFromNBT(NBTTagCompound tag) {
 		super.readFromNBT(tag);
 		type = tag.getInteger("type");
 	}
-	
+
 	@Override
 	public void writeToNBT(NBTTagCompound tag) {
 		super.writeToNBT(tag);
 		tag.setInteger("type", type);
-		
+
 	}
 }

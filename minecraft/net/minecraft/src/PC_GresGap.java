@@ -5,28 +5,28 @@ package net.minecraft.src;
  * 
  * @author MightyPork
  * @copy (c) 2012
- *
+ * 
  */
 public class PC_GresGap extends PC_GresWidget {
 
 	/**
 	 * gap
+	 * 
 	 * @param width min width
 	 * @param height min height
 	 */
-	public PC_GresGap(int width, int height){
+	public PC_GresGap(int width, int height) {
 		super(width, height);
 		canAddWidget = false;
 	}
-	
+
 	@Override
 	public PC_CoordI calcSize() {
 		return minSize.copy();
 	}
 
 	@Override
-	protected void render(PC_CoordI offsetPos) {		
-	}
+	protected void render(PC_CoordI offsetPos) {}
 
 	@Override
 	public boolean mouseOver(PC_CoordI mpos) {
@@ -45,7 +45,7 @@ public class PC_GresGap extends PC_GresWidget {
 
 	@Override
 	public void calcChildPositions() {
-		
+
 	}
 
 	@Override
@@ -59,10 +59,8 @@ public class PC_GresGap extends PC_GresWidget {
 	}
 
 	@Override
-	public void mouseWheel(int i) {
-	}
-	
+	public void mouseWheel(int i) {}
+
 	@Override
-	public void addedToWidget() {
-	}
+	public void addedToWidget() {}
 }

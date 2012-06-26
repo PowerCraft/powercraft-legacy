@@ -5,7 +5,7 @@ package net.minecraft.src;
  * 
  * @author XOR19
  * @copy (c) 2012
- *
+ * 
  */
 public class PC_GresLayoutV extends PC_GresWidget {
 
@@ -19,8 +19,12 @@ public class PC_GresLayoutV extends PC_GresWidget {
 	@Override
 	public PC_CoordI calcSize() {
 		calcChildPositions();
-		if(size.x < minSize.x) size.x = minSize.x;
-		if(size.y < minSize.y) size.y = minSize.y;
+		if (size.x < minSize.x) {
+			size.x = minSize.x;
+		}
+		if (size.y < minSize.y) {
+			size.y = minSize.y;
+		}
 		return size.copy();
 	}
 
@@ -28,24 +32,28 @@ public class PC_GresLayoutV extends PC_GresWidget {
 	public void calcChildPositions() {
 		int yy = 0, ySize = 0;
 		int lastmargin = 0;
-		for (PC_GresWidget w: childs) {
+		for (PC_GresWidget w : childs) {
 			w.calcChildPositions();
 			PC_CoordI csize = w.calcSize();
 			if (csize.x > size.x || ySize + csize.y > size.y) {
-				if (csize.x > size.x) 
+				if (csize.x > size.x) {
 					size.x = csize.x;
-				if (ySize + csize.y > size.y) 
+				}
+				if (ySize + csize.y > size.y) {
 					size.y = ySize + csize.y;
-				if (parent != null) 
+				}
+				if (parent != null) {
 					parent.calcChildPositions();
+				}
 				calcChildPositions();
 				return;
-			};
+			}
+			;
 			lastmargin = w.widgetMargin;
 			ySize += csize.y + w.widgetMargin;
 		}
-		//ySize -= lastmargin;
-		for (PC_GresWidget w: childs) {
+		// ySize -= lastmargin;
+		for (PC_GresWidget w : childs) {
 			PC_CoordI csize = w.getSize();
 			int xPos = 0;
 			int yPos = 0;
@@ -110,10 +118,8 @@ public class PC_GresLayoutV extends PC_GresWidget {
 	}
 
 	@Override
-	public void mouseWheel(int i) {
-	}
-	
+	public void mouseWheel(int i) {}
+
 	@Override
-	public void addedToWidget() {
-	}
+	public void addedToWidget() {}
 }

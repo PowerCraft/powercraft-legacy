@@ -45,7 +45,7 @@ public class PCde_BlockWalkable extends BlockContainer implements PC_IBlockType,
 
 	@Override
 	public int getBlockTextureFromSideAndMetadata(int side, int meta) {
-		if (meta == 0) return 22;
+		if (meta == 0) { return 22; }
 		return 0;
 	}
 
@@ -53,14 +53,14 @@ public class PCde_BlockWalkable extends BlockContainer implements PC_IBlockType,
 	public int colorMultiplier(IBlockAccess iblockaccess, int x, int y, int z) {
 		// colors particles
 		PCde_TileEntityWalkable ted = getTE(iblockaccess, x, y, z);
-		if (ted.type == 0) return 0xffffff;
+		if (ted.type == 0) { return 0xffffff; }
 		return 0xffffff;
 
 	}
 
 	@Override
 	public int getRenderColor(int i) {
-		if (i == 0) return 0xcccccc;
+		if (i == 0) { return 0xcccccc; }
 		return 0xffffff;
 	}
 
@@ -142,21 +142,21 @@ public class PCde_BlockWalkable extends BlockContainer implements PC_IBlockType,
 
 	private static boolean isFallBlock(World world, PC_CoordI pos) {
 		int id = pos.getId(world);
-		if (id == 0 || Block.blocksList[id] == null) return true;
+		if (id == 0 || Block.blocksList[id] == null) { return true; }
 
-		if (id == Block.ladder.blockID || id == Block.vine.blockID) return false;
+		if (id == Block.ladder.blockID || id == Block.vine.blockID) { return false; }
 
-		if (Block.blocksList[id].getCollisionBoundingBoxFromPool(world, pos.x, pos.y, pos.z) == null) return true;
-		if (Block.blocksList[id].blockMaterial.isLiquid() || !Block.blocksList[id].blockMaterial.isSolid()) return true;
-		if (PC_BlockUtils.getBlockFlags(world, pos).contains("BELT")) return true;
+		if (Block.blocksList[id].getCollisionBoundingBoxFromPool(world, pos.x, pos.y, pos.z) == null) { return true; }
+		if (Block.blocksList[id].blockMaterial.isLiquid() || !Block.blocksList[id].blockMaterial.isSolid()) { return true; }
+		if (PC_BlockUtils.getBlockFlags(world, pos).contains("BELT")) { return true; }
 		return false;
 	}
 
 	private static boolean isClimbBlock(World world, PC_CoordI pos) {
 		int id = pos.getId(world);
-		if (id == 0 || Block.blocksList[id] == null) return false;
+		if (id == 0 || Block.blocksList[id] == null) { return false; }
 
-		if (id == Block.ladder.blockID || id == Block.vine.blockID) return true;
+		if (id == Block.ladder.blockID || id == Block.vine.blockID) { return true; }
 		return false;
 	}
 
@@ -263,12 +263,15 @@ public class PCde_BlockWalkable extends BlockContainer implements PC_IBlockType,
 		super.getCollidingBoundingBoxes(world, x, y, z, axisalignedbb, arraylist);
 	}
 
+	@Override
 	public void onBlockPlacedBy(World world, int x, int y, int z, EntityLiving entityliving) {
 		PCde_TileEntityWalkable tew = getTE(world, x, y, z);
 
 		if (tew.type == 1) {
 			int dir = ((MathHelper.floor_double(((entityliving.rotationYaw * 4F) / 360F) + 0.5D) & 3) + 2) % 4;
-			if (PC_Utils.isPlacingReversed()) dir = PC_Utils.reverseSide(dir);
+			if (PC_Utils.isPlacingReversed()) {
+				dir = PC_Utils.reverseSide(dir);
+			}
 			world.setBlockMetadataWithNotify(x, y, z, dir);
 		}
 
@@ -293,7 +296,7 @@ public class PCde_BlockWalkable extends BlockContainer implements PC_IBlockType,
 	public int getBlockTexture(IBlockAccess iblockaccess, int x, int y, int z, int side) {
 		// in world - block
 		PCde_TileEntityWalkable ted = getTE(iblockaccess, x, y, z);
-		if (ted.type == 0) return 22;
+		if (ted.type == 0) { return 22; }
 		return 0;
 
 	}
@@ -362,8 +365,10 @@ public class PCde_BlockWalkable extends BlockContainer implements PC_IBlockType,
 		set.add("IRON_LEDGE");
 		set.add("DECORATIVE");
 		set.add("PASSIVE");
-		
-		if (tew != null && tew.type != 1) set.add("TRANSLUCENT");
+
+		if (tew != null && tew.type != 1) {
+			set.add("TRANSLUCENT");
+		}
 
 		return set;
 	}

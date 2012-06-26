@@ -57,8 +57,8 @@ public class PCco_ThreadDownloadTranslations extends Thread {
 
 			zin.close();
 			PC_Logger.fine("Language pack updated.\n\n");
-			
-			
+
+
 			mod_PCcore.onTranslationsUpdated();
 
 

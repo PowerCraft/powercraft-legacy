@@ -1,6 +1,5 @@
 package net.minecraft.src;
 
-import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -36,9 +35,11 @@ public class PCtr_BlockItemElevator extends Block implements PC_IBlockType, PC_I
 
 		PC_CoordI pos = new PC_CoordI(i, j, k);
 
-		if (PCtr_BeltBase.isEntityIgnored(entity)) return;
+		if (PCtr_BeltBase.isEntityIgnored(entity)) { return; }
 
-		if (entity instanceof EntityItem) PCtr_BeltBase.packItems(world, pos);
+		if (entity instanceof EntityItem) {
+			PCtr_BeltBase.packItems(world, pos);
+		}
 
 		boolean down = (pos.getMeta(world) == 1);
 
@@ -77,11 +78,11 @@ public class PCtr_BlockItemElevator extends Block implements PC_IBlockType, PC_I
 				} else if ((PCtr_BeltBase.isConveyorAt(world, pos.offset(0, 0, -1)) && world.isAirBlock(i, j + 1, k - 1))) {
 
 					side = 0;
-					
+
 				} else if ((world.isAirBlock(i + 1, j, k) && !world.isAirBlock(i + 1, j - 1, k))) {
 
 					side = 1;
-					
+
 				} else if ((world.isAirBlock(i - 1, j, k) && !world.isAirBlock(i - 1, j - 1, k))) {
 
 					side = 3;
@@ -94,11 +95,13 @@ public class PCtr_BlockItemElevator extends Block implements PC_IBlockType, PC_I
 
 					side = 0;
 				}
-				if(side != -1)
-					PCtr_BeltBase.moveEntityOnBelt(world, pos, entity, true, true, side, PCtr_BeltBase.MAX_HORIZONTAL_SPEED, PCtr_BeltBase.HORIZONTAL_BOOST);
-				
+				if (side != -1) {
+					PCtr_BeltBase.moveEntityOnBelt(world, pos, entity, true, true, side, PCtr_BeltBase.MAX_HORIZONTAL_SPEED,
+							PCtr_BeltBase.HORIZONTAL_BOOST);
+				}
+
 			} else {
-				
+
 				if ((down && entity.posY < j + 0.6D) || (!down && entity.posY > j + 0.1D)) {
 					if (PCtr_BeltBase.isConveyorAt(world, pos.offset(1, 0, 0))) {
 
@@ -129,10 +132,12 @@ public class PCtr_BlockItemElevator extends Block implements PC_IBlockType, PC_I
 			if (!down) {
 				if (entity.motionY < ((id != blockID || halted) ? 0.2D : 0.3D)) {
 					entity.motionY = ((id != blockID || halted) ? 0.2D : 0.3D);
-					if(entity.onGround) entity.moveEntity(0,0.01D, 0);
+					if (entity.onGround) {
+						entity.moveEntity(0, 0.01D, 0);
+					}
 				}
 			}
-			
+
 			if (entity.posX > pos.x + (1D - BORDERS)) {
 				entity.motionX -= BBOOST;
 			}
@@ -148,9 +153,11 @@ public class PCtr_BlockItemElevator extends Block implements PC_IBlockType, PC_I
 				entity.motionZ += BBOOST;
 			}
 
-			if (!(id != blockID || halted)){
-				entity.motionZ = MathHelper.clamp_float((float) entity.motionZ, (float) -(BORDER_BOOST*1.5D), (float) (BORDER_BOOST*1.5D));
-				entity.motionX = MathHelper.clamp_float((float) entity.motionX, (float) -(BORDER_BOOST*1.5D), (float) (BORDER_BOOST*1.5D));
+			if (!(id != blockID || halted)) {
+				entity.motionZ = MathHelper.clamp_float((float) entity.motionZ, (float) -(BORDER_BOOST * 1.5D),
+						(float) (BORDER_BOOST * 1.5D));
+				entity.motionX = MathHelper.clamp_float((float) entity.motionX, (float) -(BORDER_BOOST * 1.5D),
+						(float) (BORDER_BOOST * 1.5D));
 			}
 		}
 

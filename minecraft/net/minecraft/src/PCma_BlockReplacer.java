@@ -55,12 +55,12 @@ public class PCma_BlockReplacer extends BlockContainer implements PC_ISwapTerrai
 
 	@Override
 	public void onBlockClicked(World world, int i, int j, int k, EntityPlayer entityplayer) {
-		
+
 		PCma_TileEntityReplacer tileentity = (PCma_TileEntityReplacer) world.getBlockTileEntity(i, j, k);
 		if (tileentity != null) {
 			tileentity.aidEnabled = !tileentity.aidEnabled;
 		}
-		
+
 	}
 
 	@Override
@@ -73,34 +73,48 @@ public class PCma_BlockReplacer extends BlockContainer implements PC_ISwapTerrai
 				Block bhold = Block.blocksList[ihold.getItem().shiftedIndex];
 				if (bhold instanceof PC_IBlockType) { return false; }
 
-			}else if(ihold.getItem().shiftedIndex == Item.stick.shiftedIndex){
-				
+			} else if (ihold.getItem().shiftedIndex == Item.stick.shiftedIndex) {
+
 				int l = MathHelper.floor_double(((entityplayer.rotationYaw * 4F) / 360F) + 0.5D) & 3;
 
 				if (PC_Utils.isPlacingReversed()) {
 					l = PC_Utils.reverseSide(l);
 				}
-				
-				if(entityplayer.isSneaking()) l = PC_Utils.isPlacingReversed()?5:4;
-				
+
+				if (entityplayer.isSneaking()) {
+					l = PC_Utils.isPlacingReversed() ? 5 : 4;
+				}
+
 				PCma_TileEntityReplacer tileentity = (PCma_TileEntityReplacer) world.getBlockTileEntity(i, j, k);
 				if (tileentity != null) {
-					
-					switch(l){
-						case 0: tileentity.coordOffset.z++; break;
-						case 2: tileentity.coordOffset.z--; break;
-						case 3: tileentity.coordOffset.x++; break;
-						case 1: tileentity.coordOffset.x--; break;
-						case 4: tileentity.coordOffset.y++; break;
-						case 5: tileentity.coordOffset.y--; break;
+
+					switch (l) {
+						case 0:
+							tileentity.coordOffset.z++;
+							break;
+						case 2:
+							tileentity.coordOffset.z--;
+							break;
+						case 3:
+							tileentity.coordOffset.x++;
+							break;
+						case 1:
+							tileentity.coordOffset.x--;
+							break;
+						case 4:
+							tileentity.coordOffset.y++;
+							break;
+						case 5:
+							tileentity.coordOffset.y--;
+							break;
 					}
-					
+
 					tileentity.coordOffset.x = MathHelper.clamp_int(tileentity.coordOffset.x, -16, 16);
 					tileentity.coordOffset.y = MathHelper.clamp_int(tileentity.coordOffset.y, -16, 16);
 					tileentity.coordOffset.z = MathHelper.clamp_int(tileentity.coordOffset.z, -16, 16);
 				}
-				
-				
+
+
 				return true;
 			}
 		}
@@ -122,18 +136,18 @@ public class PCma_BlockReplacer extends BlockContainer implements PC_ISwapTerrai
 
 	@Override
 	public void onNeighborBlockChange(World world, int i, int j, int k, int l) {
-		/*if (l > 0 && Block.blocksList[l].canProvidePower()) {*/
-			world.scheduleBlockUpdate(i, j, k, blockID, tickRate());
-		/*}*/
+		/* if (l > 0 && Block.blocksList[l].canProvidePower()) { */
+		world.scheduleBlockUpdate(i, j, k, blockID, tickRate());
+		/* } */
 	}
 
 	private boolean replacer_canHarvestBlockAt(World world, PC_CoordI pos) {
 
 		int id = pos.getMeta(world);
 
-		if (id == 0 || Block.blocksList[id] == null) return true;
+		if (id == 0 || Block.blocksList[id] == null) { return true; }
 
-		if (pos.getTileEntity(world) != null) return false;
+		if (pos.getTileEntity(world) != null) { return false; }
 
 		return true;
 
@@ -149,18 +163,18 @@ public class PCma_BlockReplacer extends BlockContainer implements PC_ISwapTerrai
 	 */
 	private boolean replacer_canPlaceBlockAt(World world, ItemStack itemstack, PC_CoordI pos) {
 
-		if (itemstack == null) return true;
+		if (itemstack == null) { return true; }
 		Item item = itemstack.getItem();
 
 		if (item instanceof ItemBlock) {
 
 			Block block = Block.blocksList[item.shiftedIndex];
 
-			if (block == null) return false;
+			if (block == null) { return false; }
 
-			if (PC_BlockUtils.hasFlag(itemstack,"NO_BUILD")) return false;
+			if (PC_BlockUtils.hasFlag(itemstack, "NO_BUILD")) { return false; }
 
-			if (block.isBlockContainer) return false;
+			if (block.isBlockContainer) { return false; }
 
 			return true;
 
@@ -186,23 +200,22 @@ public class PCma_BlockReplacer extends BlockContainer implements PC_ISwapTerrai
 			return true;
 		}
 
-		if (!replacer_canPlaceBlockAt(world, itemstack, pos)) return false;
+		if (!replacer_canPlaceBlockAt(world, itemstack, pos)) { return false; }
 
 		ItemBlock iblock = (ItemBlock) itemstack.getItem();
-		
-        if (pos.setBlockNoNotify(world, iblock.getBlockID(), iblock.getMetadata(itemstack.getItemDamage())))
-        {
-            if (pos.getId(world) == iblock.getBlockID())
-            {
-            	world.notifyBlockChange(pos.x, pos.y, pos.z, iblock.getBlockID());
-                Block.blocksList[iblock.getBlockID()].onBlockPlaced(world, pos.x, pos.y, pos.z, 0);
-            }
 
-            //world.playSoundEffect((float)par4 + 0.5F, (float)par5 + 0.5F, (float)par6 + 0.5F, block.stepSound.getStepSound(), (block.stepSound.getVolume() + 1.0F) / 2.0F, block.stepSound.getPitch() * 0.8F);
-            itemstack.stackSize--;
-        }
+		if (pos.setBlockNoNotify(world, iblock.getBlockID(), iblock.getMetadata(itemstack.getItemDamage()))) {
+			if (pos.getId(world) == iblock.getBlockID()) {
+				world.notifyBlockChange(pos.x, pos.y, pos.z, iblock.getBlockID());
+				Block.blocksList[iblock.getBlockID()].onBlockPlaced(world, pos.x, pos.y, pos.z, 0);
+			}
 
-        return true;
+			// world.playSoundEffect((float)par4 + 0.5F, (float)par5 + 0.5F, (float)par6 + 0.5F, block.stepSound.getStepSound(),
+			// (block.stepSound.getVolume() + 1.0F) / 2.0F, block.stepSound.getPitch() * 0.8F);
+			itemstack.stackSize--;
+		}
+
+		return true;
 	}
 
 
@@ -217,15 +230,11 @@ public class PCma_BlockReplacer extends BlockContainer implements PC_ISwapTerrai
 
 		ItemStack loot = null;
 
-		if (!replacer_canHarvestBlockAt(world, pos)){
-			return null;
-		}
+		if (!replacer_canHarvestBlockAt(world, pos)) { return null; }
 
 		Block block = Block.blocksList[pos.getId(world)];
 
-		if (block == null){
-			return null;
-		}
+		if (block == null) { return null; }
 
 		if (block.canSilkHarvest()) {
 			loot = block.createStackedBlock(pos.getMeta(world));
@@ -243,43 +252,39 @@ public class PCma_BlockReplacer extends BlockContainer implements PC_ISwapTerrai
 			loot = new ItemStack(dropId, dropQuant, dropMeta);
 		}
 
-		//pos.setBlock(world,0,0);
+		// pos.setBlock(world,0,0);
 		return loot;
 	}
 
 	private void swapBlocks(PCma_TileEntityReplacer te) {
-	
+
 		PC_CoordI pos = te.getCoord().offset(te.coordOffset);
-		
-		if(pos.equals(te.getCoord())) return;
-		
-		if(!replacer_canHarvestBlockAt(te.worldObj, pos)){
-			return;
-		}
-		
-		if(!replacer_canPlaceBlockAt(te.worldObj, te.buildBlock, pos)){
-			return;
-		}
-		
+
+		if (pos.equals(te.getCoord())) { return; }
+
+		if (!replacer_canHarvestBlockAt(te.worldObj, pos)) { return; }
+
+		if (!replacer_canPlaceBlockAt(te.worldObj, te.buildBlock, pos)) { return; }
+
 		ItemStack harvested = replacer_harvestBlockAt(te.worldObj, pos);
-		
+
 		replacer_placeBlockAt(te.worldObj, te.buildBlock, pos);
-		
+
 		te.buildBlock = harvested;
 
 	}
 
 	@Override
 	public void updateTick(World world, int i, int j, int k, Random random) {
-		
+
 		PCma_TileEntityReplacer ter = (PCma_TileEntityReplacer) world.getBlockTileEntity(i, j, k);
-		
+
 		if (ter != null && !world.isRemote) {
 			boolean powered = isIndirectlyPowered(world, i, j, k);
-			if(powered != ter.state){
+			if (powered != ter.state) {
 				swapBlocks(ter);
 				ter.state = powered;
-			}			
+			}
 		}
 	}
 
@@ -308,16 +313,18 @@ public class PCma_BlockReplacer extends BlockContainer implements PC_ISwapTerrai
 	public void onBlockRemoval(World world, int i, int j, int k) {
 		PCma_TileEntityReplacer tileentity = (PCma_TileEntityReplacer) world.getBlockTileEntity(i, j, k);
 		Random random = new Random();
-		if (tileentity != null) if (tileentity.buildBlock != null) {
-			float f = random.nextFloat() * 0.8F + 0.1F;
-			float f1 = random.nextFloat() * 0.8F + 0.1F;
-			float f2 = random.nextFloat() * 0.8F + 0.1F;
-			EntityItem entityitem = new EntityItem(world, i + f, j + f1, k + f2, tileentity.buildBlock);
-			float f3 = 0.05F;
-			entityitem.motionX = (float) random.nextGaussian() * f3;
-			entityitem.motionY = (float) random.nextGaussian() * f3 + 0.2F;
-			entityitem.motionZ = (float) random.nextGaussian() * f3;
-			world.spawnEntityInWorld(entityitem);
+		if (tileentity != null) {
+			if (tileentity.buildBlock != null) {
+				float f = random.nextFloat() * 0.8F + 0.1F;
+				float f1 = random.nextFloat() * 0.8F + 0.1F;
+				float f2 = random.nextFloat() * 0.8F + 0.1F;
+				EntityItem entityitem = new EntityItem(world, i + f, j + f1, k + f2, tileentity.buildBlock);
+				float f3 = 0.05F;
+				entityitem.motionX = (float) random.nextGaussian() * f3;
+				entityitem.motionY = (float) random.nextGaussian() * f3 + 0.2F;
+				entityitem.motionZ = (float) random.nextGaussian() * f3;
+				world.spawnEntityInWorld(entityitem);
+			}
 		}
 		super.onBlockRemoval(world, i, j, k);
 	}
@@ -329,7 +336,7 @@ public class PCma_BlockReplacer extends BlockContainer implements PC_ISwapTerrai
 
 		set.add("NO_HARVEST");
 		set.add("HARVEST_STOP");
-		//set.add("TRANSLUCENT");
+		// set.add("TRANSLUCENT");
 
 		return set;
 	}

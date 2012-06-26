@@ -5,7 +5,7 @@ package net.minecraft.src;
  * 
  * @author MightyPork
  * @copy (c) 2012
- *
+ * 
  */
 public class PC_GresSeparatorV extends PC_GresWidget {
 	/** Line color (0xrrggbb) */
@@ -13,6 +13,7 @@ public class PC_GresSeparatorV extends PC_GresWidget {
 
 	/**
 	 * vertical separator
+	 * 
 	 * @param width width
 	 * @param height min height
 	 */
@@ -81,10 +82,8 @@ public class PC_GresSeparatorV extends PC_GresWidget {
 	}
 
 	@Override
-	public void mouseWheel(int i) {
-	}
-	
+	public void mouseWheel(int i) {}
+
 	@Override
-	public void addedToWidget() {
-	}
+	public void addedToWidget() {}
 }

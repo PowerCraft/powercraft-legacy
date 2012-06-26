@@ -1,4 +1,4 @@
-package net.minecraft.src.weasel;
+package net.minecraft.src.weasel.obj;
 
 import net.minecraft.src.NBTTagCompound;
 import net.minecraft.src.PC_INBT;
@@ -16,6 +16,9 @@ public abstract class WeaselObject implements PC_INBT {
 	private WeaselObjectType type = null;
 
 
+	/**
+	 * @param type object type
+	 */
 	public WeaselObject(WeaselObjectType type) {
 		this.type = type;
 	}
@@ -50,7 +53,7 @@ public abstract class WeaselObject implements PC_INBT {
 	 * 
 	 * @param outerTag
 	 * @param wrappingTagName
-	 * @return
+	 * @return the loaded object
 	 */
 	public static WeaselObject loadWrappedObjectFromNBT(NBTTagCompound outerTag, String wrappingTagName) {
 		return loadObjectFromNBT(outerTag.getCompoundTag(wrappingTagName));
@@ -96,6 +99,17 @@ public abstract class WeaselObject implements PC_INBT {
 
 		return obj;
 	}
+
+	/**
+	 * @return the wrapped object
+	 */
+	public abstract Object get();
+
+	/**
+	 * Set the wrapped object, replace current one
+	 * @param obj
+	 */
+	public abstract void set(Object obj);
 
 	@Override
 	public abstract String toString();

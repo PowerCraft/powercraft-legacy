@@ -77,8 +77,10 @@ public class mod_PCdeco extends PC_Module {
 
 	@Override
 	public void registerTileEntities(List<PC_Struct3<Class<? extends TileEntity>, String, TileEntitySpecialRenderer>> list) {
-		list.add(new PC_Struct3<Class<? extends TileEntity>, String, TileEntitySpecialRenderer>(PCde_TileEntityDeco.class, "PCdeDecoBlock", new PCde_TileEntityDecoRenderer()));
-		list.add(new PC_Struct3<Class<? extends TileEntity>, String, TileEntitySpecialRenderer>(PCde_TileEntityWalkable.class, "PCdeWalkableBlock", new PCde_TileEntityWalkableRenderer()));
+		list.add(new PC_Struct3<Class<? extends TileEntity>, String, TileEntitySpecialRenderer>(PCde_TileEntityDeco.class, "PCdeDecoBlock",
+				new PCde_TileEntityDecoRenderer()));
+		list.add(new PC_Struct3<Class<? extends TileEntity>, String, TileEntitySpecialRenderer>(PCde_TileEntityWalkable.class,
+				"PCdeWalkableBlock", new PCde_TileEntityWalkableRenderer()));
 	}
 
 	@Override
@@ -119,7 +121,7 @@ public class mod_PCdeco extends PC_Module {
 	@Override
 	public void preloadTextures(List<String> list) {
 		list.add(getTerrainFile());
-		list.add(getImgDir()+"block_deco.png");
+		list.add(getImgDir() + "block_deco.png");
 	}
 
 	@Override
