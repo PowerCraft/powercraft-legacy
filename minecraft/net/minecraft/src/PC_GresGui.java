@@ -75,6 +75,19 @@ public class PC_GresGui extends GuiContainer implements PC_IGresGui {
 			lastFocus.updateCursorCounter();
 		}
 	}
+	
+	@Override
+	public void setFocus(PC_GresWidget widget){
+		if (widget != lastFocus) {
+			if (lastFocus != null) {
+				lastFocus.setFocus(false);
+			}
+			if (widget != null) {
+				widget.setFocus(true);
+			}
+			lastFocus = widget;
+		}
+	}
 
 	@Override
 	public void initGui() {

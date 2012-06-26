@@ -338,12 +338,8 @@ public class mod_PClogic extends PC_Module {
 		map.put("pc.sensor.range.2-4", "Range: %s blocks");
 		map.put("pc.sensor.range.5+", "Range: %s blocks");
 
-		map.put("pc.gui.customGate.errProgEq0", "Program need to be longer than 0");
-		map.put("pc.gui.customGate.errUnkChar", "unknown char '%s'");
-		map.put("pc.gui.customGate.errUnclosed", "Unclosed bracket");
-		map.put("pc.gui.customGate.errNoTextBefore", "You need a text before '%s'");
-		map.put("pc.gui.customGate.errNoTextBehind", "You need a text behind '%s'");
-		map.put("pc.gui.customGate.errUnkString", "unknown string '%s'");
+		map.put("pc.gui.customGate.syntaxError", "Syntax error!");
+		map.put("pc.gui.customGate.legend", "Enter a logical expression.\nIt's result will be set to output.\nL - left, B - back, R - right");
 
 	}
 

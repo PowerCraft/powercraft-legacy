@@ -220,6 +220,10 @@ public class PC_GresTextEdit extends PC_GresWidget {
 		return text.substring(s, e);
 	}
 
+	/**
+	 * Replace selected part of the text 
+	 * @param stri replacement
+	 */
 	private void setSelected(String stri) {
 		int s = mouseSelectStart, e = mouseSelectEnd;
 		if (s > e) {
@@ -313,6 +317,8 @@ public class PC_GresTextEdit extends PC_GresWidget {
 		mouseSelectEnd = s + ss.length();
 		mouseSelectStart = s;
 	}
+	
+	
 
 	@Override
 	public boolean keyTyped(char c, int key) {
