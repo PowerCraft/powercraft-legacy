@@ -25,15 +25,33 @@ public class WeaselBoolean extends WeaselObject {
 
 	@Override
 	public PC_INBT readFromNBT(NBTTagCompound tag) {
-		tag.setBoolean("bool", bool);
+		tag.setBoolean("b", bool);
 		return this;
 	}
 	
 	@Override
 	public NBTTagCompound writeToNBT(NBTTagCompound tag) {
 		super.writeToNBT(tag);
-		tag.setBoolean("bool", bool);
+		tag.setBoolean("b", bool);
 		return tag;
 	}
+	
+	@Override
+	public boolean equals(Object obj) {
+		if (obj == null) { return false; }
+		if (!this.getClass().equals(obj.getClass())) { return false; }
 
+		return ((WeaselBoolean) obj).bool == bool;
+	}
+
+
+	@Override
+	public int hashCode() {
+		return bool?1:0;
+	}
+
+	@Override
+	public String toString() {
+		return "BOOL("+(bool?"1":"0")+")";
+	}	
 }

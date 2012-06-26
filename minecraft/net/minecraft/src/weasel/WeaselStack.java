@@ -1,9 +1,11 @@
 package net.minecraft.src.weasel;
 
+import java.util.ArrayList;
 import java.util.Stack;
 
 import net.minecraft.src.NBTTagCompound;
 import net.minecraft.src.NBTTagList;
+import net.minecraft.src.PC_CoordI;
 import net.minecraft.src.PC_INBT;
 
 /**
@@ -40,11 +42,15 @@ public class WeaselStack extends WeaselObject {
 		
 		NBTTagList tags = new NBTTagList();
 		
+		int posFromTop = 0;
+		int size = stack.size();
 		while(!stack.empty()){
 			NBTTagCompound tag1 = stack.pop().writeToNBT(new NBTTagCompound());
+			tag1.setInteger("sIndex", posFromTop++);
 			tags.appendTag(tag1);
 		}
 		tag.setTag("Stack", tags);
+		tag.setInteger("sSize", size);
 		
 		return tag;
 		
@@ -53,15 +59,40 @@ public class WeaselStack extends WeaselObject {
 	@Override
 	public PC_INBT readFromNBT(NBTTagCompound tag) {
 		
+		int size = tag.getInteger("sSize");
+		ArrayList<WeaselObject> list = new ArrayList<WeaselObject>(size);
+		
 		NBTTagList tags = tag.getTagList("Stack");
 		
 		for(int i=0; i<tags.tagCount(); i++){
 			NBTTagCompound tag1 = (NBTTagCompound) tags.tagAt(i);
-			stack.push(WeaselObject.loadObjectFromNBT(tag1));
+			list.set(tag1.getInteger("sIndex"),WeaselObject.loadObjectFromNBT(tag1));
+		}
+		
+		for(WeaselObject obj : list){
+			stack.push(obj);
 		}
 		
 		return this;
 		
+	}
+
+
+	@Override
+	public String toString() {
+		return "STACK("+stack+")";
+	}
+
+
+	@Override
+	public boolean equals(Object obj) {
+		return obj == this;
+	}
+
+
+	@Override
+	public int hashCode() {
+		return stack.hashCode();
 	}	
 	
 
