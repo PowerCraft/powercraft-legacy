@@ -5,29 +5,31 @@ package net.minecraft.src;
  * 
  * @author XOR19, Rapus95, MightyPork
  * @copy (c) 2012
- *
+ * 
  */
 public class PC_GresButton extends PC_GresWidget {
-	
+
 	private boolean isClicked = false;
-	
+
 	/**
 	 * @param label button label
 	 */
-	public PC_GresButton(String label){
+	public PC_GresButton(String label) {
 		super(label);
 		canAddWidget = false;
-		minSize.setTo(60,0);
+		minSize.setTo(60, 0);
 	}
-	
+
 	@Override
 	public PC_CoordI calcSize() {
 		FontRenderer fontRenderer = getFontRenderer();
-		
-		size.setTo(fontRenderer.getStringWidth(text),fontRenderer.FONT_HEIGHT).add(12,12);
-		
-		if(size.x < minSize.x) size.x = minSize.x;
-		
+
+		size.setTo(fontRenderer.getStringWidth(text), fontRenderer.FONT_HEIGHT).add(12, 12);
+
+		if (size.x < minSize.x) {
+			size.x = minSize.x;
+		}
+
 		return size.copy();
 	}
 
@@ -38,26 +40,33 @@ public class PC_GresButton extends PC_GresWidget {
 
 	@Override
 	protected void render(PC_CoordI offsetPos) {
-		
+
 		int state;
-		if(!enabled){
-			state = 0; //disabled
-		}else if(isClicked){
+		if (!enabled) {
+			state = 0; // disabled
+		} else if (isClicked) {
 			state = 3; // enabled and clicked
-		}else if(isMouseOver){
+		} else if (isMouseOver) {
 			state = 2; // enabled and hover
-		}else{
+		} else {
 			state = 1; // enabled and not hover
 		}
-		
-		int txC = 0xe0e0e0;
-		
-		if(state == 0) txC = 0xa0a0a0; // dark
-		if(state == 1) txC = 0xe0e0e0; // light
-		if (state > 1) txC = 0xffffa0; // yellow
 
-		renderTextureSliced(offsetPos, mod_PCcore.getImgDir()+"gres/button.png", size, new PC_CoordI(0, state*50), new PC_CoordI(256, 50));
-		
+		int txC = 0xe0e0e0;
+
+		if (state == 0) {
+			txC = 0xa0a0a0; // dark
+		}
+		if (state == 1) {
+			txC = 0xe0e0e0; // light
+		}
+		if (state > 1) {
+			txC = 0xffffa0; // yellow
+		}
+
+		renderTextureSliced(offsetPos, mod_PCcore.getImgDir() + "gres/button.png", size, new PC_CoordI(0, state * 50), new PC_CoordI(256,
+				50));
+
 		drawCenteredString(getFontRenderer(), text, offsetPos.x + pos.x + size.x / 2, offsetPos.y + pos.y + (size.y - 8) / 2, txC);
 	}
 
@@ -66,17 +75,16 @@ public class PC_GresButton extends PC_GresWidget {
 		isMouseOver = true;
 		return true;
 	}
-	
-	
+
+
 	@Override
 	public boolean mouseClick(PC_CoordI mpos, int key) {
-		if(!enabled)
-			return false;
-		if(isClicked && key==-1){
+		if (!enabled) { return false; }
+		if (isClicked && key == -1) {
 			isClicked = false;
 			return true;
 		}
-		isClicked = key==-1?false:true;
+		isClicked = key == -1 ? false : true;
 		return false;
 	}
 
@@ -87,7 +95,7 @@ public class PC_GresButton extends PC_GresWidget {
 
 	@Override
 	public void mouseMove(PC_CoordI mpos) {
-		if(mpos.x<0 || mpos.x>=size.x || mpos.y<0 || mpos.y>=size.y || mouseOver(mpos)==false){
+		if (mpos.x < 0 || mpos.x >= size.x || mpos.y < 0 || mpos.y >= size.y || mouseOver(mpos) == false) {
 			isClicked = false;
 		}
 	}
@@ -98,11 +106,9 @@ public class PC_GresButton extends PC_GresWidget {
 	}
 
 	@Override
-	public void mouseWheel(int i) {
-	}
+	public void mouseWheel(int i) {}
 
 	@Override
-	public void addedToWidget() {
-	}
+	public void addedToWidget() {}
 
 }

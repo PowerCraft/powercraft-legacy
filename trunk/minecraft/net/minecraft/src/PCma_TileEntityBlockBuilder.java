@@ -150,7 +150,7 @@ public class PCma_TileEntityBlockBuilder extends PC_TileEntity implements IInven
 		// try to put minecart
 		if (itemstack.getItem() instanceof ItemMinecart) {
 
-			if (PC_BlockUtils.hasFlag(worldObj, front,"BELT") || Block.blocksList[id] instanceof BlockRail) {
+			if (PC_BlockUtils.hasFlag(worldObj, front, "BELT") || Block.blocksList[id] instanceof BlockRail) {
 				if (!worldObj.isRemote) {
 					worldObj.spawnEntityInWorld(new EntityMinecart(worldObj, (float) x + incX + 0.5F, y + 0.5F, (float) z + incZ + 0.5F,
 							((ItemMinecart) itemstack.getItem()).minecartType));
@@ -163,13 +163,14 @@ public class PCma_TileEntityBlockBuilder extends PC_TileEntity implements IInven
 		if (id == 49
 				|| id == 7
 				|| id == 98
-				|| (PC_BlockUtils.hasFlag(worldObj, front,"HARVEST_STOP") && !(PC_BlockUtils.hasFlag(worldObj, front,"BELT") && !(PC_BlockUtils.hasFlag(worldObj, front,"TRANSLUCENT"))))) { return -1; }
+				|| (PC_BlockUtils.hasFlag(worldObj, front, "HARVEST_STOP") && !(PC_BlockUtils.hasFlag(worldObj, front, "BELT") && !(PC_BlockUtils
+						.hasFlag(worldObj, front, "TRANSLUCENT"))))) { return -1; }
 
 		// try to place front
 		if (itemstack.getItem() instanceof ItemBlock) {
 
 			ItemBlock item = ((ItemBlock) itemstack.getItem());
-			if (PC_BlockUtils.hasFlag(itemstack,"NO_BUILD")) { return 0; }
+			if (PC_BlockUtils.hasFlag(itemstack, "NO_BUILD")) { return 0; }
 
 			if (Block.blocksList[item.shiftedIndex].canPlaceBlockAt(worldObj, x + incX, y, z + incZ)) {
 				worldObj.setBlockAndMetadataWithNotify(x + incX, y, z + incZ, item.shiftedIndex,

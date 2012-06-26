@@ -12,14 +12,14 @@ import net.minecraft.src.PC_GresWidget.PC_GresAlign;
  * 
  */
 public class PClo_GuiRadioChannel implements PC_IGresBase {
-	
+
 	private String errMsg = "";
 
 	/** receiver index */
 	public static final int RECEIVER = 1;
 	/** transmitter index */
 	public static final int TRANSMITTER = 0;
-	
+
 	private int type;
 	private PC_CoordI pos;
 	private String oldChannel;
@@ -44,7 +44,7 @@ public class PClo_GuiRadioChannel implements PC_IGresBase {
 		pos = blockPos;
 		dim = dimen;
 	}
-	
+
 	@Override
 	public EntityPlayer getPlayer() {
 		return PC_Utils.mc().thePlayer;
@@ -59,22 +59,22 @@ public class PClo_GuiRadioChannel implements PC_IGresBase {
 			title = PC_Lang.tr("tile.PCloRadio.rx.name");
 		}
 
-		//window
+		// window
 		PC_GresWindow w = new PC_GresWindow(title);
 		w.setAlignH(PC_GresAlign.CENTER);
 		PC_GresWidget hg;
-		
+
 		// layout with the input
 		PC_GresWidget vg = new PC_GresLayoutV().setAlignH(PC_GresAlign.LEFT);
 		vg.add(new PC_GresLabel(PC_Lang.tr("pc.gui.radio.channel")));
 		vg.add(edit = new PC_GresTextEdit(editedString, 8, PC_GresInputType.TEXT).setMinWidth(130));
-		w.add(vg);		
-		
+		w.add(vg);
+
 		// eror
 		hg = new PC_GresLayoutH().setAlignH(PC_GresAlign.CENTER);
 		hg.add(txError = new PC_GresLabel("").setColor(PC_GresWidget.textColorEnabled, 0x990000));
-		w.add(hg);		
-		
+		w.add(hg);
+
 		// buttons
 		hg = new PC_GresLayoutH().setAlignH(PC_GresAlign.CENTER);
 		hg.add(buttonCancel = new PC_GresButton(PC_Lang.tr("pc.gui.cancel")).setId(1));
@@ -82,7 +82,7 @@ public class PClo_GuiRadioChannel implements PC_IGresBase {
 		w.add(hg);
 
 		gui.add(w);
-		
+
 
 		gui.setPausesGame(true);
 
@@ -131,10 +131,10 @@ public class PClo_GuiRadioChannel implements PC_IGresBase {
 
 		if (widget == edit) {
 
-			if(edit.getText().trim().length() == 0){
+			if (edit.getText().trim().length() == 0) {
 				errMsg = "pc.gui.radio.errChannel";
 				txError.setText(PC_Lang.tr(errMsg));
-			}else{
+			} else {
 				txError.setText("");
 			}
 
@@ -153,10 +153,9 @@ public class PClo_GuiRadioChannel implements PC_IGresBase {
 	}
 
 	@Override
-	public void onCraftMatrixChanged(IInventory iinventory) {
-	}
+	public void onCraftMatrixChanged(IInventory iinventory) {}
 
 	@Override
 	public void updateTick(PC_IGresGui gui) {}
-	
+
 }

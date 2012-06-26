@@ -15,7 +15,7 @@ public class PCco_CraftingToolManager {
 	/**
 	 * Crafting tool manager. Make instance to use in Crafting Tool.
 	 */
-	public PCco_CraftingToolManager(){
+	public PCco_CraftingToolManager() {
 		loadStacksToSlots();
 	}
 

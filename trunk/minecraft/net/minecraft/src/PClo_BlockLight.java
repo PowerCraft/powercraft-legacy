@@ -327,7 +327,7 @@ public class PClo_BlockLight extends BlockContainer implements PC_ISwapTerrain, 
 			world.spawnParticle("reddust", i, jj + 1 - h, kk, r, g, b);
 		}
 	}
-	
+
 	@Override
 	public Set<String> getBlockFlags(World world, PC_CoordI pos) {
 

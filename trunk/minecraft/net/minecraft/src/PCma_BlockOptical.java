@@ -160,7 +160,9 @@ public class PCma_BlockOptical extends BlockContainer implements PC_IBlockType {
 					if (teo != null) {
 						teo.setPrismSide(angle, false);
 					}
-					if(!PC_Utils.isCreative())	dropBlockAsItem_do(world, i, j, k, new ItemStack(Block.thinGlass, 1));
+					if (!PC_Utils.isCreative()) {
+						dropBlockAsItem_do(world, i, j, k, new ItemStack(Block.thinGlass, 1));
+					}
 
 				}
 
@@ -267,6 +269,7 @@ public class PCma_BlockOptical extends BlockContainer implements PC_IBlockType {
 		if (isMirror(iblockaccess, i, j, k)) { return 0x999999; }
 		return 0xffffcc;
 	}
+
 	@Override
 	public Set<String> getBlockFlags(World world, PC_CoordI pos) {
 
@@ -275,10 +278,10 @@ public class PCma_BlockOptical extends BlockContainer implements PC_IBlockType {
 		set.add("NO_HARVEST");
 		set.add("TRANSLUCENT");
 		set.add("OPTICAL");
-		
-		if(isMirror(world, pos.x, pos.y, pos.z)){
+
+		if (isMirror(world, pos.x, pos.y, pos.z)) {
 			set.add("MIRROR");
-		}else{
+		} else {
 			set.add("PRISM");
 		}
 

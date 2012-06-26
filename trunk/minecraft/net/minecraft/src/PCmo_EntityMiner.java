@@ -124,7 +124,7 @@ public class PCmo_EntityMiner extends Entity implements IInventory {
 		find_chest_loop:
 		for (int x = pos.x - 1; x <= pos.x + 1; x++) {
 			for (int z = pos.z - 1; z <= pos.z + 1; z++) {
-				inv = PC_InvUtils.getCompositeInventoryAt(world, pos.offset(0,1,0));
+				inv = PC_InvUtils.getCompositeInventoryAt(world, pos.offset(0, 1, 0));
 				if (inv != null) {
 					break find_chest_loop;
 				}
@@ -1604,7 +1604,7 @@ public class PCmo_EntityMiner extends Entity implements IInventory {
 
 		int id = is.itemID;
 
-		if (PC_BlockUtils.hasFlag(is,"NO_BUILD")) { return false; }
+		if (PC_BlockUtils.hasFlag(is, "NO_BUILD")) { return false; }
 
 		if (id == Block.sand.blockID || id == Block.gravel.blockID) { return false; }
 

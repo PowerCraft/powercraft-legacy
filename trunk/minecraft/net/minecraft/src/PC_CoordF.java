@@ -272,12 +272,12 @@ public class PC_CoordF implements PC_ICoord, PC_INBT {
 		z += added.z;
 		return this;
 	}
-	
+
 	/**
 	 * Add a coordinates to this coord
 	 * 
-	 * @param x 
-	 * @param y 
+	 * @param x
+	 * @param y
 	 * @param z
 	 * @return this
 	 */
@@ -291,7 +291,7 @@ public class PC_CoordF implements PC_ICoord, PC_INBT {
 	/**
 	 * Add a coordinates to this coord
 	 * 
-	 * @param x 
+	 * @param x
 	 * @param y
 	 * @return this
 	 */
@@ -300,12 +300,12 @@ public class PC_CoordF implements PC_ICoord, PC_INBT {
 		this.y += y;
 		return this;
 	}
-	
+
 	/**
 	 * Add a coordinates to this coord
 	 * 
-	 * @param x 
-	 * @param y 
+	 * @param x
+	 * @param y
 	 * @param z
 	 * @return this
 	 */
@@ -319,7 +319,7 @@ public class PC_CoordF implements PC_ICoord, PC_INBT {
 	/**
 	 * Add a coordinates to this coord
 	 * 
-	 * @param x 
+	 * @param x
 	 * @param y
 	 * @return this
 	 */
@@ -329,12 +329,12 @@ public class PC_CoordF implements PC_ICoord, PC_INBT {
 		return this;
 	}
 
-	
+
 	/**
 	 * Add a coordinates to this coord
 	 * 
-	 * @param x 
-	 * @param y 
+	 * @param x
+	 * @param y
 	 * @param z
 	 * @return this
 	 */
@@ -348,7 +348,7 @@ public class PC_CoordF implements PC_ICoord, PC_INBT {
 	/**
 	 * Add a coordinates to this coord
 	 * 
-	 * @param x 
+	 * @param x
 	 * @param y
 	 * @return this
 	 */
@@ -357,14 +357,14 @@ public class PC_CoordF implements PC_ICoord, PC_INBT {
 		this.y += y;
 		return this;
 	}
-	
-	
-	
+
+
+
 	/**
 	 * Add a coordinates to this coord
 	 * 
-	 * @param x 
-	 * @param y 
+	 * @param x
+	 * @param y
 	 * @param z
 	 * @return this
 	 */
@@ -378,7 +378,7 @@ public class PC_CoordF implements PC_ICoord, PC_INBT {
 	/**
 	 * Add a coordinates to this coord
 	 * 
-	 * @param x 
+	 * @param x
 	 * @param y
 	 * @return this
 	 */
@@ -503,7 +503,7 @@ public class PC_CoordF implements PC_ICoord, PC_INBT {
 	public PC_CoordF setZ(float zz) {
 		return new PC_CoordF(x, y, zz);
 	}
-	
+
 	/**
 	 * Calculate distance to another coordinate
 	 * 
@@ -513,7 +513,7 @@ public class PC_CoordF implements PC_ICoord, PC_INBT {
 	public double distanceTo(PC_CoordF pos) {
 		return Math.sqrt((x - pos.x) * (x - pos.x) + (y - pos.y) * (y - pos.y) + (z - pos.z) * (z - pos.z));
 	}
-	
+
 	/**
 	 * Make vector from two points
 	 * 
@@ -521,9 +521,9 @@ public class PC_CoordF implements PC_ICoord, PC_INBT {
 	 * @return distance
 	 */
 	public PC_CoordD getVectorTo(PC_CoordF pos) {
-		return new PC_CoordD(pos.x-x, pos.y-y, pos.z-z);
+		return new PC_CoordD(pos.x - x, pos.y - y, pos.z - z);
 	}
-	
+
 	/**
 	 * Make vector from two points
 	 * 
@@ -532,7 +532,7 @@ public class PC_CoordF implements PC_ICoord, PC_INBT {
 	 * @return the vector A-B
 	 */
 	public static PC_CoordD getVector(PC_CoordF pos1, PC_CoordF pos2) {
-		return new PC_CoordD(pos2.x-pos1.x, pos2.y-pos1.y, pos2.z-pos1.z);
+		return new PC_CoordD(pos2.x - pos1.x, pos2.y - pos1.y, pos2.z - pos1.z);
 	}
 
 	@Override

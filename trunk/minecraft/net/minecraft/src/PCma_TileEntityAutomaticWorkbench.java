@@ -12,7 +12,8 @@ import java.util.List;
  * @copy (c) 2012
  * 
  */
-public class PCma_TileEntityAutomaticWorkbench extends PC_TileEntity implements IInventory, PC_IStateReportingInventory, PC_ISpecialAccessInventory {
+public class PCma_TileEntityAutomaticWorkbench extends PC_TileEntity implements IInventory, PC_IStateReportingInventory,
+		PC_ISpecialAccessInventory {
 	private static Container fakeContainer = new PCma_ContainerFake();
 
 	/**
@@ -106,8 +107,7 @@ public class PCma_TileEntityAutomaticWorkbench extends PC_TileEntity implements 
 
 	// special things.
 	@Override
-	public void onInventoryChanged() {
-	}
+	public void onInventoryChanged() {}
 
 	/**
 	 * Reorder contents of the storage grid to fill as many slots a spossible
@@ -180,9 +180,9 @@ public class PCma_TileEntityAutomaticWorkbench extends PC_TileEntity implements 
 		orderAndCraft();
 		return flag;
 	}
-		
-		
-	private boolean insertStackIntoInventory_do(ItemStack stack){
+
+
+	private boolean insertStackIntoInventory_do(ItemStack stack) {
 		if (stack == null) { return false; }
 
 		// prepare table of matching slots.
@@ -234,9 +234,9 @@ public class PCma_TileEntityAutomaticWorkbench extends PC_TileEntity implements 
 				break;
 			}
 		}
-		
 
-		return storedSomething; //stack.stackSize <= 0;
+
+		return storedSomething; // stack.stackSize <= 0;
 	}
 
 	/**

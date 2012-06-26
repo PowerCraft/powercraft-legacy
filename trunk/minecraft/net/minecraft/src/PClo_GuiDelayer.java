@@ -38,7 +38,7 @@ public class PClo_GuiDelayer implements PC_IGresBase {
 		ticks = type == FIFO ? gateTE.getDelayBufferLength() : gateTE.repeaterGetHoldTime();
 		delayer_type = type;
 	}
-	
+
 	@Override
 	public EntityPlayer getPlayer() {
 		return PC_Utils.mc().thePlayer;
@@ -47,29 +47,33 @@ public class PClo_GuiDelayer implements PC_IGresBase {
 	@Override
 	public void initGui(PC_IGresGui gui) {
 		String title = "";
-		if (delayer_type == FIFO) title = PC_Lang.tr("tile.PCloLogicGate.buffer.name");
-		if (delayer_type == HOLD) title = PC_Lang.tr("tile.PCloLogicGate.slowRepeater.name");
+		if (delayer_type == FIFO) {
+			title = PC_Lang.tr("tile.PCloLogicGate.buffer.name");
+		}
+		if (delayer_type == HOLD) {
+			title = PC_Lang.tr("tile.PCloLogicGate.slowRepeater.name");
+		}
 
-		//window
+		// window
 		PC_GresWindow w = new PC_GresWindow(title);
 		w.setAlignH(PC_GresAlign.CENTER);
 		PC_GresWidget hg;
 		PC_GresWidget vg;
-		
+
 		// layout with the input
 		vg = new PC_GresLayoutV().setAlignH(PC_GresAlign.LEFT);
 		vg.add(new PC_GresLabel(PC_Lang.tr("pc.gui.gate.delay")));
 		vg.add(edit = new PC_GresTextEdit(PC_Utils.floatToString(ticks * 0.05F), 8, PC_GresInputType.SIGNED_FLOAT).setMinWidth(120));
 		vg.add(txConverted = new PC_GresLabelMultiline("", 120).setMinRows(2).setColor(PC_GresWidget.textColorEnabled, 0x606060));
 		w.add(vg);
-		
-		
+
+
 		// labels
 		hg = new PC_GresLayoutH().setAlignH(PC_GresAlign.CENTER);
 		hg.add(txError = new PC_GresLabel("").setColor(PC_GresWidget.textColorEnabled, 0x990000));
 		w.add(hg);
-		
-		
+
+
 		// buttons
 		hg = new PC_GresLayoutH().setAlignH(PC_GresAlign.CENTER);
 		hg.add(buttonCancel = new PC_GresButton(PC_Lang.tr("pc.gui.cancel")).setId(1));
@@ -77,7 +81,7 @@ public class PClo_GuiDelayer implements PC_IGresBase {
 		w.add(hg);
 
 		gui.add(w);
-		
+
 
 		gui.setPausesGame(false);
 
@@ -133,14 +137,16 @@ public class PClo_GuiDelayer implements PC_IGresBase {
 
 			}
 
-			if (!error) errMsg = "";
+			if (!error) {
+				errMsg = "";
+			}
 
 			txError.setText(PC_Lang.tr(errMsg));
 			String conv = "";
-			if(!error){				
+			if (!error) {
 				conv += "= " + ticks + " " + PC_Lang.tr("pc.gui.gate.delayer.ticks");
-				if(ticks >= 60*20){
-					conv += "\n= "+PC_Utils.formatTimeTicks(ticks);
+				if (ticks >= 60 * 20) {
+					conv += "\n= " + PC_Utils.formatTimeTicks(ticks);
 				}
 			}
 			txConverted.setText(conv);
@@ -160,8 +166,7 @@ public class PClo_GuiDelayer implements PC_IGresBase {
 	}
 
 	@Override
-	public void onCraftMatrixChanged(IInventory iinventory) {
-	}
+	public void onCraftMatrixChanged(IInventory iinventory) {}
 
 	@Override
 	public void updateTick(PC_IGresGui gui) {}

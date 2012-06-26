@@ -224,8 +224,10 @@ public class PCtr_TeleporterHelper {
 			if (tet.direction.equals(side[i])) {
 				good[i] += 1;
 			}
-			
-			if(PC_BlockUtils.hasFlag(world, tmp, "TELEPORTER")) good[i]=0;
+
+			if (PC_BlockUtils.hasFlag(world, tmp, "TELEPORTER")) {
+				good[i] = 0;
+			}
 
 		}
 

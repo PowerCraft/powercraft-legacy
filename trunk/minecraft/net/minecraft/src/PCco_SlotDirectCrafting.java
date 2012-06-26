@@ -48,7 +48,7 @@ public class PCco_SlotDirectCrafting extends Slot {
 	}
 
 	@Override
-	public void onPickupFromSlot(ItemStack itemstack) {		
+	public void onPickupFromSlot(ItemStack itemstack) {
 		// itemstack.onCrafting(thePlayer.worldObj, thePlayer);
 		super.onPickupFromSlot(itemstack);
 
@@ -60,19 +60,8 @@ public class PCco_SlotDirectCrafting extends Slot {
 	public ItemStack decrStackSize(int i) {
 		if (available) {
 			ItemStack output = product.copy();
-			if((PC_Utils.isCreative() || survivalCheating) && (Keyboard.isKeyDown(Keyboard.KEY_LCONTROL) || Keyboard.isKeyDown(Keyboard.KEY_RCONTROL))){
-				output.stackSize = output.getMaxStackSize();				
-			}
-			return output;
-		}
-		return null;
-	}
-
-	@Override
-	public ItemStack getStack() {
-		if (available && product != null) {			
-			ItemStack output = product.copy();
-			if((PC_Utils.isCreative() || survivalCheating) && (Keyboard.isKeyDown(Keyboard.KEY_LCONTROL) || Keyboard.isKeyDown(Keyboard.KEY_RCONTROL))){
+			if ((PC_Utils.isCreative() || survivalCheating)
+					&& (Keyboard.isKeyDown(Keyboard.KEY_LCONTROL) || Keyboard.isKeyDown(Keyboard.KEY_RCONTROL))) {
 				output.stackSize = output.getMaxStackSize();
 			}
 			return output;
@@ -81,9 +70,21 @@ public class PCco_SlotDirectCrafting extends Slot {
 	}
 
 	@Override
-	public void putStack(ItemStack itemstack) {
+	public ItemStack getStack() {
+		if (available && product != null) {
+			ItemStack output = product.copy();
+			if ((PC_Utils.isCreative() || survivalCheating)
+					&& (Keyboard.isKeyDown(Keyboard.KEY_LCONTROL) || Keyboard.isKeyDown(Keyboard.KEY_RCONTROL))) {
+				output.stackSize = output.getMaxStackSize();
+			}
+			return output;
+		}
+		return null;
 	}
-	
+
+	@Override
+	public void putStack(ItemStack itemstack) {}
+
 	public void setProduct(ItemStack itemstack) {
 		product = itemstack;
 	}

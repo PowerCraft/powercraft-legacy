@@ -8,17 +8,17 @@ public class PClo_GuiProgramming implements PC_IGresBase {
 	private PC_GresWidget buttonOK, buttonCancel;
 	private PC_GresWidget edit;
 	private PC_GresWidget txError;
-	
-	
-	public PClo_GuiProgramming(PClo_TileEntityGate tileEntity){
+
+
+	public PClo_GuiProgramming(PClo_TileEntityGate tileEntity) {
 		this.tileEntity = tileEntity;
 	}
-	
+
 	@Override
 	public EntityPlayer getPlayer() {
 		return PC_Utils.mc().thePlayer;
 	}
-	
+
 	@Override
 	public void initGui(PC_IGresGui gui) {
 		PC_GresWindow w = new PC_GresWindow("Programmin guide");
@@ -37,9 +37,9 @@ public class PClo_GuiProgramming implements PC_IGresBase {
 
 	@Override
 	public void actionPerformed(PC_GresWidget widget, PC_IGresGui gui) {
-		if(widget==buttonCancel)
+		if (widget == buttonCancel) {
 			gui.close();
-		else if(widget==buttonOK){
+		} else if (widget == buttonOK) {
 			tileEntity.programm = edit.getText();
 			gui.close();
 		}
@@ -54,12 +54,11 @@ public class PClo_GuiProgramming implements PC_IGresBase {
 	public void onReturnPressed(PC_IGresGui gui) {
 		actionPerformed(buttonOK, gui);
 	}
-	
+
 	@Override
-	public void onCraftMatrixChanged(IInventory iinventory) {
-	}
+	public void onCraftMatrixChanged(IInventory iinventory) {}
 
 	@Override
 	public void updateTick(PC_IGresGui gui) {}
-	
+
 }

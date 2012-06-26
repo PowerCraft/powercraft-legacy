@@ -15,7 +15,7 @@ public class PC_GresWindow extends PC_GresWidget {
 	 * distance to the window frame
 	 */
 	protected PC_CoordI padding = new PC_CoordI(10, 10);
-	/** 
+	/**
 	 * The gap right under the top title.<br>
 	 * Applies only if title != ""
 	 */
@@ -30,30 +30,32 @@ public class PC_GresWindow extends PC_GresWidget {
 	public PC_GresWindow(int minX, int minY, String title) {
 		super(minX, minY, title);
 	}
-	
+
 	/**
 	 * Create window of width 240 and height auto.
+	 * 
 	 * @param title title of the window
 	 */
 	public PC_GresWindow(String title) {
 		super(240, 0, title);
 	}
-	
+
 	/**
 	 * Create window of width 240 and height auto, no title.
 	 */
 	public PC_GresWindow() {
 		super(240, 0, "");
 	}
-	
+
 	/**
 	 * Set standard width and stuff for an inventory screen.<br>
 	 * Used to look exactly like normal inventory screens.
+	 * 
 	 * @return this
 	 */
-	public PC_GresWidget setWidthForInventory(){
+	public PC_GresWidget setWidthForInventory() {
 		setMinWidth(176);
-		padding.setTo(7,7);
+		padding.setTo(7, 7);
 		this.size = minSize.copy();
 		this.minSize = minSize.copy();
 		calcSize();
@@ -75,7 +77,10 @@ public class PC_GresWindow extends PC_GresWidget {
 
 		renderTextureSliced(offsetPos, mod_PCcore.getImgDir() + "gres/dialog.png", size, new PC_CoordI(0, 0), new PC_CoordI(256, 256));
 
-		if(text.length() > 0) getFontRenderer().drawString(text, offsetPos.x + pos.x + (size.x) / 2 - fontRenderer.getStringWidth(text) / 2, offsetPos.y + pos.y + 8, 0x404040);
+		if (text.length() > 0) {
+			getFontRenderer().drawString(text, offsetPos.x + pos.x + (size.x) / 2 - fontRenderer.getStringWidth(text) / 2,
+					offsetPos.y + pos.y + 8, 0x404040);
+		}
 
 	}
 
@@ -96,10 +101,12 @@ public class PC_GresWindow extends PC_GresWidget {
 
 	@Override
 	public void calcChildPositions() {
-		int yy = 0, minySize = 0, minmaxxSize = 0, maxxSize = 0, ySize = 0, yPlus = getFontRenderer().FONT_HEIGHT + gapUnderTitle ;
-		
-		if(text.length() == 0) yPlus = 0;
-		
+		int yy = 0, minySize = 0, minmaxxSize = 0, maxxSize = 0, ySize = 0, yPlus = getFontRenderer().FONT_HEIGHT + gapUnderTitle;
+
+		if (text.length() == 0) {
+			yPlus = 0;
+		}
+
 		int childNum = childs.size();
 		for (int i = 0; i < childNum; i++) {
 			childs.get(i).calcChildPositions();
@@ -107,8 +114,12 @@ public class PC_GresWindow extends PC_GresWidget {
 			PC_CoordI cminSize = childs.get(i).getMinSize();
 			ySize += csize.y + widgetMargin;
 			minySize += cminSize.y + widgetMargin;
-			if (maxxSize < csize.x) maxxSize = csize.x;
-			if (minmaxxSize < cminSize.x) minmaxxSize = cminSize.x;
+			if (maxxSize < csize.x) {
+				maxxSize = csize.x;
+			}
+			if (minmaxxSize < cminSize.x) {
+				minmaxxSize = cminSize.x;
+			}
 		}
 
 		if (alignV == PC_GresAlign.STRETCH) {
@@ -121,9 +132,15 @@ public class PC_GresWindow extends PC_GresWidget {
 		}
 
 		if (maxxSize + padding.x * 2 > size.x || ySize + yPlus + padding.y > size.y) {
-			if (maxxSize + padding.x * 2 > size.x) size.x = maxxSize + padding.x * 2;
-			if (ySize + yPlus + padding.y > size.y) size.y = ySize + yPlus + padding.y;
-			if (parent != null) parent.calcChildPositions();
+			if (maxxSize + padding.x * 2 > size.x) {
+				size.x = maxxSize + padding.x * 2;
+			}
+			if (ySize + yPlus + padding.y > size.y) {
+				size.y = ySize + yPlus + padding.y;
+			}
+			if (parent != null) {
+				parent.calcChildPositions();
+			}
 			calcChildPositions();
 			return;
 		}
@@ -184,10 +201,8 @@ public class PC_GresWindow extends PC_GresWidget {
 	}
 
 	@Override
-	public void mouseWheel(int i) {
-	}
-	
+	public void mouseWheel(int i) {}
+
 	@Override
-	public void addedToWidget() {
-	}
+	public void addedToWidget() {}
 }

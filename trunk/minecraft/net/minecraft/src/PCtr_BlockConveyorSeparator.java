@@ -160,13 +160,15 @@ public class PCtr_BlockConveyorSeparator extends BlockContainer implements PC_IB
 		}
 
 		// try to store at offset coordinate
-		if (entity instanceof EntityItem && PCtr_BeltBase.storeEntityItemAt(world, pos_leading_to, (EntityItem) entity)) return;
+		if (entity instanceof EntityItem && PCtr_BeltBase.storeEntityItemAt(world, pos_leading_to, (EntityItem) entity)) { return; }
 
 		// check if target position is blocked
 		boolean leadsToNowhere = PCtr_BeltBase.isBlocked(world, pos_leading_to);
 
 		// longlife if not leading to nowhere
-		if (!leadsToNowhere) PCtr_BeltBase.entityPreventDespawning(world, pos, true, entity);
+		if (!leadsToNowhere) {
+			PCtr_BeltBase.entityPreventDespawning(world, pos, true, entity);
+		}
 
 		leadsToNowhere = leadsToNowhere
 				&& PCtr_BeltBase.isBeyondStorageBorder(world, rotation, pos, entity, PCtr_BeltBase.STORAGE_BORDER_LONG);

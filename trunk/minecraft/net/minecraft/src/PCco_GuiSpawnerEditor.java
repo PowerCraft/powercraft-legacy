@@ -30,7 +30,7 @@ public class PCco_GuiSpawnerEditor implements PC_IGresBase {
 
 		spawner.getMobID();
 	}
-	
+
 	@Override
 	public EntityPlayer getPlayer() {
 		return PC_Utils.mc().thePlayer;
@@ -75,7 +75,9 @@ public class PCco_GuiSpawnerEditor implements PC_IGresBase {
 		int hgTotalWidth = 0;
 
 		for (int i = 0; i < mapping.length; i++) {
-			if (i % 3 == 0) hg = new PC_GresLayoutH();
+			if (i % 3 == 0) {
+				hg = new PC_GresLayoutH();
+			}
 			hg.widgetMargin = 1;
 			buttons[i] = new PC_GresButton(names[i]).setId(i);
 
@@ -110,8 +112,7 @@ public class PCco_GuiSpawnerEditor implements PC_IGresBase {
 	}
 
 	@Override
-	public void onGuiClosed(PC_IGresGui gui) {
-	}
+	public void onGuiClosed(PC_IGresGui gui) {}
 
 	private void setDangerousEnabled(boolean state) {
 		buttons[10].enabled = buttons[11].enabled = buttons[23].enabled = state;

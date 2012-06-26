@@ -1,7 +1,8 @@
 package net.minecraft.src;
 
 /**
- * Interface for tile entities which have inventory, but are not implementing it directly. Instead they provide different IInventory instance on demand.
+ * Interface for tile entities which have inventory, but are not implementing it directly. Instead they provide different IInventory
+ * instance on demand.
  * 
  * @author MightyPork
  */

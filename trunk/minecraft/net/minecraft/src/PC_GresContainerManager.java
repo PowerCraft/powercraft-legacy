@@ -12,13 +12,13 @@ public class PC_GresContainerManager extends Container {
 	public PC_GresContainerManager(EntityPlayer player) {
 		thePlayer = player;
 		this.gresGui = gresGui;
-		if(thePlayer!=null){
+		if (thePlayer != null) {
 			// lower player inventory
 			for (int i = 0; i < 9; i++) {
 				inventoryPlayerLower[i][0] = new Slot(player.inventory, i, -3000, 0);
 				addSlot(inventoryPlayerLower[i][0]);
 			}
-	
+
 			// upper player inventory
 			for (int i = 0; i < 9; i++) {
 				for (int j = 0; j < 3; j++) {
@@ -47,18 +47,17 @@ public class PC_GresContainerManager extends Container {
 	@Override
 	protected void retrySlotClick(int par1, int par2, boolean par3, EntityPlayer par4EntityPlayer) {
 
-		if (((PC_GresGui) gresGui).gui instanceof PCco_GuiCraftingTool){
-			return;
-		}
+		if (((PC_GresGui) gresGui).gui instanceof PCco_GuiCraftingTool) { return; }
 
 		super.retrySlotClick(par1, par2, par3, par4EntityPlayer);
 
 	}
 
+	@Override
 	public ItemStack transferStackInSlot(int slotIndex) {
 
-//		if (((PC_GresGui) gresGui).gui instanceof PCco_GuiCraftingTool){
-//		}
+		// if (((PC_GresGui) gresGui).gui instanceof PCco_GuiCraftingTool){
+		// }
 
 		if (slotIndex < playerSlots && !gresGui.canShiftTransfer()) { return null; }
 
@@ -73,15 +72,15 @@ public class PC_GresContainerManager extends Container {
 
 				if (!mergeItemStack(itemstack1, playerSlots, inventorySlots.size(), false)) {
 					return null;
-				}else{
+				} else {
 					slot.onPickupFromSlot(itemstack);
-					
+
 				}
-				
+
 			} else if (!mergeItemStack(itemstack1, 0, playerSlots, false)) {
 				return null;
-			}else{
-					slot.onPickupFromSlot(itemstack);
+			} else {
+				slot.onPickupFromSlot(itemstack);
 			}
 
 			if (itemstack1.stackSize == 0) {
@@ -106,7 +105,9 @@ public class PC_GresContainerManager extends Container {
 		int i = id;
 		for (; i < inventorySlots.size() - 1; i++) {
 			Slot s = (Slot) inventorySlots.get(i + 1);
-			if (s != null) s.slotNumber = i;
+			if (s != null) {
+				s.slotNumber = i;
+			}
 			inventorySlots.set(i, s);
 			inventoryItemStacks.set(i, inventorySlots.get(i + 1));
 		}
@@ -115,13 +116,11 @@ public class PC_GresContainerManager extends Container {
 			inventoryItemStacks.remove(i);
 		}
 	}
-	
-	
+
+
 	private int getLimit(Slot slot, int a, boolean flag) {
-		if (flag) {
-			return a;
-		}
-		return Math.min(a,slot.inventory.getInventoryStackLimit());
+		if (flag) { return a; }
+		return Math.min(a, slot.inventory.getInventoryStackLimit());
 	}
 
 	@Override
@@ -139,15 +138,14 @@ public class PC_GresContainerManager extends Container {
 						&& itemstack1.itemID == itemstack.itemID
 						&& (!itemstack.getHasSubtypes() || itemstack.getItemDamage() == itemstack1.getItemDamage())) {
 					int i1 = itemstack1.stackSize + itemstack.stackSize;
-					if (i1 <= getLimit(slot,itemstack.getMaxStackSize(), flag))
-					{
+					if (i1 <= getLimit(slot, itemstack.getMaxStackSize(), flag)) {
 						itemstack.stackSize = 0;
 						itemstack1.stackSize = i1;
 						slot.onSlotChanged();
 						flag1 = true;
-					} else if (itemstack1.stackSize < getLimit(slot,itemstack.getMaxStackSize(), flag)) {
-						itemstack.stackSize -= getLimit(slot,itemstack.getMaxStackSize(), flag) - itemstack1.stackSize;
-						itemstack1.stackSize = getLimit(slot,itemstack.getMaxStackSize(), flag);
+					} else if (itemstack1.stackSize < getLimit(slot, itemstack.getMaxStackSize(), flag)) {
+						itemstack.stackSize -= getLimit(slot, itemstack.getMaxStackSize(), flag) - itemstack1.stackSize;
+						itemstack1.stackSize = getLimit(slot, itemstack.getMaxStackSize(), flag);
 						slot.onSlotChanged();
 						flag1 = true;
 					}
@@ -201,5 +199,5 @@ public class PC_GresContainerManager extends Container {
 	public void onCraftMatrixChanged(IInventory iinventory) {
 		gresGui.onCraftMatrixChanged(iinventory);
 	}
-	
+
 }

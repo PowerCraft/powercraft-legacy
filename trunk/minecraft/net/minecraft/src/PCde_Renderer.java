@@ -46,9 +46,9 @@ public class PCde_Renderer {
 	public static boolean renderBlockDecorative(RenderBlocks renderblocks, IBlockAccess iblockaccess, int i, int j, int k, Block block) {
 
 		TileEntity te = iblockaccess.getBlockTileEntity(i, j, k);
-		if(te == null) return false;
-		PCde_TileEntityDeco ted = (PCde_TileEntityDeco)te;
-		
+		if (te == null) { return false; }
+		PCde_TileEntityDeco ted = (PCde_TileEntityDeco) te;
+
 		if (ted.type == 1) {
 			block.setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 1.0F, 1.0F);
 
@@ -56,7 +56,7 @@ public class PCde_Renderer {
 
 			return true;
 		}
-		
+
 		return false;
 	}
 
@@ -86,11 +86,11 @@ public class PCde_Renderer {
 	 * @param meta metadata
 	 */
 	public static void renderInvBlockDeco(RenderBlocks renderblocks, Block block, int meta) {
-		
+
 		if (meta == 0) {
-			
+
 			boolean swapped = PC_Renderer.swapTerrain(block);
-			
+
 			float s = 0.1875F;
 
 			// pillars
@@ -127,26 +127,26 @@ public class PCde_Renderer {
 			block.setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 1.0F, 1.0F);
 
 			PC_Renderer.resetTerrain(swapped);
-			
+
 			return;
-		}else if(meta == 1){
-			block.setBlockBounds(0,0,0,1,1,1);
+		} else if (meta == 1) {
+			block.setBlockBounds(0, 0, 0, 1, 1, 1);
 			PC_Renderer.renderInvBlock(renderblocks, block, meta);
-		}else if(meta == 2){
+		} else if (meta == 2) {
 			float p = 0.0625F;
 			boolean swapped = PC_Renderer.swapTerrain(block);
-			block.setBlockBounds(0,0,0,1,p,1);
+			block.setBlockBounds(0, 0, 0, 1, p, 1);
 			PC_Renderer.renderInvBoxWithTexture(renderblocks, block, 22);
-			block.setBlockBounds(0,0,1-p,1,1,1);
+			block.setBlockBounds(0, 0, 1 - p, 1, 1, 1);
 			PC_Renderer.renderInvBoxWithTexture(renderblocks, block, 20);
-			block.setBlockBounds(0,0,0,p,1,1);
+			block.setBlockBounds(0, 0, 0, p, 1, 1);
 			PC_Renderer.renderInvBoxWithTexture(renderblocks, block, 20);
 			block.setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 1.0F, 1.0F);
 			PC_Renderer.resetTerrain(swapped);
 		}
 
 	}
-	
+
 	/**
 	 * Render Deco block on inventory
 	 * 
@@ -155,34 +155,34 @@ public class PCde_Renderer {
 	 * @param meta metadata
 	 */
 	public static void renderInvBlockDecoNonSolid(RenderBlocks renderblocks, Block block, int meta) {
-		
+
 		if (meta == 0) {
 			float p = 0.0625F;
 			boolean swapped = PC_Renderer.swapTerrain(block);
-			block.setBlockBounds(0,0,0,1,p,1);
+			block.setBlockBounds(0, 0, 0, 1, p, 1);
 			PC_Renderer.renderInvBoxWithTexture(renderblocks, block, 22);
-			block.setBlockBounds(0,0,1-p,1,1,1);
+			block.setBlockBounds(0, 0, 1 - p, 1, 1, 1);
 			PC_Renderer.renderInvBoxWithTexture(renderblocks, block, 20);
-			block.setBlockBounds(0,0,0,p,1,1);
+			block.setBlockBounds(0, 0, 0, p, 1, 1);
 			PC_Renderer.renderInvBoxWithTexture(renderblocks, block, 20);
 			block.setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 1.0F, 1.0F);
 			PC_Renderer.resetTerrain(swapped);
-		}else if (meta == 1) {
+		} else if (meta == 1) {
 			float p = 0.0625F;
 			boolean swapped = PC_Renderer.swapTerrain(block);
-			
-			block.setBlockBounds(0,0F,0.5F, 1,p,1);			
+
+			block.setBlockBounds(0, 0F, 0.5F, 1, p, 1);
 			PC_Renderer.renderInvBoxWithTexture(renderblocks, block, 22);
-			
-			block.setBlockBounds(0,0.5F-p,0, 1,0.5F,0.5F);			
+
+			block.setBlockBounds(0, 0.5F - p, 0, 1, 0.5F, 0.5F);
 			PC_Renderer.renderInvBoxWithTexture(renderblocks, block, 22);
-			
-			block.setBlockBounds(0,0,0.5F, p,0.5F,1);
+
+			block.setBlockBounds(0, 0, 0.5F, p, 0.5F, 1);
 			PC_Renderer.renderInvBoxWithTexture(renderblocks, block, 20);
-			block.setBlockBounds(0,0.5F,0, p,0.5F+0.5F,0.5F);
+			block.setBlockBounds(0, 0.5F, 0, p, 0.5F + 0.5F, 0.5F);
 			PC_Renderer.renderInvBoxWithTexture(renderblocks, block, 20);
-			
-			block.setBlockBounds(0.0F,0.0F,0.0F, 1.0F,1.0F,1.0F);
+
+			block.setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 1.0F, 1.0F);
 			PC_Renderer.resetTerrain(swapped);
 		}
 

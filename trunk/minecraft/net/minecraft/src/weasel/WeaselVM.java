@@ -2,44 +2,43 @@ package net.minecraft.src.weasel;
 
 import net.minecraft.src.NBTTagCompound;
 import net.minecraft.src.PC_INBT;
+import net.minecraft.src.weasel.obj.WeaselStack;
+import net.minecraft.src.weasel.obj.WeaselVariableMap;
 
 /**
  * The WEASEL virtual machine.
  * 
  * @author MightyPork
  * @copy (c) 2012
- *
+ * 
  */
-public class WeaselVM implements PC_INBT{
+public class WeaselVM implements PC_INBT {
 
 	/**
-	 *  List of variables visible in current function body / root list.
+	 * List of variables visible in current function body / root list.
 	 */
-	public WeaselVariableMap localVars = new WeaselVariableMap();
-	/** 
-	 * Globally visible variables
-	 */
-	public WeaselVariableMap globalVars = new WeaselVariableMap();
-	
+	public WeaselVariableMap variables = new WeaselVariableMap();
+
 	/** Stack of addresses */
 	public WeaselStack systemStack = new WeaselStack();
-	
-	
-	
-	
+
+
+
+
 	@Override
 	public NBTTagCompound writeToNBT(NBTTagCompound tag) {
 		// TODO Auto-generated method stub
 		return null;
 	}
+
 	@Override
 	public PC_INBT readFromNBT(NBTTagCompound tag) {
 		// TODO Auto-generated method stub
 		return null;
 	}
-	
-	
 
-	
+
+
+
 
 }

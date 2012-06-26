@@ -245,10 +245,10 @@ public class PCma_BlockHarvester extends Block implements PC_ISwapTerrain, PC_IB
 
 		return false; }
 
-		if(PC_BlockUtils.hasFlag(world, coord, "POWERCRAFT")){
-			if(PC_BlockUtils.hasFlag(world, coord, "TRANSLUCENT")) return false;
+		if (PC_BlockUtils.hasFlag(world, coord, "POWERCRAFT")) {
+			if (PC_BlockUtils.hasFlag(world, coord, "TRANSLUCENT")) { return false; }
 		}
-		
+
 
 
 		// tree - replace with sapling

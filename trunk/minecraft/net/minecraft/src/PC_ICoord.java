@@ -8,15 +8,15 @@ package net.minecraft.src;
  * @copy (c) 2012
  * 
  */
-public interface PC_ICoord extends PC_INBT{
+public interface PC_ICoord extends PC_INBT {
 
 	/**
 	 * @return copy of this, with coordinates inverted
 	 */
 	public abstract PC_ICoord getInverted();
 
-	
-	
+
+
 	/**
 	 * Get copy moved by offset coord
 	 * 
@@ -81,8 +81,8 @@ public interface PC_ICoord extends PC_INBT{
 	 */
 	public abstract PC_ICoord offset(float x, float y, float z);
 
-	
-	
+
+
 	/**
 	 * Round to integer coordinate.
 	 * 

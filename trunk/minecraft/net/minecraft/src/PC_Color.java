@@ -33,7 +33,7 @@ public class PC_Color implements PC_INBT {
 		this.g = g;
 		this.b = b;
 	}
-	
+
 	/**
 	 * Make color of HEX
 	 * 

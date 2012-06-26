@@ -7,18 +7,19 @@ import org.lwjgl.opengl.GL11;
  * 
  * @author XOR19, MightyPork
  * @copy (c) 2012
- *
+ * 
  */
 public class PC_GresCheckBox extends PC_GresWidget {
 
 	private static final int WIDTH = 11;
 	private boolean checked = false;
-	
+
 	/**
 	 * Resizable GUI checkbox
+	 * 
 	 * @param label checkbox label
 	 */
-	public PC_GresCheckBox(String label){
+	public PC_GresCheckBox(String label) {
 		super(label);
 		canAddWidget = false;
 		color[textColorEnabled] = 0x000000;
@@ -26,7 +27,7 @@ public class PC_GresCheckBox extends PC_GresWidget {
 		color[textColorDisabled] = 0x707070;
 		color[textColorShadowDisabled] = 0xAAAAAA;
 	}
-	
+
 	/**
 	 * @return is checkbox checked?
 	 */
@@ -36,6 +37,7 @@ public class PC_GresCheckBox extends PC_GresWidget {
 
 	/**
 	 * Set checked state
+	 * 
 	 * @param state checked
 	 * @return this
 	 */
@@ -43,22 +45,22 @@ public class PC_GresCheckBox extends PC_GresWidget {
 		checked = state;
 		return this;
 	}
-	
+
 	@Override
 	public PC_CoordI calcSize() {
-		
-		size.setTo(getStringWidth(text),getLineHeight()).add(WIDTH+3,0);
 
-		if(size.y<WIDTH){
+		size.setTo(getStringWidth(text), getLineHeight()).add(WIDTH + 3, 0);
+
+		if (size.y < WIDTH) {
 			size.y = WIDTH;
 		}
-		
-		if(size.x<minSize.x){
+
+		if (size.x < minSize.x) {
 			size.x = minSize.x;
 		}
 		return size.copy();
 	}
-	
+
 	@Override
 	public PC_CoordI getMinSize() {
 		return calcSize();
@@ -66,23 +68,27 @@ public class PC_GresCheckBox extends PC_GresWidget {
 
 	@Override
 	public void calcChildPositions() {
-		
+
 	}
 
 	@Override
 	protected void render(PC_CoordI offsetPos) {
-		
+
 		String texture = mod_PCcore.getImgDir() + "gres/widgets.png";
 		GL11.glBindTexture(GL11.GL_TEXTURE_2D, mc.renderEngine.getTexture(texture));
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-		
+
 		int state = 0;
-		if(isChecked()) state=1;
-		if(!isEnabled()) state += 2;
-		
-		drawTexturedModalRect(pos.x+offsetPos.x, pos.y+offsetPos.y, WIDTH*state, 0, WIDTH, WIDTH);
-		
-		
+		if (isChecked()) {
+			state = 1;
+		}
+		if (!isEnabled()) {
+			state += 2;
+		}
+
+		drawTexturedModalRect(pos.x + offsetPos.x, pos.y + offsetPos.y, WIDTH * state, 0, WIDTH, WIDTH);
+
+
 		drawString(text, offsetPos.x + pos.x + WIDTH + 3, offsetPos.y + pos.y + 2);
 	}
 
@@ -93,16 +99,16 @@ public class PC_GresCheckBox extends PC_GresWidget {
 
 	@Override
 	public boolean mouseClick(PC_CoordI mpos, int key) {
-		if(!enabled)
-			return false;
-		if(key!=-1)
+		if (!enabled) { return false; }
+		if (key != -1) {
 			checked ^= true;
+		}
 		return true;
 	}
 
 	@Override
 	public void mouseMove(PC_CoordI mpos) {
-		
+
 	}
 
 	@Override
@@ -111,10 +117,8 @@ public class PC_GresCheckBox extends PC_GresWidget {
 	}
 
 	@Override
-	public void mouseWheel(int i) {
-	}
-	
+	public void mouseWheel(int i) {}
+
 	@Override
-	public void addedToWidget() {
-	}
+	public void addedToWidget() {}
 }

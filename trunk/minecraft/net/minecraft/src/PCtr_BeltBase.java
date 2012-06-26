@@ -396,7 +396,7 @@ public class PCtr_BeltBase {
 		flag |= entity.item.itemID == Item.bucketWater.shiftedIndex;
 		flag |= entity.item.itemID == Item.bucketEmpty.shiftedIndex;
 		flag |= entity.item.itemID == Item.glassBottle.shiftedIndex;
-		if (!flag) return;
+		if (!flag) { return; }
 
 		do {
 
@@ -544,14 +544,14 @@ public class PCtr_BeltBase {
 			}
 		}
 
-		
+
 		entity.motionZ = MathHelper.clamp_float((float) entity.motionZ, (float) -max_horizontal_speed, (float) max_horizontal_speed);
 		entity.motionX = MathHelper.clamp_float((float) entity.motionX, (float) -max_horizontal_speed, (float) max_horizontal_speed);
 
 
 		switch (moveDirection) {
 
-				
+
 			case 0: // Z--
 				if (entity.motionZ >= -max_horizontal_speed && motionEnabled) {
 					entity.motionZ -= horizontal_boost;
@@ -618,15 +618,16 @@ public class PCtr_BeltBase {
 
 	/**
 	 * Check if entity should be ignored by transporters.
+	 * 
 	 * @param entity the entity
 	 * @return ignored.
 	 */
 	public static boolean isEntityIgnored(Entity entity) {
-		if(entity == null) return true;
-		if (!entity.isEntityAlive()) return true;
-		if (entity instanceof EntityPlayer && ((EntityPlayer) entity).isSneaking()) return true;
-		if (entity instanceof EntityDiggingFX) return false;
-		if (entity instanceof EntityFX) return true;
+		if (entity == null) { return true; }
+		if (!entity.isEntityAlive()) { return true; }
+		if (entity instanceof EntityPlayer && ((EntityPlayer) entity).isSneaking()) { return true; }
+		if (entity instanceof EntityDiggingFX) { return false; }
+		if (entity instanceof EntityFX) { return true; }
 		return false;
 	}
 
@@ -641,16 +642,16 @@ public class PCtr_BeltBase {
 	 */
 	public static boolean storeAllSides(World world, PC_CoordI pos, EntityItem entity) {
 
-		if (storeItemIntoMinecart(world, pos, entity)) return true;
+		if (storeItemIntoMinecart(world, pos, entity)) { return true; }
 
-		if (storeEntityItemAt(world, pos.offset(0, 0, -1), entity)) return true;
-		if (storeEntityItemAt(world, pos.offset(0, 0, 1), entity)) return true;
-		if (storeEntityItemAt(world, pos.offset(-1, 0, 0), entity)) return true;
-		if (storeEntityItemAt(world, pos.offset(1, 0, 0), entity)) return true;
+		if (storeEntityItemAt(world, pos.offset(0, 0, -1), entity)) { return true; }
+		if (storeEntityItemAt(world, pos.offset(0, 0, 1), entity)) { return true; }
+		if (storeEntityItemAt(world, pos.offset(-1, 0, 0), entity)) { return true; }
+		if (storeEntityItemAt(world, pos.offset(1, 0, 0), entity)) { return true; }
 
-		if (storeEntityItemAt(world, pos.offset(0, 1, 0), entity)) return true;
+		if (storeEntityItemAt(world, pos.offset(0, 1, 0), entity)) { return true; }
 
-		if (storeEntityItemAt(world, pos.offset(0, -1, 0), entity)) return true;
+		if (storeEntityItemAt(world, pos.offset(0, -1, 0), entity)) { return true; }
 		return false;
 	}
 
@@ -660,17 +661,17 @@ public class PCtr_BeltBase {
 			case 0: // Z--
 				if (entity.posZ > beltPos.z + 1 - border) { return false; }
 				break;
-	
+
 			case 1: // X++
 				if (entity.posX < beltPos.x + border) { return false; }
 				break;
-	
+
 			case 2: // Z++
-	
+
 				if (entity.posZ < beltPos.z + border) { return false; }
-	
+
 				break;
-	
+
 			case 3: // X--
 				if (entity.posX > beltPos.x + 1 - border) { return false; }
 				break;

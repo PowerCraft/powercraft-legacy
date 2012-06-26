@@ -211,12 +211,12 @@ public abstract class PC_Module extends BaseMod {
 			registerTileEntities(tileentities);
 
 			for (PC_Struct3<Class<? extends TileEntity>, String, TileEntitySpecialRenderer> entry : tileentities) {
-				if(entry.c == null){
+				if (entry.c == null) {
 					ModLoader.registerTileEntity(entry.a, entry.b);
-				}else{
+				} else {
 					ModLoader.registerTileEntity(entry.a, entry.b, entry.c);
 				}
-				
+
 			}
 
 

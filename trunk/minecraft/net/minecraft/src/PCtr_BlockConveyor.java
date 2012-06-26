@@ -234,9 +234,11 @@ public class PCtr_BlockConveyor extends Block implements PC_IBlockType, PC_IRota
 
 		PC_CoordI pos = new PC_CoordI(i, j, k);
 
-		if(PCtr_BeltBase.isEntityIgnored(entity)) return;
+		if (PCtr_BeltBase.isEntityIgnored(entity)) { return; }
 
-		if (entity instanceof EntityItem) PCtr_BeltBase.packItems(world, pos);
+		if (entity instanceof EntityItem) {
+			PCtr_BeltBase.packItems(world, pos);
+		}
 
 		// detector activated
 		if (!isActive(world, i, j, k) && type == PCtr_BeltType.detector) {
@@ -344,12 +346,16 @@ public class PCtr_BlockConveyor extends Block implements PC_IBlockType, PC_IRota
 					break;
 			}
 		}
-		
+
 		redir = -redir;
-		
+
 		int direction = meta + redir;
-		if(direction == -1) direction = 3;
-		if(direction == 4) direction = 0;
+		if (direction == -1) {
+			direction = 3;
+		}
+		if (direction == 4) {
+			direction = 0;
+		}
 
 		PC_CoordI pos_leading_to = pos.copy();
 		switch (direction) {
@@ -372,10 +378,11 @@ public class PCtr_BlockConveyor extends Block implements PC_IBlockType, PC_IRota
 		}
 
 		boolean leadsToNowhere = PCtr_BeltBase.isBlocked(world, pos_leading_to);
-		leadsToNowhere = leadsToNowhere && PCtr_BeltBase.isBeyondStorageBorder(world, direction, pos, entity, PCtr_BeltBase.STORAGE_BORDER_LONG);
+		leadsToNowhere = leadsToNowhere
+				&& PCtr_BeltBase.isBeyondStorageBorder(world, direction, pos, entity, PCtr_BeltBase.STORAGE_BORDER_LONG);
 
 		// longlife!
-		if(!leadsToNowhere){
+		if (!leadsToNowhere) {
 			PCtr_BeltBase.entityPreventDespawning(world, pos, !halted, entity);
 		}
 
@@ -396,7 +403,7 @@ public class PCtr_BlockConveyor extends Block implements PC_IBlockType, PC_IRota
 		if (type == PCtr_BeltType.speedy) {
 			boost *= 2.0D;
 		}
-		
+
 		PCtr_BeltBase.moveEntityOnBelt(world, pos, entity, true, !halted && !leadsToNowhere, direction, speed_max, boost);
 
 	}
@@ -531,6 +538,7 @@ public class PCtr_BlockConveyor extends Block implements PC_IBlockType, PC_IRota
 
 	/**
 	 * Get closest minecraft and dispense stack from it onto this belt.
+	 * 
 	 * @param world
 	 * @param beltPos
 	 * @return
@@ -541,21 +549,21 @@ public class PCtr_BlockConveyor extends Block implements PC_IBlockType, PC_IRota
 				net.minecraft.src.EntityMinecart.class,
 				AxisAlignedBB.getBoundingBoxFromPool(beltPos.x, beltPos.y, beltPos.z, beltPos.x + 1, beltPos.y + 1, beltPos.z + 1).expand(
 						1.0D, 1.0D, 1.0D));
-	
+
 		if (hitList.size() > 0) {
 			for (EntityMinecart cart : hitList) {
 				if (cart.minecartType != 1) {
 					continue;
 				}
-	
+
 				IInventory inventory = cart;
 				if (inventory != null) {
 					if (dispenseItem(world, new PC_CoordD(cart.posX, cart.posY, cart.posZ).round(), inventory, beltPos)) { return true; }
 				}
-	
+
 			}
 		}
-	
+
 		return false;
 	}
 }

@@ -11,14 +11,14 @@ import net.minecraft.src.PC_GresWidget.PC_GresAlign;
  * 
  */
 public class PClo_GuiPulsar implements PC_IGresBase {
-	
+
 
 	@SuppressWarnings("unused")
 	private PC_GresWidget buttonOK, buttonCancel;
 	private PC_GresWidget editDelay;
 	private PC_GresWidget editHold;
 	private PC_GresWidget txError, txConvDelay, txConvHold;
-	
+
 	private boolean errorDelay = false, errorHold = false;
 
 	private PClo_TileEntityPulsar pulsar;
@@ -35,7 +35,7 @@ public class PClo_GuiPulsar implements PC_IGresBase {
 		delay_ticks = pulsar.delay;
 		hold_ticks = pulsar.holdtime;
 	}
-	
+
 	@Override
 	public EntityPlayer getPlayer() {
 		return PC_Utils.mc().thePlayer;
@@ -44,35 +44,40 @@ public class PClo_GuiPulsar implements PC_IGresBase {
 	@Override
 	public void initGui(PC_IGresGui gui) {
 
-		//window
+		// window
 		PC_GresWindow w = new PC_GresWindow(PC_Lang.tr("tile.PCloRedstonePulsar.name"));
 		w.setAlignH(PC_GresAlign.CENTER);
 		PC_GresWidget hg, vg;
-		
+
 		// layout with the inputs
 		hg = new PC_GresLayoutH().setAlignH(PC_GresAlign.CENTER);
-		
+
 		vg = new PC_GresLayoutV().setAlignH(PC_GresAlign.LEFT);
 		vg.add(new PC_GresLabel(PC_Lang.tr("pc.gui.pulsar.delay")));
-		vg.add(editDelay = new PC_GresTextEdit(PC_Utils.doubleToString(PC_Utils.ticksToSecs(delay_ticks)), 8, PC_GresInputType.UNSIGNED_FLOAT));
-		vg.add(txConvDelay = new PC_GresLabelMultiline("", editDelay.getMinSize().x).setMinRows(2).setColor(PC_GresWidget.textColorEnabled, 0x606060));
+		vg.add(editDelay = new PC_GresTextEdit(PC_Utils.doubleToString(PC_Utils.ticksToSecs(delay_ticks)), 8,
+				PC_GresInputType.UNSIGNED_FLOAT));
+		vg.add(txConvDelay = new PC_GresLabelMultiline("", editDelay.getMinSize().x).setMinRows(2).setColor(PC_GresWidget.textColorEnabled,
+				0x606060));
 		hg.add(vg);
-		
+
 		vg = new PC_GresLayoutV().setAlignH(PC_GresAlign.LEFT);
 		vg.add(new PC_GresLabel(PC_Lang.tr("pc.gui.pulsar.hold")));
 		vg.add(editHold = new PC_GresTextEdit(PC_Utils.doubleToString(PC_Utils.ticksToSecs(hold_ticks)), 8, PC_GresInputType.UNSIGNED_FLOAT));
-		vg.add(txConvHold = new PC_GresLabelMultiline("", editDelay.getMinSize().x).setMinRows(2).setColor(PC_GresWidget.textColorEnabled, 0x606060));
+		vg.add(txConvHold = new PC_GresLabelMultiline("", editDelay.getMinSize().x).setMinRows(2).setColor(PC_GresWidget.textColorEnabled,
+				0x606060));
 		hg.add(vg);
-		
-		w.add(hg);		
-		
-		
+
+		w.add(hg);
+
+
 		w.add(txError = new PC_GresLabel("").setColor(PC_GresWidget.textColorEnabled, 0x990000));
-		
-		/*w.add(new PC_GresGap(0,3));
-		w.add(new PC_GresImage(mod_PClogic.getImgDir()+"pulsar_hint.png", 0, 0, 131, 20));		
-		w.add(new PC_GresGap(0,3));*/
-		
+
+		/*
+		 * w.add(new PC_GresGap(0,3));
+		 * w.add(new PC_GresImage(mod_PClogic.getImgDir()+"pulsar_hint.png", 0, 0, 131, 20));
+		 * w.add(new PC_GresGap(0,3));
+		 */
+
 		// buttons
 		hg = new PC_GresLayoutH().setAlignH(PC_GresAlign.CENTER);
 		hg.add(checkSilent = new PC_GresCheckBox(PC_Lang.tr("pc.gui.pulsar.silent")).check(pulsar.silent));
@@ -81,7 +86,7 @@ public class PClo_GuiPulsar implements PC_IGresBase {
 		w.add(hg);
 
 		gui.add(w);
-		
+
 
 		gui.setPausesGame(false);
 
@@ -102,13 +107,13 @@ public class PClo_GuiPulsar implements PC_IGresBase {
 			pulsar.setHoldTime(hold_ticks);
 			pulsar.setSilent(checkSilent.isChecked());
 			gui.close();
-			
-		} else if (widget.getId() == 1) {			
-			gui.close();	
-			
+
+		} else if (widget.getId() == 1) {
+			gui.close();
+
 		}
-		
-		
+
+
 
 		if (widget == editDelay || widget == editHold) {
 
@@ -125,21 +130,21 @@ public class PClo_GuiPulsar implements PC_IGresBase {
 			} catch (NullPointerException npe) {
 
 				errorDelay = true;
-				
+
 			}
-			
+
 			String conv;
-			
+
 			conv = "";
-			if(!errorDelay){				
+			if (!errorDelay) {
 				conv += "= " + delay_ticks + " " + PC_Lang.tr("pc.gui.gate.delayer.ticks");
-				if(delay_ticks >= 60*20){
-					conv += "\n= "+PC_Utils.formatTimeTicks(delay_ticks);
+				if (delay_ticks >= 60 * 20) {
+					conv += "\n= " + PC_Utils.formatTimeTicks(delay_ticks);
 				}
 			}
 			txConvDelay.setText(conv);
-			
-			
+
+
 			try {
 				double time = Double.valueOf(editHold.getText());
 				hold_ticks = PC_Utils.secsToTicks(time);
@@ -154,26 +159,26 @@ public class PClo_GuiPulsar implements PC_IGresBase {
 
 				errorHold = true;
 			}
-			
+
 			conv = "";
-			if(!errorHold){				
+			if (!errorHold) {
 				conv += "= " + hold_ticks + " " + PC_Lang.tr("pc.gui.gate.delayer.ticks");
-				if(hold_ticks >= 60*20){
-					conv += "\n= "+PC_Utils.formatTimeTicks(hold_ticks);
+				if (hold_ticks >= 60 * 20) {
+					conv += "\n= " + PC_Utils.formatTimeTicks(hold_ticks);
 				}
 			}
 			txConvHold.setText(conv);
 
 		}
-		
-		if(errorDelay){
+
+		if (errorDelay) {
 			txError.setText(PC_Lang.tr("pc.gui.pulsar.errDelay"));
-		}else if(errorHold){
+		} else if (errorHold) {
 			txError.setText(PC_Lang.tr("pc.gui.pulsar.errHold"));
-		}else{
+		} else {
 			txError.setText("");
 		}
-		
+
 		buttonOK.enable(!errorDelay && !errorHold);
 
 	}
@@ -189,11 +194,9 @@ public class PClo_GuiPulsar implements PC_IGresBase {
 	}
 
 	@Override
-	public void onCraftMatrixChanged(IInventory iinventory) {
-	}
+	public void onCraftMatrixChanged(IInventory iinventory) {}
 
 	@Override
 	public void updateTick(PC_IGresGui gui) {}
-	
-}
 
+}

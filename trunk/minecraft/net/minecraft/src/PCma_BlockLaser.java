@@ -13,7 +13,8 @@ import net.minecraft.src.forge.ITextureProvider;
  * @copy (c) 2012
  * 
  */
-public class PCma_BlockLaser extends BlockContainer implements PC_IBlockType, PC_ISpecialInventoryTextures, PC_ISwapTerrain, ITextureProvider {
+public class PCma_BlockLaser extends BlockContainer implements PC_IBlockType, PC_ISpecialInventoryTextures, PC_ISwapTerrain,
+		ITextureProvider {
 	private static final int TXWOOD = 4, TXGUNON = 20;
 
 	@Override

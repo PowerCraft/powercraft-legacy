@@ -23,6 +23,7 @@ public class PCtr_TileEntityTeleporter extends PC_TileEntity {
 		identifier = "";
 	}
 
+	@Override
 	public PC_CoordI getCoord() {
 		return new PC_CoordI(xCoord, yCoord, zCoord);
 	}

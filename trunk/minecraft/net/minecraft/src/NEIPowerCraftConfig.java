@@ -19,13 +19,13 @@ import codechicken.nei.MultiItemRange;
 public class NEIPowerCraftConfig implements IConfigureNEI {
 	@Override
 	public void loadConfig() {
-		
+
 		PC_Logger.fine("Loading NEI configuration.");
 
 		// hide items
 		for (Integer id : PC_InveditManager.hidden) {
 			API.hideItem(id);
-			PC_Logger.finer("Hiding item ID = "+id);
+			PC_Logger.finer("Hiding item ID = " + id);
 		}
 
 
@@ -42,7 +42,7 @@ public class NEIPowerCraftConfig implements IConfigureNEI {
 
 			list.add(new int[] { range[0], range[1] });
 			API.setItemDamageVariants(id, list);
-			PC_Logger.finer("Setting item damage variants ID = "+id+", damage range="+range[0]+" - "+range[1]);
+			PC_Logger.finer("Setting item damage variants ID = " + id + ", damage range=" + range[0] + " - " + range[1]);
 		}
 
 
@@ -59,9 +59,9 @@ public class NEIPowerCraftConfig implements IConfigureNEI {
 			}
 
 			API.setItemDamageVariants(id, col);
-			PC_Logger.finer("Setting item damage variants ID = "+id+", collection:");
-			for(Integer dmg : col){
-				PC_Logger.finest(""+dmg);
+			PC_Logger.finer("Setting item damage variants ID = " + id + ", collection:");
+			for (Integer dmg : col) {
+				PC_Logger.finest("" + dmg);
 			}
 		}
 
@@ -74,9 +74,9 @@ public class NEIPowerCraftConfig implements IConfigureNEI {
 			if (!categoryLists.containsKey(cat)) {
 				categoryLists.put(cat, new HashSet<Integer>());
 			}
-			
+
 			categoryLists.get(cat).add(id);
-			PC_Logger.finest("Adding ID = "+id+" to category "+cat);
+			PC_Logger.finest("Adding ID = " + id + " to category " + cat);
 		}
 
 		for (String catname : categoryLists.keySet()) {

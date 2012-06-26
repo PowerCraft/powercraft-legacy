@@ -66,7 +66,7 @@ public class PCfix_BlockRadioPlaceholder extends BlockContainer implements PC_IB
 	public TileEntity getBlockEntity() {
 		return new PCfix_TileEntityRadioPlaceholder();
 	}
-	
+
 	@Override
 	public Set<String> getBlockFlags(World world, PC_CoordI pos) {
 		// NO_HARVEST, HARVEST_STOP, TRANSLUCENT

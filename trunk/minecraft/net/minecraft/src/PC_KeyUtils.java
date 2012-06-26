@@ -65,7 +65,7 @@ public class PC_KeyUtils {
 	public static boolean filterKeyInt(char c, int i) {
 		return isCharDigit(c) || isEditControlKey(i);
 	}
-	
+
 	/**
 	 * Check if entered character / key code is valid for text edit.<br>
 	 * Checks if valid for (even minus) integer value without decimal dot.

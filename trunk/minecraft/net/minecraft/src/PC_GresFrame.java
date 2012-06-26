@@ -5,26 +5,30 @@ package net.minecraft.src;
  * 
  * @author MightyPork
  * @copy (c) 2012
- *
+ * 
  */
 public class PC_GresFrame extends PC_GresWidget {
 
 
 	/** distance from borders to contents. */
 	int framePadding = 5;
-	
+
 	/**
 	 * frame widget H
 	 */
 	public PC_GresFrame() {
 		super();
 	}
-	
+
 	@Override
 	public PC_CoordI calcSize() {
 		calcChildPositions();
-		if (size.x < minSize.x + framePadding*2) size.x = minSize.x + framePadding*2;
-		if (size.y < minSize.y + framePadding*2) size.y = minSize.y + framePadding*2;
+		if (size.x < minSize.x + framePadding * 2) {
+			size.x = minSize.x + framePadding * 2;
+		}
+		if (size.y < minSize.y + framePadding * 2) {
+			size.y = minSize.y + framePadding * 2;
+		}
 
 		return size.copy();
 	}
@@ -32,13 +36,19 @@ public class PC_GresFrame extends PC_GresWidget {
 	@Override
 	public void calcChildPositions() {
 		int xx = 0, xSize = 0;
-		for (PC_GresWidget w: childs) {
+		for (PC_GresWidget w : childs) {
 			w.calcChildPositions();
 			PC_CoordI csize = w.calcSize();
-			if (csize.x + xSize + framePadding*2 > size.x || csize.y > size.y) {
-				if (csize.x + xSize + framePadding*2 > size.x) size.x = csize.x + xSize + framePadding*2;
-				if (csize.y + framePadding*2 > size.y) size.y = csize.y + framePadding*2;
-				if (parent != null) parent.calcChildPositions();
+			if (csize.x + xSize + framePadding * 2 > size.x || csize.y > size.y) {
+				if (csize.x + xSize + framePadding * 2 > size.x) {
+					size.x = csize.x + xSize + framePadding * 2;
+				}
+				if (csize.y + framePadding * 2 > size.y) {
+					size.y = csize.y + framePadding * 2;
+				}
+				if (parent != null) {
+					parent.calcChildPositions();
+				}
 				calcChildPositions();
 				return;
 			}
@@ -47,7 +57,7 @@ public class PC_GresFrame extends PC_GresWidget {
 			// xx += size.x + widgetDistance;
 		}
 		xSize -= widgetMargin;
-		for (PC_GresWidget w: childs) {
+		for (PC_GresWidget w : childs) {
 			PC_CoordI csize = w.getSize();
 			int xPos = 0;
 			int yPos = 0;
@@ -87,9 +97,9 @@ public class PC_GresFrame extends PC_GresWidget {
 
 	@Override
 	protected void render(PC_CoordI mpos) {
-		
+
 		renderTextureSliced(mpos, mod_PCcore.getImgDir() + "gres/frame.png", size, new PC_CoordI(0, 0), new PC_CoordI(256, 256));
-		
+
 	}
 
 	@Override
