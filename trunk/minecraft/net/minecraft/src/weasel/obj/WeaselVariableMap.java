@@ -46,8 +46,8 @@ public class WeaselVariableMap extends WeaselObject {
 	public void set(String name, WeaselObject object) {
 
 		if (map.get(name) != null) {
-			if (map.get(name).getType() != object.getType()) { throw new RuntimeException("Trying to store " + object.getType()
-					+ " object into a " + map.get(name).getType() + " variable."); }
+			if (map.get(name).getType() != object.getType()) {
+				throw new RuntimeException("Trying to store " + object.getType() + " object into a " + map.get(name).getType() + " variable."); }
 		}
 
 		map.put(name, object);

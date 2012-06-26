@@ -6,6 +6,9 @@ import java.util.Random;
 import java.util.Set;
 
 import net.minecraft.src.forge.ITextureProvider;
+import net.minecraft.src.weasel.Calculator;
+import net.minecraft.src.weasel.obj.WeaselBoolean;
+import net.minecraft.src.weasel.obj.WeaselVariableMap;
 
 /**
  * Logic gate and other flat sensors
@@ -773,56 +776,25 @@ public class PClo_BlockGate extends BlockContainer implements PC_IRotatedBox, PC
 
 	boolean calcGates(String stri, boolean A, boolean B, boolean C) {
 		stri = stri.trim();
-		char c;
-		int h = 0;
-		if (stri.length() < 1) { return false; }
-		if (stri.length() == 1) {
-			c = stri.charAt(0);
-			if (c == 'l' || c == 'L') { return B; }
-			if (c == 'b' || c == 'B') { return A; }
-			if (c == 'r' || c == 'R') { return C; }
+		
+		try{
+			WeaselVariableMap vars = new WeaselVariableMap();
+			vars.set("L",new WeaselBoolean(B));
+			vars.set("R",new WeaselBoolean(C));
+			vars.set("B",new WeaselBoolean(A));
+			vars.set("F",new WeaselBoolean(false));
+			
+			Calculator.eval("F = "+stri, vars);
+	
+			return ((WeaselBoolean)vars.get("F")).get();
+			
+		}catch(Exception e){
+			System.out.println();
+			System.out.println("error in gate.");
+			System.out.println(stri);
+			e.printStackTrace();
 			return false;
 		}
-		if (stri.charAt(0) == '(') {
-			h = 1;
-			for (int i = 1; i < stri.length() - 1; i++) {
-				if (stri.charAt(i) == '(') {
-					h++;
-				}
-				if (stri.charAt(i) == ')') {
-					h--;
-					if (h == 0) {
-						break;
-					}
-				}
-			}
-			if (h > 0) {
-				if (stri.charAt(stri.length() - 1) == ')') { return calcGates(stri.substring(1, stri.length() - 1), A, B, C); }
-				return calcGates(stri.substring(1), A, B, C);
-			}
-			h = 0;
-		}
-		for (int i = stri.length() - 1; i >= 0; i--) {
-			switch (stri.charAt(i)) {
-				case '(':
-					h--;
-					break;
-				case ')':
-					h++;
-					break;
-				case '&':
-					if (h <= 0) { return calcGates(stri.substring(0, i), A, B, C) & calcGates(stri.substring(i + 1), A, B, C); }
-					break;
-				case '|':
-					if (h <= 0) { return calcGates(stri.substring(0, i), A, B, C) | calcGates(stri.substring(i + 1), A, B, C); }
-					break;
-				case '^':
-					if (h <= 0) { return calcGates(stri.substring(0, i), A, B, C) ^ calcGates(stri.substring(i + 1), A, B, C); }
-					break;
-			}
-		}
-		if (stri.charAt(0) == '!') { return !calcGates(stri.substring(1), A, B, C); }
-		return false;
 	}
 
 	/**

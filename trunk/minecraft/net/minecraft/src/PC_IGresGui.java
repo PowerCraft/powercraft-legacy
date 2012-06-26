@@ -44,5 +44,11 @@ public interface PC_IGresGui {
 	public abstract void onCraftMatrixChanged(IInventory iinventory);
 
 	public abstract Container getContainer();
+	
+	/**
+	 * Set focused element.
+	 * @param widget
+	 */
+	public void setFocus(PC_GresWidget widget);
 
 }
