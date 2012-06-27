@@ -6,20 +6,24 @@ package net.minecraft.src.weasel.obj;
  * 
  * @author MightyPork
  * @copy (c) 2012
- * 
  */
 @SuppressWarnings("javadoc")
 public enum WeaselObjectType {
 
 	BOOLEAN(1), INTEGER(2), STRING(3), VARIABLE_LIST(4), STACK(5);
 
-	/**  */
-	private final int index;
+	/** Enum index */
+	public int index;
 
 	private WeaselObjectType(int index) {
 		this.index = index;
 	}
-
+	
+	/**
+	 * Get enum type for type index
+	 * @param index type index
+	 * @return corresponding enum type
+	 */
 	public static WeaselObjectType getTypeFromIndex(int index) {
 		switch (index) {
 			case 1:
@@ -35,13 +39,6 @@ public enum WeaselObjectType {
 			default:
 				return null;
 		}
-	}
-
-	/**
-	 * @return type index
-	 */
-	public int getIndex() {
-		return index;
 	}
 
 

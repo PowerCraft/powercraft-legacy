@@ -1,13 +1,14 @@
 package net.minecraft.src.weasel.obj;
 
+
 import net.minecraft.src.NBTTagCompound;
+
 
 /**
  * String object
  * 
  * @author MightyPork
  * @copy (c) 2012
- * 
  */
 public class WeaselString extends WeaselObject {
 
@@ -30,9 +31,10 @@ public class WeaselString extends WeaselObject {
 		super(WeaselObjectType.STRING);
 		this.string = string;
 	}
-	
+
 	/**
 	 * Create string of any type (almost)
+	 * 
 	 * @param obj
 	 */
 	public WeaselString(Object obj) {
@@ -52,14 +54,15 @@ public class WeaselString extends WeaselObject {
 			return;
 		}
 
-		if (obj == null || !(obj instanceof String)) { throw new RuntimeException("Trying to store " + obj + " in a string variable."); }
+		if (obj == null || !(obj instanceof String)) {
+			throw new RuntimeException("Trying to store " + obj + " in a string variable.");
+		}
 		this.string = (String) obj;
 	}
 
 
 	@Override
 	public NBTTagCompound writeToNBT(NBTTagCompound tag) {
-		super.writeToNBT(tag);
 		tag.setString("s", string);
 		return tag;
 	}
@@ -72,8 +75,12 @@ public class WeaselString extends WeaselObject {
 
 	@Override
 	public boolean equals(Object obj) {
-		if (obj == null) { return false; }
-		if (!this.getClass().equals(obj.getClass())) { return false; }
+		if (obj == null) {
+			return false;
+		}
+		if (!this.getClass().equals(obj.getClass())) {
+			return false;
+		}
 
 		return ((WeaselString) obj).string == string;
 	}
