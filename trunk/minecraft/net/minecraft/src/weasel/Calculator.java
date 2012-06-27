@@ -1,5 +1,6 @@
 package net.minecraft.src.weasel;
 
+
 import java.util.Map.Entry;
 
 import javax.script.ScriptEngine;
@@ -11,39 +12,46 @@ import net.minecraft.src.weasel.obj.WeaselInteger;
 import net.minecraft.src.weasel.obj.WeaselObject;
 import net.minecraft.src.weasel.obj.WeaselVariableMap;
 
+
 /**
  * Expression evaluation class
  * 
  * @author MightyPork
  * @copy (c) 2012
- * 
  */
 public class Calculator {
 	private static ScriptEngineManager engineFactory = new ScriptEngineManager();
-	
+
 	/**
-	 * Format an integer (plain or wrapped in WeaselInteger, or a boolean, or long) using given radix, and output as string.
+	 * Format an integer (plain or wrapped in WeaselInteger, or a boolean, or
+	 * long) using given radix, and output as string.
+	 * 
 	 * @param obj the integer
 	 * @param radix radix. 2=binary,8=octal,16=hex,10=decimal.
 	 * @return the formatted integer
 	 */
-	public static String formatInteger(Object obj, int radix){
+	public static String formatInteger(Object obj, int radix) {
 		Integer i = 0;
-		if(obj instanceof Integer) i = (Integer) obj;
-		if(obj instanceof Long) i = (Integer) obj;
-		if(obj instanceof Float) i = Math.round((Float) obj);
-		if(obj instanceof Double) i = (int) Math.round((Double) obj);
-		if(obj instanceof Boolean) i = (Boolean) obj?1:0;
-		if(obj instanceof WeaselInteger) i = ((WeaselInteger) obj).get();
-		if(obj instanceof WeaselBoolean) i = ((WeaselBoolean) obj).get()?1:0;
-		
-		switch(radix){
-			case 2:	 return "0b"+Integer.toBinaryString(i);
-			case 8:	 return "0c"+Integer.toOctalString(i);
-			case 16: return "0x"+Integer.toHexString(i);
-			case 10: return "0d"+Integer.toString(i);
-			default: return "0d"+i;
-		}		
+		if (obj instanceof Integer) i = (Integer) obj;
+		if (obj instanceof Long) i = (Integer) obj;
+		if (obj instanceof Float) i = Math.round((Float) obj);
+		if (obj instanceof Double) i = (int) Math.round((Double) obj);
+		if (obj instanceof Boolean) i = (Boolean) obj ? 1 : 0;
+		if (obj instanceof WeaselInteger) i = ((WeaselInteger) obj).get();
+		if (obj instanceof WeaselBoolean) i = ((WeaselBoolean) obj).get() ? 1 : 0;
+
+		switch (radix) {
+			case 2:
+				return "0b" + Integer.toBinaryString(i);
+			case 8:
+				return "0c" + Integer.toOctalString(i);
+			case 16:
+				return "0x" + Integer.toHexString(i);
+			case 10:
+				return "0d" + Integer.toString(i);
+			default:
+				return "0d" + i;
+		}
 	}
 
 	/**
@@ -70,7 +78,9 @@ public class Calculator {
 	 */
 	public static Object eval(String expression, WeaselVariableMap varmap) throws CalcException {
 
-		if (expression.contains(";")) { throw new CalcException("Semicolon in a numeric expression. Possible injection attack."); }
+		if (expression.contains(";")) {
+			throw new CalcException("Semicolon in a numeric expression. Possible injection attack.");
+		}
 
 		ScriptEngine engine = engineFactory.getEngineByName("JavaScript");
 
@@ -97,7 +107,6 @@ public class Calculator {
 	 * 
 	 * @author MightyPork
 	 * @copy (c) 2012
-	 * 
 	 */
 	public static class CalcException extends RuntimeException {
 

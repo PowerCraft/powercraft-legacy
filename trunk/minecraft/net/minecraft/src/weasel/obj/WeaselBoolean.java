@@ -1,13 +1,14 @@
 package net.minecraft.src.weasel.obj;
 
+
 import net.minecraft.src.NBTTagCompound;
+
 
 /**
  * Boolean object
  * 
  * @author MightyPork
  * @copy (c) 2012
- * 
  */
 public class WeaselBoolean extends WeaselObject {
 
@@ -21,9 +22,10 @@ public class WeaselBoolean extends WeaselObject {
 		super(WeaselObjectType.BOOLEAN);
 		this.bool = bool;
 	}
-	
+
 	/**
 	 * Create boolean of any type (almost)
+	 * 
 	 * @param obj
 	 */
 	public WeaselBoolean(Object obj) {
@@ -45,7 +47,7 @@ public class WeaselBoolean extends WeaselObject {
 
 	@Override
 	public void set(Object obj) {
-		
+
 		if (obj instanceof WeaselInteger) {
 			this.bool = ((WeaselInteger) obj).get() != 0;
 			return;
@@ -75,7 +77,9 @@ public class WeaselBoolean extends WeaselObject {
 			return;
 		}
 
-		if (obj == null || !(obj instanceof Boolean)) { throw new RuntimeException("Trying to store " + obj + " in a boolean variable."); }
+		if (obj == null || !(obj instanceof Boolean)) {
+			throw new RuntimeException("Trying to store " + obj + " in a boolean variable.");
+		}
 		this.bool = (Boolean) obj;
 	}
 
@@ -87,15 +91,18 @@ public class WeaselBoolean extends WeaselObject {
 
 	@Override
 	public NBTTagCompound writeToNBT(NBTTagCompound tag) {
-		super.writeToNBT(tag);
 		tag.setBoolean("b", bool);
 		return tag;
 	}
 
 	@Override
 	public boolean equals(Object obj) {
-		if (obj == null) { return false; }
-		if (!this.getClass().equals(obj.getClass())) { return false; }
+		if (obj == null) {
+			return false;
+		}
+		if (!this.getClass().equals(obj.getClass())) {
+			return false;
+		}
 
 		return ((WeaselBoolean) obj).bool == bool;
 	}
@@ -109,6 +116,11 @@ public class WeaselBoolean extends WeaselObject {
 	@Override
 	public String toString() {
 		return "B(" + (bool ? "TRUE" : "FALSE") + ")";
+	}
+
+	@Override
+	public WeaselObject copy() {
+		return new WeaselBoolean(bool);
 	}
 
 }

@@ -1,11 +1,13 @@
 package net.minecraft.src.weasel.obj;
 
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Stack;
 
 import net.minecraft.src.NBTTagCompound;
 import net.minecraft.src.NBTTagList;
+
 
 /**
  * List of variables in the WeaselVM<br>
@@ -14,7 +16,6 @@ import net.minecraft.src.NBTTagList;
  * 
  * @author MightyPork
  * @copy (c) 2012
- * 
  */
 public class WeaselStack extends WeaselObject {
 
@@ -26,36 +27,40 @@ public class WeaselStack extends WeaselObject {
 	public void clear() {
 		stack.clear();
 	}
-	
+
 	/**
 	 * Check if the stack is empty
+	 * 
 	 * @return is empty
 	 */
-	public boolean empty(){
+	public boolean empty() {
 		return stack.empty();
 	}
 
 	/**
 	 * push object on stack
+	 * 
 	 * @param obj
 	 */
-	public void push(WeaselObject obj){
+	public void push(WeaselObject obj) {
 		stack.push(obj);
 	}
-	
+
 	/**
 	 * pop object from stack
+	 * 
 	 * @return the object
 	 */
-	public WeaselObject pop(){
+	public WeaselObject pop() {
 		return stack.pop();
 	}
-	
+
 	/**
 	 * Look at the topmost object without removing.
+	 * 
 	 * @return the object on top of the stack
 	 */
-	public WeaselObject peek(){
+	public WeaselObject peek() {
 		return stack.peek();
 	}
 
@@ -71,11 +76,11 @@ public class WeaselStack extends WeaselObject {
 	public NBTTagCompound writeToNBT(NBTTagCompound tag) {
 
 		NBTTagList tags = new NBTTagList();
-		
+
 		List<WeaselObject> list = new ArrayList<WeaselObject>(stack);
 
-		for(WeaselObject obj : list) {
-			NBTTagCompound tag1 = obj.writeToNBT(new NBTTagCompound());
+		for (WeaselObject obj : list) {
+			NBTTagCompound tag1 = WeaselObject.saveObjectToNBT(obj,new NBTTagCompound());
 			tags.appendTag(tag1);
 		}
 		tag.setTag("Stack", tags);
@@ -128,7 +133,9 @@ public class WeaselStack extends WeaselObject {
 	@SuppressWarnings("unchecked")
 	@Override
 	public void set(Object obj) {
-		if (obj == null || !(obj instanceof Stack)) { throw new RuntimeException("Trying to store " + obj + " in a Stack variable."); }
+		if (obj == null || !(obj instanceof Stack)) {
+			throw new RuntimeException("Trying to store " + obj + " in a Stack variable.");
+		}
 		stack = (Stack<WeaselObject>) obj;
 	}
 

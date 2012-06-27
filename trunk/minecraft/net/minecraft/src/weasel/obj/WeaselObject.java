@@ -1,15 +1,15 @@
 package net.minecraft.src.weasel.obj;
 
+
 import net.minecraft.src.NBTTagCompound;
 import net.minecraft.src.PC_INBT;
-import net.minecraft.src.PC_Utils;
+
 
 /**
  * Weasel data object.
  * 
  * @author MightyPork
  * @copy (c) 2012
- * 
  */
 public abstract class WeaselObject implements PC_INBT {
 
@@ -23,49 +23,36 @@ public abstract class WeaselObject implements PC_INBT {
 		this.type = type;
 	}
 
-	@Override
-	public NBTTagCompound writeToNBT(NBTTagCompound tag) {
-		tag.setInteger("type", type.getIndex());
+	/**
+	 * @return object type
+	 */
+	public final WeaselObjectType getType() {
+		return type;
+	}
+	
+	public abstract WeaselObject copy();
+	
+	/**
+	 * Save an object to {@link NBTTagCompound}, together with it's type (needed for loading).
+	 * 
+	 * @param object object to save
+	 * @param tag tag to save into
+	 * @return the tag
+	 */
+	public static final NBTTagCompound saveObjectToNBT(WeaselObject object, NBTTagCompound tag) {
+		tag.setInteger("type", object.getType().index);
+		object.writeToNBT(tag);
 		return tag;
 	}
 
 	/**
-	 * @return object type
-	 */
-	public WeaselObjectType getType() {
-		return type;
-	}
-
-	/**
-	 * Save Weasel Object to NBT, wrapped in it's own NBTTagCompound.<br>
-	 * It is at the same time added to parent compound tag.
-	 * 
-	 * @param outerTag
-	 * @param wrappingTagName
-	 * @return the wrapping tag
-	 */
-	public NBTTagCompound saveWrappedToNBT(NBTTagCompound outerTag, String wrappingTagName) {
-		return PC_Utils.writeWrappedToNBT(outerTag, wrappingTagName, this);
-	}
-
-	/**
-	 * Get Weasel Object from a wrapping compound tag.
-	 * 
-	 * @param outerTag
-	 * @param wrappingTagName
-	 * @return the loaded object
-	 */
-	public static WeaselObject loadWrappedObjectFromNBT(NBTTagCompound outerTag, String wrappingTagName) {
-		return loadObjectFromNBT(outerTag.getCompoundTag(wrappingTagName));
-	}
-
-	/**
-	 * Load an object from Compound NBT tag, using the proper WeaselObject subtype.
+	 * Load an object from Compound NBT tag, using the proper WeaselObject
+	 * subtype.
 	 * 
 	 * @param tag the tag with object
 	 * @return the object
 	 */
-	public static WeaselObject loadObjectFromNBT(NBTTagCompound tag) {
+	public static final WeaselObject loadObjectFromNBT(NBTTagCompound tag) {
 		WeaselObject obj = null;
 
 		switch (WeaselObjectType.getTypeFromIndex(tag.getInteger("type"))) {
@@ -107,6 +94,7 @@ public abstract class WeaselObject implements PC_INBT {
 
 	/**
 	 * Set the wrapped object, replace current one
+	 * 
 	 * @param obj
 	 */
 	public abstract void set(Object obj);

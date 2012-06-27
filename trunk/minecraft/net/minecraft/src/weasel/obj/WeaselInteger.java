@@ -1,5 +1,6 @@
 package net.minecraft.src.weasel.obj;
 
+
 import net.minecraft.src.NBTTagCompound;
 
 
@@ -8,7 +9,6 @@ import net.minecraft.src.NBTTagCompound;
  * 
  * @author MightyPork
  * @copy (c) 2012
- * 
  */
 public class WeaselInteger extends WeaselObject {
 
@@ -24,18 +24,20 @@ public class WeaselInteger extends WeaselObject {
 		super(WeaselObjectType.INTEGER);
 		this.integer = integer;
 	}
-	
+
 	/**
 	 * Create integer of any type (almost)
+	 * 
 	 * @param obj
 	 */
 	public WeaselInteger(Object obj) {
 		super(WeaselObjectType.INTEGER);
 		set(obj);
 	}
-	
+
 	/**
 	 * Integer object
+	 * 
 	 * @param number number representation
 	 * @param radix radix 2,8,16
 	 */
@@ -79,7 +81,9 @@ public class WeaselInteger extends WeaselObject {
 			return;
 		}
 
-		if (obj == null || !(obj instanceof Integer)) { throw new RuntimeException("Trying to store " + obj + " in an integer variable."); }
+		if (obj == null || !(obj instanceof Integer)) {
+			throw new RuntimeException("Trying to store " + obj + " in an integer variable.");
+		}
 		this.integer = (Integer) obj;
 	}
 
@@ -91,15 +95,18 @@ public class WeaselInteger extends WeaselObject {
 
 	@Override
 	public NBTTagCompound writeToNBT(NBTTagCompound tag) {
-		super.writeToNBT(tag);
 		tag.setInteger("i", integer);
 		return tag;
 	}
 
 	@Override
 	public boolean equals(Object obj) {
-		if (obj == null) { return false; }
-		if (!this.getClass().equals(obj.getClass())) { return false; }
+		if (obj == null) {
+			return false;
+		}
+		if (!this.getClass().equals(obj.getClass())) {
+			return false;
+		}
 
 		return ((WeaselInteger) obj).integer == integer;
 	}

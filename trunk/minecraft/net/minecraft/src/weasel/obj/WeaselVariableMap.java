@@ -1,11 +1,13 @@
 package net.minecraft.src.weasel.obj;
 
+
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Map.Entry;
 
 import net.minecraft.src.NBTTagCompound;
 import net.minecraft.src.NBTTagList;
+
 
 /**
  * List of variables in the WeaselVM<br>
@@ -14,7 +16,6 @@ import net.minecraft.src.NBTTagList;
  * 
  * @author MightyPork
  * @copy (c) 2012
- * 
  */
 public class WeaselVariableMap extends WeaselObject {
 
@@ -47,9 +48,22 @@ public class WeaselVariableMap extends WeaselObject {
 
 		if (map.get(name) != null) {
 			if (map.get(name).getType() != object.getType()) {
-				throw new RuntimeException("Trying to store " + object.getType() + " object into a " + map.get(name).getType() + " variable."); }
+				throw new RuntimeException("Trying to store " + object.getType() + " object into a " + map.get(name).getType() + " variable.");
+			}
 		}
 
+		map.put(name, object);
+	}
+	
+	/**
+	 * Store variable into map, ignoring old value data type.<br>
+	 * Used mainly for function return value.
+	 * 
+	 * @param name variable name
+	 * @param object variable object to store
+	 */
+	public void setForceReplace(String name, WeaselObject object) {
+		map.remove(name);
 		map.put(name, object);
 	}
 
@@ -76,7 +90,7 @@ public class WeaselVariableMap extends WeaselObject {
 
 		NBTTagList tags = new NBTTagList();
 		for (Entry<String, WeaselObject> entry : map.entrySet()) {
-			NBTTagCompound tag1 = entry.getValue().writeToNBT(new NBTTagCompound());
+			NBTTagCompound tag1 = WeaselObject.saveObjectToNBT(entry.getValue(),new NBTTagCompound());
 			tag1.setString("VariableName", entry.getKey());
 			tags.appendTag(tag1);
 		}
@@ -101,8 +115,12 @@ public class WeaselVariableMap extends WeaselObject {
 
 	@Override
 	public boolean equals(Object obj) {
-		if (obj == null) { return false; }
-		if (!this.getClass().equals(obj.getClass())) { return false; }
+		if (obj == null) {
+			return false;
+		}
+		if (!this.getClass().equals(obj.getClass())) {
+			return false;
+		}
 
 		return ((WeaselVariableMap) obj).map == map;
 	}
@@ -127,7 +145,9 @@ public class WeaselVariableMap extends WeaselObject {
 	@SuppressWarnings("unchecked")
 	@Override
 	public void set(Object obj) {
-		if (obj == null || !(obj instanceof Map)) { throw new RuntimeException("Trying to store " + obj + " in a VariableMap variable."); }
+		if (obj == null || !(obj instanceof Map)) {
+			throw new RuntimeException("Trying to store " + obj + " in a VariableMap variable.");
+		}
 		map = (LinkedHashMap<String, WeaselObject>) obj;
 	}
 
