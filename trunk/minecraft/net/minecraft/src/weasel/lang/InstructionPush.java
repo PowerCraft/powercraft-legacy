@@ -1,10 +1,8 @@
 package net.minecraft.src.weasel.lang;
 
 import net.minecraft.src.NBTTagCompound;
-import net.minecraft.src.PC_INBT;
 import net.minecraft.src.weasel.InstructionList;
 import net.minecraft.src.weasel.WeaselEngine;
-import net.minecraft.src.weasel.exception.PauseRequestedException;
 import net.minecraft.src.weasel.exception.WeaselRuntimeException;
 import net.minecraft.src.weasel.obj.WeaselObject;
 
@@ -31,24 +29,24 @@ public class InstructionPush extends Instruction {
 	}
 	
 	/**
-	 * @return name of this label
+	 * @return name of pushed variable
 	 */
-	public String getLabelName(){
+	public String getVariableName(){
 		return pushedVariableName;
 	}
 	
 	/**
-	 * Set label name
-	 * @param labelName label name to set
+	 * Set pushed variable name
+	 * @param variableName name of the pushed variable
 	 * @return this
 	 */
-	public InstructionPush setLabelName(String labelName){
-		this.pushedVariableName = labelName;
+	public InstructionPush setVariableName(String variableName){
+		this.pushedVariableName = variableName;
 		return this;
 	}
 
 	@Override
-	public void execute(WeaselEngine engine, InstructionList instructionList) throws PauseRequestedException, WeaselRuntimeException {
+	public void execute(WeaselEngine engine, InstructionList instructionList) throws WeaselRuntimeException {
 		WeaselObject obj = engine.variables.get(pushedVariableName);
 		if(obj == null) throw new WeaselRuntimeException("Variable "+pushedVariableName+" does not exist in this scope.");
 		engine.dataStack.push(obj);

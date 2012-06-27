@@ -151,5 +151,12 @@ public class WeaselVariableMap extends WeaselObject {
 		map = (LinkedHashMap<String, WeaselObject>) obj;
 	}
 
+	@Override
+	public WeaselObject copy() {
+		WeaselVariableMap map2 = new WeaselVariableMap();
+		map2.set(map.clone());
+		return map2;		
+	}
+
 
 }

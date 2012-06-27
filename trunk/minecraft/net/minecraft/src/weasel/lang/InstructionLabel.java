@@ -4,7 +4,6 @@ package net.minecraft.src.weasel.lang;
 import net.minecraft.src.NBTTagCompound;
 import net.minecraft.src.weasel.InstructionList;
 import net.minecraft.src.weasel.WeaselEngine;
-import net.minecraft.src.weasel.exception.PauseRequestedException;
 import net.minecraft.src.weasel.exception.WeaselRuntimeException;
 
 
@@ -20,7 +19,7 @@ public class InstructionLabel extends Instruction {
 	private String labelName;
 
 	@Override
-	public void execute(WeaselEngine engine, InstructionList instructionList) throws PauseRequestedException, WeaselRuntimeException {}
+	public void execute(WeaselEngine engine, InstructionList instructionList) throws WeaselRuntimeException {}
 
 	@Override
 	public NBTTagCompound writeToNBT(NBTTagCompound tag) {

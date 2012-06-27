@@ -96,4 +96,9 @@ public class WeaselString extends WeaselObject {
 		return "S(" + string + ")";
 	}
 
+	@Override
+	public WeaselString copy() {
+		return new WeaselString(new String(string));
+	}
+
 }

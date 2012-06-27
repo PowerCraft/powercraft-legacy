@@ -1,6 +1,8 @@
 package net.minecraft.src.weasel.obj;
 
 
+import java.util.ArrayList;
+
 import net.minecraft.src.NBTTagCompound;
 import net.minecraft.src.PC_INBT;
 
@@ -30,6 +32,10 @@ public abstract class WeaselObject implements PC_INBT {
 		return type;
 	}
 	
+	/**
+	 * Get a completely separate copy of this object.
+	 * @return the copy
+	 */
 	public abstract WeaselObject copy();
 	
 	/**
@@ -107,4 +113,47 @@ public abstract class WeaselObject implements PC_INBT {
 
 	@Override
 	public abstract int hashCode();
+	
+	/**
+	 * Type of an object
+	 * 
+	 * @author MightyPork
+	 *
+	 */
+	@SuppressWarnings("javadoc")
+	public enum WeaselObjectType {
+
+		BOOLEAN,INTEGER,STRING,VARIABLE_LIST,STACK;
+
+		
+		private WeaselObjectType() {
+			setup();
+		}
+		
+		private static int counter = 1;
+		private static ArrayList<WeaselObjectType> members;
+
+		static {
+			members = new ArrayList<WeaselObjectType>();
+			members.add(null);
+		}
+		
+		private void setup() {			
+			index = counter++;
+			members.add(this);
+		}
+		
+		/**
+		 * Get enum type for type index
+		 * 
+		 * @param index type index
+		 * @return corresponding enum type
+		 */
+		public static WeaselObjectType getTypeFromIndex(int index) {
+			return members.get(index);
+		}
+
+		/** enum index */
+		public int index;
+	}
 }

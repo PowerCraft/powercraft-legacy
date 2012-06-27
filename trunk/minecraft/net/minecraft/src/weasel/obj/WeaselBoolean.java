@@ -119,7 +119,7 @@ public class WeaselBoolean extends WeaselObject {
 	}
 
 	@Override
-	public WeaselObject copy() {
+	public WeaselBoolean copy() {
 		return new WeaselBoolean(bool);
 	}
 
