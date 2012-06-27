@@ -9,7 +9,10 @@ import net.minecraft.src.PC_INBT;
 import net.minecraft.src.weasel.exception.EndOfScopeException;
 import net.minecraft.src.weasel.exception.WeaselRuntimeException;
 import net.minecraft.src.weasel.lang.Instruction;
+import net.minecraft.src.weasel.lang.InstructionFunction;
 import net.minecraft.src.weasel.lang.InstructionLabel;
+import net.minecraft.src.weasel.obj.WeaselInteger;
+import net.minecraft.src.weasel.obj.WeaselObject;
 
 
 /**
@@ -20,9 +23,18 @@ import net.minecraft.src.weasel.lang.InstructionLabel;
  */
 public class InstructionList implements PC_INBT {
 
-	private ArrayList<Instruction> list = new ArrayList<Instruction>();
+	/** Instruction list. Use appendInstruction to add new instructions. */
+	public ArrayList<Instruction> list = new ArrayList<Instruction>();
 	private WeaselEngine engine;
 	private int programCounter = 0;
+	
+	/** Address of first instruction in current scope */
+	private int scopeStart;
+
+	/** Address of last instruction in current scope */
+	private int scopeEnd;
+	
+	
 
 	/**
 	 * Instruction list for VM
@@ -47,7 +59,7 @@ public class InstructionList implements PC_INBT {
 	 * @param index address
 	 */
 	public void movePointerTo(int index) {
-		if (!Utils.isInRange(index, engine.scopeStart, engine.scopeEnd)) throw new WeaselRuntimeException("Jump target out of scope range.");
+		if (!Utils.isInRange(index, scopeStart, scopeEnd)) throw new WeaselRuntimeException("Jump target out of scope range.");
 		programCounter = index;
 	}
 
@@ -64,6 +76,43 @@ public class InstructionList implements PC_INBT {
 			}
 		}
 	}
+	
+	/**
+	 * Stack what needs to be stacked, and move pointer to a header of the specified function
+	 * 
+	 * @param functionName name of a function
+	 * @param args arguments for the call
+	 */
+	public void callFunction(String functionName, WeaselObject[] args) {
+		for (Instruction instruction : list) {
+			if (instruction instanceof InstructionFunction) {
+				InstructionFunction func = (InstructionFunction)instruction;
+				if(func.getFunctionName().equals(functionName)) {					
+					engine.systemStack.push(new WeaselInteger(programCounter));
+					engine.systemStack.push(new WeaselInteger(scopeStart));
+					engine.systemStack.push(new WeaselInteger(scopeEnd));
+					engine.systemStack.push(engine.variables);
+					
+					programCounter = func.getAddress();
+					engine.variables.clear();
+					int cnt=0;
+					for(WeaselObject obj: args) {
+						engine.variables.set(func.getArgumentName(cnt++), obj);
+					}
+					
+					return;
+				}
+			}
+		}
+		
+		
+		if(engine.nativeFunctionExists(functionName)) {
+			engine.callNativeFunction(functionName,args);
+		}else {
+			throw new WeaselRuntimeException("Called function "+functionName+" does not exist.");
+		}
+		
+	}
 
 	/**
 	 * Execute next instruction (the one pointed by programCounter)
@@ -71,7 +120,7 @@ public class InstructionList implements PC_INBT {
 	 */
 	public void executeNextInstruction() throws EndOfScopeException {
 		if (programCounter >= list.size()) throw new EndOfScopeException();
-		if (programCounter > engine.scopeEnd) throw new EndOfScopeException();
+		if (programCounter > scopeEnd) throw new EndOfScopeException();
 		Instruction instruction = list.get(programCounter++);
 		instruction.execute(engine, this);
 	}
@@ -90,6 +139,8 @@ public class InstructionList implements PC_INBT {
 		}
 		tag.setTag("List", tags);
 		tag.setInteger("Size", size);
+		tag.setInteger("ScopeStart", scopeStart);
+		tag.setInteger("ScopeEnd", scopeEnd);
 
 		return tag;
 
@@ -109,6 +160,9 @@ public class InstructionList implements PC_INBT {
 			NBTTagCompound tag1 = (NBTTagCompound) tags.tagAt(i);
 			list.set(tag1.getInteger("Index"), Instruction.loadInstructionFromNBT(tag1));
 		}
+		
+		scopeStart = tag.getInteger("ScopeStart");
+		scopeEnd = tag.getInteger("ScopeEnd");
 
 		return this;
 

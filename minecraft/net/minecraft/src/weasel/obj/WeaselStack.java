@@ -2,11 +2,13 @@ package net.minecraft.src.weasel.obj;
 
 
 import java.util.ArrayList;
+import java.util.EmptyStackException;
 import java.util.List;
 import java.util.Stack;
 
 import net.minecraft.src.NBTTagCompound;
 import net.minecraft.src.NBTTagList;
+import net.minecraft.src.weasel.exception.WeaselRuntimeException;
 
 
 /**
@@ -43,16 +45,21 @@ public class WeaselStack extends WeaselObject {
 	 * @param obj
 	 */
 	public void push(WeaselObject obj) {
-		stack.push(obj);
+		stack.push(obj.copy());
 	}
 
 	/**
 	 * pop object from stack
 	 * 
 	 * @return the object
+	 * @throws WeaselRuntimeException when stack is empty
 	 */
 	public WeaselObject pop() {
-		return stack.pop();
+		try {
+			return stack.pop();
+		}catch(EmptyStackException e) {
+			throw new WeaselRuntimeException("Calling POP on empty stack.");
+		}
 	}
 
 	/**
@@ -137,6 +144,13 @@ public class WeaselStack extends WeaselObject {
 			throw new RuntimeException("Trying to store " + obj + " in a Stack variable.");
 		}
 		stack = (Stack<WeaselObject>) obj;
+	}
+
+	@Override
+	public WeaselStack copy() {
+		WeaselObject obj =  new WeaselStack();
+		obj.set(stack.clone());
+		return (WeaselStack) obj;
 	}
 
 

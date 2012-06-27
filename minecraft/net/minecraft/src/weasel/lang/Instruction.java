@@ -1,13 +1,13 @@
 package net.minecraft.src.weasel.lang;
 
 
+import java.util.ArrayList;
+
 import net.minecraft.src.NBTTagCompound;
 import net.minecraft.src.PC_INBT;
 import net.minecraft.src.weasel.InstructionList;
 import net.minecraft.src.weasel.WeaselEngine;
 import net.minecraft.src.weasel.exception.WeaselRuntimeException;
-import net.minecraft.src.weasel.exception.PauseRequestedException;
-import net.minecraft.src.weasel.obj.WeaselObjectType;
 
 
 /**
@@ -25,13 +25,9 @@ public abstract class Instruction implements PC_INBT {
 	 * 
 	 * @param engine the weasel engine
 	 * @param instructionList the instruction list the instruction is in
-	 * @throws PauseRequestedException thrown at the end of instruction if
-	 *             Weasel Engine should pause program and wait for external
-	 *             resume call.
-	 * @throws WeaselRuntimeException thrown if execution of this instruction
-	 *             failed.
+	 * @throws WeaselRuntimeException thrown if execution of this instruction failed.
 	 */
-	public abstract void execute(WeaselEngine engine, InstructionList instructionList) throws PauseRequestedException, WeaselRuntimeException;
+	public abstract void execute(WeaselEngine engine, InstructionList instructionList) throws WeaselRuntimeException;
 
 	/**
 	 * Set instruction address in {@link InstructionList}
@@ -77,6 +73,12 @@ public abstract class Instruction implements PC_INBT {
 
 
 
+	/**
+	 * Save a given instruction to {@link NBTTagCompound}
+	 * @param instruction instruction to save
+	 * @param tag compound tag to save into
+	 * @return the tag
+	 */
 	public static final NBTTagCompound saveInstructionToNBT(Instruction instruction, NBTTagCompound tag) {
 		tag.setInteger("type", instruction.getType().index);
 		instruction.writeToNBT(tag);
@@ -93,9 +95,13 @@ public abstract class Instruction implements PC_INBT {
 	public static final Instruction loadInstructionFromNBT(NBTTagCompound tag) {
 		switch (InstructionType.getTypeFromIndex(tag.getInteger("type"))) {
 			case LABEL:
-				return (Instruction) new InstructionLabel().readFromNBT(tag);
+				return new InstructionLabel().readFromNBT(tag);
+			case GOTO:
+				return new InstructionGoto().readFromNBT(tag);
 			case PUSH:
-				return (Instruction) new InstructionPush().readFromNBT(tag);
+				return new InstructionPush().readFromNBT(tag);
+			case POP:
+				return new InstructionPop().readFromNBT(tag);
 			default:
 				return null;
 		}
@@ -110,12 +116,25 @@ public abstract class Instruction implements PC_INBT {
 	@SuppressWarnings("javadoc")
 	protected enum InstructionType {
 
-		LABEL(1), CALL(2), FUNCTION(3), SET(4), PUSH(5), POP(6), IF(7), CALL_HW(8), END(9), PAUSE(10);
+		LABEL, GOTO, CALL, FUNCTION, SET, SET_RETVAL, PUSH, POP, IF, END, PAUSE;
 
-		private InstructionType(int i) {
-			index = i;
+		private InstructionType() {
+			setup();
 		}
+		
+		private static int counter = 1;
+		private static ArrayList<InstructionType> members;
 
+		static {
+			members = new ArrayList<Instruction.InstructionType>();
+			members.add(null);
+		}
+		
+		private void setup() {			
+			index = counter++;
+			members.add(this);
+		}
+		
 		/**
 		 * Get enum type for type index
 		 * 
@@ -123,30 +142,7 @@ public abstract class Instruction implements PC_INBT {
 		 * @return corresponding enum type
 		 */
 		public static InstructionType getTypeFromIndex(int index) {
-			switch (index) {
-				case 1:
-					return LABEL;
-				case 2:
-					return CALL;
-				case 3:
-					return FUNCTION;
-				case 4:
-					return SET;
-				case 5:
-					return PUSH;
-				case 6:
-					return POP;
-				case 7:
-					return IF;
-				case 8:
-					return CALL_HW;
-				case 9:
-					return END;
-				case 10:
-					return PAUSE;
-				default:
-					return null;
-			}
+			return members.get(index);
 		}
 
 		/** enum index */

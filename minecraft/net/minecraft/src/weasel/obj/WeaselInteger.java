@@ -121,4 +121,9 @@ public class WeaselInteger extends WeaselObject {
 	public String toString() {
 		return "I(" + integer + ")";
 	}
+
+	@Override
+	public WeaselInteger copy() {
+		return new WeaselInteger(integer);
+	}
 }
