@@ -15,7 +15,7 @@ public interface IWeaselControlled {
 	 * @param functionName hardware function name
 	 * @return supports function
 	 */
-	boolean hasFunction(String functionName);
+	public boolean hasFunction(String functionName);
 
 	/**
 	 * Call a hardware function
@@ -24,6 +24,15 @@ public interface IWeaselControlled {
 	 * @param args function argument list
 	 * @return return value
 	 */
-	WeaselObject callFunction(WeaselEngine engine, String functionName, WeaselObject[] args);
+	public WeaselObject callFunction(WeaselEngine engine, String functionName, WeaselObject[] args);
+
+	/**
+	 * Get a variable for name.<br>
+	 * This is commonly used to retrieve hardware state, inputs etc.
+	 * 
+	 * @param name variable name
+	 * @return the variable, or null if not available.
+	 */
+	public WeaselObject getVariable(String name);
 
 }
