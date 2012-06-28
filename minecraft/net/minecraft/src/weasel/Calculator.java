@@ -1,7 +1,11 @@
 package net.minecraft.src.weasel;
 
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map.Entry;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import javax.script.ScriptEngine;
 import javax.script.ScriptEngineManager;
@@ -68,6 +72,41 @@ public class Calculator {
 		}
 	}
 
+	/**
+	 * Evaluate an expression with variables from VM.
+	 * 
+	 * @param expression expression, without semicolon. eg. (14+a)/2;
+	 * @param engine weasel engine
+	 * @return result of the expression.
+	 * @throws CalcException when evaluation fails.
+	 */
+	public static Object eval(String expression, WeaselEngine engine) throws CalcException {
+
+		if (expression.contains(";")) {
+			throw new CalcException("Semicolon in a numeric expression. Possible injection attack.");
+		}
+
+		ScriptEngine jsEngine = engineFactory.getEngineByName("JavaScript");
+
+		List<String> varsNeeded = new ArrayList<String>();
+		Matcher matcher = Pattern.compile("([a-zA-Z_]{1}[a-zA-Z_0-9.]*?)").matcher(expression);
+		while(matcher.find()){
+		    String name = matcher.group(1);
+		    varsNeeded.add(name);
+		    System.out.println("varNeeded: "+name);
+		    jsEngine.put(name, engine.getVariable(name).get());
+		}
+
+		Object out = eval(jsEngine, expression);
+
+		for (String varname : varsNeeded) {
+			engine.getVariable(varname).set(jsEngine.get(varname));	
+		}
+
+		return out;
+
+	}
+	
 	/**
 	 * Evaluate an expression with variables from VM.
 	 * 

@@ -1,12 +1,14 @@
 package net.minecraft.src.weasel.obj;
 
 
+import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Map.Entry;
 
 import net.minecraft.src.NBTTagCompound;
 import net.minecraft.src.NBTTagList;
+import net.minecraft.src.weasel.WeaselEngine;
 
 
 /**
@@ -34,7 +36,7 @@ public class WeaselVariableMap extends WeaselObject {
 	 * 
 	 * @param name variable name
 	 */
-	public void unset(String name) {
+	public void unsetVariable(String name) {
 		map.remove(name);
 	}
 
@@ -44,7 +46,7 @@ public class WeaselVariableMap extends WeaselObject {
 	 * @param name variable name
 	 * @param object variable object to store
 	 */
-	public void set(String name, WeaselObject object) {
+	public void setVariable(String name, WeaselObject object) {
 
 		if (map.get(name) != null) {
 			if (map.get(name).getType() != object.getType()) {
@@ -54,18 +56,18 @@ public class WeaselVariableMap extends WeaselObject {
 
 		map.put(name, object);
 	}
-	
-	/**
-	 * Store variable into map, ignoring old value data type.<br>
-	 * Used mainly for function return value.
-	 * 
-	 * @param name variable name
-	 * @param object variable object to store
-	 */
-	public void setForceReplace(String name, WeaselObject object) {
-		map.remove(name);
-		map.put(name, object);
-	}
+
+//	/**
+//	 * Store variable into map, ignoring old value data type.<br>
+//	 * Used mainly for function return value.
+//	 * 
+//	 * @param name variable name
+//	 * @param object variable object to store
+//	 */
+//	public void setVariableForceReplace(String name, WeaselObject object) {
+//		map.remove(name);
+//		map.put(name, object);
+//	}
 
 	/**
 	 * Get variable from map
@@ -73,7 +75,7 @@ public class WeaselVariableMap extends WeaselObject {
 	 * @param name variable name
 	 * @return variable object
 	 */
-	public WeaselObject get(String name) {
+	public WeaselObject getVariable(String name) {
 		return map.get(name);
 	}
 
@@ -90,7 +92,7 @@ public class WeaselVariableMap extends WeaselObject {
 
 		NBTTagList tags = new NBTTagList();
 		for (Entry<String, WeaselObject> entry : map.entrySet()) {
-			NBTTagCompound tag1 = WeaselObject.saveObjectToNBT(entry.getValue(),new NBTTagCompound());
+			NBTTagCompound tag1 = WeaselObject.saveObjectToNBT(entry.getValue(), new NBTTagCompound());
 			tag1.setString("VariableName", entry.getKey());
 			tags.appendTag(tag1);
 		}
@@ -125,8 +127,6 @@ public class WeaselVariableMap extends WeaselObject {
 		return ((WeaselVariableMap) obj).map == map;
 	}
 
-
-
 	@Override
 	public int hashCode() {
 		return map.hashCode();
@@ -138,7 +138,7 @@ public class WeaselVariableMap extends WeaselObject {
 	}
 
 	@Override
-	public Object get() {
+	public Map<String, WeaselObject> get() {
 		return map;
 	}
 
@@ -155,7 +155,7 @@ public class WeaselVariableMap extends WeaselObject {
 	public WeaselObject copy() {
 		WeaselVariableMap map2 = new WeaselVariableMap();
 		map2.set(map.clone());
-		return map2;		
+		return map2;
 	}
 
 

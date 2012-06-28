@@ -73,10 +73,10 @@ public class PClo_GuiCustomGate implements PC_IGresBase {
 		
 		try{
 			WeaselVariableMap vars = new WeaselVariableMap();
-			vars.set("L",new WeaselBoolean(false));
-			vars.set("R",new WeaselBoolean(false));
-			vars.set("B",new WeaselBoolean(false));
-			vars.set("F",new WeaselBoolean(false));
+			vars.setVariable("L",new WeaselBoolean(false));
+			vars.setVariable("R",new WeaselBoolean(false));
+			vars.setVariable("B",new WeaselBoolean(false));
+			vars.setVariable("F",new WeaselBoolean(false));
 			
 			Calculator.eval("F = "+program, vars);
 			

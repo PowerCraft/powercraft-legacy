@@ -1,6 +1,7 @@
 package net.minecraft.src.weasel;
 
 import net.minecraft.src.weasel.obj.WeaselObject;
+import net.minecraft.src.weasel.obj.WeaselVariableMap;
 
 /**
  * Weasel engine controlled hardware

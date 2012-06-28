@@ -779,14 +779,14 @@ public class PClo_BlockGate extends BlockContainer implements PC_IRotatedBox, PC
 		
 		try{
 			WeaselVariableMap vars = new WeaselVariableMap();
-			vars.set("L",new WeaselBoolean(B));
-			vars.set("R",new WeaselBoolean(C));
-			vars.set("B",new WeaselBoolean(A));
-			vars.set("F",new WeaselBoolean(false));
+			vars.setVariable("L",new WeaselBoolean(B));
+			vars.setVariable("R",new WeaselBoolean(C));
+			vars.setVariable("B",new WeaselBoolean(A));
+			vars.setVariable("F",new WeaselBoolean(false));
 			
 			Calculator.eval("F = "+stri, vars);
 	
-			return ((WeaselBoolean)vars.get("F")).get();
+			return ((WeaselBoolean)vars.getVariable("F")).get();
 			
 		}catch(Exception e){
 			System.out.println();

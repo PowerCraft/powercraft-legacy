@@ -46,7 +46,7 @@ public class InstructionPop extends Instruction {
 
 	@Override
 	public void execute(WeaselEngine engine, InstructionList instructionList) throws WeaselRuntimeException {
-		engine.variables.set(poppedVariableName,engine.dataStack.pop());
+		engine.variables.setVariable(poppedVariableName,engine.dataStack.pop());
 	}
 
 }

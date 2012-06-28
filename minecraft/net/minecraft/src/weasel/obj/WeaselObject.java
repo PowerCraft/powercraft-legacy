@@ -131,15 +131,11 @@ public abstract class WeaselObject implements PC_INBT {
 		}
 		
 		private static int counter = 1;
-		private static ArrayList<WeaselObjectType> members;
-
-		static {
-			members = new ArrayList<WeaselObjectType>();
-			members.add(null);
-		}
+		private static ArrayList<WeaselObjectType> members = new ArrayList<WeaselObjectType>();
 		
-		private void setup() {			
+		private void setup() {
 			index = counter++;
+			if(members == null) members = new ArrayList<WeaselObjectType>();
 			members.add(this);
 		}
 		
@@ -150,7 +146,7 @@ public abstract class WeaselObject implements PC_INBT {
 		 * @return corresponding enum type
 		 */
 		public static WeaselObjectType getTypeFromIndex(int index) {
-			return members.get(index);
+			return members.get(index-1);
 		}
 
 		/** enum index */

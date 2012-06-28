@@ -1,9 +1,12 @@
 package net.minecraft.src;
 
 import java.io.ByteArrayInputStream;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -183,8 +186,54 @@ public class mod_PCcore extends PC_Module implements PC_IActivatorListener {
 
 		// test.run();
 
+		List<String> tmpEvals = new ArrayList<String>();
+		int tmpCounter = 0;
+		String expression = "posY = MathHelper.clamp_int(\n" + 
+				"					random.nextInt(MathHelper.clamp_int(cfg.num(pk_genCrystalsMaxY) - cfg.num(pk_genCrystalsMinY), 1, 255))" + 
+				"							+ cfg.num(pk_genCrystalsMinY), 1, 255);";
+		
+		expression = expression.replaceAll("\\s", "");
+		System.out.println("ee: " +expression);
+		
+		StringBuffer sb = new StringBuffer();
+		Pattern fnPattern = Pattern.compile("([a-zA-Z_]{1}[a-zA-Z_0-9.]*?)\\(([^(]*?)\\)");
+		
+		int functionsFoundThisTurn=-1;
+		while(functionsFoundThisTurn != 0) {
+			functionsFoundThisTurn = 0;
+			Matcher funcMatcher = fnPattern.matcher(expression);
+			
+			funcMatcher = fnPattern.matcher(expression);
+			
+			sb = new StringBuffer();
+			while(funcMatcher.find()){
+			    String name = funcMatcher.group(1);
+			    String args = funcMatcher.group(2);
+			    String tmpvar = "_tmp" + tmpCounter++;
+			    tmpEvals.add(tmpvar+"="+name+"("+args+")");
+			    funcMatcher.appendReplacement(sb, tmpvar);
+			    functionsFoundThisTurn++;
+			}
+			funcMatcher.appendTail(sb);
+			
+			expression = sb.toString();	
+			System.out.println("expr2: "+expression);
+		}
+		
+		
+		for(String line : tmpEvals) {
+			System.out.println(line);
+		}
+		
+		System.out.println("Expression remaining: "+expression);
+		Matcher varMatcher = Pattern.compile("([a-zA-Z_]{1}[a-zA-Z_0-9.]*?)([^a-zA-Z_0-9.()]|$)").matcher(expression);
+		while(varMatcher.find()){
+		    String name = varMatcher.group(1);
+		    System.out.println("varNeeded: "+name);
+		}
+		
 
-		// System.exit(0);
+		 System.exit(0);
 		// end of weasel;
 
 
