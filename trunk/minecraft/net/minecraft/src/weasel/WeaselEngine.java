@@ -3,11 +3,8 @@ package net.minecraft.src.weasel;
 
 import net.minecraft.src.NBTTagCompound;
 import net.minecraft.src.PC_INBT;
-import net.minecraft.src.PC_Utils;
+import net.minecraft.src.weasel.exception.EndOfScopeException;
 import net.minecraft.src.weasel.exception.WeaselRuntimeException;
-import net.minecraft.src.weasel.lang.Instruction;
-import net.minecraft.src.weasel.lang.InstructionLabel;
-import net.minecraft.src.weasel.obj.WeaselInteger;
 import net.minecraft.src.weasel.obj.WeaselObject;
 import net.minecraft.src.weasel.obj.WeaselStack;
 import net.minecraft.src.weasel.obj.WeaselVariableMap;
@@ -21,6 +18,10 @@ import net.minecraft.src.weasel.obj.WeaselVariableMap;
  */
 public class WeaselEngine implements PC_INBT {
 	
+	/**
+	 * Weasel Engine
+	 * @param hardware hardware the engine is controlling
+	 */
 	public WeaselEngine(IWeaselControlled hardware) {
 		this.hardware = hardware;
 	}
@@ -32,6 +33,7 @@ public class WeaselEngine implements PC_INBT {
 	
 	private IWeaselControlled hardware = null;
 	
+	/** Function retval */
 	public WeaselObject returnValue = null;
 
 	/** Stack of addresses and variable lists */
@@ -73,8 +75,50 @@ public class WeaselEngine implements PC_INBT {
 		return this;
 	}
 	
+	/**
+	 * Set return value of a function. Since return value can't be assigned directly,
+	 * SET_RETVAL must be called right after function call.
+	 * 
+	 * @param object return value (WeaselObject)
+	 */
 	public void setReturnValue(WeaselObject object) {
 		returnValue = object;
+	}
+	
+	/**
+	 * Get variable value.
+	 * @param name
+	 * @return variable object
+	 * @throws WeaselRuntimeException when variable was not found
+	 */
+	public WeaselObject getVariable(String name) {
+		WeaselObject obj = hardware.getVariable(name);
+		if(obj != null) return obj;
+		obj = variables.get(name);
+		if(obj != null) return obj;
+		throw new WeaselRuntimeException("Variable "+name+" is not defined in this scope.");
+	}
+	
+	/**
+	 * Execute at most given number of statements
+	 * @param statementsMax max number of statements to execute
+	 * @return true = all executed, false = PAUSE required
+	 * @throws WeaselRuntimeException when something goes wrong.
+	 */
+	public boolean run(int statementsMax) {
+		
+		for(;statementsMax>0;statementsMax--) {
+			try{
+				instructionList.executeNextInstruction();
+			}catch(EndOfScopeException eose) {
+				return true;
+			}catch(WeaselRuntimeException wre) {
+				throw wre;
+			}
+			
+			if(pauseRequested) return false;
+		}		
+		return true;
 	}
 
 	/**
