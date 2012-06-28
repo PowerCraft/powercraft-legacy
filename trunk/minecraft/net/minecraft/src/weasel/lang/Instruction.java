@@ -8,6 +8,7 @@ import net.minecraft.src.PC_INBT;
 import net.minecraft.src.weasel.InstructionList;
 import net.minecraft.src.weasel.WeaselEngine;
 import net.minecraft.src.weasel.exception.WeaselRuntimeException;
+import net.minecraft.src.weasel.obj.WeaselObject.WeaselObjectType;
 
 
 /**
@@ -123,12 +124,7 @@ public abstract class Instruction implements PC_INBT {
 		}
 		
 		private static int counter = 1;
-		private static ArrayList<InstructionType> members;
-
-		static {
-			members = new ArrayList<Instruction.InstructionType>();
-			members.add(null);
-		}
+		private static ArrayList<InstructionType> members = new ArrayList<Instruction.InstructionType>();
 		
 		private void setup() {			
 			index = counter++;
@@ -142,7 +138,8 @@ public abstract class Instruction implements PC_INBT {
 		 * @return corresponding enum type
 		 */
 		public static InstructionType getTypeFromIndex(int index) {
-			return members.get(index);
+			if(members == null) members = new ArrayList<InstructionType>();
+			return members.get(index-1);
 		}
 
 		/** enum index */

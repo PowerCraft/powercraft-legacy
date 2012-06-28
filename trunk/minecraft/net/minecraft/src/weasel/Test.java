@@ -4,6 +4,7 @@ package net.minecraft.src.weasel;
 import net.minecraft.src.NBTTagCompound;
 import net.minecraft.src.weasel.obj.WeaselBoolean;
 import net.minecraft.src.weasel.obj.WeaselInteger;
+import net.minecraft.src.weasel.obj.WeaselObject;
 import net.minecraft.src.weasel.obj.WeaselStack;
 import net.minecraft.src.weasel.obj.WeaselString;
 import net.minecraft.src.weasel.obj.WeaselVariableMap;
@@ -12,22 +13,44 @@ import net.minecraft.src.weasel.obj.WeaselVariableMap;
 public class Test {
 
 	public void run() {
-		WeaselVariableMap map = new WeaselVariableMap();
-		map.set("var1", new WeaselInteger(-13));
-		map.set("var2", new WeaselInteger(17));
-		map.set("var3", new WeaselInteger(99));
-		map.set("bool", new WeaselBoolean(true));
-		map.set("bool_second", new WeaselBoolean(false));
-		map.set("string", new WeaselString("Ahoy! ěščř"));
-		map.set("string2", new WeaselString("SECOND"));
+		WeaselEngine engine = new WeaselEngine(new IWeaselControlled() {
+			
+			@Override
+			public boolean hasFunction(String functionName) {
+				return false;
+			}
+			
+			@Override
+			public WeaselObject getVariable(String name) {
+				if(name.equals("hw.num")) return new WeaselInteger(13);
+				return null;
+			}
+			
+			@Override
+			public WeaselObject callFunction(WeaselEngine engine, String functionName, WeaselObject[] args) {
+				return null;
+			}
+		});
+		
+		WeaselVariableMap map = engine.variables;
+		map.setVariable("integer", new WeaselInteger(-13));
+		map.setVariable("varint", new WeaselInteger(17));
+		map.setVariable("bool", new WeaselBoolean(true));
+		map.setVariable("bool_second", new WeaselBoolean(false));
+		map.setVariable("string", new WeaselString("Ahoy! ěščř"));
+		map.setVariable("string2", new WeaselString("SECOND"));
+		
 
 		// variable assign
-		Calculator.eval("var1 += var2 * var3", map);
-		assert (((WeaselInteger) map.get("var1")).get() == -13 + 17);
+		Calculator.eval("integer += var * hw.num", engine);
+		System.out.println(" = "+map.getVariable("var1"));
+		if(true) return;
+		
+		assert (((WeaselInteger) map.getVariable("var1")).get() == -13 + 17);
 
 		// strings
-		Calculator.eval("string+='!'", map);
-		assert (((WeaselInteger) map.get("var1")).get().equals("Ahoy! ěšč!"));
+		Calculator.eval("string+='!'", engine);
+		assert (((WeaselInteger) map.getVariable("var1")).get().equals("Ahoy! ěšč!"));
 
 
 		// NBT

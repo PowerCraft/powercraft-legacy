@@ -47,7 +47,7 @@ public class InstructionPush extends Instruction {
 
 	@Override
 	public void execute(WeaselEngine engine, InstructionList instructionList) throws WeaselRuntimeException {
-		WeaselObject obj = engine.variables.get(pushedVariableName);
+		WeaselObject obj = engine.variables.getVariable(pushedVariableName);
 		if(obj == null) throw new WeaselRuntimeException("Variable "+pushedVariableName+" does not exist in this scope.");
 		engine.dataStack.push(obj);
 	}

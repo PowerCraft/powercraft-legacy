@@ -97,7 +97,7 @@ public class InstructionList implements PC_INBT {
 					engine.variables.clear();
 					int cnt=0;
 					for(WeaselObject obj: args) {
-						engine.variables.set(func.getArgumentName(cnt++), obj);
+						engine.variables.setVariable(func.getArgumentName(cnt++), obj);
 					}
 					
 					return;
