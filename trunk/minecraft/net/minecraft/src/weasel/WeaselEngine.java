@@ -5,8 +5,11 @@ import net.minecraft.src.NBTTagCompound;
 import net.minecraft.src.PC_INBT;
 import net.minecraft.src.weasel.exception.EndOfScopeException;
 import net.minecraft.src.weasel.exception.WeaselRuntimeException;
+import net.minecraft.src.weasel.obj.WeaselBoolean;
+import net.minecraft.src.weasel.obj.WeaselInteger;
 import net.minecraft.src.weasel.obj.WeaselObject;
 import net.minecraft.src.weasel.obj.WeaselStack;
+import net.minecraft.src.weasel.obj.WeaselString;
 import net.minecraft.src.weasel.obj.WeaselVariableMap;
 
 
@@ -16,7 +19,7 @@ import net.minecraft.src.weasel.obj.WeaselVariableMap;
  * @author MightyPork
  * @copy (c) 2012
  */
-public class WeaselEngine implements PC_INBT {
+public class WeaselEngine implements PC_INBT, IVariableContainer {
 
 	/**
 	 * Weasel Engine
@@ -131,30 +134,37 @@ public class WeaselEngine implements PC_INBT {
 		hardware.callFunction(this, functionName, args);
 	}
 	
-	/**
-	 * Get variable for name, both weasel and natives
-	 * @param name variable name
-	 * @return variable value
-	 */
+
+	@Override
 	public WeaselObject getVariable(String name) {
 		WeaselObject obj;
 		if((obj = hardware.getVariable(name)) != null) {
-			System.out.println(name+" is hw: "+obj);
 			return obj;
 		}
-		
 		return variables.getVariable(name);
-	}
+	}	
 	
-	/**
-	 * Set variable value.
-	 * @param name
-	 * @param value
-	 */
-	public void setVariable(String name, WeaselObject value) {
+
+	@Override
+	public void setVariable(String name, Object value) {
 		if(hardware.getVariable(name) != null) throw new WeaselRuntimeException("Native variables are read-only. @ "+name+" = "+value);
 		if(name == null || value == null) throw new WeaselRuntimeException("Variable name or value to set is null. @ "+name+" = "+value);
-		variables.setVariable(name,value);
+		
+		WeaselObject set = null;
+		if(value instanceof WeaselObject) {
+			set = (WeaselObject) value;
+		}else if(value instanceof Number) {
+			set = new WeaselInteger(value);
+		}else if(value instanceof String) {
+			set = new WeaselString(value);
+		}else if(value instanceof Boolean) {
+			set = new WeaselBoolean(value);
+		}else {
+			throw new WeaselRuntimeException("Value "+value+" cannot be saved as a WeaselObject to variable map.");
+		}
+		
+		variables.setVariable(name,set);
 	}
+
 
 }

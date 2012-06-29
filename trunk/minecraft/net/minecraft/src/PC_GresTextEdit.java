@@ -48,9 +48,9 @@ public class PC_GresTextEdit extends PC_GresWidget {
 		maxChars = chars;
 		canAddWidget = false;
 		color[textColorEnabled] = 0xffffffff;
-		color[textColorShadowEnabled] = 0xff383838;
+		color[textColorShadowEnabled] = 0; //0xff383838;
 		color[textColorDisabled] = 0xffffffff;
-		color[textColorShadowDisabled] = 0xff383838;
+		color[textColorShadowDisabled] = 0; //0xff383838;
 	}
 
 	/**
@@ -65,9 +65,9 @@ public class PC_GresTextEdit extends PC_GresWidget {
 		maxChars = chars;
 		canAddWidget = false;
 		color[textColorEnabled] = 0xffffffff;
-		color[textColorShadowEnabled] = 0xff383838;
+		color[textColorShadowEnabled] = 0; //0xff383838;
 		color[textColorDisabled] = 0xffffffff;
-		color[textColorShadowDisabled] = 0xff383838;
+		color[textColorShadowDisabled] = 0; //0xff383838;
 		this.type = type;
 	}
 
@@ -160,6 +160,10 @@ public class PC_GresTextEdit extends PC_GresWidget {
 		return false;
 	}
 
+	/**
+	 * Add a character instead of current selection (or in place of, if start == end)
+	 * @param c character
+	 */
 	protected void addKey(char c) {
 		int s = mouseSelectStart, e = mouseSelectEnd;
 		if (s > e) {

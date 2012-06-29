@@ -151,13 +151,13 @@ public class mod_PClogic extends PC_Module {
 
 		gateOff = new PClo_BlockGate(cfg().getInteger(pk_idGateOff), false)
 				.setBlockName("PCloLogicGate")
-				.setHardness(0.0F).setLightValue(0)
+				.setHardness(0.0F)/*.setLightValue(0)*/
 				.setStepSound(Block.soundWoodFootstep)
 				.disableStats().setRequiresSelfNotify();
 
 		gateOn = new PClo_BlockGate(cfg().getInteger(pk_idGateOn), true)
 				.setBlockName("PCloLogicGate")
-				.setHardness(0.0F).setLightValue(cfg().getInteger(pk_brightGate) * 0.0625F)
+				.setHardness(0.0F)/*.setLightValue(cfg().getInteger(pk_brightGate) * 0.0625F)*/
 				.setStepSound(Block.soundWoodFootstep)
 				.disableStats().setRequiresSelfNotify();
 

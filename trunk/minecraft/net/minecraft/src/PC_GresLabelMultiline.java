@@ -65,7 +65,6 @@ public class PC_GresLabelMultiline extends PC_GresWidget {
 		for (String s : lines_nl) {
 			s.trim();
 			if (s.length() > 0) {
-				@SuppressWarnings("unchecked")
 				List<String> lines = fontRenderer.listFormattedStringToWidth(s, getMinSize().x);
 
 				for (String ss : lines) {
@@ -130,7 +129,6 @@ public class PC_GresLabelMultiline extends PC_GresWidget {
 		for (String s : lines_nl) {
 			s.trim();
 			if (s.length() > 0) {
-				@SuppressWarnings("unchecked")
 				List<String> lines = fontRenderer.listFormattedStringToWidth(s, minSize.x);
 
 				for (String ss : lines) {

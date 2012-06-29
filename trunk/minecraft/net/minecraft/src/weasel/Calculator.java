@@ -2,7 +2,9 @@ package net.minecraft.src.weasel;
 
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Map.Entry;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -11,10 +13,12 @@ import javax.script.ScriptEngine;
 import javax.script.ScriptEngineManager;
 import javax.script.ScriptException;
 
+import org.nfunk.jep.JEP;
+
+import net.minecraft.src.weasel.exception.WeaselRuntimeException;
 import net.minecraft.src.weasel.obj.WeaselBoolean;
 import net.minecraft.src.weasel.obj.WeaselInteger;
-import net.minecraft.src.weasel.obj.WeaselObject;
-import net.minecraft.src.weasel.obj.WeaselVariableMap;
+import net.minecraft.src.weasel.obj.WeaselString;
 
 
 /**
@@ -24,7 +28,7 @@ import net.minecraft.src.weasel.obj.WeaselVariableMap;
  * @copy (c) 2012
  */
 public class Calculator {
-	private static ScriptEngineManager engineFactory = new ScriptEngineManager();
+	private static Pattern variablePattern = Pattern.compile("([a-zA-Z_]{1}[a-zA-Z_0-9.]*?)(?:[^a-zA-Z_0-9.(]|$)");
 
 	/**
 	 * Format an integer (plain or wrapped in WeaselInteger, or a boolean, or
@@ -57,84 +61,193 @@ public class Calculator {
 				return "0d" + i;
 		}
 	}
-
-	/**
-	 * @param engine the script engine
-	 * @param javascript script to evaluate
-	 * @return result object
-	 * @throws CalcException when evaluation fails.
-	 */
-	public static Object eval(ScriptEngine engine, String javascript) throws CalcException {
-		try {
-			return engine.eval(javascript);
-		} catch (ScriptException e) {
-			throw new CalcException(e);
+	
+	public static boolean toBoolean(Object obj) {
+		if (obj instanceof WeaselInteger) {
+			return ((WeaselInteger) obj).get() != 0;
 		}
+
+		if (obj instanceof Double) {
+			return (int) Math.round((Double) obj) != 0;
+		}
+
+		if (obj instanceof Float) {
+			return Math.round((Float) obj) != 0;
+		}
+
+		if (obj instanceof Long) {
+			return ((Long) obj) != 0;
+		}
+		if (obj instanceof WeaselBoolean) {
+			return ((WeaselBoolean) obj).get();
+		}
+
+		if (obj instanceof Integer) {
+			return ((Integer) obj) != 0;
+		}
+
+		if (obj == null || !(obj instanceof Boolean)) {
+			throw new RuntimeException("Trying to convert " + obj + " to boolean.");
+		}
+		
+		return (Boolean)obj;
+	}
+	
+	public static int toInteger(Object obj) {
+		if (obj instanceof WeaselInteger) {
+			return ((WeaselInteger) obj).get();
+		}
+
+		if (obj instanceof Double) {
+			return (int) Math.round((Double) obj);
+		}
+
+		if (obj instanceof Float) {
+			return Math.round((Float) obj);
+		}
+
+		if (obj instanceof Long) {
+			return ((Integer) obj);
+		}
+		if (obj instanceof WeaselBoolean) {
+			return ((WeaselBoolean) obj).get()?1:0;
+		}
+
+		if (obj instanceof Integer) {
+			return ((Integer) obj);
+		}
+
+		if (obj == null || !(obj instanceof Integer)) {
+			throw new RuntimeException("Trying to convert " + obj + " to integer.");
+		}
+		
+		return (Integer)obj;
+	}
+	
+	public static String toString(Object obj) {
+		if (obj instanceof WeaselInteger) {
+			return ((WeaselInteger) obj).get()+"";
+		}
+
+		if (obj instanceof Double) {
+			return obj+"";
+		}
+
+		if (obj instanceof Float) {
+			return obj+"";
+		}
+
+		if (obj instanceof Long) {
+			return obj+"";
+		}
+		if (obj instanceof WeaselBoolean) {
+			return ((WeaselBoolean) obj).get()?"true":"false";
+		}
+
+		if (obj instanceof Integer) {
+			return obj+"";
+		}
+		
+		if (obj instanceof WeaselString) {
+			return ((WeaselString) obj).get();
+		}
+
+		if (obj == null || !(obj instanceof String)) {
+			throw new RuntimeException("Trying to convert " + obj + " to integer.");
+		}
+		
+		return (String)obj;
 	}
 
-	/**
-	 * Evaluate an expression with variables from VM.
-	 * 
-	 * @param expression expression, without semicolon. eg. (14+a)/2;
-	 * @param engine weasel engine
-	 * @return result of the expression.
-	 * @throws CalcException when evaluation fails.
-	 */
-	public static Object eval(String expression, WeaselEngine engine) throws CalcException {
 
-		if (expression.contains(";")) {
-			throw new CalcException("Semicolon in a numeric expression. Possible injection attack.");
+
+	public static Object evalSimple(String expression, Map<String,Object> vars) {
+		
+		JEP jep = new JEP();
+		for(Entry<String,Object> entry : vars.entrySet()) {
+			jep.addVariable(entry.getKey(), entry.getValue());			
 		}
-
-		ScriptEngine jsEngine = engineFactory.getEngineByName("JavaScript");
-
-		List<String> varsNeeded = new ArrayList<String>();
-		Matcher matcher = Pattern.compile("([a-zA-Z_]{1}[a-zA-Z_0-9.]*?)").matcher(expression);
-		while(matcher.find()){
-		    String name = matcher.group(1);
-		    varsNeeded.add(name);
-		    System.out.println("varNeeded: "+name);
-		    jsEngine.put(name, engine.getVariable(name).get());
+		
+		jep.parseExpression(expression);
+		if(jep.hasError()) {
+			System.out.println(jep.getErrorInfo());
+			throw new CalcException(jep.getErrorInfo());
 		}
-
-		Object out = eval(jsEngine, expression);
-
-		for (String varname : varsNeeded) {
-			engine.getVariable(varname).set(jsEngine.get(varname));	
-		}
-
-		return out;
-
+		
+		return jep.getValueAsObject();
+		
 	}
+	
+	
 	
 	/**
 	 * Evaluate an expression with variables from VM.
 	 * 
 	 * @param expression expression, without semicolon. eg. (14+a)/2;
-	 * @param varmap map of variables
+	 * @param variableContainer weasel variable container (primary ENGINE, but sometimes also VariableMap).
 	 * @return result of the expression.
 	 * @throws CalcException when evaluation fails.
 	 */
-	public static Object eval(String expression, WeaselVariableMap varmap) throws CalcException {
+	public static Object eval(String expression, IVariableContainer variableContainer) throws CalcException {
+		
+		if(expression == null || expression.length()==0) return null;
 
 		if (expression.contains(";")) {
 			throw new CalcException("Semicolon in a numeric expression. Possible injection attack.");
 		}
+		
+		expression = expression.replaceAll("\\s", "");
+		
+		// List of variables needed to evaluate this expression
+		List<String> varsNeeded = new ArrayList<String>();		
+		
+		// List of renamed variables (. -> __)
+		Map<String,String> rename = new HashMap<String,String>();
+		
+		JEP jep = new JEP();
+		jep.setAllowAssignment(true);
+		
+		Matcher matcher = variablePattern.matcher(expression);
+		
+		while(matcher.find()){
+			
+		    String name = matcher.group(1);
+		    String real = name;
+		    varsNeeded.add(name);
+		    
+		    //if name contains dot, replace it by __ to prevent "no such object" errors in JS
+		    if(name.contains(".")) {
+		    	real = name;
+		    	name = name.replaceAll("\\.", "__");
+		    	rename.put(real, name);
+		    	expression = expression.replace(real, name);
+		    }		    
+		    
+		    //add the variable into JS engine
+		    try {
+		    	jep.addVariable(name, variableContainer.getVariable(real).get());
+		    	//jsEngine.put(name, variableContainer.getVariable(real).get());
+		    }catch(NullPointerException npe) {
+		    	throw new WeaselRuntimeException("Variable "+real + " not set in this scope.");
+		    }
+		}
+		
+		jep.parseExpression(expression);
 
-		ScriptEngine engine = engineFactory.getEngineByName("JavaScript");
-
-		for (Entry<String, WeaselObject> entry : varmap.map.entrySet()) {
-			if (expression.contains(entry.getKey())) {
-				engine.put(entry.getKey(), entry.getValue().get());
-			}
+		// execute JS
+		Object out = jep.getValueAsObject(); //eval(jsEngine, expression);
+		
+		if(jep.hasError()) {
+			System.out.println(jep.getErrorInfo());
+			throw new CalcException(jep.getErrorInfo());
 		}
 
-		Object out = eval(engine, expression);
-
-		for (Entry<String, WeaselObject> entry : varmap.map.entrySet()) {
-			if (expression.contains(entry.getKey())) {
-				entry.getValue().set(engine.get(entry.getKey()));
-			}
+		// put variables back into Variable Map in Engine
+		for (String varname : varsNeeded) {			
+			String real = varname;
+			if(rename.containsKey(varname)) real = rename.get(varname);
+			
+			variableContainer.getVariable(real).set(jep.getVarValue(varname));	
 		}
 
 		return out;
@@ -147,7 +260,7 @@ public class Calculator {
 	 * @author MightyPork
 	 * @copy (c) 2012
 	 */
-	public static class CalcException extends RuntimeException {
+	public static class CalcException extends WeaselRuntimeException {
 
 		/** Description why the evaluation failed. */
 		public String cause;
@@ -155,7 +268,7 @@ public class Calculator {
 		/**
 		 * @param e causing expression.
 		 */
-		public CalcException(ScriptException e) {
+		public CalcException(RuntimeException e) {
 			super(e);
 		}
 
@@ -163,7 +276,7 @@ public class Calculator {
 		 * @param cause cause description
 		 */
 		public CalcException(String cause) {
-			this.cause = cause;
+			super(cause);
 		}
 	}
 }

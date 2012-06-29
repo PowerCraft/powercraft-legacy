@@ -28,6 +28,8 @@ public class mod_PCfix extends PC_Module {
 	}
 
 	// fake radios
+	
+	@SuppressWarnings("javadoc")
 	public static Block radio0, radio1;
 
 	// *** MODULE INIT ***

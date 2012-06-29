@@ -1,14 +1,14 @@
 package net.minecraft.src.weasel.obj;
 
 
-import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Map.Entry;
 
 import net.minecraft.src.NBTTagCompound;
 import net.minecraft.src.NBTTagList;
-import net.minecraft.src.weasel.WeaselEngine;
+import net.minecraft.src.weasel.IVariableContainer;
+import net.minecraft.src.weasel.exception.WeaselRuntimeException;
 
 
 /**
@@ -19,7 +19,7 @@ import net.minecraft.src.weasel.WeaselEngine;
  * @author MightyPork
  * @copy (c) 2012
  */
-public class WeaselVariableMap extends WeaselObject {
+public class WeaselVariableMap extends WeaselObject implements IVariableContainer {
 
 	/** Variable map */
 	public LinkedHashMap<String, WeaselObject> map;
@@ -40,21 +40,31 @@ public class WeaselVariableMap extends WeaselObject {
 		map.remove(name);
 	}
 
-	/**
-	 * Store variable into map
-	 * 
-	 * @param name variable name
-	 * @param object variable object to store
-	 */
-	public void setVariable(String name, WeaselObject object) {
+	@Override
+	public void setVariable(String name, Object value) {
+		
+		if(name == null || value == null) throw new WeaselRuntimeException("Variable name or value to set is null. @ "+name+" = "+value);
+		
+		WeaselObject set = null;
+		if(value instanceof WeaselObject) {
+			set = (WeaselObject) value;
+		}else if(value instanceof Number) {
+			set = new WeaselInteger(value);
+		}else if(value instanceof String) {
+			set = new WeaselString(value);
+		}else if(value instanceof Boolean) {
+			set = new WeaselBoolean(value);
+		}else {
+			throw new WeaselRuntimeException("Value "+value+" cannot be saved as a WeaselObject to variable map.");
+		}
 
 		if (map.get(name) != null) {
-			if (map.get(name).getType() != object.getType()) {
-				throw new RuntimeException("Trying to store " + object.getType() + " object into a " + map.get(name).getType() + " variable.");
+			if (map.get(name).getType() != set.getType()) {
+				throw new RuntimeException("Trying to store " + set.getType() + " object into a " + map.get(name).getType() + " variable.");
 			}
 		}
 
-		map.put(name, object);
+		map.put(name, set);
 	}
 
 //	/**
@@ -69,12 +79,7 @@ public class WeaselVariableMap extends WeaselObject {
 //		map.put(name, object);
 //	}
 
-	/**
-	 * Get variable from map
-	 * 
-	 * @param name variable name
-	 * @return variable object
-	 */
+	@Override
 	public WeaselObject getVariable(String name) {
 		return map.get(name);
 	}

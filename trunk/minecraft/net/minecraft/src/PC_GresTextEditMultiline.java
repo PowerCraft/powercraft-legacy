@@ -1,21 +1,56 @@
 package net.minecraft.src;
 
+
 import java.util.ArrayList;
 
 import org.lwjgl.input.Keyboard;
 
-public class PC_GresMultiTextEdit extends PC_GresWidget {
+
+/**
+ * Multiline text edit
+ * 
+ * @author XOR19
+ */
+public class PC_GresTextEditMultiline extends PC_GresWidget {
 
 	private static final char br = '\n';
 
+	/**
+	 * Keyword colouring settings
+	 * 
+	 * @author XOR19
+	 */
 	public static class Keyword {
+		/**
+		 * Keyword coloring of plain word
+		 * 
+		 * @param word keyword string
+		 * @param color color
+		 */
 		public Keyword(String word, int color) {
 			this.word = word;
 			this.color = color;
 		}
 
+		/**
+		 * keyword colouring
+		 * 
+		 * @param word the word stringl or regext pattern
+		 * @param color color
+		 * @param regexp is string a regexp pattern?
+		 */
+		public Keyword(String word, int color, boolean regexp) {
+			this.word = word;
+			this.color = color;
+			this.isRegexp = regexp;
+		}
+
+		/** the keyword */
 		public String word;
+		/** rgb color */
 		public int color;
+		/** flag that this word uses a regular expresison for matching. */
+		public boolean isRegexp;
 	}
 
 	private PC_CoordI lastMousePosition = new PC_CoordI(0, 0);
@@ -26,24 +61,37 @@ public class PC_GresMultiTextEdit extends PC_GresWidget {
 	private ArrayList<Keyword> keyWords = null;
 	private int vScrollPos = 0, vScrollSize = 0, hScrollPos = 0, hScrollSize = 0;
 
-	public PC_GresMultiTextEdit(String text, int minWidth, int minHeight) {
-		super(minWidth > 20 ? minWidth : 20, minHeight > PC_Utils.mc().fontRenderer.FONT_HEIGHT + 26 ? minHeight
-				: PC_Utils.mc().fontRenderer.FONT_HEIGHT + 26, text);
+	/**
+	 * Multi-row text edit
+	 * 
+	 * @param text initial text
+	 * @param minWidth width
+	 * @param minHeight height
+	 */
+	public PC_GresTextEditMultiline(String text, int minWidth, int minHeight) {
+		super(minWidth > 20 ? minWidth : 20, minHeight > PC_Utils.mc().fontRenderer.FONT_HEIGHT + 26 ? minHeight : PC_Utils.mc().fontRenderer.FONT_HEIGHT + 26, text);
 		canAddWidget = false;
 		color[textColorEnabled] = 0xffffffff;
-		color[textColorShadowEnabled] = 0xff383838;
+		color[textColorShadowEnabled] = 0; //0xff383838;
 		color[textColorDisabled] = 0xffffffff;
-		color[textColorShadowDisabled] = 0xff383838;
+		color[textColorShadowDisabled] = 0; //0xff383838;
 	}
 
-	public PC_GresMultiTextEdit(String text, int minWidth, int minHeight, ArrayList<Keyword> keyWords) {
-		super(minWidth > 20 ? minWidth : 20, minHeight > PC_Utils.mc().fontRenderer.FONT_HEIGHT + 26 ? minHeight
-				: PC_Utils.mc().fontRenderer.FONT_HEIGHT + 26, text);
+	/**
+	 * Multi-row text edit
+	 * 
+	 * @param text initial text
+	 * @param minWidth width
+	 * @param minHeight height
+	 * @param keyWords list of keywords
+	 */
+	public PC_GresTextEditMultiline(String text, int minWidth, int minHeight, ArrayList<Keyword> keyWords) {
+		super(minWidth > 20 ? minWidth : 20, minHeight > PC_Utils.mc().fontRenderer.FONT_HEIGHT + 26 ? minHeight : PC_Utils.mc().fontRenderer.FONT_HEIGHT + 26, text);
 		canAddWidget = false;
 		color[textColorEnabled] = 0xffffffff;
-		color[textColorShadowEnabled] = 0xff383838;
+		color[textColorShadowEnabled] = 0; //0xff383838;
 		color[textColorDisabled] = 0xffffffff;
-		color[textColorShadowDisabled] = 0xff383838;
+		color[textColorShadowDisabled] = 0; //0xff383838;
 		this.keyWords = keyWords;
 	}
 
@@ -133,7 +181,8 @@ public class PC_GresMultiTextEdit extends PC_GresWidget {
 	private int getColorForWord(String word) {
 		if (keyWords != null) {
 			for (Keyword k : keyWords) {
-				if (k.word.equalsIgnoreCase(word)) { return k.color; }
+				if (k.word.equalsIgnoreCase(word)) return k.color;
+				if (k.isRegexp && word.matches(k.word)) return k.color;
 			}
 		}
 		return 0xffffffff;
@@ -144,13 +193,17 @@ public class PC_GresMultiTextEdit extends PC_GresWidget {
 	}
 
 	private boolean coordsInDrawRect(PC_CoordI c) {
-		if (!yCoordsInDrawRect(c.y)) { return false; }
+		if (!yCoordsInDrawRect(c.y)) {
+			return false;
+		}
 		int cx = getStringWidth(getLine(c.y).substring(0, c.x));
 		return cx >= scroll.x && cx < scroll.x + size.x - 26;
 	}
 
 	private void drawSelect(PC_CoordI offsetPos, int sx, int ex, int y) {
-		if (!yCoordsInDrawRect(y)) { return; }
+		if (!yCoordsInDrawRect(y)) {
+			return;
+		}
 		String line = getLine(y);
 		if (sx < 0) {
 			sx = 0;
@@ -163,21 +216,26 @@ public class PC_GresMultiTextEdit extends PC_GresWidget {
 		int exx = getStringWidth(line.substring(0, ex)) - scroll.x;
 		if (sxx < 0) {
 			sxx = 0;
-		} else if (sxx > size.x - 24) { return; }
+		} else if (sxx > size.x - 24) {
+			return;
+		}
 		if (exx < 0) {
 			return;
 		} else if (exx > size.x - 24) {
 			exx = size.x - 24;
 		}
 
-		drawRect(offsetPos.x + pos.x + sxx + 6, offsetPos.y + pos.y + 6 + cy * PC_Utils.mc().fontRenderer.FONT_HEIGHT, offsetPos.x + pos.x
-				+ exx + 6, offsetPos.y + pos.y + 6 + (cy + 1) * PC_Utils.mc().fontRenderer.FONT_HEIGHT, 0xff3399FF);
+		drawRect(offsetPos.x + pos.x + sxx + 6, offsetPos.y + pos.y + 6 + cy * PC_Utils.mc().fontRenderer.FONT_HEIGHT, offsetPos.x + pos.x + exx + 6, offsetPos.y + pos.y + 6 + (cy + 1) * PC_Utils.mc().fontRenderer.FONT_HEIGHT, 0xff3399FF);
 	}
 
 	private void drawWord(PC_CoordI offsetPos, int x, int y, String word, boolean highlited) {
-		if (!yCoordsInDrawRect(y)) { return; }
+		if (!yCoordsInDrawRect(y)) {
+			return;
+		}
 		int wordlength = getStringWidth(word);
-		if (x > size.x + wordlength - 26) { return; }
+		if (x > size.x + wordlength - 26) {
+			return;
+		}
 		int color = highlited ? getColorForWord(word) : 0xffffffff;
 		int strposStart = 0;
 		int strSize = 0;
@@ -193,12 +251,14 @@ public class PC_GresMultiTextEdit extends PC_GresWidget {
 			charSize = getStringWidth("" + word.charAt(strposStart + strSize));
 			sx += charSize;
 		}
-		getFontRenderer().drawStringWithShadow(word.substring(strposStart, strposStart + strSize), offsetPos.x + pos.x + 6 + xp,
-				offsetPos.y + pos.y + 6 + (y - scroll.y) * PC_Utils.mc().fontRenderer.FONT_HEIGHT, color);
+		drawStringColor(word.substring(strposStart, strposStart + strSize),offsetPos.x + pos.x + 6 + xp,offsetPos.y + pos.y + 6 + (y - scroll.y) * PC_Utils.mc().fontRenderer.FONT_HEIGHT,color);
+		//getFontRenderer().drawStringWithShadow(word.substring(strposStart, strposStart + strSize), offsetPos.x + pos.x + 6 + xp, offsetPos.y + pos.y + 6 + (y - scroll.y) * PC_Utils.mc().fontRenderer.FONT_HEIGHT, color);
 	}
 
 	private void drawStringLine(PC_CoordI offsetPos, int y) {
-		if (!yCoordsInDrawRect(y)) { return; }
+		if (!yCoordsInDrawRect(y)) {
+			return;
+		}
 		String line = getLine(y);
 		String word = "";
 		char c;
@@ -239,14 +299,11 @@ public class PC_GresMultiTextEdit extends PC_GresWidget {
 		drawVerticalLine(offsetPos.x + pos.x, offsetPos.y + pos.y, offsetPos.y + pos.y + size.y - 1, 0xffA0A0A0);
 		drawVerticalLine(offsetPos.x + pos.x + size.x - 1, offsetPos.y + pos.y, offsetPos.y + pos.y + size.y - 12, 0xffA0A0A0);
 
-		drawRect(offsetPos.x + pos.x + 1, offsetPos.y + pos.y + 1, offsetPos.x + pos.x + size.x - 12, offsetPos.y + pos.y + size.y - 12,
-				0xff000000);
+		drawRect(offsetPos.x + pos.x + 1, offsetPos.y + pos.y + 1, offsetPos.x + pos.x + size.x - 12, offsetPos.y + pos.y + size.y - 12, 0xff000000);
 
-		drawRect(offsetPos.x + pos.x + 1, offsetPos.y + pos.y + size.y - 11, offsetPos.x + pos.x + size.x - 12, offsetPos.y + pos.y
-				+ size.y - 1, 0xffffffff);
+		drawRect(offsetPos.x + pos.x + 1, offsetPos.y + pos.y + size.y - 11, offsetPos.x + pos.x + size.x - 12, offsetPos.y + pos.y + size.y - 1, 0xffffffff);
 
-		drawRect(offsetPos.x + pos.x + size.x - 11, offsetPos.y + pos.y + 1, offsetPos.x + pos.x + size.x - 1, offsetPos.y + pos.y + size.y
-				- 12, 0xffffffff);
+		drawRect(offsetPos.x + pos.x + size.x - 11, offsetPos.y + pos.y + 1, offsetPos.x + pos.x + size.x - 1, offsetPos.y + pos.y + size.y - 12, 0xffffffff);
 
 		drawHorizontalLine(offsetPos.x + pos.x, offsetPos.x + pos.x + size.x - 1, offsetPos.y + pos.y + size.y - 12, 0xffA0A0A0);
 
@@ -255,10 +312,22 @@ public class PC_GresMultiTextEdit extends PC_GresWidget {
 		if (mousePressed == 0 || mousePressed == 1) {
 			calcScrollPosition();
 		}
-		drawRect(offsetPos.x + pos.x + 1 + hScrollPos, offsetPos.y + pos.y + size.y - 11, offsetPos.x + pos.x + hScrollPos + hScrollSize,
-				offsetPos.y + pos.y + size.y - 1, 0xff7A85FF);
-		drawRect(offsetPos.x + pos.x + size.x - 11, offsetPos.y + pos.y + 1 + vScrollPos, offsetPos.x + pos.x + size.x - 1, offsetPos.y
-				+ pos.y + vScrollPos + vScrollSize, 0xff7A85FF);
+
+		renderTextureSliced(
+				offsetPos.offset(hScrollPos+1, size.y - 11),
+				mod_PCcore.getImgDir() + "gres/scrollbar_handle.png",
+				new PC_CoordI(hScrollSize-1, 10),
+				new PC_CoordI(0, 0),
+				new PC_CoordI(256, 256)
+			);
+		
+		renderTextureSliced(
+				offsetPos.offset(size.x - 11, 1 + vScrollPos),
+				mod_PCcore.getImgDir() + "gres/scrollbar_handle.png",
+				new PC_CoordI(10, vScrollSize-1),
+				new PC_CoordI(0, 0),
+				new PC_CoordI(256, 256)
+			);
 
 		if ((!(mouseSelectStart.x == mouseSelectEnd.x && mouseSelectStart.y == mouseSelectEnd.y)) && hasFocus) {
 			int s = calcSelectCoordsToStringIndex(mouseSelectStart), e = calcSelectCoordsToStringIndex(mouseSelectEnd);
@@ -295,13 +364,10 @@ public class PC_GresMultiTextEdit extends PC_GresWidget {
 		if (hasFocus && (cursorCounter / 6) % 2 == 0) {
 			if (coordsInDrawRect(new PC_CoordI(mouseSelectEnd.x > 0 ? mouseSelectEnd.x - 1 : 0, mouseSelectEnd.y))) {
 				if (calcSelectCoordsToStringIndex(mouseSelectEnd) == text.length()) {
-					drawString("_", offsetPos.x + pos.x + getStringWidth(getLine(mouseSelectEnd.y)) + 6 - scroll.x, offsetPos.y + pos.y + 6
-							+ (mouseSelectEnd.y - scroll.y) * PC_Utils.mc().fontRenderer.FONT_HEIGHT);
+					drawString("_", offsetPos.x + pos.x + getStringWidth(getLine(mouseSelectEnd.y)) + 6 - scroll.x, offsetPos.y + pos.y + 6 + (mouseSelectEnd.y - scroll.y) * PC_Utils.mc().fontRenderer.FONT_HEIGHT);
 				} else {
-					drawVerticalLine(offsetPos.x + pos.x + getStringWidth(getLine(mouseSelectEnd.y).substring(0, mouseSelectEnd.x)) + 5
-							- scroll.x, offsetPos.y + pos.y + 6 + (mouseSelectEnd.y - scroll.y) * PC_Utils.mc().fontRenderer.FONT_HEIGHT,
-							offsetPos.y + pos.y + 6 + (mouseSelectEnd.y - scroll.y + 1) * PC_Utils.mc().fontRenderer.FONT_HEIGHT,
-							color[enabled ? textColorEnabled : textColorDisabled]);
+					drawVerticalLine(offsetPos.x + pos.x + getStringWidth(getLine(mouseSelectEnd.y).substring(0, mouseSelectEnd.x)) + 5 - scroll.x, offsetPos.y + pos.y + 6 + (mouseSelectEnd.y - scroll.y) * PC_Utils.mc().fontRenderer.FONT_HEIGHT,
+							offsetPos.y + pos.y + 6 + (mouseSelectEnd.y - scroll.y + 1) * PC_Utils.mc().fontRenderer.FONT_HEIGHT, color[enabled ? textColorEnabled : textColorDisabled]);
 				}
 			}
 		}
@@ -316,15 +382,21 @@ public class PC_GresMultiTextEdit extends PC_GresWidget {
 		String s = "";
 		int pos = 0;
 		while (line > 0) {
-			if (pos >= text.length()) { return ""; }
+			if (pos >= text.length()) {
+				return "";
+			}
 			if (text.charAt(pos) == br) {
 				line--;
 			}
 			pos++;
 		}
 		while (true) {
-			if (pos >= text.length()) { return s; }
-			if (text.charAt(pos) == br) { return s; }
+			if (pos >= text.length()) {
+				return s;
+			}
+			if (text.charAt(pos) == br) {
+				return s;
+			}
 			s += text.charAt(pos);
 			pos++;
 		}
@@ -359,7 +431,9 @@ public class PC_GresMultiTextEdit extends PC_GresWidget {
 	}
 
 	private PC_CoordI lineUp() {
-		if (mouseSelectEnd.y <= 0) { return new PC_CoordI(0, 0); }
+		if (mouseSelectEnd.y <= 0) {
+			return new PC_CoordI(0, 0);
+		}
 		int xP = getStringWidth(getLine(mouseSelectEnd.y).substring(0, mouseSelectEnd.x));
 		String rowText = getLine(mouseSelectEnd.y - 1);
 		int charSize;
@@ -398,7 +472,9 @@ public class PC_GresMultiTextEdit extends PC_GresWidget {
 	@Override
 	public boolean mouseClick(PC_CoordI mousePos, int key) {
 		mousePressed = 0;
-		if (!enabled) { return false; }
+		if (!enabled) {
+			return false;
+		}
 		lastMousePosition.setTo(mousePos);
 		if (key != -1) {
 			if (mousePos.x < size.x - 12 && mousePos.y < size.y - 12) {
@@ -459,7 +535,9 @@ public class PC_GresMultiTextEdit extends PC_GresWidget {
 		int pos = 0;
 		int line = c.y;
 		while (line > 0) {
-			if (pos >= text.length()) { return pos; }
+			if (pos >= text.length()) {
+				return pos;
+			}
 			if (text.charAt(pos) == br) {
 				line--;
 			}
@@ -467,8 +545,12 @@ public class PC_GresMultiTextEdit extends PC_GresWidget {
 		}
 		int p = c.x;
 		while (p > 0) {
-			if (pos >= text.length()) { return pos; }
-			if (text.charAt(pos) == br) { return pos; }
+			if (pos >= text.length()) {
+				return pos;
+			}
+			if (text.charAt(pos) == br) {
+				return pos;
+			}
 			pos++;
 			p--;
 		}
@@ -490,7 +572,11 @@ public class PC_GresMultiTextEdit extends PC_GresWidget {
 		return new PC_CoordI(xx, yy);
 	}
 
-	private void addKey(char c) {
+	/**
+	 * Replace selection with given key
+	 * @param c key
+	 */
+	public void addKey(char c) {
 		int s = calcSelectCoordsToStringIndex(mouseSelectStart), e = calcSelectCoordsToStringIndex(mouseSelectEnd);
 		if (s > e) {
 			int t = e;
@@ -525,7 +611,9 @@ public class PC_GresMultiTextEdit extends PC_GresWidget {
 			return;
 		}
 		int e = calcSelectCoordsToStringIndex(mouseSelectEnd);
-		if (e <= 0) { return; }
+		if (e <= 0) {
+			return;
+		}
 		String s1 = text.substring(0, e - 1);
 		String s2 = text.substring(e);
 		text = s1 + s2;
@@ -539,7 +627,9 @@ public class PC_GresMultiTextEdit extends PC_GresWidget {
 			return;
 		}
 		int p = calcSelectCoordsToStringIndex(mouseSelectEnd);
-		if (p >= text.length()) { return; }
+		if (p >= text.length()) {
+			return;
+		}
 		String s1 = text.substring(0, p);
 		String s2 = text.substring(p + 1);
 		text = s1 + s2;
@@ -594,7 +684,9 @@ public class PC_GresMultiTextEdit extends PC_GresWidget {
 	@Override
 	public boolean keyTyped(char c, int key) {
 		int p;
-		if (!enabled || !hasFocus || (mousePressed != 0 && mousePressed != 1)) { return false; }
+		if (!enabled || !hasFocus || (mousePressed != 0 && mousePressed != 1)) {
+			return false;
+		}
 		switch (c) {
 			case 3:
 				GuiScreen.setClipboardString(getSelect());
@@ -670,7 +762,6 @@ public class PC_GresMultiTextEdit extends PC_GresWidget {
 	}
 
 	private int getLineNumbers() {
-		String s = "";
 		int line = 0;
 		for (int i = 0; i < text.length(); i++) {
 			if (text.charAt(i) == br) {

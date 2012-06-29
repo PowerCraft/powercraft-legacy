@@ -1,13 +1,24 @@
 package net.minecraft.src;
 
+
+import net.minecraft.src.weasel.Calculator;
+
+import org.nfunk.jep.JEP;
+import org.nfunk.jep.Node;
+import org.nfunk.jep.ParseException;
+
+
 /**
  * Logic gate tile entity
  * 
  * @author MightyPork
  * @copy (c) 2012
- * 
  */
 public class PClo_TileEntityGate extends PC_TileEntity {
+
+	public PClo_TileEntityGate() {
+		evaluator.addStandardFunctions();
+	}
 
 	/**
 	 * For forge: does the entity need update ticks
@@ -22,6 +33,73 @@ public class PClo_TileEntityGate extends PC_TileEntity {
 	 * The gate type index, from PClo_GType
 	 */
 	public int gateType = -1;
+	public JEP evaluator = new JEP();
+	private Node jepNode = null;
+	
+	public boolean checkProgram(String pgm) {
+		pgm = pgm.trim();
+		
+		try{
+			
+			JEP jep = new JEP();
+			
+			jep.addVariable("L", 0);
+			jep.addVariable("R", 0);
+			jep.addVariable("B", 0);
+			
+			jep.parse(pgm);
+			
+			return !jep.hasError();
+			
+		}catch(Exception e){
+			return false;
+		}
+	}
+	
+	public void setProgram(String program) {
+		if (checkProgram(program)) {
+			this.programm = program;
+			try {
+				if(evaluator == null) {
+					evaluator = new JEP();
+				}else {
+					evaluator.initSymTab();
+				}
+				evaluator.addVariable("L", 0);
+				evaluator.addVariable("R", 0);
+				evaluator.addVariable("B", 0);
+				jepNode = evaluator.parse(programm);
+				
+				System.out.println("Good");
+			} catch (ParseException e) {
+				System.out.println("te - "+e.getErrorInfo());
+			}
+		}
+	}
+	
+	public boolean evalProgram(boolean L, boolean B, boolean R) {
+		if(evaluator==null) {
+			System.out.println("Evaluator == null");
+			return false;
+		}
+		
+		if(jepNode == null) {
+			System.out.println("Node == null");
+			return false;
+		}
+		evaluator.setVarValue("L", L?1:0);
+		evaluator.setVarValue("B", B?1:0);
+		evaluator.setVarValue("R", R?1:0);
+		if(evaluator.hasError()) {
+			System.out.println("preeval: "+evaluator.getErrorInfo());
+		}
+		try {
+			return Calculator.toBoolean(evaluator.evaluate(jepNode));
+		}catch(ParseException e) {
+			System.out.println("te-eval "+e.getErrorInfo());
+			return false;
+		}
+	}
 
 	/**
 	 * Helper boolean state for some flip flop gates
@@ -34,18 +112,21 @@ public class PClo_TileEntityGate extends PC_TileEntity {
 	/**
 	 * Set to true if the entity is removed. Saves resources.
 	 */
-	public boolean zombie = false; // set true if this tile entity was already
-									// destroyed
+	public boolean zombie = false; // set true if this tile entity was already destroyed
 
 	public String programm = "";
 
 	@Override
 	public void updateEntity() {
-		if (zombie) { return; }
+		if (zombie) {
+			return;
+		}
 
 		// fix for double updates
 		long t = System.currentTimeMillis();
-		if (t - lastUpdateTime < 5) { return; }
+		if (t - lastUpdateTime < 5) {
+			return;
+		}
 		lastUpdateTime = t;
 
 		// if regular ticks aren't needed, use only every sixth.
@@ -61,7 +142,9 @@ public class PClo_TileEntityGate extends PC_TileEntity {
 		updateContainingBlockInfo();
 
 		Block block = getBlockType();
-		if (block == null || (block.blockID != mod_PClogic.gateOn.blockID && block.blockID != mod_PClogic.gateOff.blockID)) { return; }
+		if (block == null || (block.blockID != mod_PClogic.gateOn.blockID && block.blockID != mod_PClogic.gateOff.blockID)) {
+			return;
+		}
 
 		int blockID = block.blockID;
 
@@ -219,6 +302,8 @@ public class PClo_TileEntityGate extends PC_TileEntity {
 
 		if (gateType == PClo_GateType.PROGRAMMABLE) {
 			programm = maintag.getString("programm");
+			
+			setProgram(programm);
 		}
 
 		if (gateType == PClo_GateType.HOLD_DELAYER) {
@@ -269,6 +354,9 @@ public class PClo_TileEntityGate extends PC_TileEntity {
 			maintag.setInteger("CrossingZ", crossing_Z);
 		}
 	}
+	
+	
+
 
 	/**
 	 * FULL CHEST DETECTOR: Check if nearby chest is full
@@ -283,10 +371,18 @@ public class PClo_TileEntityGate extends PC_TileEntity {
 		int N2 = 2;
 		int N3 = 3;
 
-		if (i1 == N0) { return isFullChestAt(worldObj, getCoord().offset(0, 0, 1)); }
-		if (i1 == N1) { return isFullChestAt(worldObj, getCoord().offset(-1, 0, 0)); }
-		if (i1 == N2) { return isFullChestAt(worldObj, getCoord().offset(0, 0, -1)); }
-		if (i1 == N3) { return isFullChestAt(worldObj, getCoord().offset(1, 0, 0)); }
+		if (i1 == N0) {
+			return isFullChestAt(worldObj, getCoord().offset(0, 0, 1));
+		}
+		if (i1 == N1) {
+			return isFullChestAt(worldObj, getCoord().offset(-1, 0, 0));
+		}
+		if (i1 == N2) {
+			return isFullChestAt(worldObj, getCoord().offset(0, 0, -1));
+		}
+		if (i1 == N3) {
+			return isFullChestAt(worldObj, getCoord().offset(1, 0, 0));
+		}
 		return false;
 	}
 
@@ -303,10 +399,18 @@ public class PClo_TileEntityGate extends PC_TileEntity {
 		int N2 = 2;
 		int N3 = 3;
 
-		if (i1 == N0) { return isEmptyChestAt(worldObj, getCoord().offset(0, 0, 1)); }
-		if (i1 == N1) { return isEmptyChestAt(worldObj, getCoord().offset(-1, 0, 0)); }
-		if (i1 == N2) { return isEmptyChestAt(worldObj, getCoord().offset(0, 0, -1)); }
-		if (i1 == N3) { return isEmptyChestAt(worldObj, getCoord().offset(1, 0, 0)); }
+		if (i1 == N0) {
+			return isEmptyChestAt(worldObj, getCoord().offset(0, 0, 1));
+		}
+		if (i1 == N1) {
+			return isEmptyChestAt(worldObj, getCoord().offset(-1, 0, 0));
+		}
+		if (i1 == N2) {
+			return isEmptyChestAt(worldObj, getCoord().offset(0, 0, -1));
+		}
+		if (i1 == N3) {
+			return isEmptyChestAt(worldObj, getCoord().offset(1, 0, 0));
+		}
 		return true;
 	}
 
@@ -466,10 +570,18 @@ public class PClo_TileEntityGate extends PC_TileEntity {
 	 * @return the variant, as follows: 0=X+Z+, 1=X-Z+, 2=X+Z-, 3=X-Z-
 	 */
 	public int getCrossingVariant() {
-		if (crossing_X == PLUS && crossing_Z == PLUS) { return 0; }
-		if (crossing_X == MINUS && crossing_Z == PLUS) { return 1; }
-		if (crossing_X == PLUS && crossing_Z == MINUS) { return 2; }
-		if (crossing_X == MINUS && crossing_Z == MINUS) { return 3; }
+		if (crossing_X == PLUS && crossing_Z == PLUS) {
+			return 0;
+		}
+		if (crossing_X == MINUS && crossing_Z == PLUS) {
+			return 1;
+		}
+		if (crossing_X == PLUS && crossing_Z == MINUS) {
+			return 2;
+		}
+		if (crossing_X == MINUS && crossing_Z == MINUS) {
+			return 3;
+		}
 		return -1;
 	}
 

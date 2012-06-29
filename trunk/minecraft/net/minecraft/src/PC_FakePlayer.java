@@ -172,7 +172,7 @@ public class PC_FakePlayer extends EntityPlayer {
 	public void respawnPlayer() {}
 
 	@Override
-	public void func_6420_o() {};
+	public void func_6420_o() {}
 
 	@Override
 	public void onItemStackChanged(ItemStack itemstack) {}

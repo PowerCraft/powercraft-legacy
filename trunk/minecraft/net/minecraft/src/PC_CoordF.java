@@ -141,7 +141,7 @@ public class PC_CoordF implements PC_ICoord, PC_INBT {
 	@Override
 	public int hashCode() {
 		return new Float(x + 17).hashCode() ^ new Float((y - 156)).hashCode() ^ new Float(z).hashCode();
-	};
+	}
 
 	/**
 	 * Set coordinates
