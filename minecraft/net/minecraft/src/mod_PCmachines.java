@@ -385,8 +385,6 @@ public class mod_PCmachines extends PC_Module implements PC_IActivatorListener {
 
 
 
-
-	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@Override
 	public void addRenderer(Map map) {
 		map.put(PCma_EntityThrownBucket.class, new PCma_RenderThrownItem());

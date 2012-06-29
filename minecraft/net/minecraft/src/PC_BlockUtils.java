@@ -13,8 +13,14 @@ import java.util.Set;
  */
 public class PC_BlockUtils {
 
-	public static boolean isPowerCraftBlock(World world, PC_CoordI pos, String flag) {
-		return getBlockFlags(world, pos).contains(flag);
+	/**
+	 * Check if a block at coords is a powercraft block.
+	 * @param world the world
+	 * @param pos position
+	 * @return is PC block
+	 */
+	public static boolean isPowerCraftBlock(World world, PC_CoordI pos) {
+		return getBlockFlags(world, pos).contains("POWERCRAFT");
 	}
 
 	/**

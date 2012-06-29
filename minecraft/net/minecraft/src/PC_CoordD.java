@@ -139,7 +139,7 @@ public class PC_CoordD implements PC_ICoord, PC_INBT {
 	@Override
 	public int hashCode() {
 		return new Double(x + 17).hashCode() ^ new Double((y - 156)).hashCode() ^ new Double(z).hashCode();
-	};
+	}
 
 	/**
 	 * Set coordinates

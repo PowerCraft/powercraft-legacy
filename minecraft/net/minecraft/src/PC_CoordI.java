@@ -116,7 +116,7 @@ public class PC_CoordI implements PC_ICoord, PC_INBT {
 	@Override
 	public int hashCode() {
 		return (x + 17) ^ (y - 156) ^ z;
-	};
+	}
 
 	/**
 	 * Set coordinates

@@ -8,7 +8,6 @@ import net.minecraft.src.PC_INBT;
 import net.minecraft.src.weasel.InstructionList;
 import net.minecraft.src.weasel.WeaselEngine;
 import net.minecraft.src.weasel.exception.WeaselRuntimeException;
-import net.minecraft.src.weasel.obj.WeaselObject.WeaselObjectType;
 
 
 /**

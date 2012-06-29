@@ -1,12 +1,17 @@
 package net.minecraft.src;
 
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Random;
 import java.util.Set;
 
+import org.nfunk.jep.ParseException;
+
 import net.minecraft.src.forge.ITextureProvider;
 import net.minecraft.src.weasel.Calculator;
+import net.minecraft.src.weasel.exception.WeaselRuntimeException;
 import net.minecraft.src.weasel.obj.WeaselBoolean;
 import net.minecraft.src.weasel.obj.WeaselVariableMap;
 
@@ -22,6 +27,11 @@ public class PClo_BlockGate extends BlockContainer implements PC_IRotatedBox, PC
 	public boolean active;
 
 	private static boolean changingState;
+	
+    public int tickRate()
+    {
+        return 3;
+    }
 
 	/**
 	 * gate block
@@ -695,17 +705,17 @@ public class PClo_BlockGate extends BlockContainer implements PC_IRotatedBox, PC
 		if (type == PClo_GateType.FIFO_DELAYER) { return; }
 
 		if (type == PClo_GateType.CROSSING) {
-			world.scheduleBlockUpdate(x, y, z, blockID, 1);
+			world.scheduleBlockUpdate(x, y, z, blockID, tickRate());
 		}
 
 		if (type == PClo_GateType.DAY || type == PClo_GateType.RAIN || type == PClo_GateType.CHEST_EMPTY
 				|| type == PClo_GateType.CHEST_FULL) {
-			world.scheduleBlockUpdate(x, y, z, blockID, 1);
+			world.scheduleBlockUpdate(x, y, z, blockID, tickRate());
 			return;
 		}
 
 		if (isSpecialDevice(getType(world, x, y, z))) {
-			world.scheduleBlockUpdate(x, y, z, blockID, 1);
+			world.scheduleBlockUpdate(x, y, z, blockID, tickRate());
 			return;
 		}
 
@@ -713,9 +723,9 @@ public class PClo_BlockGate extends BlockContainer implements PC_IRotatedBox, PC
 		boolean on = isActive();
 
 		if (on && !outputActive) {
-			world.scheduleBlockUpdate(x, y, z, blockID, 1);
+			world.scheduleBlockUpdate(x, y, z, blockID, tickRate());
 		} else if (!on && outputActive) {
-			world.scheduleBlockUpdate(x, y, z, blockID, 1);
+			world.scheduleBlockUpdate(x, y, z, blockID, tickRate());
 		}
 	}
 
@@ -774,56 +784,46 @@ public class PClo_BlockGate extends BlockContainer implements PC_IRotatedBox, PC
 	}
 
 
-	boolean calcGates(String stri, boolean A, boolean B, boolean C) {
-		stri = stri.trim();
-		
-		try{
-			WeaselVariableMap vars = new WeaselVariableMap();
-			vars.setVariable("L",new WeaselBoolean(B));
-			vars.setVariable("R",new WeaselBoolean(C));
-			vars.setVariable("B",new WeaselBoolean(A));
-			vars.setVariable("F",new WeaselBoolean(false));
-			
-			Calculator.eval("F = "+stri, vars);
-	
-			return ((WeaselBoolean)vars.getVariable("F")).get();
-			
-		}catch(Exception e){
-			System.out.println();
-			System.out.println("error in gate.");
-			System.out.println(stri);
-			e.printStackTrace();
-			return false;
-		}
+	/**
+	 * Calculate result of a programmable gate.
+	 * @param pgm program (expression)
+	 * @param B back input
+	 * @param L left input
+	 * @param R right input
+	 * @return output
+	 */
+	boolean calcProgrammableGate(PClo_TileEntityGate teg, boolean B, boolean L, boolean R) {
+		return teg.evalProgram(L, B, R);
 	}
 
 	/**
 	 * Calculate logic result of given inputs. Often only A or A,B are needed.
 	 * 
 	 * @param gateType the gate type (index in PClo_GType)
-	 * @param A input A
-	 * @param B input B
-	 * @param C input C
+	 * @param back input A
+	 * @param left input B
+	 * @param right input C
+	 * @param tileEntety gate tile entity
 	 * @return the result
 	 */
-	private boolean getResult(int gateType, boolean A, boolean B, boolean C, PClo_TileEntityGate tileEntety) {
+	private boolean getResult(int gateType, boolean back, boolean left, boolean right, PClo_TileEntityGate tileEntety) {
 		// A = bottom
 		// B = left
 		// C = right
-		if (gateType == PClo_GateType.NOT) { return !A; }
-		if (gateType == PClo_GateType.AND) { return B & C; }
-		if (gateType == PClo_GateType.NAND) { return !(B & C); }
-		if (gateType == PClo_GateType.OR) { return B | C; }
-		if (gateType == PClo_GateType.NOR) { return !(B | C); }
-		if (gateType == PClo_GateType.XOR) { return B != C; }
-		if (gateType == PClo_GateType.XNOR) { return B == C; }
-		if (gateType == PClo_GateType.AND3) { return A & B & C; }
-		if (gateType == PClo_GateType.NAND3) { return !(A & B & C); }
-		if (gateType == PClo_GateType.OR3) { return A | B | C; }
-		if (gateType == PClo_GateType.NOR3) { return !(A | B | C); }
-		if (gateType == PClo_GateType.XOR3) { return (A != B) | (B != C) | (C != A); }
-		if (gateType == PClo_GateType.XNOR3) { return (A == B) && (B == C) && (C == A); }
-		if (gateType == PClo_GateType.PROGRAMMABLE) { return calcGates(tileEntety.programm, A, B, C); }
+		if (gateType == PClo_GateType.NOT) { return !back; }
+		if (gateType == PClo_GateType.AND) { return left & right; }
+		if (gateType == PClo_GateType.NAND) { return !(left & right); }
+		if (gateType == PClo_GateType.OR) { return left | right; }
+		if (gateType == PClo_GateType.NOR) { return !(left | right); }
+		if (gateType == PClo_GateType.XOR) { return left != right; }
+		if (gateType == PClo_GateType.XNOR) { return left == right; }
+		if (gateType == PClo_GateType.AND3) { return back & left & right; }
+		if (gateType == PClo_GateType.NAND3) { return !(back & left & right); }
+		if (gateType == PClo_GateType.OR3) { return back | left | right; }
+		if (gateType == PClo_GateType.NOR3) { return !(back | left | right); }
+		if (gateType == PClo_GateType.XOR3) { return (back != left) | (left != right) | (right != back); }
+		if (gateType == PClo_GateType.XNOR3) { return (back == left) && (left == right) && (right == back); }
+		if (gateType == PClo_GateType.PROGRAMMABLE) { return calcProgrammableGate(tileEntety, back, left, right); }
 		return false;
 
 	}
@@ -886,7 +886,7 @@ public class PClo_BlockGate extends BlockContainer implements PC_IRotatedBox, PC
 	public void onBlockPlacedBy(World world, int x, int y, int z, EntityLiving entityliving) {
 
 		if (getType(world, x, y, z) == PClo_GateType.CROSSING) {
-			world.scheduleBlockUpdate(x, y, z, blockID, 1);
+			world.scheduleBlockUpdate(x, y, z, blockID, tickRate());
 			return;
 		}
 
@@ -899,7 +899,7 @@ public class PClo_BlockGate extends BlockContainer implements PC_IRotatedBox, PC
 		world.setBlockMetadataWithNotify(x, y, z, l);
 		boolean flag = isOutputActive(world, x, y, z);
 		if (flag) {
-			world.scheduleBlockUpdate(x, y, z, blockID, 1);
+			world.scheduleBlockUpdate(x, y, z, blockID, tickRate());
 		}
 	}
 

@@ -1,17 +1,30 @@
 package net.minecraft.src;
 
+/**
+ * Container used by GRES for inventory slots in the GUI.
+ * 
+ * @author XOR19
+ *
+ */
 public class PC_GresContainerManager extends Container {
 
+	/** The player who opened the gui */
 	public EntityPlayer thePlayer;
-	PC_IGresGui gresGui;
+	/** the open gui */
+	public PC_IGresGui gresGui;
 
 	private static final int playerSlots = 9 * 4;
+	/** Upper part of the player's inventory (3x9) */
 	public Slot[][] inventoryPlayerUpper = new Slot[9][3];
+	/** Lower part of the player's inventory (1x9, aka QuickBar) */
 	public Slot[][] inventoryPlayerLower = new Slot[9][1];
 
+	/**
+	 * Gres Container for player
+	 * @param player the player
+	 */
 	public PC_GresContainerManager(EntityPlayer player) {
 		thePlayer = player;
-		this.gresGui = gresGui;
 		if (thePlayer != null) {
 			// lower player inventory
 			for (int i = 0; i < 9; i++) {
@@ -30,6 +43,10 @@ public class PC_GresContainerManager extends Container {
 
 	}
 
+	/**
+	 * Set the GRES GUI (gui which uses this container)
+	 * @param gresGui
+	 */
 	public void setGresGui(PC_IGresGui gresGui) {
 		this.gresGui = gresGui;
 	}
@@ -93,6 +110,11 @@ public class PC_GresContainerManager extends Container {
 		return itemstack;
 	}
 
+	/**
+	 * Set a slot at position in inventorySlots list. Slot's slotNumber will be set to the ID.
+	 * @param id position in the list
+	 * @param newSlot the added slot.
+	 */
 	public void setSlot(int id, Slot newSlot) {
 		if (newSlot != null) {
 			inventorySlots.set(id, newSlot);
@@ -101,6 +123,10 @@ public class PC_GresContainerManager extends Container {
 		}
 	}
 
+	/**
+	 * Remove a slot with ID
+	 * @param id slot id
+	 */
 	public void removeSlot(int id) {
 		int i = id;
 		for (; i < inventorySlots.size() - 1; i++) {

@@ -349,7 +349,6 @@ public abstract class PC_BeamTracerBase {
 			if (canHitEntity) {
 
 				// check for entities in this block.
-				@SuppressWarnings("unchecked")
 				List<Entity> hitList = world.getEntitiesWithinAABB(net.minecraft.src.Entity.class,
 						AxisAlignedBB.getBoundingBoxFromPool(cnt.x, cnt.y, cnt.z, cnt.x + 1, cnt.y + 1, cnt.z + 1));
 

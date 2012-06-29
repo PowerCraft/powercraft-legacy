@@ -130,10 +130,10 @@ public class PC_GresGui extends GuiContainer implements PC_IGresGui {
 	}
 
 	@Override
-	protected void mouseClicked(int i, int j, int k) {
-		super.mouseClicked(i, j, k);
+	protected void mouseClicked(int x, int y, int button) {
+		super.mouseClicked(x, y, button);
 
-		PC_GresWidget newFocus = child.getWidgetUnderMouse(new PC_CoordI(i, j));
+		PC_GresWidget newFocus = child.getWidgetUnderMouse(new PC_CoordI(x, y));
 
 		if (newFocus != lastFocus) {
 			if (lastFocus != null) {
@@ -147,13 +147,13 @@ public class PC_GresGui extends GuiContainer implements PC_IGresGui {
 
 		if (newFocus != null) {
 			PC_CoordI fpos = newFocus.getPositionOnScreen();
-			if (newFocus.mouseClick(new PC_CoordI(i - fpos.x, j - fpos.y), k)) {
+			if (newFocus.mouseClick(new PC_CoordI(x - fpos.x, y - fpos.y), button)) {
 				gui.actionPerformed(newFocus, this);
 			}
 		}
 	}
 
-	private void mouseMoved(int i, int j) {
+	private void mouseMoved(int x, int y) {
 		int wheel = Mouse.getDWheel();
 		if (wheel < 0) {
 			wheel = -1;
@@ -163,28 +163,32 @@ public class PC_GresGui extends GuiContainer implements PC_IGresGui {
 		}
 		if (lastFocus != null) {
 			PC_CoordI fpos = lastFocus.getPositionOnScreen();
-			lastFocus.mouseMove(new PC_CoordI(i - fpos.x, j - fpos.y));
+			lastFocus.mouseMove(new PC_CoordI(x - fpos.x, y - fpos.y));
 			lastFocus.mouseWheel(wheel);
 		}
-		child.getWidgetUnderMouse(new PC_CoordI(i, j));
+		child.getWidgetUnderMouse(new PC_CoordI(x, y));
 	}
 
-	private void mouseUp(int i, int j, int k) {
+	private void mouseUp(int x, int y, @SuppressWarnings("unused") int state) {
 		if (lastFocus != null) {
 			PC_CoordI fpos = lastFocus.getPositionOnScreen();
-			if (lastFocus.mouseClick(new PC_CoordI(i - fpos.x, j - fpos.y), -1)) {
+			if (lastFocus.mouseClick(new PC_CoordI(x - fpos.x, y - fpos.y), -1)) {
 				gui.actionPerformed(lastFocus, this);
 			}
 		}
 	}
 
+
+	/**
+	 * state = -1 ... move, other ... up
+	 */
 	@Override
-	protected void mouseMovedOrUp(int i, int j, int k) {
-		super.mouseMovedOrUp(i, j, k);
-		if (k != -1) {
-			mouseUp(i, j, k);
+	protected void mouseMovedOrUp(int x, int y, int state) {
+		super.mouseMovedOrUp(x, y, state);
+		if (state != -1) {
+			mouseUp(x, y, state);
 		} else {
-			mouseMoved(i, j);
+			mouseMoved(x, y);
 		}
 	}
 
@@ -338,6 +342,11 @@ public class PC_GresGui extends GuiContainer implements PC_IGresGui {
 	 * NEEDED TO OVERRIDE render() AND FOR CUSTOM SLOT RENDERING.<br>
 	 * <br>
 	 * Returns if the passed mouse position is over the specified slot.
+	 * 
+	 * @param par1Slot the slot to check
+	 * @param par2 x ?
+	 * @param par3 y ?
+	 * @return is over
 	 */
 	private boolean isMouseOverSlot(Slot par1Slot, int par2, int par3) {
 		int i = guiLeft;

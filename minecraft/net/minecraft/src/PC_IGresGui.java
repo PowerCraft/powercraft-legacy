@@ -41,8 +41,16 @@ public interface PC_IGresGui {
 	 */
 	public abstract void close();
 
+	/**
+	 * On "craft matrix changed" event is generated
+	 * @param iinventory
+	 */
 	public abstract void onCraftMatrixChanged(IInventory iinventory);
 
+	/**
+	 * Get the container manager
+	 * @return container
+	 */
 	public abstract Container getContainer();
 	
 	/**
