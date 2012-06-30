@@ -1,11 +1,11 @@
 package net.minecraft.src;
 
+
 /**
  * PowerCraft core module renderer (power crystals)
  * 
  * @author MightyPork
  * @copy (c) 2012
- * 
  */
 public class PCtr_Renderer {
 
@@ -25,7 +25,9 @@ public class PCtr_Renderer {
 	 * @return success
 	 */
 	public static boolean renderBlockByType(RenderBlocks renderblocks, IBlockAccess blockAccess, int i, int j, int k, Block block, int rtype) {
-		if (rtype == teleporterRenderer) { return renderBlockTeleporter(renderblocks, blockAccess, i, j, k, block); }
+		if (rtype == teleporterRenderer) {
+			return renderBlockTeleporter(renderblocks, blockAccess, i, j, k, block);
+		}
 		return false;
 	}
 

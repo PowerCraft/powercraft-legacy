@@ -5,11 +5,11 @@ package net.minecraft.src.weasel;
  * Weasel utils
  * 
  * @author MightyPork
- *
  */
 public final class Utils {
 	/**
 	 * Check if number is in given range.
+	 * 
 	 * @param checked checked number
 	 * @param from range lower boundary (included)
 	 * @param to range upper boundary (included)

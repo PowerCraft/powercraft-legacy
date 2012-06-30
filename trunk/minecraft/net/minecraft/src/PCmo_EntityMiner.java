@@ -1,14 +1,13 @@
 package net.minecraft.src;
 
+
 import java.util.List;
 import java.util.Random;
 
+
 /**
- * 
- * 
  * @author MightyPork
  * @copy (c) 2012
- * 
  */
 public class PCmo_EntityMiner extends Entity implements IInventory {
 
@@ -38,37 +37,32 @@ public class PCmo_EntityMiner extends Entity implements IInventory {
 
 					PC_CoordI pos = new PC_CoordI(xx, yy, zz);
 
-					if (pos.getId(world) == steel && pos.offset(1, 0, 0).getId(world) == steel && pos.offset(0, 0, 1).getId(world) == steel
-							&& pos.offset(1, 0, 1).getId(world) == steel) {
+					if (pos.getId(world) == steel && pos.offset(1, 0, 0).getId(world) == steel && pos.offset(0, 0, 1).getId(world) == steel && pos.offset(1, 0, 1).getId(world) == steel) {
 
 						// valid bottom layer
 						// find direction.
-						if (pos.offset(0, 1, 0).getId(world) == steel && pos.offset(1, 1, 0).getId(world) == chest
-								&& pos.offset(0, 1, 1).getId(world) == steel && pos.offset(1, 1, 1).getId(world) == chest) {
+						if (pos.offset(0, 1, 0).getId(world) == steel && pos.offset(1, 1, 0).getId(world) == chest && pos.offset(0, 1, 1).getId(world) == steel && pos.offset(1, 1, 1).getId(world) == chest) {
 							if (spawnMinerAt(world, pos, 0)) {
 								itemstack.damageItem(1, entityplayer);
 							} else {
 								PC_Utils.chatMsg(eMinerCrystals, false);
 							}
 							return true;
-						} else if (pos.offset(0, 1, 0).getId(world) == chest && pos.offset(1, 1, 0).getId(world) == chest
-								&& pos.offset(0, 1, 1).getId(world) == steel && pos.offset(1, 1, 1).getId(world) == steel) {
+						} else if (pos.offset(0, 1, 0).getId(world) == chest && pos.offset(1, 1, 0).getId(world) == chest && pos.offset(0, 1, 1).getId(world) == steel && pos.offset(1, 1, 1).getId(world) == steel) {
 							if (spawnMinerAt(world, pos, 3)) {
 								itemstack.damageItem(1, entityplayer);
 							} else {
 								PC_Utils.chatMsg(eMinerCrystals, false);
 							}
 							return true;
-						} else if (pos.offset(0, 1, 0).getId(world) == chest && pos.offset(1, 1, 0).getId(world) == steel
-								&& pos.offset(0, 1, 1).getId(world) == chest && pos.offset(1, 1, 1).getId(world) == steel) {
+						} else if (pos.offset(0, 1, 0).getId(world) == chest && pos.offset(1, 1, 0).getId(world) == steel && pos.offset(0, 1, 1).getId(world) == chest && pos.offset(1, 1, 1).getId(world) == steel) {
 							if (spawnMinerAt(world, pos, 2)) {
 								itemstack.damageItem(1, entityplayer);
 							} else {
 								PC_Utils.chatMsg(eMinerCrystals, false);
 							}
 							return true;
-						} else if (pos.offset(0, 1, 0).getId(world) == steel && pos.offset(1, 1, 0).getId(world) == steel
-								&& pos.offset(0, 1, 1).getId(world) == chest && pos.offset(1, 1, 1).getId(world) == chest) {
+						} else if (pos.offset(0, 1, 0).getId(world) == steel && pos.offset(1, 1, 0).getId(world) == steel && pos.offset(0, 1, 1).getId(world) == chest && pos.offset(1, 1, 1).getId(world) == chest) {
 							if (spawnMinerAt(world, pos, 1)) {
 								itemstack.damageItem(1, entityplayer);
 							} else {
@@ -131,11 +125,15 @@ public class PCmo_EntityMiner extends Entity implements IInventory {
 			}
 		}
 
-		if (inv == null) { return false; }
+		if (inv == null) {
+			return false;
+		}
 
 		int cnt = PC_InvUtils.countPowerCrystals(inv);
 
-		if (cnt == 0) { return false; }
+		if (cnt == 0) {
+			return false;
+		}
 
 		// move contents.
 		PC_InvUtils.moveStacks(inv, this);
@@ -173,16 +171,15 @@ public class PCmo_EntityMiner extends Entity implements IInventory {
 
 
 	/**
-	 * Despawn the miner, recreate build structure at it's position;
-	 * Called when miner is killed or "to blocks" key is pressed
+	 * Despawn the miner, recreate build structure at it's position; Called when
+	 * miner is killed or "to blocks" key is pressed
 	 */
 	private void turnIntoBlocks() {
 		minerBeingCreated = true;
 		int xh = (int) Math.round(posX);
 		int y = (int) Math.floor(posY + 0.0001F);
 		int zh = (int) Math.round(posZ);
-		int yaw = (rotationYaw < 45 || rotationYaw > 315) ? 0 : (rotationYaw < 135 ? 1 : (rotationYaw < 215 ? 2 : (rotationYaw < 315 ? 3
-				: 0)));
+		int yaw = (rotationYaw < 45 || rotationYaw > 315) ? 0 : (rotationYaw < 135 ? 1 : (rotationYaw < 215 ? 2 : (rotationYaw < 315 ? 3 : 0)));
 
 		int xl = xh - 1, zl = zh - 1;
 
@@ -221,8 +218,7 @@ public class PCmo_EntityMiner extends Entity implements IInventory {
 		// replace opened gui with chest.
 		if (openedGui) {
 			ModLoader.getMinecraftInstance().thePlayer.closeScreen();
-			ModLoader.openGUI(ModLoader.getMinecraftInstance().thePlayer, new GuiChest(
-					ModLoader.getMinecraftInstance().thePlayer.inventory, inv));
+			ModLoader.openGUI(ModLoader.getMinecraftInstance().thePlayer, new GuiChest(ModLoader.getMinecraftInstance().thePlayer.inventory, inv));
 		}
 
 	}
@@ -313,15 +309,15 @@ public class PCmo_EntityMiner extends Entity implements IInventory {
 	// returns true if in water.
 	@Override
 	public boolean handleWaterMovement() {
-		return worldObj.isMaterialInBB(boundingBox.expand(-0.10000000149011612D, -0.40000000596046448D, -0.10000000149011612D),
-				Material.water);
+		return worldObj.isMaterialInBB(boundingBox.expand(-0.10000000149011612D, -0.40000000596046448D, -0.10000000149011612D), Material.water);
 	}
 
 	@Override
 	public boolean attackEntityFrom(DamageSource damagesource, int i) {
 		// all but void and explosion is ignored.
-		if (damagesource != DamageSource.outOfWorld
-				&& (worldObj.isRemote || isDead || (damagesource.getSourceOfDamage() == null && damagesource != DamageSource.explosion))) { return true; }
+		if (damagesource != DamageSource.outOfWorld && (worldObj.isRemote || isDead || (damagesource.getSourceOfDamage() == null && damagesource != DamageSource.explosion))) {
+			return true;
+		}
 		setForwardDirection(-getForwardDirection());
 		setTimeSinceHit(10);
 		setDamageTaken(getDamageTaken() + i * 7);
@@ -423,7 +419,10 @@ public class PCmo_EntityMiner extends Entity implements IInventory {
 
 	/** Speed based on level. */
 	private static final double[] MOTION_SPEED = { 0.04D, 0.05D, 0.06D, 0.07D, 0.08D, 0.09D, 0.11D, 0.12D };
-	/** Flag that this entity is being created and inventory should not be checked for Power Crystals. */
+	/**
+	 * Flag that this entity is being created and inventory should not be
+	 * checked for Power Crystals.
+	 */
 	public boolean minerBeingCreated = false;
 
 
@@ -457,11 +456,15 @@ public class PCmo_EntityMiner extends Entity implements IInventory {
 	private int fuelBuffer = 0;
 	/**
 	 * Fuel allocated for current operation.<br>
-	 * This fuel is already in the buffer, but won't be consumed until the operation is really finished.<br>
+	 * This fuel is already in the buffer, but won't be consumed until the
+	 * operation is really finished.<br>
 	 * that prevents fuel consumption when miner hits something it can't mine.
 	 */
 	private int fuelAllocated = 0;
-	/** Fuel needed to execute current command - wonẗ move until some fuel is added */
+	/**
+	 * Fuel needed to execute current command - wonẗ move until some fuel is
+	 * added
+	 */
 	private int waitingForFuel = 0;
 
 	/**
@@ -495,10 +498,18 @@ public class PCmo_EntityMiner extends Entity implements IInventory {
 	 * @return destroy it
 	 */
 	private boolean shouldDestroyStack(ItemStack stack) {
-		if (stack == null) { return true; }
-		if (stack.itemID == Block.cobblestone.blockID) { return (DESTROY & COBBLE) != 0; }
-		if (stack.itemID == Block.dirt.blockID) { return (DESTROY & DIRT) != 0; }
-		if (stack.itemID == Block.gravel.blockID) { return (DESTROY & GRAVEL) != 0; }
+		if (stack == null) {
+			return true;
+		}
+		if (stack.itemID == Block.cobblestone.blockID) {
+			return (DESTROY & COBBLE) != 0;
+		}
+		if (stack.itemID == Block.dirt.blockID) {
+			return (DESTROY & DIRT) != 0;
+		}
+		if (stack.itemID == Block.gravel.blockID) {
+			return (DESTROY & GRAVEL) != 0;
+		}
 		return false;
 	}
 
@@ -547,7 +558,9 @@ public class PCmo_EntityMiner extends Entity implements IInventory {
 	 * Pause program execution when the GUI is opened for running Miner.
 	 */
 	public void pauseProgram() {
-		if (paused) { return; }
+		if (paused) {
+			return;
+		}
 
 		// pack last instruction into saved codebuffer
 		commandListSaved = new String(commandList);
@@ -570,7 +583,9 @@ public class PCmo_EntityMiner extends Entity implements IInventory {
 	 * If not paused, do nothing.
 	 */
 	public void resumeProgram() {
-		if (!paused) { return; }
+		if (!paused) {
+			return;
+		}
 
 		resetStatus();
 		commandList = new String(commandListSaved.trim());
@@ -580,7 +595,8 @@ public class PCmo_EntityMiner extends Entity implements IInventory {
 	}
 
 	/**
-	 * Disconnect from keyboard, parse program, reset status and start program execution.
+	 * Disconnect from keyboard, parse program, reset status and start program
+	 * execution.
 	 * 
 	 * @throws PCmo_CommandException when the program contains errors.
 	 */
@@ -635,7 +651,9 @@ public class PCmo_EntityMiner extends Entity implements IInventory {
 	 * @return is miner ready for keyboard command
 	 */
 	public boolean canReceiveKeyboardCommand() {
-		if (openedGui) { return false; }
+		if (openedGui) {
+			return false;
+		}
 		commandList = commandList.trim();
 		return true;
 	}
@@ -657,7 +675,9 @@ public class PCmo_EntityMiner extends Entity implements IInventory {
 			resetEverything();
 		} else {
 			Character chr = PCmo_Command.getCharFromInt(i);
-			if (chr.equals('?')) { return; }
+			if (chr.equals('?')) {
+				return;
+			}
 			commandList += chr.toString();
 		}
 	}
@@ -684,7 +704,8 @@ public class PCmo_EntityMiner extends Entity implements IInventory {
 	}
 
 	/**
-	 * Get next command from buffer or step cound, prepare for execution and start it.
+	 * Get next command from buffer or step cound, prepare for execution and
+	 * start it.
 	 * 
 	 * @return the command, or -1 if buffer is empty
 	 */
@@ -719,7 +740,9 @@ public class PCmo_EntityMiner extends Entity implements IInventory {
 					cmd = stepCounter > 0 ? PCmo_Command.FORWARD : PCmo_Command.BACKWARD;
 
 					stepCounter = Math.abs(stepCounter);
-					if (stepCounter == 0) { return -1; }
+					if (stepCounter == 0) {
+						return -1;
+					}
 
 					return cmd;
 
@@ -737,21 +760,38 @@ public class PCmo_EntityMiner extends Entity implements IInventory {
 	// === EXECUTION AND STATUS UTILS ===
 
 	/**
-	 * Check if miner has at the target coordinates, which indicates that MOVE command was finished.
+	 * Check if miner has at the target coordinates, which indicates that MOVE
+	 * command was finished.
 	 * 
 	 * @return true if miner is at target pos
 	 */
 	private boolean isMinerAtTargetPos() {
 		if (currentCommand == PCmo_Command.FORWARD || currentCommand == PCmo_Command.UP) {
-			if (rotationYaw == 0) { return posX <= target.x; }
-			if (rotationYaw == 90) { return posZ <= target.z; }
-			if (rotationYaw == 180) { return posX >= target.x; }
-			if (rotationYaw == 270) { return posZ >= target.z; }
+			if (rotationYaw == 0) {
+				return posX <= target.x;
+			}
+			if (rotationYaw == 90) {
+				return posZ <= target.z;
+			}
+			if (rotationYaw == 180) {
+				return posX >= target.x;
+			}
+			if (rotationYaw == 270) {
+				return posZ >= target.z;
+			}
 		} else if (currentCommand == PCmo_Command.BACKWARD) {
-			if (rotationYaw == 0) { return posX >= target.x; }
-			if (rotationYaw == 90) { return posZ >= target.z; }
-			if (rotationYaw == 180) { return posX <= target.x; }
-			if (rotationYaw == 270) { return posZ <= target.z; }
+			if (rotationYaw == 0) {
+				return posX >= target.x;
+			}
+			if (rotationYaw == 90) {
+				return posZ >= target.z;
+			}
+			if (rotationYaw == 180) {
+				return posX <= target.x;
+			}
+			if (rotationYaw == 270) {
+				return posZ <= target.z;
+			}
 		}
 		return true;
 	}
@@ -1067,7 +1107,8 @@ public class PCmo_EntityMiner extends Entity implements IInventory {
 	}
 
 	/**
-	 * Look if there is any player who may appreciate the awesome effects and sounds.
+	 * Look if there is any player who may appreciate the awesome effects and
+	 * sounds.
 	 * 
 	 * @return
 	 */
@@ -1079,7 +1120,9 @@ public class PCmo_EntityMiner extends Entity implements IInventory {
 	 * Play the "ticking" sound made by miner's tracks.
 	 */
 	private void playMotionEffect() {
-		if (!shouldMakeEffects()) { return; }
+		if (!shouldMakeEffects()) {
+			return;
+		}
 		worldObj.playSoundAtEntity(this, "random.click", 0.02F, 0.8F);
 	}
 
@@ -1089,23 +1132,24 @@ public class PCmo_EntityMiner extends Entity implements IInventory {
 	 * @param x block x
 	 * @param y block y
 	 * @param z block z
-	 * @param block_index index of mined block, equal to it's index in MineCounter.
+	 * @param block_index index of mined block, equal to it's index in
+	 *            MineCounter.
 	 */
 	private void playMiningEffect(PC_CoordI pos, int block_index) {
 		miningTickCounter++;
 
-		if (!shouldMakeEffects()) { return; }
+		if (!shouldMakeEffects()) {
+			return;
+		}
 		int id = pos.getId(worldObj);
 
 		Block block = Block.blocksList[id];
 		if (miningTickCounter % 8 == 0 && block != null) {
-			ModLoader.getMinecraftInstance().sndManager.playSound(block.stepSound.getBreakSound(), pos.x + 0.5F, pos.y + 0.5F,
-					pos.z + 0.5F, (block.stepSound.getVolume() + 1.0F) / 8F, block.stepSound.getPitch() * 0.5F);
+			ModLoader.getMinecraftInstance().sndManager.playSound(block.stepSound.getBreakSound(), pos.x + 0.5F, pos.y + 0.5F, pos.z + 0.5F, (block.stepSound.getVolume() + 1.0F) / 8F, block.stepSound.getPitch() * 0.5F);
 		}
 
 		if (block != null) {
-			ModLoader.getMinecraftInstance().effectRenderer.addBlockHitEffects(pos.x, pos.y, pos.z, block_index < 4 ? getSideFromYaw()
-					: (block_index < 6 ? 1 : 0));
+			ModLoader.getMinecraftInstance().effectRenderer.addBlockHitEffects(pos.x, pos.y, pos.z, block_index < 4 ? getSideFromYaw() : (block_index < 6 ? 1 : 0));
 		}
 	}
 
@@ -1115,10 +1159,18 @@ public class PCmo_EntityMiner extends Entity implements IInventory {
 	 * @return
 	 */
 	private int getSideFromYaw() {
-		if (rotationYaw == 0) { return 5; }
-		if (rotationYaw == 90) { return 3; }
-		if (rotationYaw == 180) { return 4; }
-		if (rotationYaw == 270) { return 2; }
+		if (rotationYaw == 0) {
+			return 5;
+		}
+		if (rotationYaw == 90) {
+			return 3;
+		}
+		if (rotationYaw == 180) {
+			return 4;
+		}
+		if (rotationYaw == 270) {
+			return 2;
+		}
 		return 1;
 	}
 
@@ -1251,7 +1303,9 @@ public class PCmo_EntityMiner extends Entity implements IInventory {
 	 */
 	private boolean isMiningInProgress() {
 		for (int counter : mineCounter) {
-			if (counter != 0) { return true; }
+			if (counter != 0) {
+				return true;
+			}
 		}
 		return false;
 	}
@@ -1287,15 +1341,15 @@ public class PCmo_EntityMiner extends Entity implements IInventory {
 	 * Check if block is unharvestable
 	 * 
 	 * @param pos
-	 * 
 	 * @param id block id
 	 * @return is not harvested
 	 */
 	private boolean shouldIgnoreBlockForHarvesting(PC_CoordI pos, int id) {
 
-		if (id == 0 || Block.blocksList[id] == null || Block.blocksList[id] instanceof BlockTorch || id == Block.fire.blockID
-				|| id == Block.portal.blockID || id == Block.endPortal.blockID || Block.blocksList[id] instanceof BlockFluid || id == 55
-				|| id == 70 || id == 72 || PC_BlockUtils.hasFlag(worldObj, pos, "LIFT") || PC_BlockUtils.hasFlag(worldObj, pos, "BELT")) { return true; }
+		if (id == 0 || Block.blocksList[id] == null || Block.blocksList[id] instanceof BlockTorch || id == Block.fire.blockID || id == Block.portal.blockID || id == Block.endPortal.blockID || Block.blocksList[id] instanceof BlockFluid || id == 55
+				|| id == 70 || id == 72 || PC_BlockUtils.hasFlag(worldObj, pos, "LIFT") || PC_BlockUtils.hasFlag(worldObj, pos, "BELT")) {
+			return true;
+		}
 
 		boolean flag = false;
 		if (Block.blocksList[id] instanceof PC_ICropBlock) {
@@ -1305,7 +1359,9 @@ public class PCmo_EntityMiner extends Entity implements IInventory {
 			flag = !PC_CropHarvestingManager.canHarvestBlock(id, pos.getMeta(worldObj));
 		}
 
-		if (flag && Block.blocksList[id].getCollisionBoundingBoxFromPool(worldObj, pos.x, pos.y, pos.z) == null) { return true; }
+		if (flag && Block.blocksList[id].getCollisionBoundingBoxFromPool(worldObj, pos.x, pos.y, pos.z) == null) {
+			return true;
+		}
 
 		return false;
 
@@ -1325,21 +1381,22 @@ public class PCmo_EntityMiner extends Entity implements IInventory {
 	 * Check if miner is able to break given block.
 	 * 
 	 * @param pos
-	 * 
 	 * @param id block id
 	 * @return can break
 	 */
 	private boolean canHarvestBlockWithCurrentLevel(PC_CoordI pos, int id) {
 		// exception - miner 8 can mine bedrock.
-		if (id == 7 && level == 8) { return true; }
-		if (isBlockUnbreakable(id) || PC_BlockUtils.hasFlag(worldObj, pos, "HARVEST_STOP")) { return false; }
+		if (id == 7 && level == 8) {
+			return true;
+		}
+		if (isBlockUnbreakable(id) || PC_BlockUtils.hasFlag(worldObj, pos, "HARVEST_STOP")) {
+			return false;
+		}
 		switch (level) {
 			case 1: // all but rocks and iron
-				return Block.blocksList[id].blockMaterial != Material.rock && Block.blocksList[id].blockMaterial != Material.iron
-						&& id != mod_PCcore.powerCrystal.blockID;
+				return Block.blocksList[id].blockMaterial != Material.rock && Block.blocksList[id].blockMaterial != Material.iron && id != mod_PCcore.powerCrystal.blockID;
 			case 2: // everything but precious ores (cobble, coal, iron)
-				return id != 49 && id != 14 && id != 21 && id != 22 && id != 41 && id != 56 && id != 57 && id != 73 && id != 74
-						&& id != mod_PCcore.powerCrystal.blockID;
+				return id != 49 && id != 14 && id != 21 && id != 22 && id != 41 && id != 56 && id != 57 && id != 73 && id != 74 && id != mod_PCcore.powerCrystal.blockID;
 			case 3: // all but diamonds + obsidian + power crystals
 				return id != 49 && id != 56 && id != 57 && id != mod_PCcore.powerCrystal.blockID;
 			case 4: // all but obsidian
@@ -1357,25 +1414,39 @@ public class PCmo_EntityMiner extends Entity implements IInventory {
 	 * Get block mining price.
 	 * 
 	 * @param pos position
-	 * 
 	 * @param id block ID
 	 * @return block's mining cost in fuel points.
 	 */
 	private int getBlockMiningCost(PC_CoordI pos, int id) {
-		if (!canHarvestBlockWithCurrentLevel(pos, id)) { return -1; }
-		if (shouldIgnoreBlockForHarvesting(pos, id)) { return 0; }
+		if (!canHarvestBlockWithCurrentLevel(pos, id)) {
+			return -1;
+		}
+		if (shouldIgnoreBlockForHarvesting(pos, id)) {
+			return 0;
+		}
 
 		// dirt, gravel, sand, non-rocks.
-		if (Block.blocksList[id].blockMaterial != Material.rock && Block.blocksList[id].blockMaterial != Material.iron) { return 10; }
-		if (id == 73 || id == 74 || id == 21 || id == 14) { return 100;// redstone,lapis,gold
+		if (Block.blocksList[id].blockMaterial != Material.rock && Block.blocksList[id].blockMaterial != Material.iron) {
+			return 10;
 		}
-		if (id == 16 || id == 15 || id == 42 || id == 98) { return 30;// coal,iron,stonebrick
+		if (id == 73 || id == 74 || id == 21 || id == 14) {
+			return 100;// redstone,lapis,gold
 		}
-		if (id == 56 || id == 57 || id == 14) { return 150; // diamond
+		if (id == 16 || id == 15 || id == 42 || id == 98) {
+			return 30;// coal,iron,stonebrick
 		}
-		if (id == 49) { return 600; }
-		if (id == 7) { return 2000; }
-		if (id == mod_PCcore.powerCrystal.blockID) { return 100; }
+		if (id == 56 || id == 57 || id == 14) {
+			return 150; // diamond
+		}
+		if (id == 49) {
+			return 600;
+		}
+		if (id == 7) {
+			return 2000;
+		}
+		if (id == mod_PCcore.powerCrystal.blockID) {
+			return 100;
+		}
 
 		return 20;
 	}
@@ -1404,7 +1475,8 @@ public class PCmo_EntityMiner extends Entity implements IInventory {
 	}
 
 	/**
-	 * Check if block at given position is air, laid half step or non-colliding block.
+	 * Check if block at given position is air, laid half step or non-colliding
+	 * block.
 	 * 
 	 * @param pos position in world
 	 * @param lower is it the lower block of miner's body
@@ -1413,7 +1485,9 @@ public class PCmo_EntityMiner extends Entity implements IInventory {
 	private boolean checkIfAir(PC_CoordI pos, boolean lower) {
 		int id = pos.getId(worldObj);
 
-		if (lower && id == Block.stairSingle.blockID) { return true; }
+		if (lower && id == Block.stairSingle.blockID) {
+			return true;
+		}
 
 		Block block = Block.blocksList[id];
 		return block == null || block.getCollisionBoundingBoxFromPool(worldObj, pos.x, pos.y, pos.z) == null;
@@ -1432,14 +1506,26 @@ public class PCmo_EntityMiner extends Entity implements IInventory {
 	 * @return false if it run out of material
 	 */
 	private boolean performBridgeBuilding() {
-		if (!bridgeEnabled) { return true; }
+		if (!bridgeEnabled) {
+			return true;
+		}
 
 		int y = (int) Math.floor(posY - 0.9999F);
-		if (isOnHalfStep()) { return true; }
-		if (!bridgeBuilding_do(target.offset(0, -1, 0))) { return false; }
-		if (!bridgeBuilding_do(target.offset(-1, -1, 0))) { return false; }
-		if (!bridgeBuilding_do(target.offset(0, -1, -1))) { return false; }
-		if (!bridgeBuilding_do(target.offset(-1, -1, -1))) { return false; }
+		if (isOnHalfStep()) {
+			return true;
+		}
+		if (!bridgeBuilding_do(target.offset(0, -1, 0))) {
+			return false;
+		}
+		if (!bridgeBuilding_do(target.offset(-1, -1, 0))) {
+			return false;
+		}
+		if (!bridgeBuilding_do(target.offset(0, -1, -1))) {
+			return false;
+		}
+		if (!bridgeBuilding_do(target.offset(-1, -1, -1))) {
+			return false;
+		}
 
 		return true;
 	}
@@ -1459,15 +1545,16 @@ public class PCmo_EntityMiner extends Entity implements IInventory {
 				return false;
 			}
 			ItemStack fill = getBlockForBuilding();
-			if (fill == null) { return false; }
+			if (fill == null) {
+				return false;
+			}
 
 			int id = fill.itemID;
 			int meta = fill.getItemDamage();
 			pos.setBlock(worldObj, id, meta);
 
 			if (shouldMakeEffects()) {
-				worldObj.playSoundEffect(pos.x + 0.5F, pos.y + 0.5F, pos.z + 0.5F, Block.blocksList[id].stepSound.getStepSound(),
-						(Block.blocksList[id].stepSound.getVolume() + 1.0F) / 2.0F, Block.blocksList[id].stepSound.getPitch() * 0.8F);
+				worldObj.playSoundEffect(pos.x + 0.5F, pos.y + 0.5F, pos.z + 0.5F, Block.blocksList[id].stepSound.getStepSound(), (Block.blocksList[id].stepSound.getVolume() + 1.0F) / 2.0F, Block.blocksList[id].stepSound.getPitch() * 0.8F);
 			}
 		}
 		return true;
@@ -1496,25 +1583,25 @@ public class PCmo_EntityMiner extends Entity implements IInventory {
 		}
 
 		int id = worldObj.getBlockId(x, y + (step ? -1 : 0), z);
-		if (id == 0 || id == 8 || id == 9 || id == 10 || id == 11
-				|| Block.blocksList[id].getCollisionBoundingBoxFromPool(worldObj, x, y, z) == null) {
+		if (id == 0 || id == 8 || id == 9 || id == 10 || id == 11 || Block.blocksList[id].getCollisionBoundingBoxFromPool(worldObj, x, y, z) == null) {
 			ItemStack fill = getBlockForBuilding();
-			if (fill == null) { return; }
+			if (fill == null) {
+				return;
+			}
 
 			id = fill.itemID;
 			int meta = fill.getItemDamage();
 			worldObj.setBlockAndMetadataWithNotify(x, y + (step ? -1 : 0), z, id, meta);
 			if (shouldMakeEffects()) {
-				worldObj.playSoundEffect(x + 0.5F, (float) y + (step ? -1 : 0) + 0.5F, z + 0.5F,
-						Block.blocksList[id].stepSound.getStepSound(), (Block.blocksList[id].stepSound.getVolume() + 1.0F) / 2.0F,
+				worldObj.playSoundEffect(x + 0.5F, (float) y + (step ? -1 : 0) + 0.5F, z + 0.5F, Block.blocksList[id].stepSound.getStepSound(), (Block.blocksList[id].stepSound.getVolume() + 1.0F) / 2.0F,
 						Block.blocksList[id].stepSound.getPitch() * 0.8F);
 			}
 		}
 	}
 
 	/**
-	 * Find block for halfstep and get it's id;
-	 * TODO this method ignores metadata and newly you get two halfsteps from signel block.
+	 * Find block for halfstep and get it's id; TODO this method ignores
+	 * metadata and newly you get two halfsteps from signel block.
 	 * 
 	 * @return metadata
 	 */
@@ -1524,7 +1611,9 @@ public class PCmo_EntityMiner extends Entity implements IInventory {
 				if (isItemGoodForHalfStep(getStackInSlot(i), pass)) {
 					ItemStack returned = decrStackSize(i, 1);
 
-					if (returned.itemID == Block.stairSingle.blockID) { return returned.getItemDamage(); }
+					if (returned.itemID == Block.stairSingle.blockID) {
+						return returned.getItemDamage();
+					}
 					return getDamageFromMaterialForHalfStep(returned.itemID);
 				}
 			}
@@ -1560,18 +1649,27 @@ public class PCmo_EntityMiner extends Entity implements IInventory {
 	 * Check if stack can be crafted to halfstep.
 	 * 
 	 * @param is stack
-	 * @param pass pass; 0 = stone, 1 = planks+smoothstone, 2 = sandstone+stonebrick+brick.
+	 * @param pass pass; 0 = stone, 1 = planks+smoothstone, 2 =
+	 *            sandstone+stonebrick+brick.
 	 * @return
 	 */
 	private boolean isItemGoodForHalfStep(ItemStack is, int pass) {
-		if (is == null) { return false; }
+		if (is == null) {
+			return false;
+		}
 		int id = is.itemID;
 
-		if (pass == 0) { return id == Block.cobblestone.blockID || id == Block.stairSingle.blockID; }
+		if (pass == 0) {
+			return id == Block.cobblestone.blockID || id == Block.stairSingle.blockID;
+		}
 
-		if (pass == 1) { return id == Block.planks.blockID || id == Block.stone.blockID; }
+		if (pass == 1) {
+			return id == Block.planks.blockID || id == Block.stone.blockID;
+		}
 
-		if (pass == 2) { return id == Block.sandStone.blockID || id == Block.stoneBrick.blockID || id == Block.brick.blockID; }
+		if (pass == 2) {
+			return id == Block.sandStone.blockID || id == Block.stoneBrick.blockID || id == Block.brick.blockID;
+		}
 
 		return false;
 	}
@@ -1584,7 +1682,9 @@ public class PCmo_EntityMiner extends Entity implements IInventory {
 	private ItemStack getBlockForBuilding() {
 		for (int pass = 0; pass < 3; pass++) {
 			for (int i = 0; i < getSizeInventory(); i++) {
-				if (isBlockGoodForBuilding(getStackInSlot(i), pass)) { return decrStackSize(i, 1); }
+				if (isBlockGoodForBuilding(getStackInSlot(i), pass)) {
+					return decrStackSize(i, 1);
+				}
 			}
 		}
 		return null;
@@ -1598,25 +1698,38 @@ public class PCmo_EntityMiner extends Entity implements IInventory {
 	 * @return is good
 	 */
 	private boolean isBlockGoodForBuilding(ItemStack is, int pass) {
-		if (is == null) { return false; }
+		if (is == null) {
+			return false;
+		}
 
-		if (!(is.getItem() instanceof ItemBlock)) { return false; }
+		if (!(is.getItem() instanceof ItemBlock)) {
+			return false;
+		}
 
 		int id = is.itemID;
 
-		if (PC_BlockUtils.hasFlag(is, "NO_BUILD")) { return false; }
+		if (PC_BlockUtils.hasFlag(is, "NO_BUILD")) {
+			return false;
+		}
 
-		if (id == Block.sand.blockID || id == Block.gravel.blockID) { return false; }
+		if (id == Block.sand.blockID || id == Block.gravel.blockID) {
+			return false;
+		}
 
-		if (pass == 0) { return id == 2 || id == 3 || id == 4; }
+		if (pass == 0) {
+			return id == 2 || id == 3 || id == 4;
+		}
 
-		if (pass == 1) { return id == 5 || id == 1 || id == 24 || id == 87; }
+		if (pass == 1) {
+			return id == 5 || id == 1 || id == 24 || id == 87;
+		}
 
-		if (id == 15 || id == 14 || id == 56) { return false; }
+		if (id == 15 || id == 14 || id == 56) {
+			return false;
+		}
 
 
-		return id != mod_PCcore.powerCrystal.blockID && Block.blocksList[is.itemID] != null
-				&& Block.blocksList[is.itemID].blockMaterial.isSolid();
+		return id != mod_PCcore.powerCrystal.blockID && Block.blocksList[is.itemID] != null && Block.blocksList[is.itemID].blockMaterial.isSolid();
 	}
 
 	/**
@@ -1624,8 +1737,12 @@ public class PCmo_EntityMiner extends Entity implements IInventory {
 	 * <b>Time expensive, do only if needed!</b>
 	 */
 	private void compressInv() {
-		if (level < 5) { return; }
-		if (!compressBlocks) { return; }
+		if (level < 5) {
+			return;
+		}
+		if (!compressBlocks) {
+			return;
+		}
 
 		int sand = 0;
 		int diamond = 0;
@@ -1761,7 +1878,9 @@ public class PCmo_EntityMiner extends Entity implements IInventory {
 	 * Fill nearby lava with stones from inventory, get lava into bucket.
 	 */
 	private void fillLavaNearby() {
-		if (level < 4 || !lavaFillingEnabled) { return; }
+		if (level < 4 || !lavaFillingEnabled) {
+			return;
+		}
 
 		int y1 = (int) Math.floor(posY + 0.0001F);
 		int x1 = (int) Math.round(posX);
@@ -1850,8 +1969,7 @@ public class PCmo_EntityMiner extends Entity implements IInventory {
 						worldObj.setBlockAndMetadataWithNotify(x, y, z, fillId, fillMeta);
 						if (Block.blocksList[fillId] != null) {
 							if (shouldMakeEffects()) {
-								worldObj.playSoundEffect(x + 0.5F, y + 0.5F, z + 0.5F, Block.blocksList[fillId].stepSound.getStepSound(),
-										(Block.blocksList[fillId].stepSound.getVolume() + 1.0F) / 2.0F,
+								worldObj.playSoundEffect(x + 0.5F, y + 0.5F, z + 0.5F, Block.blocksList[fillId].stepSound.getStepSound(), (Block.blocksList[fillId].stepSound.getVolume() + 1.0F) / 2.0F,
 										Block.blocksList[fillId].stepSound.getPitch() * 0.8F);
 							}
 						}
@@ -1865,7 +1983,9 @@ public class PCmo_EntityMiner extends Entity implements IInventory {
 	 * Fill nearby water with stones from inventory.
 	 */
 	private void fillWaterNearby() {
-		if (level < 6 || !waterFillingEnabled) { return; }
+		if (level < 6 || !waterFillingEnabled) {
+			return;
+		}
 
 		int y1 = (int) Math.floor(posY + 0.000F);
 		int x1 = (int) Math.round(posX);
@@ -1953,8 +2073,7 @@ public class PCmo_EntityMiner extends Entity implements IInventory {
 						worldObj.setBlockAndMetadataWithNotify(x, y, z, fillId, fillMeta);
 						if (Block.blocksList[fillId] != null) {
 							if (shouldMakeEffects()) {
-								worldObj.playSoundEffect(x + 0.5F, y + 0.5F, z + 0.5F, Block.blocksList[fillId].stepSound.getStepSound(),
-										(Block.blocksList[fillId].stepSound.getVolume() + 1.0F) / 2.0F,
+								worldObj.playSoundEffect(x + 0.5F, y + 0.5F, z + 0.5F, Block.blocksList[fillId].stepSound.getStepSound(), (Block.blocksList[fillId].stepSound.getVolume() + 1.0F) / 2.0F,
 										Block.blocksList[fillId].stepSound.getPitch() * 0.8F);
 							}
 						}
@@ -1966,7 +2085,8 @@ public class PCmo_EntityMiner extends Entity implements IInventory {
 
 
 	/**
-	 * Try to unburry itself (if cobble was spawned at miner's position, sand fell on it or whatever.
+	 * Try to unburry itself (if cobble was spawned at miner's position, sand
+	 * fell on it or whatever.
 	 * 
 	 * @param targetPos do this for target position; current pos otherwise
 	 */
@@ -1987,8 +2107,7 @@ public class PCmo_EntityMiner extends Entity implements IInventory {
 					int id = worldObj.getBlockId(x, y, z);
 
 					// get entry for new blocks.
-					if (id != 0
-							&& (Block.blocksList[id] instanceof BlockSand || id == Block.cobblestone.blockID || id == Block.dirt.blockID)) {
+					if (id != 0 && (Block.blocksList[id] instanceof BlockSand || id == Block.cobblestone.blockID || id == Block.dirt.blockID)) {
 						harvestBlock_do(new PC_CoordI(x, y, z));
 					}
 				}
@@ -2016,9 +2135,7 @@ public class PCmo_EntityMiner extends Entity implements IInventory {
 							boolean stored = false;
 							boolean crystal = false;
 							ItemStack stack = getStackInSlot(i);
-							if (stack != null && stack.itemID != mod_PCcore.powerDust.shiftedIndex
-									&& stack.itemID != Block.torchWood.blockID && stack.itemID != Item.bucketEmpty.shiftedIndex
-									&& stack.itemID != Item.bucketLava.shiftedIndex
+							if (stack != null && stack.itemID != mod_PCcore.powerDust.shiftedIndex && stack.itemID != Block.torchWood.blockID && stack.itemID != Item.bucketEmpty.shiftedIndex && stack.itemID != Item.bucketLava.shiftedIndex
 									&& (!keepAllFuel || PC_InvUtils.getFuelValue(stack, FUEL_STRENGTH) == 0)) {
 
 								if (stack.itemID == mod_PCcore.powerCrystal.blockID) {
@@ -2055,16 +2172,24 @@ public class PCmo_EntityMiner extends Entity implements IInventory {
 	 * Place torches on ground and on walls, if enabled.
 	 */
 	private void performTorchPlacing() {
-		if (level < 3) { return; }
+		if (level < 3) {
+			return;
+		}
 
 		int y = (int) Math.floor(posY + 0.0001F);
 		int x = (int) Math.round(posX);
 		int z = (int) Math.round(posZ);
 
-		if (getBrightness(1.0F) > 0.2F) { return; }
-		if (handleWaterMovement()) { return; }
+		if (getBrightness(1.0F) > 0.2F) {
+			return;
+		}
+		if (handleWaterMovement()) {
+			return;
+		}
 
-		if (!hasTorch()) { return; }
+		if (!hasTorch()) {
+			return;
+		}
 
 		int leftX = x, leftZ = z, rightX = x, rightZ = z;
 
@@ -2145,7 +2270,9 @@ public class PCmo_EntityMiner extends Entity implements IInventory {
 	 */
 	private boolean hasTorch() {
 		for (int i = 0; i < getSizeInventory(); i++) {
-			if (getStackInSlot(i) != null && getStackInSlot(i).itemID == Block.torchWood.blockID) { return true; }
+			if (getStackInSlot(i) != null && getStackInSlot(i).itemID == Block.torchWood.blockID) {
+				return true;
+			}
 		}
 		return false;
 	}
@@ -2450,8 +2577,7 @@ public class PCmo_EntityMiner extends Entity implements IInventory {
 					}
 
 					// stop if bumped into wall
-					if ((!miningEnabled || !isMiningInProgress() || currentCommand == PCmo_Command.BACKWARD)
-							&& !isLocationEmpty(target.setY(y))) {
+					if ((!miningEnabled || !isMiningInProgress() || currentCommand == PCmo_Command.BACKWARD) && !isLocationEmpty(target.setY(y))) {
 
 						burriedFix(fw && miningEnabled);
 
@@ -2541,8 +2667,7 @@ public class PCmo_EntityMiner extends Entity implements IInventory {
 				int dmg = entity.item.getItemDamage();
 
 				boolean xtal = id == mod_PCcore.powerCrystal.blockID;
-				boolean compress = (id == Block.sand.blockID || id == Item.snowball.shiftedIndex || id == Item.diamond.shiftedIndex
-						|| (id == Item.dyePowder.shiftedIndex && dmg == 4) || id == Item.lightStoneDust.shiftedIndex);
+				boolean compress = (id == Block.sand.blockID || id == Item.snowball.shiftedIndex || id == Item.diamond.shiftedIndex || (id == Item.dyePowder.shiftedIndex && dmg == 4) || id == Item.lightStoneDust.shiftedIndex);
 
 				if (shouldDestroyStack(entity.item)) {
 					entity.setDead();
@@ -2600,7 +2725,9 @@ public class PCmo_EntityMiner extends Entity implements IInventory {
 
 	@Override
 	public void applyEntityCollision(Entity entity) {
-		if (entity.riddenByEntity == this || entity.ridingEntity == this) { return; }
+		if (entity.riddenByEntity == this || entity.ridingEntity == this) {
+			return;
+		}
 
 		double d = entity.posX - posX;
 		double d1 = entity.posZ - posZ;
@@ -2761,7 +2888,9 @@ public class PCmo_EntityMiner extends Entity implements IInventory {
 
 	@Override
 	public boolean interact(EntityPlayer entityplayer) {
-		if (riddenByEntity != null && (riddenByEntity instanceof EntityPlayer) && riddenByEntity != entityplayer) { return true; }
+		if (riddenByEntity != null && (riddenByEntity instanceof EntityPlayer) && riddenByEntity != entityplayer) {
+			return true;
+		}
 
 		if (!worldObj.isRemote) {
 			if (entityplayer.isSneaking()) {
@@ -2772,19 +2901,15 @@ public class PCmo_EntityMiner extends Entity implements IInventory {
 			}
 
 			// set for keyboard control or open gui.
-			if (entityplayer.getCurrentEquippedItem() != null
-					&& entityplayer.getCurrentEquippedItem().itemID == mod_PCcore.activator.shiftedIndex) {
+			if (entityplayer.getCurrentEquippedItem() != null && entityplayer.getCurrentEquippedItem().itemID == mod_PCcore.activator.shiftedIndex) {
 				setKeyboardControl(!keyboardControlled);
 
-			} else if (entityplayer.getCurrentEquippedItem() != null
-					&& entityplayer.getCurrentEquippedItem().itemID == Item.stick.shiftedIndex) {
+			} else if (entityplayer.getCurrentEquippedItem() != null && entityplayer.getCurrentEquippedItem().itemID == Item.stick.shiftedIndex) {
 				PC_Utils.chatMsg(rotationYaw + "°", true);
 				PC_Utils.chatMsg("PROGRAM: " + program, false);
 				PC_Utils.chatMsg("Buffer: " + commandList.length() + " commands.", false);
-				PC_Utils.chatMsg("Inctruction = " + Character.toString(PCmo_Command.getCharFromInt(currentCommand)) + ", Step counter = "
-						+ stepCounter, false);
-				PC_Utils.chatMsg("FUEL: burning = " + fuelBuffer + ", allocated = " + fuelAllocated + ", deficit = " + waitingForFuel,
-						false);
+				PC_Utils.chatMsg("Inctruction = " + Character.toString(PCmo_Command.getCharFromInt(currentCommand)) + ", Step counter = " + stepCounter, false);
+				PC_Utils.chatMsg("FUEL: burning = " + fuelBuffer + ", allocated = " + fuelAllocated + ", deficit = " + waitingForFuel, false);
 				PC_Utils.chatMsg("bridge = " + bridgeEnabled + ", mining = " + miningEnabled + ", destroy_flags = " + DESTROY, false);
 
 			} else {

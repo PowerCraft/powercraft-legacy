@@ -1,14 +1,15 @@
 package net.minecraft.src;
 
+
 import java.util.List;
 import java.util.Map;
+
 
 /**
  * Machines PowerCraft module
  * 
  * @author MightyPork
  * @copy (c) 2012
- * 
  */
 public class mod_PCmachines extends PC_Module implements PC_IActivatorListener {
 
@@ -125,8 +126,7 @@ public class mod_PCmachines extends PC_Module implements PC_IActivatorListener {
 		conf.putBoolean(pk_optDispenseBowls, true, "Thrown bowls can get soup from mushroom cow.");
 		conf.putBoolean(pk_optDispenseWheat, true, "Thrown wheat can put animals into 'love' mode.");
 		conf.putBoolean(pk_optDispenseFood, false, "Thrown meat can heal wolves etc.");
-		conf.putBoolean(pk_optAltPrismRecipe, false, "Use \"+\" shaped glass recipe instead of the 4-block one.\n"
-				+ "Needed for compatibility with MoCreatures.");
+		conf.putBoolean(pk_optAltPrismRecipe, false, "Use \"+\" shaped glass recipe instead of the 4-block one.\n" + "Needed for compatibility with MoCreatures.");
 
 		conf.apply();
 
@@ -377,10 +377,8 @@ public class mod_PCmachines extends PC_Module implements PC_IActivatorListener {
 		PC_InveditManager.setDamageRange(optical.blockID, 0, 1);
 		PC_InveditManager.setItemCategory(optical.blockID, "Optical");
 
-		addStacksToCraftingTool(PC_CraftingToolGroup.MACHINES, new ItemStack(harvester), new ItemStack(builder), new ItemStack(replacer),
-				new ItemStack(roaster), new ItemStack(xpbank), new ItemStack(automaticWorkbench));
-		addStacksToCraftingTool(PC_CraftingToolGroup.OPTICAL, new ItemStack(laser), new ItemStack(optical, 1, 0), new ItemStack(optical, 1,
-				1), new ItemStack(Block.thinGlass));
+		addStacksToCraftingTool(PC_CraftingToolGroup.MACHINES, new ItemStack(harvester), new ItemStack(builder), new ItemStack(replacer), new ItemStack(roaster), new ItemStack(xpbank), new ItemStack(automaticWorkbench));
+		addStacksToCraftingTool(PC_CraftingToolGroup.OPTICAL, new ItemStack(laser), new ItemStack(optical, 1, 0), new ItemStack(optical, 1, 1), new ItemStack(Block.thinGlass));
 	}
 
 

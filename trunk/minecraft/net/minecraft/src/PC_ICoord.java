@@ -1,12 +1,13 @@
 package net.minecraft.src;
 
+
 /**
  * Common methods for coordinate classes;<br>
- * This interface is mainly used to require overrides, coords should not be casted to it.
+ * This interface is mainly used to require overrides, coords should not be
+ * casted to it.
  * 
  * @author MightyPork
  * @copy (c) 2012
- * 
  */
 public interface PC_ICoord extends PC_INBT {
 

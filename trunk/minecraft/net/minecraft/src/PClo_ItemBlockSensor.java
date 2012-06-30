@@ -1,11 +1,11 @@
 package net.minecraft.src;
 
+
 /**
  * Item Block replacement for sensors (overrides itemNameIS)
  * 
  * @author MightyPork
  * @copy (c) 2012
- * 
  */
 public class PClo_ItemBlockSensor extends ItemMetadata {
 	/**
@@ -18,8 +18,7 @@ public class PClo_ItemBlockSensor extends ItemMetadata {
 
 	@Override
 	public String getItemNameIS(ItemStack itemstack) {
-		return (new StringBuilder()).append(super.getItemName()).append(".")
-				.append(itemstack.getItemDamage() == 0 ? "item" : itemstack.getItemDamage() == 1 ? "living" : "player").toString();
+		return (new StringBuilder()).append(super.getItemName()).append(".").append(itemstack.getItemDamage() == 0 ? "item" : itemstack.getItemDamage() == 1 ? "living" : "player").toString();
 	}
 
 }

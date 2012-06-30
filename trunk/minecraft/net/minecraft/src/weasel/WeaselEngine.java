@@ -133,37 +133,37 @@ public class WeaselEngine implements PC_INBT, IVariableContainer {
 		if (hardware == null) throw new WeaselRuntimeException("No hardware is connected.");
 		hardware.callFunction(this, functionName, args);
 	}
-	
+
 
 	@Override
 	public WeaselObject getVariable(String name) {
 		WeaselObject obj;
-		if((obj = hardware.getVariable(name)) != null) {
+		if ((obj = hardware.getVariable(name)) != null) {
 			return obj;
 		}
 		return variables.getVariable(name);
-	}	
-	
+	}
+
 
 	@Override
 	public void setVariable(String name, Object value) {
-		if(hardware.getVariable(name) != null) throw new WeaselRuntimeException("Native variables are read-only. @ "+name+" = "+value);
-		if(name == null || value == null) throw new WeaselRuntimeException("Variable name or value to set is null. @ "+name+" = "+value);
-		
+		if (hardware.getVariable(name) != null) throw new WeaselRuntimeException("Native variables are read-only. @ " + name + " = " + value);
+		if (name == null || value == null) throw new WeaselRuntimeException("Variable name or value to set is null. @ " + name + " = " + value);
+
 		WeaselObject set = null;
-		if(value instanceof WeaselObject) {
+		if (value instanceof WeaselObject) {
 			set = (WeaselObject) value;
-		}else if(value instanceof Number) {
+		} else if (value instanceof Number) {
 			set = new WeaselInteger(value);
-		}else if(value instanceof String) {
+		} else if (value instanceof String) {
 			set = new WeaselString(value);
-		}else if(value instanceof Boolean) {
+		} else if (value instanceof Boolean) {
 			set = new WeaselBoolean(value);
-		}else {
-			throw new WeaselRuntimeException("Value "+value+" cannot be saved as a WeaselObject to variable map.");
+		} else {
+			throw new WeaselRuntimeException("Value " + value + " cannot be saved as a WeaselObject to variable map.");
 		}
-		
-		variables.setVariable(name,set);
+
+		variables.setVariable(name, set);
 	}
 
 

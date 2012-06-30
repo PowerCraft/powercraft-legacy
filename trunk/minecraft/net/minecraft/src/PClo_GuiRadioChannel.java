@@ -1,5 +1,6 @@
 package net.minecraft.src;
 
+
 import net.minecraft.src.PC_GresTextEdit.PC_GresInputType;
 import net.minecraft.src.PC_GresWidget.PC_GresAlign;
 
@@ -9,7 +10,6 @@ import net.minecraft.src.PC_GresWidget.PC_GresAlign;
  * 
  * @author MightyPork
  * @copy (c) 2012
- * 
  */
 public class PClo_GuiRadioChannel implements PC_IGresBase {
 

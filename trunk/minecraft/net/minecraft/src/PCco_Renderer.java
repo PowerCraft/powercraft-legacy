@@ -1,13 +1,14 @@
 package net.minecraft.src;
 
+
 import java.util.Random;
+
 
 /**
  * PowerCraft core module renderer (power crystals)
  * 
  * @author MightyPork
  * @copy (c) 2012
- * 
  */
 public class PCco_Renderer {
 
@@ -28,7 +29,9 @@ public class PCco_Renderer {
 	 * @return success
 	 */
 	public static boolean renderBlockByType(RenderBlocks renderblocks, IBlockAccess blockAccess, int i, int j, int k, Block block, int rtype) {
-		if (rtype == crystalRenderer) { return renderBlockCrystal(renderblocks, blockAccess, i, j, k, block); }
+		if (rtype == crystalRenderer) {
+			return renderBlockCrystal(renderblocks, blockAccess, i, j, k, block);
+		}
 		return false;
 	}
 

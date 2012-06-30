@@ -1,13 +1,14 @@
 package net.minecraft.src;
 
+
 import org.lwjgl.opengl.GL11;
+
 
 /**
  * Resizable GUI checkbox
  * 
  * @author XOR19, MightyPork
  * @copy (c) 2012
- * 
  */
 public class PC_GresCheckBox extends PC_GresWidget {
 
@@ -99,7 +100,9 @@ public class PC_GresCheckBox extends PC_GresWidget {
 
 	@Override
 	public boolean mouseClick(PC_CoordI mpos, int key) {
-		if (!enabled) { return false; }
+		if (!enabled) {
+			return false;
+		}
 		if (key != -1) {
 			checked ^= true;
 		}

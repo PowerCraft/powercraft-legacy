@@ -1,5 +1,6 @@
 package net.minecraft.src;
 
+
 /**
  * Thrown food or wheat item from dispenser.<br>
  * Can start 'love mode' when hits animal.

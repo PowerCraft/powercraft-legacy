@@ -1,6 +1,8 @@
 package net.minecraft.src;
 
+
 import net.minecraft.src.PC_GresWidget.PC_GresAlign;
+
 
 /**
  * Gui for delayer and repeater gates.
@@ -17,8 +19,7 @@ public class PClo_GuiSensor implements PC_IGresBase {
 	private PC_GresProgressBar slider;
 
 	/**
-	 * @param tep Gate tile entity
-	 * @param type 0 = HOLD, 1 = FIFO
+	 * @param tes Sensor tile entity
 	 */
 	public PClo_GuiSensor(PClo_TileEntitySensor tes) {
 		sensor = tes;

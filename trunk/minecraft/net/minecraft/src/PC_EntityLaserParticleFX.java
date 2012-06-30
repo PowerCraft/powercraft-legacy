@@ -1,11 +1,12 @@
 package net.minecraft.src;
 
+
 /**
- * Particle for lasers; small particle, moving using given movement vector, stopping in the middle of a block if required...
+ * Particle for lasers; small particle, moving using given movement vector,
+ * stopping in the middle of a block if required...
  * 
  * @author MightyPork
  * @copy (c) 2012
- * 
  */
 public class PC_EntityLaserParticleFX extends EntityReddustFX {
 
@@ -18,7 +19,8 @@ public class PC_EntityLaserParticleFX extends EntityReddustFX {
 	 * @param pos double coordinate position
 	 * @param color beam color
 	 * @param motion laser movement vector (unit vector)
-	 * @param par beam half (0 - both, 1 - first, 2 - second) - used to draw half-block beam when the direction changes on this block.
+	 * @param par beam half (0 - both, 1 - first, 2 - second) - used to draw
+	 *            half-block beam when the direction changes on this block.
 	 */
 	public PC_EntityLaserParticleFX(World par1World, PC_CoordD pos, PC_Color color, PC_CoordI motion, int par) {
 		super(par1World, pos.x, pos.y, pos.z, 0.45F, (float) color.r, (float) color.g, (float) color.b);

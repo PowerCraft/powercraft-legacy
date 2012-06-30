@@ -1,11 +1,11 @@
 package net.minecraft.src;
 
+
 /**
  * Automatic Workbench's container
  * 
  * @author MightyPork
  * @copy (c) 2012
- * 
  */
 public class PCma_ContainerAutomaticWorkbench extends Container {
 

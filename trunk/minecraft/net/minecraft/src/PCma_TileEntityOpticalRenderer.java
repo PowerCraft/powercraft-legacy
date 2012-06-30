@@ -1,13 +1,14 @@
 package net.minecraft.src;
 
+
 import org.lwjgl.opengl.GL11;
+
 
 /**
  * Renderer of optical device
  * 
  * @author MightyPork
  * @copy (c) 2012
- * 
  */
 public class PCma_TileEntityOpticalRenderer extends TileEntitySpecialRenderer {
 	private PCma_ModelMirror modelMirror;

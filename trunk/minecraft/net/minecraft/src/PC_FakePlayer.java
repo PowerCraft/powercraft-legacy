@@ -4,10 +4,10 @@
 
 package net.minecraft.src;
 
+
 /**
- * Fake player entity, which is used in calls requiring player instance.
- * All methods are modified to do nothing, to prevent modification of player
- * stats.
+ * Fake player entity, which is used in calls requiring player instance. All
+ * methods are modified to do nothing, to prevent modification of player stats.
  * 
  * @author MightyPork
  * @copy 2012

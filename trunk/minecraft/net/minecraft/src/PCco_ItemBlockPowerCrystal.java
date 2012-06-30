@@ -7,7 +7,6 @@ package net.minecraft.src;
  * 
  * @author MightyPork
  * @copy (c) 2012
- * 
  */
 public class PCco_ItemBlockPowerCrystal extends ItemBlock {
 	/**

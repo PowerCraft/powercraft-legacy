@@ -1,20 +1,20 @@
 package net.minecraft.src;
 
+
 import java.util.HashSet;
 import java.util.Random;
 import java.util.Set;
 
 import net.minecraft.src.forge.ITextureProvider;
 
+
 /**
  * Laser machine (sybtypes: tripwire, killer, senser, receiver)
  * 
  * @author MightyPork
  * @copy (c) 2012
- * 
  */
-public class PCma_BlockLaser extends BlockContainer implements PC_IBlockType, PC_ISpecialInventoryTextures, PC_ISwapTerrain,
-		ITextureProvider {
+public class PCma_BlockLaser extends BlockContainer implements PC_IBlockType, PC_ISpecialInventoryTextures, PC_ISwapTerrain, ITextureProvider {
 	private static final int TXWOOD = 4, TXGUNON = 20;
 
 	@Override
@@ -41,20 +41,30 @@ public class PCma_BlockLaser extends BlockContainer implements PC_IBlockType, PC
 	// only for item renderer
 	@Override
 	public int getBlockTextureFromSideAndMetadata(int s, int m) {
-		if (s == 1) { return TXWOOD; }
+		if (s == 1) {
+			return TXWOOD;
+		}
 		if (s == 0) {
 			return TXWOOD;
 		} else {
-			if (m == s) { return TXGUNON; }
-			if ((m == 2 && s == 3) || (m == 3 && s == 2) || (m == 4 && s == 5) || (m == 5 && s == 4)) { return TXWOOD; }
+			if (m == s) {
+				return TXGUNON;
+			}
+			if ((m == 2 && s == 3) || (m == 3 && s == 2) || (m == 4 && s == 5) || (m == 5 && s == 4)) {
+				return TXWOOD;
+			}
 			return TXWOOD;
 		}
 	}
 
 	@Override
 	public int getInvTexture(int i, int m) {
-		if (i == 1) { return TXWOOD; }
-		if (i == 0) { return TXWOOD; }
+		if (i == 1) {
+			return TXWOOD;
+		}
+		if (i == 0) {
+			return TXWOOD;
+		}
 		if (i == 3) {
 			return TXGUNON;
 		} else if (i == 4) {
@@ -124,7 +134,9 @@ public class PCma_BlockLaser extends BlockContainer implements PC_IBlockType, PC
 		if (entityliving instanceof EntityPlayer) {
 			PCma_TileEntityLaser te = (PCma_TileEntityLaser) world.getBlockTileEntity(i, j, k);
 
-			if (te == null) { return; }
+			if (te == null) {
+				return;
+			}
 
 			if (world.getBlockId(i, j - 1, k) == mod_PCmachines.roaster.blockID) {
 				te.setType(PCma_LaserType.KILLER);

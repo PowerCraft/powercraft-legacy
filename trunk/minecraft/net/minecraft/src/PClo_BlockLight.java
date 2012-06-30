@@ -1,10 +1,12 @@
 package net.minecraft.src;
 
+
 import java.util.HashSet;
 import java.util.Random;
 import java.util.Set;
 
 import net.minecraft.src.forge.ITextureProvider;
+
 
 /**
  * Indication light
@@ -65,11 +67,21 @@ public class PClo_BlockLight extends BlockContainer implements PC_ISwapTerrain, 
 
 	@Override
 	public boolean canPlaceBlockOnSide(World world, int i, int j, int k, int l) {
-		if (l == 0 && world.isBlockNormalCube(i, j + 1, k)) { return true; }
-		if (l == 1 && world.isBlockNormalCube(i, j - 1, k)) { return true; }
-		if (l == 2 && world.isBlockNormalCube(i, j, k + 1)) { return true; }
-		if (l == 3 && world.isBlockNormalCube(i, j, k - 1)) { return true; }
-		if (l == 4 && world.isBlockNormalCube(i + 1, j, k)) { return true; }
+		if (l == 0 && world.isBlockNormalCube(i, j + 1, k)) {
+			return true;
+		}
+		if (l == 1 && world.isBlockNormalCube(i, j - 1, k)) {
+			return true;
+		}
+		if (l == 2 && world.isBlockNormalCube(i, j, k + 1)) {
+			return true;
+		}
+		if (l == 3 && world.isBlockNormalCube(i, j, k - 1)) {
+			return true;
+		}
+		if (l == 4 && world.isBlockNormalCube(i + 1, j, k)) {
+			return true;
+		}
 		return l == 5 && world.isBlockNormalCube(i - 1, j, k);
 	}
 
@@ -93,17 +105,26 @@ public class PClo_BlockLight extends BlockContainer implements PC_ISwapTerrain, 
 			i1 = 5;
 		}
 		world.setBlockMetadataWithNotify(i, j, k, i1);
-		onPoweredBlockChange(world, i, j, k, world.isBlockIndirectlyGettingPowered(i, j, k) || isAttachmentBlockPowered(world, i, j, k, i1)
-				|| isBlockUnderAttachmentPowered(world, i, j, k, i1));
+		onPoweredBlockChange(world, i, j, k, world.isBlockIndirectlyGettingPowered(i, j, k) || isAttachmentBlockPowered(world, i, j, k, i1) || isBlockUnderAttachmentPowered(world, i, j, k, i1));
 	}
 
 	@Override
 	public boolean canPlaceBlockAt(World world, int i, int j, int k) {
-		if (world.isBlockNormalCube(i, j - 1, k)) { return true; }
-		if (world.isBlockNormalCube(i - 1, j, k)) { return true; }
-		if (world.isBlockNormalCube(i + 1, j, k)) { return true; }
-		if (world.isBlockNormalCube(i, j, k - 1)) { return true; }
-		if (world.isBlockNormalCube(i, j + 1, k)) { return true; }
+		if (world.isBlockNormalCube(i, j - 1, k)) {
+			return true;
+		}
+		if (world.isBlockNormalCube(i - 1, j, k)) {
+			return true;
+		}
+		if (world.isBlockNormalCube(i + 1, j, k)) {
+			return true;
+		}
+		if (world.isBlockNormalCube(i, j, k - 1)) {
+			return true;
+		}
+		if (world.isBlockNormalCube(i, j + 1, k)) {
+			return true;
+		}
 		return world.isBlockNormalCube(i, j, k + 1);
 	}
 
@@ -116,7 +137,9 @@ public class PClo_BlockLight extends BlockContainer implements PC_ISwapTerrain, 
 
 	@Override
 	public void onNeighborBlockChange(World world, int i, int j, int k, int l) {
-		if (changingState) { return; }
+		if (changingState) {
+			return;
+		}
 		int sidemeta = world.getBlockMetadata(i, j, k);
 
 		if (!canPlaceBlockOnSide(world, i, j, k, meta2side[sidemeta])) {
@@ -124,8 +147,7 @@ public class PClo_BlockLight extends BlockContainer implements PC_ISwapTerrain, 
 			return;
 		}
 
-		boolean powered = world.isBlockIndirectlyGettingPowered(i, j, k) || isAttachmentBlockPowered(world, i, j, k, sidemeta)
-				|| isBlockUnderAttachmentPowered(world, i, j, k, sidemeta);
+		boolean powered = world.isBlockIndirectlyGettingPowered(i, j, k) || isAttachmentBlockPowered(world, i, j, k, sidemeta) || isBlockUnderAttachmentPowered(world, i, j, k, sidemeta);
 		if (on && !powered) {
 			world.scheduleBlockUpdate(i, j, k, blockID, 1);
 		} else if (!on && powered) {
@@ -136,8 +158,7 @@ public class PClo_BlockLight extends BlockContainer implements PC_ISwapTerrain, 
 	@Override
 	public void updateTick(World world, int i, int j, int k, Random random) {
 		int sidemeta = world.getBlockMetadata(i, j, k);
-		boolean powered = world.isBlockIndirectlyGettingPowered(i, j, k) || isAttachmentBlockPowered(world, i, j, k, sidemeta)
-				|| isBlockUnderAttachmentPowered(world, i, j, k, sidemeta);
+		boolean powered = world.isBlockIndirectlyGettingPowered(i, j, k) || isAttachmentBlockPowered(world, i, j, k, sidemeta) || isBlockUnderAttachmentPowered(world, i, j, k, sidemeta);
 		if (on && !powered) {
 			onPoweredBlockChange(world, i, j, k, false);
 		} else if (!on && powered) {
@@ -156,12 +177,24 @@ public class PClo_BlockLight extends BlockContainer implements PC_ISwapTerrain, 
 	 * @return is powering the gate
 	 */
 	private boolean isAttachmentBlockPowered(World world, int x, int y, int z, int side) {
-		if (side == 0) { return world.isBlockGettingPowered(x, y - 1, z); }
-		if (side == 1) { return world.isBlockGettingPowered(x, y, z + 1); }
-		if (side == 2) { return world.isBlockGettingPowered(x, y, z - 1); }
-		if (side == 3) { return world.isBlockGettingPowered(x + 1, y, z); }
-		if (side == 4) { return world.isBlockGettingPowered(x - 1, y, z); }
-		if (side == 5) { return world.isBlockGettingPowered(x, y + 1, z); }
+		if (side == 0) {
+			return world.isBlockGettingPowered(x, y - 1, z);
+		}
+		if (side == 1) {
+			return world.isBlockGettingPowered(x, y, z + 1);
+		}
+		if (side == 2) {
+			return world.isBlockGettingPowered(x, y, z - 1);
+		}
+		if (side == 3) {
+			return world.isBlockGettingPowered(x + 1, y, z);
+		}
+		if (side == 4) {
+			return world.isBlockGettingPowered(x - 1, y, z);
+		}
+		if (side == 5) {
+			return world.isBlockGettingPowered(x, y + 1, z);
+		}
 		return false;
 	}
 
@@ -176,13 +209,26 @@ public class PClo_BlockLight extends BlockContainer implements PC_ISwapTerrain, 
 	 * @return is powering the gate
 	 */
 	private boolean isBlockUnderAttachmentPowered(World world, int x, int y, int z, int side) {
-		if (side == 0) { return world.isBlockGettingPowered(x, y - 2, z) && world.getBlockId(x, y - 2, z) != 0; }
-		if (side == 1) { return world.isBlockGettingPowered(x, y - 1, z + 1) && world.getBlockId(x, y - 1, z + 1) != 0; }
-		if (side == 2) { return world.isBlockGettingPowered(x, y - 1, z - 1) && world.getBlockId(x, y - 1, z - 1) != 0; }
-		if (side == 3) { return world.isBlockGettingPowered(x + 1, y - 1, z) && world.getBlockId(x + 1, y - 1, z) != 0; }
-		if (side == 4) { return world.isBlockGettingPowered(x - 1, y - 1, z) && world.getBlockId(x - 1, y - 1, z) != 0; }
-		if (side == 5) { return world.isBlockGettingPowered(x, y + 2, z) && world.getBlockId(x - 1, y + 2, z) != 0; }
 		return false;
+//		if (side == 0) {
+//			return world.isBlockGettingPowered(x, y - 2, z) && world.getBlockId(x, y - 2, z) != 0;
+//		}
+//		if (side == 1) {
+//			return world.isBlockGettingPowered(x, y - 1, z + 1) && world.getBlockId(x, y - 1, z + 1) != 0;
+//		}
+//		if (side == 2) {
+//			return world.isBlockGettingPowered(x, y - 1, z - 1) && world.getBlockId(x, y - 1, z - 1) != 0;
+//		}
+//		if (side == 3) {
+//			return world.isBlockGettingPowered(x + 1, y - 1, z) && world.getBlockId(x + 1, y - 1, z) != 0;
+//		}
+//		if (side == 4) {
+//			return world.isBlockGettingPowered(x - 1, y - 1, z) && world.getBlockId(x - 1, y - 1, z) != 0;
+//		}
+//		if (side == 5) {
+//			return world.isBlockGettingPowered(x, y + 2, z) && world.getBlockId(x - 1, y + 2, z) != 0;
+//		}
+//		return false;
 	}
 
 	@Override
@@ -281,7 +327,9 @@ public class PClo_BlockLight extends BlockContainer implements PC_ISwapTerrain, 
 
 	private int getColorHex(IBlockAccess w, int i, int j, int k) {
 		TileEntity te = w.getBlockTileEntity(i, j, k);
-		if (te == null) { return 0xff0000; }
+		if (te == null) {
+			return 0xff0000;
+		}
 		PClo_TileEntityLight tei = (PClo_TileEntityLight) te;
 		return tei.getHexColor(on);
 	}
@@ -298,7 +346,9 @@ public class PClo_BlockLight extends BlockContainer implements PC_ISwapTerrain, 
 
 	@Override
 	public void randomDisplayTick(World world, int i, int j, int k, Random random) {
-		if (!on) { return; }
+		if (!on) {
+			return;
+		}
 		int l = world.getBlockMetadata(i, j, k);
 		int color_hex = getColorHex(world, i, j, k);
 		double ii = i + 0.5D;

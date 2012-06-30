@@ -1,11 +1,11 @@
 package net.minecraft.src;
 
+
 /**
  * laser device model
  * 
  * @author MightyPork
  * @copy (c) 2012
- * 
  */
 public class PCma_ModelLaser extends ModelBase {
 

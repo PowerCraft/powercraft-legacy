@@ -1,5 +1,6 @@
 package net.minecraft.src;
 
+
 import java.util.Random;
 
 import org.lwjgl.opengl.GL11;
@@ -11,7 +12,6 @@ import org.lwjgl.opengl.GL11;
  * 
  * @author MightyPork
  * @copy (c) 2012
- * 
  */
 public class PCma_RenderFishingMachine extends Render {
 

@@ -1,14 +1,15 @@
 package net.minecraft.src;
 
+
 import net.minecraft.src.PC_GresTextEdit.PC_GresInputType;
 import net.minecraft.src.PC_GresWidget.PC_GresAlign;
+
 
 /**
  * GUI for changing radio device channel
  * 
  * @author MightyPork
  * @copy (c) 2012
- * 
  */
 public class PClo_GuiPulsar implements PC_IGresBase {
 
@@ -54,17 +55,14 @@ public class PClo_GuiPulsar implements PC_IGresBase {
 
 		vg = new PC_GresLayoutV().setAlignH(PC_GresAlign.LEFT);
 		vg.add(new PC_GresLabel(PC_Lang.tr("pc.gui.pulsar.delay")));
-		vg.add(editDelay = new PC_GresTextEdit(PC_Utils.doubleToString(PC_Utils.ticksToSecs(delay_ticks)), 8,
-				PC_GresInputType.UNSIGNED_FLOAT));
-		vg.add(txConvDelay = new PC_GresLabelMultiline("", editDelay.getMinSize().x).setMinRows(2).setColor(PC_GresWidget.textColorEnabled,
-				0x606060));
+		vg.add(editDelay = new PC_GresTextEdit(PC_Utils.doubleToString(PC_Utils.ticksToSecs(delay_ticks)), 8, PC_GresInputType.UNSIGNED_FLOAT));
+		vg.add(txConvDelay = new PC_GresLabelMultiline("", editDelay.getMinSize().x).setMinRows(2).setColor(PC_GresWidget.textColorEnabled, 0x606060));
 		hg.add(vg);
 
 		vg = new PC_GresLayoutV().setAlignH(PC_GresAlign.LEFT);
 		vg.add(new PC_GresLabel(PC_Lang.tr("pc.gui.pulsar.hold")));
 		vg.add(editHold = new PC_GresTextEdit(PC_Utils.doubleToString(PC_Utils.ticksToSecs(hold_ticks)), 8, PC_GresInputType.UNSIGNED_FLOAT));
-		vg.add(txConvHold = new PC_GresLabelMultiline("", editDelay.getMinSize().x).setMinRows(2).setColor(PC_GresWidget.textColorEnabled,
-				0x606060));
+		vg.add(txConvHold = new PC_GresLabelMultiline("", editDelay.getMinSize().x).setMinRows(2).setColor(PC_GresWidget.textColorEnabled, 0x606060));
 		hg.add(vg);
 
 		w.add(hg);

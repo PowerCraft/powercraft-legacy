@@ -1,8 +1,9 @@
 package net.minecraft.src;
 
+
 /**
- * Inventory with special method for inserting stacks.
- * Used mostly by conveyors to put stuff into it.
+ * Inventory with special method for inserting stacks. Used mostly by conveyors
+ * to put stuff into it.
  * 
  * @author MightyPork
  */
@@ -18,7 +19,8 @@ public interface PC_ISpecialAccessInventory {
 	public boolean insertStackIntoInventory(ItemStack stack);
 
 	/**
-	 * @return true if you must use "insertStackIntoInventory" to store something.
+	 * @return true if you must use "insertStackIntoInventory" to store
+	 *         something.
 	 */
 	public boolean needsSpecialInserter();
 

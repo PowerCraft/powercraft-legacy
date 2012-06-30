@@ -1,16 +1,17 @@
 package net.minecraft.src;
 
+
 import java.util.Hashtable;
 import java.util.Map.Entry;
 
 import net.minecraft.client.Minecraft;
+
 
 /**
  * Teleporter name and coordinate manager.
  * 
  * @author MightyPork
  * @copy (c) 2012
- * 
  */
 public class PCtr_TeleporterManagerUNUSED {
 
@@ -42,7 +43,8 @@ public class PCtr_TeleporterManagerUNUSED {
 	}
 
 	/**
-	 * Unregister target device. No problem if device is not registered or is not target.
+	 * Unregister target device. No problem if device is not registered or is
+	 * not target.
 	 * 
 	 * @param pos device position
 	 */
@@ -57,7 +59,9 @@ public class PCtr_TeleporterManagerUNUSED {
 		checkWorldChange();
 
 		for (Entry<PC_CoordI, String> a : targets.entrySet()) {
-			if (a.getValue().equals(name)) { return a.getKey(); }
+			if (a.getValue().equals(name)) {
+				return a.getKey();
+			}
 		}
 
 		return null;
@@ -85,7 +89,9 @@ public class PCtr_TeleporterManagerUNUSED {
 	public static boolean targetExistsExcept(String name, PC_CoordI coord) {
 		checkWorldChange();
 
-		if (name.equals("")) { return false; }
+		if (name.equals("")) {
+			return false;
+		}
 
 		for (Entry<PC_CoordI, String> a : targets.entrySet()) {
 			if (a.getValue().equals(name)) {
@@ -122,11 +128,15 @@ public class PCtr_TeleporterManagerUNUSED {
 
 		PC_CoordI tc = getTargetCoord(target);
 		// target invalid
-		if (tc == null) { return false; }
+		if (tc == null) {
+			return false;
+		}
 
 		World world = entity.worldObj;
 
-		if (world.getBlockId(tc.x, tc.y, tc.z) != mod_PCtransport.teleporter.blockID) { return false; }
+		if (world.getBlockId(tc.x, tc.y, tc.z) != mod_PCtransport.teleporter.blockID) {
+			return false;
+		}
 
 		// we have to find space for the entity, conveyor in good direction
 		// preferably.

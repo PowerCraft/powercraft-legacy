@@ -5,29 +5,31 @@
       (c) Copyright 2007, Nathan Funk and Richard Morris
       See LICENSE-*.txt for license information.
 
-*****************************************************************************/
+ *****************************************************************************/
 
 package org.nfunk.jep;
 
-import java.util.*;
 
-import org.nfunk.jep.function.*;
+import java.util.Stack;
+
+import org.nfunk.jep.function.CallbackEvaluationI;
+import org.nfunk.jep.function.PostfixMathCommandI;
+import org.nfunk.jep.function.SpecialEvaluationI;
+
 
 /**
  * This class is used for the evaluation of an expression. It uses the Visitor
  * design pattern to traverse the function tree and evaluate the expression
  * using a stack.
  * <p>
- * Function nodes are evaluated by first evaluating all the children nodes,
- * then applying the function class associated with the node. Variable and
- * constant nodes are evaluated by pushing their value onto the stack.
-
+ * Function nodes are evaluated by first evaluating all the children nodes, then
+ * applying the function class associated with the node. Variable and constant
+ * nodes are evaluated by pushing their value onto the stack.
  * <p>
- * Some changes implemented by rjm. Nov 03.
- * Added hook to SpecialEvaluationI.
- * Clears stack before evaluation.
- * Simplifies error handling by making visit methods throw ParseException.
- * Changed visit(ASTVarNode node) so messages not calculated every time. 
+ * Some changes implemented by rjm. Nov 03. Added hook to SpecialEvaluationI.
+ * Clears stack before evaluation. Simplifies error handling by making visit
+ * methods throw ParseException. Changed visit(ASTVarNode node) so messages not
+ * calculated every time.
  */
 public class EvaluatorVisitor implements ParserVisitor, EvaluatorI {
 	/** Stack used for evaluating the expression */
@@ -47,7 +49,7 @@ public class EvaluatorVisitor implements ParserVisitor, EvaluatorI {
 
 	/** TrapNull **/
 	protected boolean trapNullValues = true;
-	
+
 	/** Constructor. Initialise the stack member */
 	public EvaluatorVisitor() {
 		//errorList = null;
@@ -65,19 +67,18 @@ public class EvaluatorVisitor implements ParserVisitor, EvaluatorI {
 	}*/
 
 	/**
-	 * Returns the value of the expression as an object. The expression
-	 * tree is specified with its top node. The algorithm uses a stack
-	 * for evaluation.
+	 * Returns the value of the expression as an object. The expression tree is
+	 * specified with its top node. The algorithm uses a stack for evaluation.
 	 * <p>
 	 * The symTab parameter can be null, if no variables are expected in the
 	 * expression. If a variable is found, an error is added to the error list.
 	 * <p>
 	 * An exception is thrown, if an error occurs during evaluation.
+	 * 
 	 * @return The value of the expression as an object.
 	 * @throws ParseException if there is a problem with the evaluation.
 	 */
-	public Object getValue(Node topNode,SymbolTable symTab_in)
-		throws ParseException {
+	public Object getValue(Node topNode, SymbolTable symTab_in) throws ParseException {
 
 		// check if arguments are ok
 		if (topNode == null) {
@@ -93,7 +94,7 @@ public class EvaluatorVisitor implements ParserVisitor, EvaluatorI {
 		// njf changed from clear() to removeAllElements for 1.1 compatibility
 
 		// evaluate by letting the top node accept the visitor
-		topNode.jjtAccept(this,null);
+		topNode.jjtAccept(this, null);
 		/*
 		} catch (ParseException e) {
 			this.addToErrorList("Error: "+e.getMessage());
@@ -101,7 +102,7 @@ public class EvaluatorVisitor implements ParserVisitor, EvaluatorI {
 		}
 		if(errorFlag) return null;
 		*/
-		
+
 		// something is wrong if not exactly one item remains on the stack
 		// or if the error flag has been set
 		if (stack.size() != 1) {
@@ -130,95 +131,91 @@ public class EvaluatorVisitor implements ParserVisitor, EvaluatorI {
 		return node.jjtAccept(this,data);
 	}
 	*/
-	
+
 	/**
 	 * Evaluates a given node, in the current context.
+	 * 
 	 * @param node The node to evaluate
 	 * @return result of the evaluation
 	 */
+	@Override
 	public Object eval(Node node) throws ParseException {
-		node.jjtAccept(this,null);
+		node.jjtAccept(this, null);
 		return stack.pop();
 	}
-	
+
 	/**
-	 * Evaluates a PostfixMathCommandI with given arguments.
-	 * Not used in normal use.
+	 * Evaluates a PostfixMathCommandI with given arguments. Not used in normal
+	 * use.
 	 * 
 	 * @param pfmc the command to evaluate.
 	 * @param children the parameters to the function.
 	 * @return the value of the function
 	 * @throws ParseException
 	 */
-	public Object eval(PostfixMathCommandI pfmc,Node children[]) throws ParseException 
-	{
+	public Object eval(PostfixMathCommandI pfmc, Node children[]) throws ParseException {
 		if (pfmc instanceof SpecialEvaluationI) {
-		    ASTFunNode node = new ASTFunNode(ParserTreeConstants.JJTFUNNODE);
-			node.setFunction("TmpFun",pfmc);
+			ASTFunNode node = new ASTFunNode(ParserTreeConstants.JJTFUNNODE);
+			node.setFunction("TmpFun", pfmc);
 			node.jjtOpen();
-			for(int i=0;i<children.length;++i) 
-			    node.jjtAddChild(children[i],i);
+			for (int i = 0; i < children.length; ++i)
+				node.jjtAddChild(children[i], i);
 			node.jjtClose();
-			return ((SpecialEvaluationI) pfmc).evaluate(
-				node,null,this,new Stack(),this.symTab);
+			return ((SpecialEvaluationI) pfmc).evaluate(node, null, this, new Stack(), this.symTab);
 		}
-		if(pfmc instanceof CallbackEvaluationI) {
-		    ASTFunNode node = new ASTFunNode(ParserTreeConstants.JJTFUNNODE);
-			node.setFunction("TmpFun",pfmc);
+		if (pfmc instanceof CallbackEvaluationI) {
+			ASTFunNode node = new ASTFunNode(ParserTreeConstants.JJTFUNNODE);
+			node.setFunction("TmpFun", pfmc);
 			node.jjtOpen();
-			for(int i=0;i<children.length;++i) 
-			    node.jjtAddChild(children[i],i);
+			for (int i = 0; i < children.length; ++i)
+				node.jjtAddChild(children[i], i);
 			node.jjtClose();
-			Object val = ((CallbackEvaluationI) pfmc).evaluate(node,this);
+			Object val = ((CallbackEvaluationI) pfmc).evaluate(node, this);
 			return val;
 		}
 
-	    Stack lstack = new Stack();
-		for(int i=0;i<children.length;++i)
-		{
-			if(!(children[i] instanceof ASTConstant))
-				throw new ParseException("buildConstantNode: arguments must all be constant nodes");
+		Stack lstack = new Stack();
+		for (int i = 0; i < children.length; ++i) {
+			if (!(children[i] instanceof ASTConstant)) throw new ParseException("buildConstantNode: arguments must all be constant nodes");
 			lstack.push(((ASTConstant) children[i]).getValue());
 		}
 		pfmc.setCurNumberOfParameters(children.length);
 		pfmc.run(lstack);
 		return lstack.pop();
 	}
+
 	/**
-	 * This method should never be called when evaluation a normal
-	 * expression.
+	 * This method should never be called when evaluation a normal expression.
 	 */
+	@Override
 	public Object visit(SimpleNode node, Object data) throws ParseException {
-		throw new ParseException(
-			"No visit method for " + node.getClass().getName());
+		throw new ParseException("No visit method for " + node.getClass().getName());
 	}
 
 	/**
-	 * This method should never be called when evaluating a normal
-	 * expression.
+	 * This method should never be called when evaluating a normal expression.
 	 */
+	@Override
 	public Object visit(ASTStart node, Object data) throws ParseException {
 		throw new ParseException("Start node encountered during evaluation");
 	}
 
 	/**
-	 * Visit a function node. The values of the child nodes
-	 * are first pushed onto the stack. Then the function class associated
-	 * with the node is used to evaluate the function.
+	 * Visit a function node. The values of the child nodes are first pushed
+	 * onto the stack. Then the function class associated with the node is used
+	 * to evaluate the function.
 	 * <p>
-	 * If a function implements SpecialEvaluationI then the
-	 * evaluate method of PFMC is called.
+	 * If a function implements SpecialEvaluationI then the evaluate method of
+	 * PFMC is called.
 	 */
+	@Override
 	public Object visit(ASTFunNode node, Object data) throws ParseException {
 
-		if (node == null)
-			return null;
+		if (node == null) return null;
 		PostfixMathCommandI pfmc = node.getPFMC();
 
 		// check if the function class is set
-		if (pfmc == null)
-			throw new ParseException(
-				"No function class associated with " + node.getName());
+		if (pfmc == null) throw new ParseException("No function class associated with " + node.getName());
 
 		// Some operators (=) need a special method for evaluation
 		// as the pfmc.run method does not have enough information
@@ -226,17 +223,15 @@ public class EvaluatorVisitor implements ParserVisitor, EvaluatorI {
 		// all available info. Note evaluating the children is
 		// the responsibility of the evaluate method. 
 		if (pfmc instanceof SpecialEvaluationI) {
-			return ((SpecialEvaluationI) pfmc).evaluate(
-				node,data,this,stack,this.symTab);
+			return ((SpecialEvaluationI) pfmc).evaluate(node, data, this, stack, this.symTab);
 		}
-		if(pfmc instanceof CallbackEvaluationI) {
-			Object val = ((CallbackEvaluationI) pfmc).evaluate(node,this);
+		if (pfmc instanceof CallbackEvaluationI) {
+			Object val = ((CallbackEvaluationI) pfmc).evaluate(node, this);
 			stack.push(val);
 			return val;
 		}
 		if (debug == true) {
-			System.out.println(
-				"Stack size before childrenAccept: " + stack.size());
+			System.out.println("Stack size before childrenAccept: " + stack.size());
 		}
 
 		// evaluate all children (each leaves their result on the stack)
@@ -244,8 +239,7 @@ public class EvaluatorVisitor implements ParserVisitor, EvaluatorI {
 		data = node.childrenAccept(this, data);
 
 		if (debug == true) {
-			System.out.println(
-				"Stack size after childrenAccept: " + stack.size());
+			System.out.println("Stack size after childrenAccept: " + stack.size());
 		}
 
 		if (pfmc.getNumberOfParameters() == -1) {
@@ -269,6 +263,7 @@ public class EvaluatorVisitor implements ParserVisitor, EvaluatorI {
 	 * Visit a variable node. The value of the variable is obtained from the
 	 * symbol table (symTab) and pushed onto the stack.
 	 */
+	@Override
 	public Object visit(ASTVarNode node, Object data) throws ParseException {
 
 		// old code
@@ -304,31 +299,30 @@ public class EvaluatorVisitor implements ParserVisitor, EvaluatorI {
 	 * Visit a constant node. The value of the constant is pushed onto the
 	 * stack.
 	 */
+	@Override
 	public Object visit(ASTConstant node, Object data) {
 		stack.push(node.getValue());
 		return data;
 	}
-	
-	
+
+
 	/**
-	 * Tests whether null variable values are trapped by evaluator. 
+	 * Tests whether null variable values are trapped by evaluator.
+	 * 
 	 * @return true is nulls are trapped
 	 */
-	public boolean isTrapNullValues()
-	{
+	public boolean isTrapNullValues() {
 		return trapNullValues;
 	}
 
 	/**
-	 * Sets the behaviour when a variable's value is null.
-	 * If true an exception will be thrown is a variable value is null.
-	 * If false then the value will be passed to other functions, this may cause error
-	 * else where.
+	 * Sets the behaviour when a variable's value is null. If true an exception
+	 * will be thrown is a variable value is null. If false then the value will
+	 * be passed to other functions, this may cause error else where.
 	 * 
-	 * @param b 
+	 * @param b
 	 */
-	public void setTrapNullValues(boolean b)
-	{
+	public void setTrapNullValues(boolean b) {
 		trapNullValues = b;
 	}
 

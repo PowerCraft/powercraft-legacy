@@ -5,9 +5,9 @@
  */
 package org.nfunk.jep;
 
+
 /**
- * @author Rich Morris
- * Created on 22-Apr-2005
+ * @author Rich Morris Created on 22-Apr-2005
  */
 public interface EvaluatorI {
 	/*
@@ -28,7 +28,7 @@ public interface EvaluatorI {
 	 return node.jjtAccept(this,data);
 	 }
 	 */
-	
+
 	/**
 	 * Evaluates a node and returns and object with the value of the node.
 	 * 

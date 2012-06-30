@@ -1,11 +1,11 @@
 package net.minecraft.src;
 
+
 /**
  * Prism model
  * 
  * @author MightyPork
  * @copy (c) 2012
- * 
  */
 public class PCma_ModelPrism extends ModelBase {
 

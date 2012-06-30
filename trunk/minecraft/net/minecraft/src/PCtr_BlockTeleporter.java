@@ -1,8 +1,10 @@
 package net.minecraft.src;
 
+
 import java.util.HashSet;
 import java.util.Random;
 import java.util.Set;
+
 
 public class PCtr_BlockTeleporter extends BlockContainer implements PC_IBlockType {
 	public PCtr_BlockTeleporter(int id, int tindex, Material material) {
@@ -31,7 +33,9 @@ public class PCtr_BlockTeleporter extends BlockContainer implements PC_IBlockTyp
 		if (ihold != null) {
 			if (ihold.getItem() instanceof ItemBlock && ihold.getItem().shiftedIndex != blockID) {
 				Block bhold = Block.blocksList[ihold.getItem().shiftedIndex];
-				if (bhold instanceof PC_IBlockType) { return false; }
+				if (bhold instanceof PC_IBlockType) {
+					return false;
+				}
 			}
 		}
 
@@ -48,7 +52,9 @@ public class PCtr_BlockTeleporter extends BlockContainer implements PC_IBlockTyp
 		if (entityliving instanceof EntityPlayer) {
 			PCtr_TileEntityTeleporter te = (PCtr_TileEntityTeleporter) world.getBlockTileEntity(i, j, k);
 
-			if (te == null) { return; }
+			if (te == null) {
+				return;
+			}
 
 			PC_Utils.openGres((EntityPlayer) entityliving, new PCtr_GuiTeleporterDecide(te));
 		}
@@ -92,7 +98,9 @@ public class PCtr_BlockTeleporter extends BlockContainer implements PC_IBlockTyp
 
 	@Override
 	public void onEntityCollidedWithBlock(World world, int i, int j, int k, Entity entity) {
-		if ((entity instanceof EntityFishHook) || (entity instanceof EntityPainting) || (entity instanceof EntityDiggingFX)) { return; }
+		if ((entity instanceof EntityFishHook) || (entity instanceof EntityPainting) || (entity instanceof EntityDiggingFX)) {
+			return;
+		}
 
 		PCtr_TileEntityTeleporter te = getTE(world, i, j, k);
 
@@ -108,7 +116,9 @@ public class PCtr_BlockTeleporter extends BlockContainer implements PC_IBlockTyp
 
 	@Override
 	public void randomDisplayTick(World world, int x, int y, int z, Random random) {
-		if (!isActive(world, x, y, z)) { return; }
+		if (!isActive(world, x, y, z)) {
+			return;
+		}
 
 		if (random.nextInt(60) == 0) {
 			if (mod_PCcore.soundsEnabled) {
@@ -137,7 +147,9 @@ public class PCtr_BlockTeleporter extends BlockContainer implements PC_IBlockTyp
 
 	public static PCtr_TileEntityTeleporter getTE(IBlockAccess iblockaccess, int i, int j, int k) {
 		TileEntity te = iblockaccess.getBlockTileEntity(i, j, k);
-		if (te == null) { return null; }
+		if (te == null) {
+			return null;
+		}
 		PCtr_TileEntityTeleporter tet = (PCtr_TileEntityTeleporter) te;
 
 		return tet;

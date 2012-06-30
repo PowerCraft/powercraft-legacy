@@ -1,16 +1,17 @@
 package net.minecraft.src;
 
+
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Random;
 import java.util.Set;
+
 
 /**
  * Radio device block with tile entity.
  * 
  * @author MightyPork
  * @copy (c) 2012
- * 
  */
 public class PClo_BlockRadio extends BlockContainer implements PC_IBlockType {
 
@@ -22,7 +23,6 @@ public class PClo_BlockRadio extends BlockContainer implements PC_IBlockType {
 		setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 0.255F, 1.0F);
 	}
 
-	@SuppressWarnings("rawtypes")
 	@Override
 	public void getCollidingBoundingBoxes(World world, int x, int y, int z, AxisAlignedBB collidedbox, ArrayList list) {
 		setBlockBoundsBasedOnState(world, x, y, z);
@@ -70,7 +70,9 @@ public class PClo_BlockRadio extends BlockContainer implements PC_IBlockType {
 		if (ihold != null) {
 			if (ihold.getItem() instanceof ItemBlock && ihold.getItem().shiftedIndex != blockID) {
 				Block bhold = Block.blocksList[ihold.getItem().shiftedIndex];
-				if (bhold instanceof PC_IBlockType) { return false; }
+				if (bhold instanceof PC_IBlockType) {
+					return false;
+				}
 			}
 		}
 
@@ -82,8 +84,7 @@ public class PClo_BlockRadio extends BlockContainer implements PC_IBlockType {
 				channel = getTE(world, x, y, z).getChannel();
 
 				PClo_ItemRadioRemote.setChannel(holditem, channel);
-				world.playSoundAtEntity(entityplayer, "note.snare", (world.rand.nextFloat() + 0.7F) / 2.0F,
-						1.0F + (world.rand.nextFloat() - world.rand.nextFloat()) * 0.4F);
+				world.playSoundAtEntity(entityplayer, "note.snare", (world.rand.nextFloat() + 0.7F) / 2.0F, 1.0F + (world.rand.nextFloat() - world.rand.nextFloat()) * 0.4F);
 				return true;
 			}
 		}
@@ -107,7 +108,9 @@ public class PClo_BlockRadio extends BlockContainer implements PC_IBlockType {
 	 */
 	public static PClo_TileEntityRadio getTE(IBlockAccess iblockaccess, int i, int j, int k) {
 		TileEntity te = iblockaccess.getBlockTileEntity(i, j, k);
-		if (te == null) { return null; }
+		if (te == null) {
+			return null;
+		}
 		PClo_TileEntityRadio ter = (PClo_TileEntityRadio) te;
 
 		return ter;
@@ -185,17 +188,20 @@ public class PClo_BlockRadio extends BlockContainer implements PC_IBlockType {
 	}
 
 	private boolean isGettingPower(World world, int i, int j, int k) {
-		return ((world.isBlockGettingPowered(i, j, k) || world.isBlockGettingPowered(i, j - 1, k)
-				|| world.isBlockIndirectlyGettingPowered(i, j, k) || world.isBlockIndirectlyGettingPowered(i, j - 1, k)));
+		return ((world.isBlockGettingPowered(i, j, k) || world.isBlockGettingPowered(i, j - 1, k) || world.isBlockIndirectlyGettingPowered(i, j, k) || world.isBlockIndirectlyGettingPowered(i, j - 1, k)));
 	}
 
 	@Override
 	public void onNeighborBlockChange(World world, int i, int j, int k, int l) {
 
-		if (getTE(world, i, j, k).isReceiver()) { return; }
+		if (getTE(world, i, j, k).isReceiver()) {
+			return;
+		}
 
 
-		if (!(l > 0 && Block.blocksList[l].canProvidePower())) { return; }
+		if (!(l > 0 && Block.blocksList[l].canProvidePower())) {
+			return;
+		}
 
 		boolean on = (world.getBlockMetadata(i, j, k) == 1);
 		boolean power = isGettingPower(world, i, j, k);
@@ -211,7 +217,9 @@ public class PClo_BlockRadio extends BlockContainer implements PC_IBlockType {
 	@Override
 	public boolean isPoweringTo(IBlockAccess iblockaccess, int i, int j, int k, int l) {
 		int meta = iblockaccess.getBlockMetadata(i, j, k);
-		if (getTE(iblockaccess, i, j, k).isReceiver() && meta == 1) { return true; }
+		if (getTE(iblockaccess, i, j, k).isReceiver() && meta == 1) {
+			return true;
+		}
 		return false;
 	}
 
@@ -233,7 +241,9 @@ public class PClo_BlockRadio extends BlockContainer implements PC_IBlockType {
 	@Override
 	public void randomDisplayTick(World world, int i, int j, int k, Random random) {
 		int i1 = world.getBlockMetadata(i, j, k);
-		if (i1 != 1) { return; }
+		if (i1 != 1) {
+			return;
+		}
 
 		double x = (i + 0.5F) + (random.nextFloat() - 0.5F) * 0.20000000000000001D;
 		double y = (j + 0.9F) + (random.nextFloat() - 0.5F) * 0.20000000000000001D;

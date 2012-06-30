@@ -1,11 +1,11 @@
 package net.minecraft.src;
 
+
 /**
  * Resizable GUI horizontal separation line
  * 
  * @author MightyPork
  * @copy (c) 2012
- * 
  */
 public class PC_GresSeparatorH extends PC_GresWidget {
 
@@ -50,8 +50,7 @@ public class PC_GresSeparatorH extends PC_GresWidget {
 
 	@Override
 	protected void render(PC_CoordI off) {
-		drawRect(off.x + pos.x, off.y + size.y / 2 + pos.y, off.x + size.x + pos.x + 1, off.y + size.y / 2 + pos.y + 1,
-				lineColor | 0xff000000);
+		drawRect(off.x + pos.x, off.y + size.y / 2 + pos.y, off.x + size.x + pos.x + 1, off.y + size.y / 2 + pos.y + 1, lineColor | 0xff000000);
 	}
 
 	@Override

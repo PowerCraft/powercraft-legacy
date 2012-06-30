@@ -1,12 +1,12 @@
 package net.minecraft.src;
 
+
 /**
- * PowerCraft logic module renderer (power crystals)
- * [template file, no function yet]
+ * PowerCraft logic module renderer (power crystals) [template file, no function
+ * yet]
  * 
  * @author MightyPork
  * @copy (c) 2012
- * 
  */
 public class PClo_Renderer {
 

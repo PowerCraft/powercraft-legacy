@@ -1,24 +1,47 @@
 package net.minecraft.src;
 
+
 import java.util.HashSet;
 import java.util.Random;
 import java.util.Set;
 
 import net.minecraft.src.forge.ITextureProvider;
 
+
+/**
+ * Block replacing machine
+ * 
+ * @author MightyPork, Rapus, XOR19
+ */
 public class PCma_BlockReplacer extends BlockContainer implements PC_ISwapTerrain, PC_IBlockType, ITextureProvider {
-	private static final int TXDOWN = 109, TXTOP = 153, TXSIDE = 137, TXFRONT = 105, TXBACK = 121;
+	private static final int TXDOWN = 109, TXTOP = 153, TXSIDE = 137;
 
-	private int blockOffset[] = { 0, 0, 0 };
-
+	/**
+	 * Block replacer
+	 * 
+	 * @param par1 id
+	 * @param par2 texture
+	 * @param par3Material material
+	 */
 	protected PCma_BlockReplacer(int par1, int par2, Material par3Material) {
 		super(par1, par2, par3Material);
 	}
 
+	/**
+	 * Block replacer
+	 * 
+	 * @param par1 id
+	 * @param par2Material material
+	 */
 	protected PCma_BlockReplacer(int par1, Material par2Material) {
 		super(par1, par2Material);
 	}
 
+	/**
+	 * Block replacer
+	 * 
+	 * @param par1 id
+	 */
 	protected PCma_BlockReplacer(int par1) {
 		super(par1, Material.ground);
 	}
@@ -45,7 +68,9 @@ public class PCma_BlockReplacer extends BlockContainer implements PC_ISwapTerrai
 
 	@Override
 	public int getBlockTextureFromSideAndMetadata(int s, int m) {
-		if (s == 1) { return TXTOP; }
+		if (s == 1) {
+			return TXTOP;
+		}
 		if (s == 0) {
 			return TXDOWN;
 		} else {
@@ -71,7 +96,9 @@ public class PCma_BlockReplacer extends BlockContainer implements PC_ISwapTerrai
 			if (ihold.getItem() instanceof ItemBlock && ihold.getItem().shiftedIndex != blockID) {
 
 				Block bhold = Block.blocksList[ihold.getItem().shiftedIndex];
-				if (bhold instanceof PC_IBlockType) { return false; }
+				if (bhold instanceof PC_IBlockType) {
+					return false;
+				}
 
 			} else if (ihold.getItem().shiftedIndex == Item.stick.shiftedIndex) {
 
@@ -119,7 +146,9 @@ public class PCma_BlockReplacer extends BlockContainer implements PC_ISwapTerrai
 			}
 		}
 
-		if (world.isRemote) { return true; }
+		if (world.isRemote) {
+			return true;
+		}
 
 		PCma_TileEntityReplacer tileentity = (PCma_TileEntityReplacer) world.getBlockTileEntity(i, j, k);
 		if (tileentity != null) {
@@ -145,9 +174,13 @@ public class PCma_BlockReplacer extends BlockContainer implements PC_ISwapTerrai
 
 		int id = pos.getMeta(world);
 
-		if (id == 0 || Block.blocksList[id] == null) { return true; }
+		if (id == 0 || Block.blocksList[id] == null) {
+			return true;
+		}
 
-		if (pos.getTileEntity(world) != null) { return false; }
+		if (pos.getTileEntity(world) != null) {
+			return false;
+		}
 
 		return true;
 
@@ -163,18 +196,26 @@ public class PCma_BlockReplacer extends BlockContainer implements PC_ISwapTerrai
 	 */
 	private boolean replacer_canPlaceBlockAt(World world, ItemStack itemstack, PC_CoordI pos) {
 
-		if (itemstack == null) { return true; }
+		if (itemstack == null) {
+			return true;
+		}
 		Item item = itemstack.getItem();
 
 		if (item instanceof ItemBlock) {
 
 			Block block = Block.blocksList[item.shiftedIndex];
 
-			if (block == null) { return false; }
+			if (block == null) {
+				return false;
+			}
 
-			if (PC_BlockUtils.hasFlag(itemstack, "NO_BUILD")) { return false; }
+			if (PC_BlockUtils.hasFlag(itemstack, "NO_BUILD")) {
+				return false;
+			}
 
-			if (block.isBlockContainer) { return false; }
+			if (block.isBlockContainer) {
+				return false;
+			}
 
 			return true;
 
@@ -191,7 +232,7 @@ public class PCma_BlockReplacer extends BlockContainer implements PC_ISwapTerrai
 	 * @param world
 	 * @param itemstack
 	 * @param pos
-	 * @return
+	 * @return success
 	 */
 	private boolean replacer_placeBlockAt(World world, ItemStack itemstack, PC_CoordI pos) {
 
@@ -200,7 +241,9 @@ public class PCma_BlockReplacer extends BlockContainer implements PC_ISwapTerrai
 			return true;
 		}
 
-		if (!replacer_canPlaceBlockAt(world, itemstack, pos)) { return false; }
+		if (!replacer_canPlaceBlockAt(world, itemstack, pos)) {
+			return false;
+		}
 
 		ItemBlock iblock = (ItemBlock) itemstack.getItem();
 
@@ -230,11 +273,15 @@ public class PCma_BlockReplacer extends BlockContainer implements PC_ISwapTerrai
 
 		ItemStack loot = null;
 
-		if (!replacer_canHarvestBlockAt(world, pos)) { return null; }
+		if (!replacer_canHarvestBlockAt(world, pos)) {
+			return null;
+		}
 
 		Block block = Block.blocksList[pos.getId(world)];
 
-		if (block == null) { return null; }
+		if (block == null) {
+			return null;
+		}
 
 		if (block.canSilkHarvest()) {
 			loot = block.createStackedBlock(pos.getMeta(world));
@@ -260,11 +307,17 @@ public class PCma_BlockReplacer extends BlockContainer implements PC_ISwapTerrai
 
 		PC_CoordI pos = te.getCoord().offset(te.coordOffset);
 
-		if (pos.equals(te.getCoord())) { return; }
+		if (pos.equals(te.getCoord())) {
+			return;
+		}
 
-		if (!replacer_canHarvestBlockAt(te.worldObj, pos)) { return; }
+		if (!replacer_canHarvestBlockAt(te.worldObj, pos)) {
+			return;
+		}
 
-		if (!replacer_canPlaceBlockAt(te.worldObj, te.buildBlock, pos)) { return; }
+		if (!replacer_canPlaceBlockAt(te.worldObj, te.buildBlock, pos)) {
+			return;
+		}
 
 		ItemStack harvested = replacer_harvestBlockAt(te.worldObj, pos);
 
@@ -289,13 +342,21 @@ public class PCma_BlockReplacer extends BlockContainer implements PC_ISwapTerrai
 	}
 
 	private boolean isIndirectlyPowered(World world, int i, int j, int k) {
-		if (world.isBlockGettingPowered(i, j, k)) { return true; }
+		if (world.isBlockGettingPowered(i, j, k)) {
+			return true;
+		}
 
-		if (world.isBlockIndirectlyGettingPowered(i, j, k)) { return true; }
+		if (world.isBlockIndirectlyGettingPowered(i, j, k)) {
+			return true;
+		}
 
-		if (world.isBlockGettingPowered(i, j - 1, k)) { return true; }
+		if (world.isBlockGettingPowered(i, j - 1, k)) {
+			return true;
+		}
 
-		if (world.isBlockIndirectlyGettingPowered(i, j - 1, k)) { return true; }
+		if (world.isBlockIndirectlyGettingPowered(i, j - 1, k)) {
+			return true;
+		}
 		return false;
 	}
 

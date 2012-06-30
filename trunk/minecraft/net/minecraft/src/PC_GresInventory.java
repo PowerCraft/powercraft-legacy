@@ -1,13 +1,14 @@
 package net.minecraft.src;
 
+
 import org.lwjgl.opengl.GL11;
+
 
 /**
  * Gres Inventory with a grid of slots.
  * 
  * @author MightyPork
  * @copy (c) 2012
- * 
  */
 public class PC_GresInventory extends PC_GresWidget {
 
@@ -234,7 +235,9 @@ public class PC_GresInventory extends PC_GresWidget {
 	 * @return this
 	 */
 	public Slot getSlot(int x, int y) {
-		if (x >= 0 && x < this.slots.length && y >= 0 && y < this.slots[x].length) { return this.slots[x][y]; }
+		if (x >= 0 && x < this.slots.length && y >= 0 && y < this.slots[x].length) {
+			return this.slots[x][y];
+		}
 		return null;
 	}
 

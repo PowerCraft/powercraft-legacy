@@ -9,6 +9,7 @@
 
 package org.nfunk.jepexamples;
 
+
 /**
  * This class tests the thread safety of the JEP package with a brute force
  * approach. 1000 threads are started, and each one invokes the evaluate method.
@@ -62,11 +63,9 @@ public class ThreadTest {
 			myParser.addVariable("foo", fooValue);
 			myParser.parseExpression("foo == \"" + fooValue + "\"");
 
-			if (myParser.getValue() != 1.0)
-				System.out.println("Wrong value returned");
-			
-			if (myParser.hasError())
-				System.out.println(myParser.getErrorInfo());
+			if (myParser.getValue() != 1.0) System.out.println("Wrong value returned");
+
+			if (myParser.hasError()) System.out.println(myParser.getErrorInfo());
 		}
 	}
 }

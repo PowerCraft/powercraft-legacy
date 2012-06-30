@@ -1,11 +1,11 @@
 package net.minecraft.src;
 
+
 /**
  * Structure of 5 objects.
  * 
  * @author MightyPork
  * @copy (c) 2012
- * 
  * @param <T1> 1st object class
  * @param <T2> 2nd object class
  * @param <T3> 3rd object class
@@ -219,14 +219,17 @@ public class PC_Struct5<T1, T2, T3, T4, T5> {
 
 	@Override
 	public boolean equals(Object obj) {
-		if (obj == null) { return false; }
+		if (obj == null) {
+			return false;
+		}
 
-		if (!this.getClass().equals(obj.getClass())) { return false; }
+		if (!this.getClass().equals(obj.getClass())) {
+			return false;
+		}
 
 		PC_Struct5<?, ?, ?, ?, ?> t = (PC_Struct5<?, ?, ?, ?, ?>) obj;
 
-		return PC_Utils.areObjectsEqual(a, t.a) && PC_Utils.areObjectsEqual(b, t.b) && PC_Utils.areObjectsEqual(c, t.c)
-				&& PC_Utils.areObjectsEqual(d, t.d) && PC_Utils.areObjectsEqual(e, t.e);
+		return PC_Utils.areObjectsEqual(a, t.a) && PC_Utils.areObjectsEqual(b, t.b) && PC_Utils.areObjectsEqual(c, t.c) && PC_Utils.areObjectsEqual(d, t.d) && PC_Utils.areObjectsEqual(e, t.e);
 
 	}
 
@@ -239,7 +242,7 @@ public class PC_Struct5<T1, T2, T3, T4, T5> {
 		hash += (d == null ? 0 : d.hashCode());
 		hash += (e == null ? 0 : e.hashCode());
 		return hash;
-	};
+	}
 
 	@Override
 	public String toString() {

@@ -1,11 +1,11 @@
 package net.minecraft.src;
 
+
 /**
  * Structure of 3 objects.
  * 
  * @author MightyPork
  * @copy (c) 2012
- * 
  * @param <T1> 1st object class
  * @param <T2> 2nd object class
  * @param <T3> 3rd object class
@@ -138,9 +138,13 @@ public class PC_Struct3<T1, T2, T3> {
 
 	@Override
 	public boolean equals(Object obj) {
-		if (obj == null) { return false; }
+		if (obj == null) {
+			return false;
+		}
 
-		if (!this.getClass().equals(obj.getClass())) { return false; }
+		if (!this.getClass().equals(obj.getClass())) {
+			return false;
+		}
 
 		PC_Struct3<?, ?, ?> t = (PC_Struct3<?, ?, ?>) obj;
 
@@ -155,7 +159,7 @@ public class PC_Struct3<T1, T2, T3> {
 		hash += (b == null ? 0 : b.hashCode());
 		hash += (c == null ? 0 : c.hashCode());
 		return hash;
-	};
+	}
 
 	@Override
 	public String toString() {

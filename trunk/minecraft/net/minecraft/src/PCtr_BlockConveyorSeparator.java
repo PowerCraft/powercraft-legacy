@@ -1,10 +1,12 @@
 package net.minecraft.src;
 
+
 import java.util.HashSet;
 import java.util.Random;
 import java.util.Set;
 
 import net.minecraft.src.forge.ITextureProvider;
+
 
 public class PCtr_BlockConveyorSeparator extends BlockContainer implements PC_IBlockType, PC_ISwapTerrain, PC_IRotatedBox, ITextureProvider {
 
@@ -23,7 +25,8 @@ public class PCtr_BlockConveyorSeparator extends BlockContainer implements PC_IB
 
 	@Override
 	public int getBlockTextureFromSideAndMetadata(int i, int j) {
-		if (i == 0) { return 1; // stone particles
+		if (i == 0) {
+			return 1; // stone particles
 		}
 		if (i == 1) {
 			return 7; // top face
@@ -57,7 +60,9 @@ public class PCtr_BlockConveyorSeparator extends BlockContainer implements PC_IB
 		ItemStack ihold = entityplayer.getCurrentEquippedItem();
 		if (ihold != null) {
 			if (ihold.getItem() instanceof ItemBlock) {
-				if (Block.blocksList[ihold.itemID] instanceof PC_IBlockType && ihold.itemID != blockID) { return false; }
+				if (Block.blocksList[ihold.itemID] instanceof PC_IBlockType && ihold.itemID != blockID) {
+					return false;
+				}
 			}
 		}
 
@@ -93,8 +98,7 @@ public class PCtr_BlockConveyorSeparator extends BlockContainer implements PC_IB
 						i1 = itemstack.stackSize;
 					}
 					itemstack.stackSize -= i1;
-					EntityItem entityitem = new EntityItem(world, i + f, j + f1, k + f2, new ItemStack(itemstack.itemID, i1,
-							itemstack.getItemDamage()));
+					EntityItem entityitem = new EntityItem(world, i + f, j + f1, k + f2, new ItemStack(itemstack.itemID, i1, itemstack.getItemDamage()));
 					float f3 = 0.05F;
 					entityitem.motionX = (float) world.rand.nextGaussian() * f3;
 					entityitem.motionY = (float) world.rand.nextGaussian() * f3 + 0.2F;
@@ -125,9 +129,15 @@ public class PCtr_BlockConveyorSeparator extends BlockContainer implements PC_IB
 
 		int redir = 0;
 
-		if (entity instanceof EntityFX) { return; } // no derbish will be moved
-		if (!entity.isEntityAlive()) { return; }
-		if (entity instanceof EntityPlayer && ((EntityPlayer) entity).isSneaking()) { return; }
+		if (entity instanceof EntityFX) {
+			return;
+		} // no derbish will be moved
+		if (!entity.isEntityAlive()) {
+			return;
+		}
+		if (entity instanceof EntityPlayer && ((EntityPlayer) entity).isSneaking()) {
+			return;
+		}
 
 		PCtr_TileEntitySeparationBelt filter = (PCtr_TileEntitySeparationBelt) world.getBlockTileEntity(i, j, k);
 
@@ -160,7 +170,9 @@ public class PCtr_BlockConveyorSeparator extends BlockContainer implements PC_IB
 		}
 
 		// try to store at offset coordinate
-		if (entity instanceof EntityItem && PCtr_BeltBase.storeEntityItemAt(world, pos_leading_to, (EntityItem) entity)) { return; }
+		if (entity instanceof EntityItem && PCtr_BeltBase.storeEntityItemAt(world, pos_leading_to, (EntityItem) entity)) {
+			return;
+		}
 
 		// check if target position is blocked
 		boolean leadsToNowhere = PCtr_BeltBase.isBlocked(world, pos_leading_to);
@@ -170,12 +182,10 @@ public class PCtr_BlockConveyorSeparator extends BlockContainer implements PC_IB
 			PCtr_BeltBase.entityPreventDespawning(world, pos, true, entity);
 		}
 
-		leadsToNowhere = leadsToNowhere
-				&& PCtr_BeltBase.isBeyondStorageBorder(world, rotation, pos, entity, PCtr_BeltBase.STORAGE_BORDER_LONG);
+		leadsToNowhere = leadsToNowhere && PCtr_BeltBase.isBeyondStorageBorder(world, rotation, pos, entity, PCtr_BeltBase.STORAGE_BORDER_LONG);
 
 		// add motion.
-		PCtr_BeltBase.moveEntityOnBelt(world, pos, entity, true, !leadsToNowhere, rotation, PCtr_BeltBase.MAX_HORIZONTAL_SPEED,
-				PCtr_BeltBase.HORIZONTAL_BOOST);
+		PCtr_BeltBase.moveEntityOnBelt(world, pos, entity, true, !leadsToNowhere, rotation, PCtr_BeltBase.MAX_HORIZONTAL_SPEED, PCtr_BeltBase.HORIZONTAL_BOOST);
 	}
 
 	// collision and other stuff

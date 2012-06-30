@@ -1,7 +1,9 @@
 package net.minecraft.src;
 
+
 import java.util.List;
 import java.util.Map;
+
 
 /**
  * PowerCraft Logic module
@@ -151,13 +153,13 @@ public class mod_PClogic extends PC_Module {
 
 		gateOff = new PClo_BlockGate(cfg().getInteger(pk_idGateOff), false)
 				.setBlockName("PCloLogicGate")
-				.setHardness(0.0F)/*.setLightValue(0)*/
+				.setHardness(0.0F).setLightValue(0)
 				.setStepSound(Block.soundWoodFootstep)
 				.disableStats().setRequiresSelfNotify();
 
 		gateOn = new PClo_BlockGate(cfg().getInteger(pk_idGateOn), true)
 				.setBlockName("PCloLogicGate")
-				.setHardness(0.0F)/*.setLightValue(cfg().getInteger(pk_brightGate) * 0.0625F)*/
+				.setHardness(0.0F).setLightValue(cfg().getInteger(pk_brightGate) * 0.0625F)
 				.setStepSound(Block.soundWoodFootstep)
 				.disableStats().setRequiresSelfNotify();
 
@@ -235,7 +237,6 @@ public class mod_PClogic extends PC_Module {
 		map.put("tile.PCloSensorRanged.living.name", "Mob Proximity Detector");
 		map.put("tile.PCloSensorRanged.player.name", "Player Proximity Detector");
 
-
 		map.put("tile.PCloLight.0.name", "Black Indicator");
 		map.put("tile.PCloLight.1.name", "Red Indicator");
 		map.put("tile.PCloLight.2.name", "Green Indicator");
@@ -281,6 +282,8 @@ public class mod_PClogic extends PC_Module {
 		map.put("tile.PCloLogicGate.crossing.name", "Redstone Crossing");
 		map.put("tile.PCloLogicGate.random.name", "Redstone Random Gate");
 		map.put("tile.PCloLogicGate.programmable.name", "Programmable Logic Gate");
+		map.put("tile.PCloLogicGate.repeaterStraight.name", "Straight Repeater");
+		map.put("tile.PCloLogicGate.repeaterCorner.name", "Angled Repeater");
 
 
 		// descriptions.
@@ -312,6 +315,8 @@ public class mod_PClogic extends PC_Module {
 		map.put("pc.gate.crossing.desc", "lets two wires intersect");
 		map.put("pc.gate.random.desc", "changes state randomly on pulse");
 		map.put("pc.gate.programmable.desc", "gate with custom function");
+		map.put("pc.gate.repeaterStraight.desc", "simple 1-tick repeater");
+		map.put("pc.gate.repeaterCorner.desc", "simple 1-tick corner repeater");
 
 		map.put("pc.radioRemote.connected", "Portable device connected to channel \"%s\".");
 		map.put("pc.radioRemote.desc", "Channel: %s");
@@ -339,7 +344,7 @@ public class mod_PClogic extends PC_Module {
 		map.put("pc.sensor.range.5+", "Range: %s blocks");
 
 		map.put("pc.gui.customGate.syntaxError", "Syntax error!");
-		map.put("pc.gui.customGate.legend", "Enter a logical expression.\nIt's result will be set to output.\nL - left, B - back, R - right");
+		map.put("pc.gui.customGate.legend", "L - left, B - back, R - right");
 
 	}
 
@@ -503,6 +508,17 @@ public class mod_PClogic extends PC_Module {
 				new ItemStack(gateOn, 1, PClo_GateType.HOLD_DELAYER),
 				new Object[] { "DD", "SS",
 					'D', Item.redstoneRepeater, 'S', Block.stone });
+		
+
+		ModLoader.addRecipe(
+				new ItemStack(gateOn, 1, PClo_GateType.REPEATER_STRAIGHT),
+				new Object[] { "R", "R", "R",
+					'R', Item.redstone});
+		
+		ModLoader.addRecipe(
+				new ItemStack(gateOn, 1, PClo_GateType.REPEATER_CORNER),
+				new Object[] { "RR", " R",
+					'R', Item.redstone});
 
 		ModLoader.addRecipe(
 				new ItemStack(gateOn, 1, PClo_GateType.CROSSING),
@@ -642,8 +658,7 @@ public class mod_PClogic extends PC_Module {
 		addStackRangeToCraftingTool(PC_CraftingToolGroup.LOGIC, gateOn.blockID, 0, PClo_GateType.TOTAL_GATE_COUNT - 1, 1);
 		addStacksToCraftingTool(PC_CraftingToolGroup.LOGIC, new ItemStack(pulsar));
 		addStackRangeToCraftingTool(PC_CraftingToolGroup.LOGIC, lightOn.blockID, 0, 15, 1);
-		addStacksToCraftingTool(PC_CraftingToolGroup.WIRELESS, new ItemStack(radio, 1, 0), new ItemStack(radio, 1, 1), new ItemStack(
-				sensor, 1, 0), new ItemStack(sensor, 1, 1), new ItemStack(sensor, 1, 2));
+		addStacksToCraftingTool(PC_CraftingToolGroup.WIRELESS, new ItemStack(radio, 1, 0), new ItemStack(radio, 1, 1), new ItemStack(sensor, 1, 0), new ItemStack(sensor, 1, 1), new ItemStack(sensor, 1, 2));
 		addStacksToCraftingTool(PC_CraftingToolGroup.HANDHELD, new ItemStack(portableTx));
 	}
 

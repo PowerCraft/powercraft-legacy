@@ -1,7 +1,9 @@
 package net.minecraft.src;
 
+
 import net.minecraft.src.PC_GresTextEdit.PC_GresInputType;
 import net.minecraft.src.PC_GresWidget.PC_GresAlign;
+
 
 /**
  * Gui for delayer and repeater gates.

@@ -1,14 +1,15 @@
 package net.minecraft.src;
 
+
 import java.util.List;
 import java.util.Map;
+
 
 /**
  * RADIO FIX module - updates radios built before 3.4 to the new format.
  * 
  * @author MightyPork
  * @copy (c) 2012
- * 
  */
 public class mod_PCfix extends PC_Module {
 
@@ -28,7 +29,7 @@ public class mod_PCfix extends PC_Module {
 	}
 
 	// fake radios
-	
+
 	@SuppressWarnings("javadoc")
 	public static Block radio0, radio1;
 
@@ -59,8 +60,7 @@ public class mod_PCfix extends PC_Module {
 
 	@Override
 	public void registerTileEntities(List<PC_Struct3<Class<? extends TileEntity>, String, TileEntitySpecialRenderer>> list) {
-		list.add(new PC_Struct3<Class<? extends TileEntity>, String, TileEntitySpecialRenderer>(PCfix_TileEntityRadioPlaceholder.class,
-				"PCfixRadioPlaceholder", null));
+		list.add(new PC_Struct3<Class<? extends TileEntity>, String, TileEntitySpecialRenderer>(PCfix_TileEntityRadioPlaceholder.class, "PCfixRadioPlaceholder", null));
 	}
 
 	@Override

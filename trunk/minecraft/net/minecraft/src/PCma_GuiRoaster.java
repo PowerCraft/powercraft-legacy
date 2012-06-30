@@ -1,5 +1,6 @@
 package net.minecraft.src;
 
+
 import net.minecraft.src.PC_GresWidget.PC_GresAlign;
 
 
@@ -8,7 +9,6 @@ import net.minecraft.src.PC_GresWidget.PC_GresAlign;
  * 
  * @author MightyPork
  * @copy (c) 2012
- * 
  */
 public class PCma_GuiRoaster implements PC_IGresBase {
 
@@ -32,8 +32,7 @@ public class PCma_GuiRoaster implements PC_IGresBase {
 
 	@Override
 	public void initGui(PC_IGresGui gui) {
-		PC_GresWidget w = new PC_GresWindow(PC_Lang.tr("tile.PCmaRoaster.name") + " - " + PC_Lang.tr("pc.roaster.insertFuel"))
-				.setWidthForInventory();
+		PC_GresWidget w = new PC_GresWindow(PC_Lang.tr("tile.PCmaRoaster.name") + " - " + PC_Lang.tr("pc.roaster.insertFuel")).setWidthForInventory();
 
 
 		w.setAlignH(PC_GresAlign.CENTER);

@@ -1,13 +1,14 @@
 package net.minecraft.src;
 
+
 import org.lwjgl.opengl.GL11;
+
 
 /**
  * Resizable GUI image widget
  * 
  * @author MightyPork
  * @copy (c) 2012
- * 
  */
 public class PC_GresImage extends PC_GresWidget {
 
@@ -18,7 +19,8 @@ public class PC_GresImage extends PC_GresWidget {
 	/**
 	 * Image from a texture file.
 	 * 
-	 * @param texture Name of a texture file inside minecraft.jar. Must be 256x256!
+	 * @param texture Name of a texture file inside minecraft.jar. Must be
+	 *            256x256!
 	 * @param offsetX start of texture x
 	 * @param offsetY start of texture y
 	 * @param imgW image width

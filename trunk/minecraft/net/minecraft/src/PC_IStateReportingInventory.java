@@ -1,5 +1,6 @@
 package net.minecraft.src;
 
+
 /**
  * Interface used by the chest detection gates to read automatic workbench's
  * state.

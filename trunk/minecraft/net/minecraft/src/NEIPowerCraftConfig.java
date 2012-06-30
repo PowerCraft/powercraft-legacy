@@ -1,5 +1,6 @@
 package net.minecraft.src;
 
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -9,6 +10,7 @@ import java.util.HashSet;
 import codechicken.nei.API;
 import codechicken.nei.IConfigureNEI;
 import codechicken.nei.MultiItemRange;
+
 
 /**
  * Compatibility plugin for NotEnoughItems.

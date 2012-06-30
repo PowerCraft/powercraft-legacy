@@ -1,13 +1,14 @@
 package net.minecraft.src;
 
+
 import org.lwjgl.opengl.GL11;
+
 
 /**
  * Render thrown item
  * 
  * @author MightyPork
  * @copy (c) 2012
- * 
  */
 public class PCma_RenderThrownItem extends Render {
 	private float scalef;

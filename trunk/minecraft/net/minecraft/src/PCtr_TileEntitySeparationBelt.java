@@ -1,8 +1,10 @@
 package net.minecraft.src;
 
+
 import java.util.Enumeration;
 import java.util.Hashtable;
 import java.util.Random;
+
 
 public class PCtr_TileEntitySeparationBelt extends PC_TileEntity implements IInventory, PC_ISpecialAccessInventory {
 
@@ -23,6 +25,7 @@ public class PCtr_TileEntitySeparationBelt extends PC_TileEntity implements IInv
 	@Override
 	public void closeChest() {}
 
+	@Override
 	public boolean canUpdate() {
 		return true;
 	}
@@ -35,8 +38,7 @@ public class PCtr_TileEntitySeparationBelt extends PC_TileEntity implements IInv
 		while (e.hasMoreElements()) {
 			Entity thisItem = e.nextElement();
 
-			if (thisItem.posX < xCoord - 0.2F || thisItem.posY < yCoord - 0.2F || thisItem.posZ < zCoord - 0.2F
-					|| thisItem.posX > xCoord + 1.2F || thisItem.posY > yCoord + 1.2F || thisItem.posZ > zCoord + 1.2F) {
+			if (thisItem.posX < xCoord - 0.2F || thisItem.posY < yCoord - 0.2F || thisItem.posZ < zCoord - 0.2F || thisItem.posX > xCoord + 1.2F || thisItem.posY > yCoord + 1.2F || thisItem.posZ > zCoord + 1.2F) {
 				redirList.remove(thisItem);
 			}
 		}
@@ -109,9 +111,13 @@ public class PCtr_TileEntitySeparationBelt extends PC_TileEntity implements IInv
 			}
 		}
 
-		if (itemstack == null) { return 0; }
+		if (itemstack == null) {
+			return 0;
+		}
 
-		if (redirList.containsKey(entity)) { return redirList.get(entity); }
+		if (redirList.containsKey(entity)) {
+			return redirList.get(entity);
+		}
 
 		// decide for direction.
 
@@ -124,9 +130,7 @@ public class PCtr_TileEntitySeparationBelt extends PC_TileEntity implements IInv
 		for (int i = 0; i < getSizeInventory(); i++) {
 			ItemStack stack = getStackInSlot(i);
 			if (stack != null
-					&& (stack.isItemEqual(itemstack)
-							|| (group_logs && stack.itemID == Block.wood.blockID && itemstack.itemID == Block.wood.blockID) || (group_planks
-							&& stack.itemID == Block.planks.blockID && itemstack.itemID == Block.planks.blockID))) {
+					&& (stack.isItemEqual(itemstack) || (group_logs && stack.itemID == Block.wood.blockID && itemstack.itemID == Block.wood.blockID) || (group_planks && stack.itemID == Block.planks.blockID && itemstack.itemID == Block.planks.blockID))) {
 
 				int tmpi = i % 6;
 				if (tmpi >= 3) {
@@ -138,13 +142,16 @@ public class PCtr_TileEntitySeparationBelt extends PC_TileEntity implements IInv
 			}
 		}
 
-		if (countLeft == 0 && countRight == 0) { return 0; // forward
+		if (countLeft == 0 && countRight == 0) {
+			return 0; // forward
 		}
 
-		if (countLeft == 0 && countRight > 0) { return -1; // right
+		if (countLeft == 0 && countRight > 0) {
+			return -1; // right
 		}
 
-		if (countLeft > 0 && countRight == 0) { return 1; // left
+		if (countLeft > 0 && countRight == 0) {
+			return 1; // left
 		}
 
 		if (countLeft > 0 && countRight > 0) {
@@ -309,7 +316,9 @@ public class PCtr_TileEntitySeparationBelt extends PC_TileEntity implements IInv
 	}
 
 	public boolean canInteractWith(EntityPlayer entityplayer) {
-		if (worldObj.getBlockTileEntity(xCoord, yCoord, zCoord) != this) { return false; }
+		if (worldObj.getBlockTileEntity(xCoord, yCoord, zCoord) != this) {
+			return false;
+		}
 		return entityplayer.getDistanceSq(xCoord + 0.5D, yCoord + 0.5D, zCoord + 0.5D) <= 64D;
 	}
 

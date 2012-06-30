@@ -1,5 +1,6 @@
 package net.minecraft.src;
 
+
 import java.io.File;
 import java.io.FilenameFilter;
 import java.util.HashMap;
@@ -7,12 +8,12 @@ import java.util.Map.Entry;
 
 import net.minecraft.client.Minecraft;
 
+
 /**
  * PowerCraft translation helper
  * 
  * @author MightyPork
  * @copy (c) 2012
- * 
  */
 public class PC_Lang {
 
@@ -34,7 +35,8 @@ public class PC_Lang {
 	 * Get translated string formatted
 	 * 
 	 * @param identifier string identifier in the localizations
-	 * @param replacements array of strings for replacing the %s and %1$s things.
+	 * @param replacements array of strings for replacing the %s and %1$s
+	 *            things.
 	 * @return translated.
 	 */
 	public static String tr(String identifier, String[] replacements) {
@@ -85,8 +87,7 @@ public class PC_Lang {
 			PC_Logger.finest("* loading names from file " + filename + "...");
 			String language = filename.substring(0, filename.indexOf('-'));
 
-			PC_PropertyManager p = new PC_PropertyManager(mod_PCcore.cfgdir + "/lang/" + filename, language + " translation of " + module
-					+ " module.");
+			PC_PropertyManager p = new PC_PropertyManager(mod_PCcore.cfgdir + "/lang/" + filename, language + " translation of " + module + " module.");
 
 			p.cfgSilent(true);
 
@@ -111,9 +112,8 @@ public class PC_Lang {
 	 */
 	public void generateDefaultTranslationFile() {
 
-		PC_PropertyManager p = new PC_PropertyManager(mod_PCcore.cfgdir + "/lang/" + deflang + "-" + module + ".lang",
-				"English (default, immutable) translation of " + module + " module.\n"
-						+ "To add your own translation, copy this file, change language prefix and transtalte the names.");
+		PC_PropertyManager p = new PC_PropertyManager(mod_PCcore.cfgdir + "/lang/" + deflang + "-" + module + ".lang", "English (default, immutable) translation of " + module + " module.\n"
+				+ "To add your own translation, copy this file, change language prefix and transtalte the names.");
 
 		p.cfgSilent(true);
 

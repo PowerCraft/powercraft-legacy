@@ -11,7 +11,6 @@ import net.minecraft.src.weasel.exception.WeaselRuntimeException;
  * Label instruction, target for jumps.
  * 
  * @author MightyPork
- *
  */
 public class InstructionLabel extends Instruction {
 
@@ -32,20 +31,21 @@ public class InstructionLabel extends Instruction {
 		labelName = tag.getString("Name");
 		return this;
 	}
-	
+
 	/**
 	 * @return name of this label
 	 */
-	public String getLabelName(){
+	public String getLabelName() {
 		return labelName;
 	}
-	
+
 	/**
 	 * Set label name
+	 * 
 	 * @param labelName label name to set
 	 * @return this
 	 */
-	public InstructionLabel setLabelName(String labelName){
+	public InstructionLabel setLabelName(String labelName) {
 		this.labelName = labelName;
 		return this;
 	}

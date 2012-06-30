@@ -1,16 +1,17 @@
 package net.minecraft.src;
 
+
 import java.util.HashSet;
 
 
 /**
  * Activation Crystal item.<br>
- * This item has various uses: opens spawner GUI, converts blocks to miner and to fishing machine.<br>
+ * This item has various uses: opens spawner GUI, converts blocks to miner and
+ * to fishing machine.<br>
  * Community modules can use it for their own uses.
  * 
  * @author MightyPork
  * @copy (c) 2012
- * 
  */
 public class PCco_ItemActivator extends Item {
 	/**
@@ -27,7 +28,9 @@ public class PCco_ItemActivator extends Item {
 
 		for (PC_IActivatorListener listener : listeners) {
 
-			if (listener.onActivatorUsedOnBlock(itemstack, entityplayer, world, new PC_CoordI(i, j, k))) { return true; }
+			if (listener.onActivatorUsedOnBlock(itemstack, entityplayer, world, new PC_CoordI(i, j, k))) {
+				return true;
+			}
 
 		}
 		return false;

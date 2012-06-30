@@ -1,5 +1,6 @@
 package net.minecraft.src;
 
+
 import net.minecraft.src.PC_GresWidget.PC_GresAlign;
 
 
@@ -8,7 +9,6 @@ import net.minecraft.src.PC_GresWidget.PC_GresAlign;
  * 
  * @author MightyPork & XOR19
  * @copy (c) 2012
- * 
  */
 public class PCco_GuiCraftingTool implements PC_IGresBase {
 
@@ -82,8 +82,7 @@ public class PCco_GuiCraftingTool implements PC_IGresBase {
 
 				int indexInList = page * invWidth * invHeight + j * invWidth + i;
 
-				((PCco_SlotDirectCrafting) craftingToolInventory.getSlot(i, j)).setProduct(craftingToolManager
-						.getItemForSlotNumber(indexInList));
+				((PCco_SlotDirectCrafting) craftingToolInventory.getSlot(i, j)).setProduct(craftingToolManager.getItemForSlotNumber(indexInList));
 
 			}
 		}

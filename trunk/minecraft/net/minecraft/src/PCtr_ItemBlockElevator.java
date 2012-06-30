@@ -4,6 +4,7 @@
 
 package net.minecraft.src;
 
+
 // Referenced classes of package net.minecraft.src:
 // ItemBlock, Block, BlockCloth, ItemDye,
 // ItemStack
@@ -28,7 +29,6 @@ public class PCtr_ItemBlockElevator extends ItemBlock {
 
 	@Override
 	public String getItemNameIS(ItemStack itemstack) {
-		return (new StringBuilder()).append(super.getItemName()).append(".").append(itemstack.getItemDamage() == 0 ? "up" : "down")
-				.toString();
+		return (new StringBuilder()).append(super.getItemName()).append(".").append(itemstack.getItemDamage() == 0 ? "up" : "down").toString();
 	}
 }

@@ -1,5 +1,6 @@
 package net.minecraft.src;
 
+
 import net.minecraft.src.PC_GresWidget.PC_GresAlign;
 
 
@@ -8,7 +9,6 @@ import net.minecraft.src.PC_GresWidget.PC_GresAlign;
  * 
  * @author MightyPork
  * @copy (c) 2012
- * 
  */
 public class PCtr_GuiTeleporterDecide implements PC_IGresBase {
 

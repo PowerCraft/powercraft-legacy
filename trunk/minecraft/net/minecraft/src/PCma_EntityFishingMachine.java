@@ -1,5 +1,6 @@
 package net.minecraft.src;
 
+
 import java.util.Random;
 
 
@@ -8,7 +9,6 @@ import java.util.Random;
  * 
  * @author MightyPork
  * @copy (c) 2012
- * 
  */
 public class PCma_EntityFishingMachine extends Entity {
 	/**
@@ -82,8 +82,9 @@ public class PCma_EntityFishingMachine extends Entity {
 
 	@Override
 	public boolean attackEntityFrom(DamageSource damagesource, int i) {
-		if (damagesource != DamageSource.outOfWorld
-				&& (worldObj.isRemote || isDead || (damagesource.getSourceOfDamage() == null && damagesource != DamageSource.explosion))) { return true; }
+		if (damagesource != DamageSource.outOfWorld && (worldObj.isRemote || isDead || (damagesource.getSourceOfDamage() == null && damagesource != DamageSource.explosion))) {
+			return true;
+		}
 		setForwardDirection(-getForwardDirection());
 		setTimeSinceHit(10);
 		setDamageTaken(getDamageTaken() + i * 7);
@@ -151,8 +152,8 @@ public class PCma_EntityFishingMachine extends Entity {
 	}
 
 	/**
-	 * Check if fishing machine can be built at this position.
-	 * If it fails, user is informed using in-game chat messages.
+	 * Check if fishing machine can be built at this position. If it fails, user
+	 * is informed using in-game chat messages.
 	 * 
 	 * @param pos coordinate of one fence
 	 * @return true if it's a valid structure
@@ -232,8 +233,7 @@ public class PCma_EntityFishingMachine extends Entity {
 	 * Check if the structure at this coord is complete
 	 * 
 	 * @param pos starting position
-	 * @return
-	 *         <ul>
+	 * @return <ul>
 	 *         <li>0 - valid structure
 	 *         <li>1 - invalid structure
 	 *         <li>2 - not enough water
@@ -243,10 +243,14 @@ public class PCma_EntityFishingMachine extends Entity {
 
 		buildPos = pos.copy();
 
-		if (!isBodyComplete(true)) { return 1; }
+		if (!isBodyComplete(true)) {
+			return 1;
+		}
 
 		// count water blocks under it - depth of 10.
-		if (!hasEnoughWater()) { return 2; }
+		if (!hasEnoughWater()) {
+			return 2;
+		}
 
 		setLocationAndAngles(pos.x + 1.5D, pos.y - yOffset, pos.z + 1.5D, 0.0F, 0.0F);
 
@@ -289,7 +293,9 @@ public class PCma_EntityFishingMachine extends Entity {
 				}
 			}
 		}
-		if (nonWaters > 20 || critical > 2) { return false; }
+		if (nonWaters > 20 || critical > 2) {
+			return false;
+		}
 
 		return true;
 	}
@@ -493,26 +499,32 @@ public class PCma_EntityFishingMachine extends Entity {
 
 	// === WATCHER ===
 
+	@SuppressWarnings("javadoc")
 	public void setDamageTaken(int i) {
 		dataWatcher.updateObject(19, Integer.valueOf(i));
 	}
 
+	@SuppressWarnings("javadoc")
 	public int getDamageTaken() {
 		return dataWatcher.getWatchableObjectInt(19);
 	}
 
+	@SuppressWarnings("javadoc")
 	public void setTimeSinceHit(int i) {
 		dataWatcher.updateObject(17, Integer.valueOf(i));
 	}
 
+	@SuppressWarnings("javadoc")
 	public int getTimeSinceHit() {
 		return dataWatcher.getWatchableObjectInt(17);
 	}
 
+	@SuppressWarnings("javadoc")
 	public void setForwardDirection(int i) {
 		dataWatcher.updateObject(18, Integer.valueOf(i));
 	}
 
+	@SuppressWarnings("javadoc")
 	public int getForwardDirection() {
 		return dataWatcher.getWatchableObjectInt(18);
 	}
@@ -529,7 +541,9 @@ public class PCma_EntityFishingMachine extends Entity {
 	private IInventory getChestInventory() {
 		TileEntity te = buildPos.offset(1, 1, 1).getTileEntity(worldObj);
 
-		if (te instanceof IInventory) { return (IInventory) te; }
+		if (te instanceof IInventory) {
+			return (IInventory) te;
+		}
 		return null;
 	}
 

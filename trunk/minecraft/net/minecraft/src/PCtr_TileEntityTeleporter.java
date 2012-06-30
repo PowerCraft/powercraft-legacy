@@ -1,6 +1,8 @@
 package net.minecraft.src;
 
+
 import java.util.Random;
+
 
 public class PCtr_TileEntityTeleporter extends PC_TileEntity {
 	Random rand = new Random();
@@ -28,6 +30,7 @@ public class PCtr_TileEntityTeleporter extends PC_TileEntity {
 		return new PC_CoordI(xCoord, yCoord, zCoord);
 	}
 
+	@Override
 	public boolean canUpdate() {
 		return true;
 	}
@@ -122,19 +125,32 @@ public class PCtr_TileEntityTeleporter extends PC_TileEntity {
 	 */
 	public boolean acceptsEntity(Entity entity) {
 
-		if (entity == null) { return false; }
-		if (entity instanceof EntityDiggingFX) { return false; }
+		if (entity == null) {
+			return false;
+		}
+		if (entity instanceof EntityDiggingFX) {
+			return false;
+		}
 
-		if ((entity instanceof EntityAnimal || entity instanceof EntitySquid || entity instanceof EntitySlime) && !animals) { return false; }
+		if ((entity instanceof EntityAnimal || entity instanceof EntitySquid || entity instanceof EntitySlime) && !animals) {
+			return false;
+		}
 
-		if ((entity instanceof EntityMob || entity instanceof EntityGhast || entity instanceof EntityDragon || entity instanceof EntityGolem)
-				&& !monsters) { return false; }
+		if ((entity instanceof EntityMob || entity instanceof EntityGhast || entity instanceof EntityDragon || entity instanceof EntityGolem) && !monsters) {
+			return false;
+		}
 
-		if ((entity instanceof EntityItem || entity instanceof EntityXPOrb || entity instanceof EntityArrow) && !items) { return false; }
+		if ((entity instanceof EntityItem || entity instanceof EntityXPOrb || entity instanceof EntityArrow) && !items) {
+			return false;
+		}
 
-		if ((entity instanceof EntityPlayer) && !players) { return false; }
+		if ((entity instanceof EntityPlayer) && !players) {
+			return false;
+		}
 
-		if ((entity instanceof EntityPlayer) && !entity.isSneaking() && sneakTrigger) { return false; }
+		if ((entity instanceof EntityPlayer) && !entity.isSneaking() && sneakTrigger) {
+			return false;
+		}
 
 		return true;
 

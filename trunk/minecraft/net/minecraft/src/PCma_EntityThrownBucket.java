@@ -1,11 +1,12 @@
 package net.minecraft.src;
 
+
 /**
- * Thrown bucket entity. Turns into item when hits something, can milk cow and if bowl subtype, also mooshroom.
+ * Thrown bucket entity. Turns into item when hits something, can milk cow and
+ * if bowl subtype, also mooshroom.
  * 
  * @author MightyPork
  * @copy (c) 2012
- * 
  */
 public class PCma_EntityThrownBucket extends EntityThrowable implements PCma_IThrownItem {
 

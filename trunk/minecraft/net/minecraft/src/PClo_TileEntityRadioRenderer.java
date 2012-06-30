@@ -1,13 +1,14 @@
 package net.minecraft.src;
 
+
 import org.lwjgl.opengl.GL11;
+
 
 /**
  * Radio special renderer
  * 
  * @author MightyPork
  * @copy (c) 2012
- * 
  */
 public class PClo_TileEntityRadioRenderer extends TileEntitySpecialRenderer {
 

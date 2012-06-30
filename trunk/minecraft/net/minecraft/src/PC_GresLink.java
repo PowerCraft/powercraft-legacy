@@ -1,15 +1,16 @@
 package net.minecraft.src;
 
+
 /**
  * Resizable GUI hypertext link-like widget
  * 
  * @author MightyPork
  * @copy (c) 2012
- * 
  */
 public class PC_GresLink extends PC_GresWidget {
 
 	private boolean isClicked = false;
+	private boolean underline;
 
 	/**
 	 * Link button
@@ -20,8 +21,12 @@ public class PC_GresLink extends PC_GresWidget {
 		super(label);
 		canAddWidget = false;
 		minSize.setTo(10, 0);
+		setColor(textColorEnabled, 0x000000);		
+		setColor(textColorDisabled, 0xa0a0a0);	
+		setColor(textColorHover, 0x0000ff);	
+		setColor(textColorActive, 0xff0000);
 	}
-
+	
 	@Override
 	public PC_CoordI calcSize() {
 
@@ -32,6 +37,15 @@ public class PC_GresLink extends PC_GresWidget {
 		}
 
 		return size.copy();
+	}
+	
+	/**
+	 * Set underline
+	 * @param underline
+	 */
+	public PC_GresLink setUnderline(boolean underline) {
+		this.underline = underline;
+		return this;
 	}
 
 	@Override
@@ -53,26 +67,26 @@ public class PC_GresLink extends PC_GresWidget {
 			state = 1; // enabled and not hover
 		}
 
-		int textColor = 0x000000;
+		int textColor = getColor(textColorEnabled);
 
 		if (state == 0) {
-			textColor = 0xa0a0a0; // gray
+			textColor = getColor(textColorDisabled); // gray
 		}
 		if (state == 1) {
-			textColor = 0x000000; // black
+			textColor = getColor(textColorEnabled); // black
 		}
 		if (state == 2) {
-			textColor = 0x0000ff; // blue, hover
+			textColor = getColor(textColorHover); // blue, hover
 		}
 		if (state == 3) {
-			textColor = 0xff0000; // red, activated
+			textColor = getColor(textColorActive); // red, activated
 		}
 
 		drawStringColor(text, offsetPos.x + pos.x, offsetPos.y + pos.y, textColor);
 
 		int yy = offsetPos.y + pos.y + getFontRenderer().FONT_HEIGHT;
 
-		drawRect(offsetPos.x + pos.x, yy, offsetPos.x + size.x + pos.x + 1, yy + 1, textColor | 0xff000000);
+		if(underline) drawRect(offsetPos.x + pos.x, yy, offsetPos.x + size.x + pos.x + 1, yy + 1, textColor);
 	}
 
 	@Override
@@ -84,7 +98,9 @@ public class PC_GresLink extends PC_GresWidget {
 
 	@Override
 	public boolean mouseClick(PC_CoordI mpos, int key) {
-		if (!enabled) { return false; }
+		if (!enabled) {
+			return false;
+		}
 		if (isClicked && key == -1) {
 			isClicked = false;
 			return true;

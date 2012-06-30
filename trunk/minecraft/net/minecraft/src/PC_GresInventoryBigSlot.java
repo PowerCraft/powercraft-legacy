@@ -5,7 +5,6 @@ package net.minecraft.src;
  * Inventory with single huge slot, used in crafting gui
  * 
  * @author XOR19
- *
  */
 public class PC_GresInventoryBigSlot extends PC_GresWidget {
 
@@ -14,8 +13,8 @@ public class PC_GresInventoryBigSlot extends PC_GresWidget {
 
 	/**
 	 * Inventory widget, with empty slot grid. To be filled using setSlot()
-	 * @param slot the only slot in this inventory
 	 * 
+	 * @param slot the only slot in this inventory
 	 */
 	public PC_GresInventoryBigSlot(Slot slot) {
 		super(26, 26);

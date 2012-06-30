@@ -1,11 +1,11 @@
 package net.minecraft.src;
 
+
 /**
  * Resizable GUI vertical layout
  * 
  * @author XOR19
  * @copy (c) 2012
- * 
  */
 public class PC_GresLayoutV extends PC_GresWidget {
 
@@ -31,6 +31,7 @@ public class PC_GresLayoutV extends PC_GresWidget {
 	@Override
 	public void calcChildPositions() {
 		int yy = 0, ySize = 0;
+		@SuppressWarnings("unused")
 		int lastmargin = 0;
 		for (PC_GresWidget w : childs) {
 			w.calcChildPositions();
@@ -48,7 +49,6 @@ public class PC_GresLayoutV extends PC_GresWidget {
 				calcChildPositions();
 				return;
 			}
-			;
 			lastmargin = w.widgetMargin;
 			ySize += csize.y + w.widgetMargin;
 		}

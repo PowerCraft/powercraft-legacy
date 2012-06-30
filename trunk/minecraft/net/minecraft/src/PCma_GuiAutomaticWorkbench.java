@@ -7,38 +7,19 @@ package net.minecraft.src;
  * 
  * @author MightyPork
  * @copy (c) 2012
- * 
  */
 public class PCma_GuiAutomaticWorkbench implements PC_IGresBase {
-	/**
-	 * @param inventoryplayer player inventory
-	 * @param tileentity tile entity of the Automatic Workbench
-	 */
-	/*
-	 * public PCma_GuiAutomaticWorkbench(InventoryPlayer inventoryplayer, PCma_TileEntityAutomaticWorkbench tileentity) {
-	 * super(new PCma_ContainerAutomaticWorkbench(inventoryplayer, tileentity));
-	 * ySize = 186;
-	 * }
-	 * @Override
-	 * protected void drawGuiContainerForegroundLayer() {
-	 * fontRenderer.drawString(PC_Lang.tr("tile.PCmaAutoWorkbench.name"), 37, 8, 0x404040);
-	 * fontRenderer.drawString(StatCollector.translateToLocal("container.inventory"), 8, (ySize - 96) + 2, 0x404040);
-	 * }
-	 * @Override
-	 * protected void drawGuiContainerBackgroundLayer(float f, int o, int p) {
-	 * int i = mc.renderEngine.getTexture(mod_PCmachines.getImgDir() + "gui_act.png");
-	 * GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-	 * mc.renderEngine.bindTexture(i);
-	 * int j = (width - xSize) / 2;
-	 * int k = (height - ySize) / 2;
-	 * drawTexturedModalRect(j, k, 0, 0, xSize, ySize);
-	 * }
-	 */
+
+
 
 	private EntityPlayer entityplayer;
 	private PCma_TileEntityAutomaticWorkbench tileentity;
 	private IInventory craftResult;
 
+	/**
+	 * @param entityplayer player
+	 * @param tileentity tile entity of the Automatic Workbench
+	 */
 	public PCma_GuiAutomaticWorkbench(EntityPlayer entityplayer, PCma_TileEntityAutomaticWorkbench tileentity) {
 		this.entityplayer = entityplayer;
 		this.tileentity = tileentity;
@@ -79,8 +60,7 @@ public class PCma_GuiAutomaticWorkbench implements PC_IGresBase {
 
 		hg1.add(new PC_GresImage(mod_PCcore.getImgDir() + "gres/widgets.png", 44, 66, 12, 11));
 
-		hg1.add(new PC_GresInventoryBigSlot(new PCma_SlotAutomaticWorkbenchResult(entityplayer, tileentity, craftResult,
-				gui.getContainer(), 0, 0, 0)));
+		hg1.add(new PC_GresInventoryBigSlot(new PCma_SlotAutomaticWorkbenchResult(entityplayer, tileentity, craftResult, gui.getContainer(), 0, 0, 0)));
 
 		hg.add(hg1);
 

@@ -57,7 +57,7 @@ public class WeaselStack extends WeaselObject {
 	public WeaselObject pop() {
 		try {
 			return stack.pop();
-		}catch(EmptyStackException e) {
+		} catch (EmptyStackException e) {
 			throw new WeaselRuntimeException("Calling POP on empty stack.");
 		}
 	}
@@ -87,7 +87,7 @@ public class WeaselStack extends WeaselObject {
 		List<WeaselObject> list = new ArrayList<WeaselObject>(stack);
 
 		for (WeaselObject obj : list) {
-			NBTTagCompound tag1 = WeaselObject.saveObjectToNBT(obj,new NBTTagCompound());
+			NBTTagCompound tag1 = WeaselObject.saveObjectToNBT(obj, new NBTTagCompound());
 			tags.appendTag(tag1);
 		}
 		tag.setTag("Stack", tags);
@@ -148,7 +148,7 @@ public class WeaselStack extends WeaselObject {
 
 	@Override
 	public WeaselStack copy() {
-		WeaselObject obj =  new WeaselStack();
+		WeaselObject obj = new WeaselStack();
 		obj.set(stack.clone());
 		return (WeaselStack) obj;
 	}

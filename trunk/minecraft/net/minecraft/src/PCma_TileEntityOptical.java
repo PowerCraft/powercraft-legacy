@@ -1,19 +1,19 @@
 package net.minecraft.src;
 
+
 /**
  * Optical device tile entity (mirror, prism)
  * 
  * @author MightyPork
  * @copy (c) 2012
- * 
  */
 public class PCma_TileEntityOptical extends PC_TileEntity {
 	/** device type ("MIRROR", "PRISM") */
 	public String type = "MIRROR";
 
 	/**
-	 * List of prism's sides, flags whether there are attached glass panels. starts with up and down, but the order does not really matter
-	 * here.
+	 * List of prism's sides, flags whether there are attached glass panels.
+	 * starts with up and down, but the order does not really matter here.
 	 */
 	private boolean[] prismSides = { false, false, false, false, false, false, false, false, false, false };
 
@@ -52,7 +52,9 @@ public class PCma_TileEntityOptical extends PC_TileEntity {
 	 * @return has glass panel
 	 */
 	public boolean getPrismSide(int i) {
-		if (i < 0 || i > 9) { return false; }
+		if (i < 0 || i > 9) {
+			return false;
+		}
 		return prismSides[i];
 	}
 
@@ -63,7 +65,9 @@ public class PCma_TileEntityOptical extends PC_TileEntity {
 	 * @param state has glass panel
 	 */
 	public void setPrismSide(int i, boolean state) {
-		if (i < 0 || i > 9) { return; }
+		if (i < 0 || i > 9) {
+			return;
+		}
 		prismSides[i] = state;
 	}
 
@@ -105,6 +109,7 @@ public class PCma_TileEntityOptical extends PC_TileEntity {
 	/**
 	 * @return forge method can update; false;
 	 */
+	@Override
 	public boolean canUpdate() {
 		return false;
 	}

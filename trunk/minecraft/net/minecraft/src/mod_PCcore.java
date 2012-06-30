@@ -1,9 +1,11 @@
 package net.minecraft.src;
 
+
 import java.io.ByteArrayInputStream;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
+
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 
@@ -16,6 +18,7 @@ import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 import org.xml.sax.SAXParseException;
+
 
 /**
  * PowerCraft's core module<br>
@@ -31,8 +34,9 @@ public class mod_PCcore extends PC_Module implements PC_IActivatorListener {
 
 	/**
 	 * Mod version, shared by other modules.<br>
-	 * Since this is static final, it is replaced by it's value during compilation, thus all modules keep their compile-time version and
-	 * aren't affected by current core version.
+	 * Since this is static final, it is replaced by it's value during
+	 * compilation, thus all modules keep their compile-time version and aren't
+	 * affected by current core version.
 	 */
 	public static final String VERSION = "3.4p4";
 
@@ -43,7 +47,8 @@ public class mod_PCcore extends PC_Module implements PC_IActivatorListener {
 
 	/**
 	 * Directory with settings. /something/something<br>
-	 * Note that All image files are inside jar (virtually) in /PowerCraft/module_name_lowercase/*.png
+	 * Note that All image files are inside jar (virtually) in
+	 * /PowerCraft/module_name_lowercase/*.png
 	 */
 	public static final String cfgdir = "/PowerCraft";
 
@@ -125,6 +130,9 @@ public class mod_PCcore extends PC_Module implements PC_IActivatorListener {
 	// property keys
 	/** Key used to build in reversed direction */
 	public static final String pk_keyReverse = "global.key.reverse_placing";
+	
+	private static final String pk_logEnabled = "global.logger.enabled";
+	private static final String pk_logToStdout = "global.logger.toStdout";
 
 	// recipe options
 	private static final String pk_optRecRecyclation = "opt.new_recipes.recyclation";
@@ -217,8 +225,10 @@ public class mod_PCcore extends PC_Module implements PC_IActivatorListener {
 		conf.putBoolean(pk_optMuteSound, false, "Disable all sounds and breaking animations with sounds.");
 		conf.putBoolean(pk_optSoundCrystal, true, "Enable \"jingle\" sounds made by PowerCrystals.");
 
-		conf.putBoolean(pk_optCraftCheating, false,
-				"Makes the Crafting Tool work like TMI in Survival,\ngiving you everything with no resources consumed.");
+		conf.putBoolean(pk_optCraftCheating, false, "Makes the Crafting Tool work like TMI in Survival,\ngiving you everything with no resources consumed.");
+
+		conf.putBoolean(pk_logEnabled, true, "Enable logging. Logs errors, events and debug info.");
+		conf.putBoolean(pk_logToStdout, false, "Send log also to stdout (terminal screen).");
 
 		conf.putString(pk_cfgUpdateIgnored, getVersion());
 		conf.putString(pk_cfgCurrentLangVersion, "0");
@@ -232,6 +242,9 @@ public class mod_PCcore extends PC_Module implements PC_IActivatorListener {
 		PCco_BlockPowerCrystal.makeSound = !conf.flag(pk_optSoundCrystal);
 		update_last_ignored_version = conf.string(pk_cfgUpdateIgnored);
 		current_lang_version = conf.string(pk_cfgCurrentLangVersion);
+		
+		PC_Logger.setPrintToStdout(conf.flag(pk_logToStdout));
+		PC_Logger.enableLogging(conf.flag(pk_logEnabled));
 	}
 
 	@Override
@@ -608,7 +621,9 @@ public class mod_PCcore extends PC_Module implements PC_IActivatorListener {
 	// Generate the power crystals if enabled.
 	@Override
 	public void generateSurface(World world, Random random, int chunkX, int chunkZ) {
-		if (!cfg().flag(pk_genCrystal_gen)) { return; }
+		if (!cfg().flag(pk_genCrystal_gen)) {
+			return;
+		}
 
 		int posX;
 		int posY;
@@ -618,9 +633,7 @@ public class mod_PCcore extends PC_Module implements PC_IActivatorListener {
 			int maxBlocks = random.nextInt(MathHelper.clamp_int(cfg().num(pk_genCrystalsDepositMaxCount) - 1, 1, 10)) + 2;
 
 			posX = chunkX + random.nextInt(16);
-			posY = MathHelper.clamp_int(
-					random.nextInt(MathHelper.clamp_int(cfg().num(pk_genCrystalsMaxY) - cfg().num(pk_genCrystalsMinY), 1, 255))
-							+ cfg().num(pk_genCrystalsMinY), 1, 255);
+			posY = MathHelper.clamp_int(random.nextInt(MathHelper.clamp_int(cfg().num(pk_genCrystalsMaxY) - cfg().num(pk_genCrystalsMinY), 1, 255)) + cfg().num(pk_genCrystalsMinY), 1, 255);
 
 			posZ = chunkZ + random.nextInt(16);
 
@@ -750,7 +763,8 @@ public class mod_PCcore extends PC_Module implements PC_IActivatorListener {
 	}
 
 	/**
-	 * Method called translation files were downloaded and updated. Reloads the translations and forces modloader to update loaded names.
+	 * Method called translation files were downloaded and updated. Reloads the
+	 * translations and forces modloader to update loaded names.
 	 */
 	public static void onTranslationsUpdated() {
 

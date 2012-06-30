@@ -1,8 +1,10 @@
 package net.minecraft.src;
 
+
 import net.minecraft.src.PC_GresRadioButton.PC_GresRadioGroup;
 import net.minecraft.src.PC_GresTextEdit.PC_GresInputType;
 import net.minecraft.src.PC_GresWidget.PC_GresAlign;
+
 
 public class PCtr_GuiTeleporter implements PC_IGresBase {
 
@@ -206,8 +208,7 @@ public class PCtr_GuiTeleporter implements PC_IGresBase {
 
 			teleporter.onInventoryChanged();
 
-			teleporter.worldObj.markBlocksDirty(teleporter.xCoord, teleporter.yCoord, teleporter.zCoord, teleporter.xCoord,
-					teleporter.yCoord, teleporter.zCoord);
+			teleporter.worldObj.markBlocksDirty(teleporter.xCoord, teleporter.yCoord, teleporter.zCoord, teleporter.xCoord, teleporter.yCoord, teleporter.zCoord);
 			teleporter.worldObj.markBlockNeedsUpdate(teleporter.xCoord, teleporter.yCoord, teleporter.zCoord);
 
 			gui.close();

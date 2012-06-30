@@ -1,6 +1,8 @@
 package net.minecraft.src;
 
+
 import java.util.ArrayList;
+
 
 /**
  * Laser beam tracing class
@@ -18,7 +20,6 @@ public class PCma_BeamTracer extends PC_BeamTracerBase {
 	 * Works with mirrors and prisms
 	 * 
 	 * @param worldObj the world
-	 * 
 	 * @param handler laser handler (interface)
 	 */
 	public PCma_BeamTracer(World worldObj, PC_IBeamHandler handler) {
@@ -71,9 +72,8 @@ public class PCma_BeamTracer extends PC_BeamTracerBase {
 	private static final int n = 0;
 
 	/** prism redirection vector for side */
-	private static final PC_CoordI[] prismMove = { new PC_CoordI(0, -1, 0), new PC_CoordI(0, 1, 0), new PC_CoordI(1, 0, 0), new PC_CoordI(
-			1, 0, 1), new PC_CoordI(0, 0, 1), new PC_CoordI(-1, 0, 1), new PC_CoordI(-1, 0, 0), new PC_CoordI(-1, 0, -1), new PC_CoordI(0,
-			0, -1), new PC_CoordI(1, 0, -1) };
+	private static final PC_CoordI[] prismMove = { new PC_CoordI(0, -1, 0), new PC_CoordI(0, 1, 0), new PC_CoordI(1, 0, 0), new PC_CoordI(1, 0, 1), new PC_CoordI(0, 0, 1), new PC_CoordI(-1, 0, 1), new PC_CoordI(-1, 0, 0), new PC_CoordI(-1, 0, -1),
+			new PC_CoordI(0, 0, -1), new PC_CoordI(1, 0, -1) };
 
 	/**
 	 * get movement vector from prism's side
@@ -93,7 +93,9 @@ public class PCma_BeamTracer extends PC_BeamTracerBase {
 	 */
 	private int getPrismSideFacingMove(PC_CoordI move) {
 		for (int i = 0; i < 10; i++) {
-			if (prismMove[i].equals(move.getInverted())) { return i; }
+			if (prismMove[i].equals(move.getInverted())) {
+				return i;
+			}
 		}
 		return -1;
 	}
@@ -214,7 +216,9 @@ public class PCma_BeamTracer extends PC_BeamTracerBase {
 		int id = world.getBlockId(coord.x, coord.y, coord.z);
 		int meta = world.getBlockMetadata(coord.x, coord.y, coord.z);
 
-		if (Block.blocksList[id] == null) { return result.CONTINUE; }
+		if (Block.blocksList[id] == null) {
+			return result.CONTINUE;
+		}
 
 		if (id == mod_PCmachines.optical.blockID) {
 
@@ -262,7 +266,9 @@ public class PCma_BeamTracer extends PC_BeamTracerBase {
 			} else if (PCma_BlockOptical.isPrism(world, coord.x, coord.y, coord.z) && reflectPrism) {
 				// it's a prism!
 
-				if (usedPrisms.contains(coord)) { return result.STOP; }
+				if (usedPrisms.contains(coord)) {
+					return result.STOP;
+				}
 
 				usedPrisms.add(coord.copy());
 
@@ -295,7 +301,9 @@ public class PCma_BeamTracer extends PC_BeamTracerBase {
 
 				}
 
-				if (sideCount > 0) { return result.STOP; }
+				if (sideCount > 0) {
+					return result.STOP;
+				}
 
 				return result.CONTINUE;
 

@@ -1,5 +1,6 @@
 package net.minecraft.src;
 
+
 import java.util.HashSet;
 import java.util.Random;
 import java.util.Set;
@@ -12,7 +13,6 @@ import net.minecraft.src.forge.ITextureProvider;
  * 
  * @author MightyPork
  * @copy (c) 2012
- * 
  */
 public class PCma_BlockXPBank extends BlockContainer implements PC_ISwapTerrain, PC_IBlockType, ITextureProvider {
 	@Override
@@ -79,8 +79,7 @@ public class PCma_BlockXPBank extends BlockContainer implements PC_ISwapTerrain,
 		if (rendering) {
 			int xp = ((PCma_TileEntityXPBank) iblockaccess.getBlockTileEntity(i, j, k)).xp;
 
-			setBlockBounds(0.15F, 0.29F - 0.2F * calculateHeightMultiplier(xp), 0.15F, 0.85F, 0.71F + 0.2F * calculateHeightMultiplier(xp),
-					0.85F);
+			setBlockBounds(0.15F, 0.29F - 0.2F * calculateHeightMultiplier(xp), 0.15F, 0.85F, 0.71F + 0.2F * calculateHeightMultiplier(xp), 0.85F);
 		} else {
 			setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 1.0F, 1.0F);
 		}
@@ -101,27 +100,18 @@ public class PCma_BlockXPBank extends BlockContainer implements PC_ISwapTerrain,
 	}
 
 	@Override
-	public void onBlockClicked(World world, int i, int j, int k, EntityPlayer entityplayer) {
-		((PCma_TileEntityXPBank) world.getBlockTileEntity(i, j, k)).printXP(entityplayer);
-	}
-
-	@Override
 	public boolean blockActivated(World world, int i, int j, int k, EntityPlayer entityplayer) {
 		ItemStack ihold = entityplayer.getCurrentEquippedItem();
 		if (ihold != null) {
 			if (ihold.getItem() instanceof ItemBlock && ihold.getItem().shiftedIndex != blockID) {
-				if (Block.blocksList[ihold.getItem().shiftedIndex] instanceof PC_IBlockType) { return false; }
+				if (Block.blocksList[ihold.getItem().shiftedIndex] instanceof PC_IBlockType) {
+					return false;
+				}
 			}
 		}
 
 		PC_Utils.openGres(entityplayer, new PCma_GuiXPBank((PCma_TileEntityXPBank) world.getBlockTileEntity(i, j, k)));
-		/*
-		 * if (!entityplayer.isSneaking()) {
-		 * ((PCma_TileEntityXPBank) world.getBlockTileEntity(i, j, k)).withdrawXP(entityplayer);
-		 * } else {
-		 * ((PCma_TileEntityXPBank) world.getBlockTileEntity(i, j, k)).depositXP(entityplayer);
-		 * }
-		 */
+
 		return true;
 	}
 

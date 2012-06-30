@@ -1,5 +1,6 @@
 package net.minecraft.src;
 
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Hashtable;
@@ -9,47 +10,58 @@ import java.util.Map.Entry;
 
 import net.minecraft.client.Minecraft;
 
+
 /**
- * PowerCraft's module. Extend this instead of BaseMod by your mod_something classes.<br>
+ * PowerCraft's module. Extend this instead of BaseMod by your mod_something
+ * classes.<br>
  * <br>
  * <b>*** About PowerCraft API ***</b><br>
- * PowerCraft has various useful classes, prefixed with <i>PC_</i>. There are few Utils classes, logger, new Gui elements and commonly
- * shared renderer. One of the most useful things are also the Coordinate and Struct classes, which make your methods much easier to use.<br>
+ * PowerCraft has various useful classes, prefixed with <i>PC_</i>. There are
+ * few Utils classes, logger, new Gui elements and commonly shared renderer. One
+ * of the most useful things are also the Coordinate and Struct classes, which
+ * make your methods much easier to use.<br>
  * <br>
  * mod_PCcore is an integral part of PowerCraft.<br>
- * Classes prefixed with <i>PCco_</i> are parts of core module, but not this API.
- * 
- * <br>
- * Some useful methods are here, on PC_Module, so you can use them directly when initializing your modules. <br>
+ * Classes prefixed with <i>PCco_</i> are parts of core module, but not this
+ * API. <br>
+ * Some useful methods are here, on PC_Module, so you can use them directly when
+ * initializing your modules. <br>
  * <br>
  * <b>Most important and useful API classes:</b>
  * <ul>
  * <li>PC_Module - abstract class to be used instead of BaseMod
- * <li>PC_PropertyManager - property file reader; reads properties, validates entries etc.
- * <li>PC_Renderer - PowerCraft's common renderer (few most important rendering methods)
+ * <li>PC_PropertyManager - property file reader; reads properties, validates
+ * entries etc.
+ * <li>PC_Renderer - PowerCraft's common renderer (few most important rendering
+ * methods)
  * <li>PC_CropManager - the crops API
  * <li>PC_InveditManager - TMI & NEI compatibility manager
  * <li>PC_Logger - static PowerCraft's logger, stores output into a file
  * <li>PC_Utils - common utilities
  * <li>PC_InvUtils - tools for inventory manipulation
  * <li>PC_KeyUtils - tools for key filtering, used mainly in GUIs
- * <li>PC_BlockUtils - lets you get information about block type at coord in world
+ * <li>PC_BlockUtils - lets you get information about block type at coord in
+ * world
  * <li>PC_Color - universal color class
- * <li>PC_CoordI - integer coordinate 3D (there is also float and double version)
+ * <li>PC_CoordI - integer coordinate 3D (there is also float and double
+ * version)
  * </ul>
  * <br>
  * <b>Most important interfaces:</b>
  * <ul>
- * <li>PC_IActivatorListener - handler interface for activator device. To be implemented by main module class.
+ * <li>PC_IActivatorListener - handler interface for activator device. To be
+ * implemented by main module class.
  * <li>PC_IBlockType - block type interface, all PC blocks must implement it
- * <li>PC_IFullnessReporter - interface for non-standard IInventory block, used to get full and empty flags
- * <li>PC_IInvTextures - block with differently mapped textures when in inventory than when in the world
- * <li>PC_IRotatedBox - block whose top face rotates based on metadata information (gates, conveyors)
- * <li>PC_ISelectiveInventory - inventory which can store only some blocks to some slots; it lets you check where is what stored by
- * conveyors.
+ * <li>PC_IFullnessReporter - interface for non-standard IInventory block, used
+ * to get full and empty flags
+ * <li>PC_IInvTextures - block with differently mapped textures when in
+ * inventory than when in the world
+ * <li>PC_IRotatedBox - block whose top face rotates based on metadata
+ * information (gates, conveyors)
+ * <li>PC_ISelectiveInventory - inventory which can store only some blocks to
+ * some slots; it lets you check where is what stored by conveyors.
  * <li>PC_ISwapTerrain - block with custom terrain texture
  * </ul>
- * 
  * 
  * @author MightyPork
  * @copy (c) 2012
@@ -188,8 +200,7 @@ public abstract class PC_Module extends BaseMod {
 
 
 			PC_Logger.finer("Initializing properties...");
-			conf = new PC_PropertyManager(mod_PCcore.cfgdir + "/" + getModuleName() + ".cfg", "PowerCraft " + getModuleName()
-					+ " module\nconfiguration file");
+			conf = new PC_PropertyManager(mod_PCcore.cfgdir + "/" + getModuleName() + ".cfg", "PowerCraft " + getModuleName() + " module\nconfiguration file");
 			initProperties(conf);
 
 
@@ -344,7 +355,6 @@ public abstract class PC_Module extends BaseMod {
 	 * Add given stacks into the crafting tool.
 	 * 
 	 * @param group item type group
-	 * 
 	 * @param stacks array of stacks to add
 	 */
 	public static final void addStacksToCraftingTool(PC_CraftingToolGroup group, ItemStack... stacks) {
@@ -361,7 +371,8 @@ public abstract class PC_Module extends BaseMod {
 	}
 
 	/**
-	 * Remove existing block item from items list. This is needed to prevent generating "CONFLICT" error message
+	 * Remove existing block item from items list. This is needed to prevent
+	 * generating "CONFLICT" error message
 	 * 
 	 * @param id block id
 	 */
@@ -390,10 +401,13 @@ public abstract class PC_Module extends BaseMod {
 
 	/**
 	 * Initialize your property manager, add needed keys and apply.<br>
-	 * Property manager is per-module, it's only yours, with your own property file.<br>
-	 * You can also put some things from the property manager into static fields after calling "apply().<br>
+	 * Property manager is per-module, it's only yours, with your own property
+	 * file.<br>
+	 * You can also put some things from the property manager into static fields
+	 * after calling "apply().<br>
 	 * <br>
-	 * <b>Look into some of the base modules for help how to use property manager.</b>
+	 * <b>Look into some of the base modules for help how to use property
+	 * manager.</b>
 	 * 
 	 * @param conf the initialized property manager for your module
 	 */
@@ -403,16 +417,20 @@ public abstract class PC_Module extends BaseMod {
 	 * Register tile entities
 	 * 
 	 * @param list List of structures { YourEntity.class, name, index }<br>
-	 *            Name must be an unique entity name, preferably prefixed with "PC".<br>
-	 *            Use ModLoader.getUniqueEntityID() to get index in singleplayer modules.<br>
+	 *            Name must be an unique entity name, preferably prefixed with
+	 *            "PC".<br>
+	 *            Use ModLoader.getUniqueEntityID() to get index in singleplayer
+	 *            modules.<br>
 	 */
 	public abstract void registerEntities(List<PC_Struct3<Class<? extends Entity>, String, Integer>> list);
 
 	/**
 	 * Register tile entities
 	 * 
-	 * @param list List of structures { TileEntity.class, name, TileEntitySpecialRenderer }<br>
-	 *            Name must be an unique entity name, preferably prefixed with "PC".<br>
+	 * @param list List of structures { TileEntity.class, name,
+	 *            TileEntitySpecialRenderer }<br>
+	 *            Name must be an unique entity name, preferably prefixed with
+	 *            "PC".<br>
 	 *            Use null in place of renderer if you use block renderer.
 	 */
 	public abstract void registerTileEntities(List<PC_Struct3<Class<? extends TileEntity>, String, TileEntitySpecialRenderer>> list);
@@ -425,7 +443,8 @@ public abstract class PC_Module extends BaseMod {
 	 * PCmy_Renderer.fooRenderer = ModLoader.getUniqueBlockModelID(this, true);
 	 * </pre>
 	 * 
-	 * Renderer ids initialized here are then to be handled using BaseMod's renderWorldBlock and renderInvBlock methods.
+	 * Renderer ids initialized here are then to be handled using BaseMod's
+	 * renderWorldBlock and renderInvBlock methods.
 	 */
 	public abstract void registerBlockRenderers();
 
@@ -445,7 +464,8 @@ public abstract class PC_Module extends BaseMod {
 	 * replaceBlockItem(myBlock.blockID, new PCmy_MyItemBlock(myBlock.blockID - 256));
 	 * </pre>
 	 * 
-	 * You can alternatively set item name, and do some metadata stuff in your custom ItemBlock.
+	 * You can alternatively set item name, and do some metadata stuff in your
+	 * custom ItemBlock.
 	 */
 	public abstract void registerItems();
 
@@ -474,7 +494,8 @@ public abstract class PC_Module extends BaseMod {
 
 	/**
 	 * Add recipes.<br>
-	 * Use standard ModLoader's methods for this - addRecipe and addShapelessRecipe, and addSmelting.<br>
+	 * Use standard ModLoader's methods for this - addRecipe and
+	 * addShapelessRecipe, and addSmelting.<br>
 	 * For fuels, override addFuel method from baseMod.
 	 */
 	public abstract void addRecipes();

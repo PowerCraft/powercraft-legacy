@@ -1,11 +1,11 @@
 package net.minecraft.src;
 
+
 /**
  * Radio Tile Entity (both TX and RX)
  * 
  * @author MightyPork
  * @copy (c) 2012
- * 
  */
 public class PClo_TileEntityRadio extends PC_TileEntity {
 
@@ -48,8 +48,7 @@ public class PClo_TileEntityRadio extends PC_TileEntity {
 				PC_Logger.finest("Radio receiver at [" + xCoord + ";" + yCoord + ";" + zCoord + "] registers to RadioManager");
 				PClo_RadioManager.registerReceiver(dim, new PC_CoordI(xCoord, yCoord, zCoord), channel);
 			} else {
-				PC_Logger.finest("Radio transmitter at [" + xCoord + ";" + yCoord + ";" + zCoord
-						+ "] registers to RadioManager with signal state = " + active);
+				PC_Logger.finest("Radio transmitter at [" + xCoord + ";" + yCoord + ";" + zCoord + "] registers to RadioManager with signal state = " + active);
 				PClo_RadioManager.setTransmitterState(dim, new PC_CoordI(xCoord, yCoord, zCoord), channel, active);
 			}
 			registered = true;
@@ -70,6 +69,7 @@ public class PClo_TileEntityRadio extends PC_TileEntity {
 	 * 
 	 * @return true
 	 */
+	@Override
 	public boolean canUpdate() {
 		return true;
 	}

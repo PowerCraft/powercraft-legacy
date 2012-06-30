@@ -1,13 +1,14 @@
 package net.minecraft.src;
 
+
 import org.lwjgl.input.Keyboard;
+
 
 /**
  * Text editor
  * 
  * @author XOR19
  * @copy (c) 2012
- * 
  */
 public class PC_GresTextEdit extends PC_GresWidget {
 
@@ -16,7 +17,6 @@ public class PC_GresTextEdit extends PC_GresWidget {
 	 * 
 	 * @author MightyPork
 	 * @copy (c) 2012
-	 * 
 	 */
 	public enum PC_GresInputType {
 		/** accept all characters */
@@ -48,6 +48,8 @@ public class PC_GresTextEdit extends PC_GresWidget {
 		maxChars = chars;
 		canAddWidget = false;
 		color[textColorEnabled] = 0xffffffff;
+		color[textColorActive] = 0xffffffff;
+		color[textColorHover] = 0xffffffff;
 		color[textColorShadowEnabled] = 0; //0xff383838;
 		color[textColorDisabled] = 0xffffffff;
 		color[textColorShadowDisabled] = 0; //0xff383838;
@@ -65,6 +67,8 @@ public class PC_GresTextEdit extends PC_GresWidget {
 		maxChars = chars;
 		canAddWidget = false;
 		color[textColorEnabled] = 0xffffffff;
+		color[textColorActive] = 0xffffffff;
+		color[textColorHover] = 0xffffffff;
 		color[textColorShadowEnabled] = 0; //0xff383838;
 		color[textColorDisabled] = 0xffffffff;
 		color[textColorShadowDisabled] = 0; //0xff383838;
@@ -99,8 +103,7 @@ public class PC_GresTextEdit extends PC_GresWidget {
 		drawVerticalLine(offsetPos.x + pos.x, offsetPos.y + pos.y, offsetPos.y + pos.y + size.y - 1, 0xffA0A0A0);
 		drawVerticalLine(offsetPos.x + pos.x + size.x - 1, offsetPos.y + pos.y, offsetPos.y + pos.y + size.y - 1, 0xffA0A0A0);
 
-		drawRect(offsetPos.x + pos.x + 1, offsetPos.y + pos.y + 1, offsetPos.x + pos.x + size.x - 1, offsetPos.y + pos.y + size.y - 1,
-				0xff000000);
+		drawRect(offsetPos.x + pos.x + 1, offsetPos.y + pos.y + 1, offsetPos.x + pos.x + size.x - 1, offsetPos.y + pos.y + size.y - 1, 0xff000000);
 
 		if (text.length() > maxChars) {
 			text = text.substring(0, maxChars);
@@ -113,8 +116,7 @@ public class PC_GresTextEdit extends PC_GresWidget {
 				s = mouseSelectEnd;
 			}
 
-			drawRect(offsetPos.x + pos.x + getStringWidth(text.substring(0, s)) + 6, offsetPos.y + pos.y + 4, offsetPos.x + pos.x
-					+ getStringWidth(text.substring(0, e)) + 6, offsetPos.y + pos.y + size.y - 5, 0xff3399FF);
+			drawRect(offsetPos.x + pos.x + getStringWidth(text.substring(0, s)) + 6, offsetPos.y + pos.y + 4, offsetPos.x + pos.x + getStringWidth(text.substring(0, e)) + 6, offsetPos.y + pos.y + size.y - 5, 0xff3399FF);
 
 		}
 
@@ -125,8 +127,7 @@ public class PC_GresTextEdit extends PC_GresWidget {
 				drawString("_", offsetPos.x + pos.x + getStringWidth(text) + 6, offsetPos.y + pos.y + (size.y - 8) / 2);
 			}
 		} else if (hasFocus && (cursorCounter / 6) % 2 == 0) {
-			drawVerticalLine(offsetPos.x + pos.x + getStringWidth(text.substring(0, mouseSelectEnd)) + 5, offsetPos.y + pos.y + 3,
-					offsetPos.y + pos.y + size.y - 5, color[enabled ? textColorEnabled : textColorDisabled]);
+			drawVerticalLine(offsetPos.x + pos.x + getStringWidth(text.substring(0, mouseSelectEnd)) + 5, offsetPos.y + pos.y + 3, offsetPos.y + pos.y + size.y - 5, color[enabled ? textColorEnabled : textColorDisabled]);
 		}
 
 	}
@@ -141,7 +142,9 @@ public class PC_GresTextEdit extends PC_GresWidget {
 		x -= 6;
 		for (int i = 0; i < text.length(); i++) {
 			charSize = getStringWidth("" + text.charAt(i));
-			if (x - charSize / 2 < 0) { return i; }
+			if (x - charSize / 2 < 0) {
+				return i;
+			}
 			x -= charSize;
 		}
 		return text.length();
@@ -150,7 +153,9 @@ public class PC_GresTextEdit extends PC_GresWidget {
 	@Override
 	public boolean mouseClick(PC_CoordI mpos, int key) {
 		mousePressed = false;
-		if (!enabled) { return false; }
+		if (!enabled) {
+			return false;
+		}
 		if (key != -1) {
 			mouseSelectStart = getMousePositionInString(mpos.x);
 			mouseSelectEnd = mouseSelectStart;
@@ -161,7 +166,9 @@ public class PC_GresTextEdit extends PC_GresWidget {
 	}
 
 	/**
-	 * Add a character instead of current selection (or in place of, if start == end)
+	 * Add a character instead of current selection (or in place of, if start ==
+	 * end)
+	 * 
 	 * @param c character
 	 */
 	protected void addKey(char c) {
@@ -172,7 +179,9 @@ public class PC_GresTextEdit extends PC_GresWidget {
 		}
 		String s1 = text.substring(0, s);
 		String s2 = text.substring(e);
-		if ((s1 + c + s2).length() > maxChars) { return; }
+		if ((s1 + c + s2).length() > maxChars) {
+			return;
+		}
 		text = s1 + c + s2;
 		mouseSelectEnd += 1;
 		mouseSelectStart = mouseSelectEnd;
@@ -196,7 +205,9 @@ public class PC_GresTextEdit extends PC_GresWidget {
 			deleteSelected();
 			return;
 		}
-		if (mouseSelectEnd <= 0) { return; }
+		if (mouseSelectEnd <= 0) {
+			return;
+		}
 		String s1 = text.substring(0, mouseSelectEnd - 1);
 		String s2 = text.substring(mouseSelectEnd);
 		text = s1 + s2;
@@ -209,7 +220,9 @@ public class PC_GresTextEdit extends PC_GresWidget {
 			deleteSelected();
 			return;
 		}
-		if (mouseSelectEnd >= text.length()) { return; }
+		if (mouseSelectEnd >= text.length()) {
+			return;
+		}
 		String s1 = text.substring(0, mouseSelectEnd);
 		String s2 = text.substring(mouseSelectEnd + 1);
 		text = s1 + s2;
@@ -225,7 +238,8 @@ public class PC_GresTextEdit extends PC_GresWidget {
 	}
 
 	/**
-	 * Replace selected part of the text 
+	 * Replace selected part of the text
+	 * 
 	 * @param stri replacement
 	 */
 	private void setSelected(String stri) {
@@ -316,17 +330,21 @@ public class PC_GresTextEdit extends PC_GresWidget {
 				}
 				break;
 		}
-		if ((s1 + ss + s2).length() > maxChars) { return; }
+		if ((s1 + ss + s2).length() > maxChars) {
+			return;
+		}
 		text = s1 + ss + s2;
 		mouseSelectEnd = s + ss.length();
 		mouseSelectStart = s;
 	}
-	
-	
+
+
 
 	@Override
 	public boolean keyTyped(char c, int key) {
-		if (!enabled || !hasFocus) { return false; }
+		if (!enabled || !hasFocus) {
+			return false;
+		}
 		switch (c) {
 			case 3:
 				GuiScreen.setClipboardString(getSelect());
@@ -385,7 +403,9 @@ public class PC_GresTextEdit extends PC_GresWidget {
 
 					case INT:
 						// writing before minus
-						if (text.length() > 0 && text.charAt(0) == '-' && mouseSelectStart == 0 && mouseSelectEnd == 0) { return true; }
+						if (text.length() > 0 && text.charAt(0) == '-' && mouseSelectStart == 0 && mouseSelectEnd == 0) {
+							return true;
+						}
 
 						if (Character.isDigit(Character.valueOf(c))) {
 							addKey(c);
@@ -399,14 +419,22 @@ public class PC_GresTextEdit extends PC_GresWidget {
 					case SIGNED_FLOAT:
 
 						if (c == '.') {
-							if (mouseSelectStart == 0 || mouseSelectEnd == 0) { return true; }
-							if (text.length() > 0 && (mouseSelectStart == 1 || mouseSelectEnd == 1) && text.charAt(0) == '-') { return true; }
-							if (text.length() > 0 && text.contains(".")) { return true; }
+							if (mouseSelectStart == 0 || mouseSelectEnd == 0) {
+								return true;
+							}
+							if (text.length() > 0 && (mouseSelectStart == 1 || mouseSelectEnd == 1) && text.charAt(0) == '-') {
+								return true;
+							}
+							if (text.length() > 0 && text.contains(".")) {
+								return true;
+							}
 							addKey(c);
 							return true;
 						}
 
-						if (text.length() > 0 && text.charAt(0) == '-' && mouseSelectStart == 0 && mouseSelectEnd == 0) { return true; }
+						if (text.length() > 0 && text.charAt(0) == '-' && mouseSelectStart == 0 && mouseSelectEnd == 0) {
+							return true;
+						}
 
 						if (Character.isDigit(Character.valueOf(c))) {
 							addKey(c);
@@ -421,8 +449,12 @@ public class PC_GresTextEdit extends PC_GresWidget {
 					case UNSIGNED_FLOAT:
 
 						if (c == '.') {
-							if (mouseSelectStart == 0 || mouseSelectEnd == 0) { return true; }
-							if (text.length() > 0 && text.contains(".")) { return true; }
+							if (mouseSelectStart == 0 || mouseSelectEnd == 0) {
+								return true;
+							}
+							if (text.length() > 0 && text.contains(".")) {
+								return true;
+							}
 							addKey(c);
 							return true;
 						}

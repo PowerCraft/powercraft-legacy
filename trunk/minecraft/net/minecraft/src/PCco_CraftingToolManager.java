@@ -1,8 +1,10 @@
 package net.minecraft.src;
 
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+
 
 /**
  * The Crafting Tool device container
@@ -20,7 +22,8 @@ public class PCco_CraftingToolManager {
 	}
 
 	/**
-	 * List of stacks for slots, use loadStacksToSlots() to fill with latest stacks available.
+	 * List of stacks for slots, use loadStacksToSlots() to fill with latest
+	 * stacks available.
 	 */
 	public ArrayList<ItemStack> stacklist = new ArrayList<ItemStack>();
 
@@ -32,7 +35,8 @@ public class PCco_CraftingToolManager {
 	/**
 	 * Add given stacks into the crafting tool.
 	 * 
-	 * @param ordering_index index of position; If used, tries one higher until it finds free number.
+	 * @param ordering_index index of position; If used, tries one higher until
+	 *            it finds free number.
 	 * @param stacks array of stacks to add
 	 */
 	public static void addStacks(int ordering_index, ItemStack[] stacks) {
@@ -75,7 +79,9 @@ public class PCco_CraftingToolManager {
 	 * @return the stack or null if not present.
 	 */
 	public ItemStack getItemForSlotNumber(int num) {
-		if (num < stacklist.size()) { return stacklist.get(num); }
+		if (num < stacklist.size()) {
+			return stacklist.get(num);
+		}
 		return null;
 	}
 

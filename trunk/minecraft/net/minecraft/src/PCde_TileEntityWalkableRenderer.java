@@ -1,13 +1,14 @@
 package net.minecraft.src;
 
+
 import org.lwjgl.opengl.GL11;
+
 
 /**
  * Renderer for deco block non solid kind
  * 
  * @author MightyPork
  * @copy (c) 2012
- * 
  */
 public class PCde_TileEntityWalkableRenderer extends TileEntitySpecialRenderer {
 

@@ -1,11 +1,13 @@
 package net.minecraft.src;
 
+
 import java.util.HashSet;
 import java.util.List;
 import java.util.Random;
 import java.util.Set;
 
 import net.minecraft.src.forge.ITextureProvider;
+
 
 public class PCtr_BlockConveyor extends Block implements PC_IBlockType, PC_IRotatedBox, PC_ISwapTerrain, ITextureProvider {
 	public PCtr_BeltType type = PCtr_BeltType.belt;
@@ -76,8 +78,7 @@ public class PCtr_BlockConveyor extends Block implements PC_IBlockType, PC_IRota
 		if (type == PCtr_BeltType.ejector) {
 			int meta = pos.getMeta(world);
 
-			if (pos.isPoweredDirectly(world) || pos.isPoweredIndirectly(world) || pos.offset(0, -1, 0).isPoweredDirectly(world)
-					|| pos.offset(0, -1, 0).isPoweredIndirectly(world)) {
+			if (pos.isPoweredDirectly(world) || pos.isPoweredIndirectly(world) || pos.offset(0, -1, 0).isPoweredDirectly(world) || pos.offset(0, -1, 0).isPoweredIndirectly(world)) {
 				if (!PCtr_BeltBase.isActive(meta)) {
 					if (!PCtr_BlockConveyor.dispenseStackFromNearbyMinecart(world, pos)) {
 						tryToDispenseItem(world, pos);
@@ -100,8 +101,7 @@ public class PCtr_BlockConveyor extends Block implements PC_IBlockType, PC_IRota
 			boolean isAlreadyActive = PCtr_BeltBase.isActive(meta);
 			boolean isPressed = false;
 			List list = null;
-			list = world
-					.getEntitiesWithinAABBExcludingEntity(null, AxisAlignedBB.getBoundingBoxFromPool(i, j, k, (i + 1), j + 1D, (k + 1)));
+			list = world.getEntitiesWithinAABBExcludingEntity(null, AxisAlignedBB.getBoundingBoxFromPool(i, j, k, (i + 1), j + 1D, (k + 1)));
 			if (list.size() > 0) {
 				isPressed = true;
 			}
@@ -140,7 +140,9 @@ public class PCtr_BlockConveyor extends Block implements PC_IBlockType, PC_IRota
 	// ii jj kk are conveyor's coordinates. ijk is for inventory.
 	public static boolean dispenseFromInventoryAt(World world, PC_CoordI inventoryPos, PC_CoordI beltPos) {
 		IInventory inventory = PC_InvUtils.getCompositeInventoryAt(world, inventoryPos);
-		if (inventory == null) { return false; }
+		if (inventory == null) {
+			return false;
+		}
 		return dispenseItem(world, inventoryPos, inventory, beltPos);
 	}
 
@@ -148,16 +150,32 @@ public class PCtr_BlockConveyor extends Block implements PC_IBlockType, PC_IRota
 		int rot = PCtr_BeltBase.getRotation(beltPos.getMeta(world));
 
 		// first try the inventory right behind this belt
-		if (rot == 2 && dispenseFromInventoryAt(world, beltPos.offset(0, 0, -1), beltPos)) { return; }
-		if (rot == 3 && dispenseFromInventoryAt(world, beltPos.offset(1, 0, 0), beltPos)) { return; }
-		if (rot == 0 && dispenseFromInventoryAt(world, beltPos.offset(0, 0, 1), beltPos)) { return; }
-		if (rot == 1 && dispenseFromInventoryAt(world, beltPos.offset(-1, 0, 0), beltPos)) { return; }
+		if (rot == 2 && dispenseFromInventoryAt(world, beltPos.offset(0, 0, -1), beltPos)) {
+			return;
+		}
+		if (rot == 3 && dispenseFromInventoryAt(world, beltPos.offset(1, 0, 0), beltPos)) {
+			return;
+		}
+		if (rot == 0 && dispenseFromInventoryAt(world, beltPos.offset(0, 0, 1), beltPos)) {
+			return;
+		}
+		if (rot == 1 && dispenseFromInventoryAt(world, beltPos.offset(-1, 0, 0), beltPos)) {
+			return;
+		}
 
 		// try all the other sides
-		if (rot != 2 && dispenseFromInventoryAt(world, beltPos.offset(0, 0, -1), beltPos)) { return; }
-		if (rot != 3 && dispenseFromInventoryAt(world, beltPos.offset(1, 0, 0), beltPos)) { return; }
-		if (rot != 0 && dispenseFromInventoryAt(world, beltPos.offset(0, 0, 1), beltPos)) { return; }
-		if (rot != 1 && dispenseFromInventoryAt(world, beltPos.offset(-1, 0, 0), beltPos)) { return; }
+		if (rot != 2 && dispenseFromInventoryAt(world, beltPos.offset(0, 0, -1), beltPos)) {
+			return;
+		}
+		if (rot != 3 && dispenseFromInventoryAt(world, beltPos.offset(1, 0, 0), beltPos)) {
+			return;
+		}
+		if (rot != 0 && dispenseFromInventoryAt(world, beltPos.offset(0, 0, 1), beltPos)) {
+			return;
+		}
+		if (rot != 1 && dispenseFromInventoryAt(world, beltPos.offset(-1, 0, 0), beltPos)) {
+			return;
+		}
 	}
 
 
@@ -188,30 +206,53 @@ public class PCtr_BlockConveyor extends Block implements PC_IBlockType, PC_IRota
 
 	public boolean storeNearby(World world, PC_CoordI pos, EntityItem entity) {
 
-		if (PCtr_BeltBase.storeItemIntoMinecart(world, pos, entity)) { return true; }
-		if (entity.posY > pos.y + 1 - PCtr_BeltBase.STORAGE_BORDER_V) { return false; }
+		if (PCtr_BeltBase.storeItemIntoMinecart(world, pos, entity)) {
+			return true;
+		}
+		if (entity.posY > pos.y + 1 - PCtr_BeltBase.STORAGE_BORDER_V) {
+			return false;
+		}
 
 
 		int rot = PCtr_BeltBase.getRotation(pos.getMeta(world));
 
 
-		if (PCtr_BeltBase.isBeyondStorageBorder(world, rot, pos, entity, PCtr_BeltBase.STORAGE_BORDER)
-				|| (isPowered(world, pos) && type == PCtr_BeltType.brake)) {
-			if (rot == 0 && PCtr_BeltBase.storeEntityItemAt(world, pos.offset(0, 0, -1), entity)) { return true; }
-			if (rot == 1 && PCtr_BeltBase.storeEntityItemAt(world, pos.offset(1, 0, 0), entity)) { return true; }
-			if (rot == 2 && PCtr_BeltBase.storeEntityItemAt(world, pos.offset(0, 0, 1), entity)) { return true; }
-			if (rot == 3 && PCtr_BeltBase.storeEntityItemAt(world, pos.offset(-1, 0, 0), entity)) { return true; }
+		if (PCtr_BeltBase.isBeyondStorageBorder(world, rot, pos, entity, PCtr_BeltBase.STORAGE_BORDER) || (isPowered(world, pos) && type == PCtr_BeltType.brake)) {
+			if (rot == 0 && PCtr_BeltBase.storeEntityItemAt(world, pos.offset(0, 0, -1), entity)) {
+				return true;
+			}
+			if (rot == 1 && PCtr_BeltBase.storeEntityItemAt(world, pos.offset(1, 0, 0), entity)) {
+				return true;
+			}
+			if (rot == 2 && PCtr_BeltBase.storeEntityItemAt(world, pos.offset(0, 0, 1), entity)) {
+				return true;
+			}
+			if (rot == 3 && PCtr_BeltBase.storeEntityItemAt(world, pos.offset(-1, 0, 0), entity)) {
+				return true;
+			}
 
-			if (rot != 0 && rot != 2 && PCtr_BeltBase.storeEntityItemAt(world, pos.offset(0, 0, -1), entity)) { return true; }
-			if (rot != 1 && rot != 3 && PCtr_BeltBase.storeEntityItemAt(world, pos.offset(1, 0, 0), entity)) { return true; }
-			if (rot != 2 && rot != 0 && PCtr_BeltBase.storeEntityItemAt(world, pos.offset(0, 0, 1), entity)) { return true; }
-			if (rot != 3 && rot != 1 && PCtr_BeltBase.storeEntityItemAt(world, pos.offset(-1, 0, 0), entity)) { return true; }
+			if (rot != 0 && rot != 2 && PCtr_BeltBase.storeEntityItemAt(world, pos.offset(0, 0, -1), entity)) {
+				return true;
+			}
+			if (rot != 1 && rot != 3 && PCtr_BeltBase.storeEntityItemAt(world, pos.offset(1, 0, 0), entity)) {
+				return true;
+			}
+			if (rot != 2 && rot != 0 && PCtr_BeltBase.storeEntityItemAt(world, pos.offset(0, 0, 1), entity)) {
+				return true;
+			}
+			if (rot != 3 && rot != 1 && PCtr_BeltBase.storeEntityItemAt(world, pos.offset(-1, 0, 0), entity)) {
+				return true;
+			}
 
-			if (PCtr_BeltBase.storeEntityItemAt(world, pos.offset(0, 1, 0), entity)) { return true; }
+			if (PCtr_BeltBase.storeEntityItemAt(world, pos.offset(0, 1, 0), entity)) {
+				return true;
+			}
 
 			// store under belt if not roaster.
 			if (PC_BlockUtils.hasFlag(world, pos.offset(0, -1, 0), "ROASTER")) {
-				if (PCtr_BeltBase.storeEntityItemAt(world, pos.offset(0, -1, 0), entity)) { return true; }
+				if (PCtr_BeltBase.storeEntityItemAt(world, pos.offset(0, -1, 0), entity)) {
+					return true;
+				}
 			}
 		}
 		return false;
@@ -224,8 +265,7 @@ public class PCtr_BlockConveyor extends Block implements PC_IBlockType, PC_IRota
 	}
 
 	private boolean isPowered(World world, PC_CoordI pos) {
-		return pos.isPoweredIndirectly(world) || pos.offset(0, 1, 0).isPoweredIndirectly(world)
-				|| pos.offset(0, -1, 0).isPoweredIndirectly(world);
+		return pos.isPoweredIndirectly(world) || pos.offset(0, 1, 0).isPoweredIndirectly(world) || pos.offset(0, -1, 0).isPoweredIndirectly(world);
 	}
 
 	// -------------MOVEMENT------------------
@@ -234,7 +274,9 @@ public class PCtr_BlockConveyor extends Block implements PC_IBlockType, PC_IRota
 
 		PC_CoordI pos = new PC_CoordI(i, j, k);
 
-		if (PCtr_BeltBase.isEntityIgnored(entity)) { return; }
+		if (PCtr_BeltBase.isEntityIgnored(entity)) {
+			return;
+		}
 
 		if (entity instanceof EntityItem) {
 			PCtr_BeltBase.packItems(world, pos);
@@ -247,10 +289,14 @@ public class PCtr_BlockConveyor extends Block implements PC_IBlockType, PC_IRota
 
 		if (entity instanceof EntityItem && type != PCtr_BeltType.ejector && type != PCtr_BeltType.speedy) {
 			PCtr_BeltBase.doSpecialItemAction(world, pos, (EntityItem) entity);
-			if (storeNearby(world, pos, (EntityItem) entity)) { return; }
+			if (storeNearby(world, pos, (EntityItem) entity)) {
+				return;
+			}
 		}
 
-		if (!entity.isEntityAlive()) { return; }
+		if (!entity.isEntityAlive()) {
+			return;
+		}
 
 		// brake activated
 		boolean halted = isPowered(world, pos) && type == PCtr_BeltType.brake;
@@ -315,32 +361,24 @@ public class PCtr_BlockConveyor extends Block implements PC_IBlockType, PC_IRota
 		if (type == PCtr_BeltType.redirector && redir == 0) { // not powered
 			switch (meta) {
 				case 0: // '\0' Z--
-					if (PCtr_BeltBase.isTransporterAt(world, pos.offset(1, 0, 0))
-							&& PCtr_BeltBase.isTransporterAt(world, pos.offset(-1, 0, 0))
-							&& !PCtr_BeltBase.isTransporterAt(world, pos.offset(0, 0, -1))) {
+					if (PCtr_BeltBase.isTransporterAt(world, pos.offset(1, 0, 0)) && PCtr_BeltBase.isTransporterAt(world, pos.offset(-1, 0, 0)) && !PCtr_BeltBase.isTransporterAt(world, pos.offset(0, 0, -1))) {
 						redir = 1;
 					}
 					break;
 				case 1: // '\001' X++
-					if (PCtr_BeltBase.isTransporterAt(world, pos.offset(0, 0, 1))
-							&& PCtr_BeltBase.isTransporterAt(world, pos.offset(0, 0, -1))
-							&& !PCtr_BeltBase.isTransporterAt(world, pos.offset(1, 0, 0))) {
+					if (PCtr_BeltBase.isTransporterAt(world, pos.offset(0, 0, 1)) && PCtr_BeltBase.isTransporterAt(world, pos.offset(0, 0, -1)) && !PCtr_BeltBase.isTransporterAt(world, pos.offset(1, 0, 0))) {
 						redir = 1;
 					}
 					break;
 
 				case 2: // '\0' Z++
-					if (PCtr_BeltBase.isTransporterAt(world, pos.offset(-1, 0, 0))
-							&& PCtr_BeltBase.isTransporterAt(world, pos.offset(1, 0, 0))
-							&& !PCtr_BeltBase.isTransporterAt(world, pos.offset(0, 0, 1))) {
+					if (PCtr_BeltBase.isTransporterAt(world, pos.offset(-1, 0, 0)) && PCtr_BeltBase.isTransporterAt(world, pos.offset(1, 0, 0)) && !PCtr_BeltBase.isTransporterAt(world, pos.offset(0, 0, 1))) {
 						redir = 1;
 					}
 					break;
 
 				case 3: // '\001' X--
-					if (PCtr_BeltBase.isTransporterAt(world, pos.offset(0, 0, -1))
-							&& PCtr_BeltBase.isTransporterAt(world, pos.offset(0, 0, 1))
-							&& !PCtr_BeltBase.isTransporterAt(world, pos.offset(-1, 0, 0))) {
+					if (PCtr_BeltBase.isTransporterAt(world, pos.offset(0, 0, -1)) && PCtr_BeltBase.isTransporterAt(world, pos.offset(0, 0, 1)) && !PCtr_BeltBase.isTransporterAt(world, pos.offset(-1, 0, 0))) {
 						redir = 1;
 					}
 					break;
@@ -378,8 +416,7 @@ public class PCtr_BlockConveyor extends Block implements PC_IBlockType, PC_IRota
 		}
 
 		boolean leadsToNowhere = PCtr_BeltBase.isBlocked(world, pos_leading_to);
-		leadsToNowhere = leadsToNowhere
-				&& PCtr_BeltBase.isBeyondStorageBorder(world, direction, pos, entity, PCtr_BeltBase.STORAGE_BORDER_LONG);
+		leadsToNowhere = leadsToNowhere && PCtr_BeltBase.isBeyondStorageBorder(world, direction, pos, entity, PCtr_BeltBase.STORAGE_BORDER_LONG);
 
 		// longlife!
 		if (!leadsToNowhere) {
@@ -437,7 +474,9 @@ public class PCtr_BlockConveyor extends Block implements PC_IBlockType, PC_IRota
 
 	@Override
 	public int getBlockTextureFromSideAndMetadata(int i, int j) {
-		if (i == 0) { return 1; }
+		if (i == 0) {
+			return 1;
+		}
 		if (i == 1) {
 			return getIndexTop(j);
 		} else {
@@ -446,12 +485,24 @@ public class PCtr_BlockConveyor extends Block implements PC_IBlockType, PC_IRota
 	}
 
 	public int getIndexTop(int meta) {
-		if (type == PCtr_BeltType.belt) { return 0; }
-		if (type == PCtr_BeltType.speedy) { return 4; }
-		if (type == PCtr_BeltType.ejector) { return 3; }
-		if (type == PCtr_BeltType.detector) { return 6; }
-		if (type == PCtr_BeltType.brake) { return 5; }
-		if (type == PCtr_BeltType.redirector) { return 8; }
+		if (type == PCtr_BeltType.belt) {
+			return 0;
+		}
+		if (type == PCtr_BeltType.speedy) {
+			return 4;
+		}
+		if (type == PCtr_BeltType.ejector) {
+			return 3;
+		}
+		if (type == PCtr_BeltType.detector) {
+			return 6;
+		}
+		if (type == PCtr_BeltType.brake) {
+			return 5;
+		}
+		if (type == PCtr_BeltType.redirector) {
+			return 8;
+		}
 		return 0;
 	}
 
@@ -545,10 +596,7 @@ public class PCtr_BlockConveyor extends Block implements PC_IBlockType, PC_IRota
 	 */
 	@SuppressWarnings("unchecked")
 	public static boolean dispenseStackFromNearbyMinecart(World world, PC_CoordI beltPos) {
-		List<EntityMinecart> hitList = world.getEntitiesWithinAABB(
-				net.minecraft.src.EntityMinecart.class,
-				AxisAlignedBB.getBoundingBoxFromPool(beltPos.x, beltPos.y, beltPos.z, beltPos.x + 1, beltPos.y + 1, beltPos.z + 1).expand(
-						1.0D, 1.0D, 1.0D));
+		List<EntityMinecart> hitList = world.getEntitiesWithinAABB(net.minecraft.src.EntityMinecart.class, AxisAlignedBB.getBoundingBoxFromPool(beltPos.x, beltPos.y, beltPos.z, beltPos.x + 1, beltPos.y + 1, beltPos.z + 1).expand(1.0D, 1.0D, 1.0D));
 
 		if (hitList.size() > 0) {
 			for (EntityMinecart cart : hitList) {
@@ -558,7 +606,9 @@ public class PCtr_BlockConveyor extends Block implements PC_IBlockType, PC_IRota
 
 				IInventory inventory = cart;
 				if (inventory != null) {
-					if (dispenseItem(world, new PC_CoordD(cart.posX, cart.posY, cart.posZ).round(), inventory, beltPos)) { return true; }
+					if (dispenseItem(world, new PC_CoordD(cart.posX, cart.posY, cart.posZ).round(), inventory, beltPos)) {
+						return true;
+					}
 				}
 
 			}

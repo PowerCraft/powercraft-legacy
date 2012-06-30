@@ -1,11 +1,11 @@
 package net.minecraft.src;
 
+
 /**
  * Resizable GUI vertical separation line
  * 
  * @author MightyPork
  * @copy (c) 2012
- * 
  */
 public class PC_GresSeparatorV extends PC_GresWidget {
 	/** Line color (0xrrggbb) */

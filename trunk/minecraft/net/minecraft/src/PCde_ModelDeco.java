@@ -1,11 +1,11 @@
 package net.minecraft.src;
 
+
 /**
  * Model for PClo_TileEntityRadioRenderer.
  * 
  * @author MightyPork
  * @copy (c) 2012
- * 
  */
 public class PCde_ModelDeco extends ModelBase {
 
@@ -43,6 +43,7 @@ public class PCde_ModelDeco extends ModelBase {
 		ironFrame[2].addBox(-8F, 5F, -8F, 16, 3, 16, 0.0F);
 		ironFrame[2].rotateAngleZ = (float) (Math.PI / 2);
 
+		// fillings
 		ironFrame[3] = new ModelRenderer(this, 64, 39);
 		ironFrame[3].addBox(-5F, -9F, -5F, 10, 4, 10, 0.0F);
 
@@ -104,12 +105,13 @@ public class PCde_ModelDeco extends ModelBase {
 	}
 
 	/**
-	 * Set iron frame subpieces.
+	 * Set iron frame fillings
 	 * 
-	 * @param top
+	 * @param side 0 = top, 1,2,3,4 = sides
+	 * @param show visible
 	 */
-	public void setFrameParts(int side, boolean top) {
-		ironFrame[side + 3].showModel = top;
+	public void setFrameParts(int side, boolean show) {
+		ironFrame[side + 3].showModel = show;
 	}
 
 	/**
@@ -119,6 +121,7 @@ public class PCde_ModelDeco extends ModelBase {
 	 * @param b 2nd
 	 * @param c 3rd
 	 * @param d 4th
+	 * @param floor floor piece
 	 */
 	public void setLedgeFences(boolean a, boolean b, boolean c, boolean d, boolean floor) {
 		ironLedge[0].showModel = floor;
@@ -142,7 +145,8 @@ public class PCde_ModelDeco extends ModelBase {
 	/**
 	 * Do render.
 	 * 
-	 * @param type device type. Equals to type in tile entity. NonSolid block adds 100 to it.
+	 * @param type device type. Equals to type in tile entity. NonSolid block
+	 *            adds 100 to it.
 	 */
 	public void render(int type) {
 		// parts[1].render(0.0625F);

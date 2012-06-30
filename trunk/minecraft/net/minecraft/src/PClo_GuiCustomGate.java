@@ -1,16 +1,20 @@
 package net.minecraft.src;
 
-import java.util.ArrayList;
 
-import org.nfunk.jep.JEP;
-import org.nfunk.jep.ParseException;
+import java.util.ArrayList;
+import java.util.LinkedHashMap;
+import java.util.Map;
+import java.util.Map.Entry;
 
 import net.minecraft.src.PC_GresTextEditMultiline.Keyword;
 import net.minecraft.src.PC_GresWidget.PC_GresAlign;
-import net.minecraft.src.weasel.Calculator;
-import net.minecraft.src.weasel.obj.WeaselBoolean;
-import net.minecraft.src.weasel.obj.WeaselVariableMap;
 
+
+/**
+ * gui for editing programmable gate's program
+ * 
+ * @author MightyPork
+ */
 public class PClo_GuiCustomGate implements PC_IGresBase {
 
 	private PClo_TileEntityGate tileEntity;
@@ -19,6 +23,11 @@ public class PClo_GuiCustomGate implements PC_IGresBase {
 	private PC_GresWidget txError;
 
 
+	/**
+	 * prog gate GUI
+	 * 
+	 * @param tileEntity gate TE
+	 */
 	public PClo_GuiCustomGate(PClo_TileEntityGate tileEntity) {
 		this.tileEntity = tileEntity;
 	}
@@ -31,50 +40,102 @@ public class PClo_GuiCustomGate implements PC_IGresBase {
 	@Override
 	public void initGui(PC_IGresGui gui) {
 		PC_GresWindow w = new PC_GresWindow(PC_Lang.tr("tile.PCloLogicGate.programmable.name"));
-		PC_GresWidget hg;
 		
+		PC_GresWidget hg;
+
 		ArrayList<Keyword> kw = new ArrayList<Keyword>();
 		int cinput = 0x0000ee;
 		int coperation = 0xff9900;
 		int cnumber = 0xffff00;
-		
+
 		kw.add(new Keyword("L", cinput, false));
 		kw.add(new Keyword("R", cinput, false));
 		kw.add(new Keyword("B", cinput, false));
-		kw.add(new Keyword("[+\\-*&|^\\*!?]", coperation, true));
+		kw.add(new Keyword("[+\\-*&|^\\*!%<>=]", coperation, true));
 		kw.add(new Keyword("[0-9]+", cnumber, true));
 		
-		kw.add(new Keyword("Math", 0x0000ee, false));
+		String[] jepkw = tileEntity.evaluator.getKeywords();
 		
-		w.add(edit = new PC_GresTextEditMultiline(tileEntity.programm, 200, 50,kw));
+		for(String str: jepkw) {
+			kw.add(new Keyword(str, 0xff0000, true));
+		}
+		
+
+		kw.add(new Keyword("Math", 0x0000ee, false));
+
+		w.add(edit = new PC_GresTextEditMultiline(tileEntity.program, 270, 60, kw));
 		w.add(txError = new PC_GresLabel("").setColor(PC_GresWidget.textColorEnabled, 0x990000));
 
-		hg = new PC_GresLayoutH().setAlignH(PC_GresAlign.CENTER);
-		hg.add(new PC_GresButton("L").setId(100).setMinWidth(0));
-		hg.add(new PC_GresButton("R").setId(100).setMinWidth(0));
-		hg.add(new PC_GresButton("B").setId(100).setMinWidth(0));
-		hg.add(new PC_GresButton("(").setId(100).setMinWidth(0));
-		hg.add(new PC_GresButton(")").setId(100).setMinWidth(0));
-		hg.add(new PC_GresButton("||").setId(100).setMinWidth(0));
-		hg.add(new PC_GresButton("&&").setId(100).setMinWidth(0));
-		hg.add(new PC_GresButton("!").setId(100).setMinWidth(0));
-		hg.add(new PC_GresButton("(?:)").setId(100).setMinWidth(0));
-		w.add(hg);
-		hg = new PC_GresLayoutH().setAlignH(PC_GresAlign.CENTER);
-		hg.add(new PC_GresButton(" ").setId(100).setMinWidth(0));
-		hg.add(new PC_GresButton(">").setId(100).setMinWidth(0));
-		hg.add(new PC_GresButton("<").setId(100).setMinWidth(0));
-		hg.add(new PC_GresButton("==").setId(100).setMinWidth(0));
-		hg.add(new PC_GresButton(">=").setId(100).setMinWidth(0));
-		hg.add(new PC_GresButton("<=").setId(100).setMinWidth(0));
-		hg.add(new PC_GresButton("!=").setId(100).setMinWidth(0));
-		hg.add(new PC_GresButton("+").setId(100).setMinWidth(0));
-		hg.add(new PC_GresButton("*").setId(100).setMinWidth(0));
-		hg.add(new PC_GresButton("-").setId(100).setMinWidth(0));
-		w.add(hg);
 		
+		
+		Map<String,String> hintMap = new LinkedHashMap<String,String>();
+		hintMap.put("Left","L");
+		hintMap.put("Back","B");
+		hintMap.put("Right","R");
+		hintMap.put("(","(");
+		hintMap.put(")",")");
+		hintMap.put("\"","\"");
+		hintMap.put("+","+");
+		hintMap.put("*","*");
+		hintMap.put("-","-");
+		hintMap.put("^","^");
+		hintMap.put("%","%");	
+		hintMap.put(" "," ");	
+		hintMap.put(",",",");
+		hintMap.put(">",">");
+		hintMap.put("<","<");
+		hintMap.put("==","==");
+		hintMap.put(">=",">=");
+		hintMap.put("<=","<=");
+		hintMap.put("!=","!=");
+		hintMap.put("||","||");
+		hintMap.put("&&","&&");
+		hintMap.put("!","!");
+		hintMap.put("not","not(");
+		hintMap.put("xor","xor(");
+		hintMap.put("and","and(");
+		hintMap.put("or","or(");
+		hintMap.put("nor","nor(");
+		hintMap.put("nxor","nxor(");
+		hintMap.put("odd","odd(");
+		hintMap.put("even","even(");
+		hintMap.put("min","min(");
+		hintMap.put("max","max(");
+		hintMap.put("sum","sum(");
+		hintMap.put("rnd","rnd(");
+		hintMap.put("str","str(");
+		hintMap.put("charAt","charAt(");
+		hintMap.put("strlen","strlen(");
+		hintMap.put("if","if(");
+		
+		int widthCounter = 0;
+		hg = new PC_GresLayoutH().setAlignH(PC_GresAlign.CENTER).setWidgetMargin(0);
+		for(Entry<String,String> entry : hintMap.entrySet()) {
+			PC_GresWidget widget = new PC_GresButton(entry.getKey()).
+					setColor(PC_GresWidget.textColorEnabled, 0x404040).
+					setColor(PC_GresWidget.textColorHover, 0x000000).
+					setColor(PC_GresWidget.textColorActive, 0x0000ff).
+					setTag(entry.getValue()).
+					setId(100).
+					setMinWidth(0).setWidgetMargin(1);
+			
+			widthCounter += widget.size.x + widget.widgetMargin;
+			
+			hg.add(widget);
+			
+			if(widthCounter >= 275) {
+				widthCounter = 0;
+				w.add(hg);
+				hg = new PC_GresLayoutH().setAlignH(PC_GresAlign.CENTER).setWidgetMargin(0);
+			}			
+			
+		}
+		if(hg.childs.size() > 0) w.add(hg);
+		
+		
+
 		hg = new PC_GresLayoutH().setAlignH(PC_GresAlign.CENTER);
-		hg.add(new PC_GresLabelMultiline(PC_Lang.tr("pc.gui.customGate.legend"),230).setAlignH(PC_GresAlign.CENTER).setColor(PC_GresWidget.textColorEnabled, 0x606060));
+		hg.add(new PC_GresLabel(PC_Lang.tr("pc.gui.customGate.legend")).setColor(PC_GresWidget.textColorEnabled, 0x606060));
 		w.add(hg);
 
 		hg = new PC_GresLayoutH().setAlignH(PC_GresAlign.CENTER);
@@ -99,19 +160,19 @@ public class PClo_GuiCustomGate implements PC_IGresBase {
 			}
 		} else if (widget == edit) {
 			txError.setText("");
-			if(!tileEntity.checkProgram(edit.getText())){
+			if (!tileEntity.checkProgram(edit.getText())) {
 				txError.setText(PC_Lang.tr("pc.gui.customGate.syntaxError"));
 			}
 		} else if (widget.getId() == 100) {
-			
-			String txt = new String(widget.getText());
-			while(txt.length() > 0){
+
+			String txt = new String(widget.getTag());
+			while (txt.length() > 0) {
 				char c = txt.charAt(0);
 				((PC_GresTextEditMultiline) edit).addKey(c);
-				if(txt.length() == 1) break;
+				if (txt.length() == 1) break;
 				txt = txt.substring(1);
-			}			
-			
+			}
+
 			actionPerformed(edit, gui);
 			gui.setFocus(edit);
 		}

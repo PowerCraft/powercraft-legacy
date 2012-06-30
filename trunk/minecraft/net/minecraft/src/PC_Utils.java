@@ -1,5 +1,6 @@
 package net.minecraft.src;
 
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -12,7 +13,6 @@ import net.minecraft.client.Minecraft;
  * 
  * @author MightyPork
  * @copy (c) 2012
- * 
  */
 public class PC_Utils {
 
@@ -64,10 +64,12 @@ public class PC_Utils {
 	}
 
 	/**
-	 * Write PC_INBT object to NBT compound tag, creating a wrapping compound tag for it.
+	 * Write PC_INBT object to NBT compound tag, creating a wrapping compound
+	 * tag for it.
 	 * 
 	 * @param parent parent compound tag
-	 * @param wrapperTagName name of the wrapper tag, which is later inserted into parent
+	 * @param wrapperTagName name of the wrapper tag, which is later inserted
+	 *            into parent
 	 * @param stored object to store
 	 * @return the compound wrapping tag
 	 */
@@ -79,10 +81,12 @@ public class PC_Utils {
 	}
 
 	/**
-	 * Load PC_INBT object from NBT compound tag, when it was stored using "writeWrappedToNBT" method.<br>
+	 * Load PC_INBT object from NBT compound tag, when it was stored using
+	 * "writeWrappedToNBT" method.<br>
 	 * 
 	 * @param parent parent compound tag
-	 * @param wrapperTagName name of the wrapper compound tag, in which the object is stored
+	 * @param wrapperTagName name of the wrapper compound tag, in which the
+	 *            object is stored
 	 * @param loaded object to load
 	 */
 	public static void readWrappedFromNBT(NBTTagCompound parent, String wrapperTagName, PC_INBT loaded) {
@@ -98,13 +102,14 @@ public class PC_Utils {
 	 * @return is fuel
 	 */
 	public static boolean isFuel(ItemStack itemstack) {
-		if (itemstack == null) { return false; }
+		if (itemstack == null) {
+			return false;
+		}
 
 		int i = itemstack.getItem().shiftedIndex;
 
-		return (i < 256 && Block.blocksList[i] != null && Block.blocksList[i].blockMaterial == Material.wood)
-				|| (i == Item.stick.shiftedIndex) || (i == Item.coal.shiftedIndex) || (i == Item.bucketLava.shiftedIndex)
-				|| (i == Block.sapling.blockID) || ModLoader.addAllFuel(i, itemstack.getItemDamage()) > 0;
+		return (i < 256 && Block.blocksList[i] != null && Block.blocksList[i].blockMaterial == Material.wood) || (i == Item.stick.shiftedIndex) || (i == Item.coal.shiftedIndex) || (i == Item.bucketLava.shiftedIndex) || (i == Block.sapling.blockID)
+				|| ModLoader.addAllFuel(i, itemstack.getItemDamage()) > 0;
 	}
 
 	/**
@@ -114,7 +119,9 @@ public class PC_Utils {
 	 * @return is smeltable
 	 */
 	public static boolean isSmeltable(ItemStack itemstack) {
-		if (itemstack == null || FurnaceRecipes.smelting().getSmeltingResult(itemstack.getItem().shiftedIndex) == null) { return false; }
+		if (itemstack == null || FurnaceRecipes.smelting().getSmeltingResult(itemstack.getItem().shiftedIndex) == null) {
+			return false;
+		}
 		return true;
 	}
 
@@ -130,8 +137,7 @@ public class PC_Utils {
 	}
 
 	/**
-	 * Reverse side (0,1,2,3).
-	 * Usually used together with isPlacingReversede().
+	 * Reverse side (0,1,2,3). Usually used together with isPlacingReversede().
 	 * 
 	 * @param l side
 	 * @return reversed side
@@ -175,7 +181,9 @@ public class PC_Utils {
 	 * @return array of integers or null.
 	 */
 	public static List<Integer> parseIntList(String list) {
-		if (list == null) { return null; }
+		if (list == null) {
+			return null;
+		}
 		String[] parts = list.split(",");
 
 		ArrayList<Integer> intList = new ArrayList<Integer>();

@@ -1,5 +1,6 @@
 package net.minecraft.src;
 
+
 import java.util.HashSet;
 import java.util.Random;
 import java.util.Set;
@@ -13,7 +14,6 @@ import net.minecraft.src.forge.ITextureProvider;
  * 
  * @author MightyPork
  * @copy (c) 2012
- * 
  */
 public class PCma_BlockRoaster extends BlockContainer implements PC_ISwapTerrain, PC_IBlockType, ITextureProvider {
 	private static final int TXDOWN = 62, TXTOP = 61, TXSIDE = 46;
@@ -64,7 +64,9 @@ public class PCma_BlockRoaster extends BlockContainer implements PC_ISwapTerrain
 
 	@Override
 	public int getBlockTextureFromSideAndMetadata(int s, int m) {
-		if (s == 1) { return TXTOP; }
+		if (s == 1) {
+			return TXTOP;
+		}
 		if (s == 0) {
 			return TXDOWN;
 		} else {
@@ -94,11 +96,15 @@ public class PCma_BlockRoaster extends BlockContainer implements PC_ISwapTerrain
 		ItemStack ihold = entityplayer.getCurrentEquippedItem();
 		if (ihold != null) {
 			if (ihold.getItem() instanceof ItemBlock && ihold.getItem().shiftedIndex != blockID) {
-				if (Block.blocksList[ihold.getItem().shiftedIndex] instanceof PC_IBlockType) { return false; }
+				if (Block.blocksList[ihold.getItem().shiftedIndex] instanceof PC_IBlockType) {
+					return false;
+				}
 			}
 		}
 
-		if (world.isRemote) { return true; }
+		if (world.isRemote) {
+			return true;
+		}
 
 		PCma_TileEntityRoaster tileentity = (PCma_TileEntityRoaster) world.getBlockTileEntity(i, j, k);
 		if (tileentity != null) {
@@ -129,8 +135,7 @@ public class PCma_BlockRoaster extends BlockContainer implements PC_ISwapTerrain
 							i1 = itemstack.stackSize;
 						}
 						itemstack.stackSize -= i1;
-						EntityItem entityitem = new EntityItem(world, i + f, j + f1, k + f2, new ItemStack(itemstack.itemID, i1,
-								itemstack.getItemDamage()));
+						EntityItem entityitem = new EntityItem(world, i + f, j + f1, k + f2, new ItemStack(itemstack.itemID, i1, itemstack.getItemDamage()));
 						float f3 = 0.05F;
 						entityitem.motionX = (float) random.nextGaussian() * f3;
 						entityitem.motionY = (float) random.nextGaussian() * f3 + 0.2F;
@@ -154,13 +159,21 @@ public class PCma_BlockRoaster extends BlockContainer implements PC_ISwapTerrain
 	 * @return is powered
 	 */
 	public static boolean isIndirectlyPowered(World world, int x, int y, int z) {
-		if (world.isBlockGettingPowered(x, y, z)) { return true; }
+		if (world.isBlockGettingPowered(x, y, z)) {
+			return true;
+		}
 
-		if (world.isBlockIndirectlyGettingPowered(x, y, z)) { return true; }
+		if (world.isBlockIndirectlyGettingPowered(x, y, z)) {
+			return true;
+		}
 
-		if (world.isBlockGettingPowered(x, y - 1, z)) { return true; }
+		if (world.isBlockGettingPowered(x, y - 1, z)) {
+			return true;
+		}
 
-		if (world.isBlockIndirectlyGettingPowered(x, y - 1, z)) { return true; }
+		if (world.isBlockIndirectlyGettingPowered(x, y - 1, z)) {
+			return true;
+		}
 		return false;
 	}
 
@@ -215,8 +228,7 @@ public class PCma_BlockRoaster extends BlockContainer implements PC_ISwapTerrain
 	public void randomDisplayTick(World world, int i, int j, int k, Random random) {
 		if (isBurning(world, i, j, k)) {
 			if (random.nextInt(24) == 0) {
-				world.playSoundEffect(i + 0.5F, j + 0.5F, k + 0.5F, "fire.fire", 1.0F + random.nextFloat(),
-						random.nextFloat() * 0.7F + 0.3F);
+				world.playSoundEffect(i + 0.5F, j + 0.5F, k + 0.5F, "fire.fire", 1.0F + random.nextFloat(), random.nextFloat() * 0.7F + 0.3F);
 			}
 
 			for (int c = 0; c < 5; c++) {

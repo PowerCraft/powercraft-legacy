@@ -27,14 +27,14 @@ public class InstructionList implements PC_INBT {
 	public ArrayList<Instruction> list = new ArrayList<Instruction>();
 	private WeaselEngine engine;
 	private int programCounter = 0;
-	
+
 	/** Address of first instruction in current scope */
 	private int scopeStart;
 
 	/** Address of last instruction in current scope */
 	private int scopeEnd;
-	
-	
+
+
 
 	/**
 	 * Instruction list for VM
@@ -47,6 +47,7 @@ public class InstructionList implements PC_INBT {
 
 	/**
 	 * Append an instruction and set it's address
+	 * 
 	 * @param instruction the new instruction to append
 	 */
 	public void appendInstruction(Instruction instruction) {
@@ -56,6 +57,7 @@ public class InstructionList implements PC_INBT {
 
 	/**
 	 * Move program pointer to specified address
+	 * 
 	 * @param index address
 	 */
 	public void movePointerTo(int index) {
@@ -65,20 +67,22 @@ public class InstructionList implements PC_INBT {
 
 	/**
 	 * Move program pointer to specified address, if it's within scope.
+	 * 
 	 * @param labelName
 	 */
 	public void gotoLabel(String labelName) {
 		for (Instruction instruction : list) {
 			if (instruction instanceof InstructionLabel) {
-				if(((InstructionLabel)instruction).getLabelName().equals(labelName)) {
+				if (((InstructionLabel) instruction).getLabelName().equals(labelName)) {
 					movePointerTo(instruction.getAddress());
 				}
 			}
 		}
 	}
-	
+
 	/**
-	 * Stack what needs to be stacked, and move pointer to a header of the specified function
+	 * Stack what needs to be stacked, and move pointer to a header of the
+	 * specified function
 	 * 
 	 * @param functionName name of a function
 	 * @param args arguments for the call
@@ -86,37 +90,39 @@ public class InstructionList implements PC_INBT {
 	public void callFunction(String functionName, WeaselObject[] args) {
 		for (Instruction instruction : list) {
 			if (instruction instanceof InstructionFunction) {
-				InstructionFunction func = (InstructionFunction)instruction;
-				if(func.getFunctionName().equals(functionName)) {					
+				InstructionFunction func = (InstructionFunction) instruction;
+				if (func.getFunctionName().equals(functionName)) {
 					engine.systemStack.push(new WeaselInteger(programCounter));
 					engine.systemStack.push(new WeaselInteger(scopeStart));
 					engine.systemStack.push(new WeaselInteger(scopeEnd));
 					engine.systemStack.push(engine.variables);
-					
+
 					programCounter = func.getAddress();
 					engine.variables.clear();
-					int cnt=0;
-					for(WeaselObject obj: args) {
+					int cnt = 0;
+					for (WeaselObject obj : args) {
 						engine.variables.setVariable(func.getArgumentName(cnt++), obj);
 					}
-					
+
 					return;
 				}
 			}
 		}
-		
-		
-		if(engine.nativeFunctionExists(functionName)) {
-			engine.callNativeFunction(functionName,args);
-		}else {
-			throw new WeaselRuntimeException("Called function "+functionName+" does not exist.");
+
+
+		if (engine.nativeFunctionExists(functionName)) {
+			engine.callNativeFunction(functionName, args);
+		} else {
+			throw new WeaselRuntimeException("Called function " + functionName + " does not exist.");
 		}
-		
+
 	}
 
 	/**
 	 * Execute next instruction (the one pointed by programCounter)
-	 * @throws EndOfScopeException if end of instruction list, or end of scope was reached
+	 * 
+	 * @throws EndOfScopeException if end of instruction list, or end of scope
+	 *             was reached
 	 */
 	public void executeNextInstruction() throws EndOfScopeException {
 		if (programCounter >= list.size()) throw new EndOfScopeException();
@@ -160,7 +166,7 @@ public class InstructionList implements PC_INBT {
 			NBTTagCompound tag1 = (NBTTagCompound) tags.tagAt(i);
 			list.set(tag1.getInteger("Index"), Instruction.loadInstructionFromNBT(tag1));
 		}
-		
+
 		scopeStart = tag.getInteger("ScopeStart");
 		scopeEnd = tag.getInteger("ScopeEnd");
 

@@ -1,14 +1,15 @@
 package net.minecraft.src;
 
+
 import java.util.ArrayList;
 import java.util.List;
+
 
 /**
  * Miner keyboard control handler
  * 
  * @author MightyPork
  * @copy (c) 2012
- * 
  */
 public class PCmo_MinerControlHandler {
 
@@ -16,7 +17,10 @@ public class PCmo_MinerControlHandler {
 	/** list of keyboard controlled miners */
 	public static List<PCmo_EntityMiner> controlledMiners = new ArrayList<PCmo_EntityMiner>();
 
-	/** World in which last tick was received. If changes, reset timers and everything. */
+	/**
+	 * World in which last tick was received. If changes, reset timers and
+	 * everything.
+	 */
 	static World lastTickWorld = null;
 
 	/** cool-down timer for repeated key presses */
@@ -163,9 +167,13 @@ public class PCmo_MinerControlHandler {
 			lastTickWorld = ModLoader.getMinecraftInstance().theWorld;
 		}
 
-		if (lastTickWorld == null) { return; }
+		if (lastTickWorld == null) {
+			return;
+		}
 
-		if (ModLoader.getMinecraftInstance().currentScreen != null) { return; }
+		if (ModLoader.getMinecraftInstance().currentScreen != null) {
+			return;
+		}
 
 		for (int i = 0; i <= 8; i++) {
 			if (keyPressTimer[i] > 0) {

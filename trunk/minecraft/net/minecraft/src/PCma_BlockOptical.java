@@ -1,15 +1,16 @@
 package net.minecraft.src;
 
+
 import java.util.HashSet;
 import java.util.Random;
 import java.util.Set;
+
 
 /**
  * Mirror / Prism block
  * 
  * @author MightyPork
  * @copy (c) 2012
- * 
  */
 public class PCma_BlockOptical extends BlockContainer implements PC_IBlockType {
 
@@ -100,7 +101,9 @@ public class PCma_BlockOptical extends BlockContainer implements PC_IBlockType {
 
 			if (ihold.getItem() instanceof ItemBlock && ihold.itemID != blockID) {
 				Block bhold = Block.blocksList[ihold.getItem().shiftedIndex];
-				if (bhold instanceof PC_IBlockType) { return false; }
+				if (bhold instanceof PC_IBlockType) {
+					return false;
+				}
 			}
 		}
 
@@ -183,7 +186,9 @@ public class PCma_BlockOptical extends BlockContainer implements PC_IBlockType {
 	 */
 	public static PCma_TileEntityOptical getTE(IBlockAccess iblockaccess, int x, int y, int z) {
 		TileEntity te = iblockaccess.getBlockTileEntity(x, y, z);
-		if (te == null) { return null; }
+		if (te == null) {
+			return null;
+		}
 		PCma_TileEntityOptical tem = (PCma_TileEntityOptical) te;
 
 		return tem;
@@ -203,7 +208,9 @@ public class PCma_BlockOptical extends BlockContainer implements PC_IBlockType {
 
 		PCma_TileEntityOptical teo = getTE(iblockaccess, x, y, z);
 
-		if (teo == null) { return false; }
+		if (teo == null) {
+			return false;
+		}
 
 		return getTE(iblockaccess, x, y, z).getPrismSide(side);
 	}
@@ -238,7 +245,9 @@ public class PCma_BlockOptical extends BlockContainer implements PC_IBlockType {
 
 		PCma_TileEntityOptical teo = getTE(iblockaccess, x, y, z);
 
-		if (teo == null) { return 0; }
+		if (teo == null) {
+			return 0;
+		}
 		return teo.getMirrorColor();
 
 	}
@@ -260,13 +269,17 @@ public class PCma_BlockOptical extends BlockContainer implements PC_IBlockType {
 
 	@Override
 	public int getRenderColor(int i) {
-		if (i == 0) { return 0x999999; }
+		if (i == 0) {
+			return 0x999999;
+		}
 		return 0xffffcc;
 	}
 
 	@Override
 	public int colorMultiplier(IBlockAccess iblockaccess, int i, int j, int k) {
-		if (isMirror(iblockaccess, i, j, k)) { return 0x999999; }
+		if (isMirror(iblockaccess, i, j, k)) {
+			return 0x999999;
+		}
 		return 0xffffcc;
 	}
 

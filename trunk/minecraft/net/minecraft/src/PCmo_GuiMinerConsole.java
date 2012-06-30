@@ -1,9 +1,11 @@
 package net.minecraft.src;
 
+
 import java.util.ArrayList;
 
 import net.minecraft.src.PC_GresTextEditMultiline.Keyword;
 import net.minecraft.src.PC_GresWidget.PC_GresAlign;
+
 
 public class PCmo_GuiMinerConsole implements PC_IGresBase {
 	private PCmo_EntityMiner miner;
@@ -56,9 +58,9 @@ public class PCmo_GuiMinerConsole implements PC_IGresBase {
 		keyWords.add(new Keyword(")", keyWordColor));
 		keyWords.add(new Keyword("@", keyWordColor));
 		keyWords.add(new Keyword(":", keyWordColor));
-		keyWords.add(new Keyword("[+\\-\\*/%=><?!]", operatorColor,true));
-		keyWords.add(new Keyword("[FBLRSNEWUDQXBMfblrsnewudqxbm]", keyWordColor,true));
-		keyWords.add(new Keyword("[0-9]+", numberColor,true));
+		keyWords.add(new Keyword("[+\\-\\*/%=><?!]", operatorColor, true));
+		keyWords.add(new Keyword("[FBLRSNEWUDQXBMfblrsnewudqxbm]", keyWordColor, true));
+		keyWords.add(new Keyword("[0-9]+", numberColor, true));
 		keyWords.add(new Keyword("deposit", keyWordColor));
 		keyWords.add(new Keyword("store", keyWordColor));
 		keyWords.add(new Keyword("eject", keyWordColor));
@@ -111,12 +113,9 @@ public class PCmo_GuiMinerConsole implements PC_IGresBase {
 		dir_go.enable(false);
 
 		vg = new PC_GresLayoutV().setAlignH(PC_GresAlign.LEFT);
-		vg.add(checkCobble = new PC_GresCheckBox(PC_Lang.tr("pc.gui.miner.opt.destroyCobble"))
-				.check((miner.DESTROY & PCmo_EntityMiner.COBBLE) != 0));
-		vg.add(checkGravel = new PC_GresCheckBox(PC_Lang.tr("pc.gui.miner.opt.destroyGravel"))
-				.check((miner.DESTROY & PCmo_EntityMiner.GRAVEL) != 0));
-		vg.add(checkDirt = new PC_GresCheckBox(PC_Lang.tr("pc.gui.miner.opt.destroyDirt"))
-				.check((miner.DESTROY & PCmo_EntityMiner.DIRT) != 0));
+		vg.add(checkCobble = new PC_GresCheckBox(PC_Lang.tr("pc.gui.miner.opt.destroyCobble")).check((miner.DESTROY & PCmo_EntityMiner.COBBLE) != 0));
+		vg.add(checkGravel = new PC_GresCheckBox(PC_Lang.tr("pc.gui.miner.opt.destroyGravel")).check((miner.DESTROY & PCmo_EntityMiner.GRAVEL) != 0));
+		vg.add(checkDirt = new PC_GresCheckBox(PC_Lang.tr("pc.gui.miner.opt.destroyDirt")).check((miner.DESTROY & PCmo_EntityMiner.DIRT) != 0));
 		vg.add(checkTorchFloor = new PC_GresCheckBox(PC_Lang.tr("pc.gui.miner.opt.torchesOnFloor")).check(miner.torchesOnlyOnFloor));
 		vg.add(checkCompress = new PC_GresCheckBox(PC_Lang.tr("pc.gui.miner.opt.compress")).check(miner.compressBlocks));
 		hg.add(vg);
@@ -143,13 +142,14 @@ public class PCmo_GuiMinerConsole implements PC_IGresBase {
 		miner.torchesOnlyOnFloor = checkTorchFloor.isChecked();
 		miner.compressBlocks = checkCompress.isChecked();
 
-		miner.DESTROY = (byte) ((checkCobble.isChecked() ? PCmo_EntityMiner.COBBLE : 0)
-				| (checkGravel.isChecked() ? PCmo_EntityMiner.GRAVEL : 0) | (checkDirt.isChecked() ? PCmo_EntityMiner.DIRT : 0));
+		miner.DESTROY = (byte) ((checkCobble.isChecked() ? PCmo_EntityMiner.COBBLE : 0) | (checkGravel.isChecked() ? PCmo_EntityMiner.GRAVEL : 0) | (checkDirt.isChecked() ? PCmo_EntityMiner.DIRT : 0));
 	}
 
 	@Override
 	public void actionPerformed(PC_GresWidget widget, PC_IGresGui gui) {
-		if (!widget.isEnabled()) { return; }
+		if (!widget.isEnabled()) {
+			return;
+		}
 
 		if (widget == quit) {
 			// Close

@@ -16,15 +16,17 @@ import org.nfunk.jep.ParseException;
  */
 public class PClo_TileEntityGate extends PC_TileEntity {
 
-	public PClo_TileEntityGate() {
-		evaluator.addStandardFunctions();
-	}
+	/**
+	 * TEG
+	 */
+	public PClo_TileEntityGate() {}
 
 	/**
 	 * For forge: does the entity need update ticks
 	 * 
 	 * @return true if it needs updates
 	 */
+	@Override
 	public boolean canUpdate() {
 		return true;
 	}
@@ -33,70 +35,93 @@ public class PClo_TileEntityGate extends PC_TileEntity {
 	 * The gate type index, from PClo_GType
 	 */
 	public int gateType = -1;
-	public JEP evaluator = new JEP();
+	/** JEP expression evaluator */
+	public JEP evaluator;
 	private Node jepNode = null;
-	
+
+	/**
+	 * Check if program is valid and has no errors
+	 * 
+	 * @param pgm
+	 * @return is valid
+	 */
 	public boolean checkProgram(String pgm) {
-		pgm = pgm.trim();
+		if(evaluator == null) evaluator = JEP.createWeaselParser(false);
 		
-		try{
-			
-			JEP jep = new JEP();
-			
+		pgm = pgm.trim();
+
+		try {
+
+			JEP jep = JEP.createWeaselParser(false);
+
 			jep.addVariable("L", 0);
 			jep.addVariable("R", 0);
 			jep.addVariable("B", 0);
-			
+
 			jep.parse(pgm);
-			
+
 			return !jep.hasError();
-			
-		}catch(Exception e){
+
+		} catch (Throwable t) {
+			if(t instanceof ParseException) {
+				PC_Logger.finest("programmable gate syntax error: "+((ParseException) t).getErrorInfo());
+			}else {
+				PC_Logger.finest("programmable gate syntax error: "+t.getMessage());
+			}
 			return false;
 		}
 	}
-	
+
+	/**
+	 * Set and init a program
+	 * 
+	 * @param program
+	 */
 	public void setProgram(String program) {
+		if(evaluator == null) evaluator = JEP.createWeaselParser(false);
+		
 		if (checkProgram(program)) {
-			this.programm = program;
+			this.program = program;
 			try {
-				if(evaluator == null) {
-					evaluator = new JEP();
-				}else {
+				if (evaluator == null) {
+					evaluator = JEP.createWeaselParser(false);
+				} else {
 					evaluator.initSymTab();
 				}
 				evaluator.addVariable("L", 0);
 				evaluator.addVariable("R", 0);
 				evaluator.addVariable("B", 0);
-				jepNode = evaluator.parse(programm);
-				
-				System.out.println("Good");
+				jepNode = evaluator.parse(this.program);
 			} catch (ParseException e) {
-				System.out.println("te - "+e.getErrorInfo());
+				PC_Logger.warning("Error while setting program to programmable gate: "+e.getErrorInfo());
 			}
 		}
 	}
-	
-	public boolean evalProgram(boolean L, boolean B, boolean R) {
-		if(evaluator==null) {
-			System.out.println("Evaluator == null");
+
+	/**
+	 * Calculate result of current program
+	 * 
+	 * @param L left input
+	 * @param B back input
+	 * @param R right input
+	 * @return output
+	 */
+	public boolean evalProgram(boolean L, boolean B, boolean R) {		
+		if(evaluator == null) evaluator = JEP.createWeaselParser(false);
+
+		if (jepNode == null) {
 			return false;
 		}
-		
-		if(jepNode == null) {
-			System.out.println("Node == null");
-			return false;
-		}
-		evaluator.setVarValue("L", L?1:0);
-		evaluator.setVarValue("B", B?1:0);
-		evaluator.setVarValue("R", R?1:0);
-		if(evaluator.hasError()) {
-			System.out.println("preeval: "+evaluator.getErrorInfo());
+		evaluator.setVarValue("L", L ? 1 : 0);
+		evaluator.setVarValue("B", B ? 1 : 0);
+		evaluator.setVarValue("R", R ? 1 : 0);
+		if (evaluator.hasError()) {
+			System.out.println("preeval: " + evaluator.getErrorInfo());
 		}
 		try {
 			return Calculator.toBoolean(evaluator.evaluate(jepNode));
-		}catch(ParseException e) {
-			System.out.println("te-eval "+e.getErrorInfo());
+		} catch (ParseException e) {
+			System.out.println("te-eval " + e.getErrorInfo());
 			return false;
 		}
 	}
@@ -114,7 +139,8 @@ public class PClo_TileEntityGate extends PC_TileEntity {
 	 */
 	public boolean zombie = false; // set true if this tile entity was already destroyed
 
-	public String programm = "";
+	/** Programmable gate's program */
+	public String program = "";
 
 	@Override
 	public void updateEntity() {
@@ -236,6 +262,8 @@ public class PClo_TileEntityGate extends PC_TileEntity {
 					updateBlock();
 				}
 
+				break;
+
 			case PClo_GateType.SPECIAL:
 
 				stopSpawning_stopPulsar(worldObj.getBlockTileEntity(xCoord + 1, yCoord, zCoord), active);
@@ -266,7 +294,7 @@ public class PClo_TileEntityGate extends PC_TileEntity {
 		if (te != null) {
 			if (te instanceof TileEntityMobSpawner) {
 				((TileEntityMobSpawner) te).delay = 500;
-			} else if (te != null && te instanceof PClo_TileEntityPulsar && active) {
+			} else if (te instanceof PClo_TileEntityPulsar && active) {
 
 				((PClo_TileEntityPulsar) te).paused = true;
 				((PClo_TileEntityPulsar) te).active = false;
@@ -301,15 +329,17 @@ public class PClo_TileEntityGate extends PC_TileEntity {
 		}
 
 		if (gateType == PClo_GateType.PROGRAMMABLE) {
-			programm = maintag.getString("programm");
-			
-			setProgram(programm);
+			program = maintag.getString("programm");
+
+			setProgram(program);
 		}
 
 		if (gateType == PClo_GateType.HOLD_DELAYER) {
 			rHoldTime = maintag.getInteger("RepeaterHoldTime");
 			rRemainingTicks = maintag.getInteger("RepeaterTicksRem");
 		}
+		
+		inputVariant = maintag.getInteger("inputVariant");
 
 		if (gateType == PClo_GateType.CROSSING) {
 			crossing_X = maintag.getInteger("CrossingX");
@@ -339,9 +369,11 @@ public class PClo_TileEntityGate extends PC_TileEntity {
 			maintag.setBoolean("DelayState", dOutputState);
 
 		}
+		
+		maintag.setInteger("inputVariant", inputVariant);
 
 		if (gateType == PClo_GateType.PROGRAMMABLE) {
-			maintag.setString("programm", programm);
+			maintag.setString("programm", program);
 		}
 
 		if (gateType == PClo_GateType.HOLD_DELAYER) {
@@ -354,8 +386,8 @@ public class PClo_TileEntityGate extends PC_TileEntity {
 			maintag.setInteger("CrossingZ", crossing_Z);
 		}
 	}
-	
-	
+
+
 
 
 	/**
@@ -418,7 +450,7 @@ public class PClo_TileEntityGate extends PC_TileEntity {
 	 * Check if the chest at given coords is empty
 	 * 
 	 * @param blockaccess block access
-	 * @param pos
+	 * @param pos chest pos
 	 * @return is full
 	 */
 	private static boolean isEmptyChestAt(IBlockAccess blockaccess, PC_CoordI pos) {
@@ -429,9 +461,7 @@ public class PClo_TileEntityGate extends PC_TileEntity {
 	 * Check if the chest at given coords is full
 	 * 
 	 * @param blockaccess block access
-	 * @param x
-	 * @param y
-	 * @param z
+	 * @param pos chest pos
 	 * @return is full
 	 */
 	private static boolean isFullChestAt(IBlockAccess blockaccess, PC_CoordI pos) {
@@ -563,6 +593,7 @@ public class PClo_TileEntityGate extends PC_TileEntity {
 	 * State of inputs last time the CROSSING GATE was updated.
 	 */
 	public boolean[] powered = { false, false, false, false };
+	private int inputVariant;
 
 	/**
 	 * CROSSING GATE: Get current crossing variant.
@@ -603,5 +634,23 @@ public class PClo_TileEntityGate extends PC_TileEntity {
 		PClo_BlockGate.hugeUpdate(worldObj, xCoord, yCoord, zCoord, worldObj.getBlockId(xCoord, yCoord, zCoord));
 		worldObj.markBlocksDirty(xCoord, yCoord, zCoord, xCoord, yCoord, zCoord);
 		worldObj.markBlockNeedsUpdate(xCoord, yCoord, zCoord);
+	}
+
+	/**
+	 * Get corner side for corner repeater
+	 * @return true = left, false = right
+	 */
+	public int getInputsVariant() {
+		return inputVariant;
+	}
+
+	/**
+	 * change corner side.
+	 */
+	public void toggleInputVariant() {
+		inputVariant++;
+		if(inputVariant >= PClo_GateType.getMaxCornerSides(gateType)){
+			inputVariant = 0;
+		}
 	}
 }

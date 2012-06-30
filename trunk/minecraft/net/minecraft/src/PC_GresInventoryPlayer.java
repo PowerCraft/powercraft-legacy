@@ -1,11 +1,9 @@
 package net.minecraft.src;
 
+
 /**
- * 
- * 
  * @author MightyPork
  * @copy (c) 2012
- * 
  */
 public class PC_GresInventoryPlayer extends PC_GresLayoutV {
 
@@ -16,7 +14,6 @@ public class PC_GresInventoryPlayer extends PC_GresLayoutV {
 
 	/**
 	 * @param labelVisible show inventory label.
-	 * 
 	 */
 	public PC_GresInventoryPlayer(boolean labelVisible) {
 		showLabel = labelVisible;
@@ -27,7 +24,9 @@ public class PC_GresInventoryPlayer extends PC_GresLayoutV {
 
 	@Override
 	public void addedToWidget() {
-		if (containerManager == null) { return; }
+		if (containerManager == null) {
+			return;
+		}
 
 
 		canAddWidget = true;
