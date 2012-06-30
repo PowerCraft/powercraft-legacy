@@ -1,5 +1,6 @@
 package net.minecraft.src;
 
+
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Random;
@@ -7,18 +8,20 @@ import java.util.Set;
 
 import net.minecraft.src.forge.ITextureProvider;
 
+
 /**
  * Block harvesting machine.
  * 
  * @author MightyPork
  * @copy (c) 2012
- * 
  */
-public class PCma_BlockHarvester extends Block implements PC_ISwapTerrain, PC_IBlockType, PC_ISpecialInventoryTextures, ITextureProvider,
-		PC_IBeamHandler {
+public class PCma_BlockHarvester extends Block implements PC_ISwapTerrain, PC_IBlockType, PC_ISpecialInventoryTextures, ITextureProvider, PC_IBeamHandler {
 	private static final int TXDOWN = 109, TXTOP = 155, TXSIDE = 139, TXFRONT = 107, TXBACK = 123;
 
-	/** Block which ends the harvesting. 98 = stone brick. Obsidian + bedrock stop too. */
+	/**
+	 * Block which ends the harvesting. 98 = stone brick. Obsidian + bedrock
+	 * stop too.
+	 */
 	public static final int ENDBLOCK = 98;
 
 
@@ -44,20 +47,30 @@ public class PCma_BlockHarvester extends Block implements PC_ISwapTerrain, PC_IB
 
 	@Override
 	public int getBlockTextureFromSideAndMetadata(int s, int m) {
-		if (s == 1) { return TXTOP; }
+		if (s == 1) {
+			return TXTOP;
+		}
 		if (s == 0) {
 			return TXDOWN;
 		} else {
-			if (m == s) { return TXFRONT; }
-			if ((m == 2 && s == 3) || (m == 3 && s == 2) || (m == 4 && s == 5) || (m == 5 && s == 4)) { return TXBACK; }
+			if (m == s) {
+				return TXFRONT;
+			}
+			if ((m == 2 && s == 3) || (m == 3 && s == 2) || (m == 4 && s == 5) || (m == 5 && s == 4)) {
+				return TXBACK;
+			}
 			return TXSIDE;
 		}
 	}
 
 	@Override
 	public int getInvTexture(int i, int m) {
-		if (i == 1) { return TXTOP; }
-		if (i == 0) { return TXDOWN; }
+		if (i == 1) {
+			return TXTOP;
+		}
+		if (i == 0) {
+			return TXDOWN;
+		}
 		if (i == 3) {
 			return TXFRONT;
 		} else if (i == 4) {
@@ -129,11 +142,15 @@ public class PCma_BlockHarvester extends Block implements PC_ISwapTerrain, PC_IB
 	private boolean isIndirectlyPowered(World world, int i, int j, int k) {
 		// if (world.isBlockGettingPowered(i, j, k)) { return true; }
 
-		if (world.isBlockIndirectlyGettingPowered(i, j, k)) { return true; }
+		if (world.isBlockIndirectlyGettingPowered(i, j, k)) {
+			return true;
+		}
 
 		// if (world.isBlockGettingPowered(i, j - 1, k)) { return true; }
 
-		if (world.isBlockIndirectlyGettingPowered(i, j - 1, k)) { return true; }
+		if (world.isBlockIndirectlyGettingPowered(i, j - 1, k)) {
+			return true;
+		}
 		return false;
 	}
 
@@ -222,31 +239,36 @@ public class PCma_BlockHarvester extends Block implements PC_ISwapTerrain, PC_IB
 		int id = coord.getId(world);
 		int meta = coord.getMeta(world);
 
-		if (id == 49 || id == 7 || id == ENDBLOCK) { return true; }
+		if (id == 49 || id == 7 || id == ENDBLOCK) {
+			return true;
+		}
 
 
 		// sapling on grass
 		if (PC_TreeHarvestingManager.isBlockTreeSapling(id, meta)) {
 			int underId = coord.offset(0, -1, 0).getId(world);
-			if (underId == Block.dirt.blockID || underId == Block.grass.blockID || underId == Block.mycelium.blockID) { return false; }
+			if (underId == Block.dirt.blockID || underId == Block.grass.blockID || underId == Block.mycelium.blockID) {
+				return false;
+			}
 		}
 
-		if (PC_BlockUtils.hasFlag(world, coord, "HARVEST_STOP")) { return true; }
+		if (PC_BlockUtils.hasFlag(world, coord, "HARVEST_STOP")) {
+			return true;
+		}
 
 		// SKIP non-breaking
-		if (id == 0 || id == Block.glass.blockID || id == Block.thinGlass.blockID || id == Block.redstoneLampActive.blockID
-				|| id == Block.redstoneLampIdle.blockID || Block.blocksList[id] == null || id == 8 || id == 9 || id == 10 || id == 11
-				|| id == Block.sapling.blockID || id == Block.pumpkinStem.blockID || id == Block.melonStem.blockID
-				|| id == Block.cake.blockID || id == Block.fire.blockID || Block.blocksList[id] instanceof BlockTorch
-				|| id == Block.redstoneWire.blockID || id == Block.lever.blockID || id == Block.button.blockID
-				|| Block.blocksList[id] instanceof BlockRedstoneRepeater || id == Block.pistonStickyBase.blockID
-				|| id == Block.pistonBase.blockID || id == Block.pistonExtension.blockID || id == Block.pistonMoving.blockID
-				|| Block.blocksList[id] instanceof BlockRail || PC_BlockUtils.getBlockFlags(world, coord).contains("NO_HARVEST")) {
+		if (id == 0 || id == Block.glass.blockID || id == Block.thinGlass.blockID || id == Block.redstoneLampActive.blockID || id == Block.redstoneLampIdle.blockID || Block.blocksList[id] == null || id == 8 || id == 9 || id == 10 || id == 11
+				|| id == Block.sapling.blockID || id == Block.pumpkinStem.blockID || id == Block.melonStem.blockID || id == Block.cake.blockID || id == Block.fire.blockID || Block.blocksList[id] instanceof BlockTorch
+				|| id == Block.redstoneWire.blockID || id == Block.lever.blockID || id == Block.button.blockID || Block.blocksList[id] instanceof BlockRedstoneRepeater || id == Block.pistonStickyBase.blockID || id == Block.pistonBase.blockID
+				|| id == Block.pistonExtension.blockID || id == Block.pistonMoving.blockID || Block.blocksList[id] instanceof BlockRail || PC_BlockUtils.getBlockFlags(world, coord).contains("NO_HARVEST")) {
 
-		return false; }
+			return false;
+		}
 
 		if (PC_BlockUtils.hasFlag(world, coord, "POWERCRAFT")) {
-			if (PC_BlockUtils.hasFlag(world, coord, "TRANSLUCENT")) { return false; }
+			if (PC_BlockUtils.hasFlag(world, coord, "TRANSLUCENT")) {
+				return false;
+			}
 		}
 
 
@@ -329,8 +351,9 @@ public class PCma_BlockHarvester extends Block implements PC_ISwapTerrain, PC_IB
 		}
 
 		// ignore inventory blocks
-		if (world.getBlockTileEntity(coord.x, coord.y, coord.z) != null
-				&& world.getBlockTileEntity(coord.x, coord.y, coord.z) instanceof IInventory) { return false; }
+		if (world.getBlockTileEntity(coord.x, coord.y, coord.z) != null && world.getBlockTileEntity(coord.x, coord.y, coord.z) instanceof IInventory) {
+			return false;
+		}
 
 		// now regular block breaking
 		int dropId;
@@ -351,7 +374,9 @@ public class PCma_BlockHarvester extends Block implements PC_ISwapTerrain, PC_IB
 
 		if (id == Block.tallGrass.blockID) {
 			dropId = Item.seeds.shiftedIndex;
-			if (world.rand.nextInt(5) != 0) { return true; } // dddd
+			if (world.rand.nextInt(5) != 0) {
+				return true;
+			} // dddd
 		}
 
 		if (dropId <= 0) {
@@ -374,11 +399,13 @@ public class PCma_BlockHarvester extends Block implements PC_ISwapTerrain, PC_IB
 
 		for (Entity entity : array) {
 
+			if (entity == null) continue;
+
 			if (entity instanceof EntityMinecart) {
 
 				EntityMinecart cart = (EntityMinecart) entity;
 
-				if (cart == null || cart.isDead) {
+				if (cart.isDead) {
 					continue;
 				}
 
@@ -396,7 +423,7 @@ public class PCma_BlockHarvester extends Block implements PC_ISwapTerrain, PC_IB
 
 				EntitySheep sheep = (EntitySheep) entity;
 
-				if (sheep == null || sheep.isDead) {
+				if (sheep.isDead) {
 					continue;
 				}
 
@@ -409,22 +436,20 @@ public class PCma_BlockHarvester extends Block implements PC_ISwapTerrain, PC_IB
 
 				EntityMooshroom mooshroom = (EntityMooshroom) entity;
 
-				if (mooshroom == null || mooshroom.isDead) {
+				if (mooshroom.isDead) {
 					continue;
 				}
 
 				if (mooshroom.getGrowingAge() >= 0) {
 
 					EntityCow entitycow = new EntityCow(world);
-					entitycow.setLocationAndAngles(mooshroom.posX, mooshroom.posY, mooshroom.posZ, mooshroom.rotationYaw,
-							mooshroom.rotationPitch);
+					entitycow.setLocationAndAngles(mooshroom.posX, mooshroom.posY, mooshroom.posZ, mooshroom.rotationYaw, mooshroom.rotationPitch);
 					entitycow.setEntityHealth(mooshroom.getHealth());
 					entitycow.renderYawOffset = mooshroom.renderYawOffset;
 
 					mooshroom.setDead();
 					mooshroom.deathTime = 0;
-					world.spawnParticle("largeexplode", mooshroom.posX, mooshroom.posY + (mooshroom.height / 2.0F), mooshroom.posZ, 0.0D,
-							0.0D, 0.0D);
+					world.spawnParticle("largeexplode", mooshroom.posX, mooshroom.posY + (mooshroom.height / 2.0F), mooshroom.posZ, 0.0D, 0.0D, 0.0D);
 					world.spawnEntityInWorld(entitycow);
 
 					addToDispenseList(new ItemStack(Block.mushroomRed.blockID, 1 + world.rand.nextInt(5), 0));
@@ -442,11 +467,11 @@ public class PCma_BlockHarvester extends Block implements PC_ISwapTerrain, PC_IB
 	}
 
 
-	private void dispenseItem(World worlda, PC_CoordI devPos, ItemStack itemstack) {
+	private void dispenseItem(World world, PC_CoordI devPos, ItemStack itemstack) {
 
-		World world = ModLoader.getMinecraftInstance().theWorld;
-
-		if (itemstack == null || itemstack.stackSize <= 0) { return; }
+		if (itemstack == null || itemstack.stackSize <= 0) {
+			return;
+		}
 
 		int l = world.getBlockMetadata(devPos.x, devPos.y, devPos.z) & 7;
 

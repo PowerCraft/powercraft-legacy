@@ -25,7 +25,8 @@ public abstract class Instruction implements PC_INBT {
 	 * 
 	 * @param engine the weasel engine
 	 * @param instructionList the instruction list the instruction is in
-	 * @throws WeaselRuntimeException thrown if execution of this instruction failed.
+	 * @throws WeaselRuntimeException thrown if execution of this instruction
+	 *             failed.
 	 */
 	public abstract void execute(WeaselEngine engine, InstructionList instructionList) throws WeaselRuntimeException;
 
@@ -75,6 +76,7 @@ public abstract class Instruction implements PC_INBT {
 
 	/**
 	 * Save a given instruction to {@link NBTTagCompound}
+	 * 
 	 * @param instruction instruction to save
 	 * @param tag compound tag to save into
 	 * @return the tag
@@ -121,15 +123,15 @@ public abstract class Instruction implements PC_INBT {
 		private InstructionType() {
 			setup();
 		}
-		
+
 		private static int counter = 1;
 		private static ArrayList<InstructionType> members = new ArrayList<Instruction.InstructionType>();
-		
-		private void setup() {			
+
+		private void setup() {
 			index = counter++;
 			members.add(this);
 		}
-		
+
 		/**
 		 * Get enum type for type index
 		 * 
@@ -137,8 +139,8 @@ public abstract class Instruction implements PC_INBT {
 		 * @return corresponding enum type
 		 */
 		public static InstructionType getTypeFromIndex(int index) {
-			if(members == null) members = new ArrayList<InstructionType>();
-			return members.get(index-1);
+			if (members == null) members = new ArrayList<InstructionType>();
+			return members.get(index - 1);
 		}
 
 		/** enum index */

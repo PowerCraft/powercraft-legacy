@@ -1,5 +1,6 @@
 package net.minecraft.src;
 
+
 import java.io.BufferedWriter;
 import java.io.ByteArrayInputStream;
 import java.io.File;
@@ -23,9 +24,11 @@ import net.minecraft.client.Minecraft;
 
 import org.lwjgl.input.Keyboard;
 
+
 /**
  * PowerCraft's property manager with advanced formatting and value checking.<br>
- * Methods starting with put are for filling. Most of the others are shortcuts to getters.
+ * Methods starting with put are for filling. Most of the others are shortcuts
+ * to getters.
  * 
  * @author MightyPork
  */
@@ -72,7 +75,8 @@ public class PC_PropertyManager {
 	}
 
 	/**
-	 * Set value saved to certain key; use to save runtime-changed configuration values.
+	 * Set value saved to certain key; use to save runtime-changed configuration
+	 * values.
 	 * 
 	 * @param key key
 	 * @param value the saved value
@@ -87,7 +91,6 @@ public class PC_PropertyManager {
 	 * 
 	 * @param oldKey old key
 	 * @param newKey new key
-	 * 
 	 */
 	public void renameKey(String oldKey, String newKey) {
 		keyRename.put(oldKey, newKey);
@@ -527,7 +530,6 @@ public class PC_PropertyManager {
 	 * 
 	 * @author MightyPork
 	 * @copy (c) 2012
-	 * 
 	 */
 	private class Property {
 		public String name;
@@ -598,10 +600,18 @@ public class PC_PropertyManager {
 					num = defnum;
 				}
 			}
-			if (type == PropertyType.BLOCK || type == PropertyType.ITEM || type == PropertyType.INT) { return Integer.toString(num); }
-			if (type == PropertyType.STRING) { return str; }
-			if (type == PropertyType.KEY) { return Keyboard.getKeyName(num) == null ? "none" : Keyboard.getKeyName(num); }
-			if (type == PropertyType.BOOLEAN) { return bool ? "True" : "False"; }
+			if (type == PropertyType.BLOCK || type == PropertyType.ITEM || type == PropertyType.INT) {
+				return Integer.toString(num);
+			}
+			if (type == PropertyType.STRING) {
+				return str;
+			}
+			if (type == PropertyType.KEY) {
+				return Keyboard.getKeyName(num) == null ? "none" : Keyboard.getKeyName(num);
+			}
+			if (type == PropertyType.BOOLEAN) {
+				return bool ? "True" : "False";
+			}
 			return null;
 		}
 
@@ -621,8 +631,7 @@ public class PC_PropertyManager {
 				try {
 					num = Integer.parseInt(string);
 				} catch (NumberFormatException e) {
-					PC_Logger.warning("Numeric property \"" + name + "\" has invalid value \"" + num + "\". Falling back to default \""
-							+ defnum + "\"");
+					PC_Logger.warning("Numeric property \"" + name + "\" has invalid value \"" + num + "\". Falling back to default \"" + defnum + "\"");
 					num = defnum;
 				}
 			}
@@ -635,8 +644,7 @@ public class PC_PropertyManager {
 				}
 				num = Keyboard.getKeyIndex(string);
 				if (num == Keyboard.KEY_NONE) {
-					PC_Logger.warning("Key property \"" + name + "\" has invalid value \"" + string + "\". Falling back to default \""
-							+ Keyboard.getKeyName(defnum) + "\"");
+					PC_Logger.warning("Key property \"" + name + "\" has invalid value \"" + string + "\". Falling back to default \"" + Keyboard.getKeyName(defnum) + "\"");
 					num = defnum;
 				}
 			}
@@ -657,8 +665,7 @@ public class PC_PropertyManager {
 					return this;
 				}
 				String string2 = string.toLowerCase();
-				bool = string2.equals("yes") || string2.equals("true") || string2.equals("on") || string2.equals("enabled")
-						|| string2.equals("enable");
+				bool = string2.equals("yes") || string2.equals("true") || string2.equals("on") || string2.equals("enabled") || string2.equals("enable");
 			}
 
 			return this;
@@ -706,11 +713,21 @@ public class PC_PropertyManager {
 		 * @return is valid
 		 */
 		public boolean isValid() {
-			if (type == PropertyType.BLOCK) { return num > 0 && num <= Block.blocksList.length && Block.blocksList[num] == null; }
-			if (type == PropertyType.ITEM) { return num > 200 && num <= (32000 - 256) && Item.itemsList[num + 256] == null; }
-			if (type == PropertyType.KEY) { return Keyboard.getKeyName(num) != null; }
-			if (type == PropertyType.STRING) { return str != null; }
-			if (type == PropertyType.BOOLEAN || type == PropertyType.INT) { return true; }
+			if (type == PropertyType.BLOCK) {
+				return num > 0 && num <= Block.blocksList.length && Block.blocksList[num] == null;
+			}
+			if (type == PropertyType.ITEM) {
+				return num > 200 && num <= (32000 - 256) && Item.itemsList[num + 256] == null;
+			}
+			if (type == PropertyType.KEY) {
+				return Keyboard.getKeyName(num) != null;
+			}
+			if (type == PropertyType.STRING) {
+				return str != null;
+			}
+			if (type == PropertyType.BOOLEAN || type == PropertyType.INT) {
+				return true;
+			}
 			return false;
 		}
 
@@ -720,22 +737,17 @@ public class PC_PropertyManager {
 		public void validate() {
 			if (!isValid()) {
 				if (type == PropertyType.BLOCK) {
-					PC_Logger.severe("Block ID property \"" + name
-							+ "\" has invalid value (ID out of range, or already used). YOUR MINECRAFT WILL CRASH!");
+					PC_Logger.severe("Block ID property \"" + name + "\" has invalid value (ID out of range, or already used). YOUR MINECRAFT WILL CRASH!");
 				} else if (type == PropertyType.ITEM) {
-					PC_Logger.severe("Item ID property \"" + name
-							+ "\" has invalid value (ID out of range, or already used). THIS MAY CAUSE CRASH!");
+					PC_Logger.severe("Item ID property \"" + name + "\" has invalid value (ID out of range, or already used). THIS MAY CAUSE CRASH!");
 				}
 
 				if (type == PropertyType.KEY) {
-					PC_Logger.warning("Key property \"" + name
-							+ "\" has invalid value (unknown key name). Falling back to default value  \"" + Keyboard.getKeyName(defnum)
-							+ "\"");
+					PC_Logger.warning("Key property \"" + name + "\" has invalid value (unknown key name). Falling back to default value  \"" + Keyboard.getKeyName(defnum) + "\"");
 					num = defnum;
 				}
 				if (type == PropertyType.STRING) {
-					PC_Logger.warning("String property \"" + name + "\" has invalid value (NULL). Falling back to default value  \""
-							+ defstr + "\"");
+					PC_Logger.warning("String property \"" + name + "\" has invalid value (NULL). Falling back to default value  \"" + defstr + "\"");
 					str = defstr;
 				}
 			}
@@ -747,12 +759,11 @@ public class PC_PropertyManager {
 	/**
 	 * Properties stored in file, alphabetically sorted.<br>
 	 * Property file is much cleaner than the normal java.util.Properties,
-	 * newlines can be inserted to separate categories, and individual keys
-	 * can have their own inline comments.
+	 * newlines can be inserted to separate categories, and individual keys can
+	 * have their own inline comments.
 	 * 
 	 * @author MightyPork
 	 * @copy (c) 2012
-	 * 
 	 */
 	private static class PC_SortedProperties extends Properties {
 
@@ -977,10 +988,10 @@ public class PC_PropertyManager {
 	}
 
 	/**
-	 * Helper class which loads Properties from UTF-8 file (Properties use "ISO-8859-1" by default)
+	 * Helper class which loads Properties from UTF-8 file (Properties use
+	 * "ISO-8859-1" by default)
 	 * 
 	 * @author Itay Maman
-	 * 
 	 */
 	private static class PropertiesLoader {
 		public static PC_SortedProperties loadProperties(PC_SortedProperties props, InputStream is) throws IOException {
@@ -1013,7 +1024,9 @@ public class PC_PropertyManager {
 
 		private static char hexDigit(char ch, int offset) {
 			int val = (ch >> offset) & 0xF;
-			if (val <= 9) { return (char) ('0' + val); }
+			if (val <= 9) {
+				return (char) ('0' + val);
+			}
 
 			return (char) ('A' + val - 10);
 		}
@@ -1048,7 +1061,6 @@ public class PC_PropertyManager {
 	 * 
 	 * @author MightyPork
 	 * @copy (c) 2012
-	 * 
 	 */
 	private enum PropertyType {
 		BLOCK, ITEM, KEY, STRING, BOOLEAN, INT;

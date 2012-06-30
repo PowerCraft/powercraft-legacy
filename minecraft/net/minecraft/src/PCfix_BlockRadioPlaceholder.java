@@ -1,15 +1,16 @@
 package net.minecraft.src;
 
+
 import java.util.HashSet;
 import java.util.Random;
 import java.util.Set;
+
 
 /**
  * Radio device block with tile entity.
  * 
  * @author MightyPork
  * @copy (c) 2012
- * 
  */
 public class PCfix_BlockRadioPlaceholder extends BlockContainer implements PC_IBlockType {
 

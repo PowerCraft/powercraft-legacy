@@ -6,7 +6,6 @@ package net.minecraft.src;
  * 
  * @author MightyPork
  * @copy (c) 2012
- * 
  */
 public class PClo_ItemBlockLight extends ItemBlock {
 
@@ -61,19 +60,24 @@ public class PClo_ItemBlockLight extends ItemBlock {
 			}
 		}
 
-		if (itemstack.stackSize == 0) { return false; }
+		if (itemstack.stackSize == 0) {
+			return false;
+		}
 
-		if (!entityplayer.canPlayerEdit(i, j, k)) { return false; }
+		if (!entityplayer.canPlayerEdit(i, j, k)) {
+			return false;
+		}
 
-		if (j == 255 && Block.blocksList[getBlockID()].blockMaterial.isSolid()) { return false; }
+		if (j == 255 && Block.blocksList[getBlockID()].blockMaterial.isSolid()) {
+			return false;
+		}
 
 		if (world.canBlockBePlacedAt(mod_PClogic.lightOff.blockID, i, j, k, false, l)) {
 			Block block = mod_PClogic.lightOff;
 			if (world.setBlockWithNotify(i, j, k, block.blockID)) {
 				block.onBlockPlaced(world, i, j, k, l);
 				block.onBlockPlacedBy(world, i, j, k, entityplayer);
-				world.playSoundEffect(i + 0.5F, j + 0.5F, k + 0.5F, block.stepSound.getStepSound(),
-						(block.stepSound.getVolume() + 1.0F) / 2.0F, block.stepSound.getPitch() * 0.8F);
+				world.playSoundEffect(i + 0.5F, j + 0.5F, k + 0.5F, block.stepSound.getStepSound(), (block.stepSound.getVolume() + 1.0F) / 2.0F, block.stepSound.getPitch() * 0.8F);
 
 				// set tile entity
 				PClo_TileEntityLight tei = (PClo_TileEntityLight) world.getBlockTileEntity(i, j, k);

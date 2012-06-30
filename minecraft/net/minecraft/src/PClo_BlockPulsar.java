@@ -1,15 +1,16 @@
 package net.minecraft.src;
 
+
 import java.util.HashSet;
 import java.util.Random;
 import java.util.Set;
+
 
 /**
  * redstone Pulsar block
  * 
  * @author MightyPork
  * @copy (c) 2012
- * 
  */
 public class PClo_BlockPulsar extends BlockContainer implements PC_IBlockType {
 
@@ -61,7 +62,7 @@ public class PClo_BlockPulsar extends BlockContainer implements PC_IBlockType {
 				Block bhold = Block.blocksList[ihold.getItem().shiftedIndex];
 				if (bhold instanceof PC_IBlockType) {
 
-				return false;
+					return false;
 
 				}
 			}
@@ -131,7 +132,9 @@ public class PClo_BlockPulsar extends BlockContainer implements PC_IBlockType {
 	 */
 	public boolean isActive(IBlockAccess iblockaccess, int x, int y, int z) {
 		TileEntity te = iblockaccess.getBlockTileEntity(x, y, z);
-		if (te == null) { return false; }
+		if (te == null) {
+			return false;
+		}
 		PClo_TileEntityPulsar tep = (PClo_TileEntityPulsar) te;
 
 		return tep.active;

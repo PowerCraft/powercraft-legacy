@@ -6,7 +6,6 @@ package net.minecraft.src;
  * 
  * @author MightyPork
  * @copy (c) 2012
- * 
  */
 public class PCma_TileEntityLaser extends PC_TileEntity implements PC_IBeamHandler {
 
@@ -41,6 +40,7 @@ public class PCma_TileEntityLaser extends PC_TileEntity implements PC_IBeamHandl
 	 * 
 	 * @return should this TE get update ticks?
 	 */
+	@Override
 	public boolean canUpdate() {
 		return true;
 	}
@@ -84,10 +84,14 @@ public class PCma_TileEntityLaser extends PC_TileEntity implements PC_IBeamHandl
 		}
 
 		// if type is not decided
-		if (type == 0) { return; }
+		if (type == 0) {
+			return;
+		}
 
 		// if it's killer and roaster is not burning
-		if (isKiller() && !isKillerActive()) { return; }
+		if (isKiller() && !isKillerActive()) {
+			return;
+		}
 
 		// if it's a receiver
 		if (isRsReceiver()) {
@@ -108,7 +112,9 @@ public class PCma_TileEntityLaser extends PC_TileEntity implements PC_IBeamHandl
 
 		// if it's a transmitter and is unpowered
 		if (isRsTransmitter()) {
-			if (!isRedstonePowered()) { return; }
+			if (!isRedstonePowered()) {
+				return;
+			}
 		}
 
 		// prepare color for type
@@ -200,18 +206,28 @@ public class PCma_TileEntityLaser extends PC_TileEntity implements PC_IBeamHandl
 	}
 
 	private boolean isKillerActive() {
-		if (isKiller()) { return PCma_BlockRoaster.isBurning(worldObj, xCoord, yCoord - 1, zCoord); }
+		if (isKiller()) {
+			return PCma_BlockRoaster.isBurning(worldObj, xCoord, yCoord - 1, zCoord);
+		}
 		return false;
 	}
 
 	private boolean isRedstonePowered() {
-		if (worldObj.isBlockGettingPowered(xCoord, yCoord, zCoord)) { return true; }
+		if (worldObj.isBlockGettingPowered(xCoord, yCoord, zCoord)) {
+			return true;
+		}
 
-		if (worldObj.isBlockIndirectlyGettingPowered(xCoord, yCoord, zCoord)) { return true; }
+		if (worldObj.isBlockIndirectlyGettingPowered(xCoord, yCoord, zCoord)) {
+			return true;
+		}
 
-		if (worldObj.isBlockGettingPowered(xCoord, yCoord, zCoord)) { return true; }
+		if (worldObj.isBlockGettingPowered(xCoord, yCoord, zCoord)) {
+			return true;
+		}
 
-		if (worldObj.isBlockIndirectlyGettingPowered(xCoord, yCoord, zCoord)) { return true; }
+		if (worldObj.isBlockIndirectlyGettingPowered(xCoord, yCoord, zCoord)) {
+			return true;
+		}
 		return false;
 	}
 
@@ -234,7 +250,9 @@ public class PCma_TileEntityLaser extends PC_TileEntity implements PC_IBeamHandl
 
 		int id = coord.getId(world);
 
-		if (Block.blocksList[id] == null) { return false; }
+		if (Block.blocksList[id] == null) {
+			return false;
+		}
 
 		if (id == Block.tnt.blockID && (isKiller() || isRsTransmitter())) {
 
@@ -250,8 +268,7 @@ public class PCma_TileEntityLaser extends PC_TileEntity implements PC_IBeamHandl
 		Block block = Block.blocksList[id];
 
 		// translucent blocks...
-		if (mat == Material.glass || mat == Material.snow || mat == Material.plants || mat == Material.circuits || mat == Material.vine
-				|| id == Block.signPost.blockID || id == Block.signWall.blockID || block instanceof BlockPane
+		if (mat == Material.glass || mat == Material.snow || mat == Material.plants || mat == Material.circuits || mat == Material.vine || id == Block.signPost.blockID || id == Block.signWall.blockID || block instanceof BlockPane
 				|| PC_BlockUtils.hasFlag(world, coord, "TRANSLUCENT")) {
 
 			return false;
@@ -276,9 +293,13 @@ public class PCma_TileEntityLaser extends PC_TileEntity implements PC_IBeamHandl
 			}
 
 			// PC block, yet not translucent
-			if (PC_BlockUtils.hasFlag(world, coord, "POWERCRAFT")) { return true; }
+			if (PC_BlockUtils.hasFlag(world, coord, "POWERCRAFT")) {
+				return true;
+			}
 
-			if (Block.blocksList[id].isOpaqueCube()) { return true; }
+			if (Block.blocksList[id].isOpaqueCube()) {
+				return true;
+			}
 
 		}
 
@@ -292,8 +313,7 @@ public class PCma_TileEntityLaser extends PC_TileEntity implements PC_IBeamHandl
 
 			int cnte = 0;
 			for (Entity entity : array) {
-				if ((entity instanceof EntityFX) || (entity instanceof EntityArrow) || (entity instanceof EntityEnderEye)
-						|| (entity instanceof EntityEnderPearl) || (entity instanceof EntityFishHook) || (entity instanceof EntityPainting)
+				if ((entity instanceof EntityFX) || (entity instanceof EntityArrow) || (entity instanceof EntityEnderEye) || (entity instanceof EntityEnderPearl) || (entity instanceof EntityFishHook) || (entity instanceof EntityPainting)
 						|| (entity instanceof EntityWeatherEffect) || (entity instanceof EntityItem) || (entity instanceof EntityXPOrb)) {
 					continue;
 				}
@@ -301,7 +321,9 @@ public class PCma_TileEntityLaser extends PC_TileEntity implements PC_IBeamHandl
 				cnte++;
 				break;
 			}
-			if (cnte < 1) { return false; }
+			if (cnte < 1) {
+				return false;
+			}
 
 			hitObjectThisShot = true;
 
@@ -326,8 +348,7 @@ public class PCma_TileEntityLaser extends PC_TileEntity implements PC_IBeamHandl
 					EntityPlayerSP player = (EntityPlayerSP) entity;
 					int armourValue = PC_InvUtils.getPlayerArmourValue(player);
 					if (worldObj.rand.nextBoolean()) {
-						player.attackEntityFrom(DamageSource.generic,
-								MathHelper.clamp_int(Math.round(5 * (0.7F - (armourValue / 8))), 0, 8));
+						player.attackEntityFrom(DamageSource.generic, MathHelper.clamp_int(Math.round(5 * (0.7F - (armourValue / 8))), 0, 8));
 					}
 
 				} else {

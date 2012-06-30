@@ -1,16 +1,17 @@
 package net.minecraft.src;
 
+
 import java.util.Hashtable;
 import java.util.Map.Entry;
 
 import net.minecraft.client.Minecraft;
+
 
 /**
  * Radio signal manager and receivers updater
  * 
  * @author MightyPork
  * @copy (c) 2012
- * 
  */
 public class PClo_RadioManager {
 
@@ -19,7 +20,10 @@ public class PClo_RadioManager {
 	/** RECEIVERS LIST coordinate -> channel:dimension */
 	public static Hashtable<PC_CoordI, PC_Struct2<String, Integer>> receivers = new Hashtable<PC_CoordI, PC_Struct2<String, Integer>>();
 
-	/** SIGNAL LIST hashtable of: (string) channel -> hashtable{ struc(coordinate,dimension)->is_active } */
+	/**
+	 * SIGNAL LIST hashtable of: (string) channel -> hashtable{
+	 * struc(coordinate,dimension)->is_active }
+	 */
 	public static Hashtable<String, Hashtable<PC_Struct2<PC_CoordI, Integer>, Boolean>> signals = new Hashtable<String, Hashtable<PC_Struct2<PC_CoordI, Integer>, Boolean>>();
 
 	private static String worldName = null;
@@ -148,7 +152,9 @@ public class PClo_RadioManager {
 	public static int getSignalStrength(String channel) {
 		checkWorldChange();
 
-		if (!signals.containsKey(channel)) { return 0; }
+		if (!signals.containsKey(channel)) {
+			return 0;
+		}
 
 		int cnt = 0;
 		for (Entry<PC_Struct2<PC_CoordI, Integer>, Boolean> a : signals.get(channel).entrySet()) {

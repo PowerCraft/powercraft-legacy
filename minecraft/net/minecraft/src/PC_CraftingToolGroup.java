@@ -1,12 +1,11 @@
 package net.minecraft.src;
 
+
 /**
- * 
  * Groups of items in the crafting tool.
  * 
  * @author MightyPork
  * @copy (c) 2012
- * 
  */
 public enum PC_CraftingToolGroup {
 	/**

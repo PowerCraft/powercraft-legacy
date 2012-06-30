@@ -1,5 +1,6 @@
 package net.minecraft.src;
 
+
 /**
  * Exception thrown during program parsing
  * 

@@ -1,9 +1,11 @@
 package net.minecraft.src;
 
+
 import java.io.File;
 import java.util.Hashtable;
 
 import net.minecraft.client.Minecraft;
+
 
 public class PCtr_TeleporterHelper {
 
@@ -29,8 +31,7 @@ public class PCtr_TeleporterHelper {
 	}
 
 	private static void loadIfNeeded() {
-		if (listsWorld == null || listSaveDir == null || !listsLoaded || listsWorld != mc.theWorld
-				|| !listSaveDir.equals(PCtr_TeleporterEntry.getSaveDir(mc.theWorld))) {
+		if (listsWorld == null || listSaveDir == null || !listsLoaded || listsWorld != mc.theWorld || !listSaveDir.equals(PCtr_TeleporterEntry.getSaveDir(mc.theWorld))) {
 			PC_Logger.fine("Loading teleporter list...");
 			targets.clear();
 			loadAllLists();
@@ -87,7 +88,9 @@ public class PCtr_TeleporterHelper {
 	public static boolean targetExists(String identifier) {
 		loadIfNeeded();
 
-		if (identifier.equals("")) { return false; }
+		if (identifier.equals("")) {
+			return false;
+		}
 
 		return targets.get(identifier) != null;
 	}
@@ -95,7 +98,9 @@ public class PCtr_TeleporterHelper {
 	public static boolean targetExistsExcept(String identifier, PC_CoordI coord) {
 		loadIfNeeded();
 
-		if (identifier.equals("")) { return false; }
+		if (identifier.equals("")) {
+			return false;
+		}
 
 		PCtr_TeleporterEntry entry = targets.get(identifier);
 		return entry != null && !entry.getCoord().equals(coord);
@@ -110,10 +115,14 @@ public class PCtr_TeleporterHelper {
 	public static int getTargetDimension(String identifier) {
 		loadIfNeeded();
 
-		if (identifier.equals("")) { return 0; }
+		if (identifier.equals("")) {
+			return 0;
+		}
 
 		PCtr_TeleporterEntry entry = targets.get(identifier);
-		if (entry == null) { return 0; }
+		if (entry == null) {
+			return 0;
+		}
 
 		return entry.getDimension();
 	}
@@ -134,13 +143,14 @@ public class PCtr_TeleporterHelper {
 
 		if (!targetExists(id1) || targetExists(id2)) {
 
-		return false; }
+			return false;
+		}
 
 		PCtr_TeleporterEntry dev = targets.get(id1);
 
 		if (dev == null) {
 
-		return false;
+			return false;
 
 		}
 
@@ -163,7 +173,9 @@ public class PCtr_TeleporterHelper {
 
 		PCtr_TeleporterEntry dev = targets.get(identifier);
 
-		if (dev == null) { return; }
+		if (dev == null) {
+			return;
+		}
 
 		dev.removeFile();
 		targets.remove(identifier);
@@ -183,15 +195,21 @@ public class PCtr_TeleporterHelper {
 
 		PC_CoordI tc = getTargetCoord(target);
 		// target invalid
-		if (tc == null) { return false; }
+		if (tc == null) {
+			return false;
+		}
 
 		World world = entity.worldObj;
 
-		if (world.getBlockId(tc.x, tc.y, tc.z) != mod_PCtransport.teleporter.blockID) { return false; }
+		if (world.getBlockId(tc.x, tc.y, tc.z) != mod_PCtransport.teleporter.blockID) {
+			return false;
+		}
 
 		PCtr_TileEntityTeleporter tet = (PCtr_TileEntityTeleporter) tc.getTileEntity(world);
 
-		if (tet == null) { return false; }
+		if (tet == null) {
+			return false;
+		}
 
 		// we have to find space for the entity, conveyor in good direction
 		// preferably.

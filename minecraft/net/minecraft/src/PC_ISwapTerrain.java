@@ -1,5 +1,6 @@
 package net.minecraft.src;
 
+
 /**
  * Block which uses different file instead of terrain.png
  * 

@@ -1,7 +1,9 @@
 package net.minecraft.src;
 
+
 import java.util.List;
 import java.util.Map;
+
 
 /**
  * Decoration module for PowerCraft<br>
@@ -9,7 +11,6 @@ import java.util.Map;
  * 
  * @author MightyPork
  * @copy (c) 2012
- * 
  */
 public class mod_PCdeco extends PC_Module {
 
@@ -77,10 +78,8 @@ public class mod_PCdeco extends PC_Module {
 
 	@Override
 	public void registerTileEntities(List<PC_Struct3<Class<? extends TileEntity>, String, TileEntitySpecialRenderer>> list) {
-		list.add(new PC_Struct3<Class<? extends TileEntity>, String, TileEntitySpecialRenderer>(PCde_TileEntityDeco.class, "PCdeDecoBlock",
-				new PCde_TileEntityDecoRenderer()));
-		list.add(new PC_Struct3<Class<? extends TileEntity>, String, TileEntitySpecialRenderer>(PCde_TileEntityWalkable.class,
-				"PCdeWalkableBlock", new PCde_TileEntityWalkableRenderer()));
+		list.add(new PC_Struct3<Class<? extends TileEntity>, String, TileEntitySpecialRenderer>(PCde_TileEntityDeco.class, "PCdeDecoBlock", new PCde_TileEntityDecoRenderer()));
+		list.add(new PC_Struct3<Class<? extends TileEntity>, String, TileEntitySpecialRenderer>(PCde_TileEntityWalkable.class, "PCdeWalkableBlock", new PCde_TileEntityWalkableRenderer()));
 	}
 
 	@Override
@@ -161,8 +160,8 @@ public class mod_PCdeco extends PC_Module {
 					'X', Item.ingotIron });
 		
 		ModLoader.addRecipe(
-				new ItemStack(walkable, 8, 1),
-				new Object[] { "X ", " X",
+				new ItemStack(walkable, 12, 1),
+				new Object[] { "X ", "XX",
 					'X', new ItemStack(walkable, 1, 0) });		
 		
 		//@formatter:on

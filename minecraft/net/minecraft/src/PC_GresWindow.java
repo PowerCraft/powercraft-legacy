@@ -1,12 +1,11 @@
 package net.minecraft.src;
 
+
 /**
- * 
  * Window for GUI
  * 
  * @authors XOR19, Rapus95, MightyPork
  * @copy (c) 2012
- * 
  */
 
 public class PC_GresWindow extends PC_GresWidget {
@@ -22,7 +21,6 @@ public class PC_GresWindow extends PC_GresWidget {
 	protected int gapUnderTitle = 15;
 
 	/**
-	 * 
 	 * @param minX minimal X size
 	 * @param minY minimal Y size
 	 * @param title title of the window
@@ -78,8 +76,7 @@ public class PC_GresWindow extends PC_GresWidget {
 		renderTextureSliced(offsetPos, mod_PCcore.getImgDir() + "gres/dialog.png", size, new PC_CoordI(0, 0), new PC_CoordI(256, 256));
 
 		if (text.length() > 0) {
-			getFontRenderer().drawString(text, offsetPos.x + pos.x + (size.x) / 2 - fontRenderer.getStringWidth(text) / 2,
-					offsetPos.y + pos.y + 8, 0x404040);
+			getFontRenderer().drawString(text, offsetPos.x + pos.x + (size.x) / 2 - fontRenderer.getStringWidth(text) / 2, offsetPos.y + pos.y + 8, 0x404040);
 		}
 
 	}
@@ -112,8 +109,8 @@ public class PC_GresWindow extends PC_GresWidget {
 			childs.get(i).calcChildPositions();
 			PC_CoordI csize = childs.get(i).calcSize();
 			PC_CoordI cminSize = childs.get(i).getMinSize();
-			ySize += csize.y + widgetMargin;
-			minySize += cminSize.y + widgetMargin;
+			ySize += csize.y + childs.get(i).widgetMargin;
+			minySize += cminSize.y + childs.get(i).widgetMargin;
 			if (maxxSize < csize.x) {
 				maxxSize = csize.x;
 			}
@@ -145,7 +142,7 @@ public class PC_GresWindow extends PC_GresWidget {
 			return;
 		}
 
-		ySize -= widgetMargin;
+		//ySize -= widgetMargin;
 
 		for (int i = 0; i < childNum; i++) {
 			PC_CoordI csize = childs.get(i).getSize();
@@ -187,7 +184,7 @@ public class PC_GresWindow extends PC_GresWidget {
 			}
 
 			childs.get(i).setPosition(xPos, yPos);
-			yy += csize.y + widgetMargin + s;
+			yy += csize.y + childs.get(i).widgetMargin + s;
 		}
 
 	}

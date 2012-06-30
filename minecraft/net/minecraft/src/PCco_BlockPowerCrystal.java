@@ -1,5 +1,6 @@
 package net.minecraft.src;
 
+
 import java.util.Random;
 
 import net.minecraft.src.forge.ITextureProvider;
@@ -10,7 +11,6 @@ import net.minecraft.src.forge.ITextureProvider;
  * 
  * @author MightyPork
  * @copy (c) 2012
- * 
  */
 public class PCco_BlockPowerCrystal extends BlockBreakable implements PC_ISwapTerrain, ITextureProvider {
 
@@ -116,8 +116,7 @@ public class PCco_BlockPowerCrystal extends BlockBreakable implements PC_ISwapTe
 					}
 
 					if (random.nextInt(distance) == 0) {
-						world.playSoundEffect(i + 0.5D, j + 0.5D, k + 0.5D, "random.orb", 0.15F,
-								0.5F * ((random.nextFloat() - random.nextFloat()) * 0.7F + 1.8F));
+						world.playSoundEffect(i + 0.5D, j + 0.5D, k + 0.5D, "random.orb", 0.15F, 0.5F * ((random.nextFloat() - random.nextFloat()) * 0.7F + 1.8F));
 					}
 
 				}

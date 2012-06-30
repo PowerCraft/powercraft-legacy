@@ -1,25 +1,32 @@
 package net.minecraft.src;
 
+
 import java.util.HashMap;
 import java.util.HashSet;
+
 
 /**
  * TMI and NEI compatibility layer
  * 
  * @author MightyPork
  * @copy (c) 2012
- * 
  */
 public class PC_InveditManager {
 
 	// these are protected to allow NEI configuration class to access them
 	/** list of IDs of hidden items; key: ID */
 	protected static HashSet<Integer> hidden = new HashSet<Integer>();
-	/** list of damage ranges for items; range format: Integer[]{start,stop}; key: ID->range array */
+	/**
+	 * list of damage ranges for items; range format: Integer[]{start,stop};
+	 * key: ID->range array
+	 */
 	protected static HashMap<Integer, Integer[]> damageRanges = new HashMap<Integer, Integer[]>();
 	/** list of lists of allowed damages for blocks; key: ID->damages array */
 	protected static HashMap<Integer, Integer[]> damageLists = new HashMap<Integer, Integer[]>();
-	/** item categories; Key: ID -> Category; Prefix "PowerCraft." is added automatically. */
+	/**
+	 * item categories; Key: ID -> Category; Prefix "PowerCraft." is added
+	 * automatically.
+	 */
 	protected static HashMap<Integer, String> categories = new HashMap<Integer, String>();
 
 	/**
@@ -76,7 +83,9 @@ public class PC_InveditManager {
 	 */
 	public static void sendToTMI() {
 
-		if (mod_items_sent_to_TMI) { return; }
+		if (mod_items_sent_to_TMI) {
+			return;
+		}
 		mod_items_sent_to_TMI = true;
 
 		try {

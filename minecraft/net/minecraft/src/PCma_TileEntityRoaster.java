@@ -1,5 +1,6 @@
 package net.minecraft.src;
 
+
 import java.util.List;
 import java.util.Random;
 
@@ -9,7 +10,6 @@ import java.util.Random;
  * 
  * @author MightyPork
  * @copy (c) 2012
- * 
  */
 public class PCma_TileEntityRoaster extends PC_TileEntity implements IInventory, PC_ISpecialAccessInventory {
 	@Override
@@ -137,7 +137,9 @@ public class PCma_TileEntityRoaster extends PC_TileEntity implements IInventory,
 
 	@Override
 	public boolean isUseableByPlayer(EntityPlayer entityplayer) {
-		if (worldObj.getBlockTileEntity(xCoord, yCoord, zCoord) != this) { return false; }
+		if (worldObj.getBlockTileEntity(xCoord, yCoord, zCoord) != this) {
+			return false;
+		}
 		return entityplayer.getDistanceSq(xCoord + 0.5D, yCoord + 0.5D, zCoord + 0.5D) <= 64D;
 	}
 
@@ -152,6 +154,7 @@ public class PCma_TileEntityRoaster extends PC_TileEntity implements IInventory,
 	/**
 	 * @return forge = can't update, false
 	 */
+	@Override
 	public boolean canUpdate() {
 		return true;
 	}
@@ -159,7 +162,9 @@ public class PCma_TileEntityRoaster extends PC_TileEntity implements IInventory,
 	@Override
 	public void updateEntity() {
 		// not powered -> off
-		if (!PCma_BlockRoaster.isIndirectlyPowered(worldObj, xCoord, yCoord, zCoord)) { return; }
+		if (!PCma_BlockRoaster.isIndirectlyPowered(worldObj, xCoord, yCoord, zCoord)) {
+			return;
+		}
 
 		boolean laser = worldObj.getBlockId(xCoord, yCoord + 1, zCoord) == mod_PCmachines.laser.blockID;
 
@@ -220,10 +225,8 @@ public class PCma_TileEntityRoaster extends PC_TileEntity implements IInventory,
 	/**
 	 * Do smelt items above the device.
 	 */
-	@SuppressWarnings("unchecked")
 	public void smeltItems() {
-		List<EntityItem> itemsList = worldObj.getEntitiesWithinAABB(net.minecraft.src.EntityItem.class,
-				AxisAlignedBB.getBoundingBoxFromPool(xCoord, yCoord, zCoord, xCoord + 1, yCoord + 2, zCoord + 1));
+		List<EntityItem> itemsList = worldObj.getEntitiesWithinAABB(net.minecraft.src.EntityItem.class, AxisAlignedBB.getBoundingBoxFromPool(xCoord, yCoord, zCoord, xCoord + 1, yCoord + 2, zCoord + 1));
 
 		nextItem:
 		for (EntityItem entityitem : itemsList) {
@@ -245,8 +248,7 @@ public class PCma_TileEntityRoaster extends PC_TileEntity implements IInventory,
 			if (burnTime >= getItemSmeltTime(entityitem.item)) {
 				// DO smelting.
 				burnTime -= getItemSmeltTime(entityitem.item);
-				EntityItem eitem = new EntityItem(worldObj, entityitem.posX - 0.1F + random.nextFloat() * 0.2F, entityitem.posY,
-						entityitem.posZ - 0.1F + random.nextFloat() * 0.2F, result.copy());
+				EntityItem eitem = new EntityItem(worldObj, entityitem.posX - 0.1F + random.nextFloat() * 0.2F, entityitem.posY, entityitem.posZ - 0.1F + random.nextFloat() * 0.2F, result.copy());
 				eitem.motionX = entityitem.motionX;
 				eitem.motionY = entityitem.motionY;
 				eitem.motionZ = entityitem.motionZ;
@@ -261,12 +263,12 @@ public class PCma_TileEntityRoaster extends PC_TileEntity implements IInventory,
 	/**
 	 * Burn creatures on top.
 	 */
-	@SuppressWarnings("unchecked")
 	public void burnCreatures() {
-		if (burnTime <= 0) { return; }
+		if (burnTime <= 0) {
+			return;
+		}
 
-		List<EntityLiving> entities = worldObj.getEntitiesWithinAABB(net.minecraft.src.EntityLiving.class,
-				AxisAlignedBB.getBoundingBoxFromPool(xCoord, yCoord, zCoord, xCoord + 1, yCoord + 2, zCoord + 1));
+		List<EntityLiving> entities = worldObj.getEntitiesWithinAABB(net.minecraft.src.EntityLiving.class, AxisAlignedBB.getBoundingBoxFromPool(xCoord, yCoord, zCoord, xCoord + 1, yCoord + 2, zCoord + 1));
 
 		nextEliving:
 		for (EntityLiving eliving : entities) {
@@ -320,10 +322,14 @@ public class PCma_TileEntityRoaster extends PC_TileEntity implements IInventory,
 			if (bt > 0) {
 				burnTime += bt;
 				decrStackSize(s, 1);
-				if (burnTime >= getItemSmeltTime(itemstack)) { return true; }
+				if (burnTime >= getItemSmeltTime(itemstack)) {
+					return true;
+				}
 			}
 		}
-		if (burnTime >= getItemSmeltTime(itemstack)) { return true; }
+		if (burnTime >= getItemSmeltTime(itemstack)) {
+			return true;
+		}
 		return false;
 	}
 
@@ -339,10 +345,14 @@ public class PCma_TileEntityRoaster extends PC_TileEntity implements IInventory,
 			if (bt > 0) {
 				burnTime += bt;
 				decrStackSize(s, 1);
-				if (burnTime >= time) { return true; }
+				if (burnTime >= time) {
+					return true;
+				}
 			}
 		}
-		if (burnTime >= time) { return true; }
+		if (burnTime >= time) {
+			return true;
+		}
 		return false;
 	}
 
@@ -373,11 +383,16 @@ public class PCma_TileEntityRoaster extends PC_TileEntity implements IInventory,
 
 	/**
 	 * @param stack
-	 * @return how long it takes to smelt (this is used only to measure amount of fuel consumed, smelting is instant)
+	 * @return how long it takes to smelt (this is used only to measure amount
+	 *         of fuel consumed, smelting is instant)
 	 */
 	private int getItemSmeltTime(ItemStack stack) {
-		if (stack.getItem() instanceof ItemFood) { return 180; }
-		if (stack.itemID == Block.wood.blockID) { return 300; }
+		if (stack.getItem() instanceof ItemFood) {
+			return 180;
+		}
+		if (stack.itemID == Block.wood.blockID) {
+			return 300;
+		}
 		return 350;
 	}
 

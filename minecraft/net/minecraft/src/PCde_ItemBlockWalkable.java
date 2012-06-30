@@ -2,11 +2,11 @@ package net.minecraft.src;
 
 
 /**
- * Replacement ItemBlock for BlockDecorative, which sets the tile entity when placed.
+ * Replacement ItemBlock for BlockDecorative, which sets the tile entity when
+ * placed.
  * 
  * @author MightyPork
  * @copy (c) 2012
- * 
  */
 public class PCde_ItemBlockWalkable extends ItemBlock {
 
@@ -56,9 +56,13 @@ public class PCde_ItemBlockWalkable extends ItemBlock {
 			}
 		}
 
-		if (itemstack.stackSize == 0) { return false; }
+		if (itemstack.stackSize == 0) {
+			return false;
+		}
 
-		if (!entityplayer.canPlayerEdit(i, j, k)) { return false; }
+		if (!entityplayer.canPlayerEdit(i, j, k)) {
+			return false;
+		}
 
 
 
@@ -68,44 +72,45 @@ public class PCde_ItemBlockWalkable extends ItemBlock {
 			if (te != null && te instanceof PCde_TileEntityWalkable) {
 				PCde_TileEntityWalkable tew = (PCde_TileEntityWalkable) te;
 
-				if (tew != null) {
-					int dir = ((MathHelper.floor_double(((entityplayer.rotationYaw * 4F) / 360F) + 0.5D) & 3) + 2) % 4;
+				int dir = ((MathHelper.floor_double(((entityplayer.rotationYaw * 4F) / 360F) + 0.5D) & 3) + 2) % 4;
 
-					if (itemstack.getItemDamage() == 0 && PC_Utils.isPlacingReversed()) {
-						dir = PC_Utils.reverseSide(dir);
-					}
-					int meta = world.getBlockMetadata(i, j - 1, k);
-
-					i -= Direction.offsetX[dir];
-					k -= Direction.offsetZ[dir];
-
-					if (tew.type == 1) {
-
-						if (meta == dir) {
-
-							if (!PC_Utils.isPlacingReversed()) {
-								j += 1;
-							} else if (!PC_Utils.isPlacingReversed()) {
-								j += 1;
-							}
-
-						} else if (PC_Utils.isPlacingReversed() && itemstack.getItemDamage() == 1) {
-							j--;
-						}
-
-					} else if (tew.type == 0 && itemstack.getItemDamage() == 1) {
-						if (PC_Utils.isPlacingReversed()) {
-							j--;
-						}
-					}
-
-					j--;
+				if (itemstack.getItemDamage() == 0 && PC_Utils.isPlacingReversed()) {
+					dir = PC_Utils.reverseSide(dir);
 				}
+				int meta = world.getBlockMetadata(i, j - 1, k);
+
+				i -= Direction.offsetX[dir];
+				k -= Direction.offsetZ[dir];
+
+				if (tew.type == 1) {
+
+					if (meta == dir) {
+
+						if (!PC_Utils.isPlacingReversed()) {
+							j += 1;
+						} else if (!PC_Utils.isPlacingReversed()) {
+							j += 1;
+						}
+
+					} else if (PC_Utils.isPlacingReversed() && itemstack.getItemDamage() == 1) {
+						j--;
+					}
+
+				} else if (tew.type == 0 && itemstack.getItemDamage() == 1) {
+					if (PC_Utils.isPlacingReversed()) {
+						j--;
+					}
+				}
+
+				j--;
+
 			}
 		}
 
 
-		if (j == 255 && Block.blocksList[getBlockID()].blockMaterial.isSolid()) { return false; }
+		if (j == 255 && Block.blocksList[getBlockID()].blockMaterial.isSolid()) {
+			return false;
+		}
 
 		if (world.canBlockBePlacedAt(mod_PCdeco.walkable.blockID, i, j, k, false, l)) {
 			Block block = mod_PCdeco.walkable;
@@ -123,8 +128,7 @@ public class PCde_ItemBlockWalkable extends ItemBlock {
 				world.markBlocksDirty(i, j, k, i, j, k);
 				world.markBlockNeedsUpdate(i, j, k);
 
-				world.playSoundEffect(i + 0.5F, j + 0.5F, k + 0.5F, block.stepSound.getStepSound(),
-						(block.stepSound.getVolume() + 1.0F) / 2.0F, block.stepSound.getPitch() * 0.8F);
+				world.playSoundEffect(i + 0.5F, j + 0.5F, k + 0.5F, block.stepSound.getStepSound(), (block.stepSound.getVolume() + 1.0F) / 2.0F, block.stepSound.getPitch() * 0.8F);
 
 				itemstack.stackSize--;
 			}

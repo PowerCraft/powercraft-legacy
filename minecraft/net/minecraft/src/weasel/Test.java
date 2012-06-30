@@ -8,10 +8,10 @@ import net.minecraft.src.weasel.obj.WeaselObject;
 public class Test {
 
 	public void run() {
-		
-		
+
+
 		// extracting function calls from an expression
-		
+
 //		List<String> tmpEvals = new ArrayList<String>();
 //		
 //		int tmpCounter = 0;
@@ -57,22 +57,22 @@ public class Test {
 //		    System.out.println("varNeeded: "+name);
 //		}
 
-		
-		
-		
+
+
+
 		WeaselEngine engine = new WeaselEngine(new IWeaselControlled() {
-			
+
 			@Override
 			public boolean hasFunction(String functionName) {
 				return false;
 			}
-			
+
 			@Override
 			public WeaselObject getVariable(String name) {
-				if(name.equals("hw.num")) return new WeaselInteger(13);
+				if (name.equals("hw.num")) return new WeaselInteger(13);
 				return null;
 			}
-			
+
 			@Override
 			public WeaselObject callFunction(WeaselEngine engine, String functionName, WeaselObject[] args) {
 				return null;
@@ -80,23 +80,23 @@ public class Test {
 
 			@Override
 			public void setVariable(String name, Object object) {}
-			
+
 		});
-		
+
 		try {
-		
+
 			engine.setVariable("nn", 99);
 			engine.setVariable("out", 0);
-			
+
 			Calculator.eval("out = hw.num*nn - 1", engine);
-			
-			System.out.println("="+engine.getVariable("out"));
-			
-		}catch(RuntimeException re) {
-			System.out.println(re.getMessage());			
+
+			System.out.println("=" + engine.getVariable("out"));
+
+		} catch (RuntimeException re) {
+			System.out.println(re.getMessage());
 		}
-		
-		
+
+
 //		WeaselVariableMap map = engine.variables;
 //		map.setVariable("integer", new WeaselInteger(-13));
 //		map.setVariable("varint", new WeaselInteger(17));

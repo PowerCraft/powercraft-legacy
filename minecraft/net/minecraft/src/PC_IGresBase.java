@@ -1,11 +1,11 @@
 package net.minecraft.src;
 
+
 /**
  * Gres Base interface, implemented by GRES individual GUIs.
  * 
  * @author MightyPork
  * @copy (c) 2012
- * 
  */
 public interface PC_IGresBase {
 
@@ -16,7 +16,8 @@ public interface PC_IGresBase {
 
 
 	/**
-	 * Create {@link PC_GresWindow}, fill with widgets and add it to the outer GUI.
+	 * Create {@link PC_GresWindow}, fill with widgets and add it to the outer
+	 * GUI.
 	 * 
 	 * @param gui the outer gui
 	 */
@@ -31,7 +32,8 @@ public interface PC_IGresBase {
 
 	/**
 	 * On action performed.<br>
-	 * Action = mouse click, key press, button press etc., accepted by the corresponding widget.
+	 * Action = mouse click, key press, button press etc., accepted by the
+	 * corresponding widget.
 	 * 
 	 * @param widget widget generating the action
 	 * @param gui outer gui

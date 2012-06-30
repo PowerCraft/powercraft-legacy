@@ -1,13 +1,14 @@
 package net.minecraft.src;
 
+
 import java.util.List;
+
 
 /**
  * Replacement ItemBlock for gate, which sets the tile entity when placed.
  * 
  * @author MightyPork
  * @copy (c) 2012
- * 
  */
 public class PClo_ItemBlockGate extends ItemBlock {
 
@@ -58,11 +59,17 @@ public class PClo_ItemBlockGate extends ItemBlock {
 			}
 		}
 
-		if (itemstack.stackSize == 0) { return false; }
+		if (itemstack.stackSize == 0) {
+			return false;
+		}
 
-		if (!entityplayer.canPlayerEdit(i, j, k)) { return false; }
+		if (!entityplayer.canPlayerEdit(i, j, k)) {
+			return false;
+		}
 
-		if (j == 255 && Block.blocksList[getBlockID()].blockMaterial.isSolid()) { return false; }
+		if (j == 255 && Block.blocksList[getBlockID()].blockMaterial.isSolid()) {
+			return false;
+		}
 
 		if (world.canBlockBePlacedAt(mod_PClogic.gateOff.blockID, i, j, k, false, l)) {
 			Block block = mod_PClogic.gateOff;
@@ -81,8 +88,7 @@ public class PClo_ItemBlockGate extends ItemBlock {
 				world.markBlocksDirty(i, j, k, i, j, k);
 				world.markBlockNeedsUpdate(i, j, k);
 
-				world.playSoundEffect(i + 0.5F, j + 0.5F, k + 0.5F, block.stepSound.getStepSound(),
-						(block.stepSound.getVolume() + 1.0F) / 2.0F, block.stepSound.getPitch() * 0.8F);
+				world.playSoundEffect(i + 0.5F, j + 0.5F, k + 0.5F, block.stepSound.getStepSound(), (block.stepSound.getVolume() + 1.0F) / 2.0F, block.stepSound.getPitch() * 0.8F);
 
 				itemstack.stackSize--;
 			}
@@ -119,7 +125,6 @@ public class PClo_ItemBlockGate extends ItemBlock {
 		return false;
 	}
 
-	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@Override
 	public void addInformation(ItemStack itemstack, List list) {
 		list.add(getDescriptionForGate(itemstack.getItemDamage()));

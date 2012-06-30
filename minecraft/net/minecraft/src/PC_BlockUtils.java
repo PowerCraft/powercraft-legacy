@@ -1,7 +1,9 @@
 package net.minecraft.src;
 
+
 import java.util.HashSet;
 import java.util.Set;
+
 
 /**
  * PowerCraft block type tests.<br>
@@ -9,12 +11,12 @@ import java.util.Set;
  * 
  * @author MightyPork
  * @copy (c) 2012
- * 
  */
 public class PC_BlockUtils {
 
 	/**
 	 * Check if a block at coords is a powercraft block.
+	 * 
 	 * @param world the world
 	 * @param pos position
 	 * @return is PC block
@@ -53,7 +55,8 @@ public class PC_BlockUtils {
 	 * 
 	 * @param world the world
 	 * @param pos the coordinate
-	 * @return set of flags, or empty set if not instance of {@link PC_IBlockType}
+	 * @return set of flags, or empty set if not instance of
+	 *         {@link PC_IBlockType}
 	 */
 	public static Set<String> getBlockFlags(World world, PC_CoordI pos) {
 
@@ -75,15 +78,19 @@ public class PC_BlockUtils {
 	 * Get item-block flags for itemstack.
 	 * 
 	 * @param stack the stack
-	 * @return set of flags, or empty set if block not instance of {@link PC_IBlockType}
+	 * @return set of flags, or empty set if block not instance of
+	 *         {@link PC_IBlockType}
 	 */
 	public static Set<String> getItemFlags(ItemStack stack) {
 
-		if (stack == null) { return new HashSet<String>(); }
-		if (stack.getItem() instanceof ItemBlock) { return new HashSet<String>(); }
+		if (stack == null) {
+			return new HashSet<String>();
+		}
+		if (stack.getItem() instanceof ItemBlock) {
+			return new HashSet<String>();
+		}
 
-		if (Block.blocksList[stack.getItem().shiftedIndex] != null
-				&& Block.blocksList[stack.getItem().shiftedIndex] instanceof PC_IBlockType) {
+		if (Block.blocksList[stack.getItem().shiftedIndex] != null && Block.blocksList[stack.getItem().shiftedIndex] instanceof PC_IBlockType) {
 			PC_IBlockType type = (PC_IBlockType) Block.blocksList[stack.getItem().shiftedIndex];
 			Set<String> flags = type.getItemFlags(stack.getItemDamage());
 			flags.add("POWERCRAFT");

@@ -1,11 +1,11 @@
 package net.minecraft.src;
 
+
 /**
  * PowerCraft deco module renderer (iron frame + subtypes)
  * 
  * @author MightyPork
  * @copy (c) 2012
- * 
  */
 public class PCde_Renderer {
 
@@ -28,7 +28,9 @@ public class PCde_Renderer {
 	 * @return success
 	 */
 	public static boolean renderBlockByType(RenderBlocks renderblocks, IBlockAccess blockAccess, int i, int j, int k, Block block, int rtype) {
-		if (rtype == decorativeBlockRenderer) { return renderBlockDecorative(renderblocks, blockAccess, i, j, k, block); }
+		if (rtype == decorativeBlockRenderer) {
+			return renderBlockDecorative(renderblocks, blockAccess, i, j, k, block);
+		}
 		return false;
 	}
 
@@ -46,7 +48,9 @@ public class PCde_Renderer {
 	public static boolean renderBlockDecorative(RenderBlocks renderblocks, IBlockAccess iblockaccess, int i, int j, int k, Block block) {
 
 		TileEntity te = iblockaccess.getBlockTileEntity(i, j, k);
-		if (te == null) { return false; }
+		if (te == null) {
+			return false;
+		}
 		PCde_TileEntityDeco ted = (PCde_TileEntityDeco) te;
 
 		if (ted.type == 1) {

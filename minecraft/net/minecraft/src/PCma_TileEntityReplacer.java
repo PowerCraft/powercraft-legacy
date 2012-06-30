@@ -1,16 +1,27 @@
 package net.minecraft.src;
 
+
 import java.util.Random;
 
+
+/**
+ * Replacer's Tile Entity
+ * 
+ * @author MightyPork, XOR19, Rapus
+ */
 public class PCma_TileEntityReplacer extends PC_TileEntity implements IInventory, PC_ISpecialAccessInventory {
 
+	/** the building stack */
 	public ItemStack buildBlock;
-	public static final int MAXSTACK = 1;
-	public static final int SIZE = 1;
+	private static final int MAXSTACK = 1;
+	private static final int SIZE = 1;
+	/** offset coordinate for replacing */
 	public PC_CoordI coordOffset = new PC_CoordI(0, 1, 0);
+	/** particle frame shown */
 	public boolean aidEnabled = false;
 	private PC_Color aidcolor;
 
+	/** state (redstone). To prevent action on each neighbour block change. */
 	public boolean state = false;
 	private Random rand;
 	private boolean init = false;
@@ -67,8 +78,7 @@ public class PCma_TileEntityReplacer extends PC_TileEntity implements IInventory
 			int a = rand.nextInt(3);
 			int b = rand.nextInt(3);
 
-			ModLoader.getMinecraftInstance().effectRenderer.addEffect(new PC_EntityLaserParticleFX(worldObj, new PC_CoordD(d, d1, d2),
-					aidcolor, new PC_CoordI(), 0));
+			ModLoader.getMinecraftInstance().effectRenderer.addEffect(new PC_EntityLaserParticleFX(worldObj, new PC_CoordD(d, d1, d2), aidcolor, new PC_CoordI(), 0));
 
 			for (int q = 0; q < 8; q++) {
 
@@ -108,8 +118,7 @@ public class PCma_TileEntityReplacer extends PC_TileEntity implements IInventory
 						break;
 				}
 
-				ModLoader.getMinecraftInstance().effectRenderer.addEffect(new PC_EntityLaserParticleFX(worldObj, new PC_CoordD(d, d1, d2),
-						aidcolor, new PC_CoordI(), 0));
+				ModLoader.getMinecraftInstance().effectRenderer.addEffect(new PC_EntityLaserParticleFX(worldObj, new PC_CoordD(d, d1, d2), aidcolor, new PC_CoordI(), 0));
 
 			}
 		}
@@ -119,7 +128,9 @@ public class PCma_TileEntityReplacer extends PC_TileEntity implements IInventory
 
 	@Override
 	public boolean canInsertStackTo(int slot, ItemStack stack) {
-		if (stack.getItem() instanceof ItemBlock) { return true; }
+		if (stack.getItem() instanceof ItemBlock) {
+			return true;
+		}
 		return false;
 	}
 
@@ -238,6 +249,11 @@ public class PCma_TileEntityReplacer extends PC_TileEntity implements IInventory
 
 	@Override
 	public boolean needsSpecialInserter() {
+		return false;
+	}
+
+	@Override
+	public boolean canUpdate() {
 		return false;
 	}
 

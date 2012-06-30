@@ -1,5 +1,6 @@
 package net.minecraft.src;
 
+
 import java.util.List;
 
 
@@ -8,7 +9,6 @@ import java.util.List;
  * 
  * @author MightyPork
  * @copy (c) 2012
- * 
  */
 public class PClo_ItemRadioRemote extends Item {
 
@@ -28,8 +28,7 @@ public class PClo_ItemRadioRemote extends Item {
 		}
 
 		PClo_RadioManager.sendRemotePulse(itemstack.getTagCompound().getString("channel"));
-		world.playSoundAtEntity(entityplayer, "random.click", (world.rand.nextFloat() + 0.7F) / 2.0F,
-				1.0F + (world.rand.nextFloat() - world.rand.nextFloat()) * 0.4F);
+		world.playSoundAtEntity(entityplayer, "random.click", (world.rand.nextFloat() + 0.7F) / 2.0F, 1.0F + (world.rand.nextFloat() - world.rand.nextFloat()) * 0.4F);
 
 		return itemstack;
 	}
@@ -60,7 +59,6 @@ public class PClo_ItemRadioRemote extends Item {
 		PC_Utils.chatMsg(PC_Lang.tr("pc.radioRemote.connected", new String[] { channel }), true);
 	}
 
-	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@Override
 	public void addInformation(ItemStack itemstack, List list) {
 

@@ -1,6 +1,8 @@
 package net.minecraft.src;
 
+
 import org.lwjgl.opengl.GL11;
+
 
 /**
  * Common rendering utils for PowerCraft
@@ -29,8 +31,12 @@ public class PC_Renderer {
 	 * @return success
 	 */
 	public static boolean renderBlockByType(RenderBlocks renderblocks, IBlockAccess blockAccess, int x, int y, int z, Block block, int rtype) {
-		if (rtype == swapTerrainRenderer) { return renderBlockSwapTerrain(renderblocks, blockAccess, x, y, z, block); }
-		if (rtype == rotatedBoxRenderer) { return renderBlockRotatedBox(renderblocks, blockAccess, x, y, z, block); }
+		if (rtype == swapTerrainRenderer) {
+			return renderBlockSwapTerrain(renderblocks, blockAccess, x, y, z, block);
+		}
+		if (rtype == rotatedBoxRenderer) {
+			return renderBlockRotatedBox(renderblocks, blockAccess, x, y, z, block);
+		}
 		return false;
 	}
 
@@ -75,7 +81,8 @@ public class PC_Renderer {
 	}
 
 	/**
-	 * Render world block as Rotated Box - must implement PC_IRotatedBox; swaps terrain if needed
+	 * Render world block as Rotated Box - must implement PC_IRotatedBox; swaps
+	 * terrain if needed
 	 * 
 	 * @param renderblocks block renderer
 	 * @param blockAccess block access
@@ -156,8 +163,7 @@ public class PC_Renderer {
 	}
 
 	/**
-	 * Render crossed squares in world; swaps terrain if needed
-	 * TODO untested
+	 * Render crossed squares in world; swaps terrain if needed TODO untested
 	 * 
 	 * @param renderblocks
 	 * @param blockAccess
@@ -396,7 +402,8 @@ public class PC_Renderer {
 	}
 
 	/**
-	 * Render item block as Crossed Squares - grass, flower etc.; swaps terrain if needed
+	 * Render item block as Crossed Squares - grass, flower etc.; swaps terrain
+	 * if needed
 	 * 
 	 * @param renderblocks
 	 * @param block
@@ -412,8 +419,8 @@ public class PC_Renderer {
 	}
 
 	/**
-	 * Render item block as Crossed Squares - grass, flower etc.; swaps terrain if needed
-	 * <b>This method uses provided texture index for all sides!</b>
+	 * Render item block as Crossed Squares - grass, flower etc.; swaps terrain
+	 * if needed <b>This method uses provided texture index for all sides!</b>
 	 * 
 	 * @param renderblocks
 	 * @param textureIndex
@@ -490,10 +497,12 @@ public class PC_Renderer {
 	}
 
 	/**
-	 * If block implements ISwapTerrain, set used terrain texture to the one from this block
+	 * If block implements ISwapTerrain, set used terrain texture to the one
+	 * from this block
 	 * 
 	 * @param block the block to render
-	 * @return true if terrain was swapped -> call resetTerrain() to re-enable original terrain.png
+	 * @return true if terrain was swapped -> call resetTerrain() to re-enable
+	 *         original terrain.png
 	 */
 	public static boolean swapTerrain(Block block) {
 		RenderEngine renderengine = ModLoader.getMinecraftInstance().renderEngine;
@@ -541,7 +550,9 @@ public class PC_Renderer {
 
 		float f = (float) renderManager.livingPlayer.getDistance(realPos.x + 0.5D, realPos.y + 0.5D, realPos.z + 0.5D);
 
-		if (f > viewDistance) { return; }
+		if (f > viewDistance) {
+			return;
+		}
 
 		FontRenderer fontrenderer = renderManager.getFontRenderer();
 		float f1 = 1.0F; // 1.6F;

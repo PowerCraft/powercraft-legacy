@@ -1,7 +1,9 @@
 package net.minecraft.src;
 
+
 import java.util.Hashtable;
 import java.util.Random;
+
 
 /**
  * Class for miner program parsing
@@ -81,8 +83,7 @@ public class PCmo_Command {
 
 	}
 
-	public static final int FORWARD = 0, LEFT = 1, RIGHT = 2, BACKWARD = 3, SOUTH = 4, NORTH = 5, EAST = 6, WEST = 7, DOWN = 8, UP = 9,
-			DEPOSIT = 10, DISASSEMBLY = 11, MINING_ENABLE = 12, MINING_DISABLE = 13, BRIDGE_ENABLE = 14, BRIDGE_DISABLE = 15,
+	public static final int FORWARD = 0, LEFT = 1, RIGHT = 2, BACKWARD = 3, SOUTH = 4, NORTH = 5, EAST = 6, WEST = 7, DOWN = 8, UP = 9, DEPOSIT = 10, DISASSEMBLY = 11, MINING_ENABLE = 12, MINING_DISABLE = 13, BRIDGE_ENABLE = 14, BRIDGE_DISABLE = 15,
 			LAVA_ENABLE = 16, LAVA_DISABLE = 17, WATER_ENABLE = 18, WATER_DISABLE = 19;
 
 	// direct commands
@@ -145,7 +146,9 @@ public class PCmo_Command {
 	 * @return command as string (one character long)
 	 */
 	public static String getNameFromInt(int num) {
-		if (num < 0 || num >= COUNT) { return "BAD_CMD"; }
+		if (num < 0 || num >= COUNT) {
+			return "BAD_CMD";
+		}
 		return names[num];
 	}
 
@@ -156,7 +159,9 @@ public class PCmo_Command {
 	 * @return as character
 	 */
 	public static Character getCharFromInt(int num) {
-		if (num < 0 || num >= COUNT) { return '?'; }
+		if (num < 0 || num >= COUNT) {
+			return '?';
+		}
 		return Character.valueOf(chars[num]);
 	}
 
@@ -168,7 +173,9 @@ public class PCmo_Command {
 	 */
 	public static int getIntFromChar(Character chr) {
 		for (int i = 0; i < COUNT; i++) {
-			if (Character.valueOf(chars[i]).equals(chr)) { return i; }
+			if (Character.valueOf(chars[i]).equals(chr)) {
+				return i;
+			}
 		}
 		return -1;
 	}
@@ -176,27 +183,37 @@ public class PCmo_Command {
 	private static Hashtable<Character, Integer> vars = new Hashtable<Character, Integer>();
 
 	private static void setVar(char index, int value) throws PCmo_CommandException {
-		if (!Character.isLetter(Character.valueOf(index))) { throw new PCmo_CommandException("Bad variable name '" + index + "'."); }
+		if (!Character.isLetter(Character.valueOf(index))) {
+			throw new PCmo_CommandException("Bad variable name '" + index + "'.");
+		}
 		vars.put(Character.valueOf(index), Integer.valueOf(value));
 	}
 
 	private static int getVar(char index) throws PCmo_CommandException {
 		Object obj = vars.get(Character.valueOf(index));
 
-		if (obj == null) { throw new PCmo_CommandException("Var '" + index + "' not initialized."); }
-		if (!(obj instanceof Integer)) { throw new PCmo_CommandException("'" + index + "' not Integer."); }
+		if (obj == null) {
+			throw new PCmo_CommandException("Var '" + index + "' not initialized.");
+		}
+		if (!(obj instanceof Integer)) {
+			throw new PCmo_CommandException("'" + index + "' not Integer.");
+		}
 
 		return (Integer) obj;
 	}
 
 	private static String parseEvaluateVars(String input) throws PCmo_CommandException {
 		if (input.indexOf("<") == -1) {
-			if (input.indexOf(">") != -1) { throw new PCmo_CommandException("Invalid var field syntax."); }
+			if (input.indexOf(">") != -1) {
+				throw new PCmo_CommandException("Invalid var field syntax.");
+			}
 
 			return input; // no vars found, plain code.
 		}
 
-		if (input.indexOf(">") == -1) { throw new PCmo_CommandException("Invalid var field syntax."); }
+		if (input.indexOf(">") == -1) {
+			throw new PCmo_CommandException("Invalid var field syntax.");
+		}
 
 		// find and evaluate all pieces.
 
@@ -234,9 +251,13 @@ public class PCmo_Command {
 
 	private static int parseLoopCount(String code) throws PCmo_CommandException {
 		try {
-			if (!Character.isDigit(Character.valueOf(code.charAt(0))) && code.charAt(0) != '-') { throw new NumberFormatException(); }
+			if (!Character.isDigit(Character.valueOf(code.charAt(0))) && code.charAt(0) != '-') {
+				throw new NumberFormatException();
+			}
 			int n = Integer.valueOf(code);
-			if (n > 0) { return n; }
+			if (n > 0) {
+				return n;
+			}
 			throw new PCmo_CommandException("Invalid loop count.");
 		} catch (NumberFormatException nfe) {
 			try {
@@ -250,16 +271,22 @@ public class PCmo_Command {
 	private static int parseSingleVar(String code, boolean requireValue) throws PCmo_CommandException {
 		String local = new String(code);
 
-		if (code == null) { throw new PCmo_CommandException("parseSingleVar: NullPointer"); }
+		if (code == null) {
+			throw new PCmo_CommandException("parseSingleVar: NullPointer");
+		}
 		if (code.charAt(0) == '<' && code.charAt(code.length() - 1) == '>') {
 			local = local.substring(1, local.length() - 1); // only the insides
 		}
 
 		// A
-		if (local.matches("[A-Z]{1}")) { return getVar(local.charAt(0)); }
+		if (local.matches("[A-Z]{1}")) {
+			return getVar(local.charAt(0));
+		}
 
 		// -123
-		if (local.matches("[\\-]?[0-9]+")) { return readInt(local, 0); }
+		if (local.matches("[\\-]?[0-9]+")) {
+			return readInt(local, 0);
+		}
 
 		// RND*15
 		if (local.matches("RND\\*[\\-]?[0-9]+")) {
@@ -300,8 +327,7 @@ public class PCmo_Command {
 		// -14+RND*15
 		if (local.matches("[\\-]?[0-9]+[+\\-*%/]{1}RND\\*[0-9]+")) {
 			try {
-				return numOp(readInt(local, 0), local.charAt(local.indexOf("RND") - 1),
-						random.nextInt(readInt(local, local.indexOf("RND")) + 4));
+				return numOp(readInt(local, 0), local.charAt(local.indexOf("RND") - 1), random.nextInt(readInt(local, local.indexOf("RND")) + 4));
 
 			} catch (IllegalArgumentException iae) {
 				throw new PCmo_CommandException("Negative random.");
@@ -335,7 +361,9 @@ public class PCmo_Command {
 			return numOp(var1, operation, var2);
 		}
 
-		if (requireValue) { throw new PCmo_CommandException("Loop count needs value!"); }
+		if (requireValue) {
+			throw new PCmo_CommandException("Loop count needs value!");
+		}
 
 		// A=-123
 		if (local.matches("[A-Z]{1}=[\\-]?[0-9]+")) {
@@ -366,8 +394,7 @@ public class PCmo_Command {
 		// A=RND*15+B
 		if (local.matches("[A-Z]{1}=RND\\*[0-9]+[+\\-*%/]{1}[A-Z]{1}")) {
 			try {
-				setVar(local.charAt(0),
-						numOp(getVar(local.charAt(local.length() - 1)), local.charAt(local.length() - 2), random.nextInt(readInt(local, 6))));
+				setVar(local.charAt(0), numOp(getVar(local.charAt(local.length() - 1)), local.charAt(local.length() - 2), random.nextInt(readInt(local, 6))));
 			} catch (IllegalArgumentException iae) {
 				throw new PCmo_CommandException("Negative random.");
 			}
@@ -387,9 +414,7 @@ public class PCmo_Command {
 		// A=-14+RND*15
 		if (local.matches("[A-Z]{1}=[\\-]?[0-9]+[+\\-*%/]{1}RND\\*[0-9]+")) {
 			try {
-				setVar(local.charAt(0),
-						numOp(readInt(local, 2), local.charAt(local.indexOf("RND") - 1),
-								random.nextInt(readInt(local, local.indexOf("RND")) + 4)));
+				setVar(local.charAt(0), numOp(readInt(local, 2), local.charAt(local.indexOf("RND") - 1), random.nextInt(readInt(local, local.indexOf("RND")) + 4)));
 			} catch (IllegalArgumentException iae) {
 				throw new PCmo_CommandException("Negative random.");
 			}
@@ -466,11 +491,21 @@ public class PCmo_Command {
 	}
 
 	private static int numOp(int a, char operation, int b) {
-		if (operation == '+') { return a + b; }
-		if (operation == '-') { return a - b; }
-		if (operation == '*') { return a * b; }
-		if (operation == '/') { return (int) Math.round((double) a / (double) b); }
-		if (operation == '%') { return a % b; }
+		if (operation == '+') {
+			return a + b;
+		}
+		if (operation == '-') {
+			return a - b;
+		}
+		if (operation == '*') {
+			return a * b;
+		}
+		if (operation == '/') {
+			return (int) Math.round((double) a / (double) b);
+		}
+		if (operation == '%') {
+			return a % b;
+		}
 		return 0;
 	}
 
@@ -521,13 +556,17 @@ public class PCmo_Command {
 			return a <= b;
 		}
 
-		if (local.equals("RND")) { return random.nextBoolean(); }
+		if (local.equals("RND")) {
+			return random.nextBoolean();
+		}
 
 		throw new PCmo_CommandException("Invalid condition syntax.");
 	}
 
 	private static int readInt(String str, int pos) throws PCmo_CommandException {
-		if (str.length() <= pos) { throw new PCmo_CommandException("Number expected."); }
+		if (str.length() <= pos) {
+			throw new PCmo_CommandException("Number expected.");
+		}
 
 		Character chr = str.charAt(pos);
 
@@ -737,7 +776,9 @@ public class PCmo_Command {
 			return parseExpandLoops(local.substring(qmark + 1, ddot > qmark ? ddot : local.length()));
 		} else {
 			PC_Logger.finest("false, qmark=" + qmark + ", ddot=" + ddot);
-			if (ddot != -1) { return parseExpandLoops(local.substring(ddot + 1, local.length())); }
+			if (ddot != -1) {
+				return parseExpandLoops(local.substring(ddot + 1, local.length()));
+			}
 			return "";
 		}
 	}
@@ -767,7 +808,9 @@ public class PCmo_Command {
 		// return without parsing
 		// if no loops are found
 
-		if (source.indexOf("(") == -1) { return parseEvaluateVars(source); }
+		if (source.indexOf("(") == -1) {
+			return parseEvaluateVars(source);
+		}
 
 		if (source.indexOf("@") == -1) {
 			ifElse = true;
@@ -776,7 +819,9 @@ public class PCmo_Command {
 
 		if (source.indexOf(":") == -1) {
 			PC_Logger.warning(": not found");
-			if (!ifElse) { throw new PCmo_CommandException("Invalid loop syntax."); }
+			if (!ifElse) {
+				throw new PCmo_CommandException("Invalid loop syntax.");
+			}
 		}
 
 		if (source.indexOf(")") == -1) {
@@ -872,7 +917,9 @@ public class PCmo_Command {
 					pos++;
 				}
 
-				if (openLoops > 0) { throw new PCmo_CommandException("Unclosed loops."); }
+				if (openLoops > 0) {
+					throw new PCmo_CommandException("Unclosed loops.");
+				}
 
 				// if not a loop - its an if-else statement
 			} else {

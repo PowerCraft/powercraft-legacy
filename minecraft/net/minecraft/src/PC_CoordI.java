@@ -1,5 +1,6 @@
 package net.minecraft.src;
 
+
 /**
  * Integer coordinate class, can be used to hold information about position or a
  * simple movement vector. Can also work in 2D.
@@ -22,7 +23,6 @@ public class PC_CoordI implements PC_ICoord, PC_INBT {
 
 	/**
 	 * Create coordinate [0,0,0]
-	 * 
 	 */
 	public PC_CoordI() {
 		x = 0;
@@ -102,13 +102,17 @@ public class PC_CoordI implements PC_ICoord, PC_INBT {
 	}
 
 	/**
-	 * Tests if the coordinates have equal numbers.
-	 * If both are null, they are also equal.
+	 * Tests if the coordinates have equal numbers. If both are null, they are
+	 * also equal.
 	 */
 	@Override
 	public boolean equals(Object obj) {
-		if (obj == null) { return false; }
-		if (!this.getClass().equals(obj.getClass())) { return false; }
+		if (obj == null) {
+			return false;
+		}
+		if (!this.getClass().equals(obj.getClass())) {
+			return false;
+		}
 
 		return ((PC_CoordI) obj).x == x && ((PC_CoordI) obj).y == y && ((PC_CoordI) obj).z == z;
 	}
@@ -469,7 +473,8 @@ public class PC_CoordI implements PC_ICoord, PC_INBT {
 	}
 
 	/**
-	 * Get if worlds block at coord is getting indirectly powered, that means at least one of its neighbors is getting directly powered
+	 * Get if worlds block at coord is getting indirectly powered, that means at
+	 * least one of its neighbors is getting directly powered
 	 * 
 	 * @param world the world
 	 * @return is getting indirectly powered
@@ -525,7 +530,8 @@ public class PC_CoordI implements PC_ICoord, PC_INBT {
 	}
 
 	/**
-	 * Calculate horizontal distance to another coordinate (= ignore y difference)
+	 * Calculate horizontal distance to another coordinate (= ignore y
+	 * difference)
 	 * 
 	 * @param pos
 	 * @return distance

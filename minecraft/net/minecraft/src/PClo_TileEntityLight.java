@@ -1,11 +1,11 @@
 package net.minecraft.src;
 
+
 /**
  * Light block tile entity
  * 
  * @author MightyPork
  * @copy (c) 2012
- * 
  */
 public class PClo_TileEntityLight extends PC_TileEntity {
 	private int color = 1;
@@ -84,6 +84,7 @@ public class PClo_TileEntityLight extends PC_TileEntity {
 	/**
 	 * @return if forge updates this TE
 	 */
+	@Override
 	public boolean canUpdate() {
 		return false;
 	}

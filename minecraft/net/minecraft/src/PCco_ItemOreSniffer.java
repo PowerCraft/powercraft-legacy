@@ -1,14 +1,15 @@
 package net.minecraft.src;
 
+
 import java.util.ArrayList;
 import java.util.List;
+
 
 /**
  * Ore radar device.
  * 
  * @author MightyPork
  * @copy (c) 2012
- * 
  */
 public class PCco_ItemOreSniffer extends Item {
 
@@ -80,8 +81,7 @@ public class PCco_ItemOreSniffer extends Item {
 				} else {
 					if (bl.hasTileEntity()) {
 						names[q] = "d$";
-					} else if (bl.blockMaterial == Material.leaves || bl.blockMaterial == Material.plants
-							|| bl.blockMaterial == Material.vine) {
+					} else if (bl.blockMaterial == Material.leaves || bl.blockMaterial == Material.plants || bl.blockMaterial == Material.vine) {
 						names[q] = "a&";
 					} else if (bl.blockMaterial == Material.ground) {
 						names[q] = "8%";
@@ -221,7 +221,6 @@ public class PCco_ItemOreSniffer extends Item {
 		return false;
 	}
 
-	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@Override
 	public void addInformation(ItemStack itemstack, List list) {
 		list.add(PC_Lang.tr("pc.sniffer.desc"));

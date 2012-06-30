@@ -9,16 +9,12 @@ import java.util.Map.Entry;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import javax.script.ScriptEngine;
-import javax.script.ScriptEngineManager;
-import javax.script.ScriptException;
-
-import org.nfunk.jep.JEP;
-
 import net.minecraft.src.weasel.exception.WeaselRuntimeException;
 import net.minecraft.src.weasel.obj.WeaselBoolean;
 import net.minecraft.src.weasel.obj.WeaselInteger;
 import net.minecraft.src.weasel.obj.WeaselString;
+
+import org.nfunk.jep.JEP;
 
 
 /**
@@ -61,7 +57,7 @@ public class Calculator {
 				return "0d" + i;
 		}
 	}
-	
+
 	public static boolean toBoolean(Object obj) {
 		if (obj instanceof WeaselInteger) {
 			return ((WeaselInteger) obj).get() != 0;
@@ -89,10 +85,10 @@ public class Calculator {
 		if (obj == null || !(obj instanceof Boolean)) {
 			throw new RuntimeException("Trying to convert " + obj + " to boolean.");
 		}
-		
-		return (Boolean)obj;
+
+		return (Boolean) obj;
 	}
-	
+
 	public static int toInteger(Object obj) {
 		if (obj instanceof WeaselInteger) {
 			return ((WeaselInteger) obj).get();
@@ -110,7 +106,7 @@ public class Calculator {
 			return ((Integer) obj);
 		}
 		if (obj instanceof WeaselBoolean) {
-			return ((WeaselBoolean) obj).get()?1:0;
+			return ((WeaselBoolean) obj).get() ? 1 : 0;
 		}
 
 		if (obj instanceof Integer) {
@@ -120,34 +116,34 @@ public class Calculator {
 		if (obj == null || !(obj instanceof Integer)) {
 			throw new RuntimeException("Trying to convert " + obj + " to integer.");
 		}
-		
-		return (Integer)obj;
+
+		return (Integer) obj;
 	}
-	
+
 	public static String toString(Object obj) {
 		if (obj instanceof WeaselInteger) {
-			return ((WeaselInteger) obj).get()+"";
+			return ((WeaselInteger) obj).get() + "";
 		}
 
 		if (obj instanceof Double) {
-			return obj+"";
+			return obj + "";
 		}
 
 		if (obj instanceof Float) {
-			return obj+"";
+			return obj + "";
 		}
 
 		if (obj instanceof Long) {
-			return obj+"";
+			return obj + "";
 		}
 		if (obj instanceof WeaselBoolean) {
-			return ((WeaselBoolean) obj).get()?"true":"false";
+			return ((WeaselBoolean) obj).get() ? "true" : "false";
 		}
 
 		if (obj instanceof Integer) {
-			return obj+"";
+			return obj + "";
 		}
-		
+
 		if (obj instanceof WeaselString) {
 			return ((WeaselString) obj).get();
 		}
@@ -155,99 +151,100 @@ public class Calculator {
 		if (obj == null || !(obj instanceof String)) {
 			throw new RuntimeException("Trying to convert " + obj + " to integer.");
 		}
-		
-		return (String)obj;
+
+		return (String) obj;
 	}
 
 
 
-	public static Object evalSimple(String expression, Map<String,Object> vars) {
-		
+	public static Object evalSimple(String expression, Map<String, Object> vars) {
+
 		JEP jep = new JEP();
-		for(Entry<String,Object> entry : vars.entrySet()) {
-			jep.addVariable(entry.getKey(), entry.getValue());			
+		for (Entry<String, Object> entry : vars.entrySet()) {
+			jep.addVariable(entry.getKey(), entry.getValue());
 		}
-		
+
 		jep.parseExpression(expression);
-		if(jep.hasError()) {
+		if (jep.hasError()) {
 			System.out.println(jep.getErrorInfo());
 			throw new CalcException(jep.getErrorInfo());
 		}
-		
+
 		return jep.getValueAsObject();
-		
+
 	}
-	
-	
-	
+
+
+
 	/**
 	 * Evaluate an expression with variables from VM.
 	 * 
 	 * @param expression expression, without semicolon. eg. (14+a)/2;
-	 * @param variableContainer weasel variable container (primary ENGINE, but sometimes also VariableMap).
+	 * @param variableContainer weasel variable container (primary ENGINE, but
+	 *            sometimes also VariableMap).
 	 * @return result of the expression.
 	 * @throws CalcException when evaluation fails.
 	 */
 	public static Object eval(String expression, IVariableContainer variableContainer) throws CalcException {
-		
-		if(expression == null || expression.length()==0) return null;
+
+		if (expression == null || expression.length() == 0) return null;
 
 		if (expression.contains(";")) {
 			throw new CalcException("Semicolon in a numeric expression. Possible injection attack.");
 		}
-		
+
 		expression = expression.replaceAll("\\s", "");
-		
+
 		// List of variables needed to evaluate this expression
-		List<String> varsNeeded = new ArrayList<String>();		
-		
+		List<String> varsNeeded = new ArrayList<String>();
+
 		// List of renamed variables (. -> __)
-		Map<String,String> rename = new HashMap<String,String>();
-		
+		Map<String, String> rename = new HashMap<String, String>();
+
 		JEP jep = new JEP();
 		jep.setAllowAssignment(true);
-		
+
 		Matcher matcher = variablePattern.matcher(expression);
-		
-		while(matcher.find()){
-			
-		    String name = matcher.group(1);
-		    String real = name;
-		    varsNeeded.add(name);
-		    
-		    //if name contains dot, replace it by __ to prevent "no such object" errors in JS
-		    if(name.contains(".")) {
-		    	real = name;
-		    	name = name.replaceAll("\\.", "__");
-		    	rename.put(real, name);
-		    	expression = expression.replace(real, name);
-		    }		    
-		    
-		    //add the variable into JS engine
-		    try {
-		    	jep.addVariable(name, variableContainer.getVariable(real).get());
-		    	//jsEngine.put(name, variableContainer.getVariable(real).get());
-		    }catch(NullPointerException npe) {
-		    	throw new WeaselRuntimeException("Variable "+real + " not set in this scope.");
-		    }
+
+		while (matcher.find()) {
+
+			String name = matcher.group(1);
+			String real = name;
+			varsNeeded.add(name);
+
+			//if name contains dot, replace it by __ to prevent "no such object" errors in JS
+			if (name.contains(".")) {
+				real = name;
+				name = name.replaceAll("\\.", "__");
+				rename.put(real, name);
+				expression = expression.replace(real, name);
+			}
+
+			//add the variable into JS engine
+			try {
+				jep.addVariable(name, variableContainer.getVariable(real).get());
+				//jsEngine.put(name, variableContainer.getVariable(real).get());
+			} catch (NullPointerException npe) {
+				throw new WeaselRuntimeException("Variable " + real + " not set in this scope.");
+			}
 		}
-		
+
 		jep.parseExpression(expression);
 
 		// execute JS
 		Object out = jep.getValueAsObject(); //eval(jsEngine, expression);
-		
-		if(jep.hasError()) {
+
+		if (jep.hasError()) {
 			System.out.println(jep.getErrorInfo());
 			throw new CalcException(jep.getErrorInfo());
 		}
 
 		// put variables back into Variable Map in Engine
-		for (String varname : varsNeeded) {			
+		for (String varname : varsNeeded) {
 			String real = varname;
-			if(rename.containsKey(varname)) real = rename.get(varname);
-			
-			variableContainer.getVariable(real).set(jep.getVarValue(varname));	
+			if (rename.containsKey(varname)) real = rename.get(varname);
+
+			variableContainer.getVariable(real).set(jep.getVarValue(varname));
 		}
 
 		return out;

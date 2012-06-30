@@ -1,11 +1,11 @@
 package net.minecraft.src;
 
+
 /**
  * Decorative block tile entity - because of the renderer.
  * 
  * @author MightyPork
  * @copy (c) 2012
- * 
  */
 public class PCde_TileEntityWalkable extends PC_TileEntity {
 
@@ -23,6 +23,7 @@ public class PCde_TileEntityWalkable extends PC_TileEntity {
 	 * 
 	 * @return false
 	 */
+	@Override
 	public boolean canUpdate() {
 		return false;
 	}

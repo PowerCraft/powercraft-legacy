@@ -5,14 +5,17 @@
       (c) Copyright 2007, Nathan Funk and Richard Morris
       See LICENSE-*.txt for license information.
 
-*****************************************************************************/
+ *****************************************************************************/
 
 package org.nfunk.jepexamples;
-import org.nfunk.jep.*;
+
+
+import org.nfunk.jep.JEP;
+
 
 /**
- * A seven line program for testing whether the JEP library can be found
- * by the compiler and at run-time.<br>
+ * A seven line program for testing whether the JEP library can be found by the
+ * compiler and at run-time.<br>
  * Upon successful compilation and running of the program, the program should
  * print out one line: "1+2 = 3.0"
  */

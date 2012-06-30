@@ -19,6 +19,7 @@ public class WeaselRuntimeException extends RuntimeException {
 
 	/**
 	 * Other runtime exception wrapped into WRE
+	 * 
 	 * @param e
 	 */
 	public WeaselRuntimeException(RuntimeException e) {

@@ -1,16 +1,17 @@
 package net.minecraft.src;
 
+
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Random;
 import java.util.Set;
+
 
 /**
  * Entity Proximity Sensor
  * 
  * @author MightyPork
  * @copy (c) 2012
- * 
  */
 public class PClo_BlockSensor extends BlockContainer implements PC_IBlockType, PC_ISwapTerrain {
 
@@ -37,7 +38,6 @@ public class PClo_BlockSensor extends BlockContainer implements PC_IBlockType, P
 		return i;
 	}
 
-	@SuppressWarnings("rawtypes")
 	@Override
 	public void getCollidingBoundingBoxes(World world, int i, int j, int k, AxisAlignedBB axisalignedbb, ArrayList arraylist) {
 		setBlockBounds(0F, 0F, 0F, 1F, 0.255F, 1F);
@@ -60,7 +60,9 @@ public class PClo_BlockSensor extends BlockContainer implements PC_IBlockType, P
 		if (ihold != null) {
 			if (ihold.getItem() instanceof ItemBlock && ihold.getItem().shiftedIndex != blockID) {
 				Block bhold = Block.blocksList[ihold.getItem().shiftedIndex];
-				if (bhold instanceof PC_IBlockType) { return false; }
+				if (bhold instanceof PC_IBlockType) {
+					return false;
+				}
 			}
 		}
 
@@ -133,7 +135,9 @@ public class PClo_BlockSensor extends BlockContainer implements PC_IBlockType, P
 
 	@Override
 	public void randomDisplayTick(World world, int i, int j, int k, Random random) {
-		if (!((PClo_TileEntitySensor) world.getBlockTileEntity(i, j, k)).active) { return; }
+		if (!((PClo_TileEntitySensor) world.getBlockTileEntity(i, j, k)).active) {
+			return;
+		}
 
 		double ii = i + 0.2D + random.nextDouble() * 0.6;
 		double jj = j + 0.5D + random.nextDouble() * 0.4;

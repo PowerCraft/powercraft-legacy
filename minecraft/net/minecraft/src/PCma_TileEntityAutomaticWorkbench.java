@@ -1,5 +1,6 @@
 package net.minecraft.src;
 
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -10,10 +11,8 @@ import java.util.List;
  * 
  * @author MightyPork
  * @copy (c) 2012
- * 
  */
-public class PCma_TileEntityAutomaticWorkbench extends PC_TileEntity implements IInventory, PC_IStateReportingInventory,
-		PC_ISpecialAccessInventory {
+public class PCma_TileEntityAutomaticWorkbench extends PC_TileEntity implements IInventory, PC_IStateReportingInventory, PC_ISpecialAccessInventory {
 	private static Container fakeContainer = new PCma_ContainerFake();
 
 	/**
@@ -58,12 +57,15 @@ public class PCma_TileEntityAutomaticWorkbench extends PC_TileEntity implements 
 	}
 
 	/**
-	 * @return does crafting of Recipe Grid output the same as crafting of Storage Grid?
+	 * @return does crafting of Recipe Grid output the same as crafting of
+	 *         Storage Grid?
 	 */
 	private boolean areProductsMatching() {
 		ItemStack recipe = getRecipeProduct();
 		ItemStack storage = getStorageProduct();
-		if (recipe == null || storage == null) { return false; }
+		if (recipe == null || storage == null) {
+			return false;
+		}
 		return storage.isStackEqual(recipe);
 	}
 
@@ -72,7 +74,9 @@ public class PCma_TileEntityAutomaticWorkbench extends PC_TileEntity implements 
 	 */
 	public ItemStack getStorageProduct() {
 		ItemStack product = CraftingManager.getInstance().findMatchingRecipe(getStorageAsCraftingGrid(null));
-		if (product != null) { return product.copy(); }
+		if (product != null) {
+			return product.copy();
+		}
 		return null;
 	}
 
@@ -81,14 +85,18 @@ public class PCma_TileEntityAutomaticWorkbench extends PC_TileEntity implements 
 	 */
 	public ItemStack getRecipeProduct() {
 		ItemStack product = CraftingManager.getInstance().findMatchingRecipe(getRecipeAsCraftingGrid(null));
-		if (product != null) { return product.copy(); }
+		if (product != null) {
+			return product.copy();
+		}
 		return null;
 	}
 
 	@Override
 	public boolean isContainerEmpty() {
 		for (int i = 0; i < 9; i++) {
-			if (getStackInSlot(i) != null) { return false; }
+			if (getStackInSlot(i) != null) {
+				return false;
+			}
 		}
 		return true;
 	}
@@ -96,7 +104,9 @@ public class PCma_TileEntityAutomaticWorkbench extends PC_TileEntity implements 
 	@Override
 	public boolean isContainerFull() {
 		for (int i = 0; i < 9; i++) {
-			if (getStackInSlot(i) == null && getStackInSlot(i + 9) != null) { return false; }
+			if (getStackInSlot(i) == null && getStackInSlot(i + 9) != null) {
+				return false;
+			}
 		}
 		return true;
 	}
@@ -183,7 +193,9 @@ public class PCma_TileEntityAutomaticWorkbench extends PC_TileEntity implements 
 
 
 	private boolean insertStackIntoInventory_do(ItemStack stack) {
-		if (stack == null) { return false; }
+		if (stack == null) {
+			return false;
+		}
 
 		// prepare table of matching slots.
 		boolean[] matching = new boolean[9];
@@ -192,8 +204,7 @@ public class PCma_TileEntityAutomaticWorkbench extends PC_TileEntity implements 
 				continue;
 			}
 			ItemStack storageStack = getStackInSlot(i);
-			matching[i] = (stack.isItemEqual(getStackInSlot(i + 9)) && (storageStack == null || storageStack.stackSize <= storageStack
-					.getMaxStackSize()));
+			matching[i] = (stack.isItemEqual(getStackInSlot(i + 9)) && (storageStack == null || storageStack.stackSize <= storageStack.getMaxStackSize()));
 		}
 
 		// cycle through slots until they are full or stack is empty.
@@ -271,11 +282,12 @@ public class PCma_TileEntityAutomaticWorkbench extends PC_TileEntity implements 
 			}
 
 			if (currentStack != null) {
-				if ((forceEject && currentStack.stackSize > 0) || currentStack.stackSize >= currentStack.getMaxStackSize()
-						|| redstoneActivatedMode()) {
+				if ((forceEject && currentStack.stackSize > 0) || currentStack.stackSize >= currentStack.getMaxStackSize() || redstoneActivatedMode()) {
 					dispenseItem(currentStack);
 					currentStack = null;
-					if (redstoneActivatedMode()) { return; }
+					if (redstoneActivatedMode()) {
+						return;
+					}
 				}
 			}
 		}
@@ -328,7 +340,9 @@ public class PCma_TileEntityAutomaticWorkbench extends PC_TileEntity implements 
 	 * @return something dispensed
 	 */
 	private boolean dispenseItem(ItemStack stack2drop) {
-		if (stack2drop == null || stack2drop.stackSize <= 0) { return false; }
+		if (stack2drop == null || stack2drop.stackSize <= 0) {
+			return false;
+		}
 
 		int meta = worldObj.getBlockMetadata(xCoord, yCoord, zCoord);
 		int i1 = 0;
@@ -424,6 +438,7 @@ public class PCma_TileEntityAutomaticWorkbench extends PC_TileEntity implements 
 	 * 
 	 * @return false
 	 */
+	@Override
 	public boolean canUpdate() {
 		return false;
 	}
@@ -468,9 +483,11 @@ public class PCma_TileEntityAutomaticWorkbench extends PC_TileEntity implements 
 
 	@Override
 	public boolean isUseableByPlayer(EntityPlayer entityplayer) {
-		if (worldObj.getBlockTileEntity(xCoord, yCoord, zCoord) != this) { return false; }
+		if (worldObj.getBlockTileEntity(xCoord, yCoord, zCoord) != this) {
+			return false;
+		}
 		return entityplayer.getDistanceSq(xCoord + 0.5D, yCoord + 0.5D, zCoord + 0.5D) <= 64D;
-	};
+	}
 
 	@Override
 	public ItemStack getStackInSlotOnClosing(int par1) {

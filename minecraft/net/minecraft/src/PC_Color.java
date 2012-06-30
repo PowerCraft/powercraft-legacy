@@ -1,5 +1,6 @@
 package net.minecraft.src;
 
+
 /**
  * PowerCraft color handling and manipulation class.
  * 
@@ -96,7 +97,8 @@ public class PC_Color implements PC_INBT {
 
 	/**
 	 * Set visibility flag.<br>
-	 * This flag can be used to toggle particle rendering in lasers, for example.
+	 * This flag can be used to toggle particle rendering in lasers, for
+	 * example.
 	 * 
 	 * @param visibility state
 	 * @return self
@@ -217,16 +219,14 @@ public class PC_Color implements PC_INBT {
 	public static final int light_colors[] = { 0x333333, 0xff0000, 0x009900, 0x553300, 0x3333ff, 0x9900ff, 0x00ffff, 0x666666, 0x434343, 0xe881a8, 0x41ff34, 0xffff00, 0x6666ff, 0xff0099, 0xff9900, 0xf0f0f0 };
 
 	/**
-	 * Enum of dye colors.
-	 * call dye.RED.meta for the int damage value.
+	 * Enum of dye colors. call dye.RED.meta for the int damage value.
 	 * 
 	 * @author MightyPork
 	 * @copy (c) 2012
 	 */
 	@SuppressWarnings("javadoc")
 	public static enum dye {
-		BLACK(0), RED(1), GREEN(2), BROWN(3), BLUE(4), PURPLE(5), CYAN(6), LIGHTGRAY(7), GRAY(8), PINK(9), LIME(10), YELLOW(11), LIGHTBLUE(
-				12), MAGENTA(13), ORANGE(14), WHITE(15);
+		BLACK(0), RED(1), GREEN(2), BROWN(3), BLUE(4), PURPLE(5), CYAN(6), LIGHTGRAY(7), GRAY(8), PINK(9), LIME(10), YELLOW(11), LIGHTBLUE(12), MAGENTA(13), ORANGE(14), WHITE(15);
 
 		public int meta;
 
@@ -236,16 +236,14 @@ public class PC_Color implements PC_INBT {
 	}
 
 	/**
-	 * Enum of cloth colors.
-	 * call cloth.RED.meta for the int meta value.
+	 * Enum of cloth colors. call cloth.RED.meta for the int meta value.
 	 * 
 	 * @author MightyPork
 	 * @copy (c) 2012
 	 */
 	@SuppressWarnings("javadoc")
 	public static enum cloth {
-		BLACK(15), RED(14), GREEN(13), BROWN(12), BLUE(11), PURPLE(10), CYAN(9), LIGHTGRAY(8), GRAY(7), PINK(6), LIME(5), YELLOW(4), LIGHTBLUE(
-				3), MAGENTA(2), ORANGE(1), WHITE(0);
+		BLACK(15), RED(14), GREEN(13), BROWN(12), BLUE(11), PURPLE(10), CYAN(9), LIGHTGRAY(8), GRAY(7), PINK(6), LIME(5), YELLOW(4), LIGHTBLUE(3), MAGENTA(2), ORANGE(1), WHITE(0);
 
 		public int meta;
 

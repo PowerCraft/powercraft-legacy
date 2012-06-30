@@ -1,5 +1,6 @@
 package net.minecraft.src;
 
+
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Random;
@@ -7,13 +8,13 @@ import java.util.Set;
 
 import net.minecraft.src.forge.ITextureProvider;
 
+
 /**
  * Decorative block, non solid;<br>
  * Subtypes: iron ledge
  * 
  * @author MightyPork
  * @copy (c) 2012
- * 
  */
 public class PCde_BlockWalkable extends BlockContainer implements PC_IBlockType, PC_ISwapTerrain, ITextureProvider {
 
@@ -45,7 +46,9 @@ public class PCde_BlockWalkable extends BlockContainer implements PC_IBlockType,
 
 	@Override
 	public int getBlockTextureFromSideAndMetadata(int side, int meta) {
-		if (meta == 0) { return 22; }
+		if (meta == 0) {
+			return 22;
+		}
 		return 0;
 	}
 
@@ -53,14 +56,18 @@ public class PCde_BlockWalkable extends BlockContainer implements PC_IBlockType,
 	public int colorMultiplier(IBlockAccess iblockaccess, int x, int y, int z) {
 		// colors particles
 		PCde_TileEntityWalkable ted = getTE(iblockaccess, x, y, z);
-		if (ted.type == 0) { return 0xffffff; }
+		if (ted.type == 0) {
+			return 0xffffff;
+		}
 		return 0xffffff;
 
 	}
 
 	@Override
 	public int getRenderColor(int i) {
-		if (i == 0) { return 0xcccccc; }
+		if (i == 0) {
+			return 0xcccccc;
+		}
 		return 0xffffff;
 	}
 
@@ -142,21 +149,35 @@ public class PCde_BlockWalkable extends BlockContainer implements PC_IBlockType,
 
 	private static boolean isFallBlock(World world, PC_CoordI pos) {
 		int id = pos.getId(world);
-		if (id == 0 || Block.blocksList[id] == null) { return true; }
+		if (id == 0 || Block.blocksList[id] == null) {
+			return true;
+		}
 
-		if (id == Block.ladder.blockID || id == Block.vine.blockID) { return false; }
+		if (id == Block.ladder.blockID || id == Block.vine.blockID) {
+			return false;
+		}
 
-		if (Block.blocksList[id].getCollisionBoundingBoxFromPool(world, pos.x, pos.y, pos.z) == null) { return true; }
-		if (Block.blocksList[id].blockMaterial.isLiquid() || !Block.blocksList[id].blockMaterial.isSolid()) { return true; }
-		if (PC_BlockUtils.getBlockFlags(world, pos).contains("BELT")) { return true; }
+		if (Block.blocksList[id].getCollisionBoundingBoxFromPool(world, pos.x, pos.y, pos.z) == null) {
+			return true;
+		}
+		if (Block.blocksList[id].blockMaterial.isLiquid() || !Block.blocksList[id].blockMaterial.isSolid()) {
+			return true;
+		}
+		if (PC_BlockUtils.getBlockFlags(world, pos).contains("BELT")) {
+			return true;
+		}
 		return false;
 	}
 
 	private static boolean isClimbBlock(World world, PC_CoordI pos) {
 		int id = pos.getId(world);
-		if (id == 0 || Block.blocksList[id] == null) { return false; }
+		if (id == 0 || Block.blocksList[id] == null) {
+			return false;
+		}
 
-		if (id == Block.ladder.blockID || id == Block.vine.blockID) { return true; }
+		if (id == Block.ladder.blockID || id == Block.vine.blockID) {
+			return true;
+		}
 		return false;
 	}
 
@@ -288,7 +309,9 @@ public class PCde_BlockWalkable extends BlockContainer implements PC_IBlockType,
 	 */
 	public PCde_TileEntityWalkable getTE(IBlockAccess iblockaccess, int x, int y, int z) {
 		TileEntity te = iblockaccess.getBlockTileEntity(x, y, z);
-		if (te == null) { return null; }
+		if (te == null) {
+			return null;
+		}
 		return (PCde_TileEntityWalkable) te;
 	}
 
@@ -296,7 +319,9 @@ public class PCde_BlockWalkable extends BlockContainer implements PC_IBlockType,
 	public int getBlockTexture(IBlockAccess iblockaccess, int x, int y, int z, int side) {
 		// in world - block
 		PCde_TileEntityWalkable ted = getTE(iblockaccess, x, y, z);
-		if (ted.type == 0) { return 22; }
+		if (ted.type == 0) {
+			return 22;
+		}
 		return 0;
 
 	}
@@ -313,7 +338,9 @@ public class PCde_BlockWalkable extends BlockContainer implements PC_IBlockType,
 
 	@Override
 	public boolean shouldSideBeRendered(IBlockAccess iblockaccess, int i, int j, int k, int l) {
-		if (iblockaccess.getBlockMetadata(i, j, k) == 0) { return true; }
+		if (iblockaccess.getBlockMetadata(i, j, k) == 0) {
+			return true;
+		}
 		return super.shouldSideBeRendered(iblockaccess, i, j, k, l);
 	}
 

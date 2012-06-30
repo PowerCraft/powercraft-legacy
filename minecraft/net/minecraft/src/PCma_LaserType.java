@@ -1,11 +1,11 @@
 package net.minecraft.src;
 
+
 /**
  * Type of Laser Device
  * 
  * @author MightyPork
  * @copy (c) 2012
- * 
  */
 public class PCma_LaserType {
 	/** killer beam */

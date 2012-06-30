@@ -1,10 +1,10 @@
 package net.minecraft.src;
 
+
 /**
  * Container used by GRES for inventory slots in the GUI.
  * 
  * @author XOR19
- *
  */
 public class PC_GresContainerManager extends Container {
 
@@ -21,6 +21,7 @@ public class PC_GresContainerManager extends Container {
 
 	/**
 	 * Gres Container for player
+	 * 
 	 * @param player the player
 	 */
 	public PC_GresContainerManager(EntityPlayer player) {
@@ -45,6 +46,7 @@ public class PC_GresContainerManager extends Container {
 
 	/**
 	 * Set the GRES GUI (gui which uses this container)
+	 * 
 	 * @param gresGui
 	 */
 	public void setGresGui(PC_IGresGui gresGui) {
@@ -64,7 +66,9 @@ public class PC_GresContainerManager extends Container {
 	@Override
 	protected void retrySlotClick(int par1, int par2, boolean par3, EntityPlayer par4EntityPlayer) {
 
-		if (((PC_GresGui) gresGui).gui instanceof PCco_GuiCraftingTool) { return; }
+		if (((PC_GresGui) gresGui).gui instanceof PCco_GuiCraftingTool) {
+			return;
+		}
 
 		super.retrySlotClick(par1, par2, par3, par4EntityPlayer);
 
@@ -76,7 +80,9 @@ public class PC_GresContainerManager extends Container {
 		// if (((PC_GresGui) gresGui).gui instanceof PCco_GuiCraftingTool){
 		// }
 
-		if (slotIndex < playerSlots && !gresGui.canShiftTransfer()) { return null; }
+		if (slotIndex < playerSlots && !gresGui.canShiftTransfer()) {
+			return null;
+		}
 
 		ItemStack itemstack = null;
 		Slot slot = (Slot) inventorySlots.get(slotIndex);
@@ -111,7 +117,9 @@ public class PC_GresContainerManager extends Container {
 	}
 
 	/**
-	 * Set a slot at position in inventorySlots list. Slot's slotNumber will be set to the ID.
+	 * Set a slot at position in inventorySlots list. Slot's slotNumber will be
+	 * set to the ID.
+	 * 
 	 * @param id position in the list
 	 * @param newSlot the added slot.
 	 */
@@ -125,6 +133,7 @@ public class PC_GresContainerManager extends Container {
 
 	/**
 	 * Remove a slot with ID
+	 * 
 	 * @param id slot id
 	 */
 	public void removeSlot(int id) {
@@ -145,7 +154,9 @@ public class PC_GresContainerManager extends Container {
 
 
 	private int getLimit(Slot slot, int a, boolean flag) {
-		if (flag) { return a; }
+		if (flag) {
+			return a;
+		}
 		return Math.min(a, slot.inventory.getInventoryStackLimit());
 	}
 
@@ -160,9 +171,7 @@ public class PC_GresContainerManager extends Container {
 			while (itemstack.stackSize > 0 && (!flag && k < j || flag && k >= i)) {
 				Slot slot = (Slot) inventorySlots.get(k);
 				ItemStack itemstack1 = slot.getStack();
-				if (itemstack1 != null && (flag || itemstack1.stackSize < slot.inventory.getInventoryStackLimit())
-						&& itemstack1.itemID == itemstack.itemID
-						&& (!itemstack.getHasSubtypes() || itemstack.getItemDamage() == itemstack1.getItemDamage())) {
+				if (itemstack1 != null && (flag || itemstack1.stackSize < slot.inventory.getInventoryStackLimit()) && itemstack1.itemID == itemstack.itemID && (!itemstack.getHasSubtypes() || itemstack.getItemDamage() == itemstack1.getItemDamage())) {
 					int i1 = itemstack1.stackSize + itemstack.stackSize;
 					if (i1 <= getLimit(slot, itemstack.getMaxStackSize(), flag)) {
 						itemstack.stackSize = 0;

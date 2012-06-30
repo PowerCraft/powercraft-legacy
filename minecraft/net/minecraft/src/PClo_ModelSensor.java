@@ -1,11 +1,11 @@
 package net.minecraft.src;
 
+
 /**
  * Model for PClo_TileEntityRadioRenderer.
  * 
  * @author MightyPork
  * @copy (c) 2012
- * 
  */
 public class PClo_ModelSensor extends ModelBase {
 

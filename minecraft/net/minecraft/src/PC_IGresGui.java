@@ -1,12 +1,13 @@
 package net.minecraft.src;
 
+
 /**
  * GRES GUI interface.<br>
- * This is used by the GUI wrapper class {@link PC_GresGui}, and passed to widgets.
+ * This is used by the GUI wrapper class {@link PC_GresGui}, and passed to
+ * widgets.
  * 
  * @author MightyPork
  * @copy (c) 2012
- * 
  */
 public interface PC_IGresGui {
 
@@ -43,18 +44,21 @@ public interface PC_IGresGui {
 
 	/**
 	 * On "craft matrix changed" event is generated
+	 * 
 	 * @param iinventory
 	 */
 	public abstract void onCraftMatrixChanged(IInventory iinventory);
 
 	/**
 	 * Get the container manager
+	 * 
 	 * @return container
 	 */
 	public abstract Container getContainer();
-	
+
 	/**
 	 * Set focused element.
+	 * 
 	 * @param widget
 	 */
 	public void setFocus(PC_GresWidget widget);

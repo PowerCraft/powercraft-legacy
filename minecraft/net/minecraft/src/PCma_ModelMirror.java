@@ -1,11 +1,11 @@
 package net.minecraft.src;
 
+
 /**
  * Mirror model
  * 
  * @author MightyPork
  * @copy (c) 2012
- * 
  */
 public class PCma_ModelMirror extends ModelBase {
 

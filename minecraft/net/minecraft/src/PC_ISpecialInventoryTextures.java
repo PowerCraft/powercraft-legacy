@@ -1,5 +1,6 @@
 package net.minecraft.src;
 
+
 /**
  * Block with special textures for item renderer
  * 

@@ -1,13 +1,14 @@
 package net.minecraft.src;
 
+
 import java.util.List;
+
 
 /**
  * Resizable GUI multi-line text label with fixed width and dynamic height
  * 
  * @author MightyPork
  * @copy (c) 2012
- * 
  */
 public class PC_GresLabelMultiline extends PC_GresWidget {
 

@@ -1,33 +1,30 @@
 package net.minecraft.src;
 
+
 import java.util.ArrayList;
 
 import net.minecraft.client.Minecraft;
 
 import org.lwjgl.opengl.GL11;
 
+
 /**
- * 
  * Base class for GUI-system
  * 
  * @authors XOR19, Rapus95, MightyPork
  * @copy (c) 2012
- * 
  */
 public abstract class PC_GresWidget extends Gui {
-
 
 
 	/** Minecraft instance */
 	protected static Minecraft mc = PC_Utils.mc();
 
 	/**
-	 * 
 	 * align vertical
 	 * 
 	 * @authors XOR19 & Rapus95
 	 * @copy (c) 2012
-	 * 
 	 */
 	public enum PC_GresAlign {
 		/** LEFT */
@@ -45,10 +42,10 @@ public abstract class PC_GresWidget extends Gui {
 	}
 
 	@SuppressWarnings("javadoc")
-	public static final int textColorEnabled = 0, textColorShadowEnabled = 1, textColorDisabled = 2, textColorShadowDisabled = 3;
+	public static final int textColorEnabled = 0, textColorShadowEnabled = 1, textColorDisabled = 2, textColorShadowDisabled = 3, textColorHover = 4, textColorActive = 5;
 
 	/** Array of text colors */
-	protected int color[] = { 0xff000000, 0x00000000, 0xff333333, 0x00000000 };
+	protected int color[] = { 0x000000, 0x000000, 0x333333, 0x000000, 0x000000, 0x000000};
 
 	/** Parent widget */
 	protected PC_GresWidget parent = null;
@@ -99,8 +96,11 @@ public abstract class PC_GresWidget extends Gui {
 	/** Container Manager */
 	protected PC_GresContainerManager containerManager = null;
 
-	/** Widget ID */
+	/** Widget ID (general purpose) */
 	public int id = -1;
+	
+	/** Additional widget tag (general purpose) */
+	public String tag = "";
 
 	/**
 	 * A widget
@@ -167,6 +167,24 @@ public abstract class PC_GresWidget extends Gui {
 	public int getId() {
 		return this.id;
 	}
+	
+	/**
+	 * Get widget tag
+	 * @return tag
+	 */
+	public String getTag() {
+		return tag;
+	}
+
+	/**
+	 * Set widget tag
+	 * @param tag the tag
+	 * @return this
+	 */
+	public PC_GresWidget setTag(String tag) {
+		this.tag = tag;
+		return this;
+	}
 
 
 
@@ -174,7 +192,9 @@ public abstract class PC_GresWidget extends Gui {
 	 * @return widget's font renderer
 	 */
 	public FontRenderer getFontRenderer() {
-		if (fontRenderer == null) { return mc.fontRenderer; }
+		if (fontRenderer == null) {
+			return mc.fontRenderer;
+		}
 		return fontRenderer;
 	}
 
@@ -497,7 +517,9 @@ public abstract class PC_GresWidget extends Gui {
 	 * @return this
 	 */
 	public PC_GresWidget add(PC_GresWidget newwidget) {
-		if (!canAddWidget) { return null; }
+		if (!canAddWidget) {
+			return null;
+		}
 		newwidget.parent = this;
 		newwidget.setFontRenderer(fontRenderer);
 		newwidget.setContainerManager(containerManager);
@@ -544,7 +566,9 @@ public abstract class PC_GresWidget extends Gui {
 	 * @return this
 	 */
 	public PC_GresWidget setColor(int colorIndex, int color) {
-		if (colorIndex < 0 || colorIndex > 3) { return this; }
+		if (colorIndex < 0 || colorIndex > 3) {
+			return this;
+		}
 		this.color[colorIndex] = color;
 		return this;
 	}
@@ -556,7 +580,9 @@ public abstract class PC_GresWidget extends Gui {
 	 * @return color number, eg. 0xFFFFFF
 	 */
 	public int getColor(int colorIndex) {
-		if (colorIndex < 0 || colorIndex > 3) { return 0; }
+		if (colorIndex < 0 || colorIndex > 3) {
+			return 0;
+		}
 		return color[colorIndex];
 	}
 
@@ -592,7 +618,7 @@ public abstract class PC_GresWidget extends Gui {
 		if (color[enabled ? textColorShadowEnabled : textColorShadowDisabled] != 0) {
 			fr.drawString(text, x + 1, y + 1, color[enabled ? textColorShadowEnabled : textColorShadowDisabled]);
 		}
-		fr.drawString(text, x, y, color[enabled ? textColorEnabled : textColorDisabled]);
+		fr.drawString(text, x, y, color[enabled ? (isMouseOver?textColorHover:textColorEnabled) : textColorDisabled]);
 	}
 
 	/**
@@ -633,7 +659,8 @@ public abstract class PC_GresWidget extends Gui {
 	protected abstract void render(PC_CoordI posOffset);
 
 	/**
-	 * Get the widget under mouse cursor. First tries children, then self, null at last.
+	 * Get the widget under mouse cursor. First tries children, then self, null
+	 * at last.
 	 * 
 	 * @param mousePos mouse absolute x
 	 * @return the widget under mouse
@@ -744,7 +771,8 @@ public abstract class PC_GresWidget extends Gui {
 	 * @param texture texture to render (filename)
 	 * @param rectSize rectangle size
 	 * @param imgOffset offset within the texture image (from top left)
-	 * @param imgSize size of the whole "scalable" region in texture file (eg. the whole huge "button" field)
+	 * @param imgSize size of the whole "scalable" region in texture file (eg.
+	 *            the whole huge "button" field)
 	 */
 	protected void renderTextureSliced(PC_CoordI offset, String texture, PC_CoordI rectSize, PC_CoordI imgOffset, PC_CoordI imgSize) {
 		GL11.glBindTexture(GL11.GL_TEXTURE_2D, mc.renderEngine.getTexture(texture));
@@ -768,8 +796,7 @@ public abstract class PC_GresWidget extends Gui {
 		drawTexturedModalRect(pos.x + offset.x, pos.y + offset.y + ryh1, imgOffset.x, imgOffset.y + imgSize.y - ryh2, rxh1, ryh2);
 
 		// right bottom square
-		drawTexturedModalRect(pos.x + offset.x + rxh1, pos.y + offset.y + ryh1, imgOffset.x + imgSize.x - rxh2, imgOffset.y + imgSize.y
-				- ryh2, rxh2, ryh2);
+		drawTexturedModalRect(pos.x + offset.x + rxh1, pos.y + offset.y + ryh1, imgOffset.x + imgSize.x - rxh2, imgOffset.y + imgSize.y - ryh2, rxh2, ryh2);
 
 		GL11.glDisable(GL11.GL_BLEND);
 
@@ -783,10 +810,10 @@ public abstract class PC_GresWidget extends Gui {
 	 * @param texture texture to render (filename)
 	 * @param rectSize rectangle size
 	 * @param imgOffset offset within the texture image (from top left)
-	 * @param imgSize size of the whole "scalable" region in texture file (eg. the whole huge "button" field)
+	 * @param imgSize size of the whole "scalable" region in texture file (eg.
+	 *            the whole huge "button" field)
 	 */
-	protected static void renderTextureSliced_static(Gui gui, PC_CoordI startPos, String texture, PC_CoordI rectSize, PC_CoordI imgOffset,
-			PC_CoordI imgSize) {
+	protected static void renderTextureSliced_static(Gui gui, PC_CoordI startPos, String texture, PC_CoordI rectSize, PC_CoordI imgOffset, PC_CoordI imgSize) {
 		GL11.glBindTexture(GL11.GL_TEXTURE_2D, mc.renderEngine.getTexture(texture));
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 		GL11.glEnable(GL11.GL_BLEND);
@@ -807,8 +834,7 @@ public abstract class PC_GresWidget extends Gui {
 		gui.drawTexturedModalRect(startPos.x, startPos.y + ryh1, imgOffset.x, imgOffset.y + imgSize.y - ryh2, rxh1, ryh2);
 
 		// right bottom square
-		gui.drawTexturedModalRect(startPos.x + rxh1, startPos.y + ryh1, imgOffset.x + imgSize.x - rxh2, imgOffset.y + imgSize.y - ryh2,
-				rxh2, ryh2);
+		gui.drawTexturedModalRect(startPos.x + rxh1, startPos.y + ryh1, imgOffset.x + imgSize.x - rxh2, imgOffset.y + imgSize.y - ryh2, rxh2, ryh2);
 
 
 		GL11.glDisable(GL11.GL_BLEND);
@@ -859,7 +885,6 @@ public abstract class PC_GresWidget extends Gui {
 
 	/**
 	 * Called when Widget added to another widget
-	 * 
 	 */
 	public void callAddedToWidget() {
 		addedToWidget();
@@ -870,7 +895,6 @@ public abstract class PC_GresWidget extends Gui {
 
 	/**
 	 * Called when Widget added to another widget
-	 * 
 	 */
 	public abstract void addedToWidget();
 

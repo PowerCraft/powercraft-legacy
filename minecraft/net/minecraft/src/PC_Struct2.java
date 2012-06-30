@@ -1,11 +1,11 @@
 package net.minecraft.src;
 
+
 /**
  * Structure of 2 objects.
  * 
  * @author MightyPork
  * @copy (c) 2012
- * 
  * @param <T1> 1st object class
  * @param <T2> 2nd object class
  */
@@ -99,9 +99,13 @@ public class PC_Struct2<T1, T2> {
 
 	@Override
 	public boolean equals(Object obj) {
-		if (obj == null) { return false; }
+		if (obj == null) {
+			return false;
+		}
 
-		if (!this.getClass().equals(obj.getClass())) { return false; }
+		if (!this.getClass().equals(obj.getClass())) {
+			return false;
+		}
 
 		PC_Struct2<?, ?> t = (PC_Struct2<?, ?>) obj;
 
@@ -115,7 +119,7 @@ public class PC_Struct2<T1, T2> {
 		hash += (a == null ? 0 : a.hashCode());
 		hash += (b == null ? 0 : b.hashCode());
 		return hash;
-	};
+	}
 
 	@Override
 	public String toString() {

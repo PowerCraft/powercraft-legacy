@@ -1,11 +1,11 @@
 package net.minecraft.src;
 
+
 /**
  * Frame widget with padding and horizontal layout
  * 
  * @author MightyPork
  * @copy (c) 2012
- * 
  */
 public class PC_GresFrame extends PC_GresWidget {
 

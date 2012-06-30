@@ -1,5 +1,6 @@
 package net.minecraft.src;
 
+
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Random;
@@ -7,13 +8,13 @@ import java.util.Set;
 
 import net.minecraft.src.forge.ITextureProvider;
 
+
 /**
  * Decorative block;<br>
  * Subtypes: iron frame, redstone storage
  * 
  * @author MightyPork
  * @copy (c) 2012
- * 
  */
 public class PCde_BlockDeco extends BlockContainer implements PC_IBlockType, PC_ISwapTerrain, ITextureProvider {
 
@@ -46,8 +47,12 @@ public class PCde_BlockDeco extends BlockContainer implements PC_IBlockType, PC_
 	@Override
 	public int getBlockTextureFromSideAndMetadata(int side, int meta) {
 		// item + particle
-		if (meta == 0) { return 22; }
-		if (meta == 1) { return 129; }
+		if (meta == 0) {
+			return 22;
+		}
+		if (meta == 1) {
+			return 129;
+		}
 		return 0;
 	}
 
@@ -55,16 +60,24 @@ public class PCde_BlockDeco extends BlockContainer implements PC_IBlockType, PC_
 	public int colorMultiplier(IBlockAccess iblockaccess, int x, int y, int z) {
 		// colors particles
 		PCde_TileEntityDeco ted = getTE(iblockaccess, x, y, z);
-		if (ted.type == 0) { return 0xffffff; }
-		if (ted.type == 1) { return 0xcc0000; }
+		if (ted.type == 0) {
+			return 0xffffff;
+		}
+		if (ted.type == 1) {
+			return 0xcc0000;
+		}
 		return 0xffffff;
 
 	}
 
 	@Override
 	public int getRenderColor(int i) {
-		if (i == 0) { return 0x999999; }
-		if (i == 1) { return 0xcc0000; }
+		if (i == 0) {
+			return 0x999999;
+		}
+		if (i == 1) {
+			return 0xcc0000;
+		}
 		return 0xffffff;
 	}
 
@@ -90,7 +103,6 @@ public class PCde_BlockDeco extends BlockContainer implements PC_IBlockType, PC_
 
 	}
 
-	@SuppressWarnings("rawtypes")
 	@Override
 	public void getCollidingBoundingBoxes(World world, int x, int y, int z, AxisAlignedBB axisalignedbb, ArrayList arraylist) {
 
@@ -117,7 +129,9 @@ public class PCde_BlockDeco extends BlockContainer implements PC_IBlockType, PC_
 	 */
 	public PCde_TileEntityDeco getTE(IBlockAccess iblockaccess, int x, int y, int z) {
 		TileEntity te = iblockaccess.getBlockTileEntity(x, y, z);
-		if (te == null) { return null; }
+		if (te == null) {
+			return null;
+		}
 		return (PCde_TileEntityDeco) te;
 	}
 
@@ -125,8 +139,11 @@ public class PCde_BlockDeco extends BlockContainer implements PC_IBlockType, PC_
 	public int getBlockTexture(IBlockAccess iblockaccess, int x, int y, int z, int side) {
 		// in world - block
 		PCde_TileEntityDeco ted = getTE(iblockaccess, x, y, z);
-		if (ted.type == 0) { return 22; }
-		if (ted.type == 1) { return 129; // only this used
+		if (ted.type == 0) {
+			return 22;
+		}
+		if (ted.type == 1) {
+			return 129; // only this used
 		}
 		return 0;
 
@@ -144,7 +161,9 @@ public class PCde_BlockDeco extends BlockContainer implements PC_IBlockType, PC_
 
 	@Override
 	public boolean shouldSideBeRendered(IBlockAccess iblockaccess, int i, int j, int k, int l) {
-		if (iblockaccess.getBlockMetadata(i, j, k) == 0) { return true; }
+		if (iblockaccess.getBlockMetadata(i, j, k) == 0) {
+			return true;
+		}
 		return super.shouldSideBeRendered(iblockaccess, i, j, k, l);
 	}
 

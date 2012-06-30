@@ -1,10 +1,12 @@
 package net.minecraft.src;
 
+
 import java.util.HashSet;
 import java.util.Random;
 import java.util.Set;
 
 import net.minecraft.src.forge.ITextureProvider;
+
 
 /**
  * Block dispenser machine.
@@ -12,8 +14,7 @@ import net.minecraft.src.forge.ITextureProvider;
  * @author MightyPork
  * @copy (c) 2012
  */
-public class PCma_BlockBlockBuilder extends BlockContainer implements PC_ISwapTerrain, PC_IBlockType, PC_ISpecialInventoryTextures,
-		ITextureProvider {
+public class PCma_BlockBlockBuilder extends BlockContainer implements PC_ISwapTerrain, PC_IBlockType, PC_ISpecialInventoryTextures, ITextureProvider {
 	private static final int TXDOWN = 109, TXTOP = 156, TXSIDE = 140, TXFRONT = 108, TXBACK = 124;
 
 	@Override
@@ -38,20 +39,30 @@ public class PCma_BlockBlockBuilder extends BlockContainer implements PC_ISwapTe
 
 	@Override
 	public int getBlockTextureFromSideAndMetadata(int s, int m) {
-		if (s == 1) { return TXTOP; }
+		if (s == 1) {
+			return TXTOP;
+		}
 		if (s == 0) {
 			return TXDOWN;
 		} else {
-			if (m == s) { return TXFRONT; }
-			if ((m == 2 && s == 3) || (m == 3 && s == 2) || (m == 4 && s == 5) || (m == 5 && s == 4)) { return TXBACK; }
+			if (m == s) {
+				return TXFRONT;
+			}
+			if ((m == 2 && s == 3) || (m == 3 && s == 2) || (m == 4 && s == 5) || (m == 5 && s == 4)) {
+				return TXBACK;
+			}
 			return TXSIDE;
 		}
 	}
 
 	@Override
 	public int getInvTexture(int i, int m) {
-		if (i == 1) { return TXTOP; }
-		if (i == 0) { return TXDOWN; }
+		if (i == 1) {
+			return TXTOP;
+		}
+		if (i == 0) {
+			return TXDOWN;
+		}
 		if (i == 3) {
 			return TXFRONT;
 		} else if (i == 4) {
@@ -118,12 +129,16 @@ public class PCma_BlockBlockBuilder extends BlockContainer implements PC_ISwapTe
 			if (ihold.getItem() instanceof ItemBlock && ihold.getItem().shiftedIndex != blockID) {
 
 				Block bhold = Block.blocksList[ihold.getItem().shiftedIndex];
-				if (bhold instanceof PC_IBlockType) { return false; }
+				if (bhold instanceof PC_IBlockType) {
+					return false;
+				}
 
 			}
 		}
 
-		if (world.isRemote) { return true; }
+		if (world.isRemote) {
+			return true;
+		}
 
 		PCma_TileEntityBlockBuilder tileentity = (PCma_TileEntityBlockBuilder) world.getBlockTileEntity(i, j, k);
 		if (tileentity != null) {
@@ -195,8 +210,7 @@ public class PCma_BlockBlockBuilder extends BlockContainer implements PC_ISwapTe
 							i1 = itemstack.stackSize;
 						}
 						itemstack.stackSize -= i1;
-						EntityItem entityitem = new EntityItem(world, i + f, j + f1, k + f2, new ItemStack(itemstack.itemID, i1,
-								itemstack.getItemDamage()));
+						EntityItem entityitem = new EntityItem(world, i + f, j + f1, k + f2, new ItemStack(itemstack.itemID, i1, itemstack.getItemDamage()));
 						float f3 = 0.05F;
 						entityitem.motionX = (float) random.nextGaussian() * f3;
 						entityitem.motionY = (float) random.nextGaussian() * f3 + 0.2F;
@@ -211,13 +225,21 @@ public class PCma_BlockBlockBuilder extends BlockContainer implements PC_ISwapTe
 	}
 
 	private boolean isIndirectlyPowered(World world, int i, int j, int k) {
-		if (world.isBlockGettingPowered(i, j, k)) { return true; }
+		if (world.isBlockGettingPowered(i, j, k)) {
+			return true;
+		}
 
-		if (world.isBlockIndirectlyGettingPowered(i, j, k)) { return true; }
+		if (world.isBlockIndirectlyGettingPowered(i, j, k)) {
+			return true;
+		}
 
-		if (world.isBlockGettingPowered(i, j - 1, k)) { return true; }
+		if (world.isBlockGettingPowered(i, j - 1, k)) {
+			return true;
+		}
 
-		if (world.isBlockIndirectlyGettingPowered(i, j - 1, k)) { return true; }
+		if (world.isBlockIndirectlyGettingPowered(i, j - 1, k)) {
+			return true;
+		}
 		return false;
 	}
 

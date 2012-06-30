@@ -1,5 +1,6 @@
 package net.minecraft.src;
 
+
 import java.io.File;
 import java.io.FileOutputStream;
 import java.net.URL;
@@ -11,11 +12,11 @@ import net.minecraft.client.Minecraft;
 
 
 /**
- * Threads which downloads latest language pack, installs it and updates names in running Minecraft
+ * Threads which downloads latest language pack, installs it and updates names
+ * in running Minecraft
  * 
  * @author MightyPork
  * @copy (c) 2012
- * 
  */
 public class PCco_ThreadDownloadTranslations extends Thread {
 

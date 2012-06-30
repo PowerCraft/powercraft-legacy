@@ -1,20 +1,20 @@
 package net.minecraft.src;
 
+
 import java.util.Random;
 
 import net.minecraft.src.PC_GresTextEdit.PC_GresInputType;
 import net.minecraft.src.PC_GresWidget.PC_GresAlign;
 
+
 /**
- * 
- * 
  * @author MightyPork
  * @copy (c) 2012
- * 
  */
 public class PCma_GuiXPBank implements PC_IGresBase {
 
 	private PCma_TileEntityXPBank xpbank;
+	@SuppressWarnings("unused")
 	private PC_GresWidget buttonClose;
 	private PC_GresWidget txStoragePoints;
 	private PC_GresWidget txPlayerPoints;
@@ -25,6 +25,11 @@ public class PCma_GuiXPBank implements PC_IGresBase {
 
 
 
+	/**
+	 * XP bank gui
+	 * 
+	 * @param tex
+	 */
 	public PCma_GuiXPBank(PCma_TileEntityXPBank tex) {
 		xpbank = tex;
 	}
@@ -104,10 +109,6 @@ public class PCma_GuiXPBank implements PC_IGresBase {
 	@Override
 	public void onGuiClosed(PC_IGresGui gui) {}
 
-	private int getLevelSize(int level) {
-		return 7 + (level * 7 >> 1);
-	}
-
 	private void addToPlayer(EntityPlayer player, int points) {
 		int xpsum = points;
 		// add by parts to avoid bug in player.
@@ -147,8 +148,7 @@ public class PCma_GuiXPBank implements PC_IGresBase {
 					points = Math.min(points, xpbank.xp);
 
 					Random rand = new Random();
-					PC_Utils.mc().theWorld.playSoundAtEntity(player, "random.orb", 0.3F,
-							0.5F * ((rand.nextFloat() - rand.nextFloat()) * 0.7F + 1.8F));
+					PC_Utils.mc().theWorld.playSoundAtEntity(player, "random.orb", 0.3F, 0.5F * ((rand.nextFloat() - rand.nextFloat()) * 0.7F + 1.8F));
 
 					addToPlayer(player, points);
 
@@ -169,8 +169,7 @@ public class PCma_GuiXPBank implements PC_IGresBase {
 					points = Math.min(points, player.experienceTotal);
 
 					Random rand = new Random();
-					PC_Utils.mc().theWorld.playSoundAtEntity(player, "random.orb", 0.3F,
-							0.5F * ((rand.nextFloat() - rand.nextFloat()) * 0.7F + 1.8F));
+					PC_Utils.mc().theWorld.playSoundAtEntity(player, "random.orb", 0.3F, 0.5F * ((rand.nextFloat() - rand.nextFloat()) * 0.7F + 1.8F));
 
 					int totalPoints = player.experienceTotal;
 					player.experienceLevel = 0;

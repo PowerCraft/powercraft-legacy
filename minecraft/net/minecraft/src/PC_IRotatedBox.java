@@ -1,5 +1,6 @@
 package net.minecraft.src;
 
+
 /**
  * Block rendered as a box with rotated top face. Used for rendering.
  * 
@@ -16,7 +17,8 @@ public interface PC_IRotatedBox {
 	public int getRotation(int meta); // 0,1,2,3
 
 	/**
-	 * @return Is the item to be rendered horizontally? Return false for vertical renderer, like gates
+	 * @return Is the item to be rendered horizontally? Return false for
+	 *         vertical renderer, like gates
 	 */
 	public boolean renderItemHorizontal();
 }

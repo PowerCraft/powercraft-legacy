@@ -1,11 +1,11 @@
 package net.minecraft.src;
 
+
 /**
  * Resizable GUI plain text label
  * 
  * @author XOR19, Rapus95, MightyPork
  * @copy (c) 2012
- * 
  */
 public class PC_GresLabel extends PC_GresWidget {
 
@@ -19,6 +19,7 @@ public class PC_GresLabel extends PC_GresWidget {
 		canAddWidget = false;
 
 		alignH = PC_GresAlign.LEFT;
+		widgetMargin = 4;
 	}
 
 	@Override

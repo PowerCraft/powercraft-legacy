@@ -11,7 +11,6 @@ import net.minecraft.src.weasel.exception.WeaselRuntimeException;
  * GOTO instruction, jumps to label.
  * 
  * @author MightyPork
- *
  */
 public class InstructionGoto extends Instruction {
 
@@ -34,20 +33,21 @@ public class InstructionGoto extends Instruction {
 		targetLabelName = tag.getString("Target");
 		return this;
 	}
-	
+
 	/**
 	 * @return name of target label
 	 */
-	public String getTargetLabelName(){
+	public String getTargetLabelName() {
 		return targetLabelName;
 	}
-	
+
 	/**
 	 * Set target label name
+	 * 
 	 * @param labelName target label name to set
 	 * @return this
 	 */
-	public InstructionGoto setTargetLabelName(String labelName){
+	public InstructionGoto setTargetLabelName(String labelName) {
 		this.targetLabelName = labelName;
 		return this;
 	}

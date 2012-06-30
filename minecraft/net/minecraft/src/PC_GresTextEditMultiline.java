@@ -73,6 +73,8 @@ public class PC_GresTextEditMultiline extends PC_GresWidget {
 		canAddWidget = false;
 		color[textColorEnabled] = 0xffffffff;
 		color[textColorShadowEnabled] = 0; //0xff383838;
+		color[textColorActive] = 0xffffffff;
+		color[textColorHover] = 0xffffffff;
 		color[textColorDisabled] = 0xffffffff;
 		color[textColorShadowDisabled] = 0; //0xff383838;
 	}
@@ -90,6 +92,8 @@ public class PC_GresTextEditMultiline extends PC_GresWidget {
 		canAddWidget = false;
 		color[textColorEnabled] = 0xffffffff;
 		color[textColorShadowEnabled] = 0; //0xff383838;
+		color[textColorActive] = 0xffffffff;
+		color[textColorHover] = 0xffffffff;
 		color[textColorDisabled] = 0xffffffff;
 		color[textColorShadowDisabled] = 0; //0xff383838;
 		this.keyWords = keyWords;
@@ -181,7 +185,7 @@ public class PC_GresTextEditMultiline extends PC_GresWidget {
 	private int getColorForWord(String word) {
 		if (keyWords != null) {
 			for (Keyword k : keyWords) {
-				if (k.word.equalsIgnoreCase(word)) return k.color;
+				if (!k.isRegexp && k.word.equals(word)) return k.color;
 				if (k.isRegexp && word.matches(k.word)) return k.color;
 			}
 		}
@@ -251,7 +255,7 @@ public class PC_GresTextEditMultiline extends PC_GresWidget {
 			charSize = getStringWidth("" + word.charAt(strposStart + strSize));
 			sx += charSize;
 		}
-		drawStringColor(word.substring(strposStart, strposStart + strSize),offsetPos.x + pos.x + 6 + xp,offsetPos.y + pos.y + 6 + (y - scroll.y) * PC_Utils.mc().fontRenderer.FONT_HEIGHT,color);
+		drawStringColor(word.substring(strposStart, strposStart + strSize), offsetPos.x + pos.x + 6 + xp, offsetPos.y + pos.y + 6 + (y - scroll.y) * PC_Utils.mc().fontRenderer.FONT_HEIGHT, color);
 		//getFontRenderer().drawStringWithShadow(word.substring(strposStart, strposStart + strSize), offsetPos.x + pos.x + 6 + xp, offsetPos.y + pos.y + 6 + (y - scroll.y) * PC_Utils.mc().fontRenderer.FONT_HEIGHT, color);
 	}
 
@@ -313,21 +317,9 @@ public class PC_GresTextEditMultiline extends PC_GresWidget {
 			calcScrollPosition();
 		}
 
-		renderTextureSliced(
-				offsetPos.offset(hScrollPos+1, size.y - 11),
-				mod_PCcore.getImgDir() + "gres/scrollbar_handle.png",
-				new PC_CoordI(hScrollSize-1, 10),
-				new PC_CoordI(0, 0),
-				new PC_CoordI(256, 256)
-			);
-		
-		renderTextureSliced(
-				offsetPos.offset(size.x - 11, 1 + vScrollPos),
-				mod_PCcore.getImgDir() + "gres/scrollbar_handle.png",
-				new PC_CoordI(10, vScrollSize-1),
-				new PC_CoordI(0, 0),
-				new PC_CoordI(256, 256)
-			);
+		renderTextureSliced(offsetPos.offset(hScrollPos + 1, size.y - 11), mod_PCcore.getImgDir() + "gres/scrollbar_handle.png", new PC_CoordI(hScrollSize - 1, 10), new PC_CoordI(0, 0), new PC_CoordI(256, 256));
+
+		renderTextureSliced(offsetPos.offset(size.x - 11, 1 + vScrollPos), mod_PCcore.getImgDir() + "gres/scrollbar_handle.png", new PC_CoordI(10, vScrollSize - 1), new PC_CoordI(0, 0), new PC_CoordI(256, 256));
 
 		if ((!(mouseSelectStart.x == mouseSelectEnd.x && mouseSelectStart.y == mouseSelectEnd.y)) && hasFocus) {
 			int s = calcSelectCoordsToStringIndex(mouseSelectStart), e = calcSelectCoordsToStringIndex(mouseSelectEnd);
@@ -574,6 +566,7 @@ public class PC_GresTextEditMultiline extends PC_GresWidget {
 
 	/**
 	 * Replace selection with given key
+	 * 
 	 * @param c key
 	 */
 	public void addKey(char c) {

@@ -1,5 +1,6 @@
 package net.minecraft.src;
 
+
 import java.util.Random;
 
 
@@ -9,7 +10,6 @@ import java.util.Random;
  * 
  * @author MightyPork
  * @copy (c) 2012
- * 
  */
 public class PCma_TileEntityBlockBuilder extends PC_TileEntity implements IInventory {
 
@@ -20,6 +20,7 @@ public class PCma_TileEntityBlockBuilder extends PC_TileEntity implements IInven
 	/**
 	 * @return forge - can update; false
 	 */
+	@Override
 	public boolean canUpdate() {
 		return false;
 	}
@@ -86,7 +87,9 @@ public class PCma_TileEntityBlockBuilder extends PC_TileEntity implements IInven
 		if (i >= 0) {
 			for (int dist = 0; dist < maxdist; dist++) {
 				int state = try2useItem(getStackInSlot(i).copy(), dist);
-				if (state == -1) { return; }
+				if (state == -1) {
+					return;
+				}
 				if (state == 0) {
 					continue;
 				}
@@ -119,7 +122,8 @@ public class PCma_TileEntityBlockBuilder extends PC_TileEntity implements IInven
 	 * 
 	 * @param itemstack stack to use
 	 * @param dist distance form device
-	 * @return 0 = nothing happened to the stack. 1 = decrement stack size, 2 = damage item
+	 * @return 0 = nothing happened to the stack. 1 = decrement stack size, 2 =
+	 *         damage item
 	 */
 	private int try2useItem(ItemStack itemstack, int dist) {
 		int x = xCoord, y = yCoord, z = zCoord;
@@ -152,35 +156,32 @@ public class PCma_TileEntityBlockBuilder extends PC_TileEntity implements IInven
 
 			if (PC_BlockUtils.hasFlag(worldObj, front, "BELT") || Block.blocksList[id] instanceof BlockRail) {
 				if (!worldObj.isRemote) {
-					worldObj.spawnEntityInWorld(new EntityMinecart(worldObj, (float) x + incX + 0.5F, y + 0.5F, (float) z + incZ + 0.5F,
-							((ItemMinecart) itemstack.getItem()).minecartType));
+					worldObj.spawnEntityInWorld(new EntityMinecart(worldObj, (float) x + incX + 0.5F, y + 0.5F, (float) z + incZ + 0.5F, ((ItemMinecart) itemstack.getItem()).minecartType));
 				}
 				return 1;
 			}
 		}
 
 		// ending block
-		if (id == 49
-				|| id == 7
-				|| id == 98
-				|| (PC_BlockUtils.hasFlag(worldObj, front, "HARVEST_STOP") && !(PC_BlockUtils.hasFlag(worldObj, front, "BELT") && !(PC_BlockUtils
-						.hasFlag(worldObj, front, "TRANSLUCENT"))))) { return -1; }
+		if (id == 49 || id == 7 || id == 98 || (PC_BlockUtils.hasFlag(worldObj, front, "HARVEST_STOP") && !(PC_BlockUtils.hasFlag(worldObj, front, "BELT") && !(PC_BlockUtils.hasFlag(worldObj, front, "TRANSLUCENT"))))) {
+			return -1;
+		}
 
 		// try to place front
 		if (itemstack.getItem() instanceof ItemBlock) {
 
 			ItemBlock item = ((ItemBlock) itemstack.getItem());
-			if (PC_BlockUtils.hasFlag(itemstack, "NO_BUILD")) { return 0; }
+			if (PC_BlockUtils.hasFlag(itemstack, "NO_BUILD")) {
+				return 0;
+			}
 
 			if (Block.blocksList[item.shiftedIndex].canPlaceBlockAt(worldObj, x + incX, y, z + incZ)) {
-				worldObj.setBlockAndMetadataWithNotify(x + incX, y, z + incZ, item.shiftedIndex,
-						item.getMetadata(itemstack.getItemDamage()));
+				worldObj.setBlockAndMetadataWithNotify(x + incX, y, z + incZ, item.shiftedIndex, item.getMetadata(itemstack.getItemDamage()));
 				return 1;
 			}
 
 			if (isEmptyBlock(idFront) && Block.blocksList[item.shiftedIndex].canPlaceBlockAt(worldObj, x + incX * 2, y, z + incZ * 2)) {
-				worldObj.setBlockAndMetadataWithNotify(x + incX * 2, y, z + incZ * 2, item.shiftedIndex,
-						item.getMetadata(itemstack.getItemDamage()));
+				worldObj.setBlockAndMetadataWithNotify(x + incX * 2, y, z + incZ * 2, item.shiftedIndex, item.getMetadata(itemstack.getItemDamage()));
 				return 1;
 			}
 
@@ -194,7 +195,9 @@ public class PCma_TileEntityBlockBuilder extends PC_TileEntity implements IInven
 
 			if (itemstack.getItem().onItemUse(itemstack, fakeplayer, worldObj, x + incX, y, z + incZ, 1)) {
 
-				if (itemstack.getItem() instanceof ItemMonsterPlacer) { return 1; }
+				if (itemstack.getItem() instanceof ItemMonsterPlacer) {
+					return 1;
+				}
 
 				int idFrontNew = worldObj.getBlockId(x + incX, y, z + incZ);
 				int metaFrontNew = worldObj.getBlockMetadata(x + incX, y, z + incZ);
@@ -205,10 +208,13 @@ public class PCma_TileEntityBlockBuilder extends PC_TileEntity implements IInven
 				int sizeNew = itemstack.stackSize;
 
 				// if not bonemeal, or if target block was changed
-				if (!(itemstack.getItem().shiftedIndex == Item.dyePowder.shiftedIndex && itemstack.getItemDamage() == 15)
-						|| (idFront != idFrontNew || metaFront != metaFrontNew || idAbove != idAboveNew || metaAbove != metaAboveNew)) {
-					if (dmgOrig != dmgNew) { return 2; }
-					if (sizeOrig != sizeNew) { return 1; }
+				if (!(itemstack.getItem().shiftedIndex == Item.dyePowder.shiftedIndex && itemstack.getItemDamage() == 15) || (idFront != idFrontNew || metaFront != metaFrontNew || idAbove != idAboveNew || metaAbove != metaAboveNew)) {
+					if (dmgOrig != dmgNew) {
+						return 2;
+					}
+					if (sizeOrig != sizeNew) {
+						return 1;
+					}
 				}
 			}
 		}
@@ -220,7 +226,9 @@ public class PCma_TileEntityBlockBuilder extends PC_TileEntity implements IInven
 
 			if (itemstack.getItem().onItemUse(itemstack, fakeplayer, worldObj, x + incX, y - 1, z + incZ, 1)) {
 
-				if (itemstack.getItem() instanceof ItemMonsterPlacer) { return 1; }
+				if (itemstack.getItem() instanceof ItemMonsterPlacer) {
+					return 1;
+				}
 
 				int idBelowNew = worldObj.getBlockId(x + incX, y - 1, z + incZ);
 				int metaBelowNew = worldObj.getBlockMetadata(x + incX, y - 1, z + incZ);
@@ -230,10 +238,13 @@ public class PCma_TileEntityBlockBuilder extends PC_TileEntity implements IInven
 				int dmg2 = itemstack.getItemDamage();
 				int size2 = itemstack.stackSize;
 				// if not bonemeal, or if target block was changed
-				if (!(itemstack.getItem().shiftedIndex == Item.dyePowder.shiftedIndex && itemstack.getItemDamage() == 15)
-						|| (idBelow != idBelowNew || metaBelow != metaBelowNew || idFront != idFrontNew || metaFront != metaFrontNew)) {
-					if (dmg1 != dmg2) { return 2; }
-					if (size1 != size2) { return 1; }
+				if (!(itemstack.getItem().shiftedIndex == Item.dyePowder.shiftedIndex && itemstack.getItemDamage() == 15) || (idBelow != idBelowNew || metaBelow != metaBelowNew || idFront != idFrontNew || metaFront != metaFrontNew)) {
+					if (dmg1 != dmg2) {
+						return 2;
+					}
+					if (size1 != size2) {
+						return 1;
+					}
 				}
 			}
 		}
@@ -297,7 +308,9 @@ public class PCma_TileEntityBlockBuilder extends PC_TileEntity implements IInven
 
 	@Override
 	public boolean isUseableByPlayer(EntityPlayer entityplayer) {
-		if (worldObj.getBlockTileEntity(xCoord, yCoord, zCoord) != this) { return false; }
+		if (worldObj.getBlockTileEntity(xCoord, yCoord, zCoord) != this) {
+			return false;
+		}
 		return entityplayer.getDistanceSq(xCoord + 0.5D, yCoord + 0.5D, zCoord + 0.5D) <= 64D;
 	}
 

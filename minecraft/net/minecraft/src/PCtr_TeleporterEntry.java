@@ -1,5 +1,6 @@
 package net.minecraft.src;
 
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -7,6 +8,7 @@ import java.io.IOException;
 import java.util.Properties;
 
 import net.minecraft.client.Minecraft;
+
 
 public class PCtr_TeleporterEntry {
 	private static Minecraft mc = ModLoader.getMinecraftInstance();
@@ -48,8 +50,7 @@ public class PCtr_TeleporterEntry {
 			return;
 		}
 		try {
-			setPos(Integer.valueOf(props.getProperty("x")), Integer.valueOf(props.getProperty("y")),
-					Integer.valueOf(props.getProperty("z")));
+			setPos(Integer.valueOf(props.getProperty("x")), Integer.valueOf(props.getProperty("y")), Integer.valueOf(props.getProperty("z")));
 			setIdentifier(props.getProperty("id"));
 			setDimension(props.getProperty("dim"));
 		} catch (NumberFormatException nfe) {
@@ -96,14 +97,17 @@ public class PCtr_TeleporterEntry {
 	}
 
 	public static String getSaveDir(World world) {
-		if (mc == null || world == null) { return null; }
+		if (mc == null || world == null) {
+			return null;
+		}
 		return (((SaveHandler) world.saveHandler).getSaveDirectory()).toString().concat("/teleporter/");
 	}
 
 	private String getSavePath(World world) {
-		if (mc == null || world == null) { return null; }
-		return (((SaveHandler) world.saveHandler).getSaveDirectory()).toString().concat("/teleporter/").concat(getIdentifier())
-				.concat(".dat");
+		if (mc == null || world == null) {
+			return null;
+		}
+		return (((SaveHandler) world.saveHandler).getSaveDirectory()).toString().concat("/teleporter/").concat(getIdentifier()).concat(".dat");
 	}
 
 	public int getDimension() {

@@ -1,15 +1,16 @@
 package net.minecraft.src;
 
+
 import java.util.HashSet;
 
 import org.lwjgl.opengl.GL11;
+
 
 /**
  * Resizable GUI radio button
  * 
  * @author XOR19, MightyPork
  * @copy (c) 2012
- * 
  */
 public class PC_GresRadioButton extends PC_GresWidget {
 
@@ -18,7 +19,6 @@ public class PC_GresRadioButton extends PC_GresWidget {
 	 * 
 	 * @author MightyPork
 	 * @copy (c) 2012
-	 * 
 	 */
 	public static class PC_GresRadioGroup extends HashSet<PC_GresRadioButton> {
 
@@ -120,7 +120,9 @@ public class PC_GresRadioButton extends PC_GresWidget {
 
 	@Override
 	public boolean mouseClick(PC_CoordI mpos, int key) {
-		if (!enabled) { return false; }
+		if (!enabled) {
+			return false;
+		}
 		if (key != -1) {
 			check(true);
 			return true;

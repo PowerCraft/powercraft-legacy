@@ -1,11 +1,11 @@
 package net.minecraft.src;
 
+
 /**
  * Resizable GUI button
  * 
  * @author XOR19, Rapus95, MightyPork
  * @copy (c) 2012
- * 
  */
 public class PC_GresButton extends PC_GresWidget {
 
@@ -64,8 +64,7 @@ public class PC_GresButton extends PC_GresWidget {
 			txC = 0xffffa0; // yellow
 		}
 
-		renderTextureSliced(offsetPos, mod_PCcore.getImgDir() + "gres/button.png", size, new PC_CoordI(0, state * 50), new PC_CoordI(256,
-				50));
+		renderTextureSliced(offsetPos, mod_PCcore.getImgDir() + "gres/button.png", size, new PC_CoordI(0, state * 50), new PC_CoordI(256, 50));
 
 		drawCenteredString(getFontRenderer(), text, offsetPos.x + pos.x + size.x / 2, offsetPos.y + pos.y + (size.y - 8) / 2, txC);
 	}
@@ -79,7 +78,9 @@ public class PC_GresButton extends PC_GresWidget {
 
 	@Override
 	public boolean mouseClick(PC_CoordI mpos, int key) {
-		if (!enabled) { return false; }
+		if (!enabled) {
+			return false;
+		}
 		if (isClicked && key == -1) {
 			isClicked = false;
 			return true;

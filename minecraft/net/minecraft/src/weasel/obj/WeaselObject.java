@@ -31,15 +31,17 @@ public abstract class WeaselObject implements PC_INBT {
 	public final WeaselObjectType getType() {
 		return type;
 	}
-	
+
 	/**
 	 * Get a completely separate copy of this object.
+	 * 
 	 * @return the copy
 	 */
 	public abstract WeaselObject copy();
-	
+
 	/**
-	 * Save an object to {@link NBTTagCompound}, together with it's type (needed for loading).
+	 * Save an object to {@link NBTTagCompound}, together with it's type (needed
+	 * for loading).
 	 * 
 	 * @param object object to save
 	 * @param tag tag to save into
@@ -113,32 +115,31 @@ public abstract class WeaselObject implements PC_INBT {
 
 	@Override
 	public abstract int hashCode();
-	
+
 	/**
 	 * Type of an object
 	 * 
 	 * @author MightyPork
-	 *
 	 */
 	@SuppressWarnings("javadoc")
 	public enum WeaselObjectType {
 
-		BOOLEAN,INTEGER,STRING,VARIABLE_LIST,STACK;
+		BOOLEAN, INTEGER, STRING, VARIABLE_LIST, STACK;
 
-		
+
 		private WeaselObjectType() {
 			setup();
 		}
-		
+
 		private static int counter = 1;
 		private static ArrayList<WeaselObjectType> members = new ArrayList<WeaselObjectType>();
-		
+
 		private void setup() {
 			index = counter++;
-			if(members == null) members = new ArrayList<WeaselObjectType>();
+			if (members == null) members = new ArrayList<WeaselObjectType>();
 			members.add(this);
 		}
-		
+
 		/**
 		 * Get enum type for type index
 		 * 
@@ -146,7 +147,7 @@ public abstract class WeaselObject implements PC_INBT {
 		 * @return corresponding enum type
 		 */
 		public static WeaselObjectType getTypeFromIndex(int index) {
-			return members.get(index-1);
+			return members.get(index - 1);
 		}
 
 		/** enum index */

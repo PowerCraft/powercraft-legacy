@@ -1,36 +1,55 @@
 package net.minecraft.src;
 
+
 import java.util.List;
 import java.util.Set;
+
 
 /**
  * Class providing common methods and constants to all kinds of conveyor belts.
  * 
  * @author MightyPork
  * @copy (c) 2012
- * 
  */
 public class PCtr_BeltBase {
 
-	/** Max horizontal speed of an item on a belt. Items going slower are accelerated. */
+	/**
+	 * Max horizontal speed of an item on a belt. Items going slower are
+	 * accelerated.
+	 */
 	public static final double MAX_HORIZONTAL_SPEED = 0.4D;
-	/** Velocity increment added to item on belt, if it is going slower than MAX_HORIZONTAL_SPEED */
+	/**
+	 * Velocity increment added to item on belt, if it is going slower than
+	 * MAX_HORIZONTAL_SPEED
+	 */
 	public static final double HORIZONTAL_BOOST = 0.11D;
 	/** Items this far from belt sides get BORDER_BOOST to stay in the center. */
 	public static final double BORDERS = 0.35D;
-	/** Velocity increment added to item when it gets close to a border, in order to keep it on the belt. */
+	/**
+	 * Velocity increment added to item when it gets close to a border, in order
+	 * to keep it on the belt.
+	 */
 	public static final double BORDER_BOOST = 0.063D;
 	/** belts' height in units. 0.0625F = one pixel in vanilla textures. */
 	public static final float HEIGHT = 0.0625F;
-	/** collision box height - must be smaller than HEIGHT to let the items collide -> get moved */
+	/**
+	 * collision box height - must be smaller than HEIGHT to let the items
+	 * collide -> get moved
+	 */
 	public static final float HEIGHT_COLLISION = HEIGHT;// - 0.0125F;
-	/** selection box height. Affects only the wireframe, does not allow better selection. */
+	/**
+	 * selection box height. Affects only the wireframe, does not allow better
+	 * selection.
+	 */
 	public static final float HEIGHT_SELECTED = HEIGHT;
 	/** How far from start of belt the tiem must be to be stored. */
 	public static final float STORAGE_BORDER = 0.5F;
 	/** Long storage border */
 	public static final float STORAGE_BORDER_LONG = 0.8F;
-	/** Vertical storage border - how high above belt the item must be to get stored. */
+	/**
+	 * Vertical storage border - how high above belt the item must be to get
+	 * stored.
+	 */
 	public static final float STORAGE_BORDER_V = 0.6F;
 
 
@@ -47,7 +66,9 @@ public class PCtr_BeltBase {
 	public static boolean blockActivated(World world, int i, int j, int k, EntityPlayer entityplayer) {
 		// minecart placing.
 		ItemStack stack = entityplayer.getCurrentEquippedItem();
-		if (stack == null) { return false; }
+		if (stack == null) {
+			return false;
+		}
 
 		Item equip_item = stack.getItem();
 
@@ -138,8 +159,7 @@ public class PCtr_BeltBase {
 	 */
 	public static void soundEffectChest(World world, PC_CoordI pos) {
 		if (mod_PCcore.soundsEnabled) {
-			world.playSoundEffect(pos.x + 0.5D, pos.y + 0.5D, pos.z + 0.5D, "random.pop", (world.rand.nextFloat() + 0.7F) / 5.0F,
-					0.5F + world.rand.nextFloat() * 0.3F);
+			world.playSoundEffect(pos.x + 0.5D, pos.y + 0.5D, pos.z + 0.5D, "random.pop", (world.rand.nextFloat() + 0.7F) / 5.0F, 0.5F + world.rand.nextFloat() * 0.3F);
 		}
 	}
 
@@ -152,8 +172,7 @@ public class PCtr_BeltBase {
 	 */
 	public static void soundEffectBelt(World world, PC_CoordI pos) {
 		if (mod_PCcore.soundsEnabled) {
-			world.playSoundEffect(pos.x + 0.5D, pos.y + 0.625D, pos.z + 0.5D, "random.wood click", (world.rand.nextFloat() + 0.2F) / 10.0F,
-					1.0F + (world.rand.nextFloat() - world.rand.nextFloat()) * 0.6F);
+			world.playSoundEffect(pos.x + 0.5D, pos.y + 0.625D, pos.z + 0.5D, "random.wood click", (world.rand.nextFloat() + 0.2F) / 10.0F, 1.0F + (world.rand.nextFloat() - world.rand.nextFloat()) * 0.6F);
 		}
 	}
 
@@ -245,7 +264,8 @@ public class PCtr_BeltBase {
 
 
 	/**
-	 * Try to store entity item into inventory at this position, if there is any.
+	 * Try to store entity item into inventory at this position, if there is
+	 * any.
 	 * 
 	 * @param world the world
 	 * @param inventoryPos position to store at
@@ -273,16 +293,18 @@ public class PCtr_BeltBase {
 
 	// reduce number of entityitems.
 	/**
-	 * Pack tiems at position to smallest possible number og EntityItems. To reduce lag.
+	 * Pack tiems at position to smallest possible number og EntityItems. To
+	 * reduce lag.
 	 * 
 	 * @param world
 	 * @param pos
 	 */
 	@SuppressWarnings("unchecked")
 	public static void packItems(World world, PC_CoordI pos) {
-		List<EntityItem> items = world.getEntitiesWithinAABB(net.minecraft.src.EntityItem.class,
-				AxisAlignedBB.getBoundingBoxFromPool(pos.x, pos.y, pos.z, pos.x + 1, pos.y + 1, pos.z + 1));
-		if (items.size() < 5) { return; }
+		List<EntityItem> items = world.getEntitiesWithinAABB(net.minecraft.src.EntityItem.class, AxisAlignedBB.getBoundingBoxFromPool(pos.x, pos.y, pos.z, pos.x + 1, pos.y + 1, pos.z + 1));
+		if (items.size() < 5) {
+			return;
+		}
 
 		// do packing!
 		nextItem:
@@ -351,10 +373,7 @@ public class PCtr_BeltBase {
 	 */
 	@SuppressWarnings("unchecked")
 	public static boolean storeItemIntoMinecart(World world, PC_CoordI beltPos, EntityItem entity) {
-		List<EntityMinecart> hitList = world.getEntitiesWithinAABB(
-				EntityMinecart.class,
-				AxisAlignedBB.getBoundingBoxFromPool(beltPos.x, beltPos.y, beltPos.z, beltPos.x + 1, beltPos.y + 1, beltPos.z + 1).expand(
-						1.0D, 1.0D, 1.0D));
+		List<EntityMinecart> hitList = world.getEntitiesWithinAABB(EntityMinecart.class, AxisAlignedBB.getBoundingBoxFromPool(beltPos.x, beltPos.y, beltPos.z, beltPos.x + 1, beltPos.y + 1, beltPos.z + 1).expand(1.0D, 1.0D, 1.0D));
 
 		if (hitList.size() > 0) {
 			for (EntityMinecart cart : hitList) {
@@ -384,19 +403,24 @@ public class PCtr_BeltBase {
 
 
 	/**
-	 * Do special item action. This means: fill bucket with water, fill cauldron from bucket, fill empty bottle from cauldron.
+	 * Do special item action. This means: fill bucket with water, fill cauldron
+	 * from bucket, fill empty bottle from cauldron.
 	 * 
 	 * @param world
 	 * @param beltPos
 	 * @param entity
 	 */
 	public static void doSpecialItemAction(World world, PC_CoordI beltPos, EntityItem entity) {
-		if (entity == null || entity.item == null) { return; }
+		if (entity == null || entity.item == null) {
+			return;
+		}
 		boolean flag = false;
 		flag |= entity.item.itemID == Item.bucketWater.shiftedIndex;
 		flag |= entity.item.itemID == Item.bucketEmpty.shiftedIndex;
 		flag |= entity.item.itemID == Item.glassBottle.shiftedIndex;
-		if (!flag) { return; }
+		if (!flag) {
+			return;
+		}
 
 		do {
 
@@ -464,8 +488,7 @@ public class PCtr_BeltBase {
 				int meta = pos.getMeta(world);
 				pos.setMeta(world, meta - 1);
 
-				EntityItem entity2 = new EntityItem(world, entity.posX, entity.posY, entity.posZ, new ItemStack(Item.potion.shiftedIndex,
-						1, 0));
+				EntityItem entity2 = new EntityItem(world, entity.posX, entity.posY, entity.posZ, new ItemStack(Item.potion.shiftedIndex, 1, 0));
 
 				entity2.motionX = entity.motionX;
 				entity2.motionY = entity.motionY;
@@ -502,8 +525,7 @@ public class PCtr_BeltBase {
 				((EntityItem) entity).delayBeforeCanPickup = 7;
 			}
 			if (((EntityItem) entity).age >= 5000) {
-				if (world.getEntitiesWithinAABBExcludingEntity(null,
-						AxisAlignedBB.getBoundingBoxFromPool(pos.x, pos.y, pos.z, pos.x + 1, pos.y + 1, pos.z + 1)).size() < 40) {
+				if (world.getEntitiesWithinAABBExcludingEntity(null, AxisAlignedBB.getBoundingBoxFromPool(pos.x, pos.y, pos.z, pos.x + 1, pos.y + 1, pos.z + 1)).size() < 40) {
 					((EntityItem) entity).age = 4000;
 				}
 			}
@@ -511,8 +533,7 @@ public class PCtr_BeltBase {
 
 		if (entity instanceof EntityXPOrb) {
 			if (((EntityXPOrb) entity).xpOrbAge >= 5000) {
-				if (world.getEntitiesWithinAABBExcludingEntity(null,
-						AxisAlignedBB.getBoundingBoxFromPool(pos.x, pos.y, pos.z, pos.x + 1, pos.y + 1, pos.z + 1)).size() < 40) {
+				if (world.getEntitiesWithinAABBExcludingEntity(null, AxisAlignedBB.getBoundingBoxFromPool(pos.x, pos.y, pos.z, pos.x + 1, pos.y + 1, pos.z + 1)).size() < 40) {
 					((EntityXPOrb) entity).xpOrbAge = 4000;
 				}
 			}
@@ -527,18 +548,19 @@ public class PCtr_BeltBase {
 	 * @param entity the moved entity
 	 * @param bordersEnabled enable border correction (keep items on belt)
 	 * @param motionEnabled enable item movement forwards
-	 * @param moveDirection the belt's direction, or a direction chosen for this entity. Z-, X+, Z+, X-
-	 * @param max_horizontal_speed maximal speed on belt, items will be accelerated and slowed down to achieve this speed.
-	 * @param horizontal_boost velocity increment added when entity reaches border, to keep it on the belt.
+	 * @param moveDirection the belt's direction, or a direction chosen for this
+	 *            entity. Z-, X+, Z+, X-
+	 * @param max_horizontal_speed maximal speed on belt, items will be
+	 *            accelerated and slowed down to achieve this speed.
+	 * @param horizontal_boost velocity increment added when entity reaches
+	 *            border, to keep it on the belt.
 	 */
-	public static void moveEntityOnBelt(World world, PC_CoordI pos, Entity entity, boolean bordersEnabled, boolean motionEnabled,
-			int moveDirection, double max_horizontal_speed, double horizontal_boost) {
+	public static void moveEntityOnBelt(World world, PC_CoordI pos, Entity entity, boolean bordersEnabled, boolean motionEnabled, int moveDirection, double max_horizontal_speed, double horizontal_boost) {
 
 		// sound effect
 		if (motionEnabled && world.rand.nextInt(35) == 0) {
 			@SuppressWarnings("rawtypes")
-			List list = world.getEntitiesWithinAABBExcludingEntity(entity,
-					AxisAlignedBB.getBoundingBoxFromPool(pos.x, pos.y, pos.z, pos.x + 1, pos.y + 1, pos.z + 1));
+			List list = world.getEntitiesWithinAABBExcludingEntity(entity, AxisAlignedBB.getBoundingBoxFromPool(pos.x, pos.y, pos.z, pos.x + 1, pos.y + 1, pos.z + 1));
 			if (world.rand.nextInt(list.size() + 1) == 0) {
 				PCtr_BeltBase.soundEffectBelt(world, pos);
 			}
@@ -623,11 +645,21 @@ public class PCtr_BeltBase {
 	 * @return ignored.
 	 */
 	public static boolean isEntityIgnored(Entity entity) {
-		if (entity == null) { return true; }
-		if (!entity.isEntityAlive()) { return true; }
-		if (entity instanceof EntityPlayer && ((EntityPlayer) entity).isSneaking()) { return true; }
-		if (entity instanceof EntityDiggingFX) { return false; }
-		if (entity instanceof EntityFX) { return true; }
+		if (entity == null) {
+			return true;
+		}
+		if (!entity.isEntityAlive()) {
+			return true;
+		}
+		if (entity instanceof EntityPlayer && ((EntityPlayer) entity).isSneaking()) {
+			return true;
+		}
+		if (entity instanceof EntityDiggingFX) {
+			return false;
+		}
+		if (entity instanceof EntityFX) {
+			return true;
+		}
 		return false;
 	}
 
@@ -642,16 +674,30 @@ public class PCtr_BeltBase {
 	 */
 	public static boolean storeAllSides(World world, PC_CoordI pos, EntityItem entity) {
 
-		if (storeItemIntoMinecart(world, pos, entity)) { return true; }
+		if (storeItemIntoMinecart(world, pos, entity)) {
+			return true;
+		}
 
-		if (storeEntityItemAt(world, pos.offset(0, 0, -1), entity)) { return true; }
-		if (storeEntityItemAt(world, pos.offset(0, 0, 1), entity)) { return true; }
-		if (storeEntityItemAt(world, pos.offset(-1, 0, 0), entity)) { return true; }
-		if (storeEntityItemAt(world, pos.offset(1, 0, 0), entity)) { return true; }
+		if (storeEntityItemAt(world, pos.offset(0, 0, -1), entity)) {
+			return true;
+		}
+		if (storeEntityItemAt(world, pos.offset(0, 0, 1), entity)) {
+			return true;
+		}
+		if (storeEntityItemAt(world, pos.offset(-1, 0, 0), entity)) {
+			return true;
+		}
+		if (storeEntityItemAt(world, pos.offset(1, 0, 0), entity)) {
+			return true;
+		}
 
-		if (storeEntityItemAt(world, pos.offset(0, 1, 0), entity)) { return true; }
+		if (storeEntityItemAt(world, pos.offset(0, 1, 0), entity)) {
+			return true;
+		}
 
-		if (storeEntityItemAt(world, pos.offset(0, -1, 0), entity)) { return true; }
+		if (storeEntityItemAt(world, pos.offset(0, -1, 0), entity)) {
+			return true;
+		}
 		return false;
 	}
 
@@ -659,21 +705,29 @@ public class PCtr_BeltBase {
 	public static boolean isBeyondStorageBorder(World world, int rotation, PC_CoordI beltPos, Entity entity, float border) {
 		switch (rotation) {
 			case 0: // Z--
-				if (entity.posZ > beltPos.z + 1 - border) { return false; }
+				if (entity.posZ > beltPos.z + 1 - border) {
+					return false;
+				}
 				break;
 
 			case 1: // X++
-				if (entity.posX < beltPos.x + border) { return false; }
+				if (entity.posX < beltPos.x + border) {
+					return false;
+				}
 				break;
 
 			case 2: // Z++
 
-				if (entity.posZ < beltPos.z + border) { return false; }
+				if (entity.posZ < beltPos.z + border) {
+					return false;
+				}
 
 				break;
 
 			case 3: // X--
-				if (entity.posX > beltPos.x + 1 - border) { return false; }
+				if (entity.posX > beltPos.x + 1 - border) {
+					return false;
+				}
 				break;
 		}
 		return true;

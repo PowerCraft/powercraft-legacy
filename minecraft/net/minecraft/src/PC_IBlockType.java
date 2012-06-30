@@ -1,6 +1,8 @@
 package net.minecraft.src;
 
+
 import java.util.Set;
+
 
 /**
  * Block type flags for PowerCraft blocks
@@ -12,7 +14,8 @@ public interface PC_IBlockType {
 
 	/**
 	 * @param world the world the block is in
-	 * @param pos position in world; This can be used, together with world, to get metadata or tile entity, and thus make it possible for
+	 * @param pos position in world; This can be used, together with world, to
+	 *            get metadata or tile entity, and thus make it possible for
 	 *            subtypes to have different type settings.
 	 * @return set of flags for given location
 	 */

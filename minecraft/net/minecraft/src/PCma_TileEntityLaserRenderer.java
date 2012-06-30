@@ -1,13 +1,14 @@
 package net.minecraft.src;
 
+
 import org.lwjgl.opengl.GL11;
+
 
 /**
  * Renderer for lasers
  * 
  * @author MightyPork
  * @copy (c) 2012
- * 
  */
 public class PCma_TileEntityLaserRenderer extends TileEntitySpecialRenderer {
 	private PCma_ModelLaser modelLaser;
@@ -24,8 +25,7 @@ public class PCma_TileEntityLaserRenderer extends TileEntitySpecialRenderer {
 
 		PCma_TileEntityLaser tel = (PCma_TileEntityLaser) tileEntity;
 
-		modelLaser.laserParts[0].showModel = modelLaser.laserParts[1].showModel = modelLaser.laserParts[2].showModel = modelLaser.laserParts[3].showModel = tel
-				.isKiller();
+		modelLaser.laserParts[0].showModel = modelLaser.laserParts[1].showModel = modelLaser.laserParts[2].showModel = modelLaser.laserParts[3].showModel = tel.isKiller();
 
 		modelLaser.laserParts[7].showModel = tel.isKiller();
 		modelLaser.laserParts[8].showModel = tel.isSensor();

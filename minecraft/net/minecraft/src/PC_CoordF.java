@@ -1,5 +1,6 @@
 package net.minecraft.src;
 
+
 /**
  * float coordinate class, can be used to hold information about position or a
  * simple movement vector.
@@ -23,7 +24,6 @@ public class PC_CoordF implements PC_ICoord, PC_INBT {
 
 	/**
 	 * Create coordinate [0,0,0]
-	 * 
 	 */
 	public PC_CoordF() {
 		x = 0;
@@ -126,13 +126,17 @@ public class PC_CoordF implements PC_ICoord, PC_INBT {
 	}
 
 	/**
-	 * Tests if the coordinates have equal numbers.
-	 * If both are null, they are also equal.
+	 * Tests if the coordinates have equal numbers. If both are null, they are
+	 * also equal.
 	 */
 	@Override
 	public boolean equals(Object obj) {
-		if (obj == null) { return false; }
-		if (!this.getClass().equals(obj.getClass())) { return false; }
+		if (obj == null) {
+			return false;
+		}
+		if (!this.getClass().equals(obj.getClass())) {
+			return false;
+		}
 
 		return ((PC_CoordF) obj).x == x && ((PC_CoordF) obj).y == y && ((PC_CoordF) obj).z == z;
 	}

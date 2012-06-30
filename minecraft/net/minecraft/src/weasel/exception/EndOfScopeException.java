@@ -2,10 +2,10 @@ package net.minecraft.src.weasel.exception;
 
 
 /**
- * Weasel runtime exception thrown when instruction list reached end of scope without RETURN or END
+ * Weasel runtime exception thrown when instruction list reached end of scope
+ * without RETURN or END
  * 
  * @author MightyPork
- *
  */
 public class EndOfScopeException extends WeaselRuntimeException {
 

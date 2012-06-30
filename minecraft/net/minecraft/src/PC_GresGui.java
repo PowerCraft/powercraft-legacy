@@ -1,5 +1,6 @@
 package net.minecraft.src;
 
+
 import java.util.List;
 
 import org.lwjgl.input.Keyboard;
@@ -7,13 +8,12 @@ import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
 
+
 /**
- * 
  * GuiScreen class
  * 
  * @authors XOR19, Rapus95, MightyPork
  * @copy (c) 2012
- * 
  */
 public class PC_GresGui extends GuiContainer implements PC_IGresGui {
 
@@ -75,9 +75,9 @@ public class PC_GresGui extends GuiContainer implements PC_IGresGui {
 			lastFocus.updateCursorCounter();
 		}
 	}
-	
+
 	@Override
-	public void setFocus(PC_GresWidget widget){
+	public void setFocus(PC_GresWidget widget) {
 		if (widget != lastFocus) {
 			if (lastFocus != null) {
 				lastFocus.setFocus(false);
@@ -205,9 +205,7 @@ public class PC_GresGui extends GuiContainer implements PC_IGresGui {
 
 
 	/**
-	 * Draws the screen and all the components in it.
-	 * 
-	 * COPY FROM GuiContainer!<BR>
+	 * Draws the screen and all the components in it. COPY FROM GuiContainer!<BR>
 	 * NEEDED TO OVERRIDE render() AND FOR CUSTOM SLOT RENDERING.<br>
 	 * <br>
 	 */
@@ -256,8 +254,7 @@ public class PC_GresGui extends GuiContainer implements PC_IGresGui {
 			zLevel = 200F;
 			itemRenderer.zLevel = 200F;
 			itemRenderer.renderItemIntoGUI(fontRenderer, mc.renderEngine, inventoryplayer.getItemStack(), par1 - i - 8, par2 - j - 8);
-			itemRenderer
-					.renderItemOverlayIntoGUI(fontRenderer, mc.renderEngine, inventoryplayer.getItemStack(), par1 - i - 8, par2 - j - 8);
+			itemRenderer.renderItemOverlayIntoGUI(fontRenderer, mc.renderEngine, inventoryplayer.getItemStack(), par1 - i - 8, par2 - j - 8);
 			zLevel = 0.0F;
 			itemRenderer.zLevel = 0.0F;
 		}
@@ -311,8 +308,7 @@ public class PC_GresGui extends GuiContainer implements PC_IGresGui {
 					String s = (String) list.get(j4);
 
 					if (j4 == 0) {
-						s = (new StringBuilder()).append("\247").append(Integer.toHexString(itemstack.getRarity().nameColor)).append(s)
-								.toString();
+						s = (new StringBuilder()).append("\247").append(Integer.toHexString(itemstack.getRarity().nameColor)).append(s).toString();
 					} else {
 						s = (new StringBuilder()).append("\2477").append(s).toString();
 					}
@@ -353,14 +349,14 @@ public class PC_GresGui extends GuiContainer implements PC_IGresGui {
 		int j = guiTop;
 		par2 -= i;
 		par3 -= j;
-		return par2 >= par1Slot.xDisplayPosition - 1 && par2 < par1Slot.xDisplayPosition + 16 + 1 && par3 >= par1Slot.yDisplayPosition - 1
-				&& par3 < par1Slot.yDisplayPosition + 16 + 1;
+		return par2 >= par1Slot.xDisplayPosition - 1 && par2 < par1Slot.xDisplayPosition + 16 + 1 && par3 >= par1Slot.yDisplayPosition - 1 && par3 < par1Slot.yDisplayPosition + 16 + 1;
 	}
 
 
 	/**
 	 * Draws an inventory slot.<br>
-	 * Almost copy from GuiContainer, but also does PCco_SlotDirectCrafting's ghostly rendering.
+	 * Almost copy from GuiContainer, but also does PCco_SlotDirectCrafting's
+	 * ghostly rendering.
 	 * 
 	 * @param slot the slot
 	 */

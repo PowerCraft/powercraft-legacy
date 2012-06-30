@@ -1,15 +1,16 @@
 package net.minecraft.src;
 
+
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.net.URL;
+
 
 /**
  * thread which downloads information about powercraft updates.
  * 
  * @author MightyPork
  * @copy (c) 2012
- * 
  */
 public class PCco_ThreadCheckUpdates extends Thread {
 

@@ -1,5 +1,6 @@
 package net.minecraft.src;
 
+
 import java.io.File;
 import java.io.PrintWriter;
 import java.io.StringWriter;
@@ -13,19 +14,22 @@ import java.util.logging.Logger;
 
 import net.minecraft.client.Minecraft;
 
+
 /**
  * PowerCraft's static logger class.
  * 
  * @author MightyPork
  * @copy (c) 2012
- * 
  */
 public class PC_Logger {
 	/**
 	 * Global PowerCraft's logger.
 	 */
 	private static final Logger logger = Logger.getLogger("PowerCraft");
-	private static boolean loggingEnabled;
+	/** Logging enabled */
+	public static boolean loggingEnabled = true;
+	/** Stdout printing enabled */
+	public static boolean printToStdout = false;
 
 	static {
 		try {
@@ -44,15 +48,18 @@ public class PC_Logger {
 	/**
 	 * Enable logging.
 	 */
-	public static void enableLogging() {
-		loggingEnabled = true;
+	public static void enableLogging(boolean flag) {
+		loggingEnabled = flag;
 	}
 
+
+
 	/**
-	 * Disable logging.
+	 * Enable debug mode - log also printed to stdout.
+	 * @param printToStdout
 	 */
-	public static void disableLogging() {
-		loggingEnabled = false;
+	public static void setPrintToStdout(boolean printToStdout) {
+		PC_Logger.printToStdout = printToStdout;
 	}
 
 	/**
@@ -61,7 +68,9 @@ public class PC_Logger {
 	 * @param msg message
 	 */
 	public static void info(String msg) {
-		if (!loggingEnabled) { return; }
+		if (!loggingEnabled) {
+			return;
+		}
 		logger.log(Level.INFO, msg);
 	}
 
@@ -71,7 +80,9 @@ public class PC_Logger {
 	 * @param msg message
 	 */
 	public static void fine(String msg) {
-		if (!loggingEnabled) { return; }
+		if (!loggingEnabled) {
+			return;
+		}
 		logger.log(Level.FINE, msg);
 	}
 
@@ -81,7 +92,9 @@ public class PC_Logger {
 	 * @param msg message
 	 */
 	public static void finer(String msg) {
-		if (!loggingEnabled) { return; }
+		if (!loggingEnabled) {
+			return;
+		}
 		logger.log(Level.FINER, msg);
 	}
 
@@ -91,7 +104,9 @@ public class PC_Logger {
 	 * @param msg message
 	 */
 	public static void finest(String msg) {
-		if (!loggingEnabled) { return; }
+		if (!loggingEnabled) {
+			return;
+		}
 		logger.log(Level.FINEST, msg);
 	}
 
@@ -101,7 +116,9 @@ public class PC_Logger {
 	 * @param msg message
 	 */
 	public static void warning(String msg) {
-		if (!loggingEnabled) { return; }
+		if (!loggingEnabled) {
+			return;
+		}
 		logger.log(Level.WARNING, msg);
 	}
 
@@ -111,7 +128,9 @@ public class PC_Logger {
 	 * @param msg message
 	 */
 	public static void severe(String msg) {
-		if (!loggingEnabled) { return; }
+		if (!loggingEnabled) {
+			return;
+		}
 		logger.log(Level.SEVERE, msg);
 	}
 
@@ -123,7 +142,9 @@ public class PC_Logger {
 	 * @param thrown thrown exception
 	 */
 	public static void throwing(String sourceClass, String sourceMethod, Throwable thrown) {
-		if (!loggingEnabled) { return; }
+		if (!loggingEnabled) {
+			return;
+		}
 		logger.throwing(sourceClass, sourceMethod, thrown);
 	}
 
@@ -134,7 +155,6 @@ public class PC_Logger {
 	 * 
 	 * @author MightyPork
 	 * @copy (c) 2012
-	 * 
 	 */
 	private static class PC_LogFormatter extends Formatter {
 
@@ -147,7 +167,9 @@ public class PC_Logger {
 
 			StringBuffer buf = new StringBuffer(180);
 
-			if (record.getMessage().equals("\n")) { return nl; }
+			if (record.getMessage().equals("\n")) {
+				return nl;
+			}
 
 			if (record.getMessage().charAt(0) == '\n') {
 				buf.append(nl);
@@ -207,6 +229,8 @@ public class PC_Logger {
 
 				buf.append(nl);
 			}
+			
+			if(PC_Logger.printToStdout) System.out.println(buf.toString());
 
 			return buf.toString();
 		}

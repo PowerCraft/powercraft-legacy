@@ -1,8 +1,10 @@
 package net.minecraft.src;
 
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+
 
 /**
  * Tools for inventory manipulation.
@@ -20,9 +22,15 @@ public class PC_InvUtils {
 	 */
 	public static IInventory getCompositeInventoryAt(IBlockAccess world, PC_CoordI pos) {
 		TileEntity te = pos.getTileEntity(world);
-		if (te == null) { return null; }
-		if (te instanceof PC_IInventoryWrapper) { return ((PC_IInventoryWrapper) te).getInventory(); }
-		if (!(te instanceof IInventory)) { return null; }
+		if (te == null) {
+			return null;
+		}
+		if (te instanceof PC_IInventoryWrapper) {
+			return ((PC_IInventoryWrapper) te).getInventory();
+		}
+		if (!(te instanceof IInventory)) {
+			return null;
+		}
 
 		IInventory inv = (IInventory) te;
 
@@ -49,8 +57,8 @@ public class PC_InvUtils {
 	}
 
 	/**
-	 * Store itemstack into specified slot in an inventory.
-	 * Useful for furnaces, brewing stands and that kind of containers.
+	 * Store itemstack into specified slot in an inventory. Useful for furnaces,
+	 * brewing stands and that kind of containers.
 	 * 
 	 * @param inventory target inventory
 	 * @param stackToStore stack to store
@@ -58,9 +66,12 @@ public class PC_InvUtils {
 	 * @return true if something was stored
 	 */
 	public static boolean storeItemInSlot(IInventory inventory, ItemStack stackToStore, int slot) {
-		if (stackToStore == null || stackToStore.stackSize == 0) { return false; }
-		if (inventory instanceof PC_ISpecialAccessInventory
-				&& !((PC_ISpecialAccessInventory) inventory).canInsertStackTo(slot, stackToStore)) { return false; }
+		if (stackToStore == null || stackToStore.stackSize == 0) {
+			return false;
+		}
+		if (inventory instanceof PC_ISpecialAccessInventory && !((PC_ISpecialAccessInventory) inventory).canInsertStackTo(slot, stackToStore)) {
+			return false;
+		}
 
 		ItemStack destination = inventory.getStackInSlot(slot);
 
@@ -73,9 +84,7 @@ public class PC_InvUtils {
 			return true;
 		}
 
-		if (destination.itemID == stackToStore.itemID && destination.isStackable()
-				&& (!destination.getHasSubtypes() || destination.getItemDamage() == stackToStore.getItemDamage())
-				&& destination.stackSize < inventory.getInventoryStackLimit()) {
+		if (destination.itemID == stackToStore.itemID && destination.isStackable() && (!destination.getHasSubtypes() || destination.getItemDamage() == stackToStore.getItemDamage()) && destination.stackSize < inventory.getInventoryStackLimit()) {
 			int numStored = stackToStore.stackSize;
 			numStored = Math.min(numStored, destination.getMaxStackSize() - destination.stackSize);
 			numStored = Math.min(numStored, inventory.getInventoryStackLimit() - destination.stackSize);
@@ -107,15 +116,16 @@ public class PC_InvUtils {
 		if (inventory instanceof TileEntityBrewingStand) {
 
 			// check if brewing finished
-			if (((TileEntityBrewingStand) inventory).getBrewTime() != 0) { return null; }
+			if (((TileEntityBrewingStand) inventory).getBrewTime() != 0) {
+				return null;
+			}
 
 			for (int i = 0; i < 4; i++) {
 
 				ItemStack stack = inventory.getStackInSlot(i);
 
 				// if 0-2, its potion slot. If 3, its ingredient.
-				if ((i < 3 && (stack != null && stack.stackSize > 0 && stack.itemID == Item.potion.shiftedIndex && stack.getItemDamage() != 0))
-						|| (i == 3 && (stack != null))) {
+				if ((i < 3 && (stack != null && stack.stackSize > 0 && stack.itemID == Item.potion.shiftedIndex && stack.getItemDamage() != 0)) || (i == 3 && (stack != null))) {
 					inventory.setInventorySlotContents(i, null);
 					return stack;
 				}
@@ -126,9 +136,17 @@ public class PC_InvUtils {
 		return null;
 	}
 
+	/**
+	 * Remove first stack from inventory
+	 * 
+	 * @param inventory inv
+	 * @return the stack removed
+	 */
 	public static ItemStack dispenseFirstStack(IInventory inventory) {
 
-		if (isSpecialContainer(inventory)) { return dispenseFromSpecialContainer(inventory); }
+		if (isSpecialContainer(inventory)) {
+			return dispenseFromSpecialContainer(inventory);
+		}
 
 		for (int i = 0, n = inventory.getSizeInventory(); i < n; i++) {
 
@@ -178,7 +196,8 @@ public class PC_InvUtils {
 
 	/**
 	 * Add given stack to an inventory. First fills used slots, then starts
-	 * using new slots. Returns TRUE only if EVERYTHING was stored, and the entity item can be discarded.
+	 * using new slots. Returns TRUE only if EVERYTHING was stored, and the
+	 * entity item can be discarded.
 	 * 
 	 * @param inv target IInventory
 	 * @param itemstack stack to store
@@ -213,9 +232,10 @@ public class PC_InvUtils {
 			}
 
 			ItemStack stackAt = inv.getStackInSlot(slot);
-			if (stackAt != null && stackAt.itemID == itemstack.itemID && stackAt.isStackable()
-					&& stackAt.stackSize < stackAt.getMaxStackSize() && stackAt.stackSize < inv.getInventoryStackLimit()
-					&& (!stackAt.getHasSubtypes() || stackAt.getItemDamage() == itemstack.getItemDamage())) { return slot; }
+			if (stackAt != null && stackAt.itemID == itemstack.itemID && stackAt.isStackable() && stackAt.stackSize < stackAt.getMaxStackSize() && stackAt.stackSize < inv.getInventoryStackLimit()
+					&& (!stackAt.getHasSubtypes() || stackAt.getItemDamage() == itemstack.getItemDamage())) {
+				return slot;
+			}
 		}
 
 		return -1;
@@ -229,7 +249,9 @@ public class PC_InvUtils {
 		// not stackable
 		if (itemstack.getMaxStackSize() == 1) {
 			int firstEmpty = getFirstEmptySlot(inv, itemstack);
-			if (firstEmpty < 0) { return size; }
+			if (firstEmpty < 0) {
+				return size;
+			}
 			if (inv.getStackInSlot(firstEmpty) == null) {
 				inv.setInventorySlotContents(firstEmpty, ItemStack.copyItemStack(itemstack));
 			}
@@ -241,7 +263,9 @@ public class PC_InvUtils {
 			targetSlot = getFirstEmptySlot(inv, itemstack);
 		}
 
-		if (targetSlot < 0) { return size; }
+		if (targetSlot < 0) {
+			return size;
+		}
 
 		if (inv.getStackInSlot(targetSlot) == null) {
 			inv.setInventorySlotContents(targetSlot, new ItemStack(id, 0, itemstack.getItemDamage()));
@@ -281,7 +305,8 @@ public class PC_InvUtils {
 	}
 
 	/**
-	 * Store whole stack in inventory; works correctly with special inventory types
+	 * Store whole stack in inventory; works correctly with special inventory
+	 * types
 	 * 
 	 * @param inventory the inventory we're storing into
 	 * @param stack the stored stack
@@ -300,12 +325,20 @@ public class PC_InvUtils {
 
 		if (inventory instanceof TileEntityBrewingStand) {
 			if (stack.itemID == Item.potion.shiftedIndex) {
-				if (PC_InvUtils.storeItemInSlot(inventory, stack, 0)) { return true; }
-				if (PC_InvUtils.storeItemInSlot(inventory, stack, 1)) { return true; }
-				if (PC_InvUtils.storeItemInSlot(inventory, stack, 2)) { return true; }
+				if (PC_InvUtils.storeItemInSlot(inventory, stack, 0)) {
+					return true;
+				}
+				if (PC_InvUtils.storeItemInSlot(inventory, stack, 1)) {
+					return true;
+				}
+				if (PC_InvUtils.storeItemInSlot(inventory, stack, 2)) {
+					return true;
+				}
 				return false;
 			} else {
-				if (stack.getItem().isPotionIngredient()) { return PC_InvUtils.storeItemInSlot(inventory, stack, 3); }
+				if (stack.getItem().isPotionIngredient()) {
+					return PC_InvUtils.storeItemInSlot(inventory, stack, 3);
+				}
 				return false;
 			}
 		}
@@ -327,16 +360,22 @@ public class PC_InvUtils {
 	 * @return is full
 	 */
 	public static boolean isInventoryFull(IInventory inv) {
-		if (inv == null) { return false; }
+		if (inv == null) {
+			return false;
+		}
 
-		if (inv instanceof PC_IStateReportingInventory) { return ((PC_IStateReportingInventory) inv).isContainerFull(); }
+		if (inv instanceof PC_IStateReportingInventory) {
+			return ((PC_IStateReportingInventory) inv).isContainerFull();
+		}
 
-		if (inv instanceof TileEntityFurnace) { return inv.getStackInSlot(1) != null
-				&& inv.getStackInSlot(1).stackSize == Math.min(inv.getInventoryStackLimit(), inv.getStackInSlot(1).getMaxStackSize()); }
+		if (inv instanceof TileEntityFurnace) {
+			return inv.getStackInSlot(1) != null && inv.getStackInSlot(1).stackSize == Math.min(inv.getInventoryStackLimit(), inv.getStackInSlot(1).getMaxStackSize());
+		}
 
 		for (int i = 0; i < inv.getSizeInventory(); i++) {
-			if (inv.getStackInSlot(i) == null
-					|| inv.getStackInSlot(i).stackSize < Math.min(inv.getInventoryStackLimit(), inv.getStackInSlot(i).getMaxStackSize())) { return false; }
+			if (inv.getStackInSlot(i) == null || inv.getStackInSlot(i).stackSize < Math.min(inv.getInventoryStackLimit(), inv.getStackInSlot(i).getMaxStackSize())) {
+				return false;
+			}
 		}
 		return true;
 	}
@@ -348,14 +387,22 @@ public class PC_InvUtils {
 	 * @return is empty
 	 */
 	public static boolean isInventoryEmpty(IInventory inv) {
-		if (inv == null) { return true; }
+		if (inv == null) {
+			return true;
+		}
 
-		if (inv instanceof PC_IStateReportingInventory) { return ((PC_IStateReportingInventory) inv).isContainerEmpty(); }
+		if (inv instanceof PC_IStateReportingInventory) {
+			return ((PC_IStateReportingInventory) inv).isContainerEmpty();
+		}
 
-		if (inv instanceof TileEntityFurnace) { return inv.getStackInSlot(1) == null; }
+		if (inv instanceof TileEntityFurnace) {
+			return inv.getStackInSlot(1) == null;
+		}
 
 		for (int i = 0; i < inv.getSizeInventory(); i++) {
-			if (inv.getStackInSlot(i) != null) { return false; }
+			if (inv.getStackInSlot(i) != null) {
+				return false;
+			}
 		}
 		return true;
 	}
@@ -399,17 +446,37 @@ public class PC_InvUtils {
 	 * @return fuel value
 	 */
 	public static int getFuelValue(ItemStack itemstack, double strength) {
-		if (itemstack == null) { return 0; }
+		if (itemstack == null) {
+			return 0;
+		}
 		int i = itemstack.getItem().shiftedIndex;
-		if (i == Block.wood.blockID) { return (int) (4 * 300 * strength); }
-		if (i < 256 && Block.blocksList[i].blockMaterial == Material.wood) { return (int) (300 * strength); }
-		if (i == Item.stick.shiftedIndex) { return (int) (100 * strength); }
-		if (i == Item.paper.shiftedIndex) { return (int) (150 * strength); }
-		if (i == Item.coal.shiftedIndex) { return (int) (1600 * strength); }
-		if (i == Item.bucketLava.shiftedIndex) { return (int) (20000 * strength); }
-		if (i == Block.sapling.blockID) { return (int) (100 * strength); }
-		if (i == Item.gunpowder.shiftedIndex) { return (int) (500 * strength); }
-		if (i == Item.blazeRod.shiftedIndex) { return (int) (2400 * strength); }
+		if (i == Block.wood.blockID) {
+			return (int) (4 * 300 * strength);
+		}
+		if (i < 256 && Block.blocksList[i].blockMaterial == Material.wood) {
+			return (int) (300 * strength);
+		}
+		if (i == Item.stick.shiftedIndex) {
+			return (int) (100 * strength);
+		}
+		if (i == Item.paper.shiftedIndex) {
+			return (int) (150 * strength);
+		}
+		if (i == Item.coal.shiftedIndex) {
+			return (int) (1600 * strength);
+		}
+		if (i == Item.bucketLava.shiftedIndex) {
+			return (int) (20000 * strength);
+		}
+		if (i == Block.sapling.blockID) {
+			return (int) (100 * strength);
+		}
+		if (i == Item.gunpowder.shiftedIndex) {
+			return (int) (500 * strength);
+		}
+		if (i == Item.blazeRod.shiftedIndex) {
+			return (int) (2400 * strength);
+		}
 
 		return (int) (ModLoader.addAllFuel(i, itemstack.getItemDamage()) * strength);
 	}
@@ -440,7 +507,8 @@ public class PC_InvUtils {
 	}
 
 	/**
-	 * Go through an array of itemstacks and merge them to smallest possible count.<br>
+	 * Go through an array of itemstacks and merge them to smallest possible
+	 * count.<br>
 	 * Great for inventory cleanup.
 	 * 
 	 * @param input original stacks array
@@ -458,13 +526,16 @@ public class PC_InvUtils {
 
 
 	/**
-	 * Go through a list of itemstacks and merge them to smallest possible count.
+	 * Go through a list of itemstacks and merge them to smallest possible
+	 * count.
 	 * 
 	 * @param input original list of stacks
 	 */
 	public static void mergeStacks(List<ItemStack> input) {
 
-		if (input == null) { return; }
+		if (input == null) {
+			return;
+		}
 
 		for (ItemStack st1 : input) {
 

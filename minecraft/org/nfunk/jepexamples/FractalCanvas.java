@@ -5,42 +5,51 @@
       (c) Copyright 2007, Nathan Funk and Richard Morris
       See LICENSE-*.txt for license information.
 
-*****************************************************************************/
+ *****************************************************************************/
 
 package org.nfunk.jepexamples;
 
-import java.awt.*;
-import java.util.*;
 
-import org.nfunk.jep.*;
-import org.nfunk.jep.type.*;
-import org.nfunk.jep.evaluation.*;
+import java.awt.Canvas;
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.Graphics;
+import java.util.Date;
+
+import org.nfunk.jep.JEP;
+import org.nfunk.jep.ParseException;
+import org.nfunk.jep.SymbolTable;
+import org.nfunk.jep.evaluation.CommandElement;
+import org.nfunk.jep.evaluation.CommandEvaluator;
+import org.nfunk.jep.evaluation.ExpressionCompiler;
+import org.nfunk.jep.type.Complex;
+
 
 /**
-* This class performs the drawing of the fractal.
-*/
+ * This class performs the drawing of the fractal.
+ */
 public class FractalCanvas extends Canvas {
 	private static final long serialVersionUID = -593341831485283712L;
 
 	private int scaleX, scaleY;
 
 	private Dimension dimensions;
-	
+
 	private int iterations, nEvals;
 
 	private boolean hasError;
 
 	private JEP myParser;
 	private ExpressionCompiler expressionCompiler;
-	private CommandEvaluator          evaluator;
-	private CommandElement[]          commands;
-	private SymbolTable        symTab;
-	
+	private CommandEvaluator evaluator;
+	private CommandElement[] commands;
+	private SymbolTable symTab;
+
 	private java.awt.TextField exprField;
 
 	/**
-	* Constructor. 
-	*/
+	 * Constructor.
+	 */
 	public FractalCanvas(String initialExpression, java.awt.TextField exprField_in) {
 		iterations = 20;
 		nEvals = 0;
@@ -56,8 +65,8 @@ public class FractalCanvas extends Canvas {
 	}
 
 	/**
-	* Initializes the parser
-	*/
+	 * Initializes the parser
+	 */
 	private void initParser(String initialExpression) {
 		//Init Parser
 		myParser = new JEP();
@@ -67,18 +76,18 @@ public class FractalCanvas extends Canvas {
 
 		//Load the standard
 		myParser.addStandardConstants();
-		myParser.addComplex();	
+		myParser.addComplex();
 
 		//Add and initialize z to (0,0)
-		myParser.addVariable("z",0,0);
-		myParser.addVariable("c",0,0);
+		myParser.addVariable("z", 0, 0);
+		myParser.addVariable("c", 0, 0);
 
 		setExpressionString(initialExpression);
 	}
 
 	/**
-	* Parses a new expression
-	*/
+	 * Parses a new expression
+	 */
 	public void setExpressionString(String newString) {
 		nEvals = 0;
 
@@ -88,9 +97,9 @@ public class FractalCanvas extends Canvas {
 		//Find out whether there was an error in the expression
 		hasError = myParser.hasError();
 		if (hasError)
-		  exprField.setForeground(Color.red);
+			exprField.setForeground(Color.red);
 		else
-		  exprField.setForeground(Color.black);
+			exprField.setForeground(Color.black);
 
 	}
 
@@ -100,7 +109,7 @@ public class FractalCanvas extends Canvas {
 
 	private void paintWhite(Graphics g) {
 		g.setColor(Color.white);
-		g.fillRect(0,0,dimensions.width,dimensions.height);
+		g.fillRect(0, 0, dimensions.width, dimensions.height);
 	}
 
 
@@ -111,16 +120,14 @@ public class FractalCanvas extends Canvas {
 
 		System.out.println("done.");
 	}
-	
-	private void paintRegion(Graphics g, int x, int y,
-							int width, int height, int depth,
-							int depth_max) {
+
+	private void paintRegion(Graphics g, int x, int y, int width, int height, int depth, int depth_max) {
 		double re, im, p, q, resq, imsq, imtemp;
 		int count;
 
 		if (depth == depth_max) {
-			p = (double)(x+width/2-230)/scaleX;
-			q = (double)(y+height/2-150)/scaleY;
+			p = (double) (x + width / 2 - 230) / scaleX;
+			q = (double) (y + height / 2 - 150) / scaleY;
 			count = 0;
 			re = 0;
 			im = 0;
@@ -138,32 +145,31 @@ public class FractalCanvas extends Canvas {
 			}
 			//System.out.println("At: " + x + ", " + y + ": " + count + " "+ result);
 			if (count != iterations) {
-				g.setColor(new Color(0, 0, (int)(255.0*(Math.sqrt(count)/Math.sqrt(iterations)))));
+				g.setColor(new Color(0, 0, (int) (255.0 * (Math.sqrt(count) / Math.sqrt(iterations)))));
 				g.fillRect(x, y, width, height);
 			}
 
 		} else {
-			paintRegion(g,           x,            y, width/2, height - height/2, depth+1, depth_max);
-			paintRegion(g, x + width/2,            y, width - width/2, height/2, depth+1, depth_max);
-			paintRegion(g,           x, y + height/2, width/2, height - height/2, depth+1, depth_max);
-			paintRegion(g, x + width/2, y + height/2, width - width/2, height - height/2, depth+1, depth_max);
+			paintRegion(g, x, y, width / 2, height - height / 2, depth + 1, depth_max);
+			paintRegion(g, x + width / 2, y, width - width / 2, height / 2, depth + 1, depth_max);
+			paintRegion(g, x, y + height / 2, width / 2, height - height / 2, depth + 1, depth_max);
+			paintRegion(g, x + width / 2, y + height / 2, width - width / 2, height - height / 2, depth + 1, depth_max);
 		}
 	}
 
 	private void paintFractal(Graphics g) {
-		Complex z,c,temp;
+		Complex z, c, temp;
 		int count;
-		
+
 		c = myParser.addVariable("c", 0, 0);
 		z = myParser.addVariable("z", 0, 0);
 
-		for (int x = 0; x <= (dimensions.width-1); x++) {
-			for (int y = 0; y <= (dimensions.height-1); y++) {
+		for (int x = 0; x <= (dimensions.width - 1); x++) {
+			for (int y = 0; y <= (dimensions.height - 1); y++) {
 				count = 0;
-				c.set((double)(x-230)/scaleX,
-				      (double)(y-150)/scaleY);
-				z.set(0,0);
-				
+				c.set((double) (x - 230) / scaleX, (double) (y - 150) / scaleY);
+				z.set(0, 0);
+
 				while ((count < iterations) && (z.abs2() < 4.0)) {
 					z.set(myParser.getComplexValue());
 					count++;
@@ -171,7 +177,7 @@ public class FractalCanvas extends Canvas {
 				}
 
 				if (count != iterations) {
-					g.setColor(new Color(0, 0, (int)(255.0*(Math.sqrt(count)/Math.sqrt(iterations)))));
+					g.setColor(new Color(0, 0, (int) (255.0 * (Math.sqrt(count) / Math.sqrt(iterations)))));
 					g.fillRect(x, y, 1, 1);
 				}
 			}
@@ -179,9 +185,9 @@ public class FractalCanvas extends Canvas {
 	}
 
 	private void paintFractalWithCompiler(Graphics g) {
-		Complex z,c,temp;
+		Complex z, c, temp;
 		int count;
-		
+
 		c = myParser.addVariable("c", 0, 0);
 		z = myParser.addVariable("z", 0, 0);
 		try {
@@ -191,16 +197,15 @@ public class FractalCanvas extends Canvas {
 			e.printStackTrace();
 		}
 
-		for (int x = 0; x <= (dimensions.width-1); x++) {
-			for (int y = 0; y <= (dimensions.height-1); y++) {
+		for (int x = 0; x <= (dimensions.width - 1); x++) {
+			for (int y = 0; y <= (dimensions.height - 1); y++) {
 				count = 0;
-				c.set((double)(x-230)/scaleX,
-					  (double)(y-150)/scaleY);
-				z.set(0,0);
-				
+				c.set((double) (x - 230) / scaleX, (double) (y - 150) / scaleY);
+				z.set(0, 0);
+
 				while ((count < iterations) && (z.abs2() < 4.0)) {
 					try {
-						temp = (Complex)evaluator.evaluate(commands, symTab);
+						temp = (Complex) evaluator.evaluate(commands, symTab);
 						z.set(temp);
 					} catch (Exception e) {
 						//System.out.println(e.toString());
@@ -211,7 +216,7 @@ public class FractalCanvas extends Canvas {
 				}
 
 				if (count != iterations) {
-					g.setColor(new Color(0, 0, (int)(255.0*(Math.sqrt(count)/Math.sqrt(iterations)))));
+					g.setColor(new Color(0, 0, (int) (255.0 * (Math.sqrt(count) / Math.sqrt(iterations)))));
 					g.fillRect(x, y, 1, 1);
 				}
 			}
@@ -222,17 +227,17 @@ public class FractalCanvas extends Canvas {
 		double re, im, p, q, resq, imsq, imtemp;
 		int count;
 
-		for (int x = 0; x <= (dimensions.width-1); x++) {
-			for (int y = 0; y <= (dimensions.height-1); y++) {
-				p = (double)(x-230)/scaleX;
-				q = (double)(y-150)/scaleY;
+		for (int x = 0; x <= (dimensions.width - 1); x++) {
+			for (int y = 0; y <= (dimensions.height - 1); y++) {
+				p = (double) (x - 230) / scaleX;
+				q = (double) (y - 150) / scaleY;
 				count = 0;
 				re = 0;
 				im = 0;
 				resq = 0;
 				imsq = 0;
-	
-				while ( (count < iterations) && ((resq + imsq) < 4.0) ) {
+
+				while ((count < iterations) && ((resq + imsq) < 4.0)) {
 					imtemp = 2 * re * im;
 					re = resq - imsq + p;
 					im = imtemp + q;
@@ -243,13 +248,14 @@ public class FractalCanvas extends Canvas {
 				}
 				//System.out.println("At: " + x + ", " + y + ": " + count + " "+ result);
 				if (count != iterations) {
-					g.setColor(new Color(0, 0, (int)(255.0*(Math.sqrt(count)/Math.sqrt(iterations)))));
+					g.setColor(new Color(0, 0, (int) (255.0 * (Math.sqrt(count) / Math.sqrt(iterations)))));
 					g.fillRect(x, y, 1, 1);
 				}
 			}
 		}
 	}
 
+	@Override
 	public void paint(Graphics g) {
 		Date start, finish;
 
@@ -264,8 +270,8 @@ public class FractalCanvas extends Canvas {
 			//paintNonJEPFractal(g);
 			finish = new Date();
 			System.out.print("done. sec/eval: ");
-			double seconds =  ( finish.getTime() - start.getTime() ) / 1000.0;
-			System.out.println(seconds/nEvals);
+			double seconds = (finish.getTime() - start.getTime()) / 1000.0;
+			System.out.println(seconds / nEvals);
 		}
 /*
 		if (!initializedBuffer)

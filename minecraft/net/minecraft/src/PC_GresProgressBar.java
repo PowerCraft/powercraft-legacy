@@ -1,13 +1,14 @@
 package net.minecraft.src;
 
+
 import org.lwjgl.opengl.GL11;
+
 
 /**
  * Resizable GUI user-editable colorable progress bar widget
  * 
  * @author MightyPork
  * @copy (c) 2012
- * 
  */
 public class PC_GresProgressBar extends PC_GresWidget {
 
@@ -129,7 +130,8 @@ public class PC_GresProgressBar extends PC_GresWidget {
 	}
 
 	/**
-	 * @param labelMultiplier the label multiplier (if set to 100, percent sign will be shown)
+	 * @param labelMultiplier the label multiplier (if set to 100, percent sign
+	 *            will be shown)
 	 * @return this
 	 */
 	public PC_GresProgressBar setLabelMultiplier(int labelMultiplier) {
@@ -210,7 +212,8 @@ public class PC_GresProgressBar extends PC_GresWidget {
 	 * 
 	 * @param append label unit (eg. %, km, t)
 	 * @param longest longest expected text shown on label (eg. 100% or 999km)
-	 * @param multiplier fraction multiplier. The fraction is multiplied by this and rounded before showing as label.
+	 * @param multiplier fraction multiplier. The fraction is multiplied by this
+	 *            and rounded before showing as label.
 	 * @return this
 	 */
 	public PC_GresProgressBar configureLabel(String append, String longest, int multiplier) {
@@ -241,8 +244,7 @@ public class PC_GresProgressBar extends PC_GresWidget {
 
 		String texture = mod_PCcore.getImgDir() + "gres/widgets.png";
 
-		renderTextureSliced(offsetPos, texture, size.offset(showLabel ? -(labelWidth + 3) : 0, 0), new PC_CoordI(0, 11 * 2), new PC_CoordI(
-				256, 11));
+		renderTextureSliced(offsetPos, texture, size.offset(showLabel ? -(labelWidth + 3) : 0, 0), new PC_CoordI(0, 11 * 2), new PC_CoordI(256, 11));
 
 		GL11.glBindTexture(GL11.GL_TEXTURE_2D, PC_Utils.mc().renderEngine.getTexture(texture));
 
@@ -281,7 +283,9 @@ public class PC_GresProgressBar extends PC_GresWidget {
 
 		int inner_width = Math.round((size.x - 2 - (showLabel ? labelWidth + 3 : 0)));
 
-		if (!acceptsInput) { return false; }
+		if (!acceptsInput) {
+			return false;
+		}
 
 		if (mpos.x >= 0) {
 			fraction = (mpos.x) / (float) inner_width;

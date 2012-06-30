@@ -7,7 +7,6 @@ package net.minecraft.src;
  * 
  * @author MightyPork
  * @copy (c) 2012
- * 
  */
 public class PCma_ItemBlockOptical extends ItemBlock {
 
@@ -62,11 +61,17 @@ public class PCma_ItemBlockOptical extends ItemBlock {
 			}
 		}
 
-		if (itemstack.stackSize == 0) { return false; }
+		if (itemstack.stackSize == 0) {
+			return false;
+		}
 
-		if (!entityplayer.canPlayerEdit(i, j, k)) { return false; }
+		if (!entityplayer.canPlayerEdit(i, j, k)) {
+			return false;
+		}
 
-		if (j == 255 && Block.blocksList[getBlockID()].blockMaterial.isSolid()) { return false; }
+		if (j == 255 && Block.blocksList[getBlockID()].blockMaterial.isSolid()) {
+			return false;
+		}
 
 		if (world.canBlockBePlacedAt(getBlockID(), i, j, k, false, l)) {
 			Block block = mod_PCmachines.optical;
@@ -91,8 +96,7 @@ public class PCma_ItemBlockOptical extends ItemBlock {
 
 				mod_PCmachines.optical.onBlockPlaced(world, i, j, k, i);
 				mod_PCmachines.optical.onBlockPlacedBy(world, i, j, k, entityplayer);
-				world.playSoundEffect(i + 0.5F, j + 0.5F, k + 0.5F, block.stepSound.getStepSound(),
-						(block.stepSound.getVolume() + 1.0F) / 2.0F, block.stepSound.getPitch() * 0.8F);
+				world.playSoundEffect(i + 0.5F, j + 0.5F, k + 0.5F, block.stepSound.getStepSound(), (block.stepSound.getVolume() + 1.0F) / 2.0F, block.stepSound.getPitch() * 0.8F);
 				world.markBlocksDirty(i, j, k, i, j, k);
 				world.markBlockNeedsUpdate(i, j, k);
 

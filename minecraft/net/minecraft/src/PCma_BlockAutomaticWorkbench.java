@@ -1,20 +1,20 @@
 package net.minecraft.src;
 
+
 import java.util.HashSet;
 import java.util.Random;
 import java.util.Set;
 
 import net.minecraft.src.forge.ITextureProvider;
 
+
 /**
  * Automatic Crafting table block
  * 
  * @author MightyPork
  * @copy (c) 2012
- * 
  */
-public class PCma_BlockAutomaticWorkbench extends BlockContainer implements PC_IBlockType, PC_ISwapTerrain, PC_ISpecialInventoryTextures,
-		ITextureProvider {
+public class PCma_BlockAutomaticWorkbench extends BlockContainer implements PC_IBlockType, PC_ISwapTerrain, PC_ISpecialInventoryTextures, ITextureProvider {
 	private static final int TXDOWN = 109, TXTOP = 154, TXSIDE = 138, TXFRONT = 106, TXBACK = 122;
 
 	@Override
@@ -27,7 +27,9 @@ public class PCma_BlockAutomaticWorkbench extends BlockContainer implements PC_I
 		ItemStack ihold = entityplayer.getCurrentEquippedItem();
 		if (ihold != null) {
 			if (ihold.getItem() instanceof ItemBlock && ihold.getItem().shiftedIndex != blockID) {
-				if (Block.blocksList[ihold.getItem().shiftedIndex] instanceof PC_IBlockType) { return false; }
+				if (Block.blocksList[ihold.getItem().shiftedIndex] instanceof PC_IBlockType) {
+					return false;
+				}
 			}
 		}
 
@@ -80,8 +82,7 @@ public class PCma_BlockAutomaticWorkbench extends BlockContainer implements PC_I
 						i1 = itemstack.stackSize;
 					}
 					itemstack.stackSize -= i1;
-					EntityItem entityitem = new EntityItem(world, i + f, j + f1, k + f2, new ItemStack(itemstack.itemID, i1,
-							itemstack.getItemDamage()));
+					EntityItem entityitem = new EntityItem(world, i + f, j + f1, k + f2, new ItemStack(itemstack.itemID, i1, itemstack.getItemDamage()));
 					float f3 = 0.05F;
 					entityitem.motionX = (float) world.rand.nextGaussian() * f3;
 					entityitem.motionY = (float) world.rand.nextGaussian() * f3 + 0.2F;
@@ -120,20 +121,30 @@ public class PCma_BlockAutomaticWorkbench extends BlockContainer implements PC_I
 			m = 4;
 		}
 
-		if (s == 1) { return TXTOP; }
+		if (s == 1) {
+			return TXTOP;
+		}
 		if (s == 0) {
 			return TXDOWN;
 		} else {
-			if (m == s) { return TXBACK; }
-			if ((m == 2 && s == 3) || (m == 3 && s == 2) || (m == 4 && s == 5) || (m == 5 && s == 4)) { return TXFRONT; }
+			if (m == s) {
+				return TXBACK;
+			}
+			if ((m == 2 && s == 3) || (m == 3 && s == 2) || (m == 4 && s == 5) || (m == 5 && s == 4)) {
+				return TXFRONT;
+			}
 			return TXSIDE;
 		}
 	}
 
 	@Override
 	public int getInvTexture(int i, int m) {
-		if (i == 1) { return TXTOP; }
-		if (i == 0) { return TXDOWN; }
+		if (i == 1) {
+			return TXTOP;
+		}
+		if (i == 0) {
+			return TXDOWN;
+		}
 		if (i == 3) {
 			return TXFRONT;
 		} else if (i == 4) {
@@ -151,8 +162,7 @@ public class PCma_BlockAutomaticWorkbench extends BlockContainer implements PC_I
 	@Override
 	public void onNeighborBlockChange(World world, int i, int j, int k, int l) {
 		if (l > 0 && Block.blocksList[l].canProvidePower()) {
-			boolean flag = world.isBlockIndirectlyGettingPowered(i, j, k) || world.isBlockIndirectlyGettingPowered(i, j + 1, k)
-					|| world.isBlockIndirectlyGettingPowered(i, j - 1, k);
+			boolean flag = world.isBlockIndirectlyGettingPowered(i, j, k) || world.isBlockIndirectlyGettingPowered(i, j + 1, k) || world.isBlockIndirectlyGettingPowered(i, j - 1, k);
 			if (flag) {
 				world.scheduleBlockUpdate(i, j, k, blockID, tickRate());
 			}
@@ -161,8 +171,7 @@ public class PCma_BlockAutomaticWorkbench extends BlockContainer implements PC_I
 
 	@Override
 	public void updateTick(World world, int i, int j, int k, Random random) {
-		if (world.isBlockIndirectlyGettingPowered(i, j, k) || world.isBlockIndirectlyGettingPowered(i, j + 1, k)
-				|| world.isBlockIndirectlyGettingPowered(i, j - 1, k)) {
+		if (world.isBlockIndirectlyGettingPowered(i, j, k) || world.isBlockIndirectlyGettingPowered(i, j + 1, k) || world.isBlockIndirectlyGettingPowered(i, j - 1, k)) {
 			getTE(world, i, j, k).doCrafting();
 		}
 	}

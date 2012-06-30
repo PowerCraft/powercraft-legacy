@@ -1,13 +1,14 @@
 package net.minecraft.src;
 
+
 import org.lwjgl.opengl.GL11;
+
 
 /**
  * Renderer for prozimity Sensor
  * 
  * @author MightyPork
  * @copy (c) 2012
- * 
  */
 public class PCde_TileEntityDecoRenderer extends TileEntitySpecialRenderer {
 
@@ -25,7 +26,9 @@ public class PCde_TileEntityDecoRenderer extends TileEntitySpecialRenderer {
 
 		PCde_TileEntityDeco ted = (PCde_TileEntityDeco) tileentity;
 
-		if (ted.type == 1) { return; }
+		if (ted.type == 1) {
+			return;
+		}
 
 		GL11.glPushMatrix();
 		float f = 1.0F;

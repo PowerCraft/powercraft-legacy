@@ -1,5 +1,6 @@
 package net.minecraft.src;
 
+
 import java.io.File;
 import java.io.FileWriter;
 import java.io.FilenameFilter;
@@ -17,6 +18,7 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 import org.xml.sax.SAXParseException;
+
 
 /**
  * Tree harvesting manager for machines that harvest whole trees.
@@ -36,7 +38,8 @@ public class PC_TreeHarvestingManager {
 	private static ArrayList<PC_Struct3<PC_Struct2<Integer, Integer>, PC_Struct2<Integer, Integer>, PC_Struct2<Integer, Integer>>> trees = new ArrayList<PC_Struct3<PC_Struct2<Integer, Integer>, PC_Struct2<Integer, Integer>, PC_Struct2<Integer, Integer>>>();
 
 	/**
-	 * API method for adding custom trees from PowerCraft modules. Set leaves or sapling numbers to -1 to disable them.
+	 * API method for adding custom trees from PowerCraft modules. Set leaves or
+	 * sapling numbers to -1 to disable them.
 	 * 
 	 * @param WOOD_ID
 	 * @param WOOD_META
@@ -47,8 +50,7 @@ public class PC_TreeHarvestingManager {
 	 */
 	public static void registerTree(int WOOD_ID, int WOOD_META, int LEAVES_ID, int LEAVES_META, int SAPLING_ID, int SAPLING_META) {
 		PC_Logger.finest("Registering new tree into Tree Harvesting Manager.");
-		trees.add(new PC_Struct3<PC_Struct2<Integer, Integer>, PC_Struct2<Integer, Integer>, PC_Struct2<Integer, Integer>>(
-				new PC_Struct2<Integer, Integer>(WOOD_ID, WOOD_META), new PC_Struct2<Integer, Integer>(LEAVES_ID, LEAVES_META),
+		trees.add(new PC_Struct3<PC_Struct2<Integer, Integer>, PC_Struct2<Integer, Integer>, PC_Struct2<Integer, Integer>>(new PC_Struct2<Integer, Integer>(WOOD_ID, WOOD_META), new PC_Struct2<Integer, Integer>(LEAVES_ID, LEAVES_META),
 				new PC_Struct2<Integer, Integer>(SAPLING_ID, SAPLING_META)));
 	}
 
@@ -59,10 +61,11 @@ public class PC_TreeHarvestingManager {
 	 * @param wood_meta block meta
 	 * @return tree definition
 	 */
-	public static PC_Struct3<PC_Struct2<Integer, Integer>, PC_Struct2<Integer, Integer>, PC_Struct2<Integer, Integer>> getStructForTree(
-			int wood_id, int wood_meta) {
+	public static PC_Struct3<PC_Struct2<Integer, Integer>, PC_Struct2<Integer, Integer>, PC_Struct2<Integer, Integer>> getStructForTree(int wood_id, int wood_meta) {
 		for (PC_Struct3<PC_Struct2<Integer, Integer>, PC_Struct2<Integer, Integer>, PC_Struct2<Integer, Integer>> tree : trees) {
-			if (tree.a.a == wood_id && (tree.a.b == wood_meta || tree.a.b == -1)) { return tree; }
+			if (tree.a.a == wood_id && (tree.a.b == wood_meta || tree.a.b == -1)) {
+				return tree;
+			}
 		}
 		return null;
 	}
@@ -76,7 +79,9 @@ public class PC_TreeHarvestingManager {
 	 */
 	public static boolean isBlockTreeWood(int id, int meta) {
 		for (PC_Struct3<PC_Struct2<Integer, Integer>, PC_Struct2<Integer, Integer>, PC_Struct2<Integer, Integer>> tree : trees) {
-			if (tree.a.a == id && (tree.a.b == meta || tree.a.b == -1)) { return true; }
+			if (tree.a.a == id && (tree.a.b == meta || tree.a.b == -1)) {
+				return true;
+			}
 		}
 		return false;
 	}
@@ -90,7 +95,9 @@ public class PC_TreeHarvestingManager {
 	 */
 	public static boolean isBlockTreeSapling(int id, int meta) {
 		for (PC_Struct3<PC_Struct2<Integer, Integer>, PC_Struct2<Integer, Integer>, PC_Struct2<Integer, Integer>> tree : trees) {
-			if (tree.c != null && tree.c.a == id && (tree.c.b == meta || tree.c.b == -1)) { return true; }
+			if (tree.c != null && tree.c.a == id && (tree.c.b == meta || tree.c.b == -1)) {
+				return true;
+			}
 		}
 		return false;
 	}
@@ -104,14 +111,15 @@ public class PC_TreeHarvestingManager {
 	 */
 	public static ItemStack[] harvestTreeAt(World world, PC_CoordI treeStart) {
 
-		PC_Struct3<PC_Struct2<Integer, Integer>, PC_Struct2<Integer, Integer>, PC_Struct2<Integer, Integer>> treeData = getStructForTree(
-				treeStart.getId(world), treeStart.getMeta(world));
+		PC_Struct3<PC_Struct2<Integer, Integer>, PC_Struct2<Integer, Integer>, PC_Struct2<Integer, Integer>> treeData = getStructForTree(treeStart.getId(world), treeStart.getMeta(world));
 		ArrayList<ItemStack> harvestedStacks = new ArrayList<ItemStack>();
 
 		if (treeData != null) {
 			cnt = 0;
 			chopTree(world, treeStart, treeStart, harvestedStacks, treeData);
-			if (harvestedStacks.size() > 0) { return PC_InvUtils.mergeStacks(PC_InvUtils.stacksToArray(harvestedStacks)); }
+			if (harvestedStacks.size() > 0) {
+				return PC_InvUtils.mergeStacks(PC_InvUtils.stacksToArray(harvestedStacks));
+			}
 		}
 
 		return null;
@@ -130,14 +138,16 @@ public class PC_TreeHarvestingManager {
 	 * 
 	 * @param world the world
 	 * @param treeRootPos position of the tree's roots
-	 * @param pos current block position (used for recursion, set to treeRootPos at start)
+	 * @param pos current block position (used for recursion, set to treeRootPos
+	 *            at start)
 	 * @param harvestedStacks list of stacks to eject
 	 * @param treeData structure describing the current tree
 	 */
-	public static void chopTree(World world, PC_CoordI treeRootPos, PC_CoordI pos, ArrayList<ItemStack> harvestedStacks,
-			PC_Struct3<PC_Struct2<Integer, Integer>, PC_Struct2<Integer, Integer>, PC_Struct2<Integer, Integer>> treeData) {
+	public static void chopTree(World world, PC_CoordI treeRootPos, PC_CoordI pos, ArrayList<ItemStack> harvestedStacks, PC_Struct3<PC_Struct2<Integer, Integer>, PC_Struct2<Integer, Integer>, PC_Struct2<Integer, Integer>> treeData) {
 
-		if (cnt >= MAXLOGS || pos.distanceHorizontalTo(treeRootPos) > 10) { return; }
+		if (cnt >= MAXLOGS || pos.distanceHorizontalTo(treeRootPos) > 10) {
+			return;
+		}
 
 		int id = pos.getId(world);
 		int meta = pos.getMeta(world);
@@ -173,9 +183,15 @@ public class PC_TreeHarvestingManager {
 
 			if (cnt == 0) {
 				// if not in tree, simply stop.
-				if (pos.offset(0, 1, 0).getId(world) != wood_id || (pos.offset(0, 1, 0).getMeta(world) != wood_meta && wood_meta != -1)) { return; }
-				if (pos.offset(0, 2, 0).getId(world) != wood_id || (pos.offset(0, 2, 0).getMeta(world) != wood_meta && wood_meta != -1)) { return; }
-				if (pos.offset(0, 3, 0).getId(world) != wood_id || (pos.offset(0, 3, 0).getMeta(world) != wood_meta && wood_meta != -1)) { return; }
+				if (pos.offset(0, 1, 0).getId(world) != wood_id || (pos.offset(0, 1, 0).getMeta(world) != wood_meta && wood_meta != -1)) {
+					return;
+				}
+				if (pos.offset(0, 2, 0).getId(world) != wood_id || (pos.offset(0, 2, 0).getMeta(world) != wood_meta && wood_meta != -1)) {
+					return;
+				}
+				if (pos.offset(0, 3, 0).getId(world) != wood_id || (pos.offset(0, 3, 0).getMeta(world) != wood_meta && wood_meta != -1)) {
+					return;
+				}
 			}
 
 			// replant sapling.
@@ -187,7 +203,9 @@ public class PC_TreeHarvestingManager {
 
 
 			cnt++;
-			if (cnt >= MAXLOGS) { return; }
+			if (cnt >= MAXLOGS) {
+				return;
+			}
 
 
 			for (int x = pos.x - 1; x <= pos.x + 1; x++) {
@@ -196,8 +214,7 @@ public class PC_TreeHarvestingManager {
 						PC_CoordI here = new PC_CoordI(x, y, z);
 						int here_id = here.getId(world);
 						int here_meta = here.getMeta(world);
-						if ((here_id == wood_id && (here_meta == wood_meta || wood_meta == -1))
-								|| (here_id == leaves_id && ((here_meta & 3) == leaves_meta || leaves_meta == -1))) {
+						if ((here_id == wood_id && (here_meta == wood_meta || wood_meta == -1)) || (here_id == leaves_id && ((here_meta & 3) == leaves_meta || leaves_meta == -1))) {
 							chopTree(world, treeRootPos, here, harvestedStacks, treeData);
 						}
 
@@ -213,7 +230,9 @@ public class PC_TreeHarvestingManager {
 	 * Load trees data from file.
 	 */
 	public static void loadTrees() {
-		if (treesLoaded) { return; }
+		if (treesLoaded) {
+			return;
+		}
 
 		PC_Logger.finer("Loading XML configuration for trees.");
 
@@ -339,8 +358,7 @@ public class PC_TreeHarvestingManager {
 					// <wood>
 					NodeList woodlist = tree.getElementsByTagName("wood");
 					if (woodlist.getLength() != 1) {
-						PC_Logger.warning("Tree manager - parseFile - Error while parsing " + file
-								+ " - invalid no. of <wood> tags in <tree>");
+						PC_Logger.warning("Tree manager - parseFile - Error while parsing " + file + " - invalid no. of <wood> tags in <tree>");
 						continue treeloop;
 					}
 
@@ -438,8 +456,8 @@ public class PC_TreeHarvestingManager {
 
 					}
 
-					PC_Struct3<PC_Struct2<Integer, Integer>, PC_Struct2<Integer, Integer>, PC_Struct2<Integer, Integer>> struct = new PC_Struct3<PC_Struct2<Integer, Integer>, PC_Struct2<Integer, Integer>, PC_Struct2<Integer, Integer>>(
-							woodStruct, leavesStruct, saplingStruct);
+					PC_Struct3<PC_Struct2<Integer, Integer>, PC_Struct2<Integer, Integer>, PC_Struct2<Integer, Integer>> struct = new PC_Struct3<PC_Struct2<Integer, Integer>, PC_Struct2<Integer, Integer>, PC_Struct2<Integer, Integer>>(woodStruct,
+							leavesStruct, saplingStruct);
 
 					trees.add(struct);
 

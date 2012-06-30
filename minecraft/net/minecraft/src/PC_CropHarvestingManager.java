@@ -1,5 +1,6 @@
 package net.minecraft.src;
 
+
 import java.io.File;
 import java.io.FileWriter;
 import java.io.FilenameFilter;
@@ -19,6 +20,7 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 import org.xml.sax.SAXParseException;
+
 
 /**
  * Custom Crops manager
@@ -73,30 +75,26 @@ public class PC_CropHarvestingManager {
 	 * Add dropped item to the currently constructed crop entry.
 	 * 
 	 * @param id item ID
-	 * @param metaFrom
-	 *            lowest possible metadata
-	 * @param metaTo
-	 *            highest possible metadata;<br>
+	 * @param metaFrom lowest possible metadata
+	 * @param metaTo highest possible metadata;<br>
 	 *            For constant metadata set to the same value as metaFrom.
-	 * @param countFrom
-	 *            lowest possible item count
-	 * @param countTo
-	 *            highest possible item count;<br>
+	 * @param countFrom lowest possible item count
+	 * @param countTo highest possible item count;<br>
 	 *            For constant item count, set to the same as countFrom.
-	 * @param rarityNumenator
-	 *            rarity fraction numerator;<br>
+	 * @param rarityNumenator rarity fraction numerator;<br>
 	 *            For 1/200, set to 1<br>
-	 * @param rarityDenominator
-	 *            rarity fraction denominator;<br>
+	 * @param rarityDenominator rarity fraction denominator;<br>
 	 *            For 1/200, set to 200<br>
-	 *            If you want this item to drop each time, set to 1 (the same as numenator)
-	 * @param itemPriority
-	 *            priority pass<br>
-	 *            When crop is harvested, items with priority 1 are checked first. If nothing is dropped, items with priority 2 are checked,
-	 *            then 3, 4 etc., until something is dropped. Highest priority used can have rarity 1/1, and it will work as fallback drop.
+	 *            If you want this item to drop each time, set to 1 (the same as
+	 *            numenator)
+	 * @param itemPriority priority pass<br>
+	 *            When crop is harvested, items with priority 1 are checked
+	 *            first. If nothing is dropped, items with priority 2 are
+	 *            checked, then 3, 4 etc., until something is dropped. Highest
+	 *            priority used can have rarity 1/1, and it will work as
+	 *            fallback drop.
 	 */
-	public void addDropItem(int id, int metaFrom, int metaTo, int countFrom, int countTo, int rarityNumenator, int rarityDenominator,
-			int itemPriority) {
+	public void addDropItem(int id, int metaFrom, int metaTo, int countFrom, int countTo, int rarityNumenator, int rarityDenominator, int itemPriority) {
 		if (!new_started) {
 			PC_Logger.severe("Crop manager - addDropItem - Crop entry not started!");
 			return;
@@ -139,7 +137,9 @@ public class PC_CropHarvestingManager {
 	public static int getReplantMeta(int block_id) {
 		PC_CropEntry entry = crops.get(block_id);
 
-		if (entry == null) { return -1; }
+		if (entry == null) {
+			return -1;
+		}
 
 		return entry.getReplantMetadata();
 	}
@@ -153,7 +153,9 @@ public class PC_CropHarvestingManager {
 	public static boolean isBlockRegisteredCrop(int block_id) {
 		PC_CropEntry entry = crops.get(block_id);
 
-		if (entry == null) { return false; }
+		if (entry == null) {
+			return false;
+		}
 
 		return true;
 	}
@@ -168,7 +170,9 @@ public class PC_CropHarvestingManager {
 	public static boolean canHarvestBlock(int block_id, int block_meta) {
 		PC_CropEntry entry = crops.get(block_id);
 
-		if (entry == null) { return false; }
+		if (entry == null) {
+			return false;
+		}
 
 		return entry.canHarvestBlock(block_id, block_meta);
 	}
@@ -182,7 +186,9 @@ public class PC_CropHarvestingManager {
 	 */
 	public static ItemStack[] getHarvestedStacks(int block_id, int block_meta) {
 		PC_CropEntry entry = crops.get(block_id);
-		if (entry == null) { return null; }
+		if (entry == null) {
+			return null;
+		}
 
 		if (!entry.canHarvestBlock(block_id, block_meta)) {
 			// immature
@@ -193,10 +199,13 @@ public class PC_CropHarvestingManager {
 	}
 
 	/**
-	 * Call this method to explicitly init static fields -> list of crops from XML files
+	 * Call this method to explicitly init static fields -> list of crops from
+	 * XML files
 	 */
 	public static void loadCrops() {
-		if (cropsLoaded) { return; }
+		if (cropsLoaded) {
+			return;
+		}
 
 		PC_Logger.finer("Loading XML configuration for crops.");
 
@@ -318,8 +327,7 @@ public class PC_CropHarvestingManager {
 					// <block>
 					NodeList blocks = crop.getElementsByTagName("block");
 					if (blocks.getLength() != 1) {
-						PC_Logger.warning("Crop manager - parseFile - Error while parsing " + file
-								+ " - invalid no. of <block>s in one <crop>");
+						PC_Logger.warning("Crop manager - parseFile - Error while parsing " + file + " - invalid no. of <block>s in one <crop>");
 						continue croploop;
 					}
 
@@ -481,8 +489,7 @@ public class PC_CropHarvestingManager {
 								}
 							}
 
-							manager.addDropItem(itemId, itemMetaA, itemMetaB, itemCountA, itemCountB, itemRarityA, itemRarityB,
-									itemPriority);
+							manager.addDropItem(itemId, itemMetaA, itemMetaB, itemCountA, itemCountB, itemRarityA, itemRarityB, itemPriority);
 
 						} catch (NumberFormatException e) {
 							continue itemloop;
@@ -559,8 +566,7 @@ public class PC_CropHarvestingManager {
 		 * @param rarityDenominator rarity fraction denominator; B in A/B
 		 * @param itemPriority priority pass
 		 */
-		public void addDropItem(int id, int metaFrom, int metaTo, int countFrom, int countTo, int rarityNumenator, int rarityDenominator,
-				int itemPriority) {
+		public void addDropItem(int id, int metaFrom, int metaTo, int countFrom, int countTo, int rarityNumenator, int rarityDenominator, int itemPriority) {
 
 			itemId.add(id);
 			metaStart.add(metaFrom);
@@ -640,7 +646,9 @@ public class PC_CropHarvestingManager {
 
 			}
 
-			if (stacks.size() == 0) { return null; }
+			if (stacks.size() == 0) {
+				return null;
+			}
 
 			return PC_InvUtils.mergeStacks(stacks.toArray(new ItemStack[stacks.size()]));
 

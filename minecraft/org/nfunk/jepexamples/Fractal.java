@@ -5,7 +5,7 @@
       (c) Copyright 2007, Nathan Funk and Richard Morris
       See LICENSE-*.txt for license information.
 
-*****************************************************************************/
+ *****************************************************************************/
 
 /*
 <applet code="org.nfunk.jepexamples.Fractal" width=300 height=320>
@@ -14,9 +14,17 @@
 */
 package org.nfunk.jepexamples;
 
-import java.applet.*;
-import java.awt.*;
-import java.awt.event.*;
+
+import java.applet.Applet;
+import java.awt.Button;
+import java.awt.Color;
+import java.awt.Font;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.TextField;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
 
 public class Fractal extends Applet implements ActionListener {
 	private static final long serialVersionUID = -1825231934586941116L;
@@ -26,36 +34,37 @@ public class Fractal extends Applet implements ActionListener {
 
 
 	/** Initializes the applet Fractal */
-	public void init () {
+	@Override
+	public void init() {
 		initComponents();
 	}
 
 
-	private void initComponents () {
+	private void initComponents() {
 		GridBagLayout gridbag = new GridBagLayout();
 		GridBagConstraints c = new GridBagConstraints();
 
 		setLayout(gridbag);
 		c.fill = GridBagConstraints.BOTH;
-		
+
 		// Expression field
 		String expr = getParameter("initialExpression");
-		if (expr!=null)
+		if (expr != null)
 			exprField = new TextField(expr);
 		else
 			exprField = new TextField("");
 
 
-		exprField.setBackground (java.awt.Color.white);
-		exprField.setName ("exprField");
-		exprField.setFont (new Font ("Dialog", 0, 11));
-		exprField.setForeground (Color.black);
-		exprField.addTextListener (new java.awt.event.TextListener () {
-			public void textValueChanged (java.awt.event.TextEvent evt) {
-				exprFieldTextValueChanged (evt);
+		exprField.setBackground(java.awt.Color.white);
+		exprField.setName("exprField");
+		exprField.setFont(new Font("Dialog", 0, 11));
+		exprField.setForeground(Color.black);
+		exprField.addTextListener(new java.awt.event.TextListener() {
+			@Override
+			public void textValueChanged(java.awt.event.TextEvent evt) {
+				exprFieldTextValueChanged(evt);
 			}
-		}
-		);
+		});
 
 		c.gridx = 0;
 		c.gridy = 0;
@@ -74,12 +83,12 @@ public class Fractal extends Applet implements ActionListener {
 
 		// Iterations field
 		itField = new TextField("20");
-		itField.addTextListener (new java.awt.event.TextListener () {
-			public void textValueChanged (java.awt.event.TextEvent evt) {
+		itField.addTextListener(new java.awt.event.TextListener() {
+			@Override
+			public void textValueChanged(java.awt.event.TextEvent evt) {
 				itFieldTextValueChanged(evt);
 			}
-		}
-		);
+		});
 
 		c.gridx = 0;
 		c.gridy = 1;
@@ -94,7 +103,7 @@ public class Fractal extends Applet implements ActionListener {
 		c.gridwidth = 2;
 		c.weighty = 1;
 //		button2 = new Button("test");
-		
+
 		complexCanvas = new FractalCanvas(expr, exprField);
 		gridbag.setConstraints(complexCanvas, c);
 		add(complexCanvas);
@@ -102,18 +111,19 @@ public class Fractal extends Applet implements ActionListener {
 
 
 
-	private void exprFieldTextValueChanged (java.awt.event.TextEvent evt) {
+	private void exprFieldTextValueChanged(java.awt.event.TextEvent evt) {
 		String newExpressionString = exprField.getText();
 		complexCanvas.setExpressionString(newExpressionString);
 		//complexCanvas.repaint();
 	}
 
-	private void itFieldTextValueChanged (java.awt.event.TextEvent evt) {
+	private void itFieldTextValueChanged(java.awt.event.TextEvent evt) {
 		Integer newIterationsValue = new Integer(itField.getText());
 		complexCanvas.setIterations(newIterationsValue.intValue());
 		//complexCanvas.repaint();
 	}
 
+	@Override
 	public void actionPerformed(ActionEvent ae) {
 		String str = ae.getActionCommand();
 		if (str.equals("Render")) {

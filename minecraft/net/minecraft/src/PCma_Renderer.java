@@ -6,11 +6,13 @@ package net.minecraft.src;
  * 
  * @author MightyPork
  * @copy (c) 2012
- * 
  */
 public class PCma_Renderer {
 
-	/** Laser block renderer (the inventory item, terrain block is rendered by TileEntitySpecialRenderer) */
+	/**
+	 * Laser block renderer (the inventory item, terrain block is rendered by
+	 * TileEntitySpecialRenderer)
+	 */
 	public static int laserRenderer = 0;
 	/** XP bank block renderer */
 	public static int xpbankRenderer = 0;
@@ -30,8 +32,12 @@ public class PCma_Renderer {
 	 * @return success
 	 */
 	public static boolean renderBlockByType(RenderBlocks renderblocks, IBlockAccess blockAccess, int i, int j, int k, Block block, int rtype) {
-		if (rtype == laserRenderer) { return true; /* Laser is not rendered as block! */}
-		if (rtype == xpbankRenderer) { return renderBlockXPBank(renderblocks, blockAccess, i, j, k, block); }
+		if (rtype == laserRenderer) {
+			return true; /* Laser is not rendered as block! */
+		}
+		if (rtype == xpbankRenderer) {
+			return renderBlockXPBank(renderblocks, blockAccess, i, j, k, block);
+		}
 		return false;
 	}
 

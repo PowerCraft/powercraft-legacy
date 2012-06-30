@@ -1,11 +1,11 @@
 package net.minecraft.src;
 
+
 /**
  * Redstone Pulsar Tile Entity
  * 
  * @author MightyPork
  * @copy (c) 2012
- * 
  */
 public class PClo_TileEntityPulsar extends PC_TileEntity {
 
@@ -88,13 +88,14 @@ public class PClo_TileEntityPulsar extends PC_TileEntity {
 	 * Show curretn delay in chat, include remaining ticks.
 	 */
 	public void printDelayTime() {
-		PC_Utils.chatMsg(PC_Lang.tr("pc.pulsar.clickMsgTime", new String[] { delay + "", (delay / 20D) + "", (delay - delayTimer) + "" }),
-				true);
+		PC_Utils.chatMsg(PC_Lang.tr("pc.pulsar.clickMsgTime", new String[] { delay + "", (delay / 20D) + "", (delay - delayTimer) + "" }), true);
 	}
 
 	@Override
 	public void updateEntity() {
-		if (paused) { return; }
+		if (paused) {
+			return;
+		}
 
 		if (delayTimer < 0) {
 			active = true;
@@ -130,6 +131,7 @@ public class PClo_TileEntityPulsar extends PC_TileEntity {
 	 * 
 	 * @return true
 	 */
+	@Override
 	public boolean canUpdate() {
 		return true;
 	}

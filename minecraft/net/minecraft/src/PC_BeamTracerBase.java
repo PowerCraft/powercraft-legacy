@@ -1,14 +1,15 @@
 package net.minecraft.src;
 
+
 import java.util.List;
 import java.util.Random;
+
 
 /**
  * Laser beam tracing class
  * 
  * @author MightyPork
  * @copy (c) 2012
- * 
  */
 public abstract class PC_BeamTracerBase {
 
@@ -18,7 +19,8 @@ public abstract class PC_BeamTracerBase {
 
 	/**
 	 * The beam color.<br>
-	 * This object also contains information about beam visibility (particles enabled) and power crystal metadata.
+	 * This object also contains information about beam visibility (particles
+	 * enabled) and power crystal metadata.
 	 */
 	private PC_Color origColor;
 
@@ -43,7 +45,6 @@ public abstract class PC_BeamTracerBase {
 	 * Laser beam raytracer
 	 * 
 	 * @param worldObj the world
-	 * 
 	 * @param handler laser handler (interface)
 	 */
 	public PC_BeamTracerBase(World worldObj, PC_IBeamHandler handler) {
@@ -76,7 +77,8 @@ public abstract class PC_BeamTracerBase {
 	}
 
 	/**
-	 * Set maximum current limit. When crystal adds some length, it is checked against this limit and shortened if needed.<br>
+	 * Set maximum current limit. When crystal adds some length, it is checked
+	 * against this limit and shortened if needed.<br>
 	 * If set to small number, crystals won't add more than this number.
 	 * 
 	 * @param length range in blocks
@@ -177,7 +179,8 @@ public abstract class PC_BeamTracerBase {
 	 * Set starting beam color (can be changed by power crystals)
 	 * 
 	 * @param color color object representing the color;<br>
-	 *            Color must also contain information about beam metadata, and visibility flag.
+	 *            Color must also contain information about beam metadata, and
+	 *            visibility flag.
 	 * @return self
 	 */
 	public PC_BeamTracerBase setColor(PC_Color color) {
@@ -204,7 +207,8 @@ public abstract class PC_BeamTracerBase {
 
 
 	/**
-	 * Set that the particles will "move" both forward and backward to simulate reflected beam for sensors.
+	 * Set that the particles will "move" both forward and backward to simulate
+	 * reflected beam for sensors.
 	 * 
 	 * @param bidi
 	 * @return self
@@ -251,7 +255,6 @@ public abstract class PC_BeamTracerBase {
 	 * @param par_move starting movement
 	 * @param par_color starting color object
 	 * @param limit length limit for this fork
-	 * 
 	 */
 	protected void forkBeam(PC_CoordI par_cnt, PC_CoordI par_move, PC_Color par_color, int limit) {
 		// copy parameters to prevent interference
@@ -302,7 +305,9 @@ public abstract class PC_BeamTracerBase {
 
 					boolean stop = handler.onBlockHit(world, cnt, startCoord);
 
-					if (stop) { return; }
+					if (stop) {
+						return;
+					}
 
 				} else if (res == result.CONTINUE) {
 
@@ -349,11 +354,12 @@ public abstract class PC_BeamTracerBase {
 			if (canHitEntity) {
 
 				// check for entities in this block.
-				List<Entity> hitList = world.getEntitiesWithinAABB(net.minecraft.src.Entity.class,
-						AxisAlignedBB.getBoundingBoxFromPool(cnt.x, cnt.y, cnt.z, cnt.x + 1, cnt.y + 1, cnt.z + 1));
+				List<Entity> hitList = world.getEntitiesWithinAABB(net.minecraft.src.Entity.class, AxisAlignedBB.getBoundingBoxFromPool(cnt.x, cnt.y, cnt.z, cnt.x + 1, cnt.y + 1, cnt.z + 1));
 
 				if (hitList.size() > 0) {
-					if (handler.onEntityHit(world, hitList.toArray(new Entity[hitList.size()]), startCoord)) { return; }
+					if (handler.onEntityHit(world, hitList.toArray(new Entity[hitList.size()]), startCoord)) {
+						return;
+					}
 				}
 			}
 		}
@@ -381,7 +387,9 @@ public abstract class PC_BeamTracerBase {
 	 * @param color the beam color;
 	 */
 	protected void spawnParticles(PC_CoordI cnt, PC_CoordI move, int half, PC_Color color) {
-		if (!color.isVisible()) { return; }
+		if (!color.isVisible()) {
+			return;
+		}
 
 		double shift = 0;
 		if (half == 0) {
@@ -417,8 +425,7 @@ public abstract class PC_BeamTracerBase {
 		}
 
 		if (particlesBidi && rand.nextBoolean()) {
-			ModLoader.getMinecraftInstance().effectRenderer.addEffect(new PC_EntityLaserParticleFX(world, particle, color, move
-					.getInverted(), half));
+			ModLoader.getMinecraftInstance().effectRenderer.addEffect(new PC_EntityLaserParticleFX(world, particle, color, move.getInverted(), half));
 		} else {
 			ModLoader.getMinecraftInstance().effectRenderer.addEffect(new PC_EntityLaserParticleFX(world, particle, color, move, half));
 		}
@@ -431,11 +438,10 @@ public abstract class PC_BeamTracerBase {
 	 * @param blockCoord coordinate of the hit block
 	 * @param move current movement vector
 	 * @param moveOld old movement vector (for changing direction)
-	 * @param color current color object, with visiblity flag and crystal metadata
+	 * @param color current color object, with visiblity flag and crystal
+	 *            metadata
 	 * @param remainingLength laser beam remaining length
-	 * 
 	 * @return result enum state
-	 * 
 	 */
 	public abstract result onBlockHit(PC_CoordI blockCoord, PC_CoordI move, PC_CoordI moveOld, PC_Color color, int remainingLength);
 

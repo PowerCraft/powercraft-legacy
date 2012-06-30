@@ -1,11 +1,11 @@
 package net.minecraft.src;
 
+
 /**
  * Resizable GUI horizontal layout
  * 
  * @author XOR19
  * @copy (c) 2012
- * 
  */
 public class PC_GresLayoutH extends PC_GresWidget {
 
@@ -40,7 +40,7 @@ public class PC_GresLayoutH extends PC_GresWidget {
 					size.x = csize.x + xSize;
 				}
 				if (csize.y > size.y) {
-					size.y = csize.y;
+					size.y = csize.y + w.widgetMargin;
 				}
 				if (parent != null) {
 					parent.calcChildPositions();

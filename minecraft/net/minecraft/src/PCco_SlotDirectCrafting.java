@@ -1,10 +1,12 @@
 package net.minecraft.src;
 
+
 import java.util.ArrayList;
 import java.util.Hashtable;
 import java.util.List;
 
 import org.lwjgl.input.Keyboard;
+
 
 /**
  * Direct Crafting slot, used in Crafting Tool.<br>
@@ -12,7 +14,6 @@ import org.lwjgl.input.Keyboard;
  * 
  * @author MightyPork
  * @copy (c) 2012
- * 
  */
 public class PCco_SlotDirectCrafting extends Slot {
 
@@ -31,7 +32,8 @@ public class PCco_SlotDirectCrafting extends Slot {
 
 	/**
 	 * @param entityplayer the Player
-	 * @param product product stack (Must be in the same size as crafted from the recipe!)
+	 * @param product product stack (Must be in the same size as crafted from
+	 *            the recipe!)
 	 * @param index slot index
 	 * @param x slot position X
 	 * @param y slot position Y
@@ -60,8 +62,7 @@ public class PCco_SlotDirectCrafting extends Slot {
 	public ItemStack decrStackSize(int i) {
 		if (available) {
 			ItemStack output = product.copy();
-			if ((PC_Utils.isCreative() || survivalCheating)
-					&& (Keyboard.isKeyDown(Keyboard.KEY_LCONTROL) || Keyboard.isKeyDown(Keyboard.KEY_RCONTROL))) {
+			if ((PC_Utils.isCreative() || survivalCheating) && (Keyboard.isKeyDown(Keyboard.KEY_LCONTROL) || Keyboard.isKeyDown(Keyboard.KEY_RCONTROL))) {
 				output.stackSize = output.getMaxStackSize();
 			}
 			return output;
@@ -73,8 +74,7 @@ public class PCco_SlotDirectCrafting extends Slot {
 	public ItemStack getStack() {
 		if (available && product != null) {
 			ItemStack output = product.copy();
-			if ((PC_Utils.isCreative() || survivalCheating)
-					&& (Keyboard.isKeyDown(Keyboard.KEY_LCONTROL) || Keyboard.isKeyDown(Keyboard.KEY_RCONTROL))) {
+			if ((PC_Utils.isCreative() || survivalCheating) && (Keyboard.isKeyDown(Keyboard.KEY_LCONTROL) || Keyboard.isKeyDown(Keyboard.KEY_RCONTROL))) {
 				output.stackSize = output.getMaxStackSize();
 			}
 			return output;
@@ -85,6 +85,11 @@ public class PCco_SlotDirectCrafting extends Slot {
 	@Override
 	public void putStack(ItemStack itemstack) {}
 
+	/**
+	 * Set slot's product (rendered as "ghost" item if not available)
+	 * 
+	 * @param itemstack
+	 */
 	public void setProduct(ItemStack itemstack) {
 		product = itemstack;
 	}
@@ -94,7 +99,9 @@ public class PCco_SlotDirectCrafting extends Slot {
 
 	@Override
 	public int getSlotStackLimit() {
-		if (product == null) { return 1; }
+		if (product == null) {
+			return 1;
+		}
 		return product.getMaxStackSize();
 	}
 
@@ -104,9 +111,13 @@ public class PCco_SlotDirectCrafting extends Slot {
 	 * @return true if the item can be crafted
 	 */
 	private boolean isAvailable() {
-		if (product == null) { return false; }
+		if (product == null) {
+			return false;
+		}
 
-		if (ModLoader.getMinecraftInstance().playerController.isInCreativeMode() || survivalCheating) { return true; }
+		if (ModLoader.getMinecraftInstance().playerController.isInCreativeMode() || survivalCheating) {
+			return true;
+		}
 
 		lastRecipe = -1;
 		// local recipe counter
@@ -116,7 +127,9 @@ public class PCco_SlotDirectCrafting extends Slot {
 			IRecipe irecipe = getNextRecipeForProduct(product);
 			recipe_number = lastRecipe;
 
-			if (irecipe == null) { return false; }
+			if (irecipe == null) {
+				return false;
+			}
 			recursionCount = 0;
 			allocatedStacks.clear();
 			toConsume.clear();
@@ -126,8 +139,7 @@ public class PCco_SlotDirectCrafting extends Slot {
 			recipeBannedStacks.add(getStackDescriptor(product));
 			recipeBannedStacks.add(getStackDescriptorAnyMeta(product));
 			if (tryToFindMaterialsForRecipe(irecipe)) {
-				if (toConsume.size() == 1 && toConsume.get(0).isItemEqual(product)
-						|| (toConsume.get(0).itemID == product.itemID && toConsume.get(0).getItemDamage() == -1)) {
+				if (toConsume.size() == 1 && toConsume.get(0).isItemEqual(product) || (toConsume.get(0).itemID == product.itemID && toConsume.get(0).getItemDamage() == -1)) {
 					continue; // next recipe
 				}
 				return true;
@@ -139,9 +151,13 @@ public class PCco_SlotDirectCrafting extends Slot {
 	 * Craft the product and consume needed items from inventory
 	 */
 	private void doCrafting() {
-		if (product == null) { return; }
+		if (product == null) {
+			return;
+		}
 
-		if (ModLoader.getMinecraftInstance().playerController.isInCreativeMode() || survivalCheating) { return; }
+		if (ModLoader.getMinecraftInstance().playerController.isInCreativeMode() || survivalCheating) {
+			return;
+		}
 
 		lastRecipe = -1;
 		// local recipe counter
@@ -153,7 +169,9 @@ public class PCco_SlotDirectCrafting extends Slot {
 			IRecipe irecipe = getNextRecipeForProduct(product);
 			recipe_number = lastRecipe;
 
-			if (irecipe == null) { return; }
+			if (irecipe == null) {
+				return;
+			}
 
 			recursionCount = 0;
 			allocatedStacks.clear();
@@ -164,8 +182,7 @@ public class PCco_SlotDirectCrafting extends Slot {
 			recipeBannedStacks.add(getStackDescriptor(product));
 			recipeBannedStacks.add(getStackDescriptorAnyMeta(product));
 			if (tryToFindMaterialsForRecipe(irecipe)) {
-				if (toConsume.size() == 1 && toConsume.get(0).isItemEqual(product)
-						|| (toConsume.get(0).itemID == product.itemID && toConsume.get(0).getItemDamage() == -1)) {
+				if (toConsume.size() == 1 && toConsume.get(0).isItemEqual(product) || (toConsume.get(0).itemID == product.itemID && toConsume.get(0).getItemDamage() == -1)) {
 					continue; // next recipe
 				}
 
@@ -174,8 +191,7 @@ public class PCco_SlotDirectCrafting extends Slot {
 				}
 
 				if (irecipe.getRecipeOutput().stackSize > product.stackSize) {
-					toGiveBack.add(new ItemStack(irecipe.getRecipeOutput().itemID, irecipe.getRecipeOutput().stackSize - product.stackSize,
-							product.getItemDamage()));
+					toGiveBack.add(new ItemStack(irecipe.getRecipeOutput().itemID, irecipe.getRecipeOutput().stackSize - product.stackSize, product.getItemDamage()));
 				}
 
 				for (ItemStack stack : toGiveBack) {
@@ -221,16 +237,22 @@ public class PCco_SlotDirectCrafting extends Slot {
 	 * @return could allocate all
 	 */
 	private boolean allocatePlayerItems(ItemStack stack1, int needed) {
-		if (stack1 == null) { return true; }
+		if (stack1 == null) {
+			return true;
+		}
 
-		if (recipeBannedStacks.contains(getStackDescriptor(stack1))) { return false; }
+		if (recipeBannedStacks.contains(getStackDescriptor(stack1))) {
+			return false;
+		}
 
 		Integer alloc = allocatedStacks.get(getStackDescriptor(stack1));
 		if (alloc == null) {
 			alloc = 0;
 		}
 
-		if (ModLoader.getMinecraftInstance().playerController.isInCreativeMode() || survivalCheating) { return true; }
+		if (ModLoader.getMinecraftInstance().playerController.isInCreativeMode() || survivalCheating) {
+			return true;
+		}
 
 		int counter = 0;
 		for (int i = 0; i < thePlayer.inventory.getSizeInventory(); i++) {
@@ -260,16 +282,22 @@ public class PCco_SlotDirectCrafting extends Slot {
 	 * @return number found
 	 */
 	private int countPlayerItems(ItemStack wanted) {
-		if (wanted == null) { return 0; }
+		if (wanted == null) {
+			return 0;
+		}
 
-		if (recipeBannedStacks.contains(getStackDescriptor(wanted))) { return 0; }
+		if (recipeBannedStacks.contains(getStackDescriptor(wanted))) {
+			return 0;
+		}
 
 		Integer alloc = allocatedStacks.get(getStackDescriptor(wanted));
 		if (alloc == null) {
 			alloc = 0;
 		}
 
-		if (ModLoader.getMinecraftInstance().playerController.isInCreativeMode() || survivalCheating) { return -1; }
+		if (ModLoader.getMinecraftInstance().playerController.isInCreativeMode() || survivalCheating) {
+			return -1;
+		}
 
 		int counter = 0;
 		for (int i = 0; i < thePlayer.inventory.getSizeInventory(); i++) {
@@ -293,9 +321,13 @@ public class PCco_SlotDirectCrafting extends Slot {
 	 */
 	private boolean consumePlayerItems(ItemStack stack1, int count) {
 
-		if (ModLoader.getMinecraftInstance().playerController.isInCreativeMode() || survivalCheating) { return true; }
+		if (ModLoader.getMinecraftInstance().playerController.isInCreativeMode() || survivalCheating) {
+			return true;
+		}
 
-		if (stack1 == null) { return true; }
+		if (stack1 == null) {
+			return true;
+		}
 
 		for (int i = 0; i < thePlayer.inventory.getSizeInventory(); i++) {
 			ItemStack curStack = thePlayer.inventory.getStackInSlot(i);
@@ -309,30 +341,33 @@ public class PCco_SlotDirectCrafting extends Slot {
 				}
 			}
 		}
-		if (count > 0) { return false; }
+		if (count > 0) {
+			return false;
+		}
 		return true;
 	}
 
 	private int lastRecipe = -1;
 
 	/**
-	 * Get next recipe in the recipes list. Uses "lastRecipe" field as counter, increments it on success.
+	 * Get next recipe in the recipes list. Uses "lastRecipe" field as counter,
+	 * increments it on success.
 	 * 
 	 * @param prod required recipe output
 	 * @return the recipe, or null
 	 */
 	private IRecipe getNextRecipeForProduct(ItemStack prod) {
-		@SuppressWarnings("unchecked")
 		List<IRecipe> recipes = new ArrayList<IRecipe>(CraftingManager.getInstance().getRecipeList());
 
-		if (lastRecipe == recipes.size() - 1) { return null; }
+		if (lastRecipe == recipes.size() - 1) {
+			return null;
+		}
 
 		int k;
 		for (k = lastRecipe + 1; k < recipes.size(); k++) {
 			IRecipe irecipe = recipes.get(k);
 			try {
-				if (irecipe.getRecipeOutput().isItemEqual(prod)
-						|| (irecipe.getRecipeOutput().itemID == prod.itemID && prod.getItemDamage() == -1)) {
+				if (irecipe.getRecipeOutput().isItemEqual(prod) || (irecipe.getRecipeOutput().itemID == prod.itemID && prod.getItemDamage() == -1)) {
 					lastRecipe = k;
 					return irecipe;
 				}
@@ -350,14 +385,17 @@ public class PCco_SlotDirectCrafting extends Slot {
 	/** Stacks already seeked. Used to prevent infinite recursion. */
 	private ArrayList<String> stacksSeekedInThisRecursion = new ArrayList<String>();
 	/**
-	 * Stack descriptors of stacks that are excluded from recipe finding. Used to prevent finding of recipes like ironcube > ingots >
-	 * ironcube.
+	 * Stack descriptors of stacks that are excluded from recipe finding. Used
+	 * to prevent finding of recipes like ironcube > ingots > ironcube.
 	 */
 	private ArrayList<String> recipeBannedStacks = new ArrayList<String>();
 
 	/** List of stacks to consume, output of the recipe sequence finding method */
 	private ArrayList<ItemStack> toConsume = new ArrayList<ItemStack>();
-	/** List of stacks to give back to player, output of the recipe sequence finding method */
+	/**
+	 * List of stacks to give back to player, output of the recipe sequence
+	 * finding method
+	 */
 	private ArrayList<ItemStack> toGiveBack = new ArrayList<ItemStack>();
 
 	/**
@@ -367,13 +405,16 @@ public class PCco_SlotDirectCrafting extends Slot {
 	 * @param irecipe recipe to craft (the topmost)
 	 * @return true if valid recipe sequence was found.
 	 */
-	@SuppressWarnings("unchecked")
 	private boolean tryToFindMaterialsForRecipe(IRecipe irecipe) {
 
-		if (ModLoader.getMinecraftInstance().playerController.isInCreativeMode() || survivalCheating) { return true; }
+		if (ModLoader.getMinecraftInstance().playerController.isInCreativeMode() || survivalCheating) {
+			return true;
+		}
 
 		recursionCount++;
-		if (recursionCount > RECURSION_LIMIT) { return false; }
+		if (recursionCount > RECURSION_LIMIT) {
+			return false;
+		}
 		try {
 
 			ItemStack[] tmps;
@@ -420,16 +461,24 @@ public class PCco_SlotDirectCrafting extends Slot {
 				if (!allocatePlayerItems(recipeStacks[i], recipeStacks[i].stackSize)) {
 
 					// if can't craft recursively, stop.
-					if (!recursiveCrafting) { return false; }
+					if (!recursiveCrafting) {
+						return false;
+					}
 
 					// if already tried to find this, stop. (prevent infinite recursion and stack overflow)
-					if (stacksSeekedInThisRecursion.contains(getStackDescriptor(recipeStacks[i]))) { return false; }
+					if (stacksSeekedInThisRecursion.contains(getStackDescriptor(recipeStacks[i]))) {
+						return false;
+					}
 
 					// if stack in recipe is banned, stop.
-					if (recipeBannedStacks.contains(getStackDescriptor(recipeStacks[i]))) { return false; }
+					if (recipeBannedStacks.contains(getStackDescriptor(recipeStacks[i]))) {
+						return false;
+					}
 
 					// check recursion depth
-					if (recursionCount > RECURSION_LIMIT) { return false; }
+					if (recursionCount > RECURSION_LIMIT) {
+						return false;
+					}
 
 					// take copy of the needed stack
 					ItemStack needed = recipeStacks[i].copy();

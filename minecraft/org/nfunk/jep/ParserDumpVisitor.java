@@ -21,61 +21,65 @@
    implementing preorder or postorder tree walks.
 
    Err, that's it. */
-   
+
 package org.nfunk.jep;
 
-public class ParserDumpVisitor implements ParserVisitor
-{
-  private int indent = 0;
 
-  private String indentString() {
-    StringBuffer sb = new StringBuffer();
-    for (int i = 0; i < indent; ++i) {
-      sb.append("  ");
-    }
-    return sb.toString();
-  }
+public class ParserDumpVisitor implements ParserVisitor {
+	private int indent = 0;
 
-  public Object visit(SimpleNode node, Object data) throws ParseException {
-    System.out.println(indentString() + node +
-		       ": acceptor not unimplemented in subclass?");
-    ++indent;
-    data = node.childrenAccept(this, data);
-    --indent;
-    return data;
-  }
+	private String indentString() {
+		StringBuffer sb = new StringBuffer();
+		for (int i = 0; i < indent; ++i) {
+			sb.append("  ");
+		}
+		return sb.toString();
+	}
 
-  public Object visit(ASTStart node, Object data) throws ParseException {
-    System.out.println(indentString() + node);
-    ++indent;
-    data = node.childrenAccept(this, data);
-    --indent;
-    return data;
-  }
+	@Override
+	public Object visit(SimpleNode node, Object data) throws ParseException {
+		System.out.println(indentString() + node + ": acceptor not unimplemented in subclass?");
+		++indent;
+		data = node.childrenAccept(this, data);
+		--indent;
+		return data;
+	}
 
-  public Object visit(ASTFunNode node, Object data) throws ParseException {
-    System.out.println(indentString() + node);
-    ++indent;
-    data = node.childrenAccept(this, data);
-    --indent;
-    return data;
-  }
+	@Override
+	public Object visit(ASTStart node, Object data) throws ParseException {
+		System.out.println(indentString() + node);
+		++indent;
+		data = node.childrenAccept(this, data);
+		--indent;
+		return data;
+	}
 
-  public Object visit(ASTVarNode node, Object data) throws ParseException {
-    System.out.println(indentString() + node);
-    ++indent;
-    data = node.childrenAccept(this, data);
-    --indent;
-    return data;
-  }
+	@Override
+	public Object visit(ASTFunNode node, Object data) throws ParseException {
+		System.out.println(indentString() + node);
+		++indent;
+		data = node.childrenAccept(this, data);
+		--indent;
+		return data;
+	}
 
-  public Object visit(ASTConstant node, Object data) throws ParseException {
-    System.out.println(indentString() + node);
-    ++indent;
-    data = node.childrenAccept(this, data);
-    --indent;
-    return data;
-  }
+	@Override
+	public Object visit(ASTVarNode node, Object data) throws ParseException {
+		System.out.println(indentString() + node);
+		++indent;
+		data = node.childrenAccept(this, data);
+		--indent;
+		return data;
+	}
+
+	@Override
+	public Object visit(ASTConstant node, Object data) throws ParseException {
+		System.out.println(indentString() + node);
+		++indent;
+		data = node.childrenAccept(this, data);
+		--indent;
+		return data;
+	}
 }
 
 /*end*/

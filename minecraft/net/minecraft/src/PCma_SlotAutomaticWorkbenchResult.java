@@ -7,7 +7,6 @@ package net.minecraft.src;
  * 
  * @author MightyPork
  * @copy (c) 2012
- * 
  */
 public class PCma_SlotAutomaticWorkbenchResult extends Slot {
 	private final PCma_TileEntityAutomaticWorkbench storageInv;
@@ -25,8 +24,7 @@ public class PCma_SlotAutomaticWorkbenchResult extends Slot {
 	 * @param j x
 	 * @param k y
 	 */
-	public PCma_SlotAutomaticWorkbenchResult(EntityPlayer entityplayer, PCma_TileEntityAutomaticWorkbench storage, IInventory result,
-			Container parent, int i, int j, int k) {
+	public PCma_SlotAutomaticWorkbenchResult(EntityPlayer entityplayer, PCma_TileEntityAutomaticWorkbench storage, IInventory result, Container parent, int i, int j, int k) {
 		super(result, i, j, k);
 		thePlayer = entityplayer;
 		storageInv = storage;

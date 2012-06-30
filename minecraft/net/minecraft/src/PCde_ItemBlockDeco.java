@@ -2,11 +2,11 @@ package net.minecraft.src;
 
 
 /**
- * Replacement ItemBlock for BlockDecorative, which sets the tile entity when placed.
+ * Replacement ItemBlock for BlockDecorative, which sets the tile entity when
+ * placed.
  * 
  * @author MightyPork
  * @copy (c) 2012
- * 
  */
 public class PCde_ItemBlockDeco extends ItemBlock {
 
@@ -56,9 +56,13 @@ public class PCde_ItemBlockDeco extends ItemBlock {
 			}
 		}
 
-		if (itemstack.stackSize == 0) { return false; }
+		if (itemstack.stackSize == 0) {
+			return false;
+		}
 
-		if (!entityplayer.canPlayerEdit(i, j, k)) { return false; }
+		if (!entityplayer.canPlayerEdit(i, j, k)) {
+			return false;
+		}
 
 
 		if (itemstack.getItemDamage() == 2) {
@@ -74,7 +78,9 @@ public class PCde_ItemBlockDeco extends ItemBlock {
 		}
 
 
-		if (j == 255 && Block.blocksList[getBlockID()].blockMaterial.isSolid()) { return false; }
+		if (j == 255 && Block.blocksList[getBlockID()].blockMaterial.isSolid()) {
+			return false;
+		}
 
 		if (world.canBlockBePlacedAt(mod_PCdeco.deco.blockID, i, j, k, false, l)) {
 			Block block = mod_PCdeco.deco;
@@ -92,8 +98,7 @@ public class PCde_ItemBlockDeco extends ItemBlock {
 				world.markBlocksDirty(i, j, k, i, j, k);
 				world.markBlockNeedsUpdate(i, j, k);
 
-				world.playSoundEffect(i + 0.5F, j + 0.5F, k + 0.5F, block.stepSound.getStepSound(),
-						(block.stepSound.getVolume() + 1.0F) / 2.0F, block.stepSound.getPitch() * 0.8F);
+				world.playSoundEffect(i + 0.5F, j + 0.5F, k + 0.5F, block.stepSound.getStepSound(), (block.stepSound.getVolume() + 1.0F) / 2.0F, block.stepSound.getPitch() * 0.8F);
 
 				itemstack.stackSize--;
 			}

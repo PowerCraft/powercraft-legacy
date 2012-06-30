@@ -1,5 +1,6 @@
 package net.minecraft.src;
 
+
 import net.minecraft.src.PC_GresTextEdit.PC_GresInputType;
 import net.minecraft.src.PC_GresWidget.PC_GresAlign;
 
@@ -11,7 +12,6 @@ import org.lwjgl.input.Keyboard;
  * 
  * @author COR19, Rapus, MightyPork
  * @copy (c) 2012
- * 
  */
 public class PCma_GuiReplacer implements PC_IGresBase {
 
@@ -23,11 +23,14 @@ public class PCma_GuiReplacer implements PC_IGresBase {
 
 	private boolean valid;
 
-	IInventory playerInv;
-
+	/**
+	 * replacer gres gui
+	 * 
+	 * @param teReplacer replacer TE
+	 * @param entityplayer player
+	 */
 	public PCma_GuiReplacer(PCma_TileEntityReplacer teReplacer, EntityPlayer entityplayer) {
 		this.teReplacer = teReplacer;
-		this.playerInv = entityplayer.inventory;
 	}
 
 	@Override
@@ -187,7 +190,9 @@ public class PCma_GuiReplacer implements PC_IGresBase {
 					edit = textedit[2];
 				}
 
-				if (edit == null) { return; }
+				if (edit == null) {
+					return;
+				}
 
 				number = edit.getText();
 				try {

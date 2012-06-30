@@ -1,11 +1,11 @@
 package net.minecraft.src;
 
+
 /**
  * Interface for classes that can load and save to NBT.<br>
  * 
  * @author MightyPork
  * @copy (c) 2012
- * 
  */
 public interface PC_INBT {
 	/**

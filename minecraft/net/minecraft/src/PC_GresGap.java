@@ -1,11 +1,11 @@
 package net.minecraft.src;
 
+
 /**
  * GUI gap with fixed size
  * 
  * @author MightyPork
  * @copy (c) 2012
- * 
  */
 public class PC_GresGap extends PC_GresWidget {
 

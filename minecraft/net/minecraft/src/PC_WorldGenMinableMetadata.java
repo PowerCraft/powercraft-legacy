@@ -1,13 +1,14 @@
 package net.minecraft.src;
 
+
 import java.util.Random;
+
 
 /**
  * Ore Generator which supports block metadata.
  * 
  * @author MightyPork
  * @copy (c) 2012
- * 
  */
 public class PC_WorldGenMinableMetadata extends WorldGenerator {
 
