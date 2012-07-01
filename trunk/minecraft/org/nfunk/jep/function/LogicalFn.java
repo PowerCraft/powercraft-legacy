@@ -24,7 +24,7 @@ import org.nfunk.jep.ParseException;
 public class LogicalFn extends PostfixMathCommand {
 
 	public enum LogicalFnType {
-		AND(false), NAND(true), OR(false), NOR(true), XOR(false), NXOR(true), ODD(true), EVEN(false);
+		AND(false), NAND(true), OR(false), NOR(true), XOR(false), NXOR(true), EVEN(true), ODD(false);
 
 		public boolean neg;
 
@@ -45,7 +45,7 @@ public class LogicalFn extends PostfixMathCommand {
 	public void run(Stack stack) throws ParseException {
 		checkStack(stack);// check the stack
 
-		if (curNumberOfParameters < 2 && type != LogicalFnType.ODD && type != LogicalFnType.EVEN) throw new ParseException("Not enough arguments for " + type.toString().toLowerCase() + "()");
+		if (curNumberOfParameters < 2 && type != LogicalFnType.EVEN && type != LogicalFnType.ODD) throw new ParseException("Not enough arguments for " + type.toString().toLowerCase() + "()");
 
 		int i = 0;
 
@@ -62,7 +62,7 @@ public class LogicalFn extends PostfixMathCommand {
 			else if ((param instanceof Boolean))
 				x = ((Boolean) param).booleanValue() ? 1 : 0;
 			else
-				throw new ParseException(type.toString().toLowerCase() + "() requires Numeric or Boolean arguments, got " + param.getClass().getName());
+				throw new ParseException(type.toString().toLowerCase() + "() not defined for " + param.getClass().getName());
 
 			params.add((x != 0d));
 
@@ -103,8 +103,8 @@ public class LogicalFn extends PostfixMathCommand {
 				}
 				break;
 
-			case ODD:
 			case EVEN:
+			case ODD:
 				result = false;
 				for (boolean b : params) {
 					result ^= b;

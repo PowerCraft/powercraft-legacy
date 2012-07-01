@@ -36,7 +36,7 @@ public class Abs extends PostfixMathCommand {
 			return new Double(Math.abs(((Number) param).doubleValue()));
 		}
 
-		throw new ParseException("Invalid parameter type");
+		throw new ParseException("abs() not defined for "+param.getClass().getSimpleName());
 	}
 
 }

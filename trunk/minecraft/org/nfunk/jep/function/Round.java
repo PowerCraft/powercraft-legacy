@@ -48,7 +48,7 @@ public class Round extends PostfixMathCommand {
 			double mul = Math.pow(10, dp);
 			return new Double(Math.rint(val * mul) / mul);
 		}
-		throw new ParseException("Invalid parameter type");
+		throw new ParseException("round() not defined for "+l.getClass().getSimpleName()+" and " + r.getClass().getSimpleName());
 	}
 
 	public Object round(Object param) throws ParseException {
@@ -56,7 +56,7 @@ public class Round extends PostfixMathCommand {
 			return new Double(Math.rint(((Number) param).doubleValue()));
 		}
 
-		throw new ParseException("Invalid parameter type");
+		throw new ParseException("round() not defined for "+param.getClass().getSimpleName());
 	}
 
 }

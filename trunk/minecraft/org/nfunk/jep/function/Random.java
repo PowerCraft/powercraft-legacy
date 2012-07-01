@@ -104,7 +104,7 @@ public class Random extends PostfixMathCommand {
 					throw new ParseException("Random(start,end) can't have start > end.");
 				}
 
-				stack.push(new Integer((Integer) start + rand.nextInt(((Integer) end - (Integer) start + 1))));
+				stack.push(new Integer(st + rand.nextInt((en - st + 1))));
 			}
 			return;
 

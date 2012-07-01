@@ -45,6 +45,7 @@ public class ArcSineH extends PostfixMathCommand {
 //			Complex temp = new Complex(((Number)param).doubleValue(),0.0);
 //			return temp.asinh();
 		}
-		throw new ParseException("Invalid parameter type");
+
+		throw new ParseException("asinh() not defined for "+param.getClass().getSimpleName());
 	}
 }

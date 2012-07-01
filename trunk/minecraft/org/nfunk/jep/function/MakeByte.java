@@ -20,13 +20,13 @@ import org.nfunk.jep.ParseException;
 /**
  * Build byte of bits
  */
-public class Trilobyte extends PostfixMathCommand {
+public class MakeByte extends PostfixMathCommand {
 	private Add addFun = new Add();
 
 	/**
 	 * Constructor.
 	 */
-	public Trilobyte() {
+	public MakeByte() {
 		// Use a variable number of arguments
 		numberOfParameters = -1;
 	}
@@ -53,7 +53,7 @@ public class Trilobyte extends PostfixMathCommand {
 	public void run(Stack stack) throws ParseException {
 		checkStack(stack);// check the stack
 
-		if (curNumberOfParameters < 1) throw new ParseException("No arguments for Trilobyte");
+		if (curNumberOfParameters < 1) throw new ParseException("No arguments for Byte");
 
 		int exponent = curNumberOfParameters-1;
 		
@@ -77,8 +77,6 @@ public class Trilobyte extends PostfixMathCommand {
 
 			i++;
 		}
-
-		System.out.println("trilobyte = "+sum);
 		
 		// push the result on the inStack
 		stack.push(sum);

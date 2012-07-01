@@ -41,7 +41,7 @@ public class Ceil extends PostfixMathCommand {
 			return new Double(Math.ceil(((Number) param).doubleValue()));
 		}
 
-		throw new ParseException("Invalid parameter type");
+		throw new ParseException("ceil() not defined for "+param.getClass().getSimpleName());
 	}
 
 }

@@ -66,7 +66,7 @@ public class Multiply extends PostfixMathCommand {
 			else if (param2 instanceof Number) return mul((Vector) param1, (Number) param2);
 		}
 
-		throw new ParseException("Invalid parameter type");
+		throw new ParseException("Can't multiply "+param1.getClass().getSimpleName()+" by " + param2.getClass().getSimpleName());
 	}
 
 	public Double mul(Number d1, Number d2) {

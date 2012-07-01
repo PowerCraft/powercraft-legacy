@@ -49,6 +49,6 @@ public class ArcCosineH extends PostfixMathCommand {
 			}
 		}
 
-		throw new ParseException("Invalid parameter type");
+		throw new ParseException("acosh() not defined for "+param.getClass().getSimpleName());
 	}
 }

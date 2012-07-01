@@ -80,7 +80,7 @@ public class Add extends PostfixMathCommand {
 			return (String) param1 + (String) param2;
 		}
 
-		throw new ParseException("Invalid parameter type");
+		throw new ParseException("Can't add "+param2.getClass().getSimpleName()+" to "+param1.getClass().getSimpleName());
 	}
 
 	public Double add(Number d1, Number d2) {
