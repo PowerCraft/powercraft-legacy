@@ -33,7 +33,7 @@ public class PCtr_BlockConveyor extends Block implements PC_IBlockType, PC_IRota
 
 	@Override
 	public int tickRate() {
-		return 4;
+		return 1;
 	}
 
 	@Override

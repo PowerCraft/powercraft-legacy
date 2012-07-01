@@ -362,8 +362,8 @@ public class mod_PCcore extends PC_Module implements PC_IActivatorListener {
 				new ItemStack(craftingTool),
 				new Object[] { " r ", "rIr", " r ",
 					'r', Item.redstone, 'I', Block.blockSteel });
-		ModLoader.addShapelessRecipe(new ItemStack(craftingTool), new Object[] { Block.dirt });
-		ModLoader.addShapelessRecipe(new ItemStack(Block.wood,32), new Object[] { Block.dirt,Block.dirt });
+		//ModLoader.addShapelessRecipe(new ItemStack(craftingTool), new Object[] { Block.dirt });
+		//ModLoader.addShapelessRecipe(new ItemStack(Block.wood,32), new Object[] { Block.dirt,Block.dirt });
 		
 		// @formatter:on
 

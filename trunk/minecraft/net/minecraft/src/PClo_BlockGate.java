@@ -382,6 +382,7 @@ public class PClo_BlockGate extends BlockContainer implements PC_IRotatedBox, PC
 
 		for (; gateUpdates.size() > 0 && world.getWorldTime() - gateUpdates.get(0).updateTime > 30L; gateUpdates.remove(0)) {}
 		if (checkForBurnout(world, x, y, z, false)) {
+			// schedule "unpause" tick
 			world.scheduleBlockUpdate(x, y, z, blockID, 6);
 			return;
 		}
@@ -809,6 +810,7 @@ public class PClo_BlockGate extends BlockContainer implements PC_IRotatedBox, PC
 
 			for (; gateUpdates.size() > 0 && world.getWorldTime() - gateUpdates.get(0).updateTime > 30L; gateUpdates.remove(0)) {}
 			if (checkForBurnout(world, x, y, z, false)) {
+				//schedule unpause tick
 				world.scheduleBlockUpdate(x, y, z, blockID, 6);
 				return;
 			}

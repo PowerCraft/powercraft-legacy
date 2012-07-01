@@ -455,7 +455,7 @@ public class mod_PClogic extends PC_Module {
 		
 
 		ModLoader.addRecipe(
-				new ItemStack(gateOn, 1, PClo_GateType.T),
+				new ItemStack(gateOn, 1, PClo_GateType.RANDOM),
 				new Object[] { "R","T",
 					'R', Item.redstone, 'T', new ItemStack(gateOn, 1, PClo_GateType.T) });
 
