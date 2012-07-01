@@ -49,36 +49,37 @@ public class PCma_GuiReplacer implements PC_IGresBase {
 
 
 		hg = new PC_GresLayoutH().setAlignV(PC_GresAlign.TOP);
-		vg = new PC_GresLayoutV();
+		
+		vg = new PC_GresLayoutV().setWidgetMargin(1);
 		PC_GresWidget hg1 = new PC_GresLayoutH();
-		hg1 = new PC_GresLayoutH();
+		hg1 = new PC_GresLayoutH().setWidgetMargin(1);
 		hg1.add(textedit[0] = new PC_GresTextEdit("" + teReplacer.coordOffset.x, 4, PC_GresInputType.INT));
 		vg.add(hg1);
 		hg1 = new PC_GresLayoutH();
-		hg1.add(new PC_GresButton("-").setId(101).setMinWidth(16));
-		hg1.add(new PC_GresButton("+").setId(102).setMinWidth(16));
+		hg1.add(new PC_GresButton("-").setId(101).setMinWidth(16).setWidgetMargin(1));
+		hg1.add(new PC_GresButton("+").setId(102).setMinWidth(16).setWidgetMargin(1));
 		vg.add(hg1);
 		hg.add(lblx = new PC_GresLabel("X:"));
 		hg.add(vg);
 
-		vg = new PC_GresLayoutV();
-		hg1 = new PC_GresLayoutH();
+		vg = new PC_GresLayoutV().setWidgetMargin(1);
+		hg1 = new PC_GresLayoutH().setWidgetMargin(1);
 		hg1.add(textedit[1] = new PC_GresTextEdit("" + teReplacer.coordOffset.y, 4, PC_GresInputType.INT));
 		vg.add(hg1);
 		hg1 = new PC_GresLayoutH();
-		hg1.add(new PC_GresButton("-").setId(201).setMinWidth(16));
-		hg1.add(new PC_GresButton("+").setId(202).setMinWidth(16));
+		hg1.add(new PC_GresButton("-").setId(201).setMinWidth(16).setWidgetMargin(1));
+		hg1.add(new PC_GresButton("+").setId(202).setMinWidth(16).setWidgetMargin(1));
 		vg.add(hg1);
 		hg.add(lbly = new PC_GresLabel("Y:"));
 		hg.add(vg);
 
-		vg = new PC_GresLayoutV();
-		hg1 = new PC_GresLayoutH();
+		vg = new PC_GresLayoutV().setWidgetMargin(1);
+		hg1 = new PC_GresLayoutH().setWidgetMargin(1);
 		hg1.add(textedit[2] = new PC_GresTextEdit("" + teReplacer.coordOffset.z, 4, PC_GresInputType.INT));
 		vg.add(hg1);
 		hg1 = new PC_GresLayoutH();
-		hg1.add(new PC_GresButton("-").setId(301).setMinWidth(16));
-		hg1.add(new PC_GresButton("+").setId(302).setMinWidth(16));
+		hg1.add(new PC_GresButton("-").setId(301).setMinWidth(16).setWidgetMargin(1));
+		hg1.add(new PC_GresButton("+").setId(302).setMinWidth(16).setWidgetMargin(1));
 		vg.add(hg1);
 		hg.add(lblz = new PC_GresLabel("Z:"));
 		hg.add(vg);
@@ -95,12 +96,12 @@ public class PCma_GuiReplacer implements PC_IGresBase {
 
 		// w.add(new PC_GresGap(0, 6));
 
-		hg = new PC_GresLayoutH().setAlignH(PC_GresAlign.CENTER);
-		hg.add(errorLabel = new PC_GresLabel(""));
+		hg = new PC_GresLayoutH().setAlignH(PC_GresAlign.CENTER).setWidgetMargin(1);
+		hg.add(errorLabel = (PC_GresLabel) new PC_GresLabel("").setWidgetMargin(1));
 		errorLabel.setColor(PC_GresWidget.textColorEnabled, 0x990000);
 		w.add(hg);
 
-		w.add(new PC_GresInventory(teReplacer, 0));
+		w.add(new PC_GresInventoryBigSlot(new Slot(teReplacer, 0,0,0)));
 
 		w.add(new PC_GresInventoryPlayer(true));
 

@@ -160,7 +160,7 @@ public class PCma_BlockReplacer extends BlockContainer implements PC_ISwapTerrai
 
 	@Override
 	public int tickRate() {
-		return 2;
+		return 1;
 	}
 
 	@Override

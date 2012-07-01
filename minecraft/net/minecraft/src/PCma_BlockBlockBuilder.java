@@ -85,7 +85,7 @@ public class PCma_BlockBlockBuilder extends BlockContainer implements PC_ISwapTe
 
 	@Override
 	public int tickRate() {
-		return 4;
+		return 1;
 	}
 
 	@Override
