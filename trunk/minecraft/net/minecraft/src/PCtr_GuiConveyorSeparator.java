@@ -26,7 +26,8 @@ public class PCtr_GuiConveyorSeparator implements PC_IGresBase {
 
 	@Override
 	public void initGui(PC_IGresGui gui) {
-		PC_GresWindow w = new PC_GresWindow(50, 50, PC_Lang.tr("tile.PCconveyorFilter.name"));
+		PC_GresWindow w = new PC_GresWindow(00, 00, PC_Lang.tr("tile.PCconveyorFilter.name"));
+		w.setWidthForInventory();
 		PC_GresLayoutH hg = new PC_GresLayoutH();
 		hg.add(new PC_GresImage(mod_PCcore.getImgDir() + "gres/widgets.png", 56, 66, 8, 15));
 		hg.add(new PC_GresInventory(tileentityconveyorfilter, 3, 3));

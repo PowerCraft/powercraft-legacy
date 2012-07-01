@@ -533,6 +533,7 @@ public class mod_PCcore extends PC_Module implements PC_IActivatorListener {
 				new ItemStack(Item.minecartCrate),
 				new ItemStack(Item.minecartPowered),
 				new ItemStack(Block.ladder),
+				new ItemStack(Block.fenceIron),
 				new ItemStack(Block.trapdoor),
 				new ItemStack(Item.doorSteel),
 				new ItemStack(Item.doorWood),

@@ -198,8 +198,8 @@ public class Calculator {
 		// List of variables needed to evaluate this expression
 		List<String> varsNeeded = new ArrayList<String>();
 
-		// List of renamed variables (. -> __)
-		Map<String, String> rename = new HashMap<String, String>();
+//		 List of renamed variables (. -> __)
+//		Map<String, String> rename = new HashMap<String, String>();
 
 		JEP jep = new JEP();
 		jep.setAllowAssignment(true);
@@ -212,16 +212,17 @@ public class Calculator {
 			String real = name;
 			varsNeeded.add(name);
 
-			//if name contains dot, replace it by __ to prevent "no such object" errors in JS
-			if (name.contains(".")) {
-				real = name;
-				name = name.replaceAll("\\.", "__");
-				rename.put(real, name);
-				expression = expression.replace(real, name);
-			}
+//			//if name contains dot, replace it by __ to prevent "no such object" errors in JS
+//			if (name.contains(".")) {
+//				real = name;
+//				name = name.replaceAll("\\.", "__");
+//				rename.put(real, name);
+//				expression = expression.replace(real, name);
+//			}
 
 			//add the variable into JS engine
 			try {
+				System.out.println("Needs variable "+name);
 				jep.addVariable(name, variableContainer.getVariable(real).get());
 				//jsEngine.put(name, variableContainer.getVariable(real).get());
 			} catch (NullPointerException npe) {
@@ -242,7 +243,7 @@ public class Calculator {
 		// put variables back into Variable Map in Engine
 		for (String varname : varsNeeded) {
 			String real = varname;
-			if (rename.containsKey(varname)) real = rename.get(varname);
+//			if (rename.containsKey(varname)) real = rename.get(varname);
 
 			variableContainer.getVariable(real).set(jep.getVarValue(varname));
 		}

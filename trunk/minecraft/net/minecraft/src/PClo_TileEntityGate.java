@@ -45,7 +45,7 @@ public class PClo_TileEntityGate extends PC_TileEntity {
 	 * @param pgm
 	 * @return is valid
 	 */
-	public boolean checkProgram(String pgm) {
+	public String checkProgram(String pgm) {
 		if(evaluator == null) evaluator = JEP.createWeaselParser(false);
 		
 		pgm = pgm.trim();
@@ -58,18 +58,27 @@ public class PClo_TileEntityGate extends PC_TileEntity {
 			jep.addVariable("R", 0);
 			jep.addVariable("B", 0);
 
-			jep.parse(pgm);
+			Node node = jep.parse(pgm);
 
-			return !jep.hasError();
+			if(jep.hasError()) return "Unknown syntax error!";
+			
+			evaluator.evaluate(node);
 
 		} catch (Throwable t) {
 			if(t instanceof ParseException) {
-				PC_Logger.finest("programmable gate syntax error: "+((ParseException) t).getErrorInfo());
+				if(((ParseException) t).getErrorInfo() == null) return "Unspecified parse error.\n"+t.getStackTrace();
+				return ((ParseException) t).getErrorInfo().trim();
 			}else {
-				PC_Logger.finest("programmable gate syntax error: "+t.getMessage());
+				
+				if(t.getMessage() == null) {
+					t.printStackTrace();
+					return "Unspecified parse error.\n"+t.toString();
+				}
+				
+				return t.getMessage().trim();
 			}
-			return false;
 		}
+		return null;
 	}
 
 	/**
@@ -80,7 +89,7 @@ public class PClo_TileEntityGate extends PC_TileEntity {
 	public void setProgram(String program) {
 		if(evaluator == null) evaluator = JEP.createWeaselParser(false);
 		
-		if (checkProgram(program)) {
+		if (checkProgram(program) == null) {
 			this.program = program;
 			try {
 				if (evaluator == null) {
@@ -115,13 +124,10 @@ public class PClo_TileEntityGate extends PC_TileEntity {
 		evaluator.setVarValue("L", L ? 1 : 0);
 		evaluator.setVarValue("B", B ? 1 : 0);
 		evaluator.setVarValue("R", R ? 1 : 0);
-		if (evaluator.hasError()) {
-			System.out.println("preeval: " + evaluator.getErrorInfo());
-		}
+
 		try {
 			return Calculator.toBoolean(evaluator.evaluate(jepNode));
 		} catch (ParseException e) {
-			System.out.println("te-eval " + e.getErrorInfo());
 			return false;
 		}
 	}

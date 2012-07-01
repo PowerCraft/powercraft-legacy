@@ -69,7 +69,7 @@ public class Test {
 
 			@Override
 			public WeaselObject getVariable(String name) {
-				if (name.equals("hw.num")) return new WeaselInteger(13);
+				if (name.equals("hw.num")) return new WeaselInteger(10);
 				return null;
 			}
 

@@ -1,8 +1,10 @@
 package net.minecraft.src;
 
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Random;
 import java.util.Set;
 
@@ -25,6 +27,37 @@ public class PClo_BlockGate extends BlockContainer implements PC_IRotatedBox, PC
 	@Override
 	public int tickRate() {
 		return 1;
+	}
+
+
+	/** List of gate updates (burn-out counting) */
+	private static List<RedstoneUpdateInfo> gateUpdates = new ArrayList<RedstoneUpdateInfo>();
+
+	/**
+	 * Check for burn-out (prevents immense lag caused by short circuits and fast pulsars)
+	 * @param world
+	 * @param x
+	 * @param y
+	 * @param z
+	 * @param addToList add to burn-out list, (false = only check)
+	 * @return is burnt out
+	 */
+	private boolean checkForBurnout(World world, int x, int y, int z, boolean addToList) {
+		if (addToList) {
+			gateUpdates.add(new RedstoneUpdateInfo(x, y, z, world.getWorldTime()));
+		}
+
+		int i = 0;
+
+		for (int j = 0; j < gateUpdates.size(); j++) {
+			RedstoneUpdateInfo redstoneupdateinfo = gateUpdates.get(j);
+
+			if (redstoneupdateinfo.x == x && redstoneupdateinfo.y == y && redstoneupdateinfo.z == z && ++i >= 20) {
+				return true;
+			}
+		}
+
+		return false;
 	}
 
 	/**
@@ -128,35 +161,44 @@ public class PClo_BlockGate extends BlockContainer implements PC_IRotatedBox, PC
 
 				return 48;
 			}
-			
+
 			if (index == PClo_GateType.REPEATER_CORNER) {
 				int variant = getTE(iblockaccess, x, y, z).getInputsVariant();
-				if(variant==1) {
+				if (variant == 1) {
 					return getTopFaceFromEnum(index) + (active ? 16 : 0);
-				}else {
-					return active?54:53;
+				} else {
+					return active ? 54 : 53;
 				}
 			}
-			
+
+			if (index == PClo_GateType.REPEATER_CORNER_I) {
+				int variant = getTE(iblockaccess, x, y, z).getInputsVariant();
+				if (variant == 1) {
+					return getTopFaceFromEnum(index) + (active ? 16 : 0);
+				} else {
+					return active ? 60 : 59;
+				}
+			}
+
 			if (index == PClo_GateType.OR) {
 				int variant = getTE(iblockaccess, x, y, z).getInputsVariant();
-				if(variant==0) {
+				if (variant == 0) {
 					return getTopFaceFromEnum(index) + (active ? 16 : 0);
-				}else if(variant == 1) {
-					return active?71:55;
-				}else if(variant == 2) {
-					return active?72:56;
+				} else if (variant == 1) {
+					return active ? 71 : 55;
+				} else if (variant == 2) {
+					return active ? 72 : 56;
 				}
 			}
-			
+
 			if (index == PClo_GateType.AND) {
 				int variant = getTE(iblockaccess, x, y, z).getInputsVariant();
-				if(variant==0) {
+				if (variant == 0) {
 					return getTopFaceFromEnum(index) + (active ? 16 : 0);
-				}else if(variant == 1) {
-					return active?73:57;
-				}else if(variant == 2) {
-					return active?74:58;
+				} else if (variant == 1) {
+					return active ? 73 : 57;
+				} else if (variant == 2) {
+					return active ? 74 : 58;
 				}
 			}
 
@@ -265,16 +307,16 @@ public class PClo_BlockGate extends BlockContainer implements PC_IRotatedBox, PC
 
 	@Override
 	public boolean canPlaceBlockAt(World world, int x, int y, int z) {
-		int under = world.getBlockId(x, y - 1, z);
-		/*if (Block.blocksList[under] != null && Block.blocksList[under] instanceof PClo_BlockGate) {
-			return false;
-		}*/
-
-		// if (!world.isBlockNormalCube(x, y - 1, z)) {
-		// return false;
-		// } else {
-		// return super.canPlaceBlockAt(world, x, y, z);
-		// }
+//		int under = world.getBlockId(x, y - 1, z);
+//		/*if (Block.blocksList[under] != null && Block.blocksList[under] instanceof PClo_BlockGate) {
+//			return false;
+//		}*/
+//
+//		// if (!world.isBlockNormalCube(x, y - 1, z)) {
+//		// return false;
+//		// } else {
+//		// return super.canPlaceBlockAt(world, x, y, z);
+//		// }
 		return true;
 	}
 
@@ -337,6 +379,14 @@ public class PClo_BlockGate extends BlockContainer implements PC_IRotatedBox, PC
 
 	@Override
 	public void updateTick(World world, int x, int y, int z, Random random) {
+
+		for (; gateUpdates.size() > 0 && world.getWorldTime() - gateUpdates.get(0).updateTime > 30L; gateUpdates.remove(0)) {}
+		if (checkForBurnout(world, x, y, z, false)) {
+			world.scheduleBlockUpdate(x, y, z, blockID, 6);
+			return;
+		}
+		checkForBurnout(world, x, y, z, true);
+
 
 		int type = getType(world, x, y, z);
 		boolean on, state;
@@ -737,21 +787,45 @@ public class PClo_BlockGate extends BlockContainer implements PC_IRotatedBox, PC
 
 	@Override
 	public void onNeighborBlockChange(World world, int x, int y, int z, int l) {
-		/*
-		 * if (!canBlockStay(world, i, j, k)) {
-		 * unpausePausedBlocks(world, i, j, k);
-		 * world.setBlockWithNotify(i, j, k, 0);
-		 * return;
-		 * }
-		 */
+
+
 
 		int type = getType(world, x, y, z);
+
+		if (type == PClo_GateType.REPEATER_STRAIGHT_I || type == PClo_GateType.REPEATER_CORNER_I) {
+
+			boolean on = isActive();
+
+			boolean outputActive = isOutputActive(world, x, y, z);
+
+			if (on && !outputActive) {
+				// turn off
+				changeGateState(false, world, x, y, z);
+			} else if (!on && outputActive) {
+				// turn on
+				changeGateState(true, world, x, y, z);
+			}
+
+
+			for (; gateUpdates.size() > 0 && world.getWorldTime() - gateUpdates.get(0).updateTime > 30L; gateUpdates.remove(0)) {}
+			if (checkForBurnout(world, x, y, z, false)) {
+				world.scheduleBlockUpdate(x, y, z, blockID, 6);
+				return;
+			}
+			checkForBurnout(world, x, y, z, true);
+
+
+			return;
+		}
+
 		if (type == PClo_GateType.FIFO_DELAYER) {
 			return;
 		}
 
 		if (type == PClo_GateType.CROSSING) {
-			world.scheduleBlockUpdate(x, y, z, blockID, tickRate());
+			updateTick(world, x, y, z, world.rand);
+			return;
+			//world.scheduleBlockUpdate(x, y, z, blockID, tickRate());
 		}
 
 		if (type == PClo_GateType.DAY || type == PClo_GateType.RAIN || type == PClo_GateType.CHEST_EMPTY || type == PClo_GateType.CHEST_FULL) {
@@ -780,10 +854,26 @@ public class PClo_BlockGate extends BlockContainer implements PC_IRotatedBox, PC
 		int rotation = getRotation(meta);
 
 		int type = getType(iblockaccess, x, y, z);
+		World world = ModLoader.getMinecraftInstance().theWorld;
+//		
+//		if (type == PClo_GateType.REPEATER_INSTANT) {
+//			if(powered_from_input(world, x, y, z, 0)) {
+//				if (rotation == 0 && side == 3) {
+//					return true;
+//				}
+//				if (rotation == 1 && side == 4) {
+//					return true;
+//				}
+//				if (rotation == 2 && side == 2) {
+//					return true;
+//				}
+//				return (rotation == 3 && side == 5);
+//			}
+//			return false;
+//		}
 
 		if (type == PClo_GateType.CROSSING) {
 
-			World world = ModLoader.getMinecraftInstance().theWorld;
 
 			// check for rotation and variant.
 			int variant = getTE(iblockaccess, x, y, z).getCrossingVariant();
@@ -884,58 +974,67 @@ public class PClo_BlockGate extends BlockContainer implements PC_IRotatedBox, PC
 		// A = bottom
 		// B = left
 		// C = right
-		if (gateType == PClo_GateType.NOT) {
-			return !back;
+
+		switch (gateType) {
+			case PClo_GateType.NOT:
+				return !back;
+				
+			case PClo_GateType.REPEATER_STRAIGHT:
+			case PClo_GateType.REPEATER_STRAIGHT_I:
+				return back;
+				
+			case PClo_GateType.REPEATER_CORNER:
+			case PClo_GateType.REPEATER_CORNER_I:
+				return teg.getInputsVariant() == 1 ? left : right;
+				
+			case PClo_GateType.AND:
+				if (teg.getInputsVariant() == 0) return left & right;
+				if (teg.getInputsVariant() == 1) return left & back;
+				if (teg.getInputsVariant() == 2) return back & right;
+				return false;
+				
+			case PClo_GateType.OR:
+				if (teg.getInputsVariant() == 0) return left || right;
+				if (teg.getInputsVariant() == 1) return left || back;
+				if (teg.getInputsVariant() == 2) return back || right;
+				return false;				
+				
+			case PClo_GateType.NAND:
+				return !(left & right);
+				
+			case PClo_GateType.NOR:
+				return !(left | right);
+				
+			case PClo_GateType.XOR:
+				return left != right;
+				
+			case PClo_GateType.PROGRAMMABLE:
+				return calcProgrammableGate(teg, back, left, right);
+				
+			case PClo_GateType.XNOR:
+				return left == right;
+				
+			case PClo_GateType.AND3:
+				return back & left & right;
+				
+			case PClo_GateType.NAND3:
+				return !(back & left & right);
+				
+			case PClo_GateType.OR3:
+				return back | left | right;
+				
+			case PClo_GateType.NOR3:
+				return !(back | left | right);
+				
+			case PClo_GateType.XOR3:
+				return (back != left) | (left != right) | (right != back);
+				
+			case PClo_GateType.XNOR3:
+				return (back == left) && (left == right) && (right == back);
+
+				
 		}
-		if (gateType == PClo_GateType.AND) {
-			if(teg.getInputsVariant()==0) return left & right;
-			if(teg.getInputsVariant()==1) return left & back;
-			if(teg.getInputsVariant()==2) return back & right;
-		}
-		if (gateType == PClo_GateType.NAND) {
-			return !(left & right);
-		}
-		if (gateType == PClo_GateType.OR) {
-			if(teg.getInputsVariant()==0) return left || right;
-			if(teg.getInputsVariant()==1) return left || back;
-			if(teg.getInputsVariant()==2) return back || right;
-		}
-		if (gateType == PClo_GateType.NOR) {
-			return !(left | right);
-		}
-		if (gateType == PClo_GateType.XOR) {
-			return left != right;
-		}
-		if (gateType == PClo_GateType.XNOR) {
-			return left == right;
-		}
-		if (gateType == PClo_GateType.AND3) {
-			return back & left & right;
-		}
-		if (gateType == PClo_GateType.NAND3) {
-			return !(back & left & right);
-		}
-		if (gateType == PClo_GateType.OR3) {
-			return back | left | right;
-		}
-		if (gateType == PClo_GateType.NOR3) {
-			return !(back | left | right);
-		}
-		if (gateType == PClo_GateType.XOR3) {
-			return (back != left) | (left != right) | (right != back);
-		}
-		if (gateType == PClo_GateType.XNOR3) {
-			return (back == left) && (left == right) && (right == back);
-		}
-		if (gateType == PClo_GateType.PROGRAMMABLE) {
-			return calcProgrammableGate(teg, back, left, right);
-		}
-		if (gateType == PClo_GateType.REPEATER_STRAIGHT) {
-			return back;
-		}
-		if (gateType == PClo_GateType.REPEATER_CORNER) {
-			return teg.getInputsVariant()==1?left:right;
-		}
+		
 		return false;
 
 	}
@@ -1000,7 +1099,9 @@ public class PClo_BlockGate extends BlockContainer implements PC_IRotatedBox, PC
 	@Override
 	public void onBlockPlacedBy(World world, int x, int y, int z, EntityLiving entityliving) {
 
-		if (getType(world, x, y, z) == PClo_GateType.CROSSING) {
+		int type = getType(world, x, y, z);
+		
+		if (type == PClo_GateType.CROSSING) {
 			world.scheduleBlockUpdate(x, y, z, blockID, tickRate());
 			return;
 		}
@@ -1010,10 +1111,10 @@ public class PClo_BlockGate extends BlockContainer implements PC_IRotatedBox, PC
 		if (PC_Utils.isPlacingReversed()) {
 			l = PC_Utils.reverseSide(l);
 		}
-		
-		if (getType(world, x, y, z) == PClo_GateType.REPEATER_CORNER) {
+
+		if (type == PClo_GateType.REPEATER_CORNER || type == PClo_GateType.REPEATER_CORNER_I) {
 			l++;
-			if(l>3) l=0;
+			if (l > 3) l = 0;
 		}
 
 		world.setBlockMetadataWithNotify(x, y, z, l);
@@ -1086,53 +1187,56 @@ public class PClo_BlockGate extends BlockContainer implements PC_IRotatedBox, PC
 		if (ihold != null) {
 			if (ihold.getItem() instanceof ItemBlock) {
 
-				if(ihold.getItem().shiftedIndex == mod_PClogic.gateOn.blockID || ihold.getItem().shiftedIndex == mod_PClogic.gateOff.blockID) {
-					
-					if(ihold.getItemDamage() != getType(world, x, y, z)) {
+				if (ihold.getItem().shiftedIndex == mod_PClogic.gateOn.blockID || ihold.getItem().shiftedIndex == mod_PClogic.gateOff.blockID) {
+
+					if (ihold.getItemDamage() != getType(world, x, y, z)) {
 						return false;
 					}
-					
-				}else {
-				
+
+				} else {
+
 					Block bhold = Block.blocksList[ihold.getItem().shiftedIndex];
 					if (bhold instanceof PC_IBlockType) {
-	
+
 						return false;
-	
+
 					}
-					
+
 				}
 
 			}
 		}
 
-		if (getType(world, x, y, z) == PClo_GateType.CROSSING) {
+		int type = getType(world, x, y, z);
+		PClo_TileEntityGate teg = getTE(world, x, y, z);
+		
+		if (type == PClo_GateType.CROSSING) {
 			int side = ((MathHelper.floor_double(((player.rotationYaw * 4F) / 360F) + 0.5D) & 3) + 2) % 4;
 			if (side == 0 || side == 2) {
-				getTE(world, x, y, z).toggleCrossingZ();
+				teg.toggleCrossingZ();
 			}
 			if (side == 1 || side == 3) {
-				getTE(world, x, y, z).toggleCrossingX();
+				teg.toggleCrossingX();
 			}
 			return true;
 		}
-		
-		if (getType(world, x, y, z) == PClo_GateType.REPEATER_CORNER) {
-			getTE(world, x, y, z).toggleInputVariant();
+
+		if (type == PClo_GateType.REPEATER_CORNER || type == PClo_GateType.REPEATER_CORNER_I) {
+			teg.toggleInputVariant();
 			world.setBlockMetadataWithNotify(x, y, z, PC_Utils.reverseSide(world.getBlockMetadata(x, y, z)));
 			return true;
-		}	
-		
-		if (getType(world, x, y, z) == PClo_GateType.AND || getType(world, x, y, z) == PClo_GateType.OR) {
-			getTE(world, x, y, z).toggleInputVariant();
+		}
+
+		if (type == PClo_GateType.AND || type == PClo_GateType.OR) {
+			teg.toggleInputVariant();
 			world.notifyBlockChange(x, y, z, blockID);
 			return true;
 		}
 
 
-		if (getType(world, x, y, z) == PClo_GateType.PROGRAMMABLE) {
+		if (type == PClo_GateType.PROGRAMMABLE) {
 
-			PC_Utils.openGres(player, new PClo_GuiCustomGate(getTE(world, x, y, z)));
+			PC_Utils.openGres(player, new PClo_GuiProgrammableGate(teg));
 			boolean outputActive = isOutputActive(world, x, y, z);
 			boolean on = isActive();
 
@@ -1147,14 +1251,14 @@ public class PClo_BlockGate extends BlockContainer implements PC_IRotatedBox, PC
 
 		}
 
-		if (getType(world, x, y, z) == PClo_GateType.FIFO_DELAYER) {
+		if (type == PClo_GateType.FIFO_DELAYER) {
 
-			PC_Utils.openGres(player, new PClo_GuiDelayer(getTE(world, x, y, z), PClo_GuiDelayer.FIFO));
+			PC_Utils.openGres(player, new PClo_GuiDelayer(teg, PClo_GuiDelayer.FIFO));
 			return true;
 
-		} else if (getType(world, x, y, z) == PClo_GateType.HOLD_DELAYER) {
+		} else if (type == PClo_GateType.HOLD_DELAYER) {
 
-			PC_Utils.openGres(player, new PClo_GuiDelayer(getTE(world, x, y, z), PClo_GuiDelayer.HOLD));
+			PC_Utils.openGres(player, new PClo_GuiDelayer(teg, PClo_GuiDelayer.HOLD));
 			return true;
 		}
 
