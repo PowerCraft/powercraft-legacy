@@ -101,7 +101,7 @@ public class Comparative extends PostfixMathCommand {
 			String y = ((String) param2);
 			return x.compareTo(y) < 0;
 		}
-		throw new ParseException("< not defined for object of type " + param1.getClass().getName() + " and " + param2.getClass().getName());
+		throw new ParseException("< not defined for " + param1.getClass().getName() + " and " + param2.getClass().getName());
 	}
 
 	public boolean gt(Object param1, Object param2) throws ParseException {
@@ -122,7 +122,7 @@ public class Comparative extends PostfixMathCommand {
 			String y = ((String) param2);
 			return x.compareTo(y) > 0;
 		}
-		throw new ParseException("> not defined for object of type " + param1.getClass().getName() + " and " + param2.getClass().getName());
+		throw new ParseException("> not defined for " + param1.getClass().getName() + " and " + param2.getClass().getName());
 	}
 
 	public boolean le(Object param1, Object param2) throws ParseException {
@@ -143,7 +143,7 @@ public class Comparative extends PostfixMathCommand {
 			String y = ((String) param2);
 			return x.compareTo(y) <= 0;
 		}
-		throw new ParseException("<= not defined for object of type " + param1.getClass().getName() + " and " + param2.getClass().getName());
+		throw new ParseException("<= not defined for " + param1.getClass().getName() + " and " + param2.getClass().getName());
 	}
 
 	public boolean ge(Object param1, Object param2) throws ParseException {
@@ -164,7 +164,7 @@ public class Comparative extends PostfixMathCommand {
 			String y = ((String) param2);
 			return x.compareTo(y) >= 0;
 		}
-		throw new ParseException(">= not defined for object of type " + param1.getClass().getName() + " and " + param2.getClass().getName());
+		throw new ParseException(">= not defined for " + param1.getClass().getName() + " and " + param2.getClass().getName());
 	}
 
 	public boolean eq(Object param1, Object param2) throws ParseException {

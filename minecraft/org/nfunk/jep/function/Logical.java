@@ -38,13 +38,13 @@ public class Logical extends PostfixMathCommand {
 		else if ((param1 instanceof Boolean))
 			x = ((Boolean) param1).booleanValue() ? 1.0 : 0.0;
 		else
-			throw new ParseException("Logical: require a number or Boolean value on left, have " + param1.getClass().getName());
+			throw new ParseException("Logical operation not defined for " + param1.getClass().getName());
 		if ((param2 instanceof Number))
 			y = ((Number) param2).doubleValue();
 		else if ((param2 instanceof Boolean))
 			y = ((Boolean) param2).booleanValue() ? 1.0 : 0.0;
 		else
-			throw new ParseException("Logical: require a number or Boolean value on right, have " + param1.getClass().getName());
+			throw new ParseException("Logical operation not defined for " + param1.getClass().getName());
 
 		int r;
 

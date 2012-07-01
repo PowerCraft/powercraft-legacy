@@ -48,6 +48,6 @@ public class NaturalLogarithm extends PostfixMathCommand {
 			}
 		}
 
-		throw new ParseException("Invalid parameter type");
+		throw new ParseException("nl() not defined for "+param.getClass().getSimpleName());
 	}
 }

@@ -49,6 +49,6 @@ public class Exp extends PostfixMathCommand {
 			return new Double(Math.exp(((Number) param).doubleValue()));
 		}
 
-		throw new ParseException("Invalid parameter type");
+		throw new ParseException("exp() not defined for "+param.getClass().getSimpleName());
 	}
 }

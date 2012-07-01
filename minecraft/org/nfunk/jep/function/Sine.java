@@ -36,6 +36,6 @@ public class Sine extends PostfixMathCommand {
 			return new Double(Math.sin(((Number) param).doubleValue()));
 		}
 
-		throw new ParseException("Invalid parameter type");
+		throw new ParseException("sin() not defined for "+param.getClass().getSimpleName());
 	}
 }

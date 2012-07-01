@@ -41,7 +41,8 @@ public class Arg extends PostfixMathCommand {
 		} else if (param instanceof Number) {
 			return (ONE);
 		}
-		throw new ParseException("Invalid parameter type");
+
+		throw new ParseException("arg() not defined for "+param.getClass().getSimpleName());
 	}
 
 }

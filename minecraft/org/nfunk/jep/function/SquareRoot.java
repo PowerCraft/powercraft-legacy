@@ -51,6 +51,6 @@ public class SquareRoot extends PostfixMathCommand {
 			}
 		}
 
-		throw new ParseException("Invalid parameter type");
+		throw new ParseException("sqrt() not defined for "+param.getClass().getSimpleName());
 	}
 }
