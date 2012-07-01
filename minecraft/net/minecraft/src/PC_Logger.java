@@ -230,7 +230,7 @@ public class PC_Logger {
 				buf.append(nl);
 			}
 			
-			if(PC_Logger.printToStdout) System.out.println(buf.toString());
+			if(PC_Logger.printToStdout) System.out.print(buf.toString());
 
 			return buf.toString();
 		}

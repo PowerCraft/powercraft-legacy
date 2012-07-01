@@ -32,15 +32,16 @@ public class PC_GresLayoutH extends PC_GresWidget {
 	@Override
 	public void calcChildPositions() {
 		int xx = 0, xSize = 0;
-		for (PC_GresWidget w : childs) {
-			w.calcChildPositions();
-			PC_CoordI csize = w.calcSize();
+		int lastcm = 0;
+		for (PC_GresWidget child : childs) {
+			child.calcChildPositions();
+			PC_CoordI csize = child.calcSize();
 			if (csize.x + xSize > size.x || csize.y > size.y) {
 				if (csize.x + xSize > size.x) {
 					size.x = csize.x + xSize;
 				}
 				if (csize.y > size.y) {
-					size.y = csize.y + w.widgetMargin;
+					size.y = csize.y + child.widgetMargin;
 				}
 				if (parent != null) {
 					parent.calcChildPositions();
@@ -48,13 +49,12 @@ public class PC_GresLayoutH extends PC_GresWidget {
 				calcChildPositions();
 				return;
 			}
-			xSize += csize.x + w.widgetMargin;
-			// childs.get(i).setPosition(xx, height/2 - childs.get(i).getSize().y/2);
-			// xx += size.x + widgetDistance;
+			xSize += csize.x + child.widgetMargin;
+			lastcm = child.widgetMargin;
 		}
-		// xSize -= widgetMargin;
-		for (PC_GresWidget w : childs) {
-			PC_CoordI csize = w.getSize();
+		xSize -= lastcm;
+		for (PC_GresWidget child : childs) {
+			PC_CoordI csize = child.getSize();
 			int xPos = 0;
 			int yPos = 0;
 			switch (alignH) {
@@ -83,11 +83,11 @@ public class PC_GresLayoutH extends PC_GresWidget {
 					break;
 				case STRETCH:
 					yPos = 0;
-					w.setSize(w.getSize().x, size.y, false);
+					child.setSize(child.getSize().x, size.y, false);
 					break;
 			}
-			w.setPosition(xPos, yPos);
-			xx += csize.x + w.widgetMargin;
+			child.setPosition(xPos, yPos);
+			xx += csize.x + child.widgetMargin;
 		}
 	}
 

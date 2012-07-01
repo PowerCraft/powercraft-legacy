@@ -4,11 +4,11 @@ package net.minecraft.src;
 /** "Enum" for logic gates type */
 public class PClo_GateType {
 	/** Number of all the gate types */
-	public static final int TOTAL_GATE_COUNT = 28;
+	public static final int TOTAL_GATE_COUNT = 30;
 
 	@SuppressWarnings("javadoc")
 	public static final int NOT = 0, AND = 1, NAND = 2, OR = 3, NOR = 4, XOR = 5, XNOR = 6, AND3 = 7, NAND3 = 8, OR3 = 9, NOR3 = 10, XOR3 = 11, XNOR3 = 12, D = 13, RS = 14, T = 15, DAY = 16, RAIN = 17, CHEST_EMPTY = 18, CHEST_FULL = 19,
-			SPECIAL = 20, FIFO_DELAYER = 21, HOLD_DELAYER = 22, CROSSING = 23, RANDOM = 24, PROGRAMMABLE = 25, REPEATER_STRAIGHT = 26, REPEATER_CORNER = 27;
+			SPECIAL = 20, FIFO_DELAYER = 21, HOLD_DELAYER = 22, CROSSING = 23, RANDOM = 24, PROGRAMMABLE = 25, REPEATER_STRAIGHT = 26, REPEATER_CORNER = 27, REPEATER_STRAIGHT_I=28, REPEATER_CORNER_I=29;
 
 	/**
 	 * Gate names used for localization
@@ -44,6 +44,8 @@ public class PClo_GateType {
 		names[PROGRAMMABLE] = "programmable";
 		names[REPEATER_STRAIGHT] = "repeaterStraight";
 		names[REPEATER_CORNER] = "repeaterCorner";
+		names[REPEATER_STRAIGHT_I] = "repeaterStraightInstant";
+		names[REPEATER_CORNER_I] = "repeaterCornerInstant";
 	}
 
 	/**
@@ -53,7 +55,7 @@ public class PClo_GateType {
 	 */
 	public static int getMaxCornerSides(int gateType) {
 		if(gateType == AND || gateType == OR) return 3;
-		if(gateType == REPEATER_CORNER) return 2;
+		if(gateType == REPEATER_CORNER || gateType == REPEATER_CORNER_I) return 2;
 		return 1;
 	}
 

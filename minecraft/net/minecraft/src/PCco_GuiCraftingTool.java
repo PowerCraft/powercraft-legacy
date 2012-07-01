@@ -38,8 +38,13 @@ public class PCco_GuiCraftingTool implements PC_IGresBase {
 	@Override
 	public void initGui(PC_IGresGui gui) {
 		PC_GresWindow w = new PC_GresWindow(PC_Lang.tr("pc.gui.craftingTool.title"));
-		w.padding.setTo(10, 3);
-		w.gapUnderTitle = 8;
+		w.padding.setTo(10, 4);
+		w.gapUnderTitle = 10;
+		
+		w.setAlignH(PC_GresAlign.CENTER);
+		w.setAlignV(PC_GresAlign.CENTER);
+		
+		
 		PC_GresWidget hg;
 
 		craftingToolManager = new PCco_CraftingToolManager();
@@ -53,7 +58,7 @@ public class PCco_GuiCraftingTool implements PC_IGresBase {
 
 		w.add(craftingToolInventory);
 
-		hg = new PC_GresLayoutH().setAlignV(PC_GresAlign.TOP);
+		hg = new PC_GresLayoutH().setAlignV(PC_GresAlign.TOP).setAlignH(PC_GresAlign.CENTER);
 		hg.add(buttonPrev = (PC_GresButton) new PC_GresButton("<<<").setMinWidth(30));
 		if (page <= 0) {
 			page = 0;

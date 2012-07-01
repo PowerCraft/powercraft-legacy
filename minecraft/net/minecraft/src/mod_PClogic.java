@@ -282,8 +282,10 @@ public class mod_PClogic extends PC_Module {
 		map.put("tile.PCloLogicGate.crossing.name", "Redstone Crossing");
 		map.put("tile.PCloLogicGate.random.name", "Redstone Random Gate");
 		map.put("tile.PCloLogicGate.programmable.name", "Programmable Logic Gate");
-		map.put("tile.PCloLogicGate.repeaterStraight.name", "Straight Repeater");
+		map.put("tile.PCloLogicGate.repeaterStraight.name", "Quick Repeater");
 		map.put("tile.PCloLogicGate.repeaterCorner.name", "Angled Repeater");
+		map.put("tile.PCloLogicGate.repeaterStraightInstant.name", "Instant Repeater");
+		map.put("tile.PCloLogicGate.repeaterCornerInstant.name", "Instant Angled Repeater");
 
 
 		// descriptions.
@@ -317,6 +319,8 @@ public class mod_PClogic extends PC_Module {
 		map.put("pc.gate.programmable.desc", "gate with custom function");
 		map.put("pc.gate.repeaterStraight.desc", "simple 1-tick repeater");
 		map.put("pc.gate.repeaterCorner.desc", "simple 1-tick corner repeater");
+		map.put("pc.gate.repeaterStraightInstant.desc", "instant repeater");
+		map.put("pc.gate.repeaterCornerInstant.desc", "instant corner repeater");
 
 		map.put("pc.radioRemote.connected", "Portable device connected to channel \"%s\".");
 		map.put("pc.radioRemote.desc", "Channel: %s");
@@ -343,8 +347,7 @@ public class mod_PClogic extends PC_Module {
 		map.put("pc.sensor.range.2-4", "Range: %s blocks");
 		map.put("pc.sensor.range.5+", "Range: %s blocks");
 
-		map.put("pc.gui.customGate.syntaxError", "Syntax error!");
-		map.put("pc.gui.customGate.legend", "L - left, B - back, R - right");
+		map.put("pc.gui.customGate.syntaxError", "There's a syntax error in your code!");
 
 	}
 
@@ -519,6 +522,16 @@ public class mod_PClogic extends PC_Module {
 				new ItemStack(gateOn, 1, PClo_GateType.REPEATER_CORNER),
 				new Object[] { "RR", " R",
 					'R', Item.redstone});
+		
+		ModLoader.addRecipe(
+				new ItemStack(gateOn, 1, PClo_GateType.REPEATER_STRAIGHT_I),
+				new Object[] { "R", "S",
+					'R', Item.redstone, 'S', new ItemStack(gateOn,1,PClo_GateType.REPEATER_STRAIGHT)});
+		
+		ModLoader.addRecipe(
+				new ItemStack(gateOn, 1, PClo_GateType.REPEATER_CORNER_I),
+				new Object[] { "R", "S",
+					'R', Item.redstone, 'S', new ItemStack(gateOn,1,PClo_GateType.REPEATER_CORNER)});
 
 		ModLoader.addRecipe(
 				new ItemStack(gateOn, 1, PClo_GateType.CROSSING),
