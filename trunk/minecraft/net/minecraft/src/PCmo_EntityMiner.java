@@ -37,32 +37,47 @@ public class PCmo_EntityMiner extends Entity implements IInventory {
 
 					PC_CoordI pos = new PC_CoordI(xx, yy, zz);
 
-					if (pos.getId(world) == steel && pos.offset(1, 0, 0).getId(world) == steel && pos.offset(0, 0, 1).getId(world) == steel && pos.offset(1, 0, 1).getId(world) == steel) {
+					// is lower layer?
+					if (pos.getId(world) == steel && pos.offset(1, 0, 0).getId(world) == steel && pos.offset(1, 0, 1).getId(world) == steel && pos.offset(0, 0, 1).getId(world) == steel) {
 
+						System.out.println("x-,z-,y- coord orig 4STEEL = "+pos);
+						String upper = "";
+						
+						int bl;
+						
+						bl = pos.offset(0, 1, 0).getId(world);
+						upper += (bl == steel?"S":(bl == chest?"C":"?"));
+						bl = pos.offset(1, 1, 0).getId(world);
+						upper += (bl == steel?"S":(bl == chest?"C":"?"));
+						bl = pos.offset(1, 1, 1).getId(world);
+						upper += (bl == steel?"S":(bl == chest?"C":"?"));
+						bl = pos.offset(0, 1, 1).getId(world);
+						upper += (bl == steel?"S":(bl == chest?"C":"?"));
+						
 						// valid bottom layer
 						// find direction.
-						if (pos.offset(0, 1, 0).getId(world) == steel && pos.offset(1, 1, 0).getId(world) == chest && pos.offset(0, 1, 1).getId(world) == steel && pos.offset(1, 1, 1).getId(world) == chest) {
+						if (upper.equals("SCCS")) {
 							if (spawnMinerAt(world, pos, 0)) {
 								itemstack.damageItem(1, entityplayer);
 							} else {
 								PC_Utils.chatMsg(eMinerCrystals, false);
 							}
 							return true;
-						} else if (pos.offset(0, 1, 0).getId(world) == chest && pos.offset(1, 1, 0).getId(world) == chest && pos.offset(0, 1, 1).getId(world) == steel && pos.offset(1, 1, 1).getId(world) == steel) {
+						} else if (upper.equals("CCSS")) {
 							if (spawnMinerAt(world, pos, 3)) {
 								itemstack.damageItem(1, entityplayer);
 							} else {
 								PC_Utils.chatMsg(eMinerCrystals, false);
 							}
 							return true;
-						} else if (pos.offset(0, 1, 0).getId(world) == chest && pos.offset(1, 1, 0).getId(world) == steel && pos.offset(0, 1, 1).getId(world) == chest && pos.offset(1, 1, 1).getId(world) == steel) {
+						} else if (upper.equals("CSSC")) {
 							if (spawnMinerAt(world, pos, 2)) {
 								itemstack.damageItem(1, entityplayer);
 							} else {
 								PC_Utils.chatMsg(eMinerCrystals, false);
 							}
 							return true;
-						} else if (pos.offset(0, 1, 0).getId(world) == steel && pos.offset(1, 1, 0).getId(world) == steel && pos.offset(0, 1, 1).getId(world) == chest && pos.offset(1, 1, 1).getId(world) == chest) {
+						} else if (upper.equals("SSCC")) {
 							if (spawnMinerAt(world, pos, 1)) {
 								itemstack.damageItem(1, entityplayer);
 							} else {
@@ -112,13 +127,15 @@ public class PCmo_EntityMiner extends Entity implements IInventory {
 	 */
 	private boolean spawnMinerAt(World world, PC_CoordI pos, int rot) {
 		minerBeingCreated = true; // disable crystal counting.
+		
+		System.out.println("x-,z-,y- coord = "+pos);
 
 		IInventory inv = null;
 
 		find_chest_loop:
-		for (int x = pos.x - 1; x <= pos.x + 1; x++) {
-			for (int z = pos.z - 1; z <= pos.z + 1; z++) {
-				inv = PC_InvUtils.getCompositeInventoryAt(world, pos.offset(0, 1, 0));
+		for (int x = pos.x; x <= pos.x + 1; x++) {
+			for (int z = pos.z; z <= pos.z + 1; z++) {
+				inv = PC_InvUtils.getCompositeInventoryAt(world, new PC_CoordI(x,pos.y+1,z));
 				if (inv != null) {
 					break find_chest_loop;
 				}
@@ -126,6 +143,7 @@ public class PCmo_EntityMiner extends Entity implements IInventory {
 		}
 
 		if (inv == null) {
+			System.out.println("no chest");
 			return false;
 		}
 
@@ -3065,7 +3083,8 @@ public class PCmo_EntityMiner extends Entity implements IInventory {
 			}
 		}
 
-		waitingForFuel += cost - (fuelBuffer + fuelAllocated);
+		if(waitingForFuel<= 0)
+			waitingForFuel += cost - (fuelBuffer + fuelAllocated);
 		return false;
 	}
 
