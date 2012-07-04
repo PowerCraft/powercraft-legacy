@@ -34,6 +34,6 @@ public class UMinus extends PostfixMathCommand {
 		if (param instanceof Complex) return ((Complex) param).neg();
 		if (param instanceof Number) return new Double(-((Number) param).doubleValue());
 
-		throw new ParseException("Can't change sign of "+param.getClass().getSimpleName());
+		throw new ParseException("Can't change sign of " + param.getClass().getSimpleName());
 	}
 }

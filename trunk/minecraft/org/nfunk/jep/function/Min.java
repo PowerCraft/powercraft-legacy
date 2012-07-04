@@ -20,7 +20,7 @@ import org.nfunk.jep.ParseException;
  */
 public class Min extends PostfixMathCommand {
 	Comparative comp = new Comparative(Comparative.LT);
-	
+
 	/**
 	 * Constructor.
 	 */
@@ -41,7 +41,7 @@ public class Min extends PostfixMathCommand {
 
 		// initialize the result to the first argument
 		Object min = stack.pop();
-		
+
 		Object param;
 		int i = 1;
 
@@ -51,7 +51,7 @@ public class Min extends PostfixMathCommand {
 			param = stack.pop();
 
 			// add it to the sum (order is important for String arguments)
-			min =  comp.lt(min,param)?min:param;
+			min = comp.lt(min, param) ? min : param;
 
 			i++;
 		}

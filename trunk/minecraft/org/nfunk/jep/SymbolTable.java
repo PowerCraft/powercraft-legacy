@@ -70,7 +70,7 @@ import java.util.Vector;
  * 
  * @author Rich Morris Created on 28-Feb-2004
  */
-public class SymbolTable extends Hashtable {
+public class SymbolTable extends Hashtable<String, Variable> {
 	private static final long serialVersionUID = 1127787896437151144L;
 	private VariableFactory vf;
 
@@ -89,8 +89,7 @@ public class SymbolTable extends Hashtable {
 	 * @deprecated The getValue or getVar methods should be used instead.
 	 */
 	@Deprecated
-	@Override
-	public Object get(Object key) {
+	public Object get(String key) {
 		return getValue(key);
 	}
 
@@ -118,7 +117,7 @@ public class SymbolTable extends Hashtable {
 	 */
 	@Deprecated
 	@Override
-	public Object put(Object key, Object val) {
+	public Variable put(String key, Variable val) {
 		return makeVarIfNeeded((String) key, val);
 	}
 
@@ -226,7 +225,7 @@ public class SymbolTable extends Hashtable {
 	@Override
 	public String toString() {
 		StringBuffer sb = new StringBuffer();
-		for (Enumeration e = this.elements(); e.hasMoreElements();) {
+		for (Enumeration<?> e = this.elements(); e.hasMoreElements();) {
 			Variable var = (Variable) e.nextElement();
 			sb.append(var.toString());
 			sb.append("\n");
@@ -239,7 +238,7 @@ public class SymbolTable extends Hashtable {
 	 * the {@link Variable#setValidValue Variable.setValidValue} method.
 	 */
 	public void clearValues() {
-		for (Enumeration e = this.elements(); e.hasMoreElements();) {
+		for (Enumeration<?> e = this.elements(); e.hasMoreElements();) {
 			Variable var = (Variable) e.nextElement();
 			var.setValidValue(false);
 		}
@@ -302,7 +301,7 @@ public class SymbolTable extends Hashtable {
 	 * @param arg the object to be notified when a variable changes.
 	 */
 	public synchronized void addObserverToExistingVariables(Observer arg) {
-		for (Enumeration en = this.elements(); en.hasMoreElements();) {
+		for (Enumeration<?> en = this.elements(); en.hasMoreElements();) {
 			Variable var = (Variable) en.nextElement();
 			var.addObserver(arg);
 		}
@@ -310,14 +309,14 @@ public class SymbolTable extends Hashtable {
 
 	/** Remove all non constant elements */
 	public void clearNonConstants() {
-		Vector tmp = new Vector();
-		for (Enumeration en = this.elements(); en.hasMoreElements();) {
+		Vector<Variable> tmp = new Vector<Variable>();
+		for (Enumeration<?> en = this.elements(); en.hasMoreElements();) {
 			Variable var = (Variable) en.nextElement();
 			if (var.isConstant()) tmp.add(var);
 		}
 		this.clear();
-		for (Enumeration en = tmp.elements(); en.hasMoreElements();) {
-			Variable var = (Variable) en.nextElement();
+		for (Enumeration<Variable> en = tmp.elements(); en.hasMoreElements();) {
+			Variable var = en.nextElement();
 			super.put(var.getName(), var);
 		}
 	}

@@ -22,7 +22,7 @@ import org.nfunk.jep.ParseException;
 public class Mean extends PostfixMathCommand {
 	Add add = new Add();
 	Divide div = new Divide();
-	
+
 	/**
 	 * Constructor.
 	 */
@@ -43,7 +43,7 @@ public class Mean extends PostfixMathCommand {
 
 		// initialize the result to the first argument
 		Object sum = stack.pop();
-		
+
 		Object param;
 		int i = 1;
 
@@ -59,6 +59,6 @@ public class Mean extends PostfixMathCommand {
 		}
 
 		// push the result on the inStack
-		stack.push(div.div(sum,curNumberOfParameters));
+		stack.push(div.div(sum, curNumberOfParameters));
 	}
 }

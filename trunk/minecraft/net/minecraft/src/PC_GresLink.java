@@ -21,12 +21,12 @@ public class PC_GresLink extends PC_GresWidget {
 		super(label);
 		canAddWidget = false;
 		minSize.setTo(10, 0);
-		setColor(textColorEnabled, 0x000000);		
-		setColor(textColorDisabled, 0xa0a0a0);	
-		setColor(textColorHover, 0x0000ff);	
+		setColor(textColorEnabled, 0x000000);
+		setColor(textColorDisabled, 0xa0a0a0);
+		setColor(textColorHover, 0x0000ff);
 		setColor(textColorActive, 0xff0000);
 	}
-	
+
 	@Override
 	public PC_CoordI calcSize() {
 
@@ -38,10 +38,12 @@ public class PC_GresLink extends PC_GresWidget {
 
 		return size.copy();
 	}
-	
+
 	/**
 	 * Set underline
+	 * 
 	 * @param underline
+	 * @return this
 	 */
 	public PC_GresLink setUnderline(boolean underline) {
 		this.underline = underline;
@@ -86,7 +88,7 @@ public class PC_GresLink extends PC_GresWidget {
 
 		int yy = offsetPos.y + pos.y + getFontRenderer().FONT_HEIGHT;
 
-		if(underline) drawRect(offsetPos.x + pos.x, yy, offsetPos.x + size.x + pos.x + 1, yy + 1, textColor);
+		if (underline) drawRect(offsetPos.x + pos.x, yy, offsetPos.x + size.x + pos.x + 1, yy + 1, textColor);
 	}
 
 	@Override

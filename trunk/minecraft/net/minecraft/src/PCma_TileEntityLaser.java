@@ -150,7 +150,7 @@ public class PCma_TileEntityLaser extends PC_TileEntity implements PC_IBeamHandl
 	private boolean hitObjectThisShot = false;
 
 	/** type of the laser device */
-	private int type;
+	public int type;
 
 	private void notifyChange(boolean state) {
 		if (state) {

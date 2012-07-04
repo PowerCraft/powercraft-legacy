@@ -270,7 +270,7 @@ public class PC_GresTextEditMultiline extends PC_GresWidget {
 		int wordStart = sx;
 		for (int i = 0; i < line.length(); i++) {
 			c = line.charAt(i);
-			if (Character.isLetterOrDigit(c) || (!word.equals("") && ("._".contains(c+"")))) {
+			if (Character.isLetterOrDigit(c) || (!word.equals("") && ("._".contains(c + "")))) {
 				if (word.equals("")) {
 					wordStart = sx;
 				}
@@ -306,7 +306,7 @@ public class PC_GresTextEditMultiline extends PC_GresWidget {
 		drawRect(offsetPos.x + pos.x + 1, offsetPos.y + pos.y + 1, offsetPos.x + pos.x + size.x - 12, offsetPos.y + pos.y + size.y - 12, 0xff000000);
 
 		int scrollbarBg = 0x909090;
-		
+
 		drawRect(offsetPos.x + pos.x + 1, offsetPos.y + pos.y + size.y - 11, offsetPos.x + pos.x + size.x - 12, offsetPos.y + pos.y + size.y - 1, scrollbarBg);
 
 		drawRect(offsetPos.x + pos.x + size.x - 11, offsetPos.y + pos.y + 1, offsetPos.x + pos.x + size.x - 1, offsetPos.y + pos.y + size.y - 12, scrollbarBg);

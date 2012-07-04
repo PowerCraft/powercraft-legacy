@@ -36,7 +36,7 @@ public class ArcSine extends PostfixMathCommand {
 			return new Double(Math.asin(((Number) param).doubleValue()));
 		}
 
-		throw new ParseException("asin() not defined for "+param.getClass().getSimpleName());
+		throw new ParseException("asin() not defined for " + param.getClass().getSimpleName());
 	}
 
 }

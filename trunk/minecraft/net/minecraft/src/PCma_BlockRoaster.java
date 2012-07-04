@@ -279,6 +279,7 @@ public class PCma_BlockRoaster extends BlockContainer implements PC_ISwapTerrain
 		set.add("HARVEST_STOP");
 		set.add("ROASTER");
 		set.add("FURNACE");
+		set.add("MACHINE");
 
 		if (isBurning(world, pos.x, pos.y, pos.z)) {
 			set.add("SMOKE");
@@ -288,9 +289,10 @@ public class PCma_BlockRoaster extends BlockContainer implements PC_ISwapTerrain
 	}
 
 	@Override
-	public Set<String> getItemFlags(int damage) {
+	public Set<String> getItemFlags(ItemStack stack) {
 		Set<String> set = new HashSet<String>();
 		set.add("NO_BUILD");
+		set.add("ROASTER");
 		return set;
 	}
 }

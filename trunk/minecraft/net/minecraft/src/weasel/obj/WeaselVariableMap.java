@@ -22,7 +22,15 @@ import net.minecraft.src.weasel.exception.WeaselRuntimeException;
 public class WeaselVariableMap extends WeaselObject implements IVariableContainer {
 
 	/** Variable map */
-	public LinkedHashMap<String, WeaselObject> map;
+	public LinkedHashMap<String, WeaselObject> map;	
+
+	/**
+	 * List of weasel variables
+	 */
+	public WeaselVariableMap() {
+		super(WeaselObjectType.VARMAP);
+		map = new LinkedHashMap<String, WeaselObject>();
+	}
 
 	/**
 	 * clear the map.
@@ -42,8 +50,9 @@ public class WeaselVariableMap extends WeaselObject implements IVariableContaine
 
 	@Override
 	public void setVariable(String name, Object value) {
-
-		if (name == null || value == null) throw new WeaselRuntimeException("Variable name or value to set is null. @ " + name + " = " + value);
+		
+		if (name == null) throw new WeaselRuntimeException("VARMAP Set - variable name == null. @ " + name + " = " + value);
+		if (value == null) throw new WeaselRuntimeException("VARMAP Set - variable value == null. @ " + name + " = " + value);
 
 		WeaselObject set = null;
 		if (value instanceof WeaselObject) {
@@ -55,42 +64,23 @@ public class WeaselVariableMap extends WeaselObject implements IVariableContaine
 		} else if (value instanceof Boolean) {
 			set = new WeaselBoolean(value);
 		} else {
-			throw new WeaselRuntimeException("Value " + value + " cannot be saved as a WeaselObject to variable map.");
+			throw new WeaselRuntimeException("VARMAP Set - value " + value + " cannot be saved as a WeaselObject to variable map.");
 		}
 
 		if (map.get(name) != null) {
 			if (map.get(name).getType() != set.getType()) {
-				throw new RuntimeException("Trying to store " + set.getType() + " object into a " + map.get(name).getType() + " variable.");
+				throw new RuntimeException("VARMAP Set - trying to store " + set.getType() + " object into a " + map.get(name).getType() + " variable.");
 			}
 		}
 
 		map.put(name, set);
 	}
 
-//	/**
-//	 * Store variable into map, ignoring old value data type.<br>
-//	 * Used mainly for function return value.
-//	 * 
-//	 * @param name variable name
-//	 * @param object variable object to store
-//	 */
-//	public void setVariableForceReplace(String name, WeaselObject object) {
-//		map.remove(name);
-//		map.put(name, object);
-//	}
-
 	@Override
 	public WeaselObject getVariable(String name) {
 		return map.get(name);
 	}
 
-	/**
-	 * List of weasel variables
-	 */
-	public WeaselVariableMap() {
-		super(WeaselObjectType.VARIABLE_LIST);
-		map = new LinkedHashMap<String, WeaselObject>();
-	}
 
 	@Override
 	public NBTTagCompound writeToNBT(NBTTagCompound tag) {

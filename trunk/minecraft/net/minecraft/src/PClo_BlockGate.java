@@ -34,7 +34,9 @@ public class PClo_BlockGate extends BlockContainer implements PC_IRotatedBox, PC
 	private static List<RedstoneUpdateInfo> gateUpdates = new ArrayList<RedstoneUpdateInfo>();
 
 	/**
-	 * Check for burn-out (prevents immense lag caused by short circuits and fast pulsars)
+	 * Check for burn-out (prevents immense lag caused by short circuits and
+	 * fast pulsars)
+	 * 
 	 * @param world
 	 * @param x
 	 * @param y
@@ -980,63 +982,63 @@ public class PClo_BlockGate extends BlockContainer implements PC_IRotatedBox, PC
 		switch (gateType) {
 			case PClo_GateType.NOT:
 				return !back;
-				
+
 			case PClo_GateType.REPEATER_STRAIGHT:
 			case PClo_GateType.REPEATER_STRAIGHT_I:
 				return back;
-				
+
 			case PClo_GateType.REPEATER_CORNER:
 			case PClo_GateType.REPEATER_CORNER_I:
 				return teg.getInputsVariant() == 1 ? left : right;
-				
+
 			case PClo_GateType.AND:
 				if (teg.getInputsVariant() == 0) return left & right;
 				if (teg.getInputsVariant() == 1) return left & back;
 				if (teg.getInputsVariant() == 2) return back & right;
 				return false;
-				
+
 			case PClo_GateType.OR:
 				if (teg.getInputsVariant() == 0) return left || right;
 				if (teg.getInputsVariant() == 1) return left || back;
 				if (teg.getInputsVariant() == 2) return back || right;
-				return false;				
-				
+				return false;
+
 			case PClo_GateType.NAND:
 				return !(left & right);
-				
+
 			case PClo_GateType.NOR:
 				return !(left | right);
-				
+
 			case PClo_GateType.XOR:
 				return left != right;
-				
+
 			case PClo_GateType.PROGRAMMABLE:
 				return calcProgrammableGate(teg, back, left, right);
-				
+
 			case PClo_GateType.XNOR:
 				return left == right;
-				
+
 			case PClo_GateType.AND3:
 				return back & left & right;
-				
+
 			case PClo_GateType.NAND3:
 				return !(back & left & right);
-				
+
 			case PClo_GateType.OR3:
 				return back | left | right;
-				
+
 			case PClo_GateType.NOR3:
 				return !(back | left | right);
-				
+
 			case PClo_GateType.XOR3:
 				return (back != left) | (left != right) | (right != back);
-				
+
 			case PClo_GateType.XNOR3:
 				return (back == left) && (left == right) && (right == back);
 
-				
+
 		}
-		
+
 		return false;
 
 	}
@@ -1102,7 +1104,7 @@ public class PClo_BlockGate extends BlockContainer implements PC_IRotatedBox, PC
 	public void onBlockPlacedBy(World world, int x, int y, int z, EntityLiving entityliving) {
 
 		int type = getType(world, x, y, z);
-		
+
 		if (type == PClo_GateType.CROSSING) {
 			world.scheduleBlockUpdate(x, y, z, blockID, tickRate());
 			return;
@@ -1211,7 +1213,7 @@ public class PClo_BlockGate extends BlockContainer implements PC_IRotatedBox, PC
 
 		int type = getType(world, x, y, z);
 		PClo_TileEntityGate teg = getTE(world, x, y, z);
-		
+
 		if (type == PClo_GateType.CROSSING) {
 			int side = ((MathHelper.floor_double(((player.rotationYaw * 4F) / 360F) + 0.5D) & 3) + 2) % 4;
 			if (side == 0 || side == 2) {
@@ -1282,9 +1284,10 @@ public class PClo_BlockGate extends BlockContainer implements PC_IRotatedBox, PC
 	}
 
 	@Override
-	public Set<String> getItemFlags(int damage) {
+	public Set<String> getItemFlags(ItemStack itemstack) {
 		Set<String> set = new HashSet<String>();
 		set.add("NO_BUILD");
+		set.add("GATE");
 		return set;
 	}
 

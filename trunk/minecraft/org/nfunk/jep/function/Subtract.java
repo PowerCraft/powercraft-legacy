@@ -46,7 +46,7 @@ public class Subtract extends PostfixMathCommand {
 				return sub((Number) param1, (Number) param2);
 			}
 		}
-		throw new ParseException("Can't subtract "+param2.getClass().getSimpleName()+" from " + param1.getClass().getSimpleName());
+		throw new ParseException("Can't subtract " + param2.getClass().getSimpleName() + " from " + param1.getClass().getSimpleName());
 	}
 
 

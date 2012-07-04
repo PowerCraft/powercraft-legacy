@@ -92,8 +92,8 @@ public class Comparative extends PostfixMathCommand {
 			return (x < y);
 		}
 		if ((param1 instanceof Boolean) && (param2 instanceof Boolean)) {
-			double x = ((Boolean) param1)?1:0;
-			double y = ((Boolean) param2)?1:0;
+			double x = ((Boolean) param1) ? 1 : 0;
+			double y = ((Boolean) param2) ? 1 : 0;
 			return (x < y);
 		}
 		if ((param1 instanceof String) && (param2 instanceof String)) {
@@ -113,8 +113,8 @@ public class Comparative extends PostfixMathCommand {
 			return (x > y);
 		}
 		if ((param1 instanceof Boolean) && (param2 instanceof Boolean)) {
-			double x = ((Boolean) param1)?1:0;
-			double y = ((Boolean) param2)?1:0;
+			double x = ((Boolean) param1) ? 1 : 0;
+			double y = ((Boolean) param2) ? 1 : 0;
 			return (x > y);
 		}
 		if ((param1 instanceof String) && (param2 instanceof String)) {
@@ -134,8 +134,8 @@ public class Comparative extends PostfixMathCommand {
 			return (x <= y);
 		}
 		if ((param1 instanceof Boolean) && (param2 instanceof Boolean)) {
-			double x = ((Boolean) param1)?1:0;
-			double y = ((Boolean) param2)?1:0;
+			double x = ((Boolean) param1) ? 1 : 0;
+			double y = ((Boolean) param2) ? 1 : 0;
 			return (x <= y);
 		}
 		if ((param1 instanceof String) && (param2 instanceof String)) {
@@ -155,8 +155,8 @@ public class Comparative extends PostfixMathCommand {
 			return (x >= y);
 		}
 		if ((param1 instanceof Boolean) && (param2 instanceof Boolean)) {
-			double x = ((Boolean) param1)?1:0;
-			double y = ((Boolean) param2)?1:0;
+			double x = ((Boolean) param1) ? 1 : 0;
+			double y = ((Boolean) param2) ? 1 : 0;
 			return (x >= y);
 		}
 		if ((param1 instanceof String) && (param2 instanceof String)) {
@@ -198,8 +198,8 @@ public class Comparative extends PostfixMathCommand {
 			return (x == y);
 		}
 		if ((param1 instanceof Boolean) && (param2 instanceof Boolean)) {
-			double x = ((Boolean) param1)?1:0;
-			double y = ((Boolean) param2)?1:0;
+			double x = ((Boolean) param1) ? 1 : 0;
+			double y = ((Boolean) param2) ? 1 : 0;
 			return (x == y);
 		}
 		if ((param1 instanceof String) && (param2 instanceof String)) {
@@ -213,7 +213,7 @@ public class Comparative extends PostfixMathCommand {
 	}
 
 	public boolean ne(Object param1, Object param2) throws ParseException {
-		return !eq(param1,param2);
+		return !eq(param1, param2);
 	}
 
 	/**

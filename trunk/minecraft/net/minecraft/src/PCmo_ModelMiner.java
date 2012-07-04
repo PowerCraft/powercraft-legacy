@@ -1,4 +1,3 @@
-
 package net.minecraft.src;
 
 
@@ -6,7 +5,6 @@ package net.minecraft.src;
  * Miner model
  * 
  * @author MightyPork
- *
  */
 public class PCmo_ModelMiner extends ModelBase {
 

@@ -35,7 +35,7 @@ public class Cosine extends PostfixMathCommand {
 			return new Double(Math.cos(((Number) param).doubleValue()));
 		}
 
-		throw new ParseException("cos() not defined for "+param.getClass().getSimpleName());
+		throw new ParseException("cos() not defined for " + param.getClass().getSimpleName());
 	}
 
 }

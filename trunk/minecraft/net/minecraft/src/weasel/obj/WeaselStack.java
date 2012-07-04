@@ -75,7 +75,7 @@ public class WeaselStack extends WeaselObject {
 	 * List of weasel variables
 	 */
 	public WeaselStack() {
-		super(WeaselObjectType.VARIABLE_LIST);
+		super(WeaselObjectType.VARMAP);
 		stack = new Stack<WeaselObject>();
 	}
 

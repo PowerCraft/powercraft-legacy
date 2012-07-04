@@ -41,7 +41,7 @@ public class Power extends PostfixMathCommand {
 			else if (param2 instanceof Number) return power((Number) param1, (Number) param2);
 		}
 
-		throw new ParseException("pow() not defined for "+param1.getClass().getSimpleName()+" and " + param2.getClass().getSimpleName());
+		throw new ParseException("pow() not defined for " + param1.getClass().getSimpleName() + " and " + param2.getClass().getSimpleName());
 	}
 
 

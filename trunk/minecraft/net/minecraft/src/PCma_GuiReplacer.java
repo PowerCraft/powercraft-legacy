@@ -49,7 +49,7 @@ public class PCma_GuiReplacer implements PC_IGresBase {
 
 
 		hg = new PC_GresLayoutH().setAlignV(PC_GresAlign.TOP);
-		
+
 		vg = new PC_GresLayoutV().setWidgetMargin(1);
 		PC_GresWidget hg1 = new PC_GresLayoutH();
 		hg1 = new PC_GresLayoutH().setWidgetMargin(1);
@@ -101,7 +101,7 @@ public class PCma_GuiReplacer implements PC_IGresBase {
 		errorLabel.setColor(PC_GresWidget.textColorEnabled, 0x990000);
 		w.add(hg);
 
-		w.add(new PC_GresInventoryBigSlot(new Slot(teReplacer, 0,0,0)));
+		w.add(new PC_GresInventoryBigSlot(new Slot(teReplacer, 0, 0, 0)));
 
 		w.add(new PC_GresInventoryPlayer(true));
 

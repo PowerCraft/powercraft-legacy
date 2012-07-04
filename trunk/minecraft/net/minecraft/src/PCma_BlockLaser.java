@@ -131,12 +131,9 @@ public class PCma_BlockLaser extends BlockContainer implements PC_IBlockType, PC
 
 		world.setBlockMetadataWithNotify(i, j, k, l);
 
-		if (entityliving instanceof EntityPlayer) {
-			PCma_TileEntityLaser te = (PCma_TileEntityLaser) world.getBlockTileEntity(i, j, k);
+		PCma_TileEntityLaser te = (PCma_TileEntityLaser) world.getBlockTileEntity(i, j, k);
 
-			if (te == null) {
-				return;
-			}
+		if (te != null && te.type == 0 && entityliving instanceof EntityPlayer) {
 
 			if (world.getBlockId(i, j - 1, k) == mod_PCmachines.roaster.blockID) {
 				te.setType(PCma_LaserType.KILLER);
@@ -197,9 +194,10 @@ public class PCma_BlockLaser extends BlockContainer implements PC_IBlockType, PC
 	}
 
 	@Override
-	public Set<String> getItemFlags(int damage) {
+	public Set<String> getItemFlags(ItemStack stack) {
 		Set<String> set = new HashSet<String>();
 		set.add("NO_BUILD");
+		set.add("LASER");
 		return set;
 	}
 }

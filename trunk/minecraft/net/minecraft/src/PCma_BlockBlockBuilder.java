@@ -258,9 +258,10 @@ public class PCma_BlockBlockBuilder extends BlockContainer implements PC_ISwapTe
 	}
 
 	@Override
-	public Set<String> getItemFlags(int damage) {
+	public Set<String> getItemFlags(ItemStack stack) {
 		Set<String> set = new HashSet<String>();
 		set.add("NO_BUILD");
+		set.add("BLOCK_DISPENSER");
 		return set;
 	}
 }

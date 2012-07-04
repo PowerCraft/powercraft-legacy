@@ -212,9 +212,12 @@ public class PCde_BlockDeco extends BlockContainer implements PC_IBlockType, PC_
 		Set<String> set = new HashSet<String>();
 
 		set.add("NO_HARVEST");
+		set.add("NO_PICKUP");
 		set.add("DECORATIVE");
 		set.add("PASSIVE");
 
+		if (ted != null && ted.type == 0) set.add("IRON_FRAME");
+		if (ted != null && ted.type == 1) set.add("REDSTONE_BLOCK");
 
 		if (ted != null && ted.type == 1) {
 			set.add("HARVEST_STOP");
@@ -227,9 +230,11 @@ public class PCde_BlockDeco extends BlockContainer implements PC_IBlockType, PC_
 	}
 
 	@Override
-	public Set<String> getItemFlags(int damage) {
+	public Set<String> getItemFlags(ItemStack stack) {
 		Set<String> set = new HashSet<String>();
 		set.add("NO_BUILD");
+		if (stack.getItemDamage() == 0) set.add("IRON_FRAME");
+		if (stack.getItemDamage() == 1) set.add("REDSTONE_BLOCK");
 		return set;
 	}
 

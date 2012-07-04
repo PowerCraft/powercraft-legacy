@@ -547,6 +547,7 @@ public class PCtr_BlockConveyor extends Block implements PC_IBlockType, PC_IRota
 		Set<String> set = new HashSet<String>();
 
 		set.add("NO_HARVEST");
+		set.add("NO_PICKUP");
 		set.add("TRANSLUCENT");
 		set.add("BELT");
 
@@ -581,9 +582,10 @@ public class PCtr_BlockConveyor extends Block implements PC_IBlockType, PC_IRota
 	}
 
 	@Override
-	public Set<String> getItemFlags(int damage) {
+	public Set<String> getItemFlags(ItemStack stack) {
 		Set<String> set = new HashSet<String>();
 		set.add("NO_BUILD");
+		set.add("BELT");
 		return set;
 	}
 
@@ -594,7 +596,6 @@ public class PCtr_BlockConveyor extends Block implements PC_IBlockType, PC_IRota
 	 * @param beltPos
 	 * @return
 	 */
-	@SuppressWarnings("unchecked")
 	public static boolean dispenseStackFromNearbyMinecart(World world, PC_CoordI beltPos) {
 		List<EntityMinecart> hitList = world.getEntitiesWithinAABB(net.minecraft.src.EntityMinecart.class, AxisAlignedBB.getBoundingBoxFromPool(beltPos.x, beltPos.y, beltPos.z, beltPos.x + 1, beltPos.y + 1, beltPos.z + 1).expand(1.0D, 1.0D, 1.0D));
 
@@ -605,10 +606,9 @@ public class PCtr_BlockConveyor extends Block implements PC_IBlockType, PC_IRota
 				}
 
 				IInventory inventory = cart;
-				if (inventory != null) {
-					if (dispenseItem(world, new PC_CoordD(cart.posX, cart.posY, cart.posZ).round(), inventory, beltPos)) {
-						return true;
-					}
+
+				if (dispenseItem(world, new PC_CoordD(cart.posX, cart.posY, cart.posZ).round(), inventory, beltPos)) {
+					return true;
 				}
 
 			}

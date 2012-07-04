@@ -40,20 +40,20 @@ public class PCmo_EntityMiner extends Entity implements IInventory {
 					// is lower layer?
 					if (pos.getId(world) == steel && pos.offset(1, 0, 0).getId(world) == steel && pos.offset(1, 0, 1).getId(world) == steel && pos.offset(0, 0, 1).getId(world) == steel) {
 
-						System.out.println("x-,z-,y- coord orig 4STEEL = "+pos);
+						System.out.println("x-,z-,y- coord orig 4STEEL = " + pos);
 						String upper = "";
-						
+
 						int bl;
-						
+
 						bl = pos.offset(0, 1, 0).getId(world);
-						upper += (bl == steel?"S":(bl == chest?"C":"?"));
+						upper += (bl == steel ? "S" : (bl == chest ? "C" : "?"));
 						bl = pos.offset(1, 1, 0).getId(world);
-						upper += (bl == steel?"S":(bl == chest?"C":"?"));
+						upper += (bl == steel ? "S" : (bl == chest ? "C" : "?"));
 						bl = pos.offset(1, 1, 1).getId(world);
-						upper += (bl == steel?"S":(bl == chest?"C":"?"));
+						upper += (bl == steel ? "S" : (bl == chest ? "C" : "?"));
 						bl = pos.offset(0, 1, 1).getId(world);
-						upper += (bl == steel?"S":(bl == chest?"C":"?"));
-						
+						upper += (bl == steel ? "S" : (bl == chest ? "C" : "?"));
+
 						// valid bottom layer
 						// find direction.
 						if (upper.equals("SCCS")) {
@@ -127,15 +127,15 @@ public class PCmo_EntityMiner extends Entity implements IInventory {
 	 */
 	private boolean spawnMinerAt(World world, PC_CoordI pos, int rot) {
 		minerBeingCreated = true; // disable crystal counting.
-		
-		System.out.println("x-,z-,y- coord = "+pos);
+
+		System.out.println("x-,z-,y- coord = " + pos);
 
 		IInventory inv = null;
 
 		find_chest_loop:
 		for (int x = pos.x; x <= pos.x + 1; x++) {
 			for (int z = pos.z; z <= pos.z + 1; z++) {
-				inv = PC_InvUtils.getCompositeInventoryAt(world, new PC_CoordI(x,pos.y+1,z));
+				inv = PC_InvUtils.getCompositeInventoryAt(world, new PC_CoordI(x, pos.y + 1, z));
 				if (inv != null) {
 					break find_chest_loop;
 				}
@@ -3083,8 +3083,7 @@ public class PCmo_EntityMiner extends Entity implements IInventory {
 			}
 		}
 
-		if(waitingForFuel<= 0)
-			waitingForFuel += cost - (fuelBuffer + fuelAllocated);
+		if (waitingForFuel <= 0) waitingForFuel += cost - (fuelBuffer + fuelAllocated);
 		return false;
 	}
 

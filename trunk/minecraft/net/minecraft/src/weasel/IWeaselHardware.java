@@ -9,7 +9,7 @@ import net.minecraft.src.weasel.obj.WeaselObject;
  * 
  * @author MightyPork
  */
-public interface IWeaselControlled extends IVariableContainer {
+public interface IWeaselHardware extends IVariableContainer {
 
 	/**
 	 * Check if this hardware supports given function.<br>

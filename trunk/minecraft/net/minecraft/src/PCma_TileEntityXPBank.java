@@ -9,7 +9,6 @@ import java.util.Random;
  * Experience storage tile entity
  * 
  * @author MightyPork
- *
  */
 public class PCma_TileEntityXPBank extends PC_TileEntity {
 
@@ -62,6 +61,7 @@ public class PCma_TileEntityXPBank extends PC_TileEntity {
 
 	/**
 	 * withdraw all xp (before block removal)
+	 * 
 	 * @param player
 	 */
 	public void withdrawXP(EntityPlayer player) {
@@ -73,7 +73,7 @@ public class PCma_TileEntityXPBank extends PC_TileEntity {
 		worldObj.playSoundAtEntity(player, "random.orb", 0.3F, 0.5F * ((rand.nextFloat() - rand.nextFloat()) * 0.7F + 1.8F));
 
 		int xpsum = 0;
-		while(xp > 0) {
+		while (xp > 0) {
 			int addedXP = Math.min(xp, player.xpBarCap());
 			player.addExperience(addedXP);
 			xp -= addedXP;

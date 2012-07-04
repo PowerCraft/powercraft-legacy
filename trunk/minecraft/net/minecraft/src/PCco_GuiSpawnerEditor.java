@@ -70,8 +70,11 @@ public class PCco_GuiSpawnerEditor implements PC_IGresBase {
 		// @formatter:on
 
 		PC_GresWidget w = new PC_GresWindow(230, 100, PC_Lang.tr("tile.mobSpawner.name")).setAlignH(PC_GresAlign.STRETCH);
-		w.widgetMargin = 1;
-		PC_GresLayoutH hg = new PC_GresLayoutH();
+		((PC_GresWindow)w).gapUnderTitle = 12;
+		
+		PC_GresLayoutV vg = new PC_GresLayoutV();
+		
+		PC_GresLayoutH hg = null;
 
 		int maxw = 0;
 		int hgTotalWidth = 0;
@@ -79,17 +82,19 @@ public class PCco_GuiSpawnerEditor implements PC_IGresBase {
 		for (int i = 0; i < mapping.length; i++) {
 			if (i % 3 == 0) {
 				hg = new PC_GresLayoutH();
+				hg.setWidgetMargin(0);
 			}
-			hg.widgetMargin = 1;
-			buttons[i] = new PC_GresButton(names[i]).setId(i);
+			
+			buttons[i] = new PC_GresButton(names[i]).setId(i).setWidgetMargin(1);
 
 			maxw = Math.max(buttons[i].getMinSize().x, maxw);
 
 			hg.add(buttons[i]);
 			if (i % 3 == 2) {
-				w.add(hg);
+				vg.add(hg);
 			}
 		}
+		w.add(vg);
 
 		hgTotalWidth = maxw * 3 + 2;
 
@@ -97,13 +102,10 @@ public class PCco_GuiSpawnerEditor implements PC_IGresBase {
 			buttons[i].setMinWidth(maxw);
 		}
 
-		w.add(new PC_GresGap(10, 3));
-
 		hg = new PC_GresLayoutH();
-		hg.widgetMargin = 1;
 
 		hg.add(checkDangerous = new PC_GresCheckBox(PC_Lang.tr("pc.gui.spawnerEditor.enableDangerous")));
-		hg.add(new PC_GresGap(hgTotalWidth - (maxw + checkDangerous.getMinSize().x + 2), 3));
+		hg.add(new PC_GresGap(hgTotalWidth - (maxw + checkDangerous.getMinSize().x + 8), 3));
 		hg.add(buttons[24] = new PC_GresButton(PC_Lang.tr("pc.gui.cancel")).setId(24).setMinWidth(maxw));
 
 		w.add(hg);
