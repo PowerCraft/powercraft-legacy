@@ -1,14 +1,17 @@
 package net.minecraft.src.weasel.lang;
 
 
+import java.util.ArrayList;
+
 import net.minecraft.src.NBTTagCompound;
+import net.minecraft.src.NBTTagList;
 import net.minecraft.src.weasel.InstructionList;
 import net.minecraft.src.weasel.WeaselEngine;
 import net.minecraft.src.weasel.exception.WeaselRuntimeException;
 
 
 /**
- * Label instruction, target for jumps.
+ * Function header. Works like label for jumps, all PUSHes were already done in instruction list.
  * 
  * @author MightyPork
  */
@@ -23,12 +26,32 @@ public class InstructionFunction extends Instruction {
 	@Override
 	public NBTTagCompound writeToNBT(NBTTagCompound tag) {
 		tag.setString("Name", functionName);
+		
+		NBTTagList tags = new NBTTagList();
+		for (String argname : args) {
+			NBTTagCompound tag1 = new NBTTagCompound();
+			tag1.setString("ArgName", argname);
+			tags.appendTag(tag1);
+		}
+		tag.setTag("Args", tags);
+		
 		return tag;
 	}
 
 	@Override
 	public InstructionFunction readFromNBT(NBTTagCompound tag) {
 		functionName = tag.getString("Name");
+		
+		ArrayList<String> list = new ArrayList<String>();
+		
+		NBTTagList tags = tag.getTagList("Args");
+		for (int i = 0; i < tags.tagCount(); i++) {
+			NBTTagCompound tag1 = (NBTTagCompound) tags.tagAt(i);
+			list.add(tag1.getString("ArgName"));
+		}
+		
+		args = list.toArray(new String[list.size()]);
+		
 		return this;
 	}
 
@@ -70,6 +93,13 @@ public class InstructionFunction extends Instruction {
 	public String getArgumentName(int i) {
 		if (i > 0 && i < args.length) return args[i];
 		return null;
+	}
+	
+	/**
+	 * @return number of arguments.
+	 */
+	public int getArgumentCount() {
+		return args.length;
 	}
 
 }
