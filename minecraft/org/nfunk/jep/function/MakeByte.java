@@ -30,14 +30,14 @@ public class MakeByte extends PostfixMathCommand {
 		// Use a variable number of arguments
 		numberOfParameters = -1;
 	}
-	
+
 	private int pow(int what) {
-		if(what == 0) return 1;
+		if (what == 0) return 1;
 		int out = 2;
 		what--;
 		int p = 2;
-		
-		while(what > 0) {
+
+		while (what > 0) {
 			out += p;
 			p *= 2;
 			what--;
@@ -55,13 +55,13 @@ public class MakeByte extends PostfixMathCommand {
 
 		if (curNumberOfParameters < 1) throw new ParseException("No arguments for Byte");
 
-		int exponent = curNumberOfParameters-1;
-		
+		int exponent = curNumberOfParameters - 1;
+
 		// initialize the result to the first argument
 		Object sum = stack.pop();
-		
-		int byteout = Calculator.toBoolean(sum)?1:0;
-		
+
+		int byteout = Calculator.toBoolean(sum) ? 1 : 0;
+
 		Object param;
 		int i = 1;
 
@@ -69,15 +69,15 @@ public class MakeByte extends PostfixMathCommand {
 		while (i < curNumberOfParameters) {
 			// get the parameter from the stack
 			param = stack.pop();
-			
+
 			boolean bit = Calculator.toBoolean(param);
 
 			// add it to the sum (order is important for String arguments)
-			if(bit) sum = addFun.add(pow(i), sum);
+			if (bit) sum = addFun.add(pow(i), sum);
 
 			i++;
 		}
-		
+
 		// push the result on the inStack
 		stack.push(sum);
 	}

@@ -228,9 +228,10 @@ public class PCtr_BlockItemElevator extends Block implements PC_IBlockType, PC_I
 	}
 
 	@Override
-	public Set<String> getItemFlags(int damage) {
+	public Set<String> getItemFlags(ItemStack stack) {
 		Set<String> set = new HashSet<String>();
 		set.add("NO_BUILD");
+		set.add("LIFT");
 		return set;
 	}
 }

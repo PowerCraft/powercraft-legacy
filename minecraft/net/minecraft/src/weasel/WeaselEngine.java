@@ -3,7 +3,7 @@ package net.minecraft.src.weasel;
 
 import net.minecraft.src.NBTTagCompound;
 import net.minecraft.src.PC_INBT;
-import net.minecraft.src.weasel.exception.EndOfScopeException;
+import net.minecraft.src.weasel.exception.EndOfProgramException;
 import net.minecraft.src.weasel.exception.WeaselRuntimeException;
 import net.minecraft.src.weasel.obj.WeaselBoolean;
 import net.minecraft.src.weasel.obj.WeaselInteger;
@@ -26,7 +26,7 @@ public class WeaselEngine implements PC_INBT, IVariableContainer {
 	 * 
 	 * @param hardware hardware the engine is controlling
 	 */
-	public WeaselEngine(IWeaselControlled hardware) {
+	public WeaselEngine(IWeaselHardware hardware) {
 		this.hardware = hardware;
 	}
 
@@ -35,7 +35,7 @@ public class WeaselEngine implements PC_INBT, IVariableContainer {
 	 */
 	public WeaselVariableMap variables = new WeaselVariableMap();
 
-	private IWeaselControlled hardware = null;
+	private IWeaselHardware hardware = null;
 
 	/** Function retval */
 	public WeaselObject returnValue = null;
@@ -58,24 +58,30 @@ public class WeaselEngine implements PC_INBT, IVariableContainer {
 	public void requestPause() {
 		pauseRequested = true;
 	}
+	
+	private static final String nk_VARIABLE_MAP = "VAR";
+	private static final String nk_STACK_SYSTEM = "STSYS";
+	private static final String nk_STACK_DATA = "STUSR";
+	private static final String nk_INSTRUCTION_LIST = "INSTRL";
+	private static final String nk_RETURN_VALUE = "RETVAL";
 
 	@Override
 	public NBTTagCompound writeToNBT(NBTTagCompound tag) {
-		tag.setCompoundTag("Variables", WeaselObject.saveObjectToNBT(variables, new NBTTagCompound()));
-		tag.setCompoundTag("SystemStack", WeaselObject.saveObjectToNBT(systemStack, new NBTTagCompound()));
-		tag.setCompoundTag("DataStack", WeaselObject.saveObjectToNBT(dataStack, new NBTTagCompound()));
-		tag.setCompoundTag("InstructionList", instructionList.writeToNBT(new NBTTagCompound()));
-		tag.setCompoundTag("ReturnValue", WeaselObject.saveObjectToNBT(returnValue, new NBTTagCompound()));
+		tag.setCompoundTag(nk_VARIABLE_MAP, WeaselObject.saveObjectToNBT(variables, new NBTTagCompound()));
+		tag.setCompoundTag(nk_STACK_SYSTEM, WeaselObject.saveObjectToNBT(systemStack, new NBTTagCompound()));
+		tag.setCompoundTag(nk_STACK_DATA, WeaselObject.saveObjectToNBT(dataStack, new NBTTagCompound()));
+		tag.setCompoundTag(nk_INSTRUCTION_LIST, instructionList.writeToNBT(new NBTTagCompound()));
+		tag.setCompoundTag(nk_RETURN_VALUE, WeaselObject.saveObjectToNBT(returnValue, new NBTTagCompound()));
 		return tag;
 	}
 
 	@Override
 	public WeaselEngine readFromNBT(NBTTagCompound tag) {
-		variables = (WeaselVariableMap) WeaselObject.loadObjectFromNBT(tag.getCompoundTag("Variables"));
-		systemStack = (WeaselStack) WeaselObject.loadObjectFromNBT(tag.getCompoundTag("SystemStack"));
-		dataStack = (WeaselStack) WeaselObject.loadObjectFromNBT(tag.getCompoundTag("DataStack"));
-		instructionList = (InstructionList) new InstructionList(this).readFromNBT(tag.getCompoundTag("InstructionList"));
-		returnValue = WeaselObject.loadObjectFromNBT(tag.getCompoundTag("ReturnValue"));
+		variables = (WeaselVariableMap) WeaselObject.loadObjectFromNBT(tag.getCompoundTag(nk_VARIABLE_MAP));
+		systemStack = (WeaselStack) WeaselObject.loadObjectFromNBT(tag.getCompoundTag(nk_STACK_SYSTEM));
+		dataStack = (WeaselStack) WeaselObject.loadObjectFromNBT(tag.getCompoundTag(nk_STACK_DATA));
+		instructionList = (InstructionList) new InstructionList(this).readFromNBT(tag.getCompoundTag(nk_INSTRUCTION_LIST));
+		returnValue = WeaselObject.loadObjectFromNBT(tag.getCompoundTag(nk_RETURN_VALUE));
 		return this;
 	}
 
@@ -101,7 +107,7 @@ public class WeaselEngine implements PC_INBT, IVariableContainer {
 		for (; statementsMax > 0; statementsMax--) {
 			try {
 				instructionList.executeNextInstruction();
-			} catch (EndOfScopeException eose) {
+			} catch (EndOfProgramException eose) {
 				return true;
 			} catch (WeaselRuntimeException wre) {
 				throw wre;
@@ -130,7 +136,7 @@ public class WeaselEngine implements PC_INBT, IVariableContainer {
 	 * @param args argument list
 	 */
 	public void callNativeFunction(String functionName, WeaselObject[] args) {
-		if (hardware == null) throw new WeaselRuntimeException("No hardware is connected.");
+		if (hardware == null) throw new WeaselRuntimeException("ENGINE CallNative() - no hardware is connected.");
 		hardware.callFunction(this, functionName, args);
 	}
 
@@ -147,23 +153,15 @@ public class WeaselEngine implements PC_INBT, IVariableContainer {
 
 	@Override
 	public void setVariable(String name, Object value) {
-		if (hardware.getVariable(name) != null) throw new WeaselRuntimeException("Native variables are read-only. @ " + name + " = " + value);
-		if (name == null || value == null) throw new WeaselRuntimeException("Variable name or value to set is null. @ " + name + " = " + value);
-
-		WeaselObject set = null;
-		if (value instanceof WeaselObject) {
-			set = (WeaselObject) value;
-		} else if (value instanceof Number) {
-			set = new WeaselInteger(value);
-		} else if (value instanceof String) {
-			set = new WeaselString(value);
-		} else if (value instanceof Boolean) {
-			set = new WeaselBoolean(value);
-		} else {
-			throw new WeaselRuntimeException("Value " + value + " cannot be saved as a WeaselObject to variable map.");
+		
+		if (name == null) throw new WeaselRuntimeException("ENGINE Set() - variable name == null. @ " + name + " = " + value);
+		if (value == null) throw new WeaselRuntimeException("ENGINE Set() - variable value == null. @ " + name + " = " + value);
+		
+		if (hardware.getVariable(name) != null) {
+			hardware.setVariable(name, value);
 		}
 
-		variables.setVariable(name, set);
+		variables.setVariable(name, value);
 	}
 
 

@@ -98,7 +98,7 @@ public class PC_GresWindow extends PC_GresWidget {
 
 	@Override
 	public void calcChildPositions() {
-		
+
 		int yy = 0, minySize = 0, minmaxxSize = 0, maxxSize = 0, ySize = 0, yPlus = getFontRenderer().FONT_HEIGHT + gapUnderTitle;
 
 		if (text.length() == 0) {
@@ -148,7 +148,7 @@ public class PC_GresWindow extends PC_GresWidget {
 
 		for (int i = 0; i < childNum; i++) {
 			PC_GresWidget child = childs.get(i);
-			
+
 			PC_CoordI csize = child.getSize();
 			int xPos = 0;
 			int yPos = 0;
@@ -190,7 +190,7 @@ public class PC_GresWindow extends PC_GresWidget {
 			child.setPosition(xPos, yPos);
 			yy += csize.y + widgetMargin + s;
 		}
-		
+
 /*		
 		int yy = 0, minySize = 0, minmaxxSize = 0, maxxSize = 0, ySize = 0, yPlus = getFontRenderer().FONT_HEIGHT + gapUnderTitle;
 

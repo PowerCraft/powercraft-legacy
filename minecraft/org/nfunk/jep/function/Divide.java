@@ -49,7 +49,7 @@ public class Divide extends PostfixMathCommand {
 			else if (param2 instanceof Number) return div((Vector) param1, (Number) param2);
 		}
 
-		throw new ParseException("Can't divide "+param1.getClass().getSimpleName()+" by " + param2.getClass().getSimpleName());
+		throw new ParseException("Can't divide " + param1.getClass().getSimpleName() + " by " + param2.getClass().getSimpleName());
 	}
 
 

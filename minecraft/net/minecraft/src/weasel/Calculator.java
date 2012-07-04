@@ -2,7 +2,6 @@ package net.minecraft.src.weasel;
 
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -15,6 +14,7 @@ import net.minecraft.src.weasel.obj.WeaselInteger;
 import net.minecraft.src.weasel.obj.WeaselString;
 
 import org.nfunk.jep.JEP;
+import org.nfunk.jep.ParseException;
 
 
 /**
@@ -26,6 +26,58 @@ import org.nfunk.jep.JEP;
 public class Calculator {
 	private static Pattern variablePattern = Pattern.compile("([a-zA-Z_]{1}[a-zA-Z_0-9.]*?)(?:[^a-zA-Z_0-9.(]|$)");
 
+
+	/**
+	 * Convert all 0x007f and 0b100101 to decimal format in give string.
+	 * 
+	 * @param str string
+	 * @return converted string
+	 * @throws ParseException if there's a number starting with 0b or 0x, and does not have the correct format.
+	 */
+	public static String convertNumberFormats(String str) throws ParseException {
+
+		Pattern hex = Pattern.compile("0x([0-9a-zA-Z]+)");
+		Pattern bin = Pattern.compile("0b([0-9a-zA-Z]+)");
+
+		StringBuffer sb = new StringBuffer();
+		Matcher matcher;
+
+
+		matcher = hex.matcher(str);
+
+		while (matcher.find()) {
+			String group = matcher.group(1);
+			try {
+				Integer out = Integer.parseInt(group, 16);
+				matcher.appendReplacement(sb, out.toString());
+			} catch (NumberFormatException nfe) {
+				throw new ParseException("0x" + group + " is not a valid hex number.");
+			}
+		}
+
+		matcher.appendTail(sb);
+
+		str = sb.toString();
+		sb = new StringBuffer();
+
+		matcher = bin.matcher(str);
+
+		while (matcher.find()) {
+			String group = matcher.group(1);
+			try {
+				Integer out = Integer.parseInt(group, 2);
+				System.out.println("out bin="+out);
+				matcher.appendReplacement(sb, out.toString());
+			} catch (NumberFormatException nfe) {
+				throw new ParseException("0b"+group + " is not a valid bin number.");
+			}
+		}
+
+		matcher.appendTail(sb);
+
+		return sb.toString();
+	}
+	
 	/**
 	 * Format an integer (plain or wrapped in WeaselInteger, or a boolean, or
 	 * long) using given radix, and output as string.
@@ -83,7 +135,7 @@ public class Calculator {
 		}
 
 		if (obj == null || !(obj instanceof Boolean)) {
-			throw new RuntimeException("Trying to convert " + obj + " to boolean.");
+			throw new RuntimeException("Unable to convert " + obj + " to Boolean.");
 		}
 
 		return (Boolean) obj;
@@ -108,13 +160,12 @@ public class Calculator {
 		if (obj instanceof WeaselBoolean) {
 			return ((WeaselBoolean) obj).get() ? 1 : 0;
 		}
-
-		if (obj instanceof Integer) {
-			return ((Integer) obj);
+		if (obj instanceof Boolean) {
+			return ((Boolean) obj) ? 1 : 0;
 		}
 
 		if (obj == null || !(obj instanceof Integer)) {
-			throw new RuntimeException("Trying to convert " + obj + " to integer.");
+			throw new RuntimeException("Unable to convert " + obj + " to Integer.");
 		}
 
 		return (Integer) obj;
@@ -139,6 +190,9 @@ public class Calculator {
 		if (obj instanceof WeaselBoolean) {
 			return ((WeaselBoolean) obj).get() ? "true" : "false";
 		}
+		if (obj instanceof Boolean) {
+			return ((Boolean) obj) ? "true" : "false";
+		}
 
 		if (obj instanceof Integer) {
 			return obj + "";
@@ -149,7 +203,7 @@ public class Calculator {
 		}
 
 		if (obj == null || !(obj instanceof String)) {
-			throw new RuntimeException("Trying to convert " + obj + " to integer.");
+			throw new RuntimeException("Unable to convert " + obj + " to String.");
 		}
 
 		return (String) obj;
@@ -166,7 +220,6 @@ public class Calculator {
 
 		jep.parseExpression(expression);
 		if (jep.hasError()) {
-			System.out.println(jep.getErrorInfo());
 			throw new CalcException(jep.getErrorInfo());
 		}
 
@@ -190,16 +243,13 @@ public class Calculator {
 		if (expression == null || expression.length() == 0) return null;
 
 		if (expression.contains(";")) {
-			throw new CalcException("Semicolon in a numeric expression. Possible injection attack.");
+			throw new CalcException("Unexpected \";\" in a numeric expression.");
 		}
 
 		expression = expression.replaceAll("\\s", "");
 
 		// List of variables needed to evaluate this expression
 		List<String> varsNeeded = new ArrayList<String>();
-
-//		 List of renamed variables (. -> __)
-//		Map<String, String> rename = new HashMap<String, String>();
 
 		JEP jep = new JEP();
 		jep.setAllowAssignment(true);
@@ -212,19 +262,9 @@ public class Calculator {
 			String real = name;
 			varsNeeded.add(name);
 
-//			//if name contains dot, replace it by __ to prevent "no such object" errors in JS
-//			if (name.contains(".")) {
-//				real = name;
-//				name = name.replaceAll("\\.", "__");
-//				rename.put(real, name);
-//				expression = expression.replace(real, name);
-//			}
-
 			//add the variable into JS engine
 			try {
-				System.out.println("Needs variable "+name);
 				jep.addVariable(name, variableContainer.getVariable(real).get());
-				//jsEngine.put(name, variableContainer.getVariable(real).get());
 			} catch (NullPointerException npe) {
 				throw new WeaselRuntimeException("Variable " + real + " not set in this scope.");
 			}
@@ -232,8 +272,7 @@ public class Calculator {
 
 		jep.parseExpression(expression);
 
-		// execute JS
-		Object out = jep.getValueAsObject(); //eval(jsEngine, expression);
+		Object out = jep.getValueAsObject();
 
 		if (jep.hasError()) {
 			System.out.println(jep.getErrorInfo());
@@ -243,7 +282,6 @@ public class Calculator {
 		// put variables back into Variable Map in Engine
 		for (String varname : varsNeeded) {
 			String real = varname;
-//			if (rename.containsKey(varname)) real = rename.get(varname);
 
 			variableContainer.getVariable(real).set(jep.getVarValue(varname));
 		}

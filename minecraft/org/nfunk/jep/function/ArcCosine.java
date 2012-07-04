@@ -41,7 +41,7 @@ public class ArcCosine extends PostfixMathCommand {
 			return new Double(Math.acos(((Number) param).doubleValue()));
 		}
 
-		throw new ParseException("asin() not defined for "+param.getClass().getSimpleName());
+		throw new ParseException("asin() not defined for " + param.getClass().getSimpleName());
 	}
 
 }

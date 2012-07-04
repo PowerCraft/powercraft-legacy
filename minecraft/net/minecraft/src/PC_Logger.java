@@ -56,6 +56,7 @@ public class PC_Logger {
 
 	/**
 	 * Enable debug mode - log also printed to stdout.
+	 * 
 	 * @param printToStdout
 	 */
 	public static void setPrintToStdout(boolean printToStdout) {
@@ -229,8 +230,8 @@ public class PC_Logger {
 
 				buf.append(nl);
 			}
-			
-			if(PC_Logger.printToStdout) System.out.print(buf.toString());
+
+			if (PC_Logger.printToStdout) System.out.print(buf.toString());
 
 			return buf.toString();
 		}

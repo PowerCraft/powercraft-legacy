@@ -46,8 +46,8 @@ public class PClo_TileEntityGate extends PC_TileEntity {
 	 * @return is valid
 	 */
 	public String checkProgram(String pgm) {
-		if(evaluator == null) evaluator = JEP.createWeaselParser(false);
-		
+		if (evaluator == null) evaluator = JEP.createWeaselParser(false);
+
 		pgm = pgm.trim();
 
 		try {
@@ -60,21 +60,21 @@ public class PClo_TileEntityGate extends PC_TileEntity {
 
 			Node node = jep.parse(pgm);
 
-			if(jep.hasError()) return "Unknown syntax error!";
-			
+			if (jep.hasError()) return "Unknown syntax error!";
+
 			evaluator.evaluate(node);
 
 		} catch (Throwable t) {
-			if(t instanceof ParseException) {
-				if(((ParseException) t).getErrorInfo() == null) return "Unspecified parse error.\n"+t.getStackTrace();
+			if (t instanceof ParseException) {
+				if (((ParseException) t).getErrorInfo() == null) return "Unspecified parse error.\n" + t.getStackTrace();
 				return ((ParseException) t).getErrorInfo().trim();
-			}else {
-				
-				if(t.getMessage() == null) {
+			} else {
+
+				if (t.getMessage() == null) {
 					t.printStackTrace();
-					return "Unspecified parse error.\n"+t.toString();
+					return "Unspecified parse error.\n" + t.toString();
 				}
-				
+
 				return t.getMessage().trim();
 			}
 		}
@@ -87,22 +87,22 @@ public class PClo_TileEntityGate extends PC_TileEntity {
 	 * @param program
 	 */
 	public void setProgram(String program) {
-		if(evaluator == null) evaluator = JEP.createWeaselParser(false);
-		
+		if (evaluator == null) evaluator = JEP.createWeaselParser(false);
+
 		if (checkProgram(program) == null) {
 			this.program = program;
 			try {
 				if (evaluator == null) {
 					evaluator = JEP.createWeaselParser(false);
 				} else {
-					evaluator.initSymTab();
+					evaluator.getSymbolTable().clearNonConstants();
 				}
 				evaluator.addVariable("L", 0);
 				evaluator.addVariable("R", 0);
 				evaluator.addVariable("B", 0);
 				jepNode = evaluator.parse(this.program);
 			} catch (ParseException e) {
-				PC_Logger.warning("Error while setting program to programmable gate: "+e.getErrorInfo());
+				PC_Logger.warning("Error while setting program to programmable gate: " + e.getErrorInfo());
 			}
 		}
 	}
@@ -115,8 +115,8 @@ public class PClo_TileEntityGate extends PC_TileEntity {
 	 * @param R right input
 	 * @return output
 	 */
-	public boolean evalProgram(boolean L, boolean B, boolean R) {		
-		if(evaluator == null) evaluator = JEP.createWeaselParser(false);
+	public boolean evalProgram(boolean L, boolean B, boolean R) {
+		if (evaluator == null) evaluator = JEP.createWeaselParser(false);
 
 		if (jepNode == null) {
 			return false;
@@ -344,7 +344,7 @@ public class PClo_TileEntityGate extends PC_TileEntity {
 			rHoldTime = maintag.getInteger("RepeaterHoldTime");
 			rRemainingTicks = maintag.getInteger("RepeaterTicksRem");
 		}
-		
+
 		inputVariant = maintag.getInteger("inputVariant");
 
 		if (gateType == PClo_GateType.CROSSING) {
@@ -375,7 +375,7 @@ public class PClo_TileEntityGate extends PC_TileEntity {
 			maintag.setBoolean("DelayState", dOutputState);
 
 		}
-		
+
 		maintag.setInteger("inputVariant", inputVariant);
 
 		if (gateType == PClo_GateType.PROGRAMMABLE) {
@@ -644,6 +644,7 @@ public class PClo_TileEntityGate extends PC_TileEntity {
 
 	/**
 	 * Get corner side for corner repeater
+	 * 
 	 * @return true = left, false = right
 	 */
 	public int getInputsVariant() {
@@ -655,7 +656,7 @@ public class PClo_TileEntityGate extends PC_TileEntity {
 	 */
 	public void toggleInputVariant() {
 		inputVariant++;
-		if(inputVariant >= PClo_GateType.getMaxCornerSides(gateType)){
+		if (inputVariant >= PClo_GateType.getMaxCornerSides(gateType)) {
 			inputVariant = 0;
 		}
 	}

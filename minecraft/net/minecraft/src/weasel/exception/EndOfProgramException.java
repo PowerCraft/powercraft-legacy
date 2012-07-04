@@ -7,12 +7,12 @@ package net.minecraft.src.weasel.exception;
  * 
  * @author MightyPork
  */
-public class EndOfScopeException extends WeaselRuntimeException {
+public class EndOfProgramException extends WeaselRuntimeException {
 
 	/**
 	 * EOS
 	 */
-	public EndOfScopeException() {
+	public EndOfProgramException() {
 		super("End of an instruction list reached.");
 	}
 

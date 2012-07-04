@@ -31,7 +31,7 @@ public class Not extends PostfixMathCommand {
 			int r = (((Boolean) param).booleanValue()) ? 0 : 1;
 			inStack.push(new Double(r));//push the result on the inStack
 		} else
-			throw new ParseException("Logical NOT not defined for "+param.getClass().getSimpleName());
+			throw new ParseException("Logical NOT not defined for " + param.getClass().getSimpleName());
 		return;
 	}
 

@@ -75,6 +75,7 @@ public class PCfix_BlockRadioPlaceholder extends BlockContainer implements PC_IB
 		Set<String> set = new HashSet<String>();
 
 		set.add("NO_HARVEST");
+		set.add("NO_PICKUP");
 		set.add("TRANSLUCENT");
 		set.add("FIX_RADIO");
 
@@ -82,7 +83,7 @@ public class PCfix_BlockRadioPlaceholder extends BlockContainer implements PC_IB
 	}
 
 	@Override
-	public Set<String> getItemFlags(int damage) {
+	public Set<String> getItemFlags(ItemStack stack) {
 		Set<String> set = new HashSet<String>();
 		set.add("NO_BUILD");
 		return set;

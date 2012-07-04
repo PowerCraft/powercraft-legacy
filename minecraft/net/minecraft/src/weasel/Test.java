@@ -60,7 +60,7 @@ public class Test {
 
 
 
-		WeaselEngine engine = new WeaselEngine(new IWeaselControlled() {
+		WeaselEngine engine = new WeaselEngine(new IWeaselHardware() {
 
 			@Override
 			public boolean hasFunction(String functionName) {

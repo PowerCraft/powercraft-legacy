@@ -45,7 +45,7 @@ public abstract class PC_GresWidget extends Gui {
 	public static final int textColorEnabled = 0, textColorShadowEnabled = 1, textColorDisabled = 2, textColorShadowDisabled = 3, textColorHover = 4, textColorActive = 5;
 
 	/** Array of text colors */
-	protected int color[] = { 0x000000, 0x000000, 0x333333, 0x000000, 0x000000, 0x000000};
+	protected int color[] = { 0x000000, 0x000000, 0x333333, 0x000000, 0x000000, 0x000000 };
 
 	/** Parent widget */
 	protected PC_GresWidget parent = null;
@@ -98,7 +98,7 @@ public abstract class PC_GresWidget extends Gui {
 
 	/** Widget ID (general purpose) */
 	public int id = -1;
-	
+
 	/** Additional widget tag (general purpose) */
 	public String tag = "";
 
@@ -167,9 +167,10 @@ public abstract class PC_GresWidget extends Gui {
 	public int getId() {
 		return this.id;
 	}
-	
+
 	/**
 	 * Get widget tag
+	 * 
 	 * @return tag
 	 */
 	public String getTag() {
@@ -178,6 +179,7 @@ public abstract class PC_GresWidget extends Gui {
 
 	/**
 	 * Set widget tag
+	 * 
 	 * @param tag the tag
 	 * @return this
 	 */
@@ -618,7 +620,7 @@ public abstract class PC_GresWidget extends Gui {
 		if (color[enabled ? textColorShadowEnabled : textColorShadowDisabled] != 0) {
 			fr.drawString(text, x + 1, y + 1, color[enabled ? textColorShadowEnabled : textColorShadowDisabled]);
 		}
-		fr.drawString(text, x, y, color[enabled ? (isMouseOver?textColorHover:textColorEnabled) : textColorDisabled]);
+		fr.drawString(text, x, y, color[enabled ? (isMouseOver ? textColorHover : textColorEnabled) : textColorDisabled]);
 	}
 
 	/**

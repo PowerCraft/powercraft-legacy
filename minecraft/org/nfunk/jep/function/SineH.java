@@ -36,7 +36,7 @@ public class SineH extends PostfixMathCommand {
 			return new Double((Math.exp(value) - Math.exp(-value)) / 2);
 		}
 
-		throw new ParseException("sinh() not defined for "+param.getClass().getSimpleName());
+		throw new ParseException("sinh() not defined for " + param.getClass().getSimpleName());
 	}
 
 }

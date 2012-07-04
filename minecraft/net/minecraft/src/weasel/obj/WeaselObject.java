@@ -80,7 +80,7 @@ public abstract class WeaselObject implements PC_INBT {
 				obj.readFromNBT(tag);
 				break;
 
-			case VARIABLE_LIST:
+			case VARMAP:
 				obj = new WeaselVariableMap();
 				obj.readFromNBT(tag);
 				break;
@@ -124,7 +124,7 @@ public abstract class WeaselObject implements PC_INBT {
 	@SuppressWarnings("javadoc")
 	public enum WeaselObjectType {
 
-		BOOLEAN, INTEGER, STRING, VARIABLE_LIST, STACK;
+		BOOLEAN, INTEGER, STRING, VARMAP, STACK;
 
 
 		private WeaselObjectType() {

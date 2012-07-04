@@ -52,7 +52,7 @@ public class Logarithm extends PostfixMathCommand {
 				return temp.log().div(CLOG10);
 			}
 		}
-		throw new ParseException("log() not defined for "+param.getClass().getSimpleName());
+		throw new ParseException("log() not defined for " + param.getClass().getSimpleName());
 	}
 
 

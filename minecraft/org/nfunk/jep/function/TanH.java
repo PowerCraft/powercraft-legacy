@@ -35,7 +35,7 @@ public class TanH extends PostfixMathCommand {
 			double value = ((Number) param).doubleValue();
 			return new Double((Math.exp(value) - Math.exp(-value)) / (Math.pow(Math.E, value) + Math.pow(Math.E, -value)));
 		}
-		throw new ParseException("tanh() not defined for "+param.getClass().getSimpleName());
+		throw new ParseException("tanh() not defined for " + param.getClass().getSimpleName());
 	}
 
 }

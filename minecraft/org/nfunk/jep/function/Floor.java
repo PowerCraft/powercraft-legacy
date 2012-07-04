@@ -41,7 +41,7 @@ public class Floor extends PostfixMathCommand {
 			return new Double(Math.floor(((Number) param).doubleValue()));
 		}
 
-		throw new ParseException("floor() not defined for "+param.getClass().getSimpleName());
+		throw new ParseException("floor() not defined for " + param.getClass().getSimpleName());
 	}
 
 }

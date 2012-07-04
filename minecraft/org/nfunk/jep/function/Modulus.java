@@ -34,7 +34,7 @@ public class Modulus extends PostfixMathCommand {
 
 			inStack.push(new Double(result));
 		} else {
-			throw new ParseException("mod() not defined for "+param1.getClass().getSimpleName()+" and " + param2.getClass().getSimpleName());
+			throw new ParseException("mod() not defined for " + param1.getClass().getSimpleName() + " and " + param2.getClass().getSimpleName());
 		}
 		return;
 	}

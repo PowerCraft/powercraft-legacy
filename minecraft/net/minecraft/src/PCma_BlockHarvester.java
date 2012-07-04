@@ -532,9 +532,10 @@ public class PCma_BlockHarvester extends Block implements PC_ISwapTerrain, PC_IB
 	}
 
 	@Override
-	public Set<String> getItemFlags(int damage) {
+	public Set<String> getItemFlags(ItemStack stack) {
 		Set<String> set = new HashSet<String>();
 		set.add("NO_BUILD");
+		set.add("HARVESTER");
 		return set;
 	}
 }

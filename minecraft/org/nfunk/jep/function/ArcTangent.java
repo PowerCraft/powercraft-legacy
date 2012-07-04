@@ -36,7 +36,7 @@ public class ArcTangent extends PostfixMathCommand {
 		}
 
 
-		throw new ParseException("atan() not defined for "+param.getClass().getSimpleName());
+		throw new ParseException("atan() not defined for " + param.getClass().getSimpleName());
 	}
 
 }

@@ -154,14 +154,16 @@ public class PCma_BlockXPBank extends BlockContainer implements PC_ISwapTerrain,
 		set.add("NO_HARVEST");
 		set.add("HARVEST_STOP");
 		set.add("XP_BANK");
+		set.add("MACHINE");
 
 		return set;
 	}
 
 	@Override
-	public Set<String> getItemFlags(int damage) {
+	public Set<String> getItemFlags(ItemStack stack) {
 		Set<String> set = new HashSet<String>();
 		set.add("NO_BUILD");
+		set.add("XP_BANK");
 		return set;
 	}
 }

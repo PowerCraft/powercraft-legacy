@@ -69,9 +69,10 @@ public class PCma_BlockAutomaticWorkbench extends BlockContainer implements PC_I
 
 	@Override
 	public void onBlockRemoval(World world, int i, int j, int k) {
-		PCma_TileEntityAutomaticWorkbench tileentityconveyoract = (PCma_TileEntityAutomaticWorkbench) world.getBlockTileEntity(i, j, k);
-		for (int l = 0; l < tileentityconveyoract.getSizeInventory(); l++) {
-			ItemStack itemstack = tileentityconveyoract.getStackInSlot(l);
+		PCma_TileEntityAutomaticWorkbench tew = (PCma_TileEntityAutomaticWorkbench) world.getBlockTileEntity(i, j, k);
+		if (tew == null) return;
+		for (int l = 0; l < tew.getSizeInventory(); l++) {
+			ItemStack itemstack = tew.getStackInSlot(l);
 			if (itemstack != null) {
 				float f = world.rand.nextFloat() * 0.8F + 0.1F;
 				float f1 = world.rand.nextFloat() * 0.8F + 0.1F;
@@ -207,9 +208,10 @@ public class PCma_BlockAutomaticWorkbench extends BlockContainer implements PC_I
 	}
 
 	@Override
-	public Set<String> getItemFlags(int damage) {
+	public Set<String> getItemFlags(ItemStack stack) {
 		Set<String> set = new HashSet<String>();
 		set.add("NO_BUILD");
+		set.add("ACT");
 		return set;
 	}
 }

@@ -13,9 +13,10 @@ package org.nfunk.jep;
 import java.io.Reader;
 import java.io.StringReader;
 import java.util.ArrayList;
+import java.util.Map.Entry;
 import java.util.Vector;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
+
+import net.minecraft.src.weasel.Calculator;
 
 import org.nfunk.jep.function.Abs;
 import org.nfunk.jep.function.ArcCosine;
@@ -27,7 +28,9 @@ import org.nfunk.jep.function.ArcTangent;
 import org.nfunk.jep.function.ArcTangent2;
 import org.nfunk.jep.function.Arg;
 import org.nfunk.jep.function.Binomial;
+import org.nfunk.jep.function.BitwiseOperation;
 import org.nfunk.jep.function.BitwiseOperation.OpType;
+import org.nfunk.jep.function.Bool;
 import org.nfunk.jep.function.Ceil;
 import org.nfunk.jep.function.ComplexPFMC;
 import org.nfunk.jep.function.Conjugate;
@@ -40,13 +43,14 @@ import org.nfunk.jep.function.Imaginary;
 import org.nfunk.jep.function.Logarithm;
 import org.nfunk.jep.function.LogicalFn;
 import org.nfunk.jep.function.LogicalFn.LogicalFnType;
-import org.nfunk.jep.function.BitwiseOperation;
+import org.nfunk.jep.function.MakeByte;
 import org.nfunk.jep.function.Max;
 import org.nfunk.jep.function.Mean;
 import org.nfunk.jep.function.Min;
 import org.nfunk.jep.function.Modulus;
 import org.nfunk.jep.function.NaturalLogarithm;
 import org.nfunk.jep.function.Not;
+import org.nfunk.jep.function.Num;
 import org.nfunk.jep.function.Polar;
 import org.nfunk.jep.function.PostfixMathCommandI;
 import org.nfunk.jep.function.Power;
@@ -62,7 +66,6 @@ import org.nfunk.jep.function.StringChar;
 import org.nfunk.jep.function.Sum;
 import org.nfunk.jep.function.TanH;
 import org.nfunk.jep.function.Tangent;
-import org.nfunk.jep.function.MakeByte;
 import org.nfunk.jep.type.Complex;
 import org.nfunk.jep.type.DoubleNumberFactory;
 import org.nfunk.jep.type.NumberFactory;
@@ -186,8 +189,8 @@ public class JEP {
 	 * This constructor copies the SymbolTable and other components of the
 	 * arguments to the new instance. Subclasses can call this protected
 	 * constructor and set the individual components themselves.
-	 * @param j Source jep
 	 * 
+	 * @param j Source jep
 	 * @since 2.3.0 alpha
 	 */
 	protected JEP(JEP j) {
@@ -223,7 +226,8 @@ public class JEP {
 
 
 	/**
-	 * Create a parser suitable for weasel and other numeric expression evaluating systems in PowerCraft.
+	 * Create a parser suitable for weasel and other numeric expression
+	 * evaluating systems in PowerCraft.
 	 * 
 	 * @param assignmentAllowed
 	 * @return the new JEP
@@ -249,7 +253,7 @@ public class JEP {
 		funTab.put("random", new org.nfunk.jep.function.Random());
 
 		// binary functions
-		
+
 		funTab.put("not", new Not());
 		funTab.put("or", new LogicalFn(LogicalFnType.OR));
 		funTab.put("and", new LogicalFn(LogicalFnType.AND));
@@ -258,28 +262,30 @@ public class JEP {
 		funTab.put("nand", new LogicalFn(LogicalFnType.NAND));
 		funTab.put("xnor", new LogicalFn(LogicalFnType.NXOR));
 		funTab.put("nxor", new LogicalFn(LogicalFnType.NXOR));
-		
+
 		funTab.put("even", new LogicalFn(LogicalFnType.EVEN));
 		funTab.put("odd", new LogicalFn(LogicalFnType.ODD));
 
 		// aditional constructors
 		funTab.put("list", new org.nfunk.jep.function.List());
 		funTab.put("range", new Range());
-		
+
 		// string
 		funTab.put("strlen", new StrLen());
 		funTab.put("strLen", new StrLen());
 		funTab.put("length", new StrLen());
 		funTab.put("char", new StringChar());
 		funTab.put("strChar", new StringChar());
-		
+		funTab.put("num", new Num());
+		funTab.put("bool", new Bool());
+
 		//other
 		funTab.put("avg", new Mean());
 		funTab.put("mean", new Mean());
 		funTab.put("min", new Min());
 		funTab.put("max", new Max());
 		funTab.put("byte", new MakeByte());
-		
+
 		funTab.put("bw.not", new BitwiseOperation(OpType.NOT));
 		funTab.put("bw.or", new BitwiseOperation(OpType.OR));
 		funTab.put("bw.and", new BitwiseOperation(OpType.AND));
@@ -295,16 +301,32 @@ public class JEP {
 
 	/**
 	 * Get list of function names
+	 * 
 	 * @return keywords string array
 	 */
-	public String[] getKeywords() {		
+	public String[] getKeywords() {
 		ArrayList<String> list = new ArrayList<String>();
 
 		list.addAll(funTab.keySet());
-		
+
 		return list.toArray(new String[list.size()]);
 	}
 	
+	/**
+	 * Get list of function names
+	 * 
+	 * @return keywords string array
+	 */
+	public String[] getConstants() {
+		ArrayList<String> list = new ArrayList<String>();
+
+		for(Entry<String,Variable> var : symTab.entrySet()) {
+			if(var.getValue().isConstant()) list.add(var.getKey());
+		}
+
+		return list.toArray(new String[list.size()]);
+	}
+
 	/**
 	 * Adds the standard functions to the parser. If this function is not called
 	 * before parsing an expression, functions such as sin() or cos() would
@@ -410,9 +432,9 @@ public class JEP {
 
 	/**
 	 * Adds a constant. This is a variable whose value cannot be changed.
-	 * @param name var name
-	 * @param value var value 
 	 * 
+	 * @param name var name
+	 * @param value var value
 	 * @since 2.3.0 beta 1
 	 */
 	public void addConstant(String name, Object value) {
@@ -468,8 +490,8 @@ public class JEP {
 	 * Removes a variable from the parser. For example after calling
 	 * addStandardConstants(), removeVariable("e") might be called to remove the
 	 * euler constant from the set of variables.
-	 * @param name variable to remove
 	 * 
+	 * @param name variable to remove
 	 * @return The value of the variable if it was added earlier. If the
 	 *         variable is not in the table of variables, <code>null</code> is
 	 *         returned.
@@ -516,8 +538,8 @@ public class JEP {
 
 	/**
 	 * Removes a function from the parser.
-	 * @param name function name
 	 * 
+	 * @param name function name
 	 * @return If the function was added earlier, the function class instance is
 	 *         returned. If the function was not present, <code>null</code> is
 	 *         returned.
@@ -611,8 +633,8 @@ public class JEP {
 
 	/**
 	 * Sets whether assignment equations like <tt>y=x+1</tt> are allowed.
-	 * @param value allow
 	 * 
+	 * @param value allow
 	 * @since 2.3.0 alpha
 	 */
 	public void setAllowAssignment(boolean value) {
@@ -621,59 +643,14 @@ public class JEP {
 
 	/**
 	 * Whether assignment equation <tt>y=x+1</tt> equations are allowed.
-	 * @return is assignment allowed
 	 * 
+	 * @return is assignment allowed
 	 * @since 2.3.0 alpha
 	 */
 	public boolean getAllowAssignment() {
 		return allowAssignment;
 	}
-	
-	/**
-	 * Convert all 0x007f and 0b100101 to decimal format in give string.
-	 * @param str string
-	 * @return converted string
-	 */
-	private String convertNumberFormats(String str) {
-		
-		Pattern hex = Pattern.compile("0x([0-9a-fA-F]+)");
-		Pattern bin = Pattern.compile("0b([01]+)");
-		
-		StringBuffer sb = new StringBuffer();
-		Matcher matcher;
-		
-		
-		matcher = hex.matcher(str); 
-		
-		while(matcher.find()) {
-			String group = matcher.group(1);
-			try {
-				matcher.appendReplacement(sb, Integer.parseInt(group, 16)+"");
-			}catch(NumberFormatException nfe) {
-				errorList.addElement(group+" is not a valid hex number.");
-			}
-		}
-		
-		matcher.appendTail(sb);
-		
-		str = sb.toString();
-		sb = new StringBuffer();
-		
-		matcher = bin.matcher(str); 
-		
-		while(matcher.find()) {
-			String group = matcher.group(1);
-			try {
-				matcher.appendReplacement(sb, Integer.parseInt(group, 2)+"");
-			}catch(NumberFormatException nfe) {
-				errorList.addElement(group+" is not a valid bin number.");
-			}
-		}
-		
-		matcher.appendTail(sb);
-		
-		return sb.toString();
-	}
+
 
 
 	/**
@@ -686,9 +663,15 @@ public class JEP {
 	 *         <code>null</code> otherwise
 	 */
 	public Node parseExpression(String expression_in) {
-		
-		expression_in = convertNumberFormats(expression_in);
-		
+
+		try {
+			expression_in = Calculator.convertNumberFormats(expression_in);
+		} catch (ParseException e1) {
+			errorList.addElement(e1.getErrorInfo());
+		}
+
+		if(hasError()) return null;
+
 		Reader reader = new StringReader(expression_in);
 
 		try {
@@ -748,9 +731,11 @@ public class JEP {
 	 * @since 2.3.0 beta - will raise exception if errorList non empty
 	 */
 	public Node parse(String expression) throws ParseException {
+
+		expression = Calculator.convertNumberFormats(expression);
 		
-		expression = convertNumberFormats(expression);
-		
+		if(hasError()) throw new ParseException(getErrorInfo());
+
 		java.io.StringReader sr = new java.io.StringReader(expression);
 		errorList.removeAllElements();
 		Node node = parser.parseStream(sr, this);
@@ -794,7 +779,7 @@ public class JEP {
 			if (c.im() != 0.0) return Double.NaN;
 			return c.re();
 		}
-		
+
 		if (value instanceof Number) {
 			return ((Number) value).doubleValue();
 		}

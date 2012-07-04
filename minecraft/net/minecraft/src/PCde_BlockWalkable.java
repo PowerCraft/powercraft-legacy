@@ -389,9 +389,12 @@ public class PCde_BlockWalkable extends BlockContainer implements PC_IBlockType,
 		Set<String> set = new HashSet<String>();
 
 		set.add("NO_HARVEST");
-		set.add("IRON_LEDGE");
+		set.add("NO_PICKUP");
 		set.add("DECORATIVE");
 		set.add("PASSIVE");
+
+		if (tew != null && tew.type == 0) set.add("IRON_LEDGE");
+		if (tew != null && tew.type == 1) set.add("IRON_STAIRS");
 
 		if (tew != null && tew.type != 1) {
 			set.add("TRANSLUCENT");
@@ -401,9 +404,11 @@ public class PCde_BlockWalkable extends BlockContainer implements PC_IBlockType,
 	}
 
 	@Override
-	public Set<String> getItemFlags(int damage) {
+	public Set<String> getItemFlags(ItemStack stack) {
 		Set<String> set = new HashSet<String>();
 		set.add("NO_BUILD");
+		if (stack.getItemDamage() == 0) set.add("IRON_LEDGE");
+		if (stack.getItemDamage() == 1) set.add("IRON_STAIRS");
 		return set;
 	}
 

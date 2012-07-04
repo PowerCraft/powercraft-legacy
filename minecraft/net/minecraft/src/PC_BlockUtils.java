@@ -86,13 +86,13 @@ public class PC_BlockUtils {
 		if (stack == null) {
 			return new HashSet<String>();
 		}
-		if (stack.getItem() instanceof ItemBlock) {
+		if (!(stack.getItem() instanceof ItemBlock)) {
 			return new HashSet<String>();
 		}
 
 		if (Block.blocksList[stack.getItem().shiftedIndex] != null && Block.blocksList[stack.getItem().shiftedIndex] instanceof PC_IBlockType) {
 			PC_IBlockType type = (PC_IBlockType) Block.blocksList[stack.getItem().shiftedIndex];
-			Set<String> flags = type.getItemFlags(stack.getItemDamage());
+			Set<String> flags = type.getItemFlags(stack);
 			flags.add("POWERCRAFT");
 			return flags;
 		}

@@ -230,9 +230,11 @@ public class mod_PClogic extends PC_Module {
 		map.put(pulsar, "Redstone Pulsar");
 		map.put(portableTx, "Radio Remote");
 
+		map.put("tile.PCloRadio.name", "Redstone Radio Device");
 		map.put("tile.PCloRadio.tx.name", "Redstone Radio Transmitter");
 		map.put("tile.PCloRadio.rx.name", "Redstone Radio Receiver");
 
+		map.put("tile.PCloSensorRanged.name", "Proximity Detector");
 		map.put("tile.PCloSensorRanged.item.name", "Item Proximity Detector");
 		map.put("tile.PCloSensorRanged.living.name", "Mob Proximity Detector");
 		map.put("tile.PCloSensorRanged.player.name", "Player Proximity Detector");
@@ -253,7 +255,9 @@ public class mod_PClogic extends PC_Module {
 		map.put("tile.PCloLight.13.name", "Magenta Indicator");
 		map.put("tile.PCloLight.14.name", "Orange Indicator");
 		map.put("tile.PCloLight.15.name", "White Indicator");
+		map.put("tile.PCloLight.name", "Indicator Light");
 
+		map.put("tile.PCloLogicGate.name", "Redstone Logic Gate");
 		map.put("tile.PCloLogicGate.not.name", "Redstone Inverter");
 		map.put("tile.PCloLogicGate.and.name", "Redstone AND gate");
 		map.put("tile.PCloLogicGate.nand.name", "Redstone NAND gate");

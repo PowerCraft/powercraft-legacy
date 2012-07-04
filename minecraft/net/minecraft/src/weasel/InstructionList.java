@@ -6,13 +6,14 @@ import java.util.ArrayList;
 import net.minecraft.src.NBTTagCompound;
 import net.minecraft.src.NBTTagList;
 import net.minecraft.src.PC_INBT;
-import net.minecraft.src.weasel.exception.EndOfScopeException;
+import net.minecraft.src.weasel.exception.EndOfProgramException;
 import net.minecraft.src.weasel.exception.WeaselRuntimeException;
 import net.minecraft.src.weasel.lang.Instruction;
 import net.minecraft.src.weasel.lang.InstructionFunction;
 import net.minecraft.src.weasel.lang.InstructionLabel;
 import net.minecraft.src.weasel.obj.WeaselInteger;
 import net.minecraft.src.weasel.obj.WeaselObject;
+import net.minecraft.src.weasel.obj.WeaselVariableMap;
 
 
 /**
@@ -27,13 +28,6 @@ public class InstructionList implements PC_INBT {
 	public ArrayList<Instruction> list = new ArrayList<Instruction>();
 	private WeaselEngine engine;
 	private int programCounter = 0;
-
-	/** Address of first instruction in current scope */
-	private int scopeStart;
-
-	/** Address of last instruction in current scope */
-	private int scopeEnd;
-
 
 
 	/**
@@ -61,7 +55,7 @@ public class InstructionList implements PC_INBT {
 	 * @param index address
 	 */
 	public void movePointerTo(int index) {
-		if (!Utils.isInRange(index, scopeStart, scopeEnd)) throw new WeaselRuntimeException("Jump target out of scope range.");
+		if(index < 0 || index > list.size()) throw new WeaselRuntimeException("INSTRL goto - jump out of program space.");
 		programCounter = index;
 	}
 
@@ -93,8 +87,6 @@ public class InstructionList implements PC_INBT {
 				InstructionFunction func = (InstructionFunction) instruction;
 				if (func.getFunctionName().equals(functionName)) {
 					engine.systemStack.push(new WeaselInteger(programCounter));
-					engine.systemStack.push(new WeaselInteger(scopeStart));
-					engine.systemStack.push(new WeaselInteger(scopeEnd));
 					engine.systemStack.push(engine.variables);
 
 					programCounter = func.getAddress();
@@ -109,28 +101,45 @@ public class InstructionList implements PC_INBT {
 			}
 		}
 
-
+		// if the function was not found in the program space, try hardware.
 		if (engine.nativeFunctionExists(functionName)) {
 			engine.callNativeFunction(functionName, args);
 		} else {
-			throw new WeaselRuntimeException("Called function " + functionName + " does not exist.");
+			throw new WeaselRuntimeException("INSTRL Call - function " + functionName + " does not exist.");
 		}
 
+	}
+	
+	/**
+	 * Return from a program-space function.
+	 * 
+	 * @param retval returned value. Return null for void functions.
+	 */
+	public void returnFromCall(WeaselObject retval) {
+		engine.setReturnValue(retval);
+		
+		engine.variables = (WeaselVariableMap) engine.systemStack.pop();
+		programCounter = ((WeaselInteger) engine.systemStack.pop()).get();		
 	}
 
 	/**
 	 * Execute next instruction (the one pointed by programCounter)
 	 * 
-	 * @throws EndOfScopeException if end of instruction list, or end of scope
+	 * @throws EndOfProgramException if end of instruction list, or end of scope
 	 *             was reached
 	 */
-	public void executeNextInstruction() throws EndOfScopeException {
-		if (programCounter >= list.size()) throw new EndOfScopeException();
-		if (programCounter > scopeEnd) throw new EndOfScopeException();
+	public void executeNextInstruction() throws EndOfProgramException {
+		if (programCounter >= list.size()) throw new EndOfProgramException();
+		if (programCounter < 0) throw new EndOfProgramException();
 		Instruction instruction = list.get(programCounter++);
 		instruction.execute(engine, this);
 	}
+	
 
+	private static final String nk_SIZE = "Size";
+	private static final String nk_LIST = "List";
+	private static final String nk_INDEX = "Index";
+	
 	@Override
 	public NBTTagCompound writeToNBT(NBTTagCompound tag) {
 
@@ -140,13 +149,11 @@ public class InstructionList implements PC_INBT {
 		int size = list.size();
 		for (index = 0; index < size; index++) {
 			NBTTagCompound tag1 = Instruction.saveInstructionToNBT(list.get(index), new NBTTagCompound());
-			tag1.setInteger("Index", index);
+			tag1.setInteger(nk_INDEX, index);
 			tags.appendTag(tag1);
 		}
-		tag.setTag("List", tags);
-		tag.setInteger("Size", size);
-		tag.setInteger("ScopeStart", scopeStart);
-		tag.setInteger("ScopeEnd", scopeEnd);
+		tag.setTag(nk_LIST, tags);
+		tag.setInteger(nk_SIZE, size);
 
 		return tag;
 
@@ -155,20 +162,24 @@ public class InstructionList implements PC_INBT {
 	@Override
 	public PC_INBT readFromNBT(NBTTagCompound tag) {
 
-		int size = tag.getInteger("Size");
+		// get list length
+		int size = tag.getInteger(nk_SIZE);
+		
+		if(list == null) list = new ArrayList<Instruction>();
+		
+		// fill the list with nulls.
 		list.clear();
-		for (int i = 0; i < size; i++)
+		for (int i = 0; i < size; i++) {
 			list.add(null);
-
-		NBTTagList tags = tag.getTagList("List");
-
-		for (int i = 0; i < tags.tagCount(); i++) {
-			NBTTagCompound tag1 = (NBTTagCompound) tags.tagAt(i);
-			list.set(tag1.getInteger("Index"), Instruction.loadInstructionFromNBT(tag1));
 		}
 
-		scopeStart = tag.getInteger("ScopeStart");
-		scopeEnd = tag.getInteger("ScopeEnd");
+		NBTTagList tags = tag.getTagList(nk_LIST);
+
+		//store instructions into the list
+		for (int i = 0; i < tags.tagCount(); i++) {
+			NBTTagCompound tag1 = (NBTTagCompound) tags.tagAt(i);
+			list.set(tag1.getInteger(nk_INDEX), Instruction.loadInstructionFromNBT(tag1));
+		}
 
 		return this;
 

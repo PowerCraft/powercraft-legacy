@@ -37,7 +37,7 @@ public class ArcTangent2 extends PostfixMathCommand {
 			inStack.push(new Double(Math.atan2(y, x)));//push the result on the inStack
 		} else
 
-			throw new ParseException("atan2() not defined for "+param1.getClass().getSimpleName()+" and "+param2.getClass().getSimpleName());
+			throw new ParseException("atan2() not defined for " + param1.getClass().getSimpleName() + " and " + param2.getClass().getSimpleName());
 		return;
 	}
 }

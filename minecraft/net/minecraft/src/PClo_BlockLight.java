@@ -384,18 +384,20 @@ public class PClo_BlockLight extends BlockContainer implements PC_ISwapTerrain, 
 		Set<String> set = new HashSet<String>();
 
 		set.add("NO_HARVEST");
+		set.add("NO_PICKUP");
 		set.add("TRANSLUCENT");
 		set.add("REDSTONE");
 		set.add("LOGIC");
-		set.add("LIGHT");
+		set.add("LED");
 
 		return set;
 	}
 
 	@Override
-	public Set<String> getItemFlags(int damage) {
+	public Set<String> getItemFlags(ItemStack stack) {
 		Set<String> set = new HashSet<String>();
 		set.add("NO_BUILD");
+		set.add("LED");
 		return set;
 	}
 }

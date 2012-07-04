@@ -8,6 +8,8 @@ package net.minecraft.src;
  * @copy (c) 2012
  */
 public class PC_GresButton extends PC_GresWidget {
+	
+	private PC_CoordI buttonScale = new PC_CoordI(12,12);
 
 	private boolean isClicked = false;
 
@@ -18,16 +20,35 @@ public class PC_GresButton extends PC_GresWidget {
 		super(label);
 		canAddWidget = false;
 		minSize.setTo(60, 0);
+		buttonScale = new PC_CoordI(6,6);
+	}
+	
+	/**
+	 * Set distance from text to borders of the box.
+	 * 
+	 * @param x distance horizontally
+	 * @param y distance vertically
+	 * 
+	 * @return this
+	 */
+	public PC_GresButton setButtonPadding(int x, int y) {
+		buttonScale = new PC_CoordI(x,y);
+		return this;
 	}
 
 	@Override
 	public PC_CoordI calcSize() {
 		FontRenderer fontRenderer = getFontRenderer();
+		
+		if(buttonScale == null) buttonScale = new PC_CoordI(6,6);
 
-		size.setTo(fontRenderer.getStringWidth(text), fontRenderer.FONT_HEIGHT).add(12, 12);
+		size.setTo(fontRenderer.getStringWidth(text), fontRenderer.FONT_HEIGHT).add(buttonScale).add(buttonScale);
 
 		if (size.x < minSize.x) {
 			size.x = minSize.x;
+		}
+		if (size.y < minSize.y) {
+			size.y = minSize.y;
 		}
 
 		return size.copy();
@@ -66,7 +87,7 @@ public class PC_GresButton extends PC_GresWidget {
 
 		renderTextureSliced(offsetPos, mod_PCcore.getImgDir() + "gres/button.png", size, new PC_CoordI(0, state * 50), new PC_CoordI(256, 50));
 
-		drawCenteredString(getFontRenderer(), text, offsetPos.x + pos.x + size.x / 2, offsetPos.y + pos.y + (size.y - 8) / 2, txC);
+		drawCenteredString(getFontRenderer(), text, offsetPos.x + pos.x + size.x / 2, offsetPos.y + pos.y + (size.y - getFontRenderer().FONT_HEIGHT) / 2, txC);
 	}
 
 	@Override

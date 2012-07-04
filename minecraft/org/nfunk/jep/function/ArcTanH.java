@@ -50,7 +50,7 @@ public class ArcTanH extends PostfixMathCommand {
 		}
 
 
-		throw new ParseException("atanh() not defined for "+param.getClass().getSimpleName());
+		throw new ParseException("atanh() not defined for " + param.getClass().getSimpleName());
 	}
 
 }

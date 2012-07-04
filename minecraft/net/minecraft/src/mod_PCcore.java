@@ -130,7 +130,7 @@ public class mod_PCcore extends PC_Module implements PC_IActivatorListener {
 	// property keys
 	/** Key used to build in reversed direction */
 	public static final String pk_keyReverse = "global.key.reverse_placing";
-	
+
 	private static final String pk_logEnabled = "global.logger.enabled";
 	private static final String pk_logToStdout = "global.logger.toStdout";
 
@@ -242,7 +242,7 @@ public class mod_PCcore extends PC_Module implements PC_IActivatorListener {
 		PCco_BlockPowerCrystal.makeSound = !conf.flag(pk_optSoundCrystal);
 		update_last_ignored_version = conf.string(pk_cfgUpdateIgnored);
 		current_lang_version = conf.string(pk_cfgCurrentLangVersion);
-		
+
 		PC_Logger.setPrintToStdout(conf.flag(pk_logToStdout));
 		PC_Logger.enableLogging(conf.flag(pk_logEnabled));
 	}
@@ -301,6 +301,12 @@ public class mod_PCcore extends PC_Module implements PC_IActivatorListener {
 		removeBlockItem(powerCrystal.blockID);
 		setBlockItem(powerCrystal.blockID, new PCco_ItemBlockPowerCrystal(powerCrystal.blockID - 256));
 		
+		removeBlockItem(Block.lockedChest.blockID);
+		Block.blocksList[Block.lockedChest.blockID] = null;
+		Block.blocksList[Block.lockedChest.blockID] = new PCco_BlockLockedChestReplacement(Block.lockedChest.blockID);
+		removeBlockItem(Block.lockedChest.blockID);
+		setBlockItem(Block.lockedChest.blockID, new PCco_ItemBlockLockedChestReplacement(Block.lockedChest.blockID - 256));
+		
 		// @formatter:on
 	}
 
@@ -339,6 +345,7 @@ public class mod_PCcore extends PC_Module implements PC_IActivatorListener {
 		map.put("tile.PCcoPowerCrystal.color5.name", "\u03b6 Power Crystal");
 		map.put("tile.PCcoPowerCrystal.color6.name", "\u03be Power Crystal");
 		map.put("tile.PCcoPowerCrystal.color7.name", "\u03d7 Power Crystal");
+		map.put("tile.PCcoContainerChest.name", "Chest with Contents");
 		map.put("pc.gui.craftingTool.title", "PowerCraft's Crafting Tool");
 		map.put("pc.gui.spawnerEditor.enableDangerous", "Enable dangerous");
 		map.put("pc.gui.ok", "OK");
@@ -351,6 +358,10 @@ public class mod_PCcore extends PC_Module implements PC_IActivatorListener {
 		map.put("pc.gui.update.readMore", "Read more...");
 		map.put("pc.gui.update.version", "Using %1$s (%2$s), Available %3$s (%4$s)");
 		map.put("pc.gui.update.doNotShowAgain", "Don't show again");
+
+
+		map.put("pc.block.pickedUp", "Picked-up %s");
+		map.put("pc.block.pickedUp.special", "Special Block");
 
 	}
 
@@ -666,6 +677,34 @@ public class mod_PCcore extends PC_Module implements PC_IActivatorListener {
 			}
 
 			return true;
+		}
+
+		if (!world.isRemote) {
+			int dir = ((MathHelper.floor_double(((player.rotationYaw * 4F) / 360F) + 0.5D) & 3) + 2) % 4;
+
+			if (PC_Utils.isPlacingReversed()) {
+				dir = PC_Utils.reverseSide(dir);
+			}
+
+			for (int i = 0; i < 3; i++) {
+
+
+				PC_CoordI chest = pos.offset(-Direction.offsetX[dir], i, -Direction.offsetZ[dir]);
+				if (i == 2) {
+					chest = pos.offset(0, 1, 0);
+				}
+
+				ItemStack stackchest = PCco_ItemBlockLockedChestReplacement.extractAndRemoveChest(world, chest);
+				if (stackchest != null) {
+					float f = 0.7F;
+					double d = world.rand.nextFloat() * f + (1.0F - f) * 0.5D;
+					double d1 = world.rand.nextFloat() * f + (1.0F - f) * 0.5D;
+					double d2 = world.rand.nextFloat() * f + (1.0F - f) * 0.5D;
+					EntityItem entityitem = new EntityItem(world, chest.x + d, chest.y + d1, chest.z + d2, stackchest);
+					entityitem.delayBeforeCanPickup = 10;
+					world.spawnEntityInWorld(entityitem);
+				}
+			}
 		}
 
 		return false;

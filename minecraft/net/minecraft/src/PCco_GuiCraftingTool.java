@@ -40,11 +40,11 @@ public class PCco_GuiCraftingTool implements PC_IGresBase {
 		PC_GresWindow w = new PC_GresWindow(PC_Lang.tr("pc.gui.craftingTool.title"));
 		w.padding.setTo(10, 4);
 		w.gapUnderTitle = 10;
-		
+
 		w.setAlignH(PC_GresAlign.CENTER);
 		w.setAlignV(PC_GresAlign.CENTER);
-		
-		
+
+
 		PC_GresWidget hg;
 
 		craftingToolManager = new PCco_CraftingToolManager();

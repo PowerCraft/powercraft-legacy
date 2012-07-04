@@ -24,8 +24,8 @@ public interface PC_IBlockType {
 	/**
 	 * Get block item flags
 	 * 
-	 * @param damage itemstack's damage
+	 * @param stack the examined stack
 	 * @return set of all flags for given damage
 	 */
-	public abstract Set<String> getItemFlags(int damage);
+	public abstract Set<String> getItemFlags(ItemStack stack);
 }

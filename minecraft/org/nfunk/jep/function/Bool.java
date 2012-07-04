@@ -6,18 +6,23 @@
       See LICENSE-*.txt for license information.
 
  *****************************************************************************/
-
 package org.nfunk.jep.function;
 
 
 import java.util.Stack;
 
+import net.minecraft.src.weasel.Calculator;
+
 import org.nfunk.jep.ParseException;
-import org.nfunk.jep.type.Complex;
 
 
-public class Sine extends PostfixMathCommand {
-	public Sine() {
+/**
+ * Converts an object into its boolean value.
+ * 
+ * @author MightyPork
+ */
+public class Bool extends PostfixMathCommand {
+	public Bool() {
 		numberOfParameters = 1;
 	}
 
@@ -25,17 +30,16 @@ public class Sine extends PostfixMathCommand {
 	public void run(Stack inStack) throws ParseException {
 		checkStack(inStack);// check the stack
 		Object param = inStack.pop();
-		inStack.push(sin(param));//push the result on the inStack
-		return;
-	}
-
-	public Object sin(Object param) throws ParseException {
-		if (param instanceof Complex) {
-			return ((Complex) param).sin();
-		} else if (param instanceof Number) {
-			return new Double(Math.sin(((Number) param).doubleValue()));
+		
+		Object back = null;
+		
+		try {
+			back = Calculator.toBoolean(param);
+		}catch(Exception e) {
+			throw new ParseException(param.getClass().getSimpleName()+" can't be converted to a Boolean.");
 		}
-
-		throw new ParseException("sin() not defined for " + param.getClass().getSimpleName());
+		
+		inStack.push(back);
+		return;
 	}
 }

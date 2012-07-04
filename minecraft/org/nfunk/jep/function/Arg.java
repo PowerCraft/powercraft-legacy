@@ -42,7 +42,7 @@ public class Arg extends PostfixMathCommand {
 			return (ONE);
 		}
 
-		throw new ParseException("arg() not defined for "+param.getClass().getSimpleName());
+		throw new ParseException("arg() not defined for " + param.getClass().getSimpleName());
 	}
 
 }

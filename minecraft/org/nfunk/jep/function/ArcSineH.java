@@ -46,6 +46,6 @@ public class ArcSineH extends PostfixMathCommand {
 //			return temp.asinh();
 		}
 
-		throw new ParseException("asinh() not defined for "+param.getClass().getSimpleName());
+		throw new ParseException("asinh() not defined for " + param.getClass().getSimpleName());
 	}
 }

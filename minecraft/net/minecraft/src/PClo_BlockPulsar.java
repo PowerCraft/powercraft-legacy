@@ -169,9 +169,10 @@ public class PClo_BlockPulsar extends BlockContainer implements PC_IBlockType {
 	}
 
 	@Override
-	public Set<String> getItemFlags(int damage) {
+	public Set<String> getItemFlags(ItemStack stack) {
 		Set<String> set = new HashSet<String>();
 		set.add("NO_BUILD");
+		set.add("PULSAR");
 		return set;
 	}
 

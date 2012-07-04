@@ -397,15 +397,18 @@ public class PCma_BlockReplacer extends BlockContainer implements PC_ISwapTerrai
 
 		set.add("NO_HARVEST");
 		set.add("HARVEST_STOP");
-		// set.add("TRANSLUCENT");
+		set.add("REPLACER");
+		set.add("REDSTONE");
+		set.add("MACHINE");
 
 		return set;
 	}
 
 	@Override
-	public Set<String> getItemFlags(int damage) {
+	public Set<String> getItemFlags(ItemStack stack) {
 		Set<String> set = new HashSet<String>();
 		set.add("NO_BUILD");
+		set.add("REPLACER");
 		return set;
 	}
 }

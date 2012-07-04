@@ -263,6 +263,7 @@ public class PClo_BlockRadio extends BlockContainer implements PC_IBlockType {
 		Set<String> set = new HashSet<String>();
 
 		set.add("NO_HARVEST");
+		set.add("NO_PICKUP");
 		set.add("TRANSLUCENT");
 		set.add("REDSTONE");
 		set.add("LOGIC");
@@ -272,9 +273,10 @@ public class PClo_BlockRadio extends BlockContainer implements PC_IBlockType {
 	}
 
 	@Override
-	public Set<String> getItemFlags(int damage) {
+	public Set<String> getItemFlags(ItemStack stack) {
 		Set<String> set = new HashSet<String>();
 		set.add("NO_BUILD");
+		set.add("RADIO");
 		return set;
 	}
 

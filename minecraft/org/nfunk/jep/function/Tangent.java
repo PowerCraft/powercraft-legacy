@@ -33,6 +33,6 @@ public class Tangent extends PostfixMathCommand {
 			return ((Complex) param).tan();
 		else if (param instanceof Number) return new Double(Math.tan(((Number) param).doubleValue()));
 
-		throw new ParseException("tan() not defined for "+param.getClass().getSimpleName());
+		throw new ParseException("tan() not defined for " + param.getClass().getSimpleName());
 	}
 }
