@@ -55,7 +55,7 @@ public class InstructionList implements PC_INBT {
 	 * @param index address
 	 */
 	public void movePointerTo(int index) {
-		if(index < 0 || index > list.size()) throw new WeaselRuntimeException("INSTRL goto - jump out of program space.");
+		if (index < 0 || index > list.size()) throw new WeaselRuntimeException("INSTRL goto - jump out of program space.");
 		programCounter = index;
 	}
 
@@ -84,8 +84,14 @@ public class InstructionList implements PC_INBT {
 	public void callFunction(String functionName, WeaselObject[] args) {
 		for (Instruction instruction : list) {
 			if (instruction instanceof InstructionFunction) {
+				
 				InstructionFunction func = (InstructionFunction) instruction;
 				if (func.getFunctionName().equals(functionName)) {
+					
+					if(func.getArgumentCount() != args.length) {
+						throw new WeaselRuntimeException("INSTRL call - invalid argument count for function "+functionName);
+					}
+					
 					engine.systemStack.push(new WeaselInteger(programCounter));
 					engine.systemStack.push(engine.variables);
 
@@ -93,11 +99,17 @@ public class InstructionList implements PC_INBT {
 					engine.variables.clear();
 					int cnt = 0;
 					for (WeaselObject obj : args) {
-						engine.variables.setVariable(func.getArgumentName(cnt++), obj);
+						String argname = func.getArgumentName(cnt++);
+						
+						if(argname == null) throw new WeaselRuntimeException("INSTRL call - invalid argument count for function "+functionName);
+						
+						engine.variables.setVariable(argname, obj);
 					}
 
 					return;
+					
 				}
+				
 			}
 		}
 
@@ -109,7 +121,7 @@ public class InstructionList implements PC_INBT {
 		}
 
 	}
-	
+
 	/**
 	 * Return from a program-space function.
 	 * 
@@ -117,9 +129,9 @@ public class InstructionList implements PC_INBT {
 	 */
 	public void returnFromCall(WeaselObject retval) {
 		engine.setReturnValue(retval);
-		
+
 		engine.variables = (WeaselVariableMap) engine.systemStack.pop();
-		programCounter = ((WeaselInteger) engine.systemStack.pop()).get();		
+		programCounter = ((WeaselInteger) engine.systemStack.pop()).get();
 	}
 
 	/**
@@ -134,12 +146,12 @@ public class InstructionList implements PC_INBT {
 		Instruction instruction = list.get(programCounter++);
 		instruction.execute(engine, this);
 	}
-	
+
 
 	private static final String nk_SIZE = "Size";
 	private static final String nk_LIST = "List";
 	private static final String nk_INDEX = "Index";
-	
+
 	@Override
 	public NBTTagCompound writeToNBT(NBTTagCompound tag) {
 
@@ -164,9 +176,9 @@ public class InstructionList implements PC_INBT {
 
 		// get list length
 		int size = tag.getInteger(nk_SIZE);
-		
-		if(list == null) list = new ArrayList<Instruction>();
-		
+
+		if (list == null) list = new ArrayList<Instruction>();
+
 		// fill the list with nulls.
 		list.clear();
 		for (int i = 0; i < size; i++) {
