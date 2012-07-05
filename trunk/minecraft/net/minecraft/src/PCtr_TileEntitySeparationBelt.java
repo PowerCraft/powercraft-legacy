@@ -327,7 +327,7 @@ public class PCtr_TileEntitySeparationBelt extends PC_TileEntity implements IInv
 	@Override
 	public boolean isUseableByPlayer(EntityPlayer entityplayer) {
 		return true;
-	};
+	}
 
 	@Override
 	public ItemStack getStackInSlotOnClosing(int par1) {
@@ -351,7 +351,12 @@ public class PCtr_TileEntitySeparationBelt extends PC_TileEntity implements IInv
 	}
 
 	@Override
-	public boolean canInsertStackTo(int slot, ItemStack stack) {
+	public boolean canPlayerInsertStackTo(int slot, ItemStack stack) {
+		return true;
+	}
+	
+	@Override
+	public boolean canMachineInsertStackTo(int slot, ItemStack stack) {
 		return false;
 	}
 

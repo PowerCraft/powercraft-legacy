@@ -5,6 +5,7 @@ import java.util.ArrayList;
 
 import net.minecraft.src.NBTTagCompound;
 import net.minecraft.src.PC_INBT;
+import net.minecraft.src.weasel.exception.WeaselRuntimeException;
 
 
 /**
@@ -93,6 +94,32 @@ public abstract class WeaselObject implements PC_INBT {
 		}
 
 		return obj;
+	}
+
+	/**
+	 * Create an adequate wrapper for given value.
+	 * 
+	 * @param value the value object (primitive)
+	 * @return the WeaselObject representing given value. If value already was a
+	 *         weasel object, returns it unchanged.
+	 */
+	public static WeaselObject getWrapperForValue(Object value) {
+		if (value instanceof Number) {
+			return new WeaselInteger(value);
+		}
+
+		if (value instanceof String) {
+			return new WeaselString(value);
+		}
+
+		if (value instanceof Boolean) {
+			return new WeaselBoolean(value);
+		}
+
+		if (value instanceof WeaselObject) return (WeaselObject) value;
+
+		throw new WeaselRuntimeException("WOBJ - can not create a wrapper for " + value + ", (" + value.getClass().getSimpleName() + ")");
+
 	}
 
 	/**

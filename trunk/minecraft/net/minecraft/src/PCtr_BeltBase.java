@@ -565,7 +565,20 @@ public class PCtr_BeltBase {
 				PCtr_BeltBase.soundEffectBelt(world, pos);
 			}
 		}
+		
+		if(entity instanceof EntityPlayer) {
+			if(((EntityPlayer)entity).inventory.armorItemInSlot(0) != null) {
+				if(((EntityPlayer)entity).inventory.armorItemInSlot(0).itemID == mod_PCtransport.slimeboots.shiftedIndex) {
+					return;
+				}
+			}
+		}
 
+		if(entity instanceof EntityItem) {
+			if(entity.motionY > 0.2F) entity.motionY /= 3F;
+		}
+		
+		if(entity.stepHeight <= 0.15F) entity.stepHeight = 0.25F;
 
 		entity.motionZ = MathHelper.clamp_float((float) entity.motionZ, (float) -max_horizontal_speed, (float) max_horizontal_speed);
 		entity.motionX = MathHelper.clamp_float((float) entity.motionX, (float) -max_horizontal_speed, (float) max_horizontal_speed);

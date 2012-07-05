@@ -5,7 +5,7 @@ import net.minecraft.src.weasel.obj.WeaselObject;
 
 
 /**
- * Weasel engine controlled hardware
+ * Weasel-controlled hardware
  * 
  * @author MightyPork
  */
@@ -14,12 +14,19 @@ public interface IWeaselHardware extends IVariableContainer {
 	/**
 	 * Check if this hardware supports given function.<br>
 	 * Note that hardware functions have higher priority than program functions,
-	 * thus they can't be overriden within Weasel program.
+	 * thus they can't be overridden within Weasel program.
 	 * 
 	 * @param functionName hardware function name
 	 * @return supports function
 	 */
 	public boolean hasFunction(String functionName);
+	
+	/**
+	 * Get number of parameters required by a given function.
+	 * @param functionName name of the checked function
+	 * @return number of parameters
+	 */
+	public int getFunctionArgumentCount(String functionName);
 
 	/**
 	 * Call a hardware function. If you want, you can ask to pause the program:
@@ -60,7 +67,7 @@ public interface IWeaselHardware extends IVariableContainer {
 	 * call.
 	 * 
 	 * @param name variable name
-	 * @param object
+	 * @param object variable value. Can be either weasel object, or a primitive value.
 	 */
 	@Override
 	public void setVariable(String name, Object object);

@@ -22,6 +22,8 @@ public class PC_GresProgressBar extends PC_GresWidget {
 	protected boolean showLabel = false;
 	/** label multiplier (fraction *= this) */
 	protected int labelMultiplier = 100;
+	/** label ofset (added to the output label) */
+	protected int labelOffset = 0;
 	/** the bar width */
 	private int barWidth;
 	/** string appended after label number */
@@ -61,6 +63,14 @@ public class PC_GresProgressBar extends PC_GresWidget {
 	 */
 	public float getFraction() {
 		return fraction;
+	}
+	
+	/**
+	 * Get the number shown as label.
+	 * @return number
+	 */
+	public int getNumber() {
+		return (labelOffset + Math.round(fraction * labelMultiplier));
 	}
 
 	/**
@@ -103,6 +113,17 @@ public class PC_GresProgressBar extends PC_GresWidget {
 	 */
 	public PC_GresProgressBar setType(int type) {
 		this.type = type;
+		return this;
+	}
+	
+	/**
+	 * Set label offset (added to the output number)
+	 * 
+	 * @param offset the offset
+	 * @return this
+	 */
+	public PC_GresProgressBar setLabelOffset(int offset) {
+		this.labelOffset = offset;
 		return this;
 	}
 
@@ -262,7 +283,7 @@ public class PC_GresProgressBar extends PC_GresWidget {
 		drawTexturedModalRect(inner_x, inner_y, texture_x, texture_y, inner_width, inner_height);
 
 		if (showLabel) {
-			String lbl = Math.round(fraction * labelMultiplier) + labelAppend;
+			String lbl = getNumber() + labelAppend;
 			drawString(lbl, pos.x + offsetPos.x + size.offset(-labelWidth, 0).x, pos.y + offsetPos.y + 2);
 		}
 
@@ -309,6 +330,7 @@ public class PC_GresProgressBar extends PC_GresWidget {
 	public void mouseMove(PC_CoordI mpos) {
 		if (dragging) {
 			mouseClick(mpos, 0);
+			((PC_GresGui)this.getContainerManager().gresGui).gui.actionPerformed(this, this.getContainerManager().gresGui);
 		}
 	}
 

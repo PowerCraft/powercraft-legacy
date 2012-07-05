@@ -2,6 +2,7 @@ package net.minecraft.src.weasel.lang;
 
 
 import net.minecraft.src.NBTTagCompound;
+import net.minecraft.src.weasel.Calculator;
 import net.minecraft.src.weasel.InstructionList;
 import net.minecraft.src.weasel.WeaselEngine;
 import net.minecraft.src.weasel.exception.WeaselRuntimeException;
@@ -14,44 +15,55 @@ import net.minecraft.src.weasel.obj.WeaselObject;
  * @author MightyPork
  */
 public class InstructionPush extends Instruction {
+	
+	/**
+	 * PUSH
+	 * @param expression variable to push on stack
+	 */
+	public InstructionPush(String expression) {
+		this.pushedExpression = expression;
+	}
+	
+	/**
+	 * PUSH
+	 */
+	public InstructionPush() {}
 
-	private String pushedVariableName;
+	private String pushedExpression;
 
 	@Override
 	public NBTTagCompound writeToNBT(NBTTagCompound tag) {
-		tag.setString("Name", pushedVariableName);
+		tag.setString("Name", pushedExpression);
 		return tag;
 	}
 
 	@Override
 	public InstructionPush readFromNBT(NBTTagCompound tag) {
-		pushedVariableName = tag.getString("Name");
+		pushedExpression = tag.getString("Name");
 		return this;
 	}
 
 	/**
-	 * @return name of pushed variable
+	 * @return the pushed expression
 	 */
-	public String getVariableName() {
-		return pushedVariableName;
+	public String getPushedExpression() {
+		return pushedExpression;
 	}
 
 	/**
-	 * Set pushed variable name
+	 * Set pushed expression
 	 * 
-	 * @param variableName name of the pushed variable
+	 * @param expression the pushed expression
 	 * @return this
 	 */
-	public InstructionPush setVariableName(String variableName) {
-		this.pushedVariableName = variableName;
+	public InstructionPush setPushedVariable(String expression) {
+		this.pushedExpression = expression;
 		return this;
 	}
 
 	@Override
 	public void execute(WeaselEngine engine, InstructionList instructionList) throws WeaselRuntimeException {
-		WeaselObject obj = engine.variables.getVariable(pushedVariableName);
-		if (obj == null) throw new WeaselRuntimeException("Variable " + pushedVariableName + " does not exist in this scope.");
-		engine.dataStack.push(obj);
+		engine.dataStack.push(WeaselObject.getWrapperForValue(Calculator.evaluate(pushedExpression, engine)));
 	}
 
 }

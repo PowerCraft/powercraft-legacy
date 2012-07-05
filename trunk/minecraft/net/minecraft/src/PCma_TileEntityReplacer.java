@@ -127,7 +127,7 @@ public class PCma_TileEntityReplacer extends PC_TileEntity implements IInventory
 	}
 
 	@Override
-	public boolean canInsertStackTo(int slot, ItemStack stack) {
+	public boolean canPlayerInsertStackTo(int slot, ItemStack stack) {
 		if (stack.getItem() instanceof ItemBlock) {
 			return true;
 		}
@@ -255,6 +255,11 @@ public class PCma_TileEntityReplacer extends PC_TileEntity implements IInventory
 	@Override
 	public boolean canUpdate() {
 		return false;
+	}
+
+	@Override
+	public boolean canMachineInsertStackTo(int slot, ItemStack stack) {
+		return canPlayerInsertStackTo(slot, stack);
 	}
 
 }

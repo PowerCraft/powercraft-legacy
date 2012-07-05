@@ -665,7 +665,7 @@ public class JEP {
 	public Node parseExpression(String expression_in) {
 
 		try {
-			expression_in = Calculator.convertNumberFormats(expression_in);
+			expression_in = Calculator.convertNumbersToDecimal(expression_in);
 		} catch (ParseException e1) {
 			errorList.addElement(e1.getErrorInfo());
 		}
@@ -732,7 +732,7 @@ public class JEP {
 	 */
 	public Node parse(String expression) throws ParseException {
 
-		expression = Calculator.convertNumberFormats(expression);
+		expression = Calculator.convertNumbersToDecimal(expression);
 		
 		if(hasError()) throw new ParseException(getErrorInfo());
 

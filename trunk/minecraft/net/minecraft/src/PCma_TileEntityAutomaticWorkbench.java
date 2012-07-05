@@ -501,8 +501,8 @@ public class PCma_TileEntityAutomaticWorkbench extends PC_TileEntity implements 
 	}
 
 	@Override
-	public boolean canInsertStackTo(int slot, ItemStack stack) {
-		return false;
+	public boolean canPlayerInsertStackTo(int slot, ItemStack stack) {
+		return true;
 	}
 
 	@Override
@@ -513,5 +513,10 @@ public class PCma_TileEntityAutomaticWorkbench extends PC_TileEntity implements 
 	@Override
 	public boolean needsSpecialInserter() {
 		return true;
+	}
+
+	@Override
+	public boolean canMachineInsertStackTo(int slot, ItemStack stack) {
+		return false;
 	}
 }

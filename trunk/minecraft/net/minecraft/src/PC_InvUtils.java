@@ -69,7 +69,7 @@ public class PC_InvUtils {
 		if (stackToStore == null || stackToStore.stackSize == 0) {
 			return false;
 		}
-		if (inventory instanceof PC_ISpecialAccessInventory && !((PC_ISpecialAccessInventory) inventory).canInsertStackTo(slot, stackToStore)) {
+		if (inventory instanceof PC_ISpecialAccessInventory && !((PC_ISpecialAccessInventory) inventory).canMachineInsertStackTo(slot, stackToStore)) {
 			return false;
 		}
 
@@ -226,7 +226,7 @@ public class PC_InvUtils {
 		for (int slot = 0; slot < inv.getSizeInventory(); slot++) {
 
 			if (inv instanceof PC_ISpecialAccessInventory) {
-				if (!((PC_ISpecialAccessInventory) inv).canInsertStackTo(slot, itemstack)) {
+				if (!((PC_ISpecialAccessInventory) inv).canMachineInsertStackTo(slot, itemstack)) {
 					continue;
 				}
 			}
@@ -292,7 +292,7 @@ public class PC_InvUtils {
 			if (inv.getStackInSlot(i) == null) {
 
 				if (inv instanceof PC_ISpecialAccessInventory) {
-					if (!((PC_ISpecialAccessInventory) inv).canInsertStackTo(i, stackInserted)) {
+					if (!((PC_ISpecialAccessInventory) inv).canMachineInsertStackTo(i, stackInserted)) {
 						continue;
 					}
 				}
