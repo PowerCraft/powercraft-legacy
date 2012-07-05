@@ -14,8 +14,21 @@ import net.minecraft.src.weasel.exception.WeaselRuntimeException;
  */
 public class InstructionLabel extends Instruction {
 
+	
+	/**
+	 * LABEL
+	 * @param labelName label name
+	 */
+	public InstructionLabel(String labelName) {
+		this.labelName= labelName;
+	}
 
-	private String labelName;
+	/**
+	 * LABEL
+	 */
+	public InstructionLabel() {}
+
+	private String labelName="";
 
 	@Override
 	public void execute(WeaselEngine engine, InstructionList instructionList) throws WeaselRuntimeException {}

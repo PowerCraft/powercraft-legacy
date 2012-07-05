@@ -27,7 +27,7 @@ public class WeaselEngine implements PC_INBT, IVariableContainer {
 	 * @param hardware hardware the engine is controlling
 	 */
 	public WeaselEngine(IWeaselHardware hardware) {
-		this.hardware = hardware;
+		this.hw = hardware;
 	}
 
 	/**
@@ -35,10 +35,10 @@ public class WeaselEngine implements PC_INBT, IVariableContainer {
 	 */
 	public WeaselVariableMap variables = new WeaselVariableMap();
 
-	private IWeaselHardware hardware = null;
+	private IWeaselHardware hw = null;
 
 	/** Function retval */
-	public WeaselObject returnValue = null;
+	public WeaselObject retval = null;
 
 	/** Stack of addresses and variable lists */
 	public WeaselStack systemStack = new WeaselStack();
@@ -71,7 +71,7 @@ public class WeaselEngine implements PC_INBT, IVariableContainer {
 		tag.setCompoundTag(nk_STACK_SYSTEM, WeaselObject.saveObjectToNBT(systemStack, new NBTTagCompound()));
 		tag.setCompoundTag(nk_STACK_DATA, WeaselObject.saveObjectToNBT(dataStack, new NBTTagCompound()));
 		tag.setCompoundTag(nk_INSTRUCTION_LIST, instructionList.writeToNBT(new NBTTagCompound()));
-		tag.setCompoundTag(nk_RETURN_VALUE, WeaselObject.saveObjectToNBT(returnValue, new NBTTagCompound()));
+		tag.setCompoundTag(nk_RETURN_VALUE, WeaselObject.saveObjectToNBT(retval, new NBTTagCompound()));
 		return tag;
 	}
 
@@ -81,7 +81,7 @@ public class WeaselEngine implements PC_INBT, IVariableContainer {
 		systemStack = (WeaselStack) WeaselObject.loadObjectFromNBT(tag.getCompoundTag(nk_STACK_SYSTEM));
 		dataStack = (WeaselStack) WeaselObject.loadObjectFromNBT(tag.getCompoundTag(nk_STACK_DATA));
 		instructionList = (InstructionList) new InstructionList(this).readFromNBT(tag.getCompoundTag(nk_INSTRUCTION_LIST));
-		returnValue = WeaselObject.loadObjectFromNBT(tag.getCompoundTag(nk_RETURN_VALUE));
+		retval = WeaselObject.loadObjectFromNBT(tag.getCompoundTag(nk_RETURN_VALUE));
 		return this;
 	}
 
@@ -92,7 +92,7 @@ public class WeaselEngine implements PC_INBT, IVariableContainer {
 	 * @param object return value (WeaselObject)
 	 */
 	public void setReturnValue(WeaselObject object) {
-		returnValue = object;
+		retval = object;
 	}
 
 	/**
@@ -124,27 +124,36 @@ public class WeaselEngine implements PC_INBT, IVariableContainer {
 	 * @param functionName native function name
 	 * @return exists
 	 */
-	public boolean nativeFunctionExists(String functionName) {
-		if (hardware == null) return false;
-		return hardware.hasFunction(functionName);
+	public boolean hardwareFunctionExists(String functionName) {
+		if (hw == null) return false;
+		return hw.hasFunction(functionName);
 	}
-
+	
 	/**
 	 * Call native function
 	 * 
 	 * @param functionName native function name
 	 * @param args argument list
 	 */
-	public void callNativeFunction(String functionName, WeaselObject[] args) {
-		if (hardware == null) throw new WeaselRuntimeException("ENGINE CallNative() - no hardware is connected.");
-		hardware.callFunction(this, functionName, args);
+	public void callHardwareFunction(String functionName, WeaselObject[] args) {
+		if (hw == null) throw new WeaselRuntimeException("ENGINE CallHw() - no hardware is connected.");
+
+		try {
+			retval = hw.callFunction(this, functionName, args);
+		}catch(ClassCastException e) {
+			throw new WeaselRuntimeException("ENGINE CallHw() -  Invalid arguments given to HW function "+functionName);
+		}catch(ArrayIndexOutOfBoundsException e) {
+			throw new WeaselRuntimeException("ENGINE CallHw() -  Not enough arguments given to HW function "+functionName);
+		}catch(Throwable t) {
+			throw new WeaselRuntimeException("ENGINE CallHw() -  Hardware call error - "+t.getMessage());
+		}
 	}
 
 
 	@Override
 	public WeaselObject getVariable(String name) {
 		WeaselObject obj;
-		if ((obj = hardware.getVariable(name)) != null) {
+		if ((obj = hw.getVariable(name)) != null) {
 			return obj;
 		}
 		return variables.getVariable(name);
@@ -157,8 +166,8 @@ public class WeaselEngine implements PC_INBT, IVariableContainer {
 		if (name == null) throw new WeaselRuntimeException("ENGINE Set() - variable name == null. @ " + name + " = " + value);
 		if (value == null) throw new WeaselRuntimeException("ENGINE Set() - variable value == null. @ " + name + " = " + value);
 		
-		if (hardware.getVariable(name) != null) {
-			hardware.setVariable(name, value);
+		if (hw.getVariable(name) != null) {
+			hw.setVariable(name, value);
 		}
 
 		variables.setVariable(name, value);

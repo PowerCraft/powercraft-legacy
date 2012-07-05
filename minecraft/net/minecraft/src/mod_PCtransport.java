@@ -69,9 +69,11 @@ public class mod_PCtransport extends PC_Module {
 	private static final String pk_plankTypes = "opt.separation.distinguish_plank_types";
 
 
+	private static final String pk_idSlimeBoots = "id.item.stickyBoots";
+
+
 
 	// *** BLOCKS & ITEMS ***
-	//@formatter:off
 	/** standard gray conveyor belt */
 	public static Block conveyorBelt;
 
@@ -98,7 +100,9 @@ public class mod_PCtransport extends PC_Module {
 
 	/** entity teleporter block */
 	public static Block teleporter;
-	//@formatter:on
+
+	/** Slime Boots */
+	public static Item slimeboots;
 
 
 	// *** MODULE INIT ***
@@ -121,6 +125,8 @@ public class mod_PCtransport extends PC_Module {
 		conf.putBoolean(pk_woodTypes, false, "Treat different wood (log) colors as different items.");
 		conf.putBoolean(pk_plankTypes, false, "Treat different planks colors as different items");
 		conf.putInteger(pk_teleporter_brightness, 5, "Teleporter block brightness, scale 0-15.");
+
+		conf.putBlock(pk_idSlimeBoots, 19005);
 
 		conf.apply();
 
@@ -220,6 +226,9 @@ public class mod_PCtransport extends PC_Module {
 	public void registerItems() {
 		removeBlockItem(itemElevator.blockID);
 		setBlockItem(itemElevator.blockID, new PCtr_ItemBlockElevator(itemElevator.blockID - 256));
+
+		int armour_index = ModLoader.addArmor("pcslime");
+		slimeboots = new PCtr_ItemStickyBoots(cfg().num(pk_idSlimeBoots), armour_index).setIconIndex(Item.bootsSteel.iconIndex).setItemName("PCtrStickyIronBoots");
 	}
 
 	@Override
@@ -252,6 +261,7 @@ public class mod_PCtransport extends PC_Module {
 		map.put(brakeBelt, "Brake Conveyor");
 		map.put(redirectionBelt, "Item Redirection Belt");
 		map.put(teleporter, "Teleporter");
+		map.put(slimeboots, "Sticky Iron Boots");
 
 		map.put("tile.PCconveyorItemElevator.up.name", "Item Elevator (up)");
 		map.put("tile.PCconveyorItemElevator.down.name", "Item Descender (down)");
@@ -349,7 +359,8 @@ public class mod_PCtransport extends PC_Module {
 				new ItemStack(itemElevator, 6, 1),
 				new Object[] { "XGX", "XRX", "XGX",
 					'X', conveyorBelt, 'G', Item.ingotGold, 'R', Item.redstone });
-
+		
+		ModLoader.addRecipe(new ItemStack(slimeboots), new Object[] {"B","S",'B', Item.bootsSteel,'S',Item.slimeBall});
 		
 		// PRISM RECIPE is added in ModulesLoaded method.
 		
@@ -371,6 +382,7 @@ public class mod_PCtransport extends PC_Module {
 		PC_InveditManager.setItemCategory(speedyBelt.blockID, ctg);
 		PC_InveditManager.setItemCategory(itemElevator.blockID, ctg);
 		PC_InveditManager.setItemCategory(teleporter.blockID, ctg);
+		PC_InveditManager.setItemCategory(slimeboots.shiftedIndex, ctg);
 
 		// @formatter:off
 		addStacksToCraftingTool(
@@ -384,7 +396,8 @@ public class mod_PCtransport extends PC_Module {
 				new ItemStack(separationBelt),
 				new ItemStack(itemElevator,1,0),
 				new ItemStack(itemElevator,1,1),
-				new ItemStack(teleporter)
+				new ItemStack(teleporter),
+				new ItemStack(slimeboots)
 			);
 		// @formatter:on
 	}

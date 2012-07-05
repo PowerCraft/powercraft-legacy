@@ -16,8 +16,8 @@ public interface IVariableContainer {
 	 * Set variable value. Accepts both java types and WeaselObjects, but if the
 	 * types don't match, throws an exception.
 	 * 
-	 * @param name
-	 * @param value
+	 * @param name variable name
+	 * @param value value. Can be either weasel object, or a primitive object, which should be converted to weasel object.
 	 * @throws WeaselRuntimeException when trying to store unsupported object
 	 *             into a variable.
 	 */

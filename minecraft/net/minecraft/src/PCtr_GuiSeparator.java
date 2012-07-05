@@ -9,12 +9,12 @@ package net.minecraft.src;
 // GuiContainer, ContainerDispenser, FontRenderer, RenderEngine,
 // InventoryPlayer, TileEntityDispenser
 
-public class PCtr_GuiConveyorSeparator implements PC_IGresBase {
+public class PCtr_GuiSeparator implements PC_IGresBase {
 
 	EntityPlayer player;
 	PCtr_TileEntitySeparationBelt tileentityconveyorfilter;
 
-	public PCtr_GuiConveyorSeparator(EntityPlayer player, PCtr_TileEntitySeparationBelt tileentityconveyorfilter) {
+	public PCtr_GuiSeparator(EntityPlayer player, PCtr_TileEntitySeparationBelt tileentityconveyorfilter) {
 		this.player = player;
 		this.tileentityconveyorfilter = tileentityconveyorfilter;
 	}
@@ -30,8 +30,21 @@ public class PCtr_GuiConveyorSeparator implements PC_IGresBase {
 		w.setWidthForInventory();
 		PC_GresLayoutH hg = new PC_GresLayoutH();
 		hg.add(new PC_GresImage(mod_PCcore.getImgDir() + "gres/widgets.png", 56, 66, 8, 15));
-		hg.add(new PC_GresInventory(tileentityconveyorfilter, 3, 3));
-		hg.add(new PC_GresInventory(tileentityconveyorfilter, 3, 3, 9, 18));
+		
+		PC_GresInventory left, right;
+		
+		hg.add(left = new PC_GresInventory(3, 3));
+		
+		hg.add(right = new PC_GresInventory(3, 3));
+		
+		for(int i=0; i<tileentityconveyorfilter.getSizeInventory(); i++) {
+			if(i%6 >= 3) {
+				left.setSlot(new Slot(tileentityconveyorfilter,i,0,0), i%3, (int) Math.floor(i/6));
+			}else {
+				right.setSlot(new Slot(tileentityconveyorfilter,i,0,0), i%3, (int) Math.floor(i/6));
+			}
+		}
+		
 		hg.add(new PC_GresImage(mod_PCcore.getImgDir() + "gres/widgets.png", 64, 66, 8, 15));
 		w.add(hg);
 		w.add(new PC_GresInventoryPlayer(true));

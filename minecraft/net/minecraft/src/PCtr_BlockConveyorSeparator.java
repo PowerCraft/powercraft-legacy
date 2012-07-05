@@ -67,7 +67,7 @@ public class PCtr_BlockConveyorSeparator extends BlockContainer implements PC_IB
 		}
 
 		PCtr_TileEntitySeparationBelt te = (PCtr_TileEntitySeparationBelt) world.getBlockTileEntity(i, j, k);
-		PC_Utils.openGres(entityplayer, new PCtr_GuiConveyorSeparator(entityplayer, te));
+		PC_Utils.openGres(entityplayer, new PCtr_GuiSeparator(entityplayer, te));
 		return true;
 	}
 
@@ -150,6 +150,8 @@ public class PCtr_BlockConveyorSeparator extends BlockContainer implements PC_IB
 
 		// calculate final rotation
 		rotation += redir;
+		while(rotation >= 4) rotation -= 4;
+		while(rotation < 0) rotation += 4;
 
 		// offset coordinate
 		PC_CoordI pos_leading_to = pos.copy();

@@ -264,69 +264,80 @@ public class PC_GresGui extends GuiContainer implements PC_IGresGui {
 		GL11.glDisable(GL11.GL_LIGHTING);
 		GL11.glDisable(GL11.GL_DEPTH_TEST);
 
-		if (inventoryplayer.getItemStack() == null && slot != null && slot.getHasStack()) {
-			ItemStack itemstack = slot.getStack();
-			@SuppressWarnings("rawtypes")
-			List list = itemstack.getItemNameandInformation();
-
-			if (list.size() > 0) {
-				int l1 = 0;
-
-				for (int i2 = 0; i2 < list.size(); i2++) {
-					int k2 = fontRenderer.getStringWidth((String) list.get(i2));
-
-					if (k2 > l1) {
-						l1 = k2;
+		if(inventoryplayer.getItemStack() == null && slot != null) {
+			
+			ItemStack itemstack = null;
+			
+			if(slot.getHasStack()) itemstack = slot.getStack();
+						
+			if (slot instanceof PC_SlotNoPickup && ((PC_SlotNoPickup)slot).shownStack != null) itemstack = ((PC_SlotNoPickup)slot).shownStack;
+			
+			if (slot instanceof PCco_SlotDirectCrafting && ((PCco_SlotDirectCrafting)slot).product != null) itemstack = ((PCco_SlotDirectCrafting)slot).product;
+				
+			if(itemstack != null) {
+				@SuppressWarnings("rawtypes")
+				List list = itemstack.getItemNameandInformation();
+	
+				if (list.size() > 0) {
+					int l1 = 0;
+	
+					for (int i2 = 0; i2 < list.size(); i2++) {
+						int k2 = fontRenderer.getStringWidth((String) list.get(i2));
+	
+						if (k2 > l1) {
+							l1 = k2;
+						}
 					}
-				}
-
-				int j2 = (par1 - i) + 12;
-				int l2 = par2 - j - 12;
-				int i3 = l1;
-				int j3 = 8;
-
-				if (list.size() > 1) {
-					j3 += 2 + (list.size() - 1) * 10;
-				}
-
-				zLevel = 300F;
-				itemRenderer.zLevel = 300F;
-				int k3 = 0xf0100010;
-				drawGradientRect(j2 - 3, l2 - 4, j2 + i3 + 3, l2 - 3, k3, k3);
-				drawGradientRect(j2 - 3, l2 + j3 + 3, j2 + i3 + 3, l2 + j3 + 4, k3, k3);
-				drawGradientRect(j2 - 3, l2 - 3, j2 + i3 + 3, l2 + j3 + 3, k3, k3);
-				drawGradientRect(j2 - 4, l2 - 3, j2 - 3, l2 + j3 + 3, k3, k3);
-				drawGradientRect(j2 + i3 + 3, l2 - 3, j2 + i3 + 4, l2 + j3 + 3, k3, k3);
-				int l3 = 0x505000ff;
-				int i4 = (l3 & 0xfefefe) >> 1 | l3 & 0xff000000;
-				drawGradientRect(j2 - 3, (l2 - 3) + 1, (j2 - 3) + 1, (l2 + j3 + 3) - 1, l3, i4);
-				drawGradientRect(j2 + i3 + 2, (l2 - 3) + 1, j2 + i3 + 3, (l2 + j3 + 3) - 1, l3, i4);
-				drawGradientRect(j2 - 3, l2 - 3, j2 + i3 + 3, (l2 - 3) + 1, l3, l3);
-				drawGradientRect(j2 - 3, l2 + j3 + 2, j2 + i3 + 3, l2 + j3 + 3, i4, i4);
-
-				for (int j4 = 0; j4 < list.size(); j4++) {
-					String s = (String) list.get(j4);
-
-					if (j4 == 0) {
-						s = (new StringBuilder()).append("\247").append(Integer.toHexString(itemstack.getRarity().nameColor)).append(s).toString();
-					} else {
-						s = (new StringBuilder()).append("\2477").append(s).toString();
+	
+					int j2 = (par1 - i) + 12;
+					int l2 = par2 - j - 12;
+					int i3 = l1;
+					int j3 = 8;
+	
+					if (list.size() > 1) {
+						j3 += 2 + (list.size() - 1) * 10;
 					}
-
-					fontRenderer.drawStringWithShadow(s, j2, l2, -1);
-
-					if (j4 == 0) {
-						l2 += 2;
+	
+					zLevel = 300F;
+					itemRenderer.zLevel = 300F;
+					int k3 = 0xf0100010;
+					drawGradientRect(j2 - 3, l2 - 4, j2 + i3 + 3, l2 - 3, k3, k3);
+					drawGradientRect(j2 - 3, l2 + j3 + 3, j2 + i3 + 3, l2 + j3 + 4, k3, k3);
+					drawGradientRect(j2 - 3, l2 - 3, j2 + i3 + 3, l2 + j3 + 3, k3, k3);
+					drawGradientRect(j2 - 4, l2 - 3, j2 - 3, l2 + j3 + 3, k3, k3);
+					drawGradientRect(j2 + i3 + 3, l2 - 3, j2 + i3 + 4, l2 + j3 + 3, k3, k3);
+					int l3 = 0x505000ff;
+					int i4 = (l3 & 0xfefefe) >> 1 | l3 & 0xff000000;
+					drawGradientRect(j2 - 3, (l2 - 3) + 1, (j2 - 3) + 1, (l2 + j3 + 3) - 1, l3, i4);
+					drawGradientRect(j2 + i3 + 2, (l2 - 3) + 1, j2 + i3 + 3, (l2 + j3 + 3) - 1, l3, i4);
+					drawGradientRect(j2 - 3, l2 - 3, j2 + i3 + 3, (l2 - 3) + 1, l3, l3);
+					drawGradientRect(j2 - 3, l2 + j3 + 2, j2 + i3 + 3, l2 + j3 + 3, i4, i4);
+	
+					for (int j4 = 0; j4 < list.size(); j4++) {
+						String s = (String) list.get(j4);
+	
+						if (j4 == 0) {
+							s = (new StringBuilder()).append("\247").append(Integer.toHexString(itemstack.getRarity().nameColor)).append(s).toString();
+						} else {
+							s = (new StringBuilder()).append("\2477").append(s).toString();
+						}
+	
+						fontRenderer.drawStringWithShadow(s, j2, l2, -1);
+	
+						if (j4 == 0) {
+							l2 += 2;
+						}
+	
+						l2 += 10;
 					}
-
-					l2 += 10;
+	
+					zLevel = 0.0F;
+					itemRenderer.zLevel = 0.0F;
 				}
-
-				zLevel = 0.0F;
-				itemRenderer.zLevel = 0.0F;
 			}
 		}
 
+			
 		GL11.glPopMatrix();
 
 		GL11.glEnable(GL11.GL_LIGHTING);
@@ -400,6 +411,25 @@ public class PC_GresGui extends GuiContainer implements PC_IGresGui {
 					drawGradientRect(j1, k1, j1 + 16, k1 + 16, 0xbb999999, 0xbb999999);
 					GL11.glEnable(GL11.GL_LIGHTING);
 					GL11.glEnable(GL11.GL_DEPTH_TEST);
+					zLevel = 100F;
+					itemRenderer.zLevel = 100F;
+				}
+
+			}else
+			if (slot instanceof PC_SlotNoPickup) {
+				PC_SlotNoPickup nopslot = (PC_SlotNoPickup) slot;
+				if (nopslot.shownStack != null) {
+					itemRenderer.zLevel = 99F;
+					zLevel = 99F;
+					itemRenderer.renderItemIntoGUI(fontRenderer, mc.renderEngine, nopslot.shownStack, k, l);
+
+					//GL11.glDisable(GL11.GL_LIGHTING);
+					//GL11.glDisable(GL11.GL_DEPTH_TEST);
+					//int j1 = slot.xDisplayPosition;
+					//int k1 = slot.yDisplayPosition;
+					//drawGradientRect(j1, k1, j1 + 16, k1 + 16, 0xbb999999, 0xbb999999);
+					//GL11.glEnable(GL11.GL_LIGHTING);
+					//GL11.glEnable(GL11.GL_DEPTH_TEST);
 					zLevel = 100F;
 					itemRenderer.zLevel = 100F;
 				}

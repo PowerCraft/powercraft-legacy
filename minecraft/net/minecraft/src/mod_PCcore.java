@@ -38,7 +38,7 @@ public class mod_PCcore extends PC_Module implements PC_IActivatorListener {
 	 * compilation, thus all modules keep their compile-time version and aren't
 	 * affected by current core version.
 	 */
-	public static final String VERSION = "3.4p4";
+	public static final String VERSION = "3.4.1";
 
 	/** Location of the file with updates */
 	public static final String updateInfoPath = "http://dl.dropbox.com/u/64454818/POWERCRAFT_DATA/info.xml"; // "http://bit.ly/Ld7sOI";
@@ -99,6 +99,7 @@ public class mod_PCcore extends PC_Module implements PC_IActivatorListener {
 
 	/** Activation Crystal item */
 	public static Item activator;
+	
 
 	/** Power Dust item (fuel) */
 	public static Item powerDust;
@@ -239,7 +240,7 @@ public class mod_PCcore extends PC_Module implements PC_IActivatorListener {
 		optUpdateNotify = conf.flag(pk_optUpdateNotify);
 		optUpdateLangpack = conf.flag(pk_optUpdateTranslations);
 		soundsEnabled = !conf.flag(pk_optMuteSound);
-		PCco_BlockPowerCrystal.makeSound = !conf.flag(pk_optSoundCrystal);
+		PCco_BlockPowerCrystal.makeSound = conf.flag(pk_optSoundCrystal);
 		update_last_ignored_version = conf.string(pk_cfgUpdateIgnored);
 		current_lang_version = conf.string(pk_cfgCurrentLangVersion);
 
@@ -350,9 +351,13 @@ public class mod_PCcore extends PC_Module implements PC_IActivatorListener {
 		map.put("pc.gui.spawnerEditor.enableDangerous", "Enable dangerous");
 		map.put("pc.gui.ok", "OK");
 		map.put("pc.gui.cancel", "Cancel");
+		
 		map.put("pc.sniffer.sniffing", "Sniffing ores...");
 		map.put("pc.sniffer.away", "(far away)");
 		map.put("pc.sniffer.desc", "Portable radar device");
+		map.put("pc.sniffer.distance", "Sniffing depth (blocks):");
+		
+		
 		map.put("pc.gui.update.title", "Mod Update Notification");
 		map.put("pc.gui.update.newVersionAvailable", "Update available!");
 		map.put("pc.gui.update.readMore", "Read more...");
@@ -481,9 +486,6 @@ public class mod_PCcore extends PC_Module implements PC_IActivatorListener {
 		
 		// register activator listener (for spawner GUI)
 		PC_Module.registerActivatorListener(this);
-		
-		oreSniffer.initNames();
-
 
 		// set invedit groups and exceptions
 		PC_InveditManager.setDamageRange(powerCrystal.blockID, 0, 7);

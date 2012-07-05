@@ -81,7 +81,7 @@ public class PCma_ItemBlockOptical extends ItemBlock {
 				if (itemstack.getItemDamage() != 0) {
 					meta = 0;
 				}
-				world.setBlockAndMetadataWithNotify(i, j, k, mod_PCmachines.optical.blockID, meta);
+				world.setBlockMetadataWithNotify(i, j, k, meta);
 
 				PCma_TileEntityOptical teo = (PCma_TileEntityOptical) world.getBlockTileEntity(i, j, k);
 				if (teo == null) {

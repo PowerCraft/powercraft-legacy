@@ -171,7 +171,7 @@ public class PC_GresContainerManager extends Container {
 			while (itemstack.stackSize > 0 && (!flag && k < j || flag && k >= i)) {
 				Slot slot = (Slot) inventorySlots.get(k);
 				ItemStack itemstack1 = slot.getStack();
-				if (itemstack1 != null && (flag || itemstack1.stackSize < slot.inventory.getInventoryStackLimit()) && itemstack1.itemID == itemstack.itemID && (!itemstack.getHasSubtypes() || itemstack.getItemDamage() == itemstack1.getItemDamage())) {
+				if (itemstack1 != null && slot.isItemValid(itemstack) && (flag || itemstack1.stackSize < slot.inventory.getInventoryStackLimit()) && itemstack1.itemID == itemstack.itemID && (!itemstack.getHasSubtypes() || itemstack.getItemDamage() == itemstack1.getItemDamage())) {
 					int i1 = itemstack1.stackSize + itemstack.stackSize;
 					if (i1 <= getLimit(slot, itemstack.getMaxStackSize(), flag)) {
 						itemstack.stackSize = 0;
@@ -205,7 +205,7 @@ public class PC_GresContainerManager extends Container {
 				}
 				Slot slot = (Slot) inventorySlots.get(l);
 				ItemStack itemstack2 = slot.getStack();
-				if (itemstack2 == null) {
+				if (itemstack2 == null &&  slot.isItemValid(itemstack)) {
 					// empty field in inventory
 					ItemStack toStore = itemstack.copy();
 					toStore.stackSize = getLimit(slot, toStore.stackSize, flag);

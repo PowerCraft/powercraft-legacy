@@ -57,7 +57,7 @@ public class PC_GresInventory extends PC_GresWidget {
 		for (int j = 0; j < height; j++) {
 			for (int i = 0; i < width; i++) {
 				if (i + j * width < inventory.getSizeInventory()) {
-					setSlot(new Slot(inventory, i + j * width, 0, 0), i, j);
+					setSlot(new PC_SlotSelective(inventory, i + j * width, 0, 0), i, j);
 				}
 			}
 		}
@@ -79,7 +79,7 @@ public class PC_GresInventory extends PC_GresWidget {
 
 		slots = new Slot[1][1];
 
-		setSlot(new Slot(inventory, slot, 0, 0), 0, 0);
+		setSlot(new PC_SlotSelective(inventory, slot, 0, 0), 0, 0);
 
 	}
 
@@ -111,7 +111,7 @@ public class PC_GresInventory extends PC_GresWidget {
 				}
 
 				if (slotStart + i + j * width < inventory.getSizeInventory()) {
-					setSlot(new Slot(inventory, slotStart + i + j * width, 0, 0), i, j);
+					setSlot(new PC_SlotSelective(inventory, slotStart + i + j * width, 0, 0), i, j);
 				}
 
 			}

@@ -13,7 +13,19 @@ import net.minecraft.src.weasel.exception.WeaselRuntimeException;
  * @author MightyPork
  */
 public class InstructionGoto extends Instruction {
+	
+	/**
+	 * GOTO
+	 * @param targetLabel target label name
+	 */
+	public InstructionGoto(String targetLabel) {
+		this.targetLabelName = targetLabel;
+	}
 
+	/**
+	 * GOTO
+	 */
+	public InstructionGoto() {}
 
 	private String targetLabelName;
 

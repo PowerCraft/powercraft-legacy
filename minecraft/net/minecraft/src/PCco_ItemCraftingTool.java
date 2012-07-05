@@ -4,7 +4,7 @@ package net.minecraft.src;
 /**
  * The Crafting Tool item
  * 
- * @author Ondrej Hruska
+ * @author MightyPork
  * @copy (c) 2012
  */
 public class PCco_ItemCraftingTool extends Item {

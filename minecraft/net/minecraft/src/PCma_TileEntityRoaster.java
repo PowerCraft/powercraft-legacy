@@ -13,8 +13,13 @@ import java.util.Random;
  */
 public class PCma_TileEntityRoaster extends PC_TileEntity implements IInventory, PC_ISpecialAccessInventory {
 	@Override
-	public boolean canInsertStackTo(int slot, ItemStack stack) {
+	public boolean canPlayerInsertStackTo(int slot, ItemStack stack) {
 		return stack != null && (PC_Utils.isFuel(stack) || stack.itemID == Block.netherrack.blockID);
+	}
+
+	@Override
+	public boolean canMachineInsertStackTo(int slot, ItemStack stack) {
+		return canPlayerInsertStackTo(slot, stack);
 	}
 
 	@Override

@@ -11,11 +11,26 @@ import net.minecraft.src.weasel.exception.WeaselRuntimeException;
 
 
 /**
- * Function header. Works like label for jumps, all PUSHes were already done in instruction list.
+ * Function header. Works like label for jumps, all PUSHes and variable initialization were already done in instruction list.
  * 
  * @author MightyPork
  */
 public class InstructionFunction extends Instruction {
+	
+	/**
+	 * FUNC
+	 * @param functionName function name
+	 * @param args array of argument variable names
+	 */
+	public InstructionFunction(String functionName, String ... args) {
+		this.functionName = functionName;
+		this.args = args;
+	}
+	
+	/**
+	 * FUNC
+	 */
+	public InstructionFunction() {}
 
 	private String functionName;
 	private String[] args;
@@ -91,7 +106,7 @@ public class InstructionFunction extends Instruction {
 	 * @return the name
 	 */
 	public String getArgumentName(int i) {
-		if (i > 0 && i < args.length) return args[i];
+		if (i >= 0 && i < args.length) return args[i];
 		return null;
 	}
 	

@@ -33,7 +33,17 @@ public interface PC_ISpecialAccessInventory {
 	 * @param stack stack to store
 	 * @return can store it here
 	 */
-	public boolean canInsertStackTo(int slot, ItemStack stack);
+	public boolean canPlayerInsertStackTo(int slot, ItemStack stack);
+	
+	/**
+	 * Can we AUTOMATICALLY (by belt) put this stack into this slot?<br>
+	 * For the insertion itself, use methods from PC_InvUtils.
+	 * 
+	 * @param slot slot number
+	 * @param stack stack to store
+	 * @return can store it here
+	 */
+	public boolean canMachineInsertStackTo(int slot, ItemStack stack);
 
 	/**
 	 * Can stack in this slot be dispensed (ejected by conveyor, for example)?

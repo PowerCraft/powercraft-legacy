@@ -98,12 +98,37 @@ public abstract class Instruction implements PC_INBT {
 		switch (InstructionType.getTypeFromIndex(tag.getInteger("type"))) {
 			case LABEL:
 				return new InstructionLabel().readFromNBT(tag);
+				
 			case GOTO:
 				return new InstructionGoto().readFromNBT(tag);
+				
+			case CALL:
+				return new InstructionCall().readFromNBT(tag);
+				
+			case FUNCTION:
+				return new InstructionFunction().readFromNBT(tag);
+				
+			case ASSIGN:
+				return new InstructionAssign().readFromNBT(tag);
+				
+			case ASSIGN_RETVAL:
+				return new InstructionAssignRetval().readFromNBT(tag);
+				
 			case PUSH:
 				return new InstructionPush().readFromNBT(tag);
+				
 			case POP:
 				return new InstructionPop().readFromNBT(tag);
+				
+			case IF:
+				return new InstructionIf().readFromNBT(tag);
+				
+			case END:
+				return new InstructionEnd().readFromNBT(tag);
+				
+			case PAUSE:
+				return new InstructionPause().readFromNBT(tag);
+				
 			default:
 				return null;
 		}
@@ -118,7 +143,7 @@ public abstract class Instruction implements PC_INBT {
 	@SuppressWarnings("javadoc")
 	protected enum InstructionType {
 
-		LABEL, GOTO, CALL, FUNCTION, SET, SET_RETVAL, PUSH, POP, IF, END, PAUSE;
+		LABEL, GOTO, CALL, FUNCTION, ASSIGN, ASSIGN_RETVAL, PUSH, POP, IF, END, PAUSE;
 
 		private InstructionType() {
 			setup();

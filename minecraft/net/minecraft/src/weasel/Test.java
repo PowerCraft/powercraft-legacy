@@ -1,6 +1,15 @@
 package net.minecraft.src.weasel;
 
 
+import net.minecraft.src.weasel.exception.WeaselRuntimeException;
+import net.minecraft.src.weasel.lang.InstructionAssignRetval;
+import net.minecraft.src.weasel.lang.InstructionCall;
+import net.minecraft.src.weasel.lang.InstructionEnd;
+import net.minecraft.src.weasel.lang.InstructionFunction;
+import net.minecraft.src.weasel.lang.InstructionGoto;
+import net.minecraft.src.weasel.lang.InstructionIf;
+import net.minecraft.src.weasel.lang.InstructionLabel;
+import net.minecraft.src.weasel.lang.InstructionReturn;
 import net.minecraft.src.weasel.obj.WeaselInteger;
 import net.minecraft.src.weasel.obj.WeaselObject;
 
@@ -57,14 +66,39 @@ public class Test {
 //		    System.out.println("varNeeded: "+name);
 //		}
 
-
-
-
-		WeaselEngine engine = new WeaselEngine(new IWeaselHardware() {
+		
+		IWeaselHardware hardware = new IWeaselHardware() {
 
 			@Override
 			public boolean hasFunction(String functionName) {
+				if(functionName.equals("print")) {
+					return true;
+				}
 				return false;
+			}
+			
+			@Override
+			public int getFunctionArgumentCount(String functionName) {
+				
+				if(functionName.equals("print")) {
+					return 1;
+				}
+				
+				
+				return 0;
+			}
+
+			@Override
+			public WeaselObject callFunction(WeaselEngine engine, String functionName, WeaselObject[] args) {
+				
+				if(functionName.equals("print")) {
+					
+					System.out.println(args[0].get());
+					return new WeaselInteger(((String)args[0].get()).length());
+					
+				}
+				
+				return null;
 			}
 
 			@Override
@@ -74,23 +108,38 @@ public class Test {
 			}
 
 			@Override
-			public WeaselObject callFunction(WeaselEngine engine, String functionName, WeaselObject[] args) {
-				return null;
-			}
-
-			@Override
 			public void setVariable(String name, Object object) {}
 
-		});
+
+
+		};
+
 
 		try {
+			
+			WeaselEngine engine = new WeaselEngine(hardware);
 
-			engine.setVariable("nn", 99);
+			engine.setVariable("abc", 99);
 			engine.setVariable("out", 0);
 
-			Calculator.eval("out = hw.num*nn - 1", engine);
-
-			System.out.println("=" + engine.getVariable("out"));
+			InstructionList prog = engine.instructionList;
+			
+			prog.append(new InstructionIf("abc - 99 == out","yes","no"));
+			prog.append(new InstructionLabel("yes"));
+			prog.append(new InstructionCall("say", "\"YES!\""));	
+			prog.append(new InstructionAssignRetval("eee"));
+			prog.append(new InstructionCall("print","\"eee is equal to \"+str(eee)"));
+			prog.append(new InstructionGoto("end"));
+			prog.append(new InstructionLabel("no"));
+			prog.append(new InstructionCall("print", "\"NO!\""));
+			prog.append(new InstructionLabel("end"));
+			prog.append(new InstructionEnd());
+			
+			prog.append(new InstructionFunction("say", "what"));
+			prog.append(new InstructionCall("print", "str(what)"));
+			prog.append(new InstructionReturn("17"));
+			
+			engine.run(100);
 
 		} catch (RuntimeException re) {
 			System.out.println(re.getMessage());

@@ -249,7 +249,7 @@ public class PCtr_BlockConveyor extends Block implements PC_IBlockType, PC_IRota
 			}
 
 			// store under belt if not roaster.
-			if (PC_BlockUtils.hasFlag(world, pos.offset(0, -1, 0), "ROASTER")) {
+			if (!PC_BlockUtils.hasFlag(world, pos.offset(0, -1, 0), "ROASTER")) {
 				if (PCtr_BeltBase.storeEntityItemAt(world, pos.offset(0, -1, 0), entity)) {
 					return true;
 				}

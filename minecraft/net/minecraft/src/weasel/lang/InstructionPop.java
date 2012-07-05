@@ -13,18 +13,31 @@ import net.minecraft.src.weasel.exception.WeaselRuntimeException;
  * @author MightyPork
  */
 public class InstructionPop extends Instruction {
+	
+	/**
+	 * POP
+	 * @param poppedVarName variable to store the result in
+	 */
+	public InstructionPop(String poppedVarName) {
+		this.poppedVarName = poppedVarName;
+	}
+	
+	/**
+	 * POP
+	 */
+	public InstructionPop() {}
 
-	private String poppedVariableName;
+	private String poppedVarName;
 
 	@Override
 	public NBTTagCompound writeToNBT(NBTTagCompound tag) {
-		tag.setString("Name", poppedVariableName);
+		tag.setString("Name", poppedVarName);
 		return tag;
 	}
 
 	@Override
 	public InstructionPop readFromNBT(NBTTagCompound tag) {
-		poppedVariableName = tag.getString("Name");
+		poppedVarName = tag.getString("Name");
 		return this;
 	}
 
@@ -32,7 +45,7 @@ public class InstructionPop extends Instruction {
 	 * @return name of popped variable
 	 */
 	public String getVariableName() {
-		return poppedVariableName;
+		return poppedVarName;
 	}
 
 	/**
@@ -42,13 +55,13 @@ public class InstructionPop extends Instruction {
 	 * @return this
 	 */
 	public InstructionPop setVariableName(String variableName) {
-		this.poppedVariableName = variableName;
+		this.poppedVarName = variableName;
 		return this;
 	}
 
 	@Override
 	public void execute(WeaselEngine engine, InstructionList instructionList) throws WeaselRuntimeException {
-		engine.variables.setVariable(poppedVariableName, engine.dataStack.pop());
+		engine.variables.setVariable(poppedVarName, engine.dataStack.pop());
 	}
 
 }

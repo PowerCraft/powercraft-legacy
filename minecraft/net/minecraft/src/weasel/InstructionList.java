@@ -44,7 +44,7 @@ public class InstructionList implements PC_INBT {
 	 * 
 	 * @param instruction the new instruction to append
 	 */
-	public void appendInstruction(Instruction instruction) {
+	public void append(Instruction instruction) {
 		list.add(instruction);
 		instruction.setAddress(list.size() - 1);
 	}
@@ -84,14 +84,14 @@ public class InstructionList implements PC_INBT {
 	public void callFunction(String functionName, WeaselObject[] args) {
 		for (Instruction instruction : list) {
 			if (instruction instanceof InstructionFunction) {
-				
+
 				InstructionFunction func = (InstructionFunction) instruction;
 				if (func.getFunctionName().equals(functionName)) {
-					
-					if(func.getArgumentCount() != args.length) {
-						throw new WeaselRuntimeException("INSTRL call - invalid argument count for function "+functionName);
+
+					if (func.getArgumentCount() != args.length) {
+						throw new WeaselRuntimeException("INSTRL call - invalid argument count for function " + functionName+" (needs "+func.getArgumentCount()+", got "+args.length+")");
 					}
-					
+
 					engine.systemStack.push(new WeaselInteger(programCounter));
 					engine.systemStack.push(engine.variables);
 
@@ -100,22 +100,22 @@ public class InstructionList implements PC_INBT {
 					int cnt = 0;
 					for (WeaselObject obj : args) {
 						String argname = func.getArgumentName(cnt++);
-						
-						if(argname == null) throw new WeaselRuntimeException("INSTRL call - invalid argument count for function "+functionName);
-						
+
+						if (argname == null) throw new WeaselRuntimeException("INSTRL call - invalid argument count for function " + functionName+" (needs "+func.getArgumentCount()+", got "+args.length+")");
+
 						engine.variables.setVariable(argname, obj);
 					}
 
 					return;
-					
+
 				}
-				
+
 			}
 		}
 
 		// if the function was not found in the program space, try hardware.
-		if (engine.nativeFunctionExists(functionName)) {
-			engine.callNativeFunction(functionName, args);
+		if (engine.hardwareFunctionExists(functionName)) {
+			engine.callHardwareFunction(functionName, args);
 		} else {
 			throw new WeaselRuntimeException("INSTRL Call - function " + functionName + " does not exist.");
 		}
@@ -195,6 +195,16 @@ public class InstructionList implements PC_INBT {
 
 		return this;
 
+	}
+
+	/**
+	 * Add an increment to program counter.Can be used to prevent further
+	 * program execution by adding -1 inside an instruction body.
+	 * 
+	 * @param change increment
+	 */
+	public void movePointer(int change) {
+		programCounter += change;
 	}
 
 }

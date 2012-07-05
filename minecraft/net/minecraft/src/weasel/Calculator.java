@@ -2,6 +2,7 @@ package net.minecraft.src.weasel;
 
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -24,7 +25,6 @@ import org.nfunk.jep.ParseException;
  * @copy (c) 2012
  */
 public class Calculator {
-	private static Pattern variablePattern = Pattern.compile("([a-zA-Z_]{1}[a-zA-Z_0-9.]*?)(?:[^a-zA-Z_0-9.(]|$)");
 
 
 	/**
@@ -34,7 +34,7 @@ public class Calculator {
 	 * @return converted string
 	 * @throws ParseException if there's a number starting with 0b or 0x, and does not have the correct format.
 	 */
-	public static String convertNumberFormats(String str) throws ParseException {
+	public static String convertNumbersToDecimal(String str) throws ParseException {
 
 		Pattern hex = Pattern.compile("0x([0-9a-zA-Z]+)");
 		Pattern bin = Pattern.compile("0b([0-9a-zA-Z]+)");
@@ -66,7 +66,6 @@ public class Calculator {
 			String group = matcher.group(1);
 			try {
 				Integer out = Integer.parseInt(group, 2);
-				System.out.println("out bin="+out);
 				matcher.appendReplacement(sb, out.toString());
 			} catch (NumberFormatException nfe) {
 				throw new ParseException("0b"+group + " is not a valid bin number.");
@@ -83,10 +82,10 @@ public class Calculator {
 	 * long) using given radix, and output as string.
 	 * 
 	 * @param obj the integer
-	 * @param radix radix. 2=binary,8=octal,16=hex,10=decimal.
+	 * @param base 2=binary, 8=octal, 16=hex, 10=decimal.
 	 * @return the formatted integer
 	 */
-	public static String formatInteger(Object obj, int radix) {
+	public static String formatIntegerBase(Object obj, int base) {
 		Integer i = 0;
 		if (obj instanceof Integer) i = (Integer) obj;
 		if (obj instanceof Long) i = (Integer) obj;
@@ -96,7 +95,7 @@ public class Calculator {
 		if (obj instanceof WeaselInteger) i = ((WeaselInteger) obj).get();
 		if (obj instanceof WeaselBoolean) i = ((WeaselBoolean) obj).get() ? 1 : 0;
 
-		switch (radix) {
+		switch (base) {
 			case 2:
 				return "0b" + Integer.toBinaryString(i);
 			case 8:
@@ -110,6 +109,12 @@ public class Calculator {
 		}
 	}
 
+	/**
+	 * Convert an object object to a boolean.
+	 * 
+	 * @param obj object (WeaselInteger, WeaselBoolean, integer, boolean, long, float, double)
+	 * @return boolean value
+	 */
 	public static boolean toBoolean(Object obj) {
 		if (obj instanceof WeaselInteger) {
 			return ((WeaselInteger) obj).get() != 0;
@@ -140,7 +145,13 @@ public class Calculator {
 
 		return (Boolean) obj;
 	}
-
+	
+	/**
+	 * Convert an object object to an integer. Booleans are turned into 0 or 1.
+	 * 
+	 * @param obj object (WeaselInteger, WeaselBoolean, integer, boolean, long, float, double)
+	 * @return integer value
+	 */
 	public static int toInteger(Object obj) {
 		if (obj instanceof WeaselInteger) {
 			return ((WeaselInteger) obj).get();
@@ -171,6 +182,11 @@ public class Calculator {
 		return (Integer) obj;
 	}
 
+	/**
+	 * Convert an object to String. For weasel objects, converts only the wrapped value to string.
+	 * @param obj object  (WeaselInteger, WeaselBoolean, WeaselString, integer, boolean, long, float, double, string)
+	 * @return the string value
+	 */
 	public static String toString(Object obj) {
 		if (obj instanceof WeaselInteger) {
 			return ((WeaselInteger) obj).get() + "";
@@ -211,7 +227,15 @@ public class Calculator {
 
 
 
-	public static Object evalSimple(String expression, Map<String, Object> vars) {
+	/**
+	 * Evaluate an expression using variables from a given map.<br>
+	 * It is fast, but does not support Weasel variables and does not check what variables are needed.
+	 * @param expression the expression
+	 * @param vars map of variables (string → variable)
+	 * @return result value
+	 * @throws CalcException when the evaluation fails
+	 */
+	public static Object evaluateSimple(String expression, Map<String, Object> vars) {
 
 		JEP jep = new JEP();
 		for (Entry<String, Object> entry : vars.entrySet()) {
@@ -219,6 +243,7 @@ public class Calculator {
 		}
 
 		jep.parseExpression(expression);
+		
 		if (jep.hasError()) {
 			throw new CalcException(jep.getErrorInfo());
 		}
@@ -226,8 +251,12 @@ public class Calculator {
 		return jep.getValueAsObject();
 
 	}
+	
+	
+	
 
-
+	private static Pattern variablePattern = Pattern.compile("(?:[^a-zA-Z_0-9]|^)([a-zA-Z_]{1}[a-zA-Z_0-9.]*?)(?:[^a-zA-Z_0-9.(]|$)");
+	private static Pattern stringPattern = Pattern.compile("(\"[^\"]*?\")");
 
 	/**
 	 * Evaluate an expression with variables from VM.
@@ -238,54 +267,91 @@ public class Calculator {
 	 * @return result of the expression.
 	 * @throws CalcException when evaluation fails.
 	 */
-	public static Object eval(String expression, IVariableContainer variableContainer) throws CalcException {
+	public static Object evaluate(String expression, IVariableContainer variableContainer) throws CalcException {
 
 		if (expression == null || expression.length() == 0) return null;
 
 		if (expression.contains(";")) {
-			throw new CalcException("Unexpected \";\" in a numeric expression.");
+			throw new CalcException("CALC evaluate - unexpected \";\" in a numeric expression.");
 		}
-
-		expression = expression.replaceAll("\\s", "");
-
-		// List of variables needed to evaluate this expression
-		List<String> varsNeeded = new ArrayList<String>();
-
-		JEP jep = new JEP();
-		jep.setAllowAssignment(true);
-
-		Matcher matcher = variablePattern.matcher(expression);
+		
+		
+		Matcher matcher;
+		
+		
+		// take all strings away to make variable parsing easier		
+		//strings are stored in "replace" map, together with replacement keys
+		HashMap<String,String> replace = new HashMap<String, String>();
+		int counter = 0;
+		
+		matcher = stringPattern.matcher(expression);
+		StringBuffer sb = new StringBuffer();
 
 		while (matcher.find()) {
+			String str = matcher.group(1);			
+			String repl = "[§"+counter+"]";
+			
+			replace.put(repl,str);			
+			matcher.appendReplacement(sb, repl);
+		}
+		
+		matcher.appendTail(sb);		
+		expression = sb.toString();
+		
+		
+		
+		//remove whitespace
+		expression = expression.replaceAll("\\s", "");
 
+		
+		
+		// List of variables needed to evaluate this expression
+		List<String> varsNeeded = new ArrayList<String>();
+		
+		JEP jep = JEP.createWeaselParser(true);
+		matcher = variablePattern.matcher(expression);
+		
+		while (matcher.find()) {
 			String name = matcher.group(1);
-			String real = name;
 			varsNeeded.add(name);
 
-			//add the variable into JS engine
 			try {
-				jep.addVariable(name, variableContainer.getVariable(real).get());
+				//add variable into JEP
+				jep.addVariable(name, variableContainer.getVariable(name).get());
 			} catch (NullPointerException npe) {
-				throw new WeaselRuntimeException("Variable " + real + " not set in this scope.");
+				throw new WeaselRuntimeException("CALC evaluate - variable \"" + name + "\" not set in this scope.");
 			}
 		}
-
+		
+		
+		
+		//put back replaced strings.
+		if(replace.size() > 0) {
+			for(Entry<String,String> entry:replace.entrySet()) {
+				expression = expression.replace(entry.getKey(), entry.getValue());
+			}
+		}
+		
+		
+		
+		//evaluate
 		jep.parseExpression(expression);
 
 		Object out = jep.getValueAsObject();
 
 		if (jep.hasError()) {
-			System.out.println(jep.getErrorInfo());
 			throw new CalcException(jep.getErrorInfo());
 		}
+		
+		
 
-		// put variables back into Variable Map in Engine
+		// put variables back into Variable Container
 		for (String varname : varsNeeded) {
 			String real = varname;
-
-			variableContainer.getVariable(real).set(jep.getVarValue(varname));
+			variableContainer.setVariable(real,jep.getVarValue(varname));
 		}
 
+		//return expression result
 		return out;
 
 	}
