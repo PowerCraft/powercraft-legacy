@@ -1,7 +1,12 @@
 package net.minecraft.src.weasel;
 
 
+import java.util.ArrayList;
+import java.util.List;
+
+import net.minecraft.src.PC_Struct3;
 import net.minecraft.src.weasel.exception.WeaselRuntimeException;
+import net.minecraft.src.weasel.lang.Instruction;
 import net.minecraft.src.weasel.lang.InstructionAssignRetval;
 import net.minecraft.src.weasel.lang.InstructionCall;
 import net.minecraft.src.weasel.lang.InstructionEnd;
@@ -21,129 +26,103 @@ public class Test {
 
 		// extracting function calls from an expression
 
-//		List<String> tmpEvals = new ArrayList<String>();
+//		Calculator.toBoolean(true);
 //		
-//		int tmpCounter = 0;
-//		String expression = "variable = Math.floor(X*16)";
 //		
-//		expression = expression.replaceAll("\\s", "");
-//		System.out.println("ee: " +expression);
-//		
-//		StringBuffer sb = new StringBuffer();
-//		Pattern fnPattern = Pattern.compile("([a-zA-Z_]{1}[a-zA-Z_0-9.]*?)\\(([^(]*?)\\)");
-//		
-//		int functionsFoundThisTurn=-1;
-//		while(functionsFoundThisTurn != 0) {
-//			functionsFoundThisTurn = 0;
-//			Matcher funcMatcher = fnPattern.matcher(expression);
+//		System.out.println();
+//		String expr = "num(fn1(str(rnd(0,16)),fn2(round(0.99)))+byte(0,0,hw.at19,hell,fn3(num(true))))";
+//		System.out.println("PROCESSING EXPR: "+expr);
+//		System.out.println();
+//		PC_Struct3<String, Integer, List<Instruction>> aa = Calculator.expandExpression(expr, 0);
 //			
-//			funcMatcher = fnPattern.matcher(expression);
-//			
-//			sb = new StringBuffer();
-//			while(funcMatcher.find()){
-//			    String name = funcMatcher.group(1);
-//			    String args = funcMatcher.group(2);
-//			    String tmpvar = "_tmp" + tmpCounter++;
-//			    tmpEvals.add(tmpvar+"="+name+"("+args+")");
-//			    funcMatcher.appendReplacement(sb, tmpvar);
-//			    functionsFoundThisTurn++;
-//			}
-//			funcMatcher.appendTail(sb);
-//			
-//			expression = sb.toString();	
-//			System.out.println("expr2: "+expression);
-//		}
+//		List<Instruction> cmdlist = aa.c;
 //		
+//		for(Instruction instr: cmdlist) System.out.println(instr);
 //		
-//		for(String line : tmpEvals) {
-//			System.out.println(line);
-//		}
-//		
-//		System.out.println("Expression remaining: "+expression);
-//		Matcher varMatcher = Pattern.compile("([a-zA-Z_]{1}[a-zA-Z_0-9.]*?)([^a-zA-Z_0-9.()]|$)").matcher(expression);
-//		while(varMatcher.find()){
-//		    String name = varMatcher.group(1);
-//		    System.out.println("varNeeded: "+name);
-//		}
+//		System.out.println("\nTHIS REMAINS: "+aa.a);
+		
+		
+//		System.exit(0);
+
 
 		
-		IWeaselHardware hardware = new IWeaselHardware() {
-
-			@Override
-			public boolean hasFunction(String functionName) {
-				if(functionName.equals("print")) {
-					return true;
-				}
-				return false;
-			}
-			
-			@Override
-			public int getFunctionArgumentCount(String functionName) {
-				
-				if(functionName.equals("print")) {
-					return 1;
-				}
-				
-				
-				return 0;
-			}
-
-			@Override
-			public WeaselObject callFunction(WeaselEngine engine, String functionName, WeaselObject[] args) {
-				
-				if(functionName.equals("print")) {
-					
-					System.out.println(args[0].get());
-					return new WeaselInteger(((String)args[0].get()).length());
-					
-				}
-				
-				return null;
-			}
-
-			@Override
-			public WeaselObject getVariable(String name) {
-				if (name.equals("hw.num")) return new WeaselInteger(10);
-				return null;
-			}
-
-			@Override
-			public void setVariable(String name, Object object) {}
-
-
-
-		};
-
-
-		try {
-			
-			WeaselEngine engine = new WeaselEngine(hardware);
-
-			engine.setVariable("abc", 99);
-			engine.setVariable("out", 0);
-
-			InstructionList prog = engine.instructionList;
-			
-			prog.append(new InstructionIf("abc - 99 == out","yes","no"));
-			prog.append(new InstructionLabel("yes"));
-			prog.append(new InstructionCall("say", "\"YES!\""));	
-			prog.append(new InstructionAssignRetval("eee"));
-			prog.append(new InstructionCall("print","\"eee is equal to \"+str(eee)"));
-			prog.append(new InstructionGoto("end"));
-			prog.append(new InstructionLabel("no"));
-			prog.append(new InstructionCall("print", "\"NO!\""));
-			prog.append(new InstructionLabel("end"));
-			prog.append(new InstructionEnd());
-			
-			prog.append(new InstructionFunction("say", "what"));
-			prog.append(new InstructionCall("print", "str(what)"));
-			prog.append(new InstructionReturn("17"));
-			
-			engine.run(100);
-
-		} catch (RuntimeException re) {
-			System.out.println(re.getMessage());
-		}
+//		IWeaselHardware hardware = new IWeaselHardware() {
+//
+//			@Override
+//			public boolean hasFunction(String functionName) {
+//				if(functionName.equals("print")) {
+//					return true;
+//				}
+//				return false;
+//			}
+//			
+//			@Override
+//			public int getFunctionArgumentCount(String functionName) {
+//				
+//				if(functionName.equals("print")) {
+//					return 1;
+//				}
+//				
+//				
+//				return 0;
+//			}
+//
+//			@Override
+//			public WeaselObject callFunction(WeaselEngine engine, String functionName, WeaselObject[] args) {
+//				
+//				if(functionName.equals("print")) {
+//					
+//					System.out.println(args[0].get());
+//					return new WeaselInteger(((String)args[0].get()).length());
+//					
+//				}
+//				
+//				return null;
+//			}
+//
+//			@Override
+//			public WeaselObject getVariable(String name) {
+//				if (name.equals("hw.num")) return new WeaselInteger(10);
+//				return null;
+//			}
+//
+//			@Override
+//			public void setVariable(String name, Object object) {}
+//
+//
+//
+//		};
+//
+//
+//		try {
+//			
+//			WeaselEngine engine = new WeaselEngine(hardware);
+//
+//			engine.setVariable("abc", 99);
+//			engine.setVariable("out", 0);
+//
+//			InstructionList prog = engine.instructionList;
+//			
+//			prog.append(new InstructionIf("abc - 99 == out","yes","no"));
+//			prog.append(new InstructionLabel("yes"));
+//			prog.append(new InstructionCall("say", "\"YES!\""));	
+//			prog.append(new InstructionAssignRetval("eee"));
+//			prog.append(new InstructionCall("print","\"eee is equal to \"+str(eee)"));
+//			prog.append(new InstructionGoto("end"));
+//			prog.append(new InstructionLabel("no"));
+//			prog.append(new InstructionCall("print", "\"NO!\""));
+//			prog.append(new InstructionLabel("end"));
+//			prog.append(new InstructionEnd());
+//			
+//			prog.append(new InstructionFunction("say", "what"));
+//			prog.append(new InstructionCall("print", "str(what)"));
+//			prog.append(new InstructionReturn("17"));
+//			
+//			engine.run(100);
+//
+//		} catch (RuntimeException re) {
+//			System.out.println(re.getMessage());
+//		}
 
 
 //		WeaselVariableMap map = engine.variables;

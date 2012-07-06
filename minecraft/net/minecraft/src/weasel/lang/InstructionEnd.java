@@ -36,4 +36,11 @@ public class InstructionEnd extends Instruction {
 		return this;
 	}
 
+	@Override
+	public String toString() {
+		return "END";
+	}
+	
+	
+
 }

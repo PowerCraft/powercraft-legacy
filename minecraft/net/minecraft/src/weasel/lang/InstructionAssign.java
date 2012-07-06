@@ -91,4 +91,9 @@ public class InstructionAssign extends Instruction {
 		this.expression = expression;
 	}
 
+	@Override
+	public String toString() {
+		return "ASSIGN '"+lhsVarName+"' = '"+expression+"'";
+	}
+
 }

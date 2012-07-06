@@ -116,5 +116,18 @@ public class InstructionFunction extends Instruction {
 	public int getArgumentCount() {
 		return args.length;
 	}
+	
+	@Override
+	public String toString() {
+		String a = "FUNCTION "+functionName+" (";
+		boolean first=true;
+		for(String str : args) {
+			if(!first) a += ", ";
+			first=false;
+			a += "'"+str+"'";
+		}
+		a+=")";
+		return a;
+	}
 
 }

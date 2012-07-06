@@ -126,9 +126,6 @@ public abstract class Instruction implements PC_INBT {
 			case END:
 				return new InstructionEnd().readFromNBT(tag);
 				
-			case PAUSE:
-				return new InstructionPause().readFromNBT(tag);
-				
 			default:
 				return null;
 		}
@@ -143,7 +140,7 @@ public abstract class Instruction implements PC_INBT {
 	@SuppressWarnings("javadoc")
 	protected enum InstructionType {
 
-		LABEL, GOTO, CALL, FUNCTION, ASSIGN, ASSIGN_RETVAL, PUSH, POP, IF, END, PAUSE;
+		LABEL, GOTO, CALL, FUNCTION, ASSIGN, ASSIGN_RETVAL, PUSH, POP, IF, END;
 
 		private InstructionType() {
 			setup();
@@ -171,5 +168,8 @@ public abstract class Instruction implements PC_INBT {
 		/** enum index */
 		public int index;
 	}
+	
+	@Override
+	public abstract String toString();
 
 }

@@ -72,5 +72,10 @@ public class InstructionAssignRetval extends Instruction {
 	public void setVarName(String lhsVarName) {
 		this.lhsVarName = lhsVarName;
 	}
+	
+	@Override
+	public String toString() {
+		return "ASSIGN_RETVAL -> '"+lhsVarName+"'";
+	}
 
 }

@@ -70,5 +70,10 @@ public class InstructionReturn extends Instruction {
 		this.expression = expression;
 		return this;
 	}
+	
+	@Override
+	public String toString() {
+		return "RETURN '"+expression+"'";
+	}
 
 }

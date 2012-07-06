@@ -1,6 +1,9 @@
 package net.minecraft.src;
 
 
+import java.util.HashSet;
+import java.util.Set;
+
 import net.minecraft.src.forge.ITextureProvider;
 
 
@@ -15,7 +18,7 @@ import net.minecraft.src.forge.ITextureProvider;
  * 
  * @author MightyPork
  */
-public class PCco_BlockLockedChestReplacement extends BlockLockedChest {
+public class PCco_BlockLockedChestReplacement extends BlockLockedChest implements PC_IBlockType {
 	/**
 	 * @param par1 id
 	 */
@@ -42,5 +45,19 @@ public class PCco_BlockLockedChestReplacement extends BlockLockedChest {
 		} else {
 			return Block.dispenser.getBlockTextureFromSideAndMetadata(0, 0);
 		}
+	}
+
+	@Override
+	public Set<String> getBlockFlags(World world, PC_CoordI pos) {
+		Set<String> flags  = new HashSet<String>();
+		flags.add("NO_HARVEST");
+		return flags;
+	}
+
+	@Override
+	public Set<String> getItemFlags(ItemStack stack) {
+		Set<String> flags  = new HashSet<String>();
+		flags.add("NO_BUILD");
+		return flags;
 	}
 }
