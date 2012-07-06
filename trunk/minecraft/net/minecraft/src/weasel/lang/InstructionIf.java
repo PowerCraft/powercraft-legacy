@@ -102,5 +102,10 @@ public class InstructionIf extends Instruction {
 	public void setExpression(String expression) {
 		this.expression = expression;
 	}
+	
+	@Override
+	public String toString() {
+		return "IF '"+expression+"' THEN '"+yesLabel+"' ELSE '"+noLabel+"'";
+	}
 
 }

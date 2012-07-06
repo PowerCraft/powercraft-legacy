@@ -64,4 +64,8 @@ public class InstructionGoto extends Instruction {
 		return this;
 	}
 
+	@Override
+	public String toString() {
+		return "GOTO '"+targetLabelName+"'";
+	}
 }

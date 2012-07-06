@@ -82,6 +82,13 @@ public class InstructionList implements PC_INBT {
 	 * @param args arguments for the call
 	 */
 	public void callFunction(String functionName, WeaselObject[] args) {
+		
+		// if the function was not found in the program space, try hardware.
+		if (engine.hardwareFunctionExists(functionName)) {
+			engine.callHardwareFunction(functionName, args);
+			return;
+		}
+		
 		for (Instruction instruction : list) {
 			if (instruction instanceof InstructionFunction) {
 
@@ -111,14 +118,9 @@ public class InstructionList implements PC_INBT {
 				}
 
 			}
-		}
-
-		// if the function was not found in the program space, try hardware.
-		if (engine.hardwareFunctionExists(functionName)) {
-			engine.callHardwareFunction(functionName, args);
-		} else {
-			throw new WeaselRuntimeException("INSTRL Call - function " + functionName + " does not exist.");
-		}
+		}		
+		
+		throw new WeaselRuntimeException("INSTRL Call - function " + functionName + " does not exist.");
 
 	}
 

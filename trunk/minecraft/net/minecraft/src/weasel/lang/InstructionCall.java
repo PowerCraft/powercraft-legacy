@@ -138,5 +138,18 @@ public class InstructionCall extends Instruction {
 	public int getParameterCount() {
 		return parameterExpressions.length;
 	}
+	
+	@Override
+	public String toString() {
+		String a = "CALL "+targetFunctionName+" (";
+		boolean first=true;
+		for(String str : parameterExpressions) {
+			if(!first) a += ", ";
+			first=false;
+			a += "'"+str+"'";
+		}
+		a+=")";
+		return a;
+	}
 
 }

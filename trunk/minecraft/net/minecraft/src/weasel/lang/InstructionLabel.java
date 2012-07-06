@@ -62,5 +62,10 @@ public class InstructionLabel extends Instruction {
 		this.labelName = labelName;
 		return this;
 	}
+	
+	@Override
+	public String toString() {
+		return "LABEL '"+labelName+"'";
+	}
 
 }

@@ -681,31 +681,38 @@ public class mod_PCcore extends PC_Module implements PC_IActivatorListener {
 			return true;
 		}
 
-		if (!world.isRemote) {
-			int dir = ((MathHelper.floor_double(((player.rotationYaw * 4F) / 360F) + 0.5D) & 3) + 2) % 4;
+		
+		int dir = ((MathHelper.floor_double(((player.rotationYaw * 4F) / 360F) + 0.5D) & 3) + 2) % 4;
 
-			if (PC_Utils.isPlacingReversed()) {
-				dir = PC_Utils.reverseSide(dir);
+//		if (PC_Utils.isPlacingReversed()) {
+//			dir = PC_Utils.reverseSide(dir);
+//		}
+		
+		
+
+		for (int i = 0; i < 3; i++) {
+
+			PC_CoordI chest = pos.offset(-Direction.offsetX[dir], i, -Direction.offsetZ[dir]);
+			if (i == 2) {
+				//try direct up.
+				chest = pos.offset(0, 1, 0);
+			}
+			
+			if(chest.getId(world) == Block.chest.blockID && chest.offset(0,-1,0).getId(world) == Block.blockSteel.blockID) {
+				break;
 			}
 
-			for (int i = 0; i < 3; i++) {
-
-
-				PC_CoordI chest = pos.offset(-Direction.offsetX[dir], i, -Direction.offsetZ[dir]);
-				if (i == 2) {
-					chest = pos.offset(0, 1, 0);
-				}
-
-				ItemStack stackchest = PCco_ItemBlockLockedChestReplacement.extractAndRemoveChest(world, chest);
-				if (stackchest != null) {
-					float f = 0.7F;
-					double d = world.rand.nextFloat() * f + (1.0F - f) * 0.5D;
-					double d1 = world.rand.nextFloat() * f + (1.0F - f) * 0.5D;
-					double d2 = world.rand.nextFloat() * f + (1.0F - f) * 0.5D;
-					EntityItem entityitem = new EntityItem(world, chest.x + d, chest.y + d1, chest.z + d2, stackchest);
-					entityitem.delayBeforeCanPickup = 10;
-					world.spawnEntityInWorld(entityitem);
-				}
+			ItemStack stackchest = PCco_ItemBlockLockedChestReplacement.extractAndRemoveChest(world, chest);
+			if (stackchest != null) {
+				float f = 0.7F;
+				double d = world.rand.nextFloat() * f + (1.0F - f) * 0.5D;
+				double d1 = world.rand.nextFloat() * f + (1.0F - f) * 0.5D;
+				double d2 = world.rand.nextFloat() * f + (1.0F - f) * 0.5D;
+				EntityItem entityitem = new EntityItem(world, chest.x + d, chest.y + d1, chest.z + d2, stackchest);
+				entityitem.delayBeforeCanPickup = 10;
+				world.spawnEntityInWorld(entityitem);
+				stack.damageItem(1, player);
+				return true;
 			}
 		}
 

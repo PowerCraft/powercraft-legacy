@@ -65,5 +65,10 @@ public class InstructionPush extends Instruction {
 	public void execute(WeaselEngine engine, InstructionList instructionList) throws WeaselRuntimeException {
 		engine.dataStack.push(WeaselObject.getWrapperForValue(Calculator.evaluate(pushedExpression, engine)));
 	}
+	
+	@Override
+	public String toString() {
+		return "PUSH <- '"+pushedExpression+"'";
+	}
 
 }
