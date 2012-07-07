@@ -4,21 +4,18 @@ package weasel;
 import java.util.ArrayList;
 import java.util.List;
 
-import net.minecraft.src.NBTTagCompound;
-
 import weasel.exception.SyntaxError;
 import weasel.exception.WeaselRuntimeException;
 import weasel.lang.Instruction;
 import weasel.obj.WeaselInteger;
 import weasel.obj.WeaselObject;
-import weasel.obj.WeaselString;
 
 
 
 public class Test {
 
 	public void run() {
-		if(true) return;
+		if (true) return;
 
 		IWeaselHardware hardware = new IWeaselHardware() {
 
@@ -95,8 +92,8 @@ public class Test {
 		pb.a("");
 		pb.a("");
 		pb.a("");
-		
-		
+
+
 //		pb.a("global state = false;");
 //		pb.a("");
 //		pb.a("function pinChanged(){");
@@ -166,14 +163,14 @@ public class Test {
 			engine.instructionList.addAll(list);
 
 			try {
-				
+
 				engine.run(511);
-				
+
 			} catch (WeaselRuntimeException we) {
 				System.out.println("ERROR: " + we.getMessage());
 			}
-			
-			
+
+
 
 		} catch (SyntaxError e) {
 			System.out.println("ERROR: " + e.getMessage());

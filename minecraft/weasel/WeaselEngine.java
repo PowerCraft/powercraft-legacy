@@ -143,7 +143,7 @@ public class WeaselEngine implements PC_INBT, IVariableProvider, IFunctionProvid
 	 * @throws WeaselRuntimeException when something goes wrong.
 	 */
 	public boolean run(int statementsMax) {
-		
+
 		//if (isProgramFinished) return true;
 
 		for (; statementsMax > 0; statementsMax--) {
@@ -158,7 +158,7 @@ public class WeaselEngine implements PC_INBT, IVariableProvider, IFunctionProvid
 				} else {
 
 					boolean notpaused = !pauseRequested;
-					pauseRequested= false;
+					pauseRequested = false;
 					return notpaused;
 				}
 
@@ -172,7 +172,7 @@ public class WeaselEngine implements PC_INBT, IVariableProvider, IFunctionProvid
 			}
 		}
 		boolean notpaused = !pauseRequested;
-		pauseRequested= false;
+		pauseRequested = false;
 		return notpaused;
 	}
 
@@ -324,7 +324,7 @@ public class WeaselEngine implements PC_INBT, IVariableProvider, IFunctionProvid
 	 * @param funcName function name
 	 * @param args function arguments, array of simple objects
 	 */
-	public void callFunctionExternal(String funcName, Object ... args) {
+	public void callFunctionExternal(String funcName, Object... args) {
 		instructionList.callFunctionExternal(funcName, Calc.s2w(args));
 	}
 

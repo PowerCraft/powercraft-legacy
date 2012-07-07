@@ -115,8 +115,8 @@ public class Calc {
 //	private static String correctQuotes(String expression) {
 //		return expression.replaceAll("'", "\"");
 //	}
-	
-	
+
+
 
 //  // NOT USED ANYWHERE	
 //	/**
@@ -145,31 +145,33 @@ public class Calc {
 //		return jep.getValueAsObject();
 //
 //	}
-	
-	
+
+
 	/**
 	 * Convert weasel object array to simple object array
+	 * 
 	 * @param array weasel object array
 	 * @return object array
 	 */
 	public static Object[] w2s(WeaselObject... array) {
 		Object[] out = new Object[array.length];
 		int id = 0;
-		for(WeaselObject obj: array) {
+		for (WeaselObject obj : array) {
 			out[id++] = obj.get();
 		}
 		return out;
 	}
-	
+
 	/**
 	 * Convert simple object array to weasel object array
+	 * 
 	 * @param array object array
 	 * @return weasel object array
 	 */
 	public static WeaselObject[] s2w(Object... array) {
 		WeaselObject[] out = new WeaselObject[array.length];
 		int id = 0;
-		for(Object obj: array) {
+		for (Object obj : array) {
 			out[id++] = WeaselObject.getWrapperForValue(obj);
 		}
 		return out;

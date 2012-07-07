@@ -53,8 +53,6 @@ public abstract class WeaselObject implements PC_INBT {
 		return tag;
 	}
 	
-	private static int cnt = 0;
-
 	/**
 	 * Load an object from Compound NBT tag, using the proper WeaselObject
 	 * subtype.

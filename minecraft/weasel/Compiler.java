@@ -271,7 +271,7 @@ public class Compiler {
 				} else if (letter == ')') {
 					bracketLevel--;
 				}
-				
+
 				if (letter == '"') {
 					stringOpen ^= true;
 				}
@@ -391,7 +391,7 @@ public class Compiler {
 
 		source = source.replace("'", "\"");
 		//System.out.println(source);
-		
+
 		source = source.replaceAll("([^a-zA-Z0-9._]|^)for[(](.*?)[)][{]", "$1for($2;){");
 
 		// ++ and --, but it works only outside other expressions.
@@ -413,18 +413,18 @@ public class Compiler {
 
 		// remove () from end and pause
 		source = source.replaceAll("([^a-zA-Z0-9._]|^)(end|pause|restart)\\s*[(]\\s*[)]\\s*;", "$1$2;");
-		
+
 		// add quotes to isset
 		source = source.replaceAll("([^a-zA-Z0-9._]|^)(isset)\\s*[(]\\s*([a-zA-Z_.]{1}[a-zA-Z0-9_.]*?)\\s*[)]\\s*", "$1$2(\"$3\")");
-		
+
 
 		try {
 			source = Calc.convertNumbersToDecimal(source);
 		} catch (ParseException e1) {
 			throw new SyntaxError(e1.getMessage());
 		}
-		
-		System.out.println("\n == SOURCE BEFORE WHITESPACE FIX ==\n"+source+"\n");
+
+		System.out.println("\n == SOURCE BEFORE WHITESPACE FIX ==\n" + source + "\n");
 
 		// Replace string constants by replacement marks, each time 
 		// an instruction is created, replace it back.
@@ -610,8 +610,7 @@ public class Compiler {
 					instructionList.add(new InstructionRestart());
 
 				} else {
-					if(!statement.equals(""))
-						throw new SyntaxError("Invalid statement at \"" + statement + ";\".");
+					if (!statement.equals("")) throw new SyntaxError("Invalid statement at \"" + statement + ";\".");
 				}
 
 				//reset string builder.
@@ -847,73 +846,73 @@ public class Compiler {
 
 					String inBracket = readUntil(reader, '(', ')', "WHILE condition");
 
-					
+
 					List<String> args = splitBracketSafe(inBracket, ';');
-					
+
 					String labelBegin = makeTmpLabel();
 					String labelPreiter = makeTmpLabel();
 					String labelEnd = makeTmpLabel();
 
 					loopLabelsContinue.push(labelPreiter);
 					loopLabelsBreak.push(labelEnd);
-					
-					if(args.size() == 1) {
-						
+
+					if (args.size() == 1) {
+
 						String header = args.get(0);
-						
+
 						String init;
 						String var;
 						String start;
 						String stop;
-						
-						if(header.matches("[a-zA-Z_.][a-zA-Z0-9_.]*?[=][^:]+[:][^:]+")) {
+
+						if (header.matches("[a-zA-Z_.][a-zA-Z0-9_.]*?[=][^:]+[:][^:]+")) {
 							init = header.substring(0, header.indexOf(":"));
-							
+
 							var = header.substring(0, header.indexOf("="));
-							start = header.substring(header.indexOf("=")+1, header.indexOf(":"));
-							stop = header.substring(header.indexOf(":")+1);
-						}else if(header.matches("[^:]+[:][^:]+")) {
+							start = header.substring(header.indexOf("=") + 1, header.indexOf(":"));
+							stop = header.substring(header.indexOf(":") + 1);
+						} else if (header.matches("[^:]+[:][^:]+")) {
 							var = makeTmpVar();
 							start = header.substring(0, header.indexOf(":"));
-							stop = header.substring(header.indexOf(":")+1);
-							init = var + "="+start;
-							
-						}else {
-							throw new SyntaxError("Invalid condition block in FOR loop, at \""+header+"\"");
+							stop = header.substring(header.indexOf(":") + 1);
+							init = var + "=" + start;
+
+						} else {
+							throw new SyntaxError("Invalid condition block in FOR loop, at \"" + header + "\"");
 						}
-							
+
 						// the initializer.
-						instructionList.addAll(parseCodeBlock(init+";"));
+						instructionList.addAll(parseCodeBlock(init + ";"));
 						String direction = makeTmpVar();
-						instructionList.add(new InstructionAssign(false, direction, "-1 + (("+start+") < ("+stop+"))*2"));
-				
+						instructionList.add(new InstructionAssign(false, direction, "-1 + ((" + start + ") < (" + stop + "))*2"));
+
 						instructionList.add(new InstructionLabel(labelBegin));
-						
-						instructionList.add(new InstructionIf(var +" == ("+stop+") + "+direction, labelEnd, ""));
-						
+
+						instructionList.add(new InstructionIf(var + " == (" + stop + ") + " + direction, labelEnd, ""));
+
 						assertNextBlack(reader, '{', "FOR body", "FOR condition must be followed by \"{\".");
 						instructionList.addAll(parseCodeBlock(readUntil(reader, '{', '}', "FOR body")));
-						
+
 
 						instructionList.add(new InstructionLabel(labelPreiter));
-						instructionList.add(new InstructionAssign(false, var, var+" + " + direction));
-						
-					}else {
+						instructionList.add(new InstructionAssign(false, var, var + " + " + direction));
+
+					} else {
 						String init = args.get(0);
 						String cond = args.get(1);
 						String iter = args.get(2);
-						
-						instructionList.addAll(parseCodeBlock(init+";"));
-						
+
+						instructionList.addAll(parseCodeBlock(init + ";"));
+
 						instructionList.add(new InstructionLabel(labelBegin));
-						instructionList.add(new InstructionIf(cond, "", labelEnd));	
-						
+						instructionList.add(new InstructionIf(cond, "", labelEnd));
+
 						assertNextBlack(reader, '{', "FOR body", "FOR condition must be followed by \"{\".");
 						instructionList.addAll(parseCodeBlock(readUntil(reader, '{', '}', "FOR body")));
 
 						instructionList.add(new InstructionLabel(labelPreiter));
-						instructionList.addAll(parseCodeBlock(iter+";"));
-						
+						instructionList.addAll(parseCodeBlock(iter + ";"));
+
 					}
 
 					instructionList.add(new InstructionGoto(labelBegin));
