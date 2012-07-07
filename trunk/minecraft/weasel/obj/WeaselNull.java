@@ -11,6 +11,9 @@ import net.minecraft.src.PC_INBT;
  */
 public class WeaselNull extends WeaselObject {
 	
+	/**
+	 * Null placeholder in stack.
+	 */
 	public WeaselNull() {
 		super(WeaselObjectType.NULL);
 	}

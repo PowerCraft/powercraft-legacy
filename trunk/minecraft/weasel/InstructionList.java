@@ -30,13 +30,13 @@ public class InstructionList implements PC_INBT {
 
 	/** Instruction list. Use appendInstruction to add new instructions. */
 	public ArrayList<Instruction> list = new ArrayList<Instruction>();
-	
-	private Map<String,Integer> labelMap = new HashMap<String, Integer>();
+
+	private Map<String, Integer> labelMap = new HashMap<String, Integer>();
 	private boolean labelMapGenerated = false;
-	
-	private Map<String,Integer> functionMap = new HashMap<String, Integer>();
+
+	private Map<String, Integer> functionMap = new HashMap<String, Integer>();
 	private boolean functionMapGenerated = false;
-	
+
 	private WeaselEngine engine;
 	private int programCounter = 0;
 
@@ -59,7 +59,7 @@ public class InstructionList implements PC_INBT {
 		list.add(instruction);
 		instruction.setAddress(list.size() - 1);
 	}
-	
+
 
 	/**
 	 * Append all instructions from a list to the instruction list.
@@ -67,49 +67,49 @@ public class InstructionList implements PC_INBT {
 	 * @param list2
 	 */
 	public void addAll(List<Instruction> list2) {
-		for(Instruction instruction: list2) {
+		for (Instruction instruction : list2) {
 			add(instruction);
 		}
 	}
-	
+
 	/**
 	 * Make a table of label addresses for faster program execution
 	 */
 	public void generateLabelMap() {
-		
-		if(labelMap == null) {
+
+		if (labelMap == null) {
 			labelMap = new HashMap<String, Integer>();
-		}else {
+		} else {
 			labelMap.clear();
 		}
-		
+
 		for (Instruction instruction : list) {
 			if (instruction instanceof InstructionLabel) {
 				labelMap.put(((InstructionLabel) instruction).getLabelName(), instruction.getAddress());
 			}
 		}
-		
+
 		labelMapGenerated = true;
 	}
-	
-	
+
+
 	/**
 	 * Make a table of label addresses for faster program execution
 	 */
 	public void generateFunctionMap() {
-		
-		if(functionMap == null) {
+
+		if (functionMap == null) {
 			functionMap = new HashMap<String, Integer>();
-		}else {
+		} else {
 			functionMap.clear();
 		}
-		
+
 		for (Instruction instruction : list) {
 			if (instruction instanceof InstructionFunction) {
 				functionMap.put(((InstructionFunction) instruction).getFunctionName(), instruction.getAddress());
 			}
 		}
-		
+
 		functionMapGenerated = true;
 	}
 
@@ -129,12 +129,13 @@ public class InstructionList implements PC_INBT {
 	 * @param labelName
 	 */
 	public void gotoLabel(String labelName) {
-		if(!labelMapGenerated) generateLabelMap();		
-		movePointerTo(labelMap.get(labelName));		
+		if (!labelMapGenerated) generateLabelMap();
+		movePointerTo(labelMap.get(labelName));
 	}
-	
+
 	/**
-	 * Call program function from outside the program. Return in this function will then pause the engine.
+	 * Call program function from outside the program. Return in this function
+	 * will then pause the engine.
 	 * 
 	 * @param functionName name of a function to call
 	 * @param args arguments for the call
@@ -143,7 +144,7 @@ public class InstructionList implements PC_INBT {
 		engine.systemStack.push(engine.retval);
 		callFunction_do(true, functionName, args);
 	}
-	
+
 	/**
 	 * Call program function from within the program.
 	 * 
@@ -158,6 +159,8 @@ public class InstructionList implements PC_INBT {
 	 * Stack what needs to be stacked, and move pointer to a header of the
 	 * specified function
 	 * 
+	 * @param external flag that this call comes from an external caller, not
+	 *            from the program.
 	 * @param functionName name of a function
 	 * @param args arguments for the call
 	 */
@@ -168,7 +171,7 @@ public class InstructionList implements PC_INBT {
 			engine.setReturnValue(engine.callProvidedFunction(engine, functionName, args));
 			return;
 		}
-		
+
 		// hardware functions
 		if (!external && engine.hardwareFunctionExists(functionName)) {
 			engine.callHardwareFunction(functionName, args);
@@ -176,11 +179,11 @@ public class InstructionList implements PC_INBT {
 		}
 
 		// program functions
-		
-		if(!functionMapGenerated) generateFunctionMap();		
+
+		if (!functionMapGenerated) generateFunctionMap();
 		Integer address = functionMap.get(functionName);
-		
-		if(address != null) {
+
+		if (address != null) {
 			InstructionFunction func = (InstructionFunction) list.get(address);
 
 			if (func.getArgumentCount() != args.length) {
@@ -214,19 +217,19 @@ public class InstructionList implements PC_INBT {
 	 * @param retval returned value. Return null for void functions.
 	 */
 	public void returnFromCall(WeaselObject retval) {
-		
+
 		engine.setReturnValue(retval);
 
 		engine.variables = (WeaselVariableMap) engine.systemStack.pop();
 		programCounter = ((WeaselInteger) engine.systemStack.pop()).get();
 		boolean wasExternal = ((WeaselBoolean) engine.systemStack.pop()).get();
-		
-		if(wasExternal) {
+
+		if (wasExternal) {
 			engine.externalCallRetval = engine.retval;
 			engine.retval = engine.systemStack.pop();
 			engine.requestPause();
 		}
-		
+
 	}
 
 	/**
@@ -262,8 +265,8 @@ public class InstructionList implements PC_INBT {
 		}
 		tag.setTag(nk_LIST, tags);
 		tag.setInteger(nk_SIZE, size);
-		
-		tag.setInteger(nk_PC,programCounter);
+
+		tag.setInteger(nk_PC, programCounter);
 
 		return tag;
 
@@ -290,7 +293,7 @@ public class InstructionList implements PC_INBT {
 			NBTTagCompound tag1 = (NBTTagCompound) tags.tagAt(i);
 			list.set(tag1.getInteger(nk_INDEX), Instruction.loadInstructionFromNBT(tag1));
 		}
-		
+
 		programCounter = tag.getInteger(nk_PC);
 
 		return this;
