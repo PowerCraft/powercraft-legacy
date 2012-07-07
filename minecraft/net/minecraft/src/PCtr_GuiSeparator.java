@@ -30,21 +30,21 @@ public class PCtr_GuiSeparator implements PC_IGresBase {
 		w.setWidthForInventory();
 		PC_GresLayoutH hg = new PC_GresLayoutH();
 		hg.add(new PC_GresImage(mod_PCcore.getImgDir() + "gres/widgets.png", 56, 66, 8, 15));
-		
+
 		PC_GresInventory left, right;
-		
+
 		hg.add(left = new PC_GresInventory(3, 3));
-		
+
 		hg.add(right = new PC_GresInventory(3, 3));
-		
-		for(int i=0; i<tileentityconveyorfilter.getSizeInventory(); i++) {
-			if(i%6 >= 3) {
-				left.setSlot(new Slot(tileentityconveyorfilter,i,0,0), i%3, (int) Math.floor(i/6));
-			}else {
-				right.setSlot(new Slot(tileentityconveyorfilter,i,0,0), i%3, (int) Math.floor(i/6));
+
+		for (int i = 0; i < tileentityconveyorfilter.getSizeInventory(); i++) {
+			if (i % 6 >= 3) {
+				left.setSlot(new Slot(tileentityconveyorfilter, i, 0, 0), i % 3, (int) Math.floor(i / 6));
+			} else {
+				right.setSlot(new Slot(tileentityconveyorfilter, i, 0, 0), i % 3, (int) Math.floor(i / 6));
 			}
 		}
-		
+
 		hg.add(new PC_GresImage(mod_PCcore.getImgDir() + "gres/widgets.png", 64, 66, 8, 15));
 		w.add(hg);
 		w.add(new PC_GresInventoryPlayer(true));

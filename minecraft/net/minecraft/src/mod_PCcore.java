@@ -10,7 +10,6 @@ import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 
 import net.minecraft.client.Minecraft;
-import net.minecraft.src.weasel.Test;
 
 import org.lwjgl.input.Keyboard;
 import org.w3c.dom.Document;
@@ -18,6 +17,8 @@ import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 import org.xml.sax.SAXParseException;
+
+import weasel.Test;
 
 
 /**
@@ -99,7 +100,7 @@ public class mod_PCcore extends PC_Module implements PC_IActivatorListener {
 
 	/** Activation Crystal item */
 	public static Item activator;
-	
+
 
 	/** Power Dust item (fuel) */
 	public static Item powerDust;
@@ -351,13 +352,13 @@ public class mod_PCcore extends PC_Module implements PC_IActivatorListener {
 		map.put("pc.gui.spawnerEditor.enableDangerous", "Enable dangerous");
 		map.put("pc.gui.ok", "OK");
 		map.put("pc.gui.cancel", "Cancel");
-		
+
 		map.put("pc.sniffer.sniffing", "Sniffing ores...");
 		map.put("pc.sniffer.away", "(far away)");
 		map.put("pc.sniffer.desc", "Portable radar device");
 		map.put("pc.sniffer.distance", "Sniffing depth (blocks):");
-		
-		
+
+
 		map.put("pc.gui.update.title", "Mod Update Notification");
 		map.put("pc.gui.update.newVersionAvailable", "Update available!");
 		map.put("pc.gui.update.readMore", "Read more...");
@@ -681,14 +682,14 @@ public class mod_PCcore extends PC_Module implements PC_IActivatorListener {
 			return true;
 		}
 
-		
+
 		int dir = ((MathHelper.floor_double(((player.rotationYaw * 4F) / 360F) + 0.5D) & 3) + 2) % 4;
 
 //		if (PC_Utils.isPlacingReversed()) {
 //			dir = PC_Utils.reverseSide(dir);
 //		}
-		
-		
+
+
 
 		for (int i = 0; i < 3; i++) {
 
@@ -697,8 +698,8 @@ public class mod_PCcore extends PC_Module implements PC_IActivatorListener {
 				//try direct up.
 				chest = pos.offset(0, 1, 0);
 			}
-			
-			if(chest.getId(world) == Block.chest.blockID && chest.offset(0,-1,0).getId(world) == Block.blockSteel.blockID) {
+
+			if (chest.getId(world) == Block.chest.blockID && chest.offset(0, -1, 0).getId(world) == Block.blockSteel.blockID) {
 				break;
 			}
 

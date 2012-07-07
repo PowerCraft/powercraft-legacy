@@ -54,6 +54,13 @@ public class PClo_BlockPulsar extends BlockContainer implements PC_IBlockType {
 	}
 
 	@Override
+	public void updateTick(World world, int i, int j, int k, Random random) {
+		super.updateTick(world, i, j, k, random);
+		world.markBlockAsNeedsUpdate(i, j, k);
+		world.notifyBlockChange(i, j, k, blockID);
+	}
+
+	@Override
 	public boolean blockActivated(World world, int i, int j, int k, EntityPlayer player) {
 		ItemStack ihold = player.getCurrentEquippedItem();
 		if (ihold != null) {

@@ -4,20 +4,6 @@ package net.minecraft.src;
 import java.util.List;
 import java.util.Random;
 
-import net.minecraft.src.weasel.IWeaselHardware;
-import net.minecraft.src.weasel.InstructionList;
-import net.minecraft.src.weasel.WeaselEngine;
-import net.minecraft.src.weasel.lang.InstructionAssignRetval;
-import net.minecraft.src.weasel.lang.InstructionCall;
-import net.minecraft.src.weasel.lang.InstructionEnd;
-import net.minecraft.src.weasel.lang.InstructionFunction;
-import net.minecraft.src.weasel.lang.InstructionGoto;
-import net.minecraft.src.weasel.lang.InstructionIf;
-import net.minecraft.src.weasel.lang.InstructionLabel;
-import net.minecraft.src.weasel.lang.InstructionReturn;
-import net.minecraft.src.weasel.obj.WeaselInteger;
-import net.minecraft.src.weasel.obj.WeaselObject;
-
 
 /**
  * @author MightyPork

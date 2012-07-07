@@ -150,8 +150,10 @@ public class PCtr_BlockConveyorSeparator extends BlockContainer implements PC_IB
 
 		// calculate final rotation
 		rotation += redir;
-		while(rotation >= 4) rotation -= 4;
-		while(rotation < 0) rotation += 4;
+		while (rotation >= 4)
+			rotation -= 4;
+		while (rotation < 0)
+			rotation += 4;
 
 		// offset coordinate
 		PC_CoordI pos_leading_to = pos.copy();

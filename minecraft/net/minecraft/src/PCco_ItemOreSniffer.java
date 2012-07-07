@@ -1,7 +1,6 @@
 package net.minecraft.src;
 
 
-import java.util.ArrayList;
 import java.util.List;
 
 
@@ -31,7 +30,7 @@ public class PCco_ItemOreSniffer extends Item {
 		int MoveY = offsetY[l];
 		int MoveZ = offsetZ[l];
 
-		PC_Utils.openGres(entityplayer, new PCco_GuiOreSnifferResultScreen(entityplayer, world, new PC_CoordI(i,j,k), new PC_CoordI(MoveX,MoveY,MoveZ)));
+		PC_Utils.openGres(entityplayer, new PCco_GuiOreSnifferResultScreen(entityplayer, world, new PC_CoordI(i, j, k), new PC_CoordI(MoveX, MoveY, MoveZ)));
 
 		itemstack.damageItem(1, entityplayer);
 

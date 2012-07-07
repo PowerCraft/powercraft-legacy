@@ -354,7 +354,7 @@ public class PCtr_TileEntitySeparationBelt extends PC_TileEntity implements IInv
 	public boolean canPlayerInsertStackTo(int slot, ItemStack stack) {
 		return true;
 	}
-	
+
 	@Override
 	public boolean canMachineInsertStackTo(int slot, ItemStack stack) {
 		return false;

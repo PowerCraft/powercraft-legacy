@@ -70,10 +70,10 @@ public class PCco_GuiSpawnerEditor implements PC_IGresBase {
 		// @formatter:on
 
 		PC_GresWidget w = new PC_GresWindow(230, 100, PC_Lang.tr("tile.mobSpawner.name")).setAlignH(PC_GresAlign.STRETCH);
-		((PC_GresWindow)w).gapUnderTitle = 12;
-		
+		((PC_GresWindow) w).gapUnderTitle = 12;
+
 		PC_GresLayoutV vg = new PC_GresLayoutV();
-		
+
 		PC_GresLayoutH hg = null;
 
 		int maxw = 0;
@@ -84,7 +84,7 @@ public class PCco_GuiSpawnerEditor implements PC_IGresBase {
 				hg = new PC_GresLayoutH();
 				hg.setWidgetMargin(0);
 			}
-			
+
 			buttons[i] = new PC_GresButton(names[i]).setId(i).setWidgetMargin(1);
 
 			maxw = Math.max(buttons[i].getMinSize().x, maxw);
