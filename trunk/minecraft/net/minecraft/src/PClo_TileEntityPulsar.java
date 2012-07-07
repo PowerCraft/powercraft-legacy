@@ -104,7 +104,7 @@ public class PClo_TileEntityPulsar extends PC_TileEntity {
 
 		delayTimer++;
 
-		if (delayTimer >= holdtime) {
+		if (delayTimer >= holdtime && active) {
 			active = false;
 			updateBlock();
 		}
@@ -121,9 +121,12 @@ public class PClo_TileEntityPulsar extends PC_TileEntity {
 	 * Notify block change.
 	 */
 	public void updateBlock() {
-		worldObj.notifyBlocksOfNeighborChange(xCoord, yCoord, zCoord, getBlockType().blockID);
-		worldObj.notifyBlocksOfNeighborChange(xCoord, yCoord - 1, zCoord, getBlockType().blockID);
-		worldObj.markBlocksDirty(xCoord, yCoord, zCoord, xCoord, yCoord, zCoord);
+		worldObj.scheduleBlockUpdate(xCoord, yCoord, zCoord, mod_PClogic.pulsar.blockID, 1);
+
+//		
+//		worldObj.markBlocksDirty(xCoord, yCoord, zCoord, xCoord, yCoord, zCoord);
+//		worldObj.notifyBlocksOfNeighborChange(xCoord, yCoord, zCoord, getBlockType().blockID);
+//		worldObj.notifyBlocksOfNeighborChange(xCoord, yCoord - 1, zCoord, getBlockType().blockID);
 	}
 
 	/**

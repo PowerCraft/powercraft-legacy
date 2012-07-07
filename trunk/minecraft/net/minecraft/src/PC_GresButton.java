@@ -8,8 +8,8 @@ package net.minecraft.src;
  * @copy (c) 2012
  */
 public class PC_GresButton extends PC_GresWidget {
-	
-	private PC_CoordI buttonScale = new PC_CoordI(12,12);
+
+	private PC_CoordI buttonScale = new PC_CoordI(12, 12);
 
 	private boolean isClicked = false;
 
@@ -20,27 +20,26 @@ public class PC_GresButton extends PC_GresWidget {
 		super(label);
 		canAddWidget = false;
 		minSize.setTo(60, 0);
-		buttonScale = new PC_CoordI(6,6);
+		buttonScale = new PC_CoordI(6, 6);
 	}
-	
+
 	/**
 	 * Set distance from text to borders of the box.
 	 * 
 	 * @param x distance horizontally
 	 * @param y distance vertically
-	 * 
 	 * @return this
 	 */
 	public PC_GresButton setButtonPadding(int x, int y) {
-		buttonScale = new PC_CoordI(x,y);
+		buttonScale = new PC_CoordI(x, y);
 		return this;
 	}
 
 	@Override
 	public PC_CoordI calcSize() {
 		FontRenderer fontRenderer = getFontRenderer();
-		
-		if(buttonScale == null) buttonScale = new PC_CoordI(6,6);
+
+		if (buttonScale == null) buttonScale = new PC_CoordI(6, 6);
 
 		size.setTo(fontRenderer.getStringWidth(text), fontRenderer.FONT_HEIGHT).add(buttonScale).add(buttonScale);
 

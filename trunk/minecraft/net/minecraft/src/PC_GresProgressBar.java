@@ -64,9 +64,10 @@ public class PC_GresProgressBar extends PC_GresWidget {
 	public float getFraction() {
 		return fraction;
 	}
-	
+
 	/**
 	 * Get the number shown as label.
+	 * 
 	 * @return number
 	 */
 	public int getNumber() {
@@ -115,7 +116,7 @@ public class PC_GresProgressBar extends PC_GresWidget {
 		this.type = type;
 		return this;
 	}
-	
+
 	/**
 	 * Set label offset (added to the output number)
 	 * 
@@ -330,7 +331,7 @@ public class PC_GresProgressBar extends PC_GresWidget {
 	public void mouseMove(PC_CoordI mpos) {
 		if (dragging) {
 			mouseClick(mpos, 0);
-			((PC_GresGui)this.getContainerManager().gresGui).gui.actionPerformed(this, this.getContainerManager().gresGui);
+			((PC_GresGui) this.getContainerManager().gresGui).gui.actionPerformed(this, this.getContainerManager().gresGui);
 		}
 	}
 

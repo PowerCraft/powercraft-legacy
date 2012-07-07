@@ -49,14 +49,14 @@ public class PCco_BlockLockedChestReplacement extends BlockLockedChest implement
 
 	@Override
 	public Set<String> getBlockFlags(World world, PC_CoordI pos) {
-		Set<String> flags  = new HashSet<String>();
+		Set<String> flags = new HashSet<String>();
 		flags.add("NO_HARVEST");
 		return flags;
 	}
 
 	@Override
 	public Set<String> getItemFlags(ItemStack stack) {
-		Set<String> flags  = new HashSet<String>();
+		Set<String> flags = new HashSet<String>();
 		flags.add("NO_BUILD");
 		return flags;
 	}

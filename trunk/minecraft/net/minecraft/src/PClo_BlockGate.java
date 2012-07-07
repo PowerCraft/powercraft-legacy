@@ -117,7 +117,9 @@ public class PClo_BlockGate extends BlockContainer implements PC_IRotatedBox, PC
 	 * @return type index
 	 */
 	public int getType(IBlockAccess iblockaccess, int x, int y, int z) {
-		return getTE(iblockaccess, x, y, z).gateType;
+		PClo_TileEntityGate teg = getTE(iblockaccess, x, y, z);
+		//if(teg==null) return -1;
+		return teg.gateType;
 	}
 
 	/**
@@ -705,9 +707,12 @@ public class PClo_BlockGate extends BlockContainer implements PC_IRotatedBox, PC
 	 */
 	private void changeGateState(boolean state, World world, int x, int y, int z) {
 		int l = world.getBlockMetadata(x, y, z);
+
 		TileEntity tileentity = world.getBlockTileEntity(x, y, z);
+		//world.removeBlockTileEntity(x,y,z);
 
 		changingState = true;
+
 		if (state) {
 			world.setBlockWithNotify(x, y, z, mod_PClogic.gateOn.blockID);
 		} else {
@@ -715,12 +720,16 @@ public class PClo_BlockGate extends BlockContainer implements PC_IRotatedBox, PC
 		}
 
 		world.setBlockMetadataWithNotify(x, y, z, l);
+
 		changingState = false;
+
 		if (tileentity != null) {
 			tileentity.validate();
 			world.setBlockTileEntity(x, y, z, tileentity);
 		}
+
 		hugeUpdate(world, x, y, z, blockID);
+
 	}
 
 	/**
@@ -791,7 +800,7 @@ public class PClo_BlockGate extends BlockContainer implements PC_IRotatedBox, PC
 	@Override
 	public void onNeighborBlockChange(World world, int x, int y, int z, int l) {
 
-
+		if (changingState) return;
 
 		int type = getType(world, x, y, z);
 
@@ -801,6 +810,7 @@ public class PClo_BlockGate extends BlockContainer implements PC_IRotatedBox, PC
 
 			boolean outputActive = isOutputActive(world, x, y, z);
 
+
 			if (on && !outputActive) {
 				// turn off
 				changeGateState(false, world, x, y, z);
@@ -809,15 +819,12 @@ public class PClo_BlockGate extends BlockContainer implements PC_IRotatedBox, PC
 				changeGateState(true, world, x, y, z);
 			}
 
-
 			for (; gateUpdates.size() > 0 && world.getWorldTime() - gateUpdates.get(0).updateTime > 30L; gateUpdates.remove(0)) {}
 			if (checkForBurnout(world, x, y, z, false)) {
-				//schedule unpause tick
 				world.scheduleBlockUpdate(x, y, z, blockID, 6);
 				return;
 			}
 			checkForBurnout(world, x, y, z, true);
-
 
 			return;
 		}
@@ -1130,8 +1137,8 @@ public class PClo_BlockGate extends BlockContainer implements PC_IRotatedBox, PC
 
 	@Override
 	public void onBlockAdded(World world, int x, int y, int z) {
-		hugeUpdate(world, x, y, z, blockID);
-		super.onBlockAdded(world, x, y, z);
+		//hugeUpdate(world, x, y, z, blockID);
+		if (!changingState) super.onBlockAdded(world, x, y, z);
 	}
 
 	/**

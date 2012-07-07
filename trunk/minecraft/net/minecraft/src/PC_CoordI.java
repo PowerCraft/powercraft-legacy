@@ -558,10 +558,11 @@ public class PC_CoordI implements PC_ICoord, PC_INBT {
 
 	/**
 	 * Get coord multiplied by integer
+	 * 
 	 * @param scale multiplicand
 	 * @return the result
 	 */
 	public PC_CoordI multiply(int scale) {
-		return new PC_CoordI(x*scale, y*scale, z*scale);
+		return new PC_CoordI(x * scale, y * scale, z * scale);
 	}
 }

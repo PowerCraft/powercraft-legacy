@@ -84,7 +84,7 @@ public class PClo_GuiProgrammableGate implements PC_IGresBase {
 		for (String str : jepkw) {
 			kw.add(new Keyword(str, colorMathFunction, false));
 		}
-		
+
 		String[] jepcs = teg.evaluator.getConstants();
 
 		for (String str : jepcs) {
@@ -142,8 +142,8 @@ public class PClo_GuiProgrammableGate implements PC_IGresBase {
 
 		hg = new PC_GresLayoutH().setAlignH(PC_GresAlign.CENTER).setWidgetMargin(0);
 		for (Entry<String, String> entry : hintMap.entrySet()) {
-			PC_GresWidget widget = new PC_GresButton(entry.getKey()).setButtonPadding(3, 4).setColor(PC_GresWidget.textColorEnabled, 0x404040).setColor(PC_GresWidget.textColorHover, 0x000000).setColor(PC_GresWidget.textColorActive, 0x0000ff).setTag(entry.getValue())
-					.setId(100).setWidgetMargin(1).setMinWidth(0);
+			PC_GresWidget widget = new PC_GresButton(entry.getKey()).setButtonPadding(3, 4).setColor(PC_GresWidget.textColorEnabled, 0x404040).setColor(PC_GresWidget.textColorHover, 0x000000).setColor(PC_GresWidget.textColorActive, 0x0000ff)
+					.setTag(entry.getValue()).setId(100).setWidgetMargin(1).setMinWidth(0);
 
 			widthCounter += widget.calcSize().x + widget.widgetMargin;
 

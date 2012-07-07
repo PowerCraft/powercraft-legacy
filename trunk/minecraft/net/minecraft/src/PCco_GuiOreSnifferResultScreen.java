@@ -19,9 +19,9 @@ public class PCco_GuiOreSnifferResultScreen implements PC_IGresBase {
 	private PC_CoordI[][] startpos;
 	private World world;
 	private PC_CoordI start;
-	
+
 	private static final int range = 16;
-	
+
 	private void rotateRight() {
 		PC_CoordI swap = startpos[0][0];
 		startpos[0][0] = startpos[0][1];
@@ -45,11 +45,11 @@ public class PCco_GuiOreSnifferResultScreen implements PC_IGresBase {
 		this.vector = vector;
 		this.world = world;
 		this.start = startBlock;
-		
+
 		int l = MathHelper.floor_double(((player.rotationYaw * 4F) / 360F) + 0.5D) & 3;
 
 		if (vector.equals(new PC_CoordI(0, -1, 0))) {
-			
+
 			this.startpos[0][0] = startBlock.offset(-1, 0, -1);
 			this.startpos[1][0] = startBlock.offset(0, 0, -1);
 			this.startpos[2][0] = startBlock.offset(1, 0, -1);
@@ -59,15 +59,15 @@ public class PCco_GuiOreSnifferResultScreen implements PC_IGresBase {
 			this.startpos[0][2] = startBlock.offset(-1, 0, 1);
 			this.startpos[1][2] = startBlock.offset(0, 0, 1);
 			this.startpos[2][2] = startBlock.offset(1, 0, 1);
-			
+
 			l = 3 - l;
 			l += 3;
-			for(int i=0; i<l; i++) {
+			for (int i = 0; i < l; i++) {
 				rotateRight();
 				rotateRight();
 			}
-			
-			
+
+
 		} else if (vector.equals(new PC_CoordI(1, 0, 0))) {
 			this.startpos[0][0] = startBlock.offset(0, 1, -1);
 			this.startpos[1][0] = startBlock.offset(0, 1, 0);
@@ -88,8 +88,8 @@ public class PCco_GuiOreSnifferResultScreen implements PC_IGresBase {
 			this.startpos[0][2] = startBlock.offset(-1, -1, 0);
 			this.startpos[1][2] = startBlock.offset(0, -1, 0);
 			this.startpos[2][2] = startBlock.offset(1, -1, 0);
-			
-			
+
+
 		} else if (vector.equals(new PC_CoordI(0, 1, 0))) {
 			this.startpos[0][2] = startBlock.offset(-1, 0, -1);
 			this.startpos[1][2] = startBlock.offset(0, 0, -1);
@@ -100,13 +100,13 @@ public class PCco_GuiOreSnifferResultScreen implements PC_IGresBase {
 			this.startpos[0][0] = startBlock.offset(-1, 0, 1);
 			this.startpos[1][0] = startBlock.offset(0, 0, 1);
 			this.startpos[2][0] = startBlock.offset(1, 0, 1);
-			
+
 			l += 2;
-			for(int i=0; i<l; i++) {
+			for (int i = 0; i < l; i++) {
 				rotateRight();
 				rotateRight();
 			}
-			
+
 		} else if (vector.equals(new PC_CoordI(-1, 0, 0))) {
 			this.startpos[2][0] = startBlock.offset(0, 1, -1);
 			this.startpos[1][0] = startBlock.offset(0, 1, 0);
@@ -180,7 +180,7 @@ public class PCco_GuiOreSnifferResultScreen implements PC_IGresBase {
 	@Override
 	public void actionPerformed(PC_GresWidget widget, PC_IGresGui gui) {
 		if (widget == slider) {
-			int distance = slider.getNumber()-1;
+			int distance = slider.getNumber() - 1;
 			loadBlocksForDistance(distance);
 		}
 	}
@@ -219,9 +219,9 @@ public class PCco_GuiOreSnifferResultScreen implements PC_IGresBase {
 
 	@Override
 	public void updateTick(PC_IGresGui gui) {
-		
-		if(start.distanceTo(new PC_CoordI(Math.round(player.posX), Math.round(player.posY), Math.round(player.posZ))) > 8) gui.close();
-		
+
+		if (start.distanceTo(new PC_CoordI(Math.round(player.posX), Math.round(player.posY), Math.round(player.posZ))) > 8) gui.close();
+
 	}
 
 }

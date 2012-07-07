@@ -1,11 +1,11 @@
 package net.minecraft.src;
 
 
-import net.minecraft.src.weasel.Calculator;
 
-import org.nfunk.jep.JEP;
-import org.nfunk.jep.Node;
-import org.nfunk.jep.ParseException;
+import weasel.Calc;
+import weasel.jep.JEP;
+import weasel.jep.Node;
+import weasel.jep.ParseException;
 
 
 /**
@@ -126,7 +126,7 @@ public class PClo_TileEntityGate extends PC_TileEntity {
 		evaluator.setVarValue("R", R ? 1 : 0);
 
 		try {
-			return Calculator.toBoolean(evaluator.evaluate(jepNode));
+			return Calc.toBoolean(evaluator.evaluate(jepNode));
 		} catch (ParseException e) {
 			return false;
 		}

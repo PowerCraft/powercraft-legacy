@@ -34,7 +34,7 @@ public interface PC_ISpecialAccessInventory {
 	 * @return can store it here
 	 */
 	public boolean canPlayerInsertStackTo(int slot, ItemStack stack);
-	
+
 	/**
 	 * Can we AUTOMATICALLY (by belt) put this stack into this slot?<br>
 	 * For the insertion itself, use methods from PC_InvUtils.
