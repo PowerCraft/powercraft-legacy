@@ -1,0 +1,46 @@
+package weasel.lang;
+
+
+import net.minecraft.src.NBTTagCompound;
+import weasel.InstructionList;
+import weasel.WeaselEngine;
+import weasel.exception.WeaselRuntimeException;
+
+
+/**
+ * Restart the program, clear all but global variables
+ * 
+ * @author MightyPork
+ */
+public class InstructionRestart extends Instruction {
+
+	/**
+	 * RESTART
+	 */
+	public InstructionRestart() {
+		super(InstructionType.RESTART);
+	}
+
+	@Override
+	public void execute(WeaselEngine engine, InstructionList instructionList) throws WeaselRuntimeException {
+		engine.restartProgram();
+	}
+
+	@Override
+	public NBTTagCompound writeToNBT(NBTTagCompound tag) {
+		return tag;
+	}
+
+	@Override
+	public InstructionRestart readFromNBT(NBTTagCompound tag) {
+		return this;
+	}
+
+	@Override
+	public String toString() {
+		return "RESTART";
+	}
+
+
+
+}
