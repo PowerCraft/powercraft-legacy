@@ -47,7 +47,7 @@ public class WeaselStack extends WeaselObject {
 	public void push(WeaselObject obj) {
 		
 		if(stack.size() > 3000) {
-			throw new WeaselRuntimeException("Stack overflow - too deep recursion.");
+			throw new WeaselRuntimeException("Stack overflow - recursion too deep.");
 		}
 		
 		if(obj == null) {
@@ -71,7 +71,6 @@ public class WeaselStack extends WeaselObject {
 			return obj;
 			
 		} catch (EmptyStackException e) {
-			e.printStackTrace();
 			throw new WeaselRuntimeException("Calling POP on empty stack.");
 			
 		}
@@ -130,7 +129,7 @@ public class WeaselStack extends WeaselObject {
 
 	@Override
 	public String toString() {
-		return "STACK(" + stack + ")";
+		return "Stack{" + stack + "}";
 	}
 
 

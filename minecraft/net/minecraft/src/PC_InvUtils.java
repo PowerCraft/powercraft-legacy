@@ -96,78 +96,6 @@ public class PC_InvUtils {
 		return false;
 	}
 
-	private static boolean isSpecialContainer(IInventory inventory) {
-		boolean flag = false;
-		flag |= inventory instanceof TileEntityFurnace;
-		flag |= inventory instanceof TileEntityBrewingStand;
-		return flag;
-	}
-
-	private static ItemStack dispenseFromSpecialContainer(IInventory inventory) {
-		if (inventory instanceof TileEntityFurnace) {
-			ItemStack stack = inventory.getStackInSlot(2);
-			if (stack != null && stack.stackSize > 0) {
-				inventory.setInventorySlotContents(2, null);
-				return stack;
-			}
-			return null;
-		}
-
-		if (inventory instanceof TileEntityBrewingStand) {
-
-			// check if brewing finished
-			if (((TileEntityBrewingStand) inventory).getBrewTime() != 0) {
-				return null;
-			}
-
-			for (int i = 0; i < 4; i++) {
-
-				ItemStack stack = inventory.getStackInSlot(i);
-
-				// if 0-2, its potion slot. If 3, its ingredient.
-				if ((i < 3 && (stack != null && stack.stackSize > 0 && stack.itemID == Item.potion.shiftedIndex && stack.getItemDamage() != 0)) || (i == 3 && (stack != null))) {
-					inventory.setInventorySlotContents(i, null);
-					return stack;
-				}
-			}
-			return null;
-		}
-
-		return null;
-	}
-
-	/**
-	 * Remove first stack from inventory
-	 * 
-	 * @param inventory inv
-	 * @return the stack removed
-	 */
-	public static ItemStack dispenseFirstStack(IInventory inventory) {
-
-		if (isSpecialContainer(inventory)) {
-			return dispenseFromSpecialContainer(inventory);
-		}
-
-		for (int i = 0, n = inventory.getSizeInventory(); i < n; i++) {
-
-			if (inventory instanceof PC_ISpecialAccessInventory) {
-				if (!((PC_ISpecialAccessInventory) inventory).canDispenseStackFrom(i)) {
-					continue;
-				}
-			}
-
-			ItemStack stack = inventory.getStackInSlot(i);
-			if (stack != null && stack.stackSize > 0) {
-
-				inventory.setInventorySlotContents(i, null);
-				return stack;
-
-			}
-		}
-
-		return null;
-	}
-
 	/**
 	 * Add given stack to an inventory. First fills used slots, then starts
 	 * using new slots.
@@ -356,7 +284,7 @@ public class PC_InvUtils {
 	/**
 	 * Check if given inventory is full
 	 * 
-	 * @param inv the ivnentory
+	 * @param inv the inventory
 	 * @return is full
 	 */
 	public static boolean isInventoryFull(IInventory inv) {
@@ -374,6 +302,33 @@ public class PC_InvUtils {
 
 		for (int i = 0; i < inv.getSizeInventory(); i++) {
 			if (inv.getStackInSlot(i) == null || inv.getStackInSlot(i).stackSize < Math.min(inv.getInventoryStackLimit(), inv.getStackInSlot(i).getMaxStackSize())) {
+				return false;
+			}
+		}
+		return true;
+	}
+	
+	/**
+	 * Check if given inventory has no free slots.
+	 * 
+	 * @param inv the inventory
+	 * @return is full
+	 */
+	public static boolean hasInventoryNoFreeSlots(IInventory inv) {
+		if (inv == null) {
+			return false;
+		}
+
+		if (inv instanceof PC_IStateReportingInventory) {
+			return ((PC_IStateReportingInventory) inv).hasContainerNoFreeSlots();
+		}
+
+		if (inv instanceof TileEntityFurnace) {
+			return inv.getStackInSlot(1) != null;
+		}
+
+		for (int i = 0; i < inv.getSizeInventory(); i++) {
+			if (inv.getStackInSlot(i) == null) {
 				return false;
 			}
 		}
@@ -514,11 +469,11 @@ public class PC_InvUtils {
 	 * @param input original stacks array
 	 * @return new stacks array
 	 */
-	public static ItemStack[] mergeStacks(ItemStack[] input) {
+	public static ItemStack[] groupStacks(ItemStack[] input) {
 
 		List<ItemStack> list = stacksToList(input);
 
-		mergeStacks(list);
+		groupStacks(list);
 
 		return stacksToArray(list);
 
@@ -531,7 +486,7 @@ public class PC_InvUtils {
 	 * 
 	 * @param input original list of stacks
 	 */
-	public static void mergeStacks(List<ItemStack> input) {
+	public static void groupStacks(List<ItemStack> input) {
 
 		if (input == null) {
 			return;
@@ -588,5 +543,44 @@ public class PC_InvUtils {
 	 */
 	public static ItemStack[] stacksToArray(List<ItemStack> stacks) {
 		return stacks.toArray(new ItemStack[stacks.size()]);
+	}
+	
+	/**
+	 * Load whole IInventory from NBT compound tag
+	 * @param outerTag the outer, main tag
+	 * @param invTagName inventory tag name (the same you used to save the inventory)
+	 * @param inventory the loaded inventory
+	 */
+	public static void loadInventoryFromNBT(NBTTagCompound outerTag, String invTagName, IInventory inventory) {
+		NBTTagList nbttaglist = outerTag.getTagList(invTagName);
+		for (int i = 0; i < nbttaglist.tagCount(); i++) {
+			NBTTagCompound nbttagcompound1 = (NBTTagCompound) nbttaglist.tagAt(i);
+			int j = nbttagcompound1.getByte("Slot") & 0xff;
+			if (j >= 0 && j < inventory.getSizeInventory()) {
+				inventory.setInventorySlotContents(j, ItemStack.loadItemStackFromNBT(nbttagcompound1));
+			}
+		}
+	}
+	
+	/**
+	 * Save whole IInventory into a NBT compound tag
+	 * @param outerTag the outer, main tag
+	 * @param invTagName inventory tag name
+	 * @param inventory the saved inventory
+	 */
+	public static void saveInventoryToNBT(NBTTagCompound outerTag, String invTagName, IInventory inventory) {
+		
+		NBTTagList nbttaglist = new NBTTagList();
+		for (int i = 0; i < inventory.getSizeInventory(); i++) {
+			if (inventory.getStackInSlot(i) != null) {
+				NBTTagCompound nbttagcompound1 = new NBTTagCompound();
+				nbttagcompound1.setByte("Slot", (byte) i);
+				inventory.getStackInSlot(i).writeToNBT(nbttagcompound1);
+				nbttaglist.appendTag(nbttagcompound1);
+			}
+		}
+
+		outerTag.setTag(invTagName, nbttaglist);
+		
 	}
 }

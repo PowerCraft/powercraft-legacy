@@ -276,7 +276,7 @@ public class mod_PClogic extends PC_Module {
 		map.put("tile.PCloLogicGate.rs.name", "Redstone RS flip-flop");
 		map.put("tile.PCloLogicGate.t.name", "Redstone T flip-flop");
 
-		map.put("tile.PCloLogicGate.day.name", "Daytime Sensor");
+		map.put("tile.PCloLogicGate.day.name", "Day Sensor");
 		map.put("tile.PCloLogicGate.rain.name", "Rain Sensor");
 		map.put("tile.PCloLogicGate.chestEmpty.name", "Empty Chest Detector");
 		map.put("tile.PCloLogicGate.chestFull.name", "Full Chest Detector");
@@ -290,6 +290,7 @@ public class mod_PClogic extends PC_Module {
 		map.put("tile.PCloLogicGate.repeaterCorner.name", "Angled Repeater");
 		map.put("tile.PCloLogicGate.repeaterStraightInstant.name", "Instant Repeater");
 		map.put("tile.PCloLogicGate.repeaterCornerInstant.name", "Instant Angled Repeater");
+		map.put("tile.PCloLogicGate.night.name", "Night Sensor");
 
 
 		// descriptions.
@@ -325,6 +326,7 @@ public class mod_PClogic extends PC_Module {
 		map.put("pc.gate.repeaterCorner.desc", "simple 1-tick corner repeater");
 		map.put("pc.gate.repeaterStraightInstant.desc", "instant repeater");
 		map.put("pc.gate.repeaterCornerInstant.desc", "instant corner repeater");
+		map.put("pc.gate.night.desc", "on during night");
 
 		map.put("pc.radioRemote.connected", "Portable device connected to channel \"%s\".");
 		map.put("pc.radioRemote.desc", "Channel: %s");
@@ -346,12 +348,21 @@ public class mod_PClogic extends PC_Module {
 
 		map.put("pc.gui.sensor.range", "Detection distance:");
 
-
 		map.put("pc.sensor.range.1", "Range: %s block");
 		map.put("pc.sensor.range.2-4", "Range: %s blocks");
 		map.put("pc.sensor.range.5+", "Range: %s blocks");
+		
 
-		map.put("pc.gui.customGate.syntaxError", "There's a syntax error in your code!");
+		map.put("pc.gui.programGate.close", "Cancel");
+		map.put("pc.gui.programGate.saveAndClose", "Save");
+		map.put("pc.gui.programGate.checkErrors", "Check for errors");
+		map.put("pc.gui.programGate.startAndClose", "Launch");
+		
+		map.put("pc.gui.chestFull.requireAllSlotsFull", "All slots must be fully used");
+		
+
+		
+		
 
 	}
 
@@ -474,6 +485,11 @@ public class mod_PClogic extends PC_Module {
 				new ItemStack(gateOn, 1, PClo_GateType.DAY),
 				new Object[] { "G", "P",
 					'G', Item.lightStoneDust, 'P', Block.pressurePlateStone });
+		
+		ModLoader.addRecipe(
+				new ItemStack(gateOn, 1, PClo_GateType.NIGHT),
+				new Object[] { "N", "G",
+					'N', new ItemStack(gateOn, 1, PClo_GateType.NOT), 'G', new ItemStack(gateOn, 1, PClo_GateType.DAY) });
 
 		ModLoader.addRecipe(
 				new ItemStack(gateOn, 1, PClo_GateType.RAIN),
@@ -543,7 +559,7 @@ public class mod_PClogic extends PC_Module {
 					'+', Item.redstone });
 		
 		ModLoader.addRecipe(
-				new ItemStack(gateOn, 2, PClo_GateType.PROGRAMMABLE),
+				new ItemStack(gateOn, 2, PClo_GateType.CPU),
 				new Object[] { "+++", "+S+", "+++",
 					'+', Item.redstone, 'S', Block.stone });
 

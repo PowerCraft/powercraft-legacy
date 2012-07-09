@@ -7,7 +7,9 @@ import java.util.List;
 import net.minecraft.src.NBTTagCompound;
 import net.minecraft.src.PC_INBT;
 import weasel.exception.EndOfProgramException;
+import weasel.exception.SyntaxError;
 import weasel.exception.WeaselRuntimeException;
+import weasel.lang.Instruction;
 import weasel.obj.WeaselBoolean;
 import weasel.obj.WeaselObject;
 import weasel.obj.WeaselStack;
@@ -156,7 +158,6 @@ public class WeaselEngine implements PC_INBT, IVariableProvider, IFunctionProvid
 					restartsScheduled--;
 					restartProgram();
 				} else {
-
 					boolean notpaused = !pauseRequested;
 					pauseRequested = false;
 					return notpaused;
@@ -181,14 +182,52 @@ public class WeaselEngine implements PC_INBT, IVariableProvider, IFunctionProvid
 	 * preserving globals.
 	 */
 	public void restartProgram() {
+		
 		instructionList.movePointerTo(0);
+		
 		systemStack.clear();
+		dataStack.clear();
+		
 		retval = null;
 		externalCallRetval = null;
 		variables.clear();
+		
 		// not globals! they are preserved!
-		dataStack.clear();
 	}
+	
+	/**
+	 * Clear everything and prepare for execution of a new program code
+	 */
+	public void clear() {
+		restartProgram();
+		instructionList.clear();
+		globals.clear();
+		restartsScheduled = 0;
+		isProgramFinished = false;
+		pauseRequested=false;
+	}
+	
+
+	/**
+	 * Clear all variables, insert compiled program into instruction list and get ready for it's execution.
+	 * @param instructions the new program
+	 */
+	public void insertNewProgram(List<Instruction> instructions) {
+		clear();
+		this.instructionList.addAll(instructions);
+	}
+	
+	/**
+	 * Compile given program to a list of instruction.
+	 * @param program source code
+	 * @return the list of instructions
+	 * @throws SyntaxError when there's an error in the source code
+	 */
+	public static List<Instruction> compileProgram(String program) throws SyntaxError{
+		return (new Compiler()).compile(program);
+	}
+	
+	
 
 	/**
 	 * Check if a native function exists
@@ -208,23 +247,24 @@ public class WeaselEngine implements PC_INBT, IVariableProvider, IFunctionProvid
 	 * @param args argument list
 	 */
 	public void callHardwareFunction(String functionName, WeaselObject[] args) {
-		if (hw == null) throw new WeaselRuntimeException("ENGINE CallHw() - no hardware is connected.");
+		if (hw == null) throw new WeaselRuntimeException("No hardware is connected.");
 
 		try {
 			retval = hw.callProvidedFunction(this, functionName, args);
 		} catch (ClassCastException e) {
-			throw new WeaselRuntimeException("ENGINE CallHw() -  Invalid arguments given to HW function " + functionName);
+			throw new WeaselRuntimeException("Invalid arguments for function " + functionName);
 		} catch (ArrayIndexOutOfBoundsException e) {
-			throw new WeaselRuntimeException("ENGINE CallHw() -  Not enough arguments given to HW function " + functionName);
+			throw new WeaselRuntimeException("Not enough arguments for function " + functionName);
 		} catch (Throwable t) {
-			throw new WeaselRuntimeException("ENGINE CallHw() -  Hardware call error - " + t.getMessage());
+			t.printStackTrace();
+			throw new WeaselRuntimeException("Hardware call error - " + t.getMessage());
 		}
 	}
 
 
 	@Override
 	public WeaselObject getVariable(String name) {
-
+		
 		WeaselObject obj;
 
 		if ((obj = hw.getVariable(name)) != null) {
@@ -243,8 +283,8 @@ public class WeaselEngine implements PC_INBT, IVariableProvider, IFunctionProvid
 	@Override
 	public void setVariable(String name, Object value) {
 
-		if (name == null) throw new WeaselRuntimeException("ENGINE Set() - variable name == null. @ " + name + " = " + value);
-		if (value == null) throw new WeaselRuntimeException("ENGINE Set() - variable value == null. @ " + name + " = " + value);
+		if (name == null) throw new WeaselRuntimeException("Variable name cannot be null at " + name + " = " + value);
+		if (value == null) throw new WeaselRuntimeException("Variable value cannot be null at " + name + " = " + value);
 
 		if (hw.getVariable(name) != null) {
 			hw.setVariable(name, value);
@@ -271,6 +311,7 @@ public class WeaselEngine implements PC_INBT, IVariableProvider, IFunctionProvid
 
 			variables.unsetVariable(name);
 		}
+		
 		globals.setVariable(name, value);
 	}
 
@@ -296,13 +337,13 @@ public class WeaselEngine implements PC_INBT, IVariableProvider, IFunctionProvid
 
 		if (functionName.equals("isset")) {
 
-			if (args.length != 1) throw new WeaselRuntimeException("ENGINE Isset() requires exactly one argument, got " + args.length);
+			if (args.length != 1) throw new WeaselRuntimeException("Isset() requires exactly 1 argument, got " + args.length);
 			if (args[0] instanceof WeaselString) {
 				String varname = (String) args[0].get();
 //				System.out.println("## ISSET? "+varname+" -> "+getVariable(varname));
 				return new WeaselBoolean(getVariable(varname) != null);
 			} else {
-				throw new WeaselRuntimeException("ENGINE Isset() requires String argument, got " + args[0].get().getClass().getSimpleName());
+				throw new WeaselRuntimeException("Isset() requires String argument, got " + args[0].get().getClass().getSimpleName());
 			}
 
 		}
@@ -325,8 +366,11 @@ public class WeaselEngine implements PC_INBT, IVariableProvider, IFunctionProvid
 	 * @param args function arguments, array of simple objects
 	 */
 	public void callFunctionExternal(String funcName, Object... args) {
+		if(args == null) args = new Object[] {};
 		instructionList.callFunctionExternal(funcName, Calc.s2w(args));
 	}
+	
+	public int executingFunctionExternal = 0;
 
 	/**
 	 * Get value returned from the last function called from outside
@@ -355,6 +399,5 @@ public class WeaselEngine implements PC_INBT, IVariableProvider, IFunctionProvid
 		List<String> list = new ArrayList<String>(0);
 		return list;
 	}
-
 
 }

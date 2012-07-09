@@ -650,7 +650,7 @@ public class PC_CropHarvestingManager {
 				return null;
 			}
 
-			return PC_InvUtils.mergeStacks(stacks.toArray(new ItemStack[stacks.size()]));
+			return PC_InvUtils.groupStacks(stacks.toArray(new ItemStack[stacks.size()]));
 
 		}
 

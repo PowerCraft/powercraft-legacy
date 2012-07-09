@@ -101,15 +101,7 @@ public class PCma_TileEntityRoaster extends PC_TileEntity implements IInventory,
 	@Override
 	public void readFromNBT(NBTTagCompound nbttagcompound) {
 		super.readFromNBT(nbttagcompound);
-		NBTTagList nbttaglist = nbttagcompound.getTagList("Items");
-		roasterContents = new ItemStack[getSizeInventory()];
-		for (int i = 0; i < nbttaglist.tagCount(); i++) {
-			NBTTagCompound nbttagcompound1 = (NBTTagCompound) nbttaglist.tagAt(i);
-			int j = nbttagcompound1.getByte("Slot") & 0xff;
-			if (j >= 0 && j < roasterContents.length) {
-				roasterContents[j] = ItemStack.loadItemStackFromNBT(nbttagcompound1);
-			}
-		}
+		PC_InvUtils.loadInventoryFromNBT(nbttagcompound, "Items", this);
 
 		burnTime = nbttagcompound.getInteger("burning");
 		netherTime = nbttagcompound.getInteger("netherTime");
@@ -119,17 +111,9 @@ public class PCma_TileEntityRoaster extends PC_TileEntity implements IInventory,
 	@Override
 	public void writeToNBT(NBTTagCompound nbttagcompound) {
 		super.writeToNBT(nbttagcompound);
-		NBTTagList nbttaglist = new NBTTagList();
-		for (int i = 0; i < roasterContents.length; i++) {
-			if (roasterContents[i] != null) {
-				NBTTagCompound nbttagcompound1 = new NBTTagCompound();
-				nbttagcompound1.setByte("Slot", (byte) i);
-				roasterContents[i].writeToNBT(nbttagcompound1);
-				nbttaglist.appendTag(nbttagcompound1);
-			}
-		}
-
-		nbttagcompound.setTag("Items", nbttaglist);
+		
+		PC_InvUtils.saveInventoryToNBT(nbttagcompound, "Items", this);
+		
 		nbttagcompound.setInteger("burning", burnTime);
 		nbttagcompound.setInteger("netherTime", netherTime);
 		nbttagcompound.setInteger("netherActionTime", netherActionTime);

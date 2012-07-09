@@ -44,8 +44,14 @@ public class Subtract extends PostfixMathCommand {
 				return sub((Number) param1, (Complex) param2);
 			} else if (param2 instanceof Number) {
 				return sub((Number) param1, (Number) param2);
-			}
+			} else if ((param2 instanceof Boolean)) {
+				return sub((Number) param1, ((Boolean) param2)?1:0);
 		}
+		} else if ((param1 instanceof Boolean) && (param2 instanceof Boolean)) {
+			return sub(((Boolean) param1)?1:0, ((Boolean) param2)?1:0);
+		} else if ((param1 instanceof Boolean) && (param2 instanceof Number)) {
+			return sub(((Boolean) param1)?1:0, (Number) param2);
+		} 
 		throw new ParseException("Can't subtract " + param2.getClass().getSimpleName() + " from " + param1.getClass().getSimpleName());
 	}
 

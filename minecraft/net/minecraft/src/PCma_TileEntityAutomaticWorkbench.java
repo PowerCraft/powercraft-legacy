@@ -14,6 +14,8 @@ import java.util.List;
  */
 public class PCma_TileEntityAutomaticWorkbench extends PC_TileEntity implements IInventory, PC_IStateReportingInventory, PC_ISpecialAccessInventory {
 	private static Container fakeContainer = new PCma_ContainerFake();
+	/** Flag that this AW needs pulse to craft. */
+	public boolean redstoneActivated;
 
 	/**
 	 * tile entity aw
@@ -106,13 +108,29 @@ public class PCma_TileEntityAutomaticWorkbench extends PC_TileEntity implements 
 		for (int i = 0; i < 9; i++) {
 			if (getStackInSlot(i) == null && getStackInSlot(i + 9) != null) {
 				return false;
+			}else
+			if(getStackInSlot(i) != null && getStackInSlot(i + 9) != null) {
+				if(getStackInSlot(i).stackSize < Math.min(getStackInSlot(i).getMaxStackSize(), getInventoryStackLimit())) {
+					return false;
+				}
+			}
+		}
+		return true;
+	}
+	
+
+	@Override
+	public boolean hasContainerNoFreeSlots() {
+		for (int i = 0; i < 9; i++) {
+			if (getStackInSlot(i) == null && getStackInSlot(i + 9) != null) {
+				return false;
 			}
 		}
 		return true;
 	}
 
 	private boolean redstoneActivatedMode() {
-		return worldObj.getBlockId(xCoord, yCoord - 1, zCoord) == Block.stoneBrick.blockID;
+		return redstoneActivated;
 	}
 
 	// special things.
@@ -266,6 +284,7 @@ public class PCma_TileEntityAutomaticWorkbench extends PC_TileEntity implements 
 	 */
 	public void doCrafting() {
 		ItemStack currentStack = null;
+		boolean needsSound = false;
 
 		boolean forceEject = false;
 		while (areProductsMatching()) {
@@ -285,7 +304,9 @@ public class PCma_TileEntityAutomaticWorkbench extends PC_TileEntity implements 
 				if ((forceEject && currentStack.stackSize > 0) || currentStack.stackSize >= currentStack.getMaxStackSize() || redstoneActivatedMode()) {
 					dispenseItem(currentStack);
 					currentStack = null;
+					needsSound = true;
 					if (redstoneActivatedMode()) {
+						makeSound();
 						return;
 					}
 				}
@@ -294,6 +315,11 @@ public class PCma_TileEntityAutomaticWorkbench extends PC_TileEntity implements 
 
 		if (currentStack != null) {
 			dispenseItem(currentStack);
+			needsSound = true;
+		}
+		
+		if(needsSound) {
+			makeSound();			
 		}
 	}
 
@@ -373,10 +399,14 @@ public class PCma_TileEntityAutomaticWorkbench extends PC_TileEntity implements 
 		entityitem.motionY = 0.05000000298023221D;
 		entityitem.motionZ = j1 * d3;
 		worldObj.spawnEntityInWorld(entityitem);
+		
+		return true;
+	}
+	
+	private void makeSound() {
 		if (mod_PCcore.soundsEnabled) {
 			worldObj.playAuxSFX(1000, xCoord, yCoord, zCoord, 0);
 		}
-		return true;
 	}
 
 
@@ -446,32 +476,19 @@ public class PCma_TileEntityAutomaticWorkbench extends PC_TileEntity implements 
 	@Override
 	public void readFromNBT(NBTTagCompound nbttagcompound) {
 		super.readFromNBT(nbttagcompound);
-		NBTTagList nbttaglist = nbttagcompound.getTagList("Items");
-		actContents = new ItemStack[getSizeInventory()];
-		for (int i = 0; i < nbttaglist.tagCount(); i++) {
-			NBTTagCompound nbttagcompound1 = (NBTTagCompound) nbttaglist.tagAt(i);
-			int j = nbttagcompound1.getByte("Slot") & 0xff;
-			if (j >= 0 && j < actContents.length) {
-				actContents[j] = ItemStack.loadItemStackFromNBT(nbttagcompound1);
-			}
-		}
+		
+		PC_InvUtils.loadInventoryFromNBT(nbttagcompound, "Items", this);
+		redstoneActivated = nbttagcompound.getBoolean("RedstoneActivated");
 
 	}
 
 	@Override
 	public void writeToNBT(NBTTagCompound nbttagcompound) {
 		super.writeToNBT(nbttagcompound);
-		NBTTagList nbttaglist = new NBTTagList();
-		for (int i = 0; i < actContents.length; i++) {
-			if (actContents[i] != null) {
-				NBTTagCompound nbttagcompound1 = new NBTTagCompound();
-				nbttagcompound1.setByte("Slot", (byte) i);
-				actContents[i].writeToNBT(nbttagcompound1);
-				nbttaglist.appendTag(nbttagcompound1);
-			}
-		}
-
-		nbttagcompound.setTag("Items", nbttaglist);
+		
+		PC_InvUtils.saveInventoryToNBT(nbttagcompound, "Items", this);
+		nbttagcompound.setBoolean("RedstoneActivated",redstoneActivated);
+		
 	}
 
 	@Override
@@ -519,4 +536,5 @@ public class PCma_TileEntityAutomaticWorkbench extends PC_TileEntity implements 
 	public boolean canMachineInsertStackTo(int slot, ItemStack stack) {
 		return false;
 	}
+
 }

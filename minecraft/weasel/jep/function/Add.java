@@ -73,12 +73,22 @@ public class Add extends PostfixMathCommand {
 				return add((Complex) param1, (Complex) param2);
 			else if (param2 instanceof Number) return add((Complex) param1, (Number) param2);
 		} else if (param1 instanceof Number) {
+			
 			if (param2 instanceof Complex)
 				return add((Complex) param2, (Number) param1);
-			else if (param2 instanceof Number) return add((Number) param1, (Number) param2);
+			else if (param2 instanceof Number)
+				return add((Number) param1, (Number) param2);
+			else if (param2 instanceof Boolean)
+				return add((Number) param1, ((Boolean) param2)?1:0);
+			
 		} else if ((param1 instanceof String) && (param2 instanceof String)) {
 			return (String) param1 + (String) param2;
+		} else if ((param1 instanceof Boolean) && (param2 instanceof Boolean)) {
+			return add(((Boolean) param1)?1:0, ((Boolean) param2)?1:0);
+		} else if ((param1 instanceof Boolean) && (param2 instanceof Number)) {
+			return add(((Boolean) param1)?1:0, (Number) param2);
 		}
+		
 
 		throw new ParseException("Can't add " + param2.getClass().getSimpleName() + " to " + param1.getClass().getSimpleName());
 	}

@@ -1,6 +1,7 @@
 package weasel.obj;
 
 
+import weasel.Calc;
 import net.minecraft.src.NBTTagCompound;
 
 
@@ -47,40 +48,7 @@ public class WeaselBoolean extends WeaselObject {
 
 	@Override
 	public void set(Object obj) {
-
-		if (obj instanceof WeaselInteger) {
-			this.bool = ((WeaselInteger) obj).get() != 0;
-			return;
-		}
-
-		if (obj instanceof Double) {
-			this.bool = (int) Math.round((Double) obj) != 0;
-			return;
-		}
-
-		if (obj instanceof Float) {
-			this.bool = Math.round((Float) obj) != 0;
-			return;
-		}
-
-		if (obj instanceof Long) {
-			this.bool = ((Long) obj) != 0;
-			return;
-		}
-		if (obj instanceof WeaselBoolean) {
-			this.bool = ((WeaselBoolean) obj).get();
-			return;
-		}
-
-		if (obj instanceof Integer) {
-			this.bool = ((Integer) obj) != 0;
-			return;
-		}
-
-		if (obj == null || !(obj instanceof Boolean)) {
-			throw new RuntimeException("Trying to store " + obj + " in a boolean variable.");
-		}
-		this.bool = (Boolean) obj;
+		this.bool = Calc.toBoolean(obj);	
 	}
 
 	@Override
@@ -115,7 +83,7 @@ public class WeaselBoolean extends WeaselObject {
 
 	@Override
 	public String toString() {
-		return "B(" + (bool ? "TRUE" : "FALSE") + ")";
+		return "Boolean{"+(bool ? "TRUE" : "FALSE")+"}";
 	}
 
 	@Override

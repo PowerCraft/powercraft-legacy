@@ -223,7 +223,7 @@ public class PCma_BlockHarvester extends Block implements PC_ISwapTerrain, PC_IB
 		beamTracer.flash();
 
 		if (drops != null) {
-			PC_InvUtils.mergeStacks(drops);
+			PC_InvUtils.groupStacks(drops);
 
 
 			for (ItemStack stack : drops) {

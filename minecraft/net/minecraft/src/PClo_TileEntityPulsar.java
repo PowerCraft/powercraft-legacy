@@ -122,11 +122,6 @@ public class PClo_TileEntityPulsar extends PC_TileEntity {
 	 */
 	public void updateBlock() {
 		worldObj.scheduleBlockUpdate(xCoord, yCoord, zCoord, mod_PClogic.pulsar.blockID, 1);
-
-//		
-//		worldObj.markBlocksDirty(xCoord, yCoord, zCoord, xCoord, yCoord, zCoord);
-//		worldObj.notifyBlocksOfNeighborChange(xCoord, yCoord, zCoord, getBlockType().blockID);
-//		worldObj.notifyBlocksOfNeighborChange(xCoord, yCoord - 1, zCoord, getBlockType().blockID);
 	}
 
 	/**
@@ -157,7 +152,7 @@ public class PClo_TileEntityPulsar extends PC_TileEntity {
 	/** hold time in ticks */
 	public int holdtime = 4;
 	/** status whether pulsar is active */
-	public boolean active;
+	public boolean active = false;
 	/** makes sound */
-	public boolean silent;
+	public boolean silent = false;
 }

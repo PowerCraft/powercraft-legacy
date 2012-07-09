@@ -141,6 +141,8 @@ public class mod_PCtransport extends PC_Module {
 	@Override
 	public void registerTileEntities(List<PC_Struct3<Class<? extends TileEntity>, String, TileEntitySpecialRenderer>> list) {
 		list.add(new PC_Struct3(PCtr_TileEntitySeparationBelt.class, "FCConveyorFilter", null));
+		list.add(new PC_Struct3(PCtr_TileEntityRedirectionBelt.class, "PCConveyorRedirector", null));
+		list.add(new PC_Struct3(PCtr_TileEntityEjectionBelt.class, "PCConveyorEjector", null));
 		list.add(new PC_Struct3(PCtr_TileEntityTeleporter.class, "PCteleporter", new PCtr_TileEntityTeleporterRenderer()));
 	}
 
@@ -154,37 +156,37 @@ public class mod_PCtransport extends PC_Module {
 
 		//@formatter:off
 		
-		conveyorBelt = new PCtr_BlockConveyor(cfg().getInteger(pk_belt), PCtr_BeltType.belt)
+		conveyorBelt = new PCtr_BlockBeltNormal(cfg().getInteger(pk_belt), false)
 				.setHardness(0.22F)
 				.setResistance(5.0F)
 				.setBlockName("PCconveyorBelt")
 				.setStepSound(Block.soundMetalFootstep);
 
-		ejectionBelt = new PCtr_BlockConveyor(cfg().getInteger(pk_ejector), PCtr_BeltType.ejector)
+		ejectionBelt = new PCtr_BlockBeltEjector(cfg().getInteger(pk_ejector))
 				.setHardness(0.22F)
 				.setResistance(5.0F)
 				.setBlockName("PCconveyorFurnace")
 				.setStepSound(Block.soundMetalFootstep);
 
-		detectionBelt = new PCtr_BlockConveyor(cfg().getInteger(pk_detector), PCtr_BeltType.detector)
+		detectionBelt = new PCtr_BlockBeltDetector(cfg().getInteger(pk_detector))
 				.setHardness(0.22F)
 				.setResistance(5.0F)
 				.setBlockName("PCconveyorDetector")
 				.setStepSound(Block.soundMetalFootstep);
 
-		separationBelt = new PCtr_BlockConveyorSeparator(cfg().getInteger(pk_separator))
+		separationBelt = new PCtr_BlockBeltSeparator(cfg().getInteger(pk_separator))
 				.setHardness(0.22F)
 				.setResistance(5.0F)
 				.setBlockName("PCconveyorFilter")
 				.setStepSound(Block.soundMetalFootstep);
 
-		brakeBelt = new PCtr_BlockConveyor(cfg().getInteger(pk_brake), PCtr_BeltType.brake)
+		brakeBelt = new PCtr_BlockBeltBrake(cfg().getInteger(pk_brake))
 				.setHardness(0.22F)
 				.setResistance(5.0F)
 				.setBlockName("PCconveyorBrake")
 				.setStepSound(Block.soundMetalFootstep);
 
-		redirectionBelt = new PCtr_BlockConveyor(cfg().getInteger(pk_redirector), PCtr_BeltType.redirector)
+		redirectionBelt = new PCtr_BlockBeltRedirector(cfg().getInteger(pk_redirector))
 				.setHardness(0.22F)
 				.setResistance(5.0F)
 				.setBlockName("PCconveyorRedirector")
@@ -196,7 +198,7 @@ public class mod_PCtransport extends PC_Module {
 				.setBlockName("PCconveyorItemElevator")
 				.setStepSound(Block.soundMetalFootstep);
 
-		speedyBelt = new PCtr_BlockConveyor(cfg().getInteger(pk_speedybelt), PCtr_BeltType.speedy)
+		speedyBelt = new PCtr_BlockBeltNormal(cfg().getInteger(pk_speedybelt), true)
 				.setHardness(0.22F)
 				.setResistance(5.0F)
 				.setBlockName("PCconveyorSpeedBelt")
@@ -294,6 +296,24 @@ public class mod_PCtransport extends PC_Module {
 		map.put("pc.gui.teleporter.outputDirection", "Primary output:");
 		map.put("pc.gui.teleporter.type.sender", "SENDER");
 		map.put("pc.gui.teleporter.type.target", "TARGET");
+		
+		map.put("pc.gui.ejector.modeEjectTitle", "Ejection mode:");
+		map.put("pc.gui.ejector.modeStacks", "Whole stacks");
+		map.put("pc.gui.ejector.modeItems", "Single items");
+		map.put("pc.gui.ejector.modeAll", "All contents at once");
+		
+		map.put("pc.gui.ejector.modeSelectTitle", "Method of selection:");
+		map.put("pc.gui.ejector.modeSelectFirst", "First slot");
+		map.put("pc.gui.ejector.modeSelectLast", "Last slot");
+		map.put("pc.gui.ejector.modeSelectRandom", "Random slot");
+		
+		
+		map.put("pc.gui.separationBelt.group", "Ignore subtypes of");
+		map.put("pc.gui.separationBelt.groupLogs", "Logs");
+		map.put("pc.gui.separationBelt.groupPlanks", "Planks");
+		map.put("pc.gui.separationBelt.groupAll", "All");
+		
+		
 	}
 
 	@Override
