@@ -5,6 +5,8 @@ import java.io.ByteArrayInputStream;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -18,7 +20,8 @@ import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 import org.xml.sax.SAXParseException;
 
-import weasel.Test;
+import weasel.Compiler;
+import weasel.exception.WeaselRuntimeException;
 
 
 /**
@@ -188,8 +191,8 @@ public class mod_PCcore extends PC_Module implements PC_IActivatorListener {
 	public void preInit() {
 
 		// Weasel testing
-		Test test = new Test();
-		test.run();
+//		Test test = new Test();
+//		test.run();
 
 
 		Thread.setDefaultUncaughtExceptionHandler(new PC_ErrorHandler());
@@ -229,7 +232,7 @@ public class mod_PCcore extends PC_Module implements PC_IActivatorListener {
 
 		conf.putBoolean(pk_optCraftCheating, false, "Makes the Crafting Tool work like TMI in Survival,\ngiving you everything with no resources consumed.");
 
-		conf.putBoolean(pk_logEnabled, true, "Enable logging. Logs errors, events and debug info.");
+		conf.putBoolean(pk_logEnabled, true, "Enable logging. Logs errors, events and debug info.\nDisabling this may slightly improve speed.");
 		conf.putBoolean(pk_logToStdout, false, "Send log also to stdout (terminal screen).");
 
 		conf.putString(pk_cfgUpdateIgnored, getVersion());
@@ -821,6 +824,10 @@ public class mod_PCcore extends PC_Module implements PC_IActivatorListener {
 		PC_Logger.fine("Loading translations from updated files.\n");
 
 		for (PC_Module module : PC_Module.modules.values()) {
+			
+			PC_Logger.finer("Recreating en_US translation files for module " + module.getModuleName());
+			module.generateTranslationFiles();
+			
 			PC_Logger.finer("Loading translations for module " + module.getModuleName());
 			if (module.lang != null) {
 				module.lang.loadTranstalions();

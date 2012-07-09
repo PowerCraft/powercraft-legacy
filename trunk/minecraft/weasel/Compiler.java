@@ -45,7 +45,7 @@ import weasel.lang.InstructionUnset;
 public class Compiler {
 
 	/** Pattern matching function headers in expressions. */
-	protected static final Pattern functionPattern = Pattern.compile("([a-zA-Z_]{1}[a-zA-Z_0-9.]*?)\\(([^(]*?)\\)");
+	protected static final Pattern functionPattern = Pattern.compile("([a-zA-Z_.]{1}[a-zA-Z_0-9.]*?)\\(([^(]*?)\\)");
 
 	/**
 	 * Pattern matching string constants in expressions.<br>
@@ -54,12 +54,12 @@ public class Compiler {
 	 */
 	protected static final Pattern stringPattern = Pattern.compile("(\"[^\"]*?\")");
 
-	private static final String variablePatternRegexp = "(?:[^a-zA-Z_0-9]|^)([a-zA-Z_]{1}[a-zA-Z_0-9.]*?)(?:[^a-zA-Z_0-9.(]|$)";
+	private static final String variablePatternRegexp = "([a-zA-Z_.]{1}[a-zA-Z_0-9.]*?)(?:[^a-zA-Z_0-9.(]|$|\n)";
 
 	private static final String mathExpressionRegexp = "[0-9a-zA-Z_.\\-+!(\"](?:{1}.*?[0-9a-zA-Z_.)\"]{1})?";
 
 	/** Pattern matching variables in an expression */
-	protected static final Pattern variablePattern = Pattern.compile(variablePatternRegexp);
+	public static final Pattern variablePattern = Pattern.compile(variablePatternRegexp);
 
 
 	/**
@@ -93,7 +93,8 @@ public class Compiler {
 		langKeywords.add("elseif");
 		langKeywords.add("end");
 		langKeywords.add("return");
-//		langKeywords.add("for");
+		langKeywords.add("restart");
+		langKeywords.add("for");
 		langKeywords.add("while");
 		langKeywords.add("do");
 		langKeywords.add("until");
@@ -101,6 +102,11 @@ public class Compiler {
 //		langKeywords.add("case");
 		langKeywords.add("break");
 		langKeywords.add("continue");
+		langKeywords.add("function");
+		langKeywords.add("push");
+		langKeywords.add("pop");
+		langKeywords.add("pause");
+		langKeywords.add("global");
 
 		jep = null;
 	}
@@ -353,8 +359,8 @@ public class Compiler {
 	private static final String replRoundBracketStart = "↑";
 	private static final String replRoundBracketEnd = "↓";
 
-	private static final String tmpVarPrefix = "_V";
-	private static final String tmpLabelPrefix = "_L";
+	private static final String tmpVarPrefix = "_v";
+	private static final String tmpLabelPrefix = "_";
 
 
 	/** Counter used to generate temporary variable names */
@@ -392,6 +398,11 @@ public class Compiler {
 		source = source.replace("'", "\"");
 		//System.out.println(source);
 
+		source = source.replaceAll("//.*?\n", "");
+		source = source.replaceAll("#.*?\n", "");
+		source = source.replace("\n", " ");
+		source = source.replaceAll("/\\*.*?\\*/", "");
+		
 		source = source.replaceAll("([^a-zA-Z0-9._]|^)for[(](.*?)[)][{]", "$1for($2;){");
 
 		// ++ and --, but it works only outside other expressions.
@@ -424,7 +435,7 @@ public class Compiler {
 			throw new SyntaxError(e1.getMessage());
 		}
 
-		System.out.println("\n == SOURCE BEFORE WHITESPACE FIX ==\n" + source + "\n");
+		//System.out.println("\n == SOURCE BEFORE WHITESPACE FIX ==\n" + source + "\n");
 
 		// Replace string constants by replacement marks, each time 
 		// an instruction is created, replace it back.
@@ -624,7 +635,7 @@ public class Compiler {
 			} else if (ch == '(') {
 
 				// IF block
-				if (sb.toString().trim().equals("if")) {
+				if (sb.toString().trim().equalsIgnoreCase("if")) {
 
 					// if(
 
@@ -687,7 +698,7 @@ public class Compiler {
 									// opening bracket, it could be start of else if condition!
 
 									// is it else if?
-									if (sb1.toString().equals("elseif") || sb1.toString().equals("else if")) {
+									if (sb1.toString().equalsIgnoreCase("elseif") || sb1.toString().equalsIgnoreCase("else if")) {
 
 										// else if(condition){...}
 
@@ -736,7 +747,7 @@ public class Compiler {
 								} else if (ch1 == '{') {
 
 									// it might be an else branch.
-									if (sb1.toString().equals("else")) {
+									if (sb1.toString().equalsIgnoreCase("else")) {
 										// else{ ... }
 
 
@@ -808,7 +819,7 @@ public class Compiler {
 
 					}
 
-				} else if (sb.toString().trim().equals("while")) {
+				} else if (sb.toString().trim().equalsIgnoreCase("while")) {
 					//simple while loop
 
 					// while(condition){ ... }
@@ -838,7 +849,7 @@ public class Compiler {
 					loopLabelsContinue.pop();
 					loopLabelsBreak.pop();
 
-				} else if (sb.toString().trim().equals("for")) {
+				} else if (sb.toString().trim().equalsIgnoreCase("for")) {
 					// the almighty FOR loop
 
 					// for(initial code block; condition; iteration code block ){ ... }
@@ -864,8 +875,7 @@ public class Compiler {
 						String var;
 						String start;
 						String stop;
-
-						if (header.matches("[a-zA-Z_.][a-zA-Z0-9_.]*?[=][^:]+[:][^:]+")) {
+						if (header.matches("\\s*[a-zA-Z_.][a-zA-Z0-9_.]*?\\s*[=]\\s*[^:]+[:][^:]+")) {
 							init = header.substring(0, header.indexOf(":"));
 
 							var = header.substring(0, header.indexOf("="));
@@ -884,11 +894,11 @@ public class Compiler {
 						// the initializer.
 						instructionList.addAll(parseCodeBlock(init + ";"));
 						String direction = makeTmpVar();
-						instructionList.add(new InstructionAssign(false, direction, "-1 + ((" + start + ") < (" + stop + "))*2"));
+						instructionList.add(new InstructionAssign(false, direction, "-1+((" + start + ")<(" + stop + "))*2"));
 
 						instructionList.add(new InstructionLabel(labelBegin));
 
-						instructionList.add(new InstructionIf(var + " == (" + stop + ") + " + direction, labelEnd, ""));
+						instructionList.add(new InstructionIf(var + "==(" + stop + ")+" + direction, labelEnd, ""));
 
 						assertNextBlack(reader, '{', "FOR body", "FOR condition must be followed by \"{\".");
 						instructionList.addAll(parseCodeBlock(readUntil(reader, '{', '}', "FOR body")));
@@ -921,7 +931,7 @@ public class Compiler {
 					loopLabelsContinue.pop();
 					loopLabelsBreak.pop();
 
-				} else if (sb.toString().trim().equals("until")) {
+				} else if (sb.toString().trim().equalsIgnoreCase("until")) {
 
 					//simple until loop, WHILE with negated condition
 
@@ -1085,7 +1095,7 @@ public class Compiler {
 
 				}
 
-			} else if (ch == '{' && sb.toString().trim().equals("do")) {
+			} else if (ch == '{' && sb.toString().trim().equalsIgnoreCase("do")) {
 
 				// do{...}while(condition);
 
@@ -1105,9 +1115,9 @@ public class Compiler {
 
 				boolean whileType;
 
-				if (whileString.equals("while")) {
+				if (whileString.equalsIgnoreCase("while")) {
 					whileType = true;
-				} else if (whileString.equals("until")) {
+				} else if (whileString.equalsIgnoreCase("until")) {
 					whileType = false;
 				} else {
 					throw new SyntaxError("DO body must be followed by \"while\" or \"until\", found \"" + whileString + "\".");
@@ -1129,6 +1139,10 @@ public class Compiler {
 				sb.append(ch);
 			}
 
+		}
+		
+		if(!sb.toString().trim().equals("")) {
+			throw new SyntaxError("Invalid statement: \""+sb.toString().trim()+"\"");
 		}
 
 		return instructionList;

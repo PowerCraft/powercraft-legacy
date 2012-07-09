@@ -48,6 +48,7 @@ public abstract class WeaselObject implements PC_INBT {
 	 * @return the tag
 	 */
 	public static final NBTTagCompound saveObjectToNBT(WeaselObject object, NBTTagCompound tag) {
+		if(object == null) object = new WeaselNull();
 		tag.setString("type", object.getType().toString());
 		object.writeToNBT(tag);
 		return tag;
@@ -91,7 +92,7 @@ public abstract class WeaselObject implements PC_INBT {
 				break;
 
 			case NULL:
-				obj = new WeaselNull();
+				obj = null;
 				break;
 		}
 

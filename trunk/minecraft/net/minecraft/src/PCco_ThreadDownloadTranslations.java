@@ -37,7 +37,8 @@ public class PCco_ThreadDownloadTranslations extends Thread {
 				// file.mkdirs();
 
 				if (ze.getName().matches("en_US.+")) {
-					PC_Logger.finer(" - SKIPPING " + ze.getName());
+					PC_Logger.finer(" - REFRESHING " + ze.getName());
+					if(file.exists()) file.delete();
 					continue;
 				}
 

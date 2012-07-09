@@ -118,7 +118,7 @@ public class PC_TreeHarvestingManager {
 			cnt = 0;
 			chopTree(world, treeStart, treeStart, harvestedStacks, treeData);
 			if (harvestedStacks.size() > 0) {
-				return PC_InvUtils.mergeStacks(PC_InvUtils.stacksToArray(harvestedStacks));
+				return PC_InvUtils.groupStacks(PC_InvUtils.stacksToArray(harvestedStacks));
 			}
 		}
 

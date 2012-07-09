@@ -45,25 +45,26 @@ public class PCde_ModelDeco extends ModelBase {
 
 		// fillings
 		ironFrame[3] = new ModelRenderer(this, 64, 39);
-		ironFrame[3].addBox(-5F, -9F, -5F, 10, 4, 10, 0.0F);
+		ironFrame[3].addBox(-5F, -8.5F, -5F, 10, 4, 10, 0.0F);
 
 		ironFrame[4] = new ModelRenderer(this, 64, 39);
-		ironFrame[4].addBox(-5F, -9F, -5F, 10, 4, 10, 0.0F);
+		ironFrame[4].addBox(-5F, -8.5F, -5F, 10, 4, 10, 0.0F);
 		ironFrame[4].rotateAngleZ = (float) (Math.PI / 2);
 
 		ironFrame[5] = new ModelRenderer(this, 64, 39);
-		ironFrame[5].addBox(-5F, -9F, -5F, 10, 4, 10, 0.0F);
+		ironFrame[5].addBox(-5F, -8.5F, -5F, 10, 4, 10, 0.0F);
 		ironFrame[5].rotateAngleX = (float) (Math.PI / 2);
 
 		ironFrame[6] = new ModelRenderer(this, 64, 39);
-		ironFrame[6].addBox(-5F, -9F, -5F, 10, 4, 10, 0.0F);
+		ironFrame[6].addBox(-5F, -8.5F, -5F, 10, 4, 10, 0.0F);
 		ironFrame[6].rotateAngleZ = -(float) (Math.PI / 2);
 
 		ironFrame[7] = new ModelRenderer(this, 64, 39);
-		ironFrame[7].addBox(-5F, -9F, -5F, 10, 4, 10, 0.0F);
+		ironFrame[7].addBox(-5F, -8.5F, -5F, 10, 4, 10, 0.0F);
 		ironFrame[7].rotateAngleX = -(float) (Math.PI / 2);
 
 
+		//ledges
 		ironLedge[0] = new ModelRenderer(this, 64, 0);
 		ironLedge[0].addBox(-8F, 7F, -8F, 16, 1, 16, 0.0F);
 

@@ -8,10 +8,7 @@ import java.util.Set;
 import net.minecraft.src.forge.ITextureProvider;
 
 
-public class PCtr_BlockConveyorSeparator extends BlockContainer implements PC_IBlockType, PC_ISwapTerrain, PC_IRotatedBox, ITextureProvider {
-
-
-	public static boolean group_wood_sort;
+public class PCtr_BlockBeltSeparator extends BlockContainer implements PC_IBlockType, PC_ISwapTerrain, PC_IRotatedBox, ITextureProvider {
 
 	@Override
 	public boolean renderItemHorizontal() {
@@ -57,18 +54,22 @@ public class PCtr_BlockConveyorSeparator extends BlockContainer implements PC_IB
 
 	@Override
 	public boolean blockActivated(World world, int i, int j, int k, EntityPlayer entityplayer) {
-		ItemStack ihold = entityplayer.getCurrentEquippedItem();
-		if (ihold != null) {
-			if (ihold.getItem() instanceof ItemBlock) {
-				if (Block.blocksList[ihold.itemID] instanceof PC_IBlockType && ihold.itemID != blockID) {
-					return false;
+		if(PCtr_BeltBase.blockActivated(world, i, j, k, entityplayer)) {
+			return true;
+		}else {
+			ItemStack ihold = entityplayer.getCurrentEquippedItem();
+			if (ihold != null) {
+				if (ihold.getItem() instanceof ItemBlock) {
+					if (Block.blocksList[ihold.itemID] instanceof PC_IBlockType && ihold.itemID != blockID) {
+						return false;
+					}
 				}
 			}
-		}
 
-		PCtr_TileEntitySeparationBelt te = (PCtr_TileEntitySeparationBelt) world.getBlockTileEntity(i, j, k);
-		PC_Utils.openGres(entityplayer, new PCtr_GuiSeparator(entityplayer, te));
-		return true;
+			PCtr_TileEntitySeparationBelt te = (PCtr_TileEntitySeparationBelt) world.getBlockTileEntity(i, j, k);
+			PC_Utils.openGres(entityplayer, new PCtr_GuiSeparationBelt(entityplayer, te));
+			return true;
+		}
 	}
 
 	@Override
@@ -76,7 +77,7 @@ public class PCtr_BlockConveyorSeparator extends BlockContainer implements PC_IB
 		return new PCtr_TileEntitySeparationBelt();
 	}
 
-	protected PCtr_BlockConveyorSeparator(int i) {
+	protected PCtr_BlockBeltSeparator(int i) {
 		super(i, new PCtr_MaterialConveyor());
 
 		setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, PCtr_BeltBase.HEIGHT, 1.0F);
@@ -141,10 +142,10 @@ public class PCtr_BlockConveyorSeparator extends BlockContainer implements PC_IB
 			return;
 		}
 
-		PCtr_TileEntitySeparationBelt filter = (PCtr_TileEntitySeparationBelt) world.getBlockTileEntity(i, j, k);
+		PCtr_TileEntitySeparationBelt tes = (PCtr_TileEntitySeparationBelt) world.getBlockTileEntity(i, j, k);
 
 		// get relative direction.
-		redir = filter.getDirection(entity);
+		redir = tes.getDirection(entity);
 
 		int rotation = getRotation(world.getBlockMetadata(i, j, k));
 

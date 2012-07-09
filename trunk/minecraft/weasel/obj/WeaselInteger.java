@@ -1,6 +1,7 @@
 package weasel.obj;
 
 
+import weasel.Calc;
 import net.minecraft.src.NBTTagCompound;
 
 
@@ -59,32 +60,8 @@ public class WeaselInteger extends WeaselObject {
 	}
 
 	@Override
-	public void set(Object obj) {
-
-		if (obj instanceof WeaselInteger) {
-			this.integer = ((WeaselInteger) obj).get();
-			return;
-		}
-
-		if (obj instanceof Double) {
-			this.integer = (int) Math.round((Double) obj);
-			return;
-		}
-
-		if (obj instanceof Float) {
-			this.integer = Math.round((Float) obj);
-			return;
-		}
-
-		if (obj instanceof Long) {
-			this.integer = (Integer) obj;
-			return;
-		}
-
-		if (obj == null || !(obj instanceof Integer)) {
-			throw new RuntimeException("Trying to store " + obj + " in an integer variable.");
-		}
-		this.integer = (Integer) obj;
+	public void set(Object obj) {		
+		this.integer = Calc.toInteger(obj);		
 	}
 
 	@Override
@@ -119,7 +96,7 @@ public class WeaselInteger extends WeaselObject {
 
 	@Override
 	public String toString() {
-		return "I(" + integer + ")";
+		return "Integer{" + integer + "}";
 	}
 
 	@Override

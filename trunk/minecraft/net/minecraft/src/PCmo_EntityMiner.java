@@ -2822,21 +2822,8 @@ public class PCmo_EntityMiner extends Entity implements IInventory {
 		status.setInteger("mineTime5", mineCounter[5]);
 
 		tag.setTag("MinerStatus", status);
-
-
-
-		NBTTagList nbttaglist = new NBTTagList();
-
-		for (int i = 0; i < inventory.length; i++) {
-			if (inventory[i] != null) {
-				NBTTagCompound nbttagcompound1 = new NBTTagCompound();
-				nbttagcompound1.setByte("Slot", (byte) i);
-				inventory[i].writeToNBT(nbttagcompound1);
-				nbttaglist.appendTag(nbttagcompound1);
-			}
-		}
-
-		tag.setTag("Items", nbttaglist);
+		
+		PC_InvUtils.saveInventoryToNBT(tag, "Items", this);
 	}
 
 	@Override
@@ -2883,16 +2870,7 @@ public class PCmo_EntityMiner extends Entity implements IInventory {
 		mineCounter[4] = status.getInteger("mineTime4");
 		mineCounter[5] = status.getInteger("mineTime5");
 
-		NBTTagList nbttaglist = tag.getTagList("Items");
-
-		inventory = new ItemStack[getSizeInventory()];
-		for (int i = 0; i < nbttaglist.tagCount(); i++) {
-			NBTTagCompound nbttagcompound1 = (NBTTagCompound) nbttaglist.tagAt(i);
-			int j = nbttagcompound1.getByte("Slot") & 0xff;
-			if (j >= 0 && j < inventory.length) {
-				inventory[j] = ItemStack.loadItemStackFromNBT(nbttagcompound1);
-			}
-		}
+		PC_InvUtils.loadInventoryFromNBT(tag, "Items", this);
 
 		if (keyboardControlled) {
 			PCmo_MinerControlHandler.setMinerForKeyboardControl(this, true);

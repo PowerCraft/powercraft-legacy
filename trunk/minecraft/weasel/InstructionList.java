@@ -39,6 +39,16 @@ public class InstructionList implements PC_INBT {
 
 	private WeaselEngine engine;
 	private int programCounter = 0;
+	
+	/**
+	 * Clear all from the list
+	 */
+	public void clear() {
+		list.clear();
+		programCounter = 0;
+		functionMapGenerated = false;
+		labelMapGenerated = false;
+	}
 
 
 	/**
@@ -119,7 +129,7 @@ public class InstructionList implements PC_INBT {
 	 * @param index address
 	 */
 	public void movePointerTo(int index) {
-		if (index < 0 || index > list.size()) throw new WeaselRuntimeException("INSTRL goto - jump out of program space.");
+		if (index < 0 || index > list.size()) throw new WeaselRuntimeException("Jump out of program space.");
 		programCounter = index;
 	}
 
@@ -142,6 +152,7 @@ public class InstructionList implements PC_INBT {
 	 */
 	public void callFunctionExternal(String functionName, WeaselObject[] args) {
 		engine.systemStack.push(engine.retval);
+		engine.executingFunctionExternal++;
 		callFunction_do(true, functionName, args);
 	}
 
@@ -187,7 +198,7 @@ public class InstructionList implements PC_INBT {
 			InstructionFunction func = (InstructionFunction) list.get(address);
 
 			if (func.getArgumentCount() != args.length) {
-				throw new WeaselRuntimeException("INSTRL call - invalid argument count for function " + functionName + " (needs " + func.getArgumentCount() + ", got " + args.length + ")");
+				throw new WeaselRuntimeException("Invalid argument count for function " + functionName + " (needs " + func.getArgumentCount() + ", got " + args.length + ")");
 			}
 
 			engine.systemStack.push(new WeaselBoolean(external));
@@ -200,14 +211,14 @@ public class InstructionList implements PC_INBT {
 			for (WeaselObject obj : args) {
 				String argname = func.getArgumentName(cnt++);
 
-				if (argname == null) throw new WeaselRuntimeException("INSTRL call - invalid argument count for function " + functionName + " (needs " + func.getArgumentCount() + ", got " + args.length + ")");
+				if (argname == null) throw new WeaselRuntimeException("Invalid argument count for function " + functionName + " (needs " + func.getArgumentCount() + ", got " + args.length + ")");
 
 				engine.variables.setVariable(argname, obj);
 			}
 
 			return;
 		}
-		throw new WeaselRuntimeException("INSTRL Call - function " + functionName + " does not exist.");
+		throw new WeaselRuntimeException("Function " + functionName + " does not exist.");
 
 	}
 
@@ -226,6 +237,7 @@ public class InstructionList implements PC_INBT {
 
 		if (wasExternal) {
 			engine.externalCallRetval = engine.retval;
+			engine.executingFunctionExternal--;
 			engine.retval = engine.systemStack.pop();
 			engine.requestPause();
 		}
@@ -309,6 +321,8 @@ public class InstructionList implements PC_INBT {
 	public void movePointer(int change) {
 		programCounter += change;
 	}
+
+
 
 
 }

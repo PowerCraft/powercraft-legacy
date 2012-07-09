@@ -52,20 +52,26 @@ public class WeaselVariableMap extends WeaselObject implements IVariableProvider
 	@Override
 	public void setVariable(String name, Object value) {
 
-		if (name == null) throw new WeaselRuntimeException("VARMAP Set - variable name == null. @ " + name + " = " + value);
-		if (value == null) throw new WeaselRuntimeException("VARMAP Set - variable value == null. @ " + name + " = " + value);
+		if (name == null) throw new WeaselRuntimeException("Variable name cannot be null at " + name + " = " + value);
+		if (value == null) throw new WeaselRuntimeException("Variable value cannot be null at " + name + " = " + value);
 
-		WeaselObject set = null;
-		if (value instanceof WeaselObject) {
-			set = (WeaselObject) value;
-		} else if (value instanceof Number) {
-			set = new WeaselInteger(value);
-		} else if (value instanceof String) {
-			set = new WeaselString(value);
-		} else if (value instanceof Boolean) {
-			set = new WeaselBoolean(value);
-		} else {
-			throw new WeaselRuntimeException("VARMAP Set - value " + value + " cannot be saved as a WeaselObject to variable map.");
+		if (map.get(name) != null) {
+			map.get(name).set(value);
+		}else {
+			WeaselObject set = null;
+			if (value instanceof WeaselObject) {
+				set = (WeaselObject) value;
+			} else if (value instanceof Number) {
+				set = new WeaselInteger(value);
+			} else if (value instanceof String) {
+				set = new WeaselString(value);
+			} else if (value instanceof Boolean) {
+				set = new WeaselBoolean(value);
+			} else {
+				throw new WeaselRuntimeException("Value " + value + " cannot be assigned to a variable.");
+			}
+			
+			map.put(name, set);
 		}
 		
 //		if (map.get(name) != null) {
@@ -74,7 +80,6 @@ public class WeaselVariableMap extends WeaselObject implements IVariableProvider
 //			}
 //		}
 
-		map.put(name, set);
 	}
 
 	@Override
@@ -130,7 +135,7 @@ public class WeaselVariableMap extends WeaselObject implements IVariableProvider
 
 	@Override
 	public String toString() {
-		return "VARMAP(" + map + ")";
+		return "VariableMap{" + map + "}";
 	}
 
 	@Override

@@ -273,32 +273,16 @@ public class PCma_TileEntityBlockBuilder extends PC_TileEntity implements IInven
 	@Override
 	public void readFromNBT(NBTTagCompound nbttagcompound) {
 		super.readFromNBT(nbttagcompound);
-		NBTTagList nbttaglist = nbttagcompound.getTagList("Items");
-		stacks = new ItemStack[getSizeInventory()];
-		for (int i = 0; i < nbttaglist.tagCount(); i++) {
-			NBTTagCompound nbttagcompound1 = (NBTTagCompound) nbttaglist.tagAt(i);
-			int j = nbttagcompound1.getByte("Slot") & 0xff;
-			if (j >= 0 && j < stacks.length) {
-				stacks[j] = ItemStack.loadItemStackFromNBT(nbttagcompound1);
-			}
-		}
+
+		PC_InvUtils.loadInventoryFromNBT(nbttagcompound, "Items", this);
 
 	}
 
 	@Override
 	public void writeToNBT(NBTTagCompound nbttagcompound) {
 		super.writeToNBT(nbttagcompound);
-		NBTTagList nbttaglist = new NBTTagList();
-		for (int i = 0; i < stacks.length; i++) {
-			if (stacks[i] != null) {
-				NBTTagCompound nbttagcompound1 = new NBTTagCompound();
-				nbttagcompound1.setByte("Slot", (byte) i);
-				stacks[i].writeToNBT(nbttagcompound1);
-				nbttaglist.appendTag(nbttagcompound1);
-			}
-		}
 
-		nbttagcompound.setTag("Items", nbttaglist);
+		PC_InvUtils.saveInventoryToNBT(nbttagcompound, "Items", this);
 	}
 
 	@Override

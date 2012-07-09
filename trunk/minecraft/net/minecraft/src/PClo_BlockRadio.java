@@ -198,12 +198,12 @@ public class PClo_BlockRadio extends BlockContainer implements PC_IBlockType {
 			return;
 		}
 
-
-		if (!(l > 0 && Block.blocksList[l].canProvidePower())) {
+		boolean on = (world.getBlockMetadata(i, j, k) == 1);
+		
+		if (!on && !(l > 0 && Block.blocksList[l].canProvidePower())) {
 			return;
 		}
-
-		boolean on = (world.getBlockMetadata(i, j, k) == 1);
+		
 		boolean power = isGettingPower(world, i, j, k);
 
 		if (on && !power) {

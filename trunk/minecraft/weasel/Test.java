@@ -15,7 +15,8 @@ import weasel.obj.WeaselObject;
 public class Test {
 
 	public void run() {
-		if (true) return;
+		
+		if(true) return;
 
 		IWeaselHardware hardware = new IWeaselHardware() {
 
@@ -77,18 +78,10 @@ public class Test {
 		}
 
 		PB pb = new PB();
-		pb.a("global quee = 98;");
-		pb.a("for(a=quee/2 + 1:0){");
-		pb.a("	print(str(a));");
-		pb.a("	if(a == 13) continue;");
-		pb.a("	print('mars!');");
-		pb.a("}");
 		pb.a("");
-		pb.a("print('end');");
-		pb.a("");
-		pb.a("");
-		pb.a("");
-		pb.a("");
+		pb.a("a = 13;");
+		pb.a("a = true;");
+		pb.a("a = \"13\";");
 		pb.a("");
 		pb.a("");
 		pb.a("");

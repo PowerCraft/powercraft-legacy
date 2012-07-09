@@ -271,37 +271,8 @@ public abstract class PC_Module extends BaseMod {
 
 
 			PC_Logger.finer("Adding default names...");
-			HashMap<Object, String> names = new HashMap<Object, String>();
-			HashMap<String, String> en_US = new HashMap<String, String>();
-
-			setNames(names);
-
-			for (Entry<Object, String> loc : names.entrySet()) {
-
-				if (loc.getKey() == null || loc.getValue() == null) {
-					PC_Logger.severe("Trying to use null when adding names.");
-					continue;
-				}
-
-				String nametag = getNameTagForObject(loc.getKey());
-
-				if (nametag == null) {
-					PC_Logger.severe("Setting name to invalid object.");
-					continue;
-				}
-
-				en_US.put(nametag, loc.getValue());
-
-			}
-
-			lang = new PC_Lang(getModuleName(), en_US);
-
-			PC_Logger.finer("Generating default translation file (en_US) if not exists");
-			lang.generateDefaultTranslationFile();
-			PC_Logger.finer("Loading translations from " + mod_PCcore.cfgdir + "/lang");
-			lang.loadTranstalions();
-
-
+			
+			generateTranslationFiles();
 
 
 
@@ -330,6 +301,43 @@ public abstract class PC_Module extends BaseMod {
 
 
 	// UTILS
+
+	
+	/**
+	 * Read needed names from the addNames() and generate new en_US lang files in the lang folder.
+	 */
+	protected final void generateTranslationFiles() {
+		HashMap<Object, String> names = new HashMap<Object, String>();
+		HashMap<String, String> en_US = new HashMap<String, String>();
+
+		setNames(names);
+
+		for (Entry<Object, String> loc : names.entrySet()) {
+
+			if (loc.getKey() == null || loc.getValue() == null) {
+				PC_Logger.severe("Trying to use null when adding names.");
+				continue;
+			}
+
+			String nametag = getNameTagForObject(loc.getKey());
+
+			if (nametag == null) {
+				PC_Logger.severe("Setting name to invalid object.");
+				continue;
+			}
+
+			en_US.put(nametag, loc.getValue());
+
+		}
+
+		lang = new PC_Lang(getModuleName(), en_US);
+
+		PC_Logger.finer("Generating default translation file (en_US) if not exists");
+		lang.generateDefaultTranslationFile();
+		PC_Logger.finer("Loading translations from " + mod_PCcore.cfgdir + "/lang");
+		lang.loadTranstalions();
+	}
+
 
 	/**
 	 * Add stacks with damage ranging from A to B into Crafting Tool.

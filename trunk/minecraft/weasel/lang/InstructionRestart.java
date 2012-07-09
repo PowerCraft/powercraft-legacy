@@ -4,6 +4,7 @@ package weasel.lang;
 import net.minecraft.src.NBTTagCompound;
 import weasel.InstructionList;
 import weasel.WeaselEngine;
+import weasel.exception.EndOfProgramException;
 import weasel.exception.WeaselRuntimeException;
 
 
@@ -23,7 +24,14 @@ public class InstructionRestart extends Instruction {
 
 	@Override
 	public void execute(WeaselEngine engine, InstructionList instructionList) throws WeaselRuntimeException {
-		engine.restartProgram();
+		if(engine.executingFunctionExternal > 0) {
+			engine.restartProgram();
+			engine.requestPause();
+			engine.isProgramFinished = false;
+		}else {
+			engine.scheduleRestart();
+			throw new EndOfProgramException();
+		}
 	}
 
 	@Override

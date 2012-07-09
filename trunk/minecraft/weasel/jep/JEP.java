@@ -274,7 +274,8 @@ public class JEP {
 		funTab.put("strLen", new StrLen());
 		funTab.put("length", new StrLen());
 		funTab.put("char", new StringChar());
-		funTab.put("strChar", new StringChar());
+		funTab.put("charAt", new StringChar());
+		funTab.put("charat", new StringChar());
 		funTab.put("num", new Num());
 		funTab.put("bool", new Bool());
 

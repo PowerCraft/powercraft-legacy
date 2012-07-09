@@ -306,6 +306,7 @@ public class PCma_BlockOptical extends BlockContainer implements PC_IBlockType {
 	public Set<String> getItemFlags(ItemStack stack) {
 		Set<String> set = new HashSet<String>();
 		set.add("NO_BUILD");
+		set.add("ATTACHED");
 		if (stack.getItemDamage() == 0) {
 			set.add("MIRROR");
 		} else {

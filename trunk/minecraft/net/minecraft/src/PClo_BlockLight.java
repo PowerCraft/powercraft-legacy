@@ -389,6 +389,7 @@ public class PClo_BlockLight extends BlockContainer implements PC_ISwapTerrain, 
 		set.add("REDSTONE");
 		set.add("LOGIC");
 		set.add("LED");
+		set.add("ATTACHED");
 
 		return set;
 	}
@@ -398,6 +399,7 @@ public class PClo_BlockLight extends BlockContainer implements PC_ISwapTerrain, 
 		Set<String> set = new HashSet<String>();
 		set.add("NO_BUILD");
 		set.add("LED");
+		set.add("ATTACHED");
 		return set;
 	}
 }

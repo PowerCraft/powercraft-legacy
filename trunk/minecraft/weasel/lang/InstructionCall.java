@@ -56,7 +56,7 @@ public class InstructionCall extends Instruction {
 			try {
 				paramValues[i] = WeaselObject.getWrapperForValue(Calc.evaluate(parameterExpressions[i], engine));
 			} catch (NullPointerException npe) {
-				throw new WeaselRuntimeException("CALL - can not pass NULL to a function " + targetFunctionName);
+				throw new WeaselRuntimeException("Can not pass NULL to a function " + targetFunctionName);
 			}
 
 		}

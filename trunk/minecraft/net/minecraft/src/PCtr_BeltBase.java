@@ -17,12 +17,12 @@ public class PCtr_BeltBase {
 	 * Max horizontal speed of an item on a belt. Items going slower are
 	 * accelerated.
 	 */
-	public static final double MAX_HORIZONTAL_SPEED = 0.4D;
+	public static final double MAX_HORIZONTAL_SPEED = 0.5F; //0.4D;
 	/**
 	 * Velocity increment added to item on belt, if it is going slower than
 	 * MAX_HORIZONTAL_SPEED
 	 */
-	public static final double HORIZONTAL_BOOST = 0.11D;
+	public static final double HORIZONTAL_BOOST = 0.14D; //0.11D;
 	/** Items this far from belt sides get BORDER_BOOST to stay in the center. */
 	public static final double BORDERS = 0.35D;
 	/**
@@ -577,7 +577,15 @@ public class PCtr_BeltBase {
 		if (entity instanceof EntityItem) {
 			if (entity.motionY > 0.2F) entity.motionY /= 3F;
 		}
+		
+		// speed limit, stick to belt
+		if (entity instanceof EntityItem || entity instanceof EntityXPOrb) {
+			if (entity.motionY > 0.2) {
+				entity.motionY -= 0.1;
+			}
+		}
 
+		//unstuck
 		if (entity.stepHeight <= 0.15F) entity.stepHeight = 0.25F;
 
 		entity.motionZ = MathHelper.clamp_float((float) entity.motionZ, (float) -max_horizontal_speed, (float) max_horizontal_speed);
@@ -744,5 +752,74 @@ public class PCtr_BeltBase {
 				break;
 		}
 		return true;
+	}
+
+
+	public static void createEntityItemOnBelt(World world, PC_CoordI invPos, PC_CoordI beltPos, ItemStack stack) {
+		EntityItem item = new EntityItem(world, beltPos.x + 0.5D, beltPos.y + 0.3D, beltPos.z + 0.5D, stack);
+		item.motionX = 0.0D;
+		item.motionY = 0.0D;
+		item.motionZ = 0.0D;
+	
+		PC_CoordD vector = PC_CoordI.getVector(beltPos, invPos);
+		item.posX += 0.43D * vector.x;
+		item.posZ += 0.43D * vector.z;
+	
+		item.delayBeforeCanPickup = 7;
+		world.spawnEntityInWorld(item);
+	}
+
+
+	public static boolean storeNearby(World world, PC_CoordI pos, EntityItem entity, boolean ignoreStorageBorder) {
+	
+		if (storeItemIntoMinecart(world, pos, entity)) {
+			return true;
+		}
+		if (entity.posY > pos.y + 1 - STORAGE_BORDER_V) {
+			return false;
+		}
+	
+		int rot = getRotation(pos.getMeta(world));
+	
+	
+		if (isBeyondStorageBorder(world, rot, pos, entity, STORAGE_BORDER) || ignoreStorageBorder) {
+			if (rot == 0 && storeEntityItemAt(world, pos.offset(0, 0, -1), entity)) {
+				return true;
+			}
+			if (rot == 1 && storeEntityItemAt(world, pos.offset(1, 0, 0), entity)) {
+				return true;
+			}
+			if (rot == 2 && storeEntityItemAt(world, pos.offset(0, 0, 1), entity)) {
+				return true;
+			}
+			if (rot == 3 && storeEntityItemAt(world, pos.offset(-1, 0, 0), entity)) {
+				return true;
+			}
+	
+			if (rot != 0 && rot != 2 && storeEntityItemAt(world, pos.offset(0, 0, -1), entity)) {
+				return true;
+			}
+			if (rot != 1 && rot != 3 && storeEntityItemAt(world, pos.offset(1, 0, 0), entity)) {
+				return true;
+			}
+			if (rot != 2 && rot != 0 && storeEntityItemAt(world, pos.offset(0, 0, 1), entity)) {
+				return true;
+			}
+			if (rot != 3 && rot != 1 && storeEntityItemAt(world, pos.offset(-1, 0, 0), entity)) {
+				return true;
+			}
+	
+			if (storeEntityItemAt(world, pos.offset(0, 1, 0), entity)) {
+				return true;
+			}
+	
+			// store under belt if not roaster.
+			if (!PC_BlockUtils.hasFlag(world, pos.offset(0, -1, 0), "ROASTER")) {
+				if (storeEntityItemAt(world, pos.offset(0, -1, 0), entity)) {
+					return true;
+				}
+			}
+		}
+		return false;
 	}
 }

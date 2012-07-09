@@ -79,13 +79,16 @@ public class Calc {
 			String name = matcher.group(1);
 
 			// skip parser's constants, they are built-in
-			if (Compiler.parserConstants.contains(name)) continue;
+			if (Compiler.parserConstants.contains(name)) {
+				continue;
+			}
 
 			try {
 				//add variable into JEP
 				jep.addVariable(name, variableContainer.getVariable(name).get());
 			} catch (NullPointerException npe) {
-				throw new WeaselRuntimeException("CALC evaluate - variable \"" + name + "\" not set in this scope.");
+				throw new WeaselRuntimeException("Variable \"" + name + "\" not set in this scope.");
+				
 			}
 		}
 		matcher = null;
@@ -188,29 +191,23 @@ public class Calc {
 	public static boolean toBoolean(Object obj) {
 
 		if (obj instanceof Boolean) {
-
 			return (Boolean) obj;
-
 		} else if (obj instanceof Integer) {
-
 			return ((Integer) obj) != 0;
-
 		} else if (obj instanceof Double) {
-
 			return (int) Math.round((Double) obj) != 0;
-
 		} else if (obj instanceof Float) {
-
 			return Math.round((Float) obj) != 0;
-
 		} else if (obj instanceof WeaselBoolean) {
-
 			return ((WeaselBoolean) obj).get();
-
 		} else if (obj instanceof WeaselInteger) {
 			return ((WeaselInteger) obj).get() != 0;
 		} else if (obj instanceof Long) {
 			return ((Long) obj) != 0;
+		} else if (obj instanceof String) {
+			return ((String) obj).equalsIgnoreCase("true") || ((String) obj).equalsIgnoreCase("1");
+		} else if (obj instanceof WeaselString) {
+			return ((WeaselString) obj).get().equalsIgnoreCase("true") || ((WeaselString) obj).get().equalsIgnoreCase("1");
 		}
 
 		throw new RuntimeException("Unable to convert " + obj + " to Boolean.");
@@ -289,30 +286,26 @@ public class Calc {
 
 		if (obj instanceof Integer) {
 			return ((Integer) obj);
-		}
-
-		if (obj instanceof Boolean) {
+		} else if (obj instanceof Boolean) {
 			return ((Boolean) obj) ? 1 : 0;
-		}
-
-		if (obj instanceof Double) {
+		} else if (obj instanceof Double) {
 			return (int) Math.round((Double) obj);
-		}
-
-		if (obj instanceof Float) {
+		} else if (obj instanceof Float) {
 			return Math.round((Float) obj);
-		}
-
-		if (obj instanceof WeaselInteger) {
+		} else if (obj instanceof WeaselInteger) {
 			return ((WeaselInteger) obj).get();
-		}
-
-		if (obj instanceof WeaselBoolean) {
+		} else if (obj instanceof WeaselBoolean) {
 			return ((WeaselBoolean) obj).get() ? 1 : 0;
-		}
-
-		if (obj instanceof Long) {
+		} else if (obj instanceof Long) {
 			return ((Integer) obj);
+		} else if (obj instanceof String) {
+			try {
+				return Integer.parseInt((String) obj);
+			} catch (NumberFormatException e) {}
+		} else if (obj instanceof WeaselString) {
+			try {
+				return Integer.parseInt(((WeaselString) obj).get());
+			} catch (NumberFormatException e) {}
 		}
 
 		throw new RuntimeException("Unable to convert " + obj + " to Integer.");
@@ -329,24 +322,16 @@ public class Calc {
 	 */
 	public static String toString(Object obj) {
 
-		if (obj == null) return "";
+		if (obj == null) return "null";
 
 		if (obj instanceof WeaselBoolean) {
-
 			return ((WeaselBoolean) obj).get() ? "true" : "false";
-
 		} else if (obj instanceof WeaselInteger) {
-
 			return ((WeaselInteger) obj).get() + "";
-
 		} else if (obj instanceof WeaselString) {
-
 			return ((WeaselString) obj).get();
-
 		} else if (obj instanceof Boolean) {
-
 			return ((Boolean) obj) ? "true" : "false";
-
 		} else {
 			return obj.toString();
 		}

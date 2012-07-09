@@ -15,6 +15,7 @@ public class PCma_GuiAutomaticWorkbench implements PC_IGresBase {
 	private EntityPlayer entityplayer;
 	private PCma_TileEntityAutomaticWorkbench tileentity;
 	private IInventory craftResult;
+	private PC_GresCheckBox checkRedstone;
 
 	/**
 	 * @param entityplayer player
@@ -36,27 +37,27 @@ public class PCma_GuiAutomaticWorkbench implements PC_IGresBase {
 		PC_GresWindow w = new PC_GresWindow(50, 50, PC_Lang.tr("tile.PCmaAutoWorkbench.name"));
 
 		PC_GresWidget hg = new PC_GresLayoutH();
-		PC_GresInventory i = new PC_GresInventory(3, 3);
+		PC_GresInventory inv = new PC_GresInventory(3, 3);
 
 		int cnt = 0;
 
 		for (int y = 0; y < 3; y++) {
 			for (int x = 0; x < 3; x++) {
-				i.setSlot(new PCma_SlotAutomaticWorkbenchInventory(tileentity, gui.getContainer(), false, cnt++, 0, 0), x, y);
+				inv.setSlot(new PCma_SlotAutomaticWorkbenchInventory(tileentity, gui.getContainer(), false, cnt++, 0, 0), x, y);
 			}
 		}
 
-		hg.add(i);
+		hg.add(inv);
 
 		PC_GresWidget hg1 = new PC_GresFrame();
-		i = new PC_GresInventory(3, 3);
+		inv = new PC_GresInventory(3, 3);
 		for (int y = 0; y < 3; y++) {
 			for (int x = 0; x < 3; x++) {
-				i.setSlot(new PCma_SlotAutomaticWorkbenchInventory(tileentity, gui.getContainer(), true, cnt++, 0, 0), x, y);
+				inv.setSlot(new PCma_SlotAutomaticWorkbenchInventory(tileentity, gui.getContainer(), true, cnt++, 0, 0), x, y);
 			}
 		}
 
-		hg1.add(i);
+		hg1.add(inv);
 
 		hg1.add(new PC_GresImage(mod_PCcore.getImgDir() + "gres/widgets.png", 44, 66, 12, 11));
 
@@ -65,8 +66,13 @@ public class PCma_GuiAutomaticWorkbench implements PC_IGresBase {
 		hg.add(hg1);
 
 		w.add(hg);
+		
+		w.add(checkRedstone = new PC_GresCheckBox(PC_Lang.tr("pc.gui.automaticWorkbench.redstoneActivated")));
+		checkRedstone.check(tileentity.redstoneActivated);
+		w.add(new PC_GresGap(0, 3));
 
 		w.add(new PC_GresInventoryPlayer(true));
+		w.add(new PC_GresGap(0, 0));
 
 		gui.add(w);
 
@@ -75,7 +81,8 @@ public class PCma_GuiAutomaticWorkbench implements PC_IGresBase {
 
 	@Override
 	public void onGuiClosed(PC_IGresGui gui) {
-		tileentity.orderAndCraft();
+		tileentity.redstoneActivated = checkRedstone.isChecked();
+		tileentity.orderAndCraft();		
 	}
 
 	@Override
