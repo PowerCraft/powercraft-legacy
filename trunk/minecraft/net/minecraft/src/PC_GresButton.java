@@ -9,7 +9,7 @@ package net.minecraft.src;
  */
 public class PC_GresButton extends PC_GresWidget {
 
-	private PC_CoordI buttonScale = new PC_CoordI(12, 12);
+	protected PC_CoordI buttonScale = new PC_CoordI(12, 12);
 
 	private boolean isClicked = false;
 

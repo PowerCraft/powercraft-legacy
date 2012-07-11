@@ -49,6 +49,13 @@ public class mod_PCcore extends PC_Module implements PC_IActivatorListener {
 	 * affected by current core version.
 	 */
 	public static final String VERSION = "3.4.3";
+	
+	/**
+	 * The serial number used to check whether new update is available.
+	 */
+	public static final int VERSION_SERIAL = 2;
+	
+	
 
 	/** Location of the file with updates */
 	public static final String updateInfoPath = "http://dl.dropbox.com/u/64454818/POWERCRAFT_DATA/info.xml"; // "http://bit.ly/Ld7sOI";
@@ -65,6 +72,10 @@ public class mod_PCcore extends PC_Module implements PC_IActivatorListener {
 	@Override
 	public String getVersion() {
 		return mod_PCcore.VERSION;
+	}
+	
+	public int getVersionSerial() {
+		return mod_PCcore.VERSION_SERIAL;
 	}
 
 	/**
@@ -134,9 +145,9 @@ public class mod_PCcore extends PC_Module implements PC_IActivatorListener {
 	/** Enable sounds and loud things. */
 	public static boolean soundsEnabled;
 	/** Last update version marked as "ignore this". */
-	public static String update_last_ignored_version;
+	public static int update_last_ignored_version_serial;
 	/** Version of current language pack */
-	public static String current_lang_version;
+	public static int current_lang_version_serial;
 
 	// property keys
 	/** Key used to build in reversed direction */
@@ -173,10 +184,10 @@ public class mod_PCcore extends PC_Module implements PC_IActivatorListener {
 	private static final String pk_optSoundCrystal = "opt.power_crystal.soundEnabled";
 
 	/** last version marked as "do not show again" */
-	public static final String pk_cfgUpdateIgnored = "cfg.updateVersionMarkedAsIgnored";
+	public static final String pk_cfgUpdateIgnoredSerVersion = "cfg.updateVersionMarkedAsIgnored";
 
 	/** current langpack version */
-	public static final String pk_cfgCurrentLangVersion = "cfg.currentLangVersion";
+	public static final String pk_cfgCurrentLangSerVersion = "cfg.currentLangVersion";
 
 
 	private static class PC_ErrorHandler implements Thread.UncaughtExceptionHandler {
@@ -241,8 +252,8 @@ public class mod_PCcore extends PC_Module implements PC_IActivatorListener {
 		conf.putBoolean(pk_logEnabled, true, "Enable logging. Logs errors, events and debug info.\nDisabling this may slightly improve speed.");
 		conf.putBoolean(pk_logToStdout, false, "Send log also to stdout (terminal screen).");
 
-		conf.putString(pk_cfgUpdateIgnored, getVersion());
-		conf.putString(pk_cfgCurrentLangVersion, "0");
+		conf.putInteger(pk_cfgUpdateIgnoredSerVersion, getVersionSerial());
+		conf.putInteger(pk_cfgCurrentLangSerVersion, 0);
 
 		conf.apply();
 
@@ -251,8 +262,8 @@ public class mod_PCcore extends PC_Module implements PC_IActivatorListener {
 		optUpdateLangpack = conf.flag(pk_optUpdateTranslations);
 		soundsEnabled = !conf.flag(pk_optMuteSound);
 		PCco_BlockPowerCrystal.makeSound = conf.flag(pk_optSoundCrystal);
-		update_last_ignored_version = conf.string(pk_cfgUpdateIgnored);
-		current_lang_version = conf.string(pk_cfgCurrentLangVersion);
+		update_last_ignored_version_serial = conf.num(pk_cfgUpdateIgnoredSerVersion);
+		current_lang_version_serial = conf.num(pk_cfgCurrentLangSerVersion);
 
 		PC_Logger.setPrintToStdout(conf.flag(pk_logToStdout));
 		PC_Logger.enableLogging(conf.flag(pk_logEnabled));
@@ -976,9 +987,11 @@ public class mod_PCcore extends PC_Module implements PC_IActivatorListener {
 	/** Minecraft version required by the latest update */
 	public static String updateMcVersion = "";
 	/** Version of latest available translation pack */
-	public static String updateLangVersion = "";
+	public static int updateLangVersionSerial = -1;
 	/** Text with information about the latest update */
 	public static String updateText = "";
+	/** Serial number of the update */
+	public static int updateModVersionSerial = -1;
 
 	/**
 	 * Called when PCco_ThreadCheckUpdates terminates.
@@ -1011,20 +1024,31 @@ public class mod_PCcore extends PC_Module implements PC_IActivatorListener {
 				if (updateModVersion == null || updateModVersion.equals("")) {
 					break;
 				}
+				
+				updateModVersionSerial = Integer.valueOf(latest.getAttribute("modVersionSerial"));
 
 				updateMcVersion = latest.getAttribute("mcVersion");
 
 				if (updateMcVersion == null || updateMcVersion.equals("")) {
 					break;
 				}
+				
+				try {
+					updateLangVersionSerial = Integer.valueOf(latest.getAttribute("langVersion"));
+				}catch(NumberFormatException e) {
+					updateLangVersionSerial = -1;
+				}
+				
+				int updateLangModVersionSerial;
+				try{
+					updateLangModVersionSerial = Integer.valueOf(latest.getAttribute("langModVersion"));
+				}catch(NumberFormatException e) {
+					updateLangModVersionSerial = -1;
+				}
 
-				updateLangVersion = latest.getAttribute("langVersion");
-				String updateLangModVersion = latest.getAttribute("langModVersion");
-
-				if (updateLangVersion != null && !updateLangVersion.equals("")) {
-					if (!updateLangVersion.equals(current_lang_version) && updateLangModVersion.equals(instance.getVersion())) {
-						(new PCco_ThreadDownloadTranslations()).start();
-					}
+				
+				if (updateLangVersionSerial > current_lang_version_serial && updateLangModVersionSerial == instance.getVersionSerial()) {
+					(new PCco_ThreadDownloadTranslations()).start();
 				}
 
 				updateText = latest.getTextContent();
@@ -1035,11 +1059,12 @@ public class mod_PCcore extends PC_Module implements PC_IActivatorListener {
 
 				updateText = updateText.trim();
 
-				updateAvailable = !updateModVersion.equals(instance.getVersion()) && !updateModVersion.equals(update_last_ignored_version);
+				updateAvailable = updateModVersionSerial > instance.getVersionSerial() && updateModVersionSerial != update_last_ignored_version_serial;
 
 				PC_Logger.finer("* Update mod version = " + updateModVersion);
+				PC_Logger.finer("* Update mod version_serial = " + updateModVersionSerial);
 				PC_Logger.finer("* Update MC version = " + updateMcVersion);
-				PC_Logger.finer("* Latest language pack version = " + updateLangVersion);
+				PC_Logger.finer("* Latest language pack version = " + updateLangVersionSerial);
 				PC_Logger.finer("* Update info = " + updateText);
 
 			} while (false);
@@ -1087,7 +1112,7 @@ public class mod_PCcore extends PC_Module implements PC_IActivatorListener {
 		cfg.enableValidation(false);
 		cfg.cfgSilent(true);
 
-		cfg.setValue(mod_PCcore.pk_cfgCurrentLangVersion, mod_PCcore.updateLangVersion);
+		cfg.setValue(mod_PCcore.pk_cfgCurrentLangSerVersion, mod_PCcore.updateLangVersionSerial);
 		cfg.apply();
 
 		cfg.enableValidation(true);
