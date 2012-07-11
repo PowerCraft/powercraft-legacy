@@ -29,6 +29,25 @@ public class PC_GresButtonImage extends PC_GresButton {
 		this.textureLeftTop = leftTop;
 		this.imageSize = imageSize;
 	}
+	
+	@Override
+	public PC_CoordI calcSize() {
+
+		if (buttonScale == null) buttonScale = new PC_CoordI(4, 4);		
+		if(size == null) size = new PC_CoordI();
+		if(imageSize == null) imageSize = new PC_CoordI();
+
+		size.setTo(imageSize).add(buttonScale).add(buttonScale);
+
+		if (size.x < minSize.x) {
+			size.x = minSize.x;
+		}
+		if (size.y < minSize.y) {
+			size.y = minSize.y;
+		}
+
+		return size.copy();
+	}
 
 	@Override
 	protected void render(PC_CoordI offsetPos) {
