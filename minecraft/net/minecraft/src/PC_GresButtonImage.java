@@ -11,8 +11,6 @@ import org.lwjgl.opengl.GL11;
  */
 public class PC_GresButtonImage extends PC_GresButton {
 
-	private PC_CoordI buttonScale;
-
 	private boolean isClicked = false;
 	private String texture;
 	private PC_CoordI textureLeftTop, imageSize;
@@ -25,7 +23,7 @@ public class PC_GresButtonImage extends PC_GresButton {
 		canAddWidget = false;
 		minSize.setTo(imageSize);
 		this.texture = imageFile;
-		buttonScale = new PC_CoordI(4, 4);
+		buttonScale = new PC_CoordI(4,4);
 		this.textureLeftTop = leftTop;
 		this.imageSize = imageSize;
 	}

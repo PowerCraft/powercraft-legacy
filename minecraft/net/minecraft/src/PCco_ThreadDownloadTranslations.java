@@ -27,7 +27,7 @@ public class PCco_ThreadDownloadTranslations extends Thread {
 
 			ZipInputStream zin = new ZipInputStream(url.openStream());
 
-			PC_Logger.fine("\n\nLanguage pack update v" + mod_PCcore.updateLangVersion + " downloaded.");
+			PC_Logger.fine("\n\nLanguage pack update v" + mod_PCcore.updateLangVersionSerial + " downloaded.");
 			PC_Logger.fine("Starting extraction of language files");
 
 			ZipEntry ze = null;

@@ -81,8 +81,8 @@ public class PC_PropertyManager {
 	 * @param key key
 	 * @param value the saved value
 	 */
-	public void setValue(String key, String value) {
-		setValues.put(key, value);
+	public void setValue(String key, Object value) {
+		setValues.put(key, value.toString());
 		return;
 	}
 
@@ -474,7 +474,7 @@ public class PC_PropertyManager {
 			keyList.add(entry.name);
 
 			String propOrig = pr.getProperty(entry.name);
-			entry.parse(propOrig);
+			if(!entry.parse(propOrig)) needsSave = true;
 			if (!cfgNoValidate) {
 				entry.validate();
 			}
@@ -621,17 +621,17 @@ public class PC_PropertyManager {
 		 * @param string the string loaded
 		 * @return this entry
 		 */
-		public Property parse(String string) {
+		public boolean parse(String string) {
 			if (type == PropertyType.BLOCK || type == PropertyType.ITEM || type == PropertyType.INT) {
 				if (string == null) {
 					PC_Logger.finest("* Numeric property \"" + name + "\" not set, setting to default \"" + defnum + "\"");
 					num = defnum;
-					return this;
+					return false;
 				}
 				try {
-					num = Integer.parseInt(string);
+					num = Integer.parseInt(string.trim());
 				} catch (NumberFormatException e) {
-					PC_Logger.warning("Numeric property \"" + name + "\" has invalid value \"" + num + "\". Falling back to default \"" + defnum + "\"");
+					PC_Logger.warning("Numeric property \"" + name + "\" has invalid value \"" + string + "\". Falling back to default \"" + defnum + "\"");
 					num = defnum;
 				}
 			}
@@ -640,7 +640,7 @@ public class PC_PropertyManager {
 				if (string == null) {
 					PC_Logger.finest("* Key property \"" + name + "\" not set, setting to default \"" + Keyboard.getKeyName(defnum) + "\"");
 					num = defnum;
-					return this;
+					return false;
 				}
 				num = Keyboard.getKeyIndex(string);
 				if (num == Keyboard.KEY_NONE) {
@@ -653,7 +653,7 @@ public class PC_PropertyManager {
 				if (string == null) {
 					PC_Logger.finest("* String property \"" + name + "\" not set, setting to default \"" + defstr + "\"");
 					str = defstr;
-					return this;
+					return false;
 				}
 				this.str = string;
 			}
@@ -662,13 +662,13 @@ public class PC_PropertyManager {
 				if (string == null) {
 					PC_Logger.finest("* Boolean property \"" + name + "\" not set, setting to default \"" + defbool + "\"");
 					bool = defbool;
-					return this;
+					return false;
 				}
 				String string2 = string.toLowerCase();
 				bool = string2.equals("yes") || string2.equals("true") || string2.equals("on") || string2.equals("enabled") || string2.equals("enable");
 			}
 
-			return this;
+			return true;
 		}
 
 		/**

@@ -84,8 +84,8 @@ public class PCco_GuiUpdateNotification implements PC_IGresBase {
 			if (checkDisable.isChecked()) {
 				PC_PropertyManager cfg = mod_PCcore.instance.cfg();
 
-				cfg.setValue(mod_PCcore.pk_cfgUpdateIgnored, mod_PCcore.updateModVersion);
-				PC_Logger.finest("Setting last shown update version to: " + mod_PCcore.updateModVersion);
+				cfg.setValue(mod_PCcore.pk_cfgUpdateIgnoredSerVersion, mod_PCcore.updateModVersionSerial);
+				PC_Logger.finest("Setting last shown update version to: " + mod_PCcore.updateModVersionSerial);
 
 				cfg.enableValidation(false);
 
@@ -93,7 +93,7 @@ public class PCco_GuiUpdateNotification implements PC_IGresBase {
 
 				cfg.enableValidation(true);
 
-				mod_PCcore.update_last_ignored_version = mod_PCcore.updateModVersion;
+				mod_PCcore.update_last_ignored_version_serial = mod_PCcore.updateModVersionSerial;
 			}
 
 			gui.close();
