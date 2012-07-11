@@ -20,10 +20,11 @@ public class PC_GresButtonImage extends PC_GresButton {
 	/**
 	 * @param label button label
 	 */
-	public PC_GresButtonImage(String label, String imageFile, PC_CoordI leftTop, PC_CoordI imageSize) {
-		super(label);
+	public PC_GresButtonImage(String imageFile, PC_CoordI leftTop, PC_CoordI imageSize) {
+		super("");
 		canAddWidget = false;
 		minSize.setTo(imageSize);
+		this.texture = imageFile;
 		buttonScale = new PC_CoordI(4, 4);
 		this.textureLeftTop = leftTop;
 		this.imageSize = imageSize;

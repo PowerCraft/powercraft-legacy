@@ -1,6 +1,7 @@
 package net.minecraft.src;
 
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Hashtable;
@@ -310,8 +311,18 @@ public abstract class PC_Module extends BaseMod {
 	protected final void generateTranslationFiles() {
 		HashMap<Object, String> names = new HashMap<Object, String>();
 		HashMap<String, String> en_US = new HashMap<String, String>();
-
 		setNames(names);
+
+		if(names.isEmpty()) {
+			PC_Logger.finer("This module has no translations.");
+			File file = new File(Minecraft.getMinecraftDir() + mod_PCcore.cfgdir + "/lang/en_US-"+getModuleName()+".lang");
+			System.out.println("Filepath to delete: "+file);
+			if(file.exists()) {
+				PC_Logger.finer("Old translation file en_US-"+getModuleName()+".lang exists, removing it.");
+				file.delete();
+			}
+			return;
+		}
 
 		for (Entry<Object, String> loc : names.entrySet()) {
 
@@ -498,6 +509,7 @@ public abstract class PC_Module extends BaseMod {
 	 * Add names and localizations for your blocks and items.
 	 * 
 	 * @param map map of { Block/Item/String (localization) : String name }
+	 * @return true if translation file should be generated. False to disable it.
 	 */
 	public abstract void setNames(Map<Object, String> map);
 

@@ -32,7 +32,14 @@ public class mod_PCcore extends PC_Module implements PC_IActivatorListener {
 	public static mod_PCcore instance;
 
 
+	/**
+	 * Size of a group in crafting tool
+	 */
 	public static int G = 1000;
+	/** 
+	 * Crafting tool's group counter.
+	 * It is here cuz stupid enum can't have it in itself.
+	 */
 	public static int C = 10;
 
 	/**
@@ -41,7 +48,7 @@ public class mod_PCcore extends PC_Module implements PC_IActivatorListener {
 	 * compilation, thus all modules keep their compile-time version and aren't
 	 * affected by current core version.
 	 */
-	public static final String VERSION = "3.4.2";
+	public static final String VERSION = "3.4.3";
 
 	/** Location of the file with updates */
 	public static final String updateInfoPath = "http://dl.dropbox.com/u/64454818/POWERCRAFT_DATA/info.xml"; // "http://bit.ly/Ld7sOI";
@@ -50,8 +57,8 @@ public class mod_PCcore extends PC_Module implements PC_IActivatorListener {
 
 	/**
 	 * Directory with settings. /something/something<br>
-	 * Note that All image files are inside jar (virtually) in
-	 * /PowerCraft/module_name_lowercase/*.png
+	 * Note that ALL image files are inside jar (virtually) in
+	 * /PowerCraft/module_name_lowercase/*.png, or in it's subfolders if you make it like that.
 	 */
 	public static final String cfgdir = "/PowerCraft";
 
@@ -311,6 +318,11 @@ public class mod_PCcore extends PC_Module implements PC_IActivatorListener {
 		removeBlockItem(Block.lockedChest.blockID);
 		setBlockItem(Block.lockedChest.blockID, new PCco_ItemBlockLockedChestReplacement(Block.lockedChest.blockID - 256));
 		
+		Block.blocksList[Block.waterStill.blockID] = null;
+		Block.blocksList[Block.waterStill.blockID] = new PCco_BlockWaterStationaryReplacement(9, Material.water).setHardness(100F).setLightOpacity(3).setBlockName("water").disableStats().setRequiresSelfNotify();
+		
+		
+		
 		// @formatter:on
 	}
 
@@ -358,8 +370,8 @@ public class mod_PCcore extends PC_Module implements PC_IActivatorListener {
 		map.put("pc.gui.ok", "OK");
 		map.put("pc.gui.cancel", "Cancel");
 
-		map.put("pc.sniffer.sniffing", "Sniffing ores...");
-		map.put("pc.sniffer.away", "(far away)");
+//		map.put("pc.sniffer.sniffing", "Sniffing ores...");
+//		map.put("pc.sniffer.away", "(far away)");
 		map.put("pc.sniffer.desc", "Portable radar device");
 		map.put("pc.sniffer.distance", "Sniffing depth (blocks):");
 
