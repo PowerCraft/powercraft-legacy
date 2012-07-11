@@ -307,7 +307,7 @@ public class PC_InvUtils {
 		}
 		return true;
 	}
-	
+
 	/**
 	 * Check if given inventory has no free slots.
 	 * 
@@ -544,11 +544,13 @@ public class PC_InvUtils {
 	public static ItemStack[] stacksToArray(List<ItemStack> stacks) {
 		return stacks.toArray(new ItemStack[stacks.size()]);
 	}
-	
+
 	/**
 	 * Load whole IInventory from NBT compound tag
+	 * 
 	 * @param outerTag the outer, main tag
-	 * @param invTagName inventory tag name (the same you used to save the inventory)
+	 * @param invTagName inventory tag name (the same you used to save the
+	 *            inventory)
 	 * @param inventory the loaded inventory
 	 */
 	public static void loadInventoryFromNBT(NBTTagCompound outerTag, String invTagName, IInventory inventory) {
@@ -561,15 +563,16 @@ public class PC_InvUtils {
 			}
 		}
 	}
-	
+
 	/**
 	 * Save whole IInventory into a NBT compound tag
+	 * 
 	 * @param outerTag the outer, main tag
 	 * @param invTagName inventory tag name
 	 * @param inventory the saved inventory
 	 */
 	public static void saveInventoryToNBT(NBTTagCompound outerTag, String invTagName, IInventory inventory) {
-		
+
 		NBTTagList nbttaglist = new NBTTagList();
 		for (int i = 0; i < inventory.getSizeInventory(); i++) {
 			if (inventory.getStackInSlot(i) != null) {
@@ -581,6 +584,6 @@ public class PC_InvUtils {
 		}
 
 		outerTag.setTag(invTagName, nbttaglist);
-		
+
 	}
 }

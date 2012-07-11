@@ -1,16 +1,17 @@
 package net.minecraft.src;
 
+
 import java.util.HashSet;
 import java.util.Random;
 import java.util.Set;
 
 import net.minecraft.src.forge.ITextureProvider;
 
+
 /**
  * Redirection belt with redstone control
  * 
  * @author MightyPork
- *
  */
 public class PCtr_BlockBeltRedirector extends BlockContainer implements PC_IBlockType, PC_IRotatedBox, PC_ISwapTerrain, ITextureProvider {
 
@@ -145,7 +146,7 @@ public class PCtr_BlockBeltRedirector extends BlockContainer implements PC_IBloc
 		if (!leadsToNowhere) {
 			PCtr_BeltBase.entityPreventDespawning(world, pos, true, entity);
 		}
-		
+
 		double speed_max = PCtr_BeltBase.MAX_HORIZONTAL_SPEED;
 		double boost = PCtr_BeltBase.HORIZONTAL_BOOST;
 
@@ -238,7 +239,7 @@ public class PCtr_BlockBeltRedirector extends BlockContainer implements PC_IBloc
 		set.add("BELT");
 		set.add("BELT_REDIRECTOR");
 		set.add("REDSTONE");
-		
+
 		return set;
 	}
 

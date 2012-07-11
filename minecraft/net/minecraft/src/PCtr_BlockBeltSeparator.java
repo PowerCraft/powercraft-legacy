@@ -54,9 +54,9 @@ public class PCtr_BlockBeltSeparator extends BlockContainer implements PC_IBlock
 
 	@Override
 	public boolean blockActivated(World world, int i, int j, int k, EntityPlayer entityplayer) {
-		if(PCtr_BeltBase.blockActivated(world, i, j, k, entityplayer)) {
+		if (PCtr_BeltBase.blockActivated(world, i, j, k, entityplayer)) {
 			return true;
-		}else {
+		} else {
 			ItemStack ihold = entityplayer.getCurrentEquippedItem();
 			if (ihold != null) {
 				if (ihold.getItem() instanceof ItemBlock) {

@@ -66,7 +66,7 @@ public class PCma_GuiAutomaticWorkbench implements PC_IGresBase {
 		hg.add(hg1);
 
 		w.add(hg);
-		
+
 		w.add(checkRedstone = new PC_GresCheckBox(PC_Lang.tr("pc.gui.automaticWorkbench.redstoneActivated")));
 		checkRedstone.check(tileentity.redstoneActivated);
 		w.add(new PC_GresGap(0, 3));
@@ -82,7 +82,7 @@ public class PCma_GuiAutomaticWorkbench implements PC_IGresBase {
 	@Override
 	public void onGuiClosed(PC_IGresGui gui) {
 		tileentity.redstoneActivated = checkRedstone.isChecked();
-		tileentity.orderAndCraft();		
+		tileentity.orderAndCraft();
 	}
 
 	@Override

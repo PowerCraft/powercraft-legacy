@@ -88,7 +88,7 @@ public class Calc {
 				jep.addVariable(name, variableContainer.getVariable(name).get());
 			} catch (NullPointerException npe) {
 				throw new WeaselRuntimeException("Variable \"" + name + "\" not set in this scope.");
-				
+
 			}
 		}
 		matcher = null;

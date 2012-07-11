@@ -568,7 +568,7 @@ public abstract class PC_GresWidget extends Gui {
 	 * @return this
 	 */
 	public PC_GresWidget setColor(int colorIndex, int color) {
-		if (colorIndex < 0 || colorIndex > 3) {
+		if (colorIndex < 0 || colorIndex > 5) {
 			return this;
 		}
 		this.color[colorIndex] = color;
@@ -582,7 +582,7 @@ public abstract class PC_GresWidget extends Gui {
 	 * @return color number, eg. 0xFFFFFF
 	 */
 	public int getColor(int colorIndex) {
-		if (colorIndex < 0 || colorIndex > 3) {
+		if (colorIndex < 0 || colorIndex > 5) {
 			return 0;
 		}
 		return color[colorIndex];

@@ -67,7 +67,9 @@ public class PC_GresContainerManager extends Container {
 	protected void retrySlotClick(int par1, int par2, boolean par3, EntityPlayer par4EntityPlayer) {
 
 		if (((PC_GresGui) gresGui).gui instanceof PCco_GuiCraftingTool) {
-			return;
+			if ((PC_Utils.isCreative() || PCco_SlotDirectCrafting.survivalCheating)) {
+				return;
+			}
 		}
 
 		super.retrySlotClick(par1, par2, par3, par4EntityPlayer);

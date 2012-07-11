@@ -144,39 +144,46 @@ public class mod_PClogic extends PC_Module {
 		
 		radio = new PClo_BlockRadio(cfg().getInteger(pk_idRadio))
 				.setBlockName("PCloRadio")
-				.setHardness(0.2F);
+				.setHardness(0.2F)
+				.setResistance(8.0F);
 
 		sensor = (PClo_BlockSensor) (new PClo_BlockSensor(cfg().getInteger(pk_idSensor))
 				.setBlockName("PCloSensorRanged")
-				.setHardness(0.2F));
+				.setHardness(0.2F)
+				.setResistance(8.0F));
 
 
 		gateOff = new PClo_BlockGate(cfg().getInteger(pk_idGateOff), false)
 				.setBlockName("PCloLogicGate")
 				.setHardness(0.0F).setLightValue(0)
 				.setStepSound(Block.soundWoodFootstep)
-				.disableStats().setRequiresSelfNotify();
+				.disableStats().setRequiresSelfNotify()
+				.setResistance(8.0F);
 
 		gateOn = new PClo_BlockGate(cfg().getInteger(pk_idGateOn), true)
 				.setBlockName("PCloLogicGate")
 				.setHardness(0.0F).setLightValue(cfg().getInteger(pk_brightGate) * 0.0625F)
 				.setStepSound(Block.soundWoodFootstep)
-				.disableStats().setRequiresSelfNotify();
+				.disableStats().setRequiresSelfNotify()
+				.setResistance(8.0F);
 
 		pulsar = new PClo_BlockPulsar(cfg().getInteger(pk_idPulsar))
 				.setHardness(0.8F)
+				.setResistance(8.0F)
 				.setBlockName("PCloRedstonePulsar")
 				.setRequiresSelfNotify()
 				.setStepSound(Block.soundWoodFootstep);
 
 		lightOff = new PClo_BlockLight(cfg().getInteger(pk_idLightOff), false)
 				.setHardness(0.0F)
+				.setResistance(8.0F)
 				.setBlockName("PCloLight")
 				.setStepSound(Block.soundStoneFootstep)
 				.setRequiresSelfNotify();
 
 		lightOn = new PClo_BlockLight(cfg().getInteger(pk_idLightOn), true)
 				.setHardness(0.0F)
+				.setResistance(8.0F)
 				.setLightValue(cfg().getInteger(pk_brightLight) * 0.0625F)
 				.setBlockName("PCloLight")
 				.setStepSound(Block.soundStoneFootstep)
@@ -256,6 +263,24 @@ public class mod_PClogic extends PC_Module {
 		map.put("tile.PCloLight.14.name", "Orange Indicator");
 		map.put("tile.PCloLight.15.name", "White Indicator");
 		map.put("tile.PCloLight.name", "Indicator Light");
+
+
+		map.put("tile.PCloLight.0.stable.name", "Black Lamp");
+		map.put("tile.PCloLight.1.stable.name", "Red Lamp");
+		map.put("tile.PCloLight.2.stable.name", "Green Lamp");
+		map.put("tile.PCloLight.3.stable.name", "Brown Lamp");
+		map.put("tile.PCloLight.4.stable.name", "Blue Lamp");
+		map.put("tile.PCloLight.5.stable.name", "Purple Lamp");
+		map.put("tile.PCloLight.6.stable.name", "Cyan Lamp");
+		map.put("tile.PCloLight.7.stable.name", "Light-gray Lamp");
+		map.put("tile.PCloLight.8.stable.name", "Gray Lamp");
+		map.put("tile.PCloLight.9.stable.name", "Pink Lamp");
+		map.put("tile.PCloLight.10.stable.name", "Lime Lamp");
+		map.put("tile.PCloLight.11.stable.name", "Yellow Lamp");
+		map.put("tile.PCloLight.12.stable.name", "Light-blue Lamp");
+		map.put("tile.PCloLight.13.stable.name", "Magenta Lamp");
+		map.put("tile.PCloLight.14.stable.name", "Orange Lamp");
+		map.put("tile.PCloLight.15.stable.name", "White Lamp");
 
 		map.put("tile.PCloLogicGate.name", "Redstone Logic Gate");
 		map.put("tile.PCloLogicGate.not.name", "Redstone Inverter");
@@ -351,18 +376,14 @@ public class mod_PClogic extends PC_Module {
 		map.put("pc.sensor.range.1", "Range: %s block");
 		map.put("pc.sensor.range.2-4", "Range: %s blocks");
 		map.put("pc.sensor.range.5+", "Range: %s blocks");
-		
+
 
 		map.put("pc.gui.programGate.close", "Cancel");
 		map.put("pc.gui.programGate.saveAndClose", "Save");
 		map.put("pc.gui.programGate.checkErrors", "Check for errors");
 		map.put("pc.gui.programGate.startAndClose", "Launch");
-		
-		map.put("pc.gui.chestFull.requireAllSlotsFull", "All slots must be fully used");
-		
 
-		
-		
+		map.put("pc.gui.chestFull.requireAllSlotsFull", "All slots must be fully used");
 
 	}
 
@@ -565,70 +586,136 @@ public class mod_PClogic extends PC_Module {
 
 		
 		// *** lights ***
-		
-		ModLoader.addShapelessRecipe(
-				new ItemStack(lightOn, 1, 1),
-				new Object[] { Item.redstone, Item.lightStoneDust });
 
 		ModLoader.addShapelessRecipe(
 				new ItemStack(lightOn, 1, 0),
-				new Object[] { new ItemStack(lightOn, 1, 1), new ItemStack(Item.dyePowder, 1, 0) });
+				new Object[] { Item.redstone, Item.lightStoneDust, new ItemStack(Item.dyePowder, 1, 0) });
 
 		ModLoader.addShapelessRecipe(
+				new ItemStack(lightOn, 1, 1),
+				new Object[] { Item.redstone, Item.lightStoneDust, new ItemStack(Item.dyePowder, 1, 1) });
+		
+		ModLoader.addShapelessRecipe(
 				new ItemStack(lightOn, 1, 2),
-				new Object[] { new ItemStack(lightOn, 1, 1), new ItemStack(Item.dyePowder, 1, 2) });
+				new Object[] { Item.redstone, Item.lightStoneDust, new ItemStack(Item.dyePowder, 1, 2) });
 
 		ModLoader.addShapelessRecipe(
 				new ItemStack(lightOn, 1, 3),
-				new Object[] { new ItemStack(lightOn, 1, 1), new ItemStack(Item.dyePowder, 1, 3) });
+				new Object[] { Item.redstone, Item.lightStoneDust, new ItemStack(Item.dyePowder, 1, 3) });
 
 		ModLoader.addShapelessRecipe(
 				new ItemStack(lightOn, 1, 4),
-				new Object[] { new ItemStack(lightOn, 1, 1), new ItemStack(Item.dyePowder, 1, 4) });
+				new Object[] { Item.redstone, Item.lightStoneDust, new ItemStack(Item.dyePowder, 1, 4) });
 
 		ModLoader.addShapelessRecipe(
 				new ItemStack(lightOn, 1, 5),
-				new Object[] { new ItemStack(lightOn, 1, 1), new ItemStack(Item.dyePowder, 1, 5) });
+				new Object[] { Item.redstone, Item.lightStoneDust, new ItemStack(Item.dyePowder, 1, 5) });
 
 		ModLoader.addShapelessRecipe(
 				new ItemStack(lightOn, 1, 6),
-				new Object[] { new ItemStack(lightOn, 1, 1), new ItemStack(Item.dyePowder, 1, 6) });
+				new Object[] { Item.redstone, Item.lightStoneDust, new ItemStack(Item.dyePowder, 1, 6) });
 
 		ModLoader.addShapelessRecipe(
 				new ItemStack(lightOn, 1, 7),
-				new Object[] { new ItemStack(lightOn, 1, 1), new ItemStack(Item.dyePowder, 1, 7) });
+				new Object[] { Item.redstone, Item.lightStoneDust, new ItemStack(Item.dyePowder, 1, 7) });
 
 		ModLoader.addShapelessRecipe(
 				new ItemStack(lightOn, 1, 8),
-				new Object[] { new ItemStack(lightOn, 1, 1), new ItemStack(Item.dyePowder, 1, 8) });
+				new Object[] { Item.redstone, Item.lightStoneDust, new ItemStack(Item.dyePowder, 1, 8) });
 
 		ModLoader.addShapelessRecipe(
 				new ItemStack(lightOn, 1, 9),
-				new Object[] { new ItemStack(lightOn, 1, 1), new ItemStack(Item.dyePowder, 1, 9) });
+				new Object[] { Item.redstone, Item.lightStoneDust, new ItemStack(Item.dyePowder, 1, 9) });
 
 		ModLoader.addShapelessRecipe(
 				new ItemStack(lightOn, 1, 10),
-				new Object[] { new ItemStack(lightOn, 1, 1), new ItemStack(Item.dyePowder, 1, 10) });
+				new Object[] { Item.redstone, Item.lightStoneDust, new ItemStack(Item.dyePowder, 1, 10) });
 
 		ModLoader.addShapelessRecipe(
 				new ItemStack(lightOn, 1, 11),
-				new Object[] { new ItemStack(lightOn, 1, 1), new ItemStack(Item.dyePowder, 1, 11) });
+				new Object[] { Item.redstone, Item.lightStoneDust, new ItemStack(Item.dyePowder, 1, 11) });
 
 		ModLoader.addShapelessRecipe(
 				new ItemStack(lightOn, 1, 12),
-				new Object[] { new ItemStack(lightOn, 1, 1), new ItemStack(Item.dyePowder, 1, 12) });
+				new Object[] { Item.redstone, Item.lightStoneDust, new ItemStack(Item.dyePowder, 1, 12) });
 
 		ModLoader.addShapelessRecipe(
 				new ItemStack(lightOn, 1, 13),
-				new Object[] { new ItemStack(lightOn, 1, 1), new ItemStack(Item.dyePowder, 1, 13) });
+				new Object[] { Item.redstone, Item.lightStoneDust, new ItemStack(Item.dyePowder, 1, 13) });
 
 		ModLoader.addShapelessRecipe(
 				new ItemStack(lightOn, 1, 14),
-				new Object[] { new ItemStack(lightOn, 1, 1), new ItemStack(Item.dyePowder, 1, 14) });
+				new Object[] { Item.redstone, Item.lightStoneDust, new ItemStack(Item.dyePowder, 1, 14) });
 
 		ModLoader.addShapelessRecipe(
 				new ItemStack(lightOn, 1, 15),
-				new Object[] { new ItemStack(lightOn, 1, 1), new ItemStack(Item.dyePowder, 1, 15) });
+				new Object[] { Item.redstone, Item.lightStoneDust, new ItemStack(Item.dyePowder, 1, 15) });
+		
+		// STABLE
+
+		ModLoader.addShapelessRecipe(
+				new ItemStack(lightOn, 1, 0 + 16),
+				new Object[] { Item.lightStoneDust, new ItemStack(Item.dyePowder, 1, 0) });
+
+		ModLoader.addShapelessRecipe(
+				new ItemStack(lightOn, 1, 1 + 16),
+				new Object[] { Item.lightStoneDust, new ItemStack(Item.dyePowder, 1, 1) });
+
+		ModLoader.addShapelessRecipe(
+				new ItemStack(lightOn, 1, 2 + 16),
+				new Object[] { Item.lightStoneDust, new ItemStack(Item.dyePowder, 1, 2) });
+
+		ModLoader.addShapelessRecipe(
+				new ItemStack(lightOn, 1, 3 + 16),
+				new Object[] { Item.lightStoneDust, new ItemStack(Item.dyePowder, 1, 3) });
+
+		ModLoader.addShapelessRecipe(
+				new ItemStack(lightOn, 1, 4 + 16),
+				new Object[] { Item.lightStoneDust, new ItemStack(Item.dyePowder, 1, 4) });
+
+		ModLoader.addShapelessRecipe(
+				new ItemStack(lightOn, 1, 5 + 16),
+				new Object[] { Item.lightStoneDust, new ItemStack(Item.dyePowder, 1, 5) });
+
+		ModLoader.addShapelessRecipe(
+				new ItemStack(lightOn, 1, 6 + 16),
+				new Object[] { Item.lightStoneDust, new ItemStack(Item.dyePowder, 1, 6) });
+
+		ModLoader.addShapelessRecipe(
+				new ItemStack(lightOn, 1, 7 + 16),
+				new Object[] { Item.lightStoneDust, new ItemStack(Item.dyePowder, 1, 7) });
+
+		ModLoader.addShapelessRecipe(
+				new ItemStack(lightOn, 1, 8 + 16),
+				new Object[] { Item.lightStoneDust, new ItemStack(Item.dyePowder, 1, 8) });
+
+		ModLoader.addShapelessRecipe(
+				new ItemStack(lightOn, 1, 9 + 16),
+				new Object[] { Item.lightStoneDust, new ItemStack(Item.dyePowder, 1, 9) });
+
+		ModLoader.addShapelessRecipe(
+				new ItemStack(lightOn, 1, 10 + 16),
+				new Object[] { Item.lightStoneDust, new ItemStack(Item.dyePowder, 1, 10) });
+
+		ModLoader.addShapelessRecipe(
+				new ItemStack(lightOn, 1, 11 + 16),
+				new Object[] { Item.lightStoneDust, new ItemStack(Item.dyePowder, 1, 11) });
+
+		ModLoader.addShapelessRecipe(
+				new ItemStack(lightOn, 1, 12 + 16),
+				new Object[] { Item.lightStoneDust, new ItemStack(Item.dyePowder, 1, 12) });
+
+		ModLoader.addShapelessRecipe(
+				new ItemStack(lightOn, 1, 13 + 16),
+				new Object[] { Item.lightStoneDust, new ItemStack(Item.dyePowder, 1, 13) });
+
+		ModLoader.addShapelessRecipe(
+				new ItemStack(lightOn, 1, 14 + 16),
+				new Object[] { Item.lightStoneDust, new ItemStack(Item.dyePowder, 1, 14) });
+
+		ModLoader.addShapelessRecipe(
+				new ItemStack(lightOn, 1, 15 + 16),
+				new Object[] { Item.lightStoneDust, new ItemStack(Item.dyePowder, 1, 15) });
 		
 		
 		// *** RADIOS ***
@@ -676,6 +763,7 @@ public class mod_PClogic extends PC_Module {
 	public void postInit() {
 		PC_InveditManager.setDamageRange(gateOn.blockID, 0, PClo_GateType.TOTAL_GATE_COUNT - 1);
 		PC_InveditManager.setDamageRange(sensor.blockID, 0, 2);
+		PC_InveditManager.setDamageRange(lightOn.blockID, 0, 31);
 		PC_InveditManager.hideItem(gateOff.blockID);
 		PC_InveditManager.hideItem(lightOff.blockID);
 
@@ -688,11 +776,52 @@ public class mod_PClogic extends PC_Module {
 		PC_InveditManager.setItemCategory(portableTx.shiftedIndex, "Wireless");
 
 
-		addStackRangeToCraftingTool(PC_CraftingToolGroup.LOGIC, gateOn.blockID, 0, PClo_GateType.TOTAL_GATE_COUNT - 1, 1);
-		addStacksToCraftingTool(PC_CraftingToolGroup.LOGIC, new ItemStack(pulsar));
-		addStackRangeToCraftingTool(PC_CraftingToolGroup.LOGIC, lightOn.blockID, 0, 15, 1);
-		addStacksToCraftingTool(PC_CraftingToolGroup.WIRELESS, new ItemStack(radio, 1, 0), new ItemStack(radio, 1, 1), new ItemStack(sensor, 1, 0), new ItemStack(sensor, 1, 1), new ItemStack(sensor, 1, 2));
-		addStacksToCraftingTool(PC_CraftingToolGroup.HANDHELD, new ItemStack(portableTx));
+		//@formatter:off
+		addStackRangeToCraftingTool(PC_ItemGroup.LOGIC, gateOn.blockID, 0, PClo_GateType.TOTAL_GATE_COUNT - 1, 1);
+		addStacksToCraftingTool(PC_ItemGroup.LOGIC, 
+				new ItemStack(pulsar));
+		
+		addStacksToCraftingTool(PC_ItemGroup.LIGHTS,
+				
+				new ItemStack(lightOn, 1, PC_Color.dye.RED.meta),
+				new ItemStack(lightOn, 1, PC_Color.dye.ORANGE.meta),
+				new ItemStack(lightOn, 1, PC_Color.dye.YELLOW.meta),
+				new ItemStack(lightOn, 1, PC_Color.dye.LIME.meta),
+				new ItemStack(lightOn, 1, PC_Color.dye.GREEN.meta),
+				new ItemStack(lightOn, 1, PC_Color.dye.CYAN.meta),
+				new ItemStack(lightOn, 1, PC_Color.dye.LIGHTBLUE.meta),
+				new ItemStack(lightOn, 1, PC_Color.dye.BLUE.meta),
+				new ItemStack(lightOn, 1, PC_Color.dye.PURPLE.meta),
+				new ItemStack(lightOn, 1, PC_Color.dye.MAGENTA.meta),
+				new ItemStack(lightOn, 1, PC_Color.dye.PINK.meta),
+				new ItemStack(lightOn, 1, PC_Color.dye.WHITE.meta),
+				
+				new ItemStack(lightOn, 1, PC_Color.dye.RED.meta+16),
+				new ItemStack(lightOn, 1, PC_Color.dye.ORANGE.meta+16),
+				new ItemStack(lightOn, 1, PC_Color.dye.YELLOW.meta+16),
+				new ItemStack(lightOn, 1, PC_Color.dye.LIME.meta+16),
+				new ItemStack(lightOn, 1, PC_Color.dye.GREEN.meta+16),
+				new ItemStack(lightOn, 1, PC_Color.dye.CYAN.meta+16),
+				new ItemStack(lightOn, 1, PC_Color.dye.LIGHTBLUE.meta+16),
+				new ItemStack(lightOn, 1, PC_Color.dye.BLUE.meta+16),
+				new ItemStack(lightOn, 1, PC_Color.dye.PURPLE.meta+16),
+				new ItemStack(lightOn, 1, PC_Color.dye.MAGENTA.meta+16),
+				new ItemStack(lightOn, 1, PC_Color.dye.PINK.meta+16),
+				new ItemStack(lightOn, 1, PC_Color.dye.WHITE.meta+16)
+		
+				);
+		
+		addStacksToCraftingTool(PC_ItemGroup.WIRELESS,
+				
+				new ItemStack(radio, 1, 0),
+				new ItemStack(radio, 1, 1), 
+				new ItemStack(portableTx),
+				
+				new ItemStack(sensor, 1, 0),
+				new ItemStack(sensor, 1, 1),
+				new ItemStack(sensor, 1, 2));
+		
+		//@formatter:on
 	}
 
 

@@ -55,7 +55,7 @@ public class mod_PCdeco extends PC_Module {
 	// *** BLOCKS & ITEMS ***
 
 	/** Decorative block with subtypes - SOLID BLOCKS. */
-	public static Block deco;
+	public static PCde_BlockDeco deco;
 	/** Decorative block with subtypes - NON-SOLID BLOCKS */
 	public static Block walkable;
 
@@ -91,15 +91,15 @@ public class mod_PCdeco extends PC_Module {
 	@Override
 	public void registerBlocks(List<Block> list) {
 		// @formatter:off
-		deco = new PCde_BlockDeco(cfg().getInteger(pk_idDecoBlockSolid), 22, Material.rock)
+		deco = (PCde_BlockDeco) new PCde_BlockDeco(cfg().getInteger(pk_idDecoBlockSolid), 22, Material.rock)
 				.setHardness(1.5F)
-				.setResistance(5.0F)
+				.setResistance(50.0F)
 				.setBlockName("PCdeDecoBlock")
 				.setStepSound(Block.soundMetalFootstep);
 		
 		walkable = new PCde_BlockWalkable(cfg().getInteger(pk_idDecoBlockNonsolid), 22, Material.rock)
 		.setHardness(1.5F)
-		.setResistance(5.0F)
+		.setResistance(30.0F)
 		.setBlockName("PCdeWalkableBlock")
 		.setStepSound(Block.soundMetalFootstep);
 		
@@ -130,8 +130,11 @@ public class mod_PCdeco extends PC_Module {
 	public void setNames(Map<Object, String> map) {
 		map.put("tile.PCdeDecoBlock.0.name", "Iron Frame");
 		map.put("tile.PCdeDecoBlock.1.name", "Redstone Block");
+		map.put("tile.PCdeDecoBlock.2.name", "Lightning Conductor");
+		map.put("tile.PCdeDecoBlock.3.name", "Transmutation Chamber");
 		map.put("tile.PCdeWalkableBlock.0.name", "Iron Ledge");
 		map.put("tile.PCdeWalkableBlock.1.name", "Iron Stairs");
+		map.put("pc.gui.transmutationChamber.charge", "Charge level:");
 	}
 
 	@Override
@@ -148,6 +151,16 @@ public class mod_PCdeco extends PC_Module {
 				new ItemStack(deco, 1, 1),
 				new Object[] { "XXX", "XXX", "XXX",
 					'X', Item.redstone });
+		
+		ModLoader.addRecipe(
+				new ItemStack(deco, 1, 2),
+				new Object[] { " X ", " X ", "XXX",
+					'X', Block.blockSteel });
+		
+		ModLoader.addRecipe(
+				new ItemStack(deco, 1, 3),
+				new Object[] { "FOF", "OPO", "FOF",
+					'F', new ItemStack(deco, 1, 0), 'O', Block.obsidian, 'P', Block.stoneOvenIdle });
 		
 		ModLoader.addShapelessRecipe(
 				new ItemStack(Item.redstone, 9, 0),
@@ -169,7 +182,7 @@ public class mod_PCdeco extends PC_Module {
 
 	@Override
 	public void postInit() {
-		PC_InveditManager.setDamageRange(deco.blockID, 0, 2);
+		PC_InveditManager.setDamageRange(deco.blockID, 0, 3);
 		PC_InveditManager.setDamageRange(walkable.blockID, 0, 1);
 		PC_InveditManager.setItemCategory(deco.blockID, "Decorative");
 		PC_InveditManager.setItemCategory(walkable.blockID, "Decorative");
@@ -177,11 +190,23 @@ public class mod_PCdeco extends PC_Module {
 		//@formatter:off
 		
 		addStacksToCraftingTool(
-				PC_CraftingToolGroup.DECORATIVE,
+				PC_ItemGroup.NON_FUNCTIONAL,
 				new ItemStack(deco,1,0),
-				new ItemStack(deco,1,1),
 				new ItemStack(walkable,1,0),
 				new ItemStack(walkable,1,1)
+			);
+		
+		// redstone block
+		addStacksToCraftingTool(
+				PC_ItemGroup.ORES,
+				Item.redstone,
+				new ItemStack(deco,1,1)
+			);
+		
+		addStacksToCraftingTool(
+				PC_ItemGroup.MACHINES,
+				new ItemStack(deco,1,2),
+				new ItemStack(deco,1,3)
 			);
 		
 		//@formatter:on

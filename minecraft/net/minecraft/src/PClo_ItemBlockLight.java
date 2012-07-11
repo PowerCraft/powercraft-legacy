@@ -25,7 +25,7 @@ public class PClo_ItemBlockLight extends ItemBlock {
 
 	@Override
 	public String getItemNameIS(ItemStack itemstack) {
-		return super.getItemName() + "." + itemstack.getItemDamage();
+		return super.getItemName() + "." + itemstack.getItemDamage() % 16 + (itemstack.getItemDamage() > 15 ? ".stable" : "");
 	}
 
 	@Override
@@ -72,8 +72,11 @@ public class PClo_ItemBlockLight extends ItemBlock {
 			return false;
 		}
 
-		if (world.canBlockBePlacedAt(mod_PClogic.lightOff.blockID, i, j, k, false, l)) {
-			Block block = mod_PClogic.lightOff;
+
+		boolean lamp = itemstack.getItemDamage() > 15;
+		Block block = lamp ? mod_PClogic.lightOn : mod_PClogic.lightOff;
+
+		if (world.canBlockBePlacedAt(block.blockID, i, j, k, false, l)) {
 			if (world.setBlockWithNotify(i, j, k, block.blockID)) {
 				block.onBlockPlaced(world, i, j, k, l);
 				block.onBlockPlacedBy(world, i, j, k, entityplayer);
@@ -84,8 +87,18 @@ public class PClo_ItemBlockLight extends ItemBlock {
 				if (tei == null) {
 					tei = (PClo_TileEntityLight) ((BlockContainer) block).getBlockEntity();
 				}
-				tei.setColor(itemstack.getItemDamage());
+
+				if (lamp) tei.isStable = true;
+
+				tei.setColor(itemstack.getItemDamage() % 16);
 				world.setBlockTileEntity(i, j, k, tei);
+
+				if (lamp) {
+					PClo_BlockLight.onPoweredBlockChange(world, i, j, k, true);
+				}
+
+
+
 				itemstack.stackSize--;
 			}
 		}

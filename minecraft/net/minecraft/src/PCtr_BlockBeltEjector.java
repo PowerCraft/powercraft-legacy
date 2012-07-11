@@ -42,9 +42,9 @@ public class PCtr_BlockBeltEjector extends BlockContainer implements PC_IBlockTy
 
 	@Override
 	public boolean blockActivated(World world, int i, int j, int k, EntityPlayer entityplayer) {
-		if(PCtr_BeltBase.blockActivated(world, i, j, k, entityplayer)) {
+		if (PCtr_BeltBase.blockActivated(world, i, j, k, entityplayer)) {
 			return true;
-		}else {
+		} else {
 			ItemStack ihold = entityplayer.getCurrentEquippedItem();
 			if (ihold != null) {
 				if (ihold.getItem() instanceof ItemBlock) {
@@ -56,7 +56,7 @@ public class PCtr_BlockBeltEjector extends BlockContainer implements PC_IBlockTy
 
 			PCtr_TileEntityEjectionBelt te = (PCtr_TileEntityEjectionBelt) world.getBlockTileEntity(i, j, k);
 			PC_Utils.openGres(entityplayer, new PCtr_GuiEjectionBelt(te));
-			
+
 			return true;
 		}
 	}
@@ -88,7 +88,7 @@ public class PCtr_BlockBeltEjector extends BlockContainer implements PC_IBlockTy
 	public void updateTick(World world, int i, int j, int k, Random random) {
 
 		PC_CoordI pos = new PC_CoordI(i, j, k);
-		
+
 		int meta = pos.getMeta(world);
 
 		if (isPowered(world, pos)) {
@@ -99,13 +99,13 @@ public class PCtr_BlockBeltEjector extends BlockContainer implements PC_IBlockTy
 				}
 				pos.setMeta(world, PCtr_BeltBase.getActiveMeta(meta));
 			}
-			
+
 		} else if (PCtr_BeltBase.isActive(meta)) {
-			
+
 			pos.setMeta(world, PCtr_BeltBase.getPassiveMeta(meta));
-			
+
 		}
-		
+
 	}
 
 	/**
@@ -123,10 +123,11 @@ public class PCtr_BlockBeltEjector extends BlockContainer implements PC_IBlockTy
 		}
 		return dispenseItemOntoBelt(world, inventoryPos, inventory, beltPos);
 	}
-	
+
 
 	/**
 	 * Try to dispense item from blocks around the belt.
+	 * 
 	 * @param world
 	 * @param beltPos the belt position
 	 */
@@ -164,6 +165,7 @@ public class PCtr_BlockBeltEjector extends BlockContainer implements PC_IBlockTy
 
 	/**
 	 * Dispense item from inventory onto a belt.
+	 * 
 	 * @param world
 	 * @param invPos pos of the inventory (for item positioning on the belt)
 	 * @param inventory the iinventory to eject item from
@@ -174,18 +176,18 @@ public class PCtr_BlockBeltEjector extends BlockContainer implements PC_IBlockTy
 		ItemStack[] stacks = PCtr_BlockBeltEjector.dispenseStuffFromInventory(world, beltPos, inventory);
 
 		if (stacks != null) {
-			
+
 			stacks = PC_InvUtils.groupStacks(stacks);
-			
-			for(ItemStack stack: stacks) {
+
+			for (ItemStack stack : stacks) {
 				PCtr_BeltBase.createEntityItemOnBelt(world, invPos, beltPos, stack);
 			}
-			
+
 			return true;
 		}
 		return false;
 	}
-	
+
 	/**
 	 * Get closest minecart and dispense stack from it onto this belt.
 	 * 
@@ -208,10 +210,12 @@ public class PCtr_BlockBeltEjector extends BlockContainer implements PC_IBlockTy
 
 		return false;
 	}
-	
+
 
 	/**
-	 * Check if the inventory is a special and needs special dispension method. Furnace, BrewStand
+	 * Check if the inventory is a special and needs special dispension method.
+	 * Furnace, BrewStand
+	 * 
 	 * @param inventory
 	 * @return needs special ejector
 	 */
@@ -223,7 +227,9 @@ public class PCtr_BlockBeltEjector extends BlockContainer implements PC_IBlockTy
 	}
 
 	/**
-	 * Dispense item from inventroy which needs special method Furnace, BrewStand
+	 * Dispense item from inventroy which needs special method Furnace,
+	 * BrewStand
+	 * 
 	 * @param inventory the inventory
 	 * @return stack ejected
 	 */
@@ -236,18 +242,18 @@ public class PCtr_BlockBeltEjector extends BlockContainer implements PC_IBlockTy
 			}
 			return null;
 		}
-	
+
 		if (inventory instanceof TileEntityBrewingStand) {
-	
+
 			// check if brewing finished
 			if (((TileEntityBrewingStand) inventory).getBrewTime() != 0) {
 				return null;
 			}
-	
+
 			for (int i = 0; i < 4; i++) {
-	
+
 				ItemStack stack = inventory.getStackInSlot(i);
-	
+
 				// if 0-2, its potion slot. If 3, its ingredient.
 				if ((i < 3 && (stack != null && stack.stackSize > 0 && stack.itemID == Item.potion.shiftedIndex && stack.getItemDamage() != 0)) || (i == 3 && (stack != null))) {
 					inventory.setInventorySlotContents(i, null);
@@ -256,117 +262,126 @@ public class PCtr_BlockBeltEjector extends BlockContainer implements PC_IBlockTy
 			}
 			return null;
 		}
-	
+
 		return null;
 	}
 
 	/**
 	 * Remove first stack from inventory
-	 * @param world the world
 	 * 
+	 * @param world the world
 	 * @param beltPos position of the belt
 	 * @param inventory inv
 	 * @return the stack removed
 	 */
 	public static ItemStack[] dispenseStuffFromInventory(World world, PC_CoordI beltPos, IInventory inventory) {
-	
+
 		if (PCtr_BlockBeltEjector.isSpecialContainer(inventory)) {
-			return new ItemStack[] {PCtr_BlockBeltEjector.dispenseFromSpecialContainer(inventory)};
+			return new ItemStack[] { PCtr_BlockBeltEjector.dispenseFromSpecialContainer(inventory) };
 		}
-	
-		
+
+
 		PCtr_TileEntityEjectionBelt teb = (PCtr_TileEntityEjectionBelt) beltPos.getTileEntity(world);
-		
-		
+
+
 		List<ItemStack> stacks = new ArrayList<ItemStack>();
-		
+
 		boolean modeStacks = teb.actionType == 0;
 		boolean modeItems = teb.actionType == 1;
 		boolean modeAll = teb.actionType == 2;
-		
-		if(modeAll) {
-			for(int i=0; i<inventory.getSizeInventory(); i++) {
+
+		if (modeAll) {
+			for (int i = 0; i < inventory.getSizeInventory(); i++) {
+
+				// fix for inventories that want to keep their stuff
+				if (inventory instanceof PC_ISpecialAccessInventory) {
+					if (!((PC_ISpecialAccessInventory) inventory).canDispenseStackFrom(i)) {
+						continue;
+					}
+				}
+
 				ItemStack inSlot = inventory.getStackInSlot(i);
-				if(inSlot != null) {
+				if (inSlot != null) {
 					stacks.add(inSlot);
 					inventory.setInventorySlotContents(i, null);
 				}
 			}
 			return PC_InvUtils.stacksToArray(stacks);
 		}
-		
+
 		boolean random = teb.itemSelectMode == 2;
 		boolean first = teb.itemSelectMode == 0;
 		boolean last = teb.itemSelectMode == 1;
-		
+
 		int numStacks = teb.numStacksEjected;
 		int numItems = teb.numItemsEjected;
-		
-		if(modeStacks && numStacks == 0) return new ItemStack[] {};
-		if(modeItems && numItems == 0) return new ItemStack[] {};
-		
+
+		if (modeStacks && numStacks == 0) return new ItemStack[] {};
+		if (modeItems && numItems == 0) return new ItemStack[] {};
+
 		int i = 0;
-		
-		if(first) i =0;
-		if(last) i = inventory.getSizeInventory()-1;
-		if(random) i = teb.rand.nextInt(inventory.getSizeInventory());
-		
-		int randomTries = inventory.getSizeInventory()*2;
-		
-		while(true) {				
+
+		if (first) i = 0;
+		if (last) i = inventory.getSizeInventory() - 1;
+		if (random) i = teb.rand.nextInt(inventory.getSizeInventory());
+
+		int randomTries = inventory.getSizeInventory() * 2;
+
+		while (true) {
+
+			boolean accessDenied = false;
+
 			// fix for inventories that want to keep their stuff
 			if (inventory instanceof PC_ISpecialAccessInventory) {
 				if (!((PC_ISpecialAccessInventory) inventory).canDispenseStackFrom(i)) {
-					continue;
+					accessDenied = true;
 				}
 			}
-	
+
 			ItemStack stack = inventory.getStackInSlot(i);
-			if (stack != null && stack.stackSize > 0) {
-				
-				if(modeStacks) {
-					if(numStacks>0) {
+			if (stack != null && stack.stackSize > 0 && !accessDenied) {
+
+				if (modeStacks) {
+					if (numStacks > 0) {
 						inventory.setInventorySlotContents(i, null);
 						stacks.add(stack);
 						numStacks--;
-						if(numStacks <= 0) break;
+						if (numStacks <= 0) break;
 					}
-				}else if(modeItems) {
-					if(numItems>0) {
+				} else if (modeItems) {
+					if (numItems > 0) {
 						stack = inventory.decrStackSize(i, numItems);
-						numItems -= stack.stackSize;						
+						numItems -= stack.stackSize;
 						stacks.add(stack);
-						if(numItems <= 0) break;
+						if (numItems <= 0) break;
 					}
 				}
-	
+
 			}
-			
-			if(first) {
+
+			if (first) {
 				i++;
-				if(i >= inventory.getSizeInventory()) break;
-			}else
-			if(last) {
+				if (i >= inventory.getSizeInventory()) break;
+			} else if (last) {
 				i--;
-				if(i < 0) break;
-			}else
-			if(random) {
+				if (i < 0) break;
+			} else if (random) {
 				i = teb.rand.nextInt(inventory.getSizeInventory());
 				randomTries--;
-				if(randomTries == 0) break;
+				if (randomTries == 0) break;
 			}
 		}
-		
+
 		return PC_InvUtils.stacksToArray(stacks);
 	}
-	
-	
-	
-	
-	
-	
-	
-	
+
+
+
+
+
+
+
+
 
 	// from interface, but also used locally
 	@Override

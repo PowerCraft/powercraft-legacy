@@ -11,7 +11,7 @@ import net.minecraft.src.forge.ITextureProvider;
 
 /**
  * Decorative block;<br>
- * Subtypes: iron frame, redstone storage
+ * Subtypes: iron frame, redstone storage, lightning conductor, obsidian chest
  * 
  * @author MightyPork
  * @copy (c) 2012
@@ -33,6 +33,37 @@ public class PCde_BlockDeco extends BlockContainer implements PC_IBlockType, PC_
 		return mod_PCdeco.getTerrainFile();
 	}
 
+
+	@Override
+	public boolean blockActivated(World world, int i, int j, int k, EntityPlayer entityplayer) {
+
+		PCde_TileEntityDeco tileentity = (PCde_TileEntityDeco) world.getBlockTileEntity(i, j, k);
+
+		ItemStack ihold = entityplayer.getCurrentEquippedItem();
+		if (ihold != null) {
+			if (ihold.getItem() instanceof ItemBlock) {
+				if (ihold.getItem().shiftedIndex != blockID) {
+					if (Block.blocksList[ihold.getItem().shiftedIndex] instanceof PC_IBlockType) {
+						return false;
+					}
+					if (ihold.getItem().shiftedIndex == Block.blockSteel.blockID) return false;
+				} else if (ihold.getItemDamage() != tileentity.type) {
+					return false;
+				}
+			}
+		}
+
+		if (tileentity != null) {
+			if (tileentity.type == 3 && tileentity.getInventory() != null) {
+				PC_Utils.openGres(entityplayer, new PCde_GuiTransmutator(entityplayer, (PCde_InventoryTransmutationContainer) tileentity.getInventory()));
+				return true;
+			}
+		}
+
+		return false;
+	}
+
+
 	/**
 	 * Decorative block;
 	 * 
@@ -44,15 +75,32 @@ public class PCde_BlockDeco extends BlockContainer implements PC_IBlockType, PC_
 		super(i, j, material);
 	}
 
+	public int renderFlag = 0;
+
 	@Override
 	public int getBlockTextureFromSideAndMetadata(int side, int meta) {
 		// item + particle
+
+		// iron frame
 		if (meta == 0) {
 			return 22;
 		}
+
+		// redstone block
 		if (meta == 1) {
 			return 129;
 		}
+
+		// the lightning conductor
+		if (meta == 2) {
+			return 22;
+		}
+
+		// the obsidian storage
+		if (meta == 3) {
+			return 37;
+		}
+
 		return 0;
 	}
 
@@ -66,6 +114,12 @@ public class PCde_BlockDeco extends BlockContainer implements PC_IBlockType, PC_
 		if (ted.type == 1) {
 			return 0xcc0000;
 		}
+		if (ted.type == 2) {
+			return 0xffffff;
+		}
+		if (ted.type == 3) {
+			return 0xffffff;
+		}
 		return 0xffffff;
 
 	}
@@ -73,10 +127,16 @@ public class PCde_BlockDeco extends BlockContainer implements PC_IBlockType, PC_
 	@Override
 	public int getRenderColor(int i) {
 		if (i == 0) {
-			return 0x999999;
+			return 0xcccccc;
 		}
 		if (i == 1) {
 			return 0xcc0000;
+		}
+		if (i == 2) {
+			return 0xcccccc;
+		}
+		if (i == 3) {
+			return 0xcccccc;
 		}
 		return 0xffffff;
 	}
@@ -98,6 +158,18 @@ public class PCde_BlockDeco extends BlockContainer implements PC_IBlockType, PC_
 			return;
 		}
 
+		// point
+		if (ted.type == 2) {
+			setBlockBounds(0, 0, 0, 1, 2.5F, 1);
+			return;
+		}
+
+		// obsidian storage
+		if (ted.type == 3) {
+			setBlockBounds(0, 0, 0, 1, 1, 1);
+			return;
+		}
+
 		setBlockBounds(0, 0, 0, 1, 1, 1);
 
 
@@ -108,15 +180,19 @@ public class PCde_BlockDeco extends BlockContainer implements PC_IBlockType, PC_
 
 		PCde_TileEntityDeco ted = getTE(world, x, y, z);
 
-		if (ted.type == 0 || ted.type == 1) {
+		if (ted.type == 0 || ted.type == 1 || ted.type == 3) {
 			setBlockBounds(0, 0, 0, 1, 1, 1);
+			super.getCollidingBoundingBoxes(world, x, y, z, axisalignedbb, arraylist);
+			return;
+		}
+		if (ted.type == 2) {
+			setBlockBounds(0, 0, 0, 1, 2.5F, 1);
 			super.getCollidingBoundingBoxes(world, x, y, z, axisalignedbb, arraylist);
 			return;
 		}
 
 		setBlockBounds(0, 0, 0, 1, 1, 1);
 	}
-
 
 	/**
 	 * Get tile entity at position
@@ -144,6 +220,13 @@ public class PCde_BlockDeco extends BlockContainer implements PC_IBlockType, PC_
 		}
 		if (ted.type == 1) {
 			return 129; // only this used
+		}
+		if (ted.type == 2) {
+			return 22;
+		}
+		if (ted.type == 3) {
+			if (renderFlag == 1) return 22;
+			return 37;
 		}
 		return 0;
 

@@ -199,11 +199,11 @@ public class PClo_BlockRadio extends BlockContainer implements PC_IBlockType {
 		}
 
 		boolean on = (world.getBlockMetadata(i, j, k) == 1);
-		
+
 		if (!on && !(l > 0 && Block.blocksList[l].canProvidePower())) {
 			return;
 		}
-		
+
 		boolean power = isGettingPower(world, i, j, k);
 
 		if (on && !power) {

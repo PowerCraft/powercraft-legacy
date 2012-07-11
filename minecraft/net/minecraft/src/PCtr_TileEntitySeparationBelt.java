@@ -5,7 +5,6 @@ package net.minecraft.src;
  * Separation belt with inventory of samples.
  * 
  * @author MightyPork
- *
  */
 public class PCtr_TileEntitySeparationBelt extends PCtr_TileEntityRedirectionBeltBase implements IInventory, PC_ISpecialAccessInventory {
 
@@ -32,8 +31,8 @@ public class PCtr_TileEntitySeparationBelt extends PCtr_TileEntityRedirectionBel
 	public void openChest() {}
 
 	@Override
-	public void closeChest() {}	
-	
+	public void closeChest() {}
+
 
 	@Override
 	public int calculateItemDirection(Entity entity) {
@@ -115,10 +114,8 @@ public class PCtr_TileEntitySeparationBelt extends PCtr_TileEntityRedirectionBel
 		for (int i = 0; i < getSizeInventory(); i++) {
 			ItemStack stack = getStackInSlot(i);
 			if (stack != null
-					&& (stack.isItemEqual(itemstack)
-							|| (group_logs && stack.itemID == Block.wood.blockID && itemstack.itemID == Block.wood.blockID)
-							|| (group_planks && stack.itemID == Block.planks.blockID && itemstack.itemID == Block.planks.blockID)
-							|| (group_all && stack.itemID == itemstack.itemID))) {
+					&& (stack.isItemEqual(itemstack) || (group_logs && stack.itemID == Block.wood.blockID && itemstack.itemID == Block.wood.blockID)
+							|| (group_planks && stack.itemID == Block.planks.blockID && itemstack.itemID == Block.planks.blockID) || (group_all && stack.itemID == itemstack.itemID))) {
 
 				int tmpi = i % 6;
 				if (tmpi >= 3) {
@@ -270,12 +267,12 @@ public class PCtr_TileEntitySeparationBelt extends PCtr_TileEntityRedirectionBel
 	@Override
 	public void readFromNBT(NBTTagCompound nbttagcompound) {
 		super.readFromNBT(nbttagcompound);
-		
+
 		PC_InvUtils.loadInventoryFromNBT(nbttagcompound, "Items", this);
 		group_all = nbttagcompound.getBoolean("GroupAll");
 		group_logs = nbttagcompound.getBoolean("GroupLogs");
 		group_planks = nbttagcompound.getBoolean("GroupPlanks");
-		if(!nbttagcompound.getBoolean("mark342")) {
+		if (!nbttagcompound.getBoolean("mark342")) {
 			group_all = false;
 			group_logs = true;
 			group_planks = true;
@@ -286,14 +283,14 @@ public class PCtr_TileEntitySeparationBelt extends PCtr_TileEntityRedirectionBel
 	@Override
 	public void writeToNBT(NBTTagCompound nbttagcompound) {
 		super.writeToNBT(nbttagcompound);
-		
+
 		PC_InvUtils.saveInventoryToNBT(nbttagcompound, "Items", this);
-		
+
 		nbttagcompound.setBoolean("GroupAll", group_all);
 		nbttagcompound.setBoolean("GroupLogs", group_logs);
 		nbttagcompound.setBoolean("GroupPlanks", group_planks);
-		nbttagcompound.setBoolean("mark342", true);		
-		
+		nbttagcompound.setBoolean("mark342", true);
+
 	}
 
 	@Override

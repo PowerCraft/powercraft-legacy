@@ -38,7 +38,11 @@ public class PCco_GuiUpdateNotification implements PC_IGresBase {
 		hg = new PC_GresLayoutH();
 		hg.setAlignH(PC_GresAlign.CENTER);
 		hg.add(new PC_GresLabel(PC_Lang.tr("pc.gui.update.newVersionAvailable")));
-		hg.add(new PC_GresLink(PC_Lang.tr("pc.gui.update.readMore")).setId(1));
+		PC_GresLink link;
+		hg.add(link = (PC_GresLink) new PC_GresLink(PC_Lang.tr("pc.gui.update.readMore")).setId(1));
+
+
+
 		w.add(hg);
 		hg = new PC_GresLayoutH();
 		hg.setAlignH(PC_GresAlign.CENTER);
@@ -60,6 +64,8 @@ public class PCco_GuiUpdateNotification implements PC_IGresBase {
 		hg.add(new PC_GresGap(10, 0));
 		hg.add(buttonOK = new PC_GresButton(PC_Lang.tr("pc.gui.ok")).setId(0));
 		w.add(hg);
+
+		w.add(new PC_GresGap(0, 0));
 
 		gui.add(w);
 

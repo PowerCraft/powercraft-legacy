@@ -105,6 +105,11 @@ public class PClo_BlockLight extends BlockContainer implements PC_ISwapTerrain, 
 			i1 = 5;
 		}
 		world.setBlockMetadataWithNotify(i, j, k, i1);
+
+		PClo_TileEntityLight tileentity = getTE(world, i, j, k);
+
+		if (tileentity != null && tileentity.isStable) return;
+
 		onPoweredBlockChange(world, i, j, k, world.isBlockIndirectlyGettingPowered(i, j, k) || isAttachmentBlockPowered(world, i, j, k, i1) || isBlockUnderAttachmentPowered(world, i, j, k, i1));
 	}
 
@@ -137,15 +142,21 @@ public class PClo_BlockLight extends BlockContainer implements PC_ISwapTerrain, 
 
 	@Override
 	public void onNeighborBlockChange(World world, int i, int j, int k, int l) {
+
 		if (changingState) {
 			return;
 		}
+
 		int sidemeta = world.getBlockMetadata(i, j, k);
 
 		if (!canPlaceBlockOnSide(world, i, j, k, meta2side[sidemeta])) {
 			world.setBlockWithNotify(i, j, k, 0);// drop -> onremoval
 			return;
 		}
+
+		PClo_TileEntityLight tileentity = getTE(world, i, j, k);
+
+		if (tileentity != null && tileentity.isStable) return;
 
 		boolean powered = world.isBlockIndirectlyGettingPowered(i, j, k) || isAttachmentBlockPowered(world, i, j, k, sidemeta) || isBlockUnderAttachmentPowered(world, i, j, k, sidemeta);
 		if (on && !powered) {
@@ -157,6 +168,11 @@ public class PClo_BlockLight extends BlockContainer implements PC_ISwapTerrain, 
 
 	@Override
 	public void updateTick(World world, int i, int j, int k, Random random) {
+
+		PClo_TileEntityLight tileentity = getTE(world, i, j, k);
+
+		if (tileentity != null && tileentity.isStable) return;
+
 		int sidemeta = world.getBlockMetadata(i, j, k);
 		boolean powered = world.isBlockIndirectlyGettingPowered(i, j, k) || isAttachmentBlockPowered(world, i, j, k, sidemeta) || isBlockUnderAttachmentPowered(world, i, j, k, sidemeta);
 		if (on && !powered) {
@@ -238,7 +254,7 @@ public class PClo_BlockLight extends BlockContainer implements PC_ISwapTerrain, 
 			if (te != null) {
 				if (!PC_Utils.isCreative()) {
 					PClo_TileEntityLight teg = (PClo_TileEntityLight) te;
-					dropBlockAsItem_do(world, i, j, k, new ItemStack(mod_PClogic.lightOn, 1, teg.getColor()));
+					dropBlockAsItem_do(world, i, j, k, new ItemStack(mod_PClogic.lightOn, 1, teg.getColor() + (teg.isStable ? 16 : 0)));
 				}
 			}
 		}
@@ -256,7 +272,9 @@ public class PClo_BlockLight extends BlockContainer implements PC_ISwapTerrain, 
 	 */
 	public static void onPoweredBlockChange(World world, int x, int y, int z, boolean rs_state) {
 		int l = world.getBlockMetadata(x, y, z);
-		TileEntity tileentity = world.getBlockTileEntity(x, y, z);
+		PClo_TileEntityLight tileentity = getTE(world, x, y, z);
+
+		if (tileentity != null && tileentity.isStable && rs_state == false) return;
 
 		changingState = true;
 		if (rs_state) {
@@ -317,7 +335,7 @@ public class PClo_BlockLight extends BlockContainer implements PC_ISwapTerrain, 
 	@Override
 	public int getRenderColor(int i) // item
 	{
-		return PClo_TileEntityLight.getHexColor(i, true);
+		return PClo_TileEntityLight.getHexColor(i % 16, true);
 	}
 
 	@Override
@@ -325,12 +343,20 @@ public class PClo_BlockLight extends BlockContainer implements PC_ISwapTerrain, 
 		return getColorHex(iblockaccess, i, j, k);
 	}
 
+	private static PClo_TileEntityLight getTE(IBlockAccess world, int i, int j, int k) {
+		TileEntity te = world.getBlockTileEntity(i, j, k);
+		if (te == null) return null;
+		PClo_TileEntityLight tel = (PClo_TileEntityLight) te;
+		return tel;
+	}
+
 	private int getColorHex(IBlockAccess w, int i, int j, int k) {
-		TileEntity te = w.getBlockTileEntity(i, j, k);
-		if (te == null) {
+		PClo_TileEntityLight tei = getTE(w, i, j, k);
+
+		if (tei == null) {
 			return 0xff0000;
 		}
-		PClo_TileEntityLight tei = (PClo_TileEntityLight) te;
+
 		return tei.getHexColor(on);
 	}
 
@@ -349,6 +375,11 @@ public class PClo_BlockLight extends BlockContainer implements PC_ISwapTerrain, 
 		if (!on) {
 			return;
 		}
+
+		try {
+			if (getTE(world, i, j, k).isStable && world.rand.nextInt(4) != 0) return;
+		} catch (NullPointerException e) {}
+
 		int l = world.getBlockMetadata(i, j, k);
 		int color_hex = getColorHex(world, i, j, k);
 		double ii = i + 0.5D;

@@ -39,12 +39,12 @@ public class PCde_TileEntityDecoRenderer extends TileEntitySpecialRenderer {
 
 		GL11.glPushMatrix();
 		GL11.glScalef(f, -f, -f);
-		
-		model.setFrameParts(0, needsFullFace(ted.getCoord().offset(0,1,0).getId(ted.worldObj)));
-		model.setFrameParts(1, needsFullFace(ted.getCoord().offset(1,0,0).getId(ted.worldObj)));
-		model.setFrameParts(2, needsFullFace(ted.getCoord().offset(0,0,1).getId(ted.worldObj)));
-		model.setFrameParts(3, needsFullFace(ted.getCoord().offset(-1,0,0).getId(ted.worldObj)));
-		model.setFrameParts(4, needsFullFace(ted.getCoord().offset(0,0,-1).getId(ted.worldObj)));
+
+		model.setFrameParts(0, needsFullFace(ted.getCoord().offset(0, 1, 0).getId(ted.worldObj)));
+		model.setFrameParts(1, needsFullFace(ted.getCoord().offset(1, 0, 0).getId(ted.worldObj)));
+		model.setFrameParts(2, needsFullFace(ted.getCoord().offset(0, 0, 1).getId(ted.worldObj)));
+		model.setFrameParts(3, needsFullFace(ted.getCoord().offset(-1, 0, 0).getId(ted.worldObj)));
+		model.setFrameParts(4, needsFullFace(ted.getCoord().offset(0, 0, -1).getId(ted.worldObj)));
 		model.render(ted.type);
 
 		GL11.glPopMatrix();
@@ -52,16 +52,16 @@ public class PCde_TileEntityDecoRenderer extends TileEntitySpecialRenderer {
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 		GL11.glPopMatrix();
 	}
-	
+
 	private boolean needsFullFace(int id) {
-		if(id == Block.torchWood.blockID) return true;
-		if(id == Block.torchRedstoneActive.blockID) return true;
-		if(id == Block.torchRedstoneIdle.blockID) return true;
-		if(id == Block.lever.blockID) return true;
-		if(id == Block.button.blockID) return true;
-		if(PC_BlockUtils.hasFlag(new ItemStack(id,1,0), "ATTACHED")) return true;
+		if (id == Block.torchWood.blockID) return true;
+		if (id == Block.torchRedstoneActive.blockID) return true;
+		if (id == Block.torchRedstoneIdle.blockID) return true;
+		if (id == Block.lever.blockID) return true;
+		if (id == Block.button.blockID) return true;
+		if (PC_BlockUtils.hasFlag(new ItemStack(id, 1, 0), "ATTACHED")) return true;
 		return false;
-		
+
 	}
 
 }
