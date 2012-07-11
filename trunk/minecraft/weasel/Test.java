@@ -15,8 +15,8 @@ import weasel.obj.WeaselObject;
 public class Test {
 
 	public void run() {
-		
-		if(true) return;
+
+		if (true) return;
 
 		IWeaselHardware hardware = new IWeaselHardware() {
 

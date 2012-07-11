@@ -578,9 +578,9 @@ public class PC_GresTextEditMultiline extends PC_GresWidget {
 			e = s;
 			s = t;
 		}
-		
+
 		int oldSize = e - s;
-		
+
 		String s1 = text.substring(0, s);
 		String s2 = text.substring(e);
 		text = s1 + c + s2;

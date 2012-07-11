@@ -1,6 +1,9 @@
 package net.minecraft.src;
 
 
+import java.util.ArrayList;
+import java.util.List;
+
 import net.minecraft.src.PC_GresWidget.PC_GresAlign;
 
 
@@ -14,9 +17,14 @@ public class PCco_GuiCraftingTool implements PC_IGresBase {
 
 	private PC_GresButton buttonPrev, buttonNext;
 	private EntityPlayer player;
+	private PC_IGresGui gui;
 
 	private PC_GresInventory craftingToolInventory;
+	private PC_GresInventoryBigSlot trashInventory;
 	private PCco_CraftingToolManager craftingToolManager;
+	private PC_GresButton buttonTrashAll;
+	private PC_GresButton buttonSort;
+	private PC_GresInventoryPlayer playerInventory;
 	private static int page = 0;
 
 	private static final int invWidth = 13;
@@ -37,6 +45,7 @@ public class PCco_GuiCraftingTool implements PC_IGresBase {
 
 	@Override
 	public void initGui(PC_IGresGui gui) {
+		this.gui = gui;
 		PC_GresWindow w = new PC_GresWindow(PC_Lang.tr("pc.gui.craftingTool.title"));
 		w.padding.setTo(10, 4);
 		w.gapUnderTitle = 10;
@@ -45,7 +54,7 @@ public class PCco_GuiCraftingTool implements PC_IGresBase {
 		w.setAlignV(PC_GresAlign.CENTER);
 
 
-		PC_GresWidget hg;
+		PC_GresWidget hg, vg;
 
 		craftingToolManager = new PCco_CraftingToolManager();
 		craftingToolInventory = new PC_GresInventory(invWidth, invHeight);
@@ -59,19 +68,36 @@ public class PCco_GuiCraftingTool implements PC_IGresBase {
 		w.add(craftingToolInventory);
 
 		hg = new PC_GresLayoutH().setAlignV(PC_GresAlign.TOP).setAlignH(PC_GresAlign.CENTER);
-		hg.add(buttonPrev = (PC_GresButton) new PC_GresButton("<<<").setMinWidth(30));
+
+		vg = new PC_GresLayoutV();
+		vg.add(new PC_GresGap(0, 0).setWidgetMargin(2));
+		vg.add(buttonPrev = (PC_GresButton) new PC_GresButton("<<<").setMinWidth(30));
 		if (page <= 0) {
 			page = 0;
 			buttonPrev.enable(false);
 		}
 
-		hg.add(new PC_GresInventoryPlayer(false));
+		trashInventory = new PC_GresInventoryBigSlot(new PC_SlotTrash());
+		vg.add(new PC_GresLabel(PC_Lang.tr("pc.gui.craftingTool.trashTitle")).setWidgetMargin(1));
+		vg.add(trashInventory.setWidgetMargin(1));
+		vg.add(buttonTrashAll = (PC_GresButton) new PC_GresButton(PC_Lang.tr("pc.gui.craftingTool.trashAll")).setButtonPadding(3, 3).setMinWidth(30).setWidgetMargin(1));
+		hg.add(vg);
 
-		hg.add(buttonNext = (PC_GresButton) new PC_GresButton(">>>").setMinWidth(30));
+		hg.add(playerInventory = new PC_GresInventoryPlayer(false));
+
+
+		vg = new PC_GresLayoutV();
+		vg.add(new PC_GresGap(0, 0).setWidgetMargin(2));
+		vg.add(buttonNext = (PC_GresButton) new PC_GresButton(">>>").setMinWidth(30));
 		if (page >= getMaxPages()) {
 			page = getMaxPages();
 			buttonNext.enable(false);
 		}
+		vg.add(new PC_GresGap(0, 0).setWidgetMargin(4)).setAlignH(PC_GresAlign.CENTER);
+		//vg.add(buttonSort = (PC_GresButton) new PC_GresButton(PC_Lang.tr("pc.gui.craftingTool.sort")).setButtonPadding(2, 4).setMinWidth(30));
+		vg.add(buttonSort = (PC_GresButton) new PC_GresButtonImage(PC_Lang.tr("pc.gui.craftingTool.sort"), mod_PCcore.getImgDir() + "gres/button.png", new PC_CoordI(0,0), new PC_CoordI(17,10)).setButtonPadding(2, 4).setMinWidth(30));
+		hg.add(vg);
+
 		w.add(hg);
 		gui.add(w);
 		gui.setCanShiftTransfer(false);
@@ -106,7 +132,7 @@ public class PCco_GuiCraftingTool implements PC_IGresBase {
 
 	@Override
 	public void actionPerformed(PC_GresWidget widget, PC_IGresGui gui) {
-		if (widget == craftingToolInventory) {
+		if (widget == craftingToolInventory || widget == trashInventory || widget == playerInventory.inv1 || widget == playerInventory.inv2) {
 			for (int i = 0; i < invWidth; i++) {
 				for (int j = 0; j < invHeight; j++) {
 					Slot slot = craftingToolInventory.getSlot(i, j);
@@ -137,6 +163,61 @@ public class PCco_GuiCraftingTool implements PC_IGresBase {
 				buttonPrev.enable(true);
 			}
 			loadSlotsForCorrentPage(gui);
+		} else if (widget == buttonTrashAll) {
+			IInventory inv = player.inventory;
+			for (int i = 0; i < inv.getSizeInventory() - 4; i++) {
+				ItemStack stack = inv.getStackInSlot(i);
+				if (stack != null) {
+					if (stack.itemID != mod_PCcore.craftingTool.shiftedIndex) {
+						inv.setInventorySlotContents(i, null);
+					}
+				}
+			}
+			actionPerformed(craftingToolInventory, gui);
+		} else if (widget == buttonSort) {
+			InventoryPlayer inv = player.inventory;
+			List<ItemStack> stacks = new ArrayList<ItemStack>();
+			for (int i = 0; i < inv.getSizeInventory() - 4; i++) {
+				ItemStack stack = inv.getStackInSlot(i);
+				if (stack != null) {
+					inv.setInventorySlotContents(i, null);
+					stacks.add(stack);
+				}
+			}
+
+			if (stacks.size() == 0) return;
+
+			PC_InvUtils.groupStacks(stacks);
+
+			List<ItemStack> sorted = new ArrayList<ItemStack>();
+
+			while (stacks.size() > 0) {
+				ItemStack lowest = null;
+				int indexLowest = -1;
+				for (int i = 0; i < stacks.size(); i++) {
+					ItemStack checked = stacks.get(i);
+					if (checked == null) {
+						indexLowest = i;
+						break;
+					}
+
+					if (lowest == null
+							|| (checked.itemID == mod_PCcore.craftingTool.shiftedIndex && lowest.itemID != mod_PCcore.craftingTool.shiftedIndex)
+							|| ((lowest.itemID * 32000 * 64 + lowest.getItemDamage() * 64 + lowest.stackSize) > (checked.itemID * 32000 * 64 + checked.getItemDamage() * 64 + checked.stackSize) && lowest.itemID != mod_PCcore.craftingTool.shiftedIndex)) {
+						lowest = checked;
+						indexLowest = i;
+					}
+				}
+				if (lowest != null) sorted.add(stacks.remove(indexLowest));
+			}
+
+			//Collections.reverse(sorted);
+
+			for (ItemStack stack : sorted) {
+				inv.addItemStackToInventory(stack);
+			}
+
+			actionPerformed(craftingToolInventory, gui);
 		}
 	}
 

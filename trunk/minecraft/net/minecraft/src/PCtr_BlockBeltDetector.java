@@ -13,7 +13,6 @@ import net.minecraft.src.forge.ITextureProvider;
  * Detection belt
  * 
  * @author MightyPork
- *
  */
 public class PCtr_BlockBeltDetector extends Block implements PC_IBlockType, PC_IRotatedBox, PC_ISwapTerrain, ITextureProvider {
 
@@ -83,27 +82,27 @@ public class PCtr_BlockBeltDetector extends Block implements PC_IBlockType, PC_I
 
 	@SuppressWarnings("rawtypes")
 	private void setStateIfEntityInteractsWithDetector(World world, int i, int j, int k) {
-		
+
 		int meta = world.getBlockMetadata(i, j, k);
 		boolean isAlreadyActive = PCtr_BeltBase.isActive(meta);
 		boolean isPressed = false;
 		List list = null;
-		
+
 		list = world.getEntitiesWithinAABBExcludingEntity(null, AxisAlignedBB.getBoundingBoxFromPool(i, j, k, (i + 1), j + 1D, (k + 1)));
 		if (list.size() > 0) {
 			isPressed = true;
 		}
 
 		boolean shallNotify = false;
-		
+
 		if (isPressed && !isAlreadyActive) { // turn on
 			world.setBlockMetadataWithNotify(i, j, k, PCtr_BeltBase.getActiveMeta(meta));
 			shallNotify = true;
-			
+
 		} else if (!isPressed && isAlreadyActive) { // turn off
 			world.setBlockMetadataWithNotify(i, j, k, PCtr_BeltBase.getPassiveMeta(meta));
 			shallNotify = true;
-			
+
 		}
 
 		if (shallNotify) {
@@ -119,7 +118,7 @@ public class PCtr_BlockBeltDetector extends Block implements PC_IBlockType, PC_I
 		if (isPressed) {
 			world.scheduleBlockUpdate(i, j, k, blockID, tickRate());
 		}
-		
+
 		return;
 	}
 
@@ -159,11 +158,11 @@ public class PCtr_BlockBeltDetector extends Block implements PC_IBlockType, PC_I
 				return;
 			}
 		}
-		
+
 
 		int direction = getRotation(world.getBlockMetadata(i, j, k));
 
-		
+
 		PC_CoordI pos_leading_to = pos.copy();
 		switch (direction) {
 			case 0: // Z--

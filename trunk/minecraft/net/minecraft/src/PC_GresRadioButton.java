@@ -81,11 +81,11 @@ public class PC_GresRadioButton extends PC_GresWidget {
 		if (size.y < WIDTH) {
 			size.y = WIDTH;
 		}
-		
+
 		if (size.x < minSize.x) {
 			size.x = minSize.x;
 		}
-		
+
 		return size.copy();
 	}
 

@@ -402,7 +402,7 @@ public class Compiler {
 		source = source.replaceAll("#.*?\n", "");
 		source = source.replace("\n", " ");
 		source = source.replaceAll("/\\*.*?\\*/", "");
-		
+
 		source = source.replaceAll("([^a-zA-Z0-9._]|^)for[(](.*?)[)][{]", "$1for($2;){");
 
 		// ++ and --, but it works only outside other expressions.
@@ -1140,9 +1140,9 @@ public class Compiler {
 			}
 
 		}
-		
-		if(!sb.toString().trim().equals("")) {
-			throw new SyntaxError("Invalid statement: \""+sb.toString().trim()+"\"");
+
+		if (!sb.toString().trim().equals("")) {
+			throw new SyntaxError("Invalid statement: \"" + sb.toString().trim() + "\"");
 		}
 
 		return instructionList;

@@ -48,11 +48,6 @@ public class mod_PCtransport extends PC_Module {
 
 	// *** PROPERTIES ***
 
-	/** <i>Separator</i> - treat different wood colors as different blocks */
-	public static boolean separate_wood_types = false;
-	/** <i>Separator</i> - treat different plank types as different blocks */
-	public static boolean separate_plank_types = false;
-
 	private static final String pk_belt = "id.block.conveyor_belt";
 	private static final String pk_ejector = "id.block.ejection_belt";
 	private static final String pk_detector = "id.block.detection_belt";
@@ -64,10 +59,6 @@ public class mod_PCtransport extends PC_Module {
 	private static final String pk_teleporter = "id.block.teleporter";
 
 	private static final String pk_teleporter_brightness = "brightness.teleporter";
-
-	private static final String pk_woodTypes = "opt.separation.distinguish_wood_types";
-	private static final String pk_plankTypes = "opt.separation.distinguish_plank_types";
-
 
 	private static final String pk_idSlimeBoots = "id.item.stickyBoots";
 
@@ -122,16 +113,11 @@ public class mod_PCtransport extends PC_Module {
 		conf.putBlock(pk_elevator, 219);
 		conf.putBlock(pk_speedybelt, 220);
 		conf.putBlock(pk_teleporter, 235);
-		conf.putBoolean(pk_woodTypes, false, "Treat different wood (log) colors as different items.");
-		conf.putBoolean(pk_plankTypes, false, "Treat different planks colors as different items");
 		conf.putInteger(pk_teleporter_brightness, 5, "Teleporter block brightness, scale 0-15.");
 
 		conf.putBlock(pk_idSlimeBoots, 19005);
 
 		conf.apply();
-
-		separate_plank_types = conf.getBoolean(pk_plankTypes);
-		separate_wood_types = conf.getBoolean(pk_woodTypes);
 	}
 
 	@Override
@@ -158,37 +144,37 @@ public class mod_PCtransport extends PC_Module {
 		
 		conveyorBelt = new PCtr_BlockBeltNormal(cfg().getInteger(pk_belt), false)
 				.setHardness(0.22F)
-				.setResistance(5.0F)
+				.setResistance(8.0F)
 				.setBlockName("PCconveyorBelt")
 				.setStepSound(Block.soundMetalFootstep);
 
 		ejectionBelt = new PCtr_BlockBeltEjector(cfg().getInteger(pk_ejector))
 				.setHardness(0.22F)
-				.setResistance(5.0F)
+				.setResistance(8.0F)
 				.setBlockName("PCconveyorFurnace")
 				.setStepSound(Block.soundMetalFootstep);
 
 		detectionBelt = new PCtr_BlockBeltDetector(cfg().getInteger(pk_detector))
 				.setHardness(0.22F)
-				.setResistance(5.0F)
+				.setResistance(8.0F)
 				.setBlockName("PCconveyorDetector")
 				.setStepSound(Block.soundMetalFootstep);
 
 		separationBelt = new PCtr_BlockBeltSeparator(cfg().getInteger(pk_separator))
 				.setHardness(0.22F)
-				.setResistance(5.0F)
+				.setResistance(8.0F)
 				.setBlockName("PCconveyorFilter")
 				.setStepSound(Block.soundMetalFootstep);
 
 		brakeBelt = new PCtr_BlockBeltBrake(cfg().getInteger(pk_brake))
 				.setHardness(0.22F)
-				.setResistance(5.0F)
+				.setResistance(8.0F)
 				.setBlockName("PCconveyorBrake")
 				.setStepSound(Block.soundMetalFootstep);
 
 		redirectionBelt = new PCtr_BlockBeltRedirector(cfg().getInteger(pk_redirector))
 				.setHardness(0.22F)
-				.setResistance(5.0F)
+				.setResistance(8.0F)
 				.setBlockName("PCconveyorRedirector")
 				.setStepSound(Block.soundMetalFootstep);
 
@@ -200,13 +186,13 @@ public class mod_PCtransport extends PC_Module {
 
 		speedyBelt = new PCtr_BlockBeltNormal(cfg().getInteger(pk_speedybelt), true)
 				.setHardness(0.22F)
-				.setResistance(5.0F)
+				.setResistance(8.0F)
 				.setBlockName("PCconveyorSpeedBelt")
 				.setStepSound(Block.soundMetalFootstep);
 
 		teleporter = new PCtr_BlockTeleporter(cfg().getInteger(pk_teleporter), 14, Material.portal)
 				.setHardness(1.0F)
-				.setResistance(5.0F)
+				.setResistance(8.0F)
 				.setLightValue(cfg().getInteger(pk_teleporter_brightness) * 0.0625F)
 				.setBlockName("PCteleporter")
 				.setStepSound(Block.soundMetalFootstep);
@@ -236,7 +222,6 @@ public class mod_PCtransport extends PC_Module {
 	@Override
 	public void preloadTextures(List<String> list) {
 		list.add(getTerrainFile());
-		list.add(getImgDir() + "gui_separator.png");
 	}
 
 	@Override
@@ -296,24 +281,24 @@ public class mod_PCtransport extends PC_Module {
 		map.put("pc.gui.teleporter.outputDirection", "Primary output:");
 		map.put("pc.gui.teleporter.type.sender", "SENDER");
 		map.put("pc.gui.teleporter.type.target", "TARGET");
-		
+
 		map.put("pc.gui.ejector.modeEjectTitle", "Ejection mode:");
 		map.put("pc.gui.ejector.modeStacks", "Whole stacks");
 		map.put("pc.gui.ejector.modeItems", "Single items");
 		map.put("pc.gui.ejector.modeAll", "All contents at once");
-		
+
 		map.put("pc.gui.ejector.modeSelectTitle", "Method of selection:");
 		map.put("pc.gui.ejector.modeSelectFirst", "First slot");
 		map.put("pc.gui.ejector.modeSelectLast", "Last slot");
 		map.put("pc.gui.ejector.modeSelectRandom", "Random slot");
-		
-		
+
+
 		map.put("pc.gui.separationBelt.group", "Ignore subtypes of");
 		map.put("pc.gui.separationBelt.groupLogs", "Logs");
 		map.put("pc.gui.separationBelt.groupPlanks", "Planks");
 		map.put("pc.gui.separationBelt.groupAll", "All");
-		
-		
+
+
 	}
 
 	@Override
@@ -406,7 +391,7 @@ public class mod_PCtransport extends PC_Module {
 
 		// @formatter:off
 		addStacksToCraftingTool(
-				PC_CraftingToolGroup.TRANSPORT,
+				PC_ItemGroup.TRANSPORT,
 				new ItemStack(conveyorBelt),
 				new ItemStack(speedyBelt),
 				new ItemStack(ejectionBelt),
@@ -416,9 +401,10 @@ public class mod_PCtransport extends PC_Module {
 				new ItemStack(separationBelt),
 				new ItemStack(itemElevator,1,0),
 				new ItemStack(itemElevator,1,1),
-				new ItemStack(teleporter),
-				new ItemStack(slimeboots)
+				new ItemStack(teleporter)
 			);
+		
+		addStacksToCraftingTool(PC_ItemGroup.ARMOR, slimeboots);
 		// @formatter:on
 	}
 

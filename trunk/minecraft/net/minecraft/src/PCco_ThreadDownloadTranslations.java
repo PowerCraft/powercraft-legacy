@@ -38,7 +38,7 @@ public class PCco_ThreadDownloadTranslations extends Thread {
 
 				if (ze.getName().matches("en_US.+")) {
 					PC_Logger.finer(" - REFRESHING " + ze.getName());
-					if(file.exists()) file.delete();
+					if (file.exists()) file.delete();
 					continue;
 				}
 

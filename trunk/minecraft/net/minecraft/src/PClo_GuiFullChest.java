@@ -35,16 +35,16 @@ public class PClo_GuiFullChest implements PC_IGresBase {
 	public void initGui(PC_IGresGui gui) {
 
 		String title = PC_Lang.tr("tile.PCloLogicGate.chestFull.name");
-		
+
 
 		// window
 		PC_GresWindow w = new PC_GresWindow(title);
 		w.setAlignH(PC_GresAlign.CENTER);
-		
-		w.add(new PC_GresGap(0,8));
-		w.add(check = new PC_GresCheckBox(PC_Lang.tr("pc.gui.chestFull.requireAllSlotsFull")));	
-		check.check(gate.fullChestNeedsAllSlotsFull);		
-		w.add(new PC_GresGap(0,8));
+
+		w.add(new PC_GresGap(0, 8));
+		w.add(check = new PC_GresCheckBox(PC_Lang.tr("pc.gui.chestFull.requireAllSlotsFull")));
+		check.check(gate.fullChestNeedsAllSlotsFull);
+		w.add(new PC_GresGap(0, 8));
 		// buttons
 		PC_GresWidget hg = new PC_GresLayoutH().setAlignH(PC_GresAlign.CENTER);
 		hg.add(new PC_GresButton(PC_Lang.tr("pc.gui.cancel")).setId(1));

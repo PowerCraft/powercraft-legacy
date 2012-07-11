@@ -288,7 +288,7 @@ public class PClo_BlockGate extends BlockContainer implements PC_IRotatedBox, PC
 
 	@Override
 	public void onBlockRemoval(World world, int x, int y, int z) {
-		if (!changingState.contains(new PC_CoordI(x,y,z))) {
+		if (!changingState.contains(new PC_CoordI(x, y, z))) {
 			// drop the gate
 			PClo_TileEntityGate teg = getTE(world, x, y, z);
 
@@ -401,11 +401,11 @@ public class PClo_BlockGate extends BlockContainer implements PC_IRotatedBox, PC
 
 		switch (type) {
 			case PClo_GateType.CPU:
-				
+
 				world.notifyBlockChange(x, y, z, blockID);
 
 				return;
-				
+
 			case PClo_GateType.CROSSING:
 
 				boolean[] powered = { powered_from_input(world, x, y, z, 0), powered_from_input(world, x, y, z, 1), powered_from_input(world, x, y, z, 2), powered_from_input(world, x, y, z, 3) };
@@ -441,7 +441,7 @@ public class PClo_BlockGate extends BlockContainer implements PC_IRotatedBox, PC
 					changeGateState(false, world, x, y, z);
 				}
 				break;
-				
+
 			case PClo_GateType.NIGHT:
 				if (!world.isDaytime() && !active) {
 					changeGateState(true, world, x, y, z);
@@ -728,7 +728,7 @@ public class PClo_BlockGate extends BlockContainer implements PC_IRotatedBox, PC
 		TileEntity tileentity = world.getBlockTileEntity(x, y, z);
 		//world.removeBlockTileEntity(x,y,z);
 
-		changingState.add(new PC_CoordI(x,y,z));
+		changingState.add(new PC_CoordI(x, y, z));
 
 		if (state) {
 			world.setBlockWithNotify(x, y, z, mod_PClogic.gateOn.blockID);
@@ -738,7 +738,7 @@ public class PClo_BlockGate extends BlockContainer implements PC_IRotatedBox, PC
 
 		world.setBlockMetadataWithNotify(x, y, z, l);
 
-		changingState.remove(new PC_CoordI(x,y,z));
+		changingState.remove(new PC_CoordI(x, y, z));
 
 		if (tileentity != null) {
 			tileentity.validate();
@@ -817,7 +817,7 @@ public class PClo_BlockGate extends BlockContainer implements PC_IRotatedBox, PC
 	@Override
 	public void onNeighborBlockChange(World world, int x, int y, int z, int l) {
 
-		if (changingState.contains(new PC_CoordI(x,y,z))) {
+		if (changingState.contains(new PC_CoordI(x, y, z))) {
 //			System.out.println("atm changing state, skipping neighbor notify "+System.currentTimeMillis());
 			return;
 		}
@@ -847,14 +847,14 @@ public class PClo_BlockGate extends BlockContainer implements PC_IRotatedBox, PC
 			checkForBurnout(world, x, y, z, true);
 
 			//world.scheduleBlockUpdate(x, y, z, blockID, 1);
-			
+
 			return;
 		}
 
 		if (type == PClo_GateType.FIFO_DELAYER) {
 			return;
 		}
-		
+
 		if (type == PClo_GateType.CPU) {
 
 			for (; gateUpdates.size() > 0 && world.getWorldTime() - gateUpdates.get(0).updateTime > 10L; gateUpdates.remove(0)) {}
@@ -869,7 +869,7 @@ public class PClo_BlockGate extends BlockContainer implements PC_IRotatedBox, PC
 //			System.out.println("---------- "+y+" ------------------ "+aa);
 			getTE(world, x, y, z).weaselOnPinChanged();
 //			System.out.println("---------- END "+y+" ------------------"+aa);
-			
+
 			//world.scheduleBlockUpdate(x, y, z, blockID, tickRate());
 			return;
 		}
@@ -975,52 +975,52 @@ public class PClo_BlockGate extends BlockContainer implements PC_IRotatedBox, PC
 		if (type == PClo_GateType.CPU) {
 
 			boolean[] outputs = getTE(iblockaccess, x, y, z).getWeaselOutputStates();
-			
+
 //			System.out.println("Is gate at "+y+"powering to side "+side+"? ");
-			
+
 //			for(int i=0; i<6; i++) {
 //				System.out.println("- before rotation: i"+i+" = " + outputs[i]);
 //			}
 
-			for(int i=0; i<rotation; i++) {
+			for (int i = 0; i < rotation; i++) {
 				boolean swap = outputs[0];
 				outputs[0] = outputs[1];
 				outputs[1] = outputs[2];
 				outputs[2] = outputs[3];
 				outputs[3] = swap;
 			}
-			
+
 //			for(int i=0; i<6; i++) {
 //				System.out.println("- after rotation: i"+i+" = " + outputs[i]);
 //			}
 
 			boolean state = false;
-			switch(side) {
+			switch (side) {
 				case 3:
 					state = outputs[3];
 					break;
-					
+
 				case 4:
 					state = outputs[2];
 					break;
-					
+
 				case 2:
 					state = outputs[1];
 					break;
-					
+
 				case 5:
 					state = outputs[0];
 					break;
-				
+
 				case 0:
 					state = outputs[4];
 					break;
-					
+
 				case 1:
 					state = outputs[5];
 					break;
 			}
-			
+
 //			System.out.println(state?"YES":"No");
 //			System.out.println();
 			return state;
@@ -1051,7 +1051,7 @@ public class PClo_BlockGate extends BlockContainer implements PC_IRotatedBox, PC
 		}
 		return ((rotation == 3 && side == 5) || (rotation == 1 && side == 5 && hasTwoOutputs(getType(iblockaccess, x, y, z))));
 	}
-	
+
 	public static boolean[] getWeaselInputStates(World world, int x, int y, int z) {
 //		System.out.println("Geting inputs for weasel at "+y);
 		//@formatter:off
@@ -1064,12 +1064,12 @@ public class PClo_BlockGate extends BlockContainer implements PC_IRotatedBox, PC
 				powered_from_input(world, x, y, z, 4)
 			};
 		//@formatter:on
-		
+
 //		for(int i=0; i<6; i++) {
 //			System.out.println("input "+i+" = "+inputs[i]);
 //			
 //		}
-		
+
 //		System.out.println();
 		return inputs;
 	}
@@ -1162,16 +1162,16 @@ public class PClo_BlockGate extends BlockContainer implements PC_IRotatedBox, PC
 	 * @return is powered
 	 */
 	public static boolean powered_from_input(World world, int x, int y, int z, int inp) {
-		
+
 		if (inp == 4) {
-			boolean isProviding = (world.isBlockIndirectlyProvidingPowerTo(x, y-1, z, 0) || (world.getBlockId(x, y-1, z) == Block.redstoneWire.blockID && world.getBlockMetadata(x, y-1, z) > 0));
+			boolean isProviding = (world.isBlockIndirectlyProvidingPowerTo(x, y - 1, z, 0) || (world.getBlockId(x, y - 1, z) == Block.redstoneWire.blockID && world.getBlockMetadata(x, y - 1, z) > 0));
 			return isProviding;
 		}
 		if (inp == 5) {
-			boolean isProviding = (world.isBlockIndirectlyProvidingPowerTo(x, y+1, z, 1) || (world.getBlockId(x, y+1, z) == Block.redstoneWire.blockID && world.getBlockMetadata(x, y+1, z) > 0));
+			boolean isProviding = (world.isBlockIndirectlyProvidingPowerTo(x, y + 1, z, 1) || (world.getBlockId(x, y + 1, z) == Block.redstoneWire.blockID && world.getBlockMetadata(x, y + 1, z) > 0));
 			return isProviding;
 		}
-		
+
 		int rotation = getRotation_static(world.getBlockMetadata(x, y, z));
 		int N0 = 0, N1 = 1, N2 = 2, N3 = 3;
 		if (inp == 0) {
@@ -1248,7 +1248,7 @@ public class PClo_BlockGate extends BlockContainer implements PC_IRotatedBox, PC
 	@Override
 	public void onBlockAdded(World world, int x, int y, int z) {
 		hugeUpdate(world, x, y, z, blockID);
-		if (!changingState.contains(new PC_CoordI(x,y,z))) super.onBlockAdded(world, x, y, z);
+		if (!changingState.contains(new PC_CoordI(x, y, z))) super.onBlockAdded(world, x, y, z);
 	}
 
 	/**
@@ -1355,12 +1355,12 @@ public class PClo_BlockGate extends BlockContainer implements PC_IRotatedBox, PC
 		}
 
 		if (type == PClo_GateType.CPU) {
-			PC_Utils.openGres(player, new PClo_GuiProgrammableGate(teg));			
+			PC_Utils.openGres(player, new PClo_GuiProgrammableGate(teg));
 			return true;
 		}
-		
+
 		if (type == PClo_GateType.CHEST_FULL) {
-			PC_Utils.openGres(player, new PClo_GuiFullChest(teg));			
+			PC_Utils.openGres(player, new PClo_GuiFullChest(teg));
 			return true;
 		}
 
@@ -1368,7 +1368,7 @@ public class PClo_BlockGate extends BlockContainer implements PC_IRotatedBox, PC
 			PC_Utils.openGres(player, new PClo_GuiDelayer(teg, PClo_GuiDelayer.FIFO));
 			return true;
 		}
-		
+
 		if (type == PClo_GateType.HOLD_DELAYER) {
 			PC_Utils.openGres(player, new PClo_GuiDelayer(teg, PClo_GuiDelayer.HOLD));
 			return true;

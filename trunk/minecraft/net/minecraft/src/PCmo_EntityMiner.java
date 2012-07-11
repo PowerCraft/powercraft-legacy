@@ -2822,7 +2822,7 @@ public class PCmo_EntityMiner extends Entity implements IInventory {
 		status.setInteger("mineTime5", mineCounter[5]);
 
 		tag.setTag("MinerStatus", status);
-		
+
 		PC_InvUtils.saveInventoryToNBT(tag, "Items", this);
 	}
 

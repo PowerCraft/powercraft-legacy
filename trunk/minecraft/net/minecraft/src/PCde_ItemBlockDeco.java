@@ -64,20 +64,6 @@ public class PCde_ItemBlockDeco extends ItemBlock {
 			return false;
 		}
 
-
-		if (itemstack.getItemDamage() == 2) {
-			// special placing rules for Ledge
-			if (world.getBlockId(i, j - 1, k) == mod_PCdeco.deco.blockID) {
-				int dir = ((MathHelper.floor_double(((entityplayer.rotationYaw * 4F) / 360F) + 0.5D) & 3) + 2) % 4;
-
-				i -= Direction.offsetX[dir];
-				k -= Direction.offsetZ[dir];
-
-				j--;
-			}
-		}
-
-
 		if (j == 255 && Block.blocksList[getBlockID()].blockMaterial.isSolid()) {
 			return false;
 		}

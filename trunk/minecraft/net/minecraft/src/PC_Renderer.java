@@ -41,6 +41,12 @@ public class PC_Renderer {
 	}
 
 	/**
+	 * Set this to disable automatic calling of "setBlockBoundsBasedOnState".<br>
+	 * Don't forget to clear it afterwards.
+	 */
+	public static boolean enableCustomBounds = false;
+
+	/**
 	 * Render world block with swapped terrain - must implement PC_ISwapTerrain
 	 * 
 	 * @param renderblocks block renderer
@@ -67,7 +73,7 @@ public class PC_Renderer {
 		boolean gf = RenderBlocks.cfgGrassFix;
 		RenderBlocks.cfgGrassFix = false;
 
-		block.setBlockBoundsBasedOnState(blockAccess, x, y, z);
+		if (!enableCustomBounds) block.setBlockBoundsBasedOnState(blockAccess, x, y, z);
 		renderblocks.renderStandardBlock(block, x, y, z);
 
 		RenderBlocks.cfgGrassFix = gf;

@@ -39,7 +39,7 @@ public class InstructionList implements PC_INBT {
 
 	private WeaselEngine engine;
 	private int programCounter = 0;
-	
+
 	/**
 	 * Clear all from the list
 	 */

@@ -271,7 +271,7 @@ public abstract class PC_Module extends BaseMod {
 
 
 			PC_Logger.finer("Adding default names...");
-			
+
 			generateTranslationFiles();
 
 
@@ -302,9 +302,10 @@ public abstract class PC_Module extends BaseMod {
 
 	// UTILS
 
-	
+
 	/**
-	 * Read needed names from the addNames() and generate new en_US lang files in the lang folder.
+	 * Read needed names from the addNames() and generate new en_US lang files
+	 * in the lang folder.
 	 */
 	protected final void generateTranslationFiles() {
 		HashMap<Object, String> names = new HashMap<Object, String>();
@@ -348,7 +349,7 @@ public abstract class PC_Module extends BaseMod {
 	 * @param damage2 ending damage
 	 * @param stackSize items in each stack
 	 */
-	public static final void addStackRangeToCraftingTool(PC_CraftingToolGroup group, int id, int damage1, int damage2, int stackSize) {
+	public static final void addStackRangeToCraftingTool(PC_ItemGroup group, int id, int damage1, int damage2, int stackSize) {
 
 		ArrayList<ItemStack> list = new ArrayList<ItemStack>();
 
@@ -365,7 +366,7 @@ public abstract class PC_Module extends BaseMod {
 	 * @param group item type group
 	 * @param stacks array of stacks to add
 	 */
-	public static final void addStacksToCraftingTool(PC_CraftingToolGroup group, ItemStack... stacks) {
+	public static final void addStacksToCraftingTool(PC_ItemGroup group, Object... stacks) {
 		PCco_CraftingToolManager.addStacks(group.index, stacks);
 	}
 

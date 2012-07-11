@@ -9,17 +9,20 @@ package net.minecraft.src;
  */
 public class PClo_TileEntityLight extends PC_TileEntity {
 	private int color = 1;
+	public boolean isStable;
 
 	@Override
 	public void readFromNBT(NBTTagCompound nbttagcompound) {
 		super.readFromNBT(nbttagcompound);
 		color = nbttagcompound.getInteger("color");
+		isStable = nbttagcompound.getBoolean("stable");
 	}
 
 	@Override
 	public void writeToNBT(NBTTagCompound nbttagcompound) {
 		super.writeToNBT(nbttagcompound);
 		nbttagcompound.setInteger("color", color);
+		nbttagcompound.setBoolean("stable", isStable);
 	}
 
 	/**

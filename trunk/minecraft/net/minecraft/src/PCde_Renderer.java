@@ -54,9 +54,71 @@ public class PCde_Renderer {
 		PCde_TileEntityDeco ted = (PCde_TileEntityDeco) te;
 
 		if (ted.type == 1) {
-			block.setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 1.0F, 1.0F);
 
+			block.setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 1.0F, 1.0F);
 			PC_Renderer.renderBlockSwapTerrain(renderblocks, iblockaccess, i, j, k, block);
+
+			return true;
+		}
+
+		if (ted.type == 2) {
+
+			float px = 0.0625F;
+
+			PC_Renderer.enableCustomBounds = true;
+			block.setBlockBounds(0.0F + 2 * px, 0.0F, 0.0F + 2 * px, 1.0F - 2 * px, 0.8F, 1.0F - 2 * px);
+			PC_Renderer.renderBlockSwapTerrain(renderblocks, iblockaccess, i, j, k, block);
+
+			block.setBlockBounds(0.0F + 4 * px, 0.8F, 0.0F + 4 * px, 1.0F - 4 * px, 1.6F, 1.0F - 4 * px);
+			PC_Renderer.renderBlockSwapTerrain(renderblocks, iblockaccess, i, j, k, block);
+
+			block.setBlockBounds(0.0F + 6 * px, 1.6F, 0.0F + 6 * px, 1.0F - 6 * px, 2.4F, 1.0F - 6 * px);
+			PC_Renderer.renderBlockSwapTerrain(renderblocks, iblockaccess, i, j, k, block);
+			PC_Renderer.enableCustomBounds = false;
+			block.setBlockBounds(0, 0, 0, 1, 1, 1);
+
+			return true;
+		}
+
+		if (ted.type == 3) {
+
+			final float px = 0.0625F;
+
+			PC_Renderer.enableCustomBounds = true;
+			block.setBlockBounds(0.0625F, 0.0625F, 0.0625F, 1 - 0.0625F, 1 - 0.0625F, 1 - 0.0625F);
+			PC_Renderer.renderBlockSwapTerrain(renderblocks, iblockaccess, i, j, k, block);
+			block.setBlockBounds(0, 0, 0, 1, 1, 1);
+
+			((PCde_BlockDeco) block).renderFlag = 1;
+
+			block.setBlockBounds(0 * px, 0 * px, 0 * px, 4 * px, 4 * px, 4 * px);
+			PC_Renderer.renderBlockSwapTerrain(renderblocks, iblockaccess, i, j, k, block);
+
+			block.setBlockBounds(0 * px, 0 * px, 12 * px, 4 * px, 4 * px, 16 * px);
+			PC_Renderer.renderBlockSwapTerrain(renderblocks, iblockaccess, i, j, k, block);
+
+			block.setBlockBounds(12 * px, 0 * px, 0 * px, 16 * px, 4 * px, 4 * px);
+			PC_Renderer.renderBlockSwapTerrain(renderblocks, iblockaccess, i, j, k, block);
+
+			block.setBlockBounds(12 * px, 0 * px, 12 * px, 16 * px, 4 * px, 16 * px);
+			PC_Renderer.renderBlockSwapTerrain(renderblocks, iblockaccess, i, j, k, block);
+
+
+			block.setBlockBounds(0 * px, 12 * px, 0 * px, 4 * px, 16 * px, 4 * px);
+			PC_Renderer.renderBlockSwapTerrain(renderblocks, iblockaccess, i, j, k, block);
+
+			block.setBlockBounds(0 * px, 12 * px, 12 * px, 4 * px, 16 * px, 16 * px);
+			PC_Renderer.renderBlockSwapTerrain(renderblocks, iblockaccess, i, j, k, block);
+
+			block.setBlockBounds(12 * px, 12 * px, 0 * px, 16 * px, 16 * px, 4 * px);
+			PC_Renderer.renderBlockSwapTerrain(renderblocks, iblockaccess, i, j, k, block);
+
+			block.setBlockBounds(12 * px, 12 * px, 12 * px, 16 * px, 16 * px, 16 * px);
+			PC_Renderer.renderBlockSwapTerrain(renderblocks, iblockaccess, i, j, k, block);
+
+			((PCde_BlockDeco) block).renderFlag = 0;
+			block.setBlockBounds(0, 0, 0, 1, 1, 1);
+			PC_Renderer.enableCustomBounds = false;
 
 			return true;
 		}
@@ -76,6 +138,7 @@ public class PCde_Renderer {
 		if (rtype == decorativeBlockRenderer) {
 			renderInvBlockDeco(renderblocks, block, meta);
 		}
+
 		if (rtype == walkableBlockRenderer) {
 			renderInvBlockDecoNonSolid(renderblocks, block, meta);
 		}
@@ -132,20 +195,66 @@ public class PCde_Renderer {
 
 			PC_Renderer.resetTerrain(swapped);
 
-			return;
 		} else if (meta == 1) {
 			block.setBlockBounds(0, 0, 0, 1, 1, 1);
 			PC_Renderer.renderInvBlock(renderblocks, block, meta);
+
 		} else if (meta == 2) {
-			float p = 0.0625F;
+
+			float px = 0.0625F;
+
 			boolean swapped = PC_Renderer.swapTerrain(block);
-			block.setBlockBounds(0, 0, 0, 1, p, 1);
+
+			block.setBlockBounds(0.0F + 3 * px, 0, 0.0F + 3 * px, 1 - 3 * px, 6 * px, 1 - 3 * px);
 			PC_Renderer.renderInvBoxWithTexture(renderblocks, block, 22);
-			block.setBlockBounds(0, 0, 1 - p, 1, 1, 1);
-			PC_Renderer.renderInvBoxWithTexture(renderblocks, block, 20);
-			block.setBlockBounds(0, 0, 0, p, 1, 1);
-			PC_Renderer.renderInvBoxWithTexture(renderblocks, block, 20);
-			block.setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 1.0F, 1.0F);
+
+			block.setBlockBounds(0.0F + 5 * px, 6 * px, 0.0F + 4 * px, 1 - 5 * px, 12 * px, 1 - 5 * px);
+			PC_Renderer.renderInvBoxWithTexture(renderblocks, block, 22);
+
+			block.setBlockBounds(0.0F + 7 * px, 12 * px, 0.0F + 7 * px, 1.0F - 7 * px, 18 * px, 1.0F - 7 * px);
+			PC_Renderer.renderInvBoxWithTexture(renderblocks, block, 22);
+
+			PC_Renderer.resetTerrain(swapped);
+
+			block.setBlockBounds(0, 0, 0, 1, 1, 1);
+
+		} else if (meta == 3) {
+
+			boolean swapped = PC_Renderer.swapTerrain(block);
+
+			final float px = 0.0625F;
+
+			block.setBlockBounds(0.0625F, 0.0625F, 0.0625F, 1 - 0.0625F, 1 - 0.0625F, 1 - 0.0625F);
+			PC_Renderer.renderInvBoxWithTexture(renderblocks, block, 37);
+
+			block.setBlockBounds(0 * px, 0 * px, 0 * px, 4 * px, 4 * px, 4 * px);
+			PC_Renderer.renderInvBoxWithTexture(renderblocks, block, 22);
+
+			block.setBlockBounds(0 * px, 0 * px, 12 * px, 4 * px, 4 * px, 16 * px);
+			PC_Renderer.renderInvBoxWithTexture(renderblocks, block, 22);
+
+			block.setBlockBounds(12 * px, 0 * px, 0 * px, 16 * px, 4 * px, 4 * px);
+			PC_Renderer.renderInvBoxWithTexture(renderblocks, block, 22);
+
+			block.setBlockBounds(12 * px, 0 * px, 12 * px, 16 * px, 4 * px, 16 * px);
+			PC_Renderer.renderInvBoxWithTexture(renderblocks, block, 22);
+
+
+			block.setBlockBounds(0 * px, 12 * px, 0 * px, 4 * px, 16 * px, 4 * px);
+			PC_Renderer.renderInvBoxWithTexture(renderblocks, block, 22);
+
+			block.setBlockBounds(0 * px, 12 * px, 12 * px, 4 * px, 16 * px, 16 * px);
+			PC_Renderer.renderInvBoxWithTexture(renderblocks, block, 22);
+
+			block.setBlockBounds(12 * px, 12 * px, 0 * px, 16 * px, 16 * px, 4 * px);
+			PC_Renderer.renderInvBoxWithTexture(renderblocks, block, 22);
+
+			block.setBlockBounds(12 * px, 12 * px, 12 * px, 16 * px, 16 * px, 16 * px);
+			PC_Renderer.renderInvBoxWithTexture(renderblocks, block, 22);
+
+			block.setBlockBounds(0, 0, 0, 1, 1, 1);
+
+
 			PC_Renderer.resetTerrain(swapped);
 		}
 

@@ -297,7 +297,7 @@ public class mod_PCmachines extends PC_Module implements PC_IActivatorListener {
 		map.put("pc.gui.xpbank.withdrawButton", "Withdraw");
 		map.put("pc.gui.xpbank.pointsToDeposit", "Points to deposit:");
 		map.put("pc.gui.xpbank.depositButton", "Deposit");
-		
+
 		map.put("pc.gui.automaticWorkbench.redstoneActivated", "Redstone triggered");
 	}
 
@@ -379,8 +379,25 @@ public class mod_PCmachines extends PC_Module implements PC_IActivatorListener {
 		PC_InveditManager.setDamageRange(optical.blockID, 0, 1);
 		PC_InveditManager.setItemCategory(optical.blockID, "Optical");
 
-		addStacksToCraftingTool(PC_CraftingToolGroup.MACHINES, new ItemStack(harvester), new ItemStack(builder), new ItemStack(replacer), new ItemStack(roaster), new ItemStack(xpbank), new ItemStack(automaticWorkbench));
-		addStacksToCraftingTool(PC_CraftingToolGroup.OPTICAL, new ItemStack(laser), new ItemStack(optical, 1, 0), new ItemStack(optical, 1, 1), new ItemStack(Block.thinGlass));
+		//@formatter:off
+		
+		addStacksToCraftingTool(PC_ItemGroup.MACHINES,
+				new ItemStack(harvester),
+				new ItemStack(builder),
+				new ItemStack(replacer),
+				new ItemStack(roaster),
+				new ItemStack(xpbank),
+				new ItemStack(automaticWorkbench)
+		);
+		
+		addStacksToCraftingTool(PC_ItemGroup.OPTICAL,
+				new ItemStack(laser),
+				new ItemStack(optical, 1, 0),
+				new ItemStack(optical, 1, 1),
+				new ItemStack(Block.thinGlass)
+		);
+
+		//@formatter:on
 	}
 
 

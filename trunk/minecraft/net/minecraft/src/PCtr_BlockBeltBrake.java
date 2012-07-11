@@ -12,7 +12,6 @@ import net.minecraft.src.forge.ITextureProvider;
  * Redstone controlled Brake
  * 
  * @author MightyPork
- *
  */
 public class PCtr_BlockBeltBrake extends Block implements PC_IBlockType, PC_IRotatedBox, PC_ISwapTerrain, ITextureProvider {
 
@@ -119,7 +118,7 @@ public class PCtr_BlockBeltBrake extends Block implements PC_IBlockType, PC_IRot
 		}
 
 		// speed limit
-		
+
 
 		int meta = getRotation(world.getBlockMetadata(i, j, k));
 
@@ -164,10 +163,10 @@ public class PCtr_BlockBeltBrake extends Block implements PC_IBlockType, PC_IRot
 
 		double speed_max = PCtr_BeltBase.MAX_HORIZONTAL_SPEED;
 		speed_max *= 0.6D;
-		
+
 		double boost = PCtr_BeltBase.HORIZONTAL_BOOST;
 		boost *= 0.6D;
-		
+
 
 		PCtr_BeltBase.moveEntityOnBelt(world, pos, entity, true, !halted && !leadsToNowhere, direction, speed_max, boost);
 

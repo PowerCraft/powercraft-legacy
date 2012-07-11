@@ -1,8 +1,6 @@
 package net.minecraft.src;
 
 
-import java.util.Random;
-
 import net.minecraft.src.PC_GresRadioButton.PC_GresRadioGroup;
 import net.minecraft.src.PC_GresTextEdit.PC_GresInputType;
 import net.minecraft.src.PC_GresWidget.PC_GresAlign;
@@ -10,22 +8,23 @@ import net.minecraft.src.PC_GresWidget.PC_GresAlign;
 
 /**
  * Gui for item ejection belt.
+ * 
  * @author MightyPork
  * @copy (c) 2012
  */
 public class PCtr_GuiEjectionBelt implements PC_IGresBase {
 
 	private PCtr_TileEntityEjectionBelt teb;
-	
+
 	private PC_GresWidget btnOK;
-	
+
 	private PC_GresWidget editItems;
 	private PC_GresWidget editSlots;
-	
+
 	private PC_GresRadioButton radioModeStacks;
 	private PC_GresRadioButton radioModeItems;
 	private PC_GresRadioButton radioModeAll;
-	
+
 	private PC_GresRadioButton radioSelectFirst;
 	private PC_GresRadioButton radioSelectLast;
 	private PC_GresRadioButton radioSelectRandom;
@@ -51,53 +50,53 @@ public class PCtr_GuiEjectionBelt implements PC_IGresBase {
 		w.gapUnderTitle = 13;
 
 		PC_GresWidget vg, hg;
-		
-		
+
+
 		vg = new PC_GresLayoutV();
 		vg.setAlignH(PC_GresAlign.LEFT);
-		
+
 		PC_GresRadioGroup actionMode = new PC_GresRadioGroup();
-		
+
 
 		vg.add(new PC_GresLabel(PC_Lang.tr("pc.gui.ejector.modeEjectTitle")));
-			
+
 		vg.setWidgetMargin(0);
 
 		hg = new PC_GresLayoutH();
 		hg.setWidgetMargin(0);
-		hg.setAlignH(PC_GresAlign.LEFT);		
+		hg.setAlignH(PC_GresAlign.LEFT);
 		hg.add(radioModeStacks = new PC_GresRadioButton(PC_Lang.tr("pc.gui.ejector.modeStacks"), actionMode));
 		radioModeStacks.setMinWidth(100);
-		radioModeStacks.check(teb.actionType==0);
-		hg.add(editSlots = new PC_GresTextEdit(teb.numStacksEjected+"", 6, PC_GresInputType.UNSIGNED_INT));
+		radioModeStacks.check(teb.actionType == 0);
+		hg.add(editSlots = new PC_GresTextEdit(teb.numStacksEjected + "", 6, PC_GresInputType.UNSIGNED_INT));
 		vg.add(hg);
-		
+
 		hg = new PC_GresLayoutH();
-		hg.setAlignH(PC_GresAlign.LEFT);	
-		hg.setWidgetMargin(0);	
+		hg.setAlignH(PC_GresAlign.LEFT);
+		hg.setWidgetMargin(0);
 		hg.add(radioModeItems = new PC_GresRadioButton(PC_Lang.tr("pc.gui.ejector.modeItems"), actionMode));
 		radioModeItems.setMinWidth(100);
-		radioModeItems.check(teb.actionType==1);
-		hg.add(editItems = new PC_GresTextEdit(teb.numItemsEjected+"", 6, PC_GresInputType.UNSIGNED_INT));
+		radioModeItems.check(teb.actionType == 1);
+		hg.add(editItems = new PC_GresTextEdit(teb.numItemsEjected + "", 6, PC_GresInputType.UNSIGNED_INT));
 		vg.add(hg);
-		
+
 		hg = new PC_GresLayoutH();
-		hg.setAlignH(PC_GresAlign.LEFT);	
-		hg.setWidgetMargin(0);	
+		hg.setAlignH(PC_GresAlign.LEFT);
+		hg.setWidgetMargin(0);
 		hg.add(radioModeAll = new PC_GresRadioButton(PC_Lang.tr("pc.gui.ejector.modeAll"), actionMode));
 		radioModeAll.setMinWidth(100);
-		radioModeAll.check(teb.actionType==2);
+		radioModeAll.check(teb.actionType == 2);
 		vg.add(hg);
-		
+
 		w.add(vg);
-		
+
 		w.add(new PC_GresSeparatorH(0, 5));
-		
+
 		vg = new PC_GresLayoutV();
 		vg.setAlignH(PC_GresAlign.LEFT);
-		
+
 		PC_GresRadioGroup selectMode = new PC_GresRadioGroup();
-		
+
 		vg.add(new PC_GresLabel(PC_Lang.tr("pc.gui.ejector.modeSelectTitle")));
 		vg.add(radioSelectFirst = new PC_GresRadioButton(PC_Lang.tr("pc.gui.ejector.modeSelectFirst"), selectMode));
 		vg.add(radioSelectLast = new PC_GresRadioButton(PC_Lang.tr("pc.gui.ejector.modeSelectLast"), selectMode));
@@ -112,7 +111,7 @@ public class PCtr_GuiEjectionBelt implements PC_IGresBase {
 		hg.add(new PC_GresButton(PC_Lang.tr("pc.gui.cancel")).setId(1));
 		hg.add(btnOK = new PC_GresButton(PC_Lang.tr("pc.gui.ok")).setId(0));
 		w.add(hg);
-		
+
 		w.add(new PC_GresGap(0, 0));
 
 		gui.add(w);
@@ -130,26 +129,26 @@ public class PCtr_GuiEjectionBelt implements PC_IGresBase {
 				break;
 
 			case 0: //OK
-				
-				if(radioModeStacks.isChecked()) teb.actionType = 0;
-				if(radioModeItems.isChecked()) teb.actionType = 1;
-				if(radioModeAll.isChecked()) teb.actionType = 2;
-				
-				if(radioSelectFirst.isChecked()) teb.itemSelectMode = 0;
-				if(radioSelectLast.isChecked()) teb.itemSelectMode = 1;
-				if(radioSelectRandom.isChecked()) teb.itemSelectMode = 2;
-				
+
+				if (radioModeStacks.isChecked()) teb.actionType = 0;
+				if (radioModeItems.isChecked()) teb.actionType = 1;
+				if (radioModeAll.isChecked()) teb.actionType = 2;
+
+				if (radioSelectFirst.isChecked()) teb.itemSelectMode = 0;
+				if (radioSelectLast.isChecked()) teb.itemSelectMode = 1;
+				if (radioSelectRandom.isChecked()) teb.itemSelectMode = 2;
+
 				try {
 					teb.numStacksEjected = Integer.parseInt(editSlots.getText());
-				}catch(NumberFormatException e) {}
-				
+				} catch (NumberFormatException e) {}
+
 				try {
 					teb.numItemsEjected = Integer.parseInt(editItems.getText());
-				}catch(NumberFormatException e) {}
-				
-				
+				} catch (NumberFormatException e) {}
+
+
 				// save data
-				
+
 				gui.close();
 				break;
 		}

@@ -3,6 +3,7 @@ package net.minecraft.src;
 
 import java.util.ArrayList;
 import java.util.List;
+
 import net.minecraft.src.PC_GresTextEditMultiline.Keyword;
 import net.minecraft.src.PC_GresWidget.PC_GresAlign;
 import weasel.Compiler;
@@ -49,22 +50,22 @@ public class PClo_GuiProgrammableGate implements PC_IGresBase {
 		int colorMathFunction = 0xff3030;
 		int colorLangFunction = 0xff0000;
 		int colorBracket = 0xff66ff;
-		
+
 		kw.add(new Keyword("[+\\-*&|^\\*!%<>=]", colorOperator, true));
-		
+
 		kw.add(new Keyword("[\\(\\)\\[\\];]", colorBracket, true));
-		
-		kw.add(new Keyword("[0-9]+[\\.]?[0-9]*", colorNumber, true));		
-		kw.add(new Keyword("0x[0-9a-fA-F]+", colorNumber, true));		
+
+		kw.add(new Keyword("[0-9]+[\\.]?[0-9]*", colorNumber, true));
+		kw.add(new Keyword("0x[0-9a-fA-F]+", colorNumber, true));
 		kw.add(new Keyword("0b[0-1]+", colorNumber, true));
-		
+
 
 		// gate functions
 		List<String> gateFunc = teg.getProvidedFunctionNames();
 		for (String str : gateFunc) {
 			kw.add(new Keyword(str, colorMathFunction, false));
 		}
-		
+
 		// gate input variables
 		List<String> gateVar = teg.getProvidedVariableNames();
 		for (String str : gateVar) {
@@ -77,23 +78,23 @@ public class PClo_GuiProgrammableGate implements PC_IGresBase {
 		for (String str : jepFunc) {
 			kw.add(new Keyword(str, colorMathFunction, false));
 		}
-		
+
 		// math constants
 		List<String> jepVar = Compiler.parserConstants;
 
 		for (String str : jepVar) {
 			kw.add(new Keyword(str, colorConstant, false));
 		}
-		
+
 		// lang functions
 		List<String> weaselFunc = Compiler.langKeywords;
 
 		for (String str : weaselFunc) {
 			kw.add(new Keyword(str, colorLangFunction, false));
 		}
-		
+
 		win.add(edit = new PC_GresTextEditMultiline(teg.program, 280, 154, kw));
-		win.add(txError = new PC_GresLabelMultiline("Weasel status: "+(teg.getWeaselError()==null?"OK":teg.getWeaselError()), 270).setMinRows(2).setColor(PC_GresWidget.textColorEnabled, 0x000000));
+		win.add(txError = new PC_GresLabelMultiline("Weasel status: " + (teg.getWeaselError() == null ? "OK" : teg.getWeaselError()), 270).setMinRows(2).setColor(PC_GresWidget.textColorEnabled, 0x000000));
 
 		hg = new PC_GresLayoutH().setAlignH(PC_GresAlign.CENTER);
 		hg.add(new PC_GresButton(PC_Lang.tr("pc.gui.programGate.close")).setId(0));
@@ -116,31 +117,31 @@ public class PClo_GuiProgrammableGate implements PC_IGresBase {
 
 		if (widget.getId() == 0) {
 			gui.close();
-			
+
 		} else if (widget.getId() == 1) {
 			teg.setProgram(edit.getText());
 			gui.close();
-			
+
 		} else if (widget.getId() == 2) {
 			txError.setText("");
 			try {
 				teg.checkProgramForErrors(edit.getText());
 				txError.setText("Program has no errors.");
-			}catch(Exception e) {
+			} catch (Exception e) {
 				txError.setText(e.getMessage());
 			}
-			
+
 		} else if (widget.getId() == 3) {
 			txError.setText("");
 			try {
 				teg.setAndStartNewProgram(edit.getText());
 				teg.worldObj.notifyBlockChange(teg.xCoord, teg.yCoord, teg.zCoord, teg.getBlockType().blockID);
 				gui.close();
-			}catch(Exception e) {
+			} catch (Exception e) {
 				txError.setText(e.getMessage());
 			}
 		}
-		
+
 	}
 
 	@Override

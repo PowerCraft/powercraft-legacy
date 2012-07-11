@@ -54,8 +54,6 @@ public class PClo_TileEntityGate extends PC_TileEntity implements IWeaselHardwar
 	private int updateIgnoreCounter = 10;
 	private long lastUpdateAbsoluteTime = 0;
 
-	private long lightningCharge = 0;
-
 	/**
 	 * Set to true if the entity is removed. Saves resources.
 	 */
@@ -70,7 +68,7 @@ public class PClo_TileEntityGate extends PC_TileEntity implements IWeaselHardwar
 			return;
 		}
 
-		updateFlashCharge();
+
 
 		// fix for double updates
 		long t = System.currentTimeMillis();
@@ -292,7 +290,6 @@ public class PClo_TileEntityGate extends PC_TileEntity implements IWeaselHardwar
 			weaselOutport[5] = maintag.getBoolean("wo5");
 
 			weaselError = maintag.getString("weaselError");
-			lightningCharge = maintag.getLong("LightningCharge");
 			if (weaselError.equals("")) weaselError = null;
 
 		}
@@ -350,8 +347,6 @@ public class PClo_TileEntityGate extends PC_TileEntity implements IWeaselHardwar
 			maintag.setBoolean("wo3", weaselOutport[3]);
 			maintag.setBoolean("wo4", weaselOutport[4]);
 			maintag.setBoolean("wo5", weaselOutport[5]);
-
-			maintag.setLong("LightningCharge", lightningCharge);
 		}
 
 		if (gateType == PClo_GateType.HOLD_DELAYER) {
@@ -429,21 +424,21 @@ public class PClo_TileEntityGate extends PC_TileEntity implements IWeaselHardwar
 	/**
 	 * Check if nearby chest is empty
 	 * 
-	 * @param meta metadata of the gate
+	 * @param side metadata of the gate
 	 * @return true if chest is empty.
 	 */
-	private boolean isChestEmpty(int meta) {
-		if (meta == 0) {
-			return isEmptyChestAt(worldObj, getCoord().offset(0, 0, 1));
+	private boolean isChestEmpty(int side) {
+		if (side == 0) {
+			return isEmptyChestAt(getCoord().offset(0, 0, 1));
 		}
-		if (meta == 1) {
-			return isEmptyChestAt(worldObj, getCoord().offset(-1, 0, 0));
+		if (side == 1) {
+			return isEmptyChestAt(getCoord().offset(-1, 0, 0));
 		}
-		if (meta == 2) {
-			return isEmptyChestAt(worldObj, getCoord().offset(0, 0, -1));
+		if (side == 2) {
+			return isEmptyChestAt(getCoord().offset(0, 0, -1));
 		}
-		if (meta == 3) {
-			return isEmptyChestAt(worldObj, getCoord().offset(1, 0, 0));
+		if (side == 3) {
+			return isEmptyChestAt(getCoord().offset(1, 0, 0));
 		}
 		return true;
 	}
@@ -455,9 +450,9 @@ public class PClo_TileEntityGate extends PC_TileEntity implements IWeaselHardwar
 	 * @param pos chest pos
 	 * @return is full
 	 */
-	private boolean isEmptyChestAt(IBlockAccess blockaccess, PC_CoordI pos) {
+	private boolean isEmptyChestAt(PC_CoordI pos) {
 
-		IInventory invAt = PC_InvUtils.getCompositeInventoryAt(blockaccess, pos);
+		IInventory invAt = PC_InvUtils.getCompositeInventoryAt(worldObj, pos);
 		if (invAt != null) return PC_InvUtils.isInventoryEmpty(invAt);
 
 		List<IInventory> list = worldObj.getEntitiesWithinAABB(IInventory.class, AxisAlignedBB.getBoundingBox(pos.x, pos.y, pos.z, pos.x + 1, pos.y + 1, pos.z + 1).expand(0.6D, 0.6D, 0.6D));
@@ -820,85 +815,6 @@ public class PClo_TileEntityGate extends PC_TileEntity implements IWeaselHardwar
 
 	private static Random rand = new Random();
 
-	private static final int FLASH_CHARGE_NEEDED = 2000;
-	private static final int FLASH_MIN_HEIGHT = 79;
-
-	private void updateFlashCharge() {
-		
-		//charging not started.
-		if(lightningCharge == 0) return;
-
-		if (lightningCharge <= FLASH_CHARGE_NEEDED * 5) {
-			
-			int increment = rand.nextInt(3);
-			
-			if(worldObj.isThundering()) {
-				increment = 2+rand.nextInt(5);
-			}else			
-			if(worldObj.isRaining()) {
-				increment = 1+rand.nextInt(3);
-			}else				
-			if(worldObj.isBlockHighHumidity(xCoord, yCoord, zCoord)) {
-				increment = rand.nextInt(2);
-			}
-			
-			//System.out.println("\nUpdating lighting charge by: "+lightningCharge);
-			lightningCharge += increment;
-			//System.out.println("Lighting charge: "+lightningCharge);
-			
-		}else {
-			//System.out.println("Lightning fully charged to 5 bolts.");
-		}
-
-	}
-
-	private boolean isFlashReadyToStrike() {
-		return lightningCharge >= FLASH_CHARGE_NEEDED;
-	}
-
-	private void summonLightning(int count) {
-		boolean ok = true;
-
-		int steel = Block.blockSteel.blockID;
-
-		//check integrity of the underlying iron pillar
-		for (int i = -1; i >= -6; i--) {
-			if (getCoord().offset(0, i, 0).getId(worldObj) != steel) ok = false;
-		}
-		
-		ok &= worldObj.canBlockSeeTheSky(xCoord, yCoord, zCoord);
-		ok &= yCoord >= FLASH_MIN_HEIGHT;
-
-		// if okay and is high enough
-		if (ok) {
-			
-			for (int i = 0; i < count; i++) {
-				
-				if (isFlashReadyToStrike()) {
-					worldObj.addWeatherEffect(new EntityLightningBolt(worldObj, xCoord, yCoord + 0.2D, zCoord));
-					lightningCharge -= FLASH_CHARGE_NEEDED;
-				} else {
-					for (int j = 0; j < 40; j++) {
-						// blue sparks in the air
-						ModLoader.getMinecraftInstance().effectRenderer.addEffect(new PC_EntityLaserParticleFX(worldObj, new PC_CoordD(getCoord()).offset(rand.nextDouble(), rand.nextDouble() * 4, rand.nextDouble()), new PC_Color(0.6, 0.6, 1),
-								new PC_CoordI(), 0));
-					}
-					// explosion sound
-					worldObj.playSoundEffect(xCoord + 0.5D, yCoord + 0.5D, zCoord + 0.5D, "random.explode", 3.0F, (rand.nextFloat() - rand.nextFloat()) * 0.2F + 1.0F);
-				}
-				
-			}
-			
-		} else {
-			// blue sparks
-			for (int i = 0; i < 20; i++) {
-				ModLoader.getMinecraftInstance().effectRenderer.addEffect(new PC_EntityLaserParticleFX(worldObj, new PC_CoordD(getCoord()).offset(rand.nextDouble(), rand.nextDouble() * 0.5, rand.nextDouble()), new PC_Color(0.6, 0.6, 1),
-						new PC_CoordI(), 0));
-			}
-			worldObj.playSoundEffect(xCoord + 0.5D, yCoord + 0.5D, zCoord + 0.5D, "random.explode", 0.6F, (rand.nextFloat() - rand.nextFloat()) * 0.2F + 1.0F);
-
-		}
-	}
 
 	@Override
 	public boolean doesProvideFunction(String functionName) {
@@ -908,41 +824,48 @@ public class PClo_TileEntityGate extends PC_TileEntity implements IWeaselHardwar
 	@Override
 	public WeaselObject callProvidedFunction(WeaselEngine engine, String functionName, WeaselObject[] args) {
 
-
 		float volume = 1.0F;
-		if (args.length == 2) volume = ((Integer) args[1].get()) / 10F;
-		if (volume > 5) volume = 5;
-		if (volume < 0) volume = 0.001F;
+		if (args.length >= 2 && args[1].getType() == WeaselObjectType.INTEGER) {
+			if (args.length == 2) volume = ((Integer) args[1].get()) / 10F;
+			if (volume > 5) volume = 5;
+			if (volume < 0) volume = 0.001F;
+		}
 
-
-		if (functionName.equals("flash.strike")) {
-
-			int count = 1;
-			if(args.length == 1) {
-				count = (Integer) args[0].get();
-			}
-
-			summonLightning(count);
-			
-			return null;
-
-		} else if (functionName.equals("flash.ready")) {
-
-			return new WeaselBoolean(isFlashReadyToStrike());
-
-		} else if (functionName.equals("flash.level")) {
-
-			return new WeaselInteger((int)lightningCharge/20);
-
-		}else if (functionName.equals("flash.charge") || functionName.equals("flash.begin") || functionName.equals("flash.startCharging")) {
-
-			if(lightningCharge == 0) lightningCharge = 1;
-			
-			return null;
-
-		} else if (functionName.equals("time")) {
+		if (functionName.equals("time")) {
 
 			return new WeaselInteger(worldObj.worldInfo.getWorldTime());
+
+		} else if (functionName.equals("emptyChest") || functionName.equals("empty")) {
+
+			int rotation = worldObj.getBlockMetadata(xCoord, yCoord, zCoord) & 3;
+
+			String side = (String) args[0].get();
+
+			if (side.equals("B")) rotation = rotation + 0;
+			if (side.equals("F")) rotation = rotation + 2;
+			if (side.equals("L")) rotation = rotation + 1;
+			if (side.equals("R")) rotation = rotation + 3;
+			if (rotation > 3) rotation = rotation % 4;
+
+			return new WeaselBoolean(isChestEmpty(rotation));
+
+		} else if (functionName.equals("fullChest") || functionName.equals("full")) {
+
+			int rotation = worldObj.getBlockMetadata(xCoord, yCoord, zCoord) & 3;
+
+			String side = (String) args[0].get();
+			boolean strict = false;
+
+			if (args.length == 2) strict = (Boolean) args[1].get();
+
+			if (side.equals("B")) rotation = rotation + 0;
+			if (side.equals("F")) rotation = rotation + 2;
+			if (side.equals("L")) rotation = rotation + 1;
+			if (side.equals("R")) rotation = rotation + 3;
+
+			if (rotation > 3) rotation = rotation % 4;
+
+			return new WeaselBoolean(isChestFull(rotation, strict));
 
 		} else if (functionName.equals("sleep")) {
 
@@ -951,15 +874,15 @@ public class PClo_TileEntityGate extends PC_TileEntity implements IWeaselHardwar
 			engine.requestPause();
 			return null;
 
-		} else if (functionName.equals("day")) {
+		} else if (functionName.equals("isDay")) {
 
 			return new WeaselBoolean(worldObj.isDaytime());
 
-		} else if (functionName.equals("night")) {
+		} else if (functionName.equals("idNight")) {
 
 			return new WeaselBoolean(!worldObj.isDaytime());
 
-		} else if (functionName.equals("rain")) {
+		} else if (functionName.equals("isRaining")) {
 
 			return new WeaselBoolean(worldObj.isRaining());
 
@@ -1009,7 +932,7 @@ public class PClo_TileEntityGate extends PC_TileEntity implements IWeaselHardwar
 			s = "note.hat";
 		} else if (type.equalsIgnoreCase("wood") || type.equalsIgnoreCase("bass guitar") || type.equalsIgnoreCase("bassguitar") || type.equalsIgnoreCase("bg") || type.equalsIgnoreCase("guitar")) {
 			s = "note.bassattack";
-		} else if (type.equalsIgnoreCase("firt") || type.equalsIgnoreCase("harp") || type.equalsIgnoreCase("piano") || type.equalsIgnoreCase("pi")) {
+		} else if (type.equalsIgnoreCase("dirt") || type.equalsIgnoreCase("harp") || type.equalsIgnoreCase("piano") || type.equalsIgnoreCase("pi")) {
 			s = "note.harp";
 		}
 
@@ -1029,9 +952,6 @@ public class PClo_TileEntityGate extends PC_TileEntity implements IWeaselHardwar
 		if (name.equals("F") || name.equals("front")) obj = new WeaselBoolean(weaselInport[3]);
 		if (name.equals("U") || name.equals("up") || name.equals("top")) obj = new WeaselBoolean(weaselInport[4]);
 		if (name.equals("D") || name.equals("down") || name.equals("bottom")) obj = new WeaselBoolean(weaselInport[5]);
-
-		if (name.equals("flash.charge") || name.equals("flash.level")) obj = new WeaselInteger((int) lightningCharge/20);
-		if (name.equals("flash.ready")) obj = new WeaselBoolean(isFlashReadyToStrike());
 
 		//System.out.println(" ← get "+name+" = "+obj);
 
@@ -1088,20 +1008,14 @@ public class PClo_TileEntityGate extends PC_TileEntity implements IWeaselHardwar
 		list.add("sound");
 		list.add("note");
 
-		list.add("flash.startCharging");
-		list.add("flash.begin");
-		list.add("flash.charge");
-		
-		list.add("flash.ready");
-		
-		list.add("flash.level");
-
-		list.add("flash.strike");
-
-		list.add("day");
-		list.add("night");
+		list.add("isDay");
+		list.add("isNight");
 		list.add("time");
-		list.add("rain");
+		list.add("isRaining");
+		list.add("emptyChest");
+		list.add("empty");
+		list.add("fullChest");
+		list.add("full");
 		list.add("sleep");
 		return list;
 	}
@@ -1124,10 +1038,6 @@ public class PClo_TileEntityGate extends PC_TileEntity implements IWeaselHardwar
 		list.add("down");
 		list.add("top");
 		list.add("bottom");
-
-		list.add("flash.charge");
-		list.add("flash.level");
-		list.add("flash.ready");
 
 		return list;
 
@@ -1175,10 +1085,5 @@ public class PClo_TileEntityGate extends PC_TileEntity implements IWeaselHardwar
 	public String getWeaselError() {
 		return this.weaselError;
 	}
-
-
-
-
-
 
 }

@@ -1,12 +1,12 @@
 package net.minecraft.src;
 
+
 /**
  * Redstone powered redirection belt.
  * 
  * @author MightyPork
- *
  */
-public class PCtr_TileEntityRedirectionBelt extends PCtr_TileEntityRedirectionBeltBase  {
+public class PCtr_TileEntityRedirectionBelt extends PCtr_TileEntityRedirectionBeltBase {
 
 	/**
 	 * 
@@ -15,12 +15,12 @@ public class PCtr_TileEntityRedirectionBelt extends PCtr_TileEntityRedirectionBe
 
 	@Override
 	protected int calculateItemDirection(Entity entity) {
-		
+
 		PCtr_BlockBeltRedirector block = ((PCtr_BlockBeltRedirector) mod_PCtransport.redirectionBelt);
-		
+
 		PC_CoordI pos = getCoord();
 		int meta = block.getRotation(pos.getMeta(worldObj));
-		
+
 		// get redir
 		int redir = 0;
 		if (block.isPowered(worldObj, pos)) {
@@ -87,11 +87,11 @@ public class PCtr_TileEntityRedirectionBelt extends PCtr_TileEntityRedirectionBe
 		}
 
 		redir = -redir;
-		
+
 		setItemDirection(entity, Integer.valueOf(redir));
-		
+
 		return redir;
-		
+
 	}
 
 }

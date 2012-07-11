@@ -1,12 +1,13 @@
 package net.minecraft.src;
 
+
 import net.minecraft.src.PC_GresWidget.PC_GresAlign;
+
 
 /**
  * Gui for item separation belt.
  * 
  * @author MightyPork
- *
  */
 public class PCtr_GuiSeparationBelt implements PC_IGresBase {
 
@@ -18,6 +19,7 @@ public class PCtr_GuiSeparationBelt implements PC_IGresBase {
 
 	/**
 	 * Item separation belt
+	 * 
 	 * @param player
 	 * @param tileentityconveyorfilter
 	 */
@@ -53,39 +55,39 @@ public class PCtr_GuiSeparationBelt implements PC_IGresBase {
 		}
 		hg.add(new PC_GresImage(mod_PCcore.getImgDir() + "gres/widgets.png", 64, 66, 8, 15));
 		w.add(hg);
-		
+
 		PC_GresLayoutV vg = new PC_GresLayoutV();
 		vg.setAlignH(PC_GresAlign.LEFT);
 		vg.setMinWidth(100);
 		vg.add(new PC_GresLabel(PC_Lang.tr("pc.gui.separationBelt.group")).setWidgetMargin(0));
 		vg.setWidgetMargin(0);
-		
+
 		hg = new PC_GresLayoutH();
 		hg.setAlignH(PC_GresAlign.LEFT);
 		hg.setWidgetMargin(0);
 		hg.add(checkLogs = new PC_GresCheckBox(PC_Lang.tr("pc.gui.separationBelt.groupLogs")).check(tes.group_logs));
 		hg.add(checkPlanks = new PC_GresCheckBox(PC_Lang.tr("pc.gui.separationBelt.groupPlanks")).check(tes.group_planks));
 		hg.add(checkAll = new PC_GresCheckBox(PC_Lang.tr("pc.gui.separationBelt.groupAll")).check(tes.group_all));
-		
+
 		vg.add(hg);
-		
-		w.add(new PC_GresGap(0,2));
+
+		w.add(new PC_GresGap(0, 2));
 		w.add(vg);
-		w.add(new PC_GresGap(0,2));
-		
+		w.add(new PC_GresGap(0, 2));
+
 		w.add(new PC_GresInventoryPlayer(true));
-		w.add(new PC_GresGap(0,0));
+		w.add(new PC_GresGap(0, 0));
 		gui.add(w);
 	}
 
 	@Override
 	public void onGuiClosed(PC_IGresGui gui) {
-		
+
 		tes.group_logs = checkLogs.isChecked();
 		tes.group_planks = checkPlanks.isChecked();
 		tes.group_all = checkAll.isChecked();
-		
-		
+
+
 	}
 
 	@Override

@@ -29,7 +29,7 @@ public class PCco_CraftingToolManager {
 
 
 	/** Groups of stacks, ordered by index key. */
-	private static HashMap<Integer, ItemStack[]> itemLists = new HashMap<Integer, ItemStack[]>();
+	private static HashMap<Integer, Object[]> itemLists = new HashMap<Integer, Object[]>();
 
 
 	/**
@@ -39,7 +39,7 @@ public class PCco_CraftingToolManager {
 	 *            it finds free number.
 	 * @param stacks array of stacks to add
 	 */
-	public static void addStacks(int ordering_index, ItemStack[] stacks) {
+	public static void addStacks(int ordering_index, Object[] stacks) {
 		if (itemLists.containsKey(ordering_index)) {
 			addStacks(ordering_index + 1, stacks);
 		} else {
@@ -61,11 +61,24 @@ public class PCco_CraftingToolManager {
 		// get all lists, ordered by indexes, and load them to the itemstack array.
 		for (int key : keys) {
 
-			ItemStack[] list = itemLists.get(key);
+			Object[] list = itemLists.get(key);
 
-			for (ItemStack stack : list) {
+			for (Object stack : list) {
+				ItemStack tmp = null;
+				if (stack instanceof ItemStack) tmp = (ItemStack) stack;
+
+				if (stack instanceof Block) tmp = new ItemStack((Block) stack);
+				if (stack instanceof Item) tmp = new ItemStack((Item) stack);
+
+				if (tmp == null) {
+					stacklist.add(null);
+					continue;
+				}
+
+				PC_Logger.finest("Adding stack to Crafting Tool: " + tmp);
+
 				// add to list
-				stacklist.add(stack.copy());
+				stacklist.add(tmp.copy());
 			}
 		}
 	}

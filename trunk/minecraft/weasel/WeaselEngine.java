@@ -182,19 +182,19 @@ public class WeaselEngine implements PC_INBT, IVariableProvider, IFunctionProvid
 	 * preserving globals.
 	 */
 	public void restartProgram() {
-		
+
 		instructionList.movePointerTo(0);
-		
+
 		systemStack.clear();
 		dataStack.clear();
-		
+
 		retval = null;
 		externalCallRetval = null;
 		variables.clear();
-		
+
 		// not globals! they are preserved!
 	}
-	
+
 	/**
 	 * Clear everything and prepare for execution of a new program code
 	 */
@@ -204,30 +204,33 @@ public class WeaselEngine implements PC_INBT, IVariableProvider, IFunctionProvid
 		globals.clear();
 		restartsScheduled = 0;
 		isProgramFinished = false;
-		pauseRequested=false;
+		pauseRequested = false;
 	}
-	
+
 
 	/**
-	 * Clear all variables, insert compiled program into instruction list and get ready for it's execution.
+	 * Clear all variables, insert compiled program into instruction list and
+	 * get ready for it's execution.
+	 * 
 	 * @param instructions the new program
 	 */
 	public void insertNewProgram(List<Instruction> instructions) {
 		clear();
 		this.instructionList.addAll(instructions);
 	}
-	
+
 	/**
 	 * Compile given program to a list of instruction.
+	 * 
 	 * @param program source code
 	 * @return the list of instructions
 	 * @throws SyntaxError when there's an error in the source code
 	 */
-	public static List<Instruction> compileProgram(String program) throws SyntaxError{
+	public static List<Instruction> compileProgram(String program) throws SyntaxError {
 		return (new Compiler()).compile(program);
 	}
-	
-	
+
+
 
 	/**
 	 * Check if a native function exists
@@ -264,7 +267,7 @@ public class WeaselEngine implements PC_INBT, IVariableProvider, IFunctionProvid
 
 	@Override
 	public WeaselObject getVariable(String name) {
-		
+
 		WeaselObject obj;
 
 		if ((obj = hw.getVariable(name)) != null) {
@@ -311,7 +314,7 @@ public class WeaselEngine implements PC_INBT, IVariableProvider, IFunctionProvid
 
 			variables.unsetVariable(name);
 		}
-		
+
 		globals.setVariable(name, value);
 	}
 
@@ -366,10 +369,10 @@ public class WeaselEngine implements PC_INBT, IVariableProvider, IFunctionProvid
 	 * @param args function arguments, array of simple objects
 	 */
 	public void callFunctionExternal(String funcName, Object... args) {
-		if(args == null) args = new Object[] {};
+		if (args == null) args = new Object[] {};
 		instructionList.callFunctionExternal(funcName, Calc.s2w(args));
 	}
-	
+
 	public int executingFunctionExternal = 0;
 
 	/**

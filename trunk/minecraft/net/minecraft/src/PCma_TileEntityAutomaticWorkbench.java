@@ -108,16 +108,15 @@ public class PCma_TileEntityAutomaticWorkbench extends PC_TileEntity implements 
 		for (int i = 0; i < 9; i++) {
 			if (getStackInSlot(i) == null && getStackInSlot(i + 9) != null) {
 				return false;
-			}else
-			if(getStackInSlot(i) != null && getStackInSlot(i + 9) != null) {
-				if(getStackInSlot(i).stackSize < Math.min(getStackInSlot(i).getMaxStackSize(), getInventoryStackLimit())) {
+			} else if (getStackInSlot(i) != null && getStackInSlot(i + 9) != null) {
+				if (getStackInSlot(i).stackSize < Math.min(getStackInSlot(i).getMaxStackSize(), getInventoryStackLimit())) {
 					return false;
 				}
 			}
 		}
 		return true;
 	}
-	
+
 
 	@Override
 	public boolean hasContainerNoFreeSlots() {
@@ -317,9 +316,9 @@ public class PCma_TileEntityAutomaticWorkbench extends PC_TileEntity implements 
 			dispenseItem(currentStack);
 			needsSound = true;
 		}
-		
-		if(needsSound) {
-			makeSound();			
+
+		if (needsSound) {
+			makeSound();
 		}
 	}
 
@@ -399,10 +398,10 @@ public class PCma_TileEntityAutomaticWorkbench extends PC_TileEntity implements 
 		entityitem.motionY = 0.05000000298023221D;
 		entityitem.motionZ = j1 * d3;
 		worldObj.spawnEntityInWorld(entityitem);
-		
+
 		return true;
 	}
-	
+
 	private void makeSound() {
 		if (mod_PCcore.soundsEnabled) {
 			worldObj.playAuxSFX(1000, xCoord, yCoord, zCoord, 0);
@@ -476,7 +475,7 @@ public class PCma_TileEntityAutomaticWorkbench extends PC_TileEntity implements 
 	@Override
 	public void readFromNBT(NBTTagCompound nbttagcompound) {
 		super.readFromNBT(nbttagcompound);
-		
+
 		PC_InvUtils.loadInventoryFromNBT(nbttagcompound, "Items", this);
 		redstoneActivated = nbttagcompound.getBoolean("RedstoneActivated");
 
@@ -485,10 +484,10 @@ public class PCma_TileEntityAutomaticWorkbench extends PC_TileEntity implements 
 	@Override
 	public void writeToNBT(NBTTagCompound nbttagcompound) {
 		super.writeToNBT(nbttagcompound);
-		
+
 		PC_InvUtils.saveInventoryToNBT(nbttagcompound, "Items", this);
-		nbttagcompound.setBoolean("RedstoneActivated",redstoneActivated);
-		
+		nbttagcompound.setBoolean("RedstoneActivated", redstoneActivated);
+
 	}
 
 	@Override

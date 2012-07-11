@@ -12,7 +12,6 @@ import net.minecraft.src.forge.ITextureProvider;
  * Normal or speedy conveyor belt. Normal belt can store items into inventories.
  * 
  * @author MightyPork
- *
  */
 public class PCtr_BlockBeltNormal extends Block implements PC_IBlockType, PC_IRotatedBox, PC_ISwapTerrain, ITextureProvider {
 
@@ -25,7 +24,7 @@ public class PCtr_BlockBeltNormal extends Block implements PC_IBlockType, PC_IRo
 	public boolean renderItemHorizontal() {
 		return true;
 	}
-	
+
 	private boolean isSpeedy = false;
 
 	/**
@@ -95,7 +94,7 @@ public class PCtr_BlockBeltNormal extends Block implements PC_IBlockType, PC_IRo
 			PCtr_BeltBase.packItems(world, pos);
 		}
 
-		
+
 		if (entity instanceof EntityItem && !isSpeedy) {
 			PCtr_BeltBase.doSpecialItemAction(world, pos, (EntityItem) entity);
 			if (PCtr_BeltBase.storeNearby(world, pos, (EntityItem) entity, false)) {
@@ -137,10 +136,10 @@ public class PCtr_BlockBeltNormal extends Block implements PC_IBlockType, PC_IRo
 
 
 		double speed_max = PCtr_BeltBase.MAX_HORIZONTAL_SPEED;
-		if(isSpeedy) speed_max *= 2.0D;
+		if (isSpeedy) speed_max *= 2.0D;
 
 		double boost = PCtr_BeltBase.HORIZONTAL_BOOST;
-		if(isSpeedy) boost *= 2.0D;
+		if (isSpeedy) boost *= 2.0D;
 
 		PCtr_BeltBase.moveEntityOnBelt(world, pos, entity, true, !leadsToNowhere, direction, speed_max, boost);
 
@@ -179,7 +178,7 @@ public class PCtr_BlockBeltNormal extends Block implements PC_IBlockType, PC_IRo
 			return 1;
 		}
 		if (i == 1) {
-			return isSpeedy?4:0;
+			return isSpeedy ? 4 : 0;
 		} else {
 			return 2;
 		}

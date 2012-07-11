@@ -5,8 +5,6 @@ import java.io.ByteArrayInputStream;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -19,9 +17,6 @@ import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 import org.xml.sax.SAXParseException;
-
-import weasel.Compiler;
-import weasel.exception.WeaselRuntimeException;
 
 
 /**
@@ -36,13 +31,17 @@ public class mod_PCcore extends PC_Module implements PC_IActivatorListener {
 	/** the mod instance */
 	public static mod_PCcore instance;
 
+
+	public static int G = 1000;
+	public static int C = 10;
+
 	/**
 	 * Mod version, shared by other modules.<br>
 	 * Since this is static final, it is replaced by it's value during
 	 * compilation, thus all modules keep their compile-time version and aren't
 	 * affected by current core version.
 	 */
-	public static final String VERSION = "3.4.1";
+	public static final String VERSION = "3.4.2";
 
 	/** Location of the file with updates */
 	public static final String updateInfoPath = "http://dl.dropbox.com/u/64454818/POWERCRAFT_DATA/info.xml"; // "http://bit.ly/Ld7sOI";
@@ -93,7 +92,7 @@ public class mod_PCcore extends PC_Module implements PC_IActivatorListener {
 	// Add fuels.
 	@Override
 	public int addFuel(int i, int j) {
-		return (i == powerDust.shiftedIndex) ? 2200 : 0;
+		return (i == powerDust.shiftedIndex) ? 3200 : 0;
 	}
 
 	// *** BLOCKS & ITEMS ***
@@ -352,6 +351,9 @@ public class mod_PCcore extends PC_Module implements PC_IActivatorListener {
 		map.put("tile.PCcoPowerCrystal.color7.name", "\u03d7 Power Crystal");
 		map.put("tile.PCcoContainerChest.name", "Chest with Contents");
 		map.put("pc.gui.craftingTool.title", "PowerCraft's Crafting Tool");
+		map.put("pc.gui.craftingTool.trashTitle", "Trash");
+		map.put("pc.gui.craftingTool.trashAll", "All");
+		map.put("pc.gui.craftingTool.sort", "Sort");
 		map.put("pc.gui.spawnerEditor.enableDangerous", "Enable dangerous");
 		map.put("pc.gui.ok", "OK");
 		map.put("pc.gui.cancel", "Cancel");
@@ -502,108 +504,337 @@ public class mod_PCcore extends PC_Module implements PC_IActivatorListener {
 		
 		PC_InveditManager.setItemCategory(oreSniffer.shiftedIndex, "Handheld devices");
 
-
-
 		// adding stuff to crafting tool
-		ItemStack[] crystals = new ItemStack[9];
+		Object[] crystals = new ItemStack[8];
 		for (int i = 0; i < 8; i++) {
 			crystals[i] = new ItemStack(powerCrystal, 1, i);
 		}
-		crystals[8] = new ItemStack(powerDust);
-		addStacksToCraftingTool(PC_CraftingToolGroup.DECORATIVE, crystals);
+		
+		addStacksToCraftingTool(PC_ItemGroup.ORES, crystals);	
+		addStacksToCraftingTool(PC_ItemGroup.FUEL, powerDust);
 
 		
 		addStacksToCraftingTool(
-				PC_CraftingToolGroup.HANDHELD,
-				new ItemStack(activator),
-				new ItemStack(oreSniffer),
-				new ItemStack(craftingTool)
+				PC_ItemGroup.PORTABLE,
+				activator,
+				oreSniffer,
+				craftingTool
 			);
 		
 		addStacksToCraftingTool(
-				PC_CraftingToolGroup.VANILLA_RELATED,
-				new ItemStack(Item.redstone),
-				new ItemStack(Item.redstoneRepeater),
-				new ItemStack(Block.torchRedstoneActive),
-				new ItemStack(Block.lever),
-				new ItemStack(Block.button),
-				new ItemStack(Block.pressurePlateStone),
-				new ItemStack(Block.pressurePlatePlanks),
-				new ItemStack(Block.redstoneLampIdle),
-				new ItemStack(Block.pistonBase),
-				new ItemStack(Block.pistonStickyBase),
-				new ItemStack(Block.mobSpawner),
-				new ItemStack(Block.music),
-				new ItemStack(Block.jukebox),
-				new ItemStack(Block.dispenser),
-				new ItemStack(Block.stoneOvenIdle),
-				new ItemStack(Block.chest),
-				new ItemStack(Block.workbench),
-				new ItemStack(Block.glowStone),
-				new ItemStack(Item.lightStoneDust),
-				new ItemStack(Block.tnt),
-				new ItemStack(Item.fireballCharge),
-				new ItemStack(Block.rail),
-				new ItemStack(Block.railDetector),
-				new ItemStack(Block.railPowered),
-				new ItemStack(Item.minecartEmpty),
-				new ItemStack(Item.minecartCrate),
-				new ItemStack(Item.minecartPowered),
-				new ItemStack(Block.ladder),
-				new ItemStack(Block.fenceIron),
-				new ItemStack(Block.trapdoor),
-				new ItemStack(Item.doorSteel),
-				new ItemStack(Item.doorWood),
-				new ItemStack(Item.cauldron),
-				new ItemStack(Item.brewingStand),
-				new ItemStack(Item.bucketEmpty),
-				new ItemStack(Block.enchantmentTable),
-				new ItemStack(Item.glassBottle),
-				new ItemStack(Item.blazePowder),
-				new ItemStack(Item.magmaCream),
-				new ItemStack(Item.netherStalkSeeds),
-				new ItemStack(Item.sugar),
-				new ItemStack(Item.gunpowder),
-				new ItemStack(Item.spiderEye),
-				new ItemStack(Item.fermentedSpiderEye),
-				new ItemStack(Item.eyeOfEnder),
-				new ItemStack(Item.ghastTear),
-				new ItemStack(Item.speckledMelon),
-				new ItemStack(Item.goldNugget),
+				PC_ItemGroup.FARMING_V,
+				Item.wheat,
+				Item.reed,
+				Block.cactus,
+				Item.seeds,
+				Item.netherStalkSeeds,
+				Item.melonSeeds,
+				Block.melon,
+				Item.pumpkinSeeds,
+				Block.pumpkin,
 				new ItemStack(Item.dyePowder,1,15),
-				new ItemStack(Block.mushroomBrown),
-				new ItemStack(Block.mushroomRed),
+				Block.mushroomBrown,
+				Block.mushroomRed,
 				new ItemStack(Block.sapling,1,0),
 				new ItemStack(Block.sapling,1,1),
 				new ItemStack(Block.sapling,1,2),
-				new ItemStack(Block.sapling,1,3),
-				new ItemStack(Item.compass),
-				new ItemStack(Item.pocketSundial),
-				new ItemStack(Item.fishingRod),
-				new ItemStack(Item.shears),
-				new ItemStack(Block.torchWood),
-				new ItemStack(Item.sign),
-				new ItemStack(Block.fence),
-				new ItemStack(Block.fenceGate),
-				new ItemStack(Item.stick),
-				new ItemStack(Block.blockDiamond),
-				new ItemStack(Block.blockGold),
-				new ItemStack(Block.blockSteel),
-				new ItemStack(Block.blockLapis),
-				new ItemStack(Item.diamond),
-				new ItemStack(Item.ingotGold),
-				new ItemStack(Item.ingotIron),
-				new ItemStack(Item.dyePowder,PC_Color.dye.BLUE.meta),
-				new ItemStack(Block.planks),
-				new ItemStack(Block.obsidian),
-				new ItemStack(Block.stone,1,0),
-				new ItemStack(Block.cobblestone),
-				new ItemStack(Block.cobblestoneMossy),
-				new ItemStack(Block.stoneBrick),
-				new ItemStack(Block.blockClay),
-				new ItemStack(Block.brick),
-				new ItemStack(Block.sand),
-				new ItemStack(Block.sandStone)
+				new ItemStack(Block.sapling,1,3)
+			);
+		
+		addStacksToCraftingTool(
+				PC_ItemGroup.ALCHEMY_DROPS_V,
+				Item.glassBottle,
+				new ItemStack(Item.potion,1,0),
+				Item.expBottle,
+				Item.blazeRod,
+				Item.blazePowder,
+				Item.magmaCream,
+				Item.netherStalkSeeds,
+				Item.sugar,
+				Item.gunpowder,
+				Item.spiderEye,
+				Item.fermentedSpiderEye,
+				Item.eyeOfEnder,
+				Item.ghastTear,
+				Item.speckledMelon,
+				Item.goldNugget,
+				Item.bone,
+				Item.silk,
+				Item.slimeBall,
+				Item.enderPearl
+			);
+		
+		addStacksToCraftingTool(
+				PC_ItemGroup.ARMOR_V,
+				Item.helmetLeather,
+				Item.plateLeather,
+				Item.legsLeather,
+				Item.bootsLeather,
+				Item.helmetSteel,
+				Item.plateSteel,
+				Item.legsSteel,
+				Item.bootsSteel,
+				Item.helmetChain,
+				Item.plateChain,
+				Item.legsChain,
+				Item.bootsChain,
+				Item.helmetGold,
+				Item.plateGold,
+				Item.legsGold,
+				Item.bootsGold,
+				Item.helmetDiamond,
+				Item.plateDiamond,
+				Item.legsDiamond,
+				Item.bootsDiamond
+			);
+		
+	
+		addStacksToCraftingTool(
+				PC_ItemGroup.FIREWORKS_V,
+				Block.tnt,
+				Item.fireballCharge				
+			);
+		
+		
+		addStacksToCraftingTool(
+				PC_ItemGroup.LOGIC_V,
+				Item.redstone,
+				Item.redstoneRepeater,
+				Block.torchRedstoneActive,
+				Block.lever,
+				Block.button,
+				Block.pressurePlateStone,
+				Block.pressurePlatePlanks		
+			);
+		
+		addStacksToCraftingTool(
+				PC_ItemGroup.MACHINES_V,
+				Block.chest,
+				Block.workbench,
+				Block.pistonBase,
+				Block.pistonStickyBase,
+				Block.mobSpawner,
+				Block.music,
+				Block.dispenser,
+				Block.stoneOvenIdle,
+				Block.enchantmentTable,
+				Block.jukebox,
+				Item.cauldron,
+				Item.brewingStand
+			);
+		addStacksToCraftingTool(
+				PC_ItemGroup.RECORDS_V,
+				Item.record11,
+				Item.record13,
+				Item.recordBlocks,
+				Item.recordCat,
+				Item.recordChirp,
+				Item.recordFar,
+				Item.recordMall,
+				Item.recordMellohi,
+				Item.recordStal,
+				Item.recordStrad,
+				Item.recordWard	
+			);
+		
+		addStacksToCraftingTool(
+				PC_ItemGroup.FUEL_V,
+				new ItemStack(Item.coal,1,0),
+				new ItemStack(Item.coal,1,1)
+			);
+		
+		addStacksToCraftingTool(
+				PC_ItemGroup.LIGHTS_V,
+				Block.torchWood,
+				Block.glowStone,
+				Item.lightStoneDust,
+				Block.redstoneLampIdle
+			);
+		
+		addStacksToCraftingTool(
+				PC_ItemGroup.NON_FUNCTIONAL_V,
+				Block.ladder,
+				Block.fenceIron,
+				Block.trapdoor,
+				Item.doorSteel,
+				Item.doorWood,
+				Item.sign,
+				Block.fence,
+				Block.fenceGate,
+				Item.painting,
+				Item.paper,
+				Item.book,
+				Block.bookShelf
+			);
+		
+		
+		addStacksToCraftingTool(
+				PC_ItemGroup.TOOLS_V,
+				Item.compass,
+				Item.pocketSundial,
+				Item.fishingRod,
+				Item.shears,
+				Item.map,
+				Item.bow,
+				Item.arrow,
+				Item.bucketEmpty,
+				Item.bucketWater,
+				Item.bucketLava,
+				Item.bucketMilk,
+
+				Item.hoeWood,
+				Item.axeWood,
+				Item.shovelWood,
+				Item.pickaxeWood,
+				Item.swordWood,
+				
+				Item.hoeStone,
+				Item.axeStone,
+				Item.shovelStone,
+				Item.pickaxeStone,
+				Item.swordStone,
+				
+				Item.hoeSteel,
+				Item.axeSteel,
+				Item.shovelSteel,
+				Item.pickaxeSteel,
+				Item.swordSteel,
+				
+				Item.hoeGold,
+				Item.axeGold,
+				Item.shovelGold,
+				Item.pickaxeGold,
+				Item.swordGold,
+				
+				Item.hoeDiamond,
+				Item.axeDiamond,
+				Item.shovelDiamond,
+				Item.pickaxeDiamond,
+				Item.swordDiamond				
+				
+			);
+		
+		addStacksToCraftingTool(
+				PC_ItemGroup.TRANSPORT_V,
+				Block.rail,
+				Block.railDetector,
+				Block.railPowered,
+				Item.minecartEmpty,
+				Item.minecartCrate,
+				Item.minecartPowered
+			);
+		
+		addStacksToCraftingTool(
+				PC_ItemGroup.MOBILE_V,
+				Item.boat,
+				Item.saddle
+			);		
+		
+		addStacksToCraftingTool(
+			PC_ItemGroup.COLOURS_V,
+			new ItemStack(Item.dyePowder,1,PC_Color.dye.BLACK.meta),
+			new ItemStack(Item.dyePowder,1,PC_Color.dye.GRAY.meta),
+			new ItemStack(Item.dyePowder,1,PC_Color.dye.LIGHTGRAY.meta),
+			new ItemStack(Item.dyePowder,1,PC_Color.dye.WHITE.meta),
+			new ItemStack(Item.dyePowder,1,PC_Color.dye.RED.meta),
+			new ItemStack(Item.dyePowder,1,PC_Color.dye.ORANGE.meta),
+			new ItemStack(Item.dyePowder,1,PC_Color.dye.YELLOW.meta),
+			new ItemStack(Item.dyePowder,1,PC_Color.dye.LIME.meta),
+			new ItemStack(Item.dyePowder,1,PC_Color.dye.GREEN.meta),
+			new ItemStack(Item.dyePowder,1,PC_Color.dye.CYAN.meta),
+			new ItemStack(Item.dyePowder,1,PC_Color.dye.LIGHTBLUE.meta),
+			new ItemStack(Item.dyePowder,1,PC_Color.dye.BLUE.meta),
+			new ItemStack(Item.dyePowder,1,PC_Color.dye.PURPLE.meta),
+			new ItemStack(Item.dyePowder,1,PC_Color.dye.MAGENTA.meta),
+			new ItemStack(Item.dyePowder,1,PC_Color.dye.PINK.meta),
+			new ItemStack(Item.dyePowder,1,PC_Color.dye.BROWN.meta),
+			
+			new ItemStack(Block.cloth,1,PC_Color.cloth.BLACK.meta),
+			new ItemStack(Block.cloth,1,PC_Color.cloth.GRAY.meta),
+			new ItemStack(Block.cloth,1,PC_Color.cloth.LIGHTGRAY.meta),
+			new ItemStack(Block.cloth,1,PC_Color.cloth.WHITE.meta),
+			new ItemStack(Block.cloth,1,PC_Color.cloth.RED.meta),
+			new ItemStack(Block.cloth,1,PC_Color.cloth.ORANGE.meta),
+			new ItemStack(Block.cloth,1,PC_Color.cloth.YELLOW.meta),
+			new ItemStack(Block.cloth,1,PC_Color.cloth.LIME.meta),
+			new ItemStack(Block.cloth,1,PC_Color.cloth.GREEN.meta),
+			new ItemStack(Block.cloth,1,PC_Color.cloth.CYAN.meta),
+			new ItemStack(Block.cloth,1,PC_Color.cloth.LIGHTBLUE.meta),
+			new ItemStack(Block.cloth,1,PC_Color.cloth.BLUE.meta),
+			new ItemStack(Block.cloth,1,PC_Color.cloth.PURPLE.meta),
+			new ItemStack(Block.cloth,1,PC_Color.cloth.MAGENTA.meta),
+			new ItemStack(Block.cloth,1,PC_Color.cloth.PINK.meta),
+			new ItemStack(Block.cloth,1,PC_Color.cloth.BROWN.meta)
+			
+		);
+		
+		addStacksToCraftingTool(
+			PC_ItemGroup.ORES_V,
+			new ItemStack(Item.dyePowder,1,PC_Color.dye.BLUE.meta),
+			Block.blockLapis,	
+			Item.diamond,
+			Block.blockDiamond,
+			Item.goldNugget,
+			Item.ingotGold,
+			Block.blockGold,
+			Item.ingotIron,
+			Block.blockSteel	
+		);
+		
+		addStacksToCraftingTool(
+			PC_ItemGroup.ROCKS_ETC_V,
+			Block.obsidian,
+			Block.stoneBrick,
+			Block.stone,
+			Block.cobblestone,
+			Block.cobblestoneMossy,
+			Block.dirt,
+			Block.grass,
+			Block.blockClay,
+			Block.brick,
+			Block.sand,
+			Block.sandStone,
+			Block.gravel,
+			Block.glass,	
+			Block.bedrock	
+		);	
+		
+		addStacksToCraftingTool(
+			PC_ItemGroup.FOOD_V,
+			Item.appleGold,
+			Item.appleRed,
+			Item.beefRaw,
+			Item.beefCooked,
+			Item.bowlEmpty,
+			Item.bowlSoup,
+			Item.bread,
+			Item.cake,
+			Item.chickenRaw,
+			Item.chickenCooked,
+			Item.cookie,
+			Item.fishRaw,
+			Item.fishCooked,
+			Item.melon,
+			Item.rottenFlesh,
+			Item.egg,
+			Item.sugar
+		);
+		
+		addStacksToCraftingTool(
+				PC_ItemGroup.WOOD_V,
+				Item.stick,
+				new ItemStack(Block.planks,1,0),
+				new ItemStack(Block.planks,1,1),
+				new ItemStack(Block.planks,1,2),
+				new ItemStack(Block.planks,1,3),
+				new ItemStack(Block.wood,1,0),
+				new ItemStack(Block.wood,1,1),
+				new ItemStack(Block.wood,1,2),
+				new ItemStack(Block.wood,1,3),
+				new ItemStack(Block.leaves,1,0),
+				new ItemStack(Block.leaves,1,1),
+				new ItemStack(Block.leaves,1,2),
+				new ItemStack(Block.leaves,1,3)
 			);
 		
 		// @formatter:on
@@ -655,7 +886,7 @@ public class mod_PCcore extends PC_Module implements PC_IActivatorListener {
 
 			posZ = chunkZ + random.nextInt(16);
 
-			PC_Logger.finest("Generating PowerCrystals deposit of size " + maxBlocks + " at coords " + new PC_CoordI(posX, posY, posZ));
+			//PC_Logger.finest("Generating PowerCrystals deposit of size " + maxBlocks + " at coords " + new PC_CoordI(posX, posY, posZ));
 
 			new PC_WorldGenMinableMetadata(powerCrystal.blockID, random.nextInt(8), maxBlocks).generate(world, random, posX, posY, posZ);
 		}
@@ -824,10 +1055,10 @@ public class mod_PCcore extends PC_Module implements PC_IActivatorListener {
 		PC_Logger.fine("Loading translations from updated files.\n");
 
 		for (PC_Module module : PC_Module.modules.values()) {
-			
+
 			PC_Logger.finer("Recreating en_US translation files for module " + module.getModuleName());
 			module.generateTranslationFiles();
-			
+
 			PC_Logger.finer("Loading translations for module " + module.getModuleName());
 			if (module.lang != null) {
 				module.lang.loadTranstalions();
