@@ -4,6 +4,8 @@ package net.minecraft.src;
 import java.util.List;
 import java.util.Map;
 
+import net.minecraft.client.Minecraft;
+
 
 /**
  * PowerCraft Logic module
@@ -39,6 +41,12 @@ public class mod_PClogic extends PC_Module {
 	public String getModuleName() {
 		return "LOGIC";
 	}
+	
+	
+	/** 
+	 * World-wide data bus used by weasel devices and radios to transfer information.
+	 */
+	public static PClo_WirelessBus DATA_BUS = new PClo_WirelessBus();
 
 
 	// *** PROPERTIES ***
@@ -580,7 +588,7 @@ public class mod_PClogic extends PC_Module {
 					'+', Item.redstone });
 		
 		ModLoader.addRecipe(
-				new ItemStack(gateOn, 2, PClo_GateType.CPU),
+				new ItemStack(gateOn, 2, PClo_GateType.PROG),
 				new Object[] { "+++", "+S+", "+++",
 					'+', Item.redstone, 'S', Block.stone });
 
@@ -822,6 +830,9 @@ public class mod_PClogic extends PC_Module {
 				new ItemStack(sensor, 1, 2));
 		
 		//@formatter:on
+		
+		ModLoader.setInGameHook(this, true, false);
+		ModLoader.setInGUIHook(this, true, false);
 	}
 
 
@@ -834,5 +845,25 @@ public class mod_PClogic extends PC_Module {
 	@Override
 	public void renderInvBlock(RenderBlocks renderblocks, Block block, int i, int rtype) {
 		PClo_Renderer.renderInvBlockByType(renderblocks, block, i, rtype);
+	}
+	
+	private int tickCounter = 0;
+
+	@Override
+	public boolean onTickInGame(float f, Minecraft minecraft) {
+		if (tickCounter++ % 20 == 0) {
+			if(DATA_BUS.needsSave) {
+				DATA_BUS.saveToFile();
+			}
+		}
+		return true;
+	}
+	
+	@Override
+	public boolean onTickInGUI(float f, Minecraft minecraft, GuiScreen guiscreen) {
+		if(DATA_BUS.needsSave) {
+			DATA_BUS.saveToFile();
+		}
+		return true;
 	}
 }

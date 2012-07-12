@@ -19,7 +19,7 @@ public class PClo_BlockRadio extends BlockContainer implements PC_IBlockType {
 	 * @param id ID
 	 */
 	protected PClo_BlockRadio(int id) {
-		super(id, Block.stone.blockIndexInTexture, Material.circuits);
+		super(id, Block.stone.blockIndexInTexture, Material.ground);
 		setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 0.255F, 1.0F);
 	}
 
@@ -134,9 +134,7 @@ public class PClo_BlockRadio extends BlockContainer implements PC_IBlockType {
 		PClo_TileEntityRadio ter = getTE(world, i, j, k);
 
 		if (ter.isTransmitter()) {
-			PClo_RadioManager.unregisterTx(ter.dim, new PC_CoordI(i, j, k), ter.getChannel());
-		} else {
-			PClo_RadioManager.unregisterReceiver(new PC_CoordI(i, j, k));
+			mod_PClogic.DATA_BUS.disconnectFromRedstoneBus(ter);
 		}
 
 
@@ -161,25 +159,25 @@ public class PClo_BlockRadio extends BlockContainer implements PC_IBlockType {
 
 			if (on && !power) {
 				world.setBlockMetadataWithNotify(i, j, k, 0);
-				ter.setStateWithNotify(false);
+				ter.setTransmitterState(false);
 
 			} else if (!on && power) {
 				world.setBlockMetadataWithNotify(i, j, k, 1);
-				ter.setStateWithNotify(true);
+				ter.setTransmitterState(true);
 			}
 
 		} else {
 
 			boolean on = (meta == 1);
-			boolean power = PClo_RadioManager.getSignalStrength(ter.getChannel()) > 0;
+			boolean power = ter.active;
 
 			if (on && !power) {
 				world.setBlockMetadataWithNotify(i, j, k, 0);
-				ter.setStateWithNotify(false);
+				ter.setTransmitterState(false);
 
 			} else if (!on && power) {
 				world.setBlockMetadataWithNotify(i, j, k, 1);
-				ter.setStateWithNotify(true);
+				ter.setTransmitterState(true);
 			}
 		}
 
@@ -194,23 +192,7 @@ public class PClo_BlockRadio extends BlockContainer implements PC_IBlockType {
 	@Override
 	public void onNeighborBlockChange(World world, int i, int j, int k, int l) {
 
-		if (getTE(world, i, j, k).isReceiver()) {
-			return;
-		}
-
-		boolean on = (world.getBlockMetadata(i, j, k) == 1);
-
-		if (!on && !(l > 0 && Block.blocksList[l].canProvidePower())) {
-			return;
-		}
-
-		boolean power = isGettingPower(world, i, j, k);
-
-		if (on && !power) {
-			world.scheduleBlockUpdate(i, j, k, blockID, 1);
-		} else if (!on && power) {
-			world.scheduleBlockUpdate(i, j, k, blockID, 1);
-		}
+		world.scheduleBlockUpdate(i, j, k, blockID, 1);
 
 	}
 

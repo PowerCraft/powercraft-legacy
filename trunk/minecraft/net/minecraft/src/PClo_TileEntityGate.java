@@ -3,8 +3,13 @@ package net.minecraft.src;
 
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Random;
+
+import net.minecraft.src.PClo_WirelessBus.IRadioDevice;
 
 import weasel.Calc;
 import weasel.IWeaselHardware;
@@ -24,7 +29,7 @@ import weasel.obj.WeaselObject.WeaselObjectType;
  * @author MightyPork
  * @copy (c) 2012
  */
-public class PClo_TileEntityGate extends PC_TileEntity implements IWeaselHardware {
+public class PClo_TileEntityGate extends PC_TileEntity implements IWeaselHardware, IRadioDevice {
 
 	/**
 	 * TEG
@@ -53,6 +58,8 @@ public class PClo_TileEntityGate extends PC_TileEntity implements IWeaselHardwar
 
 	private int updateIgnoreCounter = 10;
 	private long lastUpdateAbsoluteTime = 0;
+	
+	private boolean connectedToRadioBus = false;
 
 	/**
 	 * Set to true if the entity is removed. Saves resources.
@@ -67,6 +74,10 @@ public class PClo_TileEntityGate extends PC_TileEntity implements IWeaselHardwar
 		if (zombie || worldObj == null) {
 			return;
 		}
+		
+		if(!connectedToRadioBus) {
+			mod_PClogic.DATA_BUS.connectToRedstoneBus(this);
+		}
 
 
 
@@ -80,7 +91,7 @@ public class PClo_TileEntityGate extends PC_TileEntity implements IWeaselHardwar
 		// if regular ticks aren't needed, use only every sixth.
 		if (gateType != PClo_GateType.FIFO_DELAYER && gateType != PClo_GateType.HOLD_DELAYER) {
 			if (updateIgnoreCounter-- <= 0) {
-				updateIgnoreCounter = (gateType == PClo_GateType.CPU) ? 1 : PRESCALLER;
+				updateIgnoreCounter = (gateType == PClo_GateType.PROG) ? 1 : PRESCALLER;
 			} else {
 				return;
 			}
@@ -204,7 +215,7 @@ public class PClo_TileEntityGate extends PC_TileEntity implements IWeaselHardwar
 				stopSpawning_stopPulsar(worldObj.getBlockTileEntity(xCoord, yCoord - 1, zCoord), active);
 				break;
 
-			case PClo_GateType.CPU:
+			case PClo_GateType.PROG:
 				if (weaselError == null) {
 					if (!weasel.isProgramFinished) {
 						weaselInport = PClo_BlockGate.getWeaselInputStates(worldObj, xCoord, yCoord, zCoord);
@@ -276,21 +287,25 @@ public class PClo_TileEntityGate extends PC_TileEntity implements IWeaselHardwar
 
 		}
 
-		if (gateType == PClo_GateType.CPU) {
+		if (gateType == PClo_GateType.PROG) {
 			program = maintag.getString("program");
 			if (program.equals("")) program = default_program;
 			initWeaselIfNull();
 			weasel.readFromNBT(maintag.getCompoundTag("Weasel"));
-
-			weaselOutport[0] = maintag.getBoolean("wo0");
-			weaselOutport[1] = maintag.getBoolean("wo1");
-			weaselOutport[2] = maintag.getBoolean("wo2");
-			weaselOutport[3] = maintag.getBoolean("wo3");
-			weaselOutport[4] = maintag.getBoolean("wo4");
-			weaselOutport[5] = maintag.getBoolean("wo5");
+			
+			for(int i=0; i<weaselOutport.length; i++)
+				weaselOutport[i] = maintag.getBoolean("wo"+i);
+			
 
 			weaselError = maintag.getString("weaselError");
 			if (weaselError.equals("")) weaselError = null;
+			
+			NBTTagList list = maintag.getTagList("wradio");
+			
+			for(int i=0; i< list.tagCount(); i++) {
+				NBTTagCompound ct = (NBTTagCompound) list.tagAt(i);
+				weaselRadioSignals.put(ct.getString("C"), ct.getBoolean("S"));
+			}
 
 		}
 
@@ -336,17 +351,27 @@ public class PClo_TileEntityGate extends PC_TileEntity implements IWeaselHardwar
 
 		maintag.setInteger("inputVariant", inputVariant);
 
-		if (gateType == PClo_GateType.CPU) {
+		if (gateType == PClo_GateType.PROG) {
 			maintag.setString("program", program);
 			maintag.setString("weaselError", (weaselError == null ? "" : weaselError));
 			initWeaselIfNull();
 			maintag.setCompoundTag("Weasel", weasel.writeToNBT(new NBTTagCompound()));
-			maintag.setBoolean("wo0", weaselOutport[0]);
-			maintag.setBoolean("wo1", weaselOutport[1]);
-			maintag.setBoolean("wo2", weaselOutport[2]);
-			maintag.setBoolean("wo3", weaselOutport[3]);
-			maintag.setBoolean("wo4", weaselOutport[4]);
-			maintag.setBoolean("wo5", weaselOutport[5]);
+			
+			
+			for(int i=0; i<weaselOutport.length; i++)
+				maintag.setBoolean("wo"+i, weaselOutport[i]);
+			
+			
+			NBTTagList list = new NBTTagList();
+			for(Entry<String,Boolean> entry : weaselRadioSignals.entrySet()) {
+				NBTTagCompound ct = new NBTTagCompound();
+				ct.setString("C", entry.getKey());
+				ct.setBoolean("S", entry.getValue());
+				list.appendTag(ct);
+			}
+			
+			maintag.setTag("wradio", list);
+			
 		}
 
 		if (gateType == PClo_GateType.HOLD_DELAYER) {
@@ -446,7 +471,6 @@ public class PClo_TileEntityGate extends PC_TileEntity implements IWeaselHardwar
 	/**
 	 * Check if the chest at given coords is empty
 	 * 
-	 * @param blockaccess block access
 	 * @param pos chest pos
 	 * @return is full
 	 */
@@ -470,6 +494,7 @@ public class PClo_TileEntityGate extends PC_TileEntity implements IWeaselHardwar
 	 * 
 	 * @param blockaccess block access
 	 * @param pos chest pos
+	 * @param allSlotsFull strict check for full slots
 	 * @return is full
 	 */
 	private boolean isFullChestAt(IBlockAccess blockaccess, PC_CoordI pos, boolean allSlotsFull) {
@@ -787,6 +812,7 @@ public class PClo_TileEntityGate extends PC_TileEntity implements IWeaselHardwar
 
 		weaselError = null;
 		weaselOutport = new boolean[] { false, false, false, false, false, false };
+		weaselRadioSignals.clear();
 
 		try {
 			if (worldObj != null) weasel.run(500);
@@ -803,15 +829,18 @@ public class PClo_TileEntityGate extends PC_TileEntity implements IWeaselHardwar
 	 * @throws SyntaxError
 	 */
 	public void checkProgramForErrors(String program) throws SyntaxError {
-		List<Instruction> list = WeaselEngine.compileProgram(program);
+		//List<Instruction> list = 
+		WeaselEngine.compileProgram(program);
 //		System.out.println();
 //		for (Instruction i : list) {
 //			System.out.println(i);
 //		}
 	}
 
-	boolean[] weaselOutport = { false, false, false, false, false, false };
-	boolean[] weaselInport = { false, false, false, false, false, false };
+	private boolean[] weaselOutport = { false, false, false, false, false, false };
+	private boolean[] weaselInport = { false, false, false, false, false, false };
+	
+	private Map<String,Boolean> weaselRadioSignals = new HashMap<String, Boolean>(0);
 
 	private static Random rand = new Random();
 
@@ -820,17 +849,82 @@ public class PClo_TileEntityGate extends PC_TileEntity implements IWeaselHardwar
 	public boolean doesProvideFunction(String functionName) {
 		return getProvidedFunctionNames().contains(functionName);
 	}
+	
+	private class BadFunc extends Exception{}
 
 	@Override
 	public WeaselObject callProvidedFunction(WeaselEngine engine, String functionName, WeaselObject[] args) {
+		try{
+			return fnSound(engine, functionName, args);
+		}catch(BadFunc e) {}
+		
+		try{
+			return fnAmbient(engine, functionName, args);
+		}catch(BadFunc e) {}
+		
+		try{
+			return fnBus(engine, functionName, args);
+		}catch(BadFunc e) {}
+		
+		throw new WeaselRuntimeException("Invalid call of function "+functionName);
+	}
+	
+	/**
+	 * try to execute a BUS function
+	 * @param engine the engine
+	 * @param functionName function name
+	 * @param args arguments given
+	 * @return return value
+	 * @throws BadFunc not supported by this method
+	 */
+	private WeaselObject fnBus(WeaselEngine engine, String functionName, WeaselObject[] args) throws BadFunc {
+		
+		if (functionName.equals("bus.set") || functionName.equals("bs")) {
 
-		float volume = 1.0F;
-		if (args.length >= 2 && args[1].getType() == WeaselObjectType.INTEGER) {
-			if (args.length == 2) volume = ((Integer) args[1].get()) / 10F;
-			if (volume > 5) volume = 5;
-			if (volume < 0) volume = 0.001F;
+			mod_PClogic.DATA_BUS.setWeaselVariable((String) args[0].get(), args[1]);
+			return null;
+
+		} else if (functionName.equals("bus.get") || functionName.equals("bg")) {
+
+			return mod_PClogic.DATA_BUS.getWeaselVariable((String) args[0].get());
+
+		} else if (functionName.equals("radio")) {
+
+			if(args.length == 1) {
+				//receive
+				return new WeaselBoolean(mod_PClogic.DATA_BUS.getChannelState((String) args[0].get()));
+				
+			}else if(args.length == 2) {
+				//send
+				weaselRadioSignals.put((String) args[0].get(), Calc.toBoolean(args[1].get()));
+				return null;
+			}
+			
+		} else if (functionName.equals("rx")) {
+			//receive
+			return new WeaselBoolean(mod_PClogic.DATA_BUS.getChannelState((String) args[0].get()));
+			
+		} else if (functionName.equals("tx")) {
+			//send
+			weaselRadioSignals.put((String) args[0].get(), Calc.toBoolean(args[1].get()));
+			return null;
+			
 		}
-
+		
+		throw new BadFunc();
+		
+	}
+	
+	/**
+	 * Try to execute a function which works with the environment or surrounding blocks.
+	 * @param engine the engine
+	 * @param functionName function name
+	 * @param args arguments given
+	 * @return return value
+	 * @throws BadFunc not supported by this method
+	 */
+	private WeaselObject fnAmbient(WeaselEngine engine, String functionName, WeaselObject[] args) throws BadFunc {
+		
 		if (functionName.equals("time")) {
 
 			return new WeaselInteger(worldObj.worldInfo.getWorldTime());
@@ -886,7 +980,30 @@ public class PClo_TileEntityGate extends PC_TileEntity implements IWeaselHardwar
 
 			return new WeaselBoolean(worldObj.isRaining());
 
-		} else if (functionName.equals("oink")) {
+		}else {
+			throw new BadFunc();
+		}
+		
+	}
+	
+	/**
+	 * Try to execute a sound function
+	 * @param engine the engine
+	 * @param functionName function name
+	 * @param args arguments given
+	 * @return return value
+	 * @throws BadFunc not supported by this method
+	 */
+	private WeaselObject fnSound(WeaselEngine engine, String functionName, WeaselObject[] args) throws BadFunc {
+
+		float volume = 1.0F;
+		if (args.length >= 2 && args[1].getType() == WeaselObjectType.INTEGER) {
+			if (args.length == 2) volume = ((Integer) args[1].get()) / 10F;
+			if (volume > 5) volume = 5;
+			if (volume < 0) volume = 0.001F;
+		}
+
+		if (functionName.equals("oink")) {
 			worldObj.playSoundEffect(xCoord + 0.5D, yCoord + 0.5D, zCoord + 0.5D, "mob.pig", volume, (rand.nextFloat() - rand.nextFloat()) * 0.2F + 1.0F);
 		} else if (functionName.equals("moo")) {
 			worldObj.playSoundEffect(xCoord + 0.5D, yCoord + 0.5D, zCoord + 0.5D, "mob.cow", volume, (rand.nextFloat() - rand.nextFloat()) * 0.2F + 1.0F);
@@ -913,6 +1030,8 @@ public class PClo_TileEntityGate extends PC_TileEntity implements IWeaselHardwar
 
 			playNote(((String) args[0].get()), ((Integer) args[1].get()), volume);
 			return null;
+		}else {
+			throw new BadFunc();
 		}
 
 		worldObj.spawnParticle("note", xCoord + 0.5D, yCoord + 0.3D, zCoord + 0.5D, (functionName.length() * (3 + args.length)) / 24D, 0.0D, 0.0D);
@@ -991,7 +1110,8 @@ public class PClo_TileEntityGate extends PC_TileEntity implements IWeaselHardwar
 
 		if (change) {
 //			System.out.println("Sending notification.");
-			worldObj.notifyBlocksOfNeighborChange(xCoord, yCoord, zCoord, mod_PClogic.gateOff.blockID);
+			PClo_BlockGate.hugeUpdate(worldObj, xCoord, yCoord, zCoord, mod_PClogic.gateOn.blockID);
+//			worldObj.notifyBlocksOfNeighborChange(xCoord, yCoord, zCoord, mod_PClogic.gateOff.blockID);
 
 		}
 
@@ -1017,6 +1137,16 @@ public class PClo_TileEntityGate extends PC_TileEntity implements IWeaselHardwar
 		list.add("fullChest");
 		list.add("full");
 		list.add("sleep");
+		
+		list.add("bus.set");
+		list.add("bus.get");
+		
+		list.add("bg");
+		list.add("bs");
+		
+		list.add("radio");
+		list.add("rx");
+		list.add("tx");
 		return list;
 	}
 
@@ -1078,12 +1208,23 @@ public class PClo_TileEntityGate extends PC_TileEntity implements IWeaselHardwar
 
 	}
 
+	/**
+	 * @param message set the error message
+	 */
 	public void setWeaselError(String message) {
 		this.weaselError = message;
 	}
 
+	/**
+	 * @return message describing last weasel error
+	 */
 	public String getWeaselError() {
 		return this.weaselError;
+	}
+
+	@Override
+	public boolean doesTransmitOnChannel(String channel) {
+		return weaselRadioSignals.containsKey(channel) && weaselRadioSignals.get(channel) == true;
 	}
 
 }

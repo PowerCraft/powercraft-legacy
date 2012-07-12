@@ -94,7 +94,7 @@ public class PClo_GuiProgrammableGate implements PC_IGresBase {
 		}
 
 		win.add(edit = new PC_GresTextEditMultiline(teg.program, 280, 154, kw));
-		win.add(txError = new PC_GresLabelMultiline("Weasel status: " + (teg.getWeaselError() == null ? "OK" : teg.getWeaselError()), 270).setMinRows(2).setColor(PC_GresWidget.textColorEnabled, 0x000000));
+		win.add(txError = new PC_GresLabelMultiline("Weasel status: " + (teg.getWeaselError() == null ? "OK" : teg.getWeaselError()), 270).setMinRows(2).setMaxRows(2).setColor(PC_GresWidget.textColorEnabled, 0x000000));
 
 		hg = new PC_GresLayoutH().setAlignH(PC_GresAlign.CENTER);
 		hg.add(new PC_GresButton(PC_Lang.tr("pc.gui.programGate.close")).setId(0));

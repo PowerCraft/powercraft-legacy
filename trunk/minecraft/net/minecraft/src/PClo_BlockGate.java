@@ -69,7 +69,7 @@ public class PClo_BlockGate extends BlockContainer implements PC_IRotatedBox, PC
 	 * @param flag is active (glowing)
 	 */
 	protected PClo_BlockGate(int id, boolean flag) {
-		super(id, Material.circuits);
+		super(id, Material.ground);
 		active = flag;
 		blockIndexInTexture = 6;
 		setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 0.1875F, 1.0F);
@@ -400,7 +400,7 @@ public class PClo_BlockGate extends BlockContainer implements PC_IRotatedBox, PC
 		boolean on, state;
 
 		switch (type) {
-			case PClo_GateType.CPU:
+			case PClo_GateType.PROG:
 
 				world.notifyBlockChange(x, y, z, blockID);
 
@@ -855,7 +855,7 @@ public class PClo_BlockGate extends BlockContainer implements PC_IRotatedBox, PC
 			return;
 		}
 
-		if (type == PClo_GateType.CPU) {
+		if (type == PClo_GateType.PROG) {
 
 			for (; gateUpdates.size() > 0 && world.getWorldTime() - gateUpdates.get(0).updateTime > 10L; gateUpdates.remove(0)) {}
 			if (checkForBurnout(world, x, y, z, false)) {
@@ -972,7 +972,7 @@ public class PClo_BlockGate extends BlockContainer implements PC_IRotatedBox, PC
 			return false;
 		}
 
-		if (type == PClo_GateType.CPU) {
+		if (type == PClo_GateType.PROG) {
 
 			boolean[] outputs = getTE(iblockaccess, x, y, z).getWeaselOutputStates();
 
@@ -1268,6 +1268,17 @@ public class PClo_BlockGate extends BlockContainer implements PC_IRotatedBox, PC
 		world.notifyBlocksOfNeighborChange(x, y, z - 1, id);
 		world.notifyBlocksOfNeighborChange(x, y - 1, z, id);
 		world.notifyBlocksOfNeighborChange(x, y + 1, z, id);
+//		
+//		
+//		world.notifyBlocksOfNeighborChange(x + 1, y-1, z, id);
+//		world.notifyBlocksOfNeighborChange(x - 1, y-1, z, id);
+//		world.notifyBlocksOfNeighborChange(x, y-1, z + 1, id);
+//		world.notifyBlocksOfNeighborChange(x, y-1, z - 1, id);
+//		
+//		world.notifyBlocksOfNeighborChange(x + 1, y+1, z, id);
+//		world.notifyBlocksOfNeighborChange(x - 1, y+1, z, id);
+//		world.notifyBlocksOfNeighborChange(x, y+1, z + 1, id);
+//		world.notifyBlocksOfNeighborChange(x, y+1, z - 1, id);
 	}
 
 	@Override
@@ -1354,7 +1365,7 @@ public class PClo_BlockGate extends BlockContainer implements PC_IRotatedBox, PC
 			return true;
 		}
 
-		if (type == PClo_GateType.CPU) {
+		if (type == PClo_GateType.PROG) {
 			PC_Utils.openGres(player, new PClo_GuiProgrammableGate(teg));
 			return true;
 		}

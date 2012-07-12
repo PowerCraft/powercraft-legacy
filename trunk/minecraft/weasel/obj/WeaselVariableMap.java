@@ -86,6 +86,10 @@ public class WeaselVariableMap extends WeaselObject implements IVariableProvider
 	public WeaselObject getVariable(String name) {
 		return map.get(name);
 	}
+	
+	public void setVariableForce(String name, WeaselObject value) {
+		map.put(name, value);
+	}
 
 
 	@Override
