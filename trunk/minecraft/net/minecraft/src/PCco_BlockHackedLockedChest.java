@@ -18,11 +18,11 @@ import net.minecraft.src.forge.ITextureProvider;
  * 
  * @author MightyPork
  */
-public class PCco_BlockLockedChestReplacement extends BlockLockedChest implements PC_IBlockType {
+public class PCco_BlockHackedLockedChest extends BlockLockedChest implements PC_IBlockType {
 	/**
 	 * @param par1 id
 	 */
-	protected PCco_BlockLockedChestReplacement(int par1) {
+	protected PCco_BlockHackedLockedChest(int par1) {
 		super(par1);
 		blockIndexInTexture = 26;
 	}

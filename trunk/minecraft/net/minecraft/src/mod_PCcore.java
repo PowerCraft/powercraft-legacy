@@ -46,7 +46,7 @@ public class mod_PCcore extends PC_Module implements PC_IActivatorListener {
 	 * Mod version, shared by other modules.<br>
 	 * Since this is static final, it is replaced by it's value during
 	 * compilation, thus all modules keep their compile-time version and aren't
-	 * affected by current core version.
+	 * affected by current core version. Which is good.
 	 */
 	public static final String VERSION = "3.4.3";
 	
@@ -325,14 +325,9 @@ public class mod_PCcore extends PC_Module implements PC_IActivatorListener {
 		
 		removeBlockItem(Block.lockedChest.blockID);
 		Block.blocksList[Block.lockedChest.blockID] = null;
-		Block.blocksList[Block.lockedChest.blockID] = new PCco_BlockLockedChestReplacement(Block.lockedChest.blockID);
+		Block.blocksList[Block.lockedChest.blockID] = new PCco_BlockHackedLockedChest(Block.lockedChest.blockID);
 		removeBlockItem(Block.lockedChest.blockID);
 		setBlockItem(Block.lockedChest.blockID, new PCco_ItemBlockLockedChestReplacement(Block.lockedChest.blockID - 256));
-		
-		Block.blocksList[Block.waterStill.blockID] = null;
-		Block.blocksList[Block.waterStill.blockID] = new PCco_BlockWaterStationaryReplacement(9, Material.water).setHardness(100F).setLightOpacity(3).setBlockName("water").disableStats().setRequiresSelfNotify();
-		
-		
 		
 		// @formatter:on
 	}
