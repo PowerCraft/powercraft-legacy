@@ -443,9 +443,12 @@ public class PC_GresTextEditMultiline extends PC_GresWidget {
 		keywordToFinish = null;
 		for (int i = 0; i < shownLines(); i++) {
 			drawStringLine(offsetPos, i + scroll.y);
-			if(keywordToFinish!=null)
-				if(keywordToFinish.end.equals("\n"))
+			if(keywordToFinish!=null){
+				if(!keywordToFinish.isRegexp && keywordToFinish.end.equals("\n"))
 					keywordToFinish = null;
+				else if(keywordToFinish.isRegexp && "\n".matches(keywordToFinish.end))
+					keywordToFinish = null;
+			}
 		}
 
 		if (hasFocus && (cursorCounter / 6) % 2 == 0) {
