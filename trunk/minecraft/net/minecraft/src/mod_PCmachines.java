@@ -289,14 +289,20 @@ public class mod_PCmachines extends PC_Module implements PC_IActivatorListener {
 		map.put("pc.gui.blockReplacer.err3zeros", "Expects at least 1 value unequal 0.");
 
 		map.put("pc.gui.xpbank.storagePoints", "Stored XP:");
+		map.put("pc.gui.xpbank.currentPlayerLevel", "Your level:");
 		map.put("pc.gui.xpbank.xpUnit", "points");
 		map.put("pc.gui.xpbank.xpLevels", "levels");
-		map.put("pc.gui.xpbank.pointsToWithdraw", "Points to withdraw:");
-		map.put("pc.gui.xpbank.currentPlayerPoints", "Your XP:");
-		map.put("pc.gui.xpbank.currentPlayerLevel", "Your level:");
-		map.put("pc.gui.xpbank.withdrawButton", "Withdraw");
-		map.put("pc.gui.xpbank.pointsToDeposit", "Points to deposit:");
-		map.put("pc.gui.xpbank.depositButton", "Deposit");
+		
+		map.put("pc.gui.xpbank.withdraw", "Withdraw:");
+		map.put("pc.gui.xpbank.deposit", "Deposit:");
+		map.put("pc.gui.xpbank.oneLevel", "1 level");
+		map.put("pc.gui.xpbank.all", "all");
+//		
+//		map.put("pc.gui.xpbank.pointsToWithdraw", "Points to withdraw:");
+//		map.put("pc.gui.xpbank.currentPlayerPoints", "Your XP:");
+//		map.put("pc.gui.xpbank.withdrawButton", "Withdraw");
+//		map.put("pc.gui.xpbank.pointsToDeposit", "Points to deposit:");
+//		map.put("pc.gui.xpbank.depositButton", "Deposit");
 
 		map.put("pc.gui.automaticWorkbench.redstoneActivated", "Redstone triggered");
 	}
