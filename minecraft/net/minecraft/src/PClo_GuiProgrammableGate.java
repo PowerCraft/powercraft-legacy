@@ -43,12 +43,13 @@ public class PClo_GuiProgrammableGate implements PC_IGresBase {
 		PC_GresWidget hg;
 
 		ArrayList<Keyword> kw = new ArrayList<Keyword>();
-		int colorInputVar = 0x00BB00;
+		int colorHardwareVar = 0x00BB00;
+		int colorHardwareFunction = 0xff3030;
 		int colorOperator = 0xff9900;
 		int colorNumber = 0xffff00;
-		int colorConstant = 0x990099;
+		int colorMathConstant = 0x990099;
 		int colorMathFunction = 0xff3030;
-		int colorLangFunction = 0xff0000;
+		int colorLangKeyword = 0xff0000;
 		int colorBracket = 0xff66ff;
 		int colorComments = 0x337ca7;
 		int colorString = 0xff3330;
@@ -70,13 +71,13 @@ public class PClo_GuiProgrammableGate implements PC_IGresBase {
 		// gate functions
 		List<String> gateFunc = teg.getProvidedFunctionNames();
 		for (String str : gateFunc) {
-			kw.add(new Keyword(str, colorMathFunction, false));
+			kw.add(new Keyword(str, colorHardwareFunction, false));
 		}
 
 		// gate input variables
 		List<String> gateVar = teg.getProvidedVariableNames();
 		for (String str : gateVar) {
-			kw.add(new Keyword(str, colorInputVar, false));
+			kw.add(new Keyword(str, colorHardwareVar, false));
 		}
 
 		// math functions
@@ -90,17 +91,17 @@ public class PClo_GuiProgrammableGate implements PC_IGresBase {
 		List<String> jepVar = Compiler.parserConstants;
 
 		for (String str : jepVar) {
-			kw.add(new Keyword(str, colorConstant, false));
+			kw.add(new Keyword(str, colorMathConstant, false));
 		}
 
 		// lang functions
 		List<String> weaselFunc = Compiler.langKeywords;
 
 		for (String str : weaselFunc) {
-			kw.add(new Keyword(str, colorLangFunction, false));
+			kw.add(new Keyword(str, colorLangKeyword, false));
 		}
 
-		win.add(edit = new PC_GresTextEditMultiline(teg.program, 280, 154, kw));
+		win.add(edit = new PC_GresTextEditMultiline(teg.program, 300, 154, kw));
 		win.add(txError = new PC_GresLabelMultiline("Weasel status: " + (teg.getWeaselError() == null ? "OK" : teg.getWeaselError()), 270).setMinRows(2).setMaxRows(2).setColor(PC_GresWidget.textColorEnabled, 0x000000));
 
 		hg = new PC_GresLayoutH().setAlignH(PC_GresAlign.CENTER);
