@@ -59,6 +59,7 @@ public class PCma_Renderer {
 
 		// XP bank inner thingy
 		mod_PCmachines.xpbank.rendering = true;
+		PC_Renderer.enableCustomBounds = false;
 		PC_Renderer.renderBlockSwapTerrain(renderblocks, iblockaccess, i, j, k, block);
 		mod_PCmachines.xpbank.rendering = false;
 		block.setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 1.0F, 1.0F);

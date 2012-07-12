@@ -133,7 +133,7 @@ public class mod_PClogic extends PC_Module {
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@Override
 	public void registerTileEntities(List<PC_Struct3<Class<? extends TileEntity>, String, TileEntitySpecialRenderer>> list) {
-		list.add(new PC_Struct3(PClo_TileEntityGate.class, "FCLogicGate", null));
+		list.add(new PC_Struct3(PClo_TileEntityGate.class, "FCLogicGate", new PClo_TileEntityGateRenderer()));
 		list.add(new PC_Struct3(PClo_TileEntityPulsar.class, "FCRedstonePulsar", null));
 		list.add(new PC_Struct3(PClo_TileEntityLight.class, "FCRedstoneIndicator", null));
 		list.add(new PC_Struct3(PClo_TileEntitySensor.class, "FCSensorRanged", new PClo_TileEntitySensorRenderer()));
@@ -152,46 +152,46 @@ public class mod_PClogic extends PC_Module {
 		
 		radio = new PClo_BlockRadio(cfg().getInteger(pk_idRadio))
 				.setBlockName("PCloRadio")
-				.setHardness(0.2F)
-				.setResistance(8.0F);
+				.setHardness(0.35F)
+				.setResistance(15.0F);
 
 		sensor = (PClo_BlockSensor) (new PClo_BlockSensor(cfg().getInteger(pk_idSensor))
 				.setBlockName("PCloSensorRanged")
-				.setHardness(0.2F)
-				.setResistance(8.0F));
+				.setHardness(0.35F)
+				.setResistance(15.0F));
 
 
 		gateOff = new PClo_BlockGate(cfg().getInteger(pk_idGateOff), false)
 				.setBlockName("PCloLogicGate")
-				.setHardness(0.0F).setLightValue(0)
+				.setHardness(0.35F).setLightValue(0)
 				.setStepSound(Block.soundWoodFootstep)
 				.disableStats().setRequiresSelfNotify()
-				.setResistance(8.0F);
+				.setResistance(15.0F);
 
 		gateOn = new PClo_BlockGate(cfg().getInteger(pk_idGateOn), true)
 				.setBlockName("PCloLogicGate")
-				.setHardness(0.0F).setLightValue(cfg().getInteger(pk_brightGate) * 0.0625F)
+				.setHardness(0.35F).setLightValue(cfg().getInteger(pk_brightGate) * 0.0625F)
 				.setStepSound(Block.soundWoodFootstep)
 				.disableStats().setRequiresSelfNotify()
-				.setResistance(8.0F);
+				.setResistance(15.0F);
 
 		pulsar = new PClo_BlockPulsar(cfg().getInteger(pk_idPulsar))
 				.setHardness(0.8F)
-				.setResistance(8.0F)
+				.setResistance(20.0F)
 				.setBlockName("PCloRedstonePulsar")
 				.setRequiresSelfNotify()
 				.setStepSound(Block.soundWoodFootstep);
 
 		lightOff = new PClo_BlockLight(cfg().getInteger(pk_idLightOff), false)
-				.setHardness(0.0F)
-				.setResistance(8.0F)
+				.setHardness(0.3F)
+				.setResistance(5.0F)
 				.setBlockName("PCloLight")
 				.setStepSound(Block.soundStoneFootstep)
 				.setRequiresSelfNotify();
 
 		lightOn = new PClo_BlockLight(cfg().getInteger(pk_idLightOn), true)
-				.setHardness(0.0F)
-				.setResistance(8.0F)
+				.setHardness(0.3F)
+				.setResistance(5.0F)
 				.setLightValue(cfg().getInteger(pk_brightLight) * 0.0625F)
 				.setBlockName("PCloLight")
 				.setStepSound(Block.soundStoneFootstep)
@@ -233,6 +233,9 @@ public class mod_PClogic extends PC_Module {
 	@Override
 	public void preloadTextures(List<String> list) {
 		list.add(getTerrainFile());
+		list.add(getImgDir()+"block_chip.png");
+		list.add(getImgDir()+"block_radio.png");
+		list.add(getImgDir()+"block_sensor.png");
 	}
 
 	@Override
@@ -318,7 +321,7 @@ public class mod_PClogic extends PC_Module {
 		map.put("tile.PCloLogicGate.slowRepeater.name", "Slow Repeater");
 		map.put("tile.PCloLogicGate.crossing.name", "Redstone Crossing");
 		map.put("tile.PCloLogicGate.random.name", "Redstone Random Gate");
-		map.put("tile.PCloLogicGate.programmable.name", "Programmable Logic Gate");
+		map.put("tile.PCloLogicGate.programmable.name", "Weasel Unit");
 		map.put("tile.PCloLogicGate.repeaterStraight.name", "Quick Repeater");
 		map.put("tile.PCloLogicGate.repeaterCorner.name", "Angled Repeater");
 		map.put("tile.PCloLogicGate.repeaterStraightInstant.name", "Instant Repeater");
@@ -354,7 +357,7 @@ public class mod_PClogic extends PC_Module {
 		map.put("pc.gate.slowRepeater.desc", "makes pulses longer");
 		map.put("pc.gate.crossing.desc", "lets two wires intersect");
 		map.put("pc.gate.random.desc", "changes state randomly on pulse");
-		map.put("pc.gate.programmable.desc", "gate with custom function");
+		map.put("pc.gate.programmable.desc", "Microcontroller");
 		map.put("pc.gate.repeaterStraight.desc", "simple 1-tick repeater");
 		map.put("pc.gate.repeaterCorner.desc", "simple 1-tick corner repeater");
 		map.put("pc.gate.repeaterStraightInstant.desc", "instant repeater");
@@ -588,9 +591,9 @@ public class mod_PClogic extends PC_Module {
 					'+', Item.redstone });
 		
 		ModLoader.addRecipe(
-				new ItemStack(gateOn, 2, PClo_GateType.PROG),
-				new Object[] { "+++", "+S+", "+++",
-					'+', Item.redstone, 'S', Block.stone });
+				new ItemStack(gateOn, 1, PClo_GateType.PROG),
+				new Object[] { "SRS", "RCR", "SRS",
+					'S', Block.stone, 'R', Item.redstone, 'C', mod_PCcore.powerCrystal });
 
 		
 		// *** lights ***
