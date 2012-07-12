@@ -11,6 +11,7 @@ package net.minecraft.src;
  */
 public class PCtr_BlockHackedWater extends BlockStationary {
 
+//  // THIS WAS AN ATTEMPT TO LET WOODEN ITEMS FLOAT. IT DIDNT WORK.
 //	private static HashSet<Integer> floating = new HashSet<Integer>();	
 //	
 //	static {

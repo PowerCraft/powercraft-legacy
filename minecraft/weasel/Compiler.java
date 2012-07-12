@@ -403,6 +403,11 @@ public class Compiler {
 		source = source.replace("\n", " ");
 		source = source.replaceAll("/\\*.*?\\*/", "");
 
+		// convert & to && and | to ||
+		source = source.replaceAll("([^&])[&]([^&])", "$1&&$2");
+		source = source.replaceAll("([^|])[|]([^|])", "$1||$2");
+
+		// add missing semicolon to for
 		source = source.replaceAll("([^a-zA-Z0-9._]|^)for[(](.*?)[)][{]", "$1for($2;){");
 
 		// ++ and --, but it works only outside other expressions.

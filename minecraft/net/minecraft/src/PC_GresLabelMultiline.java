@@ -13,6 +13,7 @@ import java.util.List;
 public class PC_GresLabelMultiline extends PC_GresWidget {
 
 	private int minRows = 1;
+	private int maxRows = 100;
 
 	/**
 	 * Multiline label
@@ -27,18 +28,20 @@ public class PC_GresLabelMultiline extends PC_GresWidget {
 	}
 
 	/**
-	 * @return the minimal no. rows
-	 */
-	public int getMinRows() {
-		return minRows;
-	}
-
-	/**
 	 * @param minRows set minimal no. of rows
 	 * @return this
 	 */
 	public PC_GresLabelMultiline setMinRows(int minRows) {
 		this.minRows = minRows;
+		return this;
+	}
+
+	/**
+	 * @param maxRows set max no. of rows
+	 * @return this
+	 */
+	public PC_GresLabelMultiline setMaxRows(int maxRows) {
+		this.maxRows = maxRows;
 		return this;
 	}
 
@@ -63,12 +66,13 @@ public class PC_GresLabelMultiline extends PC_GresWidget {
 
 		String[] lines_nl = text.split("\n");
 
-		for (String s : lines_nl) {
+		l1: for (String s : lines_nl) {
 			s.trim();
 			if (s.length() > 0) {
 				List<String> lines = fontRenderer.listFormattedStringToWidth(s, getMinSize().x);
 
 				for (String ss : lines) {
+					if(cnt == maxRows) break l1;
 					ss.trim();
 					if (ss.length() > 0) {
 						int wid = getStringWidth(ss);
@@ -127,12 +131,13 @@ public class PC_GresLabelMultiline extends PC_GresWidget {
 
 		String[] lines_nl = text.split("\n");
 
-		for (String s : lines_nl) {
+		l1: for (String s : lines_nl) {
 			s.trim();
 			if (s.length() > 0) {
 				List<String> lines = fontRenderer.listFormattedStringToWidth(s, minSize.x);
 
 				for (String ss : lines) {
+					if(cnt == maxRows) break l1;
 					ss.trim();
 					if (s.length() > 0) {
 						cnt++;

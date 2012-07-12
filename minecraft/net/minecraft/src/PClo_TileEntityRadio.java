@@ -1,5 +1,7 @@
 package net.minecraft.src;
 
+import net.minecraft.src.PClo_WirelessBus.IRadioDevice;
+
 
 /**
  * Radio Tile Entity (both TX and RX)
@@ -7,7 +9,7 @@ package net.minecraft.src;
  * @author MightyPork
  * @copy (c) 2012
  */
-public class PClo_TileEntityRadio extends PC_TileEntity {
+public class PClo_TileEntityRadio extends PC_TileEntity implements IRadioDevice {
 
 	/** Device channel */
 	public String channel = mod_PClogic.default_radio_channel;
@@ -39,19 +41,24 @@ public class PClo_TileEntityRadio extends PC_TileEntity {
 
 
 	private boolean registered = false;
-
+	
 
 	@Override
-	public void updateEntity() {
+	public void updateEntity() {		
 		if (!registered) {
-			if (type == 1) {
-				PC_Logger.finest("Radio receiver at [" + xCoord + ";" + yCoord + ";" + zCoord + "] registers to RadioManager");
-				PClo_RadioManager.registerReceiver(dim, new PC_CoordI(xCoord, yCoord, zCoord), channel);
-			} else {
-				PC_Logger.finest("Radio transmitter at [" + xCoord + ";" + yCoord + ";" + zCoord + "] registers to RadioManager with signal state = " + active);
-				PClo_RadioManager.setTransmitterState(dim, new PC_CoordI(xCoord, yCoord, zCoord), channel, active);
-			}
+			PC_Logger.finest("RADIO Tx at [" + xCoord + ";" + yCoord + ";" + zCoord + "] connected to DATA_BUS.");
+			mod_PClogic.DATA_BUS.connectToRedstoneBus(this);
+
 			registered = true;
+		}
+		
+		if(type == 1) {
+			boolean newstate = mod_PClogic.DATA_BUS.getChannelState(channel);
+			if(active != newstate) {
+				active = newstate;
+				worldObj.scheduleBlockUpdate(xCoord, yCoord, zCoord, getBlockType().blockID, 1);
+				updateBlock();
+			}
 		}
 	}
 
@@ -109,10 +116,7 @@ public class PClo_TileEntityRadio extends PC_TileEntity {
 	 * 
 	 * @param act is active
 	 */
-	public void setStateWithNotify(boolean act) {
-		if (isTransmitter() && active != act) {
-			PClo_RadioManager.setTransmitterState(dim, new PC_CoordI(xCoord, yCoord, zCoord), channel, act);
-		}
+	public void setTransmitterState(boolean act) {
 		active = act;
 	}
 
@@ -122,4 +126,19 @@ public class PClo_TileEntityRadio extends PC_TileEntity {
 	public String getChannel() {
 		return channel;
 	}
+
+	@Override
+	public boolean doesTransmitOnChannel(String channel) {
+		return type == 0 && getChannel().equals(channel) && active;
+	}
 }
+
+
+
+
+
+
+
+
+
+

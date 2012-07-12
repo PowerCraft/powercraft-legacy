@@ -103,19 +103,13 @@ public class PClo_GuiRadioChannel implements PC_IGresBase {
 
 			PClo_TileEntityRadio ter = PClo_BlockRadio.getTE(PC_Utils.mc().theWorld, pos.x, pos.y, pos.z);
 
-			if (type == 0) {
-				PClo_RadioManager.setTransmitterChannel(dim, pos, oldChannel, newChannel, ter.isActive());
-			} else {
-				PClo_RadioManager.setReceiverChannel(dim, pos, newChannel);
-			}
-
 			ter.channel = newChannel;
 
 			// player is in the right dimen, set it to make sure.
 			ter.dim = dim;
 
 			if (type == 1) {
-				ter.active = PClo_RadioManager.getSignalStrength(newChannel) > 0;
+				ter.active = mod_PClogic.DATA_BUS.getChannelState(newChannel);
 				if (ter.active) {
 					PC_Utils.mc().theWorld.setBlockMetadataWithNotify(pos.x, pos.y, pos.z, 1);
 				}

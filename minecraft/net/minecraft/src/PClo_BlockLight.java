@@ -25,7 +25,7 @@ public class PClo_BlockLight extends BlockContainer implements PC_ISwapTerrain, 
 	 * @param lit is glowing
 	 */
 	protected PClo_BlockLight(int id, boolean lit) {
-		super(id, 66, Material.circuits);
+		super(id, 66, Material.glass);
 		on = lit;
 	}
 
@@ -174,7 +174,7 @@ public class PClo_BlockLight extends BlockContainer implements PC_ISwapTerrain, 
 		if (tileentity != null && tileentity.isStable) return;
 
 		int sidemeta = world.getBlockMetadata(i, j, k);
-		boolean powered = world.isBlockIndirectlyGettingPowered(i, j, k) || isAttachmentBlockPowered(world, i, j, k, sidemeta) || isBlockUnderAttachmentPowered(world, i, j, k, sidemeta);
+		boolean powered = world.isBlockGettingPowered(i, j, k) || world.isBlockIndirectlyGettingPowered(i, j, k) || isAttachmentBlockPowered(world, i, j, k, sidemeta) || isBlockUnderAttachmentPowered(world, i, j, k, sidemeta);
 		if (on && !powered) {
 			onPoweredBlockChange(world, i, j, k, false);
 		} else if (!on && powered) {

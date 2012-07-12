@@ -21,7 +21,7 @@ public class PClo_BlockSensor extends BlockContainer implements PC_IBlockType, P
 	 * @param id block ID
 	 */
 	protected PClo_BlockSensor(int id) {
-		super(id, 6, Material.circuits);
+		super(id, 6, Material.ground);
 		setLightOpacity(0);
 		opaqueCubeLookup[id] = false;
 
