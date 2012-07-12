@@ -333,9 +333,9 @@ public class PC_GresTextEditMultiline extends PC_GresWidget {
 	}
 	
 	private void drawStringLine(PC_CoordI offsetPos, int y) {
-		if (!yCoordsInDrawRect(y)) {
+		/*if (!yCoordsInDrawRect(y)) {
 			return;
-		}
+		}*/
 		String line = getLine(y);
 		String word = "";
 		char c;
@@ -441,8 +441,8 @@ public class PC_GresTextEditMultiline extends PC_GresWidget {
 		}
 		
 		keywordToFinish = null;
-		for (int i = 0; i < shownLines(); i++) {
-			drawStringLine(offsetPos, i + scroll.y);
+		for (int i = 0; i < getLineNumbers(); i++) {
+			drawStringLine(offsetPos, i);
 			if(keywordToFinish!=null){
 				if(!keywordToFinish.isRegexp && keywordToFinish.end.equals("\n"))
 					keywordToFinish = null;
