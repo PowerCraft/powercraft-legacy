@@ -50,8 +50,10 @@ public class PClo_GuiProgrammableGate implements PC_IGresBase {
 		int colorMathFunction = 0xff3030;
 		int colorLangFunction = 0xff0000;
 		int colorBracket = 0xff66ff;
-
-		kw.add(new Keyword("[+\\-*&|^\\*!%<>=]", colorOperator, true));
+		int colorComments = 0x337ca7;
+		int colorString = 0xff3330;
+		
+		kw.add(new Keyword("[+\\-*/&|^\\*!%<>=]", colorOperator, true));
 
 		kw.add(new Keyword("[\\(\\)\\[\\];]", colorBracket, true));
 
@@ -59,7 +61,12 @@ public class PClo_GuiProgrammableGate implements PC_IGresBase {
 		kw.add(new Keyword("0x[0-9a-fA-F]+", colorNumber, true));
 		kw.add(new Keyword("0b[0-1]+", colorNumber, true));
 
-
+		kw.add(new Keyword("#", "\n", colorComments, false));
+		kw.add(new Keyword("//", "\n", colorComments, false));
+		kw.add(new Keyword("/*", "*/", colorComments, false));
+		kw.add(new Keyword("\"", "\"", colorString, false));
+		kw.add(new Keyword("'", "'", colorString, false));
+		
 		// gate functions
 		List<String> gateFunc = teg.getProvidedFunctionNames();
 		for (String str : gateFunc) {

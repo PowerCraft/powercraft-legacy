@@ -45,8 +45,24 @@ public class PC_GresTextEditMultiline extends PC_GresWidget {
 			this.isRegexp = regexp;
 		}
 
+		/**
+		 * keyword colouring
+		 * 
+		 * @param word the word stringl or regext pattern
+		 * @param color color
+		 * @param regexp is string a regexp pattern?
+		 */
+		public Keyword(String word, String end, int color, boolean regexp) {
+			this.word = word;
+			this.end = end;
+			this.color = color;
+			this.isRegexp = regexp;
+		}
+		
 		/** the keyword */
 		public String word;
+		/** the end */
+		public String end;
 		/** rgb color */
 		public int color;
 		/** flag that this word uses a regular expresison for matching. */
@@ -60,7 +76,8 @@ public class PC_GresTextEditMultiline extends PC_GresWidget {
 	private PC_CoordI scroll = new PC_CoordI(0, 0);
 	private ArrayList<Keyword> keyWords = null;
 	private int vScrollPos = 0, vScrollSize = 0, hScrollPos = 0, hScrollSize = 0;
-
+	private Keyword keywordToFinish = null;
+	
 	/**
 	 * Multi-row text edit
 	 * 
@@ -182,14 +199,41 @@ public class PC_GresTextEditMultiline extends PC_GresWidget {
 		scroll.y = (int) (vScrollPos / prozent / sizeY * linesNotToSee + 0.5);
 	}
 
-	private int getColorForWord(String word) {
-		if (keyWords != null) {
-			for (Keyword k : keyWords) {
-				if (!k.isRegexp && k.word.equals(word)) return k.color;
-				if (k.isRegexp && word.matches(k.word)) return k.color;
+	private int getColorForWord(String word){
+		Keyword kw = getKeywordForWord(word, true);
+		if(kw==null)
+			return 0xffffffff;
+		return kw.color;
+	}
+	
+	private Keyword getKeywordForWord(String word, boolean giveKeyword) {
+		if ( keywordToFinish == null ){
+			if (keyWords != null) {
+				for (Keyword k : keyWords) {
+					if (!k.isRegexp && k.word.equals(word)){
+						if(k.end != null)
+							keywordToFinish = k;
+						return k;
+					}
+					if (k.isRegexp && word.matches(k.word)){
+						if(k.end != null)
+							keywordToFinish = k;
+						return k;
+					}
+				}
 			}
+		}else{
+			Keyword kw = keywordToFinish;
+			if (!keywordToFinish.isRegexp && keywordToFinish.end.equals(word)) 
+				keywordToFinish = null;
+			else if (keywordToFinish.isRegexp && word.matches(keywordToFinish.end)) 
+				keywordToFinish = null;
+			if(giveKeyword)
+				return kw;
+			if(keywordToFinish==null)
+				return kw;
 		}
-		return 0xffffffff;
+		return null;
 	}
 
 	private boolean yCoordsInDrawRect(int cy) {
@@ -231,8 +275,39 @@ public class PC_GresTextEditMultiline extends PC_GresWidget {
 
 		drawRect(offsetPos.x + pos.x + sxx + 6, offsetPos.y + pos.y + 6 + cy * PC_Utils.mc().fontRenderer.FONT_HEIGHT, offsetPos.x + pos.x + exx + 6, offsetPos.y + pos.y + 6 + (cy + 1) * PC_Utils.mc().fontRenderer.FONT_HEIGHT, 0xff3399FF);
 	}
-
+	
+	private void drawSpecialChar(PC_CoordI offsetPos, int x, int y, String word, boolean highlited) {
+		if(!highlited){
+			drawStringStringAt(offsetPos, x, y, word,  0xffffffff);
+			return;
+		}
+		Keyword kw = null;
+		String w="";
+		for(int j=0; j<word.length(); j+=w.length()){
+			w="";
+			kw = null;
+			for(int i=word.length(); i>j; i--){
+				w = word.substring(j, i);
+				kw = getKeywordForWord(w, false);
+				if(kw!=null)
+					break;
+			}
+			if(w.equals("")){
+				w = "" + word.charAt(j);
+			}
+			if(kw == null)
+				kw = keywordToFinish;
+			drawStringStringAt(offsetPos, x, y, w, kw!=null ? kw.color : 0xffffffff);
+			x += getStringWidth(w);
+		}
+	}
+	
 	private void drawWord(PC_CoordI offsetPos, int x, int y, String word, boolean highlited) {
+		drawStringStringAt(offsetPos, x, y, word,  highlited ? getColorForWord(word) : 0xffffffff);
+		//getFontRenderer().drawStringWithShadow(word.substring(strposStart, strposStart + strSize), offsetPos.x + pos.x + 6 + xp, offsetPos.y + pos.y + 6 + (y - scroll.y) * PC_Utils.mc().fontRenderer.FONT_HEIGHT, color);
+	}
+
+	private void drawStringStringAt(PC_CoordI offsetPos, int x, int y, String word, int color){
 		if (!yCoordsInDrawRect(y)) {
 			return;
 		}
@@ -240,7 +315,6 @@ public class PC_GresTextEditMultiline extends PC_GresWidget {
 		if (x > size.x + wordlength - 26) {
 			return;
 		}
-		int color = highlited ? getColorForWord(word) : 0xffffffff;
 		int strposStart = 0;
 		int strSize = 0;
 		int charSize;
@@ -256,9 +330,8 @@ public class PC_GresTextEditMultiline extends PC_GresWidget {
 			sx += charSize;
 		}
 		drawStringColor(word.substring(strposStart, strposStart + strSize), offsetPos.x + pos.x + 6 + xp, offsetPos.y + pos.y + 6 + (y - scroll.y) * PC_Utils.mc().fontRenderer.FONT_HEIGHT, color);
-		//getFontRenderer().drawStringWithShadow(word.substring(strposStart, strposStart + strSize), offsetPos.x + pos.x + 6 + xp, offsetPos.y + pos.y + 6 + (y - scroll.y) * PC_Utils.mc().fontRenderer.FONT_HEIGHT, color);
 	}
-
+	
 	private void drawStringLine(PC_CoordI offsetPos, int y) {
 		if (!yCoordsInDrawRect(y)) {
 			return;
@@ -268,29 +341,45 @@ public class PC_GresTextEditMultiline extends PC_GresWidget {
 		char c;
 		int sx = -scroll.x;
 		int wordStart = sx;
+		boolean isWord = false;
 		for (int i = 0; i < line.length(); i++) {
 			c = line.charAt(i);
 			if (Character.isLetterOrDigit(c) || (!word.equals("") && ("._".contains(c + "")))) {
+				if ( !isWord && !word.equals("") ){
+					drawSpecialChar(offsetPos, wordStart, y, word, true);
+					word = "";
+				}
+				if (word.equals("")) {
+					wordStart = sx;
+				}
+				isWord = true;
+				word += c;
+			} else if (Character.isSpaceChar(c)) {
+				if (!word.equals("")) {
+					if(isWord)
+						drawWord(offsetPos, wordStart, y, word, true);
+					else
+						drawSpecialChar(offsetPos, wordStart, y, word, true);
+				}
+				word = "";
+			} else {
+				if ( isWord && !word.equals("")) {
+					drawWord(offsetPos, wordStart, y, word, true);
+					word = "";
+				}
+				isWord = false;
 				if (word.equals("")) {
 					wordStart = sx;
 				}
 				word += c;
-			} else if (Character.isSpaceChar(c)) {
-				if (!word.equals("")) {
-					drawWord(offsetPos, wordStart, y, word, true);
-				}
-				word = "";
-			} else {
-				if (!word.equals("")) {
-					drawWord(offsetPos, wordStart, y, word, true);
-				}
-				drawWord(offsetPos, sx, y, "" + c, true);
-				word = "";
 			}
 			sx += getStringWidth("" + c);
 		}
 		if (!word.equals("")) {
-			drawWord(offsetPos, wordStart, y, word, true);
+			if(isWord)
+				drawWord(offsetPos, wordStart, y, word, true);
+			else
+				drawSpecialChar(offsetPos, wordStart, y, word, true);
 		}
 	}
 
@@ -350,9 +439,13 @@ public class PC_GresTextEditMultiline extends PC_GresWidget {
 			}
 
 		}
-
+		
+		keywordToFinish = null;
 		for (int i = 0; i < shownLines(); i++) {
 			drawStringLine(offsetPos, i + scroll.y);
+			if(keywordToFinish!=null)
+				if(keywordToFinish.end.equals("\n"))
+					keywordToFinish = null;
 		}
 
 		if (hasFocus && (cursorCounter / 6) % 2 == 0) {
