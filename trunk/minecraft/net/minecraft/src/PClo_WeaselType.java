@@ -4,10 +4,10 @@ package net.minecraft.src;
 /** "Enum" for logic gates type */
 public class PClo_WeaselType {
 	/** Number of all the gate types */
-	public static final int WEASEL_DEVICE_COUNT = 2;
+	public static final int WEASEL_DEVICE_COUNT = 3;
 
 	@SuppressWarnings("javadoc")
-	public static final int CORE = 0, PORT = 1;
+	public static final int CORE = 0, PORT = 1, DISPLAY=2;
 
 	/**
 	 * Gate names used for localization
@@ -17,6 +17,7 @@ public class PClo_WeaselType {
 	static {
 		names[CORE] = "core";
 		names[PORT] = "port";
+		names[DISPLAY] = "display";
 	}
 
 }

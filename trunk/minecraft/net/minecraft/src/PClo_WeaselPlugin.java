@@ -258,6 +258,7 @@ public abstract class PClo_WeaselPlugin implements PC_INBT, NetworkMember {
 		switch(type) {
 			case PClo_WeaselType.CORE: return new PClo_WeaselPluginCore(tew);
 			case PClo_WeaselType.PORT: return new PClo_WeaselPluginPort(tew);
+			case PClo_WeaselType.DISPLAY: return new PClo_WeaselPluginDisplay(tew);
 		}
 		
 		return null;

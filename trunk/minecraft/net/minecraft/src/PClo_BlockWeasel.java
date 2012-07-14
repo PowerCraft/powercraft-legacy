@@ -551,6 +551,11 @@ public class PClo_BlockWeasel extends BlockContainer implements PC_ISwapTerrain,
 			return true;
 		}
 
+		if (type == PClo_WeaselType.DISPLAY) {
+			PC_Utils.openGres(player, new PClo_GuiWeaselDisplay((PClo_WeaselPluginDisplay) plugin));
+			return true;
+		}
+		
 		return false;
 	}
 
