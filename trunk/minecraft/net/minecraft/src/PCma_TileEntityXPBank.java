@@ -66,18 +66,14 @@ public class PCma_TileEntityXPBank extends PC_TileEntity {
 	 */
 	public void withdrawXP(EntityPlayer player) {
 		if (xp == 0) {
-			ModLoader.getMinecraftInstance().ingameGUI.clearChatMessages();
-			ModLoader.getMinecraftInstance().thePlayer.addChatMessage("This storage is empty.");
 			return;
 		}
 		worldObj.playSoundAtEntity(player, "random.orb", 0.3F, 0.5F * ((rand.nextFloat() - rand.nextFloat()) * 0.7F + 1.8F));
 
-		int xpsum = 0;
 		while (xp > 0) {
 			int addedXP = Math.min(xp, player.xpBarCap());
 			player.addExperience(addedXP);
 			xp -= addedXP;
-			xpsum += addedXP;
 		}
 
 		if (xp < 0) {
@@ -85,9 +81,6 @@ public class PCma_TileEntityXPBank extends PC_TileEntity {
 		}
 
 		notifyChange();
-
-		ModLoader.getMinecraftInstance().ingameGUI.clearChatMessages();
-		ModLoader.getMinecraftInstance().thePlayer.addChatMessage("Gained " + xpsum + " experience point" + (xpsum > 1 ? "s." : "."));
 	}
 
 	private void notifyChange() {

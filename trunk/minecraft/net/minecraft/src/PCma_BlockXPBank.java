@@ -134,18 +134,17 @@ public class PCma_BlockXPBank extends BlockContainer implements PC_ISwapTerrain,
 	public boolean isIndirectlyPoweringTo(World world, int i, int j, int k, int l) {
 		return isPoweringTo(world, i, j, k, l);
 	}
-
+	
 	@Override
-	public void harvestBlock(World world, EntityPlayer entityplayer, int i, int j, int k, int l) {
+	public void onBlockRemoval(World world, int i, int j, int k) {
+		
 		try {
-			((PCma_TileEntityXPBank) world.getBlockTileEntity(i, j, k)).withdrawXP(entityplayer);
-		} catch (NullPointerException npe) {
-
-		}
-
-		super.harvestBlock(world, entityplayer, i, j, k, l);
+			((PCma_TileEntityXPBank) world.getBlockTileEntity(i, j, k)).withdrawXP(PC_Utils.mc().thePlayer);
+		} catch (NullPointerException npe) {}
+		
+		super.onBlockRemoval(world, i, j, k);
 	}
-
+	
 	@Override
 	public Set<String> getBlockFlags(World world, PC_CoordI pos) {
 
