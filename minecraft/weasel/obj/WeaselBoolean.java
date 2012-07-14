@@ -83,7 +83,7 @@ public class WeaselBoolean extends WeaselObject {
 
 	@Override
 	public String toString() {
-		return "Boolean{"+(bool ? "TRUE" : "FALSE")+"}";
+		return (bool ? "TRUE" : "FALSE");
 	}
 
 	@Override

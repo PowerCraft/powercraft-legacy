@@ -96,7 +96,7 @@ public class WeaselInteger extends WeaselObject {
 
 	@Override
 	public String toString() {
-		return "Integer{" + integer + "}";
+		return integer + "";
 	}
 
 	@Override

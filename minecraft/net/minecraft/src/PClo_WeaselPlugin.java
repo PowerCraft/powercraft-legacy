@@ -306,7 +306,8 @@ public abstract class PClo_WeaselPlugin implements PC_INBT, NetworkMember {
 	}
 	
 	private boolean[] weaselOutport = { false, false, false, false, false, false };
-	private boolean[] weaselInport = { false, false, false, false, false, false };	
+	private boolean[] weaselInport = { false, false, false, false, false, false };
+
 
 	/**
 	 * Get outport for the block. This is called by the Block directly.
