@@ -109,7 +109,7 @@ public class PClo_GuiRadioChannel implements PC_IGresBase {
 			ter.dim = dim;
 
 			if (type == 1) {
-				ter.active = mod_PClogic.DATA_BUS.getChannelState(newChannel);
+				ter.active = mod_PClogic.RADIO.getChannelState(newChannel);
 				if (ter.active) {
 					PC_Utils.mc().theWorld.setBlockMetadataWithNotify(pos.x, pos.y, pos.z, 1);
 				}

@@ -11,12 +11,12 @@ package net.minecraft.src;
  * 
  * @author MightyPork
  */
-public class PCco_ItemBlockLockedChestReplacement extends ItemBlock {
+public class PCco_ItemBlockHackedLockedChest extends ItemBlock {
 
 	/**
 	 * @param par1 id
 	 */
-	public PCco_ItemBlockLockedChestReplacement(int par1) {
+	public PCco_ItemBlockHackedLockedChest(int par1) {
 		super(par1);
 		setMaxStackSize(1);
 		setHasSubtypes(true);
@@ -81,7 +81,7 @@ public class PCco_ItemBlockLockedChestReplacement extends ItemBlock {
 		}
 
 		PC_CoordI pos = new PC_CoordI(x, y, z);
-
+		
 		if (world.canBlockBePlacedAt(placedID, x, y, z, false, face)) {
 			Block block = Block.blocksList[placedID];
 
@@ -105,6 +105,7 @@ public class PCco_ItemBlockLockedChestReplacement extends ItemBlock {
 							tec.yCoord = cy;
 							tec.zCoord = cz;
 							itemstack.setTagCompound(null);
+							world.setBlockTileEntity(cx,cy,cz, tec);
 						}
 					}
 
@@ -159,7 +160,7 @@ public class PCco_ItemBlockLockedChestReplacement extends ItemBlock {
 
 		if (tec == null) return null;
 
-		ItemStack stack = new ItemStack(Block.lockedChest, 1);
+		ItemStack stack = new ItemStack(Block.lockedChest.blockID, 1,0);
 
 		NBTTagCompound blocktag = new NBTTagCompound();
 		pos.getTileEntity(world).writeToNBT(blocktag);
@@ -183,6 +184,7 @@ public class PCco_ItemBlockLockedChestReplacement extends ItemBlock {
 		}
 
 		tec.invalidate();
+		world.removeBlockTileEntity(pos.x, pos.y, pos.z);
 
 		pos.setBlock(world, 0, 0);
 

@@ -24,7 +24,7 @@ public class PC_GresLink extends PC_GresWidget {
 		setColor(textColorEnabled, 0x000000);
 		setColor(textColorDisabled, 0xa0a0a0);
 		setColor(textColorHover, 0x0000ff);
-		setColor(textColorActive, 0xff0000);
+		setColor(textColorClicked, 0xff0000);
 	}
 
 	@Override
@@ -81,7 +81,7 @@ public class PC_GresLink extends PC_GresWidget {
 			textColor = getColor(textColorHover); // blue, hover
 		}
 		if (state == 3) {
-			textColor = getColor(textColorActive); // red, activated
+			textColor = getColor(textColorClicked); // red, activated
 		}
 
 		drawStringColor(text, offsetPos.x + pos.x, offsetPos.y + pos.y, textColor);

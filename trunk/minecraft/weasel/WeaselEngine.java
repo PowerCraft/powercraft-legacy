@@ -367,12 +367,22 @@ public class WeaselEngine implements PC_INBT, IVariableProvider, IFunctionProvid
 	 * 
 	 * @param funcName function name
 	 * @param args function arguments, array of simple objects
+	 * @return true if function was called, false if is missing.
+	 * @throws WeaselRuntimeException if the user function has bad number of parameters declared.
 	 */
-	public void callFunctionExternal(String funcName, Object... args) {
+	public boolean callFunctionExternal(String funcName, Object... args) throws WeaselRuntimeException{
 		if (args == null) args = new Object[] {};
-		instructionList.callFunctionExternal(funcName, Calc.s2w(args));
+		if(instructionList.canCallFunctionExternal(funcName)) {
+			instructionList.callFunctionExternal(funcName, Calc.s2w(args));
+			return true;
+		}else {
+			return false;
+		}
 	}
 
+	/** 
+	 * Number of currently running external functions. This isn't tested, but they should be "stackable".
+	 */
 	public int executingFunctionExternal = 0;
 
 	/**

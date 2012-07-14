@@ -94,8 +94,7 @@ public class PCco_GuiCraftingTool implements PC_IGresBase {
 			buttonNext.enable(false);
 		}
 		vg.add(new PC_GresGap(0, 0).setWidgetMargin(4)).setAlignH(PC_GresAlign.CENTER);
-		vg.add(buttonSort = (PC_GresButton) new PC_GresButton(PC_Lang.tr("pc.gui.craftingTool.sort")).setButtonPadding(2, 4).setMinWidth(30));
-		vg.add(new PC_GresButtonImage(mod_PCcore.getImgDir() + "gres/button.png", new PC_CoordI(0,0), new PC_CoordI(17,10)).setButtonPadding(2, 2));
+		vg.add(buttonSort = (PC_GresButton) new PC_GresButton(PC_Lang.tr("pc.gui.craftingTool.sort")).setButtonPadding(2, 4).setMinWidth(30));		
 		hg.add(vg);
 
 		w.add(hg);

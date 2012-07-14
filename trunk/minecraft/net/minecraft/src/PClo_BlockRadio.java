@@ -134,7 +134,7 @@ public class PClo_BlockRadio extends BlockContainer implements PC_IBlockType {
 		PClo_TileEntityRadio ter = getTE(world, i, j, k);
 
 		if (ter.isTransmitter()) {
-			mod_PClogic.DATA_BUS.disconnectFromRedstoneBus(ter);
+			mod_PClogic.RADIO.disconnectFromRedstoneBus(ter);
 		}
 
 

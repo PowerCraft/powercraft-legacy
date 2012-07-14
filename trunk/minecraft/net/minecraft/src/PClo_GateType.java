@@ -8,7 +8,7 @@ public class PClo_GateType {
 
 	@SuppressWarnings("javadoc")
 	public static final int NOT = 0, AND = 1, NAND = 2, OR = 3, NOR = 4, XOR = 5, XNOR = 6, AND3 = 7, NAND3 = 8, OR3 = 9, NOR3 = 10, XOR3 = 11, XNOR3 = 12, D = 13, RS = 14, T = 15, DAY = 16, RAIN = 17, CHEST_EMPTY = 18, CHEST_FULL = 19,
-			SPECIAL = 20, FIFO_DELAYER = 21, HOLD_DELAYER = 22, CROSSING = 23, RANDOM = 24, PROG = 25, REPEATER_STRAIGHT = 26, REPEATER_CORNER = 27, REPEATER_STRAIGHT_I = 28, REPEATER_CORNER_I = 29, NIGHT = 30;
+			SPECIAL = 20, FIFO_DELAYER = 21, HOLD_DELAYER = 22, CROSSING = 23, RANDOM = 24, OBSOLETE_UNUSED = 25, REPEATER_STRAIGHT = 26, REPEATER_CORNER = 27, REPEATER_STRAIGHT_I = 28, REPEATER_CORNER_I = 29, NIGHT = 30;
 
 	/**
 	 * Gate names used for localization
@@ -41,7 +41,7 @@ public class PClo_GateType {
 		names[HOLD_DELAYER] = "slowRepeater";
 		names[CROSSING] = "crossing";
 		names[RANDOM] = "random";
-		names[PROG] = "programmable";
+		names[OBSOLETE_UNUSED] = "obsolete_unused";
 		names[REPEATER_STRAIGHT] = "repeaterStraight";
 		names[REPEATER_CORNER] = "repeaterCorner";
 		names[REPEATER_STRAIGHT_I] = "repeaterStraightInstant";

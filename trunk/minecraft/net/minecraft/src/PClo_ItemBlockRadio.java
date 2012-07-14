@@ -94,7 +94,7 @@ public class PClo_ItemBlockRadio extends ItemBlock {
 				world.setBlockTileEntity(i, j, k, ter);
 
 				if (itemstack.getItemDamage() == 1) {
-					ter.active = mod_PClogic.DATA_BUS.getChannelState(mod_PClogic.default_radio_channel);
+					ter.active = mod_PClogic.RADIO.getChannelState(mod_PClogic.default_radio_channel);
 					if (ter.active) {
 						world.setBlockMetadataWithNotify(i, j, k, 1);
 					}

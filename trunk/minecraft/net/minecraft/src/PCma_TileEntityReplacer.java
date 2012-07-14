@@ -25,6 +25,7 @@ public class PCma_TileEntityReplacer extends PC_TileEntity implements IInventory
 	public boolean state = false;
 	private Random rand;
 	private boolean init = false;
+	public int extraMeta = -1;
 
 
 
@@ -68,6 +69,9 @@ public class PCma_TileEntityReplacer extends PC_TileEntity implements IInventory
 
 			rand = new Random();
 		}
+		
+		
+		
 
 		if (aidEnabled) {
 
@@ -192,6 +196,7 @@ public class PCma_TileEntityReplacer extends PC_TileEntity implements IInventory
 		PC_Utils.readWrappedFromNBT(nbttagcompound, "targetPos", coordOffset);
 		state = nbttagcompound.getBoolean("state");
 		aidEnabled = nbttagcompound.getBoolean("aid");
+		extraMeta = nbttagcompound.getInteger("extraMeta");
 
 		if (coordOffset.equals(new PC_CoordI(0, 0, 0))) {
 			coordOffset.setTo(0, 1, 0);
@@ -213,6 +218,7 @@ public class PCma_TileEntityReplacer extends PC_TileEntity implements IInventory
 		nbttagcompound.setTag("Items", nbttaglist);
 		nbttagcompound.setBoolean("state", state);
 		nbttagcompound.setBoolean("aid", aidEnabled);
+		nbttagcompound.setInteger("extraMeta", extraMeta);
 
 		PC_Utils.writeWrappedToNBT(nbttagcompound, "targetPos", coordOffset);
 	}

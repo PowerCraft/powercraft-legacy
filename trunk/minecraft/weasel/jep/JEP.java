@@ -366,7 +366,7 @@ public class JEP {
 		funTab.put("rand", new weasel.jep.function.Random());
 
 		// rjm additions
-		funTab.put("if", new If());
+		funTab.put("is", new If());
 		funTab.put("str", new Str());
 
 		// rjm 13/2/05

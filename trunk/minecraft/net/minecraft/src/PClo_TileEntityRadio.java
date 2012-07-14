@@ -1,6 +1,6 @@
 package net.minecraft.src;
 
-import net.minecraft.src.PClo_WirelessBus.IRadioDevice;
+import net.minecraft.src.PClo_RadioBus.IRadioDevice;
 
 
 /**
@@ -47,13 +47,13 @@ public class PClo_TileEntityRadio extends PC_TileEntity implements IRadioDevice 
 	public void updateEntity() {		
 		if (!registered) {
 			PC_Logger.finest("RADIO Tx at [" + xCoord + ";" + yCoord + ";" + zCoord + "] connected to DATA_BUS.");
-			mod_PClogic.DATA_BUS.connectToRedstoneBus(this);
+			mod_PClogic.RADIO.connectToRedstoneBus(this);
 
 			registered = true;
 		}
 		
 		if(type == 1) {
-			boolean newstate = mod_PClogic.DATA_BUS.getChannelState(channel);
+			boolean newstate = mod_PClogic.RADIO.getChannelState(channel);
 			if(active != newstate) {
 				active = newstate;
 				worldObj.scheduleBlockUpdate(xCoord, yCoord, zCoord, getBlockType().blockID, 1);

@@ -28,7 +28,9 @@ public class PC_GresTextEdit extends PC_GresWidget {
 		/** accept signed number with dot */
 		SIGNED_FLOAT,
 		/** accept unsigned number with dot */
-		UNSIGNED_FLOAT;
+		UNSIGNED_FLOAT,
+		/** Disable user input */
+		NONE;
 	}
 
 	private int maxChars;
@@ -48,7 +50,7 @@ public class PC_GresTextEdit extends PC_GresWidget {
 		maxChars = chars;
 		canAddWidget = false;
 		color[textColorEnabled] = 0xffffffff;
-		color[textColorActive] = 0xffffffff;
+		color[textColorClicked] = 0xffffffff;
 		color[textColorHover] = 0xffffffff;
 		color[textColorShadowEnabled] = 0; //0xff383838;
 		color[textColorDisabled] = 0xffffffff;
@@ -67,7 +69,7 @@ public class PC_GresTextEdit extends PC_GresWidget {
 		maxChars = chars;
 		canAddWidget = false;
 		color[textColorEnabled] = 0xffffffff;
-		color[textColorActive] = 0xffffffff;
+		color[textColorClicked] = 0xffffffff;
 		color[textColorHover] = 0xffffffff;
 		color[textColorShadowEnabled] = 0; //0xff383838;
 		color[textColorDisabled] = 0xffffffff;
@@ -321,6 +323,9 @@ public class PC_GresTextEdit extends PC_GresWidget {
 					}
 				}
 				break;
+				
+			case NONE:
+				break;
 
 			default:
 				for (int i = 0; i < stri.length(); i++) {
@@ -359,6 +364,9 @@ public class PC_GresTextEdit extends PC_GresWidget {
 				deleteSelected();
 				return true;
 		}
+		
+		if(type == PC_GresInputType.NONE) return true;
+		
 		switch (key) {
 			case Keyboard.KEY_RETURN:
 				return true;

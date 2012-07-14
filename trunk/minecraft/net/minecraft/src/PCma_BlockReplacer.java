@@ -177,10 +177,12 @@ public class PCma_BlockReplacer extends BlockContainer implements PC_ISwapTerrai
 		if (id == 0 || Block.blocksList[id] == null) {
 			return true;
 		}
-
-		if (pos.getTileEntity(world) != null) {
+		
+		if (PC_BlockUtils.hasFlag(world, pos, "NO_HARVEST")){
 			return false;
 		}
+		
+		if(id == 7 && pos.y == 0) return false;
 
 		return true;
 
@@ -200,6 +202,8 @@ public class PCma_BlockReplacer extends BlockContainer implements PC_ISwapTerrai
 			return true;
 		}
 		Item item = itemstack.getItem();
+		
+		if(item.shiftedIndex == Block.lockedChest.blockID) return pos.getTileEntity(world) == null;
 
 		if (item instanceof ItemBlock) {
 
@@ -230,14 +234,26 @@ public class PCma_BlockReplacer extends BlockContainer implements PC_ISwapTerrai
 	 * Place itemblock from stack.
 	 * 
 	 * @param world
+	 * @param meta metadata of the block when it was picked up.
 	 * @param itemstack
 	 * @param pos
 	 * @return success
 	 */
-	private boolean replacer_placeBlockAt(World world, ItemStack itemstack, PC_CoordI pos) {
+	private boolean replacer_placeBlockAt(World world, int meta, ItemStack itemstack, PC_CoordI pos) {
 
 		if (itemstack == null) {
 			pos.setBlock(world, 0, 0);
+			return true;
+		}
+		
+		if(itemstack.itemID == Block.lockedChest.blockID) {
+			pos.setBlockNoNotify(world, 0, 0);
+			world.removeBlockTileEntity(pos.x, pos.y, pos.z);
+			if(!Item.itemsList[Block.lockedChest.blockID].onItemUse(itemstack, new PC_FakePlayer(world), world, pos.x, pos.y+1, pos.z, 0)) return false;
+			itemstack.stackSize--;
+			if(meta != -1) {
+				pos.setMetaNoNotify(world, meta);
+			}
 			return true;
 		}
 
@@ -246,15 +262,24 @@ public class PCma_BlockReplacer extends BlockContainer implements PC_ISwapTerrai
 		}
 
 		ItemBlock iblock = (ItemBlock) itemstack.getItem();
+		
+		if(iblock.shiftedIndex == Block.waterStill.blockID) {
+			iblock = (ItemBlock) Item.itemsList[Block.waterMoving.blockID];
+		}
+		
+		if(iblock.shiftedIndex == Block.lavaStill.blockID) {
+			iblock = (ItemBlock) Item.itemsList[Block.lavaMoving.blockID];
+		}
 
 		if (pos.setBlockNoNotify(world, iblock.getBlockID(), iblock.getMetadata(itemstack.getItemDamage()))) {
 			if (pos.getId(world) == iblock.getBlockID()) {
 				world.notifyBlockChange(pos.x, pos.y, pos.z, iblock.getBlockID());
 				Block.blocksList[iblock.getBlockID()].onBlockPlaced(world, pos.x, pos.y, pos.z, 0);
 			}
-
-			// world.playSoundEffect((float)par4 + 0.5F, (float)par5 + 0.5F, (float)par6 + 0.5F, block.stepSound.getStepSound(),
-			// (block.stepSound.getVolume() + 1.0F) / 2.0F, block.stepSound.getPitch() * 0.8F);
+			
+			if(meta != -1 && !iblock.getHasSubtypes()) {
+				pos.setMetaNoNotify(world, meta);
+			}
 			itemstack.stackSize--;
 		}
 
@@ -269,12 +294,19 @@ public class PCma_BlockReplacer extends BlockContainer implements PC_ISwapTerrai
 	 * @param pos target position
 	 * @return stack, or null if not harvested.
 	 */
-	private ItemStack replacer_harvestBlockAt(World world, PC_CoordI pos) {
+	private PC_Struct2<ItemStack,Integer> replacer_harvestBlockAt(World world, PC_CoordI pos) {
 
 		ItemStack loot = null;
+		
+		int meta = pos.getMeta(world);
+		
 
 		if (!replacer_canHarvestBlockAt(world, pos)) {
 			return null;
+		}
+		
+		if(pos.getTileEntity(world) != null) {
+			return new PC_Struct2<ItemStack, Integer>(PCco_ItemBlockHackedLockedChest.extractAndRemoveChest(world, pos),meta);
 		}
 
 		Block block = Block.blocksList[pos.getId(world)];
@@ -300,7 +332,7 @@ public class PCma_BlockReplacer extends BlockContainer implements PC_ISwapTerrai
 		}
 
 		// pos.setBlock(world,0,0);
-		return loot;
+		return new PC_Struct2<ItemStack, Integer>(loot,meta);
 	}
 
 	private void swapBlocks(PCma_TileEntityReplacer te) {
@@ -319,11 +351,20 @@ public class PCma_BlockReplacer extends BlockContainer implements PC_ISwapTerrai
 			return;
 		}
 
-		ItemStack harvested = replacer_harvestBlockAt(te.worldObj, pos);
+		PC_Struct2<ItemStack, Integer> harvested = replacer_harvestBlockAt(te.worldObj, pos);
 
-		replacer_placeBlockAt(te.worldObj, te.buildBlock, pos);
+		if(!replacer_placeBlockAt(te.worldObj, te.extraMeta, te.buildBlock, pos)) {
+			if(harvested != null) replacer_placeBlockAt(te.worldObj, harvested.b, harvested.a, pos);
+			return;
+		}
 
-		te.buildBlock = harvested;
+		if(harvested == null) {
+			te.buildBlock = null;
+			te.extraMeta = -1;
+		}else {
+			te.buildBlock = harvested.a;
+			te.extraMeta = harvested.b;
+		}
 
 	}
 

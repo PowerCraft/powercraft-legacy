@@ -67,6 +67,12 @@ public class PC_GresWindow extends PC_GresWidget {
 			size.x = textWidth + padding.y * 2 + 12;
 		}
 		calcChildPositions();
+		if (size.x < minSize.x) {
+			size.x = minSize.x;
+		}
+		if (size.y < minSize.y) {
+			size.y = minSize.y;
+		}
 		return size.copy();
 	}
 

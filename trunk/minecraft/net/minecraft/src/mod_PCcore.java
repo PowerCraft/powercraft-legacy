@@ -213,6 +213,8 @@ public class mod_PCcore extends PC_Module implements PC_IActivatorListener {
 
 
 		Thread.setDefaultUncaughtExceptionHandler(new PC_ErrorHandler());
+		
+		PC_GresHighlight.generateConfigFile();
 
 		instance = this;
 
@@ -327,7 +329,7 @@ public class mod_PCcore extends PC_Module implements PC_IActivatorListener {
 		Block.blocksList[Block.lockedChest.blockID] = null;
 		Block.blocksList[Block.lockedChest.blockID] = new PCco_BlockHackedLockedChest(Block.lockedChest.blockID);
 		removeBlockItem(Block.lockedChest.blockID);
-		setBlockItem(Block.lockedChest.blockID, new PCco_ItemBlockLockedChestReplacement(Block.lockedChest.blockID - 256));
+		setBlockItem(Block.lockedChest.blockID, new PCco_ItemBlockHackedLockedChest(Block.lockedChest.blockID - 256));
 		
 		// @formatter:on
 	}
@@ -955,7 +957,7 @@ public class mod_PCcore extends PC_Module implements PC_IActivatorListener {
 				break;
 			}
 
-			ItemStack stackchest = PCco_ItemBlockLockedChestReplacement.extractAndRemoveChest(world, chest);
+			ItemStack stackchest = PCco_ItemBlockHackedLockedChest.extractAndRemoveChest(world, chest);
 			if (stackchest != null) {
 				float f = 0.7F;
 				double d = world.rand.nextFloat() * f + (1.0F - f) * 0.5D;

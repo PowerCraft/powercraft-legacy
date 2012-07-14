@@ -42,10 +42,10 @@ public abstract class PC_GresWidget extends Gui {
 	}
 
 	@SuppressWarnings("javadoc")
-	public static final int textColorEnabled = 0, textColorShadowEnabled = 1, textColorDisabled = 2, textColorShadowDisabled = 3, textColorHover = 4, textColorActive = 5;
+	public static final int textColorEnabled = 0, textColorShadowEnabled = 1, textColorDisabled = 2, textColorShadowDisabled = 3, textColorHover = 4, textColorClicked = 5;
 
 	/** Array of text colors */
-	protected int color[] = { 0x000000, 0x000000, 0x333333, 0x000000, 0x000000, 0x000000 };
+	protected int color[] = { 0x000000, 0, 0x333333, 0, 0x000000, 0x000000 };
 
 	/** Parent widget */
 	protected PC_GresWidget parent = null;
@@ -569,6 +569,7 @@ public abstract class PC_GresWidget extends Gui {
 	 */
 	public PC_GresWidget setColor(int colorIndex, int color) {
 		if (colorIndex < 0 || colorIndex > 5) {
+			System.out.println("Setting color to an invalid index "+colorIndex);
 			return this;
 		}
 		this.color[colorIndex] = color;
@@ -583,6 +584,7 @@ public abstract class PC_GresWidget extends Gui {
 	 */
 	public int getColor(int colorIndex) {
 		if (colorIndex < 0 || colorIndex > 5) {
+			System.out.println("Setting color to an invalid index "+colorIndex);
 			return 0;
 		}
 		return color[colorIndex];

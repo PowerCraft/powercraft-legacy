@@ -400,7 +400,7 @@ public class PClo_BlockGate extends BlockContainer implements PC_IRotatedBox, PC
 		boolean on, state;
 
 		switch (type) {
-			case PClo_GateType.PROG:
+			case PClo_GateType.OBSOLETE_UNUSED:
 
 				world.notifyBlockChange(x, y, z, blockID);
 
@@ -855,22 +855,8 @@ public class PClo_BlockGate extends BlockContainer implements PC_IRotatedBox, PC
 			return;
 		}
 
-		if (type == PClo_GateType.PROG) {
+		if (type == PClo_GateType.OBSOLETE_UNUSED) {
 
-			for (; gateUpdates.size() > 0 && world.getWorldTime() - gateUpdates.get(0).updateTime > 10L; gateUpdates.remove(0)) {}
-			if (checkForBurnout(world, x, y, z, false)) {
-				world.scheduleBlockUpdate(x, y, z, blockID, 6);
-				//System.out.println("cpu burned out");
-				return;
-			}
-			checkForBurnout(world, x, y, z, true);
-
-			long aa = System.currentTimeMillis();
-//			System.out.println("---------- "+y+" ------------------ "+aa);
-			getTE(world, x, y, z).weaselOnPinChanged();
-//			System.out.println("---------- END "+y+" ------------------"+aa);
-
-			//world.scheduleBlockUpdate(x, y, z, blockID, tickRate());
 			return;
 		}
 
@@ -907,22 +893,6 @@ public class PClo_BlockGate extends BlockContainer implements PC_IRotatedBox, PC
 
 		int type = getType(iblockaccess, x, y, z);
 		World world = ModLoader.getMinecraftInstance().theWorld;
-//		
-//		if (type == PClo_GateType.REPEATER_INSTANT) {
-//			if(powered_from_input(world, x, y, z, 0)) {
-//				if (rotation == 0 && side == 3) {
-//					return true;
-//				}
-//				if (rotation == 1 && side == 4) {
-//					return true;
-//				}
-//				if (rotation == 2 && side == 2) {
-//					return true;
-//				}
-//				return (rotation == 3 && side == 5);
-//			}
-//			return false;
-//		}
 
 		if (type == PClo_GateType.CROSSING) {
 
@@ -972,58 +942,9 @@ public class PClo_BlockGate extends BlockContainer implements PC_IRotatedBox, PC
 			return false;
 		}
 
-		if (type == PClo_GateType.PROG) {
+		if (type == PClo_GateType.OBSOLETE_UNUSED) {
 
-			boolean[] outputs = getTE(iblockaccess, x, y, z).getWeaselOutputStates();
-
-//			System.out.println("Is gate at "+y+"powering to side "+side+"? ");
-
-//			for(int i=0; i<6; i++) {
-//				System.out.println("- before rotation: i"+i+" = " + outputs[i]);
-//			}
-
-			for (int i = 0; i < rotation; i++) {
-				boolean swap = outputs[0];
-				outputs[0] = outputs[1];
-				outputs[1] = outputs[2];
-				outputs[2] = outputs[3];
-				outputs[3] = swap;
-			}
-
-//			for(int i=0; i<6; i++) {
-//				System.out.println("- after rotation: i"+i+" = " + outputs[i]);
-//			}
-
-			boolean state = false;
-			switch (side) {
-				case 3:
-					state = outputs[3];
-					break;
-
-				case 4:
-					state = outputs[2];
-					break;
-
-				case 2:
-					state = outputs[1];
-					break;
-
-				case 5:
-					state = outputs[0];
-					break;
-
-				case 0:
-					state = outputs[4];
-					break;
-
-				case 1:
-					state = outputs[5];
-					break;
-			}
-
-//			System.out.println(state?"YES":"No");
-//			System.out.println();
-			return state;
+			return false;
 		}
 
 		boolean on = isActive();
@@ -1365,8 +1286,9 @@ public class PClo_BlockGate extends BlockContainer implements PC_IRotatedBox, PC
 			return true;
 		}
 
-		if (type == PClo_GateType.PROG) {
-			PC_Utils.openGres(player, new PClo_GuiProgrammableGate(teg));
+		if (type == PClo_GateType.OBSOLETE_UNUSED) {
+			//PC_Utils.openGres(player, new PClo_GuiProgrammableGate(teg));
+			world.createExplosion(player, x, y, z, 0);
 			return true;
 		}
 

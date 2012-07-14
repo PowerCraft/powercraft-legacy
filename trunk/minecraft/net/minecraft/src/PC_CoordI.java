@@ -441,6 +441,15 @@ public class PC_CoordI implements PC_ICoord, PC_INBT {
 	public void setMeta(World w, int meta) {
 		w.setBlockMetadataWithNotify(x, y, z, meta);
 	}
+	
+	/**
+	 * Set block meta without notify
+	 * @param w
+	 * @param meta
+	 */
+	public void setMetaNoNotify(World w, int meta) {
+		w.setBlockMetadata(x, y, z, meta);
+	}
 
 	/**
 	 * Set world's block id

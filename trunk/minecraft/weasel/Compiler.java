@@ -45,7 +45,7 @@ import weasel.lang.InstructionUnset;
 public class Compiler {
 
 	/** Pattern matching function headers in expressions. */
-	protected static final Pattern functionPattern = Pattern.compile("([a-zA-Z_.]{1}[a-zA-Z_0-9.]*?)\\(([^(]*?)\\)");
+	protected static final Pattern functionPattern = Pattern.compile("([a-zA-Z_]{1}[a-zA-Z_0-9.]*?)\\(([^(]*?)\\)");
 
 	/**
 	 * Pattern matching string constants in expressions.<br>
@@ -54,12 +54,14 @@ public class Compiler {
 	 */
 	protected static final Pattern stringPattern = Pattern.compile("(\"[^\"]*?\")");
 
-	private static final String variablePatternRegexp = "([a-zA-Z_.]{1}[a-zA-Z_0-9.]*?)(?:[^a-zA-Z_0-9.(]|$|\n)";
+	private static final String variableInCodePatternRegexp = "([a-zA-Z_]{1}[a-zA-Z_0-9.]*)(?:[^a-zA-Z_0-9.(]|$|\n)";
 
+	private static final String variableAlonePatternRegexp = "([a-zA-Z_]{1}[a-zA-Z_0-9.]*?)(?:[^a-zA-Z_0-9.(]|$|\n)";
+	
 	private static final String mathExpressionRegexp = "[0-9a-zA-Z_.\\-+!(\"](?:{1}.*?[0-9a-zA-Z_.)\"]{1})?";
 
 	/** Pattern matching variables in an expression */
-	public static final Pattern variablePattern = Pattern.compile(variablePatternRegexp);
+	public static final Pattern variableInCodePattern = Pattern.compile(variableInCodePatternRegexp);
 
 
 	/**
@@ -396,6 +398,8 @@ public class Compiler {
 	public List<Instruction> compile(String source) throws SyntaxError {
 
 		source = source.replace("'", "\"");
+
+		source = escapeStringConstants(source);
 		//System.out.println(source);
 
 		source = source.replaceAll("//.*?\n", "");
@@ -445,7 +449,6 @@ public class Compiler {
 		// Replace string constants by replacement marks, each time 
 		// an instruction is created, replace it back.
 
-		source = escapeStringConstants(source);
 
 		source = source.replaceAll("[\\s\\n]+", " ");
 
@@ -518,7 +521,7 @@ public class Compiler {
 					lhs = lhs.substring("var ".length()).trim();
 				}
 
-				if (!lhs.matches(variablePatternRegexp)) {
+				if (!lhs.matches(variableAlonePatternRegexp)) {
 					throw new SyntaxError("Invalid variable name \"" + lhs + "\"");
 				}
 
@@ -986,7 +989,7 @@ public class Compiler {
 
 					for (int i = 0; i < parameters.size(); i++) {
 
-						if (!parameters.get(i).matches(variablePatternRegexp)) {
+						if (!parameters.get(i).matches(variableInCodePatternRegexp)) {
 							throw new SyntaxError("Invalid argument name \"" + parameters.get(i) + "\" for declared function \"" + funcName + "\".");
 						} else {
 							parameters.set(i, parameters.get(i).trim());
@@ -1060,7 +1063,7 @@ public class Compiler {
 						if (inBracket.length() > 0) {
 							// push(something);
 
-							if (inBracket.matches(variablePatternRegexp)) {
+							if (inBracket.matches(variableInCodePatternRegexp)) {
 								instructionList.add(new InstructionPop(inBracket));
 							} else {
 								throw new SyntaxError("Invalid variable name at \"pop(" + inBracket + ");\".");
@@ -1075,7 +1078,7 @@ public class Compiler {
 						if (inBracket.length() > 0) {
 							// unset(something);
 
-							if (inBracket.matches(variablePatternRegexp)) {
+							if (inBracket.matches(variableInCodePatternRegexp)) {
 								instructionList.add(new InstructionUnset(inBracket));
 							} else {
 								throw new SyntaxError("Invalid variable name at \"unset(" + inBracket + ");\".");
