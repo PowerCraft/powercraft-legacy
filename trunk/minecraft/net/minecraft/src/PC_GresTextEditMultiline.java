@@ -441,7 +441,7 @@ public class PC_GresTextEditMultiline extends PC_GresWidget {
 		}
 		
 		keywordToFinish = null;
-		for (int i = 0; i < getLineNumbers(); i++) {
+		for (int i = 0; i <= getLineNumbers(); i++) {
 			drawStringLine(offsetPos, i);
 			if(keywordToFinish!=null){
 				if(!keywordToFinish.isRegexp && keywordToFinish.end.equals("\n"))
