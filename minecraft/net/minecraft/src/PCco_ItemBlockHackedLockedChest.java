@@ -208,6 +208,10 @@ public class PCco_ItemBlockHackedLockedChest extends ItemBlock {
 				name = PC_Lang.tr("tile.PCloLogicGate.name");
 			}
 
+			if (PC_BlockUtils.hasFlag(tmpstack, "WEASEL")) {
+				name = PC_Lang.tr("tile.PCloWeasel.name");
+			}
+
 			if (name.trim().equals("")) {
 				name = PC_Lang.tr("pc.block.pickedUp.special");
 			}

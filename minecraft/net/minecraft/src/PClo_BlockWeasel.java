@@ -563,7 +563,11 @@ public class PClo_BlockWeasel extends BlockContainer implements PC_ISwapTerrain,
 		set.add("TRANSLUCENT");
 		set.add("REDSTONE");
 		set.add("LOGIC");
-		set.add("GATE");
+		set.add("WEASEL");
+		PClo_WeaselPlugin plugin = getPlugin(world, pos.x, pos.y, pos.z);
+		
+		set.add(PClo_WeaselType.names[plugin.getType()]);
+		
 
 		return set;
 	}
@@ -572,7 +576,8 @@ public class PClo_BlockWeasel extends BlockContainer implements PC_ISwapTerrain,
 	public Set<String> getItemFlags(ItemStack itemstack) {
 		Set<String> set = new HashSet<String>();
 		set.add("NO_BUILD");
-		set.add("GATE");
+		set.add("WEASEL");
+		set.add(PClo_WeaselType.names[itemstack.getItemDamage()]);
 		return set;
 	}
 
