@@ -434,6 +434,13 @@ public class PClo_BlockWeasel extends BlockContainer implements PC_ISwapTerrain,
 		}
 
 		world.setBlockMetadataWithNotify(x, y, z, l);
+		
+		PClo_WeaselPlugin plugin = getPlugin(world, x, y, z);
+		if(plugin!=null) {
+			if(plugin instanceof PClo_WeaselPluginDisplay) {
+				((PClo_WeaselPluginDisplay)plugin).rotation = MathHelper.floor_double(((entityliving.rotationYaw + 180F) * 16F) / 360F + 0.5D) & 0xf;
+			}
+		}
 
 	}
 

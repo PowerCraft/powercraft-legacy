@@ -86,7 +86,7 @@ public class WeaselString extends WeaselObject {
 
 	@Override
 	public String toString() {
-		return "String{\"" + string + "\"}";
+		return "\"" + string + "\"";
 	}
 
 	@Override
