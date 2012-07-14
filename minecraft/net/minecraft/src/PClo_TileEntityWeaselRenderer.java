@@ -33,6 +33,8 @@ public class PClo_TileEntityWeaselRenderer extends TileEntitySpecialRenderer {
 		if(plugin == null) return;
 		
 		model.deviceType = plugin.getType();
+		model.plugin = plugin;
+		model.tileentity = (PC_TileEntity)tileentity;
 		model.active = false;
 		if(plugin instanceof PClo_WeaselPluginPort) model.active = ((PClo_WeaselPluginPort)plugin).renderAsActive();
 		
@@ -58,6 +60,9 @@ public class PClo_TileEntityWeaselRenderer extends TileEntitySpecialRenderer {
 		GL11.glPopMatrix();
 
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
+		
+		model.renderText();
+		
 		GL11.glPopMatrix();
 		
 	}

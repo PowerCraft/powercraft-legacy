@@ -1,5 +1,7 @@
 package net.minecraft.src;
 
+import org.lwjgl.opengl.GL11;
+
 
 /**
  * Model for PClo_TileEntityGateRenderer.
@@ -11,7 +13,8 @@ public class PClo_ModelChip extends ModelBase {
 
 	private ModelRenderer core[];
 	private ModelRenderer port[];
-
+	private ModelRenderer display[];
+	
 	/**
 	 * Radio block model.
 	 */
@@ -59,10 +62,22 @@ public class PClo_ModelChip extends ModelBase {
 		port[3].addBox(-2F, 0.5F, -6F, 4, 1, 2, 0.0F);
 
 
+		display = new ModelRenderer[3];
+		
+		// the stone pad
+		display[0] = new ModelRenderer(this, 0, 40);
+		display[0].addBox(-8F, -11F, -0.5F, 16, 16, 1, 0.0F);
+		
+		// the colour pad
+		display[1] = new ModelRenderer(this, 13, 12);
+		display[1].addBox(-2F, 3.99F, -1F, 4, 1, 2, 0.0F);
+		
 	}
 	
 	public int deviceType = PClo_WeaselType.CORE;
 	public boolean active = false;
+	public PClo_WeaselPlugin plugin;
+	public PC_TileEntity tileentity;
 
 	/**
 	 * Do render.
@@ -81,8 +96,10 @@ public class PClo_ModelChip extends ModelBase {
 			}else {
 				port[2].render(0.0625F);
 			}
+		}else
+		if(deviceType == PClo_WeaselType.DISPLAY) {
+			display[0].render(0.0625F);
 		}
-
 	}
 	
 	/**
@@ -95,7 +112,34 @@ public class PClo_ModelChip extends ModelBase {
 		}else		
 		if(deviceType == PClo_WeaselType.PORT) {
 			port[3].render(0.0625F);			
+		}else		
+		if(deviceType == PClo_WeaselType.DISPLAY) {
+			display[2].render(0.0625F);			
 		}
 		
+	}
+
+	public void renderText() {
+		if(deviceType == PClo_WeaselType.DISPLAY) {
+			float f = 0.6666667F;
+			GL11.glPushMatrix();
+			
+			FontRenderer fontrenderer = PC_Utils.mc().fontRenderer;
+	        float f3 = 0.01666667F * f;
+	        
+	        GL11.glTranslatef(0.0F, 0.0F, 0.1F);
+	        GL11.glScalef(f3, -f3, f3);
+	        GL11.glNormal3f(0.0F, 0.0F, -1F * f3);
+	        GL11.glDepthMask(false);
+	        
+	        int j = 0;
+	        String s = ((PClo_WeaselPluginDisplay)plugin).text;
+	        fontrenderer.drawString(s, -fontrenderer.getStringWidth(s) / 2, 1, j);
+	        
+	        GL11.glDepthMask(true);
+	        GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
+	        GL11.glPopMatrix();
+	        
+		}
 	}
 }

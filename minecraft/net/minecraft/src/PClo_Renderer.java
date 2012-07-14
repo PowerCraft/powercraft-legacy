@@ -130,6 +130,15 @@ public class PClo_Renderer {
 				PC_Renderer.renderInvBoxWithTextures(renderblocks, block, new int[] { 0, 194, 193, 193, 193, 193 });
 				block.setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 1.0F, 1.0F);
 				break;
+				
+			case PClo_WeaselType.DISPLAY:
+				block.setBlockBounds(0, 0, 0, 16 * px, 3 * px, 16 * px);
+				PC_Renderer.renderInvBoxWithTextures(renderblocks, block, new int[] { 6, 208, 5, 5, 5, 5 });
+
+				block.setBlockBounds(5 * px, 3 * px, 5 * px, 11 * px, 5 * px, 11 * px);
+				PC_Renderer.renderInvBoxWithTextures(renderblocks, block, new int[] { 0, 194, 193, 193, 193, 193 });
+				block.setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 1.0F, 1.0F);
+				break;
 		}
 
 		PC_Renderer.resetTerrain(true);
