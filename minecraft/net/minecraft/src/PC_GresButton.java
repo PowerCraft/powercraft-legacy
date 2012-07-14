@@ -106,6 +106,7 @@ public class PC_GresButton extends PC_GresWidget {
 			return true;
 		}
 		isClicked = key == -1 ? false : true;
+		if(key != -1) mc.sndManager.playSoundFX("random.click", 1.0F, 1.0F);
 		return false;
 	}
 

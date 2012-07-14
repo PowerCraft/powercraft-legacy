@@ -132,6 +132,8 @@ public class PC_GresRadioButton extends PC_GresWidget {
 			check(true);
 			return true;
 		}
+
+		if(key != -1) mc.sndManager.playSoundFX("random.click", 1.0F, 1.0F);
 		return false;
 	}
 

@@ -39,7 +39,7 @@ public class PC_Lang {
 	 *            things.
 	 * @return translated.
 	 */
-	public static String tr(String identifier, String[] replacements) {
+	public static String tr(String identifier, String... replacements) {
 		return StringTranslate.getInstance().translateKeyFormat(identifier, replacements);
 	}
 

@@ -6,6 +6,11 @@ import java.util.List;
 import java.util.Random;
 
 import weasel.Calc;
+import weasel.WeaselEngine;
+import weasel.exception.WeaselRuntimeException;
+import weasel.obj.WeaselBoolean;
+import weasel.obj.WeaselObject;
+import weasel.obj.WeaselString;
 
 import net.minecraft.src.PClo_NetManager.WeaselNetwork;
 import net.minecraft.src.PClo_NetManager.NetworkMember;
@@ -28,7 +33,7 @@ public abstract class PClo_WeaselPlugin implements PC_INBT, NetworkMember {
 	}
 	
 	/** The tile entity containing this plugin */
-	protected PClo_TileEntityWeasel tileEntity;
+	private PClo_TileEntityWeasel tileEntity;
 
 	/**
 	 * @return coord of the tile entiy
@@ -78,11 +83,32 @@ public abstract class PClo_WeaselPlugin implements PC_INBT, NetworkMember {
 
 	/** RNG */
 	protected static Random rand = new Random();
+	
+	/**
+	 * Update state when a neighbor block's redstone state was changed
+	 */
+	public abstract void onRedstoneSignalChanged();
 
 	/**
 	 * Handler for block's event
 	 */
-	public abstract void onNeighborBlockChanged();	
+	public final void onNeighborBlockChanged() {
+
+		boolean[] inport = PClo_BlockWeasel.getWeaselInputStates(world(), coord());
+		
+		boolean changed=false;
+		for(int i=0; i<weaselInport.length; i++) {
+			if(weaselInport[i]||weaselOutport[i] != inport[i]) {
+				changed=true;
+			}
+			
+		}
+			weaselInport = inport;
+		
+		if(changed) {
+			onRedstoneSignalChanged();
+		}
+	}
 
 	/**
 	 * @return message describing last error
@@ -103,10 +129,10 @@ public abstract class PClo_WeaselPlugin implements PC_INBT, NetworkMember {
 	}
 	
 	/** Name of this member in the network. */
-	public String memberName = Calc.generateUniqueName();
+	private String memberName = Calc.generateUniqueName();
 	
 	/** Name of the local network this device is connected to. */
-	public String networkName = "";
+	private String networkName = "";
 	
 	@Override
 	public final void onNetworkRenamed(String newName) {
@@ -125,8 +151,27 @@ public abstract class PClo_WeaselPlugin implements PC_INBT, NetworkMember {
 	 * @return The network this device is connected to.
 	 */	
 	public final WeaselNetwork getNetwork() {
-		return mod_PClogic.NETWORK.getNetwork(networkName);
+		return getNetManager().getNetwork(networkName);
 	}
+
+	/**
+	 * @return The network manager providing global variable sharing pool.
+	 */	
+	protected final PClo_NetManager getNetManager() {
+		return mod_PClogic.NETWORK;
+	}
+
+	/**
+	 * @return The radio manager.
+	 */	
+	protected final PClo_RadioBus getRadioManager() {
+		return mod_PClogic.RADIO;
+	}
+	
+	/**
+	 * @return weasel engine, or null if this device has none
+	 */
+	public abstract WeaselEngine getWeaselEngine();
 	
 	/**
 	 * @return color of the network this device is connected to.
@@ -134,7 +179,7 @@ public abstract class PClo_WeaselPlugin implements PC_INBT, NetworkMember {
 	public final PC_Color getNetworkColor() {
 		
 		if(networkName != null && !networkName.equals("")) {
-			WeaselNetwork net = mod_PClogic.NETWORK.getNetwork(networkName);
+			WeaselNetwork net = getNetManager().getNetwork(networkName);
 			if(net != null) return net.getColor();
 		}
 		
@@ -179,10 +224,10 @@ public abstract class PClo_WeaselPlugin implements PC_INBT, NetworkMember {
 	}
 	
 	/**
-	 * Get name of this member.
+	 * Get name of this device in the network.
 	 * @return name of this member
 	 */
-	public final String getMemberName() {
+	public final String getName() {
 		return memberName;
 	}
 	
@@ -226,13 +271,177 @@ public abstract class PClo_WeaselPlugin implements PC_INBT, NetworkMember {
 		onDeviceDestroyed();
 	}
 	
-	public abstract void onDeviceDestroyed();
+	/**
+	 * Hook called when this device was destroyed
+	 */
+	protected abstract void onDeviceDestroyed();
 	
+	/**
+	 * If this device has a weasel engine, execute given user function and return retval.<br>
+	 * This function can be called by other members of a network in order to invoke program functions.
+	 * 
+	 * @param function name of the function in weasel code
+	 * @param args arguments for the function
+	 * @return returned value
+	 */
+	public abstract Object callFunctionExternalDelegated(String function, Object... args);
 	
+
+	
+	/**
+	 * Set all output ports to false
+	 */
+	protected final void resetOutport() {
+		for(int i=0; i<weaselOutport.length; i++) {
+			weaselOutport[i] = false;
+		}
+	}
+	
+	/**
+	 * Update buffered input port
+	 */
+	protected final void refreshInport() {
+		weaselInport = PClo_BlockWeasel.getWeaselInputStates(world(), coord());
+	}
+	
+	private boolean[] weaselOutport = { false, false, false, false, false, false };
+	private boolean[] weaselInport = { false, false, false, false, false, false };	
+
+	/**
+	 * Get outport for the block. This is called by the Block directly.
+	 * 
+	 * @return array of booleans
+	 */
+	public final boolean[] getWeaselOutputStates() {
+		//@formatter:off		
+		// It works. Better not to change this.
+		return new boolean[] {
+				weaselOutport[1],
+				weaselOutport[0],
+				weaselOutport[2],
+				weaselOutport[3],
+				weaselOutport[4],
+				weaselOutport[5]
+		};		
+		//@formatter:on
+	}
+	
+	/**
+	 * Get redstone state on given port
+	 * @param port port name (F,L,R,B,U,D)
+	 * @return rs state
+	 */
+	protected final boolean getInport(String port) {
+		if(port.equals("B")) return weaselInport[0];
+		if(port.equals("L")) return weaselInport[1];
+		if(port.equals("R")) return weaselInport[2];
+		if(port.equals("F")) return weaselInport[3];
+		if(port.equals("U")) return weaselInport[4];
+		if(port.equals("D")) return weaselInport[5];
+		return false;
+	}
+	
+	/**
+	 * Get redstone state sending to given port
+	 * @param port port name (F,L,R,B,U,D)
+	 * @return rs state
+	 */
+	protected final boolean getOutport(String port) {
+		if(port.equals("B")) return weaselOutport[0];
+		if(port.equals("L")) return weaselOutport[1];
+		if(port.equals("R")) return weaselOutport[2];
+		if(port.equals("F")) return weaselOutport[3];
+		if(port.equals("U")) return weaselOutport[4];
+		if(port.equals("D")) return weaselOutport[5];
+		return false;
+	}
+	
+	/**
+	 * Set redstone state on given port
+	 * @param port port name (F,L,R,B,U,D)
+	 * @param state rs state
+	 */
+	protected final void setOutport(String port, boolean state) {	
+		boolean old = getOutport(port);
+		
+		if(port.equals("B")) weaselOutport[0]=state;
+		if(port.equals("L")) weaselOutport[1]=state;
+		if(port.equals("R")) weaselOutport[2]=state;
+		if(port.equals("F")) weaselOutport[3]=state;
+		if(port.equals("U")) weaselOutport[4]=state;
+		if(port.equals("D")) weaselOutport[5]=state;
+		
+		
+		if(state != old) {
+			notifyBlockChange();
+			refreshInport();
+		}
+	}
 	
 	
 	// Inventory status detection
 	
+	/**
+	 * Test if there is a full chest on given side.
+	 * 
+	 * @param args the arguments given (can be: String side, Boolean strict (optional))
+	 * @return is full
+	 */
+	protected WeaselObject chestFullTest(WeaselObject...args) {
+		int rotation = coord().getMeta(world()) & 3;
+
+		String side = "F";
+		boolean strict = false;
+		
+		if(args.length > 0) {
+			if(args[0] instanceof WeaselString) {
+				side = (String) args[0].get();
+			}
+			if(args[0] instanceof WeaselBoolean) {
+				strict = (Boolean) args[0].get();
+			}
+		}
+		if(args.length > 1) {
+			strict = (Boolean) args[1].get();
+		}
+
+		if (side.equals("B")) rotation = rotation + 0;
+		if (side.equals("F")) rotation = rotation + 2;
+		if (side.equals("L")) rotation = rotation + 1;
+		if (side.equals("R")) rotation = rotation + 3;
+
+		if (rotation > 3) rotation = rotation % 4;
+
+		return new WeaselBoolean(isChestFull(rotation, strict));
+	}
+	
+	/**
+	 * Test if there is an empty chest on given side.
+	 * 
+	 * @param args the arguments given (can be: String side)
+	 * @return is empty
+	 */
+	protected WeaselObject chestEmptyTest(WeaselObject...args) {
+		
+		int rotation = coord().getMeta(world()) & 3;
+
+		String side = "F";
+		
+		if(args.length == 1) {
+			if(args[0] instanceof WeaselString) {
+				side = (String) args[0].get();
+			}
+		}
+
+		if (side.equals("B")) rotation = rotation + 0;
+		if (side.equals("F")) rotation = rotation + 2;
+		if (side.equals("L")) rotation = rotation + 1;
+		if (side.equals("R")) rotation = rotation + 3;
+		if (rotation > 3) rotation = rotation % 4;
+
+		return new WeaselBoolean(isChestEmpty(rotation));
+		
+	}
 
 	/**
 	 * Check if chest on given side is full
@@ -242,7 +451,7 @@ public abstract class PClo_WeaselPlugin implements PC_INBT, NetworkMember {
 	 *            partially used slots are treated as used.
 	 * @return true if chest is full.
 	 */
-	protected final boolean isChestFull(int side, boolean allSlotsFull) {
+	private final boolean isChestFull(int side, boolean allSlotsFull) {
 
 		if (side == 0) {
 			return isFullChestAt(tileEntity.getCoord().offset(0, 0, 1), allSlotsFull);
@@ -265,7 +474,7 @@ public abstract class PClo_WeaselPlugin implements PC_INBT, NetworkMember {
 	 * @param side metadata of the gate
 	 * @return true if chest is empty.
 	 */
-	protected final boolean isChestEmpty(int side) {
+	private final boolean isChestEmpty(int side) {
 		if (side == 0) {
 			return isEmptyChestAt(tileEntity.getCoord().offset(0, 0, 1));
 		}
@@ -287,7 +496,7 @@ public abstract class PClo_WeaselPlugin implements PC_INBT, NetworkMember {
 	 * @param pos chest pos
 	 * @return is full
 	 */
-	private boolean isEmptyChestAt(PC_CoordI pos) {
+	private final boolean isEmptyChestAt(PC_CoordI pos) {
 
 		IInventory invAt = PC_InvUtils.getCompositeInventoryAt(world(), pos);
 		if (invAt != null) return PC_InvUtils.isInventoryEmpty(invAt);
@@ -309,7 +518,7 @@ public abstract class PClo_WeaselPlugin implements PC_INBT, NetworkMember {
 	 * @param allSlotsFull strict check for full slots
 	 * @return is full
 	 */
-	private boolean isFullChestAt(PC_CoordI pos, boolean allSlotsFull) {
+	private final boolean isFullChestAt(PC_CoordI pos, boolean allSlotsFull) {
 
 		IInventory invAt = PC_InvUtils.getCompositeInventoryAt(tileEntity.worldObj, pos);
 		if (invAt != null) {
@@ -337,7 +546,11 @@ public abstract class PClo_WeaselPlugin implements PC_INBT, NetworkMember {
 	@Override
 	public final PClo_WeaselPlugin readFromNBT(NBTTagCompound tag) {		
 		networkName = tag.getString("NetworkName");	
-		memberName = tag.getString("MemberName");				
+		memberName = tag.getString("MemberName");	
+
+		for (int i = 0; i < weaselOutport.length; i++)
+			weaselOutport[i] = tag.getBoolean("wo" + i);
+		
 		return readPluginFromNBT(tag);
 	}
 
@@ -345,6 +558,10 @@ public abstract class PClo_WeaselPlugin implements PC_INBT, NetworkMember {
 	public final NBTTagCompound writeToNBT(NBTTagCompound tag) {
 		tag.setString("NetworkName", networkName);
 		tag.setString("MemberName", memberName);
+		
+		for (int i = 0; i < weaselOutport.length; i++)
+			tag.setBoolean("wo" + i, weaselOutport[i]);
+		
 		return writePluginToNBT(tag);
 	}
 	

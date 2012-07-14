@@ -42,6 +42,7 @@ import weasel.jep.function.Imaginary;
 import weasel.jep.function.Logarithm;
 import weasel.jep.function.LogicalFn;
 import weasel.jep.function.LogicalFn.LogicalFnType;
+import weasel.jep.function.MakeBit;
 import weasel.jep.function.MakeByte;
 import weasel.jep.function.Max;
 import weasel.jep.function.Mean;
@@ -253,17 +254,15 @@ public class JEP {
 
 		// binary functions
 
-		funTab.put("not", new Not());
-		funTab.put("or", new LogicalFn(LogicalFnType.OR));
-		funTab.put("and", new LogicalFn(LogicalFnType.AND));
-		funTab.put("xor", new LogicalFn(LogicalFnType.XOR));
-		funTab.put("nor", new LogicalFn(LogicalFnType.NOR));
-		funTab.put("nand", new LogicalFn(LogicalFnType.NAND));
-		funTab.put("xnor", new LogicalFn(LogicalFnType.NXOR));
-		funTab.put("nxor", new LogicalFn(LogicalFnType.NXOR));
+//		funTab.put("not", new Not());
+//		funTab.put("or", new LogicalFn(LogicalFnType.OR));
+//		funTab.put("and", new LogicalFn(LogicalFnType.AND));
+//		funTab.put("xor", new LogicalFn(LogicalFnType.XOR));
+//		funTab.put("nor", new LogicalFn(LogicalFnType.NOR));
+//		funTab.put("nand", new LogicalFn(LogicalFnType.NAND));
+//		funTab.put("xnor", new LogicalFn(LogicalFnType.NXOR));
+//		funTab.put("nxor", new LogicalFn(LogicalFnType.NXOR));
 
-		funTab.put("even", new LogicalFn(LogicalFnType.EVEN));
-		funTab.put("odd", new LogicalFn(LogicalFnType.ODD));
 
 		// aditional constructors
 		funTab.put("list", new weasel.jep.function.List());
@@ -285,17 +284,23 @@ public class JEP {
 		funTab.put("min", new Min());
 		funTab.put("max", new Max());
 		funTab.put("byte", new MakeByte());
+		funTab.put("bit", new MakeBit());
 
-		funTab.put("bw.not", new BitwiseOperation(OpType.NOT));
-		funTab.put("bw.or", new BitwiseOperation(OpType.OR));
-		funTab.put("bw.and", new BitwiseOperation(OpType.AND));
-		funTab.put("bw.xor", new BitwiseOperation(OpType.XOR));
-		funTab.put("bw.nor", new BitwiseOperation(OpType.NOR));
-		funTab.put("bw.nand", new BitwiseOperation(OpType.NAND));
-		funTab.put("bw.xnor", new BitwiseOperation(OpType.NXOR));
-		funTab.put("bw.nxor", new BitwiseOperation(OpType.NXOR));
-		funTab.put("bw.lshift", new BitwiseOperation(OpType.LSL));
-		funTab.put("bw.rshift", new BitwiseOperation(OpType.LSR));
+		funTab.put("not", new BitwiseOperation(OpType.NOT));
+		funTab.put("or", new BitwiseOperation(OpType.OR));
+		funTab.put("and", new BitwiseOperation(OpType.AND));
+		funTab.put("xor", new BitwiseOperation(OpType.XOR));
+		funTab.put("nor", new BitwiseOperation(OpType.NOR));
+		funTab.put("nand", new BitwiseOperation(OpType.NAND));
+		funTab.put("xnor", new BitwiseOperation(OpType.NXOR));
+		funTab.put("nxor", new BitwiseOperation(OpType.NXOR));
+		funTab.put("lsl", new BitwiseOperation(OpType.LSL));
+		funTab.put("lsr", new BitwiseOperation(OpType.LSR));
+		funTab.put("lshift", new BitwiseOperation(OpType.LSL));
+		funTab.put("rshift", new BitwiseOperation(OpType.LSR));
+
+		funTab.put("even", new LogicalFn(LogicalFnType.EVEN));
+		funTab.put("odd", new LogicalFn(LogicalFnType.ODD));
 
 	}
 

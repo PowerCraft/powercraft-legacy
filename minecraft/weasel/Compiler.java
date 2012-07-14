@@ -44,7 +44,7 @@ import weasel.lang.InstructionUnset;
  */
 public class Compiler {
 
-	/** Pattern matching function headers in expressions. */
+	/** Pattern matching function headers in expressions. */ //Pattern.compile("([a-zA-Z_]{1}[a-zA-Z_0-9.]*?)[(]((([(][^)]*?[)])*[^(]*)*)[)]");
 	protected static final Pattern functionPattern = Pattern.compile("([a-zA-Z_]{1}[a-zA-Z_0-9.]*?)\\(([^(]*?)\\)");
 
 	/**
@@ -428,9 +428,10 @@ public class Compiler {
 		// enclose arguments in brackets for return, push, pop and unset
 		source = source.replaceAll("([^a-zA-Z0-9._]|^)(return|push|pop|unset)\\s*(.*?)\\s*;", "$1$2($3);");
 
-		//remove brackets from break and continue
+		//remove brackets from break and continue - they cant have any calculations there anyway
 		source = source.replaceAll("([^a-zA-Z0-9._]|^)(break|continue)\\s*[(](.*?)[)];", "$1$2 $3;");
 
+		
 		// remove () from end and pause
 		source = source.replaceAll("([^a-zA-Z0-9._]|^)(end|pause|restart)\\s*[(]\\s*[)]\\s*;", "$1$2;");
 

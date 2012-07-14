@@ -69,10 +69,10 @@ public class PC_Color implements PC_INBT {
 	private static Random rand = new Random();
 	
 	/**
-	 * Set all 3 channels to random color
-	 * @return
+	 * Set all 3 channels to random color, tries to make bright or at least not dark colors
+	 * @return this
 	 */
-	public PC_Color random() {
+	public PC_Color randomize() {
 		do {
 			r = rand.nextFloat();
 			g = rand.nextFloat();
@@ -83,10 +83,30 @@ public class PC_Color implements PC_INBT {
 	}
 	
 	/**
+	 * Set all 3 channels to 100% random color
+	 * @return this
+	 */
+	public PC_Color randomizePure() {
+		
+			r = rand.nextFloat();
+			g = rand.nextFloat();
+			b = rand.nextFloat();
+		
+		return this;
+	}
+	
+	/**
 	 * @return new random color
 	 */
 	public static PC_Color randomColor() {
-		return new PC_Color().random();
+		return new PC_Color().randomize();
+	}
+	
+	/**
+	 * @return new random color
+	 */
+	public static PC_Color pureRandomColor() {
+		return new PC_Color().randomizePure();
 	}
 
 	/**

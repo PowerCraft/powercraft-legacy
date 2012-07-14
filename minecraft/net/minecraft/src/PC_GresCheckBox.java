@@ -106,6 +106,8 @@ public class PC_GresCheckBox extends PC_GresWidget {
 		if (key != -1) {
 			checked ^= true;
 		}
+
+		if(key != -1) mc.sndManager.playSoundFX("random.click", 1.0F, 1.0F);
 		return true;
 	}
 
