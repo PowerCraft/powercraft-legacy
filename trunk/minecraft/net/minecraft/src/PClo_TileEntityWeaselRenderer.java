@@ -34,7 +34,7 @@ public class PClo_TileEntityWeaselRenderer extends TileEntitySpecialRenderer {
 		
 		model.deviceType = plugin.getType();
 		model.active = false;
-		if(plugin instanceof PClo_WeaselPluginPort) model.active = ((PClo_WeaselPluginPort)plugin).sendingSignal;
+		if(plugin instanceof PClo_WeaselPluginPort) model.active = ((PClo_WeaselPluginPort)plugin).renderAsActive();
 		
 		PC_Color color = plugin.getNetworkColor();
 

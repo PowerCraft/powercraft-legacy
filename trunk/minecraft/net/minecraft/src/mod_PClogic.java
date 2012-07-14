@@ -3,8 +3,12 @@ package net.minecraft.src;
 
 import java.util.List;
 import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import weasel.Calc;
+import weasel.exception.SyntaxError;
+import weasel.lang.Instruction;
 
 import net.minecraft.client.Minecraft;
 
@@ -115,7 +119,8 @@ public class mod_PClogic extends PC_Module {
 	// *** MODULE INIT ***
 
 	@Override
-	public void preInit() {}
+	public void preInit() {	
+	}
 
 	@Override
 	public void initProperties(PC_PropertyManager conf) {
@@ -351,6 +356,7 @@ public class mod_PClogic extends PC_Module {
 		map.put("tile.PCloLogicGate.repeaterStraightInstant.name", "Instant Repeater");
 		map.put("tile.PCloLogicGate.repeaterCornerInstant.name", "Instant Angled Repeater");
 		map.put("tile.PCloLogicGate.night.name", "Night Sensor");
+		map.put("tile.PCloLogicGate.obsolete_unused.name", "Do-nothing device");
 
 
 		// descriptions.
@@ -386,6 +392,7 @@ public class mod_PClogic extends PC_Module {
 		map.put("pc.gate.repeaterStraightInstant.desc", "instant repeater");
 		map.put("pc.gate.repeaterCornerInstant.desc", "instant corner repeater");
 		map.put("pc.gate.night.desc", "on during night");
+		map.put("pc.gate.obsolete_unused.desc", "Do not take this!");
 
 
 
@@ -399,11 +406,21 @@ public class mod_PClogic extends PC_Module {
 		map.put("pc.weasel.activatorGetNetwork", "Network \"%s\" assigned to activation crystal.");
 		map.put("pc.weasel.activatorSetNetwork", "Device connected to network \"%s\".");
 		
+		map.put("pc.gui.weasel.connectedToNetwork", "Connected to network:");
+		map.put("pc.gui.weasel.rename", "Rename");
+		map.put("pc.gui.weasel.errDeviceNameTooShort", "Entered name is too short.");
+		map.put("pc.gui.weasel.errDeviceNameAlreadyUsed", "Device %s already exists in this network.");
+		map.put("pc.gui.weasel.deviceRenamed", "Device renamed to %s.");
+		map.put("pc.gui.weasel.close", "Close");
+		
+		map.put("pc.gui.weasel.port.portName", "Port name:");
+		
+		
 		map.put("pc.gui.weasel.core.program", "Program");
 		map.put("pc.gui.weasel.core.settings", "Settings");
 		map.put("pc.gui.weasel.core.status", "Status");
 		
-		map.put("pc.gui.weasel.core.runningLabel", "Running:");
+		map.put("pc.gui.weasel.core.runningStateLabel", "Program state:");
 		map.put("pc.gui.weasel.core.stackLabel", "Stack size:");
 		map.put("pc.gui.weasel.core.memoryLabel", "Memory size:");
 		map.put("pc.gui.weasel.core.statusLabel", "Status:");		
@@ -415,20 +432,31 @@ public class mod_PClogic extends PC_Module {
 		map.put("pc.gui.weasel.core.colorLabel", "Network color:");
 		
 		map.put("pc.gui.weasel.core.title", "Weasel Controller");
-		map.put("pc.gui.weasel.core.save", "Save");
+		map.put("pc.gui.weasel.port.title", "Expansion port for Weasel Controller");		
+		map.put("pc.gui.weasel.core.undoAll", "Undo All");
 		map.put("pc.gui.weasel.core.check", "Check");
 		map.put("pc.gui.weasel.core.launch", "Launch");
+		map.put("pc.gui.weasel.core.running", "Running.");
+		map.put("pc.gui.weasel.core.paused", "Paused.");
+		map.put("pc.gui.weasel.core.idle", "Idle.");
+		map.put("pc.gui.weasel.core.pause", "Pause");
+		map.put("pc.gui.weasel.core.resume", "Resume");
+		map.put("pc.gui.weasel.core.restart", "Restart");
+		map.put("pc.gui.weasel.core.stop", "Stop");
 		map.put("pc.gui.weasel.core.title", "Weasel Controller");
-		map.put("pc.gui.weasel.core.yes", "Yes");
-		map.put("pc.gui.weasel.core.no", "No");
-		map.put("pc.gui.weasel.core.rename", "Rename");
 		map.put("pc.gui.weasel.core.colorChange", "Change");
-		map.put("pc.gui.weasel.core.colorSave", "Save");
 		
 		map.put("pc.gui.weasel.core.errNetworkNameTooShort", "Entered network name is too short.");
 		map.put("pc.gui.weasel.core.errNetworkNameAlreadyUsed", "Network with this name already exists.");
-		map.put("pc.gui.weasel.core.networkRenamed", "Network renamed to %s.");
-		map.put("pc.gui.weasel.core.networkColorChanged", "Network color changed.");
+		map.put("pc.gui.weasel.core.msgNetworkRenamed", "Network renamed to %s.");
+		map.put("pc.gui.weasel.core.msgNetworkColorChanged", "Network color changed.");
+		map.put("pc.gui.weasel.core.msgPaused", "Program paused.");
+		map.put("pc.gui.weasel.core.msgResumed", "Program resumed.");
+		map.put("pc.gui.weasel.core.msgRestarted", "Program restarted.");
+		map.put("pc.gui.weasel.core.msgLaunched", "New program compiled and started.");
+		map.put("pc.gui.weasel.core.msgNoErrors", "Program has no syntax errors.");
+		map.put("pc.gui.weasel.core.msgAllUndone", "All changes reverted.");
+		map.put("pc.gui.weasel.core.msgHalted", "Program execution halted.\nPeripherals may remember last state.");
 
 		map.put("pc.radioRemote.connected", "Portable transmitter connected to channel \"%s\".");
 		map.put("pc.radioRemote.desc", "Channel: %s");

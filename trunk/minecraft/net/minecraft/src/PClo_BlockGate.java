@@ -301,7 +301,12 @@ public class PClo_BlockGate extends BlockContainer implements PC_IRotatedBox, PC
 				teg.zombie = true;
 
 				if (!PC_Utils.isCreative()) {
+					if(teg.gateType == PClo_GateType.OBSOLETE_UNUSED) {
+						dropBlockAsItem_do(world, x, y, z, new ItemStack(Item.redstone, 4, 0));
+						dropBlockAsItem_do(world, x, y, z, new ItemStack(Block.stairSingle, 1, 0));
+					}else {
 					dropBlockAsItem_do(world, x, y, z, new ItemStack(mod_PClogic.gateOn, 1, teg.gateType));
+					}
 				}
 			}
 		}

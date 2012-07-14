@@ -101,6 +101,14 @@ public class PClo_NetManager implements PC_INBT {
 		public void registerMember(String memberName, NetworkMember member) {
 			members.put(memberName, member);
 		}
+		
+		public NetworkMember getMember(String name) {
+			return members.get(name);
+		}
+		
+		public int size() {
+			return members.size();
+		}
 	}
 	
 	/**

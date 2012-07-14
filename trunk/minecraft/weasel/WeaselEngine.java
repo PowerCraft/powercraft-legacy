@@ -183,6 +183,7 @@ public class WeaselEngine implements PC_INBT, IVariableProvider, IFunctionProvid
 	 */
 	public void restartProgram() {
 
+		isProgramFinished = false;
 		instructionList.movePointerTo(0);
 
 		systemStack.clear();
@@ -193,6 +194,14 @@ public class WeaselEngine implements PC_INBT, IVariableProvider, IFunctionProvid
 		variables.clear();
 
 		// not globals! they are preserved!
+	}
+
+	/**
+	 * Restart program, clear system and data stacks and all variables.
+	 */
+	public void restartProgramClearGlobals() {
+		restartProgram();
+		globals.clear();
 	}
 
 	/**
@@ -391,7 +400,7 @@ public class WeaselEngine implements PC_INBT, IVariableProvider, IFunctionProvid
 	 * @return the output value, simple object
 	 */
 	public Object getRetvalExternal() {
-		return externalCallRetval.get();
+		return externalCallRetval==null?null:externalCallRetval.get();
 	}
 
 	/**

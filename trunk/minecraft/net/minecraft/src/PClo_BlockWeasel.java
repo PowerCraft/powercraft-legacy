@@ -198,10 +198,10 @@ public class PClo_BlockWeasel extends BlockContainer implements PC_ISwapTerrain,
 			tew.zombie = true;
 
 			PClo_WeaselPlugin plugin = tew.getPlugin();
-			
-			if(plugin != null) {
+
+			if (plugin != null) {
 				plugin.onBlockRemoval();
-			
+
 
 				if (!PC_Utils.isCreative()) {
 					dropBlockAsItem_do(world, x, y, z, new ItemStack(mod_PClogic.weaselDevice, 1, tew.getType()));
@@ -237,14 +237,14 @@ public class PClo_BlockWeasel extends BlockContainer implements PC_ISwapTerrain,
 		for (; burnoutList.size() > 0 && world.getWorldTime() - burnoutList.get(0).updateTime > 30L; burnoutList.remove(0)) {}
 		if (checkForBurnout(world, x, y, z, false)) {
 			// schedule "unpause" tick
-			world.scheduleBlockUpdate(x, y, z, blockID, 6);
+			world.scheduleBlockUpdate(x, y, z, blockID, 3);
+			//System.out.println("Weasel device at "+x+","+y+","+z+" burned out.");
 			return;
 		}
 
 		checkForBurnout(world, x, y, z, true);
 
-
-		world.notifyBlockChange(x, y, z, blockID);
+		hugeUpdate(world, new PC_CoordI(x, y, z));
 
 	}
 
@@ -266,7 +266,7 @@ public class PClo_BlockWeasel extends BlockContainer implements PC_ISwapTerrain,
 
 		for (; burnoutList.size() > 0 && world.getWorldTime() - burnoutList.get(0).updateTime > 10L; burnoutList.remove(0)) {}
 		if (checkForBurnout(world, x, y, z, false)) {
-			world.scheduleBlockUpdate(x, y, z, blockID, 6);
+			world.scheduleBlockUpdate(x, y, z, blockID, 3);
 			//System.out.println("cpu burned out");
 			return;
 		}
@@ -282,77 +282,52 @@ public class PClo_BlockWeasel extends BlockContainer implements PC_ISwapTerrain,
 		int meta = iblockaccess.getBlockMetadata(x, y, z);
 		int rotation = getRotation(meta);
 
-		int type = getType(iblockaccess, x, y, z);
-		World world = ModLoader.getMinecraftInstance().theWorld;
-
 		PClo_TileEntityWeasel tew = getTE(iblockaccess, x, y, z);
 
+		if(tew == null) return false;
+		
 		PClo_WeaselPlugin plugin = tew.getPlugin();
 
-		switch (type) {
-			case PClo_WeaselType.CORE:
+		if(plugin == null) return false;
+		
+		boolean[] outputs = plugin.getWeaselOutputStates();
 
-				boolean[] outputs = ((PClo_WeaselPluginCore) plugin).getWeaselOutputStates();
-
-				for (int i = 0; i < rotation; i++) {
-					boolean swap = outputs[0];
-					outputs[0] = outputs[1];
-					outputs[1] = outputs[2];
-					outputs[2] = outputs[3];
-					outputs[3] = swap;
-				}
-
-				boolean state = false;
-				switch (side) {
-					case 3:
-						state = outputs[3];
-						break;
-
-					case 4:
-						state = outputs[2];
-						break;
-
-					case 2:
-						state = outputs[1];
-						break;
-
-					case 5:
-						state = outputs[0];
-						break;
-
-					case 0:
-						state = outputs[4];
-						break;
-
-					case 1:
-						state = outputs[5];
-						break;
-				}
-
-				return state;
-
-			case PClo_WeaselType.PORT:
-
-				if (!((PClo_WeaselPluginPort) plugin).sendingSignal) return false;
-
-				
-				if (rotation == 0 && side == 3) {
-					return true;
-				}
-				
-				if (rotation == 1 && side == 4) {
-					return true;
-				}
-				
-				if (rotation == 2 && side == 2) {
-					return true;
-				}
-				
-				return (rotation == 3 && side == 5);
-
+		for (int i = 0; i < rotation; i++) {
+			boolean swap = outputs[0];
+			outputs[0] = outputs[1];
+			outputs[1] = outputs[2];
+			outputs[2] = outputs[3];
+			outputs[3] = swap;
 		}
 
-		return false;
+		boolean state = false;
+		switch (side) {
+			case 3:
+				state = outputs[3];
+				break;
+
+			case 4:
+				state = outputs[2];
+				break;
+
+			case 2:
+				state = outputs[1];
+				break;
+
+			case 5:
+				state = outputs[0];
+				break;
+
+			case 0:
+				state = outputs[4];
+				break;
+
+			case 1:
+				state = outputs[5];
+				break;
+		}
+
+		return state;
 
 	}
 
@@ -494,7 +469,7 @@ public class PClo_BlockWeasel extends BlockContainer implements PC_ISwapTerrain,
 	public void randomDisplayTick(World world, int x, int y, int z, Random random) {
 
 		PClo_WeaselPlugin plugin = getPlugin(world, x, y, z);
-		
+
 		if (plugin != null && plugin.hasError()) {
 
 			double d = (x + 0.5F) + (random.nextFloat() - 0.5F) * 0.20000000000000001D;
@@ -531,29 +506,29 @@ public class PClo_BlockWeasel extends BlockContainer implements PC_ISwapTerrain,
 
 				}
 
-			}else if(ihold.getItem().shiftedIndex == mod_PCcore.activator.shiftedIndex) {
-								
+			} else if (ihold.getItem().shiftedIndex == mod_PCcore.activator.shiftedIndex) {
+
 				PClo_WeaselPlugin plugin = getPlugin(world, x, y, z);
-				if(plugin == null) return true;
-				
-				if(plugin.isMaster()) {
-					
-					if(ihold.hasTagCompound()) {
+				if (plugin == null) return true;
+
+				if (plugin.isMaster()) {
+
+					if (ihold.hasTagCompound()) {
 						ihold.getTagCompound().setString("WeaselNetwork", plugin.getNetworkName());
-					}else {
+					} else {
 						NBTTagCompound tag = new NBTTagCompound();
 						tag.setString("WeaselNetwork", plugin.getNetworkName());
 						ihold.setTagCompound(tag);
 					}
-					
-					PC_Utils.chatMsg(PC_Lang.tr("pc.weasel.activatorGetNetwork", new String[] {plugin.getNetworkName()}), true);
-					
-				}else{
-					if(ihold.hasTagCompound()) {
+
+					PC_Utils.chatMsg(PC_Lang.tr("pc.weasel.activatorGetNetwork", new String[] { plugin.getNetworkName() }), true);
+
+				} else {
+					if (ihold.hasTagCompound()) {
 						String network = ihold.getTagCompound().getString("WeaselNetwork");
-						if(!network.equals("")) {
+						if (!network.equals("")) {
 							plugin.setNetworkNameAndConnect(network);
-							PC_Utils.chatMsg(PC_Lang.tr("pc.weasel.activatorSetNetwork", new String[] {plugin.getNetworkName()}), true);
+							PC_Utils.chatMsg(PC_Lang.tr("pc.weasel.activatorSetNetwork", new String[] { plugin.getNetworkName() }), true);
 							world.playSoundEffect(x, y, z, "note.snare", 1.0F, 0.5F);
 						}
 					}
@@ -564,10 +539,15 @@ public class PClo_BlockWeasel extends BlockContainer implements PC_ISwapTerrain,
 
 		int type = getType(world, x, y, z);
 		PClo_WeaselPlugin plugin = getPlugin(world, x, y, z);
-		if(plugin == null) return true;
+		if (plugin == null) return true;
 
 		if (type == PClo_WeaselType.CORE) {
 			PC_Utils.openGres(player, new PClo_GuiWeaselCoreProgram((PClo_WeaselPluginCore) plugin));
+			return true;
+		}
+
+		if (type == PClo_WeaselType.PORT) {
+			PC_Utils.openGres(player, new PClo_GuiWeaselPort((PClo_WeaselPluginPort) plugin));
 			return true;
 		}
 
