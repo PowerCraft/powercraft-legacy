@@ -294,6 +294,46 @@ public class PC_Renderer {
 		GL11.glTranslatef(0.5F, 0.5F, 0.5F);
 
 	}
+	
+	/**
+	 * Render block on inventory, with completely custom testures. Does not swap terrain.
+	 * 
+	 * @param renderblocks block renderer
+	 * @param block the block
+	 * @param textures array of textures (bottom, top, east, west, north, south; whatever the sides mean)
+	 */
+	public static void renderInvBoxWithTextures(RenderBlocks renderblocks, Block block, int[] textures) {
+		Tessellator tessellator = Tessellator.instance;
+
+		block.setBlockBoundsForItemRender();
+		GL11.glTranslatef(-0.5F, -0.5F, -0.5F);
+		tessellator.startDrawingQuads();
+		tessellator.setNormal(0.0F, -1F, 0.0F);
+		renderblocks.renderBottomFace(block, 0.0D, 0.0D, 0.0D, textures[0]);
+		tessellator.draw();
+		tessellator.startDrawingQuads();
+		tessellator.setNormal(0.0F, 1.0F, 0.0F);
+		renderblocks.renderTopFace(block, 0.0D, 0.0D, 0.0D, textures[1]);
+		tessellator.draw();
+		tessellator.startDrawingQuads();
+		tessellator.setNormal(0.0F, 0.0F, -1F);
+		renderblocks.renderEastFace(block, 0.0D, 0.0D, 0.0D, textures[2]);
+		tessellator.draw();
+		tessellator.startDrawingQuads();
+		tessellator.setNormal(0.0F, 0.0F, 1.0F);
+		renderblocks.renderWestFace(block, 0.0D, 0.0D, 0.0D, textures[3]);
+		tessellator.draw();
+		tessellator.startDrawingQuads();
+		tessellator.setNormal(-1F, 0.0F, 0.0F);
+		renderblocks.renderNorthFace(block, 0.0D, 0.0D, 0.0D, textures[4]);
+		tessellator.draw();
+		tessellator.startDrawingQuads();
+		tessellator.setNormal(1.0F, 0.0F, 0.0F);
+		renderblocks.renderSouthFace(block, 0.0D, 0.0D, 0.0D, textures[5]);
+		tessellator.draw();
+		GL11.glTranslatef(0.5F, 0.5F, 0.5F);
+
+	}
 
 
 	/**

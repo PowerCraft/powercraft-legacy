@@ -1,5 +1,7 @@
 package net.minecraft.src;
 
+import java.util.Random;
+
 
 /**
  * PowerCraft color handling and manipulation class.
@@ -62,6 +64,29 @@ public class PC_Color implements PC_INBT {
 	 */
 	public PC_Color() {
 		r = g = b = 1D;
+	}
+	
+	private static Random rand = new Random();
+	
+	/**
+	 * Set all 3 channels to random color
+	 * @return
+	 */
+	public PC_Color random() {
+		do {
+			r = rand.nextFloat();
+			g = rand.nextFloat();
+			b = rand.nextFloat();
+		}while(r+g+b < 0.8F);
+		
+		return this;
+	}
+	
+	/**
+	 * @return new random color
+	 */
+	public static PC_Color randomColor() {
+		return new PC_Color().random();
 	}
 
 	/**

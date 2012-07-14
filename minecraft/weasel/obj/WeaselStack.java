@@ -146,7 +146,7 @@ public class WeaselStack extends WeaselObject {
 
 
 	@Override
-	public Object get() {
+	public Stack<WeaselObject> get() {
 		return stack;
 	}
 

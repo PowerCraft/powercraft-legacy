@@ -2,25 +2,7 @@ package net.minecraft.src;
 
 
 
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.Map.Entry;
-import java.util.Random;
-
-import net.minecraft.src.PClo_WirelessBus.IRadioDevice;
-
-import weasel.Calc;
-import weasel.IWeaselHardware;
-import weasel.WeaselEngine;
-import weasel.exception.SyntaxError;
-import weasel.exception.WeaselRuntimeException;
-import weasel.lang.Instruction;
-import weasel.obj.WeaselBoolean;
-import weasel.obj.WeaselInteger;
-import weasel.obj.WeaselObject;
-import weasel.obj.WeaselObject.WeaselObjectType;
 
 
 /**
@@ -29,7 +11,7 @@ import weasel.obj.WeaselObject.WeaselObjectType;
  * @author MightyPork
  * @copy (c) 2012
  */
-public class PClo_TileEntityGate extends PC_TileEntity implements IWeaselHardware, IRadioDevice {
+public class PClo_TileEntityGate extends PC_TileEntity {
 
 	/**
 	 * TEG
@@ -58,9 +40,6 @@ public class PClo_TileEntityGate extends PC_TileEntity implements IWeaselHardwar
 
 	private int updateIgnoreCounter = 10;
 	private long lastUpdateAbsoluteTime = 0;
-	
-	private boolean connectedToRadioBus = false;
-
 	/**
 	 * Set to true if the entity is removed. Saves resources.
 	 */
@@ -73,10 +52,6 @@ public class PClo_TileEntityGate extends PC_TileEntity implements IWeaselHardwar
 	public void updateEntity() {
 		if (zombie || worldObj == null) {
 			return;
-		}
-		
-		if(!connectedToRadioBus) {
-			mod_PClogic.DATA_BUS.connectToRedstoneBus(this);
 		}
 
 
@@ -91,7 +66,7 @@ public class PClo_TileEntityGate extends PC_TileEntity implements IWeaselHardwar
 		// if regular ticks aren't needed, use only every sixth.
 		if (gateType != PClo_GateType.FIFO_DELAYER && gateType != PClo_GateType.HOLD_DELAYER) {
 			if (updateIgnoreCounter-- <= 0) {
-				updateIgnoreCounter = (gateType == PClo_GateType.PROG) ? 1 : PRESCALLER;
+				updateIgnoreCounter = PRESCALLER;
 			} else {
 				return;
 			}
@@ -215,19 +190,8 @@ public class PClo_TileEntityGate extends PC_TileEntity implements IWeaselHardwar
 				stopSpawning_stopPulsar(worldObj.getBlockTileEntity(xCoord, yCoord - 1, zCoord), active);
 				break;
 
-			case PClo_GateType.PROG:
-				if (weaselError == null) {
-					if (!weasel.isProgramFinished) {
-						weaselInport = PClo_BlockGate.getWeaselInputStates(worldObj, xCoord, yCoord, zCoord);
+			case PClo_GateType.OBSOLETE_UNUSED:
 
-						try {
-							initWeaselIfNull();
-							weasel.run(400);
-						} catch (WeaselRuntimeException wre) {
-							setWeaselError(wre.getMessage());
-						}
-					}
-				}
 		}
 
 	}
@@ -287,25 +251,7 @@ public class PClo_TileEntityGate extends PC_TileEntity implements IWeaselHardwar
 
 		}
 
-		if (gateType == PClo_GateType.PROG) {
-			program = maintag.getString("program");
-			if (program.equals("")) program = default_program;
-			initWeaselIfNull();
-			weasel.readFromNBT(maintag.getCompoundTag("Weasel"));
-			
-			for(int i=0; i<weaselOutport.length; i++)
-				weaselOutport[i] = maintag.getBoolean("wo"+i);
-			
-
-			weaselError = maintag.getString("weaselError");
-			if (weaselError.equals("")) weaselError = null;
-			
-			NBTTagList list = maintag.getTagList("wradio");
-			
-			for(int i=0; i< list.tagCount(); i++) {
-				NBTTagCompound ct = (NBTTagCompound) list.tagAt(i);
-				weaselRadioSignals.put(ct.getString("C"), ct.getBoolean("S"));
-			}
+		if (gateType == PClo_GateType.OBSOLETE_UNUSED) {
 
 		}
 
@@ -351,26 +297,7 @@ public class PClo_TileEntityGate extends PC_TileEntity implements IWeaselHardwar
 
 		maintag.setInteger("inputVariant", inputVariant);
 
-		if (gateType == PClo_GateType.PROG) {
-			maintag.setString("program", program);
-			maintag.setString("weaselError", (weaselError == null ? "" : weaselError));
-			initWeaselIfNull();
-			maintag.setCompoundTag("Weasel", weasel.writeToNBT(new NBTTagCompound()));
-			
-			
-			for(int i=0; i<weaselOutport.length; i++)
-				maintag.setBoolean("wo"+i, weaselOutport[i]);
-			
-			
-			NBTTagList list = new NBTTagList();
-			for(Entry<String,Boolean> entry : weaselRadioSignals.entrySet()) {
-				NBTTagCompound ct = new NBTTagCompound();
-				ct.setString("C", entry.getKey());
-				ct.setBoolean("S", entry.getValue());
-				list.appendTag(ct);
-			}
-			
-			maintag.setTag("wradio", list);
+		if (gateType == PClo_GateType.OBSOLETE_UNUSED) {
 			
 		}
 
@@ -738,493 +665,4 @@ public class PClo_TileEntityGate extends PC_TileEntity implements IWeaselHardwar
 			inputVariant = 0;
 		}
 	}
-
-
-
-
-	/*
-	 * 
-	 * Weasel for the Programmable gates.
-	 * 
-	 */
-
-	//@formatter:off
-	
-	private static final String default_program = 
-			"# *** Weasel powered Microcontroller ***\n"+
-			"# update() is called when neighbor block changes.\n" +
-			"# Use variables F,L,R,B,U,D to access sides.\n" +
-			"\n\n"+
-			"function update(){\n"+
-			"  \n"+
-			"}\n";
-	
-	//@formatter:on
-
-	/** Programmable gate's program */
-	public String program = default_program;
-
-
-	private WeaselEngine weasel = null;
-
-	private String weaselError = null;
-
-	/**
-	 * Save the programmable gate's source code in this tile entity.
-	 * 
-	 * @param program the source code
-	 */
-	public void setProgram(String program) {
-		this.program = program;
-	}
-
-	private void initWeaselIfNull() {
-		if (weasel == null) {
-
-			weasel = new WeaselEngine(this);
-			try {
-
-				if (program.equals("")) {
-					program = default_program;
-				}
-
-				setAndStartNewProgram(program);
-
-			} catch (SyntaxError e) {
-				e.printStackTrace();
-			}
-
-		}
-	}
-
-	/**
-	 * Set program to the engine and start it.
-	 * 
-	 * @param program the source code
-	 * @throws SyntaxError
-	 */
-	public void setAndStartNewProgram(String program) throws SyntaxError {
-		setProgram(program);
-
-		initWeaselIfNull();
-		List<Instruction> list = WeaselEngine.compileProgram(program);
-		weasel.insertNewProgram(list);
-
-		weaselError = null;
-		weaselOutport = new boolean[] { false, false, false, false, false, false };
-		weaselRadioSignals.clear();
-
-		try {
-			if (worldObj != null) weasel.run(500);
-		} catch (WeaselRuntimeException e) {
-			weaselError = e.getMessage();
-		}
-
-	}
-
-	/**
-	 * Check program for errors.
-	 * 
-	 * @param program the source code
-	 * @throws SyntaxError
-	 */
-	public void checkProgramForErrors(String program) throws SyntaxError {
-		//List<Instruction> list = 
-		WeaselEngine.compileProgram(program);
-//		System.out.println();
-//		for (Instruction i : list) {
-//			System.out.println(i);
-//		}
-	}
-
-	private boolean[] weaselOutport = { false, false, false, false, false, false };
-	private boolean[] weaselInport = { false, false, false, false, false, false };
-	
-	private Map<String,Boolean> weaselRadioSignals = new HashMap<String, Boolean>(0);
-
-	private static Random rand = new Random();
-
-
-	@Override
-	public boolean doesProvideFunction(String functionName) {
-		return getProvidedFunctionNames().contains(functionName);
-	}
-	
-	private class BadFunc extends Exception{}
-
-	@Override
-	public WeaselObject callProvidedFunction(WeaselEngine engine, String functionName, WeaselObject[] args) {
-		try{
-			return fnSound(engine, functionName, args);
-		}catch(BadFunc e) {}
-		
-		try{
-			return fnAmbient(engine, functionName, args);
-		}catch(BadFunc e) {}
-		
-		try{
-			return fnBus(engine, functionName, args);
-		}catch(BadFunc e) {}
-		
-		throw new WeaselRuntimeException("Invalid call of function "+functionName);
-	}
-	
-	/**
-	 * try to execute a BUS function
-	 * @param engine the engine
-	 * @param functionName function name
-	 * @param args arguments given
-	 * @return return value
-	 * @throws BadFunc not supported by this method
-	 */
-	private WeaselObject fnBus(WeaselEngine engine, String functionName, WeaselObject[] args) throws BadFunc {
-		
-		if (functionName.equals("bus.set") || functionName.equals("bs")) {
-
-			mod_PClogic.DATA_BUS.setWeaselVariable((String) args[0].get(), args[1]);
-			return null;
-
-		} else if (functionName.equals("bus.get") || functionName.equals("bg")) {
-
-			return mod_PClogic.DATA_BUS.getWeaselVariable((String) args[0].get());
-
-		} else if (functionName.equals("radio")) {
-
-			if(args.length == 1) {
-				//receive
-				return new WeaselBoolean(mod_PClogic.DATA_BUS.getChannelState((String) args[0].get()));
-				
-			}else if(args.length == 2) {
-				//send
-				weaselRadioSignals.put((String) args[0].get(), Calc.toBoolean(args[1].get()));
-				return null;
-			}
-			
-		} else if (functionName.equals("rx")) {
-			//receive
-			return new WeaselBoolean(mod_PClogic.DATA_BUS.getChannelState((String) args[0].get()));
-			
-		} else if (functionName.equals("tx")) {
-			//send
-			weaselRadioSignals.put((String) args[0].get(), Calc.toBoolean(args[1].get()));
-			return null;
-			
-		}
-		
-		throw new BadFunc();
-		
-	}
-	
-	/**
-	 * Try to execute a function which works with the environment or surrounding blocks.
-	 * @param engine the engine
-	 * @param functionName function name
-	 * @param args arguments given
-	 * @return return value
-	 * @throws BadFunc not supported by this method
-	 */
-	private WeaselObject fnAmbient(WeaselEngine engine, String functionName, WeaselObject[] args) throws BadFunc {
-		
-		if (functionName.equals("time")) {
-
-			return new WeaselInteger(worldObj.worldInfo.getWorldTime());
-
-		} else if (functionName.equals("emptyChest") || functionName.equals("empty")) {
-
-			int rotation = worldObj.getBlockMetadata(xCoord, yCoord, zCoord) & 3;
-
-			String side = (String) args[0].get();
-
-			if (side.equals("B")) rotation = rotation + 0;
-			if (side.equals("F")) rotation = rotation + 2;
-			if (side.equals("L")) rotation = rotation + 1;
-			if (side.equals("R")) rotation = rotation + 3;
-			if (rotation > 3) rotation = rotation % 4;
-
-			return new WeaselBoolean(isChestEmpty(rotation));
-
-		} else if (functionName.equals("fullChest") || functionName.equals("full")) {
-
-			int rotation = worldObj.getBlockMetadata(xCoord, yCoord, zCoord) & 3;
-
-			String side = (String) args[0].get();
-			boolean strict = false;
-
-			if (args.length == 2) strict = (Boolean) args[1].get();
-
-			if (side.equals("B")) rotation = rotation + 0;
-			if (side.equals("F")) rotation = rotation + 2;
-			if (side.equals("L")) rotation = rotation + 1;
-			if (side.equals("R")) rotation = rotation + 3;
-
-			if (rotation > 3) rotation = rotation % 4;
-
-			return new WeaselBoolean(isChestFull(rotation, strict));
-
-		} else if (functionName.equals("sleep")) {
-
-			updateIgnoreCounter = (Integer) args[0].get();
-			if (updateIgnoreCounter < 0) updateIgnoreCounter = 0;
-			engine.requestPause();
-			return null;
-
-		} else if (functionName.equals("isDay")) {
-
-			return new WeaselBoolean(worldObj.isDaytime());
-
-		} else if (functionName.equals("idNight")) {
-
-			return new WeaselBoolean(!worldObj.isDaytime());
-
-		} else if (functionName.equals("isRaining")) {
-
-			return new WeaselBoolean(worldObj.isRaining());
-
-		}else {
-			throw new BadFunc();
-		}
-		
-	}
-	
-	/**
-	 * Try to execute a sound function
-	 * @param engine the engine
-	 * @param functionName function name
-	 * @param args arguments given
-	 * @return return value
-	 * @throws BadFunc not supported by this method
-	 */
-	private WeaselObject fnSound(WeaselEngine engine, String functionName, WeaselObject[] args) throws BadFunc {
-
-		float volume = 1.0F;
-		if (args.length >= 2 && args[1].getType() == WeaselObjectType.INTEGER) {
-			if (args.length == 2) volume = ((Integer) args[1].get()) / 10F;
-			if (volume > 5) volume = 5;
-			if (volume < 0) volume = 0.001F;
-		}
-
-		if (functionName.equals("oink")) {
-			worldObj.playSoundEffect(xCoord + 0.5D, yCoord + 0.5D, zCoord + 0.5D, "mob.pig", volume, (rand.nextFloat() - rand.nextFloat()) * 0.2F + 1.0F);
-		} else if (functionName.equals("moo")) {
-			worldObj.playSoundEffect(xCoord + 0.5D, yCoord + 0.5D, zCoord + 0.5D, "mob.cow", volume, (rand.nextFloat() - rand.nextFloat()) * 0.2F + 1.0F);
-		} else if (functionName.equals("baa")) {
-			worldObj.playSoundEffect(xCoord + 0.5D, yCoord + 0.5D, zCoord + 0.5D, "mob.sheep", volume, (rand.nextFloat() - rand.nextFloat()) * 0.2F + 1.0F);
-
-		} else if (functionName.equals("cluck")) {
-			worldObj.playSoundEffect(xCoord + 0.5D, yCoord + 0.5D, zCoord + 0.5D, "mob.chicken", volume, (rand.nextFloat() - rand.nextFloat()) * 0.2F + 1.0F);
-
-		} else if (functionName.equals("woof")) {
-			worldObj.playSoundEffect(xCoord + 0.5D, yCoord + 0.5D, zCoord + 0.5D, "mob.wolf.bark", volume, (rand.nextFloat() - rand.nextFloat()) * 0.2F + 1.0F);
-
-		} else if (functionName.equals("sound")) {
-			worldObj.playSoundEffect(xCoord + 0.5D, yCoord + 0.5D, zCoord + 0.5D, ((String) args[0].get()), volume, (rand.nextFloat() - rand.nextFloat()) * 0.2F + 1.0F);
-		} else if (functionName.equals("note")) {
-			if (args.length == 3) {
-				volume = ((Integer) args[2].get()) / 10F;
-			} else {
-				volume = 3F;
-			}
-
-			if (volume > 5) volume = 5;
-			if (volume < 0) volume = 0.001F;
-
-			playNote(((String) args[0].get()), ((Integer) args[1].get()), volume);
-			return null;
-		}else {
-			throw new BadFunc();
-		}
-
-		worldObj.spawnParticle("note", xCoord + 0.5D, yCoord + 0.3D, zCoord + 0.5D, (functionName.length() * (3 + args.length)) / 24D, 0.0D, 0.0D);
-
-		return null;
-	}
-
-	private void playNote(String type, int height, float volume) {
-		float f = (float) Math.pow(2D, (height - 12) / 12D);
-		String s = type;
-
-		if (type.equalsIgnoreCase("stone") || type.equalsIgnoreCase("bass drum") || type.equalsIgnoreCase("bassdrum") || type.equalsIgnoreCase("bd") || type.equalsIgnoreCase("drum")) {
-			s = "note.bd";
-		} else if (type.equalsIgnoreCase("sand") || type.equalsIgnoreCase("snare drum") || type.equalsIgnoreCase("snaredrum") || type.equalsIgnoreCase("sd") || type.equalsIgnoreCase("snare")) {
-			s = "note.snare";
-		} else if (type.equalsIgnoreCase("glass") || type.equalsIgnoreCase("stick") || type.equalsIgnoreCase("sticks") || type.equalsIgnoreCase("cl") || type.equalsIgnoreCase("clicks") || type.equalsIgnoreCase("click")) {
-			s = "note.hat";
-		} else if (type.equalsIgnoreCase("wood") || type.equalsIgnoreCase("bass guitar") || type.equalsIgnoreCase("bassguitar") || type.equalsIgnoreCase("bg") || type.equalsIgnoreCase("guitar")) {
-			s = "note.bassattack";
-		} else if (type.equalsIgnoreCase("dirt") || type.equalsIgnoreCase("harp") || type.equalsIgnoreCase("piano") || type.equalsIgnoreCase("pi")) {
-			s = "note.harp";
-		}
-
-		worldObj.playSoundEffect(xCoord + 0.5D, yCoord + 0.5D, zCoord + 0.5D, s, volume, f);
-		worldObj.spawnParticle("note", xCoord + 0.5D, yCoord + 0.3D, zCoord + 0.5D, height / 24D, 0.0D, 0.0D);
-	}
-
-	@Override
-	public WeaselObject getVariable(String name) {
-
-		//System.out.print("Get variable "+name+" = ");
-		WeaselObject obj = null;
-
-		if (name.equals("B") || name.equals("back")) obj = new WeaselBoolean(weaselInport[0]);
-		if (name.equals("L") || name.equals("left")) obj = new WeaselBoolean(weaselInport[1]);
-		if (name.equals("R") || name.equals("right")) obj = new WeaselBoolean(weaselInport[2]);
-		if (name.equals("F") || name.equals("front")) obj = new WeaselBoolean(weaselInport[3]);
-		if (name.equals("U") || name.equals("up") || name.equals("top")) obj = new WeaselBoolean(weaselInport[4]);
-		if (name.equals("D") || name.equals("down") || name.equals("bottom")) obj = new WeaselBoolean(weaselInport[5]);
-
-		//System.out.println(" ← get "+name+" = "+obj);
-
-		return obj;
-	}
-
-	@Override
-	public void setVariable(String name, Object object) {
-
-		//System.out.println("Set variable "+name+" = "+object);
-
-		boolean change = false;
-		boolean setval = Calc.toBoolean(object);
-
-		if (name.equals("B") || name.equals("back")) {
-			change = (weaselOutport[0] != setval);
-			weaselOutport[0] = setval;
-		} else if (name.equals("L") || name.equals("left")) {
-			change = (weaselOutport[1] != setval);
-			weaselOutport[1] = setval;
-		} else if (name.equals("R") || name.equals("right")) {
-			change = (weaselOutport[2] != setval);
-			weaselOutport[2] = setval;
-		} else if (name.equals("F") || name.equals("front")) {
-			change = (weaselOutport[3] != setval);
-			weaselOutport[3] = setval;
-		} else if (name.equals("U") || name.equals("up") || name.equals("top")) {
-			change = (weaselOutport[4] != setval);
-			weaselOutport[4] = setval;
-		} else if (name.equals("D") || name.equals("down") || name.equals("bottom")) {
-			change = (weaselOutport[5] != setval);
-			weaselOutport[5] = setval;
-		}
-
-
-//		System.out.println(" set → "+name+" = "+object);
-
-		if (change) {
-//			System.out.println("Sending notification.");
-			PClo_BlockGate.hugeUpdate(worldObj, xCoord, yCoord, zCoord, mod_PClogic.gateOn.blockID);
-//			worldObj.notifyBlocksOfNeighborChange(xCoord, yCoord, zCoord, mod_PClogic.gateOff.blockID);
-
-		}
-
-	}
-
-	@Override
-	public List<String> getProvidedFunctionNames() {
-		List<String> list = new ArrayList<String>();
-		list.add("oink");
-		list.add("moo");
-		list.add("baa");
-		list.add("cluck");
-		list.add("woof");
-		list.add("sound");
-		list.add("note");
-
-		list.add("isDay");
-		list.add("isNight");
-		list.add("time");
-		list.add("isRaining");
-		list.add("emptyChest");
-		list.add("empty");
-		list.add("fullChest");
-		list.add("full");
-		list.add("sleep");
-		
-		list.add("bus.set");
-		list.add("bus.get");
-		
-		list.add("bg");
-		list.add("bs");
-		
-		list.add("radio");
-		list.add("rx");
-		list.add("tx");
-		return list;
-	}
-
-	@Override
-	public List<String> getProvidedVariableNames() {
-
-		List<String> list = new ArrayList<String>();
-		list.add("B");
-		list.add("L");
-		list.add("R");
-		list.add("F");
-		list.add("U");
-		list.add("D");
-		list.add("back");
-		list.add("left");
-		list.add("right");
-		list.add("front");
-		list.add("up");
-		list.add("down");
-		list.add("top");
-		list.add("bottom");
-
-		return list;
-
-	}
-
-	/**
-	 * Get outport
-	 * 
-	 * @return array of booleans: Back, left, right, front
-	 */
-	public boolean[] getWeaselOutputStates() {
-		return new boolean[] { weaselOutport[1], weaselOutport[0], weaselOutport[2], weaselOutport[3], weaselOutport[4], weaselOutport[5] };
-
-	}
-
-
-	/**
-	 * Call weasel's function update
-	 */
-	public void weaselOnPinChanged() {
-
-		if (weaselError != null) return;
-
-//		System.out.println("Getting INPORT for weasel at "+yCoord);
-		weaselInport = PClo_BlockGate.getWeaselInputStates(worldObj, xCoord, yCoord, zCoord);
-//		System.out.println("Weasel at " + yCoord + " - pin changed update");
-//		System.out.println("BOTTOM = " + weaselInport[5]);
-//		System.out.println("TOP = " + weaselInport[4]);
-
-		try {
-			initWeaselIfNull();
-			weasel.callFunctionExternal("update", new Object[] {});
-			weasel.run(400);
-
-		} catch (WeaselRuntimeException wre) {
-			setWeaselError(wre.getMessage());
-		}
-
-	}
-
-	/**
-	 * @param message set the error message
-	 */
-	public void setWeaselError(String message) {
-		this.weaselError = message;
-	}
-
-	/**
-	 * @return message describing last weasel error
-	 */
-	public String getWeaselError() {
-		return this.weaselError;
-	}
-
-	@Override
-	public boolean doesTransmitOnChannel(String channel) {
-		return weaselRadioSignals.containsKey(channel) && weaselRadioSignals.get(channel) == true;
-	}
-
 }

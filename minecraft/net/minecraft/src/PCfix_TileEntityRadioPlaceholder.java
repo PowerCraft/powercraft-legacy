@@ -74,7 +74,7 @@ public class PCfix_TileEntityRadioPlaceholder extends PC_TileEntity {
 					worldObj.setBlockTileEntity(xCoord, yCoord, zCoord, ter);
 
 					if (type == 1) {
-						ter.active = mod_PClogic.DATA_BUS.getChannelState(channel);
+						ter.active = mod_PClogic.RADIO.getChannelState(channel);
 						if (ter.active) {
 							worldObj.setBlockMetadataWithNotify(i, j, k, 1);
 						}

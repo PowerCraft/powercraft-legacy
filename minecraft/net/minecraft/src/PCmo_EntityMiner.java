@@ -1407,7 +1407,7 @@ public class PCmo_EntityMiner extends Entity implements IInventory {
 		if (id == 7 && level == 8) {
 			return true;
 		}
-		if (isBlockUnbreakable(id) || PC_BlockUtils.hasFlag(worldObj, pos, "HARVEST_STOP")) {
+		if (isBlockUnbreakable(id) || PC_BlockUtils.hasFlag(worldObj, pos, "HARVEST_STOP") || PC_BlockUtils.hasFlag(worldObj, pos, "NO_HARVEST")) {
 			return false;
 		}
 		switch (level) {

@@ -38,7 +38,8 @@ public class InstructionList implements PC_INBT {
 	private boolean functionMapGenerated = false;
 
 	private WeaselEngine engine;
-	private int programCounter = 0;
+	/** program pointer, read only. */
+	public int programCounter = 0;
 
 	/**
 	 * Clear all from the list
@@ -141,6 +142,16 @@ public class InstructionList implements PC_INBT {
 	public void gotoLabel(String labelName) {
 		if (!labelMapGenerated) generateLabelMap();
 		movePointerTo(labelMap.get(labelName));
+	}
+	
+	/**
+	 * Check if function called from external caller does exist
+	 * @param functionName
+	 * @return
+	 */
+	public boolean canCallFunctionExternal(String functionName) {
+		if (!functionMapGenerated) generateFunctionMap();
+		return functionMap.get(functionName) != null;
 	}
 
 	/**

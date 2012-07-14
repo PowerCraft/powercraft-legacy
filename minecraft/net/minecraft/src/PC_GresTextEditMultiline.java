@@ -88,11 +88,11 @@ public class PC_GresTextEditMultiline extends PC_GresWidget {
 	public PC_GresTextEditMultiline(String text, int minWidth, int minHeight) {
 		super(minWidth > 20 ? minWidth : 20, minHeight > PC_Utils.mc().fontRenderer.FONT_HEIGHT + 26 ? minHeight : PC_Utils.mc().fontRenderer.FONT_HEIGHT + 26, text);
 		canAddWidget = false;
-		color[textColorEnabled] = 0xffffffff;
+		color[textColorEnabled] = 0xff000000 | PC_GresHighlight.colorDefault;
 		color[textColorShadowEnabled] = 0; //0xff383838;
-		color[textColorActive] = 0xffffffff;
-		color[textColorHover] = 0xffffffff;
-		color[textColorDisabled] = 0xffffffff;
+		color[textColorClicked] = 0xff000000 | PC_GresHighlight.colorDefault;
+		color[textColorHover] = 0xff000000 | PC_GresHighlight.colorDefault;
+		color[textColorDisabled] = 0xff000000 | PC_GresHighlight.colorDefault;
 		color[textColorShadowDisabled] = 0; //0xff383838;
 	}
 
@@ -107,11 +107,11 @@ public class PC_GresTextEditMultiline extends PC_GresWidget {
 	public PC_GresTextEditMultiline(String text, int minWidth, int minHeight, ArrayList<Keyword> keyWords) {
 		super(minWidth > 20 ? minWidth : 20, minHeight > PC_Utils.mc().fontRenderer.FONT_HEIGHT + 26 ? minHeight : PC_Utils.mc().fontRenderer.FONT_HEIGHT + 26, text);
 		canAddWidget = false;
-		color[textColorEnabled] = 0xffffffff;
+		color[textColorEnabled] = 0xff000000 | PC_GresHighlight.colorDefault;
 		color[textColorShadowEnabled] = 0; //0xff383838;
-		color[textColorActive] = 0xffffffff;
-		color[textColorHover] = 0xffffffff;
-		color[textColorDisabled] = 0xffffffff;
+		color[textColorClicked] = 0xff000000 | PC_GresHighlight.colorDefault;
+		color[textColorHover] = 0xff000000 | PC_GresHighlight.colorDefault;
+		color[textColorDisabled] = 0xff000000 | PC_GresHighlight.colorDefault;
 		color[textColorShadowDisabled] = 0; //0xff383838;
 		this.keyWords = keyWords;
 	}
@@ -202,7 +202,7 @@ public class PC_GresTextEditMultiline extends PC_GresWidget {
 	private int getColorForWord(String word){
 		Keyword kw = getKeywordForWord(word, true);
 		if(kw==null)
-			return 0xffffffff;
+			return 0xff000000 | PC_GresHighlight.colorDefault;
 		return kw.color;
 	}
 	
@@ -278,7 +278,7 @@ public class PC_GresTextEditMultiline extends PC_GresWidget {
 	
 	private void drawSpecialChar(PC_CoordI offsetPos, int x, int y, String word, boolean highlited) {
 		if(!highlited){
-			drawStringStringAt(offsetPos, x, y, word,  0xffffffff);
+			drawStringStringAt(offsetPos, x, y, word,  0xff000000 | PC_GresHighlight.colorDefault);
 			return;
 		}
 		Keyword kw = null;
@@ -297,13 +297,13 @@ public class PC_GresTextEditMultiline extends PC_GresWidget {
 			}
 			if(kw == null)
 				kw = keywordToFinish;
-			drawStringStringAt(offsetPos, x, y, w, kw!=null ? kw.color : 0xffffffff);
+			drawStringStringAt(offsetPos, x, y, w, kw!=null ? kw.color : 0xff000000 | PC_GresHighlight.colorDefault);
 			x += getStringWidth(w);
 		}
 	}
 	
 	private void drawWord(PC_CoordI offsetPos, int x, int y, String word, boolean highlited) {
-		drawStringStringAt(offsetPos, x, y, word,  highlited ? getColorForWord(word) : 0xffffffff);
+		drawStringStringAt(offsetPos, x, y, word,  highlited ? getColorForWord(word) : 0xff000000 | PC_GresHighlight.colorDefault);
 		//getFontRenderer().drawStringWithShadow(word.substring(strposStart, strposStart + strSize), offsetPos.x + pos.x + 6 + xp, offsetPos.y + pos.y + 6 + (y - scroll.y) * PC_Utils.mc().fontRenderer.FONT_HEIGHT, color);
 	}
 
@@ -392,7 +392,7 @@ public class PC_GresTextEditMultiline extends PC_GresWidget {
 		drawVerticalLine(offsetPos.x + pos.x, offsetPos.y + pos.y, offsetPos.y + pos.y + size.y - 1, 0xffA0A0A0);
 		drawVerticalLine(offsetPos.x + pos.x + size.x - 1, offsetPos.y + pos.y, offsetPos.y + pos.y + size.y - 12, 0xffA0A0A0);
 
-		drawRect(offsetPos.x + pos.x + 1, offsetPos.y + pos.y + 1, offsetPos.x + pos.x + size.x - 12, offsetPos.y + pos.y + size.y - 12, 0xff000000);
+		drawRect(offsetPos.x + pos.x + 1, offsetPos.y + pos.y + 1, offsetPos.x + pos.x + size.x - 12, offsetPos.y + pos.y + size.y - 12, 0xff000000 | PC_GresHighlight.colorBackground);
 
 		int scrollbarBg = 0x909090;
 

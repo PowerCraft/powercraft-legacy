@@ -14,6 +14,8 @@ public class PClo_Renderer {
 	public static int radioRenderer;
 	/** Sensor block renderer (item only) */
 	public static int sensorRenderer;
+	/** Renderer for weasel devices (items only) */
+	public static int weaselRenderer;
 
 	/**
 	 * Render block by render type.<br>
@@ -40,18 +42,27 @@ public class PClo_Renderer {
 	 * @param rtype render type
 	 */
 	public static void renderInvBlockByType(RenderBlocks renderblocks, Block block, int meta, int rtype) {
+
 		if (rtype == radioRenderer) {
 			renderInvBlockRadio(renderblocks, block, meta);
+			return;
 		}
+
 		if (rtype == sensorRenderer) {
 			renderInvBlockSensor(renderblocks, (PClo_BlockSensor) block, meta);
+			return;
 		}
+
+		if (rtype == weaselRenderer) {
+			renderInvBlockWeasel(renderblocks, (PClo_BlockWeasel) block, meta);
+			return;
+		}
+
 	}
 
 	private static void renderInvBlockRadio(RenderBlocks renderblocks, Block block, int meta) {
-		RenderEngine renderengine = ModLoader.getMinecraftInstance().renderEngine;
 
-		renderengine.bindTexture(renderengine.getTexture(mod_PClogic.getTerrainFile()));
+		PC_Renderer.swapTerrain(mod_PClogic.getTerrainFile());
 
 		int tx = meta == 0 ? 69 : 70;
 
@@ -71,14 +82,13 @@ public class PClo_Renderer {
 
 		block.setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 0.255F, 1.0F);
 
-		renderengine.bindTexture(renderengine.getTexture("/terrain.png"));
+		PC_Renderer.resetTerrain(true);
 
 	}
 
 	private static void renderInvBlockSensor(RenderBlocks renderblocks, PClo_BlockSensor block, int meta) {
-		RenderEngine renderengine = ModLoader.getMinecraftInstance().renderEngine;
 
-		renderengine.bindTexture(renderengine.getTexture(mod_PClogic.getTerrainFile()));
+		PC_Renderer.swapTerrain(mod_PClogic.getTerrainFile());
 
 		float px = 0.0625F;
 
@@ -92,7 +102,37 @@ public class PClo_Renderer {
 		PC_Renderer.renderInvBoxWithTexture(renderblocks, block, 68);
 		block.setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 1.0F, 1.0F);
 
-		renderengine.bindTexture(renderengine.getTexture("/terrain.png"));
+		PC_Renderer.resetTerrain(true);
+
+	}
+
+	private static void renderInvBlockWeasel(RenderBlocks renderblocks, PClo_BlockWeasel block, int meta) {
+
+		PC_Renderer.swapTerrain(mod_PClogic.getTerrainFile());
+
+		float px = 0.0625F;
+
+		switch (meta) {
+			case PClo_WeaselType.CORE:
+				block.setBlockBounds(0, 0, 0, 16 * px, 3 * px, 16 * px);
+				PC_Renderer.renderInvBoxWithTextures(renderblocks, block, new int[] { 6, 224, 5, 5, 5, 5 });
+
+				block.setBlockBounds(4 * px, 3 * px, 3 * px, 12 * px, 5 * px, 13 * px);
+				PC_Renderer.renderInvBoxWithTextures(renderblocks, block, new int[] { 0, 196, 195, 195, 195, 195 });
+				block.setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 1.0F, 1.0F);
+				break;
+
+			case PClo_WeaselType.PORT:
+				block.setBlockBounds(0, 0, 0, 16 * px, 3 * px, 16 * px);
+				PC_Renderer.renderInvBoxWithTextures(renderblocks, block, new int[] { 6, 208, 5, 5, 5, 5 });
+
+				block.setBlockBounds(5 * px, 3 * px, 5 * px, 11 * px, 5 * px, 11 * px);
+				PC_Renderer.renderInvBoxWithTextures(renderblocks, block, new int[] { 0, 194, 193, 193, 193, 193 });
+				block.setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 1.0F, 1.0F);
+				break;
+		}
+
+		PC_Renderer.resetTerrain(true);
 
 	}
 }

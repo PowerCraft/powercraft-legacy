@@ -1,6 +1,7 @@
 package weasel;
 
 
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map.Entry;
 import java.util.regex.Matcher;
@@ -27,6 +28,21 @@ public class Calc {
 
 	static {
 		jep = JEP.createWeaselParser(false);
+	}
+	
+	public static String generateUniqueName() {
+		long time = System.currentTimeMillis();
+		String letters = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
+		String out = "";
+		int base = letters.length();
+		while(time > 0) {
+			int pos = (int) (time % base);
+			out = letters.charAt(pos) + out;
+			time -= pos;
+			time = time / base;
+		}
+		
+		return out;
 	}
 
 	/**
@@ -73,7 +89,7 @@ public class Calc {
 			expression = sb.toString();
 		}
 
-		matcher = Compiler.variablePattern.matcher(expression);
+		matcher = Compiler.variableInCodePattern.matcher(expression);
 
 		while (matcher.find()) {
 			String name = matcher.group(1);

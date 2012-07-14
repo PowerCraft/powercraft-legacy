@@ -15,8 +15,11 @@ public class PC_GresButtonImage extends PC_GresButton {
 	private String texture;
 	private PC_CoordI textureLeftTop, imageSize;
 
+
 	/**
-	 * @param label button label
+	 * @param imageFile
+	 * @param leftTop
+	 * @param imageSize
 	 */
 	public PC_GresButtonImage(String imageFile, PC_CoordI leftTop, PC_CoordI imageSize) {
 		super("");
