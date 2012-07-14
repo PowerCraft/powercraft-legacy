@@ -114,7 +114,7 @@ public class PClo_ModelChip extends ModelBase {
 			port[3].render(0.0625F);			
 		}else		
 		if(deviceType == PClo_WeaselType.DISPLAY) {
-			display[2].render(0.0625F);			
+			display[1].render(0.0625F);			
 		}
 		
 	}
