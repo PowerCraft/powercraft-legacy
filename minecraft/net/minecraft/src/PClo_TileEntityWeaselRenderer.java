@@ -12,13 +12,13 @@ import org.lwjgl.opengl.GL11;
  */
 public class PClo_TileEntityWeaselRenderer extends TileEntitySpecialRenderer {
 
-	private PClo_ModelChip model;
+	private PClo_ModelWeasel model;
 
 	/**
 	 * radio te renderer
 	 */
 	public PClo_TileEntityWeaselRenderer() {
-		model = new PClo_ModelChip();
+		model = new PClo_ModelWeasel();
 	}
 
 	@Override
@@ -58,7 +58,7 @@ public class PClo_TileEntityWeaselRenderer extends TileEntitySpecialRenderer {
 			f1 = ((PClo_WeaselPluginDisplay) plugin).rotation * 360 / 16F;
             GL11.glRotatef(f1, 0.0F, 1.0F, 0.0F);
 		}else {
-			GL11.glRotatef( -90*(tew.getCoord().getMeta(tew.worldObj) & 3) , 0, 1, 0);		
+			GL11.glRotatef( 90*(tew.getCoord().getMeta(tew.worldObj) & 3) , 0, 1, 0);		
 		}
 		model.renderDevice();
 		

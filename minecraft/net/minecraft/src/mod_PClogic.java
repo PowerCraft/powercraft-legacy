@@ -401,9 +401,11 @@ public class mod_PClogic extends PC_Module {
 		map.put("tile.PCloWeasel.core.name", "Weasel Controller");
 		map.put("tile.PCloWeasel.port.name", "Wireless Port");
 		map.put("tile.PCloWeasel.display.name", "Wireless Display");
+		map.put("tile.PCloWeasel.sound.name", "Wireless Speaker");
 		map.put("pc.weasel.core.desc", "programmable chip");
 		map.put("pc.weasel.port.desc", "expansion redstone port");
-		map.put("pc.weasel.display.desc", "expansion display");
+		map.put("pc.weasel.display.desc", "display for Weasel");
+		map.put("pc.weasel.sound.desc", "electronic noteblock");
 		
 		map.put("pc.weasel.activatorGetNetwork", "Network \"%s\" assigned to activation crystal.");
 		map.put("pc.weasel.activatorSetNetwork", "Device connected to network \"%s\".");
@@ -416,6 +418,8 @@ public class mod_PClogic extends PC_Module {
 		map.put("pc.gui.weasel.close", "Close");
 		
 		map.put("pc.gui.weasel.port.portName", "Port name:");
+		map.put("pc.gui.weasel.display.displayName", "Display name:");
+		map.put("pc.gui.weasel.sound.speakerName", "Speaker name:");
 		
 		
 		map.put("pc.gui.weasel.core.program", "Program");
@@ -434,13 +438,17 @@ public class mod_PClogic extends PC_Module {
 		map.put("pc.gui.weasel.core.colorLabel", "Network color:");
 		
 		map.put("pc.gui.weasel.core.title", "Weasel Controller");
-		map.put("pc.gui.weasel.port.title", "Expansion port for Weasel Controller");		
+		map.put("pc.gui.weasel.port.title", "Expansion port for Weasel Controller");
+		map.put("pc.gui.weasel.display.title", "Display for Weasel Controller");
+		map.put("pc.gui.weasel.sound.title", "Audio output for Weasel");		
+		
 		map.put("pc.gui.weasel.core.undoAll", "Undo All");
 		map.put("pc.gui.weasel.core.check", "Check");
 		map.put("pc.gui.weasel.core.launch", "Launch");
-		map.put("pc.gui.weasel.core.running", "Running.");
-		map.put("pc.gui.weasel.core.paused", "Paused.");
-		map.put("pc.gui.weasel.core.idle", "Idle.");
+		map.put("pc.gui.weasel.core.running", "Running");
+		map.put("pc.gui.weasel.core.paused", "Paused");
+		map.put("pc.gui.weasel.core.idle", "Idle");
+		map.put("pc.gui.weasel.core.waiting", "Waiting");
 		map.put("pc.gui.weasel.core.pause", "Pause");
 		map.put("pc.gui.weasel.core.resume", "Resume");
 		map.put("pc.gui.weasel.core.restart", "Restart");
@@ -691,7 +699,22 @@ public class mod_PClogic extends PC_Module {
 		ModLoader.addRecipe(
 				new ItemStack(weaselDevice, 1, PClo_WeaselType.CORE),
 				new Object[] { "SRS", "RCR", "SRS",
-					'S', Block.stone, 'R', Item.redstone, 'C', mod_PCcore.powerCrystal });
+					'S', new ItemStack(Block.stairSingle,1,0), 'R', Item.redstone, 'C', mod_PCcore.powerCrystal });
+		
+		ModLoader.addRecipe(
+				new ItemStack(weaselDevice, 1, PClo_WeaselType.PORT),
+				new Object[] { "RGR", "SSS",
+					'S', new ItemStack(Block.stairSingle,1,0), 'R', Item.redstone, 'G', Item.goldNugget });
+		
+		ModLoader.addRecipe(
+				new ItemStack(weaselDevice, 1, PClo_WeaselType.DISPLAY),
+				new Object[] { " G ", " R ","SSS",
+					'S', new ItemStack(Block.stairSingle,1,0), 'R', Item.redstone, 'G', Block.thinGlass });
+		
+		ModLoader.addRecipe(
+				new ItemStack(weaselDevice, 1, PClo_WeaselType.SPEAKER),
+				new Object[] { " N ", " R ","SSS",
+					'S', new ItemStack(Block.stairSingle,1,0), 'R', Item.redstone, 'N', Block.music });
 
 		
 		// *** lights ***
@@ -955,7 +978,7 @@ public class mod_PClogic extends PC_Module {
 
 	@Override
 	public boolean onTickInGame(float f, Minecraft minecraft) {
-		if (tickCounter++ % 20 == 0) {
+		if (tickCounter++ % 100 == 0) {
 			if (NETWORK.needsSave) {
 				NETWORK.saveToFile();
 			}
@@ -965,6 +988,9 @@ public class mod_PClogic extends PC_Module {
 
 	@Override
 	public boolean onTickInGUI(float f, Minecraft minecraft, GuiScreen guiscreen) {
+		
+		if(guiscreen == null) return true;
+		
 		if (NETWORK.needsSave) {
 			NETWORK.saveToFile();
 		}

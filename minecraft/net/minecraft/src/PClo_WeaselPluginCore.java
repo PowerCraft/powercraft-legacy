@@ -21,7 +21,6 @@ import weasel.lang.Instruction;
 import weasel.obj.WeaselBoolean;
 import weasel.obj.WeaselInteger;
 import weasel.obj.WeaselObject;
-import weasel.obj.WeaselObject.WeaselObjectType;
 
 
 /**
@@ -37,19 +36,20 @@ public class PClo_WeaselPluginCore extends PClo_WeaselPlugin implements IWeaselH
 	 * Set this flag to pause weasel execution.
 	 */
 	public boolean paused = true;
-	
+
 	private WeaselNetwork coreProvidedNetwork = null;
-	
+
 	/**
 	 * Rename the network, and reconnect all members.
+	 * 
 	 * @param newName new network name.
 	 */
 	public void renameNetwork(String newName) {
-		if(coreProvidedNetwork != null) {
+		if (coreProvidedNetwork != null) {
 			mod_PClogic.NETWORK.renameNetwork(getNetworkName(), newName);
 		}
 	}
-	
+
 	//@formatter:off	
 	private static final String default_program = 
 			"# *** Weasel powered Microcontroller ***\n"+
@@ -90,21 +90,21 @@ public class PClo_WeaselPluginCore extends PClo_WeaselPlugin implements IWeaselH
 			mod_PClogic.RADIO.connectToRedstoneBus(this);
 		}
 
-		if(coreProvidedNetwork == null) {
-			
+		if (coreProvidedNetwork == null) {
+
 			// do not call setNetworkName, it doesn't exist yet and setNetworkName tries to connect
 			String netname = Calc.generateUniqueName();
-			
+
 			coreProvidedNetwork = getNetManager().createNetwork(netname);
 			setNetworkNameAndConnect(netname);
-			
+
 		}
 
 
 		if (weaselError == null) {
 			initWeaselIfNull();
 			if (!weasel.isProgramFinished && !paused) {
-				
+
 				if (sleepTimer > 0) {
 					sleepTimer--;
 					return;
@@ -174,15 +174,15 @@ public class PClo_WeaselPluginCore extends PClo_WeaselPlugin implements IWeaselH
 			NBTTagCompound ct = (NBTTagCompound) list.tagAt(i);
 			weaselRadioSignals.put(ct.getString("C"), ct.getBoolean("S"));
 		}
-		
+
 		paused = tag.getBoolean("Paused");
-		sleepTimer = tag.getInteger("Sleep")+10;
-		
+		sleepTimer = tag.getInteger("Sleep") + 10;
+
 		NBTTagCompound networkTag = tag.getCompoundTag("NetworkData");
 		// network name was already read by superclass.
 		getNetManager().registerNetwork(getNetworkName(), coreProvidedNetwork = new WeaselNetwork().readFromNBT(networkTag));
 		registerToNetwork();
-		
+
 		return this;
 	}
 
@@ -203,15 +203,15 @@ public class PClo_WeaselPluginCore extends PClo_WeaselPlugin implements IWeaselH
 		}
 
 		tag.setTag("wradio", list);
-		
+
 		tag.setBoolean("Paused", paused);
 		tag.setInteger("Sleep", sleepTimer);
-		
-		
-		
+
+
+
 		// network name will be saved by superclass		
-		if(coreProvidedNetwork != null) tag.setCompoundTag("NetworkData", coreProvidedNetwork.writeToNBT(new NBTTagCompound()));
-		
+		if (coreProvidedNetwork != null) tag.setCompoundTag("NetworkData", coreProvidedNetwork.writeToNBT(new NBTTagCompound()));
+
 		return tag;
 	}
 
@@ -256,15 +256,13 @@ public class PClo_WeaselPluginCore extends PClo_WeaselPlugin implements IWeaselH
 	 */
 	public void setAndStartNewProgram(String program) throws SyntaxError {
 		setProgram(program);
+		
+		restartAllNetworkDevices();
 
 		initWeaselIfNull();
 		List<Instruction> list = WeaselEngine.compileProgram(program);
 		weasel.insertNewProgram(list);
 
-		weaselError = null;
-		resetOutport();
-		weaselRadioSignals.clear();
-		paused = false;
 
 //		try {
 //			if (world() != null) weasel.run(500);
@@ -273,25 +271,25 @@ public class PClo_WeaselPluginCore extends PClo_WeaselPlugin implements IWeaselH
 //		}
 
 	}
-	
+
 	/**
 	 * Force restart program, but preserve source and instruction list.
 	 */
-	public void restartProgram() {
-		initWeaselIfNull();
-		weasel.restartProgramClearGlobals();
-		weaselError = null;
-		resetOutport();
-		weaselRadioSignals.clear();
-		paused = false;
-		sleepTimer = 0;
+	public void restartAllNetworkDevices() {
+		
+		if(getNetwork() == null) return;
+		
+		for (NetworkMember member : getNetwork().members.values()) {
+			if (member != null && member instanceof PClo_WeaselPlugin) ((PClo_WeaselPlugin) member).restartDevice();
+		}
+		
 	}
-	
+
 	/**
 	 * Stop program, clear outputs, prepare for new program execution.
 	 */
 	public void stopProgram() {
-		restartProgram();
+		restartAllNetworkDevices();
 		weasel.isProgramFinished = true;
 		paused = false;
 	}
@@ -303,8 +301,7 @@ public class PClo_WeaselPluginCore extends PClo_WeaselPlugin implements IWeaselH
 	 * @throws SyntaxError
 	 */
 	public void checkProgramForErrors(String program) throws SyntaxError {
-		List<Instruction> list = 
-		WeaselEngine.compileProgram(program);
+		List<Instruction> list = WeaselEngine.compileProgram(program);
 		System.out.println();
 		for (Instruction i : list) {
 			System.out.println(i);
@@ -319,22 +316,26 @@ public class PClo_WeaselPluginCore extends PClo_WeaselPlugin implements IWeaselH
 
 	@Override
 	public boolean doesProvideFunction(String functionName) {
-		
+
 		// functions from the network are already added by getProvidedFunctionNames
-		if(getProvidedFunctionNames().contains(functionName)) return true;
-		
+		if (getProvidedFunctionNames().contains(functionName)) return true;
+
 		return false;
-		
+
 	}
 
 	private class BadFunc extends Exception {}
 
 	@Override
 	public WeaselObject callProvidedFunction(WeaselEngine engine, String functionName, WeaselObject[] args) {
-		try {
-			return fnSound(engine, functionName, args);
-		} catch (BadFunc e) {}
 
+		if(functionName.equals("bell")) {
+			world().playSoundEffect(coord().x + 0.5D, coord().y + 0.5D, coord().z + 0.5D, "random.orb", 0.8F, (rand.nextFloat() - rand.nextFloat()) * 0.2F + 1.0F);
+			world().spawnParticle("note", coord().x + 0.5D, coord().y + 0.3D, coord().z + 0.5D, (functionName.length() * (3 + args.length)) / 24D, 0.0D, 0.0D);
+			return null;
+		}
+		
+		
 		try {
 			return fnAmbient(engine, functionName, args);
 		} catch (BadFunc e) {}
@@ -342,18 +343,18 @@ public class PClo_WeaselPluginCore extends PClo_WeaselPlugin implements IWeaselH
 		try {
 			return fnBus(engine, functionName, args);
 		} catch (BadFunc e) {}
-		
-		
+
+
 		WeaselNetwork net = getNetwork();
-		if(net != null) {
-			for(NetworkMember member: net.members.values()) {
-				if(member == this) continue;
-				if(member.doesProvideFunction(functionName)) {
+		if (net != null) {
+			for (NetworkMember member : net.members.values()) {
+				if (member == this) continue;
+				if (member.doesProvideFunction(functionName)) {
 					return member.callProvidedFunction(engine, functionName, args);
 				}
 			}
 		}
-		
+
 
 		throw new WeaselRuntimeException("Invalid call of function " + functionName);
 	}
@@ -368,15 +369,15 @@ public class PClo_WeaselPluginCore extends PClo_WeaselPlugin implements IWeaselH
 	 * @throws BadFunc not supported by this method
 	 */
 	private WeaselObject fnBus(WeaselEngine engine, String functionName, WeaselObject[] args) throws BadFunc {
-
+		
 		if (functionName.equals("set")) {
 
-			mod_PClogic.NETWORK.setGlobalVariable((String) args[0].get(), args[1]);
+			getNetManager().setGlobalVariable((String) args[0].get(), args[1]);
 			return null;
 
 		} else if (functionName.equals("get")) {
 
-			return mod_PClogic.NETWORK.getGlobalVariable((String) args[0].get());
+			return getNetManager().getGlobalVariable((String) args[0].get());
 
 		} else if (functionName.equals("rx")) {
 			//receive
@@ -419,12 +420,12 @@ public class PClo_WeaselPluginCore extends PClo_WeaselPlugin implements IWeaselH
 
 		} else if (functionName.equals("sleep")) {
 
-			if(args.length == 0) {
+			if (args.length == 0) {
 				sleepTimer = 1;
 				engine.requestPause();
 				return null;
 			}
-			
+
 			sleepTimer = (Integer) args[0].get();
 			if (sleepTimer < 0) sleepTimer = 0;
 			engine.requestPause();
@@ -448,111 +449,7 @@ public class PClo_WeaselPluginCore extends PClo_WeaselPlugin implements IWeaselH
 
 	}
 
-	/**
-	 * Try to execute a sound function
-	 * 
-	 * @param engine the engine
-	 * @param functionName function name
-	 * @param args arguments given
-	 * @return return value
-	 * @throws BadFunc not supported by this method
-	 */
-	private WeaselObject fnSound(WeaselEngine engine, String functionName, WeaselObject[] args) throws BadFunc {
 
-		WeaselObject ret = null;
-		
-		do {
-			float volume = 1.0F;
-			
-			if(args.length > 0) {
-				if(args[args.length-1] instanceof WeaselInteger) {
-					volume = ((Integer) args[args.length-1].get()) / 10F;
-				}
-			}
-			
-			if (volume > 5) volume = 5;
-			if (volume < 0) volume = 0.001F;
-			
-			// sound(resource [, volume])
-			if (functionName.equals("sound")) {
-				world().playSoundEffect(coord().x + 0.5D, coord().y + 0.5D, coord().z + 0.5D, ((String) args[0].get()), volume, (rand.nextFloat() - rand.nextFloat()) * 0.2F + 1.0F);
-				break;
-			}
-			
-			// note(resourceOrInstrument, tone [, volume])
-			if (functionName.equals("note")) {	
-				if(args.length != 3) volume = 3;
-				return playNote(((String) args[0].get()), ((Integer) args[1].get()), volume);
-			}
-			
-			String sound = "random.orb";
-			boolean direct = false;
-	
-			// ???([volume]);
-			if (functionName.equals("oink")) {
-				sound = "mob.pig";
-				direct = true;
-				
-			} else if (functionName.equals("bell")) {
-				sound = "random.orb";
-				direct = true;
-				
-			} else if (functionName.equals("click")) {
-				sound = "random.click";
-				direct = true;
-				
-			} else if (functionName.equals("moo")) {
-				sound = "mob.cow";
-				direct = true;
-				
-			} else if (functionName.equals("baa")) {
-				sound = "mob.sheep";
-				direct = true;
-	
-			} else if (functionName.equals("cluck")) {
-				sound = "mob.chicken";
-				direct = true;
-	
-			} else if (functionName.equals("woof")) {
-				sound = "mob.wolf.bark";
-				direct = true;
-	
-			}
-			
-			if(direct) {
-				world().playSoundEffect(coord().x + 0.5D, coord().y + 0.5D, coord().z + 0.5D, sound, volume, (rand.nextFloat() - rand.nextFloat()) * 0.2F + 1.0F);
-				break;
-			}			
-			
-			throw new BadFunc();
-			
-		}while(false);
-		
-		world().spawnParticle("note", coord().x + 0.5D, coord().y + 0.3D, coord().z + 0.5D, (functionName.length() * (3 + args.length)) / 24D, 0.0D, 0.0D);
-
-		return ret;
-	}
-
-	private WeaselObject playNote(String type, int tone, float volume) {
-		float f = (float) Math.pow(2D, (tone - 12) / 12D);
-		String s = type;
-
-		if (type.equalsIgnoreCase("stone") || type.equalsIgnoreCase("bass drum") || type.equalsIgnoreCase("bassdrum") || type.equalsIgnoreCase("bd") || type.equalsIgnoreCase("drum")) {
-			s = "note.bd";
-		} else if (type.equalsIgnoreCase("sand") || type.equalsIgnoreCase("snare drum") || type.equalsIgnoreCase("snaredrum") || type.equalsIgnoreCase("sd") || type.equalsIgnoreCase("snare")) {
-			s = "note.snare";
-		} else if (type.equalsIgnoreCase("glass") || type.equalsIgnoreCase("stick") || type.equalsIgnoreCase("sticks") || type.equalsIgnoreCase("cl") || type.equalsIgnoreCase("clicks") || type.equalsIgnoreCase("click")) {
-			s = "note.hat";
-		} else if (type.equalsIgnoreCase("wood") || type.equalsIgnoreCase("bass guitar") || type.equalsIgnoreCase("bassguitar") || type.equalsIgnoreCase("bg") || type.equalsIgnoreCase("guitar")) {
-			s = "note.bassattack";
-		} else if (type.equalsIgnoreCase("dirt") || type.equalsIgnoreCase("harp") || type.equalsIgnoreCase("piano") || type.equalsIgnoreCase("pi")) {
-			s = "note.harp";
-		}
-
-		world().playSoundEffect(coord().x + 0.5D, coord().y + 0.5D, coord().z + 0.5D, s, volume, f);
-		world().spawnParticle("note", coord().x + 0.5D, coord().y + 0.3D, coord().z + 0.5D, tone / 24D, 0.0D, 0.0D);
-		return null;
-	}
 
 	@Override
 	public WeaselObject getVariable(String name) {
@@ -561,28 +458,23 @@ public class PClo_WeaselPluginCore extends PClo_WeaselPlugin implements IWeaselH
 
 		if (name.equals("B") || name.equals("back")) {
 			obj = new WeaselBoolean(getInport("B"));
-		}else
-		if (name.equals("L") || name.equals("left")) {
+		} else if (name.equals("L") || name.equals("left")) {
 			obj = new WeaselBoolean(getInport("L"));
-		}else
-		if (name.equals("R") || name.equals("right")) {
+		} else if (name.equals("R") || name.equals("right")) {
 			obj = new WeaselBoolean(getInport("R"));
-		}else
-		if (name.equals("F") || name.equals("front")) {
+		} else if (name.equals("F") || name.equals("front")) {
 			obj = new WeaselBoolean(getInport("F"));
-		}else
-		if (name.equals("U") || name.equals("up") || name.equals("top")) {
+		} else if (name.equals("U") || name.equals("up") || name.equals("top")) {
 			obj = new WeaselBoolean(getInport("U"));
-		}else
-		if (name.equals("D") || name.equals("down") || name.equals("bottom")) {
+		} else if (name.equals("D") || name.equals("down") || name.equals("bottom")) {
 			obj = new WeaselBoolean(getInport("D"));
-		}else {
+		} else {
 			WeaselNetwork net = getNetwork();
-			if(net != null) {
-				for(NetworkMember member: net.members.values()) {
-					if(member == this) continue;
+			if (net != null) {
+				for (NetworkMember member : net.members.values()) {
+					if (member == this) continue;
 					obj = member.getVariable(name);
-					if(obj != null) break;
+					if (obj != null) break;
 				}
 			}
 		}
@@ -611,10 +503,10 @@ public class PClo_WeaselPluginCore extends PClo_WeaselPlugin implements IWeaselH
 			setOutport("D", setval);
 		} else {
 			WeaselNetwork net = getNetwork();
-			if(net != null) {
-				for(NetworkMember member: net.members.values()) {
-					if(member == this) continue;
-					if(member.getVariable(name) != null) {
+			if (net != null) {
+				for (NetworkMember member : net.members.values()) {
+					if (member == this) continue;
+					if (member.getVariable(name) != null) {
 						member.setVariable(name, object);
 						break;
 					}
@@ -631,14 +523,8 @@ public class PClo_WeaselPluginCore extends PClo_WeaselPlugin implements IWeaselH
 	@Override
 	public List<String> getProvidedFunctionNames() {
 		List<String> list = new ArrayList<String>();
-		list.add("oink");
-		list.add("moo");
-		list.add("baa");
-		list.add("cluck");
-		list.add("woof");
+
 		list.add("bell");
-		list.add("sound");
-		list.add("note");
 
 		list.add("isDay");
 		list.add("isNight");
@@ -653,12 +539,12 @@ public class PClo_WeaselPluginCore extends PClo_WeaselPlugin implements IWeaselH
 
 		list.add("rx");
 		list.add("tx");
-		
-		
+
+
 		WeaselNetwork net = getNetwork();
-		if(net != null) {
-			for(NetworkMember member: net.members.values()) {
-				if(member == this) continue;
+		if (net != null) {
+			for (NetworkMember member : net.members.values()) {
+				if (member == this) continue;
 				list.addAll(member.getProvidedFunctionNames());
 			}
 		}
@@ -684,11 +570,11 @@ public class PClo_WeaselPluginCore extends PClo_WeaselPlugin implements IWeaselH
 		list.add("down");
 		list.add("top");
 		list.add("bottom");
-		
+
 		WeaselNetwork net = getNetwork();
-		if(net != null) {
-			for(NetworkMember member: net.members.values()) {
-				if(member == this) continue;
+		if (net != null) {
+			for (NetworkMember member : net.members.values()) {
+				if (member == this) continue;
 				list.addAll(member.getProvidedVariableNames());
 			}
 		}
@@ -733,6 +619,18 @@ public class PClo_WeaselPluginCore extends PClo_WeaselPlugin implements IWeaselH
 			weaselError = wre.getMessage();
 		}
 		return null;
+	}
+
+	@Override
+	public void restartDevice() {
+		initWeaselIfNull();
+		weasel.restartProgramClearGlobals();
+		weaselError = null;
+		resetOutport();
+		weaselRadioSignals.clear();
+		paused = false;
+		sleepTimer = 0;
+		notifyBlockChange();
 	}
 
 }

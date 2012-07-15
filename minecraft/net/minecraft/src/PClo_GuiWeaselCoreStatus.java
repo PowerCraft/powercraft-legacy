@@ -121,12 +121,14 @@ public class PClo_GuiWeaselCoreStatus implements PC_IGresBase {
 	
 	private void updateCounters() {
 		
-		if (core.paused && !core.getWeaselEngine().isProgramFinished) {
+		if (core.paused&& !core.getWeaselEngine().isProgramFinished) {
 			txRunning.setText(PC_Lang.tr("pc.gui.weasel.core.paused"));
 		} else if (!core.paused && !core.getWeaselEngine().isProgramFinished) {
 			txRunning.setText(PC_Lang.tr("pc.gui.weasel.core.running"));
-		} else if (core.getWeaselEngine().isProgramFinished) {
-			txRunning.setText(PC_Lang.tr("pc.gui.weasel.core.idle"));
+		} else if (core.getWeaselEngine().isProgramFinished && !core.paused) {
+			txRunning.setText(PC_Lang.tr("pc.gui.weasel.core.idle")+", "+PC_Lang.tr("pc.gui.weasel.core.waiting"));
+		} else if (core.getWeaselEngine().isProgramFinished && core.paused) {
+			txRunning.setText(PC_Lang.tr("pc.gui.weasel.core.idle")+", "+PC_Lang.tr("pc.gui.weasel.core.paused"));
 		}
 		
 		txStack.text = (core.getWeaselEngine().dataStack.get().size() + core.getWeaselEngine().systemStack.get().size())+" "+PC_Lang.tr("pc.gui.weasel.core.unitObjects");

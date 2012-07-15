@@ -28,8 +28,9 @@ public class PClo_GuiWeaselDisplay implements PC_IGresBase {
 
 	@Override
 	public void initGui(PC_IGresGui gui) {
-		w = new PC_GresWindow(PC_Lang.tr("pc.gui.weasel.port.title"));
-		w.setAlignH(PC_GresAlign.CENTER);		
+		w = new PC_GresWindow(PC_Lang.tr("pc.gui.weasel.display.title"));
+		w.setAlignH(PC_GresAlign.CENTER);
+		w.setMinWidth(260);		
 
 		PC_GresWidget hg;
 		
@@ -44,7 +45,7 @@ public class PClo_GuiWeaselDisplay implements PC_IGresBase {
 		
 		
 		hg = new PC_GresLayoutH();
-		hg.add(new PC_GresLabel(PC_Lang.tr("pc.gui.weasel.port.portName")));
+		hg.add(new PC_GresLabel(PC_Lang.tr("pc.gui.weasel.display.displayName")));
 		hg.add(edName = new PC_GresTextEdit(display.getName(),14).setWidgetMargin(2));
 		w.add(hg);
 

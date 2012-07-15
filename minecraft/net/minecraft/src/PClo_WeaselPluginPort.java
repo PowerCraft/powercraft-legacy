@@ -22,6 +22,10 @@ public class PClo_WeaselPluginPort extends PClo_WeaselPlugin {
 		super(tew);
 	}
 	
+	/**
+	 * Helper for renderer, checks if device should be rendered with a red mark on top or not.
+	 * @return is active
+	 */
 	public boolean renderAsActive() {
 		boolean flag = false;
 		flag |= getOutport("F") == true;
@@ -43,7 +47,9 @@ public class PClo_WeaselPluginPort extends PClo_WeaselPlugin {
 
 	@Override
 	public void onRedstoneSignalChanged() {
-		((PClo_WeaselPlugin) getNetwork().getMember("CORE")).callFunctionExternalDelegated("update");
+		if( getNetwork() != null)
+			if(getNetwork().getMember("CORE") != null)
+				((PClo_WeaselPlugin) getNetwork().getMember("CORE")).callFunctionExternalDelegated("update");
 	}
 
 	@Override
@@ -149,6 +155,12 @@ public class PClo_WeaselPluginPort extends PClo_WeaselPlugin {
 	@Override
 	public Object callFunctionExternalDelegated(String function, Object... args) {
 		return null;
+	}
+
+	@Override
+	public void restartDevice() {
+		resetOutport();
+		
 	}
 
 }

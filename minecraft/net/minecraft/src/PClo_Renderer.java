@@ -114,29 +114,52 @@ public class PClo_Renderer {
 
 		switch (meta) {
 			case PClo_WeaselType.CORE:
+				//floor
 				block.setBlockBounds(0, 0, 0, 16 * px, 3 * px, 16 * px);
 				PC_Renderer.renderInvBoxWithTextures(renderblocks, block, new int[] { 6, 224, 5, 5, 5, 5 });
 
+				//chip
 				block.setBlockBounds(4 * px, 3 * px, 3 * px, 12 * px, 5 * px, 13 * px);
 				PC_Renderer.renderInvBoxWithTextures(renderblocks, block, new int[] { 0, 196, 195, 195, 195, 195 });
 				block.setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 1.0F, 1.0F);
 				break;
 
 			case PClo_WeaselType.PORT:
+				//floor piece
 				block.setBlockBounds(0, 0, 0, 16 * px, 3 * px, 16 * px);
 				PC_Renderer.renderInvBoxWithTextures(renderblocks, block, new int[] { 6, 208, 5, 5, 5, 5 });
 
+				//chip
 				block.setBlockBounds(5 * px, 3 * px, 5 * px, 11 * px, 5 * px, 11 * px);
 				PC_Renderer.renderInvBoxWithTextures(renderblocks, block, new int[] { 0, 194, 193, 193, 193, 193 });
 				block.setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 1.0F, 1.0F);
 				break;
-				
-			case PClo_WeaselType.DISPLAY:
-				block.setBlockBounds(0, 0, 0, 16 * px, 3 * px, 16 * px);
-				PC_Renderer.renderInvBoxWithTextures(renderblocks, block, new int[] { 6, 208, 5, 5, 5, 5 });
 
-				block.setBlockBounds(5 * px, 3 * px, 5 * px, 11 * px, 5 * px, 11 * px);
-				PC_Renderer.renderInvBoxWithTextures(renderblocks, block, new int[] { 0, 194, 193, 193, 193, 193 });
+			case PClo_WeaselType.DISPLAY:
+				// floor
+				block.setBlockBounds(3 * px, 0, 3 * px, 13 * px, 1 * px, 13 * px);
+				PC_Renderer.renderInvBoxWithTextures(renderblocks, block, new int[] { 192, 192, 176, 176, 176, 176 });
+
+				// leg
+				block.setBlockBounds(7.2F * px, 1 * px, 7.2F * px, 8.8F * px, 2 * px, 8.8F * px);
+				PC_Renderer.renderInvBoxWithTextures(renderblocks, block, new int[] { 176, 176, 176, 176, 176, 176 });
+
+				// screen
+				block.setBlockBounds(0 * px, 2 * px, 7 * px, 16 * px, 16 * px, 9 * px);
+				PC_Renderer.renderInvBoxWithTextures(renderblocks, block, new int[] { 176, 176, 178, 177, 176, 176 });
+
+				block.setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 1.0F, 1.0F);
+				break;
+
+			case PClo_WeaselType.SPEAKER:
+				// floor
+				block.setBlockBounds(3 * px, 0, 3 * px, 13 * px, 1 * px, 13 * px);
+				PC_Renderer.renderInvBoxWithTextures(renderblocks, block, new int[] { 6, 227, 5, 5, 5, 5 });
+
+				// box
+				block.setBlockBounds(2F * px, 1 * px, 2F * px, 14F * px, 15 * px, 14F * px);
+				PC_Renderer.renderInvBoxWithTextures(renderblocks, block, new int[] { 179, 179, 180, 180, 180, 180 });
+
 				block.setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 1.0F, 1.0F);
 				break;
 		}
