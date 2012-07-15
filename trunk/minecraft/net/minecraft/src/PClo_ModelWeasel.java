@@ -11,16 +11,17 @@ import org.lwjgl.opengl.GL11;
  * @author MightyPork
  * @copy (c) 2012
  */
-public class PClo_ModelChip extends ModelBase {
+public class PClo_ModelWeasel extends ModelBase {
 
 	private ModelRenderer core[];
 	private ModelRenderer port[];
 	private ModelRenderer display[];
+	private ModelRenderer sound[];
 	
 	/**
 	 * Radio block model.
 	 */
-	public PClo_ModelChip() {
+	public PClo_ModelWeasel() {
 
 		textureWidth = 128;
 		textureHeight = 64;
@@ -68,8 +69,8 @@ public class PClo_ModelChip extends ModelBase {
 		display = new ModelRenderer[4];
 		
 		// the bottom pad
-		display[0] = new ModelRenderer(this, 62, 37);
-		display[0].addBox(-6F, -1F, -6F, 12, 1, 12, 0.0F);
+		display[0] = new ModelRenderer(this, 85, 27);
+		display[0].addBox(-5F, -1F, -5F, 10, 1, 10, 0.0F);
 		
 		// the connection piece
 		display[1] = new ModelRenderer(this, 86, 16);
@@ -82,6 +83,22 @@ public class PClo_ModelChip extends ModelBase {
 		// the colour piece
 		display[3] = new ModelRenderer(this, 13, 12);
 		display[3].addBox(-2F, -17F, -1F, 4, 1, 2, 0.0F);
+		
+		
+		sound = new ModelRenderer[3];
+		
+		// the stone pad
+		sound[0] = new ModelRenderer(this, 64, 39);
+		sound[0].addBox(-8F, -3F, -8F, 16, 3, 16, 0.0F);
+
+		// body
+		sound[1] = new ModelRenderer(this, 0, 40);
+		sound[1].addBox(-6F, -15F, -6F, 12, 12, 12, 0.0F);
+		
+		// the colour piece
+		sound[2] = new ModelRenderer(this, 0, 31);
+		sound[2].addBox(-2F, -15.5F, -2F, 4, 1, 4, 0.0F);
+		
 		
 	}
 	
@@ -108,9 +125,13 @@ public class PClo_ModelChip extends ModelBase {
 			}
 		}else
 		if(deviceType == PClo_WeaselType.DISPLAY) {
+			display[0].render(0.0625F);
 			display[1].render(0.0625F);
 			display[2].render(0.0625F);
-			display[0].render(0.0625F);
+		}else
+		if(deviceType == PClo_WeaselType.SPEAKER) {
+			sound[0].render(0.0625F);
+			sound[1].render(0.0625F);
 		}
 	}
 	
@@ -134,15 +155,21 @@ public class PClo_ModelChip extends ModelBase {
 		}else		
 		if(deviceType == PClo_WeaselType.DISPLAY) {
 			display[3].render(0.0625F);			
+		}else		
+		if(deviceType == PClo_WeaselType.SPEAKER) {
+			sound[2].render(0.0625F);			
 		}
 		
 	}
 
 	public void renderText() {
 		if(deviceType == PClo_WeaselType.DISPLAY) {
+			
 			float f = 0.6666667F;
 			GL11.glPushMatrix();
-			
+			GL11.glDisable(GL11.GL_LIGHTING);
+			//GL11.glEnable(GL11.GL_BLEND);
+			GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 			FontRenderer fontrenderer = PC_Utils.mc().fontRenderer;
 	        float f3 = 0.01666667F * f;
 	        
@@ -178,10 +205,13 @@ public class PClo_ModelChip extends ModelBase {
 		        	i++;
 		        	if(i == maxlines) break two;
 		        }
+		        i++;
 	        }
 	        
 	        GL11.glDepthMask(true);
 	        GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
+	        GL11.glEnable(GL11.GL_LIGHTING);
+			//GL11.glDisable(GL11.GL_BLEND);
 	        GL11.glPopMatrix();
 		}
 	}

@@ -174,7 +174,7 @@ public class PClo_GuiWeaselCoreProgram implements PC_IGresBase {
 
 		// restart clear globals
 		if (widget.getId() == 5) {
-			core.restartProgram();
+			core.restartAllNetworkDevices();
 			txError.setText(PC_Lang.tr("pc.gui.weasel.core.msgRestarted"));
 			
 			return;
@@ -204,12 +204,12 @@ public class PClo_GuiWeaselCoreProgram implements PC_IGresBase {
 	@Override
 	public void updateTick(PC_IGresGui gui) {
 		
-		if (!core.getWeaselEngine().isProgramFinished) {
+		if (!core.getWeaselEngine().isProgramFinished || core.paused) {
 			if (core.paused) {
 				txRunning.setText(PC_Lang.tr("pc.gui.weasel.core.paused"));
 				btnPauseResume.setText(PC_Lang.tr("pc.gui.weasel.core.resume"));
 				btnPauseResume.enable(true);
-				btnStop.enable(true);
+				btnStop.enable(!core.getWeaselEngine().isProgramFinished);
 			} else {
 				txRunning.setText(PC_Lang.tr("pc.gui.weasel.core.running"));
 				btnPauseResume.setText(PC_Lang.tr("pc.gui.weasel.core.pause"));
@@ -218,9 +218,8 @@ public class PClo_GuiWeaselCoreProgram implements PC_IGresBase {
 			}
 		} else {
 			txRunning.setText(PC_Lang.tr("pc.gui.weasel.core.idle"));
-			btnPauseResume.enable(false);
-			btnPauseResume.setText(PC_Lang.tr("pc.gui.weasel.core.pause"));
 			btnStop.enable(false);
+			btnPauseResume.setText(PC_Lang.tr("pc.gui.weasel.core.pause"));
 		}
 		
 		if(core.hasError()) {

@@ -1,18 +1,10 @@
 package net.minecraft.src;
 
-
-
 import net.minecraft.src.PC_GresWidget.PC_GresAlign;
 
+public class PClo_GuiWeaselSpeaker implements PC_IGresBase {
 
-/**
- * gui for a weasel port
- * 
- * @author MightyPork
- */
-public class PClo_GuiWeaselPort implements PC_IGresBase {
-
-	private PClo_WeaselPluginPort port;
+	private PClo_WeaselPluginSpeaker speaker;
 	private PC_GresWindow w;
 	private PC_GresWidget txError;
 	private PC_GresWidget edName;
@@ -25,8 +17,8 @@ public class PClo_GuiWeaselPort implements PC_IGresBase {
 	 * 
 	 * @param port gate TE
 	 */
-	public PClo_GuiWeaselPort(PClo_WeaselPluginPort port) {
-		this.port = port;
+	public PClo_GuiWeaselSpeaker(PClo_WeaselPluginSpeaker display) {
+		this.speaker = display;
 	}
 
 	@Override
@@ -36,9 +28,9 @@ public class PClo_GuiWeaselPort implements PC_IGresBase {
 
 	@Override
 	public void initGui(PC_IGresGui gui) {
-		w = new PC_GresWindow(PC_Lang.tr("pc.gui.weasel.port.title"));
+		w = new PC_GresWindow(PC_Lang.tr("pc.gui.weasel.sound.title"));
 		w.setAlignH(PC_GresAlign.CENTER);
-		w.setMinWidth(260);
+		w.setMinWidth(260);		
 
 		PC_GresWidget hg;
 		
@@ -47,14 +39,14 @@ public class PClo_GuiWeaselPort implements PC_IGresBase {
 		
 		hg = new PC_GresLayoutH();
 		hg.add(new PC_GresLabel(PC_Lang.tr("pc.gui.weasel.connectedToNetwork")).setColor(PC_GresWidget.textColorEnabled, colorLabel));
-		hg.add(new PC_GresColor(port.getNetworkColor()));
-		hg.add(new PC_GresLabel(port.getNetworkName()).setColor(PC_GresWidget.textColorEnabled, colorValue));
+		hg.add(new PC_GresColor(speaker.getNetworkColor()));
+		hg.add(new PC_GresLabel(speaker.getNetworkName()).setColor(PC_GresWidget.textColorEnabled, colorValue));
 		w.add(hg);
 		
 		
 		hg = new PC_GresLayoutH();
-		hg.add(new PC_GresLabel(PC_Lang.tr("pc.gui.weasel.port.portName")));
-		hg.add(edName = new PC_GresTextEdit(port.getName(),14).setWidgetMargin(2));
+		hg.add(new PC_GresLabel(PC_Lang.tr("pc.gui.weasel.sound.speakerName")));
+		hg.add(edName = new PC_GresTextEdit(speaker.getName(),14).setWidgetMargin(2));
 		w.add(hg);
 
 		w.add(txError = new PC_GresLabel("").setWidgetMargin(2).setColor(PC_GresWidget.textColorEnabled, 0x000000));
@@ -82,7 +74,7 @@ public class PClo_GuiWeaselPort implements PC_IGresBase {
 			if(name.length() == 0) {
 				txError.text = PC_Lang.tr("pc.gui.weasel.errDeviceNameTooShort");
 				btnOk.enabled = false;
-			}else if(port.getNetwork() != null && port.getNetwork().members.get(name) != null) {
+			}else if(speaker.getNetwork() != null && speaker.getNetwork().members.get(name) != null) {
 				txError.text = PC_Lang.tr("pc.gui.weasel.errDeviceNameAlreadyUsed", name);
 				btnOk.enabled = false;
 			}else {
@@ -95,7 +87,7 @@ public class PClo_GuiWeaselPort implements PC_IGresBase {
 		
 		if(widget == btnOk) {
 			String name = edName.text.trim();
-			port.setMemberName(name);
+			speaker.setMemberName(name);
 			//txError.text = PC_Lang.tr("pc.gui.weasel.deviceRenamed", name);
 			//w.calcSize();
 			gui.close();

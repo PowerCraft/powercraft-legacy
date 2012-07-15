@@ -27,6 +27,7 @@ import net.minecraft.client.Minecraft;
  */
 public class PClo_NetManager implements PC_INBT {
 
+	private static final String netfile = "/weaselnet.dat";
 
 	/**
 	 * Local weasel network, provided by a weasel CORE to it's peripherals.
@@ -178,8 +179,10 @@ public class PClo_NetManager implements PC_INBT {
 	 * Clear device lists if the world changed
 	 */
 	private void checkWorldChange() {
+		if(mc.theWorld == null) return;
 		if (mc.theWorld.worldInfo.getWorldName() != worldName) {
 			if(worldSaveDir != null) {
+				System.out.println("World changed.");
 				saveToFile();
 			}
 			
@@ -197,7 +200,7 @@ public class PClo_NetManager implements PC_INBT {
 	 * Load this bus from file in world folder
 	 */
 	public void loadFromFile() {
-		File file = new File(worldSaveDir+"/wireless_bus.dat");
+		File file = new File(worldSaveDir+netfile);
 		if(file.exists()) {
 			// load it
 			NBTTagCompound tag = new NBTTagCompound();
@@ -221,7 +224,7 @@ public class PClo_NetManager implements PC_INBT {
 	 */
 	public void saveToFile() {
 		if(worldSaveDir == null) return;
-		File file = new File(worldSaveDir+"/weasel_net.dat");
+		File file = new File(worldSaveDir+netfile);
 		NBTTagCompound tag = writeToNBT(new NBTTagCompound());
 		try {
 			tag.write(new DataOutputStream(new FileOutputStream(file)));
@@ -240,6 +243,8 @@ public class PClo_NetManager implements PC_INBT {
 
 		tag.setCompoundTag("GlobalHeap", globalHeap.writeToNBT(new NBTTagCompound()));
 
+		System.out.println("Saving global heap: "+globalHeap);
+		
 		return tag;
 	}
 
@@ -248,6 +253,7 @@ public class PClo_NetManager implements PC_INBT {
 
 		globalHeap.clear();
 		globalHeap.readFromNBT(tag.getCompoundTag("GlobalHeap"));
+		System.out.println("Global heap loaded, contains: " + globalHeap);
 
 		return this;
 	}
@@ -258,6 +264,7 @@ public class PClo_NetManager implements PC_INBT {
 	 * @return the network
 	 */
 	public WeaselNetwork getNetwork(String networkName) {
+		checkWorldChange();
 		return localNetworks.get(networkName);
 	}
 	
@@ -267,6 +274,7 @@ public class PClo_NetManager implements PC_INBT {
 	 * @return the newly created network.
 	 */
 	public WeaselNetwork createNetwork(String name) {
+		checkWorldChange();
 		WeaselNetwork net = new WeaselNetwork();
 		localNetworks.put(name, net);
 		return net;
@@ -278,6 +286,7 @@ public class PClo_NetManager implements PC_INBT {
 	 * @return the removed network
 	 */
 	public WeaselNetwork destroyNetwork(String name) {
+		checkWorldChange();
 		return localNetworks.remove(name);
 	}
 	
@@ -287,6 +296,7 @@ public class PClo_NetManager implements PC_INBT {
 	 * @param network
 	 */
 	public void registerNetwork(String name, WeaselNetwork network) {
+		checkWorldChange();
 		localNetworks.put(name, network);
 	}
 	
@@ -297,6 +307,7 @@ public class PClo_NetManager implements PC_INBT {
 	 * @param newName
 	 */
 	public void renameNetwork(String name, String newName) {
+		checkWorldChange();
 		WeaselNetwork net = getNetwork(name);
 		localNetworks.remove(name);
 		localNetworks.put(newName, net);

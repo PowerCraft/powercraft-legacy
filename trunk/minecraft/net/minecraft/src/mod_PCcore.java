@@ -148,6 +148,10 @@ public class mod_PCcore extends PC_Module implements PC_IActivatorListener {
 	public static int update_last_ignored_version_serial;
 	/** Version of current language pack */
 	public static int current_lang_version_serial;
+	/** Allow hacking splashtexts */
+	private boolean optHackSplashes;
+	/** Allow hacking locked chests */
+	private boolean optHackLockedChest;
 
 	// property keys
 	/** Key used to build in reversed direction */
@@ -181,6 +185,8 @@ public class mod_PCcore extends PC_Module implements PC_IActivatorListener {
 	private static final String pk_optUpdateNotify = "global.update.notifications";
 	private static final String pk_optUpdateTranslations = "global.update.translations.autoDownload";
 	private static final String pk_optMuteSound = "global.disableSounds";
+	private static final String pk_optHackedSplashes = "global.allowAddingSplashes";
+	private static final String pk_optHackedLockedChest = "opt.hack.allowTileEntityPickup";
 	private static final String pk_optSoundCrystal = "opt.power_crystal.soundEnabled";
 
 	/** last version marked as "do not show again" */
@@ -253,6 +259,8 @@ public class mod_PCcore extends PC_Module implements PC_IActivatorListener {
 
 		conf.putBoolean(pk_logEnabled, true, "Enable logging. Logs errors, events and debug info.\nDisabling this may slightly improve speed.");
 		conf.putBoolean(pk_logToStdout, false, "Send log also to stdout (terminal screen).");
+		conf.putBoolean(pk_optHackedSplashes, true, "Sometimes add PowerCraft's splash texts to main menu.");
+		conf.putBoolean(pk_optHackedLockedChest, true, "Modify locked chest block and item to\nallow the \"inventory block pickup\" function.");
 
 		conf.putInteger(pk_cfgUpdateIgnoredSerVersion, getVersionSerial());
 		conf.putInteger(pk_cfgCurrentLangSerVersion, 0);
@@ -266,6 +274,8 @@ public class mod_PCcore extends PC_Module implements PC_IActivatorListener {
 		PCco_BlockPowerCrystal.makeSound = conf.flag(pk_optSoundCrystal);
 		update_last_ignored_version_serial = conf.num(pk_cfgUpdateIgnoredSerVersion);
 		current_lang_version_serial = conf.num(pk_cfgCurrentLangSerVersion);
+		optHackSplashes = conf.flag(pk_optHackedSplashes);
+		optHackLockedChest = conf.flag(pk_optHackedLockedChest);
 
 		PC_Logger.setPrintToStdout(conf.flag(pk_logToStdout));
 		PC_Logger.enableLogging(conf.flag(pk_logEnabled));
@@ -325,11 +335,13 @@ public class mod_PCcore extends PC_Module implements PC_IActivatorListener {
 		removeBlockItem(powerCrystal.blockID);
 		setBlockItem(powerCrystal.blockID, new PCco_ItemBlockPowerCrystal(powerCrystal.blockID - 256));
 		
-		removeBlockItem(Block.lockedChest.blockID);
-		Block.blocksList[Block.lockedChest.blockID] = null;
-		Block.blocksList[Block.lockedChest.blockID] = new PCco_BlockHackedLockedChest(Block.lockedChest.blockID);
-		removeBlockItem(Block.lockedChest.blockID);
-		setBlockItem(Block.lockedChest.blockID, new PCco_ItemBlockHackedLockedChest(Block.lockedChest.blockID - 256));
+		if(optHackLockedChest) {
+			removeBlockItem(Block.lockedChest.blockID);
+			Block.blocksList[Block.lockedChest.blockID] = null;
+			Block.blocksList[Block.lockedChest.blockID] = new PCco_BlockHackedLockedChest(Block.lockedChest.blockID);
+			removeBlockItem(Block.lockedChest.blockID);
+			setBlockItem(Block.lockedChest.blockID, new PCco_ItemBlockHackedLockedChest(Block.lockedChest.blockID - 256));
+		}
 		
 		// @formatter:on
 	}
@@ -388,8 +400,9 @@ public class mod_PCcore extends PC_Module implements PC_IActivatorListener {
 		map.put("pc.gui.update.newVersionAvailable", "Update available!");
 		map.put("pc.gui.update.readMore", "Read more...");
 		map.put("pc.gui.update.version", "Using %1$s (%2$s), Available %3$s (%4$s)");
-		map.put("pc.gui.update.doNotShowAgain", "Don't show again");
+		map.put("pc.gui.update.doNotShowAgain", "Don't show again");		
 
+		map.put("pc.splash.newPowerCraftAvailable", "New PowerCraft available!");
 
 		map.put("pc.block.pickedUp", "Picked-up %s");
 		map.put("pc.block.pickedUp.special", "Special Block");
@@ -803,7 +816,19 @@ public class mod_PCcore extends PC_Module implements PC_IActivatorListener {
 		
 		addStacksToCraftingTool(
 			PC_ItemGroup.ROCKS_ETC_V,
+			Block.stairCompactCobblestone,
+			Block.stairCompactPlanks,
+			Block.stairsNetherBrick,
+			Block.stairsStoneBrickSmooth,
+			Block.stairsBrick,
+			new ItemStack(Block.stairSingle,1,0),
+			new ItemStack(Block.stairSingle,1,1),
+			new ItemStack(Block.stairSingle,1,2),
+			new ItemStack(Block.stairSingle,1,3),
+			new ItemStack(Block.stairSingle,1,4),
+			new ItemStack(Block.stairSingle,1,5),
 			Block.obsidian,
+			Block.whiteStone,
 			Block.stoneBrick,
 			Block.stone,
 			Block.cobblestone,
@@ -815,6 +840,7 @@ public class mod_PCcore extends PC_Module implements PC_IActivatorListener {
 			Block.sand,
 			Block.sandStone,
 			Block.gravel,
+			Block.slowSand,
 			Block.glass,	
 			Block.bedrock	
 		);	
@@ -866,6 +892,8 @@ public class mod_PCcore extends PC_Module implements PC_IActivatorListener {
 		if (optUpdateLangpack) {
 			(new PCco_ThreadCheckUpdates()).start();
 		}
+		
+		ModLoader.setInGUIHook(this, true, false);
 
 	}
 
@@ -1075,6 +1103,7 @@ public class mod_PCcore extends PC_Module implements PC_IActivatorListener {
 			Exception x = e.getException();
 			((x == null) ? e : x).printStackTrace();
 		} catch (Throwable t) {
+			PC_Logger.throwing("mod_PCcore", "onUpdateInfoDownloaded()", t);
 			t.printStackTrace();
 		}
 
@@ -1122,6 +1151,8 @@ public class mod_PCcore extends PC_Module implements PC_IActivatorListener {
 		} catch (Exception e) {
 			e.printStackTrace();
 			PC_Logger.throwing("mod_PCcore", "onTranslationsUpdated()", e);
+		} catch (Throwable t) {
+			t.printStackTrace();
 		}
 
 	}
@@ -1135,14 +1166,32 @@ public class mod_PCcore extends PC_Module implements PC_IActivatorListener {
 		if (!updateAlreadyShown && updateAvailable && optUpdateNotify) {
 			if (++inGameTickCounter > 20) {
 				updateAlreadyShown = true;
-				PC_Utils.openGres(mc.thePlayer, new PCco_GuiUpdateNotification());
-				PC_Logger.fine("Openning UPDATE NOTIFICATION screen.");
+				try {
+					PC_Utils.openGres(mc.thePlayer, new PCco_GuiUpdateNotification());
+					PC_Logger.fine("Openning UPDATE NOTIFICATION screen.");
+				}catch(Throwable t) {
+					PC_Logger.throwing("mod_PCcore", "onTickInGame", t);
+				}
 				return false;
 			} else {
 				return true;
 			}
 		}
 		return false;
+	}
+	
+	@Override
+	public boolean onTickInGUI(float f, Minecraft minecraft, GuiScreen gui) {
+		if(gui == null) return true;
+		
+		if(gui instanceof GuiMainMenu && optHackSplashes) PCco_SplashHelper.hackSplashes((GuiMainMenu) gui);
+		
+		// text at the bottom of the screen
+		if(gui instanceof GuiMainMenu) {
+			gui.drawString(gui.fontRenderer, ", PowerCraft "+getVersion(), 2 + gui.fontRenderer.getStringWidth("Minecraft 1.2.5"), gui.height-10, 0xffffffff);
+		}
+		return true;
+		
 	}
 
 }

@@ -61,6 +61,11 @@ public class mod_PCtransport extends PC_Module {
 	private static final String pk_teleporter_brightness = "brightness.teleporter";
 
 	private static final String pk_idSlimeBoots = "id.item.stickyBoots";
+	private static final String pk_optHackedWater = "opt.hack.improveWater";
+	
+	
+	/** Allow hacking water */
+	private boolean optHackWater;
 
 
 
@@ -114,10 +119,12 @@ public class mod_PCtransport extends PC_Module {
 		conf.putBlock(pk_speedybelt, 220);
 		conf.putBlock(pk_teleporter, 235);
 		conf.putInteger(pk_teleporter_brightness, 5, "Teleporter block brightness, scale 0-15.");
+		conf.putBoolean(pk_optHackedWater, true, "Modify water to store items to chests and work seamlessly with conveyors.");
 
 		conf.putBlock(pk_idSlimeBoots, 19005);
 
 		conf.apply();
+		optHackWater = conf.flag(pk_optHackedWater);
 	}
 
 	@Override

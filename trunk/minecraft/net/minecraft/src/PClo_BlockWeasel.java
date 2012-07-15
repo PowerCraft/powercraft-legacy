@@ -457,6 +457,7 @@ public class PClo_BlockWeasel extends BlockContainer implements PC_ISwapTerrain,
 	 * @param pos
 	 */
 	public static void hugeUpdate(World world, PC_CoordI pos) {
+		if(world == null) return;
 		int x = pos.x, y = pos.y, z = pos.z, id = mod_PClogic.weaselDevice.blockID;
 		world.notifyBlocksOfNeighborChange(x, y, z, id);
 		world.notifyBlocksOfNeighborChange(x + 1, y, z, id);
@@ -562,6 +563,11 @@ public class PClo_BlockWeasel extends BlockContainer implements PC_ISwapTerrain,
 			PC_Utils.openGres(player, new PClo_GuiWeaselDisplay((PClo_WeaselPluginDisplay) plugin));
 			return true;
 		}
+
+		if (type == PClo_WeaselType.SPEAKER) {
+			PC_Utils.openGres(player, new PClo_GuiWeaselSpeaker((PClo_WeaselPluginSpeaker) plugin));
+			return true;
+		}
 		
 		return false;
 	}
@@ -589,7 +595,6 @@ public class PClo_BlockWeasel extends BlockContainer implements PC_ISwapTerrain,
 		Set<String> set = new HashSet<String>();
 		set.add("NO_BUILD");
 		set.add("WEASEL");
-		set.add(PClo_WeaselType.names[itemstack.getItemDamage()]);
 		return set;
 	}
 

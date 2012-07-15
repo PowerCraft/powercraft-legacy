@@ -8,18 +8,27 @@ import java.util.List;
 import weasel.Calc;
 import weasel.WeaselEngine;
 import weasel.exception.WeaselRuntimeException;
-import weasel.obj.WeaselBoolean;
 import weasel.obj.WeaselInteger;
 import weasel.obj.WeaselObject;
 import weasel.obj.WeaselString;
 
 
+/**
+ * 
+ * 
+ * @author MightyPork
+ *
+ */
 public class PClo_WeaselPluginDisplay extends PClo_WeaselPlugin {
 
+	/** Displayed text. "\n" is a newline. */
 	public String text = "";
+	/** Hex color for the text */
 	public int color = 0x000000;
+	/** Text align (-1,0,1) */
 	public int align = 0;
 
+	/** Rotation, like sign, 0-15 */
 	public int rotation;	
 
 	private static HashMap<String, Integer> namedColord = new HashMap<String, Integer>();
@@ -216,6 +225,7 @@ public class PClo_WeaselPluginDisplay extends PClo_WeaselPlugin {
 		text = tag.getString("text");
 		color = tag.getInteger("color");
 		align = tag.getInteger("align");
+		rotation = tag.getInteger("rotation");
 		return this;
 	}
 
@@ -224,8 +234,16 @@ public class PClo_WeaselPluginDisplay extends PClo_WeaselPlugin {
 		tag.setString("text", text);
 		tag.setInteger("color", color);
 		tag.setInteger("align", align);
-
+		tag.setInteger("rotation",rotation);
 		return tag;
+	}
+
+	@Override
+	public void restartDevice() {
+		text = "";
+		color = 0x000000;
+		align = 0;
+		notifyBlockChange();
 	}
 
 }

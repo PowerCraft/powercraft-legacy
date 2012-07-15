@@ -1,0 +1,119 @@
+package net.minecraft.src;
+
+import java.util.Random;
+
+/**
+ * Class which helps to hack splash texts in the main menu.
+ * 
+ * @author MightyPork
+ *
+ */
+public class PCco_SplashHelper {
+	
+	private static GuiMainMenu lastHacked = null;
+	
+	//@formatter:off
+	private static String[] splashes = {
+		// our features
+		"Weasel is fast!",
+		"Weasel powered!",
+		"WeeScript™ rocks!",
+		"WeeScript™ FTW!",
+		"Sniffing diamonds!",
+		"Power of the storm!",
+		"Hacked water!",
+		"Hacked splashes!",
+		"Miner! Oh boy!",
+		"Using Weasel™",
+		"GRES",
+		"Transmutation!",
+		// our credits
+		"Modded by MightyPork!",
+		"Modded by MightyPork!",
+		"Modded by MightyPork!",
+		"Modded by MightyPork!",
+		"Modded by MightyPork!",
+		"Modded by MightyPork!",
+		"Modded by MightyPork!",
+		"Modded by MightyPork!",
+		"Modded by MightyPork!",
+		"Modded by MightyPork!",
+		"Modded by XOR19!",
+		"Modded by XOR19!",
+		"Modded by XOR19!",
+		"Modded by XOR19!",
+		"Modded by XOR19!",
+		"Modded by XOR19!",
+		"Modded by Rapus!",
+		"Modded by Rapus!",
+		"Modded by Rapus!",
+		"Modded by Rapus!",
+		"Modded by Rapus!",
+		"Reviewed by RxD!",
+		"Reviewed by RxD!",
+		"Reviewed by RxD!",
+		"Reviewed by RxD!",
+		"Modded by masters!",
+		// the mod name
+		"PowerCraft™ "+mod_PCcore.VERSION,
+		"PowerCraft™ "+mod_PCcore.VERSION,
+		"PowerCraft™ "+mod_PCcore.VERSION,
+		// making fun of crashes
+		"Null Pointers included!",
+		"ArrayIndexOutOfBoundsException",
+		"Null Pointer loves you!",
+		"Work in progress!",
+		"Unstable!",
+		"Buggy code!",
+		//random shouts
+		"Break it down!",
+		"Addictive!",
+		"Make your homeworks!",
+		"Go to bed!",
+		"Facebook sucks!",
+		"Earth is flat!",
+		"Faster than Atari!",
+		"DAFUQ??",
+		"LWJGL",
+		"Don't press the button!",
+		"Press the button!",
+		"Ssssssssssssssss!",
+		"C'mon!",
+		"Redstone Wizzard!",
+		// advice
+		"Keep your mods up-to-date!",
+		"Read the changelog!",
+		"Read the log files!",
+		// also try
+		"Also try Discoworld!",
+		"Also try HammerFall!",
+		"Also try Nightwish!",
+		"Also try ICE AGE mod!",
+		"Also try Backpack mod!",
+		// pieces of code
+		"while(true){}",
+		"GOSUB",
+		"0b10010112!",
+	};
+	//@formatter:on
+
+	private static Random rand = new Random();
+	
+	public static void hackSplashes(GuiMainMenu gui) {
+		if(gui == lastHacked) return;
+		lastHacked = gui;
+		PC_Logger.finest("Hacking main menu splashes");
+		if(mod_PCcore.updateAvailable && rand.nextInt(2)==0) {			
+			try {
+				ModLoader.setPrivateValue(GuiMainMenu.class, gui, 2, PC_Lang.tr("pc.splash.newPowerCraftAvailable"));
+			} catch (Throwable t) {
+			}
+		}else if(rand.nextInt(4) == 0){
+			try {
+				ModLoader.setPrivateValue(GuiMainMenu.class, gui, 2, splashes[rand.nextInt(splashes.length)]);
+			} catch (Throwable t) {
+			}	
+		}
+	}
+	
+}

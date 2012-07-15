@@ -21,7 +21,7 @@ public class PClo_TileEntityWeasel extends PC_TileEntity {
 	private PClo_WeaselPlugin plugin;
 
 
-	private int updateIgnoreCounter = 1;
+	private int updateIgnoreCounter = 10;
 	private long lastUpdateAbsoluteTime = 0;
 
 	/**
