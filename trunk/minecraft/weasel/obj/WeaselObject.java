@@ -1,5 +1,6 @@
 package weasel.obj;
 
+
 import java.util.HashMap;
 
 import net.minecraft.src.NBTTagCompound;
@@ -48,12 +49,12 @@ public abstract class WeaselObject implements PC_INBT {
 	 * @return the tag
 	 */
 	public static final NBTTagCompound saveObjectToNBT(WeaselObject object, NBTTagCompound tag) {
-		if(object == null) object = new WeaselNull();
+		if (object == null) object = new WeaselNull();
 		tag.setString("type", object.getType().toString());
 		object.writeToNBT(tag);
 		return tag;
 	}
-	
+
 	/**
 	 * Load an object from Compound NBT tag, using the proper WeaselObject
 	 * subtype.
@@ -92,7 +93,8 @@ public abstract class WeaselObject implements PC_INBT {
 				break;
 
 			case NULL:
-				obj = null;
+				// it already is 
+				// obj = null;
 				break;
 		}
 
@@ -107,9 +109,9 @@ public abstract class WeaselObject implements PC_INBT {
 	 *         weasel object, returns it unchanged.
 	 */
 	public static WeaselObject getWrapperForValue(Object value) {
-		
-		if(value == null) return null;
-		
+
+		if (value == null) return null;
+
 		if (value instanceof Number) {
 			return new WeaselInteger(value);
 		}
@@ -153,14 +155,13 @@ public abstract class WeaselObject implements PC_INBT {
 	 * Type of a weasel object
 	 * 
 	 * @author MightyPork
-	 *
 	 */
 	@SuppressWarnings("javadoc")
 	public static enum WeaselObjectType {
 
 		BOOLEAN, INTEGER, STRING, VARMAP, STACK, NULL;
 
-		private static HashMap<String,WeaselObjectType> members = new HashMap<String, WeaselObjectType>();
+		private static HashMap<String, WeaselObjectType> members = new HashMap<String, WeaselObjectType>();
 
 		/**
 		 * Get enum type for type name
@@ -171,11 +172,11 @@ public abstract class WeaselObject implements PC_INBT {
 		public static WeaselObjectType getTypeFromName(String name) {
 			return members.get(name);
 		}
-		
+
 		static {
-		      for (WeaselObjectType type : WeaselObjectType.values()) {
-		            members.put(type.toString(), type);
-		      }
+			for (WeaselObjectType type : WeaselObjectType.values()) {
+				members.put(type.toString(), type);
+			}
 		}
 
 	}

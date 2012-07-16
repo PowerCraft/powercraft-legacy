@@ -11,7 +11,7 @@ import net.minecraft.src.PC_GresWidget.PC_GresAlign;
  * @author MightyPork
  * @copy (c) 2012
  */
-public class PClo_GuiRadioChannel implements PC_IGresBase {
+public class PClo_GuiRadio implements PC_IGresBase {
 
 	private String errMsg = "";
 
@@ -22,7 +22,6 @@ public class PClo_GuiRadioChannel implements PC_IGresBase {
 
 	private int type;
 	private PC_CoordI pos;
-	private String oldChannel;
 	private String editedString;
 	private int dim = 0;
 
@@ -30,6 +29,11 @@ public class PClo_GuiRadioChannel implements PC_IGresBase {
 	private PC_GresWidget buttonOK, buttonCancel;
 	private PC_GresWidget edit;
 	private PC_GresWidget txError;
+	private PClo_TileEntityRadio ter;
+
+	private PC_GresCheckBox checkLabel;
+
+	private PC_GresCheckBox checkMicro; 
 
 	/**
 	 * @param dimen Radio device dimension
@@ -37,12 +41,12 @@ public class PClo_GuiRadioChannel implements PC_IGresBase {
 	 * @param s device channel
 	 * @param radiotype transmitter or receiver
 	 */
-	public PClo_GuiRadioChannel(int dimen, PC_CoordI blockPos, String s, int radiotype) {
+	public PClo_GuiRadio(int dimen, PC_CoordI blockPos, String s, int radiotype) {
 		editedString = s;
-		oldChannel = new String(s);
 		type = radiotype;
 		pos = blockPos;
 		dim = dimen;
+		ter = (PClo_TileEntityRadio) pos.getTileEntity(PC_Utils.mc().theWorld);
 	}
 
 	@Override
@@ -67,12 +71,20 @@ public class PClo_GuiRadioChannel implements PC_IGresBase {
 		// layout with the input
 		PC_GresWidget vg = new PC_GresLayoutV().setAlignH(PC_GresAlign.LEFT);
 		vg.add(new PC_GresLabel(PC_Lang.tr("pc.gui.radio.channel")));
-		vg.add(edit = new PC_GresTextEdit(editedString, 8, PC_GresInputType.TEXT).setMinWidth(130));
+		vg.add(edit = new PC_GresTextEdit(editedString, 20, PC_GresInputType.TEXT).setMinWidth(140));
 		w.add(vg);
 
 		// eror
 		hg = new PC_GresLayoutH().setAlignH(PC_GresAlign.CENTER);
 		hg.add(txError = new PC_GresLabel("").setColor(PC_GresWidget.textColorEnabled, 0x990000));
+		w.add(hg);
+		
+		hg = new PC_GresLayoutH().setAlignH(PC_GresAlign.CENTER);
+		hg.add(checkLabel = new PC_GresCheckBox(PC_Lang.tr("pc.gui.radio.showLabel")));
+		checkLabel.check(!ter.hideLabel);
+		
+		hg.add(checkMicro = new PC_GresCheckBox(PC_Lang.tr("pc.gui.radio.renderSmall")));
+		checkMicro.check(ter.renderMicro);
 		w.add(hg);
 
 		// buttons
@@ -101,9 +113,9 @@ public class PClo_GuiRadioChannel implements PC_IGresBase {
 
 			String newChannel = edit.getText().trim();
 
-			PClo_TileEntityRadio ter = PClo_BlockRadio.getTE(PC_Utils.mc().theWorld, pos.x, pos.y, pos.z);
-
 			ter.channel = newChannel;
+			ter.renderMicro = checkMicro.isChecked();
+			ter.hideLabel = !checkLabel.isChecked();
 
 			// player is in the right dimen, set it to make sure.
 			ter.dim = dim;

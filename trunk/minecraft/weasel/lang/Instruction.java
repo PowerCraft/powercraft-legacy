@@ -118,7 +118,7 @@ public abstract class Instruction implements PC_INBT {
 			case CALL:
 				read = new InstructionCall().readFromNBT(tag);
 				break;
-				
+
 			case FUNCTION:
 				read = new InstructionFunction().readFromNBT(tag);
 				break;
@@ -166,9 +166,9 @@ public abstract class Instruction implements PC_INBT {
 			default:
 				return null;
 		}
-		
+
 		read.address = tag.getInteger("address");
-		
+
 		return read;
 	}
 

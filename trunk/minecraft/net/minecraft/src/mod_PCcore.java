@@ -30,15 +30,17 @@ public class mod_PCcore extends PC_Module implements PC_IActivatorListener {
 
 	/** the mod instance */
 	public static mod_PCcore instance;
+	
+	public static FontRenderer fontRendererDefault = new FontRenderer(PC_Utils.mc().gameSettings, "/font/default.png", PC_Utils.mc().renderEngine, false);
 
 
 	/**
 	 * Size of a group in crafting tool
 	 */
 	public static int G = 1000;
-	/** 
-	 * Crafting tool's group counter.
-	 * It is here cuz stupid enum can't have it in itself.
+	/**
+	 * Crafting tool's group counter. It is here cuz stupid enum can't have it
+	 * in itself.
 	 */
 	public static int C = 10;
 
@@ -49,13 +51,13 @@ public class mod_PCcore extends PC_Module implements PC_IActivatorListener {
 	 * affected by current core version. Which is good.
 	 */
 	public static final String VERSION = "3.4.3";
-	
+
 	/**
 	 * The serial number used to check whether new update is available.
 	 */
 	public static final int VERSION_SERIAL = 2;
-	
-	
+
+
 
 	/** Location of the file with updates */
 	public static final String updateInfoPath = "http://dl.dropbox.com/u/64454818/POWERCRAFT_DATA/info.xml"; // "http://bit.ly/Ld7sOI";
@@ -65,7 +67,8 @@ public class mod_PCcore extends PC_Module implements PC_IActivatorListener {
 	/**
 	 * Directory with settings. /something/something<br>
 	 * Note that ALL image files are inside jar (virtually) in
-	 * /PowerCraft/module_name_lowercase/*.png, or in it's subfolders if you make it like that.
+	 * /PowerCraft/module_name_lowercase/*.png, or in it's subfolders if you
+	 * make it like that.
 	 */
 	public static final String cfgdir = "/PowerCraft";
 
@@ -73,7 +76,12 @@ public class mod_PCcore extends PC_Module implements PC_IActivatorListener {
 	public String getVersion() {
 		return mod_PCcore.VERSION;
 	}
-	
+
+	/**
+	 * Get serial version of the mod - the one used for update checking.
+	 * 
+	 * @return serial version
+	 */
 	public int getVersionSerial() {
 		return mod_PCcore.VERSION_SERIAL;
 	}
@@ -130,7 +138,6 @@ public class mod_PCcore extends PC_Module implements PC_IActivatorListener {
 
 	/** Power Crystal block */
 	public static Block powerCrystal;
-
 
 
 
@@ -219,8 +226,8 @@ public class mod_PCcore extends PC_Module implements PC_IActivatorListener {
 
 
 		Thread.setDefaultUncaughtExceptionHandler(new PC_ErrorHandler());
-		
-		PC_GresHighlight.generateConfigFile();
+
+		PC_GresHighlightHelper.checkConfigFile();
 
 		instance = this;
 
@@ -400,7 +407,7 @@ public class mod_PCcore extends PC_Module implements PC_IActivatorListener {
 		map.put("pc.gui.update.newVersionAvailable", "Update available!");
 		map.put("pc.gui.update.readMore", "Read more...");
 		map.put("pc.gui.update.version", "Using %1$s (%2$s), Available %3$s (%4$s)");
-		map.put("pc.gui.update.doNotShowAgain", "Don't show again");		
+		map.put("pc.gui.update.doNotShowAgain", "Don't show again");
 
 		map.put("pc.splash.newPowerCraftAvailable", "New PowerCraft available!");
 
@@ -892,7 +899,7 @@ public class mod_PCcore extends PC_Module implements PC_IActivatorListener {
 		if (optUpdateLangpack) {
 			(new PCco_ThreadCheckUpdates()).start();
 		}
-		
+
 		ModLoader.setInGUIHook(this, true, false);
 
 	}
@@ -1004,7 +1011,6 @@ public class mod_PCcore extends PC_Module implements PC_IActivatorListener {
 
 
 
-
 	/** Flag that mod update is available */
 	public static boolean updateAvailable = false;
 	/** PowerCraft version in latest update */
@@ -1049,7 +1055,7 @@ public class mod_PCcore extends PC_Module implements PC_IActivatorListener {
 				if (updateModVersion == null || updateModVersion.equals("")) {
 					break;
 				}
-				
+
 				updateModVersionSerial = Integer.valueOf(latest.getAttribute("modVersionSerial"));
 
 				updateMcVersion = latest.getAttribute("mcVersion");
@@ -1057,21 +1063,21 @@ public class mod_PCcore extends PC_Module implements PC_IActivatorListener {
 				if (updateMcVersion == null || updateMcVersion.equals("")) {
 					break;
 				}
-				
+
 				try {
 					updateLangVersionSerial = Integer.valueOf(latest.getAttribute("langVersion"));
-				}catch(NumberFormatException e) {
+				} catch (NumberFormatException e) {
 					updateLangVersionSerial = -1;
 				}
-				
+
 				int updateLangModVersionSerial;
-				try{
+				try {
 					updateLangModVersionSerial = Integer.valueOf(latest.getAttribute("langModVersion"));
-				}catch(NumberFormatException e) {
+				} catch (NumberFormatException e) {
 					updateLangModVersionSerial = -1;
 				}
 
-				
+
 				if (updateLangVersionSerial > current_lang_version_serial && updateLangModVersionSerial == instance.getVersionSerial()) {
 					(new PCco_ThreadDownloadTranslations()).start();
 				}
@@ -1169,7 +1175,7 @@ public class mod_PCcore extends PC_Module implements PC_IActivatorListener {
 				try {
 					PC_Utils.openGres(mc.thePlayer, new PCco_GuiUpdateNotification());
 					PC_Logger.fine("Openning UPDATE NOTIFICATION screen.");
-				}catch(Throwable t) {
+				} catch (Throwable t) {
 					PC_Logger.throwing("mod_PCcore", "onTickInGame", t);
 				}
 				return false;
@@ -1179,19 +1185,19 @@ public class mod_PCcore extends PC_Module implements PC_IActivatorListener {
 		}
 		return false;
 	}
-	
+
 	@Override
 	public boolean onTickInGUI(float f, Minecraft minecraft, GuiScreen gui) {
-		if(gui == null) return true;
-		
-		if(gui instanceof GuiMainMenu && optHackSplashes) PCco_SplashHelper.hackSplashes((GuiMainMenu) gui);
-		
+		if (gui == null) return true;
+
+		if (gui instanceof GuiMainMenu && optHackSplashes) PCco_SplashHelper.hackSplashes((GuiMainMenu) gui);
+
 		// text at the bottom of the screen
-		if(gui instanceof GuiMainMenu) {
-			gui.drawString(gui.fontRenderer, ", PowerCraft "+getVersion(), 2 + gui.fontRenderer.getStringWidth("Minecraft 1.2.5"), gui.height-10, 0xffffffff);
+		if (gui instanceof GuiMainMenu) {
+			gui.drawString(gui.fontRenderer, ", PowerCraft " + getVersion(), 2 + gui.fontRenderer.getStringWidth("Minecraft 1.2.5"), gui.height - 10, 0xffffffff);
 		}
 		return true;
-		
+
 	}
 
 }

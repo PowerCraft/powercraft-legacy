@@ -45,7 +45,7 @@ public class InstructionAssignRetval extends Instruction {
 		Object result = engine.retval;
 
 		if (result == null) {
-			throw new WeaselRuntimeException("Can't set "+lhsVarName+", called function did't return anything.");
+			throw new WeaselRuntimeException("Cannot assign variable, called function did't return anything.");
 		}
 
 		if (lhsVarName != null && !lhsVarName.equals("")) {

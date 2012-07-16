@@ -21,7 +21,7 @@ public class PC_GresSeparatorV extends PC_GresWidget {
 		super(width, height);
 		canAddWidget = false;
 		setMinWidth(3);
-		setMinSize(width,height);
+		setMinSize(width, height);
 	}
 
 	/**
@@ -35,6 +35,7 @@ public class PC_GresSeparatorV extends PC_GresWidget {
 	 * Set line color.
 	 * 
 	 * @param lineColor the line color to set
+	 * @return this
 	 */
 	public PC_GresSeparatorV setLineColor(int lineColor) {
 		this.lineColor = lineColor;
@@ -49,7 +50,7 @@ public class PC_GresSeparatorV extends PC_GresWidget {
 
 	@Override
 	protected void render(PC_CoordI off) {
-		drawRect(off.x + size.x / 2 + pos.x, off.y + pos.y, off.x + size.x / 2 + pos.x+1, off.y + size.y + pos.y+1, lineColor | 0xff000000);
+		drawRect(off.x + size.x / 2 + pos.x, off.y + pos.y, off.x + size.x / 2 + pos.x + 1, off.y + size.y + pos.y + 1, lineColor | 0xff000000);
 	}
 
 	@Override

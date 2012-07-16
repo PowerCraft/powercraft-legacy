@@ -7,16 +7,27 @@ import java.util.Set;
 import net.minecraft.src.forge.ITextureProvider;
 
 
+/**
+ * belt elevator
+ * 
+ * @author MightyPork
+ */
 public class PCtr_BlockItemElevator extends Block implements PC_IBlockType, PC_ISwapTerrain, ITextureProvider {
 
-	public static final double BORDERS = 0.25D;
-	public static final double BORDER_BOOST = 0.062D;
+	private static final double BORDERS = 0.25D;
+	private static final double BORDER_BOOST = 0.062D;
 
 	@Override
 	public String getTextureFile() {
 		return getTerrainFile();
 	}
 
+	/**
+	 * elevator and descender
+	 * 
+	 * @param i id
+	 * @param tx texture
+	 */
 	public PCtr_BlockItemElevator(int i, int tx) {
 		super(i, tx, (new PCtr_MaterialElevator(MapColor.airColor)));
 	}
@@ -42,6 +53,10 @@ public class PCtr_BlockItemElevator extends Block implements PC_IBlockType, PC_I
 
 		if (entity instanceof EntityItem) {
 			PCtr_BeltBase.packItems(world, pos);
+			if(PCtr_BeltBase.storeItemIntoMinecart(world, pos, (EntityItem) entity) || PCtr_BeltBase.storeAllSides(world, pos, (EntityItem) entity)) {
+				entity.setDead();
+				return;
+			}
 		}
 
 		boolean down = (pos.getMeta(world) == 1);

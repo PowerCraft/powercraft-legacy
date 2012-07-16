@@ -21,13 +21,13 @@ import weasel.jep.ParseException;
  * @author Rich Morris Created on 27-Mar-2004
  */
 public class StrFormat extends PostfixMathCommand {
-	
+
 	private EnumType type;
-	
-	public enum EnumType{
+
+	public enum EnumType {
 		ZEROFILL, CUTFIRST, CUTLAST;
 	}
-	
+
 	public StrFormat(EnumType type) {
 		numberOfParameters = 2;
 		this.type = type;
@@ -38,33 +38,33 @@ public class StrFormat extends PostfixMathCommand {
 		checkStack(inStack);// check the stack
 		Object param2 = inStack.pop();
 		Object param1 = inStack.pop();
-		
+
 		String str = Calc.toString(param1);
 		int number = Calc.toInteger(param2);
-		
-		
-		switch(type) {
+
+
+		switch (type) {
 			case ZEROFILL:
-				while(str.length() < number) {
-					str = "0"+str;
+				while (str.length() < number) {
+					str = "0" + str;
 				}
 				break;
 			case CUTFIRST:
-				if(number >= str.length()) {
+				if (number >= str.length()) {
 					str = "";
-				}else {
+				} else {
 					str = str.substring(number);
 				}
 				break;
 			case CUTLAST:
-				if(number >= str.length()) {
+				if (number >= str.length()) {
 					str = "";
-				}else {
-					str = str.substring(0,str.length()+1-number);
+				} else {
+					str = str.substring(0, str.length() + 1 - number);
 				}
 				break;
 		}
-		
+
 		inStack.push(str);//push the result on the inStack
 		return;
 	}

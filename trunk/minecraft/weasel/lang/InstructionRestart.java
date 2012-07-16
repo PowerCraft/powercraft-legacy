@@ -24,11 +24,11 @@ public class InstructionRestart extends Instruction {
 
 	@Override
 	public void execute(WeaselEngine engine, InstructionList instructionList) throws WeaselRuntimeException {
-		if(engine.executingFunctionExternal > 0) {
+		if (engine.executingFunctionExternal > 0) {
 			engine.restartProgram();
 			engine.requestPause();
 			engine.isProgramFinished = false;
-		}else {
+		} else {
 			engine.scheduleRestart();
 			throw new EndOfProgramException();
 		}

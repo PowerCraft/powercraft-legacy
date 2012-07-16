@@ -73,7 +73,6 @@ public class mod_PCmobile extends PC_Module implements PC_IActivatorListener {
 
 
 
-
 	// *** MODULE INIT ***
 
 	@Override

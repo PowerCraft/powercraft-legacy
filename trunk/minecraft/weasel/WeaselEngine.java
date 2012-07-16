@@ -5,12 +5,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 import net.minecraft.src.NBTTagCompound;
+import net.minecraft.src.PC_Color;
 import net.minecraft.src.PC_INBT;
 import weasel.exception.EndOfProgramException;
 import weasel.exception.SyntaxError;
 import weasel.exception.WeaselRuntimeException;
 import weasel.lang.Instruction;
 import weasel.obj.WeaselBoolean;
+import weasel.obj.WeaselInteger;
 import weasel.obj.WeaselObject;
 import weasel.obj.WeaselStack;
 import weasel.obj.WeaselString;
@@ -276,6 +278,9 @@ public class WeaselEngine implements PC_INBT, IVariableProvider, IFunctionProvid
 	}
 
 
+	/**
+	 * Get variable for weasel. First HW, then globals, at last locals.
+	 */
 	@Override
 	public WeaselObject getVariable(String name) {
 
@@ -338,9 +343,7 @@ public class WeaselEngine implements PC_INBT, IVariableProvider, IFunctionProvid
 	 */
 	@Override
 	public boolean doesProvideFunction(String functionName) {
-		if (functionName.equals("isset")) return true;
-
-		return false;
+		return getProvidedFunctionNames().contains(functionName);
 	}
 
 	/**
@@ -351,13 +354,61 @@ public class WeaselEngine implements PC_INBT, IVariableProvider, IFunctionProvid
 
 		if (functionName.equals("isset")) {
 
-			if (args.length != 1) throw new WeaselRuntimeException("Isset() requires exactly 1 argument, got " + args.length);
+			if (args.length != 1) throw new WeaselRuntimeException("Isset() requires 1 argument, got " + args.length);
 			if (args[0] instanceof WeaselString) {
 				String varname = (String) args[0].get();
 //				System.out.println("## ISSET? "+varname+" -> "+getVariable(varname));
 				return new WeaselBoolean(getVariable(varname) != null);
 			} else {
 				throw new WeaselRuntimeException("Isset() requires String argument, got " + args[0].get().getClass().getSimpleName());
+			}
+
+		}
+
+		if (functionName.equals("_get")) {
+
+			if (args.length != 1) throw new WeaselRuntimeException("_get() requires 1 argument, got " + args.length);
+			if (args[0] instanceof WeaselString) {
+				String varname = (String) args[0].get();
+				return getVariable(varname);
+			} else {
+				throw new WeaselRuntimeException("_get() requires String argument, got " + args[0].get().getClass().getSimpleName());
+			}
+
+		}
+
+		if (functionName.equals("_set")) {
+
+			if (args.length != 2) throw new WeaselRuntimeException("_set() requires 2 arguments, got " + args.length);
+			if (args[0] instanceof WeaselString) {
+				String varname = (String) args[0].get();
+				setVariable(varname, args[1]);
+			} else {
+				throw new WeaselRuntimeException("_set() requires String as 1st argument, got " + args[0].get().getClass().getSimpleName());
+			}
+
+		}
+
+		if (functionName.equals("color")) {
+			if (args.length == 1) {
+				if(args[0] instanceof WeaselInteger) {
+					return new WeaselInteger(((Integer)args[0].get())&0xffffff);
+				}
+				if(args[0] instanceof WeaselString) {
+					return new WeaselInteger(PC_Color.getHexColorForName((String) args[0].get()));
+				}
+				
+				throw new WeaselRuntimeException("color() can't work with " + args[0].get().getClass().getSimpleName());
+			}else
+			if (args.length == 3) {
+				if(args[0] instanceof WeaselInteger)
+					if(args[1] instanceof WeaselInteger)
+						if(args[2] instanceof WeaselInteger)
+							return new WeaselInteger(((Integer)args[0].get())<<32 | ((Integer)args[1].get())<<16 | ((Integer)args[2].get()));
+				
+				throw new WeaselRuntimeException("Invalid arguments for color().");
+			}else {
+				throw new WeaselRuntimeException("color() needs 1 or 3 arguments.");
 			}
 
 		}
@@ -379,20 +430,22 @@ public class WeaselEngine implements PC_INBT, IVariableProvider, IFunctionProvid
 	 * @param funcName function name
 	 * @param args function arguments, array of simple objects
 	 * @return true if function was called, false if is missing.
-	 * @throws WeaselRuntimeException if the user function has bad number of parameters declared.
+	 * @throws WeaselRuntimeException if the user function has bad number of
+	 *             parameters declared.
 	 */
-	public boolean callFunctionExternal(String funcName, Object... args) throws WeaselRuntimeException{
+	public boolean callFunctionExternal(String funcName, Object... args) throws WeaselRuntimeException {
 		if (args == null) args = new Object[] {};
-		if(instructionList.canCallFunctionExternal(funcName)) {
+		if (instructionList.canCallFunctionExternal(funcName)) {
 			instructionList.callFunctionExternal(funcName, Calc.s2w(args));
 			return true;
-		}else {
+		} else {
 			return false;
 		}
 	}
 
-	/** 
-	 * Number of currently running external functions. This isn't tested, but they should be "stackable".
+	/**
+	 * Number of currently running external functions. This isn't tested, but
+	 * they should be "stackable".
 	 */
 	public int executingFunctionExternal = 0;
 
@@ -402,7 +455,7 @@ public class WeaselEngine implements PC_INBT, IVariableProvider, IFunctionProvid
 	 * @return the output value, simple object
 	 */
 	public Object getRetvalExternal() {
-		return externalCallRetval==null?null:externalCallRetval.get();
+		return externalCallRetval == null ? null : externalCallRetval.get();
 	}
 
 	/**
@@ -412,6 +465,9 @@ public class WeaselEngine implements PC_INBT, IVariableProvider, IFunctionProvid
 	public List<String> getProvidedFunctionNames() {
 		List<String> list = new ArrayList<String>(0);
 		list.add("isset");
+		list.add("_set");
+		list.add("_get");
+		list.add("color");
 		return list;
 	}
 

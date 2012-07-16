@@ -1,8 +1,8 @@
 package weasel.obj;
 
 
-import weasel.Calc;
 import net.minecraft.src.NBTTagCompound;
+import weasel.Calc;
 
 
 /**
@@ -50,7 +50,7 @@ public class WeaselString extends WeaselObject {
 
 	@Override
 	public void set(Object obj) {
-		this.string = Calc.toString(obj);	
+		this.string = Calc.toString(obj);
 	}
 
 

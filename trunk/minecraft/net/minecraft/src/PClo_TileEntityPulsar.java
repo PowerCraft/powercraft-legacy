@@ -110,7 +110,7 @@ public class PClo_TileEntityPulsar extends PC_TileEntity {
 		}
 		if (delayTimer >= delay) {
 			if (!silent && mod_PCcore.soundsEnabled) {
-				worldObj.playSoundEffect(xCoord + 0.5D, yCoord + 0.5D, zCoord + 0.5D, "random.click", 0.15F, 0.6F);
+				worldObj.playSoundEffect(xCoord + 0.5D, yCoord + 0.5D, zCoord + 0.5D, "random.click", 0.10F, 0.6F);
 			}
 			delayTimer = -1;
 		}

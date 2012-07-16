@@ -469,7 +469,6 @@ public class PCmo_EntityMiner extends Entity implements IInventory {
 
 
 
-
 	/** Fuel consumed from items and waiting for usage */
 	private int fuelBuffer = 0;
 	/**

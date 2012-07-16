@@ -21,37 +21,36 @@ public class PClo_ItemRadioRemote extends Item {
 		setMaxStackSize(1);
 	}
 
-	
+
 	@Override
 	public EnumAction getItemUseAction(ItemStack par1ItemStack) {
 		return EnumAction.none;
 	}
-	
+
 	@Override
-    public ItemStack onItemRightClick(ItemStack itemstack, World world, EntityPlayer entityplayer)
-    {
-    	if (!itemstack.hasTagCompound()) {
+	public ItemStack onItemRightClick(ItemStack itemstack, World world, EntityPlayer entityplayer) {
+		if (!itemstack.hasTagCompound()) {
 			onCreated(itemstack, world, entityplayer);
 		}
 
 		mod_PClogic.RADIO.anonymousTransmitterOn(itemstack.getTagCompound().getString("channel"));
 		world.playSoundAtEntity(entityplayer, "random.click", (world.rand.nextFloat() + 0.7F) / 2.0F, 1.0F + (world.rand.nextFloat() - world.rand.nextFloat()) * 0.4F);
-		
-        entityplayer.setItemInUse(itemstack, getMaxItemUseDuration(itemstack));
-        return itemstack;
-    }
-    
-    @Override
-    public int getMaxItemUseDuration(ItemStack par1ItemStack) {
-    	return 0x11940; // dunno why, this is taken from bow item
-    }
-    
-    @Override
-    public void onPlayerStoppedUsing(ItemStack itemstack, World world, EntityPlayer entityplayer, int i) {
-    	super.onPlayerStoppedUsing(itemstack, world, entityplayer, i);
-    	mod_PClogic.RADIO.anonymousTransmitterOff(itemstack.getTagCompound().getString("channel"));
+
+		entityplayer.setItemInUse(itemstack, getMaxItemUseDuration(itemstack));
+		return itemstack;
+	}
+
+	@Override
+	public int getMaxItemUseDuration(ItemStack par1ItemStack) {
+		return 0x11940; // dunno why, this is taken from bow item
+	}
+
+	@Override
+	public void onPlayerStoppedUsing(ItemStack itemstack, World world, EntityPlayer entityplayer, int i) {
+		super.onPlayerStoppedUsing(itemstack, world, entityplayer, i);
+		mod_PClogic.RADIO.anonymousTransmitterOff(itemstack.getTagCompound().getString("channel"));
 		world.playSoundAtEntity(entityplayer, "random.click", (world.rand.nextFloat() + 0.7F) / 2.0F, 1.0F + (world.rand.nextFloat() - world.rand.nextFloat()) * 0.4F);
-    }
+	}
 
 	@Override
 	public void onCreated(ItemStack itemstack, World world, EntityPlayer entityplayer) {

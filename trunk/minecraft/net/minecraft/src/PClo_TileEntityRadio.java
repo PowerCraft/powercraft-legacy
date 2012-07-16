@@ -1,5 +1,6 @@
 package net.minecraft.src;
 
+
 import net.minecraft.src.PClo_RadioBus.IRadioDevice;
 
 
@@ -18,7 +19,11 @@ public class PClo_TileEntityRadio extends PC_TileEntity implements IRadioDevice 
 	/** Device active flag */
 	public boolean active = false;
 	/** Dimension of the device (nether, world, end) */
-	public int dim = 0;
+	public int dim = 0;	
+	/** Hide the label */
+	public boolean hideLabel = false;
+	/** Render a smaller model */
+	public boolean renderMicro = false;
 
 
 	@Override
@@ -28,6 +33,8 @@ public class PClo_TileEntityRadio extends PC_TileEntity implements IRadioDevice 
 		nbttagcompound.setInteger("type", type);
 		nbttagcompound.setBoolean("active", active);
 		nbttagcompound.setInteger("dim", dim);
+		nbttagcompound.setBoolean("NoLabel", hideLabel);
+		nbttagcompound.setBoolean("Micro", renderMicro);
 	}
 
 	@Override
@@ -37,24 +44,26 @@ public class PClo_TileEntityRadio extends PC_TileEntity implements IRadioDevice 
 		type = nbttagcompound.getInteger("type");
 		active = nbttagcompound.getBoolean("active");
 		dim = nbttagcompound.getInteger("dim");
+		hideLabel = nbttagcompound.getBoolean("NoLabel");
+		renderMicro = nbttagcompound.getBoolean("Micro");
 	}
 
 
 	private boolean registered = false;
-	
+
 
 	@Override
-	public void updateEntity() {		
+	public void updateEntity() {
 		if (!registered) {
 			PC_Logger.finest("RADIO Tx at [" + xCoord + ";" + yCoord + ";" + zCoord + "] connected to DATA_BUS.");
 			mod_PClogic.RADIO.connectToRedstoneBus(this);
 
 			registered = true;
 		}
-		
-		if(type == 1) {
+
+		if (type == 1) {
 			boolean newstate = mod_PClogic.RADIO.getChannelState(channel);
-			if(active != newstate) {
+			if (active != newstate) {
 				active = newstate;
 				worldObj.scheduleBlockUpdate(xCoord, yCoord, zCoord, getBlockType().blockID, 1);
 				updateBlock();
@@ -132,13 +141,3 @@ public class PClo_TileEntityRadio extends PC_TileEntity implements IRadioDevice 
 		return type == 0 && getChannel().equals(channel) && active;
 	}
 }
-
-
-
-
-
-
-
-
-
-

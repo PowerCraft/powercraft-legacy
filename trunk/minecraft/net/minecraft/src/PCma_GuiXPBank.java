@@ -3,7 +3,6 @@ package net.minecraft.src;
 
 import java.util.Random;
 
-import net.minecraft.src.PC_GresTextEdit.PC_GresInputType;
 import net.minecraft.src.PC_GresWidget.PC_GresAlign;
 
 
@@ -19,11 +18,6 @@ public class PCma_GuiXPBank implements PC_IGresBase {
 	private PC_GresWidget txStoragePoints;
 	private PC_GresWidget txPlayerLevels;
 	private PC_GresWindow w;
-	private PC_GresWidget btnStoreAll;
-	private PC_GresWidget btnStoreOne;
-	private PC_GresWidget btnWithdrawOne;
-	private PC_GresWidget btnWithdrawAll;
-
 
 
 	/**
@@ -44,7 +38,7 @@ public class PCma_GuiXPBank implements PC_IGresBase {
 	public void initGui(PC_IGresGui gui) {
 		w = new PC_GresWindow(PC_Lang.tr("tile.PCmaXPBank.name"));
 		w.setAlignH(PC_GresAlign.CENTER);
-		
+
 		EntityPlayer player = getPlayer();
 
 		if (player.experience < 0) player.experience = 0;
@@ -57,7 +51,7 @@ public class PCma_GuiXPBank implements PC_IGresBase {
 		if (player.score < 0) player.score = 0;
 		if (xpbank.xp < 0) xpbank.xp = 0;
 
-		PC_GresWidget vg, hg, hg1;
+		PC_GresWidget hg;
 
 		int labelWidth = 0;
 		labelWidth = Math.max(labelWidth, w.getStringWidth(PC_Lang.tr("pc.gui.xpbank.storagePoints")));
@@ -75,8 +69,8 @@ public class PCma_GuiXPBank implements PC_IGresBase {
 		hg = new PC_GresLayoutH().setAlignH(PC_GresAlign.LEFT).setMinWidth(200);
 		hg.add(new PC_GresLabel(PC_Lang.tr("pc.gui.xpbank.withdraw")).setMinWidth(labelWidth).setAlignH(PC_GresAlign.RIGHT));
 
-		hg.add(btnStoreOne = new PC_GresButton(PC_Lang.tr("pc.gui.xpbank.oneLevel")).setId(10).setMinWidth(50).setWidgetMargin(2));
-		hg.add(btnWithdrawOne = new PC_GresButton(PC_Lang.tr("pc.gui.xpbank.all")).setId(11).setMinWidth(50).setWidgetMargin(2));
+		hg.add(new PC_GresButton(PC_Lang.tr("pc.gui.xpbank.oneLevel")).setId(10).setMinWidth(50).setWidgetMargin(2));
+		hg.add(new PC_GresButton(PC_Lang.tr("pc.gui.xpbank.all")).setId(11).setMinWidth(50).setWidgetMargin(2));
 		w.add(hg);
 
 		w.add(new PC_GresSeparatorH(0, 5).setLineColor(0x999999));
@@ -90,69 +84,15 @@ public class PCma_GuiXPBank implements PC_IGresBase {
 		hg = new PC_GresLayoutH().setAlignH(PC_GresAlign.LEFT).setMinWidth(200);
 		hg.add(new PC_GresLabel(PC_Lang.tr("pc.gui.xpbank.deposit")).setMinWidth(labelWidth).setAlignH(PC_GresAlign.RIGHT));
 
-		hg.add(btnStoreAll = new PC_GresButton(PC_Lang.tr("pc.gui.xpbank.oneLevel")).setId(20).setMinWidth(50).setWidgetMargin(2));
-		hg.add(btnWithdrawAll = new PC_GresButton(PC_Lang.tr("pc.gui.xpbank.all")).setId(21).setMinWidth(50).setWidgetMargin(2));
+		hg.add(new PC_GresButton(PC_Lang.tr("pc.gui.xpbank.oneLevel")).setId(20).setMinWidth(50).setWidgetMargin(2));
+		hg.add(new PC_GresButton(PC_Lang.tr("pc.gui.xpbank.all")).setId(21).setMinWidth(50).setWidgetMargin(2));
 		w.add(hg);
-
-
-//		hg = new PC_GresLayoutH().setAlignH(PC_GresAlign.STRETCH);
-//
-//		vg = new PC_GresLayoutV().setAlignH(PC_GresAlign.STRETCH);
-//
-//		hg1 = new PC_GresLayoutH().setAlignH(PC_GresAlign.LEFT);
-//
-//		int labelWidth = 0;
-//		labelWidth = Math.max(labelWidth, window.getStringWidth(PC_Lang.tr("pc.gui.xpbank.totalXp")));
-//		labelWidth = Math.max(labelWidth, window.getStringWidth(PC_Lang.tr("pc.gui.xpbank.currentPlayerPoints")));
-//		labelWidth = Math.max(labelWidth, window.getStringWidth(PC_Lang.tr("pc.gui.xpbank.currentPlayerLevel")));
-//		labelWidth = Math.max(labelWidth, window.getStringWidth(PC_Lang.tr("pc.gui.xpbank.pointsToWithdraw")));
-//		labelWidth = Math.max(labelWidth, window.getStringWidth(PC_Lang.tr("pc.gui.xpbank.pointsToDeposit")));
-//		labelWidth += 5;
-//
-//		hg1.add(new PC_GresLabel(PC_Lang.tr("pc.gui.xpbank.storagePoints")).setMinWidth(labelWidth).setAlignH(PC_GresAlign.RIGHT));
-//		hg1.add(txStoragePoints = new PC_GresLabel(xpbank.xp + "").setColor(PC_GresWidget.textColorEnabled, 0x009900));
-//		hg1.add(new PC_GresLabel(PC_Lang.tr("pc.gui.xpbank.xpUnit")));
-//		vg.add(hg1);
-//
-//		vg.add(new PC_GresSeparatorH(0, 5).setLineColor(0xbbbbbb));
-//
-//		hg1 = new PC_GresLayoutH().setAlignH(PC_GresAlign.LEFT);
-//		hg1.add(new PC_GresLabel(PC_Lang.tr("pc.gui.xpbank.currentPlayerPoints")).setMinWidth(labelWidth).setAlignH(PC_GresAlign.RIGHT));
-//		hg1.add(txPlayerPoints = new PC_GresLabel(getPlayer().experienceTotal + "").setColor(PC_GresWidget.textColorEnabled, 0x000099));
-//		hg1.add(new PC_GresLabel(PC_Lang.tr("pc.gui.xpbank.xpUnit")));
-//		vg.add(hg1);
-//
-//		hg1 = new PC_GresLayoutH().setAlignH(PC_GresAlign.LEFT);
-//		hg1.add(new PC_GresLabel(PC_Lang.tr("pc.gui.xpbank.currentPlayerLevel")).setMinWidth(labelWidth).setAlignH(PC_GresAlign.RIGHT));
-//		hg1.add(txPlayerLevel = new PC_GresLabel(getPlayer().experienceLevel + "").setColor(PC_GresWidget.textColorEnabled, 0x990099));
-//		hg1.add(new PC_GresLabel(PC_Lang.tr("pc.gui.xpbank.xpLevels")));
-//		vg.add(hg1);
-//
-//		vg.add(new PC_GresSeparatorH(0, 5).setLineColor(0xbbbbbb));
-//
-//		hg1 = new PC_GresLayoutH().setAlignH(PC_GresAlign.LEFT);
-//		hg1.add(new PC_GresLabel(PC_Lang.tr("pc.gui.xpbank.pointsToWithdraw")).setMinWidth(labelWidth).setAlignH(PC_GresAlign.RIGHT));
-//		hg1.add(editWithdraw = new PC_GresTextEdit(xpbank.xp + "", 8, PC_GresInputType.UNSIGNED_INT).setId(10));
-//		hg1.add(new PC_GresButton(PC_Lang.tr("pc.gui.xpbank.withdrawButton")).setId(11));
-//		vg.add(hg1);
-//
-//		hg1 = new PC_GresLayoutH().setAlignH(PC_GresAlign.LEFT);
-//		hg1.add(new PC_GresLabel(PC_Lang.tr("pc.gui.xpbank.pointsToDeposit")).setMinWidth(labelWidth).setAlignH(PC_GresAlign.RIGHT));
-//		hg1.add(editDeposit = new PC_GresTextEdit(getPlayer().experienceTotal + "", 8, PC_GresInputType.UNSIGNED_INT).setId(20));
-//		hg1.add(new PC_GresButton(PC_Lang.tr("pc.gui.xpbank.depositButton")).setId(21));
-//		vg.add(hg1);
-//
-//		hg.add(vg);
-//		window.add(hg);
-//
-//		// window.add(new PC_GresGap(0, 6));
 
 		hg = new PC_GresLayoutH().setAlignH(PC_GresAlign.CENTER);
 		hg.add(buttonClose = new PC_GresButton(PC_Lang.tr("pc.gui.ok")).setId(0));
 		w.add(hg);
 
 		updateCounters();
-		//updateFields();
 
 		gui.add(w);
 
@@ -183,30 +123,13 @@ public class PCma_GuiXPBank implements PC_IGresBase {
 	}
 
 	private void updateCounters() {
-		//txPlayerLevel.setText(getPlayer().experienceLevel + "").setMinWidth(0);
-		//txPlayerPoints.setText(getPlayerExperiencePointsTotal(getPlayer()) + "").setMinWidth(0);
 		txStoragePoints.setText(xpbank.xp + "").setMinWidth(0);
 		txPlayerLevels.setText(getPlayer().experienceLevel + "").setMinWidth(0);
-		//w.calcSize();
 	}
 
 	private int xpBarCap(int level) {
 		return 7 + (level * 7 >> 1);
 	}
-
-//	
-//	private int getPlayerExperiencePointsTotal(EntityPlayer player) {
-//		//int totalXP = player.experienceTotal;
-//		int totalPoints = 0;
-//		totalPoints += player.experience*player.xpBarCap();
-//		//player.experience = 0;
-//		
-//		for(int i=player.experienceLevel; i>0; i--) {
-//			totalPoints += xpBarCap(i);
-//		}
-//		
-//		return totalPoints;
-//	}
 
 	private void withdrawOneLevel(EntityPlayer player) {
 		int level = player.experienceLevel;
@@ -271,9 +194,6 @@ public class PCma_GuiXPBank implements PC_IGresBase {
 				break;
 
 			case 11: // withdraw all				
-
-//				addToPlayer(player, xpbank.xp);
-//				 xpbank.xp=0;
 
 				while (xpbank.xp > 0) {
 					if (player.experience < 0) player.experience = 0;

@@ -1,5 +1,6 @@
 package net.minecraft.src;
 
+
 /**
  * Weasel device tile entity
  * 
@@ -49,8 +50,8 @@ public class PClo_TileEntityWeasel extends PC_TileEntity {
 		} else {
 			return;
 		}
-		
-		if(plugin != null) {
+
+		if (plugin != null) {
 			plugin.update();
 		}
 	}
@@ -61,9 +62,7 @@ public class PClo_TileEntityWeasel extends PC_TileEntity {
 	 * Call weasel's function update
 	 */
 	public void onDirectPinChanged() {
-		if(plugin != null)
-			plugin.onNeighborBlockChanged();
-
+		if (plugin != null) plugin.onNeighborBlockChanged();
 	}
 
 
@@ -71,22 +70,22 @@ public class PClo_TileEntityWeasel extends PC_TileEntity {
 	@Override
 	public void readFromNBT(NBTTagCompound maintag) {
 		super.readFromNBT(maintag);
-		
-		if(maintag.getBoolean("nullplugin")) return;
+
+		if (maintag.getBoolean("nullplugin")) return;
 
 		int type = maintag.getInteger("type");
 
 		plugin = PClo_WeaselPlugin.getPluginForType(this, type);
-		if(plugin != null) plugin.readFromNBT(maintag.getCompoundTag("Plugin"));
+		if (plugin != null) plugin.readFromNBT(maintag.getCompoundTag("Plugin"));
 
 	}
 
 	@Override
 	public void writeToNBT(NBTTagCompound maintag) {
 		super.writeToNBT(maintag);
-		if(plugin == null) {
+		if (plugin == null) {
 			maintag.setBoolean("nullplugin", true);
-		}else {
+		} else {
 			maintag.setInteger("type", plugin.getType());
 			maintag.setCompoundTag("Plugin", plugin.writeToNBT(new NBTTagCompound()));
 		}
@@ -103,7 +102,7 @@ public class PClo_TileEntityWeasel extends PC_TileEntity {
 	 * @return ID type of the weasel plugin
 	 */
 	public int getType() {
-		if(plugin == null) return -1;
+		if (plugin == null) return -1;
 		return plugin.getType();
 	}
 
@@ -115,10 +114,10 @@ public class PClo_TileEntityWeasel extends PC_TileEntity {
 	public void setType(int type) {
 		plugin = PClo_WeaselPlugin.getPluginForType(this, type);
 	}
-	
+
 	@Override
 	public void onBlockPickup() {
-		if(plugin != null) {
+		if (plugin != null) {
 			plugin.onBlockRemoval();
 		}
 	}

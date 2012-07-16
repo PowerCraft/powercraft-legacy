@@ -27,9 +27,9 @@ public class PClo_BlockRadio extends BlockContainer implements PC_IBlockType {
 	public void getCollidingBoundingBoxes(World world, int x, int y, int z, AxisAlignedBB collidedbox, ArrayList list) {
 		setBlockBoundsBasedOnState(world, x, y, z);
 		super.getCollidingBoundingBoxes(world, x, y, z, collidedbox, list);
-
-		setBlockBounds(0.65F, 0, 0.65F, 0.95F, 0.9F, 0.65F);
-		super.getCollidingBoundingBoxes(world, x, y, z, collidedbox, list);
+//
+//		setBlockBounds(0.65F, 0, 0.65F, 0.95F, 0.9F, 0.65F);
+//		super.getCollidingBoundingBoxes(world, x, y, z, collidedbox, list);
 	}
 
 	@Override
@@ -67,12 +67,52 @@ public class PClo_BlockRadio extends BlockContainer implements PC_IBlockType {
 	@Override
 	public boolean blockActivated(World world, int x, int y, int z, EntityPlayer entityplayer) {
 		ItemStack ihold = entityplayer.getCurrentEquippedItem();
+		
+		PClo_TileEntityRadio ter = getTE(world, x, y, z);
+		if(ter==null) return false;
+		
+		
 		if (ihold != null) {
 			if (ihold.getItem() instanceof ItemBlock && ihold.getItem().shiftedIndex != blockID) {
 				Block bhold = Block.blocksList[ihold.getItem().shiftedIndex];
 				if (bhold instanceof PC_IBlockType) {
 					return false;
 				}
+			} else if (ihold.getItem().shiftedIndex == mod_PCcore.activator.shiftedIndex) {
+
+				if (ter.isTransmitter()) {
+
+					if (ihold.hasTagCompound()) {
+						ihold.getTagCompound().setString("RadioChannel", ter.channel);
+					} else {
+						NBTTagCompound tag = new NBTTagCompound();
+						tag.setString("RadioChannel", ter.channel);
+						ihold.setTagCompound(tag);
+					}
+
+					PC_Utils.chatMsg(PC_Lang.tr("pc.radio.activatorGetChannel", new String[] { ter.channel }), true);
+
+				} else {
+					if (ihold.hasTagCompound()) {
+						String chnl = ihold.getTagCompound().getString("RadioChannel");
+						if (!chnl.equals("")) {
+							ter.channel = chnl;
+							
+							PC_CoordI pos = ter.getCoord();
+							
+							ter.active = mod_PClogic.RADIO.getChannelState(chnl);
+							if (ter.active) {
+								PC_Utils.mc().theWorld.setBlockMetadataWithNotify(pos.x, pos.y, pos.z, 1);
+							}
+
+							PC_Utils.mc().theWorld.scheduleBlockUpdate(pos.x, pos.y, pos.z, mod_PClogic.radio.blockID, 1);
+							
+							PC_Utils.chatMsg(PC_Lang.tr("pc.radio.activatorSetChannel", new String[] { chnl }), true);
+							world.playSoundEffect(x, y, z, "note.snare", (world.rand.nextFloat() + 0.7F) / 2.0F, 0.5F);
+						}
+					}
+				}
+				return true;
 			}
 		}
 
@@ -89,10 +129,10 @@ public class PClo_BlockRadio extends BlockContainer implements PC_IBlockType {
 			}
 		}
 
-		int rtype = getTE(world, x, y, z).isTransmitter() ? PClo_GuiRadioChannel.TRANSMITTER : PClo_GuiRadioChannel.RECEIVER;
-		String channel = getTE(world, x, y, z).getChannel();
+		int rtype = ter.isTransmitter() ? PClo_GuiRadio.TRANSMITTER : PClo_GuiRadio.RECEIVER;
+		String channel = ter.getChannel();
 
-		PC_Utils.openGres(entityplayer, new PClo_GuiRadioChannel(entityplayer.dimension, new PC_CoordI(x, y, z), channel, rtype));
+		PC_Utils.openGres(entityplayer, new PClo_GuiRadio(entityplayer.dimension, ter.getCoord(), channel, rtype));
 
 		return true;
 	}
@@ -226,9 +266,11 @@ public class PClo_BlockRadio extends BlockContainer implements PC_IBlockType {
 		if (i1 != 1) {
 			return;
 		}
+		
+		boolean tiny = getTE(world, i, j, k).renderMicro;
 
 		double x = (i + 0.5F) + (random.nextFloat() - 0.5F) * 0.20000000000000001D;
-		double y = (j + 0.9F) + (random.nextFloat() - 0.5F) * 0.20000000000000001D;
+		double y = (j + (tiny?0.2F:0.9F)) + (random.nextFloat() - 0.5F) * 0.20000000000000001D;
 		double z = (k + 0.5F) + (random.nextFloat() - 0.5F) * 0.20000000000000001D;
 
 		world.spawnParticle("reddust", x, y, z, 0.0D, 0.0D, 0.0D);

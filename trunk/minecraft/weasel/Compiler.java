@@ -34,6 +34,7 @@ import weasel.lang.InstructionPop;
 import weasel.lang.InstructionPush;
 import weasel.lang.InstructionRestart;
 import weasel.lang.InstructionReturn;
+import weasel.lang.InstructionStringCall;
 import weasel.lang.InstructionUnset;
 
 
@@ -45,7 +46,8 @@ import weasel.lang.InstructionUnset;
  */
 public class Compiler {
 
-	/** Pattern matching function headers in expressions. */ //Pattern.compile("([a-zA-Z_]{1}[a-zA-Z_0-9.]*?)[(]((([(][^)]*?[)])*[^(]*)*)[)]");
+	/** Pattern matching function headers in expressions. */
+	//Pattern.compile("([a-zA-Z_]{1}[a-zA-Z_0-9.]*?)[(]((([(][^)]*?[)])*[^(]*)*)[)]");
 	protected static final Pattern functionPattern = Pattern.compile("([a-zA-Z_]{1}[a-zA-Z_0-9.]*?)\\(([^(]*?)\\)");
 
 	/**
@@ -54,12 +56,16 @@ public class Compiler {
 	 * as they tend to confuse the other parsers.
 	 */
 	protected static final Pattern stringPattern = Pattern.compile("(\"[^\"]*?\")");
+	/**
+	 * Pattern for finding strings, which does not include the quotes in the
+	 * string.
+	 */
 	protected static final Pattern stringPatternNoQuotes = Pattern.compile("\"([^\"]*?)\"");
 
 	private static final String variableInCodePatternRegexp = "([a-zA-Z_]{1}[a-zA-Z_0-9.]*)(?:[^a-zA-Z_0-9.(]|$|\n)";
 
 	private static final String variableAlonePatternRegexp = "([a-zA-Z_]{1}[a-zA-Z_0-9.]*?)(?:[^a-zA-Z_0-9.(]|$|\n)";
-	
+
 	private static final String mathExpressionRegexp = "[0-9a-zA-Z_.\\-+!(\"](?:{1}.*?[0-9a-zA-Z_.)\"]{1})?";
 
 	/** Pattern matching variables in an expression */
@@ -102,6 +108,7 @@ public class Compiler {
 		langKeywords.add("while");
 		langKeywords.add("do");
 		langKeywords.add("until");
+		langKeywords.add("_call");
 //		langKeywords.add("switch");
 //		langKeywords.add("case");
 		langKeywords.add("break");
@@ -400,7 +407,8 @@ public class Compiler {
 	 */
 	public List<Instruction> compile(String source) throws SyntaxError {
 
-		source = source.replace("'", "\"");		
+		// DO NOT! There may be It's or doesn't, and we need these apostrophes!
+		//source = source.replace("'", "\"");
 
 		source = escapeStringConstants(source);
 		//System.out.println(source);
@@ -434,7 +442,7 @@ public class Compiler {
 		//remove brackets from break and continue - they cant have any calculations there anyway
 		source = source.replaceAll("([^a-zA-Z0-9._]|^)(break|continue)\\s*[(](.*?)[)];", "$1$2 $3;");
 
-		
+
 		// remove () from end and pause
 		source = source.replaceAll("([^a-zA-Z0-9._]|^)(end|pause|restart)\\s*[(]\\s*[)]\\s*;", "$1$2;");
 
@@ -1048,6 +1056,18 @@ public class Compiler {
 							// return;
 							instructionList.add(new InstructionReturn(""));
 						}
+
+					} else if (funcName.equalsIgnoreCase("_call")) {
+						// a _CALL statement
+						List<String> parameters = splitBracketSafe(inBracket, ',');
+
+						for (int i = 0; i < parameters.size(); i++) {
+							PC_Struct2<String, List<Instruction>> tmp = expandExpression(parameters.get(i));
+							instructionList.addAll(tmp.b);
+							parameters.set(i, tmp.a);
+						}
+
+						instructionList.add(new InstructionStringCall(parameters.toArray(new String[parameters.size()])));
 
 					} else if (funcName.equalsIgnoreCase("push")) {
 						// a PUSH statement

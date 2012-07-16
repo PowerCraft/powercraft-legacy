@@ -1,15 +1,20 @@
 package net.minecraft.src;
 
 
-import java.util.Random;
 
 
+/**
+ * Teleporter TE
+ * 
+ * @author MightyPork
+ */
 public class PCtr_TileEntityTeleporter extends PC_TileEntity {
-	Random rand = new Random();
-
 	private static final int SENDER = 1, RECEIVER = 2, INVALID = 0;
+	/** TP type */
 	public int type;
-	public String target, identifier;
+
+	public String targetName, identifierName;
+
 	private boolean lastActiveState = false;
 
 	public boolean items = true;
@@ -18,11 +23,15 @@ public class PCtr_TileEntityTeleporter extends PC_TileEntity {
 	public boolean players = true;
 	public boolean sneakTrigger = false;
 	public String direction = "N";
+	public boolean hideLabel = false;
 
+	/**
+	 * 
+	 */
 	public PCtr_TileEntityTeleporter() {
 		type = INVALID;
-		target = "";
-		identifier = "";
+		targetName = "";
+		identifierName = "";
 	}
 
 	@Override
@@ -43,11 +52,11 @@ public class PCtr_TileEntityTeleporter extends PC_TileEntity {
 		return type == RECEIVER;
 	}
 
-	public void setSender() {
+	public void setIsSender() {
 		type = SENDER;
 	}
 
-	public void setReceiver() {
+	public void setIsReceiver() {
 		type = RECEIVER;
 	}
 
@@ -60,9 +69,9 @@ public class PCtr_TileEntityTeleporter extends PC_TileEntity {
 		boolean active = false;
 
 		if (type == SENDER) {
-			active = (!target.equals("") && PCtr_TeleporterHelper.targetExists(target));
+			active = (!targetName.equals("") && PCtr_TeleporterHelper.targetExists(targetName));
 		} else if (type == RECEIVER) {
-			active = (!identifier.equals("") && PCtr_TeleporterHelper.targetExists(identifier));
+			active = (!identifierName.equals("") && PCtr_TeleporterHelper.targetExists(identifierName));
 		}
 
 		if (active != lastActiveState) {
@@ -79,8 +88,8 @@ public class PCtr_TileEntityTeleporter extends PC_TileEntity {
 	public void readFromNBT(NBTTagCompound nbttagcompound) {
 		super.readFromNBT(nbttagcompound);
 
-		target = nbttagcompound.getString("tptarget");
-		identifier = nbttagcompound.getString("tpidentifier");
+		targetName = nbttagcompound.getString("tptarget");
+		identifierName = nbttagcompound.getString("tpidentifier");
 		type = nbttagcompound.getInteger("tptype");
 
 		items = nbttagcompound.getBoolean("tpaitems");
@@ -88,6 +97,7 @@ public class PCtr_TileEntityTeleporter extends PC_TileEntity {
 		animals = nbttagcompound.getBoolean("tpaanimals");
 		players = nbttagcompound.getBoolean("tpaplayers");
 		direction = nbttagcompound.getString("tpdir");
+		hideLabel = nbttagcompound.getBoolean("hideLabel");
 
 		sneakTrigger = nbttagcompound.getBoolean("tpsneak");
 
@@ -103,14 +113,15 @@ public class PCtr_TileEntityTeleporter extends PC_TileEntity {
 	public void writeToNBT(NBTTagCompound nbttagcompound) {
 		super.writeToNBT(nbttagcompound);
 
-		nbttagcompound.setString("tpidentifier", identifier);
-		nbttagcompound.setString("tptarget", target);
+		nbttagcompound.setString("tpidentifier", identifierName);
+		nbttagcompound.setString("tptarget", targetName);
 		nbttagcompound.setInteger("tptype", type);
 
 		nbttagcompound.setBoolean("tpaitems", items);
 		nbttagcompound.setBoolean("tpamonsters", monsters);
 		nbttagcompound.setBoolean("tpaanimals", animals);
 		nbttagcompound.setBoolean("tpaplayers", players);
+		nbttagcompound.setBoolean("hideLabel", hideLabel);
 
 		nbttagcompound.setBoolean("tpsneak", sneakTrigger);
 		nbttagcompound.setString("tpdir", direction);

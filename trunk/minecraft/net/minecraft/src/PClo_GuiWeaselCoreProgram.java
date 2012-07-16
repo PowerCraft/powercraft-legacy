@@ -2,7 +2,6 @@ package net.minecraft.src;
 
 
 
-import net.minecraft.src.PC_GresTextEdit.PC_GresInputType;
 import net.minecraft.src.PC_GresWidget.PC_GresAlign;
 
 
@@ -64,7 +63,7 @@ public class PClo_GuiWeaselCoreProgram implements PC_IGresBase {
 
 
 
-		leftCol.add(edit = new PC_GresTextEditMultiline(core.program, 290, 154, PC_GresHighlight.weasel(core)).setWidgetMargin(2));
+		leftCol.add(edit = new PC_GresTextEditMultiline(core.program, 290, 154, PC_GresHighlightHelper.weasel(core, core.getWeaselEngine())).setWidgetMargin(2));
 		leftCol.add(txMsg = new PC_GresLabelMultiline("Weasel status: " + (core.getError() == null ? "OK" : core.getError()), 270).setMinRows(2).setMaxRows(2).setWidgetMargin(2).setColor(PC_GresWidget.textColorEnabled, 0x000000));
 
 		mainHg.add(leftCol);
@@ -82,7 +81,7 @@ public class PClo_GuiWeaselCoreProgram implements PC_IGresBase {
 		mainHg.add(rightCol);
 
 		w.add(mainHg);
-		
+
 		btnLaunch.enable(false);
 
 		gui.add(w);
@@ -111,9 +110,9 @@ public class PClo_GuiWeaselCoreProgram implements PC_IGresBase {
 			PC_Utils.openGres(getPlayer(), new PClo_GuiWeaselCoreSettings(core));
 			return;
 		}
-		
-		
-		if(widget == edit) {
+
+
+		if (widget == edit) {
 			btnLaunch.enable(false);
 		}
 
@@ -138,7 +137,7 @@ public class PClo_GuiWeaselCoreProgram implements PC_IGresBase {
 				core.checkProgramForErrors(edit.getText());
 				txMsg.setText(PC_Lang.tr("pc.gui.weasel.core.msgNoErrors"));
 				btnLaunch.enable(true);
-				
+
 			} catch (Exception e) {
 				txMsg.setText(e.getMessage());
 				btnLaunch.enable(false);
@@ -176,7 +175,7 @@ public class PClo_GuiWeaselCoreProgram implements PC_IGresBase {
 		if (widget.getId() == 5) {
 			core.restartAllNetworkDevices();
 			txMsg.setText(PC_Lang.tr("pc.gui.weasel.core.msgRestarted"));
-			
+
 			return;
 		}
 
@@ -184,7 +183,7 @@ public class PClo_GuiWeaselCoreProgram implements PC_IGresBase {
 		if (widget.getId() == 6) {
 			core.stopProgram();
 			txMsg.setText(PC_Lang.tr("pc.gui.weasel.core.msgHalted"));
-			
+
 			return;
 		}
 
@@ -203,24 +202,24 @@ public class PClo_GuiWeaselCoreProgram implements PC_IGresBase {
 
 	@Override
 	public void updateTick(PC_IGresGui gui) {
-		
-		if(core.halted) {
+
+		if (core.halted) {
 			txRunning.setText(PC_Lang.tr("pc.gui.weasel.core.halted"));
 			btnPauseResume.enable(false);
 			btnStop.enable(false);
 			btnRestart.enable(true);
 			return;
 		}
-		
-		if(core.hasError()) {
+
+		if (core.hasError()) {
 			txMsg.text = core.getError();
 			txRunning.setText(PC_Lang.tr("pc.gui.weasel.core.crashed"));
 			btnPauseResume.enable(false);
 			btnRestart.enable(true);
 			btnStop.enable(true);
 		}
-		
-		if(core.paused) {
+
+		if (core.paused) {
 			txRunning.setText(PC_Lang.tr("pc.gui.weasel.core.paused"));
 			btnPauseResume.setText(PC_Lang.tr("pc.gui.weasel.core.resume"));
 			btnPauseResume.enable(true);
@@ -228,8 +227,8 @@ public class PClo_GuiWeaselCoreProgram implements PC_IGresBase {
 			btnStop.enable(true);
 			return;
 		}
-		
-		if(core.getWeaselEngine().isProgramFinished) {
+
+		if (core.getWeaselEngine().isProgramFinished) {
 			txRunning.setText(PC_Lang.tr("pc.gui.weasel.core.idle"));
 			btnPauseResume.setText(PC_Lang.tr("pc.gui.weasel.core.pause"));
 			btnPauseResume.enable(true);
@@ -238,8 +237,8 @@ public class PClo_GuiWeaselCoreProgram implements PC_IGresBase {
 			btnStop.enable(!core.getWeaselEngine().isProgramFinished);
 			return;
 		}
-		
-		
+
+
 		txRunning.setText(PC_Lang.tr("pc.gui.weasel.core.running"));
 		btnPauseResume.setText(PC_Lang.tr("pc.gui.weasel.core.pause"));
 		btnPauseResume.enable(true);

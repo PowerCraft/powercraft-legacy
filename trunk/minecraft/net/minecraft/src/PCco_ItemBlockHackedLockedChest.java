@@ -2,7 +2,6 @@ package net.minecraft.src;
 
 
 
-
 /**
  * ItemBlock injected to itemsList to replace the standard item block.<br>
  * This kind of Locked Chest can hold additional information about the
@@ -81,7 +80,7 @@ public class PCco_ItemBlockHackedLockedChest extends ItemBlock {
 		}
 
 		PC_CoordI pos = new PC_CoordI(x, y, z);
-		
+
 		if (world.canBlockBePlacedAt(placedID, x, y, z, false, face)) {
 			Block block = Block.blocksList[placedID];
 
@@ -105,7 +104,7 @@ public class PCco_ItemBlockHackedLockedChest extends ItemBlock {
 							tec.yCoord = cy;
 							tec.zCoord = cz;
 							itemstack.setTagCompound(null);
-							world.setBlockTileEntity(cx,cy,cz, tec);
+							world.setBlockTileEntity(cx, cy, cz, tec);
 						}
 					}
 
@@ -160,7 +159,7 @@ public class PCco_ItemBlockHackedLockedChest extends ItemBlock {
 
 		if (tec == null) return null;
 
-		ItemStack stack = new ItemStack(Block.lockedChest.blockID, 1,0);
+		ItemStack stack = new ItemStack(Block.lockedChest.blockID, 1, 0);
 
 		NBTTagCompound blocktag = new NBTTagCompound();
 		pos.getTileEntity(world).writeToNBT(blocktag);
@@ -182,11 +181,11 @@ public class PCco_ItemBlockHackedLockedChest extends ItemBlock {
 				ic.setInventorySlotContents(i, null);
 			}
 		}
-		
+
 		//Block.blocksList[pos.getId(world)].onBlockRemoval(world, pos.x, pos.y, pos.z);
 
-		if(tec instanceof PC_TileEntity) ((PC_TileEntity) tec).onBlockPickup();
-		
+		if (tec instanceof PC_TileEntity) ((PC_TileEntity) tec).onBlockPickup();
+
 		tec.invalidate();
 		//world.removeBlockTileEntity(pos.x, pos.y, pos.z);
 

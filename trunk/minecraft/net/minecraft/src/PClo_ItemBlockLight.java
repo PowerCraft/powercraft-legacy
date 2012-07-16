@@ -25,7 +25,9 @@ public class PClo_ItemBlockLight extends ItemBlock {
 
 	@Override
 	public String getItemNameIS(ItemStack itemstack) {
-		return super.getItemName() + "." + itemstack.getItemDamage() % 16 + (itemstack.getItemDamage() > 15 ? ".stable" : "");
+		boolean lamp = itemstack.getItemDamage() >= 16 && itemstack.getItemDamage() < 32;
+		boolean huge = itemstack.getItemDamage() >= 32 && itemstack.getItemDamage() < 48;
+		return super.getItemName() + "." + itemstack.getItemDamage() % 16 + (lamp ? ".stable" : huge?".huge":"");
 	}
 
 	@Override
@@ -73,7 +75,8 @@ public class PClo_ItemBlockLight extends ItemBlock {
 		}
 
 
-		boolean lamp = itemstack.getItemDamage() > 15;
+		boolean lamp = itemstack.getItemDamage() >= 16 && itemstack.getItemDamage() < 32;
+		boolean huge = itemstack.getItemDamage() >= 32 && itemstack.getItemDamage() < 48;
 		Block block = lamp ? mod_PClogic.lightOn : mod_PClogic.lightOff;
 
 		if (world.canBlockBePlacedAt(block.blockID, i, j, k, false, l)) {
@@ -89,6 +92,7 @@ public class PClo_ItemBlockLight extends ItemBlock {
 				}
 
 				if (lamp) tei.isStable = true;
+				if (huge) tei.isHuge = true;
 
 				tei.setColor(itemstack.getItemDamage() % 16);
 				world.setBlockTileEntity(i, j, k, tei);

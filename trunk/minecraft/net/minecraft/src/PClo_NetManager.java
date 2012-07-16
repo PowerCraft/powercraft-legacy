@@ -10,13 +10,12 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Random;
+
+import net.minecraft.client.Minecraft;
 import weasel.IWeaselHardware;
 import weasel.exception.WeaselRuntimeException;
 import weasel.obj.WeaselObject;
 import weasel.obj.WeaselVariableMap;
-
-import net.minecraft.client.Minecraft;
 
 
 /**
@@ -33,29 +32,27 @@ public class PClo_NetManager implements PC_INBT {
 	 * Local weasel network, provided by a weasel CORE to it's peripherals.
 	 * 
 	 * @author MightyPork
-	 *
 	 */
 	public static class WeaselNetwork implements PC_INBT {
-		/** RNG */
-		public Random rand = new Random();
-		
+
 		/** Map of members, please dont edit. */
-		public Map<String, NetworkMember> members = new HashMap<String, NetworkMember>();
-		
+		private Map<String, NetworkMember> members = new HashMap<String, NetworkMember>();
+
 		private PC_Color color = PC_Color.randomColor();
-		
+
 		/** Local shared variable pool */
 		public WeaselVariableMap localHeap = new WeaselVariableMap();
-		
+
 		/**
 		 * @return the net color
 		 */
 		public PC_Color getColor() {
 			return color;
 		}
-		
+
 		/**
 		 * Set net color
+		 * 
 		 * @param color color to set
 		 */
 		public void setColor(PC_Color color) {
@@ -72,22 +69,25 @@ public class PClo_NetManager implements PC_INBT {
 		@Override
 		public WeaselNetwork readFromNBT(NBTTagCompound tag) {
 			color.readFromNBT(tag.getCompoundTag("Color"));
-			localHeap.readFromNBT(tag.getCompoundTag("Heap"));			
+			localHeap.readFromNBT(tag.getCompoundTag("Heap"));
 			return this;
 		}
 
 		/**
-		 * Called when a network was renamed, all members must change their copies of the network name.
+		 * Called when a network was renamed, all members must change their
+		 * copies of the network name.
+		 * 
 		 * @param newName
 		 */
 		public void renamedTo(String newName) {
-			for(NetworkMember member:members.values()) {
+			for (NetworkMember member : members.values()) {
 				member.onNetworkRenamed(newName);
 			}
 		}
 
 		/**
 		 * Unregister member form the network
+		 * 
 		 * @param memberName
 		 */
 		public void unregisterMember(String memberName) {
@@ -96,65 +96,90 @@ public class PClo_NetManager implements PC_INBT {
 
 		/**
 		 * Register member to the network
+		 * 
 		 * @param memberName member's name
 		 * @param member the member
 		 */
 		public void registerMember(String memberName, NetworkMember member) {
 			members.put(memberName, member);
 		}
-		
+
+		/**
+		 * Get network member by name
+		 * 
+		 * @param name
+		 * @return member or null
+		 */
 		public NetworkMember getMember(String name) {
 			return members.get(name);
 		}
-		
+
+		/**
+		 * get size of network
+		 * 
+		 * @return size
+		 */
 		public int size() {
 			return members.size();
 		}
+
+		/**
+		 * @return member map
+		 */
+		public Map<String, NetworkMember> getMembers() {
+			return members;
+		}
 	}
-	
+
 	/**
 	 * Interface for weasel network members
 	 * 
 	 * @author MightyPork
-	 *
 	 */
-	public static interface NetworkMember extends IWeaselHardware{		
+	public static interface NetworkMember extends IWeaselHardware {
 		/**
 		 * @return name of the network thuis member is connected to
 		 */
 		public abstract String getNetworkName();
+
 		/**
-		 * Called when a network was renamed. Member must change his copy of the network name.
+		 * Called when a network was renamed. Member must change his copy of the
+		 * network name.
+		 * 
 		 * @param newName new network name
 		 */
 		public void onNetworkRenamed(String newName);
 	}
 
-	/** 
+	/**
 	 * Minecraft instance
 	 */
 	public static Minecraft mc = ModLoader.getMinecraftInstance();
-	
+
 	/**
-	 * Flag that this bus contains some new information that should be saved to disk.
+	 * Flag that this bus contains some new information that should be saved to
+	 * disk.
 	 */
 	public boolean needsSave = false;
 
-	/** 
+	/**
 	 * Globally shared variable pool
 	 */
 	public WeaselVariableMap globalHeap = new WeaselVariableMap();
-	
-	/** 
+
+	/**
 	 * Map of local networks, each has it's own local heap and a color
 	 */
 	private Map<String, WeaselNetwork> localNetworks = new HashMap<String, WeaselNetwork>();
 
 	/**
-	 * Set a weasel variable into the global weasel bus. You should use some prefixes in order to prevent cross-system conflicts.
+	 * Set a weasel variable into the global weasel bus. You should use some
+	 * prefixes in order to prevent cross-system conflicts.
+	 * 
 	 * @param name variable key - name
 	 * @param value variable value
-	 * @throws WeaselRuntimeException if you are trying to store incompatible variable type
+	 * @throws WeaselRuntimeException if you are trying to store incompatible
+	 *             variable type
 	 */
 	public void setGlobalVariable(String name, WeaselObject value) throws WeaselRuntimeException {
 		checkWorldChange();
@@ -164,6 +189,7 @@ public class PClo_NetManager implements PC_INBT {
 
 	/**
 	 * Get state of a weasel variable.
+	 * 
 	 * @param name variable name
 	 * @return variable value.
 	 */
@@ -179,19 +205,19 @@ public class PClo_NetManager implements PC_INBT {
 	 * Clear device lists if the world changed
 	 */
 	private void checkWorldChange() {
-		if(mc.theWorld == null) return;
+		if (mc.theWorld == null) return;
 		if (mc.theWorld.worldInfo.getWorldName() != worldName) {
-			if(worldSaveDir != null) {
+			if (worldSaveDir != null) {
 				System.out.println("World changed.");
 				saveToFile();
 			}
-			
+
 			globalHeap.clear();
 			worldName = mc.theWorld.worldInfo.getWorldName();
 			worldSaveDir = (((SaveHandler) mc.theWorld.saveHandler).getSaveDirectory()).toString();
 			loadFromFile();
 			needsSave = false;
-		}else {
+		} else {
 			worldSaveDir = (((SaveHandler) mc.theWorld.saveHandler).getSaveDirectory()).toString();
 		}
 	}
@@ -200,13 +226,13 @@ public class PClo_NetManager implements PC_INBT {
 	 * Load this bus from file in world folder
 	 */
 	public void loadFromFile() {
-		File file = new File(worldSaveDir+netfile);
-		if(file.exists()) {
+		File file = new File(worldSaveDir + netfile);
+		if (file.exists()) {
 			// load it
 			NBTTagCompound tag = new NBTTagCompound();
 			try {
 				tag.load(new DataInputStream(new FileInputStream(file)));
-				needsSave = false;				
+				needsSave = false;
 			} catch (FileNotFoundException e) {
 				e.printStackTrace();
 				return;
@@ -223,8 +249,8 @@ public class PClo_NetManager implements PC_INBT {
 	 * Save this bus to a file in world folder
 	 */
 	public void saveToFile() {
-		if(worldSaveDir == null) return;
-		File file = new File(worldSaveDir+netfile);
+		if (worldSaveDir == null) return;
+		File file = new File(worldSaveDir + netfile);
 		NBTTagCompound tag = writeToNBT(new NBTTagCompound());
 		try {
 			tag.write(new DataOutputStream(new FileOutputStream(file)));
@@ -243,8 +269,8 @@ public class PClo_NetManager implements PC_INBT {
 
 		tag.setCompoundTag("GlobalHeap", globalHeap.writeToNBT(new NBTTagCompound()));
 
-		System.out.println("Saving global heap: "+globalHeap);
-		
+		System.out.println("Saving global heap: " + globalHeap);
+
 		return tag;
 	}
 
@@ -260,6 +286,7 @@ public class PClo_NetManager implements PC_INBT {
 
 	/**
 	 * Get local network
+	 * 
 	 * @param networkName name of the network
 	 * @return the network
 	 */
@@ -267,9 +294,11 @@ public class PClo_NetManager implements PC_INBT {
 		checkWorldChange();
 		return localNetworks.get(networkName);
 	}
-	
+
 	/**
-	 * Create and register a network. Note that you must save this network to your NBT yourself.
+	 * Create and register a network. Note that you must save this network to
+	 * your NBT yourself.
+	 * 
 	 * @param name new network name
 	 * @return the newly created network.
 	 */
@@ -279,9 +308,10 @@ public class PClo_NetManager implements PC_INBT {
 		localNetworks.put(name, net);
 		return net;
 	}
-	
+
 	/**
 	 * Remove a local network from the pool (a block providing it was removed)
+	 * 
 	 * @param name network name
 	 * @return the removed network
 	 */
@@ -289,9 +319,11 @@ public class PClo_NetManager implements PC_INBT {
 		checkWorldChange();
 		return localNetworks.remove(name);
 	}
-	
+
 	/**
-	 * Connect a local network to the manager. This network might be loaded from a nbt tag.
+	 * Connect a local network to the manager. This network might be loaded from
+	 * a nbt tag.
+	 * 
 	 * @param name
 	 * @param network
 	 */
@@ -299,10 +331,12 @@ public class PClo_NetManager implements PC_INBT {
 		checkWorldChange();
 		localNetworks.put(name, network);
 	}
-	
+
 	/**
 	 * Rename network, and tell all its members to rename their network names.
-	 * Don't forget to change your network name, too. Network itself does not contain it.
+	 * Don't forget to change your network name, too. Network itself does not
+	 * contain it.
+	 * 
 	 * @param name
 	 * @param newName
 	 */

@@ -10,6 +10,11 @@ import java.util.Set;
 import net.minecraft.src.forge.ITextureProvider;
 
 
+/**
+ * item ejection belt
+ * 
+ * @author MightyPork
+ */
 public class PCtr_BlockBeltEjector extends BlockContainer implements PC_IBlockType, PC_IRotatedBox, PC_ISwapTerrain, ITextureProvider {
 
 	@Override
@@ -22,6 +27,9 @@ public class PCtr_BlockBeltEjector extends BlockContainer implements PC_IBlockTy
 		return true;
 	}
 
+	/**
+	 * @param i block ID
+	 */
 	protected PCtr_BlockBeltEjector(int i) {
 		super(i, new PCtr_MaterialConveyor());
 		setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, PCtr_BeltBase.HEIGHT, 1.0F);
@@ -374,12 +382,6 @@ public class PCtr_BlockBeltEjector extends BlockContainer implements PC_IBlockTy
 
 		return PC_InvUtils.stacksToArray(stacks);
 	}
-
-
-
-
-
-
 
 
 

@@ -132,6 +132,9 @@ public class mod_PCdeco extends PC_Module {
 		map.put("tile.PCdeDecoBlock.1.name", "Redstone Block");
 		map.put("tile.PCdeDecoBlock.2.name", "Lightning Conductor");
 		map.put("tile.PCdeDecoBlock.3.name", "Transmutation Chamber");
+		map.put("tile.PCdeDecoBlock.4.name", "Cobblestone Chimney");
+		map.put("tile.PCdeDecoBlock.5.name", "Brick Chimney");
+		map.put("tile.PCdeDecoBlock.6.name", "Stone Brick Chimney");
 		map.put("tile.PCdeWalkableBlock.0.name", "Iron Ledge");
 		map.put("tile.PCdeWalkableBlock.1.name", "Iron Stairs");
 		map.put("pc.gui.transmutationChamber.charge", "Charge level:");
@@ -175,7 +178,12 @@ public class mod_PCdeco extends PC_Module {
 		ModLoader.addRecipe(
 				new ItemStack(walkable, 12, 1),
 				new Object[] { "X ", "XX",
-					'X', new ItemStack(walkable, 1, 0) });		
+					'X', new ItemStack(walkable, 1, 0) });	
+		
+		// chimneys
+		ModLoader.addRecipe(new ItemStack(deco,6,4),new Object[] {"X X", "X X", "X X", Character.valueOf('X'), Block.cobblestone});
+		ModLoader.addRecipe(new ItemStack(deco,6,5),new Object[] {"X X", "X X", "X X", Character.valueOf('X'), Block.brick});
+		ModLoader.addRecipe(new ItemStack(deco,6,6),new Object[] {"X X", "X X", "X X", Character.valueOf('X'), Block.stoneBrick});
 		
 		//@formatter:on
 	}
@@ -193,7 +201,10 @@ public class mod_PCdeco extends PC_Module {
 				PC_ItemGroup.NON_FUNCTIONAL,
 				new ItemStack(deco,1,0),
 				new ItemStack(walkable,1,0),
-				new ItemStack(walkable,1,1)
+				new ItemStack(walkable,1,1),
+				new ItemStack(deco,1,4),
+				new ItemStack(deco,1,5),
+				new ItemStack(deco,1,6)
 			);
 		
 		// redstone block

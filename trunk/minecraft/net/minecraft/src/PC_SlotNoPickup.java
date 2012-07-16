@@ -12,6 +12,9 @@ public class PC_SlotNoPickup extends Slot {
 	/** shown stack. */
 	public ItemStack shownStack;
 
+	/**
+	 * no-pickup slot, in ore sniffer
+	 */
 	public PC_SlotNoPickup() {
 		super(new IInventory() {
 			@Override
@@ -68,6 +71,11 @@ public class PC_SlotNoPickup extends Slot {
 		return false;
 	}
 
+	/**
+	 * Set the stack which is shown, yet not pickable
+	 * 
+	 * @param displ
+	 */
 	public void setDisplayedStack(ItemStack displ) {
 		shownStack = displ;
 	}

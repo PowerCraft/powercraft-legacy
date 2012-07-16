@@ -26,13 +26,10 @@ public class PCma_TileEntityReplacer extends PC_TileEntity implements IInventory
 	private Random rand;
 	private boolean init = false;
 	/**
-	 * metadata of the block at the time it was replaced from world to inventory.
-	 *  Is cleared when user touches the inventory slot.
+	 * metadata of the block at the time it was replaced from world to
+	 * inventory. Is cleared when user touches the inventory slot.
 	 */
 	public int extraMeta = -1;
-
-
-
 
 
 
@@ -73,9 +70,8 @@ public class PCma_TileEntityReplacer extends PC_TileEntity implements IInventory
 
 			rand = new Random();
 		}
-		
-		
-		
+
+
 
 		if (aidEnabled) {
 

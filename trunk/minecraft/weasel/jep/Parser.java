@@ -3,7 +3,6 @@ package weasel.jep;
 
 
 
-
 public class Parser/*@bgen(jjtree)*/implements ParserTreeConstants, ParserConstants {/*@bgen(jjtree)*/
 	protected JJTParserState jjtree = new JJTParserState();
 	private JEP jep;

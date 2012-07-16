@@ -17,8 +17,6 @@ public class PCco_GuiCraftingTool implements PC_IGresBase {
 
 	private PC_GresButton buttonPrev, buttonNext;
 	private EntityPlayer player;
-	private PC_IGresGui gui;
-
 	private PC_GresInventory craftingToolInventory;
 	private PC_GresInventoryBigSlot trashInventory;
 	private PCco_CraftingToolManager craftingToolManager;
@@ -45,7 +43,6 @@ public class PCco_GuiCraftingTool implements PC_IGresBase {
 
 	@Override
 	public void initGui(PC_IGresGui gui) {
-		this.gui = gui;
 		PC_GresWindow w = new PC_GresWindow(PC_Lang.tr("pc.gui.craftingTool.title"));
 		w.padding.setTo(10, 4);
 		w.gapUnderTitle = 10;
@@ -94,7 +91,7 @@ public class PCco_GuiCraftingTool implements PC_IGresBase {
 			buttonNext.enable(false);
 		}
 		vg.add(new PC_GresGap(0, 0).setWidgetMargin(4)).setAlignH(PC_GresAlign.CENTER);
-		vg.add(buttonSort = (PC_GresButton) new PC_GresButton(PC_Lang.tr("pc.gui.craftingTool.sort")).setButtonPadding(2, 4).setMinWidth(30));		
+		vg.add(buttonSort = (PC_GresButton) new PC_GresButton(PC_Lang.tr("pc.gui.craftingTool.sort")).setButtonPadding(2, 4).setMinWidth(30));
 		hg.add(vg);
 
 		w.add(hg);

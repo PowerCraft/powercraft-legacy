@@ -52,9 +52,21 @@ public class PCtr_Renderer {
 
 		boolean gf = RenderBlocks.cfgGrassFix;
 		RenderBlocks.cfgGrassFix = false;
-
-		if (PCtr_BlockTeleporter.isTarget(iblockaccess, i, j, k)) {
+		PCtr_TileEntityTeleporter tet = PCtr_BlockTeleporter.getTE(iblockaccess, i, j, k);
+		if (tet.isReceiver()) {
 			Block.blockGold.setBlockBounds(0.125F, 0.0F, 0.125F, 0.875F, 0.125F, 0.875F);
+			renderblocks.renderStandardBlock(Block.blockGold, i, j, k);
+			float m = 0.0625F * 6F;
+			float n = 0.0625F*10F;
+			if(tet.direction.equals("N")) {
+				Block.blockGold.setBlockBounds(m, 0, 0.0625F, n, 0.125F, 0.0625F*2);
+			}else if(tet.direction.equals("S")) {
+				Block.blockGold.setBlockBounds(m, 0, 1-0.0625F*2, n, 0.125F, 1-0.0625F);
+			}else if(tet.direction.equals("E")) {
+				Block.blockGold.setBlockBounds(1-0.0625F*2, 0, m, 1-0.0625F, 0.125F, n);
+			}else if(tet.direction.equals("W")) {
+				Block.blockGold.setBlockBounds(0.0625F, 0, m, 0.0625F*2, 0.125F, n);
+			}
 			renderblocks.renderStandardBlock(Block.blockGold, i, j, k);
 		} else {
 			Block.blockSteel.setBlockBounds(0.125F, 0.0F, 0.125F, 0.875F, 0.125F, 0.875F);
@@ -71,7 +83,7 @@ public class PCtr_Renderer {
 		Block.blockSteel.setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 1.0F, 1.0F);
 		Block.blockGold.setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 1.0F, 1.0F);
 
-		if (PCtr_BlockTeleporter.isActive(iblockaccess, i, j, k)) {
+		if (tet.isActive()) {
 			block.setBlockBounds(0.1875F, 0.1875F, 0.1875F, 1.0F - 0.1875F, 1.0F - 0.1875F, 1.0F - 0.1875F);
 			renderblocks.renderStandardBlock(block, i, j, k);
 			block.setBlockBounds(0.125F, 0.0F, 0.125F, 1.0F - 0.125F, 1.0F - 0.125F, 1.0F - 0.125F);

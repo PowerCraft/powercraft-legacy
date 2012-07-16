@@ -474,7 +474,7 @@ public class PC_PropertyManager {
 			keyList.add(entry.name);
 
 			String propOrig = pr.getProperty(entry.name);
-			if(!entry.parse(propOrig)) needsSave = true;
+			if (!entry.parse(propOrig)) needsSave = true;
 			if (!cfgNoValidate) {
 				entry.validate();
 			}
@@ -519,9 +519,6 @@ public class PC_PropertyManager {
 		setValues.clear();
 		keyRename.clear();
 	}
-
-
-
 
 
 
@@ -875,7 +872,6 @@ public class PC_PropertyManager {
 					if (last != current) {
 						bw.write("# " + comments.substring(last, current));
 					}
-
 
 
 

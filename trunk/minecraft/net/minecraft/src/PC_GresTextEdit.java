@@ -46,7 +46,7 @@ public class PC_GresTextEdit extends PC_GresWidget {
 	 * @param chars max number of characters
 	 */
 	public PC_GresTextEdit(String label, int chars) {
-		super((chars + 1) * 10, PC_Utils.mc().fontRenderer.FONT_HEIGHT + 12, label);
+		super((chars + 1) * 7, PC_Utils.mc().fontRenderer.FONT_HEIGHT + 12, label);
 		maxChars = chars;
 		canAddWidget = false;
 		color[textColorEnabled] = 0xffffffff;
@@ -65,7 +65,7 @@ public class PC_GresTextEdit extends PC_GresWidget {
 	 * @param type input type allowed.
 	 */
 	public PC_GresTextEdit(String initText, int chars, PC_GresInputType type) {
-		super((chars + 1) * 10, PC_Utils.mc().fontRenderer.FONT_HEIGHT + 12, initText);
+		super((chars + 1) * 7, PC_Utils.mc().fontRenderer.FONT_HEIGHT + 12, initText);
 		maxChars = chars;
 		canAddWidget = false;
 		color[textColorEnabled] = 0xffffffff;
@@ -323,7 +323,7 @@ public class PC_GresTextEdit extends PC_GresWidget {
 					}
 				}
 				break;
-				
+
 			case NONE:
 				break;
 
@@ -364,9 +364,9 @@ public class PC_GresTextEdit extends PC_GresWidget {
 				deleteSelected();
 				return true;
 		}
-		
-		if(type == PC_GresInputType.NONE) return true;
-		
+
+		if (type == PC_GresInputType.NONE) return true;
+
 		switch (key) {
 			case Keyboard.KEY_RETURN:
 				return true;
@@ -494,7 +494,8 @@ public class PC_GresTextEdit extends PC_GresWidget {
 
 	@Override
 	public PC_CoordI getMinSize() {
-		return new PC_CoordI((maxChars + 1) * 10, getFontRenderer().FONT_HEIGHT + 12);
+		if(minSize.x == 0) return new PC_CoordI((maxChars + 1) * 7, getFontRenderer().FONT_HEIGHT + 12);
+		return minSize.setY(getFontRenderer().FONT_HEIGHT + 12);
 	}
 
 	@Override

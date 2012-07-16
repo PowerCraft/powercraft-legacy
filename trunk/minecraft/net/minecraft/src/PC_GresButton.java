@@ -9,7 +9,11 @@ package net.minecraft.src;
  */
 public class PC_GresButton extends PC_GresWidget {
 
-	protected PC_CoordI buttonScale = new PC_CoordI(12, 12);
+	/**
+	 * Button inner padding - distance from the borders. Added twice, once on
+	 * each side.
+	 */
+	protected PC_CoordI buttonScale = new PC_CoordI(6, 6);
 
 	private boolean isClicked = false;
 
@@ -106,7 +110,7 @@ public class PC_GresButton extends PC_GresWidget {
 			return true;
 		}
 		isClicked = key == -1 ? false : true;
-		if(key != -1) mc.sndManager.playSoundFX("random.click", 1.0F, 1.0F);
+		if (key != -1) mc.sndManager.playSoundFX("random.click", 1.0F, 1.0F);
 		return false;
 	}
 

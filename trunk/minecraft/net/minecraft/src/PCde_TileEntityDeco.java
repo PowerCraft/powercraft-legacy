@@ -22,18 +22,27 @@ public class PCde_TileEntityDeco extends PC_TileEntity implements PC_IInventoryW
 	private PCde_InventoryTransmutationContainer transmutabox = new PCde_InventoryTransmutationContainer(this);
 
 
+	/** Charge level in the lightning conductor */
 	public long lightningCharge = 0;
+	/** Charge needed to make lightning */
 	public long lightningChargeRequired = FLASH_CHARGE_MIN + 500 + rand.nextInt(FLASH_CHARGE_MAX - FLASH_CHARGE_MIN);
 
 	private int flashStructureCheckTimeout = 1;
 	private boolean flashStructureComplete = false;
 
+	/**
+	 * if this is the chamber, here may be instance of conductor.
+	 */
 	public PCde_TileEntityDeco conductor = null;
+	/**
+	 * if this is the conductor, here may be instance of chamber
+	 */
 	public PCde_TileEntityDeco chamber = null;
 
 
 	@Override
 	public void updateEntity() {
+		if (type == 0 || type == 1) return;
 
 
 		// conversion of old iron ledges to their own block (walkable)
@@ -56,9 +65,11 @@ public class PCde_TileEntityDeco extends PC_TileEntity implements PC_IInventoryW
 				worldObj.markBlockNeedsUpdate(xCoord, yCoord, zCoord);
 
 				PC_Logger.finest("Old Iron Ledge block updated to use now format at [" + xCoord + ";" + yCoord + ";" + zCoord + "]");
+				return;
 			}
 		}
 
+		// conductor
 		if (type == 2) {
 
 			if (flashStructureCheckTimeout-- <= 0) {
@@ -96,7 +107,13 @@ public class PCde_TileEntityDeco extends PC_TileEntity implements PC_IInventoryW
 				if (lightningCharge > FLASH_CHARGE_MIN) lightningCharge--;
 			}
 
+		}
 
+		//chimney
+		if (type >= 4 && type <= 6) {
+			if (rand.nextInt(6) == 0) {
+				tryToSmoke();
+			}
 		}
 
 		flag34pre4 = true;
@@ -147,11 +164,12 @@ public class PCde_TileEntityDeco extends PC_TileEntity implements PC_IInventoryW
 	}
 
 
+	/** lowest allowed charge level for flash */
 	public static final int FLASH_CHARGE_MIN = 8000;
+	/** highest allowed charge level needed for flash */
 	public static final int FLASH_CHARGE_MAX = 17000;
 	private static final int FLASH_MIN_HEIGHT = 79;
 
-	private static Random rand = new Random();
 
 	private void updateFlashCharge() {
 
@@ -257,4 +275,117 @@ public class PCde_TileEntityDeco extends PC_TileEntity implements PC_IInventoryW
 
 		return false;
 	}
+
+
+
+	// chimney
+
+	private void doSmoke() {
+		for (int l = 0; l < 12; l++) {
+			float smI = xCoord + rand.nextFloat() * 0.4F + 0.2F;
+			float smJ = yCoord + 0.4F + rand.nextFloat() * 0.6F;
+			float smK = zCoord + rand.nextFloat() * 0.4F + 0.2F;
+
+			ModLoader.getMinecraftInstance().effectRenderer.addEffect(new EntitySmokeFX(worldObj, smI, smJ, smK, 0, 0, 0, 2.0F));
+		}
+	}
+
+	private boolean doesBlockSmoke(PC_CoordI pos) {
+		int id = pos.getId(worldObj);
+		if(id == Block.stoneOvenActive.blockID) return true;
+		if(id == Block.fire.blockID) return true;
+		
+		if(PC_BlockUtils.hasFlag(worldObj, pos, "SMOKE")) return true;
+		return false;
+	}
+	
+	private boolean doesBlockSmokeOpenly(PC_CoordI pos) {
+		int id = pos.getId(worldObj);
+		if(id == Block.fire.blockID) return true;
+		
+		if(PC_BlockUtils.hasFlag(worldObj, pos, "SMOKE")) return true;
+		return false;
+	}
+	
+	private boolean isBlockLitFurnace(PC_CoordI pos) {
+		return pos.getId(worldObj) == Block.stoneOvenActive.blockID;
+	}
+
+	private boolean isBlockChimney(PC_CoordI pos) {
+		if(pos.getId(worldObj) == mod_PCdeco.deco.blockID) {
+			PCde_TileEntityDeco ted = (PCde_TileEntityDeco) pos.getTileEntity(worldObj);
+			if(ted.type >= 4 && ted.type <= 6) return true;
+		}
+		return false;
+	}
+
+	private void tryToSmoke() {
+		if (worldObj.isAirBlock(xCoord, yCoord + 1, zCoord)) { //test if air is above chimney	    
+
+			PC_CoordI cursor = getCoord().copy();
+			
+			boolean smoke = false;
+			
+			cursor.y++;
+			while(cursor.y>0) {
+				cursor.y--;
+				
+				if(isBlockChimney(cursor)) {
+					smoke |= isBlockLitFurnace(cursor.offset(-1,0,0));
+					smoke |= isBlockLitFurnace(cursor.offset(1,0,0));
+					smoke |= isBlockLitFurnace(cursor.offset(0,0,-1));
+					smoke |= isBlockLitFurnace(cursor.offset(0,0,1));
+					if(smoke) break;
+					continue;
+				}else {					
+					// no more chimney. check what is underneath.
+					
+					// smoke source directly here
+					if(doesBlockSmoke(cursor)) {
+						smoke=true; break;
+					}
+					
+					//a block under
+					if(doesBlockSmoke(cursor.offset(0,-1,0))) {
+						smoke=true; break;
+					}
+					
+					// smoke sources by side
+					smoke |= doesBlockSmokeOpenly(cursor.offset(-1,0,0));
+					smoke |= doesBlockSmokeOpenly(cursor.offset(1,0,0));
+					smoke |= doesBlockSmokeOpenly(cursor.offset(0,0,-1));
+					smoke |= doesBlockSmokeOpenly(cursor.offset(0,0,1));
+					if(smoke) break;
+					
+					// smoke sources by corner
+					smoke |= doesBlockSmokeOpenly(cursor.offset(1,0,-1));
+					smoke |= doesBlockSmokeOpenly(cursor.offset(-1,0,1));
+					smoke |= doesBlockSmokeOpenly(cursor.offset(-1,0,-1));
+					smoke |= doesBlockSmokeOpenly(cursor.offset(1,0,1));
+					if(smoke) break;
+					
+					// under by side
+					smoke |= doesBlockSmokeOpenly(cursor.offset(-1,-1,0));
+					smoke |= doesBlockSmokeOpenly(cursor.offset(1,-1,0));
+					smoke |= doesBlockSmokeOpenly(cursor.offset(0,-1,-1));
+					smoke |= doesBlockSmokeOpenly(cursor.offset(0,-1,1));
+					if(smoke) break;
+					
+					//under by corner
+					smoke |= doesBlockSmokeOpenly(cursor.offset(1,-1,-1));
+					smoke |= doesBlockSmokeOpenly(cursor.offset(-1,-1,1));
+					smoke |= doesBlockSmokeOpenly(cursor.offset(-1,-1,-1));
+					smoke |= doesBlockSmokeOpenly(cursor.offset(1,-1,1));
+					if(smoke) break;
+				}
+			}
+			
+			if(smoke) {
+				doSmoke();
+			}
+			
+		}
+	}
+
+	private static Random rand = new Random();
 }

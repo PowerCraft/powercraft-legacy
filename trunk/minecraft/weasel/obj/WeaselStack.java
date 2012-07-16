@@ -45,14 +45,14 @@ public class WeaselStack extends WeaselObject {
 	 * @param obj
 	 */
 	public void push(WeaselObject obj) {
-		
-		if(stack.size() > 3000) {
+
+		if (stack.size() > 3000) {
 			throw new WeaselRuntimeException("Stack overflow - recursion too deep.");
 		}
-		
-		if(obj == null) {
+
+		if (obj == null) {
 			stack.push(new WeaselNull());
-		}else {
+		} else {
 			stack.push(obj.copy());
 		}
 	}
@@ -65,14 +65,14 @@ public class WeaselStack extends WeaselObject {
 	 */
 	public WeaselObject pop() {
 		try {
-			
+
 			WeaselObject obj = stack.pop();
-			if(obj instanceof WeaselNull) return null;
+			if (obj instanceof WeaselNull) return null;
 			return obj;
-			
+
 		} catch (EmptyStackException e) {
 			throw new WeaselRuntimeException("Calling POP on empty stack.");
-			
+
 		}
 	}
 

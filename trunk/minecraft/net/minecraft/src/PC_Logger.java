@@ -47,6 +47,8 @@ public class PC_Logger {
 
 	/**
 	 * Enable logging.
+	 * 
+	 * @param flag do enable logging
 	 */
 	public static void enableLogging(boolean flag) {
 		loggingEnabled = flag;

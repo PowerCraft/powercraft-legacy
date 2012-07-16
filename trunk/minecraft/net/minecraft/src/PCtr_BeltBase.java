@@ -236,7 +236,6 @@ public class PCtr_BeltBase {
 
 
 
-
 	// TESTS
 	/**
 	 * Is there a belt at...?
@@ -299,7 +298,6 @@ public class PCtr_BeltBase {
 	 * @param world
 	 * @param pos
 	 */
-	@SuppressWarnings("unchecked")
 	public static void packItems(World world, PC_CoordI pos) {
 		List<EntityItem> items = world.getEntitiesWithinAABB(net.minecraft.src.EntityItem.class, AxisAlignedBB.getBoundingBoxFromPool(pos.x, pos.y, pos.z, pos.x + 1, pos.y + 1, pos.z + 1));
 		if (items.size() < 5) {
@@ -371,18 +369,17 @@ public class PCtr_BeltBase {
 	 * @param entity the item entity
 	 * @return stored completely
 	 */
-	@SuppressWarnings("unchecked")
 	public static boolean storeItemIntoMinecart(World world, PC_CoordI beltPos, EntityItem entity) {
 		List<EntityMinecart> hitList = world.getEntitiesWithinAABB(EntityMinecart.class, AxisAlignedBB.getBoundingBoxFromPool(beltPos.x, beltPos.y, beltPos.z, beltPos.x + 1, beltPos.y + 1, beltPos.z + 1).expand(1.0D, 1.0D, 1.0D));
 
 		if (hitList.size() > 0) {
 			for (EntityMinecart cart : hitList) {
-				if (cart.minecartType != 1) {
+				if (cart == null || cart.minecartType != 1) {
 					continue;
 				}
 
 				IInventory inventory = cart;
-				if (inventory != null && entity != null && entity.isEntityAlive()) {
+				if (entity != null && entity.isEntityAlive()) {
 					ItemStack stackToStore = entity.item;
 
 					if (stackToStore != null && PC_InvUtils.storeItemInInventory(inventory, stackToStore)) {
@@ -723,6 +720,16 @@ public class PCtr_BeltBase {
 	}
 
 
+	/**
+	 * check if item is beyond storage border.
+	 * 
+	 * @param world the world
+	 * @param rotation belt rotation
+	 * @param beltPos belt coord
+	 * @param entity the checked item entity
+	 * @param border border size 0-1
+	 * @return is beyond
+	 */
 	public static boolean isBeyondStorageBorder(World world, int rotation, PC_CoordI beltPos, Entity entity, float border) {
 		switch (rotation) {
 			case 0: // Z--
@@ -755,6 +762,14 @@ public class PCtr_BeltBase {
 	}
 
 
+	/**
+	 * Create entity item on belt
+	 * 
+	 * @param world the world
+	 * @param invPos position of inventory this item was taken from
+	 * @param beltPos the belt pos
+	 * @param stack stack to put in the item
+	 */
 	public static void createEntityItemOnBelt(World world, PC_CoordI invPos, PC_CoordI beltPos, ItemStack stack) {
 		EntityItem item = new EntityItem(world, beltPos.x + 0.5D, beltPos.y + 0.3D, beltPos.z + 0.5D, stack);
 		item.motionX = 0.0D;
@@ -770,12 +785,21 @@ public class PCtr_BeltBase {
 	}
 
 
+	/**
+	 * Store an item nearby this conveyor position
+	 * 
+	 * @param world the world
+	 * @param pos belt position
+	 * @param entity the entity to store
+	 * @param ignoreStorageBorder ignore storage border?
+	 * @return stored completely
+	 */
 	public static boolean storeNearby(World world, PC_CoordI pos, EntityItem entity, boolean ignoreStorageBorder) {
 
 		if (storeItemIntoMinecart(world, pos, entity)) {
 			return true;
 		}
-		if (entity.posY > pos.y + 1 - STORAGE_BORDER_V) {
+		if (!ignoreStorageBorder && entity.posY > pos.y + 1 - STORAGE_BORDER_V) {
 			return false;
 		}
 

@@ -7,7 +7,7 @@ public class PClo_WeaselType {
 	public static final int WEASEL_DEVICE_COUNT = 4;
 
 	@SuppressWarnings("javadoc")
-	public static final int CORE = 0, PORT = 1, DISPLAY=2, SPEAKER = 3;
+	public static final int CORE = 0, PORT = 1, DISPLAY = 2, SPEAKER = 3;
 
 	/**
 	 * Gate names used for localization

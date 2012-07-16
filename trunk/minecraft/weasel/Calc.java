@@ -1,9 +1,6 @@
 package weasel;
 
 
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map.Entry;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -30,6 +27,11 @@ public class Calc {
 		jep = JEP.createWeaselParser(false);
 	}
 
+	/**
+	 * Generate shortest possible unique identifier based on timestamp.
+	 * 
+	 * @return the identifier
+	 */
 	public static String generateUniqueName() {
 		long time = System.currentTimeMillis();
 		String letters = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
@@ -338,13 +340,13 @@ public class Calc {
 	public static String toString(Object obj) {
 
 		if (obj == null) return "null";
-		
-		if(obj instanceof Number) {
+
+		if (obj instanceof Number) {
 			double dbl = ((Number) obj).doubleValue();
-			if(dbl - Math.round(dbl) < 0.001D) {
-				return ""+(int)Math.round(dbl);
-			}else{
-				return ""+dbl;
+			if (dbl - Math.round(dbl) < 0.001D) {
+				return "" + (int) Math.round(dbl);
+			} else {
+				return "" + dbl;
 			}
 		}
 

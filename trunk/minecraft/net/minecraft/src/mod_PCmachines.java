@@ -287,12 +287,13 @@ public class mod_PCmachines extends PC_Module implements PC_IActivatorListener {
 		map.put("pc.gui.blockReplacer.title", "Block Replacer");
 		map.put("pc.gui.blockReplacer.errWrongValue", "Expects a value between -16 and 16.");
 		map.put("pc.gui.blockReplacer.err3zeros", "Expects at least 1 value unequal 0.");
+		map.put("pc.gui.blockReplacer.particleFrame", "Particles");
 
 		map.put("pc.gui.xpbank.storagePoints", "Stored XP:");
 		map.put("pc.gui.xpbank.currentPlayerLevel", "Your level:");
 		map.put("pc.gui.xpbank.xpUnit", "points");
 		map.put("pc.gui.xpbank.xpLevels", "levels");
-		
+
 		map.put("pc.gui.xpbank.withdraw", "Withdraw:");
 		map.put("pc.gui.xpbank.deposit", "Deposit:");
 		map.put("pc.gui.xpbank.oneLevel", "1 level");

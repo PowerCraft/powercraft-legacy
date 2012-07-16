@@ -66,13 +66,14 @@ public class PC_GresLabelMultiline extends PC_GresWidget {
 
 		String[] lines_nl = text.split("\n");
 
-		l1: for (String s : lines_nl) {
+		l1:
+		for (String s : lines_nl) {
 			s.trim();
 			if (s.length() > 0) {
 				List<String> lines = fontRenderer.listFormattedStringToWidth(s, getMinSize().x);
 
 				for (String ss : lines) {
-					if(cnt == maxRows) break l1;
+					if (cnt == maxRows) break l1;
 					ss.trim();
 					if (ss.length() > 0) {
 						int wid = getStringWidth(ss);
@@ -131,13 +132,14 @@ public class PC_GresLabelMultiline extends PC_GresWidget {
 
 		String[] lines_nl = text.split("\n");
 
-		l1: for (String s : lines_nl) {
+		l1:
+		for (String s : lines_nl) {
 			s.trim();
 			if (s.length() > 0) {
 				List<String> lines = fontRenderer.listFormattedStringToWidth(s, minSize.x);
 
 				for (String ss : lines) {
-					if(cnt == maxRows) break l1;
+					if (cnt == maxRows) break l1;
 					ss.trim();
 					if (s.length() > 0) {
 						cnt++;

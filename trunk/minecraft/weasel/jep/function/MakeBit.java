@@ -12,7 +12,6 @@ package weasel.jep.function;
 
 import java.util.Stack;
 
-import weasel.Calc;
 import weasel.jep.ParseException;
 
 
@@ -40,18 +39,18 @@ public class MakeBit extends PostfixMathCommand {
 
 		Object par2 = stack.pop();
 		Object par1 = stack.pop();
-		
-		if(par1 instanceof Number && par2 instanceof Number) {
+
+		if (par1 instanceof Number && par2 instanceof Number) {
 			double bytex = ((Number) par1).doubleValue();
 			double bitn = ((Number) par2).doubleValue();
-			
+
 			int num = (int) Math.round(bytex);
 			int bit = (int) Math.round(bitn);
-			
-			stack.push((num & (1<<bit)) != 0);
+
+			stack.push((num & (1 << bit)) != 0);
 			return;
 		}
-		
-		throw new ParseException("Invalid parameters for BIT: "+par1.getClass().getSimpleName()+" and "+par2.getClass().getSimpleName());
+
+		throw new ParseException("Invalid parameters for BIT: " + par1.getClass().getSimpleName() + " and " + par2.getClass().getSimpleName());
 	}
 }

@@ -70,9 +70,9 @@ public class InstructionPush extends Instruction {
 	@Override
 	public void execute(WeaselEngine engine, InstructionList instructionList) throws WeaselRuntimeException {
 		WeaselObject obj = WeaselObject.getWrapperForValue(Calc.evaluate(pushedExpression, engine));
-		if(obj == null) {
+		if (obj == null) {
 			engine.dataStack.push(new WeaselInteger(0));
-		}else {
+		} else {
 			engine.dataStack.push(obj);
 		}
 	}

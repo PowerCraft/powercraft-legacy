@@ -63,10 +63,10 @@ public class Logical extends PostfixMathCommand {
 		if (x < 0) x = -x;
 		if (y < 0) y = -y;
 
-		if(b1 && b2) {
-			
+		if (b1 && b2) {
+
 			boolean a = (x != 0d), b = (y != 0d), out = false;
-	
+
 			switch (id) {
 				case AND:
 					out = (a && b);
@@ -77,15 +77,15 @@ public class Logical extends PostfixMathCommand {
 				default:
 					r = 0;
 			}
-	
+
 			r = out ? 1 : 0;
-	
+
 			inStack.push(new Double(r)); // push the result on the inStack			
-			
-		}else {
-			
+
+		} else {
+
 			int a = (int) Math.round(x), b = (int) Math.round((y)), out = 0;
-	
+
 			switch (id) {
 				case AND:
 					out = (a & b);
@@ -96,14 +96,10 @@ public class Logical extends PostfixMathCommand {
 				default:
 					out = 0;
 			}
-	
+
 			inStack.push(new Integer(out)); // push the result on the inStack	
-			
+
 		}
-
-
-
-
 
 
 
