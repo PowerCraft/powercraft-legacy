@@ -42,6 +42,7 @@ import weasel.jep.function.Imaginary;
 import weasel.jep.function.Logarithm;
 import weasel.jep.function.LogicalFn;
 import weasel.jep.function.LogicalFn.LogicalFnType;
+import weasel.jep.function.StrFormat.EnumType;
 import weasel.jep.function.MakeBit;
 import weasel.jep.function.MakeByte;
 import weasel.jep.function.Max;
@@ -61,11 +62,14 @@ import weasel.jep.function.Sine;
 import weasel.jep.function.SineH;
 import weasel.jep.function.SquareRoot;
 import weasel.jep.function.Str;
+import weasel.jep.function.StrFormat;
 import weasel.jep.function.StrLen;
 import weasel.jep.function.StringChar;
 import weasel.jep.function.Sum;
 import weasel.jep.function.TanH;
 import weasel.jep.function.Tangent;
+import weasel.jep.function.TimeFunc;
+import weasel.jep.function.TimeFunc.TimeFuncType;
 import weasel.jep.type.Complex;
 import weasel.jep.type.DoubleNumberFactory;
 import weasel.jep.type.NumberFactory;
@@ -238,8 +242,6 @@ public class JEP {
 		newjep.addStandardConstants();
 		newjep.addStandardFunctions();
 		newjep.addWeaselFunctions();
-
-
 		return newjep;
 	}
 
@@ -272,11 +274,48 @@ public class JEP {
 		funTab.put("strlen", new StrLen());
 		funTab.put("strLen", new StrLen());
 		funTab.put("length", new StrLen());
-		funTab.put("char", new StringChar());
 		funTab.put("charAt", new StringChar());
 		funTab.put("charat", new StringChar());
-		funTab.put("num", new Num());
-		funTab.put("bool", new Bool());
+		funTab.put("strchar", new StringChar());
+		funTab.put("toNum", new Num());
+		funTab.put("tonum", new Num());
+		funTab.put("tonumber", new Num());
+		funTab.put("atoi", new Num());
+		funTab.put("toi", new Num());
+		funTab.put("toBool", new Bool());
+		funTab.put("tobool", new Bool());
+		funTab.put("atob", new Bool());
+		funTab.put("tob", new Bool());
+		funTab.put("boolean", new Bool());
+		funTab.put("toStr", new Str());
+		funTab.put("atos", new Str());
+		funTab.put("toString", new Str());
+		funTab.put("tostr", new Str());
+		funTab.put("tos", new Str());
+		funTab.put("toString", new Str());
+		funTab.put("zerofill", new StrFormat(EnumType.ZEROFILL));
+		funTab.put("cutfirst", new StrFormat(EnumType.CUTFIRST));
+		funTab.put("cutlast", new StrFormat(EnumType.CUTLAST));
+		funTab.put("zf", new StrFormat(EnumType.ZEROFILL));
+		funTab.put("cf", new StrFormat(EnumType.CUTFIRST));
+		funTab.put("cl", new StrFormat(EnumType.CUTLAST));
+		
+		// time
+		funTab.put("hours", new TimeFunc(TimeFuncType.H));
+		funTab.put("mins", new TimeFunc(TimeFuncType.M));
+		funTab.put("secs", new TimeFunc(TimeFuncType.S));
+		funTab.put("minutes", new TimeFunc(TimeFuncType.M));
+		funTab.put("seconds", new TimeFunc(TimeFuncType.S));
+		funTab.put("hours_r", new TimeFunc(TimeFuncType.RH));
+		funTab.put("mins_r", new TimeFunc(TimeFuncType.RM));
+		funTab.put("secs_r", new TimeFunc(TimeFuncType.RS));
+		funTab.put("minutes_r", new TimeFunc(TimeFuncType.RM));
+		funTab.put("seconds_r", new TimeFunc(TimeFuncType.RS));
+		funTab.put("time", new TimeFunc(TimeFuncType.SECS_ALL));
+		funTab.put("time_r", new TimeFunc(TimeFuncType.SECS_ALL_R));
+		funTab.put("ftime", new TimeFunc(TimeFuncType.FTIME));
+		funTab.put("ftime_r", new TimeFunc(TimeFuncType.FTIME_R));
+		funTab.put("moon", new TimeFunc(TimeFuncType.MOON));
 
 		//other
 		funTab.put("avg", new Mean());

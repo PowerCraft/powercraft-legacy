@@ -104,7 +104,7 @@ public class PClo_BlockWeasel extends BlockContainer implements PC_ISwapTerrain,
 	 */
 	public PClo_WeaselPlugin getPlugin(IBlockAccess iblockaccess, int x, int y, int z) {
 		TileEntity te = iblockaccess.getBlockTileEntity(x, y, z);
-		if (te == null) {
+		if (te == null || !(te instanceof PClo_TileEntityWeasel)) {
 			return null;
 		}
 		return ((PClo_TileEntityWeasel) te).getPlugin();
@@ -365,7 +365,7 @@ public class PClo_BlockWeasel extends BlockContainer implements PC_ISwapTerrain,
 	 * @return is powered
 	 */
 	public static boolean powered_from_input(World world, PC_CoordI pos, int inp) {
-
+        if(world == null) return false;
 		int x = pos.x, y = pos.y, z = pos.z;
 
 		if (inp == 4) {
@@ -583,8 +583,7 @@ public class PClo_BlockWeasel extends BlockContainer implements PC_ISwapTerrain,
 		set.add("LOGIC");
 		set.add("WEASEL");
 		PClo_WeaselPlugin plugin = getPlugin(world, pos.x, pos.y, pos.z);
-		
-		set.add(PClo_WeaselType.names[plugin.getType()]);
+		if(plugin != null) set.add(PClo_WeaselType.names[plugin.getType()]);
 		
 
 		return set;

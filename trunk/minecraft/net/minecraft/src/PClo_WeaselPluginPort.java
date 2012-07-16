@@ -160,7 +160,6 @@ public class PClo_WeaselPluginPort extends PClo_WeaselPlugin {
 	@Override
 	public void restartDevice() {
 		resetOutport();
-		
 	}
 
 }

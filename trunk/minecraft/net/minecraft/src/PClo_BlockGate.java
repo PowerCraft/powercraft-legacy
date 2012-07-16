@@ -301,11 +301,11 @@ public class PClo_BlockGate extends BlockContainer implements PC_IRotatedBox, PC
 				teg.zombie = true;
 
 				if (!PC_Utils.isCreative()) {
-					if(teg.gateType == PClo_GateType.OBSOLETE_UNUSED) {
+					if (teg.gateType == PClo_GateType.OBSOLETE_UNUSED) {
 						dropBlockAsItem_do(world, x, y, z, new ItemStack(Item.redstone, 4, 0));
 						dropBlockAsItem_do(world, x, y, z, new ItemStack(Block.stairSingle, 1, 0));
-					}else {
-					dropBlockAsItem_do(world, x, y, z, new ItemStack(mod_PClogic.gateOn, 1, teg.gateType));
+					} else {
+						dropBlockAsItem_do(world, x, y, z, new ItemStack(mod_PClogic.gateOn, 1, teg.gateType));
 					}
 				}
 			}
@@ -831,18 +831,18 @@ public class PClo_BlockGate extends BlockContainer implements PC_IRotatedBox, PC
 
 		if (type == PClo_GateType.REPEATER_STRAIGHT_I || type == PClo_GateType.REPEATER_CORNER_I) {
 
-			boolean on = isActive();
+			//boolean on = isActive();
 
-			boolean outputActive = isOutputActive(world, x, y, z);
+			//boolean outputActive = isOutputActive(world, x, y, z);
 
 
-			if (on && !outputActive) {
-				// turn off
-				changeGateState(false, world, x, y, z);
-			} else if (!on && outputActive) {
-				// turn on
-				changeGateState(true, world, x, y, z);
-			}
+//			if (on && !outputActive) {
+//				// turn off
+//				changeGateState(false, world, x, y, z);
+//			} else if (!on && outputActive) {
+//				// turn on
+//				changeGateState(true, world, x, y, z);
+//			}
 
 			for (; gateUpdates.size() > 0 && world.getWorldTime() - gateUpdates.get(0).updateTime > 10L; gateUpdates.remove(0)) {}
 			if (checkForBurnout(world, x, y, z, false)) {
@@ -896,14 +896,17 @@ public class PClo_BlockGate extends BlockContainer implements PC_IRotatedBox, PC
 		int meta = iblockaccess.getBlockMetadata(x, y, z);
 		int rotation = getRotation(meta);
 
-		int type = getType(iblockaccess, x, y, z);
+		PClo_TileEntityGate teg = getTE(iblockaccess, x, y, z);
+		if (teg == null) return false;
+
+		int type = teg.gateType;
 		World world = ModLoader.getMinecraftInstance().theWorld;
 
 		if (type == PClo_GateType.CROSSING) {
 
 
 			// check for rotation and variant.
-			int variant = getTE(iblockaccess, x, y, z).getCrossingVariant();
+			int variant = teg.getCrossingVariant();
 
 			switch (variant) {
 				case 0:
@@ -952,6 +955,12 @@ public class PClo_BlockGate extends BlockContainer implements PC_IRotatedBox, PC
 			return false;
 		}
 
+		if (type == PClo_GateType.REPEATER_STRAIGHT_I || type == PClo_GateType.REPEATER_CORNER_I) {
+			if ((rotation == 0 && side == 3) || (rotation == 1 && side == 4) || (rotation == 2 && side == 2) || (rotation == 3 && side == 5))
+				return getResult(type, powered_from_input(world, x, y, z, 0), powered_from_input(world, x, y, z, 1), powered_from_input(world, x, y, z, 2), teg);
+			return false;
+		}
+
 		boolean on = isActive();
 		if (!on) {
 			return false;
@@ -966,13 +975,13 @@ public class PClo_BlockGate extends BlockContainer implements PC_IRotatedBox, PC
 		}
 
 		// oriented gates
-		if ((rotation == 0 && side == 3) || (rotation == 2 && side == 3 && hasTwoOutputs(getType(iblockaccess, x, y, z)))) {
+		if ((rotation == 0 && side == 3) || (rotation == 2 && side == 3 && hasTwoOutputs(type))) {
 			return true;
 		}
-		if ((rotation == 1 && side == 4) || (rotation == 3 && side == 4 && hasTwoOutputs(getType(iblockaccess, x, y, z)))) {
+		if ((rotation == 1 && side == 4) || (rotation == 3 && side == 4 && hasTwoOutputs(type))) {
 			return true;
 		}
-		if ((rotation == 2 && side == 2) || (rotation == 0 && side == 2 && hasTwoOutputs(getType(iblockaccess, x, y, z)))) {
+		if ((rotation == 2 && side == 2) || (rotation == 0 && side == 2 && hasTwoOutputs(type))) {
 			return true;
 		}
 		return ((rotation == 3 && side == 5) || (rotation == 1 && side == 5 && hasTwoOutputs(getType(iblockaccess, x, y, z))));
@@ -1163,11 +1172,13 @@ public class PClo_BlockGate extends BlockContainer implements PC_IRotatedBox, PC
 			l++;
 			if (l > 3) l = 0;
 		}
-
 		world.setBlockMetadataWithNotify(x, y, z, l);
-		boolean flag = isOutputActive(world, x, y, z);
-		if (flag) {
-			world.scheduleBlockUpdate(x, y, z, blockID, tickRate());
+		
+		if(PClo_GateType.canChangeState(type)) {			
+			boolean flag = isOutputActive(world, x, y, z);
+			if (flag) {
+				world.scheduleBlockUpdate(x, y, z, blockID, tickRate());
+			}
 		}
 	}
 

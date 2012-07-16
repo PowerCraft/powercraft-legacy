@@ -14,6 +14,7 @@ import java.util.Stack;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import net.minecraft.src.PC_Color;
 import net.minecraft.src.PC_Struct2;
 import weasel.exception.SyntaxError;
 import weasel.exception.WeaselRuntimeException;
@@ -53,6 +54,7 @@ public class Compiler {
 	 * as they tend to confuse the other parsers.
 	 */
 	protected static final Pattern stringPattern = Pattern.compile("(\"[^\"]*?\")");
+	protected static final Pattern stringPatternNoQuotes = Pattern.compile("\"([^\"]*?)\"");
 
 	private static final String variableInCodePatternRegexp = "([a-zA-Z_]{1}[a-zA-Z_0-9.]*)(?:[^a-zA-Z_0-9.(]|$|\n)";
 
@@ -134,6 +136,7 @@ public class Compiler {
 				String str = matcher.group(1);
 				String repl = replKeyStringStart + (stringReplaceCounter++) + replKeyStringEnd;
 
+				str = PC_Color.convertMagicColors(str);
 				stringReplacements.put(repl, str);
 				matcher.appendReplacement(sb, repl);
 			}
@@ -397,7 +400,7 @@ public class Compiler {
 	 */
 	public List<Instruction> compile(String source) throws SyntaxError {
 
-		source = source.replace("'", "\"");
+		source = source.replace("'", "\"");		
 
 		source = escapeStringConstants(source);
 		//System.out.println(source);

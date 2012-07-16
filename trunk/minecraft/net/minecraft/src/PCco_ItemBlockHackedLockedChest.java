@@ -182,9 +182,13 @@ public class PCco_ItemBlockHackedLockedChest extends ItemBlock {
 				ic.setInventorySlotContents(i, null);
 			}
 		}
+		
+		//Block.blocksList[pos.getId(world)].onBlockRemoval(world, pos.x, pos.y, pos.z);
 
+		if(tec instanceof PC_TileEntity) ((PC_TileEntity) tec).onBlockPickup();
+		
 		tec.invalidate();
-		world.removeBlockTileEntity(pos.x, pos.y, pos.z);
+		//world.removeBlockTileEntity(pos.x, pos.y, pos.z);
 
 		pos.setBlock(world, 0, 0);
 

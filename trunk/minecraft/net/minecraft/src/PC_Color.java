@@ -1,5 +1,9 @@
 package net.minecraft.src;
 
+
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Random;
 
 
@@ -10,6 +14,141 @@ import java.util.Random;
  * @copy (c) 2012
  */
 public class PC_Color implements PC_INBT {
+
+	private static Map<String, String> magicColors = new HashMap<String, String>();
+	static {
+		magicColors.put("[black]", "§0");
+		magicColors.put("[navy]", "§1");
+		magicColors.put("[blue]", "§1");
+		magicColors.put("[dblue]", "§1");
+		magicColors.put("[darkblue]", "§1");
+		magicColors.put("[green]", "§2");
+		magicColors.put("[dgreen]", "§2");
+		magicColors.put("[darkgreen]", "§2");
+		magicColors.put("[dcyan]", "§3");
+		magicColors.put("[darkcyan]", "§3");
+		magicColors.put("[daqua]", "§3");
+		magicColors.put("[darkaqua]", "§3");
+		magicColors.put("[darkred]", "§4");
+		magicColors.put("[red]", "§4");
+		magicColors.put("[dred]", "§4");
+		magicColors.put("[purple]", "§5");
+		magicColors.put("[orange]", "§6");
+		magicColors.put("[grey]", "§7");
+		magicColors.put("[gray]", "§7");
+		magicColors.put("[dgrey]", "§8");
+		magicColors.put("[darkgrey]", "§8");
+		magicColors.put("[dgray]", "§8");
+		magicColors.put("[darkgray]", "§8");
+		magicColors.put("[indigo]", "§9");
+		magicColors.put("[lblue]", "§9");
+		magicColors.put("[lightblue]", "§9");
+		magicColors.put("[lime]", "§a");
+		magicColors.put("[limegreen]", "§a");
+		magicColors.put("[aqua]", "§b");
+		magicColors.put("[cyan]", "§b");
+		magicColors.put("[lred]", "§c");
+		magicColors.put("[lightred]", "§c");
+		magicColors.put("[pink]", "§d");
+		magicColors.put("[yellow]", "§e");
+		magicColors.put("[white]", "§f");
+		magicColors.put("[random]", "§k");
+		magicColors.put("[bold]", "§l");
+		magicColors.put("[b]", "§l");
+		magicColors.put("[s]", "§m");
+		magicColors.put("[strike]", "§m");
+		magicColors.put("[u]", "§n");
+		magicColors.put("[underline]", "§n");
+		magicColors.put("[italics]", "§o");
+		magicColors.put("[i]", "§o");
+		magicColors.put("[reset]", "§r");
+		magicColors.put("[r]", "§r");
+		magicColors.put("[#0]", "§0");
+		magicColors.put("[#1]", "§1");
+		magicColors.put("[#2]", "§2");
+		magicColors.put("[#3]", "§3");
+		magicColors.put("[#4]", "§4");
+		magicColors.put("[#5]", "§5");
+		magicColors.put("[#6]", "§6");
+		magicColors.put("[#7]", "§7");
+		magicColors.put("[#8]", "§8");
+		magicColors.put("[#9]", "§9");
+		magicColors.put("[#a]", "§a");
+		magicColors.put("[#b]", "§b");
+		magicColors.put("[#c]", "§c");
+		magicColors.put("[#d]", "§d");
+		magicColors.put("[#e]", "§e");
+		magicColors.put("[#f]", "§f");
+	}
+	
+
+	private static HashMap<String, Integer> namedColors = new HashMap<String, Integer>();
+
+	static {
+		namedColors.put("white", 0xffffff);
+		namedColors.put("silver", 0xc0c0c0);
+		namedColors.put("gray", 0x808080);
+		namedColors.put("black", 0x000000);
+		namedColors.put("red", 0xff0000);
+		namedColors.put("maroon", 0x800000);
+		namedColors.put("yellow", 0xffff00);
+		namedColors.put("olive", 0x808000);
+		namedColors.put("lime", 0x00ff00);
+		namedColors.put("green", 0x008000);
+		namedColors.put("aqua", 0x00ffff);
+		namedColors.put("teal", 0x008080);
+		namedColors.put("blue", 0x0000ff);
+		namedColors.put("navy", 0x000080);
+		namedColors.put("fuchsia", 0xff00ff);
+		namedColors.put("purple", 0x800080);
+		namedColors.put("brick", 0xB22222);
+		namedColors.put("darkred", 0x8B0000);
+		namedColors.put("salmon", 0xFA8072);
+		namedColors.put("pink", 0xff1493);
+		namedColors.put("orange", 0xff4500);
+		namedColors.put("gold", 0xffd700);
+		namedColors.put("magenta", 0xff00ff);
+		namedColors.put("violet", 0x9400d3);
+		namedColors.put("indigo", 0x483D8B);
+		namedColors.put("limegreen", 0x32cd32);
+		namedColors.put("darkgreen", 0x006400);
+		namedColors.put("cyan", 0x00ffff);
+		namedColors.put("steel", 0x4682b4);
+		namedColors.put("darkblue", 0x00008b);
+		namedColors.put("brown", 0x8b4513);
+		namedColors.put("lightgray", 0xd3d3d3);
+		namedColors.put("darkgray", 0xa9a9a9);
+	}
+
+	/**
+	 * Get a color index (hex) for given color name.
+	 * 
+	 * @param name
+	 * @return hex color, or null.
+	 */
+	public static Integer getHexColorForName(String name) {
+		for (String key : namedColors.keySet()) {
+			if (key.equalsIgnoreCase(name)) {
+				return namedColors.get(key);
+			}
+		}
+		return null;
+	}
+	
+	/**
+	 * Convert color and formatting tags in input string to chat color codes.
+	 * @param input string to convert
+	 * @return converted input
+	 */
+	public static String convertMagicColors(String input) {
+		input = input.replaceAll("\\[/.*?\\]", "§r");
+		input = input.replaceAll("</.*?>", "§r");
+		for(Entry<String,String> entry: magicColors.entrySet()) {
+			input = input.replace(entry.getKey(), entry.getValue());
+			input = input.replace(entry.getKey().replace('[', '<').replace(']', '>'), entry.getValue());
+		}
+		return input;
+	}
 
 	/** Red color channel */
 	public double r;
@@ -65,11 +204,13 @@ public class PC_Color implements PC_INBT {
 	public PC_Color() {
 		r = g = b = 1D;
 	}
-	
+
 	private static Random rand = new Random();
-	
+
 	/**
-	 * Set all 3 channels to random color, tries to make bright or at least not dark colors
+	 * Set all 3 channels to random color, tries to make bright or at least not
+	 * dark colors
+	 * 
 	 * @return this
 	 */
 	public PC_Color randomize() {
@@ -77,31 +218,32 @@ public class PC_Color implements PC_INBT {
 			r = rand.nextFloat();
 			g = rand.nextFloat();
 			b = rand.nextFloat();
-		}while(r+g+b < 0.8F);
-		
+		} while (r + g + b < 0.8F);
+
 		return this;
 	}
-	
+
 	/**
 	 * Set all 3 channels to 100% random color
+	 * 
 	 * @return this
 	 */
 	public PC_Color randomizePure() {
-		
-			r = rand.nextFloat();
-			g = rand.nextFloat();
-			b = rand.nextFloat();
-		
+
+		r = rand.nextFloat();
+		g = rand.nextFloat();
+		b = rand.nextFloat();
+
 		return this;
 	}
-	
+
 	/**
 	 * @return new random color
 	 */
 	public static PC_Color randomColor() {
 		return new PC_Color().randomize();
 	}
-	
+
 	/**
 	 * @return new random color
 	 */
@@ -205,11 +347,13 @@ public class PC_Color implements PC_INBT {
 	 * Set color from hex
 	 * 
 	 * @param hex hex color
+	 * @return this
 	 */
-	public void setTo(int hex) {
+	public PC_Color setTo(int hex) {
 		r = red(hex);
 		g = green(hex);
 		b = blue(hex);
+		return this;
 	}
 
 	/**
@@ -316,6 +460,15 @@ public class PC_Color implements PC_INBT {
 		powerCrystalMeta = tag.getInteger("xtal_meta");
 		invisible = tag.getBoolean("invisible");
 		return this;
+	}
+
+	/**
+	 * make color from hex
+	 * @param hex
+	 * @return
+	 */
+	public static PC_Color fromHex(int hex) {
+		return new PC_Color().setTo(hex);
 	}
 
 }

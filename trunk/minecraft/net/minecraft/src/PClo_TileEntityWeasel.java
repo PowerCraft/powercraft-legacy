@@ -115,5 +115,12 @@ public class PClo_TileEntityWeasel extends PC_TileEntity {
 	public void setType(int type) {
 		plugin = PClo_WeaselPlugin.getPluginForType(this, type);
 	}
+	
+	@Override
+	public void onBlockPickup() {
+		if(plugin != null) {
+			plugin.onBlockRemoval();
+		}
+	}
 
 }
