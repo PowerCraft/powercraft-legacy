@@ -38,8 +38,7 @@ public class PCco_GuiUpdateNotification implements PC_IGresBase {
 		hg = new PC_GresLayoutH();
 		hg.setAlignH(PC_GresAlign.CENTER);
 		hg.add(new PC_GresLabel(PC_Lang.tr("pc.gui.update.newVersionAvailable")));
-		PC_GresLink link;
-		hg.add(link = (PC_GresLink) new PC_GresLink(PC_Lang.tr("pc.gui.update.readMore")).setId(1));
+		hg.add(new PC_GresLink(PC_Lang.tr("pc.gui.update.readMore")).setId(1));
 
 
 

@@ -254,7 +254,6 @@ public abstract class PC_Module extends BaseMod {
 
 
 
-
 			PC_Logger.finer("Preloading textures...");
 			ArrayList<String> textures = new ArrayList<String>();
 
@@ -313,12 +312,12 @@ public abstract class PC_Module extends BaseMod {
 		HashMap<String, String> en_US = new HashMap<String, String>();
 		setNames(names);
 
-		if(names.isEmpty()) {
+		if (names.isEmpty()) {
 			PC_Logger.finer("This module has no translations.");
-			File file = new File(Minecraft.getMinecraftDir() + mod_PCcore.cfgdir + "/lang/en_US-"+getModuleName()+".lang");
-			System.out.println("Filepath to delete: "+file);
-			if(file.exists()) {
-				PC_Logger.finer("Old translation file en_US-"+getModuleName()+".lang exists, removing it.");
+			File file = new File(Minecraft.getMinecraftDir() + mod_PCcore.cfgdir + "/lang/en_US-" + getModuleName() + ".lang");
+			System.out.println("Filepath to delete: " + file);
+			if (file.exists()) {
+				PC_Logger.finer("Old translation file en_US-" + getModuleName() + ".lang exists, removing it.");
 				file.delete();
 			}
 			return;
@@ -509,7 +508,6 @@ public abstract class PC_Module extends BaseMod {
 	 * Add names and localizations for your blocks and items.
 	 * 
 	 * @param map map of { Block/Item/String (localization) : String name }
-	 * @return true if translation file should be generated. False to disable it.
 	 */
 	public abstract void setNames(Map<Object, String> map);
 

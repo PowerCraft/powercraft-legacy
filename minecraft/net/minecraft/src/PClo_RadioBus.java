@@ -45,6 +45,7 @@ public class PClo_RadioBus {
 
 	/**
 	 * Connect transmitter to the redstone bus
+	 * 
 	 * @param device
 	 */
 	public void connectToRedstoneBus(IRadioDevice device) {
@@ -56,6 +57,7 @@ public class PClo_RadioBus {
 
 	/**
 	 * Disconnect transmitter form the redstone bus
+	 * 
 	 * @param device
 	 */
 	public void disconnectFromRedstoneBus(IRadioDevice device) {
@@ -65,6 +67,7 @@ public class PClo_RadioBus {
 
 	/**
 	 * Get state of a channel
+	 * 
 	 * @param channel channel name
 	 * @return TRUE if channel is on, someone is transmitting on it.
 	 */
@@ -74,9 +77,9 @@ public class PClo_RadioBus {
 		for (IRadioDevice device : devices) {
 			if (device.doesTransmitOnChannel(channel)) return true;
 		}
-		
-		if(anonymousTransmitters.containsKey(channel)) {
-			return anonymousTransmitters.get(channel)>0;
+
+		if (anonymousTransmitters.containsKey(channel)) {
+			return anonymousTransmitters.get(channel) > 0;
 		}
 
 		return false;
@@ -85,8 +88,10 @@ public class PClo_RadioBus {
 
 	/**
 	 * Set anonymous transmitter on.<br>
-	 * This is used by portables, because they do not have any object which could implement the IRadioDevice interface.
-	 * Do not forget to also turn it OFF!
+	 * This is used by portables, because they do not have any object which
+	 * could implement the IRadioDevice interface. Do not forget to also turn it
+	 * OFF!
+	 * 
 	 * @param channel channel name
 	 */
 	public void anonymousTransmitterOn(String channel) {
@@ -101,8 +106,10 @@ public class PClo_RadioBus {
 
 	/**
 	 * Set anonymous transmitter off.<br>
-	 * This is used by portables, because they do not have any object which could implement the IRadioDevice interface.
-	 * Do not call this if you didn't turn it ON before!
+	 * This is used by portables, because they do not have any object which
+	 * could implement the IRadioDevice interface. Do not call this if you
+	 * didn't turn it ON before!
+	 * 
 	 * @param channel
 	 */
 	public void anonymousTransmitterOff(String channel) {
@@ -117,6 +124,7 @@ public class PClo_RadioBus {
 	}
 
 	private String worldName = null;
+
 	/**
 	 * Clear device lists if the world changed
 	 */

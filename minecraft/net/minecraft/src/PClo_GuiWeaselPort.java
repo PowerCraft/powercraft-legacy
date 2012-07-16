@@ -41,33 +41,33 @@ public class PClo_GuiWeaselPort implements PC_IGresBase {
 		w.setMinWidth(260);
 
 		PC_GresWidget hg;
-		
+
 		int colorLabel = 0x000000;
 		int colorValue = 0x000099;
-		
+
 		hg = new PC_GresLayoutH();
 		hg.add(new PC_GresLabel(PC_Lang.tr("pc.gui.weasel.connectedToNetwork")).setColor(PC_GresWidget.textColorEnabled, colorLabel));
 		hg.add(new PC_GresColor(port.getNetworkColor()));
 		hg.add(new PC_GresLabel(port.getNetworkName()).setColor(PC_GresWidget.textColorEnabled, colorValue));
 		w.add(hg);
-		
-		
+
+
 		hg = new PC_GresLayoutH();
 		hg.add(new PC_GresLabel(PC_Lang.tr("pc.gui.weasel.port.portName")));
-		hg.add(edName = new PC_GresTextEdit(port.getName(),14).setWidgetMargin(2));
+		hg.add(edName = new PC_GresTextEdit(port.getName(), 14).setWidgetMargin(2));
 		w.add(hg);
 
 		w.add(txError = new PC_GresLabel("").setWidgetMargin(2).setColor(PC_GresWidget.textColorEnabled, 0x000000));
 
 		hg = new PC_GresLayoutH();
 		hg.add(btnCancel = new PC_GresButton(PC_Lang.tr("pc.gui.cancel")));
-		hg.add(btnOk = new PC_GresButton(PC_Lang.tr("pc.gui.weasel.rename")));		
+		hg.add(btnOk = new PC_GresButton(PC_Lang.tr("pc.gui.weasel.rename")));
 		w.add(hg);
 		w.add(new PC_GresGap(0, 0));
 
 		gui.add(w);
 
-		btnOk.enable(false);		
+		btnOk.enable(false);
 
 	}
 
@@ -76,24 +76,24 @@ public class PClo_GuiWeaselPort implements PC_IGresBase {
 
 	@Override
 	public void actionPerformed(PC_GresWidget widget, PC_IGresGui gui) {
-		
-		if(widget == edName) {
+
+		if (widget == edName) {
 			String name = edName.text.trim();
-			if(name.length() == 0) {
+			if (name.length() == 0) {
 				txError.text = PC_Lang.tr("pc.gui.weasel.errDeviceNameTooShort");
 				btnOk.enabled = false;
-			}else if(port.getNetwork() != null && port.getNetwork().members.get(name) != null) {
+			} else if (port.getNetwork() != null && port.getNetwork().getMembers().get(name) != null) {
 				txError.text = PC_Lang.tr("pc.gui.weasel.errDeviceNameAlreadyUsed", name);
 				btnOk.enabled = false;
-			}else {
+			} else {
 				txError.text = "";
 				btnOk.enabled = true;
 			}
 			w.calcSize();
 			return;
 		}
-		
-		if(widget == btnOk) {
+
+		if (widget == btnOk) {
 			String name = edName.text.trim();
 			port.setMemberName(name);
 			//txError.text = PC_Lang.tr("pc.gui.weasel.deviceRenamed", name);
@@ -101,8 +101,8 @@ public class PClo_GuiWeaselPort implements PC_IGresBase {
 			gui.close();
 			return;
 		}
-		
-		if(widget == btnCancel) {
+
+		if (widget == btnCancel) {
 			gui.close();
 			return;
 		}

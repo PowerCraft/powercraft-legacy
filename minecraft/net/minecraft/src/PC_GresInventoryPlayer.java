@@ -12,8 +12,10 @@ public class PC_GresInventoryPlayer extends PC_GresLayoutV {
 	/** align of the label on top */
 	protected PC_GresAlign labelAlign = PC_GresAlign.LEFT;
 
+	/** the upper inv block */
 	protected PC_GresInventory inv1;
 
+	/** the lower inv block */
 	protected PC_GresInventory inv2;
 
 	/**

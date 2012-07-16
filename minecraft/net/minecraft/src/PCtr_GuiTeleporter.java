@@ -6,6 +6,11 @@ import net.minecraft.src.PC_GresTextEdit.PC_GresInputType;
 import net.minecraft.src.PC_GresWidget.PC_GresAlign;
 
 
+/**
+ * gui for teleporter
+ * 
+ * @author MightyPork
+ */
 public class PCtr_GuiTeleporter implements PC_IGresBase {
 
 	private PCtr_TileEntityTeleporter teleporter;
@@ -15,6 +20,7 @@ public class PCtr_GuiTeleporter implements PC_IGresBase {
 	private PC_GresCheckBox checkMobs;
 	private PC_GresCheckBox checkPlayers;
 	private PC_GresCheckBox checkSneak;
+	private PC_GresCheckBox checkLabel;
 
 
 	private PC_GresRadioButton checkN;
@@ -36,10 +42,19 @@ public class PCtr_GuiTeleporter implements PC_IGresBase {
 	private PC_GresWidget txError;
 
 
+	/**
+	 * @param te teleproter TE
+	 */
 	public PCtr_GuiTeleporter(PCtr_TileEntityTeleporter te) {
 		this(te, false);
 	}
 
+	/**
+	 * teleporter gui
+	 * 
+	 * @param te teleporter TE
+	 * @param newt flag whether this is a gui for newly created device
+	 */
 	public PCtr_GuiTeleporter(PCtr_TileEntityTeleporter te, boolean newt) {
 		isnew = newt;
 		teleporter = te;
@@ -47,12 +62,12 @@ public class PCtr_GuiTeleporter implements PC_IGresBase {
 		if (teleporter.isSender()) {
 
 			type = SENDER;
-			field = new String(teleporter.target);
+			field = new String(teleporter.targetName);
 
 		} else if (teleporter.isReceiver()) {
 
 			type = RECEIVER;
-			field = new String(teleporter.identifier);
+			field = new String(teleporter.identifierName);
 
 		} else {
 
@@ -83,7 +98,7 @@ public class PCtr_GuiTeleporter implements PC_IGresBase {
 
 		vg = new PC_GresLayoutV().setAlignH(PC_GresAlign.LEFT);
 		vg.add(new PC_GresLabel(type == SENDER ? PC_Lang.tr("pc.gui.teleporter.linksTo") : PC_Lang.tr("pc.gui.teleporter.deviceId")));
-		vg.add(edit = new PC_GresTextEdit(field, 20, PC_GresInputType.TEXT));
+		vg.add(edit = new PC_GresTextEdit(field, 30, PC_GresInputType.TEXT));
 		w.add(vg);
 
 		hg = new PC_GresLayoutH().setAlignH(PC_GresAlign.CENTER);
@@ -92,7 +107,6 @@ public class PCtr_GuiTeleporter implements PC_IGresBase {
 
 
 		if (type == SENDER) {
-
 
 
 
@@ -140,6 +154,8 @@ public class PCtr_GuiTeleporter implements PC_IGresBase {
 
 
 		hg = new PC_GresLayoutH().setAlignH(PC_GresAlign.CENTER);
+		hg.add(checkLabel = new PC_GresCheckBox(PC_Lang.tr("pc.gui.teleporter.showLabel")));
+		checkLabel.check(!teleporter.hideLabel);
 		hg.add(buttonCancel = new PC_GresButton(PC_Lang.tr("pc.gui.cancel")).setId(1));
 		hg.add(buttonOK = new PC_GresButton(PC_Lang.tr("pc.gui.ok")).setId(0));
 		w.add(hg);
@@ -164,8 +180,9 @@ public class PCtr_GuiTeleporter implements PC_IGresBase {
 		} else if (widget == buttonOK) {
 
 			if (!edit.getText().equals("")) {
+				teleporter.hideLabel = !checkLabel.isChecked();
 				if (type == SENDER) {
-					teleporter.target = new String(edit.getText());
+					teleporter.targetName = new String(edit.getText());
 
 					PC_Logger.finest("setting target to " + edit.getText());
 				} else {
@@ -173,10 +190,10 @@ public class PCtr_GuiTeleporter implements PC_IGresBase {
 					if (isnew) {
 						PCtr_TeleporterHelper.registerNewDevice(teleporter.xCoord, teleporter.yCoord, teleporter.zCoord, edit.getText());
 					} else {
-						PCtr_TeleporterHelper.renameDevice(teleporter.identifier, edit.getText());
+						PCtr_TeleporterHelper.renameDevice(teleporter.identifierName, edit.getText());
 					}
 
-					teleporter.identifier = new String(edit.getText());
+					teleporter.identifierName = new String(edit.getText());
 					PC_Logger.finest("setting id to " + edit.getText());
 
 				}

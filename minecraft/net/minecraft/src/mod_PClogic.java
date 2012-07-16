@@ -3,12 +3,6 @@ package net.minecraft.src;
 
 import java.util.List;
 import java.util.Map;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
-import weasel.Calc;
-import weasel.exception.SyntaxError;
-import weasel.lang.Instruction;
 
 import net.minecraft.client.Minecraft;
 
@@ -119,8 +113,7 @@ public class mod_PClogic extends PC_Module {
 	// *** MODULE INIT ***
 
 	@Override
-	public void preInit() {	
-	}
+	public void preInit() {}
 
 	@Override
 	public void initProperties(PC_PropertyManager conf) {
@@ -164,6 +157,7 @@ public class mod_PClogic extends PC_Module {
 		PClo_Renderer.radioRenderer = ModLoader.getUniqueBlockModelID(this, true);
 		PClo_Renderer.sensorRenderer = ModLoader.getUniqueBlockModelID(this, true);
 		PClo_Renderer.weaselRenderer = ModLoader.getUniqueBlockModelID(this, true);
+		PClo_Renderer.lightRenderer = ModLoader.getUniqueBlockModelID(this, true);
 	}
 
 	@Override
@@ -173,12 +167,12 @@ public class mod_PClogic extends PC_Module {
 		radio = new PClo_BlockRadio(cfg().getInteger(pk_idRadio))
 				.setBlockName("PCloRadio")
 				.setHardness(0.35F)
-				.setResistance(15.0F);
+				.setResistance(30.0F);
 
 		sensor = (PClo_BlockSensor) (new PClo_BlockSensor(cfg().getInteger(pk_idSensor))
 				.setBlockName("PCloSensorRanged")
 				.setHardness(0.35F)
-				.setResistance(15.0F));
+				.setResistance(30.0F));
 
 
 		gateOff = new PClo_BlockGate(cfg().getInteger(pk_idGateOff), false)
@@ -186,7 +180,7 @@ public class mod_PClogic extends PC_Module {
 				.setHardness(0.35F).setLightValue(0)
 				.setStepSound(Block.soundWoodFootstep)
 				.disableStats().setRequiresSelfNotify()
-				.setResistance(15.0F);
+				.setResistance(30.0F);
 
 
 		weaselDevice = new PClo_BlockWeasel(cfg().getInteger(pk_idWeasel))
@@ -201,25 +195,25 @@ public class mod_PClogic extends PC_Module {
 				.setHardness(0.35F).setLightValue(cfg().getInteger(pk_brightGate) * 0.0625F)
 				.setStepSound(Block.soundWoodFootstep)
 				.disableStats().setRequiresSelfNotify()
-				.setResistance(15.0F);
+				.setResistance(30.0F);
 
 		pulsar = new PClo_BlockPulsar(cfg().getInteger(pk_idPulsar))
 				.setHardness(0.8F)
-				.setResistance(20.0F)
+				.setResistance(30.0F)
 				.setBlockName("PCloRedstonePulsar")
 				.setRequiresSelfNotify()
 				.setStepSound(Block.soundWoodFootstep);
 
 		lightOff = new PClo_BlockLight(cfg().getInteger(pk_idLightOff), false)
 				.setHardness(0.3F)
-				.setResistance(5.0F)
+				.setResistance(20F)
 				.setBlockName("PCloLight")
 				.setStepSound(Block.soundStoneFootstep)
 				.setRequiresSelfNotify();
 
 		lightOn = new PClo_BlockLight(cfg().getInteger(pk_idLightOn), true)
 				.setHardness(0.3F)
-				.setResistance(5.0F)
+				.setResistance(20F)
 				.setLightValue(cfg().getInteger(pk_brightLight) * 0.0625F)
 				.setBlockName("PCloLight")
 				.setStepSound(Block.soundStoneFootstep)
@@ -323,6 +317,23 @@ public class mod_PClogic extends PC_Module {
 		map.put("tile.PCloLight.14.stable.name", "Orange Lamp");
 		map.put("tile.PCloLight.15.stable.name", "White Lamp");
 
+		map.put("tile.PCloLight.0.huge.name", "Black Display Segment");
+		map.put("tile.PCloLight.1.huge.name", "Red Display Segment");
+		map.put("tile.PCloLight.2.huge.name", "Green Display Segment");
+		map.put("tile.PCloLight.3.huge.name", "Brown Display Segment");
+		map.put("tile.PCloLight.4.huge.name", "Blue Display Segment");
+		map.put("tile.PCloLight.5.huge.name", "Purple Display Segment");
+		map.put("tile.PCloLight.6.huge.name", "Cyan Display Segment");
+		map.put("tile.PCloLight.7.huge.name", "Light-gray Display Segment");
+		map.put("tile.PCloLight.8.huge.name", "Gray Display Segment");
+		map.put("tile.PCloLight.9.huge.name", "Pink Display Segment");
+		map.put("tile.PCloLight.10.huge.name", "Lime Display Segment");
+		map.put("tile.PCloLight.11.huge.name", "Yellow Display Segment");
+		map.put("tile.PCloLight.12.huge.name", "Light-blue Display Segment");
+		map.put("tile.PCloLight.13.huge.name", "Magenta Display Segment");
+		map.put("tile.PCloLight.14.huge.name", "Orange Display Segment");
+		map.put("tile.PCloLight.15.huge.name", "White Display Segment");
+
 		map.put("tile.PCloLogicGate.name", "Redstone Logic Gate");
 		map.put("tile.PCloLogicGate.not.name", "Redstone Inverter");
 		map.put("tile.PCloLogicGate.and.name", "Redstone AND gate");
@@ -356,7 +367,7 @@ public class mod_PClogic extends PC_Module {
 		map.put("tile.PCloLogicGate.repeaterStraightInstant.name", "Instant Repeater");
 		map.put("tile.PCloLogicGate.repeaterCornerInstant.name", "Instant Angled Repeater");
 		map.put("tile.PCloLogicGate.night.name", "Night Sensor");
-		map.put("tile.PCloLogicGate.obsolete_unused.name", "Do-nothing device");
+		map.put("tile.PCloLogicGate.splitter.name", "Redstone Splitter");
 
 
 		// descriptions.
@@ -392,12 +403,12 @@ public class mod_PClogic extends PC_Module {
 		map.put("pc.gate.repeaterStraightInstant.desc", "instant repeater");
 		map.put("pc.gate.repeaterCornerInstant.desc", "instant corner repeater");
 		map.put("pc.gate.night.desc", "on during night");
-		map.put("pc.gate.obsolete_unused.desc", "Do not take this!");
+		map.put("pc.gate.splitter.desc", "splits signal");
 
 
 
 		map.put("tile.PCloWeasel.name", "Weasel Device");
-		
+
 		map.put("tile.PCloWeasel.core.name", "Weasel Controller");
 		map.put("tile.PCloWeasel.port.name", "Wireless Port");
 		map.put("tile.PCloWeasel.display.name", "Wireless Display");
@@ -406,42 +417,44 @@ public class mod_PClogic extends PC_Module {
 		map.put("pc.weasel.port.desc", "expansion redstone port");
 		map.put("pc.weasel.display.desc", "display for Weasel");
 		map.put("pc.weasel.sound.desc", "electronic noteblock");
-		
+
 		map.put("pc.weasel.activatorGetNetwork", "Network \"%s\" assigned to activation crystal.");
 		map.put("pc.weasel.activatorSetNetwork", "Device connected to network \"%s\".");
-		
+		map.put("pc.radio.activatorGetChannel", "Channel \"%s\" assigned to activation crystal.");
+		map.put("pc.radio.activatorSetChannel", "Radio connected to channel \"%s\".");
+
 		map.put("pc.gui.weasel.connectedToNetwork", "Connected to network:");
 		map.put("pc.gui.weasel.rename", "Rename");
 		map.put("pc.gui.weasel.errDeviceNameTooShort", "Entered name is too short.");
 		map.put("pc.gui.weasel.errDeviceNameAlreadyUsed", "Device %s already exists in this network.");
 		map.put("pc.gui.weasel.deviceRenamed", "Device renamed to %s.");
 		map.put("pc.gui.weasel.close", "Close");
-		
+
 		map.put("pc.gui.weasel.port.portName", "Port name:");
 		map.put("pc.gui.weasel.display.displayName", "Display name:");
 		map.put("pc.gui.weasel.sound.speakerName", "Speaker name:");
-		
-		
+
+
 		map.put("pc.gui.weasel.core.program", "Program");
 		map.put("pc.gui.weasel.core.settings", "Settings");
 		map.put("pc.gui.weasel.core.status", "Status");
-		
+
 		map.put("pc.gui.weasel.core.runningStateLabel", "Program state:");
 		map.put("pc.gui.weasel.core.stackLabel", "Stack size:");
 		map.put("pc.gui.weasel.core.memoryLabel", "Memory size:");
-		map.put("pc.gui.weasel.core.statusLabel", "Status:");		
+		map.put("pc.gui.weasel.core.statusLabel", "Status:");
 		map.put("pc.gui.weasel.core.programLength", "Program length:");
 		map.put("pc.gui.weasel.core.peripheralsLabel", "Peripherals:");
 		map.put("pc.gui.weasel.core.unitInstructions", "instructions");
 		map.put("pc.gui.weasel.core.unitObjects", "values");
 		map.put("pc.gui.weasel.core.networkLabel", "Network name:");
 		map.put("pc.gui.weasel.core.colorLabel", "Network color:");
-		
+
 		map.put("pc.gui.weasel.core.title", "Weasel Controller");
 		map.put("pc.gui.weasel.port.title", "Expansion port for Weasel Controller");
 		map.put("pc.gui.weasel.display.title", "Display for Weasel Controller");
-		map.put("pc.gui.weasel.sound.title", "Audio output for Weasel");		
-		
+		map.put("pc.gui.weasel.sound.title", "Audio output for Weasel");
+
 		map.put("pc.gui.weasel.core.undoAll", "Undo All");
 		map.put("pc.gui.weasel.core.check", "Check");
 		map.put("pc.gui.weasel.core.launch", "Launch");
@@ -457,7 +470,7 @@ public class mod_PClogic extends PC_Module {
 		map.put("pc.gui.weasel.core.stop", "Stop");
 		map.put("pc.gui.weasel.core.title", "Weasel Controller");
 		map.put("pc.gui.weasel.core.colorChange", "Change");
-		
+
 		map.put("pc.gui.weasel.core.errNetworkNameTooShort", "Entered network name is too short.");
 		map.put("pc.gui.weasel.core.errNetworkNameAlreadyUsed", "Network with this name already exists.");
 		map.put("pc.gui.weasel.core.msgNetworkRenamed", "Network renamed to %s.");
@@ -485,7 +498,9 @@ public class mod_PClogic extends PC_Module {
 		map.put("pc.gui.pulsar.errDelay", "Bad delay time!");
 		map.put("pc.gui.pulsar.errHold", "Bad hold time!");
 		map.put("pc.gui.radio.channel", "Channel:");
+		map.put("pc.gui.radio.showLabel", "Show label");
 		map.put("pc.gui.radio.errChannel", "Invalid channel name.");
+		map.put("pc.gui.radio.renderSmall", "Tiny");
 		map.put("pc.pulsar.clickMsg", "Period %s ticks (%s s)");
 		map.put("pc.pulsar.clickMsgTime", "Period %s ticks (%s s), remains %s");
 
@@ -693,9 +708,14 @@ public class mod_PClogic extends PC_Module {
 				new Object[] { " + ", "+++", " + ",
 					'+', Item.redstone });
 		
+		ModLoader.addRecipe(
+				new ItemStack(gateOn, 1, PClo_GateType.SPLITTER_I),
+				new Object[] { "S+S", "+++", "S+S",
+					'+', Item.redstone,'S', Block.stone});
 		
 		
 		
+		// weasel.
 		
 		
 		ModLoader.addRecipe(
@@ -720,136 +740,34 @@ public class mod_PClogic extends PC_Module {
 
 		
 		// *** lights ***
-
-		ModLoader.addShapelessRecipe(
-				new ItemStack(lightOn, 1, 0),
-				new Object[] { Item.redstone, Item.lightStoneDust, new ItemStack(Item.dyePowder, 1, 0) });
-
-		ModLoader.addShapelessRecipe(
-				new ItemStack(lightOn, 1, 1),
-				new Object[] { Item.redstone, Item.lightStoneDust, new ItemStack(Item.dyePowder, 1, 1) });
 		
-		ModLoader.addShapelessRecipe(
-				new ItemStack(lightOn, 1, 2),
-				new Object[] { Item.redstone, Item.lightStoneDust, new ItemStack(Item.dyePowder, 1, 2) });
+		// SMALL
+		
+		for(int i=0; i<16; i++) {
+			ModLoader.addShapelessRecipe(
+					new ItemStack(lightOn, 1, i),
+					new Object[] { Item.redstone, Item.lightStoneDust, new ItemStack(Item.dyePowder, 1, i) });
+		}
 
-		ModLoader.addShapelessRecipe(
-				new ItemStack(lightOn, 1, 3),
-				new Object[] { Item.redstone, Item.lightStoneDust, new ItemStack(Item.dyePowder, 1, 3) });
-
-		ModLoader.addShapelessRecipe(
-				new ItemStack(lightOn, 1, 4),
-				new Object[] { Item.redstone, Item.lightStoneDust, new ItemStack(Item.dyePowder, 1, 4) });
-
-		ModLoader.addShapelessRecipe(
-				new ItemStack(lightOn, 1, 5),
-				new Object[] { Item.redstone, Item.lightStoneDust, new ItemStack(Item.dyePowder, 1, 5) });
-
-		ModLoader.addShapelessRecipe(
-				new ItemStack(lightOn, 1, 6),
-				new Object[] { Item.redstone, Item.lightStoneDust, new ItemStack(Item.dyePowder, 1, 6) });
-
-		ModLoader.addShapelessRecipe(
-				new ItemStack(lightOn, 1, 7),
-				new Object[] { Item.redstone, Item.lightStoneDust, new ItemStack(Item.dyePowder, 1, 7) });
-
-		ModLoader.addShapelessRecipe(
-				new ItemStack(lightOn, 1, 8),
-				new Object[] { Item.redstone, Item.lightStoneDust, new ItemStack(Item.dyePowder, 1, 8) });
-
-		ModLoader.addShapelessRecipe(
-				new ItemStack(lightOn, 1, 9),
-				new Object[] { Item.redstone, Item.lightStoneDust, new ItemStack(Item.dyePowder, 1, 9) });
-
-		ModLoader.addShapelessRecipe(
-				new ItemStack(lightOn, 1, 10),
-				new Object[] { Item.redstone, Item.lightStoneDust, new ItemStack(Item.dyePowder, 1, 10) });
-
-		ModLoader.addShapelessRecipe(
-				new ItemStack(lightOn, 1, 11),
-				new Object[] { Item.redstone, Item.lightStoneDust, new ItemStack(Item.dyePowder, 1, 11) });
-
-		ModLoader.addShapelessRecipe(
-				new ItemStack(lightOn, 1, 12),
-				new Object[] { Item.redstone, Item.lightStoneDust, new ItemStack(Item.dyePowder, 1, 12) });
-
-		ModLoader.addShapelessRecipe(
-				new ItemStack(lightOn, 1, 13),
-				new Object[] { Item.redstone, Item.lightStoneDust, new ItemStack(Item.dyePowder, 1, 13) });
-
-		ModLoader.addShapelessRecipe(
-				new ItemStack(lightOn, 1, 14),
-				new Object[] { Item.redstone, Item.lightStoneDust, new ItemStack(Item.dyePowder, 1, 14) });
-
-		ModLoader.addShapelessRecipe(
-				new ItemStack(lightOn, 1, 15),
-				new Object[] { Item.redstone, Item.lightStoneDust, new ItemStack(Item.dyePowder, 1, 15) });
 		
 		// STABLE
 
-		ModLoader.addShapelessRecipe(
-				new ItemStack(lightOn, 1, 0 + 16),
-				new Object[] { Item.lightStoneDust, new ItemStack(Item.dyePowder, 1, 0) });
+		for(int i=16; i<32; i++) {
+			ModLoader.addShapelessRecipe(
+					new ItemStack(lightOn, 1, i),
+					new Object[] { Item.lightStoneDust, new ItemStack(Item.dyePowder, 1, i%16) });
+		}
+		
+		// SEGMENTS
+		
+		for(int i=32; i<48; i++) {
+			ModLoader.addShapelessRecipe(
+					new ItemStack(lightOn, 1, i),
+					new Object[] { Item.redstone, Block.glowStone, new ItemStack(Item.dyePowder, 1, i%16) });
+		}
+		
 
-		ModLoader.addShapelessRecipe(
-				new ItemStack(lightOn, 1, 1 + 16),
-				new Object[] { Item.lightStoneDust, new ItemStack(Item.dyePowder, 1, 1) });
-
-		ModLoader.addShapelessRecipe(
-				new ItemStack(lightOn, 1, 2 + 16),
-				new Object[] { Item.lightStoneDust, new ItemStack(Item.dyePowder, 1, 2) });
-
-		ModLoader.addShapelessRecipe(
-				new ItemStack(lightOn, 1, 3 + 16),
-				new Object[] { Item.lightStoneDust, new ItemStack(Item.dyePowder, 1, 3) });
-
-		ModLoader.addShapelessRecipe(
-				new ItemStack(lightOn, 1, 4 + 16),
-				new Object[] { Item.lightStoneDust, new ItemStack(Item.dyePowder, 1, 4) });
-
-		ModLoader.addShapelessRecipe(
-				new ItemStack(lightOn, 1, 5 + 16),
-				new Object[] { Item.lightStoneDust, new ItemStack(Item.dyePowder, 1, 5) });
-
-		ModLoader.addShapelessRecipe(
-				new ItemStack(lightOn, 1, 6 + 16),
-				new Object[] { Item.lightStoneDust, new ItemStack(Item.dyePowder, 1, 6) });
-
-		ModLoader.addShapelessRecipe(
-				new ItemStack(lightOn, 1, 7 + 16),
-				new Object[] { Item.lightStoneDust, new ItemStack(Item.dyePowder, 1, 7) });
-
-		ModLoader.addShapelessRecipe(
-				new ItemStack(lightOn, 1, 8 + 16),
-				new Object[] { Item.lightStoneDust, new ItemStack(Item.dyePowder, 1, 8) });
-
-		ModLoader.addShapelessRecipe(
-				new ItemStack(lightOn, 1, 9 + 16),
-				new Object[] { Item.lightStoneDust, new ItemStack(Item.dyePowder, 1, 9) });
-
-		ModLoader.addShapelessRecipe(
-				new ItemStack(lightOn, 1, 10 + 16),
-				new Object[] { Item.lightStoneDust, new ItemStack(Item.dyePowder, 1, 10) });
-
-		ModLoader.addShapelessRecipe(
-				new ItemStack(lightOn, 1, 11 + 16),
-				new Object[] { Item.lightStoneDust, new ItemStack(Item.dyePowder, 1, 11) });
-
-		ModLoader.addShapelessRecipe(
-				new ItemStack(lightOn, 1, 12 + 16),
-				new Object[] { Item.lightStoneDust, new ItemStack(Item.dyePowder, 1, 12) });
-
-		ModLoader.addShapelessRecipe(
-				new ItemStack(lightOn, 1, 13 + 16),
-				new Object[] { Item.lightStoneDust, new ItemStack(Item.dyePowder, 1, 13) });
-
-		ModLoader.addShapelessRecipe(
-				new ItemStack(lightOn, 1, 14 + 16),
-				new Object[] { Item.lightStoneDust, new ItemStack(Item.dyePowder, 1, 14) });
-
-		ModLoader.addShapelessRecipe(
-				new ItemStack(lightOn, 1, 15 + 16),
-				new Object[] { Item.lightStoneDust, new ItemStack(Item.dyePowder, 1, 15) });
+		
 		
 		
 		// *** RADIOS ***
@@ -933,6 +851,19 @@ public class mod_PClogic extends PC_Module {
 				new ItemStack(lightOn, 1, PC_Color.dye.PINK.meta),
 				new ItemStack(lightOn, 1, PC_Color.dye.WHITE.meta),
 				
+				new ItemStack(lightOn, 1, PC_Color.dye.RED.meta+32),
+				new ItemStack(lightOn, 1, PC_Color.dye.ORANGE.meta+32),
+				new ItemStack(lightOn, 1, PC_Color.dye.YELLOW.meta+32),
+				new ItemStack(lightOn, 1, PC_Color.dye.LIME.meta+32),
+				new ItemStack(lightOn, 1, PC_Color.dye.GREEN.meta+32),
+				new ItemStack(lightOn, 1, PC_Color.dye.CYAN.meta+32),
+				new ItemStack(lightOn, 1, PC_Color.dye.LIGHTBLUE.meta+32),
+				new ItemStack(lightOn, 1, PC_Color.dye.BLUE.meta+32),
+				new ItemStack(lightOn, 1, PC_Color.dye.PURPLE.meta+32),
+				new ItemStack(lightOn, 1, PC_Color.dye.MAGENTA.meta+32),
+				new ItemStack(lightOn, 1, PC_Color.dye.PINK.meta+32),
+				new ItemStack(lightOn, 1, PC_Color.dye.WHITE.meta+32),
+				
 				new ItemStack(lightOn, 1, PC_Color.dye.RED.meta+16),
 				new ItemStack(lightOn, 1, PC_Color.dye.ORANGE.meta+16),
 				new ItemStack(lightOn, 1, PC_Color.dye.YELLOW.meta+16),
@@ -968,7 +899,7 @@ public class mod_PClogic extends PC_Module {
 
 	@Override
 	public boolean renderWorldBlock(RenderBlocks renderblocks, IBlockAccess iblockaccess, int i, int j, int k, Block block, int renderType) {
-		return false;
+		return PClo_Renderer.renderBlockByType(renderblocks, iblockaccess, i, j, k, block, renderType);
 	}
 
 	@Override
@@ -990,9 +921,9 @@ public class mod_PClogic extends PC_Module {
 
 	@Override
 	public boolean onTickInGUI(float f, Minecraft minecraft, GuiScreen guiscreen) {
-		
-		if(guiscreen == null) return true;
-		
+
+		if (guiscreen == null) return true;
+
 		if (NETWORK.needsSave) {
 			NETWORK.saveToFile();
 		}

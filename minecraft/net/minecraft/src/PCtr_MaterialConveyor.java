@@ -1,8 +1,16 @@
 package net.minecraft.src;
 
 
+/**
+ * conveyer material
+ * 
+ * @author MightyPork
+ */
 public class PCtr_MaterialConveyor extends Material {
 
+	/**
+	 * the material for conveyor belts.
+	 */
 	public PCtr_MaterialConveyor() {
 		super(MapColor.airColor);
 	}

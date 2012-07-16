@@ -5,14 +5,13 @@ package net.minecraft.src;
 import java.util.List;
 import java.util.Random;
 
+import net.minecraft.src.PClo_NetManager.NetworkMember;
+import net.minecraft.src.PClo_NetManager.WeaselNetwork;
 import weasel.Calc;
 import weasel.WeaselEngine;
 import weasel.obj.WeaselBoolean;
 import weasel.obj.WeaselObject;
 import weasel.obj.WeaselString;
-
-import net.minecraft.src.PClo_NetManager.WeaselNetwork;
-import net.minecraft.src.PClo_NetManager.NetworkMember;
 
 
 /**
@@ -370,7 +369,7 @@ public abstract class PClo_WeaselPlugin implements PC_INBT, NetworkMember {
 	/**
 	 * Get redstone state sending to given port
 	 * 
-	 * @param port port name (F,L,R,B,U,D)
+	 * @param port port name (B,L,R,F,U,D)
 	 * @return rs state
 	 */
 	protected final boolean getOutport(String port) {
@@ -433,6 +432,14 @@ public abstract class PClo_WeaselPlugin implements PC_INBT, NetworkMember {
 		if (args.length > 1) {
 			strict = (Boolean) args[1].get();
 		}
+		
+		if(side.equals("U") || side.equals("T") ) {
+			return new WeaselBoolean(isFullChestAt(coord().offset(0, 1, 0), strict));
+		}
+		
+		if(side.equals("D")) {
+			return new WeaselBoolean(isFullChestAt(coord().offset(0, -1, 0), strict));
+		}
 
 		if (side.equals("B")) rotation = rotation + 0;
 		if (side.equals("F")) rotation = rotation + 2;
@@ -461,6 +468,14 @@ public abstract class PClo_WeaselPlugin implements PC_INBT, NetworkMember {
 				side = (String) args[0].get();
 			}
 		}
+		
+		if(side.equals("U") || side.equals("T") ) {
+			return new WeaselBoolean(isEmptyChestAt(coord().offset(0, 1, 0)));
+		}
+		
+		if(side.equals("D")) {
+			return new WeaselBoolean(isEmptyChestAt(coord().offset(0, -1, 0)));
+		}
 
 		if (side.equals("B")) rotation = rotation + 0;
 		if (side.equals("F")) rotation = rotation + 2;
@@ -483,16 +498,16 @@ public abstract class PClo_WeaselPlugin implements PC_INBT, NetworkMember {
 	private final boolean isChestFull(int side, boolean allSlotsFull) {
 
 		if (side == 0) {
-			return isFullChestAt(tileEntity.getCoord().offset(0, 0, 1), allSlotsFull);
+			return isFullChestAt(coord().offset(0, 0, 1), allSlotsFull);
 		}
 		if (side == 1) {
-			return isFullChestAt(tileEntity.getCoord().offset(-1, 0, 0), allSlotsFull);
+			return isFullChestAt(coord().offset(-1, 0, 0), allSlotsFull);
 		}
 		if (side == 2) {
-			return isFullChestAt(tileEntity.getCoord().offset(0, 0, -1), allSlotsFull);
+			return isFullChestAt(coord().offset(0, 0, -1), allSlotsFull);
 		}
 		if (side == 3) {
-			return isFullChestAt(tileEntity.getCoord().offset(1, 0, 0), allSlotsFull);
+			return isFullChestAt(coord().offset(1, 0, 0), allSlotsFull);
 		}
 		return false;
 	}
@@ -505,16 +520,16 @@ public abstract class PClo_WeaselPlugin implements PC_INBT, NetworkMember {
 	 */
 	private final boolean isChestEmpty(int side) {
 		if (side == 0) {
-			return isEmptyChestAt(tileEntity.getCoord().offset(0, 0, 1));
+			return isEmptyChestAt(coord().offset(0, 0, 1));
 		}
 		if (side == 1) {
-			return isEmptyChestAt(tileEntity.getCoord().offset(-1, 0, 0));
+			return isEmptyChestAt(coord().offset(-1, 0, 0));
 		}
 		if (side == 2) {
-			return isEmptyChestAt(tileEntity.getCoord().offset(0, 0, -1));
+			return isEmptyChestAt(coord().offset(0, 0, -1));
 		}
 		if (side == 3) {
-			return isEmptyChestAt(tileEntity.getCoord().offset(1, 0, 0));
+			return isEmptyChestAt(coord().offset(1, 0, 0));
 		}
 		return true;
 	}
@@ -582,11 +597,11 @@ public abstract class PClo_WeaselPlugin implements PC_INBT, NetworkMember {
 		}
 		try {
 			return readPluginFromNBT(tag);
-		}catch(Exception e) {
+		} catch (Exception e) {
 			e.printStackTrace();
 			return this;
 		}
-			
+
 	}
 
 	@Override
@@ -600,7 +615,7 @@ public abstract class PClo_WeaselPlugin implements PC_INBT, NetworkMember {
 
 		try {
 			return writePluginToNBT(tag);
-		}catch(Exception e) {
+		} catch (Exception e) {
 			e.printStackTrace();
 			return tag;
 		}
@@ -621,5 +636,32 @@ public abstract class PClo_WeaselPlugin implements PC_INBT, NetworkMember {
 	 * @return the tag
 	 */
 	protected abstract NBTTagCompound writePluginToNBT(NBTTagCompound tag);
+
+	/**
+	 * Block bounds + selection & collision box
+	 * @return array of floats: minX, minY, minZ, maxX, maxY, maxZ - relative to block, 0-1.
+	 */
+	public float[] getBounds() {
+		return new float[] {0,0,0,1,0.5F,1};
+	}
+
+	/**
+	 * hook called when the device was placed
+	 * @param entityliving
+	 */
+	public abstract void onBlockPlaced(EntityLiving entityliving);
+
+	/**
+	 * hook from block - random display tick. You can make some perticles here.
+	 * @param random
+	 */
+	public abstract void onRandomDisplayTick(Random random);
+
+	/**
+	 * hook from block - called when block is right-clicked.
+	 * @param player the player who clicked
+	 * @return true if event was consumed - not allow block placing.
+	 */
+	public abstract boolean onClick(EntityPlayer player);
 
 }

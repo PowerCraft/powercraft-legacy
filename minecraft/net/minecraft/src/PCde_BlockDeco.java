@@ -75,7 +75,7 @@ public class PCde_BlockDeco extends BlockContainer implements PC_IBlockType, PC_
 		super(i, j, material);
 	}
 
-	/** flag used by renderer to alter individual textures  */
+	/** flag used by renderer to alter individual textures */
 	public int renderFlag = 0;
 
 	@Override
@@ -109,7 +109,7 @@ public class PCde_BlockDeco extends BlockContainer implements PC_IBlockType, PC_
 	public int colorMultiplier(IBlockAccess iblockaccess, int x, int y, int z) {
 		// colors particles
 		PCde_TileEntityDeco ted = getTE(iblockaccess, x, y, z);
-		if(ted==null) return 0xffffff;
+		if (ted == null) return 0xffffff;
 		if (ted.type == 0) {
 			return 0xffffff;
 		}
@@ -147,7 +147,7 @@ public class PCde_BlockDeco extends BlockContainer implements PC_IBlockType, PC_
 	@Override
 	public void setBlockBoundsBasedOnState(IBlockAccess iblockaccess, int i, int j, int k) {
 		PCde_TileEntityDeco ted = getTE(iblockaccess, i, j, k);
-		if(ted==null) return;
+		if (ted == null) return;
 
 		// frames
 		if (ted.type == 0) {
@@ -182,7 +182,7 @@ public class PCde_BlockDeco extends BlockContainer implements PC_IBlockType, PC_
 	public void getCollidingBoundingBoxes(World world, int x, int y, int z, AxisAlignedBB axisalignedbb, ArrayList arraylist) {
 
 		PCde_TileEntityDeco ted = getTE(world, x, y, z);
-		if(ted==null) return;
+		if (ted == null) return;
 
 		if (ted.type == 0 || ted.type == 1 || ted.type == 3) {
 			setBlockBounds(0, 0, 0, 1, 1, 1);
@@ -196,6 +196,7 @@ public class PCde_BlockDeco extends BlockContainer implements PC_IBlockType, PC_
 		}
 
 		setBlockBounds(0, 0, 0, 1, 1, 1);
+		super.getCollidingBoundingBoxes(world, x, y, z, axisalignedbb, arraylist);
 	}
 
 	/**
@@ -219,7 +220,7 @@ public class PCde_BlockDeco extends BlockContainer implements PC_IBlockType, PC_
 	public int getBlockTexture(IBlockAccess iblockaccess, int x, int y, int z, int side) {
 		// in world - block
 		PCde_TileEntityDeco ted = getTE(iblockaccess, x, y, z);
-		if(ted==null) return 0;
+		if (ted == null) return 0;
 		if (ted.type == 0) {
 			return 22;
 		}
@@ -296,7 +297,7 @@ public class PCde_BlockDeco extends BlockContainer implements PC_IBlockType, PC_
 	public Set<String> getBlockFlags(World world, PC_CoordI pos) {
 
 		PCde_TileEntityDeco ted = getTE(world, pos.x, pos.y, pos.z);
-		if(ted==null) return new HashSet<String>(0);
+		if (ted == null) return new HashSet<String>(0);
 
 		Set<String> set = new HashSet<String>();
 

@@ -6,7 +6,19 @@ import java.util.Random;
 import java.util.Set;
 
 
+/**
+ * Teleporter block
+ * 
+ * @author MightyPork
+ */
 public class PCtr_BlockTeleporter extends BlockContainer implements PC_IBlockType {
+	/**
+	 * teleporter block
+	 * 
+	 * @param id ID
+	 * @param tindex texture
+	 * @param material material
+	 */
 	public PCtr_BlockTeleporter(int id, int tindex, Material material) {
 		super(id, tindex, material);
 		setBlockBounds(0.125F, 0.0F, 0.125F, 1.0F - 0.125F, 1.0F - 0.125F, 1.0F - 0.125F);
@@ -63,7 +75,7 @@ public class PCtr_BlockTeleporter extends BlockContainer implements PC_IBlockTyp
 	@Override
 	public void onBlockRemoval(World world, int i, int j, int k) {
 
-		PCtr_TeleporterHelper.unregisterDevice(getTE(world, i, j, k).identifier);
+		PCtr_TeleporterHelper.unregisterDevice(getTE(world, i, j, k).identifierName);
 
 		world.setBlockAndMetadataWithNotify(i, j, k, 0, 0);
 		world.notifyBlocksOfNeighborChange(i, j, k, blockID);
@@ -106,7 +118,7 @@ public class PCtr_BlockTeleporter extends BlockContainer implements PC_IBlockTyp
 
 		if (te.isSender() && te.isActive()) {
 			if (te.acceptsEntity(entity)) {
-				PCtr_TeleporterHelper.teleportEntityTo(entity, te.target);
+				PCtr_TeleporterHelper.teleportEntityTo(entity, te.targetName);
 			}
 		} else {
 			// receiver, do nothing.
@@ -145,8 +157,17 @@ public class PCtr_BlockTeleporter extends BlockContainer implements PC_IBlockTyp
 		}
 	}
 
-	public static PCtr_TileEntityTeleporter getTE(IBlockAccess iblockaccess, int i, int j, int k) {
-		TileEntity te = iblockaccess.getBlockTileEntity(i, j, k);
+	/**
+	 * Get Tile Entity at position.
+	 * 
+	 * @param iblockaccess
+	 * @param x
+	 * @param y
+	 * @param z
+	 * @return te
+	 */
+	public static PCtr_TileEntityTeleporter getTE(IBlockAccess iblockaccess, int x, int y, int z) {
+		TileEntity te = iblockaccess.getBlockTileEntity(x, y, z);
 		if (te == null) {
 			return null;
 		}
@@ -155,10 +176,28 @@ public class PCtr_BlockTeleporter extends BlockContainer implements PC_IBlockTyp
 		return tet;
 	}
 
+	/**
+	 * check if the teleporter is running
+	 * 
+	 * @param iblockaccess
+	 * @param i
+	 * @param j
+	 * @param k
+	 * @return flag
+	 */
 	public static boolean isActive(IBlockAccess iblockaccess, int i, int j, int k) {
 		return getTE(iblockaccess, i, j, k).isActive();
 	}
 
+	/**
+	 * check if this is the target device
+	 * 
+	 * @param iblockaccess
+	 * @param i
+	 * @param j
+	 * @param k
+	 * @return flag
+	 */
 	public static boolean isTarget(IBlockAccess iblockaccess, int i, int j, int k) {
 		return getTE(iblockaccess, i, j, k).isReceiver();
 	}

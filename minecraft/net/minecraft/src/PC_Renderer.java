@@ -294,13 +294,15 @@ public class PC_Renderer {
 		GL11.glTranslatef(0.5F, 0.5F, 0.5F);
 
 	}
-	
+
 	/**
-	 * Render block on inventory, with completely custom testures. Does not swap terrain.
+	 * Render block on inventory, with completely custom testures. Does not swap
+	 * terrain.
 	 * 
 	 * @param renderblocks block renderer
 	 * @param block the block
-	 * @param textures array of textures (bottom, top, east, west, north, south; whatever the sides mean)
+	 * @param textures array of textures (bottom, top, east, west, north, south;
+	 *            whatever the sides mean)
 	 */
 	public static void renderInvBoxWithTextures(RenderBlocks renderblocks, Block block, int[] textures) {
 		Tessellator tessellator = Tessellator.instance;
@@ -593,6 +595,7 @@ public class PC_Renderer {
 	public static void renderEntityLabelAt(String label, PC_CoordF realPos, int viewDistance, float yOffset, double x, double y, double z) {
 
 		RenderManager renderManager = RenderManager.instance;
+		label = label.trim();
 
 		float f = (float) renderManager.livingPlayer.getDistance(realPos.x + 0.5D, realPos.y + 0.5D, realPos.z + 0.5D);
 
@@ -600,7 +603,7 @@ public class PC_Renderer {
 			return;
 		}
 
-		FontRenderer fontrenderer = renderManager.getFontRenderer();
+		FontRenderer fontrenderer = mod_PCcore.fontRendererDefault;
 		float f1 = 1.0F; // 1.6F;
 		float f2 = 0.01666667F * f1;
 		GL11.glPushMatrix();
@@ -620,7 +623,7 @@ public class PC_Renderer {
 		GL11.glDisable(GL11.GL_TEXTURE_2D);
 		tessellator.startDrawingQuads();
 		float i = (fontrenderer.getStringWidth(label) / 2) * 1.12F;
-		tessellator.setColorRGBA_F(0.0F, 0.0F, 0.0F, 0.25F);
+		tessellator.setColorRGBA_F(0.0F, 0.0F, 0.0F, 0.5F);
 		tessellator.addVertex(-i - 1, -1 + byte0, 0.0D);
 		tessellator.addVertex(-i - 1, 8 + byte0, 0.0D);
 		tessellator.addVertex(i + 1, 8 + byte0, 0.0D);

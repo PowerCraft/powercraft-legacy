@@ -1,16 +1,17 @@
 package weasel.obj;
 
+
 import net.minecraft.src.NBTTagCompound;
 import net.minecraft.src.PC_INBT;
+
 
 /**
  * NULL placeholder for stacks.
  * 
  * @author MightyPork
- *
  */
 public class WeaselNull extends WeaselObject {
-	
+
 	/**
 	 * Null placeholder in stack.
 	 */
@@ -42,7 +43,9 @@ public class WeaselNull extends WeaselObject {
 	public void set(Object obj) {}
 
 	@Override
-	public String toString() {return "NULL";}
+	public String toString() {
+		return "NULL";
+	}
 
 	@Override
 	public boolean equals(Object obj) {

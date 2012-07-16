@@ -5,6 +5,7 @@
 
 package net.minecraft.src.forge;
 
+
 /**
  * This interface has to be implemented either by an instance of Block or Item.
  * It allow to use texture files different from terrain.png or items.png.

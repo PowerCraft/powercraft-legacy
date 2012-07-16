@@ -11,7 +11,7 @@ import org.lwjgl.opengl.GL11;
  * @copy (c) 2012
  */
 public class PC_GresColor extends PC_GresWidget {
-	
+
 	private PC_CoordI imgSize = new PC_CoordI(11, 11);
 	private PC_CoordI imgOffset = new PC_CoordI(57, 0);
 	private String texture = mod_PCcore.getImgDir() + "gres/widgets.png";
@@ -53,9 +53,10 @@ public class PC_GresColor extends PC_GresWidget {
 
 
 	}
-	
+
 	/**
 	 * Set color displayed
+	 * 
 	 * @param color
 	 */
 	public void setColor(PC_Color color) {
@@ -93,6 +94,9 @@ public class PC_GresColor extends PC_GresWidget {
 	@Override
 	public void addedToWidget() {}
 
+	/**
+	 * @return color currently shown
+	 */
 	public PC_Color getColor() {
 		return bulbColor;
 	}

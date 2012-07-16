@@ -16,6 +16,8 @@ public class PClo_Renderer {
 	public static int sensorRenderer;
 	/** Renderer for weasel devices (items only) */
 	public static int weaselRenderer;
+	/** Light renderer */
+	public static int lightRenderer;
 
 	/**
 	 * Render block by render type.<br>
@@ -30,6 +32,24 @@ public class PClo_Renderer {
 	 * @return success
 	 */
 	public static boolean renderBlockByType(RenderBlocks renderblocks, IBlockAccess blockAccess, int i, int j, int k, Block block, int rtype) {
+
+		if (rtype == lightRenderer) {
+			PC_Renderer.renderBlockSwapTerrain(renderblocks, blockAccess, i,j,k, block);
+			return true;
+		}
+		
+		if (rtype == radioRenderer) {
+			return true;
+		}
+		
+		if (rtype == sensorRenderer) {
+			return true;
+		}
+		
+		if (rtype == weaselRenderer) {
+			return true;
+		}
+		
 		return false;
 	}
 
@@ -57,6 +77,31 @@ public class PClo_Renderer {
 			renderInvBlockWeasel(renderblocks, (PClo_BlockWeasel) block, meta);
 			return;
 		}
+
+		if (rtype == lightRenderer) {
+			renderInvBlockLight(renderblocks, (PClo_BlockLight) block, meta);
+			return;
+		}
+
+	}
+
+	private static void renderInvBlockLight(RenderBlocks renderblocks, Block block, int meta) {
+
+		PC_Renderer.swapTerrain(mod_PClogic.getTerrainFile());
+
+		if(meta < 32) {
+			float sidehalf = 0.1875F;
+			float height = 0.15F;
+			block.setBlockBounds(0.5F - sidehalf, 0.5F - sidehalf, 0.5F - height / 2F, 0.5F + sidehalf, 0.5F + sidehalf, 0.5F + height / 2F);
+			PC_Renderer.renderInvBoxWithTexture(renderblocks, block, 66);
+		}else {
+			float sidehalf = 0.5F-0.0625F;
+			float height = 0.18F;
+			block.setBlockBounds(0.5F - sidehalf, 0.5F - sidehalf, 0.5F - height / 2F, 0.5F + sidehalf, 0.5F + sidehalf, 0.5F + height / 2F);
+			PC_Renderer.renderInvBoxWithTexture(renderblocks, block, 117);
+		}
+
+		PC_Renderer.resetTerrain(true);
 
 	}
 

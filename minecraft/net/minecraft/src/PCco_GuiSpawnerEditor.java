@@ -74,7 +74,7 @@ public class PCco_GuiSpawnerEditor implements PC_IGresBase {
 
 		PC_GresLayoutV vg = new PC_GresLayoutV();
 
-		PC_GresLayoutH hg = null;
+		PC_GresLayoutH hg = new PC_GresLayoutH();
 
 		int maxw = 0;
 		int hgTotalWidth = 0;

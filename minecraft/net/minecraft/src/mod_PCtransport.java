@@ -294,6 +294,7 @@ public class mod_PCtransport extends PC_Module {
 		map.put("pc.gui.teleporter.outputDirection", "Primary output:");
 		map.put("pc.gui.teleporter.type.sender", "SENDER");
 		map.put("pc.gui.teleporter.type.target", "TARGET");
+		map.put("pc.gui.teleporter.showLabel", "Show label");
 
 		map.put("pc.gui.ejector.modeEjectTitle", "Ejection mode:");
 		map.put("pc.gui.ejector.modeStacks", "Whole stacks");

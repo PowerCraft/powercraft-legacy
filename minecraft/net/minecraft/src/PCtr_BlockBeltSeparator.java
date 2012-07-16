@@ -8,6 +8,11 @@ import java.util.Set;
 import net.minecraft.src.forge.ITextureProvider;
 
 
+/**
+ * item separation belt
+ * 
+ * @author MightyPork
+ */
 public class PCtr_BlockBeltSeparator extends BlockContainer implements PC_IBlockType, PC_ISwapTerrain, PC_IRotatedBox, ITextureProvider {
 
 	@Override
@@ -77,6 +82,11 @@ public class PCtr_BlockBeltSeparator extends BlockContainer implements PC_IBlock
 		return new PCtr_TileEntitySeparationBelt();
 	}
 
+	/**
+	 * belt sep.
+	 * 
+	 * @param i ID
+	 */
 	protected PCtr_BlockBeltSeparator(int i) {
 		super(i, new PCtr_MaterialConveyor());
 

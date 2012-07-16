@@ -109,7 +109,7 @@ public class PC_GresLink extends PC_GresWidget {
 		}
 		isClicked = key == -1 ? false : true;
 
-		if(key != -1) mc.sndManager.playSoundFX("random.click", 1.0F, 1.0F);
+		if (key != -1) mc.sndManager.playSoundFX("random.click", 1.0F, 1.0F);
 		return false;
 	}
 

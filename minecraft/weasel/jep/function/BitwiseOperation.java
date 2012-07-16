@@ -43,7 +43,7 @@ public class BitwiseOperation extends PostfixMathCommand {
 			if (obj instanceof Number) {
 				num = (int) Math.round(((Number) obj).doubleValue());
 			} else if (obj instanceof Boolean) {
-				inStack.push(!(Boolean)obj);
+				inStack.push(!(Boolean) obj);
 				return;
 			} else {
 				throw new ParseException("NOT not defined for " + obj.getClass().getSimpleName());
@@ -60,12 +60,12 @@ public class BitwiseOperation extends PostfixMathCommand {
 			Object param1 = inStack.pop();
 
 			if ((param1 instanceof Number || param1 instanceof Boolean) && (param2 instanceof Number || param2 instanceof Boolean)) {
-				double first=0;
-				if(param1 instanceof Number) first = ((Number) param1).doubleValue();
-				if(param1 instanceof Boolean) first = (Boolean) param1?1:0;
-				double second=0;
-				if(param1 instanceof Number) second = ((Number) param2).doubleValue();
-				if(param1 instanceof Boolean) second = (Boolean) param2?1:0;
+				double first = 0;
+				if (param1 instanceof Number) first = ((Number) param1).doubleValue();
+				if (param1 instanceof Boolean) first = (Boolean) param1 ? 1 : 0;
+				double second = 0;
+				if (param1 instanceof Number) second = ((Number) param2).doubleValue();
+				if (param1 instanceof Boolean) second = (Boolean) param2 ? 1 : 0;
 
 				int a = (int) Math.round(first);
 				int b = (int) Math.round(second);

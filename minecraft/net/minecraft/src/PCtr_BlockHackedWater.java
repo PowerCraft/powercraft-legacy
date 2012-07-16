@@ -1,13 +1,13 @@
 package net.minecraft.src;
 
+
 //import java.util.HashSet;
 
 /**
- * Hacked water which works like conveyor and stores items into chests and other inv blocks.
- * This is the stationary water, moving is unchanged.
+ * Hacked water which works like conveyor and stores items into chests and other
+ * inv blocks. This is the stationary water, moving is unchanged.
  * 
  * @author MightyPork
- *
  */
 public class PCtr_BlockHackedWater extends BlockStationary {
 
@@ -85,32 +85,32 @@ public class PCtr_BlockHackedWater extends BlockStationary {
 	public PCtr_BlockHackedWater(int par1, Material par2Material) {
 		super(par1, par2Material);
 	}
-	
+
 	@Override
 	public void onEntityCollidedWithBlock(World world, int i, int j, int k, Entity entity) {
 		super.onEntityCollidedWithBlock(world, i, j, k, entity);
-		
-		if(entity.stepHeight < 0.25F) entity.stepHeight = 0.25F;
-		
-		if(entity instanceof EntityItem) {
-			if(entity.rand.nextFloat() < 0.8F &&  ((EntityItem) entity).age%20 == 0 && world.getBlockMetadata(i, j, k) != 0) {
-				PCtr_BeltBase.storeAllSides(world, new PC_CoordI(i,j,k), (EntityItem) entity);
-				PCtr_BeltBase.packItems(world, new PC_CoordI(i,j,k));
+
+		if (entity.stepHeight < 0.25F) entity.stepHeight = 0.25F;
+
+		if (entity instanceof EntityItem) {
+			if (entity.rand.nextFloat() < 0.8F && ((EntityItem) entity).age % 20 == 0 && world.getBlockMetadata(i, j, k) != 0) {
+				PCtr_BeltBase.storeAllSides(world, new PC_CoordI(i, j, k), (EntityItem) entity);
+				PCtr_BeltBase.packItems(world, new PC_CoordI(i, j, k));
 			}
-			
-			
-			
+
+
+
 //			ItemStack stack = ((EntityItem)entity).item;
 //			int id = stack.itemID;
-			if(entity.motionY < 0) {
-				entity.motionY *= 0.6F;	
+			if (entity.motionY < 0) {
+				entity.motionY *= 0.6F;
 //				if(floating.contains(id)) {
 //					if(entity.inWater && !entity.onGround && entity.rand.nextFloat() < 0.8F)
 //					entity.motionY += 0.039999999105930328D;
 //				}
 			}
-			
-			
+
+
 		}
 	}
 

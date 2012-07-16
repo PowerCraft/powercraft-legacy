@@ -9,7 +9,8 @@ package net.minecraft.src;
  */
 public class PClo_ModelRadio extends ModelBase {
 
-	private ModelRenderer parts[];
+	private ModelRenderer parts[], tinyp[];
+	public boolean tiny;
 
 	/**
 	 * Radio block model.
@@ -20,6 +21,22 @@ public class PClo_ModelRadio extends ModelBase {
 		textureHeight = 34;
 
 		parts = new ModelRenderer[9];
+
+		tinyp = new ModelRenderer[5];
+		tinyp[0] = new ModelRenderer(this, 22, 28);
+		tinyp[0].addBox(-2.5F, -1F, -2.5F, 5, 1, 5, 0.0F);
+
+		tinyp[1] = new ModelRenderer(this, 22, 21);
+		tinyp[1].addBox(-0.5F, -4F, -0.5F, 1, 3, 1, 0.0F);
+
+		tinyp[2] = new ModelRenderer(this, 22, 28);
+		tinyp[2].addBox(-0.5F, -4F, -0.5F, 1, 3, 1, 0.0F);
+
+		tinyp[3] = new ModelRenderer(this, 27, 21);
+		tinyp[3].addBox(-1F, -4.1F, -1F, 2, 2, 2, 0.0F);
+
+		tinyp[4] = new ModelRenderer(this, 36, 21);
+		tinyp[4].addBox(-1F, -4.1F, -1F, 2, 2, 2, 0.0F);
 
 		// base
 		parts[0] = new ModelRenderer(this, 0, 0);
@@ -56,6 +73,7 @@ public class PClo_ModelRadio extends ModelBase {
 		parts[8].addBox(-0.5F, -13F, -0.5F, 1, 3, 1, 0.0F);
 
 
+
 	}
 
 	/**
@@ -69,19 +87,31 @@ public class PClo_ModelRadio extends ModelBase {
 		parts[3].showModel = parts[4].showModel = parts[5].showModel = transmitter;
 		parts[1].showModel = on;
 		parts[2].showModel = !on;
+
+		tinyp[1].showModel = transmitter;
+		tinyp[2].showModel = !transmitter;
+		tinyp[3].showModel = on;
+		tinyp[4].showModel = !on;
 	}
 
 	/**
 	 * Do render.
 	 */
 	public void render() {
-		for (ModelRenderer part : parts) {
-			if (part == null) {
-				break;
+		if (!tiny) {
+			for (ModelRenderer part : parts) {
+				if (part == null) {
+					break;
+				}
+				part.render(0.0625F); // length of one size and position unit
 			}
-
-			part.render(0.0625F); // length of one size and position unit
-
+		} else {
+			for (ModelRenderer part : tinyp) {
+				if (part == null) {
+					break;
+				}
+				part.render(0.0625F); // length of one size and position unit
+			}
 		}
 	}
 }

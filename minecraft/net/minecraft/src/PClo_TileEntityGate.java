@@ -190,7 +190,7 @@ public class PClo_TileEntityGate extends PC_TileEntity {
 				stopSpawning_stopPulsar(worldObj.getBlockTileEntity(xCoord, yCoord - 1, zCoord), active);
 				break;
 
-			case PClo_GateType.OBSOLETE_UNUSED:
+			case PClo_GateType.SPLITTER_I:
 
 		}
 
@@ -251,7 +251,7 @@ public class PClo_TileEntityGate extends PC_TileEntity {
 
 		}
 
-		if (gateType == PClo_GateType.OBSOLETE_UNUSED) {
+		if (gateType == PClo_GateType.SPLITTER_I) {
 
 		}
 
@@ -297,8 +297,8 @@ public class PClo_TileEntityGate extends PC_TileEntity {
 
 		maintag.setInteger("inputVariant", inputVariant);
 
-		if (gateType == PClo_GateType.OBSOLETE_UNUSED) {
-			
+		if (gateType == PClo_GateType.SPLITTER_I) {
+
 		}
 
 		if (gateType == PClo_GateType.HOLD_DELAYER) {
@@ -450,7 +450,6 @@ public class PClo_TileEntityGate extends PC_TileEntity {
 
 
 
-
 	/*
 	 * 
 	 * FIFO REPEATER
@@ -526,8 +525,6 @@ public class PClo_TileEntityGate extends PC_TileEntity {
 
 
 
-
-
 	/*
 	 * 
 	 * HOLD REPEATER
@@ -593,6 +590,9 @@ public class PClo_TileEntityGate extends PC_TileEntity {
 	 * State of inputs last time the CROSSING GATE was updated.
 	 */
 	public boolean[] crossingGateInputStates = { false, false, false, false };
+	
+	/** last output state of instagate, to prevent unneeded notifications */
+	public boolean instagate_last_input = false;
 
 
 	/**
@@ -652,7 +652,7 @@ public class PClo_TileEntityGate extends PC_TileEntity {
 	 * 
 	 * @return input variant index
 	 */
-	public int getInputsVariant() {
+	public int getLayoutVariant() {
 		return inputVariant;
 	}
 

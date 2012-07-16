@@ -5,7 +5,7 @@ import net.minecraft.src.PC_GresWidget.PC_GresAlign;
 
 
 /**
- * Gui where user decides what laser type he wants. They share the same item.
+ * Gui where user decides what teleporter type he wants.
  * 
  * @author MightyPork
  * @copy (c) 2012
@@ -15,6 +15,9 @@ public class PCtr_GuiTeleporterDecide implements PC_IGresBase {
 
 	private PCtr_TileEntityTeleporter teleporter;
 
+	/**
+	 * @param te telep. TE
+	 */
 	public PCtr_GuiTeleporterDecide(PCtr_TileEntityTeleporter te) {
 		teleporter = te;
 	}
@@ -54,10 +57,10 @@ public class PCtr_GuiTeleporterDecide implements PC_IGresBase {
 	public void actionPerformed(PC_GresWidget widget, PC_IGresGui gui) {
 
 		if (widget.getId() == 0) {
-			teleporter.setSender();
+			teleporter.setIsSender();
 
 		} else if (widget.getId() == 1) {
-			teleporter.setReceiver();
+			teleporter.setIsReceiver();
 
 		}
 

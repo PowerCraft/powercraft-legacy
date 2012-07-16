@@ -107,8 +107,11 @@ public class PClo_ModelWeasel extends ModelBase {
 
 	}
 
+	/** index of then plugin */
 	public int deviceType = PClo_WeaselType.CORE;
+	/** helper flag, eg. "active" */
 	public boolean flag1 = false;
+	/** instance of the plugin */
 	public PClo_WeaselPlugin plugin;
 
 	/**
@@ -135,7 +138,7 @@ public class PClo_ModelWeasel extends ModelBase {
 			PC_Color bgc = PC_Color.fromHex(bg);
 			GL11.glColor4d(bgc.r, bgc.g, bgc.b, 1.0F);
 			display[3].render(0.0625F);
-			GL11.glColor4d(1,1,1,1);
+			GL11.glColor4d(1, 1, 1, 1);
 		} else if (deviceType == PClo_WeaselType.SPEAKER) {
 			sound[0].render(0.0625F);
 			sound[1].render(0.0625F);
@@ -167,6 +170,11 @@ public class PClo_ModelWeasel extends ModelBase {
 
 	}
 
+	/**
+	 * Render the text if there is any
+	 * 
+	 * @param renderer
+	 */
 	public void renderText(PClo_TileEntityWeaselRenderer renderer) {
 		if (deviceType == PClo_WeaselType.DISPLAY) {
 
@@ -175,7 +183,7 @@ public class PClo_ModelWeasel extends ModelBase {
 			GL11.glDisable(GL11.GL_LIGHTING);
 			//GL11.glEnable(GL11.GL_BLEND);
 			GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-			FontRenderer fontrenderer = PC_Utils.mc().fontRenderer;
+			FontRenderer fontrenderer = mod_PCcore.fontRendererDefault; //PC_Utils.mc().fontRenderer;
 			float f3 = 0.01666667F * f;
 
 			GL11.glTranslatef(0.0F, 0.0625F * 15, 0.0625F + 0.001F);
@@ -187,38 +195,6 @@ public class PClo_ModelWeasel extends ModelBase {
 			GL11.glNormal3f(0.0F, 0.0F, -1F * f3);
 
 			int j = ((PClo_WeaselPluginDisplay) plugin).color;
-
-			
-//			
-//			/**
-//			 * This terrible piece of code was adjusted manually, and it is
-//			 * miracle it works. NO NOT TOUCH!
-//			 */
-//			int bg = ((PClo_WeaselPluginDisplay) plugin).bgcolor;
-//			PC_Color bgc = PC_Color.fromHex(bg);
-//			renderer.bindTextureByName(mod_PClogic.getImgDir() + "block_chip.png");
-//			float ff = 0.001388F;
-//			float f1 = 0.001388F;
-//			double x1 = -39.5;
-//			double y1 = 0;
-//			double w = 14 * 5.63;
-//			double h = 12 * 5.63;
-//			double zlevel = -0.0005;
-//			double u = 202.6;
-//			double v = 225.16;
-//			GL11.glEnable(GL11.GL_DEPTH_TEST);
-//			GL11.glColor4d(bgc.r, bgc.g, bgc.b, 1.0F);
-//			Tessellator tessellator = Tessellator.instance;
-//			tessellator.startDrawingQuads();
-//			tessellator.addVertexWithUV(x1 + 0, y1 + h, zlevel, (float) (u + 0) * ff, (float) (v + h) * f1);
-//			tessellator.addVertexWithUV(x1 + w, y1 + h, zlevel, (float) (u + w) * ff, (float) (v + h) * f1);
-//			tessellator.addVertexWithUV(x1 + w, y1 + 0, zlevel, (float) (u + w) * ff, (float) (v + 0) * f1);
-//			tessellator.addVertexWithUV(x1 + 0, y1 + 0, zlevel, (float) (u + 0) * ff, (float) (v + 0) * f1);
-//			tessellator.draw();
-			
-			
-			
-
 
 
 			String s = ((PClo_WeaselPluginDisplay) plugin).text;

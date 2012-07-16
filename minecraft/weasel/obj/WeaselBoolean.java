@@ -1,8 +1,8 @@
 package weasel.obj;
 
 
-import weasel.Calc;
 import net.minecraft.src.NBTTagCompound;
+import weasel.Calc;
 
 
 /**
@@ -48,7 +48,7 @@ public class WeaselBoolean extends WeaselObject {
 
 	@Override
 	public void set(Object obj) {
-		this.bool = Calc.toBoolean(obj);	
+		this.bool = Calc.toBoolean(obj);
 	}
 
 	@Override

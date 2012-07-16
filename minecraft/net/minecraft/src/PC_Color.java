@@ -80,7 +80,7 @@ public class PC_Color implements PC_INBT {
 		magicColors.put("[#e]", "§e");
 		magicColors.put("[#f]", "§f");
 	}
-	
+
 
 	private static HashMap<String, Integer> namedColors = new HashMap<String, Integer>();
 
@@ -134,16 +134,17 @@ public class PC_Color implements PC_INBT {
 		}
 		return null;
 	}
-	
+
 	/**
 	 * Convert color and formatting tags in input string to chat color codes.
+	 * 
 	 * @param input string to convert
 	 * @return converted input
 	 */
 	public static String convertMagicColors(String input) {
 		input = input.replaceAll("\\[/.*?\\]", "§r");
 		input = input.replaceAll("</.*?>", "§r");
-		for(Entry<String,String> entry: magicColors.entrySet()) {
+		for (Entry<String, String> entry : magicColors.entrySet()) {
 			input = input.replace(entry.getKey(), entry.getValue());
 			input = input.replace(entry.getKey().replace('[', '<').replace(']', '>'), entry.getValue());
 		}
@@ -464,8 +465,9 @@ public class PC_Color implements PC_INBT {
 
 	/**
 	 * make color from hex
+	 * 
 	 * @param hex
-	 * @return
+	 * @return color made of the given hex
 	 */
 	public static PC_Color fromHex(int hex) {
 		return new PC_Color().setTo(hex);

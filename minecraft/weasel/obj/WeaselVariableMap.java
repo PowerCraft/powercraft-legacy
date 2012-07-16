@@ -57,7 +57,7 @@ public class WeaselVariableMap extends WeaselObject implements IVariableProvider
 
 		if (map.get(name) != null) {
 			map.get(name).set(value);
-		}else {
+		} else {
 			WeaselObject set = null;
 			if (value instanceof WeaselObject) {
 				set = (WeaselObject) value;
@@ -70,10 +70,10 @@ public class WeaselVariableMap extends WeaselObject implements IVariableProvider
 			} else {
 				throw new WeaselRuntimeException("Value " + value + " cannot be assigned to a variable.");
 			}
-			
+
 			map.put(name, set);
 		}
-		
+
 //		if (map.get(name) != null) {
 //			if (map.get(name).getType() != set.getType()) {
 //				throw new RuntimeException("VARMAP Set - trying to store " + set.getType() + " object into a " + map.get(name).getType() + " variable.");
@@ -86,7 +86,12 @@ public class WeaselVariableMap extends WeaselObject implements IVariableProvider
 	public WeaselObject getVariable(String name) {
 		return map.get(name);
 	}
-	
+
+	/**
+	 * Set variable contents, regardless of previous variable data type
+	 * @param name variable name
+	 * @param value value to set
+	 */
 	public void setVariableForce(String name, WeaselObject value) {
 		map.put(name, value);
 	}

@@ -17,6 +17,11 @@ import net.minecraft.src.forge.ITextureProvider;
 public class PClo_BlockLight extends BlockContainer implements PC_ISwapTerrain, PC_IBlockType, ITextureProvider {
 	private static boolean changingState = false;
 	private boolean on;
+//	
+//	@Override
+//	public int getMixedBrightnessForBlock(IBlockAccess par1iBlockAccess, int par2, int par3, int par4) {
+//		return 50*super.getMixedBrightnessForBlock(par1iBlockAccess, par2, par3, par4);
+//	}
 
 	/**
 	 * Light block
@@ -44,10 +49,18 @@ public class PClo_BlockLight extends BlockContainer implements PC_ISwapTerrain, 
 	public String getTextureFile() {
 		return getTerrainFile();
 	}
+	
+	@Override
+	public int getBlockTexture(IBlockAccess par1iBlockAccess, int par2, int par3, int par4, int par5) {
+		PClo_TileEntityLight te  = getTE(par1iBlockAccess, par2, par3, par4);
+		if(te == null) return super.getBlockTexture(par1iBlockAccess, par2, par3, par4, par5);
+		if(!te.isHuge) return 66;
+		return 117;
+	}
 
 	@Override
 	public int getRenderType() {
-		return PC_Renderer.swapTerrainRenderer;
+		return PClo_Renderer.lightRenderer;
 	}
 
 	@Override
@@ -67,41 +80,60 @@ public class PClo_BlockLight extends BlockContainer implements PC_ISwapTerrain, 
 
 	@Override
 	public boolean canPlaceBlockOnSide(World world, int i, int j, int k, int l) {
-		if (l == 0 && world.isBlockNormalCube(i, j + 1, k)) {
-			return true;
-		}
-		if (l == 1 && world.isBlockNormalCube(i, j - 1, k)) {
-			return true;
-		}
-		if (l == 2 && world.isBlockNormalCube(i, j, k + 1)) {
-			return true;
-		}
-		if (l == 3 && world.isBlockNormalCube(i, j, k - 1)) {
-			return true;
-		}
-		if (l == 4 && world.isBlockNormalCube(i + 1, j, k)) {
-			return true;
-		}
-		return l == 5 && world.isBlockNormalCube(i - 1, j, k);
+//		if (l == 0 && world.isBlockNormalCube(i, j + 1, k)) {
+//			return true;
+//		}
+//		if (l == 1 && world.isBlockNormalCube(i, j - 1, k)) {
+//			return true;
+//		}
+//		if (l == 2 && world.isBlockNormalCube(i, j, k + 1)) {
+//			return true;
+//		}
+//		if (l == 3 && world.isBlockNormalCube(i, j, k - 1)) {
+//			return true;
+//		}
+//		if (l == 4 && world.isBlockNormalCube(i + 1, j, k)) {
+//			return true;
+//		}
+//		return l == 5 && world.isBlockNormalCube(i - 1, j, k);
+
+		return true;
 	}
 
 	@Override
 	public void onBlockPlaced(World world, int i, int j, int k, int l) {
+//		int i1 = 0;
+//
+//		if (l == 1 && world.isBlockNormalCube(i, j - 1, k)) {
+//			i1 = 0;
+//		}
+//		if (l == 2 && world.isBlockNormalCube(i, j, k + 1)) {
+//			i1 = 1;
+//		} else if (l == 3 && world.isBlockNormalCube(i, j, k - 1)) {
+//			i1 = 2;
+//		} else if (l == 4 && world.isBlockNormalCube(i + 1, j, k)) {
+//			i1 = 3;
+//		} else if (l == 5 && world.isBlockNormalCube(i - 1, j, k)) {
+//			i1 = 4;
+//		}
+//		if (l == 0 && world.isBlockNormalCube(i, j + 1, k)) {
+//			i1 = 5;
+//		}
 		int i1 = 0;
 
-		if (l == 1 && world.isBlockNormalCube(i, j - 1, k)) {
+		if (l == 1) {
 			i1 = 0;
 		}
-		if (l == 2 && world.isBlockNormalCube(i, j, k + 1)) {
+		if (l == 2) {
 			i1 = 1;
-		} else if (l == 3 && world.isBlockNormalCube(i, j, k - 1)) {
+		} else if (l == 3) {
 			i1 = 2;
-		} else if (l == 4 && world.isBlockNormalCube(i + 1, j, k)) {
+		} else if (l == 4) {
 			i1 = 3;
-		} else if (l == 5 && world.isBlockNormalCube(i - 1, j, k)) {
+		} else if (l == 5) {
 			i1 = 4;
 		}
-		if (l == 0 && world.isBlockNormalCube(i, j + 1, k)) {
+		if (l == 0) {
 			i1 = 5;
 		}
 		world.setBlockMetadataWithNotify(i, j, k, i1);
@@ -115,22 +147,23 @@ public class PClo_BlockLight extends BlockContainer implements PC_ISwapTerrain, 
 
 	@Override
 	public boolean canPlaceBlockAt(World world, int i, int j, int k) {
-		if (world.isBlockNormalCube(i, j - 1, k)) {
-			return true;
-		}
-		if (world.isBlockNormalCube(i - 1, j, k)) {
-			return true;
-		}
-		if (world.isBlockNormalCube(i + 1, j, k)) {
-			return true;
-		}
-		if (world.isBlockNormalCube(i, j, k - 1)) {
-			return true;
-		}
-		if (world.isBlockNormalCube(i, j + 1, k)) {
-			return true;
-		}
-		return world.isBlockNormalCube(i, j, k + 1);
+//		if (world.isBlockNormalCube(i, j - 1, k)) {
+//			return true;
+//		}
+//		if (world.isBlockNormalCube(i - 1, j, k)) {
+//			return true;
+//		}
+//		if (world.isBlockNormalCube(i + 1, j, k)) {
+//			return true;
+//		}
+//		if (world.isBlockNormalCube(i, j, k - 1)) {
+//			return true;
+//		}
+//		if (world.isBlockNormalCube(i, j + 1, k)) {
+//			return true;
+//		}
+//		return world.isBlockNormalCube(i, j, k + 1);
+		return true;
 	}
 
 	private int[] meta2side = { 1, 2, 3, 4, 5, 0 };
@@ -254,7 +287,7 @@ public class PClo_BlockLight extends BlockContainer implements PC_ISwapTerrain, 
 			if (te != null) {
 				if (!PC_Utils.isCreative()) {
 					PClo_TileEntityLight teg = (PClo_TileEntityLight) te;
-					dropBlockAsItem_do(world, i, j, k, new ItemStack(mod_PClogic.lightOn, 1, teg.getColor() + (teg.isStable ? 16 : 0)));
+					dropBlockAsItem_do(world, i, j, k, new ItemStack(mod_PClogic.lightOn, 1, teg.getColor() + (teg.isStable ? 16 : 0) + (teg.isHuge ? 32 : 0)));
 				}
 			}
 		}
@@ -295,8 +328,10 @@ public class PClo_BlockLight extends BlockContainer implements PC_ISwapTerrain, 
 	public void setBlockBoundsBasedOnState(IBlockAccess iblockaccess, int i, int j, int k) {
 		int i1 = iblockaccess.getBlockMetadata(i, j, k);
 
-		float sidehalf = 0.1875F;
-		float height = 0.125F;
+		PClo_TileEntityLight te = getTE(iblockaccess, i, j, k);
+		
+		float sidehalf = te.isHuge?0.5F-0.0625F:0.1875F;
+		float height = te.isHuge?0.0625F*3:0.0625F*2;
 
 		if (i1 == 0) // y-1
 		{
@@ -335,7 +370,11 @@ public class PClo_BlockLight extends BlockContainer implements PC_ISwapTerrain, 
 	@Override
 	public int getRenderColor(int i) // item
 	{
-		return PClo_TileEntityLight.getHexColor(i % 16, true);
+		try {
+			return PC_Color.light_colors[i % 16];
+		}catch(ArrayIndexOutOfBoundsException e) {
+			return 0xf0f0f0;
+		}
 	}
 
 	@Override
@@ -377,7 +416,8 @@ public class PClo_BlockLight extends BlockContainer implements PC_ISwapTerrain, 
 		}
 
 		try {
-			if (getTE(world, i, j, k).isStable && world.rand.nextInt(4) != 0) return;
+			if (getTE(world, i, j, k).isHuge) return;
+			if (getTE(world, i, j, k).isStable && world.rand.nextInt(3) != 0) return;
 		} catch (NullPointerException e) {}
 
 		int l = world.getBlockMetadata(i, j, k);

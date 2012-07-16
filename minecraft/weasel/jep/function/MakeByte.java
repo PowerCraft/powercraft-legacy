@@ -72,7 +72,7 @@ public class MakeByte extends PostfixMathCommand {
 			boolean bit = Calc.toBoolean(param);
 
 			// add it to the sum (order is important for String arguments)
-			if (bit) sum = (int)Math.round(addFun.add(pow(i), sum));
+			if (bit) sum = (int) Math.round(addFun.add(pow(i), sum));
 
 			i++;
 		}

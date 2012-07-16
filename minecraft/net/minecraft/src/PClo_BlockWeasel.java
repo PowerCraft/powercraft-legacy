@@ -149,7 +149,7 @@ public class PClo_BlockWeasel extends BlockContainer implements PC_ISwapTerrain,
 
 	@Override
 	public boolean shouldSideBeRendered(IBlockAccess iblockaccess, int x, int y, int z, int side) {
-		return side != 1;
+		return false;
 	}
 
 	@Override
@@ -202,7 +202,6 @@ public class PClo_BlockWeasel extends BlockContainer implements PC_ISwapTerrain,
 			if (plugin != null) {
 				plugin.onBlockRemoval();
 
-
 				if (!PC_Utils.isCreative()) {
 					dropBlockAsItem_do(world, x, y, z, new ItemStack(mod_PClogic.weaselDevice, 1, tew.getType()));
 				}
@@ -251,6 +250,11 @@ public class PClo_BlockWeasel extends BlockContainer implements PC_ISwapTerrain,
 	@Override
 	public void setBlockBoundsBasedOnState(IBlockAccess iblockaccess, int x, int y, int z) {
 		setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 0.5F, 1.0F);
+		PClo_WeaselPlugin plugin = getPlugin(iblockaccess, x, y, z);
+		if(plugin != null) {
+			float[] bounds = plugin.getBounds();
+			setBlockBounds(bounds[0], bounds[1], bounds[2], bounds[3], bounds[4], bounds[5]);
+		}
 	}
 
 	@Override
@@ -258,8 +262,12 @@ public class PClo_BlockWeasel extends BlockContainer implements PC_ISwapTerrain,
 		setBlockBoundsBasedOnState(world, x, y, z);
 		return super.getCollisionBoundingBoxFromPool(world, x, y, z);
 	}
-
-
+	
+	@Override
+	public AxisAlignedBB getSelectedBoundingBoxFromPool(World world, int x, int y, int z) {
+		setBlockBoundsBasedOnState(world, x, y, z);
+		return super.getSelectedBoundingBoxFromPool(world, x, y, z);
+	}
 
 	@Override
 	public void onNeighborBlockChange(World world, int x, int y, int z, int l) {
@@ -284,12 +292,12 @@ public class PClo_BlockWeasel extends BlockContainer implements PC_ISwapTerrain,
 
 		PClo_TileEntityWeasel tew = getTE(iblockaccess, x, y, z);
 
-		if(tew == null) return false;
-		
+		if (tew == null) return false;
+
 		PClo_WeaselPlugin plugin = tew.getPlugin();
 
-		if(plugin == null) return false;
-		
+		if (plugin == null) return false;
+
 		boolean[] outputs = plugin.getWeaselOutputStates();
 
 		for (int i = 0; i < rotation; i++) {
@@ -365,7 +373,7 @@ public class PClo_BlockWeasel extends BlockContainer implements PC_ISwapTerrain,
 	 * @return is powered
 	 */
 	public static boolean powered_from_input(World world, PC_CoordI pos, int inp) {
-        if(world == null) return false;
+		if (world == null) return false;
 		int x = pos.x, y = pos.y, z = pos.z;
 
 		if (inp == 4) {
@@ -434,12 +442,10 @@ public class PClo_BlockWeasel extends BlockContainer implements PC_ISwapTerrain,
 		}
 
 		world.setBlockMetadataWithNotify(x, y, z, l);
-		
+
 		PClo_WeaselPlugin plugin = getPlugin(world, x, y, z);
-		if(plugin!=null) {
-			if(plugin instanceof PClo_WeaselPluginDisplay) {
-				((PClo_WeaselPluginDisplay)plugin).rotation = MathHelper.floor_double(((entityliving.rotationYaw + 180F) * 16F) / 360F + 0.5D) & 0xf;
-			}
+		if (plugin != null) {
+			plugin.onBlockPlaced(entityliving);
 		}
 
 	}
@@ -457,7 +463,7 @@ public class PClo_BlockWeasel extends BlockContainer implements PC_ISwapTerrain,
 	 * @param pos
 	 */
 	public static void hugeUpdate(World world, PC_CoordI pos) {
-		if(world == null) return;
+		if (world == null) return;
 		int x = pos.x, y = pos.y, z = pos.z, id = mod_PClogic.weaselDevice.blockID;
 		world.notifyBlocksOfNeighborChange(x, y, z, id);
 		world.notifyBlocksOfNeighborChange(x + 1, y, z, id);
@@ -475,17 +481,17 @@ public class PClo_BlockWeasel extends BlockContainer implements PC_ISwapTerrain,
 
 	@Override
 	public void randomDisplayTick(World world, int x, int y, int z, Random random) {
-
 		PClo_WeaselPlugin plugin = getPlugin(world, x, y, z);
 
-		if (plugin != null && plugin.hasError()) {
-
-			double d = (x + 0.5F) + (random.nextFloat() - 0.5F) * 0.20000000000000001D;
-			double d1 = (y + 0.5F) + (random.nextFloat() - 0.5F) * 0.20000000000000001D;
-			double d2 = (z + 0.5F) + (random.nextFloat() - 0.5F) * 0.20000000000000001D;
-
-			world.spawnParticle("largesmoke", d, d1, d2, 0.0D, 0.0D, 0.0D);
-
+		if (plugin != null) {
+			plugin.onRandomDisplayTick(random);
+			if(plugin.hasError()) {
+				double d = (x + 0.5F) + (random.nextFloat() - 0.5F) * 0.20000000000000001D;
+				double d1 = (y + 0.5F) + (random.nextFloat() - 0.5F) * 0.20000000000000001D;
+				double d2 = (z + 0.5F) + (random.nextFloat() - 0.5F) * 0.20000000000000001D;
+	
+				world.spawnParticle("largesmoke", d, d1, d2, 0.0D, 0.0D, 0.0D);
+			}
 		}
 	}
 
@@ -545,29 +551,8 @@ public class PClo_BlockWeasel extends BlockContainer implements PC_ISwapTerrain,
 			}
 		}
 
-		int type = getType(world, x, y, z);
 		PClo_WeaselPlugin plugin = getPlugin(world, x, y, z);
-		if (plugin == null) return true;
-
-		if (type == PClo_WeaselType.CORE) {
-			PC_Utils.openGres(player, new PClo_GuiWeaselCoreProgram((PClo_WeaselPluginCore) plugin));
-			return true;
-		}
-
-		if (type == PClo_WeaselType.PORT) {
-			PC_Utils.openGres(player, new PClo_GuiWeaselPort((PClo_WeaselPluginPort) plugin));
-			return true;
-		}
-
-		if (type == PClo_WeaselType.DISPLAY) {
-			PC_Utils.openGres(player, new PClo_GuiWeaselDisplay((PClo_WeaselPluginDisplay) plugin));
-			return true;
-		}
-
-		if (type == PClo_WeaselType.SPEAKER) {
-			PC_Utils.openGres(player, new PClo_GuiWeaselSpeaker((PClo_WeaselPluginSpeaker) plugin));
-			return true;
-		}
+		if (plugin != null) return plugin.onClick(player);
 		
 		return false;
 	}
@@ -582,9 +567,7 @@ public class PClo_BlockWeasel extends BlockContainer implements PC_ISwapTerrain,
 		set.add("REDSTONE");
 		set.add("LOGIC");
 		set.add("WEASEL");
-		PClo_WeaselPlugin plugin = getPlugin(world, pos.x, pos.y, pos.z);
-		if(plugin != null) set.add(PClo_WeaselType.names[plugin.getType()]);
-		
+
 
 		return set;
 	}

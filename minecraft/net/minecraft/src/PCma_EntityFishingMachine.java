@@ -401,7 +401,6 @@ public class PCma_EntityFishingMachine extends Entity {
 
 
 
-
 	// === UPDATE TICK ===
 
 	@Override

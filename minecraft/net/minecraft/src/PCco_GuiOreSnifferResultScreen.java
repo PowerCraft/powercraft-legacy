@@ -36,6 +36,7 @@ public class PCco_GuiOreSnifferResultScreen implements PC_IGresBase {
 
 	/**
 	 * @param player the player
+	 * @param world the world
 	 * @param startBlock starting block (start of sniffing)
 	 * @param vector (sniffing direction)
 	 */
@@ -153,7 +154,7 @@ public class PCco_GuiOreSnifferResultScreen implements PC_IGresBase {
 
 		vg.add(slider = new PC_GresProgressBar(0x9900ff, 150));
 
-		slider.configureLabel("", ""+(range-1), range-1);
+		slider.configureLabel("", "" + (range - 1), range - 1);
 		slider.setLabelOffset(1);
 		slider.setFraction(0);
 		slider.setEditable(true);

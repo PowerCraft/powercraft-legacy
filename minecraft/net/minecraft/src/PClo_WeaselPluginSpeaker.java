@@ -3,6 +3,7 @@ package net.minecraft.src;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 import weasel.WeaselEngine;
 import weasel.exception.WeaselRuntimeException;
@@ -25,6 +26,12 @@ public class PClo_WeaselPluginSpeaker extends PClo_WeaselPlugin {
 	@Override
 	public int getType() {
 		return PClo_WeaselType.SPEAKER;
+	}
+	
+	@Override
+	public boolean onClick(EntityPlayer player) {
+		PC_Utils.openGres(player, new PClo_GuiWeaselSpeaker(this));
+		return true;
 	}
 
 	@Override
@@ -64,10 +71,10 @@ public class PClo_WeaselPluginSpeaker extends PClo_WeaselPlugin {
 	@Override
 	public WeaselObject callProvidedFunction(WeaselEngine engine, String functionName, WeaselObject[] args) {
 
-		if(!functionName.startsWith(getName()+".")) return null;
-		
-		functionName = functionName.substring((getName()+".").length());
-		
+		if (!functionName.startsWith(getName() + ".")) return null;
+
+		functionName = functionName.substring((getName() + ".").length());
+
 		do {
 			float volume = 1.0F;
 
@@ -91,37 +98,37 @@ public class PClo_WeaselPluginSpeaker extends PClo_WeaselPlugin {
 				if (args.length != 3) volume = 3;
 				return playNote(((String) args[0].get()), ((Integer) args[1].get()), volume);
 			}
-			
+
 			// instr(tone [, volume])
 			if (functionName.equals("snare") || functionName.equals("snaredrum") || functionName.equals("sd")) {
 				if (args.length != 2) volume = 3;
 				return playNote("snaredrum", ((Integer) args[0].get()), volume);
 			}
-			
+
 			// instr(tone [, volume])
 			if (functionName.equals("bass") || functionName.equals("bassdrum") || functionName.equals("drum") || functionName.equals("bs")) {
 				if (args.length != 2) volume = 3;
 				return playNote("bassdrum", ((Integer) args[0].get()), volume);
 			}
-			
+
 			// instr(tone [, volume])
 			if (functionName.equals("guitar") || functionName.equals("bassguitar") || functionName.equals("bg")) {
 				if (args.length != 2) volume = 3;
 				return playNote("bassguitar", ((Integer) args[0].get()), volume);
 			}
-			
+
 			// instr(tone [, volume])
 			if (functionName.equals("sticks") || functionName.equals("stick") || functionName.equals("clicks") || functionName.equals("click") || functionName.equals("st") || functionName.equals("cl")) {
 				if (args.length != 2) volume = 3;
 				return playNote("sticks", ((Integer) args[0].get()), volume);
 			}
-			
+
 			// instr(tone [, volume])
-			if (functionName.equals("piano") || functionName.equals("harp")||functionName.equals("p")||functionName.equals("pn")) {
+			if (functionName.equals("piano") || functionName.equals("harp") || functionName.equals("p") || functionName.equals("pn")) {
 				if (args.length != 2) volume = 3;
 				return playNote("harp", ((Integer) args[0].get()), volume);
 			}
-			
+
 			// instr(tone [, volume])
 			if ((functionName.equals("bell") || functionName.equals("orb"))) {
 				if (args.length != 2) volume = 3;
@@ -159,7 +166,7 @@ public class PClo_WeaselPluginSpeaker extends PClo_WeaselPlugin {
 				break;
 			}
 
-			throw new WeaselRuntimeException("Invalid function called on speaker "+getName());
+			throw new WeaselRuntimeException("Invalid function called on speaker " + getName());
 
 		} while (false);
 
@@ -195,45 +202,44 @@ public class PClo_WeaselPluginSpeaker extends PClo_WeaselPlugin {
 	}
 
 	@Override
-	public void setVariable(String name, Object object) {
-	}
+	public void setVariable(String name, Object object) {}
 
 	@Override
 	public List<String> getProvidedFunctionNames() {
 		List<String> list = new ArrayList<String>(0);
-		
-		list.add(getName()+".oink");
-		list.add(getName()+".moo");
-		list.add(getName()+".baa");
-		list.add(getName()+".cluck");
-		list.add(getName()+".woof");
-		
-		list.add(getName()+".sound");
-		list.add(getName()+".note");
-		list.add(getName()+".play");
-		
-		list.add(getName()+".piano");
-		list.add(getName()+".p");
-		list.add(getName()+".pn");
-		list.add(getName()+".harp");		
-		list.add(getName()+".sticks");	
-		list.add(getName()+".st");
-		list.add(getName()+".stick");
-		list.add(getName()+".cl");
-		list.add(getName()+".clicks");
-		list.add(getName()+".click");
-		list.add(getName()+".snare");
-		list.add(getName()+".snaredrum");
-		list.add(getName()+".sd");
-		list.add(getName()+".drum");
-		list.add(getName()+".bassdrum");
-		list.add(getName()+".bd");
-		list.add(getName()+".guitar");
-		list.add(getName()+".bassguitar");
-		list.add(getName()+".bg");
-		list.add(getName()+".orb");
-		list.add(getName()+".bell");
-		
+
+		list.add(getName() + ".oink");
+		list.add(getName() + ".moo");
+		list.add(getName() + ".baa");
+		list.add(getName() + ".cluck");
+		list.add(getName() + ".woof");
+
+		list.add(getName() + ".sound");
+		list.add(getName() + ".note");
+		list.add(getName() + ".play");
+
+		list.add(getName() + ".piano");
+		list.add(getName() + ".p");
+		list.add(getName() + ".pn");
+		list.add(getName() + ".harp");
+		list.add(getName() + ".sticks");
+		list.add(getName() + ".st");
+		list.add(getName() + ".stick");
+		list.add(getName() + ".cl");
+		list.add(getName() + ".clicks");
+		list.add(getName() + ".click");
+		list.add(getName() + ".snare");
+		list.add(getName() + ".snaredrum");
+		list.add(getName() + ".sd");
+		list.add(getName() + ".drum");
+		list.add(getName() + ".bassdrum");
+		list.add(getName() + ".bd");
+		list.add(getName() + ".guitar");
+		list.add(getName() + ".bassguitar");
+		list.add(getName() + ".bg");
+		list.add(getName() + ".orb");
+		list.add(getName() + ".bell");
+
 		return list;
 	}
 
@@ -263,5 +269,16 @@ public class PClo_WeaselPluginSpeaker extends PClo_WeaselPlugin {
 
 	@Override
 	public void restartDevice() {}
+
+	@Override
+	public void onBlockPlaced(EntityLiving entityliving) {}
+
+	@Override
+	public void onRandomDisplayTick(Random random) {}
+	
+	@Override
+	public float[] getBounds() {
+		return new float[] {0,0,0,1,1,1};
+	}
 
 }

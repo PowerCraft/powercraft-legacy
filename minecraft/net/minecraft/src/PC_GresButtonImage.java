@@ -1,5 +1,6 @@
 package net.minecraft.src;
 
+
 import org.lwjgl.opengl.GL11;
 
 
@@ -26,17 +27,17 @@ public class PC_GresButtonImage extends PC_GresButton {
 		canAddWidget = false;
 		minSize.setTo(imageSize);
 		this.texture = imageFile;
-		buttonScale = new PC_CoordI(4,4);
+		buttonScale = new PC_CoordI(4, 4);
 		this.textureLeftTop = leftTop;
 		this.imageSize = imageSize;
 	}
-	
+
 	@Override
 	public PC_CoordI calcSize() {
 
-		if (buttonScale == null) buttonScale = new PC_CoordI(4, 4);		
-		if(size == null) size = new PC_CoordI();
-		if(imageSize == null) imageSize = new PC_CoordI();
+		if (buttonScale == null) buttonScale = new PC_CoordI(4, 4);
+		if (size == null) size = new PC_CoordI();
+		if (imageSize == null) imageSize = new PC_CoordI();
 
 		size.setTo(imageSize).add(buttonScale).add(buttonScale);
 
@@ -72,10 +73,10 @@ public class PC_GresButtonImage extends PC_GresButton {
 		GL11.glEnable(GL11.GL_BLEND);
 		GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
 
-		drawTexturedModalRect(pos.x + offsetPos.x + (size.x - imageSize.x)/2, pos.y + offsetPos.y + (size.y - imageSize.y)/2, textureLeftTop.x, textureLeftTop.y, imageSize.x, imageSize.y);
+		drawTexturedModalRect(pos.x + offsetPos.x + (size.x - imageSize.x) / 2, pos.y + offsetPos.y + (size.y - imageSize.y) / 2, textureLeftTop.x, textureLeftTop.y, imageSize.x, imageSize.y);
 
 		GL11.glDisable(GL11.GL_BLEND);
-		
+
 	}
 
 }

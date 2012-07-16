@@ -81,7 +81,7 @@ public class PClo_ItemBlockWeasel extends ItemBlock {
 				}
 				teg.setType(itemstack.getItemDamage());
 				world.setBlockTileEntity(i, j, k, teg);
-				
+
 				block.onBlockPlaced(world, i, j, k, l);
 				block.onBlockPlacedBy(world, i, j, k, entityplayer);
 

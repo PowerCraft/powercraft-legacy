@@ -143,11 +143,12 @@ public class InstructionList implements PC_INBT {
 		if (!labelMapGenerated) generateLabelMap();
 		movePointerTo(labelMap.get(labelName));
 	}
-	
+
 	/**
 	 * Check if function called from external caller does exist
+	 * 
 	 * @param functionName
-	 * @return
+	 * @return can call this function externally
 	 */
 	public boolean canCallFunctionExternal(String functionName) {
 		if (!functionMapGenerated) generateFunctionMap();
@@ -332,7 +333,6 @@ public class InstructionList implements PC_INBT {
 	public void movePointer(int change) {
 		programCounter += change;
 	}
-
 
 
 

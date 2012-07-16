@@ -42,7 +42,6 @@ import weasel.jep.function.Imaginary;
 import weasel.jep.function.Logarithm;
 import weasel.jep.function.LogicalFn;
 import weasel.jep.function.LogicalFn.LogicalFnType;
-import weasel.jep.function.StrFormat.EnumType;
 import weasel.jep.function.MakeBit;
 import weasel.jep.function.MakeByte;
 import weasel.jep.function.Max;
@@ -50,7 +49,6 @@ import weasel.jep.function.Mean;
 import weasel.jep.function.Min;
 import weasel.jep.function.Modulus;
 import weasel.jep.function.NaturalLogarithm;
-import weasel.jep.function.Not;
 import weasel.jep.function.Num;
 import weasel.jep.function.Polar;
 import weasel.jep.function.PostfixMathCommandI;
@@ -63,6 +61,7 @@ import weasel.jep.function.SineH;
 import weasel.jep.function.SquareRoot;
 import weasel.jep.function.Str;
 import weasel.jep.function.StrFormat;
+import weasel.jep.function.StrFormat.EnumType;
 import weasel.jep.function.StrLen;
 import weasel.jep.function.StringChar;
 import weasel.jep.function.Sum;
@@ -299,7 +298,7 @@ public class JEP {
 		funTab.put("zf", new StrFormat(EnumType.ZEROFILL));
 		funTab.put("cf", new StrFormat(EnumType.CUTFIRST));
 		funTab.put("cl", new StrFormat(EnumType.CUTLAST));
-		
+
 		// time
 		funTab.put("hours", new TimeFunc(TimeFuncType.H));
 		funTab.put("mins", new TimeFunc(TimeFuncType.M));
