@@ -153,7 +153,7 @@ public class PClo_Renderer {
 
 			case PClo_WeaselType.SPEAKER:
 				// floor
-				block.setBlockBounds(3 * px, 0, 3 * px, 13 * px, 1 * px, 13 * px);
+				block.setBlockBounds(0 * px, 0, 0 * px, 16 * px, 3 * px, 16 * px);
 				PC_Renderer.renderInvBoxWithTextures(renderblocks, block, new int[] { 6, 227, 5, 5, 5, 5 });
 
 				// box

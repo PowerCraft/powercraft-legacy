@@ -20,5 +20,10 @@ public abstract class PC_TileEntity extends TileEntity {
 	 * @return can update
 	 */
 	public abstract boolean canUpdate();
+	
+	/**
+	 * Called right before the block is picked up and it's tile entity destroyed.
+	 */
+	public void onBlockPickup() {}
 
 }

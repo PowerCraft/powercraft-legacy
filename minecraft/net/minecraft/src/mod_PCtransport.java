@@ -62,8 +62,8 @@ public class mod_PCtransport extends PC_Module {
 
 	private static final String pk_idSlimeBoots = "id.item.stickyBoots";
 	private static final String pk_optHackedWater = "opt.hack.improveWater";
-	
-	
+
+
 	/** Allow hacking water */
 	private boolean optHackWater;
 
@@ -205,11 +205,12 @@ public class mod_PCtransport extends PC_Module {
 				.setStepSound(Block.soundMetalFootstep);
 		
 		//@formatter:on
-		
-		// The super dirty way how to get the new, amazing hacked water
-		Block.blocksList[Block.waterStill.blockID] = null;
-		Block.blocksList[Block.waterStill.blockID] = new PCtr_BlockHackedWater(9, Material.water).setHardness(100F).setLightOpacity(3).setBlockName("water").disableStats().setRequiresSelfNotify();
 
+		if (optHackWater) {
+			// The super dirty way how to get the new, amazing hacked water
+			Block.blocksList[Block.waterStill.blockID] = null;
+			Block.blocksList[Block.waterStill.blockID] = new PCtr_BlockHackedWater(9, Material.water).setHardness(100F).setLightOpacity(3).setBlockName("water").disableStats().setRequiresSelfNotify();
+		}
 
 		list.add(conveyorBelt);
 		list.add(ejectionBelt);

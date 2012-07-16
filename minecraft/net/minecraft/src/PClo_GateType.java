@@ -62,4 +62,12 @@ public class PClo_GateType {
 		return 1;
 	}
 
+	/**
+	 * @param type gate type
+	 * @return true if this type can change light level based on active state
+	 */
+	public static boolean canChangeState(int type) {
+		return !(type == REPEATER_CORNER_I || type == REPEATER_STRAIGHT_I || type == CROSSING);
+	}
+
 }

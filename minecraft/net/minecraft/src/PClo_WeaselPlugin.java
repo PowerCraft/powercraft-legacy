@@ -63,7 +63,7 @@ public abstract class PClo_WeaselPlugin implements PC_INBT, NetworkMember {
 	public final void update() {
 		if (!isMaster()) {
 			// register to network if not registered yet (eg. after load)
-			if (!registeredToNetwork) {
+			if (!registeredToNetwork && networkName != null && !networkName.equals("")) {
 				registerToNetwork();
 				registeredToNetwork = true;
 			}
@@ -71,6 +71,7 @@ public abstract class PClo_WeaselPlugin implements PC_INBT, NetworkMember {
 			// set "unregistered" status if network is missing
 			if (registeredToNetwork && getNetwork() == null) {
 				registeredToNetwork = false;
+				networkName = "";
 			}
 		}
 		updateTick();
@@ -576,8 +577,9 @@ public abstract class PClo_WeaselPlugin implements PC_INBT, NetworkMember {
 		networkName = tag.getString("NetworkName");
 		memberName = tag.getString("MemberName");
 
-		for (int i = 0; i < weaselOutport.length; i++)
+		for (int i = 0; i < weaselOutport.length; i++) {
 			weaselOutport[i] = tag.getBoolean("wo" + i);
+		}
 		try {
 			return readPluginFromNBT(tag);
 		}catch(Exception e) {
@@ -592,8 +594,9 @@ public abstract class PClo_WeaselPlugin implements PC_INBT, NetworkMember {
 		tag.setString("NetworkName", networkName);
 		tag.setString("MemberName", memberName);
 
-		for (int i = 0; i < weaselOutport.length; i++)
+		for (int i = 0; i < weaselOutport.length; i++) {
 			tag.setBoolean("wo" + i, weaselOutport[i]);
+		}
 
 		try {
 			return writePluginToNBT(tag);

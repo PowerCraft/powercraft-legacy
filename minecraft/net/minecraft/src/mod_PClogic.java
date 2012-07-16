@@ -449,6 +449,8 @@ public class mod_PClogic extends PC_Module {
 		map.put("pc.gui.weasel.core.paused", "Paused");
 		map.put("pc.gui.weasel.core.idle", "Idle");
 		map.put("pc.gui.weasel.core.waiting", "Waiting");
+		map.put("pc.gui.weasel.core.halted", "Halted");
+		map.put("pc.gui.weasel.core.crashed", "Crashed");
 		map.put("pc.gui.weasel.core.pause", "Pause");
 		map.put("pc.gui.weasel.core.resume", "Resume");
 		map.put("pc.gui.weasel.core.restart", "Restart");
@@ -466,7 +468,7 @@ public class mod_PClogic extends PC_Module {
 		map.put("pc.gui.weasel.core.msgLaunched", "New program compiled and started.");
 		map.put("pc.gui.weasel.core.msgNoErrors", "Program has no syntax errors.");
 		map.put("pc.gui.weasel.core.msgAllUndone", "All changes reverted.");
-		map.put("pc.gui.weasel.core.msgHalted", "Program execution halted.\nPeripherals may remember last state.");
+		map.put("pc.gui.weasel.core.msgHalted", "Program execution halted, network restarted.");
 
 		map.put("pc.radioRemote.connected", "Portable transmitter connected to channel \"%s\".");
 		map.put("pc.radioRemote.desc", "Channel: %s");
@@ -708,13 +710,13 @@ public class mod_PClogic extends PC_Module {
 		
 		ModLoader.addRecipe(
 				new ItemStack(weaselDevice, 1, PClo_WeaselType.DISPLAY),
-				new Object[] { " G ", " R ","SSS",
-					'S', new ItemStack(Block.stairSingle,1,0), 'R', Item.redstone, 'G', Block.thinGlass });
+				new Object[] { " G ", "RNR","SSS",
+					'S', new ItemStack(Block.stairSingle,1,0), 'R', Item.redstone, 'G', Block.thinGlass, 'N', Item.goldNugget });
 		
 		ModLoader.addRecipe(
 				new ItemStack(weaselDevice, 1, PClo_WeaselType.SPEAKER),
-				new Object[] { " N ", " R ","SSS",
-					'S', new ItemStack(Block.stairSingle,1,0), 'R', Item.redstone, 'N', Block.music });
+				new Object[] { " N ", "RGR","SSS",
+					'S', new ItemStack(Block.stairSingle,1,0), 'R', Item.redstone, 'N', Block.music, 'G', Item.goldNugget  });
 
 		
 		// *** lights ***

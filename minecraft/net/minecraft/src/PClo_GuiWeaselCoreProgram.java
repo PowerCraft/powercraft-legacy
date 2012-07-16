@@ -15,12 +15,13 @@ public class PClo_GuiWeaselCoreProgram implements PC_IGresBase {
 
 	private PClo_WeaselPluginCore core;
 	private PC_GresWidget edit;
-	private PC_GresWidget txError;
+	private PC_GresWidget txMsg;
 	private PC_GresWindow w;
 	private PC_GresWidget txRunning;
 	private PC_GresWidget btnPauseResume;
 	private PC_GresWidget btnLaunch;
 	private PC_GresWidget btnStop;
+	private PC_GresWidget btnRestart;
 
 
 	/**
@@ -64,7 +65,7 @@ public class PClo_GuiWeaselCoreProgram implements PC_IGresBase {
 
 
 		leftCol.add(edit = new PC_GresTextEditMultiline(core.program, 290, 154, PC_GresHighlight.weasel(core)).setWidgetMargin(2));
-		leftCol.add(txError = new PC_GresLabelMultiline("Weasel status: " + (core.getError() == null ? "OK" : core.getError()), 270).setMinRows(2).setMaxRows(2).setWidgetMargin(2).setColor(PC_GresWidget.textColorEnabled, 0x000000));
+		leftCol.add(txMsg = new PC_GresLabelMultiline("Weasel status: " + (core.getError() == null ? "OK" : core.getError()), 270).setMinRows(2).setMaxRows(2).setWidgetMargin(2).setColor(PC_GresWidget.textColorEnabled, 0x000000));
 
 		mainHg.add(leftCol);
 
@@ -76,14 +77,13 @@ public class PClo_GuiWeaselCoreProgram implements PC_IGresBase {
 		rightCol.add(new PC_GresGap(0, 5));
 		rightCol.add(txRunning = new PC_GresLabel("").setMinWidth(55).setWidgetMargin(2).setAlignH(PC_GresAlign.CENTER));
 		rightCol.add(btnPauseResume = new PC_GresButton("").setId(4).setMinWidth(55).setWidgetMargin(2));
-		rightCol.add(new PC_GresButton(PC_Lang.tr("pc.gui.weasel.core.restart")).setId(5).setMinWidth(55).setWidgetMargin(2));
+		rightCol.add(btnRestart = new PC_GresButton(PC_Lang.tr("pc.gui.weasel.core.restart")).setId(5).setMinWidth(55).setWidgetMargin(2));
 		rightCol.add(btnStop = new PC_GresButton(PC_Lang.tr("pc.gui.weasel.core.stop")).setId(6).setMinWidth(55).setWidgetMargin(2));
 		mainHg.add(rightCol);
 
 		w.add(mainHg);
 		
 		btnLaunch.enable(false);
-		btnStop.enable(!core.getWeaselEngine().isProgramFinished);
 
 		gui.add(w);
 
@@ -127,20 +127,20 @@ public class PClo_GuiWeaselCoreProgram implements PC_IGresBase {
 		// undo all
 		if (widget.getId() == 1) {
 			edit.setText(core.program);
-			txError.setText(PC_Lang.tr("pc.gui.weasel.core.msgAllUndone"));
+			txMsg.setText(PC_Lang.tr("pc.gui.weasel.core.msgAllUndone"));
 			return;
 		}
 
 		// check
 		if (widget.getId() == 2) {
-			txError.setText("");
+			txMsg.setText("");
 			try {
 				core.checkProgramForErrors(edit.getText());
-				txError.setText(PC_Lang.tr("pc.gui.weasel.core.msgNoErrors"));
+				txMsg.setText(PC_Lang.tr("pc.gui.weasel.core.msgNoErrors"));
 				btnLaunch.enable(true);
 				
 			} catch (Exception e) {
-				txError.setText(e.getMessage());
+				txMsg.setText(e.getMessage());
 				btnLaunch.enable(false);
 			}
 			return;
@@ -149,13 +149,13 @@ public class PClo_GuiWeaselCoreProgram implements PC_IGresBase {
 
 		// launch
 		if (widget.getId() == 3) {
-			txError.setText("");
+			txMsg.setText("");
 			try {
 				core.setAndStartNewProgram(edit.getText());
-				core.world().notifyBlockChange(core.coord().x, core.coord().y, core.coord().z, mod_PClogic.weaselDevice.blockID);
-				txError.setText(PC_Lang.tr("pc.gui.weasel.core.msgLaunched"));
+				//core.world().notifyBlockChange(core.coord().x, core.coord().y, core.coord().z, mod_PClogic.weaselDevice.blockID);
+				txMsg.setText(PC_Lang.tr("pc.gui.weasel.core.msgLaunched"));
 			} catch (Exception e) {
-				txError.setText(e.getMessage());
+				txMsg.setText(e.getMessage());
 			}
 			return;
 		}
@@ -164,9 +164,9 @@ public class PClo_GuiWeaselCoreProgram implements PC_IGresBase {
 		if (widget.getId() == 4) {
 			core.paused ^= true;
 			if (core.paused) {
-				txError.setText(PC_Lang.tr("pc.gui.weasel.core.msgPaused"));
+				txMsg.setText(PC_Lang.tr("pc.gui.weasel.core.msgPaused"));
 			} else {
-				txError.setText(PC_Lang.tr("pc.gui.weasel.core.msgResumed"));
+				txMsg.setText(PC_Lang.tr("pc.gui.weasel.core.msgResumed"));
 			}
 
 			return;
@@ -175,7 +175,7 @@ public class PClo_GuiWeaselCoreProgram implements PC_IGresBase {
 		// restart clear globals
 		if (widget.getId() == 5) {
 			core.restartAllNetworkDevices();
-			txError.setText(PC_Lang.tr("pc.gui.weasel.core.msgRestarted"));
+			txMsg.setText(PC_Lang.tr("pc.gui.weasel.core.msgRestarted"));
 			
 			return;
 		}
@@ -183,7 +183,7 @@ public class PClo_GuiWeaselCoreProgram implements PC_IGresBase {
 		// stop
 		if (widget.getId() == 6) {
 			core.stopProgram();
-			txError.setText(PC_Lang.tr("pc.gui.weasel.core.msgHalted"));
+			txMsg.setText(PC_Lang.tr("pc.gui.weasel.core.msgHalted"));
 			
 			return;
 		}
@@ -204,27 +204,47 @@ public class PClo_GuiWeaselCoreProgram implements PC_IGresBase {
 	@Override
 	public void updateTick(PC_IGresGui gui) {
 		
-		if (!core.getWeaselEngine().isProgramFinished || core.paused) {
-			if (core.paused) {
-				txRunning.setText(PC_Lang.tr("pc.gui.weasel.core.paused"));
-				btnPauseResume.setText(PC_Lang.tr("pc.gui.weasel.core.resume"));
-				btnPauseResume.enable(true);
-				btnStop.enable(!core.getWeaselEngine().isProgramFinished);
-			} else {
-				txRunning.setText(PC_Lang.tr("pc.gui.weasel.core.running"));
-				btnPauseResume.setText(PC_Lang.tr("pc.gui.weasel.core.pause"));
-				btnPauseResume.enable(true);
-				btnStop.enable(true);
-			}
-		} else {
-			txRunning.setText(PC_Lang.tr("pc.gui.weasel.core.idle"));
+		if(core.halted) {
+			txRunning.setText(PC_Lang.tr("pc.gui.weasel.core.halted"));
+			btnPauseResume.enable(false);
 			btnStop.enable(false);
-			btnPauseResume.setText(PC_Lang.tr("pc.gui.weasel.core.pause"));
+			btnRestart.enable(true);
+			return;
 		}
 		
 		if(core.hasError()) {
-			txError.text = core.getError();
+			txMsg.text = core.getError();
+			txRunning.setText(PC_Lang.tr("pc.gui.weasel.core.crashed"));
+			btnPauseResume.enable(false);
+			btnRestart.enable(true);
+			btnStop.enable(true);
 		}
+		
+		if(core.paused) {
+			txRunning.setText(PC_Lang.tr("pc.gui.weasel.core.paused"));
+			btnPauseResume.setText(PC_Lang.tr("pc.gui.weasel.core.resume"));
+			btnPauseResume.enable(true);
+			btnRestart.enable(true);
+			btnStop.enable(true);
+			return;
+		}
+		
+		if(core.getWeaselEngine().isProgramFinished) {
+			txRunning.setText(PC_Lang.tr("pc.gui.weasel.core.idle"));
+			btnPauseResume.setText(PC_Lang.tr("pc.gui.weasel.core.pause"));
+			btnPauseResume.enable(true);
+			btnRestart.enable(true);
+			btnStop.enable(true);
+			btnStop.enable(!core.getWeaselEngine().isProgramFinished);
+			return;
+		}
+		
+		
+		txRunning.setText(PC_Lang.tr("pc.gui.weasel.core.running"));
+		btnPauseResume.setText(PC_Lang.tr("pc.gui.weasel.core.pause"));
+		btnPauseResume.enable(true);
+		btnStop.enable(true);
+		btnRestart.enable(true);
 	}
 
 }

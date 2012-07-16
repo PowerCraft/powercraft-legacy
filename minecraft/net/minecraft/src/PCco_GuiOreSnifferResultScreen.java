@@ -153,7 +153,7 @@ public class PCco_GuiOreSnifferResultScreen implements PC_IGresBase {
 
 		vg.add(slider = new PC_GresProgressBar(0x9900ff, 150));
 
-		slider.configureLabel("", "16", 15);
+		slider.configureLabel("", ""+(range-1), range-1);
 		slider.setLabelOffset(1);
 		slider.setFraction(0);
 		slider.setEditable(true);
@@ -165,6 +165,7 @@ public class PCco_GuiOreSnifferResultScreen implements PC_IGresBase {
 				inv.setSlot(new PC_SlotNoPickup(), x, y);
 			}
 		}
+		//w.add(new PC_GresInventoryPlayer(true));
 		gui.add(w);
 		gui.setCanShiftTransfer(false);
 

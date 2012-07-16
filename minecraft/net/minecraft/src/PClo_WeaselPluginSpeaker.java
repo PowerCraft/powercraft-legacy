@@ -213,7 +213,7 @@ public class PClo_WeaselPluginSpeaker extends PClo_WeaselPlugin {
 		list.add(getName()+".play");
 		
 		list.add(getName()+".piano");
-		list.add(getName()+".p");;
+		list.add(getName()+".p");
 		list.add(getName()+".pn");
 		list.add(getName()+".harp");		
 		list.add(getName()+".sticks");	

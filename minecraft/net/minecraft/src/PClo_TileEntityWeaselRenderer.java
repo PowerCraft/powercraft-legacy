@@ -73,7 +73,7 @@ public class PClo_TileEntityWeaselRenderer extends TileEntitySpecialRenderer {
 
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 		GL11.glRotatef(-f1, 0.0F, 1.0F, 0.0F);
-		model.renderText();
+		model.renderText(this);
 		
 		// pop1
 		GL11.glPopMatrix();

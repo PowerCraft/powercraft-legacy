@@ -1,17 +1,18 @@
 package net.minecraft.src;
 
+
 import java.util.Random;
+
 
 /**
  * Class which helps to hack splash texts in the main menu.
  * 
  * @author MightyPork
- *
  */
 public class PCco_SplashHelper {
-	
+
 	private static GuiMainMenu lastHacked = null;
-	
+
 	//@formatter:off
 	private static String[] splashes = {
 		// our features
@@ -98,22 +99,28 @@ public class PCco_SplashHelper {
 	//@formatter:on
 
 	private static Random rand = new Random();
-	
+
+	/**
+	 * Hack splash text of a main screen. Every 4th time a screen is displayed,
+	 * the PC text will be used.<br>
+	 * It also shows update notifications when new version is released, every
+	 * 2nd time.
+	 * 
+	 * @param gui
+	 */
 	public static void hackSplashes(GuiMainMenu gui) {
-		if(gui == lastHacked) return;
+		if (gui == lastHacked) return;
 		lastHacked = gui;
 		PC_Logger.finest("Hacking main menu splashes");
-		if(mod_PCcore.updateAvailable && rand.nextInt(2)==0) {			
+		if (mod_PCcore.updateAvailable && rand.nextInt(2) == 0) {
 			try {
 				ModLoader.setPrivateValue(GuiMainMenu.class, gui, 2, PC_Lang.tr("pc.splash.newPowerCraftAvailable"));
-			} catch (Throwable t) {
-			}
-		}else if(rand.nextInt(4) == 0){
+			} catch (Throwable t) {}
+		} else if (rand.nextInt(4) == 0) {
 			try {
 				ModLoader.setPrivateValue(GuiMainMenu.class, gui, 2, splashes[rand.nextInt(splashes.length)]);
-			} catch (Throwable t) {
-			}	
+			} catch (Throwable t) {}
 		}
 	}
-	
+
 }

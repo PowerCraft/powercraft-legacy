@@ -29,19 +29,19 @@ public class Calc {
 	static {
 		jep = JEP.createWeaselParser(false);
 	}
-	
+
 	public static String generateUniqueName() {
 		long time = System.currentTimeMillis();
 		String letters = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
 		String out = "";
 		int base = letters.length();
-		while(time > 0) {
+		while (time > 0) {
 			int pos = (int) (time % base);
 			out = letters.charAt(pos) + out;
 			time -= pos;
 			time = time / base;
 		}
-		
+
 		return out;
 	}
 
@@ -70,18 +70,20 @@ public class Calc {
 		//take out the strings
 		Matcher matcher;
 
-		HashMap<String, String> replacedStrings = new HashMap<String, String>(5);
-		int stringReplaceCounter = 0;
+		String stringFakeVarPrefix = "_stc";
+		int fakecnt = 0;
 
+		// Out parser really sucks when it has to add strings. So we replace 
+		// them by fake variables, because he has no problem with string variables.
 		if (expression.contains("\"")) {
-			matcher = Compiler.stringPattern.matcher(expression);
+			matcher = Compiler.stringPatternNoQuotes.matcher(expression);
 			StringBuffer sb = new StringBuffer(30);
 
 			while (matcher.find()) {
 				String str = matcher.group(1);
-				String repl = "[@" + stringReplaceCounter + "]";
-
-				replacedStrings.put(repl, str);
+				String idFake = stringFakeVarPrefix + (fakecnt++);
+				String repl = idFake;
+				jep.addVariable(idFake, str);
 				matcher.appendReplacement(sb, repl);
 			}
 
@@ -98,6 +100,9 @@ public class Calc {
 			if (Compiler.parserConstants.contains(name)) {
 				continue;
 			}
+			if (name.startsWith("_stc")) {
+				continue;
+			}
 
 			try {
 				//add variable into JEP
@@ -109,12 +114,6 @@ public class Calc {
 		}
 		matcher = null;
 
-		//put back replaced strings.
-		if (replacedStrings.size() > 0) {
-			for (Entry<String, String> entry : replacedStrings.entrySet()) {
-				expression = expression.replace(entry.getKey(), entry.getValue());
-			}
-		}
 
 
 		//evaluate
@@ -313,7 +312,7 @@ public class Calc {
 		} else if (obj instanceof WeaselBoolean) {
 			return ((WeaselBoolean) obj).get() ? 1 : 0;
 		} else if (obj instanceof Long) {
-			return ((Integer) obj);
+			return ((Long) obj).intValue();
 		} else if (obj instanceof String) {
 			try {
 				return Integer.parseInt((String) obj);
@@ -339,6 +338,15 @@ public class Calc {
 	public static String toString(Object obj) {
 
 		if (obj == null) return "null";
+		
+		if(obj instanceof Number) {
+			double dbl = ((Number) obj).doubleValue();
+			if(dbl - Math.round(dbl) < 0.001D) {
+				return ""+(int)Math.round(dbl);
+			}else{
+				return ""+dbl;
+			}
+		}
 
 		if (obj instanceof WeaselBoolean) {
 			return ((WeaselBoolean) obj).get() ? "true" : "false";

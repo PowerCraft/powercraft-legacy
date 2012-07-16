@@ -12,6 +12,7 @@ package weasel.jep.function;
 
 import java.util.Stack;
 
+import weasel.Calc;
 import weasel.jep.ParseException;
 import weasel.jep.type.Complex;
 
@@ -68,6 +69,15 @@ public class Add extends PostfixMathCommand {
 	 * @throws ParseException
 	 */
 	public Object add(Object param1, Object param2) throws ParseException {
+		
+		if(param1 instanceof String || param2 instanceof String) {
+			StringBuilder sb = new StringBuilder();
+			sb.append(Calc.toString(param1));
+			sb.append(Calc.toString(param2));
+			return sb.toString();
+		}
+		
+		
 		if (param1 instanceof Complex) {
 			if (param2 instanceof Complex)
 				return add((Complex) param1, (Complex) param2);
