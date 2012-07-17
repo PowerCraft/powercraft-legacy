@@ -31,6 +31,7 @@ public class mod_PCcore extends PC_Module implements PC_IActivatorListener {
 	/** the mod instance */
 	public static mod_PCcore instance;
 	
+	/** The english font renderer, huge letters etc. */
 	public static FontRenderer fontRendererDefault = new FontRenderer(PC_Utils.mc().gameSettings, "/font/default.png", PC_Utils.mc().renderEngine, false);
 
 
@@ -50,12 +51,12 @@ public class mod_PCcore extends PC_Module implements PC_IActivatorListener {
 	 * compilation, thus all modules keep their compile-time version and aren't
 	 * affected by current core version. Which is good.
 	 */
-	public static final String VERSION = "3.4.4";
+	public static final String VERSION = "3.4.5";
 
 	/**
 	 * The serial number used to check whether new update is available.
 	 */
-	public static final int VERSION_SERIAL = 3;
+	public static final int VERSION_SERIAL = 4;
 
 
 
@@ -601,7 +602,8 @@ public class mod_PCcore extends PC_Module implements PC_IActivatorListener {
 				Item.bone,
 				Item.silk,
 				Item.slimeBall,
-				Item.enderPearl
+				Item.enderPearl,
+				Item.flint
 			);
 		
 		addStacksToCraftingTool(
@@ -717,6 +719,7 @@ public class mod_PCcore extends PC_Module implements PC_IActivatorListener {
 				Item.map,
 				Item.bow,
 				Item.arrow,
+				Item.flintAndSteel,
 				Item.bucketEmpty,
 				Item.bucketWater,
 				Item.bucketLava,

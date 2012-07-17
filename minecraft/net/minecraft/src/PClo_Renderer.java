@@ -34,7 +34,6 @@ public class PClo_Renderer {
 	public static boolean renderBlockByType(RenderBlocks renderblocks, IBlockAccess blockAccess, int i, int j, int k, Block block, int rtype) {
 
 		if (rtype == lightRenderer) {
-			PC_Renderer.renderBlockSwapTerrain(renderblocks, blockAccess, i,j,k, block);
 			return true;
 		}
 		
@@ -79,7 +78,7 @@ public class PClo_Renderer {
 		}
 
 		if (rtype == lightRenderer) {
-			renderInvBlockLight(renderblocks, (PClo_BlockLight) block, meta);
+			renderInvBlockLight(renderblocks, block, meta);
 			return;
 		}
 

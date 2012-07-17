@@ -206,54 +206,63 @@ public class PClo_ModelWeasel extends ModelBase {
 
 			String[] parts = s.split("\\\\n");
 
-			String magic = "";
+			try {
+				String magic = "";
 
-			two:
-			for (String part : parts) {
+				two:
+				for (String part : parts) {
 
-				if (part.trim().length() == 0) {
-					i++;
-					continue;
-				}
+					if (part.trim().length() == 0) {
+						i++;
+						continue;
+					}
+					if (part.charAt(part.length() - 1) == '§') {
+						part = part.substring(0, part.length() - 1);
+					}
+					List<String> lines = fontrenderer.listFormattedStringToWidth(part, screenWidth);
 
-				List<String> lines = fontrenderer.listFormattedStringToWidth(part, screenWidth);
-
-				for (String line : lines) {
-
-					if (line.trim().length() == 0) continue;
-					i++;
-
-					String removedMagicStuff = line.replaceAll("§.", "");
+					for (String line : lines) {
 
 
-					int len = fontrenderer.getStringWidth(removedMagicStuff);
+						if (line.trim().length() == 0) continue;
 
-					int start = -len / 2;
+						if (line.charAt(line.length() - 1) == '§') {
+							line = line.substring(0, line.length() - 1);
+						}
+						i++;
 
-					if (align == 0) start = -len / 2;
-					if (align == -1) start = -screenWidth / 2;
-					if (align == 1) start = screenWidth / 2 - len;
+						String removedMagicStuff = line.replaceAll("§.", "");
 
-					fontrenderer.drawString(magic + line, start, 2 + fontrenderer.FONT_HEIGHT * i, j);
 
-					if (line.contains("§")) {
-						int a = -1;
-						while ((a = line.indexOf('§', a + 1)) != -1) {
-							magic += '§';
-							if (line.length() > a + 1) {
-								char ch = line.charAt(a + 1);
-								if (ch == 'r') {
-									magic = "";
-								} else {
-									magic += ch;
+						int len = fontrenderer.getStringWidth(removedMagicStuff);
+
+						int start = -len / 2;
+
+						if (align == 0) start = -len / 2;
+						if (align == -1) start = -screenWidth / 2;
+						if (align == 1) start = screenWidth / 2 - len;
+
+						fontrenderer.drawString(magic + line, start, 2 + fontrenderer.FONT_HEIGHT * i, j);
+
+						if (line.contains("§")) {
+							int a = -1;
+							while ((a = line.indexOf('§', a + 1)) != -1) {
+								magic += '§';
+								if (line.length() > a + 1) {
+									char ch = line.charAt(a + 1);
+									if (ch == 'r') {
+										magic = "";
+									} else {
+										magic += ch;
+									}
 								}
 							}
 						}
-					}
 
-					if (i == maxlines) break two;
+						if (i == maxlines) break two;
+					}
 				}
-			}
+			} catch (StringIndexOutOfBoundsException e) {}
 
 			GL11.glDepthMask(true);
 			GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);

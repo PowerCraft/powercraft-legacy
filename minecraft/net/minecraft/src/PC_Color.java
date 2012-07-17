@@ -256,9 +256,9 @@ public class PC_Color implements PC_INBT {
 	 * @return this color as hex 0xRRGGBB
 	 */
 	public int getHex() {
-		int r255 = (int) Math.round(r * 255);
-		int g255 = (int) Math.round(g * 255);
-		int b255 = (int) Math.round(b * 255);
+		int r255 = (int) Math.round(r * 255) & 0xff;
+		int g255 = (int) Math.round(g * 255) & 0xff;
+		int b255 = (int) Math.round(b * 255) & 0xff;
 
 		return r255 << 16 | g255 << 8 | b255;
 	}

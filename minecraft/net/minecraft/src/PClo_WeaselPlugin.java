@@ -595,6 +595,9 @@ public abstract class PClo_WeaselPlugin implements PC_INBT, NetworkMember {
 		for (int i = 0; i < weaselOutport.length; i++) {
 			weaselOutport[i] = tag.getBoolean("wo" + i);
 		}
+		for (int i = 0; i < weaselInport.length; i++) {
+			weaselInport[i] = tag.getBoolean("wi" + i);
+		}
 		try {
 			return readPluginFromNBT(tag);
 		} catch (Exception e) {
@@ -611,6 +614,9 @@ public abstract class PClo_WeaselPlugin implements PC_INBT, NetworkMember {
 
 		for (int i = 0; i < weaselOutport.length; i++) {
 			tag.setBoolean("wo" + i, weaselOutport[i]);
+		}
+		for (int i = 0; i < weaselInport.length; i++) {
+			tag.setBoolean("wi" + i, weaselInport[i]);
 		}
 
 		try {

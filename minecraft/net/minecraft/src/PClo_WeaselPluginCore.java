@@ -290,9 +290,10 @@ public class PClo_WeaselPluginCore extends PClo_WeaselPlugin implements IWeaselH
 	public void setAndStartNewProgram(String program) throws SyntaxError {
 		setProgram(program);
 
-		restartAllNetworkDevices();
-
 		initWeaselIfNull();
+
+		restartAllNetworkDevices();
+		restartDevice();
 		List<Instruction> list = WeaselEngine.compileProgram(program);
 		weasel.insertNewProgram(list);
 		halted = false;
@@ -319,7 +320,7 @@ public class PClo_WeaselPluginCore extends PClo_WeaselPlugin implements IWeaselH
 		}
 
 		for (NetworkMember member : getNetwork().getMembers().values()) {
-			if (member != null && member instanceof PClo_WeaselPlugin) ((PClo_WeaselPlugin) member).restartDevice();
+			if (member != null && member != this && member instanceof PClo_WeaselPlugin) ((PClo_WeaselPlugin) member).restartDevice();
 		}
 
 	}

@@ -404,7 +404,7 @@ public class WeaselEngine implements PC_INBT, IVariableProvider, IFunctionProvid
 				if(args[0] instanceof WeaselInteger)
 					if(args[1] instanceof WeaselInteger)
 						if(args[2] instanceof WeaselInteger)
-							return new WeaselInteger(((Integer)args[0].get())<<32 | ((Integer)args[1].get())<<16 | ((Integer)args[2].get()));
+							return new WeaselInteger(((Integer)args[0].get())<<16 | ((Integer)args[1].get())<<8 | ((Integer)args[2].get()));
 				
 				throw new WeaselRuntimeException("Invalid arguments for color().");
 			}else {

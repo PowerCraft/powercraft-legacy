@@ -38,31 +38,40 @@ public class StrFormat extends PostfixMathCommand {
 		checkStack(inStack);// check the stack
 		Object param2 = inStack.pop();
 		Object param1 = inStack.pop();
+		String str;
+		int number;
+		try {
+			str = Calc.toString(param1);
+			number = Calc.toInteger(param2);
+		} catch (ClassCastException e) {
+			throw new ParseException(type + " got invalid parameter types. Needs String and Integer");
+		}
 
-		String str = Calc.toString(param1);
-		int number = Calc.toInteger(param2);
+		try {
 
-
-		switch (type) {
-			case ZEROFILL:
-				while (str.length() < number) {
-					str = "0" + str;
-				}
-				break;
-			case CUTFIRST:
-				if (number >= str.length()) {
-					str = "";
-				} else {
-					str = str.substring(number);
-				}
-				break;
-			case CUTLAST:
-				if (number >= str.length()) {
-					str = "";
-				} else {
-					str = str.substring(0, str.length() + 1 - number);
-				}
-				break;
+			switch (type) {
+				case ZEROFILL:
+					while (str.length() < number) {
+						str = "0" + str;
+					}
+					break;
+				case CUTFIRST:
+					if (number >= str.length()) {
+						str = "";
+					} else {
+						str = str.substring(number);
+					}
+					break;
+				case CUTLAST:
+					if (number >= str.length()) {
+						str = "";
+					} else {
+						str = str.substring(0, str.length() - number);
+					}
+					break;
+			}
+		} catch (StringIndexOutOfBoundsException e) {
+			throw new ParseException(type + " cannot work with '" + str + "' and " + number + ".");
 		}
 
 		inStack.push(str);//push the result on the inStack
