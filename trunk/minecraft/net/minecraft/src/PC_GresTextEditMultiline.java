@@ -878,6 +878,10 @@ public class PC_GresTextEditMultiline extends PC_GresWidget {
 	@Override
 	public void addedToWidget() {}
 	
+	/**
+	 * static version of getFontRenderer
+	 * @return font renderer
+	 */
 	public static FontRenderer getFR() {
 		return mod_PCcore.fontRendererDefault;
 	}

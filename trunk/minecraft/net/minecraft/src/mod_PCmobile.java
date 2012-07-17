@@ -185,7 +185,6 @@ public class mod_PCmobile extends PC_Module implements PC_IActivatorListener {
 
 
 
-	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@Override
 	public void addRenderer(Map map) {
 		map.put(PCmo_EntityMiner.class, new PCmo_RenderMiner());

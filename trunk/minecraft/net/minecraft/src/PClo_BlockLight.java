@@ -63,10 +63,10 @@ public class PClo_BlockLight extends BlockContainer implements PC_ISwapTerrain, 
 		return PClo_Renderer.lightRenderer;
 	}
 
-	@Override
-	public AxisAlignedBB getCollisionBoundingBoxFromPool(World world, int i, int j, int k) {
-		return null;
-	}
+//	@Override
+//	public AxisAlignedBB getCollisionBoundingBoxFromPool(World world, int i, int j, int k) {
+//		return null;
+//	}
 
 	@Override
 	public boolean isOpaqueCube() {
@@ -330,7 +330,7 @@ public class PClo_BlockLight extends BlockContainer implements PC_ISwapTerrain, 
 
 		PClo_TileEntityLight te = getTE(iblockaccess, i, j, k);
 		
-		float sidehalf = te.isHuge?0.5F-0.0625F:0.1875F;
+		float sidehalf = te.isHuge?0.5F:0.1875F;
 		float height = te.isHuge?0.0625F*3:0.0625F*2;
 
 		if (i1 == 0) // y-1
@@ -396,7 +396,7 @@ public class PClo_BlockLight extends BlockContainer implements PC_ISwapTerrain, 
 			return 0xff0000;
 		}
 
-		return tei.getHexColor(on);
+		return tei.getFullColor(on).getHex();
 	}
 
 	@Override

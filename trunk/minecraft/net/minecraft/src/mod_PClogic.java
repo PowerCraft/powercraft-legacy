@@ -147,7 +147,7 @@ public class mod_PClogic extends PC_Module {
 		list.add(new PC_Struct3(PClo_TileEntityGate.class, "FCLogicGate", null));
 		list.add(new PC_Struct3(PClo_TileEntityWeasel.class, "PCWeaselDevice", new PClo_TileEntityWeaselRenderer()));
 		list.add(new PC_Struct3(PClo_TileEntityPulsar.class, "FCRedstonePulsar", null));
-		list.add(new PC_Struct3(PClo_TileEntityLight.class, "FCRedstoneIndicator", null));
+		list.add(new PC_Struct3(PClo_TileEntityLight.class, "FCRedstoneIndicator", new PClo_TileEntityLightRenderer()));
 		list.add(new PC_Struct3(PClo_TileEntitySensor.class, "FCSensorRanged", new PClo_TileEntitySensorRenderer()));
 		list.add(new PC_Struct3(PClo_TileEntityRadio.class, "PCRadioDevice", new PClo_TileEntityRadioRenderer()));
 	}
@@ -260,6 +260,7 @@ public class mod_PClogic extends PC_Module {
 		list.add(getImgDir() + "block_chip.png");
 		list.add(getImgDir() + "block_radio.png");
 		list.add(getImgDir() + "block_sensor.png");
+		list.add(getImgDir() + "block_light.png");
 	}
 
 	@Override

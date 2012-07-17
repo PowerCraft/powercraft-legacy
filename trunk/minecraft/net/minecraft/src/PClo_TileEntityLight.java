@@ -49,79 +49,65 @@ public class PClo_TileEntityLight extends PC_TileEntity {
 	}
 
 	/**
+	 * @return true if light is glowing
+	 */
+	public boolean isActive() {
+		return getCoord().getId(worldObj) == mod_PClogic.lightOn.blockID;
+	}
+	
+	/**
 	 * Get hex color
 	 * 
 	 * @param on is glowing
 	 * @return hex color
 	 */
-	public int getHexColor(boolean on) {
-		return getHexColor(color, on);
-	}
-	
-	private int lastcolor = 0;
-
-	/**
-	 * Get light's color in hex format.
-	 * 
-	 * @param color_index color index
-	 * @param on is light glowing
-	 * @return hex color
-	 */
-	public int getHexColor(int color_index, boolean on) {
+	public PC_Color getFullColor(boolean on) {
 		int rc;
-		
-		try {
-			rc = PC_Color.light_colors[color_index];
-		} catch (ArrayIndexOutOfBoundsException e) {
-			rc = 0xf0f0f0;
-		}
-		
-		if(rc == 0xf0f0f0) {
+
+		rc = PC_Color.light_colors[color];
+
+
+		if (rc == 0xf0f0f0) {
 			//try to get color from driver - weasel port.
-			
 			PC_CoordI drc = getCoord().copy();
-			
+
 			int meta = drc.getMeta(worldObj);
-			switch(meta) {
-				case 0: drc = drc.offset(0,-1,0); break;
-				case 1: drc = drc.offset(0,0,1); break;
-				case 2: drc = drc.offset(0,0,-1); break;
-				case 3: drc = drc.offset(1,0,0); break;
-				case 4: drc = drc.offset(-1,0,0); break;
-				case 5: drc = drc.offset(0,1,0); break;
+			switch (meta) {
+				case 0:
+					drc = drc.offset(0, -1, 0);
+					break;
+				case 1:
+					drc = drc.offset(0, 0, 1);
+					break;
+				case 2:
+					drc = drc.offset(0, 0, -1);
+					break;
+				case 3:
+					drc = drc.offset(1, 0, 0);
+					break;
+				case 4:
+					drc = drc.offset(-1, 0, 0);
+					break;
+				case 5:
+					drc = drc.offset(0, 1, 0);
+					break;
 			}
 			TileEntity te = drc.getTileEntity(worldObj);
-			if(te != null && te instanceof PClo_TileEntityWeasel) {
+			if (te != null && te instanceof PClo_TileEntityWeasel) {
 				PClo_WeaselPlugin plugin = ((PClo_TileEntityWeasel) te).getPlugin();
-				if(plugin != null && plugin instanceof PClo_WeaselPluginPort) {
-					rc = ((PClo_WeaselPluginPort)plugin).rgbcolor;
-					if(rc != lastcolor) {
-						//worldObj.markBlocksDirty(xCoord, yCoord, zCoord, xCoord, yCoord, zCoord);
-						worldObj.markBlockAsNeedsUpdate(xCoord, yCoord, zCoord);
-						//worldObj.markBlockNeedsUpdate(xCoord, yCoord, zCoord);
-						worldObj.notifyBlockChange(xCoord, yCoord, zCoord, mod_PClogic.lightOn.blockID);
-					}
-					lastcolor = rc;
+				if (plugin != null && plugin instanceof PClo_WeaselPluginPort) {
+					rc = ((PClo_WeaselPluginPort) plugin).rgbcolor;
 				}
 			}
-			
 		}
-		
 
-		int r = (rc & 0xff0000) >> 16;
-		int g = (rc & 0x00ff00) >> 8;
-		int b = (rc & 0x0000ff);
-
-		if (on) {
-
-		} else {
+		if (!on) {
+			PC_Color color = PC_Color.fromHex(rc);
 			// darker
-			r *= 0.3D;
-			g *= 0.3D;
-			b *= 0.3D;
+			return new PC_Color(color.r*0.3D,color.g*0.3D,color.b*0.3D);
+		} else {
+			return PC_Color.fromHex(rc);
 		}
-
-		return (r << 16) + (g << 8) + b;
 	}
 
 	/**

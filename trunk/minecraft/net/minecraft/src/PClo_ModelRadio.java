@@ -10,6 +10,7 @@ package net.minecraft.src;
 public class PClo_ModelRadio extends ModelBase {
 
 	private ModelRenderer parts[], tinyp[];
+	/** flag that the rendered model should be the "tiny" version. */
 	public boolean tiny;
 
 	/**
