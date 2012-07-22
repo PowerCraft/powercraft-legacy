@@ -2,6 +2,8 @@ package net.minecraft.src;
 
 
 
+import net.minecraft.src.PC_GresTextEditMultiline.AutoAdd;
+import net.minecraft.src.PC_GresTextEditMultiline.StringAdd;
 import net.minecraft.src.PC_GresWidget.PC_GresAlign;
 
 
@@ -62,8 +64,129 @@ public class PClo_GuiWeaselCoreProgram implements PC_IGresBase {
 		PC_GresWidget leftCol = new PC_GresLayoutV().setAlignH(PC_GresAlign.STRETCH).setMinWidth(294).setWidgetMargin(1);
 
 
-
-		leftCol.add(edit = new PC_GresTextEditMultiline(core.program, 290, 154, PC_GresHighlightHelper.weasel(core, core.getWeaselEngine())).setWidgetMargin(2));
+		AutoAdd autoAdd = new AutoAdd(){
+			
+			private static final int STRING = 1;
+			private static final int COMMENT = 2;
+			
+			private int getInfo(String s, int info){
+				int section = 0;
+				int tab = 0;
+				int type = 0;
+				char c=0;
+				boolean sem=false;
+				for(int i=0; i<s.length(); i++){
+					if(section==STRING){
+						if((s.charAt(i)=='"'&&type==0))
+							section = 0;
+					}else if(section==COMMENT){
+						if(s.charAt(i)=='\n'&&type==0){
+							section = 0;
+						}else if(s.charAt(i)=='*'&&type==1){
+							i++;
+							if(i<s.length()){
+								if(s.charAt(i)=='/')
+									section = 0;
+							}
+						}
+					}else{
+						section = 0;
+						c = s.charAt(i);
+						if(c!=' ' && c!= '\n'){
+							sem = false;
+						}
+						switch(c){
+						case '"':
+							section = STRING;
+							type = 0;
+							break;
+						case '#':
+							section = COMMENT;
+							type = 0;
+							break;
+						case '{':
+							tab++;
+							sem = true;
+							break;
+						case '}':
+							tab--;
+							if(tab<0)
+								tab=0;
+							break;
+						case ';':
+							sem = true;
+						case '/':
+							i++;
+							if(i>=s.length())
+								break;
+							if(s.charAt(i)=='/'){
+								section = COMMENT;
+								type = 0;
+							}else if(s.charAt(i)=='*'){
+								section = COMMENT;
+								type = 1;
+							}
+							break;
+						}
+					}
+				}
+				if(info==0)
+					return section;
+				else if(info==1)
+					return tab;
+				else if(info==2)
+					return sem?0:1;
+				return 0;
+			}
+		
+			private int getFirstFreeSpace(String s){
+				for(int i=0; i<s.length(); i++){
+					if(s.charAt(i)!=' ')
+						return i;
+				}
+				return s.length();
+			}
+			
+			private char getFirstNotOf(String s, char c){
+				for(int i=0; i<s.length(); i++){
+					if(s.charAt(i)!=' ')
+						return s.charAt(i);
+				}
+				return 0;
+			}
+			
+			@Override
+			public StringAdd charAdd(PC_GresTextEditMultiline te, char c,
+					String textBevore, String textBehind) {
+				int section = getInfo(textBevore, 0);
+				if(section==0){
+					if(c=='{')
+						return new StringAdd("}", false);
+					if(c=='(')
+						return new StringAdd(")", false);
+					if(c=='"')
+						return new StringAdd("\"", false);
+					if(c=='\n'){
+						int tab = getInfo(textBevore, 1);
+						int ffs = getFirstFreeSpace(textBehind);
+						if(getFirstNotOf(textBehind, ' ')=='}')
+							tab -= 1;
+						else
+							tab += getInfo(textBevore, 2);
+						tab *= 2;
+						tab -= ffs;
+						String s="";
+						for(int i=0; i<tab; i++){
+							s += " ";
+						}
+						return new StringAdd(s, true);
+					}
+				}
+				return null;
+			}
+			
+		};
+		leftCol.add(edit = new PC_GresTextEditMultiline(core.program, 290, 154, PC_GresHighlightHelper.weasel(core, core.getWeaselEngine()), autoAdd).setWidgetMargin(2));
 		leftCol.add(txMsg = new PC_GresLabelMultiline("Weasel status: " + (core.getError() == null ? "OK" : core.getError()), 270).setMinRows(2).setMaxRows(2).setWidgetMargin(2).setColor(PC_GresWidget.textColorEnabled, 0x000000));
 
 		mainHg.add(leftCol);

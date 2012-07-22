@@ -33,6 +33,7 @@ public class PC_GresHighlightHelper {
 	public static int colorComments;
 	public static int colorString;
 	public static int colorBackground;
+	public static int colorUserFunction;
 	public static int colorDefault;
 
 	/**
@@ -56,6 +57,7 @@ public class PC_GresHighlightHelper {
 		cfg.putString("comments", "337ca7");
 		cfg.putString("string", "ff3330");
 		cfg.putString("background", "000000");
+		cfg.putString("function_user", "4332ff");
 		cfg.putString("default", "ffffff");
 		cfg.apply();
 
@@ -73,6 +75,7 @@ public class PC_GresHighlightHelper {
 		colorComments = Integer.parseInt(cfg.str("comments"), 16);
 		colorString = Integer.parseInt(cfg.str("string"), 16);
 		colorBackground = Integer.parseInt(cfg.str("background"), 16);
+		colorUserFunction = Integer.parseInt(cfg.str("function_user"), 16);
 		colorDefault = Integer.parseInt(cfg.str("default"), 16);
 	}
 
@@ -150,6 +153,13 @@ public class PC_GresHighlightHelper {
 
 		for (String str : weaselFunc) {
 			kw.add(new Keyword(str, colorLangKeyword, false));
+		}
+		
+		for(Keyword k: kw){
+			if(k.word=="function"){
+				k.nextWordKeywordColor = colorUserFunction;
+				break;
+			}
 		}
 		return kw;
 	}
