@@ -414,10 +414,12 @@ public class mod_PClogic extends PC_Module {
 		map.put("tile.PCloWeasel.port.name", "Wireless Port");
 		map.put("tile.PCloWeasel.display.name", "Wireless Display");
 		map.put("tile.PCloWeasel.sound.name", "Wireless Speaker");
+		map.put("tile.PCloWeasel.touchscreen.name", "Wireless Touchscreen");
 		map.put("pc.weasel.core.desc", "programmable chip");
 		map.put("pc.weasel.port.desc", "expansion redstone port");
 		map.put("pc.weasel.display.desc", "display for Weasel");
 		map.put("pc.weasel.sound.desc", "electronic noteblock");
+		map.put("pc.weasel.touchscreen.desc", "touchscreen for Weasel");
 
 		map.put("pc.weasel.activatorGetNetwork", "Network \"%s\" assigned to activation crystal.");
 		map.put("pc.weasel.activatorSetNetwork", "Device connected to network \"%s\".");

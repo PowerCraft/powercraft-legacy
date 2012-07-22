@@ -206,6 +206,23 @@ public class PClo_Renderer {
 
 				block.setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 1.0F, 1.0F);
 				break;
+				
+			case PClo_WeaselType.TOUCHSCREEN:
+				// floor
+				block.setBlockBounds(3 * px, 0, 3 * px, 13 * px, 1 * px, 13 * px);
+				PC_Renderer.renderInvBoxWithTextures(renderblocks, block, new int[] { 192, 192, 176, 176, 176, 176 });
+
+				// leg
+				block.setBlockBounds(7.2F * px, 1 * px, 7.2F * px, 8.8F * px, 2 * px, 8.8F * px);
+				PC_Renderer.renderInvBoxWithTextures(renderblocks, block, new int[] { 176, 176, 176, 176, 176, 176 });
+
+				// screen
+				block.setBlockBounds(0 * px, 2 * px, 7 * px, 16 * px, 16 * px, 9 * px);
+				PC_Renderer.renderInvBoxWithTextures(renderblocks, block, new int[] { 176, 176, 178, 177, 176, 176 });
+
+				block.setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 1.0F, 1.0F);
+				break;
+				
 		}
 
 		PC_Renderer.resetTerrain(true);

@@ -46,6 +46,21 @@ public class PC_GresTextEditMultiline extends PC_GresWidget {
 		}
 
 		/**
+		 * keyword coloring
+		 * 
+		 * @param word the word string or regexp pattern
+		 * @param color color
+		 * @param regexp is string a regexp pattern?
+		 * @param nextWordColor color 
+		 */
+		public Keyword(String word, int color, boolean regexp, int nextWordKeywordColor) {
+			this.word = word;
+			this.color = color;
+			this.isRegexp = regexp;
+			this.nextWordKeywordColor = nextWordKeywordColor;
+		}
+		
+		/**
 		 * keyword coloring - sequence
 		 * 
 		 * @param start the string the sequence starts with
@@ -66,19 +81,41 @@ public class PC_GresTextEditMultiline extends PC_GresWidget {
 		public String end;
 		/** rgb color */
 		public int color;
+		
+		public int nextWordKeywordColor;
 		/** flag that this word uses a regular expresison for matching. */
 		public boolean isRegexp;
 	}
 
+	public static class StringAdd{
+		public StringAdd(String addString, boolean jumpToEnd){
+			this.addString = addString;
+			this.jumpToEnd = jumpToEnd;
+		}
+		
+		public String addString;
+		public boolean jumpToEnd;
+	}
+	
+	public static interface AutoAdd{
+		
+		public StringAdd charAdd(PC_GresTextEditMultiline te, char c, String textBevore, String textBehind);
+		
+	}
+	
 	private PC_CoordI lastMousePosition = new PC_CoordI(0, 0);
 	private PC_CoordI mouseSelectStart = new PC_CoordI(0, 0);
 	private PC_CoordI mouseSelectEnd = new PC_CoordI(0, 0);
 	private int mousePressed = 0;
 	private PC_CoordI scroll = new PC_CoordI(0, 0);
 	private ArrayList<Keyword> keyWords = null;
+	private ArrayList<Keyword> oneFrameKeyWords = new ArrayList<Keyword>();
+	private ArrayList<Keyword> newOneFrameKeyWords;
+	private AutoAdd autoAdd = null;
 	private int vScrollPos = 0, vScrollSize = 0, hScrollPos = 0, hScrollSize = 0;
 	private Keyword keywordToFinish = null;
-
+	private int nextWordKeywordColor = 0;
+	
 	/**
 	 * Multi-row text edit
 	 * 
@@ -117,6 +154,28 @@ public class PC_GresTextEditMultiline extends PC_GresWidget {
 		this.keyWords = keyWords;
 	}
 
+	/**
+	 * Multi-row text edit
+	 * 
+	 * @param text initial text
+	 * @param minWidth width
+	 * @param minHeight height
+	 * @param keyWords list of keywords
+	 * @param autoAdd autoAdd function
+	 */
+	public PC_GresTextEditMultiline(String text, int minWidth, int minHeight, ArrayList<Keyword> keyWords, AutoAdd autoAdd) {
+		super(minWidth > 20 ? minWidth : 20, minHeight > getFR().FONT_HEIGHT + 26 ? minHeight : getFR().FONT_HEIGHT + 26, text);
+		canAddWidget = false;
+		color[textColorEnabled] = 0xff000000 | PC_GresHighlightHelper.colorDefault;
+		color[textColorShadowEnabled] = 0; //0xff383838;
+		color[textColorClicked] = 0xff000000 | PC_GresHighlightHelper.colorDefault;
+		color[textColorHover] = 0xff000000 | PC_GresHighlightHelper.colorDefault;
+		color[textColorDisabled] = 0xff000000 | PC_GresHighlightHelper.colorDefault;
+		color[textColorShadowDisabled] = 0; //0xff383838;
+		this.keyWords = keyWords;
+		this.autoAdd = autoAdd;
+	}
+	
 	@Override
 	public PC_CoordI getMinSize() {
 		return calcSize();
@@ -200,10 +259,25 @@ public class PC_GresTextEditMultiline extends PC_GresWidget {
 		scroll.y = (int) (vScrollPos / prozent / sizeY * linesNotToSee + 0.5);
 	}
 
+	private int getColorForKeyword(Keyword kw) {
+		if (kw == null){
+			nextWordKeywordColor = 0;
+			return 0xff000000 | PC_GresHighlightHelper.colorDefault;
+		}
+		nextWordKeywordColor = kw.nextWordKeywordColor;
+		return kw.color;
+	}
+	
 	private int getColorForWord(String word) {
 		Keyword kw = getKeywordForWord(word, true);
-		if (kw == null) return 0xff000000 | PC_GresHighlightHelper.colorDefault;
-		return kw.color;
+		if(nextWordKeywordColor!=0){
+			Keyword k = new Keyword(word, nextWordKeywordColor);
+			if(kw==null)
+				kw = k;
+			newOneFrameKeyWords.add(k);
+		}
+		return getColorForKeyword(kw);
+		
 	}
 
 	private Keyword getKeywordForWord(String word, boolean giveKeyword) {
@@ -218,6 +292,10 @@ public class PC_GresTextEditMultiline extends PC_GresWidget {
 						if (k.end != null) keywordToFinish = k;
 						return k;
 					}
+				}
+				for (Keyword k : oneFrameKeyWords) {
+					if (!k.isRegexp && k.word.equals(word))return k;
+					if (k.isRegexp && word.matches(k.word))return k;
 				}
 			}
 		} else {
@@ -290,7 +368,7 @@ public class PC_GresTextEditMultiline extends PC_GresWidget {
 				w = "" + word.charAt(j);
 			}
 			if (kw == null) kw = keywordToFinish;
-			drawStringStringAt(offsetPos, x, y, w, kw != null ? kw.color : 0xff000000 | PC_GresHighlightHelper.colorDefault);
+			drawStringStringAt(offsetPos, x, y, w, getColorForKeyword(kw));
 			x += getStringWidth(w);
 		}
 	}
@@ -433,6 +511,7 @@ public class PC_GresTextEditMultiline extends PC_GresWidget {
 		}
 
 		keywordToFinish = null;
+		newOneFrameKeyWords = new ArrayList<Keyword>();
 		for (int i = 0; i <= getLineNumbers(); i++) {
 			drawStringLine(offsetPos, i);
 			if (keywordToFinish != null) {
@@ -441,7 +520,8 @@ public class PC_GresTextEditMultiline extends PC_GresWidget {
 				else if (keywordToFinish.isRegexp && "\n".matches(keywordToFinish.end)) keywordToFinish = null;
 			}
 		}
-
+		oneFrameKeyWords = newOneFrameKeyWords;
+		
 		if (hasFocus && (cursorCounter / 6) % 2 == 0) {
 			if (coordsInDrawRect(new PC_CoordI(mouseSelectEnd.x > 0 ? mouseSelectEnd.x - 1 : 0, mouseSelectEnd.y))) {
 				if (calcSelectCoordsToStringIndex(mouseSelectEnd) == text.length()) {
@@ -670,13 +750,19 @@ public class PC_GresTextEditMultiline extends PC_GresWidget {
 
 		String s1 = text.substring(0, s);
 		String s2 = text.substring(e);
-		text = s1 + c + s2;
-		e++;
+		StringAdd a = autoAdd.charAdd(this, c, s1, s2);
+		if(a==null){
+			text = s1 + c + s2;
+			e++;
+		}else{
+			text = s1 + c + a.addString + s2;
+			e += a.jumpToEnd?a.addString.length()+1:1;
+		}
 		e -= oldSize;
 		mouseSelectEnd.setTo(calcStringIndexToSelectCoords(e));
 		mouseSelectStart.setTo(mouseSelectEnd);
 	}
-
+	
 	private void deleteSelected() {
 		int s = calcSelectCoordsToStringIndex(mouseSelectStart), e = calcSelectCoordsToStringIndex(mouseSelectEnd);
 		if (s > e) {
@@ -769,7 +855,7 @@ public class PC_GresTextEditMultiline extends PC_GresWidget {
 			scroll.x = cxs - size.x + 27;
 		}
 	}
-
+	
 	@Override
 	public boolean keyTyped(char c, int key) {
 		int p;

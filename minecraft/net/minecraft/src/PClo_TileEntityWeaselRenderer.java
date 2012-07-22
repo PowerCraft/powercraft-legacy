@@ -58,6 +58,9 @@ public class PClo_TileEntityWeaselRenderer extends TileEntitySpecialRenderer {
 		if (plugin instanceof PClo_WeaselPluginDisplay) {
 			f1 = ((PClo_WeaselPluginDisplay) plugin).rotation * 360 / 16F;
 			GL11.glRotatef(f1, 0.0F, 1.0F, 0.0F);
+		} else if (plugin instanceof PClo_WeaselPluginTouchscreen) {
+			f1 = ((PClo_WeaselPluginTouchscreen) plugin).rotation * 360 / 16F;
+			GL11.glRotatef(f1, 0.0F, 1.0F, 0.0F);
 		} else {
 			GL11.glRotatef(90 * (tew.getCoord().getMeta(tew.worldObj) & 3), 0, 1, 0);
 		}

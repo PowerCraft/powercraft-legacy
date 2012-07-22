@@ -18,6 +18,7 @@ public class PClo_ModelWeasel extends ModelBase {
 	private ModelRenderer port[];
 	private ModelRenderer display[];
 	private ModelRenderer sound[];
+	private ModelRenderer touchscreen[];
 
 	/**
 	 * Radio block model.
@@ -104,6 +105,26 @@ public class PClo_ModelWeasel extends ModelBase {
 		sound[2] = new ModelRenderer(this, 0, 31);
 		sound[2].addBox(-2F, -15.5F, -2F, 4, 1, 4, 0.0F);
 
+		touchscreen = new ModelRenderer[2];
+
+		// the bottom pad
+		touchscreen[0] = new ModelRenderer(this, 58, 73);
+		touchscreen[0].addBox(-5F, -1F, -5F, 1, 1, 10, 0.0F);
+		touchscreen[0].addBox(4F, -1F, -5F, 1, 1, 10, 0.0F);
+		
+		touchscreen[0].addBox(-5F, -2F, -0.5F, 1, 1, 1, 0.0F);
+		touchscreen[0].addBox(4F, -2F, -0.5F, 1, 1, 1, 0.0F);
+		
+		touchscreen[0].addBox(-8F, -3F, -0.5F, 16, 1, 1, 0.0F);
+		touchscreen[0].addBox(-8F, -16F, -0.5F, 16, 1, 1, 0.0F);
+		
+		touchscreen[0].addBox(-8F, -15F, -0.5F, 1, 12, 1, 0.0F);
+		touchscreen[0].addBox(7F, -15F, -0.5F, 1, 12, 1, 0.0F);
+
+		// the colour piece
+		touchscreen[1] = new ModelRenderer(this, 13, 12);
+		touchscreen[1].addBox(-2F, -17F, -1F, 4, 1, 2, 0.0F);
+		
 
 	}
 
@@ -142,6 +163,8 @@ public class PClo_ModelWeasel extends ModelBase {
 		} else if (deviceType == PClo_WeaselType.SPEAKER) {
 			sound[0].render(0.0625F);
 			sound[1].render(0.0625F);
+		} else if (deviceType == PClo_WeaselType.TOUCHSCREEN) {
+			touchscreen[0].render(0.0625F);
 		}
 	}
 
@@ -166,6 +189,8 @@ public class PClo_ModelWeasel extends ModelBase {
 			display[4].render(0.0625F);
 		} else if (deviceType == PClo_WeaselType.SPEAKER) {
 			sound[2].render(0.0625F);
+		} else if (deviceType == PClo_WeaselType.TOUCHSCREEN) {
+			touchscreen[1].render(0.0625F);
 		}
 
 	}
@@ -176,24 +201,23 @@ public class PClo_ModelWeasel extends ModelBase {
 	 * @param renderer
 	 */
 	public void renderText(PClo_TileEntityWeaselRenderer renderer) {
+		float f = 0.6666667F;
+		GL11.glPushMatrix();
+		GL11.glDisable(GL11.GL_LIGHTING);
+		//GL11.glEnable(GL11.GL_BLEND);
+		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
+		FontRenderer fontrenderer = mod_PCcore.fontRendererDefault; //PC_Utils.mc().fontRenderer;
+		float f3 = 0.01666667F * f;
+
+		GL11.glNormal3f(0.0F, 0.0F, -1F * f3);
+		
+		
 		if (deviceType == PClo_WeaselType.DISPLAY) {
-
-			float f = 0.6666667F;
-			GL11.glPushMatrix();
-			GL11.glDisable(GL11.GL_LIGHTING);
-			//GL11.glEnable(GL11.GL_BLEND);
-			GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-			FontRenderer fontrenderer = mod_PCcore.fontRendererDefault; //PC_Utils.mc().fontRenderer;
-			float f3 = 0.01666667F * f;
-
+			
+			GL11.glDepthMask(false);
 			GL11.glTranslatef(0.0F, 0.0625F * 15, 0.0625F + 0.001F);
 			GL11.glScalef(f3, -f3, f3);
-
-			GL11.glDepthMask(false);
-
-
-			GL11.glNormal3f(0.0F, 0.0F, -1F * f3);
-
+			
 			int j = ((PClo_WeaselPluginDisplay) plugin).color;
 
 
@@ -263,12 +287,62 @@ public class PClo_ModelWeasel extends ModelBase {
 					}
 				}
 			} catch (StringIndexOutOfBoundsException e) {}
-
-			GL11.glDepthMask(true);
-			GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-			GL11.glEnable(GL11.GL_LIGHTING);
-			//GL11.glDisable(GL11.GL_BLEND);
-			GL11.glPopMatrix();
+		}else if(deviceType == PClo_WeaselType.TOUCHSCREEN){
+			PClo_WeaselPluginTouchscreen touchscreen = (PClo_WeaselPluginTouchscreen)plugin;
+			Tessellator tessellator = Tessellator.instance;
+			
+			GL11.glTranslatef(0.0f ,  0.0625f * 9, 0.0f);
+			GL11.glScalef(0.0625f*14/touchscreen.WIDTH, -0.0625f*12/touchscreen.HEIGHT, f3);
+			GL11.glDisable(GL11.GL_TEXTURE_2D);
+			
+            tessellator.startDrawingQuads();
+            double posX, posY, pixelW, pixelH;
+            int color;
+            pixelW = 1.0D;
+            pixelH = 1.0D;
+            for(int j=0; j<touchscreen.HEIGHT; j++){
+            	for(int i=0; i<touchscreen.WIDTH; i++){
+            		color = touchscreen.screen[i][j];
+            		if(((color>>24) & 0xFF) != 0){
+	            		posX = i-touchscreen.WIDTH*0.5;
+	            		posY = j-touchscreen.HEIGHT*0.5;
+	            		tessellator.setColorRGBA((color >> 16) & 0xFF,  (color >> 8) & 0xFF, color & 0xFF, 255);
+			            tessellator.addVertex(posX + pixelW, posY, 0.0D);
+			            tessellator.addVertex(posX, posY, 0.0D);
+			            tessellator.addVertex(posX, posY + pixelH, 0.0D);
+			            tessellator.addVertex(posX + pixelW, posY + pixelH, 0.0D);
+            		}
+            	}
+            }
+            tessellator.draw();
+            
+            GL11.glScalef(-1, 1, 1);
+            
+            tessellator.startDrawingQuads();
+            for(int j=0; j<touchscreen.HEIGHT; j++){
+            	for(int i=0; i<touchscreen.WIDTH; i++){
+            		color = touchscreen.screen[i][j];
+            		if(((color>>24) & 0xFF) != 0){
+	            		posX = i-touchscreen.WIDTH*0.5;
+	            		posY = j-touchscreen.HEIGHT*0.5;
+	            		color = touchscreen.screen[i][j];
+	            		tessellator.setColorRGBA((color >> 16) & 0xFF,  (color >> 8) & 0xFF, color & 0xFF, 255);
+			            tessellator.addVertex(posX + pixelW, posY, 0.0D);
+			            tessellator.addVertex(posX, posY, 0.0D);
+			            tessellator.addVertex(posX, posY + pixelH, 0.0D);
+			            tessellator.addVertex(posX + pixelW, posY + pixelH, 0.0D);
+            		}
+            	}
+            }
+            tessellator.draw();
+            
+            GL11.glEnable(GL11.GL_TEXTURE_2D);
 		}
+		
+		GL11.glDepthMask(true);
+		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
+		GL11.glEnable(GL11.GL_LIGHTING);
+		//GL11.glDisable(GL11.GL_BLEND);
+		GL11.glPopMatrix();
 	}
 }
