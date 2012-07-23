@@ -66,82 +66,9 @@ public class PClo_GuiWeaselCoreProgram implements PC_IGresBase {
 
 		AutoAdd autoAdd = new AutoAdd(){
 			
-			private static final int STRING = 1;
-			private static final int COMMENT = 2;
-			
-			private int getInfo(String s, int info){
-				int section = 0;
-				int tab = 0;
-				int type = 0;
-				char c=0;
-				boolean sem=false;
-				for(int i=0; i<s.length(); i++){
-					if(section==STRING){
-						if((s.charAt(i)=='"'&&type==0))
-							section = 0;
-					}else if(section==COMMENT){
-						if(s.charAt(i)=='\n'&&type==0){
-							section = 0;
-						}else if(s.charAt(i)=='*'&&type==1){
-							i++;
-							if(i<s.length()){
-								if(s.charAt(i)=='/')
-									section = 0;
-							}
-						}
-					}else{
-						section = 0;
-						c = s.charAt(i);
-						if(c!=' ' && c!= '\n'){
-							sem = false;
-						}
-						switch(c){
-						case '"':
-							section = STRING;
-							type = 0;
-							break;
-						case '#':
-							section = COMMENT;
-							type = 0;
-							break;
-						case '{':
-							tab++;
-							sem = true;
-							break;
-						case '}':
-							tab--;
-							if(tab<0)
-								tab=0;
-							break;
-						case ';':
-							sem = true;
-						case '/':
-							i++;
-							if(i>=s.length())
-								break;
-							if(s.charAt(i)=='/'){
-								section = COMMENT;
-								type = 0;
-							}else if(s.charAt(i)=='*'){
-								section = COMMENT;
-								type = 1;
-							}
-							break;
-						}
-					}
-				}
-				if(info==0)
-					return section;
-				else if(info==1)
-					return tab;
-				else if(info==2)
-					return sem?0:1;
-				return 0;
-			}
-		
 			private int getFirstFreeSpace(String s){
 				for(int i=0; i<s.length(); i++){
-					if(s.charAt(i)!=' ')
+					if(s.charAt(i)!='\t')
 						return i;
 				}
 				return s.length();
@@ -157,9 +84,8 @@ public class PClo_GuiWeaselCoreProgram implements PC_IGresBase {
 			
 			@Override
 			public StringAdd charAdd(PC_GresTextEditMultiline te, char c,
-					String textBevore, String textBehind) {
-				int section = getInfo(textBevore, 0);
-				if(section==0){
+					PC_GresTextEditMultiline.Keyword kw, int blocks, String textBevore, String textBehind) {
+				if(kw==null||kw.end==null){
 					if(c=='{')
 						return new StringAdd("}", false);
 					if(c=='(')
@@ -167,17 +93,14 @@ public class PClo_GuiWeaselCoreProgram implements PC_IGresBase {
 					if(c=='"')
 						return new StringAdd("\"", false);
 					if(c=='\n'){
-						int tab = getInfo(textBevore, 1);
+						int tab = blocks;
 						int ffs = getFirstFreeSpace(textBehind);
 						if(getFirstNotOf(textBehind, ' ')=='}')
 							tab -= 1;
-						else
-							tab += getInfo(textBevore, 2);
-						tab *= 2;
 						tab -= ffs;
 						String s="";
 						for(int i=0; i<tab; i++){
-							s += " ";
+							s += "\t";
 						}
 						return new StringAdd(s, true);
 					}

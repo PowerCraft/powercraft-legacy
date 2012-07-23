@@ -92,7 +92,8 @@ public class PC_GresHighlightHelper {
 		kw.add(new Keyword("[+\\-*/&|^\\*!%<>=]", colorOperator, true));
 
 		kw.add(new Keyword("[\\(\\)\\[\\]]", colorBracket, true));
-		kw.add(new Keyword("[\\{\\}]", colorBrace, true));
+		kw.add(new Keyword("{", colorBrace, false, true, false));
+		kw.add(new Keyword("}", colorBrace, false, false, true));
 		kw.add(new Keyword("[;]", colorSemicolon, true));
 		kw.add(new Keyword("[,]", colorComma, true));
 
