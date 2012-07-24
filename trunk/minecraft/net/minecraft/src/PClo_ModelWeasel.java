@@ -305,7 +305,7 @@ public class PClo_ModelWeasel extends ModelBase {
             for(int j=0; j<touchscreen.HEIGHT; j++){
             	for(int i=0; i<touchscreen.WIDTH; i++){
             		color = touchscreen.screen[i][j];
-            		if(((color>>24) & 0xFF) != 0){
+            		if(color != -1){
 	            		posX = i-touchscreen.WIDTH*0.5;
 	            		posY = j-touchscreen.HEIGHT*0.5;
 	            		tessellator.setColorRGBA((color >> 16) & 0xFF,  (color >> 8) & 0xFF, color & 0xFF, 255);
@@ -313,12 +313,18 @@ public class PClo_ModelWeasel extends ModelBase {
 			            tessellator.addVertex(posX, posY, 0.0D);
 			            tessellator.addVertex(posX, posY + pixelH, 0.0D);
 			            tessellator.addVertex(posX + pixelW, posY + pixelH, 0.0D);
+			            
+			            tessellator.addVertex(posX, posY, 0.0D);
+			            tessellator.addVertex(posX + pixelW, posY, 0.0D);
+			            tessellator.addVertex(posX + pixelW, posY + pixelH, 0.0D);
+			            tessellator.addVertex(posX, posY + pixelH, 0.0D);
+			            
             		}
             	}
             }
             tessellator.draw();
             
-            GL11.glScalef(-1, 1, 1);
+            /*GL11.glScalef(-1, 1, 1);
             
             tessellator.startDrawingQuads();
             for(int j=0; j<touchscreen.HEIGHT; j++){
@@ -336,7 +342,7 @@ public class PClo_ModelWeasel extends ModelBase {
             		}
             	}
             }
-            tessellator.draw();
+            tessellator.draw();*/
             
             GL11.glEnable(GL11.GL_TEXTURE_2D);
 		}
