@@ -255,9 +255,12 @@ public class Calc {
 			while (matcher.find()) {
 				String group = matcher.group(1);
 				try {
-					Integer out = Integer.parseInt(group, 16);
+					System.out.println("PARSE "+group);
+					Integer out = (int) Long.parseLong(group, 16);
 					matcher.appendReplacement(sb, out.toString());
 				} catch (NumberFormatException nfe) {
+					nfe.printStackTrace();
+					System.out.println(nfe.getMessage());
 					throw new ParseException("0x" + group + " is not a valid hex number.");
 				}
 			}
@@ -275,7 +278,7 @@ public class Calc {
 			while (matcher.find()) {
 				String group = matcher.group(1);
 				try {
-					Integer out = Integer.parseInt(group, 2);
+					Integer out = (int) Long.parseLong(group, 2);
 					matcher.appendReplacement(sb, out.toString());
 				} catch (NumberFormatException nfe) {
 					throw new ParseException("0b" + group + " is not a valid bin number.");
