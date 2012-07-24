@@ -417,13 +417,13 @@ public class PC_GresTextEditMultiline extends PC_GresWidget {
 		public void render(PC_CoordI offsetPos) {
 			offsetPos = offsetPos.copy();
 			char c;
-			int xV = -scroll.x;
+			int xV = 0;
 			int charWidth = 0;
 			for (int i = 0; i < line.length; i++) {
 				c = line[i].c;
 				charWidth = getFontRenderer().getCharWidth(c);
 				if (xV >= scroll.x) {
-					if (xV + charWidth > size.x + scroll.x - 20)
+					if (xV + charWidth > size.x + scroll.x - 24)
 						return;
 					if (c != '\t')
 						drawStringColor(
