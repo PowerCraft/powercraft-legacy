@@ -26,11 +26,16 @@ public class PClo_TileEntityWeaselRenderer extends TileEntitySpecialRenderer {
 
 		PClo_TileEntityWeasel tew = (PClo_TileEntityWeasel) tileentity;
 
-		if (tew == null) return;
+		if (tew == null) {
+			return;
+		}
 
 		PClo_WeaselPlugin plugin = tew.getPlugin();
 
-		if (plugin == null) return;
+		if (plugin == null) {
+			System.out.println("no plugin");
+			return;
+		}
 
 		model.deviceType = plugin.getType();
 		model.plugin = plugin;
