@@ -66,10 +66,10 @@ public class PC_GresColorMap extends PC_GresWidget {
 	        for(int i=-1; i<colorArray.length+1; i++){
 	        	for(int j=-1; j<colorArray[0].length+1; j++){
 	        		if(i==-1||j==-1||i==colorArray.length||j==colorArray[i].length)
-	        			color = 0xff000000;
+	        			color = 0x000000;
 	        		else
 	        			color = colorArray[i][j];
-	        		if(((color>>24) & 0xFF) != 0){
+	        		if(color != -1){
 	            		posX = i + pos.x + posOffset.x;
 	            		posY = j + pos.y + posOffset.y;
 	            		tessellator.setColorRGBA((color >> 16) & 0xFF,  (color >> 8) & 0xFF, color & 0xFF, 255);

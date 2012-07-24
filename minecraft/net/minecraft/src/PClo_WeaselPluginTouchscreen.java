@@ -296,7 +296,7 @@ public class PClo_WeaselPluginTouchscreen extends PClo_WeaselPlugin {
 	public void restartDevice() {
 		for(int j=0; j<HEIGHT; j++){
 			for(int i=0; i<WIDTH; i++){
-				screen[i][j] = 0x00000000;
+				screen[i][j] = -1;
 			}
 		}
 	}
