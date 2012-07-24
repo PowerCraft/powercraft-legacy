@@ -132,7 +132,7 @@ public class PClo_WeaselPluginPort extends PClo_WeaselPlugin {
 
 	@Override
 	public WeaselObject getVariable(String name) {
-		if (name.equals(getName()+".rgb")||name.equals(getName()+".color")) return new WeaselBoolean(rgbcolor);
+		if (name.equals(getName()+".rgb")||name.equals(getName()+".color")) return new WeaselInteger(rgbcolor);
 		if (name.equals(getName())) return new WeaselBoolean(getInport("F"));
 		if (name.startsWith(getName() + ".") && name.length() == getName().length() + 2) {
 			String port = name.substring(name.length() - 1);
