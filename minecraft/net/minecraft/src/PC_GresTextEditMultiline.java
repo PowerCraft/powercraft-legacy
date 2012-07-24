@@ -375,7 +375,7 @@ public class PC_GresTextEditMultiline extends PC_GresWidget {
 			char c;
 			for (int i = 0; i < s.length(); i++) {
 				c = s.charAt(i);
-				if (Character.isAlphabetic(c) || Character.isDigit(c)
+				if (Character.isLetterOrDigit(c)
 						|| c == '_' || c == '.') {
 					if (ret.type == 0)
 						ret.type = 1;

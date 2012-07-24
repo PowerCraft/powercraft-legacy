@@ -907,12 +907,13 @@ public class PClo_BlockGate extends BlockContainer implements PC_IRotatedBox, PC
 		int type = teg.gateType;
 		World world = ModLoader.getMinecraftInstance().theWorld;
 
-		if (type == PClo_GateType.SPECIAL) {
+		if (type == PClo_GateType.SPECIAL) {			
 			return false;
 		}
 
 		if (type == PClo_GateType.NIGHT || type == PClo_GateType.DAY || type == PClo_GateType.RAIN) {
 			//all sides.
+			if (!isActive()) return false;
 			return true;
 		}
 

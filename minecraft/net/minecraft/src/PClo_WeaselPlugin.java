@@ -277,8 +277,8 @@ public abstract class PClo_WeaselPlugin implements PC_INBT, NetworkMember {
 				return new PClo_WeaselPluginDisplay(tew);
 			case PClo_WeaselType.SPEAKER:
 				return new PClo_WeaselPluginSpeaker(tew);
-			case PClo_WeaselType.TOUCHSCREEN:
-				return new PClo_WeaselPluginTouchscreen(tew);
+//			case PClo_WeaselType.TOUCHSCREEN:
+//				return new PClo_WeaselPluginTouchscreen(tew);
 		}
 
 		return null;
@@ -316,10 +316,12 @@ public abstract class PClo_WeaselPlugin implements PC_INBT, NetworkMember {
 	 * Set all output ports to false
 	 */
 	protected final void resetOutport() {
+		boolean wasOn = false;
 		for (int i = 0; i < weaselOutport.length; i++) {
+			wasOn |= weaselOutport[i];
 			weaselOutport[i] = false;
 		}
-		notifyBlockChange();
+		if(wasOn) notifyBlockChange();
 	}
 
 	/**
