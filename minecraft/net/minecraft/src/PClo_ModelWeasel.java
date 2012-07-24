@@ -287,7 +287,9 @@ public class PClo_ModelWeasel extends ModelBase {
 					}
 				}
 			} catch (StringIndexOutOfBoundsException e) {}
+			
 		}else if(deviceType == PClo_WeaselType.TOUCHSCREEN){
+			
 			PClo_WeaselPluginTouchscreen touchscreen = (PClo_WeaselPluginTouchscreen)plugin;
 			Tessellator tessellator = Tessellator.instance;
 			
