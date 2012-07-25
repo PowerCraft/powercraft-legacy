@@ -18,14 +18,15 @@ public class PCco_SplashHelper {
 		// our features
 		"Weasel is fast!",
 		"Weasel powered!",
-		"WeeScript™ rocks!",
-		"WeeScript™ FTW!",
+		"Weasel rocks!",
+		"Weasel FTW!",
+		"Touch it!",
 		"Sniffing diamonds!",
 		"Power of the storm!",
 		"Hacked water!",
 		"Hacked splashes!",
 		"Miner! Oh boy!",
-		"Using Weasel™",
+		"Using Weasel",
 		"GRES",
 		"Transmutation!",
 		// our credits
@@ -56,9 +57,9 @@ public class PCco_SplashHelper {
 		"Reviewed by RxD!",
 		"Modded by masters!",
 		// the mod name
-		"PowerCraft™ "+mod_PCcore.VERSION,
-		"PowerCraft™ "+mod_PCcore.VERSION,
-		"PowerCraft™ "+mod_PCcore.VERSION,
+		"PowerCraft "+mod_PCcore.VERSION,
+		"PowerCraft "+mod_PCcore.VERSION,
+		"PowerCraft "+mod_PCcore.VERSION,
 		// making fun of crashes
 		"Null Pointers included!",
 		"ArrayIndexOutOfBoundsException",
@@ -69,9 +70,6 @@ public class PCco_SplashHelper {
 		//random shouts
 		"Break it down!",
 		"Addictive!",
-		"Make your homeworks!",
-		"Go to bed!",
-		"Facebook sucks!",
 		"Earth is flat!",
 		"Faster than Atari!",
 		"DAFUQ??",
@@ -86,15 +84,12 @@ public class PCco_SplashHelper {
 		"Read the changelog!",
 		"Read the log files!",
 		// also try
-		"Also try Discoworld!",
-		"Also try HammerFall!",
-		"Also try Nightwish!",
+		"Discoworld!",
 		"Also try ICE AGE mod!",
 		"Also try Backpack mod!",
 		// pieces of code
 		"while(true){}",
-		"GOSUB",
-		"0b10010112!",
+		"GOSUB"
 	};
 	//@formatter:on
 
