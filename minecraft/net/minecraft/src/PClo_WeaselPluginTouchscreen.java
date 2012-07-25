@@ -125,8 +125,6 @@ public class PClo_WeaselPluginTouchscreen extends PClo_WeaselPlugin {
 			tmp = x1;
 			x1 = x2;
 			x2 = tmp;
-		}
-		if (y2 < y1) {
 			tmp = y1;
 			y1 = y2;
 			y2 = tmp;
@@ -134,16 +132,24 @@ public class PClo_WeaselPluginTouchscreen extends PClo_WeaselPlugin {
 
 		float f;
 		int x, y, xd = x2 - x1, yd = y2 - y1;
-		if (xd > yd) {
+
+		if (xd > Math.abs(yd)) {
 			f = (float) yd / xd;
-			for (int i = 0; i < xd; i++) {
+			for (int i = 0; i <= xd; i++) {
 				x = x1 + i;
 				y = (int) (y1 + f * i);
 				if (x >= 0 && x < WIDTH && y >= 0 && y < HEIGHT) screen[x][y] = color;
 			}
+		} else if(yd<0) {
+			f = (float) xd / yd;
+			for (int j = 0; j >= yd; j--) {
+				x = (int) (x1 + f * j);
+				y = y1 + j;
+				if (x >= 0 && x < WIDTH && y >= 0 && y < HEIGHT) screen[x][y] = color;
+			}
 		} else {
 			f = (float) xd / yd;
-			for (int j = 0; j < yd; j++) {
+			for (int j = 0; j <= yd; j++) {
 				x = (int) (x1 + f * j);
 				y = y1 + j;
 				if (x >= 0 && x < WIDTH && y >= 0 && y < HEIGHT) screen[x][y] = color;
