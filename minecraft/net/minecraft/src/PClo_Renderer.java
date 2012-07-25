@@ -208,18 +208,30 @@ public class PClo_Renderer {
 				break;
 				
 			case PClo_WeaselType.TOUCHSCREEN:
-				// floor
-				block.setBlockBounds(3 * px, 0, 3 * px, 13 * px, 1 * px, 13 * px);
-				PC_Renderer.renderInvBoxWithTextures(renderblocks, block, new int[] { 192, 192, 176, 176, 176, 176 });
-
-				// leg
-				block.setBlockBounds(7.2F * px, 1 * px, 7.2F * px, 8.8F * px, 2 * px, 8.8F * px);
-				PC_Renderer.renderInvBoxWithTextures(renderblocks, block, new int[] { 176, 176, 176, 176, 176, 176 });
-
-				// screen
-				block.setBlockBounds(0 * px, 2 * px, 7 * px, 16 * px, 16 * px, 9 * px);
-				PC_Renderer.renderInvBoxWithTextures(renderblocks, block, new int[] { 176, 176, 178, 177, 176, 176 });
-
+				// legs
+				block.setBlockBounds(3 * px, 0, 4 * px, 4 * px, 1 * px, 12 * px);
+				PC_Renderer.renderInvBoxWithTexture(renderblocks, block, 197);
+				block.setBlockBounds(11 * px, 0, 4 * px, 12* px, 1 * px, 12 * px);
+				PC_Renderer.renderInvBoxWithTexture(renderblocks, block, 197);
+				//sticks
+				block.setBlockBounds(3 * px, 1*px, 7.5F * px, 4 * px, 2 * px, 8.5F * px);
+				PC_Renderer.renderInvBoxWithTexture(renderblocks, block, 197);
+				block.setBlockBounds(11 * px, 1*px, 7.5F * px, 12* px, 2 * px, 8.5F * px);
+				PC_Renderer.renderInvBoxWithTexture(renderblocks, block, 197);
+				
+				//bottom
+				block.setBlockBounds(0 * px, 2*px, 7.5F * px, 15 * px, 3 * px, 8.5F * px);
+				PC_Renderer.renderInvBoxWithTexture(renderblocks, block, 197);
+				//top
+				block.setBlockBounds(0 * px, 14*px, 7.5F * px, 15 * px, 15* px, 8.5F * px);
+				PC_Renderer.renderInvBoxWithTexture(renderblocks, block, 197);
+				//left
+				block.setBlockBounds(0 * px, 3*px, 7.5F * px, 1 * px, 14* px, 8.5F * px);
+				PC_Renderer.renderInvBoxWithTexture(renderblocks, block, 197);
+				//right
+				block.setBlockBounds(14 * px, 3*px, 7.5F * px, 15 * px, 14* px, 8.5F * px);
+				PC_Renderer.renderInvBoxWithTexture(renderblocks, block, 197);
+				
 				block.setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 1.0F, 1.0F);
 				break;
 				
