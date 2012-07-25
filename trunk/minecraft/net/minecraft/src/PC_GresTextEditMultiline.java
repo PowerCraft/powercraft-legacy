@@ -1238,9 +1238,20 @@ public class PC_GresTextEditMultiline extends PC_GresWidget {
 	private void setSelected(String stri) {
 		text.addString(stri, mouseSelectStart.y, mouseSelectStart.x,
 				mouseSelectEnd.y, mouseSelectEnd.x);
-		moveCursor(stri.length());
+		moveCursorJumping(stri.length());
 		
-		mouseSelectStart.setTo(mouseSelectEnd);
+		mouseSelectEnd.setTo(mouseSelectStart);
+	}
+
+	private void moveCursorJumping(int x) {
+		int yPos = mouseSelectStart.y;
+		x += mouseSelectStart.x;
+		while(x>getLine(yPos).length()){
+			x-=getLine(yPos).length()+1;
+			yPos++;
+		}
+		int xPos = x;
+		mouseSelectStart.setTo(xPos, yPos);
 	}
 
 	@Override
