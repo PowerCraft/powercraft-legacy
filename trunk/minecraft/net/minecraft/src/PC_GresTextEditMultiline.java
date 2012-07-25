@@ -18,14 +18,14 @@ public class PC_GresTextEditMultiline extends PC_GresWidget {
 
 	}
 
-	public class File {
+	public class TextFile {
 		private Line[] lines = { new Line("", null, 0) };
 
-		public File(String s) {
+		public TextFile(String s) {
 			addString(s, 0, 0, 0, 0);
 		}
 
-		public File addString(String s, int line1, int pos1, int line2, int pos2) {
+		public TextFile addString(String s, int line1, int pos1, int line2, int pos2) {
 			if (line1 > line2) {
 				int tmp = line1;
 				line1 = line2;
@@ -165,7 +165,7 @@ public class PC_GresTextEditMultiline extends PC_GresWidget {
 			}
 		}
 
-		public File setString(String s, int line) {
+		public TextFile setString(String s, int line) {
 			if (line >= 0 && line < getNumLines()) {
 				Keyword notEndedKeywordBevore = null;
 				Keyword kwbev = null;
@@ -594,7 +594,7 @@ public class PC_GresTextEditMultiline extends PC_GresWidget {
 
 	//private int nextWordKeywordColor = 0;
 
-	private File text;
+	private TextFile text;
 
 	/**
 	 * Multi-row text edit
@@ -617,7 +617,7 @@ public class PC_GresTextEditMultiline extends PC_GresWidget {
 		color[textColorHover] = 0xff000000 | PC_GresHighlightHelper.colorDefault;
 		color[textColorDisabled] = 0xff000000 | PC_GresHighlightHelper.colorDefault;
 		color[textColorShadowDisabled] = 0; // 0xff383838;
-		this.text = new File(text);
+		this.text = new TextFile(text);
 	}
 
 	/**
@@ -645,7 +645,7 @@ public class PC_GresTextEditMultiline extends PC_GresWidget {
 		color[textColorDisabled] = 0xff000000 | PC_GresHighlightHelper.colorDefault;
 		color[textColorShadowDisabled] = 0; // 0xff383838;
 		this.keyWords = keyWords;
-		this.text = new File(text);
+		this.text = new TextFile(text);
 	}
 
 	/**
@@ -676,7 +676,7 @@ public class PC_GresTextEditMultiline extends PC_GresWidget {
 		color[textColorShadowDisabled] = 0; // 0xff383838;
 		this.keyWords = keyWords;
 		this.autoAdd = autoAdd;
-		this.text = new File(text);
+		this.text = new TextFile(text);
 	}
 
 	private int _getStringWidth(String text) {
@@ -1239,6 +1239,7 @@ public class PC_GresTextEditMultiline extends PC_GresWidget {
 		text.addString(stri, mouseSelectStart.y, mouseSelectStart.x,
 				mouseSelectEnd.y, mouseSelectEnd.x);
 		moveCursor(stri.length());
+		
 		mouseSelectStart.setTo(mouseSelectEnd);
 	}
 
