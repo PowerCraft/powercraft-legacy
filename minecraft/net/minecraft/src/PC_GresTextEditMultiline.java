@@ -1236,6 +1236,15 @@ public class PC_GresTextEditMultiline extends PC_GresWidget {
 	}
 
 	private void setSelected(String stri) {
+		if (mouseSelectStart.y > mouseSelectEnd.y) {
+			PC_CoordI tmp = mouseSelectStart;
+			mouseSelectStart = mouseSelectEnd;
+			mouseSelectEnd = tmp;
+		} else if (mouseSelectStart.y == mouseSelectEnd.y && mouseSelectStart.x > mouseSelectEnd.x) {
+			PC_CoordI tmp = mouseSelectStart;
+			mouseSelectStart = mouseSelectEnd;
+			mouseSelectEnd = tmp;
+		}
 		text.addString(stri, mouseSelectStart.y, mouseSelectStart.x,
 				mouseSelectEnd.y, mouseSelectEnd.x);
 		moveCursorJumping(stri.length());
