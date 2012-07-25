@@ -63,4 +63,11 @@ public interface PC_IGresGui {
 	 */
 	public void setFocus(PC_GresWidget widget);
 
+	/**
+	 * Set background gradient colors - 0xAARRGGBB.
+	 * @param top
+	 * @param bottom
+	 */
+	public void setBackground(int top, int bottom);
+
 }

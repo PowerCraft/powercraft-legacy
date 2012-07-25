@@ -255,7 +255,6 @@ public class Calc {
 			while (matcher.find()) {
 				String group = matcher.group(1);
 				try {
-					System.out.println("PARSE "+group);
 					Integer out = (int) Long.parseLong(group, 16);
 					matcher.appendReplacement(sb, out.toString());
 				} catch (NumberFormatException nfe) {

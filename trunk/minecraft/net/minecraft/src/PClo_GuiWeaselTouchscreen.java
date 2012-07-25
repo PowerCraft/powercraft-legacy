@@ -17,7 +17,6 @@ public class PClo_GuiWeaselTouchscreen implements PC_IGresBase {
 	private PC_GresWidget edName;
 	private PC_GresWidget btnOk;
 	private PC_GresButton btnCancel;
-	private PC_GresColorMap colorMap;
 
 	/**
 	 * GUI for port.
@@ -67,8 +66,6 @@ public class PClo_GuiWeaselTouchscreen implements PC_IGresBase {
 		w.add(new PC_GresGap(0, 0));
 		
 		mvg.add(w);
-		colorMap = new PC_GresColorMap(touchscreen.screen);
-		mvg.add(colorMap);
 		
 		gui.add(mvg);
 		
@@ -101,8 +98,6 @@ public class PClo_GuiWeaselTouchscreen implements PC_IGresBase {
 		if (widget == btnOk) {
 			String name = edName.text.trim();
 			touchscreen.setMemberName(name);
-			//txError.text = PC_Lang.tr("pc.gui.weasel.deviceRenamed", name);
-			//w.calcSize();
 			gui.close();
 			return;
 		}
@@ -110,17 +105,6 @@ public class PClo_GuiWeaselTouchscreen implements PC_IGresBase {
 		if (widget == btnCancel) {
 			gui.close();
 			return;
-		}
-
-		if (widget == colorMap) {
-			int event = colorMap.getLastEvent();
-			PC_CoordI mouse = colorMap.getLastMousePos();
-			int mouseKey = colorMap.getLastMouseKey();
-			char key = colorMap.getLastKey();
-			
-			((PClo_WeaselPlugin) touchscreen.getNetwork().getMember("CORE"))
-					.callFunctionExternalDelegated("touchscreenUpdate", new WeaselString(touchscreen.getName()), new WeaselInteger(event),
-					new WeaselInteger(mouse.x), new WeaselInteger(mouse.y), new WeaselInteger(mouseKey), new WeaselString(""+key));
 		}
 		
 	}
