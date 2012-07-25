@@ -108,16 +108,20 @@ public class PClo_ModelWeasel extends ModelBase {
 		touchscreen = new ModelRenderer[2];
 
 		// the bottom pad
-		touchscreen[0] = new ModelRenderer(this, 58, 73);
+		touchscreen[0] = new ModelRenderer(this, 0, 81);
+		//legs
 		touchscreen[0].addBox(-5F, -1F, -5F, 1, 1, 10, 0.0F);
 		touchscreen[0].addBox(4F, -1F, -5F, 1, 1, 10, 0.0F);
 		
+		// connections
 		touchscreen[0].addBox(-5F, -2F, -0.5F, 1, 1, 1, 0.0F);
 		touchscreen[0].addBox(4F, -2F, -0.5F, 1, 1, 1, 0.0F);
 		
+		// top,bottom
 		touchscreen[0].addBox(-8F, -3F, -0.5F, 16, 1, 1, 0.0F);
 		touchscreen[0].addBox(-8F, -16F, -0.5F, 16, 1, 1, 0.0F);
 		
+		// sides
 		touchscreen[0].addBox(-8F, -15F, -0.5F, 1, 12, 1, 0.0F);
 		touchscreen[0].addBox(7F, -15F, -0.5F, 1, 12, 1, 0.0F);
 
