@@ -9,6 +9,7 @@ public class PC_GresColorMap extends PC_GresWidget {
 	private PC_CoordI lastMousePos;
 	private int lastMouseKey;
 	private int lastEvent;
+	private static final int px = 3;
 	
 	public PC_GresColorMap(int colorArray[][]){
 		super("");
@@ -31,7 +32,8 @@ public class PC_GresColorMap extends PC_GresWidget {
 	}
 	
 	public PC_CoordI getLastMousePos(){
-		return lastMousePos.copy();
+		PC_CoordI co = lastMousePos.copy().offset(-1*px,-1*px);
+		return new PC_CoordI(co.x/px,co.y/px);
 	}
 	
 	public int getLastMouseKey(){
@@ -47,7 +49,7 @@ public class PC_GresColorMap extends PC_GresWidget {
 		if(colorArray==null)
 			return new PC_CoordI(0,0);
 		else
-			return new PC_CoordI(colorArray.length+2,colorArray[0].length+2);
+			return new PC_CoordI(Math.round(colorArray.length*px+2*px),Math.round(colorArray[0].length*px+2*px));
 	}
 
 	@Override
@@ -70,17 +72,17 @@ public class PC_GresColorMap extends PC_GresWidget {
 	        		else
 	        			color = colorArray[i][j];
 	        		if(color != -1){
-	            		posX = i + pos.x + posOffset.x;
-	            		posY = j + pos.y + posOffset.y;
+	            		posX = i*px + pos.x + posOffset.x;
+	            		posY = j*px + pos.y + posOffset.y;
 	            		tessellator.setColorRGBA((color >> 16) & 0xFF,  (color >> 8) & 0xFF, color & 0xFF, 255);
 			            tessellator.addVertex(posX, posY, 0.0D);
-			            tessellator.addVertex(posX + pixelW, posY, 0.0D);
-			            tessellator.addVertex(posX + pixelW, posY + pixelH, 0.0D);
-			            tessellator.addVertex(posX, posY + pixelH, 0.0D);
-			            tessellator.addVertex(posX + pixelW, posY, 0.0D);
+			            tessellator.addVertex(posX + pixelW*px, posY, 0.0D);
+			            tessellator.addVertex(posX + pixelW*px, posY + pixelH*px, 0.0D);
+			            tessellator.addVertex(posX, posY + pixelH*px, 0.0D);
+			            tessellator.addVertex(posX + pixelW*px, posY, 0.0D);
 			            tessellator.addVertex(posX, posY, 0.0D);
-			            tessellator.addVertex(posX, posY + pixelH, 0.0D);
-			            tessellator.addVertex(posX + pixelW, posY + pixelH, 0.0D);
+			            tessellator.addVertex(posX, posY + pixelH*px, 0.0D);
+			            tessellator.addVertex(posX + pixelW*px, posY + pixelH*px, 0.0D);
 	        		}
 	        	}
 	        }
