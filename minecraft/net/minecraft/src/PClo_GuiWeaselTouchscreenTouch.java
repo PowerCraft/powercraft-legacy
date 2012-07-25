@@ -3,6 +3,7 @@ package net.minecraft.src;
 import weasel.obj.WeaselInteger;
 import weasel.obj.WeaselString;
 import net.minecraft.src.PC_GresWidget.PC_GresAlign;
+import net.minecraft.src.PClo_NetManager.WeaselNetwork;
 
 /**
  * Gui for touchscreen with the touch area - not the settings.
@@ -58,9 +59,11 @@ public class PClo_GuiWeaselTouchscreenTouch implements PC_IGresBase {
 			int mouseKey = colorMap.getLastMouseKey();
 			char key = colorMap.getLastKey();
 			
-			((PClo_WeaselPlugin) touchscreen.getNetwork().getMember("CORE"))
-					.callFunctionExternalDelegated("touchEvent", new WeaselString(touchscreen.getName()), new WeaselString(event),
-					new WeaselInteger(mouse.x), new WeaselInteger(mouse.y), new WeaselInteger(mouseKey), new WeaselString(""+key));
+			WeaselNetwork network = touchscreen.getNetwork();
+			if(network!=null)
+				((PClo_WeaselPlugin) network.getMember("CORE"))
+						.callFunctionExternalDelegated("touchEvent", new WeaselString(touchscreen.getName()), new WeaselString(event),
+								new WeaselInteger(mouse.x), new WeaselInteger(mouse.y), new WeaselInteger(mouseKey), new WeaselString(""+key));
 		}
 		
 		if(widget.getId() == 0) gui.close();
