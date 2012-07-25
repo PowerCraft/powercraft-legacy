@@ -6,6 +6,9 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Random;
 
+import weasel.Calc;
+import weasel.obj.WeaselString;
+
 
 /**
  * PowerCraft color handling and manipulation class.
@@ -123,14 +126,25 @@ public class PC_Color implements PC_INBT {
 	/**
 	 * Get a color index (hex) for given color name.
 	 * 
-	 * @param name
+	 * @param object color name or hex
 	 * @return hex color, or null.
 	 */
-	public static Integer getHexColorForName(String name) {
-		for (String key : namedColors.keySet()) {
-			if (key.equalsIgnoreCase(name)) {
-				return namedColors.get(key);
+	public static Integer getHexColorForName(Object object) {
+		String name = null;
+		if(object instanceof WeaselString) {			
+			name = ((WeaselString) object).get();
+		}
+		if(object instanceof String) {			
+			name = ((String) object);
+		}
+		if(name!=null) {
+			for (String key : namedColors.keySet()) {
+				if (key.equalsIgnoreCase(name)) {
+					return namedColors.get(key);
+				}
 			}
+		}else {
+			return Calc.toInteger(object);
 		}
 		return null;
 	}

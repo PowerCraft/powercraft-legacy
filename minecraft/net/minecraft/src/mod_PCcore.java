@@ -397,6 +397,7 @@ public class mod_PCcore extends PC_Module implements PC_IActivatorListener {
 		map.put("pc.gui.spawnerEditor.enableDangerous", "Enable dangerous");
 		map.put("pc.gui.ok", "OK");
 		map.put("pc.gui.cancel", "Cancel");
+		map.put("pc.gui.close", "Close");
 
 //		map.put("pc.sniffer.sniffing", "Sniffing ores...");
 //		map.put("pc.sniffer.away", "(far away)");

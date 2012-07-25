@@ -202,6 +202,28 @@ public class PC_GresGui extends GuiContainer implements PC_IGresGui {
 		drawDefaultBackground();
 		child.updateRenderer(new PC_CoordI(0, 0));
 	}
+	
+	private int bgColor1 = 0xa0101010;
+	private int bgColor2 = 0x50101010;
+	
+	@Override
+	public void setBackground(int top, int bottom) {
+		bgColor1 = top;
+		bgColor2 = bottom;
+	}
+
+    @Override
+	public void drawWorldBackground(int par1)
+    {
+        if (mc.theWorld != null)
+        {
+            drawGradientRect(0, 0, width, height, bgColor1, bgColor2);
+        }
+        else
+        {
+            drawBackground(par1);
+        }
+    }
 
 
 	/**
