@@ -869,6 +869,7 @@ public class mod_PClogic extends PC_Module {
 		addStacksToCraftingTool(PC_ItemGroup.LOGIC, 
 				new ItemStack(pulsar));
 		addStackRangeToCraftingTool(PC_ItemGroup.LOGIC, weaselDevice.blockID, 0, PClo_WeaselType.WEASEL_DEVICE_COUNT - 1, 1);
+		addStacksToCraftingTool(PC_ItemGroup.LOGIC, new ItemStack(weaselDisk,1,0xfff));
 		
 		addStacksToCraftingTool(PC_ItemGroup.LIGHTS,
 				
