@@ -3,6 +3,10 @@ package net.minecraft.src;
 
 import java.util.List;
 
+import weasel.Calc;
+import weasel.exception.WeaselRuntimeException;
+import weasel.obj.WeaselInteger;
+import weasel.obj.WeaselObject;
 import weasel.obj.WeaselVariableMap;
 
 
@@ -32,19 +36,13 @@ public class PClo_ItemWeaselDisk extends Item {
 
 	@Override
 	public void onCreated(ItemStack itemstack, World world, EntityPlayer entityplayer) {
-		NBTTagCompound tag = new NBTTagCompound();
-		tag.setString("Label", PC_Lang.tr("pc.weasel.disk.new_label"));
-		tag.setInteger("Type", EMPTY);
-		itemstack.setTagCompound(tag);
+		checkTag(itemstack);
 	}
 
 	
 	@Override
 	public void addInformation(ItemStack itemstack, List list) {
-		if(!itemstack.hasTagCompound()) {
-			list.add(PC_Lang.tr("pc.weasel.disk.empty"));
-			return;
-		}
+		checkTag(itemstack);
 		switch(itemstack.getTagCompound().getInteger("Type")) {
 			case EMPTY:
 				list.add(PC_Lang.tr("pc.weasel.disk.empty"));
@@ -69,7 +67,7 @@ public class PClo_ItemWeaselDisk extends Item {
 	
 	@Override
 	public String getItemDisplayName(ItemStack itemstack) {
-		if(!itemstack.hasTagCompound()) return PC_Lang.tr("pc.weasel.disk.new_label");
+		checkTag(itemstack);
 		return itemstack.getTagCompound().getString("Label");
 	}
 	
@@ -78,6 +76,7 @@ public class PClo_ItemWeaselDisk extends Item {
 	 * @param itemstack
 	 */
 	public static void eraseDisk(ItemStack itemstack) {
+		checkTag(itemstack);
 		String label = getLabel(itemstack);
 		NBTTagCompound tag = new NBTTagCompound();
 		tag.setString("Label", label);
@@ -92,6 +91,7 @@ public class PClo_ItemWeaselDisk extends Item {
 	 * @param type type, constants from PClo_ItemWeaselDisk
 	 */
 	public static void formatDisk(ItemStack itemstack, int type) {
+		checkTag(itemstack);
 		eraseDisk(itemstack);
 		NBTTagCompound tag = itemstack.getTagCompound();
 		switch(type) {
@@ -133,6 +133,7 @@ public class PClo_ItemWeaselDisk extends Item {
 	 * @return text
 	 */
 	public static String getText(ItemStack itemstack) {
+		checkTag(itemstack);
 		if(itemstack.getTagCompound().getInteger("Type") != TEXT) return null;
 		return itemstack.getTagCompound().getString("Text");
 	}
@@ -143,6 +144,7 @@ public class PClo_ItemWeaselDisk extends Item {
 	 * @param text text
 	 */
 	public static void setText(ItemStack itemstack, String text) {
+		checkTag(itemstack);
 		if(itemstack.getTagCompound().getInteger("Type") != TEXT) return;
 		itemstack.getTagCompound().setString("Text",text);
 	}
@@ -156,9 +158,34 @@ public class PClo_ItemWeaselDisk extends Item {
 	 * @param itemstack stack
 	 * @return strings
 	 */
-	public static String[] getListEntires(ItemStack itemstack) {
+	private static String[] getListEntries(ItemStack itemstack) {
+		checkTag(itemstack);
 		if(itemstack.getTagCompound().getInteger("Type") != NUMBERLIST && itemstack.getTagCompound().getInteger("Type") != STRINGLIST) return null;
 		return itemstack.getTagCompound().getString("ListData").split(itemstack.getTagCompound().getString("ListDelimiter"));
+	}
+	
+	public static int getListLength(ItemStack itemstack) {
+		checkTag(itemstack);
+		if(itemstack.getTagCompound().getInteger("Type") != NUMBERLIST && itemstack.getTagCompound().getInteger("Type") != STRINGLIST) return -1;
+		return getListEntries(itemstack).length;
+	}
+	
+	public static WeaselObject getListEntry(ItemStack itemstack, int entry) {
+		checkTag(itemstack);
+		if(itemstack.getTagCompound().getInteger("Type") != NUMBERLIST && itemstack.getTagCompound().getInteger("Type") != STRINGLIST) return null;
+		
+		int size = getListLength(itemstack);
+		if(entry<0 || entry>=size) throw new WeaselRuntimeException("Disk: getListEntry called with invalid index "+entry+" (length "+size+").");
+		
+		String str = getListEntries(itemstack)[entry];
+		if(itemstack.getTagCompound().getInteger("Type") == NUMBERLIST) {
+			return new WeaselInteger(Calc.toInteger(str));
+		}
+		if(itemstack.getTagCompound().getInteger("Type") == STRINGLIST) {
+			return new WeaselInteger(Calc.toString(str));
+		}
+		
+		return null;		
 	}
 	
 	/**
@@ -166,7 +193,8 @@ public class PClo_ItemWeaselDisk extends Item {
 	 * @param itemstack stack
 	 * @return raw list
 	 */
-	public static String getList(ItemStack itemstack) {
+	public static String getListText(ItemStack itemstack) {
+		checkTag(itemstack);
 		if(itemstack.getTagCompound().getInteger("Type") != NUMBERLIST && itemstack.getTagCompound().getInteger("Type") != STRINGLIST) return null;
 		return itemstack.getTagCompound().getString("ListData");
 	}
@@ -177,6 +205,7 @@ public class PClo_ItemWeaselDisk extends Item {
 	 * @return delimiter
 	 */
 	public static String getListDelimiter(ItemStack itemstack) {
+		checkTag(itemstack);
 		if(itemstack.getTagCompound().getInteger("Type") != NUMBERLIST && itemstack.getTagCompound().getInteger("Type") != STRINGLIST) return null;
 		return itemstack.getTagCompound().getString("ListDelimiter");
 	}
@@ -188,9 +217,35 @@ public class PClo_ItemWeaselDisk extends Item {
 	 * @param delimiter ","
 	 */
 	public static void setList(ItemStack itemstack, String listtext, String delimiter) {
+		checkTag(itemstack);
 		if(itemstack.getTagCompound().getInteger("Type") != NUMBERLIST && itemstack.getTagCompound().getInteger("Type") != STRINGLIST) return;
 		itemstack.getTagCompound().setString("ListData",listtext);
 		itemstack.getTagCompound().setString("ListDelimiter",delimiter);
+	}
+	
+	public static int getType(ItemStack itemstack) {
+		checkTag(itemstack);
+		return itemstack.getTagCompound().getInteger("Type");
+	}
+	
+	public static void setType(ItemStack itemstack, int type) {
+		checkTag(itemstack);
+		itemstack.getTagCompound().setInteger("Type",type);
+	}
+	
+	public static void checkTag(ItemStack stack) {
+		if(stack.hasTagCompound()) {
+			if(!stack.getTagCompound().hasKey("Type")) {
+				stack.getTagCompound().setInteger("Type", EMPTY);
+			}
+			if(!stack.getTagCompound().hasKey("Label")) {
+				stack.getTagCompound().setString("Label", PC_Lang.tr("pc.weasel.disk.new_label"));
+			}
+			return;
+		}else{
+			stack.setTagCompound(new NBTTagCompound());
+			checkTag(stack);
+		}
 	}
 	
 	
@@ -203,6 +258,7 @@ public class PClo_ItemWeaselDisk extends Item {
 	 * @return the label
 	 */
 	public static String getLabel(ItemStack itemstack) {
+		checkTag(itemstack);
 		return itemstack.getTagCompound().getString("Label");
 	}
 	
@@ -212,6 +268,7 @@ public class PClo_ItemWeaselDisk extends Item {
 	 * @param text the label
 	 */
 	public static void setLabel(ItemStack itemstack, String text) {
+		checkTag(itemstack);
 		itemstack.getTagCompound().setString("Label",text);
 	}
 	
