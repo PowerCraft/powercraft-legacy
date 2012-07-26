@@ -74,6 +74,7 @@ public class mod_PClogic extends PC_Module {
 	private static final String pk_idWeasel = "id.block.weasel_device";
 	private static final String pk_idSensor = "id.block.motion_sensor";
 	private static final String pk_idRemote = "id.item.radio_remote";
+	private static final String pk_idDisk = "id.item.weasel_disk";
 	private static final String pk_optRadioDefChannel = "default.radio.channel";
 	private static final String pk_optSensorDefRange = "default.sensor.range";
 
@@ -89,6 +90,9 @@ public class mod_PClogic extends PC_Module {
 
 	/** Portable transmitter */
 	public static Item portableTx;
+
+	/** WeaselDisk */
+	public static PClo_ItemWeaselDisk weaselDisk;
 
 	/** flat device, off state */
 	public static Block gateOff;
@@ -129,6 +133,7 @@ public class mod_PClogic extends PC_Module {
 		conf.putBlock(pk_idSensor, 229);
 		conf.putBlock(pk_idWeasel, 239);
 		conf.putItem(pk_idRemote, 19000);
+		conf.putItem(pk_idDisk, 19005);
 		conf.putString(pk_optRadioDefChannel, "default", "the default channel for radios");
 		conf.putInteger(pk_optSensorDefRange, 3, "the range of newly placed sensor");
 
@@ -239,6 +244,10 @@ public class mod_PClogic extends PC_Module {
 				.setMaxStackSize(1)
 				.setItemName("PCloRadioPortableTx");
 		
+		weaselDisk = (PClo_ItemWeaselDisk) (new PClo_ItemWeaselDisk(cfg().getInteger(pk_idDisk)))
+				.setMaxStackSize(1)
+				.setItemName("PCloWeaselDisk");
+		
 		// @formatter:on
 
 		removeBlockItem(gateOn.blockID);
@@ -266,6 +275,8 @@ public class mod_PClogic extends PC_Module {
 	@Override
 	public void setTextures() {
 		portableTx.setIconIndex(ModLoader.addOverride("/gui/items.png", getImgDir() + "portable.png"));
+		weaselDisk.textureBg = ModLoader.addOverride("/gui/items.png", getImgDir() + "item_disk_base.png");
+		weaselDisk.textureFg = ModLoader.addOverride("/gui/items.png", getImgDir() + "item_disk_label.png");
 	}
 
 	@Override
@@ -488,6 +499,15 @@ public class mod_PClogic extends PC_Module {
 
 		map.put("pc.radioRemote.connected", "Portable transmitter connected to channel \"%s\".");
 		map.put("pc.radioRemote.desc", "Channel: %s");
+		
+		map.put("pc.weasel.disk.new_label", "Weasel Disk");
+		map.put("pc.weasel.disk.empty", "Unformatted Disk");
+		map.put("pc.weasel.disk.text", "Text read-only");
+		map.put("pc.weasel.disk.image", "Image read-only");
+		map.put("pc.weasel.disk.numberlist", "Number list read-only");
+		map.put("pc.weasel.disk.stringlist", "String list read-only");
+		map.put("pc.weasel.disk.varmap", "Read-write memory");
+
 
 
 		map.put("pc.gui.gate.delay", "Delay (sec)");
@@ -740,7 +760,18 @@ public class mod_PClogic extends PC_Module {
 				new ItemStack(weaselDevice, 1, PClo_WeaselType.SPEAKER),
 				new Object[] { " N ", "RGR","SSS",
 					'S', new ItemStack(Block.stairSingle,1,0), 'R', Item.redstone, 'N', Block.music, 'G', Item.goldNugget  });
+		
+		ModLoader.addRecipe(
+				new ItemStack(weaselDevice, 1, PClo_WeaselType.TOUCHSCREEN),
+				new Object[] { "GGG", "RNR","SSS",
+					'S', new ItemStack(Block.stairSingle,1,0), 'R', Item.redstone, 'G', Block.thinGlass, 'N', Item.goldNugget });
+		
 
+		ModLoader.addRecipe(
+				new ItemStack(weaselDisk, 4, 0),
+				new Object[] { " C ", "CIC"," C ",
+					'C', Item.coal, 'I', Item.ingotIron });
+		
 		
 		// *** lights ***
 		
