@@ -1,6 +1,7 @@
 package net.minecraft.src;
 
 
+import net.minecraft.src.PC_GresTextEdit.PC_GresInputType;
 import net.minecraft.src.PC_GresWidget.PC_GresAlign;
 
 
@@ -53,7 +54,7 @@ public class PClo_GuiWeaselSpeaker implements PC_IGresBase {
 
 		hg = new PC_GresLayoutH();
 		hg.add(new PC_GresLabel(PC_Lang.tr("pc.gui.weasel.sound.speakerName")));
-		hg.add(edName = new PC_GresTextEdit(speaker.getName(), 14).setWidgetMargin(2));
+		hg.add(edName = new PC_GresTextEdit(speaker.getName(), 14, PC_GresInputType.IDENTIFIER).setWidgetMargin(2));
 		w.add(hg);
 
 		w.add(txError = new PC_GresLabel("").setWidgetMargin(2).setColor(PC_GresWidget.textColorEnabled, 0x000000));

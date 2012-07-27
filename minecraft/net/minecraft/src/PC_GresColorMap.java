@@ -12,6 +12,18 @@ public class PC_GresColorMap extends PC_GresWidget {
 	private int lastMouseKey;
 	private String lastEvent;
 	private int px = 3;
+	private boolean border = true;
+	private boolean acceptKeyboardInput = true;
+	
+	protected PC_GresColorMap showBorder(boolean flag) {
+		border = flag;
+		return this;
+	}
+	
+	public PC_GresColorMap useKeyboard(boolean flag) {
+		acceptKeyboardInput = flag;
+		return this;
+	}
 	
 	/**
 	 * Set map scale - size of 1 pixel. default is 3.
@@ -20,7 +32,9 @@ public class PC_GresColorMap extends PC_GresWidget {
 	 */
 	public PC_GresColorMap setScale(int scale) {
 		px = scale;
-		size = calcSize();
+		minSize = size = calcSize();
+		if(parent!=null)
+			parent.calcChildPositions();
 		return this;
 	}
 	
@@ -38,6 +52,10 @@ public class PC_GresColorMap extends PC_GresWidget {
 		size = calcSize();
 		if(parent!=null)
 			parent.calcChildPositions();
+	}
+	
+	public int[][] getColorArray(){
+		return colorArray;
 	}
 	
 	public char getLastKey(){
@@ -59,10 +77,19 @@ public class PC_GresColorMap extends PC_GresWidget {
 	
 	@Override
 	public PC_CoordI calcSize() {
+		if(!visible) return zerosize;
 		if(colorArray==null)
-			return new PC_CoordI(0,0);
+			return zerosize;
 		else
 			return new PC_CoordI(Math.round(colorArray.length*px+2*px),Math.round(colorArray[0].length*px+2*px));
+	}
+	
+	public PC_CoordI getSizeAfterChange(int change) {
+		int px1 = px;
+		px+=change;
+		PC_CoordI ss = calcSize();
+		px = px1;
+		return ss;
 	}
 
 	@Override
@@ -78,7 +105,7 @@ public class PC_GresColorMap extends PC_GresWidget {
         double posX, posY, pixelW, pixelH;
         int color;
         boolean border=false;
-        float bdrdist = 0.4F;
+        float bdrdist = px>1?0.4F:0F;
         pixelW = 1.0D;
         pixelH = 1.0D;
         if(colorArray!=null){
@@ -86,8 +113,8 @@ public class PC_GresColorMap extends PC_GresWidget {
 	        	for(int y=-1; y<colorArray[0].length+1; y++){
 	        		border=false;
 	        		if(x==-1||y==-1||x==colorArray.length||y==colorArray[x].length) {
-	        			color = 0x000000;
-	        			border=true;
+	        			color = 0x606060;
+	        			border=this.border;
 	        		}else {
 	        			color = colorArray[x][y];}
 	        		if(color != -1){
@@ -142,6 +169,7 @@ public class PC_GresColorMap extends PC_GresWidget {
 
 	@Override
 	public boolean keyTyped(char c, int key) {
+		if(!acceptKeyboardInput) return false;
 		lastKey = c;
 		lastEvent = "key";
 		return true;
@@ -149,5 +177,9 @@ public class PC_GresColorMap extends PC_GresWidget {
 
 	@Override
 	public void addedToWidget() {}
+
+	public int getScale() {
+		return px;
+	}
 
 }

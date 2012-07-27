@@ -34,6 +34,7 @@ public class PC_GresButtonImage extends PC_GresButton {
 
 	@Override
 	public PC_CoordI calcSize() {
+		if(!visible) return zerosize;
 
 		if (buttonScale == null) buttonScale = new PC_CoordI(4, 4);
 		if (size == null) size = new PC_CoordI();

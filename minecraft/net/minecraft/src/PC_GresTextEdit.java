@@ -30,7 +30,9 @@ public class PC_GresTextEdit extends PC_GresWidget {
 		/** accept unsigned number with dot */
 		UNSIGNED_FLOAT,
 		/** Disable user input */
-		NONE;
+		NONE,		
+		/** [a-zA-Z_][a-zA-Z0-9_] */
+		IDENTIFIER;
 	}
 
 	private int maxChars;
@@ -402,7 +404,7 @@ public class PC_GresTextEdit extends PC_GresWidget {
 			default:
 				switch (type) {
 					case UNSIGNED_INT:
-						if (Character.isDigit(Character.valueOf(c))) {
+						if (Character.isDigit(c)) {
 							addKey(c);
 							return true;
 						} else {
@@ -415,7 +417,7 @@ public class PC_GresTextEdit extends PC_GresWidget {
 							return true;
 						}
 
-						if (Character.isDigit(Character.valueOf(c))) {
+						if (Character.isDigit(c)) {
 							addKey(c);
 							return true;
 						} else if ((mouseSelectStart == 0 || mouseSelectEnd == 0) && c == '-') {
@@ -444,7 +446,7 @@ public class PC_GresTextEdit extends PC_GresWidget {
 							return true;
 						}
 
-						if (Character.isDigit(Character.valueOf(c))) {
+						if (Character.isDigit(c)) {
 							addKey(c);
 							return true;
 						} else if ((mouseSelectStart == 0 || mouseSelectEnd == 0) && c == '-') {
@@ -467,7 +469,24 @@ public class PC_GresTextEdit extends PC_GresWidget {
 							return true;
 						}
 
-						if (Character.isDigit(Character.valueOf(c))) {
+						if (Character.isDigit(c)) {
+							addKey(c);
+							return true;
+						}
+
+						return false;
+						
+					case IDENTIFIER:
+
+						if (Character.isDigit(c)) {
+							if (mouseSelectStart == 0 || mouseSelectEnd == 0) {
+								return true;
+							}
+							addKey(c);
+							return true;
+						}
+
+						if (Character.isLetter(c) || c == '_') {
 							addKey(c);
 							return true;
 						}

@@ -41,6 +41,7 @@ public class PC_GresButton extends PC_GresWidget {
 
 	@Override
 	public PC_CoordI calcSize() {
+		if(!visible) return zerosize;
 		FontRenderer fontRenderer = getFontRenderer();
 
 		if (buttonScale == null) buttonScale = new PC_CoordI(6, 6);
@@ -102,7 +103,7 @@ public class PC_GresButton extends PC_GresWidget {
 
 	@Override
 	public boolean mouseClick(PC_CoordI mpos, int key) {
-		if (!enabled) {
+		if (!enabled || !visible) {
 			return false;
 		}
 		if (isClicked && key == -1) {

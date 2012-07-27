@@ -73,7 +73,6 @@ public class PC_GresContainerManager extends Container {
 		}
 
 		super.retrySlotClick(par1, par2, par3, par4EntityPlayer);
-
 	}
 
 	@Override
@@ -99,7 +98,6 @@ public class PC_GresContainerManager extends Container {
 					return null;
 				} else {
 					slot.onPickupFromSlot(itemstack);
-
 				}
 
 			} else if (!mergeItemStack(itemstack1, 0, playerSlots, false)) {
@@ -110,6 +108,7 @@ public class PC_GresContainerManager extends Container {
 
 			if (itemstack1.stackSize == 0) {
 				slot.putStack(null);
+				slot.onSlotChanged();
 			} else {
 				slot.onSlotChanged();
 			}

@@ -18,6 +18,7 @@ public class PC_GresLayoutH extends PC_GresWidget {
 
 	@Override
 	public PC_CoordI calcSize() {
+		if(!visible) return zerosize;
 		calcChildPositions();
 		if (size.x < minSize.x) {
 			size.x = minSize.x;
@@ -31,6 +32,7 @@ public class PC_GresLayoutH extends PC_GresWidget {
 
 	@Override
 	public void calcChildPositions() {
+		if(!visible) return;
 		int xx = 0, xSize = 0;
 		int lastcm = 0;
 		for (PC_GresWidget child : childs) {
@@ -114,6 +116,7 @@ public class PC_GresLayoutH extends PC_GresWidget {
 
 	@Override
 	public PC_CoordI getMinSize() {
+		if(!visible) return zerosize;
 		return calcSize();
 	}
 

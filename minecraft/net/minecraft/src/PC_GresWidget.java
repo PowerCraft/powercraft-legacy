@@ -15,6 +15,8 @@ import org.lwjgl.opengl.GL11;
  * @copy (c) 2012
  */
 public abstract class PC_GresWidget extends Gui {
+	
+	public static final PC_CoordI zerosize = new PC_CoordI(0,0);
 
 
 	/** Minecraft instance */
@@ -83,6 +85,18 @@ public abstract class PC_GresWidget extends Gui {
 
 	/** Is widget focused (used mainly for text edits) */
 	protected boolean hasFocus = false;
+
+	/** Is visible */
+	protected boolean visible = true;
+
+	protected PC_GresWidget setVisible(boolean show) {
+		visible = show;
+		return this;
+	}
+
+	protected boolean isVisible() {
+		return visible;
+	}
 
 	/** Widget's label (text in title or on button or whatever) */
 	protected String text = "";
@@ -304,6 +318,7 @@ public abstract class PC_GresWidget extends Gui {
 	 * @return minimal size, {width,height}
 	 */
 	public PC_CoordI getMinSize() {
+		if(!visible) return new PC_CoordI(0,0);
 		return calcSize().copy();
 	}
 
@@ -395,6 +410,7 @@ public abstract class PC_GresWidget extends Gui {
 	 * @return {width, height}
 	 */
 	public PC_CoordI getSize() {
+		if(!visible) return new PC_CoordI(0,0);
 		return size.copy();
 	}
 
@@ -478,6 +494,7 @@ public abstract class PC_GresWidget extends Gui {
 			for (int i = 0; i < childs.size(); i++) {
 				childs.get(i).calcChildPositions();
 				PC_CoordI childSize = childs.get(i).calcSize();
+				if(!childs.get(i).isVisible()) childSize = new PC_CoordI(0,0);
 				if (childSize.y > maxh) {
 					maxh = childSize.y;
 				}
@@ -647,10 +664,12 @@ public abstract class PC_GresWidget extends Gui {
 	 * @param posOffset offset from top left
 	 */
 	public void updateRenderer(PC_CoordI posOffset) {
+		if(!visible) return;
 		this.render(posOffset);
 		if (childs != null) {
 			for (int i = 0; i < childs.size(); i++) {
-				childs.get(i).updateRenderer(posOffset.offset(pos));
+				if(childs.get(i).visible)
+					childs.get(i).updateRenderer(posOffset.offset(pos));
 			}
 		}
 	}
@@ -670,6 +689,7 @@ public abstract class PC_GresWidget extends Gui {
 	 * @return the widget under mouse
 	 */
 	public PC_GresWidget getWidgetUnderMouse(PC_CoordI mousePos) {
+		if(!visible) return null;
 		PC_GresWidget widget;
 		PC_CoordI mpos = mousePos.offset(-pos.x, -pos.y);
 

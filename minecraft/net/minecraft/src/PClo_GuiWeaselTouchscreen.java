@@ -6,6 +6,7 @@ import java.util.Map;
 import weasel.obj.WeaselInteger;
 import weasel.obj.WeaselObject;
 import weasel.obj.WeaselString;
+import net.minecraft.src.PC_GresTextEdit.PC_GresInputType;
 import net.minecraft.src.PC_GresWidget.PC_GresAlign;
 import net.minecraft.src.PClo_NetManager.NetworkMember;
 
@@ -36,7 +37,7 @@ public class PClo_GuiWeaselTouchscreen implements PC_IGresBase {
 	public void initGui(PC_IGresGui gui) {
 		PC_GresWidget mvg = new PC_GresLayoutV();
 		mvg.setAlignH(PC_GresAlign.CENTER);
-		w = new PC_GresWindow(PC_Lang.tr("pc.gui.weasel.display.title"));
+		w = new PC_GresWindow(PC_Lang.tr("pc.gui.weasel.touchscreen.title"));
 		w.setAlignH(PC_GresAlign.CENTER);
 		w.setMinWidth(200);
 
@@ -54,7 +55,7 @@ public class PClo_GuiWeaselTouchscreen implements PC_IGresBase {
 
 		hg = new PC_GresLayoutH();
 		hg.add(new PC_GresLabel(PC_Lang.tr("pc.gui.weasel.display.displayName")));
-		hg.add(edName = new PC_GresTextEdit(touchscreen.getName(), 14).setWidgetMargin(2));
+		hg.add(edName = new PC_GresTextEdit(touchscreen.getName(), 14, PC_GresInputType.IDENTIFIER).setWidgetMargin(2));
 		w.add(hg);
 
 		w.add(txError = new PC_GresLabel("").setWidgetMargin(2).setColor(PC_GresWidget.textColorEnabled, 0x000000));
