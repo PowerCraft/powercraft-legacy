@@ -9,14 +9,15 @@ import weasel.obj.WeaselObject;
 
 public class PC_GresColorPicker extends PC_GresWidget {
 
-	private int colorArray[][] = new int[100][50];
+	private int[][] colorArray = new int[40][20];
 	private int px = 1;
-	private int lastColor = 0x000000;
+	private int color = 0x000000;
+	private int lx=-1,ly=-1;
 
-	public PC_GresColorPicker(int color) {
+	public PC_GresColorPicker(int color, int width, int height) {
 		super("");
-		this.setLastColor(color);
 		canAddWidget = false;
+		colorArray = new int[width][height];
 		size = calcSize();
 
 		if (parent != null) parent.calcChildPositions();
@@ -44,7 +45,26 @@ public class PC_GresColorPicker extends PC_GresWidget {
 				colorArray[col][row] = clr(cc.getRed(),cc.getGreen(),cc.getBlue());
 			}
 		}
-
+		
+		this.setColor(color);
+	}
+	
+	public void setColor(int color) {
+		lx=-1; ly=-1;
+		for (int x = 0; x < colorArray.length; x++) {
+			for (int y = 0; y < colorArray[0].length; y++) {
+				if(color == colorArray[x][y]) {
+					lx = x; ly = y;
+					break;
+				}
+				
+			}
+		}
+		this.color = color;
+	}
+	
+	public int getColor() {
+		return color;
 	}
 
 	private int clr(float r, float g, float b) {
@@ -56,8 +76,9 @@ public class PC_GresColorPicker extends PC_GresWidget {
 	
 	@Override
 	public PC_CoordI calcSize() {
+		if(!visible) return zerosize;
 		if (colorArray == null)
-			return new PC_CoordI(0, 0);
+			return zerosize;
 		else
 			return new PC_CoordI(Math.round(colorArray.length * px), Math.round(colorArray[0].length * px));
 	}
@@ -81,6 +102,12 @@ public class PC_GresColorPicker extends PC_GresWidget {
 				for (int y = 0; y < colorArray[0].length; y++) {
 					color = colorArray[x][y];
 					if (color != -1) {
+						
+						if(System.currentTimeMillis()%1000<500 && x==lx && y==ly) {
+							color = ~color;
+						}
+						
+						
 						posX = x * px + pos.x + posOffset.x;
 						posY = y * px + pos.y + posOffset.y;
 						tessellator.setColorRGBA((color >> 16) & 0xFF, (color >> 8) & 0xFF, color & 0xFF, 255);
@@ -112,7 +139,9 @@ public class PC_GresColorPicker extends PC_GresWidget {
 		if (mousePos.y >= size.y) return false;
 		if (mousePos.y < 0) return false;
 		if (mousePos.x < 0) return false;
-		setLastColor(colorArray[mousePos.x / px][mousePos.y / px]);
+		lx = mousePos.x / px;
+		ly = mousePos.y / px;
+		color = colorArray[lx][ly];
 		return true;
 	}
 
@@ -133,14 +162,6 @@ public class PC_GresColorPicker extends PC_GresWidget {
 	@Override
 	public boolean keyTyped(char c, int key) {
 		return false;
-	}
-
-	public int getLastColor() {
-		return lastColor;
-	}
-
-	public void setLastColor(int lastColor) {
-		this.lastColor = lastColor;
 	}
 
 }

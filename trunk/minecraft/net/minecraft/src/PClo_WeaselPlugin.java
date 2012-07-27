@@ -279,6 +279,10 @@ public abstract class PClo_WeaselPlugin implements PC_INBT, NetworkMember {
 				return new PClo_WeaselPluginSpeaker(tew);
 			case PClo_WeaselType.TOUCHSCREEN:
 				return new PClo_WeaselPluginTouchscreen(tew);
+			case PClo_WeaselType.DISK_MANAGER:
+				return new PClo_WeaselPluginDiskManager(tew);
+//			case PClo_WeaselType.DISK_DRIVE:
+//				return new PClo_WeaselPluginDiskDrive(tew);
 		}
 
 		return null;

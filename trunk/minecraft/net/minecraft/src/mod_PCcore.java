@@ -121,6 +121,16 @@ public class mod_PCcore extends PC_Module implements PC_IActivatorListener {
 	public int addFuel(int i, int j) {
 		return (i == powerDust.shiftedIndex) ? 3200 : 0;
 	}
+	
+	/**
+	 * maybe changing the first letter will fix the problems - who knows.
+	 * @param i id
+	 * @param j damage
+	 * @return fuel
+	 */
+	public int AddFuel(int i, int j) {
+		return addFuel(i, j);
+	}
 
 	// *** BLOCKS & ITEMS ***
 
@@ -398,6 +408,7 @@ public class mod_PCcore extends PC_Module implements PC_IActivatorListener {
 		map.put("pc.gui.ok", "OK");
 		map.put("pc.gui.cancel", "Cancel");
 		map.put("pc.gui.close", "Close");
+		map.put("pc.gui.back", "Back");
 
 //		map.put("pc.sniffer.sniffing", "Sniffing ores...");
 //		map.put("pc.sniffer.away", "(far away)");

@@ -559,7 +559,7 @@ public class PC_CoordI implements PC_ICoord, PC_INBT {
 	}
 
 	@Override
-	public PC_INBT readFromNBT(NBTTagCompound tag) {
+	public PC_CoordI readFromNBT(NBTTagCompound tag) {
 		x = tag.getInteger("ix");
 		y = tag.getInteger("iy");
 		z = tag.getInteger("iz");

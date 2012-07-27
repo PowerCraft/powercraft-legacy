@@ -22,6 +22,7 @@ public class PC_GresFrame extends PC_GresWidget {
 
 	@Override
 	public PC_CoordI calcSize() {
+		if(!visible) return zerosize;
 		calcChildPositions();
 		if (size.x < minSize.x + framePadding * 2) {
 			size.x = minSize.x + framePadding * 2;
@@ -35,6 +36,7 @@ public class PC_GresFrame extends PC_GresWidget {
 
 	@Override
 	public void calcChildPositions() {
+		if(!visible) return;
 		int xx = 0, xSize = 0;
 		for (PC_GresWidget w : childs) {
 			w.calcChildPositions();
@@ -97,13 +99,12 @@ public class PC_GresFrame extends PC_GresWidget {
 
 	@Override
 	protected void render(PC_CoordI mpos) {
-
 		renderTextureSliced(mpos, mod_PCcore.getImgDir() + "gres/frame.png", size, new PC_CoordI(0, 0), new PC_CoordI(256, 256));
-
 	}
 
 	@Override
 	public boolean mouseOver(PC_CoordI mpos) {
+		if(!visible) return false;
 		return true;
 	}
 
@@ -122,6 +123,7 @@ public class PC_GresFrame extends PC_GresWidget {
 
 	@Override
 	public PC_CoordI getMinSize() {
+		if(!visible) return zerosize;
 		return calcSize();
 	}
 

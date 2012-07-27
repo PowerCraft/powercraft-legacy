@@ -18,6 +18,7 @@ public class PC_GresLayoutV extends PC_GresWidget {
 
 	@Override
 	public PC_CoordI calcSize() {
+		if(!visible) return zerosize;
 		calcChildPositions();
 		if (size.x < minSize.x) {
 			size.x = minSize.x;
@@ -30,10 +31,12 @@ public class PC_GresLayoutV extends PC_GresWidget {
 
 	@Override
 	public void calcChildPositions() {
+		if(!visible) return;
 		int yy = 0, ySize = 0;
 		@SuppressWarnings("unused")
 		int lastmargin = 0;
 		for (PC_GresWidget w : childs) {
+			if(!w.visible) continue;
 			w.calcChildPositions();
 			PC_CoordI csize = w.calcSize();
 			if (csize.x > size.x || ySize + csize.y > size.y) {
@@ -54,6 +57,7 @@ public class PC_GresLayoutV extends PC_GresWidget {
 		}
 		// ySize -= lastmargin;
 		for (PC_GresWidget w : childs) {
+			if(!w.visible) continue;
 			PC_CoordI csize = w.getSize();
 			int xPos = 0;
 			int yPos = 0;
@@ -114,6 +118,7 @@ public class PC_GresLayoutV extends PC_GresWidget {
 
 	@Override
 	public PC_CoordI getMinSize() {
+		if(!visible) return zerosize;
 		return calcSize();
 	}
 

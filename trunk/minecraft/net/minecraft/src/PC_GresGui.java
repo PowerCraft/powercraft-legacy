@@ -109,10 +109,12 @@ public class PC_GresGui extends GuiContainer implements PC_IGresGui {
 
 	@Override
 	protected void keyTyped(char c, int i) {
+		
+		if(i == Keyboard.KEY_F11) {}
 
 		boolean consumed = false;
 
-		if (lastFocus != null) {
+		if (lastFocus != null && lastFocus.visible) {
 			if (lastFocus.keyTyped(c, i)) {
 				gui.actionPerformed(lastFocus, this);
 				consumed = true;
@@ -134,6 +136,7 @@ public class PC_GresGui extends GuiContainer implements PC_IGresGui {
 		super.mouseClicked(x, y, button);
 
 		PC_GresWidget newFocus = child.getWidgetUnderMouse(new PC_CoordI(x, y));
+		if(!newFocus.visible) newFocus = null;
 
 		if (newFocus != lastFocus) {
 			if (lastFocus != null) {

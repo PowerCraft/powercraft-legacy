@@ -75,7 +75,7 @@ public class PClo_GuiWeaselCoreSettings implements PC_IGresBase {
 
 
 		frame.add(colorBulb = new PC_GresColor(core.getNetworkColor()));
-		frame.add(colorPicker = new PC_GresColorPicker(core.getNetworkColor().getHex()));
+		frame.add(colorPicker = new PC_GresColorPicker(core.getNetworkColor().getHex(),100,50));
 		hg.add(frame);
 		hg.add(new PC_GresButton(PC_Lang.tr("pc.gui.weasel.core.colorChange")).setId(3).setMinWidth(40));
 		w.add(hg);
@@ -144,7 +144,7 @@ public class PClo_GuiWeaselCoreSettings implements PC_IGresBase {
 		}
 
 		if (widget == colorPicker) {
-			((PC_GresColor) colorBulb).setColor(PC_Color.fromHex(colorPicker.getLastColor()));
+			((PC_GresColor) colorBulb).setColor(PC_Color.fromHex(colorPicker.getColor()));
 			return;
 		}
 

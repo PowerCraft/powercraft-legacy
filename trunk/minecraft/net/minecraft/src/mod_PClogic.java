@@ -425,12 +425,16 @@ public class mod_PClogic extends PC_Module {
 		map.put("tile.PCloWeasel.port.name", "Wireless Port");
 		map.put("tile.PCloWeasel.display.name", "Wireless Display");
 		map.put("tile.PCloWeasel.sound.name", "Wireless Speaker");
-		map.put("tile.PCloWeasel.touchscreen.name", "Wireless Touchscreen");
+		map.put("tile.PCloWeasel.touchscreen.name", "Wireless Touchscreen Display");
+		map.put("tile.PCloWeasel.diskManager.name", "Digital Workbench");
+		map.put("tile.PCloWeasel.diskDrive.name", "Digital Disk Drive");
 		map.put("pc.weasel.core.desc", "programmable chip");
 		map.put("pc.weasel.port.desc", "expansion redstone port");
 		map.put("pc.weasel.display.desc", "display for Weasel");
 		map.put("pc.weasel.sound.desc", "electronic noteblock");
 		map.put("pc.weasel.touchscreen.desc", "touchscreen for Weasel");
+		map.put("pc.weasel.diskManager.desc", "Weasel disk editor");
+		map.put("pc.weasel.diskDrive.desc", "extended storage for Weasel");
 
 		map.put("pc.weasel.activatorGetNetwork", "Network \"%s\" assigned to activation crystal.");
 		map.put("pc.weasel.activatorSetNetwork", "Device connected to network \"%s\".");
@@ -468,6 +472,7 @@ public class mod_PClogic extends PC_Module {
 		map.put("pc.gui.weasel.port.title", "Expansion port for Weasel Controller");
 		map.put("pc.gui.weasel.display.title", "Display for Weasel Controller");
 		map.put("pc.gui.weasel.sound.title", "Audio output for Weasel");
+		map.put("pc.gui.weasel.touchscreen.title", "Touchscreen display for Weasel");
 
 		map.put("pc.gui.weasel.core.undoAll", "Undo All");
 		map.put("pc.gui.weasel.core.check", "Check");
@@ -500,13 +505,29 @@ public class mod_PClogic extends PC_Module {
 		map.put("pc.radioRemote.connected", "Portable transmitter connected to channel \"%s\".");
 		map.put("pc.radioRemote.desc", "Channel: %s");
 		
-		map.put("pc.weasel.disk.new_label", "Weasel Disk");
-		map.put("pc.weasel.disk.empty", "Unformatted Disk");
-		map.put("pc.weasel.disk.text", "Text read-only");
-		map.put("pc.weasel.disk.image", "Image read-only");
-		map.put("pc.weasel.disk.numberlist", "Number list read-only");
-		map.put("pc.weasel.disk.stringlist", "String list read-only");
-		map.put("pc.weasel.disk.varmap", "Read-write memory");
+		map.put("pc.weasel.disk.new_label", "disk");
+		map.put("pc.weasel.disk.empty", "Blank Weasel Disk");
+		map.put("pc.weasel.disk.text", "Weasel Text Disk");
+		map.put("pc.weasel.disk.image", "Weasel Image Disk");
+		map.put("pc.weasel.disk.numberlist", "Weasel Number List Disk");
+		map.put("pc.weasel.disk.stringlist", "Weasel String List Disk");
+		map.put("pc.gui.weasel.diskManager.color", "Color:");
+		map.put("pc.gui.weasel.diskManager.label", "Disk label:");
+		map.put("pc.gui.weasel.diskManager.separator", "Entry separator:");
+		map.put("pc.gui.weasel.diskManager.size", "Image size");
+		map.put("pc.gui.weasel.diskManager.resize", "Resize");
+		map.put("pc.gui.weasel.diskManager.set", "Set");
+		map.put("pc.gui.weasel.diskManager.edit", "Edit");
+		map.put("pc.gui.weasel.diskManager.img.clear", "Clear");
+		map.put("pc.gui.weasel.diskManager.img.fill", "Fill");
+		map.put("pc.gui.weasel.diskManager.disk", "Disk");
+		map.put("pc.gui.weasel.diskManager.format", "Format:");
+		map.put("pc.gui.weasel.diskManager.formatText", "Text");
+		map.put("pc.gui.weasel.diskManager.formatImage", "Image");
+		map.put("pc.gui.weasel.diskManager.formatIntegerList", "Numbers");
+		map.put("pc.gui.weasel.diskManager.formatStringList", "Strings");
+
+		map.put("pc.gui.weasel.diskManager.empty.title", "Digital Workbench - insert disk");
 
 
 
