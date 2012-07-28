@@ -35,7 +35,9 @@ public class PClo_WeaselPluginSpeaker extends PClo_WeaselPlugin {
 	}
 
 	@Override
-	public void updateTick() {}
+	public boolean updateTick() {
+		return false;
+	}
 
 	@Override
 	public void onRedstoneSignalChanged() {}

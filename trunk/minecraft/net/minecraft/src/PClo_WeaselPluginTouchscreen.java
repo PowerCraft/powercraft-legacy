@@ -6,6 +6,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
+import net.minecraft.src.PClo_NetManager.NetworkMember;
+
 import org.lwjgl.BufferUtils;
 import org.lwjgl.opengl.GL11;
 
@@ -23,6 +25,8 @@ public class PClo_WeaselPluginTouchscreen extends PClo_WeaselPlugin {
 	public int screen[][] = new int[WIDTH][HEIGHT];
 	/** Rotation, like sign, 0-15 */
 	public int rotation;
+
+	private boolean isChanged;
 
 	public PClo_WeaselPluginTouchscreen(PClo_TileEntityWeasel tew) {
 		super(tew);
@@ -44,7 +48,7 @@ public class PClo_WeaselPluginTouchscreen extends PClo_WeaselPlugin {
 		WeaselObject c = new WeaselInteger(screen[x][y]);
 		if (args.length == 3) {
 			//set
-			int color = Calc.toInteger(args[2]);
+			int color = PC_Color.getHexColorForName(args[2]);
 			screen[x][y] = color;
 		}
 		return c;
@@ -54,7 +58,7 @@ public class PClo_WeaselPluginTouchscreen extends PClo_WeaselPlugin {
 		if (args.length != 3) throw new WeaselRuntimeException("Wrong argument count for function " + functionName + " (" + args.length + ", needs 3)");
 		int x = Calc.toInteger(args[0]);
 		int y = Calc.toInteger(args[1]);
-		int color = Calc.toInteger(args[2]);
+		int color = PC_Color.getHexColorForName(args[2]);
 		if (x < 0 || x >= WIDTH || y < 0 || y >= HEIGHT) return;
 		screen[x][y] = color;
 	}
@@ -67,49 +71,90 @@ public class PClo_WeaselPluginTouchscreen extends PClo_WeaselPlugin {
 		return new WeaselInteger(screen[x][y]);
 	}
 
-	private void drawRect(String functionName, Object... objects) {
-		if (objects.length != 5 && objects.length != 6) throw new WeaselRuntimeException("Wrong argument count for function " + functionName + " (" + objects.length + ", needs 5 or 6)");
-		int x1 = Calc.toInteger(objects[0]);
-		int y1 = Calc.toInteger(objects[1]);
-		int x2 = Calc.toInteger(objects[2]);
-		int y2 = Calc.toInteger(objects[3]);
-		int color = Calc.toInteger(objects[4]);
-		int fillcolor = objects.length < 6 ? -1 : Calc.toInteger(objects[5]);
-		int tmp;
+	private void drawImage(String functionName, Object... objects) {
+		
+		
+		
+		// name, left, top
+		// name, left, top, startx, starty, width, height
+		if (objects.length != 3 && objects.length != 7) throw new WeaselRuntimeException("Wrong argument count for function " + functionName + " (" + objects.length + ", needs 5 or 6)");
 
-		if (x2 < x1) {
-			tmp = x1;
-			x1 = x2;
-			x2 = tmp;
-		}
-		if (y2 < y1) {
-			tmp = y1;
-			y1 = y2;
-			y2 = tmp;
+		String name = Calc.toString(objects[0]);
+
+		ItemStack disk = null;
+
+		for (NetworkMember member : getNetwork().getMembers().values()) {
+			if (member instanceof PClo_WeaselPluginDiskDrive) {
+				disk = ((PClo_WeaselPluginDiskDrive) member).getImageDisk(name);
+				if (disk != null) break;
+			}
 		}
 
-		if (fillcolor != -1) {
+		if (disk == null) {
+			throw new WeaselRuntimeException("Error: Couldn't find image disk " + name + ".");
+		}
 
-			for (int j = y1; j <= y2; j++) {
-				for (int i = x1; i <= x2; i++) {
-					if (i >= 0 && i < WIDTH && j >= 0 && j < HEIGHT) screen[i][j] = fillcolor;
+		int x1 = Calc.toInteger(objects[1]);
+		int y1 = Calc.toInteger(objects[2]);
+
+		int startImageX = 0;
+		int startImageY = 0;
+
+		int sizeImgX, sizex, sizeImgY, sizey;
+		sizeImgX = sizex = PClo_ItemWeaselDisk.getImageSize(disk).x;
+		sizeImgY = sizey = PClo_ItemWeaselDisk.getImageSize(disk).y;
+
+		if (objects.length == 7) {
+			startImageX = Calc.toInteger(objects[3]);
+			startImageY = Calc.toInteger(objects[4]);
+
+			sizex = Calc.toInteger(objects[5]);
+			sizey = Calc.toInteger(objects[6]);
+		}
+
+		for (int j = y1, jj = 0; j < y1 + sizey; j++, jj++) {
+			for (int i = x1, ii = 0; i < x1 + sizex; i++, ii++) {
+				if (i >= 0 && i < WIDTH && j >= 0 && j < HEIGHT) {
+					if (startImageX + ii >= 0 && startImageY + jj >= 0) if (startImageX + ii < sizeImgX && startImageY + jj < sizeImgY) {
+						int color = PClo_ItemWeaselDisk.getImageColorAt(disk, new PC_CoordI(startImageX + ii, startImageY + jj));
+						if(color!=-1) screen[i][j] = color;
+					}
 				}
 			}
+		}
+	}
 
-		} else {
+	private void drawRect(boolean frameOnly, String functionName, Object... objects) {
+		if (objects.length != 5 && objects.length != 6) throw new WeaselRuntimeException("Wrong argument count for function " + functionName + " (" + objects.length + ", needs 5 or 6)");
 
-			for (int i = x1; i <= x2; i++) {
-				if (i >= 0 && i < WIDTH && y1 >= 0 && y1 < HEIGHT) screen[i][y1] = color;
-				if (i >= 0 && i < WIDTH && y2 >= 0 && y2 < HEIGHT) screen[i][y2] = color;
-			}
+		if (frameOnly && objects.length != 5) throw new WeaselRuntimeException("Wrong argument count for function " + functionName + " (" + objects.length + ", needs 5 or 6)");
 
+		int x1 = Calc.toInteger(objects[0]);
+		int y1 = Calc.toInteger(objects[1]);
+		int x2 = x1 + Calc.toInteger(objects[2]);
+		int y2 = y1 + Calc.toInteger(objects[3]);
+		int color = PC_Color.getHexColorForName(objects[4]);
+		int framecolor = objects.length < 6 ? color : PC_Color.getHexColorForName(objects[5]);
+
+
+		if (!frameOnly) {
 			for (int j = y1; j <= y2; j++) {
-				if (x1 >= 0 && x1 < WIDTH && j >= 0 && j < HEIGHT) screen[x1][j] = color;
-				if (x2 >= 0 && x2 < WIDTH && j >= 0 && j < HEIGHT) screen[x2][j] = color;
+				for (int i = x1; i <= x2; i++) {
+					if (i >= 0 && i < WIDTH && j >= 0 && j < HEIGHT) screen[i][j] = color;
+				}
 			}
-
 		}
 
+		// frame
+		for (int i = x1; i <= x2; i++) {
+			if (i >= 0 && i < WIDTH && y1 >= 0 && y1 < HEIGHT) screen[i][y1] = frameOnly ? color : framecolor;
+			if (i >= 0 && i < WIDTH && y2 >= 0 && y2 < HEIGHT) screen[i][y2] = frameOnly ? color : framecolor;
+		}
+
+		for (int j = y1; j <= y2; j++) {
+			if (x1 >= 0 && x1 < WIDTH && j >= 0 && j < HEIGHT) screen[x1][j] = frameOnly ? color : framecolor;
+			if (x2 >= 0 && x2 < WIDTH && j >= 0 && j < HEIGHT) screen[x2][j] = frameOnly ? color : framecolor;
+		}
 	}
 
 	private void drawLine(String functionName, WeaselObject[] args) {
@@ -118,7 +163,7 @@ public class PClo_WeaselPluginTouchscreen extends PClo_WeaselPlugin {
 		int y1 = Calc.toInteger(args[1]);
 		int x2 = Calc.toInteger(args[2]);
 		int y2 = Calc.toInteger(args[3]);
-		int color = Calc.toInteger(args[4]);
+		int color = PC_Color.getHexColorForName(args[4]);
 		int tmp;
 
 		if (x2 < x1) {
@@ -140,7 +185,7 @@ public class PClo_WeaselPluginTouchscreen extends PClo_WeaselPlugin {
 				y = (int) (y1 + f * i);
 				if (x >= 0 && x < WIDTH && y >= 0 && y < HEIGHT) screen[x][y] = color;
 			}
-		} else if(yd<0) {
+		} else if (yd < 0) {
 			f = (float) xd / yd;
 			for (int j = 0; j >= yd; j--) {
 				x = (int) (x1 + f * j);
@@ -181,7 +226,7 @@ public class PClo_WeaselPluginTouchscreen extends PClo_WeaselPlugin {
 		int x = Calc.toInteger(args[0]);
 		int y = Calc.toInteger(args[1]);
 		String s = Calc.toString(args[2]);
-		int color = Calc.toInteger(args[3]);
+		int color = PC_Color.getHexColorForName(args[3]);
 
 
 		GL11.glBindTexture(GL11.GL_TEXTURE_2D, PC_Utils.mc().fontRenderer.fontTextureName);
@@ -200,18 +245,23 @@ public class PClo_WeaselPluginTouchscreen extends PClo_WeaselPlugin {
 
 	@Override
 	public WeaselObject callProvidedFunction(WeaselEngine engine, String functionName, WeaselObject[] args) {
+		isChanged = true;
 		if (functionName.equals(getName())) {
-			return setGetPixel(functionName, (Object[])args);
-		} else if (functionName.equals(getName() + ".dot")|| functionName.equals(getName() + ".point")|| functionName.equals(getName() + ".set") || functionName.equals(getName() + ".draw.pixel")) {
-			setPixel(functionName, (Object[])args);
+			return setGetPixel(functionName, (Object[]) args);
+		} else if (functionName.equals(getName() + ".dot") || functionName.equals(getName() + ".point") || functionName.equals(getName() + ".set") || functionName.equals(getName() + ".draw.pixel")) {
+			setPixel(functionName, (Object[]) args);
 		} else if (functionName.equals(getName() + ".get")) {
-			return getPixel(functionName, (Object[])args);
-		} else if (functionName.equals(getName() + ".rect")||functionName.equals(getName() + ".draw.rect")) {
-			drawRect(functionName, (Object[])args);
-		} else if (functionName.equals(getName() + ".line")||functionName.equals(getName() + ".draw.line")) {
+			return getPixel(functionName, (Object[]) args);
+		} else if (functionName.equals(getName() + ".rect") || functionName.equals(getName() + ".draw.rect")) {
+			drawRect(false, functionName, (Object[]) args);
+		} else if (functionName.equals(getName() + ".frame") || functionName.equals(getName() + ".draw.frame")) {
+			drawRect(true, functionName, (Object[]) args);
+		} else if (functionName.equals(getName() + ".line") || functionName.equals(getName() + ".draw.line")) {
 			drawLine(functionName, args);
-		} else if (functionName.equals(getName() + ".string")||functionName.equals(getName() + ".draw.string")) {
+		} else if (functionName.equals(getName() + ".string") || functionName.equals(getName() + ".draw.string")) {
 			drawString(functionName, args);
+		} else if (functionName.equals(getName() + ".image") || functionName.equals(getName() + ".draw.image")) {
+			drawImage(functionName, (Object[]) args);
 		} else {
 			throw new WeaselRuntimeException("Invalid call of function " + functionName);
 		}
@@ -220,9 +270,9 @@ public class PClo_WeaselPluginTouchscreen extends PClo_WeaselPlugin {
 
 	@Override
 	public WeaselObject getVariable(String name) {
-		if (name.equals(getName() + ".W")||name.equals(getName() + ".w")||name.equalsIgnoreCase(getName() + ".width")) {
+		if (name.equals(getName() + ".W") || name.equals(getName() + ".w") || name.equalsIgnoreCase(getName() + ".width")) {
 			return new WeaselInteger(WIDTH);
-		} else if (name.equals(getName() + ".H")||name.equals(getName() + ".h")||name.equalsIgnoreCase(getName() + ".height")) {
+		} else if (name.equals(getName() + ".H") || name.equals(getName() + ".h") || name.equalsIgnoreCase(getName() + ".height")) {
 			return new WeaselInteger(HEIGHT);
 		}
 //		else if (name.startsWith(getName())) {
@@ -236,10 +286,11 @@ public class PClo_WeaselPluginTouchscreen extends PClo_WeaselPlugin {
 
 	@Override
 	public void setVariable(String name, Object object) {
+		isChanged = true;
 		if (name.startsWith(getName())) {
 			int clr = PC_Color.getHexColorForName(object);
-			drawRect(getName()+".rect", 0,0,WIDTH,HEIGHT,clr,clr);
-			
+			drawRect(false, getName() + ".rect", 0, 0, WIDTH, HEIGHT, clr, clr);
+
 //			String[] s = name.split("\\.");
 //			int x = Integer.valueOf(s[1].substring(1));
 //			int y = Integer.valueOf(s[2].substring(1));
@@ -255,13 +306,17 @@ public class PClo_WeaselPluginTouchscreen extends PClo_WeaselPlugin {
 		list.add(getName() + ".get");
 		list.add(getName() + ".draw.pixel");
 		list.add(getName() + ".draw.rect");
+		list.add(getName() + ".draw.frame");
 		list.add(getName() + ".draw.line");
 		list.add(getName() + ".draw.string");
+		list.add(getName() + ".draw.image");
 		list.add(getName() + ".pixel");
 		list.add(getName() + ".point");
 		list.add(getName() + ".rect");
+		list.add(getName() + ".frame");
 		list.add(getName() + ".line");
 		list.add(getName() + ".string");
+		list.add(getName() + ".image");
 		return list;
 	}
 
@@ -290,7 +345,13 @@ public class PClo_WeaselPluginTouchscreen extends PClo_WeaselPlugin {
 	}
 
 	@Override
-	protected void updateTick() {}
+	protected boolean updateTick() {
+		if (isChanged) {
+			isChanged = false;
+			return true;
+		}
+		return false;
+	}
 
 	@Override
 	public void onRedstoneSignalChanged() {}

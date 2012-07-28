@@ -52,7 +52,9 @@ public class PClo_TileEntityWeasel extends PC_TileEntity {
 		}
 
 		if (plugin != null) {
-			plugin.update();
+			if(plugin.update()) {
+				worldObj.getChunkFromBlockCoords(xCoord,zCoord).setChunkModified();
+			}
 		}
 	}
 
@@ -71,13 +73,14 @@ public class PClo_TileEntityWeasel extends PC_TileEntity {
 	public void readFromNBT(NBTTagCompound maintag) {
 		super.readFromNBT(maintag);
 
-		if (maintag.getBoolean("nullplugin")) return;
+		if (maintag.getBoolean("nullplugin")) {
+			return;
+		}
 
 		int type = maintag.getInteger("type");
 
 		plugin = PClo_WeaselPlugin.getPluginForType(this, type);
 		if (plugin != null) plugin.readFromNBT(maintag.getCompoundTag("Plugin"));
-
 	}
 
 	@Override

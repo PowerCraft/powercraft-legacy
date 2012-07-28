@@ -61,7 +61,7 @@ public class Calc {
 		if (expression == null || expression.length() == 0) return null;
 
 		if (expression.contains(";")) {
-			throw new CalcException("CALC evaluate - unexpected \";\" in a numeric expression.");
+			throw new CalcException("CALC unexpected \";\" in a numeric expression.");
 		}
 
 		//expression = correctQuotes(expression);

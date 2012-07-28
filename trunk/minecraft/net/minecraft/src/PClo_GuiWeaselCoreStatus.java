@@ -41,6 +41,7 @@ public class PClo_GuiWeaselCoreStatus implements PC_IGresBase {
 
 		hg = new PC_GresLayoutH().setAlignH(PC_GresAlign.LEFT);
 		hg.add(new PC_GresGap(4, 0));
+		hg.add(new PC_GresButton("+").setId(103).setMinWidth(0).enable(false).setWidgetMargin(2));
 		hg.add(new PC_GresButton(PC_Lang.tr("pc.gui.weasel.core.program")).setId(100).enable(true).setWidgetMargin(2));
 		hg.add(new PC_GresButton(PC_Lang.tr("pc.gui.weasel.core.status")).setId(101).enable(false).setWidgetMargin(2));
 		hg.add(new PC_GresButton(PC_Lang.tr("pc.gui.weasel.core.settings")).setId(102).enable(true).setWidgetMargin(2));
@@ -107,9 +108,9 @@ public class PClo_GuiWeaselCoreStatus implements PC_IGresBase {
 		hg.add(txPeripherals = new PC_GresLabel("").setColor(PC_GresWidget.textColorEnabled, colorValue));
 		vg.add(hg);
 
-		hg = new PC_GresLayoutH().setAlignH(PC_GresAlign.LEFT);
+		hg = new PC_GresLayoutH().setAlignH(PC_GresAlign.LEFT).setAlignV(PC_GresAlign.TOP);
 		hg.add(new PC_GresLabel(lStatus).setMinWidth(width).setAlignH(PC_GresAlign.RIGHT).setColor(PC_GresWidget.textColorEnabled, colorLabel));
-		hg.add(txStatus = new PC_GresLabel("").setColor(PC_GresWidget.textColorEnabled, colorValue));
+		hg.add(txStatus = new PC_GresLabelMultiline("",150).setColor(PC_GresWidget.textColorEnabled, colorValue));
 		vg.add(hg);
 		hugehg.add(vg);
 		w.add(hugehg);
@@ -136,7 +137,7 @@ public class PClo_GuiWeaselCoreStatus implements PC_IGresBase {
 		txStack.text = (core.getWeaselEngine().dataStack.get().size() + core.getWeaselEngine().systemStack.get().size()) + " " + PC_Lang.tr("pc.gui.weasel.core.unitObjects");
 		txMemory.text = (core.getWeaselEngine().variables.get().size()) + " " + PC_Lang.tr("pc.gui.weasel.core.unitObjects");
 		txPeripherals.text = (core.getNetwork().size() - 1) + "";
-		txStatus.text = core.getError() == null ? "OK" : core.getError();
+		txStatus.text = core.getError() == null ? "OK" : core.getError().replace("\n", " ");
 		txLength.text = core.getWeaselEngine().instructionList.list.size() + " " + PC_Lang.tr("pc.gui.weasel.core.unitInstructions");
 	}
 

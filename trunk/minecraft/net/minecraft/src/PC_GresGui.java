@@ -91,13 +91,13 @@ public class PC_GresGui extends GuiContainer implements PC_IGresGui {
 
 	@Override
 	public void initGui() {
-		Keyboard.enableRepeatEvents(true);
+		Keyboard.enableRepeatEvents(true);	
+		super.initGui();
 		child = new PC_GresLayoutV();
 		child.setFontRenderer(fontRenderer);
 		child.setContainerManager(containerManager);
 		child.setSize(0, 0);
 		gui.initGui(this);
-		super.initGui();
 	}
 
 	@Override
@@ -136,7 +136,7 @@ public class PC_GresGui extends GuiContainer implements PC_IGresGui {
 		super.mouseClicked(x, y, button);
 
 		PC_GresWidget newFocus = child.getWidgetUnderMouse(new PC_CoordI(x, y));
-		if(!newFocus.visible) newFocus = null;
+		if(newFocus!= null && !newFocus.visible) newFocus = null;
 
 		if (newFocus != lastFocus) {
 			if (lastFocus != null) {

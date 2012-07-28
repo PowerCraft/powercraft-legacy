@@ -4,7 +4,9 @@ package net.minecraft.src;
 import java.util.ArrayList;
 import java.util.List;
 
+import net.minecraft.src.PC_GresTextEditMultiline.AutoAdd;
 import net.minecraft.src.PC_GresTextEditMultiline.Keyword;
+import net.minecraft.src.PC_GresTextEditMultiline.StringAdd;
 import weasel.Compiler;
 import weasel.IWeaselHardware;
 import weasel.WeaselEngine;
@@ -17,6 +19,47 @@ import weasel.WeaselEngine;
  */
 @SuppressWarnings("javadoc")
 public class PC_GresHighlightHelper {
+	
+	/** autoadd for program in weasel */
+	public static AutoAdd autoAdd = new AutoAdd() {
+
+		private int getFirstFreeSpace(String s) {
+			for (int i = 0; i < s.length(); i++) {
+				if (s.charAt(i) != '\t') return i;
+			}
+			return s.length();
+		}
+
+		private char getFirstNotOf(String s, char c) {
+			for (int i = 0; i < s.length(); i++) {
+				if (s.charAt(i) != ' ') return s.charAt(i);
+			}
+			return 0;
+		}
+
+		@Override
+		public StringAdd charAdd(PC_GresTextEditMultiline te, char c, PC_GresTextEditMultiline.Keyword kw, int blocks, String textBefore,
+				String textBehind) {
+			if (kw == null || kw.end == null) {
+				if (c == '{') return new StringAdd("}", false);
+				if (c == '(') return new StringAdd(")", false);
+				if (c == '"') return new StringAdd("\"", false);
+				if (c == '\n') {
+					int tab = blocks;
+					int ffs = getFirstFreeSpace(textBehind);
+					if (getFirstNotOf(textBehind, ' ') == '}') tab -= 1;
+					tab -= ffs;
+					String s = "";
+					for (int i = 0; i < tab; i++) {
+						s += "\t";
+					}
+					return new StringAdd(s, true);
+				}
+			}
+			return null;
+		}
+
+	};
 
 
 	public static int colorHardwareFunction;

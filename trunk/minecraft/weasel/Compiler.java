@@ -231,7 +231,12 @@ public class Compiler {
 							}
 						}
 
-						instrList.add(new InstructionCall(name, params.toArray(new String[params.size()])));
+						if(name.equals("_call")){
+							instrList.add(new InstructionStringCall(params.toArray(new String[params.size()])));
+						}else {						
+							instrList.add(new InstructionCall(name, params.toArray(new String[params.size()])));
+						}
+						
 						instrList.add(new InstructionAssignRetval(false, tmpvar));
 
 						funcMatcher.appendReplacement(sb, tmpvar);
@@ -295,14 +300,14 @@ public class Compiler {
 				}
 
 				if (letter == delim && bracketLevel == 0 && !stringOpen) {
-					pieces.add(sb.toString());
+					pieces.add(sb.toString().trim());
 					sb = new StringBuilder();
 				} else {
 					sb.append(letter);
 				}
 			}
 
-			if (sb.length() > 0) pieces.add(sb.toString());
+			if (sb.length() > 0) pieces.add(sb.toString().trim());
 
 			return pieces;
 
@@ -1000,7 +1005,6 @@ public class Compiler {
 					List<String> parameters = splitBracketSafe(inBracket, ',');
 
 					for (int i = 0; i < parameters.size(); i++) {
-
 						if (!parameters.get(i).matches(variableInCodePatternRegexp)) {
 							throw new SyntaxError("Invalid argument name \"" + parameters.get(i) + "\" for declared function \"" + funcName + "\".");
 						} else {

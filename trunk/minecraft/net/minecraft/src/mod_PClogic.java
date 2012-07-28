@@ -425,16 +425,18 @@ public class mod_PClogic extends PC_Module {
 		map.put("tile.PCloWeasel.port.name", "Wireless Port");
 		map.put("tile.PCloWeasel.display.name", "Wireless Display");
 		map.put("tile.PCloWeasel.sound.name", "Wireless Speaker");
-		map.put("tile.PCloWeasel.touchscreen.name", "Wireless Touchscreen Display");
+		map.put("tile.PCloWeasel.touchscreen.name", "Wireless Touchscreen");
 		map.put("tile.PCloWeasel.diskManager.name", "Digital Workbench");
-		map.put("tile.PCloWeasel.diskDrive.name", "Digital Disk Drive");
+		map.put("tile.PCloWeasel.diskDrive.name", "Wireless Disk Drive");
+		map.put("tile.PCloWeasel.terminal.name", "Weasel Terminal");
 		map.put("pc.weasel.core.desc", "programmable chip");
 		map.put("pc.weasel.port.desc", "expansion redstone port");
 		map.put("pc.weasel.display.desc", "display for Weasel");
 		map.put("pc.weasel.sound.desc", "electronic noteblock");
-		map.put("pc.weasel.touchscreen.desc", "touchscreen for Weasel");
+		map.put("pc.weasel.touchscreen.desc", "touchscreen display");
 		map.put("pc.weasel.diskManager.desc", "Weasel disk editor");
-		map.put("pc.weasel.diskDrive.desc", "extended storage for Weasel");
+		map.put("pc.weasel.diskDrive.desc", "Weasel disk reader");
+		map.put("pc.weasel.terminal.desc", "command interface");
 
 		map.put("pc.weasel.activatorGetNetwork", "Network \"%s\" assigned to activation crystal.");
 		map.put("pc.weasel.activatorSetNetwork", "Device connected to network \"%s\".");
@@ -451,6 +453,8 @@ public class mod_PClogic extends PC_Module {
 		map.put("pc.gui.weasel.port.portName", "Port name:");
 		map.put("pc.gui.weasel.display.displayName", "Display name:");
 		map.put("pc.gui.weasel.sound.speakerName", "Speaker name:");
+		map.put("pc.gui.weasel.drive.driveName", "Drive name:");
+		map.put("pc.gui.weasel.terminal.terminalName", "Terminal name:");
 
 
 		map.put("pc.gui.weasel.core.program", "Program");
@@ -469,10 +473,12 @@ public class mod_PClogic extends PC_Module {
 		map.put("pc.gui.weasel.core.colorLabel", "Network color:");
 
 		map.put("pc.gui.weasel.core.title", "Weasel Controller");
+		map.put("pc.gui.weasel.diskDrive.title", "Weasel Disk Drive");
 		map.put("pc.gui.weasel.port.title", "Expansion port for Weasel Controller");
 		map.put("pc.gui.weasel.display.title", "Display for Weasel Controller");
 		map.put("pc.gui.weasel.sound.title", "Audio output for Weasel");
 		map.put("pc.gui.weasel.touchscreen.title", "Touchscreen display for Weasel");
+		map.put("pc.gui.weasel.terminal.title", "Weasel Terminal");
 
 		map.put("pc.gui.weasel.core.undoAll", "Undo All");
 		map.put("pc.gui.weasel.core.check", "Check");
@@ -769,22 +775,22 @@ public class mod_PClogic extends PC_Module {
 		
 		ModLoader.addRecipe(
 				new ItemStack(weaselDevice, 1, PClo_WeaselType.PORT),
-				new Object[] { "RGR", "SSS",
+				new Object[] { "GRG", "SSS",
 					'S', new ItemStack(Block.stairSingle,1,0), 'R', Item.redstone, 'G', Item.goldNugget });
 		
 		ModLoader.addRecipe(
 				new ItemStack(weaselDevice, 1, PClo_WeaselType.DISPLAY),
-				new Object[] { " G ", "RNR","SSS",
+				new Object[] { " G ", "NRN","SSS",
 					'S', new ItemStack(Block.stairSingle,1,0), 'R', Item.redstone, 'G', Block.thinGlass, 'N', Item.goldNugget });
 		
 		ModLoader.addRecipe(
 				new ItemStack(weaselDevice, 1, PClo_WeaselType.SPEAKER),
-				new Object[] { " N ", "RGR","SSS",
+				new Object[] { " N ", "GRG","SSS",
 					'S', new ItemStack(Block.stairSingle,1,0), 'R', Item.redstone, 'N', Block.music, 'G', Item.goldNugget  });
 		
 		ModLoader.addRecipe(
 				new ItemStack(weaselDevice, 1, PClo_WeaselType.TOUCHSCREEN),
-				new Object[] { "GGG", "RNR","SSS",
+				new Object[] { "GGG", "NRN","SSS",
 					'S', new ItemStack(Block.stairSingle,1,0), 'R', Item.redstone, 'G', Block.thinGlass, 'N', Item.goldNugget });
 		
 
@@ -792,6 +798,30 @@ public class mod_PClogic extends PC_Module {
 				new ItemStack(weaselDisk, 4, 0),
 				new Object[] { " C ", "CIC"," C ",
 					'C', Item.coal, 'I', Item.ingotIron });
+		
+		ModLoader.addRecipe(
+				new ItemStack(weaselDevice, 1, PClo_WeaselType.DISK_MANAGER),
+				new Object[] { "BBB", "SRS", "SSS",
+					'B', Block.button,
+					'S', new ItemStack(Block.stairSingle,1,0),
+					'R', Item.redstone});
+		
+		ModLoader.addRecipe(
+				new ItemStack(weaselDevice, 1, PClo_WeaselType.DISK_DRIVE),
+				new Object[] { "SSS", "GRG", "SSS",
+					'B', Block.button,
+					'S', new ItemStack(Block.stairSingle,1,0),
+					'R', Item.redstone,
+					'G', Item.goldNugget
+					});
+		
+		ModLoader.addRecipe(
+				new ItemStack(weaselDevice, 1, PClo_WeaselType.DISK_DRIVE),
+				new Object[] { "  D", "BBS", "SSS",
+					'B', Block.button,
+					'S', new ItemStack(Block.stairSingle,1,0),
+					'D', new ItemStack(weaselDevice, 1, PClo_WeaselType.DISPLAY),
+					});
 		
 		
 		// *** lights ***

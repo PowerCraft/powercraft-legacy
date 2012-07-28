@@ -46,6 +46,7 @@ public class PClo_GuiWeaselCoreSettings implements PC_IGresBase {
 
 		hg = new PC_GresLayoutH().setAlignH(PC_GresAlign.LEFT);
 		hg.add(new PC_GresGap(4, 0));
+		hg.add(new PC_GresButton("+").setId(103).setMinWidth(0).enable(false).setWidgetMargin(2));
 		hg.add(new PC_GresButton(PC_Lang.tr("pc.gui.weasel.core.program")).setId(100).enable(true).setWidgetMargin(2));
 		hg.add(new PC_GresButton(PC_Lang.tr("pc.gui.weasel.core.status")).setId(101).enable(true).setWidgetMargin(2));
 		hg.add(new PC_GresButton(PC_Lang.tr("pc.gui.weasel.core.settings")).setId(102).enable(false).setWidgetMargin(2));

@@ -25,7 +25,7 @@ public class InstructionStringCall extends Instruction {
 	 * @param parameterExpressions array of expressions to pass
 	 */
 	public InstructionStringCall(String... parameterExpressions) {
-		super(InstructionType.CALL);
+		super(InstructionType._CALL);
 		this.parameterExpressions = parameterExpressions;
 	}
 
@@ -33,7 +33,7 @@ public class InstructionStringCall extends Instruction {
 	 * CALL
 	 */
 	public InstructionStringCall() {
-		super(InstructionType.CALL);
+		super(InstructionType._CALL);
 	}
 
 	/**
@@ -46,7 +46,7 @@ public class InstructionStringCall extends Instruction {
 	@Override
 	public void execute(WeaselEngine engine, InstructionList instructionList) throws WeaselRuntimeException {
 		
-		String funcname = parameterExpressions[0];
+		String funcname = (String) Calc.evaluate(parameterExpressions[0], engine);
 
 		WeaselObject[] paramValues = new WeaselObject[parameterExpressions.length-1];
 

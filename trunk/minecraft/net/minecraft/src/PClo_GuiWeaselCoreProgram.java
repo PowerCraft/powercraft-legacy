@@ -14,15 +14,17 @@ import net.minecraft.src.PC_GresWidget.PC_GresAlign;
  */
 public class PClo_GuiWeaselCoreProgram implements PC_IGresBase {
 
-	private PClo_WeaselPluginCore core;
-	private PC_GresWidget edit;
-	private PC_GresWidget txMsg;
-	private PC_GresWindow w;
-	private PC_GresWidget txRunning;
-	private PC_GresWidget btnPauseResume;
-	private PC_GresWidget btnLaunch;
-	private PC_GresWidget btnStop;
-	private PC_GresWidget btnRestart;
+	protected PClo_WeaselPluginCore core;
+	protected PC_GresWidget edit;
+	protected PC_GresWidget txMsg;
+	protected PC_GresWindow w;
+	protected PC_GresWidget txRunning;
+	protected PC_GresWidget btnPauseResume;
+	protected PC_GresWidget btnLaunch;
+	protected PC_GresWidget btnStop;
+	protected PC_GresWidget btnRestart;
+
+	protected String preUndo = "";
 
 
 	/**
@@ -32,6 +34,7 @@ public class PClo_GuiWeaselCoreProgram implements PC_IGresBase {
 	 */
 	public PClo_GuiWeaselCoreProgram(PClo_WeaselPluginCore core) {
 		this.core = core;
+		preUndo = core.program;
 	}
 
 	@Override
@@ -41,6 +44,7 @@ public class PClo_GuiWeaselCoreProgram implements PC_IGresBase {
 
 	@Override
 	public void initGui(PC_IGresGui gui) {
+
 		w = new PC_GresWindow(PC_Lang.tr("pc.gui.weasel.core.title"));
 		w.setMinSize(380, 230);
 		w.setAlignH(PC_GresAlign.STRETCH);
@@ -50,6 +54,7 @@ public class PClo_GuiWeaselCoreProgram implements PC_IGresBase {
 
 		hg = new PC_GresLayoutH().setAlignH(PC_GresAlign.LEFT);
 		hg.add(new PC_GresGap(4, 0));
+		hg.add(new PC_GresButton("+").setId(103).setMinWidth(0).enable(true).setWidgetMargin(2));
 		hg.add(new PC_GresButton(PC_Lang.tr("pc.gui.weasel.core.program")).setId(100).enable(false).setWidgetMargin(2));
 		hg.add(new PC_GresButton(PC_Lang.tr("pc.gui.weasel.core.status")).setId(101).enable(true).setWidgetMargin(2));
 		hg.add(new PC_GresButton(PC_Lang.tr("pc.gui.weasel.core.settings")).setId(102).enable(true).setWidgetMargin(2));
@@ -63,54 +68,10 @@ public class PClo_GuiWeaselCoreProgram implements PC_IGresBase {
 
 		PC_GresWidget leftCol = new PC_GresLayoutV().setAlignH(PC_GresAlign.STRETCH).setMinWidth(294).setWidgetMargin(1);
 
-
-		AutoAdd autoAdd = new AutoAdd(){
-			
-			private int getFirstFreeSpace(String s){
-				for(int i=0; i<s.length(); i++){
-					if(s.charAt(i)!='\t')
-						return i;
-				}
-				return s.length();
-			}
-			
-			private char getFirstNotOf(String s, char c){
-				for(int i=0; i<s.length(); i++){
-					if(s.charAt(i)!=' ')
-						return s.charAt(i);
-				}
-				return 0;
-			}
-			
-			@Override
-			public StringAdd charAdd(PC_GresTextEditMultiline te, char c,
-					PC_GresTextEditMultiline.Keyword kw, int blocks, String textBevore, String textBehind) {
-				if(kw==null||kw.end==null){
-					if(c=='{')
-						return new StringAdd("}", false);
-					if(c=='(')
-						return new StringAdd(")", false);
-					if(c=='"')
-						return new StringAdd("\"", false);
-					if(c=='\n'){
-						int tab = blocks;
-						int ffs = getFirstFreeSpace(textBehind);
-						if(getFirstNotOf(textBehind, ' ')=='}')
-							tab -= 1;
-						tab -= ffs;
-						String s="";
-						for(int i=0; i<tab; i++){
-							s += "\t";
-						}
-						return new StringAdd(s, true);
-					}
-				}
-				return null;
-			}
-			
-		};
-		leftCol.add(edit = new PC_GresTextEditMultiline(core.program, 290, 154, PC_GresHighlightHelper.weasel(core, core.getWeaselEngine()), autoAdd).setWidgetMargin(2));
-		leftCol.add(txMsg = new PC_GresLabelMultiline("Weasel status: " + (core.getError() == null ? "OK" : core.getError()), 270).setMinRows(2).setMaxRows(2).setWidgetMargin(2).setColor(PC_GresWidget.textColorEnabled, 0x000000));
+		leftCol.add(edit = new PC_GresTextEditMultiline(core.program, 290, 164, PC_GresHighlightHelper.weasel(core, core.getWeaselEngine()),
+				PC_GresHighlightHelper.autoAdd).setWidgetMargin(2));
+		leftCol.add(txMsg = new PC_GresLabelMultiline("Weasel status: " + (core.getError() == null ? "OK" : core.getError().replace("\n", " ")), 270)
+				.setMinRows(1).setMaxRows(1).setWidgetMargin(2).setColor(PC_GresWidget.textColorEnabled, 0x000000));
 
 		mainHg.add(leftCol);
 
@@ -131,6 +92,8 @@ public class PClo_GuiWeaselCoreProgram implements PC_IGresBase {
 		btnLaunch.enable(false);
 
 		gui.add(w);
+
+		txMsg.setFontRenderer(mod_PCcore.fontRendererSmall);
 
 		actionPerformed(edit, gui);
 
@@ -156,9 +119,16 @@ public class PClo_GuiWeaselCoreProgram implements PC_IGresBase {
 			PC_Utils.openGres(getPlayer(), new PClo_GuiWeaselCoreSettings(core));
 			return;
 		}
+		if (widget.getId() == 103) {
+			core.setProgram(edit.getText());
+			PC_Utils.openGres(getPlayer(), (this instanceof PClo_GuiWeaselCoreProgramBig) ? new PClo_GuiWeaselCoreProgram(core)
+					: new PClo_GuiWeaselCoreProgramBig(core));
+			return;
+		}
 
 
 		if (widget == edit) {
+			core.setProgram(edit.getText());
 			btnLaunch.enable(false);
 		}
 
@@ -171,7 +141,7 @@ public class PClo_GuiWeaselCoreProgram implements PC_IGresBase {
 
 		// undo all
 		if (widget.getId() == 1) {
-			edit.setText(core.program);
+			edit.setText(preUndo);
 			txMsg.setText(PC_Lang.tr("pc.gui.weasel.core.msgAllUndone"));
 			return;
 		}
@@ -219,9 +189,8 @@ public class PClo_GuiWeaselCoreProgram implements PC_IGresBase {
 
 		// restart clear globals
 		if (widget.getId() == 5) {
-			core.restartAllNetworkDevices();
+			core.restartDevice();
 			txMsg.setText(PC_Lang.tr("pc.gui.weasel.core.msgRestarted"));
-
 			return;
 		}
 
@@ -258,11 +227,12 @@ public class PClo_GuiWeaselCoreProgram implements PC_IGresBase {
 		}
 
 		if (core.hasError()) {
-			txMsg.text = core.getError();
+			txMsg.text = core.getError().replace("\n", " ");
 			txRunning.setText(PC_Lang.tr("pc.gui.weasel.core.crashed"));
 			btnPauseResume.enable(false);
 			btnRestart.enable(true);
 			btnStop.enable(true);
+			return;
 		}
 
 		if (core.paused) {

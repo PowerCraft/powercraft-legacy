@@ -12,7 +12,6 @@ import org.lwjgl.opengl.GL11;
  */
 public class PC_GresButtonImage extends PC_GresButton {
 
-	private boolean isClicked = false;
 	private String texture;
 	private PC_CoordI textureLeftTop, imageSize;
 

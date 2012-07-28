@@ -7,6 +7,12 @@ import net.minecraft.src.PC_GresTextEdit.PC_GresInputType;
 import net.minecraft.src.PC_GresWidget.PC_GresAlign;
 
 
+/**
+ * Digital Workbench
+ * 
+ * @author MightyPork
+ *
+ */
 public class PClo_GuiWeaselDiskManager implements PC_IGresBase {
 
 	private static class TinyInv implements IInventory, PC_ISpecialAccessInventory {
@@ -85,6 +91,7 @@ public class PClo_GuiWeaselDiskManager implements PC_IGresBase {
 		@Override
 		public void closeChest() {
 			player.dropPlayerItem(slot);
+			slot = null;
 		}
 
 		@Override
@@ -117,29 +124,16 @@ public class PClo_GuiWeaselDiskManager implements PC_IGresBase {
 		}
 	}
 
-	private PClo_WeaselPluginDiskManager dev;
 	private PC_GresWindow w;
-	private PC_GresWidget txError;
 	private PC_GresWidget edName;
-	private PC_GresWidget btnOk;
-	private PC_GresButton btnCancel;
 	private PC_GresColor colorBulb;
 	private PC_GresWidget vg0, vgf, vgt, vgl, vgi;
 	private PC_GresColorPicker colorPicker;
-	private Slot theSlot;
+	private Slot theSlot, cpySlot1, cpySlot2;
 	private PC_GresWidget btnRename;
 	private PC_GresWidget btnRecolor;
 	private PC_GresInventoryBigSlot slotInv;
-
-
-	/**
-	 * GUI for port.
-	 * 
-	 * @param display plugin instance
-	 */
-	public PClo_GuiWeaselDiskManager(PClo_WeaselPluginDiskManager device) {
-		this.dev = device;
-	}
+	private PC_GresInventory cpyInv1, cpyInv2;
 
 	@Override
 	public EntityPlayer getPlayer() {
@@ -191,12 +185,18 @@ public class PClo_GuiWeaselDiskManager implements PC_IGresBase {
 		vgl.setVisible(false);
 		vgi.setVisible(false);
 		vg0.setVisible(false);
+		cpyInv1.setSlot(null, 0, 0);
+		cpyInv2.setSlot(null, 0, 0);
+		cpySlot1.inventory.closeChest();
+		cpySlot2.inventory.closeChest();
 		
 		formatButtons.setVisible(false);
 		switch (panel) {
 			case -1:
 				w.setText(PC_Lang.tr("pc.gui.weasel.diskManager.empty.title"));
 				vg0.setVisible(true);
+				cpyInv1.setSlot(cpySlot1, 0, 0);
+				cpyInv2.setSlot(cpySlot2, 0, 0);
 				break;
 			case 0:
 				w.setText(theSlot.getStack().getItem().getItemDisplayName(theSlot.getStack()));
@@ -277,7 +277,16 @@ public class PClo_GuiWeaselDiskManager implements PC_IGresBase {
 
 		vg0 = new PC_GresLayoutV();
 		vg0.setAlignH(PC_GresAlign.CENTER).setMinWidth(180);
-		vg0.add(new PC_GresImage(mod_PCcore.getImgDir()+"graphics.png", 80, 24, 117, 92));
+		vg0.add(new PC_GresImage(mod_PCcore.getImgDir()+"graphics.png", 80, 24, 112, 70));
+		
+		hg = new PC_GresLayoutH().setAlignH(PC_GresAlign.CENTER);
+		hg.add(cpyInv1 = new PC_GresInventory(1,1));
+		cpyInv1.setSlot(cpySlot1 = new PC_SlotSelective(new TinyInv(getPlayer()), 0, 0, 0), 0, 0);
+		
+		hg.add(new PC_GresButtonImage(mod_PCcore.getImgDir()+"gres/widgets.png",new PC_CoordI(57,12),new PC_CoordI(13, 10)).setButtonPadding(3, 3).setId(-13));
+		hg.add(cpyInv2 = new PC_GresInventory(1,1));
+		cpyInv2.setSlot(cpySlot2 = new PC_SlotSelective(new TinyInv(getPlayer()), 0, 0, 0), 0, 0);
+		vg0.add(hg);
 
 
 		// List screen
@@ -401,6 +410,13 @@ public class PClo_GuiWeaselDiskManager implements PC_IGresBase {
 
 	@Override
 	public void actionPerformed(PC_GresWidget widget, PC_IGresGui gui) {
+		
+		if(widget.getId() == -13) {
+			if(cpySlot1.getStack() != null && cpySlot2.getStack() != null ) {
+				cpySlot2.putStack(cpySlot1.getStack().copy());
+				PC_Utils.mc().sndManager.playSoundFX("random.wood click", 1.0F, 1.0F);
+			}
+		}
 
 		if (widget == btnRecolor) {
 			if (theSlot.getStack() != null) {
@@ -425,9 +441,7 @@ public class PClo_GuiWeaselDiskManager implements PC_IGresBase {
 			if (theSlot.getStack() != null) {
 				btnEdit.enabled = PClo_ItemWeaselDisk.getType(theSlot.getStack()) != PClo_ItemWeaselDisk.EMPTY;				
 				if (this.panelShown == -1) {
-					System.out.println("Showing panel");
 					setPanelForStack(false);
-					System.out.println("Panel now " + panelShown);
 				}
 				edName.setText(PClo_ItemWeaselDisk.getLabel(theSlot.getStack()));
 				colorPicker.setColor(PClo_ItemWeaselDisk.getColor(theSlot.getStack()));
@@ -551,15 +565,19 @@ public class PClo_GuiWeaselDiskManager implements PC_IGresBase {
 					break;
 				case 100:
 					PClo_ItemWeaselDisk.formatDisk(theSlot.getStack(), PClo_ItemWeaselDisk.TEXT);
+					btnEdit.enabled = true;
 					break;
 				case 101:
 					PClo_ItemWeaselDisk.formatDisk(theSlot.getStack(), PClo_ItemWeaselDisk.IMAGE);
+					btnEdit.enabled = true;
 					break;
 				case 102:
 					PClo_ItemWeaselDisk.formatDisk(theSlot.getStack(), PClo_ItemWeaselDisk.NUMBERLIST);
+					btnEdit.enabled = true;
 					break;
 				case 103:
 					PClo_ItemWeaselDisk.formatDisk(theSlot.getStack(), PClo_ItemWeaselDisk.STRINGLIST);
+					btnEdit.enabled = true;
 					break;
 			}
 		}

@@ -25,7 +25,7 @@ public class StrFormat extends PostfixMathCommand {
 	private EnumType type;
 
 	public enum EnumType {
-		ZEROFILL, CUTFIRST, CUTLAST;
+		ZEROFILL, CUTFIRST, CUTLAST, GETFIRST, GETLAST;
 	}
 
 	public StrFormat(EnumType type) {
@@ -67,6 +67,18 @@ public class StrFormat extends PostfixMathCommand {
 						str = "";
 					} else {
 						str = str.substring(0, str.length() - number);
+					}
+					break;
+				case GETFIRST:
+					if (number >= str.length()) {
+					} else {
+						str = str.substring(0,number);
+					}
+					break;
+				case GETLAST:
+					if (number >= str.length()) {
+					} else {
+						str = str.substring(str.length() - number);
 					}
 					break;
 			}

@@ -15,7 +15,7 @@ public class PC_GresButton extends PC_GresWidget {
 	 */
 	protected PC_CoordI buttonScale = new PC_CoordI(6, 6);
 
-	private boolean isClicked = false;
+	protected boolean isClicked = false;
 
 	/**
 	 * @param label button label

@@ -29,6 +29,7 @@ public class PClo_WeaselPluginDisplay extends PClo_WeaselPlugin {
 
 	/** Rotation, like sign, 0-15 */
 	public int rotation;
+	private boolean isChanged;
 
 
 
@@ -55,6 +56,7 @@ public class PClo_WeaselPluginDisplay extends PClo_WeaselPlugin {
 
 	@Override
 	public WeaselObject callProvidedFunction(WeaselEngine engine, String functionName, WeaselObject[] args) {
+		isChanged = true;
 		if (functionName.equals(getName()+".reset") || functionName.equals(getName()+".restart")) restartDevice();
 		if (functionName.equals(getName()+".cls") || functionName.equals(getName()+".clear")) text="";
 		if (functionName.equals(getName()+".matrix") || functionName.equals(getName()+".grain")) {
@@ -84,6 +86,7 @@ public class PClo_WeaselPluginDisplay extends PClo_WeaselPlugin {
 
 	@Override
 	public void setVariable(String name, Object object) {
+		isChanged = true;
 
 		if (name.equals(getName()) || name.equals(getName() + ".text") || name.equals(getName() + ".txt")) {
 			text = Calc.toString(object);
@@ -185,7 +188,13 @@ public class PClo_WeaselPluginDisplay extends PClo_WeaselPlugin {
 	}
 
 	@Override
-	protected void updateTick() {}
+	protected boolean updateTick() {
+		if(isChanged) {
+			isChanged = false;
+			return true;
+		}
+		return false;
+	}
 
 	@Override
 	public void onRedstoneSignalChanged() {}

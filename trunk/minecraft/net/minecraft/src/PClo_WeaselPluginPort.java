@@ -18,6 +18,8 @@ import weasel.obj.WeaselObject;
  */
 public class PClo_WeaselPluginPort extends PClo_WeaselPlugin {
 
+	private boolean isChanged;
+
 	/**
 	 * @param tew tile entity weasel
 	 */
@@ -54,10 +56,17 @@ public class PClo_WeaselPluginPort extends PClo_WeaselPlugin {
 	}
 
 	@Override
-	public void updateTick() {}
+	public boolean updateTick() {
+		if(isChanged) {
+			isChanged = false;
+			return true;
+		}
+		return false;
+	}
 
 	@Override
 	public void onRedstoneSignalChanged() {
+		isChanged = true;
 		if (getNetwork() != null) if (getNetwork().getMember("CORE") != null) ((PClo_WeaselPlugin) getNetwork().getMember("CORE")).callFunctionExternalDelegated("update");
 	}
 
@@ -103,6 +112,7 @@ public class PClo_WeaselPluginPort extends PClo_WeaselPlugin {
 		} else if (functionName.equals(getName() + ".reset") || functionName.equals(getName() + ".restart")) {
 			restartDevice();
 		} else if (functionName.equals(getName() + ".on")) {
+			isChanged = true;
 			if(args.length == 0) {
 				setOutport("F", true);
 			}else {
@@ -111,6 +121,7 @@ public class PClo_WeaselPluginPort extends PClo_WeaselPlugin {
 				}
 			}
 		} else if (functionName.equals(getName() + ".off")) {
+			isChanged = true;
 			if(args.length == 0) {
 				setOutport("F", false);
 			}else {
@@ -119,6 +130,7 @@ public class PClo_WeaselPluginPort extends PClo_WeaselPlugin {
 				}
 			}
 		} else if (functionName.equals(getName() + ".switch") || functionName.equals(getName() + ".toggle")) {
+			isChanged = true;
 			if(args.length == 0) {
 				setOutport("F", !getOutport("F"));
 			}else {
@@ -143,6 +155,7 @@ public class PClo_WeaselPluginPort extends PClo_WeaselPlugin {
 
 	@Override
 	public void setVariable(String name, Object object) {
+		isChanged = true;
 		if (name.equals(getName()+".color")||name.equals(getName()+".rgb")) {
 			if (object instanceof WeaselInteger || object instanceof Number) {
 				rgbcolor = Calc.toInteger(object);
@@ -156,7 +169,13 @@ public class PClo_WeaselPluginPort extends PClo_WeaselPlugin {
 			}
 		}else
 		if (name.equals(getName())) {
-			setOutport("F", Calc.toBoolean(object));
+			boolean state = Calc.toBoolean(object);
+			setOutport("F", state);
+			setOutport("B", state);
+			setOutport("L", state);
+			setOutport("R", state);
+			setOutport("U", state);
+			setOutport("D", state);
 
 		} else if (name.startsWith(getName() + ".") && name.length() == getName().length() + 2) {
 			String port = name.substring(name.length() - 1);

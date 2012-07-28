@@ -30,7 +30,7 @@ public class PClo_WeaselPluginDiskManager extends PClo_WeaselPlugin {
 	
 	@Override
 	public boolean onClick(EntityPlayer player) {
-		PC_Utils.openGres(player, new PClo_GuiWeaselDiskManager(this));
+		PC_Utils.openGres(player, new PClo_GuiWeaselDiskManager());
 		return true;
 	}
 
@@ -71,7 +71,7 @@ public class PClo_WeaselPluginDiskManager extends PClo_WeaselPlugin {
 	}
 
 	@Override
-	protected void updateTick() {}
+	protected boolean updateTick() {return false;}
 
 	@Override
 	public void onRedstoneSignalChanged() {}
@@ -130,6 +130,6 @@ public class PClo_WeaselPluginDiskManager extends PClo_WeaselPlugin {
 	
 	@Override
 	public float[] getBounds() {
-		return new float[] {0,0,0,1,0.6F,1};
+		return new float[] {0,0,0,1,1-2*0.0625F,1};
 	}
 }

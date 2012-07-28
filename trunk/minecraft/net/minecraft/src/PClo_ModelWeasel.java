@@ -19,6 +19,9 @@ public class PClo_ModelWeasel extends ModelBase {
 	private ModelRenderer display[];
 	private ModelRenderer sound[];
 	private ModelRenderer touchscreen[];
+	private ModelRenderer diskmanager[];
+	private ModelRenderer diskdrive[];
+	private ModelRenderer terminal[];
 
 	/**
 	 * Radio block model.
@@ -46,6 +49,8 @@ public class PClo_ModelWeasel extends ModelBase {
 		core[3] = new ModelRenderer(this, 13, 12);
 		core[3].addBox(-2F, -6.5F, 2F, 4, 1, 2, 0.0F);
 
+		
+		
 
 
 		port = new ModelRenderer[4];
@@ -67,6 +72,8 @@ public class PClo_ModelWeasel extends ModelBase {
 		port[3].addBox(-2F, -4.5F, -6F, 4, 1, 2, 0.0F);
 
 
+		
+		
 
 		display = new ModelRenderer[5];
 
@@ -90,6 +97,8 @@ public class PClo_ModelWeasel extends ModelBase {
 		display[4] = new ModelRenderer(this, 13, 12);
 		display[4].addBox(-2F, -17F, -1F, 4, 1, 2, 0.0F);
 
+		
+		
 
 		sound = new ModelRenderer[3];
 
@@ -105,6 +114,9 @@ public class PClo_ModelWeasel extends ModelBase {
 		sound[2] = new ModelRenderer(this, 0, 31);
 		sound[2].addBox(-2F, -15.5F, -2F, 4, 1, 4, 0.0F);
 
+		
+		
+		
 		touchscreen = new ModelRenderer[2];
 
 		// the bottom pad
@@ -129,7 +141,48 @@ public class PClo_ModelWeasel extends ModelBase {
 		touchscreen[1] = new ModelRenderer(this, 13, 12);
 		touchscreen[1].addBox(-2F, -17F, -1F, 4, 1, 2, 0.0F);
 		
+		
 
+		diskmanager = new ModelRenderer[2];
+
+		// box
+		diskmanager[0] = new ModelRenderer(this, 0, 99);
+		diskmanager[0].addBox(-8F, -13F, -8F, 16, 13, 16, 0.0F);
+
+		// top
+		diskmanager[1] = new ModelRenderer(this, 37, 53);
+		diskmanager[1].addBox(-6F, -14F, -6F, 12, 1, 12, 0.0F);
+		
+
+		diskdrive = new ModelRenderer[2];
+
+		// box
+		diskdrive[0] = new ModelRenderer(this, 64, 99);
+		diskdrive[0].addBox(-8F, -13F, -8F, 16, 13, 16, 0.0F);
+
+		// colored
+		diskdrive[1] = new ModelRenderer(this, 0, 31);
+		diskdrive[1].addBox(-2F, -14F, -2F, 4, 1, 4, 0.0F);
+		
+
+		terminal = new ModelRenderer[4];
+
+		// box
+		terminal[0] = new ModelRenderer(this, 39, 67);
+		terminal[0].addBox(-7F, -4F, -7F, 14, 4, 14, 0.0F);
+
+		// keyb
+		terminal[1] = new ModelRenderer(this, 62, 59);
+		terminal[1].addBox(-5F, -5F, -5F, 10, 1, 4, 0.0F);
+		
+		//screen
+		terminal[2] = new ModelRenderer(this, 39, 85);
+		terminal[2].addBox(-6F, -12F, 0F, 12, 8, 6, 0.0F);
+
+		terminal[3] = new ModelRenderer(this, 13, 12);
+		terminal[3].addBox(-2F, -13F, 2F, 4, 1, 2, 0.0F);
+		
+		
 	}
 
 	/** index of then plugin */
@@ -169,6 +222,15 @@ public class PClo_ModelWeasel extends ModelBase {
 			sound[1].render(0.0625F);
 		} else if (deviceType == PClo_WeaselType.TOUCHSCREEN) {
 			touchscreen[0].render(0.0625F);
+		} else if (deviceType == PClo_WeaselType.DISK_MANAGER) {
+			diskmanager[0].render(0.0625F);
+			diskmanager[1].render(0.0625F);
+		} else if (deviceType == PClo_WeaselType.DISK_DRIVE) {
+			diskdrive[0].render(0.0625F);
+		} else if (deviceType == PClo_WeaselType.TERMINAL) {
+			terminal[0].render(0.0625F);
+			terminal[1].render(0.0625F);
+			terminal[2].render(0.0625F);
 		}
 	}
 
@@ -195,6 +257,12 @@ public class PClo_ModelWeasel extends ModelBase {
 			sound[2].render(0.0625F);
 		} else if (deviceType == PClo_WeaselType.TOUCHSCREEN) {
 			touchscreen[1].render(0.0625F);
+		} else if (deviceType == PClo_WeaselType.DISK_MANAGER) {
+			// none
+		} else if (deviceType == PClo_WeaselType.DISK_DRIVE) {
+			diskdrive[1].render(0.0625F);
+		} else if (deviceType == PClo_WeaselType.TERMINAL) {
+			terminal[3].render(0.0625F);
 		}
 
 	}
