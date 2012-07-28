@@ -131,19 +131,19 @@ public class PC_Color implements PC_INBT {
 	 */
 	public static Integer getHexColorForName(Object object) {
 		String name = null;
-		if(object instanceof WeaselString) {			
+		if (object instanceof WeaselString) {
 			name = ((WeaselString) object).get();
 		}
-		if(object instanceof String) {			
+		if (object instanceof String) {
 			name = ((String) object);
 		}
-		if(name!=null) {
+		if (name != null) {
 			for (String key : namedColors.keySet()) {
 				if (key.equalsIgnoreCase(name)) {
 					return namedColors.get(key);
 				}
 			}
-		}else {
+		} else {
 			return Calc.toInteger(object);
 		}
 		return null;
@@ -420,7 +420,8 @@ public class PC_Color implements PC_INBT {
 	public static final int crystal_colors[] = { 0xff9900, 0xff1111, 0x39ff11, 0x5555ff, 0xCCCCFF, 0xff33ff, 0x33ffff, 0xffff00 };
 
 	/** Control Light colors */
-	public static final int light_colors[] = { 0x333333, 0xff0000, 0x009900, 0x553300, 0x3333ff, 0x9900ff, 0x00ffff, 0x666666, 0x434343, 0xe881a8, 0x41ff34, 0xffff00, 0x6666ff, 0xff0099, 0xff9900, 0xf0f0f0 };
+	public static final int light_colors[] = { 0x333333, 0xff0000, 0x009900, 0x553300, 0x3333ff, 0x9900ff, 0x00ffff, 0x666666, 0x434343, 0xe881a8,
+			0x41ff34, 0xffff00, 0x6666ff, 0xff0099, 0xff9900, 0xf0f0f0 };
 
 	/**
 	 * Enum of dye colors. call dye.RED.meta for the int damage value.
@@ -430,7 +431,8 @@ public class PC_Color implements PC_INBT {
 	 */
 	@SuppressWarnings("javadoc")
 	public static enum dye {
-		BLACK(0), RED(1), GREEN(2), BROWN(3), BLUE(4), PURPLE(5), CYAN(6), LIGHTGRAY(7), GRAY(8), PINK(9), LIME(10), YELLOW(11), LIGHTBLUE(12), MAGENTA(13), ORANGE(14), WHITE(15);
+		BLACK(0), RED(1), GREEN(2), BROWN(3), BLUE(4), PURPLE(5), CYAN(6), LIGHTGRAY(7), GRAY(8), PINK(9), LIME(10), YELLOW(11), LIGHTBLUE(12), MAGENTA(
+				13), ORANGE(14), WHITE(15);
 
 		public int meta;
 
@@ -447,7 +449,8 @@ public class PC_Color implements PC_INBT {
 	 */
 	@SuppressWarnings("javadoc")
 	public static enum cloth {
-		BLACK(15), RED(14), GREEN(13), BROWN(12), BLUE(11), PURPLE(10), CYAN(9), LIGHTGRAY(8), GRAY(7), PINK(6), LIME(5), YELLOW(4), LIGHTBLUE(3), MAGENTA(2), ORANGE(1), WHITE(0);
+		BLACK(15), RED(14), GREEN(13), BROWN(12), BLUE(11), PURPLE(10), CYAN(9), LIGHTGRAY(8), GRAY(7), PINK(6), LIME(5), YELLOW(4), LIGHTBLUE(3), MAGENTA(
+				2), ORANGE(1), WHITE(0);
 
 		public int meta;
 

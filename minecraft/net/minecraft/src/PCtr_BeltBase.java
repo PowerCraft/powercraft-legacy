@@ -159,7 +159,8 @@ public class PCtr_BeltBase {
 	 */
 	public static void soundEffectChest(World world, PC_CoordI pos) {
 		if (mod_PCcore.soundsEnabled) {
-			world.playSoundEffect(pos.x + 0.5D, pos.y + 0.5D, pos.z + 0.5D, "random.pop", (world.rand.nextFloat() + 0.7F) / 5.0F, 0.5F + world.rand.nextFloat() * 0.3F);
+			world.playSoundEffect(pos.x + 0.5D, pos.y + 0.5D, pos.z + 0.5D, "random.pop", (world.rand.nextFloat() + 0.7F) / 5.0F,
+					0.5F + world.rand.nextFloat() * 0.3F);
 		}
 	}
 
@@ -172,7 +173,8 @@ public class PCtr_BeltBase {
 	 */
 	public static void soundEffectBelt(World world, PC_CoordI pos) {
 		if (mod_PCcore.soundsEnabled) {
-			world.playSoundEffect(pos.x + 0.5D, pos.y + 0.625D, pos.z + 0.5D, "random.wood click", (world.rand.nextFloat() + 0.2F) / 10.0F, 1.0F + (world.rand.nextFloat() - world.rand.nextFloat()) * 0.6F);
+			world.playSoundEffect(pos.x + 0.5D, pos.y + 0.625D, pos.z + 0.5D, "random.wood click", (world.rand.nextFloat() + 0.2F) / 10.0F,
+					1.0F + (world.rand.nextFloat() - world.rand.nextFloat()) * 0.6F);
 		}
 	}
 
@@ -299,7 +301,8 @@ public class PCtr_BeltBase {
 	 * @param pos
 	 */
 	public static void packItems(World world, PC_CoordI pos) {
-		List<EntityItem> items = world.getEntitiesWithinAABB(net.minecraft.src.EntityItem.class, AxisAlignedBB.getBoundingBoxFromPool(pos.x, pos.y, pos.z, pos.x + 1, pos.y + 1, pos.z + 1));
+		List<EntityItem> items = world.getEntitiesWithinAABB(net.minecraft.src.EntityItem.class,
+				AxisAlignedBB.getBoundingBoxFromPool(pos.x, pos.y, pos.z, pos.x + 1, pos.y + 1, pos.z + 1));
 		if (items.size() < 5) {
 			return;
 		}
@@ -370,7 +373,10 @@ public class PCtr_BeltBase {
 	 * @return stored completely
 	 */
 	public static boolean storeItemIntoMinecart(World world, PC_CoordI beltPos, EntityItem entity) {
-		List<EntityMinecart> hitList = world.getEntitiesWithinAABB(EntityMinecart.class, AxisAlignedBB.getBoundingBoxFromPool(beltPos.x, beltPos.y, beltPos.z, beltPos.x + 1, beltPos.y + 1, beltPos.z + 1).expand(1.0D, 1.0D, 1.0D));
+		List<EntityMinecart> hitList = world.getEntitiesWithinAABB(
+				EntityMinecart.class,
+				AxisAlignedBB.getBoundingBoxFromPool(beltPos.x, beltPos.y, beltPos.z, beltPos.x + 1, beltPos.y + 1, beltPos.z + 1).expand(1.0D, 1.0D,
+						1.0D));
 
 		if (hitList.size() > 0) {
 			for (EntityMinecart cart : hitList) {
@@ -522,7 +528,8 @@ public class PCtr_BeltBase {
 				((EntityItem) entity).delayBeforeCanPickup = 7;
 			}
 			if (((EntityItem) entity).age >= 5000) {
-				if (world.getEntitiesWithinAABBExcludingEntity(null, AxisAlignedBB.getBoundingBoxFromPool(pos.x, pos.y, pos.z, pos.x + 1, pos.y + 1, pos.z + 1)).size() < 40) {
+				if (world.getEntitiesWithinAABBExcludingEntity(null,
+						AxisAlignedBB.getBoundingBoxFromPool(pos.x, pos.y, pos.z, pos.x + 1, pos.y + 1, pos.z + 1)).size() < 40) {
 					((EntityItem) entity).age = 4000;
 				}
 			}
@@ -530,7 +537,8 @@ public class PCtr_BeltBase {
 
 		if (entity instanceof EntityXPOrb) {
 			if (((EntityXPOrb) entity).xpOrbAge >= 5000) {
-				if (world.getEntitiesWithinAABBExcludingEntity(null, AxisAlignedBB.getBoundingBoxFromPool(pos.x, pos.y, pos.z, pos.x + 1, pos.y + 1, pos.z + 1)).size() < 40) {
+				if (world.getEntitiesWithinAABBExcludingEntity(null,
+						AxisAlignedBB.getBoundingBoxFromPool(pos.x, pos.y, pos.z, pos.x + 1, pos.y + 1, pos.z + 1)).size() < 40) {
 					((EntityXPOrb) entity).xpOrbAge = 4000;
 				}
 			}
@@ -552,12 +560,14 @@ public class PCtr_BeltBase {
 	 * @param horizontal_boost velocity increment added when entity reaches
 	 *            border, to keep it on the belt.
 	 */
-	public static void moveEntityOnBelt(World world, PC_CoordI pos, Entity entity, boolean bordersEnabled, boolean motionEnabled, int moveDirection, double max_horizontal_speed, double horizontal_boost) {
+	public static void moveEntityOnBelt(World world, PC_CoordI pos, Entity entity, boolean bordersEnabled, boolean motionEnabled, int moveDirection,
+			double max_horizontal_speed, double horizontal_boost) {
 
 		// sound effect
 		if (motionEnabled && world.rand.nextInt(35) == 0) {
 			@SuppressWarnings("rawtypes")
-			List list = world.getEntitiesWithinAABBExcludingEntity(entity, AxisAlignedBB.getBoundingBoxFromPool(pos.x, pos.y, pos.z, pos.x + 1, pos.y + 1, pos.z + 1));
+			List list = world.getEntitiesWithinAABBExcludingEntity(entity,
+					AxisAlignedBB.getBoundingBoxFromPool(pos.x, pos.y, pos.z, pos.x + 1, pos.y + 1, pos.z + 1));
 			if (world.rand.nextInt(list.size() + 1) == 0) {
 				PCtr_BeltBase.soundEffectBelt(world, pos);
 			}

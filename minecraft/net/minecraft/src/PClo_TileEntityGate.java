@@ -406,7 +406,8 @@ public class PClo_TileEntityGate extends PC_TileEntity {
 		IInventory invAt = PC_InvUtils.getCompositeInventoryAt(worldObj, pos);
 		if (invAt != null) return PC_InvUtils.isInventoryEmpty(invAt);
 
-		List<IInventory> list = worldObj.getEntitiesWithinAABB(IInventory.class, AxisAlignedBB.getBoundingBox(pos.x, pos.y, pos.z, pos.x + 1, pos.y + 1, pos.z + 1).expand(0.6D, 0.6D, 0.6D));
+		List<IInventory> list = worldObj.getEntitiesWithinAABB(IInventory.class,
+				AxisAlignedBB.getBoundingBox(pos.x, pos.y, pos.z, pos.x + 1, pos.y + 1, pos.z + 1).expand(0.6D, 0.6D, 0.6D));
 
 		if (list.size() >= 1) {
 			return PC_InvUtils.isInventoryEmpty(list.get(0));
@@ -435,7 +436,8 @@ public class PClo_TileEntityGate extends PC_TileEntity {
 			}
 		}
 
-		List<IInventory> list = worldObj.getEntitiesWithinAABB(IInventory.class, AxisAlignedBB.getBoundingBox(pos.x, pos.y, pos.z, pos.x + 1, pos.y + 1, pos.z + 1).expand(0.6D, 0.6D, 0.6D));
+		List<IInventory> list = worldObj.getEntitiesWithinAABB(IInventory.class,
+				AxisAlignedBB.getBoundingBox(pos.x, pos.y, pos.z, pos.x + 1, pos.y + 1, pos.z + 1).expand(0.6D, 0.6D, 0.6D));
 
 		if (list.size() >= 1) {
 			if (allSlotsFull) {
@@ -590,7 +592,7 @@ public class PClo_TileEntityGate extends PC_TileEntity {
 	 * State of inputs last time the CROSSING GATE was updated.
 	 */
 	public boolean[] crossingGateInputStates = { false, false, false, false };
-	
+
 	/** last output state of instagate, to prevent unneeded notifications */
 	public boolean instagate_last_input = false;
 

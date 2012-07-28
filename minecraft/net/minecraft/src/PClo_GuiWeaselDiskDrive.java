@@ -1,5 +1,6 @@
 package net.minecraft.src;
 
+
 import net.minecraft.src.PC_GresTextEdit.PC_GresInputType;
 import net.minecraft.src.PC_GresWidget.PC_GresAlign;
 
@@ -8,7 +9,6 @@ import net.minecraft.src.PC_GresWidget.PC_GresAlign;
  * drive
  * 
  * @author MightyPork
- *
  */
 public class PClo_GuiWeaselDiskDrive implements PC_IGresBase {
 
@@ -20,10 +20,11 @@ public class PClo_GuiWeaselDiskDrive implements PC_IGresBase {
 
 	/**
 	 * gui for drive
+	 * 
 	 * @param drive drive plugin
 	 */
 	public PClo_GuiWeaselDiskDrive(PClo_WeaselPluginDiskDrive drive) {
-		this.drive=drive;
+		this.drive = drive;
 	}
 
 	@Override
@@ -39,7 +40,7 @@ public class PClo_GuiWeaselDiskDrive implements PC_IGresBase {
 		w.setAlignH(PC_GresAlign.CENTER);
 		w.setWidthForInventory();
 		w.setMinWidth(260);
-		
+
 		PC_GresWidget hg;
 
 		int colorLabel = 0x000000;
@@ -59,16 +60,16 @@ public class PClo_GuiWeaselDiskDrive implements PC_IGresBase {
 		w.add(hg);
 
 		w.add(txError = new PC_GresLabel("").setWidgetMargin(2).setColor(PC_GresWidget.textColorEnabled, 0x000000));
-	
-		w.add(new PC_GresInventory(drive.getInventory(),4,2));
+
+		w.add(new PC_GresInventory(drive.getInventory(), 4, 2));
 
 		w.add(new PC_GresInventoryPlayer(true));
-		
+
 
 		w.add(new PC_GresGap(0, 0));
 
 		gui.add(w);
-		
+
 		gui.setCanShiftTransfer(true);
 		btnOk.enable(false);
 

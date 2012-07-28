@@ -88,7 +88,8 @@ public class PCco_ItemBlockHackedLockedChest extends ItemBlock {
 				if (pos.getId(world) == placedID) {
 					Block.blocksList[placedID].onBlockPlaced(world, x, y, z, face);
 
-					world.playSoundEffect(x + 0.5F, y + 0.5F, z + 0.5F, block.stepSound.getStepSound(), (block.stepSound.getVolume() + 1.0F) / 2.0F, block.stepSound.getPitch() * 0.8F);
+					world.playSoundEffect(x + 0.5F, y + 0.5F, z + 0.5F, block.stepSound.getStepSound(), (block.stepSound.getVolume() + 1.0F) / 2.0F,
+							block.stepSound.getPitch() * 0.8F);
 
 					if (itemstack.hasTagCompound()) {
 						NBTTagCompound tag = itemstack.getTagCompound();

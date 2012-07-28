@@ -251,7 +251,7 @@ public class PClo_BlockWeasel extends BlockContainer implements PC_ISwapTerrain,
 	public void setBlockBoundsBasedOnState(IBlockAccess iblockaccess, int x, int y, int z) {
 		setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 0.5F, 1.0F);
 		PClo_WeaselPlugin plugin = getPlugin(iblockaccess, x, y, z);
-		if(plugin != null) {
+		if (plugin != null) {
 			float[] bounds = plugin.getBounds();
 			setBlockBounds(bounds[0], bounds[1], bounds[2], bounds[3], bounds[4], bounds[5]);
 		}
@@ -262,7 +262,7 @@ public class PClo_BlockWeasel extends BlockContainer implements PC_ISwapTerrain,
 		setBlockBoundsBasedOnState(world, x, y, z);
 		return super.getCollisionBoundingBoxFromPool(world, x, y, z);
 	}
-	
+
 	@Override
 	public AxisAlignedBB getSelectedBoundingBoxFromPool(World world, int x, int y, int z) {
 		setBlockBoundsBasedOnState(world, x, y, z);
@@ -377,11 +377,13 @@ public class PClo_BlockWeasel extends BlockContainer implements PC_ISwapTerrain,
 		int x = pos.x, y = pos.y, z = pos.z;
 
 		if (inp == 4) {
-			boolean isProviding = (world.isBlockIndirectlyProvidingPowerTo(x, y - 1, z, 0) || (world.getBlockId(x, y - 1, z) == Block.redstoneWire.blockID && world.getBlockMetadata(x, y - 1, z) > 0));
+			boolean isProviding = (world.isBlockIndirectlyProvidingPowerTo(x, y - 1, z, 0) || (world.getBlockId(x, y - 1, z) == Block.redstoneWire.blockID && world
+					.getBlockMetadata(x, y - 1, z) > 0));
 			return isProviding;
 		}
 		if (inp == 5) {
-			boolean isProviding = (world.isBlockIndirectlyProvidingPowerTo(x, y + 1, z, 1) || (world.getBlockId(x, y + 1, z) == Block.redstoneWire.blockID && world.getBlockMetadata(x, y + 1, z) > 0));
+			boolean isProviding = (world.isBlockIndirectlyProvidingPowerTo(x, y + 1, z, 1) || (world.getBlockId(x, y + 1, z) == Block.redstoneWire.blockID && world
+					.getBlockMetadata(x, y + 1, z) > 0));
 			return isProviding;
 		}
 
@@ -411,16 +413,20 @@ public class PClo_BlockWeasel extends BlockContainer implements PC_ISwapTerrain,
 		}
 
 		if (rotation == N0) {
-			return (world.isBlockIndirectlyProvidingPowerTo(x, y, z + 1, 3) || world.getBlockId(x, y, z + 1) == Block.redstoneWire.blockID && world.getBlockMetadata(x, y, z + 1) > 0);
+			return (world.isBlockIndirectlyProvidingPowerTo(x, y, z + 1, 3) || world.getBlockId(x, y, z + 1) == Block.redstoneWire.blockID
+					&& world.getBlockMetadata(x, y, z + 1) > 0);
 		}
 		if (rotation == N1) {
-			return (world.isBlockIndirectlyProvidingPowerTo(x - 1, y, z, 4) || world.getBlockId(x - 1, y, z) == Block.redstoneWire.blockID && world.getBlockMetadata(x - 1, y, z) > 0);
+			return (world.isBlockIndirectlyProvidingPowerTo(x - 1, y, z, 4) || world.getBlockId(x - 1, y, z) == Block.redstoneWire.blockID
+					&& world.getBlockMetadata(x - 1, y, z) > 0);
 		}
 		if (rotation == N2) {
-			return (world.isBlockIndirectlyProvidingPowerTo(x, y, z - 1, 2) || world.getBlockId(x, y, z - 1) == Block.redstoneWire.blockID && world.getBlockMetadata(x, y, z - 1) > 0);
+			return (world.isBlockIndirectlyProvidingPowerTo(x, y, z - 1, 2) || world.getBlockId(x, y, z - 1) == Block.redstoneWire.blockID
+					&& world.getBlockMetadata(x, y, z - 1) > 0);
 		}
 		if (rotation == N3) {
-			return (world.isBlockIndirectlyProvidingPowerTo(x + 1, y, z, 5) || world.getBlockId(x + 1, y, z) == Block.redstoneWire.blockID && world.getBlockMetadata(x + 1, y, z) > 0);
+			return (world.isBlockIndirectlyProvidingPowerTo(x + 1, y, z, 5) || world.getBlockId(x + 1, y, z) == Block.redstoneWire.blockID
+					&& world.getBlockMetadata(x + 1, y, z) > 0);
 		}
 		return false;
 	}
@@ -485,11 +491,11 @@ public class PClo_BlockWeasel extends BlockContainer implements PC_ISwapTerrain,
 
 		if (plugin != null) {
 			plugin.onRandomDisplayTick(random);
-			if(plugin.hasError()) {
+			if (plugin.hasError()) {
 				double d = (x + 0.5F) + (random.nextFloat() - 0.5F) * 0.20000000000000001D;
 				double d1 = (y + 0.5F) + (random.nextFloat() - 0.5F) * 0.20000000000000001D;
 				double d2 = (z + 0.5F) + (random.nextFloat() - 0.5F) * 0.20000000000000001D;
-	
+
 				world.spawnParticle("largesmoke", d, d1, d2, 0.0D, 0.0D, 0.0D);
 			}
 		}
@@ -553,7 +559,7 @@ public class PClo_BlockWeasel extends BlockContainer implements PC_ISwapTerrain,
 
 		PClo_WeaselPlugin plugin = getPlugin(world, x, y, z);
 		if (plugin != null) return plugin.onClick(player);
-		
+
 		return false;
 	}
 

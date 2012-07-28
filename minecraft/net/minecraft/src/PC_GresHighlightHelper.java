@@ -19,7 +19,7 @@ import weasel.WeaselEngine;
  */
 @SuppressWarnings("javadoc")
 public class PC_GresHighlightHelper {
-	
+
 	/** autoadd for program in weasel */
 	public static AutoAdd autoAdd = new AutoAdd() {
 
@@ -30,7 +30,7 @@ public class PC_GresHighlightHelper {
 			return s.length();
 		}
 
-		private char getFirstNotOf(String s, char c) {
+		private char getFirstNotOf(String s, @SuppressWarnings("unused") char c) {
 			for (int i = 0; i < s.length(); i++) {
 				if (s.charAt(i) != ' ') return s.charAt(i);
 			}
@@ -84,7 +84,8 @@ public class PC_GresHighlightHelper {
 	 */
 	public static void checkConfigFile() {
 
-		PC_PropertyManager cfg = new PC_PropertyManager(mod_PCcore.cfgdir + "/highlight.cfg", "Colors used to highlight code in programming screens.\nColor hex format: RRGGBB.");
+		PC_PropertyManager cfg = new PC_PropertyManager(mod_PCcore.cfgdir + "/highlight.cfg",
+				"Colors used to highlight code in programming screens.\nColor hex format: RRGGBB.");
 		cfg.cfgSeparateSections(false);
 		cfg.putString("function_hardware", "6666ff");
 		cfg.putString("function_math", "ff1050");
@@ -163,8 +164,8 @@ public class PC_GresHighlightHelper {
 				kw.add(new Keyword(str, colorHardwareVar, false));
 			}
 		}
-		
-		if(engine != null) {
+
+		if (engine != null) {
 			// gate functions
 			List<String> gateFunc = engine.getProvidedFunctionNames();
 			for (String str : gateFunc) {
@@ -198,9 +199,9 @@ public class PC_GresHighlightHelper {
 		for (String str : weaselFunc) {
 			kw.add(new Keyword(str, colorLangKeyword, false));
 		}
-		
-		for(Keyword k: kw){
-			if(k.word=="function"){
+
+		for (Keyword k : kw) {
+			if (k.word == "function") {
 				k.nextWordKeywordColor = colorUserFunction;
 				break;
 			}

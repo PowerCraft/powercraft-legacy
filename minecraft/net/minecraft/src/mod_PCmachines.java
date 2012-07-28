@@ -126,7 +126,8 @@ public class mod_PCmachines extends PC_Module implements PC_IActivatorListener {
 		conf.putBoolean(pk_optDispenseBowls, true, "Thrown bowls can get soup from mushroom cow.");
 		conf.putBoolean(pk_optDispenseWheat, true, "Thrown wheat can put animals into 'love' mode.");
 		conf.putBoolean(pk_optDispenseFood, false, "Thrown meat can heal wolves etc.");
-		conf.putBoolean(pk_optAltPrismRecipe, false, "Use \"+\" shaped glass recipe instead of the 4-block one.\n" + "Needed for compatibility with MoCreatures.");
+		conf.putBoolean(pk_optAltPrismRecipe, false, "Use \"+\" shaped glass recipe instead of the 4-block one.\n"
+				+ "Needed for compatibility with MoCreatures.");
 
 		conf.apply();
 

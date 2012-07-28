@@ -49,8 +49,6 @@ public class PClo_ModelWeasel extends ModelBase {
 		core[3] = new ModelRenderer(this, 13, 12);
 		core[3].addBox(-2F, -6.5F, 2F, 4, 1, 2, 0.0F);
 
-		
-		
 
 
 		port = new ModelRenderer[4];
@@ -72,8 +70,6 @@ public class PClo_ModelWeasel extends ModelBase {
 		port[3].addBox(-2F, -4.5F, -6F, 4, 1, 2, 0.0F);
 
 
-		
-		
 
 		display = new ModelRenderer[5];
 
@@ -97,8 +93,7 @@ public class PClo_ModelWeasel extends ModelBase {
 		display[4] = new ModelRenderer(this, 13, 12);
 		display[4].addBox(-2F, -17F, -1F, 4, 1, 2, 0.0F);
 
-		
-		
+
 
 		sound = new ModelRenderer[3];
 
@@ -114,9 +109,8 @@ public class PClo_ModelWeasel extends ModelBase {
 		sound[2] = new ModelRenderer(this, 0, 31);
 		sound[2].addBox(-2F, -15.5F, -2F, 4, 1, 4, 0.0F);
 
-		
-		
-		
+
+
 		touchscreen = new ModelRenderer[2];
 
 		// the bottom pad
@@ -124,15 +118,15 @@ public class PClo_ModelWeasel extends ModelBase {
 		//legs
 		touchscreen[0].addBox(-5F, -1F, -5F, 1, 1, 10, 0.0F);
 		touchscreen[0].addBox(4F, -1F, -5F, 1, 1, 10, 0.0F);
-		
+
 		// connections
 		touchscreen[0].addBox(-5F, -2F, -0.5F, 1, 1, 1, 0.0F);
 		touchscreen[0].addBox(4F, -2F, -0.5F, 1, 1, 1, 0.0F);
-		
+
 		// top,bottom
 		touchscreen[0].addBox(-8F, -3F, -0.5F, 16, 1, 1, 0.0F);
 		touchscreen[0].addBox(-8F, -16F, -0.5F, 16, 1, 1, 0.0F);
-		
+
 		// sides
 		touchscreen[0].addBox(-8F, -15F, -0.5F, 1, 12, 1, 0.0F);
 		touchscreen[0].addBox(7F, -15F, -0.5F, 1, 12, 1, 0.0F);
@@ -140,8 +134,8 @@ public class PClo_ModelWeasel extends ModelBase {
 		// the colour piece
 		touchscreen[1] = new ModelRenderer(this, 13, 12);
 		touchscreen[1].addBox(-2F, -17F, -1F, 4, 1, 2, 0.0F);
-		
-		
+
+
 
 		diskmanager = new ModelRenderer[2];
 
@@ -152,7 +146,7 @@ public class PClo_ModelWeasel extends ModelBase {
 		// top
 		diskmanager[1] = new ModelRenderer(this, 37, 53);
 		diskmanager[1].addBox(-6F, -14F, -6F, 12, 1, 12, 0.0F);
-		
+
 
 		diskdrive = new ModelRenderer[2];
 
@@ -163,7 +157,7 @@ public class PClo_ModelWeasel extends ModelBase {
 		// colored
 		diskdrive[1] = new ModelRenderer(this, 0, 31);
 		diskdrive[1].addBox(-2F, -14F, -2F, 4, 1, 4, 0.0F);
-		
+
 
 		terminal = new ModelRenderer[4];
 
@@ -174,15 +168,15 @@ public class PClo_ModelWeasel extends ModelBase {
 		// keyb
 		terminal[1] = new ModelRenderer(this, 62, 59);
 		terminal[1].addBox(-5F, -5F, -5F, 10, 1, 4, 0.0F);
-		
+
 		//screen
 		terminal[2] = new ModelRenderer(this, 39, 85);
 		terminal[2].addBox(-6F, -12F, 0F, 12, 8, 6, 0.0F);
 
 		terminal[3] = new ModelRenderer(this, 13, 12);
 		terminal[3].addBox(-2F, -13F, 2F, 4, 1, 2, 0.0F);
-		
-		
+
+
 	}
 
 	/** index of then plugin */
@@ -272,6 +266,7 @@ public class PClo_ModelWeasel extends ModelBase {
 	 * 
 	 * @param renderer
 	 */
+	@SuppressWarnings("static-access")
 	public void renderText(PClo_TileEntityWeaselRenderer renderer) {
 		float f = 0.6666667F;
 		GL11.glPushMatrix();
@@ -282,14 +277,14 @@ public class PClo_ModelWeasel extends ModelBase {
 		float f3 = 0.01666667F * f;
 
 		GL11.glNormal3f(0.0F, 0.0F, -1F * f3);
-		
-		
+
+
 		if (deviceType == PClo_WeaselType.DISPLAY) {
-			
+
 			GL11.glDepthMask(false);
 			GL11.glTranslatef(0.0F, 0.0625F * 15, 0.0625F + 0.001F);
 			GL11.glScalef(f3, -f3, f3);
-			
+
 			int j = ((PClo_WeaselPluginDisplay) plugin).color;
 
 
@@ -359,66 +354,66 @@ public class PClo_ModelWeasel extends ModelBase {
 					}
 				}
 			} catch (StringIndexOutOfBoundsException e) {}
-			
-		}else if(deviceType == PClo_WeaselType.TOUCHSCREEN){
-			
-			PClo_WeaselPluginTouchscreen touchscreen = (PClo_WeaselPluginTouchscreen)plugin;
+
+		} else if (deviceType == PClo_WeaselType.TOUCHSCREEN) {
+
+			PClo_WeaselPluginTouchscreen touchscreen = (PClo_WeaselPluginTouchscreen) plugin;
 			Tessellator tessellator = Tessellator.instance;
-			
-			GL11.glTranslatef(0.0f ,  0.0625f * 9, 0.0f);
-			GL11.glScalef(0.0625f*14/touchscreen.WIDTH, -0.0625f*12/touchscreen.HEIGHT, f3);
+
+			GL11.glTranslatef(0.0f, 0.0625f * 9, 0.0f);
+			GL11.glScalef(0.0625f * 14 / touchscreen.WIDTH, -0.0625f * 12 / touchscreen.HEIGHT, f3);
 			GL11.glDisable(GL11.GL_TEXTURE_2D);
+
+			tessellator.startDrawingQuads();
+			double posX, posY, pixelW, pixelH;
+			int color;
+			pixelW = 1.0D;
+			pixelH = 1.0D;
+			for (int j = 0; j < touchscreen.HEIGHT; j++) {
+				for (int i = 0; i < touchscreen.WIDTH; i++) {
+					color = touchscreen.screen[i][j];
+					if (color != -1) {
+						posX = i - touchscreen.WIDTH * 0.5;
+						posY = j - touchscreen.HEIGHT * 0.5;
+						tessellator.setColorRGBA((color >> 16) & 0xFF, (color >> 8) & 0xFF, color & 0xFF, 255);
+						tessellator.addVertex(posX + pixelW, posY, 0.0D);
+						tessellator.addVertex(posX, posY, 0.0D);
+						tessellator.addVertex(posX, posY + pixelH, 0.0D);
+						tessellator.addVertex(posX + pixelW, posY + pixelH, 0.0D);
+
+						tessellator.addVertex(posX, posY, 0.0D);
+						tessellator.addVertex(posX + pixelW, posY, 0.0D);
+						tessellator.addVertex(posX + pixelW, posY + pixelH, 0.0D);
+						tessellator.addVertex(posX, posY + pixelH, 0.0D);
+
+					}
+				}
+			}
+			tessellator.draw();
+
+			/*GL11.glScalef(-1, 1, 1);
 			
-            tessellator.startDrawingQuads();
-            double posX, posY, pixelW, pixelH;
-            int color;
-            pixelW = 1.0D;
-            pixelH = 1.0D;
-            for(int j=0; j<touchscreen.HEIGHT; j++){
-            	for(int i=0; i<touchscreen.WIDTH; i++){
-            		color = touchscreen.screen[i][j];
-            		if(color != -1){
-	            		posX = i-touchscreen.WIDTH*0.5;
-	            		posY = j-touchscreen.HEIGHT*0.5;
-	            		tessellator.setColorRGBA((color >> 16) & 0xFF,  (color >> 8) & 0xFF, color & 0xFF, 255);
+			tessellator.startDrawingQuads();
+			for(int j=0; j<touchscreen.HEIGHT; j++){
+				for(int i=0; i<touchscreen.WIDTH; i++){
+					color = touchscreen.screen[i][j];
+					if(((color>>24) & 0xFF) != 0){
+			    		posX = i-touchscreen.WIDTH*0.5;
+			    		posY = j-touchscreen.HEIGHT*0.5;
+			    		color = touchscreen.screen[i][j];
+			    		tessellator.setColorRGBA((color >> 16) & 0xFF,  (color >> 8) & 0xFF, color & 0xFF, 255);
 			            tessellator.addVertex(posX + pixelW, posY, 0.0D);
 			            tessellator.addVertex(posX, posY, 0.0D);
 			            tessellator.addVertex(posX, posY + pixelH, 0.0D);
 			            tessellator.addVertex(posX + pixelW, posY + pixelH, 0.0D);
-			            
-			            tessellator.addVertex(posX, posY, 0.0D);
-			            tessellator.addVertex(posX + pixelW, posY, 0.0D);
-			            tessellator.addVertex(posX + pixelW, posY + pixelH, 0.0D);
-			            tessellator.addVertex(posX, posY + pixelH, 0.0D);
-			            
-            		}
-            	}
-            }
-            tessellator.draw();
-            
-            /*GL11.glScalef(-1, 1, 1);
-            
-            tessellator.startDrawingQuads();
-            for(int j=0; j<touchscreen.HEIGHT; j++){
-            	for(int i=0; i<touchscreen.WIDTH; i++){
-            		color = touchscreen.screen[i][j];
-            		if(((color>>24) & 0xFF) != 0){
-	            		posX = i-touchscreen.WIDTH*0.5;
-	            		posY = j-touchscreen.HEIGHT*0.5;
-	            		color = touchscreen.screen[i][j];
-	            		tessellator.setColorRGBA((color >> 16) & 0xFF,  (color >> 8) & 0xFF, color & 0xFF, 255);
-			            tessellator.addVertex(posX + pixelW, posY, 0.0D);
-			            tessellator.addVertex(posX, posY, 0.0D);
-			            tessellator.addVertex(posX, posY + pixelH, 0.0D);
-			            tessellator.addVertex(posX + pixelW, posY + pixelH, 0.0D);
-            		}
-            	}
-            }
-            tessellator.draw();*/
-            
-            GL11.glEnable(GL11.GL_TEXTURE_2D);
+					}
+				}
+			}
+			tessellator.draw();*/
+
+			GL11.glEnable(GL11.GL_TEXTURE_2D);
 		}
-		
+
 		GL11.glDepthMask(true);
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 		GL11.glEnable(GL11.GL_LIGHTING);

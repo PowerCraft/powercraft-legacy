@@ -231,12 +231,12 @@ public class Compiler {
 							}
 						}
 
-						if(name.equals("_call")){
+						if (name.equals("_call")) {
 							instrList.add(new InstructionStringCall(params.toArray(new String[params.size()])));
-						}else {						
+						} else {
 							instrList.add(new InstructionCall(name, params.toArray(new String[params.size()])));
 						}
-						
+
 						instrList.add(new InstructionAssignRetval(false, tmpvar));
 
 						funcMatcher.appendReplacement(sb, tmpvar);
@@ -1018,7 +1018,8 @@ public class Compiler {
 					instructionList.add(new InstructionGoto(labelAfter));
 
 					instructionList.add(new InstructionFunction(funcName, parameters.toArray(new String[parameters.size()])));
-					assertNextBlack(reader, '{', "function \"" + funcName + "\" body", "Function declaration must be followed by \"{\" at \"" + funcName + "\"");
+					assertNextBlack(reader, '{', "function \"" + funcName + "\" body", "Function declaration must be followed by \"{\" at \""
+							+ funcName + "\"");
 					List<Instruction> funcbody = parseCodeBlock(readUntil(reader, '{', '}', "function body"));
 
 					if (funcbody.size() > 0 && (funcbody.get(funcbody.size() - 1) instanceof InstructionReturn)) {
@@ -1046,7 +1047,8 @@ public class Compiler {
 
 					String inBracket = readUntil(reader, '(', ')', "function \"" + funcName + "\" call arguments").trim();
 
-					assertNextBlack(reader, ';', "function \"" + funcName + "\" call", "function call followed by \";\" at \"" + funcName + "(" + inBracket + ")\".");
+					assertNextBlack(reader, ';', "function \"" + funcName + "\" call", "function call followed by \";\" at \"" + funcName + "("
+							+ inBracket + ")\".");
 
 					if (funcName.equalsIgnoreCase("return")) {
 						// a RETURN statement

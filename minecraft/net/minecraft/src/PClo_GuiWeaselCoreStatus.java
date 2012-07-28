@@ -110,7 +110,7 @@ public class PClo_GuiWeaselCoreStatus implements PC_IGresBase {
 
 		hg = new PC_GresLayoutH().setAlignH(PC_GresAlign.LEFT).setAlignV(PC_GresAlign.TOP);
 		hg.add(new PC_GresLabel(lStatus).setMinWidth(width).setAlignH(PC_GresAlign.RIGHT).setColor(PC_GresWidget.textColorEnabled, colorLabel));
-		hg.add(txStatus = new PC_GresLabelMultiline("",150).setColor(PC_GresWidget.textColorEnabled, colorValue));
+		hg.add(txStatus = new PC_GresLabelMultiline("", 150).setColor(PC_GresWidget.textColorEnabled, colorValue));
 		vg.add(hg);
 		hugehg.add(vg);
 		w.add(hugehg);
@@ -134,7 +134,8 @@ public class PClo_GuiWeaselCoreStatus implements PC_IGresBase {
 			txRunning.setText(PC_Lang.tr("pc.gui.weasel.core.running"));
 		}
 
-		txStack.text = (core.getWeaselEngine().dataStack.get().size() + core.getWeaselEngine().systemStack.get().size()) + " " + PC_Lang.tr("pc.gui.weasel.core.unitObjects");
+		txStack.text = (core.getWeaselEngine().dataStack.get().size() + core.getWeaselEngine().systemStack.get().size()) + " "
+				+ PC_Lang.tr("pc.gui.weasel.core.unitObjects");
 		txMemory.text = (core.getWeaselEngine().variables.get().size()) + " " + PC_Lang.tr("pc.gui.weasel.core.unitObjects");
 		txPeripherals.text = (core.getNetwork().size() - 1) + "";
 		txStatus.text = core.getError() == null ? "OK" : core.getError().replace("\n", " ");

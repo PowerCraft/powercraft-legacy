@@ -93,12 +93,12 @@ public class PClo_WeaselPluginCore extends PClo_WeaselPlugin implements IWeaselH
 	public int getType() {
 		return PClo_WeaselType.CORE;
 	}
-	
+
 	@Override
 	public boolean onClick(EntityPlayer player) {
-		if(player.isSneaking()) {
+		if (player.isSneaking()) {
 			PC_Utils.openGres(player, new PClo_GuiWeaselCoreProgramBig(this));
-		}else{
+		} else {
 			PC_Utils.openGres(player, new PClo_GuiWeaselCoreProgram(this));
 		}
 		return true;
@@ -373,8 +373,10 @@ public class PClo_WeaselPluginCore extends PClo_WeaselPlugin implements IWeaselH
 		if (halted || paused) return null;
 
 		if (functionName.equals("bell")) {
-			world().playSoundEffect(coord().x + 0.5D, coord().y + 0.5D, coord().z + 0.5D, "random.orb", 0.8F, (rand.nextFloat() - rand.nextFloat()) * 0.2F + 1.0F);
-			world().spawnParticle("note", coord().x + 0.5D, coord().y + 0.3D, coord().z + 0.5D, (functionName.length() * (3 + args.length)) / 24D, 0.0D, 0.0D);
+			world().playSoundEffect(coord().x + 0.5D, coord().y + 0.5D, coord().z + 0.5D, "random.orb", 0.8F,
+					(rand.nextFloat() - rand.nextFloat()) * 0.2F + 1.0F);
+			world().spawnParticle("note", coord().x + 0.5D, coord().y + 0.3D, coord().z + 0.5D, (functionName.length() * (3 + args.length)) / 24D,
+					0.0D, 0.0D);
 			return null;
 		}
 

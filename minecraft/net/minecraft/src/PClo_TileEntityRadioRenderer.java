@@ -36,18 +36,18 @@ public class PClo_TileEntityRadioRenderer extends TileEntitySpecialRenderer {
 		GL11.glPushMatrix();
 		GL11.glScalef(f, -f, -f);
 		model.setType(ter.isTransmitter(), ter.worldObj.getBlockMetadata(ter.xCoord, ter.yCoord, ter.zCoord) == 1); // ter.active);
-		
+
 		model.tiny = ter.renderMicro;
-		
+
 		model.render();
 		GL11.glPopMatrix();
 
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 		GL11.glPopMatrix();
-		
-		if(!ter.hideLabel) {
+
+		if (!ter.hideLabel) {
 			String foo = ter.getChannel();
-			PC_Renderer.renderEntityLabelAt(foo, new PC_CoordF(ter.xCoord, ter.yCoord, ter.zCoord), 8, ter.renderMicro?0.5F:1.3F, x, y, z);
+			PC_Renderer.renderEntityLabelAt(foo, new PC_CoordF(ter.xCoord, ter.yCoord, ter.zCoord), 8, ter.renderMicro ? 0.5F : 1.3F, x, y, z);
 		}
 	}
 

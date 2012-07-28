@@ -56,8 +56,10 @@ public class PCma_GuiReplacer implements PC_IGresBase {
 		hg1.add(new PC_GresLabel("X"));
 		hg1.add(textedit[0] = new PC_GresTextEdit("" + teReplacer.coordOffset.x, 3, PC_GresInputType.INT).setWidgetMargin(1));
 		vg = new PC_GresLayoutV().setWidgetMargin(1);
-		vg.add(new PC_GresButtonImage(mod_PCcore.getImgDir() + "gres/widgets.png", new PC_CoordI(44, 18), new PC_CoordI(6, 4)).setButtonPadding(3, 3).setId(102).setWidgetMargin(0));
-		vg.add(new PC_GresButtonImage(mod_PCcore.getImgDir() + "gres/widgets.png", new PC_CoordI(50, 18), new PC_CoordI(6, 4)).setButtonPadding(3, 3).setId(101).setWidgetMargin(0));
+		vg.add(new PC_GresButtonImage(mod_PCcore.getImgDir() + "gres/widgets.png", new PC_CoordI(44, 18), new PC_CoordI(6, 4)).setButtonPadding(3, 3)
+				.setId(102).setWidgetMargin(0));
+		vg.add(new PC_GresButtonImage(mod_PCcore.getImgDir() + "gres/widgets.png", new PC_CoordI(50, 18), new PC_CoordI(6, 4)).setButtonPadding(3, 3)
+				.setId(101).setWidgetMargin(0));
 		hg1.add(vg);
 		hg.add(hg1);
 
@@ -67,8 +69,10 @@ public class PCma_GuiReplacer implements PC_IGresBase {
 		hg1.add(new PC_GresLabel("Y"));
 		hg1.add(textedit[1] = new PC_GresTextEdit("" + teReplacer.coordOffset.y, 3, PC_GresInputType.INT).setWidgetMargin(1));
 		vg = new PC_GresLayoutV().setWidgetMargin(1);
-		vg.add(new PC_GresButtonImage(mod_PCcore.getImgDir() + "gres/widgets.png", new PC_CoordI(44, 18), new PC_CoordI(6, 4)).setButtonPadding(3, 3).setId(202).setWidgetMargin(0));
-		vg.add(new PC_GresButtonImage(mod_PCcore.getImgDir() + "gres/widgets.png", new PC_CoordI(50, 18), new PC_CoordI(6, 4)).setButtonPadding(3, 3).setId(201).setWidgetMargin(0));
+		vg.add(new PC_GresButtonImage(mod_PCcore.getImgDir() + "gres/widgets.png", new PC_CoordI(44, 18), new PC_CoordI(6, 4)).setButtonPadding(3, 3)
+				.setId(202).setWidgetMargin(0));
+		vg.add(new PC_GresButtonImage(mod_PCcore.getImgDir() + "gres/widgets.png", new PC_CoordI(50, 18), new PC_CoordI(6, 4)).setButtonPadding(3, 3)
+				.setId(201).setWidgetMargin(0));
 		hg1.add(vg);
 		hg.add(hg1);
 
@@ -78,8 +82,10 @@ public class PCma_GuiReplacer implements PC_IGresBase {
 		hg1.add(new PC_GresLabel("Z"));
 		hg1.add(textedit[2] = new PC_GresTextEdit("" + teReplacer.coordOffset.z, 3, PC_GresInputType.INT).setWidgetMargin(1));
 		vg = new PC_GresLayoutV().setWidgetMargin(1);
-		vg.add(new PC_GresButtonImage(mod_PCcore.getImgDir() + "gres/widgets.png", new PC_CoordI(44, 18), new PC_CoordI(6, 4)).setButtonPadding(3, 3).setId(302).setWidgetMargin(0));
-		vg.add(new PC_GresButtonImage(mod_PCcore.getImgDir() + "gres/widgets.png", new PC_CoordI(50, 18), new PC_CoordI(6, 4)).setButtonPadding(3, 3).setId(301).setWidgetMargin(0));
+		vg.add(new PC_GresButtonImage(mod_PCcore.getImgDir() + "gres/widgets.png", new PC_CoordI(44, 18), new PC_CoordI(6, 4)).setButtonPadding(3, 3)
+				.setId(302).setWidgetMargin(0));
+		vg.add(new PC_GresButtonImage(mod_PCcore.getImgDir() + "gres/widgets.png", new PC_CoordI(50, 18), new PC_CoordI(6, 4)).setButtonPadding(3, 3)
+				.setId(301).setWidgetMargin(0));
 		hg1.add(vg);
 		hg.add(hg1);
 

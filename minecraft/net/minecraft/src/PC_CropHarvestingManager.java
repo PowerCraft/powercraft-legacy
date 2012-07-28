@@ -566,7 +566,8 @@ public class PC_CropHarvestingManager {
 		 * @param rarityDenominator rarity fraction denominator; B in A/B
 		 * @param itemPriority priority pass
 		 */
-		public void addDropItem(int id, int metaFrom, int metaTo, int countFrom, int countTo, int rarityNumenator, int rarityDenominator, int itemPriority) {
+		public void addDropItem(int id, int metaFrom, int metaTo, int countFrom, int countTo, int rarityNumenator, int rarityDenominator,
+				int itemPriority) {
 
 			itemId.add(id);
 			metaStart.add(metaFrom);

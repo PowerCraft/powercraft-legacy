@@ -268,7 +268,8 @@ public class PCma_TileEntityLaser extends PC_TileEntity implements PC_IBeamHandl
 		Block block = Block.blocksList[id];
 
 		// translucent blocks...
-		if (mat == Material.glass || mat == Material.snow || mat == Material.plants || mat == Material.circuits || mat == Material.vine || id == Block.signPost.blockID || id == Block.signWall.blockID || block instanceof BlockPane
+		if (mat == Material.glass || mat == Material.snow || mat == Material.plants || mat == Material.circuits || mat == Material.vine
+				|| id == Block.signPost.blockID || id == Block.signWall.blockID || block instanceof BlockPane
 				|| PC_BlockUtils.hasFlag(world, coord, "TRANSLUCENT")) {
 
 			return false;
@@ -313,7 +314,8 @@ public class PCma_TileEntityLaser extends PC_TileEntity implements PC_IBeamHandl
 
 			int cnte = 0;
 			for (Entity entity : array) {
-				if ((entity instanceof EntityFX) || (entity instanceof EntityArrow) || (entity instanceof EntityEnderEye) || (entity instanceof EntityEnderPearl) || (entity instanceof EntityFishHook) || (entity instanceof EntityPainting)
+				if ((entity instanceof EntityFX) || (entity instanceof EntityArrow) || (entity instanceof EntityEnderEye)
+						|| (entity instanceof EntityEnderPearl) || (entity instanceof EntityFishHook) || (entity instanceof EntityPainting)
 						|| (entity instanceof EntityWeatherEffect) || (entity instanceof EntityItem) || (entity instanceof EntityXPOrb)) {
 					continue;
 				}

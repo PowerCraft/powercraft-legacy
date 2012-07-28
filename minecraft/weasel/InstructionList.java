@@ -210,7 +210,8 @@ public class InstructionList implements PC_INBT {
 			InstructionFunction func = (InstructionFunction) list.get(address);
 
 			if (func.getArgumentCount() != args.length) {
-				throw new WeaselRuntimeException("Invalid argument count for function " + functionName + " (needs " + func.getArgumentCount() + ", got " + args.length + ")");
+				throw new WeaselRuntimeException("Invalid argument count for function " + functionName + " (needs " + func.getArgumentCount()
+						+ ", got " + args.length + ")");
 			}
 
 			engine.systemStack.push(new WeaselBoolean(external));
@@ -223,15 +224,17 @@ public class InstructionList implements PC_INBT {
 			for (WeaselObject obj : args) {
 				String argname = func.getArgumentName(cnt++);
 
-				if (argname == null) throw new WeaselRuntimeException("Invalid argument count for function " + functionName + " (needs " + func.getArgumentCount() + ", got " + args.length + ")");
+				if (argname == null)
+					throw new WeaselRuntimeException("Invalid argument count for function " + functionName + " (needs " + func.getArgumentCount()
+							+ ", got " + args.length + ")");
 
 				engine.variables.setVariable(argname, obj);
 			}
 
 			return;
 		}
-		
-		System.out.println("at "+programCounter);
+
+		System.out.println("at " + programCounter);
 		throw new WeaselRuntimeException("Function \"" + functionName + "\" does not exist.");
 
 	}
@@ -268,7 +271,7 @@ public class InstructionList implements PC_INBT {
 		if (programCounter >= list.size()) throw new EndOfProgramException();
 		if (programCounter < 0) throw new EndOfProgramException();
 		Instruction instruction = list.get(programCounter++);
-		
+
 		instruction.execute(engine, this);
 	}
 
@@ -319,7 +322,7 @@ public class InstructionList implements PC_INBT {
 		for (int i = 0; i < tags.tagCount(); i++) {
 			NBTTagCompound tag1 = (NBTTagCompound) tags.tagAt(i);
 			list.set(tag1.getInteger(nk_INDEX), Instruction.loadInstructionFromNBT(tag1));
-			System.out.println("at "+tag1.getInteger(nk_INDEX)+": "+Instruction.loadInstructionFromNBT(tag1));
+			System.out.println("at " + tag1.getInteger(nk_INDEX) + ": " + Instruction.loadInstructionFromNBT(tag1));
 		}
 
 		programCounter = tag.getInteger(nk_PC);

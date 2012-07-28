@@ -85,7 +85,9 @@ public class PC_InvUtils {
 			return true;
 		}
 
-		if (destination.itemID == stackToStore.itemID && destination.isStackable() && (!destination.getHasSubtypes() || destination.getItemDamage() == stackToStore.getItemDamage()) && destination.stackSize < inventory.getInventoryStackLimit()) {
+		if (destination.itemID == stackToStore.itemID && destination.isStackable()
+				&& (!destination.getHasSubtypes() || destination.getItemDamage() == stackToStore.getItemDamage())
+				&& destination.stackSize < inventory.getInventoryStackLimit()) {
 			int numStored = stackToStore.stackSize;
 			numStored = Math.min(numStored, destination.getMaxStackSize() - destination.stackSize);
 			numStored = Math.min(numStored, inventory.getInventoryStackLimit() - destination.stackSize);
@@ -161,7 +163,8 @@ public class PC_InvUtils {
 			}
 
 			ItemStack stackAt = inv.getStackInSlot(slot);
-			if (stackAt != null && stackAt.itemID == itemstack.itemID && stackAt.isStackable() && stackAt.stackSize < stackAt.getMaxStackSize() && stackAt.stackSize < inv.getInventoryStackLimit()
+			if (stackAt != null && stackAt.itemID == itemstack.itemID && stackAt.isStackable() && stackAt.stackSize < stackAt.getMaxStackSize()
+					&& stackAt.stackSize < inv.getInventoryStackLimit()
 					&& (!stackAt.getHasSubtypes() || stackAt.getItemDamage() == itemstack.getItemDamage())) {
 				return slot;
 			}
@@ -298,11 +301,13 @@ public class PC_InvUtils {
 		}
 
 		if (inv instanceof TileEntityFurnace) {
-			return inv.getStackInSlot(1) != null && inv.getStackInSlot(1).stackSize == Math.min(inv.getInventoryStackLimit(), inv.getStackInSlot(1).getMaxStackSize());
+			return inv.getStackInSlot(1) != null
+					&& inv.getStackInSlot(1).stackSize == Math.min(inv.getInventoryStackLimit(), inv.getStackInSlot(1).getMaxStackSize());
 		}
 
 		for (int i = 0; i < inv.getSizeInventory(); i++) {
-			if (inv.getStackInSlot(i) == null || inv.getStackInSlot(i).stackSize < Math.min(inv.getInventoryStackLimit(), inv.getStackInSlot(i).getMaxStackSize())) {
+			if (inv.getStackInSlot(i) == null
+					|| inv.getStackInSlot(i).stackSize < Math.min(inv.getInventoryStackLimit(), inv.getStackInSlot(i).getMaxStackSize())) {
 				return false;
 			}
 		}
@@ -587,52 +592,49 @@ public class PC_InvUtils {
 		outerTag.setTag(invTagName, nbttaglist);
 
 	}
-	
+
 	/**
-	 * Drop inventory contents as items in world, when block was destroyed. called from onBlockRemoval.
+	 * Drop inventory contents as items in world, when block was destroyed.
+	 * called from onBlockRemoval.
+	 * 
 	 * @param inventory inventory to drop
 	 * @param world the world
 	 * @param pos block position
 	 */
 	public static void dropInventoryContents(IInventory inventory, World world, PC_CoordI pos) {
 		Random random = new Random();
-		if (inventory != null)
-        {
-            for (int i = 0; i < inventory.getSizeInventory(); i++)
-            {
-                ItemStack itemstack = inventory.getStackInSlot(i);
+		if (inventory != null) {
+			for (int i = 0; i < inventory.getSizeInventory(); i++) {
+				ItemStack itemstack = inventory.getStackInSlot(i);
 
-                if (itemstack != null)
-                {
-                    float f = random.nextFloat() * 0.8F + 0.1F;
-                    float f1 = random.nextFloat() * 0.8F + 0.1F;
-                    float f2 = random.nextFloat() * 0.8F + 0.1F;
+				if (itemstack != null) {
+					float f = random.nextFloat() * 0.8F + 0.1F;
+					float f1 = random.nextFloat() * 0.8F + 0.1F;
+					float f2 = random.nextFloat() * 0.8F + 0.1F;
 
-                    while (itemstack.stackSize > 0)
-                    {
-                        int j = random.nextInt(21) + 10;
+					while (itemstack.stackSize > 0) {
+						int j = random.nextInt(21) + 10;
 
-                        if (j > itemstack.stackSize)
-                        {
-                            j = itemstack.stackSize;
-                        }
+						if (j > itemstack.stackSize) {
+							j = itemstack.stackSize;
+						}
 
-                        itemstack.stackSize -= j;
-                        EntityItem entityitem = new EntityItem(world, pos.x + f, pos.y + f1, pos.z + f2, new ItemStack(itemstack.itemID, j, itemstack.getItemDamage()));
+						itemstack.stackSize -= j;
+						EntityItem entityitem = new EntityItem(world, pos.x + f, pos.y + f1, pos.z + f2, new ItemStack(itemstack.itemID, j,
+								itemstack.getItemDamage()));
 
-                        if (itemstack.hasTagCompound())
-                        {
-                            entityitem.item.setTagCompound((NBTTagCompound)itemstack.getTagCompound().copy());
-                        }
+						if (itemstack.hasTagCompound()) {
+							entityitem.item.setTagCompound((NBTTagCompound) itemstack.getTagCompound().copy());
+						}
 
-                        float f3 = 0.05F;
-                        entityitem.motionX = (float)random.nextGaussian() * f3;
-                        entityitem.motionY = (float)random.nextGaussian() * f3 + 0.2F;
-                        entityitem.motionZ = (float)random.nextGaussian() * f3;
-                        world.spawnEntityInWorld(entityitem);
-                    }
-                }
-            }
-        }
+						float f3 = 0.05F;
+						entityitem.motionX = (float) random.nextGaussian() * f3;
+						entityitem.motionY = (float) random.nextGaussian() * f3 + 0.2F;
+						entityitem.motionZ = (float) random.nextGaussian() * f3;
+						world.spawnEntityInWorld(entityitem);
+					}
+				}
+			}
+		}
 	}
 }

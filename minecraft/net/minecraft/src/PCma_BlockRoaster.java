@@ -18,14 +18,11 @@ import net.minecraft.src.forge.ITextureProvider;
 public class PCma_BlockRoaster extends BlockContainer implements PC_ISwapTerrain, PC_IBlockType, ITextureProvider {
 	private static final int TXDOWN = 62, TXTOP = 61, TXSIDE = 46;
 
-	private Random random;
-
 	/**
 	 * @param i ID
 	 */
 	protected PCma_BlockRoaster(int i) {
 		super(i, Material.ground);
-		random = new Random();
 		blockIndexInTexture = TXDOWN;
 		setLightOpacity(0);
 		opaqueCubeLookup[i] = false;
@@ -121,8 +118,8 @@ public class PCma_BlockRoaster extends BlockContainer implements PC_ISwapTerrain
 
 	@Override
 	public void onBlockRemoval(World world, int i, int j, int k) {
-		PCma_TileEntityRoaster te = (PCma_TileEntityRoaster) world.getBlockTileEntity(i, j, k);	
-		
+		PCma_TileEntityRoaster te = (PCma_TileEntityRoaster) world.getBlockTileEntity(i, j, k);
+
 		if (te != null) {
 			PC_InvUtils.dropInventoryContents(te, world, te.getCoord());
 		}

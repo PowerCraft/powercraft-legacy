@@ -31,7 +31,7 @@ public class PC_GresColor extends PC_GresWidget {
 
 	@Override
 	public PC_CoordI calcSize() {
-		if(!visible) return zerosize;
+		if (!visible) return zerosize;
 		return size.copy();
 	}
 
@@ -63,10 +63,11 @@ public class PC_GresColor extends PC_GresWidget {
 	public void setColor(PC_Color color) {
 		this.bulbColor = color;
 	}
+
 	/**
 	 * Set color displayed
 	 * 
-	 * @param color
+	 * @param hex hex rgb color
 	 */
 	public void setColor(int hex) {
 		this.bulbColor = PC_Color.fromHex(hex);

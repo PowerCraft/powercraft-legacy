@@ -188,7 +188,8 @@ public class PC_Struct4<T1, T2, T3, T4> {
 
 		PC_Struct4<?, ?, ?, ?> t = (PC_Struct4<?, ?, ?, ?>) obj;
 
-		return PC_Utils.areObjectsEqual(a, t.a) && PC_Utils.areObjectsEqual(b, t.b) && PC_Utils.areObjectsEqual(c, t.c) && PC_Utils.areObjectsEqual(d, t.d);
+		return PC_Utils.areObjectsEqual(a, t.a) && PC_Utils.areObjectsEqual(b, t.b) && PC_Utils.areObjectsEqual(c, t.c)
+				&& PC_Utils.areObjectsEqual(d, t.d);
 
 	}
 

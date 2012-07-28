@@ -201,7 +201,8 @@ public abstract class PC_Module extends BaseMod {
 
 
 			PC_Logger.finer("Initializing properties...");
-			conf = new PC_PropertyManager(mod_PCcore.cfgdir + "/" + getModuleName() + ".cfg", "PowerCraft " + getModuleName() + " module\nconfiguration file");
+			conf = new PC_PropertyManager(mod_PCcore.cfgdir + "/" + getModuleName() + ".cfg", "PowerCraft " + getModuleName()
+					+ " module\nconfiguration file");
 			initProperties(conf);
 
 

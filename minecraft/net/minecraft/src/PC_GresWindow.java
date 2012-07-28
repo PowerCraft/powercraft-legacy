@@ -82,7 +82,8 @@ public class PC_GresWindow extends PC_GresWidget {
 		renderTextureSliced(offsetPos, mod_PCcore.getImgDir() + "gres/dialog.png", size, new PC_CoordI(0, 0), new PC_CoordI(256, 256));
 
 		if (text.length() > 0) {
-			getFontRenderer().drawString(text, offsetPos.x + pos.x + (size.x) / 2 - fontRenderer.getStringWidth(text) / 2, offsetPos.y + pos.y + 8, 0x404040);
+			getFontRenderer().drawString(text, offsetPos.x + pos.x + (size.x) / 2 - fontRenderer.getStringWidth(text) / 2, offsetPos.y + pos.y + 8,
+					0x404040);
 		}
 
 	}

@@ -27,7 +27,7 @@ public class PClo_ItemBlockLight extends ItemBlock {
 	public String getItemNameIS(ItemStack itemstack) {
 		boolean lamp = itemstack.getItemDamage() >= 16 && itemstack.getItemDamage() < 32;
 		boolean huge = itemstack.getItemDamage() >= 32 && itemstack.getItemDamage() < 48;
-		return super.getItemName() + "." + itemstack.getItemDamage() % 16 + (lamp ? ".stable" : huge?".huge":"");
+		return super.getItemName() + "." + itemstack.getItemDamage() % 16 + (lamp ? ".stable" : huge ? ".huge" : "");
 	}
 
 	@Override
@@ -83,7 +83,8 @@ public class PClo_ItemBlockLight extends ItemBlock {
 			if (world.setBlockWithNotify(i, j, k, block.blockID)) {
 				block.onBlockPlaced(world, i, j, k, l);
 				block.onBlockPlacedBy(world, i, j, k, entityplayer);
-				world.playSoundEffect(i + 0.5F, j + 0.5F, k + 0.5F, block.stepSound.getStepSound(), (block.stepSound.getVolume() + 1.0F) / 2.0F, block.stepSound.getPitch() * 0.8F);
+				world.playSoundEffect(i + 0.5F, j + 0.5F, k + 0.5F, block.stepSound.getStepSound(), (block.stepSound.getVolume() + 1.0F) / 2.0F,
+						block.stepSound.getPitch() * 0.8F);
 
 				// set tile entity
 				PClo_TileEntityLight tei = (PClo_TileEntityLight) world.getBlockTileEntity(i, j, k);

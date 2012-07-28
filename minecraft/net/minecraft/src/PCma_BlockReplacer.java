@@ -249,7 +249,8 @@ public class PCma_BlockReplacer extends BlockContainer implements PC_ISwapTerrai
 		if (itemstack.itemID == Block.lockedChest.blockID) {
 			pos.setBlockNoNotify(world, 0, 0);
 			world.removeBlockTileEntity(pos.x, pos.y, pos.z);
-			if (!Item.itemsList[Block.lockedChest.blockID].onItemUse(itemstack, new PC_FakePlayer(world), world, pos.x, pos.y + 1, pos.z, 0)) return false;
+			if (!Item.itemsList[Block.lockedChest.blockID].onItemUse(itemstack, new PC_FakePlayer(world), world, pos.x, pos.y + 1, pos.z, 0))
+				return false;
 			itemstack.stackSize--;
 			if (meta != -1) {
 				pos.setMetaNoNotify(world, meta);

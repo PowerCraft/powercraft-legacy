@@ -2,8 +2,6 @@ package net.minecraft.src;
 
 
 
-import net.minecraft.src.PC_GresTextEditMultiline.AutoAdd;
-import net.minecraft.src.PC_GresTextEditMultiline.StringAdd;
 import net.minecraft.src.PC_GresWidget.PC_GresAlign;
 
 
@@ -12,6 +10,7 @@ import net.minecraft.src.PC_GresWidget.PC_GresAlign;
  * 
  * @author MightyPork
  */
+@SuppressWarnings("javadoc")
 public class PClo_GuiWeaselCoreProgram implements PC_IGresBase {
 
 	protected PClo_WeaselPluginCore core;

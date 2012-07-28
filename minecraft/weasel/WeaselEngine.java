@@ -4,8 +4,6 @@ package weasel;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.lwjgl.util.Color;
-
 import net.minecraft.src.NBTTagCompound;
 import net.minecraft.src.PC_Color;
 import net.minecraft.src.PC_INBT;
@@ -172,7 +170,10 @@ public class WeaselEngine implements PC_INBT, IVariableProvider, IFunctionProvid
 				throw wre;
 			} catch (Exception e) {
 				e.printStackTrace();
-				throw new WeaselRuntimeException(e);
+				throw new WeaselRuntimeException(e.getMessage());
+			} catch (Throwable t) {
+				t.printStackTrace();
+				throw new WeaselRuntimeException(t.getMessage());
 			}
 
 
@@ -312,7 +313,7 @@ public class WeaselEngine implements PC_INBT, IVariableProvider, IFunctionProvid
 
 		if (name == null) throw new WeaselRuntimeException("Variable name cannot be null at " + name + " = " + value);
 		if (value == null) throw new WeaselRuntimeException("Variable value cannot be null at " + name + " = " + value);
-		
+
 		if (hw.getVariable(name) != null) {
 			hw.setVariable(name, value);
 			return;
@@ -400,69 +401,64 @@ public class WeaselEngine implements PC_INBT, IVariableProvider, IFunctionProvid
 
 		if (functionName.equals("color")) {
 			if (args.length == 1) {
-				if(args[0] instanceof WeaselInteger) {
-					return new WeaselInteger(((Integer)args[0].get())&0xffffff);
+				if (args[0] instanceof WeaselInteger) {
+					return new WeaselInteger(((Integer) args[0].get()) & 0xffffff);
 				}
-				if(args[0] instanceof WeaselString) {
+				if (args[0] instanceof WeaselString) {
 					return new WeaselInteger(PC_Color.getHexColorForName(args[0].get()));
 				}
-				
+
 				throw new WeaselRuntimeException("color() can't work with " + args[0].get().getClass().getSimpleName());
-			}else
-			if (args.length == 3) {
-				if(args[0] instanceof WeaselInteger)
-					if(args[1] instanceof WeaselInteger)
-						if(args[2] instanceof WeaselInteger)
-							return new WeaselInteger(clr((Integer)args[0].get(), (Integer)args[1].get(), (Integer)args[2].get()));
-				
+			} else if (args.length == 3) {
+				if (args[0] instanceof WeaselInteger)
+					if (args[1] instanceof WeaselInteger)
+						if (args[2] instanceof WeaselInteger)
+							return new WeaselInteger(clr((Integer) args[0].get(), (Integer) args[1].get(), (Integer) args[2].get()));
+
 				throw new WeaselRuntimeException("Invalid arguments for color().");
-			}else {
+			} else {
 				throw new WeaselRuntimeException("color() needs 1 or 3 arguments: name or r,g,b.");
 			}
 
 		}
-		
+
 		if (functionName.equals("bound")) {
 			if (args.length == 3) {
-				if(args[0] instanceof WeaselInteger)
-					if(args[1] instanceof WeaselInteger)
-						if(args[2] instanceof WeaselInteger) {
-							return new WeaselInteger(Math.min((Integer)args[2].get(),Math.max((Integer)args[1].get(),(Integer)args[0].get())));
-						}
-				
+				if (args[0] instanceof WeaselInteger) if (args[1] instanceof WeaselInteger) if (args[2] instanceof WeaselInteger) {
+					return new WeaselInteger(Math.min((Integer) args[2].get(), Math.max((Integer) args[1].get(), (Integer) args[0].get())));
+				}
+
 				throw new WeaselRuntimeException("Invalid arguments for bound().");
-			}else {
+			} else {
 				throw new WeaselRuntimeException("bound() needs 3 arguments: num,min,max.");
 			}
 		}
-		
+
 		if (functionName.equals("bound_c")) {
 			if (args.length == 3) {
-				if(args[0] instanceof WeaselInteger)
-					if(args[1] instanceof WeaselInteger)
-						if(args[2] instanceof WeaselInteger) {
-							int min = (Integer)args[1].get();
-							int max = (Integer)args[2].get();
-							int val = (Integer)args[0].get();
-							while(val > max) val = val - (max-min);
-							while(val < min) val = val + (max-min);
-							return new WeaselInteger(val);
-						}
-				
+				if (args[0] instanceof WeaselInteger) if (args[1] instanceof WeaselInteger) if (args[2] instanceof WeaselInteger) {
+					int min = (Integer) args[1].get();
+					int max = (Integer) args[2].get();
+					int val = (Integer) args[0].get();
+					while (val > max)
+						val = val - (max - min);
+					while (val < min)
+						val = val + (max - min);
+					return new WeaselInteger(val);
+				}
+
 				throw new WeaselRuntimeException("Invalid arguments for bound().");
-			}else {
+			} else {
 				throw new WeaselRuntimeException("bound() needs 3 arguments: num,min,max.");
 			}
 		}
 
 		return null;
 	}
-	
+
 	private int clr(int r, int g, int b) {
-		return 
-					Math.round(Math.min(255,Math.max(0,r))) << 16 |
-					Math.round(Math.min(255,Math.max(0,g))) << 8 |
-					Math.round(Math.min(255,Math.max(0,b)));
+		return Math.round(Math.min(255, Math.max(0, r))) << 16 | Math.round(Math.min(255, Math.max(0, g))) << 8
+				| Math.round(Math.min(255, Math.max(0, b)));
 	}
 
 	/**

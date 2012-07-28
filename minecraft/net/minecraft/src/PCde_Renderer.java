@@ -122,29 +122,29 @@ public class PCde_Renderer {
 
 			return true;
 		}
-		
+
 		if (ted.type >= 4 && ted.type <= 6) {
 
 			final float px = 0.0625F;
-			float w = px*3;
+			float w = px * 3;
 
 			Block bl = null;
-			if(ted.type==4) bl = Block.cobblestone;
-			if(ted.type==5) bl = Block.brick;
-			if(ted.type==6) bl = Block.stoneBrick;			
-			if(bl==null) return false;
-			
-			bl.setBlockBounds(0, 0, 0, 1, 1, w); 
-            renderblocks.renderStandardBlock(bl, i, j, k);
+			if (ted.type == 4) bl = Block.cobblestone;
+			if (ted.type == 5) bl = Block.brick;
+			if (ted.type == 6) bl = Block.stoneBrick;
+			if (bl == null) return false;
 
-            bl.setBlockBounds(1-w, 0, w, 1, 1, 1-w); 
-            renderblocks.renderStandardBlock(bl, i, j, k);
+			bl.setBlockBounds(0, 0, 0, 1, 1, w);
+			renderblocks.renderStandardBlock(bl, i, j, k);
 
-            bl.setBlockBounds(0, 0, 1-w, 1, 1, 1); 
-            renderblocks.renderStandardBlock(bl, i, j, k);
+			bl.setBlockBounds(1 - w, 0, w, 1, 1, 1 - w);
+			renderblocks.renderStandardBlock(bl, i, j, k);
 
-            bl.setBlockBounds(0, 0, w, w, 1, 1-w); 
-            renderblocks.renderStandardBlock(bl, i, j, k);
+			bl.setBlockBounds(0, 0, 1 - w, 1, 1, 1);
+			renderblocks.renderStandardBlock(bl, i, j, k);
+
+			bl.setBlockBounds(0, 0, w, w, 1, 1 - w);
+			renderblocks.renderStandardBlock(bl, i, j, k);
 			bl.setBlockBounds(0, 0, 0, 1, 1, 1);
 
 			return true;
@@ -283,25 +283,25 @@ public class PCde_Renderer {
 
 
 			PC_Renderer.resetTerrain(swapped);
-		}else if (meta >= 4 && meta <= 6) {
+		} else if (meta >= 4 && meta <= 6) {
 
 			final float px = 0.0625F;
-			float w = px*3;
+			float w = px * 3;
 
 			Block bl = null;
-			if(meta==4) bl = Block.cobblestone;
-			if(meta==5) bl = Block.brick;
-			if(meta==6) bl = Block.stoneBrick;			
-			if(bl==null) return;
-			
-			bl.setBlockBounds(0, 0, 0, 1, 1, w); 
-            PC_Renderer.renderInvBox(renderblocks, bl, 0);
-            bl.setBlockBounds(1-w, 0, w, 1, 1, 1-w); 
-            PC_Renderer.renderInvBox(renderblocks, bl, 0);
-            bl.setBlockBounds(0, 0, 1-w, 1, 1, 1); 
-            PC_Renderer.renderInvBox(renderblocks, bl, 0);
-            bl.setBlockBounds(0, 0, w, w, 1, 1-w); 
-            PC_Renderer.renderInvBox(renderblocks, bl, 0);
+			if (meta == 4) bl = Block.cobblestone;
+			if (meta == 5) bl = Block.brick;
+			if (meta == 6) bl = Block.stoneBrick;
+			if (bl == null) return;
+
+			bl.setBlockBounds(0, 0, 0, 1, 1, w);
+			PC_Renderer.renderInvBox(renderblocks, bl, 0);
+			bl.setBlockBounds(1 - w, 0, w, 1, 1, 1 - w);
+			PC_Renderer.renderInvBox(renderblocks, bl, 0);
+			bl.setBlockBounds(0, 0, 1 - w, 1, 1, 1);
+			PC_Renderer.renderInvBox(renderblocks, bl, 0);
+			bl.setBlockBounds(0, 0, w, w, 1, 1 - w);
+			PC_Renderer.renderInvBox(renderblocks, bl, 0);
 			bl.setBlockBounds(0, 0, 0, 1, 1, 1);
 
 			return;

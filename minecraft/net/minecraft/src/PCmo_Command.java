@@ -83,8 +83,9 @@ public class PCmo_Command {
 
 	}
 
-	public static final int FORWARD = 0, LEFT = 1, RIGHT = 2, BACKWARD = 3, SOUTH = 4, NORTH = 5, EAST = 6, WEST = 7, DOWN = 8, UP = 9, DEPOSIT = 10, DISASSEMBLY = 11, MINING_ENABLE = 12, MINING_DISABLE = 13, BRIDGE_ENABLE = 14, BRIDGE_DISABLE = 15,
-			LAVA_ENABLE = 16, LAVA_DISABLE = 17, WATER_ENABLE = 18, WATER_DISABLE = 19;
+	public static final int FORWARD = 0, LEFT = 1, RIGHT = 2, BACKWARD = 3, SOUTH = 4, NORTH = 5, EAST = 6, WEST = 7, DOWN = 8, UP = 9, DEPOSIT = 10,
+			DISASSEMBLY = 11, MINING_ENABLE = 12, MINING_DISABLE = 13, BRIDGE_ENABLE = 14, BRIDGE_DISABLE = 15, LAVA_ENABLE = 16, LAVA_DISABLE = 17,
+			WATER_ENABLE = 18, WATER_DISABLE = 19;
 
 	// direct commands
 	public static final int RESET = -2, RUN_PROGRAM = -3;;
@@ -394,7 +395,8 @@ public class PCmo_Command {
 		// A=RND*15+B
 		if (local.matches("[A-Z]{1}=RND\\*[0-9]+[+\\-*%/]{1}[A-Z]{1}")) {
 			try {
-				setVar(local.charAt(0), numOp(getVar(local.charAt(local.length() - 1)), local.charAt(local.length() - 2), random.nextInt(readInt(local, 6))));
+				setVar(local.charAt(0),
+						numOp(getVar(local.charAt(local.length() - 1)), local.charAt(local.length() - 2), random.nextInt(readInt(local, 6))));
 			} catch (IllegalArgumentException iae) {
 				throw new PCmo_CommandException("Negative random.");
 			}
@@ -414,7 +416,8 @@ public class PCmo_Command {
 		// A=-14+RND*15
 		if (local.matches("[A-Z]{1}=[\\-]?[0-9]+[+\\-*%/]{1}RND\\*[0-9]+")) {
 			try {
-				setVar(local.charAt(0), numOp(readInt(local, 2), local.charAt(local.indexOf("RND") - 1), random.nextInt(readInt(local, local.indexOf("RND")) + 4)));
+				setVar(local.charAt(0),
+						numOp(readInt(local, 2), local.charAt(local.indexOf("RND") - 1), random.nextInt(readInt(local, local.indexOf("RND")) + 4)));
 			} catch (IllegalArgumentException iae) {
 				throw new PCmo_CommandException("Negative random.");
 			}

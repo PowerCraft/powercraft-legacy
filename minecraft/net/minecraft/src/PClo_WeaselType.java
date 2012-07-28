@@ -9,7 +9,7 @@ public class PClo_WeaselType {
 	@SuppressWarnings("javadoc")
 	public static final int CORE = 0, PORT = 1, DISPLAY = 2, SPEAKER = 3, TOUCHSCREEN = 4;
 	@SuppressWarnings("javadoc")
-	public static final int DISK_MANAGER=5, DISK_DRIVE=6, TERMINAL = 7;
+	public static final int DISK_MANAGER = 5, DISK_DRIVE = 6, TERMINAL = 7;
 
 	/**
 	 * Gate names used for localization

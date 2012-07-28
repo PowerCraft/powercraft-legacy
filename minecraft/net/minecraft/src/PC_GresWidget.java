@@ -15,8 +15,9 @@ import org.lwjgl.opengl.GL11;
  * @copy (c) 2012
  */
 public abstract class PC_GresWidget extends Gui {
-	
-	public static final PC_CoordI zerosize = new PC_CoordI(0,0);
+
+	/** zero coord */
+	public static final PC_CoordI zerosize = new PC_CoordI(0, 0);
 
 
 	/** Minecraft instance */
@@ -44,7 +45,8 @@ public abstract class PC_GresWidget extends Gui {
 	}
 
 	@SuppressWarnings("javadoc")
-	public static final int textColorEnabled = 0, textColorShadowEnabled = 1, textColorDisabled = 2, textColorShadowDisabled = 3, textColorHover = 4, textColorClicked = 5;
+	public static final int textColorEnabled = 0, textColorShadowEnabled = 1, textColorDisabled = 2, textColorShadowDisabled = 3, textColorHover = 4,
+			textColorClicked = 5;
 
 	/** Array of text colors */
 	protected int color[] = { 0x000000, 0, 0x333333, 0, 0x000000, 0x000000 };
@@ -89,11 +91,20 @@ public abstract class PC_GresWidget extends Gui {
 	/** Is visible */
 	protected boolean visible = true;
 
+	/**
+	 * Set visibility. Invisible widgets dont take space in layouts.
+	 * Same as css display:none
+	 * @param show flag visible
+	 * @return this
+	 */
 	protected PC_GresWidget setVisible(boolean show) {
 		visible = show;
 		return this;
 	}
 
+	/**
+	 * @return true if is visible
+	 */
 	protected boolean isVisible() {
 		return visible;
 	}
@@ -318,7 +329,7 @@ public abstract class PC_GresWidget extends Gui {
 	 * @return minimal size, {width,height}
 	 */
 	public PC_CoordI getMinSize() {
-		if(!visible) return new PC_CoordI(0,0);
+		if (!visible) return new PC_CoordI(0, 0);
 		return calcSize().copy();
 	}
 
@@ -410,7 +421,7 @@ public abstract class PC_GresWidget extends Gui {
 	 * @return {width, height}
 	 */
 	public PC_CoordI getSize() {
-		if(!visible) return new PC_CoordI(0,0);
+		if (!visible) return new PC_CoordI(0, 0);
 		return size.copy();
 	}
 
@@ -494,7 +505,7 @@ public abstract class PC_GresWidget extends Gui {
 			for (int i = 0; i < childs.size(); i++) {
 				childs.get(i).calcChildPositions();
 				PC_CoordI childSize = childs.get(i).calcSize();
-				if(!childs.get(i).isVisible()) childSize = new PC_CoordI(0,0);
+				if (!childs.get(i).isVisible()) childSize = new PC_CoordI(0, 0);
 				if (childSize.y > maxh) {
 					maxh = childSize.y;
 				}
@@ -664,12 +675,11 @@ public abstract class PC_GresWidget extends Gui {
 	 * @param posOffset offset from top left
 	 */
 	public void updateRenderer(PC_CoordI posOffset) {
-		if(!visible) return;
+		if (!visible) return;
 		this.render(posOffset);
 		if (childs != null) {
 			for (int i = 0; i < childs.size(); i++) {
-				if(childs.get(i).visible)
-					childs.get(i).updateRenderer(posOffset.offset(pos));
+				if (childs.get(i).visible) childs.get(i).updateRenderer(posOffset.offset(pos));
 			}
 		}
 	}
@@ -689,7 +699,7 @@ public abstract class PC_GresWidget extends Gui {
 	 * @return the widget under mouse
 	 */
 	public PC_GresWidget getWidgetUnderMouse(PC_CoordI mousePos) {
-		if(!visible) return null;
+		if (!visible) return null;
 		PC_GresWidget widget;
 		PC_CoordI mpos = mousePos.offset(-pos.x, -pos.y);
 
@@ -820,7 +830,8 @@ public abstract class PC_GresWidget extends Gui {
 		drawTexturedModalRect(pos.x + offset.x, pos.y + offset.y + ryh1, imgOffset.x, imgOffset.y + imgSize.y - ryh2, rxh1, ryh2);
 
 		// right bottom square
-		drawTexturedModalRect(pos.x + offset.x + rxh1, pos.y + offset.y + ryh1, imgOffset.x + imgSize.x - rxh2, imgOffset.y + imgSize.y - ryh2, rxh2, ryh2);
+		drawTexturedModalRect(pos.x + offset.x + rxh1, pos.y + offset.y + ryh1, imgOffset.x + imgSize.x - rxh2, imgOffset.y + imgSize.y - ryh2, rxh2,
+				ryh2);
 
 		GL11.glDisable(GL11.GL_BLEND);
 
@@ -837,7 +848,8 @@ public abstract class PC_GresWidget extends Gui {
 	 * @param imgSize size of the whole "scalable" region in texture file (eg.
 	 *            the whole huge "button" field)
 	 */
-	protected static void renderTextureSliced_static(Gui gui, PC_CoordI startPos, String texture, PC_CoordI rectSize, PC_CoordI imgOffset, PC_CoordI imgSize) {
+	protected static void renderTextureSliced_static(Gui gui, PC_CoordI startPos, String texture, PC_CoordI rectSize, PC_CoordI imgOffset,
+			PC_CoordI imgSize) {
 		GL11.glBindTexture(GL11.GL_TEXTURE_2D, mc.renderEngine.getTexture(texture));
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 		GL11.glEnable(GL11.GL_BLEND);

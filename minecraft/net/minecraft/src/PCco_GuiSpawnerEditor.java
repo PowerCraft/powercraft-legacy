@@ -19,8 +19,9 @@ public class PCco_GuiSpawnerEditor implements PC_IGresBase {
 
 	private PC_GresWidget[] buttons = new PC_GresWidget[25];
 
-	private static String[] mapping = { "Creeper", "Skeleton", "Spider", "CaveSpider", "Zombie", "PigZombie", "Enderman", "Silverfish", "Slime", "LavaSlime", "Ghast", "Blaze", "SnowMan", "VillagerGolem", "Villager", "Pig", "Sheep", "Cow", "Chicken",
-			"Squid", "Wolf", "MushroomCow", "Ozelot", "EnderDragon" };
+	private static String[] mapping = { "Creeper", "Skeleton", "Spider", "CaveSpider", "Zombie", "PigZombie", "Enderman", "Silverfish", "Slime",
+			"LavaSlime", "Ghast", "Blaze", "SnowMan", "VillagerGolem", "Villager", "Pig", "Sheep", "Cow", "Chicken", "Squid", "Wolf", "MushroomCow",
+			"Ozelot", "EnderDragon" };
 
 	/**
 	 * Spawner mob editor

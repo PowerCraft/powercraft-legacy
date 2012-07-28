@@ -55,7 +55,8 @@ public class PCde_BlockDeco extends BlockContainer implements PC_IBlockType, PC_
 
 		if (tileentity != null) {
 			if (tileentity.type == 3 && tileentity.getInventory() != null) {
-				PC_Utils.openGres(entityplayer, new PCde_GuiTransmutator(entityplayer, (PCde_InventoryTransmutationContainer) tileentity.getInventory()));
+				PC_Utils.openGres(entityplayer,
+						new PCde_GuiTransmutator(entityplayer, (PCde_InventoryTransmutationContainer) tileentity.getInventory()));
 				return true;
 			}
 		}
@@ -266,10 +267,10 @@ public class PCde_BlockDeco extends BlockContainer implements PC_IBlockType, PC_
 			if (!PC_Utils.isCreative()) {
 				dropBlockAsItem_do(world, x, y, z, new ItemStack(mod_PCdeco.deco, 1, teg.type));
 			}
-			
+
 			PC_InvUtils.dropInventoryContents(teg.getInventory(), world, teg.getCoord());
 		}
-		
+
 
 		super.onBlockRemoval(world, x, y, z);
 	}

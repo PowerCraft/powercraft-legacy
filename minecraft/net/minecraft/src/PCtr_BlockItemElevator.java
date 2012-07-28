@@ -53,7 +53,7 @@ public class PCtr_BlockItemElevator extends Block implements PC_IBlockType, PC_I
 
 		if (entity instanceof EntityItem) {
 			PCtr_BeltBase.packItems(world, pos);
-			if(PCtr_BeltBase.storeItemIntoMinecart(world, pos, (EntityItem) entity) || PCtr_BeltBase.storeAllSides(world, pos, (EntityItem) entity)) {
+			if (PCtr_BeltBase.storeItemIntoMinecart(world, pos, (EntityItem) entity) || PCtr_BeltBase.storeAllSides(world, pos, (EntityItem) entity)) {
 				entity.setDead();
 				return;
 			}
@@ -114,7 +114,8 @@ public class PCtr_BlockItemElevator extends Block implements PC_IBlockType, PC_I
 					side = 0;
 				}
 				if (side != -1) {
-					PCtr_BeltBase.moveEntityOnBelt(world, pos, entity, true, true, side, PCtr_BeltBase.MAX_HORIZONTAL_SPEED, PCtr_BeltBase.HORIZONTAL_BOOST);
+					PCtr_BeltBase.moveEntityOnBelt(world, pos, entity, true, true, side, PCtr_BeltBase.MAX_HORIZONTAL_SPEED,
+							PCtr_BeltBase.HORIZONTAL_BOOST);
 				}
 
 			} else {
@@ -122,20 +123,24 @@ public class PCtr_BlockItemElevator extends Block implements PC_IBlockType, PC_I
 				if ((down && entity.posY < j + 0.6D) || (!down && entity.posY > j + 0.1D)) {
 					if (PCtr_BeltBase.isConveyorAt(world, pos.offset(1, 0, 0))) {
 
-						PCtr_BeltBase.moveEntityOnBelt(world, pos, entity, true, true, 1, PCtr_BeltBase.MAX_HORIZONTAL_SPEED, PCtr_BeltBase.HORIZONTAL_BOOST * (down ? 1.2D : 1));
+						PCtr_BeltBase.moveEntityOnBelt(world, pos, entity, true, true, 1, PCtr_BeltBase.MAX_HORIZONTAL_SPEED,
+								PCtr_BeltBase.HORIZONTAL_BOOST * (down ? 1.2D : 1));
 
 					} else if (PCtr_BeltBase.isConveyorAt(world, pos.offset(-1, 0, 0))) {
 
 
-						PCtr_BeltBase.moveEntityOnBelt(world, pos, entity, true, true, 3, PCtr_BeltBase.MAX_HORIZONTAL_SPEED, PCtr_BeltBase.HORIZONTAL_BOOST * (down ? 1.2D : 1));
+						PCtr_BeltBase.moveEntityOnBelt(world, pos, entity, true, true, 3, PCtr_BeltBase.MAX_HORIZONTAL_SPEED,
+								PCtr_BeltBase.HORIZONTAL_BOOST * (down ? 1.2D : 1));
 
 					} else if (PCtr_BeltBase.isConveyorAt(world, pos.offset(0, 0, 1))) {
 
-						PCtr_BeltBase.moveEntityOnBelt(world, pos, entity, true, true, 2, PCtr_BeltBase.MAX_HORIZONTAL_SPEED, PCtr_BeltBase.HORIZONTAL_BOOST * (down ? 1.2D : 1));
+						PCtr_BeltBase.moveEntityOnBelt(world, pos, entity, true, true, 2, PCtr_BeltBase.MAX_HORIZONTAL_SPEED,
+								PCtr_BeltBase.HORIZONTAL_BOOST * (down ? 1.2D : 1));
 
 					} else if (PCtr_BeltBase.isConveyorAt(world, pos.offset(0, 0, -1))) {
 
-						PCtr_BeltBase.moveEntityOnBelt(world, pos, entity, true, true, 0, PCtr_BeltBase.MAX_HORIZONTAL_SPEED, PCtr_BeltBase.HORIZONTAL_BOOST * (down ? 1.2D : 1));
+						PCtr_BeltBase.moveEntityOnBelt(world, pos, entity, true, true, 0, PCtr_BeltBase.MAX_HORIZONTAL_SPEED,
+								PCtr_BeltBase.HORIZONTAL_BOOST * (down ? 1.2D : 1));
 
 					}
 				}

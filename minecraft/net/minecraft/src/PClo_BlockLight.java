@@ -17,6 +17,7 @@ import net.minecraft.src.forge.ITextureProvider;
 public class PClo_BlockLight extends BlockContainer implements PC_ISwapTerrain, PC_IBlockType, ITextureProvider {
 	private static boolean changingState = false;
 	private boolean on;
+
 //	
 //	@Override
 //	public int getMixedBrightnessForBlock(IBlockAccess par1iBlockAccess, int par2, int par3, int par4) {
@@ -49,12 +50,12 @@ public class PClo_BlockLight extends BlockContainer implements PC_ISwapTerrain, 
 	public String getTextureFile() {
 		return getTerrainFile();
 	}
-	
+
 	@Override
 	public int getBlockTexture(IBlockAccess par1iBlockAccess, int par2, int par3, int par4, int par5) {
-		PClo_TileEntityLight te  = getTE(par1iBlockAccess, par2, par3, par4);
-		if(te == null) return super.getBlockTexture(par1iBlockAccess, par2, par3, par4, par5);
-		if(!te.isHuge) return 66;
+		PClo_TileEntityLight te = getTE(par1iBlockAccess, par2, par3, par4);
+		if (te == null) return super.getBlockTexture(par1iBlockAccess, par2, par3, par4, par5);
+		if (!te.isHuge) return 66;
 		return 117;
 	}
 
@@ -142,7 +143,8 @@ public class PClo_BlockLight extends BlockContainer implements PC_ISwapTerrain, 
 
 		if (tileentity != null && tileentity.isStable) return;
 
-		onPoweredBlockChange(world, i, j, k, world.isBlockIndirectlyGettingPowered(i, j, k) || isAttachmentBlockPowered(world, i, j, k, i1) || isBlockUnderAttachmentPowered(world, i, j, k, i1));
+		onPoweredBlockChange(world, i, j, k, world.isBlockIndirectlyGettingPowered(i, j, k) || isAttachmentBlockPowered(world, i, j, k, i1)
+				|| isBlockUnderAttachmentPowered(world, i, j, k, i1));
 	}
 
 	@Override
@@ -191,7 +193,8 @@ public class PClo_BlockLight extends BlockContainer implements PC_ISwapTerrain, 
 
 		if (tileentity != null && tileentity.isStable) return;
 
-		boolean powered = world.isBlockIndirectlyGettingPowered(i, j, k) || isAttachmentBlockPowered(world, i, j, k, sidemeta) || isBlockUnderAttachmentPowered(world, i, j, k, sidemeta);
+		boolean powered = world.isBlockIndirectlyGettingPowered(i, j, k) || isAttachmentBlockPowered(world, i, j, k, sidemeta)
+				|| isBlockUnderAttachmentPowered(world, i, j, k, sidemeta);
 		if (on && !powered) {
 			world.scheduleBlockUpdate(i, j, k, blockID, 1);
 		} else if (!on && powered) {
@@ -207,7 +210,8 @@ public class PClo_BlockLight extends BlockContainer implements PC_ISwapTerrain, 
 		if (tileentity != null && tileentity.isStable) return;
 
 		int sidemeta = world.getBlockMetadata(i, j, k);
-		boolean powered = world.isBlockGettingPowered(i, j, k) || world.isBlockIndirectlyGettingPowered(i, j, k) || isAttachmentBlockPowered(world, i, j, k, sidemeta) || isBlockUnderAttachmentPowered(world, i, j, k, sidemeta);
+		boolean powered = world.isBlockGettingPowered(i, j, k) || world.isBlockIndirectlyGettingPowered(i, j, k)
+				|| isAttachmentBlockPowered(world, i, j, k, sidemeta) || isBlockUnderAttachmentPowered(world, i, j, k, sidemeta);
 		if (on && !powered) {
 			onPoweredBlockChange(world, i, j, k, false);
 		} else if (!on && powered) {
@@ -287,7 +291,8 @@ public class PClo_BlockLight extends BlockContainer implements PC_ISwapTerrain, 
 			if (te != null) {
 				if (!PC_Utils.isCreative()) {
 					PClo_TileEntityLight teg = (PClo_TileEntityLight) te;
-					dropBlockAsItem_do(world, i, j, k, new ItemStack(mod_PClogic.lightOn, 1, teg.getColor() + (teg.isStable ? 16 : 0) + (teg.isHuge ? 32 : 0)));
+					dropBlockAsItem_do(world, i, j, k, new ItemStack(mod_PClogic.lightOn, 1, teg.getColor() + (teg.isStable ? 16 : 0)
+							+ (teg.isHuge ? 32 : 0)));
 				}
 			}
 		}
@@ -329,9 +334,9 @@ public class PClo_BlockLight extends BlockContainer implements PC_ISwapTerrain, 
 		int i1 = iblockaccess.getBlockMetadata(i, j, k);
 
 		PClo_TileEntityLight te = getTE(iblockaccess, i, j, k);
-		
-		float sidehalf = te.isHuge?0.5F:0.1875F;
-		float height = te.isHuge?0.0625F*3:0.0625F*2;
+
+		float sidehalf = te.isHuge ? 0.5F : 0.1875F;
+		float height = te.isHuge ? 0.0625F * 3 : 0.0625F * 2;
 
 		if (i1 == 0) // y-1
 		{
@@ -372,7 +377,7 @@ public class PClo_BlockLight extends BlockContainer implements PC_ISwapTerrain, 
 	{
 		try {
 			return PC_Color.light_colors[i % 16];
-		}catch(ArrayIndexOutOfBoundsException e) {
+		} catch (ArrayIndexOutOfBoundsException e) {
 			return 0xf0f0f0;
 		}
 	}

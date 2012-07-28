@@ -37,7 +37,8 @@ public abstract class PCtr_TileEntityRedirectionBeltBase extends PC_TileEntity {
 
 			Entity thisItem = enumer.nextElement();
 
-			if (thisItem.posX < xCoord - 0.2F || thisItem.posY < yCoord - 0.2F || thisItem.posZ < zCoord - 0.2F || thisItem.posX > xCoord + 1.2F || thisItem.posY > yCoord + 2.2F || thisItem.posZ > zCoord + 1.2F) {
+			if (thisItem.posX < xCoord - 0.2F || thisItem.posY < yCoord - 0.2F || thisItem.posZ < zCoord - 0.2F || thisItem.posX > xCoord + 1.2F
+					|| thisItem.posY > yCoord + 2.2F || thisItem.posZ > zCoord + 1.2F) {
 				redirList.remove(thisItem);
 			}
 		}

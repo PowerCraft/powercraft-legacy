@@ -83,18 +83,21 @@ public class PCde_TileEntityDeco extends PC_TileEntity implements PC_IInventoryW
 				//the particle field
 
 				for (int i = 0; i < 2; i++) {
-					ModLoader.getMinecraftInstance().effectRenderer.addEffect(new PC_EntityLaserParticleFX(worldObj, new PC_CoordD(getCoord()).offset(-0.1F + rand.nextFloat() * 1.2F, rand.nextFloat() * 0.8F, -0.1F + rand.nextFloat() * 1.2F),
-							new PC_Color(0.6, 0.6, 1), new PC_CoordI(), 0));
+					ModLoader.getMinecraftInstance().effectRenderer.addEffect(new PC_EntityLaserParticleFX(worldObj, new PC_CoordD(getCoord())
+							.offset(-0.1F + rand.nextFloat() * 1.2F, rand.nextFloat() * 0.8F, -0.1F + rand.nextFloat() * 1.2F), new PC_Color(0.6,
+							0.6, 1), new PC_CoordI(), 0));
 				}
 
 				for (int i = 0; i < 2; i++) {
-					ModLoader.getMinecraftInstance().effectRenderer.addEffect(new PC_EntityLaserParticleFX(worldObj, new PC_CoordD(getCoord()).offset(0.1F + rand.nextFloat() * 0.8F, 0.8F + rand.nextFloat() * 0.8F, 0.1F + rand.nextFloat() * 0.8F),
-							new PC_Color(0.6, 0.6, 1), new PC_CoordI(), 0));
+					ModLoader.getMinecraftInstance().effectRenderer.addEffect(new PC_EntityLaserParticleFX(worldObj, new PC_CoordD(getCoord())
+							.offset(0.1F + rand.nextFloat() * 0.8F, 0.8F + rand.nextFloat() * 0.8F, 0.1F + rand.nextFloat() * 0.8F), new PC_Color(
+							0.6, 0.6, 1), new PC_CoordI(), 0));
 				}
 
 				for (int i = 0; i < 2; i++) {
-					ModLoader.getMinecraftInstance().effectRenderer.addEffect(new PC_EntityLaserParticleFX(worldObj, new PC_CoordD(getCoord()).offset(0.2F + rand.nextFloat() * 0.6F, 1.6F + rand.nextFloat() * 0.9F, 0.2F + rand.nextFloat() * 0.6F),
-							new PC_Color(0.6, 0.6, 1), new PC_CoordI(), 0));
+					ModLoader.getMinecraftInstance().effectRenderer.addEffect(new PC_EntityLaserParticleFX(worldObj, new PC_CoordD(getCoord())
+							.offset(0.2F + rand.nextFloat() * 0.6F, 1.6F + rand.nextFloat() * 0.9F, 0.2F + rand.nextFloat() * 0.6F), new PC_Color(
+							0.6, 0.6, 1), new PC_CoordI(), 0));
 				}
 
 				if (isLightningReadyToStrike()) {
@@ -224,14 +227,17 @@ public class PCde_TileEntityDeco extends PC_TileEntity implements PC_IInventoryW
 
 			worldObj.createExplosion(null, chamber.getCoord().x + 0.5F, chamber.getCoord().y + 0.5F, chamber.getCoord().z + 0.5F, 1F);
 
-			worldObj.playSoundEffect(chamber.getCoord().x + 0.5F, chamber.getCoord().y + 0.5F, chamber.getCoord().z + 0.5F, "random.explode", 1.5F, (1.0F + (worldObj.rand.nextFloat() - worldObj.rand.nextFloat()) * 0.2F) * 0.7F);
+			worldObj.playSoundEffect(chamber.getCoord().x + 0.5F, chamber.getCoord().y + 0.5F, chamber.getCoord().z + 0.5F, "random.explode", 1.5F,
+					(1.0F + (worldObj.rand.nextFloat() - worldObj.rand.nextFloat()) * 0.2F) * 0.7F);
 
 			chamber.transmutabox.onHitByLightning();
 
 			// hit entites near the chamber by lightning.
 			double d = 3D;
-			List<Entity> list = worldObj.getEntitiesWithinAABBExcludingEntity(bolt,
-					AxisAlignedBB.getBoundingBoxFromPool(chamber.getCoord().x - d, chamber.getCoord().y - d, chamber.getCoord().z - d, chamber.getCoord().x + d, chamber.getCoord().y + 6D + d, chamber.getCoord().z + d));
+			List<Entity> list = worldObj.getEntitiesWithinAABBExcludingEntity(
+					bolt,
+					AxisAlignedBB.getBoundingBoxFromPool(chamber.getCoord().x - d, chamber.getCoord().y - d, chamber.getCoord().z - d,
+							chamber.getCoord().x + d, chamber.getCoord().y + 6D + d, chamber.getCoord().z + d));
 
 			for (int l = 0; l < list.size(); l++) {
 				Entity entity = list.get(l);
@@ -292,29 +298,29 @@ public class PCde_TileEntityDeco extends PC_TileEntity implements PC_IInventoryW
 
 	private boolean doesBlockSmoke(PC_CoordI pos) {
 		int id = pos.getId(worldObj);
-		if(id == Block.stoneOvenActive.blockID) return true;
-		if(id == Block.fire.blockID) return true;
-		
-		if(PC_BlockUtils.hasFlag(worldObj, pos, "SMOKE")) return true;
+		if (id == Block.stoneOvenActive.blockID) return true;
+		if (id == Block.fire.blockID) return true;
+
+		if (PC_BlockUtils.hasFlag(worldObj, pos, "SMOKE")) return true;
 		return false;
 	}
-	
+
 	private boolean doesBlockSmokeOpenly(PC_CoordI pos) {
 		int id = pos.getId(worldObj);
-		if(id == Block.fire.blockID) return true;
-		
-		if(PC_BlockUtils.hasFlag(worldObj, pos, "SMOKE")) return true;
+		if (id == Block.fire.blockID) return true;
+
+		if (PC_BlockUtils.hasFlag(worldObj, pos, "SMOKE")) return true;
 		return false;
 	}
-	
+
 	private boolean isBlockLitFurnace(PC_CoordI pos) {
 		return pos.getId(worldObj) == Block.stoneOvenActive.blockID;
 	}
 
 	private boolean isBlockChimney(PC_CoordI pos) {
-		if(pos.getId(worldObj) == mod_PCdeco.deco.blockID) {
+		if (pos.getId(worldObj) == mod_PCdeco.deco.blockID) {
 			PCde_TileEntityDeco ted = (PCde_TileEntityDeco) pos.getTileEntity(worldObj);
-			if(ted.type >= 4 && ted.type <= 6) return true;
+			if (ted.type >= 4 && ted.type <= 6) return true;
 		}
 		return false;
 	}
@@ -323,67 +329,69 @@ public class PCde_TileEntityDeco extends PC_TileEntity implements PC_IInventoryW
 		if (worldObj.isAirBlock(xCoord, yCoord + 1, zCoord)) { //test if air is above chimney	    
 
 			PC_CoordI cursor = getCoord().copy();
-			
+
 			boolean smoke = false;
-			
+
 			cursor.y++;
-			while(cursor.y>0) {
+			while (cursor.y > 0) {
 				cursor.y--;
-				
-				if(isBlockChimney(cursor)) {
-					smoke |= isBlockLitFurnace(cursor.offset(-1,0,0));
-					smoke |= isBlockLitFurnace(cursor.offset(1,0,0));
-					smoke |= isBlockLitFurnace(cursor.offset(0,0,-1));
-					smoke |= isBlockLitFurnace(cursor.offset(0,0,1));
-					if(smoke) break;
+
+				if (isBlockChimney(cursor)) {
+					smoke |= isBlockLitFurnace(cursor.offset(-1, 0, 0));
+					smoke |= isBlockLitFurnace(cursor.offset(1, 0, 0));
+					smoke |= isBlockLitFurnace(cursor.offset(0, 0, -1));
+					smoke |= isBlockLitFurnace(cursor.offset(0, 0, 1));
+					if (smoke) break;
 					continue;
-				}else {					
+				} else {
 					// no more chimney. check what is underneath.
-					
+
 					// smoke source directly here
-					if(doesBlockSmoke(cursor)) {
-						smoke=true; break;
+					if (doesBlockSmoke(cursor)) {
+						smoke = true;
+						break;
 					}
-					
+
 					//a block under
-					if(doesBlockSmoke(cursor.offset(0,-1,0))) {
-						smoke=true; break;
+					if (doesBlockSmoke(cursor.offset(0, -1, 0))) {
+						smoke = true;
+						break;
 					}
-					
+
 					// smoke sources by side
-					smoke |= doesBlockSmokeOpenly(cursor.offset(-1,0,0));
-					smoke |= doesBlockSmokeOpenly(cursor.offset(1,0,0));
-					smoke |= doesBlockSmokeOpenly(cursor.offset(0,0,-1));
-					smoke |= doesBlockSmokeOpenly(cursor.offset(0,0,1));
-					if(smoke) break;
-					
+					smoke |= doesBlockSmokeOpenly(cursor.offset(-1, 0, 0));
+					smoke |= doesBlockSmokeOpenly(cursor.offset(1, 0, 0));
+					smoke |= doesBlockSmokeOpenly(cursor.offset(0, 0, -1));
+					smoke |= doesBlockSmokeOpenly(cursor.offset(0, 0, 1));
+					if (smoke) break;
+
 					// smoke sources by corner
-					smoke |= doesBlockSmokeOpenly(cursor.offset(1,0,-1));
-					smoke |= doesBlockSmokeOpenly(cursor.offset(-1,0,1));
-					smoke |= doesBlockSmokeOpenly(cursor.offset(-1,0,-1));
-					smoke |= doesBlockSmokeOpenly(cursor.offset(1,0,1));
-					if(smoke) break;
-					
+					smoke |= doesBlockSmokeOpenly(cursor.offset(1, 0, -1));
+					smoke |= doesBlockSmokeOpenly(cursor.offset(-1, 0, 1));
+					smoke |= doesBlockSmokeOpenly(cursor.offset(-1, 0, -1));
+					smoke |= doesBlockSmokeOpenly(cursor.offset(1, 0, 1));
+					if (smoke) break;
+
 					// under by side
-					smoke |= doesBlockSmokeOpenly(cursor.offset(-1,-1,0));
-					smoke |= doesBlockSmokeOpenly(cursor.offset(1,-1,0));
-					smoke |= doesBlockSmokeOpenly(cursor.offset(0,-1,-1));
-					smoke |= doesBlockSmokeOpenly(cursor.offset(0,-1,1));
-					if(smoke) break;
-					
+					smoke |= doesBlockSmokeOpenly(cursor.offset(-1, -1, 0));
+					smoke |= doesBlockSmokeOpenly(cursor.offset(1, -1, 0));
+					smoke |= doesBlockSmokeOpenly(cursor.offset(0, -1, -1));
+					smoke |= doesBlockSmokeOpenly(cursor.offset(0, -1, 1));
+					if (smoke) break;
+
 					//under by corner
-					smoke |= doesBlockSmokeOpenly(cursor.offset(1,-1,-1));
-					smoke |= doesBlockSmokeOpenly(cursor.offset(-1,-1,1));
-					smoke |= doesBlockSmokeOpenly(cursor.offset(-1,-1,-1));
-					smoke |= doesBlockSmokeOpenly(cursor.offset(1,-1,1));
-					if(smoke) break;
+					smoke |= doesBlockSmokeOpenly(cursor.offset(1, -1, -1));
+					smoke |= doesBlockSmokeOpenly(cursor.offset(-1, -1, 1));
+					smoke |= doesBlockSmokeOpenly(cursor.offset(-1, -1, -1));
+					smoke |= doesBlockSmokeOpenly(cursor.offset(1, -1, 1));
+					if (smoke) break;
 				}
 			}
-			
-			if(smoke) {
+
+			if (smoke) {
 				doSmoke();
 			}
-			
+
 		}
 	}
 

@@ -510,7 +510,7 @@ public class mod_PClogic extends PC_Module {
 
 		map.put("pc.radioRemote.connected", "Portable transmitter connected to channel \"%s\".");
 		map.put("pc.radioRemote.desc", "Channel: %s");
-		
+
 		map.put("pc.weasel.disk.new_label", "disk");
 		map.put("pc.weasel.disk.empty", "Blank Weasel Disk");
 		map.put("pc.weasel.disk.text", "Weasel Text Disk");
@@ -795,7 +795,7 @@ public class mod_PClogic extends PC_Module {
 		
 
 		ModLoader.addRecipe(
-				new ItemStack(weaselDisk, 4, 0),
+				new ItemStack(weaselDisk, 4, 0xFFF),
 				new Object[] { " C ", "CIC"," C ",
 					'C', Item.coal, 'I', Item.ingotIron });
 		
@@ -816,7 +816,7 @@ public class mod_PClogic extends PC_Module {
 					});
 		
 		ModLoader.addRecipe(
-				new ItemStack(weaselDevice, 1, PClo_WeaselType.DISK_DRIVE),
+				new ItemStack(weaselDevice, 1, PClo_WeaselType.TERMINAL),
 				new Object[] { "  D", "BBS", "SSS",
 					'B', Block.button,
 					'S', new ItemStack(Block.stairSingle,1,0),

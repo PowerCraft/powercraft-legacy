@@ -48,7 +48,7 @@ public class PClo_WeaselPluginPort extends PClo_WeaselPlugin {
 	public int getType() {
 		return PClo_WeaselType.PORT;
 	}
-	
+
 	@Override
 	public boolean onClick(EntityPlayer player) {
 		PC_Utils.openGres(player, new PClo_GuiWeaselPort(this));
@@ -57,7 +57,7 @@ public class PClo_WeaselPluginPort extends PClo_WeaselPlugin {
 
 	@Override
 	public boolean updateTick() {
-		if(isChanged) {
+		if (isChanged) {
 			isChanged = false;
 			return true;
 		}
@@ -67,7 +67,8 @@ public class PClo_WeaselPluginPort extends PClo_WeaselPlugin {
 	@Override
 	public void onRedstoneSignalChanged() {
 		isChanged = true;
-		if (getNetwork() != null) if (getNetwork().getMember("CORE") != null) ((PClo_WeaselPlugin) getNetwork().getMember("CORE")).callFunctionExternalDelegated("update");
+		if (getNetwork() != null)
+			if (getNetwork().getMember("CORE") != null) ((PClo_WeaselPlugin) getNetwork().getMember("CORE")).callFunctionExternalDelegated("update");
 	}
 
 	@Override
@@ -79,7 +80,7 @@ public class PClo_WeaselPluginPort extends PClo_WeaselPlugin {
 	public boolean hasError() {
 		return false;
 	}
-	
+
 	/** rgb color shown on white lights. */
 	public int rgbcolor = 0xffffff;
 
@@ -113,28 +114,28 @@ public class PClo_WeaselPluginPort extends PClo_WeaselPlugin {
 			restartDevice();
 		} else if (functionName.equals(getName() + ".on")) {
 			isChanged = true;
-			if(args.length == 0) {
+			if (args.length == 0) {
 				setOutport("F", true);
-			}else {
-				for(WeaselObject o:args) {
+			} else {
+				for (WeaselObject o : args) {
 					setOutport((String) o.get(), true);
 				}
 			}
 		} else if (functionName.equals(getName() + ".off")) {
 			isChanged = true;
-			if(args.length == 0) {
+			if (args.length == 0) {
 				setOutport("F", false);
-			}else {
-				for(WeaselObject o:args) {
+			} else {
+				for (WeaselObject o : args) {
 					setOutport((String) o.get(), false);
 				}
 			}
 		} else if (functionName.equals(getName() + ".switch") || functionName.equals(getName() + ".toggle")) {
 			isChanged = true;
-			if(args.length == 0) {
+			if (args.length == 0) {
 				setOutport("F", !getOutport("F"));
-			}else {
-				for(WeaselObject o:args) {
+			} else {
+				for (WeaselObject o : args) {
 					setOutport((String) o.get(), !getOutport((String) o.get()));
 				}
 			}
@@ -144,7 +145,7 @@ public class PClo_WeaselPluginPort extends PClo_WeaselPlugin {
 
 	@Override
 	public WeaselObject getVariable(String name) {
-		if (name.equals(getName()+".rgb")||name.equals(getName()+".color")) return new WeaselInteger(rgbcolor);
+		if (name.equals(getName() + ".rgb") || name.equals(getName() + ".color")) return new WeaselInteger(rgbcolor);
 		if (name.equals(getName())) return new WeaselBoolean(getInport("F"));
 		if (name.startsWith(getName() + ".") && name.length() == getName().length() + 2) {
 			String port = name.substring(name.length() - 1);
@@ -156,7 +157,7 @@ public class PClo_WeaselPluginPort extends PClo_WeaselPlugin {
 	@Override
 	public void setVariable(String name, Object object) {
 		isChanged = true;
-		if (name.equals(getName()+".color")||name.equals(getName()+".rgb")) {
+		if (name.equals(getName() + ".color") || name.equals(getName() + ".rgb")) {
 			if (object instanceof WeaselInteger || object instanceof Number) {
 				rgbcolor = Calc.toInteger(object);
 			} else {
@@ -167,8 +168,7 @@ public class PClo_WeaselPluginPort extends PClo_WeaselPlugin {
 					rgbcolor = clr;
 				}
 			}
-		}else
-		if (name.equals(getName())) {
+		} else if (name.equals(getName())) {
 			boolean state = Calc.toBoolean(object);
 			setOutport("F", state);
 			setOutport("B", state);
@@ -241,7 +241,7 @@ public class PClo_WeaselPluginPort extends PClo_WeaselPlugin {
 	@Override
 	public void restartDevice() {
 		resetOutport();
-		rgbcolor=0xffffff;
+		rgbcolor = 0xffffff;
 	}
 
 	@Override
@@ -249,10 +249,10 @@ public class PClo_WeaselPluginPort extends PClo_WeaselPlugin {
 
 	@Override
 	public void onRandomDisplayTick(Random random) {}
-	
+
 	@Override
 	public float[] getBounds() {
-		return new float[] {0,0,0,1,0.25F,1};
+		return new float[] { 0, 0, 0, 1, 0.25F, 1 };
 	}
 
 }

@@ -19,7 +19,7 @@ public class PClo_TileEntityRadio extends PC_TileEntity implements IRadioDevice 
 	/** Device active flag */
 	public boolean active = false;
 	/** Dimension of the device (nether, world, end) */
-	public int dim = 0;	
+	public int dim = 0;
 	/** Hide the label */
 	public boolean hideLabel = false;
 	/** Render a smaller model */

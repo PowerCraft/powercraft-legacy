@@ -11,6 +11,7 @@ import net.minecraft.src.PC_GresWidget.PC_GresAlign;
  */
 public class PClo_GuiWeaselCoreProgramBig extends PClo_GuiWeaselCoreProgram {
 
+	@SuppressWarnings("unused")
 	private PC_GresWidget btnBack;
 
 	/**

@@ -62,24 +62,28 @@ public class PCtr_TileEntityRedirectionBelt extends PCtr_TileEntityRedirectionBe
 		if (redir == 0) { // not powered
 			switch (meta) {
 				case 0: // '\0' Z--
-					if (PCtr_BeltBase.isTransporterAt(worldObj, pos.offset(1, 0, 0)) && PCtr_BeltBase.isTransporterAt(worldObj, pos.offset(-1, 0, 0)) && !PCtr_BeltBase.isTransporterAt(worldObj, pos.offset(0, 0, -1))) {
+					if (PCtr_BeltBase.isTransporterAt(worldObj, pos.offset(1, 0, 0)) && PCtr_BeltBase.isTransporterAt(worldObj, pos.offset(-1, 0, 0))
+							&& !PCtr_BeltBase.isTransporterAt(worldObj, pos.offset(0, 0, -1))) {
 						redir = 1;
 					}
 					break;
 				case 1: // '\001' X++
-					if (PCtr_BeltBase.isTransporterAt(worldObj, pos.offset(0, 0, 1)) && PCtr_BeltBase.isTransporterAt(worldObj, pos.offset(0, 0, -1)) && !PCtr_BeltBase.isTransporterAt(worldObj, pos.offset(1, 0, 0))) {
+					if (PCtr_BeltBase.isTransporterAt(worldObj, pos.offset(0, 0, 1)) && PCtr_BeltBase.isTransporterAt(worldObj, pos.offset(0, 0, -1))
+							&& !PCtr_BeltBase.isTransporterAt(worldObj, pos.offset(1, 0, 0))) {
 						redir = 1;
 					}
 					break;
 
 				case 2: // '\0' Z++
-					if (PCtr_BeltBase.isTransporterAt(worldObj, pos.offset(-1, 0, 0)) && PCtr_BeltBase.isTransporterAt(worldObj, pos.offset(1, 0, 0)) && !PCtr_BeltBase.isTransporterAt(worldObj, pos.offset(0, 0, 1))) {
+					if (PCtr_BeltBase.isTransporterAt(worldObj, pos.offset(-1, 0, 0)) && PCtr_BeltBase.isTransporterAt(worldObj, pos.offset(1, 0, 0))
+							&& !PCtr_BeltBase.isTransporterAt(worldObj, pos.offset(0, 0, 1))) {
 						redir = 1;
 					}
 					break;
 
 				case 3: // '\001' X--
-					if (PCtr_BeltBase.isTransporterAt(worldObj, pos.offset(0, 0, -1)) && PCtr_BeltBase.isTransporterAt(worldObj, pos.offset(0, 0, 1)) && !PCtr_BeltBase.isTransporterAt(worldObj, pos.offset(-1, 0, 0))) {
+					if (PCtr_BeltBase.isTransporterAt(worldObj, pos.offset(0, 0, -1)) && PCtr_BeltBase.isTransporterAt(worldObj, pos.offset(0, 0, 1))
+							&& !PCtr_BeltBase.isTransporterAt(worldObj, pos.offset(-1, 0, 0))) {
 						redir = 1;
 					}
 					break;

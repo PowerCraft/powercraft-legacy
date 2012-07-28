@@ -52,8 +52,8 @@ public class PClo_TileEntityWeasel extends PC_TileEntity {
 		}
 
 		if (plugin != null) {
-			if(plugin.update()) {
-				worldObj.getChunkFromBlockCoords(xCoord,zCoord).setChunkModified();
+			if (plugin.update()) {
+				worldObj.getChunkFromBlockCoords(xCoord, zCoord).setChunkModified();
 			}
 		}
 	}

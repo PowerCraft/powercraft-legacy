@@ -41,8 +41,8 @@ public class PClo_WeaselPluginDisplay extends PClo_WeaselPlugin {
 	public PClo_WeaselPluginDisplay(PClo_TileEntityWeasel tew) {
 		super(tew);
 	}
-	
-	
+
+
 	@Override
 	public boolean onClick(EntityPlayer player) {
 		PC_Utils.openGres(player, new PClo_GuiWeaselDisplay(this));
@@ -57,18 +57,18 @@ public class PClo_WeaselPluginDisplay extends PClo_WeaselPlugin {
 	@Override
 	public WeaselObject callProvidedFunction(WeaselEngine engine, String functionName, WeaselObject[] args) {
 		isChanged = true;
-		if (functionName.equals(getName()+".reset") || functionName.equals(getName()+".restart")) restartDevice();
-		if (functionName.equals(getName()+".cls") || functionName.equals(getName()+".clear")) text="";
-		if (functionName.equals(getName()+".matrix") || functionName.equals(getName()+".grain")) {
+		if (functionName.equals(getName() + ".reset") || functionName.equals(getName() + ".restart")) restartDevice();
+		if (functionName.equals(getName() + ".cls") || functionName.equals(getName() + ".clear")) text = "";
+		if (functionName.equals(getName() + ".matrix") || functionName.equals(getName() + ".grain")) {
 			text = "§knnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnn";
 			text += "nnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnn";
-			
-			
-			bgcolor=0x000000;
-			color=0x00ff00;			
+
+
+			bgcolor = 0x000000;
+			color = 0x00ff00;
 		}
-		if (functionName.equals(getName()+".print")) text += Calc.toString(args[0])+"\n";
-		if (functionName.equals(getName()+".add") || functionName.equals(getName()+".append")) text += Calc.toString(args[0]);
+		if (functionName.equals(getName() + ".print")) text += Calc.toString(args[0]) + "\n";
+		if (functionName.equals(getName() + ".add") || functionName.equals(getName() + ".append")) text += Calc.toString(args[0]);
 		return null;
 	}
 
@@ -93,7 +93,7 @@ public class PClo_WeaselPluginDisplay extends PClo_WeaselPlugin {
 			return;
 		}
 
-		if (name.equals(getName() + ".color")||name.equals(getName() + ".fg")) {
+		if (name.equals(getName() + ".color") || name.equals(getName() + ".fg")) {
 			if (object instanceof WeaselInteger || object instanceof Number) {
 				color = Calc.toInteger(object);
 			} else {
@@ -139,7 +139,8 @@ public class PClo_WeaselPluginDisplay extends PClo_WeaselPlugin {
 				String al = Calc.toString(object);
 				if (al.equalsIgnoreCase("L") || al.equalsIgnoreCase("left")) {
 					align = -1;
-				} else if (al.equalsIgnoreCase("C") || al.equalsIgnoreCase("M") || al.equalsIgnoreCase("center") || al.equalsIgnoreCase("centre") || al.equalsIgnoreCase("middle")) {
+				} else if (al.equalsIgnoreCase("C") || al.equalsIgnoreCase("M") || al.equalsIgnoreCase("center") || al.equalsIgnoreCase("centre")
+						|| al.equalsIgnoreCase("middle")) {
 					align = 0;
 				} else if (al.equalsIgnoreCase("R") || al.equalsIgnoreCase("right")) {
 					align = 1;
@@ -189,7 +190,7 @@ public class PClo_WeaselPluginDisplay extends PClo_WeaselPlugin {
 
 	@Override
 	protected boolean updateTick() {
-		if(isChanged) {
+		if (isChanged) {
 			isChanged = false;
 			return true;
 		}
@@ -258,7 +259,7 @@ public class PClo_WeaselPluginDisplay extends PClo_WeaselPlugin {
 		align = 0;
 		notifyBlockChange();
 	}
-	
+
 	@Override
 	public void onBlockPlaced(EntityLiving entityliving) {
 		rotation = MathHelper.floor_double(((entityliving.rotationYaw + 180F) * 16F) / 360F + 0.5D) & 0xf;
@@ -267,11 +268,11 @@ public class PClo_WeaselPluginDisplay extends PClo_WeaselPlugin {
 
 	@Override
 	public void onRandomDisplayTick(Random random) {}
-	
-	
+
+
 	@Override
 	public float[] getBounds() {
-		return new float[] {0,0,0,1,1,1};
+		return new float[] { 0, 0, 0, 1, 1, 1 };
 	}
 
 }

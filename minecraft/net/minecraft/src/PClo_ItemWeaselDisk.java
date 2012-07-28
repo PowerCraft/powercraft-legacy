@@ -8,7 +8,6 @@ import weasel.Calc;
 import weasel.exception.WeaselRuntimeException;
 import weasel.obj.WeaselInteger;
 import weasel.obj.WeaselObject;
-import weasel.obj.WeaselVariableMap;
 
 
 /**
@@ -19,6 +18,7 @@ import weasel.obj.WeaselVariableMap;
  */
 public class PClo_ItemWeaselDisk extends Item {
 
+	@SuppressWarnings("javadoc")
 	public static final int EMPTY = 0, TEXT = 1, IMAGE = 2, NUMBERLIST = 3, STRINGLIST = 4;
 
 	/** bg texture */
@@ -41,6 +41,12 @@ public class PClo_ItemWeaselDisk extends Item {
 		checkTag(itemstack);
 	}
 
+	/**
+	 * Get type label for display, localized.
+	 * 
+	 * @param itemstack disk
+	 * @return label
+	 */
 	public static String getTypeVerbose(ItemStack itemstack) {
 		checkTag(itemstack);
 		switch (itemstack.getTagCompound().getInteger("Type")) {
@@ -100,7 +106,7 @@ public class PClo_ItemWeaselDisk extends Item {
 				return;
 
 			case TEXT:
-				tag.setString("Text", "");				
+				tag.setString("Text", "");
 				return;
 
 			case IMAGE:
@@ -123,10 +129,10 @@ public class PClo_ItemWeaselDisk extends Item {
 	}
 
 	/**
-	 * Get text
+	 * Get image disk size
 	 * 
-	 * @param itemstack
-	 * @return text
+	 * @param itemstack image disk
+	 * @return size
 	 */
 	public static PC_CoordI getImageSize(ItemStack itemstack) {
 		checkTag(itemstack);
@@ -135,10 +141,10 @@ public class PClo_ItemWeaselDisk extends Item {
 	}
 
 	/**
-	 * Get text
+	 * Set image disk size
 	 * 
-	 * @param itemstack
-	 * @return text
+	 * @param itemstack image disk
+	 * @param size size to set
 	 */
 	public static void setImageSize(ItemStack itemstack, PC_CoordI size) {
 		checkTag(itemstack);
@@ -147,6 +153,13 @@ public class PClo_ItemWeaselDisk extends Item {
 		itemstack.getTagCompound().setCompoundTag("Size", new PC_CoordI(size.x, size.y).writeToNBT(new NBTTagCompound()));
 	}
 
+	/**
+	 * Get image color at coord
+	 * 
+	 * @param itemstack image disk
+	 * @param pos coord
+	 * @return color hex rgb
+	 */
 	public static int getImageColorAt(ItemStack itemstack, PC_CoordI pos) {
 		checkTag(itemstack);
 		if (getType(itemstack) != IMAGE) throw new WeaselRuntimeException("Image function called on " + getTypeVerbose(itemstack) + " disk.");
@@ -159,6 +172,13 @@ public class PClo_ItemWeaselDisk extends Item {
 		return data.getInteger("p" + pos.x + "_" + pos.y);
 	}
 
+	/**
+	 * Set color of pixel at coord
+	 * 
+	 * @param itemstack image disk
+	 * @param pos coord
+	 * @param color color to set
+	 */
 	public static void setImageColorAt(ItemStack itemstack, PC_CoordI pos, int color) {
 		checkTag(itemstack);
 		if (getType(itemstack) != IMAGE) throw new WeaselRuntimeException("Image function called on " + getTypeVerbose(itemstack) + " disk.");
@@ -171,6 +191,12 @@ public class PClo_ItemWeaselDisk extends Item {
 		data.setInteger("p" + pos.x + "_" + pos.y, color);
 	}
 
+	/**
+	 * Set image array
+	 * 
+	 * @param itemstack image disk
+	 * @param data data to set - array of rgb ints or -1
+	 */
 	public static void setImageData(ItemStack itemstack, int[][] data) {
 		checkTag(itemstack);
 		if (getType(itemstack) != IMAGE) throw new WeaselRuntimeException("Image function called on " + getTypeVerbose(itemstack) + " disk.");
@@ -187,6 +213,12 @@ public class PClo_ItemWeaselDisk extends Item {
 		tag.setCompoundTag("Data", dataTag);
 	}
 
+	/**
+	 * Get image array
+	 * 
+	 * @param itemstack image disk
+	 * @return array of rgb ints or -1
+	 */
 	public static int[][] getImageData(ItemStack itemstack) {
 		checkTag(itemstack);
 		if (getType(itemstack) != IMAGE) throw new WeaselRuntimeException("Image function called on " + getTypeVerbose(itemstack) + " disk.");
@@ -215,7 +247,8 @@ public class PClo_ItemWeaselDisk extends Item {
 	 */
 	public static String getText(ItemStack itemstack) {
 		checkTag(itemstack);
-		if (itemstack.getTagCompound().getInteger("Type") != TEXT) throw new WeaselRuntimeException("Text function called on " + getTypeVerbose(itemstack) + " disk.");
+		if (itemstack.getTagCompound().getInteger("Type") != TEXT)
+			throw new WeaselRuntimeException("Text function called on " + getTypeVerbose(itemstack) + " disk.");
 		return itemstack.getTagCompound().getString("Text");
 	}
 
@@ -245,24 +278,41 @@ public class PClo_ItemWeaselDisk extends Item {
 	private static String[] getListEntries(ItemStack itemstack) {
 		checkTag(itemstack);
 		int type = getType(itemstack);
-		if (type != NUMBERLIST && type != STRINGLIST) throw new WeaselRuntimeException("List function called on " + getTypeVerbose(itemstack) + " disk.");
+		if (type != NUMBERLIST && type != STRINGLIST)
+			throw new WeaselRuntimeException("List function called on " + getTypeVerbose(itemstack) + " disk.");
 		return itemstack.getTagCompound().getString("ListData").split(Pattern.quote(itemstack.getTagCompound().getString("ListDelimiter")));
 	}
 
+	/**
+	 * Get length of a list on disk
+	 * 
+	 * @param itemstack list disk
+	 * @return length
+	 */
 	public static int getListLength(ItemStack itemstack) {
 		checkTag(itemstack);
 		int type = getType(itemstack);
-		if (type != NUMBERLIST && type != STRINGLIST) throw new WeaselRuntimeException("List function called on " + getTypeVerbose(itemstack) + " disk.");
+		if (type != NUMBERLIST && type != STRINGLIST)
+			throw new WeaselRuntimeException("List function called on " + getTypeVerbose(itemstack) + " disk.");
 		return getListEntries(itemstack).length;
 	}
 
+	/**
+	 * Get list entry at index 0 based
+	 * 
+	 * @param itemstack list disk
+	 * @param entry entry index
+	 * @return entry value converted to string or integer
+	 */
 	public static WeaselObject getListEntry(ItemStack itemstack, int entry) {
 		checkTag(itemstack);
 		int type = getType(itemstack);
-		if (type != NUMBERLIST && type != STRINGLIST) throw new WeaselRuntimeException("List function called on " + getTypeVerbose(itemstack) + " disk.");
+		if (type != NUMBERLIST && type != STRINGLIST)
+			throw new WeaselRuntimeException("List function called on " + getTypeVerbose(itemstack) + " disk.");
 
 		int size = getListLength(itemstack);
-		if (entry < 0 || entry >= size) throw new WeaselRuntimeException("Disk: getListEntry called with invalid index " + entry + " (length " + size + ").");
+		if (entry < 0 || entry >= size)
+			throw new WeaselRuntimeException("Disk: getListEntry called with invalid index " + entry + " (length " + size + ").");
 
 		String str = getListEntries(itemstack)[entry];
 		if (getType(itemstack) == NUMBERLIST) {
@@ -284,7 +334,8 @@ public class PClo_ItemWeaselDisk extends Item {
 	public static String getListText(ItemStack itemstack) {
 		checkTag(itemstack);
 		int type = getType(itemstack);
-		if (type != NUMBERLIST && type != STRINGLIST) throw new WeaselRuntimeException("List function called on " + getTypeVerbose(itemstack) + " disk.");
+		if (type != NUMBERLIST && type != STRINGLIST)
+			throw new WeaselRuntimeException("List function called on " + getTypeVerbose(itemstack) + " disk.");
 		return itemstack.getTagCompound().getString("ListData");
 	}
 
@@ -297,7 +348,8 @@ public class PClo_ItemWeaselDisk extends Item {
 	public static String getListDelimiter(ItemStack itemstack) {
 		checkTag(itemstack);
 		int type = getType(itemstack);
-		if (type != NUMBERLIST && type != STRINGLIST) throw new WeaselRuntimeException("List function called on " + getTypeVerbose(itemstack) + " disk.");
+		if (type != NUMBERLIST && type != STRINGLIST)
+			throw new WeaselRuntimeException("List function called on " + getTypeVerbose(itemstack) + " disk.");
 		return itemstack.getTagCompound().getString("ListDelimiter");
 	}
 
@@ -311,21 +363,39 @@ public class PClo_ItemWeaselDisk extends Item {
 	public static void setListText(ItemStack itemstack, String listtext, String delimiter) {
 		checkTag(itemstack);
 		int type = getType(itemstack);
-		if (type != NUMBERLIST && type != STRINGLIST) throw new WeaselRuntimeException("List function called on " + getTypeVerbose(itemstack) + " disk.");
+		if (type != NUMBERLIST && type != STRINGLIST)
+			throw new WeaselRuntimeException("List function called on " + getTypeVerbose(itemstack) + " disk.");
 		itemstack.getTagCompound().setString("ListData", listtext);
 		itemstack.getTagCompound().setString("ListDelimiter", delimiter);
 	}
 
+	/**
+	 * Get disk type
+	 * 
+	 * @param itemstack
+	 * @return type index
+	 */
 	public static int getType(ItemStack itemstack) {
 		checkTag(itemstack);
 		return itemstack.getTagCompound().getInteger("Type");
 	}
 
+	/**
+	 * Set disk type (does not format)
+	 * 
+	 * @param itemstack disk
+	 * @param type type index
+	 */
 	public static void setType(ItemStack itemstack, int type) {
 		checkTag(itemstack);
 		itemstack.getTagCompound().setInteger("Type", type);
 	}
 
+	/**
+	 * Check tag, create if missing
+	 * 
+	 * @param stack disk stack
+	 */
 	public static void checkTag(ItemStack stack) {
 		if (stack.hasTagCompound()) {
 			if (!stack.getTagCompound().hasKey("Type")) {
@@ -436,7 +506,7 @@ public class PClo_ItemWeaselDisk extends Item {
 		int color = hex & 0xF0F0F0;
 		int r = color >> 20 & 0xF;
 		int g = color >> 12 & 0xF;
-		int b = color>>4 & 0xF;
+		int b = color >> 4 & 0xF;
 		return r << 8 | g << 4 | b;
 	}
 

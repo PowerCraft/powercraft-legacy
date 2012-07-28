@@ -77,7 +77,8 @@ public class PCco_GuiCraftingTool implements PC_IGresBase {
 		trashInventory = new PC_GresInventoryBigSlot(new PC_SlotTrash());
 		vg.add(new PC_GresLabel(PC_Lang.tr("pc.gui.craftingTool.trashTitle")).setWidgetMargin(1));
 		vg.add(trashInventory.setWidgetMargin(1));
-		vg.add(buttonTrashAll = (PC_GresButton) new PC_GresButton(PC_Lang.tr("pc.gui.craftingTool.trashAll")).setButtonPadding(3, 3).setMinWidth(30).setWidgetMargin(1));
+		vg.add(buttonTrashAll = (PC_GresButton) new PC_GresButton(PC_Lang.tr("pc.gui.craftingTool.trashAll")).setButtonPadding(3, 3).setMinWidth(30)
+				.setWidgetMargin(1));
 		hg.add(vg);
 
 		hg.add(playerInventory = new PC_GresInventoryPlayer(false));
@@ -199,7 +200,8 @@ public class PCco_GuiCraftingTool implements PC_IGresBase {
 
 					if (lowest == null
 							|| (checked.itemID == mod_PCcore.craftingTool.shiftedIndex && lowest.itemID != mod_PCcore.craftingTool.shiftedIndex)
-							|| ((lowest.itemID * 32000 * 64 + lowest.getItemDamage() * 64 + lowest.stackSize) > (checked.itemID * 32000 * 64 + checked.getItemDamage() * 64 + checked.stackSize) && lowest.itemID != mod_PCcore.craftingTool.shiftedIndex)) {
+							|| ((lowest.itemID * 32000 * 64 + lowest.getItemDamage() * 64 + lowest.stackSize) > (checked.itemID * 32000 * 64
+									+ checked.getItemDamage() * 64 + checked.stackSize) && lowest.itemID != mod_PCcore.craftingTool.shiftedIndex)) {
 						lowest = checked;
 						indexLowest = i;
 					}

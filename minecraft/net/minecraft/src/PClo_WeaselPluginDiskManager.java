@@ -5,12 +5,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-import weasel.Calc;
 import weasel.WeaselEngine;
-import weasel.exception.WeaselRuntimeException;
-import weasel.obj.WeaselInteger;
 import weasel.obj.WeaselObject;
-import weasel.obj.WeaselString;
 
 
 /**
@@ -26,8 +22,8 @@ public class PClo_WeaselPluginDiskManager extends PClo_WeaselPlugin {
 	public PClo_WeaselPluginDiskManager(PClo_TileEntityWeasel tew) {
 		super(tew);
 	}
-	
-	
+
+
 	@Override
 	public boolean onClick(EntityPlayer player) {
 		PC_Utils.openGres(player, new PClo_GuiWeaselDiskManager());
@@ -50,8 +46,7 @@ public class PClo_WeaselPluginDiskManager extends PClo_WeaselPlugin {
 	}
 
 	@Override
-	public void setVariable(String name, Object object) {
-	}
+	public void setVariable(String name, Object object) {}
 
 	@Override
 	public List<String> getProvidedFunctionNames() {
@@ -71,7 +66,9 @@ public class PClo_WeaselPluginDiskManager extends PClo_WeaselPlugin {
 	}
 
 	@Override
-	protected boolean updateTick() {return false;}
+	protected boolean updateTick() {
+		return false;
+	}
 
 	@Override
 	public void onRedstoneSignalChanged() {}
@@ -119,17 +116,17 @@ public class PClo_WeaselPluginDiskManager extends PClo_WeaselPlugin {
 
 	@Override
 	public void restartDevice() {}
-	
+
 	@Override
 	public void onBlockPlaced(EntityLiving entityliving) {}
 
 
 	@Override
 	public void onRandomDisplayTick(Random random) {}
-	
-	
+
+
 	@Override
 	public float[] getBounds() {
-		return new float[] {0,0,0,1,1-2*0.0625F,1};
+		return new float[] { 0, 0, 0, 1, 1 - 2 * 0.0625F, 1 };
 	}
 }

@@ -4,10 +4,11 @@ package net.minecraft.src;
 /**
  * @author MightyPork
  */
-public class PClo_WeaselDiskDriveInventory extends InventoryBasic implements PC_ISpecialAccessInventory{
+public class PClo_WeaselDiskDriveInventory extends InventoryBasic implements PC_ISpecialAccessInventory {
 
 	/**
 	 * inventory selective for disks
+	 * 
 	 * @param name
 	 * @param slots
 	 */
@@ -27,7 +28,7 @@ public class PClo_WeaselDiskDriveInventory extends InventoryBasic implements PC_
 
 	@Override
 	public boolean canPlayerInsertStackTo(int slot, ItemStack stack) {
-		if(stack == null) return false;
+		if (stack == null) return false;
 		int disk = mod_PClogic.weaselDisk.shiftedIndex;
 		return stack.getItem().shiftedIndex == disk && PClo_ItemWeaselDisk.getType(stack) != PClo_ItemWeaselDisk.EMPTY;
 	}

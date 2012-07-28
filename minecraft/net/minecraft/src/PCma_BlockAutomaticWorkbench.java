@@ -14,7 +14,8 @@ import net.minecraft.src.forge.ITextureProvider;
  * @author MightyPork
  * @copy (c) 2012
  */
-public class PCma_BlockAutomaticWorkbench extends BlockContainer implements PC_IBlockType, PC_ISwapTerrain, PC_ISpecialInventoryTextures, ITextureProvider {
+public class PCma_BlockAutomaticWorkbench extends BlockContainer implements PC_IBlockType, PC_ISwapTerrain, PC_ISpecialInventoryTextures,
+		ITextureProvider {
 	private static final int TXDOWN = 109, TXTOP = 154, TXSIDE = 138, TXFRONT = 106, TXBACK = 122;
 
 	@Override
@@ -71,8 +72,7 @@ public class PCma_BlockAutomaticWorkbench extends BlockContainer implements PC_I
 	public void onBlockRemoval(World world, int i, int j, int k) {
 		PCma_TileEntityAutomaticWorkbench tew = (PCma_TileEntityAutomaticWorkbench) world.getBlockTileEntity(i, j, k);
 
-		if (tew != null)		
-		PC_InvUtils.dropInventoryContents(tew, world, tew.getCoord());
+		if (tew != null) PC_InvUtils.dropInventoryContents(tew, world, tew.getCoord());
 
 		super.onBlockRemoval(world, i, j, k);
 	}
@@ -144,7 +144,8 @@ public class PCma_BlockAutomaticWorkbench extends BlockContainer implements PC_I
 	@Override
 	public void onNeighborBlockChange(World world, int i, int j, int k, int l) {
 		if (l > 0 && Block.blocksList[l].canProvidePower()) {
-			boolean flag = world.isBlockIndirectlyGettingPowered(i, j, k) || world.isBlockIndirectlyGettingPowered(i, j + 1, k) || world.isBlockIndirectlyGettingPowered(i, j - 1, k);
+			boolean flag = world.isBlockIndirectlyGettingPowered(i, j, k) || world.isBlockIndirectlyGettingPowered(i, j + 1, k)
+					|| world.isBlockIndirectlyGettingPowered(i, j - 1, k);
 			if (flag) {
 				world.scheduleBlockUpdate(i, j, k, blockID, tickRate());
 			}
@@ -153,7 +154,8 @@ public class PCma_BlockAutomaticWorkbench extends BlockContainer implements PC_I
 
 	@Override
 	public void updateTick(World world, int i, int j, int k, Random random) {
-		if (world.isBlockIndirectlyGettingPowered(i, j, k) || world.isBlockIndirectlyGettingPowered(i, j + 1, k) || world.isBlockIndirectlyGettingPowered(i, j - 1, k)) {
+		if (world.isBlockIndirectlyGettingPowered(i, j, k) || world.isBlockIndirectlyGettingPowered(i, j + 1, k)
+				|| world.isBlockIndirectlyGettingPowered(i, j - 1, k)) {
 			getTE(world, i, j, k).doCrafting();
 		}
 	}

@@ -215,7 +215,8 @@ public class PCma_TileEntityRoaster extends PC_TileEntity implements IInventory,
 	 * Do smelt items above the device.
 	 */
 	public void smeltItems() {
-		List<EntityItem> itemsList = worldObj.getEntitiesWithinAABB(net.minecraft.src.EntityItem.class, AxisAlignedBB.getBoundingBoxFromPool(xCoord, yCoord, zCoord, xCoord + 1, yCoord + 2, zCoord + 1));
+		List<EntityItem> itemsList = worldObj.getEntitiesWithinAABB(net.minecraft.src.EntityItem.class,
+				AxisAlignedBB.getBoundingBoxFromPool(xCoord, yCoord, zCoord, xCoord + 1, yCoord + 2, zCoord + 1));
 
 		nextItem:
 		for (EntityItem entityitem : itemsList) {
@@ -237,7 +238,8 @@ public class PCma_TileEntityRoaster extends PC_TileEntity implements IInventory,
 			if (burnTime >= getItemSmeltTime(entityitem.item)) {
 				// DO smelting.
 				burnTime -= getItemSmeltTime(entityitem.item);
-				EntityItem eitem = new EntityItem(worldObj, entityitem.posX - 0.1F + random.nextFloat() * 0.2F, entityitem.posY, entityitem.posZ - 0.1F + random.nextFloat() * 0.2F, result.copy());
+				EntityItem eitem = new EntityItem(worldObj, entityitem.posX - 0.1F + random.nextFloat() * 0.2F, entityitem.posY, entityitem.posZ
+						- 0.1F + random.nextFloat() * 0.2F, result.copy());
 				eitem.motionX = entityitem.motionX;
 				eitem.motionY = entityitem.motionY;
 				eitem.motionZ = entityitem.motionZ;
@@ -258,7 +260,8 @@ public class PCma_TileEntityRoaster extends PC_TileEntity implements IInventory,
 			return;
 		}
 
-		List<EntityLiving> entities = worldObj.getEntitiesWithinAABB(net.minecraft.src.EntityLiving.class, AxisAlignedBB.getBoundingBoxFromPool(xCoord, yCoord, zCoord, xCoord + 1, yCoord + 2, zCoord + 1));
+		List<EntityLiving> entities = worldObj.getEntitiesWithinAABB(net.minecraft.src.EntityLiving.class,
+				AxisAlignedBB.getBoundingBoxFromPool(xCoord, yCoord, zCoord, xCoord + 1, yCoord + 2, zCoord + 1));
 
 		nextEliving:
 		for (EntityLiving eliving : entities) {

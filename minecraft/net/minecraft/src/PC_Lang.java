@@ -87,7 +87,8 @@ public class PC_Lang {
 			PC_Logger.finest("* loading names from file " + filename + "...");
 			String language = filename.substring(0, filename.indexOf('-'));
 
-			PC_PropertyManager p = new PC_PropertyManager(mod_PCcore.cfgdir + "/lang/" + filename, language + " translation of " + module + " module.");
+			PC_PropertyManager p = new PC_PropertyManager(mod_PCcore.cfgdir + "/lang/" + filename, language + " translation of " + module
+					+ " module.");
 
 			p.cfgSilent(true);
 
@@ -112,8 +113,9 @@ public class PC_Lang {
 	 */
 	public void generateDefaultTranslationFile() {
 
-		PC_PropertyManager p = new PC_PropertyManager(mod_PCcore.cfgdir + "/lang/" + deflang + "-" + module + ".lang", "English (default, immutable) translation of " + module + " module.\n"
-				+ "To add your own translation, copy this file, change language prefix and transtalte the names.");
+		PC_PropertyManager p = new PC_PropertyManager(mod_PCcore.cfgdir + "/lang/" + deflang + "-" + module + ".lang",
+				"English (default, immutable) translation of " + module + " module.\n"
+						+ "To add your own translation, copy this file, change language prefix and transtalte the names.");
 
 		p.cfgSilent(true);
 

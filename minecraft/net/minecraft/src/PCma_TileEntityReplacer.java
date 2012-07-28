@@ -82,7 +82,8 @@ public class PCma_TileEntityReplacer extends PC_TileEntity implements IInventory
 			int a = rand.nextInt(3);
 			int b = rand.nextInt(3);
 
-			ModLoader.getMinecraftInstance().effectRenderer.addEffect(new PC_EntityLaserParticleFX(worldObj, new PC_CoordD(d, d1, d2), aidcolor, new PC_CoordI(), 0));
+			ModLoader.getMinecraftInstance().effectRenderer.addEffect(new PC_EntityLaserParticleFX(worldObj, new PC_CoordD(d, d1, d2), aidcolor,
+					new PC_CoordI(), 0));
 
 			for (int q = 0; q < 8; q++) {
 
@@ -122,7 +123,8 @@ public class PCma_TileEntityReplacer extends PC_TileEntity implements IInventory
 						break;
 				}
 
-				ModLoader.getMinecraftInstance().effectRenderer.addEffect(new PC_EntityLaserParticleFX(worldObj, new PC_CoordD(d, d1, d2), aidcolor, new PC_CoordI(), 0));
+				ModLoader.getMinecraftInstance().effectRenderer.addEffect(new PC_EntityLaserParticleFX(worldObj, new PC_CoordD(d, d1, d2), aidcolor,
+						new PC_CoordI(), 0));
 
 			}
 		}

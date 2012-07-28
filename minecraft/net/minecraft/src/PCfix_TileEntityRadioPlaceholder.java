@@ -31,7 +31,8 @@ public class PCfix_TileEntityRadioPlaceholder extends PC_TileEntity {
 
 			try {
 				Properties props = new Properties();
-				props.load(new FileInputStream((((SaveHandler) worldObj.saveHandler).getSaveDirectory()) + "/radio/" + xCoord + "_" + yCoord + "_" + zCoord));
+				props.load(new FileInputStream((((SaveHandler) worldObj.saveHandler).getSaveDirectory()) + "/radio/" + xCoord + "_" + yCoord + "_"
+						+ zCoord));
 
 				String type_s = (String) props.get("type");
 
@@ -49,7 +50,8 @@ public class PCfix_TileEntityRadioPlaceholder extends PC_TileEntity {
 
 				channel = channel_s;
 
-				PC_Logger.fine("Loaded old radio entry for block at [" + xCoord + "," + yCoord + "," + zCoord + "], channel=" + channel + ", type=" + type);
+				PC_Logger.fine("Loaded old radio entry for block at [" + xCoord + "," + yCoord + "," + zCoord + "], channel=" + channel + ", type="
+						+ type);
 
 
 				Block block = mod_PClogic.radio;
@@ -58,7 +60,8 @@ public class PCfix_TileEntityRadioPlaceholder extends PC_TileEntity {
 
 				if (worldObj.setBlockWithNotify(i, j, k, block.blockID)) {
 					block.onBlockPlaced(worldObj, i, j, k, 0);
-					worldObj.playSoundEffect(i + 0.5F, j + 0.5F, k + 0.5F, block.stepSound.getStepSound(), (block.stepSound.getVolume() + 1.0F) / 2.0F, block.stepSound.getPitch() * 0.8F);
+					worldObj.playSoundEffect(i + 0.5F, j + 0.5F, k + 0.5F, block.stepSound.getStepSound(),
+							(block.stepSound.getVolume() + 1.0F) / 2.0F, block.stepSound.getPitch() * 0.8F);
 
 					// set tile entity
 					PClo_TileEntityRadio ter = (PClo_TileEntityRadio) worldObj.getBlockTileEntity(i, j, k);
