@@ -58,8 +58,9 @@ public abstract class PClo_WeaselPlugin implements PC_INBT, NetworkMember {
 
 	/**
 	 * Handler for tile entity's update tick.
+	 * @return 
 	 */
-	public final void update() {
+	public final boolean update() {
 		if (!isMaster()) {
 			// register to network if not registered yet (eg. after load)
 			if (!registeredToNetwork && networkName != null && !networkName.equals("")) {
@@ -73,13 +74,14 @@ public abstract class PClo_WeaselPlugin implements PC_INBT, NetworkMember {
 				networkName = "";
 			}
 		}
-		updateTick();
+		return updateTick();
 	}
 
 	/**
 	 * update tick for this plugin
+	 * @return 
 	 */
-	protected abstract void updateTick();
+	protected abstract boolean updateTick();
 
 	/** RNG */
 	protected static Random rand = new Random();
@@ -281,8 +283,10 @@ public abstract class PClo_WeaselPlugin implements PC_INBT, NetworkMember {
 				return new PClo_WeaselPluginTouchscreen(tew);
 			case PClo_WeaselType.DISK_MANAGER:
 				return new PClo_WeaselPluginDiskManager(tew);
-//			case PClo_WeaselType.DISK_DRIVE:
-//				return new PClo_WeaselPluginDiskDrive(tew);
+			case PClo_WeaselType.DISK_DRIVE:
+				return new PClo_WeaselPluginDiskDrive(tew);
+			case PClo_WeaselType.TERMINAL:
+				return new PClo_WeaselPluginTerminal(tew);
 		}
 
 		return null;

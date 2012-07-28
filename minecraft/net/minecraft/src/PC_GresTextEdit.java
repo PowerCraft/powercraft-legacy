@@ -371,7 +371,7 @@ public class PC_GresTextEdit extends PC_GresWidget {
 
 		switch (key) {
 			case Keyboard.KEY_RETURN:
-				return true;
+				return false;
 			case Keyboard.KEY_BACK:
 				key_backspace();
 				return true;

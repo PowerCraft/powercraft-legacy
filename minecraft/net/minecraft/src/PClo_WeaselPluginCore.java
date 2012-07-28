@@ -96,12 +96,16 @@ public class PClo_WeaselPluginCore extends PClo_WeaselPlugin implements IWeaselH
 	
 	@Override
 	public boolean onClick(EntityPlayer player) {
-		PC_Utils.openGres(player, new PClo_GuiWeaselCoreProgram(this));
+		if(player.isSneaking()) {
+			PC_Utils.openGres(player, new PClo_GuiWeaselCoreProgramBig(this));
+		}else{
+			PC_Utils.openGres(player, new PClo_GuiWeaselCoreProgram(this));
+		}
 		return true;
 	}
 
 	@Override
-	public void updateTick() {
+	public boolean updateTick() {
 
 		if (!connectedToRadioBus) {
 			getRadioManager().connectToRedstoneBus(this);
@@ -120,7 +124,7 @@ public class PClo_WeaselPluginCore extends PClo_WeaselPlugin implements IWeaselH
 
 		if (initialSleep > 0) {
 			initialSleep--;
-			return;
+			return false;
 		}
 
 
@@ -130,20 +134,21 @@ public class PClo_WeaselPluginCore extends PClo_WeaselPlugin implements IWeaselH
 
 				if (sleepTimer > 0) {
 					sleepTimer--;
-					return;
+					return false;
 				}
 
 				try {
 					initWeaselIfNull();
-					weasel.run(200);
+					weasel.run(400);
 				} catch (WeaselRuntimeException wre) {
 					setError(wre.getMessage());
 				}
+				return true;
 			}
 		}
 
 
-
+		return false;
 	}
 
 	private void setError(String message) {
@@ -160,11 +165,7 @@ public class PClo_WeaselPluginCore extends PClo_WeaselPlugin implements IWeaselH
 
 		try {
 			initWeaselIfNull();
-			if (weasel.callFunctionExternal("update", new Object[] {})) {
-				weasel.run(1500);
-			} else {
-				// update() is missing
-			}
+			weasel.callFunctionExternal("update", new Object[] {});
 
 		} catch (WeaselRuntimeException wre) {
 			weaselError = wre.getMessage();
@@ -644,12 +645,7 @@ public class PClo_WeaselPluginCore extends PClo_WeaselPlugin implements IWeaselH
 		}
 		try {
 			initWeaselIfNull();
-			if (weasel.callFunctionExternal(function, args)) {
-				weasel.run(1500);
-				return weasel.getRetvalExternal();
-			} else {
-				// is missing
-			}
+			weasel.callFunctionExternal(function, args);
 		} catch (WeaselRuntimeException wre) {
 			weaselError = wre.getMessage();
 		}
@@ -669,10 +665,7 @@ public class PClo_WeaselPluginCore extends PClo_WeaselPlugin implements IWeaselH
 	}
 
 	@Override
-	public void onBlockPlaced(EntityLiving entityliving) {
-		// TODO Auto-generated method stub
-		
-	}
+	public void onBlockPlaced(EntityLiving entityliving) {}
 
 	@Override
 	public void onRandomDisplayTick(Random random) {}

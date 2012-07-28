@@ -10,9 +10,9 @@ import net.minecraft.src.PC_GresTextEdit.PC_GresInputType;
 import net.minecraft.src.PC_GresWidget.PC_GresAlign;
 import net.minecraft.src.PClo_NetManager.NetworkMember;
 
-public class PClo_GuiWeaselTouchscreen implements PC_IGresBase {
+public class PClo_GuiWeaselTerminal implements PC_IGresBase {
 
-	private PClo_WeaselPluginTouchscreen touchscreen;
+	private PClo_WeaselPluginTerminal term;
 	private PC_GresWindow w;
 	private PC_GresWidget txError;
 	private PC_GresWidget edName;
@@ -24,8 +24,8 @@ public class PClo_GuiWeaselTouchscreen implements PC_IGresBase {
 	 * 
 	 * @param display plugin instance
 	 */
-	public PClo_GuiWeaselTouchscreen(PClo_WeaselPluginTouchscreen touchscreen) {
-		this.touchscreen = touchscreen;
+	public PClo_GuiWeaselTerminal(PClo_WeaselPluginTerminal device) {
+		this.term = device;
 	}
 
 	@Override
@@ -35,7 +35,8 @@ public class PClo_GuiWeaselTouchscreen implements PC_IGresBase {
 
 	@Override
 	public void initGui(PC_IGresGui gui) {
-		w = new PC_GresWindow(PC_Lang.tr("pc.gui.weasel.touchscreen.title"));
+		
+		w = new PC_GresWindow(PC_Lang.tr("pc.gui.weasel.terminal.title"));
 		w.setAlignH(PC_GresAlign.CENTER);
 		w.setMinWidth(260);
 
@@ -46,14 +47,14 @@ public class PClo_GuiWeaselTouchscreen implements PC_IGresBase {
 
 		hg = new PC_GresLayoutH();
 		hg.add(new PC_GresLabel(PC_Lang.tr("pc.gui.weasel.connectedToNetwork")).setColor(PC_GresWidget.textColorEnabled, colorLabel));
-		hg.add(new PC_GresColor(touchscreen.getNetworkColor()));
-		hg.add(new PC_GresLabel(touchscreen.getNetworkName()).setColor(PC_GresWidget.textColorEnabled, colorValue));
+		hg.add(new PC_GresColor(term.getNetworkColor()));
+		hg.add(new PC_GresLabel(term.getNetworkName()).setColor(PC_GresWidget.textColorEnabled, colorValue));
 		w.add(hg);
 
 
 		hg = new PC_GresLayoutH();
-		hg.add(new PC_GresLabel(PC_Lang.tr("pc.gui.weasel.display.displayName")));
-		hg.add(edName = new PC_GresTextEdit(touchscreen.getName(), 14, PC_GresInputType.IDENTIFIER).setWidgetMargin(2));
+		hg.add(new PC_GresLabel(PC_Lang.tr("pc.gui.weasel.terminal.terminalName")));
+		hg.add(edName = new PC_GresTextEdit(term.getName(), 14, PC_GresInputType.IDENTIFIER).setWidgetMargin(2));
 		w.add(hg);
 
 		w.add(txError = new PC_GresLabel("").setWidgetMargin(2).setColor(PC_GresWidget.textColorEnabled, 0x000000));
@@ -63,7 +64,7 @@ public class PClo_GuiWeaselTouchscreen implements PC_IGresBase {
 		hg.add(btnOk = new PC_GresButton(PC_Lang.tr("pc.gui.weasel.rename")));
 		w.add(hg);
 		w.add(new PC_GresGap(0, 0));
-				
+		
 		gui.add(w);
 		
 		btnOk.enable(false);
@@ -81,7 +82,7 @@ public class PClo_GuiWeaselTouchscreen implements PC_IGresBase {
 			if (name.length() == 0) {
 				txError.text = PC_Lang.tr("pc.gui.weasel.errDeviceNameTooShort");
 				btnOk.enabled = false;
-			} else if (touchscreen.getNetwork() != null && touchscreen.getNetwork().getMembers().get(name) != null) {
+			} else if (term.getNetwork() != null && term.getNetwork().getMembers().get(name) != null) {
 				txError.text = PC_Lang.tr("pc.gui.weasel.errDeviceNameAlreadyUsed", name);
 				btnOk.enabled = false;
 			} else {
@@ -94,7 +95,7 @@ public class PClo_GuiWeaselTouchscreen implements PC_IGresBase {
 
 		if (widget == btnOk) {
 			String name = edName.text.trim();
-			touchscreen.setMemberName(name);
+			term.setMemberName(name);
 			gui.close();
 			return;
 		}

@@ -4,6 +4,7 @@ package net.minecraft.src;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Random;
 
 
 /**
@@ -585,5 +586,53 @@ public class PC_InvUtils {
 
 		outerTag.setTag(invTagName, nbttaglist);
 
+	}
+	
+	/**
+	 * Drop inventory contents as items in world, when block was destroyed. called from onBlockRemoval.
+	 * @param inventory inventory to drop
+	 * @param world the world
+	 * @param pos block position
+	 */
+	public static void dropInventoryContents(IInventory inventory, World world, PC_CoordI pos) {
+		Random random = new Random();
+		if (inventory != null)
+        {
+            for (int i = 0; i < inventory.getSizeInventory(); i++)
+            {
+                ItemStack itemstack = inventory.getStackInSlot(i);
+
+                if (itemstack != null)
+                {
+                    float f = random.nextFloat() * 0.8F + 0.1F;
+                    float f1 = random.nextFloat() * 0.8F + 0.1F;
+                    float f2 = random.nextFloat() * 0.8F + 0.1F;
+
+                    while (itemstack.stackSize > 0)
+                    {
+                        int j = random.nextInt(21) + 10;
+
+                        if (j > itemstack.stackSize)
+                        {
+                            j = itemstack.stackSize;
+                        }
+
+                        itemstack.stackSize -= j;
+                        EntityItem entityitem = new EntityItem(world, pos.x + f, pos.y + f1, pos.z + f2, new ItemStack(itemstack.itemID, j, itemstack.getItemDamage()));
+
+                        if (itemstack.hasTagCompound())
+                        {
+                            entityitem.item.setTagCompound((NBTTagCompound)itemstack.getTagCompound().copy());
+                        }
+
+                        float f3 = 0.05F;
+                        entityitem.motionX = (float)random.nextGaussian() * f3;
+                        entityitem.motionY = (float)random.nextGaussian() * f3 + 0.2F;
+                        entityitem.motionZ = (float)random.nextGaussian() * f3;
+                        world.spawnEntityInWorld(entityitem);
+                    }
+                }
+            }
+        }
 	}
 }

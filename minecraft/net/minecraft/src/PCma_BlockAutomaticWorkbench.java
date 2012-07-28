@@ -70,28 +70,9 @@ public class PCma_BlockAutomaticWorkbench extends BlockContainer implements PC_I
 	@Override
 	public void onBlockRemoval(World world, int i, int j, int k) {
 		PCma_TileEntityAutomaticWorkbench tew = (PCma_TileEntityAutomaticWorkbench) world.getBlockTileEntity(i, j, k);
-		if (tew == null) return;
-		for (int l = 0; l < tew.getSizeInventory(); l++) {
-			ItemStack itemstack = tew.getStackInSlot(l);
-			if (itemstack != null) {
-				float f = world.rand.nextFloat() * 0.8F + 0.1F;
-				float f1 = world.rand.nextFloat() * 0.8F + 0.1F;
-				float f2 = world.rand.nextFloat() * 0.8F + 0.1F;
-				while (itemstack.stackSize > 0) {
-					int i1 = world.rand.nextInt(21) + 10;
-					if (i1 > itemstack.stackSize) {
-						i1 = itemstack.stackSize;
-					}
-					itemstack.stackSize -= i1;
-					EntityItem entityitem = new EntityItem(world, i + f, j + f1, k + f2, new ItemStack(itemstack.itemID, i1, itemstack.getItemDamage()));
-					float f3 = 0.05F;
-					entityitem.motionX = (float) world.rand.nextGaussian() * f3;
-					entityitem.motionY = (float) world.rand.nextGaussian() * f3 + 0.2F;
-					entityitem.motionZ = (float) world.rand.nextGaussian() * f3;
-					world.spawnEntityInWorld(entityitem);
-				}
-			}
-		}
+
+		if (tew != null)		
+		PC_InvUtils.dropInventoryContents(tew, world, tew.getCoord());
 
 		super.onBlockRemoval(world, i, j, k);
 	}

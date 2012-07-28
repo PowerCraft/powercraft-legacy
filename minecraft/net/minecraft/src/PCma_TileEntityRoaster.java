@@ -241,6 +241,7 @@ public class PCma_TileEntityRoaster extends PC_TileEntity implements IInventory,
 				eitem.motionX = entityitem.motionX;
 				eitem.motionY = entityitem.motionY;
 				eitem.motionZ = entityitem.motionZ;
+				eitem.delayBeforeCanPickup = 7;
 				worldObj.spawnEntityInWorld(eitem);
 				if (--entityitem.item.stackSize <= 0) {
 					entityitem.setDead();

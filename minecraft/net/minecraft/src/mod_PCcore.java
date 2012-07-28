@@ -33,6 +33,8 @@ public class mod_PCcore extends PC_Module implements PC_IActivatorListener {
 	
 	/** The english font renderer, huge letters etc. */
 	public static FontRenderer fontRendererDefault = new FontRenderer(PC_Utils.mc().gameSettings, "/font/default.png", PC_Utils.mc().renderEngine, false);
+	/** Small font renderer */
+	public static FontRenderer fontRendererSmall = new FontRenderer(PC_Utils.mc().gameSettings, "/font/default.png", PC_Utils.mc().renderEngine, true);
 
 
 	/**
@@ -51,12 +53,12 @@ public class mod_PCcore extends PC_Module implements PC_IActivatorListener {
 	 * compilation, thus all modules keep their compile-time version and aren't
 	 * affected by current core version. Which is good.
 	 */
-	public static final String VERSION = "3.4.5";
+	public static final String VERSION = "3.4.6";
 
 	/**
 	 * The serial number used to check whether new update is available.
 	 */
-	public static final int VERSION_SERIAL = 4;
+	public static final int VERSION_SERIAL = 5;
 
 
 

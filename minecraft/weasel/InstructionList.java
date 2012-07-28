@@ -230,7 +230,9 @@ public class InstructionList implements PC_INBT {
 
 			return;
 		}
-		throw new WeaselRuntimeException("Function " + functionName + " does not exist.");
+		
+		System.out.println("at "+programCounter);
+		throw new WeaselRuntimeException("Function \"" + functionName + "\" does not exist.");
 
 	}
 
@@ -248,10 +250,10 @@ public class InstructionList implements PC_INBT {
 		boolean wasExternal = ((WeaselBoolean) engine.systemStack.pop()).get();
 
 		if (wasExternal) {
-			engine.externalCallRetval = engine.retval;
+			//engine.externalCallRetval = engine.retval;
 			engine.executingFunctionExternal--;
 			engine.retval = engine.systemStack.pop();
-			engine.requestPause();
+			//engine.requestPause();
 		}
 
 	}
@@ -266,6 +268,7 @@ public class InstructionList implements PC_INBT {
 		if (programCounter >= list.size()) throw new EndOfProgramException();
 		if (programCounter < 0) throw new EndOfProgramException();
 		Instruction instruction = list.get(programCounter++);
+		
 		instruction.execute(engine, this);
 	}
 
@@ -316,6 +319,7 @@ public class InstructionList implements PC_INBT {
 		for (int i = 0; i < tags.tagCount(); i++) {
 			NBTTagCompound tag1 = (NBTTagCompound) tags.tagAt(i);
 			list.set(tag1.getInteger(nk_INDEX), Instruction.loadInstructionFromNBT(tag1));
+			System.out.println("at "+tag1.getInteger(nk_INDEX)+": "+Instruction.loadInstructionFromNBT(tag1));
 		}
 
 		programCounter = tag.getInteger(nk_PC);

@@ -119,6 +119,10 @@ public abstract class Instruction implements PC_INBT {
 				read = new InstructionCall().readFromNBT(tag);
 				break;
 
+			case _CALL:
+				read = new InstructionStringCall().readFromNBT(tag);
+				break;
+
 			case FUNCTION:
 				read = new InstructionFunction().readFromNBT(tag);
 				break;
@@ -180,7 +184,7 @@ public abstract class Instruction implements PC_INBT {
 	@SuppressWarnings("javadoc")
 	protected static enum InstructionType {
 
-		LABEL, GOTO, CALL, FUNCTION, RETURN, ASSIGN, ASSIGN_RETVAL, UNSET, PUSH, POP, IF, END, PAUSE, RESTART;
+		LABEL, GOTO, CALL, _CALL, FUNCTION, RETURN, ASSIGN, ASSIGN_RETVAL, UNSET, PUSH, POP, IF, END, PAUSE, RESTART;
 
 		private static HashMap<String, InstructionType> members = new HashMap<String, InstructionType>();
 

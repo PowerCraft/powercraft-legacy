@@ -196,30 +196,11 @@ public class PCma_BlockBlockBuilder extends BlockContainer implements PC_ISwapTe
 
 	@Override
 	public void onBlockRemoval(World world, int i, int j, int k) {
-		PCma_TileEntityBlockBuilder tileentity = (PCma_TileEntityBlockBuilder) world.getBlockTileEntity(i, j, k);
-		if (tileentity != null) {
-			for (int l = 0; l < tileentity.getSizeInventory(); l++) {
-				ItemStack itemstack = tileentity.getStackInSlot(l);
-				if (itemstack != null) {
-					float f = random.nextFloat() * 0.8F + 0.1F;
-					float f1 = random.nextFloat() * 0.8F + 0.1F;
-					float f2 = random.nextFloat() * 0.8F + 0.1F;
-					while (itemstack.stackSize > 0) {
-						int i1 = random.nextInt(21) + 10;
-						if (i1 > itemstack.stackSize) {
-							i1 = itemstack.stackSize;
-						}
-						itemstack.stackSize -= i1;
-						EntityItem entityitem = new EntityItem(world, i + f, j + f1, k + f2, new ItemStack(itemstack.itemID, i1, itemstack.getItemDamage()));
-						float f3 = 0.05F;
-						entityitem.motionX = (float) random.nextGaussian() * f3;
-						entityitem.motionY = (float) random.nextGaussian() * f3 + 0.2F;
-						entityitem.motionZ = (float) random.nextGaussian() * f3;
-						world.spawnEntityInWorld(entityitem);
-					}
-				}
-			}
-
+		PCma_TileEntityBlockBuilder teb = (PCma_TileEntityBlockBuilder) world.getBlockTileEntity(i, j, k);
+		
+		
+		if (teb != null) {
+			PC_InvUtils.dropInventoryContents(teb, world, teb.getCoord());
 		}
 		super.onBlockRemoval(world, i, j, k);
 	}

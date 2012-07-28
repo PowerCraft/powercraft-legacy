@@ -39,17 +39,20 @@ import weasel.jep.function.Exp;
 import weasel.jep.function.Floor;
 import weasel.jep.function.If;
 import weasel.jep.function.Imaginary;
+import weasel.jep.function.HasNum;
 import weasel.jep.function.Logarithm;
 import weasel.jep.function.LogicalFn;
 import weasel.jep.function.LogicalFn.LogicalFnType;
 import weasel.jep.function.MakeBit;
 import weasel.jep.function.MakeByte;
+import weasel.jep.function.MakeColor;
 import weasel.jep.function.Max;
 import weasel.jep.function.Mean;
 import weasel.jep.function.Min;
 import weasel.jep.function.Modulus;
 import weasel.jep.function.NaturalLogarithm;
 import weasel.jep.function.Num;
+import weasel.jep.function.NumForm;
 import weasel.jep.function.Polar;
 import weasel.jep.function.PostfixMathCommandI;
 import weasel.jep.function.Power;
@@ -64,6 +67,7 @@ import weasel.jep.function.StrFormat;
 import weasel.jep.function.StrFormat.EnumType;
 import weasel.jep.function.StrLen;
 import weasel.jep.function.StringChar;
+import weasel.jep.function.StringCheck;
 import weasel.jep.function.Sum;
 import weasel.jep.function.TanH;
 import weasel.jep.function.Tangent;
@@ -271,16 +275,31 @@ public class JEP {
 
 		// string
 		funTab.put("strlen", new StrLen());
-		funTab.put("strLen", new StrLen());
+		funTab.put("len", new StrLen());
+		funTab.put("tolower", new StrLen());
+		funTab.put("toupper", new StrLen());
 		funTab.put("length", new StrLen());
-		funTab.put("charAt", new StringChar());
 		funTab.put("charat", new StringChar());
 		funTab.put("strchar", new StringChar());
+		funTab.put("starts", new StringCheck(0));
+		funTab.put("startsWith", new StringCheck(0));
+		funTab.put("startswith", new StringCheck(0));
+		funTab.put("ends", new StringCheck(1));
+		funTab.put("endsWith", new StringCheck(1));
+		funTab.put("endswith", new StringCheck(1));
+		funTab.put("contains", new StringCheck(2));
+		funTab.put("matches", new StringCheck(3));
 		funTab.put("toNum", new Num());
 		funTab.put("tonum", new Num());
+		funTab.put("ton", new Num());
 		funTab.put("tonumber", new Num());
 		funTab.put("atoi", new Num());
 		funTab.put("toi", new Num());
+		funTab.put("rgb", new MakeColor(0));
+		funTab.put("hsv", new MakeColor(1));
+		funTab.put("hsvtorgb", new MakeColor(1));
+		funTab.put("hsv2rgb", new MakeColor(1));
+		funTab.put("hsvrgb", new MakeColor(1));
 		funTab.put("toBool", new Bool());
 		funTab.put("tobool", new Bool());
 		funTab.put("atob", new Bool());
@@ -291,13 +310,29 @@ public class JEP {
 		funTab.put("toString", new Str());
 		funTab.put("tostr", new Str());
 		funTab.put("tos", new Str());
-		funTab.put("toString", new Str());
+		funTab.put("num2hex", new NumForm(16));
+		funTab.put("numhex", new NumForm(16));
+		funTab.put("dec2hex", new NumForm(16));
+		funTab.put("dechex", new NumForm(16));
+		funTab.put("hex", new NumForm(16));
+		funTab.put("num2bun", new NumForm(2));
+		funTab.put("numbin", new NumForm(2));
+		funTab.put("dec2bun", new NumForm(2));
+		funTab.put("decbin", new NumForm(2));
+		funTab.put("bin", new NumForm(2));
+		funTab.put("isnum", new HasNum());
 		funTab.put("zerofill", new StrFormat(EnumType.ZEROFILL));
 		funTab.put("cutfirst", new StrFormat(EnumType.CUTFIRST));
 		funTab.put("cutlast", new StrFormat(EnumType.CUTLAST));
+		funTab.put("getfirst", new StrFormat(EnumType.GETFIRST));
+		funTab.put("getlast", new StrFormat(EnumType.GETLAST));
 		funTab.put("zf", new StrFormat(EnumType.ZEROFILL));
 		funTab.put("cf", new StrFormat(EnumType.CUTFIRST));
 		funTab.put("cl", new StrFormat(EnumType.CUTLAST));
+		funTab.put("gf", new StrFormat(EnumType.GETFIRST));
+		funTab.put("gl", new StrFormat(EnumType.GETLAST));
+		funTab.put("first", new StrFormat(EnumType.GETFIRST));
+		funTab.put("last", new StrFormat(EnumType.GETLAST));
 
 		// time
 		funTab.put("hours", new TimeFunc(TimeFuncType.H));
@@ -872,11 +907,11 @@ public class JEP {
 			result = ev.getValue(topNode, symTab);
 		} catch (ParseException e) {
 			if (debug) System.out.println(e);
-			errorList.addElement("Error during evaluation: " + e.getMessage());
+			errorList.addElement(e.getMessage());
 			return null;
 		} catch (RuntimeException e) {
 			if (debug) System.out.println(e);
-			errorList.addElement(e.getClass().getName() + ": " + e.getMessage());
+			errorList.addElement(e.getMessage());
 			return null;
 		}
 		return result;
