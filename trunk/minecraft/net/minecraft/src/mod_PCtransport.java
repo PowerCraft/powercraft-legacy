@@ -209,7 +209,8 @@ public class mod_PCtransport extends PC_Module {
 		if (optHackWater) {
 			// The super dirty way how to get the new, amazing hacked water
 			Block.blocksList[Block.waterStill.blockID] = null;
-			Block.blocksList[Block.waterStill.blockID] = new PCtr_BlockHackedWater(9, Material.water).setHardness(100F).setLightOpacity(3).setBlockName("water").disableStats().setRequiresSelfNotify();
+			Block.blocksList[Block.waterStill.blockID] = new PCtr_BlockHackedWater(9, Material.water).setHardness(100F).setLightOpacity(3)
+					.setBlockName("water").disableStats().setRequiresSelfNotify();
 		}
 
 		list.add(conveyorBelt);
@@ -229,7 +230,8 @@ public class mod_PCtransport extends PC_Module {
 		setBlockItem(itemElevator.blockID, new PCtr_ItemBlockElevator(itemElevator.blockID - 256));
 
 		int armour_index = ModLoader.addArmor("pcslime");
-		slimeboots = new PCtr_ItemStickyBoots(cfg().num(pk_idSlimeBoots), armour_index).setIconIndex(Item.bootsSteel.iconIndex).setItemName("PCtrStickyIronBoots");
+		slimeboots = new PCtr_ItemStickyBoots(cfg().num(pk_idSlimeBoots), armour_index).setIconIndex(Item.bootsSteel.iconIndex).setItemName(
+				"PCtrStickyIronBoots");
 	}
 
 	@Override

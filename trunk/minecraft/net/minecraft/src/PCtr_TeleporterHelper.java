@@ -31,7 +31,8 @@ public class PCtr_TeleporterHelper {
 	}
 
 	private static void loadIfNeeded() {
-		if (listsWorld == null || listSaveDir == null || !listsLoaded || listsWorld != mc.theWorld || !listSaveDir.equals(PCtr_TeleporterEntry.getSaveDir(mc.theWorld))) {
+		if (listsWorld == null || listSaveDir == null || !listsLoaded || listsWorld != mc.theWorld
+				|| !listSaveDir.equals(PCtr_TeleporterEntry.getSaveDir(mc.theWorld))) {
 			PC_Logger.fine("Loading teleporter list...");
 			targets.clear();
 			loadAllLists();

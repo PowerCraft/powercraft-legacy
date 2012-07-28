@@ -30,7 +30,7 @@ public class PC_GresTextEdit extends PC_GresWidget {
 		/** accept unsigned number with dot */
 		UNSIGNED_FLOAT,
 		/** Disable user input */
-		NONE,		
+		NONE,
 		/** [a-zA-Z_][a-zA-Z0-9_] */
 		IDENTIFIER;
 	}
@@ -120,7 +120,8 @@ public class PC_GresTextEdit extends PC_GresWidget {
 				s = mouseSelectEnd;
 			}
 
-			drawRect(offsetPos.x + pos.x + getStringWidth(text.substring(0, s)) + 6, offsetPos.y + pos.y + 4, offsetPos.x + pos.x + getStringWidth(text.substring(0, e)) + 6, offsetPos.y + pos.y + size.y - 5, 0xff3399FF);
+			drawRect(offsetPos.x + pos.x + getStringWidth(text.substring(0, s)) + 6, offsetPos.y + pos.y + 4, offsetPos.x + pos.x
+					+ getStringWidth(text.substring(0, e)) + 6, offsetPos.y + pos.y + size.y - 5, 0xff3399FF);
 
 		}
 
@@ -131,7 +132,8 @@ public class PC_GresTextEdit extends PC_GresWidget {
 				drawString("_", offsetPos.x + pos.x + getStringWidth(text) + 6, offsetPos.y + pos.y + (size.y - 8) / 2);
 			}
 		} else if (hasFocus && (cursorCounter / 6) % 2 == 0) {
-			drawVerticalLine(offsetPos.x + pos.x + getStringWidth(text.substring(0, mouseSelectEnd)) + 5, offsetPos.y + pos.y + 3, offsetPos.y + pos.y + size.y - 5, color[enabled ? textColorEnabled : textColorDisabled]);
+			drawVerticalLine(offsetPos.x + pos.x + getStringWidth(text.substring(0, mouseSelectEnd)) + 5, offsetPos.y + pos.y + 3, offsetPos.y
+					+ pos.y + size.y - 5, color[enabled ? textColorEnabled : textColorDisabled]);
 		}
 
 	}
@@ -475,7 +477,7 @@ public class PC_GresTextEdit extends PC_GresWidget {
 						}
 
 						return false;
-						
+
 					case IDENTIFIER:
 
 						if (Character.isDigit(c)) {
@@ -513,7 +515,7 @@ public class PC_GresTextEdit extends PC_GresWidget {
 
 	@Override
 	public PC_CoordI getMinSize() {
-		if(minSize.x == 0) return new PC_CoordI((maxChars + 1) * 7, getFontRenderer().FONT_HEIGHT + 12);
+		if (minSize.x == 0) return new PC_CoordI((maxChars + 1) * 7, getFontRenderer().FONT_HEIGHT + 12);
 		return minSize.setY(getFontRenderer().FONT_HEIGHT + 12);
 	}
 

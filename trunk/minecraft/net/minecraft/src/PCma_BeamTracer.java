@@ -72,8 +72,9 @@ public class PCma_BeamTracer extends PC_BeamTracerBase {
 	private static final int n = 0;
 
 	/** prism redirection vector for side */
-	private static final PC_CoordI[] prismMove = { new PC_CoordI(0, -1, 0), new PC_CoordI(0, 1, 0), new PC_CoordI(1, 0, 0), new PC_CoordI(1, 0, 1), new PC_CoordI(0, 0, 1), new PC_CoordI(-1, 0, 1), new PC_CoordI(-1, 0, 0), new PC_CoordI(-1, 0, -1),
-			new PC_CoordI(0, 0, -1), new PC_CoordI(1, 0, -1) };
+	private static final PC_CoordI[] prismMove = { new PC_CoordI(0, -1, 0), new PC_CoordI(0, 1, 0), new PC_CoordI(1, 0, 0), new PC_CoordI(1, 0, 1),
+			new PC_CoordI(0, 0, 1), new PC_CoordI(-1, 0, 1), new PC_CoordI(-1, 0, 0), new PC_CoordI(-1, 0, -1), new PC_CoordI(0, 0, -1),
+			new PC_CoordI(1, 0, -1) };
 
 	/**
 	 * get movement vector from prism's side

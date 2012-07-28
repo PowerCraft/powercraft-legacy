@@ -91,7 +91,7 @@ public class PC_GresGui extends GuiContainer implements PC_IGresGui {
 
 	@Override
 	public void initGui() {
-		Keyboard.enableRepeatEvents(true);	
+		Keyboard.enableRepeatEvents(true);
 		super.initGui();
 		child = new PC_GresLayoutV();
 		child.setFontRenderer(fontRenderer);
@@ -109,8 +109,8 @@ public class PC_GresGui extends GuiContainer implements PC_IGresGui {
 
 	@Override
 	protected void keyTyped(char c, int i) {
-		
-		if(i == Keyboard.KEY_F11) {}
+
+		if (i == Keyboard.KEY_F11) {}
 
 		boolean consumed = false;
 
@@ -136,7 +136,7 @@ public class PC_GresGui extends GuiContainer implements PC_IGresGui {
 		super.mouseClicked(x, y, button);
 
 		PC_GresWidget newFocus = child.getWidgetUnderMouse(new PC_CoordI(x, y));
-		if(newFocus!= null && !newFocus.visible) newFocus = null;
+		if (newFocus != null && !newFocus.visible) newFocus = null;
 
 		if (newFocus != lastFocus) {
 			if (lastFocus != null) {
@@ -205,28 +205,24 @@ public class PC_GresGui extends GuiContainer implements PC_IGresGui {
 		drawDefaultBackground();
 		child.updateRenderer(new PC_CoordI(0, 0));
 	}
-	
+
 	private int bgColor1 = 0xa0101010;
 	private int bgColor2 = 0x50101010;
-	
+
 	@Override
 	public void setBackground(int top, int bottom) {
 		bgColor1 = top;
 		bgColor2 = bottom;
 	}
 
-    @Override
-	public void drawWorldBackground(int par1)
-    {
-        if (mc.theWorld != null)
-        {
-            drawGradientRect(0, 0, width, height, bgColor1, bgColor2);
-        }
-        else
-        {
-            drawBackground(par1);
-        }
-    }
+	@Override
+	public void drawWorldBackground(int par1) {
+		if (mc.theWorld != null) {
+			drawGradientRect(0, 0, width, height, bgColor1, bgColor2);
+		} else {
+			drawBackground(par1);
+		}
+	}
 
 
 	/**
@@ -297,7 +293,8 @@ public class PC_GresGui extends GuiContainer implements PC_IGresGui {
 
 			if (slot instanceof PC_SlotNoPickup && ((PC_SlotNoPickup) slot).shownStack != null) itemstack = ((PC_SlotNoPickup) slot).shownStack;
 
-			if (slot instanceof PCco_SlotDirectCrafting && ((PCco_SlotDirectCrafting) slot).product != null) itemstack = ((PCco_SlotDirectCrafting) slot).product;
+			if (slot instanceof PCco_SlotDirectCrafting && ((PCco_SlotDirectCrafting) slot).product != null)
+				itemstack = ((PCco_SlotDirectCrafting) slot).product;
 
 			if (itemstack != null) {
 				@SuppressWarnings("rawtypes")
@@ -342,7 +339,8 @@ public class PC_GresGui extends GuiContainer implements PC_IGresGui {
 						String s = (String) list.get(j4);
 
 						if (j4 == 0) {
-							s = (new StringBuilder()).append("\247").append(Integer.toHexString(itemstack.getRarity().nameColor)).append(s).toString();
+							s = (new StringBuilder()).append("\247").append(Integer.toHexString(itemstack.getRarity().nameColor)).append(s)
+									.toString();
 						} else {
 							s = (new StringBuilder()).append("\2477").append(s).toString();
 						}
@@ -385,7 +383,8 @@ public class PC_GresGui extends GuiContainer implements PC_IGresGui {
 		int j = guiTop;
 		par2 -= i;
 		par3 -= j;
-		return par2 >= par1Slot.xDisplayPosition - 1 && par2 < par1Slot.xDisplayPosition + 16 + 1 && par3 >= par1Slot.yDisplayPosition - 1 && par3 < par1Slot.yDisplayPosition + 16 + 1;
+		return par2 >= par1Slot.xDisplayPosition - 1 && par2 < par1Slot.xDisplayPosition + 16 + 1 && par3 >= par1Slot.yDisplayPosition - 1
+				&& par3 < par1Slot.yDisplayPosition + 16 + 1;
 	}
 
 

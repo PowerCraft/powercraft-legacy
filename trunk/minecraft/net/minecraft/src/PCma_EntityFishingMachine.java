@@ -82,7 +82,8 @@ public class PCma_EntityFishingMachine extends Entity {
 
 	@Override
 	public boolean attackEntityFrom(DamageSource damagesource, int i) {
-		if (damagesource != DamageSource.outOfWorld && (worldObj.isRemote || isDead || (damagesource.getSourceOfDamage() == null && damagesource != DamageSource.explosion))) {
+		if (damagesource != DamageSource.outOfWorld
+				&& (worldObj.isRemote || isDead || (damagesource.getSourceOfDamage() == null && damagesource != DamageSource.explosion))) {
 			return true;
 		}
 		setForwardDirection(-getForwardDirection());

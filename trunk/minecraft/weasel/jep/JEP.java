@@ -274,64 +274,91 @@ public class JEP {
 		funTab.put("range", new Range());
 
 		// string
-		funTab.put("strlen", new StrLen());
-		funTab.put("len", new StrLen());
 		funTab.put("tolower", new StrLen());
 		funTab.put("toupper", new StrLen());
+		
 		funTab.put("length", new StrLen());
+		funTab.put("strlen", new StrLen());
+		funTab.put("len", new StrLen());
+		
 		funTab.put("charat", new StringChar());
 		funTab.put("strchar", new StringChar());
+		
 		funTab.put("starts", new StringCheck(0));
 		funTab.put("startsWith", new StringCheck(0));
 		funTab.put("startswith", new StringCheck(0));
+		
 		funTab.put("ends", new StringCheck(1));
 		funTab.put("endsWith", new StringCheck(1));
 		funTab.put("endswith", new StringCheck(1));
+		
 		funTab.put("contains", new StringCheck(2));
+		
 		funTab.put("matches", new StringCheck(3));
-		funTab.put("toNum", new Num());
-		funTab.put("tonum", new Num());
-		funTab.put("ton", new Num());
-		funTab.put("tonumber", new Num());
-		funTab.put("atoi", new Num());
-		funTab.put("toi", new Num());
+		
 		funTab.put("rgb", new MakeColor(0));
+		
 		funTab.put("hsv", new MakeColor(1));
 		funTab.put("hsvtorgb", new MakeColor(1));
 		funTab.put("hsv2rgb", new MakeColor(1));
 		funTab.put("hsvrgb", new MakeColor(1));
+		
 		funTab.put("toBool", new Bool());
+		funTab.put("toBoolean", new Bool());
+		funTab.put("toboolean", new Bool());
 		funTab.put("tobool", new Bool());
+		funTab.put("toBool", new Bool());
 		funTab.put("atob", new Bool());
 		funTab.put("tob", new Bool());
 		funTab.put("boolean", new Bool());
+		
 		funTab.put("toStr", new Str());
+		funTab.put("tostr", new Str());
 		funTab.put("atos", new Str());
 		funTab.put("toString", new Str());
-		funTab.put("tostr", new Str());
+		funTab.put("tostring", new Str());
 		funTab.put("tos", new Str());
+		
+		funTab.put("toNum", new Num());
+		funTab.put("tonum", new Num());
+		funTab.put("ton", new Num());
+		funTab.put("tonumber", new Num());
+		funTab.put("toNumber", new Num());
+		funTab.put("atoi", new Num());
+		funTab.put("toi", new Num());
+		funTab.put("toInt", new Num());
+		funTab.put("toint", new Num());
+		
 		funTab.put("num2hex", new NumForm(16));
 		funTab.put("numhex", new NumForm(16));
 		funTab.put("dec2hex", new NumForm(16));
-		funTab.put("dechex", new NumForm(16));
+		funTab.put("dechex", new NumForm(16));		
 		funTab.put("hex", new NumForm(16));
+		
 		funTab.put("num2bun", new NumForm(2));
 		funTab.put("numbin", new NumForm(2));
 		funTab.put("dec2bun", new NumForm(2));
 		funTab.put("decbin", new NumForm(2));
 		funTab.put("bin", new NumForm(2));
+		
 		funTab.put("isnum", new HasNum());
+		
 		funTab.put("zerofill", new StrFormat(EnumType.ZEROFILL));
-		funTab.put("cutfirst", new StrFormat(EnumType.CUTFIRST));
-		funTab.put("cutlast", new StrFormat(EnumType.CUTLAST));
-		funTab.put("getfirst", new StrFormat(EnumType.GETFIRST));
-		funTab.put("getlast", new StrFormat(EnumType.GETLAST));
 		funTab.put("zf", new StrFormat(EnumType.ZEROFILL));
+		
+		funTab.put("cutfirst", new StrFormat(EnumType.CUTFIRST));
 		funTab.put("cf", new StrFormat(EnumType.CUTFIRST));
+		
+		funTab.put("cutlast", new StrFormat(EnumType.CUTLAST));
 		funTab.put("cl", new StrFormat(EnumType.CUTLAST));
+		
+		
+		funTab.put("getfirst", new StrFormat(EnumType.GETFIRST));
 		funTab.put("gf", new StrFormat(EnumType.GETFIRST));
-		funTab.put("gl", new StrFormat(EnumType.GETLAST));
 		funTab.put("first", new StrFormat(EnumType.GETFIRST));
+		
+		funTab.put("getlast", new StrFormat(EnumType.GETLAST));
+		funTab.put("gl", new StrFormat(EnumType.GETLAST));		
 		funTab.put("last", new StrFormat(EnumType.GETLAST));
 
 		// time

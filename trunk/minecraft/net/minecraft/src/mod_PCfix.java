@@ -60,7 +60,8 @@ public class mod_PCfix extends PC_Module {
 
 	@Override
 	public void registerTileEntities(List<PC_Struct3<Class<? extends TileEntity>, String, TileEntitySpecialRenderer>> list) {
-		list.add(new PC_Struct3<Class<? extends TileEntity>, String, TileEntitySpecialRenderer>(PCfix_TileEntityRadioPlaceholder.class, "PCfixRadioPlaceholder", null));
+		list.add(new PC_Struct3<Class<? extends TileEntity>, String, TileEntitySpecialRenderer>(PCfix_TileEntityRadioPlaceholder.class,
+				"PCfixRadioPlaceholder", null));
 	}
 
 	@Override

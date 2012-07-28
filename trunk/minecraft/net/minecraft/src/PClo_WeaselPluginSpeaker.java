@@ -27,7 +27,7 @@ public class PClo_WeaselPluginSpeaker extends PClo_WeaselPlugin {
 	public int getType() {
 		return PClo_WeaselType.SPEAKER;
 	}
-	
+
 	@Override
 	public boolean onClick(EntityPlayer player) {
 		PC_Utils.openGres(player, new PClo_GuiWeaselSpeaker(this));
@@ -91,7 +91,8 @@ public class PClo_WeaselPluginSpeaker extends PClo_WeaselPlugin {
 
 			// sound(resource [, volume])
 			if (functionName.equals("sound") || functionName.equals("play")) {
-				world().playSoundEffect(coord().x + 0.5D, coord().y + 0.5D, coord().z + 0.5D, ((String) args[0].get()), volume, (rand.nextFloat() - rand.nextFloat()) * 0.2F + 1.0F);
+				world().playSoundEffect(coord().x + 0.5D, coord().y + 0.5D, coord().z + 0.5D, ((String) args[0].get()), volume,
+						(rand.nextFloat() - rand.nextFloat()) * 0.2F + 1.0F);
 				break;
 			}
 
@@ -120,7 +121,8 @@ public class PClo_WeaselPluginSpeaker extends PClo_WeaselPlugin {
 			}
 
 			// instr(tone [, volume])
-			if (functionName.equals("sticks") || functionName.equals("stick") || functionName.equals("clicks") || functionName.equals("click") || functionName.equals("st") || functionName.equals("cl")) {
+			if (functionName.equals("sticks") || functionName.equals("stick") || functionName.equals("clicks") || functionName.equals("click")
+					|| functionName.equals("st") || functionName.equals("cl")) {
 				if (args.length != 2) volume = 3;
 				return playNote("sticks", ((Integer) args[0].get()), volume);
 			}
@@ -164,7 +166,8 @@ public class PClo_WeaselPluginSpeaker extends PClo_WeaselPlugin {
 			}
 
 			if (direct) {
-				world().playSoundEffect(coord().x + 0.5D, coord().y + 0.5D, coord().z + 0.5D, sound, volume, (rand.nextFloat() - rand.nextFloat()) * 0.2F + 1.0F);
+				world().playSoundEffect(coord().x + 0.5D, coord().y + 0.5D, coord().z + 0.5D, sound, volume,
+						(rand.nextFloat() - rand.nextFloat()) * 0.2F + 1.0F);
 				break;
 			}
 
@@ -172,7 +175,8 @@ public class PClo_WeaselPluginSpeaker extends PClo_WeaselPlugin {
 
 		} while (false);
 
-		world().spawnParticle("note", coord().x + 0.5D, coord().y + 1.2D, coord().z + 0.5D, (functionName.length() * (3 + args.length)) / 24D, 0.0D, 0.0D);
+		world().spawnParticle("note", coord().x + 0.5D, coord().y + 1.2D, coord().z + 0.5D, (functionName.length() * (3 + args.length)) / 24D, 0.0D,
+				0.0D);
 
 		return null;
 	}
@@ -181,13 +185,17 @@ public class PClo_WeaselPluginSpeaker extends PClo_WeaselPlugin {
 		float f = (float) Math.pow(2D, (tone - 12) / 12D);
 		String s = type;
 
-		if (type.equalsIgnoreCase("stone") || type.equalsIgnoreCase("bass drum") || type.equalsIgnoreCase("bassdrum") || type.equalsIgnoreCase("bd") || type.equalsIgnoreCase("drum")) {
+		if (type.equalsIgnoreCase("stone") || type.equalsIgnoreCase("bass drum") || type.equalsIgnoreCase("bassdrum") || type.equalsIgnoreCase("bd")
+				|| type.equalsIgnoreCase("drum")) {
 			s = "note.bd";
-		} else if (type.equalsIgnoreCase("sand") || type.equalsIgnoreCase("snare drum") || type.equalsIgnoreCase("snaredrum") || type.equalsIgnoreCase("sd") || type.equalsIgnoreCase("snare")) {
+		} else if (type.equalsIgnoreCase("sand") || type.equalsIgnoreCase("snare drum") || type.equalsIgnoreCase("snaredrum")
+				|| type.equalsIgnoreCase("sd") || type.equalsIgnoreCase("snare")) {
 			s = "note.snare";
-		} else if (type.equalsIgnoreCase("glass") || type.equalsIgnoreCase("stick") || type.equalsIgnoreCase("sticks") || type.equalsIgnoreCase("cl") || type.equalsIgnoreCase("clicks") || type.equalsIgnoreCase("click")) {
+		} else if (type.equalsIgnoreCase("glass") || type.equalsIgnoreCase("stick") || type.equalsIgnoreCase("sticks") || type.equalsIgnoreCase("cl")
+				|| type.equalsIgnoreCase("clicks") || type.equalsIgnoreCase("click")) {
 			s = "note.hat";
-		} else if (type.equalsIgnoreCase("wood") || type.equalsIgnoreCase("bass guitar") || type.equalsIgnoreCase("bassguitar") || type.equalsIgnoreCase("bg") || type.equalsIgnoreCase("guitar")) {
+		} else if (type.equalsIgnoreCase("wood") || type.equalsIgnoreCase("bass guitar") || type.equalsIgnoreCase("bassguitar")
+				|| type.equalsIgnoreCase("bg") || type.equalsIgnoreCase("guitar")) {
 			s = "note.bassattack";
 		} else if (type.equalsIgnoreCase("dirt") || type.equalsIgnoreCase("harp") || type.equalsIgnoreCase("piano") || type.equalsIgnoreCase("pi")) {
 			s = "note.harp";
@@ -277,10 +285,10 @@ public class PClo_WeaselPluginSpeaker extends PClo_WeaselPlugin {
 
 	@Override
 	public void onRandomDisplayTick(Random random) {}
-	
+
 	@Override
 	public float[] getBounds() {
-		return new float[] {0,0,0,1,1,1};
+		return new float[] { 0, 0, 0, 1, 1, 1 };
 	}
 
 }

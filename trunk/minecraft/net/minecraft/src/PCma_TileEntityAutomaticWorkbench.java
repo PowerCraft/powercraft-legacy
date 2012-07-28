@@ -221,7 +221,8 @@ public class PCma_TileEntityAutomaticWorkbench extends PC_TileEntity implements 
 				continue;
 			}
 			ItemStack storageStack = getStackInSlot(i);
-			matching[i] = (stack.isItemEqual(getStackInSlot(i + 9)) && (storageStack == null || storageStack.stackSize <= storageStack.getMaxStackSize()));
+			matching[i] = (stack.isItemEqual(getStackInSlot(i + 9)) && (storageStack == null || storageStack.stackSize <= storageStack
+					.getMaxStackSize()));
 		}
 
 		// cycle through slots until they are full or stack is empty.

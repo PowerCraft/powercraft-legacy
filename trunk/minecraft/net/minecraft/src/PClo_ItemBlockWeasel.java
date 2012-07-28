@@ -79,7 +79,7 @@ public class PClo_ItemBlockWeasel extends ItemBlock {
 				if (teg == null) {
 					teg = (PClo_TileEntityWeasel) ((BlockContainer) block).getBlockEntity();
 				}
-				System.out.println("Placing te with type "+itemstack.getItemDamage());
+				System.out.println("Placing te with type " + itemstack.getItemDamage());
 				teg.setType(itemstack.getItemDamage());
 				world.setBlockTileEntity(i, j, k, teg);
 
@@ -90,7 +90,8 @@ public class PClo_ItemBlockWeasel extends ItemBlock {
 				world.markBlocksDirty(i, j, k, i, j, k);
 				world.markBlockNeedsUpdate(i, j, k);
 
-				world.playSoundEffect(i + 0.5F, j + 0.5F, k + 0.5F, block.stepSound.getStepSound(), (block.stepSound.getVolume() + 1.0F) / 2.0F, block.stepSound.getPitch() * 0.8F);
+				world.playSoundEffect(i + 0.5F, j + 0.5F, k + 0.5F, block.stepSound.getStepSound(), (block.stepSound.getVolume() + 1.0F) / 2.0F,
+						block.stepSound.getPitch() * 0.8F);
 
 				itemstack.stackSize--;
 			}

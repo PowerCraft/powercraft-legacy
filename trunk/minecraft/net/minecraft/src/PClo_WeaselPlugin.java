@@ -58,7 +58,8 @@ public abstract class PClo_WeaselPlugin implements PC_INBT, NetworkMember {
 
 	/**
 	 * Handler for tile entity's update tick.
-	 * @return 
+	 * 
+	 * @return true if the block was changed and needs chunk save
 	 */
 	public final boolean update() {
 		if (!isMaster()) {
@@ -74,12 +75,19 @@ public abstract class PClo_WeaselPlugin implements PC_INBT, NetworkMember {
 				networkName = "";
 			}
 		}
-		return updateTick();
+		try {
+			return updateTick();
+		} catch (Throwable t) {
+			t.printStackTrace();
+			PC_Logger.throwing("WeaselPlugin", "update", t);
+			return false;
+		}
 	}
 
 	/**
 	 * update tick for this plugin
-	 * @return 
+	 * 
+	 * @return true if save is requires
 	 */
 	protected abstract boolean updateTick();
 
@@ -329,7 +337,7 @@ public abstract class PClo_WeaselPlugin implements PC_INBT, NetworkMember {
 			wasOn |= weaselOutport[i];
 			weaselOutport[i] = false;
 		}
-		if(wasOn) notifyBlockChange();
+		if (wasOn) notifyBlockChange();
 	}
 
 	/**
@@ -444,12 +452,12 @@ public abstract class PClo_WeaselPlugin implements PC_INBT, NetworkMember {
 		if (args.length > 1) {
 			strict = (Boolean) args[1].get();
 		}
-		
-		if(side.equals("U") || side.equals("T") ) {
+
+		if (side.equals("U") || side.equals("T")) {
 			return new WeaselBoolean(isFullChestAt(coord().offset(0, 1, 0), strict));
 		}
-		
-		if(side.equals("D")) {
+
+		if (side.equals("D")) {
 			return new WeaselBoolean(isFullChestAt(coord().offset(0, -1, 0), strict));
 		}
 
@@ -480,12 +488,12 @@ public abstract class PClo_WeaselPlugin implements PC_INBT, NetworkMember {
 				side = (String) args[0].get();
 			}
 		}
-		
-		if(side.equals("U") || side.equals("T") ) {
+
+		if (side.equals("U") || side.equals("T")) {
 			return new WeaselBoolean(isEmptyChestAt(coord().offset(0, 1, 0)));
 		}
-		
-		if(side.equals("D")) {
+
+		if (side.equals("D")) {
 			return new WeaselBoolean(isEmptyChestAt(coord().offset(0, -1, 0)));
 		}
 
@@ -557,7 +565,8 @@ public abstract class PClo_WeaselPlugin implements PC_INBT, NetworkMember {
 		IInventory invAt = PC_InvUtils.getCompositeInventoryAt(world(), pos);
 		if (invAt != null) return PC_InvUtils.isInventoryEmpty(invAt);
 
-		List<IInventory> list = world().getEntitiesWithinAABB(IInventory.class, AxisAlignedBB.getBoundingBox(pos.x, pos.y, pos.z, pos.x + 1, pos.y + 1, pos.z + 1).expand(0.6D, 0.6D, 0.6D));
+		List<IInventory> list = world().getEntitiesWithinAABB(IInventory.class,
+				AxisAlignedBB.getBoundingBox(pos.x, pos.y, pos.z, pos.x + 1, pos.y + 1, pos.z + 1).expand(0.6D, 0.6D, 0.6D));
 
 		if (list.size() >= 1) {
 			return PC_InvUtils.isInventoryEmpty(list.get(0));
@@ -585,7 +594,8 @@ public abstract class PClo_WeaselPlugin implements PC_INBT, NetworkMember {
 			}
 		}
 
-		List<IInventory> list = tileEntity.worldObj.getEntitiesWithinAABB(IInventory.class, AxisAlignedBB.getBoundingBox(pos.x, pos.y, pos.z, pos.x + 1, pos.y + 1, pos.z + 1).expand(0.6D, 0.6D, 0.6D));
+		List<IInventory> list = tileEntity.worldObj.getEntitiesWithinAABB(IInventory.class,
+				AxisAlignedBB.getBoundingBox(pos.x, pos.y, pos.z, pos.x + 1, pos.y + 1, pos.z + 1).expand(0.6D, 0.6D, 0.6D));
 
 		if (list.size() >= 1) {
 			if (allSlotsFull) {
@@ -657,26 +667,31 @@ public abstract class PClo_WeaselPlugin implements PC_INBT, NetworkMember {
 
 	/**
 	 * Block bounds + selection & collision box
-	 * @return array of floats: minX, minY, minZ, maxX, maxY, maxZ - relative to block, 0-1.
+	 * 
+	 * @return array of floats: minX, minY, minZ, maxX, maxY, maxZ - relative to
+	 *         block, 0-1.
 	 */
 	public float[] getBounds() {
-		return new float[] {0,0,0,1,0.5F,1};
+		return new float[] { 0, 0, 0, 1, 0.5F, 1 };
 	}
 
 	/**
 	 * hook called when the device was placed
+	 * 
 	 * @param entityliving
 	 */
 	public abstract void onBlockPlaced(EntityLiving entityliving);
 
 	/**
 	 * hook from block - random display tick. You can make some perticles here.
+	 * 
 	 * @param random
 	 */
 	public abstract void onRandomDisplayTick(Random random);
 
 	/**
 	 * hook from block - called when block is right-clicked.
+	 * 
 	 * @param player the player who clicked
 	 * @return true if event was consumed - not allow block placing.
 	 */

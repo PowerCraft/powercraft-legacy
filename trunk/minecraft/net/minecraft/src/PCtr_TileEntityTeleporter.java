@@ -2,7 +2,6 @@ package net.minecraft.src;
 
 
 
-
 /**
  * Teleporter TE
  * 
@@ -147,7 +146,8 @@ public class PCtr_TileEntityTeleporter extends PC_TileEntity {
 			return false;
 		}
 
-		if ((entity instanceof EntityMob || entity instanceof EntityGhast || entity instanceof EntityDragon || entity instanceof EntityGolem) && !monsters) {
+		if ((entity instanceof EntityMob || entity instanceof EntityGhast || entity instanceof EntityDragon || entity instanceof EntityGolem)
+				&& !monsters) {
 			return false;
 		}
 

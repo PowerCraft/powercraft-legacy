@@ -156,14 +156,19 @@ public class PCma_TileEntityBlockBuilder extends PC_TileEntity implements IInven
 
 			if (PC_BlockUtils.hasFlag(worldObj, front, "BELT") || Block.blocksList[id] instanceof BlockRail) {
 				if (!worldObj.isRemote) {
-					worldObj.spawnEntityInWorld(new EntityMinecart(worldObj, (float) x + incX + 0.5F, y + 0.5F, (float) z + incZ + 0.5F, ((ItemMinecart) itemstack.getItem()).minecartType));
+					worldObj.spawnEntityInWorld(new EntityMinecart(worldObj, (float) x + incX + 0.5F, y + 0.5F, (float) z + incZ + 0.5F,
+							((ItemMinecart) itemstack.getItem()).minecartType));
 				}
 				return 1;
 			}
 		}
 
 		// ending block
-		if (id == 49 || id == 7 || id == 98 || (PC_BlockUtils.hasFlag(worldObj, front, "HARVEST_STOP") && !(PC_BlockUtils.hasFlag(worldObj, front, "BELT") && !(PC_BlockUtils.hasFlag(worldObj, front, "TRANSLUCENT"))))) {
+		if (id == 49
+				|| id == 7
+				|| id == 98
+				|| (PC_BlockUtils.hasFlag(worldObj, front, "HARVEST_STOP") && !(PC_BlockUtils.hasFlag(worldObj, front, "BELT") && !(PC_BlockUtils
+						.hasFlag(worldObj, front, "TRANSLUCENT"))))) {
 			return -1;
 		}
 
@@ -208,7 +213,8 @@ public class PCma_TileEntityBlockBuilder extends PC_TileEntity implements IInven
 				int sizeNew = itemstack.stackSize;
 
 				// if not bonemeal, or if target block was changed
-				if (!(itemstack.getItem().shiftedIndex == Item.dyePowder.shiftedIndex && itemstack.getItemDamage() == 15) || (idFront != idFrontNew || metaFront != metaFrontNew || idAbove != idAboveNew || metaAbove != metaAboveNew)) {
+				if (!(itemstack.getItem().shiftedIndex == Item.dyePowder.shiftedIndex && itemstack.getItemDamage() == 15)
+						|| (idFront != idFrontNew || metaFront != metaFrontNew || idAbove != idAboveNew || metaAbove != metaAboveNew)) {
 					if (dmgOrig != dmgNew) {
 						return 2;
 					}
@@ -238,7 +244,8 @@ public class PCma_TileEntityBlockBuilder extends PC_TileEntity implements IInven
 				int dmg2 = itemstack.getItemDamage();
 				int size2 = itemstack.stackSize;
 				// if not bonemeal, or if target block was changed
-				if (!(itemstack.getItem().shiftedIndex == Item.dyePowder.shiftedIndex && itemstack.getItemDamage() == 15) || (idBelow != idBelowNew || metaBelow != metaBelowNew || idFront != idFrontNew || metaFront != metaFrontNew)) {
+				if (!(itemstack.getItem().shiftedIndex == Item.dyePowder.shiftedIndex && itemstack.getItemDamage() == 15)
+						|| (idBelow != idBelowNew || metaBelow != metaBelowNew || idFront != idFrontNew || metaFront != metaFrontNew)) {
 					if (dmg1 != dmg2) {
 						return 2;
 					}

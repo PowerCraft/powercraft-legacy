@@ -347,7 +347,8 @@ public class PC_Struct8<T1, T2, T3, T4, T5, T6, T7, T8> {
 
 		PC_Struct8<?, ?, ?, ?, ?, ?, ?, ?> t = (PC_Struct8<?, ?, ?, ?, ?, ?, ?, ?>) obj;
 
-		return PC_Utils.areObjectsEqual(a, t.a) && PC_Utils.areObjectsEqual(b, t.b) && PC_Utils.areObjectsEqual(c, t.c) && PC_Utils.areObjectsEqual(d, t.d) && PC_Utils.areObjectsEqual(e, t.e) && PC_Utils.areObjectsEqual(f, t.f)
+		return PC_Utils.areObjectsEqual(a, t.a) && PC_Utils.areObjectsEqual(b, t.b) && PC_Utils.areObjectsEqual(c, t.c)
+				&& PC_Utils.areObjectsEqual(d, t.d) && PC_Utils.areObjectsEqual(e, t.e) && PC_Utils.areObjectsEqual(f, t.f)
 				&& PC_Utils.areObjectsEqual(g, t.g) && PC_Utils.areObjectsEqual(h, t.h);
 
 	}

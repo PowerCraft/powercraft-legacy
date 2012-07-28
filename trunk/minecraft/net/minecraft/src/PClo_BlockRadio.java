@@ -67,11 +67,11 @@ public class PClo_BlockRadio extends BlockContainer implements PC_IBlockType {
 	@Override
 	public boolean blockActivated(World world, int x, int y, int z, EntityPlayer entityplayer) {
 		ItemStack ihold = entityplayer.getCurrentEquippedItem();
-		
+
 		PClo_TileEntityRadio ter = getTE(world, x, y, z);
-		if(ter==null) return false;
-		
-		
+		if (ter == null) return false;
+
+
 		if (ihold != null) {
 			if (ihold.getItem() instanceof ItemBlock && ihold.getItem().shiftedIndex != blockID) {
 				Block bhold = Block.blocksList[ihold.getItem().shiftedIndex];
@@ -97,16 +97,16 @@ public class PClo_BlockRadio extends BlockContainer implements PC_IBlockType {
 						String chnl = ihold.getTagCompound().getString("RadioChannel");
 						if (!chnl.equals("")) {
 							ter.channel = chnl;
-							
+
 							PC_CoordI pos = ter.getCoord();
-							
+
 							ter.active = mod_PClogic.RADIO.getChannelState(chnl);
 							if (ter.active) {
 								PC_Utils.mc().theWorld.setBlockMetadataWithNotify(pos.x, pos.y, pos.z, 1);
 							}
 
 							PC_Utils.mc().theWorld.scheduleBlockUpdate(pos.x, pos.y, pos.z, mod_PClogic.radio.blockID, 1);
-							
+
 							PC_Utils.chatMsg(PC_Lang.tr("pc.radio.activatorSetChannel", new String[] { chnl }), true);
 							world.playSoundEffect(x, y, z, "note.snare", (world.rand.nextFloat() + 0.7F) / 2.0F, 0.5F);
 						}
@@ -124,7 +124,8 @@ public class PClo_BlockRadio extends BlockContainer implements PC_IBlockType {
 				channel = getTE(world, x, y, z).getChannel();
 
 				PClo_ItemRadioRemote.setChannel(holditem, channel);
-				world.playSoundAtEntity(entityplayer, "note.snare", (world.rand.nextFloat() + 0.7F) / 2.0F, 1.0F + (world.rand.nextFloat() - world.rand.nextFloat()) * 0.4F);
+				world.playSoundAtEntity(entityplayer, "note.snare", (world.rand.nextFloat() + 0.7F) / 2.0F,
+						1.0F + (world.rand.nextFloat() - world.rand.nextFloat()) * 0.4F);
 				return true;
 			}
 		}
@@ -226,7 +227,8 @@ public class PClo_BlockRadio extends BlockContainer implements PC_IBlockType {
 	}
 
 	private boolean isGettingPower(World world, int i, int j, int k) {
-		return ((world.isBlockGettingPowered(i, j, k) || world.isBlockGettingPowered(i, j - 1, k) || world.isBlockIndirectlyGettingPowered(i, j, k) || world.isBlockIndirectlyGettingPowered(i, j - 1, k)));
+		return ((world.isBlockGettingPowered(i, j, k) || world.isBlockGettingPowered(i, j - 1, k) || world.isBlockIndirectlyGettingPowered(i, j, k) || world
+				.isBlockIndirectlyGettingPowered(i, j - 1, k)));
 	}
 
 	@Override
@@ -266,11 +268,11 @@ public class PClo_BlockRadio extends BlockContainer implements PC_IBlockType {
 		if (i1 != 1) {
 			return;
 		}
-		
+
 		boolean tiny = getTE(world, i, j, k).renderMicro;
 
 		double x = (i + 0.5F) + (random.nextFloat() - 0.5F) * 0.20000000000000001D;
-		double y = (j + (tiny?0.2F:0.9F)) + (random.nextFloat() - 0.5F) * 0.20000000000000001D;
+		double y = (j + (tiny ? 0.2F : 0.9F)) + (random.nextFloat() - 0.5F) * 0.20000000000000001D;
 		double z = (k + 0.5F) + (random.nextFloat() - 0.5F) * 0.20000000000000001D;
 
 		world.spawnParticle("reddust", x, y, z, 0.0D, 0.0D, 0.0D);

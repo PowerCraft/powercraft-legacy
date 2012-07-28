@@ -142,7 +142,8 @@ public class PCmo_GuiMinerConsole implements PC_IGresBase {
 		miner.torchesOnlyOnFloor = checkTorchFloor.isChecked();
 		miner.compressBlocks = checkCompress.isChecked();
 
-		miner.DESTROY = (byte) ((checkCobble.isChecked() ? PCmo_EntityMiner.COBBLE : 0) | (checkGravel.isChecked() ? PCmo_EntityMiner.GRAVEL : 0) | (checkDirt.isChecked() ? PCmo_EntityMiner.DIRT : 0));
+		miner.DESTROY = (byte) ((checkCobble.isChecked() ? PCmo_EntityMiner.COBBLE : 0) | (checkGravel.isChecked() ? PCmo_EntityMiner.GRAVEL : 0) | (checkDirt
+				.isChecked() ? PCmo_EntityMiner.DIRT : 0));
 	}
 
 	@Override

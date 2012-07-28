@@ -45,7 +45,8 @@ public class PCco_GuiUpdateNotification implements PC_IGresBase {
 		w.add(hg);
 		hg = new PC_GresLayoutH();
 		hg.setAlignH(PC_GresAlign.CENTER);
-		hg.add(new PC_GresLabel(PC_Lang.tr("pc.gui.update.version", new String[] { mod_PCcore.instance.getVersion(), Minecraft.getVersion(), mod_PCcore.updateModVersion, mod_PCcore.updateMcVersion })));
+		hg.add(new PC_GresLabel(PC_Lang.tr("pc.gui.update.version", new String[] { mod_PCcore.instance.getVersion(), Minecraft.getVersion(),
+				mod_PCcore.updateModVersion, mod_PCcore.updateMcVersion })));
 		w.add(hg);
 
 		w.add(new PC_GresSeparatorH(40, 5).setLineColor(0x999999));

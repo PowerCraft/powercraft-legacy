@@ -62,7 +62,8 @@ public class PCco_SlotDirectCrafting extends Slot {
 	public ItemStack decrStackSize(int i) {
 		if (available) {
 			ItemStack output = product.copy();
-			if ((PC_Utils.isCreative() || survivalCheating) && (Keyboard.isKeyDown(Keyboard.KEY_LCONTROL) || Keyboard.isKeyDown(Keyboard.KEY_RCONTROL))) {
+			if ((PC_Utils.isCreative() || survivalCheating)
+					&& (Keyboard.isKeyDown(Keyboard.KEY_LCONTROL) || Keyboard.isKeyDown(Keyboard.KEY_RCONTROL))) {
 				output.stackSize = output.getMaxStackSize();
 			}
 			return output;
@@ -74,7 +75,8 @@ public class PCco_SlotDirectCrafting extends Slot {
 	public ItemStack getStack() {
 		if (available && product != null) {
 			ItemStack output = product.copy();
-			if ((PC_Utils.isCreative() || survivalCheating) && (Keyboard.isKeyDown(Keyboard.KEY_LCONTROL) || Keyboard.isKeyDown(Keyboard.KEY_RCONTROL))) {
+			if ((PC_Utils.isCreative() || survivalCheating)
+					&& (Keyboard.isKeyDown(Keyboard.KEY_LCONTROL) || Keyboard.isKeyDown(Keyboard.KEY_RCONTROL))) {
 				output.stackSize = output.getMaxStackSize();
 			}
 			return output;
@@ -139,7 +141,8 @@ public class PCco_SlotDirectCrafting extends Slot {
 			recipeBannedStacks.add(getStackDescriptor(product));
 			recipeBannedStacks.add(getStackDescriptorAnyMeta(product));
 			if (tryToFindMaterialsForRecipe(irecipe)) {
-				if (toConsume.size() == 1 && toConsume.get(0).isItemEqual(product) || (toConsume.get(0).itemID == product.itemID && toConsume.get(0).getItemDamage() == -1)) {
+				if (toConsume.size() == 1 && toConsume.get(0).isItemEqual(product)
+						|| (toConsume.get(0).itemID == product.itemID && toConsume.get(0).getItemDamage() == -1)) {
 					continue; // next recipe
 				}
 				return true;
@@ -182,7 +185,8 @@ public class PCco_SlotDirectCrafting extends Slot {
 			recipeBannedStacks.add(getStackDescriptor(product));
 			recipeBannedStacks.add(getStackDescriptorAnyMeta(product));
 			if (tryToFindMaterialsForRecipe(irecipe)) {
-				if (toConsume.size() == 1 && toConsume.get(0).isItemEqual(product) || (toConsume.get(0).itemID == product.itemID && toConsume.get(0).getItemDamage() == -1)) {
+				if (toConsume.size() == 1 && toConsume.get(0).isItemEqual(product)
+						|| (toConsume.get(0).itemID == product.itemID && toConsume.get(0).getItemDamage() == -1)) {
 					continue; // next recipe
 				}
 
@@ -191,7 +195,8 @@ public class PCco_SlotDirectCrafting extends Slot {
 				}
 
 				if (irecipe.getRecipeOutput().stackSize > product.stackSize) {
-					toGiveBack.add(new ItemStack(irecipe.getRecipeOutput().itemID, irecipe.getRecipeOutput().stackSize - product.stackSize, product.getItemDamage()));
+					toGiveBack.add(new ItemStack(irecipe.getRecipeOutput().itemID, irecipe.getRecipeOutput().stackSize - product.stackSize, product
+							.getItemDamage()));
 				}
 
 				for (ItemStack stack : toGiveBack) {

@@ -22,7 +22,7 @@ public class PC_GresGap extends PC_GresWidget {
 
 	@Override
 	public PC_CoordI calcSize() {
-		if(!visible) return zerosize;
+		if (!visible) return zerosize;
 		return minSize.copy();
 	}
 

@@ -33,7 +33,7 @@ public class PClo_GuiRadio implements PC_IGresBase {
 
 	private PC_GresCheckBox checkLabel;
 
-	private PC_GresCheckBox checkMicro; 
+	private PC_GresCheckBox checkMicro;
 
 	/**
 	 * @param dimen Radio device dimension
@@ -78,11 +78,11 @@ public class PClo_GuiRadio implements PC_IGresBase {
 		hg = new PC_GresLayoutH().setAlignH(PC_GresAlign.CENTER);
 		hg.add(txError = new PC_GresLabel("").setColor(PC_GresWidget.textColorEnabled, 0x990000));
 		w.add(hg);
-		
+
 		hg = new PC_GresLayoutH().setAlignH(PC_GresAlign.CENTER);
 		hg.add(checkLabel = new PC_GresCheckBox(PC_Lang.tr("pc.gui.radio.showLabel")));
 		checkLabel.check(!ter.hideLabel);
-		
+
 		hg.add(checkMicro = new PC_GresCheckBox(PC_Lang.tr("pc.gui.radio.renderSmall")));
 		checkMicro.check(ter.renderMicro);
 		w.add(hg);

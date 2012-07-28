@@ -204,12 +204,16 @@ public class PCtr_BlockBeltEjector extends BlockContainer implements PC_IBlockTy
 	 * @return item dispensed.
 	 */
 	public static boolean dispenseStackFromNearbyMinecart(World world, PC_CoordI beltPos) {
-		List<Entity> hitList = world.getEntitiesWithinAABB(IInventory.class, AxisAlignedBB.getBoundingBoxFromPool(beltPos.x, beltPos.y, beltPos.z, beltPos.x + 1, beltPos.y + 1, beltPos.z + 1).expand(0.6D, 0.6D, 0.6D));
+		List<Entity> hitList = world.getEntitiesWithinAABB(
+				IInventory.class,
+				AxisAlignedBB.getBoundingBoxFromPool(beltPos.x, beltPos.y, beltPos.z, beltPos.x + 1, beltPos.y + 1, beltPos.z + 1).expand(0.6D, 0.6D,
+						0.6D));
 
 		if (hitList.size() > 0) {
 			for (Entity entityWithInventory : hitList) {
 
-				if (dispenseItemOntoBelt(world, new PC_CoordD(entityWithInventory.posX, entityWithInventory.posY, entityWithInventory.posZ).round(), (IInventory) entityWithInventory, beltPos)) {
+				if (dispenseItemOntoBelt(world, new PC_CoordD(entityWithInventory.posX, entityWithInventory.posY, entityWithInventory.posZ).round(),
+						(IInventory) entityWithInventory, beltPos)) {
 					return true;
 				}
 
@@ -263,7 +267,8 @@ public class PCtr_BlockBeltEjector extends BlockContainer implements PC_IBlockTy
 				ItemStack stack = inventory.getStackInSlot(i);
 
 				// if 0-2, its potion slot. If 3, its ingredient.
-				if ((i < 3 && (stack != null && stack.stackSize > 0 && stack.itemID == Item.potion.shiftedIndex && stack.getItemDamage() != 0)) || (i == 3 && (stack != null))) {
+				if ((i < 3 && (stack != null && stack.stackSize > 0 && stack.itemID == Item.potion.shiftedIndex && stack.getItemDamage() != 0))
+						|| (i == 3 && (stack != null))) {
 					inventory.setInventorySlotContents(i, null);
 					return stack;
 				}

@@ -72,14 +72,11 @@ public class PCma_BlockBlockBuilder extends BlockContainer implements PC_ISwapTe
 		}
 	}
 
-	private Random random;
-
 	/**
 	 * @param i ID
 	 */
 	protected PCma_BlockBlockBuilder(int i) {
 		super(i, Material.ground);
-		random = new Random();
 		blockIndexInTexture = TXDOWN;
 	}
 
@@ -197,8 +194,8 @@ public class PCma_BlockBlockBuilder extends BlockContainer implements PC_ISwapTe
 	@Override
 	public void onBlockRemoval(World world, int i, int j, int k) {
 		PCma_TileEntityBlockBuilder teb = (PCma_TileEntityBlockBuilder) world.getBlockTileEntity(i, j, k);
-		
-		
+
+
 		if (teb != null) {
 			PC_InvUtils.dropInventoryContents(teb, world, teb.getCoord());
 		}

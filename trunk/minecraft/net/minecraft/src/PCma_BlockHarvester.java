@@ -15,7 +15,8 @@ import net.minecraft.src.forge.ITextureProvider;
  * @author MightyPork
  * @copy (c) 2012
  */
-public class PCma_BlockHarvester extends Block implements PC_ISwapTerrain, PC_IBlockType, PC_ISpecialInventoryTextures, ITextureProvider, PC_IBeamHandler {
+public class PCma_BlockHarvester extends Block implements PC_ISwapTerrain, PC_IBlockType, PC_ISpecialInventoryTextures, ITextureProvider,
+		PC_IBeamHandler {
 	private static final int TXDOWN = 109, TXTOP = 155, TXSIDE = 139, TXFRONT = 107, TXBACK = 123;
 
 	/**
@@ -257,10 +258,14 @@ public class PCma_BlockHarvester extends Block implements PC_ISwapTerrain, PC_IB
 		}
 
 		// SKIP non-breaking
-		if (id == 0 || id == Block.glass.blockID || id == Block.thinGlass.blockID || id == Block.redstoneLampActive.blockID || id == Block.redstoneLampIdle.blockID || Block.blocksList[id] == null || id == 8 || id == 9 || id == 10 || id == 11
-				|| id == Block.sapling.blockID || id == Block.pumpkinStem.blockID || id == Block.melonStem.blockID || id == Block.cake.blockID || id == Block.fire.blockID || Block.blocksList[id] instanceof BlockTorch
-				|| id == Block.redstoneWire.blockID || id == Block.lever.blockID || id == Block.button.blockID || Block.blocksList[id] instanceof BlockRedstoneRepeater || id == Block.pistonStickyBase.blockID || id == Block.pistonBase.blockID
-				|| id == Block.pistonExtension.blockID || id == Block.pistonMoving.blockID || Block.blocksList[id] instanceof BlockRail || PC_BlockUtils.getBlockFlags(world, coord).contains("NO_HARVEST")) {
+		if (id == 0 || id == Block.glass.blockID || id == Block.thinGlass.blockID || id == Block.redstoneLampActive.blockID
+				|| id == Block.redstoneLampIdle.blockID || Block.blocksList[id] == null || id == 8 || id == 9 || id == 10 || id == 11
+				|| id == Block.sapling.blockID || id == Block.pumpkinStem.blockID || id == Block.melonStem.blockID || id == Block.cake.blockID
+				|| id == Block.fire.blockID || Block.blocksList[id] instanceof BlockTorch || id == Block.redstoneWire.blockID
+				|| id == Block.lever.blockID || id == Block.button.blockID || Block.blocksList[id] instanceof BlockRedstoneRepeater
+				|| id == Block.pistonStickyBase.blockID || id == Block.pistonBase.blockID || id == Block.pistonExtension.blockID
+				|| id == Block.pistonMoving.blockID || Block.blocksList[id] instanceof BlockRail
+				|| PC_BlockUtils.getBlockFlags(world, coord).contains("NO_HARVEST")) {
 
 			return false;
 		}

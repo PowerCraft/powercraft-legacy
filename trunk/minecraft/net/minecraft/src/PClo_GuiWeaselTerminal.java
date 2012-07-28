@@ -1,15 +1,16 @@
 package net.minecraft.src;
 
-import java.util.Iterator;
-import java.util.Map;
 
-import weasel.obj.WeaselInteger;
-import weasel.obj.WeaselObject;
-import weasel.obj.WeaselString;
 import net.minecraft.src.PC_GresTextEdit.PC_GresInputType;
 import net.minecraft.src.PC_GresWidget.PC_GresAlign;
-import net.minecraft.src.PClo_NetManager.NetworkMember;
 
+
+/**
+ * Term gui - name edit
+ * 
+ * @author MightyPork
+ *
+ */
 public class PClo_GuiWeaselTerminal implements PC_IGresBase {
 
 	private PClo_WeaselPluginTerminal term;
@@ -22,7 +23,7 @@ public class PClo_GuiWeaselTerminal implements PC_IGresBase {
 	/**
 	 * GUI for port.
 	 * 
-	 * @param display plugin instance
+	 * @param device plugin instance
 	 */
 	public PClo_GuiWeaselTerminal(PClo_WeaselPluginTerminal device) {
 		this.term = device;
@@ -35,7 +36,7 @@ public class PClo_GuiWeaselTerminal implements PC_IGresBase {
 
 	@Override
 	public void initGui(PC_IGresGui gui) {
-		
+
 		w = new PC_GresWindow(PC_Lang.tr("pc.gui.weasel.terminal.title"));
 		w.setAlignH(PC_GresAlign.CENTER);
 		w.setMinWidth(260);
@@ -64,9 +65,9 @@ public class PClo_GuiWeaselTerminal implements PC_IGresBase {
 		hg.add(btnOk = new PC_GresButton(PC_Lang.tr("pc.gui.weasel.rename")));
 		w.add(hg);
 		w.add(new PC_GresGap(0, 0));
-		
+
 		gui.add(w);
-		
+
 		btnOk.enable(false);
 
 	}
@@ -104,7 +105,7 @@ public class PClo_GuiWeaselTerminal implements PC_IGresBase {
 			gui.close();
 			return;
 		}
-		
+
 	}
 
 	@Override

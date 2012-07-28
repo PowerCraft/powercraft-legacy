@@ -17,7 +17,7 @@ public class PClo_GuiWeaselCoreSettings implements PC_IGresBase {
 	private PC_GresWindow w;
 
 	private PC_GresWidget edNetwork, colorBulb, btnRename;
-	private PC_GresWidget txError, txr, txg, txb;
+	private PC_GresWidget txError;
 	private PC_GresColorPicker colorPicker;
 
 
@@ -42,7 +42,7 @@ public class PClo_GuiWeaselCoreSettings implements PC_IGresBase {
 		w.setAlignH(PC_GresAlign.STRETCH);
 		w.setAlignV(PC_GresAlign.TOP);
 
-		PC_GresWidget hg, vg, hg1;
+		PC_GresWidget hg;
 
 		hg = new PC_GresLayoutH().setAlignH(PC_GresAlign.LEFT);
 		hg.add(new PC_GresGap(4, 0));
@@ -76,7 +76,7 @@ public class PClo_GuiWeaselCoreSettings implements PC_IGresBase {
 
 
 		frame.add(colorBulb = new PC_GresColor(core.getNetworkColor()));
-		frame.add(colorPicker = new PC_GresColorPicker(core.getNetworkColor().getHex(),100,50));
+		frame.add(colorPicker = new PC_GresColorPicker(core.getNetworkColor().getHex(), 100, 50));
 		hg.add(frame);
 		hg.add(new PC_GresButton(PC_Lang.tr("pc.gui.weasel.core.colorChange")).setId(3).setMinWidth(40));
 		w.add(hg);
@@ -88,11 +88,6 @@ public class PClo_GuiWeaselCoreSettings implements PC_IGresBase {
 
 		gui.add(w);
 
-
-	}
-
-	private void updateColorLetters() {
-		PC_Color color = ((PC_GresColor) colorBulb).getColor();
 
 	}
 

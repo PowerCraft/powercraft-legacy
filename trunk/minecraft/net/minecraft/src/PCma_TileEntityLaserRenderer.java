@@ -25,7 +25,8 @@ public class PCma_TileEntityLaserRenderer extends TileEntitySpecialRenderer {
 
 		PCma_TileEntityLaser tel = (PCma_TileEntityLaser) tileEntity;
 
-		modelLaser.laserParts[0].showModel = modelLaser.laserParts[1].showModel = modelLaser.laserParts[2].showModel = modelLaser.laserParts[3].showModel = tel.isKiller();
+		modelLaser.laserParts[0].showModel = modelLaser.laserParts[1].showModel = modelLaser.laserParts[2].showModel = modelLaser.laserParts[3].showModel = tel
+				.isKiller();
 
 		modelLaser.laserParts[7].showModel = tel.isKiller();
 		modelLaser.laserParts[8].showModel = tel.isSensor();

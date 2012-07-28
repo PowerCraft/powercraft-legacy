@@ -1,15 +1,14 @@
 package net.minecraft.src;
 
-import java.util.Iterator;
-import java.util.Map;
-
-import weasel.obj.WeaselInteger;
-import weasel.obj.WeaselObject;
-import weasel.obj.WeaselString;
 import net.minecraft.src.PC_GresTextEdit.PC_GresInputType;
 import net.minecraft.src.PC_GresWidget.PC_GresAlign;
-import net.minecraft.src.PClo_NetManager.NetworkMember;
 
+
+/**
+ * gui for touchscreen - name edit
+ * 
+ * @author MightyPork
+ */
 public class PClo_GuiWeaselTouchscreen implements PC_IGresBase {
 
 	private PClo_WeaselPluginTouchscreen touchscreen;
@@ -20,9 +19,9 @@ public class PClo_GuiWeaselTouchscreen implements PC_IGresBase {
 	private PC_GresButton btnCancel;
 
 	/**
-	 * GUI for port.
+	 * GUI for ts
 	 * 
-	 * @param display plugin instance
+	 * @param touchscreen plugin instance
 	 */
 	public PClo_GuiWeaselTouchscreen(PClo_WeaselPluginTouchscreen touchscreen) {
 		this.touchscreen = touchscreen;
@@ -63,9 +62,9 @@ public class PClo_GuiWeaselTouchscreen implements PC_IGresBase {
 		hg.add(btnOk = new PC_GresButton(PC_Lang.tr("pc.gui.weasel.rename")));
 		w.add(hg);
 		w.add(new PC_GresGap(0, 0));
-				
+
 		gui.add(w);
-		
+
 		btnOk.enable(false);
 
 	}
@@ -103,7 +102,7 @@ public class PClo_GuiWeaselTouchscreen implements PC_IGresBase {
 			gui.close();
 			return;
 		}
-		
+
 	}
 
 	@Override

@@ -54,7 +54,7 @@ public class PClo_TileEntityLight extends PC_TileEntity {
 	public boolean isActive() {
 		return getCoord().getId(worldObj) == mod_PClogic.lightOn.blockID;
 	}
-	
+
 	/**
 	 * Get hex color
 	 * 
@@ -104,7 +104,7 @@ public class PClo_TileEntityLight extends PC_TileEntity {
 		if (!on) {
 			PC_Color color = PC_Color.fromHex(rc);
 			// darker
-			return new PC_Color(color.r*0.3D,color.g*0.3D,color.b*0.3D);
+			return new PC_Color(color.r * 0.3D, color.g * 0.3D, color.b * 0.3D);
 		} else {
 			return PC_Color.fromHex(rc);
 		}

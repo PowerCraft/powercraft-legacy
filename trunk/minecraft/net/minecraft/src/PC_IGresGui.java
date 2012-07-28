@@ -65,6 +65,7 @@ public interface PC_IGresGui {
 
 	/**
 	 * Set background gradient colors - 0xAARRGGBB.
+	 * 
 	 * @param top
 	 * @param bottom
 	 */

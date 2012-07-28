@@ -390,7 +390,9 @@ public class PC_GresTextEditMultiline extends PC_GresWidget {
 				charWidth = getFontRenderer().getCharWidth(c);
 				if (xV >= scroll.x) {
 					if (xV + charWidth > size.x + scroll.x - 24) return;
-					if (c != '\t') drawStringColor("" + c, offsetPos.x + xV - scroll.x, offsetPos.y, fg!=null?0xff000000|fg:line[i].kw == null ? 0xff000000 | PC_GresHighlightHelper.colorDefault : line[i].kw.color);
+					if (c != '\t')
+						drawStringColor("" + c, offsetPos.x + xV - scroll.x, offsetPos.y, fg != null ? 0xff000000 | fg
+								: line[i].kw == null ? 0xff000000 | PC_GresHighlightHelper.colorDefault : line[i].kw.color);
 				}
 				if (c == '\t')
 					xV = (xV / 10 + 1) * 10;
@@ -547,12 +549,12 @@ public class PC_GresTextEditMultiline extends PC_GresWidget {
 
 	private TextFile text;
 	private Integer bg = null, fg = null;
-	
+
 	public PC_GresTextEditMultiline setBgColor(int color) {
 		bg = color;
 		return this;
 	}
-	
+
 	public PC_GresTextEditMultiline setFgColor(int color) {
 		this.color[textColorEnabled] = 0xff000000 | color;
 		this.color[textColorClicked] = 0xff000000 | color;
@@ -656,7 +658,8 @@ public class PC_GresTextEditMultiline extends PC_GresWidget {
 		StringAdd sa = null;
 		if (autoAdd != null) {
 
-			sa = autoAdd.charAdd(this, c, text.getKeywordForChar(mouseSelectEnd.y, mouseSelectEnd.x), text.getBlocksForLine(mouseSelectEnd.y), text.getString(0, 0, mouseSelectEnd.y, mouseSelectEnd.x), s);
+			sa = autoAdd.charAdd(this, c, text.getKeywordForChar(mouseSelectEnd.y, mouseSelectEnd.x), text.getBlocksForLine(mouseSelectEnd.y),
+					text.getString(0, 0, mouseSelectEnd.y, mouseSelectEnd.x), s);
 		}
 		if (sa == null) {
 			text.addString("" + c, mouseSelectEnd.y, mouseSelectEnd.x, mouseSelectEnd.y, mouseSelectEnd.x);
@@ -746,7 +749,8 @@ public class PC_GresTextEditMultiline extends PC_GresWidget {
 			exx = size.x - 24;
 		}
 
-		drawRect(offsetPos.x + pos.x + sxx + 6, offsetPos.y + pos.y + 6 + cy * getFR().FONT_HEIGHT, offsetPos.x + pos.x + exx + 6, offsetPos.y + pos.y + 6 + (cy + 1) * getFR().FONT_HEIGHT, 0xff3399FF);
+		drawRect(offsetPos.x + pos.x + sxx + 6, offsetPos.y + pos.y + 6 + cy * getFR().FONT_HEIGHT, offsetPos.x + pos.x + exx + 6, offsetPos.y
+				+ pos.y + 6 + (cy + 1) * getFR().FONT_HEIGHT, 0xff3399FF);
 	}
 
 	@Override
@@ -995,7 +999,7 @@ public class PC_GresTextEditMultiline extends PC_GresWidget {
 	public boolean mouseOver(PC_CoordI mousePos) {
 		return true;
 	}
-	
+
 	public void scrollToBottom() {
 		int maxY = getLineNumbers() - shownLines() + 1;
 		if (maxY < 0) {
@@ -1006,7 +1010,7 @@ public class PC_GresTextEditMultiline extends PC_GresWidget {
 
 	@Override
 	public void mouseWheel(int i) {
-		scroll.y -= i*3;
+		scroll.y -= i * 3;
 		if (scroll.y < 0) {
 			scroll.y = 0;
 		}
@@ -1050,13 +1054,16 @@ public class PC_GresTextEditMultiline extends PC_GresWidget {
 		drawVerticalLine(offsetPos.x + pos.x, offsetPos.y + pos.y, offsetPos.y + pos.y + size.y - 1, 0xffA0A0A0);
 		drawVerticalLine(offsetPos.x + pos.x + size.x - 1, offsetPos.y + pos.y, offsetPos.y + pos.y + size.y - 12, 0xffA0A0A0);
 
-		drawRect(offsetPos.x + pos.x + 1, offsetPos.y + pos.y + 1, offsetPos.x + pos.x + size.x - 12, offsetPos.y + pos.y + size.y - 12, 0xff000000 | (bg != null?bg :PC_GresHighlightHelper.colorBackground));
+		drawRect(offsetPos.x + pos.x + 1, offsetPos.y + pos.y + 1, offsetPos.x + pos.x + size.x - 12, offsetPos.y + pos.y + size.y - 12,
+				0xff000000 | (bg != null ? bg : PC_GresHighlightHelper.colorBackground));
 
 		int scrollbarBg = 0x909090;
 
-		drawRect(offsetPos.x + pos.x + 1, offsetPos.y + pos.y + size.y - 11, offsetPos.x + pos.x + size.x - 12, offsetPos.y + pos.y + size.y - 1, scrollbarBg);
+		drawRect(offsetPos.x + pos.x + 1, offsetPos.y + pos.y + size.y - 11, offsetPos.x + pos.x + size.x - 12, offsetPos.y + pos.y + size.y - 1,
+				scrollbarBg);
 
-		drawRect(offsetPos.x + pos.x + size.x - 11, offsetPos.y + pos.y + 1, offsetPos.x + pos.x + size.x - 1, offsetPos.y + pos.y + size.y - 12, scrollbarBg);
+		drawRect(offsetPos.x + pos.x + size.x - 11, offsetPos.y + pos.y + 1, offsetPos.x + pos.x + size.x - 1, offsetPos.y + pos.y + size.y - 12,
+				scrollbarBg);
 
 		drawHorizontalLine(offsetPos.x + pos.x, offsetPos.x + pos.x + size.x - 1, offsetPos.y + pos.y + size.y - 12, 0xffA0A0A0);
 
@@ -1066,9 +1073,11 @@ public class PC_GresTextEditMultiline extends PC_GresWidget {
 			calcScrollPosition();
 		}
 
-		renderTextureSliced(offsetPos.offset((int) hScrollPos + 1, size.y - 11), mod_PCcore.getImgDir() + "gres/scrollbar_handle.png", new PC_CoordI(hScrollSize - 1, 10), new PC_CoordI(0, 0), new PC_CoordI(256, 256));
+		renderTextureSliced(offsetPos.offset((int) hScrollPos + 1, size.y - 11), mod_PCcore.getImgDir() + "gres/scrollbar_handle.png", new PC_CoordI(
+				hScrollSize - 1, 10), new PC_CoordI(0, 0), new PC_CoordI(256, 256));
 
-		renderTextureSliced(offsetPos.offset(size.x - 11, 1 + (int) vScrollPos), mod_PCcore.getImgDir() + "gres/scrollbar_handle.png", new PC_CoordI(10, vScrollSize - 1), new PC_CoordI(0, 0), new PC_CoordI(256, 256));
+		renderTextureSliced(offsetPos.offset(size.x - 11, 1 + (int) vScrollPos), mod_PCcore.getImgDir() + "gres/scrollbar_handle.png", new PC_CoordI(
+				10, vScrollSize - 1), new PC_CoordI(0, 0), new PC_CoordI(256, 256));
 
 		if ((!(mouseSelectStart.x == mouseSelectEnd.x && mouseSelectStart.y == mouseSelectEnd.y)) && hasFocus) {
 			PC_CoordI cs = mouseSelectStart, ce = mouseSelectEnd;
@@ -1102,9 +1111,10 @@ public class PC_GresTextEditMultiline extends PC_GresWidget {
 		if (enabled && hasFocus && (cursorCounter / 6) % 2 == 0) {
 			if (coordsInDrawRect(new PC_CoordI(mouseSelectEnd.x > 0 ? mouseSelectEnd.x - 1 : 0, mouseSelectEnd.y))) {
 				try {
-				drawVerticalLine(offsetPos.x + pos.x + _getStringWidth(getLine(mouseSelectEnd.y).substring(0, mouseSelectEnd.x)) + 5 - scroll.x, offsetPos.y + pos.y + 6 + (mouseSelectEnd.y - scroll.y) * getFR().FONT_HEIGHT, offsetPos.y + pos.y + 6
-						+ (mouseSelectEnd.y - scroll.y + 1) * getFR().FONT_HEIGHT, color[enabled ? textColorEnabled : textColorDisabled]);
-				}catch(StringIndexOutOfBoundsException e) {
+					drawVerticalLine(offsetPos.x + pos.x + _getStringWidth(getLine(mouseSelectEnd.y).substring(0, mouseSelectEnd.x)) + 5 - scroll.x,
+							offsetPos.y + pos.y + 6 + (mouseSelectEnd.y - scroll.y) * getFR().FONT_HEIGHT, offsetPos.y + pos.y + 6
+									+ (mouseSelectEnd.y - scroll.y + 1) * getFR().FONT_HEIGHT, color[enabled ? textColorEnabled : textColorDisabled]);
+				} catch (StringIndexOutOfBoundsException e) {
 					e.printStackTrace();
 				}
 			}

@@ -19,7 +19,8 @@ public class PC_KeyUtils {
 	 * @return is control key
 	 */
 	public static boolean isEditControlKey(int i) {
-		return i == Keyboard.KEY_BACK || i == Keyboard.KEY_DELETE || i == Keyboard.KEY_LEFT || i == Keyboard.KEY_RIGHT || i == Keyboard.KEY_HOME || i == Keyboard.KEY_END;
+		return i == Keyboard.KEY_BACK || i == Keyboard.KEY_DELETE || i == Keyboard.KEY_LEFT || i == Keyboard.KEY_RIGHT || i == Keyboard.KEY_HOME
+				|| i == Keyboard.KEY_END;
 	}
 
 	/**

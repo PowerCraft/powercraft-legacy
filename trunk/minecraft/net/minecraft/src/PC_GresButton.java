@@ -15,6 +15,7 @@ public class PC_GresButton extends PC_GresWidget {
 	 */
 	protected PC_CoordI buttonScale = new PC_CoordI(6, 6);
 
+	/** Flag that is currently under pressed mouse */
 	protected boolean isClicked = false;
 
 	/**
@@ -41,7 +42,7 @@ public class PC_GresButton extends PC_GresWidget {
 
 	@Override
 	public PC_CoordI calcSize() {
-		if(!visible) return zerosize;
+		if (!visible) return zerosize;
 		FontRenderer fontRenderer = getFontRenderer();
 
 		if (buttonScale == null) buttonScale = new PC_CoordI(6, 6);
@@ -91,7 +92,8 @@ public class PC_GresButton extends PC_GresWidget {
 
 		renderTextureSliced(offsetPos, mod_PCcore.getImgDir() + "gres/button.png", size, new PC_CoordI(0, state * 50), new PC_CoordI(256, 50));
 
-		drawCenteredString(getFontRenderer(), text, offsetPos.x + pos.x + size.x / 2, offsetPos.y + pos.y + (size.y - getFontRenderer().FONT_HEIGHT) / 2, txC);
+		drawCenteredString(getFontRenderer(), text, offsetPos.x + pos.x + size.x / 2, offsetPos.y + pos.y + (size.y - getFontRenderer().FONT_HEIGHT)
+				/ 2, txC);
 	}
 
 	@Override

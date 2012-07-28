@@ -183,7 +183,8 @@ public class PCtr_BlockBeltSeparator extends BlockContainer implements PC_IBlock
 		leadsToNowhere = leadsToNowhere && PCtr_BeltBase.isBeyondStorageBorder(world, rotation, pos, entity, PCtr_BeltBase.STORAGE_BORDER_LONG);
 
 		// add motion.
-		PCtr_BeltBase.moveEntityOnBelt(world, pos, entity, true, !leadsToNowhere, rotation, PCtr_BeltBase.MAX_HORIZONTAL_SPEED, PCtr_BeltBase.HORIZONTAL_BOOST);
+		PCtr_BeltBase.moveEntityOnBelt(world, pos, entity, true, !leadsToNowhere, rotation, PCtr_BeltBase.MAX_HORIZONTAL_SPEED,
+				PCtr_BeltBase.HORIZONTAL_BOOST);
 	}
 
 	// collision and other stuff

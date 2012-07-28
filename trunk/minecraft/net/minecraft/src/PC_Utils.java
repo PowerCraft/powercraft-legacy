@@ -108,7 +108,8 @@ public class PC_Utils {
 
 		int i = itemstack.getItem().shiftedIndex;
 
-		return (i < 256 && Block.blocksList[i] != null && Block.blocksList[i].blockMaterial == Material.wood) || (i == Item.stick.shiftedIndex) || (i == Item.coal.shiftedIndex) || (i == Item.bucketLava.shiftedIndex) || (i == Block.sapling.blockID)
+		return (i < 256 && Block.blocksList[i] != null && Block.blocksList[i].blockMaterial == Material.wood) || (i == Item.stick.shiftedIndex)
+				|| (i == Item.coal.shiftedIndex) || (i == Item.bucketLava.shiftedIndex) || (i == Block.sapling.blockID)
 				|| ModLoader.addAllFuel(i, itemstack.getItemDamage()) > 0;
 	}
 

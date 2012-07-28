@@ -1,9 +1,15 @@
 package net.minecraft.src;
 
+
 import org.lwjgl.opengl.GL11;
 
-import weasel.obj.WeaselObject;
 
+/**
+ * Color array display
+ * 
+ * @author MightyPork
+ *
+ */
 public class PC_GresColorMap extends PC_GresWidget {
 
 	private int colorArray[][] = null;
@@ -14,79 +20,116 @@ public class PC_GresColorMap extends PC_GresWidget {
 	private int px = 3;
 	private boolean border = true;
 	private boolean acceptKeyboardInput = true;
-	
+
+	/**
+	 * enable-disable border.
+	 * @param flag
+	 * @return this
+	 */
 	protected PC_GresColorMap showBorder(boolean flag) {
 		border = flag;
 		return this;
 	}
-	
+
+	/**
+	 * enable/disable keyboard event consumption
+	 * @param flag flag
+	 * @return this
+	 */
 	public PC_GresColorMap useKeyboard(boolean flag) {
 		acceptKeyboardInput = flag;
 		return this;
 	}
-	
+
 	/**
 	 * Set map scale - size of 1 pixel. default is 3.
+	 * 
 	 * @param scale
-	 * @return
+	 * @return this
 	 */
 	public PC_GresColorMap setScale(int scale) {
 		px = scale;
 		minSize = size = calcSize();
-		if(parent!=null)
-			parent.calcChildPositions();
+		if (parent != null) parent.calcChildPositions();
 		return this;
 	}
-	
-	public PC_GresColorMap(int colorArray[][]){
+
+	/**
+	 * @param colorArray array of colors
+	 */
+	public PC_GresColorMap(int colorArray[][]) {
 		super("");
 		this.colorArray = colorArray;
 		canAddWidget = false;
 		size = calcSize();
-		if(parent!=null)
-			parent.calcChildPositions();
+		if (parent != null) parent.calcChildPositions();
 	}
-	
-	public void setColorArray(int colorArray[][]){
+
+	/**
+	 * set color arrap
+	 * @param colorArray the array of rgb
+	 */
+	public void setColorArray(int colorArray[][]) {
 		this.colorArray = colorArray;
 		size = calcSize();
-		if(parent!=null)
-			parent.calcChildPositions();
+		if (parent != null) parent.calcChildPositions();
 	}
-	
-	public int[][] getColorArray(){
+
+	/**
+	 * get color array
+	 * @return the array of rgb
+	 */
+	public int[][] getColorArray() {
 		return colorArray;
 	}
-	
-	public char getLastKey(){
+
+	/**
+	 * @return char typed
+	 */
+	public char getLastKey() {
 		return lastKey;
 	}
-	
-	public PC_CoordI getLastMousePos(){
+
+	/**
+	 * @return mouse position where event happened
+	 */
+	public PC_CoordI getLastMousePos() {
 		PC_CoordI co = lastMousePos.copy();
-		return new PC_CoordI(co.x/px,co.y/px);
+		return new PC_CoordI(co.x / px, co.y / px);
 	}
-	
-	public int getLastMouseKey(){
+
+	/**
+	 * get last mouse button
+	 * @return 0 left 1 right then others
+	 */
+	public int getLastMouseKey() {
 		return lastMouseKey;
 	}
-	
-	public String getLastEvent(){
+
+	/**
+	 * @return last event name
+	 */
+	public String getLastEvent() {
 		return lastEvent;
 	}
-	
+
 	@Override
 	public PC_CoordI calcSize() {
-		if(!visible) return zerosize;
-		if(colorArray==null)
+		if (!visible) return zerosize;
+		if (colorArray == null)
 			return zerosize;
 		else
-			return new PC_CoordI(Math.round(colorArray.length*px+2*px),Math.round(colorArray[0].length*px+2*px));
+			return new PC_CoordI(Math.round(colorArray.length * px + 2 * px), Math.round(colorArray[0].length * px + 2 * px));
 	}
-	
+
+	/**
+	 * calculate size after change of scale, to predict growth
+	 * @param change
+	 * @return size after change
+	 */
 	public PC_CoordI getSizeAfterChange(int change) {
 		int px1 = px;
-		px+=change;
+		px += change;
 		PC_CoordI ss = calcSize();
 		px = px1;
 		return ss;
@@ -96,45 +139,47 @@ public class PC_GresColorMap extends PC_GresWidget {
 	public void calcChildPositions() {}
 
 	private boolean dragging = false;
-	
+
 	@Override
 	protected void render(PC_CoordI posOffset) {
 		GL11.glDisable(GL11.GL_TEXTURE_2D);
 		Tessellator tessellator = Tessellator.instance;
 		tessellator.startDrawingQuads();
-        double posX, posY, pixelW, pixelH;
-        int color;
-        boolean border=false;
-        float bdrdist = px>1?0.4F:0F;
-        pixelW = 1.0D;
-        pixelH = 1.0D;
-        if(colorArray!=null){
-	        for(int x=-1; x<colorArray.length+1; x++){
-	        	for(int y=-1; y<colorArray[0].length+1; y++){
-	        		border=false;
-	        		if(x==-1||y==-1||x==colorArray.length||y==colorArray[x].length) {
-	        			color = 0x606060;
-	        			border=this.border;
-	        		}else {
-	        			color = colorArray[x][y];}
-	        		if(color != -1){
-	            		posX = x*px + pos.x + posOffset.x+(border?bdrdist:0);
-	            		posY = (y+1)*px + pos.y + posOffset.y+(border?bdrdist:0);
-	            		tessellator.setColorRGBA((color >> 16) & 0xFF,  (color >> 8) & 0xFF, color & 0xFF, 255);
-			            tessellator.addVertex(posX, posY, 0.0D);
-			            tessellator.addVertex(posX + pixelW*px-(border?bdrdist*2:0), posY, 0.0D);
-			            tessellator.addVertex(posX + pixelW*px-(border?bdrdist*2:0), posY + pixelH*px-(border?bdrdist*2:0), 0.0D);
-			            tessellator.addVertex(posX, posY + pixelH*px-(border?bdrdist*2:0), 0.0D);
-			            tessellator.addVertex(posX + pixelW*px-(border?bdrdist*2:0), posY, 0.0D);
-			            tessellator.addVertex(posX, posY, 0.0D);
-			            tessellator.addVertex(posX, posY + pixelH*px-(border?bdrdist*2:0), 0.0D);
-			            tessellator.addVertex(posX + pixelW*px-(border?bdrdist*2:0), posY + pixelH*px-(border?bdrdist*2:0), 0.0D);
-	        		}
-	        	}
-	        }
-        }
-        tessellator.draw();
-        GL11.glEnable(GL11.GL_TEXTURE_2D);
+		double posX, posY, pixelW, pixelH;
+		int color;
+		boolean border = false;
+		float bdrdist = px > 1 ? 0.4F : 0F;
+		pixelW = 1.0D;
+		pixelH = 1.0D;
+		if (colorArray != null) {
+			for (int x = -1; x < colorArray.length + 1; x++) {
+				for (int y = -1; y < colorArray[0].length + 1; y++) {
+					border = false;					
+					if (x == -1 || y == -1 || x == colorArray.length || y == colorArray[x].length) {
+						color = 0x606060;
+						border = this.border;
+						if(!this.border) color = -1;
+					} else {
+						color = colorArray[x][y];
+					}
+					if (color != -1) {
+						posX = x * px + pos.x + posOffset.x + (border ? bdrdist : 0);
+						posY = (y + 1) * px + pos.y + posOffset.y + (border ? bdrdist : 0);
+						tessellator.setColorRGBA((color >> 16) & 0xFF, (color >> 8) & 0xFF, color & 0xFF, 255);
+						tessellator.addVertex(posX, posY, 0.0D);
+						tessellator.addVertex(posX + pixelW * px - (border ? bdrdist * 2 : 0), posY, 0.0D);
+						tessellator.addVertex(posX + pixelW * px - (border ? bdrdist * 2 : 0), posY + pixelH * px - (border ? bdrdist * 2 : 0), 0.0D);
+						tessellator.addVertex(posX, posY + pixelH * px - (border ? bdrdist * 2 : 0), 0.0D);
+						tessellator.addVertex(posX + pixelW * px - (border ? bdrdist * 2 : 0), posY, 0.0D);
+						tessellator.addVertex(posX, posY, 0.0D);
+						tessellator.addVertex(posX, posY + pixelH * px - (border ? bdrdist * 2 : 0), 0.0D);
+						tessellator.addVertex(posX + pixelW * px - (border ? bdrdist * 2 : 0), posY + pixelH * px - (border ? bdrdist * 2 : 0), 0.0D);
+					}
+				}
+			}
+		}
+		tessellator.draw();
+		GL11.glEnable(GL11.GL_TEXTURE_2D);
 	}
 
 	@Override
@@ -145,12 +190,12 @@ public class PC_GresColorMap extends PC_GresWidget {
 	@Override
 	public boolean mouseClick(PC_CoordI mousePos, int key) {
 		dragging = (key != -1);
-		mousePos.y-=px;	
-		if(mousePos.x>=size.x-2*px) return false;
-		if(mousePos.y>=size.y-2*px) return false;
+		mousePos.y -= px;
+		if (mousePos.x >= size.x - 2 * px) return false;
+		if (mousePos.y >= size.y - 2 * px) return false;
 		lastMousePos = mousePos.copy();
 		lastMouseKey = key;
-		lastEvent = (key != -1)?"down":"up";
+		lastEvent = (key != -1) ? "down" : "up";
 		return true;
 	}
 
@@ -164,12 +209,11 @@ public class PC_GresColorMap extends PC_GresWidget {
 	}
 
 	@Override
-	public void mouseWheel(int i) {
-	}
+	public void mouseWheel(int i) {}
 
 	@Override
 	public boolean keyTyped(char c, int key) {
-		if(!acceptKeyboardInput) return false;
+		if (!acceptKeyboardInput) return false;
 		lastKey = c;
 		lastEvent = "key";
 		return true;
@@ -178,6 +222,10 @@ public class PC_GresColorMap extends PC_GresWidget {
 	@Override
 	public void addedToWidget() {}
 
+	/**
+	 * get pixel scale
+	 * @return scale
+	 */
 	public int getScale() {
 		return px;
 	}

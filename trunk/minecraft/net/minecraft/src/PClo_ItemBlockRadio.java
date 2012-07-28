@@ -79,7 +79,8 @@ public class PClo_ItemBlockRadio extends ItemBlock {
 			if (world.setBlockWithNotify(i, j, k, block.blockID)) {
 				block.onBlockPlaced(world, i, j, k, l);
 				block.onBlockPlacedBy(world, i, j, k, entityplayer);
-				world.playSoundEffect(i + 0.5F, j + 0.5F, k + 0.5F, block.stepSound.getStepSound(), (block.stepSound.getVolume() + 1.0F) / 2.0F, block.stepSound.getPitch() * 0.8F);
+				world.playSoundEffect(i + 0.5F, j + 0.5F, k + 0.5F, block.stepSound.getStepSound(), (block.stepSound.getVolume() + 1.0F) / 2.0F,
+						block.stepSound.getPitch() * 0.8F);
 
 				// set tile entity
 				PClo_TileEntityRadio ter = (PClo_TileEntityRadio) world.getBlockTileEntity(i, j, k);

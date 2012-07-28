@@ -36,19 +36,19 @@ public class PClo_Renderer {
 		if (rtype == lightRenderer) {
 			return true;
 		}
-		
+
 		if (rtype == radioRenderer) {
 			return true;
 		}
-		
+
 		if (rtype == sensorRenderer) {
 			return true;
 		}
-		
+
 		if (rtype == weaselRenderer) {
 			return true;
 		}
-		
+
 		return false;
 	}
 
@@ -88,13 +88,13 @@ public class PClo_Renderer {
 
 		PC_Renderer.swapTerrain(mod_PClogic.getTerrainFile());
 
-		if(meta < 32) {
+		if (meta < 32) {
 			float sidehalf = 0.1875F;
 			float height = 0.15F;
 			block.setBlockBounds(0.5F - sidehalf, 0.5F - sidehalf, 0.5F - height / 2F, 0.5F + sidehalf, 0.5F + sidehalf, 0.5F + height / 2F);
 			PC_Renderer.renderInvBoxWithTexture(renderblocks, block, 66);
-		}else {
-			float sidehalf = 0.5F-0.0625F;
+		} else {
+			float sidehalf = 0.5F - 0.0625F;
 			float height = 0.18F;
 			block.setBlockBounds(0.5F - sidehalf, 0.5F - sidehalf, 0.5F - height / 2F, 0.5F + sidehalf, 0.5F + sidehalf, 0.5F + height / 2F);
 			PC_Renderer.renderInvBoxWithTexture(renderblocks, block, 117);
@@ -206,61 +206,61 @@ public class PClo_Renderer {
 
 				block.setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 1.0F, 1.0F);
 				break;
-				
+
 			case PClo_WeaselType.TOUCHSCREEN:
 				// legs
 				block.setBlockBounds(3 * px, 0, 4 * px, 4 * px, 1 * px, 12 * px);
 				PC_Renderer.renderInvBoxWithTexture(renderblocks, block, 197);
-				block.setBlockBounds(12 * px, 0, 4 * px, 13* px, 1 * px, 12 * px);
+				block.setBlockBounds(12 * px, 0, 4 * px, 13 * px, 1 * px, 12 * px);
 				PC_Renderer.renderInvBoxWithTexture(renderblocks, block, 197);
 				//sticks
-				block.setBlockBounds(3 * px, 1*px, 7.5F * px, 4 * px, 2 * px, 8.5F * px);
+				block.setBlockBounds(3 * px, 1 * px, 7.5F * px, 4 * px, 2 * px, 8.5F * px);
 				PC_Renderer.renderInvBoxWithTexture(renderblocks, block, 197);
-				block.setBlockBounds(12 * px, 1*px, 7.5F * px, 13* px, 2 * px, 8.5F * px);
+				block.setBlockBounds(12 * px, 1 * px, 7.5F * px, 13 * px, 2 * px, 8.5F * px);
 				PC_Renderer.renderInvBoxWithTexture(renderblocks, block, 197);
-				
+
 				//bottom
-				block.setBlockBounds(0 * px, 2*px, 7.5F * px, 16 * px, 3 * px, 8.5F * px);
+				block.setBlockBounds(0 * px, 2 * px, 7.5F * px, 16 * px, 3 * px, 8.5F * px);
 				PC_Renderer.renderInvBoxWithTexture(renderblocks, block, 197);
 				//top
-				block.setBlockBounds(0 * px, 15*px, 7.5F * px, 16 * px, 16* px, 8.5F * px);
+				block.setBlockBounds(0 * px, 15 * px, 7.5F * px, 16 * px, 16 * px, 8.5F * px);
 				PC_Renderer.renderInvBoxWithTexture(renderblocks, block, 197);
 				//left
-				block.setBlockBounds(0 * px, 3*px, 7.5F * px, 1 * px, 15* px, 8.5F * px);
+				block.setBlockBounds(0 * px, 3 * px, 7.5F * px, 1 * px, 15 * px, 8.5F * px);
 				PC_Renderer.renderInvBoxWithTexture(renderblocks, block, 197);
 				//right
-				block.setBlockBounds(15 * px, 3*px, 7.5F * px, 16 * px, 15* px, 8.5F * px);
+				block.setBlockBounds(15 * px, 3 * px, 7.5F * px, 16 * px, 15 * px, 8.5F * px);
 				PC_Renderer.renderInvBoxWithTexture(renderblocks, block, 197);
-				
+
 				block.setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 1.0F, 1.0F);
 				break;
 
 			case PClo_WeaselType.DISK_MANAGER:
 				block.setBlockBounds(0, 0, 0, 16 * px, 13 * px, 16 * px);
-				PC_Renderer.renderInvBoxWithTextures(renderblocks, block, new int[] { 230,209,210,210,210,210 });
+				PC_Renderer.renderInvBoxWithTextures(renderblocks, block, new int[] { 230, 209, 210, 210, 210, 210 });
 
 				block.setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 1.0F, 1.0F);
 				break;
 
 			case PClo_WeaselType.DISK_DRIVE:
 				block.setBlockBounds(0, 0, 0, 16 * px, 13 * px, 16 * px);
-				PC_Renderer.renderInvBoxWithTextures(renderblocks, block, new int[] { 230,225,211,211,211,211 });
+				PC_Renderer.renderInvBoxWithTextures(renderblocks, block, new int[] { 230, 225, 211, 211, 211, 211 });
 
 				block.setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 1.0F, 1.0F);
 				break;
 
 			case PClo_WeaselType.TERMINAL:
 				// floor
-				block.setBlockBounds(1*px, 0, 1*px, 15 * px, 4 * px, 15 * px);
-				PC_Renderer.renderInvBoxWithTextures(renderblocks, block, new int[] { 227,212,226,226,226,226 });
-				
+				block.setBlockBounds(1 * px, 0, 1 * px, 15 * px, 4 * px, 15 * px);
+				PC_Renderer.renderInvBoxWithTextures(renderblocks, block, new int[] { 227, 212, 226, 226, 226, 226 });
+
 				// screen
-				block.setBlockBounds(2*px, 4*px, 2*px, 14 * px, 12 * px, 8 * px);
-				PC_Renderer.renderInvBoxWithTextures(renderblocks, block, new int[] { 229,229,228,213,214,214 });
+				block.setBlockBounds(2 * px, 4 * px, 2 * px, 14 * px, 12 * px, 8 * px);
+				PC_Renderer.renderInvBoxWithTextures(renderblocks, block, new int[] { 229, 229, 228, 213, 214, 214 });
 
 				block.setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 1.0F, 1.0F);
 				break;
-				
+
 		}
 
 		PC_Renderer.resetTerrain(true);

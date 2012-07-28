@@ -57,15 +57,15 @@ public class PCtr_Renderer {
 			Block.blockGold.setBlockBounds(0.125F, 0.0F, 0.125F, 0.875F, 0.125F, 0.875F);
 			renderblocks.renderStandardBlock(Block.blockGold, i, j, k);
 			float m = 0.0625F * 6F;
-			float n = 0.0625F*10F;
-			if(tet.direction.equals("N")) {
-				Block.blockGold.setBlockBounds(m, 0, 0.0625F, n, 0.125F, 0.0625F*2);
-			}else if(tet.direction.equals("S")) {
-				Block.blockGold.setBlockBounds(m, 0, 1-0.0625F*2, n, 0.125F, 1-0.0625F);
-			}else if(tet.direction.equals("E")) {
-				Block.blockGold.setBlockBounds(1-0.0625F*2, 0, m, 1-0.0625F, 0.125F, n);
-			}else if(tet.direction.equals("W")) {
-				Block.blockGold.setBlockBounds(0.0625F, 0, m, 0.0625F*2, 0.125F, n);
+			float n = 0.0625F * 10F;
+			if (tet.direction.equals("N")) {
+				Block.blockGold.setBlockBounds(m, 0, 0.0625F, n, 0.125F, 0.0625F * 2);
+			} else if (tet.direction.equals("S")) {
+				Block.blockGold.setBlockBounds(m, 0, 1 - 0.0625F * 2, n, 0.125F, 1 - 0.0625F);
+			} else if (tet.direction.equals("E")) {
+				Block.blockGold.setBlockBounds(1 - 0.0625F * 2, 0, m, 1 - 0.0625F, 0.125F, n);
+			} else if (tet.direction.equals("W")) {
+				Block.blockGold.setBlockBounds(0.0625F, 0, m, 0.0625F * 2, 0.125F, n);
 			}
 			renderblocks.renderStandardBlock(Block.blockGold, i, j, k);
 		} else {

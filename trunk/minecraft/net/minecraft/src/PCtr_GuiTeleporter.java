@@ -225,7 +225,8 @@ public class PCtr_GuiTeleporter implements PC_IGresBase {
 
 			teleporter.onInventoryChanged();
 
-			teleporter.worldObj.markBlocksDirty(teleporter.xCoord, teleporter.yCoord, teleporter.zCoord, teleporter.xCoord, teleporter.yCoord, teleporter.zCoord);
+			teleporter.worldObj.markBlocksDirty(teleporter.xCoord, teleporter.yCoord, teleporter.zCoord, teleporter.xCoord, teleporter.yCoord,
+					teleporter.zCoord);
 			teleporter.worldObj.markBlockNeedsUpdate(teleporter.xCoord, teleporter.yCoord, teleporter.zCoord);
 
 			gui.close();

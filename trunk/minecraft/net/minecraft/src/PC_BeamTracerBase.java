@@ -354,7 +354,8 @@ public abstract class PC_BeamTracerBase {
 			if (canHitEntity) {
 
 				// check for entities in this block.
-				List<Entity> hitList = world.getEntitiesWithinAABB(net.minecraft.src.Entity.class, AxisAlignedBB.getBoundingBoxFromPool(cnt.x, cnt.y, cnt.z, cnt.x + 1, cnt.y + 1, cnt.z + 1));
+				List<Entity> hitList = world.getEntitiesWithinAABB(net.minecraft.src.Entity.class,
+						AxisAlignedBB.getBoundingBoxFromPool(cnt.x, cnt.y, cnt.z, cnt.x + 1, cnt.y + 1, cnt.z + 1));
 
 				if (hitList.size() > 0) {
 					if (handler.onEntityHit(world, hitList.toArray(new Entity[hitList.size()]), startCoord)) {

@@ -30,9 +30,10 @@ public class mod_PCcore extends PC_Module implements PC_IActivatorListener {
 
 	/** the mod instance */
 	public static mod_PCcore instance;
-	
+
 	/** The english font renderer, huge letters etc. */
-	public static FontRenderer fontRendererDefault = new FontRenderer(PC_Utils.mc().gameSettings, "/font/default.png", PC_Utils.mc().renderEngine, false);
+	public static FontRenderer fontRendererDefault = new FontRenderer(PC_Utils.mc().gameSettings, "/font/default.png", PC_Utils.mc().renderEngine,
+			false);
 	/** Small font renderer */
 	public static FontRenderer fontRendererSmall = new FontRenderer(PC_Utils.mc().gameSettings, "/font/default.png", PC_Utils.mc().renderEngine, true);
 
@@ -123,9 +124,10 @@ public class mod_PCcore extends PC_Module implements PC_IActivatorListener {
 	public int addFuel(int i, int j) {
 		return (i == powerDust.shiftedIndex) ? 3200 : 0;
 	}
-	
+
 	/**
 	 * maybe changing the first letter will fix the problems - who knows.
+	 * 
 	 * @param i id
 	 * @param j damage
 	 * @return fuel
@@ -275,7 +277,8 @@ public class mod_PCcore extends PC_Module implements PC_IActivatorListener {
 		conf.putBoolean(pk_optMuteSound, false, "Disable all sounds and breaking animations with sounds.");
 		conf.putBoolean(pk_optSoundCrystal, true, "Enable \"jingle\" sounds made by PowerCrystals.");
 
-		conf.putBoolean(pk_optCraftCheating, false, "Makes the Crafting Tool work like TMI in Survival,\ngiving you everything with no resources consumed.");
+		conf.putBoolean(pk_optCraftCheating, false,
+				"Makes the Crafting Tool work like TMI in Survival,\ngiving you everything with no resources consumed.");
 
 		conf.putBoolean(pk_logEnabled, true, "Enable logging. Logs errors, events and debug info.\nDisabling this may slightly improve speed.");
 		conf.putBoolean(pk_logToStdout, false, "Send log also to stdout (terminal screen).");
@@ -954,7 +957,8 @@ public class mod_PCcore extends PC_Module implements PC_IActivatorListener {
 			int maxBlocks = random.nextInt(MathHelper.clamp_int(cfg().num(pk_genCrystalsDepositMaxCount) - 1, 1, 10)) + 2;
 
 			posX = chunkX + random.nextInt(16);
-			posY = MathHelper.clamp_int(random.nextInt(MathHelper.clamp_int(cfg().num(pk_genCrystalsMaxY) - cfg().num(pk_genCrystalsMinY), 1, 255)) + cfg().num(pk_genCrystalsMinY), 1, 255);
+			posY = MathHelper.clamp_int(random.nextInt(MathHelper.clamp_int(cfg().num(pk_genCrystalsMaxY) - cfg().num(pk_genCrystalsMinY), 1, 255))
+					+ cfg().num(pk_genCrystalsMinY), 1, 255);
 
 			posZ = chunkZ + random.nextInt(16);
 
@@ -1107,7 +1111,8 @@ public class mod_PCcore extends PC_Module implements PC_IActivatorListener {
 
 				updateText = updateText.trim();
 
-				updateAvailable = updateModVersionSerial > instance.getVersionSerial() && updateModVersionSerial != update_last_ignored_version_serial;
+				updateAvailable = updateModVersionSerial > instance.getVersionSerial()
+						&& updateModVersionSerial != update_last_ignored_version_serial;
 
 				PC_Logger.finer("* Update mod version = " + updateModVersion);
 				PC_Logger.finer("* Update mod version_serial = " + updateModVersionSerial);
@@ -1211,7 +1216,8 @@ public class mod_PCcore extends PC_Module implements PC_IActivatorListener {
 
 		// text at the bottom of the screen
 		if (gui instanceof GuiMainMenu) {
-			gui.drawString(gui.fontRenderer, ", PowerCraft " + getVersion(), 2 + gui.fontRenderer.getStringWidth("Minecraft 1.2.5"), gui.height - 10, 0xffffffff);
+			gui.drawString(gui.fontRenderer, ", PowerCraft " + getVersion(), 2 + gui.fontRenderer.getStringWidth("Minecraft 1.2.5"), gui.height - 10,
+					0xffffffff);
 		}
 		return true;
 

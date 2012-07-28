@@ -628,7 +628,8 @@ public class PC_PropertyManager {
 				try {
 					num = Integer.parseInt(string.trim());
 				} catch (NumberFormatException e) {
-					PC_Logger.warning("Numeric property \"" + name + "\" has invalid value \"" + string + "\". Falling back to default \"" + defnum + "\"");
+					PC_Logger.warning("Numeric property \"" + name + "\" has invalid value \"" + string + "\". Falling back to default \"" + defnum
+							+ "\"");
 					num = defnum;
 				}
 			}
@@ -641,7 +642,8 @@ public class PC_PropertyManager {
 				}
 				num = Keyboard.getKeyIndex(string);
 				if (num == Keyboard.KEY_NONE) {
-					PC_Logger.warning("Key property \"" + name + "\" has invalid value \"" + string + "\". Falling back to default \"" + Keyboard.getKeyName(defnum) + "\"");
+					PC_Logger.warning("Key property \"" + name + "\" has invalid value \"" + string + "\". Falling back to default \""
+							+ Keyboard.getKeyName(defnum) + "\"");
 					num = defnum;
 				}
 			}
@@ -662,7 +664,8 @@ public class PC_PropertyManager {
 					return false;
 				}
 				String string2 = string.toLowerCase();
-				bool = string2.equals("yes") || string2.equals("true") || string2.equals("on") || string2.equals("enabled") || string2.equals("enable");
+				bool = string2.equals("yes") || string2.equals("true") || string2.equals("on") || string2.equals("enabled")
+						|| string2.equals("enable");
 			}
 
 			return true;
@@ -734,13 +737,15 @@ public class PC_PropertyManager {
 		public void validate() {
 			if (!isValid()) {
 				if (type == PropertyType.BLOCK) {
-					PC_Logger.severe("Block ID property \"" + name + "\" has invalid value (ID out of range, or already used). YOUR MINECRAFT WILL CRASH!");
+					PC_Logger.severe("Block ID property \"" + name
+							+ "\" has invalid value (ID out of range, or already used). YOUR MINECRAFT WILL CRASH!");
 				} else if (type == PropertyType.ITEM) {
 					PC_Logger.severe("Item ID property \"" + name + "\" has invalid value (ID out of range, or already used). THIS MAY CAUSE CRASH!");
 				}
 
 				if (type == PropertyType.KEY) {
-					PC_Logger.warning("Key property \"" + name + "\" has invalid value (unknown key name). Falling back to default value  \"" + Keyboard.getKeyName(defnum) + "\"");
+					PC_Logger.warning("Key property \"" + name + "\" has invalid value (unknown key name). Falling back to default value  \""
+							+ Keyboard.getKeyName(defnum) + "\"");
 					num = defnum;
 				}
 				if (type == PropertyType.STRING) {
