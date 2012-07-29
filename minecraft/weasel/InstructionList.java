@@ -322,7 +322,6 @@ public class InstructionList implements PC_INBT {
 		for (int i = 0; i < tags.tagCount(); i++) {
 			NBTTagCompound tag1 = (NBTTagCompound) tags.tagAt(i);
 			list.set(tag1.getInteger(nk_INDEX), Instruction.loadInstructionFromNBT(tag1));
-			System.out.println("at " + tag1.getInteger(nk_INDEX) + ": " + Instruction.loadInstructionFromNBT(tag1));
 		}
 
 		programCounter = tag.getInteger(nk_PC);

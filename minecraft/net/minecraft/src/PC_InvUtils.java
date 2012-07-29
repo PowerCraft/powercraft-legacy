@@ -438,6 +438,9 @@ public class PC_InvUtils {
 		if (i == Item.blazeRod.shiftedIndex) {
 			return (int) (2400 * strength);
 		}
+		if (i == mod_PCcore.powerDust.shiftedIndex) {
+			return (int) (mod_PCcore.powerDustStrength * strength);
+		}
 
 		return (int) (ModLoader.addAllFuel(i, itemstack.getItemDamage()) * strength);
 	}

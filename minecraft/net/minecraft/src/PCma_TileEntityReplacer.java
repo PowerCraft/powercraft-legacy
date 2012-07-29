@@ -195,7 +195,7 @@ public class PCma_TileEntityReplacer extends PC_TileEntity implements IInventory
 			buildBlock = ItemStack.loadItemStackFromNBT(nbttagcompound1);
 		}
 
-		PC_Utils.readWrappedFromNBT(nbttagcompound, "targetPos", coordOffset);
+		PC_Utils.loadFromNBT(nbttagcompound, "targetPos", coordOffset);
 		state = nbttagcompound.getBoolean("state");
 		aidEnabled = nbttagcompound.getBoolean("aid");
 		extraMeta = nbttagcompound.getInteger("extraMeta");
@@ -222,7 +222,7 @@ public class PCma_TileEntityReplacer extends PC_TileEntity implements IInventory
 		nbttagcompound.setBoolean("aid", aidEnabled);
 		nbttagcompound.setInteger("extraMeta", extraMeta);
 
-		PC_Utils.writeWrappedToNBT(nbttagcompound, "targetPos", coordOffset);
+		PC_Utils.saveToNBT(nbttagcompound, "targetPos", coordOffset);
 	}
 
 	@Override

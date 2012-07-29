@@ -1,26 +1,38 @@
-// Decompiled by Jad v1.5.8g. Copyright 2001 Pavel Kouznetsov.
-// Jad home page: http://www.kpdus.com/jad.html
-// Decompiler options: packimports(3) braces deadcode fieldsfirst
-
 package net.minecraft.src;
 
 
 import org.lwjgl.opengl.GL11;
 
 
-// Referenced classes of package net.minecraft.src:
-// Render, ModelMiner, EntityMiner, MathHelper,
-// ModelBase, Entity
 
+/**
+ * Miner renderer
+ * 
+ * @author MightyPork
+ *
+ */
 public class PCmo_RenderMiner extends Render {
 
+	/** model */
 	protected ModelBase modelMiner;
 
+	/**
+	 * miner model
+	 */
 	public PCmo_RenderMiner() {
 		shadowSize = 0.5F;
 		modelMiner = new PCmo_ModelMiner();
 	}
 
+	/**
+	 * Do render miner
+	 * @param entityminer miner
+	 * @param d relative x
+	 * @param d1 relative y
+	 * @param d2 relative z
+	 * @param f angle y
+	 * @param f1 wobble time
+	 */
 	public void renderMiner(PCmo_EntityMiner entityminer, double d, double d1, double d2, float f, float f1) {
 		GL11.glPushMatrix();
 		GL11.glTranslatef((float) d, (float) d1, (float) d2);
@@ -41,7 +53,7 @@ public class PCmo_RenderMiner extends Render {
 		GL11.glScalef(-1F, -1F, 1.0F);
 		modelMiner.render(entityminer, 0.0F, 0.0F, -0.1F, 0.0F, 0.0F, 0.0625F);
 
-		loadTexture(mod_PCmobile.getImgDir() + "miner_overlay_" + (Integer.toString(entityminer.level)) + ".png");
+		loadTexture(mod_PCmobile.getImgDir() + "miner_overlay_" + (Integer.toString(entityminer.st.level)) + ".png");
 		GL11.glEnable(3042 /* GL_BLEND */);
 		GL11.glDisable(3008 /* GL_ALPHA_TEST */);
 		GL11.glBlendFunc(770, 771);
@@ -49,7 +61,7 @@ public class PCmo_RenderMiner extends Render {
 
 		modelMiner.render(entityminer, 0.0F, 0.0F, -0.1F, 0.0F, 0.0F, 0.0625F);
 
-		if (entityminer.keyboardControlled) {
+		if (entityminer.st.keyboardControlled) {
 			loadTexture(mod_PCmobile.getImgDir() + "miner_overlay_keyboard.png");
 			modelMiner.render(entityminer, 0.0F, 0.0F, -0.1F, 0.0F, 0.0F, 0.0625F);
 		}
@@ -58,46 +70,6 @@ public class PCmo_RenderMiner extends Render {
 		GL11.glEnable(3008 /* GL_ALPHA_TEST */);
 
 		GL11.glPopMatrix();
-
-		// FISHNET CILINDER
-		// GL11.glPushMatrix();
-		// Tessellator tessellator = Tessellator.instance;
-		// Random rr = new Random();
-		// rr.setSeed(15);
-		// GL11.glDisable(3553 /*GL_TEXTURE_2D*/);
-		// GL11.glDisable(2896 /*GL_LIGHTING*/);
-		// GL11.glTranslatef((float)d, (float)d1, (float)d2);
-		// GL11.glRotatef(180F - f, 0.0F, 1.0F, 0.0F);
-		//
-		// for(int q=0; q<10; q++){
-		// tessellator.startDrawing(2);
-		//
-		// tessellator.setColorOpaque_I(0);
-		//
-		// for (double k = 0; k <= 3.1415D*2; k+=(3.1415D*2)/30D)
-		// {
-		// tessellator.addVertex(Math.sin(k)*0.5D,q*0.2D,Math.cos(k)*0.5D);
-		// }
-		//
-		// tessellator.draw();
-		// }
-		//
-		// tessellator.startDrawing(1);
-		// for (double k = 0; k <= 3.1415*2; k+=(3.1415D*2)/30D)
-		// {
-		//
-		//
-		// tessellator.setColorOpaque_I(0);
-		// tessellator.addVertex(Math.sin(k)*0.5D,0D,Math.cos(k)*0.5D);
-		// tessellator.addVertex(Math.sin(k)*0.5D,9*0.2D,Math.cos(k)*0.5D);
-		//
-		//
-		// }
-		// tessellator.draw();
-		//
-		// GL11.glEnable(2896 /*GL_LIGHTING*/);
-		// GL11.glEnable(3553 /*GL_TEXTURE_2D*/);
-		// GL11.glPopMatrix();
 	}
 
 	@Override

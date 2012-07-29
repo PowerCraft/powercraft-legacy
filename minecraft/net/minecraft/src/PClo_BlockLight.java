@@ -1,6 +1,7 @@
 package net.minecraft.src;
 
 
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Random;
 import java.util.Set;
@@ -330,10 +331,17 @@ public class PClo_BlockLight extends BlockContainer implements PC_ISwapTerrain, 
 	}
 
 	@Override
+	public AxisAlignedBB getCollisionBoundingBoxFromPool(World par1World, int par2, int par3, int par4) {
+		setBlockBoundsBasedOnState(par1World, par2, par3, par4);
+		return super.getCollisionBoundingBoxFromPool(par1World, par2, par3, par4);
+	}
+	
+	@Override
 	public void setBlockBoundsBasedOnState(IBlockAccess iblockaccess, int i, int j, int k) {
 		int i1 = iblockaccess.getBlockMetadata(i, j, k);
 
 		PClo_TileEntityLight te = getTE(iblockaccess, i, j, k);
+		if(te==null) return;
 
 		float sidehalf = te.isHuge ? 0.5F : 0.1875F;
 		float height = te.isHuge ? 0.0625F * 3 : 0.0625F * 2;
@@ -362,9 +370,9 @@ public class PClo_BlockLight extends BlockContainer implements PC_ISwapTerrain, 
 
 	@Override
 	public void setBlockBoundsForItemRender() {
-		float sidehalf = 0.1875F;
-		float height = 0.15F;
-		setBlockBounds(0.5F - sidehalf, 0.5F - sidehalf, 0.5F - height / 2F, 0.5F + sidehalf, 0.5F + sidehalf, 0.5F + height / 2F);
+//		float sidehalf = 0.1875F;
+//		float height = 0.15F;
+//		setBlockBounds(0.5F - sidehalf, 0.5F - sidehalf, 0.5F - height / 2F, 0.5F + sidehalf, 0.5F + sidehalf, 0.5F + height / 2F);
 	}
 
 	@Override

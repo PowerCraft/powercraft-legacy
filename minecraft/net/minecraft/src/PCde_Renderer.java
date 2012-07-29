@@ -145,6 +145,7 @@ public class PCde_Renderer {
 
 			bl.setBlockBounds(0, 0, w, w, 1, 1 - w);
 			renderblocks.renderStandardBlock(bl, i, j, k);
+			
 			bl.setBlockBounds(0, 0, 0, 1, 1, 1);
 
 			return true;
@@ -162,6 +163,9 @@ public class PCde_Renderer {
 	 * @param rtype render type
 	 */
 	public static void renderInvBlockByType(RenderBlocks renderblocks, Block block, int meta, int rtype) {
+
+		double[] a = {block.minX,block.minY,block.minZ,block.maxX,block.maxY,block.maxZ};
+		
 		if (rtype == decorativeBlockRenderer) {
 			renderInvBlockDeco(renderblocks, block, meta);
 		}
@@ -169,6 +173,8 @@ public class PCde_Renderer {
 		if (rtype == walkableBlockRenderer) {
 			renderInvBlockDecoNonSolid(renderblocks, block, meta);
 		}
+		
+		block.setBlockBounds((float)a[0],(float)a[1],(float)a[2],(float)a[3],(float)a[4],(float)a[5]);
 		return;
 	}
 
@@ -218,7 +224,6 @@ public class PCde_Renderer {
 			block.setBlockBounds(1 - s, 1 - s, s, 1, 1, 1 - s);
 			PC_Renderer.renderInvBoxWithTexture(renderblocks, block, 21);
 
-			block.setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 1.0F, 1.0F);
 
 			PC_Renderer.resetTerrain(swapped);
 
@@ -243,7 +248,6 @@ public class PCde_Renderer {
 
 			PC_Renderer.resetTerrain(swapped);
 
-			block.setBlockBounds(0, 0, 0, 1, 1, 1);
 
 		} else if (meta == 3) {
 
@@ -278,8 +282,6 @@ public class PCde_Renderer {
 
 			block.setBlockBounds(12 * px, 12 * px, 12 * px, 16 * px, 16 * px, 16 * px);
 			PC_Renderer.renderInvBoxWithTexture(renderblocks, block, 22);
-
-			block.setBlockBounds(0, 0, 0, 1, 1, 1);
 
 
 			PC_Renderer.resetTerrain(swapped);
@@ -327,7 +329,6 @@ public class PCde_Renderer {
 			PC_Renderer.renderInvBoxWithTexture(renderblocks, block, 20);
 			block.setBlockBounds(0, 0, 0, p, 1, 1);
 			PC_Renderer.renderInvBoxWithTexture(renderblocks, block, 20);
-			block.setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 1.0F, 1.0F);
 			PC_Renderer.resetTerrain(swapped);
 		} else if (meta == 1) {
 			float p = 0.0625F;
@@ -344,7 +345,6 @@ public class PCde_Renderer {
 			block.setBlockBounds(0, 0.5F, 0, p, 0.5F + 0.5F, 0.5F);
 			PC_Renderer.renderInvBoxWithTexture(renderblocks, block, 20);
 
-			block.setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 1.0F, 1.0F);
 			PC_Renderer.resetTerrain(swapped);
 		}
 

@@ -1,21 +1,19 @@
 package net.minecraft.src;
 
-
-import java.util.Hashtable;
 import java.util.Random;
 
 
 /**
- * Class for miner program parsing
+ * Class for miner's direct program parsing
  * 
  * @author MightyPork
  */
 public class PCmo_Command {
-	public PCmo_Command() {}
 
 	private static final int COUNT = 20;
-	public static String[] names = new String[COUNT];
-	public static Character[] chars = new Character[COUNT];
+	
+	private static String[] names = new String[COUNT];
+	private static char[] chars = new char[COUNT];
 
 	private static Random random = new Random();
 
@@ -83,12 +81,14 @@ public class PCmo_Command {
 
 	}
 
+	@SuppressWarnings("javadoc")
 	public static final int FORWARD = 0, LEFT = 1, RIGHT = 2, BACKWARD = 3, SOUTH = 4, NORTH = 5, EAST = 6, WEST = 7, DOWN = 8, UP = 9, DEPOSIT = 10,
 			DISASSEMBLY = 11, MINING_ENABLE = 12, MINING_DISABLE = 13, BRIDGE_ENABLE = 14, BRIDGE_DISABLE = 15, LAVA_ENABLE = 16, LAVA_DISABLE = 17,
 			WATER_ENABLE = 18, WATER_DISABLE = 19;
 
 	// direct commands
-	public static final int RESET = -2, RUN_PROGRAM = -3;;
+	@SuppressWarnings("javadoc")
+	public static final int RESET = -2, RUN_PROGRAM = -3;
 
 	/**
 	 * is command with this id turning commans?
@@ -140,18 +140,18 @@ public class PCmo_Command {
 		return i >= 12;
 	}
 
-	/**
-	 * Convert int to string representation of the command.
-	 * 
-	 * @param num command id
-	 * @return command as string (one character long)
-	 */
-	public static String getNameFromInt(int num) {
-		if (num < 0 || num >= COUNT) {
-			return "BAD_CMD";
-		}
-		return names[num];
-	}
+//	/**
+//	 * Convert int to string representation of the command.
+//	 * 
+//	 * @param num command id
+//	 * @return command as string (one character long)
+//	 */
+//	private static String getNameFromInt(int num) {
+//		if (num < 0 || num >= COUNT) {
+//			return "BAD_CMD";
+//		}
+//		return names[num];
+//	}
 
 	/**
 	 * Convert the command int to a character
@@ -159,11 +159,11 @@ public class PCmo_Command {
 	 * @param num command id
 	 * @return as character
 	 */
-	public static Character getCharFromInt(int num) {
+	public static char getCharFromInt(int num) {
 		if (num < 0 || num >= COUNT) {
 			return '?';
 		}
-		return Character.valueOf(chars[num]);
+		return chars[num];
 	}
 
 	/**
@@ -172,35 +172,13 @@ public class PCmo_Command {
 	 * @param chr command as Character
 	 * @return command id
 	 */
-	public static int getIntFromChar(Character chr) {
+	public static int getIntFromChar(char chr) {
 		for (int i = 0; i < COUNT; i++) {
-			if (Character.valueOf(chars[i]).equals(chr)) {
+			if (chars[i]==chr) {
 				return i;
 			}
 		}
 		return -1;
-	}
-
-	private static Hashtable<Character, Integer> vars = new Hashtable<Character, Integer>();
-
-	private static void setVar(char index, int value) throws PCmo_CommandException {
-		if (!Character.isLetter(Character.valueOf(index))) {
-			throw new PCmo_CommandException("Bad variable name '" + index + "'.");
-		}
-		vars.put(Character.valueOf(index), Integer.valueOf(value));
-	}
-
-	private static int getVar(char index) throws PCmo_CommandException {
-		Object obj = vars.get(Character.valueOf(index));
-
-		if (obj == null) {
-			throw new PCmo_CommandException("Var '" + index + "' not initialized.");
-		}
-		if (!(obj instanceof Integer)) {
-			throw new PCmo_CommandException("'" + index + "' not Integer.");
-		}
-
-		return (Integer) obj;
 	}
 
 	private static String parseEvaluateVars(String input) throws PCmo_CommandException {
@@ -279,11 +257,6 @@ public class PCmo_Command {
 			local = local.substring(1, local.length() - 1); // only the insides
 		}
 
-		// A
-		if (local.matches("[A-Z]{1}")) {
-			return getVar(local.charAt(0));
-		}
-
 		// -123
 		if (local.matches("[\\-]?[0-9]+")) {
 			return readInt(local, 0);
@@ -298,218 +271,20 @@ public class PCmo_Command {
 			}
 		}
 
-		// RND*A
-		if (local.matches("RND\\*[A-Z]{1}")) {
-			try {
-				return random.nextInt(getVar(local.charAt(4)));
-			} catch (IllegalArgumentException iae) {
-				throw new PCmo_CommandException("Negative random.");
-			}
-		}
-
-		// A+RND*15
-		if (local.matches("[A-Z]{1}[+\\-*%/]{1}RND\\*[0-9]+")) {
-			try {
-				return numOp(getVar(local.charAt(0)), local.charAt(1), random.nextInt(readInt(local, 6)));
-			} catch (IllegalArgumentException iae) {
-				throw new PCmo_CommandException("Negative random.");
-			}
-		}
-
-		// RND*15+B
-		if (local.matches("RND\\*[0-9]+[+\\-*%/]{1}[A-Z]{1}")) {
-			try {
-				return numOp(getVar(local.charAt(local.length() - 1)), local.charAt(local.length() - 2), random.nextInt(readInt(local, 4)));
-			} catch (IllegalArgumentException iae) {
-				throw new PCmo_CommandException("Negative random.");
-			}
-		}
-
-		// -14+RND*15
-		if (local.matches("[\\-]?[0-9]+[+\\-*%/]{1}RND\\*[0-9]+")) {
-			try {
-				return numOp(readInt(local, 0), local.charAt(local.indexOf("RND") - 1), random.nextInt(readInt(local, local.indexOf("RND")) + 4));
-
-			} catch (IllegalArgumentException iae) {
-				throw new PCmo_CommandException("Negative random.");
-			}
-		}
-
 		// RND*15+16 only plus!
 		if (local.matches("RND\\*[0-9]+\\+[0-9]+")) {
 			try {
-				return numOp(readInt(local, local.indexOf("+") + 1), '+', random.nextInt(readInt(local, 4)));
+				return readInt(local, local.indexOf("+") + 1) + random.nextInt(readInt(local, 4));
 			} catch (IllegalArgumentException iae) {
 				throw new PCmo_CommandException("Negative random.");
 			}
-		}
-
-		// A+123
-		if (local.matches("[A-Z]{1}[+\\-%/*]{1}[0-9]+")) {
-			char operation = local.charAt(1);
-			int num = readInt(local, 2);
-			int var = getVar(local.charAt(0));
-
-			return numOp(var, operation, num);
-		}
-
-		// A+B
-		if (local.matches("[A-Z]{1}[+\\-%/*]{1}[0-9]+")) {
-			char operation = local.charAt(1);
-			int var1 = getVar(local.charAt(0));
-			int var2 = getVar(local.charAt(2));
-
-			return numOp(var1, operation, var2);
 		}
 
 		if (requireValue) {
 			throw new PCmo_CommandException("Loop count needs value!");
 		}
 
-		// A=-123
-		if (local.matches("[A-Z]{1}=[\\-]?[0-9]+")) {
-			setVar(local.charAt(0), readInt(local, 2));
-			return 0;
-		}
-
-		// A=RND*15
-		if (local.matches("[A-Z]{1}=RND\\*[0-9]+")) {
-			try {
-				setVar(local.charAt(0), random.nextInt(readInt(local, 6)));
-			} catch (IllegalArgumentException iae) {
-				throw new PCmo_CommandException("Negative random.");
-			}
-			return 0;
-		}
-
-		// A=B+RND*15
-		if (local.matches("[A-Z]{1}=[A-Z]{1}[+\\-*%/]{1}RND\\*[0-9]+")) {
-			try {
-				setVar(local.charAt(0), numOp(getVar(local.charAt(2)), local.charAt(3), random.nextInt(readInt(local, 8))));
-			} catch (IllegalArgumentException iae) {
-				throw new PCmo_CommandException("Negative random.");
-			}
-			return 0;
-		}
-
-		// A=RND*15+B
-		if (local.matches("[A-Z]{1}=RND\\*[0-9]+[+\\-*%/]{1}[A-Z]{1}")) {
-			try {
-				setVar(local.charAt(0),
-						numOp(getVar(local.charAt(local.length() - 1)), local.charAt(local.length() - 2), random.nextInt(readInt(local, 6))));
-			} catch (IllegalArgumentException iae) {
-				throw new PCmo_CommandException("Negative random.");
-			}
-			return 0;
-		}
-
-		// A+=RND*15
-		if (local.matches("[A-Z]{1}[+\\-*%/]{1}=RND\\*[0-9]+")) {
-			try {
-				setVar(local.charAt(0), numOp(getVar(local.charAt(0)), local.charAt(1), random.nextInt(readInt(local, 7))));
-			} catch (IllegalArgumentException iae) {
-				throw new PCmo_CommandException("Negative random.");
-			}
-			return 0;
-		}
-
-		// A=-14+RND*15
-		if (local.matches("[A-Z]{1}=[\\-]?[0-9]+[+\\-*%/]{1}RND\\*[0-9]+")) {
-			try {
-				setVar(local.charAt(0),
-						numOp(readInt(local, 2), local.charAt(local.indexOf("RND") - 1), random.nextInt(readInt(local, local.indexOf("RND")) + 4)));
-			} catch (IllegalArgumentException iae) {
-				throw new PCmo_CommandException("Negative random.");
-			}
-			return 0;
-		}
-
-		// A=RND*15+16 only plus!
-		if (local.matches("[A-Z]{1}=RND\\*[0-9]+\\+[0-9]+")) {
-			try {
-				setVar(local.charAt(0), numOp(readInt(local, local.indexOf("+") + 1), '+', random.nextInt(readInt(local, 6))));
-			} catch (IllegalArgumentException iae) {
-				throw new PCmo_CommandException("Negative random.");
-			}
-			return 0;
-		}
-
-		// A++
-		if (local.matches("[A-Z]{1}\\+\\+")) {
-			setVar(local.charAt(0), getVar(local.charAt(0)) + 1);
-			return 0;
-		}
-
-		// A--
-		if (local.matches("[A-Z]{1}\\-\\-")) {
-			setVar(local.charAt(0), getVar(local.charAt(0)) - 1);
-			return 0;
-		}
-
-		// A+=-123
-		if (local.matches("[A-Z]{1}[+\\-%/*]{1}=[\\-]?[0-9]+")) {
-			setVar(local.charAt(0), numOp(getVar(local.charAt(0)), local.charAt(1), readInt(local, 3)));
-			return 0;
-		}
-
-		// A+=B
-		if (local.matches("[A-Z]{1}[+\\-%/*]{1}=[A-Z]{1}")) {
-			setVar(local.charAt(0), numOp(getVar(local.charAt(0)), local.charAt(1), getVar(local.charAt(3))));
-			return 0;
-		}
-
-		// A=B+123
-		if (local.matches("[A-Z]{1}=[A-Z]{1}[+\\-%/*]{1}[0-9]+")) {
-			char var1 = local.charAt(0);
-			char operation = local.charAt(3);
-			int num = readInt(local, 4);
-			int var2 = getVar(local.charAt(2));
-
-			setVar(var1, numOp(var2, operation, num));
-
-			return 0;
-		}
-
-		// A=B+C
-		if (local.matches("[A-Z]{1}=[A-Z]{1}[+\\-%/*][A-Z]{1}")) {
-			char operation = local.charAt(3);
-			char var1 = local.charAt(0);
-			int var2 = getVar(local.charAt(2));
-			int var3 = getVar(local.charAt(4));
-
-			setVar(var1, numOp(var2, operation, var3));
-
-			return 0;
-		}
-
-		// A=B
-		if (local.matches("[A-Z]{1}=[A-Z]{1}")) {
-
-			setVar(local.charAt(0), getVar(local.charAt(2)));
-
-			return 0;
-		}
-
-		throw new PCmo_CommandException("Invalid variable syntax.");
-	}
-
-	private static int numOp(int a, char operation, int b) {
-		if (operation == '+') {
-			return a + b;
-		}
-		if (operation == '-') {
-			return a - b;
-		}
-		if (operation == '*') {
-			return a * b;
-		}
-		if (operation == '/') {
-			return (int) Math.round((double) a / (double) b);
-		}
-		if (operation == '%') {
-			return a % b;
-		}
-		return 0;
+		throw new PCmo_CommandException("Invalid miner calculation syntax.");
 	}
 
 	private static boolean parseGetEquationResult(String eq) throws PCmo_CommandException {
@@ -609,7 +384,7 @@ public class PCmo_Command {
 		try {
 			PC_Logger.fine("Parsing Miner's code:\n" + str);
 			PC_Logger.finer("Erasing vars.");
-			vars.clear();
+
 			String local = new String(str); // copy + to uppercase
 
 			PC_Logger.finer("Removing spaces, endlines, converting brackets.");
@@ -949,10 +724,7 @@ public class PCmo_Command {
 
 						// reached end of main statement, everything is closed;
 
-						output += parseIfElse(source.substring(ifElseStart, pos + 1)); // complete
-																						// statement
-																						// with
-																						// brackets
+						output += parseIfElse(source.substring(ifElseStart, pos + 1)); 
 
 						openLoops = 0;
 

@@ -1,6 +1,7 @@
 package net.minecraft.src;
 
 
+import java.awt.Toolkit;
 import java.io.ByteArrayInputStream;
 import java.util.List;
 import java.util.Map;
@@ -54,12 +55,12 @@ public class mod_PCcore extends PC_Module implements PC_IActivatorListener {
 	 * compilation, thus all modules keep their compile-time version and aren't
 	 * affected by current core version. Which is good.
 	 */
-	public static final String VERSION = "3.4.6";
+	public static final String VERSION = "3.4.6c";
 
 	/**
 	 * The serial number used to check whether new update is available.
 	 */
-	public static final int VERSION_SERIAL = 5;
+	public static final int VERSION_SERIAL = 7;
 
 
 
@@ -122,7 +123,7 @@ public class mod_PCcore extends PC_Module implements PC_IActivatorListener {
 	// Add fuels.
 	@Override
 	public int addFuel(int i, int j) {
-		return (i == powerDust.shiftedIndex) ? 3200 : 0;
+		return (i == powerDust.shiftedIndex) ? powerDustStrength : 0;
 	}
 
 	/**
@@ -217,6 +218,8 @@ public class mod_PCcore extends PC_Module implements PC_IActivatorListener {
 	/** current langpack version */
 	public static final String pk_cfgCurrentLangSerVersion = "cfg.currentLangVersion";
 
+	public static final int powerDustStrength = 3200;
+
 
 	private static class PC_ErrorHandler implements Thread.UncaughtExceptionHandler {
 
@@ -225,7 +228,10 @@ public class mod_PCcore extends PC_Module implements PC_IActivatorListener {
 
 			PC_Logger.throwing(e.getClass().getName(), "Uncaught Exception", e);
 
-			PC_Utils.mc().onMinecraftCrash(new UnexpectedThrowable("Uncaught Exception\n" + e.getMessage(), e));
+			
+			Toolkit.getDefaultToolkit().beep();  
+			
+			//PC_Utils.mc().onMinecraftCrash(new UnexpectedThrowable("Uncaught Exception\n" + e.getMessage(), e));
 
 		}
 
@@ -239,13 +245,11 @@ public class mod_PCcore extends PC_Module implements PC_IActivatorListener {
 //		Test test = new Test();
 //		test.run();
 
-
 		Thread.setDefaultUncaughtExceptionHandler(new PC_ErrorHandler());
 
 		PC_GresHighlightHelper.checkConfigFile();
 
 		instance = this;
-
 	}
 
 	@Override
@@ -1212,7 +1216,9 @@ public class mod_PCcore extends PC_Module implements PC_IActivatorListener {
 	public boolean onTickInGUI(float f, Minecraft minecraft, GuiScreen gui) {
 		if (gui == null) return true;
 
-		if (gui instanceof GuiMainMenu && optHackSplashes) PCco_SplashHelper.hackSplashes((GuiMainMenu) gui);
+		if (gui instanceof GuiMainMenu && optHackSplashes) {
+			PCco_SplashHelper.hackSplashes((GuiMainMenu) gui);
+		}
 
 		// text at the bottom of the screen
 		if (gui instanceof GuiMainMenu) {

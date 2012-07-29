@@ -425,7 +425,8 @@ public class PClo_BlockGate extends BlockContainer implements PC_IRotatedBox, PC
 				boolean in = powered_from_input(world, x, y, z, 0);
 				if (in != teg.instagate_last_input) {
 					teg.instagate_last_input = in;
-					world.notifyBlockChange(x, y, z, blockID);
+					hugeUpdate(world, x, y, z, blockID);
+					//world.notifyBlockChange(x, y, z, blockID);
 				}
 				teg.instagate_last_input = in;
 				return;

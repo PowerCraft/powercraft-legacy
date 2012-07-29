@@ -51,12 +51,19 @@ public class PClo_GuiWeaselTouchscreenTouch implements PC_IGresBase {
 
 	@Override
 	public void onGuiClosed(PC_IGresGui gui) {}
+	
+	int timer = -1;
 
 	@Override
 	public void actionPerformed(PC_GresWidget widget, PC_IGresGui gui) {
 
 		if (widget == colorMap) {
+			if(timer == -1) {
+				timer = 0;
+				return;
+			}
 			String event = colorMap.getLastEvent();
+			if(event.length()==0) return;
 			PC_CoordI mouse = colorMap.getLastMousePos();
 			int mouseKey = colorMap.getLastMouseKey();
 			char key = colorMap.getLastKey();
@@ -66,6 +73,8 @@ public class PClo_GuiWeaselTouchscreenTouch implements PC_IGresBase {
 				((PClo_WeaselPlugin) network.getMember("CORE")).callFunctionExternalDelegated("touchEvent", new WeaselString(touchscreen.getName()),
 						new WeaselString(event), new WeaselInteger(mouse.x), new WeaselInteger(mouse.y), new WeaselInteger(mouseKey),
 						new WeaselString("" + key));
+			
+			colorMap.setLastEvent("");
 		}
 
 		if (widget.getId() == 0) gui.close();
