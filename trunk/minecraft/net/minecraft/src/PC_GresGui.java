@@ -291,10 +291,8 @@ public class PC_GresGui extends GuiContainer implements PC_IGresGui {
 
 			if (slot.getHasStack()) itemstack = slot.getStack();
 
-			if (slot instanceof PC_SlotNoPickup && ((PC_SlotNoPickup) slot).shownStack != null) itemstack = ((PC_SlotNoPickup) slot).shownStack;
-
-			if (slot instanceof PCco_SlotDirectCrafting && ((PCco_SlotDirectCrafting) slot).product != null)
-				itemstack = ((PCco_SlotDirectCrafting) slot).product;
+			if (slot instanceof PC_ISlotWithBackground && ((PC_ISlotWithBackground) slot).getBackgroundStack() != null && ((PC_ISlotWithBackground) slot).renderTooltipWhenEmpty())
+				itemstack = ((PC_ISlotWithBackground) slot).getBackgroundStack();
 
 			if (itemstack != null) {
 				@SuppressWarnings("rawtypes")
@@ -418,46 +416,31 @@ public class PC_GresGui extends GuiContainer implements PC_IGresGui {
 		}
 
 		if (isNull || itemstack == null) {
-			if (slot instanceof PCco_SlotDirectCrafting) {
-				PCco_SlotDirectCrafting dirslot = (PCco_SlotDirectCrafting) slot;
-				if (dirslot.product != null) {
+			
+			if (slot instanceof PC_ISlotWithBackground) {
+				PC_ISlotWithBackground dirslot = (PC_ISlotWithBackground) slot;
+				if (dirslot.getBackgroundStack() != null) {
 					itemRenderer.zLevel = 99F;
 					zLevel = 99F;
 					GL11.glColor4f(1.0F, 1.0F, 1.0F, 0.2F);
-					itemRenderer.renderItemIntoGUI(fontRenderer, mc.renderEngine, dirslot.product, k, l);
-					// itemRenderer.renderItemOverlayIntoGUI(fontRenderer, mc.renderEngine, dirslot.product, k, l);
+					itemRenderer.renderItemIntoGUI(fontRenderer, mc.renderEngine, dirslot.getBackgroundStack(), k, l);
 
-
-					GL11.glDisable(GL11.GL_LIGHTING);
-					GL11.glDisable(GL11.GL_DEPTH_TEST);
-					int j1 = slot.xDisplayPosition;
-					int k1 = slot.yDisplayPosition;
-					drawGradientRect(j1, k1, j1 + 16, k1 + 16, 0xbb999999, 0xbb999999);
-					GL11.glEnable(GL11.GL_LIGHTING);
-					GL11.glEnable(GL11.GL_DEPTH_TEST);
-					zLevel = 100F;
-					itemRenderer.zLevel = 100F;
-				}
-
-			} else if (slot instanceof PC_SlotNoPickup) {
-				PC_SlotNoPickup nopslot = (PC_SlotNoPickup) slot;
-				if (nopslot.shownStack != null) {
-					itemRenderer.zLevel = 99F;
-					zLevel = 99F;
-					itemRenderer.renderItemIntoGUI(fontRenderer, mc.renderEngine, nopslot.shownStack, k, l);
-
-					//GL11.glDisable(GL11.GL_LIGHTING);
-					//GL11.glDisable(GL11.GL_DEPTH_TEST);
-					//int j1 = slot.xDisplayPosition;
-					//int k1 = slot.yDisplayPosition;
-					//drawGradientRect(j1, k1, j1 + 16, k1 + 16, 0xbb999999, 0xbb999999);
-					//GL11.glEnable(GL11.GL_LIGHTING);
-					//GL11.glEnable(GL11.GL_DEPTH_TEST);
+					if(dirslot.renderGrayWhenEmpty()) {
+						GL11.glDisable(GL11.GL_LIGHTING);
+						GL11.glDisable(GL11.GL_DEPTH_TEST);
+						int j1 = slot.xDisplayPosition;
+						int k1 = slot.yDisplayPosition;
+						drawGradientRect(j1, k1, j1 + 16, k1 + 16, 0xbb999999, 0xbb999999);
+						GL11.glEnable(GL11.GL_LIGHTING);
+						GL11.glEnable(GL11.GL_DEPTH_TEST);
+					}
+					
 					zLevel = 100F;
 					itemRenderer.zLevel = 100F;
 				}
 
 			}
+			
 		} else {
 			itemRenderer.renderItemIntoGUI(fontRenderer, mc.renderEngine, itemstack, k, l);
 			itemRenderer.renderItemOverlayIntoGUI(fontRenderer, mc.renderEngine, itemstack, k, l);

@@ -375,26 +375,26 @@ public class WeaselEngine implements PC_INBT, IVariableProvider, IFunctionProvid
 
 		}
 
-		if (functionName.equals("_get")) {
+		if (functionName.equals("get")) {
 
-			if (args.length != 1) throw new WeaselRuntimeException("_get() requires 1 argument, got " + args.length);
+			if (args.length != 1) throw new WeaselRuntimeException("get() requires 1 argument, got " + args.length);
 			if (args[0] instanceof WeaselString) {
 				String varname = (String) args[0].get();
 				return getVariable(varname);
 			} else {
-				throw new WeaselRuntimeException("_get() requires String argument, got " + args[0].get().getClass().getSimpleName());
+				throw new WeaselRuntimeException("get() requires String argument, got " + args[0].get().getClass().getSimpleName());
 			}
 
 		}
 
-		if (functionName.equals("_set")) {
+		if (functionName.equals("set")) {
 
-			if (args.length != 2) throw new WeaselRuntimeException("_set() requires 2 arguments, got " + args.length);
+			if (args.length != 2) throw new WeaselRuntimeException("set() requires 2 arguments, got " + args.length);
 			if (args[0] instanceof WeaselString) {
 				String varname = (String) args[0].get();
 				setVariable(varname, args[1]);
 			} else {
-				throw new WeaselRuntimeException("_set() requires String as 1st argument, got " + args[0].get().getClass().getSimpleName());
+				throw new WeaselRuntimeException("set() requires String as 1st argument, got " + args[0].get().getClass().getSimpleName());
 			}
 
 		}
@@ -511,8 +511,8 @@ public class WeaselEngine implements PC_INBT, IVariableProvider, IFunctionProvid
 	public List<String> getProvidedFunctionNames() {
 		List<String> list = new ArrayList<String>(0);
 		list.add("isset");
-		list.add("_set");
-		list.add("_get");
+		list.add("set");
+		list.add("get");
 		list.add("color");
 		list.add("bound");
 		list.add("bound_c");

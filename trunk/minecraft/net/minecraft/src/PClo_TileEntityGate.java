@@ -412,6 +412,15 @@ public class PClo_TileEntityGate extends PC_TileEntity {
 		if (list.size() >= 1) {
 			return PC_InvUtils.isInventoryEmpty(list.get(0));
 		}
+		
+		List<PC_IInventoryWrapper> list2 = worldObj.getEntitiesWithinAABB(PC_IInventoryWrapper.class,
+				AxisAlignedBB.getBoundingBox(pos.x, pos.y, pos.z, pos.x + 1, pos.y + 1, pos.z + 1).expand(0.6D, 0.6D, 0.6D));
+
+		if (list2.size() >= 1) {
+			if(list2.get(0).getInventory() != null) {
+				return PC_InvUtils.isInventoryEmpty(list2.get(0).getInventory());
+			}
+		}
 
 		return false;
 
@@ -444,6 +453,21 @@ public class PClo_TileEntityGate extends PC_TileEntity {
 				return PC_InvUtils.isInventoryFull(list.get(0));
 			} else {
 				return PC_InvUtils.hasInventoryNoFreeSlots(list.get(0));
+			}
+		}
+
+		List<PC_IInventoryWrapper> list2 = worldObj.getEntitiesWithinAABB(PC_IInventoryWrapper.class,
+				AxisAlignedBB.getBoundingBox(pos.x, pos.y, pos.z, pos.x + 1, pos.y + 1, pos.z + 1).expand(0.6D, 0.6D, 0.6D));
+
+		if (list2.size() >= 1) {
+			if (allSlotsFull) {
+				if(list2.get(0).getInventory() != null) {
+					return PC_InvUtils.isInventoryFull(list2.get(0).getInventory());
+				}
+			} else {
+				if(list2.get(0).getInventory() != null) {
+					return PC_InvUtils.hasInventoryNoFreeSlots(list2.get(0).getInventory());
+				}
 			}
 		}
 

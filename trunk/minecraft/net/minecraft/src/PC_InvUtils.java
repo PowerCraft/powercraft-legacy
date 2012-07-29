@@ -375,7 +375,7 @@ public class PC_InvUtils {
 	 * @param to target inventory
 	 * @return true if From inventory is smaller or equal to To inventory
 	 */
-	public static boolean moveStacks(IInventory from, IInventory to) {
+	public static boolean moveStacksForce(IInventory from, IInventory to) {
 
 		int copied = Math.min(from.getSizeInventory(), to.getSizeInventory());
 
@@ -387,6 +387,23 @@ public class PC_InvUtils {
 		return from.getSizeInventory() <= to.getSizeInventory();
 	}
 
+	/**
+	 * Move stacks from one to another inventory, do not overwrite stacks.
+	 * 
+	 * @param from source inventory
+	 * @param to target inventory
+	 */
+	public static void moveStacks(IInventory from, IInventory to) {
+		for (int i = 0; i < from.getSizeInventory(); i++) {
+			if (from.getStackInSlot(i) != null) {
+				addItemStackToInventory(to, from.getStackInSlot(i));
+				if (from.getStackInSlot(i) != null && from.getStackInSlot(i).stackSize <= 0) {
+					from.setInventorySlotContents(i, null);
+
+				}
+			}
+		}
+	}
 
 
 	/**

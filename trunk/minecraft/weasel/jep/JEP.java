@@ -16,6 +16,9 @@ import java.util.ArrayList;
 import java.util.Map.Entry;
 import java.util.Vector;
 
+import net.minecraft.src.Block;
+import net.minecraft.src.Item;
+
 import weasel.Calc;
 import weasel.jep.function.Abs;
 import weasel.jep.function.ArcCosine;
@@ -243,6 +246,7 @@ public class JEP {
 		JEP newjep = new JEP();
 		newjep.allowAssignment = assignmentAllowed;
 		newjep.addStandardConstants();
+		newjep.addBlockItemConstants();
 		newjep.addStandardFunctions();
 		newjep.addWeaselFunctions();
 		return newjep;
@@ -495,6 +499,91 @@ public class JEP {
 		symTab.addConstant("false", new Boolean(false));
 		symTab.addConstant("True", new Boolean(true));
 		symTab.addConstant("False", new Boolean(false));
+	}
+
+	/**
+	 * add constants for blocks and items - some are names, but mostly ids.
+	 */
+	public void addBlockItemConstants() {
+		symTab.addConstant("DIRT", Block.dirt.blockID);
+		symTab.addConstant("COBBLE", Block.cobblestone.blockID);
+		symTab.addConstant("MOSSYCOBBLE", Block.cobblestoneMossy.blockID);
+		symTab.addConstant("MOSSY_COBBLE", Block.cobblestoneMossy.blockID);
+		symTab.addConstant("PLANKS", Block.planks.blockID);
+		symTab.addConstant("LOG", Block.wood.blockID);
+		symTab.addConstant("GRAVEL", Block.gravel.blockID);
+		symTab.addConstant("SAND", Block.sand.blockID);
+		symTab.addConstant("SANDSTONE", Block.sandStone.blockID);
+		symTab.addConstant("NETHERRACK", Block.netherrack.blockID);
+		symTab.addConstant("BRICK", Block.brick.blockID);
+		symTab.addConstant("STONEBRICK", Block.stoneBrick.blockID);
+		symTab.addConstant("STONE_BRICK", Block.stoneBrick.blockID);
+		symTab.addConstant("NETHERBRICK", Block.netherBrick.blockID);
+		symTab.addConstant("NETHER_BRICK", Block.netherBrick.blockID);
+		symTab.addConstant("AIR", 0);
+		symTab.addConstant("BEDROCK", Block.bedrock.blockID);
+		symTab.addConstant("OBSIDIAN", Block.obsidian.blockID);
+		symTab.addConstant("ENDSTONE", Block.whiteStone.blockID);
+		symTab.addConstant("SLAB", Block.stairSingle.blockID);		
+		symTab.addConstant("LEAVES", Block.leaves.blockID);
+		symTab.addConstant("STONE", Block.stone.blockID);
+		symTab.addConstant("FENCE", Block.fence.blockID);
+		symTab.addConstant("NETHERFENCE", Block.netherFence.blockID);
+		symTab.addConstant("NETHER_FENCE", Block.netherFence.blockID);
+		symTab.addConstant("GOLDCUBE", Block.blockGold.blockID);
+		symTab.addConstant("IRONCUBE", Block.blockSteel.blockID);
+		symTab.addConstant("LAPISCUBE", Block.blockLapis.blockID);
+		symTab.addConstant("GOLD_CUBE", Block.blockGold.blockID);
+		symTab.addConstant("IRON_CUBE", Block.blockSteel.blockID);
+		symTab.addConstant("LAPIS_CUBE", Block.blockLapis.blockID);
+		symTab.addConstant("GOLDBLOCK", Block.blockGold.blockID);
+		symTab.addConstant("IRONBLOCK", Block.blockSteel.blockID);
+		symTab.addConstant("LAPISBLOCK", Block.blockLapis.blockID);
+		symTab.addConstant("GOLD_BLOCK", Block.blockGold.blockID);
+		symTab.addConstant("IRON_BLOCK", Block.blockSteel.blockID);
+		symTab.addConstant("LAPIS_BLOCK", Block.blockLapis.blockID);
+		symTab.addConstant("COALORE", Block.oreCoal.blockID);
+		symTab.addConstant("IRONORE", Block.oreIron.blockID);
+		symTab.addConstant("DIAMONDORE", Block.oreDiamond.blockID);
+		symTab.addConstant("LAPISORE", Block.oreLapis.blockID);
+		symTab.addConstant("REDSTONEORE", Block.oreRedstone.blockID);
+		symTab.addConstant("COAL_ORE", Block.oreCoal.blockID);
+		symTab.addConstant("IRON_ORE", Block.oreIron.blockID);
+		symTab.addConstant("REDSTONE_ORE", Block.oreRedstone.blockID);
+		symTab.addConstant("DIAMOND_ORE", Block.oreDiamond.blockID);
+		symTab.addConstant("LAPIS_ORE", Block.oreLapis.blockID);
+		symTab.addConstant("WOOL", Block.cloth.blockID);
+		symTab.addConstant("MELON", Block.melon.blockID);
+		symTab.addConstant("PUMPKIN", Block.pumpkin.blockID);
+		symTab.addConstant("TNT", Block.tnt.blockID);
+		symTab.addConstant("TORCH", Block.torchWood.blockID);
+		
+		symTab.addConstant("FLINT", Item.flint.shiftedIndex);
+		symTab.addConstant("GOND", Item.ingotGold.shiftedIndex);
+		symTab.addConstant("IRON", Item.ingotIron.shiftedIndex);
+		symTab.addConstant("DIAMOND", Item.diamond.shiftedIndex);
+		symTab.addConstant("DYE", Item.dyePowder.shiftedIndex);
+		symTab.addConstant("GOLD_NUGGET", Item.goldNugget.shiftedIndex);
+		symTab.addConstant("SAPLING", Block.sapling.blockID);
+		symTab.addConstant("REED", Item.reed.shiftedIndex);
+		symTab.addConstant("SUGARCANE", Item.reed.shiftedIndex);
+		symTab.addConstant("SEEDS", Item.seeds.shiftedIndex);
+		symTab.addConstant("MELON_SEEDS", Item.melonSeeds.shiftedIndex);
+		symTab.addConstant("PUMPKIN_SEEDS", Item.pumpkinSeeds.shiftedIndex);
+		symTab.addConstant("WHEAT", Item.wheat.shiftedIndex);
+		symTab.addConstant("APPLE", Item.appleRed.shiftedIndex);
+		symTab.addConstant("REDSTONE", Item.redstone.shiftedIndex);
+		
+		symTab.addConstant("BUILDING_BLOCKS", "BUILDING_BLOCK");
+		symTab.addConstant("BUILDING", "BUILDING_BLOCK");
+		symTab.addConstant("BLOCKS", "BLOCK");
+		symTab.addConstant("ITEMS", "ITEM");
+		symTab.addConstant("ALL", "ALL");
+		symTab.addConstant("ORE", "ORE");
+		symTab.addConstant("ORES", "ORE");
+		
+		symTab.addConstant("LAPIS", "LAPIS");
+		symTab.addConstant("BONEMEAL", "BONEMEAL");
 	}
 
 	/**

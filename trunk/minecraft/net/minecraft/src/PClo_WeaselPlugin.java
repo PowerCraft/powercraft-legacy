@@ -572,6 +572,15 @@ public abstract class PClo_WeaselPlugin implements PC_INBT, NetworkMember {
 			return PC_InvUtils.isInventoryEmpty(list.get(0));
 		}
 
+		List<PC_IInventoryWrapper> list2 = world().getEntitiesWithinAABB(PC_IInventoryWrapper.class,
+				AxisAlignedBB.getBoundingBox(pos.x, pos.y, pos.z, pos.x + 1, pos.y + 1, pos.z + 1).expand(0.6D, 0.6D, 0.6D));
+
+		if (list.size() >= 1) {
+			if(list2.get(0).getInventory() != null) {
+				return PC_InvUtils.isInventoryEmpty(list2.get(0).getInventory());
+			}
+		}
+
 		return false;
 
 	}
@@ -583,9 +592,9 @@ public abstract class PClo_WeaselPlugin implements PC_INBT, NetworkMember {
 	 * @param allSlotsFull strict check for full slots
 	 * @return is full
 	 */
-	private final boolean isFullChestAt(PC_CoordI pos, boolean allSlotsFull) {
+	private boolean isFullChestAt(PC_CoordI pos, boolean allSlotsFull) {
 
-		IInventory invAt = PC_InvUtils.getCompositeInventoryAt(tileEntity.worldObj, pos);
+		IInventory invAt = PC_InvUtils.getCompositeInventoryAt(world(), pos);
 		if (invAt != null) {
 			if (allSlotsFull) {
 				return PC_InvUtils.isInventoryFull(invAt);
@@ -594,7 +603,7 @@ public abstract class PClo_WeaselPlugin implements PC_INBT, NetworkMember {
 			}
 		}
 
-		List<IInventory> list = tileEntity.worldObj.getEntitiesWithinAABB(IInventory.class,
+		List<IInventory> list = world().getEntitiesWithinAABB(IInventory.class,
 				AxisAlignedBB.getBoundingBox(pos.x, pos.y, pos.z, pos.x + 1, pos.y + 1, pos.z + 1).expand(0.6D, 0.6D, 0.6D));
 
 		if (list.size() >= 1) {
@@ -602,6 +611,21 @@ public abstract class PClo_WeaselPlugin implements PC_INBT, NetworkMember {
 				return PC_InvUtils.isInventoryFull(list.get(0));
 			} else {
 				return PC_InvUtils.hasInventoryNoFreeSlots(list.get(0));
+			}
+		}
+
+		List<PC_IInventoryWrapper> list2 = world().getEntitiesWithinAABB(PC_IInventoryWrapper.class,
+				AxisAlignedBB.getBoundingBox(pos.x, pos.y, pos.z, pos.x + 1, pos.y + 1, pos.z + 1).expand(0.6D, 0.6D, 0.6D));
+
+		if (list.size() >= 1) {
+			if (allSlotsFull) {
+				if(list2.get(0).getInventory() != null) {
+					return PC_InvUtils.isInventoryEmpty(list2.get(0).getInventory());
+				}
+			} else {
+				if(list2.get(0).getInventory() != null) {
+					return PC_InvUtils.isInventoryEmpty(list2.get(0).getInventory());
+				}
 			}
 		}
 

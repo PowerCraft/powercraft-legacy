@@ -26,6 +26,30 @@ public class PC_GresInventoryPlayer extends PC_GresLayoutV {
 		setAlignH(labelAlign);
 		setAlignV(PC_GresAlign.TOP);
 	}
+	
+	public void hideSlots() {
+		if (containerManager == null) return;
+		
+		Slot[][] slots = getContainerManager().inventoryPlayerUpper;
+	
+		for (int x = 0; x < slots.length; x++) {
+			for (int y = 0; y < slots[0].length; y++) {
+				if (slots[x][y] != null) {
+					slots[x][y].xDisplayPosition = -3000;
+				}
+			}
+		}
+		
+		slots = getContainerManager().inventoryPlayerLower;
+	
+		for (int x = 0; x < slots.length; x++) {
+			for (int y = 0; y < slots[0].length; y++) {
+				if (slots[x][y] != null) {
+					slots[x][y].xDisplayPosition = -3000;
+				}
+			}
+		}
+	}
 
 	@Override
 	public void addedToWidget() {

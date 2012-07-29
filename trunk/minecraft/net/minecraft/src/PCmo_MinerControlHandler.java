@@ -77,8 +77,7 @@ public class PCmo_MinerControlHandler {
 				flag = true;
 				try {
 					miner.appendCode(seq);
-				} catch (PCmo_CommandException ce) {
-
+				} catch (Exception e) {
 					PC_Logger.severe("Error in keyboard-sent command! This is a bug!");
 					return false;
 				}

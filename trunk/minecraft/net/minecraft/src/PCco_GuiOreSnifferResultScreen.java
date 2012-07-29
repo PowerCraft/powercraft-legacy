@@ -201,7 +201,7 @@ public class PCco_GuiOreSnifferResultScreen implements PC_IGresBase {
 					stack = new ItemStack(id, 1, meta);
 				}
 
-				((PC_SlotNoPickup) inv.getSlot(x, y)).setDisplayedStack(stack);
+				((PC_SlotNoPickup) inv.getSlot(x, y)).setBackgroundStack(stack);
 			}
 		}
 	}

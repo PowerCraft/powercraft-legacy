@@ -415,12 +415,12 @@ public class PClo_WeaselPluginCore extends PClo_WeaselPlugin implements IWeaselH
 	 */
 	private WeaselObject fnBus(WeaselEngine engine, String functionName, WeaselObject[] args) throws BadFunc {
 
-		if (functionName.equals("set")) {
+		if (functionName.equals("nset")) {
 
 			getNetManager().setGlobalVariable((String) args[0].get(), args[1]);
 			return null;
 
-		} else if (functionName.equals("get")) {
+		} else if (functionName.equals("nget")) {
 
 			return getNetManager().getGlobalVariable((String) args[0].get());
 
@@ -568,8 +568,8 @@ public class PClo_WeaselPluginCore extends PClo_WeaselPlugin implements IWeaselH
 		list.add("full");
 		list.add("sleep");
 
-		list.add("get");
-		list.add("set");
+		list.add("nget");
+		list.add("nset");
 
 		list.add("rx");
 		list.add("tx");

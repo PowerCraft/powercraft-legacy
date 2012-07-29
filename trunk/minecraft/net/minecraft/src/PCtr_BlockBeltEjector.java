@@ -219,6 +219,24 @@ public class PCtr_BlockBeltEjector extends BlockContainer implements PC_IBlockTy
 
 			}
 		}
+		
+
+		List<Entity> hitList2 = world.getEntitiesWithinAABB(
+				PC_IInventoryWrapper.class,
+				AxisAlignedBB.getBoundingBoxFromPool(beltPos.x, beltPos.y, beltPos.z, beltPos.x + 1, beltPos.y + 1, beltPos.z + 1).expand(0.6D, 0.6D,
+						0.6D));
+
+		if (hitList2.size() > 0) {
+			for (Entity entityWithInventory : hitList2) {
+				if(((PC_IInventoryWrapper)entityWithInventory).getInventory() != null) {	
+					if (dispenseItemOntoBelt(world, new PC_CoordD(entityWithInventory.posX, entityWithInventory.posY, entityWithInventory.posZ).round(),
+							((PC_IInventoryWrapper) entityWithInventory).getInventory(), beltPos)) {
+						return true;
+					}
+				}
+
+			}
+		}
 
 		return false;
 	}

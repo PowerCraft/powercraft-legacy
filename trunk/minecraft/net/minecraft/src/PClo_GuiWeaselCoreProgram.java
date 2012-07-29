@@ -142,6 +142,7 @@ public class PClo_GuiWeaselCoreProgram implements PC_IGresBase {
 		if (widget.getId() == 1) {
 			edit.setText(preUndo);
 			txMsg.setText(PC_Lang.tr("pc.gui.weasel.core.msgAllUndone"));
+			core.setProgram(edit.getText());
 			return;
 		}
 
