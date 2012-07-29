@@ -7,12 +7,11 @@ package net.minecraft.src;
  * @author MightyPork
  */
 public class PCmo_CommandException extends Exception {
-
-	String msg;
-
+	/**
+	 * generic error
+	 */
 	public PCmo_CommandException() {
-		super(); // call superclass constructor
-		msg = "unknown";
+		super("Unknown parse error.");
 	}
 
 	/**
@@ -20,15 +19,5 @@ public class PCmo_CommandException extends Exception {
 	 */
 	public PCmo_CommandException(String err) {
 		super(err);
-		msg = err;
-	}
-
-	/**
-	 * Get the error message
-	 * 
-	 * @return what happened (human readable)
-	 */
-	public String getError() {
-		return msg;
 	}
 }

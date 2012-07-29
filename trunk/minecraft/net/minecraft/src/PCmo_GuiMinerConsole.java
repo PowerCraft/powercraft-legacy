@@ -7,6 +7,12 @@ import net.minecraft.src.PC_GresTextEditMultiline.Keyword;
 import net.minecraft.src.PC_GresWidget.PC_GresAlign;
 
 
+/**
+ * 
+ * 
+ * @author MightyPork
+ *
+ */
 public class PCmo_GuiMinerConsole implements PC_IGresBase {
 	private PCmo_EntityMiner miner;
 	private PC_GresTextEditMultiline programBox;
@@ -18,13 +24,10 @@ public class PCmo_GuiMinerConsole implements PC_IGresBase {
 	private PC_GresCheckBox checkWater;
 	private PC_GresCheckBox checkKeepFuel;
 
-	private PC_GresCheckBox checkCobble;
-	private PC_GresCheckBox checkGravel;
-	private PC_GresCheckBox checkDirt;
+
 	private PC_GresCheckBox checkTorchFloor;
 	private PC_GresCheckBox checkCompress;
 
-	private PC_GresLabel commandListLength;
 	private PC_GresLabel errorString;
 
 	private PC_GresButton quit;
@@ -33,6 +36,9 @@ public class PCmo_GuiMinerConsole implements PC_IGresBase {
 	private PC_GresWidget dir_go;
 	private PC_GresButton clear_buffer;
 
+	/**
+	 * @param machine
+	 */
 	public PCmo_GuiMinerConsole(PCmo_EntityMiner machine) {
 		miner = machine;
 	}
@@ -81,7 +87,7 @@ public class PCmo_GuiMinerConsole implements PC_IGresBase {
 		keyWords.add(new Keyword("and", keyWordColor));
 		keyWords.add(new Keyword("RND", keyWordColor));
 
-		w.add(programBox = new PC_GresTextEditMultiline(miner.program, 250, 60, keyWords));
+		w.add(programBox = new PC_GresTextEditMultiline(miner.brain.program, 250, 60, keyWords));
 
 		hg = new PC_GresLayoutH().setAlignH(PC_GresAlign.RIGHT);
 		errorString = new PC_GresLabel("");
@@ -99,29 +105,24 @@ public class PCmo_GuiMinerConsole implements PC_IGresBase {
 
 		hg = new PC_GresLayoutH();
 		vg = new PC_GresLayoutV().setAlignH(PC_GresAlign.LEFT);
-		vg.add(checkMining = new PC_GresCheckBox(PC_Lang.tr("pc.gui.miner.opt.mining")).check(miner.miningEnabled));
-		vg.add(checkBridge = new PC_GresCheckBox(PC_Lang.tr("pc.gui.miner.opt.bridge")).check(miner.bridgeEnabled));
-		vg.add(checkLava = new PC_GresCheckBox(PC_Lang.tr("pc.gui.miner.opt.lavaFill")).check(miner.lavaFillingEnabled));
-		vg.add(checkWater = new PC_GresCheckBox(PC_Lang.tr("pc.gui.miner.opt.waterFill")).check(miner.waterFillingEnabled));
-		vg.add(checkKeepFuel = new PC_GresCheckBox(PC_Lang.tr("pc.gui.miner.opt.keepFuel")).check(miner.keepAllFuel));
+		vg.add(checkMining = new PC_GresCheckBox(PC_Lang.tr("pc.gui.miner.opt.mining")).check(miner.cfg.miningEnabled));
+		vg.add(checkBridge = new PC_GresCheckBox(PC_Lang.tr("pc.gui.miner.opt.bridge")).check(miner.cfg.bridgeEnabled));
+		vg.add(checkLava = new PC_GresCheckBox(PC_Lang.tr("pc.gui.miner.opt.lavaFill")).check(miner.cfg.lavaFillingEnabled));
+		vg.add(checkWater = new PC_GresCheckBox(PC_Lang.tr("pc.gui.miner.opt.waterFill")).check(miner.cfg.waterFillingEnabled));
+		vg.add(checkKeepFuel = new PC_GresCheckBox(PC_Lang.tr("pc.gui.miner.opt.keepFuel")).check(miner.cfg.keepAllFuel));
 		hg.add(vg);
 
-		checkBridge.enable(miner.level >= 3);
-		checkLava.enable(miner.level >= 4);
-		checkWater.enable(miner.level >= 6);
-		pgm_run.enable(miner.program.length() > 0);
+		checkBridge.enable(miner.st.level >= 3);
+		checkLava.enable(miner.st.level >= 4);
+		checkWater.enable(miner.st.level >= 6);
 		dir_go.enable(false);
 
 		vg = new PC_GresLayoutV().setAlignH(PC_GresAlign.LEFT);
-		vg.add(checkCobble = new PC_GresCheckBox(PC_Lang.tr("pc.gui.miner.opt.destroyCobble")).check((miner.DESTROY & PCmo_EntityMiner.COBBLE) != 0));
-		vg.add(checkGravel = new PC_GresCheckBox(PC_Lang.tr("pc.gui.miner.opt.destroyGravel")).check((miner.DESTROY & PCmo_EntityMiner.GRAVEL) != 0));
-		vg.add(checkDirt = new PC_GresCheckBox(PC_Lang.tr("pc.gui.miner.opt.destroyDirt")).check((miner.DESTROY & PCmo_EntityMiner.DIRT) != 0));
-		vg.add(checkTorchFloor = new PC_GresCheckBox(PC_Lang.tr("pc.gui.miner.opt.torchesOnFloor")).check(miner.torchesOnlyOnFloor));
-		vg.add(checkCompress = new PC_GresCheckBox(PC_Lang.tr("pc.gui.miner.opt.compress")).check(miner.compressBlocks));
+		vg.add(checkTorchFloor = new PC_GresCheckBox(PC_Lang.tr("pc.gui.miner.opt.torchesOnFloor")).check(miner.cfg.torchesOnlyOnFloor));
+		vg.add(checkCompress = new PC_GresCheckBox(PC_Lang.tr("pc.gui.miner.opt.compress")).check(miner.cfg.compressBlocks));
 		hg.add(vg);
 
 		vg = new PC_GresLayoutV().setAlignH(PC_GresAlign.STRETCH);
-		vg.add(commandListLength = new PC_GresLabel(".." + miner.commandList.length()));
 		vg.add(clear_buffer = new PC_GresButton(PC_Lang.tr("pc.gui.miner.reset")));
 		vg.add(quit = new PC_GresButton(PC_Lang.tr("pc.gui.miner.quit")));
 		hg.add(vg);
@@ -133,17 +134,14 @@ public class PCmo_GuiMinerConsole implements PC_IGresBase {
 	@Override
 	public void onGuiClosed(PC_IGresGui gui) {
 		miner.openedGui = false;
-		miner.programmingGuiOpen = false;
-		miner.miningEnabled = checkMining.isChecked();
-		miner.bridgeEnabled = checkBridge.isChecked();
-		miner.lavaFillingEnabled = checkLava.isChecked();
-		miner.waterFillingEnabled = checkWater.isChecked();
-		miner.keepAllFuel = checkKeepFuel.isChecked();
-		miner.torchesOnlyOnFloor = checkTorchFloor.isChecked();
-		miner.compressBlocks = checkCompress.isChecked();
-
-		miner.DESTROY = (byte) ((checkCobble.isChecked() ? PCmo_EntityMiner.COBBLE : 0) | (checkGravel.isChecked() ? PCmo_EntityMiner.GRAVEL : 0) | (checkDirt
-				.isChecked() ? PCmo_EntityMiner.DIRT : 0));
+		miner.st.programmingGuiOpen = false;
+		miner.cfg.miningEnabled = checkMining.isChecked();
+		miner.cfg.bridgeEnabled = checkBridge.isChecked();
+		miner.cfg.lavaFillingEnabled = checkLava.isChecked();
+		miner.cfg.waterFillingEnabled = checkWater.isChecked();
+		miner.cfg.keepAllFuel = checkKeepFuel.isChecked();
+		miner.cfg.torchesOnlyOnFloor = checkTorchFloor.isChecked();
+		miner.cfg.compressBlocks = checkCompress.isChecked();
 	}
 
 	@Override
@@ -154,21 +152,21 @@ public class PCmo_GuiMinerConsole implements PC_IGresBase {
 
 		if (widget == quit) {
 			// Close
-			miner.program = programBox.getText().trim();
+			miner.brain.program = programBox.getText().trim();
 			gui.close();
 		} else if (widget == pgm_clear) {
 			programBox.setText("");
 		} else if (widget == clear_buffer) {
 			miner.resetEverything();
 		} else if (widget == pgm_run) {
-			miner.program = programBox.getText().trim();
+			miner.brain.program = programBox.getText().trim();
 			errorString.setText("");
 			try {
-				miner.runNewProgram();
+				miner.brain.launchProgram();
 				gui.close();
 
 			} catch (PCmo_CommandException err) {
-				errorString.setText(err.getError());
+				errorString.setText(err.getMessage());
 			}
 		} else if (widget == dir_go) {
 			errorString.setText("");
@@ -177,7 +175,7 @@ public class PCmo_GuiMinerConsole implements PC_IGresBase {
 				gui.close();
 
 			} catch (PCmo_CommandException err) {
-				errorString.setText(err.getError());
+				errorString.setText(err.getMessage());
 			}
 		} else if (widget == programBox) {
 			pgm_run.enable(programBox.getText().length() > 0);

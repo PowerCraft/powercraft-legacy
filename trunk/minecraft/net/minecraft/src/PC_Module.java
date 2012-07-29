@@ -316,7 +316,7 @@ public abstract class PC_Module extends BaseMod {
 		if (names.isEmpty()) {
 			PC_Logger.finer("This module has no translations.");
 			File file = new File(Minecraft.getMinecraftDir() + mod_PCcore.cfgdir + "/lang/en_US-" + getModuleName() + ".lang");
-			System.out.println("Filepath to delete: " + file);
+
 			if (file.exists()) {
 				PC_Logger.finer("Old translation file en_US-" + getModuleName() + ".lang exists, removing it.");
 				file.delete();

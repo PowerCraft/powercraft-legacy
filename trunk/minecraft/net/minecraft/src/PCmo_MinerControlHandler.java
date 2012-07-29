@@ -42,7 +42,7 @@ public class PCmo_MinerControlHandler {
 		}
 
 		if (!silent) {
-			PC_Utils.chatMsg(PC_Lang.tr("pc.miner.disconnected", new String[] { miner.level + "" }), true);
+			PC_Utils.chatMsg(PC_Lang.tr("pc.miner.disconnected", new String[] { miner.st.level + "" }), true);
 		}
 	}
 
@@ -148,7 +148,7 @@ public class PCmo_MinerControlHandler {
 		}
 
 		if (!silent) {
-			PC_Utils.chatMsg(PC_Lang.tr("pc.miner.connected", new String[] { miner.level + "" }), true);
+			PC_Utils.chatMsg(PC_Lang.tr("pc.miner.connected", new String[] { miner.st.level + "" }), true);
 		}
 	}
 

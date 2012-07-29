@@ -206,19 +206,19 @@ public class PCde_BlockWalkable extends BlockContainer implements PC_IBlockType,
 			boolean[] fences = getFencesShownLedge(world, new PC_CoordI(x, y, z));
 
 			if (fences[0]) {
-				setBlockBounds(1 - 0.0625F, 0, 0, 1, 1.3F, 1);
+				setBlockBounds(1 - 0.0625F, 0, 0, 1, 1.0F, 1);
 				super.getCollidingBoundingBoxes(world, x, y, z, axisalignedbb, arraylist);
 			}
 			if (fences[1]) {
-				setBlockBounds(0, 0, 0, 0.0625F, 1.3F, 1);
+				setBlockBounds(0, 0, 0, 0.0625F, 1.0F, 1);
 				super.getCollidingBoundingBoxes(world, x, y, z, axisalignedbb, arraylist);
 			}
 			if (fences[2]) {
-				setBlockBounds(0, 0, 1 - 0.0625F, 1, 1.3F, 1);
+				setBlockBounds(0, 0, 1 - 0.0625F, 1, 1.0F, 1);
 				super.getCollidingBoundingBoxes(world, x, y, z, axisalignedbb, arraylist);
 			}
 			if (fences[3]) {
-				setBlockBounds(0, 0, 0, 1, 1.3F, 0.0625F);
+				setBlockBounds(0, 0, 0, 1, 1.0F, 0.0625F);
 				super.getCollidingBoundingBoxes(world, x, y, z, axisalignedbb, arraylist);
 			}
 			if (fences[4]) {

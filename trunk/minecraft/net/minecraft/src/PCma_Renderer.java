@@ -95,6 +95,9 @@ public class PCma_Renderer {
 	 * @param rtype render type
 	 */
 	public static void renderInvBlockByType(RenderBlocks renderblocks, Block block, int meta, int rtype) {
+
+		double[] a = {block.minX,block.minY,block.minZ,block.maxX,block.maxY,block.maxZ};
+		
 		if (rtype == laserRenderer) {
 			renderInvBlockLaser(renderblocks, block, meta);
 		}
@@ -106,6 +109,7 @@ public class PCma_Renderer {
 		if (rtype == opticalRenderer) {
 			renderInvBlockOptical(renderblocks, block, meta);
 		}
+		block.setBlockBounds((float)a[0],(float)a[1],(float)a[2],(float)a[3],(float)a[4],(float)a[5]);
 		return;
 	}
 

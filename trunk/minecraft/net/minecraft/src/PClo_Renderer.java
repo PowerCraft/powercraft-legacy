@@ -62,32 +62,33 @@ public class PClo_Renderer {
 	 */
 	public static void renderInvBlockByType(RenderBlocks renderblocks, Block block, int meta, int rtype) {
 
+
+		double[] a = {block.minX,block.minY,block.minZ,block.maxX,block.maxY,block.maxZ};		
+		
 		if (rtype == radioRenderer) {
 			renderInvBlockRadio(renderblocks, block, meta);
-			return;
 		}
 
 		if (rtype == sensorRenderer) {
 			renderInvBlockSensor(renderblocks, (PClo_BlockSensor) block, meta);
-			return;
 		}
 
 		if (rtype == weaselRenderer) {
 			renderInvBlockWeasel(renderblocks, (PClo_BlockWeasel) block, meta);
-			return;
 		}
 
 		if (rtype == lightRenderer) {
 			renderInvBlockLight(renderblocks, block, meta);
-			return;
-		}
+		}		
+
+		block.setBlockBounds((float)a[0],(float)a[1],(float)a[2],(float)a[3],(float)a[4],(float)a[5]);
 
 	}
 
 	private static void renderInvBlockLight(RenderBlocks renderblocks, Block block, int meta) {
 
 		PC_Renderer.swapTerrain(mod_PClogic.getTerrainFile());
-
+		
 		if (meta < 32) {
 			float sidehalf = 0.1875F;
 			float height = 0.15F;
@@ -99,7 +100,7 @@ public class PClo_Renderer {
 			block.setBlockBounds(0.5F - sidehalf, 0.5F - sidehalf, 0.5F - height / 2F, 0.5F + sidehalf, 0.5F + sidehalf, 0.5F + height / 2F);
 			PC_Renderer.renderInvBoxWithTexture(renderblocks, block, 117);
 		}
-
+		
 		PC_Renderer.resetTerrain(true);
 
 	}
@@ -124,8 +125,6 @@ public class PClo_Renderer {
 		block.setBlockBounds(7F * px, 12F * px, 7F * px, 9F * px, 14F * px, 9F * px);
 		PC_Renderer.renderInvBoxWithTexture(renderblocks, block, 68);
 
-		block.setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 0.255F, 1.0F);
-
 		PC_Renderer.resetTerrain(true);
 
 	}
@@ -144,7 +143,6 @@ public class PClo_Renderer {
 		PC_Renderer.renderInvBoxWithTexture(renderblocks, block, tx);
 		block.setBlockBounds(5 * px, 8 * px, 5 * px, 11 * px, 14 * px, 11 * px);
 		PC_Renderer.renderInvBoxWithTexture(renderblocks, block, 68);
-		block.setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 1.0F, 1.0F);
 
 		PC_Renderer.resetTerrain(true);
 
@@ -165,7 +163,7 @@ public class PClo_Renderer {
 				//chip
 				block.setBlockBounds(4 * px, 3 * px, 3 * px, 12 * px, 5 * px, 13 * px);
 				PC_Renderer.renderInvBoxWithTextures(renderblocks, block, new int[] { 0, 196, 195, 195, 195, 195 });
-				block.setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 1.0F, 1.0F);
+
 				break;
 
 			case PClo_WeaselType.PORT:
@@ -176,7 +174,7 @@ public class PClo_Renderer {
 				//chip
 				block.setBlockBounds(5 * px, 3 * px, 5 * px, 11 * px, 5 * px, 11 * px);
 				PC_Renderer.renderInvBoxWithTextures(renderblocks, block, new int[] { 0, 194, 193, 193, 193, 193 });
-				block.setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 1.0F, 1.0F);
+
 				break;
 
 			case PClo_WeaselType.DISPLAY:
@@ -192,7 +190,6 @@ public class PClo_Renderer {
 				block.setBlockBounds(0 * px, 2 * px, 7 * px, 16 * px, 16 * px, 9 * px);
 				PC_Renderer.renderInvBoxWithTextures(renderblocks, block, new int[] { 176, 176, 178, 177, 176, 176 });
 
-				block.setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 1.0F, 1.0F);
 				break;
 
 			case PClo_WeaselType.SPEAKER:
@@ -203,8 +200,6 @@ public class PClo_Renderer {
 				// box
 				block.setBlockBounds(2F * px, 1 * px, 2F * px, 14F * px, 15 * px, 14F * px);
 				PC_Renderer.renderInvBoxWithTextures(renderblocks, block, new int[] { 179, 179, 180, 180, 180, 180 });
-
-				block.setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 1.0F, 1.0F);
 				break;
 
 			case PClo_WeaselType.TOUCHSCREEN:
@@ -232,21 +227,18 @@ public class PClo_Renderer {
 				block.setBlockBounds(15 * px, 3 * px, 7.5F * px, 16 * px, 15 * px, 8.5F * px);
 				PC_Renderer.renderInvBoxWithTexture(renderblocks, block, 197);
 
-				block.setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 1.0F, 1.0F);
 				break;
 
 			case PClo_WeaselType.DISK_MANAGER:
 				block.setBlockBounds(0, 0, 0, 16 * px, 13 * px, 16 * px);
 				PC_Renderer.renderInvBoxWithTextures(renderblocks, block, new int[] { 230, 209, 210, 210, 210, 210 });
 
-				block.setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 1.0F, 1.0F);
 				break;
 
 			case PClo_WeaselType.DISK_DRIVE:
 				block.setBlockBounds(0, 0, 0, 16 * px, 13 * px, 16 * px);
 				PC_Renderer.renderInvBoxWithTextures(renderblocks, block, new int[] { 230, 225, 211, 211, 211, 211 });
 
-				block.setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 1.0F, 1.0F);
 				break;
 
 			case PClo_WeaselType.TERMINAL:
@@ -258,7 +250,6 @@ public class PClo_Renderer {
 				block.setBlockBounds(2 * px, 4 * px, 2 * px, 14 * px, 12 * px, 8 * px);
 				PC_Renderer.renderInvBoxWithTextures(renderblocks, block, new int[] { 229, 229, 228, 213, 214, 214 });
 
-				block.setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 1.0F, 1.0F);
 				break;
 
 		}

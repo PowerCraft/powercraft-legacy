@@ -73,7 +73,7 @@ public class PC_Utils {
 	 * @param stored object to store
 	 * @return the compound wrapping tag
 	 */
-	public static NBTTagCompound writeWrappedToNBT(NBTTagCompound parent, String wrapperTagName, PC_INBT stored) {
+	public static NBTTagCompound saveToNBT(NBTTagCompound parent, String wrapperTagName, PC_INBT stored) {
 		NBTTagCompound tag = new NBTTagCompound();
 		stored.writeToNBT(tag);
 		parent.setCompoundTag(wrapperTagName, tag);
@@ -89,7 +89,7 @@ public class PC_Utils {
 	 *            object is stored
 	 * @param loaded object to load
 	 */
-	public static void readWrappedFromNBT(NBTTagCompound parent, String wrapperTagName, PC_INBT loaded) {
+	public static void loadFromNBT(NBTTagCompound parent, String wrapperTagName, PC_INBT loaded) {
 		loaded.readFromNBT(parent.getCompoundTag(wrapperTagName));
 	}
 

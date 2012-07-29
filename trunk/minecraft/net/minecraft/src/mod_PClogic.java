@@ -74,7 +74,7 @@ public class mod_PClogic extends PC_Module {
 	private static final String pk_idWeasel = "id.block.weasel_device";
 	private static final String pk_idSensor = "id.block.motion_sensor";
 	private static final String pk_idRemote = "id.item.radio_remote";
-	private static final String pk_idDisk = "id.item.weasel_disk";
+	private static final String pk_idDisk = "id.item.weasel_data_disk";
 	private static final String pk_optRadioDefChannel = "default.radio.channel";
 	private static final String pk_optSensorDefRange = "default.sensor.range";
 
@@ -133,7 +133,7 @@ public class mod_PClogic extends PC_Module {
 		conf.putBlock(pk_idSensor, 229);
 		conf.putBlock(pk_idWeasel, 239);
 		conf.putItem(pk_idRemote, 19000);
-		conf.putItem(pk_idDisk, 19005);
+		conf.putItem(pk_idDisk, 19006);
 		conf.putString(pk_optRadioDefChannel, "default", "the default channel for radios");
 		conf.putInteger(pk_optSensorDefRange, 3, "the range of newly placed sensor");
 

@@ -13,10 +13,10 @@ import org.lwjgl.opengl.GL11;
 public class PC_GresColorMap extends PC_GresWidget {
 
 	private int colorArray[][] = null;
-	private char lastKey;
-	private PC_CoordI lastMousePos;
-	private int lastMouseKey;
-	private String lastEvent;
+	private char lastKey=0;
+	private PC_CoordI lastMousePos = new PC_CoordI(-1,-1);
+	private int lastMouseKey=-1;
+	private String lastEvent="";
 	private int px = 3;
 	private boolean border = true;
 	private boolean acceptKeyboardInput = true;
@@ -228,6 +228,10 @@ public class PC_GresColorMap extends PC_GresWidget {
 	 */
 	public int getScale() {
 		return px;
+	}
+
+	public void setLastEvent(String string) {
+		lastEvent = string;
 	}
 
 }
