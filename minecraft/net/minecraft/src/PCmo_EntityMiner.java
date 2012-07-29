@@ -2,21 +2,41 @@ package net.minecraft.src;
 
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Random;
+import java.util.Map.Entry;
 
+import net.minecraft.src.PClo_RadioBus.IRadioDevice;
+
+import weasel.Calc;
 import weasel.IWeaselHardware;
 import weasel.WeaselEngine;
+import weasel.exception.SyntaxError;
 import weasel.exception.WeaselRuntimeException;
+import weasel.jep.ParseException;
+import weasel.lang.Instruction;
+import weasel.obj.WeaselBoolean;
 import weasel.obj.WeaselInteger;
 import weasel.obj.WeaselObject;
+import weasel.obj.WeaselString;
 
 
 /**
  * @author MightyPork
  * @copy (c) 2012
  */
-public class PCmo_EntityMiner extends Entity {
+public class PCmo_EntityMiner extends Entity implements PC_IInventoryWrapper {
+
+	public static final int LTORCH = 3;
+	public static final int LBRIDGE = 2;
+	public static final int LLAVA = 4;
+	public static final int LWATER = 6;
+	public static final int LAIR = 7;
+	public static final int LCOMPRESS = 5;
+
+
 
 	/** Fuel strength multiplier. It's also affected by level. */
 	private static final double FUEL_STRENGTH = 0.9D;
@@ -35,6 +55,8 @@ public class PCmo_EntityMiner extends Entity {
 	protected MinerStatus st = new MinerStatus();
 	/** Cargo inventory with all items */
 	protected MinerCargoInventory cargo = new MinerCargoInventory();
+	/** Crystals inventory */
+	protected MinerCrystalInventory xtals = new MinerCrystalInventory();
 
 	/**
 	 * Create miner in world.
@@ -198,15 +220,23 @@ public class PCmo_EntityMiner extends Entity {
 		/** Water filling enabled */
 		public boolean waterFillingEnabled = false;
 
+		/** allow placing torches */
+		public boolean torches = true;
+
+		/** allow tunnel mode */
+		public boolean airFillingEnabled = false;
+
 		@Override
 		public NBTTagCompound writeToNBT(NBTTagCompound tag) {
 			tag.setBoolean("KeepFuel", keepAllFuel);
 			tag.setBoolean("TorchesOnFloor", torchesOnlyOnFloor);
+			tag.setBoolean("Torches", torches);
 			tag.setBoolean("AutoCompress", compressBlocks);
 			tag.setBoolean("Mining", miningEnabled);
 			tag.setBoolean("Bridge", bridgeEnabled);
 			tag.setBoolean("Lava", lavaFillingEnabled);
 			tag.setBoolean("Water", waterFillingEnabled);
+			tag.setBoolean("Air", airFillingEnabled);
 			return tag;
 		}
 
@@ -214,11 +244,13 @@ public class PCmo_EntityMiner extends Entity {
 		public PC_INBT readFromNBT(NBTTagCompound tag) {
 			keepAllFuel = tag.getBoolean("KeepFuel");
 			torchesOnlyOnFloor = tag.getBoolean("TorchesOnFloor");
+			torches = tag.getBoolean("Torches");
 			compressBlocks = tag.getBoolean("AutoCompress");
 			miningEnabled = tag.getBoolean("Mining");
 			bridgeEnabled = tag.getBoolean("Bridge");
 			lavaFillingEnabled = tag.getBoolean("Lava");
 			waterFillingEnabled = tag.getBoolean("Water");
+			airFillingEnabled = tag.getBoolean("Air");
 			return this;
 		}
 	}
@@ -229,24 +261,83 @@ public class PCmo_EntityMiner extends Entity {
 	 * 
 	 * @author MightyPork
 	 */
-	public class MinerBrain implements PC_INBT, IWeaselHardware {
+	public class MinerBrain implements PC_INBT, IWeaselHardware, IRadioDevice {
 
 		/** error message. */
 		public String error = "";
 		/** source code */
 		public String program = "";
+		private boolean connectedToRadioBus = false;
 
-		private WeaselEngine engine = new WeaselEngine(this);
-		
+		/** weasel engine */
+		public WeaselEngine engine = new WeaselEngine(this);
+
+		/** Displayed text. "\n" is a newline. */
+		public String termText = "";
+
+		/**  */
+		private ArrayList<String> termUserInput = new ArrayList<String>();
+
+		private Map<String, Boolean> weaselRadioSignals = new HashMap<String, Boolean>(0);
+
 		/**
-		 * Disconnect from keyboard, reset status and start program execution.
+		 * Add user input to the buffer - if not empty
 		 * 
-		 * @throws PCmo_CommandException when the program contains errors.
+		 * @param input user input
 		 */
-		public void launchProgram() throws PCmo_CommandException {
+		public void addInput(String input) {
+			if (input.trim().length() > 0) {
+				termUserInput.add(input.trim());
+			}
+			if (termUserInput.size() > 16) {
+				termUserInput.remove(0);
+			}
+
+			addText("> " + input.trim() + "\n");
+		}
+
+		private int countIn(String str, char c) {
+			int counter = 0;
+			for (int i = 0; i < str.length(); i++) {
+				if (str.charAt(i) == c) {
+					counter++;
+				}
+			}
+			return counter;
+		}
+
+		/**
+		 * Add text to the terminal, if too long remove oldest.
+		 * 
+		 * @param text
+		 */
+		public void addText(String text) {
+			worldObj.playSoundEffect(posX + 0.5F, posY + 0.5F, posZ + 0.5F, "random.click", 0.05F, 3F);
+			this.termText += text.replace("\\n", "\n");
+			if (countIn(this.termText, '\n') > 60) {
+				while (countIn(this.termText, '\n') > 60) {
+					this.termText = this.termText.substring(this.termText.indexOf('\n') + 1);
+				}
+			}
+		}
+
+
+		@Override
+		public boolean doesTransmitOnChannel(String channel) {
+			return weaselRadioSignals.containsKey(channel) && weaselRadioSignals.get(channel) == true;
+		}
+
+		/**
+		 * Restart current weasel program
+		 */
+		public void restartProgram() {
 			st.keyboardControlled = false;
 			st.paused = false;
+			st.pausedWeasel = false;
 			st.halted = false;
+			weaselRadioSignals.clear();
+			termText = "";
+			termUserInput.clear();
 			error = "";
 			PCmo_MinerControlHandler.disconnectMinerFromKeyboardControl(PCmo_EntityMiner.this, true);
 
@@ -256,12 +347,23 @@ public class PCmo_EntityMiner extends Entity {
 			st.commandList = "";
 			st.commandListSaved = "";
 			st.currentCommand = -1;
-			
+
+			engine.restartProgramClearGlobals();
+		}
+
+		/**
+		 * Disconnect from keyboard, reset status and start program execution.
+		 * 
+		 * @throws ParseException when the program contains errors.
+		 */
+		public void launchProgram() throws ParseException {
+			restartProgram();
+
 			try {
 				engine.insertNewProgram(WeaselEngine.compileProgram(program));
 			} catch (Exception e) {
 				e.printStackTrace();
-				throw new PCmo_CommandException(e.getMessage());
+				throw new ParseException(e.getMessage());
 			}
 		}
 
@@ -269,23 +371,40 @@ public class PCmo_EntityMiner extends Entity {
 		 * @return true if miner crashed
 		 */
 		public boolean hasError() {
-			return error.length() > 0;
+			return error != null && error.length() > 0;
 		}
 
-		private void setError(String message) {
+		/**
+		 * set error message
+		 * 
+		 * @param message message
+		 */
+		public void setError(String message) {
 			error = message;
+		}
+
+		/**
+		 * @return error message or ""
+		 */
+		public String getError() {
+			return error;
 		}
 
 		/**
 		 * Run weasel and try to get next instruction.
 		 */
 		public void run() {
-			if (!st.paused && !st.halted && !hasError()) {
+
+			if (!connectedToRadioBus) {
+				mod_PClogic.RADIO.connectToRedstoneBus(this);
+			}
+
+			if (!st.paused && !st.pausedWeasel && !st.halted && !hasError()) {
 				try {
-					engine.run(400);
+					engine.run(100);
 				} catch (WeaselRuntimeException wre) {
+					wre.printStackTrace();
 					setError(wre.getMessage());
-					System.out.println(error);
 				}
 			}
 		}
@@ -297,8 +416,26 @@ public class PCmo_EntityMiner extends Entity {
 		@Override
 		public NBTTagCompound writeToNBT(NBTTagCompound tag) {
 			PC_Utils.saveToNBT(tag, "Engine", engine);
-			tag.setString("Error", error);
-			tag.setString("Program", program);
+			tag.setString("Error", error==null?"":error);
+			tag.setString("Program", program==null?"":program);
+
+			NBTTagList list = new NBTTagList();
+			for (Entry<String, Boolean> entry : weaselRadioSignals.entrySet()) {
+				NBTTagCompound ct = new NBTTagCompound();
+				ct.setString("C", entry.getKey());
+				ct.setBoolean("S", entry.getValue());
+				list.appendTag(ct);
+			}
+
+			tag.setTag("RadioChannels", list);
+
+			tag.setString("TermText", termText==null?"":termText);
+
+			tag.setInteger("TermInCount", termUserInput.size());
+			for (int i = 0; i < termUserInput.size(); i++) {
+				tag.setString("tin_" + i, termUserInput.get(i));
+			}
+
 			return tag;
 		}
 
@@ -307,6 +444,21 @@ public class PCmo_EntityMiner extends Entity {
 			PC_Utils.loadFromNBT(tag, "Engine", engine);
 			error = tag.getString("Error");
 			program = tag.getString("Program");
+
+			NBTTagList list = tag.getTagList("RadioChannels");
+
+			for (int i = 0; i < list.tagCount(); i++) {
+				NBTTagCompound ct = (NBTTagCompound) list.tagAt(i);
+				weaselRadioSignals.put(ct.getString("C"), ct.getBoolean("S"));
+			}
+
+			termText = tag.getString("TermText");
+			int count = tag.getInteger("TermInCount");
+			termUserInput.clear();
+			for (int i = 0; i < count; i++) {
+				termUserInput.add(tag.getString("tin_" + i));
+			}
+
 			return this;
 		}
 
@@ -322,20 +474,15 @@ public class PCmo_EntityMiner extends Entity {
 		public WeaselObject callProvidedFunction(WeaselEngine engine, String name, WeaselObject[] args) {
 
 			try {
+				if (name.equals("bell")) {
+					worldObj.playSoundEffect(posX + 0.5D, posY + 2D, posZ + 0.5D, "random.orb", 0.8F,
+							(rand.nextFloat() - rand.nextFloat()) * 0.2F + 1.0F);
+					worldObj.spawnParticle("note", posX + 0.5D, posY + 0.3D, posZ + 0.5D, (name.length() * (3 + args.length)) / 24D, 0.0D, 0.0D);
+					return null;
+				}
 
 				if (name.equals("run")) name = "do";
 
-				if (name.equals("do")) {
-					int num = 1;
-					if (args.length == 2) {
-						num = (Integer) args[1].get();
-					}
-					for (int i = 0; i < num; i++) {
-						appendCode((String) args[0].get());
-					}
-					engine.requestPause();
-					return null;
-				}
 
 
 				if (name.equals("forward")) name = "fw";
@@ -383,6 +530,32 @@ public class PCmo_EntityMiner extends Entity {
 					return null;
 				}
 
+				if (name.equals("up")) {
+					int num = 1;
+					if (args.length == 1) {
+						num = (Integer) args[0].get();
+					}
+
+					for (int i = 0; i < num; i++) {
+						appendCode("U");
+					}
+					engine.requestPause();
+					return null;
+				}
+
+				if (name.equals("down")) {
+					int num = 1;
+					if (args.length == 1) {
+						num = (Integer) args[0].get();
+					}
+
+					for (int i = 0; i < num; i++) {
+						appendCode("D");
+					}
+					engine.requestPause();
+					return null;
+				}
+
 				if (name.equals("right")) {
 					int num = 1;
 					if (args.length == 1) {
@@ -398,20 +571,39 @@ public class PCmo_EntityMiner extends Entity {
 				}
 
 				if (name.equals("turn")) {
-					int num = 2;
-					if (args.length == 1) {
-						num = (Integer) args[0].get();
+					do {
+						if (args[0] instanceof WeaselString) {
+							name = "do";
+							break;
+						}
+						int num = 2;
+						if (args.length == 1) {
+							num = (Integer) args[0].get();
+						}
+						boolean L = num < 0;
+						if (L) num = -num;
+						for (int i = 0; i < num; i++) {
+							appendCode(L ? "L" : "R");
+						}
+						engine.requestPause();
+						return null;
+					} while (false);
+				}
+
+
+				if (name.equals("do")) {
+					int num = 1;
+					if (args.length == 2) {
+						num = (Integer) args[1].get();
 					}
-					boolean L = num < 0;
-					if (L) num = -num;
 					for (int i = 0; i < num; i++) {
-						appendCode(L ? "L" : "R");
+						appendCode((String) args[0].get());
 					}
 					engine.requestPause();
 					return null;
 				}
-				
-				
+
+
 				if (name.equals("xplus")) name = "east";
 				if (name.equals("xminus")) name = "west";
 				if (name.equals("zplus")) name = "south";
@@ -442,7 +634,131 @@ public class PCmo_EntityMiner extends Entity {
 					engine.requestPause();
 					return null;
 				}
-			} catch (PCmo_CommandException e) {
+				if (name.equals("isDay")) {
+					return new WeaselBoolean(worldObj.isDaytime());
+				}
+				if (name.equals("idNight")) {
+					return new WeaselBoolean(!worldObj.isDaytime());
+				}
+				if (name.equals("isRaining")) {
+					return new WeaselBoolean(worldObj.isRaining());
+				}
+
+				if (name.equals("nset")) {
+					mod_PClogic.NETWORK.setGlobalVariable((String) args[0].get(), args[1]);
+					return null;
+				}
+
+				if (name.equals("nget")) {
+					return mod_PClogic.NETWORK.getGlobalVariable((String) args[0].get());
+				}
+
+				if (name.equals("rx")) {
+					return new WeaselBoolean(mod_PClogic.RADIO.getChannelState((String) args[0].get()));
+				}
+
+				if (name.equals("tx")) {
+					weaselRadioSignals.put((String) args[0].get(), Calc.toBoolean(args[1].get()));
+					return null;
+
+				}
+
+
+				if (name.equals("term")) {
+					if (args.length == 0) {
+						name = "term" + ".in";
+					} else if (args.length == 1) {
+						name = "term" + ".out";
+					}
+				}
+
+				if (name.equals("term" + ".cls") || name.equals("term" + ".clear") || name.equals("term" + ".reset")
+						|| name.equals("term" + ".restart")) {
+					termText = "";
+					termUserInput.clear();
+				}
+
+				if (name.equals("term" + ".out") || name.equals("term" + ".print")) {
+					addText(Calc.toString(args[0]) + "\n");
+				}
+				if (name.equals("term" + ".hasInput")) return new WeaselBoolean(termUserInput.size() > 0);
+				if (name.equals("term" + ".in") || name.equals("term" + ".getInput")) {
+					if (termUserInput.size() == 0) return new WeaselString("");
+					WeaselObject o = new WeaselString(termUserInput.get(0));
+					termUserInput.remove(0);
+					return o;
+				}
+
+
+
+				if (name.equals("getBlock")||name.equals("getId")) {
+					String side = Calc.toString(args[0].get());
+					char sid = side.charAt(0);
+					String num = side.substring(1);
+
+					return new WeaselInteger(getCoordOnSide(sid, Integer.valueOf(num)).getId(worldObj));
+				}
+
+				if (name.equals("place")||name.equals("setBlock")) {
+					String side = Calc.toString(args[0].get());
+					char sid = side.charAt(0);
+					String num = side.substring(1);
+
+					Object id = args[1].get();
+					String str = "";
+
+					int numid = -1;
+
+					if (id instanceof Integer) {
+						numid = (Integer) id;
+					}
+
+					if (id instanceof String) {
+						numid = -2;
+						str = (String) id;
+					}
+
+					if (numid == -1) throw new WeaselRuntimeException(id + " is not a valid block id or group.");
+
+					PC_CoordI pos = getCoordOnSide(sid, Integer.valueOf(num));
+					System.out.println(side+" Pos "+pos);
+
+					if (str.equals("BUILDING_BLOCK") || str.equals("BLOCK")) {
+						ItemStack placed = cargo.getBlockForBuilding();
+						if (placed == null) {
+							return new WeaselBoolean(false);
+						} else {
+							if (!placed.useItem(fakePlayer, worldObj, pos.x, pos.y+1, pos.z, 0)) {
+								PC_InvUtils.addItemStackToInventory(cargo, placed);
+							} else {
+								return new WeaselBoolean(true);
+							}
+						}
+					}
+
+					if (numid != -2) {
+						for (int i = 0; i < cargo.getSizeInventory(); i++) {
+							ItemStack stack = cargo.getStackInSlot(i);
+							if (stack == null) continue;
+
+							if (stack.itemID == numid) {
+								ItemStack placed = cargo.decrStackSize(i, 1);
+								System.out.println("placed "+placed);
+								if (!placed.useItem(fakePlayer, worldObj, pos.x, pos.y+1, pos.z, 0)) {
+									System.out.println("failed, now "+placed);
+									PC_InvUtils.addItemStackToInventory(cargo, placed);
+								} else {
+									return new WeaselBoolean(true);
+								}
+							}
+						}
+					}
+
+					return new WeaselBoolean(false);
+				}
+
+
+			} catch (ParseException e) {
 				e.printStackTrace();
 				throw new WeaselRuntimeException(e.getMessage());
 			}
@@ -462,11 +778,30 @@ public class PCmo_EntityMiner extends Entity {
 			if (name.equals("pos.z")) {
 				return new WeaselInteger(Math.round(posZ));
 			}
+			if (name.equals("angle") || name.equals("dir.angle")) {
+				int rot = getRotationRounded();
+				return new WeaselString(rot);
+			}
+			if (name.equals("dir") || name.equals("dir.axis") || name.equals("axis")) {
+				int rot = getRotationRounded();
+				return new WeaselString(rot == 0 ? "x-" : rot == 90 ? "z-" : rot == 180 ? "x+" : "z+");
+			}
+			if (name.equals("dir.compass") || name.equals("compass")) {
+				int rot = getRotationRounded();
+				return new WeaselString(rot == 0 ? "W" : rot == 90 ? "N" : rot == 180 ? "E" : "S");
+			}
+
 			return null;
 		}
 
 		@Override
-		public void setVariable(String name, Object object) {}
+		public void setVariable(String name, Object object) {
+			if (name.equals("term") || name.equals("term.text") || name.equals("term.txt")) {
+				termText = "";
+				addText(Calc.toString(object));
+				return;
+			}
+		}
 
 
 		@Override
@@ -477,6 +812,8 @@ public class PCmo_EntityMiner extends Entity {
 			list.add("fw");
 			list.add("forward");
 			list.add("go");
+			list.add("up");
+			list.add("down");
 			list.add("bw");
 			list.add("back");
 			list.add("backward");
@@ -492,6 +829,36 @@ public class PCmo_EntityMiner extends Entity {
 			list.add("zplus");
 			list.add("zminus");
 			list.add("deposit");
+			list.add("bell");
+			list.add("isDay");
+			list.add("isNight");
+			list.add("isRaining");
+
+
+			list.add("sleep");
+
+			list.add("nget");
+			list.add("nset");
+
+			list.add("rx");
+			list.add("tx");
+
+			list.add("term");
+			list.add("term.reset");
+			list.add("term.restart");
+			list.add("term.cls");
+			list.add("term.clear");
+			list.add("term.print");
+			list.add("term.in");
+			list.add("term.out");
+			list.add("term.getInput");
+			list.add("term.hasInput");
+
+			list.add("getBlock");
+			list.add("setBlock");
+			list.add("place");
+			list.add("getId");
+
 			return list;
 		}
 
@@ -501,7 +868,30 @@ public class PCmo_EntityMiner extends Entity {
 			list.add("pos.x");
 			list.add("pos.y");
 			list.add("pos.z");
+			list.add("dir");
+			list.add("dir.axis");
+			list.add("dir.compass");
+			list.add("dir.angle");
+			list.add("axis");
+			list.add("angle");
+			list.add("compass");
+			list.add("term.txt");
+			list.add("term.text");
 			return list;
+		}
+
+		/**
+		 * Check if program is all right
+		 * 
+		 * @param text program
+		 * @throws SyntaxError syntax error
+		 */
+		public void checkProgramForErrors(String text) throws SyntaxError {
+			List<Instruction> list = WeaselEngine.compileProgram(program);
+			System.out.println();
+			for (Instruction i : list) {
+				System.out.println(i);
+			}
 		}
 
 	}
@@ -516,6 +906,9 @@ public class PCmo_EntityMiner extends Entity {
 	public class MinerStatus implements PC_INBT {
 
 		/** Is program execution paused? */
+		public boolean pausedWeasel = false;
+
+		/** Is operation paused? */
 		private boolean paused = false;
 
 		/**
@@ -620,6 +1013,7 @@ public class PCmo_EntityMiner extends Entity {
 		@Override
 		public NBTTagCompound writeToNBT(NBTTagCompound tag) {
 			tag.setBoolean("Paused", paused);
+			tag.setBoolean("PausedWeasel", pausedWeasel);
 			tag.setBoolean("Halted", halted);
 			tag.setString("CommandList", commandList);
 			tag.setString("CommandListSaved", commandListSaved);
@@ -646,6 +1040,7 @@ public class PCmo_EntityMiner extends Entity {
 		@Override
 		public PC_INBT readFromNBT(NBTTagCompound tag) {
 			paused = tag.getBoolean("Paused");
+			pausedWeasel = tag.getBoolean("PausedWeasel");
 			halted = tag.getBoolean("Halted");
 			commandList = tag.getString("CommandList");
 			commandListSaved = tag.getString("CommandListSaved");
@@ -744,14 +1139,14 @@ public class PCmo_EntityMiner extends Entity {
 	 * 
 	 * @author MightyPork
 	 */
-	public class MinerCargoInventory extends InventoryBasic implements IInventory {
+	public class MinerCargoInventory extends InventoryBasic implements IInventory, PC_IStateReportingInventory, PC_ISpecialAccessInventory {
 		/**
 		 * inventory
 		 */
 		public MinerCargoInventory() {
-			super(PC_Lang.tr("pc.miner.chestName"), 54);
+			super(PC_Lang.tr("pc.miner.chestName"), 11 * 5);
 		}
-		
+
 		@Override
 		public void closeChest() {
 			super.closeChest();
@@ -761,139 +1156,108 @@ public class PCmo_EntityMiner extends Entity {
 		/**
 		 * Compress blocks in inventory to storage blocks.<br>
 		 * <b>Time expensive, do only if needed!</b>
+		 * 
+		 * @param stack stack inserted
 		 */
-		private void compressInv() {
-			if (st.level < 5) {
+		private void compressInv(ItemStack stack) {
+			if (st.level < LCOMPRESS) {
 				return;
 			}
 			if (!cfg.compressBlocks) {
 				return;
 			}
 
-			int sand = 0;
-			int diamond = 0;
-			int lapis = 0;
-			int glowstone = 0;
-			int snowball = 0;
+			ItemStack out = null;
+			int neededForOne = 0;
 
-			for (int pass = 0; pass < 3; pass++) {
-				for (int i = 0; i < getSizeInventory(); i++) {
-					if (getStackInSlot(i) != null) {
-						if (getStackInSlot(i).itemID == Block.sand.blockID) {
-							sand += getStackInSlot(i).stackSize;
-							setInventorySlotContents(i, null);
-							continue;
-						}
+			do {
+				if (stack.itemID == Block.sand.blockID) {
+					out = new ItemStack(Block.sandStone);
+					neededForOne = 4;
+					break;
+				}
+				if (stack.itemID == Item.snowball.shiftedIndex) {
+					out = new ItemStack(Block.blockSnow);
+					neededForOne = 4;
+					break;
+				}
+				if (stack.itemID == Item.diamond.shiftedIndex) {
+					out = new ItemStack(Block.blockDiamond);
+					neededForOne = 9;
+					break;
+				}
+				if (stack.itemID == Item.ingotIron.shiftedIndex) {
+					out = new ItemStack(Block.blockSteel);
+					neededForOne = 9;
+					break;
+				}
+				if (stack.itemID == Item.ingotGold.shiftedIndex) {
+					out = new ItemStack(Block.blockGold);
+					neededForOne = 9;
+					break;
+				}
+				if (stack.itemID == Item.goldNugget.shiftedIndex) {
+					out = new ItemStack(Item.ingotGold);
+					neededForOne = 9;
+					break;
+				}
+				if (stack.itemID == Item.lightStoneDust.shiftedIndex) {
+					out = new ItemStack(Block.glowStone);
+					neededForOne = 4;
+					break;
+				}
+				if (stack.itemID == Item.dyePowder.shiftedIndex && stack.getItemDamage() == 4) {
+					out = new ItemStack(Block.blockLapis);
+					neededForOne = 9;
+					break;
+				}
+				if (stack.itemID == Item.redstone.shiftedIndex) {
+					out = new ItemStack(mod_PCdeco.deco, 1, 1);
+					neededForOne = 9;
+					break;
+				}
+				if (stack.itemID == Item.clay.shiftedIndex) {
+					out = new ItemStack(Block.blockClay);
+					neededForOne = 4;
+					break;
+				}
+				if (stack.itemID == Item.brick.shiftedIndex) {
+					out = new ItemStack(Block.brick);
+					neededForOne = 4;
+					break;
+				}
 
-						if (getStackInSlot(i).itemID == Item.diamond.shiftedIndex) {
-							diamond += getStackInSlot(i).stackSize;
-							setInventorySlotContents(i, null);
-							continue;
-						}
+			} while (false);
 
-						if (getStackInSlot(i).itemID == Item.snowball.shiftedIndex) {
-							snowball += getStackInSlot(i).stackSize;
-							setInventorySlotContents(i, null);
-							continue;
-						}
+			if (out == null || neededForOne == 0) return;
 
-						if (getStackInSlot(i).itemID == Item.lightStoneDust.shiftedIndex) {
-							glowstone += getStackInSlot(i).stackSize;
-							setInventorySlotContents(i, null);
-							continue;
-						}
+			int count = 0;
 
-						if (getStackInSlot(i).itemID == Item.dyePowder.shiftedIndex && getStackInSlot(i).getItemDamage() == 4) {
-							lapis += getStackInSlot(i).stackSize;
-							setInventorySlotContents(i, null);
-							continue;
-						}
+
+			for (int i = 0; i < getSizeInventory(); i++) {
+				if (getStackInSlot(i) != null) {
+					if (getStackInSlot(i).isItemEqual(stack)) {
+						count += getStackInSlot(i).stackSize;
+						setInventorySlotContents(i, null);
+						continue;
 					}
 				}
 			}
 
-			if (sand > 0) {
-				while (sand >= 4) {
-					if (PC_InvUtils.addItemStackToInventory(this, new ItemStack(Block.sandStone.blockID, 1, 0))) {
-						sand -= 4;
-					} else {
-						break;
-					}
-				}
 
-				if (sand > 0) {
-					ItemStack remaining = new ItemStack(Block.sand.blockID, sand, 0);
-					if (!PC_InvUtils.addItemStackToInventory(this, remaining)) {
-						entityDropItem(remaining, 1);
-					}
+			while (count >= neededForOne) {
+				if (PC_InvUtils.addItemStackToInventory(this, out.copy())) {
+					count -= neededForOne;
+				} else {
+					break;
 				}
 			}
 
-			if (snowball > 0) {
-				while (snowball >= 4) {
-					if (PC_InvUtils.addItemStackToInventory(this, (new ItemStack(Block.blockSnow.blockID, 1, 0)))) {
-						snowball -= 4;
-					} else {
-						break;
-					}
-				}
-
-				if (snowball > 0) {
-					ItemStack remaining = new ItemStack(Item.snowball.shiftedIndex, snowball, 0);
-					if (!PC_InvUtils.addItemStackToInventory(this, remaining)) {
-						entityDropItem(remaining, 1);
-					}
-				}
-			}
-
-			if (glowstone > 0) {
-				while (glowstone >= 4) {
-					if (PC_InvUtils.addItemStackToInventory(this, new ItemStack(Block.glowStone.blockID, 1, 0))) {
-						glowstone -= 4;
-					} else {
-						break;
-					}
-				}
-
-				if (glowstone > 0) {
-					ItemStack remaining = new ItemStack(Item.lightStoneDust.shiftedIndex, glowstone, 0);
-					if (!PC_InvUtils.addItemStackToInventory(this, remaining)) {
-						entityDropItem(remaining, 1);
-					}
-				}
-			}
-
-			if (diamond > 0) {
-				while (diamond >= 9) {
-					if (PC_InvUtils.addItemStackToInventory(this, new ItemStack(Block.blockDiamond.blockID, 1, 0))) {
-						diamond -= 9;
-					} else {
-						break;
-					}
-				}
-
-				if (diamond > 0) {
-					ItemStack remaining = new ItemStack(Item.diamond.shiftedIndex, diamond, 0);
-					if (!PC_InvUtils.addItemStackToInventory(this, remaining)) {
-						entityDropItem(remaining, 1);
-					}
-				}
-			}
-
-			if (lapis > 0) {
-				while (lapis >= 9) {
-					if (PC_InvUtils.addItemStackToInventory(this, new ItemStack(Block.blockLapis.blockID, 1, 0))) {
-						lapis -= 9;
-					} else {
-						break;
-					}
-				}
-
-				if (lapis > 0) {
-					ItemStack remaining = new ItemStack(Item.dyePowder.shiftedIndex, lapis, 4);
-					if (!PC_InvUtils.addItemStackToInventory(this, remaining)) {
-						entityDropItem(remaining, 1);
-					}
+			if (count > 0) {
+				ItemStack remaining = stack.copy();
+				remaining.stackSize = count;
+				if (!PC_InvUtils.addItemStackToInventory(this, remaining)) {
+					entityDropItem(remaining, 1);
 				}
 			}
 
@@ -906,7 +1270,7 @@ public class PCmo_EntityMiner extends Entity {
 		 * @return stack or null.
 		 */
 		private ItemStack getBlockForBuilding() {
-			for (int pass = 0; pass < 3; pass++) {
+			for (int pass = 0; pass <= 5; pass++) {
 				for (int i = 0; i < getSizeInventory(); i++) {
 					if (isBlockGoodForBuilding(getStackInSlot(i), pass)) {
 						return decrStackSize(i, 1);
@@ -934,29 +1298,40 @@ public class PCmo_EntityMiner extends Entity {
 
 			int id = is.itemID;
 
+			if (id == Block.stairSingle.blockID) return false;
+
 			if (PC_BlockUtils.hasFlag(is, "NO_BUILD")) {
 				return false;
 			}
 
-			if (id == Block.sand.blockID || id == Block.gravel.blockID) {
-				return false;
-			}
-
 			if (pass == 0) {
-				return id == 2 || id == 3 || id == 4;
+				return id == Block.dirt.blockID || id == Block.grass.blockID || id == Block.cobblestone.blockID || id == Block.netherrack.blockID;
 			}
 
 			if (pass == 1) {
-				return id == 5 || id == 1 || id == 24 || id == 87;
+				return id == Block.planks.blockID || id == Block.stone.blockID || id == Block.sandStone.blockID || id == Block.brick.blockID
+						|| id == Block.stoneBrick.blockID || id == Block.netherBrick.blockID;
 			}
 
-			if (id == 15 || id == 14 || id == 56) {
-				return false;
+			if (pass == 2) {
+				return id == Block.wood.blockID || id == Block.oreIron.blockID || id == Block.whiteStone.blockID || id == Block.cloth.blockID
+						|| id == Block.blockClay.blockID;
 			}
 
+			if (pass == 3) {
+				return id == Block.wood.blockID || id == Block.oreIron.blockID || id == Block.whiteStone.blockID || id == Block.cloth.blockID
+						|| id == Block.blockClay.blockID;
+			}
 
-			return id != mod_PCcore.powerCrystal.blockID && Block.blocksList[is.itemID] != null
-					&& Block.blocksList[is.itemID].blockMaterial.isSolid();
+			if (pass == 4) {
+				if (id == Block.sand.blockID || id == Block.gravel.blockID) return false;
+				return Block.blocksList[is.itemID].isOpaqueCube() || Block.blocksList[is.itemID].renderAsNormalBlock();
+			}
+
+			if (pass == 5) {
+				return Block.blocksList[is.itemID].blockMaterial.isSolid();
+			}
+			return false;
 		}
 
 		/**
@@ -1053,11 +1428,10 @@ public class PCmo_EntityMiner extends Entity {
 						ItemStack returned = cargo.decrStackSize(i, 1);
 
 						if (returned.itemID == Block.stairSingle.blockID) {
-							return cargo.decrStackSize(i, 1);
+							return returned;
 						}
 
-						ItemStack step = makeHalfstep(returned);
-
+						ItemStack step = makeHalfStep(returned);
 						PC_InvUtils.addItemStackToInventory(cargo, step.copy());
 						return step;
 					}
@@ -1066,7 +1440,7 @@ public class PCmo_EntityMiner extends Entity {
 			return null;
 		}
 
-		private ItemStack makeHalfstep(ItemStack stack) {
+		private ItemStack makeHalfStep(ItemStack stack) {
 			int id = stack.itemID;
 			@SuppressWarnings("unused")
 			int dmg = stack.getItemDamage();
@@ -1127,7 +1501,133 @@ public class PCmo_EntityMiner extends Entity {
 			return false;
 		}
 
+		@Override
+		public boolean insertStackIntoInventory(ItemStack stack) {
+			return false;
+		}
 
+		@Override
+		public boolean needsSpecialInserter() {
+			return false;
+		}
+
+		@Override
+		public boolean canPlayerInsertStackTo(int slot, ItemStack stack) {
+			return true;
+		}
+
+		@Override
+		public boolean canMachineInsertStackTo(int slot, ItemStack stack) {
+			return canPlayerInsertStackTo(slot, stack);
+		}
+
+		@Override
+		public boolean canDispenseStackFrom(int slot) {
+			ItemStack stack = getStackInSlot(slot);
+			if (stack == null) return false;
+
+			if (PC_InvUtils.getFuelValue(stack, 1) > 0) {
+				if (stack.getItem() instanceof ItemBlock) {
+					return !cfg.keepAllFuel;
+				} else {
+					return false;
+				}
+			}
+
+			return true;
+		}
+
+		@Override
+		public boolean isContainerEmpty() {
+			for (int i = 0; i < getSizeInventory(); i++) {
+				if (getStackInSlot(i) == null) continue;
+			}
+			return true;
+		}
+
+		@Override
+		public boolean isContainerFull() {
+			for (int i = 0; i < getSizeInventory(); i++) {
+				if (getStackInSlot(i) == null) return false;
+				if (getStackInSlot(i).stackSize < Math.min(getInventoryStackLimit(), getStackInSlot(i).getMaxStackSize())) return false;
+			}
+			return true;
+		}
+
+		@Override
+		public boolean hasContainerNoFreeSlots() {
+			for (int i = 0; i < getSizeInventory(); i++) {
+				if (getStackInSlot(i) == null) return false;
+			}
+			return true;
+		}
+
+
+	}
+
+
+
+	/**
+	 * Cargo inventory and some inventory manipulation methods.
+	 * 
+	 * @author MightyPork
+	 */
+	public class MinerCrystalInventory extends InventoryBasic implements IInventory, PC_ISpecialAccessInventory {
+		/**
+		 * inventory
+		 */
+		public MinerCrystalInventory() {
+			super(PC_Lang.tr("xtals"), 8);
+		}
+
+		@Override
+		public int getInventoryStackLimit() {
+			return 1;
+		}
+
+		@Override
+		public void closeChest() {
+			super.closeChest();
+			updateLevel();
+		}
+
+		@Override
+		public boolean insertStackIntoInventory(ItemStack stack) {
+			return false;
+		}
+
+		@Override
+		public boolean needsSpecialInserter() {
+			return false;
+		}
+
+		@Override
+		public boolean canPlayerInsertStackTo(int slot, ItemStack stack) {
+			return stack.itemID == mod_PCcore.powerCrystal.blockID && stack.getItemDamage() == getCrystalTypeForSlot(slot);
+		}
+
+		private final int[] xtals = { 1, 0, 7, 2, 6, 4, 3, 5 };
+
+		/**
+		 * get crystal damage for slot number
+		 * 
+		 * @param slot slot number
+		 * @return crystal damage
+		 */
+		public int getCrystalTypeForSlot(int slot) {
+			if (slot > 8) return -1;
+			return xtals[slot];
+		}
+
+		@Override
+		public boolean canMachineInsertStackTo(int slot, ItemStack stack) {
+			return canPlayerInsertStackTo(slot, stack);
+		}
+
+		@Override
+		public boolean canDispenseStackFrom(int slot) {
+			return false;
+		}
 	}
 
 
@@ -1262,7 +1762,7 @@ public class PCmo_EntityMiner extends Entity {
 	 * @return is miner ready for keyboard command
 	 */
 	public boolean canReceiveKeyboardCommand() {
-		if (openedGui) {
+		if (st.programmingGuiOpen || !st.keyboardControlled || !(st.paused || st.halted || brain.engine.isProgramFinished)) {
 			return false;
 		}
 		st.commandList = st.commandList.trim();
@@ -1280,7 +1780,7 @@ public class PCmo_EntityMiner extends Entity {
 			setKeyboardControl(false);
 			try {
 				brain.launchProgram();
-			} catch (PCmo_CommandException e) {}
+			} catch (ParseException e) {}
 		}
 		if (i == PCmo_Command.RESET) {
 			resetEverything();
@@ -1298,9 +1798,9 @@ public class PCmo_EntityMiner extends Entity {
 	 * Used for "turn around" command, which sends RR.
 	 * 
 	 * @param code code to append
-	 * @throws PCmo_CommandException if code is invalid
+	 * @throws ParseException if code is invalid
 	 */
-	public void appendCode(String code) throws PCmo_CommandException {
+	public void appendCode(String code) throws ParseException {
 		st.commandList = st.commandList + " " + PCmo_Command.parseCode(code);
 	}
 
@@ -1308,9 +1808,9 @@ public class PCmo_EntityMiner extends Entity {
 	 * Put code to the commands list.
 	 * 
 	 * @param code the code to parse and start
-	 * @throws PCmo_CommandException if code is invalid
+	 * @throws ParseException if code is invalid
 	 */
-	public void setCode(String code) throws PCmo_CommandException {
+	public void setCode(String code) throws ParseException {
 		st.commandList = PCmo_Command.parseCode(code);
 	}
 
@@ -1324,8 +1824,10 @@ public class PCmo_EntityMiner extends Entity {
 		st.commandList = st.commandList.trim();
 
 		// if there are no more commands, try to get some from weasel
-		if (st.commandList.length() <= 0) {
-			brain.run();
+		if (st.commandList.length() <= 0 && st.currentCommand == -1) {
+			if(!st.keyboardControlled && !st.pausedWeasel && !st.paused) {
+				brain.run();
+			}
 		}
 
 		if (st.commandList.length() > 0) {
@@ -1436,27 +1938,35 @@ public class PCmo_EntityMiner extends Entity {
 	 * Round rotation to 0, 90, 180 or 270 degrees.
 	 */
 	private void roundRotation() {
-
-		if (rotationYaw < 0) {
-			rotationYaw = prevRotationYaw = 360F - rotationYaw;
-		}
-		if (rotationYaw > 360F) {
-			rotationYaw = prevRotationYaw = rotationYaw - 360F;
-		}
-
-		if (rotationYaw >= 315 || rotationYaw < 45) {
-			prevRotationYaw = rotationYaw = 0;
-		}
-		if (rotationYaw >= 45 && rotationYaw < 135) {
-			prevRotationYaw = rotationYaw = 90;
-		}
-		if (rotationYaw >= 135 && rotationYaw < 215) {
-			prevRotationYaw = rotationYaw = 180;
-		}
-		if (rotationYaw >= 215 && rotationYaw < 315) {
-			prevRotationYaw = rotationYaw = 270;
-		}
+		rotationYaw = prevRotationYaw = getRotationRounded();
 		st.rotationRemaining = 0;
+	}
+
+	private int getRotationRounded() {
+
+		float a = rotationYaw;
+
+		if (a < 0) {
+			a = 360F - a;
+		}
+		if (a > 360F) {
+			a = a - 360F;
+		}
+
+		if (a >= 315 || a < 45) {
+			a = 0;
+		}
+		if (a >= 45 && a < 135) {
+			a = 90;
+		}
+		if (a >= 135 && a < 215) {
+			a = 180;
+		}
+		if (a >= 215 && a < 315) {
+			a = 270;
+		}
+
+		return Math.round(a);
 	}
 
 	/**
@@ -1746,9 +2256,9 @@ public class PCmo_EntityMiner extends Entity {
 
 	/**
 	 * Spawn breaking particles for blockparticles
+	 * 
 	 * @param pos position
 	 * @param block_index index of the block in mining list
-	 * 
 	 */
 	private void playMiningEffect(PC_CoordI pos, int block_index) {
 		st.miningTickCounter++;
@@ -2004,11 +2514,11 @@ public class PCmo_EntityMiner extends Entity {
 	 */
 	private boolean canHarvestBlockWithCurrentLevel(PC_CoordI pos, int id) {
 		// exception - miner 8 can mine bedrock.
-		if (id == 7 && st.level == 8) {
-			return true;
-		}
 		if (isBlockUnbreakable(id) || PC_BlockUtils.hasFlag(worldObj, pos, "HARVEST_STOP") || PC_BlockUtils.hasFlag(worldObj, pos, "NO_HARVEST")) {
 			return false;
+		}
+		if (id == 7 && st.level == 8) {
+			return true;
 		}
 		switch (st.level) {
 			case 1: // all but rocks and iron
@@ -2129,23 +2639,23 @@ public class PCmo_EntityMiner extends Entity {
 			return true;
 		}
 
+		int ii = -1;
 //		int y = (int) Math.floor(posY - 0.9999F);
 		if (isOnHalfStep()) {
-			return true;
+			ii = 0;
 		}
-		if (!bridgeBuilding_do(st.target.offset(0, -1, 0))) {
+		if (!bridgeBuilding_do(st.target.setY((int) Math.round(posY - 0.2F)).offset(0, ii, 0))) {
 			return false;
 		}
-		if (!bridgeBuilding_do(st.target.offset(-1, -1, 0))) {
+		if (!bridgeBuilding_do(st.target.setY((int) Math.round(posY - 0.2F)).offset(-1, ii, 0))) {
 			return false;
 		}
-		if (!bridgeBuilding_do(st.target.offset(0, -1, -1))) {
+		if (!bridgeBuilding_do(st.target.setY((int) Math.round(posY - 0.2F)).offset(0, ii, -1))) {
 			return false;
 		}
-		if (!bridgeBuilding_do(st.target.offset(-1, -1, -1))) {
+		if (!bridgeBuilding_do(st.target.setY((int) Math.round(posY - 0.2F)).offset(-1, ii, -1))) {
 			return false;
 		}
-
 		return true;
 	}
 
@@ -2157,7 +2667,7 @@ public class PCmo_EntityMiner extends Entity {
 	 */
 	private boolean bridgeBuilding_do(PC_CoordI pos) {
 		if (checkIfAir(pos, false)) {
-			if (st.level < 3) {
+			if (st.level < LBRIDGE) {
 				st.currentCommand = -1;
 				return false;
 			}
@@ -2165,7 +2675,6 @@ public class PCmo_EntityMiner extends Entity {
 			if (fill == null) {
 				return false;
 			}
-
 			int id = fill.itemID;
 			int meta = fill.getItemDamage();
 			pos.setBlock(worldObj, id, meta);
@@ -2175,6 +2684,7 @@ public class PCmo_EntityMiner extends Entity {
 						(Block.blocksList[id].stepSound.getVolume() + 1.0F) / 2.0F, Block.blocksList[id].stepSound.getPitch() * 0.8F);
 			}
 		}
+
 		return true;
 	}
 
@@ -2190,7 +2700,6 @@ public class PCmo_EntityMiner extends Entity {
 	 * @param step is already on half step.
 	 */
 	private void layHalfStep(int x, int y, int z, boolean step) {
-
 		if (step) {
 			if (worldObj.getBlockId(x, y, z) == 0) {
 				ItemStack halfstep = cargo.getHalfStep();
@@ -2200,141 +2709,35 @@ public class PCmo_EntityMiner extends Entity {
 				}
 
 			}
-		}
+		} else {
 
-		// fix for in front of.
-		int id = worldObj.getBlockId(x, y + (step ? -1 : 0), z);
-		if (id == 0 || id == 8 || id == 9 || id == 10 || id == 11 || Block.blocksList[id].getCollisionBoundingBoxFromPool(worldObj, x, y, z) == null) {
-			ItemStack fill = cargo.getBlockForBuilding();
-			if (fill == null) {
-				return;
-			}
+			// fix for in front of.
+			int id = worldObj.getBlockId(x, y + (step ? -1 : 0), z);
+			if (id == 0 || id == 8 || id == 9 || id == 10 || id == 11
+					|| Block.blocksList[id].getCollisionBoundingBoxFromPool(worldObj, x, y, z) == null) {
+				ItemStack fill = cargo.getBlockForBuilding();
+				if (fill == null) {
+					return;
+				}
 
-			id = fill.itemID;
-			int meta = fill.getItemDamage();
-			worldObj.setBlockAndMetadataWithNotify(x, y + (step ? -1 : 0), z, id, meta);
-			if (shouldMakeEffects()) {
-				worldObj.playSoundEffect(x + 0.5F, (float) y + (step ? -1 : 0) + 0.5F, z + 0.5F, Block.blocksList[id].stepSound.getStepSound(),
-						(Block.blocksList[id].stepSound.getVolume() + 1.0F) / 2.0F, Block.blocksList[id].stepSound.getPitch() * 0.8F);
-			}
-		}
-	}
-
-
-
-	/**
-	 * Fill nearby lava with stones from inventory, get lava into bucket.
-	 */
-	private void fillLavaNearby() {
-		if (st.level < 4 || !cfg.lavaFillingEnabled) {
-			return;
-		}
-
-		int y1 = (int) Math.floor(posY + 0.0002F);
-		int x1 = (int) Math.round(posX);
-		int z1 = (int) Math.round(posZ);
-
-		boolean replace = true;
-		for (int x = x1 - 2; x <= x1 + 1; x++) {
-			for (int y = y1 - 1; y <= y1 + 2; y++) {
-				for (int z = z1 - 2; z <= z1 + 1; z++) {
-					replace = !((y == y1 || y == y1 + 1) && (x == x1 || x == x1 - 1) && (z == z1 || z == z1 - 1));
-
-					if (x == x1 - 2 && y == y1 - 1) {
-						continue;
-					}
-					if (x == x1 - 2 && y == y1 + 2) {
-						continue;
-					}
-					if (x == x1 + 1 && y == y1 - 1) {
-						continue;
-					}
-					if (x == x1 + 1 && y == y1 + 2) {
-						continue;
-					}
-
-					if (z == z1 - 2 && y == y1 - 1) {
-						continue;
-					}
-					if (z == z1 - 2 && y == y1 + 2) {
-						continue;
-					}
-					if (z == z1 + 1 && y == y1 - 1) {
-						continue;
-					}
-					if (z == z1 + 1 && y == y1 + 2) {
-						continue;
-					}
-
-					if (x == x1 - 2 && z == z1 - 2) {
-						continue;
-					}
-					if (x == x1 - 2 && z == z1 + 1) {
-						continue;
-					}
-					if (x == x1 + 1 && z == z1 - 2) {
-						continue;
-					}
-					if (x == x1 + 1 && z == z1 + 1) {
-						continue;
-					}
-
-					switch ((int) Math.floor(rotationYaw)) {
-						case 180:
-							if (x == x1 - 2) {
-								replace = false;
-							}
-							break;
-						case 270:
-							if (z == z1 - 2) {
-								replace = false;
-							}
-							break;
-						case 0:
-							if (x == x1 + 1) {
-								replace = false;
-							}
-							break;
-						case 90:
-							if (z == z1 + 1) {
-								replace = false;
-							}
-							break;
-					}
-
-					int id = worldObj.getBlockId(x, y, z);
-					if (id == 10 || id == 11) {
-						lavaFillBucket();
-						int fillId = 0;
-						int fillMeta = 0;
-						if (replace) {
-							ItemStack fill = cargo.getBlockForBuilding();
-							if (fill != null) {
-								fillId = fill.itemID;
-								fillMeta = fill.getItemDamage();
-							}
-						}
-						worldObj.setBlockAndMetadataWithNotify(x, y, z, fillId, fillMeta);
-						if (Block.blocksList[fillId] != null) {
-							if (shouldMakeEffects()) {
-								worldObj.playSoundEffect(x + 0.5F, y + 0.5F, z + 0.5F, Block.blocksList[fillId].stepSound.getStepSound(),
-										(Block.blocksList[fillId].stepSound.getVolume() + 1.0F) / 2.0F,
-										Block.blocksList[fillId].stepSound.getPitch() * 0.8F);
-							}
-						}
-					}
+				id = fill.itemID;
+				int meta = fill.getItemDamage();
+				worldObj.setBlockAndMetadataWithNotify(x, y + (step ? -1 : 0), z, id, meta);
+				if (shouldMakeEffects()) {
+					worldObj.playSoundEffect(x + 0.5F, (float) y + (step ? -1 : 0) + 0.5F, z + 0.5F, Block.blocksList[id].stepSound.getStepSound(),
+							(Block.blocksList[id].stepSound.getVolume() + 1.0F) / 2.0F, Block.blocksList[id].stepSound.getPitch() * 0.8F);
 				}
 			}
 		}
 	}
 
+
 	/**
 	 * Fill nearby water with stones from inventory.
 	 */
-	private void fillWaterNearby() {
-		if (st.level < 6 || !cfg.waterFillingEnabled) {
-			return;
-		}
+	private void fillWaterLavaAir() {
+
+		if (!cfg.waterFillingEnabled && !cfg.lavaFillingEnabled && !cfg.airFillingEnabled) return;
 
 		int y1 = (int) Math.floor(posY + 0.0002F);
 		int x1 = (int) Math.round(posX);
@@ -2385,7 +2788,7 @@ public class PCmo_EntityMiner extends Entity {
 						continue;
 					}
 
-					switch ((int) Math.floor(rotationYaw)) {
+					switch (Math.round(rotationYaw)) {
 						case 180:
 							if (x == x1 - 2) {
 								replace = false;
@@ -2408,8 +2811,18 @@ public class PCmo_EntityMiner extends Entity {
 							break;
 					}
 
+					if (y == y1 + 2 && cfg.airFillingEnabled && isOnHalfStep() && st.currentCommand == PCmo_Command.UP) replace = false;
+					if (y == y1 - 1 && cfg.airFillingEnabled) replace = cfg.bridgeEnabled;
+
 					int id = worldObj.getBlockId(x, y, z);
-					if (id == 8 || id == 9) {
+					if (((id == 8 || id == 9) && cfg.waterFillingEnabled && st.level >= LWATER)
+							|| ((id == 10 || id == 11) && cfg.lavaFillingEnabled && st.level >= LLAVA)
+							|| (id == 0 && cfg.airFillingEnabled && st.level >= LAIR)) {
+
+						if (id == 10 || id == 11) {
+							lavaFillBucket();
+						}
+
 						int fillId = 0;
 						int fillMeta = 0;
 						if (replace) {
@@ -2474,6 +2887,8 @@ public class PCmo_EntityMiner extends Entity {
 		if (st.level < 3) {
 			return;
 		}
+
+		if (!cfg.torches) return;
 
 		int y = (int) Math.floor(posY + 0.0002F);
 		int x = (int) Math.round(posX);
@@ -2572,11 +2987,263 @@ public class PCmo_EntityMiner extends Entity {
 	}
 
 
+	/**
+	 * Get coordinate of a block on given side.<br>
+	 * Accepts: F,B,L,R,U,D; N,S,E,W; u,d; u and d are front-up and front-down,
+	 * two blocks mined when doing UP or DOWN command.
+	 * 
+	 * @param side side name
+	 * @param index index - all 1-4, only u d 1-2
+	 * @return coordinate of the block described.
+	 */
+	private PC_CoordI getCoordOnSide(char side, int index) {
+
+		// get x,y,z integers for position.
+		int x = (int) Math.round(posX);
+		int y = (int) Math.floor(posY + 0.02F);
+		if (isOnHalfStep()) {
+			y += 1;
+		}
+		int z = (int) Math.round(posZ);
+
+		int yaw = getRotationRounded();
+
+		// compass sides
+		if (side == 'N') {
+			yaw = 0;
+			side = 'F';
+		}
+		if (side == 'S') {
+			yaw = 0;
+			side = 'B';
+		}
+		if (side == 'E') {
+			yaw = 0;
+			side = 'R';
+		}
+		if (side == 'W') {
+			yaw = 0;
+			side = 'L';
+		}
+
+		// derivates - left, right, back
+		if (side == 'L') {
+			yaw -= 90;
+			side = 'F';
+		}
+		if (side == 'B') {
+			yaw -= 180;
+			side = 'F';
+		}
+		if (side == 'R') {
+			yaw -= 270;
+			side = 'F';
+		}
+
+		// normalize
+		while (yaw < 0) {
+			yaw += 360;
+		}
+
+		// ceil - upper up
+		if (side == 'c') {
+			switch (index) {
+				case 1:
+					return new PC_CoordI(x, y + 2, z);
+				case 2:
+					return new PC_CoordI(x - 1, y + 2, z);
+				case 3:
+					return new PC_CoordI(x, y + 2, z - 1);
+				case 4:
+					return new PC_CoordI(x - 1, y + 2, z - 1);
+			}
+		}
+		if (side == 'U') {
+			switch (index) {
+				case 1:
+					return new PC_CoordI(x, y + 1, z);
+				case 2:
+					return new PC_CoordI(x - 1, y + 1, z);
+				case 3:
+					return new PC_CoordI(x, y + 1, z - 1);
+				case 4:
+					return new PC_CoordI(x - 1, y + 1, z - 1);
+			}
+		}
+
+		// DN - below miner
+		if (side == 'D') {
+			switch (index) {
+				case 1:
+					return new PC_CoordI(x, y - 1, z);
+				case 2:
+					return new PC_CoordI(x - 1, y - 1, z);
+				case 3:
+					return new PC_CoordI(x, y - 1, z - 1);
+				case 4:
+					return new PC_CoordI(x - 1, y - 1, z - 1);
+			}
+		}
+
+		if (yaw == 180) {
+			// F front
+			if (side == 'F') {
+				switch (index) {
+					case 1:
+						return new PC_CoordI(x + 1, y + 1, z - 1);
+					case 2:
+						return new PC_CoordI(x + 1, y + 1, z);
+					case 3:
+						return new PC_CoordI(x + 1, y, z - 1);
+					case 4:
+						return new PC_CoordI(x + 1, y, z);
+				}
+			}
+
+			//d front down
+			if (side == 'd') {
+				switch (index) {
+					case 1:
+						return new PC_CoordI(x + 1, y - 1, z - 1);
+					case 2:
+						return new PC_CoordI(x + 1, y - 1, z);
+				}
+			}
+
+			//u front up
+			if (side == 'u') {
+				switch (index) {
+					case 1:
+						return new PC_CoordI(x + 1, y + 2, z - 1);
+					case 2:
+						return new PC_CoordI(x + 1, y + 2, z);
+				}
+			}
+
+			return null;
+		}
+
+		if (yaw == 270) {
+			if (side == 'F') {
+				switch (index) {
+					case 1:
+						return new PC_CoordI(x, y + 1, z + 1);
+					case 2:
+						return new PC_CoordI(x - 1, y + 1, z + 1);
+					case 3:
+						return new PC_CoordI(x, y, z + 1);
+					case 4:
+						return new PC_CoordI(x - 1, y, z + 1);
+				}
+			}
+
+			if (side == 'd') {
+				switch (index) {
+					case 1:
+						return new PC_CoordI(x - 1, y - 1, z + 1);
+					case 2:
+						return new PC_CoordI(x, y - 1, z + 1);
+				}
+			}
+
+			if (side == 'u') {
+				switch (index) {
+					case 1:
+						return new PC_CoordI(x - 1, y + 2, z + 1);
+					case 2:
+						return new PC_CoordI(x, y + 2, z + 1);
+				}
+			}
+
+			return null;
+		}
+
+		if (yaw == 0) {
+			if (side == 'F') {
+				switch (index) {
+					case 1:
+						return new PC_CoordI(x - 2, y + 1, z);
+					case 2:
+						return new PC_CoordI(x - 2, y + 1, z - 1);
+					case 3:
+						return new PC_CoordI(x - 2, y, z);
+					case 4:
+						return new PC_CoordI(x - 2, y, z - 1);
+				}
+			}
+
+			if (side == 'd') {
+				switch (index) {
+					case 1:
+						return new PC_CoordI(x - 2, y - 1, z - 1);
+					case 2:
+						return new PC_CoordI(x - 2, y - 1, z);
+				}
+			}
+
+			if (side == 'u') {
+				switch (index) {
+					case 1:
+						return new PC_CoordI(x - 2, y + 2, z - 1);
+					case 2:
+						return new PC_CoordI(x - 2, y + 2, z);
+				}
+			}
+
+			return null;
+		}
+
+		if (yaw == 90) {
+			if (side == 'F') {
+				switch (index) {
+					case 1:
+						return new PC_CoordI(x - 1, y + 1, z - 2);
+					case 2:
+						return new PC_CoordI(x, y + 1, z - 2);
+					case 3:
+						return new PC_CoordI(x - 1, y, z - 2);
+					case 4:
+						return new PC_CoordI(x, y, z - 2);
+				}
+			}
+
+			if (side == 'd') {
+				switch (index) {
+					case 1:
+						return new PC_CoordI(x - 1, y - 1, z - 2);
+					case 2:
+						return new PC_CoordI(x, y - 1, z - 2);
+				}
+			}
+
+			if (side == 'u') {
+				switch (index) {
+					case 1:
+						return new PC_CoordI(x - 1, y + 2, z - 2);
+					case 2:
+						return new PC_CoordI(x, y + 2, z - 2);
+				}
+			}
+
+			return null;
+		}
+
+
+		return null;
+	}
+
+
 	// === UPDATE TICK ===
 
 	@Override
 	public void onUpdate() {
 		super.onUpdate();
+		
+		if(fakePlayer == null && worldObj != null) fakePlayer = new PC_FakePlayer(worldObj);
+
+		if (brain.hasError() && rand.nextInt(6) == 0) {
+			worldObj.spawnParticle("largesmoke", posX, posY + 1F, posZ, 0, 0, 0);
+		}
 
 		// breaking animations.
 		if (getTimeSinceHit() > 0) {
@@ -2592,7 +3259,7 @@ public class PCmo_EntityMiner extends Entity {
 
 		// EXECUTE CURRENT COMMAND
 
-		boolean stop = st.programmingGuiOpen;
+		boolean stop = false; // st.programmingGuiOpen;
 
 		if (!stop) {
 			if (st.fuelDeficit > 0) {
@@ -2664,8 +3331,7 @@ public class PCmo_EntityMiner extends Entity {
 						st.consumeAllocatedFuel(getStepCost());
 
 						// fill nearby liquids
-						fillLavaNearby();
-						fillWaterNearby();
+						fillWaterLavaAir();
 
 						// normalize position
 						if (getTargetDistanceX() > 0.03125D) {
@@ -2736,31 +3402,33 @@ public class PCmo_EntityMiner extends Entity {
 					boolean canMove = bridgeOk && !dwn && (!up || miningDone);
 
 					if (up && !miningDone) {
-						performMiningUpdate(new PC_CoordI(x, y + 2, z), 8);
-						performMiningUpdate(new PC_CoordI(x - 1, y + 2, z), 9);
-						performMiningUpdate(new PC_CoordI(x, y + 2, z - 1), 10);
-						performMiningUpdate(new PC_CoordI(x - 1, y + 2, z - 1), 11);
+						performMiningUpdate(getCoordOnSide('c', 1), 8);
+						performMiningUpdate(getCoordOnSide('c', 2), 9);
+						performMiningUpdate(getCoordOnSide('c', 3), 10);
+						performMiningUpdate(getCoordOnSide('c', 4), 11);
 					}
 
 					double motionAdd = (MOTION_SPEED[st.level - 1] * ((fw || up) ? 1 : -1)) * 0.5D;
 
-					if (rotationYaw == 180) {
-						if (!miningDone && (!back) && cfg.miningEnabled) {
-							performMiningUpdate(new PC_CoordI(x + 1, y, z - 1), 0);
-							performMiningUpdate(new PC_CoordI(x + 1, y, z), 1);
-							performMiningUpdate(new PC_CoordI(x + 1, y + 1, z), 2);
-							performMiningUpdate(new PC_CoordI(x + 1, y + 1, z - 1), 3);
+					if (!miningDone && (!back) && cfg.miningEnabled) {
+						performMiningUpdate(getCoordOnSide('F', 1), 0);
+						performMiningUpdate(getCoordOnSide('F', 2), 1);
+						performMiningUpdate(getCoordOnSide('F', 3), 2);
+						performMiningUpdate(getCoordOnSide('F', 4), 3);
 
-							if (dwn) {
-								performMiningUpdate(new PC_CoordI(x + 1, y - 1, z - 1), 4);
-								performMiningUpdate(new PC_CoordI(x + 1, y - 1, z), 5);
-							}
-
-							if (up) {
-								performMiningUpdate(new PC_CoordI(x + 1, y + 2, z - 1), 6);
-								performMiningUpdate(new PC_CoordI(x + 1, y + 2, z), 7);
-							}
+						if (dwn) {
+							performMiningUpdate(getCoordOnSide('d', 1), 4);
+							performMiningUpdate(getCoordOnSide('d', 2), 5);
 						}
+
+						if (up) {
+							performMiningUpdate(getCoordOnSide('u', 1), 6);
+							performMiningUpdate(getCoordOnSide('u', 2), 7);
+						}
+					}
+
+
+					if (rotationYaw == 180) {
 						if (isLocationEmpty(st.target.setY(y)) && canMove) {
 							motionX += motionAdd;
 						}
@@ -2768,24 +3436,6 @@ public class PCmo_EntityMiner extends Entity {
 					}
 
 					if (rotationYaw == 270) {
-						if (!miningDone && (!back) && cfg.miningEnabled) {
-
-							performMiningUpdate(new PC_CoordI(x - 1, y, z + 1), 0);
-							performMiningUpdate(new PC_CoordI(x, y, z + 1), 1);
-							performMiningUpdate(new PC_CoordI(x - 1, y + 1, z + 1), 2);
-							performMiningUpdate(new PC_CoordI(x, y + 1, z + 1), 3);
-
-							if (dwn) {
-								performMiningUpdate(new PC_CoordI(x - 1, y - 1, z + 1), 4);
-								performMiningUpdate(new PC_CoordI(x, y - 1, z + 1), 5);
-							}
-
-							if (up) {
-								performMiningUpdate(new PC_CoordI(x - 1, y + 2, z + 1), 6);
-								performMiningUpdate(new PC_CoordI(x, y + 2, z + 1), 7);
-							}
-
-						}
 						if (isLocationEmpty(st.target.setY(y)) && canMove) {
 							motionZ += motionAdd;
 						}
@@ -2793,23 +3443,6 @@ public class PCmo_EntityMiner extends Entity {
 					}
 
 					if (rotationYaw == 0) {
-						if (!miningDone && (!back) && cfg.miningEnabled) {
-
-							performMiningUpdate(new PC_CoordI(x - 2, y, z - 1), 0);
-							performMiningUpdate(new PC_CoordI(x - 2, y, z), 1);
-							performMiningUpdate(new PC_CoordI(x - 2, y + 1, z), 2);
-							performMiningUpdate(new PC_CoordI(x - 2, y + 1, z - 1), 3);
-
-							if (dwn) {
-								performMiningUpdate(new PC_CoordI(x - 2, y - 1, z - 1), 4);
-								performMiningUpdate(new PC_CoordI(x - 2, y - 1, z), 5);
-							}
-
-							if (up) {
-								performMiningUpdate(new PC_CoordI(x - 2, y + 2, z - 1), 6);
-								performMiningUpdate(new PC_CoordI(x - 2, y + 2, z), 7);
-							}
-						}
 						if (isLocationEmpty(st.target.setY(y)) && canMove) {
 							motionX -= motionAdd;
 						}
@@ -2817,27 +3450,12 @@ public class PCmo_EntityMiner extends Entity {
 					}
 
 					if (rotationYaw == 90) {
-						if (!miningDone && (!back) && cfg.miningEnabled) {
-
-							performMiningUpdate(new PC_CoordI(x - 1, y, z - 2), 0);
-							performMiningUpdate(new PC_CoordI(x, y, z - 2), 1);
-							performMiningUpdate(new PC_CoordI(x - 1, y + 1, z - 2), 2);
-							performMiningUpdate(new PC_CoordI(x, y + 1, z - 2), 3);
-							if (dwn) {
-								performMiningUpdate(new PC_CoordI(x - 1, y - 1, z - 2), 4);
-								performMiningUpdate(new PC_CoordI(x, y - 1, z - 2), 5);
-							}
-
-							if (up) {
-								performMiningUpdate(new PC_CoordI(x - 1, y + 2, z - 2), 6);
-								performMiningUpdate(new PC_CoordI(x, y + 2, z - 2), 7);
-							}
-						}
 						if (isLocationEmpty(st.target.setY(y)) && canMove) {
 							motionZ -= motionAdd;
 						}
 						motionX = 0;
 					}
+
 
 					if (dwn && !isMiningInProgress()) {
 						st.currentCommand = -1;
@@ -2915,8 +3533,11 @@ public class PCmo_EntityMiner extends Entity {
 			motionZ = d7;
 		}
 
+
 		// GET NEW COMMAND FROM QUEUE
-		if (!stop && onGround && st.currentCommand == -1) {
+		if (!stop && st.currentCommand == -1) {
+
+
 			int oldCmd = st.currentCommand;
 			st.currentCommand = getNextCommand(); // gets command and removes it
 													// from queue
@@ -2957,25 +3578,26 @@ public class PCmo_EntityMiner extends Entity {
 				}
 
 				int id = entity.item.itemID;
-				int dmg = entity.item.getItemDamage();
 
 				boolean xtal = id == mod_PCcore.powerCrystal.blockID;
-				boolean compress = (id == Block.sand.blockID || id == Item.snowball.shiftedIndex || id == Item.diamond.shiftedIndex
-						|| (id == Item.dyePowder.shiftedIndex && dmg == 4) || id == Item.lightStoneDust.shiftedIndex);
 
 				if (shouldDestroyStack(entity.item)) {
 					entity.setDead();
 					continue;
 				}
 
-				if (PC_InvUtils.addItemStackToInventory(cargo, entity.item)) {
+				if (xtal && PC_InvUtils.addItemStackToInventory(xtals, entity.item)) {
+					entity.setDead();
+				} else if (PC_InvUtils.addItemStackToInventory(cargo, entity.item)) {
 					entity.setDead();
 				}
+
 				if (xtal) {
 					updateLevel();
 				}
-				if (compress && cfg.compressBlocks) {
-					cargo.compressInv();
+
+				if (cfg.compressBlocks) {
+					cargo.compressInv(entity.item);
 				}
 			}
 		}
@@ -3058,6 +3680,7 @@ public class PCmo_EntityMiner extends Entity {
 		PC_Utils.saveToNBT(tag, "Brain", brain);
 
 		PC_InvUtils.saveInventoryToNBT(tag, "CargoInv", cargo);
+		PC_InvUtils.saveInventoryToNBT(tag, "XtalInv", xtals);
 	}
 
 	@Override
@@ -3068,6 +3691,7 @@ public class PCmo_EntityMiner extends Entity {
 		PC_Utils.loadFromNBT(tag, "Brain", brain);
 
 		PC_InvUtils.loadInventoryFromNBT(tag, "CargoInv", cargo);
+		PC_InvUtils.loadInventoryFromNBT(tag, "XtalInv", xtals);
 
 		if (st.keyboardControlled) {
 			PCmo_MinerControlHandler.setMinerForKeyboardControl(this, true);
@@ -3076,31 +3700,19 @@ public class PCmo_EntityMiner extends Entity {
 
 	// === PLAYER INTERACTION ===
 
-	/** The Console GUI opened for this miner. */
-	public boolean openedGui = false;
-
 	@Override
 	public boolean interact(EntityPlayer entityplayer) {
 		if (riddenByEntity != null && (riddenByEntity instanceof EntityPlayer) && riddenByEntity != entityplayer) {
 			return true;
 		}
 
-		if (!worldObj.isRemote) {
-			if (entityplayer.isSneaking()) {
-				st.programmingGuiOpen = true;
-				openedGui = true;
-				PC_Utils.openGres(entityplayer, new PCmo_GuiMinerConsole(this));
-				return true;
-			}
-
-			// set for keyboard control or open gui.
-			if (entityplayer.getCurrentEquippedItem() != null && entityplayer.getCurrentEquippedItem().itemID == mod_PCcore.activator.shiftedIndex) {
-				setKeyboardControl(!st.keyboardControlled);
-
-			} else {
-				openedGui = true;
-				ModLoader.openGUI(entityplayer, new GuiChest(entityplayer.inventory, cargo));
-			}
+		// set for keyboard control or open gui.
+		if (entityplayer.getCurrentEquippedItem() != null && entityplayer.getCurrentEquippedItem().itemID == mod_PCcore.activator.shiftedIndex) {
+			setKeyboardControl(!st.keyboardControlled);
+		} else {
+			st.programmingGuiOpen = true;
+			PC_Utils.openGres(entityplayer, new PCmo_GuiMiner(this));
+			return true;
 		}
 		return true;
 	}
@@ -3169,7 +3781,6 @@ public class PCmo_EntityMiner extends Entity {
 					if (pos.getId(world) == steel && pos.offset(1, 0, 0).getId(world) == steel && pos.offset(1, 0, 1).getId(world) == steel
 							&& pos.offset(0, 0, 1).getId(world) == steel) {
 
-						System.out.println("x-,z-,y- coord orig 4STEEL = " + pos);
 						String upper = "";
 
 						int bl;
@@ -3257,8 +3868,6 @@ public class PCmo_EntityMiner extends Entity {
 	private boolean spawnMinerAt(World world, PC_CoordI pos, int rot) {
 		st.minerBeingCreated = true; // disable crystal counting.
 
-		System.out.println("x-,z-,y- coord = " + pos);
-
 		IInventory inv = null;
 
 		find_chest_loop:
@@ -3272,7 +3881,6 @@ public class PCmo_EntityMiner extends Entity {
 		}
 
 		if (inv == null) {
-			System.out.println("no chest");
 			return false;
 		}
 
@@ -3283,7 +3891,8 @@ public class PCmo_EntityMiner extends Entity {
 		}
 
 		// move contents.
-		PC_InvUtils.moveStacks(inv, cargo);
+		PC_InvUtils.moveStacks(inv, xtals);
+		PC_InvUtils.moveStacksForce(inv, cargo);
 
 		// remove blocks.
 		removeSpawnStructure(world, pos);
@@ -3301,9 +3910,11 @@ public class PCmo_EntityMiner extends Entity {
 	/**
 	 * count crystals and update level; turn to blocks if there arent any.
 	 */
-	private void updateLevel() {
+	public void updateLevel() {
 		if (!st.minerBeingCreated) {
-			int cnt = PC_InvUtils.countPowerCrystals(cargo);
+			PC_InvUtils.moveStacks(cargo, xtals);
+
+			int cnt = PC_InvUtils.countPowerCrystals(xtals);
 			if (cnt == 0) {
 				turnIntoBlocks();
 				return;
@@ -3357,7 +3968,10 @@ public class PCmo_EntityMiner extends Entity {
 		}
 
 		if (inv != null) {
+			PC_InvUtils.moveStacks(xtals, inv);
 			PC_InvUtils.moveStacks(cargo, inv);
+			PC_InvUtils.dropInventoryContents(cargo, worldObj, new PC_CoordI(Math.round(posX), Math.round(posY + 2.2F), Math.round(posZ)));
+
 		} else {
 			PC_Logger.warning("Despawning miner - the chest blocks weren't found.");
 		}
@@ -3365,11 +3979,16 @@ public class PCmo_EntityMiner extends Entity {
 		setDead();
 
 		// replace opened gui with chest.
-		if (openedGui) {
+		if (st.programmingGuiOpen) {
 			ModLoader.getMinecraftInstance().thePlayer.closeScreen();
 			ModLoader.openGUI(ModLoader.getMinecraftInstance().thePlayer, new GuiChest(ModLoader.getMinecraftInstance().thePlayer.inventory, inv));
 		}
 
+	}
+
+	@Override
+	public IInventory getInventory() {
+		return cargo;
 	}
 
 }

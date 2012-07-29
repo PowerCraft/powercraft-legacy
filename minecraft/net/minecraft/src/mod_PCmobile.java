@@ -152,25 +152,28 @@ public class mod_PCmobile extends PC_Module implements PC_IActivatorListener {
 		map.put("pc.miner.operationsCancelled", "All operations cancelled.");
 		map.put("pc.miner.build.errInvalidStructure", "Not a valid Miner's structure!");
 		map.put("pc.miner.build.errMissingCrystals", "Put some Power Crystals into the chest!");
-		map.put("pc.gui.miner.quit", "Quit");
-		map.put("pc.gui.miner.clear", "Clear");
-		map.put("pc.gui.miner.run", "RUN!");
-		map.put("pc.gui.miner.go", "GO!");
-		map.put("pc.gui.miner.reset", "RESET");
-		map.put("pc.gui.miner.copy", "copy");
-		map.put("pc.gui.miner.paste", "paste");
-		map.put("pc.gui.miner.programCode", "Program code:");
-		map.put("pc.gui.miner.opt.mining", "Mining");
-		map.put("pc.gui.miner.opt.bridge", "Bridge");
+		
+	
+		map.put("pc.gui.miner.program", "Program");
+		map.put("pc.gui.miner.settings", "Settings");
+		map.put("pc.gui.miner.cargo", "Cargo");
+		map.put("pc.gui.miner.terminal", "Terminal");
+		
+		map.put("pc.gui.miner.opt.mining", "Mining enabled");
+		map.put("pc.gui.miner.opt.bridge", "Bridge building");
 		map.put("pc.gui.miner.opt.lavaFill", "Lava filling");
 		map.put("pc.gui.miner.opt.waterFill", "Water filling");
+		map.put("pc.gui.miner.opt.airFill", "Air filling - tunnel mode");
 		map.put("pc.gui.miner.opt.keepFuel", "Keep all fuel");
-		map.put("pc.gui.miner.opt.destroyCobble", "Destroy cobble");
-		map.put("pc.gui.miner.opt.destroyGravel", "Destroy gravel");
-		map.put("pc.gui.miner.opt.destroyDirt", "Destroy dirt");
-		map.put("pc.gui.miner.opt.torchesOnFloor", "Torch > floor");
-		map.put("pc.gui.miner.opt.compress", "Compress");
-		map.put("pc.gui.miner.title", "Miner Control Interface");
+		map.put("pc.gui.miner.opt.torchPlacing", "Place torches");
+		map.put("pc.gui.miner.opt.torchesOnlyOnFloor", "Torches only on floor");
+		map.put("pc.gui.miner.opt.compress", "Compress items");
+		
+		map.put("pc.gui.miner.program.title", "Miner Programming");
+		map.put("pc.gui.miner.settings.title", "Miner Settings");
+		map.put("pc.gui.miner.cargo.title", "Miner Cargo Storage");
+		map.put("pc.gui.miner.terminal.title", "Miner Terminal");
+		
 		map.put("pc.miner.chestName", "Miner Cargo Storage");
 	}
 

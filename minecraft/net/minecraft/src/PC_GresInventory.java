@@ -47,17 +47,33 @@ public class PC_GresInventory extends PC_GresWidget {
 	public PC_GresInventory(IInventory inventory, int width, int height) {
 		super(width * 18, height * 18);
 
-		gridHeight = height;
-		gridWidth = width;
-
 		canAddWidget = false;
 
+		fillWithSlots(inventory, width, height);
+	}
+
+	public void fillWithSlots(IInventory inventory, int width, int height) {
+		setMinSize(width * 18, height * 18);
+		gridHeight = height;
+		gridWidth = width;
 		slots = new Slot[gridWidth][gridHeight];
 
 		for (int j = 0; j < height; j++) {
 			for (int i = 0; i < width; i++) {
 				if (i + j * width < inventory.getSizeInventory()) {
 					setSlot(new PC_SlotSelective(inventory, i + j * width, 0, 0), i, j);
+				}
+			}
+		}
+	}
+
+	public void removeAllSlots() {
+		if (containerManager != null) {
+			for (int x = 0; x < slots.length; x++) {
+				for (int y = 0; y < slots[0].length; y++) {
+					if (this.slots[x][y] != null) {
+						containerManager.removeSlot(this.slots[x][y].slotNumber);
+					}
 				}
 			}
 		}

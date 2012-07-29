@@ -18,7 +18,7 @@ public class PC_GresContainerManager extends Container {
 	public Slot[][] inventoryPlayerUpper = new Slot[9][3];
 	/** Lower part of the player's inventory (1x9, aka QuickBar) */
 	public Slot[][] inventoryPlayerLower = new Slot[9][1];
-
+	
 	/**
 	 * Gres Container for player
 	 * 

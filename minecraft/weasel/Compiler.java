@@ -108,7 +108,7 @@ public class Compiler {
 		langKeywords.add("while");
 		langKeywords.add("do");
 		langKeywords.add("until");
-		langKeywords.add("_call");
+		langKeywords.add("call");
 //		langKeywords.add("switch");
 //		langKeywords.add("case");
 		langKeywords.add("break");
@@ -231,7 +231,7 @@ public class Compiler {
 							}
 						}
 
-						if (name.equals("_call")) {
+						if (name.equals("call")) {
 							instrList.add(new InstructionStringCall(params.toArray(new String[params.size()])));
 						} else {
 							instrList.add(new InstructionCall(name, params.toArray(new String[params.size()])));
@@ -1063,7 +1063,7 @@ public class Compiler {
 							instructionList.add(new InstructionReturn(""));
 						}
 
-					} else if (funcName.equalsIgnoreCase("_call")) {
+					} else if (funcName.equalsIgnoreCase("call")) {
 						// a _CALL statement
 						List<String> parameters = splitBracketSafe(inBracket, ',');
 

@@ -414,6 +414,7 @@ public class PC_Color implements PC_INBT {
 		return (1D / 255D) * ((hex & 0x0000ff));
 	}
 
+	// 1 0 7 2 6 4 3 5
 
 	// ..........................................orange....red......green.....darkblue..lightblue..purple.....cyan......yellow
 	/** PowerCrystal colors */

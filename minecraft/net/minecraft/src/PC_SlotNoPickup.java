@@ -7,7 +7,7 @@ package net.minecraft.src;
  * @author MightyPork
  * @copy (c) 2012
  */
-public class PC_SlotNoPickup extends Slot {
+public class PC_SlotNoPickup extends Slot implements PC_ISlotWithBackground {
 
 	/** shown stack. */
 	public ItemStack shownStack;
@@ -71,13 +71,25 @@ public class PC_SlotNoPickup extends Slot {
 		return false;
 	}
 
-	/**
-	 * Set the stack which is shown, yet not pickable
-	 * 
-	 * @param displ
-	 */
-	public void setDisplayedStack(ItemStack displ) {
-		shownStack = displ;
+	@Override
+	public ItemStack getBackgroundStack() {
+		return shownStack;
+	}
+
+	@Override
+	public Slot setBackgroundStack(ItemStack stack) {
+		shownStack = stack;
+		return this;
+	}
+
+	@Override
+	public boolean renderTooltipWhenEmpty() {
+		return true;
+	}
+
+	@Override
+	public boolean renderGrayWhenEmpty() {
+		return false;
 	}
 
 }

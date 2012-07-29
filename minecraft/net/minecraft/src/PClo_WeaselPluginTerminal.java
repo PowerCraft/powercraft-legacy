@@ -124,7 +124,7 @@ public class PClo_WeaselPluginTerminal extends PClo_WeaselPlugin {
 
 	@Override
 	public WeaselObject getVariable(String name) {
-		if (name.equals(getName())) return new WeaselString(text);
+		if (name.equals(getName()+".text")||name.equals(getName()+".txt")) return new WeaselString(text);
 		return null;
 	}
 

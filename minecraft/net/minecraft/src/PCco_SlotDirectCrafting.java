@@ -15,7 +15,7 @@ import org.lwjgl.input.Keyboard;
  * @author MightyPork
  * @copy (c) 2012
  */
-public class PCco_SlotDirectCrafting extends Slot {
+public class PCco_SlotDirectCrafting extends Slot implements PC_ISlotWithBackground {
 
 	/** Enable recursion when crafting */
 	public static boolean recursiveCrafting = true;
@@ -597,6 +597,27 @@ public class PCco_SlotDirectCrafting extends Slot {
 	 */
 	public void updateAvailability() {
 		available = isAvailable();
+	}
+
+	@Override
+	public ItemStack getBackgroundStack() {
+		return product;
+	}
+
+	@Override
+	public Slot setBackgroundStack(ItemStack stack) {
+		product = stack.copy();
+		return this;
+	}
+
+	@Override
+	public boolean renderTooltipWhenEmpty() {
+		return true;
+	}
+
+	@Override
+	public boolean renderGrayWhenEmpty() {
+		return true;
 	}
 
 }

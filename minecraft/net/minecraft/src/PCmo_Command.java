@@ -2,6 +2,8 @@ package net.minecraft.src;
 
 import java.util.Random;
 
+import weasel.jep.ParseException;
+
 
 /**
  * Class for miner's direct program parsing
@@ -181,17 +183,17 @@ public class PCmo_Command {
 		return -1;
 	}
 
-	private static String parseEvaluateVars(String input) throws PCmo_CommandException {
+	private static String parseEvaluateVars(String input) throws ParseException {
 		if (input.indexOf("<") == -1) {
 			if (input.indexOf(">") != -1) {
-				throw new PCmo_CommandException("Invalid var field syntax.");
+				throw new ParseException("Invalid var field syntax.");
 			}
 
 			return input; // no vars found, plain code.
 		}
 
 		if (input.indexOf(">") == -1) {
-			throw new PCmo_CommandException("Invalid var field syntax.");
+			throw new ParseException("Invalid var field syntax.");
 		}
 
 		// find and evaluate all pieces.
@@ -228,7 +230,7 @@ public class PCmo_Command {
 
 	}
 
-	private static int parseLoopCount(String code) throws PCmo_CommandException {
+	private static int parseLoopCount(String code) throws ParseException {
 		try {
 			if (!Character.isDigit(Character.valueOf(code.charAt(0))) && code.charAt(0) != '-') {
 				throw new NumberFormatException();
@@ -237,21 +239,21 @@ public class PCmo_Command {
 			if (n > 0) {
 				return n;
 			}
-			throw new PCmo_CommandException("Invalid loop count.");
+			throw new ParseException("Invalid loop count.");
 		} catch (NumberFormatException nfe) {
 			try {
 				return parseSingleVar(code, true);
-			} catch (PCmo_CommandException ce) {
+			} catch (ParseException ce) {
 				throw ce;
 			}
 		}
 	}
 
-	private static int parseSingleVar(String code, boolean requireValue) throws PCmo_CommandException {
+	private static int parseSingleVar(String code, boolean requireValue) throws ParseException {
 		String local = new String(code);
 
 		if (code == null) {
-			throw new PCmo_CommandException("parseSingleVar: NullPointer");
+			throw new ParseException("parseSingleVar: NullPointer");
 		}
 		if (code.charAt(0) == '<' && code.charAt(code.length() - 1) == '>') {
 			local = local.substring(1, local.length() - 1); // only the insides
@@ -267,7 +269,7 @@ public class PCmo_Command {
 			try {
 				return random.nextInt(readInt(local, 4));
 			} catch (IllegalArgumentException iae) {
-				throw new PCmo_CommandException("Negative random.");
+				throw new ParseException("Negative random.");
 			}
 		}
 
@@ -276,18 +278,18 @@ public class PCmo_Command {
 			try {
 				return readInt(local, local.indexOf("+") + 1) + random.nextInt(readInt(local, 4));
 			} catch (IllegalArgumentException iae) {
-				throw new PCmo_CommandException("Negative random.");
+				throw new ParseException("Negative random.");
 			}
 		}
 
 		if (requireValue) {
-			throw new PCmo_CommandException("Loop count needs value!");
+			throw new ParseException("Loop count needs value!");
 		}
 
-		throw new PCmo_CommandException("Invalid miner calculation syntax.");
+		throw new ParseException("Invalid miner calculation syntax.");
 	}
 
-	private static boolean parseGetEquationResult(String eq) throws PCmo_CommandException {
+	private static boolean parseGetEquationResult(String eq) throws ParseException {
 		String local = eq.replace("==", "=");
 		local = local.replace("=>", ">=");
 		local = local.replace("=<", "<=");
@@ -338,12 +340,12 @@ public class PCmo_Command {
 			return random.nextBoolean();
 		}
 
-		throw new PCmo_CommandException("Invalid condition syntax.");
+		throw new ParseException("Invalid condition syntax.");
 	}
 
-	private static int readInt(String str, int pos) throws PCmo_CommandException {
+	private static int readInt(String str, int pos) throws ParseException {
 		if (str.length() <= pos) {
-			throw new PCmo_CommandException("Number expected.");
+			throw new ParseException("Number expected.");
 		}
 
 		Character chr = str.charAt(pos);
@@ -365,10 +367,10 @@ public class PCmo_Command {
 			try {
 				return Integer.valueOf(numbuff);
 			} catch (NumberFormatException nfe) {
-				throw new PCmo_CommandException("Number expected.");
+				throw new ParseException("Number expected.");
 			}
 		} else {
-			throw new PCmo_CommandException("Number expected.");
+			throw new ParseException("Number expected.");
 		}
 	}
 
@@ -378,9 +380,9 @@ public class PCmo_Command {
 	 * 
 	 * @param str program to parse
 	 * @return parsed command sequence
-	 * @throws PCmo_CommandException if there was an error in the program
+	 * @throws ParseException if there was an error in the program
 	 */
-	public static String parseCode(String str) throws PCmo_CommandException {
+	public static String parseCode(String str) throws ParseException {
 		try {
 			PC_Logger.fine("Parsing Miner's code:\n" + str);
 			PC_Logger.finer("Erasing vars.");
@@ -397,7 +399,7 @@ public class PCmo_Command {
 			if (!parseLoopConsistencyCheck(local)) {
 
 				PC_Logger.warning("Loop consistency check failed, broken loops found!");
-				throw new PCmo_CommandException("Unclosed or broken loops.");
+				throw new ParseException("Unclosed or broken loops.");
 			}
 
 			PC_Logger.finer("Expanding loops, if-else statements, variables.");
@@ -412,11 +414,11 @@ public class PCmo_Command {
 			PC_Logger.fine("Parsing completed.");
 
 			return local;
-		} catch (PCmo_CommandException e) {
+		} catch (ParseException e) {
 			throw e;
 		} catch (Throwable t) {
 			PC_Logger.finer("Unexpected throwable!");
-			throw new PCmo_CommandException("Parse error.");
+			throw new ParseException("Parse error.");
 		}
 	}
 
@@ -522,17 +524,17 @@ public class PCmo_Command {
 		return openLoops == 0;
 	}
 
-	private static String parseIfElse(String source) throws PCmo_CommandException {
+	private static String parseIfElse(String source) throws ParseException {
 		PC_Logger.finer("Parsing IF-ELSE " + source);
 		String local = new String(source);
 		if (!Character.valueOf(local.charAt(0)).equals('(')) {
 			PC_Logger.warning("error 1: " + local);
-			throw new PCmo_CommandException("Bad if-else syntax.");
+			throw new ParseException("Bad if-else syntax.");
 		}
 
 		if (!Character.valueOf(local.charAt(local.length() - 1)).equals(')')) {
 			PC_Logger.warning("error 2: " + local);
-			throw new PCmo_CommandException("Bad if-else syntax.");
+			throw new ParseException("Bad if-else syntax.");
 		}
 
 		local = local.substring(1, local.length() - 1); // remove brackets.
@@ -543,7 +545,7 @@ public class PCmo_Command {
 		// no question mark
 		if (qmark == -1 || (ddot > -1 && ddot < qmark)) {
 			PC_Logger.warning("error 3: " + local);
-			throw new PCmo_CommandException("Bad if-else syntax.");
+			throw new ParseException("Bad if-else syntax.");
 		}
 
 		String equation = local.substring(0, qmark);
@@ -561,15 +563,15 @@ public class PCmo_Command {
 		}
 	}
 
-	private static String parseExpandLoops(String source) throws PCmo_CommandException {
+	private static String parseExpandLoops(String source) throws ParseException {
 		return parseExpandLoops(source, 0);
 	}
 
-	private static String parseExpandLoops(String source, int recursion) throws PCmo_CommandException {
+	private static String parseExpandLoops(String source, int recursion) throws ParseException {
 		recursion++;
 		if (recursion > 5000) {
 			PC_Logger.warning("Recursion limit exceeded.");
-			throw new PCmo_CommandException("Recursion limit exceeded.");
+			throw new ParseException("Recursion limit exceeded.");
 		}
 
 		String output = new String("");
@@ -598,13 +600,13 @@ public class PCmo_Command {
 		if (source.indexOf(":") == -1) {
 			PC_Logger.warning(": not found");
 			if (!ifElse) {
-				throw new PCmo_CommandException("Invalid loop syntax.");
+				throw new ParseException("Invalid loop syntax.");
 			}
 		}
 
 		if (source.indexOf(")") == -1) {
 			PC_Logger.warning(") not found");
-			throw new PCmo_CommandException("Unclosed brackets.");
+			throw new ParseException("Unclosed brackets.");
 		}
 
 		outer:
@@ -633,12 +635,12 @@ public class PCmo_Command {
 				try {
 					numbuf = source.substring(pos, posLimiter);
 				} catch (StringIndexOutOfBoundsException ee) {
-					throw new PCmo_CommandException("Loop syntax error.");
+					throw new ParseException("Loop syntax error.");
 				}
 
 				try {
 					repeatCount = parseLoopCount(numbuf);
-				} catch (PCmo_CommandException ce) {
+				} catch (ParseException ce) {
 					throw ce;
 				}
 
@@ -696,7 +698,7 @@ public class PCmo_Command {
 				}
 
 				if (openLoops > 0) {
-					throw new PCmo_CommandException("Unclosed loops.");
+					throw new ParseException("Unclosed loops.");
 				}
 
 				// if not a loop - its an if-else statement
@@ -744,7 +746,7 @@ public class PCmo_Command {
 		return output;
 	}
 
-	private static String parseRemoveUnknown(String code) throws PCmo_CommandException {
+	private static String parseRemoveUnknown(String code) throws ParseException {
 		String str = new String(code);
 
 		str = str.replaceAll(",+", ",");
@@ -764,7 +766,7 @@ public class PCmo_Command {
 			if ((getIntFromChar(chr) != -1) || Character.isDigit(chr) || chr.equals('-') || chr.equals(',')) {
 				codeBuffer += chr.toString();
 			} else {
-				throw new PCmo_CommandException("'" + chr.toString() + "' is not a valid command.");
+				throw new ParseException("'" + chr.toString() + "' is not a valid command.");
 			}
 
 			str = str.substring(1);
