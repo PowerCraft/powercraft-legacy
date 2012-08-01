@@ -70,7 +70,7 @@ public class PClo_GuiWeaselTouchscreenTouch implements PC_IGresBase {
 
 			WeaselNetwork network = touchscreen.getNetwork();
 			if (network != null)
-				((PClo_WeaselPlugin) network.getMember("CORE")).callFunctionExternalDelegated("touchEvent", new WeaselString(touchscreen.getName()),
+				((PClo_WeaselPlugin) network.getMember("CORE")).callFunctionOnEngine("touchEvent", new WeaselString(touchscreen.getName()),
 						new WeaselString(event), new WeaselInteger(mouse.x), new WeaselInteger(mouse.y), new WeaselInteger(mouseKey),
 						new WeaselString("" + key));
 			

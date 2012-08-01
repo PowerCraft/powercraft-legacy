@@ -133,7 +133,7 @@ public class PC_GresTextEdit extends PC_GresWidget {
 			}
 		} else if (hasFocus && (cursorCounter / 6) % 2 == 0) {
 			drawVerticalLine(offsetPos.x + pos.x + getStringWidth(text.substring(0, mouseSelectEnd)) + 5, offsetPos.y + pos.y + 3, offsetPos.y
-					+ pos.y + size.y - 5, color[enabled ? textColorEnabled : textColorDisabled]);
+					+ pos.y + size.y - 5, a(color[enabled ? textColorEnabled : textColorDisabled]));
 		}
 
 	}
@@ -141,6 +141,10 @@ public class PC_GresTextEdit extends PC_GresWidget {
 	@Override
 	public boolean mouseOver(PC_CoordI mpos) {
 		return true;
+	}
+	
+	private int a(int aa) {
+		return aa|0xff000000;
 	}
 
 	private int getMousePositionInString(int x) {
@@ -183,6 +187,7 @@ public class PC_GresTextEdit extends PC_GresWidget {
 			e = mouseSelectStart;
 			s = mouseSelectEnd;
 		}
+		try {
 		String s1 = text.substring(0, s);
 		String s2 = text.substring(e);
 		if ((s1 + c + s2).length() > maxChars) {
@@ -191,6 +196,9 @@ public class PC_GresTextEdit extends PC_GresWidget {
 		text = s1 + c + s2;
 		mouseSelectEnd += 1;
 		mouseSelectStart = mouseSelectEnd;
+		}catch(StringIndexOutOfBoundsException ss) {
+			ss.printStackTrace();
+		}
 	}
 
 	private void deleteSelected() {

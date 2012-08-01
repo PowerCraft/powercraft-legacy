@@ -82,7 +82,7 @@ public class PClo_GuiWeaselTerminalTerm implements PC_IGresBase {
 
 			WeaselNetwork network = term.getNetwork();
 			if (network != null)
-				((PClo_WeaselPlugin) network.getMember("CORE")).callFunctionExternalDelegated("termIn", new WeaselString(term.getName()), txt);
+				((PClo_WeaselPlugin) network.getMember("CORE")).callFunctionOnEngine("termIn", new WeaselString(term.getName()), txt);
 
 			term.isChanged = true;
 			return;

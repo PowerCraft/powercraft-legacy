@@ -68,7 +68,7 @@ public class PC_GresButton extends PC_GresWidget {
 	protected void render(PC_CoordI offsetPos) {
 
 		int state;
-		if (!enabled) {
+		if (!enabled || !parent.enabled) {
 			state = 0; // disabled
 		} else if (isClicked) {
 			state = 3; // enabled and clicked
@@ -106,6 +106,9 @@ public class PC_GresButton extends PC_GresWidget {
 	@Override
 	public boolean mouseClick(PC_CoordI mpos, int key) {
 		if (!enabled || !visible) {
+			return false;
+		}
+		if (!parent.enabled) {
 			return false;
 		}
 		if (isClicked && key == -1) {

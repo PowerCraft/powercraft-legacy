@@ -2,7 +2,12 @@ package net.minecraft.src;
 
 
 
+import java.util.ArrayList;
+import java.util.List;
+
+import net.minecraft.src.PC_GresTextEditMultiline.Keyword;
 import net.minecraft.src.PC_GresWidget.PC_GresAlign;
+import net.minecraft.src.PClo_NetManager.NetworkMember;
 
 
 /**
@@ -66,8 +71,22 @@ public class PClo_GuiWeaselCoreProgram implements PC_IGresBase {
 		PC_GresWidget mainHg = new PC_GresLayoutH().setAlignV(PC_GresAlign.TOP);
 
 		PC_GresWidget leftCol = new PC_GresLayoutV().setAlignH(PC_GresAlign.STRETCH).setMinWidth(294).setWidgetMargin(1);
+		ArrayList<Keyword> kw = PC_GresHighlightHelper.weasel(core, core.getWeaselEngine());
 
-		leftCol.add(edit = new PC_GresTextEditMultiline(core.program, 290, 164, PC_GresHighlightHelper.weasel(core, core.getWeaselEngine()),
+		if (core.getNetwork() != null) {
+			for (NetworkMember member : core.getNetwork().getMembers().values()) {
+				if (member != null && member != this && member instanceof PClo_WeaselPluginDiskDrive) {
+					System.out.println("Linked libraries from drive "+((PClo_WeaselPluginDiskDrive)member).getName()+" if any.");
+					List<String> funcnames = ((PClo_WeaselPluginDiskDrive)member).getLibraryFunctionNames();
+					
+					for(String fn:funcnames) {
+						kw.add(new Keyword(fn, 0x00d6b7));
+					}
+				}
+			}
+		}
+
+		leftCol.add(edit = new PC_GresTextEditMultiline(core.program, 290, 164, kw,
 				PC_GresHighlightHelper.autoAdd).setWidgetMargin(2));
 		leftCol.add(txMsg = new PC_GresLabelMultiline("Weasel status: " + (core.getError() == null ? "OK" : core.getError().replace("\n", " ")), 270)
 				.setMinRows(1).setMaxRows(1).setWidgetMargin(2).setColor(PC_GresWidget.textColorEnabled, 0x000000));

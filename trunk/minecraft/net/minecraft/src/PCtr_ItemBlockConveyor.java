@@ -2,26 +2,24 @@ package net.minecraft.src;
 
 
 /**
- * Replacement ItemBlock for BlockDecorative, which sets the tile entity when
- * placed.
+ * belt block item - the "shifting" functionality
  * 
  * @author MightyPork
- * @copy (c) 2012
  */
-public class PCde_ItemBlockWalkable extends ItemBlock {
+public class PCtr_ItemBlockConveyor extends ItemBlock {
 
 	/**
 	 * @param i ID
 	 */
-	public PCde_ItemBlockWalkable(int i) {
+	public PCtr_ItemBlockConveyor(int i) {
 		super(i);
 		setMaxDamage(0);
-		setHasSubtypes(true);
+		setHasSubtypes(false);
 	}
 
 	@Override
 	public int getBlockID() {
-		return mod_PCdeco.walkable.blockID;
+		return shiftedIndex;
 	}
 
 	@Override
@@ -67,59 +65,33 @@ public class PCde_ItemBlockWalkable extends ItemBlock {
 
 
 		// special placing rules for Ledge
-		if (world.getBlockId(i, j - 1, k) == mod_PCdeco.walkable.blockID) {
-			TileEntity te = world.getBlockTileEntity(i, j - 1, k);
-			if (te != null && te instanceof PCde_TileEntityWalkable) {
-				PCde_TileEntityWalkable tew = (PCde_TileEntityWalkable) te;
+		if (PCtr_BeltBase.isConveyorAt(world, new PC_CoordI(i, j - 1, k))) {			
 
 				int dir = ((MathHelper.floor_double(((entityplayer.rotationYaw * 4F) / 360F) + 0.5D) & 3) + 2) % 4;
 
 				if (itemstack.getItemDamage() == 0 && PC_Utils.isPlacingReversed()) {
 					dir = PC_Utils.reverseSide(dir);
-				}
-				int meta = world.getBlockMetadata(i, j - 1, k);
-
-				i -= Direction.offsetX[dir];
-				k -= Direction.offsetZ[dir];
-
-				if (tew.type == 1) {
-
-					if (meta == dir) {
-
-						if (!PC_Utils.isPlacingReversed()) {
-							j += 1;
-						}
-
-					} else if (PC_Utils.isPlacingReversed() && itemstack.getItemDamage() == 1) {
-						j--;
-					}
-
-				} else if (tew.type == 0 && itemstack.getItemDamage() == 1) {
-					if (PC_Utils.isPlacingReversed()) {
-						j--;
-					}
-				}
-
+				}	
+				
 				j--;
-
+				
+				int m = 0;
+				while(!world.canBlockBePlacedAt(getBlockID(), i, j, k, false, l) || m == 128) {
+					i -= Direction.offsetX[dir];
+					k -= Direction.offsetZ[dir];
+					m++;
+				}
 			}
-		}
 
 
 		if (j == 255 && Block.blocksList[getBlockID()].blockMaterial.isSolid()) {
 			return false;
 		}
 
-		if (world.canBlockBePlacedAt(mod_PCdeco.walkable.blockID, i, j, k, false, l)) {
-			Block block = mod_PCdeco.walkable;
+		if (world.canBlockBePlacedAt(getBlockID(), i, j, k, false, l)) {
+			Block block = Block.blocksList[getBlockID()];
 			if (world.setBlock(i, j, k, block.blockID)) {
-				// set tile entity
-				PCde_TileEntityWalkable ted = (PCde_TileEntityWalkable) world.getBlockTileEntity(i, j, k);
-				if (ted == null) {
-					ted = (PCde_TileEntityWalkable) ((BlockContainer) block).getBlockEntity();
-				}
-				ted.type = itemstack.getItemDamage();
-				world.setBlockTileEntity(i, j, k, ted);
+				
 				block.onBlockPlaced(world, i, j, k, l);
 				block.onBlockPlacedBy(world, i, j, k, entityplayer);
 
@@ -134,10 +106,4 @@ public class PCde_ItemBlockWalkable extends ItemBlock {
 		}
 		return true;
 	}
-
-	@Override
-	public String getItemNameIS(ItemStack itemstack) {
-		return super.getItemName() + "." + itemstack.getItemDamage();
-	}
-
 }

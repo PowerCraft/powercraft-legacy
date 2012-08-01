@@ -195,6 +195,7 @@ public class PClo_NetManager implements PC_INBT {
 	 */
 	public WeaselObject getGlobalVariable(String name) {
 		checkWorldChange();
+		if(globalHeap.getVariable(name) == null) throw new WeaselRuntimeException("Global network does't contain variable "+name);
 		return globalHeap.getVariable(name);
 	}
 

@@ -151,6 +151,16 @@ public class InstructionList implements PC_INBT {
 	 * @return can call this function externally
 	 */
 	public boolean canCallFunctionExternal(String functionName) {
+		return hasFunctionForExternalCall(functionName) && engine.executingFunctionExternal == 0;
+	}
+	
+	/**
+	 * Check if function called from external caller does exist
+	 * 
+	 * @param functionName
+	 * @return can call this function externally
+	 */
+	public boolean hasFunctionForExternalCall(String functionName) {
 		if (!functionMapGenerated) generateFunctionMap();
 		return functionMap.get(functionName) != null;
 	}
@@ -164,7 +174,6 @@ public class InstructionList implements PC_INBT {
 	 */
 	public void callFunctionExternal(String functionName, WeaselObject[] args) {
 		engine.systemStack.push(engine.retval);
-		engine.executingFunctionExternal++;
 		callFunction_do(true, functionName, args);
 	}
 
@@ -234,7 +243,6 @@ public class InstructionList implements PC_INBT {
 			return;
 		}
 
-		System.out.println("at " + programCounter);
 		throw new WeaselRuntimeException("Function \"" + functionName + "\" does not exist.");
 
 	}
@@ -254,7 +262,6 @@ public class InstructionList implements PC_INBT {
 
 		if (wasExternal) {
 			//engine.externalCallRetval = engine.retval;
-			engine.executingFunctionExternal--;
 			engine.retval = engine.systemStack.pop();
 			//engine.requestPause();
 		}

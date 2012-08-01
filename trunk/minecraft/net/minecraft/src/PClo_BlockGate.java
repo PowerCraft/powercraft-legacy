@@ -857,7 +857,7 @@ public class PClo_BlockGate extends BlockContainer implements PC_IRotatedBox, PC
 		if (type == PClo_GateType.REPEATER_STRAIGHT_I || type == PClo_GateType.REPEATER_CORNER_I) {
 			for (; gateUpdates.size() > 0 && world.getWorldTime() - gateUpdates.get(0).updateTime > 10L; gateUpdates.remove(0)) {}
 			if (checkForBurnout(world, x, y, z, false)) {
-				world.scheduleBlockUpdate(x, y, z, blockID, 3);
+				world.scheduleBlockUpdate(x, y, z, blockID, 2);
 				return;
 			}
 			checkForBurnout(world, x, y, z, true);

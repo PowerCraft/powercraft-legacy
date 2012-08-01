@@ -72,6 +72,7 @@ public class PClo_WeaselPluginSpeaker extends PClo_WeaselPlugin {
 
 	@Override
 	public WeaselObject callProvidedFunction(WeaselEngine engine, String functionName, WeaselObject[] args) {
+		//engine.requestPause();
 
 		if (!functionName.startsWith(getName() + ".")) return null;
 
@@ -273,9 +274,7 @@ public class PClo_WeaselPluginSpeaker extends PClo_WeaselPlugin {
 	}
 
 	@Override
-	public Object callFunctionExternalDelegated(String function, Object... args) {
-		return null;
-	}
+	public void callFunctionOnEngine(String function, Object... args) {}
 
 	@Override
 	public void restartDevice() {}

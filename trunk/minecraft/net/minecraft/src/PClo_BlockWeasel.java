@@ -274,10 +274,10 @@ public class PClo_BlockWeasel extends BlockContainer implements PC_ISwapTerrain,
 
 		for (; burnoutList.size() > 0 && world.getWorldTime() - burnoutList.get(0).updateTime > 10L; burnoutList.remove(0)) {}
 		if (checkForBurnout(world, x, y, z, false)) {
-			world.scheduleBlockUpdate(x, y, z, blockID, 3);
-			//System.out.println("cpu burned out");
+			world.scheduleBlockUpdate(x, y, z, blockID, 2);
 			return;
 		}
+		
 		checkForBurnout(world, x, y, z, true);
 
 		getTE(world, x, y, z).onDirectPinChanged();

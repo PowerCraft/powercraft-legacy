@@ -139,9 +139,21 @@ public class PClo_WeaselPluginCore extends PClo_WeaselPlugin implements IWeaselH
 
 				try {
 					initWeaselIfNull();
+					
+					if(externalCallsWaiting.size()>0) {
+						int state = weasel.callFunctionExternal(externalCallsWaiting.get(0).a, externalCallsWaiting.get(0).b);
+						
+						if(state != 0) {
+							externalCallsWaiting.remove(0);
+						}
+					}
+					
 					weasel.run(400);
 				} catch (WeaselRuntimeException wre) {
 					setError(wre.getMessage());
+				} catch (Exception e) {
+					e.printStackTrace();
+					setError(e.getMessage());
 				}
 				return true;
 			}
@@ -154,22 +166,12 @@ public class PClo_WeaselPluginCore extends PClo_WeaselPlugin implements IWeaselH
 	private void setError(String message) {
 		this.weaselError = message;
 	}
+	
+	private ArrayList<PC_Struct2<String, Object[]>> externalCallsWaiting = new ArrayList<PC_Struct2<String,Object[]>>();
 
 	@Override
 	public void onRedstoneSignalChanged() {
-		if (hasError() || paused || halted) return;
-
-		if (initialSleep > 0) {
-			return;
-		}
-
-		try {
-			initWeaselIfNull();
-			weasel.callFunctionExternal("update", new Object[] {});
-
-		} catch (WeaselRuntimeException wre) {
-			weaselError = wre.getMessage();
-		}
+		callFunctionOnEngine("update", new Object[] {});
 	}
 
 	@Override
@@ -236,9 +238,7 @@ public class PClo_WeaselPluginCore extends PClo_WeaselPlugin implements IWeaselH
 
 		tag.setBoolean("Paused", paused);
 		tag.setBoolean("Halted", halted);
-		tag.setInteger("Sleep", sleepTimer);
-
-
+		tag.setInteger("Sleep", sleepTimer);		
 
 		// network name will be saved by superclass		
 		if (providedNetwork != null) tag.setCompoundTag("NetworkData", providedNetwork.writeToNBT(new NBTTagCompound()));
@@ -296,6 +296,16 @@ public class PClo_WeaselPluginCore extends PClo_WeaselPlugin implements IWeaselH
 		restartAllNetworkDevices();
 		restartDevice();
 		List<Instruction> list = WeaselEngine.compileProgram(program);
+		
+		if (getNetwork() != null) {
+			for (NetworkMember member : getNetwork().getMembers().values()) {
+				if (member != null && member != this && member instanceof PClo_WeaselPluginDiskDrive) {
+					System.out.println("Linked libraries from drive "+((PClo_WeaselPluginDiskDrive)member).getName()+" if any.");
+					list.addAll(((PClo_WeaselPluginDiskDrive)member).getAllLibraryInstructions());
+				}
+			}
+		}
+		
 		weasel.insertNewProgram(list);
 		halted = false;
 		paused = false;
@@ -641,17 +651,23 @@ public class PClo_WeaselPluginCore extends PClo_WeaselPlugin implements IWeaselH
 	}
 
 	@Override
-	public Object callFunctionExternalDelegated(String function, Object... args) {
-		if (initialSleep > 0 || hasError() || paused || halted) {
-			return null;
+	public void callFunctionOnEngine(String function, Object... args) {
+		if (hasError() || paused || halted) {
+			return;
+		}
+		if(initialSleep > 0) {
+			externalCallsWaiting.add(new PC_Struct2<String, Object[]>(function, args));
+			return;
 		}
 		try {
 			initWeaselIfNull();
-			weasel.callFunctionExternal(function, args);
+			int state = weasel.callFunctionExternal(function, args);
+			if(state == -1 || state == 1) return;	
+			externalCallsWaiting.add(new PC_Struct2<String, Object[]>(function, args));
+			
 		} catch (WeaselRuntimeException wre) {
 			weaselError = wre.getMessage();
 		}
-		return null;
 	}
 
 	@Override
@@ -663,6 +679,7 @@ public class PClo_WeaselPluginCore extends PClo_WeaselPlugin implements IWeaselH
 		paused = false;
 		halted = false;
 		sleepTimer = 0;
+		externalCallsWaiting.clear();
 		resetOutport();
 	}
 

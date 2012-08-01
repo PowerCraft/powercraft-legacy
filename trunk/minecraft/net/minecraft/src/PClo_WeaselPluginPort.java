@@ -68,7 +68,7 @@ public class PClo_WeaselPluginPort extends PClo_WeaselPlugin {
 	public void onRedstoneSignalChanged() {
 		isChanged = true;
 		if (getNetwork() != null)
-			if (getNetwork().getMember("CORE") != null) ((PClo_WeaselPlugin) getNetwork().getMember("CORE")).callFunctionExternalDelegated("update");
+			if (getNetwork().getMember("CORE") != null) ((PClo_WeaselPlugin) getNetwork().getMember("CORE")).callFunctionOnEngine("update");
 	}
 
 	@Override
@@ -234,9 +234,7 @@ public class PClo_WeaselPluginPort extends PClo_WeaselPlugin {
 	}
 
 	@Override
-	public Object callFunctionExternalDelegated(String function, Object... args) {
-		return null;
-	}
+	public void callFunctionOnEngine(String function, Object... args) {}
 
 	@Override
 	public void restartDevice() {

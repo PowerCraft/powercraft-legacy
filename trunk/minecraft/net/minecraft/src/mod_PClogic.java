@@ -515,12 +515,13 @@ public class mod_PClogic extends PC_Module {
 		map.put("pc.weasel.disk.empty", "Blank Weasel Disk");
 		map.put("pc.weasel.disk.text", "Weasel Text Disk");
 		map.put("pc.weasel.disk.image", "Weasel Image Disk");
-		map.put("pc.weasel.disk.numberlist", "Weasel Number List Disk");
-		map.put("pc.weasel.disk.stringlist", "Weasel String List Disk");
+		map.put("pc.weasel.disk.numberList", "Weasel Numbers Disk");
+		map.put("pc.weasel.disk.stringList", "Weasel Strings Disk");
+		map.put("pc.weasel.disk.variableMap", "Weasel Data Disk");
+		map.put("pc.weasel.disk.programLibrary", "Weasel Library Disk");
 		map.put("pc.gui.weasel.diskManager.color", "Color:");
 		map.put("pc.gui.weasel.diskManager.label", "Disk label:");
 		map.put("pc.gui.weasel.diskManager.separator", "Entry separator:");
-		map.put("pc.gui.weasel.diskManager.size", "Image size");
 		map.put("pc.gui.weasel.diskManager.resize", "Resize");
 		map.put("pc.gui.weasel.diskManager.set", "Set");
 		map.put("pc.gui.weasel.diskManager.edit", "Edit");
@@ -532,6 +533,11 @@ public class mod_PClogic extends PC_Module {
 		map.put("pc.gui.weasel.diskManager.formatImage", "Image");
 		map.put("pc.gui.weasel.diskManager.formatIntegerList", "Numbers");
 		map.put("pc.gui.weasel.diskManager.formatStringList", "Strings");
+		map.put("pc.gui.weasel.diskManager.formatVariableMap", "Data");
+		map.put("pc.gui.weasel.diskManager.formatLibrary", "Library");
+		map.put("pc.gui.weasel.diskManager.clickCompile", "Click \"Compile\" to make the library executable.");
+		map.put("pc.gui.weasel.diskManager.compiled", "Library was successfully compiled.");
+
 
 		map.put("pc.gui.weasel.diskManager.empty.title", "Digital Workbench - insert disk");
 
@@ -901,7 +907,7 @@ public class mod_PClogic extends PC_Module {
 		PC_InveditManager.setDamageRange(gateOn.blockID, 0, PClo_GateType.TOTAL_GATE_COUNT - 1);
 		PC_InveditManager.setDamageRange(weaselDevice.blockID, 0, PClo_WeaselType.WEASEL_DEVICE_COUNT - 1);
 		PC_InveditManager.setDamageRange(sensor.blockID, 0, 2);
-		PC_InveditManager.setDamageRange(lightOn.blockID, 0, 31);
+		PC_InveditManager.setDamageRange(lightOn.blockID, 0, 47);
 		PC_InveditManager.hideItem(gateOff.blockID);
 		PC_InveditManager.hideItem(lightOff.blockID);
 

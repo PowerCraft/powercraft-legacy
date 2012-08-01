@@ -195,6 +195,7 @@ public class WeaselEngine implements PC_INBT, IVariableProvider, IFunctionProvid
 
 		isProgramFinished = false;
 		instructionList.movePointerTo(0);
+		executingFunctionExternal = 0;
 
 		systemStack.clear();
 		dataStack.clear();
@@ -246,7 +247,18 @@ public class WeaselEngine implements PC_INBT, IVariableProvider, IFunctionProvid
 	 * @throws SyntaxError when there's an error in the source code
 	 */
 	public static List<Instruction> compileProgram(String program) throws SyntaxError {
-		return (new Compiler()).compile(program);
+		return (new Compiler()).compile(program, false);
+	}
+	
+	/**
+	 * Compile given library source to a list of instruction.
+	 * 
+	 * @param program source code
+	 * @return the list of instructions
+	 * @throws SyntaxError when there's an error in the source code
+	 */
+	public static List<Instruction> compileLibrary(String program) throws SyntaxError {
+		return (new Compiler()).compile(program, true);
 	}
 
 
@@ -295,7 +307,7 @@ public class WeaselEngine implements PC_INBT, IVariableProvider, IFunctionProvid
 
 		WeaselObject obj;
 
-		if ((obj = hw.getVariable(name)) != null) {
+		if (hw != null && (obj = hw.getVariable(name)) != null) {
 			return obj;
 		}
 
@@ -314,7 +326,7 @@ public class WeaselEngine implements PC_INBT, IVariableProvider, IFunctionProvid
 		if (name == null) throw new WeaselRuntimeException("Variable name cannot be null at " + name + " = " + value);
 		if (value == null) throw new WeaselRuntimeException("Variable value cannot be null at " + name + " = " + value);
 
-		if (hw.getVariable(name) != null) {
+		if (hw != null && hw.getVariable(name) != null) {
 			hw.setVariable(name, value);
 			return;
 		}
@@ -366,7 +378,7 @@ public class WeaselEngine implements PC_INBT, IVariableProvider, IFunctionProvid
 
 			if (args.length != 1) throw new WeaselRuntimeException("Isset() requires 1 argument, got " + args.length);
 			if (args[0] instanceof WeaselString) {
-				String varname = (String) args[0].get();
+				String varname = Calc.toString(args[0]);
 //				System.out.println("## ISSET? "+varname+" -> "+getVariable(varname));
 				return new WeaselBoolean(getVariable(varname) != null);
 			} else {
@@ -379,7 +391,7 @@ public class WeaselEngine implements PC_INBT, IVariableProvider, IFunctionProvid
 
 			if (args.length != 1) throw new WeaselRuntimeException("get() requires 1 argument, got " + args.length);
 			if (args[0] instanceof WeaselString) {
-				String varname = (String) args[0].get();
+				String varname = Calc.toString(args[0]);
 				return getVariable(varname);
 			} else {
 				throw new WeaselRuntimeException("get() requires String argument, got " + args[0].get().getClass().getSimpleName());
@@ -391,8 +403,13 @@ public class WeaselEngine implements PC_INBT, IVariableProvider, IFunctionProvid
 
 			if (args.length != 2) throw new WeaselRuntimeException("set() requires 2 arguments, got " + args.length);
 			if (args[0] instanceof WeaselString) {
-				String varname = (String) args[0].get();
-				setVariable(varname, args[1]);
+				String varname = Calc.toString(args[0]);
+				boolean global = args.length==3?Calc.toBoolean(args[2]):false;
+				if(global) {
+					setVariableGlobal(varname, args[1]);
+				}else {
+					setVariable(varname, args[1]);
+				}
 			} else {
 				throw new WeaselRuntimeException("set() requires String as 1st argument, got " + args[0].get().getClass().getSimpleName());
 			}
@@ -474,18 +491,19 @@ public class WeaselEngine implements PC_INBT, IVariableProvider, IFunctionProvid
 	 * 
 	 * @param funcName function name
 	 * @param args function arguments, array of simple objects
-	 * @return true if function was called, false if is missing.
+	 * @return -1 missing, 0 you must wait, 1 function called.
 	 * @throws WeaselRuntimeException if the user function has bad number of
 	 *             parameters declared.
 	 */
-	public boolean callFunctionExternal(String funcName, Object... args) throws WeaselRuntimeException {
+	public int callFunctionExternal(String funcName, Object... args) throws WeaselRuntimeException {
+		if(!instructionList.hasFunctionForExternalCall(funcName)) return -1;
 		if (args == null) args = new Object[] {};
 		if (instructionList.canCallFunctionExternal(funcName)) {
 			isProgramFinished = false;
 			instructionList.callFunctionExternal(funcName, Calc.s2w(args));
-			return true;
+			return 1;
 		} else {
-			return false;
+			return 0;
 		}
 	}
 
