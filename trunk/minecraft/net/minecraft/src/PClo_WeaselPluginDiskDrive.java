@@ -540,7 +540,7 @@ public class PClo_WeaselPluginDiskDrive extends PClo_WeaselPlugin implements PC_
 
 	@Override
 	protected void onDeviceDestroyed() {
-		PC_InvUtils.dropInventoryContents(slots, world(), coord());
+		if(!isPickedUp)	PC_InvUtils.dropInventoryContents(slots, world(), coord());
 	}
 
 	@Override
@@ -618,4 +618,5 @@ public class PClo_WeaselPluginDiskDrive extends PClo_WeaselPlugin implements PC_
 	public IInventory getInventory() {
 		return slots;
 	}
+	
 }

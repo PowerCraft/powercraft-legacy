@@ -148,7 +148,7 @@ public class PClo_WeaselPluginCore extends PClo_WeaselPlugin implements IWeaselH
 						}
 					}
 					
-					weasel.run(400);
+					weasel.run(500);
 				} catch (WeaselRuntimeException wre) {
 					setError(wre.getMessage());
 				} catch (Exception e) {
@@ -193,8 +193,8 @@ public class PClo_WeaselPluginCore extends PClo_WeaselPlugin implements IWeaselH
 		program = tag.getString("program");
 
 		if (program.equals("")) program = default_program;
-		initWeaselIfNull();
-		weasel.readFromNBT(tag.getCompoundTag("Weasel"));
+		
+		weasel = (WeaselEngine) PC_Utils.loadFromNBT(tag, "Weasel", new WeaselEngine(this));
 
 		weaselError = tag.getString("weaselError");
 		if (weaselError.equals("")) weaselError = null;
@@ -223,7 +223,8 @@ public class PClo_WeaselPluginCore extends PClo_WeaselPlugin implements IWeaselH
 		tag.setString("program", program);
 		tag.setString("weaselError", (weaselError == null ? "" : weaselError));
 		initWeaselIfNull();
-		tag.setCompoundTag("Weasel", weasel.writeToNBT(new NBTTagCompound()));
+		
+		PC_Utils.saveToNBT(tag, "Weasel", weasel);
 
 		//direct radio signals			
 		NBTTagList list = new NBTTagList();
@@ -241,7 +242,9 @@ public class PClo_WeaselPluginCore extends PClo_WeaselPlugin implements IWeaselH
 		tag.setInteger("Sleep", sleepTimer);		
 
 		// network name will be saved by superclass		
-		if (providedNetwork != null) tag.setCompoundTag("NetworkData", providedNetwork.writeToNBT(new NBTTagCompound()));
+		if (providedNetwork != null) {
+			PC_Utils.saveToNBT(tag, "NetworkData", providedNetwork);
+		}
 
 		return tag;
 	}
@@ -291,6 +294,8 @@ public class PClo_WeaselPluginCore extends PClo_WeaselPlugin implements IWeaselH
 	public void setAndStartNewProgram(String program) throws SyntaxError {
 		setProgram(program);
 
+		PC_Logger.finest("\n## Launching new program in Weasel.");
+
 		initWeaselIfNull();
 
 		restartAllNetworkDevices();
@@ -300,10 +305,22 @@ public class PClo_WeaselPluginCore extends PClo_WeaselPlugin implements IWeaselH
 		if (getNetwork() != null) {
 			for (NetworkMember member : getNetwork().getMembers().values()) {
 				if (member != null && member != this && member instanceof PClo_WeaselPluginDiskDrive) {
-					System.out.println("Linked libraries from drive "+((PClo_WeaselPluginDiskDrive)member).getName()+" if any.");
-					list.addAll(((PClo_WeaselPluginDiskDrive)member).getAllLibraryInstructions());
+					List<Instruction> lib = ((PClo_WeaselPluginDiskDrive)member).getAllLibraryInstructions();
+					if(lib.size()>0) {
+						String msg = "Linked libraries from drive "+((PClo_WeaselPluginDiskDrive)member).getName()+".";
+						System.out.println(msg);
+						PC_Logger.finest(msg);
+						list.addAll(lib);
+					}
 				}
 			}
+		}
+		
+		
+		PC_Logger.finest("\n## Instructions to run");
+		for(Instruction i:list) {
+			System.out.println(i);
+			PC_Logger.finest(i+"");
 		}
 		
 		weasel.insertNewProgram(list);
@@ -353,6 +370,7 @@ public class PClo_WeaselPluginCore extends PClo_WeaselPlugin implements IWeaselH
 	 */
 	public void checkProgramForErrors(String program) throws SyntaxError {
 		List<Instruction> list = WeaselEngine.compileProgram(program);
+		System.out.println("## Program check.");
 		System.out.println();
 		for (Instruction i : list) {
 			System.out.println(i);

@@ -79,7 +79,6 @@ public class PClo_ItemBlockWeasel extends ItemBlock {
 				if (teg == null) {
 					teg = (PClo_TileEntityWeasel) ((BlockContainer) block).getBlockEntity();
 				}
-				System.out.println("Placing te with type " + itemstack.getItemDamage());
 				teg.setType(itemstack.getItemDamage());
 				world.setBlockTileEntity(i, j, k, teg);
 
