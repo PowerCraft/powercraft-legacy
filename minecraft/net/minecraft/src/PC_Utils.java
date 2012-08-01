@@ -89,8 +89,8 @@ public class PC_Utils {
 	 *            object is stored
 	 * @param loaded object to load
 	 */
-	public static void loadFromNBT(NBTTagCompound parent, String wrapperTagName, PC_INBT loaded) {
-		loaded.readFromNBT(parent.getCompoundTag(wrapperTagName));
+	public static PC_INBT loadFromNBT(NBTTagCompound parent, String wrapperTagName, PC_INBT loaded) {
+		return loaded.readFromNBT(parent.getCompoundTag(wrapperTagName));
 	}
 
 	// === FURNACE ===

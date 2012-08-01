@@ -55,12 +55,12 @@ public class mod_PCcore extends PC_Module implements PC_IActivatorListener {
 	 * compilation, thus all modules keep their compile-time version and aren't
 	 * affected by current core version. Which is good.
 	 */
-	public static final String VERSION = "3.4.6c";
+	public static final String VERSION = "3.4.8";
 
 	/**
 	 * The serial number used to check whether new update is available.
 	 */
-	public static final int VERSION_SERIAL = 7;
+	public static final int VERSION_SERIAL = 10;
 
 
 
@@ -231,7 +231,7 @@ public class mod_PCcore extends PC_Module implements PC_IActivatorListener {
 			
 			Toolkit.getDefaultToolkit().beep();  
 			
-			//PC_Utils.mc().onMinecraftCrash(new UnexpectedThrowable("Uncaught Exception\n" + e.getMessage(), e));
+			PC_Utils.mc().onMinecraftCrash(new UnexpectedThrowable("Uncaught Exception\n" + e.getMessage(), e));
 
 		}
 

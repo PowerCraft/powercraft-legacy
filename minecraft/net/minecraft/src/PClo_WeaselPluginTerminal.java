@@ -76,13 +76,19 @@ public class PClo_WeaselPluginTerminal extends PClo_WeaselPlugin {
 		}
 		return counter;
 	}
+	
+	private long lastTime = -1;
 
 	/**
 	 * Add text to the terminal, if too long remove oldest.
 	 * @param text
 	 */
 	public void addText(String text) {
+		if(System.currentTimeMillis() - lastTime > 100)
 		world().playSoundEffect(coord().x + 0.5F, coord().y + 0.5F, coord().z + 0.5F, "random.click", 0.05F, 3F);
+		lastTime = System.currentTimeMillis();
+		
+		
 		this.text += text.replace("\\n", "\n");
 		if (countIn(this.text, '\n') > 60) {
 			while (countIn(this.text, '\n') > 60) {
@@ -99,6 +105,9 @@ public class PClo_WeaselPluginTerminal extends PClo_WeaselPlugin {
 			if (args.length == 0) {
 				functionName = getName() + ".in";
 			} else if (args.length == 1) {
+				if(System.currentTimeMillis() - lastTime < 50) {
+					engine.requestPause();
+				}
 				functionName = getName() + ".out";
 			}
 		}
@@ -206,9 +215,7 @@ public class PClo_WeaselPluginTerminal extends PClo_WeaselPlugin {
 	protected void onDeviceDestroyed() {}
 
 	@Override
-	public Object callFunctionExternalDelegated(String function, Object... args) {
-		return null;
-	}
+	public void callFunctionOnEngine(String function, Object... args) {}
 
 	@Override
 	protected PClo_WeaselPlugin readPluginFromNBT(NBTTagCompound tag) {

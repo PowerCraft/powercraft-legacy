@@ -46,6 +46,32 @@ public class Calc {
 
 		return out;
 	}
+	
+	private static long lastSuperName = -1;
+
+	/**
+	 * Generate shortest possible unique identifier based on timestamp.
+	 * 
+	 * @return the identifier
+	 */
+	public static String generateSuperUniqueName() {
+		long time = System.currentTimeMillis();
+		while(time <= lastSuperName) {
+			time++;
+		}
+		lastSuperName = time;
+		String letters = "_0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
+		String out = "";
+		int base = letters.length();
+		while (time > 0) {
+			int pos = (int) (time % base);
+			out = letters.charAt(pos) + out;
+			time -= pos;
+			time = time / base;
+		}
+
+		return out.substring(2);
+	}
 
 	/**
 	 * Evaluate an expression with variables from the engine.
@@ -59,10 +85,6 @@ public class Calc {
 	public static Object evaluate(String expression, IVariableProvider variableContainer) throws CalcException {
 
 		if (expression == null || expression.length() == 0) return null;
-
-		if (expression.contains(";")) {
-			throw new CalcException("CALC unexpected \";\" in a numeric expression.");
-		}
 
 		//expression = correctQuotes(expression);
 

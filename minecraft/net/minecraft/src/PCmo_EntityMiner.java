@@ -8,6 +8,7 @@ import java.util.Map;
 import java.util.Random;
 import java.util.Map.Entry;
 
+import net.minecraft.src.PClo_NetManager.NetworkMember;
 import net.minecraft.src.PClo_RadioBus.IRadioDevice;
 
 import weasel.Calc;
@@ -17,6 +18,7 @@ import weasel.exception.SyntaxError;
 import weasel.exception.WeaselRuntimeException;
 import weasel.jep.ParseException;
 import weasel.lang.Instruction;
+import weasel.lang.InstructionFunction;
 import weasel.obj.WeaselBoolean;
 import weasel.obj.WeaselInteger;
 import weasel.obj.WeaselObject;
@@ -34,6 +36,7 @@ public class PCmo_EntityMiner extends Entity implements PC_IInventoryWrapper {
 	public static final int LLAVA = 4;
 	public static final int LWATER = 6;
 	public static final int LAIR = 7;
+	public static final int LCOBBLE = 6;
 	public static final int LCOMPRESS = 5;
 
 
@@ -215,13 +218,16 @@ public class PCmo_EntityMiner extends Entity implements PC_IInventoryWrapper {
 		public boolean bridgeEnabled = false;
 
 		/** Lava filling enabled */
-		public boolean lavaFillingEnabled = true;
+		public boolean lavaFillingEnabled = false;
 
 		/** Water filling enabled */
 		public boolean waterFillingEnabled = false;
 
 		/** allow placing torches */
-		public boolean torches = true;
+		public boolean torches = false;
+
+		/** make cobble */
+		public boolean cobbleMake = false;
 
 		/** allow tunnel mode */
 		public boolean airFillingEnabled = false;
@@ -237,6 +243,7 @@ public class PCmo_EntityMiner extends Entity implements PC_IInventoryWrapper {
 			tag.setBoolean("Lava", lavaFillingEnabled);
 			tag.setBoolean("Water", waterFillingEnabled);
 			tag.setBoolean("Air", airFillingEnabled);
+			tag.setBoolean("CobbleMaker", cobbleMake);
 			return tag;
 		}
 
@@ -251,6 +258,7 @@ public class PCmo_EntityMiner extends Entity implements PC_IInventoryWrapper {
 			lavaFillingEnabled = tag.getBoolean("Lava");
 			waterFillingEnabled = tag.getBoolean("Water");
 			airFillingEnabled = tag.getBoolean("Air");
+			cobbleMake = tag.getBoolean("CobbleMaker");
 			return this;
 		}
 	}
@@ -271,6 +279,8 @@ public class PCmo_EntityMiner extends Entity implements PC_IInventoryWrapper {
 
 		/** weasel engine */
 		public WeaselEngine engine = new WeaselEngine(this);
+
+		private int sleep = 0;
 
 		/** Displayed text. "\n" is a newline. */
 		public String termText = "";
@@ -360,7 +370,9 @@ public class PCmo_EntityMiner extends Entity implements PC_IInventoryWrapper {
 			restartProgram();
 
 			try {
-				engine.insertNewProgram(WeaselEngine.compileProgram(program));
+				List<Instruction> list = WeaselEngine.compileProgram(program);
+				list.addAll(getAllLibraryInstructions());
+				engine.insertNewProgram(list);
 			} catch (Exception e) {
 				e.printStackTrace();
 				throw new ParseException(e.getMessage());
@@ -401,6 +413,12 @@ public class PCmo_EntityMiner extends Entity implements PC_IInventoryWrapper {
 
 			if (!st.paused && !st.pausedWeasel && !st.halted && !hasError()) {
 				try {
+
+					if (sleep > 0) {
+						sleep--;
+						return;
+					}
+
 					engine.run(100);
 				} catch (WeaselRuntimeException wre) {
 					wre.printStackTrace();
@@ -416,8 +434,8 @@ public class PCmo_EntityMiner extends Entity implements PC_IInventoryWrapper {
 		@Override
 		public NBTTagCompound writeToNBT(NBTTagCompound tag) {
 			PC_Utils.saveToNBT(tag, "Engine", engine);
-			tag.setString("Error", error==null?"":error);
-			tag.setString("Program", program==null?"":program);
+			tag.setString("Error", error == null ? "" : error);
+			tag.setString("Program", program == null ? "" : program);
 
 			NBTTagList list = new NBTTagList();
 			for (Entry<String, Boolean> entry : weaselRadioSignals.entrySet()) {
@@ -429,7 +447,7 @@ public class PCmo_EntityMiner extends Entity implements PC_IInventoryWrapper {
 
 			tag.setTag("RadioChannels", list);
 
-			tag.setString("TermText", termText==null?"":termText);
+			tag.setString("TermText", termText == null ? "" : termText);
 
 			tag.setInteger("TermInCount", termUserInput.size());
 			for (int i = 0; i < termUserInput.size(); i++) {
@@ -471,13 +489,33 @@ public class PCmo_EntityMiner extends Entity implements PC_IInventoryWrapper {
 		}
 
 		@Override
-		public WeaselObject callProvidedFunction(WeaselEngine engine, String name, WeaselObject[] args) {
+		public WeaselObject callProvidedFunction(WeaselEngine engine, String name, final WeaselObject[] args) {
 
 			try {
 				if (name.equals("bell")) {
-					worldObj.playSoundEffect(posX + 0.5D, posY + 2D, posZ + 0.5D, "random.orb", 0.8F,
-							(rand.nextFloat() - rand.nextFloat()) * 0.2F + 1.0F);
-					worldObj.spawnParticle("note", posX + 0.5D, posY + 0.3D, posZ + 0.5D, (name.length() * (3 + args.length)) / 24D, 0.0D, 0.0D);
+					worldObj.playSoundEffect(posX + 1D, posY + 2D, posZ + 1D, "random.orb", 0.8F, (rand.nextFloat() - rand.nextFloat()) * 0.2F + 1.0F);
+					worldObj.spawnParticle("note", posX, posY + 1.5D, posZ, (name.length() * (3 + args.length)) / 24D, 0.0D, 0.0D);
+					return null;
+				}
+
+				if (name.equals("clearCap") || name.equals("clearCfg") || name.equals("clearOpt") || name.equals("resetCap")
+						|| name.equals("resetCfg") || name.equals("resetOpt")) {
+					cfg.airFillingEnabled = false;
+					cfg.bridgeEnabled = false;
+					cfg.compressBlocks = false;
+					cfg.keepAllFuel = false;
+					cfg.lavaFillingEnabled = false;
+					cfg.miningEnabled = false;
+					cfg.torches = false;
+					cfg.torchesOnlyOnFloor = false;
+					cfg.waterFillingEnabled = false;
+					cfg.cobbleMake = false;
+					return null;
+				}
+
+				if (name.equals("sleep")) {
+					sleep += Calc.toInteger(args[0].get());
+					engine.requestPause();
 					return null;
 				}
 
@@ -491,7 +529,7 @@ public class PCmo_EntityMiner extends Entity implements PC_IInventoryWrapper {
 				if (name.equals("fw")) {
 					int num = 1;
 					if (args.length == 1) {
-						num = (Integer) args[0].get();
+						num = Calc.toInteger(args[0].get());
 					}
 
 					// spaces are for safety - when there are two numbers next to each other.
@@ -506,7 +544,7 @@ public class PCmo_EntityMiner extends Entity implements PC_IInventoryWrapper {
 				if (name.equals("bw")) {
 					int num = 1;
 					if (args.length == 1) {
-						num = (Integer) args[0].get();
+						num = Calc.toInteger(args[0].get());
 					}
 					num = -num;
 					// spaces are for safety - when there are two numbers next to each other.
@@ -519,7 +557,7 @@ public class PCmo_EntityMiner extends Entity implements PC_IInventoryWrapper {
 				if (name.equals("left")) {
 					int num = 1;
 					if (args.length == 1) {
-						num = (Integer) args[0].get();
+						num = Calc.toInteger(args[0].get());
 					}
 					boolean R = num < 0;
 					if (R) num = -num;
@@ -533,7 +571,7 @@ public class PCmo_EntityMiner extends Entity implements PC_IInventoryWrapper {
 				if (name.equals("up")) {
 					int num = 1;
 					if (args.length == 1) {
-						num = (Integer) args[0].get();
+						num = Calc.toInteger(args[0].get());
 					}
 
 					for (int i = 0; i < num; i++) {
@@ -546,7 +584,7 @@ public class PCmo_EntityMiner extends Entity implements PC_IInventoryWrapper {
 				if (name.equals("down")) {
 					int num = 1;
 					if (args.length == 1) {
-						num = (Integer) args[0].get();
+						num = Calc.toInteger(args[0].get());
 					}
 
 					for (int i = 0; i < num; i++) {
@@ -559,7 +597,7 @@ public class PCmo_EntityMiner extends Entity implements PC_IInventoryWrapper {
 				if (name.equals("right")) {
 					int num = 1;
 					if (args.length == 1) {
-						num = (Integer) args[0].get();
+						num = Calc.toInteger(args[0].get());
 					}
 					boolean L = num < 0;
 					if (L) num = -num;
@@ -572,13 +610,13 @@ public class PCmo_EntityMiner extends Entity implements PC_IInventoryWrapper {
 
 				if (name.equals("turn")) {
 					do {
-						if (args[0] instanceof WeaselString) {
+						if (args.length > 0 && args[0] instanceof WeaselString) {
 							name = "do";
-							break;
+							break; //redir to do
 						}
 						int num = 2;
 						if (args.length == 1) {
-							num = (Integer) args[0].get();
+							num = Calc.toInteger(args[0].get());
 						}
 						boolean L = num < 0;
 						if (L) num = -num;
@@ -594,10 +632,10 @@ public class PCmo_EntityMiner extends Entity implements PC_IInventoryWrapper {
 				if (name.equals("do")) {
 					int num = 1;
 					if (args.length == 2) {
-						num = (Integer) args[1].get();
+						num = Calc.toInteger(args[1].get());
 					}
 					for (int i = 0; i < num; i++) {
-						appendCode((String) args[0].get());
+						appendCode(Calc.toString(args[0].get()));
 					}
 					engine.requestPause();
 					return null;
@@ -629,11 +667,380 @@ public class PCmo_EntityMiner extends Entity implements PC_IInventoryWrapper {
 					engine.requestPause();
 					return null;
 				}
-				if (name.equals("deposit")) {
-					appendCode("Q");
+				if (name.equals("capOff") || name.equals("cfgOff") || name.equals("optOff") || name.equals("capOn") || name.equals("cfgOn")
+						|| name.equals("optOn") || name.equals("cfg") || name.equals("opt") || name.equals("cap")) {
+
+					int state = -1;
+					if (name.equals("capOff") || name.equals("cfgOff") || name.equals("optOff")) state = 0;
+					if (name.equals("capOn") || name.equals("cfgOn") || name.equals("optOn")) state = 1;
+
+					for (int i = 0; i < (state == -1 ? 1 : args.length); i++) {
+
+						if (args[i] instanceof WeaselInteger) {
+							int cap = Calc.toInteger(args[i].get());
+							if (cap == Block.cobblestone.blockID) {
+								args[i] = new WeaselString("COBBLE");
+							} else if (cap == i) {
+								args[i] = new WeaselString("TUNNEL");
+							} else if (cap == i) {
+								args[i] = new WeaselString("TUNNEL");
+							} else if (cap == Block.waterMoving.blockID) {
+								args[i] = new WeaselString("WATER");
+							} else if (cap == Block.lavaMoving.blockID) {
+								args[i] = new WeaselString("LAVA");
+							}
+						}
+
+						String capname = Calc.toString(args[i].get());
+						int argl = args.length;
+						//@formatter:off
+						boolean flag=
+									(state==-1? 
+										(argl == 1)?
+												false //getter
+												:Calc.toBoolean(args[1].get()) // get 2nd arg, its a setter with value
+										
+										:state>0 // On/Off with multiple args.
+									);
+						//@formatter:on
+
+						if (capname.equals("KEEP_FUEL")) {
+							if (argl == 1) return new WeaselBoolean(cfg.keepAllFuel);
+							cfg.keepAllFuel = flag;
+							continue;
+						}
+						if (capname.equals("COBBLE")) {
+							if (argl == 1) return new WeaselBoolean(cfg.cobbleMake);
+							cfg.cobbleMake = flag;
+							continue;
+						}
+						if (capname.equals("TORCHES")) {
+							if (argl == 1) return new WeaselBoolean(cfg.torches);
+							cfg.torches = flag;
+							continue;
+						}
+						if (capname.equals("TORCH_FLOOR")) {
+							if (argl == 1) return new WeaselBoolean(cfg.torchesOnlyOnFloor);
+							cfg.torchesOnlyOnFloor = flag;
+							continue;
+						}
+						if (capname.equals("COMPRESS")) {
+							if (argl == 1) return new WeaselBoolean(cfg.compressBlocks);
+							cfg.compressBlocks = flag;
+							continue;
+						}
+						if (capname.equals("MINING")) {
+							if (argl == 1) return new WeaselBoolean(cfg.miningEnabled);
+							cfg.miningEnabled = flag;
+							continue;
+						}
+						if (capname.equals("BRIDGE")) {
+							if (argl == 1) return new WeaselBoolean(cfg.bridgeEnabled);
+							cfg.bridgeEnabled = flag;
+							continue;
+						}
+						if (capname.equals("LAVA")) {
+							if (argl == 1) return new WeaselBoolean(cfg.lavaFillingEnabled);
+							cfg.lavaFillingEnabled = flag;
+							continue;
+						}
+						if (capname.equals("WATER")) {
+							if (argl == 1) return new WeaselBoolean(cfg.waterFillingEnabled);
+							cfg.waterFillingEnabled = flag;
+							continue;
+						}
+						if (capname.equals("TUNNEL")) {
+							if (argl == 1) return new WeaselBoolean(cfg.airFillingEnabled);
+							cfg.airFillingEnabled = flag;
+							continue;
+						}
+						throw new WeaselRuntimeException(name + "(): Unknown option " + capname);
+					}
+
+					//what else?
+					return null;
+				}
+
+				if (name.equals("can") || name.equalsIgnoreCase("hasOpt") || name.equalsIgnoreCase("hasCap")) {
+					String capname = (String) args[0].get();
+
+					if (capname.equals("KEEP_FUEL")) {
+						return new WeaselBoolean(true);
+					}
+					if (capname.equals("TORCHES")) {
+						return new WeaselBoolean(st.level >= LTORCH);
+					}
+					if (capname.equals("TORCH_FLOOR")) {
+						return new WeaselBoolean(st.level >= LTORCH);
+					}
+					if (capname.equals("COMPRESS")) {
+						return new WeaselBoolean(st.level >= LCOMPRESS);
+					}
+					if (capname.equals("MINING")) {
+						return new WeaselBoolean(true);
+					}
+					if (capname.equals("BRIDGE")) {
+						return new WeaselBoolean(st.level >= LBRIDGE);
+					}
+					if (capname.equals("LAVA")) {
+						return new WeaselBoolean(st.level >= LLAVA);
+					}
+					if (capname.equals("WATER")) {
+						return new WeaselBoolean(st.level >= LWATER);
+					}
+					if (capname.equals("COBBLE")) {
+						return new WeaselBoolean(st.level >= LCOBBLE);
+					}
+					throw new WeaselRuntimeException(name + "(): Unknown option " + capname);
+				}
+
+				if (name.equals("destroyItems") || name.equals("burnItems") || name.equals("destroy") || name.equals("burn") || name.equals("depo")
+						|| name.equals("deposit") || name.equals("store")) {
+
+					boolean kill = name.equals("destroyItems") || name.equals("burnItems") || name.equals("destroy") || name.equals("burn");
+
+					if (args.length == 0) {
+						cargo.depositToNearbyChest(kill, null);
+					} else {
+						int num = 0;
+						if (args[0] instanceof WeaselInteger) {
+							num = Calc.toInteger(args[0]);
+
+							if (args.length == 1) {
+								final int id = num;
+								// if args length == 1, then this is type, not amount
+								cargo.depositToNearbyChest(kill, new Agree() {
+									@Override
+									public boolean agree(ItemStack stack) {
+										return stack.itemID == id;
+									}
+								});
+								return null;
+							}
+
+						} else {
+							if (args.length == 1) {
+
+								// if args length == 1, then this is type, not amount
+								cargo.depositToNearbyChest(kill, new Agree() {
+									@Override
+									public boolean agree(ItemStack stack) {
+										return matchStackIdentifier(args[0], stack);
+									}
+								});
+
+								return null;
+							}
+
+							num = -1;
+						}
+
+						// num = count, others are types.
+						cargo.depositToNearbyChest(kill, new Agree() {
+							public Agree setNum(int n) {
+								this.n = n;
+								return this;
+							}
+
+							private int n = 0;
+
+							@Override
+							public boolean agree(ItemStack stack) {
+								if (agree_do(stack)) {
+									if (n > 0) n--;
+									return true;
+								} else
+									return false;
+							}
+
+							private boolean agree_do(ItemStack stack) {
+								if (n > 0 || n == -1) {
+									for (int i = 1; i < args.length; i++) {
+										WeaselObject arg = args[i];
+										if (matchStackIdentifier(arg, stack)) return true;
+									}
+								}
+								return false;
+							}
+
+						}.setNum(num));
+					}
 					engine.requestPause();
 					return null;
 				}
+
+
+				if (name.equals("destroyKeep") || name.equals("burnKeep") || name.equals("storeKeep") || name.equals("depoKeep")) {
+					final boolean kill = name.equals("destroyKeep") || name.equals("burnKeep");
+					if (args.length == 0) {
+						throw new WeaselRuntimeException("depoKeep needs at least 1 argument, 0 given.");
+					} else {
+						int num = 0;
+						if (args[0] instanceof WeaselInteger) {
+							num = Calc.toInteger(args[0]);
+							if (args.length == 1) {
+								final int id = num;
+								// if args length == 1, then this is type, not amount
+								cargo.depositToNearbyChest(kill, new Agree() {
+									@Override
+									public boolean agree(ItemStack stack) {
+										return stack.itemID != id;
+									}
+								});
+								return null;
+							}
+						} else {
+
+							if (args.length == 1) {
+
+								// if args length == 1, then this is type, not amount
+								cargo.depositToNearbyChest(kill, new Agree() {
+									@Override
+									public boolean agree(ItemStack stack) {
+										return !agree_do(stack);
+									}
+
+									private boolean agree_do(ItemStack stack) {
+										return matchStackIdentifier(args[0], stack);
+									}
+								});
+
+								return null;
+							}// end of "len 1 string"
+
+							num = -1;
+						}
+
+						// num = count, others are types.
+						cargo.depositToNearbyChest(kill, new Agree() {
+							public Agree setNum(int n) {
+								this.n = n;
+								return this;
+							}
+
+							private int n = 0;
+
+							@Override
+							public boolean agree(ItemStack stack) {
+								if (agree_do(stack)) {
+									if (n == -1 || n > 0) {
+										if (n != -1) n--;
+										return false;
+									} else {
+										return true;
+									}
+								} else
+									return true;
+							}
+
+							private boolean agree_do(ItemStack stack) {
+								if (n > 0 || n == -1) {
+									for (int i = 1; i < args.length; i++) {
+										WeaselObject arg = args[i];
+										if (matchStackIdentifier(arg, stack)) return true;
+									}
+								}
+								return false;
+							}
+
+						}.setNum(num));
+					}
+					engine.requestPause();
+					return null;
+				}
+
+				if (name.equals("items") || name.equals("countItems")) {
+					int cnt = 0;
+					oo:
+					for (int i = 0; i < cargo.getSizeInventory(); i++) {
+						ItemStack stack = cargo.getStackInSlot(i);
+						for (int j = 0; j < args.length; j++) {
+							WeaselObject arg = args[j];
+							if (stack == null) continue oo;
+							if (arg instanceof WeaselInteger) {
+								if (stack.itemID == Calc.toInteger(arg)) {
+									cnt += stack.stackSize;
+									continue oo;
+								}
+							} else {
+								if (matchStackIdentifier(arg, stack)) {
+									cnt += stack.stackSize;
+									continue oo;
+								}
+							}
+						}
+					}
+
+					return new WeaselInteger(cnt);
+				}
+
+
+				if (name.equals("stacks") || name.equals("countStacks")) {
+					int cnt = 0;
+					oo:
+					for (int i = 0; i < cargo.getSizeInventory(); i++) {
+						ItemStack stack = cargo.getStackInSlot(i);
+						for (int j = 0; j < args.length; j++) {
+							WeaselObject arg = args[j];
+							if (stack == null) continue oo;
+							if (arg instanceof WeaselInteger) {
+								if (stack.itemID == Calc.toInteger(arg)) {
+									cnt++;
+									continue oo;
+								}
+							} else {
+								if (matchStackIdentifier(arg, stack)) {
+									cnt++;
+									continue oo;
+								}
+							}
+						}
+					}
+
+					return new WeaselInteger(cnt);
+				}
+
+				if (name.equals("idMatch") || name.equals("ideq")) {
+
+					int id1 = Calc.toInteger(args[0].get());
+
+					WeaselObject arg = args[1];
+
+					ItemStack stack = new ItemStack(id1, 1, 0);
+
+					if (stack.itemID == 0) return new WeaselBoolean(arg instanceof WeaselInteger && (Integer) arg.get() == 0);
+
+					if (stack.getItem() == null) throw new WeaselRuntimeException(args[0] + " is not a valid block/item ID.");
+
+					return new WeaselBoolean((matchStackIdentifier(arg, stack)));
+				}
+
+
+				if (name.equals("countEmpty")) {
+					int cnt = 0;
+					for (int i = 0; i < cargo.getSizeInventory(); i++) {
+						ItemStack stack = cargo.getStackInSlot(i);
+						if (stack == null) cnt++;
+					}
+
+					return new WeaselInteger(cnt);
+				}
+
+				if (name.equals("full") || name.equals("isFull")) {
+					boolean str = args.length == 1 && Calc.toBoolean(args[0]);
+					if (str) return new WeaselBoolean(PC_InvUtils.isInventoryFull(cargo));
+					return new WeaselBoolean(PC_InvUtils.hasInventoryNoFreeSlots(cargo));
+				}
+
+				if (name.equals("empty") || name.equals("isEmpty")) {
+					return new WeaselBoolean(PC_InvUtils.isInventoryEmpty(cargo));
+				}
+
+				if (name.equals("destroyMiner")) {
+					turnIntoBlocks();
+					return null;
+				}
+
 				if (name.equals("isDay")) {
 					return new WeaselBoolean(worldObj.isDaytime());
 				}
@@ -645,22 +1052,35 @@ public class PCmo_EntityMiner extends Entity implements PC_IInventoryWrapper {
 				}
 
 				if (name.equals("nset")) {
-					mod_PClogic.NETWORK.setGlobalVariable((String) args[0].get(), args[1]);
+					mod_PClogic.NETWORK.setGlobalVariable(Calc.toString(args[0].get()), args[1]);
 					return null;
 				}
 
 				if (name.equals("nget")) {
-					return mod_PClogic.NETWORK.getGlobalVariable((String) args[0].get());
+					return mod_PClogic.NETWORK.getGlobalVariable(Calc.toString(args[0].get()));
 				}
 
 				if (name.equals("rx")) {
-					return new WeaselBoolean(mod_PClogic.RADIO.getChannelState((String) args[0].get()));
+					return new WeaselBoolean(mod_PClogic.RADIO.getChannelState(Calc.toString(args[0].get())));
 				}
 
 				if (name.equals("tx")) {
-					weaselRadioSignals.put((String) args[0].get(), Calc.toBoolean(args[1].get()));
+					weaselRadioSignals.put(Calc.toString(args[0].get()), Calc.toBoolean(args[1].get()));
 					return null;
 
+				}
+
+				if (name.equals("countFuel") || name.equals("fuel")) {
+					int cnt = 0;
+					for (int i = 0; i < cargo.getSizeInventory(); i++) {
+						ItemStack stack = cargo.getStackInSlot(i);
+						if (stack == null) continue;
+						if (stack.itemID != Item.bucketLava.shiftedIndex || !cfg.cobbleMake) {
+							cnt += PC_InvUtils.getFuelValue(stack, FUEL_STRENGTH) * stack.stackSize;
+						}
+					}
+
+					return new WeaselInteger(cnt + st.fuelBuffer);
 				}
 
 
@@ -676,10 +1096,12 @@ public class PCmo_EntityMiner extends Entity implements PC_IInventoryWrapper {
 						|| name.equals("term" + ".restart")) {
 					termText = "";
 					termUserInput.clear();
+					return null;
 				}
 
 				if (name.equals("term" + ".out") || name.equals("term" + ".print")) {
 					addText(Calc.toString(args[0]) + "\n");
+					return null;
 				}
 				if (name.equals("term" + ".hasInput")) return new WeaselBoolean(termUserInput.size() > 0);
 				if (name.equals("term" + ".in") || name.equals("term" + ".getInput")) {
@@ -689,9 +1111,16 @@ public class PCmo_EntityMiner extends Entity implements PC_IInventoryWrapper {
 					return o;
 				}
 
+				if (name.equals("canHarvest")) {
+					String side = Calc.toString(args[0].get());
+					char sid = side.charAt(0);
+					String num = side.substring(1);
 
+					PC_CoordI pos = getCoordOnSide(sid, Integer.valueOf(num));
+					return new WeaselInteger(canHarvestBlockWithCurrentLevel(pos, pos.getId(worldObj)));
+				}
 
-				if (name.equals("getBlock")||name.equals("getId")) {
+				if (name.equals("getBlock") || name.equals("getId") || name.equals("idAt") || name.equals("blockAt")) {
 					String side = Calc.toString(args[0].get());
 					char sid = side.charAt(0);
 					String num = side.substring(1);
@@ -699,7 +1128,12 @@ public class PCmo_EntityMiner extends Entity implements PC_IInventoryWrapper {
 					return new WeaselInteger(getCoordOnSide(sid, Integer.valueOf(num)).getId(worldObj));
 				}
 
-				if (name.equals("place")||name.equals("setBlock")) {
+				if (name.equals("cleanup")) {
+					cargo.order();
+					return null;
+				}
+
+				if (name.equals("place") || name.equals("setBlock")) {
 					String side = Calc.toString(args[0].get());
 					char sid = side.charAt(0);
 					String num = side.substring(1);
@@ -710,25 +1144,27 @@ public class PCmo_EntityMiner extends Entity implements PC_IInventoryWrapper {
 					int numid = -1;
 
 					if (id instanceof Integer) {
-						numid = (Integer) id;
+						numid = Calc.toInteger(id);
 					}
 
 					if (id instanceof String) {
 						numid = -2;
-						str = (String) id;
+						str = Calc.toString(id);
 					}
 
 					if (numid == -1) throw new WeaselRuntimeException(id + " is not a valid block id or group.");
 
 					PC_CoordI pos = getCoordOnSide(sid, Integer.valueOf(num));
-					System.out.println(side+" Pos "+pos);
+					if (pos == null) {
+						throw new WeaselRuntimeException(name + "(): " + side + " is not a valid side [FBLRUD][1234] or [ud][12].");
+					}
 
 					if (str.equals("BUILDING_BLOCK") || str.equals("BLOCK")) {
 						ItemStack placed = cargo.getBlockForBuilding();
 						if (placed == null) {
 							return new WeaselBoolean(false);
 						} else {
-							if (!placed.useItem(fakePlayer, worldObj, pos.x, pos.y+1, pos.z, 0)) {
+							if (!placed.useItem(fakePlayer, worldObj, pos.x, pos.y + 1, pos.z, 0)) {
 								PC_InvUtils.addItemStackToInventory(cargo, placed);
 							} else {
 								return new WeaselBoolean(true);
@@ -743,15 +1179,18 @@ public class PCmo_EntityMiner extends Entity implements PC_IInventoryWrapper {
 
 							if (stack.itemID == numid) {
 								ItemStack placed = cargo.decrStackSize(i, 1);
-								System.out.println("placed "+placed);
-								if (!placed.useItem(fakePlayer, worldObj, pos.x, pos.y+1, pos.z, 0)) {
-									System.out.println("failed, now "+placed);
+								if (!placed.useItem(fakePlayer, worldObj, pos.x, pos.y + 1, pos.z, 0)) {
 									PC_InvUtils.addItemStackToInventory(cargo, placed);
 								} else {
 									return new WeaselBoolean(true);
 								}
 							}
 						}
+						
+						if(numid == Block.cobblestone.blockID && canMakeCobble()) {
+							return new WeaselBoolean((new ItemStack(Block.cobblestone)).useItem(fakePlayer, worldObj, pos.x, pos.y + 1, pos.z, 0));							
+						}
+							
 					}
 
 					return new WeaselBoolean(false);
@@ -763,7 +1202,7 @@ public class PCmo_EntityMiner extends Entity implements PC_IInventoryWrapper {
 				throw new WeaselRuntimeException(e.getMessage());
 			}
 
-			return null;
+			throw new WeaselRuntimeException(name + " not implemented or not ended properly.");
 		}
 
 
@@ -771,6 +1210,10 @@ public class PCmo_EntityMiner extends Entity implements PC_IInventoryWrapper {
 		public WeaselObject getVariable(String name) {
 			if (name.equals("pos.x")) {
 				return new WeaselInteger(Math.round(posX));
+			}
+			if (name.equals("level")) {
+				updateLevel();
+				return new WeaselInteger(st.level);
 			}
 			if (name.equals("pos.y")) {
 				return new WeaselInteger(Math.round(posY) + (isOnHalfStep() ? 1 : 0));
@@ -809,17 +1252,23 @@ public class PCmo_EntityMiner extends Entity implements PC_IInventoryWrapper {
 			List<String> list = new ArrayList<String>(0);
 			list.add("run");
 			list.add("do");
+			
 			list.add("fw");
 			list.add("forward");
 			list.add("go");
-			list.add("up");
-			list.add("down");
+			
 			list.add("bw");
 			list.add("back");
 			list.add("backward");
+			
+			list.add("up");
+			list.add("down");			
+			
 			list.add("left");
 			list.add("right");
+			
 			list.add("turn");
+			
 			list.add("north");
 			list.add("south");
 			list.add("east");
@@ -828,12 +1277,48 @@ public class PCmo_EntityMiner extends Entity implements PC_IInventoryWrapper {
 			list.add("xminus");
 			list.add("zplus");
 			list.add("zminus");
+
 			list.add("deposit");
+			list.add("depo");
+			list.add("store");
+			list.add("depoKeep");
+			list.add("storeKeep");
+			list.add("countStacks");
+			list.add("stacks");
+			list.add("countItems");
+			list.add("items");
+			list.add("countEmpty");
+			list.add("full");
+			list.add("isFull");
+			list.add("empty");
+			list.add("isEmpty");
+			list.add("countFuel");
+			list.add("fuel");
+			
+			list.add("destroyMiner");
+
+			list.add("idMatch");
+			list.add("ideq");
+			list.add("getBlock");
+			list.add("setBlock");
+			list.add("place");
+			list.add("getId");
+			list.add("idAt");
+			list.add("blockAt");
+			list.add("canHarvest");
+
+			list.add("cleanup");
+			list.add("burn");
+			list.add("destroy");
+			list.add("burnItems");
+			list.add("destroyItems");
+			list.add("burnKeep");
+			list.add("destroyKeep");
+
 			list.add("bell");
 			list.add("isDay");
 			list.add("isNight");
 			list.add("isRaining");
-
 
 			list.add("sleep");
 
@@ -854,11 +1339,24 @@ public class PCmo_EntityMiner extends Entity implements PC_IInventoryWrapper {
 			list.add("term.getInput");
 			list.add("term.hasInput");
 
-			list.add("getBlock");
-			list.add("setBlock");
-			list.add("place");
-			list.add("getId");
-
+			list.add("cap");
+			list.add("opt");
+			list.add("cfg");
+			list.add("can");
+			list.add("hasCap");
+			list.add("hasOpt");
+			list.add("clearOpt");
+			list.add("clearCap");
+			list.add("clearCfg");
+			list.add("resetOpt");
+			list.add("resetCap");
+			list.add("resetCfg");
+			list.add("capOn");
+			list.add("optOn");
+			list.add("cfgOn");
+			list.add("capOff");
+			list.add("optOff");
+			list.add("cfgOff");
 			return list;
 		}
 
@@ -877,6 +1375,7 @@ public class PCmo_EntityMiner extends Entity implements PC_IInventoryWrapper {
 			list.add("compass");
 			list.add("term.txt");
 			list.add("term.text");
+			list.add("level");
 			return list;
 		}
 
@@ -887,13 +1386,164 @@ public class PCmo_EntityMiner extends Entity implements PC_IInventoryWrapper {
 		 * @throws SyntaxError syntax error
 		 */
 		public void checkProgramForErrors(String text) throws SyntaxError {
-			List<Instruction> list = WeaselEngine.compileProgram(program);
-			System.out.println();
+			List<Instruction> list = WeaselEngine.compileProgram(program);			
+			System.out.println("\n## Checking miner program.");
 			for (Instruction i : list) {
 				System.out.println(i);
 			}
 		}
 
+	}
+
+	private boolean matchStackIdentifier(WeaselObject identifier, ItemStack stack) {
+		if (identifier == null || stack == null) return false;
+		if (identifier instanceof WeaselInteger) {
+			if (stack.itemID == Calc.toInteger(identifier)) {
+				return true;
+			}
+		} else {
+			String str = Calc.toString(identifier);
+			int id = stack.itemID;
+			if (str.equalsIgnoreCase("ALL")) {
+				return true;
+			}
+			if (str.equalsIgnoreCase("ITEM")) {
+				if (!(stack.getItem() instanceof ItemBlock)) {
+					return true;
+				}
+			}
+			if (str.equalsIgnoreCase("BLOCK")) {
+				if (stack.getItem() instanceof ItemBlock) {
+					return true;
+				}
+			}
+			if (str.equalsIgnoreCase("BUILDING_BLOCK")) {
+				if (cargo.isBlockGoodForBuilding(stack, 3)) {
+					return true;
+				}
+			}
+			if (str.equalsIgnoreCase("FUEL")) {
+				if (PC_InvUtils.getFuelValue(stack, FUEL_STRENGTH) > 0) {
+					return true;
+				}
+			}
+			if (str.equalsIgnoreCase("ORE")) {
+				if (id == Block.oreCoal.blockID || id == Block.oreIron.blockID || id == Block.oreGold.blockID || id == Block.oreLapis.blockID
+						|| id == Block.oreRedstone.blockID) {
+					return true;
+				}
+			}
+			if (str.equalsIgnoreCase("LAPIS")) {
+				if (id == Item.dyePowder.shiftedIndex && stack.getItemDamage() == 4) {
+					return true;
+				}
+			}
+			if (str.equalsIgnoreCase("BONEMEAL")) {
+				if (id == Item.dyePowder.shiftedIndex && stack.getItemDamage() == 15) {
+					return true;
+				}
+			}
+			if (str.equalsIgnoreCase("JUNK")) {
+				if (id == Block.gravel.blockID || id == Block.sapling.blockID || id == Block.leaves.blockID || id == Block.dirt.blockID
+						|| id == Item.seeds.shiftedIndex) {
+					return true;
+				}
+			}
+			if (str.equalsIgnoreCase("VALUABLE")) {
+				//@formatter:off
+				if (id == Block.blockClay.blockID || 
+						id == Block.blockSnow.blockID ||
+						id == Block.blockLapis.blockID ||
+						id == Block.blockSteel.blockID || 
+						id == Block.blockGold.blockID || 
+						id == mod_PCdeco.deco.blockID || 
+						id == Block.slowSand.blockID || 
+						id == Block.oreIron.blockID || 
+						id == Block.oreGold.blockID || 
+						id == Block.oreDiamond.blockID || 
+						id == Block.oreLapis.blockID || 
+						id == Block.oreRedstone.blockID || 
+						id == Block.glowStone.blockID || 
+						id == Block.oreCoal.blockID || 
+						id == Item.ingotGold.shiftedIndex || 
+						id == Item.ingotIron.shiftedIndex || 
+						id == Item.goldNugget.shiftedIndex || 
+						id == Item.netherStalkSeeds.shiftedIndex || 
+						id == Item.diamond.shiftedIndex || 
+						id == Item.lightStoneDust.shiftedIndex || 
+						id == mod_PCcore.powerCrystal.blockID || 
+						id == mod_PCcore.powerDust.shiftedIndex || 
+						(id == Item.dyePowder.shiftedIndex && stack.getItemDamage() == 4) || 
+						(id == Item.dyePowder.shiftedIndex && stack.getItemDamage() == 3) || 
+						id == Block.bedrock.blockID || 
+						id == Block.obsidian.blockID) {
+					return true;
+				}
+				//@formatter:on
+			}
+		}
+		return false;
+	}
+	
+	/**
+	 * @return list of names provided in existing libraries
+	 */
+	public List<String> getLibraryFunctionNames(){
+		List<String> list = new ArrayList<String>(8);
+		List<ItemStack> disks = getDisks();
+		for (int i = 0; i < disks.size(); i++) {
+			ItemStack disk = disks.get(i);
+			if (disk == null) continue;
+			
+			if (PClo_ItemWeaselDisk.getType(disk) == PClo_ItemWeaselDisk.LIBRARY) {
+				
+				List<Instruction> ilist = PClo_ItemWeaselDisk.getLibraryInstructions(disk);
+				
+				for(Instruction in : ilist) {
+					if(in instanceof InstructionFunction) {
+						list.add(((InstructionFunction) in).getFunctionName());
+					}
+				}
+				
+				continue;
+			}
+		}
+		return list;
+	}
+	
+	private List<ItemStack> getDisks() {
+		List<ItemStack> disks = new ArrayList<ItemStack>();
+		for (int i = 0; i < cargo.getSizeInventory(); i++) {
+			if(cargo.getStackInSlot(i) != null && cargo.getStackInSlot(i).itemID == mod_PClogic.weaselDisk.shiftedIndex) {
+				disks.add(cargo.getStackInSlot(i));
+			}
+		}
+		return disks;
+	}
+	
+
+	/**
+	 * @return list of all instructions in a library
+	 */
+	public List<Instruction> getAllLibraryInstructions(){
+		List<ItemStack> disks = getDisks();
+		List<Instruction> ilist = new ArrayList<Instruction>();
+		
+		for (int i = 0; i < disks.size(); i++) {
+			ItemStack disk = disks.get(i);
+			if (disk == null) continue;
+			
+			if (PClo_ItemWeaselDisk.getType(disk) == PClo_ItemWeaselDisk.LIBRARY) {
+				ilist.addAll(PClo_ItemWeaselDisk.getLibraryInstructions(disk));	
+				continue;
+			}
+		}
+		return ilist;
+	}
+	
+	private boolean canMakeCobble() {
+		return st.level >= LCOBBLE && cfg.cobbleMake&&cargo.hasItem(Item.bucketLava.shiftedIndex) && cargo
+				.hasItem(Item.bucketWater.shiftedIndex);
 	}
 
 
@@ -1106,7 +1756,7 @@ public class PCmo_EntityMiner extends Entity implements PC_IInventoryWrapper {
 				for (int s = 0; s < cargo.getSizeInventory(); s++) {
 					ItemStack stack = cargo.getStackInSlot(s);
 					int bt = PC_InvUtils.getFuelValue(stack, FUEL_STRENGTH);
-					if (bt > 0) {
+					if (bt > 0 && !(stack.itemID == Item.bucketLava.shiftedIndex && cfg.cobbleMake && level >= LCOBBLE)) {
 						fuelBuffer += bt;
 						if (stack.getItem().hasContainerItem()) {
 							cargo.setInventorySlotContents(s, new ItemStack(stack.getItem().getContainerItem(), 1, 0));
@@ -1133,6 +1783,9 @@ public class PCmo_EntityMiner extends Entity implements PC_IInventoryWrapper {
 
 	}
 
+	private interface Agree {
+		public boolean agree(ItemStack stack);
+	}
 
 	/**
 	 * Cargo inventory and some inventory manipulation methods.
@@ -1270,15 +1923,32 @@ public class PCmo_EntityMiner extends Entity implements PC_IInventoryWrapper {
 		 * @return stack or null.
 		 */
 		private ItemStack getBlockForBuilding() {
-			for (int pass = 0; pass <= 5; pass++) {
+
+			for (int pass = 0; pass <= 1; pass++) {
 				for (int i = 0; i < getSizeInventory(); i++) {
 					if (isBlockGoodForBuilding(getStackInSlot(i), pass)) {
 						return decrStackSize(i, 1);
 					}
 				}
 			}
+
+
+
+			if (canMakeCobble()) {
+				return new ItemStack(Block.cobblestone);
+			}
+
+			for (int pass = 2; pass <= 5; pass++) {
+				for (int i = 0; i < getSizeInventory(); i++) {
+					if (isBlockGoodForBuilding(getStackInSlot(i), pass)) {
+						return decrStackSize(i, 1);
+					}
+				}
+			}
+
 			return null;
 		}
+
 
 		/**
 		 * Check if block is good for building.
@@ -1298,49 +1968,61 @@ public class PCmo_EntityMiner extends Entity implements PC_IInventoryWrapper {
 
 			int id = is.itemID;
 
-			if (id == Block.stairSingle.blockID) return false;
+			if (id == Block.stairSingle.blockID || id == Block.slowSand.blockID) return false;
 
 			if (PC_BlockUtils.hasFlag(is, "NO_BUILD")) {
 				return false;
 			}
 
-			if (pass == 0) {
-				return id == Block.dirt.blockID || id == Block.grass.blockID || id == Block.cobblestone.blockID || id == Block.netherrack.blockID;
+			if (pass >= 0) {
+				if (id == Block.dirt.blockID || id == Block.grass.blockID || id == Block.cobblestone.blockID || id == Block.netherrack.blockID)
+					return true;
 			}
 
-			if (pass == 1) {
-				return id == Block.planks.blockID || id == Block.stone.blockID || id == Block.sandStone.blockID || id == Block.brick.blockID
-						|| id == Block.stoneBrick.blockID || id == Block.netherBrick.blockID;
+			if (pass >= 1) {
+				if (id == Block.planks.blockID || id == Block.stone.blockID || id == Block.sandStone.blockID || id == Block.brick.blockID
+						|| id == Block.stoneBrick.blockID || id == Block.netherBrick.blockID || id == Block.whiteStone.blockID
+						|| id == Block.cloth.blockID || id == Block.glass.blockID || id == Block.wood.blockID) return true;
 			}
 
-			if (pass == 2) {
-				return id == Block.wood.blockID || id == Block.oreIron.blockID || id == Block.whiteStone.blockID || id == Block.cloth.blockID
-						|| id == Block.blockClay.blockID;
+			if (pass >= 2) {
+				if (id == Block.oreIron.blockID || id == Block.blockClay.blockID) return true;
 			}
 
-			if (pass == 3) {
-				return id == Block.wood.blockID || id == Block.oreIron.blockID || id == Block.whiteStone.blockID || id == Block.cloth.blockID
-						|| id == Block.blockClay.blockID;
-			}
-
-			if (pass == 4) {
+			if (pass >= 3) {
 				if (id == Block.sand.blockID || id == Block.gravel.blockID) return false;
-				return Block.blocksList[is.itemID].isOpaqueCube() || Block.blocksList[is.itemID].renderAsNormalBlock();
+				if (Block.blocksList[is.itemID].isOpaqueCube() || Block.blocksList[is.itemID].renderAsNormalBlock()) return true;
 			}
 
-			if (pass == 5) {
-				return Block.blocksList[is.itemID].blockMaterial.isSolid();
+			if (pass >= 4) {
+				if (Block.blocksList[is.itemID].blockMaterial.isSolid()) return true;
 			}
 			return false;
 		}
 
 		/**
-		 * @return torch was consumed from inventory
+		 * @param id id
+		 * @param damage damage
+		 * @param count count min size (must be in single stack!)
+		 * @return stack consumed
 		 */
-		private boolean getTorch() {
+		private ItemStack consumeItem(int id, int damage, int count) {
 			for (int i = 0; i < cargo.getSizeInventory(); i++) {
-				if (cargo.getStackInSlot(i) != null && cargo.getStackInSlot(i).itemID == Block.torchWood.blockID) {
-					cargo.decrStackSize(i, 1);
+				ItemStack stack = cargo.getStackInSlot(i);
+				if (stack != null && stack.itemID == id && (damage == -1 || stack.getItemDamage() == damage) && stack.stackSize >= count) {
+					return cargo.decrStackSize(i, count);
+				}
+			}
+			return null;
+		}
+
+		/**
+		 * @param id ID
+		 * @return inventory has some items of kind
+		 */
+		private boolean hasItem(int id) {
+			for (int i = 0; i < cargo.getSizeInventory(); i++) {
+				if (cargo.getStackInSlot(i) != null && cargo.getStackInSlot(i).itemID == id) {
 					return true;
 				}
 			}
@@ -1348,22 +2030,28 @@ public class PCmo_EntityMiner extends Entity implements PC_IInventoryWrapper {
 		}
 
 		/**
-		 * @return inventory has some torches
+		 * group stacks.
 		 */
-		private boolean hasTorch() {
-			for (int i = 0; i < cargo.getSizeInventory(); i++) {
-				if (cargo.getStackInSlot(i) != null && cargo.getStackInSlot(i).itemID == Block.torchWood.blockID) {
-					return true;
+		private void order() {
+			List<ItemStack> stacks = new ArrayList<ItemStack>();
+			for (int i = 0; i < getSizeInventory(); i++) {
+				stacks.add(getStackInSlot(i));
+				setInventorySlotContents(i, null);
+			}
+			PC_InvUtils.groupStacks(stacks);
+			for (ItemStack stack : stacks) {
+				if (stack != null) {
+					PC_InvUtils.addItemStackToInventory(this, stack);
 				}
 			}
-			return false;
 		}
+
 
 
 		/**
 		 * Deposit depositable blocks to nearby chest.
 		 */
-		private void depositToNearbyChest() {
+		private void depositToNearbyChest(boolean destroyInstead, Agree agr) {
 
 			int y1 = (int) Math.floor(posY + 0.0002F);
 			int x1 = (int) Math.round(posX);
@@ -1373,38 +2061,53 @@ public class PCmo_EntityMiner extends Entity implements PC_IInventoryWrapper {
 				for (int y = y1; y <= y1 + 1; y++) {
 					for (int z = z1 - 2; z <= z1 + 1; z++) {
 						IInventory chest = PC_InvUtils.getCompositeInventoryAt(worldObj, new PC_CoordI(x, y, z));
-						if (chest != null) {
+						if (chest != null || destroyInstead) {
 							// cycle through and deposit.
 							for (int i = 0; i < cargo.getSizeInventory(); i++) {
 								boolean stored = false;
-								boolean crystal = false;
 								ItemStack stack = cargo.getStackInSlot(i);
-								if (stack != null && stack.itemID != mod_PCcore.powerDust.shiftedIndex && stack.itemID != Block.torchWood.blockID
-										&& stack.itemID != Item.bucketEmpty.shiftedIndex && stack.itemID != Item.bucketLava.shiftedIndex
-										&& (!cfg.keepAllFuel || PC_InvUtils.getFuelValue(stack, FUEL_STRENGTH) == 0)) {
+								if (stack != null) {
+									boolean yes = false;
+									if (agr == null) {
 
-									if (stack.itemID == mod_PCcore.powerCrystal.blockID) {
-										if (stack.stackSize <= 1) {
-											continue;
+										yes = stack.itemID != mod_PCcore.powerDust.shiftedIndex && stack.itemID != Block.torchWood.blockID
+												&& stack.itemID != Item.bucketEmpty.shiftedIndex && stack.itemID != Item.bucketLava.shiftedIndex
+												&& stack.itemID != Item.bucketWater.shiftedIndex
+												&& (!cfg.keepAllFuel || PC_InvUtils.getFuelValue(stack, FUEL_STRENGTH) == 0);
+
+									} else {
+										if (!cfg.keepAllFuel
+												|| (stack.itemID != mod_PCcore.powerDust.shiftedIndex && PC_InvUtils.getFuelValue(stack,
+														FUEL_STRENGTH) == 0)) {
+											yes = agr.agree(stack);
+										} else {
+											yes = false;
 										}
-										crystal = true;
-										stack = cargo.getStackInSlot(i).copy();
-
-										stack.stackSize--;
-										cargo.decrStackSize(i, stack.stackSize);
 									}
+									
+									yes &= stack.itemID != mod_PClogic.weaselDisk.shiftedIndex;
 
-									stored = PC_InvUtils.addWholeItemStackToInventory(chest, stack);
+									if (yes) {
+										if (destroyInstead) {
+											stored = true;
+										} else {
+											stored = PC_InvUtils.addWholeItemStackToInventory(chest, stack);
+										}
+									}
 
 								}
 
-								if (stored && !crystal) {
+								if (stored) {
 									cargo.setInventorySlotContents(i, null);
 								}
 							}
 
 							if (shouldMakeEffects()) {
-								worldObj.playSoundAtEntity(PCmo_EntityMiner.this, "random.pop", 0.2F, 0.5F + rand.nextFloat() * 0.3F);
+								if (destroyInstead) {
+									worldObj.playSoundAtEntity(PCmo_EntityMiner.this, "random.fizz", 0.2F, 0.5F + rand.nextFloat() * 0.3F);
+								} else {
+									worldObj.playSoundAtEntity(PCmo_EntityMiner.this, "random.pop", 0.2F, 0.5F + rand.nextFloat() * 0.3F);
+								}
 							}
 
 							return;
@@ -1437,6 +2140,13 @@ public class PCmo_EntityMiner extends Entity implements PC_IInventoryWrapper {
 					}
 				}
 			}
+
+			if (cfg.cobbleMake && st.level >= LCOBBLE) {
+				if (cargo.hasItem(Item.bucketLava.shiftedIndex) && cargo.hasItem(Item.bucketWater.shiftedIndex)) {
+					return new ItemStack(Block.stairSingle, 1, 3);
+				}
+			}
+
 			return null;
 		}
 
@@ -1680,7 +2390,7 @@ public class PCmo_EntityMiner extends Entity implements PC_IInventoryWrapper {
 		st.currentCommand = -1;
 		alignToBlocks();
 		st.paused = false;
-		st.halted = false;
+		st.halted = true;
 		resetStatus();
 	}
 
@@ -1825,7 +2535,7 @@ public class PCmo_EntityMiner extends Entity implements PC_IInventoryWrapper {
 
 		// if there are no more commands, try to get some from weasel
 		if (st.commandList.length() <= 0 && st.currentCommand == -1) {
-			if(!st.keyboardControlled && !st.pausedWeasel && !st.paused) {
+			if (!st.keyboardControlled && !st.pausedWeasel && !st.paused) {
 				brain.run();
 			}
 		}
@@ -1991,7 +2701,7 @@ public class PCmo_EntityMiner extends Entity implements PC_IInventoryWrapper {
 			roundRotation();
 
 			if (st.currentCommand == PCmo_Command.DEPOSIT) {
-				cargo.depositToNearbyChest();
+				cargo.depositToNearbyChest(false, null);
 				st.currentCommand = -1;
 
 			} else if (st.currentCommand == PCmo_Command.DISASSEMBLY) {
@@ -2307,13 +3017,14 @@ public class PCmo_EntityMiner extends Entity implements PC_IInventoryWrapper {
 	 * @param pos
 	 */
 	private void harvestBlock_do(PC_CoordI pos) {
+		if(pos == null) return;
 		int id = pos.getId(worldObj);
 		int meta = pos.getMeta(worldObj);
 
 		if (!shouldIgnoreBlockForHarvesting(pos, id)) {
 
 			// block implementing ICropBlock
-			if (Block.blocksList[id] instanceof PC_ICropBlock) {
+			if (Block.blocksList[id]!= null && Block.blocksList[id] instanceof PC_ICropBlock) {
 				if (!((PC_ICropBlock) Block.blocksList[id]).isMature(worldObj, pos)) {
 					return;
 				} else {
@@ -2355,13 +3066,13 @@ public class PCmo_EntityMiner extends Entity implements PC_IInventoryWrapper {
 				}
 
 			} else {
-
-				Block.blocksList[id].harvestBlock(worldObj, fakePlayer, pos.x, pos.y, pos.z, meta);
-				pos.setBlock(worldObj, 0, 0);
-				if (shouldMakeEffects()) {
-					worldObj.playAuxSFX(2001, pos.x, pos.y, pos.z, id + (meta << 12));
+				if(Block.blocksList[id] != null) {
+					Block.blocksList[id].harvestBlock(worldObj, fakePlayer, pos.x, pos.y, pos.z, meta);
+					pos.setBlock(worldObj, 0, 0);
+					if (shouldMakeEffects()) {
+						worldObj.playAuxSFX(2001, pos.x, pos.y, pos.z, id + (meta << 12));
+					}
 				}
-
 			}
 		}
 	}
@@ -2496,16 +3207,6 @@ public class PCmo_EntityMiner extends Entity implements PC_IInventoryWrapper {
 	}
 
 	/**
-	 * Check if miner stops at this block.
-	 * 
-	 * @param id block ID
-	 * @return is unbreakable
-	 */
-	private boolean isBlockUnbreakable(int id) {
-		return id == 7;
-	}
-
-	/**
 	 * Check if miner is able to break given block.
 	 * 
 	 * @param pos
@@ -2514,12 +3215,13 @@ public class PCmo_EntityMiner extends Entity implements PC_IInventoryWrapper {
 	 */
 	private boolean canHarvestBlockWithCurrentLevel(PC_CoordI pos, int id) {
 		// exception - miner 8 can mine bedrock.
-		if (isBlockUnbreakable(id) || PC_BlockUtils.hasFlag(worldObj, pos, "HARVEST_STOP") || PC_BlockUtils.hasFlag(worldObj, pos, "NO_HARVEST")) {
+		if (PC_BlockUtils.hasFlag(worldObj, pos, "HARVEST_STOP") || PC_BlockUtils.hasFlag(worldObj, pos, "NO_HARVEST")) {
 			return false;
 		}
-		if (id == 7 && st.level == 8) {
-			return true;
+		if (id == 7) {
+			return st.level == 8 && pos.y > 0;
 		}
+
 		switch (st.level) {
 			case 1: // all but rocks and iron
 				return Block.blocksList[id].blockMaterial != Material.rock && Block.blocksList[id].blockMaterial != Material.iron
@@ -2790,22 +3492,22 @@ public class PCmo_EntityMiner extends Entity implements PC_IInventoryWrapper {
 
 					switch (Math.round(rotationYaw)) {
 						case 180:
-							if (x == x1 - 2) {
+							if (x == x1 - 2 || x == x1 - 1) {
 								replace = false;
 							}
 							break;
 						case 270:
-							if (z == z1 - 2) {
+							if (z == z1 - 2 || z == z1 - 1) {
 								replace = false;
 							}
 							break;
 						case 0:
-							if (x == x1 + 1) {
+							if (x == x1 + 1 || x == x1) {
 								replace = false;
 							}
 							break;
 						case 90:
-							if (z == z1 + 1) {
+							if (z == z1 + 1 || z == z1) {
 								replace = false;
 							}
 							break;
@@ -2901,7 +3603,7 @@ public class PCmo_EntityMiner extends Entity implements PC_IInventoryWrapper {
 			return;
 		}
 
-		if (!cargo.hasTorch()) {
+		if (!cargo.hasItem(Block.torchWood.blockID)) {
 			return;
 		}
 
@@ -2931,12 +3633,12 @@ public class PCmo_EntityMiner extends Entity implements PC_IInventoryWrapper {
 		if (!cfg.torchesOnlyOnFloor) {
 			if (worldObj.getBlockId(rightX, y + 1, rightZ) == 0 && torch.canPlaceBlockAt(worldObj, rightX, y + 1, rightZ)) {
 				worldObj.setBlockWithNotify(rightX, y + 1, rightZ, torch.blockID);
-				cargo.getTorch();
+				cargo.consumeItem(Block.torchWood.blockID, -1, 1);
 				return;
 			}
 			if (worldObj.getBlockId(leftX, y + 1, leftZ) == 0 && torch.canPlaceBlockAt(worldObj, leftX, y + 1, leftZ)) {
 				worldObj.setBlockWithNotify(leftX, y + 1, leftZ, torch.blockID);
-				cargo.getTorch();
+				cargo.consumeItem(Block.torchWood.blockID, -1, 1);
 				return;
 			}
 		}
@@ -2948,7 +3650,7 @@ public class PCmo_EntityMiner extends Entity implements PC_IInventoryWrapper {
 			if (st.realCommand != PCmo_Command.UP) {
 				Block.torchWood.onBlockPlaced(worldObj, rightX, y, rightZ, 1);
 			}
-			cargo.getTorch();
+			cargo.consumeItem(Block.torchWood.blockID, -1, 1);
 			return;
 		}
 
@@ -2959,7 +3661,7 @@ public class PCmo_EntityMiner extends Entity implements PC_IInventoryWrapper {
 			if (st.realCommand != PCmo_Command.UP) {
 				Block.torchWood.onBlockPlaced(worldObj, leftX, y, leftZ, 1);
 			}
-			cargo.getTorch();
+			cargo.consumeItem(Block.torchWood.blockID, -1, 1);
 			return;
 		}
 
@@ -3238,8 +3940,8 @@ public class PCmo_EntityMiner extends Entity implements PC_IInventoryWrapper {
 	@Override
 	public void onUpdate() {
 		super.onUpdate();
-		
-		if(fakePlayer == null && worldObj != null) fakePlayer = new PC_FakePlayer(worldObj);
+
+		if (fakePlayer == null && worldObj != null) fakePlayer = new PC_FakePlayer(worldObj);
 
 		if (brain.hasError() && rand.nextInt(6) == 0) {
 			worldObj.spawnParticle("largesmoke", posX, posY + 1F, posZ, 0, 0, 0);
@@ -3573,7 +4275,7 @@ public class PCmo_EntityMiner extends Entity implements PC_IInventoryWrapper {
 		if (list != null && list.size() > 0) {
 			for (int j1 = 0; j1 < list.size(); j1++) {
 				EntityItem entity = list.get(j1);
-				if (entity.delayBeforeCanPickup >= 7) {
+				if (entity.delayBeforeCanPickup >= 6) {
 					continue;
 				}
 

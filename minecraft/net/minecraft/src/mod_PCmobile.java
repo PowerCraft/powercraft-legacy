@@ -168,6 +168,7 @@ public class mod_PCmobile extends PC_Module implements PC_IActivatorListener {
 		map.put("pc.gui.miner.opt.torchPlacing", "Place torches");
 		map.put("pc.gui.miner.opt.torchesOnlyOnFloor", "Torches only on floor");
 		map.put("pc.gui.miner.opt.compress", "Compress items");
+		map.put("pc.gui.miner.opt.makeCobble", "Make cobble (water & lava)");
 		
 		map.put("pc.gui.miner.program.title", "Miner Programming");
 		map.put("pc.gui.miner.settings.title", "Miner Settings");
@@ -175,6 +176,7 @@ public class mod_PCmobile extends PC_Module implements PC_IActivatorListener {
 		map.put("pc.gui.miner.terminal.title", "Miner Terminal");
 		
 		map.put("pc.miner.chestName", "Miner Cargo Storage");
+		map.put("pc.gui.miner.launched", "New program compiled and started.");
 	}
 
 	@Override

@@ -66,7 +66,7 @@ public class Compiler {
 
 	private static final String variableAlonePatternRegexp = "([a-zA-Z_]{1}[a-zA-Z_0-9.]*?)(?:[^a-zA-Z_0-9.(]|$|\n)";
 
-	private static final String mathExpressionRegexp = "[0-9a-zA-Z_.\\-+!(\"](?:{1}.*?[0-9a-zA-Z_.)\"]{1})?";
+//	private static final String mathExpressionRegexp = "[0-9a-zA-Z_.\\-+!(\"]{1}(?:.*?[0-9a-zA-Z_.\\)\"]{1})?";
 
 	/** Pattern matching variables in an expression */
 	public static final Pattern variableInCodePattern = Pattern.compile(variableInCodePatternRegexp);
@@ -225,11 +225,11 @@ public class Compiler {
 
 						List<String> params = Compiler.splitBracketSafe(args, ',');
 
-						for (String param : params) {
-							if (!param.matches(mathExpressionRegexp)) {
-								throw new SyntaxError("Not a valid expression: " + param);
-							}
-						}
+//						for (String param : params) {
+//							if (!param.matches(mathExpressionRegexp)) {
+//								throw new SyntaxError("Not a valid expression: " + param);
+//							}
+//						}
 
 						if (name.equals("call")) {
 							instrList.add(new InstructionStringCall(params.toArray(new String[params.size()])));
@@ -256,9 +256,9 @@ public class Compiler {
 
 		expression = expression.replace(replRoundBracketStart, "(").replace(replRoundBracketEnd, ")");
 
-		if (!expression.matches(mathExpressionRegexp)) {
-			throw new SyntaxError("Not a valid expression: " + expression);
-		}
+//		if (!expression.matches(mathExpressionRegexp)) {
+//			throw new SyntaxError("Not a valid expression: " + expression);
+//		}
 
 		return new PC_Struct2<String, List<Instruction>>(expression, instrList);
 
@@ -379,13 +379,6 @@ public class Compiler {
 	private static final String tmpVarPrefix = "_v";
 	private static final String tmpLabelPrefix = "_";
 
-
-	/** Counter used to generate temporary variable names */
-	private int tmpVarCounter = 0;
-
-	/** Counter used to generate temporary label names */
-	private int tmpLabelCounter = 0;
-
 	/**
 	 * Map of string replacements, must be replaced back each time an
 	 * instruction is generated.
@@ -399,6 +392,7 @@ public class Compiler {
 	private Stack<String> loopLabelsBreak = new Stack<String>();
 
 
+	private boolean isLib = false;
 
 	/**
 	 * Compile source code to a list of instructions.<br>
@@ -406,12 +400,16 @@ public class Compiler {
 	 * unless they were called on the same instance of Compiler.
 	 * 
 	 * @param source source code
+	 * @param tmpIdentifiersMoreUnique set to false to count 0,1,2, to true for timestamp based keys.
 	 * @return list of instructions to run in the engine
 	 * @throws SyntaxError when there's a syntax error in given code. Use
 	 *             getMessage() to get user-friendly info.
 	 */
-	public List<Instruction> compile(String source) throws SyntaxError {
-
+	public List<Instruction> compile(String source, boolean tmpIdentifiersMoreUnique) throws SyntaxError {
+		isLib = tmpIdentifiersMoreUnique;
+		
+		
+		
 		// DO NOT! There may be It's or doesn't, and we need these apostrophes!
 		//source = source.replace("'", "\"");
 
@@ -1206,13 +1204,15 @@ public class Compiler {
 			throw new SyntaxError(errMissing);
 		}
 	}
+	
+	private long vc = 0, lc = 0;	
 
 	private String makeTmpVar() {
-		return tmpVarPrefix + (tmpVarCounter++);
+		return tmpVarPrefix + (!isLib?(vc++):Calc.generateSuperUniqueName());
 	}
 
 	private String makeTmpLabel() {
-		return tmpLabelPrefix + (tmpLabelCounter++);
+		return tmpLabelPrefix +  (!isLib?(lc++):Calc.generateSuperUniqueName());
 	}
 
 }

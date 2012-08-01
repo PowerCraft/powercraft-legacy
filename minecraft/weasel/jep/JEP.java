@@ -18,6 +18,7 @@ import java.util.Vector;
 
 import net.minecraft.src.Block;
 import net.minecraft.src.Item;
+import net.minecraft.src.mod_PCcore;
 
 import weasel.Calc;
 import weasel.jep.function.Abs;
@@ -69,6 +70,7 @@ import weasel.jep.function.Str;
 import weasel.jep.function.StrFormat;
 import weasel.jep.function.StrFormat.EnumType;
 import weasel.jep.function.StrLen;
+import weasel.jep.function.StrMorf;
 import weasel.jep.function.StringChar;
 import weasel.jep.function.StringCheck;
 import weasel.jep.function.Sum;
@@ -278,8 +280,9 @@ public class JEP {
 		funTab.put("range", new Range());
 
 		// string
-		funTab.put("tolower", new StrLen());
-		funTab.put("toupper", new StrLen());
+		funTab.put("tolower", new StrMorf(0));
+		funTab.put("toupper", new StrMorf(1));
+		funTab.put("reverse", new StrMorf(2));
 		
 		funTab.put("length", new StrLen());
 		funTab.put("strlen", new StrLen());
@@ -544,19 +547,24 @@ public class JEP {
 		symTab.addConstant("LAPIS_BLOCK", Block.blockLapis.blockID);
 		symTab.addConstant("COALORE", Block.oreCoal.blockID);
 		symTab.addConstant("IRONORE", Block.oreIron.blockID);
+		symTab.addConstant("GOLDORE", Block.oreGold.blockID);
 		symTab.addConstant("DIAMONDORE", Block.oreDiamond.blockID);
 		symTab.addConstant("LAPISORE", Block.oreLapis.blockID);
 		symTab.addConstant("REDSTONEORE", Block.oreRedstone.blockID);
 		symTab.addConstant("COAL_ORE", Block.oreCoal.blockID);
 		symTab.addConstant("IRON_ORE", Block.oreIron.blockID);
+		symTab.addConstant("GOLD_ORE", Block.oreGold.blockID);
 		symTab.addConstant("REDSTONE_ORE", Block.oreRedstone.blockID);
 		symTab.addConstant("DIAMOND_ORE", Block.oreDiamond.blockID);
 		symTab.addConstant("LAPIS_ORE", Block.oreLapis.blockID);
+		symTab.addConstant("GLOWSTONE", Block.glowStone.blockID);
+		symTab.addConstant("SOULSAND", Block.slowSand.blockID);
 		symTab.addConstant("WOOL", Block.cloth.blockID);
 		symTab.addConstant("MELON", Block.melon.blockID);
 		symTab.addConstant("PUMPKIN", Block.pumpkin.blockID);
 		symTab.addConstant("TNT", Block.tnt.blockID);
 		symTab.addConstant("TORCH", Block.torchWood.blockID);
+		symTab.addConstant("GRASS", Block.grass.blockID);
 		
 		symTab.addConstant("FLINT", Item.flint.shiftedIndex);
 		symTab.addConstant("GOND", Item.ingotGold.shiftedIndex);
@@ -567,25 +575,67 @@ public class JEP {
 		symTab.addConstant("SAPLING", Block.sapling.blockID);
 		symTab.addConstant("REED", Item.reed.shiftedIndex);
 		symTab.addConstant("SUGARCANE", Item.reed.shiftedIndex);
+		symTab.addConstant("SUGAR_CANE", Item.reed.shiftedIndex);
 		symTab.addConstant("SEEDS", Item.seeds.shiftedIndex);
 		symTab.addConstant("MELON_SEEDS", Item.melonSeeds.shiftedIndex);
 		symTab.addConstant("PUMPKIN_SEEDS", Item.pumpkinSeeds.shiftedIndex);
 		symTab.addConstant("WHEAT", Item.wheat.shiftedIndex);
 		symTab.addConstant("APPLE", Item.appleRed.shiftedIndex);
 		symTab.addConstant("REDSTONE", Item.redstone.shiftedIndex);
+		symTab.addConstant("COAL", Item.coal.shiftedIndex);
+		symTab.addConstant("CRYSTAL", mod_PCcore.powerCrystal.blockID);
+		symTab.addConstant("POWERDUST", mod_PCcore.powerDust.shiftedIndex);
+		symTab.addConstant("WATER", Block.waterMoving.blockID);
+		symTab.addConstant("LAVA", Block.lavaMoving.blockID);
+		symTab.addConstant("BUCKETL", Item.bucketLava.shiftedIndex);
+		symTab.addConstant("BUCKETLAVA", Item.bucketLava.shiftedIndex);
+		symTab.addConstant("BUCKET_LAVA", Item.bucketLava.shiftedIndex);
+		symTab.addConstant("LAVABUCKET", Item.bucketLava.shiftedIndex);
+		symTab.addConstant("LAVA_BUCKET", Item.bucketLava.shiftedIndex);
+		symTab.addConstant("BUCKETW", Item.bucketWater.shiftedIndex);
+		symTab.addConstant("BUCKETWATER", Item.bucketWater.shiftedIndex);
+		symTab.addConstant("BUCKET_WATER", Item.bucketWater.shiftedIndex);
+		symTab.addConstant("WATERBUCKET", Item.bucketWater.shiftedIndex);
+		symTab.addConstant("WATER_BUCKET", Item.bucketWater.shiftedIndex);
 		
 		symTab.addConstant("BUILDING_BLOCKS", "BUILDING_BLOCK");
+		symTab.addConstant("BUILDING_BLOCK", "BUILDING_BLOCK");
 		symTab.addConstant("BUILDING", "BUILDING_BLOCK");
 		symTab.addConstant("BLOCKS", "BLOCK");
 		symTab.addConstant("ITEMS", "ITEM");
 		symTab.addConstant("ALL", "ALL");
 		symTab.addConstant("ORE", "ORE");
 		symTab.addConstant("ORES", "ORE");
+		symTab.addConstant("FUEL", "FUEL");
+		symTab.addConstant("FUELS", "FUEL");		
+		symTab.addConstant("JUNK", "JUNK");
+		symTab.addConstant("VALUABLE", "VALUABLE");
+		symTab.addConstant("PRECIOUS", "VALUABLE");
+		symTab.addConstant("RARE", "VALUABLE");
 		
 		symTab.addConstant("LAPIS", "LAPIS");
 		symTab.addConstant("BONEMEAL", "BONEMEAL");
-	}
+		symTab.addConstant("BUCKETS", "BUCKET");
+		symTab.addConstant("BUCKET", "BUCKET");
 
+		symTab.addConstant("KEEP_FUEL", "KEEP_FUEL");
+		symTab.addConstant("TORCHES", "TORCHES");
+		symTab.addConstant("TORCH_FLOOR", "TORCH_FLOOR");
+		symTab.addConstant("COMPRESS", "COMPRESS");
+		symTab.addConstant("MINING", "MINING");
+		symTab.addConstant("BRIDGE", "BRIDGE");
+		symTab.addConstant("LAVA_FILL", "LAVA");
+		symTab.addConstant("WATER_FILL", "WATER");
+		symTab.addConstant("AIR_FILL", "TUNNEL");
+		symTab.addConstant("LAVAFILL", "LAVA");
+		symTab.addConstant("WATERFILL", "WATER");
+		symTab.addConstant("AIRFILL", "TUNNEL");
+		symTab.addConstant("TUNNEL", "TUNNEL");
+		symTab.addConstant("COBBLEMAKER", "COBBLE");
+		symTab.addConstant("MAKE_COBBLE", "COBBLE");
+		
+		
+	}
 	/**
 	 * Call this function if you want to parse expressions which involve complex
 	 * numbers. This method specifies "i" as the imaginary unit (0,1). Two

@@ -16,6 +16,7 @@ public class PC_GresColor extends PC_GresWidget {
 	private PC_CoordI imgOffset = new PC_CoordI(57, 0);
 	private String texture = mod_PCcore.getImgDir() + "gres/widgets.png";
 	private PC_Color bulbColor;
+	public boolean showAsRect = false;
 
 	/**
 	 * Image from a texture file.
@@ -48,7 +49,11 @@ public class PC_GresColor extends PC_GresWidget {
 		GL11.glEnable(GL11.GL_BLEND);
 		GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
 
-		drawTexturedModalRect(pos.x + offsetPos.x, pos.y + offsetPos.y, imgOffset.x, imgOffset.y, imgSize.x, imgSize.y);
+		if(showAsRect) {
+			drawRect(pos.x + offsetPos.x, pos.y + offsetPos.y, pos.x + offsetPos.x+size.x, pos.y + offsetPos.y+size.y, 0xff000000|bulbColor.getHex());
+		}else {
+			drawTexturedModalRect(pos.x + offsetPos.x, pos.y + offsetPos.y, imgOffset.x, imgOffset.y, imgSize.x, imgSize.y);
+		}
 
 		GL11.glDisable(GL11.GL_BLEND);
 

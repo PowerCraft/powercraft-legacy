@@ -33,7 +33,6 @@ public class PClo_TileEntityWeaselRenderer extends TileEntitySpecialRenderer {
 		PClo_WeaselPlugin plugin = tew.getPlugin();
 
 		if (plugin == null) {
-			System.out.println("no plugin");
 			return;
 		}
 

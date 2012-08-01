@@ -539,6 +539,10 @@ public class PC_GresTextEditMultiline extends PC_GresWidget {
 	private int mousePressed = 0;
 	private PC_CoordI scroll = new PC_CoordI(0, 0);
 	private ArrayList<Keyword> keyWords = null;
+	public void setKeywords(ArrayList<Keyword> kw) {
+		this.keyWords = kw;
+		text.update();
+	}
 	//private ArrayList<Keyword> oneFrameKeyWords = new ArrayList<Keyword>();
 	//private ArrayList<Keyword> newOneFrameKeyWords;
 	private AutoAdd autoAdd = null;
@@ -549,6 +553,7 @@ public class PC_GresTextEditMultiline extends PC_GresWidget {
 
 	private TextFile text;
 	private Integer bg = null, fg = null;
+	
 
 	public PC_GresTextEditMultiline setBgColor(int color) {
 		bg = color;

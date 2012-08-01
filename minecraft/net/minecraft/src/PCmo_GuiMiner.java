@@ -1,8 +1,13 @@
 package net.minecraft.src;
 
 
+import java.util.ArrayList;
+import java.util.List;
+
 import net.minecraft.src.PC_GresTextEdit.PC_GresInputType;
+import net.minecraft.src.PC_GresTextEditMultiline.Keyword;
 import net.minecraft.src.PC_GresWidget.PC_GresAlign;
+import net.minecraft.src.PClo_NetManager.NetworkMember;
 import net.minecraft.src.PClo_NetManager.WeaselNetwork;
 
 import org.lwjgl.input.Keyboard;
@@ -63,11 +68,10 @@ public class PCmo_GuiMiner implements PC_IGresBase {
 	private PC_GresCheckBox checkWater;
 	private PC_GresCheckBox checkAir;
 	private PC_GresCheckBox checkKeepFuel;
-
-
 	private PC_GresCheckBox checkTorchFloor;
 	private PC_GresCheckBox checkTorch;
 	private PC_GresCheckBox checkCompress;
+	private PC_GresCheckBox checkCobble;
 
 	private PC_GresTextEditMultiline edTerm;
 
@@ -80,6 +84,7 @@ public class PCmo_GuiMiner implements PC_IGresBase {
 	private PC_GresInventoryBigSlot[] xtalInv = new PC_GresInventoryBigSlot[8];
 
 	private PC_SlotSelective[] xtalSlot = new PC_SlotSelective[8];
+
 
 	private void openPanel(int panel) {
 		vgSettings.setVisible(false);
@@ -103,6 +108,14 @@ public class PCmo_GuiMiner implements PC_IGresBase {
 				playerInv.removeAll();
 				w.setText(PC_Lang.tr("pc.gui.miner.program.title"));
 				vgProgram.setVisible(true);
+				ArrayList<Keyword> kw = PC_GresHighlightHelper.weasel(miner.brain, miner.brain.engine);
+				
+				List<String> funcnames = miner.getLibraryFunctionNames();
+				
+				for(String fn:funcnames) {
+					kw.add(new Keyword(fn, 0x00d6b7));
+				}
+				((PC_GresTextEditMultiline) edProgram).setKeywords(kw);
 				break;
 
 			case 1:
@@ -128,12 +141,24 @@ public class PCmo_GuiMiner implements PC_IGresBase {
 				checkCompress.enable(miner.st.level >= PCmo_EntityMiner.LCOMPRESS);
 				checkTorchFloor.enable(miner.st.level >= PCmo_EntityMiner.LTORCH);
 				checkTorch.enable(miner.st.level >= PCmo_EntityMiner.LTORCH);
+				checkCobble.enable(miner.st.level >= PCmo_EntityMiner.LCOBBLE);
 				cargoInv.removeAllSlots();
 				bts.enable(false);
 				playerInv.hideSlots();
 				playerInv.removeAll();
 				w.setText(PC_Lang.tr("pc.gui.miner.settings.title"));
 				vgSettings.setVisible(true);
+
+				checkMining.check(miner.cfg.miningEnabled);
+				checkBridge.check(miner.cfg.bridgeEnabled);
+				checkAir.check(miner.cfg.airFillingEnabled);
+				checkLava.check(miner.cfg.lavaFillingEnabled);
+				checkWater.check(miner.cfg.waterFillingEnabled);
+				checkCompress.check(miner.cfg.compressBlocks);
+				checkCobble.check(miner.cfg.cobbleMake);
+				checkKeepFuel.check(miner.cfg.keepAllFuel);
+				checkTorch.check(miner.cfg.torches);
+				checkTorchFloor.check(miner.cfg.torchesOnlyOnFloor);
 				break;
 
 			case 3:
@@ -177,7 +202,15 @@ public class PCmo_GuiMiner implements PC_IGresBase {
 
 		vg = new PC_GresLayoutV().setAlignH(PC_GresAlign.STRETCH).setAlignV(PC_GresAlign.TOP).setMinWidth(260).setWidgetMargin(1);
 
-		vg.add(edProgram = new PC_GresTextEditMultiline(miner.brain.program, 10, 170, PC_GresHighlightHelper.weasel(miner.brain, miner.brain.engine),
+		ArrayList<Keyword> kw = PC_GresHighlightHelper.weasel(miner.brain, miner.brain.engine);
+	
+		List<String> funcnames = miner.getLibraryFunctionNames();
+		
+		for(String fn:funcnames) {
+			kw.add(new Keyword(fn, 0x00d6b7));
+		}
+		
+		vg.add(edProgram = new PC_GresTextEditMultiline(miner.brain.program, 10, 170, kw,
 				PC_GresHighlightHelper.autoAdd).setWidgetMargin(2));
 		vg.add(txMsg = new PC_GresLabelMultiline("Weasel status: " + (!miner.brain.hasError() ? "OK" : miner.brain.getError().replace("\n", " ")), 250)
 				.setMinRows(1).setMaxRows(1).setWidgetMargin(1).setColor(PC_GresWidget.textColorEnabled, 0x000000));
@@ -213,15 +246,20 @@ public class PCmo_GuiMiner implements PC_IGresBase {
 
 		vg = new PC_GresLayoutV().setAlignH(PC_GresAlign.LEFT).setMinWidth(100).setWidgetMargin(1);
 
-		vg.add(checkMining = new PC_GresCheckBox(PC_Lang.tr("pc.gui.miner.opt.mining")).check(miner.cfg.miningEnabled));
-		vg.add(checkBridge = new PC_GresCheckBox(PC_Lang.tr("pc.gui.miner.opt.bridge")).check(miner.cfg.bridgeEnabled));
-		vg.add(checkLava = new PC_GresCheckBox(PC_Lang.tr("pc.gui.miner.opt.lavaFill")).check(miner.cfg.lavaFillingEnabled));
-		vg.add(checkWater = new PC_GresCheckBox(PC_Lang.tr("pc.gui.miner.opt.waterFill")).check(miner.cfg.waterFillingEnabled));
-		vg.add(checkAir = new PC_GresCheckBox(PC_Lang.tr("pc.gui.miner.opt.airFill")).check(miner.cfg.airFillingEnabled));
-		vg.add(checkKeepFuel = new PC_GresCheckBox(PC_Lang.tr("pc.gui.miner.opt.keepFuel")).check(miner.cfg.keepAllFuel));
-		vg.add(checkTorch = new PC_GresCheckBox(PC_Lang.tr("pc.gui.miner.opt.torchPlacing")).check(miner.cfg.torches));
-		vg.add(checkTorchFloor = new PC_GresCheckBox(PC_Lang.tr("pc.gui.miner.opt.torchesOnlyOnFloor")).check(miner.cfg.torchesOnlyOnFloor));
-		vg.add(checkCompress = new PC_GresCheckBox(PC_Lang.tr("pc.gui.miner.opt.compress")).check(miner.cfg.compressBlocks));
+		vg.add(checkMining = new PC_GresCheckBox(PC_Lang.tr("pc.gui.miner.opt.mining")));
+		vg.add(checkBridge = new PC_GresCheckBox(PC_Lang.tr("pc.gui.miner.opt.bridge")));
+		vg.add(checkAir = new PC_GresCheckBox(PC_Lang.tr("pc.gui.miner.opt.airFill")));
+		vg.add(checkLava = new PC_GresCheckBox(PC_Lang.tr("pc.gui.miner.opt.lavaFill")));
+		vg.add(checkWater = new PC_GresCheckBox(PC_Lang.tr("pc.gui.miner.opt.waterFill")));
+		vg.add(checkCompress = new PC_GresCheckBox(PC_Lang.tr("pc.gui.miner.opt.compress")));
+		vg.add(checkCobble = new PC_GresCheckBox(PC_Lang.tr("pc.gui.miner.opt.makeCobble")));
+		vg.add(checkKeepFuel = new PC_GresCheckBox(PC_Lang.tr("pc.gui.miner.opt.keepFuel")));
+		vg.add(checkTorch = new PC_GresCheckBox(PC_Lang.tr("pc.gui.miner.opt.torchPlacing")));
+		vg.add(checkTorchFloor = new PC_GresCheckBox(PC_Lang.tr("pc.gui.miner.opt.torchesOnlyOnFloor")));
+		
+		
+		
+		
 		
 		mhg.add(vg);
 
@@ -339,19 +377,22 @@ public class PCmo_GuiMiner implements PC_IGresBase {
 		miner.cargo.closeChest();
 		miner.st.programmingGuiOpen = false;
 
-		miner.cfg.miningEnabled = checkMining.isChecked();
-		miner.cfg.bridgeEnabled = checkBridge.isChecked();
-		miner.cfg.lavaFillingEnabled = checkLava.isChecked();
-		miner.cfg.waterFillingEnabled = checkWater.isChecked();
-		miner.cfg.airFillingEnabled = checkAir.isChecked();
-		miner.cfg.keepAllFuel = checkKeepFuel.isChecked();
-		miner.cfg.torches = checkTorch.isChecked();
-		miner.cfg.torchesOnlyOnFloor = checkTorchFloor.isChecked();
-		miner.cfg.compressBlocks = checkCompress.isChecked();
 	}
 
 	@Override
 	public void actionPerformed(PC_GresWidget widget, PC_IGresGui gui) {
+		if(widget instanceof PC_GresCheckBox) {
+			miner.cfg.miningEnabled = checkMining.isChecked();
+			miner.cfg.bridgeEnabled = checkBridge.isChecked();
+			miner.cfg.lavaFillingEnabled = checkLava.isChecked();
+			miner.cfg.waterFillingEnabled = checkWater.isChecked();
+			miner.cfg.airFillingEnabled = checkAir.isChecked();
+			miner.cfg.keepAllFuel = checkKeepFuel.isChecked();
+			miner.cfg.torches = checkTorch.isChecked();
+			miner.cfg.torchesOnlyOnFloor = checkTorchFloor.isChecked();
+			miner.cfg.compressBlocks = checkCompress.isChecked();	
+			miner.cfg.cobbleMake = checkCobble.isChecked();					
+		}
 		
 		if(widget.getId()==100)
 		{
@@ -430,7 +471,7 @@ public class PCmo_GuiMiner implements PC_IGresBase {
 			try {
 				miner.brain.program = edProgram.getText();
 				miner.brain.launchProgram();
-				gui.close();
+				txMsg.setText(PC_Lang.tr("pc.gui.miner.launched"));
 			} catch (Exception e) {
 				txMsg.setText(e.getMessage());
 			}

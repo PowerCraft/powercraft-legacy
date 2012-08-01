@@ -115,10 +115,9 @@ public abstract class PClo_WeaselPlugin implements PC_INBT, NetworkMember {
 
 		boolean changed = false;
 		for (int i = 0; i < weaselInport.length; i++) {
-			if (weaselInport[i] || weaselOutport[i] != inport[i]) {
+			if (weaselInport[i] != inport[i] && !(inport[i]&&weaselOutport[i])) {
 				changed = true;
 			}
-
 		}
 		weaselInport = inport;
 
@@ -238,10 +237,16 @@ public abstract class PClo_WeaselPlugin implements PC_INBT, NetworkMember {
 	 * @param name the new name
 	 */
 	public final void setMemberName(String name) {
-		memberName = name;
 		unregisterFromNetwork();
+		memberName = name;
 		registerToNetwork();
+		onNameChanged();
 	}
+	
+	/**
+	 * called after name was changed.
+	 */
+	protected void onNameChanged() {}
 
 	/**
 	 * Get name of this device in the network.
@@ -322,9 +327,8 @@ public abstract class PClo_WeaselPlugin implements PC_INBT, NetworkMember {
 	 * 
 	 * @param function name of the function in weasel code
 	 * @param args arguments for the function
-	 * @return returned value
 	 */
-	public abstract Object callFunctionExternalDelegated(String function, Object... args);
+	public abstract void callFunctionOnEngine(String function, Object... args);
 
 
 

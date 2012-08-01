@@ -228,6 +228,21 @@ public class mod_PCtransport extends PC_Module {
 	public void registerItems() {
 		removeBlockItem(itemElevator.blockID);
 		setBlockItem(itemElevator.blockID, new PCtr_ItemBlockElevator(itemElevator.blockID - 256));
+		
+		removeBlockItem(conveyorBelt.blockID);
+		setBlockItem(conveyorBelt.blockID, new PCtr_ItemBlockConveyor(conveyorBelt.blockID - 256));
+		removeBlockItem(ejectionBelt.blockID);
+		setBlockItem(ejectionBelt.blockID, new PCtr_ItemBlockConveyor(ejectionBelt.blockID - 256));
+		removeBlockItem(detectionBelt.blockID);
+		setBlockItem(detectionBelt.blockID, new PCtr_ItemBlockConveyor(detectionBelt.blockID - 256));
+		removeBlockItem(separationBelt.blockID);
+		setBlockItem(separationBelt.blockID, new PCtr_ItemBlockConveyor(separationBelt.blockID - 256));
+		removeBlockItem(brakeBelt.blockID);
+		setBlockItem(brakeBelt.blockID, new PCtr_ItemBlockConveyor(brakeBelt.blockID - 256));
+		removeBlockItem(redirectionBelt.blockID);
+		setBlockItem(redirectionBelt.blockID, new PCtr_ItemBlockConveyor(redirectionBelt.blockID - 256));
+		removeBlockItem(speedyBelt.blockID);
+		setBlockItem(speedyBelt.blockID, new PCtr_ItemBlockConveyor(speedyBelt.blockID - 256));
 
 		int armour_index = ModLoader.addArmor("pcslime");
 		slimeboots = new PCtr_ItemStickyBoots(cfg().num(pk_idSlimeBoots), armour_index).setIconIndex(Item.bootsSteel.iconIndex).setItemName(

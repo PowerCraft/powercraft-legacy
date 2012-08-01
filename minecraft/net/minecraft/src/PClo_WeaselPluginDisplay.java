@@ -227,9 +227,7 @@ public class PClo_WeaselPluginDisplay extends PClo_WeaselPlugin {
 	protected void onDeviceDestroyed() {}
 
 	@Override
-	public Object callFunctionExternalDelegated(String function, Object... args) {
-		return null;
-	}
+	public void callFunctionOnEngine(String function, Object... args) {}
 
 	@Override
 	protected PClo_WeaselPlugin readPluginFromNBT(NBTTagCompound tag) {

@@ -191,8 +191,8 @@ public class PC_GresColorMap extends PC_GresWidget {
 	public boolean mouseClick(PC_CoordI mousePos, int key) {
 		dragging = (key != -1);
 		mousePos.y -= px;
-		if (mousePos.x >= size.x - 2 * px) return false;
-		if (mousePos.y >= size.y - 2 * px) return false;
+//		if (mousePos.x >= size.x - 2 * px) return false;
+//		if (mousePos.y >= size.y - 2 * px) return false;
 		lastMousePos = mousePos.copy();
 		lastMouseKey = key;
 		lastEvent = (key != -1) ? "down" : "up";

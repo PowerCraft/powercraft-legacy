@@ -130,7 +130,7 @@ public class InstructionAssign extends Instruction {
 
 	@Override
 	public String toString() {
-		return "ASSIGN " + (global ? "GLOBAL" : "LOCAL") + " '" + lhsVarName + "' = '" + expression + "'";
+		return "ASSIGN " + (global ? "GLOBAL" : "") + " '" + lhsVarName + "' = '" + expression + "'";
 	}
 
 }
