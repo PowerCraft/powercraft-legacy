@@ -55,12 +55,12 @@ public class mod_PCcore extends PC_Module implements PC_IActivatorListener {
 	 * compilation, thus all modules keep their compile-time version and aren't
 	 * affected by current core version. Which is good.
 	 */
-	public static final String VERSION = "3.4.8";
+	public static final String VERSION = "3.4.8c";
 
 	/**
 	 * The serial number used to check whether new update is available.
 	 */
-	public static final int VERSION_SERIAL = 10;
+	public static final int VERSION_SERIAL = 12;
 
 
 

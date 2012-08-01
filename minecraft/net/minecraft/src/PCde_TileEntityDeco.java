@@ -186,9 +186,7 @@ public class PCde_TileEntityDeco extends PC_TileEntity implements PC_IInventoryW
 			increment = rand.nextInt(2);
 		}
 
-		//System.out.println("\n+"+increment);
 		lightningCharge += increment;
-		//System.out.println("charge = "+lightningCharge);
 
 	}
 

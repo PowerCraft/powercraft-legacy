@@ -121,7 +121,7 @@ public class PClo_TileEntityWeasel extends PC_TileEntity {
 	@Override
 	public void onBlockPickup() {
 		if (plugin != null) {
-			plugin.onBlockRemoval();
+			plugin.onBlockPickup();
 		}
 	}
 

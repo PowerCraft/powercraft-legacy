@@ -281,7 +281,6 @@ public class Calc {
 					matcher.appendReplacement(sb, out.toString());
 				} catch (NumberFormatException nfe) {
 					nfe.printStackTrace();
-					System.out.println(nfe.getMessage());
 					throw new ParseException("0x" + group + " is not a valid hex number.");
 				}
 			}

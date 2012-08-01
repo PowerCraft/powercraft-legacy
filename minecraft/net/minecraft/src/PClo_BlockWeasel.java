@@ -237,7 +237,6 @@ public class PClo_BlockWeasel extends BlockContainer implements PC_ISwapTerrain,
 		if (checkForBurnout(world, x, y, z, false)) {
 			// schedule "unpause" tick
 			world.scheduleBlockUpdate(x, y, z, blockID, 3);
-			//System.out.println("Weasel device at "+x+","+y+","+z+" burned out.");
 			return;
 		}
 

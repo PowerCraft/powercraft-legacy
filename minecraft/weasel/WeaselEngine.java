@@ -332,7 +332,6 @@ public class WeaselEngine implements PC_INBT, IVariableProvider, IFunctionProvid
 		}
 
 		if (globals.getVariable(name) != null) {
-//			System.out.println("## setting global because global with this name exists. "+name+" = "+value);
 			globals.setVariable(name, value);
 		} else {
 			variables.setVariable(name, value);
@@ -348,7 +347,6 @@ public class WeaselEngine implements PC_INBT, IVariableProvider, IFunctionProvid
 	 */
 	public void setVariableGlobal(String name, WeaselObject value) {
 		if (variables.getVariable(name) != null) {
-//			System.out.println("## setting global, removing local because local with this name exists. "+name+" = "+value);
 
 			variables.unsetVariable(name);
 		}
@@ -379,7 +377,6 @@ public class WeaselEngine implements PC_INBT, IVariableProvider, IFunctionProvid
 			if (args.length != 1) throw new WeaselRuntimeException("Isset() requires 1 argument, got " + args.length);
 			if (args[0] instanceof WeaselString) {
 				String varname = Calc.toString(args[0]);
-//				System.out.println("## ISSET? "+varname+" -> "+getVariable(varname));
 				return new WeaselBoolean(getVariable(varname) != null);
 			} else {
 				throw new WeaselRuntimeException("Isset() requires String argument, got " + args[0].get().getClass().getSimpleName());

@@ -168,7 +168,6 @@ public class Compiler {
 			if (stringReplacements.size() > 0) {
 				for (Entry<String, String> entry : stringReplacements.entrySet()) {
 					expression = expression.replace(entry.getKey(), entry.getValue());
-					//System.out.println("Replacing repl with "+entry.getValue());
 				}
 			}
 		}
@@ -414,7 +413,6 @@ public class Compiler {
 		//source = source.replace("'", "\"");
 
 		source = escapeStringConstants(source);
-		//System.out.println(source);
 
 		source = source.replaceAll("//.*?\n", "");
 		source = source.replaceAll("#.*?\n", "");
@@ -459,7 +457,6 @@ public class Compiler {
 			throw new SyntaxError(e1.getMessage());
 		}
 
-		//System.out.println("\n == SOURCE BEFORE WHITESPACE FIX ==\n" + source + "\n");
 
 		// Replace string constants by replacement marks, each time 
 		// an instruction is created, replace it back.
@@ -504,7 +501,6 @@ public class Compiler {
 		while ((chi = reader.read()) != -1) {
 			char ch = (char) chi;
 
-			//System.out.println(ch);
 
 			// assignment.
 			if (ch == '=') {

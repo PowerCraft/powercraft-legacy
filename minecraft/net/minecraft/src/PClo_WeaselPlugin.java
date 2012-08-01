@@ -116,8 +116,9 @@ public abstract class PClo_WeaselPlugin implements PC_INBT, NetworkMember {
 		boolean changed = false;
 		for (int i = 0; i < weaselInport.length; i++) {
 			if (weaselInport[i] != inport[i] && !(inport[i]&&weaselOutport[i])) {
-				changed = true;
+				changed = !nextUpdateIgnore[i];
 			}
+			nextUpdateIgnore[i] = false;
 		}
 		weaselInport = inport;
 
@@ -149,6 +150,8 @@ public abstract class PClo_WeaselPlugin implements PC_INBT, NetworkMember {
 
 	/** Name of the local network this device is connected to. */
 	private String networkName = "";
+
+	protected boolean isPickedUp = false;
 
 	@Override
 	public final void onNetworkRenamed(String newName) {
@@ -313,6 +316,16 @@ public abstract class PClo_WeaselPlugin implements PC_INBT, NetworkMember {
 		unregisterFromNetwork();
 		onDeviceDestroyed();
 	}
+	
+	
+	/**
+	 * Handler for block removal. Disconnect from bus, network, drop inventory
+	 * items etc.
+	 */
+	public final void onBlockPickup() {
+		this.isPickedUp = true;
+		onBlockRemoval();
+	}
 
 	/**
 	 * Hook called when this device was destroyed
@@ -340,8 +353,9 @@ public abstract class PClo_WeaselPlugin implements PC_INBT, NetworkMember {
 		for (int i = 0; i < weaselOutport.length; i++) {
 			wasOn |= weaselOutport[i];
 			weaselOutport[i] = false;
+			nextUpdateIgnore[i] = false;
 		}
-		if (wasOn) notifyBlockChange();
+		refreshInport();
 	}
 
 	/**
@@ -353,6 +367,7 @@ public abstract class PClo_WeaselPlugin implements PC_INBT, NetworkMember {
 
 	private boolean[] weaselOutport = { false, false, false, false, false, false };
 	private boolean[] weaselInport = { false, false, false, false, false, false };
+	private boolean[] nextUpdateIgnore =  { false, false, false, false, false, false };
 
 
 	/**
@@ -422,6 +437,12 @@ public abstract class PClo_WeaselPlugin implements PC_INBT, NetworkMember {
 		if (port.equals("U")) weaselOutport[4] = state;
 		if (port.equals("D")) weaselOutport[5] = state;
 
+		nextUpdateIgnore[0] = port.equals("B");
+		nextUpdateIgnore[1] = port.equals("L");
+		nextUpdateIgnore[2] = port.equals("R");
+		nextUpdateIgnore[3] = port.equals("F");
+		nextUpdateIgnore[4] = port.equals("U");
+		nextUpdateIgnore[5] = port.equals("D");		
 
 		if (state != old) {
 			notifyBlockChange();
@@ -648,6 +669,9 @@ public abstract class PClo_WeaselPlugin implements PC_INBT, NetworkMember {
 		for (int i = 0; i < weaselInport.length; i++) {
 			weaselInport[i] = tag.getBoolean("wi" + i);
 		}
+		for (int i = 0; i < nextUpdateIgnore.length; i++) {
+			nextUpdateIgnore[i]=tag.getBoolean("nui" + i);
+		}
 		try {
 			return readPluginFromNBT(tag);
 		} catch (Exception e) {
@@ -667,6 +691,9 @@ public abstract class PClo_WeaselPlugin implements PC_INBT, NetworkMember {
 		}
 		for (int i = 0; i < weaselInport.length; i++) {
 			tag.setBoolean("wi" + i, weaselInport[i]);
+		}
+		for (int i = 0; i < nextUpdateIgnore.length; i++) {
+			tag.setBoolean("nui" + i, nextUpdateIgnore[i]);
 		}
 
 		try {
