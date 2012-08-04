@@ -19,6 +19,7 @@ import weasel.exception.WeaselRuntimeException;
 import weasel.lang.Instruction;
 import weasel.obj.WeaselBoolean;
 import weasel.obj.WeaselObject;
+import weasel.obj.WeaselString;
 
 
 /**
@@ -307,20 +308,10 @@ public class PClo_WeaselPluginCore extends PClo_WeaselPlugin implements IWeaselH
 				if (member != null && member != this && member instanceof PClo_WeaselPluginDiskDrive) {
 					List<Instruction> lib = ((PClo_WeaselPluginDiskDrive)member).getAllLibraryInstructions();
 					if(lib.size()>0) {
-						String msg = "Linked libraries from drive "+((PClo_WeaselPluginDiskDrive)member).getName()+".";
-						System.out.println(msg);
-						PC_Logger.finest(msg);
 						list.addAll(lib);
 					}
 				}
 			}
-		}
-		
-		
-		PC_Logger.finest("\n## Instructions to run");
-		for(Instruction i:list) {
-			System.out.println(i);
-			PC_Logger.finest(i+"");
 		}
 		
 		weasel.insertNewProgram(list);
@@ -417,6 +408,17 @@ public class PClo_WeaselPluginCore extends PClo_WeaselPlugin implements IWeaselH
 			return fnBus(engine, functionName, args);
 		} catch (BadFunc e) {}
 
+		if (functionName.equals("rebuild")) {
+			try {
+				setAndStartNewProgram(program);
+			} catch (SyntaxError e) {
+				e.printStackTrace();
+				this.weaselError = e.getMessage();
+			}
+			engine.requestPause();
+			return null;
+
+		}
 
 		WeaselNetwork net = getNetwork();
 		if (net != null) {
@@ -445,22 +447,65 @@ public class PClo_WeaselPluginCore extends PClo_WeaselPlugin implements IWeaselH
 
 		if (functionName.equals("nset")) {
 
-			getNetManager().setGlobalVariable((String) args[0].get(), args[1]);
+			getNetManager().setGlobalVariable(Calc.toString(args[0].get()), args[1]);
 			return null;
 
 		} else if (functionName.equals("nget")) {
 
-			return getNetManager().getGlobalVariable((String) args[0].get());
+			return getNetManager().getGlobalVariable(Calc.toString(args[0].get()));
+
+		} else if (functionName.equals("nhas")) {
+
+			return new WeaselBoolean(getNetManager().hasGlobalVariable(Calc.toString(args[0].get())));
 
 		} else if (functionName.equals("rx")) {
 			//receive
-			return new WeaselBoolean(mod_PClogic.RADIO.getChannelState((String) args[0].get()));
+			return new WeaselBoolean(mod_PClogic.RADIO.getChannelState(Calc.toString(args[0].get())));
 
 		} else if (functionName.equals("tx")) {
 			//send
 			weaselRadioSignals.put((String) args[0].get(), Calc.toBoolean(args[1].get()));
 			return null;
 
+		} else if (functionName.equals("isConnected")) {
+			
+			return new WeaselBoolean(getNetwork().getMembers().containsKey(Calc.toString(args[0].get())));
+			
+		} else if (functionName.equals("hasDisk")) {
+			boolean found = false;
+			fl: for (NetworkMember member : getNetwork().getMembers().values()) {
+				if (member != null && member != this && member instanceof PClo_WeaselPluginDiskDrive) {
+					if(((PClo_WeaselPluginDiskDrive)member).getDiskNames().contains(Calc.toString(args[0].get()))){
+						found = true;
+						break fl;
+					}
+				}
+			}
+			return new WeaselBoolean(found);
+			
+		} else if (functionName.equals("diskType")) {
+			String type = null;
+			fl: for (NetworkMember member : getNetwork().getMembers().values()) {
+				if (member != null && member != this && member instanceof PClo_WeaselPluginDiskDrive) {
+					if(((PClo_WeaselPluginDiskDrive)member).getDiskNames().contains(Calc.toString(args[0].get()))){
+						type = ((PClo_WeaselPluginDiskDrive)member).getDiskType(Calc.toString(args[0].get()));
+						break fl;
+					}
+				}
+			}
+			if(type == null) type = "null";
+			
+			return new WeaselString(type);
+			
+		} else if (functionName.equals("libCanDo")) {
+			boolean has = false;
+			for (NetworkMember member : getNetwork().getMembers().values()) {
+				if (member != null && member != this && member instanceof PClo_WeaselPluginDiskDrive) {
+					has |= ((PClo_WeaselPluginDiskDrive)member).hasDiskLibFunction(Calc.toString(args[0].get()));
+				}
+			}
+			
+			return new WeaselBoolean(has);			
 		}
 
 		throw new BadFunc();
@@ -598,6 +643,14 @@ public class PClo_WeaselPluginCore extends PClo_WeaselPlugin implements IWeaselH
 
 		list.add("nget");
 		list.add("nset");
+		list.add("nhas");
+		
+		list.add("rebuild");
+		
+		list.add("isConnected");
+		list.add("hasDisk");
+		list.add("diskType");
+		list.add("libCanDo");
 
 		list.add("rx");
 		list.add("tx");

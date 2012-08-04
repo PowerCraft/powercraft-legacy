@@ -439,6 +439,7 @@ public class PClo_ItemWeaselDisk extends Item {
 		if (getType(itemstack) != VARMAP) throw new WeaselRuntimeException("VarMap function called on " + getTypeVerbose(itemstack) + " disk.");
 
 		WeaselVariableMap map = (WeaselVariableMap) PC_Utils.loadFromNBT(itemstack.getTagCompound(), "Map", new WeaselVariableMap());
+		
 		return (map.getVariable(name) != null);
 	}
 

@@ -76,7 +76,7 @@ public class PCtr_ItemBlockConveyor extends ItemBlock {
 				j--;
 				
 				int m = 0;
-				while(!world.canBlockBePlacedAt(getBlockID(), i, j, k, false, l) || m == 128) {
+				while(PCtr_BeltBase.isConveyorAt(world, new PC_CoordI(i,j,k)) && m <= 128) {
 					i -= Direction.offsetX[dir];
 					k -= Direction.offsetZ[dir];
 					m++;

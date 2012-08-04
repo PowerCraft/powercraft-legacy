@@ -693,64 +693,65 @@ public class PCmo_EntityMiner extends Entity implements PC_IInventoryWrapper {
 
 						String capname = Calc.toString(args[i].get());
 						int argl = args.length;
-						//@formatter:off
-						boolean flag=
-									(state==-1? 
-										(argl == 1)?
-												false //getter
-												:Calc.toBoolean(args[1].get()) // get 2nd arg, its a setter with value
-										
-										:state>0 // On/Off with multiple args.
-									);
-						//@formatter:on
+						
+						boolean flag = false;
+						if(state == -1) {
+							if(argl == 1) {
+								flag = false;
+							}else {
+								flag = Calc.toBoolean(args[1].get());
+							}
+						}else {
+							flag = state > 0;
+						}
 
 						if (capname.equals("KEEP_FUEL")) {
-							if (argl == 1) return new WeaselBoolean(cfg.keepAllFuel);
+							if (argl == 1&&state == -1) return new WeaselBoolean(cfg.keepAllFuel);
 							cfg.keepAllFuel = flag;
 							continue;
 						}
 						if (capname.equals("COBBLE")) {
-							if (argl == 1) return new WeaselBoolean(cfg.cobbleMake);
+							if (argl == 1&&state == -1) return new WeaselBoolean(cfg.cobbleMake);
 							cfg.cobbleMake = flag;
 							continue;
 						}
 						if (capname.equals("TORCHES")) {
-							if (argl == 1) return new WeaselBoolean(cfg.torches);
+							if (argl == 1&&state == -1) return new WeaselBoolean(cfg.torches);
 							cfg.torches = flag;
 							continue;
 						}
 						if (capname.equals("TORCH_FLOOR")) {
-							if (argl == 1) return new WeaselBoolean(cfg.torchesOnlyOnFloor);
+							if (argl == 1&&state == -1) return new WeaselBoolean(cfg.torchesOnlyOnFloor);
 							cfg.torchesOnlyOnFloor = flag;
 							continue;
 						}
 						if (capname.equals("COMPRESS")) {
-							if (argl == 1) return new WeaselBoolean(cfg.compressBlocks);
+							if (argl == 1&&state == -1) return new WeaselBoolean(cfg.compressBlocks);
 							cfg.compressBlocks = flag;
 							continue;
 						}
 						if (capname.equals("MINING")) {
-							if (argl == 1) return new WeaselBoolean(cfg.miningEnabled);
+							if (argl == 1&&state == -1) return new WeaselBoolean(cfg.miningEnabled);
 							cfg.miningEnabled = flag;
 							continue;
 						}
-						if (capname.equals("BRIDGE")) {
-							if (argl == 1) return new WeaselBoolean(cfg.bridgeEnabled);
+						if (capname.equals("BRIDGE")) {						
+							if (argl == 1&&state == -1) return new WeaselBoolean(cfg.bridgeEnabled);
 							cfg.bridgeEnabled = flag;
 							continue;
 						}
 						if (capname.equals("LAVA")) {
-							if (argl == 1) return new WeaselBoolean(cfg.lavaFillingEnabled);
+							if (argl == 1&&state == -1) return new WeaselBoolean(cfg.lavaFillingEnabled);
 							cfg.lavaFillingEnabled = flag;
 							continue;
 						}
 						if (capname.equals("WATER")) {
-							if (argl == 1) return new WeaselBoolean(cfg.waterFillingEnabled);
+							if (argl == 1&&state == -1) return new WeaselBoolean(cfg.waterFillingEnabled);
 							cfg.waterFillingEnabled = flag;
 							continue;
 						}
 						if (capname.equals("TUNNEL")) {
-							if (argl == 1) return new WeaselBoolean(cfg.airFillingEnabled);
+							if (argl == 1&&state == -1) return new WeaselBoolean(cfg.airFillingEnabled);
 							cfg.airFillingEnabled = flag;
 							continue;
 						}
@@ -1055,6 +1056,12 @@ public class PCmo_EntityMiner extends Entity implements PC_IInventoryWrapper {
 					mod_PClogic.NETWORK.setGlobalVariable(Calc.toString(args[0].get()), args[1]);
 					return null;
 				}
+				
+				if (name.equals("nhas")) {
+
+					return new WeaselBoolean(mod_PClogic.NETWORK.hasGlobalVariable(Calc.toString(args[0].get())));
+
+				} 
 
 				if (name.equals("nget")) {
 					return mod_PClogic.NETWORK.getGlobalVariable(Calc.toString(args[0].get()));
@@ -1324,6 +1331,7 @@ public class PCmo_EntityMiner extends Entity implements PC_IInventoryWrapper {
 
 			list.add("nget");
 			list.add("nset");
+			list.add("nhas");
 
 			list.add("rx");
 			list.add("tx");
@@ -4624,9 +4632,13 @@ public class PCmo_EntityMiner extends Entity implements PC_IInventoryWrapper {
 
 			st.level = Math.min(cnt, 8);
 
-			cfg.bridgeEnabled &= (st.level >= 3);
-			cfg.waterFillingEnabled &= (st.level >= 6);
-			cfg.lavaFillingEnabled &= (st.level >= 4);
+			cfg.bridgeEnabled &= (st.level >= LBRIDGE);
+			cfg.waterFillingEnabled &= (st.level >= LWATER);
+			cfg.lavaFillingEnabled &= (st.level >= LLAVA);
+			cfg.airFillingEnabled &= (st.level >= LAIR);
+			cfg.cobbleMake &= (st.level >= LCOBBLE);
+			cfg.compressBlocks &= (st.level >= LCOMPRESS);
+			cfg.torches &= (st.level >= LTORCH);
 		}
 	}
 
