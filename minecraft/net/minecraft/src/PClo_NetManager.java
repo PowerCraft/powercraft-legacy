@@ -199,6 +199,17 @@ public class PClo_NetManager implements PC_INBT {
 		return globalHeap.getVariable(name);
 	}
 
+	/**
+	 * Get if globvar exists
+	 * 
+	 * @param name variable name
+	 * @return variable value.
+	 */
+	public boolean hasGlobalVariable(String name) {
+		checkWorldChange();
+		return globalHeap.getVariable(name) != null;
+	}
+
 	private String worldName = null;
 	private String worldSaveDir = null;
 

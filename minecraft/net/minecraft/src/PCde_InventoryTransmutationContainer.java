@@ -31,6 +31,7 @@ public class PCde_InventoryTransmutationContainer implements IInventory, PC_ISpe
 		if (stack == null) return false;
 		if (stack.itemID == Item.coal.shiftedIndex && stack.getItemDamage() == 0) return true;
 		if (stack.itemID == Item.diamond.shiftedIndex) return true;
+		if (stack.itemID == Item.redstone.shiftedIndex) return true;
 		return false;
 	}
 
@@ -46,7 +47,7 @@ public class PCde_InventoryTransmutationContainer implements IInventory, PC_ISpe
 
 	@Override
 	public boolean canDispenseStackFrom(int i) {
-		return getStackInSlot(i) != null && getStackInSlot(i).itemID != Item.coal.shiftedIndex;
+		return getStackInSlot(i) != null && getStackInSlot(i).itemID != Item.coal.shiftedIndex && getStackInSlot(i).itemID != Item.coal.shiftedIndex;
 	}
 
 	private ItemStack stacks[];
@@ -145,7 +146,7 @@ public class PCde_InventoryTransmutationContainer implements IInventory, PC_ISpe
 		int total = 15;
 		int burnt = 8 + rand.nextInt(5); // max 12, min 8 -> left 3, or 7
 
-		int maxGoodTransmutations = 1 + rand.nextInt(5);
+		int maxGoodTransmutations = 2 + rand.nextInt(6);
 
 		for (int i = 0; i < total * 2; i++) {
 
@@ -157,7 +158,7 @@ public class PCde_InventoryTransmutationContainer implements IInventory, PC_ISpe
 				setInventorySlotContents(thisSlot, null);
 			} else if (stack != null) {
 				if (stack.itemID == Item.coal.shiftedIndex && stack.getItemDamage() == 0) {
-					if (rand.nextInt(100) == 0) {
+					if (rand.nextInt(120) == 0) {
 						// coal to crystal
 						setInventorySlotContents(thisSlot, new ItemStack(mod_PCcore.powerCrystal, 1, rand.nextInt(8)));
 						maxGoodTransmutations--;
@@ -176,6 +177,12 @@ public class PCde_InventoryTransmutationContainer implements IInventory, PC_ISpe
 						// ta-daa, diamond disappeared!
 						setInventorySlotContents(thisSlot, null);
 					}
+				} else if (stack.itemID == Item.redstone.shiftedIndex) {
+					
+					// diamond to crystal
+					setInventorySlotContents(thisSlot, new ItemStack(Item.lightStoneDust));
+					if(rand.nextBoolean()) maxGoodTransmutations--;
+
 				} else {
 					setInventorySlotContents(thisSlot, null);
 				}

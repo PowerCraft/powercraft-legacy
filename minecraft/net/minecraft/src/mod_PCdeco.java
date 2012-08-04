@@ -173,14 +173,22 @@ public class mod_PCdeco extends PC_Module {
 		
 		
 		ModLoader.addRecipe(
-				new ItemStack(walkable, 16, 0),
+				new ItemStack(walkable, 15, 0),
 				new Object[] { "X  ", "X  ", "XXX",
-					'X', Item.ingotIron });
+					'X', Item.ingotIron });	
 		
 		ModLoader.addRecipe(
-				new ItemStack(walkable, 12, 1),
-				new Object[] { "X ", "XX",
-					'X', new ItemStack(walkable, 1, 0) });	
+				new ItemStack(walkable, 15, 1),
+				new Object[] { "X  ", "XX ", " XX",
+					'X', Item.ingotIron });			
+
+		ModLoader.addShapelessRecipe(
+				new ItemStack(Item.ingotIron),
+				new Object[] {new ItemStack(walkable, 1, 0),new ItemStack(walkable, 1, 0),new ItemStack(walkable, 1, 0)});
+		
+		ModLoader.addShapelessRecipe(
+				new ItemStack(Item.ingotIron),
+				new Object[] {new ItemStack(walkable, 1, 1),new ItemStack(walkable, 1, 1),new ItemStack(walkable, 1, 1)});
 		
 		// chimneys
 		ModLoader.addRecipe(new ItemStack(deco,6,4),new Object[] {"X X", "X X", "X X", Character.valueOf('X'), Block.cobblestone});

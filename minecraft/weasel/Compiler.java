@@ -35,7 +35,6 @@ import weasel.lang.InstructionPush;
 import weasel.lang.InstructionRestart;
 import weasel.lang.InstructionReturn;
 import weasel.lang.InstructionStringCall;
-import weasel.lang.InstructionUnset;
 
 
 /**
@@ -447,8 +446,8 @@ public class Compiler {
 		// remove () from end and pause
 		source = source.replaceAll("([^a-zA-Z0-9._]|^)(end|pause|restart)\\s*[(]\\s*[)]\\s*;", "$1$2;");
 
-		// add quotes to isset
-		source = source.replaceAll("([^a-zA-Z0-9._]|^)(isset)\\s*[(]\\s*([a-zA-Z_.]{1}[a-zA-Z0-9_.]*?)\\s*[)]\\s*", "$1$2(\"$3\")");
+//		 add quotes to isset
+//		source = source.replaceAll("([^a-zA-Z0-9._]|^)(isset)\\s*[(]\\s*([a-zA-Z_.]{1}[a-zA-Z0-9_.]*?)\\s*[)]\\s*", "$1$2(\"$3\")");
 
 
 		try {
@@ -1041,7 +1040,7 @@ public class Compiler {
 
 					String inBracket = readUntil(reader, '(', ')', "function \"" + funcName + "\" call arguments").trim();
 
-					assertNextBlack(reader, ';', "function \"" + funcName + "\" call", "function call followed by \";\" at \"" + funcName + "("
+					assertNextBlack(reader, ';', "function \"" + funcName + "\" call", "Function call must be followed by \";\" at \"" + funcName + "("
 							+ inBracket + ")\".");
 
 					if (funcName.equalsIgnoreCase("return")) {
@@ -1096,20 +1095,20 @@ public class Compiler {
 							instructionList.add(new InstructionPop(""));
 						}
 
-					} else if (funcName.equalsIgnoreCase("unset")) {
-						// an UNSET statement
-
-						if (inBracket.length() > 0) {
-							// unset(something);
-
-							if (inBracket.matches(variableInCodePatternRegexp)) {
-								instructionList.add(new InstructionUnset(inBracket));
-							} else {
-								throw new SyntaxError("Invalid variable name at \"unset(" + inBracket + ");\".");
-							}
-						} else {
-							throw new SyntaxError("Can not unset \"null\" at \"unset();\".");
-						}
+					} else if (false) { //funcName.equalsIgnoreCase("unset")
+//						// an UNSET statement
+//
+//						if (inBracket.length() > 0) {
+//							// unset(something);
+//
+//							if (inBracket.matches(variableInCodePatternRegexp)) {
+//								instructionList.add(new InstructionUnset(inBracket));
+//							} else {
+//								throw new SyntaxError("Invalid variable name at \"unset(" + inBracket + ");\".");
+//							}
+//						} else {
+//							throw new SyntaxError("Can not unset \"null\" at \"unset();\".");
+//						}
 
 					} else {
 						// yes! finally! a real function! XD

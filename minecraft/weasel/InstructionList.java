@@ -40,6 +40,9 @@ public class InstructionList implements PC_INBT {
 	private WeaselEngine engine;
 	/** program pointer, read only. */
 	public int programCounter = 0;
+	
+	/** last called function used for error reporting in get retval. */
+	public String lastFuncCall = "";
 
 	/**
 	 * Clear all from the list
@@ -239,6 +242,8 @@ public class InstructionList implements PC_INBT {
 
 				engine.variables.setVariable(argname, obj);
 			}
+			
+			if(!external) lastFuncCall = functionName;
 
 			return;
 		}

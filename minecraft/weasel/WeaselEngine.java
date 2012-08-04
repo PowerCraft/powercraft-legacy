@@ -376,10 +376,24 @@ public class WeaselEngine implements PC_INBT, IVariableProvider, IFunctionProvid
 
 			if (args.length != 1) throw new WeaselRuntimeException("Isset() requires 1 argument, got " + args.length);
 			if (args[0] instanceof WeaselString) {
-				String varname = Calc.toString(args[0]);
+				String varname = Calc.toString(args[0]);				
 				return new WeaselBoolean(getVariable(varname) != null);
 			} else {
 				throw new WeaselRuntimeException("Isset() requires String argument, got " + args[0].get().getClass().getSimpleName());
+			}
+
+		}
+		
+		if (functionName.equals("unset")) {
+
+			if (args.length != 1) throw new WeaselRuntimeException("Unset() requires 1 argument, got " + args.length);
+			if (args[0] instanceof WeaselString) {
+				String varname = Calc.toString(args[0]);
+				variables.unsetVariable(varname);
+				globals.unsetVariable(varname);
+				return null;
+			} else {
+				throw new WeaselRuntimeException("Unset() requires String argument, got " + args[0].get().getClass().getSimpleName());
 			}
 
 		}
@@ -387,8 +401,8 @@ public class WeaselEngine implements PC_INBT, IVariableProvider, IFunctionProvid
 		if (functionName.equals("get")) {
 
 			if (args.length != 1) throw new WeaselRuntimeException("get() requires 1 argument, got " + args.length);
-			if (args[0] instanceof WeaselString) {
-				String varname = Calc.toString(args[0]);
+			if (args[0] instanceof WeaselString) {				
+				String varname = Calc.toString(args[0]);				
 				return getVariable(varname);
 			} else {
 				throw new WeaselRuntimeException("get() requires String argument, got " + args[0].get().getClass().getSimpleName());
@@ -398,7 +412,7 @@ public class WeaselEngine implements PC_INBT, IVariableProvider, IFunctionProvid
 
 		if (functionName.equals("set")) {
 
-			if (args.length != 2) throw new WeaselRuntimeException("set() requires 2 arguments, got " + args.length);
+			if (args.length != 2 && args.length != 3) throw new WeaselRuntimeException("set() requires 2 or 3 arguments, got " + args.length);
 			if (args[0] instanceof WeaselString) {
 				String varname = Calc.toString(args[0]);
 				boolean global = args.length==3?Calc.toBoolean(args[2]):false;
@@ -526,6 +540,7 @@ public class WeaselEngine implements PC_INBT, IVariableProvider, IFunctionProvid
 	public List<String> getProvidedFunctionNames() {
 		List<String> list = new ArrayList<String>(0);
 		list.add("isset");
+		list.add("unset");
 		list.add("set");
 		list.add("get");
 		list.add("color");

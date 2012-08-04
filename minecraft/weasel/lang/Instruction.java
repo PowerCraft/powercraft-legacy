@@ -139,10 +139,6 @@ public abstract class Instruction implements PC_INBT {
 				read = new InstructionAssignRetval().readFromNBT(tag);
 				break;
 
-			case UNSET:
-				read = new InstructionUnset().readFromNBT(tag);
-				break;
-
 			case PUSH:
 				read = new InstructionPush().readFromNBT(tag);
 				break;

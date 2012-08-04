@@ -382,6 +382,95 @@ public class PClo_WeaselPluginDiskDrive extends PClo_WeaselPlugin implements PC_
 		return list;
 	}
 	
+	/**
+	 * @return list of names provided in existing libraries
+	 */
+	public List<String> getDiskNames(){
+		List<String> list = new ArrayList<String>(8);
+		List<ItemStack> disks = getDisks();
+		for (int i = 0; i < disks.size(); i++) {
+			ItemStack disk = disks.get(i);
+			if (disk == null) continue;
+			
+			list.add(getName()+"."+(i+1));			
+			int type = getDiskType(i);			
+			list.add(type2string(type)+"."+getDiskName(i));			
+		}
+		return list;
+	}
+	
+	/**
+	 * Get disk type (string text img lib list)
+	 * @param name disk name (img.myImg, or drive.1
+	 * @return the type or null if not found
+	 */
+	public String getDiskType(String name){
+		List<ItemStack> disks = getDisks();
+		for (int i = 0; i < disks.size(); i++) {
+			ItemStack disk = disks.get(i);
+			if (disk == null) continue;
+			
+			if(name.equals(getName()+"."+(i+1))) {
+				return type2string(getDiskType(i));
+			}
+			
+			int type = getDiskType(i);
+			
+			if(name.equals(type2string(type)+"."+getDiskName(i))){
+				return type2string(getDiskType(i));
+			}
+		}
+		return null;
+	}
+	
+	/**
+	 * Get disk type (string text img lib list)
+	 * @param name disk name (img.myImg, or drive.1
+	 * @return the type or null if not found
+	 */
+	public boolean hasDiskLibFunction(String name){
+		List<ItemStack> disks = getDisks();
+		for (int i = 0; i < disks.size(); i++) {
+			ItemStack disk = disks.get(i);
+			if (disk == null) continue;
+			
+			if (WDT.getType(disk) == WDT.LIBRARY) {				
+				List<Instruction> ilist = WDT.getLibraryInstructions(disk);	
+				boolean has = false;
+				for(Instruction in: ilist) {
+					if(in instanceof InstructionFunction) {
+						has |= ((InstructionFunction) in).getFunctionName().equals(name);
+					}
+				}
+				
+				if(has) return true;					
+			}
+		}
+		return false;
+	}
+	
+	private String type2string(int type) {
+		if(type == WDT.EMPTY) {
+			return "empty";
+		}
+		if(type == WDT.IMAGE) {
+			return "img";
+		}
+		if(type == WDT.TEXT) {
+			return "text";
+		}
+		if(type == WDT.VARMAP) {
+			return "map";
+		}
+		if(type == WDT.NUMBERLIST || type == WDT.STRINGLIST) {
+			return "list";
+		}
+		if(type == WDT.LIBRARY) {
+			return "lib";
+		}
+		return null;
+	}
+	
 
 	/**
 	 * @return list of all instructions in a library

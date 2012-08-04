@@ -255,7 +255,7 @@ public class PCde_TileEntityDeco extends PC_TileEntity implements PC_IInventoryW
 		chamber = null;
 
 		//check integrity of the underlying iron pillar
-		for (int j = -1; j >= -20; j--) {
+		for (int j = -1; j >= -255; j--) {
 			PC_CoordI pos = getCoord().offset(0, j, 0);
 			int id = pos.getId(worldObj);
 

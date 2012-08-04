@@ -55,12 +55,12 @@ public class mod_PCcore extends PC_Module implements PC_IActivatorListener {
 	 * compilation, thus all modules keep their compile-time version and aren't
 	 * affected by current core version. Which is good.
 	 */
-	public static final String VERSION = "3.4.8c";
+	public static final String VERSION = "3.4.9b";
 
 	/**
 	 * The serial number used to check whether new update is available.
 	 */
-	public static final int VERSION_SERIAL = 12;
+	public static final int VERSION_SERIAL = 16;
 
 
 
@@ -1149,42 +1149,41 @@ public class mod_PCcore extends PC_Module implements PC_IActivatorListener {
 
 		PC_Logger.fine("Loading translations from updated files.\n");
 
-		for (PC_Module module : PC_Module.modules.values()) {
-
-			PC_Logger.finer("Recreating en_US translation files for module " + module.getModuleName());
-			module.generateTranslationFiles();
-
-			PC_Logger.finer("Loading translations for module " + module.getModuleName());
-			if (module.lang != null) {
-				module.lang.loadTranstalions();
-			}
-			PC_Logger.finer("\n");
-		}
-
-		PC_Logger.fine("All translations loaded.\n");
-
-		PC_Logger.fine("Saving Language Pack version number to property file CORE.cfg");
-
-		PC_PropertyManager cfg = mod_PCcore.instance.cfg();
-
-		cfg.enableValidation(false);
-		cfg.cfgSilent(true);
-
-		cfg.setValue(mod_PCcore.pk_cfgCurrentLangSerVersion, mod_PCcore.updateLangVersionSerial);
-		cfg.apply();
-
-		cfg.enableValidation(true);
-		cfg.cfgSilent(false);
-
-
-		PC_Logger.fine("Forcing ModLoader to update Minecraft's list of translations.");
 		try {
+			for (PC_Module module : PC_Module.modules.values()) {
+	
+				PC_Logger.finer("Recreating en_US translation files for module " + module.getModuleName());
+				module.generateTranslationFiles();
+	
+				PC_Logger.finer("Loading translations for module " + module.getModuleName());
+				if (module.lang != null) {
+					module.lang.loadTranstalions();
+				}
+				PC_Logger.finer("\n");
+			}
+	
+			PC_Logger.fine("All translations loaded.\n");
+	
+			PC_Logger.fine("Saving Language Pack version number to property file CORE.cfg");
+	
+			PC_PropertyManager cfg = mod_PCcore.instance.cfg();
+	
+			cfg.enableValidation(false);
+			cfg.cfgSilent(true);
+	
+			cfg.setValue(mod_PCcore.pk_cfgCurrentLangSerVersion, mod_PCcore.updateLangVersionSerial);
+			cfg.apply();
+	
+			cfg.enableValidation(true);
+			cfg.cfgSilent(false);
+	
+	
+			PC_Logger.fine("Forcing ModLoader to update Minecraft's list of translations.");
+		
 			ModLoader.setPrivateValue(ModLoader.class, null, "langPack", null);
-		} catch (Exception e) {
-			e.printStackTrace();
-			PC_Logger.throwing("mod_PCcore", "onTranslationsUpdated()", e);
 		} catch (Throwable t) {
 			t.printStackTrace();
+			PC_Logger.throwing("mod_PCcore", "onTranslationsUpdated()", t);
 		}
 
 	}
@@ -1214,16 +1213,20 @@ public class mod_PCcore extends PC_Module implements PC_IActivatorListener {
 
 	@Override
 	public boolean onTickInGUI(float f, Minecraft minecraft, GuiScreen gui) {
-		if (gui == null) return true;
-
-		if (gui instanceof GuiMainMenu && optHackSplashes) {
-			PCco_SplashHelper.hackSplashes((GuiMainMenu) gui);
-		}
-
-		// text at the bottom of the screen
-		if (gui instanceof GuiMainMenu) {
-			gui.drawString(gui.fontRenderer, ", PowerCraft " + getVersion(), 2 + gui.fontRenderer.getStringWidth("Minecraft 1.2.5"), gui.height - 10,
-					0xffffffff);
+		try {
+			if (gui == null) return true;
+	
+			if (gui instanceof GuiMainMenu && optHackSplashes) {
+				PCco_SplashHelper.hackSplashes((GuiMainMenu) gui);
+			}
+	
+			// text at the bottom of the screen
+			if (gui instanceof GuiMainMenu) {
+				gui.drawString(gui.fontRenderer, ", PowerCraft " + getVersion(), 2 + gui.fontRenderer.getStringWidth("Minecraft 1.2.5"), gui.height - 10,
+						0xffffffff);
+			}
+		}catch(Throwable t) {
+			t.printStackTrace();
 		}
 		return true;
 
