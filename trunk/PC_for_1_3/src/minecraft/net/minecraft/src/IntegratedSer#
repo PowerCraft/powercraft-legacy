@@ -1,0 +1,34 @@
+***************
+*** 99,105 ****
+        return true;
+     }
+  
+-    protected void func_71217_p() {
+        boolean var1 = this.field_71348_o;
+        this.field_71348_o = this.field_71347_n.func_71752_f();
+        if(!var1 && this.field_71348_o) {
+--- 99,105 ----
+        return true;
+     }
+  
++    public void func_71217_p() {
+        boolean var1 = this.field_71348_o;
+        this.field_71348_o = this.field_71347_n.func_71752_f();
+        if(!var1 && this.field_71348_o) {
+***************
+*** 146,152 ****
+        this.field_71349_l.func_71404_a(p_71228_1_);
+     }
+  
+-    protected CrashReport func_71230_b(CrashReport p_71230_1_) {
+        p_71230_1_.func_71500_a("Type", new CallableType3(this));
+        p_71230_1_.func_71500_a("Is Modded", new CallableIsModded(this));
+        return super.func_71230_b(p_71230_1_);
+--- 146,152 ----
+        this.field_71349_l.func_71404_a(p_71228_1_);
+     }
+  
++    public CrashReport func_71230_b(CrashReport p_71230_1_) {
+        p_71230_1_.func_71500_a("Type", new CallableType3(this));
+        p_71230_1_.func_71500_a("Is Modded", new CallableIsModded(this));
+        return super.func_71230_b(p_71230_1_);
