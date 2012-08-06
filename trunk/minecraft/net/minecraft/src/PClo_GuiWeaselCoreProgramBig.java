@@ -26,7 +26,7 @@ public class PClo_GuiWeaselCoreProgramBig extends PClo_GuiWeaselCoreProgram {
 	@Override
 	public void initGui(PC_IGresGui gui) {
 
-		w = new PC_GresWindow(PC_Lang.tr("pc.gui.weasel.core.title"));
+		w = new PC_GresWindow(PC_Lang.tr("pc.gui.weasel."+(core.isMaster()?"core":"slave")+".title"));
 		w.padding.setTo(6, 8);
 		w.setMinSize(0, 0);
 		w.setAlignH(PC_GresAlign.STRETCH);

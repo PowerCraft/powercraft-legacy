@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-import net.minecraft.src.PC_BitmapUtils.WeaselBitmapAdapter;
 import net.minecraft.src.PC_BitmapUtils.WeaselBitmapProvider;
 import net.minecraft.src.PClo_NetManager.NetworkMember;
 

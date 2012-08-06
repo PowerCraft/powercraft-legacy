@@ -32,7 +32,7 @@ public class PClo_GuiWeaselCoreStatus implements PC_IGresBase {
 
 	@Override
 	public void initGui(PC_IGresGui gui) {
-		w = new PC_GresWindow(PC_Lang.tr("pc.gui.weasel.core.title"));
+		w = new PC_GresWindow(PC_Lang.tr("pc.gui.weasel."+(core.isMaster()?"core":"slave")+".title"));
 		w.setMinSize(380, 230);
 		w.setAlignH(PC_GresAlign.STRETCH);
 		w.setAlignV(PC_GresAlign.TOP);
@@ -137,7 +137,7 @@ public class PClo_GuiWeaselCoreStatus implements PC_IGresBase {
 		txStack.text = (core.getWeaselEngine().dataStack.get().size() + core.getWeaselEngine().systemStack.get().size()) + " "
 				+ PC_Lang.tr("pc.gui.weasel.core.unitObjects");
 		txMemory.text = (core.getWeaselEngine().variables.get().size()) + " " + PC_Lang.tr("pc.gui.weasel.core.unitObjects");
-		txPeripherals.text = (core.getNetwork().size() - 1) + "";
+		txPeripherals.text = (core.isMaster()?(core.getNetwork().size() - 1):"N/A") + "";
 		txStatus.text = core.getError() == null ? "OK" : core.getError().replace("\n", " ");
 		txLength.text = core.getWeaselEngine().instructionList.list.size() + " " + PC_Lang.tr("pc.gui.weasel.core.unitInstructions");
 	}

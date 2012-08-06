@@ -22,6 +22,19 @@ import weasel.obj.WeaselString;
  */
 public abstract class PClo_WeaselPlugin implements PC_INBT, NetworkMember {
 
+	/** who asked for functions. */
+	protected NetworkMember asker;	
+
+	@Override
+	public void setAsker(NetworkMember nm) {
+		this.asker = nm;
+	}
+	
+	@Override
+	public NetworkMember getAsker() {
+		return asker;
+	}
+	
 	/**
 	 * Weasel plugin
 	 * 
@@ -151,6 +164,10 @@ public abstract class PClo_WeaselPlugin implements PC_INBT, NetworkMember {
 	/** Name of the local network this device is connected to. */
 	private String networkName = "";
 
+	/**
+	 * Flag which is set when the device is being destroyed due to pick-up.
+	 * that means not to drop disks.
+	 * */
 	protected boolean isPickedUp = false;
 
 	@Override
@@ -289,6 +306,8 @@ public abstract class PClo_WeaselPlugin implements PC_INBT, NetworkMember {
 		switch (type) {
 			case PClo_WeaselType.CORE:
 				return new PClo_WeaselPluginCore(tew);
+			case PClo_WeaselType.SLAVE:
+				return new PClo_WeaselPluginSlave(tew);
 			case PClo_WeaselType.PORT:
 				return new PClo_WeaselPluginPort(tew);
 			case PClo_WeaselType.DISPLAY:

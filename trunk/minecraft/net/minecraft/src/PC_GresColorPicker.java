@@ -38,7 +38,7 @@ public class PC_GresColorPicker extends PC_GresWidget {
 		int wi = colorArray.length;
 
 		int col = 0;
-		for (hsv[0] = 0; hsv[0] <= 1; hsv[0] += 1F / wi, col++) {
+		for (hsv[0] = 0; hsv[0] <= 1; hsv[0] += 1F / (wi-2), col++) {
 			if (col >= colorArray.length) col = colorArray.length - 1;
 			int i = 0;
 			for (int row = 0; row <= he / 2; row++) {
@@ -55,6 +55,14 @@ public class PC_GresColorPicker extends PC_GresWidget {
 				colorArray[col][row] = clr(cc.getRed(), cc.getGreen(), cc.getBlue());
 			}
 		}
+		
+		for (int row = 0; row < colorArray[0].length; row++) {
+			Color cc = new Color();
+			cc.fromHSB(0, 0, row*(1F/colorArray[0].length));
+			colorArray[colorArray.length-1][row] = clr(cc.getRed(), cc.getGreen(), cc.getBlue());
+			colorArray[colorArray.length-2][row] = clr(cc.getRed(), cc.getGreen(), cc.getBlue());
+		}
+		
 
 		this.setColor(color);
 	}

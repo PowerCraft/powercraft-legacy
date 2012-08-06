@@ -49,7 +49,7 @@ public class PClo_GuiWeaselCoreProgram implements PC_IGresBase {
 	@Override
 	public void initGui(PC_IGresGui gui) {
 
-		w = new PC_GresWindow(PC_Lang.tr("pc.gui.weasel.core.title"));
+		w = new PC_GresWindow(PC_Lang.tr("pc.gui.weasel."+(core.isMaster()?"core":"slave")+".title"));
 		w.setMinSize(380, 230);
 		w.setAlignH(PC_GresAlign.STRETCH);
 		w.setAlignV(PC_GresAlign.TOP);
@@ -216,7 +216,7 @@ public class PClo_GuiWeaselCoreProgram implements PC_IGresBase {
 		// stop
 		if (widget.getId() == 6) {
 			core.stopProgram();
-			txMsg.setText(PC_Lang.tr("pc.gui.weasel.core.msgHalted"));
+			txMsg.setText(PC_Lang.tr("pc.gui.weasel."+(core.isMaster()?"core":"slave")+".msgHalted"));
 
 			return;
 		}
