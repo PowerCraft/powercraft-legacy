@@ -149,6 +149,14 @@ public class PClo_NetManager implements PC_INBT {
 		 * @param newName new network name
 		 */
 		public void onNetworkRenamed(String newName);
+		
+		/**
+		 * This is used when slave tries to get core's functions. It prevents creating infinite loop, since core skips the asker.
+		 * @param nm
+		 */
+		public void setAsker(NetworkMember nm);
+		
+		public NetworkMember getAsker();
 	}
 
 	/**

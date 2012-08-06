@@ -19,6 +19,7 @@ public class PClo_GuiWeaselCoreSettings implements PC_IGresBase {
 	private PC_GresWidget edNetwork, colorBulb, btnRename;
 	private PC_GresWidget txError;
 	private PC_GresColorPicker colorPicker;
+	private PC_GresWidget edName;
 
 
 	/**
@@ -37,7 +38,7 @@ public class PClo_GuiWeaselCoreSettings implements PC_IGresBase {
 
 	@Override
 	public void initGui(PC_IGresGui gui) {
-		w = new PC_GresWindow(PC_Lang.tr("tile.PCloWeasel.core.name"));
+		w = new PC_GresWindow(PC_Lang.tr("tile.PCloWeasel."+(core.isMaster()?"core":"slave")+".name"));
 		w.setMinSize(380, 230);
 		w.setAlignH(PC_GresAlign.STRETCH);
 		w.setAlignV(PC_GresAlign.TOP);
@@ -62,24 +63,43 @@ public class PClo_GuiWeaselCoreSettings implements PC_IGresBase {
 		width = Math.max(width, w.getStringWidth(lNetwork));
 		width = Math.max(width, w.getStringWidth(lColor));
 		width += 40;
+		
+		if(core.isMaster()) {
+	
+			hg = new PC_GresLayoutH().setAlignH(PC_GresAlign.LEFT);
+			hg.add(new PC_GresLabel(lNetwork).setMinWidth(width).setAlignH(PC_GresAlign.RIGHT));
+			hg.add(edNetwork = new PC_GresTextEdit(core.getNetworkName(), 14, PC_GresInputType.TEXT));
+			hg.add(btnRename = new PC_GresButton(PC_Lang.tr("pc.gui.weasel.rename")).setId(1).setMinWidth(40));
+			w.add(hg);
+	
+			hg = new PC_GresLayoutH().setAlignH(PC_GresAlign.LEFT);
+			hg.add(new PC_GresLabel(lColor).setMinWidth(width).setAlignH(PC_GresAlign.RIGHT));
+	
+			PC_GresFrame frame = new PC_GresFrame();
+	
+	
+			frame.add(colorBulb = new PC_GresColor(core.getNetworkColor()));
+			frame.add(colorPicker = new PC_GresColorPicker(core.getNetworkColor().getHex(), 100, 50));
+			hg.add(frame);
+			hg.add(new PC_GresButton(PC_Lang.tr("pc.gui.weasel.core.colorChange")).setId(3).setMinWidth(40));
+			w.add(hg);
+		}else {
+			int colorLabel = 0x000000;
+			int colorValue = 0x000099;
+			
+			hg = new PC_GresLayoutH();
+			hg.add(new PC_GresLabel(PC_Lang.tr("pc.gui.weasel.connectedToNetwork")).setColor(PC_GresWidget.textColorEnabled, colorLabel));
+			hg.add(new PC_GresColor(core.getNetworkColor()));
+			hg.add(new PC_GresLabel(core.getNetworkName()).setColor(PC_GresWidget.textColorEnabled, colorValue));
+			w.add(hg);
 
-		hg = new PC_GresLayoutH().setAlignH(PC_GresAlign.LEFT);
-		hg.add(new PC_GresLabel(lNetwork).setMinWidth(width).setAlignH(PC_GresAlign.RIGHT));
-		hg.add(edNetwork = new PC_GresTextEdit(core.getNetworkName(), 14, PC_GresInputType.TEXT));
-		hg.add(btnRename = new PC_GresButton(PC_Lang.tr("pc.gui.weasel.rename")).setId(1).setMinWidth(40));
-		w.add(hg);
 
-		hg = new PC_GresLayoutH().setAlignH(PC_GresAlign.LEFT);
-		hg.add(new PC_GresLabel(lColor).setMinWidth(width).setAlignH(PC_GresAlign.RIGHT));
-
-		PC_GresFrame frame = new PC_GresFrame();
-
-
-		frame.add(colorBulb = new PC_GresColor(core.getNetworkColor()));
-		frame.add(colorPicker = new PC_GresColorPicker(core.getNetworkColor().getHex(), 100, 50));
-		hg.add(frame);
-		hg.add(new PC_GresButton(PC_Lang.tr("pc.gui.weasel.core.colorChange")).setId(3).setMinWidth(40));
-		w.add(hg);
+			hg = new PC_GresLayoutH();
+			hg.add(new PC_GresLabel(PC_Lang.tr("pc.gui.weasel.slave.slaveName")));
+			hg.add(edName = new PC_GresTextEdit(core.getName(), 14, PC_GresInputType.IDENTIFIER).setWidgetMargin(2));
+			hg.add(btnRename = new PC_GresButton(PC_Lang.tr("pc.gui.weasel.rename")).setId(1).setMinWidth(40));
+			w.add(hg);
+		}
 
 		w.add(txError = new PC_GresLabel("").setWidgetMargin(2).setAlignH(PC_GresAlign.CENTER).setColor(PC_GresWidget.textColorEnabled, 0x000000));
 
@@ -112,6 +132,22 @@ public class PClo_GuiWeaselCoreSettings implements PC_IGresBase {
 
 			w.calcSize();
 			return;
+		}	
+
+		if (widget == edName) {
+			String name = edName.text.trim();
+			if (name.length() == 0) {
+				txError.text = PC_Lang.tr("pc.gui.weasel.errDeviceNameTooShort");
+				btnRename.enabled = false;
+			} else if (core.getNetwork() != null && core.getNetwork().getMembers().get(name) != null) {
+				txError.text = PC_Lang.tr("pc.gui.weasel.errDeviceNameAlreadyUsed", name);
+				btnRename.enabled = false;
+			} else {
+				txError.text = "";
+				btnRename.enabled = true;
+			}
+			w.calcSize();
+			return;
 		}
 
 		if (widget.getId() == 100) {
@@ -129,13 +165,17 @@ public class PClo_GuiWeaselCoreSettings implements PC_IGresBase {
 		}
 
 		if (widget.getId() == 1) {
-			String name = edNetwork.text.trim();
-
-			txError.text = PC_Lang.tr("pc.gui.weasel.core.msgNetworkRenamed", new String[] { name });
-			core.renameNetwork(name);
-
-			w.calcSize();
-
+			if(core.isMaster()) {
+				String name = edNetwork.text.trim();
+	
+				txError.text = PC_Lang.tr("pc.gui.weasel.core.msgNetworkRenamed", new String[] { name });
+				core.renameNetwork(name);
+	
+				w.calcSize();
+			}else {
+				String name = edName.text.trim();
+				core.setMemberName(name);
+			}
 			return;
 		}
 

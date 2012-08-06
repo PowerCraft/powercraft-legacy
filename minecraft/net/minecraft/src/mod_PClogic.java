@@ -422,6 +422,7 @@ public class mod_PClogic extends PC_Module {
 		map.put("tile.PCloWeasel.name", "Weasel Device");
 
 		map.put("tile.PCloWeasel.core.name", "Weasel Controller");
+		map.put("tile.PCloWeasel.slave.name", "Slave Weasel Controller");
 		map.put("tile.PCloWeasel.port.name", "Wireless Port");
 		map.put("tile.PCloWeasel.display.name", "Wireless Display");
 		map.put("tile.PCloWeasel.sound.name", "Wireless Speaker");
@@ -437,6 +438,7 @@ public class mod_PClogic extends PC_Module {
 		map.put("pc.weasel.diskManager.desc", "Weasel disk editor");
 		map.put("pc.weasel.diskDrive.desc", "Weasel disk reader");
 		map.put("pc.weasel.terminal.desc", "command interface");
+		map.put("pc.weasel.slave.desc", "slave co-processor");
 
 		map.put("pc.weasel.activatorGetNetwork", "Network \"%s\" assigned to activation crystal.");
 		map.put("pc.weasel.activatorSetNetwork", "Device connected to network \"%s\".");
@@ -455,6 +457,7 @@ public class mod_PClogic extends PC_Module {
 		map.put("pc.gui.weasel.sound.speakerName", "Speaker name:");
 		map.put("pc.gui.weasel.drive.driveName", "Drive name:");
 		map.put("pc.gui.weasel.terminal.terminalName", "Terminal name:");
+		map.put("pc.gui.weasel.slave.slaveName", "Controller name:");
 
 
 		map.put("pc.gui.weasel.core.program", "Program");
@@ -473,6 +476,7 @@ public class mod_PClogic extends PC_Module {
 		map.put("pc.gui.weasel.core.colorLabel", "Network color:");
 
 		map.put("pc.gui.weasel.core.title", "Weasel Controller");
+		map.put("pc.gui.weasel.slave.title", "Slave Weasel Controller");
 		map.put("pc.gui.weasel.diskDrive.title", "Weasel Disk Drive");
 		map.put("pc.gui.weasel.port.title", "Expansion port for Weasel Controller");
 		map.put("pc.gui.weasel.display.title", "Display for Weasel Controller");
@@ -507,6 +511,7 @@ public class mod_PClogic extends PC_Module {
 		map.put("pc.gui.weasel.core.msgNoErrors", "Program has no syntax errors.");
 		map.put("pc.gui.weasel.core.msgAllUndone", "All changes reverted.");
 		map.put("pc.gui.weasel.core.msgHalted", "Program execution halted, network restarted.");
+		map.put("pc.gui.weasel.slave.msgHalted", "Program execution halted.");
 
 		map.put("pc.radioRemote.connected", "Portable transmitter connected to channel \"%s\".");
 		map.put("pc.radioRemote.desc", "Channel: %s");
@@ -778,6 +783,16 @@ public class mod_PClogic extends PC_Module {
 				new ItemStack(weaselDevice, 1, PClo_WeaselType.CORE),
 				new Object[] { "SRS", "RCR", "SRS",
 					'S', new ItemStack(Block.stairSingle,1,0), 'R', Item.redstone, 'C', mod_PCcore.powerCrystal });
+		
+
+		ModLoader.addShapelessRecipe(
+				new ItemStack(weaselDevice, 1, PClo_WeaselType.SLAVE),
+				new Object[] { new ItemStack(weaselDevice, 1, PClo_WeaselType.CORE) });
+
+		ModLoader.addShapelessRecipe(
+				new ItemStack(weaselDevice, 1, PClo_WeaselType.CORE),
+				new Object[] { new ItemStack(weaselDevice, 1, PClo_WeaselType.SLAVE) });
+		
 		
 		ModLoader.addRecipe(
 				new ItemStack(weaselDevice, 1, PClo_WeaselType.PORT),

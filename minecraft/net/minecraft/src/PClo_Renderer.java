@@ -1,5 +1,7 @@
 package net.minecraft.src;
 
+import org.lwjgl.opengl.GL11;
+
 
 /**
  * PowerCraft logic module renderer (power crystals) [template file, no function
@@ -154,11 +156,12 @@ public class PClo_Renderer {
 
 		float px = 0.0625F;
 
-		switch (meta) {
+		switch (meta) {			
 			case PClo_WeaselType.CORE:
+			case PClo_WeaselType.SLAVE:	
 				//floor
 				block.setBlockBounds(0, 0, 0, 16 * px, 3 * px, 16 * px);
-				PC_Renderer.renderInvBoxWithTextures(renderblocks, block, new int[] { 6, 224, 5, 5, 5, 5 });
+				PC_Renderer.renderInvBoxWithTextures(renderblocks, block, new int[] { 6, meta == PClo_WeaselType.SLAVE?208:224, 5, 5, 5, 5 });
 
 				//chip
 				block.setBlockBounds(4 * px, 3 * px, 3 * px, 12 * px, 5 * px, 13 * px);

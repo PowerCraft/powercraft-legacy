@@ -191,10 +191,18 @@ public class PClo_ModelWeasel extends ModelBase {
 	 */
 	public void renderDevice() {
 
-		if (deviceType == PClo_WeaselType.CORE) {
+		if (deviceType == PClo_WeaselType.CORE || deviceType == PClo_WeaselType.SLAVE) {
 			core[0].render(0.0625F);
 			core[1].render(0.0625F);
+			if(deviceType == PClo_WeaselType.CORE) {
+				GL11.glColor4f(1.0F, 0.4F, 0.4F, 1.0F);
+			}else {				
+				GL11.glColor4f(0.8F, 0.8F, 1.0F, 1.0F);
+			}
 			core[2].render(0.0625F);
+			
+			GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
+
 		} else if (deviceType == PClo_WeaselType.PORT) {
 			port[0].render(0.0625F);
 			if (flag1) {
@@ -241,7 +249,7 @@ public class PClo_ModelWeasel extends ModelBase {
 	 */
 	public void renderColorMark() {
 
-		if (deviceType == PClo_WeaselType.CORE) {
+		if (deviceType == PClo_WeaselType.CORE || deviceType == PClo_WeaselType.SLAVE) {
 			core[3].render(0.0625F);
 		} else if (deviceType == PClo_WeaselType.PORT) {
 			port[3].render(0.0625F);
