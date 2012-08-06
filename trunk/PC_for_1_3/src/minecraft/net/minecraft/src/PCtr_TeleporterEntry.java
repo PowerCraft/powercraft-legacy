@@ -100,14 +100,14 @@ public class PCtr_TeleporterEntry {
 		if (mc == null || world == null) {
 			return null;
 		}
-		return (((SaveHandler) world.saveHandler).getSaveDirectory()).toString().concat("/teleporter/");
+		return world.saveHandler.getSaveDirectoryName().concat("/teleporter/");
 	}
 
 	private String getSavePath(World world) {
 		if (mc == null || world == null) {
 			return null;
 		}
-		return (((SaveHandler) world.saveHandler).getSaveDirectory()).toString().concat("/teleporter/").concat(getIdentifier()).concat(".dat");
+		return world.saveHandler.getSaveDirectoryName().concat("/teleporter/").concat(getIdentifier()).concat(".dat");
 	}
 
 	public int getDimension() {

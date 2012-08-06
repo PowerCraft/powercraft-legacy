@@ -58,7 +58,7 @@ public class PCtr_BlockBeltSeparator extends BlockContainer implements PC_IBlock
 	}
 
 	@Override
-	public boolean blockActivated(World world, int i, int j, int k, EntityPlayer entityplayer) {
+	public boolean onBlockActivated(World world, int i, int j, int k, EntityPlayer entityplayer, int par6, float par7, float par8, float par9) {
 		if (PCtr_BeltBase.blockActivated(world, i, j, k, entityplayer)) {
 			return true;
 		} else {
@@ -78,7 +78,7 @@ public class PCtr_BlockBeltSeparator extends BlockContainer implements PC_IBlock
 	}
 
 	@Override
-	public TileEntity getBlockEntity() {
+	public TileEntity createNewTileEntity(World world) {
 		return new PCtr_TileEntitySeparationBelt();
 	}
 
@@ -95,14 +95,14 @@ public class PCtr_BlockBeltSeparator extends BlockContainer implements PC_IBlock
 	}
 
 	@Override
-	public void onBlockRemoval(World world, int i, int j, int k) {
+	public void breakBlock(World world, int i, int j, int k, int par5, int par6) {
 		PCtr_TileEntitySeparationBelt te = (PCtr_TileEntitySeparationBelt) world.getBlockTileEntity(i, j, k);
 
 		if (te != null) {
 			PC_InvUtils.dropInventoryContents(te, world, te.getCoord());
 		}
 
-		super.onBlockRemoval(world, i, j, k);
+		super.breakBlock(world, i, j, k, par5, par6);
 	}
 
 	@Override
@@ -190,7 +190,7 @@ public class PCtr_BlockBeltSeparator extends BlockContainer implements PC_IBlock
 	// collision and other stuff
 	@Override
 	public AxisAlignedBB getCollisionBoundingBoxFromPool(World world, int i, int j, int k) {
-		return AxisAlignedBB.getBoundingBoxFromPool(i, 0.0F + j, k, (i + 1), (j + PCtr_BeltBase.HEIGHT_COLLISION + 0.0F), (k + 1));
+		return AxisAlignedBB.getBoundingBox(i, 0.0F + j, k, (i + 1), (j + PCtr_BeltBase.HEIGHT_COLLISION + 0.0F), (k + 1));
 	}
 
 	@Override
@@ -202,7 +202,7 @@ public class PCtr_BlockBeltSeparator extends BlockContainer implements PC_IBlock
 	public AxisAlignedBB getSelectedBoundingBoxFromPool(World world, int i, int j, int k) {
 		float f = 0;
 		f = 0.0F + PCtr_BeltBase.HEIGHT_SELECTED;
-		return AxisAlignedBB.getBoundingBoxFromPool(i, 0.0F + j, k, (i + 1), j + f, (float) k + 1);
+		return AxisAlignedBB.getBoundingBox(i, 0.0F + j, k, (i + 1), j + f, (float) k + 1);
 	}
 
 	@Override

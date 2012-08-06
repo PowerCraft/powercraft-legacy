@@ -39,7 +39,7 @@ public class PC_FakePlayer extends EntityPlayer {
 		craftingInventory = inventorySlots;
 		yOffset = 1.62F;
 		entityType = "humanoid";
-		field_9353_B = 180F;
+		field_70741_aB = 180.0F;
 		fireResistance = 20;
 		texture = "";
 		username = "";
@@ -141,9 +141,6 @@ public class PC_FakePlayer extends EntityPlayer {
 	public void displayGUIBrewingStand(TileEntityBrewingStand tileentitybrewingstand) {}
 
 	@Override
-	public void useCurrentItemOnEntity(Entity entity) {}
-
-	@Override
 	public ItemStack getCurrentEquippedItem() {
 		return null;
 	}
@@ -170,12 +167,6 @@ public class PC_FakePlayer extends EntityPlayer {
 
 	@Override
 	public void respawnPlayer() {}
-
-	@Override
-	public void func_6420_o() {}
-
-	@Override
-	public void onItemStackChanged(ItemStack itemstack) {}
 
 	@Override
 	public void setDead() {
@@ -295,5 +286,11 @@ public class PC_FakePlayer extends EntityPlayer {
 	public void travelToTheEnd(int i) {}
 
 	@Override
-	public void copyPlayer(EntityPlayer entityplayer) {}
+	public void sendChatToPlayer(String var1) {
+	}
+
+	@Override
+	public boolean canCommandSenderUseCommand(String var1) {
+		return false;
+	}
 }

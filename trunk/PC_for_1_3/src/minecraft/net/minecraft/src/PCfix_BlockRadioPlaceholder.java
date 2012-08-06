@@ -64,7 +64,7 @@ public class PCfix_BlockRadioPlaceholder extends BlockContainer implements PC_IB
 	}
 
 	@Override
-	public TileEntity getBlockEntity() {
+	public TileEntity createNewTileEntity(World world) {
 		return new PCfix_TileEntityRadioPlaceholder();
 	}
 

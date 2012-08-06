@@ -10,7 +10,7 @@ import org.lwjgl.input.Keyboard;
 /**
  * Block replacing machine GUI
  * 
- * @author XOR19, Rapus, MightyPork
+ * @author COR19, Rapus, MightyPork
  * @copy (c) 2012
  */
 public class PCma_GuiReplacer implements PC_IGresBase {

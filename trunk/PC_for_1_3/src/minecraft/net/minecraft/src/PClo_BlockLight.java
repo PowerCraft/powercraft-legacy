@@ -37,7 +37,7 @@ public class PClo_BlockLight extends BlockContainer implements PC_ISwapTerrain, 
 	}
 
 	@Override
-	public TileEntity getBlockEntity() {
+	public TileEntity createNewTileEntity(World world) {
 		return new PClo_TileEntityLight();
 	}
 
@@ -103,7 +103,7 @@ public class PClo_BlockLight extends BlockContainer implements PC_ISwapTerrain, 
 	}
 
 	@Override
-	public void onBlockPlaced(World world, int i, int j, int k, int l) {
+	public void onBlockPlacedBy(World world, int i, int j, int k, EntityLiving player) {
 //		int i1 = 0;
 //
 //		if (l == 1 && world.isBlockNormalCube(i, j - 1, k)) {
@@ -122,8 +122,8 @@ public class PClo_BlockLight extends BlockContainer implements PC_ISwapTerrain, 
 //			i1 = 5;
 //		}
 		int i1 = 0;
-
-		if (l == 1) {
+		/**@todo l=??*/
+		/*if (l == 1) {
 			i1 = 0;
 		}
 		if (l == 2) {
@@ -137,7 +137,7 @@ public class PClo_BlockLight extends BlockContainer implements PC_ISwapTerrain, 
 		}
 		if (l == 0) {
 			i1 = 5;
-		}
+		}*/
 		world.setBlockMetadataWithNotify(i, j, k, i1);
 
 		PClo_TileEntityLight tileentity = getTE(world, i, j, k);
@@ -171,7 +171,7 @@ public class PClo_BlockLight extends BlockContainer implements PC_ISwapTerrain, 
 	private int[] meta2side = { 1, 2, 3, 4, 5, 0 };
 
 	@Override
-	public boolean blockActivated(World world, int i, int j, int k, EntityPlayer entityplayer) {
+	public boolean onBlockActivated(World world, int i, int j, int k, EntityPlayer entityplayer, int par6, float par7, float par8, float par9) {
 		return false;
 	}
 
@@ -252,7 +252,7 @@ public class PClo_BlockLight extends BlockContainer implements PC_ISwapTerrain, 
 
 
 	@Override
-	public void onBlockRemoval(World world, int i, int j, int k) {
+	public void breakBlock(World world, int i, int j, int k, int par5, int par6) {
 		if (!changingState) {
 			TileEntity te = world.getBlockTileEntity(i, j, k);
 			if (te != null) {
@@ -263,7 +263,7 @@ public class PClo_BlockLight extends BlockContainer implements PC_ISwapTerrain, 
 				}
 			}
 		}
-		super.onBlockRemoval(world, i, j, k);
+		super.breakBlock(world, i, j, k, par5, par6);
 	}
 
 	/**

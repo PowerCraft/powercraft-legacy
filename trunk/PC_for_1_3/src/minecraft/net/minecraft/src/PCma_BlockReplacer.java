@@ -89,7 +89,7 @@ public class PCma_BlockReplacer extends BlockContainer implements PC_ISwapTerrai
 	}
 
 	@Override
-	public boolean blockActivated(World world, int i, int j, int k, EntityPlayer entityplayer) {
+	public boolean onBlockActivated(World world, int i, int j, int k, EntityPlayer entityplayer, int par6, float par7, float par8, float par9) {
 
 		ItemStack ihold = entityplayer.getCurrentEquippedItem();
 		if (ihold != null) {
@@ -249,7 +249,7 @@ public class PCma_BlockReplacer extends BlockContainer implements PC_ISwapTerrai
 		if (itemstack.itemID == Block.lockedChest.blockID) {
 			pos.setBlockNoNotify(world, 0, 0);
 			world.removeBlockTileEntity(pos.x, pos.y, pos.z);
-			if (!Item.itemsList[Block.lockedChest.blockID].onItemUse(itemstack, new PC_FakePlayer(world), world, pos.x, pos.y + 1, pos.z, 0))
+			if (!Item.itemsList[Block.lockedChest.blockID].tryPlaceIntoWorld(itemstack, new PC_FakePlayer(world), world, pos.x, pos.y + 1, pos.z, 0, 0.0f, 0.0f, 0.0f))
 				return false;
 			itemstack.stackSize--;
 			if (meta != -1) {
@@ -275,7 +275,7 @@ public class PCma_BlockReplacer extends BlockContainer implements PC_ISwapTerrai
 		if (pos.setBlockNoNotify(world, iblock.getBlockID(), iblock.getMetadata(itemstack.getItemDamage()))) {
 			if (pos.getId(world) == iblock.getBlockID()) {
 				world.notifyBlockChange(pos.x, pos.y, pos.z, iblock.getBlockID());
-				Block.blocksList[iblock.getBlockID()].onBlockPlaced(world, pos.x, pos.y, pos.z, 0);
+				/** @todo Block.blocksList[iblock.getBlockID()].onBlockPlacedBy(world, pos.x, pos.y, pos.z, 0);*/
 			}
 
 			if (meta != -1 && !iblock.getHasSubtypes()) {
@@ -403,7 +403,7 @@ public class PCma_BlockReplacer extends BlockContainer implements PC_ISwapTerrai
 	}
 
 	@Override
-	public TileEntity getBlockEntity() {
+	public TileEntity createNewTileEntity(World world) {
 		return new PCma_TileEntityReplacer();
 	}
 
@@ -413,7 +413,7 @@ public class PCma_BlockReplacer extends BlockContainer implements PC_ISwapTerrai
 	}
 
 	@Override
-	public void onBlockRemoval(World world, int i, int j, int k) {
+	public void breakBlock(World world, int i, int j, int k, int par5, int par6) {
 		PCma_TileEntityReplacer tileentity = (PCma_TileEntityReplacer) world.getBlockTileEntity(i, j, k);
 		Random random = new Random();
 		if (tileentity != null) {
@@ -429,7 +429,7 @@ public class PCma_BlockReplacer extends BlockContainer implements PC_ISwapTerrai
 				world.spawnEntityInWorld(entityitem);
 			}
 		}
-		super.onBlockRemoval(world, i, j, k);
+		super.breakBlock(world, i, j, k, par5, par6);
 	}
 
 	@Override

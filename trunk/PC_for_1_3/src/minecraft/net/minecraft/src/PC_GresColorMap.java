@@ -94,7 +94,9 @@ public class PC_GresColorMap extends PC_GresWidget {
 	 * @return mouse position where event happened
 	 */
 	public PC_CoordI getLastMousePos() {
-		PC_CoordI co = lastMousePos.copy();
+		PC_CoordI co = new PC_CoordI();
+		if(lastMousePos!=null)
+			co.setTo(lastMousePos);
 		return new PC_CoordI(co.x / px, co.y / px);
 	}
 

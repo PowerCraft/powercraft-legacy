@@ -24,7 +24,7 @@ public class PClo_BlockPulsar extends BlockContainer implements PC_IBlockType {
 	}
 
 	@Override
-	public TileEntity getBlockEntity() {
+	public TileEntity createNewTileEntity(World world) {
 		return new PClo_TileEntityPulsar();
 	}
 
@@ -67,7 +67,7 @@ public class PClo_BlockPulsar extends BlockContainer implements PC_IBlockType {
 	}
 
 	@Override
-	public boolean blockActivated(World world, int i, int j, int k, EntityPlayer player) {
+	public boolean onBlockActivated(World world, int i, int j, int k, EntityPlayer player, int par6, float par7, float par8, float par9) {
 		ItemStack ihold = player.getCurrentEquippedItem();
 		if (ihold != null) {
 			if (ihold.getItem() instanceof ItemBlock && ihold.getItem().shiftedIndex != blockID) {

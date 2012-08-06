@@ -30,7 +30,7 @@ public class PCma_ItemBlockOptical extends ItemBlock {
 	}
 
 	@Override
-	public boolean onItemUse(ItemStack itemstack, EntityPlayer entityplayer, World world, int i, int j, int k, int l) {
+	public boolean tryPlaceIntoWorld(ItemStack itemstack, EntityPlayer entityplayer, World world, int i, int j, int k, int l, float par8, float par9, float par10) {
 		int id = world.getBlockId(i, j, k);
 
 		if (id == Block.snow.blockID) {
@@ -73,7 +73,7 @@ public class PCma_ItemBlockOptical extends ItemBlock {
 			return false;
 		}
 
-		if (world.canBlockBePlacedAt(getBlockID(), i, j, k, false, l)) {
+		if (world.canPlaceEntityOnSide(getBlockID(), i, j, k, false, l, entityplayer)) {
 			Block block = mod_PCmachines.optical;
 			if (world.setBlock(i, j, k, block.blockID)) {
 
@@ -94,7 +94,7 @@ public class PCma_ItemBlockOptical extends ItemBlock {
 				}
 				world.setBlockTileEntity(i, j, k, teo);
 
-				mod_PCmachines.optical.onBlockPlaced(world, i, j, k, i);
+				//mod_PCmachines.optical.onBlockPlaced(world, i, j, k, i);
 				mod_PCmachines.optical.onBlockPlacedBy(world, i, j, k, entityplayer);
 				world.playSoundEffect(i + 0.5F, j + 0.5F, k + 0.5F, block.stepSound.getStepSound(), (block.stepSound.getVolume() + 1.0F) / 2.0F,
 						block.stepSound.getPitch() * 0.8F);

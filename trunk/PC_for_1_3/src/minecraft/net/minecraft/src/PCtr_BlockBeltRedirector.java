@@ -46,7 +46,7 @@ public class PCtr_BlockBeltRedirector extends BlockContainer implements PC_IBloc
 	}
 
 	@Override
-	public boolean blockActivated(World world, int i, int j, int k, EntityPlayer entityplayer) {
+	public boolean onBlockActivated(World world, int i, int j, int k, EntityPlayer entityplayer, int par6, float par7, float par8, float par9) {
 		return PCtr_BeltBase.blockActivated(world, i, j, k, entityplayer);
 	}
 
@@ -156,7 +156,7 @@ public class PCtr_BlockBeltRedirector extends BlockContainer implements PC_IBloc
 
 	@Override
 	public AxisAlignedBB getCollisionBoundingBoxFromPool(World world, int i, int j, int k) {
-		return AxisAlignedBB.getBoundingBoxFromPool(i, 0.0F + j, k, (i + 1), (j + PCtr_BeltBase.HEIGHT_COLLISION + 0.0F), (k + 1));
+		return AxisAlignedBB.getBoundingBox(i, 0.0F + j, k, (i + 1), (j + PCtr_BeltBase.HEIGHT_COLLISION + 0.0F), (k + 1));
 	}
 
 	@Override
@@ -168,7 +168,7 @@ public class PCtr_BlockBeltRedirector extends BlockContainer implements PC_IBloc
 	public AxisAlignedBB getSelectedBoundingBoxFromPool(World world, int i, int j, int k) {
 		float f = 0;
 		f = 0.0F + PCtr_BeltBase.HEIGHT_SELECTED;
-		return AxisAlignedBB.getBoundingBoxFromPool(i, 0.0F + j, k, (i + 1), j + f, (float) k + 1);
+		return AxisAlignedBB.getBoundingBox(i, 0.0F + j, k, (i + 1), j + f, (float) k + 1);
 	}
 
 	@Override
@@ -252,7 +252,7 @@ public class PCtr_BlockBeltRedirector extends BlockContainer implements PC_IBloc
 	}
 
 	@Override
-	public TileEntity getBlockEntity() {
+	public TileEntity createNewTileEntity(World world) {
 		return new PCtr_TileEntityRedirectionBelt();
 	}
 

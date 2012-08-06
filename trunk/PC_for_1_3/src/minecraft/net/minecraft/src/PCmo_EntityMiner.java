@@ -29,6 +29,8 @@ import weasel.obj.WeaselString;
  * @author MightyPork
  * @copy (c) 2012
  */
+
+/** TODO change stairsBrick to stairsBrick*/
 public class PCmo_EntityMiner extends Entity implements PC_IInventoryWrapper {
 
 	public static final int LTORCH = 3;
@@ -1171,11 +1173,14 @@ public class PCmo_EntityMiner extends Entity implements PC_IInventoryWrapper {
 						if (placed == null) {
 							return new WeaselBoolean(false);
 						} else {
+							placed.func_77941_a(worldObj, pos.x, pos.y + 1, pos.z, 0, fakePlayer);
+							return new WeaselBoolean(true);
+							/** TODO right??
 							if (!placed.useItem(fakePlayer, worldObj, pos.x, pos.y + 1, pos.z, 0)) {
 								PC_InvUtils.addItemStackToInventory(cargo, placed);
 							} else {
 								return new WeaselBoolean(true);
-							}
+							}*/
 						}
 					}
 
@@ -1186,16 +1191,23 @@ public class PCmo_EntityMiner extends Entity implements PC_IInventoryWrapper {
 
 							if (stack.itemID == numid) {
 								ItemStack placed = cargo.decrStackSize(i, 1);
+								placed.func_77941_a(worldObj, pos.x, pos.y + 1, pos.z, 0, fakePlayer);
+								return new WeaselBoolean(true);
+								/** TODO right??
 								if (!placed.useItem(fakePlayer, worldObj, pos.x, pos.y + 1, pos.z, 0)) {
 									PC_InvUtils.addItemStackToInventory(cargo, placed);
 								} else {
 									return new WeaselBoolean(true);
-								}
+								}*/
 							}
 						}
 						
 						if(numid == Block.cobblestone.blockID && canMakeCobble()) {
+							(new ItemStack(Block.cobblestone)).func_77941_a(worldObj, pos.x, pos.y + 1, pos.z, 0, fakePlayer);
+							return new WeaselBoolean(true);
+							/** TODO right??
 							return new WeaselBoolean((new ItemStack(Block.cobblestone)).useItem(fakePlayer, worldObj, pos.x, pos.y + 1, pos.z, 0));							
+							*/
 						}
 							
 					}
@@ -1976,7 +1988,7 @@ public class PCmo_EntityMiner extends Entity implements PC_IInventoryWrapper {
 
 			int id = is.itemID;
 
-			if (id == Block.stairSingle.blockID || id == Block.slowSand.blockID) return false;
+			if (id == Block.stairsBrick.blockID || id == Block.slowSand.blockID) return false;
 
 			if (PC_BlockUtils.hasFlag(is, "NO_BUILD")) {
 				return false;
@@ -2138,7 +2150,7 @@ public class PCmo_EntityMiner extends Entity implements PC_IInventoryWrapper {
 					if (isItemGoodForHalfStep(cargo.getStackInSlot(i), pass)) {
 						ItemStack returned = cargo.decrStackSize(i, 1);
 
-						if (returned.itemID == Block.stairSingle.blockID) {
+						if (returned.itemID == Block.stairsBrick.blockID) {
 							return returned;
 						}
 
@@ -2151,7 +2163,7 @@ public class PCmo_EntityMiner extends Entity implements PC_IInventoryWrapper {
 
 			if (cfg.cobbleMake && st.level >= LCOBBLE) {
 				if (cargo.hasItem(Item.bucketLava.shiftedIndex) && cargo.hasItem(Item.bucketWater.shiftedIndex)) {
-					return new ItemStack(Block.stairSingle, 1, 3);
+					return new ItemStack(Block.stairsBrick, 1, 3);
 				}
 			}
 
@@ -2164,30 +2176,30 @@ public class PCmo_EntityMiner extends Entity implements PC_IInventoryWrapper {
 			int dmg = stack.getItemDamage();
 
 			if (id == Block.stone.blockID) {
-				return new ItemStack(Block.stairSingle, 1, 0);
+				return new ItemStack(Block.stairsBrick, 1, 0);
 			}
 
 			if (id == Block.sandStone.blockID) {
-				return new ItemStack(Block.stairSingle, 1, 1);
+				return new ItemStack(Block.stairsBrick, 1, 1);
 			}
 
 			if (id == Block.planks.blockID) {
-				return new ItemStack(Block.stairSingle, 1, 2);
+				return new ItemStack(Block.stairsBrick, 1, 2);
 			}
 
 			if (id == Block.cobblestone.blockID) {
-				return new ItemStack(Block.stairSingle, 1, 3);
+				return new ItemStack(Block.stairsBrick, 1, 3);
 			}
 
 			if (id == Block.brick.blockID) {
-				return new ItemStack(Block.stairSingle, 1, 4);
+				return new ItemStack(Block.stairsBrick, 1, 4);
 			}
 
 			if (id == Block.stoneBrick.blockID) {
-				return new ItemStack(Block.stairSingle, 1, 5);
+				return new ItemStack(Block.stairsBrick, 1, 5);
 			}
 
-			return new ItemStack(Block.stairSingle, 1, 0);
+			return new ItemStack(Block.stairsBrick, 1, 0);
 		}
 
 		/**
@@ -2205,7 +2217,7 @@ public class PCmo_EntityMiner extends Entity implements PC_IInventoryWrapper {
 			int id = is.itemID;
 
 			if (pass == 0) {
-				return id == Block.cobblestone.blockID || id == Block.stairSingle.blockID;
+				return id == Block.cobblestone.blockID || id == Block.stairsBrick.blockID;
 			}
 
 			if (pass == 1) {
@@ -3324,7 +3336,7 @@ public class PCmo_EntityMiner extends Entity implements PC_IInventoryWrapper {
 	private boolean checkIfAir(PC_CoordI pos, boolean lower) {
 		int id = pos.getId(worldObj);
 
-		if (lower && id == Block.stairSingle.blockID) {
+		if (lower && id == Block.stairsBrick.blockID) {
 			return true;
 		}
 
@@ -3656,7 +3668,7 @@ public class PCmo_EntityMiner extends Entity implements PC_IInventoryWrapper {
 
 			// set on floor if not building stairs.
 			if (st.realCommand != PCmo_Command.UP) {
-				Block.torchWood.onBlockPlaced(worldObj, rightX, y, rightZ, 1);
+				Block.torchWood.onBlockPlacedBy(worldObj, rightX, y, rightZ, fakePlayer);
 			}
 			cargo.consumeItem(Block.torchWood.blockID, -1, 1);
 			return;
@@ -3667,7 +3679,7 @@ public class PCmo_EntityMiner extends Entity implements PC_IInventoryWrapper {
 
 			// set on floor if not building stairs.
 			if (st.realCommand != PCmo_Command.UP) {
-				Block.torchWood.onBlockPlaced(worldObj, leftX, y, leftZ, 1);
+				Block.torchWood.onBlockPlacedBy(worldObj, leftX, y, leftZ, fakePlayer);
 			}
 			cargo.consumeItem(Block.torchWood.blockID, -1, 1);
 			return;

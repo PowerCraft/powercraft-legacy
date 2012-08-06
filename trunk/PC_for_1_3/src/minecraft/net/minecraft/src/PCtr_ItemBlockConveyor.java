@@ -23,7 +23,7 @@ public class PCtr_ItemBlockConveyor extends ItemBlock {
 	}
 
 	@Override
-	public boolean onItemUse(ItemStack itemstack, EntityPlayer entityplayer, World world, int i, int j, int k, int l) {
+	public boolean func_77660_a(ItemStack itemstack, World world, int i, int j, int k, int l, EntityLiving entityplayer) {
 		int id = world.getBlockId(i, j, k);
 
 		if (id == Block.snow.blockID) {
@@ -57,10 +57,11 @@ public class PCtr_ItemBlockConveyor extends ItemBlock {
 		if (itemstack.stackSize == 0) {
 			return false;
 		}
-
-		if (!entityplayer.canPlayerEdit(i, j, k)) {
-			return false;
-		}
+		
+		if (entityplayer instanceof EntityPlayer)
+			if (!((EntityPlayer)entityplayer).canPlayerEdit(i, j, k)) {
+				return false;
+			}
 
 
 
@@ -88,11 +89,11 @@ public class PCtr_ItemBlockConveyor extends ItemBlock {
 			return false;
 		}
 
-		if (world.canBlockBePlacedAt(getBlockID(), i, j, k, false, l)) {
+		if (world.canPlaceEntityOnSide(getBlockID(), i, j, k, false, l, entityplayer)) {
 			Block block = Block.blocksList[getBlockID()];
 			if (world.setBlock(i, j, k, block.blockID)) {
 				
-				block.onBlockPlaced(world, i, j, k, l);
+				//block.onBlockPlaced(world, i, j, k, l);
 				block.onBlockPlacedBy(world, i, j, k, entityplayer);
 
 				world.markBlocksDirty(i, j, k, i, j, k);

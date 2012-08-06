@@ -198,7 +198,8 @@ public class PCma_TileEntityBlockBuilder extends PC_TileEntity implements IInven
 			int dmgOrig = itemstack.getItemDamage();
 			int sizeOrig = itemstack.stackSize;
 
-			if (itemstack.getItem().onItemUse(itemstack, fakeplayer, worldObj, x + incX, y, z + incZ, 1)) {
+			/** TODO three last arguments*/
+			if (itemstack.getItem().tryPlaceIntoWorld(itemstack, fakeplayer, worldObj, x + incX, y, z + incZ, 1, 0.0f, 0.0f, 0.0f)) {
 
 				if (itemstack.getItem() instanceof ItemMonsterPlacer) {
 					return 1;
@@ -230,7 +231,8 @@ public class PCma_TileEntityBlockBuilder extends PC_TileEntity implements IInven
 			int dmg1 = itemstack.getItemDamage();
 			int size1 = itemstack.stackSize;
 
-			if (itemstack.getItem().onItemUse(itemstack, fakeplayer, worldObj, x + incX, y - 1, z + incZ, 1)) {
+			/** TODO three last arguments*/
+			if (itemstack.getItem().tryPlaceIntoWorld(itemstack, fakeplayer, worldObj, x + incX, y - 1, z + incZ, 1, 0.0f, 0.0f, 0.0f)) {
 
 				if (itemstack.getItem() instanceof ItemMonsterPlacer) {
 					return 1;

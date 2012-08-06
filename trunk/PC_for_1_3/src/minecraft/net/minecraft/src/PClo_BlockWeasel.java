@@ -67,7 +67,7 @@ public class PClo_BlockWeasel extends BlockContainer implements PC_ISwapTerrain,
 	}
 
 	@Override
-	public TileEntity getBlockEntity() {
+	public TileEntity createNewTileEntity(World world) {
 		return new PClo_TileEntityWeasel();
 	}
 
@@ -188,7 +188,7 @@ public class PClo_BlockWeasel extends BlockContainer implements PC_ISwapTerrain,
 	}
 
 	@Override
-	public void onBlockRemoval(World world, int x, int y, int z) {
+	public void breakBlock(World world, int x, int y, int z, int par5, int par6) {
 
 		// drop the gate
 		PClo_TileEntityWeasel tew = getTE(world, x, y, z);
@@ -208,7 +208,7 @@ public class PClo_BlockWeasel extends BlockContainer implements PC_ISwapTerrain,
 			}
 		}
 
-		super.onBlockRemoval(world, x, y, z);
+		super.breakBlock(world, x, y, z, par5, par6);
 	}
 
 	@Override
@@ -502,7 +502,7 @@ public class PClo_BlockWeasel extends BlockContainer implements PC_ISwapTerrain,
 
 
 	@Override
-	public boolean blockActivated(World world, int x, int y, int z, EntityPlayer player) {
+	public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player, int par6, float par7, float par8, float par9) {
 
 		ItemStack ihold = player.getCurrentEquippedItem();
 		if (ihold != null) {

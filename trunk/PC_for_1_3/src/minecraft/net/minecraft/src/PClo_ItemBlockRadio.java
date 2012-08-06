@@ -30,7 +30,7 @@ public class PClo_ItemBlockRadio extends ItemBlock {
 	}
 
 	@Override
-	public boolean onItemUse(ItemStack itemstack, EntityPlayer entityplayer, World world, int i, int j, int k, int l) {
+	public boolean tryPlaceIntoWorld(ItemStack itemstack, EntityPlayer entityplayer, World world, int i, int j, int k, int l, float par8, float par9, float par10) {
 		int id = world.getBlockId(i, j, k);
 
 		if (id == Block.snow.blockID) {
@@ -73,11 +73,11 @@ public class PClo_ItemBlockRadio extends ItemBlock {
 			return false;
 		}
 
-		if (world.canBlockBePlacedAt(mod_PClogic.radio.blockID, i, j, k, false, l)) {
+		if (world.canPlaceEntityOnSide(mod_PClogic.radio.blockID, i, j, k, false, l, entityplayer)) {
 			Block block = mod_PClogic.radio;
 
 			if (world.setBlockWithNotify(i, j, k, block.blockID)) {
-				block.onBlockPlaced(world, i, j, k, l);
+				//block.onBlockPlaced(world, i, j, k, l);
 				block.onBlockPlacedBy(world, i, j, k, entityplayer);
 				world.playSoundEffect(i + 0.5F, j + 0.5F, k + 0.5F, block.stepSound.getStepSound(), (block.stepSound.getVolume() + 1.0F) / 2.0F,
 						block.stepSound.getPitch() * 0.8F);
@@ -85,7 +85,7 @@ public class PClo_ItemBlockRadio extends ItemBlock {
 				// set tile entity
 				PClo_TileEntityRadio ter = (PClo_TileEntityRadio) world.getBlockTileEntity(i, j, k);
 				if (ter == null) {
-					ter = (PClo_TileEntityRadio) ((BlockContainer) block).getBlockEntity();
+					ter = (PClo_TileEntityRadio) ((BlockContainer) block).createNewTileEntity(world);
 				}
 
 

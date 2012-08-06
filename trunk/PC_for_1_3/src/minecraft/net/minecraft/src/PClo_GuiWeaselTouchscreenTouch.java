@@ -15,8 +15,6 @@ import weasel.obj.WeaselString;
 public class PClo_GuiWeaselTouchscreenTouch implements PC_IGresBase {
 
 	private PClo_WeaselPluginTouchscreen touchscreen;
-	@SuppressWarnings("unused")
-	private PC_GresWindow w;
 	private PC_GresColorMap colorMap;
 
 	/**

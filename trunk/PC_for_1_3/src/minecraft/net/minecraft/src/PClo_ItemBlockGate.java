@@ -27,7 +27,7 @@ public class PClo_ItemBlockGate extends ItemBlock {
 	}
 
 	@Override
-	public boolean onItemUse(ItemStack itemstack, EntityPlayer entityplayer, World world, int i, int j, int k, int l) {
+	public boolean tryPlaceIntoWorld(ItemStack itemstack, EntityPlayer entityplayer, World world, int i, int j, int k, int l, float par8, float par9, float par10) {
 
 		int id = world.getBlockId(i, j, k);
 
@@ -71,17 +71,17 @@ public class PClo_ItemBlockGate extends ItemBlock {
 			return false;
 		}
 
-		if (world.canBlockBePlacedAt(mod_PClogic.gateOff.blockID, i, j, k, false, l)) {
+		if (world.canPlaceEntityOnSide(mod_PClogic.gateOff.blockID, i, j, k, false, l, entityplayer)) {
 			Block block = mod_PClogic.gateOff;
 			if (world.setBlock(i, j, k, block.blockID)) {
 				// set tile entity
 				PClo_TileEntityGate teg = (PClo_TileEntityGate) world.getBlockTileEntity(i, j, k);
 				if (teg == null) {
-					teg = (PClo_TileEntityGate) ((BlockContainer) block).getBlockEntity();
+					teg = (PClo_TileEntityGate) ((BlockContainer) block).createNewTileEntity(world);
 				}
 				teg.gateType = itemstack.getItemDamage();
 				world.setBlockTileEntity(i, j, k, teg);
-				block.onBlockPlaced(world, i, j, k, l);
+				//block.onBlockPlaced(world, i, j, k, l);
 				block.onBlockPlacedBy(world, i, j, k, entityplayer);
 
 				PClo_BlockGate.hugeUpdate(world, i, j, k, block.blockID);

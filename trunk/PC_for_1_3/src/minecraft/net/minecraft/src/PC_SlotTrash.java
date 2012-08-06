@@ -16,13 +16,13 @@ public class PC_SlotTrash extends Slot {
 	}
 
 	@Override
-	public void func_48433_a(ItemStack par1ItemStack, ItemStack par2ItemStack) {}
+	public void onSlotChange(ItemStack par1ItemStack, ItemStack par2ItemStack) {}
 
 	@Override
-	protected void func_48435_a(ItemStack itemstack, int i) {}
+	protected void onCrafting(ItemStack itemstack, int i) {}
 
 	@Override
-	protected void func_48434_c(ItemStack itemstack) {}
+	protected void onCrafting(ItemStack itemstack) {}
 
 	@Override
 	public void onPickupFromSlot(ItemStack par1ItemStack) {}
