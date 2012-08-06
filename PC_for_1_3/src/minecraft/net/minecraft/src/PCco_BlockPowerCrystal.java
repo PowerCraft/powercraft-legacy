@@ -24,7 +24,11 @@ public class PCco_BlockPowerCrystal extends BlockBreakable implements PC_ISwapTe
 
 	@Override
 	public void onBlockAdded(World world, int i, int j, int k) {
-		onBlockPlaced(world, i, j, k, 0);
+		/**
+		 * @todo
+		 * onBlockPlaced(world, i, j, k, 0);
+		 */
+		super.onBlockAdded(world, i, j, k);
 	}
 
 	@Override

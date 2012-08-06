@@ -779,10 +779,13 @@ public class mod_PClogic extends PC_Module {
 		// weasel.
 		
 		
+		/**
+		 * TODO stairsBrick was stairsBrick??
+		 */
 		ModLoader.addRecipe(
 				new ItemStack(weaselDevice, 1, PClo_WeaselType.CORE),
 				new Object[] { "SRS", "RCR", "SRS",
-					'S', new ItemStack(Block.stairSingle,1,0), 'R', Item.redstone, 'C', mod_PCcore.powerCrystal });
+					'S', new ItemStack(Block.stairsBrick,1,0), 'R', Item.redstone, 'C', mod_PCcore.powerCrystal });
 		
 
 		ModLoader.addShapelessRecipe(
@@ -797,22 +800,22 @@ public class mod_PClogic extends PC_Module {
 		ModLoader.addRecipe(
 				new ItemStack(weaselDevice, 1, PClo_WeaselType.PORT),
 				new Object[] { "GRG", "SSS",
-					'S', new ItemStack(Block.stairSingle,1,0), 'R', Item.redstone, 'G', Item.goldNugget });
+					'S', new ItemStack(Block.stairsBrick,1,0), 'R', Item.redstone, 'G', Item.goldNugget });
 		
 		ModLoader.addRecipe(
 				new ItemStack(weaselDevice, 1, PClo_WeaselType.DISPLAY),
 				new Object[] { " G ", "NRN","SSS",
-					'S', new ItemStack(Block.stairSingle,1,0), 'R', Item.redstone, 'G', Block.thinGlass, 'N', Item.goldNugget });
+					'S', new ItemStack(Block.stairsBrick,1,0), 'R', Item.redstone, 'G', Block.thinGlass, 'N', Item.goldNugget });
 		
 		ModLoader.addRecipe(
 				new ItemStack(weaselDevice, 1, PClo_WeaselType.SPEAKER),
 				new Object[] { " N ", "GRG","SSS",
-					'S', new ItemStack(Block.stairSingle,1,0), 'R', Item.redstone, 'N', Block.music, 'G', Item.goldNugget  });
+					'S', new ItemStack(Block.stairsBrick,1,0), 'R', Item.redstone, 'N', Block.music, 'G', Item.goldNugget  });
 		
 		ModLoader.addRecipe(
 				new ItemStack(weaselDevice, 1, PClo_WeaselType.TOUCHSCREEN),
 				new Object[] { "GGG", "NRN","SSS",
-					'S', new ItemStack(Block.stairSingle,1,0), 'R', Item.redstone, 'G', Block.thinGlass, 'N', Item.goldNugget });
+					'S', new ItemStack(Block.stairsBrick,1,0), 'R', Item.redstone, 'G', Block.thinGlass, 'N', Item.goldNugget });
 		
 
 		ModLoader.addRecipe(
@@ -824,14 +827,14 @@ public class mod_PClogic extends PC_Module {
 				new ItemStack(weaselDevice, 1, PClo_WeaselType.DISK_MANAGER),
 				new Object[] { "BBB", "SRS", "SSS",
 					'B', Block.button,
-					'S', new ItemStack(Block.stairSingle,1,0),
+					'S', new ItemStack(Block.stairsBrick,1,0),
 					'R', Item.redstone});
 		
 		ModLoader.addRecipe(
 				new ItemStack(weaselDevice, 1, PClo_WeaselType.DISK_DRIVE),
 				new Object[] { "SSS", "GRG", "SSS",
 					'B', Block.button,
-					'S', new ItemStack(Block.stairSingle,1,0),
+					'S', new ItemStack(Block.stairsBrick,1,0),
 					'R', Item.redstone,
 					'G', Item.goldNugget
 					});
@@ -840,7 +843,7 @@ public class mod_PClogic extends PC_Module {
 				new ItemStack(weaselDevice, 1, PClo_WeaselType.TERMINAL),
 				new Object[] { "  D", "BBS", "SSS",
 					'B', Block.button,
-					'S', new ItemStack(Block.stairSingle,1,0),
+					'S', new ItemStack(Block.stairsBrick,1,0),
 					'D', new ItemStack(weaselDevice, 1, PClo_WeaselType.DISPLAY),
 					});
 		

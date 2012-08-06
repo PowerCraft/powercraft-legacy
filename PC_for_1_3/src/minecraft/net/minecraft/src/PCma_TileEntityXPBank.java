@@ -37,7 +37,7 @@ public class PCma_TileEntityXPBank extends PC_TileEntity {
 	@Override
 	public void updateEntity() {
 		List<EntityXPOrb> hitList = worldObj.getEntitiesWithinAABB(net.minecraft.src.EntityXPOrb.class,
-				AxisAlignedBB.getBoundingBoxFromPool(xCoord, yCoord, zCoord, xCoord + 1, yCoord + 1, zCoord + 1).expand(0.5D, 0.5D, 0.5D));
+				AxisAlignedBB.getBoundingBox(xCoord, yCoord, zCoord, xCoord + 1, yCoord + 1, zCoord + 1).expand(0.5D, 0.5D, 0.5D));
 
 		if (hitList.size() > 0) {
 			Loop:

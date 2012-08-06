@@ -26,12 +26,12 @@ public class PCtr_BlockTeleporter extends BlockContainer implements PC_IBlockTyp
 
 	@Override
 	public AxisAlignedBB getCollisionBoundingBoxFromPool(World world, int i, int j, int k) {
-		return AxisAlignedBB.getBoundingBoxFromPool(i, j, k, (i + 1), (j + 0.03125), (k + 1));
+		return AxisAlignedBB.getBoundingBox(i, j, k, (i + 1), (j + 0.03125), (k + 1));
 	}
 
 	@Override
 	public AxisAlignedBB getSelectedBoundingBoxFromPool(World world, int i, int j, int k) {
-		return AxisAlignedBB.getBoundingBoxFromPool(i + 0.125D, j, k + 0.125D, (double) i + 1 - 0.125D, j + 1D, (double) k + 1 - 0.125D);
+		return AxisAlignedBB.getBoundingBox(i + 0.125D, j, k + 0.125D, (double) i + 1 - 0.125D, j + 1D, (double) k + 1 - 0.125D);
 	}
 
 	@Override
@@ -40,7 +40,7 @@ public class PCtr_BlockTeleporter extends BlockContainer implements PC_IBlockTyp
 	}
 
 	@Override
-	public boolean blockActivated(World world, int i, int j, int k, EntityPlayer entityplayer) {
+	public boolean onBlockActivated(World world, int i, int j, int k, EntityPlayer entityplayer, int par6, float par7, float par8, float par9) {
 		ItemStack ihold = entityplayer.getCurrentEquippedItem();
 		if (ihold != null) {
 			if (ihold.getItem() instanceof ItemBlock && ihold.getItem().shiftedIndex != blockID) {
@@ -73,18 +73,18 @@ public class PCtr_BlockTeleporter extends BlockContainer implements PC_IBlockTyp
 	}
 
 	@Override
-	public void onBlockRemoval(World world, int i, int j, int k) {
+	public void breakBlock(World world, int i, int j, int k, int par5, int par6) {
 
 		PCtr_TeleporterHelper.unregisterDevice(getTE(world, i, j, k).identifierName);
 
 		world.setBlockAndMetadataWithNotify(i, j, k, 0, 0);
 		world.notifyBlocksOfNeighborChange(i, j, k, blockID);
 
-		super.onBlockRemoval(world, i, j, k);
+		super.breakBlock(world, i, j, k, par5, par6);
 	}
 
 	@Override
-	public TileEntity getBlockEntity() {
+	public TileEntity createNewTileEntity(World world) {
 		return new PCtr_TileEntityTeleporter();
 	}
 

@@ -3,6 +3,7 @@ package net.minecraft.src;
 
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Random;
 import java.util.Set;
 
@@ -24,7 +25,7 @@ public class PCde_BlockWalkable extends BlockContainer implements PC_IBlockType,
 	}
 
 	@Override
-	public TileEntity getBlockEntity() {
+	public TileEntity createNewTileEntity(World world) {
 		return new PCde_TileEntityWalkable();
 	}
 
@@ -197,7 +198,7 @@ public class PCde_BlockWalkable extends BlockContainer implements PC_IBlockType,
 	}
 
 	@Override
-	public void getCollidingBoundingBoxes(World world, int x, int y, int z, AxisAlignedBB axisalignedbb, ArrayList arraylist) {
+	public void addCollidingBlockToList(World world, int x, int y, int z, AxisAlignedBB axisalignedbb, List arraylist, Entity entity) {
 
 		PCde_TileEntityWalkable ted = getTE(world, x, y, z);
 
@@ -207,23 +208,23 @@ public class PCde_BlockWalkable extends BlockContainer implements PC_IBlockType,
 
 			if (fences[0]) {
 				setBlockBounds(1 - 0.0625F, 0, 0, 1, 1.0F, 1);
-				super.getCollidingBoundingBoxes(world, x, y, z, axisalignedbb, arraylist);
+				super.addCollidingBlockToList(world, x, y, z, axisalignedbb, arraylist, entity);
 			}
 			if (fences[1]) {
 				setBlockBounds(0, 0, 0, 0.0625F, 1.0F, 1);
-				super.getCollidingBoundingBoxes(world, x, y, z, axisalignedbb, arraylist);
+				super.addCollidingBlockToList(world, x, y, z, axisalignedbb, arraylist, entity);
 			}
 			if (fences[2]) {
 				setBlockBounds(0, 0, 1 - 0.0625F, 1, 1.0F, 1);
-				super.getCollidingBoundingBoxes(world, x, y, z, axisalignedbb, arraylist);
+				super.addCollidingBlockToList(world, x, y, z, axisalignedbb, arraylist, entity);
 			}
 			if (fences[3]) {
 				setBlockBounds(0, 0, 0, 1, 1.0F, 0.0625F);
-				super.getCollidingBoundingBoxes(world, x, y, z, axisalignedbb, arraylist);
+				super.addCollidingBlockToList(world, x, y, z, axisalignedbb, arraylist, entity);
 			}
 			if (fences[4]) {
 				setBlockBounds(0, 0, 0, 1, 0.0625F, 1);
-				super.getCollidingBoundingBoxes(world, x, y, z, axisalignedbb, arraylist);
+				super.addCollidingBlockToList(world, x, y, z, axisalignedbb, arraylist, entity);
 			}
 
 			setBlockBounds(0, 0, 0, 1, 1, 1);
@@ -235,25 +236,25 @@ public class PCde_BlockWalkable extends BlockContainer implements PC_IBlockType,
 			int j = world.getBlockMetadata(x, y, z);
 
 			setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 0.5F, 1.0F);
-			super.getCollidingBoundingBoxes(world, x, y, z, axisalignedbb, arraylist);
+			super.addCollidingBlockToList(world, x, y, z, axisalignedbb, arraylist, entity);
 
 
 
 			if (j == 0) {
 				setBlockBounds(0.0F, 0.5F, 0.0F, 1.0F, 1.0F, 0.5F);
-				super.getCollidingBoundingBoxes(world, x, y, z, axisalignedbb, arraylist);
+				super.addCollidingBlockToList(world, x, y, z, axisalignedbb, arraylist, entity);
 
 			} else if (j == 1) {
 				setBlockBounds(0.5F, 0.5F, 0.0F, 1.0F, 1.0F, 1.0F);
-				super.getCollidingBoundingBoxes(world, x, y, z, axisalignedbb, arraylist);
+				super.addCollidingBlockToList(world, x, y, z, axisalignedbb, arraylist, entity);
 
 			} else if (j == 2) {
 				setBlockBounds(0.0F, 0.5F, 0.5F, 1.0F, 1.0F, 1.0F);
-				super.getCollidingBoundingBoxes(world, x, y, z, axisalignedbb, arraylist);
+				super.addCollidingBlockToList(world, x, y, z, axisalignedbb, arraylist, entity);
 
 			} else if (j == 3) {
 				setBlockBounds(0.0F, 0.5F, 0.0F, 0.5F, 1.0F, 1.0F);
-				super.getCollidingBoundingBoxes(world, x, y, z, axisalignedbb, arraylist);
+				super.addCollidingBlockToList(world, x, y, z, axisalignedbb, arraylist, entity);
 			}
 
 			// X+, X-, Z+, Z-
@@ -261,19 +262,19 @@ public class PCde_BlockWalkable extends BlockContainer implements PC_IBlockType,
 
 			if (fences[0]) {
 				setBlockBounds(1 - 0.0625F, 0, 0, 1, 1.8F, 1);
-				super.getCollidingBoundingBoxes(world, x, y, z, axisalignedbb, arraylist);
+				super.addCollidingBlockToList(world, x, y, z, axisalignedbb, arraylist, entity);
 			}
 			if (fences[1]) {
 				setBlockBounds(0, 0, 0, 0.0625F, 1.8F, 1);
-				super.getCollidingBoundingBoxes(world, x, y, z, axisalignedbb, arraylist);
+				super.addCollidingBlockToList(world, x, y, z, axisalignedbb, arraylist, entity);
 			}
 			if (fences[2]) {
 				setBlockBounds(0, 0, 1 - 0.0625F, 1, 1.8F, 1);
-				super.getCollidingBoundingBoxes(world, x, y, z, axisalignedbb, arraylist);
+				super.addCollidingBlockToList(world, x, y, z, axisalignedbb, arraylist, entity);
 			}
 			if (fences[3]) {
 				setBlockBounds(0, 0, 0, 1, 1.8F, 0.0625F);
-				super.getCollidingBoundingBoxes(world, x, y, z, axisalignedbb, arraylist);
+				super.addCollidingBlockToList(world, x, y, z, axisalignedbb, arraylist, entity);
 			}
 
 			setBlockBounds(0, 0, 0, 1, 1, 1);
@@ -281,7 +282,7 @@ public class PCde_BlockWalkable extends BlockContainer implements PC_IBlockType,
 		}
 
 		setBlockBounds(0, 0, 0, 1, 1, 1);
-		super.getCollidingBoundingBoxes(world, x, y, z, axisalignedbb, arraylist);
+		super.addCollidingBlockToList(world, x, y, z, axisalignedbb, arraylist, entity);
 	}
 
 	@Override
@@ -345,7 +346,7 @@ public class PCde_BlockWalkable extends BlockContainer implements PC_IBlockType,
 	}
 
 	@Override
-	public void onBlockRemoval(World world, int x, int y, int z) {
+	public void breakBlock(World world, int x, int y, int z, int par5, int par6) {
 
 		PCde_TileEntityWalkable teg = getTE(world, x, y, z);
 
@@ -356,7 +357,7 @@ public class PCde_BlockWalkable extends BlockContainer implements PC_IBlockType,
 			}
 		}
 
-		super.onBlockRemoval(world, x, y, z);
+		super.breakBlock(world, x, y, z, par5, par6);
 	}
 
 	@Override

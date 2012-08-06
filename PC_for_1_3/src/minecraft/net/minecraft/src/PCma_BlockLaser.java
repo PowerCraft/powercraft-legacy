@@ -18,7 +18,7 @@ public class PCma_BlockLaser extends BlockContainer implements PC_IBlockType, PC
 	private static final int TXWOOD = 4, TXGUNON = 20;
 
 	@Override
-	public TileEntity getBlockEntity() {
+	public TileEntity createNewTileEntity(World world) {
 		return new PCma_TileEntityLaser();
 	}
 
@@ -85,12 +85,12 @@ public class PCma_BlockLaser extends BlockContainer implements PC_IBlockType, PC
 
 	@Override
 	public AxisAlignedBB getSelectedBoundingBoxFromPool(World world, int i, int j, int k) {
-		return AxisAlignedBB.getBoundingBoxFromPool(i, j, k, (double) i + 1, (double) j + 1, (double) k + 1);
+		return AxisAlignedBB.getBoundingBox(i, j, k, (double) i + 1, (double) j + 1, (double) k + 1);
 	}
 
 	@Override
 	public AxisAlignedBB getCollisionBoundingBoxFromPool(World world, int i, int j, int k) {
-		return AxisAlignedBB.getBoundingBoxFromPool(i, j, k, (double) i + 1, (double) j + 0.7F, (double) k + 1);
+		return AxisAlignedBB.getBoundingBox(i, j, k, (double) i + 1, (double) j + 0.7F, (double) k + 1);
 	}
 
 	@Override
@@ -104,7 +104,7 @@ public class PCma_BlockLaser extends BlockContainer implements PC_IBlockType, PC
 	}
 
 	@Override
-	public boolean blockActivated(World world, int i, int j, int k, EntityPlayer entityplayer) {
+	public boolean onBlockActivated(World world, int i, int j, int k, EntityPlayer entityplayer, int par6, float par7, float par8, float par9) {
 		return false;
 	}
 
@@ -164,9 +164,9 @@ public class PCma_BlockLaser extends BlockContainer implements PC_IBlockType, PC
 	}
 
 	@Override
-	public void onBlockRemoval(World world, int i, int j, int k) {
+	public void breakBlock(World world, int i, int j, int k, int par5, int par6) {
 		world.notifyBlocksOfNeighborChange(i, j, k, blockID);
-		super.onBlockRemoval(world, i, j, k);
+		super.breakBlock(world, i, j, k, par5, par6);
 	}
 
 	@Override

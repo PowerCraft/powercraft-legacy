@@ -7,13 +7,13 @@ package net.minecraft.src;
  * @author MightyPork
  * @copy (c) 2012
  */
-public class PClo_ItemBlockSensor extends ItemMetadata {
+public class PClo_ItemBlockSensor extends ItemBlock {
 	/**
 	 * @param i id
 	 * @param block the block
 	 */
 	public PClo_ItemBlockSensor(int i, Block block) {
-		super(i, block);
+		super(i);
 	}
 
 	@Override

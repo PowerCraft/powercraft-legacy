@@ -27,7 +27,7 @@ public class PClo_ItemBlockWeasel extends ItemBlock {
 	}
 
 	@Override
-	public boolean onItemUse(ItemStack itemstack, EntityPlayer entityplayer, World world, int i, int j, int k, int l) {
+	public boolean tryPlaceIntoWorld(ItemStack itemstack, EntityPlayer entityplayer, World world, int i, int j, int k, int l, float par8, float par9, float par10) {
 
 		int id = world.getBlockId(i, j, k);
 
@@ -71,18 +71,18 @@ public class PClo_ItemBlockWeasel extends ItemBlock {
 			return false;
 		}
 
-		if (world.canBlockBePlacedAt(mod_PClogic.weaselDevice.blockID, i, j, k, false, l)) {
+		if (world.canPlaceEntityOnSide(mod_PClogic.weaselDevice.blockID, i, j, k, false, l, entityplayer)) {
 			Block block = mod_PClogic.weaselDevice;
 			if (world.setBlock(i, j, k, block.blockID)) {
 				// set tile entity
 				PClo_TileEntityWeasel teg = (PClo_TileEntityWeasel) world.getBlockTileEntity(i, j, k);
 				if (teg == null) {
-					teg = (PClo_TileEntityWeasel) ((BlockContainer) block).getBlockEntity();
+					teg = (PClo_TileEntityWeasel) ((BlockContainer) block).createNewTileEntity(world);
 				}
 				teg.setType(itemstack.getItemDamage());
 				world.setBlockTileEntity(i, j, k, teg);
 
-				block.onBlockPlaced(world, i, j, k, l);
+				//block.onBlockPlaced(world, i, j, k, l);
 				block.onBlockPlacedBy(world, i, j, k, entityplayer);
 
 				PClo_BlockGate.hugeUpdate(world, i, j, k, block.blockID);

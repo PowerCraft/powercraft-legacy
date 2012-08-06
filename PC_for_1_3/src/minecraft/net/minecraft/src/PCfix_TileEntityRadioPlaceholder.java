@@ -59,14 +59,14 @@ public class PCfix_TileEntityRadioPlaceholder extends PC_TileEntity {
 				int i = xCoord, j = yCoord, k = zCoord;
 
 				if (worldObj.setBlockWithNotify(i, j, k, block.blockID)) {
-					block.onBlockPlaced(worldObj, i, j, k, 0);
+					/** @todo block.onBlockPlaced(worldObj, i, j, k, 0);*/
 					worldObj.playSoundEffect(i + 0.5F, j + 0.5F, k + 0.5F, block.stepSound.getStepSound(),
 							(block.stepSound.getVolume() + 1.0F) / 2.0F, block.stepSound.getPitch() * 0.8F);
 
 					// set tile entity
 					PClo_TileEntityRadio ter = (PClo_TileEntityRadio) worldObj.getBlockTileEntity(i, j, k);
 					if (ter == null) {
-						ter = (PClo_TileEntityRadio) ((BlockContainer) block).getBlockEntity();
+						/** @todo ter = (PClo_TileEntityRadio) ((BlockContainer) block).createNewTileEntity(world);*/
 					}
 
 					ter.channel = channel;

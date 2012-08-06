@@ -337,7 +337,7 @@ public class PC_GresGui extends GuiContainer implements PC_IGresGui {
 						String s = (String) list.get(j4);
 
 						if (j4 == 0) {
-							s = (new StringBuilder()).append("\247").append(Integer.toHexString(itemstack.getRarity().nameColor)).append(s)
+							s = (new StringBuilder()).append("\247").append(Integer.toHexString(itemstack.getRarity().rarityColor)).append(s)
 									.toString();
 						} else {
 							s = (new StringBuilder()).append("\2477").append(s).toString();

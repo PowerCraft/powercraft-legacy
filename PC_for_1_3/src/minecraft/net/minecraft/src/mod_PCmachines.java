@@ -3,6 +3,7 @@ package net.minecraft.src;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
 
 
 /**
@@ -434,14 +435,15 @@ public class mod_PCmachines extends PC_Module implements PC_IActivatorListener {
 	 * Dispense some items as thrown objects rather than EntityItem.
 	 */
 	@Override
-	public boolean dispenseEntity(World world, double d, double d1, double d2, int i1, int j1, ItemStack itemstack) {
+	//public boolean dispenseEntity(World world, double d, double d1, double d2, int i1, int j1, ItemStack itemstack) {
+	public int dispenseEntity(World world, ItemStack itemstack, Random r, int i1, int j1, int var6, int var7, int var8, double d, double d1, double d2){
 
 		if (dispenseBuckets && itemstack.itemID == Item.bucketEmpty.shiftedIndex) {
 			PCma_EntityThrownBucket entity = new PCma_EntityThrownBucket(world, d, d1, d2, false);
 			entity.setThrowableHeading(i1, 0.1D, j1, 1.1F, 6F);
 			world.spawnEntityInWorld(entity);
 			world.playAuxSFX(1002, (int) Math.round(d), (int) Math.round(d1), (int) Math.round(d2), 0);
-			return true;
+			return 1;
 		}
 
 		if (dispenseBowls && itemstack.itemID == Item.bowlEmpty.shiftedIndex) {
@@ -449,7 +451,7 @@ public class mod_PCmachines extends PC_Module implements PC_IActivatorListener {
 			entity.setThrowableHeading(i1, 0.1D, j1, 1.1F, 6F);
 			world.spawnEntityInWorld(entity);
 			world.playAuxSFX(1002, (int) Math.round(d), (int) Math.round(d1), (int) Math.round(d2), 0);
-			return true;
+			return 1;
 		}
 
 		if (dispenseWheat && itemstack.itemID == Item.wheat.shiftedIndex) {
@@ -457,7 +459,7 @@ public class mod_PCmachines extends PC_Module implements PC_IActivatorListener {
 			entity.setThrowableHeading(i1, 0.1D, j1, 1.1F, 6F);
 			world.spawnEntityInWorld(entity);
 			world.playAuxSFX(1002, (int) Math.round(d), (int) Math.round(d1), (int) Math.round(d2), 0);
-			return true;
+			return 1;
 		}
 
 		if (dispenseFood && (itemstack.getItem() instanceof ItemFood || itemstack.getItem() == Item.bone)) {
@@ -465,10 +467,10 @@ public class mod_PCmachines extends PC_Module implements PC_IActivatorListener {
 			entity.setThrowableHeading(i1, 0.1D, j1, 1.1F, 6F);
 			world.spawnEntityInWorld(entity);
 			world.playAuxSFX(1002, (int) Math.round(d), (int) Math.round(d1), (int) Math.round(d2), 0);
-			return true;
+			return 1;
 		}
 
-		return false;
+		return 0;
 	}
 
 

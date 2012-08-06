@@ -83,7 +83,7 @@ public class PClo_BlockGate extends BlockContainer implements PC_IRotatedBox, PC
 	}
 
 	@Override
-	public TileEntity getBlockEntity() {
+	public TileEntity createNewTileEntity(World world) {
 		return new PClo_TileEntityGate();
 	}
 
@@ -305,7 +305,7 @@ public class PClo_BlockGate extends BlockContainer implements PC_IRotatedBox, PC
 	}
 
 	@Override
-	public void onBlockRemoval(World world, int x, int y, int z) {
+	public void breakBlock(World world, int x, int y, int z, int par5, int par6) {
 		if (!changingState.contains(new PC_CoordI(x, y, z))) {
 			// drop the gate
 			PClo_TileEntityGate teg = getTE(world, x, y, z);
@@ -324,7 +324,7 @@ public class PClo_BlockGate extends BlockContainer implements PC_IRotatedBox, PC
 			}
 		}
 
-		super.onBlockRemoval(world, x, y, z);
+		super.breakBlock(world, x, y, z, par5, par6);
 	}
 
 	@Override
@@ -703,7 +703,7 @@ public class PClo_BlockGate extends BlockContainer implements PC_IRotatedBox, PC
 				return;
 			}
 			int c = world.getEntitiesWithinAABB(entityliving.getClass(),
-					AxisAlignedBB.getBoundingBoxFromPool(x, y, z, x + 1, y + 1, z + 1).expand(8D, 4D, 8D)).size();
+					AxisAlignedBB.getBoundingBox(x, y, z, x + 1, y + 1, z + 1).expand(8D, 4D, 8D)).size();
 			if (c >= 6) {
 				if (spawnParticles) {
 					double d = world.rand.nextGaussian() * 0.02D;
@@ -1332,7 +1332,7 @@ public class PClo_BlockGate extends BlockContainer implements PC_IRotatedBox, PC
 	}
 
 	@Override
-	public boolean blockActivated(World world, int x, int y, int z, EntityPlayer player) {
+	public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player, int par6, float par7, float par8, float par9) {
 
 		ItemStack ihold = player.getCurrentEquippedItem();
 		if (ihold != null) {

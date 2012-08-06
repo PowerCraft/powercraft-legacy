@@ -231,7 +231,10 @@ public class mod_PCcore extends PC_Module implements PC_IActivatorListener {
 			
 			Toolkit.getDefaultToolkit().beep();  
 			
-			PC_Utils.mc().onMinecraftCrash(new UnexpectedThrowable("Uncaught Exception\n" + e.getMessage(), e));
+			/**
+			 *  TODO
+			 * PC_Utils.mc().onMinecraftCrash(new UnexpectedThrowable("Uncaught Exception\n" + e.getMessage(), e));
+			 */
 
 		}
 
@@ -490,7 +493,10 @@ public class mod_PCcore extends PC_Module implements PC_IActivatorListener {
 		
 		// crystal changing color, crystal from smelted diamonds
 		if (cfg().getBoolean(pk_optRecEasyCrystals)) {
-			ModLoader.addSmelting(Item.diamond.shiftedIndex, new ItemStack(powerCrystal, 1));
+			/**
+			 * TODO new float value in ModLoader.addSmelting
+			 */
+			ModLoader.addSmelting(Item.diamond.shiftedIndex, new ItemStack(powerCrystal, 1), 0.0f);
 			ModLoader.addShapelessRecipe(
 					new ItemStack(powerCrystal, 1, 1),
 					new Object[] { new ItemStack(powerCrystal, 1, 0) });
@@ -852,12 +858,15 @@ public class mod_PCcore extends PC_Module implements PC_IActivatorListener {
 			Block.stairsNetherBrick,
 			Block.stairsStoneBrickSmooth,
 			Block.stairsBrick,
-			new ItemStack(Block.stairSingle,1,0),
-			new ItemStack(Block.stairSingle,1,1),
-			new ItemStack(Block.stairSingle,1,2),
-			new ItemStack(Block.stairSingle,1,3),
-			new ItemStack(Block.stairSingle,1,4),
-			new ItemStack(Block.stairSingle,1,5),
+			/**
+			 * TODO stairsBrick was stairSingle??
+			 */
+			new ItemStack(Block.stairsBrick,1,0),
+			new ItemStack(Block.stairsBrick,1,1),
+			new ItemStack(Block.stairsBrick,1,2),
+			new ItemStack(Block.stairsBrick,1,3),
+			new ItemStack(Block.stairsBrick,1,4),
+			new ItemStack(Block.stairsBrick,1,5),
 			Block.obsidian,
 			Block.whiteStone,
 			Block.stoneBrick,

@@ -302,7 +302,7 @@ public class PCtr_BeltBase {
 	 */
 	public static void packItems(World world, PC_CoordI pos) {
 		List<EntityItem> items = world.getEntitiesWithinAABB(net.minecraft.src.EntityItem.class,
-				AxisAlignedBB.getBoundingBoxFromPool(pos.x, pos.y, pos.z, pos.x + 1, pos.y + 1, pos.z + 1));
+				AxisAlignedBB.getBoundingBox(pos.x, pos.y, pos.z, pos.x + 1, pos.y + 1, pos.z + 1));
 		if (items.size() < 5) {
 			return;
 		}
@@ -375,7 +375,7 @@ public class PCtr_BeltBase {
 	public static boolean storeItemIntoMinecart(World world, PC_CoordI beltPos, EntityItem entity) {
 		List<EntityMinecart> hitList = world.getEntitiesWithinAABB(
 				EntityMinecart.class,
-				AxisAlignedBB.getBoundingBoxFromPool(beltPos.x, beltPos.y, beltPos.z, beltPos.x + 1, beltPos.y + 1, beltPos.z + 1).expand(1.0D, 1.0D,
+				AxisAlignedBB.getBoundingBox(beltPos.x, beltPos.y, beltPos.z, beltPos.x + 1, beltPos.y + 1, beltPos.z + 1).expand(1.0D, 1.0D,
 						1.0D));
 
 		if (hitList.size() > 0) {
@@ -529,7 +529,7 @@ public class PCtr_BeltBase {
 			}
 			if (((EntityItem) entity).age >= 5000) {
 				if (world.getEntitiesWithinAABBExcludingEntity(null,
-						AxisAlignedBB.getBoundingBoxFromPool(pos.x, pos.y, pos.z, pos.x + 1, pos.y + 1, pos.z + 1)).size() < 40) {
+						AxisAlignedBB.getBoundingBox(pos.x, pos.y, pos.z, pos.x + 1, pos.y + 1, pos.z + 1)).size() < 40) {
 					((EntityItem) entity).age = 4000;
 				}
 			}
@@ -538,7 +538,7 @@ public class PCtr_BeltBase {
 		if (entity instanceof EntityXPOrb) {
 			if (((EntityXPOrb) entity).xpOrbAge >= 5000) {
 				if (world.getEntitiesWithinAABBExcludingEntity(null,
-						AxisAlignedBB.getBoundingBoxFromPool(pos.x, pos.y, pos.z, pos.x + 1, pos.y + 1, pos.z + 1)).size() < 40) {
+						AxisAlignedBB.getBoundingBox(pos.x, pos.y, pos.z, pos.x + 1, pos.y + 1, pos.z + 1)).size() < 40) {
 					((EntityXPOrb) entity).xpOrbAge = 4000;
 				}
 			}
@@ -567,7 +567,7 @@ public class PCtr_BeltBase {
 		if (motionEnabled && world.rand.nextInt(35) == 0) {
 			@SuppressWarnings("rawtypes")
 			List list = world.getEntitiesWithinAABBExcludingEntity(entity,
-					AxisAlignedBB.getBoundingBoxFromPool(pos.x, pos.y, pos.z, pos.x + 1, pos.y + 1, pos.z + 1));
+					AxisAlignedBB.getBoundingBox(pos.x, pos.y, pos.z, pos.x + 1, pos.y + 1, pos.z + 1));
 			if (world.rand.nextInt(list.size() + 1) == 0) {
 				PCtr_BeltBase.soundEffectBelt(world, pos);
 			}

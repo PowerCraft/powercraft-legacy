@@ -22,7 +22,7 @@ public class PCco_ItemOreSniffer extends Item {
 	}
 
 	@Override
-	public boolean onItemUse(ItemStack itemstack, EntityPlayer entityplayer, World world, int i, int j, int k, int l) {
+	public boolean tryPlaceIntoWorld(ItemStack itemstack, EntityPlayer entityplayer, World world, int i, int j, int k, int l, float par8, float par9, float par10) {
 		int[] offsetX = { 0, 0, 0, 0, 1, -1 };
 		int[] offsetZ = { 0, 0, 1, -1, 0, 0 };
 		int[] offsetY = { 1, -1, 0, 0, 0, 0 };

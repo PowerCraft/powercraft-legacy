@@ -24,7 +24,7 @@ public class PCma_BlockAutomaticWorkbench extends BlockContainer implements PC_I
 	}
 
 	@Override
-	public boolean blockActivated(World world, int i, int j, int k, EntityPlayer entityplayer) {
+	public boolean onBlockActivated(World world, int i, int j, int k, EntityPlayer entityplayer, int par6, float par7, float par8, float par9) {
 		ItemStack ihold = entityplayer.getCurrentEquippedItem();
 		if (ihold != null) {
 			if (ihold.getItem() instanceof ItemBlock && ihold.getItem().shiftedIndex != blockID) {
@@ -41,7 +41,7 @@ public class PCma_BlockAutomaticWorkbench extends BlockContainer implements PC_I
 	}
 
 	@Override
-	public TileEntity getBlockEntity() {
+	public TileEntity createNewTileEntity(World world) {
 		return new PCma_TileEntityAutomaticWorkbench();
 	}
 
@@ -69,12 +69,12 @@ public class PCma_BlockAutomaticWorkbench extends BlockContainer implements PC_I
 	}
 
 	@Override
-	public void onBlockRemoval(World world, int i, int j, int k) {
+	public void breakBlock(World world, int i, int j, int k, int par5, int par6) {
 		PCma_TileEntityAutomaticWorkbench tew = (PCma_TileEntityAutomaticWorkbench) world.getBlockTileEntity(i, j, k);
 
 		if (tew != null) PC_InvUtils.dropInventoryContents(tew, world, tew.getCoord());
 
-		super.onBlockRemoval(world, i, j, k);
+		super.breakBlock(world, i, j, k, par5, par6);
 	}
 
 	@Override

@@ -49,7 +49,7 @@ public class PCtr_BlockBeltEjector extends BlockContainer implements PC_IBlockTy
 	}
 
 	@Override
-	public boolean blockActivated(World world, int i, int j, int k, EntityPlayer entityplayer) {
+	public boolean onBlockActivated(World world, int i, int j, int k, EntityPlayer entityplayer, int par6, float par7, float par8, float par9) {
 		if (PCtr_BeltBase.blockActivated(world, i, j, k, entityplayer)) {
 			return true;
 		} else {
@@ -206,7 +206,7 @@ public class PCtr_BlockBeltEjector extends BlockContainer implements PC_IBlockTy
 	public static boolean dispenseStackFromNearbyMinecart(World world, PC_CoordI beltPos) {
 		List<Entity> hitList = world.getEntitiesWithinAABB(
 				IInventory.class,
-				AxisAlignedBB.getBoundingBoxFromPool(beltPos.x, beltPos.y, beltPos.z, beltPos.x + 1, beltPos.y + 1, beltPos.z + 1).expand(0.6D, 0.6D,
+				AxisAlignedBB.getBoundingBox(beltPos.x, beltPos.y, beltPos.z, beltPos.x + 1, beltPos.y + 1, beltPos.z + 1).expand(0.6D, 0.6D,
 						0.6D));
 
 		if (hitList.size() > 0) {
@@ -223,7 +223,7 @@ public class PCtr_BlockBeltEjector extends BlockContainer implements PC_IBlockTy
 
 		List<Entity> hitList2 = world.getEntitiesWithinAABB(
 				PC_IInventoryWrapper.class,
-				AxisAlignedBB.getBoundingBoxFromPool(beltPos.x, beltPos.y, beltPos.z, beltPos.x + 1, beltPos.y + 1, beltPos.z + 1).expand(0.6D, 0.6D,
+				AxisAlignedBB.getBoundingBox(beltPos.x, beltPos.y, beltPos.z, beltPos.x + 1, beltPos.y + 1, beltPos.z + 1).expand(0.6D, 0.6D,
 						0.6D));
 
 		if (hitList2.size() > 0) {
@@ -473,7 +473,7 @@ public class PCtr_BlockBeltEjector extends BlockContainer implements PC_IBlockTy
 
 	@Override
 	public AxisAlignedBB getCollisionBoundingBoxFromPool(World world, int i, int j, int k) {
-		return AxisAlignedBB.getBoundingBoxFromPool(i, 0.0F + j, k, (i + 1), (j + PCtr_BeltBase.HEIGHT_COLLISION + 0.0F), (k + 1));
+		return AxisAlignedBB.getBoundingBox(i, 0.0F + j, k, (i + 1), (j + PCtr_BeltBase.HEIGHT_COLLISION + 0.0F), (k + 1));
 	}
 
 	@Override
@@ -485,7 +485,7 @@ public class PCtr_BlockBeltEjector extends BlockContainer implements PC_IBlockTy
 	public AxisAlignedBB getSelectedBoundingBoxFromPool(World world, int i, int j, int k) {
 		float f = 0;
 		f = 0.0F + PCtr_BeltBase.HEIGHT_SELECTED;
-		return AxisAlignedBB.getBoundingBoxFromPool(i, 0.0F + j, k, (i + 1), j + f, (float) k + 1);
+		return AxisAlignedBB.getBoundingBox(i, 0.0F + j, k, (i + 1), j + f, (float) k + 1);
 	}
 
 	@Override
@@ -571,7 +571,7 @@ public class PCtr_BlockBeltEjector extends BlockContainer implements PC_IBlockTy
 	}
 
 	@Override
-	public TileEntity getBlockEntity() {
+	public TileEntity createNewTileEntity(World world) {
 		return new PCtr_TileEntityEjectionBelt();
 	}
 

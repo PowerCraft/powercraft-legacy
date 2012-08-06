@@ -216,7 +216,7 @@ public class PCma_TileEntityRoaster extends PC_TileEntity implements IInventory,
 	 */
 	public void smeltItems() {
 		List<EntityItem> itemsList = worldObj.getEntitiesWithinAABB(net.minecraft.src.EntityItem.class,
-				AxisAlignedBB.getBoundingBoxFromPool(xCoord, yCoord, zCoord, xCoord + 1, yCoord + 2, zCoord + 1));
+				AxisAlignedBB.getBoundingBox(xCoord, yCoord, zCoord, xCoord + 1, yCoord + 2, zCoord + 1));
 
 		nextItem:
 		for (EntityItem entityitem : itemsList) {
@@ -261,7 +261,7 @@ public class PCma_TileEntityRoaster extends PC_TileEntity implements IInventory,
 		}
 
 		List<EntityLiving> entities = worldObj.getEntitiesWithinAABB(net.minecraft.src.EntityLiving.class,
-				AxisAlignedBB.getBoundingBoxFromPool(xCoord, yCoord, zCoord, xCoord + 1, yCoord + 2, zCoord + 1));
+				AxisAlignedBB.getBoundingBox(xCoord, yCoord, zCoord, xCoord + 1, yCoord + 2, zCoord + 1));
 
 		nextEliving:
 		for (EntityLiving eliving : entities) {

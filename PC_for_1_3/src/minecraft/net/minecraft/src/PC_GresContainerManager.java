@@ -58,9 +58,8 @@ public class PC_GresContainerManager extends Container {
 		return true;
 	}
 
-	@Override
 	public void addSlot(Slot slot) {
-		super.addSlot(slot);
+		super.addSlotToContainer(slot);
 	}
 
 	@Override

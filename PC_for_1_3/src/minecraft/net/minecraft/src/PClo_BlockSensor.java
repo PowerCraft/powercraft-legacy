@@ -3,6 +3,7 @@ package net.minecraft.src;
 
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Random;
 import java.util.Set;
 
@@ -29,7 +30,7 @@ public class PClo_BlockSensor extends BlockContainer implements PC_IBlockType, P
 	}
 
 	@Override
-	public TileEntity getBlockEntity() {
+	public TileEntity createNewTileEntity(World world) {
 		return new PClo_TileEntitySensor();
 	}
 
@@ -39,23 +40,23 @@ public class PClo_BlockSensor extends BlockContainer implements PC_IBlockType, P
 	}
 
 	@Override
-	public void getCollidingBoundingBoxes(World world, int i, int j, int k, AxisAlignedBB axisalignedbb, ArrayList arraylist) {
+	public void addCollidingBlockToList(World world, int i, int j, int k, AxisAlignedBB axisalignedbb, List arraylist, Entity par7Entity) {
 		setBlockBounds(0F, 0F, 0F, 1F, 0.255F, 1F);
-		super.getCollidingBoundingBoxes(world, i, j, k, axisalignedbb, arraylist);
+		super.addCollidingBlockToList(world, i, j, k, axisalignedbb, arraylist, par7Entity);
 		setBlockBounds(0.375F, 0.2F, 0.375F, 1F - 0.375F, 0.7F, 1F - 0.375F);
-		super.getCollidingBoundingBoxes(world, i, j, k, axisalignedbb, arraylist);
+		super.addCollidingBlockToList(world, i, j, k, axisalignedbb, arraylist, par7Entity);
 		setBlockBounds(0.3125F, 0.5F, 0.3125F, 1F - 0.3125F, 0.875F, 1F - 0.3125F);
-		super.getCollidingBoundingBoxes(world, i, j, k, axisalignedbb, arraylist);
+		super.addCollidingBlockToList(world, i, j, k, axisalignedbb, arraylist, par7Entity);
 		setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 1.0F, 1.0F);
 	}
 
 	@Override
 	public AxisAlignedBB getSelectedBoundingBoxFromPool(World world, int i, int j, int k) {
-		return AxisAlignedBB.getBoundingBoxFromPool(i, j, k, (double) i + 1, (double) j + 1, (double) k + 1);
+		return AxisAlignedBB.getBoundingBox(i, j, k, (double) i + 1, (double) j + 1, (double) k + 1);
 	}
 
 	@Override
-	public boolean blockActivated(World world, int i, int j, int k, EntityPlayer player) {
+	public boolean onBlockActivated(World world, int i, int j, int k, EntityPlayer player, int par6, float par7, float par8, float par9) {
 		ItemStack ihold = player.getCurrentEquippedItem();
 		if (ihold != null) {
 			if (ihold.getItem() instanceof ItemBlock && ihold.getItem().shiftedIndex != blockID) {

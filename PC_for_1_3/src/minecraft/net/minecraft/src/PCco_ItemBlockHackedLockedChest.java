@@ -28,7 +28,7 @@ public class PCco_ItemBlockHackedLockedChest extends ItemBlock {
 	 * false if it don't. This is for ITEMS, not BLOCKS !
 	 */
 	@Override
-	public boolean onItemUse(ItemStack itemstack, EntityPlayer entityplayer, World world, int x, int y, int z, int face) {
+	public boolean tryPlaceIntoWorld(ItemStack itemstack, EntityPlayer entityplayer, World world, int x, int y, int z, int face, float par8, float par9, float par10) {
 
 		int i = world.getBlockId(x, y, z);
 
@@ -81,12 +81,13 @@ public class PCco_ItemBlockHackedLockedChest extends ItemBlock {
 
 		PC_CoordI pos = new PC_CoordI(x, y, z);
 
-		if (world.canBlockBePlacedAt(placedID, x, y, z, false, face)) {
+		if (world.canPlaceEntityOnSide(placedID, x, y, z, false, face, entityplayer)) {
 			Block block = Block.blocksList[placedID];
 
 			if (pos.setBlock(world, placedID, placedMeta)) {
 				if (pos.getId(world) == placedID) {
-					Block.blocksList[placedID].onBlockPlaced(world, x, y, z, face);
+					/** @todo onBlockPlacedBy*/
+					Block.blocksList[placedID].onBlockPlacedBy(world, x, y, z, entityplayer);
 
 					world.playSoundEffect(x + 0.5F, y + 0.5F, z + 0.5F, block.stepSound.getStepSound(), (block.stepSound.getVolume() + 1.0F) / 2.0F,
 							block.stepSound.getPitch() * 0.8F);

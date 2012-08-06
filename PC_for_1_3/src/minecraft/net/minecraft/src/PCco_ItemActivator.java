@@ -24,7 +24,7 @@ public class PCco_ItemActivator extends Item {
 	}
 
 	@Override
-	public boolean onItemUse(ItemStack itemstack, EntityPlayer entityplayer, World world, int i, int j, int k, int l) {
+	public boolean tryPlaceIntoWorld(ItemStack itemstack, EntityPlayer entityplayer, World world, int i, int j, int k, int l, float par8, float par9, float par10) {
 
 		for (PC_IActivatorListener listener : listeners) {
 

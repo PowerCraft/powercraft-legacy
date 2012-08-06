@@ -494,7 +494,8 @@ public class PCma_EntityFishingMachine extends Entity {
 
 	@Override
 	public boolean interact(EntityPlayer entityplayer) {
-		return Block.chest.blockActivated(worldObj, buildPos.x + 1, buildPos.y + 1, buildPos.z + 1, entityplayer);
+		/** TODO last four arguments*/
+		return Block.chest.onBlockActivated(worldObj, buildPos.x + 1, buildPos.y + 1, buildPos.z + 1, entityplayer, 0, 0.0f, 0.0f, 0.0f);
 	}
 
 	// === WATCHER ===

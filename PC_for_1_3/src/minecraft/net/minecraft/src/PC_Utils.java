@@ -167,7 +167,10 @@ public class PC_Utils {
 	 */
 	public static void chatMsg(String msg, boolean clear) {
 		if (clear) {
-			ModLoader.getMinecraftInstance().ingameGUI.clearChatMessages();
+			/**
+			 * @todo fix
+			 * ModLoader.getMinecraftInstance().ingameGUI.clearChatMessages();
+			 */
 		}
 		ModLoader.getMinecraftInstance().thePlayer.addChatMessage(msg);
 	}

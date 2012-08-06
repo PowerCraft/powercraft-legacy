@@ -55,11 +55,11 @@ public class PCde_TileEntityDeco extends PC_TileEntity implements PC_IInventoryW
 				// set tile entity
 				PCde_TileEntityWalkable ted = (PCde_TileEntityWalkable) worldObj.getBlockTileEntity(xCoord, yCoord, zCoord);
 				if (ted == null) {
-					ted = (PCde_TileEntityWalkable) ((BlockContainer) block).getBlockEntity();
+					/** TODO ted = (PCde_TileEntityWalkable) ((BlockContainer) block).createNewTileEntity(world);*/
 				}
 				ted.type = 0;
 				worldObj.setBlockTileEntity(xCoord, yCoord, zCoord, ted);
-				block.onBlockPlaced(worldObj, xCoord, yCoord, zCoord, 0);
+				/** TODO block.onBlockPlacedBy(worldObj, xCoord, yCoord, zCoord, 0, player);*/
 
 				worldObj.markBlocksDirty(xCoord, yCoord, zCoord, xCoord, yCoord, zCoord);
 				worldObj.markBlockNeedsUpdate(xCoord, yCoord, zCoord);
@@ -234,7 +234,7 @@ public class PCde_TileEntityDeco extends PC_TileEntity implements PC_IInventoryW
 			double d = 3D;
 			List<Entity> list = worldObj.getEntitiesWithinAABBExcludingEntity(
 					bolt,
-					AxisAlignedBB.getBoundingBoxFromPool(chamber.getCoord().x - d, chamber.getCoord().y - d, chamber.getCoord().z - d,
+					AxisAlignedBB.getBoundingBox(chamber.getCoord().x - d, chamber.getCoord().y - d, chamber.getCoord().z - d,
 							chamber.getCoord().x + d, chamber.getCoord().y + 6D + d, chamber.getCoord().z + d));
 
 			for (int l = 0; l < list.size(); l++) {

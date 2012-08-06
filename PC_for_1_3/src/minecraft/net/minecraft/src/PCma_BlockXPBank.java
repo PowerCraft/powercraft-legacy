@@ -26,7 +26,7 @@ public class PCma_BlockXPBank extends BlockContainer implements PC_ISwapTerrain,
 	}
 
 	@Override
-	public TileEntity getBlockEntity() {
+	public TileEntity createNewTileEntity(World world) {
 		return new PCma_TileEntityXPBank();
 	}
 
@@ -63,12 +63,12 @@ public class PCma_BlockXPBank extends BlockContainer implements PC_ISwapTerrain,
 
 	@Override
 	public AxisAlignedBB getSelectedBoundingBoxFromPool(World world, int i, int j, int k) {
-		return AxisAlignedBB.getBoundingBoxFromPool(i, j, k, (double) i + 1, (double) j + 1, (double) k + 1);
+		return AxisAlignedBB.getBoundingBox(i, j, k, (double) i + 1, (double) j + 1, (double) k + 1);
 	}
 
 	@Override
 	public AxisAlignedBB getCollisionBoundingBoxFromPool(World world, int i, int j, int k) {
-		return AxisAlignedBB.getBoundingBoxFromPool(i, j, k, (double) i + 1, (double) j + 1, (double) k + 1);
+		return AxisAlignedBB.getBoundingBox(i, j, k, (double) i + 1, (double) j + 1, (double) k + 1);
 	}
 
 	/** Flag that it is being renderer. */
@@ -100,7 +100,7 @@ public class PCma_BlockXPBank extends BlockContainer implements PC_ISwapTerrain,
 	}
 
 	@Override
-	public boolean blockActivated(World world, int i, int j, int k, EntityPlayer entityplayer) {
+	public boolean onBlockActivated(World world, int i, int j, int k, EntityPlayer entityplayer, int par6, float par7, float par8, float par9) {
 		ItemStack ihold = entityplayer.getCurrentEquippedItem();
 		if (ihold != null) {
 			if (ihold.getItem() instanceof ItemBlock && ihold.getItem().shiftedIndex != blockID) {
@@ -136,13 +136,13 @@ public class PCma_BlockXPBank extends BlockContainer implements PC_ISwapTerrain,
 	}
 
 	@Override
-	public void onBlockRemoval(World world, int i, int j, int k) {
+	public void breakBlock(World world, int i, int j, int k, int par5, int par6) {
 
 		try {
 			((PCma_TileEntityXPBank) world.getBlockTileEntity(i, j, k)).withdrawXP(PC_Utils.mc().thePlayer);
 		} catch (NullPointerException npe) {}
 
-		super.onBlockRemoval(world, i, j, k);
+		super.breakBlock(world, i, j, k, par5, par6);
 	}
 
 	@Override

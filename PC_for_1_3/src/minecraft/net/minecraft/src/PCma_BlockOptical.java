@@ -31,7 +31,7 @@ public class PCma_BlockOptical extends BlockContainer implements PC_IBlockType {
 	}
 
 	@Override
-	public TileEntity getBlockEntity() {
+	public TileEntity createNewTileEntity(World world) {
 		return new PCma_TileEntityOptical();
 	}
 
@@ -61,7 +61,7 @@ public class PCma_BlockOptical extends BlockContainer implements PC_IBlockType {
 	}
 
 	@Override
-	public void onBlockRemoval(World world, int i, int j, int k) {
+	public void breakBlock(World world, int i, int j, int k, int par5, int par6) {
 		if (!PC_Utils.isCreative()) {
 			if (isMirror(world, i, j, k)) {
 				dropBlockAsItem_do(world, i, j, k, new ItemStack(mod_PCmachines.optical, 1, 0));
@@ -77,7 +77,7 @@ public class PCma_BlockOptical extends BlockContainer implements PC_IBlockType {
 				}
 			}
 		}
-		super.onBlockRemoval(world, i, j, k);
+		super.breakBlock(world, i, j, k, par5, par6);
 	}
 
 	@Override
@@ -86,7 +86,7 @@ public class PCma_BlockOptical extends BlockContainer implements PC_IBlockType {
 	}
 
 	@Override
-	public boolean blockActivated(World world, int i, int j, int k, EntityPlayer player) {
+	public boolean onBlockActivated(World world, int i, int j, int k, EntityPlayer player, int par6, float par7, float par8, float par9) {
 		ItemStack ihold = player.getCurrentEquippedItem();
 		if (ihold != null) {
 			if (ihold.itemID == mod_PCcore.powerCrystal.blockID) {

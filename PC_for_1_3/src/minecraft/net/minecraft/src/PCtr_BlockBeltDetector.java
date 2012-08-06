@@ -48,7 +48,7 @@ public class PCtr_BlockBeltDetector extends Block implements PC_IBlockType, PC_I
 	}
 
 	@Override
-	public boolean blockActivated(World world, int i, int j, int k, EntityPlayer entityplayer) {
+	public boolean onBlockActivated(World world, int i, int j, int k, EntityPlayer entityplayer, int par6, float par7, float par8, float par9) {
 		return PCtr_BeltBase.blockActivated(world, i, j, k, entityplayer);
 	}
 
@@ -88,7 +88,7 @@ public class PCtr_BlockBeltDetector extends Block implements PC_IBlockType, PC_I
 		boolean isPressed = false;
 		List list = null;
 
-		list = world.getEntitiesWithinAABBExcludingEntity(null, AxisAlignedBB.getBoundingBoxFromPool(i, j, k, (i + 1), j + 1D, (k + 1)));
+		list = world.getEntitiesWithinAABBExcludingEntity(null, AxisAlignedBB.getBoundingBox(i, j, k, (i + 1), j + 1D, (k + 1)));
 		if (list.size() > 0) {
 			isPressed = true;
 		}
@@ -199,7 +199,7 @@ public class PCtr_BlockBeltDetector extends Block implements PC_IBlockType, PC_I
 
 	@Override
 	public AxisAlignedBB getCollisionBoundingBoxFromPool(World world, int i, int j, int k) {
-		return AxisAlignedBB.getBoundingBoxFromPool(i, 0.0F + j, k, (i + 1), (j + PCtr_BeltBase.HEIGHT_COLLISION + 0.0F), (k + 1));
+		return AxisAlignedBB.getBoundingBox(i, 0.0F + j, k, (i + 1), (j + PCtr_BeltBase.HEIGHT_COLLISION + 0.0F), (k + 1));
 	}
 
 	@Override
@@ -211,7 +211,7 @@ public class PCtr_BlockBeltDetector extends Block implements PC_IBlockType, PC_I
 	public AxisAlignedBB getSelectedBoundingBoxFromPool(World world, int i, int j, int k) {
 		float f = 0;
 		f = 0.0F + PCtr_BeltBase.HEIGHT_SELECTED;
-		return AxisAlignedBB.getBoundingBoxFromPool(i, 0.0F + j, k, (i + 1), j + f, (float) k + 1);
+		return AxisAlignedBB.getBoundingBox(i, 0.0F + j, k, (i + 1), j + f, (float) k + 1);
 	}
 
 	@Override

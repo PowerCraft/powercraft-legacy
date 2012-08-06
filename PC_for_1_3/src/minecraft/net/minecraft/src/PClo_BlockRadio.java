@@ -3,6 +3,7 @@ package net.minecraft.src;
 
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Random;
 import java.util.Set;
 
@@ -24,9 +25,9 @@ public class PClo_BlockRadio extends BlockContainer implements PC_IBlockType {
 	}
 
 	@Override
-	public void getCollidingBoundingBoxes(World world, int x, int y, int z, AxisAlignedBB collidedbox, ArrayList list) {
+	public void addCollidingBlockToList(World world, int x, int y, int z, AxisAlignedBB collidedbox, List list, Entity par7Entity) {
 		setBlockBoundsBasedOnState(world, x, y, z);
-		super.getCollidingBoundingBoxes(world, x, y, z, collidedbox, list);
+		super.addCollidingBlockToList(world, x, y, z, collidedbox, list, par7Entity);
 //
 //		setBlockBounds(0.65F, 0, 0.65F, 0.95F, 0.9F, 0.65F);
 //		super.getCollidingBoundingBoxes(world, x, y, z, collidedbox, list);
@@ -65,7 +66,7 @@ public class PClo_BlockRadio extends BlockContainer implements PC_IBlockType {
 	}
 
 	@Override
-	public boolean blockActivated(World world, int x, int y, int z, EntityPlayer entityplayer) {
+	public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer entityplayer, int par6, float par7, float par8, float par9) {
 		ItemStack ihold = entityplayer.getCurrentEquippedItem();
 
 		PClo_TileEntityRadio ter = getTE(world, x, y, z);
@@ -168,7 +169,7 @@ public class PClo_BlockRadio extends BlockContainer implements PC_IBlockType {
 	}
 
 	@Override
-	public void onBlockRemoval(World world, int i, int j, int k) {
+	public void breakBlock(World world, int i, int j, int k, int par5, int par6) {
 		world.setBlockAndMetadataWithNotify(i, j, k, 0, 0);
 		world.notifyBlocksOfNeighborChange(i, j, k, blockID);
 
@@ -184,7 +185,7 @@ public class PClo_BlockRadio extends BlockContainer implements PC_IBlockType {
 			dropBlockAsItem_do(world, i, j, k, new ItemStack(mod_PClogic.radio, 1, getTE(world, i, j, k).isTransmitter() ? 0 : 1));
 		}
 
-		super.onBlockRemoval(world, i, j, k);
+		super.breakBlock(world, i, j, k, par5, par6);
 	}
 
 	@Override
@@ -307,7 +308,7 @@ public class PClo_BlockRadio extends BlockContainer implements PC_IBlockType {
 	}
 
 	@Override
-	public TileEntity getBlockEntity() {
+	public TileEntity createNewTileEntity(World world) {
 		return new PClo_TileEntityRadio();
 	}
 }

@@ -31,7 +31,7 @@ public class PClo_ItemBlockLight extends ItemBlock {
 	}
 
 	@Override
-	public boolean onItemUse(ItemStack itemstack, EntityPlayer entityplayer, World world, int i, int j, int k, int l) {
+	public boolean tryPlaceIntoWorld(ItemStack itemstack, EntityPlayer entityplayer, World world, int i, int j, int k, int l, float par8, float par9, float par10) {
 		int id = world.getBlockId(i, j, k);
 
 		if (id == Block.snow.blockID) {
@@ -79,9 +79,9 @@ public class PClo_ItemBlockLight extends ItemBlock {
 		boolean huge = itemstack.getItemDamage() >= 32 && itemstack.getItemDamage() < 48;
 		Block block = lamp ? mod_PClogic.lightOn : mod_PClogic.lightOff;
 
-		if (world.canBlockBePlacedAt(block.blockID, i, j, k, false, l)) {
+		if (world.canPlaceEntityOnSide(block.blockID, i, j, k, false, l, entityplayer)) {
 			if (world.setBlockWithNotify(i, j, k, block.blockID)) {
-				block.onBlockPlaced(world, i, j, k, l);
+				//block.onBlockPlaced(world, i, j, k, l);
 				block.onBlockPlacedBy(world, i, j, k, entityplayer);
 				world.playSoundEffect(i + 0.5F, j + 0.5F, k + 0.5F, block.stepSound.getStepSound(), (block.stepSound.getVolume() + 1.0F) / 2.0F,
 						block.stepSound.getPitch() * 0.8F);
@@ -89,7 +89,7 @@ public class PClo_ItemBlockLight extends ItemBlock {
 				// set tile entity
 				PClo_TileEntityLight tei = (PClo_TileEntityLight) world.getBlockTileEntity(i, j, k);
 				if (tei == null) {
-					tei = (PClo_TileEntityLight) ((BlockContainer) block).getBlockEntity();
+					tei = (PClo_TileEntityLight) ((BlockContainer) block).createNewTileEntity(world);
 				}
 
 				if (lamp) tei.isStable = true;

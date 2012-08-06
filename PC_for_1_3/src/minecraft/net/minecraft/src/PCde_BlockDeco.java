@@ -3,6 +3,7 @@ package net.minecraft.src;
 
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Random;
 import java.util.Set;
 
@@ -24,7 +25,7 @@ public class PCde_BlockDeco extends BlockContainer implements PC_IBlockType, PC_
 	}
 
 	@Override
-	public TileEntity getBlockEntity() {
+	public TileEntity createNewTileEntity(World world) {
 		return new PCde_TileEntityDeco();
 	}
 
@@ -35,7 +36,7 @@ public class PCde_BlockDeco extends BlockContainer implements PC_IBlockType, PC_
 
 
 	@Override
-	public boolean blockActivated(World world, int i, int j, int k, EntityPlayer entityplayer) {
+	public void onBlockClicked(World world, int i, int j, int k, EntityPlayer entityplayer) {
 
 		PCde_TileEntityDeco tileentity = (PCde_TileEntityDeco) world.getBlockTileEntity(i, j, k);
 
@@ -44,11 +45,11 @@ public class PCde_BlockDeco extends BlockContainer implements PC_IBlockType, PC_
 			if (ihold.getItem() instanceof ItemBlock) {
 				if (ihold.getItem().shiftedIndex != blockID) {
 					if (Block.blocksList[ihold.getItem().shiftedIndex] instanceof PC_IBlockType) {
-						return false;
+						return;
 					}
-					if (ihold.getItem().shiftedIndex == Block.blockSteel.blockID) return false;
+					if (ihold.getItem().shiftedIndex == Block.blockSteel.blockID) return;
 				} else if (ihold.getItemDamage() != tileentity.type) {
-					return false;
+					return;
 				}
 			}
 		}
@@ -57,11 +58,11 @@ public class PCde_BlockDeco extends BlockContainer implements PC_IBlockType, PC_
 			if (tileentity.type == 3 && tileentity.getInventory() != null) {
 				PC_Utils.openGres(entityplayer,
 						new PCde_GuiTransmutator(entityplayer, (PCde_InventoryTransmutationContainer) tileentity.getInventory()));
-				return true;
+				return;
 			}
 		}
 
-		return false;
+		return;
 	}
 
 
@@ -180,24 +181,24 @@ public class PCde_BlockDeco extends BlockContainer implements PC_IBlockType, PC_
 	}
 
 	@Override
-	public void getCollidingBoundingBoxes(World world, int x, int y, int z, AxisAlignedBB axisalignedbb, ArrayList arraylist) {
+	public void addCollidingBlockToList(World world, int x, int y, int z, AxisAlignedBB axisalignedbb, List arraylist, Entity entity) {
 
 		PCde_TileEntityDeco ted = getTE(world, x, y, z);
 		if (ted == null) return;
 
 		if (ted.type == 0 || ted.type == 1 || ted.type == 3) {
 			setBlockBounds(0, 0, 0, 1, 1, 1);
-			super.getCollidingBoundingBoxes(world, x, y, z, axisalignedbb, arraylist);
+			super.addCollidingBlockToList(world, x, y, z, axisalignedbb, arraylist, entity);
 			return;
 		}
 		if (ted.type == 2) {
 			setBlockBounds(0, 0, 0, 1, 2.5F, 1);
-			super.getCollidingBoundingBoxes(world, x, y, z, axisalignedbb, arraylist);
+			super.addCollidingBlockToList(world, x, y, z, axisalignedbb, arraylist, entity);
 			return;
 		}
 
 		setBlockBounds(0, 0, 0, 1, 1, 1);
-		super.getCollidingBoundingBoxes(world, x, y, z, axisalignedbb, arraylist);
+		super.addCollidingBlockToList(world, x, y, z, axisalignedbb, arraylist, entity);
 	}
 
 	/**
@@ -258,7 +259,7 @@ public class PCde_BlockDeco extends BlockContainer implements PC_IBlockType, PC_
 	}
 
 	@Override
-	public void onBlockRemoval(World world, int x, int y, int z) {
+	public void breakBlock(World world, int x, int y, int z, int par5, int par6) {
 
 		PCde_TileEntityDeco teg = getTE(world, x, y, z);
 
@@ -272,7 +273,7 @@ public class PCde_BlockDeco extends BlockContainer implements PC_IBlockType, PC_
 		}
 
 
-		super.onBlockRemoval(world, x, y, z);
+		super.breakBlock(world, x, y, z, par5, par6);
 	}
 
 	@Override

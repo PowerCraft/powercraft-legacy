@@ -695,7 +695,7 @@ public class PClo_ItemWeaselDisk extends Item {
 	 * @param pass pass 0-1
 	 */
 	@Override
-	public int func_46057_a(int dmg, int pass) {
+	public int getIconFromDamageForRenderPass(int dmg, int pass) {
 		return pass == 0 ? textureBg : textureFg;
 	}
 
@@ -703,7 +703,7 @@ public class PClo_ItemWeaselDisk extends Item {
 	 * render double pass
 	 */
 	@Override
-	public boolean func_46058_c() {
+	public boolean requiresMultipleRenderPasses() {
 		return true;
 	}
 

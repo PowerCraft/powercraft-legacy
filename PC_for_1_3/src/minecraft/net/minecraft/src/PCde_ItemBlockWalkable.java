@@ -25,7 +25,7 @@ public class PCde_ItemBlockWalkable extends ItemBlock {
 	}
 
 	@Override
-	public boolean onItemUse(ItemStack itemstack, EntityPlayer entityplayer, World world, int i, int j, int k, int l) {
+	public boolean tryPlaceIntoWorld(ItemStack itemstack, EntityPlayer entityplayer, World world, int i, int j, int k, int l, float par8, float par9, float par10) {
 		int id = world.getBlockId(i, j, k);
 
 		if (id == Block.snow.blockID) {
@@ -110,17 +110,17 @@ public class PCde_ItemBlockWalkable extends ItemBlock {
 			return false;
 		}
 
-		if (world.canBlockBePlacedAt(mod_PCdeco.walkable.blockID, i, j, k, false, l)) {
+		if (world.canPlaceEntityOnSide(mod_PCdeco.walkable.blockID, i, j, k, false, l, entityplayer)) {
 			Block block = mod_PCdeco.walkable;
 			if (world.setBlock(i, j, k, block.blockID)) {
 				// set tile entity
 				PCde_TileEntityWalkable ted = (PCde_TileEntityWalkable) world.getBlockTileEntity(i, j, k);
 				if (ted == null) {
-					ted = (PCde_TileEntityWalkable) ((BlockContainer) block).getBlockEntity();
+					ted = (PCde_TileEntityWalkable) ((BlockContainer) block).createNewTileEntity(world);
 				}
 				ted.type = itemstack.getItemDamage();
 				world.setBlockTileEntity(i, j, k, ted);
-				block.onBlockPlaced(world, i, j, k, l);
+				//block.onBlockPlaced(world, i, j, k, l);
 				block.onBlockPlacedBy(world, i, j, k, entityplayer);
 
 				world.markBlocksDirty(i, j, k, i, j, k);
