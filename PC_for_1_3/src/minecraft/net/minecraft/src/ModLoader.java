@@ -1192,12 +1192,7 @@ public final class ModLoader
             {
                 var5 = (Entry)var4.next();
                 
-                System.out.println("====");
-                System.out.println(var5);
-                System.out.println(var1);
-                System.out.println(var5.getValue());
-                System.out.println(var1.renderViewEntity);
-                System.out.println(var5.getKey());
+                // TODO delete if(var1.renderViewEntity!=null)
                 if(var1.renderViewEntity!=null)
 	                if ((clock != var14 || !(((Boolean)var5.getValue()).booleanValue() & var1.renderViewEntity.worldObj != null)) && !((BaseMod)var5.getKey()).onTickInGUI(var0, var1, var1.currentScreen))
 	                {
