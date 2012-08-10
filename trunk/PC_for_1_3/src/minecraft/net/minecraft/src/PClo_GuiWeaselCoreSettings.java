@@ -2,6 +2,8 @@ package net.minecraft.src;
 
 
 
+import java.util.List;
+
 import net.minecraft.src.PC_GresTextEdit.PC_GresInputType;
 import net.minecraft.src.PC_GresWidget.PC_GresAlign;
 
@@ -208,5 +210,11 @@ public class PClo_GuiWeaselCoreSettings implements PC_IGresBase {
 
 	@Override
 	public void updateTick(PC_IGresGui gui) {}
+
+	@Override
+	public List<Slot> getAllSlots(Container c) {
+		// TODO Auto-generated method stub
+		return null;
+	}
 
 }

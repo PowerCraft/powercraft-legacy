@@ -1,5 +1,7 @@
 package net.minecraft.src;
 
+import java.util.List;
+
 
 /**
  * Container used by GRES for inventory slots in the GUI.
@@ -13,6 +15,8 @@ public class PC_GresContainerManager extends Container {
 	/** the open gui */
 	public PC_IGresGui gresGui;
 
+	public PC_IGresBase gui;
+	
 	private static final int playerSlots = 9 * 4;
 	/** Upper part of the player's inventory (3x9) */
 	public Slot[][] inventoryPlayerUpper = new Slot[9][3];
@@ -24,24 +28,30 @@ public class PC_GresContainerManager extends Container {
 	 * 
 	 * @param player the player
 	 */
-	public PC_GresContainerManager(EntityPlayer player) {
+	public PC_GresContainerManager(EntityPlayer player, PC_IGresBase gui) {
+		this.gui = gui;
 		thePlayer = player;
 		if (thePlayer != null) {
 			// lower player inventory
 			for (int i = 0; i < 9; i++) {
 				inventoryPlayerLower[i][0] = new Slot(player.inventory, i, -3000, 0);
-				addSlot(inventoryPlayerLower[i][0]);
+				addSlotToContainer(inventoryPlayerLower[i][0]);
 			}
 
 			// upper player inventory
 			for (int i = 0; i < 9; i++) {
 				for (int j = 0; j < 3; j++) {
 					inventoryPlayerUpper[i][j] = new Slot(player.inventory, i + j * 9 + 9, -3000, 0);
-					addSlot(inventoryPlayerUpper[i][j]);
+					addSlotToContainer(inventoryPlayerUpper[i][j]);
 				}
 			}
 		}
 
+		List<Slot> sl = gui.getAllSlots(this);
+		if(sl!=null)
+			for(Slot s:sl)
+				addSlotToContainer(s);
+		
 	}
 
 	/**
@@ -56,10 +66,6 @@ public class PC_GresContainerManager extends Container {
 	@Override
 	public boolean canInteractWith(EntityPlayer entityplayer) {
 		return true;
-	}
-
-	public void addSlot(Slot slot) {
-		super.addSlotToContainer(slot);
 	}
 
 	@Override
@@ -114,42 +120,6 @@ public class PC_GresContainerManager extends Container {
 		}
 
 		return itemstack;
-	}
-
-	/**
-	 * Set a slot at position in inventorySlots list. Slot's slotNumber will be
-	 * set to the ID.
-	 * 
-	 * @param id position in the list
-	 * @param newSlot the added slot.
-	 */
-	public void setSlot(int id, Slot newSlot) {
-		if (newSlot != null) {
-			inventorySlots.set(id, newSlot);
-			inventoryItemStacks.set(id, null);
-			newSlot.slotNumber = id;
-		}
-	}
-
-	/**
-	 * Remove a slot with ID
-	 * 
-	 * @param id slot id
-	 */
-	public void removeSlot(int id) {
-		int i = id;
-		for (; i < inventorySlots.size() - 1; i++) {
-			Slot s = (Slot) inventorySlots.get(i + 1);
-			if (s != null) {
-				s.slotNumber = i;
-			}
-			inventorySlots.set(i, s);
-			inventoryItemStacks.set(i, inventorySlots.get(i + 1));
-		}
-		if (i < inventorySlots.size()) {
-			inventorySlots.remove(i);
-			inventoryItemStacks.remove(i);
-		}
 	}
 
 
@@ -234,7 +204,7 @@ public class PC_GresContainerManager extends Container {
 
 	@Override
 	public void onCraftMatrixChanged(IInventory iinventory) {
-		gresGui.onCraftMatrixChanged(iinventory);
+		gui.onCraftMatrixChanged(iinventory);
 	}
 
 }

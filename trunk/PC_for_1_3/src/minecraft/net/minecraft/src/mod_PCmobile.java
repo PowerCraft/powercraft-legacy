@@ -1,6 +1,7 @@
 package net.minecraft.src;
 
 
+import java.util.Hashtable;
 import java.util.List;
 import java.util.Map;
 
@@ -211,6 +212,12 @@ public class mod_PCmobile extends PC_Module implements PC_IActivatorListener {
 			return false;
 		}
 		return false;
+	}
+
+	@Override
+	public Hashtable<String, PC_IGresGuiCaller> addGui() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 

@@ -1,6 +1,8 @@
 package net.minecraft.src;
 
 
+import java.util.List;
+
 import net.minecraft.src.PC_GresWidget.PC_GresAlign;
 
 
@@ -14,7 +16,6 @@ public class PClo_GuiFullChest implements PC_IGresBase {
 
 	private PClo_TileEntityGate gate;
 
-	@SuppressWarnings("unused")
 	private PC_GresWidget buttonOK, buttonCancel;
 
 	private PC_GresCheckBox check;
@@ -91,5 +92,10 @@ public class PClo_GuiFullChest implements PC_IGresBase {
 
 	@Override
 	public void updateTick(PC_IGresGui gui) {}
+
+	@Override
+	public List<Slot> getAllSlots(Container c) {
+		return null;
+	}
 
 }

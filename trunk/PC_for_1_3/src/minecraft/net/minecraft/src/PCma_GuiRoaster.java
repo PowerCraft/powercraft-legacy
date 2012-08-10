@@ -1,6 +1,9 @@
 package net.minecraft.src;
 
 
+import java.util.ArrayList;
+import java.util.List;
+
 import net.minecraft.src.PC_GresWidget.PC_GresAlign;
 
 
@@ -14,7 +17,8 @@ public class PCma_GuiRoaster implements PC_IGresBase {
 
 	private EntityPlayer player;
 	private IInventory inventory;
-
+	private List<Slot> lSlot = new ArrayList<Slot>();
+	
 	/**
 	 * @param player player
 	 * @param roaster device tile entity
@@ -37,7 +41,11 @@ public class PCma_GuiRoaster implements PC_IGresBase {
 
 		w.setAlignH(PC_GresAlign.CENTER);
 
-		w.add(new PC_GresInventory(inventory, 9, 1));
+		PC_GresInventory inv = new PC_GresInventory(9, 1);
+		for (int i = 0; i < 9; i++) {
+			inv.setSlot(lSlot.get(i), i, 0);
+		}
+		w.add(inv);
 		w.add(new PC_GresInventoryPlayer(true));
 
 		gui.add(w);
@@ -68,5 +76,16 @@ public class PCma_GuiRoaster implements PC_IGresBase {
 
 	@Override
 	public void updateTick(PC_IGresGui gui) {}
+
+
+	@Override
+	public List<Slot> getAllSlots(Container c) {
+		for (int i = 0; i < 9; i++) {
+			if (i < inventory.getSizeInventory()) {
+				lSlot.add(new PC_SlotSelective(inventory, i, 0, 0));
+			}
+		}
+		return lSlot;
+	}
 
 }

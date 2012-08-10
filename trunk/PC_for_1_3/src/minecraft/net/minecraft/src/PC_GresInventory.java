@@ -37,103 +37,6 @@ public class PC_GresInventory extends PC_GresWidget {
 		slots = new Slot[gridWidth][gridHeight];
 	}
 
-	/**
-	 * Inventory widget, auto-filled with slots from an inventory.
-	 * 
-	 * @param inventory the inventory to take slots from
-	 * @param width grid width
-	 * @param height grid height
-	 */
-	public PC_GresInventory(IInventory inventory, int width, int height) {
-		super(width * 18, height * 18);
-
-		canAddWidget = false;
-
-		fillWithSlots(inventory, width, height);
-	}
-
-	public void fillWithSlots(IInventory inventory, int width, int height) {
-		setMinSize(width * 18, height * 18);
-		gridHeight = height;
-		gridWidth = width;
-		slots = new Slot[gridWidth][gridHeight];
-
-		for (int j = 0; j < height; j++) {
-			for (int i = 0; i < width; i++) {
-				if (i + j * width < inventory.getSizeInventory()) {
-					setSlot(new PC_SlotSelective(inventory, i + j * width, 0, 0), i, j);
-				}
-			}
-		}
-	}
-
-	public void removeAllSlots() {
-		if (containerManager != null) {
-			for (int x = 0; x < slots.length; x++) {
-				for (int y = 0; y < slots[0].length; y++) {
-					if (this.slots[x][y] != null) {
-						containerManager.removeSlot(this.slots[x][y].slotNumber);
-					}
-				}
-			}
-		}
-	}
-
-	/**
-	 * Inventory widget with SINGLE SLOT from an inventory
-	 * 
-	 * @param inventory the inventory to take slots from
-	 * @param slot slot number
-	 */
-	public PC_GresInventory(IInventory inventory, int slot) {
-		super(18, 18);
-
-		gridHeight = 1;
-		gridWidth = 1;
-
-		canAddWidget = false;
-
-		slots = new Slot[1][1];
-
-		setSlot(new PC_SlotSelective(inventory, slot, 0, 0), 0, 0);
-
-	}
-
-	/**
-	 * Inventory widget auto-filled with slots, with START and END slot.
-	 * 
-	 * @param inventory the inventory to take slots from
-	 * @param width grid width
-	 * @param height grid height
-	 * @param slotStart index of first (left top) slot
-	 * @param slotEnd index of last (right bottom, usually) slot
-	 */
-	public PC_GresInventory(IInventory inventory, int width, int height, int slotStart, int slotEnd) {
-		super(width * 18, height * 18);
-
-		gridHeight = height;
-		gridWidth = width;
-
-		canAddWidget = false;
-
-		slots = new Slot[gridWidth][gridHeight];
-
-		adding:
-		for (int j = 0; j < height; j++) {
-			for (int i = 0; i < width; i++) {
-
-				if (slotStart + i + j * width > slotEnd) {
-					break adding;
-				}
-
-				if (slotStart + i + j * width < inventory.getSizeInventory()) {
-					setSlot(new PC_SlotSelective(inventory, slotStart + i + j * width, 0, 0), i, j);
-				}
-
-			}
-		}
-	}
-
 	@Override
 	public PC_CoordI getMinSize() {
 		return calcSize();
@@ -147,7 +50,6 @@ public class PC_GresInventory extends PC_GresWidget {
 	@Override
 	public void calcChildPositions() {}
 
-	@SuppressWarnings("null")
 	@Override
 	protected void render(PC_CoordI posOffset) {
 		String texture = mod_PCcore.getImgDir() + "gres/widgets.png";
@@ -199,20 +101,6 @@ public class PC_GresInventory extends PC_GresWidget {
 	@Override
 	public void addedToWidget() {
 
-		if (containerManager != null && (parent == null || !(parent instanceof PC_GresInventoryPlayer))) {
-
-			for (int x = 0; x < gridWidth; x++) {
-				for (int y = 0; y < gridHeight; y++) {
-
-					if (slots[x][y] != null) {
-						containerManager.addSlot(slots[x][y]);
-					}
-
-				}
-			}
-
-		}
-
 	}
 
 	/**
@@ -225,19 +113,6 @@ public class PC_GresInventory extends PC_GresWidget {
 	 */
 	public PC_GresInventory setSlot(Slot slot, int x, int y) {
 		if (x >= 0 && x < this.slots.length && y >= 0 && y < this.slots[x].length) {
-			if (containerManager != null) {
-				if (this.slots[x][y] == null) {
-					if (slot != null) {
-						containerManager.addSlot(slot);
-					}
-				} else {
-					if (slot == null) {
-						containerManager.removeSlot(this.slots[x][y].slotNumber);
-					} else {
-						containerManager.setSlot(this.slots[x][y].slotNumber, slot);
-					}
-				}
-			}
 			this.slots[x][y] = slot;
 		}
 		return this;

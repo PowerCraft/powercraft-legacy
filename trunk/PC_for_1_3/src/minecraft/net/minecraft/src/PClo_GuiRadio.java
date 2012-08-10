@@ -1,6 +1,8 @@
 package net.minecraft.src;
 
 
+import java.util.List;
+
 import net.minecraft.src.PC_GresTextEdit.PC_GresInputType;
 import net.minecraft.src.PC_GresWidget.PC_GresAlign;
 
@@ -25,7 +27,6 @@ public class PClo_GuiRadio implements PC_IGresBase {
 	private String editedString;
 	private int dim = 0;
 
-	@SuppressWarnings("unused")
 	private PC_GresWidget buttonOK, buttonCancel;
 	private PC_GresWidget edit;
 	private PC_GresWidget txError;
@@ -163,5 +164,10 @@ public class PClo_GuiRadio implements PC_IGresBase {
 
 	@Override
 	public void updateTick(PC_IGresGui gui) {}
+
+	@Override
+	public List<Slot> getAllSlots(Container c) {
+		return null;
+	}
 
 }

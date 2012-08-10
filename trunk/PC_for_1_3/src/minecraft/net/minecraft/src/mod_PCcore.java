@@ -3,6 +3,8 @@ package net.minecraft.src;
 
 import java.awt.Toolkit;
 import java.io.ByteArrayInputStream;
+import java.util.ArrayList;
+import java.util.Hashtable;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
@@ -986,7 +988,7 @@ public class mod_PCcore extends PC_Module implements PC_IActivatorListener {
 
 		if (pos.getId(world) == Block.mobSpawner.blockID) {
 
-			PC_Utils.openGres(player, new PCco_GuiSpawnerEditor((TileEntityMobSpawner) pos.getTileEntity(world)));
+			PC_Utils.openGres(player, "SpawnerEditor", pos.x, pos.y, pos.z);
 
 			stack.damageItem(1, player);
 
@@ -1207,7 +1209,7 @@ public class mod_PCcore extends PC_Module implements PC_IActivatorListener {
 			if (++inGameTickCounter > 20) {
 				updateAlreadyShown = true;
 				try {
-					PC_Utils.openGres(mc.thePlayer, new PCco_GuiUpdateNotification());
+					PC_Utils.openGres(mc.thePlayer, "UpdateNotification", 0, 0, 0);
 					PC_Logger.fine("Openning UPDATE NOTIFICATION screen.");
 				} catch (Throwable t) {
 					PC_Logger.throwing("mod_PCcore", "onTickInGame", t);
@@ -1240,5 +1242,21 @@ public class mod_PCcore extends PC_Module implements PC_IActivatorListener {
 		return true;
 
 	}
+	
+	@Override
+	public GuiContainer getContainerGUI(EntityClientPlayerMP var1, int var2, int var3, int var4, int var5)
+    {
+        return new PC_GresGui(new PCco_GuiCraftingTool(var1));
+    }
 
+	@Override
+	public Hashtable<String, PC_IGresGuiCaller> addGui() {
+		Hashtable<String, PC_IGresGuiCaller> guis = new Hashtable<String, PC_IGresGuiCaller>();
+		guis.put("CraftingTool", new PCco_GuiCallerCraftingTool());
+		guis.put("OreSnifferResultScreen", new PCco_GuiCallerOreSnifferResultScreen());
+		guis.put("SpawnerEditor", new PCco_GuiCallerSpawnerEditor());
+		guis.put("UpdateNotification",  new PCco_GuiCallerUpdateNotification());
+		return guis;
+	}
+	
 }

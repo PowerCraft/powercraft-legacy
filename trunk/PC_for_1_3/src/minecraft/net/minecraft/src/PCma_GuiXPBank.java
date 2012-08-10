@@ -1,6 +1,7 @@
 package net.minecraft.src;
 
 
+import java.util.List;
 import java.util.Random;
 
 import net.minecraft.src.PC_GresWidget.PC_GresAlign;
@@ -13,7 +14,6 @@ import net.minecraft.src.PC_GresWidget.PC_GresAlign;
 public class PCma_GuiXPBank implements PC_IGresBase {
 
 	private PCma_TileEntityXPBank xpbank;
-	@SuppressWarnings("unused")
 	private PC_GresWidget buttonClose;
 	private PC_GresWidget txStoragePoints;
 	private PC_GresWidget txPlayerLevels;
@@ -262,6 +262,12 @@ public class PCma_GuiXPBank implements PC_IGresBase {
 	@Override
 	public void updateTick(PC_IGresGui gui) {
 		updateCounters();
+	}
+
+	@Override
+	public List<Slot> getAllSlots(Container c) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }

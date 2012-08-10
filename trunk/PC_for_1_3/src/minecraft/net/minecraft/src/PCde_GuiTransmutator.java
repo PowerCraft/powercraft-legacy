@@ -1,6 +1,9 @@
 package net.minecraft.src;
 
 
+import java.util.ArrayList;
+import java.util.List;
+
 import net.minecraft.src.PC_GresWidget.PC_GresAlign;
 
 
@@ -15,7 +18,8 @@ public class PCde_GuiTransmutator implements PC_IGresBase {
 	private EntityPlayer player;
 	private PCde_InventoryTransmutationContainer inventory;
 	private PC_GresProgressBar chargeMeter;
-
+	private List<Slot> lSlot = new ArrayList<Slot>();
+	
 	/**
 	 * @param player player
 	 * @param box device tile entity
@@ -55,7 +59,13 @@ public class PCde_GuiTransmutator implements PC_IGresBase {
 		updateFraction();
 		w.add(vg);
 
-		w.add(new PC_GresInventory(inventory, 5, 3));
+		PC_GresInventory inv = new PC_GresInventory(5, 3);
+		for (int j = 0; j < 3; j++) {
+			for (int i = 0; i < 5; i++) {
+				inv.setSlot(lSlot.get(i+j*5), i, j);
+			}
+		}
+		w.add(inv);
 		w.add(new PC_GresInventoryPlayer(true));
 
 		gui.add(w);
@@ -87,6 +97,19 @@ public class PCde_GuiTransmutator implements PC_IGresBase {
 	@Override
 	public void updateTick(PC_IGresGui gui) {
 		updateFraction();
+	}
+
+
+	@Override
+	public List<Slot> getAllSlots(Container c) {
+		for (int j = 0; j < 3; j++) {
+			for (int i = 0; i < 5; i++) {
+				if (i + j * 5 < inventory.getSizeInventory()) {
+					lSlot.add(new PC_SlotSelective(inventory, i + j * 5, 0, 0));
+				}
+			}
+		}
+		return lSlot;
 	}
 
 }

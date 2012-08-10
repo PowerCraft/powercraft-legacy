@@ -1,6 +1,9 @@
 package net.minecraft.src;
 
 
+import java.util.ArrayList;
+import java.util.List;
+
 import net.minecraft.src.PC_GresTextEdit.PC_GresInputType;
 import net.minecraft.src.PC_GresWidget.PC_GresAlign;
 
@@ -17,7 +20,8 @@ public class PClo_GuiWeaselDiskDrive implements PC_IGresBase {
 	private PC_GresWidget edName;
 	private PC_GresWidget txError;
 	private PC_GresWidget btnOk;
-
+	private List<Slot> lSlot = new ArrayList<Slot>();
+	
 	/**
 	 * gui for drive
 	 * 
@@ -60,8 +64,14 @@ public class PClo_GuiWeaselDiskDrive implements PC_IGresBase {
 		w.add(hg);
 
 		w.add(txError = new PC_GresLabel("").setWidgetMargin(2).setColor(PC_GresWidget.textColorEnabled, 0x000000));
-
-		w.add(new PC_GresInventory(drive.getInventory(), 4, 2));
+		
+		PC_GresInventory inv = new PC_GresInventory(4, 2);
+		for (int j = 0; j < 2; j++) {
+			for (int i = 0; i < 4; i++) {
+				inv.setSlot(lSlot.get(i+j*4), i, j);
+			}
+		}
+		w.add(inv);
 
 		w.add(new PC_GresInventoryPlayer(true));
 
@@ -120,5 +130,18 @@ public class PClo_GuiWeaselDiskDrive implements PC_IGresBase {
 
 	@Override
 	public void updateTick(PC_IGresGui gui) {}
+
+	@Override
+	public List<Slot> getAllSlots(Container c) {
+		IInventory inventory = drive.getInventory();
+		for (int j = 0; j < 2; j++) {
+			for (int i = 0; i < 4; i++) {
+				if (i + j * 4 < inventory.getSizeInventory()) {
+					lSlot.add(new PC_SlotSelective(inventory, i + j * 4, 0, 0));
+				}
+			}
+		}
+		return lSlot;
+	}
 
 }

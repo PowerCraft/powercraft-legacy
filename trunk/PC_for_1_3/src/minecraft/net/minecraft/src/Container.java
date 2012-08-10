@@ -27,6 +27,7 @@ public abstract class Container
      */
     protected Slot addSlotToContainer(Slot par1Slot)
     {
+    	System.out.println(par1Slot+":"+this.inventorySlots.size()+":"+this);
         par1Slot.slotNumber = this.inventorySlots.size();
         this.inventorySlots.add(par1Slot);
         this.inventoryItemStacks.add((Object)null);
@@ -132,6 +133,7 @@ public abstract class Container
 
     public ItemStack slotClick(int par1, int par2, boolean par3, EntityPlayer par4EntityPlayer)
     {
+    	System.out.println(par1+":"+inventorySlots.size()+":"+this);
         ItemStack var5 = null;
 
         if (par2 > 1)

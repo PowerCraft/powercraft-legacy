@@ -1,5 +1,7 @@
 package net.minecraft.src;
 
+import java.util.List;
+
 
 /**
  * Gres Base interface, implemented by GRES individual GUIs.
@@ -15,6 +17,11 @@ public interface PC_IGresBase {
 	public EntityPlayer getPlayer();
 
 
+	/**
+	 * @return all Slots without the Slots of the Player
+	 */
+	public List<Slot> getAllSlots(Container c);
+	
 	/**
 	 * Create {@link PC_GresWindow}, fill with widgets and add it to the outer
 	 * GUI.

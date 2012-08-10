@@ -54,13 +54,15 @@ public class PCde_BlockDeco extends BlockContainer implements PC_IBlockType, PC_
 			}
 		}
 
-		if (tileentity != null) {
+		PC_Utils.openGres(entityplayer, "Transmutator", i, j, k);
+		
+		/*if (tileentity != null) {
 			if (tileentity.type == 3 && tileentity.getInventory() != null) {
 				PC_Utils.openGres(entityplayer,
 						new PCde_GuiTransmutator(entityplayer, (PCde_InventoryTransmutationContainer) tileentity.getInventory()));
 				return;
 			}
-		}
+		}*/
 
 		return;
 	}

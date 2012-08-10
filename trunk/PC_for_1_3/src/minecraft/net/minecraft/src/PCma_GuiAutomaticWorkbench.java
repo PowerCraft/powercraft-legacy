@@ -1,5 +1,8 @@
 package net.minecraft.src;
 
+import java.util.ArrayList;
+import java.util.List;
+
 
 
 /**
@@ -16,7 +19,8 @@ public class PCma_GuiAutomaticWorkbench implements PC_IGresBase {
 	private PCma_TileEntityAutomaticWorkbench tileentity;
 	private IInventory craftResult;
 	private PC_GresCheckBox checkRedstone;
-
+	private List<Slot> lSlot = new ArrayList<Slot>();
+	
 	/**
 	 * @param entityplayer player
 	 * @param tileentity tile entity of the Automatic Workbench
@@ -39,11 +43,9 @@ public class PCma_GuiAutomaticWorkbench implements PC_IGresBase {
 		PC_GresWidget hg = new PC_GresLayoutH();
 		PC_GresInventory inv = new PC_GresInventory(3, 3);
 
-		int cnt = 0;
-
 		for (int y = 0; y < 3; y++) {
 			for (int x = 0; x < 3; x++) {
-				inv.setSlot(new PCma_SlotAutomaticWorkbenchInventory(tileentity, gui.getContainer(), false, cnt++, 0, 0), x, y);
+				inv.setSlot(lSlot.get(x+y*3+1), x, y);
 			}
 		}
 
@@ -53,7 +55,7 @@ public class PCma_GuiAutomaticWorkbench implements PC_IGresBase {
 		inv = new PC_GresInventory(3, 3);
 		for (int y = 0; y < 3; y++) {
 			for (int x = 0; x < 3; x++) {
-				inv.setSlot(new PCma_SlotAutomaticWorkbenchInventory(tileentity, gui.getContainer(), true, cnt++, 0, 0), x, y);
+				inv.setSlot(lSlot.get(x+y*3+10), x, y);
 			}
 		}
 
@@ -61,7 +63,7 @@ public class PCma_GuiAutomaticWorkbench implements PC_IGresBase {
 
 		hg1.add(new PC_GresImage(mod_PCcore.getImgDir() + "gres/widgets.png", 44, 66, 12, 11));
 
-		hg1.add(new PC_GresInventoryBigSlot(new PCma_SlotAutomaticWorkbenchResult(entityplayer, tileentity, craftResult, gui.getContainer(), 0, 0, 0)));
+		hg1.add(new PC_GresInventoryBigSlot(lSlot.get(0)));
 
 		hg.add(hg1);
 
@@ -105,4 +107,21 @@ public class PCma_GuiAutomaticWorkbench implements PC_IGresBase {
 
 	@Override
 	public void updateTick(PC_IGresGui gui) {}
+
+	@Override
+	public List<Slot> getAllSlots(Container c) {
+		int cnt = 0;
+		lSlot.add(new PCma_SlotAutomaticWorkbenchResult(entityplayer, tileentity, craftResult, c, 0, 0, 0));
+		for (int y = 0; y < 3; y++) {
+			for (int x = 0; x < 3; x++) {
+				lSlot.add(new PCma_SlotAutomaticWorkbenchInventory(tileentity, c, false, cnt++, 0, 0));
+			}
+		}
+		for (int y = 0; y < 3; y++) {
+			for (int x = 0; x < 3; x++) {
+				lSlot.add(new PCma_SlotAutomaticWorkbenchInventory(tileentity, c, true, cnt++, 0, 0));
+			}
+		}
+		return lSlot;
+	}
 }

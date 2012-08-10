@@ -1,6 +1,9 @@
 package net.minecraft.src;
 
 
+import java.util.ArrayList;
+import java.util.List;
+
 import net.minecraft.src.PC_GresWidget.PC_GresAlign;
 
 
@@ -14,7 +17,8 @@ public class PCma_GuiBlockBuilder implements PC_IGresBase {
 
 	private EntityPlayer player;
 	private IInventory inventory;
-
+	private List<Slot> lSlot = new ArrayList<Slot>();
+	
 	/**
 	 * @param player player
 	 * @param tilee device tile entity
@@ -36,9 +40,16 @@ public class PCma_GuiBlockBuilder implements PC_IGresBase {
 
 		w.setAlignH(PC_GresAlign.CENTER);
 
-		w.add(new PC_GresInventory(inventory, 3, 3));
+		PC_GresInventory inv = new PC_GresInventory(3, 3);
+		
+		for (int j = 0; j < 3; j++) {
+			for (int i = 0; i < 3; i++) {
+				inv.setSlot(lSlot.get(i+j*3), i, j);
+			}
+		}
+		w.add(inv);
 		w.add(new PC_GresInventoryPlayer(true));
-
+		
 		gui.add(w);
 		gui.setCanShiftTransfer(true);
 
@@ -68,4 +79,17 @@ public class PCma_GuiBlockBuilder implements PC_IGresBase {
 
 	@Override
 	public void updateTick(PC_IGresGui gui) {}
+
+
+	@Override
+	public List<Slot> getAllSlots(Container c) {
+		for (int j = 0; j < 3; j++) {
+			for (int i = 0; i < 3; i++) {
+				if (i + j * 3 < inventory.getSizeInventory()) {
+					lSlot.add(new PC_SlotSelective(inventory, i + j * 3, 0, 0));
+				}
+			}
+		}
+		return lSlot;
+	}
 }

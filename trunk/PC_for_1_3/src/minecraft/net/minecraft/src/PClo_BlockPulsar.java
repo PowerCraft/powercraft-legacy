@@ -86,10 +86,7 @@ public class PClo_BlockPulsar extends BlockContainer implements PC_IBlockType {
 			}
 		}
 
-		PClo_TileEntityPulsar ent = (PClo_TileEntityPulsar) world.getBlockTileEntity(i, j, k);
-		if (ent != null) {
-			PC_Utils.openGres(player, new PClo_GuiPulsar(ent));
-		}
+		PC_Utils.openGres(player, "Radio", i, j, k);
 
 		return true;
 	}
