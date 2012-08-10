@@ -65,9 +65,9 @@ public class PCtr_GuiTeleporterDecide implements PC_IGresBase {
 			teleporter.setIsReceiver();
 
 		}
-
-		PC_Utils.openGres(getPlayer(), new PCtr_GuiTeleporter(teleporter, true));
-
+		
+		gui.close();
+		
 	}
 
 	@Override

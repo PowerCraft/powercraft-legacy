@@ -491,6 +491,9 @@ public class mod_PCmachines extends PC_Module implements PC_IActivatorListener {
 		guis.put("AutomaticWorkbench", new PCma_GuiCallerAutomaticWorkbench());
 		guis.put("BlockBuilder", new PCma_GuiCallerBlockBuilder());
 		guis.put("Roaster", new PCma_GuiCallerRoaster());
+		guis.put("LaserTypeDecide", new PCma_GuiCallerLaserTypeDecide());
+		guis.put("Replacer", new PCma_GuiCallerReplacer());
+		guis.put("XPBank", new PCma_GuiCallerXPBank());
 		return guis;
 	}
 }

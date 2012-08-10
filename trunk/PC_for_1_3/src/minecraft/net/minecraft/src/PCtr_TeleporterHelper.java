@@ -73,7 +73,7 @@ public class PCtr_TeleporterHelper {
 		}
 
 	}
-
+	
 	// ------ GETTERS ----------
 
 	private static PC_CoordI getTargetCoord(String identifier) {
@@ -86,6 +86,16 @@ public class PCtr_TeleporterHelper {
 		}
 	}
 
+	public static boolean targetExists(PCtr_TeleporterEntry identifier) {
+		loadIfNeeded();
+
+		if (identifier == null) {
+			return false;
+		}
+
+		return targets.containsValue(identifier);
+	}
+
 	public static boolean targetExists(String identifier) {
 		loadIfNeeded();
 
@@ -95,7 +105,7 @@ public class PCtr_TeleporterHelper {
 
 		return targets.get(identifier) != null;
 	}
-
+	
 	public static boolean targetExistsExcept(String identifier, PC_CoordI coord) {
 		loadIfNeeded();
 

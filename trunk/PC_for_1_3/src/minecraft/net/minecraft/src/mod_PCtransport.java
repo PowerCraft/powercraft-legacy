@@ -478,6 +478,9 @@ public class mod_PCtransport extends PC_Module {
 	public Hashtable<String, PC_IGresGuiCaller> addGui() {
 		Hashtable<String, PC_IGresGuiCaller> guis = new Hashtable<String, PC_IGresGuiCaller>();
 		guis.put("SeparationBelt", new PCtr_GuiCallerSeparationBelt());
+		guis.put("EjectionBelt", new PCtr_GuiCallerEjectionBelt());
+		guis.put("Teleporter", new PCtr_GuiCallerTeleporter());
+		guis.put("TeleporterDecide", new PCtr_GuiCallerTeleporterDecide());
 		return guis;
 	}
 
