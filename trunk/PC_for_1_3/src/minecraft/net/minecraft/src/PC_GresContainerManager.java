@@ -86,7 +86,7 @@ public class PC_GresContainerManager extends Container {
 		// if (((PC_GresGui) gresGui).gui instanceof PCco_GuiCraftingTool){
 		// }
 
-		if (slotIndex < playerSlots && !gresGui.canShiftTransfer()) {
+		if (slotIndex < playerSlots && !gui.canShiftTransfer()) {
 			return null;
 		}
 

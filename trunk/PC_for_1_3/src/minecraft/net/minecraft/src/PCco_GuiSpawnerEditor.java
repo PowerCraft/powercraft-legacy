@@ -167,4 +167,9 @@ public class PCco_GuiSpawnerEditor implements PC_IGresBase {
 		return null;
 	}
 
+	@Override
+	public boolean canShiftTransfer() {
+		return false;
+	}
+
 }

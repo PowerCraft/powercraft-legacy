@@ -54,16 +54,6 @@ public class PC_GresGui extends GuiContainer implements PC_IGresGui {
 	}
 
 	@Override
-	public void setCanShiftTransfer(boolean b) {
-		shiftTransfer = b;
-	}
-
-	@Override
-	public boolean canShiftTransfer() {
-		return shiftTransfer;
-	}
-
-	@Override
 	public void close() {
 		mc.displayGuiScreen(null);
 		mc.setIngameFocus();

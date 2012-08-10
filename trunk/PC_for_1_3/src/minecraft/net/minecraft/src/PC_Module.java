@@ -552,8 +552,11 @@ public abstract class PC_Module extends BaseMod {
 				break;
 			}
 		}
-		if(guiCaller==null)
+		if(guiCaller==null){
+			System.out.println("Open no Gui with ID "+var2);
 			return null;
+		}
+		System.out.println("Open Gui with ID "+var2);
         return new PC_GresGui(guiCaller.createGui(var1, var3, var4, var5));
     }
 }

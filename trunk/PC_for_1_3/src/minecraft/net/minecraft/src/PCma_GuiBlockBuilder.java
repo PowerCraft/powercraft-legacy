@@ -51,7 +51,6 @@ public class PCma_GuiBlockBuilder implements PC_IGresBase {
 		w.add(new PC_GresInventoryPlayer(true));
 		
 		gui.add(w);
-		gui.setCanShiftTransfer(true);
 
 		w.calcChildPositions();
 
@@ -91,5 +90,11 @@ public class PCma_GuiBlockBuilder implements PC_IGresBase {
 			}
 		}
 		return lSlot;
+	}
+
+
+	@Override
+	public boolean canShiftTransfer() {
+		return true;
 	}
 }

@@ -297,7 +297,11 @@ public class PC_Utils {
 			int i, int j, int k) {
 		if(entityplayer instanceof EntityPlayerMP){
 			PC_IGresGuiCaller gCaller = PC_Module.guiList.get(string);
-			ModLoader.serverOpenWindow((EntityPlayerMP)entityplayer, new PC_GresContainerManager(entityplayer, gCaller.createGui(entityplayer, i, j, k)), gCaller.getGuiID(), i, j, k);
+			if(gCaller!=null){
+				PC_GresContainerManager cm = new PC_GresContainerManager(entityplayer, gCaller.createGui(entityplayer, i, j, k));
+				System.out.println("Open Gui "+string+" with ID "+gCaller.getGuiID() + " ContainerManager:"+cm);
+				ModLoader.serverOpenWindow((EntityPlayerMP)entityplayer, cm, gCaller.getGuiID(), i, j, k);
+			}
 		}
 	}
 }

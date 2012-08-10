@@ -25,19 +25,6 @@ public interface PC_IGresGui {
 	public abstract void setPausesGame(boolean b);
 
 	/**
-	 * Is shift transport of stacks allowed to this inventory?<br>
-	 * If returns false, only transfer inventory -> player is allowed.
-	 * 
-	 * @param b can sift transfer to inv
-	 */
-	public abstract void setCanShiftTransfer(boolean b);
-
-	/**
-	 * @return can shift transfer to this inventory
-	 */
-	public boolean canShiftTransfer();
-
-	/**
 	 * Close the gui and set in-game focus.
 	 */
 	public abstract void close();

@@ -124,4 +124,9 @@ public class PCma_GuiAutomaticWorkbench implements PC_IGresBase {
 		}
 		return lSlot;
 	}
+
+	@Override
+	public boolean canShiftTransfer() {
+		return false;
+	}
 }

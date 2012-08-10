@@ -19,7 +19,7 @@ public class PCco_GuiCraftingTool implements PC_IGresBase {
 	private EntityPlayer player;
 	private PC_GresInventory craftingToolInventory;
 	private PC_GresInventoryBigSlot trashInventory;
-	private PCco_CraftingToolManager craftingToolManager;
+	private PCco_CraftingToolManager craftingToolManager = new PCco_CraftingToolManager();
 	private PC_GresButton buttonTrashAll;
 	private PC_GresButton buttonSort;
 	private PC_GresInventoryPlayer playerInventory;
@@ -55,7 +55,6 @@ public class PCco_GuiCraftingTool implements PC_IGresBase {
 
 		PC_GresWidget hg, vg;
 
-		craftingToolManager = new PCco_CraftingToolManager();
 		craftingToolInventory = new PC_GresInventory(invWidth, invHeight);
 		for (int i = 0; i < invWidth; i++) {
 			for (int j = 0; j < invHeight; j++) {
@@ -99,7 +98,6 @@ public class PCco_GuiCraftingTool implements PC_IGresBase {
 
 		w.add(hg);
 		gui.add(w);
-		gui.setCanShiftTransfer(false);
 
 		loadSlotsForCorrentPage(gui);
 
@@ -110,9 +108,10 @@ public class PCco_GuiCraftingTool implements PC_IGresBase {
 		for (int i = 0; i < invWidth; i++) {
 			for (int j = 0; j < invHeight; j++) {
 
-				int indexInList = page * invWidth * invHeight + j * invWidth + i;
+				int indexInList = page * invWidth * invHeight + j * invWidth + i + 1;
 
-				((PCco_SlotDirectCrafting) craftingToolInventory.getSlot(i, j)).setProduct(craftingToolManager.getItemForSlotNumber(indexInList));
+				craftingToolInventory.setSlot(slotList.get(indexInList), i, j);
+				//((PCco_SlotDirectCrafting) craftingToolInventory.getSlot(i, j)).setProduct(craftingToolManager.getItemForSlotNumber(indexInList));
 
 			}
 		}
@@ -241,13 +240,23 @@ public class PCco_GuiCraftingTool implements PC_IGresBase {
 	public List<Slot> getAllSlots(Container c) {
 		slotList = new ArrayList<Slot>();
 		slotList.add(new PC_SlotTrash());
-		for (int i = 0; i < invWidth; i++) {
+		for (int p = 0; p <= getMaxPages(); p++){
 			for (int j = 0; j < invHeight; j++) {
-				int indexSlot = invWidth * invHeight + j * invWidth + i;
-				slotList.add(new PCco_SlotDirectCrafting(player, null, indexSlot, 0, 0));
+				for (int i = 0; i < invWidth; i++) {
+					int indexSlot = p * invWidth * invHeight + j * invWidth + i;
+					Slot s = new PCco_SlotDirectCrafting(player, craftingToolManager.getItemForSlotNumber(indexSlot), indexSlot, 0, 0);
+					s.xDisplayPosition = -999;
+					s.yDisplayPosition = -999;
+					slotList.add(s);
+				}
 			}
 		}
 		return slotList;
+	}
+
+	@Override
+	public boolean canShiftTransfer() {
+		return false;
 	}
 
 }

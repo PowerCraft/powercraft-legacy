@@ -98,4 +98,9 @@ public class PClo_GuiFullChest implements PC_IGresBase {
 		return null;
 	}
 
+	@Override
+	public boolean canShiftTransfer() {
+		return false;
+	}
+
 }

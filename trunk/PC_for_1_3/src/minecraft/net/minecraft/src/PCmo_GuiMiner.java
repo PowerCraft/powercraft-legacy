@@ -99,7 +99,7 @@ public class PCmo_GuiMiner implements PC_IGresBase {
 
 		switch (panel) {
 			case 0:
-				cargoInv.removeAllSlots();
+				//cargoInv.removeAllSlots();
 				for(int i=0; i<8; i++) {
 					xtalInv[i].setSlot(null);
 				}
@@ -119,7 +119,7 @@ public class PCmo_GuiMiner implements PC_IGresBase {
 				break;
 
 			case 1:
-				cargoInv.removeAllSlots();
+				//cargoInv.removeAllSlots();
 				for(int i=0; i<8; i++) {
 					xtalInv[i].setSlot(null);
 				}
@@ -142,7 +142,7 @@ public class PCmo_GuiMiner implements PC_IGresBase {
 				checkTorchFloor.enable(miner.st.level >= PCmo_EntityMiner.LTORCH);
 				checkTorch.enable(miner.st.level >= PCmo_EntityMiner.LTORCH);
 				checkCobble.enable(miner.st.level >= PCmo_EntityMiner.LCOBBLE);
-				cargoInv.removeAllSlots();
+				//cargoInv.removeAllSlots();
 				bts.enable(false);
 				playerInv.hideSlots();
 				playerInv.removeAll();
@@ -166,7 +166,7 @@ public class PCmo_GuiMiner implements PC_IGresBase {
 					xtalInv[i].setSlot(xtalSlot[i]);
 				}
 				btc.enable(false);
-				cargoInv.fillWithSlots(miner.cargo, 11, 5);
+				//cargoInv.fillWithSlots(miner.cargo, 11, 5);
 				playerInv.addedToWidget();
 				w.setText(PC_Lang.tr("pc.gui.miner.cargo.title"));
 				vgCargo.setVisible(true);
@@ -367,8 +367,6 @@ public class PCmo_GuiMiner implements PC_IGresBase {
 		openPanel(0);
 		
 		openPanel(lastPanel);
-		
-		gui.setCanShiftTransfer(true);
 
 	}
 
@@ -573,6 +571,11 @@ public class PCmo_GuiMiner implements PC_IGresBase {
 	public List<Slot> getAllSlots(Container c) {
 		// TODO Auto-generated method stub
 		return null;
+	}
+
+	@Override
+	public boolean canShiftTransfer() {
+		return true;
 	}
 
 }

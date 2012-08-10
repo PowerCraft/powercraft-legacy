@@ -203,4 +203,9 @@ public class PClo_GuiPulsar implements PC_IGresBase {
 		return null;
 	}
 
+	@Override
+	public boolean canShiftTransfer() {
+		return false;
+	}
+
 }

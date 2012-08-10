@@ -27,7 +27,6 @@ public abstract class Container
      */
     protected Slot addSlotToContainer(Slot par1Slot)
     {
-    	System.out.println(par1Slot+":"+this.inventorySlots.size()+":"+this);
         par1Slot.slotNumber = this.inventorySlots.size();
         this.inventorySlots.add(par1Slot);
         this.inventoryItemStacks.add((Object)null);
@@ -169,6 +168,7 @@ public abstract class Container
                 }
                 else if (par3)
                 {
+                	
                     ItemStack var7 = this.transferStackInSlot(par1);
 
                     if (var7 != null)
@@ -191,7 +191,7 @@ public abstract class Container
                     }
 
                     Slot var12 = (Slot)this.inventorySlots.get(par1);
-
+                    
                     if (var12 != null)
                     {
                         ItemStack var13 = var12.getStack();
@@ -289,7 +289,6 @@ public abstract class Container
                     }
                 }
             }
-
             return var5;
         }
     }
