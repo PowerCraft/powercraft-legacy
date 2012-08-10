@@ -112,4 +112,9 @@ public class PClo_GuiSensor implements PC_IGresBase {
 		return null;
 	}
 
+	@Override
+	public boolean canShiftTransfer() {
+		return false;
+	}
+
 }

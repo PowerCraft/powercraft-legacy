@@ -1,6 +1,7 @@
 package net.minecraft.src;
 
 
+import java.util.ArrayList;
 import java.util.List;
 
 import net.minecraft.src.PC_GresTextEdit.PC_GresInputType;
@@ -28,6 +29,8 @@ public class PCma_GuiReplacer implements PC_IGresBase {
 
 	private PC_GresCheckBox checkFrame;
 
+	private List<Slot> lSlot = new ArrayList<Slot>();
+	
 	/**
 	 * replacer gres gui
 	 * 
@@ -102,7 +105,7 @@ public class PCma_GuiReplacer implements PC_IGresBase {
 		errorLabel.setColor(PC_GresWidget.textColorEnabled, 0x990000);
 		w.add(hg);
 
-		w.add(slot = new PC_GresInventoryBigSlot(new Slot(teReplacer, 0, 0, 0)));
+		w.add(slot = new PC_GresInventoryBigSlot(lSlot.get(0)));
 
 		w.add(new PC_GresInventoryPlayer(true));
 
@@ -113,7 +116,6 @@ public class PCma_GuiReplacer implements PC_IGresBase {
 		w.add(hg);
 
 		gui.add(w);
-		gui.setCanShiftTransfer(true);
 
 		w.calcChildPositions();
 	}
@@ -253,8 +255,13 @@ public class PCma_GuiReplacer implements PC_IGresBase {
 
 	@Override
 	public List<Slot> getAllSlots(Container c) {
-		// TODO Auto-generated method stub
-		return null;
+		lSlot.add(new Slot(teReplacer, 0, 0, 0));
+		return lSlot;
+	}
+
+	@Override
+	public boolean canShiftTransfer() {
+		return true;
 	}
 
 }

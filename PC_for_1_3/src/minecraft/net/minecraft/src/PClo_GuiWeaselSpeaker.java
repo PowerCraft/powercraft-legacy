@@ -128,8 +128,12 @@ public class PClo_GuiWeaselSpeaker implements PC_IGresBase {
 
 	@Override
 	public List<Slot> getAllSlots(Container c) {
-		// TODO Auto-generated method stub
 		return null;
+	}
+
+	@Override
+	public boolean canShiftTransfer() {
+		return false;
 	}
 
 }

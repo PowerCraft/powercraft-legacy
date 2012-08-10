@@ -80,7 +80,6 @@ public class PClo_GuiWeaselDiskDrive implements PC_IGresBase {
 
 		gui.add(w);
 
-		gui.setCanShiftTransfer(true);
 		btnOk.enable(false);
 
 	}
@@ -142,6 +141,11 @@ public class PClo_GuiWeaselDiskDrive implements PC_IGresBase {
 			}
 		}
 		return lSlot;
+	}
+
+	@Override
+	public boolean canShiftTransfer() {
+		return true;
 	}
 
 }

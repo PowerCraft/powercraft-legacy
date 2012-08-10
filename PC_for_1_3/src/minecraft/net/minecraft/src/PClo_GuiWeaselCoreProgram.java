@@ -286,4 +286,9 @@ public class PClo_GuiWeaselCoreProgram implements PC_IGresBase {
 		return null;
 	}
 
+	@Override
+	public boolean canShiftTransfer() {
+		return false;
+	}
+
 }

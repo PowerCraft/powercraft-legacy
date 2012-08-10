@@ -1,6 +1,7 @@
 package net.minecraft.src;
 
 
+import java.util.ArrayList;
 import java.util.List;
 
 import net.minecraft.src.PC_GresWidget.PC_GresAlign;
@@ -18,7 +19,8 @@ public class PCtr_GuiSeparationBelt implements PC_IGresBase {
 	private PC_GresCheckBox checkLogs;
 	private PC_GresCheckBox checkPlanks;
 	private PC_GresCheckBox checkAll;
-
+	private List<Slot> lSlot = new ArrayList<Slot>();
+	
 	/**
 	 * Item separation belt
 	 * 
@@ -50,9 +52,9 @@ public class PCtr_GuiSeparationBelt implements PC_IGresBase {
 
 		for (int i = 0; i < tes.getSizeInventory(); i++) {
 			if (i % 6 >= 3) {
-				left.setSlot(new Slot(tes, i, 0, 0), i % 3, (int) Math.floor(i / 6));
+				left.setSlot(lSlot.get(i), i % 3, (int) Math.floor(i / 6));
 			} else {
-				right.setSlot(new Slot(tes, i, 0, 0), i % 3, (int) Math.floor(i / 6));
+				right.setSlot(lSlot.get(i), i % 3, (int) Math.floor(i / 6));
 			}
 		}
 		hg.add(new PC_GresImage(mod_PCcore.getImgDir() + "gres/widgets.png", 64, 66, 8, 15));
@@ -113,7 +115,13 @@ public class PCtr_GuiSeparationBelt implements PC_IGresBase {
 
 	@Override
 	public List<Slot> getAllSlots(Container c) {
-		// TODO Auto-generated method stub
-		return null;
+		for (int i = 0; i < tes.getSizeInventory(); i++)
+			lSlot.add(new Slot(tes, i, 0, 0));
+		return lSlot;
+	}
+
+	@Override
+	public boolean canShiftTransfer() {
+		return false;
 	}
 }

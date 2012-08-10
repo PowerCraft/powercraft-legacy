@@ -76,4 +76,9 @@ public interface PC_IGresBase {
 	 */
 	public void updateTick(PC_IGresGui gui);
 
+	/**
+	 * @return can shift transfer to this inventory
+	 */
+	public boolean canShiftTransfer();
+	
 }

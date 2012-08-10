@@ -42,6 +42,7 @@ public class PCco_SlotDirectCrafting extends Slot implements PC_ISlotWithBackgro
 		super(null, index, x, y);
 		thePlayer = entityplayer;
 		this.product = product;
+		updateAvailability();
 	}
 
 	@Override
@@ -53,14 +54,15 @@ public class PCco_SlotDirectCrafting extends Slot implements PC_ISlotWithBackgro
 	public void onPickupFromSlot(ItemStack itemstack) {
 		// itemstack.onCrafting(thePlayer.worldObj, thePlayer);
 		super.onPickupFromSlot(itemstack);
-
+		
 		doCrafting();
 		updateAvailability();
 	}
 
 	@Override
 	public ItemStack decrStackSize(int i) {
-		if (available) {
+		updateAvailability();
+		if (available && product != null) {
 			ItemStack output = product.copy();
 			if ((PC_Utils.isCreative() || survivalCheating)
 					&& (Keyboard.isKeyDown(Keyboard.KEY_LCONTROL) || Keyboard.isKeyDown(Keyboard.KEY_RCONTROL))) {
@@ -73,6 +75,7 @@ public class PCco_SlotDirectCrafting extends Slot implements PC_ISlotWithBackgro
 
 	@Override
 	public ItemStack getStack() {
+		updateAvailability();
 		if (available && product != null) {
 			ItemStack output = product.copy();
 			if ((PC_Utils.isCreative() || survivalCheating)

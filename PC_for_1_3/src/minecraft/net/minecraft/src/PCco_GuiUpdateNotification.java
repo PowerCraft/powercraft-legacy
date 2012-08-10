@@ -133,4 +133,9 @@ public class PCco_GuiUpdateNotification implements PC_IGresBase {
 		return null;
 	}
 
+	@Override
+	public boolean canShiftTransfer() {
+		return false;
+	}
+
 }

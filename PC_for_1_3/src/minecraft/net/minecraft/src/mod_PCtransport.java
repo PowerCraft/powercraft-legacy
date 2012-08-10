@@ -476,8 +476,9 @@ public class mod_PCtransport extends PC_Module {
 
 	@Override
 	public Hashtable<String, PC_IGresGuiCaller> addGui() {
-		// TODO Auto-generated method stub
-		return null;
+		Hashtable<String, PC_IGresGuiCaller> guis = new Hashtable<String, PC_IGresGuiCaller>();
+		guis.put("SeparationBelt", new PCtr_GuiCallerSeparationBelt());
+		return guis;
 	}
 
 }

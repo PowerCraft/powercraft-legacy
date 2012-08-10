@@ -1242,12 +1242,6 @@ public class mod_PCcore extends PC_Module implements PC_IActivatorListener {
 		return true;
 
 	}
-	
-	@Override
-	public GuiContainer getContainerGUI(EntityClientPlayerMP var1, int var2, int var3, int var4, int var5)
-    {
-        return new PC_GresGui(new PCco_GuiCraftingTool(var1));
-    }
 
 	@Override
 	public Hashtable<String, PC_IGresGuiCaller> addGui() {

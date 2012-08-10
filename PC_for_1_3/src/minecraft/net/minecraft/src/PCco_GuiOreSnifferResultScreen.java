@@ -172,7 +172,6 @@ public class PCco_GuiOreSnifferResultScreen implements PC_IGresBase {
 		}
 		//w.add(new PC_GresInventoryPlayer(true));
 		gui.add(w);
-		gui.setCanShiftTransfer(false);
 
 		loadBlocksForDistance(0);
 
@@ -238,6 +237,11 @@ public class PCco_GuiOreSnifferResultScreen implements PC_IGresBase {
 			}
 		}
 		return lSlot;
+	}
+
+	@Override
+	public boolean canShiftTransfer() {
+		return false;
 	}
 
 }

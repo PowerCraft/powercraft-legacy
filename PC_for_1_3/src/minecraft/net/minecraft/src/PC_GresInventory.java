@@ -113,6 +113,10 @@ public class PC_GresInventory extends PC_GresWidget {
 	 */
 	public PC_GresInventory setSlot(Slot slot, int x, int y) {
 		if (x >= 0 && x < this.slots.length && y >= 0 && y < this.slots[x].length) {
+			if(this.slots[x][y]!=null){
+				this.slots[x][y].xDisplayPosition = -999;
+				this.slots[x][y].yDisplayPosition = -999;
+			}
 			this.slots[x][y] = slot;
 		}
 		return this;

@@ -170,4 +170,9 @@ public class PClo_GuiRadio implements PC_IGresBase {
 		return null;
 	}
 
+	@Override
+	public boolean canShiftTransfer() {
+		return false;
+	}
+
 }
