@@ -569,4 +569,10 @@ public class PCmo_GuiMiner implements PC_IGresBase {
 		btnRestart.enable(true);
 	}
 
+	@Override
+	public List<Slot> getAllSlots(Container c) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 }

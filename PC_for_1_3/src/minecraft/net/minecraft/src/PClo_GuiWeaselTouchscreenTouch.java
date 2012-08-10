@@ -1,6 +1,8 @@
 package net.minecraft.src;
 
 
+import java.util.List;
+
 import net.minecraft.src.PC_GresWidget.PC_GresAlign;
 import net.minecraft.src.PClo_NetManager.WeaselNetwork;
 import weasel.obj.WeaselInteger;
@@ -92,5 +94,11 @@ public class PClo_GuiWeaselTouchscreenTouch implements PC_IGresBase {
 
 	@Override
 	public void updateTick(PC_IGresGui gui) {}
+
+	@Override
+	public List<Slot> getAllSlots(Container c) {
+		// TODO Auto-generated method stub
+		return null;
+	}
 
 }

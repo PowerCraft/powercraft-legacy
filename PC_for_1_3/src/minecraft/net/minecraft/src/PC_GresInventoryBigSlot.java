@@ -35,7 +35,6 @@ public class PC_GresInventoryBigSlot extends PC_GresWidget {
 	@Override
 	public void calcChildPositions() {}
 
-	@SuppressWarnings("null")
 	@Override
 	protected void render(PC_CoordI posOffset) {
 		String texture = mod_PCcore.getImgDir() + "gres/widgets.png";
@@ -83,10 +82,6 @@ public class PC_GresInventoryBigSlot extends PC_GresWidget {
 	@Override
 	public void addedToWidget() {
 
-		if (containerManager != null && (parent == null || !(parent instanceof PC_GresInventoryPlayer))) {
-			containerManager.addSlot(slot);
-		}
-
 	}
 
 	/**
@@ -96,19 +91,6 @@ public class PC_GresInventoryBigSlot extends PC_GresWidget {
 	 * @return this
 	 */
 	public PC_GresInventoryBigSlot setSlot(Slot slot) {
-		if (containerManager != null) {
-			if (this.slot == null) {
-				if (slot != null) {
-					containerManager.addSlot(slot);
-				}
-			} else {
-				if (slot == null) {
-					containerManager.removeSlot(this.slot.slotNumber);
-				} else {
-					containerManager.setSlot(this.slot.slotNumber, slot);
-				}
-			}
-		}
 		this.slot = slot;
 		return this;
 	}

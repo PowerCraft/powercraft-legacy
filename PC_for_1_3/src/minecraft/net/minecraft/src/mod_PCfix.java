@@ -1,6 +1,7 @@
 package net.minecraft.src;
 
 
+import java.util.Hashtable;
 import java.util.List;
 import java.util.Map;
 
@@ -95,5 +96,11 @@ public class mod_PCfix extends PC_Module {
 
 	@Override
 	public void postInit() {}
+
+	@Override
+	public Hashtable<String, PC_IGresGuiCaller> addGui() {
+		// TODO Auto-generated method stub
+		return null;
+	}
 
 }

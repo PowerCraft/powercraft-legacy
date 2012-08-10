@@ -1,6 +1,7 @@
 package net.minecraft.src;
 
 
+import java.util.Hashtable;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
@@ -482,5 +483,14 @@ public class mod_PCmachines extends PC_Module implements PC_IActivatorListener {
 	@Override
 	public void renderInvBlock(RenderBlocks renderblocks, Block block, int meta, int rtype) {
 		PCma_Renderer.renderInvBlockByType(renderblocks, block, meta, rtype);
+	}
+
+	@Override
+	public Hashtable<String, PC_IGresGuiCaller> addGui() {
+		Hashtable<String, PC_IGresGuiCaller> guis = new Hashtable<String, PC_IGresGuiCaller>();
+		guis.put("AutomaticWorkbench", new PCma_GuiCallerAutomaticWorkbench());
+		guis.put("BlockBuilder", new PCma_GuiCallerBlockBuilder());
+		guis.put("Roaster", new PCma_GuiCallerRoaster());
+		return guis;
 	}
 }

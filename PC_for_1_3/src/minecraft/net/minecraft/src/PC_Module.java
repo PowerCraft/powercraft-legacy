@@ -78,6 +78,9 @@ public abstract class PC_Module extends BaseMod {
 	/** Module translation manager */
 	public PC_Lang lang;
 
+	/** */
+	public static Hashtable<String, PC_IGresGuiCaller> guiList = new Hashtable<String, PC_IGresGuiCaller>();
+	
 	/**
 	 * @return instance of configuration manager
 	 */
@@ -281,6 +284,13 @@ public abstract class PC_Module extends BaseMod {
 			addRecipes();
 
 
+			PC_Logger.finer("Adding Gui ID's...");
+			Hashtable<String, PC_IGresGuiCaller> gList = addGui();
+			if(gList!=null){
+				guiList.putAll(gList);
+				for(PC_IGresGuiCaller gui:gList.values())
+					ModLoader.registerContainerID(this, gui.getGuiID());
+			}
 
 			PC_Logger.finer("Calling post-init hook...");
 			postInit();
@@ -521,7 +531,29 @@ public abstract class PC_Module extends BaseMod {
 	public abstract void addRecipes();
 
 	/**
+	 * Add Gui's
+	 * 
+	 * @return a List of all Gui's used in this Module
+	 */
+	public abstract Hashtable<String, PC_IGresGuiCaller> addGui();
+	
+	/**
 	 * Do something when all is initialized.
 	 */
 	public abstract void postInit();
+	
+	@Override
+	public GuiContainer getContainerGUI(EntityClientPlayerMP var1, int var2, int var3, int var4, int var5)
+    {
+		PC_IGresGuiCaller guiCaller = null;
+		for(PC_IGresGuiCaller gC:guiList.values()){
+			if(gC.getGuiID()==var2){
+				guiCaller = gC;
+				break;
+			}
+		}
+		if(guiCaller==null)
+			return null;
+        return new PC_GresGui(guiCaller.createGui(var1, var3, var4, var5));
+    }
 }

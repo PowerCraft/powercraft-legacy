@@ -292,4 +292,12 @@ public class PC_Utils {
 
 		return (hours > 0 ? hours + ":" : "") + (hours > 0 || mins > 0 ? mins + ":" : "") + secs;
 	}
+
+	public static void openGres(EntityPlayer entityplayer, String string,
+			int i, int j, int k) {
+		if(entityplayer instanceof EntityPlayerMP){
+			PC_IGresGuiCaller gCaller = PC_Module.guiList.get(string);
+			ModLoader.serverOpenWindow((EntityPlayerMP)entityplayer, new PC_GresContainerManager(entityplayer, gCaller.createGui(entityplayer, i, j, k)), gCaller.getGuiID(), i, j, k);
+		}
+	}
 }

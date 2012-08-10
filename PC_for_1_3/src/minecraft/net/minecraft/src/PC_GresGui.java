@@ -31,7 +31,7 @@ public class PC_GresGui extends GuiContainer implements PC_IGresGui {
 	 * @param gui the gui
 	 */
 	public PC_GresGui(PC_IGresBase gui) {
-		super(new PC_GresContainerManager(gui.getPlayer()));
+		super(new PC_GresContainerManager(gui.getPlayer(), gui));
 		this.gui = gui;
 		containerManager = (PC_GresContainerManager) inventorySlots;
 		containerManager.setGresGui(this);
@@ -172,7 +172,7 @@ public class PC_GresGui extends GuiContainer implements PC_IGresGui {
 		child.getWidgetUnderMouse(new PC_CoordI(x, y));
 	}
 
-	private void mouseUp(int x, int y, @SuppressWarnings("unused") int state) {
+	private void mouseUp(int x, int y, int state) {
 		if (lastFocus != null) {
 			PC_CoordI fpos = lastFocus.getPositionOnScreen();
 			if (lastFocus.mouseClick(new PC_CoordI(x - fpos.x, y - fpos.y), -1)) {
@@ -448,11 +448,6 @@ public class PC_GresGui extends GuiContainer implements PC_IGresGui {
 
 		itemRenderer.zLevel = 0.0F;
 		zLevel = 0.0F;
-	}
-
-	@Override
-	public void onCraftMatrixChanged(IInventory iinventory) {
-		gui.onCraftMatrixChanged(iinventory);
 	}
 
 	@Override

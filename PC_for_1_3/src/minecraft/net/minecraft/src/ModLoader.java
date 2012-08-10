@@ -1176,8 +1176,8 @@ public final class ModLoader
             while (var4.hasNext())
             {
                 var5 = (Entry)var4.next();
-                
-	            if ((clock != var14 || !((Boolean)var5.getValue()).booleanValue()) && !((BaseMod)var5.getKey()).onTickInGame(var0, var1))
+
+                if ((clock != var14 || !((Boolean)var5.getValue()).booleanValue()) && !((BaseMod)var5.getKey()).onTickInGame(var0, var1))
                 {
                     var4.remove();
                 }
@@ -1191,7 +1191,7 @@ public final class ModLoader
             while (var4.hasNext())
             {
                 var5 = (Entry)var4.next();
-                
+
                 // TODO delete if(var1.renderViewEntity!=null)
                 if(var1.renderViewEntity!=null)
 	                if ((clock != var14 || !(((Boolean)var5.getValue()).booleanValue() & var1.renderViewEntity.worldObj != null)) && !((BaseMod)var5.getKey()).onTickInGUI(var0, var1, var1.currentScreen))

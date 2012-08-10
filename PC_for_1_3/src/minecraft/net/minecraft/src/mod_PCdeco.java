@@ -1,6 +1,7 @@
 package net.minecraft.src;
 
 
+import java.util.Hashtable;
 import java.util.List;
 import java.util.Map;
 
@@ -244,5 +245,13 @@ public class mod_PCdeco extends PC_Module {
 	public void renderInvBlock(RenderBlocks renderblocks, Block block, int i, int rtype) {
 		PCde_Renderer.renderInvBlockByType(renderblocks, block, i, rtype);
 	}
+
+	@Override
+	public Hashtable<String, PC_IGresGuiCaller> addGui() {
+		Hashtable<String, PC_IGresGuiCaller> guis = new Hashtable<String, PC_IGresGuiCaller>();
+		guis.put("Transmutator", new PCde_GuiCallerTransmutator());
+		return null;
+	}
+
 
 }

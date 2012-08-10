@@ -137,10 +137,12 @@ public class PCma_BlockBlockBuilder extends BlockContainer implements PC_ISwapTe
 			return true;
 		}
 
-		PCma_TileEntityBlockBuilder tileentity = (PCma_TileEntityBlockBuilder) world.getBlockTileEntity(i, j, k);
+		PC_Utils.openGres(entityplayer, "BlockBuilder", i, j, k);
+		
+		/*PCma_TileEntityBlockBuilder tileentity = (PCma_TileEntityBlockBuilder) world.getBlockTileEntity(i, j, k);
 		if (tileentity != null) {
 			PC_Utils.openGres(entityplayer, new PCma_GuiBlockBuilder(entityplayer, tileentity));
-		}
+		}*/
 
 		return true;
 	}

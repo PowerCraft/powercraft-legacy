@@ -40,7 +40,7 @@ public class PC_Lang {
 	 * @return translated.
 	 */
 	public static String tr(String identifier, String... replacements) {
-		return StringTranslate.getInstance().translateKeyFormat(identifier, replacements);
+		return StringTranslate.getInstance().translateKeyFormat(identifier, (Object[])replacements);
 	}
 
 	/**

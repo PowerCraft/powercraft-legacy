@@ -28,6 +28,8 @@ public class PCco_GuiCraftingTool implements PC_IGresBase {
 	private static final int invWidth = 13;
 	private static final int invHeight = 7;
 
+	private List<Slot> slotList;
+	
 	/**
 	 * @param player the player
 	 */
@@ -57,8 +59,8 @@ public class PCco_GuiCraftingTool implements PC_IGresBase {
 		craftingToolInventory = new PC_GresInventory(invWidth, invHeight);
 		for (int i = 0; i < invWidth; i++) {
 			for (int j = 0; j < invHeight; j++) {
-				int indexSlot = invWidth * invHeight + j * invWidth + i;
-				craftingToolInventory.setSlot(new PCco_SlotDirectCrafting(player, null, indexSlot, 0, 0), i, j);
+				int indexSlot = 1 + j * invWidth + i;
+				craftingToolInventory.setSlot(slotList.get(indexSlot), i, j);
 			}
 		}
 
@@ -74,7 +76,7 @@ public class PCco_GuiCraftingTool implements PC_IGresBase {
 			buttonPrev.enable(false);
 		}
 
-		trashInventory = new PC_GresInventoryBigSlot(new PC_SlotTrash());
+		trashInventory = new PC_GresInventoryBigSlot(slotList.get(0));
 		vg.add(new PC_GresLabel(PC_Lang.tr("pc.gui.craftingTool.trashTitle")).setWidgetMargin(1));
 		vg.add(trashInventory.setWidgetMargin(1));
 		vg.add(buttonTrashAll = (PC_GresButton) new PC_GresButton(PC_Lang.tr("pc.gui.craftingTool.trashAll")).setButtonPadding(3, 3).setMinWidth(30)
@@ -234,5 +236,18 @@ public class PCco_GuiCraftingTool implements PC_IGresBase {
 
 	@Override
 	public void updateTick(PC_IGresGui gui) {}
+
+	@Override
+	public List<Slot> getAllSlots(Container c) {
+		slotList = new ArrayList<Slot>();
+		slotList.add(new PC_SlotTrash());
+		for (int i = 0; i < invWidth; i++) {
+			for (int j = 0; j < invHeight; j++) {
+				int indexSlot = invWidth * invHeight + j * invWidth + i;
+				slotList.add(new PCco_SlotDirectCrafting(player, null, indexSlot, 0, 0));
+			}
+		}
+		return slotList;
+	}
 
 }

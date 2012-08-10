@@ -281,4 +281,9 @@ public class PClo_GuiWeaselCoreProgram implements PC_IGresBase {
 		btnRestart.enable(true);
 	}
 
+	@Override
+	public List<Slot> getAllSlots(Container c) {
+		return null;
+	}
+
 }

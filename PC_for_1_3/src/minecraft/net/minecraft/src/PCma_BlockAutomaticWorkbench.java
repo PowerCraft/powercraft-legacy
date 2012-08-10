@@ -34,9 +34,9 @@ public class PCma_BlockAutomaticWorkbench extends BlockContainer implements PC_I
 			}
 		}
 
-		PCma_TileEntityAutomaticWorkbench inventory = getTE(world, i, j, k);
+		//PCma_TileEntityAutomaticWorkbench inventory = getTE(world, i, j, k);
 
-		PC_Utils.openGres(entityplayer, new PCma_GuiAutomaticWorkbench(entityplayer, inventory));
+		PC_Utils.openGres(entityplayer, "AutomaticWorkbench", i, j, k);
 		return true;
 	}
 

@@ -878,4 +878,10 @@ public class PClo_GuiWeaselDiskManager implements PC_IGresBase {
 	@Override
 	public void updateTick(PC_IGresGui gui) {}
 
+	@Override
+	public List<Slot> getAllSlots(Container c) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 }

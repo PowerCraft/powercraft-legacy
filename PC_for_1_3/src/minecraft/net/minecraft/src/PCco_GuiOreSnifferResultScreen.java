@@ -1,6 +1,9 @@
 package net.minecraft.src;
 
 
+import java.util.ArrayList;
+import java.util.List;
+
 import net.minecraft.src.PC_GresWidget.PC_GresAlign;
 
 
@@ -19,7 +22,8 @@ public class PCco_GuiOreSnifferResultScreen implements PC_IGresBase {
 	private PC_CoordI[][] startpos;
 	private World world;
 	private PC_CoordI start;
-
+	private List<Slot> lSlot = new ArrayList<Slot>();
+	
 	private static final int range = 16;
 
 	private void rotateRight() {
@@ -163,7 +167,7 @@ public class PCco_GuiOreSnifferResultScreen implements PC_IGresBase {
 		w.add(inv = new PC_GresInventory(3, 3));
 		for (int x = 0; x < 3; x++) {
 			for (int y = 0; y < 3; y++) {
-				inv.setSlot(new PC_SlotNoPickup(), x, y);
+				inv.setSlot(lSlot.get(x+y*3), x, y);
 			}
 		}
 		//w.add(new PC_GresInventoryPlayer(true));
@@ -224,6 +228,16 @@ public class PCco_GuiOreSnifferResultScreen implements PC_IGresBase {
 
 		if (start.distanceTo(new PC_CoordI(Math.round(player.posX), Math.round(player.posY), Math.round(player.posZ))) > 8) gui.close();
 
+	}
+
+	@Override
+	public List<Slot> getAllSlots(Container c) {
+		for (int x = 0; x < 3; x++) {
+			for (int y = 0; y < 3; y++) {
+				lSlot.add(new PC_SlotNoPickup());
+			}
+		}
+		return lSlot;
 	}
 
 }
