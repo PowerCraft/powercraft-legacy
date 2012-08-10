@@ -234,11 +234,11 @@ public class PClo_NetManager implements PC_INBT {
 
 			globalHeap.clear();
 			worldName = mc.theWorld.worldInfo.getWorldName();
-			worldSaveDir = (((SaveHandler) mc.theWorld.saveHandler).getSaveDirectory()).toString();
+			worldSaveDir = mc.theWorld.saveHandler.getSaveDirectoryName();
 			loadFromFile();
 			needsSave = false;
 		} else {
-			worldSaveDir = (((SaveHandler) mc.theWorld.saveHandler).getSaveDirectory()).toString();
+			worldSaveDir = mc.theWorld.saveHandler.getSaveDirectoryName();
 		}
 	}
 

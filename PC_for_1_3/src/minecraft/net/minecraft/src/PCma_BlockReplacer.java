@@ -150,10 +150,7 @@ public class PCma_BlockReplacer extends BlockContainer implements PC_ISwapTerrai
 			return true;
 		}
 
-		PCma_TileEntityReplacer tileentity = (PCma_TileEntityReplacer) world.getBlockTileEntity(i, j, k);
-		if (tileentity != null) {
-			PC_Utils.openGres(entityplayer, new PCma_GuiReplacer(tileentity, entityplayer));
-		}
+		PC_Utils.openGres(entityplayer, "Replacer", i, j, k);
 
 		return true;
 	}
@@ -340,18 +337,26 @@ public class PCma_BlockReplacer extends BlockContainer implements PC_ISwapTerrai
 
 		PC_CoordI pos = te.getCoord().offset(te.coordOffset);
 
+		System.out.println("swap");
+		
 		if (pos.equals(te.getCoord())) {
 			return;
 		}
 
+		System.out.println("swap1");
+		
 		if (!replacer_canHarvestBlockAt(te.worldObj, pos)) {
 			return;
 		}
 
+		System.out.println("swap2");
+		
 		if (!replacer_canPlaceBlockAt(te.worldObj, te.buildBlock, pos)) {
 			return;
 		}
 
+		System.out.println("swap OK");
+		
 		PC_Struct2<ItemStack, Integer> harvested = replacer_harvestBlockAt(te.worldObj, pos);
 
 		if (!replacer_placeBlockAt(te.worldObj, te.extraMeta, te.buildBlock, pos)) {
