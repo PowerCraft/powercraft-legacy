@@ -369,10 +369,10 @@ public class Compiler {
 
 
 
-	private static final String replKeyStringStart = "→";
-	private static final String replKeyStringEnd = "←";
-	private static final String replRoundBracketStart = "↑";
-	private static final String replRoundBracketEnd = "↓";
+	private static final String replKeyStringStart = "\u2192";
+	private static final String replKeyStringEnd = "\u2190";
+	private static final String replRoundBracketStart = "\u2191";
+	private static final String replRoundBracketEnd = "\u2193";
 
 	private static final String tmpVarPrefix = "_v";
 	private static final String tmpLabelPrefix = "_";

@@ -315,7 +315,7 @@ public class PClo_ModelWeasel extends ModelBase {
 						i++;
 						continue;
 					}
-					if (part.charAt(part.length() - 1) == '§') {
+					if (part.charAt(part.length() - 1) == '\u00A7') {
 						part = part.substring(0, part.length() - 1);
 					}
 					List<String> lines = fontrenderer.listFormattedStringToWidth(part, screenWidth);
@@ -325,12 +325,12 @@ public class PClo_ModelWeasel extends ModelBase {
 
 						if (line.trim().length() == 0) continue;
 
-						if (line.charAt(line.length() - 1) == '§') {
+						if (line.charAt(line.length() - 1) == '\u00A7') {
 							line = line.substring(0, line.length() - 1);
 						}
 						i++;
 
-						String removedMagicStuff = line.replaceAll("§.", "");
+						String removedMagicStuff = line.replaceAll("\u00A7.", "");
 
 
 						int len = fontrenderer.getStringWidth(removedMagicStuff);
@@ -343,10 +343,10 @@ public class PClo_ModelWeasel extends ModelBase {
 
 						fontrenderer.drawString(magic + line, start, 2 + fontrenderer.FONT_HEIGHT * i, j);
 
-						if (line.contains("§")) {
+						if (line.contains("\u00A7")) {
 							int a = -1;
-							while ((a = line.indexOf('§', a + 1)) != -1) {
-								magic += '§';
+							while ((a = line.indexOf('\u00A7', a + 1)) != -1) {
+								magic += '\u00A7';
 								if (line.length() > a + 1) {
 									char ch = line.charAt(a + 1);
 									if (ch == 'r') {
