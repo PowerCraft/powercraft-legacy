@@ -571,6 +571,7 @@ public abstract class PC_Module extends BaseMod {
 	
 	@Override
 	public void serverCustomPayload(NetServerHandler netServerHandler, Packet250CustomPayload packet){
+		System.out.println("serverCustomPayload");
 		try {
 			ObjectInputStream input = new ObjectInputStream(new ByteArrayInputStream(packet.data));
 			String str = (String)input.readObject();
@@ -582,7 +583,7 @@ public abstract class PC_Module extends BaseMod {
 			Object[] o = new Object[size];
 			for(int i=0; i<size; i++)
 				o[i] = input.readObject();
-			getPacket(str, var, x, y, z, o);
+			getPacket(netServerHandler.getPlayer().worldObj, str, var, x, y, z, o, false);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -591,6 +592,7 @@ public abstract class PC_Module extends BaseMod {
 	
 	@Override
 	public void clientCustomPayload(NetClientHandler var1, Packet250CustomPayload packet){
+		System.out.println("clientCustomPayload");
 		try {
 			ObjectInputStream input = new ObjectInputStream(new ByteArrayInputStream(packet.data));
 			String str = (String)input.readObject();
@@ -602,7 +604,7 @@ public abstract class PC_Module extends BaseMod {
 			Object[] o = new Object[size];
 			for(int i=0; i<size; i++)
 				o[i] = input.readObject();
-			getPacket(str, var, x, y, z, o);
+			getPacket(PC_Utils.mc().theWorld, str, var, x, y, z, o, true);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -610,16 +612,15 @@ public abstract class PC_Module extends BaseMod {
 		
 	}
 	
-	public void getPacket(String str, String var, int x, int y, int z, Object o[]){
-		World world = PC_Utils.mc().theWorld;
+	private void getPacket(World world, String str, String var, int x, int y, int z, Object o[], boolean client){
 		if(str.equals("TileEntity")){
 			TileEntity te = world.getBlockTileEntity(x, y, z);
 			if(te instanceof PC_IPacketSetter)
-				((PC_IPacketSetter)te).set(var, o);
+				((PC_IPacketSetter)te).set(var, o, client);
 		}else if(str.equals("Block")){
 			Block b = Block.blocksList[x];
 			if(b instanceof PC_IPacketSetter)
-				((PC_IPacketSetter)b).set(var, o);
+				((PC_IPacketSetter)b).set(var, o, client);
 		}
 	}
 	
