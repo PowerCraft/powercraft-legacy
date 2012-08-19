@@ -309,6 +309,10 @@ public class PC_Utils {
 	}
 	
 	public static void setTileEntityVar(EntityPlayer player, String var, TileEntity tileEntity, Object... o){
+		setTileEntityVarArray(player, var, tileEntity, o);
+	}
+	
+	public static void setTileEntityVarArray(EntityPlayer player, String var, TileEntity tileEntity, Object[] o) {
 		send(player, "TileEntity", var, tileEntity.xCoord, tileEntity.yCoord, tileEntity.zCoord, o);
 	}
 	
@@ -334,10 +338,14 @@ public class PC_Utils {
 			e.printStackTrace();
 		}
         Packet250CustomPayload packet =  new Packet250CustomPayload("PowerCraft", data.toByteArray());
-        if(isRemote())
-        	ModLoader.clientSendPacket(packet);
-        else
-        	ModLoader.serverSendPacket(((EntityPlayerMP)player).serverForThisPlayer, packet);
+        if(player!=null)
+	        if(player.worldObj.isRemote)
+	        	ModLoader.clientSendPacket(packet);
+	        else
+	        	ModLoader.serverSendPacket(((EntityPlayerMP)player).serverForThisPlayer, packet);
+        else{
+        	
+        }
 	}
 	
 	public static boolean isRemote(){

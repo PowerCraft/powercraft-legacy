@@ -271,17 +271,18 @@ public class PCma_TileEntityReplacer extends PC_TileEntity implements IInventory
 	}
 
 	@Override
-	public void set(String var, Object o[]) {
+	public void set(String var, Object o[], boolean client) {
 		System.out.println(var);
-		if(!PC_Utils.isRemote()){
-			System.out.println(var);
-			if(var.equals("extraMeta"))
-				extraMeta = (Integer)o[0];
-			else if(var.equals("coordOffset"))
-				coordOffset.setTo((Integer)o[0], (Integer)o[1], (Integer)o[2]);
-			else if(var.equals("aidEnabled"))
-				aidEnabled = (Boolean)o[0];
+		if(PC_Utils.isRemote()){
+			System.out.println("OK");
+			PC_Utils.setTileEntityVarArray(null, var, this, o);
 		}
+		if(var.equals("extraMeta"))
+			extraMeta = (Integer)o[0];
+		else if(var.equals("coordOffset"))
+			coordOffset.setTo((Integer)o[0], (Integer)o[1], (Integer)o[2]);
+		else if(var.equals("aidEnabled"))
+			aidEnabled = (Boolean)o[0];
 	}
 
 }
