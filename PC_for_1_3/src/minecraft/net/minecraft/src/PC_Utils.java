@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import net.minecraft.client.Minecraft;
+import net.minecraft.server.MinecraftServer;
 
 
 /**
@@ -344,12 +345,9 @@ public class PC_Utils {
 	        else
 	        	ModLoader.serverSendPacket(((EntityPlayerMP)player).serverForThisPlayer, packet);
         else{
-        	
+        	System.out.println("Server to All Clients");
+        	MinecraftServer.getServer().getConfigurationManager().sendPacketToAllPlayers(packet);
         }
-	}
-	
-	public static boolean isRemote(){
-		return mc().theWorld.isRemote;
 	}
 	
 }
