@@ -578,7 +578,10 @@ public abstract class PC_Module extends BaseMod {
 			int x = input.readInt();
 			int y = input.readInt();
 			int z = input.readInt();
-			Object o = input.readObject();
+			int size = input.readInt();
+			Object[] o = new Object[size];
+			for(int i=0; i<size; i++)
+				o[i] = input.readObject();
 			getPacket(str, var, x, y, z, o);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
@@ -595,7 +598,10 @@ public abstract class PC_Module extends BaseMod {
 			int x = input.readInt();
 			int y = input.readInt();
 			int z = input.readInt();
-			Object o = input.readObject();
+			int size = input.readInt();
+			Object[] o = new Object[size];
+			for(int i=0; i<size; i++)
+				o[i] = input.readObject();
 			getPacket(str, var, x, y, z, o);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
@@ -604,13 +610,13 @@ public abstract class PC_Module extends BaseMod {
 		
 	}
 	
-	public void getPacket(String str, String var, int x, int y, int z, Object o){
+	public void getPacket(String str, String var, int x, int y, int z, Object o[]){
 		World world = PC_Utils.mc().theWorld;
-		if(str == "TileEntity"){
-			Object p = world.getBlockTileEntity(x, y, z);
-			if(p instanceof PC_IPacketSetter)
-				((PC_IPacketSetter)p).set(var, o);
-		}else if(str == "Block"){
+		if(str.equals("TileEntity")){
+			TileEntity te = world.getBlockTileEntity(x, y, z);
+			if(te instanceof PC_IPacketSetter)
+				((PC_IPacketSetter)te).set(var, o);
+		}else if(str.equals("Block")){
 			Block b = Block.blocksList[x];
 			if(b instanceof PC_IPacketSetter)
 				((PC_IPacketSetter)b).set(var, o);

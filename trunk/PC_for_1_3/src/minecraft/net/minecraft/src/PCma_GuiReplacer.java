@@ -30,6 +30,8 @@ public class PCma_GuiReplacer implements PC_IGresBase {
 	private PC_GresCheckBox checkFrame;
 
 	private List<Slot> lSlot = new ArrayList<Slot>();
+	private EntityPlayer entityplayer;
+	
 	
 	/**
 	 * replacer gres gui
@@ -39,6 +41,7 @@ public class PCma_GuiReplacer implements PC_IGresBase {
 	 */
 	public PCma_GuiReplacer(PCma_TileEntityReplacer teReplacer, EntityPlayer entityplayer) {
 		this.teReplacer = teReplacer;
+		this.entityplayer = entityplayer;
 	}
 
 	@Override
@@ -128,7 +131,7 @@ public class PCma_GuiReplacer implements PC_IGresBase {
 	@Override
 	public void actionPerformed(PC_GresWidget widget, PC_IGresGui gui) {
 		if (widget == slot) {
-			teReplacer.extraMeta = -1;
+			PC_Utils.setTileEntityVar(entityplayer, "extraMeta", teReplacer, -1);
 		} else if (widget == button[0]) {
 
 			gui.close();
@@ -139,8 +142,8 @@ public class PCma_GuiReplacer implements PC_IGresBase {
 			int y = Integer.parseInt(textedit[1].getText());
 			int z = Integer.parseInt(textedit[2].getText());
 
-			teReplacer.coordOffset.setTo(x, y, z);
-			teReplacer.aidEnabled = checkFrame.isChecked();
+			PC_Utils.setTileEntityVar(entityplayer, "coordOffset", teReplacer, x, y, z);
+			PC_Utils.setTileEntityVar(entityplayer, "aidEnabled", teReplacer, checkFrame.isChecked());
 
 			gui.close();
 
@@ -183,7 +186,7 @@ public class PCma_GuiReplacer implements PC_IGresBase {
 				int y = Integer.parseInt(textedit[1].getText());
 				int z = Integer.parseInt(textedit[2].getText());
 
-				teReplacer.coordOffset.setTo(x, y, z);
+				PC_Utils.setTileEntityVar(entityplayer, "coordOffset", teReplacer, x, y, z);
 			}
 
 			button[1].enable(valid);

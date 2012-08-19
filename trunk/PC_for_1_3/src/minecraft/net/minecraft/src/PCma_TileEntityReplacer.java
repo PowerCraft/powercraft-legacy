@@ -9,7 +9,7 @@ import java.util.Random;
  * 
  * @author MightyPork, XOR19, Rapus
  */
-public class PCma_TileEntityReplacer extends PC_TileEntity implements IInventory, PC_ISpecialAccessInventory {
+public class PCma_TileEntityReplacer extends PC_TileEntity implements IInventory, PC_ISpecialAccessInventory, PC_IPacketSetter {
 
 	/** the building stack */
 	public ItemStack buildBlock;
@@ -268,6 +268,20 @@ public class PCma_TileEntityReplacer extends PC_TileEntity implements IInventory
 	@Override
 	public boolean canMachineInsertStackTo(int slot, ItemStack stack) {
 		return canPlayerInsertStackTo(slot, stack);
+	}
+
+	@Override
+	public void set(String var, Object o[]) {
+		System.out.println(var);
+		if(!PC_Utils.isRemote()){
+			System.out.println(var);
+			if(var.equals("extraMeta"))
+				extraMeta = (Integer)o[0];
+			else if(var.equals("coordOffset"))
+				coordOffset.setTo((Integer)o[0], (Integer)o[1], (Integer)o[2]);
+			else if(var.equals("aidEnabled"))
+				aidEnabled = (Boolean)o[0];
+		}
 	}
 
 }

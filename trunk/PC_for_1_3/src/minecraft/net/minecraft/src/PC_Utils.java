@@ -308,15 +308,15 @@ public class PC_Utils {
 		}
 	}
 	
-	public static void setTileEntityVar(EntityPlayerMP player, String var, TileEntity tileEntity, Object o){
+	public static void setTileEntityVar(EntityPlayer player, String var, TileEntity tileEntity, Object... o){
 		send(player, "TileEntity", var, tileEntity.xCoord, tileEntity.yCoord, tileEntity.zCoord, o);
 	}
 	
-	public static void setBlockVar(EntityPlayerMP player, String var, Block block, Object o){
+	public static void setBlockVar(EntityPlayer player, String var, Block block, Object... o){
 		send(player, "Block", var, block.blockID, 0, 0, o);
 	}
 	
-	public static void send(EntityPlayerMP player, String to, String var, int x, int y, int z, Object o){
+	public static void send(EntityPlayer player, String to, String var, int x, int y, int z, Object o[]){
 		ByteArrayOutputStream data = new ByteArrayOutputStream();
     	ObjectOutputStream sendData;
 		try {
@@ -326,16 +326,22 @@ public class PC_Utils {
 	        sendData.writeInt(x);
 	        sendData.writeInt(y);
 	        sendData.writeInt(z);
-	        sendData.writeObject(o);
+	        sendData.writeInt(o.length);
+	        for(int i=0; i<o.length; i++)
+	        	sendData.writeObject(o[i]);
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
         Packet250CustomPayload packet =  new Packet250CustomPayload("PowerCraft", data.toByteArray());
-        if(PC_Utils.mc().theWorld.isRemote)
+        if(isRemote())
         	ModLoader.clientSendPacket(packet);
         else
-        	ModLoader.serverSendPacket(player.serverForThisPlayer, packet);
+        	ModLoader.serverSendPacket(((EntityPlayerMP)player).serverForThisPlayer, packet);
+	}
+	
+	public static boolean isRemote(){
+		return mc().theWorld.isRemote;
 	}
 	
 }
