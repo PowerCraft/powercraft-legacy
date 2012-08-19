@@ -271,10 +271,7 @@ public class PCma_TileEntityReplacer extends PC_TileEntity implements IInventory
 	}
 
 	@Override
-	public void set(String var, Object o[], boolean client) {
-		if(!client){
-			PC_Utils.setTileEntityVarArray(null, var, this, o);
-		}
+	public void set(String var, Object o[]) {
 		if(var.equals("extraMeta"))
 			extraMeta = (Integer)o[0];
 		else if(var.equals("coordOffset"))

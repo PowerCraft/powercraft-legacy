@@ -613,15 +613,22 @@ public abstract class PC_Module extends BaseMod {
 	}
 	
 	private void getPacket(World world, String str, String var, int x, int y, int z, Object o[], boolean client){
+		boolean set=false;
 		if(str.equals("TileEntity")){
 			TileEntity te = world.getBlockTileEntity(x, y, z);
-			if(te instanceof PC_IPacketSetter)
-				((PC_IPacketSetter)te).set(var, o, client);
+			if(te instanceof PC_IPacketSetter){
+				((PC_IPacketSetter)te).set(var, o);
+				set = true;
+			}
 		}else if(str.equals("Block")){
 			Block b = Block.blocksList[x];
-			if(b instanceof PC_IPacketSetter)
-				((PC_IPacketSetter)b).set(var, o, client);
+			if(b instanceof PC_IPacketSetter){
+				((PC_IPacketSetter)b).set(var, o);
+				set = true;
+			}
 		}
+		if(set && !client)
+			PC_Utils.send(null, str, var, x, y, z, o);
 	}
 	
 }

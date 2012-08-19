@@ -83,8 +83,8 @@ public class PCma_GuiAutomaticWorkbench implements PC_IGresBase {
 
 	@Override
 	public void onGuiClosed(PC_IGresGui gui) {
-		tileentity.redstoneActivated = checkRedstone.isChecked();
-		tileentity.orderAndCraft();
+		//tileentity.redstoneActivated = checkRedstone.isChecked();
+		//tileentity.orderAndCraft();
 	}
 
 	@Override
