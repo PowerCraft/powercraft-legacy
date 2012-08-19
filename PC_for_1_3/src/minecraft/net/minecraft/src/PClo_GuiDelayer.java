@@ -101,11 +101,7 @@ public class PClo_GuiDelayer implements PC_IGresBase {
 
 		if (widget.getId() == 0) {
 
-			if (delayer_type == FIFO) {
-				gateTE.bufferResize(ticks);
-			} else if (delayer_type == HOLD) {
-				gateTE.setRepeaterHoldTime(ticks);
-			}
+			PC_Utils.setTileEntityVar(PC_Utils.mc().thePlayer, "ticks", gateTE, delayer_type, ticks);
 
 			gui.close();
 
