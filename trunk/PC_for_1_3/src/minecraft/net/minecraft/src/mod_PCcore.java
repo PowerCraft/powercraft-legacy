@@ -937,6 +937,8 @@ public class mod_PCcore extends PC_Module implements PC_IActivatorListener {
 
 		ModLoader.setInGUIHook(this, true, false);
 
+		ModLoader.registerPacketChannel(this, "PowerCraft");
+		
 	}
 
 

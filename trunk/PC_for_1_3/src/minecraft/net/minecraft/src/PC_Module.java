@@ -1,7 +1,15 @@
 package net.minecraft.src;
 
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
 import java.io.File;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Hashtable;
@@ -291,7 +299,8 @@ public abstract class PC_Module extends BaseMod {
 				for(PC_IGresGuiCaller gui:gList.values())
 					ModLoader.registerContainerID(this, gui.getGuiID());
 			}
-
+				
+			
 			PC_Logger.finer("Calling post-init hook...");
 			postInit();
 
@@ -559,4 +568,54 @@ public abstract class PC_Module extends BaseMod {
 		System.out.println("Open Gui with ID "+var2);
         return new PC_GresGui(guiCaller.createGui(var1, var3, var4, var5));
     }
+	
+	@Override
+	public void serverCustomPayload(NetServerHandler netServerHandler, Packet250CustomPayload packet){
+		try {
+			ObjectInputStream input = new ObjectInputStream(new ByteArrayInputStream(packet.data));
+			String str = (String)input.readObject();
+			String var = (String)input.readObject();
+			int x = input.readInt();
+			int y = input.readInt();
+			int z = input.readInt();
+			Object o = input.readObject();
+			getPacket(str, var, x, y, z, o);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	
+	@Override
+	public void clientCustomPayload(NetClientHandler var1, Packet250CustomPayload packet){
+		try {
+			ObjectInputStream input = new ObjectInputStream(new ByteArrayInputStream(packet.data));
+			String str = (String)input.readObject();
+			String var = (String)input.readObject();
+			int x = input.readInt();
+			int y = input.readInt();
+			int z = input.readInt();
+			Object o = input.readObject();
+			getPacket(str, var, x, y, z, o);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+	}
+	
+	public void getPacket(String str, String var, int x, int y, int z, Object o){
+		World world = PC_Utils.mc().theWorld;
+		if(str == "TileEntity"){
+			Object p = world.getBlockTileEntity(x, y, z);
+			if(p instanceof PC_IPacketSetter)
+				((PC_IPacketSetter)p).set(var, o);
+		}else if(str == "Block"){
+			Block b = Block.blocksList[x];
+			if(b instanceof PC_IPacketSetter)
+				((PC_IPacketSetter)b).set(var, o);
+		}
+	}
+	
 }
+
