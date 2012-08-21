@@ -67,7 +67,7 @@ public class CrashReport
      */
     public void addCrashSection(String par1Str, Object par2Obj)
     {
-        this.crashReportSections.put(par1Str, par2Obj != null ? par2Obj.toString() : "null");
+        this.crashReportSections.put(par1Str, par2Obj == null ? "null" : par2Obj.toString());
     }
 
     /**

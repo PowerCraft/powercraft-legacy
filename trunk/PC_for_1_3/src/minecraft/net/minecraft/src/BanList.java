@@ -87,7 +87,7 @@ public class BanList
     }
 
     /**
-     * loads the ban list from the file (adds every entry, does not clear the current list)
+     * Loads the ban list from the file (adds every entry, does not clear the current list).
      */
     public void loadBanList()
     {
@@ -146,7 +146,7 @@ public class BanList
 
             if (par1)
             {
-                var2.println("# Updated " + (new SimpleDateFormat()).format(new Date()) + " by Minecraft " + "1.3.1");
+                var2.println("# Updated " + (new SimpleDateFormat()).format(new Date()) + " by Minecraft " + "1.3.2");
                 var2.println("# victim name | ban date | banned by | banned until | reason");
                 var2.println();
             }

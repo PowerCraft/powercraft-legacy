@@ -71,7 +71,7 @@ public class EntityPlayerMP extends EntityPlayer implements ICrafting
         super(par2World);
         par4ItemInWorldManager.thisPlayerMP = this;
         this.theItemInWorldManager = par4ItemInWorldManager;
-        this.field_71142_cm = par1MinecraftServer.func_71203_ab().getViewDistance();
+        this.field_71142_cm = par1MinecraftServer.getConfigurationManager().getViewDistance();
         ChunkCoordinates var5 = par2World.getSpawnPoint();
         int var6 = var5.posX;
         int var7 = var5.posZ;
@@ -269,7 +269,7 @@ public class EntityPlayerMP extends EntityPlayer implements ICrafting
                             var5 = -1;
                         }
 
-                        this.mcServer.func_71203_ab().sendPlayerToOtherDimension(this, var5);
+                        this.mcServer.getConfigurationManager().sendPlayerToOtherDimension(this, var5);
                         this.lastExperience = -1;
                         this.lastHealth = -1;
                         this.field_71146_ci = -1;
@@ -326,7 +326,7 @@ public class EntityPlayerMP extends EntityPlayer implements ICrafting
      */
     public void onDeath(DamageSource par1DamageSource)
     {
-        this.mcServer.func_71203_ab().sendPacketToAllPlayers(new Packet3Chat(par1DamageSource.getDeathMessage(this)));
+        this.mcServer.getConfigurationManager().sendPacketToAllPlayers(new Packet3Chat(par1DamageSource.getDeathMessage(this)));
         this.inventory.dropAllItems();
     }
 
@@ -392,7 +392,7 @@ public class EntityPlayerMP extends EntityPlayer implements ICrafting
                 this.playerNetServerHandler.teleportTo((double)var2.posX, (double)var2.posY, (double)var2.posZ, 0.0F, 0.0F);
             }
 
-            this.mcServer.func_71203_ab().sendPlayerToOtherDimension(this, 1);
+            this.mcServer.getConfigurationManager().sendPlayerToOtherDimension(this, 1);
             this.lastExperience = -1;
             this.lastHealth = -1;
             this.field_71146_ci = -1;
@@ -840,7 +840,7 @@ public class EntityPlayerMP extends EntityPlayer implements ICrafting
      */
     public boolean canCommandSenderUseCommand(String par1Str)
     {
-        return "seed".equals(par1Str) && !this.mcServer.func_71262_S() ? true : this.mcServer.func_71203_ab().isOp(this.username);
+        return "seed".equals(par1Str) && !this.mcServer.isDedicatedServer() ? true : (!"tell".equals(par1Str) && !"help".equals(par1Str) && !"me".equals(par1Str) ? this.mcServer.getConfigurationManager().isOp(this.username) : true);
     }
 
     public String func_71114_r()
@@ -868,7 +868,7 @@ public class EntityPlayerMP extends EntityPlayer implements ICrafting
         this.field_71143_cn = par1Packet204ClientInfo.func_73463_g();
         this.field_71140_co = par1Packet204ClientInfo.func_73460_h();
 
-        if (this.mcServer.func_71264_H() && this.mcServer.getServerOwner().equals(this.username))
+        if (this.mcServer.isSinglePlayer() && this.mcServer.getServerOwner().equals(this.username))
         {
             this.mcServer.func_71226_c(par1Packet204ClientInfo.func_73462_i());
         }

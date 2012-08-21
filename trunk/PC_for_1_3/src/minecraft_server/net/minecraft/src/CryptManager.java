@@ -35,7 +35,10 @@ public class CryptManager
 {
     public static final Charset field_75898_a = Charset.forName("ISO_8859_1");
 
-    public static KeyPair func_75891_b()
+    /**
+     * Generates RSA KeyPair
+     */
+    public static KeyPair generateKeyPair()
     {
         try
         {

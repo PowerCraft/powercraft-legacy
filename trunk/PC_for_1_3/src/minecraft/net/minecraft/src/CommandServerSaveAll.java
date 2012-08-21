@@ -21,11 +21,11 @@ public class CommandServerSaveAll extends CommandBase
 
         try
         {
-            for (int var4 = 0; var4 < var3.dimensionServerList.length; ++var4)
+            for (int var4 = 0; var4 < var3.theWorldServer.length; ++var4)
             {
-                if (var3.dimensionServerList[var4] != null)
+                if (var3.theWorldServer[var4] != null)
                 {
-                    WorldServer var5 = var3.dimensionServerList[var4];
+                    WorldServer var5 = var3.theWorldServer[var4];
                     boolean var6 = var5.canNotSave;
                     var5.canNotSave = false;
                     var5.saveAllChunks(true, (IProgressUpdate)null);

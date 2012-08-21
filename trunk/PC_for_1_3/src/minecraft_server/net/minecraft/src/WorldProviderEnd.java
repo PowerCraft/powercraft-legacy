@@ -65,4 +65,9 @@ public class WorldProviderEnd extends WorldProvider
     {
         return 50;
     }
+
+    public String func_80007_l()
+    {
+        return "The End";
+    }
 }

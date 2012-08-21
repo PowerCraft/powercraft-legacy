@@ -31,6 +31,6 @@ public class CommandDefaultGameMode extends CommandGameMode
 
     protected void func_71541_a(EnumGameType par1EnumGameType)
     {
-        MinecraftServer.getServer().func_71235_a(par1EnumGameType);
+        MinecraftServer.getServer().setGameMode(par1EnumGameType);
     }
 }

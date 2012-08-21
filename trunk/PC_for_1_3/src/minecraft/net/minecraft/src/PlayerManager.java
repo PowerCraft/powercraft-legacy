@@ -242,7 +242,7 @@ public class PlayerManager
     public boolean isPlayerWatchingChunk(EntityPlayerMP par1EntityPlayerMP, int par2, int par3)
     {
         PlayerInstance var4 = this.getOrCreateChunkWatcher(par2, par3, false);
-        return var4 == null ? false : PlayerInstance.getPlayersInChunk(var4).contains(par1EntityPlayerMP);
+        return var4 == null ? false : PlayerInstance.getPlayersInChunk(var4).contains(par1EntityPlayerMP) && !par1EntityPlayerMP.chunksToLoad.contains(PlayerInstance.getChunkLocation(var4));
     }
 
     public static int func_72686_a(int par0)

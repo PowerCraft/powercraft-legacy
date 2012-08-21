@@ -27,7 +27,7 @@ class ThreadConnectToServer extends Thread
         {
             GuiConnecting.setNetClientHandler(this.connectingGui, new NetClientHandler(GuiConnecting.func_74256_a(this.connectingGui), this.ip, this.port));
 
-            if (GuiConnecting.func_74257_b(this.connectingGui))
+            if (GuiConnecting.isCancelled(this.connectingGui))
             {
                 return;
             }
@@ -36,7 +36,7 @@ class ThreadConnectToServer extends Thread
         }
         catch (UnknownHostException var2)
         {
-            if (GuiConnecting.func_74257_b(this.connectingGui))
+            if (GuiConnecting.isCancelled(this.connectingGui))
             {
                 return;
             }
@@ -45,7 +45,7 @@ class ThreadConnectToServer extends Thread
         }
         catch (ConnectException var3)
         {
-            if (GuiConnecting.func_74257_b(this.connectingGui))
+            if (GuiConnecting.isCancelled(this.connectingGui))
             {
                 return;
             }
@@ -54,7 +54,7 @@ class ThreadConnectToServer extends Thread
         }
         catch (Exception var4)
         {
-            if (GuiConnecting.func_74257_b(this.connectingGui))
+            if (GuiConnecting.isCancelled(this.connectingGui))
             {
                 return;
             }

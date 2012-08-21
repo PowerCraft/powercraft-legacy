@@ -5,7 +5,7 @@ public class ServerData
     public String serverName;
     public String serverIP;
     public String field_78846_c;
-    public String field_78843_d;
+    public String serverMOTD;
     public long field_78844_e;
     public boolean field_78841_f = false;
     private boolean field_78842_g = true;
@@ -17,7 +17,10 @@ public class ServerData
         this.serverIP = par2Str;
     }
 
-    public NBTTagCompound func_78836_a()
+    /**
+     * Returns an NBTTagCompound with the server's name, IP and maybe acceptTextures.
+     */
+    public NBTTagCompound getNBTCompound()
     {
         NBTTagCompound var1 = new NBTTagCompound();
         var1.setString("name", this.serverName);

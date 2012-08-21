@@ -15,7 +15,7 @@ public class CommandServerBanlist extends CommandBase
      */
     public boolean canCommandSenderUseCommand(ICommandSender par1ICommandSender)
     {
-        return (MinecraftServer.getServer().func_71203_ab().func_72363_f().func_73710_b() || MinecraftServer.getServer().func_71203_ab().func_72390_e().func_73710_b()) && super.canCommandSenderUseCommand(par1ICommandSender);
+        return (MinecraftServer.getServer().getConfigurationManager().getBannedIPs().func_73710_b() || MinecraftServer.getServer().getConfigurationManager().getBannedPlayers().func_73710_b()) && super.canCommandSenderUseCommand(par1ICommandSender);
     }
 
     public String getCommandUsage(ICommandSender par1ICommandSender)
@@ -27,13 +27,13 @@ public class CommandServerBanlist extends CommandBase
     {
         if (par2ArrayOfStr.length >= 1 && par2ArrayOfStr[0].equalsIgnoreCase("ips"))
         {
-            par1ICommandSender.func_70006_a(par1ICommandSender.translateString("commands.banlist.ips", new Object[] {Integer.valueOf(MinecraftServer.getServer().func_71203_ab().func_72363_f().func_73712_c().size())}));
-            par1ICommandSender.func_70006_a(joinNiceString(MinecraftServer.getServer().func_71203_ab().func_72363_f().func_73712_c().keySet().toArray()));
+            par1ICommandSender.func_70006_a(par1ICommandSender.translateString("commands.banlist.ips", new Object[] {Integer.valueOf(MinecraftServer.getServer().getConfigurationManager().getBannedIPs().func_73712_c().size())}));
+            par1ICommandSender.func_70006_a(joinNiceString(MinecraftServer.getServer().getConfigurationManager().getBannedIPs().func_73712_c().keySet().toArray()));
         }
         else
         {
-            par1ICommandSender.func_70006_a(par1ICommandSender.translateString("commands.banlist.players", new Object[] {Integer.valueOf(MinecraftServer.getServer().func_71203_ab().func_72390_e().func_73712_c().size())}));
-            par1ICommandSender.func_70006_a(joinNiceString(MinecraftServer.getServer().func_71203_ab().func_72390_e().func_73712_c().keySet().toArray()));
+            par1ICommandSender.func_70006_a(par1ICommandSender.translateString("commands.banlist.players", new Object[] {Integer.valueOf(MinecraftServer.getServer().getConfigurationManager().getBannedPlayers().func_73712_c().size())}));
+            par1ICommandSender.func_70006_a(joinNiceString(MinecraftServer.getServer().getConfigurationManager().getBannedPlayers().func_73712_c().keySet().toArray()));
         }
     }
 

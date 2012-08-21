@@ -69,7 +69,7 @@ public abstract class EntityFlying extends EntityLiving
             this.motionZ *= (double)var3;
         }
 
-        this.field_70722_aY = this.field_70721_aZ;
+        this.prevLegYaw = this.legYaw;
         double var10 = this.posX - this.prevPosX;
         double var9 = this.posZ - this.prevPosZ;
         float var7 = MathHelper.sqrt_double(var10 * var10 + var9 * var9) * 4.0F;
@@ -79,8 +79,8 @@ public abstract class EntityFlying extends EntityLiving
             var7 = 1.0F;
         }
 
-        this.field_70721_aZ += (var7 - this.field_70721_aZ) * 0.4F;
-        this.field_70754_ba += this.field_70721_aZ;
+        this.legYaw += (var7 - this.legYaw) * 0.4F;
+        this.field_70754_ba += this.legYaw;
     }
 
     /**

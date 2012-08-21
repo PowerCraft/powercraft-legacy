@@ -49,7 +49,16 @@ public class GenLayerBiome extends GenLayer
                 }
                 else
                 {
-                    var6[var8 + var7 * par3] = BiomeGenBase.icePlains.biomeID;
+                    int var10 = this.allowedBiomes[this.nextInt(this.allowedBiomes.length)].biomeID;
+
+                    if (var10 == BiomeGenBase.taiga.biomeID)
+                    {
+                        var6[var8 + var7 * par3] = var10;
+                    }
+                    else
+                    {
+                        var6[var8 + var7 * par3] = BiomeGenBase.icePlains.biomeID;
+                    }
                 }
             }
         }

@@ -32,7 +32,7 @@ public class CommandServerTp extends CommandBase
             }
             else
             {
-                var4 = var3.func_71203_ab().getPlayerEntity(par2ArrayOfStr[0]);
+                var4 = var3.getConfigurationManager().getPlayerEntity(par2ArrayOfStr[0]);
 
                 if (var4 == null)
                 {
@@ -44,7 +44,7 @@ public class CommandServerTp extends CommandBase
             {
                 if (par2ArrayOfStr.length == 1 || par2ArrayOfStr.length == 2)
                 {
-                    EntityPlayerMP var10 = var3.func_71203_ab().getPlayerEntity(par2ArrayOfStr[par2ArrayOfStr.length - 1]);
+                    EntityPlayerMP var10 = var3.getConfigurationManager().getPlayerEntity(par2ArrayOfStr[par2ArrayOfStr.length - 1]);
 
                     if (var10 == null)
                     {

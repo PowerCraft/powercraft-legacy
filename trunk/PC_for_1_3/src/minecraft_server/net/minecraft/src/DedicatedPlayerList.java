@@ -10,39 +10,39 @@ import net.minecraft.server.MinecraftServer;
 
 public class DedicatedPlayerList extends ServerConfigurationManager
 {
-    private File field_72423_e;
-    private File field_72422_f;
+    private File opsList;
+    private File whiteList;
 
     public DedicatedPlayerList(DedicatedServer par1DedicatedServer)
     {
         super(par1DedicatedServer);
-        this.field_72423_e = par1DedicatedServer.getFile("ops.txt");
-        this.field_72422_f = par1DedicatedServer.getFile("white-list.txt");
-        this.field_72402_d = par1DedicatedServer.getIntProperty("view-distance", 10);
+        this.opsList = par1DedicatedServer.getFile("ops.txt");
+        this.whiteList = par1DedicatedServer.getFile("white-list.txt");
+        this.viewDistance = par1DedicatedServer.getIntProperty("view-distance", 10);
         this.maxPlayers = par1DedicatedServer.getIntProperty("max-players", 20);
-        this.func_72371_a(par1DedicatedServer.func_71332_a("white-list", false));
+        this.setWhiteListEnabled(par1DedicatedServer.func_71332_a("white-list", false));
 
-        if (!par1DedicatedServer.func_71264_H())
+        if (!par1DedicatedServer.isSinglePlayer())
         {
-            this.func_72390_e().func_73708_a(true);
-            this.func_72363_f().func_73708_a(true);
+            this.getBannedPlayers().setListActive(true);
+            this.getBannedIPs().setListActive(true);
         }
 
-        this.func_72390_e().func_73707_e();
-        this.func_72390_e().func_73711_f();
-        this.func_72363_f().func_73707_e();
-        this.func_72363_f().func_73711_f();
-        this.func_72417_t();
-        this.func_72418_v();
-        this.func_72419_u();
+        this.getBannedPlayers().loadBanList();
+        this.getBannedPlayers().saveToFileWithHeader();
+        this.getBannedIPs().loadBanList();
+        this.getBannedIPs().saveToFileWithHeader();
+        this.loadOpsList();
+        this.readWhiteList();
+        this.saveOpsList();
         this.saveWhiteList();
     }
 
-    public void func_72371_a(boolean par1)
+    public void setWhiteListEnabled(boolean par1)
     {
-        super.func_72371_a(par1);
-        this.func_72420_s().setProperty("white-list", Boolean.valueOf(par1));
-        this.func_72420_s().saveProperties();
+        super.setWhiteListEnabled(par1);
+        this.getDedicatedServerInstance().setProperty("white-list", Boolean.valueOf(par1));
+        this.getDedicatedServerInstance().saveProperties();
     }
 
     /**
@@ -51,7 +51,7 @@ public class DedicatedPlayerList extends ServerConfigurationManager
     public void addOp(String par1Str)
     {
         super.addOp(par1Str);
-        this.func_72419_u();
+        this.saveOpsList();
     }
 
     /**
@@ -60,15 +60,15 @@ public class DedicatedPlayerList extends ServerConfigurationManager
     public void removeOp(String par1Str)
     {
         super.removeOp(par1Str);
-        this.func_72419_u();
+        this.saveOpsList();
     }
 
     /**
-     * remove the specified player from the whitelist
+     * Remove the specified player from the whitelist.
      */
-    public void removeFromWhiteList(String par1Str)
+    public void removeFromWhitelist(String par1Str)
     {
-        super.removeFromWhiteList(par1Str);
+        super.removeFromWhitelist(par1Str);
         this.saveWhiteList();
     }
 
@@ -82,19 +82,19 @@ public class DedicatedPlayerList extends ServerConfigurationManager
     }
 
     /**
-     * reloads the whitelist
+     * Either does nothing, or calls readWhiteList.
      */
-    public void reloadWhiteList()
+    public void loadWhiteList()
     {
-        this.func_72418_v();
+        this.readWhiteList();
     }
 
-    private void func_72417_t()
+    private void loadOpsList()
     {
         try
         {
             this.func_72376_i().clear();
-            BufferedReader var1 = new BufferedReader(new FileReader(this.field_72423_e));
+            BufferedReader var1 = new BufferedReader(new FileReader(this.opsList));
             String var2 = "";
 
             while ((var2 = var1.readLine()) != null)
@@ -110,11 +110,11 @@ public class DedicatedPlayerList extends ServerConfigurationManager
         }
     }
 
-    private void func_72419_u()
+    private void saveOpsList()
     {
         try
         {
-            PrintWriter var1 = new PrintWriter(new FileWriter(this.field_72423_e, false));
+            PrintWriter var1 = new PrintWriter(new FileWriter(this.opsList, false));
             Iterator var2 = this.func_72376_i().iterator();
 
             while (var2.hasNext())
@@ -131,12 +131,12 @@ public class DedicatedPlayerList extends ServerConfigurationManager
         }
     }
 
-    private void func_72418_v()
+    private void readWhiteList()
     {
         try
         {
             this.getWhiteListedIPs().clear();
-            BufferedReader var1 = new BufferedReader(new FileReader(this.field_72422_f));
+            BufferedReader var1 = new BufferedReader(new FileReader(this.whiteList));
             String var2 = "";
 
             while ((var2 = var1.readLine()) != null)
@@ -156,7 +156,7 @@ public class DedicatedPlayerList extends ServerConfigurationManager
     {
         try
         {
-            PrintWriter var1 = new PrintWriter(new FileWriter(this.field_72422_f, false));
+            PrintWriter var1 = new PrintWriter(new FileWriter(this.whiteList, false));
             Iterator var2 = this.getWhiteListedIPs().iterator();
 
             while (var2.hasNext())
@@ -174,7 +174,7 @@ public class DedicatedPlayerList extends ServerConfigurationManager
     }
 
     /**
-     * Determine if the player is allowed to connect based on current server settings
+     * Determine if the player is allowed to connect based on current server settings.
      */
     public boolean isAllowedToLogin(String par1Str)
     {
@@ -182,13 +182,13 @@ public class DedicatedPlayerList extends ServerConfigurationManager
         return !this.func_72383_n() || this.isOp(par1Str) || this.getWhiteListedIPs().contains(par1Str);
     }
 
-    public DedicatedServer func_72420_s()
+    public DedicatedServer getDedicatedServerInstance()
     {
-        return (DedicatedServer)super.func_72365_p();
+        return (DedicatedServer)super.getServerInstance();
     }
 
-    public MinecraftServer func_72365_p()
+    public MinecraftServer getServerInstance()
     {
-        return this.func_72420_s();
+        return this.getDedicatedServerInstance();
     }
 }

@@ -34,7 +34,7 @@ class ThreadPollServers extends Thread
                             try
                             {
                                 var27 = true;
-                                this.field_78318_a.field_78843_d = "\u00a78Polling..";
+                                this.field_78318_a.serverMOTD = "\u00a78Polling..";
                                 long var1 = System.nanoTime();
                                 GuiMultiplayer.func_74013_a(this.serverSlotContainer.parentGui, this.field_78318_a);
                                 long var3 = System.nanoTime();
@@ -45,34 +45,34 @@ class ThreadPollServers extends Thread
                             catch (UnknownHostException var35)
                             {
                                 this.field_78318_a.field_78844_e = -1L;
-                                this.field_78318_a.field_78843_d = "\u00a74Can\'t resolve hostname";
+                                this.field_78318_a.serverMOTD = "\u00a74Can\'t resolve hostname";
                                 var27 = false;
                             }
                             catch (SocketTimeoutException var36)
                             {
                                 this.field_78318_a.field_78844_e = -1L;
-                                this.field_78318_a.field_78843_d = "\u00a74Can\'t reach server";
+                                this.field_78318_a.serverMOTD = "\u00a74Can\'t reach server";
                                 var27 = false;
                                 break label187;
                             }
                             catch (ConnectException var37)
                             {
                                 this.field_78318_a.field_78844_e = -1L;
-                                this.field_78318_a.field_78843_d = "\u00a74Can\'t reach server";
+                                this.field_78318_a.serverMOTD = "\u00a74Can\'t reach server";
                                 var27 = false;
                                 break label186;
                             }
                             catch (IOException var38)
                             {
                                 this.field_78318_a.field_78844_e = -1L;
-                                this.field_78318_a.field_78843_d = "\u00a74Communication error";
+                                this.field_78318_a.serverMOTD = "\u00a74Communication error";
                                 var27 = false;
                                 break label185;
                             }
                             catch (Exception var39)
                             {
                                 this.field_78318_a.field_78844_e = -1L;
-                                this.field_78318_a.field_78843_d = "ERROR: " + var39.getClass();
+                                this.field_78318_a.serverMOTD = "ERROR: " + var39.getClass();
                                 var27 = false;
                                 break label184;
                             }

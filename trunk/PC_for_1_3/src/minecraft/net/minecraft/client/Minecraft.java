@@ -357,7 +357,7 @@ public abstract class Minecraft implements Runnable, IPlayerUsage
             Display.setDisplayMode(new DisplayMode(this.displayWidth, this.displayHeight));
         }
 
-        Display.setTitle("Minecraft Minecraft 1.3.1");
+        Display.setTitle("Minecraft Minecraft 1.3.2");
         System.out.println("LWJGL Version: " + Sys.getVersion());
 
         try
@@ -619,7 +619,7 @@ public abstract class Minecraft implements Runnable, IPlayerUsage
             if (par1GuiScreen instanceof GuiMainMenu)
             {
                 this.gameSettings.showDebugInfo = false;
-                this.ingameGUI.func_73827_b().func_73761_a();
+                this.ingameGUI.getChatGUI().func_73761_a();
             }
 
             this.currentScreen = (GuiScreen)par1GuiScreen;
@@ -992,7 +992,7 @@ public abstract class Minecraft implements Runnable, IPlayerUsage
             if (!this.isTakingScreenshot)
             {
                 this.isTakingScreenshot = true;
-                this.ingameGUI.func_73827_b().func_73765_a(ScreenShotHelper.saveScreenshot(minecraftDir, this.displayWidth, this.displayHeight));
+                this.ingameGUI.getChatGUI().printChatMessage(ScreenShotHelper.saveScreenshot(minecraftDir, this.displayWidth, this.displayHeight));
             }
         }
         else
@@ -2305,11 +2305,16 @@ public abstract class Minecraft implements Runnable, IPlayerUsage
     public void addServerStatsToSnooper(PlayerUsageSnooper par1PlayerUsageSnooper)
     {
         par1PlayerUsageSnooper.addData("fps", Integer.valueOf(field_71470_ab));
-        par1PlayerUsageSnooper.addData("texpack_name", this.texturePackList.func_77292_e().func_77538_c());
-        par1PlayerUsageSnooper.addData("texpack_resolution", Integer.valueOf(this.texturePackList.func_77292_e().func_77534_f()));
+        par1PlayerUsageSnooper.addData("texpack_name", this.texturePackList.getSelectedTexturePack().func_77538_c());
+        par1PlayerUsageSnooper.addData("texpack_resolution", Integer.valueOf(this.texturePackList.getSelectedTexturePack().func_77534_f()));
         par1PlayerUsageSnooper.addData("vsync_enabled", Boolean.valueOf(this.gameSettings.enableVsync));
         par1PlayerUsageSnooper.addData("display_frequency", Integer.valueOf(Display.getDisplayMode().getFrequency()));
         par1PlayerUsageSnooper.addData("display_type", this.fullscreen ? "fullscreen" : "windowed");
+
+        if (this.theIntegratedServer != null && this.theIntegratedServer.func_80003_ah() != null)
+        {
+            par1PlayerUsageSnooper.addData("snooper_partner", this.theIntegratedServer.func_80003_ah().func_80006_f());
+        }
     }
 
     public void addServerTypeToSnooper(PlayerUsageSnooper par1PlayerUsageSnooper)

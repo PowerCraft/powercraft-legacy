@@ -164,9 +164,4 @@ public class Packet56MapChunks extends Packet
     {
         return this.field_73589_c.length;
     }
-
-    public boolean func_73277_a_()
-    {
-        return true;
-    }
 }

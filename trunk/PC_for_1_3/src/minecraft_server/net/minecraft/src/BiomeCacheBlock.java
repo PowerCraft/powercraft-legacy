@@ -21,11 +21,11 @@ public class BiomeCacheBlock
     public long lastAccessTime;
 
     /** The BiomeCache object that contains this BiomeCacheBlock */
-    final BiomeCache biomeCache;
+    final BiomeCache theBiomeCache;
 
     public BiomeCacheBlock(BiomeCache par1BiomeCache, int par2, int par3)
     {
-        this.biomeCache = par1BiomeCache;
+        this.theBiomeCache = par1BiomeCache;
         this.temperatureValues = new float[256];
         this.rainfallValues = new float[256];
         this.biomes = new BiomeGenBase[256];

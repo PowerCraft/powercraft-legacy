@@ -86,4 +86,14 @@ public abstract class BaseMod
     {
         return null;
     }
+
+    public Entity spawnEntity(int var1, World var2, double var3, double var5, double var7)
+    {
+        return null;
+    }
+
+    public Packet23VehicleSpawn getSpawnPacket(Entity var1, int var2)
+    {
+        return null;
+    }
 }

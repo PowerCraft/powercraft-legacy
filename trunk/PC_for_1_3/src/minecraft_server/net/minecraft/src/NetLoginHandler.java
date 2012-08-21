@@ -149,7 +149,7 @@ public class NetLoginHandler extends NetHandler
 
     public void func_72529_d()
     {
-        String var1 = this.mcServer.func_71203_ab().func_72399_a(this.field_72538_b.getRemoteAddress(), this.field_72543_h);
+        String var1 = this.mcServer.getConfigurationManager().func_72399_a(this.field_72538_b.getRemoteAddress(), this.field_72543_h);
 
         if (var1 != null)
         {
@@ -157,11 +157,11 @@ public class NetLoginHandler extends NetHandler
         }
         else
         {
-            EntityPlayerMP var2 = this.mcServer.func_71203_ab().func_72366_a(this.field_72543_h);
+            EntityPlayerMP var2 = this.mcServer.getConfigurationManager().func_72366_a(this.field_72543_h);
 
             if (var2 != null)
             {
-                this.mcServer.func_71203_ab().func_72355_a(this.field_72538_b, var2);
+                this.mcServer.getConfigurationManager().func_72355_a(this.field_72538_b, var2);
             }
         }
 
@@ -181,7 +181,7 @@ public class NetLoginHandler extends NetHandler
     {
         try
         {
-            String var2 = this.mcServer.func_71273_Y() + "\u00a7" + this.mcServer.func_71203_ab().playersOnline() + "\u00a7" + this.mcServer.func_71203_ab().getMaxPlayers();
+            String var2 = this.mcServer.getMOTD() + "\u00a7" + this.mcServer.getConfigurationManager().playersOnline() + "\u00a7" + this.mcServer.getConfigurationManager().getMaxPlayers();
             InetAddress var3 = null;
 
             if (this.field_72538_b.func_74452_g() != null)

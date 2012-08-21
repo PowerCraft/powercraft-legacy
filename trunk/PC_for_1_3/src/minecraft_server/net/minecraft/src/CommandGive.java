@@ -56,12 +56,12 @@ public class CommandGive extends CommandBase
      */
     public List addTabCompletionOptions(ICommandSender par1ICommandSender, String[] par2ArrayOfStr)
     {
-        return par2ArrayOfStr.length == 1 ? getListOfStringsMatchingLastWord(par2ArrayOfStr, this.func_71536_c()) : null;
+        return par2ArrayOfStr.length == 1 ? getListOfStringsMatchingLastWord(par2ArrayOfStr, this.getPlayers()) : null;
     }
 
     protected EntityPlayer func_71537_a(String par1Str)
     {
-        EntityPlayerMP var2 = MinecraftServer.getServer().func_71203_ab().getPlayerEntity(par1Str);
+        EntityPlayerMP var2 = MinecraftServer.getServer().getConfigurationManager().getPlayerEntity(par1Str);
 
         if (var2 == null)
         {
@@ -73,7 +73,7 @@ public class CommandGive extends CommandBase
         }
     }
 
-    protected String[] func_71536_c()
+    protected String[] getPlayers()
     {
         return MinecraftServer.getServer().getPlayerNamesAsList();
     }

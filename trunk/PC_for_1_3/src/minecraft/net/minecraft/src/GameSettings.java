@@ -51,6 +51,7 @@ public class GameSettings
     public boolean snooperEnabled = true;
     public boolean fullScreen = false;
     public boolean enableVsync = false;
+    public boolean field_80005_w = false;
     public KeyBinding keyBindForward = new KeyBinding("key.forward", 17);
     public KeyBinding keyBindLeft = new KeyBinding("key.left", 30);
     public KeyBinding keyBindBack = new KeyBinding("key.back", 31);
@@ -590,6 +591,11 @@ public class GameSettings
                         this.enableVsync = var3[1].equals("true");
                     }
 
+                    if (var3[0].equals("hideServerAddress"))
+                    {
+                        this.field_80005_w = var3[1].equals("true");
+                    }
+
                     KeyBinding[] var4 = this.keyBindings;
                     int var5 = var4.length;
 
@@ -664,6 +670,7 @@ public class GameSettings
             var1.println("snooperEnabled:" + this.snooperEnabled);
             var1.println("fullscreen:" + this.fullScreen);
             var1.println("enableVsync:" + this.enableVsync);
+            var1.println("hideServerAddress:" + this.field_80005_w);
             KeyBinding[] var2 = this.keyBindings;
             int var3 = var2.length;
 

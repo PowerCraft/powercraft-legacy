@@ -15,13 +15,17 @@ public abstract class ServerConfigurationManager
 {
     private static final SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd \'at\' HH:mm:ss z");
     public static final Logger myLogger = Logger.getLogger("Minecraft");
-    private final MinecraftServer minecraftServerInstance;
-    public final List playerList = new ArrayList();
+
+    /** Reference to the MinecraftServer object. */
+    private final MinecraftServer mcServer;
+
+    /** A list of player entities that exist on this server. */
+    public final List playerEntityList = new ArrayList();
     private final BanList bannedPlayers = new BanList(new File("banned-players.txt"));
     private final BanList bannedIPs = new BanList(new File("banned-ips.txt"));
 
-    /** the list of names on the whiteList */
-    private Set whiteListNames = new HashSet();
+    /** A set containing the OPs. */
+    private Set ops = new HashSet();
     private Set whiteListIPs = new HashSet();
     private IPlayerFileData field_72412_k;
 
@@ -41,7 +45,7 @@ public abstract class ServerConfigurationManager
 
     public ServerConfigurationManager(MinecraftServer par1MinecraftServer)
     {
-        this.minecraftServerInstance = par1MinecraftServer;
+        this.mcServer = par1MinecraftServer;
         this.bannedPlayers.setListActive(false);
         this.bannedIPs.setListActive(false);
         this.maxPlayers = 8;
@@ -50,7 +54,7 @@ public abstract class ServerConfigurationManager
     public void initializeConnectionToPlayer(NetworkManager par1NetworkManager, EntityPlayerMP par2EntityPlayerMP)
     {
         this.func_72380_a(par2EntityPlayerMP);
-        par2EntityPlayerMP.setWorld(this.minecraftServerInstance.worldServerForDimension(par2EntityPlayerMP.dimension));
+        par2EntityPlayerMP.setWorld(this.mcServer.worldServerForDimension(par2EntityPlayerMP.dimension));
         par2EntityPlayerMP.theItemInWorldManager.setWorld((WorldServer)par2EntityPlayerMP.worldObj);
         String var3 = "local";
 
@@ -60,10 +64,10 @@ public abstract class ServerConfigurationManager
         }
 
         myLogger.info(par2EntityPlayerMP.username + "[" + var3 + "] logged in with entity id " + par2EntityPlayerMP.entityId + " at (" + par2EntityPlayerMP.posX + ", " + par2EntityPlayerMP.posY + ", " + par2EntityPlayerMP.posZ + ")");
-        WorldServer var4 = this.minecraftServerInstance.worldServerForDimension(par2EntityPlayerMP.dimension);
+        WorldServer var4 = this.mcServer.worldServerForDimension(par2EntityPlayerMP.dimension);
         ChunkCoordinates var5 = var4.getSpawnPoint();
         this.func_72381_a(par2EntityPlayerMP, (EntityPlayerMP)null, var4);
-        NetServerHandler var6 = new NetServerHandler(this.minecraftServerInstance, par1NetworkManager, par2EntityPlayerMP);
+        NetServerHandler var6 = new NetServerHandler(this.mcServer, par1NetworkManager, par2EntityPlayerMP);
         var6.sendPacketToPlayer(new Packet1Login(par2EntityPlayerMP.entityId, var4.getWorldInfo().getTerrainType(), par2EntityPlayerMP.theItemInWorldManager.getGameType(), var4.getWorldInfo().isHardcoreModeEnabled(), var4.provider.worldType, var4.difficultySetting, var4.getHeight(), this.getMaxPlayers()));
         var6.sendPacketToPlayer(new Packet6SpawnPosition(var5.posX, var5.posY, var5.posZ));
         var6.sendPacketToPlayer(new Packet202PlayerAbilities(par2EntityPlayerMP.capabilities));
@@ -71,12 +75,12 @@ public abstract class ServerConfigurationManager
         this.sendPacketToAllPlayers(new Packet3Chat("\u00a7e" + par2EntityPlayerMP.username + " joined the game."));
         this.func_72377_c(par2EntityPlayerMP);
         var6.setPlayerLocation(par2EntityPlayerMP.posX, par2EntityPlayerMP.posY, par2EntityPlayerMP.posZ, par2EntityPlayerMP.rotationYaw, par2EntityPlayerMP.rotationPitch);
-        this.minecraftServerInstance.getNetworkThread().func_71745_a(var6);
+        this.mcServer.getNetworkThread().func_71745_a(var6);
         var6.sendPacketToPlayer(new Packet4UpdateTime(var4.getWorldTime()));
 
-        if (this.minecraftServerInstance.getTexturePack().length() > 0)
+        if (this.mcServer.getTexturePack().length() > 0)
         {
-            par2EntityPlayerMP.requestTexturePackLoad(this.minecraftServerInstance.getTexturePack(), this.minecraftServerInstance.textureFlag());
+            par2EntityPlayerMP.requestTexturePackLoad(this.mcServer.getTexturePack(), this.mcServer.textureFlag());
         }
 
         Iterator var7 = par2EntityPlayerMP.getActivePotionEffects().iterator();
@@ -115,9 +119,9 @@ public abstract class ServerConfigurationManager
 
     public void func_72380_a(EntityPlayerMP par1EntityPlayerMP)
     {
-        NBTTagCompound var2 = this.minecraftServerInstance.dimensionServerList[0].getWorldInfo().getPlayerNBTTagCompound();
+        NBTTagCompound var2 = this.mcServer.theWorldServer[0].getWorldInfo().getPlayerNBTTagCompound();
 
-        if (par1EntityPlayerMP.getCommandSenderName().equals(this.minecraftServerInstance.getServerOwner()) && var2 != null)
+        if (par1EntityPlayerMP.getCommandSenderName().equals(this.mcServer.getServerOwner()) && var2 != null)
         {
             par1EntityPlayerMP.readFromNBT(var2);
         }
@@ -138,8 +142,8 @@ public abstract class ServerConfigurationManager
     public void func_72377_c(EntityPlayerMP par1EntityPlayerMP)
     {
         this.sendPacketToAllPlayers(new Packet201PlayerInfo(par1EntityPlayerMP.username, true, 1000));
-        this.playerList.add(par1EntityPlayerMP);
-        WorldServer var2 = this.minecraftServerInstance.worldServerForDimension(par1EntityPlayerMP.dimension);
+        this.playerEntityList.add(par1EntityPlayerMP);
+        WorldServer var2 = this.mcServer.worldServerForDimension(par1EntityPlayerMP.dimension);
 
         while (!var2.getCollidingBoundingBoxes(par1EntityPlayerMP, par1EntityPlayerMP.boundingBox).isEmpty())
         {
@@ -148,7 +152,7 @@ public abstract class ServerConfigurationManager
 
         var2.spawnEntityInWorld(par1EntityPlayerMP);
         this.func_72375_a(par1EntityPlayerMP, (WorldServer)null);
-        Iterator var3 = this.playerList.iterator();
+        Iterator var3 = this.playerEntityList.iterator();
 
         while (var3.hasNext())
         {
@@ -168,7 +172,7 @@ public abstract class ServerConfigurationManager
         WorldServer var2 = par1EntityPlayerMP.getServerForPlayer();
         var2.setEntityDead(par1EntityPlayerMP);
         var2.getPlayerManager().func_72695_c(par1EntityPlayerMP);
-        this.playerList.remove(par1EntityPlayerMP);
+        this.playerEntityList.remove(par1EntityPlayerMP);
         this.sendPacketToAllPlayers(new Packet201PlayerInfo(par1EntityPlayerMP.username, false, 9999));
     }
 
@@ -189,7 +193,7 @@ public abstract class ServerConfigurationManager
 
             return var7;
         }
-        else if (!this.isWhiteListed(par2Str))
+        else if (!this.isAllowedToLogin(par2Str))
         {
             return "You are not white-listed on this server!";
         }
@@ -213,7 +217,7 @@ public abstract class ServerConfigurationManager
             }
             else
             {
-                return this.playerList.size() >= this.maxPlayers ? "The server is full!" : null;
+                return this.playerEntityList.size() >= this.maxPlayers ? "The server is full!" : null;
             }
         }
     }
@@ -224,7 +228,7 @@ public abstract class ServerConfigurationManager
     public EntityPlayerMP createPlayerForUser(String par1Str)
     {
         ArrayList var2 = new ArrayList();
-        Iterator var3 = this.playerList.iterator();
+        Iterator var3 = this.playerEntityList.iterator();
         EntityPlayerMP var4;
 
         while (var3.hasNext())
@@ -247,16 +251,16 @@ public abstract class ServerConfigurationManager
 
         Object var5;
 
-        if (this.minecraftServerInstance.isDemo())
+        if (this.mcServer.isDemo())
         {
-            var5 = new DemoWorldManager(this.minecraftServerInstance.worldServerForDimension(0));
+            var5 = new DemoWorldManager(this.mcServer.worldServerForDimension(0));
         }
         else
         {
-            var5 = new ItemInWorldManager(this.minecraftServerInstance.worldServerForDimension(0));
+            var5 = new ItemInWorldManager(this.mcServer.worldServerForDimension(0));
         }
 
-        return new EntityPlayerMP(this.minecraftServerInstance, this.minecraftServerInstance.worldServerForDimension(0), par1Str, (ItemInWorldManager)var5);
+        return new EntityPlayerMP(this.mcServer, this.mcServer.worldServerForDimension(0), par1Str, (ItemInWorldManager)var5);
     }
 
     /**
@@ -269,32 +273,32 @@ public abstract class ServerConfigurationManager
         par1EntityPlayerMP.getServerForPlayer().getEntityTracker().removeAllTrackingPlayers(par1EntityPlayerMP);
         par1EntityPlayerMP.getServerForPlayer().getEntityTracker().removeEntityFromAllTrackingPlayers(par1EntityPlayerMP);
         par1EntityPlayerMP.getServerForPlayer().getPlayerManager().func_72695_c(par1EntityPlayerMP);
-        this.playerList.remove(par1EntityPlayerMP);
-        this.minecraftServerInstance.worldServerForDimension(par1EntityPlayerMP.dimension).removeEntity(par1EntityPlayerMP);
+        this.playerEntityList.remove(par1EntityPlayerMP);
+        this.mcServer.worldServerForDimension(par1EntityPlayerMP.dimension).removeEntity(par1EntityPlayerMP);
         ChunkCoordinates var4 = par1EntityPlayerMP.getSpawnChunk();
         par1EntityPlayerMP.dimension = par2;
         Object var5;
 
-        if (this.minecraftServerInstance.isDemo())
+        if (this.mcServer.isDemo())
         {
-            var5 = new DemoWorldManager(this.minecraftServerInstance.worldServerForDimension(par1EntityPlayerMP.dimension));
+            var5 = new DemoWorldManager(this.mcServer.worldServerForDimension(par1EntityPlayerMP.dimension));
         }
         else
         {
-            var5 = new ItemInWorldManager(this.minecraftServerInstance.worldServerForDimension(par1EntityPlayerMP.dimension));
+            var5 = new ItemInWorldManager(this.mcServer.worldServerForDimension(par1EntityPlayerMP.dimension));
         }
 
-        EntityPlayerMP var6 = new EntityPlayerMP(this.minecraftServerInstance, this.minecraftServerInstance.worldServerForDimension(par1EntityPlayerMP.dimension), par1EntityPlayerMP.username, (ItemInWorldManager)var5);
+        EntityPlayerMP var6 = new EntityPlayerMP(this.mcServer, this.mcServer.worldServerForDimension(par1EntityPlayerMP.dimension), par1EntityPlayerMP.username, (ItemInWorldManager)var5);
         var6.clonePlayer(par1EntityPlayerMP, par3);
         var6.entityId = par1EntityPlayerMP.entityId;
         var6.serverForThisPlayer = par1EntityPlayerMP.serverForThisPlayer;
-        WorldServer var7 = this.minecraftServerInstance.worldServerForDimension(par1EntityPlayerMP.dimension);
+        WorldServer var7 = this.mcServer.worldServerForDimension(par1EntityPlayerMP.dimension);
         this.func_72381_a(var6, par1EntityPlayerMP, var7);
         ChunkCoordinates var8;
 
         if (var4 != null)
         {
-            var8 = EntityPlayer.verifyRespawnCoordinates(this.minecraftServerInstance.worldServerForDimension(par1EntityPlayerMP.dimension), var4);
+            var8 = EntityPlayer.verifyRespawnCoordinates(this.mcServer.worldServerForDimension(par1EntityPlayerMP.dimension), var4);
 
             if (var8 != null)
             {
@@ -321,7 +325,7 @@ public abstract class ServerConfigurationManager
         this.sendTimeAndRainingToPlayer(var6, var7);
         var7.getPlayerManager().func_72683_a(var6);
         var7.spawnEntityInWorld(var6);
-        this.playerList.add(var6);
+        this.playerEntityList.add(var6);
         var6.addSelfToInternalCraftingInventory();
         return var6;
     }
@@ -329,9 +333,9 @@ public abstract class ServerConfigurationManager
     public void transferPlayerToDimension(EntityPlayerMP par1EntityPlayerMP, int par2)
     {
         int var3 = par1EntityPlayerMP.dimension;
-        WorldServer var4 = this.minecraftServerInstance.worldServerForDimension(par1EntityPlayerMP.dimension);
+        WorldServer var4 = this.mcServer.worldServerForDimension(par1EntityPlayerMP.dimension);
         par1EntityPlayerMP.dimension = par2;
-        WorldServer var5 = this.minecraftServerInstance.worldServerForDimension(par1EntityPlayerMP.dimension);
+        WorldServer var5 = this.mcServer.worldServerForDimension(par1EntityPlayerMP.dimension);
         par1EntityPlayerMP.serverForThisPlayer.sendPacketToPlayer(new Packet9Respawn(par1EntityPlayerMP.dimension, (byte)par1EntityPlayerMP.worldObj.difficultySetting, var5.getWorldInfo().getTerrainType(), var5.getHeight(), par1EntityPlayerMP.theItemInWorldManager.getGameType()));
         var4.removeEntity(par1EntityPlayerMP);
         par1EntityPlayerMP.isDead = false;
@@ -414,27 +418,24 @@ public abstract class ServerConfigurationManager
             this.field_72408_o = 0;
         }
 
-        if (this.field_72408_o < this.playerList.size())
+        if (this.field_72408_o < this.playerEntityList.size())
         {
-            EntityPlayerMP var1 = (EntityPlayerMP)this.playerList.get(this.field_72408_o);
+            EntityPlayerMP var1 = (EntityPlayerMP)this.playerEntityList.get(this.field_72408_o);
             this.sendPacketToAllPlayers(new Packet201PlayerInfo(var1.username, true, var1.field_71138_i));
         }
     }
 
     public void sendPacketToAllPlayers(Packet par1Packet)
     {
-        Iterator var2 = this.playerList.iterator();
-
-        while (var2.hasNext())
+        for (int var2 = 0; var2 < this.playerEntityList.size(); ++var2)
         {
-            EntityPlayerMP var3 = (EntityPlayerMP)var2.next();
-            var3.serverForThisPlayer.sendPacketToPlayer(par1Packet);
+            ((EntityPlayerMP)this.playerEntityList.get(var2)).serverForThisPlayer.sendPacketToPlayer(par1Packet);
         }
     }
 
     public void sendPacketToAllPlayersInDimension(Packet par1Packet, int par2)
     {
-        Iterator var3 = this.playerList.iterator();
+        Iterator var3 = this.playerEntityList.iterator();
 
         while (var3.hasNext())
         {
@@ -451,14 +452,14 @@ public abstract class ServerConfigurationManager
     {
         String var1 = "";
 
-        for (int var2 = 0; var2 < this.playerList.size(); ++var2)
+        for (int var2 = 0; var2 < this.playerEntityList.size(); ++var2)
         {
             if (var2 > 0)
             {
                 var1 = var1 + ", ";
             }
 
-            var1 = var1 + ((EntityPlayerMP)this.playerList.get(var2)).username;
+            var1 = var1 + ((EntityPlayerMP)this.playerEntityList.get(var2)).username;
         }
 
         return var1;
@@ -466,11 +467,11 @@ public abstract class ServerConfigurationManager
 
     public String[] getAllUsernames()
     {
-        String[] var1 = new String[this.playerList.size()];
+        String[] var1 = new String[this.playerEntityList.size()];
 
-        for (int var2 = 0; var2 < this.playerList.size(); ++var2)
+        for (int var2 = 0; var2 < this.playerEntityList.size(); ++var2)
         {
-            var1[var2] = ((EntityPlayerMP)this.playerList.get(var2)).username;
+            var1[var2] = ((EntityPlayerMP)this.playerEntityList.get(var2)).username;
         }
 
         return var1;
@@ -486,30 +487,39 @@ public abstract class ServerConfigurationManager
         return this.bannedIPs;
     }
 
-    public void addNameToWhitelist(String par1Str)
+    /**
+     * This adds a username to the ops list, then saves the op list
+     */
+    public void addOp(String par1Str)
     {
-        this.whiteListNames.add(par1Str.toLowerCase());
+        this.ops.add(par1Str.toLowerCase());
     }
 
-    public void removeNameFromWhitelist(String par1Str)
+    /**
+     * This removes a username from the ops list, then saves the op list
+     */
+    public void removeOp(String par1Str)
     {
-        this.whiteListNames.remove(par1Str.toLowerCase());
+        this.ops.remove(par1Str.toLowerCase());
     }
 
-    public boolean isWhiteListed(String par1Str)
+    /**
+     * Determine if the player is allowed to connect based on current server settings.
+     */
+    public boolean isAllowedToLogin(String par1Str)
     {
         par1Str = par1Str.trim().toLowerCase();
-        return !this.whiteListEnforced || this.whiteListNames.contains(par1Str) || this.whiteListIPs.contains(par1Str);
+        return !this.whiteListEnforced || this.ops.contains(par1Str) || this.whiteListIPs.contains(par1Str);
     }
 
     public boolean areCommandsAllowed(String par1Str)
     {
-        return this.whiteListNames.contains(par1Str.trim().toLowerCase()) || this.minecraftServerInstance.isSinglePlayer() && this.minecraftServerInstance.dimensionServerList[0].getWorldInfo().areCommandsAllowed() && this.minecraftServerInstance.getServerOwner().equalsIgnoreCase(par1Str) || this.commandsAllowedForAll;
+        return this.ops.contains(par1Str.trim().toLowerCase()) || this.mcServer.isSinglePlayer() && this.mcServer.theWorldServer[0].getWorldInfo().areCommandsAllowed() && this.mcServer.getServerOwner().equalsIgnoreCase(par1Str) || this.commandsAllowedForAll;
     }
 
     public EntityPlayerMP getPlayerForUsername(String par1Str)
     {
-        Iterator var2 = this.playerList.iterator();
+        Iterator var2 = this.playerEntityList.iterator();
         EntityPlayerMP var3;
 
         do
@@ -540,7 +550,7 @@ public abstract class ServerConfigurationManager
      */
     public void sendToAllNearExcept(EntityPlayer par1EntityPlayer, double par2, double par4, double par6, double par8, int par10, Packet par11Packet)
     {
-        Iterator var12 = this.playerList.iterator();
+        Iterator var12 = this.playerEntityList.iterator();
 
         while (var12.hasNext())
         {
@@ -562,7 +572,7 @@ public abstract class ServerConfigurationManager
 
     public void saveAllPlayerData()
     {
-        Iterator var1 = this.playerList.iterator();
+        Iterator var1 = this.playerEntityList.iterator();
 
         while (var1.hasNext())
         {
@@ -571,12 +581,18 @@ public abstract class ServerConfigurationManager
         }
     }
 
-    public void addToIPWhitelist(String par1Str)
+    /**
+     * Add the specified player to the white list.
+     */
+    public void addToWhiteList(String par1Str)
     {
         this.whiteListIPs.add(par1Str);
     }
 
-    public void removeFromIPWhitelist(String par1Str)
+    /**
+     * Remove the specified player from the whitelist.
+     */
+    public void removeFromWhitelist(String par1Str)
     {
         this.whiteListIPs.remove(par1Str);
     }
@@ -588,11 +604,11 @@ public abstract class ServerConfigurationManager
 
     public Set getNamesWhiteList()
     {
-        return this.whiteListNames;
+        return this.ops;
     }
 
     /**
-     * eithre does nothing, or calls readWhiteList
+     * Either does nothing, or calls readWhiteList.
      */
     public void loadWhiteList() {}
 
@@ -617,7 +633,7 @@ public abstract class ServerConfigurationManager
 
     public int getPlayerListSize()
     {
-        return this.playerList.size();
+        return this.playerEntityList.size();
     }
 
     public int getMaxPlayers()
@@ -630,7 +646,7 @@ public abstract class ServerConfigurationManager
      */
     public String[] getAvailablePlayerDat()
     {
-        return this.minecraftServerInstance.dimensionServerList[0].getSaveHandler().getSaveHandler().getAvailablePlayerDat();
+        return this.mcServer.theWorldServer[0].getSaveHandler().getSaveHandler().getAvailablePlayerDat();
     }
 
     public boolean isWhiteListEnabled()
@@ -646,7 +662,7 @@ public abstract class ServerConfigurationManager
     public List getPlayerList(String par1Str)
     {
         ArrayList var2 = new ArrayList();
-        Iterator var3 = this.playerList.iterator();
+        Iterator var3 = this.playerEntityList.iterator();
 
         while (var3.hasNext())
         {
@@ -671,7 +687,7 @@ public abstract class ServerConfigurationManager
 
     public MinecraftServer getServerInstance()
     {
-        return this.minecraftServerInstance;
+        return this.mcServer;
     }
 
     /**
@@ -714,9 +730,9 @@ public abstract class ServerConfigurationManager
      */
     public void removeAllPlayers()
     {
-        while (!this.playerList.isEmpty())
+        while (!this.playerEntityList.isEmpty())
         {
-            ((EntityPlayerMP)this.playerList.get(0)).serverForThisPlayer.kickPlayerFromServer("Server closed");
+            ((EntityPlayerMP)this.playerEntityList.get(0)).serverForThisPlayer.kickPlayerFromServer("Server closed");
         }
     }
 }

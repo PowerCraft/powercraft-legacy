@@ -26,6 +26,7 @@ public class WorldServer extends World
     /** Whether or not level saving is enabled */
     public boolean levelSaving;
     private boolean field_73068_P;
+    private int field_80004_Q = 0;
 
     /**
      * Double buffer of ServerBlockEventList[] for holding pending BlockEventData's
@@ -47,7 +48,7 @@ public class WorldServer extends World
         super(par2ISaveHandler, par3Str, par5WorldSettings, WorldProvider.getProviderForDimension(par4), par6Profiler);
         this.mcServer = par1MinecraftServer;
         this.field_73062_L = new EntityTracker(this);
-        this.field_73063_M = new PlayerManager(this, par1MinecraftServer.func_71203_ab().getViewDistance());
+        this.field_73063_M = new PlayerManager(this, par1MinecraftServer.getConfigurationManager().getViewDistance());
 
         if (this.entityIdMap == null)
         {
@@ -371,6 +372,26 @@ public class WorldServer extends World
     }
 
     /**
+     * Updates (and cleans up) entities and tile entities
+     */
+    public void updateEntities()
+    {
+        if (this.playerEntities.isEmpty())
+        {
+            if (this.field_80004_Q++ >= 60)
+            {
+                return;
+            }
+        }
+        else
+        {
+            this.field_80004_Q = 0;
+        }
+
+        super.updateEntities();
+    }
+
+    /**
      * Runs through the list of updates to run and ticks them
      */
     public boolean tickUpdates(boolean par1)
@@ -521,7 +542,7 @@ public class WorldServer extends World
             var6 = var5;
         }
 
-        return var6 > 16 || this.mcServer.func_71203_ab().isOp(par1EntityPlayer.username) || this.mcServer.func_71264_H();
+        return var6 > 16 || this.mcServer.getConfigurationManager().isOp(par1EntityPlayer.username) || this.mcServer.isSinglePlayer();
     }
 
     protected void initialize(WorldSettings par1WorldSettings)
@@ -650,7 +671,7 @@ public class WorldServer extends World
     protected void saveLevel() throws MinecraftException
     {
         this.checkSessionLock();
-        this.saveHandler.saveWorldInfoWithPlayer(this.worldInfo, this.mcServer.func_71203_ab().func_72378_q());
+        this.saveHandler.saveWorldInfoWithPlayer(this.worldInfo, this.mcServer.getConfigurationManager().func_72378_q());
         this.mapStorage.saveAllData();
     }
 
@@ -713,7 +734,7 @@ public class WorldServer extends World
     {
         if (super.addWeatherEffect(par1Entity))
         {
-            this.mcServer.func_71203_ab().sendPacketToPlayersAroundPoint(par1Entity.posX, par1Entity.posY, par1Entity.posZ, 512.0D, this.provider.worldType, new Packet71Weather(par1Entity));
+            this.mcServer.getConfigurationManager().sendPacketToPlayersAroundPoint(par1Entity.posX, par1Entity.posY, par1Entity.posZ, 512.0D, this.provider.worldType, new Packet71Weather(par1Entity));
             return true;
         }
         else
@@ -795,7 +816,7 @@ public class WorldServer extends World
 
                 if (this.onBlockEventReceived(var3))
                 {
-                    this.mcServer.func_71203_ab().sendPacketToPlayersAroundPoint((double)var3.getX(), (double)var3.getY(), (double)var3.getZ(), 64.0D, this.provider.worldType, new Packet54PlayNoteBlock(var3.getX(), var3.getY(), var3.getZ(), var3.getBlockID(), var3.getEventID(), var3.getEventParameter()));
+                    this.mcServer.getConfigurationManager().sendPacketToPlayersAroundPoint((double)var3.getX(), (double)var3.getY(), (double)var3.getZ(), 64.0D, this.provider.worldType, new Packet54PlayNoteBlock(var3.getX(), var3.getY(), var3.getZ(), var3.getBlockID(), var3.getEventID(), var3.getEventParameter()));
                 }
             }
 
@@ -841,11 +862,11 @@ public class WorldServer extends World
         {
             if (var1)
             {
-                this.mcServer.func_71203_ab().sendPacketToAllPlayers(new Packet70GameEvent(2, 0));
+                this.mcServer.getConfigurationManager().sendPacketToAllPlayers(new Packet70GameEvent(2, 0));
             }
             else
             {
-                this.mcServer.func_71203_ab().sendPacketToAllPlayers(new Packet70GameEvent(1, 0));
+                this.mcServer.getConfigurationManager().sendPacketToAllPlayers(new Packet70GameEvent(1, 0));
             }
         }
     }

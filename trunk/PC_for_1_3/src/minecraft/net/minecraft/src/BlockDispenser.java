@@ -176,8 +176,8 @@ public class BlockDispenser extends BlockContainer
                 }
                 else if (var18 == 0)
                 {
-                    ItemStack var19 = var9.decrStackSize(var10, 1);
-                    dispenseEntityFromStack(par1World, var19, par5Random, 6, var7, var8, var11, var13, var15);
+                    var17 = var9.decrStackSize(var10, 1);
+                    dispenseEntityFromStack(par1World, var17, par5Random, 6, var7, var8, var11, var13, var15);
                     par1World.playAuxSFX(1000, par2, par3, par4, 0);
                 }
 
@@ -422,8 +422,8 @@ public class BlockDispenser extends BlockContainer
             }
             else if (par2ItemStack.getItem() instanceof ItemMinecart)
             {
-                par9 = (double)par4 + (par7 >= 0 ? (double)((float)par7 * 1.8F) : (double)par7 * 0.8D) + (double)((float)Math.abs(par8) * 0.5F);
-                par13 = (double)par6 + (par8 >= 0 ? (double)((float)par8 * 1.8F) : (double)par8 * 0.8D) + (double)((float)Math.abs(par7) * 0.5F);
+                par9 = (double)par4 + (par7 < 0 ? (double)par7 * 0.8D : (double)((float)par7 * 1.8F)) + (double)((float)Math.abs(par8) * 0.5F);
+                par13 = (double)par6 + (par8 < 0 ? (double)par8 * 0.8D : (double)((float)par8 * 1.8F)) + (double)((float)Math.abs(par7) * 0.5F);
 
                 if (BlockRail.isRailBlockAt(par1World, par4 + par7, par5, par6 + par8))
                 {
@@ -446,8 +446,8 @@ public class BlockDispenser extends BlockContainer
             }
             else if (par2ItemStack.itemID == Item.boat.shiftedIndex)
             {
-                par9 = (double)par4 + (par7 >= 0 ? (double)((float)par7 * 1.8F) : (double)par7 * 0.8D) + (double)((float)Math.abs(par8) * 0.5F);
-                par13 = (double)par6 + (par8 >= 0 ? (double)((float)par8 * 1.8F) : (double)par8 * 0.8D) + (double)((float)Math.abs(par7) * 0.5F);
+                par9 = (double)par4 + (par7 < 0 ? (double)par7 * 0.8D : (double)((float)par7 * 1.8F)) + (double)((float)Math.abs(par8) * 0.5F);
+                par13 = (double)par6 + (par8 < 0 ? (double)par8 * 0.8D : (double)((float)par8 * 1.8F)) + (double)((float)Math.abs(par7) * 0.5F);
 
                 if (par1World.getBlockMaterial(par4 + par7, par5, par6 + par8) == Material.water)
                 {

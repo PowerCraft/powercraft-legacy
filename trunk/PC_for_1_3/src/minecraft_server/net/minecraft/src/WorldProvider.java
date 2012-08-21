@@ -142,4 +142,6 @@ public abstract class WorldProvider
     {
         return this.terrainType == WorldType.FLAT ? 4 : 64;
     }
+
+    public abstract String func_80007_l();
 }

@@ -92,8 +92,8 @@ public abstract class EntityLiving extends Entity
     protected int experienceValue;
     public int field_70731_aW = -1;
     public float field_70730_aX = (float)(Math.random() * 0.8999999761581421D + 0.10000000149011612D);
-    public float field_70722_aY;
-    public float field_70721_aZ;
+    public float prevLegYaw;
+    public float legYaw;
     public float field_70754_ba;
 
     /** The most recent player that has attacked this entity */
@@ -802,7 +802,7 @@ public abstract class EntityLiving extends Entity
             }
             else
             {
-                this.field_70721_aZ = 1.5F;
+                this.legYaw = 1.5F;
                 boolean var3 = true;
 
                 if ((float)this.hurtResistantTime > (float)this.maxHurtResistantTime / 2.0F)
@@ -1264,7 +1264,7 @@ public abstract class EntityLiving extends Entity
             this.motionZ *= (double)var3;
         }
 
-        this.field_70722_aY = this.field_70721_aZ;
+        this.prevLegYaw = this.legYaw;
         var9 = this.posX - this.prevPosX;
         double var12 = this.posZ - this.prevPosZ;
         float var11 = MathHelper.sqrt_double(var9 * var9 + var12 * var12) * 4.0F;
@@ -1274,8 +1274,8 @@ public abstract class EntityLiving extends Entity
             var11 = 1.0F;
         }
 
-        this.field_70721_aZ += (var11 - this.field_70721_aZ) * 0.4F;
-        this.field_70754_ba += this.field_70721_aZ;
+        this.legYaw += (var11 - this.legYaw) * 0.4F;
+        this.field_70754_ba += this.legYaw;
     }
 
     /**

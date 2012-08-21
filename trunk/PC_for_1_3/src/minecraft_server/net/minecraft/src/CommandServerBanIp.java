@@ -20,7 +20,7 @@ public class CommandServerBanIp extends CommandBase
      */
     public boolean canCommandSenderUseCommand(ICommandSender par1ICommandSender)
     {
-        return MinecraftServer.getServer().func_71203_ab().func_72363_f().func_73710_b() && super.canCommandSenderUseCommand(par1ICommandSender);
+        return MinecraftServer.getServer().getConfigurationManager().getBannedIPs().func_73710_b() && super.canCommandSenderUseCommand(par1ICommandSender);
     }
 
     public String getCommandUsage(ICommandSender par1ICommandSender)
@@ -46,7 +46,7 @@ public class CommandServerBanIp extends CommandBase
             }
             else
             {
-                EntityPlayerMP var5 = MinecraftServer.getServer().func_71203_ab().getPlayerEntity(par2ArrayOfStr[0]);
+                EntityPlayerMP var5 = MinecraftServer.getServer().getConfigurationManager().getPlayerEntity(par2ArrayOfStr[0]);
 
                 if (var5 == null)
                 {
@@ -80,8 +80,8 @@ public class CommandServerBanIp extends CommandBase
             var4.func_73689_b(par3Str);
         }
 
-        MinecraftServer.getServer().func_71203_ab().func_72363_f().func_73706_a(var4);
-        List var5 = MinecraftServer.getServer().func_71203_ab().func_72382_j(par2Str);
+        MinecraftServer.getServer().getConfigurationManager().getBannedIPs().func_73706_a(var4);
+        List var5 = MinecraftServer.getServer().getConfigurationManager().func_72382_j(par2Str);
         String[] var6 = new String[var5.size()];
         int var7 = 0;
         EntityPlayerMP var9;

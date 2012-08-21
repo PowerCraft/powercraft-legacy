@@ -364,7 +364,7 @@ public class Chunk
 
         if (var5 != var4)
         {
-            this.worldObj.markBlocksDirtyVertical(par1, par3, var5, var4);
+            this.worldObj.markBlocksDirtyVertical(par1 + this.xPosition * 16, par3 + this.zPosition * 16, var5, var4);
             this.heightMap[par3 << 4 | par1] = var5;
             int var6 = this.xPosition * 16 + par1;
             int var7 = this.zPosition * 16 + par3;

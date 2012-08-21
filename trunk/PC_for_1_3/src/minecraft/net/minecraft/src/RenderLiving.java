@@ -81,8 +81,8 @@ public class RenderLiving extends Render
             GL11.glScalef(-1.0F, -1.0F, 1.0F);
             this.preRenderCallback(par1EntityLiving, par9);
             GL11.glTranslatef(0.0F, -24.0F * var14 - 0.0078125F, 0.0F);
-            float var15 = par1EntityLiving.field_70722_aY + (par1EntityLiving.field_70721_aZ - par1EntityLiving.field_70722_aY) * par9;
-            float var16 = par1EntityLiving.field_70754_ba - par1EntityLiving.field_70721_aZ * (1.0F - par9);
+            float var15 = par1EntityLiving.prevLegYaw + (par1EntityLiving.legYaw - par1EntityLiving.prevLegYaw) * par9;
+            float var16 = par1EntityLiving.field_70754_ba - par1EntityLiving.legYaw * (1.0F - par9);
 
             if (par1EntityLiving.isChild())
             {

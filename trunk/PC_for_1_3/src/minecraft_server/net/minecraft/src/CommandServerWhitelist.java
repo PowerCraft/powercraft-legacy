@@ -22,22 +22,22 @@ public class CommandServerWhitelist extends CommandBase
         {
             if (par2ArrayOfStr[0].equals("on"))
             {
-                MinecraftServer.getServer().func_71203_ab().func_72371_a(true);
+                MinecraftServer.getServer().getConfigurationManager().setWhiteListEnabled(true);
                 func_71522_a(par1ICommandSender, "commands.whitelist.enabled", new Object[0]);
                 return;
             }
 
             if (par2ArrayOfStr[0].equals("off"))
             {
-                MinecraftServer.getServer().func_71203_ab().func_72371_a(false);
+                MinecraftServer.getServer().getConfigurationManager().setWhiteListEnabled(false);
                 func_71522_a(par1ICommandSender, "commands.whitelist.disabled", new Object[0]);
                 return;
             }
 
             if (par2ArrayOfStr[0].equals("list"))
             {
-                par1ICommandSender.func_70006_a(par1ICommandSender.translateString("commands.whitelist.list", new Object[] {Integer.valueOf(MinecraftServer.getServer().func_71203_ab().getWhiteListedIPs().size()), Integer.valueOf(MinecraftServer.getServer().func_71203_ab().func_72373_m().length)}));
-                par1ICommandSender.func_70006_a(joinNiceString(MinecraftServer.getServer().func_71203_ab().getWhiteListedIPs().toArray(new String[0])));
+                par1ICommandSender.func_70006_a(par1ICommandSender.translateString("commands.whitelist.list", new Object[] {Integer.valueOf(MinecraftServer.getServer().getConfigurationManager().getWhiteListedIPs().size()), Integer.valueOf(MinecraftServer.getServer().getConfigurationManager().func_72373_m().length)}));
+                par1ICommandSender.func_70006_a(joinNiceString(MinecraftServer.getServer().getConfigurationManager().getWhiteListedIPs().toArray(new String[0])));
                 return;
             }
 
@@ -48,7 +48,7 @@ public class CommandServerWhitelist extends CommandBase
                     throw new WrongUsageException("commands.whitelist.add.usage", new Object[0]);
                 }
 
-                MinecraftServer.getServer().func_71203_ab().addToWhiteList(par2ArrayOfStr[1]);
+                MinecraftServer.getServer().getConfigurationManager().addToWhiteList(par2ArrayOfStr[1]);
                 func_71522_a(par1ICommandSender, "commands.whitelist.add.success", new Object[] {par2ArrayOfStr[1]});
                 return;
             }
@@ -60,14 +60,14 @@ public class CommandServerWhitelist extends CommandBase
                     throw new WrongUsageException("commands.whitelist.remove.usage", new Object[0]);
                 }
 
-                MinecraftServer.getServer().func_71203_ab().removeFromWhiteList(par2ArrayOfStr[1]);
+                MinecraftServer.getServer().getConfigurationManager().removeFromWhitelist(par2ArrayOfStr[1]);
                 func_71522_a(par1ICommandSender, "commands.whitelist.remove.success", new Object[] {par2ArrayOfStr[1]});
                 return;
             }
 
             if (par2ArrayOfStr[0].equals("reload"))
             {
-                MinecraftServer.getServer().func_71203_ab().reloadWhiteList();
+                MinecraftServer.getServer().getConfigurationManager().loadWhiteList();
                 func_71522_a(par1ICommandSender, "commands.whitelist.reloaded", new Object[0]);
                 return;
             }
@@ -91,7 +91,7 @@ public class CommandServerWhitelist extends CommandBase
             {
                 if (par2ArrayOfStr[0].equals("add"))
                 {
-                    String[] var3 = MinecraftServer.getServer().func_71203_ab().func_72373_m();
+                    String[] var3 = MinecraftServer.getServer().getConfigurationManager().func_72373_m();
                     ArrayList var4 = new ArrayList();
                     String var5 = par2ArrayOfStr[par2ArrayOfStr.length - 1];
                     String[] var6 = var3;
@@ -101,7 +101,7 @@ public class CommandServerWhitelist extends CommandBase
                     {
                         String var9 = var6[var8];
 
-                        if (doesStringStartWith(var5, var9) && !MinecraftServer.getServer().func_71203_ab().getWhiteListedIPs().contains(var9))
+                        if (doesStringStartWith(var5, var9) && !MinecraftServer.getServer().getConfigurationManager().getWhiteListedIPs().contains(var9))
                         {
                             var4.add(var9);
                         }
@@ -112,7 +112,7 @@ public class CommandServerWhitelist extends CommandBase
 
                 if (par2ArrayOfStr[0].equals("remove"))
                 {
-                    return getListOfStringsFromIterableMatchingLastWord(par2ArrayOfStr, MinecraftServer.getServer().func_71203_ab().getWhiteListedIPs());
+                    return getListOfStringsFromIterableMatchingLastWord(par2ArrayOfStr, MinecraftServer.getServer().getConfigurationManager().getWhiteListedIPs());
                 }
             }
 

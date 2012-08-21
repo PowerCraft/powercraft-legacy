@@ -111,7 +111,7 @@ public class GuiConnecting extends GuiScreen
         return par0GuiConnecting.mc;
     }
 
-    static boolean func_74257_b(GuiConnecting par0GuiConnecting)
+    static boolean isCancelled(GuiConnecting par0GuiConnecting)
     {
         return par0GuiConnecting.cancelled;
     }

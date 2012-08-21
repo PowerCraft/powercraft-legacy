@@ -82,12 +82,12 @@ public class EntityItem extends Entity
 
             if (!this.worldObj.isRemote)
             {
-                Iterator var3 = this.worldObj.getEntitiesWithinAABB(EntityItem.class, this.boundingBox.expand(0.5D, 0.0D, 0.5D)).iterator();
+                Iterator var2 = this.worldObj.getEntitiesWithinAABB(EntityItem.class, this.boundingBox.expand(0.5D, 0.0D, 0.5D)).iterator();
 
-                while (var3.hasNext())
+                while (var2.hasNext())
                 {
-                    EntityItem var2 = (EntityItem)var3.next();
-                    this.func_70289_a(var2);
+                    EntityItem var3 = (EntityItem)var2.next();
+                    this.func_70289_a(var3);
                 }
             }
         }
@@ -96,7 +96,7 @@ public class EntityItem extends Entity
 
         if (this.onGround)
         {
-            var4 = 0.5880001F;
+            var4 = 0.58800006F;
             int var5 = this.worldObj.getBlockId(MathHelper.floor_double(this.posX), MathHelper.floor_double(this.boundingBox.minY) - 1, MathHelper.floor_double(this.posZ));
 
             if (var5 > 0)

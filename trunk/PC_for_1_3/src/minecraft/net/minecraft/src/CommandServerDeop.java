@@ -19,7 +19,7 @@ public class CommandServerDeop extends CommandBase
     {
         if (par2ArrayOfStr.length == 1 && par2ArrayOfStr[0].length() > 0)
         {
-            MinecraftServer.getServer().getConfigurationManager().removeNameFromWhitelist(par2ArrayOfStr[0]);
+            MinecraftServer.getServer().getConfigurationManager().removeOp(par2ArrayOfStr[0]);
             notifyAdmins(par1ICommandSender, "commands.deop.success", new Object[] {par2ArrayOfStr[0]});
         }
         else

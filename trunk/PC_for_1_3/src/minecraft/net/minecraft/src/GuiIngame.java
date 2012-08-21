@@ -12,7 +12,9 @@ public class GuiIngame extends Gui
     private static final RenderItem itemRenderer = new RenderItem();
     private final Random rand = new Random();
     private final Minecraft mc;
-    private final GuiNewChat field_73840_e;
+
+    /** ChatGUI instance that retains all previous chat data */
+    private final GuiNewChat persistantChatGUI;
     private int updateCounter = 0;
 
     /** The string specifying which record music is playing */
@@ -28,7 +30,7 @@ public class GuiIngame extends Gui
     public GuiIngame(Minecraft par1Minecraft)
     {
         this.mc = par1Minecraft;
-        this.field_73840_e = new GuiNewChat(par1Minecraft);
+        this.persistantChatGUI = new GuiNewChat(par1Minecraft);
     }
 
     /**
@@ -387,7 +389,7 @@ public class GuiIngame extends Gui
         {
             this.mc.mcProfiler.startSection("debug");
             GL11.glPushMatrix();
-            var8.drawStringWithShadow("Minecraft 1.3.1 (" + this.mc.debug + ")", 2, 2, 16777215);
+            var8.drawStringWithShadow("Minecraft 1.3.2 (" + this.mc.debug + ")", 2, 2, 16777215);
             var8.drawStringWithShadow(this.mc.debugInfoRenders(), 2, 12, 16777215);
             var8.drawStringWithShadow(this.mc.getEntityDebug(), 2, 22, 16777215);
             var8.drawStringWithShadow(this.mc.debugInfoEntities(), 2, 32, 16777215);
@@ -457,7 +459,7 @@ public class GuiIngame extends Gui
         GL11.glPushMatrix();
         GL11.glTranslatef(0.0F, (float)(var7 - 48), 0.0F);
         this.mc.mcProfiler.startSection("chat");
-        this.field_73840_e.func_73762_a(this.updateCounter);
+        this.persistantChatGUI.func_73762_a(this.updateCounter);
         this.mc.mcProfiler.endSection();
         GL11.glPopMatrix();
 
@@ -713,12 +715,15 @@ public class GuiIngame extends Gui
         this.recordIsPlaying = true;
     }
 
-    public GuiNewChat func_73827_b()
+    /**
+     * returns a pointer to the persistant Chat GUI, containing all previous chat messages and such
+     */
+    public GuiNewChat getChatGUI()
     {
-        return this.field_73840_e;
+        return this.persistantChatGUI;
     }
 
-    public int func_73834_c()
+    public int getUpdateCounter()
     {
         return this.updateCounter;
     }

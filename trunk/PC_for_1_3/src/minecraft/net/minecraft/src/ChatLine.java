@@ -2,29 +2,34 @@ package net.minecraft.src;
 
 public class ChatLine
 {
-    private final int field_74543_a;
-    private final String field_74541_b;
-    private final int field_74542_c;
+    /** GUI Update Counter value this Line was created at */
+    private final int updateCounterCreated;
+    private final String lineString;
+
+    /**
+     * int value to refer to existing Chat Lines, can be 0 which means unreferrable
+     */
+    private final int chatLineID;
 
     public ChatLine(int par1, String par2Str, int par3)
     {
-        this.field_74541_b = par2Str;
-        this.field_74543_a = par1;
-        this.field_74542_c = par3;
+        this.lineString = par2Str;
+        this.updateCounterCreated = par1;
+        this.chatLineID = par3;
     }
 
-    public String func_74538_a()
+    public String getChatLineString()
     {
-        return this.field_74541_b;
+        return this.lineString;
     }
 
-    public int func_74540_b()
+    public int getUpdatedCounter()
     {
-        return this.field_74543_a;
+        return this.updateCounterCreated;
     }
 
-    public int func_74539_c()
+    public int getChatLineID()
     {
-        return this.field_74542_c;
+        return this.chatLineID;
     }
 }

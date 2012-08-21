@@ -19,6 +19,7 @@ public class ServerCommandManager extends CommandHandler implements IAdminComman
         this.registerCommand(new CommandShowSeed());
         this.registerCommand(new CommandHelp());
         this.registerCommand(new CommandDebug());
+        this.registerCommand(new CommandServerMessage());
 
         if (MinecraftServer.getServer().isDedicatedServer())
         {
@@ -52,7 +53,7 @@ public class ServerCommandManager extends CommandHandler implements IAdminComman
      */
     public void notifyAdmins(ICommandSender par1ICommandSender, int par2, String par3Str, Object ... par4ArrayOfObj)
     {
-        Iterator var5 = MinecraftServer.getServer().getConfigurationManager().playerList.iterator();
+        Iterator var5 = MinecraftServer.getServer().getConfigurationManager().playerEntityList.iterator();
 
         while (var5.hasNext())
         {

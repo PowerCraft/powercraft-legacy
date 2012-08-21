@@ -2,13 +2,13 @@ package net.minecraft.src;
 
 class SlotBrewingStandIngredient extends Slot
 {
-    /** The brewing stand this clot belongs to. */
-    final ContainerBrewingStand container;
+    /** The brewing stand this slot belongs to. */
+    final ContainerBrewingStand brewingStand;
 
     public SlotBrewingStandIngredient(ContainerBrewingStand par1ContainerBrewingStand, IInventory par2IInventory, int par3, int par4, int par5)
     {
         super(par2IInventory, par3, par4, par5);
-        this.container = par1ContainerBrewingStand;
+        this.brewingStand = par1ContainerBrewingStand;
     }
 
     /**

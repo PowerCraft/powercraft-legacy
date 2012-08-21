@@ -72,7 +72,7 @@ public class EntityOtherPlayerMP extends EntityPlayer
     {
         this.field_71082_cx = 0.0F;
         super.onUpdate();
-        this.field_70722_aY = this.field_70721_aZ;
+        this.prevLegYaw = this.legYaw;
         double var1 = this.posX - this.prevPosX;
         double var3 = this.posZ - this.prevPosZ;
         float var5 = MathHelper.sqrt_double(var1 * var1 + var3 * var3) * 4.0F;
@@ -82,8 +82,8 @@ public class EntityOtherPlayerMP extends EntityPlayer
             var5 = 1.0F;
         }
 
-        this.field_70721_aZ += (var5 - this.field_70721_aZ) * 0.4F;
-        this.field_70754_ba += this.field_70721_aZ;
+        this.legYaw += (var5 - this.legYaw) * 0.4F;
+        this.field_70754_ba += this.legYaw;
 
         if (!this.isItemInUse && this.isEating() && this.inventory.mainInventory[this.inventory.currentItem] != null)
         {
@@ -177,7 +177,7 @@ public class EntityOtherPlayerMP extends EntityPlayer
 
     public void sendChatToPlayer(String par1Str)
     {
-        Minecraft.getMinecraft().ingameGUI.func_73827_b().func_73765_a(par1Str);
+        Minecraft.getMinecraft().ingameGUI.getChatGUI().printChatMessage(par1Str);
     }
 
     /**

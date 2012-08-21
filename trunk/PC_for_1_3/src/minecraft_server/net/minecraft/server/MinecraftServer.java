@@ -61,25 +61,25 @@ public abstract class MinecraftServer implements Runnable, IPlayerUsage, IComman
 
     /** Instance of Minecraft Server. */
     private static MinecraftServer mcServer = null;
-    private final ISaveFormat field_71310_m;
+    private final ISaveFormat anvilConverterForAnvilFile;
 
     /** The PlayerUsageSnooper instance. */
     private final PlayerUsageSnooper usageSnooper = new PlayerUsageSnooper("server", this);
-    private final File field_71308_o;
+    private final File anvilFile;
 
     /** List of names of players who are online. */
     private final List playersOnline = new ArrayList();
-    private final ICommandManager field_71321_q;
-    public final Profiler field_71304_b = new Profiler();
+    private final ICommandManager commandManager;
+    public final Profiler theProfiler = new Profiler();
 
-    /** The server's hostname */
+    /** The server's hostname. */
     private String hostname;
 
     /** The server's port */
     private int serverPort = -1;
 
-    /** The server world manager. */
-    public WorldServer[] worldMngr;
+    /** The server world instances. */
+    public WorldServer[] theWorldServer;
 
     /** The ServerConfigurationManager instance. */
     private ServerConfigurationManager serverConfigManager;
@@ -111,7 +111,7 @@ public abstract class MinecraftServer implements Runnable, IPlayerUsage, IComman
     /** Indicates whether PvP is active on the server or not. */
     private boolean pvpEnabled;
 
-    /** Determines if flight is Allowed or not */
+    /** Determines if flight is allowed or not. */
     private boolean allowFlight;
 
     /** The server MOTD string. */
@@ -146,9 +146,9 @@ public abstract class MinecraftServer implements Runnable, IPlayerUsage, IComman
     public MinecraftServer(File par1File)
     {
         mcServer = this;
-        this.field_71308_o = par1File;
-        this.field_71321_q = new ServerCommandManager();
-        this.field_71310_m = new AnvilSaveConverter(par1File);
+        this.anvilFile = par1File;
+        this.commandManager = new ServerCommandManager();
+        this.anvilConverterForAnvilFile = new AnvilSaveConverter(par1File);
     }
 
     /**
@@ -175,9 +175,9 @@ public abstract class MinecraftServer implements Runnable, IPlayerUsage, IComman
     {
         this.func_71237_c(par1Str);
         this.func_71192_d("menu.loadingLevel");
-        this.worldMngr = new WorldServer[3];
-        this.field_71312_k = new long[this.worldMngr.length][100];
-        ISaveHandler var6 = this.field_71310_m.getSaveLoader(par1Str, true);
+        this.theWorldServer = new WorldServer[3];
+        this.field_71312_k = new long[this.theWorldServer.length][100];
+        ISaveHandler var6 = this.anvilConverterForAnvilFile.getSaveLoader(par1Str, true);
         WorldInfo var8 = var6.loadWorldInfo();
         WorldSettings var7;
 
@@ -195,7 +195,7 @@ public abstract class MinecraftServer implements Runnable, IPlayerUsage, IComman
             var7.enableBonusChest();
         }
 
-        for (int var9 = 0; var9 < this.worldMngr.length; ++var9)
+        for (int var9 = 0; var9 < this.theWorldServer.length; ++var9)
         {
             byte var10 = 0;
 
@@ -213,26 +213,26 @@ public abstract class MinecraftServer implements Runnable, IPlayerUsage, IComman
             {
                 if (this.func_71242_L())
                 {
-                    this.worldMngr[var9] = new DemoWorldServer(this, var6, par2Str, var10, this.field_71304_b);
+                    this.theWorldServer[var9] = new DemoWorldServer(this, var6, par2Str, var10, this.theProfiler);
                 }
                 else
                 {
-                    this.worldMngr[var9] = new WorldServer(this, var6, par2Str, var10, var7, this.field_71304_b);
+                    this.theWorldServer[var9] = new WorldServer(this, var6, par2Str, var10, var7, this.theProfiler);
                 }
             }
             else
             {
-                this.worldMngr[var9] = new WorldServerMulti(this, var6, par2Str, var10, var7, this.worldMngr[0], this.field_71304_b);
+                this.theWorldServer[var9] = new WorldServerMulti(this, var6, par2Str, var10, var7, this.theWorldServer[0], this.theProfiler);
             }
 
-            this.worldMngr[var9].addWorldAccess(new WorldManager(this, this.worldMngr[var9]));
+            this.theWorldServer[var9].addWorldAccess(new WorldManager(this, this.theWorldServer[var9]));
 
-            if (!this.func_71264_H())
+            if (!this.isSinglePlayer())
             {
-                this.worldMngr[var9].getWorldInfo().setGameType(this.func_71265_f());
+                this.theWorldServer[var9].getWorldInfo().setGameType(this.func_71265_f());
             }
 
-            this.serverConfigManager.setPlayerManager(this.worldMngr);
+            this.serverConfigManager.setPlayerManager(this.theWorldServer);
         }
 
         this.func_71226_c(this.func_71232_g());
@@ -248,7 +248,7 @@ public abstract class MinecraftServer implements Runnable, IPlayerUsage, IComman
         for (int var4 = 0; var4 < 1; ++var4)
         {
             logger.info("Preparing start region for level " + var4);
-            WorldServer var5 = this.worldMngr[var4];
+            WorldServer var5 = this.theWorldServer[var4];
             ChunkCoordinates var6 = var5.getSpawnPoint();
 
             for (int var7 = -var1; var7 <= var1 && this.func_71278_l(); var7 += 16)
@@ -314,7 +314,7 @@ public abstract class MinecraftServer implements Runnable, IPlayerUsage, IComman
     {
         if (!this.field_71290_O)
         {
-            WorldServer[] var2 = this.worldMngr;
+            WorldServer[] var2 = this.theWorldServer;
             int var3 = var2.length;
 
             for (int var4 = 0; var4 < var3; ++var4)
@@ -325,7 +325,7 @@ public abstract class MinecraftServer implements Runnable, IPlayerUsage, IComman
                 {
                     if (!par1)
                     {
-                        logger.info("Saving chunks for level \'" + var5.getWorldInfo().func_76065_j() + "\'/" + var5.provider);
+                        logger.info("Saving chunks for level \'" + var5.getWorldInfo().func_76065_j() + "\'/" + var5.provider.func_80007_l());
                     }
 
                     try
@@ -364,7 +364,7 @@ public abstract class MinecraftServer implements Runnable, IPlayerUsage, IComman
 
             logger.info("Saving worlds");
             this.func_71267_a(false);
-            WorldServer[] var1 = this.worldMngr;
+            WorldServer[] var1 = this.theWorldServer;
             int var2 = var1.length;
 
             for (int var3 = 0; var3 < var2; ++var3)
@@ -432,7 +432,7 @@ public abstract class MinecraftServer implements Runnable, IPlayerUsage, IComman
                     var50 += var7;
                     var1 = var5;
 
-                    if (this.worldMngr[0].func_73056_e())
+                    if (this.theWorldServer[0].func_73056_e())
                     {
                         this.func_71217_p();
                         var50 = 0L;
@@ -519,22 +519,22 @@ public abstract class MinecraftServer implements Runnable, IPlayerUsage, IComman
         if (this.field_71295_T)
         {
             this.field_71295_T = false;
-            this.field_71304_b.profilingEnabled = true;
-            this.field_71304_b.func_76317_a();
+            this.theProfiler.profilingEnabled = true;
+            this.theProfiler.func_76317_a();
         }
 
-        this.field_71304_b.startSection("root");
+        this.theProfiler.startSection("root");
         this.func_71190_q();
 
         if (this.deathTime % 900 == 0)
         {
-            this.field_71304_b.startSection("save");
+            this.theProfiler.startSection("save");
             this.serverConfigManager.savePlayerStates();
             this.func_71267_a(true);
-            this.field_71304_b.endSection();
+            this.theProfiler.endSection();
         }
 
-        this.field_71304_b.startSection("tallying");
+        this.theProfiler.startSection("tallying");
         this.field_71311_j[this.deathTime % 100] = System.nanoTime() - var1;
         this.field_71300_f[this.deathTime % 100] = Packet.field_73290_p - this.field_71281_E;
         this.field_71281_E = Packet.field_73290_p;
@@ -544,8 +544,8 @@ public abstract class MinecraftServer implements Runnable, IPlayerUsage, IComman
         this.field_71283_G = Packet.field_73292_n;
         this.field_71314_i[this.deathTime % 100] = Packet.field_73293_o - this.field_71291_H;
         this.field_71291_H = Packet.field_73293_o;
-        this.field_71304_b.endSection();
-        this.field_71304_b.startSection("snooper");
+        this.theProfiler.endSection();
+        this.theProfiler.startSection("snooper");
 
         if (!this.usageSnooper.func_76468_d() && this.deathTime > 100)
         {
@@ -557,49 +557,44 @@ public abstract class MinecraftServer implements Runnable, IPlayerUsage, IComman
             this.usageSnooper.func_76471_b();
         }
 
-        this.field_71304_b.endSection();
-        this.field_71304_b.endSection();
+        this.theProfiler.endSection();
+        this.theProfiler.endSection();
     }
 
     public void func_71190_q()
     {
-        this.field_71304_b.startSection("levels");
+        this.theProfiler.startSection("levels");
 
-        for (int var1 = 0; var1 < this.worldMngr.length; ++var1)
+        for (int var1 = 0; var1 < this.theWorldServer.length; ++var1)
         {
             long var2 = System.nanoTime();
 
             if (var1 == 0 || this.func_71255_r())
             {
-                WorldServer var4 = this.worldMngr[var1];
-                this.field_71304_b.startSection(var4.getWorldInfo().func_76065_j());
+                WorldServer var4 = this.theWorldServer[var1];
+                this.theProfiler.startSection(var4.getWorldInfo().func_76065_j());
 
                 if (this.deathTime % 20 == 0)
                 {
-                    this.field_71304_b.startSection("timeSync");
+                    this.theProfiler.startSection("timeSync");
                     this.serverConfigManager.sendPacketToAllPlayersInDimension(new Packet4UpdateTime(var4.getWorldTime()), var4.provider.worldType);
-                    this.field_71304_b.endSection();
+                    this.theProfiler.endSection();
                 }
 
-                this.field_71304_b.startSection("tick");
+                this.theProfiler.startSection("tick");
                 var4.tick();
-                this.field_71304_b.endStartSection("lights");
+                this.theProfiler.endStartSection("lights");
 
                 while (true)
                 {
                     if (!var4.updatingLighting())
                     {
-                        this.field_71304_b.endSection();
-
-                        if (!var4.playerEntities.isEmpty())
-                        {
-                            var4.updateEntities();
-                        }
-
-                        this.field_71304_b.startSection("tracker");
+                        this.theProfiler.endSection();
+                        var4.updateEntities();
+                        this.theProfiler.startSection("tracker");
                         var4.getEntityTracker().updateTrackedEntities();
-                        this.field_71304_b.endSection();
-                        this.field_71304_b.endSection();
+                        this.theProfiler.endSection();
+                        this.theProfiler.endSection();
                         break;
                     }
                 }
@@ -608,11 +603,11 @@ public abstract class MinecraftServer implements Runnable, IPlayerUsage, IComman
             this.field_71312_k[var1][this.deathTime % 100] = System.nanoTime() - var2;
         }
 
-        this.field_71304_b.endStartSection("connection");
+        this.theProfiler.endStartSection("connection");
         this.func_71212_ac().handleNetworkListenThread();
-        this.field_71304_b.endStartSection("players");
+        this.theProfiler.endStartSection("players");
         this.serverConfigManager.onTick();
-        this.field_71304_b.endStartSection("tickables");
+        this.theProfiler.endStartSection("tickables");
         Iterator var5 = this.playersOnline.iterator();
 
         while (var5.hasNext())
@@ -621,7 +616,7 @@ public abstract class MinecraftServer implements Runnable, IPlayerUsage, IComman
             var6.update();
         }
 
-        this.field_71304_b.endSection();
+        this.theProfiler.endSection();
     }
 
     public boolean func_71255_r()
@@ -782,7 +777,7 @@ public abstract class MinecraftServer implements Runnable, IPlayerUsage, IComman
      */
     public WorldServer getWorldManager(int par1)
     {
-        return par1 == -1 ? this.worldMngr[1] : (par1 == 1 ? this.worldMngr[2] : this.worldMngr[0]);
+        return par1 == -1 ? this.theWorldServer[1] : (par1 == 1 ? this.theWorldServer[2] : this.theWorldServer[0]);
     }
 
     /**
@@ -814,7 +809,7 @@ public abstract class MinecraftServer implements Runnable, IPlayerUsage, IComman
      */
     public String getVersion()
     {
-        return "1.3.1";
+        return "1.3.2";
     }
 
     /**
@@ -852,7 +847,7 @@ public abstract class MinecraftServer implements Runnable, IPlayerUsage, IComman
     public String handleRConCommand(String par1Str)
     {
         RConConsoleSource.instance.resetLog();
-        this.field_71321_q.func_71556_a(RConConsoleSource.instance, par1Str);
+        this.commandManager.func_71556_a(RConConsoleSource.instance, par1Str);
         return RConConsoleSource.instance.getLogContents();
     }
 
@@ -895,9 +890,9 @@ public abstract class MinecraftServer implements Runnable, IPlayerUsage, IComman
             par1CrashReport.addCrashSectionCallable("Player Count", new CallablePlayers(this));
         }
 
-        if (this.worldMngr != null)
+        if (this.theWorldServer != null)
         {
-            WorldServer[] var2 = this.worldMngr;
+            WorldServer[] var2 = this.theWorldServer;
             int var3 = var2.length;
 
             for (int var4 = 0; var4 < var3; ++var4)
@@ -922,7 +917,7 @@ public abstract class MinecraftServer implements Runnable, IPlayerUsage, IComman
         {
             par2Str = par2Str.substring(1);
             boolean var10 = !par2Str.contains(" ");
-            List var11 = this.field_71321_q.func_71558_b(par1ICommandSender, par2Str);
+            List var11 = this.commandManager.func_71558_b(par1ICommandSender, par2Str);
 
             if (var11 != null)
             {
@@ -1005,7 +1000,7 @@ public abstract class MinecraftServer implements Runnable, IPlayerUsage, IComman
 
     public ICommandManager func_71187_D()
     {
-        return this.field_71321_q;
+        return this.commandManager;
     }
 
     /**
@@ -1045,7 +1040,7 @@ public abstract class MinecraftServer implements Runnable, IPlayerUsage, IComman
         this.serverOwner = par1Str;
     }
 
-    public boolean func_71264_H()
+    public boolean isSinglePlayer()
     {
         return this.serverOwner != null;
     }
@@ -1067,9 +1062,9 @@ public abstract class MinecraftServer implements Runnable, IPlayerUsage, IComman
 
     public void func_71226_c(int par1)
     {
-        for (int var2 = 0; var2 < this.worldMngr.length; ++var2)
+        for (int var2 = 0; var2 < this.theWorldServer.length; ++var2)
         {
-            WorldServer var3 = this.worldMngr[var2];
+            WorldServer var3 = this.theWorldServer[var2];
 
             if (var3 != null)
             {
@@ -1078,7 +1073,7 @@ public abstract class MinecraftServer implements Runnable, IPlayerUsage, IComman
                     var3.difficultySetting = 3;
                     var3.setAllowedSpawnTypes(true, true);
                 }
-                else if (this.func_71264_H())
+                else if (this.isSinglePlayer())
                 {
                     var3.difficultySetting = par1;
                     var3.setAllowedSpawnTypes(var3.difficultySetting > 0, true);
@@ -1114,7 +1109,7 @@ public abstract class MinecraftServer implements Runnable, IPlayerUsage, IComman
 
     public ISaveFormat func_71254_M()
     {
-        return this.field_71310_m;
+        return this.anvilConverterForAnvilFile;
     }
 
     public void func_71272_O()
@@ -1122,9 +1117,9 @@ public abstract class MinecraftServer implements Runnable, IPlayerUsage, IComman
         this.field_71290_O = true;
         this.func_71254_M().func_75800_d();
 
-        for (int var1 = 0; var1 < this.worldMngr.length; ++var1)
+        for (int var1 = 0; var1 < this.theWorldServer.length; ++var1)
         {
-            WorldServer var2 = this.worldMngr[var1];
+            WorldServer var2 = this.theWorldServer[var1];
 
             if (var2 != null)
             {
@@ -1132,7 +1127,7 @@ public abstract class MinecraftServer implements Runnable, IPlayerUsage, IComman
             }
         }
 
-        this.func_71254_M().func_75802_e(this.worldMngr[0].getSaveHandler().func_75760_g());
+        this.func_71254_M().func_75802_e(this.theWorldServer[0].getSaveHandler().func_75760_g());
         this.initiateShutdown();
     }
 
@@ -1162,11 +1157,11 @@ public abstract class MinecraftServer implements Runnable, IPlayerUsage, IComman
         par1PlayerUsageSnooper.addData("avg_rec_packet_size", Integer.valueOf((int)MathHelper.func_76127_a(this.field_71314_i)));
         int var2 = 0;
 
-        for (int var3 = 0; var3 < this.worldMngr.length; ++var3)
+        for (int var3 = 0; var3 < this.theWorldServer.length; ++var3)
         {
-            if (this.worldMngr[var3] != null)
+            if (this.theWorldServer[var3] != null)
             {
-                WorldServer var4 = this.worldMngr[var3];
+                WorldServer var4 = this.theWorldServer[var3];
                 WorldInfo var5 = var4.getWorldInfo();
                 par1PlayerUsageSnooper.addData("world[" + var2 + "][dimension]", Integer.valueOf(var4.provider.worldType));
                 par1PlayerUsageSnooper.addData("world[" + var2 + "][mode]", var5.getGameType());
@@ -1185,13 +1180,16 @@ public abstract class MinecraftServer implements Runnable, IPlayerUsage, IComman
 
     public void func_70001_b(PlayerUsageSnooper par1PlayerUsageSnooper)
     {
-        par1PlayerUsageSnooper.addData("singleplayer", Boolean.valueOf(this.func_71264_H()));
+        par1PlayerUsageSnooper.addData("singleplayer", Boolean.valueOf(this.isSinglePlayer()));
         par1PlayerUsageSnooper.addData("server_brand", this.getServerModName());
         par1PlayerUsageSnooper.addData("gui_supported", GraphicsEnvironment.isHeadless() ? "headless" : "supported");
-        par1PlayerUsageSnooper.addData("dedicated", Boolean.valueOf(this.func_71262_S()));
+        par1PlayerUsageSnooper.addData("dedicated", Boolean.valueOf(this.isDedicatedServer()));
     }
 
-    public boolean func_70002_Q()
+    /**
+     * Returns whether snooping is enabled or not.
+     */
+    public boolean isSnooperEnabled()
     {
         return true;
     }
@@ -1201,7 +1199,7 @@ public abstract class MinecraftServer implements Runnable, IPlayerUsage, IComman
         return 16;
     }
 
-    public abstract boolean func_71262_S();
+    public abstract boolean isDedicatedServer();
 
     public boolean func_71266_T()
     {
@@ -1253,46 +1251,46 @@ public abstract class MinecraftServer implements Runnable, IPlayerUsage, IComman
         this.allowFlight = par1;
     }
 
-    public String func_71273_Y()
+    public String getMOTD()
     {
         return this.motd;
     }
 
-    public void func_71205_p(String par1Str)
+    public void setMOTD(String par1Str)
     {
         this.motd = par1Str;
     }
 
-    public int func_71207_Z()
+    public int getBuildLimit()
     {
         return this.buildLimit;
     }
 
-    public void func_71191_d(int par1)
+    public void setBuildLimit(int par1)
     {
         this.buildLimit = par1;
     }
 
-    public boolean func_71241_aa()
+    public boolean isServerStopped()
     {
         return this.serverStopped;
     }
 
-    public ServerConfigurationManager func_71203_ab()
+    public ServerConfigurationManager getConfigurationManager()
     {
         return this.serverConfigManager;
     }
 
-    public void func_71210_a(ServerConfigurationManager par1ServerConfigurationManager)
+    public void setConfigurationManager(ServerConfigurationManager par1ServerConfigurationManager)
     {
         this.serverConfigManager = par1ServerConfigurationManager;
     }
 
-    public void func_71235_a(EnumGameType par1EnumGameType)
+    public void setGameMode(EnumGameType par1EnumGameType)
     {
-        for (int var2 = 0; var2 < this.worldMngr.length; ++var2)
+        for (int var2 = 0; var2 < this.theWorldServer.length; ++var2)
         {
-            getServer().worldMngr[var2].getWorldInfo().setGameType(par1EnumGameType);
+            getServer().theWorldServer[var2].getWorldInfo().setGameType(par1EnumGameType);
         }
     }
 

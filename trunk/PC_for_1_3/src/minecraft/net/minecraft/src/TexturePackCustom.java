@@ -21,7 +21,10 @@ public class TexturePackCustom extends TexturePackImplementation
 
         try
         {
-            this.field_77550_e.close();
+            if (this.field_77550_e != null)
+            {
+                this.field_77550_e.close();
+            }
         }
         catch (IOException var3)
         {

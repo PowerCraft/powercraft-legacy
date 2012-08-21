@@ -48,7 +48,7 @@ public class CommandServerWhitelist extends CommandBase
                     throw new WrongUsageException("commands.whitelist.add.usage", new Object[0]);
                 }
 
-                MinecraftServer.getServer().getConfigurationManager().addToIPWhitelist(par2ArrayOfStr[1]);
+                MinecraftServer.getServer().getConfigurationManager().addToWhiteList(par2ArrayOfStr[1]);
                 notifyAdmins(par1ICommandSender, "commands.whitelist.add.success", new Object[] {par2ArrayOfStr[1]});
                 return;
             }
@@ -60,7 +60,7 @@ public class CommandServerWhitelist extends CommandBase
                     throw new WrongUsageException("commands.whitelist.remove.usage", new Object[0]);
                 }
 
-                MinecraftServer.getServer().getConfigurationManager().removeFromIPWhitelist(par2ArrayOfStr[1]);
+                MinecraftServer.getServer().getConfigurationManager().removeFromWhitelist(par2ArrayOfStr[1]);
                 notifyAdmins(par1ICommandSender, "commands.whitelist.remove.success", new Object[] {par2ArrayOfStr[1]});
                 return;
             }

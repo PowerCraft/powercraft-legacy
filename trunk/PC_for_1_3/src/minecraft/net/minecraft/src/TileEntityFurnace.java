@@ -224,10 +224,10 @@ public class TileEntityFurnace extends TileEntity implements IInventory
                     {
                         --this.furnaceItemStacks[1].stackSize;
 
-                        if (this.furnaceItemStacks[1].stackSize == 0)
+                        if (this.furnaceItemStacks[1].stackSize <= 0)
                         {
                             Item var3 = this.furnaceItemStacks[1].getItem().getContainerItem();
-                            this.furnaceItemStacks[1] = var3 == null ? null : new ItemStack(var3);
+                            this.furnaceItemStacks[1] = var3 != null ? new ItemStack(var3) : null;
                         }
                     }
                 }
@@ -298,10 +298,10 @@ public class TileEntityFurnace extends TileEntity implements IInventory
 
             --this.furnaceItemStacks[0].stackSize;
 
-            if (this.furnaceItemStacks[0].stackSize == 0)
+            if (this.furnaceItemStacks[0].stackSize <= 0)
             {
                 Item var2 = this.furnaceItemStacks[0].getItem().getContainerItem();
-                this.furnaceItemStacks[0] = var2 == null ? null : new ItemStack(var2);
+                this.furnaceItemStacks[0] = var2 != null ? new ItemStack(var2) : null;
             }
         }
     }

@@ -47,15 +47,15 @@ public class GuiStatsComponent extends JComponent
         this.displayStrings[3] = "Avg sent: " + (int)this.func_79015_a(this.field_79017_e.field_71300_f) + ", Avg size: " + (int)this.func_79015_a(this.field_79017_e.field_71301_g);
         this.displayStrings[4] = "Avg rec: " + (int)this.func_79015_a(this.field_79017_e.field_71313_h) + ", Avg size: " + (int)this.func_79015_a(this.field_79017_e.field_71314_i);
 
-        if (this.field_79017_e.worldMngr != null)
+        if (this.field_79017_e.theWorldServer != null)
         {
-            for (int var3 = 0; var3 < this.field_79017_e.worldMngr.length; ++var3)
+            for (int var3 = 0; var3 < this.field_79017_e.theWorldServer.length; ++var3)
             {
                 this.displayStrings[5 + var3] = "Lvl " + var3 + " tick: " + field_79020_a.format(this.func_79015_a(this.field_79017_e.field_71312_k[var3]) * 1.0E-6D) + " ms";
 
-                if (this.field_79017_e.worldMngr[var3] != null && this.field_79017_e.worldMngr[var3].theChunkProviderServer != null)
+                if (this.field_79017_e.theWorldServer[var3] != null && this.field_79017_e.theWorldServer[var3].theChunkProviderServer != null)
                 {
-                    this.displayStrings[5 + var3] = this.displayStrings[5 + var3] + ", " + this.field_79017_e.worldMngr[var3].theChunkProviderServer.func_73148_d();
+                    this.displayStrings[5 + var3] = this.displayStrings[5 + var3] + ", " + this.field_79017_e.theWorldServer[var3].theChunkProviderServer.func_73148_d();
                 }
             }
         }

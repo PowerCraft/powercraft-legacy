@@ -12,6 +12,6 @@ public class CommandServerList extends CommandBase
     public void processCommand(ICommandSender par1ICommandSender, String[] par2ArrayOfStr)
     {
         par1ICommandSender.func_70006_a(par1ICommandSender.translateString("commands.players.list", new Object[] {Integer.valueOf(MinecraftServer.getServer().playersOnline()), Integer.valueOf(MinecraftServer.getServer().getMaxPlayers())}));
-        par1ICommandSender.func_70006_a(MinecraftServer.getServer().func_71203_ab().getPlayerList());
+        par1ICommandSender.func_70006_a(MinecraftServer.getServer().getConfigurationManager().getPlayerList());
     }
 }

@@ -14,7 +14,7 @@ public class CallableServerProfiler implements Callable
 
     public String func_74271_a()
     {
-        return this.field_74272_a.field_71304_b.profilingEnabled ? this.field_74272_a.field_71304_b.func_76322_c() : "N/A (disabled)";
+        return this.field_74272_a.theProfiler.profilingEnabled ? this.field_74272_a.theProfiler.func_76322_c() : "N/A (disabled)";
     }
 
     public Object call()

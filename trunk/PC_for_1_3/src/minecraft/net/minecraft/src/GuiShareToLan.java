@@ -88,7 +88,7 @@ public class GuiShareToLan extends GuiScreen
                 var3 = this.mc.thePlayer.translateString("commands.publish.failed", new Object[0]);
             }
 
-            this.mc.ingameGUI.func_73827_b().func_73765_a(var3);
+            this.mc.ingameGUI.getChatGUI().printChatMessage(var3);
         }
     }
 

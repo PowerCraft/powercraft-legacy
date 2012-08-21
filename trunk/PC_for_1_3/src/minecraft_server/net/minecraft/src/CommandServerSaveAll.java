@@ -14,18 +14,18 @@ public class CommandServerSaveAll extends CommandBase
         MinecraftServer var3 = MinecraftServer.getServer();
         par1ICommandSender.func_70006_a(par1ICommandSender.translateString("commands.save.start", new Object[0]));
 
-        if (var3.func_71203_ab() != null)
+        if (var3.getConfigurationManager() != null)
         {
-            var3.func_71203_ab().savePlayerStates();
+            var3.getConfigurationManager().savePlayerStates();
         }
 
         try
         {
-            for (int var4 = 0; var4 < var3.worldMngr.length; ++var4)
+            for (int var4 = 0; var4 < var3.theWorldServer.length; ++var4)
             {
-                if (var3.worldMngr[var4] != null)
+                if (var3.theWorldServer[var4] != null)
                 {
-                    WorldServer var5 = var3.worldMngr[var4];
+                    WorldServer var5 = var3.theWorldServer[var4];
                     boolean var6 = var5.levelSaving;
                     var5.levelSaving = false;
                     var5.saveAllChunks(true, (IProgressUpdate)null);

@@ -19,7 +19,7 @@ class GuiSlotServer extends GuiSlot
      */
     protected int getSize()
     {
-        return GuiMultiplayer.func_74006_a(this.parentGui).func_78856_c() + GuiMultiplayer.func_74003_b(this.parentGui).size() + 1;
+        return GuiMultiplayer.func_74006_a(this.parentGui).countServers() + GuiMultiplayer.func_74003_b(this.parentGui).size() + 1;
     }
 
     /**
@@ -27,12 +27,12 @@ class GuiSlotServer extends GuiSlot
      */
     protected void elementClicked(int par1, boolean par2)
     {
-        if (par1 < GuiMultiplayer.func_74006_a(this.parentGui).func_78856_c() + GuiMultiplayer.func_74003_b(this.parentGui).size())
+        if (par1 < GuiMultiplayer.func_74006_a(this.parentGui).countServers() + GuiMultiplayer.func_74003_b(this.parentGui).size())
         {
             int var3 = GuiMultiplayer.func_74020_c(this.parentGui);
             GuiMultiplayer.func_74015_a(this.parentGui, par1);
             boolean var4 = GuiMultiplayer.func_74020_c(this.parentGui) >= 0 && GuiMultiplayer.func_74020_c(this.parentGui) < this.getSize();
-            boolean var5 = GuiMultiplayer.func_74020_c(this.parentGui) < GuiMultiplayer.func_74006_a(this.parentGui).func_78856_c();
+            boolean var5 = GuiMultiplayer.func_74020_c(this.parentGui) < GuiMultiplayer.func_74006_a(this.parentGui).countServers();
             GuiMultiplayer.getButtonEdit(this.parentGui).enabled = var4;
             GuiMultiplayer.getButtonDelete(this.parentGui).enabled = var5;
             GuiMultiplayer.func_74019_f(this.parentGui).enabled = var5;
@@ -41,9 +41,9 @@ class GuiSlotServer extends GuiSlot
             {
                 GuiMultiplayer.func_74008_b(this.parentGui, par1);
             }
-            else if (var5 && GuiScreen.isShiftKeyDown() && var3 >= 0 && var3 < GuiMultiplayer.func_74006_a(this.parentGui).func_78856_c())
+            else if (var5 && GuiScreen.isShiftKeyDown() && var3 >= 0 && var3 < GuiMultiplayer.func_74006_a(this.parentGui).countServers())
             {
-                GuiMultiplayer.func_74006_a(this.parentGui).func_78857_a(var3, GuiMultiplayer.func_74020_c(this.parentGui));
+                GuiMultiplayer.func_74006_a(this.parentGui).swapServers(var3, GuiMultiplayer.func_74020_c(this.parentGui));
             }
         }
     }
@@ -71,11 +71,11 @@ class GuiSlotServer extends GuiSlot
 
     protected void drawSlot(int par1, int par2, int par3, int par4, Tessellator par5Tessellator)
     {
-        if (par1 < GuiMultiplayer.func_74006_a(this.parentGui).func_78856_c())
+        if (par1 < GuiMultiplayer.func_74006_a(this.parentGui).countServers())
         {
             this.func_77247_d(par1, par2, par3, par4, par5Tessellator);
         }
-        else if (par1 < GuiMultiplayer.func_74006_a(this.parentGui).func_78856_c() + GuiMultiplayer.func_74003_b(this.parentGui).size())
+        else if (par1 < GuiMultiplayer.func_74006_a(this.parentGui).countServers() + GuiMultiplayer.func_74003_b(this.parentGui).size())
         {
             this.func_77248_b(par1, par2, par3, par4, par5Tessellator);
         }
@@ -87,10 +87,18 @@ class GuiSlotServer extends GuiSlot
 
     private void func_77248_b(int par1, int par2, int par3, int par4, Tessellator par5Tessellator)
     {
-        LanServer var6 = (LanServer)GuiMultiplayer.func_74003_b(this.parentGui).get(par1 - GuiMultiplayer.func_74006_a(this.parentGui).func_78856_c());
+        LanServer var6 = (LanServer)GuiMultiplayer.func_74003_b(this.parentGui).get(par1 - GuiMultiplayer.func_74006_a(this.parentGui).countServers());
         this.parentGui.drawString(this.parentGui.fontRenderer, StatCollector.translateToLocal("lanServer.title"), par2 + 2, par3 + 1, 16777215);
         this.parentGui.drawString(this.parentGui.fontRenderer, var6.func_77487_a(), par2 + 2, par3 + 12, 8421504);
-        this.parentGui.drawString(this.parentGui.fontRenderer, var6.func_77488_b(), par2 + 2, par3 + 12 + 11, 3158064);
+
+        if (this.parentGui.mc.gameSettings.field_80005_w)
+        {
+            this.parentGui.drawString(this.parentGui.fontRenderer, "(Hidden)", par2 + 2, par3 + 12 + 11, 3158064);
+        }
+        else
+        {
+            this.parentGui.drawString(this.parentGui.fontRenderer, var6.func_77488_b(), par2 + 2, par3 + 12 + 11, 3158064);
+        }
     }
 
     private void func_77249_c(int par1, int par2, int par3, int par4, Tessellator par5Tessellator)
@@ -119,7 +127,7 @@ class GuiSlotServer extends GuiSlot
 
     private void func_77247_d(int par1, int par2, int par3, int par4, Tessellator par5Tessellator)
     {
-        ServerData var6 = GuiMultiplayer.func_74006_a(this.parentGui).func_78850_a(par1);
+        ServerData var6 = GuiMultiplayer.func_74006_a(this.parentGui).getServerData(par1);
 
         synchronized (GuiMultiplayer.func_74011_h())
         {
@@ -127,7 +135,7 @@ class GuiSlotServer extends GuiSlot
             {
                 var6.field_78841_f = true;
                 var6.field_78844_e = -2L;
-                var6.field_78843_d = "";
+                var6.serverMOTD = "";
                 var6.field_78846_c = "";
                 GuiMultiplayer.func_74021_j();
                 (new ThreadPollServers(this, var6)).start();
@@ -135,9 +143,18 @@ class GuiSlotServer extends GuiSlot
         }
 
         this.parentGui.drawString(this.parentGui.fontRenderer, var6.serverName, par2 + 2, par3 + 1, 16777215);
-        this.parentGui.drawString(this.parentGui.fontRenderer, var6.field_78843_d, par2 + 2, par3 + 12, 8421504);
+        this.parentGui.drawString(this.parentGui.fontRenderer, var6.serverMOTD, par2 + 2, par3 + 12, 8421504);
         this.parentGui.drawString(this.parentGui.fontRenderer, var6.field_78846_c, par2 + 215 - this.parentGui.fontRenderer.getStringWidth(var6.field_78846_c), par3 + 12, 8421504);
-        this.parentGui.drawString(this.parentGui.fontRenderer, var6.serverIP, par2 + 2, par3 + 12 + 11, 3158064);
+
+        if (this.parentGui.mc.gameSettings.field_80005_w)
+        {
+            this.parentGui.drawString(this.parentGui.fontRenderer, "(Hidden)", par2 + 2, par3 + 12 + 11, 3158064);
+        }
+        else
+        {
+            this.parentGui.drawString(this.parentGui.fontRenderer, var6.serverIP, par2 + 2, par3 + 12 + 11, 3158064);
+        }
+
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
         this.parentGui.mc.renderEngine.bindTexture(this.parentGui.mc.renderEngine.getTexture("/gui/icons.png"));
         String var9 = "";

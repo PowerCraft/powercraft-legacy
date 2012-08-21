@@ -85,11 +85,12 @@ public final class ModLoader
     private static boolean texturesAdded = false;
     private static final boolean[] usedItemSprites = new boolean[256];
     private static final boolean[] usedTerrainSprites = new boolean[256];
-    public static final String VERSION = "ModLoader 1.3.1";
+    public static final String VERSION = "ModLoader 1.3.2";
     private static NetClientHandler clientHandler = null;
     private static final List commandList = new LinkedList();
     private static final Map tradeItems = new HashMap();
     private static final Map containerGUIs = new HashMap();
+    private static final Map trackers = new HashMap();
 
     public static void addAchievementDesc(Achievement var0, String var1, String var2)
     {
@@ -134,6 +135,30 @@ public final class ModLoader
             logger.throwing("ModLoader", "AddAchievementDesc", var7);
             throwException(var7);
         }
+    }
+
+    public static void addEntityTracker(BaseMod var0, Class var1, int var2, int var3, int var4, boolean var5)
+    {
+        if (var1 == null)
+        {
+            throw new IllegalArgumentException();
+        }
+        else
+        {
+            if (!Entity.class.isAssignableFrom(var1))
+            {
+                Exception var6 = new Exception(var1.getCanonicalName() + " is not an entity.");
+                logger.throwing("ModLoader", "addEntityTracker", var6);
+                throwException(var6);
+            }
+
+            trackers.put(var1, new EntityTrackerNonliving(var0, var1, var2, var3, var4, var5));
+        }
+    }
+
+    public static Map getTrackers()
+    {
+        return Collections.unmodifiableMap(trackers);
     }
 
     public static int addAllFuel(int var0, int var1)
@@ -912,8 +937,8 @@ public final class ModLoader
                 logger.addHandler(logHandler);
             }
 
-            logger.fine("ModLoader 1.3.1 Initializing...");
-            System.out.println("ModLoader 1.3.1 Initializing...");
+            logger.fine("ModLoader 1.3.2 Initializing...");
+            System.out.println("ModLoader 1.3.2 Initializing...");
             File var16 = new File(ModLoader.class.getProtectionDomain().getCodeSource().getLocation().toURI());
             modDir.mkdirs();
             readFromClassPath(var16);
@@ -1073,7 +1098,7 @@ public final class ModLoader
     public static BufferedImage loadImage(RenderEngine var0, String var1) throws Exception
     {
         TexturePackList var2 = (TexturePackList)getPrivateValue(RenderEngine.class, var0, 10);
-        InputStream var3 = var2.func_77292_e().getResourceAsStream(var1);
+        InputStream var3 = var2.getSelectedTexturePack().getResourceAsStream(var1);
 
         if (var3 == null)
         {
@@ -1192,12 +1217,10 @@ public final class ModLoader
             {
                 var5 = (Entry)var4.next();
 
-                // TODO delete if(var1.renderViewEntity!=null)
-                if(var1.renderViewEntity!=null)
-	                if ((clock != var14 || !(((Boolean)var5.getValue()).booleanValue() & var1.renderViewEntity.worldObj != null)) && !((BaseMod)var5.getKey()).onTickInGUI(var0, var1, var1.currentScreen))
-	                {
-	                    var4.remove();
-	                }
+                if ((clock != var14 || !(((Boolean)var5.getValue()).booleanValue() & var1.thePlayer.worldObj != null)) && !((BaseMod)var5.getKey()).onTickInGUI(var0, var1, var1.currentScreen))
+                {
+                    var4.remove();
+                }
             }
         }
 
@@ -1457,7 +1480,7 @@ public final class ModLoader
                 int var4 = var1.readInt();
                 int var5 = var1.readInt();
                 int var6 = var1.readInt();
-                int var7 = var1.read();
+                byte var7 = (byte)var1.read();
                 EntityClientPlayerMP var8 = instance.thePlayer;
 
                 if (var8.dimension != var7)
@@ -2362,7 +2385,7 @@ public final class ModLoader
         var0.append("Mods loaded: ");
         var0.append(getLoadedMods().size() + 1);
         var0.append('\n');
-        var0.append("ModLoader 1.3.1");
+        var0.append("ModLoader 1.3.2");
         var0.append('\n');
         Iterator var1 = getLoadedMods().iterator();
 

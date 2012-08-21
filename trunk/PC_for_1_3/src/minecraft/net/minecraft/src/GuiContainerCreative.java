@@ -66,81 +66,87 @@ public class GuiContainerCreative extends InventoryEffectRenderer
                     this.mc.playerController.sendSlotPacket((ItemStack)null, var5);
                 }
             }
-            else if (field_74241_p == CreativeTabs.tabInventory.getTabIndex())
+            else
             {
-                if (par1Slot == this.field_74235_v)
-                {
-                    this.mc.thePlayer.inventory.setItemStack((ItemStack)null);
-                }
-                else
-                {
-                    var5 = SlotCreativeInventory.func_75240_a((SlotCreativeInventory)par1Slot).slotNumber;
+                ItemStack var7;
 
-                    if (par4)
+                if (field_74241_p == CreativeTabs.tabInventory.getTabIndex())
+                {
+                    if (par1Slot == this.field_74235_v)
                     {
-                        this.mc.playerController.sendSlotPacket((ItemStack)null, var5);
+                        this.mc.thePlayer.inventory.setItemStack((ItemStack)null);
                     }
                     else
                     {
-                        this.mc.thePlayer.inventorySlots.slotClick(var5, par3, par4, this.mc.thePlayer);
+                        var5 = SlotCreativeInventory.func_75240_a((SlotCreativeInventory)par1Slot).slotNumber;
                         var6 = this.mc.thePlayer.inventorySlots.getSlot(var5).getStack();
-                        this.mc.playerController.sendSlotPacket(var6, var5);
+
+                        if (par4 && (var6 == null || !(var6.getItem() instanceof ItemArmor)))
+                        {
+                            this.mc.playerController.sendSlotPacket((ItemStack)null, var5);
+                        }
+                        else
+                        {
+                            this.mc.thePlayer.inventorySlots.slotClick(var5, par3, par4, this.mc.thePlayer);
+                            var7 = this.mc.thePlayer.inventorySlots.getSlot(var5).getStack();
+                            this.mc.playerController.sendSlotPacket(var7, var5);
+                        }
                     }
                 }
-            }
-            else if (par1Slot.inventory == inventory)
-            {
-                var9 = this.mc.thePlayer.inventory;
-                var6 = var9.getItemStack();
-                ItemStack var7 = par1Slot.getStack();
-
-                if (var6 != null && var7 != null && var6.isItemEqual(var7))
+                else if (par1Slot.inventory == inventory)
                 {
-                    if (par3 == 0)
+                    var9 = this.mc.thePlayer.inventory;
+                    var6 = var9.getItemStack();
+                    var7 = par1Slot.getStack();
+
+                    if (var6 != null && var7 != null && var6.isItemEqual(var7))
                     {
-                        if (par4)
+                        if (par3 == 0)
                         {
-                            var6.stackSize = var6.getMaxStackSize();
+                            if (par4)
+                            {
+                                var6.stackSize = var6.getMaxStackSize();
+                            }
+                            else if (var6.stackSize < var6.getMaxStackSize())
+                            {
+                                ++var6.stackSize;
+                            }
                         }
-                        else if (var6.stackSize < var6.getMaxStackSize())
+                        else if (var6.stackSize <= 1)
                         {
-                            ++var6.stackSize;
+                            var9.setItemStack((ItemStack)null);
+                        }
+                        else
+                        {
+                            --var6.stackSize;
                         }
                     }
-                    else if (var6.stackSize <= 1)
+                    else if (var7 != null && var6 == null)
+                    {
+                        boolean var8 = false;
+
+                        if (!var8)
+                        {
+                            var9.setItemStack(ItemStack.copyItemStack(var7));
+                            var6 = var9.getItemStack();
+
+                            if (par4)
+                            {
+                                var6.stackSize = var6.getMaxStackSize();
+                            }
+                        }
+                    }
+                    else
                     {
                         var9.setItemStack((ItemStack)null);
                     }
-                    else
-                    {
-                        --var6.stackSize;
-                    }
-                }
-                else if (var7 != null && var6 == null)
-                {
-                    boolean var8 = false;
-
-                    if (!var8)
-                    {
-                        var9.setItemStack(ItemStack.copyItemStack(var7));
-                        var6 = var9.getItemStack();
-
-                        if (par4)
-                        {
-                            var6.stackSize = var6.getMaxStackSize();
-                        }
-                    }
                 }
                 else
                 {
-                    var9.setItemStack((ItemStack)null);
+                    this.inventorySlots.slotClick(par1Slot.slotNumber, par3, par4, this.mc.thePlayer);
+                    ItemStack var10 = this.inventorySlots.getSlot(par1Slot.slotNumber).getStack();
+                    this.mc.playerController.sendSlotPacket(var10, par1Slot.slotNumber - this.inventorySlots.inventorySlots.size() + 9 + 36);
                 }
-            }
-            else
-            {
-                this.inventorySlots.slotClick(par1Slot.slotNumber, par3, par4, this.mc.thePlayer);
-                ItemStack var10 = this.inventorySlots.getSlot(par1Slot.slotNumber).getStack();
-                this.mc.playerController.sendSlotPacket(var10, par1Slot.slotNumber - this.inventorySlots.inventorySlots.size() + 9 + 36);
             }
         }
         else

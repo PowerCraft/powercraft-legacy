@@ -20,7 +20,7 @@ public class CommandServerOp extends CommandBase
     {
         if (par2ArrayOfStr.length == 1 && par2ArrayOfStr[0].length() > 0)
         {
-            MinecraftServer.getServer().getConfigurationManager().addNameToWhitelist(par2ArrayOfStr[0]);
+            MinecraftServer.getServer().getConfigurationManager().addOp(par2ArrayOfStr[0]);
             notifyAdmins(par1ICommandSender, "commands.op.success", new Object[] {par2ArrayOfStr[0]});
         }
         else

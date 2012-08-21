@@ -98,7 +98,7 @@ public class TexturePackList
         HashMap var3 = new HashMap();
         GuiProgress var4 = new GuiProgress();
         var3.put("X-Minecraft-Username", this.mc.session.username);
-        var3.put("X-Minecraft-Version", "1.3.1");
+        var3.put("X-Minecraft-Version", "1.3.2");
         var3.put("X-Minecraft-Supported-Resolutions", "16");
         this.field_77315_h = true;
         this.mc.displayGuiScreen(var4);
@@ -182,7 +182,7 @@ public class TexturePackList
         return Collections.unmodifiableList(this.availableTexturePacks);
     }
 
-    public TexturePackBase func_77292_e()
+    public TexturePackBase getSelectedTexturePack()
     {
         return this.selectedTexturePack;
     }

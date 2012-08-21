@@ -17,7 +17,7 @@ public class CommandToggleDownfall extends CommandBase
 
     protected void func_71554_c()
     {
-        MinecraftServer.getServer().dimensionServerList[0].toggleRain();
-        MinecraftServer.getServer().dimensionServerList[0].getWorldInfo().setThundering(true);
+        MinecraftServer.getServer().theWorldServer[0].toggleRain();
+        MinecraftServer.getServer().theWorldServer[0].getWorldInfo().setThundering(true);
     }
 }

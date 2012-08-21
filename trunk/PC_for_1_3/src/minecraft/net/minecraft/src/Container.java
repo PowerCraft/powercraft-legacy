@@ -132,7 +132,6 @@ public abstract class Container
 
     public ItemStack slotClick(int par1, int par2, boolean par3, EntityPlayer par4EntityPlayer)
     {
-    	System.out.println(par1+":"+inventorySlots.size()+":"+this);
         ItemStack var5 = null;
 
         if (par2 > 1)
@@ -168,7 +167,6 @@ public abstract class Container
                 }
                 else if (par3)
                 {
-                	
                     ItemStack var7 = this.transferStackInSlot(par1);
 
                     if (var7 != null)
@@ -191,7 +189,7 @@ public abstract class Container
                     }
 
                     Slot var12 = (Slot)this.inventorySlots.get(par1);
-                    
+
                     if (var12 != null)
                     {
                         ItemStack var13 = var12.getStack();
@@ -289,6 +287,7 @@ public abstract class Container
                     }
                 }
             }
+
             return var5;
         }
     }
