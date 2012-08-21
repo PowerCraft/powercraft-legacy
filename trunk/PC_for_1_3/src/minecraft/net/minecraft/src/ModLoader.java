@@ -1216,10 +1216,12 @@ public final class ModLoader
             while (var4.hasNext())
             {
                 var5 = (Entry)var4.next();
-
-                if ((clock != var14 || !(((Boolean)var5.getValue()).booleanValue() & var1.thePlayer.worldObj != null)) && !((BaseMod)var5.getKey()).onTickInGUI(var0, var1, var1.currentScreen))
-                {
-                    var4.remove();
+                
+                if(var1.thePlayer!=null){
+	                if ((clock != var14 || !(((Boolean)var5.getValue()).booleanValue() & var1.thePlayer.worldObj != null)) && !((BaseMod)var5.getKey()).onTickInGUI(var0, var1, var1.currentScreen))
+	                {
+	                    var4.remove();
+	                }
                 }
             }
         }
