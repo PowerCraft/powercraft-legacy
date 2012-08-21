@@ -15,7 +15,7 @@ class PlayerUsageSnooperThread extends TimerTask
 
     public void run()
     {
-        if (PlayerUsageSnooper.func_76473_a(this.snooper).func_70002_Q())
+        if (PlayerUsageSnooper.func_76473_a(this.snooper).isSnooperEnabled())
         {
             HashMap var1;
 

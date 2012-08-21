@@ -20,14 +20,14 @@ public class CommandServerPardon extends CommandBase
      */
     public boolean canCommandSenderUseCommand(ICommandSender par1ICommandSender)
     {
-        return MinecraftServer.getServer().func_71203_ab().func_72390_e().func_73710_b() && super.canCommandSenderUseCommand(par1ICommandSender);
+        return MinecraftServer.getServer().getConfigurationManager().getBannedPlayers().func_73710_b() && super.canCommandSenderUseCommand(par1ICommandSender);
     }
 
     public void processCommand(ICommandSender par1ICommandSender, String[] par2ArrayOfStr)
     {
         if (par2ArrayOfStr.length == 1 && par2ArrayOfStr[0].length() > 0)
         {
-            MinecraftServer.getServer().func_71203_ab().func_72390_e().func_73709_b(par2ArrayOfStr[0]);
+            MinecraftServer.getServer().getConfigurationManager().getBannedPlayers().func_73709_b(par2ArrayOfStr[0]);
             func_71522_a(par1ICommandSender, "commands.unban.success", new Object[] {par2ArrayOfStr[0]});
         }
         else
@@ -41,6 +41,6 @@ public class CommandServerPardon extends CommandBase
      */
     public List addTabCompletionOptions(ICommandSender par1ICommandSender, String[] par2ArrayOfStr)
     {
-        return par2ArrayOfStr.length == 1 ? getListOfStringsFromIterableMatchingLastWord(par2ArrayOfStr, MinecraftServer.getServer().func_71203_ab().func_72390_e().func_73712_c().keySet()) : null;
+        return par2ArrayOfStr.length == 1 ? getListOfStringsFromIterableMatchingLastWord(par2ArrayOfStr, MinecraftServer.getServer().getConfigurationManager().getBannedPlayers().func_73712_c().keySet()) : null;
     }
 }

@@ -31,9 +31,9 @@ public class RenderManager
 
     /** Reference to the GameSettings object. */
     public GameSettings options;
-    public double field_78730_l;
-    public double field_78731_m;
-    public double field_78728_n;
+    public double viewerPosX;
+    public double viewerPosY;
+    public double viewerPosZ;
 
     private RenderManager()
     {
@@ -84,12 +84,12 @@ public class RenderManager
         this.entityRenderMap.put(EntityFishHook.class, new RenderFish());
         this.entityRenderMap.put(EntityLightningBolt.class, new RenderLightningBolt());
         ModLoader.addAllRenderers(this.entityRenderMap);
-        Iterator var2 = this.entityRenderMap.values().iterator();
+        Iterator var1 = this.entityRenderMap.values().iterator();
 
-        while (var2.hasNext())
+        while (var1.hasNext())
         {
-            Render var1 = (Render)var2.next();
-            var1.setRenderManager(this);
+            Render var2 = (Render)var1.next();
+            var2.setRenderManager(this);
         }
     }
 
@@ -146,9 +146,9 @@ public class RenderManager
             this.playerViewY += 180.0F;
         }
 
-        this.field_78730_l = par4EntityLiving.lastTickPosX + (par4EntityLiving.posX - par4EntityLiving.lastTickPosX) * (double)par6;
-        this.field_78731_m = par4EntityLiving.lastTickPosY + (par4EntityLiving.posY - par4EntityLiving.lastTickPosY) * (double)par6;
-        this.field_78728_n = par4EntityLiving.lastTickPosZ + (par4EntityLiving.posZ - par4EntityLiving.lastTickPosZ) * (double)par6;
+        this.viewerPosX = par4EntityLiving.lastTickPosX + (par4EntityLiving.posX - par4EntityLiving.lastTickPosX) * (double)par6;
+        this.viewerPosY = par4EntityLiving.lastTickPosY + (par4EntityLiving.posY - par4EntityLiving.lastTickPosY) * (double)par6;
+        this.viewerPosZ = par4EntityLiving.lastTickPosZ + (par4EntityLiving.posZ - par4EntityLiving.lastTickPosZ) * (double)par6;
     }
 
     /**
@@ -199,9 +199,9 @@ public class RenderManager
 
     public double getDistanceToCamera(double par1, double par3, double par5)
     {
-        double var7 = par1 - this.field_78730_l;
-        double var9 = par3 - this.field_78731_m;
-        double var11 = par5 - this.field_78728_n;
+        double var7 = par1 - this.viewerPosX;
+        double var9 = par3 - this.viewerPosY;
+        double var11 = par5 - this.viewerPosZ;
         return var7 * var7 + var9 * var9 + var11 * var11;
     }
 

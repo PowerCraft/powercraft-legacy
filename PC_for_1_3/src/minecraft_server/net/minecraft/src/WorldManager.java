@@ -43,7 +43,7 @@ public class WorldManager implements IWorldAccess
      */
     public void playSound(String par1Str, double par2, double par4, double par6, float par8, float par9)
     {
-        this.mcServer.func_71203_ab().sendPacketToPlayersAroundPoint(par2, par4, par6, par8 > 1.0F ? (double)(16.0F * par8) : 16.0D, this.world.provider.worldType, new Packet62LevelSound(par1Str, par2, par4, par6, par8, par9));
+        this.mcServer.getConfigurationManager().sendPacketToPlayersAroundPoint(par2, par4, par6, par8 > 1.0F ? (double)(16.0F * par8) : 16.0D, this.world.provider.worldType, new Packet62LevelSound(par1Str, par2, par4, par6, par8, par9));
     }
 
     /**
@@ -76,7 +76,7 @@ public class WorldManager implements IWorldAccess
      */
     public void playAuxSFX(EntityPlayer par1EntityPlayer, int par2, int par3, int par4, int par5, int par6)
     {
-        this.mcServer.func_71203_ab().func_72397_a(par1EntityPlayer, (double)par3, (double)par4, (double)par5, 64.0D, this.world.provider.worldType, new Packet61DoorChange(par2, par3, par4, par5, par6));
+        this.mcServer.getConfigurationManager().func_72397_a(par1EntityPlayer, (double)par3, (double)par4, (double)par5, 64.0D, this.world.provider.worldType, new Packet61DoorChange(par2, par3, par4, par5, par6));
     }
 
     /**
@@ -85,7 +85,7 @@ public class WorldManager implements IWorldAccess
      */
     public void destroyBlockPartially(int par1, int par2, int par3, int par4, int par5)
     {
-        Iterator var6 = this.mcServer.func_71203_ab().playerEntities.iterator();
+        Iterator var6 = this.mcServer.getConfigurationManager().playerEntityList.iterator();
 
         while (var6.hasNext())
         {

@@ -14,7 +14,7 @@ public class CallablePlayers implements Callable
 
     public String func_74269_a()
     {
-        return MinecraftServer.func_71196_a(this.field_74270_a).playersOnline() + " / " + MinecraftServer.func_71196_a(this.field_74270_a).getMaxPlayers() + "; " + MinecraftServer.func_71196_a(this.field_74270_a).playerEntities;
+        return MinecraftServer.func_71196_a(this.field_74270_a).playersOnline() + " / " + MinecraftServer.func_71196_a(this.field_74270_a).getMaxPlayers() + "; " + MinecraftServer.func_71196_a(this.field_74270_a).playerEntityList;
     }
 
     public Object call()

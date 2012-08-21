@@ -31,7 +31,7 @@ public class GuiSleepMP extends GuiChat
             }
 
             this.inputField.setText("");
-            this.mc.ingameGUI.func_73827_b().func_73764_c();
+            this.mc.ingameGUI.getChatGUI().func_73764_c();
         }
         else
         {

@@ -25,7 +25,7 @@ class CallableIsModded implements Callable
         else
         {
             var1 = this.integratedServerIsModded.getServerModName();
-            return !var1.equals("vanilla") ? "Definitely; \'" + var1 + "\'" : (Minecraft.class.getClassLoader().getResource("META-INF/MOJANG_C.DSA") == null ? "Very likely" : "Probably not");
+            return !var1.equals("vanilla") ? "Definitely; \'" + var1 + "\'" : (Minecraft.class.getSigners() == null ? "Very likely" : "Probably not");
         }
     }
 

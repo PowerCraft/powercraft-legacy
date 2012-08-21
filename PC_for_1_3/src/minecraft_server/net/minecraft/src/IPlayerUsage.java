@@ -6,5 +6,8 @@ public interface IPlayerUsage
 
     void func_70001_b(PlayerUsageSnooper var1);
 
-    boolean func_70002_Q();
+    /**
+     * Returns whether snooping is enabled or not.
+     */
+    boolean isSnooperEnabled();
 }

@@ -27,7 +27,7 @@ public class WorldClient extends World
      * spawn up to 10 pending entities with each subsequent tick until the spawn queue is empty.
      */
     private Set entitySpawnQueue = new HashSet();
-    private final Minecraft minecraftInstance = Minecraft.getMinecraft();
+    private final Minecraft mc = Minecraft.getMinecraft();
     private final Set previousActiveChunkSet = new HashSet();
 
     public WorldClient(NetClientHandler par1NetClientHandler, WorldSettings par2WorldSettings, int par3, int par4, Profiler par5Profiler)
@@ -420,9 +420,9 @@ public class WorldClient extends World
             var10 *= par8;
         }
 
-        if (this.minecraftInstance.renderViewEntity.getDistanceSq(par1, par3, par5) < (double)(var10 * var10))
+        if (this.mc.renderViewEntity.getDistanceSq(par1, par3, par5) < (double)(var10 * var10))
         {
-            this.minecraftInstance.sndManager.playSound(par7Str, (float)par1, (float)par3, (float)par5, par8, par9);
+            this.mc.sndManager.playSound(par7Str, (float)par1, (float)par3, (float)par5, par8, par9);
         }
     }
 

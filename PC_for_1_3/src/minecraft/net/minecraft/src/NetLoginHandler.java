@@ -18,7 +18,9 @@ public class NetLoginHandler extends NetHandler
     private static Random field_72537_e = new Random();
     public TcpConnection myTCPConnection;
     public boolean connectionComplete = false;
-    private MinecraftServer minecraftInstance;
+
+    /** Reference to the MinecraftServer object. */
+    private MinecraftServer mcServer;
     private int connectionTimer = 0;
     private String clientUsername = null;
     private volatile boolean field_72544_i = false;
@@ -27,7 +29,7 @@ public class NetLoginHandler extends NetHandler
 
     public NetLoginHandler(MinecraftServer par1MinecraftServer, Socket par2Socket, String par3Str) throws IOException
     {
-        this.minecraftInstance = par1MinecraftServer;
+        this.mcServer = par1MinecraftServer;
         this.myTCPConnection = new TcpConnection(par2Socket, par3Str, this, par1MinecraftServer.getKeyPair().getPrivate());
         this.myTCPConnection.field_74468_e = 0;
     }
@@ -78,7 +80,7 @@ public class NetLoginHandler extends NetHandler
         }
         else
         {
-            PublicKey var2 = this.minecraftInstance.getKeyPair().getPublic();
+            PublicKey var2 = this.mcServer.getKeyPair().getPublic();
 
             if (par1Packet2ClientProtocol.getProtocolVersion() != 39)
             {
@@ -93,7 +95,7 @@ public class NetLoginHandler extends NetHandler
             }
             else
             {
-                this.field_72541_j = this.minecraftInstance.isServerInOnlineMode() ? Long.toString(field_72537_e.nextLong(), 16) : "-";
+                this.field_72541_j = this.mcServer.isServerInOnlineMode() ? Long.toString(field_72537_e.nextLong(), 16) : "-";
                 this.field_72536_d = new byte[4];
                 field_72537_e.nextBytes(this.field_72536_d);
                 this.myTCPConnection.addToSendQueue(new Packet253ServerAuthData(this.field_72541_j, var2, this.field_72536_d));
@@ -103,7 +105,7 @@ public class NetLoginHandler extends NetHandler
 
     public void handleSharedKey(Packet252SharedKey par1Packet252SharedKey)
     {
-        PrivateKey var2 = this.minecraftInstance.getKeyPair().getPrivate();
+        PrivateKey var2 = this.mcServer.getKeyPair().getPrivate();
         this.field_72542_k = par1Packet252SharedKey.func_73303_a(var2);
 
         if (!Arrays.equals(this.field_72536_d, par1Packet252SharedKey.func_73302_b(var2)))
@@ -118,7 +120,7 @@ public class NetLoginHandler extends NetHandler
     {
         if (par1Packet205ClientCommand.forceRespawn == 0)
         {
-            if (this.minecraftInstance.isServerInOnlineMode())
+            if (this.mcServer.isServerInOnlineMode())
             {
                 (new ThreadLoginVerifier(this)).start();
             }
@@ -136,7 +138,7 @@ public class NetLoginHandler extends NetHandler
      */
     public void initializePlayerConnection()
     {
-        String var1 = this.minecraftInstance.getConfigurationManager().allowUserToConnect(this.myTCPConnection.getSocketAddress(), this.clientUsername);
+        String var1 = this.mcServer.getConfigurationManager().allowUserToConnect(this.myTCPConnection.getSocketAddress(), this.clientUsername);
 
         if (var1 != null)
         {
@@ -144,11 +146,11 @@ public class NetLoginHandler extends NetHandler
         }
         else
         {
-            EntityPlayerMP var2 = this.minecraftInstance.getConfigurationManager().createPlayerForUser(this.clientUsername);
+            EntityPlayerMP var2 = this.mcServer.getConfigurationManager().createPlayerForUser(this.clientUsername);
 
             if (var2 != null)
             {
-                this.minecraftInstance.getConfigurationManager().initializeConnectionToPlayer(this.myTCPConnection, var2);
+                this.mcServer.getConfigurationManager().initializeConnectionToPlayer(this.myTCPConnection, var2);
             }
         }
 
@@ -168,7 +170,7 @@ public class NetLoginHandler extends NetHandler
     {
         try
         {
-            String var2 = this.minecraftInstance.getMOTD() + "\u00a7" + this.minecraftInstance.getConfigurationManager().getPlayerListSize() + "\u00a7" + this.minecraftInstance.getConfigurationManager().getMaxPlayers();
+            String var2 = this.mcServer.getMOTD() + "\u00a7" + this.mcServer.getConfigurationManager().getPlayerListSize() + "\u00a7" + this.mcServer.getConfigurationManager().getMaxPlayers();
             InetAddress var3 = null;
 
             if (this.myTCPConnection.getSocket() != null)
@@ -179,9 +181,9 @@ public class NetLoginHandler extends NetHandler
             this.myTCPConnection.addToSendQueue(new Packet255KickDisconnect(var2));
             this.myTCPConnection.serverShutdown();
 
-            if (var3 != null && this.minecraftInstance.getNetworkThread() instanceof DedicatedServerListenThread)
+            if (var3 != null && this.mcServer.getNetworkThread() instanceof DedicatedServerListenThread)
             {
-                ((DedicatedServerListenThread)this.minecraftInstance.getNetworkThread()).func_71761_a(var3);
+                ((DedicatedServerListenThread)this.mcServer.getNetworkThread()).func_71761_a(var3);
             }
 
             this.connectionComplete = true;
@@ -217,7 +219,7 @@ public class NetLoginHandler extends NetHandler
 
     static MinecraftServer func_72530_b(NetLoginHandler par0NetLoginHandler)
     {
-        return par0NetLoginHandler.minecraftInstance;
+        return par0NetLoginHandler.mcServer;
     }
 
     static SecretKey func_72525_c(NetLoginHandler par0NetLoginHandler)

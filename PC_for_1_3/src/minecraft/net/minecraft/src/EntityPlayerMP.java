@@ -15,7 +15,9 @@ public class EntityPlayerMP extends EntityPlayer implements ICrafting
 
     /** set by the NetServerHandler or the ServerConfigurationManager */
     public NetServerHandler serverForThisPlayer;
-    public MinecraftServer minecraftInstance;
+
+    /** Reference to the MinecraftServer object. */
+    public MinecraftServer mcServer;
 
     /** The ItemInWorldManager belonging to this player */
     public ItemInWorldManager theItemInWorldManager;
@@ -85,7 +87,7 @@ public class EntityPlayerMP extends EntityPlayer implements ICrafting
         }
 
         this.setLocationAndAngles((double)var6 + 0.5D, (double)var8, (double)var7 + 0.5D, 0.0F, 0.0F);
-        this.minecraftInstance = par1MinecraftServer;
+        this.mcServer = par1MinecraftServer;
         this.stepHeight = 0.0F;
         this.username = par3Str;
         this.yOffset = 0.0F;
@@ -235,7 +237,7 @@ public class EntityPlayerMP extends EntityPlayer implements ICrafting
 
         if (this.inPortal)
         {
-            if (this.minecraftInstance.getAllowNether())
+            if (this.mcServer.getAllowNether())
             {
                 if (this.craftingInventory != this.inventorySlots)
                 {
@@ -266,7 +268,7 @@ public class EntityPlayerMP extends EntityPlayer implements ICrafting
                             var5 = -1;
                         }
 
-                        this.minecraftInstance.getConfigurationManager().transferPlayerToDimension(this, var5);
+                        this.mcServer.getConfigurationManager().transferPlayerToDimension(this, var5);
                         this.lastExperience = -1;
                         this.lastHealth = -1;
                         this.lastFoodLevel = -1;
@@ -323,7 +325,7 @@ public class EntityPlayerMP extends EntityPlayer implements ICrafting
      */
     public void onDeath(DamageSource par1DamageSource)
     {
-        this.minecraftInstance.getConfigurationManager().sendPacketToAllPlayers(new Packet3Chat(par1DamageSource.func_76360_b(this)));
+        this.mcServer.getConfigurationManager().sendPacketToAllPlayers(new Packet3Chat(par1DamageSource.func_76360_b(this)));
         this.inventory.dropAllItems();
     }
 
@@ -338,7 +340,7 @@ public class EntityPlayerMP extends EntityPlayer implements ICrafting
         }
         else
         {
-            if (!this.minecraftInstance.isPVPEnabled() && par1DamageSource instanceof EntityDamageSource)
+            if (!this.mcServer.isPVPEnabled() && par1DamageSource instanceof EntityDamageSource)
             {
                 Entity var3 = par1DamageSource.getEntity();
 
@@ -367,7 +369,7 @@ public class EntityPlayerMP extends EntityPlayer implements ICrafting
      */
     protected boolean isPVPEnabled()
     {
-        return this.minecraftInstance.isPVPEnabled();
+        return this.mcServer.isPVPEnabled();
     }
 
     public void travelToTheEnd(int par1)
@@ -382,14 +384,14 @@ public class EntityPlayerMP extends EntityPlayer implements ICrafting
         else
         {
             this.triggerAchievement(AchievementList.theEnd);
-            ChunkCoordinates var2 = this.minecraftInstance.worldServerForDimension(par1).getEntrancePortalLocation();
+            ChunkCoordinates var2 = this.mcServer.worldServerForDimension(par1).getEntrancePortalLocation();
 
             if (var2 != null)
             {
                 this.serverForThisPlayer.setPlayerLocation((double)var2.posX, (double)var2.posY, (double)var2.posZ, 0.0F, 0.0F);
             }
 
-            this.minecraftInstance.getConfigurationManager().transferPlayerToDimension(this, 1);
+            this.mcServer.getConfigurationManager().transferPlayerToDimension(this, 1);
             this.lastExperience = -1;
             this.lastHealth = -1;
             this.lastFoodLevel = -1;
@@ -826,7 +828,7 @@ public class EntityPlayerMP extends EntityPlayer implements ICrafting
      */
     public boolean canCommandSenderUseCommand(String par1Str)
     {
-        return "seed".equals(par1Str) && !this.minecraftInstance.isDedicatedServer() ? true : this.minecraftInstance.getConfigurationManager().areCommandsAllowed(this.username);
+        return "seed".equals(par1Str) && !this.mcServer.isDedicatedServer() ? true : (!"tell".equals(par1Str) && !"help".equals(par1Str) && !"me".equals(par1Str) ? this.mcServer.getConfigurationManager().areCommandsAllowed(this.username) : true);
     }
 
     public String func_71114_r()
@@ -854,9 +856,9 @@ public class EntityPlayerMP extends EntityPlayer implements ICrafting
         this.chatVisibility = par1Packet204ClientInfo.getChatVisibility();
         this.chatColours = par1Packet204ClientInfo.getChatColours();
 
-        if (this.minecraftInstance.isSinglePlayer() && this.minecraftInstance.getServerOwner().equals(this.username))
+        if (this.mcServer.isSinglePlayer() && this.mcServer.getServerOwner().equals(this.username))
         {
-            this.minecraftInstance.setDifficultyForAllDimensions(par1Packet204ClientInfo.getDifficulty());
+            this.mcServer.setDifficultyForAllDimensions(par1Packet204ClientInfo.getDifficulty());
         }
     }
 

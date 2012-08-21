@@ -14,7 +14,7 @@ class CallableMinecraftVersion implements Callable
 
     public String func_71493_a()
     {
-        return "1.3.1";
+        return "1.3.2";
     }
 
     public Object call()

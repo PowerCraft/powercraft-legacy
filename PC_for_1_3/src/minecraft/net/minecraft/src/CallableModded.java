@@ -17,7 +17,7 @@ public class CallableModded implements Callable
     public String func_74415_a()
     {
         String var1 = ClientBrandRetriever.getClientModName();
-        return !var1.equals("vanilla") ? "Definitely; \'" + var1 + "\'" : (Minecraft.class.getClassLoader().getResource("META-INF/MOJANG_C.DSA") == null ? "Very likely" : "Probably not");
+        return !var1.equals("vanilla") ? "Definitely; \'" + var1 + "\'" : (Minecraft.class.getSigners() == null ? "Very likely" : "Probably not");
     }
 
     public Object call()

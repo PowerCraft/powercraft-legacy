@@ -6,7 +6,12 @@ final class EnchantmentModifierDamage implements IEnchantmentModifier
      * Used to calculate the damage modifier (extra armor) on enchantments that the player have on equipped armors.
      */
     public int damageModifier;
-    public DamageSource damageSource;
+
+    /**
+     * Used as parameter to calculate the damage modifier (extra armor) on enchantments that the player have on equipped
+     * armors.
+     */
+    public DamageSource source;
 
     private EnchantmentModifierDamage() {}
 
@@ -15,7 +20,7 @@ final class EnchantmentModifierDamage implements IEnchantmentModifier
      */
     public void calculateModifier(Enchantment par1Enchantment, int par2)
     {
-        this.damageModifier += par1Enchantment.calcModifierDamage(par2, this.damageSource);
+        this.damageModifier += par1Enchantment.calcModifierDamage(par2, this.source);
     }
 
     EnchantmentModifierDamage(Empty3 par1Empty3)

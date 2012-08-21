@@ -19,7 +19,7 @@ public class CommandServerKick extends CommandBase
     {
         if (par2ArrayOfStr.length > 0 && par2ArrayOfStr[0].length() > 1)
         {
-            EntityPlayerMP var3 = MinecraftServer.getServer().func_71203_ab().getPlayerEntity(par2ArrayOfStr[0]);
+            EntityPlayerMP var3 = MinecraftServer.getServer().getConfigurationManager().getPlayerEntity(par2ArrayOfStr[0]);
             String var4 = "Kicked by an operator.";
             boolean var5 = false;
 

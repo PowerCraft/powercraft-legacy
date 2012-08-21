@@ -124,6 +124,20 @@ public class EntityTracker
         {
             this.addEntityToTracker(par1Entity, 256, Integer.MAX_VALUE, false);
         }
+        else
+        {
+            Iterator var5 = ModLoader.getTrackers().values().iterator();
+
+            while (var5.hasNext())
+            {
+                EntityTrackerNonliving var6 = (EntityTrackerNonliving)var5.next();
+
+                if (var6.entityClass.isAssignableFrom(par1Entity.getClass()))
+                {
+                    this.addEntityToTracker(par1Entity, var6.viewDistance, var6.updateFrequency, var6.trackMotion);
+                }
+            }
+        }
     }
 
     public void addEntityToTracker(Entity par1Entity, int par2, int par3)

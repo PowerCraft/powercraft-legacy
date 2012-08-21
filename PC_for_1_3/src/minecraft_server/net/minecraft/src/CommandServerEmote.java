@@ -20,7 +20,7 @@ public class CommandServerEmote extends CommandBase
         if (par2ArrayOfStr.length > 0)
         {
             String var3 = joinString(par2ArrayOfStr, 0);
-            MinecraftServer.getServer().func_71203_ab().sendPacketToAllPlayers(new Packet3Chat("* " + par1ICommandSender.getCommandSenderName() + " " + var3));
+            MinecraftServer.getServer().getConfigurationManager().sendPacketToAllPlayers(new Packet3Chat("* " + par1ICommandSender.getCommandSenderName() + " " + var3));
         }
         else
         {

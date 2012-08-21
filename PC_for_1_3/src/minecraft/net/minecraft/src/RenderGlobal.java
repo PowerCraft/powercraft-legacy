@@ -1530,7 +1530,7 @@ public class RenderGlobal implements IWorldAccess
         GL11.glDisable(GL11.GL_ALPHA_TEST);
     }
 
-    public void func_72717_a(Tessellator par1Tessellator, EntityPlayer par2EntityPlayer, float par3)
+    public void drawBlockDamageTexture(Tessellator par1Tessellator, EntityPlayer par2EntityPlayer, float par3)
     {
         double var4 = par2EntityPlayer.lastTickPosX + (par2EntityPlayer.posX - par2EntityPlayer.lastTickPosX) * (double)par3;
         double var6 = par2EntityPlayer.lastTickPosY + (par2EntityPlayer.posY - par2EntityPlayer.lastTickPosY) * (double)par3;

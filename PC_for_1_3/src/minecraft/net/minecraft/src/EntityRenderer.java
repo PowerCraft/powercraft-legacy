@@ -1107,7 +1107,7 @@ public class EntityRenderer
             this.mc.mcProfiler.endStartSection("destroyProgress");
             GL11.glEnable(GL11.GL_BLEND);
             GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE);
-            var5.func_72717_a(Tessellator.instance, (EntityPlayer)var4, par1);
+            var5.drawBlockDamageTexture(Tessellator.instance, (EntityPlayer)var4, par1);
             GL11.glDisable(GL11.GL_BLEND);
             this.mc.mcProfiler.endStartSection("weather");
             this.renderRainSnow(par1);

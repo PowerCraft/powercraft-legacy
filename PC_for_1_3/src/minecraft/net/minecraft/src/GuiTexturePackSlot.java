@@ -46,7 +46,7 @@ class GuiTexturePackSlot extends GuiSlot
     protected boolean isSelected(int par1)
     {
         List var2 = GuiTexturePacks.func_73957_h(this.parentTexturePackGui).texturePackList.availableTexturePacks();
-        return GuiTexturePacks.func_73956_i(this.parentTexturePackGui).texturePackList.func_77292_e() == var2.get(par1);
+        return GuiTexturePacks.func_73956_i(this.parentTexturePackGui).texturePackList.getSelectedTexturePack() == var2.get(par1);
     }
 
     /**

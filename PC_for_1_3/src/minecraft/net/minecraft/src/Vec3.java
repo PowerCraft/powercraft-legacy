@@ -238,7 +238,10 @@ public class Vec3
         this.zCoord = var8;
     }
 
-    public void func_72446_c(float par1)
+    /**
+     * Rotates the vector around the z axis by the specified angle.
+     */
+    public void rotateAroundZ(float par1)
     {
         float var2 = MathHelper.cos(par1);
         float var3 = MathHelper.sin(par1);

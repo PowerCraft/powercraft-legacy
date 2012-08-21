@@ -65,7 +65,7 @@ public class RenderEngine
 
     public int[] getTextureContents(String par1Str)
     {
-        TexturePackBase var2 = this.texturePack.func_77292_e();
+        TexturePackBase var2 = this.texturePack.getSelectedTexturePack();
         int[] var3 = (int[])this.textureContentsMap.get(par1Str);
 
         if (var3 != null)
@@ -151,7 +151,7 @@ public class RenderEngine
         }
         else
         {
-            TexturePackBase var6 = this.texturePack.func_77292_e();
+            TexturePackBase var6 = this.texturePack.getSelectedTexturePack();
 
             try
             {
@@ -481,7 +481,7 @@ public class RenderEngine
      */
     public void refreshTextures()
     {
-        TexturePackBase var1 = this.texturePack.func_77292_e();
+        TexturePackBase var1 = this.texturePack.getSelectedTexturePack();
         Iterator var2 = this.textureNameToImageMap.getKeySet().iterator();
         BufferedImage var4;
 

@@ -16,7 +16,7 @@ public class CommandServerPardonIp extends CommandBase
      */
     public boolean canCommandSenderUseCommand(ICommandSender par1ICommandSender)
     {
-        return MinecraftServer.getServer().func_71203_ab().func_72363_f().func_73710_b() && super.canCommandSenderUseCommand(par1ICommandSender);
+        return MinecraftServer.getServer().getConfigurationManager().getBannedIPs().func_73710_b() && super.canCommandSenderUseCommand(par1ICommandSender);
     }
 
     public String getCommandUsage(ICommandSender par1ICommandSender)
@@ -32,7 +32,7 @@ public class CommandServerPardonIp extends CommandBase
 
             if (var3.matches())
             {
-                MinecraftServer.getServer().func_71203_ab().func_72363_f().func_73709_b(par2ArrayOfStr[0]);
+                MinecraftServer.getServer().getConfigurationManager().getBannedIPs().func_73709_b(par2ArrayOfStr[0]);
                 func_71522_a(par1ICommandSender, "commands.unbanip.success", new Object[] {par2ArrayOfStr[0]});
             }
             else
@@ -51,6 +51,6 @@ public class CommandServerPardonIp extends CommandBase
      */
     public List addTabCompletionOptions(ICommandSender par1ICommandSender, String[] par2ArrayOfStr)
     {
-        return par2ArrayOfStr.length == 1 ? getListOfStringsFromIterableMatchingLastWord(par2ArrayOfStr, MinecraftServer.getServer().func_71203_ab().func_72363_f().func_73712_c().keySet()) : null;
+        return par2ArrayOfStr.length == 1 ? getListOfStringsFromIterableMatchingLastWord(par2ArrayOfStr, MinecraftServer.getServer().getConfigurationManager().getBannedIPs().func_73712_c().keySet()) : null;
     }
 }

@@ -20,7 +20,7 @@ class DedicatedServerCommandThread extends Thread
 
         try
         {
-            while (!this.field_72428_a.func_71241_aa() && this.field_72428_a.func_71278_l() && (var2 = var1.readLine()) != null)
+            while (!this.field_72428_a.isServerStopped() && this.field_72428_a.func_71278_l() && (var2 = var1.readLine()) != null)
             {
                 this.field_72428_a.func_71331_a(var2, this.field_72428_a);
             }

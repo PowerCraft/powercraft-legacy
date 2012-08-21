@@ -22,10 +22,10 @@ public class RenderIronGolem extends RenderLiving
     {
         super.rotateCorpse(par1EntityIronGolem, par2, par3, par4);
 
-        if ((double)par1EntityIronGolem.field_70721_aZ >= 0.01D)
+        if ((double)par1EntityIronGolem.legYaw >= 0.01D)
         {
             float var5 = 13.0F;
-            float var6 = par1EntityIronGolem.field_70754_ba - par1EntityIronGolem.field_70721_aZ * (1.0F - par4) + 6.0F;
+            float var6 = par1EntityIronGolem.field_70754_ba - par1EntityIronGolem.legYaw * (1.0F - par4) + 6.0F;
             float var7 = (Math.abs(var6 % var5 - var5 * 0.5F) - var5 * 0.25F) / (var5 * 0.25F);
             GL11.glRotatef(6.5F * var7, 0.0F, 0.0F, 1.0F);
         }

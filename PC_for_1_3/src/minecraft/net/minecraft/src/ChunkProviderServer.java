@@ -71,12 +71,12 @@ public class ChunkProviderServer implements IChunkProvider
      */
     public void unloadAllChunks()
     {
-        Iterator var2 = this.loadedChunks.iterator();
+        Iterator var1 = this.loadedChunks.iterator();
 
-        while (var2.hasNext())
+        while (var1.hasNext())
         {
-            Chunk var1 = (Chunk)var2.next();
-            this.unloadChunksIfNotNearSpawn(var1.xPosition, var1.zPosition);
+            Chunk var2 = (Chunk)var1.next();
+            this.unloadChunksIfNotNearSpawn(var2.xPosition, var2.zPosition);
         }
     }
 

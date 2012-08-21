@@ -264,7 +264,7 @@ public class PlayerManager
     public boolean func_72694_a(EntityPlayerMP par1EntityPlayerMP, int par2, int par3)
     {
         PlayerInstance var4 = this.getPlayerInstance(par2, par3, false);
-        return var4 == null ? false : PlayerInstance.func_73258_b(var4).contains(par1EntityPlayerMP);
+        return var4 == null ? false : PlayerInstance.func_73258_b(var4).contains(par1EntityPlayerMP) && !par1EntityPlayerMP.loadedChunks.contains(PlayerInstance.func_73253_a(var4));
     }
 
     public static int func_72686_a(int par0)

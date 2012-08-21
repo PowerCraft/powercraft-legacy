@@ -212,96 +212,96 @@ public class ItemRenderer
         GL11.glRotatef(var3.prevRotationYaw + (var3.rotationYaw - var3.prevRotationYaw) * par1, 0.0F, 1.0F, 0.0F);
         RenderHelper.enableStandardItemLighting();
         GL11.glPopMatrix();
+        float var5;
         float var6;
 
         if (var3 instanceof EntityPlayerSP)
         {
-            var6 = var3.prevRenderArmPitch + (var3.renderArmPitch - var3.prevRenderArmPitch) * par1;
-            float var7 = var3.prevRenderArmYaw + (var3.renderArmYaw - var3.prevRenderArmYaw) * par1;
-            GL11.glRotatef((var3.rotationPitch - var6) * 0.1F, 1.0F, 0.0F, 0.0F);
-            GL11.glRotatef((var3.rotationYaw - var7) * 0.1F, 0.0F, 1.0F, 0.0F);
+            var5 = var3.prevRenderArmPitch + (var3.renderArmPitch - var3.prevRenderArmPitch) * par1;
+            var6 = var3.prevRenderArmYaw + (var3.renderArmYaw - var3.prevRenderArmYaw) * par1;
+            GL11.glRotatef((var3.rotationPitch - var5) * 0.1F, 1.0F, 0.0F, 0.0F);
+            GL11.glRotatef((var3.rotationYaw - var6) * 0.1F, 0.0F, 1.0F, 0.0F);
         }
 
-        ItemStack var5 = this.itemToRender;
-        var6 = this.mc.theWorld.getLightBrightness(MathHelper.floor_double(var3.posX), MathHelper.floor_double(var3.posY), MathHelper.floor_double(var3.posZ));
-        var6 = 1.0F;
-        int var20 = this.mc.theWorld.getLightBrightnessForSkyBlocks(MathHelper.floor_double(var3.posX), MathHelper.floor_double(var3.posY), MathHelper.floor_double(var3.posZ), 0);
-        int var8 = var20 % 65536;
-        int var9 = var20 / 65536;
-        OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, (float)var8 / 1.0F, (float)var9 / 1.0F);
+        ItemStack var7 = this.itemToRender;
+        var5 = this.mc.theWorld.getLightBrightness(MathHelper.floor_double(var3.posX), MathHelper.floor_double(var3.posY), MathHelper.floor_double(var3.posZ));
+        var5 = 1.0F;
+        int var8 = this.mc.theWorld.getLightBrightnessForSkyBlocks(MathHelper.floor_double(var3.posX), MathHelper.floor_double(var3.posY), MathHelper.floor_double(var3.posZ), 0);
+        int var9 = var8 % 65536;
+        int var10 = var8 / 65536;
+        OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, (float)var9 / 1.0F, (float)var10 / 1.0F);
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
         float var11;
         float var12;
         float var13;
 
-        if (var5 != null)
+        if (var7 != null)
         {
-            int var10 = Item.itemsList[var5.itemID].getColorFromDamage(var5.getItemDamage(), 0);
-            var11 = (float)(var10 >> 16 & 255) / 255.0F;
-            var12 = (float)(var10 >> 8 & 255) / 255.0F;
-            var13 = (float)(var10 & 255) / 255.0F;
-            GL11.glColor4f(var6 * var11, var6 * var12, var6 * var13, 1.0F);
+            var8 = Item.itemsList[var7.itemID].getColorFromDamage(var7.getItemDamage(), 0);
+            var13 = (float)(var8 >> 16 & 255) / 255.0F;
+            var12 = (float)(var8 >> 8 & 255) / 255.0F;
+            var11 = (float)(var8 & 255) / 255.0F;
+            GL11.glColor4f(var5 * var13, var5 * var12, var5 * var11, 1.0F);
         }
         else
         {
-            GL11.glColor4f(var6, var6, var6, 1.0F);
+            GL11.glColor4f(var5, var5, var5, 1.0F);
         }
 
         float var14;
         float var15;
+        Render var17;
         float var16;
-        float var22;
-        Render var25;
-        RenderPlayer var24;
+        RenderPlayer var18;
 
-        if (var5 != null && var5.itemID == Item.map.shiftedIndex)
+        if (var7 != null && var7.itemID == Item.map.shiftedIndex)
         {
             GL11.glPushMatrix();
-            var22 = 0.8F;
-            var11 = var3.getSwingProgress(par1);
-            var12 = MathHelper.sin(var11 * (float)Math.PI);
-            var13 = MathHelper.sin(MathHelper.sqrt_float(var11) * (float)Math.PI);
-            GL11.glTranslatef(-var13 * 0.4F, MathHelper.sin(MathHelper.sqrt_float(var11) * (float)Math.PI * 2.0F) * 0.2F, -var12 * 0.2F);
-            var11 = 1.0F - var4 / 45.0F + 0.1F;
+            var6 = 0.8F;
+            var13 = var3.getSwingProgress(par1);
+            var12 = MathHelper.sin(var13 * (float)Math.PI);
+            var11 = MathHelper.sin(MathHelper.sqrt_float(var13) * (float)Math.PI);
+            GL11.glTranslatef(-var11 * 0.4F, MathHelper.sin(MathHelper.sqrt_float(var13) * (float)Math.PI * 2.0F) * 0.2F, -var12 * 0.2F);
+            var13 = 1.0F - var4 / 45.0F + 0.1F;
 
-            if (var11 < 0.0F)
+            if (var13 < 0.0F)
             {
-                var11 = 0.0F;
+                var13 = 0.0F;
             }
 
-            if (var11 > 1.0F)
+            if (var13 > 1.0F)
             {
-                var11 = 1.0F;
+                var13 = 1.0F;
             }
 
-            var11 = -MathHelper.cos(var11 * (float)Math.PI) * 0.5F + 0.5F;
-            GL11.glTranslatef(0.0F, 0.0F * var22 - (1.0F - var2) * 1.2F - var11 * 0.5F + 0.04F, -0.9F * var22);
+            var13 = -MathHelper.cos(var13 * (float)Math.PI) * 0.5F + 0.5F;
+            GL11.glTranslatef(0.0F, 0.0F * var6 - (1.0F - var2) * 1.2F - var13 * 0.5F + 0.04F, -0.9F * var6);
             GL11.glRotatef(90.0F, 0.0F, 1.0F, 0.0F);
-            GL11.glRotatef(var11 * -85.0F, 0.0F, 0.0F, 1.0F);
+            GL11.glRotatef(var13 * -85.0F, 0.0F, 0.0F, 1.0F);
             GL11.glEnable(GL12.GL_RESCALE_NORMAL);
             GL11.glBindTexture(GL11.GL_TEXTURE_2D, this.mc.renderEngine.getTextureForDownloadableImage(this.mc.thePlayer.skinUrl, this.mc.thePlayer.getTexture()));
 
-            for (var12 = 0.0F; var12 < 2.0F; ++var12)
+            for (var10 = 0; var10 < 2; ++var10)
             {
-                var13 = var12 * 2.0F - 1.0F;
+                int var24 = var10 * 2 - 1;
                 GL11.glPushMatrix();
-                GL11.glTranslatef(-0.0F, -0.6F, 1.1F * var13);
-                GL11.glRotatef(-45.0F * var13, 1.0F, 0.0F, 0.0F);
+                GL11.glTranslatef(-0.0F, -0.6F, 1.1F * (float)var24);
+                GL11.glRotatef((float)(-45 * var24), 1.0F, 0.0F, 0.0F);
                 GL11.glRotatef(-90.0F, 0.0F, 0.0F, 1.0F);
                 GL11.glRotatef(59.0F, 0.0F, 0.0F, 1.0F);
-                GL11.glRotatef(-65.0F * var13, 0.0F, 1.0F, 0.0F);
-                var25 = RenderManager.instance.getEntityRenderObject(this.mc.thePlayer);
-                var24 = (RenderPlayer)var25;
+                GL11.glRotatef((float)(-65 * var24), 0.0F, 1.0F, 0.0F);
+                var17 = RenderManager.instance.getEntityRenderObject(this.mc.thePlayer);
+                var18 = (RenderPlayer)var17;
                 var16 = 1.0F;
                 GL11.glScalef(var16, var16, var16);
-                var24.drawFirstPersonHand();
+                var18.drawFirstPersonHand();
                 GL11.glPopMatrix();
             }
 
             var12 = var3.getSwingProgress(par1);
-            var13 = MathHelper.sin(var12 * var12 * (float)Math.PI);
+            var11 = MathHelper.sin(var12 * var12 * (float)Math.PI);
             var14 = MathHelper.sin(MathHelper.sqrt_float(var12) * (float)Math.PI);
-            GL11.glRotatef(-var13 * 20.0F, 0.0F, 1.0F, 0.0F);
+            GL11.glRotatef(-var11 * 20.0F, 0.0F, 1.0F, 0.0F);
             GL11.glRotatef(-var14 * 20.0F, 0.0F, 0.0F, 1.0F);
             GL11.glRotatef(-var14 * 80.0F, 1.0F, 0.0F, 0.0F);
             var15 = 0.38F;
@@ -312,38 +312,38 @@ public class ItemRenderer
             var16 = 0.015625F;
             GL11.glScalef(var16, var16, var16);
             this.mc.renderEngine.bindTexture(this.mc.renderEngine.getTexture("/misc/mapbg.png"));
-            Tessellator var28 = Tessellator.instance;
+            Tessellator var25 = Tessellator.instance;
             GL11.glNormal3f(0.0F, 0.0F, -1.0F);
-            var28.startDrawingQuads();
-            byte var27 = 7;
-            var28.addVertexWithUV((double)(0 - var27), (double)(128 + var27), 0.0D, 0.0D, 1.0D);
-            var28.addVertexWithUV((double)(128 + var27), (double)(128 + var27), 0.0D, 1.0D, 1.0D);
-            var28.addVertexWithUV((double)(128 + var27), (double)(0 - var27), 0.0D, 1.0D, 0.0D);
-            var28.addVertexWithUV((double)(0 - var27), (double)(0 - var27), 0.0D, 0.0D, 0.0D);
-            var28.draw();
-            MapData var19 = Item.map.getMapData(var5, this.mc.theWorld);
-            this.mapItemRenderer.renderMap(this.mc.thePlayer, this.mc.renderEngine, var19);
+            var25.startDrawingQuads();
+            byte var23 = 7;
+            var25.addVertexWithUV((double)(0 - var23), (double)(128 + var23), 0.0D, 0.0D, 1.0D);
+            var25.addVertexWithUV((double)(128 + var23), (double)(128 + var23), 0.0D, 1.0D, 1.0D);
+            var25.addVertexWithUV((double)(128 + var23), (double)(0 - var23), 0.0D, 1.0D, 0.0D);
+            var25.addVertexWithUV((double)(0 - var23), (double)(0 - var23), 0.0D, 0.0D, 0.0D);
+            var25.draw();
+            MapData var27 = Item.map.getMapData(var7, this.mc.theWorld);
+            this.mapItemRenderer.renderMap(this.mc.thePlayer, this.mc.renderEngine, var27);
             GL11.glPopMatrix();
         }
-        else if (var5 != null)
+        else if (var7 != null)
         {
             GL11.glPushMatrix();
-            var22 = 0.8F;
+            var6 = 0.8F;
 
             if (var3.getItemInUseCount() > 0)
             {
-                EnumAction var21 = var5.getItemUseAction();
+                EnumAction var19 = var7.getItemUseAction();
 
-                if (var21 == EnumAction.eat || var21 == EnumAction.drink)
+                if (var19 == EnumAction.eat || var19 == EnumAction.drink)
                 {
                     var12 = (float)var3.getItemInUseCount() - par1 + 1.0F;
-                    var13 = 1.0F - var12 / (float)var5.getMaxItemUseDuration();
-                    var14 = 1.0F - var13;
+                    var11 = 1.0F - var12 / (float)var7.getMaxItemUseDuration();
+                    var14 = 1.0F - var11;
                     var14 = var14 * var14 * var14;
                     var14 = var14 * var14 * var14;
                     var14 = var14 * var14 * var14;
                     var15 = 1.0F - var14;
-                    GL11.glTranslatef(0.0F, MathHelper.abs(MathHelper.cos(var12 / 4.0F * (float)Math.PI) * 0.1F) * (float)((double)var13 <= 0.2D ? 0 : 1), 0.0F);
+                    GL11.glTranslatef(0.0F, MathHelper.abs(MathHelper.cos(var12 / 4.0F * (float)Math.PI) * 0.1F) * (float)((double)var11 > 0.2D ? 1 : 0), 0.0F);
                     GL11.glTranslatef(var15 * 0.6F, -var15 * 0.5F, 0.0F);
                     GL11.glRotatef(var15 * 90.0F, 0.0F, 1.0F, 0.0F);
                     GL11.glRotatef(var15 * 10.0F, 1.0F, 0.0F, 0.0F);
@@ -352,87 +352,87 @@ public class ItemRenderer
             }
             else
             {
-                var11 = var3.getSwingProgress(par1);
-                var12 = MathHelper.sin(var11 * (float)Math.PI);
-                var13 = MathHelper.sin(MathHelper.sqrt_float(var11) * (float)Math.PI);
-                GL11.glTranslatef(-var13 * 0.4F, MathHelper.sin(MathHelper.sqrt_float(var11) * (float)Math.PI * 2.0F) * 0.2F, -var12 * 0.2F);
+                var13 = var3.getSwingProgress(par1);
+                var12 = MathHelper.sin(var13 * (float)Math.PI);
+                var11 = MathHelper.sin(MathHelper.sqrt_float(var13) * (float)Math.PI);
+                GL11.glTranslatef(-var11 * 0.4F, MathHelper.sin(MathHelper.sqrt_float(var13) * (float)Math.PI * 2.0F) * 0.2F, -var12 * 0.2F);
             }
 
-            GL11.glTranslatef(0.7F * var22, -0.65F * var22 - (1.0F - var2) * 0.6F, -0.9F * var22);
+            GL11.glTranslatef(0.7F * var6, -0.65F * var6 - (1.0F - var2) * 0.6F, -0.9F * var6);
             GL11.glRotatef(45.0F, 0.0F, 1.0F, 0.0F);
             GL11.glEnable(GL12.GL_RESCALE_NORMAL);
-            var11 = var3.getSwingProgress(par1);
-            var12 = MathHelper.sin(var11 * var11 * (float)Math.PI);
-            var13 = MathHelper.sin(MathHelper.sqrt_float(var11) * (float)Math.PI);
+            var13 = var3.getSwingProgress(par1);
+            var12 = MathHelper.sin(var13 * var13 * (float)Math.PI);
+            var11 = MathHelper.sin(MathHelper.sqrt_float(var13) * (float)Math.PI);
             GL11.glRotatef(-var12 * 20.0F, 0.0F, 1.0F, 0.0F);
-            GL11.glRotatef(-var13 * 20.0F, 0.0F, 0.0F, 1.0F);
-            GL11.glRotatef(-var13 * 80.0F, 1.0F, 0.0F, 0.0F);
+            GL11.glRotatef(-var11 * 20.0F, 0.0F, 0.0F, 1.0F);
+            GL11.glRotatef(-var11 * 80.0F, 1.0F, 0.0F, 0.0F);
             var14 = 0.4F;
             GL11.glScalef(var14, var14, var14);
-            float var17;
-            float var18;
+            float var20;
+            float var22;
 
             if (var3.getItemInUseCount() > 0)
             {
-                EnumAction var23 = var5.getItemUseAction();
+                EnumAction var21 = var7.getItemUseAction();
 
-                if (var23 == EnumAction.block)
+                if (var21 == EnumAction.block)
                 {
                     GL11.glTranslatef(-0.5F, 0.2F, 0.0F);
                     GL11.glRotatef(30.0F, 0.0F, 1.0F, 0.0F);
                     GL11.glRotatef(-80.0F, 1.0F, 0.0F, 0.0F);
                     GL11.glRotatef(60.0F, 0.0F, 1.0F, 0.0F);
                 }
-                else if (var23 == EnumAction.bow)
+                else if (var21 == EnumAction.bow)
                 {
                     GL11.glRotatef(-18.0F, 0.0F, 0.0F, 1.0F);
                     GL11.glRotatef(-12.0F, 0.0F, 1.0F, 0.0F);
                     GL11.glRotatef(-8.0F, 1.0F, 0.0F, 0.0F);
                     GL11.glTranslatef(-0.9F, 0.2F, 0.0F);
-                    var16 = (float)var5.getMaxItemUseDuration() - ((float)var3.getItemInUseCount() - par1 + 1.0F);
-                    var17 = var16 / 20.0F;
-                    var17 = (var17 * var17 + var17 * 2.0F) / 3.0F;
+                    var16 = (float)var7.getMaxItemUseDuration() - ((float)var3.getItemInUseCount() - par1 + 1.0F);
+                    var22 = var16 / 20.0F;
+                    var22 = (var22 * var22 + var22 * 2.0F) / 3.0F;
 
-                    if (var17 > 1.0F)
+                    if (var22 > 1.0F)
                     {
-                        var17 = 1.0F;
+                        var22 = 1.0F;
                     }
 
-                    if (var17 > 0.1F)
+                    if (var22 > 0.1F)
                     {
-                        GL11.glTranslatef(0.0F, MathHelper.sin((var16 - 0.1F) * 1.3F) * 0.01F * (var17 - 0.1F), 0.0F);
+                        GL11.glTranslatef(0.0F, MathHelper.sin((var16 - 0.1F) * 1.3F) * 0.01F * (var22 - 0.1F), 0.0F);
                     }
 
-                    GL11.glTranslatef(0.0F, 0.0F, var17 * 0.1F);
+                    GL11.glTranslatef(0.0F, 0.0F, var22 * 0.1F);
                     GL11.glRotatef(-335.0F, 0.0F, 0.0F, 1.0F);
                     GL11.glRotatef(-50.0F, 0.0F, 1.0F, 0.0F);
                     GL11.glTranslatef(0.0F, 0.5F, 0.0F);
-                    var18 = 1.0F + var17 * 0.2F;
-                    GL11.glScalef(1.0F, 1.0F, var18);
+                    var20 = 1.0F + var22 * 0.2F;
+                    GL11.glScalef(1.0F, 1.0F, var20);
                     GL11.glTranslatef(0.0F, -0.5F, 0.0F);
                     GL11.glRotatef(50.0F, 0.0F, 1.0F, 0.0F);
                     GL11.glRotatef(335.0F, 0.0F, 0.0F, 1.0F);
                 }
             }
 
-            if (var5.getItem().shouldRotateAroundWhenRendering())
+            if (var7.getItem().shouldRotateAroundWhenRendering())
             {
                 GL11.glRotatef(180.0F, 0.0F, 1.0F, 0.0F);
             }
 
-            if (var5.getItem().requiresMultipleRenderPasses())
+            if (var7.getItem().requiresMultipleRenderPasses())
             {
-                this.renderItem(var3, var5, 0);
-                int var26 = Item.itemsList[var5.itemID].getColorFromDamage(var5.getItemDamage(), 1);
+                this.renderItem(var3, var7, 0);
+                int var26 = Item.itemsList[var7.itemID].getColorFromDamage(var7.getItemDamage(), 1);
                 var16 = (float)(var26 >> 16 & 255) / 255.0F;
-                var17 = (float)(var26 >> 8 & 255) / 255.0F;
-                var18 = (float)(var26 & 255) / 255.0F;
-                GL11.glColor4f(var6 * var16, var6 * var17, var6 * var18, 1.0F);
-                this.renderItem(var3, var5, 1);
+                var22 = (float)(var26 >> 8 & 255) / 255.0F;
+                var20 = (float)(var26 & 255) / 255.0F;
+                GL11.glColor4f(var5 * var16, var5 * var22, var5 * var20, 1.0F);
+                this.renderItem(var3, var7, 1);
             }
             else
             {
-                this.renderItem(var3, var5, 0);
+                this.renderItem(var3, var7, 0);
             }
 
             GL11.glPopMatrix();
@@ -440,18 +440,18 @@ public class ItemRenderer
         else
         {
             GL11.glPushMatrix();
-            var22 = 0.8F;
-            var11 = var3.getSwingProgress(par1);
-            var12 = MathHelper.sin(var11 * (float)Math.PI);
-            var13 = MathHelper.sin(MathHelper.sqrt_float(var11) * (float)Math.PI);
-            GL11.glTranslatef(-var13 * 0.3F, MathHelper.sin(MathHelper.sqrt_float(var11) * (float)Math.PI * 2.0F) * 0.4F, -var12 * 0.4F);
-            GL11.glTranslatef(0.8F * var22, -0.75F * var22 - (1.0F - var2) * 0.6F, -0.9F * var22);
+            var6 = 0.8F;
+            var13 = var3.getSwingProgress(par1);
+            var12 = MathHelper.sin(var13 * (float)Math.PI);
+            var11 = MathHelper.sin(MathHelper.sqrt_float(var13) * (float)Math.PI);
+            GL11.glTranslatef(-var11 * 0.3F, MathHelper.sin(MathHelper.sqrt_float(var13) * (float)Math.PI * 2.0F) * 0.4F, -var12 * 0.4F);
+            GL11.glTranslatef(0.8F * var6, -0.75F * var6 - (1.0F - var2) * 0.6F, -0.9F * var6);
             GL11.glRotatef(45.0F, 0.0F, 1.0F, 0.0F);
             GL11.glEnable(GL12.GL_RESCALE_NORMAL);
-            var11 = var3.getSwingProgress(par1);
-            var12 = MathHelper.sin(var11 * var11 * (float)Math.PI);
-            var13 = MathHelper.sin(MathHelper.sqrt_float(var11) * (float)Math.PI);
-            GL11.glRotatef(var13 * 70.0F, 0.0F, 1.0F, 0.0F);
+            var13 = var3.getSwingProgress(par1);
+            var12 = MathHelper.sin(var13 * var13 * (float)Math.PI);
+            var11 = MathHelper.sin(MathHelper.sqrt_float(var13) * (float)Math.PI);
+            GL11.glRotatef(var11 * 70.0F, 0.0F, 1.0F, 0.0F);
             GL11.glRotatef(-var12 * 20.0F, 0.0F, 0.0F, 1.0F);
             GL11.glBindTexture(GL11.GL_TEXTURE_2D, this.mc.renderEngine.getTextureForDownloadableImage(this.mc.thePlayer.skinUrl, this.mc.thePlayer.getTexture()));
             GL11.glTranslatef(-1.0F, 3.6F, 3.5F);
@@ -460,11 +460,11 @@ public class ItemRenderer
             GL11.glRotatef(-135.0F, 0.0F, 1.0F, 0.0F);
             GL11.glScalef(1.0F, 1.0F, 1.0F);
             GL11.glTranslatef(5.6F, 0.0F, 0.0F);
-            var25 = RenderManager.instance.getEntityRenderObject(this.mc.thePlayer);
-            var24 = (RenderPlayer)var25;
+            var17 = RenderManager.instance.getEntityRenderObject(this.mc.thePlayer);
+            var18 = (RenderPlayer)var17;
             var16 = 1.0F;
             GL11.glScalef(var16, var16, var16);
-            var24.drawFirstPersonHand();
+            var18.drawFirstPersonHand();
             GL11.glPopMatrix();
         }
 

@@ -50,7 +50,7 @@ public class GuiNewChat extends Gui
 
                     if (var8 != null)
                     {
-                        var9 = par1 - var8.func_74540_b();
+                        var9 = par1 - var8.getUpdatedCounter();
 
                         if (var9 < 200 || var3)
                         {
@@ -85,7 +85,7 @@ public class GuiNewChat extends Gui
                                 int var14 = -var7 * 9;
                                 drawRect(var13, var14 - 1, var13 + 320 + 4, var14 + 8, var12 / 2 << 24);
                                 GL11.glEnable(GL11.GL_BLEND);
-                                String var15 = var8.func_74538_a();
+                                String var15 = var8.getChatLineString();
 
                                 if (!this.mc.gameSettings.chatColours)
                                 {
@@ -125,19 +125,25 @@ public class GuiNewChat extends Gui
         this.field_73770_b.clear();
     }
 
-    public void func_73765_a(String par1Str)
+    /**
+     * takes a String and prints it to chat
+     */
+    public void printChatMessage(String par1Str)
     {
-        this.func_73763_a(par1Str, 0);
+        this.printChatMessageWithOptionalDeletion(par1Str, 0);
     }
 
-    public void func_73763_a(String par1Str, int par2)
+    /**
+     * prints the String to Chat. If the ID is not 0, deletes an existing Chat Line of that ID from the GUI
+     */
+    public void printChatMessageWithOptionalDeletion(String par1Str, int par2)
     {
         boolean var3 = this.func_73760_d();
         boolean var4 = true;
 
         if (par2 != 0)
         {
-            this.func_73759_c(par2);
+            this.deleteChatLine(par2);
         }
 
         Iterator var5 = this.mc.fontRenderer.listFormattedStringToWidth(par1Str, 320).iterator();
@@ -158,7 +164,7 @@ public class GuiNewChat extends Gui
             }
 
             var4 = false;
-            this.ChatLines.add(0, new ChatLine(this.mc.ingameGUI.func_73834_c(), var6, par2));
+            this.ChatLines.add(0, new ChatLine(this.mc.ingameGUI.getUpdateCounter(), var6, par2));
         }
 
         while (this.ChatLines.size() > 100)
@@ -239,7 +245,7 @@ public class GuiNewChat extends Gui
 
     public void func_73757_a(String par1Str, Object ... par2ArrayOfObj)
     {
-        this.func_73765_a(StringTranslate.getInstance().translateKeyFormat(par1Str, par2ArrayOfObj));
+        this.printChatMessage(StringTranslate.getInstance().translateKeyFormat(par1Str, par2ArrayOfObj));
     }
 
     public boolean func_73760_d()
@@ -247,7 +253,10 @@ public class GuiNewChat extends Gui
         return this.mc.currentScreen instanceof GuiChat;
     }
 
-    public void func_73759_c(int par1)
+    /**
+     * finds and deletes a Chat line by ID
+     */
+    public void deleteChatLine(int par1)
     {
         Iterator var2 = this.ChatLines.iterator();
         ChatLine var3;
@@ -261,7 +270,7 @@ public class GuiNewChat extends Gui
 
             var3 = (ChatLine)var2.next();
         }
-        while (var3.func_74539_c() != par1);
+        while (var3.getChatLineID() != par1);
 
         var2.remove();
     }

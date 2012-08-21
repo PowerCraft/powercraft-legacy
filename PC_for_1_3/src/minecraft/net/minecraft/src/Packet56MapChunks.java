@@ -179,12 +179,4 @@ public class Packet56MapChunks extends Packet
     {
         return this.field_73584_f[par1];
     }
-
-    /**
-     * if this returns false, processPacket is deffered for processReadPackets to handle
-     */
-    public boolean isWritePacket()
-    {
-        return true;
-    }
 }

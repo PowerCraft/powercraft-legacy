@@ -17,7 +17,7 @@ final class ServerWindowAdapter extends WindowAdapter
     {
         this.mc.initiateShutdown();
 
-        while (!this.mc.func_71241_aa())
+        while (!this.mc.isServerStopped())
         {
             try
             {

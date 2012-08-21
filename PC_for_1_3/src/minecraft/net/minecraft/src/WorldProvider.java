@@ -159,7 +159,7 @@ public abstract class WorldProvider
         }
 
         float var4 = 0.7529412F;
-        float var5 = 0.8470588F;
+        float var5 = 0.84705883F;
         float var6 = 1.0F;
         var4 *= var3 * 0.94F + 0.06F;
         var5 *= var3 * 0.94F + 0.06F;
@@ -232,4 +232,6 @@ public abstract class WorldProvider
     {
         return false;
     }
+
+    public abstract String func_80007_l();
 }

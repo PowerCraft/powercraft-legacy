@@ -50,7 +50,7 @@ public class CommandXP extends CommandBase
 
     protected EntityPlayer func_71543_a(String par1Str)
     {
-        EntityPlayerMP var2 = MinecraftServer.getServer().func_71203_ab().getPlayerEntity(par1Str);
+        EntityPlayerMP var2 = MinecraftServer.getServer().getConfigurationManager().getPlayerEntity(par1Str);
 
         if (var2 == null)
         {

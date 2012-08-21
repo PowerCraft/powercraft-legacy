@@ -24,7 +24,7 @@ public class IntegratedServer extends MinecraftServer
         this.setDemo(par1Minecraft.isDemo());
         this.canCreateBonusChest(par4WorldSettings.isBonusChestEnabled());
         this.setBuildLimit(256);
-        this.setServerConfigManager(new IntegratedPlayerList(this));
+        this.setConfigurationManager(new IntegratedPlayerList(this));
         this.mc = par1Minecraft;
         this.field_71350_m = par4WorldSettings;
         ModLoader.registerCommands(this);
@@ -42,11 +42,11 @@ public class IntegratedServer extends MinecraftServer
     protected void loadAllDimensions(String par1Str, String par2Str, long par3, WorldType par5WorldType)
     {
         this.convertMapIfNeeded(par1Str);
-        this.dimensionServerList = new WorldServer[3];
-        this.timeOfLastDimenstionTick = new long[this.dimensionServerList.length][100];
+        this.theWorldServer = new WorldServer[3];
+        this.timeOfLastDimenstionTick = new long[this.theWorldServer.length][100];
         ISaveHandler var6 = this.getActiveAnvilConverter().getSaveLoader(par1Str, true);
 
-        for (int var7 = 0; var7 < this.dimensionServerList.length; ++var7)
+        for (int var7 = 0; var7 < this.theWorldServer.length; ++var7)
         {
             byte var8 = 0;
 
@@ -64,20 +64,20 @@ public class IntegratedServer extends MinecraftServer
             {
                 if (this.isDemo())
                 {
-                    this.dimensionServerList[var7] = new DemoWorldServer(this, var6, par2Str, var8, this.theProfiler);
+                    this.theWorldServer[var7] = new DemoWorldServer(this, var6, par2Str, var8, this.theProfiler);
                 }
                 else
                 {
-                    this.dimensionServerList[var7] = new WorldServer(this, var6, par2Str, var8, this.field_71350_m, this.theProfiler);
+                    this.theWorldServer[var7] = new WorldServer(this, var6, par2Str, var8, this.field_71350_m, this.theProfiler);
                 }
             }
             else
             {
-                this.dimensionServerList[var7] = new WorldServerMulti(this, var6, par2Str, var8, this.field_71350_m, this.dimensionServerList[0], this.theProfiler);
+                this.theWorldServer[var7] = new WorldServerMulti(this, var6, par2Str, var8, this.field_71350_m, this.theWorldServer[0], this.theProfiler);
             }
 
-            this.dimensionServerList[var7].addWorldAccess(new WorldManager(this, this.dimensionServerList[var7]));
-            this.getConfigurationManager().func_72364_a(this.dimensionServerList);
+            this.theWorldServer[var7].addWorldAccess(new WorldManager(this, this.theWorldServer[var7]));
+            this.getConfigurationManager().func_72364_a(this.theWorldServer);
         }
 
         this.setDifficultyForAllDimensions(this.getDifficulty());
@@ -89,7 +89,7 @@ public class IntegratedServer extends MinecraftServer
      */
     protected boolean startServer() throws IOException
     {
-        logger.info("Starting integrated minecraft server version 1.3.1");
+        logger.info("Starting integrated minecraft server version 1.3.2");
         this.setOnlineMode(false);
         this.setSpawnAnimals(true);
         this.setSpawnNpcs(true);
@@ -98,7 +98,7 @@ public class IntegratedServer extends MinecraftServer
         logger.info("Generating keypair");
         this.setKeyPair(CryptManager.createNewKeyPair());
         this.loadAllDimensions(this.getFolderName(), this.getWorldName(), this.field_71350_m.getSeed(), this.field_71350_m.getTerrainType());
-        this.setMOTD(this.getServerOwner() + " - " + this.dimensionServerList[0].getWorldInfo().getWorldName());
+        this.setMOTD(this.getServerOwner() + " - " + this.theWorldServer[0].getWorldInfo().getWorldName());
         return true;
     }
 
@@ -177,9 +177,16 @@ public class IntegratedServer extends MinecraftServer
      */
     public CrashReport addServerInfoToCrashReport(CrashReport par1CrashReport)
     {
+        par1CrashReport = super.addServerInfoToCrashReport(par1CrashReport);
         par1CrashReport.addCrashSectionCallable("Type", new CallableType3(this));
         par1CrashReport.addCrashSectionCallable("Is Modded", new CallableIsModded(this));
-        return super.addServerInfoToCrashReport(par1CrashReport);
+        return par1CrashReport;
+    }
+
+    public void addServerStatsToSnooper(PlayerUsageSnooper par1PlayerUsageSnooper)
+    {
+        super.addServerStatsToSnooper(par1PlayerUsageSnooper);
+        par1PlayerUsageSnooper.addData("snooper_partner", this.mc.getPlayerUsageSnooper().func_80006_f());
     }
 
     /**

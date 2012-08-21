@@ -126,7 +126,7 @@ public class EnchantmentHelper
     public static int getEnchantmentModifierDamage(InventoryPlayer par0InventoryPlayer, DamageSource par1DamageSource)
     {
         enchantmentModifierDamage.damageModifier = 0;
-        enchantmentModifierDamage.damageSource = par1DamageSource;
+        enchantmentModifierDamage.source = par1DamageSource;
         applyEnchantmentModifierArray(enchantmentModifierDamage, par0InventoryPlayer.armorInventory);
 
         if (enchantmentModifierDamage.damageModifier > 25)

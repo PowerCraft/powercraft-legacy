@@ -58,7 +58,7 @@ public class CommandHelp extends CommandBase
             par1ICommandSender.sendChatToPlayer(var9.getCommandUsage(par1ICommandSender));
         }
 
-        if (var11 == 0)
+        if (var11 == 0 && par1ICommandSender instanceof EntityPlayer)
         {
             par1ICommandSender.sendChatToPlayer("\u00a7a" + par1ICommandSender.translateString("commands.help.footer", new Object[0]));
         }

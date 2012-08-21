@@ -19,8 +19,9 @@ public class ServerCommandManager extends CommandHandler implements IAdminComman
         this.func_71560_a(new CommandShowSeed());
         this.func_71560_a(new CommandHelp());
         this.func_71560_a(new CommandDebug());
+        this.func_71560_a(new CommandServerMessage());
 
-        if (MinecraftServer.getServer().func_71262_S())
+        if (MinecraftServer.getServer().isDedicatedServer())
         {
             this.func_71560_a(new CommandServerOp());
             this.func_71560_a(new CommandServerDeop());
@@ -52,13 +53,13 @@ public class ServerCommandManager extends CommandHandler implements IAdminComman
      */
     public void notifyAdmins(ICommandSender par1ICommandSender, int par2, String par3Str, Object ... par4ArrayOfObj)
     {
-        Iterator var5 = MinecraftServer.getServer().func_71203_ab().playerEntities.iterator();
+        Iterator var5 = MinecraftServer.getServer().getConfigurationManager().playerEntityList.iterator();
 
         while (var5.hasNext())
         {
             EntityPlayerMP var6 = (EntityPlayerMP)var5.next();
 
-            if (var6 != par1ICommandSender && MinecraftServer.getServer().func_71203_ab().isOp(var6.username))
+            if (var6 != par1ICommandSender && MinecraftServer.getServer().getConfigurationManager().isOp(var6.username))
             {
                 var6.func_70006_a("\u00a77\u00a7o[" + par1ICommandSender.getCommandSenderName() + ": " + var6.translateString(par3Str, par4ArrayOfObj) + "]");
             }

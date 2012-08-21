@@ -44,13 +44,27 @@ public class GuiSnooper extends GuiScreen
         this.field_74096_d.clear();
         this.controlList.add(this.field_74099_p = new GuiButton(1, this.width / 2 - 152, this.height - 30, 150, 20, this.field_74097_b.getKeyBinding(EnumOptions.SNOOPER_ENABLED)));
         this.controlList.add(new GuiButton(2, this.width / 2 + 2, this.height - 30, 150, 20, StatCollector.translateToLocal("gui.done")));
-        var3 = (new TreeMap(this.mc.getPlayerUsageSnooper().getCurrentStats())).entrySet().iterator();
+        boolean var6 = this.mc.getIntegratedServer() != null && this.mc.getIntegratedServer().func_80003_ah() != null;
+        Iterator var7 = (new TreeMap(this.mc.getPlayerUsageSnooper().getCurrentStats())).entrySet().iterator();
+        Entry var5;
 
-        while (var3.hasNext())
+        while (var7.hasNext())
         {
-            Entry var5 = (Entry)var3.next();
-            this.field_74098_c.add(var5.getKey());
-            this.field_74096_d.add(this.fontRenderer.trimStringToWidth((String)var5.getValue(), this.width - 210));
+            var5 = (Entry)var7.next();
+            this.field_74098_c.add((var6 ? "C " : "") + (String)var5.getKey());
+            this.field_74096_d.add(this.fontRenderer.trimStringToWidth((String)var5.getValue(), this.width - 220));
+        }
+
+        if (var6)
+        {
+            var7 = (new TreeMap(this.mc.getIntegratedServer().func_80003_ah().getCurrentStats())).entrySet().iterator();
+
+            while (var7.hasNext())
+            {
+                var5 = (Entry)var7.next();
+                this.field_74098_c.add("S " + (String)var5.getKey());
+                this.field_74096_d.add(this.fontRenderer.trimStringToWidth((String)var5.getValue(), this.width - 220));
+            }
         }
 
         this.field_74102_o = new GuiSnooperList(this);

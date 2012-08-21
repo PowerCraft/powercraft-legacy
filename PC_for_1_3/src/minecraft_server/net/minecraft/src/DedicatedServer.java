@@ -38,7 +38,7 @@ public class DedicatedServer extends MinecraftServer implements IServer
         var1.setDaemon(true);
         var1.start();
         ConsoleLogManager.init();
-        logger.info("Starting minecraft server version 1.3.1");
+        logger.info("Starting minecraft server version 1.3.2");
 
         if (Runtime.getRuntime().maxMemory() / 1024L / 1024L < 512L)
         {
@@ -48,7 +48,7 @@ public class DedicatedServer extends MinecraftServer implements IServer
         logger.info("Loading properties");
         this.field_71340_o = new PropertyManager(new File("server.properties"));
 
-        if (this.func_71264_H())
+        if (this.isSinglePlayer())
         {
             this.func_71189_e("127.0.0.1");
         }
@@ -63,7 +63,7 @@ public class DedicatedServer extends MinecraftServer implements IServer
         this.func_71188_g(this.field_71340_o.getBooleanProperty("pvp", true));
         this.func_71245_h(this.field_71340_o.getBooleanProperty("allow-flight", false));
         this.func_71269_o(this.field_71340_o.getStringProperty("texture-pack", ""));
-        this.func_71205_p(this.field_71340_o.getStringProperty("motd", "A Minecraft Server"));
+        this.setMOTD(this.field_71340_o.getStringProperty("motd", "A Minecraft Server"));
         this.field_71338_p = this.field_71340_o.getBooleanProperty("generate-structures", true);
         int var2 = this.field_71340_o.getIntProperty("gamemode", EnumGameType.SURVIVAL.getID());
         this.theGameType = WorldSettings.getGameTypeById(var2);
@@ -81,7 +81,7 @@ public class DedicatedServer extends MinecraftServer implements IServer
         }
 
         logger.info("Generating keypair");
-        this.func_71253_a(CryptManager.func_75891_b());
+        this.func_71253_a(CryptManager.generateKeyPair());
         logger.info("Starting Minecraft server on " + (this.func_71211_k().length() == 0 ? "*" : this.func_71211_k()) + ":" + this.getServerPort());
 
         try
@@ -104,7 +104,7 @@ public class DedicatedServer extends MinecraftServer implements IServer
             logger.warning("To change this, set \"online-mode\" to \"true\" in the server.properties file.");
         }
 
-        this.func_71210_a(new DedicatedPlayerList(this));
+        this.setConfigurationManager(new DedicatedPlayerList(this));
         long var4 = System.nanoTime();
 
         if (this.func_71270_I() == null)
@@ -140,10 +140,10 @@ public class DedicatedServer extends MinecraftServer implements IServer
             var16 = WorldType.DEFAULT;
         }
 
-        this.func_71191_d(this.field_71340_o.getIntProperty("max-build-height", 256));
-        this.func_71191_d((this.func_71207_Z() + 8) / 16 * 16);
-        this.func_71191_d(MathHelper.clamp_int(this.func_71207_Z(), 64, 256));
-        this.field_71340_o.setProperty("max-build-height", Integer.valueOf(this.func_71207_Z()));
+        this.setBuildLimit(this.field_71340_o.getIntProperty("max-build-height", 256));
+        this.setBuildLimit((this.getBuildLimit() + 8) / 16 * 16);
+        this.setBuildLimit(MathHelper.clamp_int(this.getBuildLimit(), 64, 256));
+        this.field_71340_o.setProperty("max-build-height", Integer.valueOf(this.getBuildLimit()));
         logger.info("Preparing level \"" + this.func_71270_I() + "\"");
         this.func_71247_a(this.func_71270_I(), this.func_71270_I(), var8, var16);
         long var11 = System.nanoTime() - var4;
@@ -206,8 +206,9 @@ public class DedicatedServer extends MinecraftServer implements IServer
 
     public CrashReport func_71230_b(CrashReport par1CrashReport)
     {
+        par1CrashReport = super.func_71230_b(par1CrashReport);
         par1CrashReport.addCrashSectionCallable("Type", new CallableType(this));
-        return super.func_71230_b(par1CrashReport);
+        return par1CrashReport;
     }
 
     protected void func_71240_o()
@@ -238,7 +239,10 @@ public class DedicatedServer extends MinecraftServer implements IServer
         super.func_70000_a(par1PlayerUsageSnooper);
     }
 
-    public boolean func_70002_Q()
+    /**
+     * Returns whether snooping is enabled or not.
+     */
+    public boolean isSnooperEnabled()
     {
         return this.field_71340_o.getBooleanProperty("snooper-enabled", true);
     }
@@ -257,14 +261,14 @@ public class DedicatedServer extends MinecraftServer implements IServer
         }
     }
 
-    public boolean func_71262_S()
+    public boolean isDedicatedServer()
     {
         return true;
     }
 
     public DedicatedPlayerList func_71334_ai()
     {
-        return (DedicatedPlayerList)super.func_71203_ab();
+        return (DedicatedPlayerList)super.getConfigurationManager();
     }
 
     public NetworkListenThread func_71212_ac()
@@ -334,7 +338,7 @@ public class DedicatedServer extends MinecraftServer implements IServer
         return "";
     }
 
-    public ServerConfigurationManager func_71203_ab()
+    public ServerConfigurationManager getConfigurationManager()
     {
         return this.func_71334_ai();
     }

@@ -12,13 +12,13 @@ class CallableOSInfo implements Callable
         this.crashReportOSInfo = par1CrashReport;
     }
 
-    public String func_71495_a()
+    public String getOsAsString()
     {
         return System.getProperty("os.name") + " (" + System.getProperty("os.arch") + ") version " + System.getProperty("os.version");
     }
 
     public Object call()
     {
-        return this.func_71495_a();
+        return this.getOsAsString();
     }
 }

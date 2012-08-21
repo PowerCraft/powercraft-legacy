@@ -19,7 +19,7 @@ public class CommandServerDeop extends CommandBase
     {
         if (par2ArrayOfStr.length == 1 && par2ArrayOfStr[0].length() > 0)
         {
-            MinecraftServer.getServer().func_71203_ab().removeOp(par2ArrayOfStr[0]);
+            MinecraftServer.getServer().getConfigurationManager().removeOp(par2ArrayOfStr[0]);
             func_71522_a(par1ICommandSender, "commands.deop.success", new Object[] {par2ArrayOfStr[0]});
         }
         else
@@ -33,6 +33,6 @@ public class CommandServerDeop extends CommandBase
      */
     public List addTabCompletionOptions(ICommandSender par1ICommandSender, String[] par2ArrayOfStr)
     {
-        return par2ArrayOfStr.length == 1 ? getListOfStringsFromIterableMatchingLastWord(par2ArrayOfStr, MinecraftServer.getServer().func_71203_ab().func_72376_i()) : null;
+        return par2ArrayOfStr.length == 1 ? getListOfStringsFromIterableMatchingLastWord(par2ArrayOfStr, MinecraftServer.getServer().getConfigurationManager().func_72376_i()) : null;
     }
 }

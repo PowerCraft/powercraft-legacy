@@ -36,7 +36,7 @@ public class DedicatedServer extends MinecraftServer implements IServer
         var1.setDaemon(true);
         var1.start();
         ConsoleLogManager.func_73699_a();
-        logger.info("Starting minecraft server version 1.3.1");
+        logger.info("Starting minecraft server version 1.3.2");
 
         if (Runtime.getRuntime().maxMemory() / 1024L / 1024L < 512L)
         {
@@ -102,7 +102,7 @@ public class DedicatedServer extends MinecraftServer implements IServer
             logger.warning("To change this, set \"online-mode\" to \"true\" in the server.properties file.");
         }
 
-        this.setServerConfigManager(new DedicatedPlayerList(this));
+        this.setConfigurationManager(new DedicatedPlayerList(this));
         long var4 = System.nanoTime();
 
         if (this.getFolderName() == null)
@@ -216,8 +216,9 @@ public class DedicatedServer extends MinecraftServer implements IServer
      */
     public CrashReport addServerInfoToCrashReport(CrashReport par1CrashReport)
     {
+        par1CrashReport = super.addServerInfoToCrashReport(par1CrashReport);
         par1CrashReport.addCrashSectionCallable("Type", new CallableType(this));
-        return super.addServerInfoToCrashReport(par1CrashReport);
+        return par1CrashReport;
     }
 
     /**

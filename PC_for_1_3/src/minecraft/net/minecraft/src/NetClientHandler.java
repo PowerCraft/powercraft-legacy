@@ -13,6 +13,7 @@ import java.net.URLEncoder;
 import java.security.PublicKey;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
@@ -260,6 +261,21 @@ public class NetClientHandler extends NetHandler
             var8 = new EntityFallingSand(this.worldClient, var2, var4, var6, par1Packet23VehicleSpawn.throwerEntityId & 65535, par1Packet23VehicleSpawn.throwerEntityId >> 16);
             par1Packet23VehicleSpawn.throwerEntityId = 0;
         }
+        else
+        {
+            Iterator var15 = ModLoader.getTrackers().values().iterator();
+
+            while (var15.hasNext())
+            {
+                EntityTrackerNonliving var10 = (EntityTrackerNonliving)var15.next();
+
+                if (par1Packet23VehicleSpawn.type == var10.id)
+                {
+                    var8 = var10.mod.spawnEntity(par1Packet23VehicleSpawn.type, this.worldClient, var2, var4, var6);
+                    break;
+                }
+            }
+        }
 
         if (var8 != null)
         {
@@ -268,18 +284,18 @@ public class NetClientHandler extends NetHandler
             ((Entity)var8).serverPosZ = par1Packet23VehicleSpawn.zPosition;
             ((Entity)var8).rotationYaw = 0.0F;
             ((Entity)var8).rotationPitch = 0.0F;
-            Entity[] var15 = ((Entity)var8).getParts();
+            Entity[] var16 = ((Entity)var8).getParts();
 
-            if (var15 != null)
+            if (var16 != null)
             {
-                int var10 = par1Packet23VehicleSpawn.entityId - ((Entity)var8).entityId;
-                Entity[] var11 = var15;
-                int var12 = var15.length;
+                int var18 = par1Packet23VehicleSpawn.entityId - ((Entity)var8).entityId;
+                Entity[] var11 = var16;
+                int var12 = var16.length;
 
                 for (int var13 = 0; var13 < var12; ++var13)
                 {
                     Entity var14 = var11[var13];
-                    var14.entityId += var10;
+                    var14.entityId += var18;
                 }
             }
 
@@ -290,12 +306,12 @@ public class NetClientHandler extends NetHandler
             {
                 if (par1Packet23VehicleSpawn.type == 60)
                 {
-                    Entity var17 = this.getEntityByID(par1Packet23VehicleSpawn.throwerEntityId);
+                    Entity var19 = this.getEntityByID(par1Packet23VehicleSpawn.throwerEntityId);
 
-                    if (var17 instanceof EntityLiving)
+                    if (var19 instanceof EntityLiving)
                     {
-                        EntityArrow var16 = (EntityArrow)var8;
-                        var16.shootingEntity = var17;
+                        EntityArrow var17 = (EntityArrow)var8;
+                        var17.shootingEntity = var19;
                     }
                 }
 
@@ -642,14 +658,14 @@ public class NetClientHandler extends NetHandler
                 this.worldClient.playSoundAtEntity(var2, "random.pop", 0.2F, ((this.rand.nextFloat() - this.rand.nextFloat()) * 0.7F + 1.0F) * 2.0F);
             }
 
-            this.mc.effectRenderer.addEffect(new EntityPickupFX(this.mc.theWorld, var2, (Entity)((Entity)var3), -0.5F));
+            this.mc.effectRenderer.addEffect(new EntityPickupFX(this.mc.theWorld, var2, (Entity)var3, -0.5F));
             this.worldClient.removeEntityFromWorld(par1Packet22Collect.collectedEntityId);
         }
     }
 
     public void handleChat(Packet3Chat par1Packet3Chat)
     {
-        this.mc.ingameGUI.func_73827_b().func_73765_a(par1Packet3Chat.message);
+        this.mc.ingameGUI.getChatGUI().printChatMessage(par1Packet3Chat.message);
         ModLoader.clientChat(par1Packet3Chat.message);
     }
 
@@ -686,7 +702,7 @@ public class NetClientHandler extends NetHandler
                     EntityCrit2FX var4 = new EntityCrit2FX(this.mc.theWorld, var2, "magicCrit");
                     this.mc.effectRenderer.addEffect(var4);
                 }
-                else if (par1Packet18Animation.animate == 5 && !(var2 instanceof EntityOtherPlayerMP))
+                else if (par1Packet18Animation.animate == 5 && var2 instanceof EntityOtherPlayerMP)
                 {
                     ;
                 }
@@ -698,13 +714,10 @@ public class NetClientHandler extends NetHandler
     {
         Entity var2 = this.getEntityByID(par1Packet17Sleep.entityID);
 
-        if (var2 != null)
+        if (var2 != null && par1Packet17Sleep.field_73622_e == 0)
         {
-            if (par1Packet17Sleep.field_73622_e == 0)
-            {
-                EntityPlayer var3 = (EntityPlayer)var2;
-                var3.sleepInBedAt(par1Packet17Sleep.bedX, par1Packet17Sleep.bedY, par1Packet17Sleep.bedZ);
-            }
+            EntityPlayer var3 = (EntityPlayer)var2;
+            var3.sleepInBedAt(par1Packet17Sleep.bedX, par1Packet17Sleep.bedY, par1Packet17Sleep.bedZ);
         }
     }
 
@@ -795,7 +808,7 @@ public class NetClientHandler extends NetHandler
 
         if (var2 != null)
         {
-            ((Entity)((Entity)var2)).mountEntity(var3);
+            ((Entity)var2).mountEntity(var3);
         }
     }
 
@@ -903,7 +916,6 @@ public class NetClientHandler extends NetHandler
             case 6:
                 var2.displayGUIMerchant(new NpcMerchant(var2));
                 var2.craftingInventory.windowId = par1Packet100OpenWindow.windowId;
-                break;
 
             default:
                 ModLoader.clientOpenWindow(par1Packet100OpenWindow);
@@ -1131,15 +1143,15 @@ public class NetClientHandler extends NetHandler
             }
             else if (var4 == 101)
             {
-                this.mc.ingameGUI.func_73827_b().func_73757_a("demo.help.movement", new Object[] {Keyboard.getKeyName(var5.keyBindForward.keyCode), Keyboard.getKeyName(var5.keyBindLeft.keyCode), Keyboard.getKeyName(var5.keyBindBack.keyCode), Keyboard.getKeyName(var5.keyBindRight.keyCode)});
+                this.mc.ingameGUI.getChatGUI().func_73757_a("demo.help.movement", new Object[] {Keyboard.getKeyName(var5.keyBindForward.keyCode), Keyboard.getKeyName(var5.keyBindLeft.keyCode), Keyboard.getKeyName(var5.keyBindBack.keyCode), Keyboard.getKeyName(var5.keyBindRight.keyCode)});
             }
             else if (var4 == 102)
             {
-                this.mc.ingameGUI.func_73827_b().func_73757_a("demo.help.jump", new Object[] {Keyboard.getKeyName(var5.keyBindJump.keyCode)});
+                this.mc.ingameGUI.getChatGUI().func_73757_a("demo.help.jump", new Object[] {Keyboard.getKeyName(var5.keyBindJump.keyCode)});
             }
             else if (var4 == 103)
             {
-                this.mc.ingameGUI.func_73827_b().func_73757_a("demo.help.inventory", new Object[] {Keyboard.getKeyName(var5.keyBindInventory.keyCode)});
+                this.mc.ingameGUI.getChatGUI().func_73757_a("demo.help.inventory", new Object[] {Keyboard.getKeyName(var5.keyBindInventory.keyCode)});
             }
         }
     }

@@ -34,8 +34,8 @@ public class DedicatedPlayerList extends ServerConfigurationManager
         this.getBannedIPs().saveToFileWithHeader();
         this.loadOpsList();
         this.readWhiteList();
-        this.saveOpsListOrWhitelist();
         this.saveOpsList();
+        this.saveWhiteList();
     }
 
     public void setWhiteListEnabled(boolean par1)
@@ -45,32 +45,44 @@ public class DedicatedPlayerList extends ServerConfigurationManager
         this.getDedicatedServerInstance().saveSettingsToFile();
     }
 
-    public void addNameToWhitelist(String par1Str)
+    /**
+     * This adds a username to the ops list, then saves the op list
+     */
+    public void addOp(String par1Str)
     {
-        super.addNameToWhitelist(par1Str);
-        this.saveOpsListOrWhitelist();
-    }
-
-    public void removeNameFromWhitelist(String par1Str)
-    {
-        super.removeNameFromWhitelist(par1Str);
-        this.saveOpsListOrWhitelist();
-    }
-
-    public void removeFromIPWhitelist(String par1Str)
-    {
-        super.removeFromIPWhitelist(par1Str);
-        this.saveOpsList();
-    }
-
-    public void addToIPWhitelist(String par1Str)
-    {
-        super.addToIPWhitelist(par1Str);
+        super.addOp(par1Str);
         this.saveOpsList();
     }
 
     /**
-     * eithre does nothing, or calls readWhiteList
+     * This removes a username from the ops list, then saves the op list
+     */
+    public void removeOp(String par1Str)
+    {
+        super.removeOp(par1Str);
+        this.saveOpsList();
+    }
+
+    /**
+     * Remove the specified player from the whitelist.
+     */
+    public void removeFromWhitelist(String par1Str)
+    {
+        super.removeFromWhitelist(par1Str);
+        this.saveWhiteList();
+    }
+
+    /**
+     * Add the specified player to the white list.
+     */
+    public void addToWhiteList(String par1Str)
+    {
+        super.addToWhiteList(par1Str);
+        this.saveWhiteList();
+    }
+
+    /**
+     * Either does nothing, or calls readWhiteList.
      */
     public void loadWhiteList()
     {
@@ -98,7 +110,7 @@ public class DedicatedPlayerList extends ServerConfigurationManager
         }
     }
 
-    private void saveOpsListOrWhitelist()
+    private void saveOpsList()
     {
         try
         {
@@ -140,7 +152,7 @@ public class DedicatedPlayerList extends ServerConfigurationManager
         }
     }
 
-    private void saveOpsList()
+    private void saveWhiteList()
     {
         try
         {
@@ -161,7 +173,10 @@ public class DedicatedPlayerList extends ServerConfigurationManager
         }
     }
 
-    public boolean isWhiteListed(String par1Str)
+    /**
+     * Determine if the player is allowed to connect based on current server settings.
+     */
+    public boolean isAllowedToLogin(String par1Str)
     {
         par1Str = par1Str.trim().toLowerCase();
         return !this.isWhiteListEnabled() || this.areCommandsAllowed(par1Str) || this.getIPWhiteList().contains(par1Str);

@@ -76,7 +76,7 @@ public class GuiMultiplayer extends GuiScreen
         {
             this.field_74024_A = true;
             this.field_74030_m = new ServerList(this.mc);
-            this.field_74030_m.func_78853_a();
+            this.field_74030_m.loadServerList();
             this.field_74041_x = new LanServerList();
 
             try
@@ -156,7 +156,7 @@ public class GuiMultiplayer extends GuiScreen
         {
             if (par1GuiButton.id == 2)
             {
-                String var2 = this.field_74030_m.func_78850_a(this.selectedServer).serverName;
+                String var2 = this.field_74030_m.getServerData(this.selectedServer).serverName;
 
                 if (var2 != null)
                 {
@@ -187,7 +187,7 @@ public class GuiMultiplayer extends GuiScreen
             else if (par1GuiButton.id == 7)
             {
                 this.editClicked = true;
-                ServerData var9 = this.field_74030_m.func_78850_a(this.selectedServer);
+                ServerData var9 = this.field_74030_m.getServerData(this.selectedServer);
                 this.mc.displayGuiScreen(new GuiScreenAddServer(this, this.field_74031_w = new ServerData(var9.serverName, var9.serverIP)));
             }
             else if (par1GuiButton.id == 0)
@@ -213,8 +213,8 @@ public class GuiMultiplayer extends GuiScreen
 
             if (par1)
             {
-                this.field_74030_m.func_78851_b(par2);
-                this.field_74030_m.func_78855_b();
+                this.field_74030_m.removeServerData(par2);
+                this.field_74030_m.saveServerList();
                 this.selectedServer = -1;
             }
 
@@ -239,8 +239,8 @@ public class GuiMultiplayer extends GuiScreen
 
             if (par1)
             {
-                this.field_74030_m.func_78849_a(this.field_74031_w);
-                this.field_74030_m.func_78855_b();
+                this.field_74030_m.addServerData(this.field_74031_w);
+                this.field_74030_m.saveServerList();
                 this.selectedServer = -1;
             }
 
@@ -252,10 +252,10 @@ public class GuiMultiplayer extends GuiScreen
 
             if (par1)
             {
-                ServerData var3 = this.field_74030_m.func_78850_a(this.selectedServer);
+                ServerData var3 = this.field_74030_m.getServerData(this.selectedServer);
                 var3.serverName = this.field_74031_w.serverName;
                 var3.serverIP = this.field_74031_w.serverIP;
-                this.field_74030_m.func_78855_b();
+                this.field_74030_m.saveServerList();
             }
 
             this.mc.displayGuiScreen(this);
@@ -269,35 +269,43 @@ public class GuiMultiplayer extends GuiScreen
     {
         int var3 = this.selectedServer;
 
-        if (isShiftKeyDown() && par2 == 200)
+        if (par2 == 59)
         {
-            if (var3 > 0 && var3 < this.field_74030_m.func_78856_c())
+            this.mc.gameSettings.field_80005_w = !this.mc.gameSettings.field_80005_w;
+            this.mc.gameSettings.saveOptions();
+        }
+        else
+        {
+            if (isShiftKeyDown() && par2 == 200)
             {
-                this.field_74030_m.func_78857_a(var3, var3 - 1);
-                --this.selectedServer;
-
-                if (var3 < this.field_74030_m.func_78856_c() - 1)
+                if (var3 > 0 && var3 < this.field_74030_m.countServers())
                 {
-                    this.serverSlotContainer.func_77208_b(-this.serverSlotContainer.slotHeight);
+                    this.field_74030_m.swapServers(var3, var3 - 1);
+                    --this.selectedServer;
+
+                    if (var3 < this.field_74030_m.countServers() - 1)
+                    {
+                        this.serverSlotContainer.func_77208_b(-this.serverSlotContainer.slotHeight);
+                    }
                 }
             }
-        }
-        else if (isShiftKeyDown() && par2 == 208)
-        {
-            if (var3 < this.field_74030_m.func_78856_c() - 1)
+            else if (isShiftKeyDown() && par2 == 208)
             {
-                this.field_74030_m.func_78857_a(var3, var3 + 1);
-                ++this.selectedServer;
-
-                if (var3 > 0)
+                if (var3 < this.field_74030_m.countServers() - 1)
                 {
-                    this.serverSlotContainer.func_77208_b(this.serverSlotContainer.slotHeight);
+                    this.field_74030_m.swapServers(var3, var3 + 1);
+                    ++this.selectedServer;
+
+                    if (var3 > 0)
+                    {
+                        this.serverSlotContainer.func_77208_b(this.serverSlotContainer.slotHeight);
+                    }
                 }
             }
-        }
-        else if (par1 == 13)
-        {
-            this.actionPerformed((GuiButton)this.controlList.get(2));
+            else if (par1 == 13)
+            {
+                this.actionPerformed((GuiButton)this.controlList.get(2));
+            }
         }
     }
 
@@ -324,13 +332,13 @@ public class GuiMultiplayer extends GuiScreen
      */
     private void joinServer(int par1)
     {
-        if (par1 < this.field_74030_m.func_78856_c())
+        if (par1 < this.field_74030_m.countServers())
         {
-            this.func_74002_a(this.field_74030_m.func_78850_a(par1));
+            this.func_74002_a(this.field_74030_m.getServerData(par1));
         }
         else
         {
-            par1 -= this.field_74030_m.func_78856_c();
+            par1 -= this.field_74030_m.countServers();
 
             if (par1 < this.field_74026_B.size())
             {
@@ -395,7 +403,7 @@ public class GuiMultiplayer extends GuiScreen
                 ;
             }
 
-            par1ServerData.field_78843_d = "\u00a77" + var6;
+            par1ServerData.serverMOTD = "\u00a77" + var6;
 
             if (var9 >= 0 && var10 > 0)
             {

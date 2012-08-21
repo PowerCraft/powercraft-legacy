@@ -22,7 +22,7 @@ public abstract class ServerConfigurationManager
     private final MinecraftServer mcServer;
 
     /** A list of player entities that exist on this server. */
-    public final List playerEntities = new ArrayList();
+    public final List playerEntityList = new ArrayList();
     private final BanList field_72401_g = new BanList(new File("banned-players.txt"));
     private final BanList field_72413_h = new BanList(new File("banned-ips.txt"));
 
@@ -42,7 +42,7 @@ public abstract class ServerConfigurationManager
 
     /** The maximum number of players that can be connected at a time. */
     protected int maxPlayers;
-    protected int field_72402_d;
+    protected int viewDistance;
     private EnumGameType field_72410_m;
     private boolean field_72407_n;
 
@@ -54,8 +54,8 @@ public abstract class ServerConfigurationManager
     public ServerConfigurationManager(MinecraftServer par1MinecraftServer)
     {
         this.mcServer = par1MinecraftServer;
-        this.field_72401_g.func_73708_a(false);
-        this.field_72413_h.func_73708_a(false);
+        this.field_72401_g.setListActive(false);
+        this.field_72413_h.setListActive(false);
         this.maxPlayers = 8;
     }
 
@@ -133,7 +133,7 @@ public abstract class ServerConfigurationManager
      */
     public void readPlayerDataFromFile(EntityPlayerMP par1EntityPlayerMP)
     {
-        NBTTagCompound var2 = this.mcServer.worldMngr[0].getWorldInfo().func_76072_h();
+        NBTTagCompound var2 = this.mcServer.theWorldServer[0].getWorldInfo().func_76072_h();
 
         if (par1EntityPlayerMP.getCommandSenderName().equals(this.mcServer.getServerOwner()) && var2 != null)
         {
@@ -156,7 +156,7 @@ public abstract class ServerConfigurationManager
     public void playerLoggedIn(EntityPlayerMP par1EntityPlayerMP)
     {
         this.sendPacketToAllPlayers(new Packet201PlayerInfo(par1EntityPlayerMP.username, true, 1000));
-        this.playerEntities.add(par1EntityPlayerMP);
+        this.playerEntityList.add(par1EntityPlayerMP);
         WorldServer var2 = this.mcServer.getWorldManager(par1EntityPlayerMP.dimension);
 
         while (!var2.getCollidingBoundingBoxes(par1EntityPlayerMP, par1EntityPlayerMP.boundingBox).isEmpty())
@@ -166,7 +166,7 @@ public abstract class ServerConfigurationManager
 
         var2.spawnEntityInWorld(par1EntityPlayerMP);
         this.func_72375_a(par1EntityPlayerMP, (WorldServer)null);
-        Iterator var3 = this.playerEntities.iterator();
+        Iterator var3 = this.playerEntityList.iterator();
 
         while (var3.hasNext())
         {
@@ -192,7 +192,7 @@ public abstract class ServerConfigurationManager
         WorldServer var2 = par1EntityPlayerMP.func_71121_q();
         var2.setEntityDead(par1EntityPlayerMP);
         var2.func_73040_p().removePlayer(par1EntityPlayerMP);
-        this.playerEntities.remove(par1EntityPlayerMP);
+        this.playerEntityList.remove(par1EntityPlayerMP);
         this.sendPacketToAllPlayers(new Packet201PlayerInfo(par1EntityPlayerMP.username, false, 9999));
     }
 
@@ -234,7 +234,7 @@ public abstract class ServerConfigurationManager
             }
             else
             {
-                return this.playerEntities.size() >= this.maxPlayers ? "The server is full!" : null;
+                return this.playerEntityList.size() >= this.maxPlayers ? "The server is full!" : null;
             }
         }
     }
@@ -242,7 +242,7 @@ public abstract class ServerConfigurationManager
     public EntityPlayerMP func_72366_a(String par1Str)
     {
         ArrayList var2 = new ArrayList();
-        Iterator var3 = this.playerEntities.iterator();
+        Iterator var3 = this.playerEntityList.iterator();
         EntityPlayerMP var4;
 
         while (var3.hasNext())
@@ -285,7 +285,7 @@ public abstract class ServerConfigurationManager
         par1EntityPlayerMP.func_71121_q().getEntityTracker().removeTrackedPlayerSymmetric(par1EntityPlayerMP);
         par1EntityPlayerMP.func_71121_q().getEntityTracker().untrackEntity(par1EntityPlayerMP);
         par1EntityPlayerMP.func_71121_q().func_73040_p().removePlayer(par1EntityPlayerMP);
-        this.playerEntities.remove(par1EntityPlayerMP);
+        this.playerEntityList.remove(par1EntityPlayerMP);
         this.mcServer.getWorldManager(par1EntityPlayerMP.dimension).removeEntity(par1EntityPlayerMP);
         ChunkCoordinates var4 = par1EntityPlayerMP.getSpawnChunk();
         par1EntityPlayerMP.dimension = par2;
@@ -337,7 +337,7 @@ public abstract class ServerConfigurationManager
         this.updateTimeAndWeather(var6, var7);
         var7.func_73040_p().addPlayer(var6);
         var7.spawnEntityInWorld(var6);
-        this.playerEntities.add(var6);
+        this.playerEntityList.add(var6);
         var6.func_71116_b();
         return var6;
     }
@@ -433,9 +433,9 @@ public abstract class ServerConfigurationManager
             this.playerPingIndex = 0;
         }
 
-        if (this.playerPingIndex < this.playerEntities.size())
+        if (this.playerPingIndex < this.playerEntityList.size())
         {
-            EntityPlayerMP var1 = (EntityPlayerMP)this.playerEntities.get(this.playerPingIndex);
+            EntityPlayerMP var1 = (EntityPlayerMP)this.playerEntityList.get(this.playerPingIndex);
             this.sendPacketToAllPlayers(new Packet201PlayerInfo(var1.username, true, var1.ping));
         }
     }
@@ -445,12 +445,9 @@ public abstract class ServerConfigurationManager
      */
     public void sendPacketToAllPlayers(Packet par1Packet)
     {
-        Iterator var2 = this.playerEntities.iterator();
-
-        while (var2.hasNext())
+        for (int var2 = 0; var2 < this.playerEntityList.size(); ++var2)
         {
-            EntityPlayerMP var3 = (EntityPlayerMP)var2.next();
-            var3.playerNetServerHandler.sendPacket(par1Packet);
+            ((EntityPlayerMP)this.playerEntityList.get(var2)).playerNetServerHandler.sendPacket(par1Packet);
         }
     }
 
@@ -459,7 +456,7 @@ public abstract class ServerConfigurationManager
      */
     public void sendPacketToAllPlayersInDimension(Packet par1Packet, int par2)
     {
-        Iterator var3 = this.playerEntities.iterator();
+        Iterator var3 = this.playerEntityList.iterator();
 
         while (var3.hasNext())
         {
@@ -479,14 +476,14 @@ public abstract class ServerConfigurationManager
     {
         String var1 = "";
 
-        for (int var2 = 0; var2 < this.playerEntities.size(); ++var2)
+        for (int var2 = 0; var2 < this.playerEntityList.size(); ++var2)
         {
             if (var2 > 0)
             {
                 var1 = var1 + ", ";
             }
 
-            var1 = var1 + ((EntityPlayerMP)this.playerEntities.get(var2)).username;
+            var1 = var1 + ((EntityPlayerMP)this.playerEntityList.get(var2)).username;
         }
 
         return var1;
@@ -497,22 +494,22 @@ public abstract class ServerConfigurationManager
      */
     public String[] getPlayerNamesAsList()
     {
-        String[] var1 = new String[this.playerEntities.size()];
+        String[] var1 = new String[this.playerEntityList.size()];
 
-        for (int var2 = 0; var2 < this.playerEntities.size(); ++var2)
+        for (int var2 = 0; var2 < this.playerEntityList.size(); ++var2)
         {
-            var1[var2] = ((EntityPlayerMP)this.playerEntities.get(var2)).username;
+            var1[var2] = ((EntityPlayerMP)this.playerEntityList.get(var2)).username;
         }
 
         return var1;
     }
 
-    public BanList func_72390_e()
+    public BanList getBannedPlayers()
     {
         return this.field_72401_g;
     }
 
-    public BanList func_72363_f()
+    public BanList getBannedIPs()
     {
         return this.field_72413_h;
     }
@@ -534,7 +531,7 @@ public abstract class ServerConfigurationManager
     }
 
     /**
-     * Determine if the player is allowed to connect based on current server settings
+     * Determine if the player is allowed to connect based on current server settings.
      */
     public boolean isAllowedToLogin(String par1Str)
     {
@@ -547,7 +544,7 @@ public abstract class ServerConfigurationManager
      */
     public boolean isOp(String par1Str)
     {
-        return this.ops.contains(par1Str.trim().toLowerCase()) || this.mcServer.func_71264_H() && this.mcServer.worldMngr[0].getWorldInfo().areCommandsAllowed() && this.mcServer.getServerOwner().equalsIgnoreCase(par1Str) || this.field_72407_n;
+        return this.ops.contains(par1Str.trim().toLowerCase()) || this.mcServer.isSinglePlayer() && this.mcServer.theWorldServer[0].getWorldInfo().areCommandsAllowed() && this.mcServer.getServerOwner().equalsIgnoreCase(par1Str) || this.field_72407_n;
     }
 
     /**
@@ -555,7 +552,7 @@ public abstract class ServerConfigurationManager
      */
     public EntityPlayerMP getPlayerEntity(String par1Str)
     {
-        Iterator var2 = this.playerEntities.iterator();
+        Iterator var2 = this.playerEntityList.iterator();
         EntityPlayerMP var3;
 
         do
@@ -582,7 +579,7 @@ public abstract class ServerConfigurationManager
 
     public void func_72397_a(EntityPlayer par1EntityPlayer, double par2, double par4, double par6, double par8, int par10, Packet par11Packet)
     {
-        Iterator var12 = this.playerEntities.iterator();
+        Iterator var12 = this.playerEntityList.iterator();
 
         while (var12.hasNext())
         {
@@ -607,7 +604,7 @@ public abstract class ServerConfigurationManager
      */
     public void savePlayerStates()
     {
-        Iterator var1 = this.playerEntities.iterator();
+        Iterator var1 = this.playerEntityList.iterator();
 
         while (var1.hasNext())
         {
@@ -625,9 +622,9 @@ public abstract class ServerConfigurationManager
     }
 
     /**
-     * remove the specified player from the whitelist
+     * Remove the specified player from the whitelist.
      */
-    public void removeFromWhiteList(String par1Str)
+    public void removeFromWhitelist(String par1Str)
     {
         this.whiteListedPlayers.remove(par1Str);
     }
@@ -646,9 +643,9 @@ public abstract class ServerConfigurationManager
     }
 
     /**
-     * reloads the whitelist
+     * Either does nothing, or calls readWhiteList.
      */
-    public void reloadWhiteList() {}
+    public void loadWhiteList() {}
 
     /**
      * Updates the time and weather for the given player to those of the given world
@@ -674,7 +671,7 @@ public abstract class ServerConfigurationManager
      */
     public int playersOnline()
     {
-        return this.playerEntities.size();
+        return this.playerEntityList.size();
     }
 
     /**
@@ -687,7 +684,7 @@ public abstract class ServerConfigurationManager
 
     public String[] func_72373_m()
     {
-        return this.mcServer.worldMngr[0].getSaveHandler().getPlayerNBTManager().getAvailablePlayerDat();
+        return this.mcServer.theWorldServer[0].getSaveHandler().getPlayerNBTManager().getAvailablePlayerDat();
     }
 
     public boolean func_72383_n()
@@ -695,7 +692,7 @@ public abstract class ServerConfigurationManager
         return this.whiteListEnforced;
     }
 
-    public void func_72371_a(boolean par1)
+    public void setWhiteListEnabled(boolean par1)
     {
         this.whiteListEnforced = par1;
     }
@@ -703,7 +700,7 @@ public abstract class ServerConfigurationManager
     public List func_72382_j(String par1Str)
     {
         ArrayList var2 = new ArrayList();
-        Iterator var3 = this.playerEntities.iterator();
+        Iterator var3 = this.playerEntityList.iterator();
 
         while (var3.hasNext())
         {
@@ -723,10 +720,10 @@ public abstract class ServerConfigurationManager
      */
     public int getViewDistance()
     {
-        return this.field_72402_d;
+        return this.viewDistance;
     }
 
-    public MinecraftServer func_72365_p()
+    public MinecraftServer getServerInstance()
     {
         return this.mcServer;
     }
@@ -752,9 +749,9 @@ public abstract class ServerConfigurationManager
 
     public void func_72392_r()
     {
-        while (!this.playerEntities.isEmpty())
+        while (!this.playerEntityList.isEmpty())
         {
-            ((EntityPlayerMP)this.playerEntities.get(0)).playerNetServerHandler.kickPlayer("Server closed");
+            ((EntityPlayerMP)this.playerEntityList.get(0)).playerNetServerHandler.kickPlayer("Server closed");
         }
     }
 }

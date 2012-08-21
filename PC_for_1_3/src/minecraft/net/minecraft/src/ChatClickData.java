@@ -23,7 +23,7 @@ public class ChatClickData
         this.line = par2ChatLine;
         this.field_78312_d = par3;
         this.field_78313_e = par4;
-        this.field_78310_f = par1FontRenderer.trimStringToWidth(par2ChatLine.func_74538_a(), par3);
+        this.field_78310_f = par1FontRenderer.trimStringToWidth(par2ChatLine.getChatLineString(), par3);
         this.field_78311_g = this.func_78307_h();
     }
 
@@ -79,13 +79,13 @@ public class ChatClickData
             var1 = 0;
         }
 
-        int var2 = this.line.func_74538_a().indexOf(" ", var1);
+        int var2 = this.line.getChatLineString().indexOf(" ", var1);
 
         if (var2 < 0)
         {
-            var2 = this.line.func_74538_a().length();
+            var2 = this.line.getChatLineString().length();
         }
 
-        return StringUtils.stripControlCodes(this.line.func_74538_a().substring(var1, var2));
+        return StringUtils.stripControlCodes(this.line.getChatLineString().substring(var1, var2));
     }
 }

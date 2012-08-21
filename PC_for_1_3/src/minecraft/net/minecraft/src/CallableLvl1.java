@@ -12,13 +12,13 @@ class CallableLvl1 implements Callable
         this.worldLvl1 = par1World;
     }
 
-    public String func_77484_a()
+    public String getWorldEntitiesAsString()
     {
         return this.worldLvl1.loadedEntityList.size() + " total; " + this.worldLvl1.loadedEntityList.toString();
     }
 
     public Object call()
     {
-        return this.func_77484_a();
+        return this.getWorldEntitiesAsString();
     }
 }

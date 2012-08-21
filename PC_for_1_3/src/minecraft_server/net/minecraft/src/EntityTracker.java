@@ -21,7 +21,7 @@ public class EntityTracker
     public EntityTracker(WorldServer par1WorldServer)
     {
         this.field_72795_a = par1WorldServer;
-        this.maxTrackingDistanceThreshold = par1WorldServer.getMinecraftServer().func_71203_ab().func_72372_a();
+        this.maxTrackingDistanceThreshold = par1WorldServer.getMinecraftServer().getConfigurationManager().func_72372_a();
     }
 
     public void trackEntity(Entity par1Entity)

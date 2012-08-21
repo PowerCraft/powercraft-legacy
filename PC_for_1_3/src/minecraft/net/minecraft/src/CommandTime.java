@@ -63,9 +63,9 @@ public class CommandTime extends CommandBase
 
     protected void func_71552_a(ICommandSender par1ICommandSender, int par2)
     {
-        for (int var3 = 0; var3 < MinecraftServer.getServer().dimensionServerList.length; ++var3)
+        for (int var3 = 0; var3 < MinecraftServer.getServer().theWorldServer.length; ++var3)
         {
-            MinecraftServer.getServer().dimensionServerList[var3].setTime((long)par2);
+            MinecraftServer.getServer().theWorldServer[var3].setTime((long)par2);
         }
     }
 
@@ -74,9 +74,9 @@ public class CommandTime extends CommandBase
      */
     protected void addTime(ICommandSender par1ICommandSender, int par2)
     {
-        for (int var3 = 0; var3 < MinecraftServer.getServer().dimensionServerList.length; ++var3)
+        for (int var3 = 0; var3 < MinecraftServer.getServer().theWorldServer.length; ++var3)
         {
-            WorldServer var4 = MinecraftServer.getServer().dimensionServerList[var3];
+            WorldServer var4 = MinecraftServer.getServer().theWorldServer[var3];
             var4.setTime(var4.getWorldTime() + (long)par2);
         }
     }

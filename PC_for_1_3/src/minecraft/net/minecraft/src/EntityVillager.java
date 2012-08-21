@@ -350,7 +350,7 @@ public class EntityVillager extends EntityAgeable implements INpc, IMerchant
     {
         MerchantRecipeList var2;
         var2 = new MerchantRecipeList();
-        label44:
+        label45:
 
         switch (this.getProfession())
         {
@@ -399,7 +399,7 @@ public class EntityVillager extends EntityAgeable implements INpc, IMerchant
                 {
                     if (var6 >= var5)
                     {
-                        break label44;
+                        break label45;
                     }
 
                     int var7 = var4[var6];

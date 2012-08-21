@@ -20,7 +20,7 @@ public class CommandServerOp extends CommandBase
     {
         if (par2ArrayOfStr.length == 1 && par2ArrayOfStr[0].length() > 0)
         {
-            MinecraftServer.getServer().func_71203_ab().addOp(par2ArrayOfStr[0]);
+            MinecraftServer.getServer().getConfigurationManager().addOp(par2ArrayOfStr[0]);
             func_71522_a(par1ICommandSender, "commands.op.success", new Object[] {par2ArrayOfStr[0]});
         }
         else
@@ -45,7 +45,7 @@ public class CommandServerOp extends CommandBase
             {
                 String var8 = var5[var7];
 
-                if (!MinecraftServer.getServer().func_71203_ab().isOp(var8) && doesStringStartWith(var3, var8))
+                if (!MinecraftServer.getServer().getConfigurationManager().isOp(var8) && doesStringStartWith(var3, var8))
                 {
                     var4.add(var8);
                 }

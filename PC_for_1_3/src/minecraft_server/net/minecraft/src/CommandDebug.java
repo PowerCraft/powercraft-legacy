@@ -34,7 +34,7 @@ public class CommandDebug extends CommandBase
 
             if (par2ArrayOfStr[0].equals("stop"))
             {
-                if (!MinecraftServer.getServer().field_71304_b.profilingEnabled)
+                if (!MinecraftServer.getServer().theProfiler.profilingEnabled)
                 {
                     throw new CommandException("commands.debug.notStarted", new Object[0]);
                 }
@@ -44,7 +44,7 @@ public class CommandDebug extends CommandBase
                 long var6 = var3 - this.field_71551_a;
                 int var8 = var5 - this.field_71550_b;
                 this.func_71548_a(var6, var8);
-                MinecraftServer.getServer().field_71304_b.profilingEnabled = false;
+                MinecraftServer.getServer().theProfiler.profilingEnabled = false;
                 func_71522_a(par1ICommandSender, "commands.debug.stop", new Object[] {Float.valueOf((float)var6 / 1000.0F), Integer.valueOf(var8)});
                 return;
             }
@@ -88,7 +88,7 @@ public class CommandDebug extends CommandBase
 
     private void func_71546_a(int par1, String par2Str, StringBuilder par3StringBuilder)
     {
-        List var4 = MinecraftServer.getServer().field_71304_b.func_76321_b(par2Str);
+        List var4 = MinecraftServer.getServer().theProfiler.func_76321_b(par2Str);
 
         if (var4 != null && var4.size() >= 3)
         {

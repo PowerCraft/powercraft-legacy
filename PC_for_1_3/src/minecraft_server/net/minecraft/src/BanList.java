@@ -30,7 +30,7 @@ public class BanList
         return this.field_73714_c;
     }
 
-    public void func_73708_a(boolean par1)
+    public void setListActive(boolean par1)
     {
         this.field_73714_c = par1;
     }
@@ -57,13 +57,13 @@ public class BanList
     public void func_73706_a(BanEntry par1BanEntry)
     {
         this.field_73715_a.func_76116_a(par1BanEntry.func_73684_a(), par1BanEntry);
-        this.func_73711_f();
+        this.saveToFileWithHeader();
     }
 
     public void func_73709_b(String par1Str)
     {
         this.field_73715_a.remove(par1Str);
-        this.func_73711_f();
+        this.saveToFileWithHeader();
     }
 
     public void func_73705_d()
@@ -81,7 +81,10 @@ public class BanList
         }
     }
 
-    public void func_73707_e()
+    /**
+     * Loads the ban list from the file (adds every entry, does not clear the current list).
+     */
+    public void loadBanList()
     {
         if (this.field_73713_b.isFile())
         {
@@ -120,7 +123,7 @@ public class BanList
         }
     }
 
-    public void func_73711_f()
+    public void saveToFileWithHeader()
     {
         this.func_73703_b(true);
     }
@@ -135,7 +138,7 @@ public class BanList
 
             if (par1)
             {
-                var2.println("# Updated " + (new SimpleDateFormat()).format(new Date()) + " by Minecraft " + "1.3.1");
+                var2.println("# Updated " + (new SimpleDateFormat()).format(new Date()) + " by Minecraft " + "1.3.2");
                 var2.println("# victim name | ban date | banned by | banned until | reason");
                 var2.println();
             }
