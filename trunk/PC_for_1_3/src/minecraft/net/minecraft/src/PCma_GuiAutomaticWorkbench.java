@@ -81,14 +81,16 @@ public class PCma_GuiAutomaticWorkbench implements PC_IGresBase {
 		onCraftMatrixChanged(tileentity);
 	}
 
-	@Override
+	
 	public void onGuiClosed(PC_IGresGui gui) {
-		//tileentity.redstoneActivated = checkRedstone.isChecked();
+		
 		//tileentity.orderAndCraft();
 	}
 
 	@Override
-	public void actionPerformed(PC_GresWidget widget, PC_IGresGui gui) {}
+	public void actionPerformed(PC_GresWidget widget, PC_IGresGui gui) {
+		PC_Utils.setTileEntityVar(entityplayer, "redstoneActivated", tileentity, checkRedstone.isChecked());
+	}
 
 	@Override
 	public void onEscapePressed(PC_IGresGui gui) {
