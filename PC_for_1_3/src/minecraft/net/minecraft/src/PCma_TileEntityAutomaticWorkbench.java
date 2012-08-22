@@ -12,7 +12,7 @@ import java.util.List;
  * @author MightyPork
  * @copy (c) 2012
  */
-public class PCma_TileEntityAutomaticWorkbench extends PC_TileEntity implements IInventory, PC_IStateReportingInventory, PC_ISpecialAccessInventory {
+public class PCma_TileEntityAutomaticWorkbench extends PC_TileEntity implements IInventory, PC_IStateReportingInventory, PC_ISpecialAccessInventory, PC_IPacketSetter {
 	private static Container fakeContainer = new PCma_ContainerFake();
 	/** Flag that this AW needs pulse to craft. */
 	public boolean redstoneActivated;
@@ -285,7 +285,6 @@ public class PCma_TileEntityAutomaticWorkbench extends PC_TileEntity implements 
 	public void doCrafting() {
 		ItemStack currentStack = null;
 		boolean needsSound = false;
-
 		boolean forceEject = false;
 		while (areProductsMatching()) {
 			if (currentStack == null) {
@@ -398,8 +397,9 @@ public class PCma_TileEntityAutomaticWorkbench extends PC_TileEntity implements 
 		entityitem.motionX = i1 * d3;
 		entityitem.motionY = 0.05000000298023221D;
 		entityitem.motionZ = j1 * d3;
-		worldObj.spawnEntityInWorld(entityitem);
-
+		if(!worldObj.isRemote){
+			worldObj.spawnEntityInWorld(entityitem);
+		}
 		return true;
 	}
 
@@ -535,6 +535,15 @@ public class PCma_TileEntityAutomaticWorkbench extends PC_TileEntity implements 
 	@Override
 	public boolean canMachineInsertStackTo(int slot, ItemStack stack) {
 		return false;
+	}
+	
+	@Override
+	public void set(String var, Object o[]){
+		System.out.println("here?");
+		if(var.equals("redstoneActivated")){ //lol
+			System.out.println("set to: " + (boolean)(Boolean) o[0]);
+			redstoneActivated=(boolean)(Boolean) o[0];
+		}
 	}
 
 }
