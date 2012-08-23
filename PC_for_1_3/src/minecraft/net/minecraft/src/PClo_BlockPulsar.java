@@ -81,12 +81,11 @@ public class PClo_BlockPulsar extends BlockContainer implements PC_IBlockType {
 			}
 
 			if (ihold.getItem().shiftedIndex == Item.stick.shiftedIndex) {
-				changeDelay(world, i, j, k, player.isSneaking() ? -1 : 1);
+				changeDelay(world, player, i, j, k, player.isSneaking() ? -1 : 1);
 				return true;
 			}
 		}
-
-		PC_Utils.openGres(player, "Radio", i, j, k);
+		PC_Utils.openGres(player, "Pulsar", i, j, k); 
 
 		return true;
 	}
@@ -105,9 +104,9 @@ public class PClo_BlockPulsar extends BlockContainer implements PC_IBlockType {
 	 * @param z
 	 * @param delay to add, like +1 or -1.
 	 */
-	public static void changeDelay(World world, int x, int y, int z, int delay) {
+	public static void changeDelay(World world, EntityPlayer player, int x, int y, int z, int delay) {
 		PClo_TileEntityPulsar ent = (PClo_TileEntityPulsar) world.getBlockTileEntity(x, y, z);
-		ent.changeDelay(delay);
+		PC_Utils.setTileEntityVar(player, "changeDelay", ent, delay);
 		ent.printDelay();
 	}
 

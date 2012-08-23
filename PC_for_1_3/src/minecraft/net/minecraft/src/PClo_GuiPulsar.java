@@ -102,9 +102,9 @@ public class PClo_GuiPulsar implements PC_IGresBase {
 	public void actionPerformed(PC_GresWidget widget, PC_IGresGui gui) {
 
 		if (widget.getId() == 0) {
-			pulsar.setDelay(delay_ticks);
-			pulsar.setHoldTime(hold_ticks);
-			pulsar.setSilent(checkSilent.isChecked());
+			PC_Utils.setTileEntityVar(getPlayer(), "delayTicks", pulsar, delay_ticks);
+			PC_Utils.setTileEntityVar(getPlayer(), "holdTicks", pulsar, hold_ticks);
+			PC_Utils.setTileEntityVar(getPlayer(), "silent", pulsar, checkSilent.isChecked());
 			gui.close();
 
 		} else if (widget.getId() == 1) {

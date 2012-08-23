@@ -6,7 +6,7 @@ package net.minecraft.src;
  * 
  * @author MightyPork
  */
-public class PCtr_TileEntitySeparationBelt extends PCtr_TileEntityRedirectionBeltBase implements IInventory, PC_ISpecialAccessInventory {
+public class PCtr_TileEntitySeparationBelt extends PCtr_TileEntityRedirectionBeltBase implements IInventory, PC_ISpecialAccessInventory, PC_IPacketSetter {
 
 	/** All log types are sorted as equal */
 	public boolean group_logs = true;
@@ -339,5 +339,15 @@ public class PCtr_TileEntitySeparationBelt extends PCtr_TileEntityRedirectionBel
 	@Override
 	public boolean canDispenseStackFrom(int slot) {
 		return false;
+	}
+
+	@Override
+	public void set(String var, Object[] o) {
+		if(var.equals("logsPlanksAll")){
+			group_logs = (boolean)(Boolean)o[0];
+			group_planks = (boolean)(Boolean)o[1];
+			group_all = (boolean)(Boolean)o[2];
+		}
+		
 	}
 }

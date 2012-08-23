@@ -131,21 +131,24 @@ public class PCtr_GuiEjectionBelt implements PC_IGresBase {
 				break;
 
 			case 0: //OK
-
-				if (radioModeStacks.isChecked()) teb.actionType = 0;
-				if (radioModeItems.isChecked()) teb.actionType = 1;
-				if (radioModeAll.isChecked()) teb.actionType = 2;
-
-				if (radioSelectFirst.isChecked()) teb.itemSelectMode = 0;
-				if (radioSelectLast.isChecked()) teb.itemSelectMode = 1;
-				if (radioSelectRandom.isChecked()) teb.itemSelectMode = 2;
-
+				int actionType=0;
+				if (radioModeStacks.isChecked()) actionType = 0;
+				if (radioModeItems.isChecked()) actionType = 1;
+				if (radioModeAll.isChecked()) actionType = 2;
+				PC_Utils.setTileEntityVar(getPlayer(), "actionType", teb, actionType);
+				
+				int itemSelectMode=0;
+				if (radioSelectFirst.isChecked()) itemSelectMode = 0;
+				if (radioSelectLast.isChecked()) itemSelectMode = 1;
+				if (radioSelectRandom.isChecked()) itemSelectMode = 2;
+				PC_Utils.setTileEntityVar(getPlayer(), "itemSelectMode", teb, itemSelectMode);
+				
 				try {
-					teb.numStacksEjected = Integer.parseInt(editSlots.getText());
+					PC_Utils.setTileEntityVar(getPlayer(), "numStacksEjected", teb, Integer.parseInt(editSlots.getText()));
 				} catch (NumberFormatException e) {}
 
 				try {
-					teb.numItemsEjected = Integer.parseInt(editItems.getText());
+					PC_Utils.setTileEntityVar(getPlayer(), "numItemsEjected", teb, Integer.parseInt(editItems.getText()));
 				} catch (NumberFormatException e) {}
 
 

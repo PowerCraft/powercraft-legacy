@@ -17,7 +17,7 @@ public class PCtr_TileEntityTeleporterRenderer extends TileEntitySpecialRenderer
 
 		if (!tet.hideLabel) {
 
-			String foo = tet.isSender() ? "→" + tet.targetName : tet.identifierName;
+			String foo = tet.isSender() ? "\u2192" + tet.targetName : tet.identifierName;
 
 			PC_Renderer.renderEntityLabelAt(foo, new PC_CoordF(tet.xCoord, tet.yCoord, tet.zCoord), 10, 1.3F, x, y, z);
 		}

@@ -87,9 +87,7 @@ public class PCtr_GuiSeparationBelt implements PC_IGresBase {
 	@Override
 	public void onGuiClosed(PC_IGresGui gui) {
 
-		tes.group_logs = checkLogs.isChecked();
-		tes.group_planks = checkPlanks.isChecked();
-		tes.group_all = checkAll.isChecked();
+		PC_Utils.setTileEntityVar(getPlayer(), "logsPlanksAll", tes, checkLogs.isChecked(), checkPlanks.isChecked(), checkAll.isChecked());
 
 
 	}

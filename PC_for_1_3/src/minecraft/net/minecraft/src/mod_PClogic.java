@@ -1048,6 +1048,6 @@ public class mod_PClogic extends PC_Module {
 		guis.put("Pulsar", new PClo_GuiCallerPulsar());
 		guis.put("Radio", new PClo_GuiCallerRadio());
 		guis.put("Sensor", new PClo_GuiCallerSensor());
-		return null;
+		return guis;
 	}
 }
