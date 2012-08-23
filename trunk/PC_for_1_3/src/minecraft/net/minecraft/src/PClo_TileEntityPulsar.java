@@ -7,7 +7,7 @@ package net.minecraft.src;
  * @author MightyPork
  * @copy (c) 2012
  */
-public class PClo_TileEntityPulsar extends PC_TileEntity {
+public class PClo_TileEntityPulsar extends PC_TileEntity implements PC_IPacketSetter{
 
 
 	@Override
@@ -155,4 +155,19 @@ public class PClo_TileEntityPulsar extends PC_TileEntity {
 	public boolean active = false;
 	/** makes sound */
 	public boolean silent = false;
+	@Override
+	public void set(String var, Object[] o) {
+		if(var.equals("holdTime")){
+			setHoldTime((int)(Integer)o[0]);
+		}else if(var.equals("delayTime")){
+			setDelay((int)(Integer)o[0]);
+		}else if(var.equals("silent")){
+			setSilent((boolean)(Boolean)o[0]);
+		}else if(var.equals("changeDelay")){
+			changeDelay((int)(Integer)o[0]);
+		}
+		
+	}
+	
+	
 }

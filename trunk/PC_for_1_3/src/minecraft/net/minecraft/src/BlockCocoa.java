@@ -24,7 +24,6 @@ public class BlockCocoa extends BlockDirectional
         {
             int var6 = par1World.getBlockMetadata(par2, par3, par4);
             int var7 = func_72219_c(var6);
-
             if (var7 < 2)
             {
                 ++var7;

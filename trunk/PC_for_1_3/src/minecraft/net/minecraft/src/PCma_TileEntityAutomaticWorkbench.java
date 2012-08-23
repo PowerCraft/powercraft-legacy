@@ -539,9 +539,7 @@ public class PCma_TileEntityAutomaticWorkbench extends PC_TileEntity implements 
 	
 	@Override
 	public void set(String var, Object o[]){
-		System.out.println("here?");
-		if(var.equals("redstoneActivated")){ //lol
-			System.out.println("set to: " + (boolean)(Boolean) o[0]);
+		if(var.equals("redstoneActivated")){
 			redstoneActivated=(boolean)(Boolean) o[0];
 		}
 	}

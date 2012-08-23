@@ -250,7 +250,7 @@ public class mod_PCdeco extends PC_Module {
 	public Hashtable<String, PC_IGresGuiCaller> addGui() {
 		Hashtable<String, PC_IGresGuiCaller> guis = new Hashtable<String, PC_IGresGuiCaller>();
 		guis.put("Transmutator", new PCde_GuiCallerTransmutator());
-		return null;
+		return guis;
 	}
 
 

@@ -9,7 +9,7 @@ import java.util.Random;
  * 
  * @author MightyPork
  */
-public class PCtr_TileEntityEjectionBelt extends PC_TileEntity {
+public class PCtr_TileEntityEjectionBelt extends PC_TileEntity implements PC_IPacketSetter{
 
 	/** Random number generator */
 	protected Random rand = new Random();
@@ -67,6 +67,19 @@ public class PCtr_TileEntityEjectionBelt extends PC_TileEntity {
 		numItemsEjected = tag.getInteger("numItems");
 		itemSelectMode = tag.getInteger("selectMode");
 
+	}
+
+	@Override
+	public void set(String var, Object[] o) {
+		if(var.equals("actionType")){
+			actionType = (int)(Integer)o[0];
+		}else if(var.equals("itemSelectMode")){
+			itemSelectMode = (int)(Integer)o[0];
+		}else if(var.equals("numStacksEjected")){
+			numStacksEjected = (int)(Integer)o[0];
+		}else if(var.equals("numItemsEjected")){
+			numItemsEjected = (int)(Integer)o[0];
+		}
 	}
 
 }
