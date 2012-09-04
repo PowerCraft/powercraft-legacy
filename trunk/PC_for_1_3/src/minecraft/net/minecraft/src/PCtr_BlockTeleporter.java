@@ -106,9 +106,10 @@ public class PCtr_BlockTeleporter extends BlockContainer implements PC_IBlockTyp
 		}
 
 		PCtr_TileEntityTeleporter te = getTE(world, i, j, k);
-
+		PCtr_TeleporterData td = te.td;
+		
 		if (te.acceptsEntity(entity)) {
-			PCtr_TeleporterHelper.teleportEntityTo(entity, te.defaultTarget);
+			PCtr_TeleporterHelper.teleportEntityTo(entity, td.defaultTarget);
 		}
 
 	}
