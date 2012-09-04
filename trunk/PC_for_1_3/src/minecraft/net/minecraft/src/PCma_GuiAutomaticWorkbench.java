@@ -89,7 +89,7 @@ public class PCma_GuiAutomaticWorkbench implements PC_IGresBase {
 
 	@Override
 	public void actionPerformed(PC_GresWidget widget, PC_IGresGui gui) {
-		PC_Utils.setTileEntityVar(entityplayer, "redstoneActivated", tileentity, checkRedstone.isChecked());
+		PC_Utils.setTileEntity(entityplayer, tileentity, "redstoneActivated", checkRedstone.isChecked());
 	}
 
 	@Override

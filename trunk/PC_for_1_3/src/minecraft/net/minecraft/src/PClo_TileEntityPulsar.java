@@ -155,18 +155,34 @@ public class PClo_TileEntityPulsar extends PC_TileEntity implements PC_IPacketSe
 	public boolean active = false;
 	/** makes sound */
 	public boolean silent = false;
+
 	@Override
-	public void set(String var, Object[] o) {
-		if(var.equals("holdTime")){
-			setHoldTime((int)(Integer)o[0]);
-		}else if(var.equals("delayTime")){
-			setDelay((int)(Integer)o[0]);
-		}else if(var.equals("silent")){
-			setSilent((boolean)(Boolean)o[0]);
-		}else if(var.equals("changeDelay")){
-			changeDelay((int)(Integer)o[0]);
+	public void set(Object[] o) {
+		int p = 0;
+		while(p<o.length){
+			String var = (String)o[p++];
+			if(var.equals("holdTime")){
+				setHoldTime((int)(Integer)o[p++]);
+			}else if(var.equals("delayTime")){
+				setDelay((int)(Integer)o[p++]);
+			}else if(var.equals("silent")){
+				setSilent((boolean)(Boolean)o[p++]);
+			}else if(var.equals("changeDelay")){
+				changeDelay((int)(Integer)o[p++]);
+			}
 		}
-		
+	}
+
+	@Override
+	public Object[] get() {
+		Object[] o = new Object[6];
+		o[0] = "holdTime";
+		o[1] = holdtime;
+		o[2] = "delayTime";
+		o[3] = delay;
+		o[4] = "silent";
+		o[5] = silent;
+		return o;
 	}
 	
 	

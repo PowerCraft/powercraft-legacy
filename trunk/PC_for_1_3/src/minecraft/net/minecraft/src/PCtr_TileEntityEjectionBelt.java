@@ -70,16 +70,34 @@ public class PCtr_TileEntityEjectionBelt extends PC_TileEntity implements PC_IPa
 	}
 
 	@Override
-	public void set(String var, Object[] o) {
-		if(var.equals("actionType")){
-			actionType = (int)(Integer)o[0];
-		}else if(var.equals("itemSelectMode")){
-			itemSelectMode = (int)(Integer)o[0];
-		}else if(var.equals("numStacksEjected")){
-			numStacksEjected = (int)(Integer)o[0];
-		}else if(var.equals("numItemsEjected")){
-			numItemsEjected = (int)(Integer)o[0];
+	public void set(Object[] o) {
+		int p = 0;
+		while(p<o.length){
+			String var = (String)o[p++];
+			if(var.equals("actionType")){
+				actionType = (int)(Integer)o[p++];
+			}else if(var.equals("itemSelectMode")){
+				itemSelectMode = (int)(Integer)o[p++];
+			}else if(var.equals("numStacksEjected")){
+				numStacksEjected = (int)(Integer)o[p++];
+			}else if(var.equals("numItemsEjected")){
+				numItemsEjected = (int)(Integer)o[p++];
+			}
 		}
+	}
+
+	@Override
+	public Object[] get() {
+		Object[] o = new Object[8];
+		o[0] = "actionType";
+		o[1] = actionType;
+		o[2] = "itemSelectMode";
+		o[3] = itemSelectMode;
+		o[4] = "numStacksEjected";
+		o[5] = numStacksEjected;
+		o[6] = "numItemsEjected";
+		o[7] = numItemsEjected;
+		return o;
 	}
 
 }

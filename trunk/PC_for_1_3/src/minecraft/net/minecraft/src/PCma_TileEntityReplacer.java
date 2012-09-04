@@ -1,6 +1,9 @@
 package net.minecraft.src;
 
 
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.ObjectOutputStream;
 import java.util.Random;
 
 
@@ -9,7 +12,7 @@ import java.util.Random;
  * 
  * @author MightyPork, XOR19, Rapus
  */
-public class PCma_TileEntityReplacer extends PC_TileEntity implements IInventory, PC_ISpecialAccessInventory, PC_IPacketSetter {
+public class PCma_TileEntityReplacer extends PC_TileEntity implements IInventory, PC_ISpecialAccessInventory {
 
 	/** the building stack */
 	public ItemStack buildBlock;
@@ -188,6 +191,7 @@ public class PCma_TileEntityReplacer extends PC_TileEntity implements IInventory
 	@Override
 	public void readFromNBT(NBTTagCompound nbttagcompound) {
 		super.readFromNBT(nbttagcompound);
+		System.out.println("readFromNBT");
 		NBTTagList nbttaglist = nbttagcompound.getTagList("Items");
 
 		if (nbttaglist.tagCount() > 0) {
@@ -271,13 +275,31 @@ public class PCma_TileEntityReplacer extends PC_TileEntity implements IInventory
 	}
 
 	@Override
-	public void set(String var, Object o[]) {
-		if(var.equals("extraMeta"))
-			extraMeta = (Integer)o[0];
-		else if(var.equals("coordOffset"))
-			coordOffset.setTo((Integer)o[0], (Integer)o[1], (Integer)o[2]);
-		else if(var.equals("aidEnabled"))
-			aidEnabled = (Boolean)o[0];
+	public void set(Object o[]) {
+		int p = 0;
+		while(p<o.length){
+			String var = (String)o[p++];
+			if(var.equals("extraMeta"))
+				extraMeta = (Integer)o[p++];
+			else if(var.equals("coordOffset"))
+				coordOffset.setTo((Integer)o[p++], (Integer)o[p++], (Integer)o[p++]);
+			else if(var.equals("aidEnabled"))
+				aidEnabled = (Boolean)o[p++];
+		}
 	}
 
+	@Override
+	public Object[] get() {
+		Object[] o = new Object[8];
+		o[0] = "extraMeta";
+		o[1] = extraMeta;
+		o[2] = "coordOffset";
+		o[3] = coordOffset.x;
+		o[4] = coordOffset.y;
+		o[5] = coordOffset.z;
+		o[6] = "aidEnabled";
+		o[7] = aidEnabled;
+		return o;
+	}
+	
 }

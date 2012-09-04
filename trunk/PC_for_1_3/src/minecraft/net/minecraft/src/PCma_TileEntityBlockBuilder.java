@@ -323,4 +323,16 @@ public class PCma_TileEntityBlockBuilder extends PC_TileEntity implements IInven
 			return null;
 		}
 	}
+
+	@Override
+	public void set(Object[] o) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public Object[] get() {
+		// TODO Auto-generated method stub
+		return null;
+	}
 }

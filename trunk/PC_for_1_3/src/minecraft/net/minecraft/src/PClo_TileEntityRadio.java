@@ -140,4 +140,16 @@ public class PClo_TileEntityRadio extends PC_TileEntity implements IRadioDevice 
 	public boolean doesTransmitOnChannel(String channel) {
 		return type == 0 && getChannel().equals(channel) && active;
 	}
+
+	@Override
+	public void set(Object[] o) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public Object[] get() {
+		// TODO Auto-generated method stub
+		return null;
+	}
 }

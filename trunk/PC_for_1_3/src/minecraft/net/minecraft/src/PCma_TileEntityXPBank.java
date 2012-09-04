@@ -94,4 +94,16 @@ public class PCma_TileEntityXPBank extends PC_TileEntity {
 		worldObj.markBlocksDirty(xCoord, yCoord, zCoord, xCoord, yCoord, zCoord);
 		worldObj.markBlockNeedsUpdate(xCoord, yCoord, zCoord);
 	}
+
+	@Override
+	public void set(Object[] o) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public Object[] get() {
+		// TODO Auto-generated method stub
+		return null;
+	}
 }

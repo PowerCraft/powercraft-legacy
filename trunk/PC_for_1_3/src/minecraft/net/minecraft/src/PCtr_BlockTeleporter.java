@@ -50,7 +50,6 @@ public class PCtr_BlockTeleporter extends BlockContainer implements PC_IBlockTyp
 				}
 			}
 		}
-
 		PC_Utils.openGres(entityplayer, "Teleporter", i, j, k);
 		
 		return true;
@@ -68,8 +67,6 @@ public class PCtr_BlockTeleporter extends BlockContainer implements PC_IBlockTyp
 
 	@Override
 	public void breakBlock(World world, int i, int j, int k, int par5, int par6) {
-
-		PCtr_TeleporterHelper.unregisterDevice(getTE(world, i, j, k).identifierName);
 
 		world.setBlockAndMetadataWithNotify(i, j, k, 0, 0);
 		world.notifyBlocksOfNeighborChange(i, j, k, blockID);
@@ -110,21 +107,14 @@ public class PCtr_BlockTeleporter extends BlockContainer implements PC_IBlockTyp
 
 		PCtr_TileEntityTeleporter te = getTE(world, i, j, k);
 
-		if (te.isSender() && te.isActive()) {
-			if (te.acceptsEntity(entity)) {
-				PCtr_TeleporterHelper.teleportEntityTo(entity, te.targetName);
-			}
-		} else {
-			// receiver, do nothing.
+		if (te.acceptsEntity(entity)) {
+			PCtr_TeleporterHelper.teleportEntityTo(entity, te.defaultTarget);
 		}
 
 	}
 
 	@Override
 	public void randomDisplayTick(World world, int x, int y, int z, Random random) {
-		if (!isActive(world, x, y, z)) {
-			return;
-		}
 
 		if (random.nextInt(60) == 0) {
 			if (mod_PCcore.soundsEnabled) {
@@ -168,32 +158,6 @@ public class PCtr_BlockTeleporter extends BlockContainer implements PC_IBlockTyp
 		PCtr_TileEntityTeleporter tet = (PCtr_TileEntityTeleporter) te;
 
 		return tet;
-	}
-
-	/**
-	 * check if the teleporter is running
-	 * 
-	 * @param iblockaccess
-	 * @param i
-	 * @param j
-	 * @param k
-	 * @return flag
-	 */
-	public static boolean isActive(IBlockAccess iblockaccess, int i, int j, int k) {
-		return getTE(iblockaccess, i, j, k).isActive();
-	}
-
-	/**
-	 * check if this is the target device
-	 * 
-	 * @param iblockaccess
-	 * @param i
-	 * @param j
-	 * @param k
-	 * @return flag
-	 */
-	public static boolean isTarget(IBlockAccess iblockaccess, int i, int j, int k) {
-		return getTE(iblockaccess, i, j, k).isReceiver();
 	}
 
 	@Override

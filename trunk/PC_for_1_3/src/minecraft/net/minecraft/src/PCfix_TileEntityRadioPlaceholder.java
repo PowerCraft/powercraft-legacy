@@ -115,4 +115,16 @@ public class PCfix_TileEntityRadioPlaceholder extends PC_TileEntity {
 	public boolean canUpdate() {
 		return true;
 	}
+
+	@Override
+	public void set(Object[] o) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public Object[] get() {
+		// TODO Auto-generated method stub
+		return null;
+	}
 }

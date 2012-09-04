@@ -98,4 +98,16 @@ public class PCtr_TileEntityRedirectionBelt extends PCtr_TileEntityRedirectionBe
 
 	}
 
+	@Override
+	public void set(Object[] o) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public Object[] get() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 }

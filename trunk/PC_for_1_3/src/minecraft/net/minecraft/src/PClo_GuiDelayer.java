@@ -101,7 +101,7 @@ public class PClo_GuiDelayer implements PC_IGresBase {
 
 		if (widget.getId() == 0) {
 
-			PC_Utils.setTileEntityVar(PC_Utils.mc().thePlayer, "ticks", gateTE, delayer_type, ticks);
+			PC_Utils.setTileEntity(PC_Utils.mc().thePlayer, gateTE, "ticks", delayer_type, ticks);
 
 			gui.close();
 

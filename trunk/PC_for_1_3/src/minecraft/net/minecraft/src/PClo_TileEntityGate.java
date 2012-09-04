@@ -11,7 +11,7 @@ import java.util.List;
  * @author MightyPork
  * @copy (c) 2012
  */
-public class PClo_TileEntityGate extends PC_TileEntity implements PC_IPacketSetter {
+public class PClo_TileEntityGate extends PC_TileEntity {
 
 	/**
 	 * TEG
@@ -693,12 +693,24 @@ public class PClo_TileEntityGate extends PC_TileEntity implements PC_IPacketSett
 	}
 
 	@Override
-	public void set(String var, Object[] o) {
-		if(var.equals("ticks"))
-			if ((Integer)o[0] == PClo_GuiDelayer.FIFO) {
-				bufferResize((Integer)o[1]);
-			} else if ((Integer)o[1] == PClo_GuiDelayer.HOLD) {
-				setRepeaterHoldTime((Integer)o[1]);
+	public void set(Object[] o) {
+		int p = 0;
+		while(p<o.length){
+			String var = (String)o[p++];
+			if(var.equals("ticks")){
+				int i = (Integer)o[p++];
+				if (i == PClo_GuiDelayer.FIFO) {
+					bufferResize((Integer)o[p++]);
+				} else if (i == PClo_GuiDelayer.HOLD) {
+					setRepeaterHoldTime((Integer)o[p++]);
+				}
 			}
+		}
+	}
+
+	@Override
+	public Object[] get() {
+		// TODO 
+		return null;
 	}
 }

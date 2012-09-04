@@ -1,5 +1,8 @@
 package net.minecraft.src;
 
+import java.util.ArrayList;
+import java.util.List;
+
 
 
 /**
@@ -8,11 +11,12 @@ package net.minecraft.src;
  * @author MightyPork
  */
 public class PCtr_TileEntityTeleporter extends PC_TileEntity {
-	private static final int SENDER = 1, RECEIVER = 2, INVALID = 0;
-	/** TP type */
-	public int type;
 
-	public String targetName, identifierName;
+	public static List<PCtr_TileEntityTeleporter> teleporter = new ArrayList<PCtr_TileEntityTeleporter>();
+	
+	public PCtr_TeleporterData td;
+	
+	/*public String defaultTarget, name;
 
 	private boolean lastActiveState = false;
 
@@ -24,13 +28,19 @@ public class PCtr_TileEntityTeleporter extends PC_TileEntity {
 	public String direction = "N";
 	public boolean hideLabel = false;
 
+	public int dimension;*/
+	
 	/**
 	 * 
 	 */
 	public PCtr_TileEntityTeleporter() {
-		type = INVALID;
-		targetName = "";
-		identifierName = "";
+		td = new PCtr_TeleporterData();
+		PCtr_TeleporterHelper.teleporter.add(td);
+		teleporter.add(this);
+		
+		td.defaultTarget = null;
+		td.name = "";
+		td.dimension = worldObj.worldInfo.getDimension();
 	}
 
 	@Override
@@ -43,7 +53,7 @@ public class PCtr_TileEntityTeleporter extends PC_TileEntity {
 		return true;
 	}
 
-	public boolean isSender() {
+	/*public boolean isSender() {
 		return type == SENDER;
 	}
 
@@ -57,28 +67,30 @@ public class PCtr_TileEntityTeleporter extends PC_TileEntity {
 
 	public void setIsReceiver() {
 		type = RECEIVER;
-	}
+	}*/
 
 	public void setPrimaryOutputDirection(String direction) {
-		this.direction = direction;
+		td.direction = direction;
 	}
 
 	public boolean isActive() {
 
 		boolean active = false;
 
-		if (type == SENDER) {
+		/*if (type == SENDER) {
 			active = (!targetName.equals("") && PCtr_TeleporterHelper.targetExists(targetName));
 		} else if (type == RECEIVER) {
 			active = (!identifierName.equals("") && PCtr_TeleporterHelper.targetExists(identifierName));
-		}
+		}*/
 
-		if (active != lastActiveState) {
+		
+		
+		if (active != td.lastActiveState) {
 			worldObj.markBlocksDirty(xCoord, yCoord, zCoord, xCoord, yCoord, zCoord);
 			worldObj.markBlockNeedsUpdate(xCoord, yCoord, zCoord);
-			lastActiveState = active;
+			td.lastActiveState = active;
 		}
-
+		
 		return active;
 
 	}
@@ -87,9 +99,8 @@ public class PCtr_TileEntityTeleporter extends PC_TileEntity {
 	public void readFromNBT(NBTTagCompound nbttagcompound) {
 		super.readFromNBT(nbttagcompound);
 
-		targetName = nbttagcompound.getString("tptarget");
-		identifierName = nbttagcompound.getString("tpidentifier");
-		type = nbttagcompound.getInteger("tptype");
+		/*defaultTarget = nbttagcompound.getString("defaultTarget");
+		name = nbttagcompound.getString("name");
 
 		items = nbttagcompound.getBoolean("tpaitems");
 		monsters = nbttagcompound.getBoolean("tpamonsters");
@@ -105,16 +116,18 @@ public class PCtr_TileEntityTeleporter extends PC_TileEntity {
 			monsters = true;
 			animals = true;
 			players = true;
-		}
+		}*/
+		
+		if(td!=null)
+			td = PCtr_TeleporterHelper.getTeleporterDataAt(xCoord, yCoord, zCoord);
 	}
 
 	@Override
 	public void writeToNBT(NBTTagCompound nbttagcompound) {
 		super.writeToNBT(nbttagcompound);
 
-		nbttagcompound.setString("tpidentifier", identifierName);
-		nbttagcompound.setString("tptarget", targetName);
-		nbttagcompound.setInteger("tptype", type);
+		/*nbttagcompound.setString("defaultTarget", defaultTarget);
+		nbttagcompound.setString("name", name);
 
 		nbttagcompound.setBoolean("tpaitems", items);
 		nbttagcompound.setBoolean("tpamonsters", monsters);
@@ -124,7 +137,7 @@ public class PCtr_TileEntityTeleporter extends PC_TileEntity {
 
 		nbttagcompound.setBoolean("tpsneak", sneakTrigger);
 		nbttagcompound.setString("tpdir", direction);
-		nbttagcompound.setBoolean("tp_flag_28", true);
+		nbttagcompound.setBoolean("tp_flag_28", true);*/
 	}
 
 	/**
@@ -138,32 +151,55 @@ public class PCtr_TileEntityTeleporter extends PC_TileEntity {
 		if (entity == null) {
 			return false;
 		}
+		
 		if (entity instanceof EntityDiggingFX) {
 			return false;
 		}
 
-		if ((entity instanceof EntityAnimal || entity instanceof EntitySquid || entity instanceof EntitySlime) && !animals) {
+		if ((entity instanceof EntityAnimal || entity instanceof EntitySquid || entity instanceof EntitySlime) && !td.animals) {
 			return false;
 		}
 
 		if ((entity instanceof EntityMob || entity instanceof EntityGhast || entity instanceof EntityDragon || entity instanceof EntityGolem)
-				&& !monsters) {
+				&& !td.monsters) {
 			return false;
 		}
 
-		if ((entity instanceof EntityItem || entity instanceof EntityXPOrb || entity instanceof EntityArrow) && !items) {
+		if ((entity instanceof EntityItem || entity instanceof EntityXPOrb || entity instanceof EntityArrow) && !td.items) {
 			return false;
 		}
 
-		if ((entity instanceof EntityPlayer) && !players) {
+		if ((entity instanceof EntityPlayer) && !td.players) {
 			return false;
 		}
 
-		if ((entity instanceof EntityPlayer) && !entity.isSneaking() && sneakTrigger) {
+		if ((entity instanceof EntityPlayer) && !entity.isSneaking() && td.sneakTrigger) {
 			return false;
 		}
-
+		
 		return true;
 
+	}
+
+	@Override
+	public void onBlockPickup(){
+		
+		teleporter.remove(this);
+		
+	}
+
+	public int getDimension() {
+		return td.dimension;
+	}
+	
+	
+	@Override
+	public void set(Object[] o) {
+		
+	}
+
+	@Override
+	public Object[] get() {
+		return null;
 	}
 }
