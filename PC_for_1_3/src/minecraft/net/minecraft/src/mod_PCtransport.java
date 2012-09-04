@@ -406,6 +406,10 @@ public class mod_PCtransport extends PC_Module {
 
 	@Override
 	public void postInit() {
+		
+		//TODO
+		dataMemory.put("PCtr_TeleporterHelper", PCtr_TeleporterHelper.class);
+		
 		PC_InveditManager.setDamageRange(itemElevator.blockID, 0, 1);
 
 		String ctg = "Transportation";

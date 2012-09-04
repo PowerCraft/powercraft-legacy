@@ -15,6 +15,7 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import net.minecraft.client.Minecraft;
 
 import org.lwjgl.input.Keyboard;
+import org.lwjgl.opengl.GL11;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
@@ -57,7 +58,7 @@ public class mod_PCcore extends PC_Module implements PC_IActivatorListener {
 	 * compilation, thus all modules keep their compile-time version and aren't
 	 * affected by current core version. Which is good.
 	 */
-	public static final String VERSION = "3.4.9x";
+	public static final String VERSION = "3.5.0a";
 
 	/**
 	 * The serial number used to check whether new update is available.
@@ -336,7 +337,8 @@ public class mod_PCcore extends PC_Module implements PC_IActivatorListener {
 				.setResistance(0.5F)
 				.setBlockName("PCcoPowerCrystal")
 				.setStepSound(Block.soundGlassFootstep)
-				.setLightValue(cfg().num(pk_brightCrystal) * 0.0625F);
+				.setLightValue(cfg().num(pk_brightCrystal) * 0.0625F)
+				.setCreativeTab(CreativeTabs.tabMaterials);
 		
 		// @formatter:on
 
@@ -350,19 +352,19 @@ public class mod_PCcore extends PC_Module implements PC_IActivatorListener {
 		// @formatter:off
 		
 		craftingTool = new PCco_ItemCraftingTool(cfg().num(pk_idCraftingTool))
-				.setItemName("PCcoGateCrafter");
+				.setItemName("PCcoGateCrafter").setTabToDisplayOn(CreativeTabs.tabTools);
 		
 		activator = new PCco_ItemActivator(cfg().num(pk_idActivator))
 				.setIconIndex(37)
-				.setItemName("PCcoActivatorItem");
+				.setItemName("PCcoActivatorItem").setTabToDisplayOn(CreativeTabs.tabTools);
 
 		powerDust = new PCco_ItemPowerDust(cfg().num(pk_idPowerDust))
 				.setIconCoord(13, 9)
-				.setItemName("PCcoPowerDust");
+				.setItemName("PCcoPowerDust").setTabToDisplayOn(CreativeTabs.tabMaterials);
 
 		oreSniffer = (PCco_ItemOreSniffer) new PCco_ItemOreSniffer(cfg().num(pk_idSniffer))
 				.setIconIndex(37)
-				.setItemName("PCcoOreSnifferItem");
+				.setItemName("PCcoOreSnifferItem").setTabToDisplayOn(CreativeTabs.tabTools);
 		
 		removeBlockItem(powerCrystal.blockID);
 		setBlockItem(powerCrystal.blockID, new PCco_ItemBlockPowerCrystal(powerCrystal.blockID - 256));
@@ -1204,9 +1206,14 @@ public class mod_PCcore extends PC_Module implements PC_IActivatorListener {
 	private static boolean updateAlreadyShown = false;
 
 	private int inGameTickCounter = 0;
-
+	
+	private static PC_DataMemoryManager dmm = null;
+	
 	@Override
 	public boolean onTickInGame(float f, Minecraft minecraft) {
+		if (dmm == null){
+			dmm = (PC_DataMemoryManager)minecraft.theWorld.mapStorage.loadData(PC_DataMemoryManager.class, "PC_DataMemoryManager");
+		}
 		if (!updateAlreadyShown && updateAvailable && optUpdateNotify) {
 			if (++inGameTickCounter > 20) {
 				updateAlreadyShown = true;

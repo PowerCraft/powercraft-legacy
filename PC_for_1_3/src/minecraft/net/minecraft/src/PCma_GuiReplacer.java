@@ -131,7 +131,7 @@ public class PCma_GuiReplacer implements PC_IGresBase {
 	@Override
 	public void actionPerformed(PC_GresWidget widget, PC_IGresGui gui) {
 		if (widget == slot) {
-			PC_Utils.setTileEntityVar(entityplayer, "extraMeta", teReplacer, -1);
+			PC_Utils.setTileEntity(entityplayer, teReplacer, "extraMeta", -1);
 		} else if (widget == button[0]) {
 
 			gui.close();
@@ -142,8 +142,8 @@ public class PCma_GuiReplacer implements PC_IGresBase {
 			int y = Integer.parseInt(textedit[1].getText());
 			int z = Integer.parseInt(textedit[2].getText());
 
-			PC_Utils.setTileEntityVar(entityplayer, "coordOffset", teReplacer, x, y, z);
-			PC_Utils.setTileEntityVar(entityplayer, "aidEnabled", teReplacer, checkFrame.isChecked());
+			PC_Utils.setTileEntity(entityplayer, teReplacer, "coordOffset", x, y, z, 
+					"aidEnabled", checkFrame.isChecked());
 
 			gui.close();
 
@@ -186,7 +186,7 @@ public class PCma_GuiReplacer implements PC_IGresBase {
 				int y = Integer.parseInt(textedit[1].getText());
 				int z = Integer.parseInt(textedit[2].getText());
 
-				PC_Utils.setTileEntityVar(entityplayer, "coordOffset", teReplacer, x, y, z);
+				PC_Utils.setTileEntity(entityplayer, teReplacer, "coordOffset", x, y, z);
 			}
 
 			button[1].enable(valid);

@@ -668,18 +668,24 @@ public abstract class PC_GresWidget extends Gui {
 		}
 		fr.drawString(text, x, y, colorOverride);
 	}
-
+	
+	public PC_CoordI updateScissor(PC_CoordI posOffset, PC_CoordI scissorOld){
+		GL11.glScissor(posOffset.x + pos.x, posOffset.y + pos.y, size.x, size.y);
+	}
+	
 	/**
 	 * Render this and all children at correct positions
 	 * 
 	 * @param posOffset offset from top left
 	 */
-	public void updateRenderer(PC_CoordI posOffset) {
+	public void updateRenderer(PC_CoordI posOffset, PC_CoordI scissorOld) {
 		if (!visible) return;
+		PC_CoordI scissorNew = updateScissor(posOffset, scissorOld);
+		
 		this.render(posOffset);
 		if (childs != null) {
 			for (int i = 0; i < childs.size(); i++) {
-				if (childs.get(i).visible) childs.get(i).updateRenderer(posOffset.offset(pos));
+				if (childs.get(i).visible) childs.get(i).updateRenderer(posOffset.offset(pos), scissorNew);
 			}
 		}
 	}

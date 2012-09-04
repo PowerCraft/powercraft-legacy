@@ -536,12 +536,23 @@ public class PCma_TileEntityAutomaticWorkbench extends PC_TileEntity implements 
 	public boolean canMachineInsertStackTo(int slot, ItemStack stack) {
 		return false;
 	}
-	
+
 	@Override
-	public void set(String var, Object o[]){
-		if(var.equals("redstoneActivated")){
-			redstoneActivated=(boolean)(Boolean) o[0];
+	public void set(Object[] o) {
+		int p = 0;
+		while(p<o.length){
+			String var = (String)o[p++];
+			if(var.equals("redstoneActivated"))
+				redstoneActivated=(boolean)(Boolean) o[p++];
 		}
+	}
+
+	@Override
+	public Object[] get() {
+		Object[] o = new Object[2];
+		o[0] = "redstoneActivated";
+		o[1] = redstoneActivated;
+		return o;
 	}
 
 }

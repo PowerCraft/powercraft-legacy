@@ -342,12 +342,25 @@ public class PCtr_TileEntitySeparationBelt extends PCtr_TileEntityRedirectionBel
 	}
 
 	@Override
-	public void set(String var, Object[] o) {
-		if(var.equals("logsPlanksAll")){
-			group_logs = (boolean)(Boolean)o[0];
-			group_planks = (boolean)(Boolean)o[1];
-			group_all = (boolean)(Boolean)o[2];
+	public void set(Object[] o) {
+		int p = 0;
+		while(p<o.length){
+			String var = (String)o[p++];
+			if(var.equals("logsPlanksAll")){
+				group_logs = (boolean)(Boolean)o[p++];
+				group_planks = (boolean)(Boolean)o[p++];
+				group_all = (boolean)(Boolean)o[p++];
+			}
 		}
-		
+	}
+
+	@Override
+	public Object[] get() {
+		Object[] o = new Object[4];
+		o[0] = "logsPlanksAll";
+		o[1] = group_logs;
+		o[2] = group_planks;
+		o[3] = group_all;
+		return o;
 	}
 }

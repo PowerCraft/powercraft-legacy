@@ -125,4 +125,16 @@ public class PClo_TileEntityWeasel extends PC_TileEntity {
 		}
 	}
 
+	@Override
+	public void set(Object[] o) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public Object[] get() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 }

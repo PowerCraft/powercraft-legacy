@@ -309,28 +309,19 @@ public class PC_Utils {
 		}
 	}
 	
-	public static void setTileEntityVar(EntityPlayer player, String var, TileEntity tileEntity, Object... o){
-		setTileEntityVarArray(player, var, tileEntity, o);
+	public static void setTileEntity(EntityPlayer player, TileEntity tileEntity, Object... o){
+		setTileEntityArray(player, tileEntity, o);
 	}
 	
-	public static void setTileEntityVarArray(EntityPlayer player, String var, TileEntity tileEntity, Object[] o) {
-		send(player, "TileEntity", var, tileEntity.xCoord, tileEntity.yCoord, tileEntity.zCoord, o);
-	}
-	
-	public static void setBlockVar(EntityPlayer player, String var, Block block, Object... o){
-		send(player, "Block", var, block.blockID, 0, 0, o);
-	}
-	
-	public static void send(EntityPlayer player, String to, String var, int x, int y, int z, Object o[]){
+	public static void setTileEntityArray(EntityPlayer player, TileEntity tileEntity, Object[] o) {
 		ByteArrayOutputStream data = new ByteArrayOutputStream();
     	ObjectOutputStream sendData;
 		try {
 			sendData = new ObjectOutputStream(data);
-			sendData.writeObject(to);
-			sendData.writeObject(var);
-	        sendData.writeInt(x);
-	        sendData.writeInt(y);
-	        sendData.writeInt(z);
+			sendData.writeObject("TileEntity");
+	        sendData.writeInt(tileEntity.xCoord);
+	        sendData.writeInt(tileEntity.yCoord);
+	        sendData.writeInt(tileEntity.zCoord);
 	        sendData.writeInt(o.length);
 	        for(int i=0; i<o.length; i++)
 	        	sendData.writeObject(o[i]);
@@ -338,6 +329,31 @@ public class PC_Utils {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		send(player, data);
+	}
+	
+	public static void setBlock(EntityPlayer player, Block block, Object... o){
+		setBlockArray(player, block, o);
+	}
+	
+	public static void setBlockArray(EntityPlayer player, Block block, Object[] o){
+		ByteArrayOutputStream data = new ByteArrayOutputStream();
+    	ObjectOutputStream sendData;
+		try {
+			sendData = new ObjectOutputStream(data);
+			sendData.writeObject("Block");
+	        sendData.writeInt(block.blockID);
+	        sendData.writeInt(o.length);
+	        for(int i=0; i<o.length; i++)
+	        	sendData.writeObject(o[i]);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		send(player, data);
+	}
+	
+	public static void send(EntityPlayer player, ByteArrayOutputStream data){
         Packet250CustomPayload packet =  new Packet250CustomPayload("PowerCraft", data.toByteArray());
         if(player!=null)
 	        if(player.worldObj.isRemote)
@@ -348,6 +364,10 @@ public class PC_Utils {
         	System.out.println("Server to All Clients");
         	MinecraftServer.getServer().getConfigurationManager().sendPacketToAllPlayers(packet);
         }
+	}
+	
+	public static double getPointToScreenCoordMultiplier(){
+		GL11.glGet
 	}
 	
 }

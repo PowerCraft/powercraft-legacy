@@ -40,4 +40,12 @@ public class PCde_TileEntityWalkable extends PC_TileEntity {
 		tag.setInteger("type", type);
 
 	}
+
+	@Override
+	public void set(Object[] o) {}
+
+	@Override
+	public Object[] get() {
+		return null;
+	}
 }

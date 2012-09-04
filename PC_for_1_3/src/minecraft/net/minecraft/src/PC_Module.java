@@ -88,6 +88,8 @@ public abstract class PC_Module extends BaseMod {
 
 	/** */
 	public static Hashtable<String, PC_IGresGuiCaller> guiList = new Hashtable<String, PC_IGresGuiCaller>();
+
+	public static Hashtable<String, Class> dataMemory = new Hashtable<String, Class>();
 	
 	/**
 	 * @return instance of configuration manager
@@ -574,16 +576,7 @@ public abstract class PC_Module extends BaseMod {
 		System.out.println("serverCustomPayload");
 		try {
 			ObjectInputStream input = new ObjectInputStream(new ByteArrayInputStream(packet.data));
-			String str = (String)input.readObject();
-			String var = (String)input.readObject();
-			int x = input.readInt();
-			int y = input.readInt();
-			int z = input.readInt();
-			int size = input.readInt();
-			Object[] o = new Object[size];
-			for(int i=0; i<size; i++)
-				o[i] = input.readObject();
-			getPacket(netServerHandler.getPlayer().worldObj, str, var, x, y, z, o, false);
+			handleIncomingPacket(input, netServerHandler.getPlayer().worldObj, false);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -595,16 +588,7 @@ public abstract class PC_Module extends BaseMod {
 		System.out.println("clientCustomPayload");
 		try {
 			ObjectInputStream input = new ObjectInputStream(new ByteArrayInputStream(packet.data));
-			String str = (String)input.readObject();
-			String var = (String)input.readObject();
-			int x = input.readInt();
-			int y = input.readInt();
-			int z = input.readInt();
-			int size = input.readInt();
-			Object[] o = new Object[size];
-			for(int i=0; i<size; i++)
-				o[i] = input.readObject();
-			getPacket(PC_Utils.mc().theWorld, str, var, x, y, z, o, true);
+			handleIncomingPacket(input, PC_Utils.mc().theWorld, true);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -612,23 +596,44 @@ public abstract class PC_Module extends BaseMod {
 		
 	}
 	
-	private void getPacket(World world, String str, String var, int x, int y, int z, Object o[], boolean client){
-		boolean set=false;
-		if(str.equals("TileEntity")){
-			TileEntity te = world.getBlockTileEntity(x, y, z);
-			if(te instanceof PC_IPacketSetter){
-				((PC_IPacketSetter)te).set(var, o);
-				set = true;
-			}
-		}else if(str.equals("Block")){
-			Block b = Block.blocksList[x];
-			if(b instanceof PC_IPacketSetter){
-				((PC_IPacketSetter)b).set(var, o);
-				set = true;
-			}
+	private void handleIncomingPacket(ObjectInputStream input, World world, boolean client) throws IOException, ClassNotFoundException{
+		String str = (String)input.readObject();
+		if(str.equals("TileEntity"))
+			handleIncomingTEPacket(input, world, client);
+		else if(str.equals("Block"))
+			handleIncomingTEPacket(input, world, client);
+		else
+			throw new IllegalArgumentException("Neither TE nor Block");
+	}
+	
+	private void handleIncomingTEPacket(ObjectInputStream input, World world, boolean client) throws IOException, ClassNotFoundException{
+		int x = input.readInt();
+		int y = input.readInt();
+		int z = input.readInt();
+		int size = input.readInt();
+		Object[] o = new Object[size];
+		for(int i=0; i<size; i++)
+			o[i] = input.readObject();
+		TileEntity te = world.getBlockTileEntity(x, y, z);
+		if(te instanceof PC_TileEntity){
+			((PC_TileEntity) te).set(o);
+			if(!client)
+				PC_Utils.setTileEntityArray(null, te, o);
 		}
-		if(set && !client)
-			PC_Utils.send(null, str, var, x, y, z, o);
+	}
+	
+	private void handleIncomingBlockPacket(ObjectInputStream input, World world, boolean client) throws IOException, ClassNotFoundException{
+		int id = input.readInt();
+		int size = input.readInt();
+		Object[] o = new Object[size];
+		for(int i=0; i<size; i++)
+			o[i] = input.readObject();
+		Block b = Block.blocksList[id];
+		if(b instanceof PC_IPacketSetter){
+			((PC_IPacketSetter)b).set(o);
+			if(!client)
+				PC_Utils.setBlockArray(null, b, o);
+		}
 	}
 	
 }

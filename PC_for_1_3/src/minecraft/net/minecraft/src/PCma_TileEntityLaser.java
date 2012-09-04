@@ -363,4 +363,16 @@ public class PCma_TileEntityLaser extends PC_TileEntity implements PC_IBeamHandl
 		}
 		return false;
 	}
+
+	@Override
+	public void set(Object[] o) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public Object[] get() {
+		// TODO Auto-generated method stub
+		return null;
+	}
 }

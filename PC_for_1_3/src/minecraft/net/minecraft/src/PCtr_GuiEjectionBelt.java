@@ -135,20 +135,20 @@ public class PCtr_GuiEjectionBelt implements PC_IGresBase {
 				if (radioModeStacks.isChecked()) actionType = 0;
 				if (radioModeItems.isChecked()) actionType = 1;
 				if (radioModeAll.isChecked()) actionType = 2;
-				PC_Utils.setTileEntityVar(getPlayer(), "actionType", teb, actionType);
+				PC_Utils.setTileEntity(getPlayer(), teb, "actionType", actionType);
 				
 				int itemSelectMode=0;
 				if (radioSelectFirst.isChecked()) itemSelectMode = 0;
 				if (radioSelectLast.isChecked()) itemSelectMode = 1;
 				if (radioSelectRandom.isChecked()) itemSelectMode = 2;
-				PC_Utils.setTileEntityVar(getPlayer(), "itemSelectMode", teb, itemSelectMode);
+				PC_Utils.setTileEntity(getPlayer(), teb, "itemSelectMode", itemSelectMode);
 				
 				try {
-					PC_Utils.setTileEntityVar(getPlayer(), "numStacksEjected", teb, Integer.parseInt(editSlots.getText()));
+					PC_Utils.setTileEntity(getPlayer(), teb, "numStacksEjected", Integer.parseInt(editSlots.getText()));
 				} catch (NumberFormatException e) {}
 
 				try {
-					PC_Utils.setTileEntityVar(getPlayer(), "numItemsEjected", teb, Integer.parseInt(editItems.getText()));
+					PC_Utils.setTileEntity(getPlayer(), teb, "numItemsEjected", Integer.parseInt(editItems.getText()));
 				} catch (NumberFormatException e) {}
 
 

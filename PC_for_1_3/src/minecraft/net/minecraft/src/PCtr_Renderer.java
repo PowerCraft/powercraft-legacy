@@ -53,25 +53,26 @@ public class PCtr_Renderer {
 		boolean gf = RenderBlocks.cfgGrassFix;
 		RenderBlocks.cfgGrassFix = false;
 		PCtr_TileEntityTeleporter tet = PCtr_BlockTeleporter.getTE(iblockaccess, i, j, k);
-		if (tet.isReceiver()) {
+		PCtr_TeleporterData td = tet.td;
+		//if (tet.isReceiver()) {
 			Block.blockGold.setBlockBounds(0.125F, 0.0F, 0.125F, 0.875F, 0.125F, 0.875F);
 			renderblocks.renderStandardBlock(Block.blockGold, i, j, k);
 			float m = 0.0625F * 6F;
 			float n = 0.0625F * 10F;
-			if (tet.direction.equals("N")) {
+			if (td.direction.equals("N")) {
 				Block.blockGold.setBlockBounds(m, 0, 0.0625F, n, 0.125F, 0.0625F * 2);
-			} else if (tet.direction.equals("S")) {
+			} else if (td.direction.equals("S")) {
 				Block.blockGold.setBlockBounds(m, 0, 1 - 0.0625F * 2, n, 0.125F, 1 - 0.0625F);
-			} else if (tet.direction.equals("E")) {
+			} else if (td.direction.equals("E")) {
 				Block.blockGold.setBlockBounds(1 - 0.0625F * 2, 0, m, 1 - 0.0625F, 0.125F, n);
-			} else if (tet.direction.equals("W")) {
+			} else if (td.direction.equals("W")) {
 				Block.blockGold.setBlockBounds(0.0625F, 0, m, 0.0625F * 2, 0.125F, n);
 			}
 			renderblocks.renderStandardBlock(Block.blockGold, i, j, k);
-		} else {
+		/*} else {
 			Block.blockSteel.setBlockBounds(0.125F, 0.0F, 0.125F, 0.875F, 0.125F, 0.875F);
 			renderblocks.renderStandardBlock(Block.blockSteel, i, j, k);
-		}
+		}*/
 
 		Block.blockSteel.setBlockBounds(0.4375F, 0.125F, 0.4375F, 1F - 0.4375F, 0.25F, 1F - 0.4375F);
 		renderblocks.renderStandardBlock(Block.blockSteel, i, j, k);

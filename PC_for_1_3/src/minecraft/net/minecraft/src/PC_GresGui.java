@@ -193,7 +193,9 @@ public class PC_GresGui extends GuiContainer implements PC_IGresGui {
 	@Override
 	protected void drawGuiContainerBackgroundLayer(float f, int i, int j) {
 		drawDefaultBackground();
+		GL11.glEnable(GL11.GL_SCISSOR_TEST);
 		child.updateRenderer(new PC_CoordI(0, 0));
+		GL11.glDisable(GL11.GL_SCISSOR_TEST);
 	}
 
 	private int bgColor1 = 0xa0101010;

@@ -1,5 +1,9 @@
 package net.minecraft.src;
 
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.ObjectOutputStream;
+
 
 /**
  * @author MightyPork
@@ -27,4 +31,31 @@ public abstract class PC_TileEntity extends TileEntity {
 	 */
 	public void onBlockPickup() {}
 
+	public abstract void set(Object[] o);
+	
+	public abstract Object[] get();
+	
+	@Override
+	public Packet getAuxillaryInfoPacket() {
+		Object[] o = get();
+		if(o==null)
+			return null;
+		ByteArrayOutputStream data = new ByteArrayOutputStream();
+    	ObjectOutputStream sendData;
+		try {
+			sendData = new ObjectOutputStream(data);
+			sendData.writeObject("TileEntity");
+	        sendData.writeInt(xCoord);
+	        sendData.writeInt(yCoord);
+	        sendData.writeInt(zCoord);
+	        sendData.writeInt(o.length);
+	        for(int i=0; i<o.length; i++)
+	        	sendData.writeObject(o[i]);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return new Packet250CustomPayload("PowerCraft", data.toByteArray());
+	}
+	
 }

@@ -117,4 +117,30 @@ public class PClo_TileEntityLight extends PC_TileEntity {
 	public boolean canUpdate() {
 		return false;
 	}
+
+	@Override
+	public void set(Object[] o) {
+		int p = 0;
+		while(p<o.length){
+			String var = (String)o[p++];
+			if(var.equals("color"))
+				color = (Integer)o[p++];
+			else if(var.equals("isStable"))
+				isStable = (Boolean)o[p++];
+			else if(var.equals("isHuge"))
+				isHuge = (Boolean)o[p++];
+		}
+	}
+
+	@Override
+	public Object[] get() {
+		Object[] o = new Object[6];
+		o[0] = "color";
+		o[1] = color;
+		o[2] = "isStable";
+		o[3] = isStable;
+		o[4] = "isHuge";
+		o[5] = isHuge;
+		return o;
+	}
 }

@@ -2,197 +2,73 @@ package net.minecraft.src;
 
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.Hashtable;
+import java.util.List;
 
 import net.minecraft.client.Minecraft;
 
 
-public class PCtr_TeleporterHelper {
+public class PCtr_TeleporterHelper implements PC_INBT {
 
 	public static Minecraft mc = ModLoader.getMinecraftInstance();
 
+	public static List<PCtr_TeleporterData> teleporter = new ArrayList<PCtr_TeleporterData>();
+
 	public PCtr_TeleporterHelper() {}
-
-	// will be filled with PCtr_TeleporterEntry
-	private static Hashtable<String, PCtr_TeleporterEntry> targets = new Hashtable<String, PCtr_TeleporterEntry>();
-
-	private static boolean listsLoaded = false;
-	private static World listsWorld = null;
-	private static String listSaveDir = null;
-
-	// ------- LOADING ----------
-	private static void loadAllLists() {
-		listsWorld = mc.theWorld;
-		listSaveDir = PCtr_TeleporterEntry.getSaveDir(mc.theWorld);
-		listsLoaded = true;
-
-		loadDevices();
-		// checkAllDevices();
-	}
-
-	private static void loadIfNeeded() {
-		if (listsWorld == null || listSaveDir == null || !listsLoaded || listsWorld != mc.theWorld
-				|| !listSaveDir.equals(PCtr_TeleporterEntry.getSaveDir(mc.theWorld))) {
-			PC_Logger.fine("Loading teleporter list...");
-			targets.clear();
-			loadAllLists();
-		}
-	}
-
-	private static void loadDevices() {
-
-		String dirPath = PCtr_TeleporterEntry.getSaveDir(mc.theWorld);
-		File dir = new File(dirPath);
-
-		String[] children = dir.list();
-		if (children == null) {
-			// Either dir does not exist or is not a directory
-			return;
-		} else {
-			for (String filename : children) {
-				loadSingleDevice(dirPath + filename);
-			}
-		}
-	}
-
-	private static void loadSingleDevice(String filePath) {
-		PCtr_TeleporterEntry entry = new PCtr_TeleporterEntry(filePath);
-
-		PC_CoordI coord = entry.getCoord();
-
-		// fix for tps with no dim set
-		if (!isTeleporter(mc.theWorld.getBlockId(coord.x, coord.y, coord.z))) {
-			// can also be in ender, but who cares ;)
-			entry.dimension = mc.thePlayer.dimension == 0 ? -1 : 0;
-		}
-
-		targets.put(new String(entry.getIdentifier()), entry);
-
-		for (PCtr_TeleporterEntry e : targets.values()) {
-			e.save();
-		}
-
-	}
 	
 	// ------ GETTERS ----------
 
+	private static PCtr_TeleporterData getTarget(String target){
+		for(PCtr_TeleporterData td : teleporter)
+			if(target.equals(td.name))
+				return td;
+		return null;
+	}
+	
 	private static PC_CoordI getTargetCoord(String identifier) {
-		loadIfNeeded();
-		PCtr_TeleporterEntry e = targets.get(identifier);
+		PCtr_TeleporterData e = getTarget(identifier);
 		if (e == null) {
 			return null;
 		} else {
-			return e.getCoord();
+			return e.pos.copy();
 		}
-	}
-
-	public static boolean targetExists(PCtr_TeleporterEntry identifier) {
-		loadIfNeeded();
-
-		if (identifier == null) {
-			return false;
-		}
-
-		return targets.containsValue(identifier);
 	}
 
 	public static boolean targetExists(String identifier) {
-		loadIfNeeded();
 
 		if (identifier.equals("")) {
 			return false;
 		}
 
-		return targets.get(identifier) != null;
+		return getTarget(identifier) != null;
 	}
 	
 	public static boolean targetExistsExcept(String identifier, PC_CoordI coord) {
-		loadIfNeeded();
 
 		if (identifier.equals("")) {
 			return false;
 		}
 
-		PCtr_TeleporterEntry entry = targets.get(identifier);
-		return entry != null && !entry.getCoord().equals(coord);
+		PCtr_TeleporterData entry = getTarget(identifier);
+		return entry != null && !entry.pos.equals(coord);
 	}
 
 	public static boolean isTargetInThisDimension(String identifier) {
-		loadIfNeeded();
-
 		return mc.thePlayer.dimension == getTargetDimension(identifier);
 	}
 
 	public static int getTargetDimension(String identifier) {
-		loadIfNeeded();
-
 		if (identifier.equals("")) {
 			return 0;
 		}
 
-		PCtr_TeleporterEntry entry = targets.get(identifier);
+		PCtr_TeleporterData entry = getTarget(identifier);
 		if (entry == null) {
 			return 0;
 		}
 
-		return entry.getDimension();
-	}
-
-	// ------ BLOCK PLACING AND REMOVAL ---
-
-	public static void registerNewDevice(int i, int j, int k, String identifier) {
-		loadIfNeeded();
-
-		int dim = mc.thePlayer.dimension;
-		PCtr_TeleporterEntry newDev = new PCtr_TeleporterEntry(i, j, k, identifier, dim);
-		newDev.save();
-		targets.put(identifier, newDev);
-	}
-
-	public static boolean renameDevice(String id1, String id2) {
-		loadIfNeeded();
-
-		if (!targetExists(id1) || targetExists(id2)) {
-
-			return false;
-		}
-
-		PCtr_TeleporterEntry dev = targets.get(id1);
-
-		if (dev == null) {
-
-			return false;
-
-		}
-
-		// change device name, save to file, put under new key into the list of
-		// targets
-
-		dev.removeFile();
-
-		dev.setIdentifier(id2);
-
-		dev.save();
-		targets.put(id2, dev.copy());
-		targets.remove(id1);
-
-		return true;
-	}
-
-	public static void unregisterDevice(String identifier) {
-		loadIfNeeded();
-
-		PCtr_TeleporterEntry dev = targets.get(identifier);
-
-		if (dev == null) {
-			return;
-		}
-
-		dev.removeFile();
-		targets.remove(identifier);
-
-		// deactivate devices with this target
-		// checkAllDevices();
+		return entry.dimension;
 	}
 
 	// ------------- TESTS -------------
@@ -250,7 +126,7 @@ public class PCtr_TeleporterHelper {
 				good[i] = 1;
 			}
 
-			if (tet.direction.equals(side[i])) {
+			if (tet.td.direction.equals(side[i])) {
 				good[i] += 1;
 			}
 
@@ -295,6 +171,40 @@ public class PCtr_TeleporterHelper {
 			return false;
 		}
 
+	}
+	
+	@Override
+	public NBTTagCompound writeToNBT(NBTTagCompound tag) {
+		tag.setInteger("size", teleporter.size());
+		int i=0;
+		for(PCtr_TeleporterData td:teleporter){
+			NBTTagCompound tc = new NBTTagCompound();
+			td.writeToNBT(tc);
+			tag.setCompoundTag("field["+i+"]", tc);
+			i++;
+		}
+		return tag;
+	}
+
+	@Override
+	public PC_INBT readFromNBT(NBTTagCompound tag) {
+		teleporter.clear();
+		int size = tag.getInteger("size");
+		for(int i=0; i<size; i++){
+			PCtr_TeleporterData td = new PCtr_TeleporterData();
+			td.readFromNBT(tag.getCompoundTag("field["+i+"]"));
+			teleporter.add(td);
+		}
+		return this;
+	}
+
+	public static PCtr_TeleporterData getTeleporterDataAt(int xCoord,
+			int yCoord, int zCoord) {
+		for(PCtr_TeleporterData td:teleporter){
+			if(td.pos.x==xCoord&&td.pos.y==yCoord&&td.pos.z==zCoord)
+				return td;
+		}
+		return null;
 	}
 
 }

@@ -394,4 +394,14 @@ public class PCde_TileEntityDeco extends PC_TileEntity implements PC_IInventoryW
 	}
 
 	private static Random rand = new Random();
+
+
+	@Override
+	public void set(Object[] o) {
+	}
+
+	@Override
+	public Object[] get() {
+		return null;
+	}
 }

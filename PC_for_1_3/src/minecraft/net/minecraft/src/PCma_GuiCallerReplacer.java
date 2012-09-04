@@ -12,7 +12,7 @@ public class PCma_GuiCallerReplacer implements PC_IGresGuiCaller {
 			int var4) {
 		PCma_TileEntityReplacer tileentity = (PCma_TileEntityReplacer) player.worldObj.getBlockTileEntity(var2, var3, var4);
 		if (tileentity != null) {
-			return  new PCma_GuiReplacer(tileentity, player);
+			return new PCma_GuiReplacer(tileentity, player);
 		}
 		return null;
 	}
