@@ -114,15 +114,16 @@ public class PClo_GuiRadio implements PC_IGresBase {
 
 			String newChannel = edit.getText().trim();
 
-			ter.channel = newChannel;
-			ter.renderMicro = checkMicro.isChecked();
-			ter.hideLabel = !checkLabel.isChecked();
+			PC_Utils.setTileEntity(getPlayer(), ter, "channel", newChannel,
+					"renderMicro", checkMicro.isChecked(),
+					"hideLabel", !checkLabel.isChecked(),
+					"dim", dim);
 
 			// player is in the right dimen, set it to make sure.
 			ter.dim = dim;
 
 			if (type == 1) {
-				ter.active = mod_PClogic.RADIO.getChannelState(newChannel);
+				PC_Utils.setTileEntity(getPlayer(), ter, "active", mod_PClogic.RADIO.getChannelState(newChannel));
 				if (ter.active) {
 					PC_Utils.mc().theWorld.setBlockMetadataWithNotify(pos.x, pos.y, pos.z, 1);
 				}

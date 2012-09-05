@@ -148,6 +148,16 @@ public class PClo_TileEntityRadio extends PC_TileEntity implements IRadioDevice 
 			String var = (String)o[p++];
 			if(var.equals("type")){
 				this.setType((Integer)o[p++]);
+			}else if(var.equals("channel")){
+				this.channel = (String)o[p++];
+			}else if(var.equals("active")){
+				this.active = (Boolean)o[p++];
+			}else if(var.equals("dim")){
+				this.dim = (Integer)o[p++];
+			}else if(var.equals("hideLabel")){
+				this.hideLabel = (Boolean)o[p++];
+			}else if(var.equals("renderMicro")){
+				this.renderMicro = (Boolean)o[p++];
 			}
 		}
 		
@@ -155,9 +165,19 @@ public class PClo_TileEntityRadio extends PC_TileEntity implements IRadioDevice 
 
 	@Override
 	public Object[] get() {
-		Object[] o = new Object[2];
+		Object[] o = new Object[12];
 		o[0] = "type";
 		o[1] = type;
+		o[2] = "channel";
+		o[3] = channel;
+		o[4] = "active";
+		o[5] = active;
+		o[6] = "dim";
+		o[7] = dim;
+		o[8] = "hideLabel";
+		o[9] = hideLabel;
+		o[10] = "renderMicro";
+		o[11] = renderMicro;
 		return o;
 	}
 }
