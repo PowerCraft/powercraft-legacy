@@ -32,7 +32,7 @@ public class PC_GresLabel extends PC_GresWidget {
 	}
 
 	@Override
-	protected void render(PC_CoordI offsetPos) {
+	protected PC_RectI render(PC_CoordI offsetPos, PC_RectI scissorOld, double scale) {
 		int wid = getStringWidth(text);
 		int xstart = offsetPos.x + pos.x;
 
@@ -48,6 +48,7 @@ public class PC_GresLabel extends PC_GresWidget {
 
 		drawString(text, xstart, offsetPos.y + pos.y);
 
+		return null;
 	}
 
 	@Override

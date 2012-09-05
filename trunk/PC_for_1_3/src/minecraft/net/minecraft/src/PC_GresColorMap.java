@@ -143,7 +143,7 @@ public class PC_GresColorMap extends PC_GresWidget {
 	private boolean dragging = false;
 
 	@Override
-	protected void render(PC_CoordI posOffset) {
+	protected PC_RectI render(PC_CoordI posOffset, PC_RectI scissorOld, double scale) {
 		GL11.glDisable(GL11.GL_TEXTURE_2D);
 		Tessellator tessellator = Tessellator.instance;
 		tessellator.startDrawingQuads();
@@ -182,6 +182,8 @@ public class PC_GresColorMap extends PC_GresWidget {
 		}
 		tessellator.draw();
 		GL11.glEnable(GL11.GL_TEXTURE_2D);
+		
+		return null;
 	}
 
 	@Override

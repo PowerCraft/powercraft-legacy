@@ -27,7 +27,9 @@ public class PC_GresGap extends PC_GresWidget {
 	}
 
 	@Override
-	protected void render(PC_CoordI offsetPos) {}
+	protected PC_RectI render(PC_CoordI posOffset, PC_RectI scissorOld, double scale) {
+		return null;
+	}
 
 	@Override
 	public boolean mouseOver(PC_CoordI mpos) {

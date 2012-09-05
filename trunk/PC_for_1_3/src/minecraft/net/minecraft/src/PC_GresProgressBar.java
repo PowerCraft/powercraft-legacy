@@ -262,7 +262,7 @@ public class PC_GresProgressBar extends PC_GresWidget {
 	}
 
 	@Override
-	protected void render(PC_CoordI offsetPos) {
+	protected PC_RectI render(PC_CoordI offsetPos, PC_RectI scissorOld, double scale) {
 
 		String texture = mod_PCcore.getImgDir() + "gres/widgets.png";
 
@@ -288,6 +288,7 @@ public class PC_GresProgressBar extends PC_GresWidget {
 			drawString(lbl, pos.x + offsetPos.x + size.offset(-labelWidth, 0).x, pos.y + offsetPos.y + 2);
 		}
 
+		return null;
 	}
 
 	@Override

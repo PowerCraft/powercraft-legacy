@@ -51,7 +51,7 @@ public class PC_GresInventory extends PC_GresWidget {
 	public void calcChildPositions() {}
 
 	@Override
-	protected void render(PC_CoordI posOffset) {
+	protected PC_RectI render(PC_CoordI posOffset, PC_RectI scissorOld, double scale) {
 		String texture = mod_PCcore.getImgDir() + "gres/widgets.png";
 		PC_CoordI posOnScrren = getPositionOnScreen();
 		PC_CoordI widgetPos = null;
@@ -75,6 +75,7 @@ public class PC_GresInventory extends PC_GresWidget {
 				drawTexturedModalRect(pos.x + posOffset.x + x * 18, pos.y + posOffset.y + y * 18, 0, 66, 18, 18);
 			}
 		}
+		return null;
 	}
 
 	@Override

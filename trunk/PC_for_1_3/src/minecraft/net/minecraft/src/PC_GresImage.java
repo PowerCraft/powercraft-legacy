@@ -46,7 +46,7 @@ public class PC_GresImage extends PC_GresWidget {
 	}
 
 	@Override
-	protected void render(PC_CoordI offsetPos) {
+	protected PC_RectI render(PC_CoordI offsetPos, PC_RectI scissorOld, double scale) {
 
 		GL11.glBindTexture(GL11.GL_TEXTURE_2D, PC_Utils.mc().renderEngine.getTexture(texture));
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
@@ -57,7 +57,7 @@ public class PC_GresImage extends PC_GresWidget {
 
 		GL11.glDisable(GL11.GL_BLEND);
 
-
+		return null;
 	}
 
 	@Override

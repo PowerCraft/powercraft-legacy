@@ -77,7 +77,7 @@ public class PC_GresWindow extends PC_GresWidget {
 	}
 
 	@Override
-	public void render(PC_CoordI offsetPos) {
+	public PC_RectI render(PC_CoordI offsetPos, PC_RectI scissorOld, double scale) {
 
 		renderTextureSliced(offsetPos, mod_PCcore.getImgDir() + "gres/dialog.png", size, new PC_CoordI(0, 0), new PC_CoordI(256, 256));
 
@@ -86,6 +86,7 @@ public class PC_GresWindow extends PC_GresWidget {
 					0x404040);
 		}
 
+		return null;
 	}
 
 	@Override

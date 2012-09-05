@@ -94,7 +94,9 @@ public class PC_GresLayoutH extends PC_GresWidget {
 	}
 
 	@Override
-	protected void render(PC_CoordI mpos) {}
+	protected PC_RectI render(PC_CoordI offsetPos, PC_RectI scissorOld, double scale) {
+		return null;
+	}
 
 	@Override
 	public boolean mouseOver(PC_CoordI mpos) {

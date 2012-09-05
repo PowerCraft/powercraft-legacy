@@ -2,7 +2,7 @@ package net.minecraft.src;
 
 public class PC_RectI {
 	
-	int x, y, width, height;
+	public int x, y, width, height;
 	
 	public PC_RectI(){
 		x = 0;
@@ -42,6 +42,10 @@ public class PC_RectI {
 		else
 			fin.height = v1 - fin.y;
 		return fin;
+	}
+
+	public PC_RectI copy() {
+		return new PC_RectI(x, y, width, height);
 	}
 	
 }

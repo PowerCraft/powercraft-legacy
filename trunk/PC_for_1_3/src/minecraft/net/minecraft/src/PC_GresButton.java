@@ -65,7 +65,7 @@ public class PC_GresButton extends PC_GresWidget {
 	}
 
 	@Override
-	protected void render(PC_CoordI offsetPos) {
+	protected PC_RectI render(PC_CoordI offsetPos, PC_RectI scissorOld, double scale) {
 
 		int state;
 		if (!enabled || !parent.enabled) {
@@ -94,6 +94,8 @@ public class PC_GresButton extends PC_GresWidget {
 
 		drawCenteredString(getFontRenderer(), text, offsetPos.x + pos.x + size.x / 2, offsetPos.y + pos.y + (size.y - getFontRenderer().FONT_HEIGHT)
 				/ 2, txC);
+		
+		return null;
 	}
 
 	@Override
