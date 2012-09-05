@@ -89,7 +89,7 @@ public class PClo_ItemBlockRadio extends ItemBlock {
 				}
 
 
-				ter.setType(itemstack.getItemDamage());
+				PC_Utils.setTileEntity(entityplayer, ter, "type", itemstack.getItemDamage());
 				ter.dim = entityplayer.dimension;
 
 				world.setBlockTileEntity(i, j, k, ter);

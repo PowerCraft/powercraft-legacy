@@ -59,10 +59,10 @@ public class PCtr_GuiTeleporterDecide implements PC_IGresBase {
 	public void actionPerformed(PC_GresWidget widget, PC_IGresGui gui) {
 
 		if (widget.getId() == 0) {
-			teleporter.setIsSender();
+			//teleporter.setIsSender();
 
 		} else if (widget.getId() == 1) {
-			teleporter.setIsReceiver();
+			//teleporter.setIsReceiver();
 
 		}
 		

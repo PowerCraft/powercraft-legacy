@@ -129,6 +129,7 @@ public class PClo_RadioBus {
 	 * Clear device lists if the world changed
 	 */
 	private void checkWorldChange() {
+		if(mc.theWorld==null||devices==null||anonymousTransmitters==null)return;
 		if (mc.theWorld.worldInfo.getWorldName() != worldName) {
 			devices.clear();
 			anonymousTransmitters.clear();
