@@ -49,8 +49,9 @@ public class PC_GresSeparatorH extends PC_GresWidget {
 	}
 
 	@Override
-	protected void render(PC_CoordI off) {
+	protected PC_RectI render(PC_CoordI off, PC_RectI scissorOld, double scale) {
 		drawRect(off.x + pos.x, off.y + size.y / 2 + pos.y, off.x + size.x + pos.x + 1, off.y + size.y / 2 + pos.y + 1, lineColor | 0xff000000);
+		return null;
 	}
 
 	@Override

@@ -73,7 +73,7 @@ public class PC_GresCheckBox extends PC_GresWidget {
 	}
 
 	@Override
-	protected void render(PC_CoordI offsetPos) {
+	protected PC_RectI render(PC_CoordI offsetPos, PC_RectI scissorOld, double scale) {
 
 		String texture = mod_PCcore.getImgDir() + "gres/widgets.png";
 		GL11.glBindTexture(GL11.GL_TEXTURE_2D, mc.renderEngine.getTexture(texture));
@@ -91,6 +91,8 @@ public class PC_GresCheckBox extends PC_GresWidget {
 
 
 		drawString(text, offsetPos.x + pos.x + WIDTH + 3, offsetPos.y + pos.y + 2);
+		
+		return null;
 	}
 
 	@Override

@@ -1051,7 +1051,7 @@ public class PC_GresTextEditMultiline extends PC_GresWidget {
 	}
 
 	@Override
-	protected void render(PC_CoordI offsetPos) {
+	protected PC_RectI render(PC_CoordI offsetPos, PC_RectI scissorOld, double scale) {
 
 		drawHorizontalLine(offsetPos.x + pos.x, offsetPos.x + pos.x + size.x - 1, offsetPos.y + pos.y, 0xffA0A0A0);
 		drawHorizontalLine(offsetPos.x + pos.x, offsetPos.x + pos.x + size.x - 12, offsetPos.y + pos.y + size.y - 1, 0xffA0A0A0);
@@ -1124,6 +1124,8 @@ public class PC_GresTextEditMultiline extends PC_GresWidget {
 				}
 			}
 		}
+		
+		return null;
 	}
 
 	private void setScrollToCursor() {

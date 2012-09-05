@@ -92,7 +92,7 @@ public class PC_GresTextEdit extends PC_GresWidget {
 	public void calcChildPositions() {}
 
 	@Override
-	protected void render(PC_CoordI offsetPos) {
+	protected PC_RectI render(PC_CoordI offsetPos, PC_RectI scissorOld, double scale) {
 
 		if (mouseSelectEnd > text.length()) {
 			mouseSelectEnd = text.length();
@@ -136,6 +136,7 @@ public class PC_GresTextEdit extends PC_GresWidget {
 					+ pos.y + size.y - 5, a(color[enabled ? textColorEnabled : textColorDisabled]));
 		}
 
+		return null;
 	}
 
 	@Override

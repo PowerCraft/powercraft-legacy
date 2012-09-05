@@ -36,7 +36,7 @@ public class PC_GresInventoryBigSlot extends PC_GresWidget {
 	public void calcChildPositions() {}
 
 	@Override
-	protected void render(PC_CoordI posOffset) {
+	protected PC_RectI render(PC_CoordI posOffset, PC_RectI scissorOld, double scale) {
 		String texture = mod_PCcore.getImgDir() + "gres/widgets.png";
 		PC_CoordI posOnScrren = getPositionOnScreen();
 		PC_CoordI widgetPos = null;
@@ -56,6 +56,7 @@ public class PC_GresInventoryBigSlot extends PC_GresWidget {
 		}
 
 		renderImage(posOffset, texture, new PC_CoordI(26, 26), new PC_CoordI(18, 66));
+		return null;
 	}
 
 	@Override

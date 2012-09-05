@@ -54,7 +54,7 @@ public class PCco_GuiCraftingTool implements PC_IGresBase {
 
 
 		PC_GresWidget hg, vg;
-
+		
 		craftingToolInventory = new PC_GresInventory(invWidth, invHeight);
 		for (int i = 0; i < invWidth; i++) {
 			for (int j = 0; j < invHeight; j++) {

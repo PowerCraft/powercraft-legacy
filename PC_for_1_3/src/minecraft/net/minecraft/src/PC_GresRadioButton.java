@@ -100,7 +100,7 @@ public class PC_GresRadioButton extends PC_GresWidget {
 	}
 
 	@Override
-	protected void render(PC_CoordI offsetPos) {
+	protected PC_RectI render(PC_CoordI offsetPos, PC_RectI scissorOld, double scale) {
 		String texture = mod_PCcore.getImgDir() + "gres/widgets.png";
 		GL11.glBindTexture(GL11.GL_TEXTURE_2D, mc.renderEngine.getTexture(texture));
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
@@ -116,6 +116,8 @@ public class PC_GresRadioButton extends PC_GresWidget {
 		drawTexturedModalRect(pos.x + offsetPos.x, pos.y + offsetPos.y, WIDTH * state, WIDTH, WIDTH, WIDTH);
 
 		drawString(text, offsetPos.x + pos.x + WIDTH + 3, offsetPos.y + pos.y + 2);
+		
+		return null;
 	}
 
 	@Override

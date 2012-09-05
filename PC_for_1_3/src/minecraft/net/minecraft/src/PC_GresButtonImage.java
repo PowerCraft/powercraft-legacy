@@ -52,7 +52,7 @@ public class PC_GresButtonImage extends PC_GresButton {
 	}
 
 	@Override
-	protected void render(PC_CoordI offsetPos) {
+	protected PC_RectI render(PC_CoordI offsetPos, PC_RectI scissorOld, double scale) {
 
 		int state;
 		if (!enabled) {
@@ -78,6 +78,7 @@ public class PC_GresButtonImage extends PC_GresButton {
 
 		GL11.glDisable(GL11.GL_BLEND);
 
+		return null;
 	}
 
 }

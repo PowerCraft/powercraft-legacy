@@ -56,7 +56,7 @@ public class PC_GresLink extends PC_GresWidget {
 	}
 
 	@Override
-	protected void render(PC_CoordI offsetPos) {
+	protected PC_RectI render(PC_CoordI offsetPos, PC_RectI scissorOld, double scale) {
 
 		int state;
 		if (!enabled) {
@@ -89,6 +89,8 @@ public class PC_GresLink extends PC_GresWidget {
 		int yy = offsetPos.y + pos.y + getFontRenderer().FONT_HEIGHT;
 
 		if (underline) drawRect(offsetPos.x + pos.x, yy, offsetPos.x + size.x + pos.x + 1, yy + 1, textColor);
+		
+		return null;
 	}
 
 	@Override

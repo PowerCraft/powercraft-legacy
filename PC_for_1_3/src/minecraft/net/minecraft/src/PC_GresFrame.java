@@ -98,8 +98,9 @@ public class PC_GresFrame extends PC_GresWidget {
 	}
 
 	@Override
-	protected void render(PC_CoordI mpos) {
+	protected PC_RectI render(PC_CoordI mpos, PC_RectI scissorOld, double scale) {
 		renderTextureSliced(mpos, mod_PCcore.getImgDir() + "gres/frame.png", size, new PC_CoordI(0, 0), new PC_CoordI(256, 256));
+		return null;
 	}
 
 	@Override

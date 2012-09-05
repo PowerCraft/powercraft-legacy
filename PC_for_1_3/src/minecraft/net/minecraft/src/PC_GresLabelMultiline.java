@@ -58,7 +58,7 @@ public class PC_GresLabelMultiline extends PC_GresWidget {
 	}
 
 	@Override
-	protected void render(PC_CoordI offsetPos) {
+	protected PC_RectI render(PC_CoordI offsetPos, PC_RectI scissorOld, double scale) {
 
 		FontRenderer fontRenderer = getFontRenderer();
 
@@ -96,6 +96,7 @@ public class PC_GresLabelMultiline extends PC_GresWidget {
 			}
 		}
 
+		return null;
 	}
 
 	@Override

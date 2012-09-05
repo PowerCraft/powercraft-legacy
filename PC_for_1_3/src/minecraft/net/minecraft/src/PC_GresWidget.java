@@ -669,6 +669,14 @@ public abstract class PC_GresWidget extends Gui {
 		fr.drawString(text, x, y, colorOverride);
 	}
 	
+	public static PC_RectI setDrawRect(PC_RectI old, PC_RectI _new, double scale){
+		PC_RectI rect = old.averageQuantity(_new);
+		if(rect.width<=0 || rect.height<=0) return null;
+		int h = PC_Utils.mc().displayHeight;
+		GL11.glScissor((int)(rect.x * scale), h - (int)((rect.y + rect.height) * scale), (int)(rect.width * scale), (int)(rect.height * scale));
+		return rect;
+	}
+	
 	/**
 	 * Render this and all children at correct positions
 	 * 
@@ -676,19 +684,18 @@ public abstract class PC_GresWidget extends Gui {
 	 */
 	public void updateRenderer(PC_CoordI posOffset, PC_RectI scissorOld, double scale) {
 		if (!visible) return;
-		PC_RectI scissorNew = scissorOld.averageQuantity(new PC_RectI(posOffset.x + pos.x, posOffset.y + pos.y, size.x, size.y));
 		
-		if(scissorNew.width<=0 || scissorNew.height<=0) return;
+		PC_RectI scissorNew = setDrawRect(scissorOld, new PC_RectI(posOffset.x + pos.x, posOffset.y + pos.y, size.x, size.y), scale);
+		if(scissorNew==null)return;
 		
-		int h = PC_Utils.mc().displayHeight;
-		GL11.glScissor((int)(scissorNew.x * scale), h - (int)((scissorNew.y + scissorNew.height) * scale), (int)(scissorNew.width * scale), (int)(scissorNew.height * scale));
-		
-		this.render(posOffset);
+		PC_RectI rect = render(posOffset, scissorNew, scale);
+		if(rect!=null)
+			scissorNew = setDrawRect(scissorNew, rect, scale);
 		
 		GL11.glDisable(GL11.GL_TEXTURE_2D);
 		GL11.glEnable(GL11.GL_BLEND);
 		GL11.glBegin(GL11.GL_QUADS);
-		GL11.glColor4f(scissorNew.width/100.0f, scissorNew.height/100.0f, 0.0f, 0.9f);
+		GL11.glColor4f(scissorNew.width/100.0f, scissorNew.height/100.0f, 0.0f, 0.4f);
 		GL11.glVertex2f(-1000, -1000);
 		GL11.glVertex2f(-1000, 1000);
 		GL11.glVertex2f(1000, 1000);
@@ -709,7 +716,7 @@ public abstract class PC_GresWidget extends Gui {
 	 * 
 	 * @param posOffset offset from top left
 	 */
-	protected abstract void render(PC_CoordI posOffset);
+	protected abstract PC_RectI render(PC_CoordI posOffset, PC_RectI scissorOld, double scale);
 
 	/**
 	 * Get the widget under mouse cursor. First tries children, then self, null
