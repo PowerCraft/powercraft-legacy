@@ -669,23 +669,37 @@ public abstract class PC_GresWidget extends Gui {
 		fr.drawString(text, x, y, colorOverride);
 	}
 	
-	public PC_CoordI updateScissor(PC_CoordI posOffset, PC_CoordI scissorOld){
-		GL11.glScissor(posOffset.x + pos.x, posOffset.y + pos.y, size.x, size.y);
-	}
-	
 	/**
 	 * Render this and all children at correct positions
 	 * 
 	 * @param posOffset offset from top left
 	 */
-	public void updateRenderer(PC_CoordI posOffset, PC_CoordI scissorOld) {
+	public void updateRenderer(PC_CoordI posOffset, PC_RectI scissorOld, double scale) {
 		if (!visible) return;
-		PC_CoordI scissorNew = updateScissor(posOffset, scissorOld);
+		PC_RectI scissorNew = scissorOld.averageQuantity(new PC_RectI(posOffset.x + pos.x, posOffset.y + pos.y, size.x, size.y));
+		
+		if(scissorNew.width<=0 || scissorNew.height<=0) return;
+		
+		int h = PC_Utils.mc().displayHeight;
+		GL11.glScissor((int)(scissorNew.x * scale), h - (int)((scissorNew.y + scissorNew.height) * scale), (int)(scissorNew.width * scale), (int)(scissorNew.height * scale));
 		
 		this.render(posOffset);
+		
+		GL11.glDisable(GL11.GL_TEXTURE_2D);
+		GL11.glEnable(GL11.GL_BLEND);
+		GL11.glBegin(GL11.GL_QUADS);
+		GL11.glColor4f(scissorNew.width/100.0f, scissorNew.height/100.0f, 0.0f, 0.9f);
+		GL11.glVertex2f(-1000, -1000);
+		GL11.glVertex2f(-1000, 1000);
+		GL11.glVertex2f(1000, 1000);
+		GL11.glVertex2f(1000, -1000);
+		GL11.glEnd();
+		GL11.glEnable(GL11.GL_TEXTURE_2D);
+		GL11.glDisable(GL11.GL_BLEND);
+		
 		if (childs != null) {
 			for (int i = 0; i < childs.size(); i++) {
-				if (childs.get(i).visible) childs.get(i).updateRenderer(posOffset.offset(pos), scissorNew);
+				if (childs.get(i).visible) childs.get(i).updateRenderer(posOffset.offset(pos), scissorNew, scale);
 			}
 		}
 	}

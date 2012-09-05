@@ -366,8 +366,4 @@ public class PC_Utils {
         }
 	}
 	
-	public static double getPointToScreenCoordMultiplier(){
-		GL11.glGet
-	}
-	
 }
