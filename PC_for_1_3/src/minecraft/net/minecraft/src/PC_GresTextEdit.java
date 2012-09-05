@@ -140,8 +140,8 @@ public class PC_GresTextEdit extends PC_GresWidget {
 	}
 
 	@Override
-	public boolean mouseOver(PC_CoordI mpos) {
-		return true;
+	public MouseOver mouseOver(PC_CoordI mpos) {
+		return MouseOver.THIS;
 	}
 	
 	private int a(int aa) {

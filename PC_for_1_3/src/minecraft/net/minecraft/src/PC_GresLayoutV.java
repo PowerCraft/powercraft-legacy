@@ -1,5 +1,7 @@
 package net.minecraft.src;
 
+import net.minecraft.src.PC_GresWidget.MouseOver;
+
 
 /**
  * Resizable GUI vertical layout
@@ -101,8 +103,8 @@ public class PC_GresLayoutV extends PC_GresWidget {
 	}
 
 	@Override
-	public boolean mouseOver(PC_CoordI pos) {
-		return true;
+	public MouseOver mouseOver(PC_CoordI mpos) {
+		return MouseOver.CHILD;
 	}
 
 	@Override

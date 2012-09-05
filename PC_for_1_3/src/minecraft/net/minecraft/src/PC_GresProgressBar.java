@@ -292,8 +292,8 @@ public class PC_GresProgressBar extends PC_GresWidget {
 	}
 
 	@Override
-	public boolean mouseOver(PC_CoordI mpos) {
-		return true;
+	public MouseOver mouseOver(PC_CoordI mpos) {
+		return MouseOver.THIS;
 	}
 
 

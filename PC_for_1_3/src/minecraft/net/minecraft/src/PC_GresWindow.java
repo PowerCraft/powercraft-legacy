@@ -90,8 +90,8 @@ public class PC_GresWindow extends PC_GresWidget {
 	}
 
 	@Override
-	public boolean mouseOver(PC_CoordI pos) {
-		return true;
+	public MouseOver mouseOver(PC_CoordI pos) {
+		return MouseOver.CHILD;
 	}
 
 	@Override
@@ -145,9 +145,9 @@ public class PC_GresWindow extends PC_GresWidget {
 			if (ySize + yPlus + padding.y > size.y) {
 				size.y = ySize + yPlus + padding.y;
 			}
-//			if (parent != null) {
-//				parent.calcChildPositions();
-//			}
+			if (parent != null) {
+				parent.calcChildPositions();
+			}
 			calcChildPositions();
 			return;
 		}

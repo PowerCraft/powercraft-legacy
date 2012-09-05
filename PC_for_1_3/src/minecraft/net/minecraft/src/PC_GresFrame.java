@@ -104,9 +104,9 @@ public class PC_GresFrame extends PC_GresWidget {
 	}
 
 	@Override
-	public boolean mouseOver(PC_CoordI mpos) {
-		if (!visible) return false;
-		return true;
+	public MouseOver mouseOver(PC_CoordI mpos) {
+		if (!visible) return MouseOver.NON;
+		return MouseOver.THIS;
 	}
 
 	@Override
