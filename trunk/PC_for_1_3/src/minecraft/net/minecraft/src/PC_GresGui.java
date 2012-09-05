@@ -192,9 +192,11 @@ public class PC_GresGui extends GuiContainer implements PC_IGresGui {
 
 	@Override
 	protected void drawGuiContainerBackgroundLayer(float f, int i, int j) {
+		ScaledResolution sr = new ScaledResolution(PC_Utils.mc().gameSettings, PC_Utils.mc().displayWidth, PC_Utils.mc().displayHeight);
 		drawDefaultBackground();
+		System.out.println("f: "+f+"\ti: "+i+"\tj: "+j);
 		GL11.glEnable(GL11.GL_SCISSOR_TEST);
-		child.updateRenderer(new PC_CoordI(0, 0), new PC_CoordI(0, 0, 0));
+		child.updateRenderer(new PC_CoordI(0, 0), new PC_RectI(0, 0, sr.getScaledWidth(), sr.getScaledHeight()), sr.getScaleFactor());
 		GL11.glDisable(GL11.GL_SCISSOR_TEST);
 	}
 
