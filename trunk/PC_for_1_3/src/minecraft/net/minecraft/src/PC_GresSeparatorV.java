@@ -55,8 +55,8 @@ public class PC_GresSeparatorV extends PC_GresWidget {
 	}
 
 	@Override
-	public boolean mouseOver(PC_CoordI mpos) {
-		return false;
+	public MouseOver mouseOver(PC_CoordI mpos) {
+		return MouseOver.THIS;
 	}
 
 	@Override

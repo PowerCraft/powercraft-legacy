@@ -92,7 +92,7 @@ public class PC_GresScrollArea extends PC_GresWidget {
 
 	private void calcScrollPosition() {
 
-		int sizeX = size.x - 12;
+		int sizeX = size.x - ((type & VSCROLL) != 0?12:1);
 		int maxSizeX = childs.size()>0?childs.get(0).size.x:0;
 		int sizeOutOfFrame = maxSizeX - sizeX + 6;
 		if (sizeOutOfFrame < 0) {
@@ -102,7 +102,7 @@ public class PC_GresScrollArea extends PC_GresWidget {
 		hScrollPos = (sizeOutOfFrame > 0 ? (float) scroll.x / sizeOutOfFrame : 0) * prozent * sizeX;
 		hScrollSize = (int) ((1 - prozent) * sizeX + 0.5);
 
-		int sizeY = size.y - 12;
+		int sizeY = size.y - ((type & HSCROLL) != 0?12:1);
 		int maxSizeY = childs.size()>0?childs.get(0).size.y:0;
 		sizeOutOfFrame = maxSizeY - sizeY + 6;
 		if (sizeOutOfFrame < 0) {
@@ -117,7 +117,7 @@ public class PC_GresScrollArea extends PC_GresWidget {
 	
 	private void updateScrollPosition() {
 
-		int sizeX = size.x - 12;
+		int sizeX = size.x - ((type & VSCROLL) != 0?12:1);
 		int maxSizeX = childs.size()>0?childs.get(0).size.x:0;
 		int sizeOutOfFrame = maxSizeX - sizeX + 6;
 		if (sizeOutOfFrame < 0) {
@@ -132,7 +132,7 @@ public class PC_GresScrollArea extends PC_GresWidget {
 		}
 		scroll.x = (int) (hScrollPos / prozent / sizeX * sizeOutOfFrame + 0.5);
 
-		int sizeY = size.y - 12;
+		int sizeY = size.y - ((type & HSCROLL) != 0?12:1);
 		int maxSizeY = childs.size()>0?childs.get(0).size.y:0;
 		sizeOutOfFrame = maxSizeY - sizeY + 6;
 		if (sizeOutOfFrame < 0) {
@@ -161,42 +161,56 @@ public class PC_GresScrollArea extends PC_GresWidget {
 	@Override
 	protected PC_RectI render(PC_CoordI offsetPos, PC_RectI scissorOld,
 			double scale) {
+		
+		boolean hScroll = (type & HSCROLL)!=0, vScroll = (type & VSCROLL)!=0;
+		int xV = vScroll?12:1, yV = hScroll?12:1;
+		
 		drawHorizontalLine(offsetPos.x + pos.x, offsetPos.x + pos.x + size.x - 1, offsetPos.y + pos.y, 0xffA0A0A0);
-		drawHorizontalLine(offsetPos.x + pos.x, offsetPos.x + pos.x + size.x - 12, offsetPos.y + pos.y + size.y - 1, 0xffA0A0A0);
+		
+		if(hScroll)
+			drawHorizontalLine(offsetPos.x + pos.x, offsetPos.x + pos.x + size.x - xV, offsetPos.y + pos.y + size.y - 1, 0xffA0A0A0);
 
 		drawVerticalLine(offsetPos.x + pos.x, offsetPos.y + pos.y, offsetPos.y + pos.y + size.y - 1, 0xffA0A0A0);
-		drawVerticalLine(offsetPos.x + pos.x + size.x - 1, offsetPos.y + pos.y, offsetPos.y + pos.y + size.y - 12, 0xffA0A0A0);
+		
+		if(vScroll)
+			drawVerticalLine(offsetPos.x + pos.x + size.x - 1, offsetPos.y + pos.y, offsetPos.y + pos.y + size.y - yV, 0xffA0A0A0);
 
-		/*drawRect(offsetPos.x + pos.x + 1, offsetPos.y + pos.y + 1, offsetPos.x + pos.x + size.x - 12, offsetPos.y + pos.y + size.y - 12,
-				0xff000000 | (bg != null ? bg : PC_GresHighlightHelper.colorBackground));*/
-
+		
 		int scrollbarBg = 0x909090;
+		
+		drawRect(offsetPos.x + pos.x + 1, offsetPos.y + pos.y + 1, offsetPos.x + pos.x + size.x - xV, offsetPos.y + pos.y + size.y - yV,0x909090);
 
-		drawRect(offsetPos.x + pos.x + 1, offsetPos.y + pos.y + size.y - 11, offsetPos.x + pos.x + size.x - 12, offsetPos.y + pos.y + size.y - 1,
+		drawRect(offsetPos.x + pos.x + 1, offsetPos.y + pos.y + size.y - yV + 1, offsetPos.x + pos.x + size.x - xV, offsetPos.y + pos.y + size.y - 1,
 				scrollbarBg);
 
-		drawRect(offsetPos.x + pos.x + size.x - 11, offsetPos.y + pos.y + 1, offsetPos.x + pos.x + size.x - 1, offsetPos.y + pos.y + size.y - 12,
+		drawRect(offsetPos.x + pos.x + size.x - xV + 1, offsetPos.y + pos.y + 1, offsetPos.x + pos.x + size.x - 1, offsetPos.y + pos.y + size.y - yV,
 				scrollbarBg);
 
-		drawHorizontalLine(offsetPos.x + pos.x, offsetPos.x + pos.x + size.x - 1, offsetPos.y + pos.y + size.y - 12, 0xffA0A0A0);
+		drawHorizontalLine(offsetPos.x + pos.x, offsetPos.x + pos.x + size.x - 1, offsetPos.y + pos.y + size.y - yV, 0xffA0A0A0);
 
-		drawVerticalLine(offsetPos.x + pos.x + size.x - 12, offsetPos.y + pos.y, offsetPos.y + pos.y + size.y - 1, 0xffA0A0A0);
+		drawVerticalLine(offsetPos.x + pos.x + size.x - xV, offsetPos.y + pos.y, offsetPos.y + pos.y + size.y - 1, 0xffA0A0A0);
 
 		if (mousePressed == -1) {
 			calcScrollPosition();
 		}
 
-		renderTextureSliced(offsetPos.offset((int) hScrollPos + 1, size.y - 11), mod_PCcore.getImgDir() + "gres/scrollbar_handle.png", new PC_CoordI(
-				hScrollSize - 1, 10), new PC_CoordI(0, 0), new PC_CoordI(256, 256));
+		if(hScroll)
+			renderTextureSliced(offsetPos.offset((int) hScrollPos + 1, size.y - 11), mod_PCcore.getImgDir() + "gres/scrollbar_handle.png", new PC_CoordI(
+					hScrollSize - 1, 10), new PC_CoordI(0, 0), new PC_CoordI(256, 256));
 
-		renderTextureSliced(offsetPos.offset(size.x - 11, 1 + (int) vScrollPos), mod_PCcore.getImgDir() + "gres/scrollbar_handle.png", new PC_CoordI(
-				10, vScrollSize - 1), new PC_CoordI(0, 0), new PC_CoordI(256, 256));
-		return new PC_RectI(offsetPos.x + pos.x + 2, offsetPos.y + pos.y + 2, size.x - 15, size.y - 15);
+		if(vScroll)
+			renderTextureSliced(offsetPos.offset(size.x - 11, 1 + (int) vScrollPos), mod_PCcore.getImgDir() + "gres/scrollbar_handle.png", new PC_CoordI(
+					10, vScrollSize - 1), new PC_CoordI(0, 0), new PC_CoordI(256, 256));
+		return new PC_RectI(offsetPos.x + pos.x + 2, offsetPos.y + pos.y + 2, size.x - ((type & VSCROLL)!=0?15:4), size.y - ((type & HSCROLL)!=0?15:4));
 	}
 
 	@Override
-	public boolean mouseOver(PC_CoordI mousePos) {
-		return true;
+	public MouseOver mouseOver(PC_CoordI mousePos) {
+		if ((mousePos.y < size.y - ((type & HSCROLL) != 0?12:1) && mousePos.x > size.x - 12)||
+				(mousePos.x < size.x - ((type & VSCROLL) != 0?12:1) && mousePos.y > size.y - 12)) {
+			return MouseOver.THIS;
+		}
+		return MouseOver.CHILD;
 	}
 
 	@Override
@@ -204,7 +218,7 @@ public class PC_GresScrollArea extends PC_GresWidget {
 		mousePressed = -1;
 		lastMousePosition.setTo(mousePos);
 		if (key != -1) {
-			if (mousePos.y < size.y - 12) {
+			if (mousePos.y < size.y - ((type & HSCROLL) != 0?12:1) && mousePos.x > size.x - 12) {
 				if (mousePos.y - 1 < vScrollPos) {
 					scroll.y -= 5;
 					return true;
@@ -215,7 +229,7 @@ public class PC_GresScrollArea extends PC_GresWidget {
 				}
 				mousePressed = 0;
 				return true;
-			} else if (mousePos.x < size.x - 12) {
+			} else if (mousePos.x < size.x - ((type & VSCROLL) != 0?12:1) && mousePos.y > size.y - 12) {
 				if (mousePos.x - 1 < hScrollPos) {
 					scroll.x -= 5;
 					return true;
@@ -249,10 +263,10 @@ public class PC_GresScrollArea extends PC_GresWidget {
 	@Override
 	public void mouseWheel(int i) {
 		if((type & VSCROLL)!=0){
-			vScrollPos += i;
+			vScrollPos -= i*3;
 			updateScrollPosition();
 		}else if((type & HSCROLL)!=0){
-			hScrollPos += i;
+			hScrollPos -= i*3;
 			updateScrollPosition();
 		}
 	}

@@ -1,5 +1,7 @@
 package net.minecraft.src;
 
+import net.minecraft.src.PC_GresWidget.MouseOver;
+
 
 /**
  * Resizable GUI hypertext link-like widget
@@ -93,10 +95,11 @@ public class PC_GresLink extends PC_GresWidget {
 		return null;
 	}
 
+	
 	@Override
-	public boolean mouseOver(PC_CoordI mpos) {
+	public MouseOver mouseOver(PC_CoordI mpos) {
 		isMouseOver = true;
-		return true;
+		return MouseOver.THIS;
 	}
 
 
@@ -122,7 +125,7 @@ public class PC_GresLink extends PC_GresWidget {
 
 	@Override
 	public void mouseMove(PC_CoordI mpos) {
-		if (mpos.x < 0 || mpos.x >= size.x || mpos.y < 0 || mpos.y >= size.y || mouseOver(mpos) == false) {
+		if (mpos.x < 0 || mpos.x >= size.x || mpos.y < 0 || mpos.y >= size.y || mouseOver(mpos) == MouseOver.NON) {
 			isClicked = false;
 		}
 	}

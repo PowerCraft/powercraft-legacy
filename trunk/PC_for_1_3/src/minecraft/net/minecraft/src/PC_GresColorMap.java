@@ -187,8 +187,8 @@ public class PC_GresColorMap extends PC_GresWidget {
 	}
 
 	@Override
-	public boolean mouseOver(PC_CoordI mousePos) {
-		return true;
+	public MouseOver mouseOver(PC_CoordI mousePos) {
+		return MouseOver.THIS;
 	}
 
 	@Override

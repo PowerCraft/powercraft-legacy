@@ -23,6 +23,12 @@ public abstract class PC_GresWidget extends Gui {
 	/** Minecraft instance */
 	protected static Minecraft mc = PC_Utils.mc();
 
+	protected enum MouseOver{
+		NON,
+		THIS,
+		CHILD
+	}
+	
 	/**
 	 * align vertical
 	 * 
@@ -729,9 +735,12 @@ public abstract class PC_GresWidget extends Gui {
 		if (!visible) return null;
 		PC_GresWidget widget;
 		PC_CoordI mpos = mousePos.offset(-pos.x, -pos.y);
-
+			
+		
+		MouseOver mo = MouseOver.NON;
+		
 		// mouse not over this widget
-		if (mpos.x < 0 || mpos.x >= size.x || mpos.y < 0 || mpos.y >= size.y || mouseOver(mpos) == false) {
+		if (mpos.x < 0 || mpos.x >= size.x || mpos.y < 0 || mpos.y >= size.y || (mo = mouseOver(mpos)) != MouseOver.CHILD) {
 			this.isMouseOver = false;
 
 			if (childs != null) {
@@ -740,6 +749,11 @@ public abstract class PC_GresWidget extends Gui {
 				}
 			}
 
+			if(mo==MouseOver.THIS){
+				this.isMouseOver = true;
+				return this;
+			}
+			
 			return null;
 		}
 
@@ -759,10 +773,6 @@ public abstract class PC_GresWidget extends Gui {
 			}
 		}
 
-		if (mouseOver(mpos) == false) {
-			this.isMouseOver = false;
-			return null;
-		}
 		return this;
 	}
 
@@ -912,7 +922,7 @@ public abstract class PC_GresWidget extends Gui {
 	 * @param mousePos mouse position
 	 * @return is over
 	 */
-	public abstract boolean mouseOver(PC_CoordI mousePos);
+	public abstract MouseOver mouseOver(PC_CoordI mousePos);
 
 	/**
 	 * Mouse clicked on widget.
