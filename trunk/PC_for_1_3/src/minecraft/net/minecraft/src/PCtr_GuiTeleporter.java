@@ -61,7 +61,7 @@ public class PCtr_GuiTeleporter implements PC_IGresBase {
 		isnew = newt;
 		teleporter = te;
 
-		if (teleporter.isSender()) {
+		/*if (teleporter.isSender()) {
 
 			type = SENDER;
 			field = new String(teleporter.targetName);
@@ -74,7 +74,7 @@ public class PCtr_GuiTeleporter implements PC_IGresBase {
 		} else {
 
 			PC_Logger.warning("openned gui for invalid teleporter device.");
-		}
+		}*/
 	}
 
 
@@ -117,18 +117,18 @@ public class PCtr_GuiTeleporter implements PC_IGresBase {
 			hg = new PC_GresLayoutH().setAlignH(PC_GresAlign.LEFT);
 
 			vg = new PC_GresLayoutV().setMinWidth(100).setAlignH(PC_GresAlign.LEFT);
-			vg.add(checkItems = new PC_GresCheckBox(PC_Lang.tr("pc.gui.teleporter.items")).check(teleporter.items));
-			vg.add(checkAnimals = new PC_GresCheckBox(PC_Lang.tr("pc.gui.teleporter.animals")).check(teleporter.animals));
+			vg.add(checkItems = new PC_GresCheckBox(PC_Lang.tr("pc.gui.teleporter.items")).check(teleporter.td.items));
+			vg.add(checkAnimals = new PC_GresCheckBox(PC_Lang.tr("pc.gui.teleporter.animals")).check(teleporter.td.animals));
 			hg.add(vg);
 
 			vg = new PC_GresLayoutV().setMinWidth(100).setAlignH(PC_GresAlign.LEFT);
-			vg.add(checkMobs = new PC_GresCheckBox(PC_Lang.tr("pc.gui.teleporter.monsters")).check(teleporter.monsters));
-			vg.add(checkPlayers = new PC_GresCheckBox(PC_Lang.tr("pc.gui.teleporter.players")).check(teleporter.players));
+			vg.add(checkMobs = new PC_GresCheckBox(PC_Lang.tr("pc.gui.teleporter.monsters")).check(teleporter.td.monsters));
+			vg.add(checkPlayers = new PC_GresCheckBox(PC_Lang.tr("pc.gui.teleporter.players")).check(teleporter.td.players));
 			hg.add(vg);
 
 			vg1.add(hg);
 
-			vg1.add(checkSneak = new PC_GresCheckBox(PC_Lang.tr("pc.gui.teleporter.sneak")).check(teleporter.sneakTrigger));
+			vg1.add(checkSneak = new PC_GresCheckBox(PC_Lang.tr("pc.gui.teleporter.sneak")).check(teleporter.td.sneakTrigger));
 			w.add(vg1);
 
 		} else if (type == RECEIVER) {
@@ -140,13 +140,13 @@ public class PCtr_GuiTeleporter implements PC_IGresBase {
 			hg = new PC_GresLayoutH().setAlignH(PC_GresAlign.LEFT);
 
 			vg = new PC_GresLayoutV().setMinWidth(100).setAlignH(PC_GresAlign.LEFT);
-			vg.add(checkN = new PC_GresRadioButton(PC_Lang.tr("pc.gui.teleporter.dir.north"), group).check(teleporter.direction.equals("N")));
-			vg.add(checkS = new PC_GresRadioButton(PC_Lang.tr("pc.gui.teleporter.dir.south"), group).check(teleporter.direction.equals("S")));
+			vg.add(checkN = new PC_GresRadioButton(PC_Lang.tr("pc.gui.teleporter.dir.north"), group).check(teleporter.td.direction.equals("N")));
+			vg.add(checkS = new PC_GresRadioButton(PC_Lang.tr("pc.gui.teleporter.dir.south"), group).check(teleporter.td.direction.equals("S")));
 			hg.add(vg);
 
 			vg = new PC_GresLayoutV().setMinWidth(100).setAlignH(PC_GresAlign.LEFT);
-			vg.add(checkE = new PC_GresRadioButton(PC_Lang.tr("pc.gui.teleporter.dir.east"), group).check(teleporter.direction.equals("E")));
-			vg.add(checkW = new PC_GresRadioButton(PC_Lang.tr("pc.gui.teleporter.dir.west"), group).check(teleporter.direction.equals("W")));
+			vg.add(checkE = new PC_GresRadioButton(PC_Lang.tr("pc.gui.teleporter.dir.east"), group).check(teleporter.td.direction.equals("E")));
+			vg.add(checkW = new PC_GresRadioButton(PC_Lang.tr("pc.gui.teleporter.dir.west"), group).check(teleporter.td.direction.equals("W")));
 			hg.add(vg);
 
 			vg1.add(hg);
@@ -157,7 +157,7 @@ public class PCtr_GuiTeleporter implements PC_IGresBase {
 
 		hg = new PC_GresLayoutH().setAlignH(PC_GresAlign.CENTER);
 		hg.add(checkLabel = new PC_GresCheckBox(PC_Lang.tr("pc.gui.teleporter.showLabel")));
-		checkLabel.check(!teleporter.hideLabel);
+		checkLabel.check(!teleporter.td.hideLabel);
 		hg.add(buttonCancel = new PC_GresButton(PC_Lang.tr("pc.gui.cancel")).setId(1));
 		hg.add(buttonOK = new PC_GresButton(PC_Lang.tr("pc.gui.ok")).setId(0));
 		w.add(hg);
@@ -181,20 +181,20 @@ public class PCtr_GuiTeleporter implements PC_IGresBase {
 		} else if (widget == buttonOK) {
 
 			if (!edit.getText().equals("")) {
-				teleporter.hideLabel = !checkLabel.isChecked();
+				teleporter.td.hideLabel = !checkLabel.isChecked();
 				if (type == SENDER) {
-					teleporter.targetName = new String(edit.getText());
+					teleporter.td.defaultTarget = new String(edit.getText());
 
 					PC_Logger.finest("setting target to " + edit.getText());
 				} else {
 
-					if (isnew) {
+				/*	if (isnew) {
 						PCtr_TeleporterHelper.registerNewDevice(teleporter.xCoord, teleporter.yCoord, teleporter.zCoord, edit.getText());
 					} else {
-						PCtr_TeleporterHelper.renameDevice(teleporter.identifierName, edit.getText());
-					}
+						PCtr_TeleporterHelper.renameDevice(teleporter.td.name, edit.getText());
+					}*/
 
-					teleporter.identifierName = new String(edit.getText());
+					teleporter.td.name = new String(edit.getText());
 					PC_Logger.finest("setting id to " + edit.getText());
 
 				}
@@ -204,23 +204,23 @@ public class PCtr_GuiTeleporter implements PC_IGresBase {
 			}
 
 			if (type == SENDER) {
-				teleporter.items = checkItems.isChecked();
-				teleporter.animals = checkAnimals.isChecked();
-				teleporter.monsters = checkMobs.isChecked();
-				teleporter.players = checkPlayers.isChecked();
-				teleporter.sneakTrigger = checkSneak.isChecked();
+				teleporter.td.items = checkItems.isChecked();
+				teleporter.td.animals = checkAnimals.isChecked();
+				teleporter.td.monsters = checkMobs.isChecked();
+				teleporter.td.players = checkPlayers.isChecked();
+				teleporter.td.sneakTrigger = checkSneak.isChecked();
 			} else if (type == RECEIVER) {
 				if (checkN.isChecked()) {
-					teleporter.direction = "N";
+					teleporter.td.direction = "N";
 				}
 				if (checkS.isChecked()) {
-					teleporter.direction = "S";
+					teleporter.td.direction = "S";
 				}
 				if (checkE.isChecked()) {
-					teleporter.direction = "E";
+					teleporter.td.direction = "E";
 				}
 				if (checkW.isChecked()) {
-					teleporter.direction = "W";
+					teleporter.td.direction = "W";
 				}
 			}
 

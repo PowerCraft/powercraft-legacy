@@ -143,13 +143,21 @@ public class PClo_TileEntityRadio extends PC_TileEntity implements IRadioDevice 
 
 	@Override
 	public void set(Object[] o) {
-		// TODO Auto-generated method stub
+		int p = 0;
+		while(p<o.length){
+			String var = (String)o[p++];
+			if(var.equals("type")){
+				this.setType((Integer)o[p++]);
+			}
+		}
 		
 	}
 
 	@Override
 	public Object[] get() {
-		// TODO Auto-generated method stub
-		return null;
+		Object[] o = new Object[2];
+		o[0] = "type";
+		o[1] = type;
+		return o;
 	}
 }
