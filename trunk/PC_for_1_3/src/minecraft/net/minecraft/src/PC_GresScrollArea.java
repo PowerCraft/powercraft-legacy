@@ -5,7 +5,7 @@ import org.lwjgl.input.Keyboard;
 public class PC_GresScrollArea extends PC_GresWidget {
 
 	public static final int HSCROLL = 1, VSCROLL = 2;
-	private int type = HSCROLL|VSCROLL;
+	private int type = (HSCROLL|VSCROLL);
 	private int vScrollSize = 0, hScrollSize = 0;
 	private float vScrollPos = 0, hScrollPos = 0;
 	private PC_CoordI scroll = new PC_CoordI(0, 0);
@@ -76,17 +76,17 @@ public class PC_GresScrollArea extends PC_GresWidget {
 		if((type & (HSCROLL|VSCROLL))!=(HSCROLL|VSCROLL))
 			if(childs.size()>0)
 				cSize = childs.get(0).calcSize();
-		if((type & HSCROLL)==0)
-			size.y = cSize.y+16;
 		if((type & VSCROLL)==0)
-			size.x = cSize.x+16;
+			size.y = cSize.y+18;
+		if((type & HSCROLL)==0)
+			size.x = cSize.x+18;
 		return size.copy();
 	}
 
 	@Override
 	public void calcChildPositions() {
 		if(childs.size()>0)
-			childs.get(0).setPosition(2, 2);
+			childs.get(0).setPosition(2-scroll.x, 2-scroll.y);
 		calcSize();
 	}
 
@@ -94,7 +94,7 @@ public class PC_GresScrollArea extends PC_GresWidget {
 
 		int sizeX = size.x - 12;
 		int maxSizeX = childs.size()>0?childs.get(0).size.x:0;
-		int sizeOutOfFrame = maxSizeX - sizeX + 14;
+		int sizeOutOfFrame = maxSizeX - sizeX + 6;
 		if (sizeOutOfFrame < 0) {
 			sizeOutOfFrame = 0;
 		}
@@ -104,7 +104,7 @@ public class PC_GresScrollArea extends PC_GresWidget {
 
 		int sizeY = size.y - 12;
 		int maxSizeY = childs.size()>0?childs.get(0).size.y:0;
-		sizeOutOfFrame = maxSizeY - sizeY + 14;
+		sizeOutOfFrame = maxSizeY - sizeY + 6;
 		if (sizeOutOfFrame < 0) {
 			sizeOutOfFrame = 0;
 		}
@@ -119,7 +119,7 @@ public class PC_GresScrollArea extends PC_GresWidget {
 
 		int sizeX = size.x - 12;
 		int maxSizeX = childs.size()>0?childs.get(0).size.x:0;
-		int sizeOutOfFrame = maxSizeX - sizeX + 14;
+		int sizeOutOfFrame = maxSizeX - sizeX + 6;
 		if (sizeOutOfFrame < 0) {
 			sizeOutOfFrame = 0;
 		}
@@ -134,7 +134,7 @@ public class PC_GresScrollArea extends PC_GresWidget {
 
 		int sizeY = size.y - 12;
 		int maxSizeY = childs.size()>0?childs.get(0).size.y:0;
-		sizeOutOfFrame = maxSizeY - sizeY + 14;
+		sizeOutOfFrame = maxSizeY - sizeY + 6;
 		if (sizeOutOfFrame < 0) {
 			sizeOutOfFrame = 0;
 		}
@@ -147,8 +147,14 @@ public class PC_GresScrollArea extends PC_GresWidget {
 		}
 		scroll.y = (int) (vScrollPos / prozent / sizeY * sizeOutOfFrame + 0.5);
 		
-		if(childs.size()>0){
-			childs.get(0)maxSizeX.get
+		if(getChild()!=null){
+			int x=2, y=2;
+			PC_GresWidget w = getChild();
+			if((type & HSCROLL)!=0)
+				x -= scroll.x;
+			if((type & VSCROLL)!=0)
+				y -= scroll.y;
+			w.setPosition(x, y);
 		}
 	}
 	
@@ -185,7 +191,7 @@ public class PC_GresScrollArea extends PC_GresWidget {
 
 		renderTextureSliced(offsetPos.offset(size.x - 11, 1 + (int) vScrollPos), mod_PCcore.getImgDir() + "gres/scrollbar_handle.png", new PC_CoordI(
 				10, vScrollSize - 1), new PC_CoordI(0, 0), new PC_CoordI(256, 256));
-		return new PC_RectI(offsetPos.x + pos.x + 2, offsetPos.y + pos.y + 2, size.x - 14, size.y - 14);
+		return new PC_RectI(offsetPos.x + pos.x + 2, offsetPos.y + pos.y + 2, size.x - 15, size.y - 15);
 	}
 
 	@Override
