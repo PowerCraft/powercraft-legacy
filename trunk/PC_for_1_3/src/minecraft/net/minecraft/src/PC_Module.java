@@ -627,6 +627,8 @@ public abstract class PC_Module extends BaseMod {
 			((PC_TileEntity) te).set(o);
 			if(!client)
 				PC_Utils.setTileEntityArray(null, te, o);
+		}else{
+			throw new IllegalArgumentException("Not a PC_TileEntity");
 		}
 	}
 	
