@@ -15,7 +15,8 @@ public class PCde_TileEntityDeco extends PC_TileEntity implements PC_IInventoryW
 
 	/** block type. */
 	public int type = 0;
-
+	private boolean send = true;
+	
 	/** Flag for migrating from 3.4pre3 to newer. */
 	private boolean flag34pre4 = true;
 
@@ -42,6 +43,10 @@ public class PCde_TileEntityDeco extends PC_TileEntity implements PC_IInventoryW
 
 	@Override
 	public void updateEntity() {
+		if(send){
+			PC_Utils.setTileEntity(PC_Utils.mc().thePlayer, this, "type", type);
+			send = false;
+		}
 		if (type == 0 || type == 1) return;
 
 
