@@ -10,12 +10,12 @@ package net.minecraft.src;
 public class PCde_TileEntityWalkable extends PC_TileEntity {
 
 	/** block type. */
-	public int type = 0;
+	public int type = -1;
 	private boolean send = true;
 
 	@Override
 	public void updateEntity() {
-		if(send){
+		if(type!=-1&&send){
 			PC_Utils.setTileEntity(PC_Utils.mc().thePlayer, this, "type", type);
 			send = false;
 		}

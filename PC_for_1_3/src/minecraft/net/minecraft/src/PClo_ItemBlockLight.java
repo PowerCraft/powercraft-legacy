@@ -62,6 +62,24 @@ public class PClo_ItemBlockLight extends ItemBlock {
 			}
 		}
 
+		int i1 = 0;
+		
+		if (l == 1 && world.isBlockNormalCube(i, j - 1, k)) {
+			i1 = 0;
+		}
+		if (l == 2 && world.isBlockNormalCube(i, j, k + 1)) {
+			i1 = 1;
+		} else if (l == 3 && world.isBlockNormalCube(i, j, k - 1)) {
+			i1 = 2;
+		} else if (l == 4 && world.isBlockNormalCube(i + 1, j, k)) {
+			i1 = 3;
+		} else if (l == 5 && world.isBlockNormalCube(i - 1, j, k)) {
+			i1 = 4;
+		}
+		if (l == 0 && world.isBlockNormalCube(i, j + 1, k)) {
+			i1 = 5;
+		}
+		
 		if (itemstack.stackSize == 0) {
 			return false;
 		}
@@ -97,6 +115,7 @@ public class PClo_ItemBlockLight extends ItemBlock {
 
 				tei.setColor(itemstack.getItemDamage() % 16);
 				world.setBlockTileEntity(i, j, k, tei);
+				world.setBlockMetadataWithNotify(i, j, k, i1);
 
 				if (lamp) {
 					PClo_BlockLight.onPoweredBlockChange(world, i, j, k, true);
