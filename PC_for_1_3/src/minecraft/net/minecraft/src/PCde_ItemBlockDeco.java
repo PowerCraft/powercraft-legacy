@@ -76,7 +76,6 @@ public class PCde_ItemBlockDeco extends ItemBlock {
 				if (ted == null) {
 					ted = (PCde_TileEntityDeco) ((BlockContainer) block).createNewTileEntity(world);
 				}
-				PC_Utils.setTileEntity(entityplayer, ted, "type", itemstack.getItemDamage());
 				world.setBlockTileEntity(i, j, k, ted);
 				/** @todo block.onBlockPlaced(world, i, j, k, l); */
 				block.onBlockPlacedBy(world, i, j, k, entityplayer);
@@ -84,6 +83,8 @@ public class PCde_ItemBlockDeco extends ItemBlock {
 				world.markBlocksDirty(i, j, k, i, j, k);
 				world.markBlockNeedsUpdate(i, j, k);
 
+				PC_Utils.setTileEntity(entityplayer, ted, "type", itemstack.getItemDamage());
+				
 				world.playSoundEffect(i + 0.5F, j + 0.5F, k + 0.5F, block.stepSound.getStepSound(), (block.stepSound.getVolume() + 1.0F) / 2.0F,
 						block.stepSound.getPitch() * 0.8F);
 
