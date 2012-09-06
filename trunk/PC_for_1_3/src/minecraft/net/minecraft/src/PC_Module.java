@@ -592,7 +592,6 @@ public abstract class PC_Module extends BaseMod {
 	
 	@Override
 	public void clientCustomPayload(NetClientHandler var1, Packet250CustomPayload packet){
-		System.out.println("clientCustomPayload");
 		try {
 			ObjectInputStream input = new ObjectInputStream(new ByteArrayInputStream(packet.data));
 			handleIncomingPacket(input, PC_Utils.mc().theWorld, true);

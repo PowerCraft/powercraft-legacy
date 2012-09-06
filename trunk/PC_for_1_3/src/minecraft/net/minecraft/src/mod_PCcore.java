@@ -1213,10 +1213,18 @@ public class mod_PCcore extends PC_Module implements PC_IActivatorListener {
 	@Override
 	public boolean onTickInGame(float f, Minecraft minecraft) {
 		if(dmm == null){
-			dmm = (PC_DataMemoryManager)MinecraftServer.getServer().worldServerForDimension(0).loadItemData(PC_DataMemoryManager.class, "PC_DataMemoryManager");
-			if(dmm == null){
-				dmm = new PC_DataMemoryManager("PC_DataMemoryManager");
-				MinecraftServer.getServer().worldServerForDimension(0).setItemData("PC_DataMemoryManager", dmm);
+			if(MinecraftServer.getServer()!=null){
+				dmm = (PC_DataMemoryManager)MinecraftServer.getServer().worldServerForDimension(0).loadItemData(PC_DataMemoryManager.class, "PC_DataMemoryManager");
+				if(dmm == null){
+					dmm = new PC_DataMemoryManager("PC_DataMemoryManager");
+					MinecraftServer.getServer().worldServerForDimension(0).setItemData("PC_DataMemoryManager", dmm);
+				}
+			}else{
+				dmm = (PC_DataMemoryManager)minecraft.theWorld.loadItemData(PC_DataMemoryManager.class, "PC_DataMemoryManager");
+				if(dmm == null){
+					dmm = new PC_DataMemoryManager("PC_DataMemoryManager");
+					minecraft.theWorld.setItemData("PC_DataMemoryManager", dmm);
+				}
 			}
 			System.out.println("dmm:"+dmm);
 		}
