@@ -90,6 +90,8 @@ public abstract class PC_Module extends BaseMod {
 	public static Hashtable<String, PC_IGresGuiCaller> guiList = new Hashtable<String, PC_IGresGuiCaller>();
 
 	public static Hashtable<String, Class> dataMemory = new Hashtable<String, Class>();
+
+	public static Hashtable<String, PC_PacketHandler> packetHandler = new Hashtable<String, PC_PacketHandler>();
 	
 	/**
 	 * @return instance of configuration manager
@@ -301,7 +303,12 @@ public abstract class PC_Module extends BaseMod {
 				for(PC_IGresGuiCaller gui:gList.values())
 					ModLoader.registerContainerID(this, gui.getGuiID());
 			}
-				
+			
+			PC_Logger.finer("Adding PacketHandler...");
+			Hashtable<String, PC_PacketHandler> phList = addPacketHandler();
+			if(phList!=null){
+				packetHandler.putAll(phList);
+			}
 			
 			PC_Logger.finer("Calling post-init hook...");
 			postInit();
@@ -320,7 +327,7 @@ public abstract class PC_Module extends BaseMod {
 		}
 	}
 
-
+	
 
 	// UTILS
 
@@ -548,6 +555,8 @@ public abstract class PC_Module extends BaseMod {
 	 */
 	public abstract Hashtable<String, PC_IGresGuiCaller> addGui();
 	
+	protected abstract Hashtable<String, PC_PacketHandler> addPacketHandler();
+	
 	/**
 	 * Do something when all is initialized.
 	 */
@@ -601,9 +610,11 @@ public abstract class PC_Module extends BaseMod {
 		if(str.equals("TileEntity"))
 			handleIncomingTEPacket(input, world, client);
 		else if(str.equals("Block"))
-			handleIncomingTEPacket(input, world, client);
+			handleIncomingBlockPacket(input, world, client);
+		else if(str.equals("PacketHandler"))
+			handleIncomingPacketHandlerPacket(input, world, client);
 		else
-			throw new IllegalArgumentException("Neither TE nor Block");
+			throw new IllegalArgumentException("Neither TE nor Block nor PacketHandler");
 	}
 	
 	private void handleIncomingTEPacket(ObjectInputStream input, World world, boolean client) throws IOException, ClassNotFoundException{
@@ -633,6 +644,20 @@ public abstract class PC_Module extends BaseMod {
 			((PC_IPacketSetter)b).set(o);
 			if(!client)
 				PC_Utils.setBlockArray(null, b, o);
+		}
+	}
+	
+	private void handleIncomingPacketHandlerPacket(ObjectInputStream input, World world, boolean client) throws IOException, ClassNotFoundException{
+		String name = (String)input.readObject();
+		int size = input.readInt();
+		Object[] o = new Object[size];
+		for(int i=0; i<size; i++)
+			o[i] = input.readObject();
+		PC_PacketHandler ph = packetHandler.get(name);
+		if(ph!=null){
+			ph.handleIncomingPacket(world, o);
+			if(!client)
+				PC_Utils.sendToPacketHandlerArray(null, name, o);
 		}
 	}
 	

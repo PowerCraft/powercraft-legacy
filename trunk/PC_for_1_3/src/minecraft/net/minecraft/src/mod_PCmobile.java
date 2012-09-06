@@ -220,5 +220,11 @@ public class mod_PCmobile extends PC_Module implements PC_IActivatorListener {
 		return null;
 	}
 
+	@Override
+	protected Hashtable<String, PC_PacketHandler> addPacketHandler() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 
 }

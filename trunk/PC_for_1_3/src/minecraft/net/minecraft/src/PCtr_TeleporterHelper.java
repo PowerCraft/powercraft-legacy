@@ -21,7 +21,7 @@ public class PCtr_TeleporterHelper implements PC_INBT {
 
 	private static PCtr_TeleporterData getTarget(String target){
 		for(PCtr_TeleporterData td : teleporter)
-			if(target.equals(td.name))
+			if(td.name.equals(target))
 				return td;
 		return null;
 	}

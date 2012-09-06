@@ -1261,5 +1261,12 @@ public class mod_PCcore extends PC_Module implements PC_IActivatorListener {
 		guis.put("UpdateNotification",  new PCco_GuiCallerUpdateNotification());
 		return guis;
 	}
+
+	@Override
+	protected Hashtable<String, PC_PacketHandler> addPacketHandler() {
+		Hashtable<String, PC_PacketHandler> packetHandler = new Hashtable<String, PC_PacketHandler>();
+		packetHandler.put("MobSpawnerSetter", new PCco_MobSpawnerSetter());
+		return packetHandler;
+	}
 	
 }

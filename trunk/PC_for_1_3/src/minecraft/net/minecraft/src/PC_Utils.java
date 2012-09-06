@@ -353,6 +353,27 @@ public class PC_Utils {
 		send(player, data);
 	}
 	
+	public static void sendToPacketHandler(EntityPlayer player, String name, Object... o){
+		sendToPacketHandlerArray(player, name, o);
+	}
+	
+	public static void sendToPacketHandlerArray(EntityPlayer player, String name, Object[] o){
+		ByteArrayOutputStream data = new ByteArrayOutputStream();
+    	ObjectOutputStream sendData;
+		try {
+			sendData = new ObjectOutputStream(data);
+			sendData.writeObject("PacketHandler");
+	        sendData.writeObject(name);
+	        sendData.writeInt(o.length);
+	        for(int i=0; i<o.length; i++)
+	        	sendData.writeObject(o[i]);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		send(player, data);
+	}
+	
 	public static void send(EntityPlayer player, ByteArrayOutputStream data){
         Packet250CustomPayload packet =  new Packet250CustomPayload("PowerCraft", data.toByteArray());
         if(player!=null)

@@ -25,6 +25,7 @@ public class PC_DataMemoryManager extends WorldSavedData {
 
 	@Override
 	public void readFromNBT(NBTTagCompound var1) {
+		System.out.println("DM: readFromNBT");
 		int size = var1.getInteger("size");
 		for(int i=0; i<size; i++){
 			String memoryName = var1.getString("memoryName["+i+"]");
