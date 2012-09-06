@@ -387,4 +387,12 @@ public class PC_Utils {
         }
 	}
 	
+	public static void registerDataMemory(PC_INBT mem){
+		mod_PCcore.registerDataMemory(mem);
+	}
+	
+	public static void unRegisterDataMemory(PC_INBT mem){
+		mod_PCcore.unRegisterDataMemory(mem);
+	}
+	
 }

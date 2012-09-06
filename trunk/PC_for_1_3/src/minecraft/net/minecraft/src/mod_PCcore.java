@@ -13,6 +13,7 @@ import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 
 import net.minecraft.client.Minecraft;
+import net.minecraft.server.MinecraftServer;
 
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.opengl.GL11;
@@ -1211,8 +1212,13 @@ public class mod_PCcore extends PC_Module implements PC_IActivatorListener {
 	
 	@Override
 	public boolean onTickInGame(float f, Minecraft minecraft) {
-		if (dmm == null){
-			dmm = (PC_DataMemoryManager)minecraft.theWorld.mapStorage.loadData(PC_DataMemoryManager.class, "PC_DataMemoryManager");
+		if(dmm == null){
+			dmm = (PC_DataMemoryManager)MinecraftServer.getServer().worldServerForDimension(0).loadItemData(PC_DataMemoryManager.class, "PC_DataMemoryManager");
+			if(dmm == null){
+				dmm = new PC_DataMemoryManager("PC_DataMemoryManager");
+				MinecraftServer.getServer().worldServerForDimension(0).setItemData("PC_DataMemoryManager", dmm);
+			}
+			System.out.println("dmm:"+dmm);
 		}
 		if (!updateAlreadyShown && updateAvailable && optUpdateNotify) {
 			if (++inGameTickCounter > 20) {
@@ -1267,6 +1273,16 @@ public class mod_PCcore extends PC_Module implements PC_IActivatorListener {
 		Hashtable<String, PC_PacketHandler> packetHandler = new Hashtable<String, PC_PacketHandler>();
 		packetHandler.put("MobSpawnerSetter", new PCco_MobSpawnerSetter());
 		return packetHandler;
+	}
+	
+	public static void registerDataMemory(PC_INBT mem){
+		if(dmm != null)
+			dmm.register(mem);
+	}
+	
+	public static void unRegisterDataMemory(PC_INBT mem){
+		if(dmm != null)
+			dmm.unRegister(mem);
 	}
 	
 }

@@ -11,10 +11,8 @@ import java.util.List;
  * @author MightyPork
  */
 public class PCtr_TileEntityTeleporter extends PC_TileEntity {
-
-	public static List<PCtr_TileEntityTeleporter> teleporter = new ArrayList<PCtr_TileEntityTeleporter>();
 	
-	public final PCtr_TeleporterData td;
+	public PCtr_TeleporterData td;
 	
 	/*public String defaultTarget, name;
 
@@ -33,18 +31,22 @@ public class PCtr_TileEntityTeleporter extends PC_TileEntity {
 	/**
 	 * 
 	 */
+	
+	
 	public PCtr_TileEntityTeleporter() {
 		super();
+	}
+
+	public void createData(){
 		PCtr_TeleporterData ntd = PCtr_TeleporterHelper.getTeleporterDataAt(xCoord, yCoord, zCoord);
 		if(ntd==null)
 			ntd = new PCtr_TeleporterData();
 		td = ntd;
-		PCtr_TeleporterHelper.teleporter.add(td);
-		teleporter.add(this);
+		PCtr_TeleporterHelper.teleporter.add(this);
 		
-		//td.dimension = worldObj.worldInfo.getDimension();
+		td.dimension = worldObj.worldInfo.getDimension();
 	}
-
+	
 	@Override
 	public PC_CoordI getCoord() {
 		return new PC_CoordI(xCoord, yCoord, zCoord);
@@ -86,13 +88,13 @@ public class PCtr_TileEntityTeleporter extends PC_TileEntity {
 		}*/
 
 		
-		
-		if (active != td.lastActiveState) {
-			worldObj.markBlocksDirty(xCoord, yCoord, zCoord, xCoord, yCoord, zCoord);
-			worldObj.markBlockNeedsUpdate(xCoord, yCoord, zCoord);
-			td.lastActiveState = active;
+		if(td!=null){
+			if (active != td.lastActiveState) {
+				worldObj.markBlocksDirty(xCoord, yCoord, zCoord, xCoord, yCoord, zCoord);
+				worldObj.markBlockNeedsUpdate(xCoord, yCoord, zCoord);
+				td.lastActiveState = active;
+			}
 		}
-		
 		return active;
 
 	}
@@ -183,7 +185,8 @@ public class PCtr_TileEntityTeleporter extends PC_TileEntity {
 	@Override
 	public void onBlockPickup(){
 		
-		teleporter.remove(this);
+		td.remove();
+		PCtr_TeleporterHelper.teleporter.remove(this);
 		
 	}
 

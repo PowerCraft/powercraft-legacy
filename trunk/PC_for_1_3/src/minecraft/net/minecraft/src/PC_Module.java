@@ -89,8 +89,6 @@ public abstract class PC_Module extends BaseMod {
 	/** */
 	public static Hashtable<String, PC_IGresGuiCaller> guiList = new Hashtable<String, PC_IGresGuiCaller>();
 
-	public static Hashtable<String, Class> dataMemory = new Hashtable<String, Class>();
-
 	public static Hashtable<String, PC_PacketHandler> packetHandler = new Hashtable<String, PC_PacketHandler>();
 	
 	/**

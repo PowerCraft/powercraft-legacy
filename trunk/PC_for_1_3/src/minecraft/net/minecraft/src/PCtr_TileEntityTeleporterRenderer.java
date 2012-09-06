@@ -16,11 +16,13 @@ public class PCtr_TileEntityTeleporterRenderer extends TileEntitySpecialRenderer
 		PCtr_TileEntityTeleporter tet = (PCtr_TileEntityTeleporter) tileEntity;
 		PCtr_TeleporterData td = tet.td;
 		
-		if (!td.hideLabel) {
-
-			String foo = "\u2192" + td.name;
-
-			PC_Renderer.renderEntityLabelAt(foo, new PC_CoordF(tet.xCoord, tet.yCoord, tet.zCoord), 10, 1.3F, x, y, z);
+		if(td!=null){
+			if (!td.hideLabel) {
+	
+				String foo = "\u2192" + td.name;
+	
+				PC_Renderer.renderEntityLabelAt(foo, new PC_CoordF(tet.xCoord, tet.yCoord, tet.zCoord), 10, 1.3F, x, y, z);
+			}
 		}
 	}
 }
