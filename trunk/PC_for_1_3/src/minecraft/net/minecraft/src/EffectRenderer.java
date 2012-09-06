@@ -49,11 +49,15 @@ public class EffectRenderer
             for (int var2 = 0; var2 < this.fxLayers[var1].size(); ++var2)
             {
                 EntityFX var3 = (EntityFX)this.fxLayers[var1].get(var2);
-                var3.onUpdate();
-
-                if (var3.isDead)
-                {
-                    this.fxLayers[var1].remove(var2--);
+                
+                //TODO
+                if(var3!=null){
+	                var3.onUpdate();
+	
+	                if (var3.isDead)
+	                {
+	                    this.fxLayers[var1].remove(var2--);
+	                }
                 }
             }
         }
