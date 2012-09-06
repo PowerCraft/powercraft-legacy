@@ -118,7 +118,7 @@ public class PCde_ItemBlockWalkable extends ItemBlock {
 				if (ted == null) {
 					ted = (PCde_TileEntityWalkable) ((BlockContainer) block).createNewTileEntity(world);
 				}
-				ted.type = itemstack.getItemDamage();
+				PC_Utils.setTileEntity(entityplayer, ted, "type", itemstack.getItemDamage());
 				world.setBlockTileEntity(i, j, k, ted);
 				//block.onBlockPlaced(world, i, j, k, l);
 				block.onBlockPlacedBy(world, i, j, k, entityplayer);
