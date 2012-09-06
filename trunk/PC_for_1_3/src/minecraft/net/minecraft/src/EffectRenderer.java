@@ -106,10 +106,13 @@ public class EffectRenderer
                 for (int var11 = 0; var11 < this.fxLayers[var8].size(); ++var11)
                 {
                     EntityFX var12 = (EntityFX)this.fxLayers[var8].get(var11);
-                    var10.setBrightness(var12.getBrightnessForRender(par2));
-                    var12.renderParticle(var10, par2, var3, var7, var4, var5, var6);
+                    //TODO
+                    if(var12!=null){
+                    	var10.setBrightness(var12.getBrightnessForRender(par2));
+                    	var12.renderParticle(var10, par2, var3, var7, var4, var5, var6);
+                    }
                 }
-
+                
                 var10.draw();
             }
         }

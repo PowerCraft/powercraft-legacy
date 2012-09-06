@@ -8,12 +8,14 @@ package net.minecraft.src;
  * @copy (c) 2012
  */
 public class PClo_TileEntityLight extends PC_TileEntity {
-	private int color = 1;
+	private int color = -1;
 	/** flag that this light is lamp, and not indicator */
 	public boolean isStable;
 	/** flag that this light huge */
 	public boolean isHuge;
 
+	public boolean send = true;
+	
 	@Override
 	public void readFromNBT(NBTTagCompound nbttagcompound) {
 		super.readFromNBT(nbttagcompound);
@@ -64,6 +66,8 @@ public class PClo_TileEntityLight extends PC_TileEntity {
 	public PC_Color getFullColor(boolean on) {
 		int rc;
 
+		if(color==-1)
+			return new PC_Color();
 		rc = PC_Color.light_colors[color];
 
 
@@ -110,12 +114,20 @@ public class PClo_TileEntityLight extends PC_TileEntity {
 		}
 	}
 
+	@Override
+	public void updateEntity() {
+		if(color!=-1&&send){
+			PC_Utils.setTileEntity(PC_Utils.mc().thePlayer, this, "color", color, "isStable", isStable, "isHuge", isHuge);
+			send=false;
+		}
+	}
+	
 	/**
 	 * @return if forge updates this TE
 	 */
 	@Override
 	public boolean canUpdate() {
-		return false;
+		return true;
 	}
 
 	@Override

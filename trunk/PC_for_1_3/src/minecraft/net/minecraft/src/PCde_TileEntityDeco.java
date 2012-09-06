@@ -14,7 +14,7 @@ import java.util.Random;
 public class PCde_TileEntityDeco extends PC_TileEntity implements PC_IInventoryWrapper {
 
 	/** block type. */
-	public int type = 0;
+	public int type = -1;
 	private boolean send = true;
 	
 	/** Flag for migrating from 3.4pre3 to newer. */
@@ -43,7 +43,7 @@ public class PCde_TileEntityDeco extends PC_TileEntity implements PC_IInventoryW
 
 	@Override
 	public void updateEntity() {
-		if(send){
+		if(type!=-1&&send){
 			PC_Utils.setTileEntity(PC_Utils.mc().thePlayer, this, "type", type);
 			send = false;
 		}
