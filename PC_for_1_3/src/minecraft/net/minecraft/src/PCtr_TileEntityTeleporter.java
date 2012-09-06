@@ -14,7 +14,7 @@ public class PCtr_TileEntityTeleporter extends PC_TileEntity {
 
 	public static List<PCtr_TileEntityTeleporter> teleporter = new ArrayList<PCtr_TileEntityTeleporter>();
 	
-	public PCtr_TeleporterData td;
+	public final PCtr_TeleporterData td;
 	
 	/*public String defaultTarget, name;
 
@@ -34,13 +34,15 @@ public class PCtr_TileEntityTeleporter extends PC_TileEntity {
 	 * 
 	 */
 	public PCtr_TileEntityTeleporter() {
-		td = new PCtr_TeleporterData();
+		super();
+		PCtr_TeleporterData ntd = PCtr_TeleporterHelper.getTeleporterDataAt(xCoord, yCoord, zCoord);
+		if(ntd==null)
+			ntd = new PCtr_TeleporterData();
+		td = ntd;
 		PCtr_TeleporterHelper.teleporter.add(td);
 		teleporter.add(this);
 		
-		td.defaultTarget = null;
-		td.name = "";
-		td.dimension = worldObj.worldInfo.getDimension();
+		//td.dimension = worldObj.worldInfo.getDimension();
 	}
 
 	@Override
@@ -117,9 +119,6 @@ public class PCtr_TileEntityTeleporter extends PC_TileEntity {
 			animals = true;
 			players = true;
 		}*/
-		
-		if(td!=null)
-			td = PCtr_TeleporterHelper.getTeleporterDataAt(xCoord, yCoord, zCoord);
 	}
 
 	@Override

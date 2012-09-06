@@ -253,5 +253,11 @@ public class mod_PCdeco extends PC_Module {
 		return guis;
 	}
 
+	@Override
+	protected Hashtable<String, PC_PacketHandler> addPacketHandler() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 
 }

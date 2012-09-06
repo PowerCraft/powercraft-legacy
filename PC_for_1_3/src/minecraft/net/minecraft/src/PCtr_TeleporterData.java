@@ -2,8 +2,8 @@ package net.minecraft.src;
 
 public class PCtr_TeleporterData implements PC_INBT {
 
-	public PC_CoordI pos;
-	public String defaultTarget, name;
+	public PC_CoordI pos = new PC_CoordI();
+	public String defaultTarget = null, name = "";
 
 	public boolean lastActiveState = false;
 
@@ -26,11 +26,8 @@ public class PCtr_TeleporterData implements PC_INBT {
 
 	@Override
 	public PC_INBT readFromNBT(NBTTagCompound tag) {
+		System.out.println("Load Data");
 		PC_Utils.loadFromNBT(tag, "pos", pos);
-		
-		PCtr_TileEntityTeleporter tet = (PCtr_TileEntityTeleporter)PC_Utils.mc().theWorld.getBlockTileEntity(pos.x, pos.y, pos.z);
-		if(tet!=null)
-			tet.td = this;
 		return this;
 	}
 

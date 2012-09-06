@@ -15,6 +15,8 @@ import net.minecraft.src.PC_GresWidget.PC_GresAlign;
  */
 public class PCco_GuiSpawnerEditor implements PC_IGresBase {
 
+	private EntityPlayer player;
+	
 	private TileEntityMobSpawner spawner;
 
 	private PC_GresCheckBox checkDangerous;
@@ -30,7 +32,8 @@ public class PCco_GuiSpawnerEditor implements PC_IGresBase {
 	 * 
 	 * @param tileEntityMobSpawner the spawner to edit
 	 */
-	public PCco_GuiSpawnerEditor(TileEntityMobSpawner tileEntityMobSpawner) {
+	public PCco_GuiSpawnerEditor(EntityPlayer player, TileEntityMobSpawner tileEntityMobSpawner) {
+		this.player = player;
 		spawner = tileEntityMobSpawner;
 
 		spawner.getMobID();
@@ -139,7 +142,7 @@ public class PCco_GuiSpawnerEditor implements PC_IGresBase {
 		}
 
 		if (widget.getId() < 24) {
-			spawner.setMobID(mapping[widget.getId()]);
+			PC_Utils.sendToPacketHandler(player, "MobSpawnerSetter", spawner.xCoord, spawner.yCoord, spawner.zCoord, mapping[widget.getId()]);
 			gui.close();
 			return;
 		}

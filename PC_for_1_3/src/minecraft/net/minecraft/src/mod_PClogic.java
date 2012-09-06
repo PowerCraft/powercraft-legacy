@@ -1050,4 +1050,10 @@ public class mod_PClogic extends PC_Module {
 		guis.put("Sensor", new PClo_GuiCallerSensor());
 		return guis;
 	}
+
+	@Override
+	protected Hashtable<String, PC_PacketHandler> addPacketHandler() {
+		// TODO Auto-generated method stub
+		return null;
+	}
 }

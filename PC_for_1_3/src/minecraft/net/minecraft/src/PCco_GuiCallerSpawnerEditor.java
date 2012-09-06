@@ -12,7 +12,7 @@ public class PCco_GuiCallerSpawnerEditor implements PC_IGresGuiCaller {
 			int var4) {
 		TileEntity te = (new PC_CoordI(var2, var3, var4)).getTileEntity(player.worldObj);
 		if(te instanceof TileEntityMobSpawner)
-			return new PCco_GuiSpawnerEditor((TileEntityMobSpawner)te);
+			return new PCco_GuiSpawnerEditor(player, (TileEntityMobSpawner)te);
 		return null;
 	}
 

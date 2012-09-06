@@ -496,4 +496,10 @@ public class mod_PCmachines extends PC_Module implements PC_IActivatorListener {
 		guis.put("XPBank", new PCma_GuiCallerXPBank());
 		return guis;
 	}
+
+	@Override
+	protected Hashtable<String, PC_PacketHandler> addPacketHandler() {
+		// TODO Auto-generated method stub
+		return null;
+	}
 }

@@ -98,7 +98,7 @@ public class PCma_GuiReplacer implements PC_IGresBase {
 		hg.add(hg1);
 
 
-		w.add(new PC_GresScrollArea(100, 40, hg, PC_GresScrollArea.VSCROLL | PC_GresScrollArea.HSCROLL));
+		w.add(hg);
 
 		// w.add(new PC_GresGap(0, 6));
 
