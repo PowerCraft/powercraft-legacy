@@ -623,11 +623,13 @@ public abstract class PC_Module extends BaseMod {
 		for(int i=0; i<size; i++)
 			o[i] = input.readObject();
 		TileEntity te = world.getBlockTileEntity(x, y, z);
+		if(te==null) return;
 		if(te instanceof PC_TileEntity){
 			((PC_TileEntity) te).set(o);
 			if(!client)
 				PC_Utils.setTileEntityArray(null, te, o);
 		}else{
+			System.out.println("x:" + te.xCoord + " y:" + te.yCoord + " z:" + te.zCoord);
 			throw new IllegalArgumentException("Not a PC_TileEntity");
 		}
 	}
