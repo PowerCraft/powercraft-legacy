@@ -398,10 +398,20 @@ public class PCde_TileEntityDeco extends PC_TileEntity implements PC_IInventoryW
 
 	@Override
 	public void set(Object[] o) {
+		int p = 0;
+		while(p<o.length){
+			String var = (String)o[p++];
+			if(var.equals("type")){
+				type = (Integer)o[p++];
+			}
+		}
 	}
 
 	@Override
 	public Object[] get() {
-		return null;
+		Object o[] = new Object[2];
+		o[0] = "type";
+		o[1] = type;
+		return o;
 	}
 }
