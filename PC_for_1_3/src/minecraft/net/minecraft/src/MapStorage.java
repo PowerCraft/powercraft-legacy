@@ -39,7 +39,7 @@ public class MapStorage
     public WorldSavedData loadData(Class par1Class, String par2Str)
     {
         WorldSavedData var3 = (WorldSavedData)this.loadedDataMap.get(par2Str);
-
+        
         if (var3 != null)
         {
             return var3;
@@ -51,7 +51,7 @@ public class MapStorage
                 try
                 {
                     File var4 = this.saveHandler.getMapFileFromName(par2Str);
-
+                    
                     if (var4 != null && var4.exists())
                     {
                         try
@@ -62,7 +62,6 @@ public class MapStorage
                         {
                             throw new RuntimeException("Failed to instantiate " + par1Class.toString(), var7);
                         }
-
                         FileInputStream var5 = new FileInputStream(var4);
                         NBTTagCompound var6 = CompressedStreamTools.readCompressed(var5);
                         var5.close();

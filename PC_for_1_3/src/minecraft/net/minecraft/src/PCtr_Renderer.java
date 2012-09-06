@@ -59,14 +59,16 @@ public class PCtr_Renderer {
 			renderblocks.renderStandardBlock(Block.blockGold, i, j, k);
 			float m = 0.0625F * 6F;
 			float n = 0.0625F * 10F;
-			if (td.direction.equals("N")) {
-				Block.blockGold.setBlockBounds(m, 0, 0.0625F, n, 0.125F, 0.0625F * 2);
-			} else if (td.direction.equals("S")) {
-				Block.blockGold.setBlockBounds(m, 0, 1 - 0.0625F * 2, n, 0.125F, 1 - 0.0625F);
-			} else if (td.direction.equals("E")) {
-				Block.blockGold.setBlockBounds(1 - 0.0625F * 2, 0, m, 1 - 0.0625F, 0.125F, n);
-			} else if (td.direction.equals("W")) {
-				Block.blockGold.setBlockBounds(0.0625F, 0, m, 0.0625F * 2, 0.125F, n);
+			if(td!=null){
+				if (td.direction.equals("N")) {
+					Block.blockGold.setBlockBounds(m, 0, 0.0625F, n, 0.125F, 0.0625F * 2);
+				} else if (td.direction.equals("S")) {
+					Block.blockGold.setBlockBounds(m, 0, 1 - 0.0625F * 2, n, 0.125F, 1 - 0.0625F);
+				} else if (td.direction.equals("E")) {
+					Block.blockGold.setBlockBounds(1 - 0.0625F * 2, 0, m, 1 - 0.0625F, 0.125F, n);
+				} else if (td.direction.equals("W")) {
+					Block.blockGold.setBlockBounds(0.0625F, 0, m, 0.0625F * 2, 0.125F, n);
+				}
 			}
 			renderblocks.renderStandardBlock(Block.blockGold, i, j, k);
 		/*} else {

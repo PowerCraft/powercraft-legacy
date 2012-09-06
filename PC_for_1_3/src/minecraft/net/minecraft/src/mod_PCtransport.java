@@ -407,9 +407,6 @@ public class mod_PCtransport extends PC_Module {
 	@Override
 	public void postInit() {
 		
-		//TODO
-		dataMemory.put("PCtr_TeleporterHelper", PCtr_TeleporterHelper.class);
-		
 		PC_InveditManager.setDamageRange(itemElevator.blockID, 0, 1);
 
 		String ctg = "Transportation";
@@ -484,7 +481,6 @@ public class mod_PCtransport extends PC_Module {
 		guis.put("SeparationBelt", new PCtr_GuiCallerSeparationBelt());
 		guis.put("EjectionBelt", new PCtr_GuiCallerEjectionBelt());
 		guis.put("Teleporter", new PCtr_GuiCallerTeleporter());
-		guis.put("TeleporterDecide", new PCtr_GuiCallerTeleporterDecide());
 		return guis;
 	}
 

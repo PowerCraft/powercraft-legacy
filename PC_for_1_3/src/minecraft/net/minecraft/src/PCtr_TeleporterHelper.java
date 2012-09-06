@@ -9,18 +9,19 @@ import java.util.List;
 import net.minecraft.client.Minecraft;
 
 
-public class PCtr_TeleporterHelper implements PC_INBT {
+public class PCtr_TeleporterHelper {
 
 	public static Minecraft mc = ModLoader.getMinecraftInstance();
 
-	public static List<PCtr_TeleporterData> teleporter = new ArrayList<PCtr_TeleporterData>();
+	public static List<PCtr_TileEntityTeleporter> teleporter = new ArrayList<PCtr_TileEntityTeleporter>();
+	public static List<PCtr_TeleporterData> teleporterData = new ArrayList<PCtr_TeleporterData>();
 
 	public PCtr_TeleporterHelper() {}
 	
 	// ------ GETTERS ----------
 
 	private static PCtr_TeleporterData getTarget(String target){
-		for(PCtr_TeleporterData td : teleporter)
+		for(PCtr_TeleporterData td : teleporterData)
 			if(td.name.equals(target))
 				return td;
 		return null;
@@ -172,39 +173,23 @@ public class PCtr_TeleporterHelper implements PC_INBT {
 		}
 
 	}
-	
-	@Override
-	public NBTTagCompound writeToNBT(NBTTagCompound tag) {
-		tag.setInteger("size", teleporter.size());
-		int i=0;
-		for(PCtr_TeleporterData td:teleporter){
-			NBTTagCompound tc = new NBTTagCompound();
-			td.writeToNBT(tc);
-			tag.setCompoundTag("field["+i+"]", tc);
-			i++;
-		}
-		return tag;
-	}
-
-	@Override
-	public PC_INBT readFromNBT(NBTTagCompound tag) {
-		teleporter.clear();
-		int size = tag.getInteger("size");
-		for(int i=0; i<size; i++){
-			PCtr_TeleporterData td = new PCtr_TeleporterData();
-			td.readFromNBT(tag.getCompoundTag("field["+i+"]"));
-			teleporter.add(td);
-		}
-		return this;
-	}
 
 	public static PCtr_TeleporterData getTeleporterDataAt(int xCoord,
 			int yCoord, int zCoord) {
-		for(PCtr_TeleporterData td:teleporter){
+		for(PCtr_TeleporterData td:teleporterData){
 			if(td.pos.x==xCoord&&td.pos.y==yCoord&&td.pos.z==zCoord)
 				return td;
 		}
 		return null;
 	}
 
+	public static PCtr_TileEntityTeleporter getTeleporterAt(int xCoord,
+			int yCoord, int zCoord) {
+		for(PCtr_TileEntityTeleporter tet:teleporter){
+			if(tet.xCoord==xCoord&&tet.yCoord==yCoord&&tet.zCoord==zCoord)
+				return tet;
+		}
+		return null;
+	}
+	
 }

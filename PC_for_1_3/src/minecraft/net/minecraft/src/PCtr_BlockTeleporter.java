@@ -58,10 +58,9 @@ public class PCtr_BlockTeleporter extends BlockContainer implements PC_IBlockTyp
 	@Override
 	public void onBlockPlacedBy(World world, int i, int j, int k, EntityLiving entityliving) {
 		super.onBlockPlacedBy(world, i, j, k, entityliving);
-
+		((PCtr_TileEntityTeleporter)world.getBlockTileEntity(i, j, k)).createData();
 		if (entityliving instanceof EntityPlayer) {
-			PC_Utils.openGres((EntityPlayer) entityliving, "TeleporterDecide", i, j, k);
-			//PC_Utils.openGres((EntityPlayer) entityliving, "Teleporter", i, j, k);
+			PC_Utils.openGres((EntityPlayer) entityliving, "Teleporter", i, j, k);
 		}
 	}
 
