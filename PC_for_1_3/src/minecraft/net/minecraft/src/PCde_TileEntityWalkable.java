@@ -11,11 +11,14 @@ public class PCde_TileEntityWalkable extends PC_TileEntity {
 
 	/** block type. */
 	public int type = 0;
-
+	private boolean send = true;
 
 	@Override
 	public void updateEntity() {
-		// nothing
+		if(send){
+			PC_Utils.setTileEntity(PC_Utils.mc().thePlayer, this, "type", type);
+			send = false;
+		}
 	}
 
 	/**
@@ -25,7 +28,7 @@ public class PCde_TileEntityWalkable extends PC_TileEntity {
 	 */
 	@Override
 	public boolean canUpdate() {
-		return false;
+		return true;
 	}
 
 	@Override
