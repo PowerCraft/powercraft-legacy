@@ -15,19 +15,12 @@ public class PClo_ItemBlockLight extends ItemBlock {
 	public PClo_ItemBlockLight(int i) {
 		super(i);
 		setMaxDamage(0);
-		setHasSubtypes(true);
+		setHasSubtypes(false);
 	}
 
 	@Override
 	public int getBlockID() {
 		return mod_PClogic.lightOff.blockID;
-	}
-
-	@Override
-	public String getItemNameIS(ItemStack itemstack) {
-		boolean lamp = itemstack.getItemDamage() >= 16 && itemstack.getItemDamage() < 32;
-		boolean huge = itemstack.getItemDamage() >= 32 && itemstack.getItemDamage() < 48;
-		return super.getItemName() + "." + itemstack.getItemDamage() % 16 + (lamp ? ".stable" : huge ? ".huge" : "");
 	}
 
 	@Override

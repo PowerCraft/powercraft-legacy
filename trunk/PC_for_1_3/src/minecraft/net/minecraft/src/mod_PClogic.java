@@ -297,58 +297,7 @@ public class mod_PClogic extends PC_Module {
 
 		map.put("tile.PCloLight.isHuge", "is Huge");
 		map.put("tile.PCloLight.isStable", "is Stable");
-		map.put("tile.PCloLight.0.name", "Black Indicator");
-		map.put("tile.PCloLight.1.name", "Red Indicator");
-		map.put("tile.PCloLight.2.name", "Green Indicator");
-		map.put("tile.PCloLight.3.name", "Brown Indicator");
-		map.put("tile.PCloLight.4.name", "Blue Indicator");
-		map.put("tile.PCloLight.5.name", "Purple Indicator");
-		map.put("tile.PCloLight.6.name", "Cyan Indicator");
-		map.put("tile.PCloLight.7.name", "Light-gray Indicator");
-		map.put("tile.PCloLight.8.name", "Gray Indicator");
-		map.put("tile.PCloLight.9.name", "Pink Indicator");
-		map.put("tile.PCloLight.10.name", "Lime Indicator");
-		map.put("tile.PCloLight.11.name", "Yellow Indicator");
-		map.put("tile.PCloLight.12.name", "Light-blue Indicator");
-		map.put("tile.PCloLight.13.name", "Magenta Indicator");
-		map.put("tile.PCloLight.14.name", "Orange Indicator");
-		map.put("tile.PCloLight.15.name", "White Indicator");
-		map.put("tile.PCloLight.name", "Indicator Light");
-
-
-		map.put("tile.PCloLight.0.stable.name", "Black Lamp");
-		map.put("tile.PCloLight.1.stable.name", "Red Lamp");
-		map.put("tile.PCloLight.2.stable.name", "Green Lamp");
-		map.put("tile.PCloLight.3.stable.name", "Brown Lamp");
-		map.put("tile.PCloLight.4.stable.name", "Blue Lamp");
-		map.put("tile.PCloLight.5.stable.name", "Purple Lamp");
-		map.put("tile.PCloLight.6.stable.name", "Cyan Lamp");
-		map.put("tile.PCloLight.7.stable.name", "Light-gray Lamp");
-		map.put("tile.PCloLight.8.stable.name", "Gray Lamp");
-		map.put("tile.PCloLight.9.stable.name", "Pink Lamp");
-		map.put("tile.PCloLight.10.stable.name", "Lime Lamp");
-		map.put("tile.PCloLight.11.stable.name", "Yellow Lamp");
-		map.put("tile.PCloLight.12.stable.name", "Light-blue Lamp");
-		map.put("tile.PCloLight.13.stable.name", "Magenta Lamp");
-		map.put("tile.PCloLight.14.stable.name", "Orange Lamp");
-		map.put("tile.PCloLight.15.stable.name", "White Lamp");
-
-		map.put("tile.PCloLight.0.huge.name", "Black Display Segment");
-		map.put("tile.PCloLight.1.huge.name", "Red Display Segment");
-		map.put("tile.PCloLight.2.huge.name", "Green Display Segment");
-		map.put("tile.PCloLight.3.huge.name", "Brown Display Segment");
-		map.put("tile.PCloLight.4.huge.name", "Blue Display Segment");
-		map.put("tile.PCloLight.5.huge.name", "Purple Display Segment");
-		map.put("tile.PCloLight.6.huge.name", "Cyan Display Segment");
-		map.put("tile.PCloLight.7.huge.name", "Light-gray Display Segment");
-		map.put("tile.PCloLight.8.huge.name", "Gray Display Segment");
-		map.put("tile.PCloLight.9.huge.name", "Pink Display Segment");
-		map.put("tile.PCloLight.10.huge.name", "Lime Display Segment");
-		map.put("tile.PCloLight.11.huge.name", "Yellow Display Segment");
-		map.put("tile.PCloLight.12.huge.name", "Light-blue Display Segment");
-		map.put("tile.PCloLight.13.huge.name", "Magenta Display Segment");
-		map.put("tile.PCloLight.14.huge.name", "Orange Display Segment");
-		map.put("tile.PCloLight.15.huge.name", "White Display Segment");
+		map.put("tile.PCloLight.name", "Light");
 
 		map.put("tile.PCloLogicGate.name", "Redstone Logic Gate");
 		map.put("tile.PCloLogicGate.not.name", "Redstone Inverter");
@@ -950,48 +899,7 @@ public class mod_PClogic extends PC_Module {
 		addStackRangeToCraftingTool(PC_ItemGroup.LOGIC, weaselDevice.blockID, 0, PClo_WeaselType.WEASEL_DEVICE_COUNT - 1, 1);
 		addStacksToCraftingTool(PC_ItemGroup.LOGIC, new ItemStack(weaselDisk,1,0xfff));
 		
-		addStacksToCraftingTool(PC_ItemGroup.LIGHTS,
-				
-				new ItemStack(lightOn, 1, PC_Color.dye.RED.meta),
-				new ItemStack(lightOn, 1, PC_Color.dye.ORANGE.meta),
-				new ItemStack(lightOn, 1, PC_Color.dye.YELLOW.meta),
-				new ItemStack(lightOn, 1, PC_Color.dye.LIME.meta),
-				new ItemStack(lightOn, 1, PC_Color.dye.GREEN.meta),
-				new ItemStack(lightOn, 1, PC_Color.dye.CYAN.meta),
-				new ItemStack(lightOn, 1, PC_Color.dye.LIGHTBLUE.meta),
-				new ItemStack(lightOn, 1, PC_Color.dye.BLUE.meta),
-				new ItemStack(lightOn, 1, PC_Color.dye.PURPLE.meta),
-				new ItemStack(lightOn, 1, PC_Color.dye.MAGENTA.meta),
-				new ItemStack(lightOn, 1, PC_Color.dye.PINK.meta),
-				new ItemStack(lightOn, 1, PC_Color.dye.WHITE.meta),
-				
-				new ItemStack(lightOn, 1, PC_Color.dye.RED.meta+32),
-				new ItemStack(lightOn, 1, PC_Color.dye.ORANGE.meta+32),
-				new ItemStack(lightOn, 1, PC_Color.dye.YELLOW.meta+32),
-				new ItemStack(lightOn, 1, PC_Color.dye.LIME.meta+32),
-				new ItemStack(lightOn, 1, PC_Color.dye.GREEN.meta+32),
-				new ItemStack(lightOn, 1, PC_Color.dye.CYAN.meta+32),
-				new ItemStack(lightOn, 1, PC_Color.dye.LIGHTBLUE.meta+32),
-				new ItemStack(lightOn, 1, PC_Color.dye.BLUE.meta+32),
-				new ItemStack(lightOn, 1, PC_Color.dye.PURPLE.meta+32),
-				new ItemStack(lightOn, 1, PC_Color.dye.MAGENTA.meta+32),
-				new ItemStack(lightOn, 1, PC_Color.dye.PINK.meta+32),
-				new ItemStack(lightOn, 1, PC_Color.dye.WHITE.meta+32),
-				
-				new ItemStack(lightOn, 1, PC_Color.dye.RED.meta+16),
-				new ItemStack(lightOn, 1, PC_Color.dye.ORANGE.meta+16),
-				new ItemStack(lightOn, 1, PC_Color.dye.YELLOW.meta+16),
-				new ItemStack(lightOn, 1, PC_Color.dye.LIME.meta+16),
-				new ItemStack(lightOn, 1, PC_Color.dye.GREEN.meta+16),
-				new ItemStack(lightOn, 1, PC_Color.dye.CYAN.meta+16),
-				new ItemStack(lightOn, 1, PC_Color.dye.LIGHTBLUE.meta+16),
-				new ItemStack(lightOn, 1, PC_Color.dye.BLUE.meta+16),
-				new ItemStack(lightOn, 1, PC_Color.dye.PURPLE.meta+16),
-				new ItemStack(lightOn, 1, PC_Color.dye.MAGENTA.meta+16),
-				new ItemStack(lightOn, 1, PC_Color.dye.PINK.meta+16),
-				new ItemStack(lightOn, 1, PC_Color.dye.WHITE.meta+16)
-		
-				);
+		addStacksToCraftingTool(PC_ItemGroup.LIGHTS,new ItemStack(lightOn, 1, 0));
 		
 		addStacksToCraftingTool(PC_ItemGroup.WIRELESS,
 				
