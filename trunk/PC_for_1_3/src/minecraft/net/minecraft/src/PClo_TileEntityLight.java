@@ -157,9 +157,15 @@ public class PClo_TileEntityLight extends PC_TileEntity {
 	public Object[] get() {
 		Object[] o = new Object[8];
 		o[0] = "color";
-		o[1] = color.r;
-		o[2] = color.g;
-		o[3] = color.b;
+		if(color!=null){
+			o[1] = color.r;
+			o[2] = color.g;
+			o[3] = color.b;
+		}else{
+			o[1] = 1.0d;
+			o[2] = 1.0d;
+			o[3] = 1.0d;
+		}
 		o[4] = "isStable";
 		o[5] = isStable;
 		o[6] = "isHuge";

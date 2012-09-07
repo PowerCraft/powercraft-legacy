@@ -12,9 +12,8 @@ import net.minecraft.src.PC_GresWidget.PC_GresAlign;
  * 
  * @author MightyPork
  */
-public class PCtr_GuiSeparationBelt implements PC_IGresBase {
+public class PCtr_GuiSeparationBelt extends PC_GresBase {
 
-	private EntityPlayer player;
 	private PCtr_TileEntitySeparationBelt tes;
 	private PC_GresCheckBox checkLogs;
 	private PC_GresCheckBox checkPlanks;
@@ -30,11 +29,6 @@ public class PCtr_GuiSeparationBelt implements PC_IGresBase {
 	public PCtr_GuiSeparationBelt(EntityPlayer player, TileEntity tileentityconveyorfilter) {
 		this.player = player;
 		this.tes = (PCtr_TileEntitySeparationBelt)tileentityconveyorfilter;
-	}
-
-	@Override
-	public EntityPlayer getPlayer() {
-		return player;
 	}
 
 	@Override
@@ -106,20 +100,10 @@ public class PCtr_GuiSeparationBelt implements PC_IGresBase {
 	}
 
 	@Override
-	public void onCraftMatrixChanged(IInventory iinventory) {}
-
-	@Override
-	public void updateTick(PC_IGresGui gui) {}
-
-	@Override
 	public List<Slot> getAllSlots(Container c) {
 		for (int i = 0; i < tes.getSizeInventory(); i++)
 			lSlot.add(new Slot(tes, i, 0, 0));
 		return lSlot;
 	}
-
-	@Override
-	public boolean canShiftTransfer() {
-		return false;
-	}
+	
 }

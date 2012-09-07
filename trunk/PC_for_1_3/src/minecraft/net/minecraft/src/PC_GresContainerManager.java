@@ -15,7 +15,7 @@ public class PC_GresContainerManager extends Container {
 	/** the open gui */
 	public PC_IGresGui gresGui;
 
-	public PC_IGresBase gui;
+	public PC_GresBase gui;
 	
 	private static final int playerSlots = 9 * 4;
 	/** Upper part of the player's inventory (3x9) */
@@ -28,7 +28,7 @@ public class PC_GresContainerManager extends Container {
 	 * 
 	 * @param player the player
 	 */
-	public PC_GresContainerManager(EntityPlayer player, PC_IGresBase gui) {
+	public PC_GresContainerManager(EntityPlayer player, PC_GresBase gui) {
 		this.gui = gui;
 		thePlayer = player;
 		if (thePlayer != null) {
@@ -71,13 +71,8 @@ public class PC_GresContainerManager extends Container {
 	@Override
 	protected void retrySlotClick(int par1, int par2, boolean par3, EntityPlayer par4EntityPlayer) {
 
-		if (((PC_GresGui) gresGui).gui instanceof PCco_GuiCraftingTool) {
-			if ((PC_Utils.isCreative() || PCco_SlotDirectCrafting.survivalCheating)) {
-				return;
-			}
-		}
-
-		super.retrySlotClick(par1, par2, par3, par4EntityPlayer);
+		if(gui.retrySlotClick(par1, par2, par3, par4EntityPlayer))
+			super.retrySlotClick(par1, par2, par3, par4EntityPlayer);
 	}
 
 	@Override

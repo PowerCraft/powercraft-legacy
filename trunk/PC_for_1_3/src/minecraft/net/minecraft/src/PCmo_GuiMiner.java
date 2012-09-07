@@ -20,7 +20,7 @@ import weasel.obj.WeaselString;
  * 
  * @author MightyPork
  */
-public class PCmo_GuiMiner implements PC_IGresBase {
+public class PCmo_GuiMiner extends PC_GresBase {
 
 	private PCmo_EntityMiner miner;
 
@@ -34,14 +34,10 @@ public class PCmo_GuiMiner implements PC_IGresBase {
 
 	private PC_GresWidget vgProgram, vgSettings, vgCargo, vgTerm;
 
-	public PCmo_GuiMiner(PCmo_EntityMiner miner) {
-		this.miner = miner;
+	public PCmo_GuiMiner(EntityPlayer player, TileEntity te){//PCmo_EntityMiner miner) {
+		this.miner = null;
+		this.player = player;
 		preUndo = miner.brain.program;
-	}
-
-	@Override
-	public EntityPlayer getPlayer() {
-		return PC_Utils.mc().thePlayer;
 	}
 
 	private int panelShown = 0;
@@ -510,12 +506,6 @@ public class PCmo_GuiMiner implements PC_IGresBase {
 	public void onEscapePressed(PC_IGresGui gui) {
 		gui.close();
 	}
-
-	@Override
-	public void onReturnPressed(PC_IGresGui gui) {}
-
-	@Override
-	public void onCraftMatrixChanged(IInventory iinventory) {}
 
 	@Override
 	public void updateTick(PC_IGresGui gui) {

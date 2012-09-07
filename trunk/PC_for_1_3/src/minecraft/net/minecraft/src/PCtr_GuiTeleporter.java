@@ -13,11 +13,10 @@ import net.minecraft.src.PC_GresWidget.PC_GresAlign;
  * 
  * @author MightyPork
  */
-public class PCtr_GuiTeleporter implements PC_IGresBase {
+public class PCtr_GuiTeleporter extends PC_GresBase {
 
 	private PCtr_TileEntityTeleporter teleporter;
 	private PCtr_TeleporterData td;
-	private EntityPlayer palyer;
 
 	private PC_GresButton ok;
 	private PC_GresTextEdit name;
@@ -26,16 +25,11 @@ public class PCtr_GuiTeleporter implements PC_IGresBase {
 	 * @param te teleproter TE
 	 */
 	public PCtr_GuiTeleporter(EntityPlayer palyer, TileEntity te) {
-		this.palyer = palyer;
+		this.player = palyer;
 		teleporter = (PCtr_TileEntityTeleporter)te;
 		td = teleporter.td;
 	}
 
-
-	@Override
-	public EntityPlayer getPlayer() {
-		return PC_Utils.mc().thePlayer;
-	}
 
 	@Override
 	public void initGui(PC_IGresGui gui) {
@@ -63,9 +57,6 @@ public class PCtr_GuiTeleporter implements PC_IGresBase {
 	}
 
 	@Override
-	public void onGuiClosed(PC_IGresGui gui) {}
-
-	@Override
 	public void actionPerformed(PC_GresWidget widget, PC_IGresGui gui) {
 
 		if(widget==ok){
@@ -73,32 +64,6 @@ public class PCtr_GuiTeleporter implements PC_IGresBase {
 			gui.close();
 		}
 
-	}
-
-	@Override
-	public void onEscapePressed(PC_IGresGui gui) {
-		
-	}
-
-	@Override
-	public void onReturnPressed(PC_IGresGui gui) {
-		
-	}
-
-	@Override
-	public void onCraftMatrixChanged(IInventory iinventory) {}
-
-	@Override
-	public void updateTick(PC_IGresGui gui) {}
-
-	@Override
-	public List<Slot> getAllSlots(Container c) {
-		return null;
-	}
-
-	@Override
-	public boolean canShiftTransfer() {
-		return false;
 	}
 
 }

@@ -15,18 +15,13 @@ import net.minecraft.src.PC_GresWidget.PC_GresAlign;
  * @author MightyPork
  * @copy (c) 2012
  */
-public class PCco_GuiUpdateNotification implements PC_IGresBase {
+public class PCco_GuiUpdateNotification extends PC_GresBase {
 
 	private PC_GresCheckBox checkDisable;
 	private PC_GresWidget buttonOK;
 
 	public PCco_GuiUpdateNotification(EntityPlayer player, TileEntity te){
-		
-	}
-	
-	@Override
-	public EntityPlayer getPlayer() {
-		return PC_Utils.mc().thePlayer;
+		this.player = player;
 	}
 
 	@Override
@@ -82,9 +77,6 @@ public class PCco_GuiUpdateNotification implements PC_IGresBase {
 	}
 
 	@Override
-	public void onGuiClosed(PC_IGresGui gui) {}
-
-	@Override
 	public void actionPerformed(PC_GresWidget widget, PC_IGresGui gui) {
 
 		if (widget.getId() == 0) {
@@ -124,22 +116,6 @@ public class PCco_GuiUpdateNotification implements PC_IGresBase {
 	@Override
 	public void onReturnPressed(PC_IGresGui gui) {
 		actionPerformed(buttonOK, gui);
-	}
-
-	@Override
-	public void onCraftMatrixChanged(IInventory iinventory) {}
-
-	@Override
-	public void updateTick(PC_IGresGui gui) {}
-
-	@Override
-	public List<Slot> getAllSlots(Container c) {
-		return null;
-	}
-
-	@Override
-	public boolean canShiftTransfer() {
-		return false;
 	}
 
 }

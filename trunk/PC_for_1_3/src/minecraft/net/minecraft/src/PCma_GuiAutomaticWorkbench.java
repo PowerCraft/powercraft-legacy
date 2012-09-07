@@ -11,11 +11,10 @@ import java.util.List;
  * @author MightyPork
  * @copy (c) 2012
  */
-public class PCma_GuiAutomaticWorkbench implements PC_IGresBase {
+public class PCma_GuiAutomaticWorkbench extends PC_GresBase {
 
 
 
-	private EntityPlayer entityplayer;
 	private PCma_TileEntityAutomaticWorkbench tileentity;
 	private IInventory craftResult;
 	private PC_GresCheckBox checkRedstone;
@@ -26,14 +25,9 @@ public class PCma_GuiAutomaticWorkbench implements PC_IGresBase {
 	 * @param tileentity tile entity of the Automatic Workbench
 	 */
 	public PCma_GuiAutomaticWorkbench(EntityPlayer entityplayer, PCma_TileEntityAutomaticWorkbench tileentity) {
-		this.entityplayer = entityplayer;
+		this.player = entityplayer;
 		this.tileentity = tileentity;
 		craftResult = new InventoryCraftResult();
-	}
-
-	@Override
-	public EntityPlayer getPlayer() {
-		return entityplayer;
 	}
 
 	@Override
@@ -81,15 +75,9 @@ public class PCma_GuiAutomaticWorkbench implements PC_IGresBase {
 		onCraftMatrixChanged(tileentity);
 	}
 
-	
-	public void onGuiClosed(PC_IGresGui gui) {
-		
-		//tileentity.orderAndCraft();
-	}
-
 	@Override
 	public void actionPerformed(PC_GresWidget widget, PC_IGresGui gui) {
-		PC_Utils.setTileEntity(entityplayer, tileentity, "redstoneActivated", checkRedstone.isChecked());
+		PC_Utils.setTileEntity(player, tileentity, "redstoneActivated", checkRedstone.isChecked());
 	}
 
 	@Override
@@ -108,12 +96,9 @@ public class PCma_GuiAutomaticWorkbench implements PC_IGresBase {
 	}
 
 	@Override
-	public void updateTick(PC_IGresGui gui) {}
-
-	@Override
 	public List<Slot> getAllSlots(Container c) {
 		int cnt = 0;
-		lSlot.add(new PCma_SlotAutomaticWorkbenchResult(entityplayer, tileentity, craftResult, c, 0, 0, 0));
+		lSlot.add(new PCma_SlotAutomaticWorkbenchResult(player, tileentity, craftResult, c, 0, 0, 0));
 		for (int y = 0; y < 3; y++) {
 			for (int x = 0; x < 3; x++) {
 				lSlot.add(new PCma_SlotAutomaticWorkbenchInventory(tileentity, c, false, cnt++, 0, 0));
@@ -127,8 +112,4 @@ public class PCma_GuiAutomaticWorkbench implements PC_IGresBase {
 		return lSlot;
 	}
 
-	@Override
-	public boolean canShiftTransfer() {
-		return false;
-	}
 }

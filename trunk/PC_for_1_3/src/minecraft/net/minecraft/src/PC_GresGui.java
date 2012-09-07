@@ -18,7 +18,7 @@ import org.lwjgl.opengl.GL12;
 public class PC_GresGui extends GuiContainer implements PC_IGresGui {
 
 	/** The wrapped GUI */
-	public PC_IGresBase gui;
+	public PC_GresBase gui;
 	private PC_GresLayoutV child;
 	private PC_GresWidget lastFocus;
 	private PC_GresContainerManager containerManager;
@@ -30,7 +30,7 @@ public class PC_GresGui extends GuiContainer implements PC_IGresGui {
 	 * 
 	 * @param gui the gui
 	 */
-	public PC_GresGui(PC_IGresBase gui) {
+	public PC_GresGui(PC_GresBase gui) {
 		super(new PC_GresContainerManager(gui.getPlayer(), gui));
 		this.gui = gui;
 		containerManager = (PC_GresContainerManager) inventorySlots;

@@ -12,7 +12,7 @@ import net.minecraft.src.PC_GresWidget.PC_GresAlign;
  * @author MightyPork
  * @copy (c) 2012
  */
-public class PCma_GuiLaserTypeDecide implements PC_IGresBase {
+public class PCma_GuiLaserTypeDecide extends PC_GresBase {
 
 
 	private PCma_TileEntityLaser laser;
@@ -22,11 +22,7 @@ public class PCma_GuiLaserTypeDecide implements PC_IGresBase {
 	 */
 	public PCma_GuiLaserTypeDecide(EntityPlayer player, TileEntity te) {
 		laser = (PCma_TileEntityLaser)te;
-	}
-
-	@Override
-	public EntityPlayer getPlayer() {
-		return PC_Utils.mc().thePlayer;
+		this.player = player;
 	}
 
 	@Override
@@ -49,9 +45,6 @@ public class PCma_GuiLaserTypeDecide implements PC_IGresBase {
 	}
 
 	@Override
-	public void onGuiClosed(PC_IGresGui gui) {}
-
-	@Override
 	public void actionPerformed(PC_GresWidget widget, PC_IGresGui gui) {
 
 		if (widget.getId() == 0) {
@@ -68,28 +61,6 @@ public class PCma_GuiLaserTypeDecide implements PC_IGresBase {
 
 		}
 
-	}
-
-	@Override
-	public void onEscapePressed(PC_IGresGui gui) {}
-
-	@Override
-	public void onReturnPressed(PC_IGresGui gui) {}
-
-	@Override
-	public void onCraftMatrixChanged(IInventory iinventory) {}
-
-	@Override
-	public void updateTick(PC_IGresGui gui) {}
-
-	@Override
-	public List<Slot> getAllSlots(Container c) {
-		return null;
-	}
-
-	@Override
-	public boolean canShiftTransfer() {
-		return false;
 	}
 
 }

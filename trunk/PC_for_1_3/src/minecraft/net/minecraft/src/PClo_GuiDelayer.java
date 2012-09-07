@@ -13,7 +13,7 @@ import net.minecraft.src.PC_GresWidget.PC_GresAlign;
  * @author MightyPork
  * @copy (c) 2012
  */
-public class PClo_GuiDelayer implements PC_IGresBase {
+public class PClo_GuiDelayer extends PC_GresBase {
 
 	private PClo_TileEntityGate gateTE;
 
@@ -36,15 +36,10 @@ public class PClo_GuiDelayer implements PC_IGresBase {
 	 * @param tep Gate tile entity
 	 * @param type 0 = HOLD, 1 = FIFO
 	 */
-	public PClo_GuiDelayer(PClo_TileEntityGate tep, int type) {
-		gateTE = tep;
-		ticks = type == FIFO ? gateTE.getDelayBufferLength() : gateTE.repeaterGetHoldTime();
-		delayer_type = type;
-	}
-
-	@Override
-	public EntityPlayer getPlayer() {
-		return PC_Utils.mc().thePlayer;
+	public PClo_GuiDelayer(EntityPlayer player, TileEntity tep) {
+		gateTE = (PClo_TileEntityGate)tep;
+		ticks = gateTE.gateType == FIFO ? gateTE.getDelayBufferLength() : gateTE.repeaterGetHoldTime();
+		delayer_type = gateTE.gateType;
 	}
 
 	@Override
@@ -92,9 +87,6 @@ public class PClo_GuiDelayer implements PC_IGresBase {
 		actionPerformed(edit, gui);
 
 	}
-
-	@Override
-	public void onGuiClosed(PC_IGresGui gui) {}
 
 	@Override
 	public void actionPerformed(PC_GresWidget widget, PC_IGresGui gui) {
@@ -163,21 +155,5 @@ public class PClo_GuiDelayer implements PC_IGresBase {
 	public void onReturnPressed(PC_IGresGui gui) {
 		actionPerformed(buttonOK, gui);
 	}
-
-	@Override
-	public void onCraftMatrixChanged(IInventory iinventory) {}
-
-	@Override
-	public void updateTick(PC_IGresGui gui) {}
-
-	@Override
-	public List<Slot> getAllSlots(Container c) {
-		return null;
-	}
-
-	@Override
-	public boolean canShiftTransfer() {
-		return false;
-	}
-
+	
 }

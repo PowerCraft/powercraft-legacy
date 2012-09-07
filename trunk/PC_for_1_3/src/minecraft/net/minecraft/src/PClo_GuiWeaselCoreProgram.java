@@ -16,7 +16,7 @@ import net.minecraft.src.PClo_NetManager.NetworkMember;
  * @author MightyPork
  */
 @SuppressWarnings("javadoc")
-public class PClo_GuiWeaselCoreProgram implements PC_IGresBase {
+public class PClo_GuiWeaselCoreProgram extends PC_GresBase {
 
 	protected PClo_WeaselPluginCore core;
 	protected PC_GresWidget edit;
@@ -36,14 +36,10 @@ public class PClo_GuiWeaselCoreProgram implements PC_IGresBase {
 	 * 
 	 * @param core gate TE
 	 */
-	public PClo_GuiWeaselCoreProgram(PClo_WeaselPluginCore core) {
-		this.core = core;
+	public PClo_GuiWeaselCoreProgram(EntityPlayer player, TileEntity te) {
+		core = (PClo_WeaselPluginCore)((PClo_TileEntityWeasel)te).getPlugin();
 		preUndo = core.program;
-	}
-
-	@Override
-	public EntityPlayer getPlayer() {
-		return PC_Utils.mc().thePlayer;
+		this.player = player;
 	}
 
 	@Override
@@ -118,29 +114,27 @@ public class PClo_GuiWeaselCoreProgram implements PC_IGresBase {
 	}
 
 	@Override
-	public void onGuiClosed(PC_IGresGui gui) {}
-
-	@Override
 	public void actionPerformed(PC_GresWidget widget, PC_IGresGui gui) {
 
 //		if (widget.getId() == 100) {
 //			PC_Utils.openGres(getPlayer(), new PClo_GuiWeaselCoreProgram(core));		
 //			return;
 //		}
+		//TODO
 		if (widget.getId() == 101) {
 			core.setProgram(edit.getText());
-			PC_Utils.openGres(getPlayer(), new PClo_GuiWeaselCoreStatus(core));
+			//PC_Utils.openGres(getPlayer(), new PClo_GuiWeaselCoreStatus(core));
 			return;
 		}
 		if (widget.getId() == 102) {
 			core.setProgram(edit.getText());
-			PC_Utils.openGres(getPlayer(), new PClo_GuiWeaselCoreSettings(core));
+			//PC_Utils.openGres(getPlayer(), new PClo_GuiWeaselCoreSettings(core));
 			return;
 		}
 		if (widget.getId() == 103) {
 			core.setProgram(edit.getText());
-			PC_Utils.openGres(getPlayer(), (this instanceof PClo_GuiWeaselCoreProgramBig) ? new PClo_GuiWeaselCoreProgram(core)
-					: new PClo_GuiWeaselCoreProgramBig(core));
+			//PC_Utils.openGres(getPlayer(), (this instanceof PClo_GuiWeaselCoreProgramBig) ? new PClo_GuiWeaselCoreProgram(core)
+			//		: new PClo_GuiWeaselCoreProgramBig(core));
 			return;
 		}
 
@@ -229,12 +223,6 @@ public class PClo_GuiWeaselCoreProgram implements PC_IGresBase {
 	}
 
 	@Override
-	public void onReturnPressed(PC_IGresGui gui) {}
-
-	@Override
-	public void onCraftMatrixChanged(IInventory iinventory) {}
-
-	@Override
 	public void updateTick(PC_IGresGui gui) {
 
 		if (core.halted) {
@@ -279,16 +267,6 @@ public class PClo_GuiWeaselCoreProgram implements PC_IGresBase {
 		btnPauseResume.enable(true);
 		btnStop.enable(true);
 		btnRestart.enable(true);
-	}
-
-	@Override
-	public List<Slot> getAllSlots(Container c) {
-		return null;
-	}
-
-	@Override
-	public boolean canShiftTransfer() {
-		return false;
 	}
 
 }

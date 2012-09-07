@@ -15,7 +15,7 @@ import weasel.obj.WeaselString;
  * @author MightyPork
  *
  */
-public class PClo_GuiWeaselTerminalTerm implements PC_IGresBase {
+public class PClo_GuiWeaselTerminalTerm implements PC_GresBase {
 
 	private PClo_WeaselPluginTerminal term;
 	private PC_GresWindow w;

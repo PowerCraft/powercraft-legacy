@@ -16,7 +16,7 @@ import org.lwjgl.input.Keyboard;
  * @author COR19, Rapus, MightyPork
  * @copy (c) 2012
  */
-public class PCma_GuiReplacer implements PC_IGresBase {
+public class PCma_GuiReplacer extends PC_GresBase {
 
 	private PCma_TileEntityReplacer teReplacer;
 
@@ -30,7 +30,6 @@ public class PCma_GuiReplacer implements PC_IGresBase {
 	private PC_GresCheckBox checkFrame;
 
 	private List<Slot> lSlot = new ArrayList<Slot>();
-	private EntityPlayer entityplayer;
 	
 	
 	/**
@@ -41,12 +40,7 @@ public class PCma_GuiReplacer implements PC_IGresBase {
 	 */
 	public PCma_GuiReplacer(EntityPlayer entityplayer, TileEntity teReplacer) {
 		this.teReplacer = (PCma_TileEntityReplacer)teReplacer;
-		this.entityplayer = entityplayer;
-	}
-
-	@Override
-	public EntityPlayer getPlayer() {
-		return PC_Utils.mc().thePlayer;
+		player = entityplayer;
 	}
 
 	@Override
@@ -130,7 +124,7 @@ public class PCma_GuiReplacer implements PC_IGresBase {
 	@Override
 	public void actionPerformed(PC_GresWidget widget, PC_IGresGui gui) {
 		if (widget == slot) {
-			PC_Utils.setTileEntity(entityplayer, teReplacer, "extraMeta", -1);
+			PC_Utils.setTileEntity(player, teReplacer, "extraMeta", -1);
 		} else if (widget == button[0]) {
 
 			gui.close();
@@ -141,7 +135,7 @@ public class PCma_GuiReplacer implements PC_IGresBase {
 			int y = Integer.parseInt(textedit[1].getText());
 			int z = Integer.parseInt(textedit[2].getText());
 
-			PC_Utils.setTileEntity(entityplayer, teReplacer, "coordOffset", x, y, z, 
+			PC_Utils.setTileEntity(player, teReplacer, "coordOffset", x, y, z, 
 					"aidEnabled", checkFrame.isChecked());
 
 			gui.close();
@@ -185,7 +179,7 @@ public class PCma_GuiReplacer implements PC_IGresBase {
 				int y = Integer.parseInt(textedit[1].getText());
 				int z = Integer.parseInt(textedit[2].getText());
 
-				PC_Utils.setTileEntity(entityplayer, teReplacer, "coordOffset", x, y, z);
+				PC_Utils.setTileEntity(player, teReplacer, "coordOffset", x, y, z);
 			}
 
 			button[1].enable(valid);
@@ -248,12 +242,6 @@ public class PCma_GuiReplacer implements PC_IGresBase {
 	public void onReturnPressed(PC_IGresGui gui) {
 		actionPerformed(button[1], gui);
 	}
-
-	@Override
-	public void onCraftMatrixChanged(IInventory iinventory) {}
-
-	@Override
-	public void updateTick(PC_IGresGui gui) {}
 
 	@Override
 	public List<Slot> getAllSlots(Container c) {

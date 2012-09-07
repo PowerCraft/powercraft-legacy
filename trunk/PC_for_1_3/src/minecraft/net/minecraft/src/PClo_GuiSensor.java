@@ -12,14 +12,12 @@ import net.minecraft.src.PC_GresWidget.PC_GresAlign;
  * @author MightyPork
  * @copy (c) 2012
  */
-public class PClo_GuiSensor implements PC_IGresBase {
+public class PClo_GuiSensor extends PC_GresBase {
 
 	private PClo_TileEntitySensor sensor;
 
 	private PC_GresWidget buttonOK, buttonCancel;
 	private PC_GresProgressBar slider;
-	
-	EntityPlayer player;
 
 	/**
 	 * @param tes Sensor tile entity
@@ -27,11 +25,6 @@ public class PClo_GuiSensor implements PC_IGresBase {
 	public PClo_GuiSensor(EntityPlayer player, TileEntity tes) {
 		sensor = (PClo_TileEntitySensor) tes;
 		this.player = player;
-	}
-
-	@Override
-	public EntityPlayer getPlayer() {
-		return player;
 	}
 
 	@Override
@@ -77,9 +70,6 @@ public class PClo_GuiSensor implements PC_IGresBase {
 	}
 
 	@Override
-	public void onGuiClosed(PC_IGresGui gui) {}
-
-	@Override
 	public void actionPerformed(PC_GresWidget widget, PC_IGresGui gui) {
 
 		if (widget.getId() == 0) {
@@ -102,22 +92,6 @@ public class PClo_GuiSensor implements PC_IGresBase {
 	@Override
 	public void onReturnPressed(PC_IGresGui gui) {
 		actionPerformed(buttonOK, gui);
-	}
-
-	@Override
-	public void onCraftMatrixChanged(IInventory iinventory) {}
-
-	@Override
-	public void updateTick(PC_IGresGui gui) {}
-
-	@Override
-	public List<Slot> getAllSlots(Container c) {
-		return null;
-	}
-
-	@Override
-	public boolean canShiftTransfer() {
-		return false;
 	}
 
 }

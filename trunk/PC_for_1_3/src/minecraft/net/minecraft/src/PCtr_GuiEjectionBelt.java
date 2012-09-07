@@ -14,9 +14,8 @@ import net.minecraft.src.PC_GresWidget.PC_GresAlign;
  * @author MightyPork
  * @copy (c) 2012
  */
-public class PCtr_GuiEjectionBelt implements PC_IGresBase {
+public class PCtr_GuiEjectionBelt extends PC_GresBase {
 
-	private EntityPlayer player;
 	private PCtr_TileEntityEjectionBelt teb;
 
 	private PC_GresWidget btnOK;
@@ -40,11 +39,6 @@ public class PCtr_GuiEjectionBelt implements PC_IGresBase {
 	public PCtr_GuiEjectionBelt(EntityPlayer player, TileEntity tilee) {
 		teb = (PCtr_TileEntityEjectionBelt)tilee;
 		this.player = player;
-	}
-
-	@Override
-	public EntityPlayer getPlayer() {
-		return player;
 	}
 
 	@Override
@@ -123,9 +117,6 @@ public class PCtr_GuiEjectionBelt implements PC_IGresBase {
 	}
 
 	@Override
-	public void onGuiClosed(PC_IGresGui gui) {}
-
-	@Override
 	public void actionPerformed(PC_GresWidget widget, PC_IGresGui gui) {
 		switch (widget.getId()) {
 			case 1:
@@ -169,22 +160,6 @@ public class PCtr_GuiEjectionBelt implements PC_IGresBase {
 	@Override
 	public void onReturnPressed(PC_IGresGui gui) {
 		actionPerformed(btnOK, gui);
-	}
-
-	@Override
-	public void onCraftMatrixChanged(IInventory iinventory) {}
-
-	@Override
-	public void updateTick(PC_IGresGui gui) {}
-
-	@Override
-	public List<Slot> getAllSlots(Container c) {
-		return null;
-	}
-
-	@Override
-	public boolean canShiftTransfer() {
-		return false;
 	}
 
 }
