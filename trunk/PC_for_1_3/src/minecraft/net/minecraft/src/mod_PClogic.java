@@ -1045,10 +1045,10 @@ public class mod_PClogic extends PC_Module {
 	@Override
 	public List<Class> addGui() {
 		List<Class> guis = new ArrayList<Class>();
-		guis.add(PClo_GuiCallerDelayer.class);
-		guis.add(PClo_GuiCallerPulsar.class);
-		guis.add(PClo_GuiCallerRadio.class);
-		guis.add(PClo_GuiCallerSensor.class);
+		guis.add(PClo_GuiDelayer.class);
+		guis.add(PClo_GuiPulsar.class);
+		guis.add(PClo_GuiRadio.class);
+		guis.add(PClo_GuiSensor.class);
 		return guis;
 	}
 
