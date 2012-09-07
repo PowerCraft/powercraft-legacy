@@ -50,11 +50,11 @@ public class PCma_GuiReplacer extends PC_GresBase {
 		PC_GresWidget hg;
 		PC_GresWidget vg;
 
-		hg = new PC_GresTab().setMinSize(200, 30);//new PC_GresLayoutH().setAlignV(PC_GresAlign.TOP);
+		hg = new PC_GresLayoutH().setAlignV(PC_GresAlign.TOP);
 
 		PC_GresWidget hg1;
 
-		hg1 = new PC_GresLayoutH().setWidgetMargin(1).setAlignV(PC_GresAlign.CENTER).setText("Tab1");
+		hg1 = new PC_GresLayoutH().setWidgetMargin(1).setAlignV(PC_GresAlign.CENTER);
 		hg1.add(new PC_GresLabel("X"));
 		hg1.add(textedit[0] = new PC_GresTextEdit("" + teReplacer.coordOffset.x, 3, PC_GresInputType.INT).setWidgetMargin(1));
 		vg = new PC_GresLayoutV().setWidgetMargin(1);
@@ -65,9 +65,9 @@ public class PCma_GuiReplacer extends PC_GresBase {
 		hg1.add(vg);
 		hg.add(hg1);
 
-		//hg.add(new PC_GresGap(3, 0));
+		hg.add(new PC_GresGap(3, 0));
 
-		hg1 = new PC_GresLayoutH().setWidgetMargin(1).setAlignV(PC_GresAlign.CENTER).setText("Tab2");
+		hg1 = new PC_GresLayoutH().setWidgetMargin(1).setAlignV(PC_GresAlign.CENTER);
 		hg1.add(new PC_GresLabel("Y"));
 		hg1.add(textedit[1] = new PC_GresTextEdit("" + teReplacer.coordOffset.y, 3, PC_GresInputType.INT).setWidgetMargin(1));
 		vg = new PC_GresLayoutV().setWidgetMargin(1);
@@ -78,9 +78,9 @@ public class PCma_GuiReplacer extends PC_GresBase {
 		hg1.add(vg);
 		hg.add(hg1);
 
-		//hg.add(new PC_GresGap(3, 0));
+		hg.add(new PC_GresGap(3, 0));
 
-		hg1 = new PC_GresLayoutH().setWidgetMargin(1).setAlignV(PC_GresAlign.CENTER).setText("Tab3");
+		hg1 = new PC_GresLayoutH().setWidgetMargin(1).setAlignV(PC_GresAlign.CENTER);
 		hg1.add(new PC_GresLabel("Z"));
 		hg1.add(textedit[2] = new PC_GresTextEdit("" + teReplacer.coordOffset.z, 3, PC_GresInputType.INT).setWidgetMargin(1));
 		vg = new PC_GresLayoutV().setWidgetMargin(1);

@@ -47,7 +47,9 @@ public abstract class PC_GresWidget extends Gui {
 		/** CENTER */
 		CENTER,
 		/** STRETCH */
-		STRETCH
+		STRETCH,
+		/** JUSTIFIED */
+		JUSTIFIED
 	}
 
 	@SuppressWarnings("javadoc")
@@ -528,7 +530,7 @@ public abstract class PC_GresWidget extends Gui {
 					calcChildPositions();
 					return;
 				}
-				if (xx + size.x > size.x) {
+				if (xx + childSize.x > size.x) {
 					xx = 0;
 					yy += maxh + widgetMargin;
 				}
