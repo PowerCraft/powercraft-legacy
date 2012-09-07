@@ -346,6 +346,28 @@ public class PC_Utils {
 		}
 	}
 	
+	public static void openGres(EntityPlayer entityplayer, Class c,
+			World world, int x, int y, int z) {
+		if(entityplayer instanceof EntityPlayerMP){
+			Enumeration<Integer> ei = PC_Module.guiList.keys();
+			while(ei.hasMoreElements()){
+				Integer i=ei.nextElement();
+				Class cgui = PC_Module.guiList.get(i);
+				if(cgui==c){
+					TileEntity te = null;
+					if(y>-1)
+						te = world.getBlockTileEntity(x, y, z);
+					PC_GresContainerManager cm = new PC_GresContainerManager(entityplayer, createGui(c, entityplayer, te));
+					if(te!=null)
+						ModLoader.serverOpenWindow((EntityPlayerMP)entityplayer, cm, i, te.xCoord, te.yCoord, te.zCoord);
+					else
+						ModLoader.serverOpenWindow((EntityPlayerMP)entityplayer, cm, i, x, y, z);
+					break;
+				}
+			}
+		}
+	}
+	
 	public static void setTileEntity(EntityPlayer player, TileEntity tileEntity, Object... o){
 		setTileEntityArray(player, tileEntity, o);
 	}
