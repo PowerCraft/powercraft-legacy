@@ -1,5 +1,7 @@
 package net.minecraft.src;
 
+import java.util.Random;
+
 
 /**
  * Light block tile entity
@@ -146,9 +148,14 @@ public class PClo_TileEntityLight extends PC_TileEntity {
 				color.r = (Double)o[p++];
 				color.g = (Double)o[p++];
 				color.b = (Double)o[p++];
-			}else if(var.equals("isStable"))
+			}else if(var.equals("isStable")){
 				isStable = (Boolean)o[p++];
-			else if(var.equals("isHuge"))
+				PClo_BlockLight bLight = (PClo_BlockLight)getBlockType();
+				if(isStable)
+					bLight.onPoweredBlockChange(worldObj, xCoord, yCoord, zCoord, true);
+				else
+					bLight.updateTick(worldObj, xCoord, yCoord, zCoord, new Random());
+			}else if(var.equals("isHuge"))
 				isHuge = (Boolean)o[p++];
 		}
 	}
