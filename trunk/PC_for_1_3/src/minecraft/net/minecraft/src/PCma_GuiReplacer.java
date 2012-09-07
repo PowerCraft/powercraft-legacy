@@ -39,8 +39,8 @@ public class PCma_GuiReplacer implements PC_IGresBase {
 	 * @param teReplacer replacer TE
 	 * @param entityplayer player
 	 */
-	public PCma_GuiReplacer(PCma_TileEntityReplacer teReplacer, EntityPlayer entityplayer) {
-		this.teReplacer = teReplacer;
+	public PCma_GuiReplacer(EntityPlayer entityplayer, TileEntity teReplacer) {
+		this.teReplacer = (PCma_TileEntityReplacer)teReplacer;
 		this.entityplayer = entityplayer;
 	}
 

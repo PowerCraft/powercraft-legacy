@@ -71,7 +71,7 @@ public class PCtr_BlockBeltSeparator extends BlockContainer implements PC_IBlock
 				}
 			}
 
-			PC_Utils.openGres(entityplayer,"SeparationBelt", i, j, k);
+			PC_Utils.openGres(entityplayer,PCtr_GuiSeparationBelt.class, world, i, j, k);
 			return true;
 		}
 	}

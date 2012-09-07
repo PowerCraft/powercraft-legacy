@@ -150,7 +150,7 @@ public class PCma_BlockReplacer extends BlockContainer implements PC_ISwapTerrai
 			return true;
 		}
 
-		PC_Utils.openGres(entityplayer, "Replacer", i, j, k);
+		PC_Utils.openGres(entityplayer, PCma_GuiReplacer.class, world, i, j, k);
 
 		return true;
 	}

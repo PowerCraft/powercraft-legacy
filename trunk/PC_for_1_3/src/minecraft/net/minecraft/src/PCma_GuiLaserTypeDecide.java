@@ -20,8 +20,8 @@ public class PCma_GuiLaserTypeDecide implements PC_IGresBase {
 	/**
 	 * @param te laser tile entity
 	 */
-	public PCma_GuiLaserTypeDecide(PCma_TileEntityLaser te) {
-		laser = te;
+	public PCma_GuiLaserTypeDecide(EntityPlayer player, TileEntity te) {
+		laser = (PCma_TileEntityLaser)te;
 	}
 
 	@Override

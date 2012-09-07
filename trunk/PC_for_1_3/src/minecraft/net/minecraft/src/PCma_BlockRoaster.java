@@ -103,7 +103,7 @@ public class PCma_BlockRoaster extends BlockContainer implements PC_ISwapTerrain
 			return true;
 		}
 
-		PC_Utils.openGres(entityplayer, "Roaster", i, j, k);
+		PC_Utils.openGres(entityplayer, PCma_GuiRoaster.class, world, i, j, k);
 
 		return true;
 	}

@@ -110,7 +110,7 @@ public class PCma_BlockXPBank extends BlockContainer implements PC_ISwapTerrain,
 			}
 		}
 
-		PC_Utils.openGres(entityplayer, "XPBank", i, j, k);
+		PC_Utils.openGres(entityplayer, PCma_GuiXPBank.class, world, i, j, k);
 
 		return true;
 	}

@@ -23,9 +23,9 @@ public class PCma_GuiBlockBuilder implements PC_IGresBase {
 	 * @param player player
 	 * @param tilee device tile entity
 	 */
-	public PCma_GuiBlockBuilder(EntityPlayer player, PCma_TileEntityBlockBuilder tilee) {
+	public PCma_GuiBlockBuilder(EntityPlayer player, TileEntity tilee) {
 		this.player = player;
-		inventory = tilee;
+		inventory = (PCma_TileEntityBlockBuilder)tilee;
 	}
 
 

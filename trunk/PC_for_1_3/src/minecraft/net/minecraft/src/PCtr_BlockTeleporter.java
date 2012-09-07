@@ -50,7 +50,7 @@ public class PCtr_BlockTeleporter extends BlockContainer implements PC_IBlockTyp
 				}
 			}
 		}
-		PC_Utils.openGres(entityplayer, "Teleporter", i, j, k);
+		PC_Utils.openGres(entityplayer, PCtr_GuiTeleporter.class, world, i, j, k);
 		
 		return true;
 	}
@@ -60,7 +60,7 @@ public class PCtr_BlockTeleporter extends BlockContainer implements PC_IBlockTyp
 		super.onBlockPlacedBy(world, i, j, k, entityliving);
 		((PCtr_TileEntityTeleporter)world.getBlockTileEntity(i, j, k)).createData();
 		if (entityliving instanceof EntityPlayer) {
-			PC_Utils.openGres((EntityPlayer) entityliving, "Teleporter", i, j, k);
+			PC_Utils.openGres((EntityPlayer)entityliving, PCtr_GuiTeleporter.class, world, i, j, k);
 		}
 	}
 
