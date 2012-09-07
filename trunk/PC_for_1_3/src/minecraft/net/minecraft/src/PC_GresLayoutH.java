@@ -73,6 +73,9 @@ public class PC_GresLayoutH extends PC_GresWidget {
 					break;
 				case STRETCH:
 					xPos = xx;
+					int realX = size.x;
+					csize.x = (int)(realX/(double)xSize*csize.x);
+					child.setSize(csize.x, csize.y, false);
 					break;
 			}
 			switch (alignV) {
