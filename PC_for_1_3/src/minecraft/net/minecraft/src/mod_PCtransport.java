@@ -479,9 +479,9 @@ public class mod_PCtransport extends PC_Module {
 	@Override
 	public List<Class> addGui() {
 		List<Class> guis = new ArrayList<Class>();
-		guis.add(PCtr_GuiCallerSeparationBelt.class);
-		guis.add(PCtr_GuiCallerEjectionBelt.class);
-		guis.add(PCtr_GuiCallerTeleporter.class);
+		guis.add(PCtr_GuiSeparationBelt.class);
+		guis.add(PCtr_GuiEjectionBelt.class);
+		guis.add(PCtr_GuiTeleporter.class);
 		return guis;
 	}
 
