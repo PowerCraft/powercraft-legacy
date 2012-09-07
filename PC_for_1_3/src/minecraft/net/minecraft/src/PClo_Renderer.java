@@ -91,17 +91,18 @@ public class PClo_Renderer {
 
 		PC_Renderer.swapTerrain(mod_PClogic.getTerrainFile());
 		
-		if (meta < 32) {
+		//if (meta < 32) {
 			float sidehalf = 0.1875F;
 			float height = 0.15F;
+			GL11.glColor3f(1.0f, 1.0f, 1.0f);
 			block.setBlockBounds(0.5F - sidehalf, 0.5F - sidehalf, 0.5F - height / 2F, 0.5F + sidehalf, 0.5F + sidehalf, 0.5F + height / 2F);
 			PC_Renderer.renderInvBoxWithTexture(renderblocks, block, 66);
-		} else {
+		/*} else {
 			float sidehalf = 0.5F - 0.0625F;
 			float height = 0.18F;
 			block.setBlockBounds(0.5F - sidehalf, 0.5F - sidehalf, 0.5F - height / 2F, 0.5F + sidehalf, 0.5F + sidehalf, 0.5F + height / 2F);
 			PC_Renderer.renderInvBoxWithTexture(renderblocks, block, 117);
-		}
+		}*/
 		
 		PC_Renderer.resetTerrain(true);
 
