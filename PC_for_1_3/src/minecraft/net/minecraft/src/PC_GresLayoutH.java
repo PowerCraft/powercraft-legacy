@@ -57,6 +57,8 @@ public class PC_GresLayoutH extends PC_GresWidget {
 			lastcm = child.widgetMargin;
 		}
 		xSize -= lastcm;
+		int numChilds = childs.size()-1;
+		int num=0;
 		for (PC_GresWidget child : childs) {
 			PC_CoordI csize = child.getSize();
 			int xPos = 0;
@@ -73,9 +75,18 @@ public class PC_GresLayoutH extends PC_GresWidget {
 					break;
 				case STRETCH:
 					xPos = xx;
-					int realX = size.x;
-					csize.x = (int)(realX/(double)xSize*csize.x);
+					csize.x = (int)(size.x/(double)xSize*csize.x+0.5);
 					child.setSize(csize.x, csize.y, false);
+					break;
+				case JUSTIFIED:
+					double sxm = (size.x/(double)xSize);
+					int nsx = (int)(sxm*csize.x+0.5);
+					int sxp = nsx-csize.x;
+					if(numChilds!=0)
+						xPos = xx+num/numChilds*sxp;
+					else
+						xPos = xx;
+					csize.x = nsx;
 					break;
 			}
 			switch (alignV) {
@@ -95,6 +106,7 @@ public class PC_GresLayoutH extends PC_GresWidget {
 			}
 			child.setPosition(xPos, yPos);
 			xx += csize.x + child.widgetMargin;
+			num++;
 		}
 	}
 

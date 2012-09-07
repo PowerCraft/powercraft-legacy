@@ -153,7 +153,9 @@ public class PC_GresWindow extends PC_GresWidget {
 		}
 
 		ySize -= widgetMargin;
-
+		int numChilds = childs.size()-1;
+		int num=0;
+		
 		for (int i = 0; i < childNum; i++) {
 			PC_GresWidget child = childs.get(i);
 
@@ -188,15 +190,27 @@ public class PC_GresWindow extends PC_GresWidget {
 				case CENTER:
 					yPos = (size.y + yPlus - padding.y) / 2 - ySize / 2 + yy;
 					break;
-//				case STRETCH:
-//					s = (size.y - yPlus - padding.y - ySize + widgetMargin - widgetMargin * childNum) / childNum;
-//					child.setSize(child.getSize().x, child.getSize().y + s, false);
-//					yPos = yPlus + yy;
-//					break;
+				case STRETCH:
+					yPos = yy;
+					int realY = size.y;
+					csize.y = (int)(realY/(double)ySize*csize.y+0.5);
+					child.setSize(csize.x, csize.y, false);
+					break;
+				case JUSTIFIED:
+					double sym = (size.y/(double)ySize);
+					int nsy = (int)(sym*csize.y+0.5);
+					int syp = nsy-csize.y;
+					if(numChilds!=0)
+						yPos = yy+num/numChilds*syp;
+					else
+						yPos = yy;
+					csize.y = nsy;
+					break;
 			}
 
 			child.setPosition(xPos, yPos);
 			yy += csize.y + widgetMargin + s;
+			num++;
 		}
 
 /*		
