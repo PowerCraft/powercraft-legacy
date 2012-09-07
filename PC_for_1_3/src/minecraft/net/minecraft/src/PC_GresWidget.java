@@ -971,4 +971,23 @@ public abstract class PC_GresWidget extends Gui {
 	 */
 	public abstract void addedToWidget();
 
+	protected static void drawButton(PC_GresWidget widget, PC_CoordI pos, PC_CoordI size, String text, int state){
+	
+		int txC = 0xe0e0e0;
+	
+		if (state == 0) {
+			txC = 0xa0a0a0; // dark
+		}
+		if (state == 1) {
+			txC = 0xe0e0e0; // light
+		}
+		if (state > 1) {
+			txC = 0xffffa0; // yellow
+		}
+	
+		renderTextureSliced_static(widget, pos, mod_PCcore.getImgDir() + "gres/button.png", size, new PC_CoordI(0, state * 50), new PC_CoordI(256, 50));
+	
+		widget.drawCenteredString(widget.getFontRenderer(), text, pos.x + size.x / 2, pos.y + (size.y - widget.getFontRenderer().FONT_HEIGHT)
+				/ 2, txC);
+	}
 }

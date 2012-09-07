@@ -57,7 +57,7 @@ public class PC_GresLayoutV extends PC_GresWidget {
 			lastmargin = w.widgetMargin;
 			ySize += csize.y + w.widgetMargin;
 		}
-		// ySize -= lastmargin;
+		ySize -= lastmargin;
 		for (PC_GresWidget w : childs) {
 			if (!w.visible) continue;
 			PC_CoordI csize = w.getSize();
@@ -90,6 +90,9 @@ public class PC_GresLayoutV extends PC_GresWidget {
 					break;
 				case STRETCH:
 					yPos = yy;
+					int realY = size.y;
+					csize.y = (int)(realY/(double)ySize*csize.y);
+					w.setSize(csize.x, csize.y, false);
 					break;
 			}
 			w.setPosition(xPos, yPos);
