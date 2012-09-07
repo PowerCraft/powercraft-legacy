@@ -11,7 +11,7 @@ import net.minecraft.src.PC_GresWidget.PC_GresAlign;
  * @author MightyPork
  * @copy (c) 2012
  */
-public class PCma_GuiXPBank implements PC_IGresBase {
+public class PCma_GuiXPBank extends PC_GresBase {
 
 	private EntityPlayer player;
 	private PCma_TileEntityXPBank xpbank;
@@ -29,11 +29,6 @@ public class PCma_GuiXPBank implements PC_IGresBase {
 	public PCma_GuiXPBank(EntityPlayer player, TileEntity tex) {
 		xpbank = (PCma_TileEntityXPBank)tex;
 		this.player = player;
-	}
-
-	@Override
-	public EntityPlayer getPlayer() {
-		return player;
 	}
 
 	@Override
@@ -259,21 +254,8 @@ public class PCma_GuiXPBank implements PC_IGresBase {
 	}
 
 	@Override
-	public void onCraftMatrixChanged(IInventory iinventory) {}
-
-	@Override
 	public void updateTick(PC_IGresGui gui) {
 		updateCounters();
-	}
-
-	@Override
-	public List<Slot> getAllSlots(Container c) {
-		return null;
-	}
-
-	@Override
-	public boolean canShiftTransfer() {
-		return false;
 	}
 
 }

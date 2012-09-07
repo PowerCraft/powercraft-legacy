@@ -11,7 +11,7 @@ import net.minecraft.src.PC_GresWidget.PC_GresAlign;
  * 
  * @author MightyPork
  */
-public class PClo_GuiWeaselTouchscreen implements PC_IGresBase {
+public class PClo_GuiWeaselTouchscreen implements PC_GresBase {
 
 	private PClo_WeaselPluginTouchscreen touchscreen;
 	private PC_GresWindow w;

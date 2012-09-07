@@ -13,9 +13,7 @@ import net.minecraft.src.PC_GresWidget.PC_GresAlign;
  * @author MightyPork
  * @copy (c) 2012
  */
-public class PCco_GuiSpawnerEditor implements PC_IGresBase {
-
-	private EntityPlayer player;
+public class PCco_GuiSpawnerEditor extends PC_GresBase {
 	
 	private TileEntityMobSpawner spawner;
 
@@ -121,9 +119,6 @@ public class PCco_GuiSpawnerEditor implements PC_IGresBase {
 		setDangerousEnabled(false);
 	}
 
-	@Override
-	public void onGuiClosed(PC_IGresGui gui) {}
-
 	private void setDangerousEnabled(boolean state) {
 		buttons[10].enabled = buttons[11].enabled = buttons[23].enabled = state;
 	}
@@ -157,22 +152,6 @@ public class PCco_GuiSpawnerEditor implements PC_IGresBase {
 	@Override
 	public void onReturnPressed(PC_IGresGui gui) {
 		gui.close();
-	}
-
-	@Override
-	public void onCraftMatrixChanged(IInventory iinventory) {}
-
-	@Override
-	public void updateTick(PC_IGresGui gui) {}
-
-	@Override
-	public List<Slot> getAllSlots(Container c) {
-		return null;
-	}
-
-	@Override
-	public boolean canShiftTransfer() {
-		return false;
 	}
 
 }

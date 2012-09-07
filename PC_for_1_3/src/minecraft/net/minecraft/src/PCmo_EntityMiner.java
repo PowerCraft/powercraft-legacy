@@ -4433,7 +4433,7 @@ public class PCmo_EntityMiner extends Entity implements PC_IInventoryWrapper {
 			setKeyboardControl(!st.keyboardControlled);
 		} else {
 			st.programmingGuiOpen = true;
-			PC_Utils.openGres(entityplayer, new PCmo_GuiMiner(this));
+			//TODO PC_Utils.openGres(entityplayer, new PCmo_GuiMiner(this));
 			return true;
 		}
 		return true;

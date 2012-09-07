@@ -23,7 +23,7 @@ import weasel.obj.WeaselString;
  * 
  * @author MightyPork
  */
-public class PClo_GuiWeaselDiskManager implements PC_IGresBase {
+public class PClo_GuiWeaselDiskManager implements PC_GresBase {
 
 	private static class TinyInv implements IInventory, PC_ISpecialAccessInventory {
 

@@ -13,10 +13,9 @@ import net.minecraft.src.PC_GresWidget.PC_GresAlign;
  * @author MightyPork & XOR19
  * @copy (c) 2012
  */
-public class PCco_GuiCraftingTool implements PC_IGresBase {
+public class PCco_GuiCraftingTool extends PC_GresBase {
 
 	private PC_GresButton buttonPrev, buttonNext;
-	private EntityPlayer player;
 	private PC_GresInventory craftingToolInventory;
 	private PC_GresInventoryBigSlot trashInventory;
 	private PCco_CraftingToolManager craftingToolManager = new PCco_CraftingToolManager();
@@ -36,11 +35,6 @@ public class PCco_GuiCraftingTool implements PC_IGresBase {
 	public PCco_GuiCraftingTool(EntityPlayer player, TileEntity te) {
 		this.player = player;
 		player.addStat(AchievementList.openInventory, 1);
-	}
-
-	@Override
-	public EntityPlayer getPlayer() {
-		return player;
 	}
 
 	@Override
@@ -231,12 +225,6 @@ public class PCco_GuiCraftingTool implements PC_IGresBase {
 	}
 
 	@Override
-	public void onCraftMatrixChanged(IInventory iinventory) {}
-
-	@Override
-	public void updateTick(PC_IGresGui gui) {}
-
-	@Override
 	public List<Slot> getAllSlots(Container c) {
 		slotList = new ArrayList<Slot>();
 		slotList.add(new PC_SlotTrash());
@@ -255,8 +243,12 @@ public class PCco_GuiCraftingTool implements PC_IGresBase {
 	}
 
 	@Override
-	public boolean canShiftTransfer() {
-		return false;
+	public boolean retrySlotClick(int par1, int par2, boolean par3,
+			EntityPlayer par4EntityPlayer) {
+		if ((PC_Utils.isCreative() || PCco_SlotDirectCrafting.survivalCheating)) {
+			return false;
+		}
+		return true;
 	}
 
 }

@@ -13,9 +13,8 @@ import net.minecraft.src.PC_GresWidget.PC_GresAlign;
  * @author MightyPork
  * @copy (c) 2012
  */
-public class PCma_GuiBlockBuilder implements PC_IGresBase {
+public class PCma_GuiBlockBuilder extends PC_GresBase {
 
-	private EntityPlayer player;
 	private IInventory inventory;
 	private List<Slot> lSlot = new ArrayList<Slot>();
 	
@@ -26,12 +25,6 @@ public class PCma_GuiBlockBuilder implements PC_IGresBase {
 	public PCma_GuiBlockBuilder(EntityPlayer player, TileEntity tilee) {
 		this.player = player;
 		inventory = (PCma_TileEntityBlockBuilder)tilee;
-	}
-
-
-	@Override
-	public EntityPlayer getPlayer() {
-		return player;
 	}
 
 	@Override
@@ -57,9 +50,6 @@ public class PCma_GuiBlockBuilder implements PC_IGresBase {
 	}
 
 	@Override
-	public void onGuiClosed(PC_IGresGui gui) {}
-
-	@Override
 	public void actionPerformed(PC_GresWidget widget, PC_IGresGui gui) {}
 
 	@Override
@@ -74,13 +64,6 @@ public class PCma_GuiBlockBuilder implements PC_IGresBase {
 
 
 	@Override
-	public void onCraftMatrixChanged(IInventory iinventory) {}
-
-	@Override
-	public void updateTick(PC_IGresGui gui) {}
-
-
-	@Override
 	public List<Slot> getAllSlots(Container c) {
 		for (int j = 0; j < 3; j++) {
 			for (int i = 0; i < 3; i++) {
@@ -91,7 +74,6 @@ public class PCma_GuiBlockBuilder implements PC_IGresBase {
 		}
 		return lSlot;
 	}
-
 
 	@Override
 	public boolean canShiftTransfer() {

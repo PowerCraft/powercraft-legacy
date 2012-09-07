@@ -12,7 +12,7 @@ import net.minecraft.src.PC_GresWidget.PC_GresAlign;
  * 
  * @author MightyPork
  */
-public class PClo_GuiWeaselDisplay implements PC_IGresBase {
+public class PClo_GuiWeaselDisplay implements PC_GresBase {
 
 	private PClo_WeaselPluginDisplay display;
 	private PC_GresWindow w;

@@ -573,7 +573,7 @@ public abstract class PC_Module extends BaseMod {
 		TileEntity te=null;
 		if(var4>-1)
 			te = var1.worldObj.getBlockTileEntity(var3, var4, var5);
-		PC_IGresBase gb=PC_Utils.createGui(c, var1, te);
+		PC_GresBase gb=PC_Utils.createGui(c, var1, te);
 		if(gb==null)
 			return null;
 		return new PC_GresGui(gb);

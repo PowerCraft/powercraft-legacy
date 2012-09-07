@@ -55,9 +55,9 @@ public class PC_Utils {
 	 * @param entityplayer
 	 * @param gres resizable GUI
 	 */
-	public static void openGres(EntityPlayer entityplayer, PC_IGresBase gres) {
+	/*public static void openGres(EntityPlayer entityplayer, PC_GresBase gres) {
 		ModLoader.openGUI(entityplayer, new PC_GresGui(gres));
-	}
+	}*/
 
 	/**
 	 * Open Minecraft GUI Screen for player
@@ -65,9 +65,9 @@ public class PC_Utils {
 	 * @param entityplayer
 	 * @param gui ordinary GUI
 	 */
-	public static void openGui(EntityPlayer entityplayer, GuiScreen gui) {
+	/*public static void openGui(EntityPlayer entityplayer, GuiScreen gui) {
 		ModLoader.openGUI(entityplayer, gui);
-	}
+	}*/
 
 	/**
 	 * Write PC_INBT object to NBT compound tag, creating a wrapping compound
@@ -299,12 +299,12 @@ public class PC_Utils {
 		return (hours > 0 ? hours + ":" : "") + (hours > 0 || mins > 0 ? mins + ":" : "") + secs;
 	}
 
-	public static PC_IGresBase createGui(Class c, EntityPlayer player, TileEntity te){
+	public static PC_GresBase createGui(Class c, EntityPlayer player, TileEntity te){
 		if(c==null)
 			return null;
-		PC_IGresBase gb=null;
+		PC_GresBase gb=null;
 		try {
-			gb = (PC_IGresBase)c.getConstructor(new Class[]{EntityPlayer.class, TileEntity.class}).newInstance(player, te);
+			gb = (PC_GresBase)c.getConstructor(new Class[]{EntityPlayer.class, TileEntity.class}).newInstance(player, te);
 		} catch (InstantiationException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

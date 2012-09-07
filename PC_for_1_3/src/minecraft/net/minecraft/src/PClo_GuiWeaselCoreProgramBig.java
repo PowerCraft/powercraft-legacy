@@ -18,8 +18,8 @@ public class PClo_GuiWeaselCoreProgramBig extends PClo_GuiWeaselCoreProgram {
 	 * 
 	 * @param core gate TE
 	 */
-	public PClo_GuiWeaselCoreProgramBig(PClo_WeaselPluginCore core) {
-		super(core);
+	public PClo_GuiWeaselCoreProgramBig(EntityPlayer player, TileEntity te) {
+		super(player, te);
 	}
 
 	@Override

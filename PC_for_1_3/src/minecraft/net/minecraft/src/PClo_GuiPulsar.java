@@ -13,7 +13,7 @@ import net.minecraft.src.PC_GresWidget.PC_GresAlign;
  * @author MightyPork
  * @copy (c) 2012
  */
-public class PClo_GuiPulsar implements PC_IGresBase {
+public class PClo_GuiPulsar extends PC_GresBase {
 
 
 	private PC_GresWidget buttonOK, buttonCancel;
@@ -28,8 +28,6 @@ public class PClo_GuiPulsar implements PC_IGresBase {
 	private PC_GresCheckBox checkSilent;
 	private int delay_ticks;
 	private int hold_ticks;
-	
-	private EntityPlayer player;
 
 	/**
 	 * @param tep Pulsar Tile Entity
@@ -39,11 +37,6 @@ public class PClo_GuiPulsar implements PC_IGresBase {
 		delay_ticks = pulsar.delay;
 		hold_ticks = pulsar.holdtime;
 		this.player = player;
-	}
-
-	@Override
-	public EntityPlayer getPlayer() {
-		return player;
 	}
 
 	@Override
@@ -97,9 +90,6 @@ public class PClo_GuiPulsar implements PC_IGresBase {
 		actionPerformed(editDelay, gui);
 
 	}
-
-	@Override
-	public void onGuiClosed(PC_IGresGui gui) {}
 
 	@Override
 	public void actionPerformed(PC_GresWidget widget, PC_IGresGui gui) {
@@ -193,22 +183,6 @@ public class PClo_GuiPulsar implements PC_IGresBase {
 	@Override
 	public void onReturnPressed(PC_IGresGui gui) {
 		actionPerformed(buttonOK, gui);
-	}
-
-	@Override
-	public void onCraftMatrixChanged(IInventory iinventory) {}
-
-	@Override
-	public void updateTick(PC_IGresGui gui) {}
-
-	@Override
-	public List<Slot> getAllSlots(Container c) {
-		return null;
-	}
-
-	@Override
-	public boolean canShiftTransfer() {
-		return false;
 	}
 
 }

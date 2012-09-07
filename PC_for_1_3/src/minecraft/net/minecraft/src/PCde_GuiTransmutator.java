@@ -13,9 +13,8 @@ import net.minecraft.src.PC_GresWidget.PC_GresAlign;
  * @author MightyPork
  * @copy (c) 2012
  */
-public class PCde_GuiTransmutator implements PC_IGresBase {
-
-	private EntityPlayer player;
+public class PCde_GuiTransmutator extends PC_GresBase {
+	
 	private PCde_InventoryTransmutationContainer inventory;
 	private PC_GresProgressBar chargeMeter;
 	private List<Slot> lSlot = new ArrayList<Slot>();
@@ -27,12 +26,6 @@ public class PCde_GuiTransmutator implements PC_IGresBase {
 	public PCde_GuiTransmutator(EntityPlayer player, PCde_InventoryTransmutationContainer box) {
 		this.player = player;
 		inventory = box;
-	}
-
-
-	@Override
-	public EntityPlayer getPlayer() {
-		return player;
 	}
 
 	private void updateFraction() {
@@ -75,9 +68,6 @@ public class PCde_GuiTransmutator implements PC_IGresBase {
 	}
 
 	@Override
-	public void onGuiClosed(PC_IGresGui gui) {}
-
-	@Override
 	public void actionPerformed(PC_GresWidget widget, PC_IGresGui gui) {}
 
 	@Override
@@ -89,9 +79,6 @@ public class PCde_GuiTransmutator implements PC_IGresBase {
 	public void onReturnPressed(PC_IGresGui gui) {
 		gui.close();
 	}
-
-	@Override
-	public void onCraftMatrixChanged(IInventory iinventory) {}
 
 	@Override
 	public void updateTick(PC_IGresGui gui) {
@@ -109,12 +96,6 @@ public class PCde_GuiTransmutator implements PC_IGresBase {
 			}
 		}
 		return lSlot;
-	}
-
-
-	@Override
-	public boolean canShiftTransfer() {
-		return true;
 	}
 
 }

@@ -12,7 +12,7 @@ import net.minecraft.src.PC_GresWidget.PC_GresAlign;
  * 
  * @author MightyPork
  */
-public class PClo_GuiWeaselSpeaker implements PC_IGresBase {
+public class PClo_GuiWeaselSpeaker implements PC_GresBase {
 
 	private PClo_WeaselPluginSpeaker speaker;
 	private PC_GresWindow w;

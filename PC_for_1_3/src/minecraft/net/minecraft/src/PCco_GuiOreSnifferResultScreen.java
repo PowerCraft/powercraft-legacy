@@ -13,10 +13,9 @@ import net.minecraft.src.PC_GresWidget.PC_GresAlign;
  * @author MightyPork & XOR19
  * @copy (c) 2012
  */
-public class PCco_GuiOreSnifferResultScreen implements PC_IGresBase {
+public class PCco_GuiOreSnifferResultScreen extends PC_GresBase {
 
 	private PC_GresProgressBar slider;
-	private EntityPlayer player;
 	private PC_GresInventory inv;
 	private PC_CoordI vector;
 	private PC_CoordI[][] startpos;
@@ -136,11 +135,6 @@ public class PCco_GuiOreSnifferResultScreen implements PC_IGresBase {
 	}
 
 	@Override
-	public EntityPlayer getPlayer() {
-		return player;
-	}
-
-	@Override
 	public void initGui(PC_IGresGui gui) {
 		PC_GresWindow w = new PC_GresWindow(PC_Lang.tr("item.PCcoOreSnifferItem.name"));
 		w.padding.setTo(10, 10);
@@ -220,9 +214,6 @@ public class PCco_GuiOreSnifferResultScreen implements PC_IGresBase {
 	}
 
 	@Override
-	public void onCraftMatrixChanged(IInventory iinventory) {}
-
-	@Override
 	public void updateTick(PC_IGresGui gui) {
 
 		if (start.distanceTo(new PC_CoordI(Math.round(player.posX), Math.round(player.posY), Math.round(player.posZ))) > 8) gui.close();
@@ -237,11 +228,6 @@ public class PCco_GuiOreSnifferResultScreen implements PC_IGresBase {
 			}
 		}
 		return lSlot;
-	}
-
-	@Override
-	public boolean canShiftTransfer() {
-		return false;
 	}
 
 }

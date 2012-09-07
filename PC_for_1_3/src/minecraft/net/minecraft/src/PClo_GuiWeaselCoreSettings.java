@@ -13,7 +13,7 @@ import net.minecraft.src.PC_GresWidget.PC_GresAlign;
  * 
  * @author MightyPork
  */
-public class PClo_GuiWeaselCoreSettings implements PC_IGresBase {
+public class PClo_GuiWeaselCoreSettings extends PC_GresBase {
 
 	private PClo_WeaselPluginCore core;
 	private PC_GresWindow w;
@@ -29,13 +29,9 @@ public class PClo_GuiWeaselCoreSettings implements PC_IGresBase {
 	 * 
 	 * @param core gate TE
 	 */
-	public PClo_GuiWeaselCoreSettings(PClo_WeaselPluginCore core) {
-		this.core = core;
-	}
-
-	@Override
-	public EntityPlayer getPlayer() {
-		return PC_Utils.mc().thePlayer;
+	public PClo_GuiWeaselCoreSettings(EntityPlayer player, TileEntity te) {
+		core = (PClo_WeaselPluginCore)((PClo_TileEntityWeasel)te).getPlugin();
+		this.player = player;
 	}
 
 	@Override
@@ -114,9 +110,6 @@ public class PClo_GuiWeaselCoreSettings implements PC_IGresBase {
 	}
 
 	@Override
-	public void onGuiClosed(PC_IGresGui gui) {}
-
-	@Override
 	public void actionPerformed(PC_GresWidget widget, PC_IGresGui gui) {
 
 		if (widget == edNetwork) {
@@ -151,15 +144,16 @@ public class PClo_GuiWeaselCoreSettings implements PC_IGresBase {
 			w.calcSize();
 			return;
 		}
-
-		if (widget.getId() == 100) {
+		
+		//TODO
+		/*if (widget.getId() == 100) {
 			PC_Utils.openGres(getPlayer(), new PClo_GuiWeaselCoreProgram(core));
 			return;
 		}
 		if (widget.getId() == 101) {
 			PC_Utils.openGres(getPlayer(), new PClo_GuiWeaselCoreStatus(core));
 			return;
-		}
+		}*/
 
 		if (widget.getId() == 0) {
 			gui.close();
@@ -200,25 +194,6 @@ public class PClo_GuiWeaselCoreSettings implements PC_IGresBase {
 	@Override
 	public void onEscapePressed(PC_IGresGui gui) {
 		gui.close();
-	}
-
-	@Override
-	public void onReturnPressed(PC_IGresGui gui) {}
-
-	@Override
-	public void onCraftMatrixChanged(IInventory iinventory) {}
-
-	@Override
-	public void updateTick(PC_IGresGui gui) {}
-
-	@Override
-	public List<Slot> getAllSlots(Container c) {
-		return null;
-	}
-
-	@Override
-	public boolean canShiftTransfer() {
-		return false;
 	}
 
 }
