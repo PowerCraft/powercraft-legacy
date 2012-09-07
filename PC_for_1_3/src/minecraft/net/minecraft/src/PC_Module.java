@@ -377,7 +377,7 @@ public abstract class PC_Module extends BaseMod {
 		PC_Logger.finer("Generating default translation file (en_US) if not exists");
 		lang.generateDefaultTranslationFile();
 		PC_Logger.finer("Loading translations from " + mod_PCcore.cfgdir + "/lang");
-		lang.loadTranstalions();
+		lang.loadTranslations();
 	}
 
 

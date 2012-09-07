@@ -65,7 +65,7 @@ public class PC_Lang {
 	/**
 	 * Load translation files for this module and add them to Minecraft
 	 */
-	public void loadTranstalions() {
+	public void loadTranslations() {
 		File folder = new File(Minecraft.getMinecraftDir(), mod_PCcore.cfgdir + "/lang/");
 
 		String[] files = folder.list(new FilenameFilter() {

@@ -138,11 +138,12 @@ public class PC_Color implements PC_INBT {
 			name = ((String) object);
 		}
 		if (name != null) {
-			for (String key : namedColors.keySet()) {
-				if (key.equalsIgnoreCase(name)) {
-					return namedColors.get(key);
-				}
-			}
+			//for (String key : namedColors.keySet()) {
+				//if (key.equalsIgnoreCase(name)) {
+			if(namedColors.containsKey(name.toLowerCase()))
+					return namedColors.get(name.toLowerCase());
+				//}
+			//}
 		} else {
 			return Calc.toInteger(object);
 		}

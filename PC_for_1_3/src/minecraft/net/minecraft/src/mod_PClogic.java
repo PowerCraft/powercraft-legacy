@@ -295,6 +295,8 @@ public class mod_PClogic extends PC_Module {
 		map.put("tile.PCloSensorRanged.living.name", "Mob Proximity Detector");
 		map.put("tile.PCloSensorRanged.player.name", "Player Proximity Detector");
 
+		map.put("tile.PCloLight.isHuge", "is Huge");
+		map.put("tile.PCloLight.isStable", "is Stable");
 		map.put("tile.PCloLight.0.name", "Black Indicator");
 		map.put("tile.PCloLight.1.name", "Red Indicator");
 		map.put("tile.PCloLight.2.name", "Green Indicator");
@@ -1049,6 +1051,7 @@ public class mod_PClogic extends PC_Module {
 		guis.add(PClo_GuiPulsar.class);
 		guis.add(PClo_GuiRadio.class);
 		guis.add(PClo_GuiSensor.class);
+		guis.add(PClo_GuiLight.class);
 		return guis;
 	}
 

@@ -1173,7 +1173,7 @@ public class mod_PCcore extends PC_Module implements PC_IActivatorListener {
 	
 				PC_Logger.finer("Loading translations for module " + module.getModuleName());
 				if (module.lang != null) {
-					module.lang.loadTranstalions();
+					module.lang.loadTranslations();
 				}
 				PC_Logger.finer("\n");
 			}
