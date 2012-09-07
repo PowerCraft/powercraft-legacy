@@ -41,29 +41,29 @@ public class PCco_GuiOreSnifferResultScreen implements PC_IGresBase {
 	/**
 	 * @param player the player
 	 * @param world the world
-	 * @param startBlock starting block (start of sniffing)
+	 * @param start starting block (start of sniffing)
 	 * @param vector (sniffing direction)
 	 */
-	public PCco_GuiOreSnifferResultScreen(EntityPlayer player, World world, PC_CoordI startBlock, PC_CoordI vector) {
+	public PCco_GuiOreSnifferResultScreen(EntityPlayer player, TileEntity te) {
 		this.player = player;
 		this.startpos = new PC_CoordI[3][3];
-		this.vector = vector;
-		this.world = world;
-		this.start = startBlock;
-
+		this.vector = new PC_CoordI(1, 0, 0);
+		this.world = te.worldObj;
+		this.start = new PC_CoordI(te.xCoord, te.yCoord, te.zCoord);
+		
 		int l = MathHelper.floor_double(((player.rotationYaw * 4F) / 360F) + 0.5D) & 3;
 
 		if (vector.equals(new PC_CoordI(0, -1, 0))) {
 
-			this.startpos[0][0] = startBlock.offset(-1, 0, -1);
-			this.startpos[1][0] = startBlock.offset(0, 0, -1);
-			this.startpos[2][0] = startBlock.offset(1, 0, -1);
-			this.startpos[0][1] = startBlock.offset(-1, 0, 0);
-			this.startpos[1][1] = startBlock;
-			this.startpos[2][1] = startBlock.offset(1, 0, 0);
-			this.startpos[0][2] = startBlock.offset(-1, 0, 1);
-			this.startpos[1][2] = startBlock.offset(0, 0, 1);
-			this.startpos[2][2] = startBlock.offset(1, 0, 1);
+			this.startpos[0][0] = start.offset(-1, 0, -1);
+			this.startpos[1][0] = start.offset(0, 0, -1);
+			this.startpos[2][0] = start.offset(1, 0, -1);
+			this.startpos[0][1] = start.offset(-1, 0, 0);
+			this.startpos[1][1] = start;
+			this.startpos[2][1] = start.offset(1, 0, 0);
+			this.startpos[0][2] = start.offset(-1, 0, 1);
+			this.startpos[1][2] = start.offset(0, 0, 1);
+			this.startpos[2][2] = start.offset(1, 0, 1);
 
 			l = 3 - l;
 			l += 3;
@@ -74,37 +74,37 @@ public class PCco_GuiOreSnifferResultScreen implements PC_IGresBase {
 
 
 		} else if (vector.equals(new PC_CoordI(1, 0, 0))) {
-			this.startpos[0][0] = startBlock.offset(0, 1, -1);
-			this.startpos[1][0] = startBlock.offset(0, 1, 0);
-			this.startpos[2][0] = startBlock.offset(0, 1, 1);
-			this.startpos[0][1] = startBlock.offset(0, 0, -1);
-			this.startpos[1][1] = startBlock;
-			this.startpos[2][1] = startBlock.offset(0, 0, 1);
-			this.startpos[0][2] = startBlock.offset(0, -1, -1);
-			this.startpos[1][2] = startBlock.offset(0, -1, 0);
-			this.startpos[2][2] = startBlock.offset(0, -1, 1);
+			this.startpos[0][0] = start.offset(0, 1, -1);
+			this.startpos[1][0] = start.offset(0, 1, 0);
+			this.startpos[2][0] = start.offset(0, 1, 1);
+			this.startpos[0][1] = start.offset(0, 0, -1);
+			this.startpos[1][1] = start;
+			this.startpos[2][1] = start.offset(0, 0, 1);
+			this.startpos[0][2] = start.offset(0, -1, -1);
+			this.startpos[1][2] = start.offset(0, -1, 0);
+			this.startpos[2][2] = start.offset(0, -1, 1);
 		} else if (vector.equals(new PC_CoordI(0, 0, -1))) {
-			this.startpos[0][0] = startBlock.offset(-1, 1, 0);
-			this.startpos[1][0] = startBlock.offset(0, 1, 0);
-			this.startpos[2][0] = startBlock.offset(1, 1, 0);
-			this.startpos[0][1] = startBlock.offset(-1, 0, 0);
-			this.startpos[1][1] = startBlock;
-			this.startpos[2][1] = startBlock.offset(1, 0, 0);
-			this.startpos[0][2] = startBlock.offset(-1, -1, 0);
-			this.startpos[1][2] = startBlock.offset(0, -1, 0);
-			this.startpos[2][2] = startBlock.offset(1, -1, 0);
+			this.startpos[0][0] = start.offset(-1, 1, 0);
+			this.startpos[1][0] = start.offset(0, 1, 0);
+			this.startpos[2][0] = start.offset(1, 1, 0);
+			this.startpos[0][1] = start.offset(-1, 0, 0);
+			this.startpos[1][1] = start;
+			this.startpos[2][1] = start.offset(1, 0, 0);
+			this.startpos[0][2] = start.offset(-1, -1, 0);
+			this.startpos[1][2] = start.offset(0, -1, 0);
+			this.startpos[2][2] = start.offset(1, -1, 0);
 
 
 		} else if (vector.equals(new PC_CoordI(0, 1, 0))) {
-			this.startpos[0][2] = startBlock.offset(-1, 0, -1);
-			this.startpos[1][2] = startBlock.offset(0, 0, -1);
-			this.startpos[2][2] = startBlock.offset(1, 0, -1);
-			this.startpos[0][1] = startBlock.offset(-1, 0, 0);
-			this.startpos[1][1] = startBlock;
-			this.startpos[2][1] = startBlock.offset(1, 0, 0);
-			this.startpos[0][0] = startBlock.offset(-1, 0, 1);
-			this.startpos[1][0] = startBlock.offset(0, 0, 1);
-			this.startpos[2][0] = startBlock.offset(1, 0, 1);
+			this.startpos[0][2] = start.offset(-1, 0, -1);
+			this.startpos[1][2] = start.offset(0, 0, -1);
+			this.startpos[2][2] = start.offset(1, 0, -1);
+			this.startpos[0][1] = start.offset(-1, 0, 0);
+			this.startpos[1][1] = start;
+			this.startpos[2][1] = start.offset(1, 0, 0);
+			this.startpos[0][0] = start.offset(-1, 0, 1);
+			this.startpos[1][0] = start.offset(0, 0, 1);
+			this.startpos[2][0] = start.offset(1, 0, 1);
 
 			l += 2;
 			for (int i = 0; i < l; i++) {
@@ -113,25 +113,25 @@ public class PCco_GuiOreSnifferResultScreen implements PC_IGresBase {
 			}
 
 		} else if (vector.equals(new PC_CoordI(-1, 0, 0))) {
-			this.startpos[2][0] = startBlock.offset(0, 1, -1);
-			this.startpos[1][0] = startBlock.offset(0, 1, 0);
-			this.startpos[0][0] = startBlock.offset(0, 1, 1);
-			this.startpos[2][1] = startBlock.offset(0, 0, -1);
-			this.startpos[1][1] = startBlock;
-			this.startpos[0][1] = startBlock.offset(0, 0, 1);
-			this.startpos[2][2] = startBlock.offset(0, -1, -1);
-			this.startpos[1][2] = startBlock.offset(0, -1, 0);
-			this.startpos[0][2] = startBlock.offset(0, -1, 1);
+			this.startpos[2][0] = start.offset(0, 1, -1);
+			this.startpos[1][0] = start.offset(0, 1, 0);
+			this.startpos[0][0] = start.offset(0, 1, 1);
+			this.startpos[2][1] = start.offset(0, 0, -1);
+			this.startpos[1][1] = start;
+			this.startpos[0][1] = start.offset(0, 0, 1);
+			this.startpos[2][2] = start.offset(0, -1, -1);
+			this.startpos[1][2] = start.offset(0, -1, 0);
+			this.startpos[0][2] = start.offset(0, -1, 1);
 		} else if (vector.equals(new PC_CoordI(0, 0, 1))) {
-			this.startpos[2][0] = startBlock.offset(-1, 1, 0);
-			this.startpos[1][0] = startBlock.offset(0, 1, 0);
-			this.startpos[0][0] = startBlock.offset(1, 1, 0);
-			this.startpos[2][1] = startBlock.offset(-1, 0, 0);
-			this.startpos[1][1] = startBlock;
-			this.startpos[0][1] = startBlock.offset(1, 0, 0);
-			this.startpos[2][2] = startBlock.offset(-1, -1, 0);
-			this.startpos[1][2] = startBlock.offset(0, -1, 0);
-			this.startpos[0][2] = startBlock.offset(1, -1, 0);
+			this.startpos[2][0] = start.offset(-1, 1, 0);
+			this.startpos[1][0] = start.offset(0, 1, 0);
+			this.startpos[0][0] = start.offset(1, 1, 0);
+			this.startpos[2][1] = start.offset(-1, 0, 0);
+			this.startpos[1][1] = start;
+			this.startpos[0][1] = start.offset(1, 0, 0);
+			this.startpos[2][2] = start.offset(-1, -1, 0);
+			this.startpos[1][2] = start.offset(0, -1, 0);
+			this.startpos[0][2] = start.offset(1, -1, 0);
 		}
 	}
 

@@ -32,9 +32,9 @@ public class PCco_GuiSpawnerEditor implements PC_IGresBase {
 	 * 
 	 * @param tileEntityMobSpawner the spawner to edit
 	 */
-	public PCco_GuiSpawnerEditor(EntityPlayer player, TileEntityMobSpawner tileEntityMobSpawner) {
+	public PCco_GuiSpawnerEditor(EntityPlayer player, TileEntity tileEntityMobSpawner) {
 		this.player = player;
-		spawner = tileEntityMobSpawner;
+		spawner = (TileEntityMobSpawner)tileEntityMobSpawner;
 
 		spawner.getMobID();
 	}

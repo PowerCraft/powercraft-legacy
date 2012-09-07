@@ -10,6 +10,7 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Hashtable;
@@ -87,8 +88,9 @@ public abstract class PC_Module extends BaseMod {
 	public PC_Lang lang;
 
 	/** */
-	public static Hashtable<String, PC_IGresGuiCaller> guiList = new Hashtable<String, PC_IGresGuiCaller>();
-
+	public static Hashtable<Integer, Class> guiList = new Hashtable<Integer, Class>();
+	public static int lastGuiID = 100;
+	
 	public static Hashtable<String, PC_PacketHandler> packetHandler = new Hashtable<String, PC_PacketHandler>();
 	
 	/**
@@ -295,11 +297,13 @@ public abstract class PC_Module extends BaseMod {
 
 
 			PC_Logger.finer("Adding Gui ID's...");
-			Hashtable<String, PC_IGresGuiCaller> gList = addGui();
+			List<Class> gList = addGui();
 			if(gList!=null){
-				guiList.putAll(gList);
-				for(PC_IGresGuiCaller gui:gList.values())
-					ModLoader.registerContainerID(this, gui.getGuiID());
+				for(Class c:gList){
+					guiList.put(lastGuiID, c);
+					ModLoader.registerContainerID(this, lastGuiID);
+					lastGuiID++;
+				}
 			}
 			
 			PC_Logger.finer("Adding PacketHandler...");
@@ -551,7 +555,7 @@ public abstract class PC_Module extends BaseMod {
 	 * 
 	 * @return a List of all Gui's used in this Module
 	 */
-	public abstract Hashtable<String, PC_IGresGuiCaller> addGui();
+	public abstract List<Class> addGui();
 	
 	protected abstract Hashtable<String, PC_PacketHandler> addPacketHandler();
 	
@@ -563,19 +567,16 @@ public abstract class PC_Module extends BaseMod {
 	@Override
 	public GuiContainer getContainerGUI(EntityClientPlayerMP var1, int var2, int var3, int var4, int var5)
     {
-		PC_IGresGuiCaller guiCaller = null;
-		for(PC_IGresGuiCaller gC:guiList.values()){
-			if(gC.getGuiID()==var2){
-				guiCaller = gC;
-				break;
-			}
-		}
-		if(guiCaller==null){
-			System.out.println("Open no Gui with ID "+var2);
+		Class c = guiList.get(var2);
+		if(c==null)
 			return null;
-		}
-		System.out.println("Open Gui with ID "+var2);
-        return new PC_GresGui(guiCaller.createGui(var1, var3, var4, var5));
+		TileEntity te=null;
+		if(var4>-1)
+			te = var1.worldObj.getBlockTileEntity(var3, var4, var5);
+		PC_IGresBase gb=PC_Utils.createGui(c, var1, te);
+		if(gb==null)
+			return null;
+		return new PC_GresGui(gb);
     }
 	
 	@Override

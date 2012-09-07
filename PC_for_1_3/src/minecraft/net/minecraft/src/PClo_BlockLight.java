@@ -258,7 +258,7 @@ public class PClo_BlockLight extends BlockContainer implements PC_ISwapTerrain, 
 			if (te != null) {
 				if (!PC_Utils.isCreative()) {
 					PClo_TileEntityLight teg = (PClo_TileEntityLight) te;
-					dropBlockAsItem_do(world, i, j, k, new ItemStack(mod_PClogic.lightOn, 1, teg.getColor() + (teg.isStable ? 16 : 0)
+					dropBlockAsItem_do(world, i, j, k, new ItemStack(mod_PClogic.lightOn, 1, (teg.isStable ? 16 : 0)
 							+ (teg.isHuge ? 32 : 0)));
 				}
 			}
@@ -356,11 +356,6 @@ public class PClo_BlockLight extends BlockContainer implements PC_ISwapTerrain, 
 		}
 	}
 
-	@Override
-	public int colorMultiplier(IBlockAccess iblockaccess, int i, int j, int k) {
-		return getColorHex(iblockaccess, i, j, k);
-	}
-
 	private static PClo_TileEntityLight getTE(IBlockAccess world, int i, int j, int k) {
 		TileEntity te = world.getBlockTileEntity(i, j, k);
 		if (te == null) return null;
@@ -369,14 +364,14 @@ public class PClo_BlockLight extends BlockContainer implements PC_ISwapTerrain, 
 		return tel;
 	}
 
-	private int getColorHex(IBlockAccess w, int i, int j, int k) {
+	private PC_Color getColor(IBlockAccess w, int i, int j, int k) {
 		PClo_TileEntityLight tei = getTE(w, i, j, k);
 
 		if (tei == null) {
-			return 0xff0000;
+			return null;
 		}
 
-		return tei.getFullColor(on).getHex();
+		return tei.getFullColor(on);
 	}
 
 	@Override
@@ -401,13 +396,15 @@ public class PClo_BlockLight extends BlockContainer implements PC_ISwapTerrain, 
 		} catch (NullPointerException e) {}
 
 		int l = world.getBlockMetadata(i, j, k);
-		int color_hex = getColorHex(world, i, j, k);
+		PC_Color color = getColor(world, i, j, k);
+		if(color==null)
+			return;
 		double ii = i + 0.5D;
 		double jj = j + 0.5D;
 		double kk = k + 0.5D;
 		double h = 0.22D;
 
-		double r = PC_Color.red(color_hex), g = PC_Color.green(color_hex), b = PC_Color.blue(color_hex);
+		double r = color.r, g = color.g, b = color.b;
 
 		r = (r == 0) ? 0.001D : r;
 		g = (g == 0) ? 0.001D : g;

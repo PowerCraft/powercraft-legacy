@@ -1,6 +1,7 @@
 package net.minecraft.src;
 
 
+import java.util.ArrayList;
 import java.util.Hashtable;
 import java.util.List;
 import java.util.Map;
@@ -1042,12 +1043,12 @@ public class mod_PClogic extends PC_Module {
 	}
 
 	@Override
-	public Hashtable<String, PC_IGresGuiCaller> addGui() {
-		Hashtable<String, PC_IGresGuiCaller> guis = new Hashtable<String, PC_IGresGuiCaller>();
-		guis.put("Delayer", new PClo_GuiCallerDelayer());
-		guis.put("Pulsar", new PClo_GuiCallerPulsar());
-		guis.put("Radio", new PClo_GuiCallerRadio());
-		guis.put("Sensor", new PClo_GuiCallerSensor());
+	public List<Class> addGui() {
+		List<Class> guis = new ArrayList<Class>();
+		guis.add(PClo_GuiCallerDelayer.class);
+		guis.add(PClo_GuiCallerPulsar.class);
+		guis.add(PClo_GuiCallerRadio.class);
+		guis.add(PClo_GuiCallerSensor.class);
 		return guis;
 	}
 

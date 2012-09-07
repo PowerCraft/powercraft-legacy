@@ -1,6 +1,7 @@
 package net.minecraft.src;
 
 
+import java.util.ArrayList;
 import java.util.Hashtable;
 import java.util.List;
 import java.util.Map;
@@ -476,11 +477,11 @@ public class mod_PCtransport extends PC_Module {
 	}
 
 	@Override
-	public Hashtable<String, PC_IGresGuiCaller> addGui() {
-		Hashtable<String, PC_IGresGuiCaller> guis = new Hashtable<String, PC_IGresGuiCaller>();
-		guis.put("SeparationBelt", new PCtr_GuiCallerSeparationBelt());
-		guis.put("EjectionBelt", new PCtr_GuiCallerEjectionBelt());
-		guis.put("Teleporter", new PCtr_GuiCallerTeleporter());
+	public List<Class> addGui() {
+		List<Class> guis = new ArrayList<Class>();
+		guis.add(PCtr_GuiCallerSeparationBelt.class);
+		guis.add(PCtr_GuiCallerEjectionBelt.class);
+		guis.add(PCtr_GuiCallerTeleporter.class);
 		return guis;
 	}
 

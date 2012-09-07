@@ -215,8 +215,7 @@ public class mod_PCmobile extends PC_Module implements PC_IActivatorListener {
 	}
 
 	@Override
-	public Hashtable<String, PC_IGresGuiCaller> addGui() {
-		// TODO Auto-generated method stub
+	public List<Class> addGui() {
 		return null;
 	}
 

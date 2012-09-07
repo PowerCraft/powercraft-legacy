@@ -1,6 +1,7 @@
 package net.minecraft.src;
 
 
+import java.util.ArrayList;
 import java.util.Hashtable;
 import java.util.List;
 import java.util.Map;
@@ -247,9 +248,9 @@ public class mod_PCdeco extends PC_Module {
 	}
 
 	@Override
-	public Hashtable<String, PC_IGresGuiCaller> addGui() {
-		Hashtable<String, PC_IGresGuiCaller> guis = new Hashtable<String, PC_IGresGuiCaller>();
-		guis.put("Transmutator", new PCde_GuiCallerTransmutator());
+	public List<Class> addGui() {
+		List<Class> guis = new ArrayList<Class>();
+		guis.add(PCde_GuiCallerTransmutator.class);
 		return guis;
 	}
 

@@ -33,7 +33,7 @@ public class PCco_GuiCraftingTool implements PC_IGresBase {
 	/**
 	 * @param player the player
 	 */
-	public PCco_GuiCraftingTool(EntityPlayer player) {
+	public PCco_GuiCraftingTool(EntityPlayer player, TileEntity te) {
 		this.player = player;
 		player.addStat(AchievementList.openInventory, 1);
 	}

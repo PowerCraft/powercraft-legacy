@@ -20,6 +20,10 @@ public class PCco_GuiUpdateNotification implements PC_IGresBase {
 	private PC_GresCheckBox checkDisable;
 	private PC_GresWidget buttonOK;
 
+	public PCco_GuiUpdateNotification(EntityPlayer player, TileEntity te){
+		
+	}
+	
 	@Override
 	public EntityPlayer getPlayer() {
 		return PC_Utils.mc().thePlayer;
