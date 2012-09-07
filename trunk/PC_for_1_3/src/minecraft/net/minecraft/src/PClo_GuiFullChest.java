@@ -19,17 +19,20 @@ public class PClo_GuiFullChest implements PC_IGresBase {
 	private PC_GresWidget buttonOK, buttonCancel;
 
 	private PC_GresCheckBox check;
-
+	
+	private EntityPlayer player;
+	
 	/**
 	 * @param tes Sensor tile entity
 	 */
-	public PClo_GuiFullChest(PClo_TileEntityGate tes) {
-		gate = tes;
+	public PClo_GuiFullChest(EntityPlayer player, TileEntity tes) {
+		gate = (PClo_TileEntityGate)tes;
+		this.player = player;
 	}
 
 	@Override
 	public EntityPlayer getPlayer() {
-		return PC_Utils.mc().thePlayer;
+		return player;
 	}
 
 	@Override

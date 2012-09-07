@@ -35,6 +35,8 @@ public class PClo_GuiRadio implements PC_IGresBase {
 	private PC_GresCheckBox checkLabel;
 
 	private PC_GresCheckBox checkMicro;
+	
+	private EntityPlayer player;
 
 	/**
 	 * @param dimen Radio device dimension
@@ -42,17 +44,19 @@ public class PClo_GuiRadio implements PC_IGresBase {
 	 * @param s device channel
 	 * @param radiotype transmitter or receiver
 	 */
-	public PClo_GuiRadio(int dimen, PC_CoordI blockPos, String s, int radiotype) {
-		editedString = s;
-		type = radiotype;
-		pos = blockPos;
-		dim = dimen;
-		ter = (PClo_TileEntityRadio) pos.getTileEntity(PC_Utils.mc().theWorld);
+	public PClo_GuiRadio(EntityPlayer player, TileEntity ter) {
+		this.ter = (PClo_TileEntityRadio) ter;
+		this.player = player;
+		editedString = this.ter.getChannel();
+		type = this.ter.isTransmitter() ? PClo_GuiRadio.TRANSMITTER : PClo_GuiRadio.RECEIVER;
+		pos = this.ter.getCoord();
+		dim = player.dimension;
+
 	}
 
 	@Override
 	public EntityPlayer getPlayer() {
-		return PC_Utils.mc().thePlayer;
+		return player;
 	}
 
 	@Override

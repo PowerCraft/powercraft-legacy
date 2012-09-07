@@ -18,17 +18,20 @@ public class PClo_GuiSensor implements PC_IGresBase {
 
 	private PC_GresWidget buttonOK, buttonCancel;
 	private PC_GresProgressBar slider;
+	
+	EntityPlayer player;
 
 	/**
 	 * @param tes Sensor tile entity
 	 */
-	public PClo_GuiSensor(PClo_TileEntitySensor tes) {
-		sensor = tes;
+	public PClo_GuiSensor(EntityPlayer player, TileEntity tes) {
+		sensor = (PClo_TileEntitySensor) tes;
+		this.player = player;
 	}
 
 	@Override
 	public EntityPlayer getPlayer() {
-		return PC_Utils.mc().thePlayer;
+		return player;
 	}
 
 	@Override

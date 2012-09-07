@@ -28,19 +28,22 @@ public class PClo_GuiPulsar implements PC_IGresBase {
 	private PC_GresCheckBox checkSilent;
 	private int delay_ticks;
 	private int hold_ticks;
+	
+	private EntityPlayer player;
 
 	/**
 	 * @param tep Pulsar Tile Entity
 	 */
-	public PClo_GuiPulsar(PClo_TileEntityPulsar tep) {
-		pulsar = tep;
+	public PClo_GuiPulsar(EntityPlayer player, TileEntity tep) {
+		pulsar = (PClo_TileEntityPulsar)tep;
 		delay_ticks = pulsar.delay;
 		hold_ticks = pulsar.holdtime;
+		this.player = player;
 	}
 
 	@Override
 	public EntityPlayer getPlayer() {
-		return PC_Utils.mc().thePlayer;
+		return player;
 	}
 
 	@Override
