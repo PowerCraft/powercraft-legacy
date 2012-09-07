@@ -59,6 +59,9 @@ public class PC_GresLayoutV extends PC_GresWidget {
 		ySize -= lastmargin;
 		int numChilds = childs.size()-1;
 		int num=0;
+		double gap = 0;
+		if(numChilds!=0)
+			gap = (size.y-ySize)/numChilds;
 		for (PC_GresWidget w : childs) {
 			if (!w.visible) continue;
 			PC_CoordI csize = w.getSize();
@@ -96,14 +99,8 @@ public class PC_GresLayoutV extends PC_GresWidget {
 					w.setSize(csize.x, csize.y, false);
 					break;
 				case JUSTIFIED:
-					double sym = (size.y/(double)ySize);
-					int nsy = (int)(sym*csize.y+0.5);
-					int syp = nsy-csize.y;
-					if(numChilds!=0)
-						yPos = yy+num/numChilds*syp;
-					else
-						yPos = yy;
-					csize.y = nsy;
+					yPos = yy;
+					csize.y += gap;
 					break;
 			}
 			w.setPosition(xPos, yPos);
