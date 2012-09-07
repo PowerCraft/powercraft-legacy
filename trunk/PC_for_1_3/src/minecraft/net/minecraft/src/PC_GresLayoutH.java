@@ -59,6 +59,9 @@ public class PC_GresLayoutH extends PC_GresWidget {
 		xSize -= lastcm;
 		int numChilds = childs.size()-1;
 		int num=0;
+		double gap = 0;
+		if(numChilds!=0)
+			gap = (size.x-xSize)/numChilds;
 		for (PC_GresWidget child : childs) {
 			PC_CoordI csize = child.getSize();
 			int xPos = 0;
@@ -79,14 +82,8 @@ public class PC_GresLayoutH extends PC_GresWidget {
 					child.setSize(csize.x, csize.y, false);
 					break;
 				case JUSTIFIED:
-					double sxm = (size.x/(double)xSize);
-					int nsx = (int)(sxm*csize.x+0.5);
-					int sxp = nsx-csize.x;
-					if(numChilds!=0)
-						xPos = xx+num/numChilds*sxp;
-					else
-						xPos = xx;
-					csize.x = nsx;
+					xPos = xx;
+					csize.x += gap;
 					break;
 			}
 			switch (alignV) {
