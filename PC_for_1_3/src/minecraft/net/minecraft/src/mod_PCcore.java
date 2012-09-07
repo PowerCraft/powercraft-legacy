@@ -23,7 +23,6 @@ import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 import org.xml.sax.SAXParseException;
 
-
 /**
  * PowerCraft's core module<br>
  * This module is an integral part of PowerCraft.
@@ -241,7 +240,7 @@ public class mod_PCcore extends PC_Module implements PC_IActivatorListener {
 			 */
 
 		}
-
+		
 	}
 
 
