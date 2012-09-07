@@ -250,7 +250,7 @@ public class mod_PCdeco extends PC_Module {
 	@Override
 	public List<Class> addGui() {
 		List<Class> guis = new ArrayList<Class>();
-		guis.add(PCde_GuiCallerTransmutator.class);
+		guis.add(PCde_GuiTransmutator.class);
 		return guis;
 	}
 

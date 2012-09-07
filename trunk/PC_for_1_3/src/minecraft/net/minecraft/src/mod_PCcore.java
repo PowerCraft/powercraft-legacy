@@ -1269,10 +1269,10 @@ public class mod_PCcore extends PC_Module implements PC_IActivatorListener {
 	@Override
 	public List<Class> addGui() {
 		List<Class> guis = new ArrayList<Class>();
-		guis.add(PCco_GuiCallerCraftingTool.class);
-		guis.add(PCco_GuiCallerOreSnifferResultScreen.class);
-		guis.add(PCco_GuiCallerSpawnerEditor.class);
-		guis.add(PCco_GuiCallerUpdateNotification.class);
+		guis.add(PCco_GuiCraftingTool.class);
+		guis.add(PCco_GuiOreSnifferResultScreen.class);
+		guis.add(PCco_GuiSpawnerEditor.class);
+		guis.add(PCco_GuiUpdateNotification.class);
 		return guis;
 	}
 

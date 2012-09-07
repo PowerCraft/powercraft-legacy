@@ -489,12 +489,12 @@ public class mod_PCmachines extends PC_Module implements PC_IActivatorListener {
 	@Override
 	public List<Class> addGui() {
 		List<Class> guis = new ArrayList<Class>();
-		guis.add(PCma_GuiCallerAutomaticWorkbench.class);
-		guis.add(PCma_GuiCallerBlockBuilder.class);
-		guis.add(PCma_GuiCallerRoaster.class);
-		guis.add(PCma_GuiCallerLaserTypeDecide.class);
-		guis.add(PCma_GuiCallerReplacer.class);
-		guis.add(PCma_GuiCallerXPBank.class);
+		guis.add(PCma_GuiAutomaticWorkbench.class);
+		guis.add(PCma_GuiBlockBuilder.class);
+		guis.add(PCma_GuiRoaster.class);
+		guis.add(PCma_GuiLaserTypeDecide.class);
+		guis.add(PCma_GuiReplacer.class);
+		guis.add(PCma_GuiXPBank.class);
 		return guis;
 	}
 
