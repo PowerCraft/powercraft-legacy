@@ -17,7 +17,10 @@ public class PClo_GuiLight extends PC_GresBase {
 		this.tel = (PClo_TileEntityLight) tel;
 		this.player = player;
 		color = this.tel.getColor();
-		if(color==null) color = new PC_Color(PC_Color.getHexColorForName("white"));
+		if(color==null) 
+			color = new PC_Color(PC_Color.getHexColorForName("white"));
+		else
+			color = color.copy();
 		isStable = this.tel.isStable;
 		isHuge = this.tel.isHuge;
 		

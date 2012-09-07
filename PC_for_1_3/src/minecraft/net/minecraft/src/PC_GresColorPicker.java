@@ -163,12 +163,9 @@ public class PC_GresColorPicker extends PC_GresWidget {
 	@Override
 	public boolean mouseClick(PC_CoordI mousePos, int key) {
 		dragging = (key != -1);
-		if (mousePos.x >= size.x) return false;
-		if (mousePos.y >= size.y) return false;
-		if (mousePos.y < 0) return false;
-		if (mousePos.x < 0) return false;
 		lx = mousePos.x / px;
 		ly = mousePos.y / px;
+		if(lx<0||ly<0||lx>=colorArray.length||ly>=colorArray[lx].length) return false;
 		color = colorArray[lx][ly];
 		return true;
 	}
