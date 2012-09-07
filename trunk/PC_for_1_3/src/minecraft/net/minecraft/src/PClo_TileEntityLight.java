@@ -8,7 +8,7 @@ package net.minecraft.src;
  * @copy (c) 2012
  */
 public class PClo_TileEntityLight extends PC_TileEntity {
-	private int color = -1;
+	private PC_Color color = null;
 	/** flag that this light is lamp, and not indicator */
 	public boolean isStable;
 	/** flag that this light huge */
@@ -19,7 +19,9 @@ public class PClo_TileEntityLight extends PC_TileEntity {
 	@Override
 	public void readFromNBT(NBTTagCompound nbttagcompound) {
 		super.readFromNBT(nbttagcompound);
-		color = nbttagcompound.getInteger("color");
+		if(color==null)
+			color = new PC_Color();
+		PC_Utils.loadFromNBT(nbttagcompound, "color", color);
 		isStable = nbttagcompound.getBoolean("stable");
 		isHuge = nbttagcompound.getBoolean("huge");
 	}
@@ -27,7 +29,8 @@ public class PClo_TileEntityLight extends PC_TileEntity {
 	@Override
 	public void writeToNBT(NBTTagCompound nbttagcompound) {
 		super.writeToNBT(nbttagcompound);
-		nbttagcompound.setInteger("color", color);
+		if(color!=null)
+			PC_Utils.saveToNBT(nbttagcompound, "color", color);
 		nbttagcompound.setBoolean("stable", isStable);
 		nbttagcompound.setBoolean("huge", isHuge);
 	}
@@ -37,7 +40,7 @@ public class PClo_TileEntityLight extends PC_TileEntity {
 	 * 
 	 * @param c color index
 	 */
-	public void setColor(int c) {
+	public void setColor(PC_Color c) {
 		color = c;
 	}
 
@@ -46,7 +49,7 @@ public class PClo_TileEntityLight extends PC_TileEntity {
 	 * 
 	 * @return color index
 	 */
-	public int getColor() {
+	public PC_Color getColor() {
 		return color;
 	}
 
@@ -64,10 +67,12 @@ public class PClo_TileEntityLight extends PC_TileEntity {
 	 * @return hex color
 	 */
 	public PC_Color getFullColor(boolean on) {
-		int rc;
+		//int rc;
 
-		if(color==-1)
-			return new PC_Color();
+		return color;
+		
+		/*if(color==null)
+			return null;
 		rc = PC_Color.light_colors[color];
 
 
@@ -111,13 +116,13 @@ public class PClo_TileEntityLight extends PC_TileEntity {
 			return new PC_Color(color.r * 0.3D, color.g * 0.3D, color.b * 0.3D);
 		} else {
 			return PC_Color.fromHex(rc);
-		}
+		}*/
 	}
 
 	@Override
 	public void updateEntity() {
-		if(color!=-1&&send){
-			PC_Utils.setTileEntity(PC_Utils.mc().thePlayer, this, "color", color, "isStable", isStable, "isHuge", isHuge);
+		if(color!=null&&send){
+			PC_Utils.setTileEntity(PC_Utils.mc().thePlayer, this, "color", color.r, color.g, color.b, "isStable", isStable, "isHuge", isHuge);
 			send=false;
 		}
 	}
@@ -135,9 +140,13 @@ public class PClo_TileEntityLight extends PC_TileEntity {
 		int p = 0;
 		while(p<o.length){
 			String var = (String)o[p++];
-			if(var.equals("color"))
-				color = (Integer)o[p++];
-			else if(var.equals("isStable"))
+			if(var.equals("color")){
+				if(color==null)
+					color = new PC_Color();
+				color.r = (Double)o[p++];
+				color.g = (Double)o[p++];
+				color.b = (Double)o[p++];
+			}else if(var.equals("isStable"))
 				isStable = (Boolean)o[p++];
 			else if(var.equals("isHuge"))
 				isHuge = (Boolean)o[p++];
@@ -146,13 +155,15 @@ public class PClo_TileEntityLight extends PC_TileEntity {
 
 	@Override
 	public Object[] get() {
-		Object[] o = new Object[6];
+		Object[] o = new Object[8];
 		o[0] = "color";
-		o[1] = color;
-		o[2] = "isStable";
-		o[3] = isStable;
-		o[4] = "isHuge";
-		o[5] = isHuge;
+		o[1] = color.r;
+		o[2] = color.g;
+		o[3] = color.b;
+		o[4] = "isStable";
+		o[5] = isStable;
+		o[6] = "isHuge";
+		o[7] = isHuge;
 		return o;
 	}
 }

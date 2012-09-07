@@ -37,8 +37,10 @@ public class PClo_TileEntityLightRenderer extends TileEntitySpecialRenderer {
 		GL11.glScalef(f, -f, -f);
 
 		PC_Color clr = tel.getFullColor(tel.isActive());
-
-		GL11.glColor4d(clr.r, clr.g, clr.b, 1.0D);
+		if(clr!=null)
+			GL11.glColor4d(clr.r, clr.g, clr.b, 1.0D);
+		else
+			GL11.glColor4d(1.0D, 1.0D, 1.0D, 1.0D);
 
 		int meta = tel.getCoord().getMeta(tel.worldObj);
 		switch (meta) {

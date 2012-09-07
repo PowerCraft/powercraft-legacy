@@ -98,8 +98,7 @@ public class mod_PCfix extends PC_Module {
 	public void postInit() {}
 
 	@Override
-	public Hashtable<String, PC_IGresGuiCaller> addGui() {
-		// TODO Auto-generated method stub
+	public List<Class> addGui() {
 		return null;
 	}
 

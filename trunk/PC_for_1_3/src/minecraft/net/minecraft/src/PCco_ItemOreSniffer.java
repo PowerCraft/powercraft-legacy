@@ -30,7 +30,7 @@ public class PCco_ItemOreSniffer extends Item {
 		int MoveY = offsetY[l];
 		int MoveZ = offsetZ[l];
 
-		PC_Utils.openGres(entityplayer, "OreSnifferResultScreen", i, j, k);
+		PC_Utils.openGres(entityplayer, PCco_GuiOreSnifferResultScreen.class, world.getBlockTileEntity(i, j, k));
 		
 		//PC_Utils.openGres(entityplayer, new PCco_GuiOreSnifferResultScreen(entityplayer, world, new PC_CoordI(i, j, k), new PC_CoordI(MoveX, MoveY,
 		//		MoveZ)));

@@ -4,7 +4,9 @@ package net.minecraft.src;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
+import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
+import java.util.Enumeration;
 import java.util.List;
 
 import net.minecraft.client.Minecraft;
@@ -297,14 +299,49 @@ public class PC_Utils {
 		return (hours > 0 ? hours + ":" : "") + (hours > 0 || mins > 0 ? mins + ":" : "") + secs;
 	}
 
-	public static void openGres(EntityPlayer entityplayer, String string,
-			int i, int j, int k) {
+	public static PC_IGresBase createGui(Class c, EntityPlayer player, TileEntity te){
+		if(c==null)
+			return null;
+		PC_IGresBase gb=null;
+		try {
+			gb = (PC_IGresBase)c.getConstructor(new Class[]{EntityPlayer.class, TileEntity.class}).newInstance(player, te);
+		} catch (InstantiationException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IllegalAccessException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IllegalArgumentException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (InvocationTargetException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (NoSuchMethodException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (SecurityException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return gb;
+	}
+	
+	public static void openGres(EntityPlayer entityplayer, Class c,
+			TileEntity te) {
 		if(entityplayer instanceof EntityPlayerMP){
-			PC_IGresGuiCaller gCaller = PC_Module.guiList.get(string);
-			if(gCaller!=null){
-				PC_GresContainerManager cm = new PC_GresContainerManager(entityplayer, gCaller.createGui(entityplayer, i, j, k));
-				System.out.println("Open Gui "+string+" with ID "+gCaller.getGuiID() + " ContainerManager:"+cm);
-				ModLoader.serverOpenWindow((EntityPlayerMP)entityplayer, cm, gCaller.getGuiID(), i, j, k);
+			Enumeration<Integer> ei = PC_Module.guiList.keys();
+			while(ei.hasMoreElements()){
+				Integer i=ei.nextElement();
+				Class cgui = PC_Module.guiList.get(i);
+				if(cgui==c){
+					PC_GresContainerManager cm = new PC_GresContainerManager(entityplayer, createGui(c, entityplayer, te));
+					if(te!=null)
+						ModLoader.serverOpenWindow((EntityPlayerMP)entityplayer, cm, i, te.xCoord, te.yCoord, te.zCoord);
+					else
+						ModLoader.serverOpenWindow((EntityPlayerMP)entityplayer, cm, i, 0, -1, 0);
+					break;
+				}
 			}
 		}
 	}

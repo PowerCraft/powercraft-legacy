@@ -113,7 +113,7 @@ public class PClo_ItemBlockLight extends ItemBlock {
 				if (lamp) tei.isStable = true;
 				if (huge) tei.isHuge = true;
 
-				tei.setColor(itemstack.getItemDamage() % 16);
+				tei.setColor(new PC_Color());
 				world.setBlockTileEntity(i, j, k, tei);
 				world.setBlockMetadataWithNotify(i, j, k, i1);
 
