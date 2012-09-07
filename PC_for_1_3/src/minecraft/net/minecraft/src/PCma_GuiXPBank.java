@@ -13,6 +13,7 @@ import net.minecraft.src.PC_GresWidget.PC_GresAlign;
  */
 public class PCma_GuiXPBank implements PC_IGresBase {
 
+	private EntityPlayer player;
 	private PCma_TileEntityXPBank xpbank;
 	private PC_GresWidget buttonClose;
 	private PC_GresWidget txStoragePoints;
@@ -25,13 +26,14 @@ public class PCma_GuiXPBank implements PC_IGresBase {
 	 * 
 	 * @param tex
 	 */
-	public PCma_GuiXPBank(PCma_TileEntityXPBank tex) {
-		xpbank = tex;
+	public PCma_GuiXPBank(EntityPlayer player, TileEntity tex) {
+		xpbank = (PCma_TileEntityXPBank)tex;
+		this.player = player;
 	}
 
 	@Override
 	public EntityPlayer getPlayer() {
-		return PC_Utils.mc().thePlayer;
+		return player;
 	}
 
 	@Override

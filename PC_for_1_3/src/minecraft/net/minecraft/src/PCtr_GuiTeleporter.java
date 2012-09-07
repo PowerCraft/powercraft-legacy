@@ -25,10 +25,10 @@ public class PCtr_GuiTeleporter implements PC_IGresBase {
 	/**
 	 * @param te teleproter TE
 	 */
-	public PCtr_GuiTeleporter(EntityPlayer palyer, PCtr_TileEntityTeleporter te) {
+	public PCtr_GuiTeleporter(EntityPlayer palyer, TileEntity te) {
 		this.palyer = palyer;
-		teleporter = te;
-		td = te.td;
+		teleporter = (PCtr_TileEntityTeleporter)te;
+		td = teleporter.td;
 	}
 
 

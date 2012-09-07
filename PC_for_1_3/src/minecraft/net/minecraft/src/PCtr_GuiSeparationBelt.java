@@ -27,9 +27,9 @@ public class PCtr_GuiSeparationBelt implements PC_IGresBase {
 	 * @param player
 	 * @param tileentityconveyorfilter
 	 */
-	public PCtr_GuiSeparationBelt(EntityPlayer player, PCtr_TileEntitySeparationBelt tileentityconveyorfilter) {
+	public PCtr_GuiSeparationBelt(EntityPlayer player, TileEntity tileentityconveyorfilter) {
 		this.player = player;
-		this.tes = tileentityconveyorfilter;
+		this.tes = (PCtr_TileEntitySeparationBelt)tileentityconveyorfilter;
 	}
 
 	@Override

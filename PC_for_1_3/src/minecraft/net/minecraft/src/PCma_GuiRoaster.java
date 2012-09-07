@@ -23,9 +23,9 @@ public class PCma_GuiRoaster implements PC_IGresBase {
 	 * @param player player
 	 * @param roaster device tile entity
 	 */
-	public PCma_GuiRoaster(EntityPlayer player, IInventory roaster) {
+	public PCma_GuiRoaster(EntityPlayer player, TileEntity roaster) {
 		this.player = player;
-		inventory = roaster;
+		inventory = (PCma_TileEntityRoaster)roaster;
 	}
 
 

@@ -16,6 +16,7 @@ import net.minecraft.src.PC_GresWidget.PC_GresAlign;
  */
 public class PCtr_GuiEjectionBelt implements PC_IGresBase {
 
+	private EntityPlayer player;
 	private PCtr_TileEntityEjectionBelt teb;
 
 	private PC_GresWidget btnOK;
@@ -36,13 +37,14 @@ public class PCtr_GuiEjectionBelt implements PC_IGresBase {
 	 * 
 	 * @param tilee belt tile entity
 	 */
-	public PCtr_GuiEjectionBelt(PCtr_TileEntityEjectionBelt tilee) {
-		teb = tilee;
+	public PCtr_GuiEjectionBelt(EntityPlayer player, TileEntity tilee) {
+		teb = (PCtr_TileEntityEjectionBelt)tilee;
+		this.player = player;
 	}
 
 	@Override
 	public EntityPlayer getPlayer() {
-		return PC_Utils.mc().thePlayer;
+		return player;
 	}
 
 	@Override
