@@ -14,8 +14,6 @@ public class PClo_ItemBlockLight extends ItemBlock {
 	 */
 	public PClo_ItemBlockLight(int i) {
 		super(i);
-		setMaxDamage(0);
-		setHasSubtypes(false);
 	}
 
 	@Override
@@ -86,9 +84,7 @@ public class PClo_ItemBlockLight extends ItemBlock {
 		}
 
 
-		boolean lamp = itemstack.getItemDamage() >= 16 && itemstack.getItemDamage() < 32;
-		boolean huge = itemstack.getItemDamage() >= 32 && itemstack.getItemDamage() < 48;
-		Block block = lamp ? mod_PClogic.lightOn : mod_PClogic.lightOff;
+		Block block = mod_PClogic.lightOff;
 
 		if (world.canPlaceEntityOnSide(block.blockID, i, j, k, false, l, entityplayer)) {
 			if (world.setBlockWithNotify(i, j, k, block.blockID)) {
@@ -103,27 +99,13 @@ public class PClo_ItemBlockLight extends ItemBlock {
 					tei = (PClo_TileEntityLight) ((BlockContainer) block).createNewTileEntity(world);
 				}
 
-				if (lamp) tei.isStable = true;
-				if (huge) tei.isHuge = true;
-
 				tei.setColor(new PC_Color());
 				world.setBlockTileEntity(i, j, k, tei);
 				world.setBlockMetadataWithNotify(i, j, k, i1);
-
-				if (lamp) {
-					PClo_BlockLight.onPoweredBlockChange(world, i, j, k, true);
-				}
-
-
 
 				itemstack.stackSize--;
 			}
 		}
 		return true;
-	}
-
-	@Override
-	public int getIconFromDamage(int i) {
-		return mod_PClogic.lightOn.getBlockTextureFromSideAndMetadata(1, 0);
 	}
 }
