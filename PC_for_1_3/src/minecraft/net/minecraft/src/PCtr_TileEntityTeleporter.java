@@ -41,16 +41,18 @@ public class PCtr_TileEntityTeleporter extends PC_TileEntity {
 	public void createData(){
 		PCtr_TeleporterData td = PCtr_TeleporterManager.getTeleporterDataAt(xCoord, yCoord, zCoord);
 		if(td==null){
-			td = new PCtr_TeleporterData();
-			td.pos.setTo(xCoord, yCoord, zCoord);	
-			td.dimension = worldObj.worldInfo.getDimension();
-			PCtr_TeleporterManager.add(td);
+			PC_Utils.sendToPacketHandler(PC_Utils.mc().thePlayer, "TeleporterNetHandler", 0, xCoord, yCoord, zCoord, "", "", worldObj.worldInfo.getDimension());
 		}
 	}
 	
 	@Override
 	public PC_CoordI getCoord() {
 		return new PC_CoordI(xCoord, yCoord, zCoord);
+	}
+	
+	@Override
+	public void updateEntity(){
+		createData();
 	}
 	
 	@Override
