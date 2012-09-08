@@ -487,7 +487,7 @@ public class mod_PCmachines extends PC_Module implements PC_IActivatorListener {
 	}
 
 	@Override
-	public List<Class> addGui() {
+	protected List<Class> addGui() {
 		List<Class> guis = new ArrayList<Class>();
 		guis.add(PCma_GuiAutomaticWorkbench.class);
 		guis.add(PCma_GuiBlockBuilder.class);
@@ -500,6 +500,12 @@ public class mod_PCmachines extends PC_Module implements PC_IActivatorListener {
 
 	@Override
 	protected Hashtable<String, PC_PacketHandler> addPacketHandler() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	protected Hashtable<String, PC_INBTWD> addNetManager() {
 		// TODO Auto-generated method stub
 		return null;
 	}

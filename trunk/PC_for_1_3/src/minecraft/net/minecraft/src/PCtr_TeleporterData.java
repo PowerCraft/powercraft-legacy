@@ -1,9 +1,10 @@
 package net.minecraft.src;
 
-public class PCtr_TeleporterData implements PC_INBT {
+public class PCtr_TeleporterData implements PC_INBTWD {
 
 	public PC_CoordI pos = new PC_CoordI();
-	public String defaultTarget = null, name = "";
+	public String defaultTarget = "";
+	private String name = "";
 
 	public boolean lastActiveState = false;
 
@@ -17,16 +18,18 @@ public class PCtr_TeleporterData implements PC_INBT {
 
 	public int dimension;
 	
+	private boolean needSave=true;
+	
 	public PCtr_TeleporterData(){
-		System.out.println("new PCtr_TeleporterData");
-		PC_Utils.registerDataMemory(this);
-		PCtr_TeleporterHelper.teleporterData.add(this);
+		System.out.println("new PCtr_TeleporterData:" + this);
 	}
 	
 	@Override
 	public NBTTagCompound writeToNBT(NBTTagCompound tag) {
 		PC_Utils.saveToNBT(tag, "pos", pos);
-		tag.setString("name", name);
+		tag.setString("name", getName());
+		tag.setString("defaultTarget", defaultTarget);
+		tag.setInteger("dimension", dimension);
 		return tag;
 	}
 
@@ -34,16 +37,27 @@ public class PCtr_TeleporterData implements PC_INBT {
 	public PC_INBT readFromNBT(NBTTagCompound tag) {
 		System.out.println("Load Data");
 		PC_Utils.loadFromNBT(tag, "pos", pos);
-		name = tag.getString("name");
-		PCtr_TileEntityTeleporter tet = PCtr_TeleporterHelper.getTeleporterAt(pos.x, pos.y, pos.z);
-		if(tet!=null)
-			tet.td = this;
+		setName(tag.getString("name"));
+		defaultTarget = tag.getString("defaultTarget");
+		dimension = tag.getInteger("dimension");
+		System.out.println("====>"+getName());
+		PC_Utils.sendToPacketHandler(null, "TeleporterNetHandler", 0, pos.x, pos.y, pos.z, getName(), defaultTarget, dimension);
 		return this;
 	}
 
-	public void remove(){
-		PCtr_TeleporterHelper.teleporter.remove(this);
-		PC_Utils.unRegisterDataMemory(this);
+	@Override
+	public boolean needsSave() {
+		return needSave;
+	}
+
+	public String getName() {
+		//System.out.println("MC:"+PC_Utils.mc()+" get "+name);
+		return name;
+	}
+
+	public void setName(String name) {
+		System.out.println("T:"+this+" set "+this.name+" to "+name);
+		this.name = name;
 	}
 	
 }

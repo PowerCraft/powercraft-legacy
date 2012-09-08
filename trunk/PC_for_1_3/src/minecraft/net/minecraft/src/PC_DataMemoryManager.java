@@ -1,13 +1,14 @@
 package net.minecraft.src;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Set;
 
-public class PC_DataMemoryManager extends WorldSavedData {
+public final class PC_DataMemoryManager extends WorldSavedData {
 
-	private List<PC_INBT> list = new ArrayList<PC_INBT>();
-	
 	public PC_DataMemoryManager(String par1Str) {
 		super(par1Str);
 	}
@@ -15,54 +16,33 @@ public class PC_DataMemoryManager extends WorldSavedData {
 	@Override
 	public void readFromNBT(NBTTagCompound var1) {
 		System.out.println("DM: readFromNBT");
-		int size = var1.getInteger("size");
-		for(int i=0; i<size; i++){
-			String memoryName = var1.getString("memoryName["+i+"]");
-			System.out.println(memoryName);
-			PC_INBT mem;
-			try {
-				mem = (PC_INBT)Class.forName(memoryName).newInstance();
-				list.add(mem);
-				mem.readFromNBT(var1.getCompoundTag("dataMemory["+i+"]"));
-			} catch (InstantiationException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (IllegalAccessException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (ClassNotFoundException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
+		Set<Entry<String,PC_INBTWD>> ent = PC_Module.netList.entrySet();
+		Iterator<Entry<String,PC_INBTWD>>it = ent.iterator();
+		while(it.hasNext()){
+			Entry<String,PC_INBTWD> e = it.next();
+			e.getValue().readFromNBT(var1.getCompoundTag(e.getKey()));
 		}
 	}
 
 	@Override
 	public void writeToNBT(NBTTagCompound var1) {
 		System.out.println("DM: writeToNBT");
-		var1.setInteger("size", list.size());
-		int i=0;
-		for(PC_INBT mem : list){
-			System.out.println(mem.getClass().getName());
-			var1.setString("memoryName["+i+"]", mem.getClass().getName());
+		Set<Entry<String,PC_INBTWD>> ent = PC_Module.netList.entrySet();
+		Iterator<Entry<String,PC_INBTWD>>it = ent.iterator();
+		while(it.hasNext()){
+			Entry<String,PC_INBTWD> e = it.next();
 			NBTTagCompound tc = new NBTTagCompound();
-			mem.writeToNBT(tc);
-			var1.setCompoundTag("dataMemory["+i+"]", tc);
-			i++;
+			e.getValue().writeToNBT(tc);
+			var1.setCompoundTag(e.getKey(), tc);
 		}
-	}
-
-	public void register(PC_INBT mem) {
-		list.add(mem);
-	}
-	
-	public void unRegister(PC_INBT mem){
-		list.remove(mem);
 	}
 	
 	@Override
 	public boolean isDirty(){
-		return true;
+		for(PC_INBTWD net : PC_Module.netList.values())
+			if(net.needsSave())
+				return true;
+		return false;
 	}
 	
 }

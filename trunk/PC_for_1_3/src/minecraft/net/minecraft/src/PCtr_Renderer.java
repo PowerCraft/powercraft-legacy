@@ -52,8 +52,8 @@ public class PCtr_Renderer {
 
 		boolean gf = RenderBlocks.cfgGrassFix;
 		RenderBlocks.cfgGrassFix = false;
-		PCtr_TileEntityTeleporter tet = PCtr_BlockTeleporter.getTE(iblockaccess, i, j, k);
-		PCtr_TeleporterData td = tet.td;
+		//PCtr_TileEntityTeleporter tet = PCtr_BlockTeleporter.getTE(iblockaccess, i, j, k);
+		PCtr_TeleporterData td = PCtr_TeleporterManager.getTeleporterDataAt(i, j, k);
 		//if (tet.isReceiver()) {
 			Block.blockGold.setBlockBounds(0.125F, 0.0F, 0.125F, 0.875F, 0.125F, 0.875F);
 			renderblocks.renderStandardBlock(Block.blockGold, i, j, k);
@@ -86,7 +86,7 @@ public class PCtr_Renderer {
 		Block.blockSteel.setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 1.0F, 1.0F);
 		Block.blockGold.setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 1.0F, 1.0F);
 
-		if (tet.isActive()) {
+		if(true) {
 			block.setBlockBounds(0.1875F, 0.1875F, 0.1875F, 1.0F - 0.1875F, 1.0F - 0.1875F, 1.0F - 0.1875F);
 			renderblocks.renderStandardBlock(block, i, j, k);
 			block.setBlockBounds(0.125F, 0.0F, 0.125F, 1.0F - 0.125F, 1.0F - 0.125F, 1.0F - 0.125F);

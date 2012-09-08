@@ -93,6 +93,8 @@ public abstract class PC_Module extends BaseMod {
 	
 	public static Hashtable<String, PC_PacketHandler> packetHandler = new Hashtable<String, PC_PacketHandler>();
 	
+	public static Hashtable<String, PC_INBTWD> netList = new Hashtable<String, PC_INBTWD>();
+	
 	/**
 	 * @return instance of configuration manager
 	 */
@@ -310,6 +312,12 @@ public abstract class PC_Module extends BaseMod {
 			Hashtable<String, PC_PacketHandler> phList = addPacketHandler();
 			if(phList!=null){
 				packetHandler.putAll(phList);
+			}
+			
+			PC_Logger.finer("Adding NetManager...");
+			Hashtable<String, PC_INBTWD> netList = addNetManager();
+			if(netList!=null){
+				this.netList.putAll(netList);
 			}
 			
 			PC_Logger.finer("Calling post-init hook...");
@@ -555,9 +563,11 @@ public abstract class PC_Module extends BaseMod {
 	 * 
 	 * @return a List of all Gui's used in this Module
 	 */
-	public abstract List<Class> addGui();
+	protected abstract List<Class> addGui();
 	
 	protected abstract Hashtable<String, PC_PacketHandler> addPacketHandler();
+	
+	protected abstract Hashtable<String, PC_INBTWD> addNetManager();
 	
 	/**
 	 * Do something when all is initialized.

@@ -69,7 +69,9 @@ public class PCtr_BlockTeleporter extends BlockContainer implements PC_IBlockTyp
 
 		world.setBlockAndMetadataWithNotify(i, j, k, 0, 0);
 		world.notifyBlocksOfNeighborChange(i, j, k, blockID);
-
+		
+		((PC_TileEntity)world.getBlockTileEntity(i, j, k)).onBlockPickup();
+		
 		super.breakBlock(world, i, j, k, par5, par6);
 	}
 
@@ -105,10 +107,12 @@ public class PCtr_BlockTeleporter extends BlockContainer implements PC_IBlockTyp
 		}
 
 		PCtr_TileEntityTeleporter te = getTE(world, i, j, k);
-		PCtr_TeleporterData td = te.td;
+		PCtr_TeleporterData td = PCtr_TeleporterManager.getTeleporterDataAt(i, j, k);
+		
+		System.out.println("onEntityCollidedWithBlock");
 		
 		if (te.acceptsEntity(entity)) {
-			PCtr_TeleporterHelper.teleportEntityTo(entity, td.defaultTarget);
+			PCtr_TeleporterManager.teleportEntityTo(entity, td.defaultTarget);
 		}
 
 	}

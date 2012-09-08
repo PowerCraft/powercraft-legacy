@@ -36,6 +36,14 @@ public class PCde_BlockDeco extends BlockContainer implements PC_IBlockType, PC_
 
 
 	@Override
+	public boolean onBlockActivated(World par1World, int par2, int par3,
+			int par4, EntityPlayer par5EntityPlayer, int par6, float par7,
+			float par8, float par9) {
+		onBlockClicked(par1World, par2, par3, par4, par5EntityPlayer);
+		return true;
+	}
+
+	@Override
 	public void onBlockClicked(World world, int i, int j, int k, EntityPlayer entityplayer) {
 
 		PCde_TileEntityDeco tileentity = (PCde_TileEntityDeco) world.getBlockTileEntity(i, j, k);
@@ -53,8 +61,8 @@ public class PCde_BlockDeco extends BlockContainer implements PC_IBlockType, PC_
 				}
 			}
 		}
-
-		PC_Utils.openGres(entityplayer, PCde_GuiTransmutator.class, world.getBlockTileEntity(i, j, k));
+		System.out.println("öffnen");
+		PC_Utils.openGres(entityplayer, PCde_GuiTransmutator.class, world, i, j, k);
 		
 		/*if (tileentity != null) {
 			if (tileentity.type == 3 && tileentity.getInventory() != null) {

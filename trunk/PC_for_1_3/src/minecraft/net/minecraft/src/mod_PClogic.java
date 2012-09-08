@@ -953,7 +953,7 @@ public class mod_PClogic extends PC_Module {
 	}
 
 	@Override
-	public List<Class> addGui() {
+	protected List<Class> addGui() {
 		List<Class> guis = new ArrayList<Class>();
 		guis.add(PClo_GuiDelayer.class);
 		guis.add(PClo_GuiPulsar.class);
@@ -965,6 +965,12 @@ public class mod_PClogic extends PC_Module {
 
 	@Override
 	protected Hashtable<String, PC_PacketHandler> addPacketHandler() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	protected Hashtable<String, PC_INBTWD> addNetManager() {
 		// TODO Auto-generated method stub
 		return null;
 	}

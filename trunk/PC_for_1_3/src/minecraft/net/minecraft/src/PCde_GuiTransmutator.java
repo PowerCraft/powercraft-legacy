@@ -23,9 +23,9 @@ public class PCde_GuiTransmutator extends PC_GresBase {
 	 * @param player player
 	 * @param box device tile entity
 	 */
-	public PCde_GuiTransmutator(EntityPlayer player, PCde_InventoryTransmutationContainer box) {
+	public PCde_GuiTransmutator(EntityPlayer player, TileEntity box) {
 		this.player = player;
-		inventory = box;
+		inventory = (PCde_InventoryTransmutationContainer)((PCde_TileEntityDeco)box).getInventory();
 	}
 
 	private void updateFraction() {

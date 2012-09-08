@@ -477,7 +477,7 @@ public class mod_PCtransport extends PC_Module {
 	}
 
 	@Override
-	public List<Class> addGui() {
+	protected List<Class> addGui() {
 		List<Class> guis = new ArrayList<Class>();
 		guis.add(PCtr_GuiSeparationBelt.class);
 		guis.add(PCtr_GuiEjectionBelt.class);
@@ -487,8 +487,16 @@ public class mod_PCtransport extends PC_Module {
 
 	@Override
 	protected Hashtable<String, PC_PacketHandler> addPacketHandler() {
-		// TODO Auto-generated method stub
-		return null;
+		Hashtable<String, PC_PacketHandler> ph = new Hashtable<String, PC_PacketHandler>();
+		ph.put("TeleporterNetHandler", PCtr_TeleporterManager.getTeleporterManager());
+		return ph;
+	}
+
+	@Override
+	protected Hashtable<String, PC_INBTWD> addNetManager() {
+		Hashtable<String, PC_INBTWD> net = new Hashtable<String, PC_INBTWD>();
+		net.put("TeleporterNetHandler", PCtr_TeleporterManager.getTeleporterManager());
+		return net;
 	}
 
 }

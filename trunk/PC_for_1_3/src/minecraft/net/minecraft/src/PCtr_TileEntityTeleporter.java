@@ -12,8 +12,6 @@ import java.util.List;
  */
 public class PCtr_TileEntityTeleporter extends PC_TileEntity {
 	
-	public PCtr_TeleporterData td;
-	
 	/*public String defaultTarget, name;
 
 	private boolean lastActiveState = false;
@@ -35,26 +33,29 @@ public class PCtr_TileEntityTeleporter extends PC_TileEntity {
 	
 	public PCtr_TileEntityTeleporter() {
 		super();
+		System.out.println("created:"+this);
+		//td = new PCtr_TeleporterData();
+		//PCtr_TeleporterManager.add(this);
 	}
 
 	public void createData(){
-		PCtr_TeleporterData ntd = PCtr_TeleporterHelper.getTeleporterDataAt(xCoord, yCoord, zCoord);
-		if(ntd==null)
-			ntd = new PCtr_TeleporterData();
-		td = ntd;
-		PCtr_TeleporterHelper.teleporter.add(this);
-		
-		td.dimension = worldObj.worldInfo.getDimension();
+		PCtr_TeleporterData td = PCtr_TeleporterManager.getTeleporterDataAt(xCoord, yCoord, zCoord);
+		if(td==null){
+			td = new PCtr_TeleporterData();
+			td.pos.setTo(xCoord, yCoord, zCoord);	
+			td.dimension = worldObj.worldInfo.getDimension();
+			PCtr_TeleporterManager.add(td);
+		}
 	}
 	
 	@Override
 	public PC_CoordI getCoord() {
 		return new PC_CoordI(xCoord, yCoord, zCoord);
 	}
-
+	
 	@Override
 	public boolean canUpdate() {
-		return true;
+		return false;
 	}
 
 	/*public boolean isSender() {
@@ -74,7 +75,7 @@ public class PCtr_TileEntityTeleporter extends PC_TileEntity {
 	}*/
 
 	public void setPrimaryOutputDirection(String direction) {
-		td.direction = direction;
+		//td.direction = direction;
 	}
 
 	public boolean isActive() {
@@ -86,7 +87,7 @@ public class PCtr_TileEntityTeleporter extends PC_TileEntity {
 		} else if (type == RECEIVER) {
 			active = (!identifierName.equals("") && PCtr_TeleporterHelper.targetExists(identifierName));
 		}*/
-
+		PCtr_TeleporterData td = PCtr_TeleporterManager.getTeleporterDataAt(xCoord, yCoord, zCoord);
 		
 		if(td!=null){
 			if (active != td.lastActiveState) {
@@ -149,6 +150,11 @@ public class PCtr_TileEntityTeleporter extends PC_TileEntity {
 	 */
 	public boolean acceptsEntity(Entity entity) {
 
+		PCtr_TeleporterData td = PCtr_TeleporterManager.getTeleporterDataAt(xCoord, yCoord, zCoord);
+		
+		if(td == null)
+			return false;
+		
 		if (entity == null) {
 			return false;
 		}
@@ -184,24 +190,42 @@ public class PCtr_TileEntityTeleporter extends PC_TileEntity {
 
 	@Override
 	public void onBlockPickup(){
-		
-		td.remove();
-		PCtr_TeleporterHelper.teleporter.remove(this);
+		PCtr_TeleporterManager.remove(PCtr_TeleporterManager.getTeleporterDataAt(xCoord, yCoord, zCoord));
+		System.out.println("remove:"+this);
 		
 	}
 
 	public int getDimension() {
+		PCtr_TeleporterData td = PCtr_TeleporterManager.getTeleporterDataAt(xCoord, yCoord, zCoord);
 		return td.dimension;
 	}
 	
 	
 	@Override
 	public void set(Object[] o) {
-		
+		PCtr_TeleporterData td = PCtr_TeleporterManager.getTeleporterDataAt(xCoord, yCoord, zCoord);
+		int p = 0;
+		while(p<o.length){
+			String var = (String)o[p++];
+			if(var.equals("name")){
+				td.setName((String)o[p++]);
+			}else if(var.equals("defaultTarget")){
+				td.defaultTarget = (String)o[p++];
+			}
+		}
 	}
 
 	@Override
 	public Object[] get() {
-		return null;
+		PCtr_TeleporterData td = PCtr_TeleporterManager.getTeleporterDataAt(xCoord, yCoord, zCoord);
+		if(td==null)
+			return null;
+		Object[] o = {
+				"name",
+				td.getName(),
+				"defaultTarget",
+				td.defaultTarget
+		};
+		return o;
 	}
 }
