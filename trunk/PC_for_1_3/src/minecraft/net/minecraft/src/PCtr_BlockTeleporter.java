@@ -102,16 +102,11 @@ public class PCtr_BlockTeleporter extends BlockContainer implements PC_IBlockTyp
 
 	@Override
 	public void onEntityCollidedWithBlock(World world, int i, int j, int k, Entity entity) {
-		if ((entity instanceof EntityFishHook) || (entity instanceof EntityPainting) || (entity instanceof EntityDiggingFX)) {
-			return;
-		}
-
 		PCtr_TileEntityTeleporter te = getTE(world, i, j, k);
-		PCtr_TeleporterData td = PCtr_TeleporterManager.getTeleporterDataAt(i, j, k);
-		
-		System.out.println("onEntityCollidedWithBlock");
 		
 		if (te.acceptsEntity(entity)) {
+			System.out.println("onEntityCollidedWithBlock");
+			PCtr_TeleporterData td = PCtr_TeleporterManager.getTeleporterDataAt(i, j, k);
 			PCtr_TeleporterManager.teleportEntityTo(entity, td.defaultTarget);
 		}
 
