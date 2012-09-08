@@ -161,10 +161,10 @@ public class PCtr_TileEntityTeleporter extends PC_TileEntity {
 			return false;
 		}
 		
-		if (entity instanceof EntityDiggingFX) {
+		if(!(entity instanceof EntityLiving || entity instanceof EntityItem || entity instanceof EntityXPOrb || entity instanceof EntityArrow))
 			return false;
-		}
-
+		
+		
 		if ((entity instanceof EntityAnimal || entity instanceof EntitySquid || entity instanceof EntitySlime) && !td.animals) {
 			return false;
 		}
