@@ -148,6 +148,10 @@ public class PCtr_TeleporterManager extends PC_PacketHandler implements PC_INBTW
 		System.out.println("teleport "+entity+" to "+target);
 		
 		PCtr_TeleporterData tdt = getTarget(target);
+		if(tdt== null) {
+			System.out.println("Faild bc tdt");
+			return false;
+		}
 		PC_CoordI tc = tdt.pos;
 		// target invalid
 		if (tc == null) {
