@@ -18,12 +18,12 @@ public class PCde_InventoryTransmutationContainer implements IInventory, PC_ISpe
 	/**
 	 * TC
 	 * 
-	 * @param chamber transmutation chamber's TE
+	 * @param pCde_TileEntityDeco transmutation chamber's TE
 	 */
-	public PCde_InventoryTransmutationContainer(PCde_TileEntityDeco chamber) {
+	public PCde_InventoryTransmutationContainer(PCde_TileEntityDeco pCde_TileEntityDeco) {
 		stacks = new ItemStack[SIZE];
 		rand = new Random();
-		this.chamber = chamber;
+		this.chamber = pCde_TileEntityDeco;
 	}
 
 	@Override

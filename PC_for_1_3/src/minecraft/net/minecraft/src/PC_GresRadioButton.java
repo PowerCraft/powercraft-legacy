@@ -2,6 +2,7 @@ package net.minecraft.src;
 
 
 import java.util.HashSet;
+import java.util.Iterator;
 
 import org.lwjgl.opengl.GL11;
 
@@ -21,7 +22,15 @@ public class PC_GresRadioButton extends PC_GresWidget {
 	 * @copy (c) 2012
 	 */
 	public static class PC_GresRadioGroup extends HashSet<PC_GresRadioButton> {
-
+		public PC_GresRadioButton getChecked(){
+			Iterator<PC_GresRadioButton> i=iterator();
+			while(i.hasNext()){
+				PC_GresRadioButton rb = i.next();
+				if(rb.isChecked())
+					return rb;
+			}
+			return null;
+		}
 	}
 
 	private static final int WIDTH = 11;

@@ -1209,21 +1209,22 @@ public class mod_PCcore extends PC_Module implements PC_IActivatorListener {
 	
 	private static PC_DataMemoryManager dmm = null;
 	
+	private PC_DataMemoryManager initDMM(World world){
+		PC_DataMemoryManager dmm = (PC_DataMemoryManager)world.loadItemData(PC_DataMemoryManager.class, "PC_DataMemoryManager");
+		if(dmm == null){
+			dmm = new PC_DataMemoryManager("PC_DataMemoryManager");
+			world.setItemData("PC_DataMemoryManager", dmm);
+		}
+		return dmm;
+	}
+	
 	@Override
 	public boolean onTickInGame(float f, Minecraft minecraft) {
 		if(dmm == null){
 			if(MinecraftServer.getServer()!=null){
-				dmm = (PC_DataMemoryManager)MinecraftServer.getServer().worldServerForDimension(0).loadItemData(PC_DataMemoryManager.class, "PC_DataMemoryManager");
-				if(dmm == null){
-					dmm = new PC_DataMemoryManager("PC_DataMemoryManager");
-					MinecraftServer.getServer().worldServerForDimension(0).setItemData("PC_DataMemoryManager", dmm);
-				}
+				dmm = initDMM(MinecraftServer.getServer().worldServerForDimension(0));
 			}else{
-				dmm = (PC_DataMemoryManager)minecraft.theWorld.loadItemData(PC_DataMemoryManager.class, "PC_DataMemoryManager");
-				if(dmm == null){
-					dmm = new PC_DataMemoryManager("PC_DataMemoryManager");
-					minecraft.theWorld.setItemData("PC_DataMemoryManager", dmm);
-				}
+				dmm = initDMM(minecraft.theWorld);
 			}
 			System.out.println("dmm:"+dmm);
 		}
@@ -1266,7 +1267,7 @@ public class mod_PCcore extends PC_Module implements PC_IActivatorListener {
 	}
 
 	@Override
-	public List<Class> addGui() {
+	protected List<Class> addGui() {
 		List<Class> guis = new ArrayList<Class>();
 		guis.add(PCco_GuiCraftingTool.class);
 		guis.add(PCco_GuiOreSnifferResultScreen.class);
@@ -1281,15 +1282,11 @@ public class mod_PCcore extends PC_Module implements PC_IActivatorListener {
 		packetHandler.put("MobSpawnerSetter", new PCco_MobSpawnerSetter());
 		return packetHandler;
 	}
-	
-	public static void registerDataMemory(PC_INBT mem){
-		if(dmm != null)
-			dmm.register(mem);
-	}
-	
-	public static void unRegisterDataMemory(PC_INBT mem){
-		if(dmm != null)
-			dmm.unRegister(mem);
+
+	@Override
+	protected Hashtable<String, PC_INBTWD> addNetManager() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 	
 }

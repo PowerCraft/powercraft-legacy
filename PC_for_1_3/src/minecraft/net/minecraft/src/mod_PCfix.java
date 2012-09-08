@@ -98,12 +98,18 @@ public class mod_PCfix extends PC_Module {
 	public void postInit() {}
 
 	@Override
-	public List<Class> addGui() {
+	protected List<Class> addGui() {
 		return null;
 	}
 
 	@Override
 	protected Hashtable<String, PC_PacketHandler> addPacketHandler() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	protected Hashtable<String, PC_INBTWD> addNetManager() {
 		// TODO Auto-generated method stub
 		return null;
 	}

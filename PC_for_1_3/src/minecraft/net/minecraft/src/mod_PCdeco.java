@@ -248,7 +248,7 @@ public class mod_PCdeco extends PC_Module {
 	}
 
 	@Override
-	public List<Class> addGui() {
+	protected List<Class> addGui() {
 		List<Class> guis = new ArrayList<Class>();
 		guis.add(PCde_GuiTransmutator.class);
 		return guis;
@@ -256,6 +256,12 @@ public class mod_PCdeco extends PC_Module {
 
 	@Override
 	protected Hashtable<String, PC_PacketHandler> addPacketHandler() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	protected Hashtable<String, PC_INBTWD> addNetManager() {
 		// TODO Auto-generated method stub
 		return null;
 	}
