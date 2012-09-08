@@ -164,10 +164,10 @@ public class PCtr_TeleporterManager extends PC_PacketHandler implements PC_INBTW
 		System.out.println(entity.worldObj.worldInfo.getDimension());
 		System.out.println(entity.worldObj);
 		
-		if (world.getBlockId(tc.x, tc.y, tc.z) != mod_PCtransport.teleporter.blockID) {
-			System.out.println("Faild bc mod_PCtransport.teleporter.blockID");
-			return false;
-		}
+		//if (world.getBlockId(tc.x, tc.y, tc.z) != mod_PCtransport.teleporter.blockID) {
+		//	System.out.println("Faild bc mod_PCtransport.teleporter.blockID");
+		//	return false;
+		//}
 
 		PCtr_TeleporterData td = getTeleporterDataAt(tc.x, tc.y, tc.z);
 		

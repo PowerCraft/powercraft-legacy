@@ -203,7 +203,12 @@ public class PCtr_TileEntityTeleporter extends PC_TileEntity {
 	
 	@Override
 	public void set(Object[] o) {
+		boolean add=false;
 		PCtr_TeleporterData td = PCtr_TeleporterManager.getTeleporterDataAt(xCoord, yCoord, zCoord);
+		if(td==null){
+			td = new PCtr_TeleporterData();
+			add=true;
+		}
 		int p = 0;
 		while(p<o.length){
 			String var = (String)o[p++];
@@ -211,20 +216,28 @@ public class PCtr_TileEntityTeleporter extends PC_TileEntity {
 				td.setName((String)o[p++]);
 			}else if(var.equals("defaultTarget")){
 				td.defaultTarget = (String)o[p++];
+			}else if(var.equals("defaultTarget")){
+				td.dimension = (Integer)o[p++];
 			}
 		}
+		if(add)
+			PCtr_TeleporterManager.add(td);
 	}
 
 	@Override
 	public Object[] get() {
 		PCtr_TeleporterData td = PCtr_TeleporterManager.getTeleporterDataAt(xCoord, yCoord, zCoord);
-		if(td==null)
+		if(td==null){
+			worldObj.markBlockNeedsUpdate(xCoord, yCoord, zCoord);
 			return null;
+		}
 		Object[] o = {
 				"name",
 				td.getName(),
 				"defaultTarget",
-				td.defaultTarget
+				td.defaultTarget,
+				"dimension",
+				td.dimension
 		};
 		return o;
 	}
