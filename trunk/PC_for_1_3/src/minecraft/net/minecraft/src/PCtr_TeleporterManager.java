@@ -236,11 +236,15 @@ public class PCtr_TeleporterManager extends PC_PacketHandler implements PC_INBTW
 					if (good[i] >= need) {
 
 						// teleport the entity!
-						entity.posX = entity.prevPosX = entity.lastTickPosX = tc.x + 0.5F + coords[i].x * 0.7;
-						entity.posY = entity.prevPosY = entity.lastTickPosY = tc.y + entity.yOffset + 0.2F;
-						entity.posZ = entity.prevPosZ = entity.lastTickPosZ = tc.z + 0.5F + coords[i].z * 0.7;
-						entity.setPosition(entity.posX, entity.posY, entity.posZ);
-
+						if(entity instanceof EntityLiving)
+							((EntityLiving)entity).setPositionAndUpdate(tc.x + 0.5F + coords[i].x * 0.7, tc.y + entity.yOffset - 0.8F, tc.z + 0.5F + coords[i].z * 0.7);
+						else{
+							entity.posX = entity.prevPosX = entity.lastTickPosX = tc.x + 0.5F + coords[i].x * 0.7;
+							entity.posY = entity.prevPosY = entity.lastTickPosY = tc.y + entity.yOffset + 0.2F;
+							entity.posZ = entity.prevPosZ = entity.lastTickPosZ = tc.z + 0.5F + coords[i].z * 0.7;
+							entity.setPosition(entity.posX, entity.posY, entity.posZ);
+						}
+							
 						entity.motionX = coords[i].x * 0.2F;
 						entity.motionZ = coords[i].z * 0.2F;
 
