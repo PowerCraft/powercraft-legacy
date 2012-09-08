@@ -216,7 +216,7 @@ public class PCtr_TileEntityTeleporter extends PC_TileEntity {
 				td.setName((String)o[p++]);
 			}else if(var.equals("defaultTarget")){
 				td.defaultTarget = (String)o[p++];
-			}else if(var.equals("defaultTarget")){
+			}else if(var.equals("dimension")){
 				td.dimension = (Integer)o[p++];
 			}
 		}
