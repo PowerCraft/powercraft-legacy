@@ -144,6 +144,7 @@ public class PCtr_TeleporterManager extends PC_PacketHandler implements PC_INBTW
 
 		if(target==null||target.equals(""))
 			return false;
+		if(!entity.worldObj.isRemote) return false;
 		
 		System.out.println("teleport "+entity+" to "+target);
 		
@@ -178,15 +179,15 @@ public class PCtr_TeleporterManager extends PC_PacketHandler implements PC_INBTW
 		
 		System.out.println(tc);
 		
-		//if(entity.worldObj.worldInfo.getDimension()!=tdt.dimension&&entity instanceof EntityPlayerMP)
-		//	((EntityPlayerMP)entity).mcServer.getConfigurationManager().transferPlayerToDimension((EntityPlayerMP)entity, tdt.dimension);
-        
+		if(entity.worldObj.worldInfo.getDimension()!=tdt.dimension&&entity instanceof EntityPlayerMP){
+			System.out.println("tp dimension");
+			((EntityPlayerMP)entity).mcServer.getConfigurationManager().transferPlayerToDimension((EntityPlayerMP)entity, tdt.dimension);
+		}
 		
-		//if(entity.worldObj!=world)
-		//	entity.setWorld(world);
-		//System.out.println(entity.worldObj.worldInfo.getDimension());
-		//System.out.println(entity.worldObj);
-		
+		if(entity.worldObj!=world){
+			System.out.println("Set World");
+			entity.setWorld(MinecraftServer.getServer().worldServerForDimension(tdt.dimension));
+		}
 		// we have to find space for the entity, conveyor in good direction
 		// preferably.
 		int meta, rotation;
