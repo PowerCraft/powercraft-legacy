@@ -193,7 +193,7 @@ public class PClo_TileEntityGate extends PC_TileEntity {
 			case PClo_GateType.SPLITTER_I:
 
 		}
-
+		
 	}
 
 
@@ -704,13 +704,85 @@ public class PClo_TileEntityGate extends PC_TileEntity {
 				} else if (i == PClo_GuiDelayer.HOLD) {
 					setRepeaterHoldTime((Integer)o[p++]);
 				}
+			}else if(var.equals("gateType")){
+				gateType = (Integer)o[p++];
+			}else if(var.equals("prevClockState")){
+				prevClockState = (Boolean)o[p++];
+			}else if(var.equals("updateIgnoreCounter")){
+				updateIgnoreCounter = (Integer)o[p++];
+			}else if(var.equals("lastUpdateAbsoluteTime")){
+				lastUpdateAbsoluteTime = (Long)o[p++];
+			}else if(var.equals("zombie")){
+				zombie = (Boolean)o[p++];
+			}else if(var.equals("PRESCALLER")){
+				PRESCALLER = (Integer)o[p++];
+			}else if(var.equals("fullChestNeedsAllSlotsFull")){
+				fullChestNeedsAllSlotsFull = (Boolean)o[p++];
+			}else if(var.equals("dOutputState")){
+				dOutputState = (Boolean)o[p++];
+			}else if(var.equals("dBuffer")){
+				dBuffer = (boolean[])o[p++];
+			}else if(var.equals("dPointer")){
+				dPointer = (Integer)o[p++];
+			}else if(var.equals("dResetDone")){
+				dResetDone = (Boolean)o[p++];
+			}else if(var.equals("rRemainingTicks")){
+				rRemainingTicks = (Integer)o[p++];
+			}else if(var.equals("rHoldTime")){
+				rHoldTime = (Integer)o[p++];
+			}else if(var.equals("crossing_X")){
+				crossing_X = (Integer)o[p++];
+			}else if(var.equals("crossing_Z")){
+				crossing_Z = (Integer)o[p++];
+			}else if(var.equals("crossingGateInputStates")){
+				crossingGateInputStates = (boolean[])o[p++];
+			}else if(var.equals("instagate_last_input")){
+				instagate_last_input = (Boolean)o[p++];
+			}else if(var.equals("inputVariant")){
+				inputVariant = (Integer)o[p++];
 			}
 		}
 	}
 
 	@Override
 	public Object[] get() {
-		// TODO 
-		return null;
+		return new Object[]{
+				"gateType",
+				gateType,
+				"prevClockState",
+				prevClockState,
+				"updateIgnoreCounter",
+				updateIgnoreCounter,
+				"lastUpdateAbsoluteTime",
+				lastUpdateAbsoluteTime,
+				"zombie",
+				zombie,
+				"PRESCALLER",
+				PRESCALLER,
+				"fullChestNeedsAllSlotsFull",
+				fullChestNeedsAllSlotsFull,
+				"dOutputState",
+				dOutputState,
+				"dBuffer",
+				dBuffer,
+				"dPointer",
+				dPointer,
+				"dResetDone",
+				dResetDone,
+				"rRemainingTicks",
+				rRemainingTicks,
+				"rHoldTime",
+				rHoldTime,
+				"crossing_X",
+				crossing_X,
+				"crossing_Z",
+				crossing_Z,
+				"crossingGateInputStates",
+				crossingGateInputStates,
+				"instagate_last_input",
+				instagate_last_input,
+				"inputVariant",
+				inputVariant
+		};
 	}
 }
