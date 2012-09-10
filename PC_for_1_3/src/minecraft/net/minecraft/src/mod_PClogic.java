@@ -7,6 +7,13 @@ import java.util.List;
 import java.util.Map;
 
 import net.minecraft.client.Minecraft;
+import net.minecraft.src.PCnt.PCnt_BlockWeasel;
+import net.minecraft.src.PCnt.PCnt_ItemBlockWeasel;
+import net.minecraft.src.PCnt.PCnt_ItemWeaselDisk;
+import net.minecraft.src.PCnt.PCnt_NetManager;
+import net.minecraft.src.PCnt.PCnt_TileEntityWeasel;
+import net.minecraft.src.PCnt.PCnt_TileEntityWeaselRenderer;
+import net.minecraft.src.PCnt.PCnt_WeaselType;
 
 
 /**
@@ -55,7 +62,7 @@ public class mod_PClogic extends PC_Module {
 	 * also instances of local networks, but the CORE weasel devices have to
 	 * save them themselves.
 	 */
-	public static PClo_NetManager NETWORK = new PClo_NetManager();
+	public static PCnt_NetManager NETWORK = new PCnt_NetManager();
 
 
 	// *** PROPERTIES ***
@@ -94,7 +101,7 @@ public class mod_PClogic extends PC_Module {
 	public static Item portableTx;
 
 	/** WeaselDisk */
-	public static PClo_ItemWeaselDisk weaselDisk;
+	public static PCnt_ItemWeaselDisk weaselDisk;
 
 	/** flat device, off state */
 	public static Block gateOff;
@@ -152,7 +159,7 @@ public class mod_PClogic extends PC_Module {
 	@Override
 	public void registerTileEntities(List<PC_Struct3<Class<? extends TileEntity>, String, TileEntitySpecialRenderer>> list) {
 		list.add(new PC_Struct3(PClo_TileEntityGate.class, "FCLogicGate", null));
-		list.add(new PC_Struct3(PClo_TileEntityWeasel.class, "PCWeaselDevice", new PClo_TileEntityWeaselRenderer()));
+		list.add(new PC_Struct3(PCnt_TileEntityWeasel.class, "PCWeaselDevice", new PCnt_TileEntityWeaselRenderer()));
 		list.add(new PC_Struct3(PClo_TileEntityPulsar.class, "FCRedstonePulsar", null));
 		list.add(new PC_Struct3(PClo_TileEntityLight.class, "FCRedstoneIndicator", new PClo_TileEntityLightRenderer()));
 		list.add(new PC_Struct3(PClo_TileEntitySensor.class, "FCSensorRanged", new PClo_TileEntitySensorRenderer()));
@@ -190,7 +197,7 @@ public class mod_PClogic extends PC_Module {
 				.setResistance(30.0F);
 
 
-		weaselDevice = new PClo_BlockWeasel(cfg().getInteger(pk_idWeasel))
+		weaselDevice = new PCnt_BlockWeasel(cfg().getInteger(pk_idWeasel))
 				.setBlockName("PCloWeasel")
 				.setHardness(0.5F).setLightValue(0)
 				.setStepSound(Block.soundWoodFootstep)
@@ -246,7 +253,7 @@ public class mod_PClogic extends PC_Module {
 				.setMaxStackSize(1)
 				.setItemName("PCloRadioPortableTx");
 		
-		weaselDisk = (PClo_ItemWeaselDisk) (new PClo_ItemWeaselDisk(cfg().getInteger(pk_idDisk)))
+		weaselDisk = (PCnt_ItemWeaselDisk) (new PCnt_ItemWeaselDisk(cfg().getInteger(pk_idDisk)))
 				.setMaxStackSize(1)
 				.setItemName("PCloWeaselDisk");
 		
@@ -255,7 +262,7 @@ public class mod_PClogic extends PC_Module {
 		removeBlockItem(gateOn.blockID);
 		setBlockItem(gateOn.blockID, new PClo_ItemBlockGate(gateOn.blockID - 256));
 		removeBlockItem(weaselDevice.blockID);
-		setBlockItem(weaselDevice.blockID, new PClo_ItemBlockWeasel(weaselDevice.blockID - 256));
+		setBlockItem(weaselDevice.blockID, new PCnt_ItemBlockWeasel(weaselDevice.blockID - 256));
 		removeBlockItem(lightOn.blockID);
 		setBlockItem(lightOn.blockID, new PClo_ItemBlockLight(lightOn.blockID - 256));
 		removeBlockItem(sensor.blockID);
@@ -736,37 +743,37 @@ public class mod_PClogic extends PC_Module {
 		 * TODO stairsBrick was stairsBrick??
 		 */
 		ModLoader.addRecipe(
-				new ItemStack(weaselDevice, 1, PClo_WeaselType.CORE),
+				new ItemStack(weaselDevice, 1, PCnt_WeaselType.CORE),
 				new Object[] { "SRS", "RCR", "SRS",
 					'S', new ItemStack(Block.stairsBrick,1,0), 'R', Item.redstone, 'C', mod_PCcore.powerCrystal });
 		
 
 		ModLoader.addShapelessRecipe(
-				new ItemStack(weaselDevice, 1, PClo_WeaselType.SLAVE),
-				new Object[] { new ItemStack(weaselDevice, 1, PClo_WeaselType.CORE) });
+				new ItemStack(weaselDevice, 1, PCnt_WeaselType.SLAVE),
+				new Object[] { new ItemStack(weaselDevice, 1, PCnt_WeaselType.CORE) });
 
 		ModLoader.addShapelessRecipe(
-				new ItemStack(weaselDevice, 1, PClo_WeaselType.CORE),
-				new Object[] { new ItemStack(weaselDevice, 1, PClo_WeaselType.SLAVE) });
+				new ItemStack(weaselDevice, 1, PCnt_WeaselType.CORE),
+				new Object[] { new ItemStack(weaselDevice, 1, PCnt_WeaselType.SLAVE) });
 		
 		
 		ModLoader.addRecipe(
-				new ItemStack(weaselDevice, 1, PClo_WeaselType.PORT),
+				new ItemStack(weaselDevice, 1, PCnt_WeaselType.PORT),
 				new Object[] { "GRG", "SSS",
 					'S', new ItemStack(Block.stairsBrick,1,0), 'R', Item.redstone, 'G', Item.goldNugget });
 		
 		ModLoader.addRecipe(
-				new ItemStack(weaselDevice, 1, PClo_WeaselType.DISPLAY),
+				new ItemStack(weaselDevice, 1, PCnt_WeaselType.DISPLAY),
 				new Object[] { " G ", "NRN","SSS",
 					'S', new ItemStack(Block.stairsBrick,1,0), 'R', Item.redstone, 'G', Block.thinGlass, 'N', Item.goldNugget });
 		
 		ModLoader.addRecipe(
-				new ItemStack(weaselDevice, 1, PClo_WeaselType.SPEAKER),
+				new ItemStack(weaselDevice, 1, PCnt_WeaselType.SPEAKER),
 				new Object[] { " N ", "GRG","SSS",
 					'S', new ItemStack(Block.stairsBrick,1,0), 'R', Item.redstone, 'N', Block.music, 'G', Item.goldNugget  });
 		
 		ModLoader.addRecipe(
-				new ItemStack(weaselDevice, 1, PClo_WeaselType.TOUCHSCREEN),
+				new ItemStack(weaselDevice, 1, PCnt_WeaselType.TOUCHSCREEN),
 				new Object[] { "GGG", "NRN","SSS",
 					'S', new ItemStack(Block.stairsBrick,1,0), 'R', Item.redstone, 'G', Block.thinGlass, 'N', Item.goldNugget });
 		
@@ -777,14 +784,14 @@ public class mod_PClogic extends PC_Module {
 					'C', Item.coal, 'I', Item.ingotIron });
 		
 		ModLoader.addRecipe(
-				new ItemStack(weaselDevice, 1, PClo_WeaselType.DISK_MANAGER),
+				new ItemStack(weaselDevice, 1, PCnt_WeaselType.DISK_MANAGER),
 				new Object[] { "BBB", "SRS", "SSS",
 					'B', Block.button,
 					'S', new ItemStack(Block.stairsBrick,1,0),
 					'R', Item.redstone});
 		
 		ModLoader.addRecipe(
-				new ItemStack(weaselDevice, 1, PClo_WeaselType.DISK_DRIVE),
+				new ItemStack(weaselDevice, 1, PCnt_WeaselType.DISK_DRIVE),
 				new Object[] { "SSS", "GRG", "SSS",
 					'B', Block.button,
 					'S', new ItemStack(Block.stairsBrick,1,0),
@@ -793,11 +800,11 @@ public class mod_PClogic extends PC_Module {
 					});
 		
 		ModLoader.addRecipe(
-				new ItemStack(weaselDevice, 1, PClo_WeaselType.TERMINAL),
+				new ItemStack(weaselDevice, 1, PCnt_WeaselType.TERMINAL),
 				new Object[] { "  D", "BBS", "SSS",
 					'B', Block.button,
 					'S', new ItemStack(Block.stairsBrick,1,0),
-					'D', new ItemStack(weaselDevice, 1, PClo_WeaselType.DISPLAY),
+					'D', new ItemStack(weaselDevice, 1, PCnt_WeaselType.DISPLAY),
 					});
 		
 		
@@ -876,7 +883,7 @@ public class mod_PClogic extends PC_Module {
 	@Override
 	public void postInit() {
 		PC_InveditManager.setDamageRange(gateOn.blockID, 0, PClo_GateType.TOTAL_GATE_COUNT - 1);
-		PC_InveditManager.setDamageRange(weaselDevice.blockID, 0, PClo_WeaselType.WEASEL_DEVICE_COUNT - 1);
+		PC_InveditManager.setDamageRange(weaselDevice.blockID, 0, PCnt_WeaselType.WEASEL_DEVICE_COUNT - 1);
 		PC_InveditManager.setDamageRange(sensor.blockID, 0, 2);
 		PC_InveditManager.setDamageRange(lightOn.blockID, 0, 47);
 		PC_InveditManager.hideItem(gateOff.blockID);
@@ -896,7 +903,7 @@ public class mod_PClogic extends PC_Module {
 		addStackRangeToCraftingTool(PC_ItemGroup.LOGIC, gateOn.blockID, 0, PClo_GateType.TOTAL_GATE_COUNT - 1, 1);
 		addStacksToCraftingTool(PC_ItemGroup.LOGIC, 
 				new ItemStack(pulsar));
-		addStackRangeToCraftingTool(PC_ItemGroup.LOGIC, weaselDevice.blockID, 0, PClo_WeaselType.WEASEL_DEVICE_COUNT - 1, 1);
+		addStackRangeToCraftingTool(PC_ItemGroup.LOGIC, weaselDevice.blockID, 0, PCnt_WeaselType.WEASEL_DEVICE_COUNT - 1, 1);
 		addStacksToCraftingTool(PC_ItemGroup.LOGIC, new ItemStack(weaselDisk,1,0xfff));
 		
 		addStacksToCraftingTool(PC_ItemGroup.LIGHTS,new ItemStack(lightOn, 1, 0));

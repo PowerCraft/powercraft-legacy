@@ -7,8 +7,8 @@ import java.util.List;
 import net.minecraft.src.PC_GresTextEdit.PC_GresInputType;
 import net.minecraft.src.PC_GresTextEditMultiline.Keyword;
 import net.minecraft.src.PC_GresWidget.PC_GresAlign;
-import net.minecraft.src.PClo_NetManager.NetworkMember;
-import net.minecraft.src.PClo_NetManager.WeaselNetwork;
+import net.minecraft.src.PCnt.PCnt_NetManager.NetworkMember;
+import net.minecraft.src.PCnt.PCnt_NetManager.WeaselNetwork;
 
 import org.lwjgl.input.Keyboard;
 

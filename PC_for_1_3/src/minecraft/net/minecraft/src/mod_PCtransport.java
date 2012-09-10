@@ -6,6 +6,12 @@ import java.util.Hashtable;
 import java.util.List;
 import java.util.Map;
 
+import net.minecraft.src.PCnt.PCnt_BlockTeleporter;
+import net.minecraft.src.PCnt.PCnt_GuiTeleporter;
+import net.minecraft.src.PCnt.PCnt_TeleporterManager;
+import net.minecraft.src.PCnt.PCnt_TileEntityTeleporter;
+import net.minecraft.src.PCnt.PCnt_TileEntityTeleporterRenderer;
+
 
 /**
  * Transport PowerCraft module
@@ -58,9 +64,6 @@ public class mod_PCtransport extends PC_Module {
 	private static final String pk_redirector = "id.block.redirection_belt";
 	private static final String pk_elevator = "id.block.elevator";
 	private static final String pk_speedybelt = "id.block.speedy_belt";
-	private static final String pk_teleporter = "id.block.teleporter";
-
-	private static final String pk_teleporter_brightness = "brightness.teleporter";
 
 	private static final String pk_idSlimeBoots = "id.item.stickyBoots";
 	private static final String pk_optHackedWater = "opt.hack.improveWater";
@@ -96,9 +99,6 @@ public class mod_PCtransport extends PC_Module {
 	/** Speedy belt */
 	public static Block speedyBelt;
 
-	/** entity teleporter block */
-	public static Block teleporter;
-
 	/** Slime Boots */
 	public static Item slimeboots;
 
@@ -119,8 +119,6 @@ public class mod_PCtransport extends PC_Module {
 		conf.putBlock(pk_redirector, 218);
 		conf.putBlock(pk_elevator, 219);
 		conf.putBlock(pk_speedybelt, 220);
-		conf.putBlock(pk_teleporter, 235);
-		conf.putInteger(pk_teleporter_brightness, 5, "Teleporter block brightness, scale 0-15.");
 		conf.putBoolean(pk_optHackedWater, true, "Modify water to store items to chests and work seamlessly with conveyors.");
 
 		conf.putBlock(pk_idSlimeBoots, 19005);
@@ -138,12 +136,10 @@ public class mod_PCtransport extends PC_Module {
 		list.add(new PC_Struct3(PCtr_TileEntitySeparationBelt.class, "FCConveyorFilter", null));
 		list.add(new PC_Struct3(PCtr_TileEntityRedirectionBelt.class, "PCConveyorRedirector", null));
 		list.add(new PC_Struct3(PCtr_TileEntityEjectionBelt.class, "PCConveyorEjector", null));
-		list.add(new PC_Struct3(PCtr_TileEntityTeleporter.class, "PCteleporter", new PCtr_TileEntityTeleporterRenderer()));
 	}
 
 	@Override
 	public void registerBlockRenderers() {
-		PCtr_Renderer.teleporterRenderer = ModLoader.getUniqueBlockModelID(this, true);
 	}
 
 	@Override
@@ -198,13 +194,6 @@ public class mod_PCtransport extends PC_Module {
 				.setResistance(8.0F)
 				.setBlockName("PCconveyorSpeedBelt")
 				.setStepSound(Block.soundMetalFootstep);
-
-		teleporter = new PCtr_BlockTeleporter(cfg().getInteger(pk_teleporter), 14, Material.portal)
-				.setHardness(1.0F)
-				.setResistance(8.0F)
-				.setLightValue(cfg().getInteger(pk_teleporter_brightness) * 0.0625F)
-				.setBlockName("PCteleporter")
-				.setStepSound(Block.soundMetalFootstep);
 		
 		//@formatter:on
 
@@ -223,7 +212,6 @@ public class mod_PCtransport extends PC_Module {
 		list.add(redirectionBelt);
 		list.add(itemElevator);
 		list.add(speedyBelt);
-		list.add(teleporter);
 	}
 
 	@Override
@@ -267,7 +255,6 @@ public class mod_PCtransport extends PC_Module {
 		redirectionBelt.blockIndexInTexture = 1;
 		itemElevator.blockIndexInTexture = 23;
 		speedyBelt.blockIndexInTexture = 1;
-		teleporter.blockIndexInTexture = 14;
 	}
 
 	@Override
@@ -279,41 +266,10 @@ public class mod_PCtransport extends PC_Module {
 		map.put(separationBelt, "Conveyor Item Separator");
 		map.put(brakeBelt, "Brake Conveyor");
 		map.put(redirectionBelt, "Item Redirection Belt");
-		map.put(teleporter, "Teleporter");
 		map.put(slimeboots, "Sticky Iron Boots");
 
 		map.put("tile.PCconveyorItemElevator.up.name", "Item Elevator (up)");
 		map.put("tile.PCconveyorItemElevator.down.name", "Item Descender (down)");
-		map.put("pc.gui.teleporter.set", "SET");
-		map.put("pc.gui.teleporter.items", "items");
-		map.put("pc.gui.teleporter.animals", "animals");
-		map.put("pc.gui.teleporter.monsters", "monsters");
-		map.put("pc.gui.teleporter.players", "players");
-		map.put("pc.gui.teleporter.dir.north", "north");
-		map.put("pc.gui.teleporter.dir.south", "south");
-		map.put("pc.gui.teleporter.dir.east", "east");
-		map.put("pc.gui.teleporter.dir.west", "west");
-		map.put("pc.gui.teleporter.sneak", "Sneak to trigger");
-		map.put("pc.gui.teleporter.errIdUsed", "ID already used.");
-		map.put("pc.gui.teleporter.errIdRequired", "ID is required!");
-		map.put("pc.gui.teleporter.errIdNotFound", "Target not found.");
-		map.put("pc.gui.teleporter.errIdDimEnd", "Target is in the End.");
-		map.put("pc.gui.teleporter.errIdDimWorld", "Target is in the Overworld.");
-		map.put("pc.gui.teleporter.errIdDimNether", "Target is in the Nether.");
-		map.put("pc.gui.teleporter.errIdDim", "Target is in other dimension.");
-		map.put("pc.gui.teleporter.errTargetRequired", "Target is required.");
-		map.put("pc.gui.teleporter.titleSender", "Entity Teleporter - Sender");
-		map.put("pc.gui.teleporter.titleTarget", "Entity Teleporter - Target");
-		map.put("pc.gui.teleporter.title", "Entity Teleporter");
-		map.put("pc.gui.teleporter.linksTo", "Links to (target ID):");
-		map.put("pc.gui.teleporter.selectType", "Select device type.");
-		map.put("pc.gui.teleporter.selectTypeDescr", "Sender teleports items to target.");
-		map.put("pc.gui.teleporter.deviceId", "Device ID:");
-		map.put("pc.gui.teleporter.teleportGroup", "Teleport:");
-		map.put("pc.gui.teleporter.outputDirection", "Primary output:");
-		map.put("pc.gui.teleporter.type.sender", "SENDER");
-		map.put("pc.gui.teleporter.type.target", "TARGET");
-		map.put("pc.gui.teleporter.showLabel", "Show label");
 
 		map.put("pc.gui.ejector.modeEjectTitle", "Ejection mode:");
 		map.put("pc.gui.ejector.modeStacks", "Whole stacks");
@@ -420,7 +376,6 @@ public class mod_PCtransport extends PC_Module {
 		PC_InveditManager.setItemCategory(separationBelt.blockID, ctg);
 		PC_InveditManager.setItemCategory(speedyBelt.blockID, ctg);
 		PC_InveditManager.setItemCategory(itemElevator.blockID, ctg);
-		PC_InveditManager.setItemCategory(teleporter.blockID, ctg);
 		PC_InveditManager.setItemCategory(slimeboots.shiftedIndex, ctg);
 
 		// @formatter:off
@@ -434,8 +389,7 @@ public class mod_PCtransport extends PC_Module {
 				new ItemStack(brakeBelt),
 				new ItemStack(separationBelt),
 				new ItemStack(itemElevator,1,0),
-				new ItemStack(itemElevator,1,1),
-				new ItemStack(teleporter)
+				new ItemStack(itemElevator,1,1)
 			);
 		
 		addStacksToCraftingTool(PC_ItemGroup.ARMOR, slimeboots);
@@ -465,12 +419,6 @@ public class mod_PCtransport extends PC_Module {
 		}else{
 			prism = new ItemStack(Block.glass);
 		}
-		
-		ModLoader.addRecipe(
-				new ItemStack(teleporter, 1, 0),
-				new Object[] { " P ", "PVP", "SSS",
-					'V', new ItemStack(Item.dyePowder, 1, 5), 'P', prism, 'S', Item.ingotIron });
-		
 		// @formatter:on
 
 		super.modsLoaded();
@@ -481,21 +429,21 @@ public class mod_PCtransport extends PC_Module {
 		List<Class> guis = new ArrayList<Class>();
 		guis.add(PCtr_GuiSeparationBelt.class);
 		guis.add(PCtr_GuiEjectionBelt.class);
-		guis.add(PCtr_GuiTeleporter.class);
+		guis.add(PCnt_GuiTeleporter.class);
 		return guis;
 	}
 
 	@Override
 	protected Hashtable<String, PC_PacketHandler> addPacketHandler() {
 		Hashtable<String, PC_PacketHandler> ph = new Hashtable<String, PC_PacketHandler>();
-		ph.put("TeleporterNetHandler", PCtr_TeleporterManager.getTeleporterManager());
+		ph.put("TeleporterNetHandler", PCnt_TeleporterManager.getTeleporterManager());
 		return ph;
 	}
 
 	@Override
 	protected Hashtable<String, PC_INBTWD> addNetManager() {
 		Hashtable<String, PC_INBTWD> net = new Hashtable<String, PC_INBTWD>();
-		net.put("TeleporterNetHandler", PCtr_TeleporterManager.getTeleporterManager());
+		net.put("TeleporterNetHandler", PCnt_TeleporterManager.getTeleporterManager());
 		return net;
 	}
 

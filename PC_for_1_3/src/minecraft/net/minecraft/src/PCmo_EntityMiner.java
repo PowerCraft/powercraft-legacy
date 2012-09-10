@@ -8,8 +8,9 @@ import java.util.Map;
 import java.util.Random;
 import java.util.Map.Entry;
 
-import net.minecraft.src.PClo_NetManager.NetworkMember;
 import net.minecraft.src.PClo_RadioBus.IRadioDevice;
+import net.minecraft.src.PCnt.PCnt_ItemWeaselDisk;
+import net.minecraft.src.PCnt.PCnt_NetManager.NetworkMember;
 
 import weasel.Calc;
 import weasel.IWeaselHardware;
@@ -1515,9 +1516,9 @@ public class PCmo_EntityMiner extends Entity implements PC_IInventoryWrapper {
 			ItemStack disk = disks.get(i);
 			if (disk == null) continue;
 			
-			if (PClo_ItemWeaselDisk.getType(disk) == PClo_ItemWeaselDisk.LIBRARY) {
+			if (PCnt_ItemWeaselDisk.getType(disk) == PCnt_ItemWeaselDisk.LIBRARY) {
 				
-				List<Instruction> ilist = PClo_ItemWeaselDisk.getLibraryInstructions(disk);
+				List<Instruction> ilist = PCnt_ItemWeaselDisk.getLibraryInstructions(disk);
 				
 				for(Instruction in : ilist) {
 					if(in instanceof InstructionFunction) {
@@ -1553,8 +1554,8 @@ public class PCmo_EntityMiner extends Entity implements PC_IInventoryWrapper {
 			ItemStack disk = disks.get(i);
 			if (disk == null) continue;
 			
-			if (PClo_ItemWeaselDisk.getType(disk) == PClo_ItemWeaselDisk.LIBRARY) {
-				ilist.addAll(PClo_ItemWeaselDisk.getLibraryInstructions(disk));	
+			if (PCnt_ItemWeaselDisk.getType(disk) == PCnt_ItemWeaselDisk.LIBRARY) {
+				ilist.addAll(PCnt_ItemWeaselDisk.getLibraryInstructions(disk));	
 				continue;
 			}
 		}

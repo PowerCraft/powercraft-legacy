@@ -1,5 +1,8 @@
 package net.minecraft.src;
 
+import net.minecraft.src.PCnt.PCnt_BlockWeasel;
+import net.minecraft.src.PCnt.PCnt_WeaselType;
+
 import org.lwjgl.opengl.GL11;
 
 
@@ -76,7 +79,7 @@ public class PClo_Renderer {
 		}
 
 		if (rtype == weaselRenderer) {
-			renderInvBlockWeasel(renderblocks, (PClo_BlockWeasel) block, meta);
+			renderInvBlockWeasel(renderblocks, (PCnt_BlockWeasel) block, meta);
 		}
 
 		if (rtype == lightRenderer) {
@@ -151,18 +154,18 @@ public class PClo_Renderer {
 
 	}
 
-	private static void renderInvBlockWeasel(RenderBlocks renderblocks, PClo_BlockWeasel block, int meta) {
+	private static void renderInvBlockWeasel(RenderBlocks renderblocks, PCnt_BlockWeasel block, int meta) {
 
 		PC_Renderer.swapTerrain(mod_PClogic.getTerrainFile());
 
 		float px = 0.0625F;
 
 		switch (meta) {			
-			case PClo_WeaselType.CORE:
-			case PClo_WeaselType.SLAVE:	
+			case PCnt_WeaselType.CORE:
+			case PCnt_WeaselType.SLAVE:	
 				//floor
 				block.setBlockBounds(0, 0, 0, 16 * px, 3 * px, 16 * px);
-				PC_Renderer.renderInvBoxWithTextures(renderblocks, block, new int[] { 6, meta == PClo_WeaselType.SLAVE?208:224, 5, 5, 5, 5 });
+				PC_Renderer.renderInvBoxWithTextures(renderblocks, block, new int[] { 6, meta == PCnt_WeaselType.SLAVE?208:224, 5, 5, 5, 5 });
 
 				//chip
 				block.setBlockBounds(4 * px, 3 * px, 3 * px, 12 * px, 5 * px, 13 * px);
@@ -170,7 +173,7 @@ public class PClo_Renderer {
 
 				break;
 
-			case PClo_WeaselType.PORT:
+			case PCnt_WeaselType.PORT:
 				//floor piece
 				block.setBlockBounds(0, 0, 0, 16 * px, 3 * px, 16 * px);
 				PC_Renderer.renderInvBoxWithTextures(renderblocks, block, new int[] { 6, 208, 5, 5, 5, 5 });
@@ -181,7 +184,7 @@ public class PClo_Renderer {
 
 				break;
 
-			case PClo_WeaselType.DISPLAY:
+			case PCnt_WeaselType.DISPLAY:
 				// floor
 				block.setBlockBounds(3 * px, 0, 3 * px, 13 * px, 1 * px, 13 * px);
 				PC_Renderer.renderInvBoxWithTextures(renderblocks, block, new int[] { 192, 192, 176, 176, 176, 176 });
@@ -196,7 +199,7 @@ public class PClo_Renderer {
 
 				break;
 
-			case PClo_WeaselType.SPEAKER:
+			case PCnt_WeaselType.SPEAKER:
 				// floor
 				block.setBlockBounds(0 * px, 0, 0 * px, 16 * px, 3 * px, 16 * px);
 				PC_Renderer.renderInvBoxWithTextures(renderblocks, block, new int[] { 6, 227, 5, 5, 5, 5 });
@@ -206,7 +209,7 @@ public class PClo_Renderer {
 				PC_Renderer.renderInvBoxWithTextures(renderblocks, block, new int[] { 179, 179, 180, 180, 180, 180 });
 				break;
 
-			case PClo_WeaselType.TOUCHSCREEN:
+			case PCnt_WeaselType.TOUCHSCREEN:
 				// legs
 				block.setBlockBounds(3 * px, 0, 4 * px, 4 * px, 1 * px, 12 * px);
 				PC_Renderer.renderInvBoxWithTexture(renderblocks, block, 197);
@@ -233,19 +236,19 @@ public class PClo_Renderer {
 
 				break;
 
-			case PClo_WeaselType.DISK_MANAGER:
+			case PCnt_WeaselType.DISK_MANAGER:
 				block.setBlockBounds(0, 0, 0, 16 * px, 13 * px, 16 * px);
 				PC_Renderer.renderInvBoxWithTextures(renderblocks, block, new int[] { 230, 209, 210, 210, 210, 210 });
 
 				break;
 
-			case PClo_WeaselType.DISK_DRIVE:
+			case PCnt_WeaselType.DISK_DRIVE:
 				block.setBlockBounds(0, 0, 0, 16 * px, 13 * px, 16 * px);
 				PC_Renderer.renderInvBoxWithTextures(renderblocks, block, new int[] { 230, 225, 211, 211, 211, 211 });
 
 				break;
 
-			case PClo_WeaselType.TERMINAL:
+			case PCnt_WeaselType.TERMINAL:
 				// floor
 				block.setBlockBounds(1 * px, 0, 1 * px, 15 * px, 4 * px, 15 * px);
 				PC_Renderer.renderInvBoxWithTextures(renderblocks, block, new int[] { 227, 212, 226, 226, 226, 226 });
