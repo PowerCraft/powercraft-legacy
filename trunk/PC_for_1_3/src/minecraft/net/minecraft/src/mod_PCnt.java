@@ -1,5 +1,6 @@
 package net.minecraft.src;
 
+import java.util.ArrayList;
 import java.util.Hashtable;
 import java.util.List;
 import java.util.Map;
@@ -426,8 +427,9 @@ public class mod_PCnt extends PC_Module {
 
 	@Override
 	protected List<Class> addGui() {
-		// TODO Auto-generated method stub
-		return null;
+		List<Class> guis = new ArrayList<Class>();
+		guis.add(PCnt_GuiTeleporter.class);
+		return guis;
 	}
 
 	@Override
