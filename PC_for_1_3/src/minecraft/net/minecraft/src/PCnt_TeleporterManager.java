@@ -177,8 +177,8 @@ public class PCnt_TeleporterManager extends PC_PacketHandler implements PC_INBTW
 		
 		System.out.println(tc);
 
-		if(true/*TODO hinzufügen */){
-			
+		if(teleportTo(entity, td.pos.x, td.pos.y, td.pos.z)){
+			return true;
 		}else{
 		/*
 		if(entity.worldObj.worldInfo.getDimension()!=tdt.dimension&&entity instanceof EntityPlayerMP){
@@ -268,7 +268,7 @@ public class PCnt_TeleporterManager extends PC_PacketHandler implements PC_INBTW
 		}
 	}
 	
-    public boolean teleportTo(Entity entity, double par1, double par3, double par5){
+    public static boolean teleportTo(Entity entity, double par1, double par3, double par5){
         double var7 = entity.posX;
         double var9 = entity.posY;
         double var11 = entity.posZ;
