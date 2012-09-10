@@ -700,17 +700,19 @@ public abstract class PC_GresWidget extends Gui {
 		if(rect!=null)
 			scissorNew = setDrawRect(scissorNew, rect, scale);
 		
-		GL11.glDisable(GL11.GL_TEXTURE_2D);
-		GL11.glEnable(GL11.GL_BLEND);
-		GL11.glBegin(GL11.GL_QUADS);
-		GL11.glColor4f(scissorNew.width/100.0f, scissorNew.height/100.0f, 0.0f, 0.4f);
-		GL11.glVertex2f(-1000, -1000);
-		GL11.glVertex2f(-1000, 1000);
-		GL11.glVertex2f(1000, 1000);
-		GL11.glVertex2f(1000, -1000);
-		GL11.glEnd();
-		GL11.glEnable(GL11.GL_TEXTURE_2D);
-		GL11.glDisable(GL11.GL_BLEND);
+		if(mod_PCcore.guiOverlayer){
+			GL11.glDisable(GL11.GL_TEXTURE_2D);
+			GL11.glEnable(GL11.GL_BLEND);
+			GL11.glBegin(GL11.GL_QUADS);
+			GL11.glColor4f(scissorNew.width/100.0f, scissorNew.height/100.0f, 0.0f, 0.4f);
+			GL11.glVertex2f(-1000, -1000);
+			GL11.glVertex2f(-1000, 1000);
+			GL11.glVertex2f(1000, 1000);
+			GL11.glVertex2f(1000, -1000);
+			GL11.glEnd();
+			GL11.glEnable(GL11.GL_TEXTURE_2D);
+			GL11.glDisable(GL11.GL_BLEND);
+		}
 		
 		if (childs != null) {
 			for (int i = 0; i < childs.size(); i++) {
