@@ -135,7 +135,7 @@ public class PCnt_TeleporterManager extends PC_PacketHandler implements PC_INBTW
 
 	// ------------- TESTS -------------
 	private static final boolean isTeleporter(int id) {
-		return id == mod_PCtransport.teleporter.blockID;
+		return id == mod_PCnt.teleporter.blockID;
 	}
 
 	// ----- ENTITY MANIPULATION ------
@@ -162,8 +162,6 @@ public class PCnt_TeleporterManager extends PC_PacketHandler implements PC_INBTW
 
 		//World world = MinecraftServer.getServer().worldServerForDimension(tdt.dimension);
 		World world = entity.worldObj;
-		System.out.println(entity.worldObj.worldInfo.getDimension());
-		System.out.println(entity.worldObj);
 		
 		//if (world.getBlockId(tc.x, tc.y, tc.z) != mod_PCtransport.teleporter.blockID) {
 		//	System.out.println("Faild bc mod_PCtransport.teleporter.blockID");
@@ -178,7 +176,11 @@ public class PCnt_TeleporterManager extends PC_PacketHandler implements PC_INBTW
 		}
 		
 		System.out.println(tc);
-		
+
+		if(true/*TODO hinzufügen */){
+			
+		}else{
+		/*
 		if(entity.worldObj.worldInfo.getDimension()!=tdt.dimension&&entity instanceof EntityPlayerMP){
 			System.out.println("tp dimension");
 			((EntityPlayerMP)entity).mcServer.getConfigurationManager().transferPlayerToDimension((EntityPlayerMP)entity, tdt.dimension);
@@ -261,8 +263,77 @@ public class PCnt_TeleporterManager extends PC_PacketHandler implements PC_INBTW
 		} else {
 			return false;
 		}
-
+	*/
+			return false;
+		}
 	}
+	
+    public boolean teleportTo(Entity entity, double par1, double par3, double par5){
+        double var7 = entity.posX;
+        double var9 = entity.posY;
+        double var11 = entity.posZ;
+        entity.posX = par1;
+        entity.posY = par3;
+        entity.posZ = par5;
+        boolean var13 = false;
+        int var14 = MathHelper.floor_double(entity.posX);
+        int var15 = MathHelper.floor_double(entity.posY);
+        int var16 = MathHelper.floor_double(entity.posZ);
+        int var18;
+
+        if (entity.worldObj.blockExists(var14, var15, var16))
+        {
+            boolean var17 = false;
+
+            while (!var17 && var15 > 0)
+            {
+                var18 = entity.worldObj.getBlockId(var14, var15 - 1, var16);
+
+                if (var18 != 0 && Block.blocksList[var18].blockMaterial.blocksMovement())
+                {
+                    var17 = true;
+                }
+                else
+                {
+                    --entity.posY;
+                    --var15;
+                }
+            }
+
+            if (var17)
+            {
+                entity.setPosition(entity.posX, entity.posY, entity.posZ);
+
+                if (entity.worldObj.getCollidingBoundingBoxes(entity, entity.boundingBox).isEmpty() && !entity.worldObj.isAnyLiquid(entity.boundingBox))
+                {
+                    var13 = true;
+                }
+            }
+        }
+
+        if (!var13)
+        {
+            entity.setPosition(var7, var9, var11);
+            return false;
+        }
+        else
+        {
+            short var30 = 128;
+
+            for (var18 = 0; var18 < var30; ++var18)
+            {
+                double var19 = (double)var18 / ((double)var30 - 1.0D);
+                float var21 = (entity.rand.nextFloat() - 0.5F) * 0.2F;
+                float var22 = (entity.rand.nextFloat() - 0.5F) * 0.2F;
+                float var23 = (entity.rand.nextFloat() - 0.5F) * 0.2F;
+                double var24 = var7 + (entity.posX - var7) * var19 + (entity.rand.nextDouble() - 0.5D) * (double)entity.width * 2.0D;
+                double var26 = var9 + (entity.posY - var9) * var19 + entity.rand.nextDouble() * (double)entity.height;
+                double var28 = var11 + (entity.posZ - var11) * var19 + (entity.rand.nextDouble() - 0.5D) * (double)entity.width * 2.0D;
+                entity.worldObj.spawnParticle("portal", var24, var26, var28, (double)var21, (double)var22, (double)var23);
+            }
+            return true;
+        }
+    }
 
 	public static PCnt_TeleporterData getTeleporterDataAt(int xCoord,
 			int yCoord, int zCoord) {
