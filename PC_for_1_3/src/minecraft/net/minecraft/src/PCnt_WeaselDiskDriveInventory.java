@@ -30,7 +30,7 @@ public class PCnt_WeaselDiskDriveInventory extends InventoryBasic implements PC_
 	@Override
 	public boolean canPlayerInsertStackTo(int slot, ItemStack stack) {
 		if (stack == null) return false;
-		int disk = mod_PCnt.weaselDisk.shiftedIndex;
+		int disk = mod_PCnet.weaselDisk.shiftedIndex;
 		return stack.getItem().shiftedIndex == disk && PCnt_ItemWeaselDisk.getType(stack) != PCnt_ItemWeaselDisk.EMPTY;
 	}
 

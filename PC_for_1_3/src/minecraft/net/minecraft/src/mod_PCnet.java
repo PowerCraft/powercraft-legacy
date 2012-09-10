@@ -7,7 +7,7 @@ import java.util.Map;
 
 import net.minecraft.client.Minecraft;
 
-public class mod_PCnt extends PC_Module {
+public class mod_PCnet extends PC_Module {
 
 	public static mod_PCtransport instance;
 	

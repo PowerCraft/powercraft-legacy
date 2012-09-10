@@ -135,7 +135,7 @@ public class PCnt_TeleporterManager extends PC_PacketHandler implements PC_INBTW
 
 	// ------------- TESTS -------------
 	private static final boolean isTeleporter(int id) {
-		return id == mod_PCnt.teleporter.blockID;
+		return id == mod_PCnet.teleporter.blockID;
 	}
 
 	// ----- ENTITY MANIPULATION ------

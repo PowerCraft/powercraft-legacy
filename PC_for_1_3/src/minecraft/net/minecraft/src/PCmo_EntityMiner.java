@@ -1055,18 +1055,18 @@ public class PCmo_EntityMiner extends Entity implements PC_IInventoryWrapper {
 				}
 
 				if (name.equals("nset")) {
-					mod_PCnt.NETWORK.setGlobalVariable(Calc.toString(args[0].get()), args[1]);
+					mod_PCnet.NETWORK.setGlobalVariable(Calc.toString(args[0].get()), args[1]);
 					return null;
 				}
 				
 				if (name.equals("nhas")) {
 
-					return new WeaselBoolean(mod_PCnt.NETWORK.hasGlobalVariable(Calc.toString(args[0].get())));
+					return new WeaselBoolean(mod_PCnet.NETWORK.hasGlobalVariable(Calc.toString(args[0].get())));
 
 				} 
 
 				if (name.equals("nget")) {
-					return mod_PCnt.NETWORK.getGlobalVariable(Calc.toString(args[0].get()));
+					return mod_PCnet.NETWORK.getGlobalVariable(Calc.toString(args[0].get()));
 				}
 
 				if (name.equals("rx")) {
@@ -1534,7 +1534,7 @@ public class PCmo_EntityMiner extends Entity implements PC_IInventoryWrapper {
 	private List<ItemStack> getDisks() {
 		List<ItemStack> disks = new ArrayList<ItemStack>();
 		for (int i = 0; i < cargo.getSizeInventory(); i++) {
-			if(cargo.getStackInSlot(i) != null && cargo.getStackInSlot(i).itemID == mod_PCnt.weaselDisk.shiftedIndex) {
+			if(cargo.getStackInSlot(i) != null && cargo.getStackInSlot(i).itemID == mod_PCnet.weaselDisk.shiftedIndex) {
 				disks.add(cargo.getStackInSlot(i));
 			}
 		}
@@ -2105,7 +2105,7 @@ public class PCmo_EntityMiner extends Entity implements PC_IInventoryWrapper {
 										}
 									}
 									
-									yes &= stack.itemID != mod_PCnt.weaselDisk.shiftedIndex;
+									yes &= stack.itemID != mod_PCnet.weaselDisk.shiftedIndex;
 
 									if (yes) {
 										if (destroyInstead) {

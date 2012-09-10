@@ -121,7 +121,7 @@ public class PCnt_GuiWeaselDiskManager extends PC_GresBase {
 
 		@Override
 		public boolean canPlayerInsertStackTo(int slot, ItemStack stack) {
-			return stack.itemID == mod_PCnt.weaselDisk.shiftedIndex;
+			return stack.itemID == mod_PCnet.weaselDisk.shiftedIndex;
 		}
 
 		@Override

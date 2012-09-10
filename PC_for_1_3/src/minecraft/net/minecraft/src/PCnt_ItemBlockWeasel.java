@@ -24,7 +24,7 @@ public class PCnt_ItemBlockWeasel extends ItemBlock {
 
 	@Override
 	public int getBlockID() {
-		return mod_PCnt.weaselDevice.blockID;
+		return mod_PCnet.weaselDevice.blockID;
 	}
 
 	@Override
@@ -72,8 +72,8 @@ public class PCnt_ItemBlockWeasel extends ItemBlock {
 			return false;
 		}
 
-		if (world.canPlaceEntityOnSide(mod_PCnt.weaselDevice.blockID, i, j, k, false, l, entityplayer)) {
-			Block block = mod_PCnt.weaselDevice;
+		if (world.canPlaceEntityOnSide(mod_PCnet.weaselDevice.blockID, i, j, k, false, l, entityplayer)) {
+			Block block = mod_PCnet.weaselDevice;
 			if (world.setBlock(i, j, k, block.blockID)) {
 				// set tile entity
 				PCnt_TileEntityWeasel teg = (PCnt_TileEntityWeasel) world.getBlockTileEntity(i, j, k);
@@ -101,12 +101,12 @@ public class PCnt_ItemBlockWeasel extends ItemBlock {
 
 	@Override
 	public String getItemName() {
-		return mod_PCnt.weaselDevice.getBlockName();
+		return mod_PCnet.weaselDevice.getBlockName();
 	}
 
 	@Override
 	public int getIconFromDamage(int i) {
-		return mod_PCnt.weaselDevice.getBlockTextureFromSideAndMetadata(1, 0);
+		return mod_PCnet.weaselDevice.getBlockTextureFromSideAndMetadata(1, 0);
 	}
 
 	@Override

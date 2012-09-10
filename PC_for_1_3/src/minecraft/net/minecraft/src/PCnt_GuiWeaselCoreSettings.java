@@ -118,7 +118,7 @@ public class PCnt_GuiWeaselCoreSettings extends PC_GresBase {
 			if (name.length() == 0) {
 				txError.text = PC_Lang.tr("pc.gui.weasel.core.errNetworkNameTooShort");
 				btnRename.enabled = false;
-			} else if (mod_PCnt.NETWORK.getNetwork(name) != null) {
+			} else if (mod_PCnet.NETWORK.getNetwork(name) != null) {
 				txError.text = PC_Lang.tr("pc.gui.weasel.core.errNetworkNameAlreadyUsed");
 				btnRename.enabled = false;
 			} else {
