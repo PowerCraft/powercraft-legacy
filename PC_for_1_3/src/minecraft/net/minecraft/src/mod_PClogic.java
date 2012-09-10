@@ -7,13 +7,6 @@ import java.util.List;
 import java.util.Map;
 
 import net.minecraft.client.Minecraft;
-import net.minecraft.src.PCnt.PCnt_BlockWeasel;
-import net.minecraft.src.PCnt.PCnt_ItemBlockWeasel;
-import net.minecraft.src.PCnt.PCnt_ItemWeaselDisk;
-import net.minecraft.src.PCnt.PCnt_NetManager;
-import net.minecraft.src.PCnt.PCnt_TileEntityWeasel;
-import net.minecraft.src.PCnt.PCnt_TileEntityWeaselRenderer;
-import net.minecraft.src.PCnt.PCnt_WeaselType;
 
 
 /**
@@ -57,13 +50,6 @@ public class mod_PClogic extends PC_Module {
 	 */
 	public static PClo_RadioBus RADIO = new PClo_RadioBus();
 
-	/**
-	 * Network manager used by weasel devices to transfer information. Holds
-	 * also instances of local networks, but the CORE weasel devices have to
-	 * save them themselves.
-	 */
-	public static PCnt_NetManager NETWORK = new PCnt_NetManager();
-
 
 	// *** PROPERTIES ***
 
@@ -80,10 +66,8 @@ public class mod_PClogic extends PC_Module {
 	private static final String pk_brightLight = "brightness.light_on";
 	private static final String pk_brightGate = "brightness.gate_on";
 	private static final String pk_idRadio = "id.block.radio";
-	private static final String pk_idWeasel = "id.block.weasel_device";
 	private static final String pk_idSensor = "id.block.motion_sensor";
 	private static final String pk_idRemote = "id.item.radio_remote";
-	private static final String pk_idDisk = "id.item.weasel_data_disk";
 	private static final String pk_optRadioDefChannel = "default.radio.channel";
 	private static final String pk_optSensorDefRange = "default.sensor.range";
 
@@ -100,9 +84,6 @@ public class mod_PClogic extends PC_Module {
 	/** Portable transmitter */
 	public static Item portableTx;
 
-	/** WeaselDisk */
-	public static PCnt_ItemWeaselDisk weaselDisk;
-
 	/** flat device, off state */
 	public static Block gateOff;
 
@@ -117,9 +98,6 @@ public class mod_PClogic extends PC_Module {
 
 	/** light, on state */
 	public static Block lightOn;
-
-	/** weasel device */
-	public static Block weaselDevice;
 
 
 
@@ -140,9 +118,7 @@ public class mod_PClogic extends PC_Module {
 		conf.putInteger(pk_brightGate, 8, "Active gate block brightness, scale 0-15.");
 		conf.putBlock(pk_idRadio, 236);
 		conf.putBlock(pk_idSensor, 229);
-		conf.putBlock(pk_idWeasel, 239);
 		conf.putItem(pk_idRemote, 19000);
-		conf.putItem(pk_idDisk, 19006);
 		conf.putString(pk_optRadioDefChannel, "default", "the default channel for radios");
 		conf.putInteger(pk_optSensorDefRange, 3, "the range of newly placed sensor");
 
@@ -159,7 +135,6 @@ public class mod_PClogic extends PC_Module {
 	@Override
 	public void registerTileEntities(List<PC_Struct3<Class<? extends TileEntity>, String, TileEntitySpecialRenderer>> list) {
 		list.add(new PC_Struct3(PClo_TileEntityGate.class, "FCLogicGate", null));
-		list.add(new PC_Struct3(PCnt_TileEntityWeasel.class, "PCWeaselDevice", new PCnt_TileEntityWeaselRenderer()));
 		list.add(new PC_Struct3(PClo_TileEntityPulsar.class, "FCRedstonePulsar", null));
 		list.add(new PC_Struct3(PClo_TileEntityLight.class, "FCRedstoneIndicator", new PClo_TileEntityLightRenderer()));
 		list.add(new PC_Struct3(PClo_TileEntitySensor.class, "FCSensorRanged", new PClo_TileEntitySensorRenderer()));
@@ -170,7 +145,6 @@ public class mod_PClogic extends PC_Module {
 	public void registerBlockRenderers() {
 		PClo_Renderer.radioRenderer = ModLoader.getUniqueBlockModelID(this, true);
 		PClo_Renderer.sensorRenderer = ModLoader.getUniqueBlockModelID(this, true);
-		PClo_Renderer.weaselRenderer = ModLoader.getUniqueBlockModelID(this, true);
 		PClo_Renderer.lightRenderer = ModLoader.getUniqueBlockModelID(this, true);
 	}
 
@@ -195,14 +169,6 @@ public class mod_PClogic extends PC_Module {
 				.setStepSound(Block.soundWoodFootstep)
 				.disableStats().setRequiresSelfNotify()
 				.setResistance(30.0F);
-
-
-		weaselDevice = new PCnt_BlockWeasel(cfg().getInteger(pk_idWeasel))
-				.setBlockName("PCloWeasel")
-				.setHardness(0.5F).setLightValue(0)
-				.setStepSound(Block.soundWoodFootstep)
-				.disableStats().setRequiresSelfNotify()
-				.setResistance(60.0F);
 
 		gateOn = new PClo_BlockGate(cfg().getInteger(pk_idGateOn), true)
 				.setBlockName("PCloLogicGate")
@@ -253,16 +219,10 @@ public class mod_PClogic extends PC_Module {
 				.setMaxStackSize(1)
 				.setItemName("PCloRadioPortableTx");
 		
-		weaselDisk = (PCnt_ItemWeaselDisk) (new PCnt_ItemWeaselDisk(cfg().getInteger(pk_idDisk)))
-				.setMaxStackSize(1)
-				.setItemName("PCloWeaselDisk");
-		
 		// @formatter:on
 
 		removeBlockItem(gateOn.blockID);
 		setBlockItem(gateOn.blockID, new PClo_ItemBlockGate(gateOn.blockID - 256));
-		removeBlockItem(weaselDevice.blockID);
-		setBlockItem(weaselDevice.blockID, new PCnt_ItemBlockWeasel(weaselDevice.blockID - 256));
 		removeBlockItem(lightOn.blockID);
 		setBlockItem(lightOn.blockID, new PClo_ItemBlockLight(lightOn.blockID - 256));
 		removeBlockItem(sensor.blockID);
@@ -275,7 +235,6 @@ public class mod_PClogic extends PC_Module {
 	@Override
 	public void preloadTextures(List<String> list) {
 		list.add(getTerrainFile());
-		list.add(getImgDir() + "block_chip.png");
 		list.add(getImgDir() + "block_radio.png");
 		list.add(getImgDir() + "block_sensor.png");
 		list.add(getImgDir() + "block_light.png");
@@ -284,8 +243,6 @@ public class mod_PClogic extends PC_Module {
 	@Override
 	public void setTextures() {
 		portableTx.setIconIndex(ModLoader.addOverride("/gui/items.png", getImgDir() + "portable.png"));
-		weaselDisk.textureBg = ModLoader.addOverride("/gui/items.png", getImgDir() + "item_disk_base.png");
-		weaselDisk.textureFg = ModLoader.addOverride("/gui/items.png", getImgDir() + "item_disk_label.png");
 	}
 
 	@Override
@@ -378,136 +335,13 @@ public class mod_PClogic extends PC_Module {
 		map.put("pc.gate.splitter.desc", "splits signal");
 
 
-
-		map.put("tile.PCloWeasel.name", "Weasel Device");
-
-		map.put("tile.PCloWeasel.core.name", "Weasel Controller");
-		map.put("tile.PCloWeasel.slave.name", "Slave Weasel Controller");
-		map.put("tile.PCloWeasel.port.name", "Wireless Port");
-		map.put("tile.PCloWeasel.display.name", "Wireless Display");
-		map.put("tile.PCloWeasel.sound.name", "Wireless Speaker");
-		map.put("tile.PCloWeasel.touchscreen.name", "Wireless Touchscreen");
-		map.put("tile.PCloWeasel.diskManager.name", "Digital Workbench");
-		map.put("tile.PCloWeasel.diskDrive.name", "Wireless Disk Drive");
-		map.put("tile.PCloWeasel.terminal.name", "Weasel Terminal");
-		map.put("pc.weasel.core.desc", "programmable chip");
-		map.put("pc.weasel.port.desc", "expansion redstone port");
-		map.put("pc.weasel.display.desc", "display for Weasel");
-		map.put("pc.weasel.sound.desc", "electronic noteblock");
-		map.put("pc.weasel.touchscreen.desc", "touchscreen display");
-		map.put("pc.weasel.diskManager.desc", "Weasel disk editor");
-		map.put("pc.weasel.diskDrive.desc", "Weasel disk reader");
-		map.put("pc.weasel.terminal.desc", "command interface");
-		map.put("pc.weasel.slave.desc", "slave co-processor");
-
-		map.put("pc.weasel.activatorGetNetwork", "Network \"%s\" assigned to activation crystal.");
-		map.put("pc.weasel.activatorSetNetwork", "Device connected to network \"%s\".");
 		map.put("pc.radio.activatorGetChannel", "Channel \"%s\" assigned to activation crystal.");
 		map.put("pc.radio.activatorSetChannel", "Radio connected to channel \"%s\".");
-
-		map.put("pc.gui.weasel.connectedToNetwork", "Connected to network:");
-		map.put("pc.gui.weasel.rename", "Rename");
-		map.put("pc.gui.weasel.errDeviceNameTooShort", "Entered name is too short.");
-		map.put("pc.gui.weasel.errDeviceNameAlreadyUsed", "Device %s already exists in this network.");
-		map.put("pc.gui.weasel.deviceRenamed", "Device renamed to %s.");
-		map.put("pc.gui.weasel.close", "Close");
-
-		map.put("pc.gui.weasel.port.portName", "Port name:");
-		map.put("pc.gui.weasel.display.displayName", "Display name:");
-		map.put("pc.gui.weasel.sound.speakerName", "Speaker name:");
-		map.put("pc.gui.weasel.drive.driveName", "Drive name:");
-		map.put("pc.gui.weasel.terminal.terminalName", "Terminal name:");
-		map.put("pc.gui.weasel.slave.slaveName", "Controller name:");
-
-
-		map.put("pc.gui.weasel.core.program", "Program");
-		map.put("pc.gui.weasel.core.settings", "Settings");
-		map.put("pc.gui.weasel.core.status", "Status");
-
-		map.put("pc.gui.weasel.core.runningStateLabel", "Program state:");
-		map.put("pc.gui.weasel.core.stackLabel", "Stack size:");
-		map.put("pc.gui.weasel.core.memoryLabel", "Memory size:");
-		map.put("pc.gui.weasel.core.statusLabel", "Status:");
-		map.put("pc.gui.weasel.core.programLength", "Program length:");
-		map.put("pc.gui.weasel.core.peripheralsLabel", "Peripherals:");
-		map.put("pc.gui.weasel.core.unitInstructions", "instructions");
-		map.put("pc.gui.weasel.core.unitObjects", "values");
-		map.put("pc.gui.weasel.core.networkLabel", "Network name:");
-		map.put("pc.gui.weasel.core.colorLabel", "Network color:");
-
-		map.put("pc.gui.weasel.core.title", "Weasel Controller");
-		map.put("pc.gui.weasel.slave.title", "Slave Weasel Controller");
-		map.put("pc.gui.weasel.diskDrive.title", "Weasel Disk Drive");
-		map.put("pc.gui.weasel.port.title", "Expansion port for Weasel Controller");
-		map.put("pc.gui.weasel.display.title", "Display for Weasel Controller");
-		map.put("pc.gui.weasel.sound.title", "Audio output for Weasel");
-		map.put("pc.gui.weasel.touchscreen.title", "Touchscreen display for Weasel");
-		map.put("pc.gui.weasel.terminal.title", "Weasel Terminal");
-
-		map.put("pc.gui.weasel.core.undoAll", "Undo All");
-		map.put("pc.gui.weasel.core.check", "Check");
-		map.put("pc.gui.weasel.core.launch", "Launch");
-		map.put("pc.gui.weasel.core.running", "Running");
-		map.put("pc.gui.weasel.core.paused", "Paused");
-		map.put("pc.gui.weasel.core.idle", "Idle");
-		map.put("pc.gui.weasel.core.waiting", "Waiting");
-		map.put("pc.gui.weasel.core.halted", "Halted");
-		map.put("pc.gui.weasel.core.crashed", "Crashed");
-		map.put("pc.gui.weasel.core.pause", "Pause");
-		map.put("pc.gui.weasel.core.resume", "Resume");
-		map.put("pc.gui.weasel.core.restart", "Restart");
-		map.put("pc.gui.weasel.core.stop", "Stop");
-		map.put("pc.gui.weasel.core.title", "Weasel Controller");
-		map.put("pc.gui.weasel.core.colorChange", "Change");
-
-		map.put("pc.gui.weasel.core.errNetworkNameTooShort", "Entered network name is too short.");
-		map.put("pc.gui.weasel.core.errNetworkNameAlreadyUsed", "Network with this name already exists.");
-		map.put("pc.gui.weasel.core.msgNetworkRenamed", "Network renamed to %s.");
-		map.put("pc.gui.weasel.core.msgNetworkColorChanged", "Network color changed.");
-		map.put("pc.gui.weasel.core.msgPaused", "Program paused.");
-		map.put("pc.gui.weasel.core.msgResumed", "Program resumed.");
-		map.put("pc.gui.weasel.core.msgRestarted", "Program restarted.");
-		map.put("pc.gui.weasel.core.msgLaunched", "New program compiled and started.");
-		map.put("pc.gui.weasel.core.msgNoErrors", "Program has no syntax errors.");
-		map.put("pc.gui.weasel.core.msgAllUndone", "All changes reverted.");
-		map.put("pc.gui.weasel.core.msgHalted", "Program execution halted, network restarted.");
-		map.put("pc.gui.weasel.slave.msgHalted", "Program execution halted.");
-
+		
 		map.put("pc.radioRemote.connected", "Portable transmitter connected to channel \"%s\".");
 		map.put("pc.radioRemote.desc", "Channel: %s");
-
-		map.put("pc.weasel.disk.new_label", "disk");
-		map.put("pc.weasel.disk.empty", "Blank Weasel Disk");
-		map.put("pc.weasel.disk.text", "Weasel Text Disk");
-		map.put("pc.weasel.disk.image", "Weasel Image Disk");
-		map.put("pc.weasel.disk.numberList", "Weasel Numbers Disk");
-		map.put("pc.weasel.disk.stringList", "Weasel Strings Disk");
-		map.put("pc.weasel.disk.variableMap", "Weasel Data Disk");
-		map.put("pc.weasel.disk.programLibrary", "Weasel Library Disk");
-		map.put("pc.gui.weasel.diskManager.color", "Color:");
-		map.put("pc.gui.weasel.diskManager.label", "Disk label:");
-		map.put("pc.gui.weasel.diskManager.separator", "Entry separator:");
-		map.put("pc.gui.weasel.diskManager.resize", "Resize");
-		map.put("pc.gui.weasel.diskManager.set", "Set");
-		map.put("pc.gui.weasel.diskManager.edit", "Edit");
-		map.put("pc.gui.weasel.diskManager.img.clear", "Clear");
-		map.put("pc.gui.weasel.diskManager.img.fill", "Fill");
-		map.put("pc.gui.weasel.diskManager.disk", "Disk");
-		map.put("pc.gui.weasel.diskManager.format", "Format:");
-		map.put("pc.gui.weasel.diskManager.formatText", "Text");
-		map.put("pc.gui.weasel.diskManager.formatImage", "Image");
-		map.put("pc.gui.weasel.diskManager.formatIntegerList", "Numbers");
-		map.put("pc.gui.weasel.diskManager.formatStringList", "Strings");
-		map.put("pc.gui.weasel.diskManager.formatVariableMap", "Data");
-		map.put("pc.gui.weasel.diskManager.formatLibrary", "Library");
-		map.put("pc.gui.weasel.diskManager.clickCompile", "Click \"Compile\" to make the library executable.");
-		map.put("pc.gui.weasel.diskManager.compiled", "Library was successfully compiled.");
-
-
-		map.put("pc.gui.weasel.diskManager.empty.title", "Digital Workbench - insert disk");
-
-
-
+		
+		
 		map.put("pc.gui.gate.delay", "Delay (sec)");
 		map.put("pc.gui.gate.delayer.errRange", "Delay time out of range.");
 		map.put("pc.gui.gate.delayer.errNumFormat", "Invalid number format.");
@@ -735,79 +569,6 @@ public class mod_PClogic extends PC_Module {
 					'+', Item.redstone,'S', Block.stone});
 		
 		
-		
-		// weasel.
-		
-		
-		/**
-		 * TODO stairsBrick was stairsBrick??
-		 */
-		ModLoader.addRecipe(
-				new ItemStack(weaselDevice, 1, PCnt_WeaselType.CORE),
-				new Object[] { "SRS", "RCR", "SRS",
-					'S', new ItemStack(Block.stairsBrick,1,0), 'R', Item.redstone, 'C', mod_PCcore.powerCrystal });
-		
-
-		ModLoader.addShapelessRecipe(
-				new ItemStack(weaselDevice, 1, PCnt_WeaselType.SLAVE),
-				new Object[] { new ItemStack(weaselDevice, 1, PCnt_WeaselType.CORE) });
-
-		ModLoader.addShapelessRecipe(
-				new ItemStack(weaselDevice, 1, PCnt_WeaselType.CORE),
-				new Object[] { new ItemStack(weaselDevice, 1, PCnt_WeaselType.SLAVE) });
-		
-		
-		ModLoader.addRecipe(
-				new ItemStack(weaselDevice, 1, PCnt_WeaselType.PORT),
-				new Object[] { "GRG", "SSS",
-					'S', new ItemStack(Block.stairsBrick,1,0), 'R', Item.redstone, 'G', Item.goldNugget });
-		
-		ModLoader.addRecipe(
-				new ItemStack(weaselDevice, 1, PCnt_WeaselType.DISPLAY),
-				new Object[] { " G ", "NRN","SSS",
-					'S', new ItemStack(Block.stairsBrick,1,0), 'R', Item.redstone, 'G', Block.thinGlass, 'N', Item.goldNugget });
-		
-		ModLoader.addRecipe(
-				new ItemStack(weaselDevice, 1, PCnt_WeaselType.SPEAKER),
-				new Object[] { " N ", "GRG","SSS",
-					'S', new ItemStack(Block.stairsBrick,1,0), 'R', Item.redstone, 'N', Block.music, 'G', Item.goldNugget  });
-		
-		ModLoader.addRecipe(
-				new ItemStack(weaselDevice, 1, PCnt_WeaselType.TOUCHSCREEN),
-				new Object[] { "GGG", "NRN","SSS",
-					'S', new ItemStack(Block.stairsBrick,1,0), 'R', Item.redstone, 'G', Block.thinGlass, 'N', Item.goldNugget });
-		
-
-		ModLoader.addRecipe(
-				new ItemStack(weaselDisk, 4, 0xFFF),
-				new Object[] { " C ", "CIC"," C ",
-					'C', Item.coal, 'I', Item.ingotIron });
-		
-		ModLoader.addRecipe(
-				new ItemStack(weaselDevice, 1, PCnt_WeaselType.DISK_MANAGER),
-				new Object[] { "BBB", "SRS", "SSS",
-					'B', Block.button,
-					'S', new ItemStack(Block.stairsBrick,1,0),
-					'R', Item.redstone});
-		
-		ModLoader.addRecipe(
-				new ItemStack(weaselDevice, 1, PCnt_WeaselType.DISK_DRIVE),
-				new Object[] { "SSS", "GRG", "SSS",
-					'B', Block.button,
-					'S', new ItemStack(Block.stairsBrick,1,0),
-					'R', Item.redstone,
-					'G', Item.goldNugget
-					});
-		
-		ModLoader.addRecipe(
-				new ItemStack(weaselDevice, 1, PCnt_WeaselType.TERMINAL),
-				new Object[] { "  D", "BBS", "SSS",
-					'B', Block.button,
-					'S', new ItemStack(Block.stairsBrick,1,0),
-					'D', new ItemStack(weaselDevice, 1, PCnt_WeaselType.DISPLAY),
-					});
-		
-		
 		// *** lights ***
 		
 		// SMALL
@@ -834,8 +595,6 @@ public class mod_PClogic extends PC_Module {
 					new ItemStack(lightOn, 1, i),
 					new Object[] { Item.redstone, Block.glowStone, new ItemStack(Item.dyePowder, 1, i%16) });
 		}
-		
-
 		
 		
 		
@@ -883,7 +642,6 @@ public class mod_PClogic extends PC_Module {
 	@Override
 	public void postInit() {
 		PC_InveditManager.setDamageRange(gateOn.blockID, 0, PClo_GateType.TOTAL_GATE_COUNT - 1);
-		PC_InveditManager.setDamageRange(weaselDevice.blockID, 0, PCnt_WeaselType.WEASEL_DEVICE_COUNT - 1);
 		PC_InveditManager.setDamageRange(sensor.blockID, 0, 2);
 		PC_InveditManager.setDamageRange(lightOn.blockID, 0, 47);
 		PC_InveditManager.hideItem(gateOff.blockID);
@@ -893,7 +651,6 @@ public class mod_PClogic extends PC_Module {
 
 		PC_InveditManager.setItemCategory(pulsar.blockID, "Logic gates");
 		PC_InveditManager.setItemCategory(gateOn.blockID, "Logic gates");
-		PC_InveditManager.setItemCategory(weaselDevice.blockID, "Weasel system");
 		PC_InveditManager.setItemCategory(sensor.blockID, "Wireless");
 		PC_InveditManager.setItemCategory(radio.blockID, "Wireless");
 		PC_InveditManager.setItemCategory(portableTx.shiftedIndex, "Wireless");
@@ -903,8 +660,6 @@ public class mod_PClogic extends PC_Module {
 		addStackRangeToCraftingTool(PC_ItemGroup.LOGIC, gateOn.blockID, 0, PClo_GateType.TOTAL_GATE_COUNT - 1, 1);
 		addStacksToCraftingTool(PC_ItemGroup.LOGIC, 
 				new ItemStack(pulsar));
-		addStackRangeToCraftingTool(PC_ItemGroup.LOGIC, weaselDevice.blockID, 0, PCnt_WeaselType.WEASEL_DEVICE_COUNT - 1, 1);
-		addStacksToCraftingTool(PC_ItemGroup.LOGIC, new ItemStack(weaselDisk,1,0xfff));
 		
 		addStacksToCraftingTool(PC_ItemGroup.LIGHTS,new ItemStack(lightOn, 1, 0));
 		
@@ -919,9 +674,6 @@ public class mod_PClogic extends PC_Module {
 				new ItemStack(sensor, 1, 2));
 		
 		//@formatter:on
-
-		ModLoader.setInGameHook(this, true, false);
-		ModLoader.setInGUIHook(this, true, false);
 	}
 
 
@@ -934,29 +686,6 @@ public class mod_PClogic extends PC_Module {
 	@Override
 	public void renderInvBlock(RenderBlocks renderblocks, Block block, int i, int rtype) {
 		PClo_Renderer.renderInvBlockByType(renderblocks, block, i, rtype);
-	}
-
-	private int tickCounter = 0;
-
-	@Override
-	public boolean onTickInGame(float f, Minecraft minecraft) {
-		if (tickCounter++ % 100 == 0) {
-			if (NETWORK.needsSave) {
-				NETWORK.saveToFile();
-			}
-		}
-		return true;
-	}
-
-	@Override
-	public boolean onTickInGUI(float f, Minecraft minecraft, GuiScreen guiscreen) {
-
-		if (guiscreen == null) return true;
-
-		if (NETWORK.needsSave) {
-			NETWORK.saveToFile();
-		}
-		return true;
 	}
 
 	@Override

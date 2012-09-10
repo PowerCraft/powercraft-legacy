@@ -1,7 +1,5 @@
 package net.minecraft.src;
 
-import net.minecraft.src.PCnt.PC_TeleporterData;
-import net.minecraft.src.PCnt.PCnt_TeleporterManager;
 
 
 /**

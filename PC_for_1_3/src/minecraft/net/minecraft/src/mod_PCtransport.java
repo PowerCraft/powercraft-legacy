@@ -6,11 +6,6 @@ import java.util.Hashtable;
 import java.util.List;
 import java.util.Map;
 
-import net.minecraft.src.PCnt.PCnt_BlockTeleporter;
-import net.minecraft.src.PCnt.PCnt_GuiTeleporter;
-import net.minecraft.src.PCnt.PCnt_TeleporterManager;
-import net.minecraft.src.PCnt.PCnt_TileEntityTeleporter;
-import net.minecraft.src.PCnt.PCnt_TileEntityTeleporterRenderer;
 
 
 /**
