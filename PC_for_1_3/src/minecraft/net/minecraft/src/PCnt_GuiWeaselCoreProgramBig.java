@@ -1,5 +1,7 @@
 package net.minecraft.src;
 
+import net.minecraft.src.PC_GresWidget.PC_GresAlign;
+
 
 
 

@@ -3,6 +3,8 @@ package net.minecraft.src;
 
 import java.util.List;
 
+import net.minecraft.src.PC_GresWidget.PC_GresAlign;
+
 
 
 /**
@@ -150,11 +152,11 @@ public class PCnt_GuiWeaselCoreStatus extends PC_GresBase {
 	public void actionPerformed(PC_GresWidget widget, PC_IGresGui gui) {
 
 		if (widget.getId() == 100) {
-			PC_Utils.openGres(getPlayer(), new PCnt_GuiWeaselCoreProgram(core));
+			//TODO PC_Utils.openGres(getPlayer(), new PCnt_GuiWeaselCoreProgram(core));
 			return;
 		}
 		if (widget.getId() == 102) {
-			PC_Utils.openGres(getPlayer(), new PCnt_GuiWeaselCoreSettings(core));
+			//TODO PC_Utils.openGres(getPlayer(), new PCnt_GuiWeaselCoreSettings(core));
 			return;
 		}
 

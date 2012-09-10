@@ -52,7 +52,7 @@ public class PCnt_WeaselPluginPort extends PCnt_WeaselPlugin {
 
 	@Override
 	public boolean onClick(EntityPlayer player) {
-		PC_Utils.openGres(player, new PCnt_GuiWeaselPort(this));
+		//TODO PC_Utils.openGres(player, new PCnt_GuiWeaselPort(this));
 		return true;
 	}
 

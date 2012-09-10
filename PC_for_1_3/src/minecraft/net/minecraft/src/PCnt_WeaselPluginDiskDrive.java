@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
+import net.minecraft.src.PC_BitmapUtils.WeaselBitmapProvider;
 import net.minecraft.src.PCnt_NetManager.NetworkMember;
 
 import weasel.Calc;
@@ -41,7 +42,7 @@ public class PCnt_WeaselPluginDiskDrive extends PCnt_WeaselPlugin implements PC_
 
 	@Override
 	public boolean onClick(EntityPlayer player) {
-		PC_Utils.openGres(player, new PCnt_GuiWeaselDiskDrive(this));
+		//TODO PC_Utils.openGres(player, new PCnt_GuiWeaselDiskDrive(this));
 		return true;
 	}
 
@@ -692,7 +693,7 @@ public class PCnt_WeaselPluginDiskDrive extends PCnt_WeaselPlugin implements PC_
 		return WDT.getType(getDisk(slot));
 	}
 
-	private static PCnt_ItemWeaselDisk WDT = mod_PClogic.weaselDisk;
+	private static PCnt_ItemWeaselDisk WDT = mod_PCnt.weaselDisk;
 
 
 	@Override

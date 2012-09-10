@@ -55,9 +55,9 @@ public class PCnt_WeaselPluginTerminal extends PCnt_WeaselPlugin {
 	@Override
 	public boolean onClick(EntityPlayer player) {
 		if (player.isSneaking()) {
-			PC_Utils.openGres(player, new PCnt_GuiWeaselTerminal(this));
+			//TODO PC_Utils.openGres(player, new PCnt_GuiWeaselTerminal(this));
 		} else {
-			PC_Utils.openGres(player, new PCnt_GuiWeaselTerminalTerm(this));
+			//TODO PC_Utils.openGres(player, new PCnt_GuiWeaselTerminalTerm(this));
 		}
 
 		return true;

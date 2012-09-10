@@ -4,6 +4,9 @@ package net.minecraft.src;
 
 import java.util.List;
 
+import net.minecraft.src.PC_GresTextEdit.PC_GresInputType;
+import net.minecraft.src.PC_GresWidget.PC_GresAlign;
+
 
 
 /**
@@ -115,7 +118,7 @@ public class PCnt_GuiWeaselCoreSettings extends PC_GresBase {
 			if (name.length() == 0) {
 				txError.text = PC_Lang.tr("pc.gui.weasel.core.errNetworkNameTooShort");
 				btnRename.enabled = false;
-			} else if (mod_PClogic.NETWORK.getNetwork(name) != null) {
+			} else if (mod_PCnt.NETWORK.getNetwork(name) != null) {
 				txError.text = PC_Lang.tr("pc.gui.weasel.core.errNetworkNameAlreadyUsed");
 				btnRename.enabled = false;
 			} else {

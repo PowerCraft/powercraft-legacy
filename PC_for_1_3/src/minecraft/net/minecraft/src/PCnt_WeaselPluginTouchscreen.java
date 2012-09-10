@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
+import net.minecraft.src.PC_BitmapUtils.WeaselBitmapAdapter;
+import net.minecraft.src.PC_BitmapUtils.WeaselBitmapProvider;
 import net.minecraft.src.PCnt_NetManager.NetworkMember;
 
 import weasel.Calc;
@@ -220,9 +222,9 @@ public class PCnt_WeaselPluginTouchscreen extends PCnt_WeaselPlugin implements W
 	@Override
 	public boolean onClick(EntityPlayer player) {
 		if (player.isSneaking()) {
-			PC_Utils.openGres(player, new PCnt_GuiWeaselTouchscreen(this));
+			//TODO PC_Utils.openGres(player, new PCnt_GuiWeaselTouchscreen(this));
 		} else {
-			PC_Utils.openGres(player, new PCnt_GuiWeaselTouchscreenTouch(this));
+			//TODO PC_Utils.openGres(player, new PCnt_GuiWeaselTouchscreenTouch(this));
 		}
 
 		return true;

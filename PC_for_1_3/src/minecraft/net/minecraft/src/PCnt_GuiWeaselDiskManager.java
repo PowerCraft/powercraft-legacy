@@ -6,6 +6,9 @@ import java.util.List;
 import java.util.Map.Entry;
 
 
+import net.minecraft.src.PC_GresTextEdit.PC_GresInputType;
+import net.minecraft.src.PC_GresWidget.PC_GresAlign;
+
 import org.lwjgl.input.Keyboard;
 
 import weasel.WeaselEngine;
@@ -118,7 +121,7 @@ public class PCnt_GuiWeaselDiskManager extends PC_GresBase {
 
 		@Override
 		public boolean canPlayerInsertStackTo(int slot, ItemStack stack) {
-			return stack.itemID == mod_PClogic.weaselDisk.shiftedIndex;
+			return stack.itemID == mod_PCnt.weaselDisk.shiftedIndex;
 		}
 
 		@Override
