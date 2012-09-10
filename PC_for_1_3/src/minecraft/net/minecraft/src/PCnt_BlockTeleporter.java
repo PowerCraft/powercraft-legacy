@@ -37,7 +37,7 @@ public class PCnt_BlockTeleporter extends BlockContainer implements PC_IBlockTyp
 
 	@Override
 	public int getRenderType() {
-		return PCtr_Renderer.teleporterRenderer;
+		return PCnt_Renderer.teleporterRenderer;
 	}
 
 	@Override

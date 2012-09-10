@@ -424,7 +424,6 @@ public class mod_PCtransport extends PC_Module {
 		List<Class> guis = new ArrayList<Class>();
 		guis.add(PCtr_GuiSeparationBelt.class);
 		guis.add(PCtr_GuiEjectionBelt.class);
-		guis.add(PCnt_GuiTeleporter.class);
 		return guis;
 	}
 

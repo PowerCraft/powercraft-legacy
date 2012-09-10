@@ -4,6 +4,7 @@ package net.minecraft.src;
 import java.util.List;
 
 import net.minecraft.server.MinecraftServer;
+import net.minecraft.src.PC_GresRadioButton.PC_GresRadioGroup;
 
 
 /**
