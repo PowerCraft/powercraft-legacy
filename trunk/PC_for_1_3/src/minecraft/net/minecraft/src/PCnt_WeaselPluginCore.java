@@ -8,6 +8,7 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Random;
 
+import net.minecraft.src.PClo_RadioBus.IRadioDevice;
 import net.minecraft.src.PCnt_NetManager.NetworkMember;
 import net.minecraft.src.PCnt_NetManager.WeaselNetwork;
 import weasel.Calc;
@@ -98,9 +99,9 @@ public class PCnt_WeaselPluginCore extends PCnt_WeaselPlugin implements IWeaselH
 	@Override
 	public boolean onClick(EntityPlayer player) {
 		if (player.isSneaking()) {
-			PC_Utils.openGres(player, new PCnt_GuiWeaselCoreProgramBig(this));
+			//TODO PC_Utils.openGres(player, new PCnt_GuiWeaselCoreProgramBig(this));
 		} else {
-			PC_Utils.openGres(player, new PCnt_GuiWeaselCoreProgram(this));
+			//TODO PC_Utils.openGres(player, new PCnt_GuiWeaselCoreProgram(this));
 		}
 		return true;
 	}

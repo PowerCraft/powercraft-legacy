@@ -31,7 +31,7 @@ public class PCnt_WeaselPluginSpeaker extends PCnt_WeaselPlugin {
 
 	@Override
 	public boolean onClick(EntityPlayer player) {
-		PC_Utils.openGres(player, new PCnt_GuiWeaselSpeaker(this));
+		//TODO PC_Utils.openGres(player, new PCnt_GuiWeaselSpeaker(this));
 		return true;
 	}
 

@@ -5,8 +5,9 @@ package net.minecraft.src;
 import java.util.ArrayList;
 import java.util.List;
 
+import net.minecraft.src.PC_GresWidget.PC_GresAlign;
 import net.minecraft.src.PCnt_NetManager.NetworkMember;
-
+import net.minecraft.src.PC_GresTextEditMultiline.Keyword;
 
 /**
  * gui for editing programmable gate's program

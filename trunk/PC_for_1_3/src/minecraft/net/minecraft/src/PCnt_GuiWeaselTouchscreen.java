@@ -2,6 +2,9 @@ package net.minecraft.src;
 
 import java.util.List;
 
+import net.minecraft.src.PC_GresTextEdit.PC_GresInputType;
+import net.minecraft.src.PC_GresWidget.PC_GresAlign;
+
 
 
 /**

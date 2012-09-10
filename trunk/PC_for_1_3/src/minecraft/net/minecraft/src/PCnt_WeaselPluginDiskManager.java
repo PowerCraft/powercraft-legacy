@@ -27,7 +27,7 @@ public class PCnt_WeaselPluginDiskManager extends PCnt_WeaselPlugin {
 
 	@Override
 	public boolean onClick(EntityPlayer player) {
-		PC_Utils.openGres(player, new PCnt_GuiWeaselDiskManager());
+		//TODO PC_Utils.openGres(player, new PCnt_GuiWeaselDiskManager());
 		return true;
 	}
 
