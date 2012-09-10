@@ -194,7 +194,7 @@ public abstract class PCnt_WeaselPlugin implements PC_INBT, NetworkMember {
 	 * @return The network manager providing global variable sharing pool.
 	 */
 	protected final PCnt_NetManager getNetManager() {
-		return mod_PCnt.NETWORK;
+		return mod_PCnet.NETWORK;
 	}
 
 	/**

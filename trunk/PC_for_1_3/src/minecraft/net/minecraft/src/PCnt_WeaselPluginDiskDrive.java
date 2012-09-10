@@ -693,7 +693,7 @@ public class PCnt_WeaselPluginDiskDrive extends PCnt_WeaselPlugin implements PC_
 		return WDT.getType(getDisk(slot));
 	}
 
-	private static PCnt_ItemWeaselDisk WDT = mod_PCnt.weaselDisk;
+	private static PCnt_ItemWeaselDisk WDT = mod_PCnet.weaselDisk;
 
 
 	@Override

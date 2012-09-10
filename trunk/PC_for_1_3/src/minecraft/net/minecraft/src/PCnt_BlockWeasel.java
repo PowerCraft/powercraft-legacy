@@ -203,7 +203,7 @@ public class PCnt_BlockWeasel extends BlockContainer implements PC_ISwapTerrain,
 				plugin.onBlockRemoval();
 
 				if (!PC_Utils.isCreative()) {
-					dropBlockAsItem_do(world, x, y, z, new ItemStack(mod_PCnt.weaselDevice, 1, tew.getType()));
+					dropBlockAsItem_do(world, x, y, z, new ItemStack(mod_PCnet.weaselDevice, 1, tew.getType()));
 				}
 			}
 		}
@@ -469,7 +469,7 @@ public class PCnt_BlockWeasel extends BlockContainer implements PC_ISwapTerrain,
 	 */
 	public static void hugeUpdate(World world, PC_CoordI pos) {
 		if (world == null) return;
-		int x = pos.x, y = pos.y, z = pos.z, id = mod_PCnt.weaselDevice.blockID;
+		int x = pos.x, y = pos.y, z = pos.z, id = mod_PCnet.weaselDevice.blockID;
 		world.notifyBlocksOfNeighborChange(x, y, z, id);
 		world.notifyBlocksOfNeighborChange(x + 1, y, z, id);
 		world.notifyBlocksOfNeighborChange(x - 1, y, z, id);
@@ -508,7 +508,7 @@ public class PCnt_BlockWeasel extends BlockContainer implements PC_ISwapTerrain,
 		if (ihold != null) {
 			if (ihold.getItem() instanceof ItemBlock) {
 
-				if (ihold.getItem().shiftedIndex == mod_PCnt.weaselDevice.blockID) {
+				if (ihold.getItem().shiftedIndex == mod_PCnet.weaselDevice.blockID) {
 
 					if (ihold.getItemDamage() != getType(world, x, y, z)) {
 						return false;
