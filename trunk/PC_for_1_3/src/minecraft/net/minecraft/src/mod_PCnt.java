@@ -5,7 +5,6 @@ import java.util.List;
 import java.util.Map;
 
 import net.minecraft.client.Minecraft;
-import net.minecraft.src.PCnt.*;
 
 public class mod_PCnt extends PC_Module {
 
@@ -87,15 +86,14 @@ public class mod_PCnt extends PC_Module {
 	@Override
 	public void registerEntities(
 			List<PC_Struct3<Class<? extends Entity>, String, Integer>> list) {
-		
-		list.add(new PC_Struct3(PCnt_TileEntityWeasel.class, "PCWeaselDevice", new PCnt_TileEntityWeaselRenderer()));
 
 	}
 
 	@Override
 	public void registerTileEntities(
 			List<PC_Struct3<Class<? extends TileEntity>, String, TileEntitySpecialRenderer>> list) {
-
+		
+		list.add(new PC_Struct3(PCnt_TileEntityWeasel.class, "PCWeaselDevice", new PCnt_TileEntityWeaselRenderer()));
 		list.add(new PC_Struct3(PCnt_TileEntityTeleporter.class, "PCteleporter", new PCnt_TileEntityTeleporterRenderer()));
 
 	}
