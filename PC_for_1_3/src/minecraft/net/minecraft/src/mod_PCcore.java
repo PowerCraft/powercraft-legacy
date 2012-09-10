@@ -179,6 +179,8 @@ public class mod_PCcore extends PC_Module implements PC_IActivatorListener {
 	/** Allow hacking locked chests */
 	private boolean optHackLockedChest;
 
+	public static boolean guiOverlayer;
+	
 	// property keys
 	/** Key used to build in reversed direction */
 	public static final String pk_keyReverse = "global.key.reverse_placing";
@@ -221,6 +223,8 @@ public class mod_PCcore extends PC_Module implements PC_IActivatorListener {
 	/** current langpack version */
 	public static final String pk_cfgCurrentLangSerVersion = "cfg.currentLangVersion";
 
+	public static final String pk_cfgGuiOverlayer = "cfg.guiOverlayer";
+	
 	public static final int powerDustStrength = 3200;
 
 
@@ -298,6 +302,8 @@ public class mod_PCcore extends PC_Module implements PC_IActivatorListener {
 		conf.putInteger(pk_cfgUpdateIgnoredSerVersion, getVersionSerial());
 		conf.putInteger(pk_cfgCurrentLangSerVersion, 0);
 
+		conf.putBoolean(pk_cfgGuiOverlayer, false,  "Draw the Gui Overlayer.");
+		
 		conf.apply();
 
 		PCco_SlotDirectCrafting.survivalCheating = conf.flag(pk_optCraftCheating);
@@ -309,7 +315,8 @@ public class mod_PCcore extends PC_Module implements PC_IActivatorListener {
 		current_lang_version_serial = conf.num(pk_cfgCurrentLangSerVersion);
 		optHackSplashes = conf.flag(pk_optHackedSplashes);
 		optHackLockedChest = conf.flag(pk_optHackedLockedChest);
-
+		guiOverlayer = conf.flag(pk_cfgGuiOverlayer);
+		
 		PC_Logger.setPrintToStdout(conf.flag(pk_logToStdout));
 		PC_Logger.enableLogging(conf.flag(pk_logEnabled));
 	}
