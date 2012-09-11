@@ -136,14 +136,28 @@ public class PCma_TileEntityOptical extends PC_TileEntity {
 
 	@Override
 	public void set(Object[] o) {
-		// TODO Auto-generated method stub
-		
+		int p = 0;
+		while(p<o.length){
+			String var = (String)o[p++];
+			if(var.equals("type"))
+				type = (String)o[p++];
+			else if(var.equals("prismSides"))
+				prismSides = (boolean[])o[p++];
+			else if(var.equals("mirrorColor"))
+				mirrorColor = (Integer)o[p++];
+		}
 	}
 
 	@Override
 	public Object[] get() {
-		// TODO Auto-generated method stub
-		return null;
+		return new Object[]{
+				"type",
+				type,
+				"prismSides",
+				prismSides,
+				"mirrorColor",
+				mirrorColor
+		};
 	}
 
 }
