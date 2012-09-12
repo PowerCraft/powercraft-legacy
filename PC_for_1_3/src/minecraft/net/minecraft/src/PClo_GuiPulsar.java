@@ -95,8 +95,8 @@ public class PClo_GuiPulsar extends PC_GresBase {
 	public void actionPerformed(PC_GresWidget widget, PC_IGresGui gui) {
 
 		if (widget.getId() == 0) {
-			PC_Utils.setTileEntity(getPlayer(), pulsar, "delayTicks", delay_ticks, 
-					"holdTicks", hold_ticks, 
+			PC_Utils.setTileEntity(getPlayer(), pulsar, "delayTime", delay_ticks, 
+					"holdTime", hold_ticks, 
 					"silent", checkSilent.isChecked());
 			gui.close();
 
