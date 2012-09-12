@@ -48,15 +48,15 @@ public class PCma_GuiLaserTypeDecide extends PC_GresBase {
 	public void actionPerformed(PC_GresWidget widget, PC_IGresGui gui) {
 
 		if (widget.getId() == 0) {
-			laser.setType(PCma_LaserType.SENSOR);
+			PC_Utils.setTileEntity(player, laser, "type", PCma_LaserType.SENSOR);
 			gui.close();
 
 		} else if (widget.getId() == 1) {
-			laser.setType(PCma_LaserType.RS_SEND);
+			PC_Utils.setTileEntity(player, laser, "type", PCma_LaserType.RS_SEND);
 			gui.close();
 
 		} else if (widget.getId() == 2) {
-			laser.setType(PCma_LaserType.RS_RECEIVE);
+			PC_Utils.setTileEntity(player, laser, "type", PCma_LaserType.RS_RECEIVE);
 			gui.close();
 
 		}
