@@ -14,6 +14,8 @@ public class PClo_TileEntitySensor extends PC_TileEntity {
 	public boolean active = false;
 	/** Current range in blocks. */
 	public int range = mod_PClogic.default_sensor_range;
+	
+	public int type;
 
 	@Override
 	public void readFromNBT(NBTTagCompound nbttagcompound) {
@@ -23,6 +25,7 @@ public class PClo_TileEntitySensor extends PC_TileEntity {
 		if (range < 1) {
 			range = mod_PClogic.default_sensor_range;
 		}
+		type = nbttagcompound.getInteger("type");
 	}
 
 	@Override
@@ -30,6 +33,7 @@ public class PClo_TileEntitySensor extends PC_TileEntity {
 		super.writeToNBT(nbttagcompound);
 		nbttagcompound.setBoolean("on", active);
 		nbttagcompound.setInteger("range", range);
+		nbttagcompound.setInteger("type", type);
 	}
 
 
@@ -128,7 +132,7 @@ public class PClo_TileEntitySensor extends PC_TileEntity {
 	 * @return group number
 	 */
 	public int getGroup() {
-		return worldObj.getBlockMetadata(xCoord, yCoord, zCoord);
+		return type;
 	}
 
 	/**
@@ -142,13 +146,25 @@ public class PClo_TileEntitySensor extends PC_TileEntity {
 
 	@Override
 	public void set(Object[] o) {
-		// TODO Auto-generated method stub
+		int p = 0;
+		while(p<o.length){
+			String var = (String)o[p++];
+			if(var.equals("active"))
+				active = (Boolean)o[p++];
+			else if(var.equals("range"))
+				range = (Integer)o[p++];
+			else if(var.equals("type"))
+				type = (Integer)o[p++];
+		}
 		
 	}
 
 	@Override
 	public Object[] get() {
-		// TODO Auto-generated method stub
-		return null;
+		return new Object[] {
+				"active", active,
+				"range", range,
+				"type", type
+		};
 	}
 }

@@ -226,7 +226,7 @@ public class mod_PClogic extends PC_Module {
 		removeBlockItem(lightOn.blockID);
 		setBlockItem(lightOn.blockID, new PClo_ItemBlockLight(lightOn.blockID - 256));
 		removeBlockItem(sensor.blockID);
-		setBlockItem(sensor.blockID, new PClo_ItemBlockSensor(sensor.blockID - 256, sensor));
+		setBlockItem(sensor.blockID, new PClo_ItemBlockSensor(sensor.blockID - 256));
 		removeBlockItem(radio.blockID);
 		setBlockItem(radio.blockID, new PClo_ItemBlockRadio(radio.blockID - 256));
 
