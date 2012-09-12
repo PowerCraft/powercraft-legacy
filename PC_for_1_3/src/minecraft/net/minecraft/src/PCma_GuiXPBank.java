@@ -100,7 +100,7 @@ public class PCma_GuiXPBank extends PC_GresBase {
 		xpbank.worldObj.markBlockAsNeedsUpdate(xpbank.xCoord, xpbank.yCoord, xpbank.zCoord);
 	}
 
-	private void addToPlayer(EntityPlayer player, int points) {
+	private void addToPlayer(int points) {
 		int xpsum = points;
 		int cnt = 0;
 		// add by parts to avoid bug in player.
@@ -128,17 +128,17 @@ public class PCma_GuiXPBank extends PC_GresBase {
 		return 7 + (level * 7 >> 1);
 	}
 
-	private void withdrawOneLevel(EntityPlayer player) {
+	private void withdrawOneLevel() {
 		int level = player.experienceLevel;
 
 		while ((player.experienceLevel == level) && (xpbank.xp > 0)) {
 			int a = Math.min(xpbank.xp, 1);
-			addToPlayer(player, a);
+			addToPlayer(a);
 			xpbank.xp -= a;
 		}
 	}
 
-	private void depositOneLevel(EntityPlayer player) {
+	private void depositOneLevel() {
 
 		int playerPointsInLevelProgress = Math.round(player.experience * player.xpBarCap());
 
@@ -172,8 +172,7 @@ public class PCma_GuiXPBank extends PC_GresBase {
 
 	@Override
 	public void actionPerformed(PC_GresWidget widget, PC_IGresGui gui) {
-
-		EntityPlayer player = getPlayer();
+		
 		Random rand = new Random();
 
 
@@ -185,7 +184,7 @@ public class PCma_GuiXPBank extends PC_GresBase {
 
 			case 10: //withdraw one level
 
-				withdrawOneLevel(player);
+				withdrawOneLevel();
 
 				PC_Utils.mc().theWorld.playSoundAtEntity(player, "random.orb", 0.3F, 0.5F * ((rand.nextFloat() - rand.nextFloat()) * 0.7F + 1.8F));
 				break;
@@ -201,13 +200,13 @@ public class PCma_GuiXPBank extends PC_GresBase {
 					if (player.experienceTotal < 0) player.experienceTotal = 0;
 					if (player.experienceLevel < 0) player.experienceLevel = 0;
 					if (player.score < 0) player.score = 0;
-					withdrawOneLevel(player);
+					withdrawOneLevel();
 				}
 				PC_Utils.mc().theWorld.playSoundAtEntity(player, "random.orb", 0.3F, 0.5F * ((rand.nextFloat() - rand.nextFloat()) * 0.7F + 1.8F));
 				break;
 
 			case 20: //deposit one level
-				depositOneLevel(player);
+				depositOneLevel();
 
 				PC_Utils.mc().theWorld.playSoundAtEntity(player, "random.orb", 0.3F, 0.5F * ((rand.nextFloat() - rand.nextFloat()) * 0.7F + 1.8F));
 				break;
@@ -222,7 +221,7 @@ public class PCma_GuiXPBank extends PC_GresBase {
 					if (player.experienceTotal < 0) player.experienceTotal = 0;
 					if (player.experienceLevel < 0) player.experienceLevel = 0;
 					if (player.score < 0) player.score = 0;
-					depositOneLevel(player);
+					depositOneLevel();
 				}
 
 				player.experienceLevel = 0;

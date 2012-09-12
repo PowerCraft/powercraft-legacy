@@ -170,7 +170,6 @@ public class PCma_TileEntityRoaster extends PC_TileEntity implements IInventory,
 		if (!laser && burnTime > 0) {
 			burnCreatures();
 		}
-
 		if (netherTime > 0) {
 			netherTime--;
 		}
@@ -244,7 +243,8 @@ public class PCma_TileEntityRoaster extends PC_TileEntity implements IInventory,
 				eitem.motionY = entityitem.motionY;
 				eitem.motionZ = entityitem.motionZ;
 				eitem.delayBeforeCanPickup = 7;
-				worldObj.spawnEntityInWorld(eitem);
+				if(!worldObj.isRemote)
+					worldObj.spawnEntityInWorld(eitem);
 				if (--entityitem.item.stackSize <= 0) {
 					entityitem.setDead();
 				}
@@ -407,13 +407,27 @@ public class PCma_TileEntityRoaster extends PC_TileEntity implements IInventory,
 
 	@Override
 	public void set(Object[] o) {
-		// TODO Auto-generated method stub
-		
+		int p = 0;
+		while(p<o.length){
+			String var = (String)o[p++];
+			if(var.equals("burnTime"))
+				burnTime = (Integer)o[p++];
+			else if(var.equals("netherTime"))
+				netherTime = (Integer)o[p++];
+			else if(var.equals("netherActionTime"))
+				netherActionTime = (Integer)o[p++];
+			else if(var.equals("noNetherrack"))
+				noNetherrack = (Boolean)o[p++];
+		}
 	}
 
 	@Override
 	public Object[] get() {
-		// TODO Auto-generated method stub
-		return null;
+		return new Object[]{
+				"burnTime", burnTime,
+				"netherTime", netherTime,
+				"netherActionTime", netherActionTime,
+				"noNetherrack", noNetherrack
+		};
 	}
 }
