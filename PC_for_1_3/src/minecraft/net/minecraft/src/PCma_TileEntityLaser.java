@@ -366,13 +366,30 @@ public class PCma_TileEntityLaser extends PC_TileEntity implements PC_IBeamHandl
 
 	@Override
 	public void set(Object[] o) {
-		// TODO Auto-generated method stub
-		
+		int p = 0;
+		while(p<o.length){
+			String var = (String)o[p++];
+			if(var.equals("active"))
+				active = (Boolean)o[p++];
+			else if(var.equals("loadedLegacyLaser"))
+				loadedLegacyLaser = (Boolean)o[p++];
+			else if(var.equals("type"))
+				type = (Integer)o[p++];
+			else if(var.equals("hitObjectThisShot"))
+				hitObjectThisShot = (Boolean)o[p++];
+			else if(var.equals("receiverCooldownTimer"))
+				receiverCooldownTimer = (Integer)o[p++];
+		}
 	}
 
 	@Override
 	public Object[] get() {
-		// TODO Auto-generated method stub
-		return null;
+		return new Object[]{
+				"active", active,
+				"loadedLegacyLaser", loadedLegacyLaser,
+				"type", type,
+				"hitObjectThisShot", hitObjectThisShot,
+				"receiverCooldownTimer", receiverCooldownTimer
+		};
 	}
 }
