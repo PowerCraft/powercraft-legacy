@@ -23,14 +23,8 @@ public class PCco_ItemOreSniffer extends Item {
 
 	@Override
 	public boolean tryPlaceIntoWorld(ItemStack itemstack, EntityPlayer entityplayer, World world, int i, int j, int k, int l, float par8, float par9, float par10) {
-		int[] offsetX = { 0, 0, 0, 0, 1, -1 };
-		int[] offsetZ = { 0, 0, 1, -1, 0, 0 };
-		int[] offsetY = { 1, -1, 0, 0, 0, 0 };
-		int MoveX = offsetX[l];
-		int MoveY = offsetY[l];
-		int MoveZ = offsetZ[l];
 
-		PC_Utils.openGres(entityplayer, PCco_GuiOreSnifferResultScreen.class, world.getBlockTileEntity(i, j, k));
+		PC_Utils.openGres(entityplayer, PCco_GuiOreSnifferResultScreen.class, i, j, k, l);
 		
 		//PC_Utils.openGres(entityplayer, new PCco_GuiOreSnifferResultScreen(entityplayer, world, new PC_CoordI(i, j, k), new PC_CoordI(MoveX, MoveY,
 		//		MoveZ)));
