@@ -23,7 +23,9 @@ public class PCtr_ItemBlockConveyor extends ItemBlock {
 	}
 
 	@Override
-	public boolean func_77660_a(ItemStack itemstack, World world, int i, int j, int k, int l, EntityLiving entityplayer) {
+	public boolean tryPlaceIntoWorld(ItemStack itemstack,
+			EntityPlayer entityplayer, World world, int i, int j,
+			int k, int l, float par8, float par9, float par10) {
 		int id = world.getBlockId(i, j, k);
 
 		if (id == Block.snow.blockID) {
@@ -93,7 +95,7 @@ public class PCtr_ItemBlockConveyor extends ItemBlock {
 			Block block = Block.blocksList[getBlockID()];
 			if (world.setBlock(i, j, k, block.blockID)) {
 				
-				//block.onBlockPlaced(world, i, j, k, l);
+				//block.onBlockPlaced(par3World, i, j, k, l);
 				block.onBlockPlacedBy(world, i, j, k, entityplayer);
 
 				world.markBlocksDirty(i, j, k, i, j, k);
