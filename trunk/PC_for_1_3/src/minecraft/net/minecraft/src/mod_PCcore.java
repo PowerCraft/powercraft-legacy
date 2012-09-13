@@ -238,10 +238,7 @@ public class mod_PCcore extends PC_Module implements PC_IActivatorListener {
 			
 			Toolkit.getDefaultToolkit().beep();  
 			
-			/**
-			 *  TODO
-			 * PC_Utils.mc().onMinecraftCrash(new UnexpectedThrowable("Uncaught Exception\n" + e.getMessage(), e));
-			 */
+			PC_Utils.mc().crashed(new CrashReport("Uncaught Exception\n" + e.getMessage(), e));
 			
 		}
 		
@@ -1282,7 +1279,6 @@ public class mod_PCcore extends PC_Module implements PC_IActivatorListener {
 
 	@Override
 	protected Hashtable<String, PC_INBTWD> addNetManager() {
-		// TODO Auto-generated method stub
 		return null;
 	}
 	

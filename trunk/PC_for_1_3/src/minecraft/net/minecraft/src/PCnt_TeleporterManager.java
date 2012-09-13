@@ -144,7 +144,7 @@ public class PCnt_TeleporterManager extends PC_PacketHandler implements PC_INBTW
 
 		if(target==null||target.equals(""))
 			return false;
-		if(!entity.worldObj.isRemote) return false;
+		//if(entity.worldObj.isRemote) return false;
 		
 		System.out.println("teleport "+entity+" to "+target);
 		
@@ -281,58 +281,23 @@ public class PCnt_TeleporterManager extends PC_PacketHandler implements PC_INBTW
         int var16 = MathHelper.floor_double(entity.posZ);
         int var18;
 
-        if (entity.worldObj.blockExists(var14, var15, var16))
+        entity.setPosition(entity.posX, entity.posY, entity.posZ);
+
+         
+        short var30 = 128;
+
+        for (var18 = 0; var18 < var30; ++var18)
         {
-            boolean var17 = false;
-
-            while (!var17 && var15 > 0)
-            {
-                var18 = entity.worldObj.getBlockId(var14, var15 - 1, var16);
-
-                if (var18 != 0 && Block.blocksList[var18].blockMaterial.blocksMovement())
-                {
-                    var17 = true;
-                }
-                else
-                {
-                    --entity.posY;
-                    --var15;
-                }
-            }
-
-            if (var17)
-            {
-                entity.setPosition(entity.posX, entity.posY, entity.posZ);
-
-                if (entity.worldObj.getCollidingBoundingBoxes(entity, entity.boundingBox).isEmpty() && !entity.worldObj.isAnyLiquid(entity.boundingBox))
-                {
-                    var13 = true;
-                }
-            }
+            double var19 = (double)var18 / ((double)var30 - 1.0D);
+            float var21 = (entity.rand.nextFloat() - 0.5F) * 0.2F;
+            float var22 = (entity.rand.nextFloat() - 0.5F) * 0.2F;
+            float var23 = (entity.rand.nextFloat() - 0.5F) * 0.2F;
+            double var24 = var7 + (entity.posX - var7) * var19 + (entity.rand.nextDouble() - 0.5D) * (double)entity.width * 2.0D;
+            double var26 = var9 + (entity.posY - var9) * var19 + entity.rand.nextDouble() * (double)entity.height;
+            double var28 = var11 + (entity.posZ - var11) * var19 + (entity.rand.nextDouble() - 0.5D) * (double)entity.width * 2.0D;
+            entity.worldObj.spawnParticle("portal", var24, var26, var28, (double)var21, (double)var22, (double)var23);
         }
-
-        if (!var13)
-        {
-            entity.setPosition(var7, var9, var11);
-            return false;
-        }
-        else
-        {
-            short var30 = 128;
-
-            for (var18 = 0; var18 < var30; ++var18)
-            {
-                double var19 = (double)var18 / ((double)var30 - 1.0D);
-                float var21 = (entity.rand.nextFloat() - 0.5F) * 0.2F;
-                float var22 = (entity.rand.nextFloat() - 0.5F) * 0.2F;
-                float var23 = (entity.rand.nextFloat() - 0.5F) * 0.2F;
-                double var24 = var7 + (entity.posX - var7) * var19 + (entity.rand.nextDouble() - 0.5D) * (double)entity.width * 2.0D;
-                double var26 = var9 + (entity.posY - var9) * var19 + entity.rand.nextDouble() * (double)entity.height;
-                double var28 = var11 + (entity.posZ - var11) * var19 + (entity.rand.nextDouble() - 0.5D) * (double)entity.width * 2.0D;
-                entity.worldObj.spawnParticle("portal", var24, var26, var28, (double)var21, (double)var22, (double)var23);
-            }
-            return true;
-        }
+        return true;
     }
 
 	public static PCnt_TeleporterData getTeleporterDataAt(int xCoord,

@@ -34,7 +34,7 @@ public class FunctionTable extends Hashtable {
 
 	/**
 	 * overrides the standard hashtable method. If the arguments are of the
-	 * wrong type then throws ClassCastException RJM addition Oct 03 TODO is
+	 * wrong type then throws ClassCastException RJM addition Oct 03 todo is
 	 * Hashtable always index by Strings?
 	 */
 	@Override

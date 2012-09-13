@@ -13,14 +13,7 @@ public class PCco_MobSpawnerSetter extends PC_PacketHandler {
 		tems.setMobID(mob);
 		try {
 			ModLoader.setPrivateValue(TileEntityMobSpawner.class, tems, 8, null);
-		} catch (IllegalArgumentException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (SecurityException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (NoSuchFieldException e) {
-			// TODO Auto-generated catch block
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		tems.getMobEntity();

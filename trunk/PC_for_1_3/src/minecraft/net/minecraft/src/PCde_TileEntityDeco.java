@@ -16,9 +16,6 @@ public class PCde_TileEntityDeco extends PC_TileEntity implements PC_IInventoryW
 	/** block type. */
 	public int type = -1;
 	private boolean send = true;
-	
-	/** Flag for migrating from 3.4pre3 to newer. */
-	private boolean flag34pre4 = true;
 
 	private PCde_InventoryTransmutationContainer transmutabox = new PCde_InventoryTransmutationContainer(this);
 
@@ -48,31 +45,6 @@ public class PCde_TileEntityDeco extends PC_TileEntity implements PC_IInventoryW
 			send = false;
 		}
 		if (type == 0 || type == 1) return;
-
-
-		// conversion of old iron ledges to their own block (walkable)
-		if (!flag34pre4 && type == 2) {
-
-			// if block was made in 3.4pre3, then type=2 should now be BlockNonSolid, type 0
-
-			Block block = mod_PCdeco.walkable;
-			if (worldObj.setBlock(xCoord, yCoord, zCoord, block.blockID)) {
-				// set tile entity
-				PCde_TileEntityWalkable ted = (PCde_TileEntityWalkable) worldObj.getBlockTileEntity(xCoord, yCoord, zCoord);
-				if (ted == null) {
-					/** TODO ted = (PCde_TileEntityWalkable) ((BlockContainer) block).createNewTileEntity(world);*/
-				}
-				ted.type = 0;
-				worldObj.setBlockTileEntity(xCoord, yCoord, zCoord, ted);
-				/** TODO block.onBlockPlacedBy(worldObj, xCoord, yCoord, zCoord, 0, player);*/
-
-				worldObj.markBlocksDirty(xCoord, yCoord, zCoord, xCoord, yCoord, zCoord);
-				worldObj.markBlockNeedsUpdate(xCoord, yCoord, zCoord);
-
-				PC_Logger.finest("Old Iron Ledge block updated to use now format at [" + xCoord + ";" + yCoord + ";" + zCoord + "]");
-				return;
-			}
-		}
 
 		// conductor
 		if (type == 2) {
@@ -124,7 +96,6 @@ public class PCde_TileEntityDeco extends PC_TileEntity implements PC_IInventoryW
 			}
 		}
 
-		flag34pre4 = true;
 	}
 
 	/**
@@ -141,7 +112,6 @@ public class PCde_TileEntityDeco extends PC_TileEntity implements PC_IInventoryW
 	public void readFromNBT(NBTTagCompound tag) {
 		super.readFromNBT(tag);
 		type = tag.getInteger("type");
-		flag34pre4 = tag.getBoolean("flag34pre4");
 
 		lightningCharge = tag.getLong("LightningCharge");
 		lightningChargeRequired = tag.getLong("LightningChargeRequired");
@@ -155,7 +125,6 @@ public class PCde_TileEntityDeco extends PC_TileEntity implements PC_IInventoryW
 	public void writeToNBT(NBTTagCompound tag) {
 		super.writeToNBT(tag);
 		tag.setInteger("type", type);
-		tag.setBoolean("flag34pre4", flag34pre4);
 
 		tag.setLong("LightningCharge", lightningCharge);
 		tag.setLong("LightningChargeRequired", lightningChargeRequired);
@@ -329,6 +298,8 @@ public class PCde_TileEntityDeco extends PC_TileEntity implements PC_IInventoryW
 	}
 
 	private void tryToSmoke() {
+		if(!worldObj.isRemote)
+			return;
 		if (worldObj.isAirBlock(xCoord, yCoord + 1, zCoord)) { //test if air is above chimney	    
 
 			PC_CoordI cursor = getCoord().copy();

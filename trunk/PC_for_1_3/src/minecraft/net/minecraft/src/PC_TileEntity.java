@@ -53,7 +53,6 @@ public abstract class PC_TileEntity extends TileEntity {
 	        for(int i=0; i<o.length; i++)
 	        	sendData.writeObject(o[i]);
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		return new Packet250CustomPayload("PowerCraft", data.toByteArray());

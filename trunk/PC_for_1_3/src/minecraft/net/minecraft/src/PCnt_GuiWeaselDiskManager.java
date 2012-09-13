@@ -881,7 +881,6 @@ public class PCnt_GuiWeaselDiskManager extends PC_GresBase {
 
 	@Override
 	public List<Slot> getAllSlots(Container c) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
