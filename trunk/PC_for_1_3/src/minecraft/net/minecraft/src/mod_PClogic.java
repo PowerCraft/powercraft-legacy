@@ -689,17 +689,6 @@ public class mod_PClogic extends PC_Module {
 	}
 
 	@Override
-	protected List<Class> addGui() {
-		List<Class> guis = new ArrayList<Class>();
-		guis.add(PClo_GuiDelayer.class);
-		guis.add(PClo_GuiPulsar.class);
-		guis.add(PClo_GuiRadio.class);
-		guis.add(PClo_GuiSensor.class);
-		guis.add(PClo_GuiLight.class);
-		return guis;
-	}
-
-	@Override
 	protected Hashtable<String, PC_PacketHandler> addPacketHandler() {
 		// TODO Auto-generated method stub
 		return null;

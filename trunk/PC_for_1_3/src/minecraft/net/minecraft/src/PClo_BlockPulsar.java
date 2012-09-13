@@ -85,7 +85,7 @@ public class PClo_BlockPulsar extends BlockContainer implements PC_IBlockType {
 				return true;
 			}
 		}
-		PC_Utils.openGres(player, PClo_GuiPulsar.class, world, i, j, k); 
+		PC_Utils.openGres(player, PClo_GuiPulsar.class, i, j, k); 
 
 		return true;
 	}

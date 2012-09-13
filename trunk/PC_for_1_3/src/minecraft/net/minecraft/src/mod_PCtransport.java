@@ -420,14 +420,6 @@ public class mod_PCtransport extends PC_Module {
 	}
 
 	@Override
-	protected List<Class> addGui() {
-		List<Class> guis = new ArrayList<Class>();
-		guis.add(PCtr_GuiSeparationBelt.class);
-		guis.add(PCtr_GuiEjectionBelt.class);
-		return guis;
-	}
-
-	@Override
 	protected Hashtable<String, PC_PacketHandler> addPacketHandler() {
 		Hashtable<String, PC_PacketHandler> ph = new Hashtable<String, PC_PacketHandler>();
 		ph.put("TeleporterNetHandler", PCnt_TeleporterManager.getTeleporterManager());

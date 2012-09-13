@@ -426,13 +426,6 @@ public class mod_PCnet extends PC_Module {
 	}
 
 	@Override
-	protected List<Class> addGui() {
-		List<Class> guis = new ArrayList<Class>();
-		guis.add(PCnt_GuiTeleporter.class);
-		return guis;
-	}
-
-	@Override
 	protected Hashtable<String, PC_PacketHandler> addPacketHandler() {
 		// TODO Auto-generated method stub
 		return null;

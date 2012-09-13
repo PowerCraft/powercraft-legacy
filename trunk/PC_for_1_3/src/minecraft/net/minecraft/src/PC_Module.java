@@ -296,17 +296,6 @@ public abstract class PC_Module extends BaseMod {
 
 			PC_Logger.finer("Adding recipes...");
 			addRecipes();
-
-
-			PC_Logger.finer("Adding Gui ID's...");
-			List<Class> gList = addGui();
-			if(gList!=null){
-				for(Class c:gList){
-					guiList.put(lastGuiID, c);
-					ModLoader.registerContainerID(this, lastGuiID);
-					lastGuiID++;
-				}
-			}
 			
 			PC_Logger.finer("Adding PacketHandler...");
 			Hashtable<String, PC_PacketHandler> phList = addPacketHandler();
@@ -557,13 +546,6 @@ public abstract class PC_Module extends BaseMod {
 	 * For fuels, override addFuel method from baseMod.
 	 */
 	public abstract void addRecipes();
-
-	/**
-	 * Add Gui's
-	 * 
-	 * @return a List of all Gui's used in this Module
-	 */
-	protected abstract List<Class> addGui();
 	
 	protected abstract Hashtable<String, PC_PacketHandler> addPacketHandler();
 	

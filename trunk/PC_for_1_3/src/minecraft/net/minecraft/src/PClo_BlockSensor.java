@@ -67,7 +67,7 @@ public class PClo_BlockSensor extends BlockContainer implements PC_IBlockType, P
 			}
 		}
 
-		PC_Utils.openGres(player, PClo_GuiSensor.class, world, i, j, k);
+		PC_Utils.openGres(player, PClo_GuiSensor.class, i, j, k);
 		//PC_Utils.openGres(player, new PClo_GuiSensor((PClo_TileEntitySensor) new PC_CoordI(i, j, k).getTileEntity(world)));
 		return true;
 	}

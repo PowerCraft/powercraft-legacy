@@ -1384,12 +1384,12 @@ public class PClo_BlockGate extends BlockContainer implements PC_IRotatedBox, PC
 
 			case PClo_GateType.CHEST_FULL:
 				//PC_Utils.openGres(player, new PClo_GuiFullChest(teg));
-				PC_Utils.openGres(player, PClo_GuiFullChest.class, world, x, y, z);
+				PC_Utils.openGres(player, PClo_GuiFullChest.class, x, y, z);
 				return true;
 
 			case PClo_GateType.HOLD_DELAYER:
 			case PClo_GateType.FIFO_DELAYER:
-				PC_Utils.openGres(player, PClo_GuiDelayer.class, world, x, y, z);
+				PC_Utils.openGres(player, PClo_GuiDelayer.class, x, y, z);
 				return true;
 		}
 
