@@ -575,28 +575,12 @@ public abstract class PC_Module extends BaseMod {
 	public abstract void postInit();
 	
 	@Override
-	public GuiContainer getContainerGUI(EntityClientPlayerMP var1, int var2, int var3, int var4, int var5)
-    {
-		Class c = guiList.get(var2);
-		if(c==null)
-			return null;
-		TileEntity te=null;
-		if(var4>-1)
-			te = var1.worldObj.getBlockTileEntity(var3, var4, var5);
-		PC_GresBase gb=PC_Utils.createGui(c, var1, te);
-		if(gb==null)
-			return null;
-		return new PC_GresGui(gb);
-    }
-	
-	@Override
 	public void serverCustomPayload(NetServerHandler netServerHandler, Packet250CustomPayload packet){
 		System.out.println("serverCustomPayload");
 		try {
 			ObjectInputStream input = new ObjectInputStream(new ByteArrayInputStream(packet.data));
 			handleIncomingPacket(input, netServerHandler.getPlayer().worldObj, false);
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
@@ -607,7 +591,6 @@ public abstract class PC_Module extends BaseMod {
 			ObjectInputStream input = new ObjectInputStream(new ByteArrayInputStream(packet.data));
 			handleIncomingPacket(input, PC_Utils.mc().theWorld, true);
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		
@@ -615,14 +598,17 @@ public abstract class PC_Module extends BaseMod {
 	
 	private void handleIncomingPacket(ObjectInputStream input, World world, boolean client) throws IOException, ClassNotFoundException{
 		String str = (String)input.readObject();
-		if(str.equals("TileEntity"))
+		if(str.equals("TileEntity")){
 			handleIncomingTEPacket(input, world, client);
-		else if(str.equals("Block"))
+		}else if(str.equals("Block")){
 			handleIncomingBlockPacket(input, world, client);
-		else if(str.equals("PacketHandler"))
+		}else if(str.equals("PacketHandler")){
 			handleIncomingPacketHandlerPacket(input, world, client);
-		else
+		}else if(str.equals("GUI")){
+			handleIncomingGuiPacket(input, world, client);
+		}else{
 			throw new IllegalArgumentException("Neither TE nor Block nor PacketHandler");
+		}
 	}
 	
 	private void handleIncomingTEPacket(ObjectInputStream input, World world, boolean client) throws IOException, ClassNotFoundException{
@@ -672,6 +658,28 @@ public abstract class PC_Module extends BaseMod {
 				PC_Utils.sendToPacketHandlerArray(null, name, o);
 		}
 	}
+	
+	private void handleIncomingGuiPacket(ObjectInputStream input, World world, boolean client) throws ClassNotFoundException, IOException{
+		if(!client)
+			return;
+		Minecraft m = PC_Utils.mc();
+		EntityClientPlayerMP player = m.thePlayer;
+		String name = (String)input.readObject();
+        int guiID = input.readInt();
+        int dimension = input.readInt();
+        int size = input.readInt();
+        Object[] o = new Object[size];
+        for(int i=0; i<size; i++)
+        	o[i] = input.readObject();
+
+        if (player.dimension != dimension)
+        {
+            return;
+        }
+        Class c = Class.forName(name);
+        m.displayGuiScreen(new PC_GresGui(PC_Utils.createGui(c, player, o)));
+        player.craftingInventory.windowId = guiID;
+    }
 	
 }
 

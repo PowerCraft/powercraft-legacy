@@ -2,8 +2,11 @@ package net.minecraft.src;
 
 
 import java.io.ByteArrayOutputStream;
+import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
+import java.lang.reflect.Constructor;
+import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.Enumeration;
@@ -299,73 +302,83 @@ public class PC_Utils {
 		return (hours > 0 ? hours + ":" : "") + (hours > 0 || mins > 0 ? mins + ":" : "") + secs;
 	}
 
-	public static PC_GresBase createGui(Class c, EntityPlayer player, TileEntity te){
+	public static PC_GresBase createGui(Class<? extends PC_GresBase> c, EntityPlayer player, Object[] o){
 		if(c==null)
 			return null;
 		PC_GresBase gb=null;
-		try {
-			gb = (PC_GresBase)c.getConstructor(new Class[]{EntityPlayer.class, TileEntity.class}).newInstance(player, te);
-		} catch (InstantiationException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IllegalAccessException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IllegalArgumentException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (InvocationTargetException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (NoSuchMethodException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (SecurityException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+		Constructor conA[] = c.getConstructors();
+		for(Constructor con:conA){
+			boolean ok=true;
+			Class p[] = con.getParameterTypes();
+			Object l[] = new Object[p.length];
+			int oP=0;
+			for(int i=0; i<p.length; i++){
+				if(p[i] == EntityPlayer.class){
+					l[i] = player;
+				}else if(p[i] == TileEntity.class){
+					if(oP+2<o.length){
+						l[i] = player.worldObj.getBlockTileEntity((Integer)o[oP++], (Integer)o[oP++], (Integer)o[oP++]);
+					}else
+						ok=false;
+				}else if(p[i] == Object.class){
+					l[i] = o[oP++];
+				}else{
+					ok=false;
+					break;
+				}
+			}
+			if(ok){
+				try {
+					gb = (PC_GresBase)con.newInstance(l);
+					break;
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
 		}
 		return gb;
 	}
 	
-	public static void openGres(EntityPlayer entityplayer, Class c,
-			TileEntity te) {
-		if(entityplayer instanceof EntityPlayerMP){
-			Enumeration<Integer> ei = PC_Module.guiList.keys();
-			while(ei.hasMoreElements()){
-				Integer i=ei.nextElement();
-				Class cgui = PC_Module.guiList.get(i);
-				if(cgui==c){
-					PC_GresContainerManager cm = new PC_GresContainerManager(entityplayer, createGui(c, entityplayer, te));
-					if(te!=null)
-						ModLoader.serverOpenWindow((EntityPlayerMP)entityplayer, cm, i, te.xCoord, te.yCoord, te.zCoord);
-					else
-						ModLoader.serverOpenWindow((EntityPlayerMP)entityplayer, cm, i, 0, -1, 0);
-					break;
-				}
-			}
-		}
-	}
-	
-	public static void openGres(EntityPlayer entityplayer, Class c,
-			World world, int x, int y, int z) {
-		if(entityplayer instanceof EntityPlayerMP){
-			Enumeration<Integer> ei = PC_Module.guiList.keys();
-			while(ei.hasMoreElements()){
-				Integer i=ei.nextElement();
-				Class cgui = PC_Module.guiList.get(i);
-				if(cgui==c){
-					TileEntity te = null;
-					if(y>-1)
-						te = world.getBlockTileEntity(x, y, z);
-					PC_GresContainerManager cm = new PC_GresContainerManager(entityplayer, createGui(c, entityplayer, te));
-					if(te!=null)
-						ModLoader.serverOpenWindow((EntityPlayerMP)entityplayer, cm, i, te.xCoord, te.yCoord, te.zCoord);
-					else
-						ModLoader.serverOpenWindow((EntityPlayerMP)entityplayer, cm, i, x, y, z);
-					break;
-				}
-			}
-		}
+	public static void openGres(EntityPlayer entityplayer, Class<? extends PC_GresBase> c, Object... o){
+		if(!(entityplayer instanceof EntityPlayerMP))
+			return;
+		if(c==null)
+			return;
+		int guiID = 0;
+		try{
+			Field var6 = EntityPlayerMP.class.getDeclaredFields()[17];
+	        var6.setAccessible(true);
+	        guiID = var6.getInt(entityplayer);
+	        guiID = guiID % 100 + 1;
+	        var6.setInt(entityplayer, guiID);
+		} catch (Exception e){
+            e.printStackTrace();
+        }
+		ByteArrayOutputStream data = new ByteArrayOutputStream();
+        ObjectOutputStream sendData;
+		try
+        {
+            sendData = new ObjectOutputStream(data);
+            sendData.writeObject("GUI");
+            sendData.writeObject(c.getName());
+            sendData.writeInt(guiID);
+            sendData.writeInt(entityplayer.dimension);
+            int size = o.length;
+            sendData.writeInt(size);
+            for(int i=0; i<size; i++){
+            	sendData.writeObject(o[i]);
+            }
+            sendData.writeObject("End GUI");
+        }
+        catch (IOException e)
+        {
+            e.printStackTrace();
+        }
+		send(entityplayer, data);
+		PC_GresContainerManager cm = new PC_GresContainerManager(entityplayer, createGui(c, entityplayer, o));      
+        entityplayer.craftingInventory = cm;
+        entityplayer.craftingInventory.windowId = guiID;
+        entityplayer.craftingInventory.addCraftingToCrafters((EntityPlayerMP)entityplayer);
 	}
 	
 	public static void setTileEntity(EntityPlayer player, TileEntity tileEntity, Object... o){
@@ -384,6 +397,7 @@ public class PC_Utils {
 	        sendData.writeInt(o.length);
 	        for(int i=0; i<o.length; i++)
 	        	sendData.writeObject(o[i]);
+	        sendData.writeObject("End TileEntity");
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -405,6 +419,7 @@ public class PC_Utils {
 	        sendData.writeInt(o.length);
 	        for(int i=0; i<o.length; i++)
 	        	sendData.writeObject(o[i]);
+	        sendData.writeObject("End Block");
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -426,6 +441,7 @@ public class PC_Utils {
 	        sendData.writeInt(o.length);
 	        for(int i=0; i<o.length; i++)
 	        	sendData.writeObject(o[i]);
+	        sendData.writeObject("End PacketHandler");
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

@@ -32,7 +32,7 @@ public class PCco_GuiCraftingTool extends PC_GresBase {
 	/**
 	 * @param player the player
 	 */
-	public PCco_GuiCraftingTool(EntityPlayer player, TileEntity te) {
+	public PCco_GuiCraftingTool(EntityPlayer player) {
 		this.player = player;
 		player.addStat(AchievementList.openInventory, 1);
 	}

@@ -62,7 +62,7 @@ public class PCde_BlockDeco extends BlockContainer implements PC_IBlockType, PC_
 			}
 		}
 		System.out.println("öffnen");
-		PC_Utils.openGres(entityplayer, PCde_GuiTransmutator.class, world, i, j, k);
+		PC_Utils.openGres(entityplayer, PCde_GuiTransmutator.class, i, j, k);
 		
 		/*if (tileentity != null) {
 			if (tileentity.type == 3 && tileentity.getInventory() != null) {

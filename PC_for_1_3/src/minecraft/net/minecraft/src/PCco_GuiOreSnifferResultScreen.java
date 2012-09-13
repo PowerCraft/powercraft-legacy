@@ -43,13 +43,17 @@ public class PCco_GuiOreSnifferResultScreen extends PC_GresBase {
 	 * @param start starting block (start of sniffing)
 	 * @param vector (sniffing direction)
 	 */
-	public PCco_GuiOreSnifferResultScreen(EntityPlayer player, TileEntity te) {
+	public PCco_GuiOreSnifferResultScreen(EntityPlayer player, Object x, Object y, Object z, Object r) {
+		int[] offsetX = { 0, 0, 0, 0, 1, -1 };
+		int[] offsetZ = { 0, 0, 1, -1, 0, 0 };
+		int[] offsetY = { 1, -1, 0, 0, 0, 0 };
 		this.player = player;
 		this.startpos = new PC_CoordI[3][3];
 		this.vector = new PC_CoordI(1, 0, 0);
-		this.world = te.worldObj;
-		this.start = new PC_CoordI(te.xCoord, te.yCoord, te.zCoord);
-		
+		this.world = player.worldObj;
+		this.start = new PC_CoordI((Integer)x, (Integer)y, (Integer)z);
+		this.vector = new PC_CoordI(offsetX[(Integer)r], offsetY[(Integer)r], offsetZ[(Integer)r]);
+				
 		int l = MathHelper.floor_double(((player.rotationYaw * 4F) / 360F) + 0.5D) & 3;
 
 		if (vector.equals(new PC_CoordI(0, -1, 0))) {
