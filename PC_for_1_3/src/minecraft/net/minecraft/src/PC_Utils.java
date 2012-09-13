@@ -399,7 +399,6 @@ public class PC_Utils {
 	        	sendData.writeObject(o[i]);
 	        sendData.writeObject("End TileEntity");
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		send(player, data);
@@ -421,7 +420,6 @@ public class PC_Utils {
 	        	sendData.writeObject(o[i]);
 	        sendData.writeObject("End Block");
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		send(player, data);
@@ -443,7 +441,6 @@ public class PC_Utils {
 	        	sendData.writeObject(o[i]);
 	        sendData.writeObject("End PacketHandler");
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		send(player, data);

@@ -78,7 +78,6 @@ public class PCde_ItemBlockDeco extends ItemBlock {
 				}
 				ted.type = itemstack.getItemDamage();
 				world.setBlockTileEntity(i, j, k, ted);
-				/** @todo block.onBlockPlaced(world, i, j, k, l); */
 				block.onBlockPlacedBy(world, i, j, k, entityplayer);
 
 				world.markBlocksDirty(i, j, k, i, j, k);
