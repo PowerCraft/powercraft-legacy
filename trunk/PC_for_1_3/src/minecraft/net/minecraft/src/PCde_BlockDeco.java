@@ -64,12 +64,6 @@ public class PCde_BlockDeco extends BlockContainer implements PC_IBlockType, PC_
 		return false;
 	}
 
-	@Override
-	public void onBlockClicked(World world, int i, int j, int k, EntityPlayer entityplayer) {
-
-		onBlockActivated(world, i, j, k, entityplayer, 0, 0.0f, 0.0f, 0.0f);
-	}
-
 
 	/**
 	 * Decorative block;
