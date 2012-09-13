@@ -62,7 +62,7 @@ public class PCtr_BlockBeltEjector extends BlockContainer implements PC_IBlockTy
 				}
 			}
 
-			PC_Utils.openGres(entityplayer, PCtr_GuiEjectionBelt.class, world, i, j, k);
+			PC_Utils.openGres(entityplayer, PCtr_GuiEjectionBelt.class, i, j, k);
 
 			return true;
 		}

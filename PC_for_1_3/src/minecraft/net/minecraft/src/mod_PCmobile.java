@@ -215,11 +215,6 @@ public class mod_PCmobile extends PC_Module implements PC_IActivatorListener {
 	}
 
 	@Override
-	protected List<Class> addGui() {
-		return null;
-	}
-
-	@Override
 	protected Hashtable<String, PC_PacketHandler> addPacketHandler() {
 		// TODO Auto-generated method stub
 		return null;

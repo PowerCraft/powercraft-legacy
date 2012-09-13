@@ -248,13 +248,6 @@ public class mod_PCdeco extends PC_Module {
 	}
 
 	@Override
-	protected List<Class> addGui() {
-		List<Class> guis = new ArrayList<Class>();
-		guis.add(PCde_GuiTransmutator.class);
-		return guis;
-	}
-
-	@Override
 	protected Hashtable<String, PC_PacketHandler> addPacketHandler() {
 		// TODO Auto-generated method stub
 		return null;

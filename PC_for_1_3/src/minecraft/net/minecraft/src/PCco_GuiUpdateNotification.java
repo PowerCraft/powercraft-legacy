@@ -20,7 +20,7 @@ public class PCco_GuiUpdateNotification extends PC_GresBase {
 	private PC_GresCheckBox checkDisable;
 	private PC_GresWidget buttonOK;
 
-	public PCco_GuiUpdateNotification(EntityPlayer player, TileEntity te){
+	public PCco_GuiUpdateNotification(EntityPlayer player){
 		this.player = player;
 	}
 

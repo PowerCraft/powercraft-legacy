@@ -999,7 +999,7 @@ public class mod_PCcore extends PC_Module implements PC_IActivatorListener {
 
 		if (pos.getId(world) == Block.mobSpawner.blockID) {
 
-			PC_Utils.openGres(player, PCco_GuiSpawnerEditor.class, world.getBlockTileEntity(pos.x, pos.y, pos.z));
+			PC_Utils.openGres(player, PCco_GuiSpawnerEditor.class, pos.x, pos.y, pos.z);
 
 			stack.damageItem(1, player);
 
@@ -1239,7 +1239,7 @@ public class mod_PCcore extends PC_Module implements PC_IActivatorListener {
 			if (++inGameTickCounter > 20) {
 				updateAlreadyShown = true;
 				try {
-					PC_Utils.openGres(mc.thePlayer, PCco_GuiUpdateNotification.class, null);
+					PC_Utils.openGres(mc.thePlayer, PCco_GuiUpdateNotification.class);
 					PC_Logger.fine("Openning UPDATE NOTIFICATION screen.");
 				} catch (Throwable t) {
 					PC_Logger.throwing("mod_PCcore", "onTickInGame", t);
@@ -1271,16 +1271,6 @@ public class mod_PCcore extends PC_Module implements PC_IActivatorListener {
 		}
 		return true;
 
-	}
-
-	@Override
-	protected List<Class> addGui() {
-		List<Class> guis = new ArrayList<Class>();
-		guis.add(PCco_GuiCraftingTool.class);
-		guis.add(PCco_GuiOreSnifferResultScreen.class);
-		guis.add(PCco_GuiSpawnerEditor.class);
-		guis.add(PCco_GuiUpdateNotification.class);
-		return guis;
 	}
 
 	@Override

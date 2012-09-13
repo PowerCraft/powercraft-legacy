@@ -172,7 +172,7 @@ public class PClo_BlockLight extends BlockContainer implements PC_ISwapTerrain, 
 
 	@Override
 	public boolean onBlockActivated(World world, int i, int j, int k, EntityPlayer entityplayer, int par6, float par7, float par8, float par9) {
-		PC_Utils.openGres(entityplayer, PClo_GuiLight.class, world, i, j, k);
+		PC_Utils.openGres(entityplayer, PClo_GuiLight.class, i, j, k);
 		return true;
 	}
 

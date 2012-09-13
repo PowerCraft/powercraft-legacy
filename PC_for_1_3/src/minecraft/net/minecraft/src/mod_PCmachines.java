@@ -487,18 +487,6 @@ public class mod_PCmachines extends PC_Module implements PC_IActivatorListener {
 	}
 
 	@Override
-	protected List<Class> addGui() {
-		List<Class> guis = new ArrayList<Class>();
-		guis.add(PCma_GuiAutomaticWorkbench.class);
-		guis.add(PCma_GuiBlockBuilder.class);
-		guis.add(PCma_GuiRoaster.class);
-		guis.add(PCma_GuiLaserTypeDecide.class);
-		guis.add(PCma_GuiReplacer.class);
-		guis.add(PCma_GuiXPBank.class);
-		return guis;
-	}
-
-	@Override
 	protected Hashtable<String, PC_PacketHandler> addPacketHandler() {
 		// TODO Auto-generated method stub
 		return null;
