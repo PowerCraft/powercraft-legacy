@@ -144,7 +144,7 @@ public class PCnt_TeleporterManager extends PC_PacketHandler implements PC_INBTW
 
 		if(target==null||target.equals(""))
 			return false;
-		//if(entity.worldObj.isRemote) return false;
+		if(entity.worldObj.isRemote) return false;
 		
 		System.out.println("teleport "+entity+" to "+target);
 		
@@ -178,6 +178,8 @@ public class PCnt_TeleporterManager extends PC_PacketHandler implements PC_INBTW
 		System.out.println(tc);
 
 		if(teleportTo(entity, td.pos.x, td.pos.y, td.pos.z)){
+			if(entity instanceof EntityPlayer)
+				PC_Utils.sendToPacketHandler((EntityPlayer)entity, "TeleporterNetHandler", 2, td.pos.x, td.pos.y, td.pos.z);
 			return true;
 		}else{
 		/*
@@ -335,6 +337,10 @@ public class PCnt_TeleporterManager extends PC_PacketHandler implements PC_INBTW
 		int x=(Integer)o[1];
 		int y=(Integer)o[2];
 		int z=(Integer)o[3];
+		if(type==2){
+			teleportTo(PC_Utils.mc().thePlayer, x, y, z);
+			return;
+		}
 		String name=(String)o[4];
 		String target=(String)o[5];
 		int dimension=0;
