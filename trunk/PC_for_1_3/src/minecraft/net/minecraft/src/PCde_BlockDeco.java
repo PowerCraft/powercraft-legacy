@@ -36,16 +36,9 @@ public class PCde_BlockDeco extends BlockContainer implements PC_IBlockType, PC_
 
 
 	@Override
-	public boolean onBlockActivated(World par1World, int par2, int par3,
-			int par4, EntityPlayer par5EntityPlayer, int par6, float par7,
+	public boolean onBlockActivated(World world, int i, int j,
+			int k, EntityPlayer entityplayer, int par6, float par7,
 			float par8, float par9) {
-		onBlockClicked(par1World, par2, par3, par4, par5EntityPlayer);
-		return true;
-	}
-
-	@Override
-	public void onBlockClicked(World world, int i, int j, int k, EntityPlayer entityplayer) {
-
 		PCde_TileEntityDeco tileentity = (PCde_TileEntityDeco) world.getBlockTileEntity(i, j, k);
 
 		ItemStack ihold = entityplayer.getCurrentEquippedItem();
@@ -53,28 +46,28 @@ public class PCde_BlockDeco extends BlockContainer implements PC_IBlockType, PC_
 			if (ihold.getItem() instanceof ItemBlock) {
 				if (ihold.getItem().shiftedIndex != blockID) {
 					if (Block.blocksList[ihold.getItem().shiftedIndex] instanceof PC_IBlockType) {
-						return;
+						return true;
 					}
-					if (ihold.getItem().shiftedIndex == Block.blockSteel.blockID) return;
+					if (ihold.getItem().shiftedIndex == Block.blockSteel.blockID) return true;
 				} else if (ihold.getItemDamage() != tileentity.type) {
-					return;
+					return true;
 				}
 			}
 		}
-		if(tileentity.type == 3){
-			System.out.println("öffnen");
-			PC_Utils.openGres(entityplayer, PCde_GuiTransmutator.class, i, j, k);
-		}
-		
-		/*if (tileentity != null) {
+		if (tileentity != null) {
 			if (tileentity.type == 3 && tileentity.getInventory() != null) {
-				PC_Utils.openGres(entityplayer,
-						new PCde_GuiTransmutator(entityplayer, (PCde_InventoryTransmutationContainer) tileentity.getInventory()));
-				return;
+				System.out.println("öffnen");
+				PC_Utils.openGres(entityplayer, PCde_GuiTransmutator.class, i, j, k);
+				return true;
 			}
-		}*/
+		}
+		return false;
+	}
 
-		return;
+	@Override
+	public void onBlockClicked(World world, int i, int j, int k, EntityPlayer entityplayer) {
+
+		onBlockActivated(world, i, j, k, entityplayer, 0, 0.0f, 0.0f, 0.0f);
 	}
 
 

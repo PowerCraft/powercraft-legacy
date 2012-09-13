@@ -25,7 +25,7 @@ public class PCde_ItemBlockDeco extends ItemBlock {
 	}
 
 	@Override
-	public boolean tryPlaceIntoWorld(ItemStack itemstack, EntityPlayer entityplayer, World world, int i, int j, int k, int l, float par8, float par9, float par10) {
+	public boolean tryPlaceIntoWorld(ItemStack itemstack, EntityPlayer entityplayer, World world, int i, int j, int k, int l, float par8, float par9, float par10) {	
 		int id = world.getBlockId(i, j, k);
 
 		if (id == Block.snow.blockID) {
