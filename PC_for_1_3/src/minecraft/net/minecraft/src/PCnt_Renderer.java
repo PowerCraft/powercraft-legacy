@@ -56,7 +56,9 @@ public class PCnt_Renderer {
 		boolean gf = RenderBlocks.cfgGrassFix;
 		RenderBlocks.cfgGrassFix = false;
 		//PCtr_TileEntityTeleporter tet = PCtr_BlockTeleporter.getTE(iblockaccess, i, j, k);
-		PCnt_TeleporterData td = PCnt_TeleporterManager.getTeleporterDataAt(i, j, k);
+		PCnt_TeleporterData td = null;
+		if(iblockaccess instanceof World)
+			td = PCnt_TeleporterManager.getTeleporterDataAt((World)iblockaccess, i, j, k);
 		//if (tet.isReceiver()) {
 			Block.blockGold.setBlockBounds(0.125F, 0.0F, 0.125F, 0.875F, 0.125F, 0.875F);
 			renderblocks.renderStandardBlock(Block.blockGold, i, j, k);

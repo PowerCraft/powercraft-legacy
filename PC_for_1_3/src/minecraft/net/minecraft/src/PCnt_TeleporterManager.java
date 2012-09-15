@@ -137,140 +137,101 @@ public class PCnt_TeleporterManager extends PC_PacketHandler implements PC_INBTW
 	private static final boolean isTeleporter(int id) {
 		return id == mod_PCnet.teleporter.blockID;
 	}
-
-	// ----- ENTITY MANIPULATION ------
-
-	public static boolean teleportEntityTo(Entity entity, String target) {
-
-		if(target==null||target.equals(""))
-			return false;
-		if(entity.worldObj.isRemote) return false;
-		
-		System.out.println("teleport "+entity+" to "+target);
-		
-		PCnt_TeleporterData tdt = getTarget(target);
-		if(tdt== null) {
-			System.out.println("Faild bc tdt");
-			return false;
-		}
+	
+	private static PC_CoordI calculatePos(World world, PCnt_TeleporterData tdt, String defaultD){
+		int rotation;
+		int meta;
+		int good = 0;
 		PC_CoordI tc = tdt.pos;
-		// target invalid
-		if (tc == null) {
-			System.out.println("Faild bc tc");
-			return false;
-		}
-
-		//World world = MinecraftServer.getServer().worldServerForDimension(tdt.dimension);
-		World world = entity.worldObj;
-		
-		//if (world.getBlockId(tc.x, tc.y, tc.z) != mod_PCtransport.teleporter.blockID) {
-		//	System.out.println("Faild bc mod_PCtransport.teleporter.blockID");
-		//	return false;
-		//}
-
-		PCnt_TeleporterData td = getTeleporterDataAt(tc.x, tc.y, tc.z);
-		
-		if (td == null) {
-			System.out.println("Faild bc td");
-			return false;
-		}
-		
-		System.out.println(tc);
-
-		if(teleportTo(entity, td.pos.x, td.pos.y, td.pos.z)){
-			if(entity instanceof EntityPlayer)
-				PC_Utils.sendToPacketHandler((EntityPlayer)entity, "TeleporterNetHandler", 2, td.pos.x, td.pos.y, td.pos.z);
-			return true;
-		}else{
-		/*
-		if(entity.worldObj.worldInfo.getDimension()!=tdt.dimension&&entity instanceof EntityPlayerMP){
-			System.out.println("tp dimension");
-			((EntityPlayerMP)entity).mcServer.getConfigurationManager().transferPlayerToDimension((EntityPlayerMP)entity, tdt.dimension);
-		}
-		
-		if(entity.worldObj!=world){
-			System.out.println("Set World");
-			entity.setWorld(MinecraftServer.getServer().worldServerForDimension(tdt.dimension));
-		}
-		// we have to find space for the entity, conveyor in good direction
-		// preferably.
-		int meta, rotation;
-
-		int good[] = { 0, 0, 0, 0 };
 		PC_CoordI coords[] = { new PC_CoordI(0, 0, -1), new PC_CoordI(+1, 0, 0), new PC_CoordI(0, 0, +1), new PC_CoordI(-1, 0, 0) };
 		String[] side = { "N", "E", "S", "W" };
+		
+		int hig=0;
+		PC_CoordI out=null;
+		
 		for (int i = 0; i < 4; i++) {
 
 			PC_CoordI tmp = tc.offset(coords[i]);
 
+			good=0;
+			
 			if (PC_BlockUtils.hasFlag(world, tmp, "BELT") && !PC_BlockUtils.hasFlag(world, tmp, "TELEPORTER")) {
 
 				meta = tmp.getMeta(world);
 				rotation = PCtr_BeltBase.getRotation(meta);
 				if (rotation == i) {
 					// good rotation, 3 points
-					good[i] = 3;
+					good = 3;
 				} else if (rotation != ((i + 2) % 4)) {
 					// not reverse rotation, 2 points
-					good[i] = 2;
+					good = 2;
 				}
 
 			} else if (!PCtr_BeltBase.isBlocked(world, tmp)) {
 				// can pass through, 1 point
-				good[i] = 1;
+				good = 1;
 			}
 
-			if (td.direction.equals(side[i])) {
-				good[i] += 1;
+			if (defaultD.equals(side[i])) {
+				good += 1;
 			}
 
 			if (PC_BlockUtils.hasFlag(world, tmp, "TELEPORTER")) {
-				good[i] = 0;
+				good = 0;
 			}
 
-		}
-
-		// if some side is good
-		if (good[0] + good[1] + good[2] + good[3] > 0) {
-
-			// first find highest rank
-			// then decrease requirements
-			for (int need = 6; need > 0; need--) {
-				// go through the array
-				for (int i = 0; i < 4; i++) {
-					if (good[i] >= need) {
-
-						// teleport the entity!
-						//entity.motionX = coords[i].x * 0.2F;
-						//entity.motionZ = coords[i].z * 0.2F;
-						entity.fallDistance = 0;
-						entity.distanceWalkedModified = 0;
-						entity.rotationYaw = (i * 90F) + 180F;
-						if(entity instanceof EntityPlayerMP){
-							
-							((EntityPlayerMP)entity).setPositionAndUpdate(tc.x + 0.5F + coords[i].x * 0.9, tc.y + 0.01F, tc.z + 0.5F + coords[i].z * 0.9);
-						}else if(!(entity instanceof EntityPlayer)){
-							entity.posX = entity.prevPosX = entity.lastTickPosX = tc.x + 0.5F + coords[i].x * 0.9;
-							entity.posY = entity.prevPosY = entity.lastTickPosY = tc.y + entity.yOffset + 0.01F;
-							entity.posZ = entity.prevPosZ = entity.lastTickPosZ = tc.z + 0.5F + coords[i].z * 0.9;
-							entity.setPosition(entity.posX, entity.posY, entity.posZ);
-						}
-						return true;
-					}
-				}
+			if(hig<good){
+				hig = good;
+				out = tmp;
 			}
-
-			return false;
-
-		} else {
-			return false;
 		}
-	*/
-			return false;
-		}
+		return out;
 	}
 	
-    public static boolean teleportTo(Entity entity, double par1, double par3, double par5){
+	private static boolean changeEntityWorld(Entity entity, int d){
+		System.out.print("changing to level "+d+"... ");
+		if(entity instanceof EntityPlayerMP){
+			EntityPlayerMP player = (EntityPlayerMP)entity;
+			if(player.dimension==d)
+				return true;
+			//if(d==-1&&!player.mcServer.getAllowNether())
+				//return false;
+			System.out.print("teleporting... ");
+			player.mcServer.getConfigurationManager().transferPlayerToDimension(player, d);
+			player.removeExperience(0);
+			try {
+				ModLoader.setPrivateValue(EntityPlayerMP.class, player, 8, -1);
+				ModLoader.setPrivateValue(EntityPlayerMP.class, player, 9, -1);
+			} catch (Exception e) {
+				e.printStackTrace();
+				System.out.println("Exception");
+				return false;
+			}
+			player.dimension=d;
+			if (player.isEntityAlive())
+				player.worldObj.updateEntityWithOptionalForce(player, true);
+			System.out.println("OK");
+			return true;
+		}
+		if(entity.worldObj.worldInfo.getDimension() == d){
+			System.out.println("OK");
+			return true;
+		}
+		System.out.println("FAIL");
+		return false;
+	}
+	
+	private static boolean teleportTo(Entity entity, double par1, double par3, double par5){
+		if(entity instanceof EntityPlayerMP){
+            EntityPlayerMP player = (EntityPlayerMP)entity;
+
+            if (!player.serverForThisPlayer.serverShuttingDown)
+            {
+            	player.serverForThisPlayer.setPlayerLocation(par1, par3, par5, 0.0F, 0.0F);
+            	player.fallDistance = 0.0F;
+            }
+            return true;
+		}
         double var7 = entity.posX;
         double var9 = entity.posY;
         double var11 = entity.posZ;
@@ -285,30 +246,53 @@ public class PCnt_TeleporterManager extends PC_PacketHandler implements PC_INBTW
 
         entity.setPosition(entity.posX, entity.posY, entity.posZ);
 
-         
-        short var30 = 128;
-
-        for (var18 = 0; var18 < var30; ++var18)
-        {
-            double var19 = (double)var18 / ((double)var30 - 1.0D);
-            float var21 = (entity.rand.nextFloat() - 0.5F) * 0.2F;
-            float var22 = (entity.rand.nextFloat() - 0.5F) * 0.2F;
-            float var23 = (entity.rand.nextFloat() - 0.5F) * 0.2F;
-            double var24 = var7 + (entity.posX - var7) * var19 + (entity.rand.nextDouble() - 0.5D) * (double)entity.width * 2.0D;
-            double var26 = var9 + (entity.posY - var9) * var19 + entity.rand.nextDouble() * (double)entity.height;
-            double var28 = var11 + (entity.posZ - var11) * var19 + (entity.rand.nextDouble() - 0.5D) * (double)entity.width * 2.0D;
-            entity.worldObj.spawnParticle("portal", var24, var26, var28, (double)var21, (double)var22, (double)var23);
-        }
         return true;
     }
+	
+	// ----- ENTITY MANIPULATION ------
 
-	public static PCnt_TeleporterData getTeleporterDataAt(int xCoord,
+	public static boolean teleportEntityTo(Entity entity, String target) {
+
+		if(target==null||target.equals(""))
+			return false;
+		if(entity==null||entity.worldObj.isRemote) 
+			return false;
+		PCnt_TeleporterData tdt = getTarget(target);
+		if(tdt== null)
+			return false;
+		PC_CoordI tc = tdt.pos;
+		if (tc == null)
+			return false;
+
+		//World world = entity.worldObj;
+		World world = MinecraftServer.getServer().worldServerForDimension(tdt.dimension);
+		
+		//PCnt_TeleporterData td = getTeleporterDataAt(tc.x, tc.y, tc.z);
+		//if (td == null)
+			//return false;
+		
+		if(!changeEntityWorld(entity, tdt.dimension))
+			return false;
+		
+		PC_CoordI pos = calculatePos(world, tdt, tdt.direction);
+		if (pos == null)
+			return false;
+		
+		return teleportTo(entity, pos.x+0.5, pos.y, pos.z+0.5);
+	}
+
+	public static PCnt_TeleporterData getTeleporterDataAt(int dimension, int xCoord,
 			int yCoord, int zCoord) {
 		for(PCnt_TeleporterData td:tm.teleporterData){
-			if(td.pos.x==xCoord&&td.pos.y==yCoord&&td.pos.z==zCoord)
+			if(td.pos.x==xCoord&&td.pos.y==yCoord&&td.pos.z==zCoord&&dimension==td.dimension)
 				return td;
 		}
 		return null;
+	}
+	
+	public static PCnt_TeleporterData getTeleporterDataAt(World world, int xCoord,
+			int yCoord, int zCoord) {
+		return getTeleporterDataAt(world.worldInfo.getDimension(), xCoord, yCoord, zCoord);
 	}
 
 	public static PCnt_TileEntityTeleporter getTeleporterAt(World world, int xCoord,
@@ -333,30 +317,22 @@ public class PCnt_TeleporterManager extends PC_PacketHandler implements PC_INBTW
 
 	@Override
 	public void handleIncomingPacket(World world, Object[] o) {
-		int type = (Integer)o[0];
-		int x=(Integer)o[1];
-		int y=(Integer)o[2];
-		int z=(Integer)o[3];
-		if(type==2){
-			teleportTo(PC_Utils.mc().thePlayer, x, y, z);
-			return;
-		}
-		String name=(String)o[4];
-		String target=(String)o[5];
-		int dimension=0;
-		if(type==0)
-			dimension = (Integer)o[6];
-		PCnt_TeleporterData td = getTeleporterDataAt(x, y, z);
+		int x=(Integer)o[0];
+		int y=(Integer)o[1];
+		int z=(Integer)o[2];
+		String name=(String)o[3];
+		String target=(String)o[4];
+		int dimension = (Integer)o[5];
+		PCnt_TeleporterData td = getTeleporterDataAt(dimension, x, y, z);
 		if(td==null){
 			td = new PCnt_TeleporterData();
 			teleporterData.add(td);
 		}
-		System.out.println("handleIncomingPacket:"+x+":"+y+":"+z+":"+name);
+		System.out.println("handleIncomingPacket:"+dimension+":"+x+":"+y+":"+z+":"+name);
 		td.pos.setTo(x, y, z);
 		td.setName(name);
 		td.defaultTarget = target;
-		if(type==0)
-			td.dimension = dimension;
+		td.dimension = dimension;
 	}
 	
 }

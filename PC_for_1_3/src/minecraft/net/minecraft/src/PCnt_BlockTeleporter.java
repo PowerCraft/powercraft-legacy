@@ -51,7 +51,7 @@ public class PCnt_BlockTeleporter extends BlockContainer implements PC_IBlockTyp
 				}
 			}
 		}
-		PC_Utils.openGres(entityplayer, PCnt_GuiTeleporter.class, i, j, k);
+		PC_Utils.openGres(entityplayer, PCnt_GuiTeleporter.class, i, j, k, world.worldInfo.getDimension());
 		
 		return true;
 	}
@@ -59,10 +59,34 @@ public class PCnt_BlockTeleporter extends BlockContainer implements PC_IBlockTyp
 	@Override
 	public void onBlockPlacedBy(World world, int i, int j, int k, EntityLiving entityliving) {
 		super.onBlockPlacedBy(world, i, j, k, entityliving);
-		((PCnt_TileEntityTeleporter)world.getBlockTileEntity(i, j, k)).createData();
-		if (entityliving instanceof EntityPlayer) {
-			PC_Utils.openGres((EntityPlayer)entityliving, PCnt_GuiTeleporter.class, i, j, k);
+		if(!world.isRemote){
+			System.out.println("onBlockPlacedBy");
+			PCnt_TeleporterData td = PCnt_TeleporterManager.getTeleporterDataAt(world, i, j, k);
+			if(td==null){
+				td = new PCnt_TeleporterData();
+				td.pos.setTo(i, j, k);
+				td.setName("");
+				td.defaultTarget="";
+				if(entityliving instanceof EntityPlayer)
+					td.dimension = ((EntityPlayer)entityliving).dimension;
+				else
+					td.dimension = entityliving.worldObj.worldInfo.getDimension();
+				System.out.println("td.dimension:"+td.dimension);
+				PCnt_TeleporterManager.add(td);
+				if(!world.isRemote)
+					PC_Utils.sendToPacketHandler(null, "TeleporterNetHandler", i, j, k, "", "", td.dimension);
+				else
+					PC_Utils.sendToPacketHandler(PC_Utils.mc().thePlayer, "TeleporterNetHandler", i, j, k, "", "", td.dimension);
+				PCnt_TeleporterManager.add(td);
+			}//else{
+			//	if(td.dimension!=worldObj.worldInfo.getDimension())
+			//		PC_Utils.sendToPacketHandler(PC_Utils.mc().thePlayer, "TeleporterNetHandler", 0, xCoord, yCoord, zCoord, "", "", worldObj.worldInfo.getDimension());
+			//}
+			if (entityliving instanceof EntityPlayer) {
+				PC_Utils.openGres((EntityPlayer)entityliving, PCnt_GuiTeleporter.class, i, j, k, td.dimension);
+			}
 		}
+		//((PCnt_TileEntityTeleporter)world.getBlockTileEntity(i, j, k)).createData();
 	}
 
 	@Override
@@ -107,7 +131,7 @@ public class PCnt_BlockTeleporter extends BlockContainer implements PC_IBlockTyp
 		
 		if (te.acceptsEntity(entity)) {
 			System.out.println("onEntityCollidedWithBlock");
-			PCnt_TeleporterData td = PCnt_TeleporterManager.getTeleporterDataAt(i, j, k);
+			PCnt_TeleporterData td = PCnt_TeleporterManager.getTeleporterDataAt(world, i, j, k);
 			PCnt_TeleporterManager.teleportEntityTo(entity, td.defaultTarget);
 		}
 

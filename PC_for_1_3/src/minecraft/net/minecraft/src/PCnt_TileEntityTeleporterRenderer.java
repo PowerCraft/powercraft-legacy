@@ -15,7 +15,7 @@ public class PCnt_TileEntityTeleporterRenderer extends TileEntitySpecialRenderer
 	public void renderTileEntityAt(TileEntity tileEntity, double x, double y, double z, float f0) {
 
 		PCnt_TileEntityTeleporter tet = (PCnt_TileEntityTeleporter) tileEntity;
-		PCnt_TeleporterData td = PCnt_TeleporterManager.getTeleporterDataAt(tet.xCoord, tet.yCoord, tet.zCoord);
+		PCnt_TeleporterData td = PCnt_TeleporterManager.getTeleporterDataAt(tileEntity.worldObj, tet.xCoord, tet.yCoord, tet.zCoord);
 		
 		if(td!=null){
 			if (!td.hideLabel) {

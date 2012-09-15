@@ -659,7 +659,7 @@ public abstract class PC_Module extends BaseMod {
             return;
         }
         Class c = Class.forName(name);
-        m.displayGuiScreen(new PC_GresGui(PC_Utils.createGui(c, player, o)));
+        m.displayGuiScreen(new PC_GresGui(player, PC_Utils.createGui(c, player, o)));
         player.craftingInventory.windowId = guiID;
     }
 	

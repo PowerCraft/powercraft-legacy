@@ -42,7 +42,7 @@ public class PCnt_TeleporterData implements PC_INBTWD {
 		defaultTarget = tag.getString("defaultTarget");
 		dimension = tag.getInteger("dimension");
 		System.out.println("====>"+getName());
-		PC_Utils.sendToPacketHandler(null, "TeleporterNetHandler", 0, pos.x, pos.y, pos.z, getName(), defaultTarget, dimension);
+		PC_Utils.sendToPacketHandler(null, "TeleporterNetHandler", pos.x, pos.y, pos.z, getName(), defaultTarget, dimension);
 		return this;
 	}
 

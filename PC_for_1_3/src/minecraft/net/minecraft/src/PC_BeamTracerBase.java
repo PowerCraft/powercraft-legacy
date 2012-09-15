@@ -378,6 +378,8 @@ public abstract class PC_BeamTracerBase {
 	 * @return make particles
 	 */
 	private boolean shouldSpawnParticle(PC_CoordI coord) {
+		if(!world.isRemote)
+			return false;
 		return world.getClosestPlayer(coord.x + 0.5D, coord.y + 0.5D, coord.z + 0.5D, particles_range) != null;
 	}
 
@@ -395,6 +397,9 @@ public abstract class PC_BeamTracerBase {
 			return;
 		}
 
+		if(!world.isRemote)
+			return;
+		
 		double shift = 0;
 		if (half == 0) {
 			shift = -0.5D + rand.nextFloat() * 1.0D;

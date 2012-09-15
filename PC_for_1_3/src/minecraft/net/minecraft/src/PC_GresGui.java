@@ -30,8 +30,8 @@ public class PC_GresGui extends GuiContainer implements PC_IGresGui {
 	 * 
 	 * @param gui the gui
 	 */
-	public PC_GresGui(PC_GresBase gui) {
-		super(new PC_GresContainerManager(gui.getPlayer(), gui));
+	public PC_GresGui(EntityPlayer player, PC_GresBase gui) {
+		super(new PC_GresContainerManager(player, gui));
 		this.gui = gui;
 		containerManager = (PC_GresContainerManager) inventorySlots;
 		containerManager.setGresGui(this);
