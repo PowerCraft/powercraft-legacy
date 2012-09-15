@@ -54,7 +54,7 @@ public class PCde_TileEntityDeco extends PC_TileEntity implements PC_IInventoryW
 				flashStructureComplete = isTransmuterStructureComplete();
 			}
 
-			if (flashStructureComplete) {
+			if (flashStructureComplete && worldObj.isRemote) {
 				updateFlashCharge();
 
 				//the particle field

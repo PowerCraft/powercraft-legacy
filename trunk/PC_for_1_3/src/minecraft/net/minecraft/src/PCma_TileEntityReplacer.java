@@ -76,7 +76,7 @@ public class PCma_TileEntityReplacer extends PC_TileEntity implements IInventory
 
 
 
-		if (aidEnabled) {
+		if (aidEnabled && worldObj.isRemote) {
 
 			double d = xCoord + rand.nextFloat();
 			double d1 = yCoord + 1.1D;

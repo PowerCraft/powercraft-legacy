@@ -51,14 +51,14 @@ public class EffectRenderer
                 EntityFX var3 = (EntityFX)this.fxLayers[var1].get(var2);
                 
                 //TODO
-                if(var3!=null){
+                //if(var3!=null){
 	                var3.onUpdate();
 	
 	                if (var3.isDead)
 	                {
 	                    this.fxLayers[var1].remove(var2--);
 	                }
-                }
+                //}
             }
         }
     }
@@ -107,10 +107,10 @@ public class EffectRenderer
                 {
                     EntityFX var12 = (EntityFX)this.fxLayers[var8].get(var11);
                     //TODO
-                    if(var12!=null){
+                    //if(var12!=null){
                     	var10.setBrightness(var12.getBrightnessForRender(par2));
                     	var12.renderParticle(var10, par2, var3, var7, var4, var5, var6);
-                    }
+                   // }
                 }
                 
                 var10.draw();

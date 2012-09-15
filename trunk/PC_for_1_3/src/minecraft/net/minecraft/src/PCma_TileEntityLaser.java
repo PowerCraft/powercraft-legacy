@@ -136,9 +136,8 @@ public class PCma_TileEntityLaser extends PC_TileEntity implements PC_IBeamHandl
 		hitObjectThisShot = false;
 
 		beamTracer.setColor(color).setDetectEntities(isKiller() || isSensor()).setParticlesBidirectional(isSensor());
-
 		beamTracer.flash();
-
+		
 		// send redstone if sender and hit something.
 		if (isSensor()) {
 			notifyChange(hitObjectThisShot);

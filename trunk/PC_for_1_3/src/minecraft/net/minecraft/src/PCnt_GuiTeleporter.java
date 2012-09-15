@@ -24,9 +24,10 @@ public class PCnt_GuiTeleporter extends PC_GresBase {
 	/**
 	 * @param te teleproter TE
 	 */
-	public PCnt_GuiTeleporter(EntityPlayer player, TileEntity te) {
+	public PCnt_GuiTeleporter(EntityPlayer player, TileEntity te, Object dimension) {
 		this.player = player;
-		td = PCnt_TeleporterManager.getTeleporterDataAt(te.xCoord, te.yCoord, te.zCoord);
+		System.out.println("world:"+te.worldObj.worldInfo.getDimension()+":"+(Integer)dimension);
+		td = PCnt_TeleporterManager.getTeleporterDataAt((Integer)dimension, te.xCoord, te.yCoord, te.zCoord);
 	}
 
 
@@ -85,7 +86,7 @@ public class PCnt_GuiTeleporter extends PC_GresBase {
 			String target="";
 			if(rb!=null)
 				target = rb.getText();
-			PC_Utils.sendToPacketHandler(player, "TeleporterNetHandler", 1, td.pos.x, td.pos.y, td.pos.z, name.getText(), target);
+			PC_Utils.sendToPacketHandler(player, "TeleporterNetHandler", td.pos.x, td.pos.y, td.pos.z, name.getText(), target, td.dimension);
 			gui.close();
 		}
 	}

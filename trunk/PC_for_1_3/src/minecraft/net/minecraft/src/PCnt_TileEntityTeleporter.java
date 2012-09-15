@@ -38,22 +38,10 @@ public class PCnt_TileEntityTeleporter extends PC_TileEntity {
 		//td = new PCtr_TeleporterData();
 		//PCtr_TeleporterManager.add(this);
 	}
-
-	public void createData(){
-		PCnt_TeleporterData td = PCnt_TeleporterManager.getTeleporterDataAt(xCoord, yCoord, zCoord);
-		if(td==null){
-			PC_Utils.sendToPacketHandler(PC_Utils.mc().thePlayer, "TeleporterNetHandler", 0, xCoord, yCoord, zCoord, "", "", worldObj.worldInfo.getDimension());
-		}
-	}
 	
 	@Override
 	public PC_CoordI getCoord() {
 		return new PC_CoordI(xCoord, yCoord, zCoord);
-	}
-	
-	@Override
-	public void updateEntity(){
-		createData();
 	}
 	
 	@Override
@@ -90,7 +78,7 @@ public class PCnt_TileEntityTeleporter extends PC_TileEntity {
 		} else if (type == RECEIVER) {
 			active = (!identifierName.equals("") && PCtr_TeleporterHelper.targetExists(identifierName));
 		}*/
-		PCnt_TeleporterData td = PCnt_TeleporterManager.getTeleporterDataAt(xCoord, yCoord, zCoord);
+		PCnt_TeleporterData td = PCnt_TeleporterManager.getTeleporterDataAt(worldObj, xCoord, yCoord, zCoord);
 		
 		if(td!=null){
 			if (active != td.lastActiveState) {
@@ -153,7 +141,7 @@ public class PCnt_TileEntityTeleporter extends PC_TileEntity {
 	 */
 	public boolean acceptsEntity(Entity entity) {
 
-		PCnt_TeleporterData td = PCnt_TeleporterManager.getTeleporterDataAt(xCoord, yCoord, zCoord);
+		PCnt_TeleporterData td = PCnt_TeleporterManager.getTeleporterDataAt(worldObj, xCoord, yCoord, zCoord);
 		
 		if(td == null)
 			return false;
@@ -193,13 +181,13 @@ public class PCnt_TileEntityTeleporter extends PC_TileEntity {
 
 	@Override
 	public void onBlockPickup(){
-		PCnt_TeleporterManager.remove(PCnt_TeleporterManager.getTeleporterDataAt(xCoord, yCoord, zCoord));
+		PCnt_TeleporterManager.remove(PCnt_TeleporterManager.getTeleporterDataAt(worldObj, xCoord, yCoord, zCoord));
 		System.out.println("remove:"+this);
 		
 	}
 
 	public int getDimension() {
-		PCnt_TeleporterData td = PCnt_TeleporterManager.getTeleporterDataAt(xCoord, yCoord, zCoord);
+		PCnt_TeleporterData td = PCnt_TeleporterManager.getTeleporterDataAt(worldObj, xCoord, yCoord, zCoord);
 		return td.dimension;
 	}
 	
@@ -207,7 +195,7 @@ public class PCnt_TileEntityTeleporter extends PC_TileEntity {
 	@Override
 	public void set(Object[] o) {
 		boolean add=false;
-		PCnt_TeleporterData td = PCnt_TeleporterManager.getTeleporterDataAt(xCoord, yCoord, zCoord);
+		PCnt_TeleporterData td = PCnt_TeleporterManager.getTeleporterDataAt(worldObj, xCoord, yCoord, zCoord);
 		if(td==null){
 			td = new PCnt_TeleporterData();
 			add=true;
@@ -229,7 +217,7 @@ public class PCnt_TileEntityTeleporter extends PC_TileEntity {
 
 	@Override
 	public Object[] get() {
-		PCnt_TeleporterData td = PCnt_TeleporterManager.getTeleporterDataAt(xCoord, yCoord, zCoord);
+		PCnt_TeleporterData td = PCnt_TeleporterManager.getTeleporterDataAt(worldObj, xCoord, yCoord, zCoord);
 		if(td==null){
 			worldObj.markBlockNeedsUpdate(xCoord, yCoord, zCoord);
 			return null;
