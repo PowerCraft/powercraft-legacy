@@ -186,6 +186,7 @@ public class PClo_TileEntityPulsar extends PC_TileEntity implements PC_IPacketSe
 						worldObj.playSound(xCoord + 0.5D, yCoord + 0.5D, zCoord + 0.5D, "random.click", 1.0F, 1.0F);
 						System.out.println("Sound...");
 					}
+					worldObj.markBlockAsNeedsUpdate(xCoord, yCoord, zCoord);
 				}
 			}
 		}
