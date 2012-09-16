@@ -141,6 +141,14 @@ public class PCnt_TileEntityTeleporter extends PC_TileEntity {
 				td.defaultTarget = (String)o[p++];
 			}else if(var.equals("dimension")){
 				td.dimension = (Integer)o[p++];
+			}else if(var.equals("tdimension")){
+				dimension = (Integer)o[p++];
+				add=false;
+				td = PCnt_TeleporterManager.getTeleporterDataAt(dimension, xCoord, yCoord, zCoord);
+				if(td==null){
+					td = new PCnt_TeleporterData();
+					add=true;
+				}
 			}
 		}
 		if(add)
@@ -155,6 +163,8 @@ public class PCnt_TileEntityTeleporter extends PC_TileEntity {
 			return null;
 		}
 		Object[] o = {
+				"tdimension",
+				dimension,
 				"name",
 				td.getName(),
 				"defaultTarget",
