@@ -174,7 +174,7 @@ public class ParserTokenManager implements ParserConstants {
 			if (++jjround == 0x7fffffff) ReInitRounds();
 			if (curChar < 64) {
 				long l = 1L << curChar;
-				MatchLoop:
+				//MatchLoop:
 				do {
 					switch (jjstateSet[--i]) {
 						case 13:
@@ -311,7 +311,7 @@ public class ParserTokenManager implements ParserConstants {
 				} while (i != startsAt);
 			} else if (curChar < 128) {
 				long l = 1L << (curChar & 077);
-				MatchLoop:
+				//MatchLoop:
 				do {
 					switch (jjstateSet[--i]) {
 						case 0:
@@ -358,7 +358,7 @@ public class ParserTokenManager implements ParserConstants {
 				long l1 = 1L << (hiByte & 077);
 				int i2 = (curChar & 0xff) >> 6;
 				long l2 = 1L << (curChar & 077);
-				MatchLoop:
+				//MatchLoop:
 				do {
 					switch (jjstateSet[--i]) {
 						case 0:
@@ -521,7 +521,7 @@ public class ParserTokenManager implements ParserConstants {
 			if (++jjround == 0x7fffffff) ReInitRounds();
 			if (curChar < 64) {
 				long l = 1L << curChar;
-				MatchLoop:
+				//MatchLoop:
 				do {
 					switch (jjstateSet[--i]) {
 						case 13:
@@ -658,7 +658,7 @@ public class ParserTokenManager implements ParserConstants {
 				} while (i != startsAt);
 			} else if (curChar < 128) {
 				long l = 1L << (curChar & 077);
-				MatchLoop:
+				//MatchLoop:
 				do {
 					switch (jjstateSet[--i]) {
 						case 0:
@@ -705,7 +705,7 @@ public class ParserTokenManager implements ParserConstants {
 				long l1 = 1L << (hiByte & 077);
 				int i2 = (curChar & 0xff) >> 6;
 				long l2 = 1L << (curChar & 077);
-				MatchLoop:
+				//MatchLoop:
 				do {
 					switch (jjstateSet[--i]) {
 						case 0:

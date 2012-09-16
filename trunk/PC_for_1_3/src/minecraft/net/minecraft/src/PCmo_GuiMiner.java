@@ -559,7 +559,6 @@ public class PCmo_GuiMiner extends PC_GresBase {
 
 	@Override
 	public List<Slot> getAllSlots(Container c) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 

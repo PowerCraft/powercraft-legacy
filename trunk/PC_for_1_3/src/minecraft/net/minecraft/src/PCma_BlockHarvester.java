@@ -15,7 +15,7 @@ import net.minecraft.src.forge.ITextureProvider;
  * @author MightyPork
  * @copy (c) 2012
  */
-public class PCma_BlockHarvester extends Block implements PC_ISwapTerrain, PC_IBlockType, PC_ISpecialInventoryTextures, ITextureProvider,
+public class PCma_BlockHarvester extends Block implements PC_ISwapTerrain, PC_IBlockType, PC_ISpecialInventoryTextures, ITextureProvider, PC_IPacketSetter,
 		PC_IBeamHandler {
 	private static final int TXDOWN = 109, TXTOP = 155, TXSIDE = 139, TXFRONT = 107, TXBACK = 123;
 
@@ -185,6 +185,9 @@ public class PCma_BlockHarvester extends Block implements PC_ISwapTerrain, PC_IB
 	 */
 	private void harvestBlocks(World world, int x, int y, int z, int deviceMeta) {
 
+		if(!world.isRemote)
+			PC_Utils.setBlock(null, this, x, y, z, deviceMeta);
+		
 		deviceMeta &= 0x7;
 
 		int incZ = Facing.offsetsZForSide[deviceMeta];
@@ -223,7 +226,7 @@ public class PCma_BlockHarvester extends Block implements PC_ISwapTerrain, PC_IB
 
 		beamTracer.flash();
 
-		if (drops != null) {
+		if (drops != null && !world.isRemote) {
 			PC_InvUtils.groupStacks(drops);
 
 
@@ -233,8 +236,8 @@ public class PCma_BlockHarvester extends Block implements PC_ISwapTerrain, PC_IB
 		}
 
 	}
-
-
+	
+	
 	@Override
 	public boolean onBlockHit(World world, PC_CoordI coord, PC_CoordI startCoord) {
 		int id = coord.getId(world);
@@ -542,5 +545,10 @@ public class PCma_BlockHarvester extends Block implements PC_ISwapTerrain, PC_IB
 		set.add("NO_BUILD");
 		set.add("HARVESTER");
 		return set;
+	}
+
+	@Override
+	public void set(World world, Object[] o) {
+		harvestBlocks(world, (Integer)o[0], (Integer)o[1], (Integer)o[2], (Integer)o[3]);
 	}
 }

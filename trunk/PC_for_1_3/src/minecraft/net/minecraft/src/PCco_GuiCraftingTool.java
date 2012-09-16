@@ -161,10 +161,12 @@ public class PCco_GuiCraftingTool extends PC_GresBase {
 				ItemStack stack = inv.getStackInSlot(i);
 				if (stack != null) {
 					if (stack.itemID != mod_PCcore.craftingTool.shiftedIndex) {
-						inv.setInventorySlotContents(i, null);
+						inv.decrStackSize(i, inv.getStackInSlot(i).stackSize);
+						//inv.setInventorySlotContents(i, null);
 					}
 				}
 			}
+			PC_Utils.sendToPacketHandler(player, "PCco_DeleteAllPlayerStacks", player.username);
 			actionPerformed(craftingToolInventory, gui);
 		} else if (widget == buttonSort) {
 			InventoryPlayer inv = player.inventory;

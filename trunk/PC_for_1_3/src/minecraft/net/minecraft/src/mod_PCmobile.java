@@ -216,13 +216,11 @@ public class mod_PCmobile extends PC_Module implements PC_IActivatorListener {
 
 	@Override
 	protected Hashtable<String, PC_PacketHandler> addPacketHandler() {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
 	protected Hashtable<String, PC_INBTWD> addNetManager() {
-		// TODO Auto-generated method stub
 		return null;
 	}
 

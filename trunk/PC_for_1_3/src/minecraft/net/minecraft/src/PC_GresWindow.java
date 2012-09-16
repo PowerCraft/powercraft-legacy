@@ -165,9 +165,6 @@ public class PC_GresWindow extends PC_GresWidget {
 			int s = 0;
 
 			switch (alignH) {
-				case LEFT:
-					xPos = padding.x;
-					break;
 				case RIGHT:
 					xPos = size.x - child.getSize().x - padding.x;
 					break;
@@ -178,12 +175,13 @@ public class PC_GresWindow extends PC_GresWidget {
 					xPos = padding.x;
 					child.setSize(size.x - padding.x * 2, child.getSize().y, false);
 					break;
+				case LEFT:
+				default:
+					xPos = padding.x;
+					break;
 			}
 
 			switch (alignV) {
-				case TOP:
-					yPos = yPlus + yy;
-					break;
 				case BOTTOM:
 					yPos = size.y - padding.y - ySize + yy;
 					break;
@@ -205,6 +203,10 @@ public class PC_GresWindow extends PC_GresWidget {
 					else
 						yPos = yy;
 					csize.y = nsy;
+					break;
+				case TOP:
+				default:
+					yPos = yPlus + yy;
 					break;
 			}
 

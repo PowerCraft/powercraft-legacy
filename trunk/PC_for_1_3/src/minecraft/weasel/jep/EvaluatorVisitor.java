@@ -208,6 +208,7 @@ public class EvaluatorVisitor implements ParserVisitor, EvaluatorI {
 	 * If a function implements SpecialEvaluationI then the evaluate method of
 	 * PFMC is called.
 	 */
+	@SuppressWarnings("unused")
 	@Override
 	public Object visit(ASTFunNode node, Object data) throws ParseException {
 
