@@ -76,7 +76,6 @@ public class PCco_Renderer {
 			block.setBlockBounds(0, 0, 0, 1, 1, 1);
 
 			RenderBlocks.cfgGrassFix = gf;
-
 			tessellator.draw();
 			tessellator.startDrawingQuads();
 			renderengine.bindTexture(renderengine.getTexture("/terrain.png"));
