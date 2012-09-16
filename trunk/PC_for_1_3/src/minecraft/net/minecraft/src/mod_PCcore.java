@@ -866,15 +866,6 @@ public class mod_PCcore extends PC_Module implements PC_IActivatorListener {
 			Block.stairsNetherBrick,
 			Block.stairsStoneBrickSmooth,
 			Block.stairsBrick,
-			/**
-			 * TODO stairsBrick was stairSingle??
-			 */
-			new ItemStack(Block.stairsBrick,1,0),
-			new ItemStack(Block.stairsBrick,1,1),
-			new ItemStack(Block.stairsBrick,1,2),
-			new ItemStack(Block.stairsBrick,1,3),
-			new ItemStack(Block.stairsBrick,1,4),
-			new ItemStack(Block.stairsBrick,1,5),
 			Block.obsidian,
 			Block.whiteStone,
 			Block.stoneBrick,
