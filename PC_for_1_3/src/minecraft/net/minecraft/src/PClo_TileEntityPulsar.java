@@ -181,9 +181,11 @@ public class PClo_TileEntityPulsar extends PC_TileEntity implements PC_IPacketSe
 			}else if(var.equals("paused")){
 				paused = (Boolean)o[p++];
 			}else if(var.equals("change")){
-				if (!silent && mod_PCcore.soundsEnabled && worldObj.isRemote) {
-					worldObj.playSound(xCoord + 0.5D, yCoord + 0.5D, zCoord + 0.5D, "random.click", 1.0F, 1.0F);
-					System.out.println("Sound...");
+				if (worldObj.isRemote){
+					if (!silent && mod_PCcore.soundsEnabled && worldObj.isRemote) {
+						worldObj.playSound(xCoord + 0.5D, yCoord + 0.5D, zCoord + 0.5D, "random.click", 1.0F, 1.0F);
+						System.out.println("Sound...");
+					}
 				}
 			}
 		}

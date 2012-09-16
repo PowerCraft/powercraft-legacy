@@ -127,7 +127,7 @@ public class PClo_BlockPulsar extends BlockContainer implements PC_IBlockType {
 
 	@Override
 	public void randomDisplayTick(World world, int i, int j, int k, Random random) {
-		if (isActive(world, i, j, k)) {
+		if (isActive(world, i, j, k)&&world.isRemote) {
 			world.spawnParticle("reddust", i + 0.5D, j + 1.0D, k + 0.5D, 0D, 0D, 0D);
 		}
 	}
@@ -158,6 +158,7 @@ public class PClo_BlockPulsar extends BlockContainer implements PC_IBlockType {
 
 	@Override
 	public int colorMultiplier(IBlockAccess iblockaccess, int i, int j, int k) {
+		System.out.println("colorMultiplier");
 		if (isActive(iblockaccess, i, j, k)) {
 			return 0xff3333;
 		} else {
