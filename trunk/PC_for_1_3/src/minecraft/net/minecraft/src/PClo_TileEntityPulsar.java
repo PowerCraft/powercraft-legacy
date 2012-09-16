@@ -93,13 +93,16 @@ public class PClo_TileEntityPulsar extends PC_TileEntity implements PC_IPacketSe
 
 	@Override
 	public void updateEntity() {
-		if (paused) {
+		if (paused||worldObj.isRemote) {
 			return;
 		}
 
-		if (delayTimer < 0) {
+		boolean change=false;
+		
+		if (delayTimer < 0 && !active) {
 			active = true;
 			updateBlock();
+			change=true;
 		}
 
 		delayTimer++;
@@ -107,7 +110,12 @@ public class PClo_TileEntityPulsar extends PC_TileEntity implements PC_IPacketSe
 		if (delayTimer >= holdtime && active) {
 			active = false;
 			updateBlock();
+			change=true;
 		}
+		
+		if(change)
+			PC_Utils.setTileEntity(null, this, "active", active);
+		
 		if (delayTimer >= delay) {
 			if (!silent && mod_PCcore.soundsEnabled) {
 				worldObj.playSoundEffect(xCoord + 0.5D, yCoord + 0.5D, zCoord + 0.5D, "random.click", 0.10F, 0.6F);
