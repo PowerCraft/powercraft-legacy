@@ -162,27 +162,33 @@ public class PClo_TileEntityPulsar extends PC_TileEntity implements PC_IPacketSe
 		while(p<o.length){
 			String var = (String)o[p++];
 			if(var.equals("holdTime")){
-				setHoldTime((int)(Integer)o[p++]);
+				setHoldTime((Integer)o[p++]);
 			}else if(var.equals("delayTime")){
-				setDelay((int)(Integer)o[p++]);
+				setDelay((Integer)o[p++]);
 			}else if(var.equals("silent")){
-				setSilent((boolean)(Boolean)o[p++]);
+				setSilent((Boolean)o[p++]);
 			}else if(var.equals("changeDelay")){
-				changeDelay((int)(Integer)o[p++]);
+				changeDelay((Integer)o[p++]);
+			}else if(var.equals("holdtime")){
+				setHoldTime((int)(Integer)o[p++]);
+			}else if(var.equals("active")){
+				active = (Boolean)o[p++];
+			}else if(var.equals("paused")){
+				paused = (Boolean)o[p++];
 			}
 		}
 	}
 
 	@Override
 	public Object[] get() {
-		Object[] o = new Object[6];
-		o[0] = "holdTime";
-		o[1] = holdtime;
-		o[2] = "delayTime";
-		o[3] = delay;
-		o[4] = "silent";
-		o[5] = silent;
-		return o;
+		return new Object[]{
+			"holdTime", holdtime,
+			"delayTime", delay,
+			"silent", silent,
+			"holdtime", holdtime,
+			"active", active,
+			"paused", paused
+		};
 	}
 	
 	
