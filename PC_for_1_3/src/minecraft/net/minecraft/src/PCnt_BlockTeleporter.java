@@ -75,6 +75,8 @@ public class PCnt_BlockTeleporter extends BlockContainer implements PC_IBlockTyp
 					td.dimension = ((EntityPlayer)entityliving).dimension;
 				else
 					td.dimension = entityliving.worldObj.worldInfo.getDimension();
+				PCnt_TileEntityTeleporter tet = (PCnt_TileEntityTeleporter)world.getBlockTileEntity(i, j, k);
+				tet.dimension = td.dimension;
 				System.out.println("td.dimension:"+td.dimension);
 				PCnt_TeleporterManager.add(td);
 				PC_Utils.sendToPacketHandler(null, "TeleporterNetHandler", i, j, k, "", "", td.dimension);

@@ -1211,7 +1211,7 @@ public class mod_PCcore extends PC_Module implements PC_IActivatorListener {
 
 	private int inGameTickCounter = 0;
 	
-	private static PC_DataMemoryManager dmm = null;
+	//private static PC_DataMemoryManager dmm = null;
 	
 	private PC_DataMemoryManager initDMM(World world){
 		PC_DataMemoryManager dmm = (PC_DataMemoryManager)world.loadItemData(PC_DataMemoryManager.class, "PC_DataMemoryManager");
@@ -1222,14 +1222,30 @@ public class mod_PCcore extends PC_Module implements PC_IActivatorListener {
 		return dmm;
 	}
 	
+	public PC_DataMemoryManager getDmm(World world){
+		Map loadedDataMap;
+		try {
+			loadedDataMap = (Map)ModLoader.getPrivateValue(MapStorage.class, world.mapStorage, 1);
+		} catch (Exception e) {
+			e.printStackTrace();
+			return null;
+		}
+		if(loadedDataMap.containsKey("PC_DataMemoryManager"))
+			return (PC_DataMemoryManager)loadedDataMap.get("PC_DataMemoryManager");
+		return null;
+	}
+	
 	@Override
 	public boolean onTickInGame(float f, Minecraft minecraft) {
+		World world;
+		if(MinecraftServer.getServer()!=null){
+			world = MinecraftServer.getServer().worldServerForDimension(0);
+		}else{
+			world = minecraft.theWorld;
+		}
+		PC_DataMemoryManager dmm = getDmm(world);
 		if(dmm == null){
-			if(MinecraftServer.getServer()!=null){
-				dmm = initDMM(MinecraftServer.getServer().worldServerForDimension(0));
-			}else{
-				dmm = initDMM(minecraft.theWorld);
-			}
+			dmm = initDMM(world);
 			System.out.println("dmm:"+dmm);
 		}
 		if (!updateAlreadyShown && updateAvailable && optUpdateNotify) {
@@ -1241,12 +1257,9 @@ public class mod_PCcore extends PC_Module implements PC_IActivatorListener {
 				} catch (Throwable t) {
 					PC_Logger.throwing("mod_PCcore", "onTickInGame", t);
 				}
-				return false;
-			} else {
-				return true;
 			}
 		}
-		return false;
+		return true;
 	}
 
 	@Override

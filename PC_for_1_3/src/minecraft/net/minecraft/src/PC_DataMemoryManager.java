@@ -8,9 +8,10 @@ import java.util.Map.Entry;
 import java.util.Set;
 
 public final class PC_DataMemoryManager extends WorldSavedData {
-
+	
 	public PC_DataMemoryManager(String par1Str) {
 		super(par1Str);
+		System.out.println("New DMM");
 	}
 
 	@Override
