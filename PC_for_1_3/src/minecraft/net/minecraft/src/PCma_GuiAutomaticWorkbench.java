@@ -24,9 +24,9 @@ public class PCma_GuiAutomaticWorkbench extends PC_GresBase {
 	 * @param entityplayer player
 	 * @param tileentity tile entity of the Automatic Workbench
 	 */
-	public PCma_GuiAutomaticWorkbench(EntityPlayer entityplayer, PCma_TileEntityAutomaticWorkbench tileentity) {
+	public PCma_GuiAutomaticWorkbench(EntityPlayer entityplayer, TileEntity tileentity) {
 		this.player = entityplayer;
-		this.tileentity = tileentity;
+		this.tileentity = (PCma_TileEntityAutomaticWorkbench)tileentity;
 		craftResult = new InventoryCraftResult();
 	}
 

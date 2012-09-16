@@ -1237,25 +1237,22 @@ public class mod_PCcore extends PC_Module implements PC_IActivatorListener {
 	
 	@Override
 	public boolean onTickInGame(float f, Minecraft minecraft) {
-		World world;
 		if(MinecraftServer.getServer()!=null){
-			world = MinecraftServer.getServer().worldServerForDimension(0);
-		}else{
-			world = minecraft.theWorld;
-		}
-		PC_DataMemoryManager dmm = getDmm(world);
-		if(dmm == null){
-			dmm = initDMM(world);
-			System.out.println("dmm:"+dmm);
-		}
-		if (!updateAlreadyShown && updateAvailable && optUpdateNotify) {
-			if (++inGameTickCounter > 20) {
-				updateAlreadyShown = true;
-				try {
-					PC_Utils.openGres(mc.thePlayer, PCco_GuiUpdateNotification.class);
-					PC_Logger.fine("Openning UPDATE NOTIFICATION screen.");
-				} catch (Throwable t) {
-					PC_Logger.throwing("mod_PCcore", "onTickInGame", t);
+			World world = MinecraftServer.getServer().worldServerForDimension(0);
+			PC_DataMemoryManager dmm = getDmm(world);
+			if(dmm == null){
+				dmm = initDMM(world);
+				System.out.println("dmm:"+dmm);
+			}
+			if (!updateAlreadyShown && updateAvailable && optUpdateNotify) {
+				if (++inGameTickCounter > 20) {
+					updateAlreadyShown = true;
+					try {
+						PC_Utils.openGres(mc.thePlayer, PCco_GuiUpdateNotification.class);
+						PC_Logger.fine("Openning UPDATE NOTIFICATION screen.");
+					} catch (Throwable t) {
+						PC_Logger.throwing("mod_PCcore", "onTickInGame", t);
+					}
 				}
 			}
 		}
