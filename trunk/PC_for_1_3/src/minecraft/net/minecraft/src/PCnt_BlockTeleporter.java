@@ -51,7 +51,7 @@ public class PCnt_BlockTeleporter extends BlockContainer implements PC_IBlockTyp
 				}
 			}
 		}
-		PC_Utils.openGres(entityplayer, PCnt_GuiTeleporter.class, i, j, k, world.worldInfo.getDimension());
+		PC_Utils.openGres(entityplayer, PCnt_GuiTeleporter.class, i, j, k, entityplayer.dimension);
 		
 		return true;
 	}
@@ -61,7 +61,11 @@ public class PCnt_BlockTeleporter extends BlockContainer implements PC_IBlockTyp
 		super.onBlockPlacedBy(world, i, j, k, entityliving);
 		if(!world.isRemote){
 			System.out.println("onBlockPlacedBy");
-			PCnt_TeleporterData td = PCnt_TeleporterManager.getTeleporterDataAt(world, i, j, k);
+			PCnt_TeleporterData td;
+			if(entityliving instanceof EntityPlayer)
+				td = PCnt_TeleporterManager.getTeleporterDataAt(((EntityPlayer)entityliving).dimension, i, j, k);
+			else
+				td = PCnt_TeleporterManager.getTeleporterDataAt(entityliving.worldObj.worldInfo.getDimension(), i, j, k);
 			if(td==null){
 				td = new PCnt_TeleporterData();
 				td.pos.setTo(i, j, k);
@@ -73,11 +77,7 @@ public class PCnt_BlockTeleporter extends BlockContainer implements PC_IBlockTyp
 					td.dimension = entityliving.worldObj.worldInfo.getDimension();
 				System.out.println("td.dimension:"+td.dimension);
 				PCnt_TeleporterManager.add(td);
-				if(!world.isRemote)
-					PC_Utils.sendToPacketHandler(null, "TeleporterNetHandler", i, j, k, "", "", td.dimension);
-				else
-					PC_Utils.sendToPacketHandler(PC_Utils.mc().thePlayer, "TeleporterNetHandler", i, j, k, "", "", td.dimension);
-				PCnt_TeleporterManager.add(td);
+				PC_Utils.sendToPacketHandler(null, "TeleporterNetHandler", i, j, k, "", "", td.dimension);
 			}//else{
 			//	if(td.dimension!=worldObj.worldInfo.getDimension())
 			//		PC_Utils.sendToPacketHandler(PC_Utils.mc().thePlayer, "TeleporterNetHandler", 0, xCoord, yCoord, zCoord, "", "", worldObj.worldInfo.getDimension());
@@ -127,13 +127,47 @@ public class PCnt_BlockTeleporter extends BlockContainer implements PC_IBlockTyp
 
 	@Override
 	public void onEntityCollidedWithBlock(World world, int i, int j, int k, Entity entity) {
-		PCnt_TileEntityTeleporter te = getTE(world, i, j, k);
 		
-		if (te.acceptsEntity(entity)) {
-			System.out.println("onEntityCollidedWithBlock");
-			PCnt_TeleporterData td = PCnt_TeleporterManager.getTeleporterDataAt(world, i, j, k);
-			PCnt_TeleporterManager.teleportEntityTo(entity, td.defaultTarget);
+		PCnt_TeleporterData td = null;
+		if(entity instanceof EntityPlayer)
+			td = PCnt_TeleporterManager.getTeleporterDataAt(((EntityPlayer)entity).dimension, i, j, k);
+		else
+			td = PCnt_TeleporterManager.getTeleporterDataAt(world.worldInfo.getDimension(), i, j, k);
+		
+		if(td == null)
+			return;
+		
+		if (entity == null) {
+			return;
 		}
+		
+		if(!(entity instanceof EntityLiving || entity instanceof EntityItem || entity instanceof EntityXPOrb || entity instanceof EntityArrow))
+			return;
+		
+		
+		if ((entity instanceof EntityAnimal || entity instanceof EntitySquid || entity instanceof EntitySlime) && !td.animals) {
+			return;
+		}
+
+		if ((entity instanceof EntityMob || entity instanceof EntityGhast || entity instanceof EntityDragon || entity instanceof EntityGolem)
+				&& !td.monsters) {
+			return;
+		}
+
+		if ((entity instanceof EntityItem || entity instanceof EntityXPOrb || entity instanceof EntityArrow) && !td.items) {
+			return;
+		}
+
+		if ((entity instanceof EntityPlayer) && !td.players) {
+			return;
+		}
+
+		if ((entity instanceof EntityPlayer) && !entity.isSneaking() && td.sneakTrigger) {
+			return;
+		}
+		
+		System.out.println("onEntityCollidedWithBlock");
+		PCnt_TeleporterManager.teleportEntityTo(entity, td.defaultTarget);
 
 	}
 

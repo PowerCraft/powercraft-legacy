@@ -21,8 +21,6 @@ public class PCnt_TeleporterManager extends PC_PacketHandler implements PC_INBTW
 	
 	private static boolean needsSave=false;
 	
-	public static Minecraft mc = PC_Utils.mc();
-	
 	public static PCnt_TeleporterManager getTeleporterManager(){
 		if(tm==null){
 			tm = new PCnt_TeleporterManager();
@@ -116,23 +114,6 @@ public class PCnt_TeleporterManager extends PC_PacketHandler implements PC_INBTW
 		return entry != null && !entry.pos.equals(coord);
 	}
 
-	public static boolean isTargetInThisDimension(String identifier) {
-		return mc.thePlayer.dimension == getTargetDimension(identifier);
-	}
-
-	public static int getTargetDimension(String identifier) {
-		if (identifier.equals("")) {
-			return 0;
-		}
-
-		PCnt_TeleporterData entry = getTarget(identifier);
-		if (entry == null) {
-			return 0;
-		}
-
-		return entry.dimension;
-	}
-
 	// ------------- TESTS -------------
 	private static final boolean isTeleporter(int id) {
 		return id == mod_PCnet.teleporter.blockID;
@@ -189,7 +170,7 @@ public class PCnt_TeleporterManager extends PC_PacketHandler implements PC_INBTW
 	}
 	
 	private static boolean changeEntityWorld(Entity entity, int d){
-		System.out.print("changing to level "+d+"... ");
+		System.out.print("changing to level "+entity.worldObj.worldInfo.getDimension()+" to "+d+"... ");
 		if(entity instanceof EntityPlayerMP){
 			EntityPlayerMP player = (EntityPlayerMP)entity;
 			if(player.dimension==d)
@@ -207,7 +188,6 @@ public class PCnt_TeleporterManager extends PC_PacketHandler implements PC_INBTW
 				System.out.println("Exception");
 				return false;
 			}
-			player.dimension=d;
 			if (player.isEntityAlive())
 				player.worldObj.updateEntityWithOptionalForce(player, true);
 			System.out.println("OK");
@@ -263,21 +243,12 @@ public class PCnt_TeleporterManager extends PC_PacketHandler implements PC_INBTW
 		PC_CoordI tc = tdt.pos;
 		if (tc == null)
 			return false;
-
-		//World world = entity.worldObj;
-		World world = MinecraftServer.getServer().worldServerForDimension(tdt.dimension);
-		
-		//PCnt_TeleporterData td = getTeleporterDataAt(tc.x, tc.y, tc.z);
-		//if (td == null)
-			//return false;
-		
 		if(!changeEntityWorld(entity, tdt.dimension))
 			return false;
-		
+		World world = MinecraftServer.getServer().worldServerForDimension(tdt.dimension);
 		PC_CoordI pos = calculatePos(world, tdt, tdt.direction);
 		if (pos == null)
 			return false;
-		
 		return teleportTo(entity, pos.x+0.5, pos.y, pos.z+0.5);
 	}
 
@@ -290,10 +261,10 @@ public class PCnt_TeleporterManager extends PC_PacketHandler implements PC_INBTW
 		return null;
 	}
 	
-	public static PCnt_TeleporterData getTeleporterDataAt(World world, int xCoord,
+	/*public static PCnt_TeleporterData getTeleporterDataAt(World world, int xCoord,
 			int yCoord, int zCoord) {
 		return getTeleporterDataAt(world.worldInfo.getDimension(), xCoord, yCoord, zCoord);
-	}
+	}*/
 
 	public static PCnt_TileEntityTeleporter getTeleporterAt(World world, int xCoord,
 			int yCoord, int zCoord) {

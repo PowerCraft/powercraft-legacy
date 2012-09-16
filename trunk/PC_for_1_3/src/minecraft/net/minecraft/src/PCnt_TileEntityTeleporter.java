@@ -23,9 +23,9 @@ public class PCnt_TileEntityTeleporter extends PC_TileEntity {
 	public boolean players = true;
 	public boolean sneakTrigger = false;
 	public String direction = "N";
-	public boolean hideLabel = false;
+	public boolean hideLabel = false;*/
 
-	public int dimension;*/
+	public int dimension;
 	
 	/**
 	 * 
@@ -69,28 +69,6 @@ public class PCnt_TileEntityTeleporter extends PC_TileEntity {
 		//td.direction = direction;
 	}
 
-	public boolean isActive() {
-
-		boolean active = false;
-
-		/*if (type == SENDER) {
-			active = (!targetName.equals("") && PCtr_TeleporterHelper.targetExists(targetName));
-		} else if (type == RECEIVER) {
-			active = (!identifierName.equals("") && PCtr_TeleporterHelper.targetExists(identifierName));
-		}*/
-		PCnt_TeleporterData td = PCnt_TeleporterManager.getTeleporterDataAt(worldObj, xCoord, yCoord, zCoord);
-		
-		if(td!=null){
-			if (active != td.lastActiveState) {
-				worldObj.markBlocksDirty(xCoord, yCoord, zCoord, xCoord, yCoord, zCoord);
-				worldObj.markBlockNeedsUpdate(xCoord, yCoord, zCoord);
-				td.lastActiveState = active;
-			}
-		}
-		return active;
-
-	}
-
 	@Override
 	public void readFromNBT(NBTTagCompound nbttagcompound) {
 		super.readFromNBT(nbttagcompound);
@@ -113,6 +91,9 @@ public class PCnt_TileEntityTeleporter extends PC_TileEntity {
 			animals = true;
 			players = true;
 		}*/
+		
+		dimension = nbttagcompound.getInteger("dimension");
+		
 	}
 
 	@Override
@@ -131,71 +112,22 @@ public class PCnt_TileEntityTeleporter extends PC_TileEntity {
 		nbttagcompound.setBoolean("tpsneak", sneakTrigger);
 		nbttagcompound.setString("tpdir", direction);
 		nbttagcompound.setBoolean("tp_flag_28", true);*/
-	}
-
-	/**
-	 * Does sender accept type of entity
-	 * 
-	 * @param entity
-	 * @return accepted
-	 */
-	public boolean acceptsEntity(Entity entity) {
-
-		PCnt_TeleporterData td = PCnt_TeleporterManager.getTeleporterDataAt(worldObj, xCoord, yCoord, zCoord);
 		
-		if(td == null)
-			return false;
+		nbttagcompound.setInteger("dimension", dimension);
 		
-		if (entity == null) {
-			return false;
-		}
-		
-		if(!(entity instanceof EntityLiving || entity instanceof EntityItem || entity instanceof EntityXPOrb || entity instanceof EntityArrow))
-			return false;
-		
-		
-		if ((entity instanceof EntityAnimal || entity instanceof EntitySquid || entity instanceof EntitySlime) && !td.animals) {
-			return false;
-		}
-
-		if ((entity instanceof EntityMob || entity instanceof EntityGhast || entity instanceof EntityDragon || entity instanceof EntityGolem)
-				&& !td.monsters) {
-			return false;
-		}
-
-		if ((entity instanceof EntityItem || entity instanceof EntityXPOrb || entity instanceof EntityArrow) && !td.items) {
-			return false;
-		}
-
-		if ((entity instanceof EntityPlayer) && !td.players) {
-			return false;
-		}
-
-		if ((entity instanceof EntityPlayer) && !entity.isSneaking() && td.sneakTrigger) {
-			return false;
-		}
-		
-		return true;
-
 	}
 
 	@Override
 	public void onBlockPickup(){
-		PCnt_TeleporterManager.remove(PCnt_TeleporterManager.getTeleporterDataAt(worldObj, xCoord, yCoord, zCoord));
+		PCnt_TeleporterManager.remove(PCnt_TeleporterManager.getTeleporterDataAt(dimension, xCoord, yCoord, zCoord));
 		System.out.println("remove:"+this);
 		
 	}
-
-	public int getDimension() {
-		PCnt_TeleporterData td = PCnt_TeleporterManager.getTeleporterDataAt(worldObj, xCoord, yCoord, zCoord);
-		return td.dimension;
-	}
-	
 	
 	@Override
 	public void set(Object[] o) {
 		boolean add=false;
-		PCnt_TeleporterData td = PCnt_TeleporterManager.getTeleporterDataAt(worldObj, xCoord, yCoord, zCoord);
+		PCnt_TeleporterData td = PCnt_TeleporterManager.getTeleporterDataAt(dimension, xCoord, yCoord, zCoord);
 		if(td==null){
 			td = new PCnt_TeleporterData();
 			add=true;
@@ -217,7 +149,7 @@ public class PCnt_TileEntityTeleporter extends PC_TileEntity {
 
 	@Override
 	public Object[] get() {
-		PCnt_TeleporterData td = PCnt_TeleporterManager.getTeleporterDataAt(worldObj, xCoord, yCoord, zCoord);
+		PCnt_TeleporterData td = PCnt_TeleporterManager.getTeleporterDataAt(dimension, xCoord, yCoord, zCoord);
 		if(td==null){
 			worldObj.markBlockNeedsUpdate(xCoord, yCoord, zCoord);
 			return null;
