@@ -309,6 +309,8 @@ public class mod_PCmachines extends PC_Module implements PC_IActivatorListener {
 //		map.put("pc.gui.xpbank.pointsToDeposit", "Points to deposit:");
 //		map.put("pc.gui.xpbank.depositButton", "Deposit");
 
+		map.put("pc.laser.kill", "%s killed by laser");
+		
 		map.put("pc.gui.automaticWorkbench.redstoneActivated", "Redstone triggered");
 	}
 

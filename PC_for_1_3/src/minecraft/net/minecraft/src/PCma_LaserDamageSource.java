@@ -8,7 +8,7 @@ public class PCma_LaserDamageSource extends DamageSource {
 	
 	public String func_76360_b(EntityPlayer par1EntityPlayer)
     {
-        return par1EntityPlayer.username + " killed by a laser";
+        return PC_Lang.tr("pc.laser.kill", par1EntityPlayer.username);
     }
 
 }
