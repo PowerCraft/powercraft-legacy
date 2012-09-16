@@ -1178,6 +1178,9 @@ public class PClo_BlockGate extends BlockContainer implements PC_IRotatedBox, PC
 	 */
 	public static boolean powered_from_input(World world, int x, int y, int z, int inp) {
 
+		if(world==null)
+			return false;
+		
 		if (inp == 4) {
 			boolean isProviding = (world.isBlockIndirectlyProvidingPowerTo(x, y - 1, z, 0) || (world.getBlockId(x, y - 1, z) == Block.redstoneWire.blockID && world
 					.getBlockMetadata(x, y - 1, z) > 0));
