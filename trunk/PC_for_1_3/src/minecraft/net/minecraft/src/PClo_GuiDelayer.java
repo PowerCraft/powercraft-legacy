@@ -38,8 +38,8 @@ public class PClo_GuiDelayer extends PC_GresBase {
 	 */
 	public PClo_GuiDelayer(EntityPlayer player, TileEntity tep) {
 		gateTE = (PClo_TileEntityGate)tep;
-		ticks = gateTE.gateType == FIFO ? gateTE.getDelayBufferLength() : gateTE.repeaterGetHoldTime();
-		delayer_type = gateTE.gateType;
+		delayer_type = gateTE.gateType == FIFO? FIFO: HOLD;
+		ticks = delayer_type == FIFO ? gateTE.getDelayBufferLength() : gateTE.repeaterGetHoldTime();
 	}
 
 	@Override

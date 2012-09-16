@@ -13,8 +13,6 @@ import java.util.List;
  */
 public class PCma_GuiAutomaticWorkbench extends PC_GresBase {
 
-
-
 	private PCma_TileEntityAutomaticWorkbench tileentity;
 	private IInventory craftResult;
 	private PC_GresCheckBox checkRedstone;
