@@ -30,7 +30,7 @@ public class PC_GresHighlightHelper {
 			return s.length();
 		}
 
-		private char getFirstNotOf(String s, @SuppressWarnings("unused") char c) {
+		private char getFirstNotOf(String s, char c) {
 			for (int i = 0; i < s.length(); i++) {
 				if (s.charAt(i) != ' ') return s.charAt(i);
 			}

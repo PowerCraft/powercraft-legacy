@@ -6,7 +6,7 @@ package net.minecraft.src;
  * 
  * @author MightyPork
  */
-public class PCtr_TileEntitySeparationBelt extends PCtr_TileEntityRedirectionBeltBase implements IInventory, PC_ISpecialAccessInventory, PC_IPacketSetter {
+public class PCtr_TileEntitySeparationBelt extends PCtr_TileEntityRedirectionBeltBase implements IInventory, PC_ISpecialAccessInventory {
 
 	/** All log types are sorted as equal */
 	public boolean group_logs = true;

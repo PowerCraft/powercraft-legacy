@@ -64,9 +64,6 @@ public class PC_GresFrame extends PC_GresWidget {
 			int xPos = 0;
 			int yPos = 0;
 			switch (alignH) {
-				case LEFT:
-					xPos = xx;
-					break;
 				case RIGHT:
 					xPos = size.x - xSize + xx;
 					break;
@@ -76,11 +73,12 @@ public class PC_GresFrame extends PC_GresWidget {
 				case STRETCH:
 					xPos = xx;
 					break;
+				default:
+				case LEFT:
+					xPos = xx;
+					break;
 			}
 			switch (alignV) {
-				case TOP:
-					yPos = 0;
-					break;
 				case BOTTOM:
 					yPos = size.y - csize.y;
 					break;
@@ -91,6 +89,10 @@ public class PC_GresFrame extends PC_GresWidget {
 					yPos = 0;
 					w.setSize(w.getSize().x, size.y, false);
 					break;
+				default:
+				case TOP:
+					yPos = 0;
+					break;	
 			}
 			w.setPosition(xPos, yPos);
 			xx += csize.x + w.widgetMargin;

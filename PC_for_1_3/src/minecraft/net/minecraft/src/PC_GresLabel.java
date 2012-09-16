@@ -37,13 +37,14 @@ public class PC_GresLabel extends PC_GresWidget {
 		int xstart = offsetPos.x + pos.x;
 
 		switch (alignH) {
-			case LEFT:
-				break;
 			case CENTER:
 				xstart = xstart + size.x / 2 - wid / 2;
 				break;
 			case RIGHT:
 				xstart = xstart + size.x - wid;
+			default:
+			case LEFT:
+				break;
 		}
 
 		drawString(text, xstart, offsetPos.y + pos.y);

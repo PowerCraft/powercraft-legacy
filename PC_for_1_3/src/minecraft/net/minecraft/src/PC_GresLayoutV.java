@@ -68,9 +68,6 @@ public class PC_GresLayoutV extends PC_GresWidget {
 			int xPos = 0;
 			int yPos = 0;
 			switch (alignH) {
-				case LEFT:
-					xPos = 0;
-					break;
 				case RIGHT:
 					xPos = size.x - csize.x;
 					break;
@@ -81,11 +78,12 @@ public class PC_GresLayoutV extends PC_GresWidget {
 					xPos = 0;
 					w.setSize(size.x, w.getSize().y, false);
 					break;
+				default:
+				case LEFT:
+					xPos = 0;
+					break;
 			}
 			switch (alignV) {
-				case TOP:
-					yPos = yy;
-					break;
 				case BOTTOM:
 					yPos = size.y - ySize + yy;
 					break;
@@ -101,6 +99,10 @@ public class PC_GresLayoutV extends PC_GresWidget {
 				case JUSTIFIED:
 					yPos = yy;
 					csize.y += gap;
+					break;
+				default:
+				case TOP:
+					yPos = yy;
 					break;
 			}
 			w.setPosition(xPos, yPos);

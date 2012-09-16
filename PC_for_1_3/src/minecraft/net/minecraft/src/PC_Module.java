@@ -621,7 +621,7 @@ public abstract class PC_Module extends BaseMod {
 			o[i] = input.readObject();
 		Block b = Block.blocksList[id];
 		if(b instanceof PC_IPacketSetter){
-			((PC_IPacketSetter)b).set(o);
+			((PC_IPacketSetter)b).set(world, o);
 			if(!client)
 				PC_Utils.setBlockArray(null, b, o);
 		}

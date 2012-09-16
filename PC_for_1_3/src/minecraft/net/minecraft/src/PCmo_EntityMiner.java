@@ -2172,7 +2172,6 @@ public class PCmo_EntityMiner extends Entity implements PC_IInventoryWrapper {
 
 		private ItemStack makeHalfStep(ItemStack stack) {
 			int id = stack.itemID;
-			@SuppressWarnings("unused")
 			int dmg = stack.getItemDamage();
 
 			if (id == Block.stone.blockID) {

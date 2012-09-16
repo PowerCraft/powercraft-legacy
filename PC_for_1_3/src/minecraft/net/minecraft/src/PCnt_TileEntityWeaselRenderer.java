@@ -51,7 +51,7 @@ public class PCnt_TileEntityWeaselRenderer extends TileEntitySpecialRenderer {
 		GL11.glTranslatef((float) x + 0.5F, ((float) y), (float) z + 0.5F);
 
 
-		bindTextureByName(mod_PClogic.getImgDir() + "block_chip.png");
+		bindTextureByName(mod_PCnet.getImgDir() + "block_chip.png");
 
 		// push 2
 		GL11.glPushMatrix();

@@ -12,7 +12,7 @@ import java.util.List;
  * @author MightyPork
  * @copy (c) 2012
  */
-public class PCma_TileEntityAutomaticWorkbench extends PC_TileEntity implements IInventory, PC_IStateReportingInventory, PC_ISpecialAccessInventory, PC_IPacketSetter {
+public class PCma_TileEntityAutomaticWorkbench extends PC_TileEntity implements IInventory, PC_IStateReportingInventory, PC_ISpecialAccessInventory {
 	private static Container fakeContainer = new PCma_ContainerFake();
 	/** Flag that this AW needs pulse to craft. */
 	public boolean redstoneActivated;

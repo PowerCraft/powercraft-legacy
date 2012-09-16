@@ -1095,21 +1095,6 @@ public class Compiler {
 							instructionList.add(new InstructionPop(""));
 						}
 
-					} else if (false) { //funcName.equalsIgnoreCase("unset")
-//						// an UNSET statement
-//
-//						if (inBracket.length() > 0) {
-//							// unset(something);
-//
-//							if (inBracket.matches(variableInCodePatternRegexp)) {
-//								instructionList.add(new InstructionUnset(inBracket));
-//							} else {
-//								throw new SyntaxError("Invalid variable name at \"unset(" + inBracket + ");\".");
-//							}
-//						} else {
-//							throw new SyntaxError("Can not unset \"null\" at \"unset();\".");
-//						}
-
 					} else {
 						// yes! finally! a real function! XD
 

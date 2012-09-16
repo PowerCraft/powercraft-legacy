@@ -1284,6 +1284,7 @@ public class mod_PCcore extends PC_Module implements PC_IActivatorListener {
 	protected Hashtable<String, PC_PacketHandler> addPacketHandler() {
 		Hashtable<String, PC_PacketHandler> packetHandler = new Hashtable<String, PC_PacketHandler>();
 		packetHandler.put("MobSpawnerSetter", new PCco_MobSpawnerSetter());
+		packetHandler.put("PCco_DeleteAllPlayerStacks", new PCco_DeleteAllPlayerStacks());
 		return packetHandler;
 	}
 

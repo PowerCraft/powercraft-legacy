@@ -7,7 +7,7 @@ package net.minecraft.src;
  * @author MightyPork
  * @copy (c) 2012
  */
-public class PClo_TileEntityPulsar extends PC_TileEntity implements PC_IPacketSetter{
+public class PClo_TileEntityPulsar extends PC_TileEntity{
 
 
 	@Override

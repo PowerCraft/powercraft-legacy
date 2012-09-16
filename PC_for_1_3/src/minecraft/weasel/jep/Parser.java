@@ -125,6 +125,7 @@ public class Parser/*@bgen(jjtree)*/implements ParserTreeConstants, ParserConsta
 	/***************************************************************
 	 * GRAMMAR START
 	 ***************************************************************/
+	@SuppressWarnings("unused")
 	final public ASTStart Start() throws ParseException {
 		/*@bgen(jjtree) Start */
 		ASTStart jjtn000 = new ASTStart(JJTSTART);
@@ -175,10 +176,7 @@ public class Parser/*@bgen(jjtree)*/implements ParserTreeConstants, ParserConsta
 						//       Decided to just return null, and handle the error
 						//       in ParseStream.
 						// addToErrorList("No expression entered");
-						{
-							if (true) return null;
-						}
-						break;
+						return null;
 					default:
 						jj_la1[2] = jj_gen;
 						jj_consume_token(-1);
@@ -1369,10 +1367,7 @@ void RangeExpression()  #FunNode:
 				jj_consume_token(-1);
 				throw new ParseException();
 		}
-		{
-			if (true) return t.image;
-		}
-		throw new Error("Missing return statement in function");
+		return t.image;
 	}
 
 	final public void AnyConstant() throws ParseException {
@@ -1487,10 +1482,8 @@ Vector Array() :
 			addToErrorList("Can't parse \"" + t.image + "\"");
 		}
 
-		{
-			if (true) return value;
-		}
-		throw new Error("Missing return statement in function");
+		return value;
+		
 	}
 
 	final private boolean jj_2_1(int xla) {

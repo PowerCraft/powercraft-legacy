@@ -9,7 +9,7 @@ import java.util.Random;
  * 
  * @author MightyPork
  */
-public class PCtr_TileEntityEjectionBelt extends PC_TileEntity implements PC_IPacketSetter{
+public class PCtr_TileEntityEjectionBelt extends PC_TileEntity{
 
 	/** Random number generator */
 	protected Random rand = new Random();
