@@ -114,12 +114,9 @@ public class PClo_TileEntityPulsar extends PC_TileEntity implements PC_IPacketSe
 		}
 		
 		if(change)
-			PC_Utils.setTileEntity(null, this, "active", active);
+			PC_Utils.setTileEntity(null, this, "active", active, "change");
 		
 		if (delayTimer >= delay) {
-			if (!silent && mod_PCcore.soundsEnabled) {
-				worldObj.playSoundEffect(xCoord + 0.5D, yCoord + 0.5D, zCoord + 0.5D, "random.click", 0.10F, 0.6F);
-			}
 			delayTimer = -1;
 		}
 
@@ -183,6 +180,11 @@ public class PClo_TileEntityPulsar extends PC_TileEntity implements PC_IPacketSe
 				active = (Boolean)o[p++];
 			}else if(var.equals("paused")){
 				paused = (Boolean)o[p++];
+			}else if(var.equals("change")){
+				if (!silent && mod_PCcore.soundsEnabled && worldObj.isRemote) {
+					worldObj.playSoundEffect(xCoord + 0.5D, yCoord + 0.5D, zCoord + 0.5D, "random.click", 1.0F, 1.0F);
+					System.out.println("Sound...");
+				}
 			}
 		}
 	}
