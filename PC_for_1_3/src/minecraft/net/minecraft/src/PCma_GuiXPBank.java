@@ -13,7 +13,6 @@ import net.minecraft.src.PC_GresWidget.PC_GresAlign;
  */
 public class PCma_GuiXPBank extends PC_GresBase {
 
-	private EntityPlayer player;
 	private PCma_TileEntityXPBank xpbank;
 	private PC_GresWidget buttonClose;
 	private PC_GresWidget txStoragePoints;
@@ -35,8 +34,6 @@ public class PCma_GuiXPBank extends PC_GresBase {
 	public void initGui(PC_IGresGui gui) {
 		w = new PC_GresWindow(PC_Lang.tr("tile.PCmaXPBank.name"));
 		w.setAlignH(PC_GresAlign.CENTER);
-
-		EntityPlayer player = getPlayer();
 
 		if (player.experience < 0) player.experience = 0;
 		if (player.experience >= 0.99 && player.experience <= 1.01) {
@@ -121,7 +118,7 @@ public class PCma_GuiXPBank extends PC_GresBase {
 
 	private void updateCounters() {
 		txStoragePoints.setText(xpbank.xp + "").setMinWidth(0);
-		txPlayerLevels.setText(getPlayer().experienceLevel + "").setMinWidth(0);
+		txPlayerLevels.setText(player.experienceLevel + "").setMinWidth(0);
 	}
 
 	private int xpBarCap(int level) {
