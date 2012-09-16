@@ -107,7 +107,8 @@ public class PClo_BlockPulsar extends BlockContainer implements PC_IBlockType {
 	public static void changeDelay(World world, EntityPlayer player, int x, int y, int z, int delay) {
 		PClo_TileEntityPulsar ent = (PClo_TileEntityPulsar) world.getBlockTileEntity(x, y, z);
 		PC_Utils.setTileEntity(player, ent, "changeDelay", delay);
-		ent.printDelay();
+		if(!world.isRemote)
+			ent.printDelay();
 	}
 
 	/**
@@ -120,7 +121,8 @@ public class PClo_BlockPulsar extends BlockContainer implements PC_IBlockType {
 	 */
 	public static void printDelay(World world, int x, int y, int z) {
 		PClo_TileEntityPulsar ent = (PClo_TileEntityPulsar) world.getBlockTileEntity(x, y, z);
-		ent.printDelayTime();
+		if(!world.isRemote)
+			ent.printDelayTime();
 	}
 
 	@Override
