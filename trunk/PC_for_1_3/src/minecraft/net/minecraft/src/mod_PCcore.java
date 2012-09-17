@@ -1235,15 +1235,15 @@ public class mod_PCcore extends PC_Module implements PC_IActivatorListener {
 				dmm = initDMM(world);
 				System.out.println("dmm:"+dmm);
 			}
-			if (!updateAlreadyShown && updateAvailable && optUpdateNotify) {
-				if (++inGameTickCounter > 20) {
-					updateAlreadyShown = true;
-					try {
-						PC_Utils.openGres(mc.thePlayer, PCco_GuiUpdateNotification.class);
-						PC_Logger.fine("Openning UPDATE NOTIFICATION screen.");
-					} catch (Throwable t) {
-						PC_Logger.throwing("mod_PCcore", "onTickInGame", t);
-					}
+		}
+		if (!updateAlreadyShown && updateAvailable && optUpdateNotify) {
+			if (++inGameTickCounter > 20) {
+				updateAlreadyShown = true;
+				try {
+					PC_Utils.openGres(null, PCco_GuiUpdateNotification.class);
+					PC_Logger.fine("Openning UPDATE NOTIFICATION screen.");
+				} catch (Throwable t) {
+					PC_Logger.throwing("mod_PCcore", "onTickInGame", t);
 				}
 			}
 		}

@@ -165,6 +165,12 @@ public class PC_TreeHarvestingManager {
 		int sapling_id = treeData.c.a;
 		int sapling_meta = treeData.c.b;
 
+		if(id == 127){
+			harvestedStacks.add(new ItemStack(351, meta>=2?3:1, 3));
+			pos.setBlock(world, 0, 0);
+			return;
+		}
+		
 		if ((id == wood_id && (meta == wood_meta || wood_meta == -1)) || ((meta & 3) == leaves_meta || leaves_meta == -1)) {
 
 			int dropI = Block.blocksList[id].idDropped(meta, world.rand, 0);
@@ -177,7 +183,7 @@ public class PC_TreeHarvestingManager {
 				harvestedStacks.add(dropped);
 			}
 
-			pos.setBlock(world, 0, 0);
+			pos.setBlockNoNotify(world, 0, 0);
 
 			if (world.rand.nextInt(10 - ((id == wood_id && (meta == wood_meta || wood_meta == -1)) ? 8 : 0)) == 0) {
 				if (mod_PCcore.soundsEnabled) {
@@ -219,7 +225,8 @@ public class PC_TreeHarvestingManager {
 						int here_id = here.getId(world);
 						int here_meta = here.getMeta(world);
 						if ((here_id == wood_id && (here_meta == wood_meta || wood_meta == -1))
-								|| (here_id == leaves_id && ((here_meta & 3) == leaves_meta || leaves_meta == -1))) {
+								|| (here_id == leaves_id && ((here_meta & 3) == leaves_meta || leaves_meta == -1))
+								|| (here_id == 127/*Cacao*/)) {
 							chopTree(world, treeRootPos, here, harvestedStacks, treeData);
 						}
 
