@@ -14,292 +14,299 @@ import java.util.Random;
  */
 public class PCma_TileEntityReplacer extends PC_TileEntity implements IInventory, PC_ISpecialAccessInventory {
 
-	/** the building stack */
-	public ItemStack buildBlock;
-	private static final int MAXSTACK = 1;
-	private static final int SIZE = 1;
-	/** offset coordinate for replacing */
-	public PC_CoordI coordOffset = new PC_CoordI(0, 1, 0);
-	/** particle frame shown */
-	public boolean aidEnabled = false;
-	private PC_Color aidcolor;
+  /** the building stack */
+  public ItemStack buildBlock;
 
-	/** state (redstone). To prevent action on each neighbour block change. */
-	public boolean state = false;
-	private Random rand;
-	private boolean init = false;
-	/**
-	 * metadata of the block at the time it was replaced from world to
-	 * inventory. Is cleared when user touches the inventory slot.
-	 */
-	public int extraMeta = -1;
+  // Anfang Attribute
+  private static final int MAXSTACK = 1;
+  private static final int SIZE = 1;
+  /** offset coordinate for replacing */
+  public PC_CoordI coordOffset = new PC_CoordI(0, 1, 0);
+  /** particle frame shown */
+  public boolean aidEnabled = false;
+  private PC_Color aidcolor;
 
-
-
-	@Override
-	public void updateEntity() {
-
-		if (!init) {
-			init = true;
-			Random rnd = new Random((145896555 + xCoord) ^ yCoord ^ (zCoord ^ 132));
-
-			double used = 2D;
-
-			double r = rnd.nextDouble() * 1D;
-			used -= r;
-			double g = rnd.nextDouble() * 1D;
-			used -= g;
-			double b = used;
-
-			if (rnd.nextBoolean()) {
-				double f = r;
-				r = g;
-				g = f;
-			}
-
-			if (rnd.nextBoolean()) {
-				double f = g;
-				g = b;
-				b = f;
-			}
-
-			if (rnd.nextBoolean()) {
-				double f = b;
-				b = r;
-				r = f;
-			}
-
-			aidcolor = new PC_Color(r, g, b);
-
-			rand = new Random();
-		}
+  /** state (redstone). To prevent action on each neighbour block change. */
+  public boolean state = false;
+  private Random rand;
+  private boolean init = false;
+  /**
+   * metadata of the block at the time it was replaced from world to
+   * inventory. Is cleared when user touches the inventory slot.
+   */
+  public int extraMeta = -1;
+  // Ende Attribute
 
 
 
-		if (aidEnabled && worldObj.isRemote) {
 
-			double d = xCoord + rand.nextFloat();
-			double d1 = yCoord + 1.1D;
-			double d2 = zCoord + rand.nextFloat();
+  @Override
 
-			int a = rand.nextInt(3);
-			int b = rand.nextInt(3);
+  // Anfang Methoden
+  public void updateEntity() {
 
-			ModLoader.getMinecraftInstance().effectRenderer.addEffect(new PC_EntityLaserParticleFX(worldObj, new PC_CoordD(d, d1, d2), aidcolor,
-					new PC_CoordI(), 0));
+    if (!init) {
+      init = true;
+      Random rnd = new Random((145896555 + xCoord) ^ yCoord ^ (zCoord ^ 132));
 
-			for (int q = 0; q < 8; q++) {
+      double used = 2D;
 
-				d = xCoord + coordOffset.x + rand.nextFloat();
-				d1 = yCoord + coordOffset.y + rand.nextFloat();
-				d2 = zCoord + coordOffset.z + rand.nextFloat();
+      double r = rnd.nextDouble() * 1D;
+      used -= r;
+      double g = rnd.nextDouble() * 1D;
+      used -= g;
+      double b = used;
 
-				a = rand.nextInt(3);
-				b = rand.nextInt(3);
-				while (a == b) {
-					b = rand.nextInt(3);
-				}
-				boolean aa = rand.nextBoolean();
-				boolean bb = rand.nextBoolean();
+      if (rnd.nextBoolean()) {
+        double f = r;
+        r = g;
+        g = f;
+      }
 
-				switch (a) {
-					case 0:
-						d = aa ? Math.floor(d) : Math.ceil(d);
-						break;
-					case 1:
-						d1 = aa ? Math.floor(d1) : Math.ceil(d1);
-						break;
-					case 2:
-						d2 = aa ? Math.floor(d2) : Math.ceil(d2);
-						break;
-				}
+      if (rnd.nextBoolean()) {
+        double f = g;
+        g = b;
+        b = f;
+      }
 
-				switch (b) {
-					case 0:
-						d = bb ? Math.floor(d) : Math.ceil(d);
-						break;
-					case 1:
-						d1 = bb ? Math.floor(d1) : Math.ceil(d1);
-						break;
-					case 2:
-						d2 = bb ? Math.floor(d2) : Math.ceil(d2);
-						break;
-				}
+      if (rnd.nextBoolean()) {
+        double f = b;
+        b = r;
+        r = f;
+      }
 
-				ModLoader.getMinecraftInstance().effectRenderer.addEffect(new PC_EntityLaserParticleFX(worldObj, new PC_CoordD(d, d1, d2), aidcolor,
-						new PC_CoordI(), 0));
+      aidcolor = new PC_Color(r, g, b);
 
-			}
-		}
+      rand = new Random();
+    }
 
-		super.updateEntity();
-	}
 
-	@Override
-	public boolean canPlayerInsertStackTo(int slot, ItemStack stack) {
-		if (stack.getItem() instanceof ItemBlock) {
-			return true;
-		}
-		return false;
-	}
 
-	@Override
-	public int getSizeInventory() {
-		return SIZE;
-	}
+    if (aidEnabled && worldObj.isRemote) {
 
-	@Override
-	public ItemStack getStackInSlot(int i) {
-		return buildBlock;
-	}
+      double d = xCoord + rand.nextFloat();
+      double d1 = yCoord + 1.1D;
+      double d2 = zCoord + rand.nextFloat();
 
-	@Override
-	public ItemStack decrStackSize(int i, int j) {
-		if (j > 0) {
-			ItemStack itemStack = buildBlock;
-			buildBlock = null;
-			return itemStack;
-		}
-		return null;
-	}
+      int a = rand.nextInt(3);
+      int b = rand.nextInt(3);
 
-	@Override
-	public ItemStack getStackInSlotOnClosing(int i) {
-		if (buildBlock != null) {
-			ItemStack itemstack = buildBlock;
-			buildBlock = null;
-			return itemstack;
-		} else {
-			return null;
-		}
-	}
+      ModLoader.getMinecraftInstance().effectRenderer.addEffect(new PC_EntityLaserParticleFX(worldObj, new PC_CoordD(d, d1, d2), aidcolor,
+          new PC_CoordI(), 0));
 
-	@Override
-	public void setInventorySlotContents(int i, ItemStack itemstack) {
-		buildBlock = itemstack;
-		if (itemstack != null && itemstack.stackSize > getInventoryStackLimit()) {
-			itemstack.stackSize = getInventoryStackLimit();
-		}
-		onInventoryChanged();
-	}
+      for (int q = 0; q < 8; q++) {
 
-	@Override
-	public String getInvName() {
-		return "Block Replacer";
-	}
+        d = xCoord + coordOffset.x + rand.nextFloat();
+        d1 = yCoord + coordOffset.y + rand.nextFloat();
+        d2 = zCoord + coordOffset.z + rand.nextFloat();
 
-	@Override
-	public void readFromNBT(NBTTagCompound nbttagcompound) {
-		super.readFromNBT(nbttagcompound);
-		System.out.println("readFromNBT");
-		NBTTagList nbttaglist = nbttagcompound.getTagList("Items");
+        a = rand.nextInt(3);
+        b = rand.nextInt(3);
+        while (a == b) {
+          b = rand.nextInt(3);
+        }
+        boolean aa = rand.nextBoolean();
+        boolean bb = rand.nextBoolean();
 
-		if (nbttaglist.tagCount() > 0) {
-			NBTTagCompound nbttagcompound1 = (NBTTagCompound) nbttaglist.tagAt(0);
-			buildBlock = ItemStack.loadItemStackFromNBT(nbttagcompound1);
-		}
+        switch (a) {
+          case 0:
+            d = aa ? Math.floor(d) : Math.ceil(d);
+            break;
+          case 1:
+            d1 = aa ? Math.floor(d1) : Math.ceil(d1);
+            break;
+          case 2:
+            d2 = aa ? Math.floor(d2) : Math.ceil(d2);
+            break;
+        }
 
-		PC_Utils.loadFromNBT(nbttagcompound, "targetPos", coordOffset);
-		state = nbttagcompound.getBoolean("state");
-		aidEnabled = nbttagcompound.getBoolean("aid");
-		extraMeta = nbttagcompound.getInteger("extraMeta");
+        switch (b) {
+          case 0:
+            d = bb ? Math.floor(d) : Math.ceil(d);
+            break;
+          case 1:
+            d1 = bb ? Math.floor(d1) : Math.ceil(d1);
+            break;
+          case 2:
+            d2 = bb ? Math.floor(d2) : Math.ceil(d2);
+            break;
+        }
 
-		if (coordOffset.equals(new PC_CoordI(0, 0, 0))) {
-			coordOffset.setTo(0, 1, 0);
-		}
-		init = false;
-	}
+        ModLoader.getMinecraftInstance().effectRenderer.addEffect(new PC_EntityLaserParticleFX(worldObj, new PC_CoordD(d, d1, d2), aidcolor,
+            new PC_CoordI(), 0));
 
-	@Override
-	public void writeToNBT(NBTTagCompound nbttagcompound) {
-		super.writeToNBT(nbttagcompound);
+      }
+    }
 
-		NBTTagList nbttaglist = new NBTTagList();
-		if (buildBlock != null) {
-			NBTTagCompound nbttagcompound1 = new NBTTagCompound();
-			buildBlock.writeToNBT(nbttagcompound1);
-			nbttaglist.appendTag(nbttagcompound1);
-		}
+    super.updateEntity();
+  }
 
-		nbttagcompound.setTag("Items", nbttaglist);
-		nbttagcompound.setBoolean("state", state);
-		nbttagcompound.setBoolean("aid", aidEnabled);
-		nbttagcompound.setInteger("extraMeta", extraMeta);
+  @Override
+  public boolean canPlayerInsertStackTo(int slot, ItemStack stack) {
+    if (stack.getItem() instanceof ItemBlock) {
+      return true;
+    }
+    return false;
+  }
 
-		PC_Utils.saveToNBT(nbttagcompound, "targetPos", coordOffset);
-	}
+  @Override
+  public int getSizeInventory() {
+    return SIZE;
+  }
 
-	@Override
-	public int getInventoryStackLimit() {
-		return MAXSTACK;
-	}
+  @Override
+  public ItemStack getStackInSlot(int i) {
+    return buildBlock;
+  }
 
-	@Override
-	public boolean isUseableByPlayer(EntityPlayer entityplayer) {
-		return false;
-	}
+  @Override
+  public ItemStack decrStackSize(int i, int j) {
+    if (j > 0) {
+      ItemStack itemStack = buildBlock;
+      buildBlock = null;
+      return itemStack;
+    }
+    return null;
+  }
 
-	@Override
-	public void openChest() {
+  @Override
+  public ItemStack getStackInSlotOnClosing(int i) {
+    if (buildBlock != null) {
+      ItemStack itemstack = buildBlock;
+      buildBlock = null;
+      return itemstack;
+    } else {
+      return null;
+    }
+  }
 
-	}
+  @Override
+  public void setInventorySlotContents(int i, ItemStack itemstack) {
+    buildBlock = itemstack;
+    if (itemstack != null && itemstack.stackSize > getInventoryStackLimit()) {
+      itemstack.stackSize = getInventoryStackLimit();
+    }
+    onInventoryChanged();
+  }
 
-	@Override
-	public void closeChest() {
+  @Override
+  public String getInvName() {
+    return "Block Replacer";
+  }
 
-	}
+  @Override
+  public void readFromNBT(NBTTagCompound nbttagcompound) {
+    super.readFromNBT(nbttagcompound);
+    System.out.println("readFromNBT");
+    NBTTagList nbttaglist = nbttagcompound.getTagList("Items");
 
-	@Override
-	public boolean insertStackIntoInventory(ItemStack stack) {
-		return PC_InvUtils.addWholeItemStackToInventory(this, stack);
-	}
+    if (nbttaglist.tagCount() > 0) {
+      NBTTagCompound nbttagcompound1 = (NBTTagCompound) nbttaglist.tagAt(0);
+      buildBlock = ItemStack.loadItemStackFromNBT(nbttagcompound1);
+    }
 
-	@Override
-	public boolean canDispenseStackFrom(int slot) {
-		return true;
-	}
+    PC_Utils.loadFromNBT(nbttagcompound, "targetPos", coordOffset);
+    state = nbttagcompound.getBoolean("state");
+    aidEnabled = nbttagcompound.getBoolean("aid");
+    extraMeta = nbttagcompound.getInteger("extraMeta");
 
-	@Override
-	public boolean needsSpecialInserter() {
-		return false;
-	}
+    if (coordOffset.equals(new PC_CoordI(0, 0, 0))) {
+      coordOffset.setTo(0, 1, 0);
+    }
+    init = false;
+  }
 
-	@Override
-	public boolean canUpdate() {
-		return false;
-	}
+  @Override
+  public void writeToNBT(NBTTagCompound nbttagcompound) {
+    super.writeToNBT(nbttagcompound);
 
-	@Override
-	public boolean canMachineInsertStackTo(int slot, ItemStack stack) {
-		return canPlayerInsertStackTo(slot, stack);
-	}
+    NBTTagList nbttaglist = new NBTTagList();
+    if (buildBlock != null) {
+      NBTTagCompound nbttagcompound1 = new NBTTagCompound();
+      buildBlock.writeToNBT(nbttagcompound1);
+      nbttaglist.appendTag(nbttagcompound1);
+    }
 
-	@Override
-	public void set(Object o[]) {
-		int p = 0;
-		while(p<o.length){
-			String var = (String)o[p++];
-			if(var.equals("extraMeta"))
-				extraMeta = (Integer)o[p++];
-			else if(var.equals("coordOffset"))
-				coordOffset.setTo((Integer)o[p++], (Integer)o[p++], (Integer)o[p++]);
-			else if(var.equals("aidEnabled"))
-				aidEnabled = (Boolean)o[p++];
-		}
-	}
+    nbttagcompound.setTag("Items", nbttaglist);
+    nbttagcompound.setBoolean("state", state);
+    nbttagcompound.setBoolean("aid", aidEnabled);
+    nbttagcompound.setInteger("extraMeta", extraMeta);
 
-	@Override
-	public Object[] get() {
-		Object[] o = new Object[8];
-		o[0] = "extraMeta";
-		o[1] = extraMeta;
-		o[2] = "coordOffset";
-		o[3] = coordOffset.x;
-		o[4] = coordOffset.y;
-		o[5] = coordOffset.z;
-		o[6] = "aidEnabled";
-		o[7] = aidEnabled;
-		return o;
-	}
-	
+    PC_Utils.saveToNBT(nbttagcompound, "targetPos", coordOffset);
+  }
+
+  @Override
+  public int getInventoryStackLimit() {
+    return MAXSTACK;
+  }
+
+  @Override
+  public boolean isUseableByPlayer(EntityPlayer entityplayer) {
+    return false;
+  }
+
+  @Override
+  public void openChest() {
+
+  }
+
+  @Override
+  public void closeChest() {
+
+  }
+
+  @Override
+  public boolean insertStackIntoInventory(ItemStack stack) {
+    return PC_InvUtils.addWholeItemStackToInventory(this, stack);
+  }
+
+  @Override
+  public boolean canDispenseStackFrom(int slot) {
+    return true;
+  }
+
+  @Override
+  public boolean needsSpecialInserter() {
+    return false;
+  }
+
+  @Override
+  public boolean canUpdate() {
+    return false;
+  }
+
+  @Override
+  public boolean canMachineInsertStackTo(int slot, ItemStack stack) {
+    return canPlayerInsertStackTo(slot, stack);
+  }
+
+  @Override
+  public void set(Object o[]) {
+    int p = 0;
+    while(p<o.length){
+      String var = (String)o[p++];
+      if(var.equals("extraMeta"))
+        extraMeta = (Integer)o[p++];
+      else if(var.equals("coordOffset"))
+        coordOffset.setTo((Integer)o[p++], (Integer)o[p++], (Integer)o[p++]);
+      else if(var.equals("aidEnabled"))
+        aidEnabled = (Boolean)o[p++];
+    }
+  }
+
+  @Override
+  public Object[] get() {
+    Object[] o = new Object[8];
+    o[0] = "extraMeta";
+    o[1] = extraMeta;
+    o[2] = "coordOffset";
+    o[3] = coordOffset.x;
+    o[4] = coordOffset.y;
+    o[5] = coordOffset.z;
+    o[6] = "aidEnabled";
+    o[7] = aidEnabled;
+    return o;
+  }
+  // Ende Methoden
+  
 }

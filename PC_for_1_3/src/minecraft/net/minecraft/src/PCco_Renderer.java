@@ -54,9 +54,6 @@ public class PCco_Renderer {
 			tessellator.startDrawingQuads();
 			renderengine.bindTexture(renderengine.getTexture(((PC_ISwapTerrain) block).getTerrainFile()));
 
-			boolean gf = RenderBlocks.cfgGrassFix;
-			RenderBlocks.cfgGrassFix = false;
-
 			Random posRand = new Random(i + i * j * k + k + iblockaccess.getBlockMetadata(i, j, k));
 
 			for (int q = 3 + posRand.nextInt(2); q > 0; q--) {
@@ -74,8 +71,7 @@ public class PCco_Renderer {
 				renderblocks.renderStandardBlock(block, i, j, k);
 			}
 			block.setBlockBounds(0, 0, 0, 1, 1, 1);
-
-			RenderBlocks.cfgGrassFix = gf;
+			
 			tessellator.draw();
 			tessellator.startDrawingQuads();
 			renderengine.bindTexture(renderengine.getTexture("/terrain.png"));

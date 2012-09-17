@@ -70,13 +70,8 @@ public class PC_Renderer {
 
 		boolean swapped = swapTerrain(block);
 
-		boolean gf = RenderBlocks.cfgGrassFix;
-		RenderBlocks.cfgGrassFix = false;
-
 		if (!enableCustomBounds) block.setBlockBoundsBasedOnState(blockAccess, x, y, z);
 		renderblocks.renderStandardBlock(block, x, y, z);
-
-		RenderBlocks.cfgGrassFix = gf;
 
 		tessellator.draw();
 		tessellator.startDrawingQuads();
