@@ -349,12 +349,12 @@ public class PCma_TileEntityLaser extends PC_TileEntity implements PC_IBeamHandl
 					EntityPlayerSP player = (EntityPlayerSP) entity;
 					int armourValue = PC_InvUtils.getPlayerArmourValue(player);
 					if (worldObj.rand.nextBoolean()) {
-						player.attackEntityFrom(new PCma_LaserDamageSource(), MathHelper.clamp_int(Math.round(5 * (0.7F - (armourValue / 8))), 0, 8));
+						player.attackEntityFrom(new DamageSource("pc.laser.kill"), MathHelper.clamp_int(Math.round(5 * (0.7F - (armourValue / 8))), 0, 8));
 					}
 
 				} else {
 
-					entity.attackEntityFrom(new PCma_LaserDamageSource(), 200);
+					entity.attackEntityFrom(new DamageSource("pc.laser.kill"), 200);
 
 				}
 
