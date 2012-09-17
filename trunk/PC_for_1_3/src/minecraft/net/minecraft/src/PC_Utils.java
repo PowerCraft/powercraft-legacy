@@ -32,6 +32,10 @@ public class PC_Utils {
 		return ModLoader.getMinecraftInstance();
 	}
 
+	public static MinecraftServer mcs() {
+		return MinecraftServer.getServer();
+	}
+	
 	/**
 	 * Get if player is in creative mode.
 	 * 
