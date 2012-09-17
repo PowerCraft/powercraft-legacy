@@ -52,14 +52,10 @@ public class PCnt_Renderer {
 		tessellator.draw();
 
 		tessellator.startDrawingQuads();
-
-		boolean gf = RenderBlocks.cfgGrassFix;
-		RenderBlocks.cfgGrassFix = false;
-		//PCtr_TileEntityTeleporter tet = PCtr_BlockTeleporter.getTE(iblockaccess, i, j, k);
+		
 		PCnt_TeleporterData td = null;
 		if(iblockaccess instanceof World)
 			td = PCnt_TeleporterManager.getTeleporterDataAt(((World)iblockaccess).worldInfo.getDimension(), i, j, k);
-		//if (tet.isReceiver()) {
 			Block.blockGold.setBlockBounds(0.125F, 0.0F, 0.125F, 0.875F, 0.125F, 0.875F);
 			renderblocks.renderStandardBlock(Block.blockGold, i, j, k);
 			float m = 0.0625F * 6F;
@@ -96,8 +92,6 @@ public class PCnt_Renderer {
 			renderblocks.renderStandardBlock(block, i, j, k);
 			block.setBlockBounds(0.125F, 0.0F, 0.125F, 1.0F - 0.125F, 1.0F - 0.125F, 1.0F - 0.125F);
 		}
-
-		RenderBlocks.cfgGrassFix = gf;
 
 		tessellator.draw();
 

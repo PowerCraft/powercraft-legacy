@@ -158,7 +158,6 @@ public class PClo_BlockPulsar extends BlockContainer implements PC_IBlockType {
 
 	@Override
 	public int colorMultiplier(IBlockAccess iblockaccess, int i, int j, int k) {
-		System.out.println("colorMultiplier");
 		if (isActive(iblockaccess, i, j, k)) {
 			return 0xff3333;
 		} else {

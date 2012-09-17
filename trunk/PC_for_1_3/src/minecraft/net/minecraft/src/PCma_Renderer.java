@@ -54,9 +54,6 @@ public class PCma_Renderer {
 	 * @return success
 	 */
 	public static boolean renderBlockXPBank(RenderBlocks renderblocks, IBlockAccess iblockaccess, int i, int j, int k, Block block) {
-		boolean gf = RenderBlocks.cfgGrassFix;
-		RenderBlocks.cfgGrassFix = false;
-
 		// XP bank inner thingy
 		mod_PCmachines.xpbank.rendering = true;
 		PC_Renderer.enableCustomBounds = false;
@@ -80,8 +77,6 @@ public class PCma_Renderer {
 
 		// reset
 		Block.obsidian.setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 1.0F, 1.0F);
-
-		RenderBlocks.cfgGrassFix = gf;
 
 		return true;
 	}

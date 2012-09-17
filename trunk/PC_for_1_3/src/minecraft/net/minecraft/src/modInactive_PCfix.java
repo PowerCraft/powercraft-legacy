@@ -12,7 +12,7 @@ import java.util.Map;
  * @author MightyPork
  * @copy (c) 2012
  */
-public class mod_PCfix extends PC_Module {
+public class modInactive_PCfix extends PC_Module {
 
 	@Override
 	public String getVersion() {
