@@ -165,7 +165,7 @@ public class PCde_TileEntityDeco extends PC_TileEntity implements PC_IInventoryW
 			increment = rand.nextInt(2);
 		}
 
-		lightningCharge += increment*10;
+		lightningCharge += increment;
 
 	}
 
