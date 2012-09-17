@@ -53,7 +53,7 @@ public class PCde_TileEntityDeco extends PC_TileEntity implements PC_IInventoryW
 				if (flashStructureCheckTimeout-- <= 0) {
 					flashStructureCheckTimeout = 40;
 					flashStructureComplete = isTransmuterStructureComplete();
-					PC_Utils.setTileEntity(null, this, "flashStructureComplete", flashStructureComplete, "reconnectWithChamber");
+					PC_Utils.setTileEntity(null, this, "lightningCharge", lightningCharge, "flashStructureComplete", flashStructureComplete, "reconnectWithChamber");
 				}
 			}
 			
@@ -81,10 +81,9 @@ public class PCde_TileEntityDeco extends PC_TileEntity implements PC_IInventoryW
 					updateFlashCharge();
 					if(isLightningReadyToStrike()){
 						PC_Utils.setTileEntity(null, this, "lightningCharge", (long)0, "makeLightning");
+						chamber.transmutabox.onHitByLightning();
 						lightningCharge = 0;
 						lightningChargeRequired = FLASH_CHARGE_MIN + 100 + rand.nextInt(FLASH_CHARGE_MAX - FLASH_CHARGE_MIN - 100);
-					}else{
-						PC_Utils.setTileEntity(null, this, "lightningCharge", lightningCharge);
 					}
 				}
 				//the particle field
@@ -207,8 +206,6 @@ public class PCde_TileEntityDeco extends PC_TileEntity implements PC_IInventoryW
 
 			worldObj.playSoundEffect(chamber.getCoord().x + 0.5F, chamber.getCoord().y + 0.5F, chamber.getCoord().z + 0.5F, "random.explode", 1.5F,
 					(1.0F + (worldObj.rand.nextFloat() - worldObj.rand.nextFloat()) * 0.2F) * 0.7F);
-
-			chamber.transmutabox.onHitByLightning();
 
 			// hit entites near the chamber by lightning.
 			double d = 3D;
@@ -393,6 +390,19 @@ public class PCde_TileEntityDeco extends PC_TileEntity implements PC_IInventoryW
 				reconnectWithChamber();
 			}else if(var.equals("flashStructureComplete")){
 				flashStructureComplete = (Boolean)o[p++];
+			}else if(var.equals("setSlotTo")){
+				if(transmutabox!=null){
+					int slot = (Integer)o[p++];
+					int id=(Integer)o[p++];
+					if(id==0){
+						transmutabox.setInventorySlotContents(slot, null);
+						p+=2;
+					}else{
+						transmutabox.setInventorySlotContents(slot, new ItemStack(id, (Integer)o[p++], (Integer)o[p++]));
+					}
+				}else{
+					p+=4;
+				}
 			}
 		}
 	}
