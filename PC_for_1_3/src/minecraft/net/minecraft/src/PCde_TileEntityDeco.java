@@ -49,39 +49,45 @@ public class PCde_TileEntityDeco extends PC_TileEntity implements PC_IInventoryW
 		// conductor
 		if (type == 2) {
 
-			if (flashStructureCheckTimeout-- <= 0) {
-				flashStructureCheckTimeout = 40;
-				flashStructureComplete = isTransmuterStructureComplete();
+			if(!worldObj.isRemote){
+				if (flashStructureCheckTimeout-- <= 0) {
+					flashStructureCheckTimeout = 40;
+					flashStructureComplete = isTransmuterStructureComplete();
+					PC_Utils.setTileEntity(null, this, "flashStructureComplete", flashStructureComplete, "reconnectWithChamber");
+				}
 			}
+			
+			if (flashStructureComplete) {
+				
+				if(worldObj.isRemote){
+					for (int i = 0; i < 2; i++) {
+						ModLoader.getMinecraftInstance().effectRenderer.addEffect(new PC_EntityLaserParticleFX(worldObj, new PC_CoordD(getCoord())
+								.offset(-0.1F + rand.nextFloat() * 1.2F, rand.nextFloat() * 0.8F, -0.1F + rand.nextFloat() * 1.2F), new PC_Color(0.6,
+								0.6, 1), new PC_CoordI(), 0));
+					}
 
-			if (flashStructureComplete && worldObj.isRemote) {
-				updateFlashCharge();
+					for (int i = 0; i < 2; i++) {
+						ModLoader.getMinecraftInstance().effectRenderer.addEffect(new PC_EntityLaserParticleFX(worldObj, new PC_CoordD(getCoord())
+								.offset(0.1F + rand.nextFloat() * 0.8F, 0.8F + rand.nextFloat() * 0.8F, 0.1F + rand.nextFloat() * 0.8F), new PC_Color(
+								0.6, 0.6, 1), new PC_CoordI(), 0));
+					}
 
+					for (int i = 0; i < 2; i++) {
+						ModLoader.getMinecraftInstance().effectRenderer.addEffect(new PC_EntityLaserParticleFX(worldObj, new PC_CoordD(getCoord())
+								.offset(0.2F + rand.nextFloat() * 0.6F, 1.6F + rand.nextFloat() * 0.9F, 0.2F + rand.nextFloat() * 0.6F), new PC_Color(
+								0.6, 0.6, 1), new PC_CoordI(), 0));
+					}
+				}else{
+					updateFlashCharge();
+					if(isLightningReadyToStrike()){
+						PC_Utils.setTileEntity(null, this, "lightningCharge", (long)0, "makeLightning");
+						lightningCharge = 0;
+						lightningChargeRequired = FLASH_CHARGE_MIN + 100 + rand.nextInt(FLASH_CHARGE_MAX - FLASH_CHARGE_MIN - 100);
+					}else{
+						PC_Utils.setTileEntity(null, this, "lightningCharge", lightningCharge);
+					}
+				}
 				//the particle field
-
-				for (int i = 0; i < 2; i++) {
-					ModLoader.getMinecraftInstance().effectRenderer.addEffect(new PC_EntityLaserParticleFX(worldObj, new PC_CoordD(getCoord())
-							.offset(-0.1F + rand.nextFloat() * 1.2F, rand.nextFloat() * 0.8F, -0.1F + rand.nextFloat() * 1.2F), new PC_Color(0.6,
-							0.6, 1), new PC_CoordI(), 0));
-				}
-
-				for (int i = 0; i < 2; i++) {
-					ModLoader.getMinecraftInstance().effectRenderer.addEffect(new PC_EntityLaserParticleFX(worldObj, new PC_CoordD(getCoord())
-							.offset(0.1F + rand.nextFloat() * 0.8F, 0.8F + rand.nextFloat() * 0.8F, 0.1F + rand.nextFloat() * 0.8F), new PC_Color(
-							0.6, 0.6, 1), new PC_CoordI(), 0));
-				}
-
-				for (int i = 0; i < 2; i++) {
-					ModLoader.getMinecraftInstance().effectRenderer.addEffect(new PC_EntityLaserParticleFX(worldObj, new PC_CoordD(getCoord())
-							.offset(0.2F + rand.nextFloat() * 0.6F, 1.6F + rand.nextFloat() * 0.9F, 0.2F + rand.nextFloat() * 0.6F), new PC_Color(
-							0.6, 0.6, 1), new PC_CoordI(), 0));
-				}
-
-				if (isLightningReadyToStrike()) {
-					makeLightning(2);
-					lightningCharge = 0;
-					lightningChargeRequired = FLASH_CHARGE_MIN + 100 + rand.nextInt(FLASH_CHARGE_MAX - FLASH_CHARGE_MIN - 100);
-				}
 
 			} else {
 				if (lightningCharge > FLASH_CHARGE_MIN) lightningCharge--;
@@ -160,7 +166,7 @@ public class PCde_TileEntityDeco extends PC_TileEntity implements PC_IInventoryW
 			increment = rand.nextInt(2);
 		}
 
-		lightningCharge += increment;
+		lightningCharge += increment*10;
 
 	}
 
@@ -379,6 +385,14 @@ public class PCde_TileEntityDeco extends PC_TileEntity implements PC_IInventoryW
 			String var = (String)o[p++];
 			if(var.equals("type")){
 				type = (Integer)o[p++];
+			}else if(var.equals("makeLightning")){
+				makeLightning(2);
+			}else if(var.equals("lightningCharge")){
+				lightningCharge = (Long)o[p++];
+			}else if(var.equals("reconnectWithChamber")){
+				reconnectWithChamber();
+			}else if(var.equals("flashStructureComplete")){
+				flashStructureComplete = (Boolean)o[p++];
 			}
 		}
 	}
