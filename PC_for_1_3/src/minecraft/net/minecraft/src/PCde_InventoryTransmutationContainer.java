@@ -156,35 +156,44 @@ public class PCde_InventoryTransmutationContainer implements IInventory, PC_ISpe
 
 			if (burnt-- > 0) {
 				setInventorySlotContents(thisSlot, null);
+				//PC_Utils.setTileEntity(null, chamber, "setSlotTo", thisSlot, 0, 0, 0);
 			} else if (stack != null) {
 				if (stack.itemID == Item.coal.shiftedIndex && stack.getItemDamage() == 0) {
 					if (rand.nextInt(120) == 0) {
 						// coal to crystal
-						setInventorySlotContents(thisSlot, new ItemStack(mod_PCcore.powerCrystal, 1, rand.nextInt(8)));
+						int r=rand.nextInt(8);
+						setInventorySlotContents(thisSlot, new ItemStack(mod_PCcore.powerCrystal, 1, r));
+						//PC_Utils.setTileEntity(null, chamber, "setSlotTo", thisSlot, mod_PCcore.powerCrystal.blockID, 1, r);
 						maxGoodTransmutations--;
 					} else if (rand.nextInt(12) != 0 && maxGoodTransmutations-- > 0) {
 						// coal to diamond
 						setInventorySlotContents(thisSlot, new ItemStack(Item.diamond, 1, 0));
+						//PC_Utils.setTileEntity(null, chamber, "setSlotTo", thisSlot, Item.diamond.shiftedIndex, 1, 0);
 					} else {
 						//let the coal unchanged
 					}
 				} else if (stack.itemID == Item.diamond.shiftedIndex) {
 					if (rand.nextInt(8) != 0) {
 						// diamond to crystal
-						setInventorySlotContents(thisSlot, new ItemStack(mod_PCcore.powerCrystal, 1, rand.nextInt(8)));
+						int r=rand.nextInt(8);
+						setInventorySlotContents(thisSlot, new ItemStack(mod_PCcore.powerCrystal, 1, r));
+						//PC_Utils.setTileEntity(null, chamber, "setSlotTo", thisSlot, mod_PCcore.powerCrystal.blockID, 1, r);
 						maxGoodTransmutations--;
 					} else {
 						// ta-daa, diamond disappeared!
 						setInventorySlotContents(thisSlot, null);
+						//PC_Utils.setTileEntity(null, chamber, "setSlotTo", thisSlot, 0, 0, 0);
 					}
 				} else if (stack.itemID == Item.redstone.shiftedIndex) {
 					
 					// diamond to crystal
 					setInventorySlotContents(thisSlot, new ItemStack(Item.lightStoneDust));
+					//PC_Utils.setTileEntity(null, chamber, "setSlotTo", thisSlot, Item.lightStoneDust.shiftedIndex, 1, 0);
 					if(rand.nextBoolean()) maxGoodTransmutations--;
 
 				} else {
 					setInventorySlotContents(thisSlot, null);
+					//PC_Utils.setTileEntity(null, chamber, "setSlotTo", thisSlot, 0, 0, 0);
 				}
 			}
 
