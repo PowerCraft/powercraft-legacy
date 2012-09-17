@@ -4,6 +4,8 @@ package net.minecraft.src;
 import java.util.List;
 import java.util.Random;
 
+import net.minecraft.server.MinecraftServer;
+
 
 /**
  * Experience storage tile entity
@@ -84,6 +86,87 @@ public class PCma_TileEntityXPBank extends PC_TileEntity {
 		notifyChange();
 	}
 
+	private int addExperience(EntityPlayer player, int num){
+		if(num>0){
+			int plus = Integer.MAX_VALUE - player.experienceTotal;
+
+	        if (num > plus)
+	        {
+	        	num = plus;
+	        }
+
+	        int n=num;
+	        
+	        player.experienceTotal += num;
+	        
+	        while(n>0){
+	        	
+	        	if(player.experience>=1.0F){
+	        		player.experienceLevel++;
+	        		player.experience-=1.0F;
+	        		continue;
+	        	}
+	        	
+	        	int needToFinish = (int)(player.xpBarCap() - player.xpBarCap()*player.experience);
+	        	
+	        	if(n>=needToFinish){
+	        		player.experience = 1.0F;
+	        		n-=needToFinish;
+	        	}else{
+	        		player.experience += (float)n/(float)player.xpBarCap();
+	        		n=0;
+	        	}
+	        }
+		}else{
+			if(-num>player.experienceTotal){
+				num = -player.experienceTotal;
+			}
+
+	        int n=-num;
+	        
+	        player.experienceTotal += num;
+	        
+	        while(n>0){
+	        	
+	        	int needToFinish = (int)(player.xpBarCap()*player.experience);
+	        	
+	        	if(n>=needToFinish){
+	        		player.experience = 1.0F;
+	        		player.experienceLevel--;
+	        		n-=needToFinish;
+	        	}else{
+	        		player.experience -= (float)n/(float)player.xpBarCap();
+	        		n=0;
+	        	}
+	        }
+	        if(player.experienceLevel<0){
+	        	player.experienceLevel=0;
+	        	player.experience=0;
+	        }
+		}
+		return num;
+	}
+	
+	public void givePlayerXP(EntityPlayer player, int num){
+		if(num>xp)
+			num=xp;
+		
+		if(worldObj.isRemote){
+			PC_Utils.setTileEntity(player, this, "givePlayerXP", player.username, num);
+		}
+		
+		num = addExperience(player, num);
+		
+		
+		xp -= num;
+
+		if (xp < 0) {
+			xp = 0;
+		}
+		
+		notifyChange();
+	}
+	
 	private void notifyChange() {
 		worldObj.notifyBlocksOfNeighborChange(xCoord, yCoord, zCoord, getBlockType().blockID);
 		worldObj.notifyBlocksOfNeighborChange(xCoord, yCoord - 1, zCoord, getBlockType().blockID);
@@ -102,6 +185,12 @@ public class PCma_TileEntityXPBank extends PC_TileEntity {
 			String var = (String)o[p++];
 			if(var.equals("xp"))
 				xp = (Integer)o[p++];
+			else if(var.equals("givePlayerXP")){
+				if(!worldObj.isRemote)
+					givePlayerXP(PC_Utils.mcs().getConfigurationManager().getPlayerForUsername((String)o[p++]), (Integer)o[p++]);
+				else
+					p+=2;
+			}
 		}
 	}
 

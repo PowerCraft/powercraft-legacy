@@ -35,14 +35,6 @@ public class PCma_GuiXPBank extends PC_GresBase {
 		w = new PC_GresWindow(PC_Lang.tr("tile.PCmaXPBank.name"));
 		w.setAlignH(PC_GresAlign.CENTER);
 
-		if (player.experience < 0) player.experience = 0;
-		if (player.experience >= 0.99 && player.experience <= 1.01) {
-			player.experience = 0;
-			player.experienceLevel++;
-		}
-		if (player.experienceTotal < 0) player.experienceTotal = 0;
-		if (player.experienceLevel < 0) player.experienceLevel = 0;
-		if (player.score < 0) player.score = 0;
 		if (xpbank.xp < 0) xpbank.xp = 0;
 
 		PC_GresWidget hg;
@@ -97,7 +89,7 @@ public class PCma_GuiXPBank extends PC_GresBase {
 		xpbank.worldObj.markBlockAsNeedsUpdate(xpbank.xCoord, xpbank.yCoord, xpbank.zCoord);
 	}
 
-	private void addToPlayer(int points) {
+	/*private void addToPlayer(int points) {
 		int xpsum = points;
 		int cnt = 0;
 		// add by parts to avoid bug in player.
@@ -114,14 +106,14 @@ public class PCma_GuiXPBank extends PC_GresBase {
 				return;
 			}
 		}
-	}
+	}*/
 
 	private void updateCounters() {
 		txStoragePoints.setText(xpbank.xp + "").setMinWidth(0);
 		txPlayerLevels.setText(player.experienceLevel + "").setMinWidth(0);
 	}
 
-	private int xpBarCap(int level) {
+	/*private int xpBarCap(int level) {
 		return 7 + (level * 7 >> 1);
 	}
 
@@ -165,14 +157,12 @@ public class PCma_GuiXPBank extends PC_GresBase {
 
 			}
 		}
-	}
+	}*/
 
 	@Override
 	public void actionPerformed(PC_GresWidget widget, PC_IGresGui gui) {
 		
 		Random rand = new Random();
-
-
 
 		switch (widget.getId()) {
 			case 0:
@@ -181,50 +171,33 @@ public class PCma_GuiXPBank extends PC_GresBase {
 
 			case 10: //withdraw one level
 
-				withdrawOneLevel();
+				xpbank.givePlayerXP(player, 1);
+				
+				//withdrawOneLevel();
 
 				PC_Utils.mc().theWorld.playSoundAtEntity(player, "random.orb", 0.3F, 0.5F * ((rand.nextFloat() - rand.nextFloat()) * 0.7F + 1.8F));
 				break;
 
 			case 11: // withdraw all				
-
-				while (xpbank.xp > 0) {
-					if (player.experience < 0) player.experience = 0;
-					if (player.experience >= 0.99 && player.experience <= 1.01) {
-						player.experience = 0;
-						player.experienceLevel++;
-					}
-					if (player.experienceTotal < 0) player.experienceTotal = 0;
-					if (player.experienceLevel < 0) player.experienceLevel = 0;
-					if (player.score < 0) player.score = 0;
-					withdrawOneLevel();
-				}
+				
+				//withdrawOneLevel();
+				xpbank.givePlayerXP(player, xpbank.xp);
+				
 				PC_Utils.mc().theWorld.playSoundAtEntity(player, "random.orb", 0.3F, 0.5F * ((rand.nextFloat() - rand.nextFloat()) * 0.7F + 1.8F));
 				break;
 
 			case 20: //deposit one level
-				depositOneLevel();
-
+				
+				//depositOneLevel();
+				xpbank.givePlayerXP(player, -1);
+				
 				PC_Utils.mc().theWorld.playSoundAtEntity(player, "random.orb", 0.3F, 0.5F * ((rand.nextFloat() - rand.nextFloat()) * 0.7F + 1.8F));
 				break;
 
 			case 21: //deposit all
-				while (player.experienceLevel > 0 || player.experience > 0) {
-					if (player.experience < 0) player.experience = 0;
-					if (player.experience >= 0.99 && player.experience <= 1.01) {
-						player.experience = 0;
-						player.experienceLevel++;
-					}
-					if (player.experienceTotal < 0) player.experienceTotal = 0;
-					if (player.experienceLevel < 0) player.experienceLevel = 0;
-					if (player.score < 0) player.score = 0;
-					depositOneLevel();
-				}
-
-				player.experienceLevel = 0;
-				player.experience = 0;
-				player.experienceTotal = 0;
-				player.score = 0;
+				
+				//depositOneLevel();
+				xpbank.givePlayerXP(player, -player.experienceTotal);
 
 				PC_Utils.mc().theWorld.playSoundAtEntity(player, "random.orb", 0.3F, 0.5F * ((rand.nextFloat() - rand.nextFloat()) * 0.7F + 1.8F));
 				break;
@@ -232,10 +205,6 @@ public class PCma_GuiXPBank extends PC_GresBase {
 
 		}
 
-		if (player.experience < 0) player.experience = 0;
-		if (player.experienceTotal < 0) player.experienceTotal = 0;
-		if (player.experienceLevel < 0) player.experienceLevel = 0;
-		if (player.score < 0) player.score = 0;
 		updateCounters();
 	}
 
