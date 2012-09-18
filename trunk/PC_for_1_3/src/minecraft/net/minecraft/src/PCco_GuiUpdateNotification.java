@@ -3,7 +3,10 @@ package net.minecraft.src;
 
 import java.awt.Desktop;
 import java.net.URI;
+import java.nio.FloatBuffer;
 import java.util.List;
+
+import org.lwjgl.opengl.GL11;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.src.PC_GresWidget.PC_GresAlign;
@@ -19,9 +22,10 @@ public class PCco_GuiUpdateNotification extends PC_GresBase {
 
 	private PC_GresCheckBox checkDisable;
 	private PC_GresWidget buttonOK;
-
-	public PCco_GuiUpdateNotification(EntityPlayer player){
-		this.player = player;
+	private GuiScreen gs;
+	
+	public PCco_GuiUpdateNotification(GuiScreen gs){
+		this.gs = gs;
 	}
 
 	@Override
@@ -96,7 +100,10 @@ public class PCco_GuiUpdateNotification extends PC_GresBase {
 				mod_PCcore.update_last_ignored_version_serial = mod_PCcore.updateModVersionSerial;
 			}
 
-			gui.close();
+			GL11.glDisable(GL11.GL_LIGHTING);
+			PC_Utils.mc().displayGuiScreen(gs);
+			
+			//gui.close();
 
 		} else if (widget.getId() == 1) {
 			try {
@@ -110,12 +117,33 @@ public class PCco_GuiUpdateNotification extends PC_GresBase {
 
 	@Override
 	public void onEscapePressed(PC_IGresGui gui) {
-		gui.close();
+		GL11.glDisable(GL11.GL_LIGHTING);
+		PC_Utils.mc().displayGuiScreen(gs);
 	}
 
 	@Override
 	public void onReturnPressed(PC_IGresGui gui) {
 		actionPerformed(buttonOK, gui);
 	}
+	
+	@Override
+	public void updateTick(PC_IGresGui gui) {
+		PC_CoordI c = gui.getSize();
+		gs.width = c.x;
+		gs.height = c.y;
+	}
 
+	@Override
+	public void updateScreen(PC_IGresGui gui) {
+		gs.updateScreen();
+	}
+	
+	@Override
+	public boolean drawBackground(GuiScreen g, PC_IGresGui gui, int par1, int par2, float par3){
+		gs.drawScreen(par1, par2, par3);
+		g.drawString(g.fontRenderer, ", PowerCraft " + mod_PCcore.instance.getVersion(), 2 + g.fontRenderer.getStringWidth("Minecraft 1.3.2"), g.height - 10,
+				0xffffffff);
+		return true;
+	}
+	
 }

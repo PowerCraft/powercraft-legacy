@@ -2,6 +2,8 @@ package net.minecraft.src;
 
 import java.util.List;
 
+import org.lwjgl.opengl.GL11;
+
 
 /**
  * Gres Base interface, implemented by GRES individual GUIs.
@@ -102,5 +104,13 @@ public abstract class PC_GresBase {
 	public boolean retrySlotClick(int par1, int par2, boolean par3, EntityPlayer par4EntityPlayer){
 		return true;
 	}
+	
+	public void updateScreen(PC_IGresGui gui) {
+	}
+	
+	public boolean drawBackground(GuiScreen g, PC_IGresGui gui, int par1, int par2, float par3){
+		return false;
+	}
+	
 	
 }

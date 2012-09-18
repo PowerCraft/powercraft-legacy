@@ -64,6 +64,7 @@ public class PC_GresGui extends GuiContainer implements PC_IGresGui {
 		if (lastFocus != null) {
 			lastFocus.updateCursorCounter();
 		}
+		gui.updateScreen(this);
 	}
 
 	@Override
@@ -82,7 +83,10 @@ public class PC_GresGui extends GuiContainer implements PC_IGresGui {
 	@Override
 	public void initGui() {
 		Keyboard.enableRepeatEvents(true);
-		super.initGui();
+		if(this.mc.thePlayer!=null)
+			this.mc.thePlayer.craftingInventory = this.inventorySlots;
+        this.guiLeft = (this.width - this.xSize) / 2;
+        this.guiTop = (this.height - this.ySize) / 2;
 		child = new PC_GresLayoutV();
 		child.setFontRenderer(fontRenderer);
 		child.setContainerManager(containerManager);
@@ -112,7 +116,8 @@ public class PC_GresGui extends GuiContainer implements PC_IGresGui {
 		}
 
 		if (!consumed) {
-			super.keyTyped(c, i);
+			if(this.mc.thePlayer!=null)
+				super.keyTyped(c, i);
 		}
 		if (!consumed && i == Keyboard.KEY_ESCAPE) {
 			gui.onEscapePressed(this);
@@ -193,10 +198,11 @@ public class PC_GresGui extends GuiContainer implements PC_IGresGui {
 	@Override
 	protected void drawGuiContainerBackgroundLayer(float f, int i, int j) {
 		ScaledResolution sr = new ScaledResolution(PC_Utils.mc().gameSettings, PC_Utils.mc().displayWidth, PC_Utils.mc().displayHeight);
-		drawDefaultBackground();
+		GL11.glPushMatrix();
 		GL11.glEnable(GL11.GL_SCISSOR_TEST);
 		child.updateRenderer(new PC_CoordI(0, 0), new PC_RectI(0, 0, sr.getScaledWidth(), sr.getScaledHeight()), sr.getScaleFactor());
 		GL11.glDisable(GL11.GL_SCISSOR_TEST);
+		GL11.glPopMatrix();
 	}
 
 	private int bgColor1 = 0xa0101010;
@@ -228,7 +234,9 @@ public class PC_GresGui extends GuiContainer implements PC_IGresGui {
 
 		gui.updateTick(this);
 
-		drawDefaultBackground();
+		if(!gui.drawBackground(this, this, par1, par2, par3))
+			drawDefaultBackground();
+		
 		int i = guiLeft;
 		int j = guiTop;
 		drawGuiContainerBackgroundLayer(par3, par1, par2);
@@ -261,6 +269,12 @@ public class PC_GresGui extends GuiContainer implements PC_IGresGui {
 		}
 
 		drawGuiContainerForegroundLayer();
+		if(mc.thePlayer==null){
+			GL11.glDisable(GL12.GL_RESCALE_NORMAL);
+			RenderHelper.disableStandardItemLighting();
+			GL11.glPopMatrix();
+			return;
+		}
 		InventoryPlayer inventoryplayer = mc.thePlayer.inventory;
 
 		if (inventoryplayer.getItemStack() != null) {
@@ -448,5 +462,20 @@ public class PC_GresGui extends GuiContainer implements PC_IGresGui {
 		return containerManager;
 	}
 
+	protected void handleMouseClick(Slot par1Slot, int par2, int par3, boolean par4)
+    {
+        if (par1Slot != null)
+        {
+            par2 = par1Slot.slotNumber;
+        }
 
+        if(mc.playerController!=null && inventorySlots!=null)
+        	this.mc.playerController.windowClick(this.inventorySlots.windowId, par2, par3, par4, this.mc.thePlayer);
+    }
+
+	@Override
+	public PC_CoordI getSize() {
+		return new PC_CoordI(width, height);
+	}
+	
 }
