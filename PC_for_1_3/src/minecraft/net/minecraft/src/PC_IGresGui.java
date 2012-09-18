@@ -51,4 +51,6 @@ public interface PC_IGresGui {
 	 */
 	public void setBackground(int top, int bottom);
 
+	public PC_CoordI getSize();
+	
 }

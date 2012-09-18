@@ -12,6 +12,7 @@ import java.util.Random;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 
+import net.java.games.util.Version;
 import net.minecraft.client.Minecraft;
 import net.minecraft.server.MinecraftServer;
 
@@ -58,12 +59,12 @@ public class mod_PCcore extends PC_Module implements PC_IActivatorListener {
 	 * compilation, thus all modules keep their compile-time version and aren't
 	 * affected by current core version. Which is good.
 	 */
-	public static final String VERSION = "3.5.0a";
+	public static final String VERSION = "3.5.0AlphaG";
 
 	/**
 	 * The serial number used to check whether new update is available.
 	 */
-	public static final int VERSION_SERIAL = 17;
+	public static final int VERSION_SERIAL = 18;
 
 
 
@@ -257,6 +258,7 @@ public class mod_PCcore extends PC_Module implements PC_IActivatorListener {
 		PC_GresHighlightHelper.checkConfigFile();
 
 		instance = this;
+		
 	}
 
 	@Override
@@ -1199,8 +1201,6 @@ public class mod_PCcore extends PC_Module implements PC_IActivatorListener {
 	}
 
 	private static boolean updateAlreadyShown = false;
-
-	private int inGameTickCounter = 0;
 	
 	//private static PC_DataMemoryManager dmm = null;
 	
@@ -1236,20 +1236,9 @@ public class mod_PCcore extends PC_Module implements PC_IActivatorListener {
 				System.out.println("dmm:"+dmm);
 			}
 		}
-		if (!updateAlreadyShown && updateAvailable && optUpdateNotify) {
-			if (++inGameTickCounter > 20) {
-				updateAlreadyShown = true;
-				try {
-					PC_Utils.openGres(null, PCco_GuiUpdateNotification.class);
-					PC_Logger.fine("Openning UPDATE NOTIFICATION screen.");
-				} catch (Throwable t) {
-					PC_Logger.throwing("mod_PCcore", "onTickInGame", t);
-				}
-			}
-		}
 		return true;
 	}
-
+	
 	@Override
 	public boolean onTickInGUI(float f, Minecraft minecraft, GuiScreen gui) {
 		try {
@@ -1261,8 +1250,15 @@ public class mod_PCcore extends PC_Module implements PC_IActivatorListener {
 	
 			// text at the bottom of the screen
 			if (gui instanceof GuiMainMenu) {
-				gui.drawString(gui.fontRenderer, ", PowerCraft " + getVersion(), 2 + gui.fontRenderer.getStringWidth("Minecraft 1.2.5"), gui.height - 10,
+				gui.drawString(gui.fontRenderer, ", PowerCraft " + getVersion(), 2 + gui.fontRenderer.getStringWidth("Minecraft 1.3.2"), gui.height - 10,
 						0xffffffff);
+				
+				if (!updateAlreadyShown && updateAvailable && optUpdateNotify) {
+					updateAlreadyShown = true;
+					ModLoader.openGUI(null, new PC_GresGui(null, new PCco_GuiUpdateNotification(gui)));
+					PC_Logger.fine("Openning UPDATE NOTIFICATION screen.");
+				}
+				
 			}
 		}catch(Throwable t) {
 			t.printStackTrace();

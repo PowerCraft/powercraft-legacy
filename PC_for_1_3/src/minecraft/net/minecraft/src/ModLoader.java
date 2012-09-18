@@ -1135,7 +1135,7 @@ public final class ModLoader
         var1.mcProfiler.endSection();
         var1.mcProfiler.endSection();
         var1.mcProfiler.startSection("modtick");
-
+        
         if (!hasInit)
         {
             init();
@@ -1208,7 +1208,7 @@ public final class ModLoader
                 }
             }
         }
-
+        
         if (var1.currentScreen != null)
         {
             var4 = inGUIHooks.entrySet().iterator();
@@ -1217,12 +1217,12 @@ public final class ModLoader
             {
                 var5 = (Entry)var4.next();
                 
-                if(var1.thePlayer!=null){
-	                if ((clock != var14 || !(((Boolean)var5.getValue()).booleanValue() & var1.thePlayer.worldObj != null)) && !((BaseMod)var5.getKey()).onTickInGUI(var0, var1, var1.currentScreen))
+                //if(var1.thePlayer!=null){
+	                if ((clock != var14 || !(((Boolean)var5.getValue()).booleanValue() && var1.thePlayer != null && var1.thePlayer.worldObj != null)) && !((BaseMod)var5.getKey()).onTickInGUI(var0, var1, var1.currentScreen))
 	                {
 	                    var4.remove();
 	                }
-                }
+                //}
             }
         }
 
