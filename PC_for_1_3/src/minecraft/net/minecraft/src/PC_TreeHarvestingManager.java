@@ -224,7 +224,7 @@ public class PC_TreeHarvestingManager {
 						PC_CoordI here = new PC_CoordI(x, y, z);
 						int here_id = here.getId(world);
 						int here_meta = here.getMeta(world);
-						if ((here_id == wood_id && (here_meta == wood_meta || wood_meta == -1))
+						if ((here_id == wood_id && ((here_meta&3) == wood_meta || wood_meta == -1))
 								|| (here_id == leaves_id && ((here_meta & 3) == leaves_meta || leaves_meta == -1))
 								|| (here_id == 127/*Cacao*/)) {
 							chopTree(world, treeRootPos, here, harvestedStacks, treeData);
