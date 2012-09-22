@@ -542,8 +542,11 @@ public class PCma_TileEntityAutomaticWorkbench extends PC_TileEntity implements 
 		int p = 0;
 		while(p<o.length){
 			String var = (String)o[p++];
-			if(var.equals("redstoneActivated"))
+			if(var.equals("redstoneActivated")){
 				redstoneActivated=(boolean)(Boolean) o[p++];
+			}else if(var.equals("orderAndCraft")){
+				orderAndCraft();
+			}
 		}
 	}
 
