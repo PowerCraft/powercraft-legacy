@@ -9,7 +9,7 @@ import java.util.Random;
 import java.util.Map.Entry;
 
 import net.minecraft.src.PClo_RadioBus.IRadioDevice;
-import net.minecraft.src.PCnt_NetManager.NetworkMember;
+import net.minecraft.src.PCnt_WeaselManager.NetworkMember;
 
 import weasel.Calc;
 import weasel.IWeaselHardware;

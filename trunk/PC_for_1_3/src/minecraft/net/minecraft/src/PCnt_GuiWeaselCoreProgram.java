@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import net.minecraft.src.PC_GresWidget.PC_GresAlign;
-import net.minecraft.src.PCnt_NetManager.NetworkMember;
+import net.minecraft.src.PCnt_WeaselManager.NetworkMember;
 import net.minecraft.src.PC_GresTextEditMultiline.Keyword;
 
 /**
@@ -70,7 +70,7 @@ public class PCnt_GuiWeaselCoreProgram extends PC_GresBase {
 
 		if (core.getNetwork() != null) {
 			for (NetworkMember member : core.getNetwork().getMembers().values()) {
-				if (member != null && member != this && member instanceof PCnt_WeaselPluginDiskDrive) {
+				if (member != null && member != core && member instanceof PCnt_WeaselPluginDiskDrive) {
 					System.out.println("Linked libraries from drive "+((PCnt_WeaselPluginDiskDrive)member).getName()+" if any.");
 					List<String> funcnames = ((PCnt_WeaselPluginDiskDrive)member).getLibraryFunctionNames();
 					

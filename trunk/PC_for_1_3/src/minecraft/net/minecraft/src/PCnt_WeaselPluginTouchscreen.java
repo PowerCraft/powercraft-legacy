@@ -6,7 +6,7 @@ import java.util.Random;
 
 import net.minecraft.src.PC_BitmapUtils.WeaselBitmapAdapter;
 import net.minecraft.src.PC_BitmapUtils.WeaselBitmapProvider;
-import net.minecraft.src.PCnt_NetManager.NetworkMember;
+import net.minecraft.src.PCnt_WeaselManager.NetworkMember;
 
 import weasel.Calc;
 import weasel.WeaselEngine;

@@ -24,7 +24,7 @@ import weasel.obj.WeaselVariableMap;
  * @author MightyPork
  * @copy (c) 2012
  */
-public class PCnt_NetManager implements PC_INBT {
+public class PCnt_NetManager extends PC_PacketHandler implements PC_INBTWD {
 
 	private static final String netfile = "/weaselnet.dat";
 
@@ -366,5 +366,16 @@ public class PCnt_NetManager implements PC_INBT {
 		localNetworks.remove(name);
 		localNetworks.put(newName, net);
 		net.renamedTo(newName);
+	}
+
+	@Override
+	public boolean needsSave() {
+		return needsSave;
+	}
+
+	@Override
+	public void handleIncomingPacket(World world, Object[] o) {
+		// TODO Auto-generated method stub
+		
 	}
 }

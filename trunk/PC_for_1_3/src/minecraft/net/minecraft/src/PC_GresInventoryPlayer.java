@@ -85,4 +85,9 @@ public class PC_GresInventoryPlayer extends PC_GresLayoutV {
 		return inv1.mouseClick(mousePos, key) || inv2.mouseClick(mousePos, key);
 	}
 
+	protected void visibleChanged(boolean show){
+		inv1.visibleChanged(show);
+		inv2.visibleChanged(show);
+	}
+	
 }

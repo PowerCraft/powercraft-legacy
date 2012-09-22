@@ -137,4 +137,17 @@ public class PC_GresInventory extends PC_GresWidget {
 		return null;
 	}
 
+	protected void visibleChanged(boolean show){
+		if(!show){
+			for (int x = 0; x < gridWidth; x++) {
+				for (int y = 0; y < gridHeight; y++) {
+					if (slots[x][y] != null) {
+						slots[x][y].xDisplayPosition = -999;
+						slots[x][y].yDisplayPosition = -999;
+					}
+				}
+			}
+		}
+	}
+	
 }
