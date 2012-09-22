@@ -72,6 +72,11 @@ public class PCma_GuiAutomaticWorkbench extends PC_GresBase {
 
 		onCraftMatrixChanged(tileentity);
 	}
+	
+	@Override
+	public void onGuiClosed(PC_IGresGui gui) {
+		PC_Utils.setTileEntity(player, tileentity, "orderAndCraft");
+	}
 
 	@Override
 	public void actionPerformed(PC_GresWidget widget, PC_IGresGui gui) {
