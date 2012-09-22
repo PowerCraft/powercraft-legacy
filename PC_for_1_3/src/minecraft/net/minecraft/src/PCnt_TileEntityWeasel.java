@@ -20,8 +20,9 @@ public class PCnt_TileEntityWeasel extends PC_TileEntity {
 		return true;
 	}
 
+	private int id;
 	private PCnt_WeaselPlugin plugin;
-
+	private int type;
 
 	private int updateIgnoreCounter = 10;
 	private long lastUpdateAbsoluteTime = 0;
@@ -74,31 +75,41 @@ public class PCnt_TileEntityWeasel extends PC_TileEntity {
 	public void readFromNBT(NBTTagCompound maintag) {
 		super.readFromNBT(maintag);
 
-		if (maintag.getBoolean("nullplugin")) {
-			return;
-		}
+		//if (maintag.getBoolean("nullplugin")) {
+		//	return;
+		//}
 
-		int type = maintag.getInteger("type");
-
-		plugin = PCnt_WeaselPlugin.getPluginForType(this, type);
-		if (plugin != null) plugin.readFromNBT(maintag.getCompoundTag("Plugin"));
+		type = maintag.getInteger("type");
+		id =  maintag.getInteger("myid");
+		
+		getPlugin();
+		
+		//plugin = PCnt_WeaselPlugin.getPluginForType(this, type);
+		//if (plugin != null) plugin.readFromNBT(maintag.getCompoundTag("Plugin"));
 	}
 
 	@Override
 	public void writeToNBT(NBTTagCompound maintag) {
 		super.writeToNBT(maintag);
-		if (plugin == null) {
-			maintag.setBoolean("nullplugin", true);
-		} else {
-			maintag.setInteger("type", plugin.getType());
-			maintag.setCompoundTag("Plugin", plugin.writeToNBT(new NBTTagCompound()));
-		}
+		//if (plugin == null) {
+		//	maintag.setBoolean("nullplugin", true);
+		//} else {
+		maintag.setInteger("type", plugin.getType());
+		maintag.setInteger("myid", plugin.getID());
+		//	maintag.setCompoundTag("Plugin", plugin.writeToNBT(new NBTTagCompound()));
+	//	}
 	}
 
 	/**
 	 * @return weasel plugin
 	 */
 	public PCnt_WeaselPlugin getPlugin() {
+		if(plugin==null){
+			plugin = (PCnt_WeaselPlugin)PCnt_WeaselManager.getPlugin(id);
+			if(plugin==null){
+				plugin = PCnt_WeaselPlugin.getPluginForType(this, type);
+			}
+		}
 		return plugin;
 	}
 
@@ -116,26 +127,38 @@ public class PCnt_TileEntityWeasel extends PC_TileEntity {
 	 * @param type the type ID
 	 */
 	public void setType(int type) {
+		this.type = type;
+		PCnt_WeaselManager.removePlugin(plugin);
 		plugin = PCnt_WeaselPlugin.getPluginForType(this, type);
 	}
 
 	@Override
 	public void onBlockPickup() {
 		if (plugin != null) {
+			PCnt_WeaselManager.removePlugin(plugin);
 			plugin.onBlockPickup();
 		}
 	}
 
 	@Override
 	public void set(Object[] o) {
-		// TODO Auto-generated method stub
-		
+		int p = 0;
+		while(p<o.length){
+			String var = (String)o[p++];
+			if(var.equals("id")){
+				id = (Integer)o[p++];
+			}else if(var.equals("type")){
+				setType((Integer)o[p++]);
+			}
+		}
 	}
 
 	@Override
 	public Object[] get() {
-		// TODO Auto-generated method stub
-		return null;
+		return new Object[]{
+				"id", id,
+				"type", type
+		};
 	}
 
 }

@@ -5,8 +5,8 @@ package net.minecraft.src;
 import java.util.List;
 import java.util.Random;
 
-import net.minecraft.src.PCnt_NetManager.NetworkMember;
-import net.minecraft.src.PCnt_NetManager.WeaselNetwork;
+import net.minecraft.src.PCnt_WeaselManager.NetworkMember;
+import net.minecraft.src.PCnt_WeaselManager.WeaselNetwork;
 import weasel.Calc;
 import weasel.WeaselEngine;
 import weasel.obj.WeaselBoolean;
@@ -20,7 +20,7 @@ import weasel.obj.WeaselString;
  * @author MightyPork
  * @copy (c) 2012
  */
-public abstract class PCnt_WeaselPlugin implements PC_INBT, NetworkMember {
+public abstract class PCnt_WeaselPlugin extends NetworkMember {
 
 	/** who asked for functions. */
 	protected NetworkMember asker;	
@@ -193,7 +193,7 @@ public abstract class PCnt_WeaselPlugin implements PC_INBT, NetworkMember {
 	/**
 	 * @return The network manager providing global variable sharing pool.
 	 */
-	protected final PCnt_NetManager getNetManager() {
+	protected final PCnt_WeaselManager getNetManager() {
 		return mod_PCnet.NETWORK;
 	}
 
@@ -771,4 +771,17 @@ public abstract class PCnt_WeaselPlugin implements PC_INBT, NetworkMember {
 	 */
 	public abstract boolean onClick(EntityPlayer player);
 
+	private boolean needsSave = false;
+	
+	@Override
+	public boolean needsSave(){
+		boolean ns = needsSave;
+		needsSave = false;
+		return ns;
+	}
+	
+	protected void needSave(){
+		needsSave = true;
+	}
+	
 }

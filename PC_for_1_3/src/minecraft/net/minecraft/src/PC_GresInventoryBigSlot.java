@@ -104,6 +104,14 @@ public class PC_GresInventoryBigSlot extends PC_GresWidget {
 	public Slot getSlot() {
 		return this.slot;
 	}
-
-
+	
+	protected void visibleChanged(boolean show){
+		if(!show){
+			if (slot != null) {
+				slot.xDisplayPosition = -999;
+				slot.yDisplayPosition = -999;
+			}
+		}
+	}
+	
 }

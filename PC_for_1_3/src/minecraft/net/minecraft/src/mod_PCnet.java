@@ -45,7 +45,7 @@ public class mod_PCnet extends PC_Module {
 	 * also instances of local networks, but the CORE weasel devices have to
 	 * save them themselves.
 	 */
-	public static PCnt_NetManager NETWORK = new PCnt_NetManager();
+	public static PCnt_WeaselManager NETWORK = new PCnt_WeaselManager();
 
 	private static final String pk_teleporter = "id.block.teleporter";
 	private static final String pk_teleporter_brightness = "brightness.teleporter";
@@ -427,14 +427,16 @@ public class mod_PCnet extends PC_Module {
 
 	@Override
 	protected Hashtable<String, PC_PacketHandler> addPacketHandler() {
-		// TODO Auto-generated method stub
-		return null;
+		Hashtable<String, PC_PacketHandler> ph = new Hashtable<String, PC_PacketHandler>();
+		ph.put("Weasel", NETWORK);
+		return ph;
 	}
 
 	@Override
 	protected Hashtable<String, PC_INBTWD> addNetManager() {
-		// TODO Auto-generated method stub
-		return null;
+		Hashtable<String, PC_INBTWD> nm = new Hashtable<String, PC_INBTWD>();
+		nm.put("Weasel", NETWORK);
+		return nm;
 	}
 
 	@Override
@@ -451,33 +453,6 @@ public class mod_PCnet extends PC_Module {
 
 		addStackRangeToCraftingTool(PC_ItemGroup.NETWORK, weaselDevice.blockID, 0, PCnt_WeaselType.WEASEL_DEVICE_COUNT - 1, 1);
 		addStacksToCraftingTool(PC_ItemGroup.NETWORK, new ItemStack(weaselDisk,1,0xfff));
-
-
-		ModLoader.setInGameHook(this, true, false);
-		ModLoader.setInGUIHook(this, true, false);
-	}
-
-	private int tickCounter = 0;
-	
-	@Override
-	public boolean onTickInGame(float f, Minecraft minecraft) {
-		if (tickCounter++ % 100 == 0) {
-			if (NETWORK.needsSave) {
-				NETWORK.saveToFile();
-			}
-		}
-		return true;
-	}
-
-	@Override
-	public boolean onTickInGUI(float f, Minecraft minecraft, GuiScreen guiscreen) {
-
-		if (guiscreen == null) return true;
-
-		if (NETWORK.needsSave) {
-			NETWORK.saveToFile();
-		}
-		return true;
 	}
 
 }

@@ -107,9 +107,19 @@ public abstract class PC_GresWidget extends Gui {
 	 */
 	protected PC_GresWidget setVisible(boolean show) {
 		visible = show;
+		visibleChanged(show);
 		return this;
 	}
 
+	private void updateVisible(boolean show){
+		visibleChanged(show);
+		for(PC_GresWidget w:childs){
+			w.updateVisible(show);
+		}
+	}
+	
+	protected void visibleChanged(boolean show){}
+	
 	/**
 	 * @return true if is visible
 	 */
@@ -460,6 +470,18 @@ public abstract class PC_GresWidget extends Gui {
 		return setSize(width, height, true);
 	}
 
+	/**
+	 * Set size, recalculate position
+	 * 
+	 * @param width width
+	 * @param height height
+	 * @return this
+	 */
+	public PC_GresWidget setSize(PC_CoordI size) {
+		this.size.setTo(size);
+		return this;
+	}
+	
 	/**
 	 * Get position
 	 * 

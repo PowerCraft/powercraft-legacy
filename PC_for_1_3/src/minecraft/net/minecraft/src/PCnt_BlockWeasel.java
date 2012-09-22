@@ -540,15 +540,18 @@ public class PCnt_BlockWeasel extends BlockContainer implements PC_ISwapTerrain,
 						ihold.setTagCompound(tag);
 					}
 
-					PC_Utils.chatMsg(PC_Lang.tr("pc.weasel.activatorGetNetwork", new String[] { plugin.getNetworkName() }), true);
+					if(!world.isRemote)
+						PC_Utils.chatMsg(PC_Lang.tr("pc.weasel.activatorGetNetwork", new String[] { plugin.getNetworkName() }), true);
 
 				} else {
 					if (ihold.hasTagCompound()) {
 						String network = ihold.getTagCompound().getString("WeaselNetwork");
 						if (!network.equals("")) {
 							plugin.setNetworkNameAndConnect(network);
-							PC_Utils.chatMsg(PC_Lang.tr("pc.weasel.activatorSetNetwork", new String[] { plugin.getNetworkName() }), true);
-							world.playSoundEffect(x, y, z, "note.snare", 1.0F, 0.5F);
+							if(!world.isRemote)
+								PC_Utils.chatMsg(PC_Lang.tr("pc.weasel.activatorSetNetwork", new String[] { plugin.getNetworkName() }), true);
+							if(world.isRemote)
+								world.playSoundEffect(x, y, z, "note.snare", 1.0F, 0.5F);
 						}
 					}
 				}
