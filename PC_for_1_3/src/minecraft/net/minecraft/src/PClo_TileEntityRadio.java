@@ -65,6 +65,7 @@ public class PClo_TileEntityRadio extends PC_TileEntity implements IRadioDevice 
 			boolean newstate = mod_PClogic.RADIO.getChannelState(channel);
 			if (active != newstate) {
 				active = newstate;
+				PC_Utils.setTileEntity(null, this, "active", active);
 				worldObj.scheduleBlockUpdate(xCoord, yCoord, zCoord, getBlockType().blockID, 1);
 				updateBlock();
 			}
@@ -87,7 +88,7 @@ public class PClo_TileEntityRadio extends PC_TileEntity implements IRadioDevice 
 	 */
 	@Override
 	public boolean canUpdate() {
-		return true;
+		return !worldObj.isRemote;
 	}
 
 	/**
