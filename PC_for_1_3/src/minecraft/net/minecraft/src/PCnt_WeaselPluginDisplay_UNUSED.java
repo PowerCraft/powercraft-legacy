@@ -17,7 +17,7 @@ import weasel.obj.WeaselString;
 /**
  * @author MightyPork
  */
-public class PCnt_WeaselPluginDisplay extends PCnt_WeaselPlugin {
+public class PCnt_WeaselPluginDisplay_UNUSED extends PCnt_WeaselPlugin_UNUSED {
 
 	/** Displayed text. "\n" is a newline. */
 	public String text = "";
@@ -39,7 +39,7 @@ public class PCnt_WeaselPluginDisplay extends PCnt_WeaselPlugin {
 	 * 
 	 * @param tew
 	 */
-	public PCnt_WeaselPluginDisplay(PCnt_TileEntityWeasel tew) {
+	public PCnt_WeaselPluginDisplay_UNUSED(PCnt_TileEntityWeasel_UNUSED tew) {
 		super(tew);
 	}
 
@@ -231,7 +231,7 @@ public class PCnt_WeaselPluginDisplay extends PCnt_WeaselPlugin {
 	public void callFunctionOnEngine(String function, Object... args) {}
 
 	@Override
-	protected PCnt_WeaselPlugin readPluginFromNBT(NBTTagCompound tag) {
+	protected PCnt_WeaselPlugin_UNUSED readPluginFromNBT(NBTTagCompound tag) {
 		text = tag.getString("text");
 		color = tag.getInteger("color");
 		bgcolor = tag.getInteger("bgcolor");

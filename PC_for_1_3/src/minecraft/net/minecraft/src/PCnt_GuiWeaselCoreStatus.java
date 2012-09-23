@@ -14,7 +14,7 @@ import net.minecraft.src.PC_GresWidget.PC_GresAlign;
  */
 public class PCnt_GuiWeaselCoreStatus extends PC_GresBase {
 
-	private PCnt_WeaselPluginCore core;
+	private PCnt_WeaselPluginCore_UNUSED core;
 	private PC_GresWindow w;
 	private PC_GresWidget txRunning, txStack, txMemory, txPeripherals, txStatus, txLength;
 
@@ -24,7 +24,7 @@ public class PCnt_GuiWeaselCoreStatus extends PC_GresBase {
 	 * 
 	 * @param core gate TE
 	 */
-	public PCnt_GuiWeaselCoreStatus(PCnt_WeaselPluginCore core) {
+	public PCnt_GuiWeaselCoreStatus(PCnt_WeaselPluginCore_UNUSED core) {
 		this.core = core;
 	}
 

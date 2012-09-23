@@ -9,8 +9,8 @@ import java.util.Map.Entry;
 import java.util.Random;
 
 import net.minecraft.src.PClo_RadioBus.IRadioDevice;
-import net.minecraft.src.PCnt_WeaselManager.NetworkMember;
-import net.minecraft.src.PCnt_WeaselManager.WeaselNetwork;
+import net.minecraft.src.PCnt_WeaselManager_UNUSED.NetworkMember;
+import net.minecraft.src.PCnt_WeaselManager_UNUSED.WeaselNetwork;
 import weasel.Calc;
 import weasel.IWeaselHardware;
 import weasel.WeaselEngine;
@@ -28,7 +28,7 @@ import weasel.obj.WeaselString;
  * 
  * @author MightyPork
  */
-public class PCnt_WeaselPluginCore extends PCnt_WeaselPlugin implements IWeaselHardware, IRadioDevice {
+public class PCnt_WeaselPluginCore_UNUSED extends PCnt_WeaselPlugin_UNUSED implements IWeaselHardware, IRadioDevice {
 
 	private boolean connectedToRadioBus = false;
 	protected int sleepTimer = 0;	
@@ -86,7 +86,7 @@ public class PCnt_WeaselPluginCore extends PCnt_WeaselPlugin implements IWeaselH
 	 * 
 	 * @param tew weasel tile entity
 	 */
-	public PCnt_WeaselPluginCore(PCnt_TileEntityWeasel tew) {
+	public PCnt_WeaselPluginCore_UNUSED(PCnt_TileEntityWeasel_UNUSED tew) {
 		super(tew);
 		if(isMaster()) setMemberName("CORE");
 	}
@@ -191,7 +191,7 @@ public class PCnt_WeaselPluginCore extends PCnt_WeaselPlugin implements IWeaselH
 
 
 	@Override
-	protected PCnt_WeaselPlugin readPluginFromNBT(NBTTagCompound tag) {
+	protected PCnt_WeaselPlugin_UNUSED readPluginFromNBT(NBTTagCompound tag) {
 		program = tag.getString("program");
 
 		if (program.equals("")) program = default_program;
@@ -308,8 +308,8 @@ public class PCnt_WeaselPluginCore extends PCnt_WeaselPlugin implements IWeaselH
 		
 		if (getNetwork() != null) {
 			for (NetworkMember member : getNetwork().getMembers().values()) {
-				if (member != null && member != this && member instanceof PCnt_WeaselPluginDiskDrive) {
-					List<Instruction> lib = ((PCnt_WeaselPluginDiskDrive)member).getAllLibraryInstructions();
+				if (member != null && member != this && member instanceof PCnt_WeaselPluginDiskDrive_UNUSED) {
+					List<Instruction> lib = ((PCnt_WeaselPluginDiskDrive_UNUSED)member).getAllLibraryInstructions();
 					if(lib.size()>0) {
 						list.addAll(lib);
 					}
@@ -342,7 +342,7 @@ public class PCnt_WeaselPluginCore extends PCnt_WeaselPlugin implements IWeaselH
 		}
 
 		for (NetworkMember member : getNetwork().getMembers().values()) {
-			if (member != null && member != this && member instanceof PCnt_WeaselPlugin) ((PCnt_WeaselPlugin) member).restartDevice();
+			if (member != null && member != this && member instanceof PCnt_WeaselPlugin_UNUSED) ((PCnt_WeaselPlugin_UNUSED) member).restartDevice();
 		}
 
 	}
@@ -501,8 +501,8 @@ public class PCnt_WeaselPluginCore extends PCnt_WeaselPlugin implements IWeaselH
 		} else if (functionName.equals("hasDisk")) {
 			boolean found = false;
 			fl: for (NetworkMember member : getNetwork().getMembers().values()) {
-				if (member != null && member != this && member instanceof PCnt_WeaselPluginDiskDrive) {
-					if(((PCnt_WeaselPluginDiskDrive)member).getDiskNames().contains(Calc.toString(args[0].get()))){
+				if (member != null && member != this && member instanceof PCnt_WeaselPluginDiskDrive_UNUSED) {
+					if(((PCnt_WeaselPluginDiskDrive_UNUSED)member).getDiskNames().contains(Calc.toString(args[0].get()))){
 						found = true;
 						break fl;
 					}
@@ -513,9 +513,9 @@ public class PCnt_WeaselPluginCore extends PCnt_WeaselPlugin implements IWeaselH
 		} else if (functionName.equals("diskType")) {
 			String type = null;
 			fl: for (NetworkMember member : getNetwork().getMembers().values()) {
-				if (member != null && member != this && member instanceof PCnt_WeaselPluginDiskDrive) {
-					if(((PCnt_WeaselPluginDiskDrive)member).getDiskNames().contains(Calc.toString(args[0].get()))){
-						type = ((PCnt_WeaselPluginDiskDrive)member).getDiskType(Calc.toString(args[0].get()));
+				if (member != null && member != this && member instanceof PCnt_WeaselPluginDiskDrive_UNUSED) {
+					if(((PCnt_WeaselPluginDiskDrive_UNUSED)member).getDiskNames().contains(Calc.toString(args[0].get()))){
+						type = ((PCnt_WeaselPluginDiskDrive_UNUSED)member).getDiskType(Calc.toString(args[0].get()));
 						break fl;
 					}
 				}
@@ -528,8 +528,8 @@ public class PCnt_WeaselPluginCore extends PCnt_WeaselPlugin implements IWeaselH
 			boolean has = false;
 			for (NetworkMember member : getNetwork().getMembers().values()) {
 				//if(member != null && member instanceof PClo_WeaselPlugin && ((PClo_WeaselPlugin) member).isMaster()) continue;
-				if (member != null && member != this && member instanceof PCnt_WeaselPluginDiskDrive) {
-					has |= ((PCnt_WeaselPluginDiskDrive)member).hasDiskLibFunction(Calc.toString(args[0].get()));
+				if (member != null && member != this && member instanceof PCnt_WeaselPluginDiskDrive_UNUSED) {
+					has |= ((PCnt_WeaselPluginDiskDrive_UNUSED)member).hasDiskLibFunction(Calc.toString(args[0].get()));
 				}
 			}
 			

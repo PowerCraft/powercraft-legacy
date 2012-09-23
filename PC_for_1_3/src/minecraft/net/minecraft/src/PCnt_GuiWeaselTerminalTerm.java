@@ -5,7 +5,7 @@ import java.util.List;
 
 import net.minecraft.src.PC_GresTextEdit.PC_GresInputType;
 import net.minecraft.src.PC_GresWidget.PC_GresAlign;
-import net.minecraft.src.PCnt_WeaselManager.WeaselNetwork;
+import net.minecraft.src.PCnt_WeaselManager_UNUSED.WeaselNetwork;
 import weasel.obj.WeaselString;
 
 
@@ -17,7 +17,7 @@ import weasel.obj.WeaselString;
  */
 public class PCnt_GuiWeaselTerminalTerm extends PC_GresBase {
 
-	private PCnt_WeaselPluginTerminal term;
+	private PCnt_WeaselPluginTerminal_UNUSED term;
 	private PC_GresWindow w;
 	private PC_GresWidget edInput;
 	private PC_GresWidget btnOk;
@@ -28,7 +28,7 @@ public class PCnt_GuiWeaselTerminalTerm extends PC_GresBase {
 	 * 
 	 * @param device plugin instance
 	 */
-	public PCnt_GuiWeaselTerminalTerm(PCnt_WeaselPluginTerminal device) {
+	public PCnt_GuiWeaselTerminalTerm(PCnt_WeaselPluginTerminal_UNUSED device) {
 		this.term = device;
 	}
 
@@ -84,7 +84,7 @@ public class PCnt_GuiWeaselTerminalTerm extends PC_GresBase {
 
 			WeaselNetwork network = term.getNetwork();
 			if (network != null)
-				((PCnt_WeaselPlugin) network.getMember("CORE")).callFunctionOnEngine("termIn", new WeaselString(term.getName()), txt);
+				((PCnt_WeaselPlugin_UNUSED) network.getMember("CORE")).callFunctionOnEngine("termIn", new WeaselString(term.getName()), txt);
 
 			term.isChanged = true;
 			return;

@@ -16,7 +16,7 @@ import net.minecraft.src.PC_GresWidget.PC_GresAlign;
  */
 public class PCnt_GuiWeaselCoreSettings extends PC_GresBase {
 
-	private PCnt_WeaselPluginCore core;
+	private PCnt_WeaselPluginCore_UNUSED core;
 	private PC_GresWindow w;
 
 	private PC_GresWidget edNetwork, colorBulb, btnRename;
@@ -31,7 +31,7 @@ public class PCnt_GuiWeaselCoreSettings extends PC_GresBase {
 	 * @param core gate TE
 	 */
 	public PCnt_GuiWeaselCoreSettings(EntityPlayer player, TileEntity te) {
-		core = (PCnt_WeaselPluginCore)((PCnt_TileEntityWeasel)te).getPlugin();
+		core = (PCnt_WeaselPluginCore_UNUSED)((PCnt_TileEntityWeasel_UNUSED)te).getPlugin();
 		this.player = player;
 	}
 

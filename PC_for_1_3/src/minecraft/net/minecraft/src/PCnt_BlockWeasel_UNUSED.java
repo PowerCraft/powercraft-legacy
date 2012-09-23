@@ -1,5 +1,6 @@
 package net.minecraft.src;
 
+
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -8,7 +9,14 @@ import java.util.Set;
 
 import net.minecraft.src.forge.ITextureProvider;
 
-public class PCnt_BlockWeasel extends BlockContainer implements PC_ISwapTerrain, PC_IBlockType, ITextureProvider {
+
+/**
+ * Weasel devices
+ * 
+ * @author MightyPork
+ * @copy (c) 2012
+ */
+public class PCnt_BlockWeasel_UNUSED extends BlockContainer implements PC_ISwapTerrain, PC_IBlockType, ITextureProvider {
 
 	@Override
 	public int tickRate() {
@@ -52,7 +60,7 @@ public class PCnt_BlockWeasel extends BlockContainer implements PC_ISwapTerrain,
 	 * 
 	 * @param id block ID
 	 */
-	protected PCnt_BlockWeasel(int id) {
+	protected PCnt_BlockWeasel_UNUSED(int id) {
 		super(id, Material.ground);
 		blockIndexInTexture = 6;
 		setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 0.1875F, 1.0F);
@@ -77,12 +85,12 @@ public class PCnt_BlockWeasel extends BlockContainer implements PC_ISwapTerrain,
 	 * @param z
 	 * @return the tile entity or null
 	 */
-	public PCnt_TileEntityWeasel getTE(IBlockAccess iblockaccess, int x, int y, int z) {
+	public PCnt_TileEntityWeasel_UNUSED getTE(IBlockAccess iblockaccess, int x, int y, int z) {
 		TileEntity te = iblockaccess.getBlockTileEntity(x, y, z);
 		if (te == null) {
 			return null;
 		}
-		return (PCnt_TileEntityWeasel) te;
+		return (PCnt_TileEntityWeasel_UNUSED) te;
 	}
 
 	/**
@@ -94,12 +102,12 @@ public class PCnt_BlockWeasel extends BlockContainer implements PC_ISwapTerrain,
 	 * @param z
 	 * @return the tile entity or null
 	 */
-	public PCnt_WeaselPlugin getPlugin(IBlockAccess iblockaccess, int x, int y, int z) {
+	public PCnt_WeaselPlugin_UNUSED getPlugin(IBlockAccess iblockaccess, int x, int y, int z) {
 		TileEntity te = iblockaccess.getBlockTileEntity(x, y, z);
-		if (te == null || !(te instanceof PCnt_TileEntityWeasel)) {
+		if (te == null || !(te instanceof PCnt_TileEntityWeasel_UNUSED)) {
 			return null;
 		}
-		return ((PCnt_TileEntityWeasel) te).getPlugin();
+		return ((PCnt_TileEntityWeasel_UNUSED) te).getPlugin();
 	}
 
 	/**
@@ -112,7 +120,7 @@ public class PCnt_BlockWeasel extends BlockContainer implements PC_ISwapTerrain,
 	 * @return type index
 	 */
 	public int getType(IBlockAccess iblockaccess, int x, int y, int z) {
-		PCnt_TileEntityWeasel tew = getTE(iblockaccess, x, y, z);
+		PCnt_TileEntityWeasel_UNUSED tew = getTE(iblockaccess, x, y, z);
 		return tew.getType();
 	}
 
@@ -166,7 +174,7 @@ public class PCnt_BlockWeasel extends BlockContainer implements PC_ISwapTerrain,
 
 	@Override
 	public String getTerrainFile() {
-		return mod_PCnet.getTerrainFile();
+		return mod_PClogic.getTerrainFile();
 	}
 
 	@Override
@@ -183,11 +191,13 @@ public class PCnt_BlockWeasel extends BlockContainer implements PC_ISwapTerrain,
 	public void breakBlock(World world, int x, int y, int z, int par5, int par6) {
 
 		// drop the gate
-		PCnt_TileEntityWeasel tew = getTE(world, x, y, z);
+		PCnt_TileEntityWeasel_UNUSED tew = getTE(world, x, y, z);
 
 		if (tew != null) {
 
-			PCnt_WeaselPlugin plugin = tew.getPlugin();
+			tew.zombie = true;
+
+			PCnt_WeaselPlugin_UNUSED plugin = tew.getPlugin();
 
 			if (plugin != null) {
 				plugin.onBlockRemoval();
@@ -239,7 +249,7 @@ public class PCnt_BlockWeasel extends BlockContainer implements PC_ISwapTerrain,
 	@Override
 	public void setBlockBoundsBasedOnState(IBlockAccess iblockaccess, int x, int y, int z) {
 		setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 0.5F, 1.0F);
-		PCnt_WeaselPlugin plugin = getPlugin(iblockaccess, x, y, z);
+		PCnt_WeaselPlugin_UNUSED plugin = getPlugin(iblockaccess, x, y, z);
 		if (plugin != null) {
 			float[] bounds = plugin.getBounds();
 			setBlockBounds(bounds[0], bounds[1], bounds[2], bounds[3], bounds[4], bounds[5]);
@@ -279,11 +289,11 @@ public class PCnt_BlockWeasel extends BlockContainer implements PC_ISwapTerrain,
 		int meta = iblockaccess.getBlockMetadata(x, y, z);
 		int rotation = getRotation(meta);
 
-		PCnt_TileEntityWeasel tew = getTE(iblockaccess, x, y, z);
+		PCnt_TileEntityWeasel_UNUSED tew = getTE(iblockaccess, x, y, z);
 
 		if (tew == null) return false;
 
-		PCnt_WeaselPlugin plugin = tew.getPlugin();
+		PCnt_WeaselPlugin_UNUSED plugin = tew.getPlugin();
 
 		if (plugin == null) return false;
 
@@ -438,7 +448,7 @@ public class PCnt_BlockWeasel extends BlockContainer implements PC_ISwapTerrain,
 
 		world.setBlockMetadataWithNotify(x, y, z, l);
 
-		PCnt_WeaselPlugin plugin = getPlugin(world, x, y, z);
+		PCnt_WeaselPlugin_UNUSED plugin = getPlugin(world, x, y, z);
 		if (plugin != null) {
 			plugin.onBlockPlaced(entityliving);
 		}
@@ -476,7 +486,7 @@ public class PCnt_BlockWeasel extends BlockContainer implements PC_ISwapTerrain,
 
 	@Override
 	public void randomDisplayTick(World world, int x, int y, int z, Random random) {
-		PCnt_WeaselPlugin plugin = getPlugin(world, x, y, z);
+		PCnt_WeaselPlugin_UNUSED plugin = getPlugin(world, x, y, z);
 
 		if (plugin != null) {
 			plugin.onRandomDisplayTick(random);
@@ -517,21 +527,21 @@ public class PCnt_BlockWeasel extends BlockContainer implements PC_ISwapTerrain,
 
 			} else if (ihold.getItem().shiftedIndex == mod_PCcore.activator.shiftedIndex) {
 
-				PCnt_WeaselPlugin plugin = getPlugin(world, x, y, z);
+				PCnt_WeaselPlugin_UNUSED plugin = getPlugin(world, x, y, z);
 				if (plugin == null) return true;
 
 				if (plugin.isMaster()) {
 
 					if (ihold.hasTagCompound()) {
-						ihold.getTagCompound().setString("WeaselNetwork", plugin.getNetwork().getName());
+						ihold.getTagCompound().setString("WeaselNetwork", plugin.getNetworkName());
 					} else {
 						NBTTagCompound tag = new NBTTagCompound();
-						tag.setString("WeaselNetwork", plugin.getNetwork().getName());
+						tag.setString("WeaselNetwork", plugin.getNetworkName());
 						ihold.setTagCompound(tag);
 					}
 
 					if(!world.isRemote)
-						PC_Utils.chatMsg(PC_Lang.tr("pc.weasel.activatorGetNetwork", new String[] { plugin.getNetwork().getName() }), true);
+						PC_Utils.chatMsg(PC_Lang.tr("pc.weasel.activatorGetNetwork", new String[] { plugin.getNetworkName() }), true);
 
 				} else {
 					if (ihold.hasTagCompound()) {
@@ -539,7 +549,7 @@ public class PCnt_BlockWeasel extends BlockContainer implements PC_ISwapTerrain,
 						if (!network.equals("")) {
 							plugin.setNetworkNameAndConnect(network);
 							if(!world.isRemote)
-								PC_Utils.chatMsg(PC_Lang.tr("pc.weasel.activatorSetNetwork", new String[] { plugin.getNetwork().getName() }), true);
+								PC_Utils.chatMsg(PC_Lang.tr("pc.weasel.activatorSetNetwork", new String[] { plugin.getNetworkName() }), true);
 							if(world.isRemote)
 								world.playSoundEffect(x, y, z, "note.snare", 1.0F, 0.5F);
 						}
@@ -549,7 +559,7 @@ public class PCnt_BlockWeasel extends BlockContainer implements PC_ISwapTerrain,
 			}
 		}
 
-		PCnt_WeaselPlugin plugin = getPlugin(world, x, y, z);
+		PCnt_WeaselPlugin_UNUSED plugin = getPlugin(world, x, y, z);
 		if (plugin != null) return plugin.onClick(player);
 
 		return false;
@@ -557,12 +567,16 @@ public class PCnt_BlockWeasel extends BlockContainer implements PC_ISwapTerrain,
 
 	@Override
 	public Set<String> getBlockFlags(World world, PC_CoordI pos) {
+
 		Set<String> set = new HashSet<String>();
+
 		set.add("NO_HARVEST");
 		set.add("TRANSLUCENT");
 		set.add("REDSTONE");
 		set.add("LOGIC");
 		set.add("WEASEL");
+
+
 		return set;
 	}
 
@@ -573,6 +587,5 @@ public class PCnt_BlockWeasel extends BlockContainer implements PC_ISwapTerrain,
 		set.add("WEASEL");
 		return set;
 	}
-
 
 }

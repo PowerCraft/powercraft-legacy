@@ -6,7 +6,7 @@ import java.util.List;
 import java.util.Random;
 
 import net.minecraft.src.PC_BitmapUtils.WeaselBitmapProvider;
-import net.minecraft.src.PCnt_WeaselManager.NetworkMember;
+import net.minecraft.src.PCnt_WeaselManager_UNUSED.NetworkMember;
 
 import weasel.Calc;
 import weasel.WeaselEngine;
@@ -24,9 +24,9 @@ import weasel.obj.WeaselString;
  * @author MightyPork
  */
 @SuppressWarnings("static-access")
-public class PCnt_WeaselPluginDiskDrive extends PCnt_WeaselPlugin implements PC_IInventoryWrapper {
+public class PCnt_WeaselPluginDiskDrive_UNUSED extends PCnt_WeaselPlugin_UNUSED implements PC_IInventoryWrapper {
 
-	private IInventory slots = new PCnt_WeaselDiskDriveInventory("Drive", 8);
+	private IInventory slots = new PCnt_WeaselDiskDriveInventory_UNUSED("Drive", 8);
 	/** plag taht needs save */
 	public boolean isChanged;
 
@@ -35,7 +35,7 @@ public class PCnt_WeaselPluginDiskDrive extends PCnt_WeaselPlugin implements PC_
 	 * 
 	 * @param tew
 	 */
-	public PCnt_WeaselPluginDiskDrive(PCnt_TileEntityWeasel tew) {
+	public PCnt_WeaselPluginDiskDrive_UNUSED(PCnt_TileEntityWeasel_UNUSED tew) {
 		super(tew);
 	}
 
@@ -62,14 +62,14 @@ public class PCnt_WeaselPluginDiskDrive extends PCnt_WeaselPlugin implements PC_
 		public int[][] getImageForName(String name) {
 			ItemStack disk = null;
 			for (NetworkMember member : getNetwork().getMembers().values()) {
-				if (member instanceof PCnt_WeaselPluginDiskDrive) {
-					disk = ((PCnt_WeaselPluginDiskDrive) member).getImageDisk(name);
+				if (member instanceof PCnt_WeaselPluginDiskDrive_UNUSED) {
+					disk = ((PCnt_WeaselPluginDiskDrive_UNUSED) member).getImageDisk(name);
 					if (disk != null) break;
 				}
 			}
 			if(disk == null) return null;
 			
-			return PCnt_ItemWeaselDisk.getImageData(disk);
+			return PCnt_ItemWeaselDisk_UNUSED.getImageData(disk);
 		}
 
 		@Override
@@ -635,7 +635,7 @@ public class PCnt_WeaselPluginDiskDrive extends PCnt_WeaselPlugin implements PC_
 	public void callFunctionOnEngine(String function, Object... args) {}
 
 	@Override
-	protected PCnt_WeaselPlugin readPluginFromNBT(NBTTagCompound tag) {
+	protected PCnt_WeaselPlugin_UNUSED readPluginFromNBT(NBTTagCompound tag) {
 		PC_InvUtils.loadInventoryFromNBT(tag, "Inv", slots);
 		return this;
 	}
@@ -693,7 +693,7 @@ public class PCnt_WeaselPluginDiskDrive extends PCnt_WeaselPlugin implements PC_
 		return WDT.getType(getDisk(slot));
 	}
 
-	private static PCnt_ItemWeaselDisk WDT = mod_PCnet.weaselDisk;
+	private static PCnt_ItemWeaselDisk_UNUSED WDT = mod_PCnet.weaselDisk;
 
 
 	@Override

@@ -16,7 +16,7 @@ import net.minecraft.src.PC_GresWidget.PC_GresAlign;
  */
 public class PCnt_GuiWeaselTerminal extends PC_GresBase {
 
-	private PCnt_WeaselPluginTerminal term;
+	private PCnt_WeaselPluginTerminal_UNUSED term;
 	private PC_GresWindow w;
 	private PC_GresWidget txError;
 	private PC_GresWidget edName;
@@ -28,7 +28,7 @@ public class PCnt_GuiWeaselTerminal extends PC_GresBase {
 	 * 
 	 * @param device plugin instance
 	 */
-	public PCnt_GuiWeaselTerminal(PCnt_WeaselPluginTerminal device) {
+	public PCnt_GuiWeaselTerminal(PCnt_WeaselPluginTerminal_UNUSED device) {
 		this.term = device;
 	}
 

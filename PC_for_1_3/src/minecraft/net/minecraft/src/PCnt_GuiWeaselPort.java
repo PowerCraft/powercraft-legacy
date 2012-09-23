@@ -16,7 +16,7 @@ import net.minecraft.src.PC_GresWidget.PC_GresAlign;
  */
 public class PCnt_GuiWeaselPort extends PC_GresBase {
 
-	private PCnt_WeaselPluginPort port;
+	private PCnt_WeaselPluginPort_UNUSED port;
 	private PC_GresWindow w;
 	private PC_GresWidget txError;
 	private PC_GresWidget edName;
@@ -29,7 +29,7 @@ public class PCnt_GuiWeaselPort extends PC_GresBase {
 	 * 
 	 * @param port gate TE
 	 */
-	public PCnt_GuiWeaselPort(PCnt_WeaselPluginPort port) {
+	public PCnt_GuiWeaselPort(PCnt_WeaselPluginPort_UNUSED port) {
 		this.port = port;
 	}
 

@@ -24,7 +24,7 @@ import weasel.obj.WeaselVariableMap;
  * @author MightyPork
  * @copy (c) 2012
  */
-public class PCnt_ItemWeaselDisk extends Item {
+public class PCnt_ItemWeaselDisk_UNUSED extends Item {
 
 	@SuppressWarnings("javadoc")
 	public static final int EMPTY = 0, TEXT = 1, IMAGE = 2, NUMBERLIST = 3, STRINGLIST = 4, VARMAP = 5, LIBRARY = 6;
@@ -37,7 +37,7 @@ public class PCnt_ItemWeaselDisk extends Item {
 	/**
 	 * @param i ID
 	 */
-	public PCnt_ItemWeaselDisk(int i) {
+	public PCnt_ItemWeaselDisk_UNUSED(int i) {
 		super(i);
 		setMaxDamage(0);
 		setMaxStackSize(1);

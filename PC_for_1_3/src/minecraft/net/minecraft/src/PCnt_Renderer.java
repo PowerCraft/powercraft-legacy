@@ -108,7 +108,7 @@ public class PCnt_Renderer {
 		}
 
 		if (rtype == weaselRenderer) {
-			renderInvBlockWeasel(renderblocks, (PCnt_BlockWeasel) block, meta);
+			renderInvBlockWeasel(renderblocks, (PCnt_BlockWeasel_UNUSED) block, meta);
 		}
 		
 		block.setBlockBounds((float)a[0],(float)a[1],(float)a[2],(float)a[3],(float)a[4],(float)a[5]);
@@ -140,7 +140,7 @@ public class PCnt_Renderer {
 		block.setBlockBounds(0.125F, 0.0F, 0.125F, 1.0F - 0.125F, 1.0F - 0.125F, 1.0F - 0.125F);
 	}
 	
-	private static void renderInvBlockWeasel(RenderBlocks renderblocks, PCnt_BlockWeasel block, int meta) {
+	private static void renderInvBlockWeasel(RenderBlocks renderblocks, PCnt_BlockWeasel_UNUSED block, int meta) {
 
 		PC_Renderer.swapTerrain(mod_PClogic.getTerrainFile());
 

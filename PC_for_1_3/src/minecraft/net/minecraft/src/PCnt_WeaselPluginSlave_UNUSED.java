@@ -6,14 +6,14 @@ package net.minecraft.src;
  * 
  * @author MightyPork
  */
-public class PCnt_WeaselPluginSlave extends PCnt_WeaselPluginCore {
+public class PCnt_WeaselPluginSlave_UNUSED extends PCnt_WeaselPluginCore_UNUSED {
 
 	/**
 	 * SLAVE plugin
 	 * 
 	 * @param tew weasel tile entity
 	 */
-	public PCnt_WeaselPluginSlave(PCnt_TileEntityWeasel tew) {
+	public PCnt_WeaselPluginSlave_UNUSED(PCnt_TileEntityWeasel_UNUSED tew) {
 		super(tew);
 	}
 
@@ -23,7 +23,7 @@ public class PCnt_WeaselPluginSlave extends PCnt_WeaselPluginCore {
 	}
 	
 	@Override
-	protected PCnt_WeaselPlugin readPluginFromNBT(NBTTagCompound tag) {
+	protected PCnt_WeaselPlugin_UNUSED readPluginFromNBT(NBTTagCompound tag) {
 		super.readPluginFromNBT(tag);
 		sleepTimer -= 3;
 		return this;

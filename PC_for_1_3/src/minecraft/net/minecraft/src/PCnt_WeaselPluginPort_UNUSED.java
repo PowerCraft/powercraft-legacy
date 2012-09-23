@@ -17,14 +17,14 @@ import weasel.obj.WeaselObject;
 /**
  * @author MightyPork
  */
-public class PCnt_WeaselPluginPort extends PCnt_WeaselPlugin {
+public class PCnt_WeaselPluginPort_UNUSED extends PCnt_WeaselPlugin_UNUSED {
 
 	private boolean isChanged;
 
 	/**
 	 * @param tew tile entity weasel
 	 */
-	public PCnt_WeaselPluginPort(PCnt_TileEntityWeasel tew) {
+	public PCnt_WeaselPluginPort_UNUSED(PCnt_TileEntityWeasel_UNUSED tew) {
 		super(tew);
 	}
 
@@ -69,7 +69,7 @@ public class PCnt_WeaselPluginPort extends PCnt_WeaselPlugin {
 	public void onRedstoneSignalChanged() {
 		isChanged = true;
 		if (getNetwork() != null)
-			if (getNetwork().getMember("CORE") != null) ((PCnt_WeaselPlugin) getNetwork().getMember("CORE")).callFunctionOnEngine("update");
+			if (getNetwork().getMember("CORE") != null) ((PCnt_WeaselPlugin_UNUSED) getNetwork().getMember("CORE")).callFunctionOnEngine("update");
 	}
 
 	@Override
@@ -86,7 +86,7 @@ public class PCnt_WeaselPluginPort extends PCnt_WeaselPlugin {
 	public int rgbcolor = 0xffffff;
 
 	@Override
-	protected PCnt_WeaselPlugin readPluginFromNBT(NBTTagCompound tag) {
+	protected PCnt_WeaselPlugin_UNUSED readPluginFromNBT(NBTTagCompound tag) {
 		rgbcolor = tag.getInteger("rgb");
 		return this;
 	}

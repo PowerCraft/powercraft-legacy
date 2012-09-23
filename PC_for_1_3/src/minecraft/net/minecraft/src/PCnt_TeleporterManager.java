@@ -245,7 +245,7 @@ public class PCnt_TeleporterManager extends PC_PacketHandler implements PC_INBTW
 			return false;
 		if(!changeEntityWorld(entity, tdt.dimension))
 			return false;
-		World world = MinecraftServer.getServer().worldServerForDimension(tdt.dimension);
+		World world = PC_Utils.mcs().worldServerForDimension(tdt.dimension);
 		PC_CoordI pos = calculatePos(world, tdt, tdt.direction);
 		if (pos == null)
 			return false;
