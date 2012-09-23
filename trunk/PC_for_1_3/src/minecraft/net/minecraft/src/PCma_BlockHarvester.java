@@ -222,7 +222,8 @@ public class PCma_BlockHarvester extends Block implements PC_ISwapTerrain, PC_IB
 			beamTracer.setMaxLengthAfterCrystal(1);
 		}
 
-		drops.clear();
+		if(!world.isRemote)
+			drops.clear();
 
 		beamTracer.flash();
 
@@ -286,9 +287,10 @@ public class PCma_BlockHarvester extends Block implements PC_ISwapTerrain, PC_IB
 			ItemStack[] output = PC_TreeHarvestingManager.harvestTreeAt(world, coord);
 
 			if (output != null) {
-				for (ItemStack stack : output) {
-					addToDispenseList(stack);
-				}
+				if(!world.isRemote)
+					for (ItemStack stack : output) {
+						addToDispenseList(stack);
+					}
 			}
 
 			return true;
@@ -313,9 +315,10 @@ public class PCma_BlockHarvester extends Block implements PC_ISwapTerrain, PC_IB
 
 				if (harvested != null) {
 
-					for (ItemStack stack : harvested) {
-						addToDispenseList(stack);
-					}
+					if(!world.isRemote)
+						for (ItemStack stack : harvested) {
+							addToDispenseList(stack);
+						}
 				}
 			}
 
@@ -337,7 +340,8 @@ public class PCma_BlockHarvester extends Block implements PC_ISwapTerrain, PC_IB
 							world.playAuxSFX(2001, coord.x, coord.y, coord.z, id + (meta << 12));
 						}
 
-						addToDispenseList(stack);
+						if(!world.isRemote)
+							addToDispenseList(stack);
 					}
 
 				}
@@ -395,7 +399,8 @@ public class PCma_BlockHarvester extends Block implements PC_ISwapTerrain, PC_IB
 			dropQuant = 1;
 		}
 
-		addToDispenseList(new ItemStack(dropId, dropQuant, dropMeta));
+		if(!world.isRemote)
+			addToDispenseList(new ItemStack(dropId, dropQuant, dropMeta));
 
 		return true;
 		// return false;
@@ -437,7 +442,8 @@ public class PCma_BlockHarvester extends Block implements PC_ISwapTerrain, PC_IB
 
 				if (!sheep.getSheared()) {
 					sheep.setSheared(true);
-					addToDispenseList(new ItemStack(Block.cloth.blockID, 1 + world.rand.nextInt(3), sheep.getFleeceColor()));
+					if(!world.isRemote)
+						addToDispenseList(new ItemStack(Block.cloth.blockID, 1 + world.rand.nextInt(3), sheep.getFleeceColor()));
 				}
 
 			} else if (entity instanceof EntityMooshroom) {
@@ -460,7 +466,8 @@ public class PCma_BlockHarvester extends Block implements PC_ISwapTerrain, PC_IB
 					world.spawnParticle("largeexplode", mooshroom.posX, mooshroom.posY + (mooshroom.height / 2.0F), mooshroom.posZ, 0.0D, 0.0D, 0.0D);
 					world.spawnEntityInWorld(entitycow);
 
-					addToDispenseList(new ItemStack(Block.mushroomRed.blockID, 1 + world.rand.nextInt(5), 0));
+					if(!world.isRemote)
+						addToDispenseList(new ItemStack(Block.mushroomRed.blockID, 1 + world.rand.nextInt(5), 0));
 
 				}
 
