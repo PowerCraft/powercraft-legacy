@@ -433,6 +433,15 @@ public class PC_CoordI implements PC_ICoord, PC_INBT {
 	}
 
 	/**
+	 * Set notification nigbours
+	 * 
+	 * @param w world
+	 */
+	public void notifyNigbours(World w) {
+		w.notifyBlocksOfNeighborChange(x, y, z, w.getBlockId(x, y, z));
+	}
+	
+	/**
 	 * Set world's block meta
 	 * 
 	 * @param w world

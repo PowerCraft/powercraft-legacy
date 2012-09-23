@@ -194,26 +194,23 @@ public class PC_TreeHarvestingManager {
 			if (cnt == 0) {
 				// if not in tree, simply stop.
 				if (pos.offset(0, 1, 0).getId(world) != wood_id || (pos.offset(0, 1, 0).getMeta(world) != wood_meta && wood_meta != -1)) {
+					pos.notifyNigbours(world);
 					return;
 				}
 				if (pos.offset(0, 2, 0).getId(world) != wood_id || (pos.offset(0, 2, 0).getMeta(world) != wood_meta && wood_meta != -1)) {
+					pos.notifyNigbours(world);
 					return;
 				}
 				if (pos.offset(0, 3, 0).getId(world) != wood_id || (pos.offset(0, 3, 0).getMeta(world) != wood_meta && wood_meta != -1)) {
+					pos.notifyNigbours(world);
 					return;
-				}
-			}
-
-			// replant sapling.
-			if (pos.offset(0, -1, 0).getId(world) == Block.dirt.blockID) {
-				if (sapling_id > 0 && sapling_meta >= 0) {
-					pos.setBlock(world, sapling_id, sapling_meta);
 				}
 			}
 
 
 			cnt++;
 			if (cnt >= MAXLOGS) {
+				pos.notifyNigbours(world);
 				return;
 			}
 
@@ -231,6 +228,15 @@ public class PC_TreeHarvestingManager {
 						}
 
 					}
+				}
+			}
+			
+			pos.notifyNigbours(world);
+			
+			// replant sapling.
+			if (pos.offset(0, -1, 0).getId(world) == Block.dirt.blockID) {
+				if (sapling_id > 0 && sapling_meta >= 0) {
+					pos.setBlock(world, sapling_id, sapling_meta);
 				}
 			}
 

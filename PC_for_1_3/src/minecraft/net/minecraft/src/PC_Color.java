@@ -373,6 +373,19 @@ public class PC_Color implements PC_INBT {
 	}
 
 	/**
+	 * Set color from color
+	 * 
+	 * @param color PC_Color color
+	 * @return this
+	 */
+	public PC_Color setTo(PC_Color color) {
+		r = color.r;
+		g = color.g;
+		b = color.b;
+		return this;
+	}
+	
+	/**
 	 * Set color channels
 	 * 
 	 * @param cr
