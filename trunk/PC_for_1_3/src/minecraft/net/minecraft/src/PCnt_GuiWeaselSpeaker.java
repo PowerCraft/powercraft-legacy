@@ -15,7 +15,7 @@ import net.minecraft.src.PC_GresWidget.PC_GresAlign;
  */
 public class PCnt_GuiWeaselSpeaker extends PC_GresBase {
 
-	private PCnt_WeaselPluginSpeaker speaker;
+	private PCnt_WeaselPluginSpeaker_UNUSED speaker;
 	private PC_GresWindow w;
 	private PC_GresWidget txError;
 	private PC_GresWidget edName;
@@ -28,7 +28,7 @@ public class PCnt_GuiWeaselSpeaker extends PC_GresBase {
 	 * 
 	 * @param speaker plugin instance
 	 */
-	public PCnt_GuiWeaselSpeaker(PCnt_WeaselPluginSpeaker speaker) {
+	public PCnt_GuiWeaselSpeaker(PCnt_WeaselPluginSpeaker_UNUSED speaker) {
 		this.speaker = speaker;
 	}
 

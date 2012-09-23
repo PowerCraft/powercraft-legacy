@@ -11,12 +11,12 @@ import java.util.List;
  * @author MightyPork
  * @copy (c) 2012
  */
-public class PCnt_ItemBlockWeasel extends ItemBlock {
+public class PCnt_ItemBlockWeasel_UNUSED extends ItemBlock {
 
 	/**
 	 * @param i ID
 	 */
-	public PCnt_ItemBlockWeasel(int i) {
+	public PCnt_ItemBlockWeasel_UNUSED(int i) {
 		super(i);
 		setMaxDamage(0);
 		setHasSubtypes(true);
@@ -76,9 +76,9 @@ public class PCnt_ItemBlockWeasel extends ItemBlock {
 			Block block = mod_PCnet.weaselDevice;
 			if (world.setBlock(i, j, k, block.blockID)) {
 				// set tile entity
-				PCnt_TileEntityWeasel teg = (PCnt_TileEntityWeasel) world.getBlockTileEntity(i, j, k);
+				PCnt_TileEntityWeasel_UNUSED teg = (PCnt_TileEntityWeasel_UNUSED) world.getBlockTileEntity(i, j, k);
 				if (teg == null) {
-					teg = (PCnt_TileEntityWeasel) ((BlockContainer) block).createNewTileEntity(world);
+					teg = (PCnt_TileEntityWeasel_UNUSED) ((BlockContainer) block).createNewTileEntity(world);
 				}
 				teg.setType(itemstack.getItemDamage());
 				world.setBlockTileEntity(i, j, k, teg);

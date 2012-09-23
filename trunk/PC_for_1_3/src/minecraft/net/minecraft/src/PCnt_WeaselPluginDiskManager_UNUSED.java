@@ -13,14 +13,14 @@ import weasel.obj.WeaselObject;
 /**
  * @author MightyPork
  */
-public class PCnt_WeaselPluginDiskManager extends PCnt_WeaselPlugin {
+public class PCnt_WeaselPluginDiskManager_UNUSED extends PCnt_WeaselPlugin_UNUSED {
 
 	/**
 	 * A digital workbench
 	 * 
 	 * @param tew
 	 */
-	public PCnt_WeaselPluginDiskManager(PCnt_TileEntityWeasel tew) {
+	public PCnt_WeaselPluginDiskManager_UNUSED(PCnt_TileEntityWeasel_UNUSED tew) {
 		super(tew);
 	}
 
@@ -104,7 +104,7 @@ public class PCnt_WeaselPluginDiskManager extends PCnt_WeaselPlugin {
 	public void callFunctionOnEngine(String function, Object... args) {}
 
 	@Override
-	protected PCnt_WeaselPlugin readPluginFromNBT(NBTTagCompound tag) {
+	protected PCnt_WeaselPlugin_UNUSED readPluginFromNBT(NBTTagCompound tag) {
 		return this;
 	}
 

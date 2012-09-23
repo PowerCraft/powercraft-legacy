@@ -180,22 +180,22 @@ public class PCnt_GuiWeaselDiskManager extends PC_GresBase {
 
 	private void setPanelForStack(boolean edit) {
 		if (theSlot.getStack() != null) {
-			int type = PCnt_ItemWeaselDisk.getType(theSlot.getStack());
+			int type = PCnt_ItemWeaselDisk_UNUSED.getType(theSlot.getStack());
 			int panel = -1;
-			if (type == PCnt_ItemWeaselDisk.EMPTY || !edit) {
+			if (type == PCnt_ItemWeaselDisk_UNUSED.EMPTY || !edit) {
 				panel = 0;
-			} else if (type == PCnt_ItemWeaselDisk.TEXT) {
+			} else if (type == PCnt_ItemWeaselDisk_UNUSED.TEXT) {
 				panel = 1;
-			} else if (type == PCnt_ItemWeaselDisk.IMAGE) {
+			} else if (type == PCnt_ItemWeaselDisk_UNUSED.IMAGE) {
 				panel = 2;
-			} else if (type == PCnt_ItemWeaselDisk.STRINGLIST) {
+			} else if (type == PCnt_ItemWeaselDisk_UNUSED.STRINGLIST) {
 				panel = 3;
-			} else if (type == PCnt_ItemWeaselDisk.NUMBERLIST) {
+			} else if (type == PCnt_ItemWeaselDisk_UNUSED.NUMBERLIST) {
 				panel = 3;
 			
-			} else if (type == PCnt_ItemWeaselDisk.VARMAP) {
+			} else if (type == PCnt_ItemWeaselDisk_UNUSED.VARMAP) {
 				panel = 4;
-			} else if (type == PCnt_ItemWeaselDisk.LIBRARY) {
+			} else if (type == PCnt_ItemWeaselDisk_UNUSED.LIBRARY) {
 				panel = 5;
 			}
 
@@ -255,7 +255,7 @@ public class PCnt_GuiWeaselDiskManager extends PC_GresBase {
 			case 1:
 				w.setText(PC_Lang.tr("pc.weasel.disk.text"));
 				if(theSlot.getStack()!=null) {
-				edTextText.setText(PCnt_ItemWeaselDisk.getText(stack));
+				edTextText.setText(PCnt_ItemWeaselDisk_UNUSED.getText(stack));
 				}
 				vgt.setVisible(true);
 				panelwrap.setVisible(true);
@@ -264,9 +264,9 @@ public class PCnt_GuiWeaselDiskManager extends PC_GresBase {
 			case 2:
 				w.setText(PC_Lang.tr("pc.weasel.disk.image"));
 				if(theSlot.getStack()!=null) {
-					colormap.setColorArray(PCnt_ItemWeaselDisk.getImageData(stack));
-					edImgX.text = PCnt_ItemWeaselDisk.getImageSize(stack).x + "";
-					edImgY.text = PCnt_ItemWeaselDisk.getImageSize(stack).y + "";
+					colormap.setColorArray(PCnt_ItemWeaselDisk_UNUSED.getImageData(stack));
+					edImgX.text = PCnt_ItemWeaselDisk_UNUSED.getImageSize(stack).x + "";
+					edImgY.text = PCnt_ItemWeaselDisk_UNUSED.getImageSize(stack).y + "";
 				}
 				vgi.setVisible(true);
 				panelwrap.setVisible(true);
@@ -275,8 +275,8 @@ public class PCnt_GuiWeaselDiskManager extends PC_GresBase {
 			case 3:
 				if(theSlot.getStack()!=null) {
 				w.setText(theSlot.getStack().getItem().getItemDisplayName(stack));
-				edListText.setText(PCnt_ItemWeaselDisk.getListText(stack));
-				edSeparator.setText(PCnt_ItemWeaselDisk.getListDelimiter(stack));
+				edListText.setText(PCnt_ItemWeaselDisk_UNUSED.getListText(stack));
+				edSeparator.setText(PCnt_ItemWeaselDisk_UNUSED.getListDelimiter(stack));
 				}
 				vgl.setVisible(true);
 				panelwrap.setVisible(true);
@@ -287,7 +287,7 @@ public class PCnt_GuiWeaselDiskManager extends PC_GresBase {
 				if(theSlot.getStack()!=null) {
 				w.setText(theSlot.getStack().getItem().getItemDisplayName(stack));
 				String str = "";
-				for(Entry<String, WeaselObject> entry : PCnt_ItemWeaselDisk.getVarMapMap(theSlot.getStack()).get().entrySet()) {
+				for(Entry<String, WeaselObject> entry : PCnt_ItemWeaselDisk_UNUSED.getVarMapMap(theSlot.getStack()).get().entrySet()) {
 					str += entry.getKey()+" = " + entry.getValue()+";\n";
 				}
 				edDataText.setText(str);
@@ -300,7 +300,7 @@ public class PCnt_GuiWeaselDiskManager extends PC_GresBase {
 			case 5:
 				if(theSlot.getStack()!=null) {
 					w.setText(theSlot.getStack().getItem().getItemDisplayName(stack));
-					String str = PCnt_ItemWeaselDisk.getLibrarySource(stack);
+					String str = PCnt_ItemWeaselDisk_UNUSED.getLibrarySource(stack);
 					edCodeText.setText(str);
 				}
 				vgc.setVisible(true);
@@ -551,14 +551,14 @@ public class PCnt_GuiWeaselDiskManager extends PC_GresBase {
 
 		if (widget == btnRecolor) {
 			if (theSlot.getStack() != null) {
-				PCnt_ItemWeaselDisk.setColor(theSlot.getStack(), colorPicker.getColor());
+				PCnt_ItemWeaselDisk_UNUSED.setColor(theSlot.getStack(), colorPicker.getColor());
 			}
 			return;
 		}
 		if (widget == btnRename) {
 			String name = edName.getText().trim();
 			if (theSlot.getStack() != null) {
-				PCnt_ItemWeaselDisk.setLabel(theSlot.getStack(), name);
+				PCnt_ItemWeaselDisk_UNUSED.setLabel(theSlot.getStack(), name);
 			}
 			return;
 		}
@@ -570,12 +570,12 @@ public class PCnt_GuiWeaselDiskManager extends PC_GresBase {
 
 		if (widget == slotInv) {
 			if (theSlot.getStack() != null) {
-				btnEdit.enabled = PCnt_ItemWeaselDisk.getType(theSlot.getStack()) != PCnt_ItemWeaselDisk.EMPTY;
+				btnEdit.enabled = PCnt_ItemWeaselDisk_UNUSED.getType(theSlot.getStack()) != PCnt_ItemWeaselDisk_UNUSED.EMPTY;
 				if (this.panelShown == -1) {
 					setPanelForStack(false);
 				}
-				edName.setText(PCnt_ItemWeaselDisk.getLabel(theSlot.getStack()));
-				colorPicker.setColor(PCnt_ItemWeaselDisk.getColor(theSlot.getStack()));
+				edName.setText(PCnt_ItemWeaselDisk_UNUSED.getLabel(theSlot.getStack()));
+				colorPicker.setColor(PCnt_ItemWeaselDisk_UNUSED.getColor(theSlot.getStack()));
 				colorBulb.setColor(colorPicker.getColor());
 			} else {
 				btnEdit.enabled = false;
@@ -590,12 +590,12 @@ public class PCnt_GuiWeaselDiskManager extends PC_GresBase {
 		if (theSlot.getStack() != null) {
 
 			if (widget == edTextText) {
-				PCnt_ItemWeaselDisk.setText(theSlot.getStack(), edTextText.getText());
+				PCnt_ItemWeaselDisk_UNUSED.setText(theSlot.getStack(), edTextText.getText());
 				return;
 			}
 			
 			if (widget == edCodeText) {
-				PCnt_ItemWeaselDisk.setLibrarySource(theSlot.getStack(), edCodeText.getText());
+				PCnt_ItemWeaselDisk_UNUSED.setLibrarySource(theSlot.getStack(), edCodeText.getText());
 				return;
 			}
 			
@@ -608,7 +608,7 @@ public class PCnt_GuiWeaselDiskManager extends PC_GresBase {
 					System.out.println("\n# Compiled library.");
 					for(Instruction i:list) System.out.println(i);
 					
-					PCnt_ItemWeaselDisk.setLibraryInstructions(theSlot.getStack(), list);
+					PCnt_ItemWeaselDisk_UNUSED.setLibraryInstructions(theSlot.getStack(), list);
 					txError.setText(PC_Lang.tr("pc.gui.weasel.diskManager.compiled"));
 				}catch(Exception e) {
 					txError.setText(e.getMessage());
@@ -618,7 +618,7 @@ public class PCnt_GuiWeaselDiskManager extends PC_GresBase {
 
 
 			if (widget == edListText || widget == edSeparator) {
-				PCnt_ItemWeaselDisk.setListText(theSlot.getStack(), edListText.getText(), edSeparator.getText());
+				PCnt_ItemWeaselDisk_UNUSED.setListText(theSlot.getStack(), edListText.getText(), edSeparator.getText());
 				return;
 			}
 			
@@ -637,9 +637,9 @@ public class PCnt_GuiWeaselDiskManager extends PC_GresBase {
 				}catch(NumberFormatException e) {}
 				
 				if(value.length() == 0) {
-					PCnt_ItemWeaselDisk.removeMapVariable(theSlot.getStack(), name);
+					PCnt_ItemWeaselDisk_UNUSED.removeMapVariable(theSlot.getStack(), name);
 				}else {
-					PCnt_ItemWeaselDisk.setMapVariable(theSlot.getStack(), name, i==null?new WeaselString(value):new WeaselInteger(i));
+					PCnt_ItemWeaselDisk_UNUSED.setMapVariable(theSlot.getStack(), name, i==null?new WeaselString(value):new WeaselInteger(i));
 				}
 				
 				edDataName.text="";
@@ -715,7 +715,7 @@ public class PCnt_GuiWeaselDiskManager extends PC_GresBase {
 					color = lastColor;
 					
 					int[][] disk = colormap.getColorArray();					
-					PCnt_ItemWeaselDisk.setImageData(theSlot.getStack(), disk);
+					PCnt_ItemWeaselDisk_UNUSED.setImageData(theSlot.getStack(), disk);
 					
 					if(ldp == null) {
 						return;
@@ -723,13 +723,13 @@ public class PCnt_GuiWeaselDiskManager extends PC_GresBase {
 					
 					if(Keyboard.isKeyDown(Keyboard.KEY_C)) {
 						PC_BitmapUtils.ellipse(disk, ldp.x, ldp.y, pos.x-ldp.x, pos.y-ldp.y, color);
-						PCnt_ItemWeaselDisk.setImageData(theSlot.getStack(), disk);
+						PCnt_ItemWeaselDisk_UNUSED.setImageData(theSlot.getStack(), disk);
 						colormap.setColorArray(disk);
 						ldp = null;
 						return;
 					}
 					if(Keyboard.isKeyDown(Keyboard.KEY_R)) {
-						PCnt_ItemWeaselDisk.setImageData(theSlot.getStack(), disk);
+						PCnt_ItemWeaselDisk_UNUSED.setImageData(theSlot.getStack(), disk);
 						PC_BitmapUtils.rect(disk, ldp.x, ldp.y, pos.x, pos.y, color);
 						colormap.setColorArray(disk);
 						ldp = null;
@@ -737,7 +737,7 @@ public class PCnt_GuiWeaselDiskManager extends PC_GresBase {
 					}
 					if(Keyboard.isKeyDown(Keyboard.KEY_B)) {
 						PC_BitmapUtils.frame(disk, ldp.x, ldp.y, pos.x, pos.y, color);
-						PCnt_ItemWeaselDisk.setImageData(theSlot.getStack(), disk);
+						PCnt_ItemWeaselDisk_UNUSED.setImageData(theSlot.getStack(), disk);
 						colormap.setColorArray(disk);
 						ldp = null;
 						return;
@@ -745,7 +745,7 @@ public class PCnt_GuiWeaselDiskManager extends PC_GresBase {
 					// L
 					if(ldp!=null) {
 						PC_BitmapUtils.line(disk, ldp.x, ldp.y, pos.x, pos.y, color);						
-						PCnt_ItemWeaselDisk.setImageData(theSlot.getStack(), disk);
+						PCnt_ItemWeaselDisk_UNUSED.setImageData(theSlot.getStack(), disk);
 						colormap.setColorArray(disk);
 						ldp = null;						
 					}
@@ -771,7 +771,7 @@ public class PCnt_GuiWeaselDiskManager extends PC_GresBase {
 
 
 			if (widget == btnImgResize) {
-				int[][] data = PCnt_ItemWeaselDisk.getImageData(theSlot.getStack());
+				int[][] data = PCnt_ItemWeaselDisk_UNUSED.getImageData(theSlot.getStack());
 				int[][] newdata = new int[Integer.valueOf(edImgX.getText())][Integer.valueOf(edImgY.getText())];
 				for (int x = 0; x < newdata.length; x++) {
 					for (int y = 0; y < newdata[0].length; y++) {
@@ -782,7 +782,7 @@ public class PCnt_GuiWeaselDiskManager extends PC_GresBase {
 						}
 					}
 				}
-				PCnt_ItemWeaselDisk.setImageData(theSlot.getStack(), newdata);
+				PCnt_ItemWeaselDisk_UNUSED.setImageData(theSlot.getStack(), newdata);
 				colormap.setScale(1);
 				colormap.setColorArray(newdata);
 				w.calcChildPositions();
@@ -805,7 +805,7 @@ public class PCnt_GuiWeaselDiskManager extends PC_GresBase {
 						}
 					}
 
-					PCnt_ItemWeaselDisk.setImageData(theSlot.getStack(), newdata);
+					PCnt_ItemWeaselDisk_UNUSED.setImageData(theSlot.getStack(), newdata);
 					break;
 
 				case 40:
@@ -825,37 +825,37 @@ public class PCnt_GuiWeaselDiskManager extends PC_GresBase {
 					setPanelForStack(panelShown <= 0);
 					break;
 				case 100:
-					PCnt_ItemWeaselDisk.formatDisk(theSlot.getStack(), PCnt_ItemWeaselDisk.TEXT);
+					PCnt_ItemWeaselDisk_UNUSED.formatDisk(theSlot.getStack(), PCnt_ItemWeaselDisk_UNUSED.TEXT);
 					btnEdit.enabled = true;
 					((PC_GresCheckBox) ckFormat).check(false);
 					formatButtons.enabled = false;
 					break;
 				case 101:
-					PCnt_ItemWeaselDisk.formatDisk(theSlot.getStack(), PCnt_ItemWeaselDisk.IMAGE);
+					PCnt_ItemWeaselDisk_UNUSED.formatDisk(theSlot.getStack(), PCnt_ItemWeaselDisk_UNUSED.IMAGE);
 					btnEdit.enabled = true;
 					((PC_GresCheckBox) ckFormat).check(false);
 					formatButtons.enabled = false;
 					break;
 				case 102:
-					PCnt_ItemWeaselDisk.formatDisk(theSlot.getStack(), PCnt_ItemWeaselDisk.NUMBERLIST);
+					PCnt_ItemWeaselDisk_UNUSED.formatDisk(theSlot.getStack(), PCnt_ItemWeaselDisk_UNUSED.NUMBERLIST);
 					btnEdit.enabled = true;
 					((PC_GresCheckBox) ckFormat).check(false);
 					formatButtons.enabled = false;
 					break;
 				case 103:
-					PCnt_ItemWeaselDisk.formatDisk(theSlot.getStack(), PCnt_ItemWeaselDisk.STRINGLIST);
+					PCnt_ItemWeaselDisk_UNUSED.formatDisk(theSlot.getStack(), PCnt_ItemWeaselDisk_UNUSED.STRINGLIST);
 					btnEdit.enabled = true;
 					((PC_GresCheckBox) ckFormat).check(false);
 					formatButtons.enabled = false;
 					break;
 				case 104:
-					PCnt_ItemWeaselDisk.formatDisk(theSlot.getStack(), PCnt_ItemWeaselDisk.VARMAP);
+					PCnt_ItemWeaselDisk_UNUSED.formatDisk(theSlot.getStack(), PCnt_ItemWeaselDisk_UNUSED.VARMAP);
 					btnEdit.enabled = true;
 					((PC_GresCheckBox) ckFormat).check(false);
 					formatButtons.enabled = false;
 					break;
 				case 105:
-					PCnt_ItemWeaselDisk.formatDisk(theSlot.getStack(), PCnt_ItemWeaselDisk.LIBRARY);
+					PCnt_ItemWeaselDisk_UNUSED.formatDisk(theSlot.getStack(), PCnt_ItemWeaselDisk_UNUSED.LIBRARY);
 					btnEdit.enabled = true;
 					((PC_GresCheckBox) ckFormat).check(false);
 					formatButtons.enabled = false;

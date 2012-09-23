@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import net.minecraft.src.PC_GresWidget.PC_GresAlign;
-import net.minecraft.src.PCnt_WeaselManager.NetworkMember;
+import net.minecraft.src.PCnt_WeaselManager_UNUSED.NetworkMember;
 import net.minecraft.src.PC_GresTextEditMultiline.Keyword;
 
 /**
@@ -17,7 +17,7 @@ import net.minecraft.src.PC_GresTextEditMultiline.Keyword;
 @SuppressWarnings("javadoc")
 public class PCnt_GuiWeaselCoreProgram extends PC_GresBase {
 
-	protected PCnt_WeaselPluginCore core;
+	protected PCnt_WeaselPluginCore_UNUSED core;
 	protected PC_GresWidget edit;
 	protected PC_GresWidget txMsg;
 	protected PC_GresWindow w;
@@ -36,7 +36,7 @@ public class PCnt_GuiWeaselCoreProgram extends PC_GresBase {
 	 * @param core gate TE
 	 */
 	public PCnt_GuiWeaselCoreProgram(EntityPlayer player, TileEntity te) {
-		core = (PCnt_WeaselPluginCore)((PCnt_TileEntityWeasel)te).getPlugin();
+		core = (PCnt_WeaselPluginCore_UNUSED)((PCnt_TileEntityWeasel_UNUSED)te).getPlugin();
 		preUndo = core.program;
 		this.player = player;
 	}
@@ -70,9 +70,9 @@ public class PCnt_GuiWeaselCoreProgram extends PC_GresBase {
 
 		if (core.getNetwork() != null) {
 			for (NetworkMember member : core.getNetwork().getMembers().values()) {
-				if (member != null && member != core && member instanceof PCnt_WeaselPluginDiskDrive) {
-					System.out.println("Linked libraries from drive "+((PCnt_WeaselPluginDiskDrive)member).getName()+" if any.");
-					List<String> funcnames = ((PCnt_WeaselPluginDiskDrive)member).getLibraryFunctionNames();
+				if (member != null && member != core && member instanceof PCnt_WeaselPluginDiskDrive_UNUSED) {
+					System.out.println("Linked libraries from drive "+((PCnt_WeaselPluginDiskDrive_UNUSED)member).getName()+" if any.");
+					List<String> funcnames = ((PCnt_WeaselPluginDiskDrive_UNUSED)member).getLibraryFunctionNames();
 					
 					for(String fn:funcnames) {
 						kw.add(new Keyword(fn, 0x00d6b7));

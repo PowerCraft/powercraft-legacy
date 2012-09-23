@@ -6,7 +6,7 @@ import java.util.Random;
 
 import net.minecraft.src.PC_BitmapUtils.WeaselBitmapAdapter;
 import net.minecraft.src.PC_BitmapUtils.WeaselBitmapProvider;
-import net.minecraft.src.PCnt_WeaselManager.NetworkMember;
+import net.minecraft.src.PCnt_WeaselManager_UNUSED.NetworkMember;
 
 import weasel.Calc;
 import weasel.WeaselEngine;
@@ -20,7 +20,7 @@ import weasel.obj.WeaselObject;
  * @author MightyPork
  *
  */
-public class PCnt_WeaselPluginTouchscreen extends PCnt_WeaselPlugin implements WeaselBitmapProvider {
+public class PCnt_WeaselPluginTouchscreen_UNUSED extends PCnt_WeaselPlugin_UNUSED implements WeaselBitmapProvider {
 
 	/** width in pixels */
 	public static final int WIDTH = 14 * 4;
@@ -45,7 +45,7 @@ public class PCnt_WeaselPluginTouchscreen extends PCnt_WeaselPlugin implements W
 	 * TS plugin
 	 * @param tew tile entity
 	 */
-	public PCnt_WeaselPluginTouchscreen(PCnt_TileEntityWeasel tew) {
+	public PCnt_WeaselPluginTouchscreen_UNUSED(PCnt_TileEntityWeasel_UNUSED tew) {
 		super(tew);
 		this.imageAdapter = new PC_BitmapUtils.WeaselBitmapAdapter(this, getName());
 	}
@@ -63,8 +63,8 @@ public class PCnt_WeaselPluginTouchscreen extends PCnt_WeaselPlugin implements W
 		if(functionName.equals(getName()+".toDisk")) {
 			ItemStack disk = null;
 			for (NetworkMember member : getNetwork().getMembers().values()) {
-				if (member instanceof PCnt_WeaselPluginDiskDrive) {
-					disk = ((PCnt_WeaselPluginDiskDrive) member).getImageDisk(Calc.toString(args[0]));					
+				if (member instanceof PCnt_WeaselPluginDiskDrive_UNUSED) {
+					disk = ((PCnt_WeaselPluginDiskDrive_UNUSED) member).getImageDisk(Calc.toString(args[0]));					
 					if (disk != null) break;
 				}
 			}
@@ -73,7 +73,7 @@ public class PCnt_WeaselPluginTouchscreen extends PCnt_WeaselPlugin implements W
 			}
 			
 			if(args.length == 1) {
-				PCnt_ItemWeaselDisk.setImageData(disk, screen);
+				PCnt_ItemWeaselDisk_UNUSED.setImageData(disk, screen);
 				return null;
 			}else {
 				throw new ArrayIndexOutOfBoundsException();
@@ -82,8 +82,8 @@ public class PCnt_WeaselPluginTouchscreen extends PCnt_WeaselPlugin implements W
 		if(functionName.equals(getName()+".fromDisk")) {
 			ItemStack disk = null;
 			for (NetworkMember member : getNetwork().getMembers().values()) {
-				if (member instanceof PCnt_WeaselPluginDiskDrive) {
-					disk = ((PCnt_WeaselPluginDiskDrive) member).getImageDisk(Calc.toString(args[0]));					
+				if (member instanceof PCnt_WeaselPluginDiskDrive_UNUSED) {
+					disk = ((PCnt_WeaselPluginDiskDrive_UNUSED) member).getImageDisk(Calc.toString(args[0]));					
 					if (disk != null) break;
 				}
 			}
@@ -93,7 +93,7 @@ public class PCnt_WeaselPluginTouchscreen extends PCnt_WeaselPlugin implements W
 			
 			if(args.length == 1) {
 				PC_BitmapUtils.rect(screen, 0, 0, WIDTH, HEIGHT, -1);
-				PC_BitmapUtils.image(screen, PCnt_ItemWeaselDisk.getImageData(disk), 0, 0);
+				PC_BitmapUtils.image(screen, PCnt_ItemWeaselDisk_UNUSED.getImageData(disk), 0, 0);
 				return null;
 			}else {
 				throw new ArrayIndexOutOfBoundsException();
@@ -188,7 +188,7 @@ public class PCnt_WeaselPluginTouchscreen extends PCnt_WeaselPlugin implements W
 	public void callFunctionOnEngine(String function, Object... args) {}
 
 	@Override
-	protected PCnt_WeaselPlugin readPluginFromNBT(NBTTagCompound tag) {
+	protected PCnt_WeaselPlugin_UNUSED readPluginFromNBT(NBTTagCompound tag) {
 		for (int j = 0; j < HEIGHT; j++) {
 			for (int i = 0; i < WIDTH; i++) {
 				screen[i][j] = tag.getInteger("p" + i + "_" + j);
@@ -239,14 +239,14 @@ public class PCnt_WeaselPluginTouchscreen extends PCnt_WeaselPlugin implements W
 	public int[][] getImageForName(String name) {
 		ItemStack disk = null;
 		for (NetworkMember member : getNetwork().getMembers().values()) {
-			if (member instanceof PCnt_WeaselPluginDiskDrive) {
-				disk = ((PCnt_WeaselPluginDiskDrive) member).getImageDisk(name);
+			if (member instanceof PCnt_WeaselPluginDiskDrive_UNUSED) {
+				disk = ((PCnt_WeaselPluginDiskDrive_UNUSED) member).getImageDisk(name);
 				if (disk != null) break;
 			}
 		}
 		if(disk == null) return null;
 		
-		return PCnt_ItemWeaselDisk.getImageData(disk);
+		return PCnt_ItemWeaselDisk_UNUSED.getImageData(disk);
 	}
 
 	@Override

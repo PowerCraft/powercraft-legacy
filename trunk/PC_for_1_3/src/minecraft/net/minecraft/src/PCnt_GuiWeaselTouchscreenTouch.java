@@ -4,7 +4,7 @@ package net.minecraft.src;
 import java.util.List;
 
 import net.minecraft.src.PC_GresWidget.PC_GresAlign;
-import net.minecraft.src.PCnt_WeaselManager.WeaselNetwork;
+import net.minecraft.src.PCnt_WeaselManager_UNUSED.WeaselNetwork;
 import weasel.obj.WeaselInteger;
 import weasel.obj.WeaselString;
 
@@ -16,7 +16,7 @@ import weasel.obj.WeaselString;
  */
 public class PCnt_GuiWeaselTouchscreenTouch extends PC_GresBase {
 
-	private PCnt_WeaselPluginTouchscreen touchscreen;
+	private PCnt_WeaselPluginTouchscreen_UNUSED touchscreen;
 	private PC_GresColorMap colorMap;
 
 	/**
@@ -24,7 +24,7 @@ public class PCnt_GuiWeaselTouchscreenTouch extends PC_GresBase {
 	 * 
 	 * @param touchscreen plugin instance
 	 */
-	public PCnt_GuiWeaselTouchscreenTouch(PCnt_WeaselPluginTouchscreen touchscreen) {
+	public PCnt_GuiWeaselTouchscreenTouch(PCnt_WeaselPluginTouchscreen_UNUSED touchscreen) {
 		this.touchscreen = touchscreen;
 	}
 
@@ -70,7 +70,7 @@ public class PCnt_GuiWeaselTouchscreenTouch extends PC_GresBase {
 
 			WeaselNetwork network = touchscreen.getNetwork();
 			if (network != null)
-				((PCnt_WeaselPlugin) network.getMember("CORE")).callFunctionOnEngine("touchEvent", new WeaselString(touchscreen.getName()),
+				((PCnt_WeaselPlugin_UNUSED) network.getMember("CORE")).callFunctionOnEngine("touchEvent", new WeaselString(touchscreen.getName()),
 						new WeaselString(event), new WeaselInteger(mouse.x), new WeaselInteger(mouse.y), new WeaselInteger(mouseKey),
 						new WeaselString("" + key));
 			

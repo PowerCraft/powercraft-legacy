@@ -1,145 +1,85 @@
 package net.minecraft.src;
 
-
-
-/**
- * Weasel device tile entity
- * 
- * @author MightyPork
- * @copy (c) 2012
- */
 public class PCnt_TileEntityWeasel extends PC_TileEntity {
 
-	/**
-	 * TEW
-	 */
-	public PCnt_TileEntityWeasel() {}
-
+	private int id = -1;
+	private int type = -1;
+	private PCnt_WeaselPlugin plugin=null;
+	
 	@Override
 	public boolean canUpdate() {
-		return true;
+		return false;
 	}
-
-	private int id;
-	private PCnt_WeaselPlugin plugin;
-	private int type;
-
-	private int updateIgnoreCounter = 10;
-	private long lastUpdateAbsoluteTime = 0;
-
-	/**
-	 * Set to true if the entity is removed. Saves resources.
-	 */
-	public boolean zombie = false; // set true if this tile entity was already destroyed
-
-	/** number of updates to skip before check. */
-	public int PRESCALLER = 1;
-
+	
 	@Override
-	public void updateEntity() {
-		if (zombie || worldObj == null) {
-			return;
-		}
-		// fix for double updates
-		long t = System.currentTimeMillis();
-		if (t - lastUpdateAbsoluteTime < 5) {
-			return;
-		}
-		lastUpdateAbsoluteTime = t;
-
-		if (updateIgnoreCounter-- <= 0) {
-			updateIgnoreCounter = PRESCALLER;
-		} else {
-			return;
-		}
-
-		if (plugin != null) {
-			if (plugin.update()) {
-				worldObj.getChunkFromBlockCoords(xCoord, zCoord).setChunkModified();
-			}
-		}
+	public void invalidate() {
+		plugin.setTileEntity(null);
+		super.invalidate();
 	}
-
-
-
-	/**
-	 * Call weasel's function update
-	 */
-	public void onDirectPinChanged() {
-		if (plugin != null) plugin.onNeighborBlockChanged();
-	}
-
-
 
 	@Override
 	public void readFromNBT(NBTTagCompound maintag) {
 		super.readFromNBT(maintag);
-
-		//if (maintag.getBoolean("nullplugin")) {
-		//	return;
-		//}
-
-		type = maintag.getInteger("type");
 		id =  maintag.getInteger("myid");
-		
-		getPlugin();
-		
-		//plugin = PCnt_WeaselPlugin.getPluginForType(this, type);
-		//if (plugin != null) plugin.readFromNBT(maintag.getCompoundTag("Plugin"));
+		type =  maintag.getInteger("type");
+		plugin = getPlugin();
 	}
 
 	@Override
 	public void writeToNBT(NBTTagCompound maintag) {
 		super.writeToNBT(maintag);
-		//if (plugin == null) {
-		//	maintag.setBoolean("nullplugin", true);
-		//} else {
-		maintag.setInteger("type", plugin.getType());
-		maintag.setInteger("myid", plugin.getID());
-		//	maintag.setCompoundTag("Plugin", plugin.writeToNBT(new NBTTagCompound()));
-	//	}
+		maintag.setInteger("myid", id);
+		maintag.setInteger("type", type);
 	}
-
-	/**
-	 * @return weasel plugin
-	 */
-	public PCnt_WeaselPlugin getPlugin() {
+	
+	public void releasePlugin(){
+		plugin = null;
+	}
+	
+	public PCnt_WeaselPlugin getPlugin(){
 		if(plugin==null){
-			plugin = (PCnt_WeaselPlugin)PCnt_WeaselManager.getPlugin(id);
+			plugin = PCnt_WeaselManager.getPlugin(id);
 			if(plugin==null){
-				plugin = PCnt_WeaselPlugin.getPluginForType(this, type);
+				plugin = PCnt_WeaselPlugin.getPluginForType(type, id);
+				plugin.setTileEntity(this);
 			}
 		}
 		return plugin;
 	}
-
-	/**
-	 * @return ID type of the weasel plugin
-	 */
-	public int getType() {
-		if (plugin == null) return -1;
-		return plugin.getType();
-	}
-
-	/**
-	 * Set type of weasel plugin (called when the block is placed)
-	 * 
-	 * @param type the type ID
-	 */
-	public void setType(int type) {
+	
+	public PCnt_TileEntityWeasel setType(int type){
+		if(this.type == type)
+			return this;
+		if(!worldObj.isRemote)
+			PC_Utils.setTileEntity(null, this, "type", type);
 		this.type = type;
+		plugin.onBlockPickup();
 		PCnt_WeaselManager.removePlugin(plugin);
-		plugin = PCnt_WeaselPlugin.getPluginForType(this, type);
+		plugin = PCnt_WeaselPlugin.getPluginForType(type, id);
+		plugin.setTileEntity(this);
+		return this;
 	}
-
+	
+	public int getType() {
+		return type;
+	}
+	
+	/**
+	 * Call weasel's function update
+	 */
+	public void onDirectPinChanged() {
+		PCnt_WeaselPlugin plugin = (PCnt_WeaselPlugin)PCnt_WeaselManager.getPlugin(id);
+		if (plugin != null) plugin.onNeighborBlockChanged();
+	}
+	
 	@Override
 	public void onBlockPickup() {
 		if (plugin != null) {
-			PCnt_WeaselManager.removePlugin(plugin);
 			plugin.onBlockPickup();
+			PCnt_WeaselManager.removePlugin(plugin);
 		}
 	}
-
+	
 	@Override
 	public void set(Object[] o) {
 		int p = 0;

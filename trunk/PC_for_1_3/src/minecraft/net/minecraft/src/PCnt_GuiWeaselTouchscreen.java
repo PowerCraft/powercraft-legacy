@@ -14,7 +14,7 @@ import net.minecraft.src.PC_GresWidget.PC_GresAlign;
  */
 public class PCnt_GuiWeaselTouchscreen extends PC_GresBase {
 
-	private PCnt_WeaselPluginTouchscreen touchscreen;
+	private PCnt_WeaselPluginTouchscreen_UNUSED touchscreen;
 	private PC_GresWindow w;
 	private PC_GresWidget txError;
 	private PC_GresWidget edName;
@@ -26,7 +26,7 @@ public class PCnt_GuiWeaselTouchscreen extends PC_GresBase {
 	 * 
 	 * @param touchscreen plugin instance
 	 */
-	public PCnt_GuiWeaselTouchscreen(PCnt_WeaselPluginTouchscreen touchscreen) {
+	public PCnt_GuiWeaselTouchscreen(PCnt_WeaselPluginTouchscreen_UNUSED touchscreen) {
 		this.touchscreen = touchscreen;
 	}
 

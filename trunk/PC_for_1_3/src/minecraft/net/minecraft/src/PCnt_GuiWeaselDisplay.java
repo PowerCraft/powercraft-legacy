@@ -15,7 +15,7 @@ import net.minecraft.src.PC_GresWidget.PC_GresAlign;
  */
 public class PCnt_GuiWeaselDisplay extends PC_GresBase {
 
-	private PCnt_WeaselPluginDisplay display;
+	private PCnt_WeaselPluginDisplay_UNUSED display;
 	private PC_GresWindow w;
 	private PC_GresWidget txError;
 	private PC_GresWidget edName;
@@ -28,7 +28,7 @@ public class PCnt_GuiWeaselDisplay extends PC_GresBase {
 	 * 
 	 * @param display plugin instance
 	 */
-	public PCnt_GuiWeaselDisplay(PCnt_WeaselPluginDisplay display) {
+	public PCnt_GuiWeaselDisplay(PCnt_WeaselPluginDisplay_UNUSED display) {
 		this.display = display;
 	}
 

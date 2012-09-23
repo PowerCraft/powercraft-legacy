@@ -5,7 +5,7 @@ package net.minecraft.src;
 /**
  * @author MightyPork
  */
-public class PCnt_WeaselDiskDriveInventory extends InventoryBasic implements PC_ISpecialAccessInventory {
+public class PCnt_WeaselDiskDriveInventory_UNUSED extends InventoryBasic implements PC_ISpecialAccessInventory {
 
 	/**
 	 * inventory selective for disks
@@ -13,7 +13,7 @@ public class PCnt_WeaselDiskDriveInventory extends InventoryBasic implements PC_
 	 * @param name
 	 * @param slots
 	 */
-	public PCnt_WeaselDiskDriveInventory(String name, int slots) {
+	public PCnt_WeaselDiskDriveInventory_UNUSED(String name, int slots) {
 		super(name, slots);
 	}
 
@@ -31,7 +31,7 @@ public class PCnt_WeaselDiskDriveInventory extends InventoryBasic implements PC_
 	public boolean canPlayerInsertStackTo(int slot, ItemStack stack) {
 		if (stack == null) return false;
 		int disk = mod_PCnet.weaselDisk.shiftedIndex;
-		return stack.getItem().shiftedIndex == disk && PCnt_ItemWeaselDisk.getType(stack) != PCnt_ItemWeaselDisk.EMPTY;
+		return stack.getItem().shiftedIndex == disk && PCnt_ItemWeaselDisk_UNUSED.getType(stack) != PCnt_ItemWeaselDisk_UNUSED.EMPTY;
 	}
 
 	@Override

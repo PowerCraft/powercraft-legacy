@@ -13,7 +13,7 @@ import org.lwjgl.opengl.GL11;
  * @author MightyPork
  * @copy (c) 2012
  */
-public class PCnt_ModelWeasel extends ModelBase {
+public class PCnt_ModelWeasel_UNUSED extends ModelBase {
 
 	private ModelRenderer core[];
 	private ModelRenderer port[];
@@ -27,7 +27,7 @@ public class PCnt_ModelWeasel extends ModelBase {
 	/**
 	 * Radio block model.
 	 */
-	public PCnt_ModelWeasel() {
+	public PCnt_ModelWeasel_UNUSED() {
 
 		textureWidth = 128;
 		textureHeight = 128;
@@ -185,7 +185,7 @@ public class PCnt_ModelWeasel extends ModelBase {
 	/** helper flag, eg. "active" */
 	public boolean flag1 = false;
 	/** instance of the plugin */
-	public PCnt_WeaselPlugin plugin;
+	public PCnt_WeaselPlugin_UNUSED plugin;
 
 	/**
 	 * Do render.
@@ -215,7 +215,7 @@ public class PCnt_ModelWeasel extends ModelBase {
 			display[0].render(0.0625F);
 			display[1].render(0.0625F);
 			display[2].render(0.0625F);
-			int bg = ((PCnt_WeaselPluginDisplay) plugin).bgcolor;
+			int bg = ((PCnt_WeaselPluginDisplay_UNUSED) plugin).bgcolor;
 			PC_Color bgc = PC_Color.fromHex(bg);
 			GL11.glColor4d(bgc.r, bgc.g, bgc.b, 1.0F);
 			display[3].render(0.0625F);
@@ -276,7 +276,7 @@ public class PCnt_ModelWeasel extends ModelBase {
 	 * @param renderer
 	 */
 	@SuppressWarnings("static-access")
-	public void renderText(PCnt_TileEntityWeaselRenderer renderer) {
+	public void renderText(PCnt_TileEntityWeaselRenderer_UNUSED renderer) {
 		float f = 0.6666667F;
 		GL11.glPushMatrix();
 		GL11.glDisable(GL11.GL_LIGHTING);
@@ -294,11 +294,11 @@ public class PCnt_ModelWeasel extends ModelBase {
 			GL11.glTranslatef(0.0F, 0.0625F * 15, 0.0625F + 0.001F);
 			GL11.glScalef(f3, -f3, f3);
 
-			int j = ((PCnt_WeaselPluginDisplay) plugin).color;
+			int j = ((PCnt_WeaselPluginDisplay_UNUSED) plugin).color;
 
 
-			String s = ((PCnt_WeaselPluginDisplay) plugin).text;
-			int align = ((PCnt_WeaselPluginDisplay) plugin).align;
+			String s = ((PCnt_WeaselPluginDisplay_UNUSED) plugin).text;
+			int align = ((PCnt_WeaselPluginDisplay_UNUSED) plugin).align;
 
 			int i = -1;
 			int maxlines = 7;
@@ -366,7 +366,7 @@ public class PCnt_ModelWeasel extends ModelBase {
 
 		} else if (deviceType == PCnt_WeaselType.TOUCHSCREEN) {
 
-			PCnt_WeaselPluginTouchscreen touchscreen = (PCnt_WeaselPluginTouchscreen) plugin;
+			PCnt_WeaselPluginTouchscreen_UNUSED touchscreen = (PCnt_WeaselPluginTouchscreen_UNUSED) plugin;
 			Tessellator tessellator = Tessellator.instance;
 
 			GL11.glTranslatef(0.0f, 0.0625f * 9, 0.0f);

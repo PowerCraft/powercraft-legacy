@@ -17,7 +17,7 @@ import net.minecraft.src.PC_GresWidget.PC_GresAlign;
 public class PCnt_GuiWeaselDiskDrive extends PC_GresBase {
 
 	private PC_GresWindow w;
-	private PCnt_WeaselPluginDiskDrive drive;
+	private PCnt_WeaselPluginDiskDrive_UNUSED drive;
 	private PC_GresWidget edName;
 	private PC_GresWidget txError;
 	private PC_GresWidget btnOk;
@@ -28,7 +28,7 @@ public class PCnt_GuiWeaselDiskDrive extends PC_GresBase {
 	 * 
 	 * @param drive drive plugin
 	 */
-	public PCnt_GuiWeaselDiskDrive(PCnt_WeaselPluginDiskDrive drive) {
+	public PCnt_GuiWeaselDiskDrive(PCnt_WeaselPluginDiskDrive_UNUSED drive) {
 		this.drive = drive;
 	}
 
