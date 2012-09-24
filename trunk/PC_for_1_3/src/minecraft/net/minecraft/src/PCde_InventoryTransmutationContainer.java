@@ -47,7 +47,7 @@ public class PCde_InventoryTransmutationContainer implements IInventory, PC_ISpe
 
 	@Override
 	public boolean canDispenseStackFrom(int i) {
-		return getStackInSlot(i)!=null&&getStackInSlot(i).itemID!=Item.coal.shiftedIndex&&getStackInSlot(i).getItemDamage()==0;
+		return getStackInSlot(i)!=null&&getStackInSlot(i).itemID!=Item.coal.shiftedIndex;
 	}
 
 	private ItemStack stacks[];
