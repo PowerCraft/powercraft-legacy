@@ -354,7 +354,12 @@ public class PCma_TileEntityLaser extends PC_TileEntity implements PC_IBeamHandl
 
 				} else {
 
-					entity.attackEntityFrom(new DamageSource("pc.laser.kill"), 200);
+					entity.attackEntityFrom((new DamageSource("pc.laser.kill"){
+							@Override 
+							public Entity getEntity(){
+								return new PC_FakePlayer(worldObj);
+							}
+						}), 200);
 
 				}
 

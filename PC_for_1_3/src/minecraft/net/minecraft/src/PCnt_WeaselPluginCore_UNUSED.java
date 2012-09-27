@@ -8,7 +8,6 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Random;
 
-import net.minecraft.src.PClo_RadioBus.IRadioDevice;
 import net.minecraft.src.PCnt_WeaselManager_UNUSED.NetworkMember;
 import net.minecraft.src.PCnt_WeaselManager_UNUSED.WeaselNetwork;
 import weasel.Calc;
@@ -28,7 +27,7 @@ import weasel.obj.WeaselString;
  * 
  * @author MightyPork
  */
-public class PCnt_WeaselPluginCore_UNUSED extends PCnt_WeaselPlugin_UNUSED implements IWeaselHardware, IRadioDevice {
+public class PCnt_WeaselPluginCore_UNUSED extends PCnt_WeaselPlugin_UNUSED implements IWeaselHardware {
 
 	private boolean connectedToRadioBus = false;
 	protected int sleepTimer = 0;	
@@ -108,10 +107,6 @@ public class PCnt_WeaselPluginCore_UNUSED extends PCnt_WeaselPlugin_UNUSED imple
 
 	@Override
 	public boolean updateTick() {
-
-		if (!connectedToRadioBus) {
-			getRadioManager().connectToRedstoneBus(this);
-		}
 
 		if (isMaster() && providedNetwork == null) {
 
@@ -251,11 +246,6 @@ public class PCnt_WeaselPluginCore_UNUSED extends PCnt_WeaselPlugin_UNUSED imple
 		}
 
 		return tag;
-	}
-
-	@Override
-	public boolean doesTransmitOnChannel(String channel) {
-		return weaselRadioSignals.containsKey(channel) && weaselRadioSignals.get(channel) == true;
 	}
 
 	/**
@@ -784,7 +774,6 @@ public class PCnt_WeaselPluginCore_UNUSED extends PCnt_WeaselPlugin_UNUSED imple
 
 	@Override
 	public void onDeviceDestroyed() {
-		getRadioManager().disconnectFromRedstoneBus(this);
 		if(isMaster()) getNetManager().destroyNetwork(getNetworkName());
 	}
 

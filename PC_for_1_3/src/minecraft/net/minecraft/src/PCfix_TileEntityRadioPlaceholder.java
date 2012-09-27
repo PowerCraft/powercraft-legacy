@@ -69,7 +69,7 @@ public class PCfix_TileEntityRadioPlaceholder extends PC_TileEntity {
 						/** @todo ter = (PClo_TileEntityRadio) ((BlockContainer) block).createNewTileEntity(world);*/
 					}
 
-					ter.channel = channel;
+					//ter.channel = channel;
 
 					ter.setType(type);
 					ter.dim = PC_Utils.mc().thePlayer.dimension;

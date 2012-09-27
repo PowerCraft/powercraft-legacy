@@ -36,10 +36,13 @@ public class PCnt_GuiTeleporter extends PC_GresBase {
 
 		PC_GresWindow w = (new PC_GresWindow("Teleporter"));
 		
+		PC_GresTab t = new PC_GresTab();
+		
+		PC_GresWidget vg = new PC_GresLayoutV();
 		PC_GresWidget hg = new PC_GresLayoutH();
 		hg.add(new PC_GresLabel("Name:"));
 		hg.add(name = new PC_GresTextEdit(td.getName(), 10));
-		w.add(hg);
+		vg.add(hg);
 		
 		rg = new PC_GresRadioGroup();
 		
@@ -55,7 +58,33 @@ public class PCnt_GuiTeleporter extends PC_GresBase {
 			}
 		}
 		hg.add(new PC_GresScrollArea(0, 100, sa, PC_GresScrollArea.VSCROLL));
-		w.add(hg);
+		vg.add(hg);
+		t.addTab(vg, new PC_GresLabel("Propertys"));
+		
+		vg = new PC_GresLayoutV();
+		hg = new PC_GresLayoutH();
+		hg.add(new PC_GresLabel("Name:"));
+		hg.add(name = new PC_GresTextEdit(td.getName(), 10));
+		vg.add(hg);
+		
+		rg = new PC_GresRadioGroup();
+		
+		hg = new PC_GresLayoutH();
+		hg.add(new PC_GresLabel("Target:"));
+		sa = new PC_GresLayoutV();
+		for(String name:PCnt_TeleporterManager.getTargetNames()){
+			if(!name.equals(td.getName())){
+				PC_GresRadioButton rb = new PC_GresRadioButton(name, rg);
+				if(name.equals(td.defaultTarget))
+					rb.check(true);
+				sa.add(rb);
+			}
+		}
+		hg.add(new PC_GresScrollArea(0, 100, sa, PC_GresScrollArea.VSCROLL));
+		vg.add(hg);
+		t.addTab(vg, new PC_GresLabel("Propertys2"));
+		
+		w.add(t);
 		w.add(ok = new PC_GresButton(PC_Lang.tr("pc.gui.ok")));
 		gui.add(w);
 		

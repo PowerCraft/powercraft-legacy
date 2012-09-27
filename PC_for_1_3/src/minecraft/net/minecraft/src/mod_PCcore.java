@@ -59,7 +59,7 @@ public class mod_PCcore extends PC_Module implements PC_IActivatorListener {
 	 * compilation, thus all modules keep their compile-time version and aren't
 	 * affected by current core version. Which is good.
 	 */
-	public static final String VERSION = "3.5.0AlphaG";
+	public static final String VERSION = "3.5.0AlphaH";
 
 	/**
 	 * The serial number used to check whether new update is available.
@@ -606,6 +606,7 @@ public class mod_PCcore extends PC_Module implements PC_IActivatorListener {
 				Block.cactus,
 				Item.seeds,
 				Item.netherStalkSeeds,
+				new ItemStack(Item.dyePowder,1,3),
 				Item.melonSeeds,
 				Block.melon,
 				Item.pumpkinSeeds,
@@ -683,12 +684,14 @@ public class mod_PCcore extends PC_Module implements PC_IActivatorListener {
 				Block.lever,
 				Block.button,
 				Block.pressurePlateStone,
-				Block.pressurePlatePlanks		
+				Block.pressurePlatePlanks,
+				Block.tripWireSource
 			);
 		
 		addStacksToCraftingTool(
 				PC_ItemGroup.MACHINES_V,
 				Block.chest,
+				Block.enderChest,
 				Block.workbench,
 				Block.pistonBase,
 				Block.pistonStickyBase,
@@ -851,7 +854,9 @@ public class mod_PCcore extends PC_Module implements PC_IActivatorListener {
 		addStacksToCraftingTool(
 			PC_ItemGroup.ORES_V,
 			new ItemStack(Item.dyePowder,1,PC_Color.dye.BLUE.meta),
-			Block.blockLapis,	
+			Block.blockLapis,
+			Item.emerald,
+			Block.blockEmerald,
 			Item.diamond,
 			Block.blockDiamond,
 			Item.goldNugget,

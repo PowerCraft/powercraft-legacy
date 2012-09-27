@@ -84,20 +84,21 @@ public class PClo_BlockRadio extends BlockContainer implements PC_IBlockType {
 				if (ter.isTransmitter()) {
 
 					if (ihold.hasTagCompound()) {
-						ihold.getTagCompound().setString("RadioChannel", ter.channel);
+						ihold.getTagCompound().setString("RadioChannel", ter.getChannel());
 					} else {
 						NBTTagCompound tag = new NBTTagCompound();
-						tag.setString("RadioChannel", ter.channel);
+						tag.setString("RadioChannel", ter.getChannel());
 						ihold.setTagCompound(tag);
 					}
 
-					PC_Utils.chatMsg(PC_Lang.tr("pc.radio.activatorGetChannel", new String[] { ter.channel }), true);
+					PC_Utils.chatMsg(PC_Lang.tr("pc.radio.activatorGetChannel", new String[] { ter.getChannel() }), true);
 
 				} else {
 					if (ihold.hasTagCompound()) {
 						String chnl = ihold.getTagCompound().getString("RadioChannel");
 						if (!chnl.equals("")) {
-							ter.channel = chnl;
+							
+							ter.setChannel(chnl);
 
 							PC_CoordI pos = ter.getCoord();
 
@@ -174,11 +175,11 @@ public class PClo_BlockRadio extends BlockContainer implements PC_IBlockType {
 	public void breakBlock(World world, int i, int j, int k, int par5, int par6) {
 		world.setBlockAndMetadataWithNotify(i, j, k, 0, 0);
 		world.notifyBlocksOfNeighborChange(i, j, k, blockID);
-
+		
 		PClo_TileEntityRadio ter = getTE(world, i, j, k);
 
-		if (ter.isTransmitter()) {
-			mod_PClogic.RADIO.disconnectFromRedstoneBus(ter);
+		if (ter.isTransmitter() && ter.active) {
+			mod_PClogic.RADIO.transmitterOff(ter.getChannel());
 		}
 
 
