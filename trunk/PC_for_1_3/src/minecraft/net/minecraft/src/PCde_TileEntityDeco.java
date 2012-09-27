@@ -81,7 +81,8 @@ public class PCde_TileEntityDeco extends PC_TileEntity implements PC_IInventoryW
 					updateFlashCharge();
 					if(isLightningReadyToStrike()){
 						PC_Utils.setTileEntity(null, this, "lightningCharge", (long)0, "makeLightning");
-						chamber.transmutabox.onHitByLightning();
+						if(chamber!=null)
+							chamber.transmutabox.onHitByLightning();
 						lightningCharge = 0;
 						lightningChargeRequired = FLASH_CHARGE_MIN + 100 + rand.nextInt(FLASH_CHARGE_MAX - FLASH_CHARGE_MIN - 100);
 					}
