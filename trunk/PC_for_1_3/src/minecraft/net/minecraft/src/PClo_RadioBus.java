@@ -4,6 +4,7 @@ package net.minecraft.src;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Set;
 
 import net.minecraft.client.Minecraft;
@@ -15,56 +16,11 @@ import net.minecraft.client.Minecraft;
  * @author MightyPork
  * @copy (c) 2012
  */
-public class PClo_RadioBus {
+public class PClo_RadioBus implements PC_INBTWD {
 
-	private Minecraft mc = ModLoader.getMinecraftInstance();
-
-	/**
-	 * Radio device, which can have more than one output channels.<br>
-	 * There is no system of notifications, so you must check the channel you
-	 * are monitoring yourself.
-	 * 
-	 * @author MightyPork
-	 */
-	public interface IRadioDevice {
-		/**
-		 * Is this device atm transmitting TRUE signal on given channel?<br>
-		 * This is called when a receiver asks for signal state.
-		 * 
-		 * @param channel channel name
-		 * @return is transmitting.
-		 */
-		public boolean doesTransmitOnChannel(String channel);
-	}
-
-	private Set<IRadioDevice> devices = new HashSet<IRadioDevice>();
-
-	private Map<String, Integer> anonymousTransmitters = new HashMap<String, Integer>();
-
-
-
-	/**
-	 * Connect transmitter to the redstone bus
-	 * 
-	 * @param device
-	 */
-	public void connectToRedstoneBus(IRadioDevice device) {
-		checkWorldChange();
-		if (!devices.contains(device)) {
-			devices.add(device);
-		}
-	}
-
-	/**
-	 * Disconnect transmitter form the redstone bus
-	 * 
-	 * @param device
-	 */
-	public void disconnectFromRedstoneBus(IRadioDevice device) {
-		checkWorldChange();
-		devices.remove(device);
-	}
-
+	private Map<String, Integer> transmitters = new HashMap<String, Integer>();
+	private boolean needsSave = false;
+	
 	/**
 	 * Get state of a channel
 	 * 
@@ -72,14 +28,9 @@ public class PClo_RadioBus {
 	 * @return TRUE if channel is on, someone is transmitting on it.
 	 */
 	public boolean getChannelState(String channel) {
-		checkWorldChange();
 
-		for (IRadioDevice device : devices) {
-			if (device.doesTransmitOnChannel(channel)) return true;
-		}
-
-		if (anonymousTransmitters.containsKey(channel)) {
-			return anonymousTransmitters.get(channel) > 0;
+		if (transmitters.containsKey(channel)) {
+			return transmitters.get(channel) > 0;
 		}
 
 		return false;
@@ -87,54 +38,80 @@ public class PClo_RadioBus {
 	}
 
 	/**
-	 * Set anonymous transmitter on.<br>
+	 * Set transmitter on.<br>
 	 * This is used by portables, because they do not have any object which
 	 * could implement the IRadioDevice interface. Do not forget to also turn it
 	 * OFF!
 	 * 
 	 * @param channel channel name
 	 */
-	public void anonymousTransmitterOn(String channel) {
-		checkWorldChange();
-		Integer strength = anonymousTransmitters.get(channel);
+	public void transmitterOn(String channel) {
+		Integer strength = transmitters.get(channel);
+		System.out.println("transmitterOn:"+channel+":"+strength);
 		if (strength == null) strength = 0;
 
 		strength++;
 
-		anonymousTransmitters.put(channel, strength);
+		transmitters.put(channel, strength);
+		
+		needsSave = true;
 	}
 
 	/**
-	 * Set anonymous transmitter off.<br>
+	 * Set transmitter off.<br>
 	 * This is used by portables, because they do not have any object which
 	 * could implement the IRadioDevice interface. Do not call this if you
 	 * didn't turn it ON before!
 	 * 
 	 * @param channel
 	 */
-	public void anonymousTransmitterOff(String channel) {
-		checkWorldChange();
-		Integer strength = anonymousTransmitters.get(channel);
+	public void transmitterOff(String channel) {
+		Integer strength = transmitters.get(channel);
+		System.out.println("transmitterOff:"+channel+":"+strength);
 		if (strength == null) strength = 0;
 
 		strength--;
 
 		if (strength < 0) strength = 0;
-		anonymousTransmitters.put(channel, strength);
+		if (strength == 0)
+			transmitters.remove(channel);
+		else
+			transmitters.put(channel, strength);
+		
+		needsSave = true;
 	}
 
-	private String worldName = null;
-
-	/**
-	 * Clear device lists if the world changed
-	 */
-	private void checkWorldChange() {
-		if(mc.theWorld==null||devices==null||anonymousTransmitters==null)return;
-		if (mc.theWorld.worldInfo.getWorldName() != worldName) {
-			devices.clear();
-			anonymousTransmitters.clear();
-			worldName = mc.theWorld.worldInfo.getWorldName();
+	@Override
+	public NBTTagCompound writeToNBT(NBTTagCompound tag) {
+		int size = transmitters.size();
+		tag.setInteger("transmitters", size);
+		Set<Entry<String, Integer>> se = transmitters.entrySet();
+		int i=0;
+		for(Entry<String, Integer> e:se){
+			tag.setString("key["+i+"]", e.getKey());
+			tag.setInteger("value["+i+"]", e.getValue());
+			i++;
 		}
+		return tag;
+	}
+
+	@Override
+	public PC_INBT readFromNBT(NBTTagCompound tag) {
+		transmitters.clear();
+		int size = tag.getInteger("transmitters");
+		for(int i=0; i<size; i++){
+			String key = tag.getString("key["+i+"]");
+			int value = tag.getInteger("value["+i+"]");
+			transmitters.put(key, value);
+		}
+		return this;
+	}
+
+	@Override
+	public boolean needsSave() {
+		boolean ns = needsSave;
+		needsSave = false;
+		return ns;
 	}
 
 }

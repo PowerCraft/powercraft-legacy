@@ -205,7 +205,7 @@ public class PCde_TileEntityDeco extends PC_TileEntity implements PC_IInventoryW
 
 			worldObj.createExplosion(null, chamber.getCoord().x + 0.5F, chamber.getCoord().y + 0.5F, chamber.getCoord().z + 0.5F, 1F);
 
-			worldObj.playSoundEffect(chamber.getCoord().x + 0.5F, chamber.getCoord().y + 0.5F, chamber.getCoord().z + 0.5F, "random.explode", 1.5F,
+			worldObj.playSound(chamber.getCoord().x + 0.5F, chamber.getCoord().y + 0.5F, chamber.getCoord().z + 0.5F, "random.explode", 1.5F,
 					(1.0F + (worldObj.rand.nextFloat() - worldObj.rand.nextFloat()) * 0.2F) * 0.7F);
 
 			// hit entites near the chamber by lightning.

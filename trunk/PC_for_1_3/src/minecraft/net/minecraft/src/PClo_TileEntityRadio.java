@@ -1,8 +1,6 @@
 package net.minecraft.src;
 
 
-import net.minecraft.src.PClo_RadioBus.IRadioDevice;
-
 
 /**
  * Radio Tile Entity (both TX and RX)
@@ -10,10 +8,10 @@ import net.minecraft.src.PClo_RadioBus.IRadioDevice;
  * @author MightyPork
  * @copy (c) 2012
  */
-public class PClo_TileEntityRadio extends PC_TileEntity implements IRadioDevice {
+public class PClo_TileEntityRadio extends PC_TileEntity {
 
 	/** Device channel */
-	public String channel = mod_PClogic.default_radio_channel;
+	private String channel = mod_PClogic.default_radio_channel;
 	/** Device type, 0=TX, 1=RX */
 	public int type = 0; // 0=tx, 1=rx
 	/** Device active flag */
@@ -22,6 +20,8 @@ public class PClo_TileEntityRadio extends PC_TileEntity implements IRadioDevice 
 	public int dim = 0;
 	/** Hide the label */
 	public boolean hideLabel = false;
+
+
 	/** Render a smaller model */
 	public boolean renderMicro = false;
 
@@ -48,20 +48,9 @@ public class PClo_TileEntityRadio extends PC_TileEntity implements IRadioDevice 
 		renderMicro = nbttagcompound.getBoolean("Micro");
 	}
 
-
-	private boolean registered = false;
-
-
 	@Override
 	public void updateEntity() {
-		if (!registered) {
-			PC_Logger.finest("RADIO Tx at [" + xCoord + ";" + yCoord + ";" + zCoord + "] connected to DATA_BUS.");
-			mod_PClogic.RADIO.connectToRedstoneBus(this);
-
-			registered = true;
-		}
-
-		if (type == 1) {
+		if(isReceiver()){
 			boolean newstate = mod_PClogic.RADIO.getChannelState(channel);
 			if (active != newstate) {
 				active = newstate;
@@ -88,7 +77,7 @@ public class PClo_TileEntityRadio extends PC_TileEntity implements IRadioDevice 
 	 */
 	@Override
 	public boolean canUpdate() {
-		return !worldObj.isRemote;
+		return !worldObj.isRemote && isReceiver();
 	}
 
 	/**
@@ -97,6 +86,9 @@ public class PClo_TileEntityRadio extends PC_TileEntity implements IRadioDevice 
 	 * @param typeindex 0=gold TX, 1=iron RX
 	 */
 	public void setType(int typeindex) {
+		if(type==0 && type!=typeindex){
+			mod_PClogic.RADIO.transmitterOff(channel);
+		}
 		type = typeindex;
 	}
 
@@ -127,7 +119,14 @@ public class PClo_TileEntityRadio extends PC_TileEntity implements IRadioDevice 
 	 * @param act is active
 	 */
 	public void setTransmitterState(boolean act) {
-		active = act;
+		if(active != act){
+			active = act;
+			if(act && type==0 && !worldObj.isRemote){
+				mod_PClogic.RADIO.transmitterOn(channel);
+			}else if(type==0 && !worldObj.isRemote){
+				mod_PClogic.RADIO.transmitterOff(channel);
+			}
+		}
 	}
 
 	/**
@@ -137,11 +136,14 @@ public class PClo_TileEntityRadio extends PC_TileEntity implements IRadioDevice 
 		return channel;
 	}
 
-	@Override
-	public boolean doesTransmitOnChannel(String channel) {
-		return type == 0 && getChannel().equals(channel) && active;
+	public void setChannel(String channel) {
+		if(!this.channel.equals(channel)){
+			if(this.isActive()&&this.isTransmitter())
+				mod_PClogic.RADIO.transmitterOff(this.channel);
+			this.channel = channel;
+		}
 	}
-
+	
 	@Override
 	public void set(Object[] o) {
 		int p = 0;
@@ -150,9 +152,9 @@ public class PClo_TileEntityRadio extends PC_TileEntity implements IRadioDevice 
 			if(var.equals("type")){
 				this.setType((Integer)o[p++]);
 			}else if(var.equals("channel")){
-				this.channel = (String)o[p++];
+				setChannel((String)o[p++]);
 			}else if(var.equals("active")){
-				this.active = (Boolean)o[p++];
+				active = !(Boolean)o[p++];
 			}else if(var.equals("dim")){
 				this.dim = (Integer)o[p++];
 			}else if(var.equals("hideLabel")){
@@ -161,7 +163,7 @@ public class PClo_TileEntityRadio extends PC_TileEntity implements IRadioDevice 
 				this.renderMicro = (Boolean)o[p++];
 			}
 		}
-		
+		setTransmitterState(!active);
 	}
 
 	@Override

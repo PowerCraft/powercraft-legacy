@@ -33,7 +33,7 @@ public class PClo_ItemRadioRemote extends Item {
 			onCreated(itemstack, world, entityplayer);
 		}
 
-		mod_PClogic.RADIO.anonymousTransmitterOn(itemstack.getTagCompound().getString("channel"));
+		mod_PClogic.RADIO.transmitterOn(itemstack.getTagCompound().getString("channel"));
 		world.playSoundAtEntity(entityplayer, "random.click", (world.rand.nextFloat() + 0.7F) / 2.0F,
 				1.0F + (world.rand.nextFloat() - world.rand.nextFloat()) * 0.4F);
 
@@ -49,7 +49,7 @@ public class PClo_ItemRadioRemote extends Item {
 	@Override
 	public void onPlayerStoppedUsing(ItemStack itemstack, World world, EntityPlayer entityplayer, int i) {
 		super.onPlayerStoppedUsing(itemstack, world, entityplayer, i);
-		mod_PClogic.RADIO.anonymousTransmitterOff(itemstack.getTagCompound().getString("channel"));
+		mod_PClogic.RADIO.transmitterOff(itemstack.getTagCompound().getString("channel"));
 		world.playSoundAtEntity(entityplayer, "random.click", (world.rand.nextFloat() + 0.7F) / 2.0F,
 				1.0F + (world.rand.nextFloat() - world.rand.nextFloat()) * 0.4F);
 	}

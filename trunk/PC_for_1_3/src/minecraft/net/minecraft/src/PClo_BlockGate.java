@@ -759,7 +759,7 @@ public class PClo_BlockGate extends BlockContainer implements PC_IRotatedBox, PC
 		TileEntity tileentity = world.getBlockTileEntity(x, y, z);
 
 		changingState.add(new PC_CoordI(x, y, z));
-
+		
 		if (state) {
 			world.setBlockWithNotify(x, y, z, mod_PClogic.gateOn.blockID);
 		} else {

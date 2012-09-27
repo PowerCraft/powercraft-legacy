@@ -8,7 +8,6 @@ import java.util.Map;
 import java.util.Random;
 import java.util.Map.Entry;
 
-import net.minecraft.src.PClo_RadioBus.IRadioDevice;
 import net.minecraft.src.PCnt_WeaselManager_UNUSED.NetworkMember;
 
 import weasel.Calc;
@@ -271,7 +270,7 @@ public class PCmo_EntityMiner extends Entity implements PC_IInventoryWrapper {
 	 * 
 	 * @author MightyPork
 	 */
-	public class MinerBrain implements PC_INBT, IWeaselHardware, IRadioDevice {
+	public class MinerBrain implements PC_INBT, IWeaselHardware {
 
 		/** error message. */
 		public String error = "";
@@ -331,12 +330,6 @@ public class PCmo_EntityMiner extends Entity implements PC_IInventoryWrapper {
 					this.termText = this.termText.substring(this.termText.indexOf('\n') + 1);
 				}
 			}
-		}
-
-
-		@Override
-		public boolean doesTransmitOnChannel(String channel) {
-			return weaselRadioSignals.containsKey(channel) && weaselRadioSignals.get(channel) == true;
 		}
 
 		/**
@@ -408,10 +401,6 @@ public class PCmo_EntityMiner extends Entity implements PC_IInventoryWrapper {
 		 * Run weasel and try to get next instruction.
 		 */
 		public void run() {
-
-			if (!connectedToRadioBus) {
-				mod_PClogic.RADIO.connectToRedstoneBus(this);
-			}
 
 			if (!st.paused && !st.pausedWeasel && !st.halted && !hasError()) {
 				try {

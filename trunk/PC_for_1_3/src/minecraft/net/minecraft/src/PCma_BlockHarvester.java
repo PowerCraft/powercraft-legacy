@@ -274,6 +274,17 @@ public class PCma_BlockHarvester extends Block implements PC_ISwapTerrain, PC_IB
 			return false;
 		}
 
+		if(id == Block.cocoa.blockID){
+			if(((meta & 12) >> 2)<2){
+				return false;
+			}else{
+				if(!world.isRemote)
+					addToDispenseList(new ItemStack(Item.dyePowder.shiftedIndex, 3, 3));
+				world.setBlockWithNotify(coord.x, coord.y, coord.z, 0);
+				return true;
+			}
+		}
+		
 		if (PC_BlockUtils.hasFlag(world, coord, "POWERCRAFT")) {
 			if (PC_BlockUtils.hasFlag(world, coord, "TRANSLUCENT")) {
 				return false;

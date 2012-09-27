@@ -695,6 +695,8 @@ public class mod_PClogic extends PC_Module {
 
 	@Override
 	protected Hashtable<String, PC_INBTWD> addNetManager() {
-		return null;
+		Hashtable<String, PC_INBTWD> nh = new Hashtable<String, PC_INBTWD>();
+		nh.put("RadioHandler", RADIO);
+		return nh;
 	}
 }

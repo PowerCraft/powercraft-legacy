@@ -201,13 +201,13 @@ public class PCnt_TeleporterManager extends PC_PacketHandler implements PC_INBTW
 		return false;
 	}
 	
-	private static boolean teleportTo(Entity entity, double par1, double par3, double par5){
+	private static boolean teleportTo(Entity entity, int par1, int par3, int par5){
 		if(entity instanceof EntityPlayerMP){
             EntityPlayerMP player = (EntityPlayerMP)entity;
 
             if (!player.serverForThisPlayer.serverShuttingDown)
             {
-            	player.serverForThisPlayer.setPlayerLocation(par1, par3, par5, 0.0F, 0.0F);
+            	player.serverForThisPlayer.setPlayerLocation(par1+0.5, par3, par5+0.5, 0.0F, 0.0F);
             	player.fallDistance = 0.0F;
             }
             return true;
@@ -215,14 +215,10 @@ public class PCnt_TeleporterManager extends PC_PacketHandler implements PC_INBTW
         double var7 = entity.posX;
         double var9 = entity.posY;
         double var11 = entity.posZ;
-        entity.posX = par1;
+        entity.posX = par1+0.5;
         entity.posY = par3;
-        entity.posZ = par5;
+        entity.posZ = par5+0.5;
         boolean var13 = false;
-        int var14 = MathHelper.floor_double(entity.posX);
-        int var15 = MathHelper.floor_double(entity.posY);
-        int var16 = MathHelper.floor_double(entity.posZ);
-        int var18;
 
         entity.setPosition(entity.posX, entity.posY, entity.posZ);
 
@@ -249,7 +245,7 @@ public class PCnt_TeleporterManager extends PC_PacketHandler implements PC_INBTW
 		PC_CoordI pos = calculatePos(world, tdt, tdt.direction);
 		if (pos == null)
 			return false;
-		return teleportTo(entity, pos.x+0.5, pos.y, pos.z+0.5);
+		return teleportTo(entity, pos.x, pos.y, pos.z);
 	}
 
 	public static PCnt_TeleporterData getTeleporterDataAt(int dimension, int xCoord,
