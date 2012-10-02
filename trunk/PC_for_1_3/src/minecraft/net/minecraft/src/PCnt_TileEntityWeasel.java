@@ -53,7 +53,7 @@ public class PCnt_TileEntityWeasel extends PC_TileEntity {
 		if(!worldObj.isRemote)
 			PC_Utils.setTileEntity(null, this, "type", type);
 		this.type = type;
-		plugin.onBlockPickup();
+		plugin.onDeviceDestroyed();
 		PCnt_WeaselManager.removePlugin(plugin);
 		plugin = PCnt_WeaselPlugin.getPluginForType(type, id);
 		plugin.setTileEntity(this);
@@ -75,7 +75,7 @@ public class PCnt_TileEntityWeasel extends PC_TileEntity {
 	@Override
 	public void onBlockPickup() {
 		if (plugin != null) {
-			plugin.onBlockPickup();
+			plugin.onDeviceDestroyed();
 			PCnt_WeaselManager.removePlugin(plugin);
 		}
 	}
@@ -89,6 +89,8 @@ public class PCnt_TileEntityWeasel extends PC_TileEntity {
 				id = (Integer)o[p++];
 			}else if(var.equals("type")){
 				setType((Integer)o[p++]);
+			}else if(var.equals("plugin")){
+				plugin.set((Object[])o[p++]);
 			}
 		}
 	}
@@ -97,7 +99,8 @@ public class PCnt_TileEntityWeasel extends PC_TileEntity {
 	public Object[] get() {
 		return new Object[]{
 				"id", id,
-				"type", type
+				"type", type,
+				"plugin", plugin.get()
 		};
 	}
 

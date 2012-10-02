@@ -3,6 +3,9 @@ package net.minecraft.src;
 import java.util.ArrayList;
 import java.util.List;
 
+import weasel.obj.WeaselObject;
+import weasel.obj.WeaselObject.WeaselObjectType;
+
 public class PCnt_WeaselManager extends PC_PacketHandler implements PC_INBTWD {
 
 	private static List<PCnt_WeaselPlugin> weaselPlugins = new ArrayList<PCnt_WeaselPlugin>();
@@ -139,14 +142,41 @@ public class PCnt_WeaselManager extends PC_PacketHandler implements PC_INBTWD {
 			needsSave = false;
 			return true;
 		}
-		
 		return false;
 	}
 
 	@Override
 	public void handleIncomingPacket(World world, Object[] o) {
-		// TODO Auto-generated method stub
-
+		int id;
+		switch((Integer)o[0]){
+		case 0:
+			id = (Integer)o[1];
+			getPlugin(id).set((Object[])o[2]);
+			break;
+		}
+	}
+	
+	public static void sendChange(PCnt_WeaselPlugin plugin, Object... o){
+		sendChangeArray(plugin, o);
+	}
+	
+	public static void sendChangeArray(PCnt_WeaselPlugin plugin, Object[] o){
+		PC_Utils.sendToPacketHandler(null, "Weasel", 0, plugin.getID(), o);
 	}
 
+	public static WeaselObject getGlobalVariable(String string) {
+		return null;
+	}
+
+	public static void setGlobalVariable(String string,
+			WeaselObject weaselObject) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public static WeaselObjectType hasGlobalVariable(String string) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	
 }

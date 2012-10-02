@@ -6,6 +6,7 @@ import java.util.List;
 public class PCnt_WeaselNetwork implements PC_INBTWD {
 
 	private String name;
+	private PC_Color color;
 	private List<Integer> members = new ArrayList<Integer>();
 	private boolean needsSave = false;
 	
@@ -19,6 +20,14 @@ public class PCnt_WeaselNetwork implements PC_INBTWD {
 	
 	public String getName() {
 		return name;
+	}
+	
+	public void setColor(PC_Color color) {
+		this.color = color;
+	}
+	
+	public PC_Color getColor() {
+		return color;
 	}
 	
 	public void remove() {
@@ -52,6 +61,15 @@ public class PCnt_WeaselNetwork implements PC_INBTWD {
 			member.removeFormNetwork();
 			members.remove(member.getID());
 		}
+	}
+	
+	public PCnt_WeaselPlugin[] iterator(){
+		PCnt_WeaselPlugin[] plugin = new PCnt_WeaselPlugin[members.size()];
+		int i=0;
+		for(Integer member:members){
+			plugin[i] = PCnt_WeaselManager.getPlugin(member);
+		}
+		return plugin;
 	}
 	
 	@Override

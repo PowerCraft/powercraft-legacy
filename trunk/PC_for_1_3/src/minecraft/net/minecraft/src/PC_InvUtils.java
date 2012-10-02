@@ -199,22 +199,25 @@ public class PC_InvUtils {
 			return size;
 		}
 
-		if (inv.getStackInSlot(targetSlot) == null) {
-			inv.setInventorySlotContents(targetSlot, new ItemStack(id, 0, itemstack.getItemDamage()));
+		ItemStack is = inv.getStackInSlot(targetSlot);
+		
+		if (is == null) {
+			is = new ItemStack(id, 0, itemstack.getItemDamage());
+			inv.setInventorySlotContents(targetSlot, is);
 		}
 
 		int canStore = size;
-		if (canStore > inv.getStackInSlot(targetSlot).getMaxStackSize() - inv.getStackInSlot(targetSlot).stackSize) {
-			canStore = inv.getStackInSlot(targetSlot).getMaxStackSize() - inv.getStackInSlot(targetSlot).stackSize;
+		if (canStore > is.getMaxStackSize() - is.stackSize) {
+			canStore = is.getMaxStackSize() - is.stackSize;
 		}
-		if (canStore > inv.getInventoryStackLimit() - inv.getStackInSlot(targetSlot).stackSize) {
-			canStore = inv.getInventoryStackLimit() - inv.getStackInSlot(targetSlot).stackSize;
+		if (canStore > inv.getInventoryStackLimit() - is.stackSize) {
+			canStore = inv.getInventoryStackLimit() - is.stackSize;
 		}
 		if (canStore == 0) {
 			return size;
 		} else {
 			size -= canStore;
-			inv.getStackInSlot(targetSlot).stackSize += canStore;
+			is.stackSize += canStore;
 			return size;
 		}
 	}
