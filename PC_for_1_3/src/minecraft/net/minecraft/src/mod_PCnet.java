@@ -45,7 +45,7 @@ public class mod_PCnet extends PC_Module {
 	 * also instances of local networks, but the CORE weasel devices have to
 	 * save them themselves.
 	 */
-	public static PCnt_WeaselManager_UNUSED NETWORK = new PCnt_WeaselManager_UNUSED();
+	public static PCnt_WeaselManager NETWORK = new PCnt_WeaselManager();
 
 	private static final String pk_teleporter = "id.block.teleporter";
 	private static final String pk_teleporter_brightness = "brightness.teleporter";
@@ -59,7 +59,7 @@ public class mod_PCnet extends PC_Module {
 	public static Block teleporter;
 
 	/** WeaselDisk */
-	public static PCnt_ItemWeaselDisk_UNUSED weaselDisk;
+	public static PCnt_ItemWeaselDisk weaselDisk;
 
 	/** weasel device */
 	public static Block weaselDevice;
@@ -94,7 +94,7 @@ public class mod_PCnet extends PC_Module {
 	public void registerTileEntities(
 			List<PC_Struct3<Class<? extends TileEntity>, String, TileEntitySpecialRenderer>> list) {
 		
-		list.add(new PC_Struct3(PCnt_TileEntityWeasel_UNUSED.class, "PCWeaselDevice", new PCnt_TileEntityWeaselRenderer_UNUSED()));
+		list.add(new PC_Struct3(PCnt_TileEntityWeasel.class, "PCWeaselDevice", new PCnt_TileEntityWeaselRenderer()));
 		list.add(new PC_Struct3(PCnt_TileEntityTeleporter.class, "PCteleporter", new PCnt_TileEntityTeleporterRenderer()));
 
 	}
@@ -127,7 +127,7 @@ public class mod_PCnet extends PC_Module {
 				.setStepSound(Block.soundMetalFootstep);
 
 		
-		weaselDevice = new PCnt_BlockWeasel_UNUSED(cfg().getInteger(pk_idWeasel))
+		weaselDevice = new PCnt_BlockWeasel(cfg().getInteger(pk_idWeasel))
 				.setBlockName("PCntWeasel")
 				.setHardness(0.5F).setLightValue(0)
 				.setStepSound(Block.soundWoodFootstep)
@@ -140,12 +140,12 @@ public class mod_PCnet extends PC_Module {
 	@Override
 	public void registerItems() {
 		
-		weaselDisk = (PCnt_ItemWeaselDisk_UNUSED) (new PCnt_ItemWeaselDisk_UNUSED(cfg().getInteger(pk_idDisk)))
+		weaselDisk = (PCnt_ItemWeaselDisk) (new PCnt_ItemWeaselDisk(cfg().getInteger(pk_idDisk)))
 				.setMaxStackSize(1)
 				.setItemName("PCntWeaselDisk");
 
 		removeBlockItem(weaselDevice.blockID);
-		setBlockItem(weaselDevice.blockID, new PCnt_ItemBlockWeasel_UNUSED(weaselDevice.blockID - 256));
+		setBlockItem(weaselDevice.blockID, new PCnt_ItemBlockWeasel(weaselDevice.blockID - 256));
 
 	}
 

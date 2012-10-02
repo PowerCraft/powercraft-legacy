@@ -126,7 +126,8 @@ public class PClo_TileEntityPulsar extends PC_TileEntity{
 	 * Notify block change.
 	 */
 	public void updateBlock() {
-		worldObj.scheduleBlockUpdate(xCoord, yCoord, zCoord, mod_PClogic.pulsar.blockID, 1);
+		if(worldObj!=null)
+			worldObj.scheduleBlockUpdate(xCoord, yCoord, zCoord, mod_PClogic.pulsar.blockID, 1);
 	}
 
 	/**

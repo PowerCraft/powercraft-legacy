@@ -6,7 +6,6 @@ import java.util.List;
 import java.util.Random;
 
 import net.minecraft.src.PCnt_WeaselManager_UNUSED.NetworkMember;
-import net.minecraft.src.PCnt_WeaselManager_UNUSED.WeaselNetwork;
 import weasel.Calc;
 import weasel.WeaselEngine;
 import weasel.obj.WeaselBoolean;
@@ -190,14 +189,14 @@ public abstract class PCnt_WeaselPlugin_UNUSED extends NetworkMember {
 	/**
 	 * @return The network this device is connected to.
 	 */
-	public final WeaselNetwork getNetwork() {
+	public final PCnt_WeaselNetwork getNetwork() {
 		return getNetManager().getNetwork(networkName);
 	}
 
 	/**
 	 * @return The network manager providing global variable sharing pool.
 	 */
-	protected final PCnt_WeaselManager_UNUSED getNetManager() {
+	protected final PCnt_WeaselManager getNetManager() {
 		return mod_PCnet.NETWORK;
 	}
 
@@ -219,7 +218,7 @@ public abstract class PCnt_WeaselPlugin_UNUSED extends NetworkMember {
 	public final PC_Color getNetworkColor() {
 
 		if (networkName != null && !networkName.equals("")) {
-			WeaselNetwork net = getNetManager().getNetwork(networkName);
+			PCnt_WeaselNetwork net = getNetManager().getNetwork(networkName);
 			if (net != null) return net.getColor();
 		}
 
@@ -231,16 +230,16 @@ public abstract class PCnt_WeaselPlugin_UNUSED extends NetworkMember {
 	 * Register this device to network, null check
 	 */
 	protected final void registerToNetwork() {
-		WeaselNetwork net = getNetwork();
-		if (net != null) net.registerMember(memberName, this);
+		PCnt_WeaselNetwork net = getNetwork();
+		//if (net != null) net.registerMember(this);
 	}
 
 	/**
 	 * Unregister this device from network, null check
 	 */
 	protected final void unregisterFromNetwork() {
-		WeaselNetwork net = getNetwork();
-		if (net != null) net.unregisterMember(memberName);
+		PCnt_WeaselNetwork net = getNetwork();
+		//if (net != null) net.unregisterMember(memberName);
 	}
 
 	/**
