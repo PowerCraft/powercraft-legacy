@@ -47,8 +47,10 @@ public abstract class PCnt_WeaselPlugin implements PC_INBTWD {
 	public PCnt_WeaselPlugin setTileEntity(PCnt_TileEntityWeasel tew){
 		tileEntity = tew;
 		if(tew!=null){
-			world = tileEntity.worldObj.worldInfo.getDimension();
-			coord.setTo(tileEntity.xCoord, tileEntity.yCoord, tileEntity.zCoord);
+			if(tileEntity.worldObj!=null){
+				world = tileEntity.worldObj.worldInfo.getDimension();
+				coord.setTo(tileEntity.xCoord, tileEntity.yCoord, tileEntity.zCoord);
+			}
 		}
 		return this;
 	}
@@ -139,6 +141,11 @@ public abstract class PCnt_WeaselPlugin implements PC_INBTWD {
 	}
 	
 	public void setNetworkNameAndConnect(String network) {
+		if(this.network!=null){
+			this.network.removeMember(this);
+		}
+		this.network = PCnt_WeaselManager.getNetwork(network);
+		this.network.registerMember(this);
 	}
 
 	public void removeFormNetwork() {
