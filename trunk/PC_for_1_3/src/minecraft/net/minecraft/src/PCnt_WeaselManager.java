@@ -142,6 +142,14 @@ public class PCnt_WeaselManager extends PC_PacketHandler implements PC_INBTWD {
 			needsSave = false;
 			return true;
 		}
+		for(PCnt_WeaselPlugin plugin:weaselPlugins){
+			if(plugin.needsSave())
+				return true;
+		}
+		for(PCnt_WeaselNetwork network:weaselNetworks){
+			if(network.needsSave())
+				return true;
+		}
 		return false;
 	}
 

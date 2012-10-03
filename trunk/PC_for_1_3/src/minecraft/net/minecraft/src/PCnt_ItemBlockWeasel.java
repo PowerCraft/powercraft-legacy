@@ -67,9 +67,9 @@ public class PCnt_ItemBlockWeasel extends ItemBlock {
 			Block block = mod_PCnet.weaselDevice;
 			if (world.setBlock(i, j, k, block.blockID)) {
 				// set tile entity
-				PCnt_TileEntityWeasel_UNUSED teg = (PCnt_TileEntityWeasel_UNUSED) world.getBlockTileEntity(i, j, k);
+				PCnt_TileEntityWeasel teg = (PCnt_TileEntityWeasel) world.getBlockTileEntity(i, j, k);
 				if (teg == null) {
-					teg = (PCnt_TileEntityWeasel_UNUSED) ((BlockContainer) block).createNewTileEntity(world);
+					teg = (PCnt_TileEntityWeasel) ((BlockContainer) block).createNewTileEntity(world);
 				}
 				teg.setType(itemstack.getItemDamage());
 				world.setBlockTileEntity(i, j, k, teg);

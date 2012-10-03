@@ -57,9 +57,10 @@ public class PCnt_WeaselNetwork implements PC_INBTWD {
 	}
 	
 	public void removeMember(PCnt_WeaselPlugin member){
-		if(members.contains(member.getID())){
+		int id = member.getID();
+		if(members.contains(id)){
 			member.removeFormNetwork();
-			members.remove(member.getID());
+			members.remove((Integer)id);
 		}
 	}
 	
@@ -95,7 +96,7 @@ public class PCnt_WeaselNetwork implements PC_INBTWD {
 		name = tag.getString("name");
 		int[] array = tag.getIntArray("members");
 		for(int i=0; i<array.length; i++){
-			members.add(array[i]);
+			PCnt_WeaselManager.getPlugin(array[i]).setNetworkNameAndConnect(name);
 		}
 		return this;
 	}
@@ -107,4 +108,6 @@ public class PCnt_WeaselNetwork implements PC_INBTWD {
 		return ns;
 	}
 
+	
+	
 }

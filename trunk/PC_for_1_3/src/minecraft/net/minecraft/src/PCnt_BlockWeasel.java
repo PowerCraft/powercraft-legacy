@@ -60,7 +60,7 @@ public class PCnt_BlockWeasel extends BlockContainer implements PC_ISwapTerrain,
 
 	@Override
 	public TileEntity createNewTileEntity(World world) {
-		return new PCnt_TileEntityWeasel_UNUSED();
+		return new PCnt_TileEntityWeasel();
 	}
 
 	@Override
@@ -493,7 +493,7 @@ public class PCnt_BlockWeasel extends BlockContainer implements PC_ISwapTerrain,
 
 	@Override
 	public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player, int par6, float par7, float par8, float par9) {
-
+		
 		ItemStack ihold = player.getCurrentEquippedItem();
 		if (ihold != null) {
 			if (ihold.getItem() instanceof ItemBlock) {
@@ -516,31 +516,34 @@ public class PCnt_BlockWeasel extends BlockContainer implements PC_ISwapTerrain,
 				}
 
 			} else if (ihold.getItem().shiftedIndex == mod_PCcore.activator.shiftedIndex) {
-
+				
 				PCnt_WeaselPlugin plugin = getPlugin(world, x, y, z);
 				if (plugin == null) return true;
 
 				if (plugin.isMaster()) {
 
-					if (ihold.hasTagCompound()) {
-						ihold.getTagCompound().setString("WeaselNetwork", plugin.getNetwork().getName());
-					} else {
-						NBTTagCompound tag = new NBTTagCompound();
-						tag.setString("WeaselNetwork", plugin.getNetwork().getName());
-						ihold.setTagCompound(tag);
-					}
-
-					if(!world.isRemote)
+					if(!world.isRemote){
+					
+						if (ihold.hasTagCompound()) {
+							ihold.getTagCompound().setString("WeaselNetwork", plugin.getNetwork().getName());
+						} else {
+							NBTTagCompound tag = new NBTTagCompound();
+							tag.setString("WeaselNetwork", plugin.getNetwork().getName());
+							ihold.setTagCompound(tag);
+						}
+	
 						PC_Utils.chatMsg(PC_Lang.tr("pc.weasel.activatorGetNetwork", new String[] { plugin.getNetwork().getName() }), true);
-
+					
+					}
+					
 				} else {
 					if (ihold.hasTagCompound()) {
 						String network = ihold.getTagCompound().getString("WeaselNetwork");
 						if (!network.equals("")) {
-							plugin.setNetworkNameAndConnect(network);
-							if(!world.isRemote)
+							if(!world.isRemote){
+								plugin.setNetworkNameAndConnect(network);
 								PC_Utils.chatMsg(PC_Lang.tr("pc.weasel.activatorSetNetwork", new String[] { plugin.getNetwork().getName() }), true);
-							if(world.isRemote)
+							}else
 								world.playSoundEffect(x, y, z, "note.snare", 1.0F, 0.5F);
 						}
 					}

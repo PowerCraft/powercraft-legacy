@@ -41,7 +41,8 @@ public class PCnt_TileEntityWeasel extends PC_TileEntity {
 			plugin = PCnt_WeaselManager.getPlugin(id);
 			if(plugin==null){
 				plugin = PCnt_WeaselPlugin.getPluginForType(type, id);
-				plugin.setTileEntity(this);
+				if(plugin!=null)
+					plugin.setTileEntity(this);
 			}
 		}
 		return plugin;
@@ -53,9 +54,16 @@ public class PCnt_TileEntityWeasel extends PC_TileEntity {
 		if(!worldObj.isRemote)
 			PC_Utils.setTileEntity(null, this, "type", type);
 		this.type = type;
-		plugin.onDeviceDestroyed();
-		PCnt_WeaselManager.removePlugin(plugin);
-		plugin = PCnt_WeaselPlugin.getPluginForType(type, id);
+		if(plugin!=null){
+			plugin.onDeviceDestroyed();
+			PCnt_WeaselManager.removePlugin(plugin);
+		}
+		if(id!=-1)
+			plugin = PCnt_WeaselPlugin.getPluginForType(type, id);
+		else{
+			plugin = PCnt_WeaselPlugin.getPluginForType(type);
+			id = plugin.getID();
+		}
 		plugin.setTileEntity(this);
 		return this;
 	}
