@@ -7,8 +7,10 @@ import net.minecraft.src.IBlockAccess;
 import net.minecraft.src.Material;
 import net.minecraft.src.World;
 import powercraft.core.PC_Block;
+import powercraft.core.PC_IBlockRenderer;
 import powercraft.core.PC_IRotatedBox;
 import powercraft.core.PC_ISwapTerrain;
+import powercraft.core.PC_Renderer;
 import powercraft.core.PC_Shining;
 import powercraft.core.PC_Shining.OFF;
 import powercraft.core.PC_Shining.ON;
@@ -17,18 +19,20 @@ import powercraft.core.PC_Utils;
 @PC_Shining
 public class PClo_BlockGate extends PC_Block implements PC_IRotatedBox, PC_ISwapTerrain {
 
-	@ON
+	@ON(lightValue=15)
 	public static PClo_BlockGate on;
-	@OFF
+	@OFF(lightValue=0)
 	public static PClo_BlockGate off;
 	
 	public PClo_BlockGate(int id){
 		super(id, Material.ground);
-		setHardness(0.3F);
-		setResistance(20F);
-		setBlockName("PCloLight");
-		setStepSound(Block.soundStoneFootstep);
+		setBlockName("PCloLogicGate");
+		setHardness(0.35F);
+		setStepSound(Block.soundWoodFootstep);
+		disableStats();
 		setRequiresSelfNotify();
+		setResistance(30.0F);
+		setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 0.1875F, 1.0F);
 	}
 	
 	@Override
@@ -67,6 +71,11 @@ public class PClo_BlockGate extends PC_Block implements PC_IRotatedBox, PC_ISwap
 	@Override
 	public String getTerrainFile() {
 		return mod_PowerCraftLogic.getInstance().getTerrainFile();
+	}
+	
+	@Override
+	public int getRenderType() {
+		return PC_Renderer.getRendererID(true);
 	}
 	
 	@Override
@@ -133,13 +142,11 @@ public class PClo_BlockGate extends PC_Block implements PC_IRotatedBox, PC_ISwap
 
 	@Override
 	public int getRotation(int meta) {
-		// TODO Auto-generated method stub
-		return 0;
+		return meta & 3;
 	}
 
 	@Override
 	public boolean renderItemHorizontal() {
-		// TODO Auto-generated method stub
 		return false;
 	}
 	

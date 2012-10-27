@@ -1,6 +1,7 @@
 package powercraft.core;
 
 import net.minecraft.src.Block;
+import net.minecraft.src.IBlockAccess;
 
 public class PC_Renderer {
 
@@ -55,7 +56,19 @@ public class PC_Renderer {
 	
 	public static void renderInvBox(Object renderer, Block block, int metadata) {
 		renderer2d.iRenderInvBox(renderer, block, metadata);
+	}
+
+	protected void iRenderBlockRotatedBox(IBlockAccess world, int x, int y, int z, Block block, int modelId, Object renderer){}
+	
+	public static void renderBlockRotatedBox(IBlockAccess world, int x, int y, int z, Block block, int modelId, Object renderer) {
+		renderer2d.iRenderBlockRotatedBox(world, x, y, z, block, modelId, renderer);
 	};
+	
+	protected void iRenderInvBlockRotatedBox(Block block, int metadata, int modelID, Object renderer){}
+	
+	public static void renderInvBlockRotatedBox(Block block, int metadata, int modelID, Object renderer) {
+		renderer2d.iRenderInvBlockRotatedBox(block, metadata, modelID, renderer);
+	}
 	
 	
 }

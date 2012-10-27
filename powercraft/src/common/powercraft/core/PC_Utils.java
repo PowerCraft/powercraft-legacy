@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.io.ObjectOutputStream;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
+import java.text.Annotation;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -139,10 +140,14 @@ public class PC_Utils {
 					GameRegistry.registerBlock(blockOff);
 					Field[] fa = blockClass.getDeclaredFields();
 					for(Field f:fa){
-						if(f.getAnnotation(PC_Shining.ON.class)!=null){
+						PC_Shining.ON on = f.getAnnotation(PC_Shining.ON.class);
+						PC_Shining.OFF off = f.getAnnotation(PC_Shining.OFF.class);
+						if(on!=null){
+							block.setLightValue(on.lightValue()/15.0f);
 							f.setAccessible(true);
 							f.set(blockClass, block);
-						}else if(f.getAnnotation(PC_Shining.OFF.class)!=null){
+						}else if(off!=null){
+							block.setLightValue(off.lightValue()/15.0f);
 							f.setAccessible(true);
 							f.set(blockClass, blockOff);
 						}
