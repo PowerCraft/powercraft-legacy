@@ -60,6 +60,10 @@ public class PClo_GateType {
 			return i1 || i3;
 		case PClo_GateType.NOR:
 			return !(i1 || i3);
+		case PClo_GateType.XOR:
+			return i1 != i3;	
+		case PClo_GateType.XNOR:
+			return i1 == i3;		
 		default:
 			return false;
 		}
