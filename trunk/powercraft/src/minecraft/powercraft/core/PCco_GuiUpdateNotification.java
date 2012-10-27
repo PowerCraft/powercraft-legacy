@@ -29,7 +29,7 @@ public class PCco_GuiUpdateNotification implements PC_IGresClient {
 
 		hg = new PC_GresLayoutH();
 		hg.setAlignH(PC_GresAlign.CENTER);
-		hg.add(new PC_GresImage(mod_PowerCraftCore.getInstance().getTextureFile() + "graphics.png", 0, 0, 195, 24));
+		hg.add(new PC_GresImage(mod_PowerCraftCore.getInstance().getTextureDirectory() + "graphics.png", 0, 0, 195, 24));
 		w.add(hg);
 
 		hg = new PC_GresLayoutH();
