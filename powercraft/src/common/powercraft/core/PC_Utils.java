@@ -117,11 +117,14 @@ public class PC_Utils {
 				throw new IllegalArgumentException("Expackt only three Arguments");
 			try {
 				int blockID;
-				if(blockClass.isAnnotationPresent(PC_Shining.class))
+				PC_Block block;
+				if(blockClass.isAnnotationPresent(PC_Shining.class)){
 					blockID = getConfigInt(config, Configuration.CATEGORY_BLOCK, blockClass.getName()+".on", defaultID);
-				else
+					block = (PC_Block) createClass(blockClass, new Class[]{int.class, boolean.class}, new Object[]{blockID, true});
+				}else{
 					blockID = getConfigInt(config, Configuration.CATEGORY_BLOCK, blockClass.getName(), defaultID);
-				PC_Block block = (PC_Block) createClass(blockClass, new Class[]{int.class}, new Object[]{blockID});
+					block = (PC_Block) createClass(blockClass, new Class[]{int.class}, new Object[]{blockID});
+				}
 				if(block instanceof PC_IConfigLoader)
 					((PC_IConfigLoader) block).loadFromConfig(config);
 				if(itemBlockClass==null){
@@ -134,7 +137,7 @@ public class PC_Utils {
 				}
 				if(blockClass.isAnnotationPresent(PC_Shining.class)){
 					blockID = getConfigInt(config, Configuration.CATEGORY_BLOCK, blockClass.getName()+".off", defaultID+1);
-					PC_Block blockOff = (PC_Block) createClass(blockClass, new Class[]{int.class}, new Object[]{blockID});
+					PC_Block blockOff = (PC_Block) createClass(blockClass, new Class[]{int.class, boolean.class}, new Object[]{blockID, false});
 					if(blockOff instanceof PC_IConfigLoader)
 						((PC_IConfigLoader) blockOff).loadFromConfig(config);
 					GameRegistry.registerBlock(blockOff);

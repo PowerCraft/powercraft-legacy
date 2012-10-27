@@ -1,6 +1,7 @@
 package powercraft.logic;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import net.minecraft.src.CreativeTabs;
@@ -15,8 +16,6 @@ public class PClo_ItemBlockGate extends PC_ItemBlock {
 		super(id);
 		setMaxDamage(0);
 		setHasSubtypes(true);
-		setItemName("PCloLight");
-		setCreativeTab(CreativeTabs.tabRedstone);
 	}
 	
 	@Override
@@ -50,11 +49,7 @@ public class PClo_ItemBlockGate extends PC_ItemBlock {
 
 	@Override
 	public String getItemNameIS(ItemStack itemstack) {
-		try {
-			return super.getItemName() + ".gate" + itemstack.getItemDamage();
-		} catch (ArrayIndexOutOfBoundsException e) {
-			return super.getItemName();
-		}
+		return getItemName() + ".gate" + itemstack.getItemDamage();
 	}
 	
 	@Override

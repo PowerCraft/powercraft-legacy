@@ -3,6 +3,7 @@ package powercraft.logic;
 import java.util.Random;
 
 import net.minecraft.src.Block;
+import net.minecraft.src.CreativeTabs;
 import net.minecraft.src.IBlockAccess;
 import net.minecraft.src.Material;
 import net.minecraft.src.World;
@@ -24,7 +25,7 @@ public class PClo_BlockGate extends PC_Block implements PC_IRotatedBox, PC_ISwap
 	@OFF(lightValue=0)
 	public static PClo_BlockGate off;
 	
-	public PClo_BlockGate(int id){
+	public PClo_BlockGate(int id, boolean on){
 		super(id, Material.ground);
 		setBlockName("PCloLogicGate");
 		setHardness(0.35F);
@@ -33,6 +34,8 @@ public class PClo_BlockGate extends PC_Block implements PC_IRotatedBox, PC_ISwap
 		setRequiresSelfNotify();
 		setResistance(30.0F);
 		setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 0.1875F, 1.0F);
+		if(on)
+			setCreativeTab(CreativeTabs.tabRedstone);
 	}
 	
 	@Override
@@ -149,5 +152,12 @@ public class PClo_BlockGate extends PC_Block implements PC_IRotatedBox, PC_ISwap
 	public boolean renderItemHorizontal() {
 		return false;
 	}
+	
+	@Override
+	public boolean isOpaqueCube() {
+		return false;
+	}
+	
+	
 	
 }
