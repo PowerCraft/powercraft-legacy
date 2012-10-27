@@ -13,8 +13,13 @@ import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.network.NetworkMod;
 
 import net.minecraftforge.common.Configuration;
+import powercraft.core.PC_Block;
 import powercraft.core.PC_Module;
+import powercraft.core.PC_Utils;
+import powercraft.logic.PClo_BlockPulsar;
 import powercraft.logic.PClo_CommonProxy;
+import powercraft.logic.PClo_TileEntityPulsar;
+import powercraft.logic.mod_PowerCraftLogic;
 
 @Mod(modid="PowerCraft-Transport", name="PowerCraft-Transport", version="0.0.1Alpha", dependencies="required-after:PowerCraft-Core")
 @NetworkMod(clientSideRequired=true, serverSideRequired=true)
@@ -22,6 +27,11 @@ public class mod_PowerCraftTransport extends PC_Module {
 
 	@SidedProxy(clientSide = "powercraft.transport.PCtr_ClientProxy", serverSide = "powercraft.transport.PCtr_CommonProxy")
 	public static PCtr_CommonProxy proxy;
+	public static PC_Block belt;
+
+	public static mod_PowerCraftTransport getInstance() {
+		return (mod_PowerCraftTransport)PC_Module.getModule("PowerCraft-Transport");
+	}
 	
 	@PreInit
 	public void preInit(FMLPreInitializationEvent event){
@@ -52,8 +62,8 @@ public class mod_PowerCraftTransport extends PC_Module {
 
 	@Override
 	protected List<String> loadTextureFiles(List<String> textures) {
-		// TODO Auto-generated method stub
-		return null;
+		textures.add(getTerrainFile());
+		return textures;
 	}
 
 	@Override
@@ -64,7 +74,7 @@ public class mod_PowerCraftTransport extends PC_Module {
 
 	@Override
 	protected void initBlocks() {
-		// TODO Auto-generated method stub
+		belt = (PC_Block)PC_Utils.register(this, 464, PCtr_BlockBelt.class);
 
 	}
 

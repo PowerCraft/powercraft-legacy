@@ -71,7 +71,7 @@ public class mod_PowerCraftCore extends PC_Module{
 		
 		preInit(event, proxy);
 		
-		getModMetadata().logoFile = getTextureFile()+"PowerCraft.png";
+		getModMetadata().logoFile = getTextureDirectory()+"PowerCraft.png";
 		
 	}
 	
@@ -104,7 +104,7 @@ public class mod_PowerCraftCore extends PC_Module{
 	@Override
 	protected List<String> loadTextureFiles(List<String> textures) {
 		textures.add(getTerrainFile());
-		textures.add(getTextureFile()+"PowerCraft.png");
+		textures.add(getTextureDirectory()+"PowerCraft.png");
 		return textures;
 	}
 
