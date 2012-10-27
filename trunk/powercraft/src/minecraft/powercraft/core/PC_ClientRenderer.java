@@ -142,6 +142,7 @@ public class PC_ClientRenderer extends PC_Renderer implements ISimpleBlockRender
 				block.setBlockBounds(-0.1F, -0.1F, 0.4F, 1.1F, 1.1F, 0.6F);
 			}
 			GL11.glTranslatef(-0.5F, -0.5F, -0.5F);
+			tessellator.draw();
 			tessellator.startDrawingQuads();
 			tessellator.setNormal(0.0F, -1F, 0.0F);
 			renderblocks.renderBottomFace(block, 0.0D, 0.0D, 0.0D, block.getBlockTextureFromSideAndMetadata(renderOnSide ? 0 : 0, metadata));
@@ -166,6 +167,7 @@ public class PC_ClientRenderer extends PC_Renderer implements ISimpleBlockRender
 			tessellator.setNormal(1.0F, 0.0F, 0.0F);
 			renderblocks.renderSouthFace(block, 0.0D, 0.0D, 0.0D, block.getBlockTextureFromSideAndMetadata(renderOnSide ? 5 : 0, metadata));
 			tessellator.draw();
+			tessellator.startDrawingQuads();
 			GL11.glTranslatef(0.5F, 0.5F, 0.5F);
 
 			resetTerrain(swapped);
@@ -182,7 +184,7 @@ public class PC_ClientRenderer extends PC_Renderer implements ISimpleBlockRender
 		if (block instanceof PC_IRotatedBox) {
 
 			boolean swapped = swapTerrain(block);
-
+			
 			boolean renderOnSide = ((PC_IRotatedBox) block).renderItemHorizontal();
 
 			if (renderOnSide) {
