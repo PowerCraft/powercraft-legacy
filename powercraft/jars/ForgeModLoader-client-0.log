@@ -1,0 +1,9 @@
+2012-10-18 16:14:40 [INFO] [ForgeModLoader] Forge Mod Loader version 3.1.35.394 for Minecraft client:1.3.2, server:1.3.2 loading
+2012-10-18 16:14:41 [FINEST] [ForgeModLoader] All core mods are successfully located
+2012-10-18 16:14:41 [FINEST] [ForgeModLoader] Discovering coremods
+2012-10-18 16:14:43 [FINEST] [ForgeModLoader] Found library file argo-2.25.jar present and correct in lib dir
+
+2012-10-18 16:14:45 [FINEST] [ForgeModLoader] Found library file guava-12.0.1.jar present and correct in lib dir
+
+2012-10-18 16:14:46 [FINEST] [ForgeModLoader] Found library file asm-all-4.0.jar present and correct in lib dir
+

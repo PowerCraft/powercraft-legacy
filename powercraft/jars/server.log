@@ -1,0 +1,61 @@
+2012-10-16 10:32:27 [INFO] Starting minecraft server version 1.3.2
+2012-10-16 10:32:52 [INFO] Loading properties
+2012-10-16 10:32:52 [INFO] Default game type: SURVIVAL
+2012-10-16 10:32:52 [INFO] Generating keypair
+2012-10-16 10:32:54 [INFO] Starting Minecraft server on *:25565
+2012-10-16 10:32:56 [WARNING] **** SERVER IS RUNNING IN OFFLINE/INSECURE MODE!
+2012-10-16 10:32:56 [WARNING] The server will make no attempt to authenticate usernames. Beware.
+2012-10-16 10:32:56 [WARNING] While this makes the game possible to play without internet access, it also opens up the ability for hackers to connect with any username they choose.
+2012-10-16 10:32:56 [WARNING] To change this, set "online-mode" to "true" in the server.properties file.
+2012-10-16 10:32:56 [WARNING] Failed to load operators list: java.io.FileNotFoundException: .\ops.txt (Das System kann die angegebene Datei nicht finden)
+2012-10-16 10:32:56 [WARNING] Failed to load white-list: java.io.FileNotFoundException: .\white-list.txt (Das System kann die angegebene Datei nicht finden)
+2012-10-16 10:32:57 [INFO] Preparing level "mcpworld"
+2012-10-16 10:32:58 [INFO] Preparing start region for level 0
+2012-10-16 10:32:59 [INFO] Preparing spawn area: 3%
+2012-10-16 10:33:00 [INFO] Preparing spawn area: 4%
+2012-10-16 10:33:02 [INFO] Preparing spawn area: 8%
+2012-10-16 10:33:03 [INFO] Preparing spawn area: 12%
+2012-10-16 10:33:04 [INFO] Preparing spawn area: 16%
+2012-10-16 10:33:05 [INFO] Preparing spawn area: 20%
+2012-10-16 10:33:06 [INFO] Preparing spawn area: 20%
+2012-10-16 10:33:07 [INFO] Preparing spawn area: 24%
+2012-10-16 10:33:08 [INFO] Preparing spawn area: 28%
+2012-10-16 10:33:09 [INFO] Preparing spawn area: 28%
+2012-10-16 10:33:10 [INFO] Preparing spawn area: 32%
+2012-10-16 10:33:11 [INFO] Preparing spawn area: 36%
+2012-10-16 10:33:12 [INFO] Preparing spawn area: 36%
+2012-10-16 10:33:13 [INFO] Preparing spawn area: 40%
+2012-10-16 10:33:14 [INFO] Preparing spawn area: 44%
+2012-10-16 10:33:15 [INFO] Preparing spawn area: 48%
+2012-10-16 10:33:17 [INFO] Preparing spawn area: 48%
+2012-10-16 10:33:18 [INFO] Preparing spawn area: 52%
+2012-10-16 10:33:19 [INFO] Preparing spawn area: 56%
+2012-10-16 10:33:20 [INFO] Preparing spawn area: 60%
+2012-10-16 10:33:22 [INFO] Preparing spawn area: 61%
+2012-10-16 10:33:23 [INFO] Preparing spawn area: 65%
+2012-10-16 10:33:24 [INFO] Preparing spawn area: 69%
+2012-10-16 10:33:25 [INFO] Preparing spawn area: 73%
+2012-10-16 10:33:26 [INFO] Preparing spawn area: 77%
+2012-10-16 10:33:27 [INFO] Preparing spawn area: 81%
+2012-10-16 10:33:28 [INFO] Preparing spawn area: 81%
+2012-10-16 10:33:30 [INFO] Preparing spawn area: 85%
+2012-10-16 10:33:31 [INFO] Preparing spawn area: 89%
+2012-10-16 10:33:32 [INFO] Preparing spawn area: 89%
+2012-10-16 10:33:33 [INFO] Preparing spawn area: 93%
+2012-10-16 10:33:34 [INFO] Preparing spawn area: 97%
+2012-10-16 10:33:36 [INFO] Preparing spawn area: 97%
+2012-10-16 10:33:37 [INFO] Preparing spawn area: 97%
+2012-10-16 10:33:37 [INFO] Done (40,279s)! For help, type "help" or "?"
+2012-10-16 10:33:37 [INFO] /127.0.0.1:1209 lost connection
+2012-10-16 10:33:38 [INFO] User Player727 connecting with mods [PowerCraft_Core]
+2012-10-16 10:33:39 [INFO] Player727[/127.0.0.1:1211] logged in with entity id 381 at (-13.5, 65.62000000476837, 235.5)
+2012-10-16 10:33:41 [WARNING] Can't keep up! Did the system time change, or is the server overloaded?
+2012-10-16 10:34:05 [WARNING] Can't keep up! Did the system time change, or is the server overloaded?
+2012-10-16 10:34:33 [WARNING] Can't keep up! Did the system time change, or is the server overloaded?
+2012-10-16 10:34:35 [INFO] Player727 lost connection: disconnect.genericReason
+2012-10-16 10:34:35 [INFO] Stopping server
+2012-10-16 10:34:35 [INFO] Saving players
+2012-10-16 10:34:35 [INFO] Saving worlds
+2012-10-16 10:34:35 [INFO] Saving chunks for level 'mcpworld'/Overworld
+2012-10-16 10:34:35 [INFO] Saving chunks for level 'mcpworld'/Nether
+2012-10-16 10:34:35 [INFO] Saving chunks for level 'mcpworld'/The End
