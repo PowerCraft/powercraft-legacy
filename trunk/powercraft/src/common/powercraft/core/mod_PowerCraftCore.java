@@ -112,7 +112,6 @@ public class mod_PowerCraftCore extends PC_Module{
 	protected void initLanguage() {
 		PC_Utils.registerLanguage(this, 
 				"pc.gui.craftingTool.title", "Crafting Tool",
-				"pc.gui.craftingTool.trash", "Trash",
 				"pc.gui.craftingTool.trashAll", "Trash All",
 				"pc.gui.craftingTool.search", "Search",
 				"pc.gui.craftingTool.sort", "Sort",

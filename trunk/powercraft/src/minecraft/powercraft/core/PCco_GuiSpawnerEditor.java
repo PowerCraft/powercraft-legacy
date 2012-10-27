@@ -1,15 +1,15 @@
 package powercraft.core;
 
+import java.lang.reflect.Modifier;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
-import java.util.Set;
 
-import net.minecraft.src.EntityCreature;
 import net.minecraft.src.EntityList;
+import net.minecraft.src.EntityLiving;
 import net.minecraft.src.EntityPlayer;
 import net.minecraft.src.TileEntityMobSpawner;
 import powercraft.core.PC_GresRadioButton.PC_GresRadioGroup;
@@ -50,7 +50,8 @@ public class PCco_GuiSpawnerEditor implements PC_IGresClient {
 		});
 		
 		for(Entry<Class, String> e: se){
-			if(EntityCreature.class.isAssignableFrom(e.getKey())){
+			Class mob = e.getKey();
+			if((mob.getModifiers() & Modifier.ABSTRACT)==0 && EntityLiving.class.isAssignableFrom(mob) && !EntityPlayer.class.isAssignableFrom(mob)){
 				PC_GresRadioButton rb = new PC_GresRadioButton(PC_Utils.tr(e.getValue()), rg);
 				entityIds.add(e.getValue());
 				rb.setId(entityIds.size());

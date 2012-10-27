@@ -90,8 +90,10 @@ public class PC_GresTab extends PC_GresWidget {
 			w.setPosition(0, 0);
 		}
 		
-		for(PC_GresWidget w:childs)
+		for(PC_GresWidget w:childs){
 			w.setPosition(3, tabHight+3);
+			w.size.setTo(size.x-6, size.y-tabHight-6);
+		}
 	}
 	
 	private int renderTab(PC_CoordI posOffset, PC_RectI scissorOld,

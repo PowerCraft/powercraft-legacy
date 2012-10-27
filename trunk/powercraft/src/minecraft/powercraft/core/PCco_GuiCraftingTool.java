@@ -40,8 +40,8 @@ public class PCco_GuiCraftingTool extends PCco_ContainerCraftingTool implements 
 		PC_GresLayoutV lv = new PC_GresLayoutV();
 		lv.setAlignH(PC_GresAlign.STRETCH);
 		page.slots = moduleList.get(name);
-		page.scroll = page.slots.size()>12*5;
-		lv.add(page.inv = new PC_GresInventory(12, page.scroll?4:5));
+		page.scroll = page.slots.size()>12*9;
+		lv.add(page.inv = new PC_GresInventory(12, page.scroll?8:9));
 		if(page.scroll){
 			PC_GresLayoutH lh = new PC_GresLayoutH();
 			lh.setAlignH(PC_GresAlign.JUSTIFIED);
@@ -120,7 +120,7 @@ public class PCco_GuiCraftingTool extends PCco_ContainerCraftingTool implements 
 		lv.setAlignH(PC_GresAlign.STRETCH);
 		search = new PC_GresTextEdit("", 20);
 		lv.add(search);
-		lv.add(searchPage.inv = new PC_GresInventory(12, 2));
+		lv.add(searchPage.inv = new PC_GresInventory(12, 6));
 		PC_GresLayoutH lh = new PC_GresLayoutH();
 		lh.setAlignH(PC_GresAlign.JUSTIFIED);
 		lh.add((searchPage.buttonLeft = new PC_GresButton("<<<")).setButtonPadding(4, 4).enable(false));
@@ -154,12 +154,25 @@ public class PCco_GuiCraftingTool extends PCco_ContainerCraftingTool implements 
 		t.addTab(searchPage.widget, searchPage.tabWidget);
 		
 		PC_GresLayoutV lv = new PC_GresLayoutV();
+		lv.setAlignH(PC_GresAlign.CENTER);
+		lv.setAlignV(PC_GresAlign.JUSTIFIED);
 		
-		lv.add(new PC_GresInventoryBigSlot(trash));
-		lv.add(trashAll = new PC_GresButton(PC_Utils.tr("pc.gui.craftingTool.trashAll")));
-		lv.add(sort = new PC_GresButton(PC_Utils.tr("pc.gui.craftingTool.sort")));
+		PC_GresLayoutV lv1 = new PC_GresLayoutV();
+		lv1.add(new PC_GresInventoryBigSlot(trash));
+		lv1.add(trashAll = new PC_GresButton(PC_Utils.tr("pc.gui.craftingTool.trashAll")));
+		lv1.add(sort = new PC_GresButton(PC_Utils.tr("pc.gui.craftingTool.sort")));
+		lv.add(lv1);
 		
-		t.addTab(lv, new PC_GresLabel(PC_Utils.tr("pc.gui.craftingTool.trash")));
+		lv1 = new PC_GresLayoutV();
+		PC_GresWidget label = new PC_GresLabel(PC_Utils.tr("container.inventory")).setWidgetMargin(2)
+				.setColor(PC_GresWidget.textColorEnabled, 0x404040).setColor(PC_GresWidget.textColorHover, 0x404040);
+		lv1.add(label);
+		PC_GresInventory inv = new PC_GresInventory(9, 3);
+		inv.slots = gui.getContainer().inventoryPlayerUpper;
+		lv1.add(inv);
+		lv.add(lv1);
+		
+		t.addTab(lv, new PC_GresLabel(PC_Utils.tr("container.inventory")));
 		
 		if(td!=null)
 			t.makeTabVisible(td);
@@ -168,7 +181,9 @@ public class PCco_GuiCraftingTool extends PCco_ContainerCraftingTool implements 
 		
 		PC_GresLayoutH lh = new PC_GresLayoutH();
 		lh.setAlignH(PC_GresAlign.CENTER);
-		lh.add(new PC_GresInventoryPlayer(true));
+		inv = new PC_GresInventory(9, 1);
+		inv.slots = gui.getContainer().inventoryPlayerLower;
+		lh.add(inv);
 		w.add(lh);
 		
 		gui.add(w);

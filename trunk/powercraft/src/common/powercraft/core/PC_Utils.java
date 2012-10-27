@@ -9,18 +9,17 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-import net.minecraft.src.Block;
 import net.minecraft.src.CraftingManager;
 import net.minecraft.src.EntityPlayer;
 import net.minecraft.src.EntityPlayerMP;
 import net.minecraft.src.EnumGameType;
 import net.minecraft.src.FurnaceRecipes;
+import net.minecraft.src.IBlockAccess;
 import net.minecraft.src.IRecipe;
 import net.minecraft.src.Item;
 import net.minecraft.src.ItemStack;
-import net.minecraft.src.Material;
-import net.minecraft.src.ModLoader;
 import net.minecraft.src.StringTranslate;
+import net.minecraft.src.TileEntity;
 import net.minecraft.src.World;
 import net.minecraftforge.common.Configuration;
 import cpw.mods.fml.common.registry.GameRegistry;
@@ -116,7 +115,11 @@ public class PC_Utils {
 			if(classes.length>3)
 				throw new IllegalArgumentException("Expackt only three Arguments");
 			try {
-				int blockID = getConfigInt(config, Configuration.CATEGORY_BLOCK, blockClass.getName(), defaultID);
+				int blockID;
+				if(blockClass.isAnnotationPresent(PC_Shining.class))
+					blockID = getConfigInt(config, Configuration.CATEGORY_BLOCK, blockClass.getName()+".on", defaultID);
+				else
+					blockID = getConfigInt(config, Configuration.CATEGORY_BLOCK, blockClass.getName(), defaultID);
 				PC_Block block = (PC_Block) createClass(blockClass, new Class[]{int.class}, new Object[]{blockID});
 				if(block instanceof PC_IConfigLoader)
 					((PC_IConfigLoader) block).loadFromConfig(config);
@@ -127,6 +130,23 @@ public class PC_Utils {
 					GameRegistry.registerBlock(block, itemBlockClass);
 					PC_ItemBlock itemBlock = (PC_ItemBlock)Item.itemsList[blockID];
 					registerLanguage(module, itemBlock.getDefaultNames());
+				}
+				if(blockClass.isAnnotationPresent(PC_Shining.class)){
+					blockID = getConfigInt(config, Configuration.CATEGORY_BLOCK, blockClass.getName()+".off", defaultID+1);
+					PC_Block blockOff = (PC_Block) createClass(blockClass, new Class[]{int.class}, new Object[]{blockID});
+					if(blockOff instanceof PC_IConfigLoader)
+						((PC_IConfigLoader) blockOff).loadFromConfig(config);
+					GameRegistry.registerBlock(blockOff);
+					Field[] fa = blockClass.getDeclaredFields();
+					for(Field f:fa){
+						if(f.getAnnotation(PC_Shining.ON.class)!=null){
+							f.setAccessible(true);
+							f.set(blockClass, block);
+						}else if(f.getAnnotation(PC_Shining.OFF.class)!=null){
+							f.setAccessible(true);
+							f.set(blockClass, blockOff);
+						}
+					}
 				}
 				if(tileEntityClass!=null)
 					GameRegistry.registerTileEntity(tileEntityClass, tileEntityClass.getName());
@@ -401,6 +421,18 @@ public class PC_Utils {
 	
 	public static String doubleToString(double d) {
 		return ""+d;
+	}
+	
+	public static TileEntity getTE(IBlockAccess world, int x, int y, int z){
+		if(world!=null)
+			return world.getBlockTileEntity(x, y, z);
+		return null;
+	}
+	
+	public static int getMD(IBlockAccess world, int x, int y, int z){
+		if(world!=null)
+			return world.getBlockMetadata(x, y, z);
+		return 0;
 	}
 	
 }

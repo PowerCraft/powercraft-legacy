@@ -77,15 +77,27 @@ public class mod_PowerCraftLogic extends PC_Module {
 				"pc.gui.pulsar.hold", "Hold time (sec)",
 				"pc.gui.pulsar.ticks", "ticks",
 				"pc.gui.pulsar.errDelay", "Bad delay time!",
-				"pc.gui.pulsar.errHold", "Bad hold time!"
+				"pc.gui.pulsar.errHold", "Bad hold time!",
+				"pc.gate.not.desc", "negates input",
+				"pc.gate.and.desc", "both inputs on",
+				"pc.gate.nand.desc", "some inputs off",
+				"pc.gate.or.desc", "at least one input on",
+				"pc.gate.nor.desc", "all inputs off",
+				"pc.gate.xor.desc", "inputs different",
+				"pc.gate.xnor.desc", "inputs equal",
+				"pc.gate.xnor3.desc", "all inputs equal",
+				"pc.gate.and3.desc", "all inputs on",
+				"pc.gate.nand3.desc", "some inputs off",
+				"pc.gate.or3.desc", "at least one input on",
+				"pc.gate.nor3.desc", "all inputs off",
+				"pc.gate.xor3.desc", "inputs different"
 		);
 	}
 
 	@Override
 	protected void initBlocks() {
 		pulsar = (PC_Block)PC_Utils.register(this, 461, PClo_BlockPulsar.class, PClo_TileEntityPulsar.class);
-		gateOff = (PC_Block)PC_Utils.register(this, 462, PClo_BlockPulsar.class, PClo_ItemBlockGate.class);
-		gateOn = (PC_Block)PC_Utils.register(this, 463, PClo_BlockPulsar.class);
+		gateOn = (PC_Block)PC_Utils.register(this, 462, PClo_BlockGate.class, PClo_ItemBlockGate.class);
 	}
 
 	@Override
