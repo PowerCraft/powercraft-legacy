@@ -54,7 +54,6 @@ public class PC_ClientUtils extends PC_Utils {
 		else
 			langs.put(lang, translation = new HashMap<String, String[]>());
 		for(int i=0; i<translations.length; i+=2){
-			System.out.println(translations+":"+translations[i]);
 			if(translations[i].startsWith("tile.") || translations[i].startsWith("item.")){
 				if(!translations[i].endsWith(".name")){
 					translations[i] += ".name";
