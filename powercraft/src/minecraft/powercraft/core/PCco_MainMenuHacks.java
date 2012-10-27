@@ -106,7 +106,7 @@ public class PCco_MainMenuHacks implements ITickHandler {
 		if (gui == lastHacked) return;
 		lastHacked = gui;
 		PC_Logger.finest("Hacking main menu splashes");
-		if (rand.nextInt(4) == 0) {
+		if (rand.nextInt(2) == 0) {
 			try {
 				PC_Utils.setPrivateValue(GuiMainMenu.class, gui, 2, splashes[rand.nextInt(splashes.length)]);
 			} catch (Throwable t) {}

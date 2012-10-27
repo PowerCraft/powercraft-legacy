@@ -11,7 +11,7 @@ public class PCco_ClientMobSpawnerSetter extends PCco_MobSpawnerSetter {
 		tems.setMobID((String)o[3]);
 		PC_Utils.setPrivateValue(TileEntityMobSpawner.class, tems, 8, null);
 		tems.getMobEntity();
-		return false;
+		return true;
 	}
 	
 }
