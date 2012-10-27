@@ -11,10 +11,14 @@ public @interface PC_Shining {
 
 	@Retention(RetentionPolicy.RUNTIME)
 	@Target(ElementType.FIELD)
-	public @interface ON {}
+	public @interface ON {
+		public int lightValue() default 15;
+	}
 	
 	@Retention(RetentionPolicy.RUNTIME)
 	@Target(ElementType.FIELD)
-	public @interface OFF {}
+	public @interface OFF {
+		public int lightValue() default 0;
+	}
 	
 }
