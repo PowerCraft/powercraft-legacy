@@ -1,22 +1,5 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <libraryInfos>
-<libraryInfo home="C:\Programme\Java\jre1.5.0_11" version="1.5.0_11">
-<bootpath>
-<entry path="C:\Programme\Java\jre1.5.0_11\lib\rt.jar"/>
-<entry path="C:\Programme\Java\jre1.5.0_11\lib\i18n.jar"/>
-<entry path="C:\Programme\Java\jre1.5.0_11\lib\sunrsasign.jar"/>
-<entry path="C:\Programme\Java\jre1.5.0_11\lib\jsse.jar"/>
-<entry path="C:\Programme\Java\jre1.5.0_11\lib\jce.jar"/>
-<entry path="C:\Programme\Java\jre1.5.0_11\lib\charsets.jar"/>
-<entry path="C:\Programme\Java\jre1.5.0_11\classes"/>
-</bootpath>
-<extensionDirs>
-<entry path="C:\Programme\Java\jre1.5.0_11\lib\ext"/>
-</extensionDirs>
-<endorsedDirs>
-<entry path="C:\Programme\Java\jre1.5.0_11\lib\endorsed"/>
-</endorsedDirs>
-</libraryInfo>
 <libraryInfo home="D:\Programme (x86)\Java\jre7" version="1.7.0_04">
 <bootpath>
 <entry path="D:\Programme (x86)\Java\jre7\lib\resources.jar"/>
@@ -36,7 +19,7 @@
 <entry path="D:\Programme (x86)\Java\jre7\lib\endorsed"/>
 </endorsedDirs>
 </libraryInfo>
-<libraryInfo home="C:\Program Files\Java\jre7" version="1.7.0_07">
+<libraryInfo home="C:\Program Files\Java\jre7" version="1.7.0_04">
 <bootpath>
 <entry path="C:\Program Files\Java\jre7\lib\resources.jar"/>
 <entry path="C:\Program Files\Java\jre7\lib\rt.jar"/>
@@ -53,6 +36,23 @@
 </extensionDirs>
 <endorsedDirs>
 <entry path="C:\Program Files\Java\jre7\lib\endorsed"/>
+</endorsedDirs>
+</libraryInfo>
+<libraryInfo home="C:\Programme\Java\jre1.5.0_11" version="1.5.0_11">
+<bootpath>
+<entry path="C:\Programme\Java\jre1.5.0_11\lib\rt.jar"/>
+<entry path="C:\Programme\Java\jre1.5.0_11\lib\i18n.jar"/>
+<entry path="C:\Programme\Java\jre1.5.0_11\lib\sunrsasign.jar"/>
+<entry path="C:\Programme\Java\jre1.5.0_11\lib\jsse.jar"/>
+<entry path="C:\Programme\Java\jre1.5.0_11\lib\jce.jar"/>
+<entry path="C:\Programme\Java\jre1.5.0_11\lib\charsets.jar"/>
+<entry path="C:\Programme\Java\jre1.5.0_11\classes"/>
+</bootpath>
+<extensionDirs>
+<entry path="C:\Programme\Java\jre1.5.0_11\lib\ext"/>
+</extensionDirs>
+<endorsedDirs>
+<entry path="C:\Programme\Java\jre1.5.0_11\lib\endorsed"/>
 </endorsedDirs>
 </libraryInfo>
 </libraryInfos>
