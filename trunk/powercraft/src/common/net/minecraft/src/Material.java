@@ -10,6 +10,7 @@ public class Material
     public static final Material wood = (new Material(MapColor.woodColor)).setBurning();
     public static final Material rock = (new Material(MapColor.stoneColor)).setNoHarvest();
     public static final Material iron = (new Material(MapColor.ironColor)).setNoHarvest();
+    public static final Material field_82717_g = (new Material(MapColor.ironColor)).setNoHarvest().setImmovableMobility();
     public static final Material water = (new MaterialLiquid(MapColor.waterColor)).setNoPushMobility();
     public static final Material lava = (new MaterialLiquid(MapColor.tntColor)).setNoPushMobility();
     public static final Material leaves = (new Material(MapColor.foliageColor)).setBurning().setTranslucent().setNoPushMobility();

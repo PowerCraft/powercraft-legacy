@@ -31,7 +31,7 @@ public class ModelBlaze extends ModelBase
      */
     public void render(Entity par1Entity, float par2, float par3, float par4, float par5, float par6, float par7)
     {
-        this.setRotationAngles(par2, par3, par4, par5, par6, par7);
+        this.setRotationAngles(par2, par3, par4, par5, par6, par7, par1Entity);
         this.field_78105_b.render(par7);
         ModelRenderer[] var8 = this.field_78106_a;
         int var9 = var8.length;
@@ -48,37 +48,37 @@ public class ModelBlaze extends ModelBase
      * and legs, where par1 represents the time(so that arms and legs swing back and forth) and par2 represents how
      * "far" arms and legs can swing at most.
      */
-    public void setRotationAngles(float par1, float par2, float par3, float par4, float par5, float par6)
+    public void setRotationAngles(float par1, float par2, float par3, float par4, float par5, float par6, Entity par7Entity)
     {
-        float var7 = par3 * (float)Math.PI * -0.1F;
-        int var8;
+        float var8 = par3 * (float)Math.PI * -0.1F;
+        int var9;
 
-        for (var8 = 0; var8 < 4; ++var8)
+        for (var9 = 0; var9 < 4; ++var9)
         {
-            this.field_78106_a[var8].rotationPointY = -2.0F + MathHelper.cos(((float)(var8 * 2) + par3) * 0.25F);
-            this.field_78106_a[var8].rotationPointX = MathHelper.cos(var7) * 9.0F;
-            this.field_78106_a[var8].rotationPointZ = MathHelper.sin(var7) * 9.0F;
-            ++var7;
+            this.field_78106_a[var9].rotationPointY = -2.0F + MathHelper.cos(((float)(var9 * 2) + par3) * 0.25F);
+            this.field_78106_a[var9].rotationPointX = MathHelper.cos(var8) * 9.0F;
+            this.field_78106_a[var9].rotationPointZ = MathHelper.sin(var8) * 9.0F;
+            ++var8;
         }
 
-        var7 = ((float)Math.PI / 4F) + par3 * (float)Math.PI * 0.03F;
+        var8 = ((float)Math.PI / 4F) + par3 * (float)Math.PI * 0.03F;
 
-        for (var8 = 4; var8 < 8; ++var8)
+        for (var9 = 4; var9 < 8; ++var9)
         {
-            this.field_78106_a[var8].rotationPointY = 2.0F + MathHelper.cos(((float)(var8 * 2) + par3) * 0.25F);
-            this.field_78106_a[var8].rotationPointX = MathHelper.cos(var7) * 7.0F;
-            this.field_78106_a[var8].rotationPointZ = MathHelper.sin(var7) * 7.0F;
-            ++var7;
+            this.field_78106_a[var9].rotationPointY = 2.0F + MathHelper.cos(((float)(var9 * 2) + par3) * 0.25F);
+            this.field_78106_a[var9].rotationPointX = MathHelper.cos(var8) * 7.0F;
+            this.field_78106_a[var9].rotationPointZ = MathHelper.sin(var8) * 7.0F;
+            ++var8;
         }
 
-        var7 = 0.47123894F + par3 * (float)Math.PI * -0.05F;
+        var8 = 0.47123894F + par3 * (float)Math.PI * -0.05F;
 
-        for (var8 = 8; var8 < 12; ++var8)
+        for (var9 = 8; var9 < 12; ++var9)
         {
-            this.field_78106_a[var8].rotationPointY = 11.0F + MathHelper.cos(((float)var8 * 1.5F + par3) * 0.5F);
-            this.field_78106_a[var8].rotationPointX = MathHelper.cos(var7) * 5.0F;
-            this.field_78106_a[var8].rotationPointZ = MathHelper.sin(var7) * 5.0F;
-            ++var7;
+            this.field_78106_a[var9].rotationPointY = 11.0F + MathHelper.cos(((float)var9 * 1.5F + par3) * 0.5F);
+            this.field_78106_a[var9].rotationPointX = MathHelper.cos(var8) * 5.0F;
+            this.field_78106_a[var9].rotationPointZ = MathHelper.sin(var8) * 5.0F;
+            ++var8;
         }
 
         this.field_78105_b.rotateAngleY = par4 / (180F / (float)Math.PI);

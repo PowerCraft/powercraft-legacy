@@ -35,11 +35,6 @@ public class BlockEndPortal extends BlockContainer
         this.setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, var5, 1.0F);
     }
 
-    /**
-     * if the specified block is in the given AABB, add its collision bounding box to the given list
-     */
-    public void addCollidingBlockToList(World par1World, int par2, int par3, int par4, AxisAlignedBB par5AxisAlignedBB, List par6List, Entity par7Entity) {}
-
     @SideOnly(Side.CLIENT)
 
     /**
@@ -50,6 +45,11 @@ public class BlockEndPortal extends BlockContainer
     {
         return par5 != 0 ? false : super.shouldSideBeRendered(par1IBlockAccess, par2, par3, par4, par5);
     }
+
+    /**
+     * if the specified block is in the given AABB, add its collision bounding box to the given list
+     */
+    public void addCollidingBlockToList(World par1World, int par2, int par3, int par4, AxisAlignedBB par5AxisAlignedBB, List par6List, Entity par7Entity) {}
 
     /**
      * Is this block (a) opaque and (b) a full 1m cube?  This determines whether or not to render the shared face of two
@@ -81,9 +81,9 @@ public class BlockEndPortal extends BlockContainer
      */
     public void onEntityCollidedWithBlock(World par1World, int par2, int par3, int par4, Entity par5Entity)
     {
-        if (par5Entity.ridingEntity == null && par5Entity.riddenByEntity == null && par5Entity instanceof EntityPlayer && !par1World.isRemote)
+        if (par5Entity.ridingEntity == null && par5Entity.riddenByEntity == null && !par1World.isRemote)
         {
-            ((EntityPlayer)par5Entity).travelToTheEnd(1);
+            par5Entity.travelToTheEnd(1);
         }
     }
 

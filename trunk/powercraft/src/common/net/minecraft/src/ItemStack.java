@@ -25,6 +25,7 @@ public final class ItemStack
 
     /** Damage dealt to the item or number of use. Raise when using items. */
     private int itemDamage;
+    private EntityItemFrame field_82843_f;
 
     public ItemStack(Block par1Block)
     {
@@ -59,6 +60,7 @@ public final class ItemStack
     public ItemStack(int par1, int par2, int par3)
     {
         this.stackSize = 0;
+        this.field_82843_f = null;
         this.itemID = par1;
         this.stackSize = par2;
         this.itemDamage = par3;
@@ -74,6 +76,7 @@ public final class ItemStack
     private ItemStack()
     {
         this.stackSize = 0;
+        this.field_82843_f = null;
     }
 
     /**
@@ -254,7 +257,7 @@ public final class ItemStack
         {
             if (par1 > 0 && par2EntityLiving instanceof EntityPlayer)
             {
-                int var3 = EnchantmentHelper.getUnbreakingModifier(((EntityPlayer)par2EntityLiving).inventory);
+                int var3 = EnchantmentHelper.getUnbreakingModifier(par2EntityLiving);
 
                 if (var3 > 0 && par2EntityLiving.worldObj.rand.nextInt(var3 + 1) > 0)
                 {
@@ -301,7 +304,7 @@ public final class ItemStack
         }
     }
 
-    public void func_77941_a(World par1World, int par2, int par3, int par4, int par5, EntityPlayer par6EntityPlayer)
+    public void onBlockDestroyed(World par1World, int par2, int par3, int par4, int par5, EntityPlayer par6EntityPlayer)
     {
         boolean var7 = Item.itemsList[this.itemID].onBlockDestroyed(this, par1World, par2, par3, par4, par5, par6EntityPlayer);
 
@@ -415,11 +418,6 @@ public final class ItemStack
         Item.itemsList[this.itemID].onCreated(this, par1World, par2EntityPlayer);
     }
 
-    public boolean isStackEqual(ItemStack par1ItemStack)
-    {
-        return this.itemID == par1ItemStack.itemID && this.stackSize == par1ItemStack.stackSize && this.itemDamage == par1ItemStack.itemDamage;
-    }
-
     public int getMaxItemUseDuration()
     {
         return this.getItem().getMaxItemUseDuration(this);
@@ -467,38 +465,139 @@ public final class ItemStack
         this.stackTagCompound = par1NBTTagCompound;
     }
 
-    @SideOnly(Side.CLIENT)
-
-    /**
-     * gets a list of strings representing the item name and successive extra data, eg Enchantments and potion effects
-     */
-    public List getItemNameandInformation()
+    public String func_82833_r()
     {
-        ArrayList var1 = new ArrayList();
-        Item var2 = Item.itemsList[this.itemID];
-        var1.add(var2.getItemDisplayName(this));
-        var2.addInformation(this, var1);
+        String var1 = this.getItem().getItemDisplayName(this);
+
+        if (this.stackTagCompound != null && this.stackTagCompound.hasKey("display"))
+        {
+            NBTTagCompound var2 = this.stackTagCompound.getCompoundTag("display");
+
+            if (var2.hasKey("Name"))
+            {
+                var1 = var2.getString("Name");
+            }
+        }
+
+        return var1;
+    }
+
+    public void func_82834_c(String par1Str)
+    {
+        if (this.stackTagCompound == null)
+        {
+            this.stackTagCompound = new NBTTagCompound();
+        }
+
+        if (!this.stackTagCompound.hasKey("display"))
+        {
+            this.stackTagCompound.setCompoundTag("display", new NBTTagCompound());
+        }
+
+        this.stackTagCompound.getCompoundTag("display").setString("Name", par1Str);
+    }
+
+    public boolean func_82837_s()
+    {
+        return this.stackTagCompound == null ? false : (!this.stackTagCompound.hasKey("display") ? false : this.stackTagCompound.getCompoundTag("display").hasKey("Name"));
+    }
+
+    @SideOnly(Side.CLIENT)
+    public List func_82840_a(EntityPlayer par1EntityPlayer, boolean par2)
+    {
+        ArrayList var3 = new ArrayList();
+        Item var4 = Item.itemsList[this.itemID];
+        String var5 = this.func_82833_r();
+
+        if (par2)
+        {
+            String var6 = "";
+
+            if (var5.length() > 0)
+            {
+                var5 = var5 + " (";
+                var6 = ")";
+            }
+
+            if (this.getHasSubtypes())
+            {
+                var5 = var5 + String.format("#%04d/%d%s", new Object[] {Integer.valueOf(this.itemID), Integer.valueOf(this.itemDamage), var6});
+            }
+            else
+            {
+                var5 = var5 + String.format("#%04d%s", new Object[] {Integer.valueOf(this.itemID), var6});
+            }
+        }
+        else if (!this.func_82837_s())
+        {
+            if (this.itemID == Item.map.shiftedIndex)
+            {
+                var5 = var5 + " #" + this.itemDamage;
+            }
+        }
+        else
+        {
+            var5 = "\u00a7o" + var5;
+        }
+
+        var3.add(var5);
+        var4.addInformation(this, par1EntityPlayer, var3, par2);
 
         if (this.hasTagCompound())
         {
-            NBTTagList var3 = this.getEnchantmentTagList();
+            NBTTagList var10 = this.getEnchantmentTagList();
 
-            if (var3 != null)
+            if (var10 != null)
             {
-                for (int var4 = 0; var4 < var3.tagCount(); ++var4)
+                for (int var7 = 0; var7 < var10.tagCount(); ++var7)
                 {
-                    short var5 = ((NBTTagCompound)var3.tagAt(var4)).getShort("id");
-                    short var6 = ((NBTTagCompound)var3.tagAt(var4)).getShort("lvl");
+                    short var8 = ((NBTTagCompound)var10.tagAt(var7)).getShort("id");
+                    short var9 = ((NBTTagCompound)var10.tagAt(var7)).getShort("lvl");
 
-                    if (Enchantment.enchantmentsList[var5] != null)
+                    if (Enchantment.enchantmentsList[var8] != null)
                     {
-                        var1.add(Enchantment.enchantmentsList[var5].getTranslatedName(var6));
+                        var3.add(Enchantment.enchantmentsList[var8].getTranslatedName(var9));
+                    }
+                }
+            }
+
+            if (this.stackTagCompound.hasKey("display"))
+            {
+                NBTTagCompound var11 = this.stackTagCompound.getCompoundTag("display");
+
+                if (var11.hasKey("color"))
+                {
+                    if (par2)
+                    {
+                        var3.add("Color: #" + Integer.toHexString(var11.getInteger("color")).toUpperCase());
+                    }
+                    else
+                    {
+                        var3.add("\u00a7o" + StatCollector.translateToLocal("item.dyed"));
+                    }
+                }
+
+                if (var11.hasKey("Lore"))
+                {
+                    NBTTagList var12 = var11.getTagList("Lore");
+
+                    if (var12.tagCount() > 0)
+                    {
+                        for (int var13 = 0; var13 < var12.tagCount(); ++var13)
+                        {
+                            var3.add("\u00a75\u00a7o" + ((NBTTagString)var12.tagAt(var13)).data);
+                        }
                     }
                 }
             }
         }
 
-        return var1;
+        if (par2 && this.isItemDamaged())
+        {
+            var3.add("Durability: " + (this.getMaxDamage() - this.getItemDamageForDisplay()) + " / " + this.getMaxDamage());
+        }
+
+        return var3;
     }
 
     @SideOnly(Side.CLIENT)
@@ -551,7 +650,6 @@ public final class ItemStack
         return this.stackTagCompound != null && this.stackTagCompound.hasKey("ench");
     }
 
-    @SideOnly(Side.CLIENT)
     public void func_77983_a(String par1Str, NBTBase par2NBTBase)
     {
         if (this.stackTagCompound == null)
@@ -560,5 +658,40 @@ public final class ItemStack
         }
 
         this.stackTagCompound.setTag(par1Str, par2NBTBase);
+    }
+
+    public boolean func_82835_x()
+    {
+        return this.getItem().func_82788_x();
+    }
+
+    public boolean func_82839_y()
+    {
+        return this.field_82843_f != null;
+    }
+
+    public void func_82842_a(EntityItemFrame par1EntityItemFrame)
+    {
+        this.field_82843_f = par1EntityItemFrame;
+    }
+
+    public EntityItemFrame func_82836_z()
+    {
+        return this.field_82843_f;
+    }
+
+    public int func_82838_A()
+    {
+        return this.hasTagCompound() && this.stackTagCompound.hasKey("RepairCost") ? this.stackTagCompound.getInteger("RepairCost") : 0;
+    }
+
+    public void func_82841_c(int par1)
+    {
+        if (!this.hasTagCompound())
+        {
+            this.stackTagCompound = new NBTTagCompound();
+        }
+
+        this.stackTagCompound.setInteger("RepairCost", par1);
     }
 }

@@ -44,7 +44,7 @@ public class PClo_BlockPulsar extends PC_Block implements PC_ICraftingToolDispla
 	}
 
 	@Override
-	public boolean isIndirectlyPoweringTo(World world, int i, int j, int k, int l) {
+	public boolean isIndirectlyPoweringTo(IBlockAccess world, int i, int j, int k, int l) {
 		return isActive(world, i, j, k);
 	}
 

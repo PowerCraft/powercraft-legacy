@@ -39,6 +39,9 @@ public class ModelRenderer
     public List childModels;
     public final String boxName;
     private ModelBase baseModel;
+    public float field_82906_o;
+    public float field_82908_p;
+    public float field_82907_q;
 
     public ModelRenderer(ModelBase par1ModelBase, String par2Str)
     {
@@ -129,6 +132,7 @@ public class ModelRenderer
                     this.compileDisplayList(par1);
                 }
 
+                GL11.glTranslatef(this.field_82906_o, this.field_82908_p, this.field_82907_q);
                 Iterator var2;
                 ModelRenderer var3;
 
@@ -203,6 +207,8 @@ public class ModelRenderer
 
                     GL11.glPopMatrix();
                 }
+
+                GL11.glTranslatef(-this.field_82906_o, -this.field_82908_p, -this.field_82907_q);
             }
         }
     }

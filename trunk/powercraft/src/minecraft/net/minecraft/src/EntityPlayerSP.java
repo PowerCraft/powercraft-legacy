@@ -27,6 +27,12 @@ public class EntityPlayerSP extends EntityPlayer
     private MouseFilter field_71160_ci = new MouseFilter();
     private MouseFilter field_71161_cj = new MouseFilter();
 
+    /** The amount of time an entity has been in a Portal */
+    public float timeInPortal;
+
+    /** The amount of time an entity has been in a Portal the previous tick */
+    public float prevTimeInPortal;
+
     public EntityPlayerSP(Minecraft par1Minecraft, World par2World, Session par3Session, int par4)
     {
         super(par2World);
@@ -309,9 +315,16 @@ public class EntityPlayerSP extends EntityPlayer
     /**
      * Displays the GUI for editing a sign. Args: tileEntitySign
      */
-    public void displayGUIEditSign(TileEntitySign par1TileEntitySign)
+    public void displayGUIEditSign(TileEntity par1TileEntity)
     {
-        this.mc.displayGuiScreen(new GuiEditSign(par1TileEntitySign));
+        if (par1TileEntity instanceof TileEntitySign)
+        {
+            this.mc.displayGuiScreen(new GuiEditSign((TileEntitySign)par1TileEntity));
+        }
+        else if (par1TileEntity instanceof TileEntityCommandBlock)
+        {
+            this.mc.displayGuiScreen(new GuiCommandBlock((TileEntityCommandBlock)par1TileEntity));
+        }
     }
 
     /**
@@ -352,6 +365,11 @@ public class EntityPlayerSP extends EntityPlayer
         this.mc.displayGuiScreen(new GuiEnchantment(this.inventory, this.worldObj, par1, par2, par3));
     }
 
+    public void func_82244_d(int par1, int par2, int par3)
+    {
+        this.mc.displayGuiScreen(new GuiRepair(this.inventory, this.worldObj, par1, par2, par3));
+    }
+
     /**
      * Displays the furnace GUI for the passed in furnace entity. Args: tileEntityFurnace
      */
@@ -366,6 +384,11 @@ public class EntityPlayerSP extends EntityPlayer
     public void displayGUIBrewingStand(TileEntityBrewingStand par1TileEntityBrewingStand)
     {
         this.mc.displayGuiScreen(new GuiBrewingStand(this.inventory, par1TileEntityBrewingStand));
+    }
+
+    public void func_82240_a(TileEntityBeacon par1TileEntityBeacon)
+    {
+        this.mc.displayGuiScreen(new GuiBeacon(this.inventory, par1TileEntityBeacon));
     }
 
     /**
@@ -575,8 +598,21 @@ public class EntityPlayerSP extends EntityPlayer
     /**
      * Returns true if the command sender is allowed to use the given command.
      */
-    public boolean canCommandSenderUseCommand(String par1Str)
+    public boolean canCommandSenderUseCommand(int par1, String par2Str)
     {
-        return this.worldObj.getWorldInfo().areCommandsAllowed();
+        return par1 <= 0;
+    }
+
+    public ChunkCoordinates func_82114_b()
+    {
+        return new ChunkCoordinates(MathHelper.floor_double(this.posX + 0.5D), MathHelper.floor_double(this.posY + 0.5D), MathHelper.floor_double(this.posZ + 0.5D));
+    }
+
+    /**
+     * Returns the item that this EntityLiving is holding, if any.
+     */
+    public ItemStack getHeldItem()
+    {
+        return this.inventory.getCurrentItem();
     }
 }

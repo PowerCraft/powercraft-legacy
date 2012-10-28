@@ -1,6 +1,7 @@
 package net.minecraft.src;
 
 import net.minecraftforge.common.EnumPlantType;
+import net.minecraftforge.common.ForgeDirection;
 import net.minecraftforge.common.IPlantable;
 
 public class ItemSeeds extends Item implements IPlantable
@@ -31,11 +32,12 @@ public class ItemSeeds extends Item implements IPlantable
         {
             return false;
         }
-        else if (par2EntityPlayer.canPlayerEdit(par4, par5, par6) && par2EntityPlayer.canPlayerEdit(par4, par5 + 1, par6))
+        else if (par2EntityPlayer.func_82247_a(par4, par5, par6, par7, par1ItemStack) && par2EntityPlayer.func_82247_a(par4, par5 + 1, par6, par7, par1ItemStack))
         {
             int var11 = par3World.getBlockId(par4, par5, par6);
+            Block soil = Block.blocksList[var11];
 
-            if (var11 == this.soilBlockID && par3World.isAirBlock(par4, par5 + 1, par6))
+            if (soil != null && soil.canSustainPlant(par3World, par4, par5, par6, ForgeDirection.UP, this) && par3World.isAirBlock(par4, par5 + 1, par6))
             {
                 par3World.setBlockWithNotify(par4, par5 + 1, par6, this.blockType);
                 --par1ItemStack.stackSize;

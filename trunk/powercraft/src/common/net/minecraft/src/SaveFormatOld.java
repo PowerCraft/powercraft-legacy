@@ -133,14 +133,43 @@ public class SaveFormatOld implements ISaveFormat
      * @args: Takes one argument - the name of the directory of the world to delete. @desc: Delete the world by deleting
      * the associated directory recursively.
      */
-    public void deleteWorldDirectory(String par1Str)
+    public boolean deleteWorldDirectory(String par1Str)
     {
         File var2 = new File(this.savesDirectory, par1Str);
 
-        if (var2.exists())
+        if (!var2.exists())
         {
-            deleteFiles(var2.listFiles());
-            var2.delete();
+            return true;
+        }
+        else
+        {
+            System.out.println("Deleting level " + par1Str);
+
+            for (int var3 = 1; var3 <= 5; ++var3)
+            {
+                System.out.println("Attempt " + var3 + "...");
+
+                if (deleteFiles(var2.listFiles()))
+                {
+                    break;
+                }
+
+                System.out.println("Unsuccessful in deleting contents.");
+
+                if (var3 < 5)
+                {
+                    try
+                    {
+                        Thread.sleep(500L);
+                    }
+                    catch (InterruptedException var5)
+                    {
+                        ;
+                    }
+                }
+            }
+
+            return var2.delete();
         }
     }
 
@@ -148,7 +177,7 @@ public class SaveFormatOld implements ISaveFormat
      * @args: Takes one argument - the list of files and directories to delete. @desc: Deletes the files and directory
      * listed in the list recursively.
      */
-    protected static void deleteFiles(File[] par0ArrayOfFile)
+    protected static boolean deleteFiles(File[] par0ArrayOfFile)
     {
         File[] var1 = par0ArrayOfFile;
         int var2 = par0ArrayOfFile.length;
@@ -156,15 +185,22 @@ public class SaveFormatOld implements ISaveFormat
         for (int var3 = 0; var3 < var2; ++var3)
         {
             File var4 = var1[var3];
+            System.out.println("Deleting " + var4);
 
-            if (var4.isDirectory())
+            if (var4.isDirectory() && !deleteFiles(var4.listFiles()))
             {
-                System.out.println("Deleting " + var4);
-                deleteFiles(var4.listFiles());
+                System.out.println("Couldn\'t delete directory " + var4);
+                return false;
             }
 
-            var4.delete();
+            if (!var4.delete())
+            {
+                System.out.println("Couldn\'t delete file " + var4);
+                return false;
+            }
         }
+
+        return true;
     }
 
     /**

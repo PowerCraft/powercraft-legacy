@@ -11,6 +11,11 @@ public class CommandServerWhitelist extends CommandBase
         return "whitelist";
     }
 
+    public int func_82362_a()
+    {
+        return 3;
+    }
+
     public String getCommandUsage(ICommandSender par1ICommandSender)
     {
         return par1ICommandSender.translateString("commands.whitelist.usage", new Object[0]);

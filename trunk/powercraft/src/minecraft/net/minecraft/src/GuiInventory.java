@@ -57,7 +57,7 @@ public class GuiInventory extends InventoryEffectRenderer
     /**
      * Draw the foreground layer for the GuiContainer (everything in front of the items)
      */
-    protected void drawGuiContainerForegroundLayer()
+    protected void drawGuiContainerForegroundLayer(int par1, int par2)
     {
         this.fontRenderer.drawString(StatCollector.translateToLocal("container.crafting"), 86, 16, 4210752);
     }
@@ -113,6 +113,9 @@ public class GuiInventory extends InventoryEffectRenderer
         GL11.glPopMatrix();
         RenderHelper.disableStandardItemLighting();
         GL11.glDisable(GL12.GL_RESCALE_NORMAL);
+        OpenGlHelper.setActiveTexture(OpenGlHelper.lightmapTexUnit);
+        GL11.glDisable(GL11.GL_TEXTURE_2D);
+        OpenGlHelper.setActiveTexture(OpenGlHelper.defaultTexUnit);
     }
 
     /**

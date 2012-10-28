@@ -191,8 +191,6 @@ public class BlockCocoa extends BlockDirectional
         return Item.dyePowder.shiftedIndex;
     }
 
-    @SideOnly(Side.CLIENT)
-
     /**
      * Get the block's damage value (for use with pick block).
      */

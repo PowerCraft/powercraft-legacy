@@ -257,7 +257,7 @@ public class PC_Utils {
 			return;
 		int guiID = 0;
 		try{
-			Field var6 = EntityPlayerMP.class.getDeclaredFields()[17];
+			Field var6 = EntityPlayerMP.class.getDeclaredFields()[16];
 	        var6.setAccessible(true);
 	        guiID = var6.getInt(player);
 	        guiID = guiID % 100 + 1;

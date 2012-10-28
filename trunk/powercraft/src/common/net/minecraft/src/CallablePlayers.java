@@ -5,24 +5,20 @@ import net.minecraft.server.MinecraftServer;
 
 public class CallablePlayers implements Callable
 {
-    /** Gets Minecraft Server players. */
-    final MinecraftServer minecraftServerPlayers;
+    final MinecraftServer field_82550_a;
 
     public CallablePlayers(MinecraftServer par1MinecraftServer)
     {
-        this.minecraftServerPlayers = par1MinecraftServer;
+        this.field_82550_a = par1MinecraftServer;
     }
 
-    /**
-     * Gets the current player count, maximum player count, and player entity list.
-     */
-    public String getPlayers()
+    public String func_82549_a()
     {
-        return MinecraftServer.getServerConfigurationManager(this.minecraftServerPlayers).getCurrentPlayerCount() + " / " + MinecraftServer.getServerConfigurationManager(this.minecraftServerPlayers).getMaxPlayers() + "; " + MinecraftServer.getServerConfigurationManager(this.minecraftServerPlayers).playerEntityList;
+        return MinecraftServer.getServerConfigurationManager(this.field_82550_a).getCurrentPlayerCount() + " / " + MinecraftServer.getServerConfigurationManager(this.field_82550_a).getMaxPlayers() + "; " + MinecraftServer.getServerConfigurationManager(this.field_82550_a).playerEntityList;
     }
 
     public Object call()
     {
-        return this.getPlayers();
+        return this.func_82549_a();
     }
 }

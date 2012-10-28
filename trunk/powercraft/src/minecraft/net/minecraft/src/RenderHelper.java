@@ -10,6 +10,8 @@ public class RenderHelper
 {
     /** Float buffer used to set OpenGL material colors */
     private static FloatBuffer colorBuffer = GLAllocation.createDirectFloatBuffer(16);
+    private static final Vec3 field_82884_b = Vec3.createVectorHelper(0.20000000298023224D, 1.0D, -0.699999988079071D).normalize();
+    private static final Vec3 field_82885_c = Vec3.createVectorHelper(-0.20000000298023224D, 1.0D, 0.699999988079071D).normalize();
 
     /**
      * Disables the OpenGL lighting properties enabled by enableStandardItemLighting
@@ -35,13 +37,11 @@ public class RenderHelper
         float var0 = 0.4F;
         float var1 = 0.6F;
         float var2 = 0.0F;
-        Vec3 var3 = Vec3.getVec3Pool().getVecFromPool(0.20000000298023224D, 1.0D, -0.699999988079071D).normalize();
-        GL11.glLight(GL11.GL_LIGHT0, GL11.GL_POSITION, setColorBuffer(var3.xCoord, var3.yCoord, var3.zCoord, 0.0D));
+        GL11.glLight(GL11.GL_LIGHT0, GL11.GL_POSITION, setColorBuffer(field_82884_b.xCoord, field_82884_b.yCoord, field_82884_b.zCoord, 0.0D));
         GL11.glLight(GL11.GL_LIGHT0, GL11.GL_DIFFUSE, setColorBuffer(var1, var1, var1, 1.0F));
         GL11.glLight(GL11.GL_LIGHT0, GL11.GL_AMBIENT, setColorBuffer(0.0F, 0.0F, 0.0F, 1.0F));
         GL11.glLight(GL11.GL_LIGHT0, GL11.GL_SPECULAR, setColorBuffer(var2, var2, var2, 1.0F));
-        var3 = Vec3.getVec3Pool().getVecFromPool(-0.20000000298023224D, 1.0D, 0.699999988079071D).normalize();
-        GL11.glLight(GL11.GL_LIGHT1, GL11.GL_POSITION, setColorBuffer(var3.xCoord, var3.yCoord, var3.zCoord, 0.0D));
+        GL11.glLight(GL11.GL_LIGHT1, GL11.GL_POSITION, setColorBuffer(field_82885_c.xCoord, field_82885_c.yCoord, field_82885_c.zCoord, 0.0D));
         GL11.glLight(GL11.GL_LIGHT1, GL11.GL_DIFFUSE, setColorBuffer(var1, var1, var1, 1.0F));
         GL11.glLight(GL11.GL_LIGHT1, GL11.GL_AMBIENT, setColorBuffer(0.0F, 0.0F, 0.0F, 1.0F));
         GL11.glLight(GL11.GL_LIGHT1, GL11.GL_SPECULAR, setColorBuffer(var2, var2, var2, 1.0F));

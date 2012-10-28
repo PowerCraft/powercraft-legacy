@@ -79,7 +79,7 @@ public class EntitySlime extends EntityLiving implements IMob
      */
     protected String getJumpSound()
     {
-        return "mob.slime";
+        return "mob.slime." + (this.getSlimeSize() > 1 ? "big" : "small");
     }
 
     /**
@@ -219,7 +219,7 @@ public class EntitySlime extends EntityLiving implements IMob
 
             if (this.canEntityBeSeen(par1EntityPlayer) && this.getDistanceSqToEntity(par1EntityPlayer) < 0.6D * (double)var2 * 0.6D * (double)var2 && par1EntityPlayer.attackEntityFrom(DamageSource.causeMobDamage(this), this.getAttackStrength()))
             {
-                this.worldObj.playSoundAtEntity(this, "mob.slimeattack", 1.0F, (this.rand.nextFloat() - this.rand.nextFloat()) * 0.2F + 1.0F);
+                this.worldObj.playSoundAtEntity(this, "mob.attack", 1.0F, (this.rand.nextFloat() - this.rand.nextFloat()) * 0.2F + 1.0F);
             }
         }
     }
@@ -245,7 +245,7 @@ public class EntitySlime extends EntityLiving implements IMob
      */
     protected String getHurtSound()
     {
-        return "mob.slime";
+        return "mob.slime." + (this.getSlimeSize() > 1 ? "big" : "small");
     }
 
     /**
@@ -253,7 +253,7 @@ public class EntitySlime extends EntityLiving implements IMob
      */
     protected String getDeathSound()
     {
-        return "mob.slime";
+        return "mob.slime." + (this.getSlimeSize() > 1 ? "big" : "small");
     }
 
     /**
@@ -270,7 +270,28 @@ public class EntitySlime extends EntityLiving implements IMob
     public boolean getCanSpawnHere()
     {
         Chunk var1 = this.worldObj.getChunkFromBlockCoords(MathHelper.floor_double(this.posX), MathHelper.floor_double(this.posZ));
-        return this.worldObj.getWorldInfo().getTerrainType().handleSlimeSpawnReduction(rand, worldObj) ? false : ((this.getSlimeSize() == 1 || this.worldObj.difficultySetting > 0) && this.rand.nextInt(10) == 0 && var1.getRandomWithSeed(987234911L).nextInt(10) == 0 && this.posY < 40.0D ? super.getCanSpawnHere() : false);
+
+        if (this.worldObj.getWorldInfo().getTerrainType().handleSlimeSpawnReduction(rand, worldObj))
+        {
+            return false;
+        }
+        else
+        {
+            if (this.getSlimeSize() == 1 || this.worldObj.difficultySetting > 0)
+            {
+                if (this.worldObj.getBiomeGenForCoords(MathHelper.floor_double(this.posX), MathHelper.floor_double(this.posZ)) == BiomeGenBase.swampland && this.posY > 50.0D && this.posY < 70.0D && this.worldObj.getBlockLightValue(MathHelper.floor_double(this.posX), MathHelper.floor_double(this.posY), MathHelper.floor_double(this.posZ)) <= this.rand.nextInt(8))
+                {
+                    return super.getCanSpawnHere();
+                }
+
+                if (this.rand.nextInt(10) == 0 && var1.getRandomWithSeed(987234911L).nextInt(10) == 0 && this.posY < 40.0D)
+                {
+                    return super.getCanSpawnHere();
+                }
+            }
+
+            return false;
+        }
     }
 
     /**
@@ -295,7 +316,7 @@ public class EntitySlime extends EntityLiving implements IMob
      */
     protected boolean makesSoundOnJump()
     {
-        return this.getSlimeSize() > 1;
+        return this.getSlimeSize() > 0;
     }
 
     /**

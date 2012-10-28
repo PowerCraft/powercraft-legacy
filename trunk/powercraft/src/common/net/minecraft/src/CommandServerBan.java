@@ -10,6 +10,11 @@ public class CommandServerBan extends CommandBase
         return "ban";
     }
 
+    public int func_82362_a()
+    {
+        return 3;
+    }
+
     public String getCommandUsage(ICommandSender par1ICommandSender)
     {
         return par1ICommandSender.translateString("commands.ban.usage", new Object[0]);
@@ -33,7 +38,7 @@ public class CommandServerBan extends CommandBase
 
             if (par2ArrayOfStr.length >= 2)
             {
-                var4.setBanReason(joinString(par2ArrayOfStr, 1));
+                var4.setBanReason(func_82360_a(par1ICommandSender, par2ArrayOfStr, 1));
             }
 
             MinecraftServer.getServer().getConfigurationManager().getBannedPlayers().put(var4);

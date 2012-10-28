@@ -9,12 +9,6 @@ import org.lwjgl.opengl.GL11;
 public class RenderDragon extends RenderLiving
 {
     /**
-     * The entity instance of the dragon. Note: This is a static field in RenderDragon because there is only supposed to
-     * be one dragon
-     */
-    public static EntityDragon entityDragon;
-
-    /**
      * Reloads the dragon model if not equal to 4. Presumably a leftover debugging field.
      */
     private static int updateModelState = 0;
@@ -93,7 +87,7 @@ public class RenderDragon extends RenderLiving
      */
     public void renderDragon(EntityDragon par1EntityDragon, double par2, double par4, double par6, float par8, float par9)
     {
-        entityDragon = par1EntityDragon;
+        BossStatus.func_82824_a(par1EntityDragon, false);
 
         if (updateModelState != 4)
         {

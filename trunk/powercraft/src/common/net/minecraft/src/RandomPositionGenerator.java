@@ -95,7 +95,7 @@ public class RandomPositionGenerator
 
         if (var5)
         {
-            return Vec3.getVec3Pool().getVecFromPool((double)var6, (double)var7, (double)var8);
+            return par0EntityCreature.worldObj.func_82732_R().getVecFromPool((double)var6, (double)var7, (double)var8);
         }
         else
         {

@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-public class VillageCollection
+public class VillageCollection extends WorldSavedData
 {
     private World worldObj;
 
@@ -17,9 +17,28 @@ public class VillageCollection
     private final List villageList = new ArrayList();
     private int tickCounter = 0;
 
+    public VillageCollection(String par1Str)
+    {
+        super(par1Str);
+    }
+
     public VillageCollection(World par1World)
     {
+        super("villages");
         this.worldObj = par1World;
+        this.markDirty();
+    }
+
+    public void func_82566_a(World par1World)
+    {
+        this.worldObj = par1World;
+        Iterator var2 = this.villageList.iterator();
+
+        while (var2.hasNext())
+        {
+            Village var3 = (Village)var2.next();
+            var3.func_82691_a(par1World);
+        }
     }
 
     /**
@@ -54,6 +73,11 @@ public class VillageCollection
         this.removeAnnihilatedVillages();
         this.dropOldestVillagerPosition();
         this.addNewDoorsToVillageOrCreateVillage();
+
+        if (this.tickCounter % 400 == 0)
+        {
+            this.markDirty();
+        }
     }
 
     private void removeAnnihilatedVillages()
@@ -67,6 +91,7 @@ public class VillageCollection
             if (var2.isAnnihilated())
             {
                 var1.remove();
+                this.markDirty();
             }
         }
     }
@@ -149,6 +174,7 @@ public class VillageCollection
                     Village var8 = new Village(this.worldObj);
                     var8.addVillageDoorInfo(var2);
                     this.villageList.add(var8);
+                    this.markDirty();
                 }
 
                 break;
@@ -303,5 +329,42 @@ public class VillageCollection
     {
         int var4 = this.worldObj.getBlockId(par1, par2, par3);
         return var4 == Block.doorWood.blockID;
+    }
+
+    /**
+     * reads in data from the NBTTagCompound into this MapDataBase
+     */
+    public void readFromNBT(NBTTagCompound par1NBTTagCompound)
+    {
+        this.tickCounter = par1NBTTagCompound.getInteger("Tick");
+        NBTTagList var2 = par1NBTTagCompound.getTagList("Villages");
+
+        for (int var3 = 0; var3 < var2.tagCount(); ++var3)
+        {
+            NBTTagCompound var4 = (NBTTagCompound)var2.tagAt(var3);
+            Village var5 = new Village();
+            var5.func_82690_a(var4);
+            this.villageList.add(var5);
+        }
+    }
+
+    /**
+     * write data to NBTTagCompound from this MapDataBase, similar to Entities and TileEntities
+     */
+    public void writeToNBT(NBTTagCompound par1NBTTagCompound)
+    {
+        par1NBTTagCompound.setInteger("Tick", this.tickCounter);
+        NBTTagList var2 = new NBTTagList("Villages");
+        Iterator var3 = this.villageList.iterator();
+
+        while (var3.hasNext())
+        {
+            Village var4 = (Village)var3.next();
+            NBTTagCompound var5 = new NBTTagCompound("Village");
+            var4.func_82689_b(var5);
+            var2.appendTag(var5);
+        }
+
+        par1NBTTagCompound.setTag("Villages", var2);
     }
 }

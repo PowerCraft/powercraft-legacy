@@ -13,6 +13,11 @@ public class BlockSand extends Block
         this.setCreativeTab(CreativeTabs.tabBlock);
     }
 
+    public BlockSand(int par1, int par2, Material par3Material)
+    {
+        super(par1, par2, par3Material);
+    }
+
     /**
      * Called whenever the block is added into the world. Args: world, x, y, z
      */
@@ -54,7 +59,8 @@ public class BlockSand extends Block
             {
                 if (!par1World.isRemote)
                 {
-                    EntityFallingSand var9 = new EntityFallingSand(par1World, (double)((float)par2 + 0.5F), (double)((float)par3 + 0.5F), (double)((float)par4 + 0.5F), this.blockID);
+                    EntityFallingSand var9 = new EntityFallingSand(par1World, (double)((float)par2 + 0.5F), (double)((float)par3 + 0.5F), (double)((float)par4 + 0.5F), this.blockID, par1World.getBlockMetadata(par2, par3, par4));
+                    this.func_82520_a(var9);
                     par1World.spawnEntityInWorld(var9);
                 }
             }
@@ -74,6 +80,8 @@ public class BlockSand extends Block
             }
         }
     }
+
+    protected void func_82520_a(EntityFallingSand par1EntityFallingSand) {}
 
     /**
      * How many world ticks before ticking
@@ -104,4 +112,6 @@ public class BlockSand extends Block
             return var5 == Material.water ? true : var5 == Material.lava;
         }
     }
+
+    public void func_82519_a_(World par1World, int par2, int par3, int par4, int par5) {}
 }

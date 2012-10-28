@@ -9,9 +9,11 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
 import java.net.ServerSocket;
 import java.net.URL;
 import java.net.URLEncoder;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -155,5 +157,60 @@ public class HttpUtil
         }
 
         return var10;
+    }
+
+    @SideOnly(Side.CLIENT)
+    public static String[] func_82718_a(String par0Str, String par1Str)
+    {
+        HashMap var2 = new HashMap();
+        var2.put("user", par0Str);
+        var2.put("password", par1Str);
+        var2.put("version", Integer.valueOf(13));
+        String var3;
+
+        try
+        {
+            var3 = sendPost(new URL("http://login.minecraft.net/"), var2, false);
+        }
+        catch (MalformedURLException var5)
+        {
+            var5.printStackTrace();
+            return null;
+        }
+
+        if (var3 != null && var3.length() != 0)
+        {
+            if (!var3.contains(":"))
+            {
+                if (var3.trim().equals("Bad login"))
+                {
+                    System.out.println("Login failed");
+                }
+                else if (var3.trim().equals("Old version"))
+                {
+                    System.out.println("Outdated launcher");
+                }
+                else if (var3.trim().equals("User not premium"))
+                {
+                    System.out.println(var3);
+                }
+                else
+                {
+                    System.out.println(var3);
+                }
+
+                return null;
+            }
+            else
+            {
+                String[] var4 = var3.split(":");
+                return new String[] {var4[2], var4[3]};
+            }
+        }
+        else
+        {
+            System.out.println("Can\'t connect to minecraft.net");
+            return null;
+        }
     }
 }

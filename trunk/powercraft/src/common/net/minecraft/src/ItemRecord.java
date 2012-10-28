@@ -48,9 +48,9 @@ public class ItemRecord extends Item
     /**
      * allows items to add custom lines of information to the mouseover description
      */
-    public void addInformation(ItemStack par1ItemStack, List par2List)
+    public void addInformation(ItemStack par1ItemStack, EntityPlayer par2EntityPlayer, List par3List, boolean par4)
     {
-        par2List.add("C418 - " + this.recordName);
+        par3List.add("C418 - " + this.recordName);
     }
 
     @SideOnly(Side.CLIENT)

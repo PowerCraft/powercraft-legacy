@@ -266,10 +266,7 @@ public class BlockLever extends Block
     /**
      * Called when the block is clicked by a player. Args: x, y, z, entityPlayer
      */
-    public void onBlockClicked(World par1World, int par2, int par3, int par4, EntityPlayer par5EntityPlayer)
-    {
-        this.onBlockActivated(par1World, par2, par3, par4, par5EntityPlayer, 0, 0.0F, 0.0F, 0.0F);
-    }
+    public void onBlockClicked(World par1World, int par2, int par3, int par4, EntityPlayer par5EntityPlayer) {}
 
     /**
      * Called upon block activation (right click on the block.)
@@ -375,9 +372,9 @@ public class BlockLever extends Block
     /**
      * Is this block indirectly powering the block on the specified side
      */
-    public boolean isIndirectlyPoweringTo(World par1World, int par2, int par3, int par4, int par5)
+    public boolean isIndirectlyPoweringTo(IBlockAccess par1IBlockAccess, int par2, int par3, int par4, int par5)
     {
-        int var6 = par1World.getBlockMetadata(par2, par3, par4);
+        int var6 = par1IBlockAccess.getBlockMetadata(par2, par3, par4);
 
         if ((var6 & 8) == 0)
         {

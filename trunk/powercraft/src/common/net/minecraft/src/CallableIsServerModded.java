@@ -5,25 +5,21 @@ import net.minecraft.server.MinecraftServer;
 
 public class CallableIsServerModded implements Callable
 {
-    /** For checking if Minecraft Server is modded. */
-    final MinecraftServer minecraftServerIsServerModded;
+    final MinecraftServer field_82557_a;
 
     public CallableIsServerModded(MinecraftServer par1MinecraftServer)
     {
-        this.minecraftServerIsServerModded = par1MinecraftServer;
+        this.field_82557_a = par1MinecraftServer;
     }
 
-    /**
-     * Gets if Minecraft Server is Modded.
-     */
-    public String getServerIsModded()
+    public String func_82556_a()
     {
-        String var1 = this.minecraftServerIsServerModded.getServerModName();
+        String var1 = this.field_82557_a.getServerModName();
         return !var1.equals("vanilla") ? "Definitely; \'" + var1 + "\'" : "Unknown (can\'t tell)";
     }
 
     public Object call()
     {
-        return this.getServerIsModded();
+        return this.func_82556_a();
     }
 }

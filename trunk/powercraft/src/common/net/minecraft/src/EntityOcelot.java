@@ -344,4 +344,18 @@ public class EntityOcelot extends EntityTameable
     {
         return this.isTamed() ? "entity.Cat.name" : super.getEntityName();
     }
+
+    public void func_82163_bD()
+    {
+        if (this.worldObj.rand.nextInt(7) == 0)
+        {
+            for (int var1 = 0; var1 < 2; ++var1)
+            {
+                EntityOcelot var2 = new EntityOcelot(this.worldObj);
+                var2.setLocationAndAngles(this.posX, this.posY, this.posZ, this.rotationYaw, 0.0F);
+                var2.setGrowingAge(-24000);
+                this.worldObj.spawnEntityInWorld(var2);
+            }
+        }
+    }
 }

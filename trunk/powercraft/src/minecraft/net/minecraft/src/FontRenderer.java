@@ -651,7 +651,7 @@ public class FontRenderer
                         var3 = true;
                     }
 
-                    var6 = this.getCharWidth(var5);
+                    var6 = 0;
                 }
 
                 var2 += var6;
@@ -993,6 +993,11 @@ public class FontRenderer
     public void setUnicodeFlag(boolean par1)
     {
         this.unicodeFlag = par1;
+    }
+
+    public boolean func_82883_a()
+    {
+        return this.unicodeFlag;
     }
 
     /**

@@ -51,6 +51,14 @@ public class DataWatcher
         }
     }
 
+    public void func_82709_a(int par1, int par2)
+    {
+        WatchableObject var3 = new WatchableObject(par2, par1, (Object)null);
+        this.field_75694_d.writeLock().lock();
+        this.watchedObjects.put(Integer.valueOf(par1), var3);
+        this.field_75694_d.writeLock().unlock();
+    }
+
     /**
      * gets the bytevalue of a watchable object
      */
@@ -78,6 +86,11 @@ public class DataWatcher
     public String getWatchableObjectString(int par1)
     {
         return (String)this.getWatchedObject(par1).getObject();
+    }
+
+    public ItemStack func_82710_f(int par1)
+    {
+        return (ItemStack)this.getWatchedObject(par1).getObject();
     }
 
     /**
@@ -116,6 +129,12 @@ public class DataWatcher
             var3.setWatched(true);
             this.objectChanged = true;
         }
+    }
+
+    public void func_82708_h(int par1)
+    {
+        WatchableObject.func_82711_a(this.getWatchedObject(par1), true);
+        this.objectChanged = true;
     }
 
     public boolean hasChanges()
@@ -190,6 +209,26 @@ public class DataWatcher
         par1DataOutputStream.writeByte(127);
     }
 
+    public List func_75685_c()
+    {
+        ArrayList var1 = null;
+        this.field_75694_d.readLock().lock();
+        WatchableObject var3;
+
+        for (Iterator var2 = this.watchedObjects.values().iterator(); var2.hasNext(); var1.add(var3))
+        {
+            var3 = (WatchableObject)var2.next();
+
+            if (var1 == null)
+            {
+                var1 = new ArrayList();
+            }
+        }
+
+        this.field_75694_d.readLock().unlock();
+        return var1;
+    }
+
     private static void writeWatchableObject(DataOutputStream par0DataOutputStream, WatchableObject par1WatchableObject) throws IOException
     {
         int var2 = (par1WatchableObject.getObjectType() << 5 | par1WatchableObject.getDataValueId() & 31) & 255;
@@ -214,9 +253,18 @@ public class DataWatcher
                 break;
             case 5:
                 ItemStack var4 = (ItemStack)par1WatchableObject.getObject();
-                par0DataOutputStream.writeShort(var4.getItem().shiftedIndex);
-                par0DataOutputStream.writeByte(var4.stackSize);
-                par0DataOutputStream.writeShort(var4.getItemDamage());
+
+                if (var4 == null)
+                {
+                    par0DataOutputStream.writeShort(-1);
+                }
+                else
+                {
+                    par0DataOutputStream.writeShort(var4.getItem().shiftedIndex);
+                    par0DataOutputStream.writeByte(var4.stackSize);
+                    par0DataOutputStream.writeShort(var4.getItemDamage());
+                }
+
                 break;
             case 6:
                 ChunkCoordinates var3 = (ChunkCoordinates)par1WatchableObject.getObject();
@@ -260,41 +308,29 @@ public class DataWatcher
                     break;
                 case 5:
                     short var6 = par0DataInputStream.readShort();
-                    byte var7 = par0DataInputStream.readByte();
-                    short var8 = par0DataInputStream.readShort();
-                    var5 = new WatchableObject(var3, var4, new ItemStack(var6, var7, var8));
+
+                    if (var6 > -1)
+                    {
+                        byte var10 = par0DataInputStream.readByte();
+                        short var11 = par0DataInputStream.readShort();
+                        var5 = new WatchableObject(var3, var4, new ItemStack(var6, var10, var11));
+                    }
+                    else
+                    {
+                        var5 = new WatchableObject(var3, var4, (Object)null);
+                    }
+
                     break;
                 case 6:
+                    int var7 = par0DataInputStream.readInt();
+                    int var8 = par0DataInputStream.readInt();
                     int var9 = par0DataInputStream.readInt();
-                    int var10 = par0DataInputStream.readInt();
-                    int var11 = par0DataInputStream.readInt();
-                    var5 = new WatchableObject(var3, var4, new ChunkCoordinates(var9, var10, var11));
+                    var5 = new WatchableObject(var3, var4, new ChunkCoordinates(var7, var8, var9));
             }
 
             var1.add(var5);
         }
 
-        return var1;
-    }
-
-    @SideOnly(Side.CLIENT)
-    public List func_75685_c()
-    {
-        ArrayList var1 = null;
-        this.field_75694_d.readLock().lock();
-        WatchableObject var3;
-
-        for (Iterator var2 = this.watchedObjects.values().iterator(); var2.hasNext(); var1.add(var3))
-        {
-            var3 = (WatchableObject)var2.next();
-
-            if (var1 == null)
-            {
-                var1 = new ArrayList();
-            }
-        }
-
-        this.field_75694_d.readLock().unlock();
         return var1;
     }
 

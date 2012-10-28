@@ -142,7 +142,7 @@ public class ItemInWorldManager
      */
     public void onBlockClicked(int par1, int par2, int par3, int par4)
     {
-        if (!this.gameType.isAdventure())
+        if (!this.gameType.func_82752_c() || this.thisPlayerMP.func_82246_f(par1, par2, par3))
         {
             PlayerInteractEvent event = ForgeEventFactory.onPlayerInteract(thisPlayerMP, Action.LEFT_CLICK_BLOCK, par1, par2, par3, par4);
             if (event.isCanceled())
@@ -274,7 +274,7 @@ public class ItemInWorldManager
      */
     public boolean tryHarvestBlock(int par1, int par2, int par3)
     {
-        if (this.gameType.isAdventure())
+        if (this.gameType.func_82752_c() && !this.thisPlayerMP.func_82246_f(par1, par2, par3))
         {
             return false;
         }
@@ -307,7 +307,7 @@ public class ItemInWorldManager
 
                 if (var7 != null)
                 {
-                    var7.func_77941_a(this.theWorld, var4, par1, par2, par3, this.thisPlayerMP);
+                    var7.onBlockDestroyed(this.theWorld, var4, par1, par2, par3, this.thisPlayerMP);
 
                     if (var7.stackSize == 0)
                     {
@@ -336,7 +336,7 @@ public class ItemInWorldManager
         int var5 = par3ItemStack.getItemDamage();
         ItemStack var6 = par3ItemStack.useItemRightClick(par2World, par1EntityPlayer);
 
-        if (var6 == par3ItemStack && (var6 == null || var6.stackSize == var4) && (var6 == null || var6.getMaxItemUseDuration() <= 0))
+        if (var6 == par3ItemStack && (var6 == null || var6.stackSize == var4 && var6.getMaxItemUseDuration() <= 0 && var6.getItemDamage() == var5))
         {
             return false;
         }
@@ -347,13 +347,22 @@ public class ItemInWorldManager
             if (this.isCreative())
             {
                 var6.stackSize = var4;
-                var6.setItemDamage(var5);
+
+                if (var6.isItemStackDamageable())
+                {
+                    var6.setItemDamage(var5);
+                }
             }
 
             if (var6.stackSize == 0)
             {
                 par1EntityPlayer.inventory.mainInventory[par1EntityPlayer.inventory.currentItem] = null;
                 MinecraftForge.EVENT_BUS.post(new PlayerDestroyItemEvent(thisPlayerMP, var6));
+            }
+
+            if (!par1EntityPlayer.isUsingItem())
+            {
+                ((EntityPlayerMP)par1EntityPlayer).sendContainerToPlayer(par1EntityPlayer.inventorySlots);
             }
 
             return true;

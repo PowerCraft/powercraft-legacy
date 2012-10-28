@@ -6,14 +6,6 @@ import net.minecraft.server.MinecraftServer;
 
 public class CommandServerMessage extends CommandBase
 {
-    /**
-     * Returns true if the given command sender is allowed to use this command.
-     */
-    public boolean canCommandSenderUseCommand(ICommandSender par1ICommandSender)
-    {
-        return (!MinecraftServer.getServer().isSinglePlayer() || MinecraftServer.getServer().getCurrentPlayerCount() > 1) && super.canCommandSenderUseCommand(par1ICommandSender);
-    }
-
     public List getCommandAliases()
     {
         return Arrays.asList(new String[] {"w", "msg"});
@@ -24,6 +16,11 @@ public class CommandServerMessage extends CommandBase
         return "tell";
     }
 
+    public int func_82362_a()
+    {
+        return 0;
+    }
+
     public void processCommand(ICommandSender par1ICommandSender, String[] par2ArrayOfStr)
     {
         if (par2ArrayOfStr.length < 2)
@@ -32,7 +29,7 @@ public class CommandServerMessage extends CommandBase
         }
         else
         {
-            EntityPlayerMP var3 = MinecraftServer.getServer().getConfigurationManager().getPlayerForUsername(par2ArrayOfStr[0]);
+            EntityPlayerMP var3 = func_82359_c(par1ICommandSender, par2ArrayOfStr[0]);
 
             if (var3 == null)
             {
@@ -44,7 +41,7 @@ public class CommandServerMessage extends CommandBase
             }
             else
             {
-                String var4 = joinString(par2ArrayOfStr, 1);
+                String var4 = func_82361_a(par1ICommandSender, par2ArrayOfStr, 1, !(par1ICommandSender instanceof EntityPlayer));
                 var3.sendChatToPlayer("\u00a77\u00a7o" + var3.translateString("commands.message.display.incoming", new Object[] {par1ICommandSender.getCommandSenderName(), var4}));
                 par1ICommandSender.sendChatToPlayer("\u00a77\u00a7o" + par1ICommandSender.translateString("commands.message.display.outgoing", new Object[] {var3.getCommandSenderName(), var4}));
             }
@@ -57,5 +54,10 @@ public class CommandServerMessage extends CommandBase
     public List addTabCompletionOptions(ICommandSender par1ICommandSender, String[] par2ArrayOfStr)
     {
         return getListOfStringsMatchingLastWord(par2ArrayOfStr, MinecraftServer.getServer().getAllUsernames());
+    }
+
+    public boolean func_82358_a(int par1)
+    {
+        return par1 == 0;
     }
 }

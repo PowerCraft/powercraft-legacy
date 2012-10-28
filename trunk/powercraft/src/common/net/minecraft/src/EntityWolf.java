@@ -80,15 +80,15 @@ public class EntityWolf extends EntityTameable
         super.entityInit();
         this.dataWatcher.addObject(18, new Integer(this.getHealth()));
         this.dataWatcher.addObject(19, new Byte((byte)0));
+        this.dataWatcher.addObject(20, new Byte((byte)BlockCloth.getBlockFromDye(1)));
     }
 
     /**
-     * returns if this entity triggers Block.onEntityWalking on the blocks they walk on. used for spiders and wolves to
-     * prevent them from trampling crops
+     * Plays step sound at given x, y, z for the entity
      */
-    protected boolean canTriggerWalking()
+    protected void playStepSound(int var1, int var2, int var3, int var4)
     {
-        return false;
+        this.worldObj.playSoundAtEntity(this, "mob.wolf.step", 0.15F, 1.0F);
     }
 
     @SideOnly(Side.CLIENT)
@@ -108,6 +108,7 @@ public class EntityWolf extends EntityTameable
     {
         super.writeEntityToNBT(par1NBTTagCompound);
         par1NBTTagCompound.setBoolean("Angry", this.isAngry());
+        par1NBTTagCompound.setByte("CollarColor", (byte)this.func_82186_bH());
     }
 
     /**
@@ -117,6 +118,11 @@ public class EntityWolf extends EntityTameable
     {
         super.readEntityFromNBT(par1NBTTagCompound);
         this.setAngry(par1NBTTagCompound.getBoolean("Angry"));
+
+        if (par1NBTTagCompound.hasKey("CollarColor"))
+        {
+            this.func_82185_r(par1NBTTagCompound.getByte("CollarColor"));
+        }
     }
 
     /**
@@ -330,25 +336,44 @@ public class EntityWolf extends EntityTameable
 
         if (this.isTamed())
         {
-            if (var2 != null && Item.itemsList[var2.itemID] instanceof ItemFood)
+            if (var2 != null)
             {
-                ItemFood var3 = (ItemFood)Item.itemsList[var2.itemID];
-
-                if (var3.isWolfsFavoriteMeat() && this.dataWatcher.getWatchableObjectInt(18) < 20)
+                if (Item.itemsList[var2.itemID] instanceof ItemFood)
                 {
-                    if (!par1EntityPlayer.capabilities.isCreativeMode)
+                    ItemFood var3 = (ItemFood)Item.itemsList[var2.itemID];
+
+                    if (var3.isWolfsFavoriteMeat() && this.dataWatcher.getWatchableObjectInt(18) < 20)
                     {
-                        --var2.stackSize;
+                        if (!par1EntityPlayer.capabilities.isCreativeMode)
+                        {
+                            --var2.stackSize;
+                        }
+
+                        this.heal(var3.getHealAmount());
+
+                        if (var2.stackSize <= 0)
+                        {
+                            par1EntityPlayer.inventory.setInventorySlotContents(par1EntityPlayer.inventory.currentItem, (ItemStack)null);
+                        }
+
+                        return true;
                     }
+                }
+                else if (var2.itemID == Item.dyePowder.shiftedIndex)
+                {
+                    int var4 = BlockCloth.getBlockFromDye(var2.getItemDamage());
 
-                    this.heal(var3.getHealAmount());
-
-                    if (var2.stackSize <= 0)
+                    if (var4 != this.func_82186_bH())
                     {
-                        par1EntityPlayer.inventory.setInventorySlotContents(par1EntityPlayer.inventory.currentItem, (ItemStack)null);
-                    }
+                        this.func_82185_r(var4);
 
-                    return true;
+                        if (!par1EntityPlayer.capabilities.isCreativeMode && var2.stackSize-- <= 0)
+                        {
+                            par1EntityPlayer.inventory.setInventorySlotContents(par1EntityPlayer.inventory.currentItem, (ItemStack)null);
+                        }
+
+                        return true;
+                    }
                 }
             }
 
@@ -397,6 +422,14 @@ public class EntityWolf extends EntityTameable
         return super.interact(par1EntityPlayer);
     }
 
+    /**
+     * Checks if the parameter is an wheat item.
+     */
+    public boolean isWheat(ItemStack par1ItemStack)
+    {
+        return par1ItemStack == null ? false : (!(Item.itemsList[par1ItemStack.itemID] instanceof ItemFood) ? false : ((ItemFood)Item.itemsList[par1ItemStack.itemID]).isWolfsFavoriteMeat());
+    }
+
     @SideOnly(Side.CLIENT)
     public void handleHealthUpdate(byte par1)
     {
@@ -416,14 +449,6 @@ public class EntityWolf extends EntityTameable
     public float getTailRotation()
     {
         return this.isAngry() ? 1.5393804F : (this.isTamed() ? (0.55F - (float)(20 - this.dataWatcher.getWatchableObjectInt(18)) * 0.02F) * (float)Math.PI : ((float)Math.PI / 5F));
-    }
-
-    /**
-     * Checks if the parameter is an wheat item.
-     */
-    public boolean isWheat(ItemStack par1ItemStack)
-    {
-        return par1ItemStack == null ? false : (!(Item.itemsList[par1ItemStack.itemID] instanceof ItemFood) ? false : ((ItemFood)Item.itemsList[par1ItemStack.itemID]).isWolfsFavoriteMeat());
     }
 
     /**
@@ -457,6 +482,16 @@ public class EntityWolf extends EntityTameable
         {
             this.dataWatcher.updateObject(16, Byte.valueOf((byte)(var2 & -3)));
         }
+    }
+
+    public int func_82186_bH()
+    {
+        return this.dataWatcher.getWatchableObjectByte(20) & 15;
+    }
+
+    public void func_82185_r(int par1)
+    {
+        this.dataWatcher.updateObject(20, Byte.valueOf((byte)(par1 & 15)));
     }
 
     /**

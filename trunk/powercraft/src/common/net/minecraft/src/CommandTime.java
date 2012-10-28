@@ -10,6 +10,11 @@ public class CommandTime extends CommandBase
         return "time";
     }
 
+    public int func_82362_a()
+    {
+        return 2;
+    }
+
     public String getCommandUsage(ICommandSender par1ICommandSender)
     {
         return par1ICommandSender.translateString("commands.time.usage", new Object[0]);
@@ -68,7 +73,7 @@ public class CommandTime extends CommandBase
     {
         for (int var3 = 0; var3 < MinecraftServer.getServer().worldServers.length; ++var3)
         {
-            MinecraftServer.getServer().worldServers[var3].setTime((long)par2);
+            MinecraftServer.getServer().worldServers[var3].setWorldTime((long)par2);
         }
     }
 
@@ -80,7 +85,7 @@ public class CommandTime extends CommandBase
         for (int var3 = 0; var3 < MinecraftServer.getServer().worldServers.length; ++var3)
         {
             WorldServer var4 = MinecraftServer.getServer().worldServers[var3];
-            var4.setTime(var4.getWorldTime() + (long)par2);
+            var4.setWorldTime(var4.getWorldTime() + (long)par2);
         }
     }
 }

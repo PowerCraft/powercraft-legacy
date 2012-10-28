@@ -76,12 +76,4 @@ public class Packet43Experience extends Packet
     {
         return true;
     }
-
-    /**
-     * if this returns false, processPacket is deffered for processReadPackets to handle
-     */
-    public boolean isWritePacket()
-    {
-        return true;
-    }
 }

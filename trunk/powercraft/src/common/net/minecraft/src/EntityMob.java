@@ -2,9 +2,6 @@ package net.minecraft.src;
 
 public abstract class EntityMob extends EntityCreature implements IMob
 {
-    /** How much damage this mob's attacks deal */
-    protected int attackStrength = 2;
-
     public EntityMob(World par1World)
     {
         super(par1World);
@@ -17,6 +14,7 @@ public abstract class EntityMob extends EntityCreature implements IMob
      */
     public void onLivingUpdate()
     {
+        this.func_82168_bl();
         float var1 = this.getBrightness(1.0F);
 
         if (var1 > 0.5F)
@@ -81,7 +79,7 @@ public abstract class EntityMob extends EntityCreature implements IMob
 
     public boolean attackEntityAsMob(Entity par1Entity)
     {
-        int var2 = this.attackStrength;
+        int var2 = this.func_82193_c(par1Entity);
 
         if (this.isPotionActive(Potion.damageBoost))
         {
@@ -93,7 +91,34 @@ public abstract class EntityMob extends EntityCreature implements IMob
             var2 -= 2 << this.getActivePotionEffect(Potion.weakness).getAmplifier();
         }
 
-        return par1Entity.attackEntityFrom(DamageSource.causeMobDamage(this), var2);
+        int var3 = 0;
+
+        if (par1Entity instanceof EntityLiving)
+        {
+            var2 += EnchantmentHelper.getEnchantmentModifierLiving(this, (EntityLiving)par1Entity);
+            var3 += EnchantmentHelper.getKnockbackModifier(this, (EntityLiving)par1Entity);
+        }
+
+        boolean var4 = par1Entity.attackEntityFrom(DamageSource.causeMobDamage(this), var2);
+
+        if (var4)
+        {
+            if (var3 > 0)
+            {
+                par1Entity.addVelocity((double)(-MathHelper.sin(this.rotationYaw * (float)Math.PI / 180.0F) * (float)var3 * 0.5F), 0.1D, (double)(MathHelper.cos(this.rotationYaw * (float)Math.PI / 180.0F) * (float)var3 * 0.5F));
+                this.motionX *= 0.6D;
+                this.motionZ *= 0.6D;
+            }
+
+            int var5 = EnchantmentHelper.getFireAspectModifier(this, (EntityLiving)par1Entity);
+
+            if (var5 > 0)
+            {
+                par1Entity.setFire(var5 * 4);
+            }
+        }
+
+        return var4;
     }
 
     /**
@@ -152,5 +177,10 @@ public abstract class EntityMob extends EntityCreature implements IMob
     public boolean getCanSpawnHere()
     {
         return this.isValidLightLevel() && super.getCanSpawnHere();
+    }
+
+    public int func_82193_c(Entity par1Entity)
+    {
+        return 2;
     }
 }

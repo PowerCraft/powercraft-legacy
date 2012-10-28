@@ -11,6 +11,11 @@ public class CommandServerOp extends CommandBase
         return "op";
     }
 
+    public int func_82362_a()
+    {
+        return 3;
+    }
+
     public String getCommandUsage(ICommandSender par1ICommandSender)
     {
         return par1ICommandSender.translateString("commands.op.usage", new Object[0]);

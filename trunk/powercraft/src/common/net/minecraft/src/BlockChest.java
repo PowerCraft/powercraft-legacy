@@ -454,7 +454,7 @@ public class BlockChest extends BlockContainer
      * Looks for a sitting ocelot within certain bounds. Such an ocelot is considered to be blocking access to the
      * chest.
      */
-    public static boolean isOcelotBlockingChest(World par0World, int par1, int par2, int par3)
+    private static boolean isOcelotBlockingChest(World par0World, int par1, int par2, int par3)
     {
         Iterator var4 = par0World.getEntitiesWithinAABB(EntityOcelot.class, AxisAlignedBB.getAABBPool().addOrModifyAABBInPool((double)par1, (double)(par2 + 1), (double)par3, (double)(par1 + 1), (double)(par2 + 2), (double)(par3 + 1))).iterator();
         EntityOcelot var6;

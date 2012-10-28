@@ -70,9 +70,9 @@ public class BlockDetectorRail extends BlockRail
     /**
      * Is this block indirectly powering the block on the specified side
      */
-    public boolean isIndirectlyPoweringTo(World par1World, int par2, int par3, int par4, int par5)
+    public boolean isIndirectlyPoweringTo(IBlockAccess par1IBlockAccess, int par2, int par3, int par4, int par5)
     {
-        return (par1World.getBlockMetadata(par2, par3, par4) & 8) == 0 ? false : par5 == 1;
+        return (par1IBlockAccess.getBlockMetadata(par2, par3, par4) & 8) == 0 ? false : par5 == 1;
     }
 
     /**

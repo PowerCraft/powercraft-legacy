@@ -25,9 +25,11 @@ public final class WorldSettings
 
     /** True if the Bonus Chest is enabled. */
     private boolean bonusChestEnabled;
+    private String field_82751_h;
 
     public WorldSettings(long par1, EnumGameType par3EnumGameType, boolean par4, boolean par5, WorldType par6WorldType)
     {
+        this.field_82751_h = "";
         this.seed = par1;
         this.theGameType = par3EnumGameType;
         this.mapFeaturesEnabled = par4;
@@ -46,6 +48,12 @@ public final class WorldSettings
     public WorldSettings enableBonusChest()
     {
         this.bonusChestEnabled = true;
+        return this;
+    }
+
+    public WorldSettings func_82750_a(String par1Str)
+    {
+        this.field_82751_h = par1Str;
         return this;
     }
 
@@ -119,5 +127,10 @@ public final class WorldSettings
     public static EnumGameType getGameTypeById(int par0)
     {
         return EnumGameType.getByID(par0);
+    }
+
+    public String func_82749_j()
+    {
+        return this.field_82751_h;
     }
 }

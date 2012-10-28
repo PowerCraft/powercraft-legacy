@@ -8,10 +8,10 @@ public class ItemTool extends Item
 {
     /** Array of blocks the tool has extra effect against. */
     private Block[] blocksEffectiveAgainst;
-    protected float efficiencyOnProperMaterial = 4.0F;
+    public float efficiencyOnProperMaterial = 4.0F;
 
     /** Damage versus entities. */
-    private int damageVsEntity;
+    public int damageVsEntity;
 
     /** The material this tool is made from. */
     protected EnumToolMaterial toolMaterial;
@@ -99,6 +99,11 @@ public class ItemTool extends Item
     public String func_77861_e()
     {
         return this.toolMaterial.toString();
+    }
+
+    public boolean func_82789_a(ItemStack par1ItemStack, ItemStack par2ItemStack)
+    {
+        return this.toolMaterial.func_82844_f() == par2ItemStack.itemID ? true : super.func_82789_a(par1ItemStack, par2ItemStack);
     }
 
     /** FORGE: Overridden to allow custom tool effectiveness */

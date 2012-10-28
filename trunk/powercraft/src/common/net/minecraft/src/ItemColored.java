@@ -21,19 +21,9 @@ public class ItemColored extends ItemBlock
     }
 
     @SideOnly(Side.CLIENT)
-    public int getColorFromDamage(int par1, int par2)
+    public int func_82790_a(ItemStack par1ItemStack, int par2)
     {
-        return this.blockRef.getRenderColor(par1);
-    }
-
-    @SideOnly(Side.CLIENT)
-
-    /**
-     * Gets an icon index based on an item's damage value
-     */
-    public int getIconFromDamage(int par1)
-    {
-        return this.blockRef.getBlockTextureFromSideAndMetadata(0, par1);
+        return this.blockRef.getRenderColor(par1ItemStack.getItemDamage());
     }
 
     /**
@@ -51,6 +41,16 @@ public class ItemColored extends ItemBlock
     {
         this.blockNames = par1ArrayOfStr;
         return this;
+    }
+
+    @SideOnly(Side.CLIENT)
+
+    /**
+     * Gets an icon index based on an item's damage value
+     */
+    public int getIconFromDamage(int par1)
+    {
+        return this.blockRef.getBlockTextureFromSideAndMetadata(0, par1);
     }
 
     public String getItemNameIS(ItemStack par1ItemStack)

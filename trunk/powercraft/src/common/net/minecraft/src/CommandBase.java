@@ -3,10 +3,16 @@ package net.minecraft.src;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import net.minecraft.server.MinecraftServer;
 
 public abstract class CommandBase implements ICommand
 {
     private static IAdminCommand theAdmin = null;
+
+    public int func_82362_a()
+    {
+        return 4;
+    }
 
     public String getCommandUsage(ICommandSender par1ICommandSender)
     {
@@ -23,7 +29,7 @@ public abstract class CommandBase implements ICommand
      */
     public boolean canCommandSenderUseCommand(ICommandSender par1ICommandSender)
     {
-        return par1ICommandSender.canCommandSenderUseCommand(this.getCommandName());
+        return par1ICommandSender.canCommandSenderUseCommand(this.func_82362_a(), this.getCommandName());
     }
 
     /**
@@ -78,14 +84,26 @@ public abstract class CommandBase implements ICommand
         }
     }
 
+    public static double func_82363_b(ICommandSender par0ICommandSender, String par1Str)
+    {
+        try
+        {
+            return Double.parseDouble(par1Str);
+        }
+        catch (NumberFormatException var3)
+        {
+            throw new NumberInvalidException("commands.generic.double.invalid", new Object[] {par1Str});
+        }
+    }
+
     /**
      * Returns the given ICommandSender as a EntityPlayer or throw an exception.
      */
-    public static EntityPlayer getCommandSenderAsPlayer(ICommandSender par0ICommandSender)
+    public static EntityPlayerMP getCommandSenderAsPlayer(ICommandSender par0ICommandSender)
     {
-        if (par0ICommandSender instanceof EntityPlayer)
+        if (par0ICommandSender instanceof EntityPlayerMP)
         {
-            return (EntityPlayer)par0ICommandSender;
+            return (EntityPlayerMP)par0ICommandSender;
         }
         else
         {
@@ -93,24 +111,65 @@ public abstract class CommandBase implements ICommand
         }
     }
 
-    /**
-     * Joins the given string array, starting with the given index, into a space seperated string.
-     */
-    public static String joinString(String[] par0ArrayOfStr, int par1)
+    public static EntityPlayerMP func_82359_c(ICommandSender par0ICommandSender, String par1Str)
     {
-        StringBuilder var2 = new StringBuilder();
+        EntityPlayerMP var2 = PlayerSelector.func_82386_a(par0ICommandSender, par1Str);
 
-        for (int var3 = par1; var3 < par0ArrayOfStr.length; ++var3)
+        if (var2 != null)
         {
-            if (var3 > par1)
+            return var2;
+        }
+        else
+        {
+            var2 = MinecraftServer.getServer().getConfigurationManager().getPlayerForUsername(par1Str);
+
+            if (var2 == null)
             {
-                var2.append(" ");
+                throw new PlayerNotFoundException();
+            }
+            else
+            {
+                return var2;
+            }
+        }
+    }
+
+    public static String func_82360_a(ICommandSender par0ICommandSender, String[] par1ArrayOfStr, int par2)
+    {
+        return func_82361_a(par0ICommandSender, par1ArrayOfStr, par2, false);
+    }
+
+    public static String func_82361_a(ICommandSender par0ICommandSender, String[] par1ArrayOfStr, int par2, boolean par3)
+    {
+        StringBuilder var4 = new StringBuilder();
+
+        for (int var5 = par2; var5 < par1ArrayOfStr.length; ++var5)
+        {
+            if (var5 > par2)
+            {
+                var4.append(" ");
             }
 
-            var2.append(par0ArrayOfStr[var3]);
+            String var6 = par1ArrayOfStr[var5];
+
+            if (par3)
+            {
+                String var7 = PlayerSelector.func_82385_b(par0ICommandSender, var6);
+
+                if (var7 != null)
+                {
+                    var6 = var7;
+                }
+                else if (PlayerSelector.func_82378_b(var6))
+                {
+                    throw new PlayerNotFoundException();
+                }
+            }
+
+            var4.append(var6);
         }
 
-        return var2.toString();
+        return var4.toString();
     }
 
     /**
@@ -195,6 +254,11 @@ public abstract class CommandBase implements ICommand
         }
 
         return var3;
+    }
+
+    public boolean func_82358_a(int par1)
+    {
+        return false;
     }
 
     public static void notifyAdmins(ICommandSender par0ICommandSender, String par1Str, Object ... par2ArrayOfObj)

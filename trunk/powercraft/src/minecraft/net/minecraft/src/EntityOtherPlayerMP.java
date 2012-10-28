@@ -186,8 +186,13 @@ public class EntityOtherPlayerMP extends EntityPlayer
     /**
      * Returns true if the command sender is allowed to use the given command.
      */
-    public boolean canCommandSenderUseCommand(String par1Str)
+    public boolean canCommandSenderUseCommand(int par1, String par2Str)
     {
         return false;
+    }
+
+    public ChunkCoordinates func_82114_b()
+    {
+        return new ChunkCoordinates(MathHelper.floor_double(this.posX + 0.5D), MathHelper.floor_double(this.posY + 0.5D), MathHelper.floor_double(this.posZ + 0.5D));
     }
 }

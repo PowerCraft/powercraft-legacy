@@ -35,7 +35,7 @@ public class EntityAIMoveTowardsTarget extends EntityAIBase
         }
         else
         {
-            Vec3 var1 = RandomPositionGenerator.findRandomTargetBlockTowards(this.theEntity, 16, 7, Vec3.getVec3Pool().getVecFromPool(this.targetEntity.posX, this.targetEntity.posY, this.targetEntity.posZ));
+            Vec3 var1 = RandomPositionGenerator.findRandomTargetBlockTowards(this.theEntity, 16, 7, this.theEntity.worldObj.func_82732_R().getVecFromPool(this.targetEntity.posX, this.targetEntity.posY, this.targetEntity.posZ));
 
             if (var1 == null)
             {

@@ -119,7 +119,13 @@ public class RenderLiving extends Render
                     this.renderPassModel.setLivingAnimations(par1EntityLiving, var16, var15, par9);
                     this.renderPassModel.render(par1EntityLiving, var16, var15, var13, var11 - var10, var12, var14);
 
-                    if (var18 == 15)
+                    if ((var18 & 240) == 16)
+                    {
+                        this.func_82408_c(par1EntityLiving, var17, par9);
+                        this.renderPassModel.render(par1EntityLiving, var16, var15, var13, var11 - var10, var12, var14);
+                    }
+
+                    if ((var18 & 15) == 15)
                     {
                         var19 = (float)par1EntityLiving.ticksExisted + par9;
                         this.loadTexture("%blur%/misc/glint.png");
@@ -161,6 +167,7 @@ public class RenderLiving extends Render
                 }
             }
 
+            GL11.glDepthMask(true);
             this.renderEquippedItems(par1EntityLiving, par9);
             float var26 = par1EntityLiving.getBrightness(par9);
             var18 = this.getColorMultiplier(par1EntityLiving, var26, par9);
@@ -236,8 +243,11 @@ public class RenderLiving extends Render
      */
     protected void renderModel(EntityLiving par1EntityLiving, float par2, float par3, float par4, float par5, float par6, float par7)
     {
-        this.loadDownloadableImageTexture(par1EntityLiving.skinUrl, par1EntityLiving.getTexture());
-        this.mainModel.render(par1EntityLiving, par2, par3, par4, par5, par6, par7);
+        if (!par1EntityLiving.func_82150_aj())
+        {
+            this.loadDownloadableImageTexture(par1EntityLiving.skinUrl, par1EntityLiving.getTexture());
+            this.mainModel.render(par1EntityLiving, par2, par3, par4, par5, par6, par7);
+        }
     }
 
     /**
@@ -293,6 +303,8 @@ public class RenderLiving extends Render
     {
         return -1;
     }
+
+    protected void func_82408_c(EntityLiving par1EntityLiving, int par2, float par3) {}
 
     protected float getDeathMaxRotation(EntityLiving par1EntityLiving)
     {

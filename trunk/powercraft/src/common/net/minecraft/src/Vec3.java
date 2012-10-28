@@ -5,7 +5,8 @@ import cpw.mods.fml.common.asm.SideOnly;
 
 public class Vec3
 {
-    private static final ThreadLocal myVec3LocalPool = new Vec3LocalPool();
+    public static final Vec3Pool field_82592_a = new Vec3Pool(-1, -1);
+    public final Vec3Pool myVec3LocalPool;
 
     /** X coordinate of Vec3D */
     public double xCoord;
@@ -22,34 +23,30 @@ public class Vec3
      */
     public static Vec3 createVectorHelper(double par0, double par2, double par4)
     {
-        return new Vec3(par0, par2, par4);
+        return new Vec3(field_82592_a, par0, par2, par4);
     }
 
-    public static Vec3Pool getVec3Pool()
+    protected Vec3(Vec3Pool par1Vec3Pool, double par2, double par4, double par6)
     {
-        return (Vec3Pool)myVec3LocalPool.get();
-    }
-
-    protected Vec3(double par1, double par3, double par5)
-    {
-        if (par1 == -0.0D)
+        if (par2 == -0.0D)
         {
-            par1 = 0.0D;
+            par2 = 0.0D;
         }
 
-        if (par3 == -0.0D)
+        if (par4 == -0.0D)
         {
-            par3 = 0.0D;
+            par4 = 0.0D;
         }
 
-        if (par5 == -0.0D)
+        if (par6 == -0.0D)
         {
-            par5 = 0.0D;
+            par6 = 0.0D;
         }
 
-        this.xCoord = par1;
-        this.yCoord = par3;
-        this.zCoord = par5;
+        this.xCoord = par2;
+        this.yCoord = par4;
+        this.zCoord = par6;
+        this.myVec3LocalPool = par1Vec3Pool;
     }
 
     /**
@@ -63,13 +60,23 @@ public class Vec3
         return this;
     }
 
+    @SideOnly(Side.CLIENT)
+
+    /**
+     * Returns a new vector with the result of the specified vector minus this.
+     */
+    public Vec3 subtract(Vec3 par1Vec3)
+    {
+        return this.myVec3LocalPool.getVecFromPool(par1Vec3.xCoord - this.xCoord, par1Vec3.yCoord - this.yCoord, par1Vec3.zCoord - this.zCoord);
+    }
+
     /**
      * Normalizes the vector to a length of 1 (except if it is the zero vector)
      */
     public Vec3 normalize()
     {
         double var1 = (double)MathHelper.sqrt_double(this.xCoord * this.xCoord + this.yCoord * this.yCoord + this.zCoord * this.zCoord);
-        return var1 < 1.0E-4D ? getVec3Pool().getVecFromPool(0.0D, 0.0D, 0.0D) : getVec3Pool().getVecFromPool(this.xCoord / var1, this.yCoord / var1, this.zCoord / var1);
+        return var1 < 1.0E-4D ? this.myVec3LocalPool.getVecFromPool(0.0D, 0.0D, 0.0D) : this.myVec3LocalPool.getVecFromPool(this.xCoord / var1, this.yCoord / var1, this.zCoord / var1);
     }
 
     public double dotProduct(Vec3 par1Vec3)
@@ -80,21 +87,11 @@ public class Vec3
     @SideOnly(Side.CLIENT)
 
     /**
-     * Returns a new vector with the result of the specified vector minus this.
-     */
-    public Vec3 subtract(Vec3 par1Vec3)
-    {
-        return getVec3Pool().getVecFromPool(par1Vec3.xCoord - this.xCoord, par1Vec3.yCoord - this.yCoord, par1Vec3.zCoord - this.zCoord);
-    }
-
-    @SideOnly(Side.CLIENT)
-
-    /**
      * Returns a new vector with the result of this vector x the specified vector.
      */
     public Vec3 crossProduct(Vec3 par1Vec3)
     {
-        return getVec3Pool().getVecFromPool(this.yCoord * par1Vec3.zCoord - this.zCoord * par1Vec3.yCoord, this.zCoord * par1Vec3.xCoord - this.xCoord * par1Vec3.zCoord, this.xCoord * par1Vec3.yCoord - this.yCoord * par1Vec3.xCoord);
+        return this.myVec3LocalPool.getVecFromPool(this.yCoord * par1Vec3.zCoord - this.zCoord * par1Vec3.yCoord, this.zCoord * par1Vec3.xCoord - this.xCoord * par1Vec3.zCoord, this.xCoord * par1Vec3.yCoord - this.yCoord * par1Vec3.xCoord);
     }
 
     /**
@@ -103,7 +100,7 @@ public class Vec3
      */
     public Vec3 addVector(double par1, double par3, double par5)
     {
-        return getVec3Pool().getVecFromPool(this.xCoord + par1, this.yCoord + par3, this.zCoord + par5);
+        return this.myVec3LocalPool.getVecFromPool(this.xCoord + par1, this.yCoord + par3, this.zCoord + par5);
     }
 
     /**
@@ -164,7 +161,7 @@ public class Vec3
         else
         {
             double var10 = (par2 - this.xCoord) / var4;
-            return var10 >= 0.0D && var10 <= 1.0D ? getVec3Pool().getVecFromPool(this.xCoord + var4 * var10, this.yCoord + var6 * var10, this.zCoord + var8 * var10) : null;
+            return var10 >= 0.0D && var10 <= 1.0D ? this.myVec3LocalPool.getVecFromPool(this.xCoord + var4 * var10, this.yCoord + var6 * var10, this.zCoord + var8 * var10) : null;
         }
     }
 
@@ -185,7 +182,7 @@ public class Vec3
         else
         {
             double var10 = (par2 - this.yCoord) / var6;
-            return var10 >= 0.0D && var10 <= 1.0D ? getVec3Pool().getVecFromPool(this.xCoord + var4 * var10, this.yCoord + var6 * var10, this.zCoord + var8 * var10) : null;
+            return var10 >= 0.0D && var10 <= 1.0D ? this.myVec3LocalPool.getVecFromPool(this.xCoord + var4 * var10, this.yCoord + var6 * var10, this.zCoord + var8 * var10) : null;
         }
     }
 
@@ -206,7 +203,7 @@ public class Vec3
         else
         {
             double var10 = (par2 - this.zCoord) / var8;
-            return var10 >= 0.0D && var10 <= 1.0D ? getVec3Pool().getVecFromPool(this.xCoord + var4 * var10, this.yCoord + var6 * var10, this.zCoord + var8 * var10) : null;
+            return var10 >= 0.0D && var10 <= 1.0D ? this.myVec3LocalPool.getVecFromPool(this.xCoord + var4 * var10, this.yCoord + var6 * var10, this.zCoord + var8 * var10) : null;
         }
     }
 

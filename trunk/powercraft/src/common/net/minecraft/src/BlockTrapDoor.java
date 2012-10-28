@@ -96,7 +96,15 @@ public class BlockTrapDoor extends Block
     public void setBlockBoundsForBlockRender(int par1)
     {
         float var2 = 0.1875F;
-        this.setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, var2, 1.0F);
+
+        if ((par1 & 8) != 0)
+        {
+            this.setBlockBounds(0.0F, 1.0F - var2, 0.0F, 1.0F, 1.0F, 1.0F);
+        }
+        else
+        {
+            this.setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, var2, 1.0F);
+        }
 
         if (isTrapdoorOpen(par1))
         {
@@ -125,10 +133,7 @@ public class BlockTrapDoor extends Block
     /**
      * Called when the block is clicked by a player. Args: x, y, z, entityPlayer
      */
-    public void onBlockClicked(World par1World, int par2, int par3, int par4, EntityPlayer par5EntityPlayer)
-    {
-        this.onBlockActivated(par1World, par2, par3, par4, par5EntityPlayer, 0, 0.0F, 0.0F, 0.0F);
-    }
+    public void onBlockClicked(World par1World, int par2, int par3, int par4, EntityPlayer par5EntityPlayer) {}
 
     /**
      * Called upon block activation (right click on the block.)
@@ -222,7 +227,7 @@ public class BlockTrapDoor extends Block
      */
     public void updateBlockMetadata(World par1World, int par2, int par3, int par4, int par5, float par6, float par7, float par8)
     {
-        byte var9 = 0;
+        int var9 = 0;
 
         if (par5 == 2)
         {
@@ -244,7 +249,14 @@ public class BlockTrapDoor extends Block
             var9 = 3;
         }
 
-        par1World.setBlockMetadataWithNotify(par2, par3, par4, var9);
+        int var10 = Block.trapdoor.blockID;
+
+        if (par5 != 1 && par5 != 0 && par7 > 0.5F)
+        {
+            var9 |= 8;
+        }
+
+        par1World.setBlockAndMetadataWithNotify(par2, par3, par4, var10, var9);
     }
 
     /**

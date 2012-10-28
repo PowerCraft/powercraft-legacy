@@ -52,9 +52,9 @@ public class PCco_SlotDirectCrafting extends Slot implements PC_ISlotWithBackgro
 	}
 
 	@Override
-	public void onPickupFromSlot(ItemStack itemstack) {
+	public void func_82870_a(EntityPlayer player, ItemStack itemstack) {
 		// itemstack.onCrafting(thePlayer.worldObj, thePlayer);
-		super.onPickupFromSlot(itemstack);
+		super.func_82870_a(player, itemstack);
 		
 		doCrafting();
 		updateAvailability();

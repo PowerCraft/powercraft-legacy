@@ -24,8 +24,8 @@ public class ThreadDownloadImageData
      */
     public boolean textureSetupComplete = false;
 
-    public ThreadDownloadImageData(String par1Str, ImageBuffer par2ImageBuffer)
+    public ThreadDownloadImageData(String par1, IImageBuffer par2IImageBuffer)
     {
-        (new ThreadDownloadImage(this, par1Str, par2ImageBuffer)).start();
+        (new ThreadDownloadImage(this, par1, par2IImageBuffer)).start();
     }
 }

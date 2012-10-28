@@ -70,30 +70,29 @@ public class BlockLog extends Block
     }
 
     /**
-     * Called when the block is placed in the world.
+     * called before onBlockPlacedBy by ItemBlock and ItemReed
      */
-    public void onBlockPlacedBy(World par1World, int par2, int par3, int par4, EntityLiving par5EntityLiving)
+    public void updateBlockMetadata(World par1World, int par2, int par3, int par4, int par5, float par6, float par7, float par8)
     {
-        int var6 = par1World.getBlockMetadata(par2, par3, par4) & 3;
-        int var7 = BlockPistonBase.determineOrientation(par1World, par2, par3, par4, (EntityPlayer)par5EntityLiving);
-        byte var8 = 0;
+        int var9 = par1World.getBlockMetadata(par2, par3, par4) & 3;
+        byte var10 = 0;
 
-        switch (var7)
+        switch (par5)
         {
             case 0:
             case 1:
-                var8 = 0;
+                var10 = 0;
                 break;
             case 2:
             case 3:
-                var8 = 8;
+                var10 = 8;
                 break;
             case 4:
             case 5:
-                var8 = 4;
+                var10 = 4;
         }
 
-        par1World.setBlockMetadataWithNotify(par2, par3, par4, var6 | var8);
+        par1World.setBlockMetadataWithNotify(par2, par3, par4, var9 | var10);
     }
 
     /**
@@ -109,7 +108,7 @@ public class BlockLog extends Block
     /**
      * Determines the damage on the item the block drops. Used in cloth and wood.
      */
-    protected int damageDropped(int par1)
+    public int damageDropped(int par1)
     {
         return par1 & 3;
     }

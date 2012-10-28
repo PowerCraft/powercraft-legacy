@@ -34,7 +34,7 @@ public class ItemLilyPad extends ItemColored
                     return par1ItemStack;
                 }
 
-                if (!par3EntityPlayer.canPlayerEdit(var5, var6, var7))
+                if (!par3EntityPlayer.func_82247_a(var5, var6, var7, var4.sideHit, par1ItemStack))
                 {
                     return par1ItemStack;
                 }
@@ -55,8 +55,8 @@ public class ItemLilyPad extends ItemColored
     }
 
     @SideOnly(Side.CLIENT)
-    public int getColorFromDamage(int par1, int par2)
+    public int func_82790_a(ItemStack par1ItemStack, int par2)
     {
-        return Block.waterlily.getRenderColor(par1);
+        return Block.waterlily.getRenderColor(par1ItemStack.getItemDamage());
     }
 }

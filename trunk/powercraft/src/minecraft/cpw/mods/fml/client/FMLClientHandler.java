@@ -43,6 +43,7 @@ import cpw.mods.fml.client.modloader.ModLoaderClientHelper;
 import cpw.mods.fml.client.registry.KeyBindingRegistry;
 import cpw.mods.fml.client.registry.RenderingRegistry;
 import cpw.mods.fml.common.DummyModContainer;
+import cpw.mods.fml.common.DuplicateModsFoundException;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.common.IFMLSidedHandler;
@@ -107,11 +108,14 @@ public class FMLClientHandler implements IFMLSidedHandler
 
     private WrongMinecraftVersionException wrongMC;
 
+    private CustomModLoadingErrorDisplayException customError;
+
+	private DuplicateModsFoundException dupesFound;
+
     /**
-     * Called to start the whole game off from
-     * {@link MinecraftServer#startServer}
+     * Called to start the whole game off
      *
-     * @param minecraftServer
+     * @param minecraft The minecraft instance being launched
      */
     public void beginMinecraftLoading(Minecraft minecraft)
     {
@@ -149,9 +153,18 @@ public class FMLClientHandler implements IFMLSidedHandler
         {
             wrongMC = wrong;
         }
+        catch (DuplicateModsFoundException dupes)
+        {
+        	dupesFound = dupes;
+        }
         catch (MissingModsException missing)
         {
             modsMissing = missing;
+        }
+        catch (CustomModLoadingErrorDisplayException custom)
+        {
+            FMLLog.log(Level.SEVERE, custom, "A custom exception was thrown by a mod, the game will now halt");
+            customError = custom;
         }
         catch (LoaderException le)
         {
@@ -174,13 +187,19 @@ public class FMLClientHandler implements IFMLSidedHandler
     @SuppressWarnings("deprecation")
     public void finishMinecraftLoading()
     {
-        if (modsMissing != null || wrongMC != null)
+        if (modsMissing != null || wrongMC != null || customError!=null || dupesFound!=null)
         {
             return;
         }
         try
         {
             Loader.instance().initializeMods();
+        }
+        catch (CustomModLoadingErrorDisplayException custom)
+        {
+            FMLLog.log(Level.SEVERE, custom, "A custom exception was thrown by a mod, the game will now halt");
+            customError = custom;
+            return;
         }
         catch (LoaderException le)
         {
@@ -203,6 +222,14 @@ public class FMLClientHandler implements IFMLSidedHandler
         else if (modsMissing != null)
         {
             client.displayGuiScreen(new GuiModsMissing(modsMissing));
+        }
+        else if (dupesFound != null)
+        {
+        	client.displayGuiScreen(new GuiDupesFound(dupesFound));
+        }
+        else if (customError != null)
+        {
+            client.displayGuiScreen(new GuiCustomModLoadingErrorScreen(customError));
         }
         else
         {
@@ -394,7 +421,10 @@ public class FMLClientHandler implements IFMLSidedHandler
     @Override
     public void sendPacket(Packet packet)
     {
-        client.thePlayer.sendQueue.addToSendQueue(packet);
+        if(client.thePlayer != null)
+        {
+            client.thePlayer.sendQueue.addToSendQueue(packet);
+        }
     }
 
     @Override

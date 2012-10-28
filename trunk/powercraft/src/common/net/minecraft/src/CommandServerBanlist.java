@@ -10,6 +10,11 @@ public class CommandServerBanlist extends CommandBase
         return "banlist";
     }
 
+    public int func_82362_a()
+    {
+        return 3;
+    }
+
     /**
      * Returns true if the given command sender is allowed to use this command.
      */

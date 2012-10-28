@@ -42,7 +42,7 @@ public class ModelQuadruped extends ModelBase
      */
     public void render(Entity par1Entity, float par2, float par3, float par4, float par5, float par6, float par7)
     {
-        this.setRotationAngles(par2, par3, par4, par5, par6, par7);
+        this.setRotationAngles(par2, par3, par4, par5, par6, par7, par1Entity);
 
         if (this.isChild)
         {
@@ -77,7 +77,7 @@ public class ModelQuadruped extends ModelBase
      * and legs, where par1 represents the time(so that arms and legs swing back and forth) and par2 represents how
      * "far" arms and legs can swing at most.
      */
-    public void setRotationAngles(float par1, float par2, float par3, float par4, float par5, float par6)
+    public void setRotationAngles(float par1, float par2, float par3, float par4, float par5, float par6, Entity par7Entity)
     {
         this.head.rotateAngleX = par5 / (180F / (float)Math.PI);
         this.head.rotateAngleY = par4 / (180F / (float)Math.PI);

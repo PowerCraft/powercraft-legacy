@@ -1,5 +1,7 @@
 package net.minecraft.src;
 
+import java.util.Iterator;
+
 public class MapInfo
 {
     /** Reference for EntityPlayer object in MapInfo */
@@ -17,6 +19,8 @@ public class MapInfo
      * a cache of the result from getPlayersOnMap so that it is not resent when nothing changes
      */
     private byte[] lastPlayerLocationOnMap;
+    public int field_82569_d;
+    private boolean field_82570_i;
 
     /** reference in MapInfo to MapData object */
     final MapData mapDataObj;
@@ -28,6 +32,7 @@ public class MapInfo
         this.field_76210_c = new int[128];
         this.currentRandomNumber = 0;
         this.ticksUntilPlayerLocationMapUpdate = 0;
+        this.field_82570_i = false;
         this.entityplayerObj = par2EntityPlayer;
 
         for (int var3 = 0; var3 < this.field_76209_b.length; ++var3)
@@ -43,73 +48,84 @@ public class MapInfo
      */
     public byte[] getPlayersOnMap(ItemStack par1ItemStack)
     {
-        int var3;
-        int var10;
+        byte[] var2;
 
-        if (--this.ticksUntilPlayerLocationMapUpdate < 0)
+        if (!this.field_82570_i)
         {
-            this.ticksUntilPlayerLocationMapUpdate = 4;
-            byte[] var2 = new byte[this.mapDataObj.playersVisibleOnMap.size() * 3 + 1];
-            var2[0] = 1;
+            var2 = new byte[] {(byte)2, this.mapDataObj.scale};
+            this.field_82570_i = true;
+            return var2;
+        }
+        else
+        {
+            int var3;
+            int var10;
 
-            for (var3 = 0; var3 < this.mapDataObj.playersVisibleOnMap.size(); ++var3)
+            if (--this.ticksUntilPlayerLocationMapUpdate < 0)
             {
-                MapCoord var4 = (MapCoord)this.mapDataObj.playersVisibleOnMap.get(var3);
-                var2[var3 * 3 + 1] = (byte)(var4.iconSize + (var4.iconRotation & 15) * 16);
-                var2[var3 * 3 + 2] = var4.centerX;
-                var2[var3 * 3 + 3] = var4.centerZ;
-            }
+                this.ticksUntilPlayerLocationMapUpdate = 4;
+                var2 = new byte[this.mapDataObj.playersVisibleOnMap.size() * 3 + 1];
+                var2[0] = 1;
+                var3 = 0;
 
-            boolean var9 = true;
-
-            if (this.lastPlayerLocationOnMap != null && this.lastPlayerLocationOnMap.length == var2.length)
-            {
-                for (var10 = 0; var10 < var2.length; ++var10)
+                for (Iterator var4 = this.mapDataObj.playersVisibleOnMap.values().iterator(); var4.hasNext(); ++var3)
                 {
-                    if (var2[var10] != this.lastPlayerLocationOnMap[var10])
+                    MapCoord var5 = (MapCoord)var4.next();
+                    var2[var3 * 3 + 1] = (byte)(var5.iconSize << 4 | var5.iconRotation & 15);
+                    var2[var3 * 3 + 2] = var5.centerX;
+                    var2[var3 * 3 + 3] = var5.centerZ;
+                }
+
+                boolean var9 = !par1ItemStack.func_82839_y();
+
+                if (this.lastPlayerLocationOnMap != null && this.lastPlayerLocationOnMap.length == var2.length)
+                {
+                    for (var10 = 0; var10 < var2.length; ++var10)
                     {
-                        var9 = false;
-                        break;
+                        if (var2[var10] != this.lastPlayerLocationOnMap[var10])
+                        {
+                            var9 = false;
+                            break;
+                        }
                     }
                 }
-            }
-            else
-            {
-                var9 = false;
-            }
-
-            if (!var9)
-            {
-                this.lastPlayerLocationOnMap = var2;
-                return var2;
-            }
-        }
-
-        for (int var8 = 0; var8 < 10; ++var8)
-        {
-            var3 = this.currentRandomNumber * 11 % 128;
-            ++this.currentRandomNumber;
-
-            if (this.field_76209_b[var3] >= 0)
-            {
-                var10 = this.field_76210_c[var3] - this.field_76209_b[var3] + 1;
-                int var5 = this.field_76209_b[var3];
-                byte[] var6 = new byte[var10 + 3];
-                var6[0] = 0;
-                var6[1] = (byte)var3;
-                var6[2] = (byte)var5;
-
-                for (int var7 = 0; var7 < var6.length - 3; ++var7)
+                else
                 {
-                    var6[var7 + 3] = this.mapDataObj.colors[(var7 + var5) * 128 + var3];
+                    var9 = false;
                 }
 
-                this.field_76210_c[var3] = -1;
-                this.field_76209_b[var3] = -1;
-                return var6;
+                if (!var9)
+                {
+                    this.lastPlayerLocationOnMap = var2;
+                    return var2;
+                }
             }
-        }
 
-        return null;
+            for (int var8 = 0; var8 < 1; ++var8)
+            {
+                var3 = this.currentRandomNumber++ * 11 % 128;
+
+                if (this.field_76209_b[var3] >= 0)
+                {
+                    int var11 = this.field_76210_c[var3] - this.field_76209_b[var3] + 1;
+                    var10 = this.field_76209_b[var3];
+                    byte[] var6 = new byte[var11 + 3];
+                    var6[0] = 0;
+                    var6[1] = (byte)var3;
+                    var6[2] = (byte)var10;
+
+                    for (int var7 = 0; var7 < var6.length - 3; ++var7)
+                    {
+                        var6[var7 + 3] = this.mapDataObj.colors[(var7 + var10) * 128 + var3];
+                    }
+
+                    this.field_76210_c[var3] = -1;
+                    this.field_76209_b[var3] = -1;
+                    return var6;
+                }
+            }
+
+            return null;
+        }
     }
 }

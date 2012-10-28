@@ -74,7 +74,7 @@ public class mod_PowerCraftTransport extends PC_Module {
 
 	@Override
 	protected void initBlocks() {
-		belt = (PC_Block)PC_Utils.register(this, 464, PCtr_BlockBelt.class);
+		//belt = (PC_Block)PC_Utils.register(this, 464, PCtr_BlockBelt.class);
 
 	}
 

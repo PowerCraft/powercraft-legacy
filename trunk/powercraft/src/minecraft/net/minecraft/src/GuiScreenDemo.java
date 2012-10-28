@@ -34,7 +34,7 @@ public class GuiScreenDemo extends GuiScreen
                 {
                     Class var2 = Class.forName("java.awt.Desktop");
                     Object var3 = var2.getMethod("getDesktop", new Class[0]).invoke((Object)null, new Object[0]);
-                    var2.getMethod("browse", new Class[] {URI.class}).invoke(var3, new Object[] {new URI("http://www.minecraft.net/")});
+                    var2.getMethod("browse", new Class[] {URI.class}).invoke(var3, new Object[] {new URI("http://www.minecraft.net/store?source=demo")});
                 }
                 catch (Throwable var4)
                 {

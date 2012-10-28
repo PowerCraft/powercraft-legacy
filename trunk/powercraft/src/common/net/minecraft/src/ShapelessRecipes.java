@@ -26,34 +26,34 @@ public class ShapelessRecipes implements IRecipe
     /**
      * Used to check if a recipe matches current crafting inventory
      */
-    public boolean matches(InventoryCrafting par1InventoryCrafting)
+    public boolean matches(InventoryCrafting par1InventoryCrafting, World par2World)
     {
-        ArrayList var2 = new ArrayList(this.recipeItems);
+        ArrayList var3 = new ArrayList(this.recipeItems);
 
-        for (int var3 = 0; var3 < 3; ++var3)
+        for (int var4 = 0; var4 < 3; ++var4)
         {
-            for (int var4 = 0; var4 < 3; ++var4)
+            for (int var5 = 0; var5 < 3; ++var5)
             {
-                ItemStack var5 = par1InventoryCrafting.getStackInRowAndColumn(var4, var3);
+                ItemStack var6 = par1InventoryCrafting.getStackInRowAndColumn(var5, var4);
 
-                if (var5 != null)
+                if (var6 != null)
                 {
-                    boolean var6 = false;
-                    Iterator var7 = var2.iterator();
+                    boolean var7 = false;
+                    Iterator var8 = var3.iterator();
 
-                    while (var7.hasNext())
+                    while (var8.hasNext())
                     {
-                        ItemStack var8 = (ItemStack)var7.next();
+                        ItemStack var9 = (ItemStack)var8.next();
 
-                        if (var5.itemID == var8.itemID && (var8.getItemDamage() == -1 || var5.getItemDamage() == var8.getItemDamage()))
+                        if (var6.itemID == var9.itemID && (var9.getItemDamage() == -1 || var6.getItemDamage() == var9.getItemDamage()))
                         {
-                            var6 = true;
-                            var2.remove(var8);
+                            var7 = true;
+                            var3.remove(var9);
                             break;
                         }
                     }
 
-                    if (!var6)
+                    if (!var7)
                     {
                         return false;
                     }
@@ -61,7 +61,7 @@ public class ShapelessRecipes implements IRecipe
             }
         }
 
-        return var2.isEmpty();
+        return var3.isEmpty();
     }
 
     /**

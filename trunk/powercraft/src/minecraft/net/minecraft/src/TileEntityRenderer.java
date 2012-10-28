@@ -57,6 +57,8 @@ public class TileEntityRenderer
         this.specialRendererMap.put(TileEntityEnderChest.class, new TileEntityEnderChestRenderer());
         this.specialRendererMap.put(TileEntityEnchantmentTable.class, new RenderEnchantmentTable());
         this.specialRendererMap.put(TileEntityEndPortal.class, new RenderEndPortal());
+        this.specialRendererMap.put(TileEntityBeacon.class, new TileEntityBeaconRenderer());
+        this.specialRendererMap.put(TileEntitySkull.class, new TileEntitySkullRenderer());
         Iterator var1 = this.specialRendererMap.values().iterator();
 
         while (var1.hasNext())
@@ -126,9 +128,7 @@ public class TileEntityRenderer
      */
     public void renderTileEntity(TileEntity par1TileEntity, float par2)
     {
-        double dist = par1TileEntity.getRenderDistance();
-        dist *= dist;
-        if (par1TileEntity.getDistanceFrom(this.playerX, this.playerY, this.playerZ) < dist)
+        if (par1TileEntity.getDistanceFrom(this.playerX, this.playerY, this.playerZ) < par1TileEntity.func_82115_m())
         {
             int var3 = this.worldObj.getLightBrightnessForSkyBlocks(par1TileEntity.xCoord, par1TileEntity.yCoord, par1TileEntity.zCoord, 0);
             int var4 = var3 % 65536;

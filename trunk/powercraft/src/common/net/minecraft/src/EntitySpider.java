@@ -46,15 +46,6 @@ public class EntitySpider extends EntityMob
     }
 
     /**
-     * returns if this entity triggers Block.onEntityWalking on the blocks they walk on. used for spiders and wolves to
-     * prevent them from trampling crops
-     */
-    protected boolean canTriggerWalking()
-    {
-        return false;
-    }
-
-    /**
      * Finds the closest player within 16 blocks to attack, or null if this Entity isn't interested in attacking
      * (Animals, Spiders at day, peaceful PigZombies).
      */
@@ -78,7 +69,7 @@ public class EntitySpider extends EntityMob
      */
     protected String getLivingSound()
     {
-        return "mob.spider";
+        return "mob.spider.say";
     }
 
     /**
@@ -86,7 +77,7 @@ public class EntitySpider extends EntityMob
      */
     protected String getHurtSound()
     {
-        return "mob.spider";
+        return "mob.spider.say";
     }
 
     /**
@@ -94,7 +85,15 @@ public class EntitySpider extends EntityMob
      */
     protected String getDeathSound()
     {
-        return "mob.spiderdeath";
+        return "mob.spider.death";
+    }
+
+    /**
+     * Plays step sound at given x, y, z for the entity
+     */
+    protected void playStepSound(int var1, int var2, int var3, int var4)
+    {
+        this.worldObj.playSoundAtEntity(this, "mob.spider.step", 0.15F, 1.0F);
     }
 
     /**
@@ -213,5 +212,17 @@ public class EntitySpider extends EntityMob
         }
 
         this.dataWatcher.updateObject(16, Byte.valueOf(var2));
+    }
+
+    public void func_82163_bD()
+    {
+        if (this.worldObj.rand.nextInt(100) == 0)
+        {
+            EntitySkeleton var1 = new EntitySkeleton(this.worldObj);
+            var1.setLocationAndAngles(this.posX, this.posY, this.posZ, this.rotationYaw, 0.0F);
+            var1.func_82163_bD();
+            this.worldObj.spawnEntityInWorld(var1);
+            var1.mountEntity(this);
+        }
     }
 }

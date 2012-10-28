@@ -13,6 +13,12 @@ public abstract class EntityFlying extends EntityLiving
     protected void fall(float par1) {}
 
     /**
+     * Takes in the distance the entity has fallen this tick and whether its on the ground to update the fall distance
+     * and deal fall damage if landing on the ground.  Args: distanceFallenThisTick, onGround
+     */
+    protected void updateFallState(double par1, boolean par3) {}
+
+    /**
      * Moves the entity based on the specified heading.  Args: strafe, forward
      */
     public void moveEntityWithHeading(float par1, float par2)

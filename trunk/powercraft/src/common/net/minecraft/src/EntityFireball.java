@@ -5,7 +5,7 @@ import cpw.mods.fml.common.asm.SideOnly;
 import java.util.Iterator;
 import java.util.List;
 
-public class EntityFireball extends Entity
+public abstract class EntityFireball extends Entity
 {
     private int xTile = -1;
     private int yTile = -1;
@@ -112,15 +112,15 @@ public class EntityFireball extends Entity
                 ++this.ticksInAir;
             }
 
-            Vec3 var15 = Vec3.getVec3Pool().getVecFromPool(this.posX, this.posY, this.posZ);
-            Vec3 var2 = Vec3.getVec3Pool().getVecFromPool(this.posX + this.motionX, this.posY + this.motionY, this.posZ + this.motionZ);
+            Vec3 var15 = this.worldObj.func_82732_R().getVecFromPool(this.posX, this.posY, this.posZ);
+            Vec3 var2 = this.worldObj.func_82732_R().getVecFromPool(this.posX + this.motionX, this.posY + this.motionY, this.posZ + this.motionZ);
             MovingObjectPosition var3 = this.worldObj.rayTraceBlocks(var15, var2);
-            var15 = Vec3.getVec3Pool().getVecFromPool(this.posX, this.posY, this.posZ);
-            var2 = Vec3.getVec3Pool().getVecFromPool(this.posX + this.motionX, this.posY + this.motionY, this.posZ + this.motionZ);
+            var15 = this.worldObj.func_82732_R().getVecFromPool(this.posX, this.posY, this.posZ);
+            var2 = this.worldObj.func_82732_R().getVecFromPool(this.posX + this.motionX, this.posY + this.motionY, this.posZ + this.motionZ);
 
             if (var3 != null)
             {
-                var2 = Vec3.getVec3Pool().getVecFromPool(var3.hitVec.xCoord, var3.hitVec.yCoord, var3.hitVec.zCoord);
+                var2 = this.worldObj.func_82732_R().getVecFromPool(var3.hitVec.xCoord, var3.hitVec.yCoord, var3.hitVec.zCoord);
             }
 
             Entity var4 = null;
@@ -165,9 +165,9 @@ public class EntityFireball extends Entity
             this.posY += this.motionY;
             this.posZ += this.motionZ;
             float var16 = MathHelper.sqrt_double(this.motionX * this.motionX + this.motionZ * this.motionZ);
-            this.rotationYaw = (float)(Math.atan2(this.motionX, this.motionZ) * 180.0D / Math.PI);
+            this.rotationYaw = (float)(Math.atan2(this.motionZ, this.motionX) * 180.0D / Math.PI) + 90.0F;
 
-            for (this.rotationPitch = (float)(Math.atan2(this.motionY, (double)var16) * 180.0D / Math.PI); this.rotationPitch - this.prevRotationPitch < -180.0F; this.prevRotationPitch -= 360.0F)
+            for (this.rotationPitch = (float)(Math.atan2((double)var16, this.motionY) * 180.0D / Math.PI) - 90.0F; this.rotationPitch - this.prevRotationPitch < -180.0F; this.prevRotationPitch -= 360.0F)
             {
                 ;
             }
@@ -189,7 +189,7 @@ public class EntityFireball extends Entity
 
             this.rotationPitch = this.prevRotationPitch + (this.rotationPitch - this.prevRotationPitch) * 0.2F;
             this.rotationYaw = this.prevRotationYaw + (this.rotationYaw - this.prevRotationYaw) * 0.2F;
-            float var17 = 0.95F;
+            float var17 = this.func_82341_c();
 
             if (this.isInWater())
             {
@@ -213,22 +213,15 @@ public class EntityFireball extends Entity
         }
     }
 
+    protected float func_82341_c()
+    {
+        return 0.95F;
+    }
+
     /**
      * Called when this EntityFireball hits a block or entity.
      */
-    protected void onImpact(MovingObjectPosition par1MovingObjectPosition)
-    {
-        if (!this.worldObj.isRemote)
-        {
-            if (par1MovingObjectPosition.entityHit != null)
-            {
-                par1MovingObjectPosition.entityHit.attackEntityFrom(DamageSource.causeFireballDamage(this, this.shootingEntity), 6);
-            }
-
-            this.worldObj.newExplosion((Entity)null, this.posX, this.posY, this.posZ, 1.0F, true);
-            this.setDead();
-        }
-    }
+    protected abstract void onImpact(MovingObjectPosition var1);
 
     /**
      * (abstract) Protected helper method to write subclass entity data to NBT.

@@ -6,10 +6,22 @@ import java.io.IOException;
 
 public class Packet254ServerPing extends Packet
 {
+    public int field_82559_a = 0;
+
     /**
      * Abstract. Reads the raw packet data from the data stream.
      */
-    public void readPacketData(DataInputStream par1DataInputStream) throws IOException {}
+    public void readPacketData(DataInputStream par1DataInputStream) throws IOException
+    {
+        try
+        {
+            this.field_82559_a = par1DataInputStream.readByte();
+        }
+        catch (Throwable var3)
+        {
+            this.field_82559_a = 0;
+        }
+    }
 
     /**
      * Abstract. Writes the raw packet data to the data stream.

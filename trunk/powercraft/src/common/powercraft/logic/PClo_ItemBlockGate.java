@@ -5,6 +5,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import net.minecraft.src.CreativeTabs;
+import net.minecraft.src.EntityPlayer;
 import net.minecraft.src.ItemStack;
 import net.minecraft.src.MathHelper;
 import powercraft.core.PC_ItemBlock;
@@ -63,8 +64,8 @@ public class PClo_ItemBlockGate extends PC_ItemBlock {
 	}
 
 	@Override
-	public void addInformation(ItemStack itemstack, List list) {
-		list.add(getDescriptionForGate(itemstack.getItemDamage()));
+	public void addInformation(ItemStack itemStack, EntityPlayer player, List list, boolean b) {
+		list.add(getDescriptionForGate(itemStack.getItemDamage()));
 	}
 
 	/**

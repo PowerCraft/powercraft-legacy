@@ -2,19 +2,14 @@ package net.minecraft.src;
 
 import cpw.mods.fml.common.Side;
 import cpw.mods.fml.common.asm.SideOnly;
-import java.util.Random;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
 
 @SideOnly(Side.CLIENT)
 public class RenderPainting extends Render
 {
-    /** RNG. */
-    private Random rand = new Random();
-
     public void renderThePainting(EntityPainting par1EntityPainting, double par2, double par4, double par6, float par8, float par9)
     {
-        this.rand.setSeed(187L);
         GL11.glPushMatrix();
         GL11.glTranslatef((float)par2, (float)par4, (float)par6);
         GL11.glRotatef(par8, 0.0F, 1.0F, 0.0F);
@@ -32,67 +27,66 @@ public class RenderPainting extends Render
     {
         float var6 = (float)(-par2) / 2.0F;
         float var7 = (float)(-par3) / 2.0F;
-        float var8 = -0.5F;
-        float var9 = 0.5F;
+        float var8 = 0.5F;
+        float var9 = 0.75F;
+        float var10 = 0.8125F;
+        float var11 = 0.0F;
+        float var12 = 0.0625F;
+        float var13 = 0.75F;
+        float var14 = 0.8125F;
+        float var15 = 0.001953125F;
+        float var16 = 0.001953125F;
+        float var17 = 0.7519531F;
+        float var18 = 0.7519531F;
+        float var19 = 0.0F;
+        float var20 = 0.0625F;
 
-        for (int var10 = 0; var10 < par2 / 16; ++var10)
+        for (int var21 = 0; var21 < par2 / 16; ++var21)
         {
-            for (int var11 = 0; var11 < par3 / 16; ++var11)
+            for (int var22 = 0; var22 < par3 / 16; ++var22)
             {
-                float var12 = var6 + (float)((var10 + 1) * 16);
-                float var13 = var6 + (float)(var10 * 16);
-                float var14 = var7 + (float)((var11 + 1) * 16);
-                float var15 = var7 + (float)(var11 * 16);
-                this.func_77008_a(par1EntityPainting, (var12 + var13) / 2.0F, (var14 + var15) / 2.0F);
-                float var16 = (float)(par4 + par2 - var10 * 16) / 256.0F;
-                float var17 = (float)(par4 + par2 - (var10 + 1) * 16) / 256.0F;
-                float var18 = (float)(par5 + par3 - var11 * 16) / 256.0F;
-                float var19 = (float)(par5 + par3 - (var11 + 1) * 16) / 256.0F;
-                float var20 = 0.75F;
-                float var21 = 0.8125F;
-                float var22 = 0.0F;
-                float var23 = 0.0625F;
-                float var24 = 0.75F;
-                float var25 = 0.8125F;
-                float var26 = 0.001953125F;
-                float var27 = 0.001953125F;
-                float var28 = 0.7519531F;
-                float var29 = 0.7519531F;
-                float var30 = 0.0F;
-                float var31 = 0.0625F;
-                Tessellator var32 = Tessellator.instance;
-                var32.startDrawingQuads();
-                var32.setNormal(0.0F, 0.0F, -1.0F);
-                var32.addVertexWithUV((double)var12, (double)var15, (double)var8, (double)var17, (double)var18);
-                var32.addVertexWithUV((double)var13, (double)var15, (double)var8, (double)var16, (double)var18);
-                var32.addVertexWithUV((double)var13, (double)var14, (double)var8, (double)var16, (double)var19);
-                var32.addVertexWithUV((double)var12, (double)var14, (double)var8, (double)var17, (double)var19);
-                var32.setNormal(0.0F, 0.0F, 1.0F);
-                var32.addVertexWithUV((double)var12, (double)var14, (double)var9, (double)var20, (double)var22);
-                var32.addVertexWithUV((double)var13, (double)var14, (double)var9, (double)var21, (double)var22);
-                var32.addVertexWithUV((double)var13, (double)var15, (double)var9, (double)var21, (double)var23);
-                var32.addVertexWithUV((double)var12, (double)var15, (double)var9, (double)var20, (double)var23);
-                var32.setNormal(0.0F, 1.0F, 0.0F);
-                var32.addVertexWithUV((double)var12, (double)var14, (double)var8, (double)var24, (double)var26);
-                var32.addVertexWithUV((double)var13, (double)var14, (double)var8, (double)var25, (double)var26);
-                var32.addVertexWithUV((double)var13, (double)var14, (double)var9, (double)var25, (double)var27);
-                var32.addVertexWithUV((double)var12, (double)var14, (double)var9, (double)var24, (double)var27);
-                var32.setNormal(0.0F, -1.0F, 0.0F);
-                var32.addVertexWithUV((double)var12, (double)var15, (double)var9, (double)var24, (double)var26);
-                var32.addVertexWithUV((double)var13, (double)var15, (double)var9, (double)var25, (double)var26);
-                var32.addVertexWithUV((double)var13, (double)var15, (double)var8, (double)var25, (double)var27);
-                var32.addVertexWithUV((double)var12, (double)var15, (double)var8, (double)var24, (double)var27);
-                var32.setNormal(-1.0F, 0.0F, 0.0F);
-                var32.addVertexWithUV((double)var12, (double)var14, (double)var9, (double)var29, (double)var30);
-                var32.addVertexWithUV((double)var12, (double)var15, (double)var9, (double)var29, (double)var31);
-                var32.addVertexWithUV((double)var12, (double)var15, (double)var8, (double)var28, (double)var31);
-                var32.addVertexWithUV((double)var12, (double)var14, (double)var8, (double)var28, (double)var30);
-                var32.setNormal(1.0F, 0.0F, 0.0F);
-                var32.addVertexWithUV((double)var13, (double)var14, (double)var8, (double)var29, (double)var30);
-                var32.addVertexWithUV((double)var13, (double)var15, (double)var8, (double)var29, (double)var31);
-                var32.addVertexWithUV((double)var13, (double)var15, (double)var9, (double)var28, (double)var31);
-                var32.addVertexWithUV((double)var13, (double)var14, (double)var9, (double)var28, (double)var30);
-                var32.draw();
+                float var23 = var6 + (float)((var21 + 1) * 16);
+                float var24 = var6 + (float)(var21 * 16);
+                float var25 = var7 + (float)((var22 + 1) * 16);
+                float var26 = var7 + (float)(var22 * 16);
+                this.func_77008_a(par1EntityPainting, (var23 + var24) / 2.0F, (var25 + var26) / 2.0F);
+                float var27 = (float)(par4 + par2 - var21 * 16) / 256.0F;
+                float var28 = (float)(par4 + par2 - (var21 + 1) * 16) / 256.0F;
+                float var29 = (float)(par5 + par3 - var22 * 16) / 256.0F;
+                float var30 = (float)(par5 + par3 - (var22 + 1) * 16) / 256.0F;
+                Tessellator var31 = Tessellator.instance;
+                var31.startDrawingQuads();
+                var31.setNormal(0.0F, 0.0F, -1.0F);
+                var31.addVertexWithUV((double)var23, (double)var26, (double)(-var8), (double)var28, (double)var29);
+                var31.addVertexWithUV((double)var24, (double)var26, (double)(-var8), (double)var27, (double)var29);
+                var31.addVertexWithUV((double)var24, (double)var25, (double)(-var8), (double)var27, (double)var30);
+                var31.addVertexWithUV((double)var23, (double)var25, (double)(-var8), (double)var28, (double)var30);
+                var31.setNormal(0.0F, 0.0F, 1.0F);
+                var31.addVertexWithUV((double)var23, (double)var25, (double)var8, (double)var9, (double)var11);
+                var31.addVertexWithUV((double)var24, (double)var25, (double)var8, (double)var10, (double)var11);
+                var31.addVertexWithUV((double)var24, (double)var26, (double)var8, (double)var10, (double)var12);
+                var31.addVertexWithUV((double)var23, (double)var26, (double)var8, (double)var9, (double)var12);
+                var31.setNormal(0.0F, 1.0F, 0.0F);
+                var31.addVertexWithUV((double)var23, (double)var25, (double)(-var8), (double)var13, (double)var15);
+                var31.addVertexWithUV((double)var24, (double)var25, (double)(-var8), (double)var14, (double)var15);
+                var31.addVertexWithUV((double)var24, (double)var25, (double)var8, (double)var14, (double)var16);
+                var31.addVertexWithUV((double)var23, (double)var25, (double)var8, (double)var13, (double)var16);
+                var31.setNormal(0.0F, -1.0F, 0.0F);
+                var31.addVertexWithUV((double)var23, (double)var26, (double)var8, (double)var13, (double)var15);
+                var31.addVertexWithUV((double)var24, (double)var26, (double)var8, (double)var14, (double)var15);
+                var31.addVertexWithUV((double)var24, (double)var26, (double)(-var8), (double)var14, (double)var16);
+                var31.addVertexWithUV((double)var23, (double)var26, (double)(-var8), (double)var13, (double)var16);
+                var31.setNormal(-1.0F, 0.0F, 0.0F);
+                var31.addVertexWithUV((double)var23, (double)var25, (double)var8, (double)var18, (double)var19);
+                var31.addVertexWithUV((double)var23, (double)var26, (double)var8, (double)var18, (double)var20);
+                var31.addVertexWithUV((double)var23, (double)var26, (double)(-var8), (double)var17, (double)var20);
+                var31.addVertexWithUV((double)var23, (double)var25, (double)(-var8), (double)var17, (double)var19);
+                var31.setNormal(1.0F, 0.0F, 0.0F);
+                var31.addVertexWithUV((double)var24, (double)var25, (double)(-var8), (double)var18, (double)var19);
+                var31.addVertexWithUV((double)var24, (double)var26, (double)(-var8), (double)var18, (double)var20);
+                var31.addVertexWithUV((double)var24, (double)var26, (double)var8, (double)var17, (double)var20);
+                var31.addVertexWithUV((double)var24, (double)var25, (double)var8, (double)var17, (double)var19);
+                var31.draw();
             }
         }
     }
@@ -103,22 +97,22 @@ public class RenderPainting extends Render
         int var5 = MathHelper.floor_double(par1EntityPainting.posY + (double)(par3 / 16.0F));
         int var6 = MathHelper.floor_double(par1EntityPainting.posZ);
 
-        if (par1EntityPainting.direction == 0)
+        if (par1EntityPainting.field_82332_a == 2)
         {
             var4 = MathHelper.floor_double(par1EntityPainting.posX + (double)(par2 / 16.0F));
         }
 
-        if (par1EntityPainting.direction == 1)
+        if (par1EntityPainting.field_82332_a == 1)
         {
             var6 = MathHelper.floor_double(par1EntityPainting.posZ - (double)(par2 / 16.0F));
         }
 
-        if (par1EntityPainting.direction == 2)
+        if (par1EntityPainting.field_82332_a == 0)
         {
             var4 = MathHelper.floor_double(par1EntityPainting.posX - (double)(par2 / 16.0F));
         }
 
-        if (par1EntityPainting.direction == 3)
+        if (par1EntityPainting.field_82332_a == 3)
         {
             var6 = MathHelper.floor_double(par1EntityPainting.posZ + (double)(par2 / 16.0F));
         }

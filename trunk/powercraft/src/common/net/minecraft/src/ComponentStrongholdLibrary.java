@@ -9,7 +9,7 @@ import static net.minecraftforge.common.ChestGenHooks.*;
 public class ComponentStrongholdLibrary extends ComponentStronghold
 {
     /** List of items that Stronghold Library chests can contain. */
-    public static final WeightedRandomChestContent[] strongholdLibraryChestContents = new WeightedRandomChestContent[] {new WeightedRandomChestContent(Item.book.shiftedIndex, 0, 1, 3, 20), new WeightedRandomChestContent(Item.paper.shiftedIndex, 0, 2, 7, 20), new WeightedRandomChestContent(Item.map.shiftedIndex, 0, 1, 1, 1), new WeightedRandomChestContent(Item.compass.shiftedIndex, 0, 1, 1, 1)};
+    public static final WeightedRandomChestContent[] strongholdLibraryChestContents = new WeightedRandomChestContent[] {new WeightedRandomChestContent(Item.book.shiftedIndex, 0, 1, 3, 20), new WeightedRandomChestContent(Item.paper.shiftedIndex, 0, 2, 7, 20), new WeightedRandomChestContent(Item.field_82801_bO.shiftedIndex, 0, 1, 1, 1), new WeightedRandomChestContent(Item.compass.shiftedIndex, 0, 1, 1, 1)};
     protected final EnumDoor doorType;
     private final boolean isLargeRoom;
 

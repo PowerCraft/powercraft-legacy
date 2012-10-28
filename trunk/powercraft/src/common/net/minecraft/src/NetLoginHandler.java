@@ -1,11 +1,14 @@
 package net.minecraft.src;
 
 import java.io.IOException;
+import java.io.Serializable;
 import java.net.InetAddress;
 import java.net.Socket;
 import java.security.PrivateKey;
 import java.security.PublicKey;
 import java.util.Arrays;
+import java.util.Iterator;
+import java.util.List;
 import java.util.Random;
 import java.util.logging.Logger;
 import javax.crypto.SecretKey;
@@ -90,9 +93,9 @@ public class NetLoginHandler extends NetHandler
         {
             PublicKey var2 = this.mcServer.getKeyPair().getPublic();
 
-            if (par1Packet2ClientProtocol.getProtocolVersion() != 39)
+            if (par1Packet2ClientProtocol.getProtocolVersion() != 47)
             {
-                if (par1Packet2ClientProtocol.getProtocolVersion() > 39)
+                if (par1Packet2ClientProtocol.getProtocolVersion() > 47)
                 {
                     this.raiseErrorAndDisconnect("Outdated server!");
                 }
@@ -183,27 +186,53 @@ public class NetLoginHandler extends NetHandler
     {
         try
         {
-            String var2 = this.mcServer.getMOTD() + "\u00a7" + this.mcServer.getConfigurationManager().getCurrentPlayerCount() + "\u00a7" + this.mcServer.getConfigurationManager().getMaxPlayers();
-            InetAddress var3 = null;
+            ServerConfigurationManager var2 = this.mcServer.getConfigurationManager();
+            String var3 = null;
+
+            if (par1Packet254ServerPing.field_82559_a == 1)
+            {
+                List var4 = Arrays.asList(new Serializable[] {Integer.valueOf(1), Integer.valueOf(47), this.mcServer.getMinecraftVersion(), this.mcServer.getMOTD(), Integer.valueOf(var2.getCurrentPlayerCount()), Integer.valueOf(var2.getMaxPlayers())});
+                Object var6;
+
+                for (Iterator var5 = var4.iterator(); var5.hasNext(); var3 = var3 + var6.toString().replaceAll("\u0000", ""))
+                {
+                    var6 = var5.next();
+
+                    if (var3 == null)
+                    {
+                        var3 = "\u00a7";
+                    }
+                    else
+                    {
+                        var3 = var3 + "\u0000";
+                    }
+                }
+            }
+            else
+            {
+                var3 = this.mcServer.getMOTD() + "\u00a7" + var2.getCurrentPlayerCount() + "\u00a7" + var2.getMaxPlayers();
+            }
+
+            InetAddress var8 = null;
 
             if (this.myTCPConnection.getSocket() != null)
             {
-                var3 = this.myTCPConnection.getSocket().getInetAddress();
+                var8 = this.myTCPConnection.getSocket().getInetAddress();
             }
 
-            this.myTCPConnection.addToSendQueue(new Packet255KickDisconnect(var2));
+            this.myTCPConnection.addToSendQueue(new Packet255KickDisconnect(var3));
             this.myTCPConnection.serverShutdown();
 
-            if (var3 != null && this.mcServer.getNetworkThread() instanceof DedicatedServerListenThread)
+            if (var8 != null && this.mcServer.getNetworkThread() instanceof DedicatedServerListenThread)
             {
-                ((DedicatedServerListenThread)this.mcServer.getNetworkThread()).func_71761_a(var3);
+                ((DedicatedServerListenThread)this.mcServer.getNetworkThread()).func_71761_a(var8);
             }
 
             this.connectionComplete = true;
         }
-        catch (Exception var4)
+        catch (Exception var7)
         {
-            var4.printStackTrace();
+            var7.printStackTrace();
         }
     }
 

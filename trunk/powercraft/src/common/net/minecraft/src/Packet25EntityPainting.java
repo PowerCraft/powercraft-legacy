@@ -21,7 +21,7 @@ public class Packet25EntityPainting extends Packet
         this.xPosition = par1EntityPainting.xPosition;
         this.yPosition = par1EntityPainting.yPosition;
         this.zPosition = par1EntityPainting.zPosition;
-        this.direction = par1EntityPainting.direction;
+        this.direction = par1EntityPainting.field_82332_a;
         this.title = par1EntityPainting.art.title;
     }
 

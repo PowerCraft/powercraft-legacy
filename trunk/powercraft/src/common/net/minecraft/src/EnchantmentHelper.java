@@ -3,6 +3,7 @@ package net.minecraft.src;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
@@ -54,6 +55,48 @@ public class EnchantmentHelper
 
                 return 0;
             }
+        }
+    }
+
+    public static Map func_82781_a(ItemStack par0ItemStack)
+    {
+        LinkedHashMap var1 = new LinkedHashMap();
+        NBTTagList var2 = par0ItemStack.getEnchantmentTagList();
+
+        if (var2 != null)
+        {
+            for (int var3 = 0; var3 < var2.tagCount(); ++var3)
+            {
+                short var4 = ((NBTTagCompound)var2.tagAt(var3)).getShort("id");
+                short var5 = ((NBTTagCompound)var2.tagAt(var3)).getShort("lvl");
+                var1.put(Integer.valueOf(var4), Integer.valueOf(var5));
+            }
+        }
+
+        return var1;
+    }
+
+    public static void func_82782_a(Map par0Map, ItemStack par1ItemStack)
+    {
+        NBTTagList var2 = new NBTTagList();
+        Iterator var3 = par0Map.keySet().iterator();
+
+        while (var3.hasNext())
+        {
+            int var4 = ((Integer)var3.next()).intValue();
+            NBTTagCompound var5 = new NBTTagCompound();
+            var5.setShort("id", (short)var4);
+            var5.setShort("lvl", (short)((Integer)par0Map.get(Integer.valueOf(var4))).intValue());
+            var2.appendTag(var5);
+        }
+
+        if (var2.tagCount() > 0)
+        {
+            par1ItemStack.func_77983_a("ench", var2);
+        }
+        else if (par1ItemStack.hasTagCompound())
+        {
+            par1ItemStack.getTagCompound().func_82580_o("ench");
         }
     }
 
@@ -123,11 +166,11 @@ public class EnchantmentHelper
     /**
      * Returns the modifier of protection enchantments on armors equipped on player.
      */
-    public static int getEnchantmentModifierDamage(InventoryPlayer par0InventoryPlayer, DamageSource par1DamageSource)
+    public static int getEnchantmentModifierDamage(ItemStack[] par0ArrayOfItemStack, DamageSource par1DamageSource)
     {
         enchantmentModifierDamage.damageModifier = 0;
         enchantmentModifierDamage.source = par1DamageSource;
-        applyEnchantmentModifierArray(enchantmentModifierDamage, par0InventoryPlayer.armorInventory);
+        applyEnchantmentModifierArray(enchantmentModifierDamage, par0ArrayOfItemStack);
 
         if (enchantmentModifierDamage.damageModifier > 25)
         {
@@ -140,84 +183,84 @@ public class EnchantmentHelper
     /**
      * Return the (magic) extra damage of the enchantments on player equipped item.
      */
-    public static int getEnchantmentModifierLiving(InventoryPlayer par0InventoryPlayer, EntityLiving par1EntityLiving)
+    public static int getEnchantmentModifierLiving(EntityLiving par0EntityLiving, EntityLiving par1EntityLiving)
     {
         enchantmentModifierLiving.livingModifier = 0;
         enchantmentModifierLiving.entityLiving = par1EntityLiving;
-        applyEnchantmentModifier(enchantmentModifierLiving, par0InventoryPlayer.getCurrentItem());
+        applyEnchantmentModifier(enchantmentModifierLiving, par0EntityLiving.getHeldItem());
         return enchantmentModifierLiving.livingModifier > 0 ? 1 + enchantmentRand.nextInt(enchantmentModifierLiving.livingModifier) : 0;
     }
 
     /**
      * Returns the knockback value of enchantments on equipped player item.
      */
-    public static int getKnockbackModifier(InventoryPlayer par0InventoryPlayer, EntityLiving par1EntityLiving)
+    public static int getKnockbackModifier(EntityLiving par0EntityLiving, EntityLiving par1EntityLiving)
     {
-        return getEnchantmentLevel(Enchantment.knockback.effectId, par0InventoryPlayer.getCurrentItem());
+        return getEnchantmentLevel(Enchantment.knockback.effectId, par0EntityLiving.getHeldItem());
     }
 
     /**
      * Return the fire aspect value of enchantments on equipped player item.
      */
-    public static int getFireAspectModifier(InventoryPlayer par0InventoryPlayer, EntityLiving par1EntityLiving)
+    public static int getFireAspectModifier(EntityLiving par0EntityLiving, EntityLiving par1EntityLiving)
     {
-        return getEnchantmentLevel(Enchantment.fireAspect.effectId, par0InventoryPlayer.getCurrentItem());
+        return getEnchantmentLevel(Enchantment.fireAspect.effectId, par0EntityLiving.getHeldItem());
     }
 
     /**
      * Returns the 'Water Breathing' modifier of enchantments on player equipped armors.
      */
-    public static int getRespiration(InventoryPlayer par0InventoryPlayer)
+    public static int getRespiration(EntityLiving par0EntityLiving)
     {
-        return getMaxEnchantmentLevel(Enchantment.respiration.effectId, par0InventoryPlayer.armorInventory);
+        return getMaxEnchantmentLevel(Enchantment.respiration.effectId, par0EntityLiving.getLastActiveItems());
     }
 
     /**
      * Return the extra efficiency of tools based on enchantments on equipped player item.
      */
-    public static int getEfficiencyModifier(InventoryPlayer par0InventoryPlayer)
+    public static int getEfficiencyModifier(EntityLiving par0EntityLiving)
     {
-        return getEnchantmentLevel(Enchantment.efficiency.effectId, par0InventoryPlayer.getCurrentItem());
+        return getEnchantmentLevel(Enchantment.efficiency.effectId, par0EntityLiving.getHeldItem());
     }
 
     /**
      * Returns the unbreaking enchantment modifier on current equipped item of player.
      */
-    public static int getUnbreakingModifier(InventoryPlayer par0InventoryPlayer)
+    public static int getUnbreakingModifier(EntityLiving par0EntityLiving)
     {
-        return getEnchantmentLevel(Enchantment.unbreaking.effectId, par0InventoryPlayer.getCurrentItem());
+        return getEnchantmentLevel(Enchantment.unbreaking.effectId, par0EntityLiving.getHeldItem());
     }
 
     /**
      * Returns the silk touch status of enchantments on current equipped item of player.
      */
-    public static boolean getSilkTouchModifier(InventoryPlayer par0InventoryPlayer)
+    public static boolean getSilkTouchModifier(EntityLiving par0EntityLiving)
     {
-        return getEnchantmentLevel(Enchantment.silkTouch.effectId, par0InventoryPlayer.getCurrentItem()) > 0;
+        return getEnchantmentLevel(Enchantment.silkTouch.effectId, par0EntityLiving.getHeldItem()) > 0;
     }
 
     /**
      * Returns the fortune enchantment modifier of the current equipped item of player.
      */
-    public static int getFortuneModifier(InventoryPlayer par0InventoryPlayer)
+    public static int getFortuneModifier(EntityLiving par0EntityLiving)
     {
-        return getEnchantmentLevel(Enchantment.fortune.effectId, par0InventoryPlayer.getCurrentItem());
+        return getEnchantmentLevel(Enchantment.fortune.effectId, par0EntityLiving.getHeldItem());
     }
 
     /**
      * Returns the looting enchantment modifier of the current equipped item of player.
      */
-    public static int getLootingModifier(InventoryPlayer par0InventoryPlayer)
+    public static int getLootingModifier(EntityLiving par0EntityLiving)
     {
-        return getEnchantmentLevel(Enchantment.looting.effectId, par0InventoryPlayer.getCurrentItem());
+        return getEnchantmentLevel(Enchantment.looting.effectId, par0EntityLiving.getHeldItem());
     }
 
     /**
      * Returns the aqua affinity status of enchantments on current equipped item of player.
      */
-    public static boolean getAquaAffinityModifier(InventoryPlayer par0InventoryPlayer)
+    public static boolean getAquaAffinityModifier(EntityLiving par0EntityLiving)
     {
-        return getMaxEnchantmentLevel(Enchantment.aquaAffinity.effectId, par0InventoryPlayer.armorInventory) > 0;
+        return getMaxEnchantmentLevel(Enchantment.aquaAffinity.effectId, par0EntityLiving.getLastActiveItems()) > 0;
     }
 
     /**

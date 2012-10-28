@@ -19,6 +19,7 @@ public class DestroyBlockProgress
      * damage ranges from 1 to 10. -1 causes the client to delete the partial block renderer.
      */
     private int partialBlockProgress;
+    private int field_82745_f;
 
     public DestroyBlockProgress(int par1, int par2, int par3, int par4)
     {
@@ -60,5 +61,15 @@ public class DestroyBlockProgress
     public int getPartialBlockDamage()
     {
         return this.partialBlockProgress;
+    }
+
+    public void func_82744_b(int par1)
+    {
+        this.field_82745_f = par1;
+    }
+
+    public int func_82743_f()
+    {
+        return this.field_82745_f;
     }
 }

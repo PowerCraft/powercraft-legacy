@@ -82,8 +82,6 @@ public class BlockTallGrass extends BlockFlower implements IShearable
         return var5 == 0 ? 16777215 : par1IBlockAccess.getBiomeGenForCoords(par2, par4).getBiomeGrassColor();
     }
 
-    @SideOnly(Side.CLIENT)
-
     /**
      * Get the block's damage value (for use with pick block).
      */

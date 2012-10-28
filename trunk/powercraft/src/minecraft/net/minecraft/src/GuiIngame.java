@@ -85,6 +85,7 @@ public class GuiIngame extends Gui
         int var20;
         int var23;
         int var22;
+        int var24;
         int var47;
 
         if (!this.mc.playerController.func_78747_a())
@@ -142,7 +143,7 @@ public class GuiIngame extends Gui
                 var47 = var7 - 39;
                 var22 = var47 - 10;
                 var23 = ForgeHooks.getTotalArmorValue(mc.thePlayer);
-                int var24 = -1;
+                var24 = -1;
 
                 if (this.mc.thePlayer.isPotionActive(Potion.regeneration))
                 {
@@ -182,6 +183,10 @@ public class GuiIngame extends Gui
                     if (this.mc.thePlayer.isPotionActive(Potion.poison))
                     {
                         var26 += 36;
+                    }
+                    else if (this.mc.thePlayer.isPotionActive(Potion.field_82731_v))
+                    {
+                        var26 += 72;
                     }
 
                     byte var27 = 0;
@@ -238,18 +243,18 @@ public class GuiIngame extends Gui
                 }
 
                 this.mc.mcProfiler.endStartSection("food");
-                int var52;
+                int var51;
 
                 for (var25 = 0; var25 < 10; ++var25)
                 {
                     var26 = var47;
-                    var52 = 16;
-                    byte var53 = 0;
+                    var51 = 16;
+                    byte var52 = 0;
 
                     if (this.mc.thePlayer.isPotionActive(Potion.hunger))
                     {
-                        var52 += 36;
-                        var53 = 13;
+                        var51 += 36;
+                        var52 = 13;
                     }
 
                     if (this.mc.thePlayer.getFoodStats().getSaturationLevel() <= 0.0F && this.updateCounter % (var16 * 3 + 1) == 0)
@@ -259,33 +264,33 @@ public class GuiIngame extends Gui
 
                     if (var14)
                     {
-                        var53 = 1;
+                        var52 = 1;
                     }
 
                     var29 = var19 - var25 * 8 - 9;
-                    this.drawTexturedModalRect(var29, var26, 16 + var53 * 9, 27, 9, 9);
+                    this.drawTexturedModalRect(var29, var26, 16 + var52 * 9, 27, 9, 9);
 
                     if (var14)
                     {
                         if (var25 * 2 + 1 < var17)
                         {
-                            this.drawTexturedModalRect(var29, var26, var52 + 54, 27, 9, 9);
+                            this.drawTexturedModalRect(var29, var26, var51 + 54, 27, 9, 9);
                         }
 
                         if (var25 * 2 + 1 == var17)
                         {
-                            this.drawTexturedModalRect(var29, var26, var52 + 63, 27, 9, 9);
+                            this.drawTexturedModalRect(var29, var26, var51 + 63, 27, 9, 9);
                         }
                     }
 
                     if (var25 * 2 + 1 < var16)
                     {
-                        this.drawTexturedModalRect(var29, var26, var52 + 36, 27, 9, 9);
+                        this.drawTexturedModalRect(var29, var26, var51 + 36, 27, 9, 9);
                     }
 
                     if (var25 * 2 + 1 == var16)
                     {
-                        this.drawTexturedModalRect(var29, var26, var52 + 45, 27, 9, 9);
+                        this.drawTexturedModalRect(var29, var26, var51 + 45, 27, 9, 9);
                     }
                 }
 
@@ -295,9 +300,9 @@ public class GuiIngame extends Gui
                 {
                     var25 = this.mc.thePlayer.getAir();
                     var26 = MathHelper.ceiling_double_int((double)(var25 - 2) * 10.0D / 300.0D);
-                    var52 = MathHelper.ceiling_double_int((double)var25 * 10.0D / 300.0D) - var26;
+                    var51 = MathHelper.ceiling_double_int((double)var25 * 10.0D / 300.0D) - var26;
 
-                    for (var28 = 0; var28 < var26 + var52; ++var28)
+                    for (var28 = 0; var28 < var26 + var51; ++var28)
                     {
                         if (var28 < var26)
                         {
@@ -376,13 +381,13 @@ public class GuiIngame extends Gui
             this.mc.mcProfiler.startSection("demo");
             String var36 = "";
 
-            if (this.mc.theWorld.getWorldTime() >= 120500L)
+            if (this.mc.theWorld.func_82737_E() >= 120500L)
             {
                 var36 = StatCollector.translateToLocal("demo.demoExpired");
             }
             else
             {
-                var36 = String.format(StatCollector.translateToLocal("demo.remainingTime"), new Object[] {StringUtils.ticksToElapsedTime((int)(120500L - this.mc.theWorld.getWorldTime()))});
+                var36 = String.format(StatCollector.translateToLocal("demo.remainingTime"), new Object[] {StringUtils.ticksToElapsedTime((int)(120500L - this.mc.theWorld.func_82737_E()))});
             }
 
             var12 = var8.getStringWidth(var36);
@@ -394,7 +399,7 @@ public class GuiIngame extends Gui
         {
             this.mc.mcProfiler.startSection("debug");
             GL11.glPushMatrix();
-            var8.drawStringWithShadow("Minecraft 1.3.2 (" + this.mc.debug + ")", 2, 2, 16777215);
+            var8.drawStringWithShadow("Minecraft 1.4.2 (" + this.mc.debug + ")", 2, 2, 16777215);
             var8.drawStringWithShadow(this.mc.debugInfoRenders(), 2, 12, 16777215);
             var8.drawStringWithShadow(this.mc.getEntityDebug(), 2, 22, 16777215);
             var8.drawStringWithShadow(this.mc.debugInfoEntities(), 2, 32, 16777215);
@@ -407,21 +412,22 @@ public class GuiIngame extends Gui
             this.drawString(var8, var45, var6 - var8.getStringWidth(var45) - 2, 2, 14737632);
             var45 = "Allocated memory: " + var34 * 100L / var41 + "% (" + var34 / 1024L / 1024L + "MB)";
             this.drawString(var8, var45, var6 - var8.getStringWidth(var45) - 2, 12, 14737632);
-            this.drawString(var8, String.format("x: %.5f", new Object[] {Double.valueOf(this.mc.thePlayer.posX)}), 2, 64, 14737632);
-            this.drawString(var8, String.format("y: %.3f (feet pos, %.3f eyes pos)", new Object[] {Double.valueOf(this.mc.thePlayer.boundingBox.minY), Double.valueOf(this.mc.thePlayer.posY)}), 2, 72, 14737632);
-            this.drawString(var8, String.format("z: %.5f", new Object[] {Double.valueOf(this.mc.thePlayer.posZ)}), 2, 80, 14737632);
-            this.drawString(var8, "f: " + (MathHelper.floor_double((double)(this.mc.thePlayer.rotationYaw * 4.0F / 360.0F) + 0.5D) & 3), 2, 88, 14737632);
             var47 = MathHelper.floor_double(this.mc.thePlayer.posX);
             var22 = MathHelper.floor_double(this.mc.thePlayer.posY);
             var23 = MathHelper.floor_double(this.mc.thePlayer.posZ);
+            this.drawString(var8, String.format("x: %.5f (%d) // c: %d (%d)", new Object[] {Double.valueOf(this.mc.thePlayer.posX), Integer.valueOf(var47), Integer.valueOf(var47 >> 4), Integer.valueOf(var47 & 15)}), 2, 64, 14737632);
+            this.drawString(var8, String.format("y: %.3f (feet pos, %.3f eyes pos)", new Object[] {Double.valueOf(this.mc.thePlayer.boundingBox.minY), Double.valueOf(this.mc.thePlayer.posY)}), 2, 72, 14737632);
+            this.drawString(var8, String.format("z: %.5f (%d) // c: %d (%d)", new Object[] {Double.valueOf(this.mc.thePlayer.posZ), Integer.valueOf(var23), Integer.valueOf(var23 >> 4), Integer.valueOf(var23 & 15)}), 2, 80, 14737632);
+            var24 = MathHelper.floor_double((double)(this.mc.thePlayer.rotationYaw * 4.0F / 360.0F) + 0.5D) & 3;
+            this.drawString(var8, "f: " + var24 + " (" + Direction.field_82373_c[var24] + ") / " + MathHelper.wrapAngleTo180_float(this.mc.thePlayer.rotationYaw), 2, 88, 14737632);
 
             if (this.mc.theWorld != null && this.mc.theWorld.blockExists(var47, var22, var23))
             {
-                Chunk var48 = this.mc.theWorld.getChunkFromBlockCoords(var47, var23);
-                this.drawString(var8, "lc: " + (var48.getTopFilledSegment() + 15) + " b: " + var48.getBiomeGenForWorldCoords(var47 & 15, var23 & 15, this.mc.theWorld.getWorldChunkManager()).biomeName + " bl: " + var48.getSavedLightValue(EnumSkyBlock.Block, var47 & 15, var22, var23 & 15) + " sl: " + var48.getSavedLightValue(EnumSkyBlock.Sky, var47 & 15, var22, var23 & 15) + " rl: " + var48.getBlockLightValue(var47 & 15, var22, var23 & 15, 0), 2, 96, 14737632);
+                Chunk var53 = this.mc.theWorld.getChunkFromBlockCoords(var47, var23);
+                this.drawString(var8, "lc: " + (var53.getTopFilledSegment() + 15) + " b: " + var53.getBiomeGenForWorldCoords(var47 & 15, var23 & 15, this.mc.theWorld.getWorldChunkManager()).biomeName + " bl: " + var53.getSavedLightValue(EnumSkyBlock.Block, var47 & 15, var22, var23 & 15) + " sl: " + var53.getSavedLightValue(EnumSkyBlock.Sky, var47 & 15, var22, var23 & 15) + " rl: " + var53.getBlockLightValue(var47 & 15, var22, var23 & 15, 0), 2, 96, 14737632);
             }
 
-            this.drawString(var8, String.format("ws: %.3f, fs: %.3f, g: %b", new Object[] {Float.valueOf(this.mc.thePlayer.capabilities.getWalkSpeed()), Float.valueOf(this.mc.thePlayer.capabilities.getFlySpeed()), Boolean.valueOf(this.mc.thePlayer.onGround)}), 2, 104, 14737632);
+            this.drawString(var8, String.format("ws: %.3f, fs: %.3f, g: %b, fl: %d", new Object[] {Float.valueOf(this.mc.thePlayer.capabilities.getWalkSpeed()), Float.valueOf(this.mc.thePlayer.capabilities.getFlySpeed()), Boolean.valueOf(this.mc.thePlayer.onGround), Integer.valueOf(this.mc.theWorld.getHeightValue(var47, var23))}), 2, 104, 14737632);
             GL11.glPopMatrix();
             this.mc.mcProfiler.endSection();
         }
@@ -505,37 +511,37 @@ public class GuiIngame extends Gui
                     GuiPlayerInfo var46 = (GuiPlayerInfo)var39.get(var19);
                     var8.drawStringWithShadow(var46.name, var20, var47, 16777215);
                     this.mc.renderEngine.bindTexture(this.mc.renderEngine.getTexture("/gui/icons.png"));
-                    byte var51 = 0;
-                    boolean var49 = false;
-                    byte var50;
+                    byte var50 = 0;
+                    boolean var48 = false;
+                    byte var49;
 
                     if (var46.responseTime < 0)
                     {
-                        var50 = 5;
+                        var49 = 5;
                     }
                     else if (var46.responseTime < 150)
                     {
-                        var50 = 0;
+                        var49 = 0;
                     }
                     else if (var46.responseTime < 300)
                     {
-                        var50 = 1;
+                        var49 = 1;
                     }
                     else if (var46.responseTime < 600)
                     {
-                        var50 = 2;
+                        var49 = 2;
                     }
                     else if (var46.responseTime < 1000)
                     {
-                        var50 = 3;
+                        var49 = 3;
                     }
                     else
                     {
-                        var50 = 4;
+                        var49 = 4;
                     }
 
                     this.zLevel += 100.0F;
-                    this.drawTexturedModalRect(var20 + var16 - 12, var47, 0 + var51 * 10, 176 + var50 * 8, 10, 8);
+                    this.drawTexturedModalRect(var20 + var16 - 12, var47, 0 + var50 * 10, 176 + var49 * 8, 10, 8);
                     this.zLevel -= 100.0F;
                 }
             }
@@ -551,27 +557,26 @@ public class GuiIngame extends Gui
      */
     private void renderBossHealth()
     {
-        if (RenderDragon.entityDragon != null)
+        if (BossStatus.field_82827_c != null && BossStatus.field_82826_b > 0)
         {
-            EntityDragon var1 = RenderDragon.entityDragon;
-            RenderDragon.entityDragon = null;
-            FontRenderer var2 = this.mc.fontRenderer;
-            ScaledResolution var3 = new ScaledResolution(this.mc.gameSettings, this.mc.displayWidth, this.mc.displayHeight);
-            int var4 = var3.getScaledWidth();
-            short var5 = 182;
-            int var6 = var4 / 2 - var5 / 2;
-            int var7 = (int)((float)var1.getDragonHealth() / (float)var1.getMaxHealth() * (float)(var5 + 1));
-            byte var8 = 12;
-            this.drawTexturedModalRect(var6, var8, 0, 74, var5, 5);
-            this.drawTexturedModalRect(var6, var8, 0, 74, var5, 5);
+            --BossStatus.field_82826_b;
+            FontRenderer var1 = this.mc.fontRenderer;
+            ScaledResolution var2 = new ScaledResolution(this.mc.gameSettings, this.mc.displayWidth, this.mc.displayHeight);
+            int var3 = var2.getScaledWidth();
+            short var4 = 182;
+            int var5 = var3 / 2 - var4 / 2;
+            int var6 = (int)(BossStatus.field_82828_a * (float)(var4 + 1));
+            byte var7 = 12;
+            this.drawTexturedModalRect(var5, var7, 0, 74, var4, 5);
+            this.drawTexturedModalRect(var5, var7, 0, 74, var4, 5);
 
-            if (var7 > 0)
+            if (var6 > 0)
             {
-                this.drawTexturedModalRect(var6, var8, 0, 79, var7, 5);
+                this.drawTexturedModalRect(var5, var7, 0, 79, var6, 5);
             }
 
-            String var9 = "Boss health";
-            var2.drawStringWithShadow(var9, var4 / 2 - var2.getStringWidth(var9) / 2, var8 - 10, 16711935);
+            String var8 = BossStatus.field_82827_c;
+            var1.drawStringWithShadow(var8, var3 / 2 - var1.getStringWidth(var8) / 2, var7 - 10, 16777215);
             GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
             GL11.glBindTexture(GL11.GL_TEXTURE_2D, this.mc.renderEngine.getTexture("/gui/icons.png"));
         }
@@ -689,7 +694,7 @@ public class GuiIngame extends Gui
                 GL11.glTranslatef((float)(-(par2 + 8)), (float)(-(par3 + 12)), 0.0F);
             }
 
-            itemRenderer.renderItemIntoGUI(this.mc.fontRenderer, this.mc.renderEngine, var5, par2, par3);
+            itemRenderer.func_82406_b(this.mc.fontRenderer, this.mc.renderEngine, var5, par2, par3);
 
             if (var6 > 0.0F)
             {

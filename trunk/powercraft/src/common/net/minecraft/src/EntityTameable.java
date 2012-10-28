@@ -53,6 +53,7 @@ public abstract class EntityTameable extends EntityAnimal
         }
 
         this.aiSit.setSitting(par1NBTTagCompound.getBoolean("Sitting"));
+        this.setSitting(par1NBTTagCompound.getBoolean("Sitting"));
     }
 
     /**
