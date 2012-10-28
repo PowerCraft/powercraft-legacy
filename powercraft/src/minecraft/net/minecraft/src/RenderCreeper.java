@@ -79,6 +79,15 @@ public class RenderCreeper extends RenderLiving
     {
         if (par1EntityCreeper.getPowered())
         {
+            if (par1EntityCreeper.func_82150_aj())
+            {
+                GL11.glDepthMask(false);
+            }
+            else
+            {
+                GL11.glDepthMask(true);
+            }
+
             if (par2 == 1)
             {
                 float var4 = (float)par1EntityCreeper.ticksExisted + par3;

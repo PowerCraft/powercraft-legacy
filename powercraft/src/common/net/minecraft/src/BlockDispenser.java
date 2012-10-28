@@ -8,6 +8,7 @@ import java.util.Random;
 
 public class BlockDispenser extends BlockContainer
 {
+    public static final IRegistry field_82527_a = new RegistryDefaulted(new BehaviorDefaultDispenseItem());
     private Random random = new Random();
 
     protected BlockDispenser(int par1)
@@ -132,62 +133,29 @@ public class BlockDispenser extends BlockContainer
         }
     }
 
-    /**
-     * dispenses an item from a randomly selected item stack from the blocks inventory into the game world.
-     */
-    private void dispenseItem(World par1World, int par2, int par3, int par4, Random par5Random)
+    private void func_82526_n(World par1World, int par2, int par3, int par4)
     {
-        int var6 = par1World.getBlockMetadata(par2, par3, par4);
-        byte var9 = 0;
-        byte var10 = 0;
+        BlockSourceImpl var5 = new BlockSourceImpl(par1World, par2, par3, par4);
+        TileEntityDispenser var6 = (TileEntityDispenser)var5.func_82619_j();
 
-        if (var6 == 3)
+        if (var6 != null)
         {
-            var10 = 1;
-        }
-        else if (var6 == 2)
-        {
-            var10 = -1;
-        }
-        else if (var6 == 5)
-        {
-            var9 = 1;
-        }
-        else
-        {
-            var9 = -1;
-        }
+            int var7 = var6.getRandomStackFromInventory();
 
-        TileEntityDispenser var11 = (TileEntityDispenser)par1World.getBlockTileEntity(par2, par3, par4);
-
-        if (var11 != null)
-        {
-            int var12 = var11.getRandomStackFromInventory();
-
-            if (var12 < 0)
+            if (var7 < 0)
             {
                 par1World.playAuxSFX(1001, par2, par3, par4, 0);
             }
             else
             {
-                double var13 = (double)par2 + (double)var9 * 0.6D + 0.5D;
-                double var15 = (double)par3 + 0.5D;
-                double var17 = (double)par4 + (double)var10 * 0.6D + 0.5D;
-                ItemStack var19 = var11.getStackInSlot(var12);
-                int var20 = spawnEntityWithAction(var11, par1World, var19, par5Random, par2, par3, par4, var9, var10, var13, var15, var17);
+                ItemStack var8 = var6.getStackInSlot(var7);
+                IBehaviorDispenseItem var9 = (IBehaviorDispenseItem)field_82527_a.func_82594_a(var8.getItem());
 
-                if (var20 == 1)
+                if (var9 != IBehaviorDispenseItem.field_82483_a)
                 {
-                    var11.decrStackSize(var12, 1);
+                    ItemStack var10 = var9.func_82482_a(var5, var8);
+                    var6.setInventorySlotContents(var7, var10.stackSize == 0 ? null : var10);
                 }
-                else if (var20 == 0)
-                {
-                    var19 = var11.decrStackSize(var12, 1);
-                    dispenseEntityFromStack(par1World, var19, par5Random, 6, var9, var10, var13, var15, var17);
-                    par1World.playAuxSFX(1000, par2, par3, par4, 0);
-                }
-
-                par1World.playAuxSFX(2000, par2, par3, par4, var9 + 1 + (var10 + 1) * 3);
             }
         }
     }
@@ -216,7 +184,7 @@ public class BlockDispenser extends BlockContainer
     {
         if (!par1World.isRemote && (par1World.isBlockIndirectlyGettingPowered(par2, par3, par4) || par1World.isBlockIndirectlyGettingPowered(par2, par3 + 1, par4)))
         {
-            this.dispenseItem(par1World, par2, par3, par4, par5Random);
+            this.func_82526_n(par1World, par2, par3, par4);
         }
     }
 
@@ -305,198 +273,12 @@ public class BlockDispenser extends BlockContainer
         super.breakBlock(par1World, par2, par3, par4, par5, par6);
     }
 
-    private static void dispenseEntityFromStack(World par0World, ItemStack par1ItemStack, Random par2Random, int par3, int par4, int par5, double par6, double par8, double par10)
+    public static IPosition func_82525_a(IBlockSource par0IBlockSource)
     {
-        EntityItem var12 = new EntityItem(par0World, par6, par8 - 0.3D, par10, par1ItemStack);
-        double var13 = par2Random.nextDouble() * 0.1D + 0.2D;
-        var12.motionX = (double)par4 * var13;
-        var12.motionY = 0.20000000298023224D;
-        var12.motionZ = (double)par5 * var13;
-        var12.motionX += par2Random.nextGaussian() * 0.007499999832361937D * (double)par3;
-        var12.motionY += par2Random.nextGaussian() * 0.007499999832361937D * (double)par3;
-        var12.motionZ += par2Random.nextGaussian() * 0.007499999832361937D * (double)par3;
-        par0World.spawnEntityInWorld(var12);
-    }
-
-    /**
-     * arrows are fired, eggs are thrown, buckets create liquid blocks ...
-     */
-    private static int spawnEntityWithAction(TileEntityDispenser par0TileEntityDispenser, World par1World, ItemStack par2ItemStack, Random par3Random, int par4, int par5, int par6, int par7, int par8, double par9, double par11, double par13)
-    {
-        float var15 = 1.1F;
-        byte var16 = 6;
-        int modDispense = GameRegistry.tryDispense(par1World, par4, par5, par6, par7, par8, par2ItemStack, par3Random, par9, par11, par13);
-        if (modDispense > -1)
-        {
-            return modDispense;
-        }
-        if (par2ItemStack.itemID == Item.arrow.shiftedIndex)
-        {
-            EntityArrow var28 = new EntityArrow(par1World, par9, par11, par13);
-            var28.setArrowHeading((double)par7, 0.10000000149011612D, (double)par8, var15, (float)var16);
-            var28.canBePickedUp = 1;
-            par1World.spawnEntityInWorld(var28);
-            par1World.playAuxSFX(1002, par4, par5, par6, 0);
-            return 1;
-        }
-        else if (par2ItemStack.itemID == Item.egg.shiftedIndex)
-        {
-            EntityEgg var29 = new EntityEgg(par1World, par9, par11, par13);
-            var29.setThrowableHeading((double)par7, 0.10000000149011612D, (double)par8, var15, (float)var16);
-            par1World.spawnEntityInWorld(var29);
-            par1World.playAuxSFX(1002, par4, par5, par6, 0);
-            return 1;
-        }
-        else if (par2ItemStack.itemID == Item.snowball.shiftedIndex)
-        {
-            EntitySnowball var24 = new EntitySnowball(par1World, par9, par11, par13);
-            var24.setThrowableHeading((double)par7, 0.10000000149011612D, (double)par8, var15, (float)var16);
-            par1World.spawnEntityInWorld(var24);
-            par1World.playAuxSFX(1002, par4, par5, par6, 0);
-            return 1;
-        }
-        else if (par2ItemStack.itemID == Item.potion.shiftedIndex && ItemPotion.isSplash(par2ItemStack.getItemDamage()))
-        {
-            EntityPotion var25 = new EntityPotion(par1World, par9, par11, par13, par2ItemStack.getItemDamage());
-            var25.setThrowableHeading((double)par7, 0.10000000149011612D, (double)par8, var15 * 1.25F, (float)var16 * 0.5F);
-            par1World.spawnEntityInWorld(var25);
-            par1World.playAuxSFX(1002, par4, par5, par6, 0);
-            return 1;
-        }
-        else if (par2ItemStack.itemID == Item.expBottle.shiftedIndex)
-        {
-            EntityExpBottle var26 = new EntityExpBottle(par1World, par9, par11, par13);
-            var26.setThrowableHeading((double)par7, 0.10000000149011612D, (double)par8, var15 * 1.25F, (float)var16 * 0.5F);
-            par1World.spawnEntityInWorld(var26);
-            par1World.playAuxSFX(1002, par4, par5, par6, 0);
-            return 1;
-        }
-        else if (par2ItemStack.itemID == Item.monsterPlacer.shiftedIndex)
-        {
-            ItemMonsterPlacer.spawnCreature(par1World, par2ItemStack.getItemDamage(), par9 + (double)par7 * 0.3D, par11 - 0.3D, par13 + (double)par8 * 0.3D);
-            par1World.playAuxSFX(1002, par4, par5, par6, 0);
-            return 1;
-        }
-        else if (par2ItemStack.itemID == Item.fireballCharge.shiftedIndex)
-        {
-            EntitySmallFireball var27 = new EntitySmallFireball(par1World, par9 + (double)par7 * 0.3D, par11, par13 + (double)par8 * 0.3D, (double)par7 + par3Random.nextGaussian() * 0.05D, par3Random.nextGaussian() * 0.05D, (double)par8 + par3Random.nextGaussian() * 0.05D);
-            par1World.spawnEntityInWorld(var27);
-            par1World.playAuxSFX(1009, par4, par5, par6, 0);
-            return 1;
-        }
-        else if (par2ItemStack.itemID != Item.bucketLava.shiftedIndex && par2ItemStack.itemID != Item.bucketWater.shiftedIndex)
-        {
-            if (par2ItemStack.itemID == Item.bucketEmpty.shiftedIndex)
-            {
-                int var21 = par4 + par7;
-                int var18 = par6 + par8;
-                Material var19 = par1World.getBlockMaterial(var21, par5, var18);
-                int var20 = par1World.getBlockMetadata(var21, par5, var18);
-
-                if (var19 == Material.water && var20 == 0)
-                {
-                    par1World.setBlockWithNotify(var21, par5, var18, 0);
-
-                    if (--par2ItemStack.stackSize == 0)
-                    {
-                        par2ItemStack.itemID = Item.bucketWater.shiftedIndex;
-                        par2ItemStack.stackSize = 1;
-                    }
-                    else if (par0TileEntityDispenser.func_70360_a(new ItemStack(Item.bucketWater)) < 0)
-                    {
-                        dispenseEntityFromStack(par1World, new ItemStack(Item.bucketWater), par3Random, 6, par7, par8, par9, par11, par13);
-                    }
-
-                    return 2;
-                }
-                else if (var19 == Material.lava && var20 == 0)
-                {
-                    par1World.setBlockWithNotify(var21, par5, var18, 0);
-
-                    if (--par2ItemStack.stackSize == 0)
-                    {
-                        par2ItemStack.itemID = Item.bucketLava.shiftedIndex;
-                        par2ItemStack.stackSize = 1;
-                    }
-                    else if (par0TileEntityDispenser.func_70360_a(new ItemStack(Item.bucketLava)) < 0)
-                    {
-                        dispenseEntityFromStack(par1World, new ItemStack(Item.bucketLava), par3Random, 6, par7, par8, par9, par11, par13);
-                    }
-
-                    return 2;
-                }
-                else
-                {
-                    return 0;
-                }
-            }
-            else if (par2ItemStack.getItem() instanceof ItemMinecart)
-            {
-                par9 = (double)par4 + (par7 < 0 ? (double)par7 * 0.8D : (double)((float)par7 * 1.8F)) + (double)((float)Math.abs(par8) * 0.5F);
-                par13 = (double)par6 + (par8 < 0 ? (double)par8 * 0.8D : (double)((float)par8 * 1.8F)) + (double)((float)Math.abs(par7) * 0.5F);
-
-                if (BlockRail.isRailBlockAt(par1World, par4 + par7, par5, par6 + par8))
-                {
-                    par11 = (double)((float)par5 + 0.5F);
-                }
-                else
-                {
-                    if (!par1World.isAirBlock(par4 + par7, par5, par6 + par8) || !BlockRail.isRailBlockAt(par1World, par4 + par7, par5 - 1, par6 + par8))
-                    {
-                        return 0;
-                    }
-
-                    par11 = (double)((float)par5 - 0.5F);
-                }
-
-                EntityMinecart var22 = new EntityMinecart(par1World, par9, par11, par13, ((ItemMinecart)par2ItemStack.getItem()).minecartType);
-                par1World.spawnEntityInWorld(var22);
-                par1World.playAuxSFX(1000, par4, par5, par6, 0);
-                return 1;
-            }
-            else if (par2ItemStack.itemID == Item.boat.shiftedIndex)
-            {
-                par9 = (double)par4 + (par7 < 0 ? (double)par7 * 0.8D : (double)((float)par7 * 1.8F)) + (double)((float)Math.abs(par8) * 0.5F);
-                par13 = (double)par6 + (par8 < 0 ? (double)par8 * 0.8D : (double)((float)par8 * 1.8F)) + (double)((float)Math.abs(par7) * 0.5F);
-
-                if (par1World.getBlockMaterial(par4 + par7, par5, par6 + par8) == Material.water)
-                {
-                    par11 = (double)((float)par5 + 1.0F);
-                }
-                else
-                {
-                    if (!par1World.isAirBlock(par4 + par7, par5, par6 + par8) || par1World.getBlockMaterial(par4 + par7, par5 - 1, par6 + par8) != Material.water)
-                    {
-                        return 0;
-                    }
-
-                    par11 = (double)par5;
-                }
-
-                EntityBoat var23 = new EntityBoat(par1World, par9, par11, par13);
-                par1World.spawnEntityInWorld(var23);
-                par1World.playAuxSFX(1000, par4, par5, par6, 0);
-                return 1;
-            }
-            else
-            {
-                return 0;
-            }
-        }
-        else
-        {
-            ItemBucket var17 = (ItemBucket)par2ItemStack.getItem();
-
-            if (var17.func_77875_a(par1World, (double)par4, (double)par5, (double)par6, par4 + par7, par5, par6 + par8))
-            {
-                par2ItemStack.itemID = Item.bucketEmpty.shiftedIndex;
-                par2ItemStack.stackSize = 1;
-                return 2;
-            }
-            else
-            {
-                return 0;
-            }
-        }
+        EnumFacing var1 = EnumFacing.func_82600_a(par0IBlockSource.func_82620_h());
+        double var2 = par0IBlockSource.func_82615_a() + 0.6D * (double)var1.func_82601_c();
+        double var4 = par0IBlockSource.func_82617_b();
+        double var6 = par0IBlockSource.func_82616_c() + 0.6D * (double)var1.func_82599_e();
+        return new PositionImpl(var2, var4, var6);
     }
 }

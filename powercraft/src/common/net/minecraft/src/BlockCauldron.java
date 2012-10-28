@@ -110,27 +110,37 @@ public class BlockCauldron extends Block
                 }
                 else
                 {
-                    if (var10.itemID == Item.glassBottle.shiftedIndex && var11 > 0)
+                    if (var10.itemID == Item.glassBottle.shiftedIndex)
                     {
-                        ItemStack var12 = new ItemStack(Item.potion, 1, 0);
-
-                        if (!par5EntityPlayer.inventory.addItemStackToInventory(var12))
+                        if (var11 > 0)
                         {
-                            par1World.spawnEntityInWorld(new EntityItem(par1World, (double)par2 + 0.5D, (double)par3 + 1.5D, (double)par4 + 0.5D, var12));
-                        }
-                        else if (par5EntityPlayer instanceof EntityPlayerMP)
-                        {
-                            ((EntityPlayerMP)par5EntityPlayer).sendContainerToPlayer(par5EntityPlayer.inventorySlots);
-                        }
+                            ItemStack var12 = new ItemStack(Item.potion, 1, 0);
 
-                        --var10.stackSize;
+                            if (!par5EntityPlayer.inventory.addItemStackToInventory(var12))
+                            {
+                                par1World.spawnEntityInWorld(new EntityItem(par1World, (double)par2 + 0.5D, (double)par3 + 1.5D, (double)par4 + 0.5D, var12));
+                            }
+                            else if (par5EntityPlayer instanceof EntityPlayerMP)
+                            {
+                                ((EntityPlayerMP)par5EntityPlayer).sendContainerToPlayer(par5EntityPlayer.inventorySlots);
+                            }
 
-                        if (var10.stackSize <= 0)
-                        {
-                            par5EntityPlayer.inventory.setInventorySlotContents(par5EntityPlayer.inventory.currentItem, (ItemStack)null);
+                            --var10.stackSize;
+
+                            if (var10.stackSize <= 0)
+                            {
+                                par5EntityPlayer.inventory.setInventorySlotContents(par5EntityPlayer.inventory.currentItem, (ItemStack)null);
+                            }
+
+                            par1World.setBlockMetadataWithNotify(par2, par3, par4, var11 - 1);
                         }
-
+                    }
+                    else if (var11 > 0 && var10.getItem() instanceof ItemArmor && ((ItemArmor)var10.getItem()).func_82812_d() == EnumArmorMaterial.CLOTH)
+                    {
+                        ItemArmor var13 = (ItemArmor)var10.getItem();
+                        var13.func_82815_c(var10);
                         par1World.setBlockMetadataWithNotify(par2, par3, par4, var11 - 1);
+                        return true;
                     }
 
                     return true;

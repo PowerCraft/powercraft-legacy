@@ -18,13 +18,26 @@ public class ItemSword extends Item
         this.weaponDamage = 4 + par2EnumToolMaterial.getDamageVsEntity();
     }
 
+    public int func_82803_g()
+    {
+        return this.toolMaterial.getDamageVsEntity();
+    }
+
     /**
      * Returns the strength of the stack against a given block. 1.0F base, (Quality+1)*2 if correct blocktype, 1.5F if
      * sword
      */
     public float getStrVsBlock(ItemStack par1ItemStack, Block par2Block)
     {
-        return par2Block.blockID == Block.web.blockID ? 15.0F : 1.5F;
+        if (par2Block.blockID == Block.web.blockID)
+        {
+            return 15.0F;
+        }
+        else
+        {
+            Material var3 = par2Block.blockMaterial;
+            return var3 != Material.plants && var3 != Material.vine && var3 != Material.field_76261_t && var3 != Material.leaves && var3 != Material.pumpkin ? 1.0F : 1.5F;
+        }
     }
 
     /**
@@ -109,5 +122,10 @@ public class ItemSword extends Item
     public String func_77825_f()
     {
         return this.toolMaterial.toString();
+    }
+
+    public boolean func_82789_a(ItemStack par1ItemStack, ItemStack par2ItemStack)
+    {
+        return this.toolMaterial.func_82844_f() == par2ItemStack.itemID ? true : super.func_82789_a(par1ItemStack, par2ItemStack);
     }
 }

@@ -67,7 +67,7 @@ public class WorldProviderEnd extends WorldProvider
         var5 *= var4 * 0.0F + 0.15F;
         var6 *= var4 * 0.0F + 0.15F;
         var7 *= var4 * 0.0F + 0.15F;
-        return Vec3.getVec3Pool().getVecFromPool((double)var5, (double)var6, (double)var7);
+        return this.worldObj.func_82732_R().getVecFromPool((double)var5, (double)var6, (double)var7);
     }
 
     @SideOnly(Side.CLIENT)

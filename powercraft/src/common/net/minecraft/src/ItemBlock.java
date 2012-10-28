@@ -75,7 +75,7 @@ public class ItemBlock extends Item
         {
             return false;
         }
-        else if (!par2EntityPlayer.canPlayerEdit(par4, par5, par6))
+        else if (!par2EntityPlayer.func_82247_a(par4, par5, par6, par7, par1ItemStack))
         {
             return false;
         }
@@ -89,7 +89,7 @@ public class ItemBlock extends Item
 
             if (placeBlockAt(par1ItemStack, par2EntityPlayer, par3World, par4, par5, par6, par7, par8, par9, par10))
             {
-                par3World.playSoundEffect((double)((float)par4 + 0.5F), (double)((float)par5 + 0.5F), (double)((float)par6 + 0.5F), var12.stepSound.getStepSound(), (var12.stepSound.getVolume() + 1.0F) / 2.0F, var12.stepSound.getPitch() * 0.8F);
+                par3World.playSoundEffect((double)((float)par4 + 0.5F), (double)((float)par5 + 0.5F), (double)((float)par6 + 0.5F), var12.stepSound.func_82593_b(), (var12.stepSound.getVolume() + 1.0F) / 2.0F, var12.stepSound.getPitch() * 0.8F);
                 --par1ItemStack.stackSize;
             }
 

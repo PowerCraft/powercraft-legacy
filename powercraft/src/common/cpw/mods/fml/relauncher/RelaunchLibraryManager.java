@@ -63,6 +63,42 @@ public class RelaunchLibraryManager
 
         downloadMonitor.updateProgressString("All core mods are successfully located");
         // Now that we have the root plugins loaded - lets see what else might be around
+        String commandLineCoremods = System.getProperty("fml.coreMods.load","");
+        for (String s : commandLineCoremods.split(","))
+        {
+            if (s.isEmpty())
+            {
+                continue;
+            }
+            FMLRelaunchLog.info("Found a command line coremod : %s", s);
+            try
+            {
+                actualClassLoader.addTransformerExclusion(s);
+                Class<?> coreModClass = Class.forName(s, true, actualClassLoader);
+                TransformerExclusions trExclusions = coreModClass.getAnnotation(IFMLLoadingPlugin.TransformerExclusions.class);
+                if (trExclusions!=null)
+                {
+                    for (String st : trExclusions.value())
+                    {
+                        actualClassLoader.addTransformerExclusion(st);
+                    }
+                }
+                IFMLLoadingPlugin plugin = (IFMLLoadingPlugin) coreModClass.newInstance();
+                loadPlugins.add(plugin);
+                if (plugin.getLibraryRequestClass()!=null)
+                {
+                    for (String libName : plugin.getLibraryRequestClass())
+                    {
+                        libraries.add((ILibrarySet) Class.forName(libName, true, actualClassLoader).newInstance());
+                    }
+                }
+            }
+            catch (Throwable e)
+            {
+                FMLRelaunchLog.log(Level.SEVERE,e,"Exception occured trying to load coremod %s",s);
+                throw new RuntimeException(e);
+            }
+        }
         discoverCoreMods(mcDir, actualClassLoader, loadPlugins, libraries);
 
         List<Throwable> caughtErrors = new ArrayList<Throwable>();
@@ -85,13 +121,14 @@ public class RelaunchLibraryManager
                 {
                     boolean download = false;
                     String libName = lib.getLibraries()[i];
+                    String targFileName = libName.lastIndexOf('/')>=0 ? libName.substring(libName.lastIndexOf('/')) : libName;
                     String checksum = lib.getHashes()[i];
-                    File libFile = new File(libDir, libName);
+                    File libFile = new File(libDir, targFileName);
                     if (!libFile.exists())
                     {
                         try
                         {
-                            downloadFile(libFile, lib.getRootURL(), checksum);
+                            downloadFile(libFile, lib.getRootURL(), libName, checksum);
                             download = true;
                         }
                         catch (Throwable e)
@@ -414,11 +451,14 @@ public class RelaunchLibraryManager
         return coreModDir;
     }
 
-    private static void downloadFile(File libFile, String rootUrl, String hash)
+    private static void downloadFile(File libFile, String rootUrl,String realFilePath, String hash)
     {
         try
         {
-            URL libDownload = new URL(String.format(rootUrl,libFile.getName()));
+        	//rootUrl.replace("%s", libFile.getPath())
+            URL libDownload = new URL(String.format(rootUrl,realFilePath));
+            System.out.println("Downloading file: " + libDownload.getHost() + libDownload.getPath());
+            System.out.println("The libFile's path is " + libFile.getAbsolutePath());
             String infoString = String.format("Downloading file %s", libDownload.toString());
             downloadMonitor.updateProgressString(infoString);
             FMLRelaunchLog.info(infoString);

@@ -18,7 +18,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 import java.util.Set;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import net.minecraft.server.MinecraftServer;
@@ -33,13 +32,12 @@ import net.minecraft.src.NetHandler;
 import net.minecraft.src.Packet131MapData;
 import net.minecraft.src.SaveHandler;
 import net.minecraft.src.ServerListenThread;
-import net.minecraft.src.ThreadServerApplication;
+import net.minecraft.src.ThreadMinecraftServer;
 import net.minecraft.src.World;
 import net.minecraft.src.WorldInfo;
 
 import com.google.common.base.Objects;
 import com.google.common.base.Strings;
-import com.google.common.base.Throwables;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableList.Builder;
 import com.google.common.collect.Lists;
@@ -156,7 +154,7 @@ public class FMLCommonHandler
     }
     /**
      * Get the forge mod loader logging instance (goes to the forgemodloader log file)
-     * @return
+     * @return The log instance for the FML log file
      */
     public Logger getFMLLogger()
     {
@@ -176,7 +174,7 @@ public class FMLCommonHandler
     public Side getEffectiveSide()
     {
         Thread thr = Thread.currentThread();
-        if ((thr instanceof ThreadServerApplication) || (thr instanceof ServerListenThread))
+        if ((thr instanceof ThreadMinecraftServer) || (thr instanceof ServerListenThread))
         {
             return Side.SERVER;
         }
@@ -230,6 +228,7 @@ public class FMLCommonHandler
         {
             Builder brd = ImmutableList.<String>builder();
             brd.add(Loader.instance().getMCVersionString());
+            brd.add(Loader.instance().getMCPVersionString());
             brd.add("FML v"+Loader.instance().getFMLVersionString());
             String forgeBranding = (String) callForgeMethod("getBrandingVersion");
             if (!Strings.isNullOrEmpty(forgeBranding))

@@ -40,10 +40,11 @@ public class GuiScreenAddServer extends GuiScreen
         this.controlList.clear();
         this.controlList.add(new GuiButton(0, this.width / 2 - 100, this.height / 4 + 96 + 12, var1.translateKey("addServer.add")));
         this.controlList.add(new GuiButton(1, this.width / 2 - 100, this.height / 4 + 120 + 12, var1.translateKey("gui.cancel")));
-        this.serverName = new GuiTextField(this.fontRenderer, this.width / 2 - 100, 76, 200, 20);
+        this.controlList.add(new GuiButton(2, this.width / 2 - 100, 142, var1.translateKey("addServer.hideAddress") + ": " + (this.newServerData.func_82820_d() ? var1.translateKey("gui.yes") : var1.translateKey("gui.no"))));
+        this.serverName = new GuiTextField(this.fontRenderer, this.width / 2 - 100, 66, 200, 20);
         this.serverName.setFocused(true);
         this.serverName.setText(this.newServerData.serverName);
-        this.serverAddress = new GuiTextField(this.fontRenderer, this.width / 2 - 100, 116, 200, 20);
+        this.serverAddress = new GuiTextField(this.fontRenderer, this.width / 2 - 100, 106, 200, 20);
         this.serverAddress.setMaxStringLength(128);
         this.serverAddress.setText(this.newServerData.serverIP);
         ((GuiButton)this.controlList.get(0)).enabled = this.serverAddress.getText().length() > 0 && this.serverAddress.getText().split(":").length > 0 && this.serverName.getText().length() > 0;
@@ -73,6 +74,12 @@ public class GuiScreenAddServer extends GuiScreen
                 this.newServerData.serverName = this.serverName.getText();
                 this.newServerData.serverIP = this.serverAddress.getText();
                 this.parentGui.confirmClicked(true, 0);
+            }
+            else if (par1GuiButton.id == 2)
+            {
+                StringTranslate var2 = StringTranslate.getInstance();
+                this.newServerData.func_82819_b(!this.newServerData.func_82820_d());
+                ((GuiButton)this.controlList.get(2)).displayString = var2.translateKey("addServer.hideAddress") + ": " + (this.newServerData.func_82820_d() ? var2.translateKey("gui.yes") : var2.translateKey("gui.no"));
             }
         }
     }
@@ -135,9 +142,9 @@ public class GuiScreenAddServer extends GuiScreen
     {
         StringTranslate var4 = StringTranslate.getInstance();
         this.drawDefaultBackground();
-        this.drawCenteredString(this.fontRenderer, var4.translateKey("addServer.title"), this.width / 2, this.height / 4 - 60 + 20, 16777215);
-        this.drawString(this.fontRenderer, var4.translateKey("addServer.enterName"), this.width / 2 - 100, 63, 10526880);
-        this.drawString(this.fontRenderer, var4.translateKey("addServer.enterIp"), this.width / 2 - 100, 104, 10526880);
+        this.drawCenteredString(this.fontRenderer, var4.translateKey("addServer.title"), this.width / 2, 17, 16777215);
+        this.drawString(this.fontRenderer, var4.translateKey("addServer.enterName"), this.width / 2 - 100, 53, 10526880);
+        this.drawString(this.fontRenderer, var4.translateKey("addServer.enterIp"), this.width / 2 - 100, 94, 10526880);
         this.serverName.drawTextBox();
         this.serverAddress.drawTextBox();
         super.drawScreen(par1, par2, par3);

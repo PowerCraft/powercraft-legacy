@@ -23,30 +23,23 @@ public class MerchantRecipeList extends ArrayList
     {
         if (par3 > 0 && par3 < this.size())
         {
-            MerchantRecipe var4 = (MerchantRecipe)this.get(par3);
-
-            if (par1ItemStack.itemID == var4.getItemToBuy().itemID && (par2ItemStack == null && !var4.hasSecondItemToBuy() || var4.hasSecondItemToBuy() && par2ItemStack != null && var4.getSecondItemToBuy().itemID == par2ItemStack.itemID))
-            {
-                if (par1ItemStack.stackSize >= var4.getItemToBuy().stackSize && (!var4.hasSecondItemToBuy() || par2ItemStack.stackSize >= var4.getSecondItemToBuy().stackSize))
-                {
-                    return var4;
-                }
-
-                return null;
-            }
+            MerchantRecipe var6 = (MerchantRecipe)this.get(par3);
+            return par1ItemStack.itemID == var6.getItemToBuy().itemID && (par2ItemStack == null && !var6.hasSecondItemToBuy() || var6.hasSecondItemToBuy() && par2ItemStack != null && var6.getSecondItemToBuy().itemID == par2ItemStack.itemID) && par1ItemStack.stackSize >= var6.getItemToBuy().stackSize && (!var6.hasSecondItemToBuy() || par2ItemStack.stackSize >= var6.getSecondItemToBuy().stackSize) ? var6 : null;
         }
-
-        for (int var6 = 0; var6 < this.size(); ++var6)
+        else
         {
-            MerchantRecipe var5 = (MerchantRecipe)this.get(var6);
-
-            if (par1ItemStack.itemID == var5.getItemToBuy().itemID && par1ItemStack.stackSize >= var5.getItemToBuy().stackSize && (!var5.hasSecondItemToBuy() && par2ItemStack == null || var5.hasSecondItemToBuy() && par2ItemStack != null && var5.getSecondItemToBuy().itemID == par2ItemStack.itemID && par2ItemStack.stackSize >= var5.getSecondItemToBuy().stackSize))
+            for (int var4 = 0; var4 < this.size(); ++var4)
             {
-                return var5;
-            }
-        }
+                MerchantRecipe var5 = (MerchantRecipe)this.get(var4);
 
-        return null;
+                if (par1ItemStack.itemID == var5.getItemToBuy().itemID && par1ItemStack.stackSize >= var5.getItemToBuy().stackSize && (!var5.hasSecondItemToBuy() && par2ItemStack == null || var5.hasSecondItemToBuy() && par2ItemStack != null && var5.getSecondItemToBuy().itemID == par2ItemStack.itemID && par2ItemStack.stackSize >= var5.getSecondItemToBuy().stackSize))
+                {
+                    return var5;
+                }
+            }
+
+            return null;
+        }
     }
 
     /**
@@ -88,6 +81,8 @@ public class MerchantRecipeList extends ArrayList
             {
                 Packet.writeItemStack(var4, par1DataOutputStream);
             }
+
+            par1DataOutputStream.writeBoolean(var3.func_82784_g());
         }
     }
 
@@ -108,7 +103,15 @@ public class MerchantRecipeList extends ArrayList
                 var6 = Packet.readItemStack(par0DataInputStream);
             }
 
-            var1.add(new MerchantRecipe(var4, var6, var5));
+            boolean var7 = par0DataInputStream.readBoolean();
+            MerchantRecipe var8 = new MerchantRecipe(var4, var6, var5);
+
+            if (var7)
+            {
+                var8.func_82785_h();
+            }
+
+            var1.add(var8);
         }
 
         return var1;

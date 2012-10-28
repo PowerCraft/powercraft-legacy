@@ -45,7 +45,7 @@ public class PCco_ItemOreSniffer extends PC_Item {
 	}
 
 	@Override
-	public void addInformation(ItemStack itemstack, List list) {
+	public void addInformation(ItemStack itemStack, EntityPlayer player, List list, boolean b) {
 		list.add(PC_Utils.tr("pc.sniffer.desc"));
 	}
 	

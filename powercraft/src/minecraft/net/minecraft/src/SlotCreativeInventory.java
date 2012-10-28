@@ -17,12 +17,9 @@ class SlotCreativeInventory extends Slot
         this.theSlot = par2Slot;
     }
 
-    /**
-     * Called when the player picks up an item from an inventory slot
-     */
-    public void onPickupFromSlot(ItemStack par1ItemStack)
+    public void func_82870_a(EntityPlayer par1EntityPlayer, ItemStack par2ItemStack)
     {
-        this.theSlot.onPickupFromSlot(par1ItemStack);
+        this.theSlot.func_82870_a(par1EntityPlayer, par2ItemStack);
     }
 
     /**

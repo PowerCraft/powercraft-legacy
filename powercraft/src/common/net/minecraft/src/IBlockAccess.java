@@ -89,4 +89,11 @@ public interface IBlockAccess
      * Returns true if the block at the given coordinate has a solid (buildable) top surface.
      */
     boolean doesBlockHaveSolidTopSurface(int var1, int var2, int var3);
+
+    Vec3Pool func_82732_R();
+
+    /**
+     * Is this block powering in the specified direction Args: x, y, z, direction
+     */
+    boolean isBlockProvidingPowerTo(int var1, int var2, int var3, int var4);
 }

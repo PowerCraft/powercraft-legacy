@@ -1,5 +1,7 @@
 package net.minecraft.src;
 
+import cpw.mods.fml.common.Side;
+import cpw.mods.fml.common.asm.SideOnly;
 import java.util.Iterator;
 import java.util.List;
 
@@ -8,7 +10,7 @@ public class EntityPotion extends EntityThrowable
     /**
      * The damage value of the thrown potion that this EntityPotion represents.
      */
-    private int potionDamage;
+    private ItemStack potionDamage;
 
     public EntityPotion(World par1World)
     {
@@ -17,14 +19,25 @@ public class EntityPotion extends EntityThrowable
 
     public EntityPotion(World par1World, EntityLiving par2EntityLiving, int par3)
     {
-        super(par1World, par2EntityLiving);
-        this.potionDamage = par3;
+        this(par1World, par2EntityLiving, new ItemStack(Item.potion, 1, par3));
     }
 
+    public EntityPotion(World par1World, EntityLiving par2EntityLiving, ItemStack par3ItemStack)
+    {
+        super(par1World, par2EntityLiving);
+        this.potionDamage = par3ItemStack;
+    }
+
+    @SideOnly(Side.CLIENT)
     public EntityPotion(World par1World, double par2, double par4, double par6, int par8)
     {
+        this(par1World, par2, par4, par6, new ItemStack(Item.potion, 1, par8));
+    }
+
+    public EntityPotion(World par1World, double par2, double par4, double par6, ItemStack par8ItemStack)
+    {
         super(par1World, par2, par4, par6);
-        this.potionDamage = par8;
+        this.potionDamage = par8ItemStack;
     }
 
     /**
@@ -45,12 +58,27 @@ public class EntityPotion extends EntityThrowable
         return -20.0F;
     }
 
+    public void func_82340_a(int par1)
+    {
+        if (this.potionDamage == null)
+        {
+            this.potionDamage = new ItemStack(Item.potion, 1, 0);
+        }
+
+        this.potionDamage.setItemDamage(par1);
+    }
+
     /**
      * Returns the damage value of the thrown potion that this EntityPotion represents.
      */
     public int getPotionDamage()
     {
-        return this.potionDamage;
+        if (this.potionDamage == null)
+        {
+            this.potionDamage = new ItemStack(Item.potion, 1, 0);
+        }
+
+        return this.potionDamage.getItemDamage();
     }
 
     /**
@@ -111,7 +139,7 @@ public class EntityPotion extends EntityThrowable
                 }
             }
 
-            this.worldObj.playAuxSFX(2002, (int)Math.round(this.posX), (int)Math.round(this.posY), (int)Math.round(this.posZ), this.potionDamage);
+            this.worldObj.playAuxSFX(2002, (int)Math.round(this.posX), (int)Math.round(this.posY), (int)Math.round(this.posZ), this.getPotionDamage());
             this.setDead();
         }
     }
@@ -122,7 +150,20 @@ public class EntityPotion extends EntityThrowable
     public void readEntityFromNBT(NBTTagCompound par1NBTTagCompound)
     {
         super.readEntityFromNBT(par1NBTTagCompound);
-        this.potionDamage = par1NBTTagCompound.getInteger("potionValue");
+
+        if (par1NBTTagCompound.hasKey("Potion"))
+        {
+            this.potionDamage = ItemStack.loadItemStackFromNBT(par1NBTTagCompound.getCompoundTag("Potion"));
+        }
+        else
+        {
+            this.func_82340_a(par1NBTTagCompound.getInteger("potionValue"));
+        }
+
+        if (this.potionDamage == null)
+        {
+            this.setDead();
+        }
     }
 
     /**
@@ -131,6 +172,10 @@ public class EntityPotion extends EntityThrowable
     public void writeEntityToNBT(NBTTagCompound par1NBTTagCompound)
     {
         super.writeEntityToNBT(par1NBTTagCompound);
-        par1NBTTagCompound.setInteger("potionValue", this.potionDamage);
+
+        if (this.potionDamage != null)
+        {
+            par1NBTTagCompound.setCompoundTag("Potion", this.potionDamage.writeToNBT(new NBTTagCompound()));
+        }
     }
 }

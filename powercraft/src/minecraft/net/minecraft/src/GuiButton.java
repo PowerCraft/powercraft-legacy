@@ -31,6 +31,7 @@ public class GuiButton extends Gui
 
     /** Hides the button completely if false. */
     public boolean drawButton;
+    protected boolean field_82253_i;
 
     public GuiButton(int par1, int par2, int par3, String par4Str)
     {
@@ -81,23 +82,23 @@ public class GuiButton extends Gui
             FontRenderer var4 = par1Minecraft.fontRenderer;
             GL11.glBindTexture(GL11.GL_TEXTURE_2D, par1Minecraft.renderEngine.getTexture("/gui/gui.png"));
             GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-            boolean var5 = par2 >= this.xPosition && par3 >= this.yPosition && par2 < this.xPosition + this.width && par3 < this.yPosition + this.height;
-            int var6 = this.getHoverState(var5);
-            this.drawTexturedModalRect(this.xPosition, this.yPosition, 0, 46 + var6 * 20, this.width / 2, this.height);
-            this.drawTexturedModalRect(this.xPosition + this.width / 2, this.yPosition, 200 - this.width / 2, 46 + var6 * 20, this.width / 2, this.height);
+            this.field_82253_i = par2 >= this.xPosition && par3 >= this.yPosition && par2 < this.xPosition + this.width && par3 < this.yPosition + this.height;
+            int var5 = this.getHoverState(this.field_82253_i);
+            this.drawTexturedModalRect(this.xPosition, this.yPosition, 0, 46 + var5 * 20, this.width / 2, this.height);
+            this.drawTexturedModalRect(this.xPosition + this.width / 2, this.yPosition, 200 - this.width / 2, 46 + var5 * 20, this.width / 2, this.height);
             this.mouseDragged(par1Minecraft, par2, par3);
-            int var7 = 14737632;
+            int var6 = 14737632;
 
             if (!this.enabled)
             {
-                var7 = -6250336;
+                var6 = -6250336;
             }
-            else if (var5)
+            else if (this.field_82253_i)
             {
-                var7 = 16777120;
+                var6 = 16777120;
             }
 
-            this.drawCenteredString(var4, this.displayString, this.xPosition + this.width / 2, this.yPosition + (this.height - 8) / 2, var7);
+            this.drawCenteredString(var4, this.displayString, this.xPosition + this.width / 2, this.yPosition + (this.height - 8) / 2, var6);
         }
     }
 
@@ -119,4 +120,11 @@ public class GuiButton extends Gui
     {
         return this.enabled && this.drawButton && par2 >= this.xPosition && par3 >= this.yPosition && par2 < this.xPosition + this.width && par3 < this.yPosition + this.height;
     }
+
+    public boolean func_82252_a()
+    {
+        return this.field_82253_i;
+    }
+
+    public void func_82251_b(int par1, int par2) {}
 }

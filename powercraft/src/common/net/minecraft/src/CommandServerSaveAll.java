@@ -9,6 +9,11 @@ public class CommandServerSaveAll extends CommandBase
         return "save-all";
     }
 
+    public int func_82362_a()
+    {
+        return 4;
+    }
+
     public void processCommand(ICommandSender par1ICommandSender, String[] par2ArrayOfStr)
     {
         MinecraftServer var3 = MinecraftServer.getServer();

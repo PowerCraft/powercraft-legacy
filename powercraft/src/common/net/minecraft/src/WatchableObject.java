@@ -46,4 +46,9 @@ public class WatchableObject
     {
         this.watched = par1;
     }
+
+    static boolean func_82711_a(WatchableObject par0WatchableObject, boolean par1)
+    {
+        return par0WatchableObject.watched = par1;
+    }
 }

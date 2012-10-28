@@ -50,14 +50,6 @@ public class TileEntity
         }
     }
 
-    /**
-     * Sets the worldObj for this tileEntity.
-     */
-    public void setWorldObj(World par1World)
-    {
-        this.worldObj = par1World;
-    }
-
     @SideOnly(Side.CLIENT)
 
     /**
@@ -66,6 +58,14 @@ public class TileEntity
     public World getWorldObj()
     {
         return this.worldObj;
+    }
+
+    /**
+     * Sets the worldObj for this tileEntity.
+     */
+    public void setWorldObj(World par1World)
+    {
+        this.worldObj = par1World;
     }
 
     public boolean func_70309_m()
@@ -181,6 +181,10 @@ public class TileEntity
     }
 
     @SideOnly(Side.CLIENT)
+    public double func_82115_m()
+    {
+        return 4096.0D;
+    }
 
     /**
      * Gets the block type at the location of this entity (client-only).
@@ -256,6 +260,9 @@ public class TileEntity
         addMapping(TileEntityBrewingStand.class, "Cauldron");
         addMapping(TileEntityEnchantmentTable.class, "EnchantTable");
         addMapping(TileEntityEndPortal.class, "Airportal");
+        addMapping(TileEntityCommandBlock.class, "Control");
+        addMapping(TileEntityBeacon.class, "Beacon");
+        addMapping(TileEntitySkull.class, "Skull");
     }
 
     /**
@@ -276,7 +283,7 @@ public class TileEntity
      * @param net The NetworkManager the packet originated from 
      * @param pkt The data packet
      */
-    public void onDataPacket(NetworkManager net, Packet132TileEntityData pkt)
+    public void onDataPacket(INetworkManager net, Packet132TileEntityData pkt)
     {
     }
 
@@ -285,13 +292,5 @@ public class TileEntity
      */
     public void onChunkUnload()
     {
-    }
-
-    /**
-     *  @return The maximum distance between the player and the TileEntity at which the TileEntitySpecialRenderer will be called
-     */
-    public double getRenderDistance()
-    {
-        return 64;
     }
 }

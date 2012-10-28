@@ -7,13 +7,8 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.HashMap;
 
-import net.minecraft.client.Minecraft;
-import net.minecraft.server.MinecraftServer;
-import net.minecraft.src.EntityClientPlayerMP;
 import net.minecraft.src.EntityPlayer;
-import net.minecraft.src.EntityPlayerMP;
-import net.minecraft.src.ModLoader;
-import net.minecraft.src.NetworkManager;
+import net.minecraft.src.INetworkManager;
 import net.minecraft.src.Packet250CustomPayload;
 import net.minecraft.src.TileEntity;
 import cpw.mods.fml.common.network.IPacketHandler;
@@ -27,7 +22,7 @@ public class PC_PacketHandler implements IPacketHandler {
 	protected static HashMap<String, PC_IPacketHandler> packetHandler = new HashMap<String, PC_IPacketHandler>();
 	
 	@Override
-	public void onPacketData(NetworkManager manager, Packet250CustomPayload packet, Player player) {
+	public void onPacketData(INetworkManager manager, Packet250CustomPayload packet, Player player) {
 		try {
 			ObjectInputStream input = new ObjectInputStream(new ByteArrayInputStream(packet.data));
 			int type = input.readInt();

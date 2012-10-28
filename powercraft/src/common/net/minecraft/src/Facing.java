@@ -19,4 +19,5 @@ public class Facing
      * gives the offset required for this axis to get the block at that side.
      */
     public static final int[] offsetsZForSide = new int[] {0, 0, -1, 1, 0, 0};
+    public static final String[] field_82374_e = new String[] {"DOWN", "UP", "NORTH", "SOUTH", "WEST", "EAST"};
 }

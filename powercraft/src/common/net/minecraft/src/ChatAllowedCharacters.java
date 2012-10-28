@@ -1,7 +1,5 @@
 package net.minecraft.src;
 
-import cpw.mods.fml.common.Side;
-import cpw.mods.fml.common.asm.SideOnly;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 
@@ -52,8 +50,6 @@ public class ChatAllowedCharacters
     {
         return par0 != 167 && (allowedCharacters.indexOf(par0) >= 0 || par0 > 32);
     }
-
-    @SideOnly(Side.CLIENT)
 
     /**
      * Filter string by only keeping those characters for which isAllowedCharacter() returns true.

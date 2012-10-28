@@ -9,6 +9,7 @@ public abstract class WorldGenerator
      * this is false, when saplings grow, this is true.
      */
     private final boolean doBlockNotify;
+    private int field_82631_b = 1;
 
     public WorldGenerator()
     {

@@ -21,6 +21,7 @@ public class PotionHelper
     public static final String redstoneEffect;
     public static final String glowstoneEffect;
     public static final String gunpowderEffect;
+    public static final String field_82818_l;
     private static final HashMap potionRequirements = new HashMap();
     private static final HashMap field_77928_m = new HashMap();
     private static final HashMap field_77925_n;
@@ -52,7 +53,6 @@ public class PotionHelper
         return checkFlag(par0, par1) ? 0 : 1;
     }
 
-    @SideOnly(Side.CLIENT)
     public static int func_77909_a(int par0)
     {
         return func_77908_a(par0, 5, 4, 3, 2, 1);
@@ -98,6 +98,25 @@ public class PotionHelper
         }
     }
 
+    public static boolean func_82817_b(Collection par0Collection)
+    {
+        Iterator var1 = par0Collection.iterator();
+        PotionEffect var2;
+
+        do
+        {
+            if (!var1.hasNext())
+            {
+                return true;
+            }
+
+            var2 = (PotionEffect)var1.next();
+        }
+        while (var2.func_82720_e());
+
+        return false;
+    }
+
     @SideOnly(Side.CLIENT)
     public static int func_77915_a(int par0, boolean par1)
     {
@@ -118,6 +137,12 @@ public class PotionHelper
         {
             return calcPotionLiquidColor(getPotionEffects(par0, par1));
         }
+    }
+
+    public static String func_77905_c(int par0)
+    {
+        int var1 = func_77909_a(par0);
+        return potionPrefixes[var1];
     }
 
     private static int func_77904_a(boolean par0, boolean par1, boolean par2, int par3, int par4, int par5, int par6)
@@ -159,13 +184,6 @@ public class PotionHelper
         }
 
         return var7;
-    }
-
-    @SideOnly(Side.CLIENT)
-    public static String func_77905_c(int par0)
-    {
-        int var1 = func_77909_a(par0);
-        return potionPrefixes[var1];
     }
 
     /**
@@ -408,7 +426,14 @@ public class PotionHelper
                             var2 = new ArrayList();
                         }
 
-                        var2.add(new PotionEffect(var6.getId(), var8, var9));
+                        PotionEffect var11 = new PotionEffect(var6.getId(), var8, var9);
+
+                        if ((par0 & 16384) != 0)
+                        {
+                            var11.func_82721_a(true);
+                        }
+
+                        var2.add(var11);
                     }
                 }
             }
@@ -542,7 +567,6 @@ public class PotionHelper
         return par0 & 32767;
     }
 
-    @SideOnly(Side.CLIENT)
     public static int func_77908_a(int par0, int par1, int par2, int par3, int par4, int par5)
     {
         return (checkFlag(par0, par1) ? 16 : 0) | (checkFlag(par0, par2) ? 8 : 0) | (checkFlag(par0, par3) ? 4 : 0) | (checkFlag(par0, par4) ? 2 : 0) | (checkFlag(par0, par5) ? 1 : 0);
@@ -565,6 +589,9 @@ public class PotionHelper
         potionRequirements.put(Integer.valueOf(Potion.moveSlowdown.getId()), "!0 & 1 & !2 & 3 & 3+6");
         blazePowderEffect = "+0-1-2+3&4-4+13";
         potionRequirements.put(Integer.valueOf(Potion.damageBoost.getId()), "0 & !1 & !2 & 3 & 3+6");
+        field_82818_l = "-0+1+2-3+13&4-4";
+        potionRequirements.put(Integer.valueOf(Potion.nightVision.getId()), "!0 & 1 & 2 & !3 & 2+6");
+        potionRequirements.put(Integer.valueOf(Potion.invisibility.getId()), "!0 & 1 & 2 & 3 & 2+6");
         glowstoneEffect = "+5-6-7";
         field_77928_m.put(Integer.valueOf(Potion.moveSpeed.getId()), "5");
         field_77928_m.put(Integer.valueOf(Potion.digSpeed.getId()), "5");

@@ -186,7 +186,7 @@ public class InventoryMerchant implements IInventory
             {
                 MerchantRecipe var4 = var3.canRecipeBeUsed(var1, var2, this.currentRecipeIndex);
 
-                if (var4 != null)
+                if (var4 != null && !var4.func_82784_g())
                 {
                     this.currentRecipe = var4;
                     this.setInventorySlotContents(2, var4.getItemToSell().copy());
@@ -195,7 +195,7 @@ public class InventoryMerchant implements IInventory
                 {
                     var4 = var3.canRecipeBeUsed(var2, var1, this.currentRecipeIndex);
 
-                    if (var4 != null)
+                    if (var4 != null && !var4.func_82784_g())
                     {
                         this.currentRecipe = var4;
                         this.setInventorySlotContents(2, var4.getItemToSell().copy());

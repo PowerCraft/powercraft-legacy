@@ -102,6 +102,14 @@ public class EntityTracker
         {
             this.addEntityToTracker(par1Entity, 64, 3, true);
         }
+        else if (par1Entity instanceof EntityWither)
+        {
+            this.addEntityToTracker(par1Entity, 80, 3, false);
+        }
+        else if (par1Entity instanceof EntityBat)
+        {
+            this.addEntityToTracker(par1Entity, 80, 3, false);
+        }
         else if (par1Entity instanceof IAnimals)
         {
             this.addEntityToTracker(par1Entity, 80, 3, true);
@@ -129,6 +137,10 @@ public class EntityTracker
         else if (par1Entity instanceof EntityEnderCrystal)
         {
             this.addEntityToTracker(par1Entity, 256, Integer.MAX_VALUE, false);
+        }
+        else if (par1Entity instanceof EntityItemFrame)
+        {
+            this.addEntityToTracker(par1Entity, 160, Integer.MAX_VALUE, false);
         }
     }
 

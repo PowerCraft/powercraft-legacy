@@ -8,6 +8,8 @@ import java.util.Random;
 public class BlockStairs extends Block
 {
     private static final int[][] field_72159_a = new int[][] {{2, 6}, {3, 7}, {2, 3}, {6, 7}, {0, 4}, {1, 5}, {0, 1}, {4, 5}};
+    private static final int[] field_82545_b = new int[] {1, -1, 0, 0};
+    private static final int[] field_82546_c = new int[] {0, 0, 1, -1};
 
     /** The block that is used as model for the stair. */
     private final Block modelBlock;
@@ -67,47 +69,283 @@ public class BlockStairs extends Block
         return 10;
     }
 
+    public void func_82541_d(IBlockAccess par1IBlockAccess, int par2, int par3, int par4)
+    {
+        int var5 = par1IBlockAccess.getBlockMetadata(par2, par3, par4);
+
+        if ((var5 & 4) != 0)
+        {
+            this.setBlockBounds(0.0F, 0.5F, 0.0F, 1.0F, 1.0F, 1.0F);
+        }
+        else
+        {
+            this.setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 0.5F, 1.0F);
+        }
+    }
+
+    public static boolean func_82543_e(int par0)
+    {
+        return par0 > 0 && Block.blocksList[par0] instanceof BlockStairs;
+    }
+
+    private boolean func_82540_f(IBlockAccess par1IBlockAccess, int par2, int par3, int par4, int par5)
+    {
+        int var6 = par1IBlockAccess.getBlockId(par2, par3, par4);
+        return func_82543_e(var6) && par1IBlockAccess.getBlockMetadata(par2, par3, par4) == par5;
+    }
+
+    public boolean func_82542_g(IBlockAccess par1IBlockAccess, int par2, int par3, int par4)
+    {
+        int var5 = par1IBlockAccess.getBlockMetadata(par2, par3, par4);
+        int var6 = var5 & 3;
+        float var7 = 0.5F;
+        float var8 = 1.0F;
+
+        if ((var5 & 4) != 0)
+        {
+            var7 = 0.0F;
+            var8 = 0.5F;
+        }
+
+        float var9 = 0.0F;
+        float var10 = 1.0F;
+        float var11 = 0.0F;
+        float var12 = 0.5F;
+        boolean var13 = true;
+        int var14;
+        int var15;
+        int var16;
+
+        if (var6 == 0)
+        {
+            var9 = 0.5F;
+            var12 = 1.0F;
+            var14 = par1IBlockAccess.getBlockId(par2 + 1, par3, par4);
+            var15 = par1IBlockAccess.getBlockMetadata(par2 + 1, par3, par4);
+
+            if (func_82543_e(var14) && (var5 & 4) == (var15 & 4))
+            {
+                var16 = var15 & 3;
+
+                if (var16 == 3 && !this.func_82540_f(par1IBlockAccess, par2, par3, par4 + 1, var5))
+                {
+                    var12 = 0.5F;
+                    var13 = false;
+                }
+                else if (var16 == 2 && !this.func_82540_f(par1IBlockAccess, par2, par3, par4 - 1, var5))
+                {
+                    var11 = 0.5F;
+                    var13 = false;
+                }
+            }
+        }
+        else if (var6 == 1)
+        {
+            var10 = 0.5F;
+            var12 = 1.0F;
+            var14 = par1IBlockAccess.getBlockId(par2 - 1, par3, par4);
+            var15 = par1IBlockAccess.getBlockMetadata(par2 - 1, par3, par4);
+
+            if (func_82543_e(var14) && (var5 & 4) == (var15 & 4))
+            {
+                var16 = var15 & 3;
+
+                if (var16 == 3 && !this.func_82540_f(par1IBlockAccess, par2, par3, par4 + 1, var5))
+                {
+                    var12 = 0.5F;
+                    var13 = false;
+                }
+                else if (var16 == 2 && !this.func_82540_f(par1IBlockAccess, par2, par3, par4 - 1, var5))
+                {
+                    var11 = 0.5F;
+                    var13 = false;
+                }
+            }
+        }
+        else if (var6 == 2)
+        {
+            var11 = 0.5F;
+            var12 = 1.0F;
+            var14 = par1IBlockAccess.getBlockId(par2, par3, par4 + 1);
+            var15 = par1IBlockAccess.getBlockMetadata(par2, par3, par4 + 1);
+
+            if (func_82543_e(var14) && (var5 & 4) == (var15 & 4))
+            {
+                var16 = var15 & 3;
+
+                if (var16 == 1 && !this.func_82540_f(par1IBlockAccess, par2 + 1, par3, par4, var5))
+                {
+                    var10 = 0.5F;
+                    var13 = false;
+                }
+                else if (var16 == 0 && !this.func_82540_f(par1IBlockAccess, par2 - 1, par3, par4, var5))
+                {
+                    var9 = 0.5F;
+                    var13 = false;
+                }
+            }
+        }
+        else if (var6 == 3)
+        {
+            var14 = par1IBlockAccess.getBlockId(par2, par3, par4 - 1);
+            var15 = par1IBlockAccess.getBlockMetadata(par2, par3, par4 - 1);
+
+            if (func_82543_e(var14) && (var5 & 4) == (var15 & 4))
+            {
+                var16 = var15 & 3;
+
+                if (var16 == 1 && !this.func_82540_f(par1IBlockAccess, par2 + 1, par3, par4, var5))
+                {
+                    var10 = 0.5F;
+                    var13 = false;
+                }
+                else if (var16 == 0 && !this.func_82540_f(par1IBlockAccess, par2 - 1, par3, par4, var5))
+                {
+                    var9 = 0.5F;
+                    var13 = false;
+                }
+            }
+        }
+
+        this.setBlockBounds(var9, var7, var11, var10, var8, var12);
+        return var13;
+    }
+
+    public boolean func_82544_h(IBlockAccess par1IBlockAccess, int par2, int par3, int par4)
+    {
+        int var5 = par1IBlockAccess.getBlockMetadata(par2, par3, par4);
+        int var6 = var5 & 3;
+        float var7 = 0.5F;
+        float var8 = 1.0F;
+
+        if ((var5 & 4) != 0)
+        {
+            var7 = 0.0F;
+            var8 = 0.5F;
+        }
+
+        float var9 = 0.0F;
+        float var10 = 0.5F;
+        float var11 = 0.5F;
+        float var12 = 1.0F;
+        boolean var13 = false;
+        int var14;
+        int var15;
+        int var16;
+
+        if (var6 == 0)
+        {
+            var14 = par1IBlockAccess.getBlockId(par2 - 1, par3, par4);
+            var15 = par1IBlockAccess.getBlockMetadata(par2 - 1, par3, par4);
+
+            if (func_82543_e(var14) && (var5 & 4) == (var15 & 4))
+            {
+                var16 = var15 & 3;
+
+                if (var16 == 3 && !this.func_82540_f(par1IBlockAccess, par2, par3, par4 - 1, var5))
+                {
+                    var11 = 0.0F;
+                    var12 = 0.5F;
+                    var13 = true;
+                }
+                else if (var16 == 2 && !this.func_82540_f(par1IBlockAccess, par2, par3, par4 + 1, var5))
+                {
+                    var11 = 0.5F;
+                    var12 = 1.0F;
+                    var13 = true;
+                }
+            }
+        }
+        else if (var6 == 1)
+        {
+            var14 = par1IBlockAccess.getBlockId(par2 + 1, par3, par4);
+            var15 = par1IBlockAccess.getBlockMetadata(par2 + 1, par3, par4);
+
+            if (func_82543_e(var14) && (var5 & 4) == (var15 & 4))
+            {
+                var9 = 0.5F;
+                var10 = 1.0F;
+                var16 = var15 & 3;
+
+                if (var16 == 3 && !this.func_82540_f(par1IBlockAccess, par2, par3, par4 - 1, var5))
+                {
+                    var11 = 0.0F;
+                    var12 = 0.5F;
+                    var13 = true;
+                }
+                else if (var16 == 2 && !this.func_82540_f(par1IBlockAccess, par2, par3, par4 + 1, var5))
+                {
+                    var11 = 0.5F;
+                    var12 = 1.0F;
+                    var13 = true;
+                }
+            }
+        }
+        else if (var6 == 2)
+        {
+            var14 = par1IBlockAccess.getBlockId(par2, par3, par4 - 1);
+            var15 = par1IBlockAccess.getBlockMetadata(par2, par3, par4 - 1);
+
+            if (func_82543_e(var14) && (var5 & 4) == (var15 & 4))
+            {
+                var11 = 0.0F;
+                var12 = 0.5F;
+                var16 = var15 & 3;
+
+                if (var16 == 1 && !this.func_82540_f(par1IBlockAccess, par2 - 1, par3, par4, var5))
+                {
+                    var13 = true;
+                }
+                else if (var16 == 0 && !this.func_82540_f(par1IBlockAccess, par2 + 1, par3, par4, var5))
+                {
+                    var9 = 0.5F;
+                    var10 = 1.0F;
+                    var13 = true;
+                }
+            }
+        }
+        else if (var6 == 3)
+        {
+            var14 = par1IBlockAccess.getBlockId(par2, par3, par4 + 1);
+            var15 = par1IBlockAccess.getBlockMetadata(par2, par3, par4 + 1);
+
+            if (func_82543_e(var14) && (var5 & 4) == (var15 & 4))
+            {
+                var16 = var15 & 3;
+
+                if (var16 == 1 && !this.func_82540_f(par1IBlockAccess, par2 - 1, par3, par4, var5))
+                {
+                    var13 = true;
+                }
+                else if (var16 == 0 && !this.func_82540_f(par1IBlockAccess, par2 + 1, par3, par4, var5))
+                {
+                    var9 = 0.5F;
+                    var10 = 1.0F;
+                    var13 = true;
+                }
+            }
+        }
+
+        if (var13)
+        {
+            this.setBlockBounds(var9, var7, var11, var10, var8, var12);
+        }
+
+        return var13;
+    }
+
     /**
      * if the specified block is in the given AABB, add its collision bounding box to the given list
      */
     public void addCollidingBlockToList(World par1World, int par2, int par3, int par4, AxisAlignedBB par5AxisAlignedBB, List par6List, Entity par7Entity)
     {
-        int var8 = par1World.getBlockMetadata(par2, par3, par4);
-        int var9 = var8 & 3;
-        float var10 = 0.0F;
-        float var11 = 0.5F;
-        float var12 = 0.5F;
-        float var13 = 1.0F;
-
-        if ((var8 & 4) != 0)
-        {
-            var10 = 0.5F;
-            var11 = 1.0F;
-            var12 = 0.0F;
-            var13 = 0.5F;
-        }
-
-        this.setBlockBounds(0.0F, var10, 0.0F, 1.0F, var11, 1.0F);
+        this.func_82541_d(par1World, par2, par3, par4);
+        super.addCollidingBlockToList(par1World, par2, par3, par4, par5AxisAlignedBB, par6List, par7Entity);
+        boolean var8 = this.func_82542_g(par1World, par2, par3, par4);
         super.addCollidingBlockToList(par1World, par2, par3, par4, par5AxisAlignedBB, par6List, par7Entity);
 
-        if (var9 == 0)
+        if (var8 && this.func_82544_h(par1World, par2, par3, par4))
         {
-            this.setBlockBounds(0.5F, var12, 0.0F, 1.0F, var13, 1.0F);
-            super.addCollidingBlockToList(par1World, par2, par3, par4, par5AxisAlignedBB, par6List, par7Entity);
-        }
-        else if (var9 == 1)
-        {
-            this.setBlockBounds(0.0F, var12, 0.0F, 0.5F, var13, 1.0F);
-            super.addCollidingBlockToList(par1World, par2, par3, par4, par5AxisAlignedBB, par6List, par7Entity);
-        }
-        else if (var9 == 2)
-        {
-            this.setBlockBounds(0.0F, var12, 0.5F, 1.0F, var13, 1.0F);
-            super.addCollidingBlockToList(par1World, par2, par3, par4, par5AxisAlignedBB, par6List, par7Entity);
-        }
-        else if (var9 == 3)
-        {
-            this.setBlockBounds(0.0F, var12, 0.0F, 1.0F, var13, 0.5F);
             super.addCollidingBlockToList(par1World, par2, par3, par4, par5AxisAlignedBB, par6List, par7Entity);
         }
 

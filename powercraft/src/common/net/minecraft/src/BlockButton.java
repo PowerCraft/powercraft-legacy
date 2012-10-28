@@ -1,5 +1,6 @@
 package net.minecraft.src;
 
+import java.util.List;
 import java.util.Random;
 
 import net.minecraftforge.common.ForgeDirection;
@@ -8,11 +9,14 @@ import static net.minecraftforge.common.ForgeDirection.*;
 
 public class BlockButton extends Block
 {
-    protected BlockButton(int par1, int par2)
+    private final boolean field_82537_a;
+
+    protected BlockButton(int par1, int par2, boolean par3)
     {
         super(par1, par2, Material.circuits);
         this.setTickRandomly(true);
         this.setCreativeTab(CreativeTabs.tabRedstone);
+        this.field_82537_a = par3;
     }
 
     /**
@@ -29,7 +33,7 @@ public class BlockButton extends Block
      */
     public int tickRate()
     {
-        return 20;
+        return this.field_82537_a ? 30 : 20;
     }
 
     /**
@@ -181,43 +185,45 @@ public class BlockButton extends Block
     public void setBlockBoundsBasedOnState(IBlockAccess par1IBlockAccess, int par2, int par3, int par4)
     {
         int var5 = par1IBlockAccess.getBlockMetadata(par2, par3, par4);
-        int var6 = var5 & 7;
-        boolean var7 = (var5 & 8) > 0;
-        float var8 = 0.375F;
-        float var9 = 0.625F;
-        float var10 = 0.1875F;
-        float var11 = 0.125F;
+        this.func_82534_e(var5);
+    }
 
-        if (var7)
+    private void func_82534_e(int par1)
+    {
+        int var2 = par1 & 7;
+        boolean var3 = (par1 & 8) > 0;
+        float var4 = 0.375F;
+        float var5 = 0.625F;
+        float var6 = 0.1875F;
+        float var7 = 0.125F;
+
+        if (var3)
         {
-            var11 = 0.0625F;
+            var7 = 0.0625F;
         }
 
-        if (var6 == 1)
+        if (var2 == 1)
         {
-            this.setBlockBounds(0.0F, var8, 0.5F - var10, var11, var9, 0.5F + var10);
+            this.setBlockBounds(0.0F, var4, 0.5F - var6, var7, var5, 0.5F + var6);
         }
-        else if (var6 == 2)
+        else if (var2 == 2)
         {
-            this.setBlockBounds(1.0F - var11, var8, 0.5F - var10, 1.0F, var9, 0.5F + var10);
+            this.setBlockBounds(1.0F - var7, var4, 0.5F - var6, 1.0F, var5, 0.5F + var6);
         }
-        else if (var6 == 3)
+        else if (var2 == 3)
         {
-            this.setBlockBounds(0.5F - var10, var8, 0.0F, 0.5F + var10, var9, var11);
+            this.setBlockBounds(0.5F - var6, var4, 0.0F, 0.5F + var6, var5, var7);
         }
-        else if (var6 == 4)
+        else if (var2 == 4)
         {
-            this.setBlockBounds(0.5F - var10, var8, 1.0F - var11, 0.5F + var10, var9, 1.0F);
+            this.setBlockBounds(0.5F - var6, var4, 1.0F - var7, 0.5F + var6, var5, 1.0F);
         }
     }
 
     /**
      * Called when the block is clicked by a player. Args: x, y, z, entityPlayer
      */
-    public void onBlockClicked(World par1World, int par2, int par3, int par4, EntityPlayer par5EntityPlayer)
-    {
-        this.onBlockActivated(par1World, par2, par3, par4, par5EntityPlayer, 0, 0.0F, 0.0F, 0.0F);
-    }
+    public void onBlockClicked(World par1World, int par2, int par3, int par4, EntityPlayer par5EntityPlayer) {}
 
     /**
      * Called upon block activation (right click on the block.)
@@ -237,29 +243,7 @@ public class BlockButton extends Block
             par1World.setBlockMetadataWithNotify(par2, par3, par4, var11 + var12);
             par1World.markBlocksDirty(par2, par3, par4, par2, par3, par4);
             par1World.playSoundEffect((double)par2 + 0.5D, (double)par3 + 0.5D, (double)par4 + 0.5D, "random.click", 0.3F, 0.6F);
-            par1World.notifyBlocksOfNeighborChange(par2, par3, par4, this.blockID);
-
-            if (var11 == 1)
-            {
-                par1World.notifyBlocksOfNeighborChange(par2 - 1, par3, par4, this.blockID);
-            }
-            else if (var11 == 2)
-            {
-                par1World.notifyBlocksOfNeighborChange(par2 + 1, par3, par4, this.blockID);
-            }
-            else if (var11 == 3)
-            {
-                par1World.notifyBlocksOfNeighborChange(par2, par3, par4 - 1, this.blockID);
-            }
-            else if (var11 == 4)
-            {
-                par1World.notifyBlocksOfNeighborChange(par2, par3, par4 + 1, this.blockID);
-            }
-            else
-            {
-                par1World.notifyBlocksOfNeighborChange(par2, par3 - 1, par4, this.blockID);
-            }
-
+            this.func_82536_d(par1World, par2, par3, par4, var11);
             par1World.scheduleBlockUpdate(par2, par3, par4, this.blockID, this.tickRate());
             return true;
         }
@@ -272,29 +256,8 @@ public class BlockButton extends Block
     {
         if ((par6 & 8) > 0)
         {
-            par1World.notifyBlocksOfNeighborChange(par2, par3, par4, this.blockID);
             int var7 = par6 & 7;
-
-            if (var7 == 1)
-            {
-                par1World.notifyBlocksOfNeighborChange(par2 - 1, par3, par4, this.blockID);
-            }
-            else if (var7 == 2)
-            {
-                par1World.notifyBlocksOfNeighborChange(par2 + 1, par3, par4, this.blockID);
-            }
-            else if (var7 == 3)
-            {
-                par1World.notifyBlocksOfNeighborChange(par2, par3, par4 - 1, this.blockID);
-            }
-            else if (var7 == 4)
-            {
-                par1World.notifyBlocksOfNeighborChange(par2, par3, par4 + 1, this.blockID);
-            }
-            else
-            {
-                par1World.notifyBlocksOfNeighborChange(par2, par3 - 1, par4, this.blockID);
-            }
+            this.func_82536_d(par1World, par2, par3, par4, var7);
         }
 
         super.breakBlock(par1World, par2, par3, par4, par5, par6);
@@ -311,9 +274,9 @@ public class BlockButton extends Block
     /**
      * Is this block indirectly powering the block on the specified side
      */
-    public boolean isIndirectlyPoweringTo(World par1World, int par2, int par3, int par4, int par5)
+    public boolean isIndirectlyPoweringTo(IBlockAccess par1IBlockAccess, int par2, int par3, int par4, int par5)
     {
-        int var6 = par1World.getBlockMetadata(par2, par3, par4);
+        int var6 = par1IBlockAccess.getBlockMetadata(par2, par3, par4);
 
         if ((var6 & 8) == 0)
         {
@@ -345,33 +308,18 @@ public class BlockButton extends Block
 
             if ((var6 & 8) != 0)
             {
-                par1World.setBlockMetadataWithNotify(par2, par3, par4, var6 & 7);
-                par1World.notifyBlocksOfNeighborChange(par2, par3, par4, this.blockID);
-                int var7 = var6 & 7;
-
-                if (var7 == 1)
+                if (this.field_82537_a)
                 {
-                    par1World.notifyBlocksOfNeighborChange(par2 - 1, par3, par4, this.blockID);
-                }
-                else if (var7 == 2)
-                {
-                    par1World.notifyBlocksOfNeighborChange(par2 + 1, par3, par4, this.blockID);
-                }
-                else if (var7 == 3)
-                {
-                    par1World.notifyBlocksOfNeighborChange(par2, par3, par4 - 1, this.blockID);
-                }
-                else if (var7 == 4)
-                {
-                    par1World.notifyBlocksOfNeighborChange(par2, par3, par4 + 1, this.blockID);
+                    this.func_82535_o(par1World, par2, par3, par4);
                 }
                 else
                 {
-                    par1World.notifyBlocksOfNeighborChange(par2, par3 - 1, par4, this.blockID);
+                    par1World.setBlockMetadataWithNotify(par2, par3, par4, var6 & 7);
+                    int var7 = var6 & 7;
+                    this.func_82536_d(par1World, par2, par3, par4, var7);
+                    par1World.playSoundEffect((double)par2 + 0.5D, (double)par3 + 0.5D, (double)par4 + 0.5D, "random.click", 0.3F, 0.5F);
+                    par1World.markBlocksDirty(par2, par3, par4, par2, par3, par4);
                 }
-
-                par1World.playSoundEffect((double)par2 + 0.5D, (double)par3 + 0.5D, (double)par4 + 0.5D, "random.click", 0.3F, 0.5F);
-                par1World.markBlocksDirty(par2, par3, par4, par2, par3, par4);
             }
         }
     }
@@ -385,5 +333,79 @@ public class BlockButton extends Block
         float var2 = 0.125F;
         float var3 = 0.125F;
         this.setBlockBounds(0.5F - var1, 0.5F - var2, 0.5F - var3, 0.5F + var1, 0.5F + var2, 0.5F + var3);
+    }
+
+    /**
+     * Triggered whenever an entity collides with this block (enters into the block). Args: world, x, y, z, entity
+     */
+    public void onEntityCollidedWithBlock(World par1World, int par2, int par3, int par4, Entity par5Entity)
+    {
+        if (!par1World.isRemote)
+        {
+            if (this.field_82537_a)
+            {
+                if ((par1World.getBlockMetadata(par2, par3, par4) & 8) == 0)
+                {
+                    this.func_82535_o(par1World, par2, par3, par4);
+                }
+            }
+        }
+    }
+
+    private void func_82535_o(World par1World, int par2, int par3, int par4)
+    {
+        int var5 = par1World.getBlockMetadata(par2, par3, par4);
+        int var6 = var5 & 7;
+        boolean var7 = (var5 & 8) != 0;
+        this.func_82534_e(var5);
+        List var9 = par1World.getEntitiesWithinAABB(EntityArrow.class, AxisAlignedBB.getAABBPool().addOrModifyAABBInPool((double)par2 + this.minX, (double)par3 + this.minY, (double)par4 + this.minZ, (double)par2 + this.maxX, (double)par3 + this.maxY, (double)par4 + this.maxZ));
+        boolean var8 = !var9.isEmpty();
+
+        if (var8 && !var7)
+        {
+            par1World.setBlockMetadataWithNotify(par2, par3, par4, var6 | 8);
+            this.func_82536_d(par1World, par2, par3, par4, var6);
+            par1World.markBlocksDirty(par2, par3, par4, par2, par3, par4);
+            par1World.playSoundEffect((double)par2 + 0.5D, (double)par3 + 0.5D, (double)par4 + 0.5D, "random.click", 0.3F, 0.6F);
+        }
+
+        if (!var8 && var7)
+        {
+            par1World.setBlockMetadataWithNotify(par2, par3, par4, var6);
+            this.func_82536_d(par1World, par2, par3, par4, var6);
+            par1World.markBlocksDirty(par2, par3, par4, par2, par3, par4);
+            par1World.playSoundEffect((double)par2 + 0.5D, (double)par3 + 0.5D, (double)par4 + 0.5D, "random.click", 0.3F, 0.5F);
+        }
+
+        if (var8)
+        {
+            par1World.scheduleBlockUpdate(par2, par3, par4, this.blockID, this.tickRate());
+        }
+    }
+
+    private void func_82536_d(World par1World, int par2, int par3, int par4, int par5)
+    {
+        par1World.notifyBlocksOfNeighborChange(par2, par3, par4, this.blockID);
+
+        if (par5 == 1)
+        {
+            par1World.notifyBlocksOfNeighborChange(par2 - 1, par3, par4, this.blockID);
+        }
+        else if (par5 == 2)
+        {
+            par1World.notifyBlocksOfNeighborChange(par2 + 1, par3, par4, this.blockID);
+        }
+        else if (par5 == 3)
+        {
+            par1World.notifyBlocksOfNeighborChange(par2, par3, par4 - 1, this.blockID);
+        }
+        else if (par5 == 4)
+        {
+            par1World.notifyBlocksOfNeighborChange(par2, par3, par4 + 1, this.blockID);
+        }
+        else
+        {
+            par1World.notifyBlocksOfNeighborChange(par2, par3 - 1, par4, this.blockID);
+        }
     }
 }

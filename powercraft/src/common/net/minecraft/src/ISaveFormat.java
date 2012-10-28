@@ -27,7 +27,7 @@ public interface ISaveFormat
      * @args: Takes one argument - the name of the directory of the world to delete. @desc: Delete the world by deleting
      * the associated directory recursively.
      */
-    void deleteWorldDirectory(String var1);
+    boolean deleteWorldDirectory(String var1);
 
     @SideOnly(Side.CLIENT)
 

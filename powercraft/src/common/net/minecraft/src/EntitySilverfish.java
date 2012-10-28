@@ -13,7 +13,6 @@ public class EntitySilverfish extends EntityMob
         this.texture = "/mob/silverfish.png";
         this.setSize(0.3F, 0.7F);
         this.moveSpeed = 0.6F;
-        this.attackStrength = 1;
     }
 
     public int getMaxHealth()
@@ -85,7 +84,7 @@ public class EntitySilverfish extends EntityMob
         if (this.attackTime <= 0 && par2 < 1.2F && par1Entity.boundingBox.maxY > this.boundingBox.minY && par1Entity.boundingBox.minY < this.boundingBox.maxY)
         {
             this.attackTime = 20;
-            par1Entity.attackEntityFrom(DamageSource.causeMobDamage(this), this.attackStrength);
+            par1Entity.attackEntityFrom(DamageSource.causeMobDamage(this), this.func_82193_c(par1Entity));
         }
     }
 
@@ -94,7 +93,7 @@ public class EntitySilverfish extends EntityMob
      */
     protected void playStepSound(int par1, int par2, int par3, int par4)
     {
-        this.worldObj.playSoundAtEntity(this, "mob.silverfish.step", 1.0F, 1.0F);
+        this.worldObj.playSoundAtEntity(this, "mob.silverfish.step", 0.15F, 1.0F);
     }
 
     /**
@@ -219,6 +218,11 @@ public class EntitySilverfish extends EntityMob
         {
             return false;
         }
+    }
+
+    public int func_82193_c(Entity par1Entity)
+    {
+        return 1;
     }
 
     /**

@@ -12,7 +12,7 @@ import java.util.List;
 import cpw.mods.fml.common.network.FMLNetworkHandler;
 
 @SideOnly(Side.CLIENT)
-public class MemoryConnection implements NetworkManager
+public class MemoryConnection implements INetworkManager
 {
     private static final SocketAddress mySocketAddress = new InetSocketAddress("127.0.0.1", 0);
     private final List readPacketCache = Collections.synchronizedList(new ArrayList());
@@ -151,6 +151,8 @@ public class MemoryConnection implements NetworkManager
      */
     public void processOrCachePacket(Packet par1Packet)
     {
+        String var2 = this.myNetHandler.isServerHandler() ? ">" : "<";
+
         if (par1Packet.isWritePacket() && this.myNetHandler.canProcessPackets())
         {
             par1Packet.processPacket(this.myNetHandler);

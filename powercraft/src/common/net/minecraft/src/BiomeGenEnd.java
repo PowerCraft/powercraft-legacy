@@ -11,6 +11,7 @@ public class BiomeGenEnd extends BiomeGenBase
         this.spawnableMonsterList.clear();
         this.spawnableCreatureList.clear();
         this.spawnableWaterCreatureList.clear();
+        this.field_82914_M.clear();
         this.spawnableMonsterList.add(new SpawnListEntry(EntityEnderman.class, 10, 4, 4));
         this.topBlock = (byte)Block.dirt.blockID;
         this.fillerBlock = (byte)Block.dirt.blockID;

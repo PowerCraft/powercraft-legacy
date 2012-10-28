@@ -31,6 +31,7 @@ public class CommandHandler implements ICommandManager
         String var4 = var3[0];
         var3 = dropFirstString(var3);
         ICommand var5 = (ICommand)this.commandMap.get(var4);
+        int var6 = this.func_82370_a(var5, var3);
 
         try
         {
@@ -42,16 +43,42 @@ public class CommandHandler implements ICommandManager
             if (var5.canCommandSenderUseCommand(par1ICommandSender))
             {
                 CommandEvent event = new CommandEvent(var5, par1ICommandSender, var3);
-                if (!MinecraftForge.EVENT_BUS.post(event))
-                {
-                    var5.processCommand(par1ICommandSender, event.parameters);
-                }
-                else
+                if (MinecraftForge.EVENT_BUS.post(event))
                 {
                     if (event.exception != null)
                     {
                         throw event.exception;
                     }
+                    return;
+                }
+
+                if (var6 > -1)
+                {
+                    EntityPlayerMP[] var7 = PlayerSelector.func_82380_c(par1ICommandSender, var3[var6]);
+                    String var8 = var3[var6];
+                    EntityPlayerMP[] var9 = var7;
+                    int var10 = var7.length;
+
+                    for (int var11 = 0; var11 < var10; ++var11)
+                    {
+                        EntityPlayerMP var12 = var9[var11];
+                        var3[var6] = var12.getEntityName();
+
+                        try
+                        {
+                            var5.processCommand(par1ICommandSender, var3);
+                        }
+                        catch (PlayerNotFoundException var14)
+                        {
+                            par1ICommandSender.sendChatToPlayer("\u00a7c" + par1ICommandSender.translateString(var14.getMessage(), var14.getErrorOjbects()));
+                        }
+                    }
+
+                    var3[var6] = var8;
+                }
+                else
+                {
+                    var5.processCommand(par1ICommandSender, var3);
                 }
             }
             else
@@ -59,18 +86,18 @@ public class CommandHandler implements ICommandManager
                 par1ICommandSender.sendChatToPlayer("\u00a7cYou do not have permission to use this command.");
             }
         }
-        catch (WrongUsageException var7)
+        catch (WrongUsageException var15)
         {
-            par1ICommandSender.sendChatToPlayer("\u00a7c" + par1ICommandSender.translateString("commands.generic.usage", new Object[] {par1ICommandSender.translateString(var7.getMessage(), var7.getErrorOjbects())}));
+            par1ICommandSender.sendChatToPlayer("\u00a7c" + par1ICommandSender.translateString("commands.generic.usage", new Object[] {par1ICommandSender.translateString(var15.getMessage(), var15.getErrorOjbects())}));
         }
-        catch (CommandException var8)
+        catch (CommandException var16)
         {
-            par1ICommandSender.sendChatToPlayer("\u00a7c" + par1ICommandSender.translateString(var8.getMessage(), var8.getErrorOjbects()));
+            par1ICommandSender.sendChatToPlayer("\u00a7c" + par1ICommandSender.translateString(var16.getMessage(), var16.getErrorOjbects()));
         }
-        catch (Throwable var9)
+        catch (Throwable var17)
         {
             par1ICommandSender.sendChatToPlayer("\u00a7c" + par1ICommandSender.translateString("commands.generic.exception", new Object[0]));
-            var9.printStackTrace();
+            var17.printStackTrace();
         }
     }
 
@@ -185,5 +212,25 @@ public class CommandHandler implements ICommandManager
     public Map getCommands()
     {
         return this.commandMap;
+    }
+
+    private int func_82370_a(ICommand par1ICommand, String[] par2ArrayOfStr)
+    {
+        if (par1ICommand == null)
+        {
+            return -1;
+        }
+        else
+        {
+            for (int var3 = 0; var3 < par2ArrayOfStr.length; ++var3)
+            {
+                if (par1ICommand.func_82358_a(var3) && PlayerSelector.func_82377_a(par2ArrayOfStr[var3]))
+                {
+                    return var3;
+                }
+            }
+
+            return -1;
+        }
     }
 }

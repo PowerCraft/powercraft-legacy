@@ -3,35 +3,19 @@ package net.minecraft.src;
 import cpw.mods.fml.common.Side;
 import cpw.mods.fml.common.asm.SideOnly;
 import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
 
-public class EntityPainting extends Entity
+public class EntityPainting extends EntityHanging
 {
-    private int tickCounter1;
-
-    /** the direction the painting faces */
-    public int direction;
-    public int xPosition;
-    public int yPosition;
-    public int zPosition;
     public EnumArt art;
 
     public EntityPainting(World par1World)
     {
         super(par1World);
-        this.tickCounter1 = 0;
-        this.direction = 0;
-        this.yOffset = 0.0F;
-        this.setSize(0.5F, 0.5F);
     }
 
     public EntityPainting(World par1World, int par2, int par3, int par4, int par5)
     {
-        this(par1World);
-        this.xPosition = par2;
-        this.yPosition = par3;
-        this.zPosition = par4;
+        super(par1World, par2, par3, par4, par5);
         ArrayList var6 = new ArrayList();
         EnumArt[] var7 = EnumArt.values();
         int var8 = var7.length;
@@ -40,7 +24,7 @@ public class EntityPainting extends Entity
         {
             EnumArt var10 = var7[var9];
             this.art = var10;
-            this.setDirection(par5);
+            this.func_82328_a(par5);
 
             if (this.onValidSurface())
             {
@@ -53,16 +37,13 @@ public class EntityPainting extends Entity
             this.art = (EnumArt)var6.get(this.rand.nextInt(var6.size()));
         }
 
-        this.setDirection(par5);
+        this.func_82328_a(par5);
     }
 
     @SideOnly(Side.CLIENT)
     public EntityPainting(World par1World, int par2, int par3, int par4, int par5, String par6Str)
     {
-        this(par1World);
-        this.xPosition = par2;
-        this.yPosition = par3;
-        this.zPosition = par4;
+        this(par1World, par2, par3, par4, par5);
         EnumArt[] var7 = EnumArt.values();
         int var8 = var7.length;
 
@@ -77,220 +58,7 @@ public class EntityPainting extends Entity
             }
         }
 
-        this.setDirection(par5);
-    }
-
-    protected void entityInit() {}
-
-    /**
-     * Sets the direction the painting faces.
-     */
-    public void setDirection(int par1)
-    {
-        this.direction = par1;
-        this.prevRotationYaw = this.rotationYaw = (float)(par1 * 90);
-        float var2 = (float)this.art.sizeX;
-        float var3 = (float)this.art.sizeY;
-        float var4 = (float)this.art.sizeX;
-
-        if (par1 != 0 && par1 != 2)
-        {
-            var2 = 0.5F;
-        }
-        else
-        {
-            var4 = 0.5F;
-        }
-
-        var2 /= 32.0F;
-        var3 /= 32.0F;
-        var4 /= 32.0F;
-        float var5 = (float)this.xPosition + 0.5F;
-        float var6 = (float)this.yPosition + 0.5F;
-        float var7 = (float)this.zPosition + 0.5F;
-        float var8 = 0.5625F;
-
-        if (par1 == 0)
-        {
-            var7 -= var8;
-        }
-
-        if (par1 == 1)
-        {
-            var5 -= var8;
-        }
-
-        if (par1 == 2)
-        {
-            var7 += var8;
-        }
-
-        if (par1 == 3)
-        {
-            var5 += var8;
-        }
-
-        if (par1 == 0)
-        {
-            var5 -= this.func_70517_b(this.art.sizeX);
-        }
-
-        if (par1 == 1)
-        {
-            var7 += this.func_70517_b(this.art.sizeX);
-        }
-
-        if (par1 == 2)
-        {
-            var5 += this.func_70517_b(this.art.sizeX);
-        }
-
-        if (par1 == 3)
-        {
-            var7 -= this.func_70517_b(this.art.sizeX);
-        }
-
-        var6 += this.func_70517_b(this.art.sizeY);
-        this.setPosition((double)var5, (double)var6, (double)var7);
-        float var9 = -0.00625F;
-        this.boundingBox.setBounds((double)(var5 - var2 - var9), (double)(var6 - var3 - var9), (double)(var7 - var4 - var9), (double)(var5 + var2 + var9), (double)(var6 + var3 + var9), (double)(var7 + var4 + var9));
-    }
-
-    private float func_70517_b(int par1)
-    {
-        return par1 == 32 ? 0.5F : (par1 == 64 ? 0.5F : 0.0F);
-    }
-
-    /**
-     * Called to update the entity's position/logic.
-     */
-    public void onUpdate()
-    {
-        if (this.tickCounter1++ == 100 && !this.worldObj.isRemote)
-        {
-            this.tickCounter1 = 0;
-
-            if (!this.isDead && !this.onValidSurface())
-            {
-                this.setDead();
-                this.worldObj.spawnEntityInWorld(new EntityItem(this.worldObj, this.posX, this.posY, this.posZ, new ItemStack(Item.painting)));
-            }
-        }
-    }
-
-    /**
-     * checks to make sure painting can be placed there
-     */
-    public boolean onValidSurface()
-    {
-        if (!this.worldObj.getCollidingBoundingBoxes(this, this.boundingBox).isEmpty())
-        {
-            return false;
-        }
-        else
-        {
-            int var1 = this.art.sizeX / 16;
-            int var2 = this.art.sizeY / 16;
-            int var3 = this.xPosition;
-            int var4 = this.yPosition;
-            int var5 = this.zPosition;
-
-            if (this.direction == 0)
-            {
-                var3 = MathHelper.floor_double(this.posX - (double)((float)this.art.sizeX / 32.0F));
-            }
-
-            if (this.direction == 1)
-            {
-                var5 = MathHelper.floor_double(this.posZ - (double)((float)this.art.sizeX / 32.0F));
-            }
-
-            if (this.direction == 2)
-            {
-                var3 = MathHelper.floor_double(this.posX - (double)((float)this.art.sizeX / 32.0F));
-            }
-
-            if (this.direction == 3)
-            {
-                var5 = MathHelper.floor_double(this.posZ - (double)((float)this.art.sizeX / 32.0F));
-            }
-
-            var4 = MathHelper.floor_double(this.posY - (double)((float)this.art.sizeY / 32.0F));
-
-            for (int var6 = 0; var6 < var1; ++var6)
-            {
-                for (int var7 = 0; var7 < var2; ++var7)
-                {
-                    Material var8;
-
-                    if (this.direction != 0 && this.direction != 2)
-                    {
-                        var8 = this.worldObj.getBlockMaterial(this.xPosition, var4 + var7, var5 + var6);
-                    }
-                    else
-                    {
-                        var8 = this.worldObj.getBlockMaterial(var3 + var6, var4 + var7, this.zPosition);
-                    }
-
-                    if (!var8.isSolid())
-                    {
-                        return false;
-                    }
-                }
-            }
-
-            List var9 = this.worldObj.getEntitiesWithinAABBExcludingEntity(this, this.boundingBox);
-            Iterator var10 = var9.iterator();
-            Entity var11;
-
-            do
-            {
-                if (!var10.hasNext())
-                {
-                    return true;
-                }
-
-                var11 = (Entity)var10.next();
-            }
-            while (!(var11 instanceof EntityPainting));
-
-            return false;
-        }
-    }
-
-    /**
-     * Returns true if other Entities should be prevented from moving through this Entity.
-     */
-    public boolean canBeCollidedWith()
-    {
-        return true;
-    }
-
-    /**
-     * Called when the entity is attacked.
-     */
-    public boolean attackEntityFrom(DamageSource par1DamageSource, int par2)
-    {
-        if (!this.isDead && !this.worldObj.isRemote)
-        {
-            this.setDead();
-            this.setBeenAttacked();
-            EntityPlayer var3 = null;
-
-            if (par1DamageSource.getEntity() instanceof EntityPlayer)
-            {
-                var3 = (EntityPlayer)par1DamageSource.getEntity();
-            }
-
-            if (var3 != null && var3.capabilities.isCreativeMode)
-            {
-                return true;
-            }
-
-            this.worldObj.spawnEntityInWorld(new EntityItem(this.worldObj, this.posX, this.posY, this.posZ, new ItemStack(Item.painting)));
-        }
-
-        return true;
+        this.func_82328_a(par5);
     }
 
     /**
@@ -298,11 +66,8 @@ public class EntityPainting extends Entity
      */
     public void writeEntityToNBT(NBTTagCompound par1NBTTagCompound)
     {
-        par1NBTTagCompound.setByte("Dir", (byte)this.direction);
         par1NBTTagCompound.setString("Motive", this.art.title);
-        par1NBTTagCompound.setInteger("TileX", this.xPosition);
-        par1NBTTagCompound.setInteger("TileY", this.yPosition);
-        par1NBTTagCompound.setInteger("TileZ", this.zPosition);
+        super.writeEntityToNBT(par1NBTTagCompound);
     }
 
     /**
@@ -310,10 +75,6 @@ public class EntityPainting extends Entity
      */
     public void readEntityFromNBT(NBTTagCompound par1NBTTagCompound)
     {
-        this.direction = par1NBTTagCompound.getByte("Dir");
-        this.xPosition = par1NBTTagCompound.getInteger("TileX");
-        this.yPosition = par1NBTTagCompound.getInteger("TileY");
-        this.zPosition = par1NBTTagCompound.getInteger("TileZ");
         String var2 = par1NBTTagCompound.getString("Motive");
         EnumArt[] var3 = EnumArt.values();
         int var4 = var3.length;
@@ -333,30 +94,21 @@ public class EntityPainting extends Entity
             this.art = EnumArt.Kebab;
         }
 
-        this.setDirection(this.direction);
+        super.readEntityFromNBT(par1NBTTagCompound);
     }
 
-    /**
-     * Tries to moves the entity by the passed in displacement. Args: x, y, z
-     */
-    public void moveEntity(double par1, double par3, double par5)
+    public int func_82329_d()
     {
-        if (!this.worldObj.isRemote && !this.isDead && par1 * par1 + par3 * par3 + par5 * par5 > 0.0D)
-        {
-            this.setDead();
-            this.worldObj.spawnEntityInWorld(new EntityItem(this.worldObj, this.posX, this.posY, this.posZ, new ItemStack(Item.painting)));
-        }
+        return this.art.sizeX;
     }
 
-    /**
-     * Adds to the current velocity of the entity. Args: x, y, z
-     */
-    public void addVelocity(double par1, double par3, double par5)
+    public int func_82330_g()
     {
-        if (!this.worldObj.isRemote && !this.isDead && par1 * par1 + par3 * par3 + par5 * par5 > 0.0D)
-        {
-            this.setDead();
-            this.worldObj.spawnEntityInWorld(new EntityItem(this.worldObj, this.posX, this.posY, this.posZ, new ItemStack(Item.painting)));
-        }
+        return this.art.sizeY;
+    }
+
+    public void func_82331_h()
+    {
+        this.entityDropItem(new ItemStack(Item.painting), 0.0F);
     }
 }

@@ -83,7 +83,7 @@ public class ModelSpider extends ModelBase
      */
     public void render(Entity par1Entity, float par2, float par3, float par4, float par5, float par6, float par7)
     {
-        this.setRotationAngles(par2, par3, par4, par5, par6, par7);
+        this.setRotationAngles(par2, par3, par4, par5, par6, par7, par1Entity);
         this.spiderHead.render(par7);
         this.spiderNeck.render(par7);
         this.spiderBody.render(par7);
@@ -102,52 +102,52 @@ public class ModelSpider extends ModelBase
      * and legs, where par1 represents the time(so that arms and legs swing back and forth) and par2 represents how
      * "far" arms and legs can swing at most.
      */
-    public void setRotationAngles(float par1, float par2, float par3, float par4, float par5, float par6)
+    public void setRotationAngles(float par1, float par2, float par3, float par4, float par5, float par6, Entity par7Entity)
     {
         this.spiderHead.rotateAngleY = par4 / (180F / (float)Math.PI);
         this.spiderHead.rotateAngleX = par5 / (180F / (float)Math.PI);
-        float var7 = ((float)Math.PI / 4F);
-        this.spiderLeg1.rotateAngleZ = -var7;
-        this.spiderLeg2.rotateAngleZ = var7;
-        this.spiderLeg3.rotateAngleZ = -var7 * 0.74F;
-        this.spiderLeg4.rotateAngleZ = var7 * 0.74F;
-        this.spiderLeg5.rotateAngleZ = -var7 * 0.74F;
-        this.spiderLeg6.rotateAngleZ = var7 * 0.74F;
-        this.spiderLeg7.rotateAngleZ = -var7;
-        this.spiderLeg8.rotateAngleZ = var7;
-        float var8 = -0.0F;
-        float var9 = 0.3926991F;
-        this.spiderLeg1.rotateAngleY = var9 * 2.0F + var8;
-        this.spiderLeg2.rotateAngleY = -var9 * 2.0F - var8;
-        this.spiderLeg3.rotateAngleY = var9 * 1.0F + var8;
-        this.spiderLeg4.rotateAngleY = -var9 * 1.0F - var8;
-        this.spiderLeg5.rotateAngleY = -var9 * 1.0F + var8;
-        this.spiderLeg6.rotateAngleY = var9 * 1.0F - var8;
-        this.spiderLeg7.rotateAngleY = -var9 * 2.0F + var8;
-        this.spiderLeg8.rotateAngleY = var9 * 2.0F - var8;
-        float var10 = -(MathHelper.cos(par1 * 0.6662F * 2.0F + 0.0F) * 0.4F) * par2;
-        float var11 = -(MathHelper.cos(par1 * 0.6662F * 2.0F + (float)Math.PI) * 0.4F) * par2;
-        float var12 = -(MathHelper.cos(par1 * 0.6662F * 2.0F + ((float)Math.PI / 2F)) * 0.4F) * par2;
-        float var13 = -(MathHelper.cos(par1 * 0.6662F * 2.0F + ((float)Math.PI * 3F / 2F)) * 0.4F) * par2;
-        float var14 = Math.abs(MathHelper.sin(par1 * 0.6662F + 0.0F) * 0.4F) * par2;
-        float var15 = Math.abs(MathHelper.sin(par1 * 0.6662F + (float)Math.PI) * 0.4F) * par2;
-        float var16 = Math.abs(MathHelper.sin(par1 * 0.6662F + ((float)Math.PI / 2F)) * 0.4F) * par2;
-        float var17 = Math.abs(MathHelper.sin(par1 * 0.6662F + ((float)Math.PI * 3F / 2F)) * 0.4F) * par2;
-        this.spiderLeg1.rotateAngleY += var10;
-        this.spiderLeg2.rotateAngleY += -var10;
-        this.spiderLeg3.rotateAngleY += var11;
-        this.spiderLeg4.rotateAngleY += -var11;
-        this.spiderLeg5.rotateAngleY += var12;
-        this.spiderLeg6.rotateAngleY += -var12;
-        this.spiderLeg7.rotateAngleY += var13;
-        this.spiderLeg8.rotateAngleY += -var13;
-        this.spiderLeg1.rotateAngleZ += var14;
-        this.spiderLeg2.rotateAngleZ += -var14;
-        this.spiderLeg3.rotateAngleZ += var15;
-        this.spiderLeg4.rotateAngleZ += -var15;
-        this.spiderLeg5.rotateAngleZ += var16;
-        this.spiderLeg6.rotateAngleZ += -var16;
-        this.spiderLeg7.rotateAngleZ += var17;
-        this.spiderLeg8.rotateAngleZ += -var17;
+        float var8 = ((float)Math.PI / 4F);
+        this.spiderLeg1.rotateAngleZ = -var8;
+        this.spiderLeg2.rotateAngleZ = var8;
+        this.spiderLeg3.rotateAngleZ = -var8 * 0.74F;
+        this.spiderLeg4.rotateAngleZ = var8 * 0.74F;
+        this.spiderLeg5.rotateAngleZ = -var8 * 0.74F;
+        this.spiderLeg6.rotateAngleZ = var8 * 0.74F;
+        this.spiderLeg7.rotateAngleZ = -var8;
+        this.spiderLeg8.rotateAngleZ = var8;
+        float var9 = -0.0F;
+        float var10 = 0.3926991F;
+        this.spiderLeg1.rotateAngleY = var10 * 2.0F + var9;
+        this.spiderLeg2.rotateAngleY = -var10 * 2.0F - var9;
+        this.spiderLeg3.rotateAngleY = var10 * 1.0F + var9;
+        this.spiderLeg4.rotateAngleY = -var10 * 1.0F - var9;
+        this.spiderLeg5.rotateAngleY = -var10 * 1.0F + var9;
+        this.spiderLeg6.rotateAngleY = var10 * 1.0F - var9;
+        this.spiderLeg7.rotateAngleY = -var10 * 2.0F + var9;
+        this.spiderLeg8.rotateAngleY = var10 * 2.0F - var9;
+        float var11 = -(MathHelper.cos(par1 * 0.6662F * 2.0F + 0.0F) * 0.4F) * par2;
+        float var12 = -(MathHelper.cos(par1 * 0.6662F * 2.0F + (float)Math.PI) * 0.4F) * par2;
+        float var13 = -(MathHelper.cos(par1 * 0.6662F * 2.0F + ((float)Math.PI / 2F)) * 0.4F) * par2;
+        float var14 = -(MathHelper.cos(par1 * 0.6662F * 2.0F + ((float)Math.PI * 3F / 2F)) * 0.4F) * par2;
+        float var15 = Math.abs(MathHelper.sin(par1 * 0.6662F + 0.0F) * 0.4F) * par2;
+        float var16 = Math.abs(MathHelper.sin(par1 * 0.6662F + (float)Math.PI) * 0.4F) * par2;
+        float var17 = Math.abs(MathHelper.sin(par1 * 0.6662F + ((float)Math.PI / 2F)) * 0.4F) * par2;
+        float var18 = Math.abs(MathHelper.sin(par1 * 0.6662F + ((float)Math.PI * 3F / 2F)) * 0.4F) * par2;
+        this.spiderLeg1.rotateAngleY += var11;
+        this.spiderLeg2.rotateAngleY += -var11;
+        this.spiderLeg3.rotateAngleY += var12;
+        this.spiderLeg4.rotateAngleY += -var12;
+        this.spiderLeg5.rotateAngleY += var13;
+        this.spiderLeg6.rotateAngleY += -var13;
+        this.spiderLeg7.rotateAngleY += var14;
+        this.spiderLeg8.rotateAngleY += -var14;
+        this.spiderLeg1.rotateAngleZ += var15;
+        this.spiderLeg2.rotateAngleZ += -var15;
+        this.spiderLeg3.rotateAngleZ += var16;
+        this.spiderLeg4.rotateAngleZ += -var16;
+        this.spiderLeg5.rotateAngleZ += var17;
+        this.spiderLeg6.rotateAngleZ += -var17;
+        this.spiderLeg7.rotateAngleZ += var18;
+        this.spiderLeg8.rotateAngleZ += -var18;
     }
 }

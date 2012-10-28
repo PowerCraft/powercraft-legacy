@@ -75,7 +75,12 @@ public class RenderGlobal implements IWorldAccess
 
     /** Maximum block Z */
     private int maxBlockZ;
-    public Map field_72738_E = new HashMap();
+
+    /**
+     * Stores blocks currently being broken. Key is entity ID of the thing doing the breaking. Value is a
+     * DestroyBlockProgress
+     */
+    private Map damagedBlocks = new HashMap();
     private int renderDistance = -1;
 
     /** Render entities startup counter (init value=2) */
@@ -866,6 +871,22 @@ public class RenderGlobal implements IWorldAccess
     public void updateClouds()
     {
         ++this.cloudOffsetX;
+
+        if (this.cloudOffsetX % 20 == 0)
+        {
+            Iterator var1 = this.damagedBlocks.values().iterator();
+
+            while (var1.hasNext())
+            {
+                DestroyBlockProgress var2 = (DestroyBlockProgress)var1.next();
+                int var3 = var2.func_82743_f();
+
+                if (this.cloudOffsetX - var3 > 400)
+                {
+                    var1.remove();
+                }
+            }
+        }
     }
 
     /**
@@ -1553,7 +1574,7 @@ public class RenderGlobal implements IWorldAccess
         double var6 = par2EntityPlayer.lastTickPosY + (par2EntityPlayer.posY - par2EntityPlayer.lastTickPosY) * (double)par3;
         double var8 = par2EntityPlayer.lastTickPosZ + (par2EntityPlayer.posZ - par2EntityPlayer.lastTickPosZ) * (double)par3;
 
-        if (!this.field_72738_E.isEmpty())
+        if (!this.damagedBlocks.isEmpty())
         {
             GL11.glBlendFunc(GL11.GL_DST_COLOR, GL11.GL_SRC_COLOR);
             int var10 = this.renderEngine.getTexture("/terrain.png");
@@ -1567,7 +1588,7 @@ public class RenderGlobal implements IWorldAccess
             par1Tessellator.startDrawingQuads();
             par1Tessellator.setTranslation(-var4, -var6, -var8);
             par1Tessellator.disableColor();
-            Iterator var11 = this.field_72738_E.values().iterator();
+            Iterator var11 = this.damagedBlocks.values().iterator();
 
             while (var11.hasNext())
             {
@@ -1773,7 +1794,7 @@ public class RenderGlobal implements IWorldAccess
             this.mc.ingameGUI.setRecordPlayingMessage("C418 - " + par1Str);
         }
 
-        this.mc.sndManager.playStreaming(par1Str, (float)par2, (float)par3, (float)par4, 1.0F, 1.0F);
+        this.mc.sndManager.playStreaming(par1Str, (float)par2, (float)par3, (float)par4);
     }
 
     /**
@@ -1868,6 +1889,12 @@ public class RenderGlobal implements IWorldAccess
                         var21 = new EntitySpellParticleFX(this.theWorld, par2, par4, par6, 0.0D, 0.0D, 0.0D);
                         ((EntityFX)var21).setRBGColorF((float)par8, (float)par10, (float)par12);
                     }
+                    else if (par1Str.equals("mobSpellAmbient"))
+                    {
+                        var21 = new EntitySpellParticleFX(this.theWorld, par2, par4, par6, 0.0D, 0.0D, 0.0D);
+                        ((EntityFX)var21).func_82338_g(0.15F);
+                        ((EntityFX)var21).setRBGColorF((float)par8, (float)par10, (float)par12);
+                    }
                     else if (par1Str.equals("spell"))
                     {
                         var21 = new EntitySpellParticleFX(this.theWorld, par2, par4, par6, par8, par10, par12);
@@ -1876,6 +1903,13 @@ public class RenderGlobal implements IWorldAccess
                     {
                         var21 = new EntitySpellParticleFX(this.theWorld, par2, par4, par6, par8, par10, par12);
                         ((EntitySpellParticleFX)var21).func_70589_b(144);
+                    }
+                    else if (par1Str.equals("witchMagic"))
+                    {
+                        var21 = new EntitySpellParticleFX(this.theWorld, par2, par4, par6, par8, par10, par12);
+                        ((EntitySpellParticleFX)var21).func_70589_b(144);
+                        float var24 = this.theWorld.rand.nextFloat() * 0.5F + 0.35F;
+                        ((EntityFX)var21).setRBGColorF(1.0F * var24, 0.0F * var24, 1.0F * var24);
                     }
                     else if (par1Str.equals("note"))
                     {
@@ -1947,21 +1981,33 @@ public class RenderGlobal implements IWorldAccess
                     {
                         var21 = new EntityHeartFX(this.theWorld, par2, par4, par6, par8, par10, par12);
                     }
+                    else if (par1Str.equals("angryVillager"))
+                    {
+                        var21 = new EntityHeartFX(this.theWorld, par2, par4 + 0.5D, par6, par8, par10, par12);
+                        ((EntityFX)var21).setParticleTextureIndex(81);
+                        ((EntityFX)var21).setRBGColorF(1.0F, 1.0F, 1.0F);
+                    }
+                    else if (par1Str.equals("happyVillager"))
+                    {
+                        var21 = new EntityAuraFX(this.theWorld, par2, par4, par6, par8, par10, par12);
+                        ((EntityFX)var21).setParticleTextureIndex(82);
+                        ((EntityFX)var21).setRBGColorF(1.0F, 1.0F, 1.0F);
+                    }
                     else
                     {
-                        int var24;
+                        int var25;
 
                         if (par1Str.startsWith("iconcrack_"))
                         {
-                            var24 = Integer.parseInt(par1Str.substring(par1Str.indexOf("_") + 1));
-                            var21 = new EntityBreakingFX(this.theWorld, par2, par4, par6, par8, par10, par12, Item.itemsList[var24]);
-                            effectObject = Item.itemsList[var24];
+                            var25 = Integer.parseInt(par1Str.substring(par1Str.indexOf("_") + 1));
+                            var21 = new EntityBreakingFX(this.theWorld, par2, par4, par6, par8, par10, par12, Item.itemsList[var25]);
+                            effectObject = Item.itemsList[var25];
                         }
                         else if (par1Str.startsWith("tilecrack_"))
                         {
-                            var24 = Integer.parseInt(par1Str.substring(par1Str.indexOf("_") + 1));
-                            var21 = new EntityDiggingFX(this.theWorld, par2, par4, par6, par8, par10, par12, Block.blocksList[var24], 0, 0);
-                            effectObject = Block.blocksList[var24];
+                            var25 = Integer.parseInt(par1Str.substring(par1Str.indexOf("_") + 1));
+                            var21 = new EntityDiggingFX(this.theWorld, par2, par4, par6, par8, par10, par12, Block.blocksList[var25], 0, 0);
+                            effectObject = Block.blocksList[var25];
                         }
                     }
 
@@ -2017,6 +2063,44 @@ public class RenderGlobal implements IWorldAccess
     public void func_72728_f()
     {
         GLAllocation.deleteDisplayLists(this.glRenderListBase);
+    }
+
+    public void func_82746_a(int par1, int par2, int par3, int par4, int par5)
+    {
+        Random var6 = this.theWorld.rand;
+
+        switch (par1)
+        {
+            case 1013:
+            case 1018:
+                if (this.mc.renderViewEntity != null)
+                {
+                    double var7 = (double)par2 - this.mc.renderViewEntity.posX;
+                    double var9 = (double)par3 - this.mc.renderViewEntity.posY;
+                    double var11 = (double)par4 - this.mc.renderViewEntity.posZ;
+                    double var13 = Math.sqrt(var7 * var7 + var9 * var9 + var11 * var11);
+                    double var15 = this.mc.renderViewEntity.posX;
+                    double var17 = this.mc.renderViewEntity.posY;
+                    double var19 = this.mc.renderViewEntity.posZ;
+
+                    if (var13 > 0.0D)
+                    {
+                        var15 += var7 / var13 * 2.0D;
+                        var17 += var9 / var13 * 2.0D;
+                        var19 += var11 / var13 * 2.0D;
+                    }
+
+                    if (par1 == 1013)
+                    {
+                        this.theWorld.playSound(var15, var17, var19, "mob.wither.spawn", 1.0F, 1.0F);
+                    }
+                    else if (par1 == 1018)
+                    {
+                        this.theWorld.playSound(var15, var17, var19, "mob.enderdragon.end", 5.0F, 1.0F);
+                    }
+                }
+            default:
+        }
     }
 
     /**
@@ -2079,6 +2163,9 @@ public class RenderGlobal implements IWorldAccess
             case 1008:
                 this.theWorld.playSound((double)par3 + 0.5D, (double)par4 + 0.5D, (double)par5 + 0.5D, "mob.ghast.fireball", 10.0F, (var7.nextFloat() - var7.nextFloat()) * 0.2F + 1.0F);
                 break;
+            case 1009:
+                this.theWorld.playSound((double)par3 + 0.5D, (double)par4 + 0.5D, (double)par5 + 0.5D, "mob.ghast.fireball", 2.0F, (var7.nextFloat() - var7.nextFloat()) * 0.2F + 1.0F);
+                break;
             case 1010:
                 this.theWorld.playSound((double)par3 + 0.5D, (double)par4 + 0.5D, (double)par5 + 0.5D, "mob.zombie.wood", 2.0F, (var7.nextFloat() - var7.nextFloat()) * 0.2F + 1.0F);
                 break;
@@ -2087,6 +2174,27 @@ public class RenderGlobal implements IWorldAccess
                 break;
             case 1012:
                 this.theWorld.playSound((double)par3 + 0.5D, (double)par4 + 0.5D, (double)par5 + 0.5D, "mob.zombie.woodbreak", 2.0F, (var7.nextFloat() - var7.nextFloat()) * 0.2F + 1.0F);
+                break;
+            case 1014:
+                this.theWorld.playSound((double)par3 + 0.5D, (double)par4 + 0.5D, (double)par5 + 0.5D, "mob.wither.shoot", 2.0F, (var7.nextFloat() - var7.nextFloat()) * 0.2F + 1.0F);
+                break;
+            case 1015:
+                this.theWorld.playSound((double)par3 + 0.5D, (double)par4 + 0.5D, (double)par5 + 0.5D, "mob.bat.takeoff", 0.05F, (var7.nextFloat() - var7.nextFloat()) * 0.2F + 1.0F);
+                break;
+            case 1016:
+                this.theWorld.playSound((double)par3 + 0.5D, (double)par4 + 0.5D, (double)par5 + 0.5D, "mob.zombie.infect", 2.0F, (var7.nextFloat() - var7.nextFloat()) * 0.2F + 1.0F);
+                break;
+            case 1017:
+                this.theWorld.playSound((double)par3 + 0.5D, (double)par4 + 0.5D, (double)par5 + 0.5D, "mob.zombie.unfect", 2.0F, (var7.nextFloat() - var7.nextFloat()) * 0.2F + 1.0F);
+                break;
+            case 1020:
+                this.theWorld.playSound((double)((float)par3 + 0.5F), (double)((float)par4 + 0.5F), (double)((float)par5 + 0.5F), "random.anvil_break", 1.0F, this.theWorld.rand.nextFloat() * 0.1F + 0.9F);
+                break;
+            case 1021:
+                this.theWorld.playSound((double)((float)par3 + 0.5F), (double)((float)par4 + 0.5F), (double)((float)par5 + 0.5F), "random.anvil_use", 1.0F, this.theWorld.rand.nextFloat() * 0.1F + 0.9F);
+                break;
+            case 1022:
+                this.theWorld.playSound((double)((float)par3 + 0.5F), (double)((float)par4 + 0.5F), (double)((float)par5 + 0.5F), "random.anvil_land", 0.3F, this.theWorld.rand.nextFloat() * 0.1F + 0.9F);
                 break;
             case 2000:
                 int var33 = par6 % 3 - 1;
@@ -2130,7 +2238,7 @@ public class RenderGlobal implements IWorldAccess
                     this.spawnParticle(var14, var8, var10, var12, var7.nextGaussian() * 0.15D, var7.nextDouble() * 0.2D, var7.nextGaussian() * 0.15D);
                 }
 
-                var15 = Item.potion.getColorFromDamage(par6, 0);
+                var15 = Item.potion.getColorFromDamage(par6);
                 float var16 = (float)(var15 >> 16 & 255) / 255.0F;
                 float var17 = (float)(var15 >> 8 & 255) / 255.0F;
                 float var18 = (float)(var15 >> 0 & 255) / 255.0F;
@@ -2198,19 +2306,20 @@ public class RenderGlobal implements IWorldAccess
     {
         if (par5 >= 0 && par5 < 10)
         {
-            DestroyBlockProgress var6 = (DestroyBlockProgress)this.field_72738_E.get(Integer.valueOf(par1));
+            DestroyBlockProgress var6 = (DestroyBlockProgress)this.damagedBlocks.get(Integer.valueOf(par1));
 
             if (var6 == null || var6.getPartialBlockX() != par2 || var6.getPartialBlockY() != par3 || var6.getPartialBlockZ() != par4)
             {
                 var6 = new DestroyBlockProgress(par1, par2, par3, par4);
-                this.field_72738_E.put(Integer.valueOf(par1), var6);
+                this.damagedBlocks.put(Integer.valueOf(par1), var6);
             }
 
             var6.setPartialBlockDamage(par5);
+            var6.func_82744_b(this.cloudOffsetX);
         }
         else
         {
-            this.field_72738_E.remove(Integer.valueOf(par1));
+            this.damagedBlocks.remove(Integer.valueOf(par1));
         }
     }
 }

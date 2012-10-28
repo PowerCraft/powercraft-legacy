@@ -60,4 +60,6 @@ public class EntityCaveSpider extends EntitySpider
             return false;
         }
     }
+
+    public void func_82163_bD() {}
 }

@@ -47,6 +47,7 @@ public class CrashReport
         this.addCrashSectionCallable("Java VM Version", new CallableJavaInfo2(this));
         this.addCrashSectionCallable("Memory", new CallableMemoryInfo(this));
         this.addCrashSectionCallable("JVM Flags", new CallableJVMFlags(this));
+        this.addCrashSectionCallable("AABB Pool Size", new CallableCrashMemoryReport(this));
         FMLCommonHandler.instance().enhanceCrashReport(this);
     }
 

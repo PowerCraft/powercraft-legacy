@@ -21,7 +21,7 @@ public class NetServerHandler extends NetHandler
     public static Logger logger = Logger.getLogger("Minecraft");
 
     /** The underlying network manager for this server handler. */
-    public NetworkManager netManager;
+    public INetworkManager netManager;
 
     /** This is set to true whenever a player disconnects from the server. */
     public boolean connectionClosed = false;
@@ -60,13 +60,13 @@ public class NetServerHandler extends NetHandler
     private boolean hasMoved = true;
     private IntHashMap field_72586_s = new IntHashMap();
 
-    public NetServerHandler(MinecraftServer par1MinecraftServer, NetworkManager par2NetworkManager, EntityPlayerMP par3EntityPlayerMP)
+    public NetServerHandler(MinecraftServer par1, INetworkManager par2, EntityPlayerMP par3)
     {
-        this.mcServer = par1MinecraftServer;
-        this.netManager = par2NetworkManager;
-        par2NetworkManager.setNetHandler(this);
-        this.playerEntity = par3EntityPlayerMP;
-        par3EntityPlayerMP.playerNetServerHandler = this;
+        this.mcServer = par1;
+        this.netManager = par2;
+        par2.setNetHandler(this);
+        this.playerEntity = par3;
+        par3.playerNetServerHandler = this;
     }
 
     /**
@@ -395,7 +395,7 @@ public class NetServerHandler extends NetHandler
         }
         else
         {
-            boolean var3 = var2.actionsAllowed = var2.provider.dimensionId != 0 || this.mcServer.getConfigurationManager().areCommandsAllowed(this.playerEntity.username) || this.mcServer.isSinglePlayer();
+            boolean var3 = var2.provider.dimensionId != 0 || this.mcServer.getConfigurationManager().getOps().isEmpty() || this.mcServer.getConfigurationManager().areCommandsAllowed(this.playerEntity.username) || this.mcServer.isSinglePlayer();
             boolean var4 = false;
 
             if (par1Packet14BlockDig.status == 0)
@@ -444,7 +444,7 @@ public class NetServerHandler extends NetHandler
 
             if (par1Packet14BlockDig.status == 0)
             {
-                if (var20 <= mcServer.spawnProtectionSize && !var3)
+                if (var20 <= this.mcServer.func_82357_ak() && !var3)
                 {
                     ForgeEventFactory.onPlayerInteract(playerEntity, Action.LEFT_CLICK_BLOCK, var5, var6, var7, 0);
                     this.playerEntity.playerNetServerHandler.sendPacketToPlayer(new Packet53BlockChange(var5, var6, var7, var2));
@@ -484,8 +484,6 @@ public class NetServerHandler extends NetHandler
                     this.playerEntity.playerNetServerHandler.sendPacketToPlayer(new Packet53BlockChange(var5, var6, var7, var2));
                 }
             }
-
-            var2.actionsAllowed = false;
         }
     }
 
@@ -498,7 +496,7 @@ public class NetServerHandler extends NetHandler
         int var6 = par1Packet15Place.getYPosition();
         int var7 = par1Packet15Place.getZPosition();
         int var8 = par1Packet15Place.getDirection();
-        boolean var9 = var2.actionsAllowed = var2.provider.dimensionId != 0 || this.mcServer.getConfigurationManager().areCommandsAllowed(this.playerEntity.username) || this.mcServer.isSinglePlayer();
+        boolean var9 = var2.provider.dimensionId != 0 || this.mcServer.getConfigurationManager().getOps().isEmpty() || this.mcServer.getConfigurationManager().areCommandsAllowed(this.playerEntity.username) || this.mcServer.isSinglePlayer();
 
         if (par1Packet15Place.getDirection() == 255)
         {
@@ -531,7 +529,7 @@ public class NetServerHandler extends NetHandler
 
             double dist = playerEntity.theItemInWorldManager.getBlockReachDistance() + 1;
             dist *= dist;
-            if (this.hasMoved && this.playerEntity.getDistanceSq((double)var5 + 0.5D, (double)var6 + 0.5D, (double)var7 + 0.5D) < dist && (var12 > mcServer.spawnProtectionSize || var9))
+            if (this.hasMoved && this.playerEntity.getDistanceSq((double)var5 + 0.5D, (double)var6 + 0.5D, (double)var7 + 0.5D) < dist && (var12 > this.mcServer.func_82357_ak() || var9))
             {
                 this.playerEntity.theItemInWorldManager.activateBlockOrUseItem(this.playerEntity, var2, var3, var5, var6, var7, var8, par1Packet15Place.getXOffset(), par1Packet15Place.getYOffset(), par1Packet15Place.getZOffset());
             }
@@ -597,8 +595,6 @@ public class NetServerHandler extends NetHandler
                 this.sendPacketToPlayer(new Packet103SetSlot(this.playerEntity.craftingInventory.windowId, var13.slotNumber, this.playerEntity.inventory.getCurrentItem()));
             }
         }
-
-        var2.actionsAllowed = false;
     }
 
     public void handleErrorMessage(String par1Str, Object[] par2ArrayOfObj)
@@ -1088,9 +1084,9 @@ public class NetServerHandler extends NetHandler
                     var4.setTagCompound(var3.getTagCompound());
                 }
             }
-            catch (Exception var7)
+            catch (Exception var12)
             {
-                var7.printStackTrace();
+                var12.printStackTrace();
             }
         }
         else if ("MC|BSign".equals(par1Packet250CustomPayload.channel))
@@ -1113,27 +1109,116 @@ public class NetServerHandler extends NetHandler
                     var4.itemID = Item.writtenBook.shiftedIndex;
                 }
             }
-            catch (Exception var6)
+            catch (Exception var11)
             {
-                var6.printStackTrace();
+                var11.printStackTrace();
             }
         }
-        else if ("MC|TrSel".equals(par1Packet250CustomPayload.channel))
+        else
         {
-            try
-            {
-                var2 = new DataInputStream(new ByteArrayInputStream(par1Packet250CustomPayload.data));
-                int var8 = var2.readInt();
-                Container var9 = this.playerEntity.craftingInventory;
+            int var14;
 
-                if (var9 instanceof ContainerMerchant)
+            if ("MC|TrSel".equals(par1Packet250CustomPayload.channel))
+            {
+                try
                 {
-                    ((ContainerMerchant)var9).setCurrentRecipeIndex(var8);
+                    var2 = new DataInputStream(new ByteArrayInputStream(par1Packet250CustomPayload.data));
+                    var14 = var2.readInt();
+                    Container var15 = this.playerEntity.craftingInventory;
+
+                    if (var15 instanceof ContainerMerchant)
+                    {
+                        ((ContainerMerchant)var15).setCurrentRecipeIndex(var14);
+                    }
+                }
+                catch (Exception var10)
+                {
+                    var10.printStackTrace();
                 }
             }
-            catch (Exception var5)
+            else
             {
-                var5.printStackTrace();
+                int var18;
+
+                if ("MC|AdvCdm".equals(par1Packet250CustomPayload.channel))
+                {
+                    if (!this.mcServer.func_82356_Z())
+                    {
+                        this.playerEntity.sendChatToPlayer(this.playerEntity.translateString("advMode.notEnabled", new Object[0]));
+                    }
+                    else if (this.playerEntity.canCommandSenderUseCommand(2, "") && this.playerEntity.capabilities.isCreativeMode)
+                    {
+                        try
+                        {
+                            var2 = new DataInputStream(new ByteArrayInputStream(par1Packet250CustomPayload.data));
+                            var14 = var2.readInt();
+                            var18 = var2.readInt();
+                            int var5 = var2.readInt();
+                            String var6 = Packet.readString(var2, 256);
+                            TileEntity var7 = this.playerEntity.worldObj.getBlockTileEntity(var14, var18, var5);
+
+                            if (var7 != null && var7 instanceof TileEntityCommandBlock)
+                            {
+                                ((TileEntityCommandBlock)var7).func_82352_b(var6);
+                                this.playerEntity.worldObj.markBlockNeedsUpdate(var14, var18, var5);
+                                this.playerEntity.sendChatToPlayer("Command set: " + var6);
+                            }
+                        }
+                        catch (Exception var9)
+                        {
+                            var9.printStackTrace();
+                        }
+                    }
+                    else
+                    {
+                        this.playerEntity.sendChatToPlayer(this.playerEntity.translateString("advMode.notAllowed", new Object[0]));
+                    }
+                }
+                else if ("MC|Beacon".equals(par1Packet250CustomPayload.channel))
+                {
+                    if (this.playerEntity.craftingInventory instanceof ContainerBeacon)
+                    {
+                        try
+                        {
+                            var2 = new DataInputStream(new ByteArrayInputStream(par1Packet250CustomPayload.data));
+                            var14 = var2.readInt();
+                            var18 = var2.readInt();
+                            ContainerBeacon var17 = (ContainerBeacon)this.playerEntity.craftingInventory;
+                            Slot var19 = var17.getSlot(0);
+
+                            if (var19.getHasStack())
+                            {
+                                var19.decrStackSize(1);
+                                TileEntityBeacon var20 = var17.func_82863_d();
+                                var20.func_82128_d(var14);
+                                var20.func_82127_e(var18);
+                                var20.onInventoryChanged();
+                            }
+                        }
+                        catch (Exception var8)
+                        {
+                            var8.printStackTrace();
+                        }
+                    }
+                }
+                else if ("MC|ItemName".equals(par1Packet250CustomPayload.channel) && this.playerEntity.craftingInventory instanceof ContainerRepair)
+                {
+                    ContainerRepair var13 = (ContainerRepair)this.playerEntity.craftingInventory;
+
+                    if (par1Packet250CustomPayload.data != null && par1Packet250CustomPayload.data.length >= 1)
+                    {
+                        String var16 = ChatAllowedCharacters.filerAllowedCharacters(new String(par1Packet250CustomPayload.data));
+
+                        if (var16.length() <= 30)
+                        {
+                            var13.func_82850_a(var16);
+                        }
+                    }
+                    else
+                    {
+                        var13.func_82850_a("");
+                    }
+                }
             }
         }
     }

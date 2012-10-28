@@ -197,6 +197,7 @@ public class WorldChunkManager
      */
     public boolean areBiomesViable(int par1, int par2, int par3, List par4List)
     {
+        IntCache.resetIntCache();
         int var5 = par1 - par3 >> 2;
         int var6 = par2 - par3 >> 2;
         int var7 = par1 + par3 >> 2;
@@ -224,6 +225,7 @@ public class WorldChunkManager
      */
     public ChunkPosition findBiomePosition(int par1, int par2, int par3, List par4List, Random par5Random)
     {
+        IntCache.resetIntCache();
         int var6 = par1 - par3 >> 2;
         int var7 = par2 - par3 >> 2;
         int var8 = par1 + par3 >> 2;

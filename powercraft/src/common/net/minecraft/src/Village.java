@@ -3,10 +3,11 @@ package net.minecraft.src;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.TreeMap;
 
 public class Village
 {
-    private final World worldObj;
+    private World worldObj;
 
     /** list of VillageDoorInfo objects */
     private final List villageDoorInfoList = new ArrayList();
@@ -23,10 +24,19 @@ public class Village
     private int lastAddDoorTimestamp = 0;
     private int tickCounter = 0;
     private int numVillagers = 0;
+    private int field_82694_i;
+    private TreeMap field_82693_j = new TreeMap();
     private List villageAgressors = new ArrayList();
     private int numIronGolems = 0;
 
+    public Village() {}
+
     public Village(World par1World)
+    {
+        this.worldObj = par1World;
+    }
+
+    public void func_82691_a(World par1World)
     {
         this.worldObj = par1World;
     }
@@ -50,7 +60,7 @@ public class Village
             this.updateNumIronGolems();
         }
 
-        int var2 = this.numVillagers / 16;
+        int var2 = this.numVillagers / 10;
 
         if (this.numIronGolems < var2 && this.villageDoorInfoList.size() > 20 && this.worldObj.rand.nextInt(7000) == 0)
         {
@@ -79,7 +89,7 @@ public class Village
 
             if (this.isInRange(var8, var9, var10) && this.isValidIronGolemSpawningLocation(var8, var9, var10, par4, par5, par6))
             {
-                return Vec3.getVec3Pool().getVecFromPool((double)var8, (double)var9, (double)var10);
+                return this.worldObj.func_82732_R().getVecFromPool((double)var8, (double)var9, (double)var10);
             }
         }
 
@@ -125,6 +135,11 @@ public class Village
     {
         List var1 = this.worldObj.getEntitiesWithinAABB(EntityVillager.class, AxisAlignedBB.getAABBPool().addOrModifyAABBInPool((double)(this.center.posX - this.villageRadius), (double)(this.center.posY - 4), (double)(this.center.posZ - this.villageRadius), (double)(this.center.posX + this.villageRadius), (double)(this.center.posY + 4), (double)(this.center.posZ + this.villageRadius)));
         this.numVillagers = var1.size();
+
+        if (this.numVillagers == 0)
+        {
+            this.field_82693_j.clear();
+        }
     }
 
     public ChunkCoordinates getCenter()
@@ -313,6 +328,36 @@ public class Village
         return var4 != null ? var4.agressor : null;
     }
 
+    public EntityPlayer func_82685_c(EntityLiving par1EntityLiving)
+    {
+        double var2 = Double.MAX_VALUE;
+        EntityPlayer var4 = null;
+        Iterator var5 = this.field_82693_j.keySet().iterator();
+
+        while (var5.hasNext())
+        {
+            String var6 = (String)var5.next();
+
+            if (this.func_82687_d(var6))
+            {
+                EntityPlayer var7 = this.worldObj.getPlayerEntityByName(var6);
+
+                if (var7 != null)
+                {
+                    double var8 = var7.getDistanceSqToEntity(par1EntityLiving);
+
+                    if (var8 <= var2)
+                    {
+                        var4 = var7;
+                        var2 = var8;
+                    }
+                }
+            }
+        }
+
+        return var4;
+    }
+
     private void removeDeadAndOldAgressors()
     {
         Iterator var1 = this.villageAgressors.iterator();
@@ -387,6 +432,124 @@ public class Village
             }
 
             this.villageRadius = Math.max(32, (int)Math.sqrt((double)var2) + 1);
+        }
+    }
+
+    public int func_82684_a(String par1Str)
+    {
+        Integer var2 = (Integer)this.field_82693_j.get(par1Str);
+        return var2 != null ? var2.intValue() : 0;
+    }
+
+    public int func_82688_a(String par1Str, int par2)
+    {
+        int var3 = this.func_82684_a(par1Str);
+        int var4 = MathHelper.clamp_int(var3 + par2, -30, 10);
+        this.field_82693_j.put(par1Str, Integer.valueOf(var4));
+        return var4;
+    }
+
+    public boolean func_82687_d(String par1Str)
+    {
+        return this.func_82684_a(par1Str) <= -15;
+    }
+
+    public void func_82690_a(NBTTagCompound par1NBTTagCompound)
+    {
+        this.numVillagers = par1NBTTagCompound.getInteger("PopSize");
+        this.villageRadius = par1NBTTagCompound.getInteger("Radius");
+        this.numIronGolems = par1NBTTagCompound.getInteger("Golems");
+        this.lastAddDoorTimestamp = par1NBTTagCompound.getInteger("Stable");
+        this.tickCounter = par1NBTTagCompound.getInteger("Tick");
+        this.field_82694_i = par1NBTTagCompound.getInteger("MTick");
+        this.center.posX = par1NBTTagCompound.getInteger("CX");
+        this.center.posY = par1NBTTagCompound.getInteger("CY");
+        this.center.posZ = par1NBTTagCompound.getInteger("CZ");
+        this.centerHelper.posX = par1NBTTagCompound.getInteger("ACX");
+        this.centerHelper.posY = par1NBTTagCompound.getInteger("ACY");
+        this.centerHelper.posZ = par1NBTTagCompound.getInteger("ACZ");
+        NBTTagList var2 = par1NBTTagCompound.getTagList("Doors");
+
+        for (int var3 = 0; var3 < var2.tagCount(); ++var3)
+        {
+            NBTTagCompound var4 = (NBTTagCompound)var2.tagAt(var3);
+            VillageDoorInfo var5 = new VillageDoorInfo(var4.getInteger("X"), var4.getInteger("Y"), var4.getInteger("Z"), var4.getInteger("IDX"), var4.getInteger("IDZ"), var4.getInteger("TS"));
+            this.villageDoorInfoList.add(var5);
+        }
+
+        NBTTagList var6 = par1NBTTagCompound.getTagList("Players");
+
+        for (int var7 = 0; var7 < var6.tagCount(); ++var7)
+        {
+            NBTTagCompound var8 = (NBTTagCompound)var6.tagAt(var7);
+            this.field_82693_j.put(var8.getString("Name"), Integer.valueOf(var8.getInteger("S")));
+        }
+    }
+
+    public void func_82689_b(NBTTagCompound par1NBTTagCompound)
+    {
+        par1NBTTagCompound.setInteger("PopSize", this.numVillagers);
+        par1NBTTagCompound.setInteger("Radius", this.villageRadius);
+        par1NBTTagCompound.setInteger("Golems", this.numIronGolems);
+        par1NBTTagCompound.setInteger("Stable", this.lastAddDoorTimestamp);
+        par1NBTTagCompound.setInteger("Tick", this.tickCounter);
+        par1NBTTagCompound.setInteger("MTick", this.field_82694_i);
+        par1NBTTagCompound.setInteger("CX", this.center.posX);
+        par1NBTTagCompound.setInteger("CY", this.center.posY);
+        par1NBTTagCompound.setInteger("CZ", this.center.posZ);
+        par1NBTTagCompound.setInteger("ACX", this.centerHelper.posX);
+        par1NBTTagCompound.setInteger("ACY", this.centerHelper.posY);
+        par1NBTTagCompound.setInteger("ACZ", this.centerHelper.posZ);
+        NBTTagList var2 = new NBTTagList("Doors");
+        Iterator var3 = this.villageDoorInfoList.iterator();
+
+        while (var3.hasNext())
+        {
+            VillageDoorInfo var4 = (VillageDoorInfo)var3.next();
+            NBTTagCompound var5 = new NBTTagCompound("Door");
+            var5.setInteger("X", var4.posX);
+            var5.setInteger("Y", var4.posY);
+            var5.setInteger("Z", var4.posZ);
+            var5.setInteger("IDX", var4.insideDirectionX);
+            var5.setInteger("IDZ", var4.insideDirectionZ);
+            var5.setInteger("TS", var4.lastActivityTimestamp);
+            var2.appendTag(var5);
+        }
+
+        par1NBTTagCompound.setTag("Doors", var2);
+        NBTTagList var7 = new NBTTagList("Players");
+        Iterator var8 = this.field_82693_j.keySet().iterator();
+
+        while (var8.hasNext())
+        {
+            String var9 = (String)var8.next();
+            NBTTagCompound var6 = new NBTTagCompound(var9);
+            var6.setString("Name", var9);
+            var6.setInteger("S", ((Integer)this.field_82693_j.get(var9)).intValue());
+            var7.appendTag(var6);
+        }
+
+        par1NBTTagCompound.setTag("Players", var7);
+    }
+
+    public void func_82692_h()
+    {
+        this.field_82694_i = this.tickCounter;
+    }
+
+    public boolean func_82686_i()
+    {
+        return this.field_82694_i == 0 || this.tickCounter - this.field_82694_i >= 3600;
+    }
+
+    public void func_82683_b(int par1)
+    {
+        Iterator var2 = this.field_82693_j.keySet().iterator();
+
+        while (var2.hasNext())
+        {
+            String var3 = (String)var2.next();
+            this.func_82688_a(var3, par1);
         }
     }
 }

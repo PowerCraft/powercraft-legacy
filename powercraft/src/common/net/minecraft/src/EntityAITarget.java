@@ -103,66 +103,59 @@ public abstract class EntityAITarget extends EntityAIBase
         {
             return false;
         }
-        else if (par1EntityLiving.boundingBox.maxY > this.taskOwner.boundingBox.minY && par1EntityLiving.boundingBox.minY < this.taskOwner.boundingBox.maxY)
+        else if (!this.taskOwner.isExplosiveMob(par1EntityLiving.getClass()))
         {
-            if (!this.taskOwner.isExplosiveMob(par1EntityLiving.getClass()))
+            return false;
+        }
+        else
+        {
+            if (this.taskOwner instanceof EntityTameable && ((EntityTameable)this.taskOwner).isTamed())
+            {
+                if (par1EntityLiving instanceof EntityTameable && ((EntityTameable)par1EntityLiving).isTamed())
+                {
+                    return false;
+                }
+
+                if (par1EntityLiving == ((EntityTameable)this.taskOwner).getOwner())
+                {
+                    return false;
+                }
+            }
+            else if (par1EntityLiving instanceof EntityPlayer && !par2 && ((EntityPlayer)par1EntityLiving).capabilities.disableDamage)
+            {
+                return false;
+            }
+
+            if (!this.taskOwner.isWithinHomeDistance(MathHelper.floor_double(par1EntityLiving.posX), MathHelper.floor_double(par1EntityLiving.posY), MathHelper.floor_double(par1EntityLiving.posZ)))
+            {
+                return false;
+            }
+            else if (this.shouldCheckSight && !this.taskOwner.getEntitySenses().canSee(par1EntityLiving))
             {
                 return false;
             }
             else
             {
-                if (this.taskOwner instanceof EntityTameable && ((EntityTameable)this.taskOwner).isTamed())
+                if (this.field_75303_a)
                 {
-                    if (par1EntityLiving instanceof EntityTameable && ((EntityTameable)par1EntityLiving).isTamed())
+                    if (--this.field_75302_c <= 0)
+                    {
+                        this.field_75301_b = 0;
+                    }
+
+                    if (this.field_75301_b == 0)
+                    {
+                        this.field_75301_b = this.func_75295_a(par1EntityLiving) ? 1 : 2;
+                    }
+
+                    if (this.field_75301_b == 2)
                     {
                         return false;
                     }
-
-                    if (par1EntityLiving == ((EntityTameable)this.taskOwner).getOwner())
-                    {
-                        return false;
-                    }
-                }
-                else if (par1EntityLiving instanceof EntityPlayer && !par2 && ((EntityPlayer)par1EntityLiving).capabilities.disableDamage)
-                {
-                    return false;
                 }
 
-                if (!this.taskOwner.isWithinHomeDistance(MathHelper.floor_double(par1EntityLiving.posX), MathHelper.floor_double(par1EntityLiving.posY), MathHelper.floor_double(par1EntityLiving.posZ)))
-                {
-                    return false;
-                }
-                else if (this.shouldCheckSight && !this.taskOwner.getEntitySenses().canSee(par1EntityLiving))
-                {
-                    return false;
-                }
-                else
-                {
-                    if (this.field_75303_a)
-                    {
-                        if (--this.field_75302_c <= 0)
-                        {
-                            this.field_75301_b = 0;
-                        }
-
-                        if (this.field_75301_b == 0)
-                        {
-                            this.field_75301_b = this.func_75295_a(par1EntityLiving) ? 1 : 2;
-                        }
-
-                        if (this.field_75301_b == 2)
-                        {
-                            return false;
-                        }
-                    }
-
-                    return true;
-                }
+                return true;
             }
-        }
-        else
-        {
-            return false;
         }
     }
 

@@ -47,7 +47,7 @@ public class GuiModsMissingForServer extends GuiScreen
     public void drawScreen(int par1, int par2, float par3)
     {
         this.drawDefaultBackground();
-        int offset = 85 - modsMissing.getModList().size() * 10;
+        int offset = Math.max(85 - modsMissing.getModList().size() * 10, 10);
         this.drawCenteredString(this.fontRenderer, "Forge Mod Loader could not connect to this server", this.width / 2, offset, 0xFFFFFF);
         offset += 10;
         this.drawCenteredString(this.fontRenderer, "The mods and versions listed below could not be found", this.width / 2, offset, 0xFFFFFF);

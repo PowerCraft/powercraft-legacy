@@ -14,10 +14,18 @@ public class Packet40EntityMetadata extends Packet
 
     public Packet40EntityMetadata() {}
 
-    public Packet40EntityMetadata(int par1, DataWatcher par2DataWatcher)
+    public Packet40EntityMetadata(int par1, DataWatcher par2DataWatcher, boolean par3)
     {
         this.entityId = par1;
-        this.metadata = par2DataWatcher.unwatchAndReturnAllWatched();
+
+        if (par3)
+        {
+            this.metadata = par2DataWatcher.func_75685_c();
+        }
+        else
+        {
+            this.metadata = par2DataWatcher.unwatchAndReturnAllWatched();
+        }
     }
 
     /**
@@ -58,13 +66,5 @@ public class Packet40EntityMetadata extends Packet
     public List getMetadata()
     {
         return this.metadata;
-    }
-
-    /**
-     * if this returns false, processPacket is deffered for processReadPackets to handle
-     */
-    public boolean isWritePacket()
-    {
-        return true;
     }
 }

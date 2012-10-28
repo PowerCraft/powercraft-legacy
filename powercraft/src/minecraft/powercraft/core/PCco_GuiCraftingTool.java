@@ -91,7 +91,7 @@ public class PCco_GuiCraftingTool extends PCco_ContainerCraftingTool implements 
 		Collection<List<PCco_SlotDirectCrafting>> cls = moduleList.values();
 		for(List<PCco_SlotDirectCrafting> ls: cls){
 			for(PCco_SlotDirectCrafting s:ls){
-				List<String> info = (List<String>)s.getBackgroundStack().getItemNameandInformation();
+				List<String> info = (List<String>)s.getBackgroundStack().func_82840_a(thePlayer, false);
 				for(String infoString:info){
 					if (infoString.toLowerCase().contains(searchString)){
 						searchPage.slots.add(s);
@@ -101,7 +101,7 @@ public class PCco_GuiCraftingTool extends PCco_ContainerCraftingTool implements 
 			}
 		}
 		for(PCco_SlotDirectCrafting s:allMcSlots){
-			List<String> info = (List<String>)s.getBackgroundStack().getItemNameandInformation();
+			List<String> info = (List<String>)s.getBackgroundStack().func_82840_a(thePlayer, false);
 			for(String infoString:info){
 				if (infoString.toLowerCase().contains(searchString)){
 					searchPage.slots.add(s);

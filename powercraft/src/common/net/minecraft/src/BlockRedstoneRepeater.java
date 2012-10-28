@@ -52,20 +52,25 @@ public class BlockRedstoneRepeater extends BlockDirectional
     public void updateTick(World par1World, int par2, int par3, int par4, Random par5Random)
     {
         int var6 = par1World.getBlockMetadata(par2, par3, par4);
-        boolean var7 = this.ignoreTick(par1World, par2, par3, par4, var6);
+        boolean var7 = this.func_82523_e(par1World, par2, par3, par4, var6);
 
-        if (this.isRepeaterPowered && !var7)
+        if (!var7)
         {
-            par1World.setBlockAndMetadataWithNotify(par2, par3, par4, Block.redstoneRepeaterIdle.blockID, var6);
-        }
-        else if (!this.isRepeaterPowered)
-        {
-            par1World.setBlockAndMetadataWithNotify(par2, par3, par4, Block.redstoneRepeaterActive.blockID, var6);
+            boolean var8 = this.ignoreTick(par1World, par2, par3, par4, var6);
 
-            if (!var7)
+            if (this.isRepeaterPowered && !var8)
             {
-                int var8 = (var6 & 12) >> 2;
-                par1World.scheduleBlockUpdate(par2, par3, par4, Block.redstoneRepeaterActive.blockID, repeaterState[var8] * 2);
+                par1World.setBlockAndMetadataWithNotify(par2, par3, par4, Block.redstoneRepeaterIdle.blockID, var6);
+            }
+            else if (!this.isRepeaterPowered)
+            {
+                par1World.setBlockAndMetadataWithNotify(par2, par3, par4, Block.redstoneRepeaterActive.blockID, var6);
+
+                if (!var8)
+                {
+                    int var9 = (var6 & 12) >> 2;
+                    par1World.scheduleBlockUpdate(par2, par3, par4, Block.redstoneRepeaterActive.blockID, repeaterState[var9] * 2);
+                }
             }
         }
     }
@@ -108,9 +113,9 @@ public class BlockRedstoneRepeater extends BlockDirectional
     /**
      * Is this block indirectly powering the block on the specified side
      */
-    public boolean isIndirectlyPoweringTo(World par1World, int par2, int par3, int par4, int par5)
+    public boolean isIndirectlyPoweringTo(IBlockAccess par1IBlockAccess, int par2, int par3, int par4, int par5)
     {
-        return this.isPoweringTo(par1World, par2, par3, par4, par5);
+        return this.isPoweringTo(par1IBlockAccess, par2, par3, par4, par5);
     }
 
     /**
@@ -149,12 +154,24 @@ public class BlockRedstoneRepeater extends BlockDirectional
         else
         {
             int var6 = par1World.getBlockMetadata(par2, par3, par4);
-            boolean var7 = this.ignoreTick(par1World, par2, par3, par4, var6);
-            int var8 = (var6 & 12) >> 2;
+            boolean var7 = this.func_82523_e(par1World, par2, par3, par4, var6);
 
-            if (this.isRepeaterPowered && !var7 || !this.isRepeaterPowered && var7)
+            if (!var7)
             {
-                par1World.scheduleBlockUpdate(par2, par3, par4, this.blockID, repeaterState[var8] * 2);
+                boolean var8 = this.ignoreTick(par1World, par2, par3, par4, var6);
+                int var9 = (var6 & 12) >> 2;
+
+                if (this.isRepeaterPowered && !var8 || !this.isRepeaterPowered && var8)
+                {
+                    byte var10 = 0;
+
+                    if (this.func_83011_d(par1World, par2, par3, par4, var6))
+                    {
+                        var10 = -1;
+                    }
+
+                    par1World.func_82740_a(par2, par3, par4, this.blockID, repeaterState[var9] * 2, var10);
+                }
             }
         }
     }
@@ -173,6 +190,23 @@ public class BlockRedstoneRepeater extends BlockDirectional
                 return par1World.isBlockIndirectlyProvidingPowerTo(par2, par3, par4 - 1, 2) || par1World.getBlockId(par2, par3, par4 - 1) == Block.redstoneWire.blockID && par1World.getBlockMetadata(par2, par3, par4 - 1) > 0;
             case 3:
                 return par1World.isBlockIndirectlyProvidingPowerTo(par2 + 1, par3, par4, 5) || par1World.getBlockId(par2 + 1, par3, par4) == Block.redstoneWire.blockID && par1World.getBlockMetadata(par2 + 1, par3, par4) > 0;
+            default:
+                return false;
+        }
+    }
+
+    public boolean func_82523_e(IBlockAccess par1IBlockAccess, int par2, int par3, int par4, int par5)
+    {
+        int var6 = getDirection(par5);
+
+        switch (var6)
+        {
+            case 0:
+            case 2:
+                return par1IBlockAccess.isBlockProvidingPowerTo(par2 - 1, par3, par4, 4) && func_82524_c(par1IBlockAccess.getBlockId(par2 - 1, par3, par4)) || par1IBlockAccess.isBlockProvidingPowerTo(par2 + 1, par3, par4, 5) && func_82524_c(par1IBlockAccess.getBlockId(par2 + 1, par3, par4));
+            case 1:
+            case 3:
+                return par1IBlockAccess.isBlockProvidingPowerTo(par2, par3, par4 + 1, 3) && func_82524_c(par1IBlockAccess.getBlockId(par2, par3, par4 + 1)) || par1IBlockAccess.isBlockProvidingPowerTo(par2, par3, par4 - 1, 2) && func_82524_c(par1IBlockAccess.getBlockId(par2, par3, par4 - 1));
             default:
                 return false;
         }
@@ -327,5 +361,26 @@ public class BlockRedstoneRepeater extends BlockDirectional
     public int idPicked(World par1World, int par2, int par3, int par4)
     {
         return Item.redstoneRepeater.shiftedIndex;
+    }
+
+    public static boolean func_82524_c(int par0)
+    {
+        return par0 == Block.redstoneRepeaterActive.blockID || par0 == Block.redstoneRepeaterIdle.blockID;
+    }
+
+    public boolean func_83011_d(World var1, int var2, int var3, int var4, int var5)
+    {
+        int var6 = getDirection(var5);
+
+        if (func_82524_c(var1.getBlockId(var2 - Direction.offsetX[var6], var3, var4 - Direction.offsetZ[var6])))
+        {
+            int var7 = var1.getBlockMetadata(var2 - Direction.offsetX[var6], var3, var4 - Direction.offsetZ[var6]);
+            int var8 = getDirection(var7);
+            return var8 != var6;
+        }
+        else
+        {
+            return false;
+        }
     }
 }

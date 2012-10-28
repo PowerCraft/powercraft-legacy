@@ -28,17 +28,14 @@ class SlotBrewingStandPotion extends Slot
         return 1;
     }
 
-    /**
-     * Called when the player picks up an item from an inventory slot
-     */
-    public void onPickupFromSlot(ItemStack par1ItemStack)
+    public void func_82870_a(EntityPlayer par1EntityPlayer, ItemStack par2ItemStack)
     {
-        if (par1ItemStack.itemID == Item.potion.shiftedIndex && par1ItemStack.getItemDamage() > 0)
+        if (par2ItemStack.itemID == Item.potion.shiftedIndex && par2ItemStack.getItemDamage() > 0)
         {
             this.player.addStat(AchievementList.potion, 1);
         }
 
-        super.onPickupFromSlot(par1ItemStack);
+        super.func_82870_a(par1EntityPlayer, par2ItemStack);
     }
 
     public static boolean func_75243_a_(ItemStack par0ItemStack)

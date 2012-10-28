@@ -13,6 +13,11 @@ public class CommandHelp extends CommandBase
         return "help";
     }
 
+    public int func_82362_a()
+    {
+        return 0;
+    }
+
     public String getCommandUsage(ICommandSender par1ICommandSender)
     {
         return par1ICommandSender.translateString("commands.help.usage", new Object[0]);

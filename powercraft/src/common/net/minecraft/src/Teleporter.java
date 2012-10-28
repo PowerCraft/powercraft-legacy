@@ -10,40 +10,40 @@ public class Teleporter
     /**
      * Place an entity in a nearby portal, creating one if necessary.
      */
-    public void placeInPortal(World par1World, Entity par2Entity)
+    public void placeInPortal(World par1World, Entity par2Entity, double par3, double par5, double par7, float par9)
     {
         if (par1World.provider.dimensionId != 1)
         {
-            if (!this.placeInExistingPortal(par1World, par2Entity))
+            if (!this.placeInExistingPortal(par1World, par2Entity, par3, par5, par7, par9))
             {
                 this.createPortal(par1World, par2Entity);
-                this.placeInExistingPortal(par1World, par2Entity);
+                this.placeInExistingPortal(par1World, par2Entity, par3, par5, par7, par9);
             }
         }
         else
         {
-            int var3 = MathHelper.floor_double(par2Entity.posX);
-            int var4 = MathHelper.floor_double(par2Entity.posY) - 1;
-            int var5 = MathHelper.floor_double(par2Entity.posZ);
-            byte var6 = 1;
-            byte var7 = 0;
+            int var10 = MathHelper.floor_double(par2Entity.posX);
+            int var11 = MathHelper.floor_double(par2Entity.posY) - 1;
+            int var12 = MathHelper.floor_double(par2Entity.posZ);
+            byte var13 = 1;
+            byte var14 = 0;
 
-            for (int var8 = -2; var8 <= 2; ++var8)
+            for (int var15 = -2; var15 <= 2; ++var15)
             {
-                for (int var9 = -2; var9 <= 2; ++var9)
+                for (int var16 = -2; var16 <= 2; ++var16)
                 {
-                    for (int var10 = -1; var10 < 3; ++var10)
+                    for (int var17 = -1; var17 < 3; ++var17)
                     {
-                        int var11 = var3 + var9 * var6 + var8 * var7;
-                        int var12 = var4 + var10;
-                        int var13 = var5 + var9 * var7 - var8 * var6;
-                        boolean var14 = var10 < 0;
-                        par1World.setBlockWithNotify(var11, var12, var13, var14 ? Block.obsidian.blockID : 0);
+                        int var18 = var10 + var16 * var13 + var15 * var14;
+                        int var19 = var11 + var17;
+                        int var20 = var12 + var16 * var14 - var15 * var13;
+                        boolean var21 = var17 < 0;
+                        par1World.setBlockWithNotify(var18, var19, var20, var21 ? Block.obsidian.blockID : 0);
                     }
                 }
             }
 
-            par2Entity.setLocationAndAngles((double)var3, (double)var4, (double)var5, par2Entity.rotationYaw, 0.0F);
+            par2Entity.setLocationAndAngles((double)var10, (double)var11, (double)var12, par2Entity.rotationYaw, 0.0F);
             par2Entity.motionX = par2Entity.motionY = par2Entity.motionZ = 0.0D;
         }
     }
@@ -51,82 +51,166 @@ public class Teleporter
     /**
      * Place an entity in a nearby portal which already exists.
      */
-    public boolean placeInExistingPortal(World par1World, Entity par2Entity)
+    public boolean placeInExistingPortal(World par1World, Entity par2Entity, double par3, double par5, double par7, float par9)
     {
-        short var3 = 128;
-        double var4 = -1.0D;
-        int var6 = 0;
-        int var7 = 0;
-        int var8 = 0;
-        int var9 = MathHelper.floor_double(par2Entity.posX);
-        int var10 = MathHelper.floor_double(par2Entity.posZ);
-        double var18;
+        short var10 = 128;
+        double var11 = -1.0D;
+        int var13 = 0;
+        int var14 = 0;
+        int var15 = 0;
+        int var16 = MathHelper.floor_double(par2Entity.posX);
+        int var17 = MathHelper.floor_double(par2Entity.posZ);
+        int var18;
+        double var25;
 
-        for (int var11 = var9 - var3; var11 <= var9 + var3; ++var11)
+        for (var18 = var16 - var10; var18 <= var16 + var10; ++var18)
         {
-            double var12 = (double)var11 + 0.5D - par2Entity.posX;
+            double var19 = (double)var18 + 0.5D - par2Entity.posX;
 
-            for (int var14 = var10 - var3; var14 <= var10 + var3; ++var14)
+            for (int var21 = var17 - var10; var21 <= var17 + var10; ++var21)
             {
-                double var15 = (double)var14 + 0.5D - par2Entity.posZ;
+                double var22 = (double)var21 + 0.5D - par2Entity.posZ;
 
-                for (int var17 = par1World.getActualHeight() - 1; var17 >= 0; --var17)
+                for (int var24 = par1World.getActualHeight() - 1; var24 >= 0; --var24)
                 {
-                    if (par1World.getBlockId(var11, var17, var14) == Block.portal.blockID)
+                    if (par1World.getBlockId(var18, var24, var21) == Block.portal.blockID)
                     {
-                        while (par1World.getBlockId(var11, var17 - 1, var14) == Block.portal.blockID)
+                        while (par1World.getBlockId(var18, var24 - 1, var21) == Block.portal.blockID)
                         {
-                            --var17;
+                            --var24;
                         }
 
-                        var18 = (double)var17 + 0.5D - par2Entity.posY;
-                        double var20 = var12 * var12 + var18 * var18 + var15 * var15;
+                        var25 = (double)var24 + 0.5D - par2Entity.posY;
+                        double var27 = var19 * var19 + var25 * var25 + var22 * var22;
 
-                        if (var4 < 0.0D || var20 < var4)
+                        if (var11 < 0.0D || var27 < var11)
                         {
-                            var4 = var20;
-                            var6 = var11;
-                            var7 = var17;
-                            var8 = var14;
+                            var11 = var27;
+                            var13 = var18;
+                            var14 = var24;
+                            var15 = var21;
                         }
                     }
                 }
             }
         }
 
-        if (var4 >= 0.0D)
+        if (var11 < 0.0D)
         {
-            double var22 = (double)var6 + 0.5D;
-            double var16 = (double)var7 + 0.5D;
-            var18 = (double)var8 + 0.5D;
-
-            if (par1World.getBlockId(var6 - 1, var7, var8) == Block.portal.blockID)
-            {
-                var22 -= 0.5D;
-            }
-
-            if (par1World.getBlockId(var6 + 1, var7, var8) == Block.portal.blockID)
-            {
-                var22 += 0.5D;
-            }
-
-            if (par1World.getBlockId(var6, var7, var8 - 1) == Block.portal.blockID)
-            {
-                var18 -= 0.5D;
-            }
-
-            if (par1World.getBlockId(var6, var7, var8 + 1) == Block.portal.blockID)
-            {
-                var18 += 0.5D;
-            }
-
-            par2Entity.setLocationAndAngles(var22, var16, var18, par2Entity.rotationYaw, 0.0F);
-            par2Entity.motionX = par2Entity.motionY = par2Entity.motionZ = 0.0D;
-            return true;
+            return false;
         }
         else
         {
-            return false;
+            double var46 = (double)var13 + 0.5D;
+            double var23 = (double)var14 + 0.5D;
+            var25 = (double)var15 + 0.5D;
+            int var47 = -1;
+
+            if (par1World.getBlockId(var13 - 1, var14, var15) == Block.portal.blockID)
+            {
+                var47 = 2;
+            }
+
+            if (par1World.getBlockId(var13 + 1, var14, var15) == Block.portal.blockID)
+            {
+                var47 = 0;
+            }
+
+            if (par1World.getBlockId(var13, var14, var15 - 1) == Block.portal.blockID)
+            {
+                var47 = 3;
+            }
+
+            if (par1World.getBlockId(var13, var14, var15 + 1) == Block.portal.blockID)
+            {
+                var47 = 1;
+            }
+
+            int var28 = par2Entity.func_82148_at();
+
+            if (var47 > -1)
+            {
+                int var29 = Direction.field_71578_g[var47];
+                int var30 = Direction.offsetX[var47];
+                int var31 = Direction.offsetZ[var47];
+                int var32 = Direction.offsetX[var29];
+                int var33 = Direction.offsetZ[var29];
+                boolean var34 = !par1World.isAirBlock(var13 + var30 + var32, var14, var15 + var31 + var33) || !par1World.isAirBlock(var13 + var30 + var32, var14 + 1, var15 + var31 + var33);
+                boolean var35 = !par1World.isAirBlock(var13 + var30, var14, var15 + var31) || !par1World.isAirBlock(var13 + var30, var14 + 1, var15 + var31);
+
+                if (var34 && var35)
+                {
+                    var47 = Direction.footInvisibleFaceRemap[var47];
+                    var29 = Direction.footInvisibleFaceRemap[var29];
+                    var30 = Direction.offsetX[var47];
+                    var31 = Direction.offsetZ[var47];
+                    var32 = Direction.offsetX[var29];
+                    var33 = Direction.offsetZ[var29];
+                    var18 = var13 - var32;
+                    var46 -= (double)var32;
+                    int var20 = var15 - var33;
+                    var25 -= (double)var33;
+                    var34 = !par1World.isAirBlock(var18 + var30 + var32, var14, var20 + var31 + var33) || !par1World.isAirBlock(var18 + var30 + var32, var14 + 1, var20 + var31 + var33);
+                    var35 = !par1World.isAirBlock(var18 + var30, var14, var20 + var31) || !par1World.isAirBlock(var18 + var30, var14 + 1, var20 + var31);
+                }
+
+                float var36 = 0.5F;
+                float var37 = 0.5F;
+
+                if (!var34 && var35)
+                {
+                    var36 = 1.0F;
+                }
+                else if (var34 && !var35)
+                {
+                    var36 = 0.0F;
+                }
+                else if (var34 && var35)
+                {
+                    var37 = 0.0F;
+                }
+
+                var46 += (double)((float)var32 * var36 + var37 * (float)var30);
+                var25 += (double)((float)var33 * var36 + var37 * (float)var31);
+                float var38 = 0.0F;
+                float var39 = 0.0F;
+                float var40 = 0.0F;
+                float var41 = 0.0F;
+
+                if (var47 == var28)
+                {
+                    var38 = 1.0F;
+                    var39 = 1.0F;
+                }
+                else if (var47 == Direction.footInvisibleFaceRemap[var28])
+                {
+                    var38 = -1.0F;
+                    var39 = -1.0F;
+                }
+                else if (var47 == Direction.enderEyeMetaToDirection[var28])
+                {
+                    var40 = 1.0F;
+                    var41 = -1.0F;
+                }
+                else
+                {
+                    var40 = -1.0F;
+                    var41 = 1.0F;
+                }
+
+                double var42 = par2Entity.motionX;
+                double var44 = par2Entity.motionZ;
+                par2Entity.motionX = var42 * (double)var38 + var44 * (double)var41;
+                par2Entity.motionZ = var42 * (double)var40 + var44 * (double)var39;
+                par2Entity.rotationYaw = par9 - (float)(var28 * 90) + (float)(var47 * 90);
+            }
+            else
+            {
+                par2Entity.motionX = par2Entity.motionY = par2Entity.motionZ = 0.0D;
+            }
+
+            par2Entity.setLocationAndAngles(var46, var23, var25, par2Entity.rotationYaw, par2Entity.rotationPitch);
+            return true;
         }
     }
 

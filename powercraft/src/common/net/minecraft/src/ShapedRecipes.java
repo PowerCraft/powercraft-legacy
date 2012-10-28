@@ -34,18 +34,18 @@ public class ShapedRecipes implements IRecipe
     /**
      * Used to check if a recipe matches current crafting inventory
      */
-    public boolean matches(InventoryCrafting par1InventoryCrafting)
+    public boolean matches(InventoryCrafting par1InventoryCrafting, World par2World)
     {
-        for (int var2 = 0; var2 <= 3 - this.recipeWidth; ++var2)
+        for (int var3 = 0; var3 <= 3 - this.recipeWidth; ++var3)
         {
-            for (int var3 = 0; var3 <= 3 - this.recipeHeight; ++var3)
+            for (int var4 = 0; var4 <= 3 - this.recipeHeight; ++var4)
             {
-                if (this.checkMatch(par1InventoryCrafting, var2, var3, true))
+                if (this.checkMatch(par1InventoryCrafting, var3, var4, true))
                 {
                     return true;
                 }
 
-                if (this.checkMatch(par1InventoryCrafting, var2, var3, false))
+                if (this.checkMatch(par1InventoryCrafting, var3, var4, false))
                 {
                     return true;
                 }
@@ -110,7 +110,7 @@ public class ShapedRecipes implements IRecipe
      */
     public ItemStack getCraftingResult(InventoryCrafting par1InventoryCrafting)
     {
-        return new ItemStack(this.recipeOutput.itemID, this.recipeOutput.stackSize, this.recipeOutput.getItemDamage());
+        return this.getRecipeOutput().copy();
     }
 
     /**

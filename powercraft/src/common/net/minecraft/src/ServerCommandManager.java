@@ -9,9 +9,11 @@ public class ServerCommandManager extends CommandHandler implements IAdminComman
     {
         this.registerCommand(new CommandTime());
         this.registerCommand(new CommandGameMode());
+        this.registerCommand(new CommandDifficulty());
         this.registerCommand(new CommandDefaultGameMode());
         this.registerCommand(new CommandKill());
         this.registerCommand(new CommandToggleDownfall());
+        this.registerCommand(new CommandWeather());
         this.registerCommand(new CommandXP());
         this.registerCommand(new CommandServerTp());
         this.registerCommand(new CommandGive());
@@ -20,6 +22,10 @@ public class ServerCommandManager extends CommandHandler implements IAdminComman
         this.registerCommand(new CommandHelp());
         this.registerCommand(new CommandDebug());
         this.registerCommand(new CommandServerMessage());
+        this.registerCommand(new CommandServerSay());
+        this.registerCommand(new CommandSetSpawnpoint());
+        this.registerCommand(new CommandGameRule());
+        this.registerCommand(new CommandClearInventory());
 
         if (MinecraftServer.getServer().isDedicatedServer())
         {
@@ -36,7 +42,6 @@ public class ServerCommandManager extends CommandHandler implements IAdminComman
             this.registerCommand(new CommandServerPardon());
             this.registerCommand(new CommandServerKick());
             this.registerCommand(new CommandServerList());
-            this.registerCommand(new CommandServerSay());
             this.registerCommand(new CommandServerWhitelist());
         }
         else
@@ -53,15 +58,25 @@ public class ServerCommandManager extends CommandHandler implements IAdminComman
      */
     public void notifyAdmins(ICommandSender par1ICommandSender, int par2, String par3Str, Object ... par4ArrayOfObj)
     {
-        Iterator var5 = MinecraftServer.getServer().getConfigurationManager().playerEntityList.iterator();
+        boolean var5 = true;
 
-        while (var5.hasNext())
+        if (par1ICommandSender instanceof TileEntityCommandBlock && !MinecraftServer.getServer().worldServers[0].func_82736_K().func_82766_b("commandBlockOutput"))
         {
-            EntityPlayerMP var6 = (EntityPlayerMP)var5.next();
+            var5 = false;
+        }
 
-            if (var6 != par1ICommandSender && MinecraftServer.getServer().getConfigurationManager().areCommandsAllowed(var6.username))
+        if (var5)
+        {
+            Iterator var6 = MinecraftServer.getServer().getConfigurationManager().playerEntityList.iterator();
+
+            while (var6.hasNext())
             {
-                var6.sendChatToPlayer("\u00a77\u00a7o[" + par1ICommandSender.getCommandSenderName() + ": " + var6.translateString(par3Str, par4ArrayOfObj) + "]");
+                EntityPlayerMP var7 = (EntityPlayerMP)var6.next();
+
+                if (var7 != par1ICommandSender && MinecraftServer.getServer().getConfigurationManager().areCommandsAllowed(var7.username))
+                {
+                    var7.sendChatToPlayer("\u00a77\u00a7o[" + par1ICommandSender.getCommandSenderName() + ": " + var7.translateString(par3Str, par4ArrayOfObj) + "]");
+                }
             }
         }
 

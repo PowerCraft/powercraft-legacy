@@ -79,7 +79,7 @@ public class RenderEngine
 
     public int[] getTextureContents(String par1Str)
     {
-        TexturePackBase var2 = this.texturePack.getSelectedTexturePack();
+        ITexturePack var2 = this.texturePack.getSelectedTexturePack();
         int[] var3 = (int[])this.textureContentsMap.get(par1Str);
 
         if (var3 != null)
@@ -166,7 +166,7 @@ public class RenderEngine
         }
         else
         {
-            TexturePackBase var6 = this.texturePack.getSelectedTexturePack();
+            ITexturePack var6 = this.texturePack.getSelectedTexturePack();
 
             try
             {
@@ -415,17 +415,22 @@ public class RenderEngine
         return var3 != null && var3.textureName >= 0 ? var3.textureName : (par2Str == null ? -1 : this.getTexture(par2Str));
     }
 
+    public boolean func_82773_c(String par1Str)
+    {
+        return this.urlToImageDataMap.containsKey(par1Str);
+    }
+
     /**
      * Return a ThreadDownloadImageData instance for the given URL.  If it does not already exist, it is created and
      * uses the passed ImageBuffer.  If it does, its reference count is incremented.
      */
-    public ThreadDownloadImageData obtainImageData(String par1Str, ImageBuffer par2ImageBuffer)
+    public ThreadDownloadImageData obtainImageData(String par1Str, IImageBuffer par2IImageBuffer)
     {
         ThreadDownloadImageData var3 = (ThreadDownloadImageData)this.urlToImageDataMap.get(par1Str);
 
         if (var3 == null)
         {
-            this.urlToImageDataMap.put(par1Str, new ThreadDownloadImageData(par1Str, par2ImageBuffer));
+            this.urlToImageDataMap.put(par1Str, new ThreadDownloadImageData(par1Str, par2IImageBuffer));
         }
         else
         {
@@ -468,48 +473,55 @@ public class RenderEngine
     public void updateDynamicTextures()
     {
         int var1 = -1;
-        
-        for (int var2 = 0; var2 < this.textureList.size(); ++var2)
+        TextureFX var3;
+
+        for (Iterator var2 = this.textureList.iterator(); var2.hasNext(); var1 = this.func_82772_a(var3, var1))
         {
-            TextureFX var3 = (TextureFX)this.textureList.get(var2);
+            var3 = (TextureFX)var2.next();
             var3.anaglyphEnabled = this.options.anaglyph;
-            if (!TextureFXManager.instance().onUpdateTextureEffect(var3))
+            if (TextureFXManager.instance().onUpdateTextureEffect(var3))
             {
-                continue;
+                var1 = this.func_82772_a(var3, var1);
             }
+            var3.onTick();
+        }
+    }
 
-            Dimension dim = TextureFXManager.instance().getTextureDimensions(var3);
-            int tWidth  = dim.width >> 4;
-            int tHeight = dim.height >> 4;
-            int tLen = tWidth * tHeight << 2;
-            
-            if (var3.imageData.length == tLen)
-            {
-                this.imageData.clear();
-                this.imageData.put(var3.imageData);
-                this.imageData.position(0).limit(var3.imageData.length);
-            }
-            else
-            {
-                TextureFXManager.instance().scaleTextureFXData(var3.imageData, imageData, tWidth, tLen);
-            }
+    public int func_82772_a(TextureFX par1TextureFX, int par2)
+    {
+        Dimension dim = TextureFXManager.instance().getTextureDimensions(par1TextureFX);
+        int tWidth  = dim.width >> 4;
+        int tHeight = dim.height >> 4;
+        int tLen = tWidth * tHeight << 2;
+        
+        if (par1TextureFX.imageData.length == tLen)
+        {
+            this.imageData.clear();
+            this.imageData.put(par1TextureFX.imageData);
+            this.imageData.position(0).limit(par1TextureFX.imageData.length);
+        }
+        else
+        {
+            TextureFXManager.instance().scaleTextureFXData(par1TextureFX.imageData, imageData, tWidth, tLen);
+        }
 
-            if (var3.iconIndex != var1)
-            {
-                var3.bindImage(this);
-                var1 = var3.iconIndex;
-            }
+        if (par1TextureFX.iconIndex != par2)
+        {
+            par1TextureFX.bindImage(this);
+            par2 = par1TextureFX.iconIndex;
+        }
 
-            for (int var4 = 0; var4 < var3.tileSize; ++var4)
+        for (int var3 = 0; var3 < par1TextureFX.tileSize; ++var3)
+        {
+            int xOffset = par1TextureFX.iconIndex % 16 * tWidth + var3 * tWidth;
+            for (int var4 = 0; var4 < par1TextureFX.tileSize; ++var4)
             {
-                int xOffset = var3.iconIndex % 16 * tWidth + var4 * tWidth;
-                for (int var5 = 0; var5 < var3.tileSize; ++var5)
-                {
-                    int yOffset = var3.iconIndex / 16 * tHeight + var5 * tHeight;
-                    GL11.glTexSubImage2D(GL11.GL_TEXTURE_2D, 0, xOffset, yOffset, tWidth, tHeight, GL11.GL_RGBA, GL11.GL_UNSIGNED_BYTE, this.imageData);
-                }
+                int yOffset = par1TextureFX.iconIndex / 16 * tHeight + var4 * tHeight;
+                GL11.glTexSubImage2D(GL11.GL_TEXTURE_2D, 0, xOffset, yOffset, tWidth, tHeight, GL11.GL_RGBA, GL11.GL_UNSIGNED_BYTE, this.imageData);
             }
         }
+
+        return par2;
     }
 
     /**
@@ -517,7 +529,7 @@ public class RenderEngine
      */
     public void refreshTextures()
     {
-        TexturePackBase var1 = this.texturePack.getSelectedTexturePack();
+        ITexturePack var1 = this.texturePack.getSelectedTexturePack();
         Iterator var2 = this.textureNameToImageMap.getKeySet().iterator();
         BufferedImage var4;
 

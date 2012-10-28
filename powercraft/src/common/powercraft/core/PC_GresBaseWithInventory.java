@@ -62,7 +62,7 @@ public abstract class PC_GresBaseWithInventory extends Container {
 	}
 	
 	@Override
-	public ItemStack transferStackInSlot(int slotIndex) {
+	public ItemStack func_82846_b(EntityPlayer player, int slotIndex) {
 
 		// if (((PC_GresGui) gresGui).gui instanceof PCco_GuiCraftingTool){
 		// }
@@ -83,13 +83,13 @@ public abstract class PC_GresBaseWithInventory extends Container {
 				if (!mergeItemStack(itemstack1, playerSlots, inventorySlots.size(), false)) {
 					return null;
 				} else {
-					slot.onPickupFromSlot(itemstack);
+					slot.func_82870_a(player, itemstack);
 				}
 
 			} else if (!mergeItemStack(itemstack1, 0, playerSlots, false)) {
 				return null;
 			} else {
-				slot.onPickupFromSlot(itemstack);
+				slot.func_82870_a(player, itemstack);
 			}
 
 			if (itemstack1.stackSize == 0) {

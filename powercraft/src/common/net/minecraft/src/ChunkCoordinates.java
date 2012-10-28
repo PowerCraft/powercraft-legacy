@@ -70,6 +70,11 @@ public class ChunkCoordinates implements Comparable
         return (float)(var4 * var4 + var5 * var5 + var6 * var6);
     }
 
+    public float func_82371_e(ChunkCoordinates par1ChunkCoordinates)
+    {
+        return this.getDistanceSquared(par1ChunkCoordinates.posX, par1ChunkCoordinates.posY, par1ChunkCoordinates.posZ);
+    }
+
     public int compareTo(Object par1Obj)
     {
         return this.compareChunkCoordinate((ChunkCoordinates)par1Obj);

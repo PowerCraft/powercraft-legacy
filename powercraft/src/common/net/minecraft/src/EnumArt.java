@@ -21,6 +21,7 @@ public enum EnumArt
     Stage("Stage", 32, 32, 64, 128),
     Void("Void", 32, 32, 96, 128),
     SkullAndRoses("SkullAndRoses", 32, 32, 128, 128),
+    Wither("Wither", 32, 32, 160, 128),
     Fighters("Fighters", 64, 32, 0, 96),
     Pointer("Pointer", 64, 64, 0, 192),
     Pigscene("Pigscene", 64, 64, 64, 192),

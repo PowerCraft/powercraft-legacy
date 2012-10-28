@@ -18,7 +18,7 @@ public class GuiBrewingStand extends GuiContainer
     /**
      * Draw the foreground layer for the GuiContainer (everything in front of the items)
      */
-    protected void drawGuiContainerForegroundLayer()
+    protected void drawGuiContainerForegroundLayer(int par1, int par2)
     {
         this.fontRenderer.drawString(StatCollector.translateToLocal("container.brewing"), 56, 6, 4210752);
         this.fontRenderer.drawString(StatCollector.translateToLocal("container.inventory"), 8, this.ySize - 96 + 2, 4210752);

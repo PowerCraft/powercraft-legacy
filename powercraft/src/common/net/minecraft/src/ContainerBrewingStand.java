@@ -76,81 +76,78 @@ public class ContainerBrewingStand extends Container
         return this.tileBrewingStand.isUseableByPlayer(par1EntityPlayer);
     }
 
-    /**
-     * Called to transfer a stack from one inventory to the other eg. when shift clicking.
-     */
-    public ItemStack transferStackInSlot(int par1)
+    public ItemStack func_82846_b(EntityPlayer par1EntityPlayer, int par2)
     {
-        ItemStack var2 = null;
-        Slot var3 = (Slot)this.inventorySlots.get(par1);
+        ItemStack var3 = null;
+        Slot var4 = (Slot)this.inventorySlots.get(par2);
 
-        if (var3 != null && var3.getHasStack())
+        if (var4 != null && var4.getHasStack())
         {
-            ItemStack var4 = var3.getStack();
-            var2 = var4.copy();
+            ItemStack var5 = var4.getStack();
+            var3 = var5.copy();
 
-            if ((par1 < 0 || par1 > 2) && par1 != 3)
+            if ((par2 < 0 || par2 > 2) && par2 != 3)
             {
-                if (!this.theSlot.getHasStack() && this.theSlot.isItemValid(var4))
+                if (!this.theSlot.getHasStack() && this.theSlot.isItemValid(var5))
                 {
-                    if (!this.mergeItemStack(var4, 3, 4, false))
+                    if (!this.mergeItemStack(var5, 3, 4, false))
                     {
                         return null;
                     }
                 }
-                else if (SlotBrewingStandPotion.func_75243_a_(var2))
+                else if (SlotBrewingStandPotion.func_75243_a_(var3))
                 {
-                    if (!this.mergeItemStack(var4, 0, 3, false))
+                    if (!this.mergeItemStack(var5, 0, 3, false))
                     {
                         return null;
                     }
                 }
-                else if (par1 >= 4 && par1 < 31)
+                else if (par2 >= 4 && par2 < 31)
                 {
-                    if (!this.mergeItemStack(var4, 31, 40, false))
+                    if (!this.mergeItemStack(var5, 31, 40, false))
                     {
                         return null;
                     }
                 }
-                else if (par1 >= 31 && par1 < 40)
+                else if (par2 >= 31 && par2 < 40)
                 {
-                    if (!this.mergeItemStack(var4, 4, 31, false))
+                    if (!this.mergeItemStack(var5, 4, 31, false))
                     {
                         return null;
                     }
                 }
-                else if (!this.mergeItemStack(var4, 4, 40, false))
+                else if (!this.mergeItemStack(var5, 4, 40, false))
                 {
                     return null;
                 }
             }
             else
             {
-                if (!this.mergeItemStack(var4, 4, 40, true))
+                if (!this.mergeItemStack(var5, 4, 40, true))
                 {
                     return null;
                 }
 
-                var3.onSlotChange(var4, var2);
+                var4.onSlotChange(var5, var3);
             }
 
-            if (var4.stackSize == 0)
+            if (var5.stackSize == 0)
             {
-                var3.putStack((ItemStack)null);
+                var4.putStack((ItemStack)null);
             }
             else
             {
-                var3.onSlotChanged();
+                var4.onSlotChanged();
             }
 
-            if (var4.stackSize == var2.stackSize)
+            if (var5.stackSize == var3.stackSize)
             {
                 return null;
             }
 
-            var3.onPickupFromSlot(var4);
+            var4.func_82870_a(par1EntityPlayer, var5);
         }
 
-        return var2;
+        return var3;
     }
 }

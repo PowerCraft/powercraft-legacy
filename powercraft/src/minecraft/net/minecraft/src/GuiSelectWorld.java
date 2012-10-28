@@ -51,6 +51,7 @@ public class GuiSelectWorld extends GuiScreen
 
     /** the delete button in the world selection gui */
     private GuiButton buttonDelete;
+    private GuiButton field_82316_w;
 
     public GuiSelectWorld(GuiScreen par1GuiScreen)
     {
@@ -117,13 +118,15 @@ public class GuiSelectWorld extends GuiScreen
     {
         StringTranslate var1 = StringTranslate.getInstance();
         this.controlList.add(this.buttonSelect = new GuiButton(1, this.width / 2 - 154, this.height - 52, 150, 20, var1.translateKey("selectWorld.select")));
-        this.controlList.add(this.buttonDelete = new GuiButton(6, this.width / 2 - 154, this.height - 28, 70, 20, var1.translateKey("selectWorld.rename")));
-        this.controlList.add(this.buttonRename = new GuiButton(2, this.width / 2 - 74, this.height - 28, 70, 20, var1.translateKey("selectWorld.delete")));
         this.controlList.add(new GuiButton(3, this.width / 2 + 4, this.height - 52, 150, 20, var1.translateKey("selectWorld.create")));
-        this.controlList.add(new GuiButton(0, this.width / 2 + 4, this.height - 28, 150, 20, var1.translateKey("gui.cancel")));
+        this.controlList.add(this.buttonDelete = new GuiButton(6, this.width / 2 - 154, this.height - 28, 72, 20, var1.translateKey("selectWorld.rename")));
+        this.controlList.add(this.buttonRename = new GuiButton(2, this.width / 2 - 76, this.height - 28, 72, 20, var1.translateKey("selectWorld.delete")));
+        this.controlList.add(this.field_82316_w = new GuiButton(7, this.width / 2 + 4, this.height - 28, 72, 20, var1.translateKey("selectWorld.recreate")));
+        this.controlList.add(new GuiButton(0, this.width / 2 + 82, this.height - 28, 72, 20, var1.translateKey("gui.cancel")));
         this.buttonSelect.enabled = false;
         this.buttonRename.enabled = false;
         this.buttonDelete.enabled = false;
+        this.field_82316_w.enabled = false;
     }
 
     /**
@@ -159,6 +162,15 @@ public class GuiSelectWorld extends GuiScreen
             else if (par1GuiButton.id == 0)
             {
                 this.mc.displayGuiScreen(this.parentScreen);
+            }
+            else if (par1GuiButton.id == 7)
+            {
+                GuiCreateWorld var5 = new GuiCreateWorld(this);
+                ISaveHandler var6 = this.mc.getSaveLoader().getSaveLoader(this.getSaveFileName(this.selectedWorld), false);
+                WorldInfo var4 = var6.loadWorldInfo();
+                var6.flush();
+                var5.func_82286_a(var4);
+                this.mc.displayGuiScreen(var5);
             }
             else
             {
@@ -282,34 +294,27 @@ public class GuiSelectWorld extends GuiScreen
         return par0GuiSelectWorld.buttonDelete;
     }
 
-    /**
-     * Gets the localized world name
-     */
-    static String getLocalizedWorldName(GuiSelectWorld par0GuiSelectWorld)
+    static GuiButton func_82312_f(GuiSelectWorld par0GuiSelectWorld)
+    {
+        return par0GuiSelectWorld.field_82316_w;
+    }
+
+    static String func_82313_g(GuiSelectWorld par0GuiSelectWorld)
     {
         return par0GuiSelectWorld.localizedWorldText;
     }
 
-    /**
-     * returns the date formatter for this gui
-     */
-    static DateFormat getDateFormatter(GuiSelectWorld par0GuiSelectWorld)
+    static DateFormat func_82315_h(GuiSelectWorld par0GuiSelectWorld)
     {
         return par0GuiSelectWorld.dateFormatter;
     }
 
-    /**
-     * Gets the localized must convert text
-     */
-    static String getLocalizedMustConvert(GuiSelectWorld par0GuiSelectWorld)
+    static String func_82311_i(GuiSelectWorld par0GuiSelectWorld)
     {
         return par0GuiSelectWorld.localizedMustConvertText;
     }
 
-    /**
-     * Gets the localized GameMode
-     */
-    static String[] getLocalizedGameMode(GuiSelectWorld par0GuiSelectWorld)
+    static String[] func_82314_j(GuiSelectWorld par0GuiSelectWorld)
     {
         return par0GuiSelectWorld.localizedGameModeText;
     }
