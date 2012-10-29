@@ -1,4 +1,4 @@
-!SESSION 2012-10-28 10:05:26.197 -----------------------------------------------
+!SESSION 2012-10-29 13:56:42.867 -----------------------------------------------
 eclipse.buildId=M20120914-1800
 java.version=1.7.0_04
 java.vendor=Oracle Corporation
@@ -6,7 +6,7 @@ BootLoader constants: OS=win32, ARCH=x86_64, WS=win32, NL=de_DE
 Framework arguments:  -product org.eclipse.epp.package.jee.product
 Command-line arguments:  -os win32 -ws win32 -arch x86_64 -product org.eclipse.epp.package.jee.product
 
-!ENTRY org.eclipse.equinox.p2.core 4 0 2012-10-28 10:20:16.999
+!ENTRY org.eclipse.equinox.p2.core 4 0 2012-10-29 13:57:09.485
 !MESSAGE Provisioning exception
 !STACK 1
 org.eclipse.equinox.p2.core.ProvisionException: No repository found at http://download.eclipse.org/webtools/downloads/drops/R3.4.0/S-3.4.0M1-20110812160550/repository/.
@@ -25,10 +25,10 @@ org.eclipse.equinox.p2.core.ProvisionException: No repository found at http://do
 	at org.eclipse.equinox.internal.p2.updatechecker.UpdateChecker.getAvailableRepositories(UpdateChecker.java:150)
 	at org.eclipse.equinox.internal.p2.updatechecker.UpdateChecker.checkForUpdates(UpdateChecker.java:128)
 	at org.eclipse.equinox.internal.p2.updatechecker.UpdateChecker$UpdateCheckThread.run(UpdateChecker.java:72)
-!SUBENTRY 1 org.eclipse.equinox.p2.metadata.repository 4 1000 2012-10-28 10:20:17.000
+!SUBENTRY 1 org.eclipse.equinox.p2.metadata.repository 4 1000 2012-10-29 13:57:09.489
 !MESSAGE No repository found at http://download.eclipse.org/webtools/downloads/drops/R3.4.0/S-3.4.0M1-20110812160550/repository/.
 
-!ENTRY org.eclipse.equinox.p2.core 4 0 2012-10-28 10:20:19.081
+!ENTRY org.eclipse.equinox.p2.core 4 0 2012-10-29 13:57:12.214
 !MESSAGE Provisioning exception
 !STACK 1
 org.eclipse.equinox.p2.core.ProvisionException: No repository found at http://download.eclipse.org/webtools/downloads/drops/R3.4.0/S-3.4.0M2-20110922230524/repository/.
@@ -47,200 +47,14 @@ org.eclipse.equinox.p2.core.ProvisionException: No repository found at http://do
 	at org.eclipse.equinox.internal.p2.updatechecker.UpdateChecker.getAvailableRepositories(UpdateChecker.java:150)
 	at org.eclipse.equinox.internal.p2.updatechecker.UpdateChecker.checkForUpdates(UpdateChecker.java:128)
 	at org.eclipse.equinox.internal.p2.updatechecker.UpdateChecker$UpdateCheckThread.run(UpdateChecker.java:72)
-!SUBENTRY 1 org.eclipse.equinox.p2.metadata.repository 4 1000 2012-10-28 10:20:19.081
+!SUBENTRY 1 org.eclipse.equinox.p2.metadata.repository 4 1000 2012-10-29 13:57:12.215
 !MESSAGE No repository found at http://download.eclipse.org/webtools/downloads/drops/R3.4.0/S-3.4.0M2-20110922230524/repository/.
 
-!ENTRY org.eclipse.equinox.p2.core 4 0 2012-10-28 10:20:31.190
-!MESSAGE Provisioning exception
-!STACK 1
-org.eclipse.equinox.p2.core.ProvisionException: No repository found at http://download.eclipse.org/webtools/downloads/drops/R3.4.0/S-3.4.0M6-20120319200442/repository/.
-	at org.eclipse.equinox.internal.p2.repository.helpers.AbstractRepositoryManager.fail(AbstractRepositoryManager.java:393)
-	at org.eclipse.equinox.internal.p2.repository.helpers.AbstractRepositoryManager.loadRepository(AbstractRepositoryManager.java:675)
-	at org.eclipse.equinox.internal.p2.metadata.repository.MetadataRepositoryManager.loadRepository(MetadataRepositoryManager.java:96)
-	at org.eclipse.equinox.internal.p2.metadata.repository.MetadataRepositoryManager.loadRepository(MetadataRepositoryManager.java:92)
-	at org.eclipse.equinox.internal.p2.metadata.repository.CompositeMetadataRepository.addChild(CompositeMetadataRepository.java:165)
-	at org.eclipse.equinox.internal.p2.metadata.repository.CompositeMetadataRepository.<init>(CompositeMetadataRepository.java:105)
-	at org.eclipse.equinox.internal.p2.metadata.repository.CompositeMetadataRepositoryFactory.load(CompositeMetadataRepositoryFactory.java:122)
-	at org.eclipse.equinox.internal.p2.metadata.repository.MetadataRepositoryManager.factoryLoad(MetadataRepositoryManager.java:57)
-	at org.eclipse.equinox.internal.p2.repository.helpers.AbstractRepositoryManager.loadRepository(AbstractRepositoryManager.java:758)
-	at org.eclipse.equinox.internal.p2.repository.helpers.AbstractRepositoryManager.loadRepository(AbstractRepositoryManager.java:651)
-	at org.eclipse.equinox.internal.p2.metadata.repository.MetadataRepositoryManager.loadRepository(MetadataRepositoryManager.java:96)
-	at org.eclipse.equinox.internal.p2.metadata.repository.MetadataRepositoryManager.loadRepository(MetadataRepositoryManager.java:92)
-	at org.eclipse.equinox.internal.p2.updatechecker.UpdateChecker.getAvailableRepositories(UpdateChecker.java:150)
-	at org.eclipse.equinox.internal.p2.updatechecker.UpdateChecker.checkForUpdates(UpdateChecker.java:128)
-	at org.eclipse.equinox.internal.p2.updatechecker.UpdateChecker$UpdateCheckThread.run(UpdateChecker.java:72)
-!SUBENTRY 1 org.eclipse.equinox.p2.metadata.repository 4 1000 2012-10-28 10:20:31.191
-!MESSAGE No repository found at http://download.eclipse.org/webtools/downloads/drops/R3.4.0/S-3.4.0M6-20120319200442/repository/.
-
-!ENTRY org.eclipse.equinox.p2.core 4 0 2012-10-28 10:20:34.918
-!MESSAGE Provisioning exception
-!STACK 1
-org.eclipse.equinox.p2.core.ProvisionException: No repository found at http://download.eclipse.org/webtools/downloads/drops/R3.4.0/S-3.4.0M7-20120507135259/repository/.
-	at org.eclipse.equinox.internal.p2.repository.helpers.AbstractRepositoryManager.fail(AbstractRepositoryManager.java:393)
-	at org.eclipse.equinox.internal.p2.repository.helpers.AbstractRepositoryManager.loadRepository(AbstractRepositoryManager.java:675)
-	at org.eclipse.equinox.internal.p2.metadata.repository.MetadataRepositoryManager.loadRepository(MetadataRepositoryManager.java:96)
-	at org.eclipse.equinox.internal.p2.metadata.repository.MetadataRepositoryManager.loadRepository(MetadataRepositoryManager.java:92)
-	at org.eclipse.equinox.internal.p2.metadata.repository.CompositeMetadataRepository.addChild(CompositeMetadataRepository.java:165)
-	at org.eclipse.equinox.internal.p2.metadata.repository.CompositeMetadataRepository.<init>(CompositeMetadataRepository.java:105)
-	at org.eclipse.equinox.internal.p2.metadata.repository.CompositeMetadataRepositoryFactory.load(CompositeMetadataRepositoryFactory.java:122)
-	at org.eclipse.equinox.internal.p2.metadata.repository.MetadataRepositoryManager.factoryLoad(MetadataRepositoryManager.java:57)
-	at org.eclipse.equinox.internal.p2.repository.helpers.AbstractRepositoryManager.loadRepository(AbstractRepositoryManager.java:758)
-	at org.eclipse.equinox.internal.p2.repository.helpers.AbstractRepositoryManager.loadRepository(AbstractRepositoryManager.java:651)
-	at org.eclipse.equinox.internal.p2.metadata.repository.MetadataRepositoryManager.loadRepository(MetadataRepositoryManager.java:96)
-	at org.eclipse.equinox.internal.p2.metadata.repository.MetadataRepositoryManager.loadRepository(MetadataRepositoryManager.java:92)
-	at org.eclipse.equinox.internal.p2.updatechecker.UpdateChecker.getAvailableRepositories(UpdateChecker.java:150)
-	at org.eclipse.equinox.internal.p2.updatechecker.UpdateChecker.checkForUpdates(UpdateChecker.java:128)
-	at org.eclipse.equinox.internal.p2.updatechecker.UpdateChecker$UpdateCheckThread.run(UpdateChecker.java:72)
-!SUBENTRY 1 org.eclipse.equinox.p2.metadata.repository 4 1000 2012-10-28 10:20:34.918
-!MESSAGE No repository found at http://download.eclipse.org/webtools/downloads/drops/R3.4.0/S-3.4.0M7-20120507135259/repository/.
-
-!ENTRY org.eclipse.equinox.p2.core 4 0 2012-10-28 10:20:37.662
-!MESSAGE Provisioning exception
-!STACK 1
-org.eclipse.equinox.p2.core.ProvisionException: No repository found at http://download.eclipse.org/webtools/downloads/drops/R3.4.0/S-3.4.0RC1-20120518171617/repository/.
-	at org.eclipse.equinox.internal.p2.repository.helpers.AbstractRepositoryManager.fail(AbstractRepositoryManager.java:393)
-	at org.eclipse.equinox.internal.p2.repository.helpers.AbstractRepositoryManager.loadRepository(AbstractRepositoryManager.java:675)
-	at org.eclipse.equinox.internal.p2.metadata.repository.MetadataRepositoryManager.loadRepository(MetadataRepositoryManager.java:96)
-	at org.eclipse.equinox.internal.p2.metadata.repository.MetadataRepositoryManager.loadRepository(MetadataRepositoryManager.java:92)
-	at org.eclipse.equinox.internal.p2.metadata.repository.CompositeMetadataRepository.addChild(CompositeMetadataRepository.java:165)
-	at org.eclipse.equinox.internal.p2.metadata.repository.CompositeMetadataRepository.<init>(CompositeMetadataRepository.java:105)
-	at org.eclipse.equinox.internal.p2.metadata.repository.CompositeMetadataRepositoryFactory.load(CompositeMetadataRepositoryFactory.java:122)
-	at org.eclipse.equinox.internal.p2.metadata.repository.MetadataRepositoryManager.factoryLoad(MetadataRepositoryManager.java:57)
-	at org.eclipse.equinox.internal.p2.repository.helpers.AbstractRepositoryManager.loadRepository(AbstractRepositoryManager.java:758)
-	at org.eclipse.equinox.internal.p2.repository.helpers.AbstractRepositoryManager.loadRepository(AbstractRepositoryManager.java:651)
-	at org.eclipse.equinox.internal.p2.metadata.repository.MetadataRepositoryManager.loadRepository(MetadataRepositoryManager.java:96)
-	at org.eclipse.equinox.internal.p2.metadata.repository.MetadataRepositoryManager.loadRepository(MetadataRepositoryManager.java:92)
-	at org.eclipse.equinox.internal.p2.updatechecker.UpdateChecker.getAvailableRepositories(UpdateChecker.java:150)
-	at org.eclipse.equinox.internal.p2.updatechecker.UpdateChecker.checkForUpdates(UpdateChecker.java:128)
-	at org.eclipse.equinox.internal.p2.updatechecker.UpdateChecker$UpdateCheckThread.run(UpdateChecker.java:72)
-!SUBENTRY 1 org.eclipse.equinox.p2.metadata.repository 4 1000 2012-10-28 10:20:37.663
-!MESSAGE No repository found at http://download.eclipse.org/webtools/downloads/drops/R3.4.0/S-3.4.0RC1-20120518171617/repository/.
-
-!ENTRY org.eclipse.equinox.p2.core 4 0 2012-10-28 10:20:40.259
-!MESSAGE Provisioning exception
-!STACK 1
-org.eclipse.equinox.p2.core.ProvisionException: No repository found at http://download.eclipse.org/webtools/downloads/drops/R3.4.0/S-3.4.0RC2-20120530010904/repository/.
-	at org.eclipse.equinox.internal.p2.repository.helpers.AbstractRepositoryManager.fail(AbstractRepositoryManager.java:393)
-	at org.eclipse.equinox.internal.p2.repository.helpers.AbstractRepositoryManager.loadRepository(AbstractRepositoryManager.java:675)
-	at org.eclipse.equinox.internal.p2.metadata.repository.MetadataRepositoryManager.loadRepository(MetadataRepositoryManager.java:96)
-	at org.eclipse.equinox.internal.p2.metadata.repository.MetadataRepositoryManager.loadRepository(MetadataRepositoryManager.java:92)
-	at org.eclipse.equinox.internal.p2.metadata.repository.CompositeMetadataRepository.addChild(CompositeMetadataRepository.java:165)
-	at org.eclipse.equinox.internal.p2.metadata.repository.CompositeMetadataRepository.<init>(CompositeMetadataRepository.java:105)
-	at org.eclipse.equinox.internal.p2.metadata.repository.CompositeMetadataRepositoryFactory.load(CompositeMetadataRepositoryFactory.java:122)
-	at org.eclipse.equinox.internal.p2.metadata.repository.MetadataRepositoryManager.factoryLoad(MetadataRepositoryManager.java:57)
-	at org.eclipse.equinox.internal.p2.repository.helpers.AbstractRepositoryManager.loadRepository(AbstractRepositoryManager.java:758)
-	at org.eclipse.equinox.internal.p2.repository.helpers.AbstractRepositoryManager.loadRepository(AbstractRepositoryManager.java:651)
-	at org.eclipse.equinox.internal.p2.metadata.repository.MetadataRepositoryManager.loadRepository(MetadataRepositoryManager.java:96)
-	at org.eclipse.equinox.internal.p2.metadata.repository.MetadataRepositoryManager.loadRepository(MetadataRepositoryManager.java:92)
-	at org.eclipse.equinox.internal.p2.updatechecker.UpdateChecker.getAvailableRepositories(UpdateChecker.java:150)
-	at org.eclipse.equinox.internal.p2.updatechecker.UpdateChecker.checkForUpdates(UpdateChecker.java:128)
-	at org.eclipse.equinox.internal.p2.updatechecker.UpdateChecker$UpdateCheckThread.run(UpdateChecker.java:72)
-!SUBENTRY 1 org.eclipse.equinox.p2.metadata.repository 4 1000 2012-10-28 10:20:40.260
-!MESSAGE No repository found at http://download.eclipse.org/webtools/downloads/drops/R3.4.0/S-3.4.0RC2-20120530010904/repository/.
-
-!ENTRY org.eclipse.equinox.p2.repository 2 0 2012-10-28 10:21:05.428
-!MESSAGE Server returned lastModified <= 0 for http://market.eclipsesource.com/yoxos/mpc/latestrepo/org.eclipse.cdt.feature.group/3.8.0.v20120521-2346/compositeContent.xml
-!SESSION 2012-10-29 11:54:33.623 -----------------------------------------------
-eclipse.buildId=M20120914-1800
-java.version=1.7.0_04
-java.vendor=Oracle Corporation
-BootLoader constants: OS=win32, ARCH=x86_64, WS=win32, NL=de_DE
-Framework arguments:  -product org.eclipse.epp.package.jee.product
-Command-line arguments:  -os win32 -ws win32 -arch x86_64 -product org.eclipse.epp.package.jee.product
-
-!ENTRY org.eclipse.equinox.p2.core 4 0 2012-10-29 11:56:06.909
-!MESSAGE Provisioning exception
-!STACK 1
-org.eclipse.equinox.p2.core.ProvisionException: No repository found at http://download.eclipse.org/webtools/downloads/drops/R3.4.0/S-3.4.0M1-20110812160550/repository/.
-	at org.eclipse.equinox.internal.p2.repository.helpers.AbstractRepositoryManager.fail(AbstractRepositoryManager.java:393)
-	at org.eclipse.equinox.internal.p2.repository.helpers.AbstractRepositoryManager.loadRepository(AbstractRepositoryManager.java:675)
-	at org.eclipse.equinox.internal.p2.metadata.repository.MetadataRepositoryManager.loadRepository(MetadataRepositoryManager.java:96)
-	at org.eclipse.equinox.internal.p2.metadata.repository.MetadataRepositoryManager.loadRepository(MetadataRepositoryManager.java:92)
-	at org.eclipse.equinox.internal.p2.metadata.repository.CompositeMetadataRepository.addChild(CompositeMetadataRepository.java:165)
-	at org.eclipse.equinox.internal.p2.metadata.repository.CompositeMetadataRepository.<init>(CompositeMetadataRepository.java:105)
-	at org.eclipse.equinox.internal.p2.metadata.repository.CompositeMetadataRepositoryFactory.load(CompositeMetadataRepositoryFactory.java:122)
-	at org.eclipse.equinox.internal.p2.metadata.repository.MetadataRepositoryManager.factoryLoad(MetadataRepositoryManager.java:57)
-	at org.eclipse.equinox.internal.p2.repository.helpers.AbstractRepositoryManager.loadRepository(AbstractRepositoryManager.java:758)
-	at org.eclipse.equinox.internal.p2.repository.helpers.AbstractRepositoryManager.loadRepository(AbstractRepositoryManager.java:651)
-	at org.eclipse.equinox.internal.p2.metadata.repository.MetadataRepositoryManager.loadRepository(MetadataRepositoryManager.java:96)
-	at org.eclipse.equinox.internal.p2.metadata.repository.MetadataRepositoryManager.loadRepository(MetadataRepositoryManager.java:92)
-	at org.eclipse.equinox.internal.p2.updatechecker.UpdateChecker.getAvailableRepositories(UpdateChecker.java:150)
-	at org.eclipse.equinox.internal.p2.updatechecker.UpdateChecker.checkForUpdates(UpdateChecker.java:128)
-	at org.eclipse.equinox.internal.p2.updatechecker.UpdateChecker$UpdateCheckThread.run(UpdateChecker.java:72)
-!SUBENTRY 1 org.eclipse.equinox.p2.metadata.repository 4 1000 2012-10-29 11:56:06.974
-!MESSAGE No repository found at http://download.eclipse.org/webtools/downloads/drops/R3.4.0/S-3.4.0M1-20110812160550/repository/.
-
-!ENTRY org.eclipse.equinox.p2.core 4 0 2012-10-29 11:56:09.990
-!MESSAGE Provisioning exception
-!STACK 1
-org.eclipse.equinox.p2.core.ProvisionException: No repository found at http://download.eclipse.org/webtools/downloads/drops/R3.4.0/S-3.4.0M2-20110922230524/repository/.
-	at org.eclipse.equinox.internal.p2.repository.helpers.AbstractRepositoryManager.fail(AbstractRepositoryManager.java:393)
-	at org.eclipse.equinox.internal.p2.repository.helpers.AbstractRepositoryManager.loadRepository(AbstractRepositoryManager.java:675)
-	at org.eclipse.equinox.internal.p2.metadata.repository.MetadataRepositoryManager.loadRepository(MetadataRepositoryManager.java:96)
-	at org.eclipse.equinox.internal.p2.metadata.repository.MetadataRepositoryManager.loadRepository(MetadataRepositoryManager.java:92)
-	at org.eclipse.equinox.internal.p2.metadata.repository.CompositeMetadataRepository.addChild(CompositeMetadataRepository.java:165)
-	at org.eclipse.equinox.internal.p2.metadata.repository.CompositeMetadataRepository.<init>(CompositeMetadataRepository.java:105)
-	at org.eclipse.equinox.internal.p2.metadata.repository.CompositeMetadataRepositoryFactory.load(CompositeMetadataRepositoryFactory.java:122)
-	at org.eclipse.equinox.internal.p2.metadata.repository.MetadataRepositoryManager.factoryLoad(MetadataRepositoryManager.java:57)
-	at org.eclipse.equinox.internal.p2.repository.helpers.AbstractRepositoryManager.loadRepository(AbstractRepositoryManager.java:758)
-	at org.eclipse.equinox.internal.p2.repository.helpers.AbstractRepositoryManager.loadRepository(AbstractRepositoryManager.java:651)
-	at org.eclipse.equinox.internal.p2.metadata.repository.MetadataRepositoryManager.loadRepository(MetadataRepositoryManager.java:96)
-	at org.eclipse.equinox.internal.p2.metadata.repository.MetadataRepositoryManager.loadRepository(MetadataRepositoryManager.java:92)
-	at org.eclipse.equinox.internal.p2.updatechecker.UpdateChecker.getAvailableRepositories(UpdateChecker.java:150)
-	at org.eclipse.equinox.internal.p2.updatechecker.UpdateChecker.checkForUpdates(UpdateChecker.java:128)
-	at org.eclipse.equinox.internal.p2.updatechecker.UpdateChecker$UpdateCheckThread.run(UpdateChecker.java:72)
-!SUBENTRY 1 org.eclipse.equinox.p2.metadata.repository 4 1000 2012-10-29 11:56:09.991
-!MESSAGE No repository found at http://download.eclipse.org/webtools/downloads/drops/R3.4.0/S-3.4.0M2-20110922230524/repository/.
-
-!ENTRY org.eclipse.equinox.p2.core 4 0 2012-10-29 11:56:11.856
-!MESSAGE Provisioning exception
-!STACK 1
-org.eclipse.equinox.p2.core.ProvisionException: No repository found at http://download.eclipse.org/webtools/downloads/drops/R3.4.0/S-3.4.0M6-20120319200442/repository/.
-	at org.eclipse.equinox.internal.p2.repository.helpers.AbstractRepositoryManager.fail(AbstractRepositoryManager.java:393)
-	at org.eclipse.equinox.internal.p2.repository.helpers.AbstractRepositoryManager.loadRepository(AbstractRepositoryManager.java:675)
-	at org.eclipse.equinox.internal.p2.metadata.repository.MetadataRepositoryManager.loadRepository(MetadataRepositoryManager.java:96)
-	at org.eclipse.equinox.internal.p2.metadata.repository.MetadataRepositoryManager.loadRepository(MetadataRepositoryManager.java:92)
-	at org.eclipse.equinox.internal.p2.metadata.repository.CompositeMetadataRepository.addChild(CompositeMetadataRepository.java:165)
-	at org.eclipse.equinox.internal.p2.metadata.repository.CompositeMetadataRepository.<init>(CompositeMetadataRepository.java:105)
-	at org.eclipse.equinox.internal.p2.metadata.repository.CompositeMetadataRepositoryFactory.load(CompositeMetadataRepositoryFactory.java:122)
-	at org.eclipse.equinox.internal.p2.metadata.repository.MetadataRepositoryManager.factoryLoad(MetadataRepositoryManager.java:57)
-	at org.eclipse.equinox.internal.p2.repository.helpers.AbstractRepositoryManager.loadRepository(AbstractRepositoryManager.java:758)
-	at org.eclipse.equinox.internal.p2.repository.helpers.AbstractRepositoryManager.loadRepository(AbstractRepositoryManager.java:651)
-	at org.eclipse.equinox.internal.p2.metadata.repository.MetadataRepositoryManager.loadRepository(MetadataRepositoryManager.java:96)
-	at org.eclipse.equinox.internal.p2.metadata.repository.MetadataRepositoryManager.loadRepository(MetadataRepositoryManager.java:92)
-	at org.eclipse.equinox.internal.p2.updatechecker.UpdateChecker.getAvailableRepositories(UpdateChecker.java:150)
-	at org.eclipse.equinox.internal.p2.updatechecker.UpdateChecker.checkForUpdates(UpdateChecker.java:128)
-	at org.eclipse.equinox.internal.p2.updatechecker.UpdateChecker$UpdateCheckThread.run(UpdateChecker.java:72)
-!SUBENTRY 1 org.eclipse.equinox.p2.metadata.repository 4 1000 2012-10-29 11:56:11.856
-!MESSAGE No repository found at http://download.eclipse.org/webtools/downloads/drops/R3.4.0/S-3.4.0M6-20120319200442/repository/.
-
-!ENTRY org.eclipse.equinox.p2.core 4 0 2012-10-29 11:56:13.181
-!MESSAGE Provisioning exception
-!STACK 1
-org.eclipse.equinox.p2.core.ProvisionException: No repository found at http://download.eclipse.org/webtools/downloads/drops/R3.4.0/S-3.4.0M7-20120507135259/repository/.
-	at org.eclipse.equinox.internal.p2.repository.helpers.AbstractRepositoryManager.fail(AbstractRepositoryManager.java:393)
-	at org.eclipse.equinox.internal.p2.repository.helpers.AbstractRepositoryManager.loadRepository(AbstractRepositoryManager.java:675)
-	at org.eclipse.equinox.internal.p2.metadata.repository.MetadataRepositoryManager.loadRepository(MetadataRepositoryManager.java:96)
-	at org.eclipse.equinox.internal.p2.metadata.repository.MetadataRepositoryManager.loadRepository(MetadataRepositoryManager.java:92)
-	at org.eclipse.equinox.internal.p2.metadata.repository.CompositeMetadataRepository.addChild(CompositeMetadataRepository.java:165)
-	at org.eclipse.equinox.internal.p2.metadata.repository.CompositeMetadataRepository.<init>(CompositeMetadataRepository.java:105)
-	at org.eclipse.equinox.internal.p2.metadata.repository.CompositeMetadataRepositoryFactory.load(CompositeMetadataRepositoryFactory.java:122)
-	at org.eclipse.equinox.internal.p2.metadata.repository.MetadataRepositoryManager.factoryLoad(MetadataRepositoryManager.java:57)
-	at org.eclipse.equinox.internal.p2.repository.helpers.AbstractRepositoryManager.loadRepository(AbstractRepositoryManager.java:758)
-	at org.eclipse.equinox.internal.p2.repository.helpers.AbstractRepositoryManager.loadRepository(AbstractRepositoryManager.java:651)
-	at org.eclipse.equinox.internal.p2.metadata.repository.MetadataRepositoryManager.loadRepository(MetadataRepositoryManager.java:96)
-	at org.eclipse.equinox.internal.p2.metadata.repository.MetadataRepositoryManager.loadRepository(MetadataRepositoryManager.java:92)
-	at org.eclipse.equinox.internal.p2.updatechecker.UpdateChecker.getAvailableRepositories(UpdateChecker.java:150)
-	at org.eclipse.equinox.internal.p2.updatechecker.UpdateChecker.checkForUpdates(UpdateChecker.java:128)
-	at org.eclipse.equinox.internal.p2.updatechecker.UpdateChecker$UpdateCheckThread.run(UpdateChecker.java:72)
-!SUBENTRY 1 org.eclipse.equinox.p2.metadata.repository 4 1000 2012-10-29 11:56:13.181
-!MESSAGE No repository found at http://download.eclipse.org/webtools/downloads/drops/R3.4.0/S-3.4.0M7-20120507135259/repository/.
-
-!ENTRY org.eclipse.jst.j2ee.core 4 0 2012-10-29 11:56:15.359
+!ENTRY org.eclipse.jst.j2ee.core 4 0 2012-10-29 13:57:14.270
 !MESSAGE 
 !STACK 0
 java.lang.InterruptedException
-	at org.eclipse.core.internal.jobs.OrderedLock.acquire(OrderedLock.java:116)
+	at org.eclipse.core.internal.jobs.OrderedLock.acquire(OrderedLock.java:100)
 	at org.eclipse.jst.j2ee.internal.J2EEInit.aquireInitializePackageContentsLock(J2EEInit.java:454)
 	at org.eclipse.jst.j2ee.ejb.internal.impl.EjbPackageImpl.freeze(EjbPackageImpl.java:1757)
 	at org.eclipse.jst.j2ee.ejb.internal.impl.EjbPackageImpl.init(EjbPackageImpl.java:325)
@@ -320,7 +134,26 @@ java.lang.InterruptedException
 	at org.eclipse.core.runtime.SafeRunner.run(SafeRunner.java:42)
 	at org.eclipse.e4.ui.internal.workbench.swt.PartRenderingEngine.createGui(PartRenderingEngine.java:682)
 	at org.eclipse.e4.ui.workbench.renderers.swt.StackRenderer.showTab(StackRenderer.java:1114)
-	at org.eclipse.e4.ui.workbench.renderers.swt.LazyStackRenderer.postProcess(LazyStackRenderer.java:98)
+	at org.eclipse.e4.ui.workbench.renderers.swt.LazyStackRenderer$1.handleEvent(LazyStackRenderer.java:67)
+	at org.eclipse.e4.ui.services.internal.events.UIEventHandler$1.run(UIEventHandler.java:41)
+	at org.eclipse.swt.widgets.Synchronizer.syncExec(Synchronizer.java:180)
+	at org.eclipse.ui.internal.UISynchronizer.syncExec(UISynchronizer.java:150)
+	at org.eclipse.swt.widgets.Display.syncExec(Display.java:4687)
+	at org.eclipse.e4.ui.internal.workbench.swt.E4Application$1.syncExec(E4Application.java:187)
+	at org.eclipse.e4.ui.services.internal.events.UIEventHandler.handleEvent(UIEventHandler.java:38)
+	at org.eclipse.equinox.internal.event.EventHandlerWrapper.handleEvent(EventHandlerWrapper.java:197)
+	at org.eclipse.equinox.internal.event.EventHandlerTracker.dispatchEvent(EventHandlerTracker.java:197)
+	at org.eclipse.equinox.internal.event.EventHandlerTracker.dispatchEvent(EventHandlerTracker.java:1)
+	at org.eclipse.osgi.framework.eventmgr.EventManager.dispatchEvent(EventManager.java:230)
+	at org.eclipse.osgi.framework.eventmgr.ListenerQueue.dispatchEventSynchronous(ListenerQueue.java:148)
+	at org.eclipse.equinox.internal.event.EventAdminImpl.dispatchEvent(EventAdminImpl.java:135)
+	at org.eclipse.equinox.internal.event.EventAdminImpl.sendEvent(EventAdminImpl.java:78)
+	at org.eclipse.equinox.internal.event.EventComponent.sendEvent(EventComponent.java:39)
+	at org.eclipse.e4.ui.services.internal.events.EventBroker.send(EventBroker.java:81)
+	at org.eclipse.e4.ui.internal.workbench.UIEventPublisher.notifyChanged(UIEventPublisher.java:58)
+	at org.eclipse.emf.common.notify.impl.BasicNotifierImpl.eNotify(BasicNotifierImpl.java:374)
+	at org.eclipse.e4.ui.model.application.ui.impl.ElementContainerImpl.setSelectedElement(ElementContainerImpl.java:171)
+	at org.eclipse.e4.ui.workbench.renderers.swt.LazyStackRenderer.postProcess(LazyStackRenderer.java:103)
 	at org.eclipse.e4.ui.internal.workbench.swt.PartRenderingEngine.safeCreateGui(PartRenderingEngine.java:646)
 	at org.eclipse.e4.ui.internal.workbench.swt.PartRenderingEngine.safeCreateGui(PartRenderingEngine.java:732)
 	at org.eclipse.e4.ui.internal.workbench.swt.PartRenderingEngine.access$2(PartRenderingEngine.java:703)
@@ -343,30 +176,65 @@ java.lang.InterruptedException
 	at org.eclipse.core.runtime.SafeRunner.run(SafeRunner.java:42)
 	at org.eclipse.e4.ui.internal.workbench.swt.PartRenderingEngine.createGui(PartRenderingEngine.java:682)
 	at org.eclipse.e4.ui.workbench.renderers.swt.PerspectiveStackRenderer.showTab(PerspectiveStackRenderer.java:103)
-	at org.eclipse.e4.ui.workbench.renderers.swt.LazyStackRenderer.postProcess(LazyStackRenderer.java:98)
-	at org.eclipse.e4.ui.workbench.renderers.swt.PerspectiveStackRenderer.postProcess(PerspectiveStackRenderer.java:77)
+	at org.eclipse.e4.ui.workbench.renderers.swt.LazyStackRenderer$1.handleEvent(LazyStackRenderer.java:67)
+	at org.eclipse.e4.ui.services.internal.events.UIEventHandler$1.run(UIEventHandler.java:41)
+	at org.eclipse.swt.widgets.Synchronizer.syncExec(Synchronizer.java:180)
+	at org.eclipse.ui.internal.UISynchronizer.syncExec(UISynchronizer.java:150)
+	at org.eclipse.swt.widgets.Display.syncExec(Display.java:4687)
+	at org.eclipse.e4.ui.internal.workbench.swt.E4Application$1.syncExec(E4Application.java:187)
+	at org.eclipse.e4.ui.services.internal.events.UIEventHandler.handleEvent(UIEventHandler.java:38)
+	at org.eclipse.equinox.internal.event.EventHandlerWrapper.handleEvent(EventHandlerWrapper.java:197)
+	at org.eclipse.equinox.internal.event.EventHandlerTracker.dispatchEvent(EventHandlerTracker.java:197)
+	at org.eclipse.equinox.internal.event.EventHandlerTracker.dispatchEvent(EventHandlerTracker.java:1)
+	at org.eclipse.osgi.framework.eventmgr.EventManager.dispatchEvent(EventManager.java:230)
+	at org.eclipse.osgi.framework.eventmgr.ListenerQueue.dispatchEventSynchronous(ListenerQueue.java:148)
+	at org.eclipse.equinox.internal.event.EventAdminImpl.dispatchEvent(EventAdminImpl.java:135)
+	at org.eclipse.equinox.internal.event.EventAdminImpl.sendEvent(EventAdminImpl.java:78)
+	at org.eclipse.equinox.internal.event.EventComponent.sendEvent(EventComponent.java:39)
+	at org.eclipse.e4.ui.services.internal.events.EventBroker.send(EventBroker.java:81)
+	at org.eclipse.e4.ui.internal.workbench.UIEventPublisher.notifyChanged(UIEventPublisher.java:58)
+	at org.eclipse.emf.common.notify.impl.BasicNotifierImpl.eNotify(BasicNotifierImpl.java:374)
+	at org.eclipse.e4.ui.model.application.ui.advanced.impl.PerspectiveStackImpl.setSelectedElement(PerspectiveStackImpl.java:135)
+	at org.eclipse.e4.ui.model.application.ui.advanced.impl.PerspectiveStackImpl.setSelectedElement(PerspectiveStackImpl.java:1)
+	at org.eclipse.ui.internal.WorkbenchPage.setPerspective(WorkbenchPage.java:3629)
+	at org.eclipse.ui.internal.WorkbenchWindow.setup(WorkbenchWindow.java:552)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(Unknown Source)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(Unknown Source)
+	at java.lang.reflect.Method.invoke(Unknown Source)
+	at org.eclipse.e4.core.internal.di.MethodRequestor.execute(MethodRequestor.java:56)
+	at org.eclipse.e4.core.internal.di.InjectorImpl.processAnnotated(InjectorImpl.java:859)
+	at org.eclipse.e4.core.internal.di.InjectorImpl.inject(InjectorImpl.java:111)
+	at org.eclipse.e4.core.internal.di.InjectorImpl.inject(InjectorImpl.java:81)
+	at org.eclipse.e4.core.contexts.ContextInjectionFactory.inject(ContextInjectionFactory.java:72)
+	at org.eclipse.ui.internal.Workbench.createWorkbenchWindow(Workbench.java:1252)
+	at org.eclipse.ui.internal.Workbench.getActiveWorkbenchWindow(Workbench.java:1224)
+	at org.eclipse.ui.internal.services.WorkbenchSourceProvider.updateActiveShell(WorkbenchSourceProvider.java:924)
+	at org.eclipse.ui.internal.services.WorkbenchSourceProvider.getCurrentState(WorkbenchSourceProvider.java:133)
+	at org.eclipse.ui.internal.services.WorkbenchSourceProvider$6.handleEvent(WorkbenchSourceProvider.java:684)
+	at org.eclipse.swt.widgets.EventTable.sendEvent(EventTable.java:84)
+	at org.eclipse.swt.widgets.Display.filterEvent(Display.java:1262)
+	at org.eclipse.swt.widgets.Widget.sendEvent(Widget.java:1052)
+	at org.eclipse.swt.widgets.Widget.sendEvent(Widget.java:1077)
+	at org.eclipse.swt.widgets.Widget.sendEvent(Widget.java:1058)
+	at org.eclipse.swt.widgets.Decorations.WM_ACTIVATE(Decorations.java:1664)
+	at org.eclipse.swt.widgets.Shell.WM_ACTIVATE(Shell.java:2145)
+	at org.eclipse.swt.widgets.Control.windowProc(Control.java:4525)
+	at org.eclipse.swt.widgets.Canvas.windowProc(Canvas.java:341)
+	at org.eclipse.swt.widgets.Decorations.windowProc(Decorations.java:1627)
+	at org.eclipse.swt.widgets.Shell.windowProc(Shell.java:2069)
+	at org.eclipse.swt.widgets.Display.windowProc(Display.java:4976)
+	at org.eclipse.swt.internal.win32.OS.BringWindowToTop(Native Method)
+	at org.eclipse.swt.widgets.Decorations.bringToTop(Decorations.java:231)
+	at org.eclipse.swt.widgets.Shell.open(Shell.java:1217)
+	at org.eclipse.e4.ui.workbench.renderers.swt.WBWRenderer.postProcess(WBWRenderer.java:730)
 	at org.eclipse.e4.ui.internal.workbench.swt.PartRenderingEngine.safeCreateGui(PartRenderingEngine.java:646)
 	at org.eclipse.e4.ui.internal.workbench.swt.PartRenderingEngine.safeCreateGui(PartRenderingEngine.java:732)
 	at org.eclipse.e4.ui.internal.workbench.swt.PartRenderingEngine.access$2(PartRenderingEngine.java:703)
 	at org.eclipse.e4.ui.internal.workbench.swt.PartRenderingEngine$7.run(PartRenderingEngine.java:697)
 	at org.eclipse.core.runtime.SafeRunner.run(SafeRunner.java:42)
 	at org.eclipse.e4.ui.internal.workbench.swt.PartRenderingEngine.createGui(PartRenderingEngine.java:682)
-	at org.eclipse.e4.ui.workbench.renderers.swt.SWTPartRenderer.processContents(SWTPartRenderer.java:59)
-	at org.eclipse.e4.ui.internal.workbench.swt.PartRenderingEngine.safeCreateGui(PartRenderingEngine.java:642)
-	at org.eclipse.e4.ui.internal.workbench.swt.PartRenderingEngine.safeCreateGui(PartRenderingEngine.java:732)
-	at org.eclipse.e4.ui.internal.workbench.swt.PartRenderingEngine.access$2(PartRenderingEngine.java:703)
-	at org.eclipse.e4.ui.internal.workbench.swt.PartRenderingEngine$7.run(PartRenderingEngine.java:697)
-	at org.eclipse.core.runtime.SafeRunner.run(SafeRunner.java:42)
-	at org.eclipse.e4.ui.internal.workbench.swt.PartRenderingEngine.createGui(PartRenderingEngine.java:682)
-	at org.eclipse.e4.ui.workbench.renderers.swt.SWTPartRenderer.processContents(SWTPartRenderer.java:59)
-	at org.eclipse.e4.ui.workbench.renderers.swt.WBWRenderer.processContents(WBWRenderer.java:639)
-	at org.eclipse.e4.ui.internal.workbench.swt.PartRenderingEngine.safeCreateGui(PartRenderingEngine.java:642)
-	at org.eclipse.e4.ui.internal.workbench.swt.PartRenderingEngine.safeCreateGui(PartRenderingEngine.java:732)
-	at org.eclipse.e4.ui.internal.workbench.swt.PartRenderingEngine.access$2(PartRenderingEngine.java:703)
-	at org.eclipse.e4.ui.internal.workbench.swt.PartRenderingEngine$7.run(PartRenderingEngine.java:697)
-	at org.eclipse.core.runtime.SafeRunner.run(SafeRunner.java:42)
-	at org.eclipse.e4.ui.internal.workbench.swt.PartRenderingEngine.createGui(PartRenderingEngine.java:682)
-	at org.eclipse.e4.ui.internal.workbench.swt.PartRenderingEngine$9.run(PartRenderingEngine.java:968)
+	at org.eclipse.e4.ui.internal.workbench.swt.PartRenderingEngine$9.run(PartRenderingEngine.java:964)
 	at org.eclipse.core.databinding.observable.Realm.runWithDefault(Realm.java:332)
 	at org.eclipse.e4.ui.internal.workbench.swt.PartRenderingEngine.run(PartRenderingEngine.java:923)
 	at org.eclipse.e4.ui.internal.workbench.E4Workbench.createAndRunUI(E4Workbench.java:86)
@@ -389,7 +257,51 @@ java.lang.InterruptedException
 	at org.eclipse.equinox.launcher.Main.run(Main.java:1438)
 	at org.eclipse.equinox.launcher.Main.main(Main.java:1414)
 
-!ENTRY org.eclipse.equinox.p2.core 4 0 2012-10-29 11:56:16.349
+!ENTRY org.eclipse.equinox.p2.core 4 0 2012-10-29 13:57:16.344
+!MESSAGE Provisioning exception
+!STACK 1
+org.eclipse.equinox.p2.core.ProvisionException: No repository found at http://download.eclipse.org/webtools/downloads/drops/R3.4.0/S-3.4.0M6-20120319200442/repository/.
+	at org.eclipse.equinox.internal.p2.repository.helpers.AbstractRepositoryManager.fail(AbstractRepositoryManager.java:393)
+	at org.eclipse.equinox.internal.p2.repository.helpers.AbstractRepositoryManager.loadRepository(AbstractRepositoryManager.java:675)
+	at org.eclipse.equinox.internal.p2.metadata.repository.MetadataRepositoryManager.loadRepository(MetadataRepositoryManager.java:96)
+	at org.eclipse.equinox.internal.p2.metadata.repository.MetadataRepositoryManager.loadRepository(MetadataRepositoryManager.java:92)
+	at org.eclipse.equinox.internal.p2.metadata.repository.CompositeMetadataRepository.addChild(CompositeMetadataRepository.java:165)
+	at org.eclipse.equinox.internal.p2.metadata.repository.CompositeMetadataRepository.<init>(CompositeMetadataRepository.java:105)
+	at org.eclipse.equinox.internal.p2.metadata.repository.CompositeMetadataRepositoryFactory.load(CompositeMetadataRepositoryFactory.java:122)
+	at org.eclipse.equinox.internal.p2.metadata.repository.MetadataRepositoryManager.factoryLoad(MetadataRepositoryManager.java:57)
+	at org.eclipse.equinox.internal.p2.repository.helpers.AbstractRepositoryManager.loadRepository(AbstractRepositoryManager.java:758)
+	at org.eclipse.equinox.internal.p2.repository.helpers.AbstractRepositoryManager.loadRepository(AbstractRepositoryManager.java:651)
+	at org.eclipse.equinox.internal.p2.metadata.repository.MetadataRepositoryManager.loadRepository(MetadataRepositoryManager.java:96)
+	at org.eclipse.equinox.internal.p2.metadata.repository.MetadataRepositoryManager.loadRepository(MetadataRepositoryManager.java:92)
+	at org.eclipse.equinox.internal.p2.updatechecker.UpdateChecker.getAvailableRepositories(UpdateChecker.java:150)
+	at org.eclipse.equinox.internal.p2.updatechecker.UpdateChecker.checkForUpdates(UpdateChecker.java:128)
+	at org.eclipse.equinox.internal.p2.updatechecker.UpdateChecker$UpdateCheckThread.run(UpdateChecker.java:72)
+!SUBENTRY 1 org.eclipse.equinox.p2.metadata.repository 4 1000 2012-10-29 13:57:16.345
+!MESSAGE No repository found at http://download.eclipse.org/webtools/downloads/drops/R3.4.0/S-3.4.0M6-20120319200442/repository/.
+
+!ENTRY org.eclipse.equinox.p2.core 4 0 2012-10-29 13:57:20.274
+!MESSAGE Provisioning exception
+!STACK 1
+org.eclipse.equinox.p2.core.ProvisionException: No repository found at http://download.eclipse.org/webtools/downloads/drops/R3.4.0/S-3.4.0M7-20120507135259/repository/.
+	at org.eclipse.equinox.internal.p2.repository.helpers.AbstractRepositoryManager.fail(AbstractRepositoryManager.java:393)
+	at org.eclipse.equinox.internal.p2.repository.helpers.AbstractRepositoryManager.loadRepository(AbstractRepositoryManager.java:675)
+	at org.eclipse.equinox.internal.p2.metadata.repository.MetadataRepositoryManager.loadRepository(MetadataRepositoryManager.java:96)
+	at org.eclipse.equinox.internal.p2.metadata.repository.MetadataRepositoryManager.loadRepository(MetadataRepositoryManager.java:92)
+	at org.eclipse.equinox.internal.p2.metadata.repository.CompositeMetadataRepository.addChild(CompositeMetadataRepository.java:165)
+	at org.eclipse.equinox.internal.p2.metadata.repository.CompositeMetadataRepository.<init>(CompositeMetadataRepository.java:105)
+	at org.eclipse.equinox.internal.p2.metadata.repository.CompositeMetadataRepositoryFactory.load(CompositeMetadataRepositoryFactory.java:122)
+	at org.eclipse.equinox.internal.p2.metadata.repository.MetadataRepositoryManager.factoryLoad(MetadataRepositoryManager.java:57)
+	at org.eclipse.equinox.internal.p2.repository.helpers.AbstractRepositoryManager.loadRepository(AbstractRepositoryManager.java:758)
+	at org.eclipse.equinox.internal.p2.repository.helpers.AbstractRepositoryManager.loadRepository(AbstractRepositoryManager.java:651)
+	at org.eclipse.equinox.internal.p2.metadata.repository.MetadataRepositoryManager.loadRepository(MetadataRepositoryManager.java:96)
+	at org.eclipse.equinox.internal.p2.metadata.repository.MetadataRepositoryManager.loadRepository(MetadataRepositoryManager.java:92)
+	at org.eclipse.equinox.internal.p2.updatechecker.UpdateChecker.getAvailableRepositories(UpdateChecker.java:150)
+	at org.eclipse.equinox.internal.p2.updatechecker.UpdateChecker.checkForUpdates(UpdateChecker.java:128)
+	at org.eclipse.equinox.internal.p2.updatechecker.UpdateChecker$UpdateCheckThread.run(UpdateChecker.java:72)
+!SUBENTRY 1 org.eclipse.equinox.p2.metadata.repository 4 1000 2012-10-29 13:57:20.275
+!MESSAGE No repository found at http://download.eclipse.org/webtools/downloads/drops/R3.4.0/S-3.4.0M7-20120507135259/repository/.
+
+!ENTRY org.eclipse.equinox.p2.core 4 0 2012-10-29 13:57:26.349
 !MESSAGE Provisioning exception
 !STACK 1
 org.eclipse.equinox.p2.core.ProvisionException: No repository found at http://download.eclipse.org/webtools/downloads/drops/R3.4.0/S-3.4.0RC1-20120518171617/repository/.
@@ -408,10 +320,10 @@ org.eclipse.equinox.p2.core.ProvisionException: No repository found at http://do
 	at org.eclipse.equinox.internal.p2.updatechecker.UpdateChecker.getAvailableRepositories(UpdateChecker.java:150)
 	at org.eclipse.equinox.internal.p2.updatechecker.UpdateChecker.checkForUpdates(UpdateChecker.java:128)
 	at org.eclipse.equinox.internal.p2.updatechecker.UpdateChecker$UpdateCheckThread.run(UpdateChecker.java:72)
-!SUBENTRY 1 org.eclipse.equinox.p2.metadata.repository 4 1000 2012-10-29 11:56:16.349
+!SUBENTRY 1 org.eclipse.equinox.p2.metadata.repository 4 1000 2012-10-29 13:57:26.350
 !MESSAGE No repository found at http://download.eclipse.org/webtools/downloads/drops/R3.4.0/S-3.4.0RC1-20120518171617/repository/.
 
-!ENTRY org.eclipse.equinox.p2.core 4 0 2012-10-29 11:56:18.497
+!ENTRY org.eclipse.equinox.p2.core 4 0 2012-10-29 13:57:28.324
 !MESSAGE Provisioning exception
 !STACK 1
 org.eclipse.equinox.p2.core.ProvisionException: No repository found at http://download.eclipse.org/webtools/downloads/drops/R3.4.0/S-3.4.0RC2-20120530010904/repository/.
@@ -430,12 +342,12 @@ org.eclipse.equinox.p2.core.ProvisionException: No repository found at http://do
 	at org.eclipse.equinox.internal.p2.updatechecker.UpdateChecker.getAvailableRepositories(UpdateChecker.java:150)
 	at org.eclipse.equinox.internal.p2.updatechecker.UpdateChecker.checkForUpdates(UpdateChecker.java:128)
 	at org.eclipse.equinox.internal.p2.updatechecker.UpdateChecker$UpdateCheckThread.run(UpdateChecker.java:72)
-!SUBENTRY 1 org.eclipse.equinox.p2.metadata.repository 4 1000 2012-10-29 11:56:18.497
+!SUBENTRY 1 org.eclipse.equinox.p2.metadata.repository 4 1000 2012-10-29 13:57:28.325
 !MESSAGE No repository found at http://download.eclipse.org/webtools/downloads/drops/R3.4.0/S-3.4.0RC2-20120530010904/repository/.
 
-!ENTRY org.eclipse.equinox.p2.repository 2 0 2012-10-29 11:56:30.476
+!ENTRY org.eclipse.equinox.p2.repository 2 0 2012-10-29 13:57:58.543
 !MESSAGE Server returned lastModified <= 0 for http://market.eclipsesource.com/yoxos/mpc/latestrepo/org.eclipse.cdt.feature.group/3.8.0.v20120521-2346/compositeContent.xml
-!SESSION 2012-10-29 12:32:35.406 -----------------------------------------------
+!SESSION 2012-10-29 14:10:36.068 -----------------------------------------------
 eclipse.buildId=M20120914-1800
 java.version=1.7.0_04
 java.vendor=Oracle Corporation
@@ -443,229 +355,137 @@ BootLoader constants: OS=win32, ARCH=x86_64, WS=win32, NL=de_DE
 Framework arguments:  -product org.eclipse.epp.package.jee.product
 Command-line arguments:  -os win32 -ws win32 -arch x86_64 -product org.eclipse.epp.package.jee.product
 
-!ENTRY org.eclipse.core.resources 2 10035 2012-10-29 12:43:22.007
-!MESSAGE The workspace exited with unsaved changes in the previous session; refreshing workspace to recover changes.
-
-!ENTRY org.eclipse.osgi 4 0 2012-10-29 12:43:22.342
-!MESSAGE An error occurred while automatically activating bundle org.eclipse.core.resources (898).
-!STACK 0
-org.osgi.framework.BundleException: Exception in org.eclipse.core.resources.ResourcesPlugin.start() of bundle org.eclipse.core.resources.
-	at org.eclipse.osgi.framework.internal.core.BundleContextImpl.startActivator(BundleContextImpl.java:734)
-	at org.eclipse.osgi.framework.internal.core.BundleContextImpl.start(BundleContextImpl.java:683)
-	at org.eclipse.osgi.framework.internal.core.BundleHost.startWorker(BundleHost.java:381)
-	at org.eclipse.osgi.framework.internal.core.AbstractBundle.start(AbstractBundle.java:300)
-	at org.eclipse.osgi.framework.util.SecureAction.start(SecureAction.java:440)
-	at org.eclipse.osgi.internal.loader.BundleLoader.setLazyTrigger(BundleLoader.java:263)
-	at org.eclipse.core.runtime.internal.adaptor.EclipseLazyStarter.postFindLocalClass(EclipseLazyStarter.java:107)
-	at org.eclipse.osgi.baseadaptor.loader.ClasspathManager.findLocalClass(ClasspathManager.java:469)
-	at org.eclipse.osgi.internal.baseadaptor.DefaultClassLoader.findLocalClass(DefaultClassLoader.java:216)
-	at org.eclipse.osgi.internal.loader.BundleLoader.findLocalClass(BundleLoader.java:395)
-	at org.eclipse.osgi.internal.loader.SingleSourcePackage.loadClass(SingleSourcePackage.java:35)
-	at org.eclipse.osgi.internal.loader.BundleLoader.findClassInternal(BundleLoader.java:461)
-	at org.eclipse.osgi.internal.loader.BundleLoader.findClass(BundleLoader.java:421)
-	at org.eclipse.osgi.internal.loader.BundleLoader.findClass(BundleLoader.java:412)
-	at org.eclipse.osgi.internal.baseadaptor.DefaultClassLoader.loadClass(DefaultClassLoader.java:107)
-	at java.lang.ClassLoader.loadClass(Unknown Source)
-	at org.eclipse.ui.internal.ide.application.IDEApplication.start(IDEApplication.java:125)
-	at org.eclipse.equinox.internal.app.EclipseAppHandle.run(EclipseAppHandle.java:196)
-	at org.eclipse.core.runtime.internal.adaptor.EclipseAppLauncher.runApplication(EclipseAppLauncher.java:110)
-	at org.eclipse.core.runtime.internal.adaptor.EclipseAppLauncher.start(EclipseAppLauncher.java:79)
-	at org.eclipse.core.runtime.adaptor.EclipseStarter.run(EclipseStarter.java:353)
-	at org.eclipse.core.runtime.adaptor.EclipseStarter.run(EclipseStarter.java:180)
-	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
-	at sun.reflect.NativeMethodAccessorImpl.invoke(Unknown Source)
-	at sun.reflect.DelegatingMethodAccessorImpl.invoke(Unknown Source)
-	at java.lang.reflect.Method.invoke(Unknown Source)
-	at org.eclipse.equinox.launcher.Main.invokeFramework(Main.java:629)
-	at org.eclipse.equinox.launcher.Main.basicRun(Main.java:584)
-	at org.eclipse.equinox.launcher.Main.run(Main.java:1438)
-	at org.eclipse.equinox.launcher.Main.main(Main.java:1414)
-Caused by: org.eclipse.core.internal.dtree.ObjectNotFoundException: Tree element '/Minecraft/src/net/minecraft/src/TexturePackBase.java' not found.
-	at org.eclipse.core.internal.dtree.AbstractDataTree.handleNotFound(AbstractDataTree.java:257)
-	at org.eclipse.core.internal.dtree.DeltaDataTree.getData(DeltaDataTree.java:585)
-	at org.eclipse.core.internal.dtree.DataDeltaNode.asBackwardDelta(DataDeltaNode.java:50)
-	at org.eclipse.core.internal.dtree.NoDataDeltaNode.asBackwardDelta(NoDataDeltaNode.java:59)
-	at org.eclipse.core.internal.dtree.NoDataDeltaNode.asBackwardDelta(NoDataDeltaNode.java:59)
-	at org.eclipse.core.internal.dtree.NoDataDeltaNode.asBackwardDelta(NoDataDeltaNode.java:59)
-	at org.eclipse.core.internal.dtree.NoDataDeltaNode.asBackwardDelta(NoDataDeltaNode.java:59)
-	at org.eclipse.core.internal.dtree.DataDeltaNode.asBackwardDelta(DataDeltaNode.java:47)
-	at org.eclipse.core.internal.dtree.DataDeltaNode.asBackwardDelta(DataDeltaNode.java:47)
-	at org.eclipse.core.internal.dtree.DeltaDataTree.asBackwardDelta(DeltaDataTree.java:88)
-	at org.eclipse.core.internal.dtree.DeltaDataTree.reroot(DeltaDataTree.java:816)
-	at org.eclipse.core.internal.dtree.DeltaDataTree.reroot(DeltaDataTree.java:815)
-	at org.eclipse.core.internal.dtree.DeltaDataTree.reroot(DeltaDataTree.java:815)
-	at org.eclipse.core.internal.dtree.DeltaDataTree.reroot(DeltaDataTree.java:815)
-	at org.eclipse.core.internal.dtree.DeltaDataTree.reroot(DeltaDataTree.java:815)
-	at org.eclipse.core.internal.dtree.DeltaDataTree.reroot(DeltaDataTree.java:815)
-	at org.eclipse.core.internal.dtree.DeltaDataTree.reroot(DeltaDataTree.java:815)
-	at org.eclipse.core.internal.dtree.DeltaDataTree.reroot(DeltaDataTree.java:815)
-	at org.eclipse.core.internal.dtree.DeltaDataTree.reroot(DeltaDataTree.java:815)
-	at org.eclipse.core.internal.dtree.DeltaDataTree.reroot(DeltaDataTree.java:815)
-	at org.eclipse.core.internal.dtree.DeltaDataTree.reroot(DeltaDataTree.java:815)
-	at org.eclipse.core.internal.dtree.DeltaDataTree.reroot(DeltaDataTree.java:815)
-	at org.eclipse.core.internal.dtree.DeltaDataTree.reroot(DeltaDataTree.java:815)
-	at org.eclipse.core.internal.dtree.DeltaDataTree.reroot(DeltaDataTree.java:815)
-	at org.eclipse.core.internal.dtree.DeltaDataTree.reroot(DeltaDataTree.java:815)
-	at org.eclipse.core.internal.dtree.DeltaDataTree.reroot(DeltaDataTree.java:815)
-	at org.eclipse.core.internal.dtree.DeltaDataTree.reroot(DeltaDataTree.java:815)
-	at org.eclipse.core.internal.dtree.DeltaDataTree.reroot(DeltaDataTree.java:815)
-	at org.eclipse.core.internal.dtree.DeltaDataTree.reroot(DeltaDataTree.java:792)
-	at org.eclipse.core.internal.watson.ElementTree.immutable(ElementTree.java:518)
-	at org.eclipse.core.internal.resources.SaveManager.restore(SaveManager.java:710)
-	at org.eclipse.core.internal.resources.SaveManager.startup(SaveManager.java:1528)
-	at org.eclipse.core.internal.resources.Workspace.startup(Workspace.java:2502)
-	at org.eclipse.core.internal.resources.Workspace.open(Workspace.java:2251)
-	at org.eclipse.core.resources.ResourcesPlugin.start(ResourcesPlugin.java:439)
-	at org.eclipse.osgi.framework.internal.core.BundleContextImpl$1.run(BundleContextImpl.java:711)
-	at java.security.AccessController.doPrivileged(Native Method)
-	at org.eclipse.osgi.framework.internal.core.BundleContextImpl.startActivator(BundleContextImpl.java:702)
-	... 29 more
-Root exception:
-org.eclipse.core.internal.dtree.ObjectNotFoundException: Tree element '/Minecraft/src/net/minecraft/src/TexturePackBase.java' not found.
-	at org.eclipse.core.internal.dtree.AbstractDataTree.handleNotFound(AbstractDataTree.java:257)
-	at org.eclipse.core.internal.dtree.DeltaDataTree.getData(DeltaDataTree.java:585)
-	at org.eclipse.core.internal.dtree.DataDeltaNode.asBackwardDelta(DataDeltaNode.java:50)
-	at org.eclipse.core.internal.dtree.NoDataDeltaNode.asBackwardDelta(NoDataDeltaNode.java:59)
-	at org.eclipse.core.internal.dtree.NoDataDeltaNode.asBackwardDelta(NoDataDeltaNode.java:59)
-	at org.eclipse.core.internal.dtree.NoDataDeltaNode.asBackwardDelta(NoDataDeltaNode.java:59)
-	at org.eclipse.core.internal.dtree.NoDataDeltaNode.asBackwardDelta(NoDataDeltaNode.java:59)
-	at org.eclipse.core.internal.dtree.DataDeltaNode.asBackwardDelta(DataDeltaNode.java:47)
-	at org.eclipse.core.internal.dtree.DataDeltaNode.asBackwardDelta(DataDeltaNode.java:47)
-	at org.eclipse.core.internal.dtree.DeltaDataTree.asBackwardDelta(DeltaDataTree.java:88)
-	at org.eclipse.core.internal.dtree.DeltaDataTree.reroot(DeltaDataTree.java:816)
-	at org.eclipse.core.internal.dtree.DeltaDataTree.reroot(DeltaDataTree.java:815)
-	at org.eclipse.core.internal.dtree.DeltaDataTree.reroot(DeltaDataTree.java:815)
-	at org.eclipse.core.internal.dtree.DeltaDataTree.reroot(DeltaDataTree.java:815)
-	at org.eclipse.core.internal.dtree.DeltaDataTree.reroot(DeltaDataTree.java:815)
-	at org.eclipse.core.internal.dtree.DeltaDataTree.reroot(DeltaDataTree.java:815)
-	at org.eclipse.core.internal.dtree.DeltaDataTree.reroot(DeltaDataTree.java:815)
-	at org.eclipse.core.internal.dtree.DeltaDataTree.reroot(DeltaDataTree.java:815)
-	at org.eclipse.core.internal.dtree.DeltaDataTree.reroot(DeltaDataTree.java:815)
-	at org.eclipse.core.internal.dtree.DeltaDataTree.reroot(DeltaDataTree.java:815)
-	at org.eclipse.core.internal.dtree.DeltaDataTree.reroot(DeltaDataTree.java:815)
-	at org.eclipse.core.internal.dtree.DeltaDataTree.reroot(DeltaDataTree.java:815)
-	at org.eclipse.core.internal.dtree.DeltaDataTree.reroot(DeltaDataTree.java:815)
-	at org.eclipse.core.internal.dtree.DeltaDataTree.reroot(DeltaDataTree.java:815)
-	at org.eclipse.core.internal.dtree.DeltaDataTree.reroot(DeltaDataTree.java:815)
-	at org.eclipse.core.internal.dtree.DeltaDataTree.reroot(DeltaDataTree.java:815)
-	at org.eclipse.core.internal.dtree.DeltaDataTree.reroot(DeltaDataTree.java:815)
-	at org.eclipse.core.internal.dtree.DeltaDataTree.reroot(DeltaDataTree.java:815)
-	at org.eclipse.core.internal.dtree.DeltaDataTree.reroot(DeltaDataTree.java:792)
-	at org.eclipse.core.internal.watson.ElementTree.immutable(ElementTree.java:518)
-	at org.eclipse.core.internal.resources.SaveManager.restore(SaveManager.java:710)
-	at org.eclipse.core.internal.resources.SaveManager.startup(SaveManager.java:1528)
-	at org.eclipse.core.internal.resources.Workspace.startup(Workspace.java:2502)
-	at org.eclipse.core.internal.resources.Workspace.open(Workspace.java:2251)
-	at org.eclipse.core.resources.ResourcesPlugin.start(ResourcesPlugin.java:439)
-	at org.eclipse.osgi.framework.internal.core.BundleContextImpl$1.run(BundleContextImpl.java:711)
-	at java.security.AccessController.doPrivileged(Native Method)
-	at org.eclipse.osgi.framework.internal.core.BundleContextImpl.startActivator(BundleContextImpl.java:702)
-	at org.eclipse.osgi.framework.internal.core.BundleContextImpl.start(BundleContextImpl.java:683)
-	at org.eclipse.osgi.framework.internal.core.BundleHost.startWorker(BundleHost.java:381)
-	at org.eclipse.osgi.framework.internal.core.AbstractBundle.start(AbstractBundle.java:300)
-	at org.eclipse.osgi.framework.util.SecureAction.start(SecureAction.java:440)
-	at org.eclipse.osgi.internal.loader.BundleLoader.setLazyTrigger(BundleLoader.java:263)
-	at org.eclipse.core.runtime.internal.adaptor.EclipseLazyStarter.postFindLocalClass(EclipseLazyStarter.java:107)
-	at org.eclipse.osgi.baseadaptor.loader.ClasspathManager.findLocalClass(ClasspathManager.java:469)
-	at org.eclipse.osgi.internal.baseadaptor.DefaultClassLoader.findLocalClass(DefaultClassLoader.java:216)
-	at org.eclipse.osgi.internal.loader.BundleLoader.findLocalClass(BundleLoader.java:395)
-	at org.eclipse.osgi.internal.loader.SingleSourcePackage.loadClass(SingleSourcePackage.java:35)
-	at org.eclipse.osgi.internal.loader.BundleLoader.findClassInternal(BundleLoader.java:461)
-	at org.eclipse.osgi.internal.loader.BundleLoader.findClass(BundleLoader.java:421)
-	at org.eclipse.osgi.internal.loader.BundleLoader.findClass(BundleLoader.java:412)
-	at org.eclipse.osgi.internal.baseadaptor.DefaultClassLoader.loadClass(DefaultClassLoader.java:107)
-	at java.lang.ClassLoader.loadClass(Unknown Source)
-	at org.eclipse.ui.internal.ide.application.IDEApplication.start(IDEApplication.java:125)
-	at org.eclipse.equinox.internal.app.EclipseAppHandle.run(EclipseAppHandle.java:196)
-	at org.eclipse.core.runtime.internal.adaptor.EclipseAppLauncher.runApplication(EclipseAppLauncher.java:110)
-	at org.eclipse.core.runtime.internal.adaptor.EclipseAppLauncher.start(EclipseAppLauncher.java:79)
-	at org.eclipse.core.runtime.adaptor.EclipseStarter.run(EclipseStarter.java:353)
-	at org.eclipse.core.runtime.adaptor.EclipseStarter.run(EclipseStarter.java:180)
-	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
-	at sun.reflect.NativeMethodAccessorImpl.invoke(Unknown Source)
-	at sun.reflect.DelegatingMethodAccessorImpl.invoke(Unknown Source)
-	at java.lang.reflect.Method.invoke(Unknown Source)
-	at org.eclipse.equinox.launcher.Main.invokeFramework(Main.java:629)
-	at org.eclipse.equinox.launcher.Main.basicRun(Main.java:584)
-	at org.eclipse.equinox.launcher.Main.run(Main.java:1438)
-	at org.eclipse.equinox.launcher.Main.main(Main.java:1414)
-
-!ENTRY org.eclipse.osgi 4 0 2012-10-29 12:43:22.452
-!MESSAGE Application error
+!ENTRY org.eclipse.equinox.p2.core 4 0 2012-10-29 14:10:55.697
+!MESSAGE Provisioning exception
 !STACK 1
-java.lang.NoClassDefFoundError: org/eclipse/core/resources/IContainer
-	at org.eclipse.ui.internal.ide.application.IDEApplication.start(IDEApplication.java:125)
-	at org.eclipse.equinox.internal.app.EclipseAppHandle.run(EclipseAppHandle.java:196)
-	at org.eclipse.core.runtime.internal.adaptor.EclipseAppLauncher.runApplication(EclipseAppLauncher.java:110)
-	at org.eclipse.core.runtime.internal.adaptor.EclipseAppLauncher.start(EclipseAppLauncher.java:79)
-	at org.eclipse.core.runtime.adaptor.EclipseStarter.run(EclipseStarter.java:353)
-	at org.eclipse.core.runtime.adaptor.EclipseStarter.run(EclipseStarter.java:180)
-	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
-	at sun.reflect.NativeMethodAccessorImpl.invoke(Unknown Source)
-	at sun.reflect.DelegatingMethodAccessorImpl.invoke(Unknown Source)
-	at java.lang.reflect.Method.invoke(Unknown Source)
-	at org.eclipse.equinox.launcher.Main.invokeFramework(Main.java:629)
-	at org.eclipse.equinox.launcher.Main.basicRun(Main.java:584)
-	at org.eclipse.equinox.launcher.Main.run(Main.java:1438)
-	at org.eclipse.equinox.launcher.Main.main(Main.java:1414)
-Caused by: org.eclipse.core.runtime.internal.adaptor.EclipseLazyStarter$TerminatingClassNotFoundException: An error occurred while automatically activating bundle org.eclipse.core.resources (898).
-	at org.eclipse.core.runtime.internal.adaptor.EclipseLazyStarter.postFindLocalClass(EclipseLazyStarter.java:122)
-	at org.eclipse.osgi.baseadaptor.loader.ClasspathManager.findLocalClass(ClasspathManager.java:469)
-	at org.eclipse.osgi.internal.baseadaptor.DefaultClassLoader.findLocalClass(DefaultClassLoader.java:216)
-	at org.eclipse.osgi.internal.loader.BundleLoader.findLocalClass(BundleLoader.java:395)
-	at org.eclipse.osgi.internal.loader.SingleSourcePackage.loadClass(SingleSourcePackage.java:35)
-	at org.eclipse.osgi.internal.loader.BundleLoader.findClassInternal(BundleLoader.java:461)
-	at org.eclipse.osgi.internal.loader.BundleLoader.findClass(BundleLoader.java:421)
-	at org.eclipse.osgi.internal.loader.BundleLoader.findClass(BundleLoader.java:412)
-	at org.eclipse.osgi.internal.baseadaptor.DefaultClassLoader.loadClass(DefaultClassLoader.java:107)
-	at java.lang.ClassLoader.loadClass(Unknown Source)
-	... 14 more
-Caused by: org.osgi.framework.BundleException: Exception in org.eclipse.core.resources.ResourcesPlugin.start() of bundle org.eclipse.core.resources.
-	at org.eclipse.osgi.framework.internal.core.BundleContextImpl.startActivator(BundleContextImpl.java:734)
-	at org.eclipse.osgi.framework.internal.core.BundleContextImpl.start(BundleContextImpl.java:683)
-	at org.eclipse.osgi.framework.internal.core.BundleHost.startWorker(BundleHost.java:381)
-	at org.eclipse.osgi.framework.internal.core.AbstractBundle.start(AbstractBundle.java:300)
-	at org.eclipse.osgi.framework.util.SecureAction.start(SecureAction.java:440)
-	at org.eclipse.osgi.internal.loader.BundleLoader.setLazyTrigger(BundleLoader.java:263)
-	at org.eclipse.core.runtime.internal.adaptor.EclipseLazyStarter.postFindLocalClass(EclipseLazyStarter.java:107)
-	... 23 more
-Caused by: org.eclipse.core.internal.dtree.ObjectNotFoundException: Tree element '/Minecraft/src/net/minecraft/src/TexturePackBase.java' not found.
-	at org.eclipse.core.internal.dtree.AbstractDataTree.handleNotFound(AbstractDataTree.java:257)
-	at org.eclipse.core.internal.dtree.DeltaDataTree.getData(DeltaDataTree.java:585)
-	at org.eclipse.core.internal.dtree.DataDeltaNode.asBackwardDelta(DataDeltaNode.java:50)
-	at org.eclipse.core.internal.dtree.NoDataDeltaNode.asBackwardDelta(NoDataDeltaNode.java:59)
-	at org.eclipse.core.internal.dtree.NoDataDeltaNode.asBackwardDelta(NoDataDeltaNode.java:59)
-	at org.eclipse.core.internal.dtree.NoDataDeltaNode.asBackwardDelta(NoDataDeltaNode.java:59)
-	at org.eclipse.core.internal.dtree.NoDataDeltaNode.asBackwardDelta(NoDataDeltaNode.java:59)
-	at org.eclipse.core.internal.dtree.DataDeltaNode.asBackwardDelta(DataDeltaNode.java:47)
-	at org.eclipse.core.internal.dtree.DataDeltaNode.asBackwardDelta(DataDeltaNode.java:47)
-	at org.eclipse.core.internal.dtree.DeltaDataTree.asBackwardDelta(DeltaDataTree.java:88)
-	at org.eclipse.core.internal.dtree.DeltaDataTree.reroot(DeltaDataTree.java:816)
-	at org.eclipse.core.internal.dtree.DeltaDataTree.reroot(DeltaDataTree.java:815)
-	at org.eclipse.core.internal.dtree.DeltaDataTree.reroot(DeltaDataTree.java:815)
-	at org.eclipse.core.internal.dtree.DeltaDataTree.reroot(DeltaDataTree.java:815)
-	at org.eclipse.core.internal.dtree.DeltaDataTree.reroot(DeltaDataTree.java:815)
-	at org.eclipse.core.internal.dtree.DeltaDataTree.reroot(DeltaDataTree.java:815)
-	at org.eclipse.core.internal.dtree.DeltaDataTree.reroot(DeltaDataTree.java:815)
-	at org.eclipse.core.internal.dtree.DeltaDataTree.reroot(DeltaDataTree.java:815)
-	at org.eclipse.core.internal.dtree.DeltaDataTree.reroot(DeltaDataTree.java:815)
-	at org.eclipse.core.internal.dtree.DeltaDataTree.reroot(DeltaDataTree.java:815)
-	at org.eclipse.core.internal.dtree.DeltaDataTree.reroot(DeltaDataTree.java:815)
-	at org.eclipse.core.internal.dtree.DeltaDataTree.reroot(DeltaDataTree.java:815)
-	at org.eclipse.core.internal.dtree.DeltaDataTree.reroot(DeltaDataTree.java:815)
-	at org.eclipse.core.internal.dtree.DeltaDataTree.reroot(DeltaDataTree.java:815)
-	at org.eclipse.core.internal.dtree.DeltaDataTree.reroot(DeltaDataTree.java:815)
-	at org.eclipse.core.internal.dtree.DeltaDataTree.reroot(DeltaDataTree.java:815)
-	at org.eclipse.core.internal.dtree.DeltaDataTree.reroot(DeltaDataTree.java:815)
-	at org.eclipse.core.internal.dtree.DeltaDataTree.reroot(DeltaDataTree.java:815)
-	at org.eclipse.core.internal.dtree.DeltaDataTree.reroot(DeltaDataTree.java:792)
-	at org.eclipse.core.internal.watson.ElementTree.immutable(ElementTree.java:518)
-	at org.eclipse.core.internal.resources.SaveManager.restore(SaveManager.java:710)
-	at org.eclipse.core.internal.resources.SaveManager.startup(SaveManager.java:1528)
-	at org.eclipse.core.internal.resources.Workspace.startup(Workspace.java:2502)
-	at org.eclipse.core.internal.resources.Workspace.open(Workspace.java:2251)
-	at org.eclipse.core.resources.ResourcesPlugin.start(ResourcesPlugin.java:439)
-	at org.eclipse.osgi.framework.internal.core.BundleContextImpl$1.run(BundleContextImpl.java:711)
-	at java.security.AccessController.doPrivileged(Native Method)
-	at org.eclipse.osgi.framework.internal.core.BundleContextImpl.startActivator(BundleContextImpl.java:702)
-	... 29 more
+org.eclipse.equinox.p2.core.ProvisionException: No repository found at http://download.eclipse.org/webtools/downloads/drops/R3.4.0/S-3.4.0M1-20110812160550/repository/.
+	at org.eclipse.equinox.internal.p2.repository.helpers.AbstractRepositoryManager.fail(AbstractRepositoryManager.java:393)
+	at org.eclipse.equinox.internal.p2.repository.helpers.AbstractRepositoryManager.loadRepository(AbstractRepositoryManager.java:675)
+	at org.eclipse.equinox.internal.p2.metadata.repository.MetadataRepositoryManager.loadRepository(MetadataRepositoryManager.java:96)
+	at org.eclipse.equinox.internal.p2.metadata.repository.MetadataRepositoryManager.loadRepository(MetadataRepositoryManager.java:92)
+	at org.eclipse.equinox.internal.p2.metadata.repository.CompositeMetadataRepository.addChild(CompositeMetadataRepository.java:165)
+	at org.eclipse.equinox.internal.p2.metadata.repository.CompositeMetadataRepository.<init>(CompositeMetadataRepository.java:105)
+	at org.eclipse.equinox.internal.p2.metadata.repository.CompositeMetadataRepositoryFactory.load(CompositeMetadataRepositoryFactory.java:122)
+	at org.eclipse.equinox.internal.p2.metadata.repository.MetadataRepositoryManager.factoryLoad(MetadataRepositoryManager.java:57)
+	at org.eclipse.equinox.internal.p2.repository.helpers.AbstractRepositoryManager.loadRepository(AbstractRepositoryManager.java:758)
+	at org.eclipse.equinox.internal.p2.repository.helpers.AbstractRepositoryManager.loadRepository(AbstractRepositoryManager.java:651)
+	at org.eclipse.equinox.internal.p2.metadata.repository.MetadataRepositoryManager.loadRepository(MetadataRepositoryManager.java:96)
+	at org.eclipse.equinox.internal.p2.metadata.repository.MetadataRepositoryManager.loadRepository(MetadataRepositoryManager.java:92)
+	at org.eclipse.equinox.internal.p2.updatechecker.UpdateChecker.getAvailableRepositories(UpdateChecker.java:150)
+	at org.eclipse.equinox.internal.p2.updatechecker.UpdateChecker.checkForUpdates(UpdateChecker.java:128)
+	at org.eclipse.equinox.internal.p2.updatechecker.UpdateChecker$UpdateCheckThread.run(UpdateChecker.java:72)
+!SUBENTRY 1 org.eclipse.equinox.p2.metadata.repository 4 1000 2012-10-29 14:10:55.699
+!MESSAGE No repository found at http://download.eclipse.org/webtools/downloads/drops/R3.4.0/S-3.4.0M1-20110812160550/repository/.
+
+!ENTRY org.eclipse.equinox.p2.core 4 0 2012-10-29 14:10:58.021
+!MESSAGE Provisioning exception
+!STACK 1
+org.eclipse.equinox.p2.core.ProvisionException: No repository found at http://download.eclipse.org/webtools/downloads/drops/R3.4.0/S-3.4.0M2-20110922230524/repository/.
+	at org.eclipse.equinox.internal.p2.repository.helpers.AbstractRepositoryManager.fail(AbstractRepositoryManager.java:393)
+	at org.eclipse.equinox.internal.p2.repository.helpers.AbstractRepositoryManager.loadRepository(AbstractRepositoryManager.java:675)
+	at org.eclipse.equinox.internal.p2.metadata.repository.MetadataRepositoryManager.loadRepository(MetadataRepositoryManager.java:96)
+	at org.eclipse.equinox.internal.p2.metadata.repository.MetadataRepositoryManager.loadRepository(MetadataRepositoryManager.java:92)
+	at org.eclipse.equinox.internal.p2.metadata.repository.CompositeMetadataRepository.addChild(CompositeMetadataRepository.java:165)
+	at org.eclipse.equinox.internal.p2.metadata.repository.CompositeMetadataRepository.<init>(CompositeMetadataRepository.java:105)
+	at org.eclipse.equinox.internal.p2.metadata.repository.CompositeMetadataRepositoryFactory.load(CompositeMetadataRepositoryFactory.java:122)
+	at org.eclipse.equinox.internal.p2.metadata.repository.MetadataRepositoryManager.factoryLoad(MetadataRepositoryManager.java:57)
+	at org.eclipse.equinox.internal.p2.repository.helpers.AbstractRepositoryManager.loadRepository(AbstractRepositoryManager.java:758)
+	at org.eclipse.equinox.internal.p2.repository.helpers.AbstractRepositoryManager.loadRepository(AbstractRepositoryManager.java:651)
+	at org.eclipse.equinox.internal.p2.metadata.repository.MetadataRepositoryManager.loadRepository(MetadataRepositoryManager.java:96)
+	at org.eclipse.equinox.internal.p2.metadata.repository.MetadataRepositoryManager.loadRepository(MetadataRepositoryManager.java:92)
+	at org.eclipse.equinox.internal.p2.updatechecker.UpdateChecker.getAvailableRepositories(UpdateChecker.java:150)
+	at org.eclipse.equinox.internal.p2.updatechecker.UpdateChecker.checkForUpdates(UpdateChecker.java:128)
+	at org.eclipse.equinox.internal.p2.updatechecker.UpdateChecker$UpdateCheckThread.run(UpdateChecker.java:72)
+!SUBENTRY 1 org.eclipse.equinox.p2.metadata.repository 4 1000 2012-10-29 14:10:58.021
+!MESSAGE No repository found at http://download.eclipse.org/webtools/downloads/drops/R3.4.0/S-3.4.0M2-20110922230524/repository/.
+
+!ENTRY org.eclipse.equinox.p2.core 4 0 2012-10-29 14:11:01.041
+!MESSAGE Provisioning exception
+!STACK 1
+org.eclipse.equinox.p2.core.ProvisionException: No repository found at http://download.eclipse.org/webtools/downloads/drops/R3.4.0/S-3.4.0M6-20120319200442/repository/.
+	at org.eclipse.equinox.internal.p2.repository.helpers.AbstractRepositoryManager.fail(AbstractRepositoryManager.java:393)
+	at org.eclipse.equinox.internal.p2.repository.helpers.AbstractRepositoryManager.loadRepository(AbstractRepositoryManager.java:675)
+	at org.eclipse.equinox.internal.p2.metadata.repository.MetadataRepositoryManager.loadRepository(MetadataRepositoryManager.java:96)
+	at org.eclipse.equinox.internal.p2.metadata.repository.MetadataRepositoryManager.loadRepository(MetadataRepositoryManager.java:92)
+	at org.eclipse.equinox.internal.p2.metadata.repository.CompositeMetadataRepository.addChild(CompositeMetadataRepository.java:165)
+	at org.eclipse.equinox.internal.p2.metadata.repository.CompositeMetadataRepository.<init>(CompositeMetadataRepository.java:105)
+	at org.eclipse.equinox.internal.p2.metadata.repository.CompositeMetadataRepositoryFactory.load(CompositeMetadataRepositoryFactory.java:122)
+	at org.eclipse.equinox.internal.p2.metadata.repository.MetadataRepositoryManager.factoryLoad(MetadataRepositoryManager.java:57)
+	at org.eclipse.equinox.internal.p2.repository.helpers.AbstractRepositoryManager.loadRepository(AbstractRepositoryManager.java:758)
+	at org.eclipse.equinox.internal.p2.repository.helpers.AbstractRepositoryManager.loadRepository(AbstractRepositoryManager.java:651)
+	at org.eclipse.equinox.internal.p2.metadata.repository.MetadataRepositoryManager.loadRepository(MetadataRepositoryManager.java:96)
+	at org.eclipse.equinox.internal.p2.metadata.repository.MetadataRepositoryManager.loadRepository(MetadataRepositoryManager.java:92)
+	at org.eclipse.equinox.internal.p2.updatechecker.UpdateChecker.getAvailableRepositories(UpdateChecker.java:150)
+	at org.eclipse.equinox.internal.p2.updatechecker.UpdateChecker.checkForUpdates(UpdateChecker.java:128)
+	at org.eclipse.equinox.internal.p2.updatechecker.UpdateChecker$UpdateCheckThread.run(UpdateChecker.java:72)
+!SUBENTRY 1 org.eclipse.equinox.p2.metadata.repository 4 1000 2012-10-29 14:11:01.081
+!MESSAGE No repository found at http://download.eclipse.org/webtools/downloads/drops/R3.4.0/S-3.4.0M6-20120319200442/repository/.
+
+!ENTRY org.eclipse.equinox.p2.core 4 0 2012-10-29 14:11:06.026
+!MESSAGE Provisioning exception
+!STACK 1
+org.eclipse.equinox.p2.core.ProvisionException: No repository found at http://download.eclipse.org/webtools/downloads/drops/R3.4.0/S-3.4.0M7-20120507135259/repository/.
+	at org.eclipse.equinox.internal.p2.repository.helpers.AbstractRepositoryManager.fail(AbstractRepositoryManager.java:393)
+	at org.eclipse.equinox.internal.p2.repository.helpers.AbstractRepositoryManager.loadRepository(AbstractRepositoryManager.java:675)
+	at org.eclipse.equinox.internal.p2.metadata.repository.MetadataRepositoryManager.loadRepository(MetadataRepositoryManager.java:96)
+	at org.eclipse.equinox.internal.p2.metadata.repository.MetadataRepositoryManager.loadRepository(MetadataRepositoryManager.java:92)
+	at org.eclipse.equinox.internal.p2.metadata.repository.CompositeMetadataRepository.addChild(CompositeMetadataRepository.java:165)
+	at org.eclipse.equinox.internal.p2.metadata.repository.CompositeMetadataRepository.<init>(CompositeMetadataRepository.java:105)
+	at org.eclipse.equinox.internal.p2.metadata.repository.CompositeMetadataRepositoryFactory.load(CompositeMetadataRepositoryFactory.java:122)
+	at org.eclipse.equinox.internal.p2.metadata.repository.MetadataRepositoryManager.factoryLoad(MetadataRepositoryManager.java:57)
+	at org.eclipse.equinox.internal.p2.repository.helpers.AbstractRepositoryManager.loadRepository(AbstractRepositoryManager.java:758)
+	at org.eclipse.equinox.internal.p2.repository.helpers.AbstractRepositoryManager.loadRepository(AbstractRepositoryManager.java:651)
+	at org.eclipse.equinox.internal.p2.metadata.repository.MetadataRepositoryManager.loadRepository(MetadataRepositoryManager.java:96)
+	at org.eclipse.equinox.internal.p2.metadata.repository.MetadataRepositoryManager.loadRepository(MetadataRepositoryManager.java:92)
+	at org.eclipse.equinox.internal.p2.updatechecker.UpdateChecker.getAvailableRepositories(UpdateChecker.java:150)
+	at org.eclipse.equinox.internal.p2.updatechecker.UpdateChecker.checkForUpdates(UpdateChecker.java:128)
+	at org.eclipse.equinox.internal.p2.updatechecker.UpdateChecker$UpdateCheckThread.run(UpdateChecker.java:72)
+!SUBENTRY 1 org.eclipse.equinox.p2.metadata.repository 4 1000 2012-10-29 14:11:06.027
+!MESSAGE No repository found at http://download.eclipse.org/webtools/downloads/drops/R3.4.0/S-3.4.0M7-20120507135259/repository/.
+
+!ENTRY org.eclipse.equinox.p2.core 4 0 2012-10-29 14:11:07.885
+!MESSAGE Provisioning exception
+!STACK 1
+org.eclipse.equinox.p2.core.ProvisionException: No repository found at http://download.eclipse.org/webtools/downloads/drops/R3.4.0/S-3.4.0RC1-20120518171617/repository/.
+	at org.eclipse.equinox.internal.p2.repository.helpers.AbstractRepositoryManager.fail(AbstractRepositoryManager.java:393)
+	at org.eclipse.equinox.internal.p2.repository.helpers.AbstractRepositoryManager.loadRepository(AbstractRepositoryManager.java:675)
+	at org.eclipse.equinox.internal.p2.metadata.repository.MetadataRepositoryManager.loadRepository(MetadataRepositoryManager.java:96)
+	at org.eclipse.equinox.internal.p2.metadata.repository.MetadataRepositoryManager.loadRepository(MetadataRepositoryManager.java:92)
+	at org.eclipse.equinox.internal.p2.metadata.repository.CompositeMetadataRepository.addChild(CompositeMetadataRepository.java:165)
+	at org.eclipse.equinox.internal.p2.metadata.repository.CompositeMetadataRepository.<init>(CompositeMetadataRepository.java:105)
+	at org.eclipse.equinox.internal.p2.metadata.repository.CompositeMetadataRepositoryFactory.load(CompositeMetadataRepositoryFactory.java:122)
+	at org.eclipse.equinox.internal.p2.metadata.repository.MetadataRepositoryManager.factoryLoad(MetadataRepositoryManager.java:57)
+	at org.eclipse.equinox.internal.p2.repository.helpers.AbstractRepositoryManager.loadRepository(AbstractRepositoryManager.java:758)
+	at org.eclipse.equinox.internal.p2.repository.helpers.AbstractRepositoryManager.loadRepository(AbstractRepositoryManager.java:651)
+	at org.eclipse.equinox.internal.p2.metadata.repository.MetadataRepositoryManager.loadRepository(MetadataRepositoryManager.java:96)
+	at org.eclipse.equinox.internal.p2.metadata.repository.MetadataRepositoryManager.loadRepository(MetadataRepositoryManager.java:92)
+	at org.eclipse.equinox.internal.p2.updatechecker.UpdateChecker.getAvailableRepositories(UpdateChecker.java:150)
+	at org.eclipse.equinox.internal.p2.updatechecker.UpdateChecker.checkForUpdates(UpdateChecker.java:128)
+	at org.eclipse.equinox.internal.p2.updatechecker.UpdateChecker$UpdateCheckThread.run(UpdateChecker.java:72)
+!SUBENTRY 1 org.eclipse.equinox.p2.metadata.repository 4 1000 2012-10-29 14:11:07.885
+!MESSAGE No repository found at http://download.eclipse.org/webtools/downloads/drops/R3.4.0/S-3.4.0RC1-20120518171617/repository/.
+
+!ENTRY org.eclipse.equinox.p2.core 4 0 2012-10-29 14:11:10.021
+!MESSAGE Provisioning exception
+!STACK 1
+org.eclipse.equinox.p2.core.ProvisionException: No repository found at http://download.eclipse.org/webtools/downloads/drops/R3.4.0/S-3.4.0RC2-20120530010904/repository/.
+	at org.eclipse.equinox.internal.p2.repository.helpers.AbstractRepositoryManager.fail(AbstractRepositoryManager.java:393)
+	at org.eclipse.equinox.internal.p2.repository.helpers.AbstractRepositoryManager.loadRepository(AbstractRepositoryManager.java:675)
+	at org.eclipse.equinox.internal.p2.metadata.repository.MetadataRepositoryManager.loadRepository(MetadataRepositoryManager.java:96)
+	at org.eclipse.equinox.internal.p2.metadata.repository.MetadataRepositoryManager.loadRepository(MetadataRepositoryManager.java:92)
+	at org.eclipse.equinox.internal.p2.metadata.repository.CompositeMetadataRepository.addChild(CompositeMetadataRepository.java:165)
+	at org.eclipse.equinox.internal.p2.metadata.repository.CompositeMetadataRepository.<init>(CompositeMetadataRepository.java:105)
+	at org.eclipse.equinox.internal.p2.metadata.repository.CompositeMetadataRepositoryFactory.load(CompositeMetadataRepositoryFactory.java:122)
+	at org.eclipse.equinox.internal.p2.metadata.repository.MetadataRepositoryManager.factoryLoad(MetadataRepositoryManager.java:57)
+	at org.eclipse.equinox.internal.p2.repository.helpers.AbstractRepositoryManager.loadRepository(AbstractRepositoryManager.java:758)
+	at org.eclipse.equinox.internal.p2.repository.helpers.AbstractRepositoryManager.loadRepository(AbstractRepositoryManager.java:651)
+	at org.eclipse.equinox.internal.p2.metadata.repository.MetadataRepositoryManager.loadRepository(MetadataRepositoryManager.java:96)
+	at org.eclipse.equinox.internal.p2.metadata.repository.MetadataRepositoryManager.loadRepository(MetadataRepositoryManager.java:92)
+	at org.eclipse.equinox.internal.p2.updatechecker.UpdateChecker.getAvailableRepositories(UpdateChecker.java:150)
+	at org.eclipse.equinox.internal.p2.updatechecker.UpdateChecker.checkForUpdates(UpdateChecker.java:128)
+	at org.eclipse.equinox.internal.p2.updatechecker.UpdateChecker$UpdateCheckThread.run(UpdateChecker.java:72)
+!SUBENTRY 1 org.eclipse.equinox.p2.metadata.repository 4 1000 2012-10-29 14:11:10.021
+!MESSAGE No repository found at http://download.eclipse.org/webtools/downloads/drops/R3.4.0/S-3.4.0RC2-20120530010904/repository/.
+
+!ENTRY org.eclipse.equinox.p2.repository 2 0 2012-10-29 14:11:18.225
+!MESSAGE Server returned lastModified <= 0 for http://market.eclipsesource.com/yoxos/mpc/latestrepo/org.eclipse.cdt.feature.group/3.8.0.v20120521-2346/compositeContent.xml
