@@ -8,13 +8,7 @@ import java.io.ObjectOutputStream;
 import java.util.HashMap;
 
 import net.minecraft.src.EntityPlayer;
-<<<<<<< .mine
-import net.minecraft.src.EntityPlayerMP;
-import net.minecraft.src.ModLoader;
 import net.minecraft.src.INetworkManager;
-=======
-import net.minecraft.src.INetworkManager;
->>>>>>> .r379
 import net.minecraft.src.Packet250CustomPayload;
 import net.minecraft.src.TileEntity;
 import cpw.mods.fml.common.network.IPacketHandler;
