@@ -2,27 +2,21 @@ package powercraft.logic;
 
 import java.util.Random;
 
-import cpw.mods.fml.common.Side;
-import cpw.mods.fml.common.asm.SideOnly;
-
 import net.minecraft.src.AxisAlignedBB;
 import net.minecraft.src.Block;
 import net.minecraft.src.CreativeTabs;
 import net.minecraft.src.EntityLiving;
+import net.minecraft.src.EntityPlayer;
 import net.minecraft.src.IBlockAccess;
+import net.minecraft.src.ItemStack;
 import net.minecraft.src.Material;
 import net.minecraft.src.MathHelper;
-import net.minecraft.src.ModLoader;
 import net.minecraft.src.TileEntity;
 import net.minecraft.src.World;
 import powercraft.core.PC_Block;
-import powercraft.core.PC_CoordI;
 import powercraft.core.PC_IRotatedBox;
 import powercraft.core.PC_ISwapTerrain;
 import powercraft.core.PC_Renderer;
-import powercraft.core.PC_Shining;
-import powercraft.core.PC_Shining.OFF;
-import powercraft.core.PC_Shining.ON;
 import powercraft.core.PC_Utils;
 
 public class PClo_BlockGate extends PC_Block implements PC_IRotatedBox, PC_ISwapTerrain {
@@ -330,5 +324,30 @@ public class PClo_BlockGate extends PC_Block implements PC_IRotatedBox, PC_ISwap
 
 		world.spawnParticle("reddust", d, d1, d2, 0.0D, 0.0D, 0.0D);
 	}	
+	
+	@Override
+	public int idDropped(int i, Random random, int j) {
+		return -1;
+	}
+
+	@Override
+	public int quantityDropped(Random random) {
+		return 0;
+	}
+	
+	@Override
+	public boolean removeBlockByPlayer(World world, EntityPlayer player, int x, int y, int z) {
+
+		int type = getType(world, x, y, z);
+		
+		boolean remove = super.removeBlockByPlayer(world, player, x, y, z);
+		
+		if (remove && !PC_Utils.isCreative(player)) {
+			dropBlockAsItem_do(world, x, y, z, new ItemStack(mod_PowerCraftLogic.gate, 1, type));
+		}
+
+		return remove;
+
+	}
 	
 }
