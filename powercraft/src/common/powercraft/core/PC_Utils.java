@@ -439,10 +439,7 @@ public class PC_Utils {
 	
 	public static int getMD(IBlockAccess world, int x, int y, int z){
 		if(world!=null){
-			TileEntity te = getTE(world, x, y, z);
-			if(te==null)
-				return world.getBlockMetadata(x, y, z);
-			return te.blockMetadata;
+			return world.getBlockMetadata(x, y, z);
 		}
 		return 0;
 	}

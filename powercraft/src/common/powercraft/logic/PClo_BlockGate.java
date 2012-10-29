@@ -2,6 +2,9 @@ package powercraft.logic;
 
 import java.util.Random;
 
+import cpw.mods.fml.common.Side;
+import cpw.mods.fml.common.asm.SideOnly;
+
 import net.minecraft.src.AxisAlignedBB;
 import net.minecraft.src.Block;
 import net.minecraft.src.CreativeTabs;
@@ -48,7 +51,6 @@ public class PClo_BlockGate extends PC_Block implements PC_IRotatedBox, PC_ISwap
 	
 	@Override
 	public void updateTick(World world, int x, int y, int z, Random random) {
-		System.out.println("updateTick");
 		boolean on = isActive(world, x, y, z);
 		boolean outputActive = isOutputActive(world, x, y, z);
 		if (on && !outputActive) {
@@ -67,10 +69,8 @@ public class PClo_BlockGate extends PC_Block implements PC_IRotatedBox, PC_ISwap
 
 	@Override
 	public void onNeighborBlockChange(World world, int x, int y, int z, int side) {
-		System.out.println("onNeighborBlockChange");
 		boolean on = isActive(world, x, y, z);
 		boolean outputActive = isOutputActive(world, x, y, z);
-		
 		if (on && !outputActive) {
 			world.scheduleBlockUpdate(x, y, z, blockID, tickRate());
 		} else if (!on && outputActive) {
@@ -91,13 +91,13 @@ public class PClo_BlockGate extends PC_Block implements PC_IRotatedBox, PC_ISwap
 	 */
 	private void changeGateState(boolean state, World world, int x, int y, int z) {
 		int l = world.getBlockMetadata(x, y, z) & 0x3;
-
+		
 		if(state)
 			l |= 0x4;
 		
 		world.setBlockMetadataWithNotify(x, y, z, l);
 
-		//PC_Utils.hugeUpdate(world, x, y, z, blockID);
+		PC_Utils.hugeUpdate(world, x, y, z, blockID);
 
 	}
 	
@@ -329,6 +329,6 @@ public class PClo_BlockGate extends PC_Block implements PC_IRotatedBox, PC_ISwap
 		double d2 = (z + 0.5F) + (random.nextFloat() - 0.5F) * 0.20000000000000001D;
 
 		world.spawnParticle("reddust", d, d1, d2, 0.0D, 0.0D, 0.0D);
-	}
+	}	
 	
 }
