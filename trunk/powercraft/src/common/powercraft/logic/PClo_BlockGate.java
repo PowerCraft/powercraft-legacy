@@ -84,14 +84,8 @@ public class PClo_BlockGate extends PC_Block implements PC_IRotatedBox, PC_ISwap
 	 * @param z
 	 */
 	private void changeGateState(boolean state, World world, int x, int y, int z) {
-		int l = world.getBlockMetadata(x, y, z) & 0x3;
 		
-		if(state)
-			l |= 0x4;
-		
-		world.setBlockMetadataWithNotify(x, y, z, l);
-
-		PC_Utils.hugeUpdate(world, x, y, z, blockID);
+		((PClo_TileEntityGate)PC_Utils.getTE(world, x, y, z)).setState(state);
 
 	}
 	
@@ -216,12 +210,22 @@ public class PClo_BlockGate extends PC_Block implements PC_IRotatedBox, PC_ISwap
 		return PC_Renderer.getRendererID(true);
 	}
 	
+	public static PClo_TileEntityGate getTE(IBlockAccess world, int x, int y, int z){
+		return (PClo_TileEntityGate)PC_Utils.getTE(world, x, y, z);
+	}
+	
 	public static int getType(IBlockAccess world, int x, int y, int z){
-		return ((PClo_TileEntityGate)PC_Utils.getTE(world, x, y, z)).getType();
+		PClo_TileEntityGate te = getTE(world, x, y, z);
+		if(te!=null)
+			return te.getType();
+		return 0;
 	}
 	
 	public static boolean isActive(IBlockAccess world, int x, int y, int z){
-		return (PC_Utils.getMD(world, x, y, z) & 0x4) != 0;
+		PClo_TileEntityGate te = getTE(world, x, y, z);
+		if(te!=null)
+			return te.getState();
+		return false;
 	}
 	
 	@Override
