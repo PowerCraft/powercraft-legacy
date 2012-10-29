@@ -16,17 +16,28 @@ from mcp import updatemd5_side
 
 def main():
     parser = OptionParser(version='MCP %s' % Commands.fullversion())
+    parser.add_option('--client', dest='only_client', action='store_true', help='only process client', default=False)
+    parser.add_option('--server', dest='only_server', action='store_true', help='only process server', default=False)
     parser.add_option('-f', '--force', action='store_true', dest='force', help='force update', default=False)
     parser.add_option('-c', '--config', dest='config', help='additional configuration file')
     options, _ = parser.parse_args()
-    updatemd5(options.config, options.force)
+    updatemd5(options.config, options.force, options.only_client, options.only_server)
 
 
-def updatemd5(conffile, force):
+def updatemd5(conffile, force, only_client, only_server):
     try:
         commands = Commands(conffile)
 
-        if (commands.checkmd5s(CLIENT) or commands.checkmd5s(SERVER)) and not force:
+        # client or server
+        process_client = True
+        process_server = True
+        if only_client and not only_server:
+            process_server = False
+        if only_server and not only_client:
+            process_client = False
+
+        if ((process_client and commands.checkmd5s(CLIENT) or process_server and commands.checkmd5s(SERVER))
+                and not force):
             print 'WARNING:'
             print 'The updatemd5 script is unsupported and should only be run in special'
             print 'cases, such as if there were compile errors in the last decompile which'
@@ -40,14 +51,16 @@ def updatemd5(conffile, force):
                 print 'You have not entered "Yes", aborting the update process'
                 sys.exit(1)
 
-        try:
-            updatemd5_side(commands, CLIENT)
-        except CalledProcessError:
-            commands.logger.error('Client recompile failed, correct source then rerun updatemd5')
-        try:
-            updatemd5_side(commands, SERVER)
-        except CalledProcessError:
-            commands.logger.error('Server recompile failed, correct source then rerun updatemd5')
+        if process_client:
+            try:
+                updatemd5_side(commands, CLIENT)
+            except CalledProcessError:
+                commands.logger.error('Client recompile failed, correct source then rerun updatemd5')
+        if process_server:
+            try:
+                updatemd5_side(commands, SERVER)
+            except CalledProcessError:
+                commands.logger.error('Server recompile failed, correct source then rerun updatemd5')
     except Exception:  # pylint: disable-msg=W0703
         logging.exception('FATAL ERROR')
         sys.exit(1)
