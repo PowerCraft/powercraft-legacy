@@ -69,6 +69,8 @@ public class mod_PowerCraftCore extends PC_Module{
 		
 		proxy.initUtils();
 		
+		PC_Logger.init(event.getModConfigurationDirectory());
+		
 		preInit(event, proxy);
 		
 		getModMetadata().logoFile = getTextureDirectory()+"PowerCraft.png";

@@ -12,6 +12,7 @@ import java.util.logging.LogRecord;
 import java.util.logging.Logger;
 
 import net.minecraft.client.Minecraft;
+import net.minecraft.server.MinecraftServer;
 
 public class PC_Logger {
 	/**
@@ -23,9 +24,9 @@ public class PC_Logger {
 	/** Stdout printing enabled */
 	public static boolean printToStdout = false;
 
-	static {
+	public static void init(File file){
 		try {
-			FileHandler handler = new FileHandler(new File(Minecraft.getMinecraftDir(), "PowerCraft.log").getPath());
+			FileHandler handler = new FileHandler(new File(file, "PowerCraft.log").getPath());
 			handler.setFormatter(new PC_LogFormatter());
 			logger.addHandler(handler);
 			loggingEnabled = true;
@@ -36,7 +37,7 @@ public class PC_Logger {
 		logger.info("PowerCraft logger initialized.");
 		logger.info((new SimpleDateFormat("yyyy/MM/dd HH:mm:ss")).format(new Date()));
 	}
-
+	
 	/**
 	 * Enable logging.
 	 * 

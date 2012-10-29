@@ -4,13 +4,15 @@ import net.minecraft.src.EntityPlayer;
 import net.minecraft.src.ItemStack;
 import net.minecraft.src.NBTTagCompound;
 import net.minecraft.src.World;
+import powercraft.core.PC_PacketHandler;
 import powercraft.core.PC_TileEntity;
 import powercraft.core.PC_Utils;
 
 public class PClo_TileEntityGate extends PC_TileEntity {
 
-	private int type=0;
-	
+	private int type=-1;
+	private boolean state = false;
+
 	public void create(ItemStack stack, EntityPlayer player, World world, int x, int y, int z, int side, float hitX, float hitY, float hitZ){
 		type = stack.getItemDamage();
 	}
@@ -19,16 +21,28 @@ public class PClo_TileEntityGate extends PC_TileEntity {
 		return type;
 	}
 	
+	public boolean getState(){
+		return state;
+	}
+	
+	public void setState(boolean b){
+		PC_PacketHandler.setTileEntity(this, "state", b);
+		state = b;
+		PC_Utils.hugeUpdate(worldObj, xCoord, yCoord, zCoord, worldObj.getBlockId(xCoord, yCoord, zCoord));
+	}
+	
 	@Override
 	public void readFromNBT(NBTTagCompound nbtTagCompound) {
 		super.readFromNBT(nbtTagCompound);
 		type = nbtTagCompound.getInteger("type");
+		state = nbtTagCompound.getBoolean("state");
 	}
 
 	@Override
 	public void writeToNBT(NBTTagCompound nbtTagCompound) {
 		super.writeToNBT(nbtTagCompound);
 		nbtTagCompound.setInteger("type", type);
+		nbtTagCompound.setBoolean("state", state);
 	}
 
 	@Override
@@ -37,15 +51,22 @@ public class PClo_TileEntityGate extends PC_TileEntity {
 		while(p<o.length){
 			String var = (String)o[p++];
 			if(var.equals("type")){
-				type = (Integer)o[p++];
+				if(type==-1)
+					type = (Integer)o[p++];
+				else
+					p++;
+			}else if(var.equals("state")){
+				state = (Boolean)o[p++];
 			}
 		}
+		PC_Utils.hugeUpdate(worldObj, xCoord, yCoord, zCoord, worldObj.getBlockId(xCoord, yCoord, zCoord));
 	}
 
 	@Override
 	public Object[] getData() {
 		return new Object[]{
-				"type", type
+				"type", type,
+				"state", state
 		};
 	}	
 	
