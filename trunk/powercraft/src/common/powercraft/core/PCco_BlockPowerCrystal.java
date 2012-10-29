@@ -123,7 +123,7 @@ public class PCco_BlockPowerCrystal extends PC_Block implements PC_IConfigLoader
 	public boolean isOpaqueCube() {
 		return false;
 	}
-
+	
 	@Override
 	public void randomDisplayTick(World world, int i, int j, int k, Random random) {
 
@@ -175,60 +175,56 @@ public class PCco_BlockPowerCrystal extends PC_Block implements PC_IConfigLoader
 	@Override
 	public void renderInventoryBlock(Block block, int metadata, int modelID,
 			Object renderer) {
-		if (block instanceof PC_ISwapTerrain) {
-			PC_Renderer.bindTexture(((PC_ISwapTerrain) block).getTerrainFile());
-			
-			Random posRand = new Random(metadata);
+		PC_Renderer.bindTexture(((PC_ISwapTerrain) block).getTerrainFile());
+		
+		Random posRand = new Random(metadata);
 
-			for (int q = 3 + posRand.nextInt(3); q > 0; q--) {
-				float x, y, z, a, b, c;
-				x = 0.0F + posRand.nextFloat() * 0.6F;
-				y = 0.0F + posRand.nextFloat() * 0.6F;
-				z = 0.0F + posRand.nextFloat() * 0.6F;
+		for (int q = 3 + posRand.nextInt(3); q > 0; q--) {
+			float x, y, z, a, b, c;
+			x = 0.0F + posRand.nextFloat() * 0.6F;
+			y = 0.0F + posRand.nextFloat() * 0.6F;
+			z = 0.0F + posRand.nextFloat() * 0.6F;
 
-				a = 0.2F + Math.max(posRand.nextFloat() * (0.7F - x), 0.3F);
-				b = 0.2F + Math.max(posRand.nextFloat() * (0.7F - y), 0.3F);
-				c = 0.2F + Math.max(posRand.nextFloat() * (0.7F - z), 0.3F);
+			a = 0.2F + Math.max(posRand.nextFloat() * (0.7F - x), 0.3F);
+			b = 0.2F + Math.max(posRand.nextFloat() * (0.7F - y), 0.3F);
+			c = 0.2F + Math.max(posRand.nextFloat() * (0.7F - z), 0.3F);
 
-				block.setBlockBounds(x, y, z, x + a, y + b, z + c);
-				PC_Renderer.renderInvBox(renderer, block, metadata);
-			}
-			block.setBlockBounds(0, 0, 0, 1, 1, 1);
-			PC_Renderer.bindTexture("/terrain.png");
+			block.setBlockBounds(x, y, z, x + a, y + b, z + c);
+			PC_Renderer.renderInvBox(renderer, block, metadata);
 		}
+		block.setBlockBounds(0, 0, 0, 1, 1, 1);
+		PC_Renderer.bindTexture("/terrain.png");
 
 	}
 
 	@Override
 	public void renderWorldBlock(IBlockAccess world, int x, int y, int z,
 			Block block, int modelId, Object renderer) {
-		if (block instanceof PC_ISwapTerrain) {
-			PC_Renderer.tessellatorDraw();
-			PC_Renderer.tessellatorStartDrawingQuads();
-			PC_Renderer.bindTexture(((PC_ISwapTerrain) block).getTerrainFile());
-			
-			Random posRand = new Random(x + x * y * z + z + world.getBlockMetadata(x, y, z));
+		PC_Renderer.tessellatorDraw();
+		PC_Renderer.tessellatorStartDrawingQuads();
+		PC_Renderer.bindTexture(((PC_ISwapTerrain) block).getTerrainFile());
+		
+		Random posRand = new Random(x + x * y * z + z + world.getBlockMetadata(x, y, z));
 
-			for (int q = 3 + posRand.nextInt(2); q > 0; q--) {
-				float i, j, k, a, b, c;
+		for (int q = 3 + posRand.nextInt(2); q > 0; q--) {
+			float i, j, k, a, b, c;
 
-				i = posRand.nextFloat() * 0.6F;
-				j = (q == 2 ? 0.001F : posRand.nextFloat() * 0.6F);
-				k = posRand.nextFloat() * 0.6F;
+			i = posRand.nextFloat() * 0.6F;
+			j = (q == 2 ? 0.001F : posRand.nextFloat() * 0.6F);
+			k = posRand.nextFloat() * 0.6F;
 
-				a = i + 0.3F + posRand.nextFloat() * (0.7F - i);
-				b = j + 0.3F + posRand.nextFloat() * (0.7F - j);
-				c = k + 0.3F + posRand.nextFloat() * (0.7F - k);
+			a = i + 0.3F + posRand.nextFloat() * (0.7F - i);
+			b = j + 0.3F + posRand.nextFloat() * (0.7F - j);
+			c = k + 0.3F + posRand.nextFloat() * (0.7F - k);
 
-				block.setBlockBounds(i, j, k, a, b, c);
-				PC_Renderer.renderStandardBlock(renderer, block, x, y, z);
-			}
-			block.setBlockBounds(0, 0, 0, 1, 1, 1);
-			
-			PC_Renderer.tessellatorDraw();
-			PC_Renderer.tessellatorStartDrawingQuads();
-			PC_Renderer.bindTexture("/terrain.png");
+			block.setBlockBounds(i, j, k, a, b, c);
+			PC_Renderer.renderStandardBlock(renderer, block, x, y, z);
 		}
+		block.setBlockBounds(0, 0, 0, 1, 1, 1);
+		
+		PC_Renderer.tessellatorDraw();
+		PC_Renderer.tessellatorStartDrawingQuads();
+		PC_Renderer.bindTexture("/terrain.png");
 		
 	}
 

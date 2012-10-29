@@ -34,12 +34,11 @@ public class PC_ClientRenderer extends PC_Renderer implements ISimpleBlockRender
 	public boolean renderWorldBlock(IBlockAccess world, int x, int y, int z, Block block, int modelId, RenderBlocks renderer) {
 		if(block instanceof PC_IBlockRenderer){
 			((PC_IBlockRenderer) block).renderWorldBlock(world, x, y, z, block, modelId, renderer);
-			return true;
 		}else if(block instanceof PC_IRotatedBox){
 			iRenderBlockRotatedBox(world, x, y, z, block, modelId, renderer);
-			return true;
-		}
-		return false;
+		}else
+			return false;
+		return true;
 	}
 
 	@Override
@@ -76,10 +75,13 @@ public class PC_ClientRenderer extends PC_Renderer implements ISimpleBlockRender
 	
 	@Override
 	protected void iRenderStandardBlock(Object renderer, Block block, int x, int y, int z){
+		((RenderBlocks)renderer).func_83018_a(block);
 		((RenderBlocks)renderer).renderStandardBlock(block, x, y, z);
+		((RenderBlocks)renderer).func_83017_b();
 	};
 
 	protected void iRenderInvBox(Object renderer, Block block, int metadata){
+		((RenderBlocks)renderer).func_83018_a(block);
 		Tessellator tessellator = Tessellator.instance;
 		RenderBlocks renderblocks = (RenderBlocks)renderer;
 		
@@ -121,6 +123,7 @@ public class PC_ClientRenderer extends PC_Renderer implements ISimpleBlockRender
 		renderblocks.renderSouthFace(block, 0.0D, 0.0D, 0.0D, textures[5]);
 		tessellator.draw();
 		GL11.glTranslatef(0.5F, 0.5F, 0.5F);
+		((RenderBlocks)renderer).func_83017_b();
 	}
 	
 	@Override
