@@ -116,5 +116,5 @@ Forge source installation
 MinecraftForge ships with this code and installs it as part of the forge
 installation process, no further action is required on your part.
 
-For reference this is version 3.1.35.394 of FML
+For reference this is version 4.2.6.422 of FML
 for Minecraft version ${version.minecraft}.
