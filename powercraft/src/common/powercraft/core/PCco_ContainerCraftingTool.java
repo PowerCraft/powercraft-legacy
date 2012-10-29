@@ -84,10 +84,11 @@ public class PCco_ContainerCraftingTool extends PC_GresBaseWithInventory{
 		slots.addAll(allMcSlots);
 		return slots;
 	}
-
+	
 	@Override
 	public void retrySlotClick(int par1, int par2, boolean par3, EntityPlayer entityPlayer) {
-		//if ((PC_Utils.isCreative() || PCco_SlotDirectCrafting.survivalCheating)) {}
+		if (PC_Utils.isCreative(entityPlayer) || PCco_SlotDirectCrafting.survivalCheating)
+			return;
 		super.retrySlotClick(par1, par2, par3, entityPlayer);
 	}
 	
