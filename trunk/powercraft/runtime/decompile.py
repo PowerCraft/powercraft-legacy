@@ -16,6 +16,8 @@ from mcp import decompile_side, updatemd5_side
 
 def main():
     parser = OptionParser(version='MCP %s' % Commands.fullversion())
+    parser.add_option('--client', dest='only_client', action='store_true', help='only process client', default=False)
+    parser.add_option('--server', dest='only_server', action='store_true', help='only process server', default=False)
     parser.add_option('-j', '--jad', dest='force_jad', action='store_true',
                       help='force use of JAD even if Fernflower available', default=False)
     parser.add_option('-s', '--csv', dest='force_csv', action='store_true',
@@ -39,11 +41,11 @@ def main():
     options, _ = parser.parse_args()
     decompile(options.config, options.force_jad, options.force_csv, options.no_recompile, options.no_comments,
               options.no_reformat, options.no_renamer, options.no_patch, options.only_patch, options.keep_lvt,
-              options.keep_generics)
+              options.keep_generics, options.only_client, options.only_server)
 
 
 def decompile(conffile, force_jad, force_csv, no_recompile, no_comments, no_reformat, no_renamer, no_patch, only_patch,
-              keep_lvt, keep_generics):
+              keep_lvt, keep_generics, only_client, only_server):
     try:
         commands = Commands(conffile, verify=True, no_patch=no_patch)
 
@@ -59,6 +61,14 @@ def decompile(conffile, force_jad, force_csv, no_recompile, no_comments, no_refo
         if force_csv and not commands.has_map_csv:
             commands.logger.error('!! forcing csvs when not available !!')
             sys.exit(1)
+
+        # client or server
+        process_client = True
+        process_server = True
+        if only_client and not only_server:
+            process_server = False
+        if only_server and not only_client:
+            process_client = False
 
         # always strip comments by default, turn off in update mode if required
         strip_comments = True
@@ -100,12 +110,18 @@ def decompile(conffile, force_jad, force_csv, no_recompile, no_comments, no_refo
         commands.creatergcfg(reobf=False, keep_lvt=keep_lvt, keep_generics=keep_generics, rg_update=rg_update)
 
         try:
-            cltdecomp = decompile_side(commands, CLIENT, use_ff=use_ff, use_srg=use_srg, no_comments=no_comments,
-                                       no_reformat=no_reformat, no_renamer=no_renamer, no_patch=no_patch,
-                                       strip_comments=strip_comments, exc_update=exc_update)
-            srvdecomp = decompile_side(commands, SERVER, use_ff=use_ff, use_srg=use_srg, no_comments=no_comments,
-                                       no_reformat=no_reformat, no_renamer=no_renamer, no_patch=no_patch,
-                                       strip_comments=strip_comments, exc_update=exc_update)
+            if process_client:
+                cltdecomp = decompile_side(commands, CLIENT, use_ff=use_ff, use_srg=use_srg, no_comments=no_comments,
+                                           no_reformat=no_reformat, no_renamer=no_renamer, no_patch=no_patch,
+                                           strip_comments=strip_comments, exc_update=exc_update)
+            else:
+                cltdecomp = False
+            if process_server:
+                srvdecomp = decompile_side(commands, SERVER, use_ff=use_ff, use_srg=use_srg, no_comments=no_comments,
+                                           no_reformat=no_reformat, no_renamer=no_renamer, no_patch=no_patch,
+                                           strip_comments=strip_comments, exc_update=exc_update)
+            else:
+                srvdecomp = False
         except CalledProcessError:
             # retroguard or other called process error so bail
             commands.logger.error('Decompile failed')

@@ -16,27 +16,42 @@ from mcp import recompile_side
 
 def main():
     parser = OptionParser(version='MCP %s' % Commands.fullversion())
+    parser.add_option('--client', dest='only_client', action='store_true', help='only process client', default=False)
+    parser.add_option('--server', dest='only_server', action='store_true', help='only process server', default=False)
     parser.add_option('-c', '--config', dest='config', help='additional configuration file')
     options, _ = parser.parse_args()
-    recompile(options.config)
+    recompile(options.config, options.only_client, options.only_server)
 
 
-def recompile(conffile):
+def recompile(conffile, only_client, only_server):
+    errorcode = 0
     try:
         commands = Commands(conffile, verify=True)
 
-        try:
-            recompile_side(commands, CLIENT)
-        except CalledProcessError:
-            pass
-        try:
-            recompile_side(commands, SERVER)
-        except CalledProcessError:
-            pass
+        # client or server
+        process_client = True
+        process_server = True
+        if only_client and not only_server:
+            process_server = False
+        if only_server and not only_client:
+            process_client = False
+
+        if process_client:
+            try:
+                recompile_side(commands, CLIENT)
+            except CalledProcessError:
+                errorcode = 2
+                pass
+        if process_server:
+            try:
+                recompile_side(commands, SERVER)
+            except CalledProcessError:
+                errorcode = 3
+                pass
     except Exception:  # pylint: disable-msg=W0703
         logging.exception('FATAL ERROR')
         sys.exit(1)
-
+    sys.exit(errorcode)
 
 if __name__ == '__main__':
     main()

@@ -143,7 +143,7 @@ def csv_header(csvfile):
 class Commands(object):
     """Contains the commands and initialisation for a full mcp run"""
 
-    MCPVersion = '7.2'
+    MCPVersion = '7.19'
     _default_config = 'conf/mcp.cfg'
     _version_config = 'conf/version.cfg'
 
@@ -459,8 +459,8 @@ class Commands(object):
         self.dirnatives = os.path.normpath(config.get('JAR', 'DirNatives'))
         self.jarclient = os.path.normpath(config.get('JAR', 'Client'))
         self.jarserver = os.path.normpath(config.get('JAR', 'Server'))
-        self.md5jarclt = config.get('JAR', 'MD5Client')
-        self.md5jarsrv = config.get('JAR', 'MD5Server')
+        self.md5jarclt = config.get('JAR', 'MD5Client').lower()
+        self.md5jarsrv = config.get('JAR', 'MD5Server').lower()
         jarslwjgl = config.get('JAR', 'LWJGL').split(',')
         self.jarslwjgl = [os.path.normpath(p) for p in jarslwjgl]
 
