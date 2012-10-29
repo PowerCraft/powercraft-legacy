@@ -141,7 +141,6 @@ public class PC_ClientRenderer extends PC_Renderer implements ISimpleBlockRender
 			block.setBlockBoundsBasedOnState(world, x, y, z);
 			((RenderBlocks)renderer).func_83018_a(block);
 			int l = ((PC_IRotatedBox) block).getRotation(metaAt);
-			int i1 = l;
 			((RenderBlocks)renderer).renderStandardBlock(block, x, y, z);
 
 			tessellator.setBrightness(block.getMixedBrightnessForBlock(world, x, y, z));
@@ -164,17 +163,17 @@ public class PC_ClientRenderer extends PC_Renderer implements ISimpleBlockRender
 			double d16 = z + block.func_83006_A();
 			double d17 = z + block.func_83005_z();
 			double d18 = y + d9;
-			if (i1 == 2) {
+			if (l == 2) {
 				d10 = d11 = x + block.func_83009_v();
 				d12 = d13 = x + block.func_83007_w();
 				d14 = d17 = z + block.func_83006_A();
 				d15 = d16 = z + block.func_83005_z();
-			} else if (i1 == 3) {
+			} else if (l == 3) {
 				d10 = d13 = x + block.func_83009_v();
 				d11 = d12 = x + block.func_83007_w();
 				d14 = d15 = z + block.func_83005_z();
 				d16 = d17 = z + block.func_83006_A();
-			} else if (i1 == 1) {
+			} else if (l == 1) {
 				d10 = d13 = x + block.func_83007_w();
 				d11 = d12 = x + block.func_83009_v();
 				d14 = d15 = z + block.func_83006_A();
