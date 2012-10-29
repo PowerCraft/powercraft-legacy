@@ -22,12 +22,12 @@ public class Packet102WindowClick extends Packet
 
     /** Item stack for inventory */
     public ItemStack itemStack;
-    public int holdingShift;
+    public boolean holdingShift;
 
     public Packet102WindowClick() {}
 
     @SideOnly(Side.CLIENT)
-    public Packet102WindowClick(int par1, int par2, int par3, int par4, ItemStack par5ItemStack, short par6)
+    public Packet102WindowClick(int par1, int par2, int par3, boolean par4, ItemStack par5ItemStack, short par6)
     {
         this.window_Id = par1;
         this.inventorySlot = par2;
@@ -54,7 +54,7 @@ public class Packet102WindowClick extends Packet
         this.inventorySlot = par1DataInputStream.readShort();
         this.mouseClick = par1DataInputStream.readByte();
         this.action = par1DataInputStream.readShort();
-        this.holdingShift = par1DataInputStream.readByte();
+        this.holdingShift = par1DataInputStream.readBoolean();
         this.itemStack = readItemStack(par1DataInputStream);
     }
 
@@ -67,7 +67,7 @@ public class Packet102WindowClick extends Packet
         par1DataOutputStream.writeShort(this.inventorySlot);
         par1DataOutputStream.writeByte(this.mouseClick);
         par1DataOutputStream.writeShort(this.action);
-        par1DataOutputStream.writeByte(this.holdingShift);
+        par1DataOutputStream.writeBoolean(this.holdingShift);
         writeItemStack(this.itemStack, par1DataOutputStream);
     }
 

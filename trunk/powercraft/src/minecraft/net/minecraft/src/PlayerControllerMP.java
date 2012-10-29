@@ -112,8 +112,7 @@ public class PlayerControllerMP
         {
             return false;
         }
-
-        if (this.currentGameType.func_82752_c() && !this.mc.thePlayer.func_82246_f(par1, par2, par3))
+        if (this.currentGameType.isAdventure())
         {
             return false;
         }
@@ -143,7 +142,7 @@ public class PlayerControllerMP
 
                     if (var9 != null)
                     {
-                        var9.onBlockDestroyed(var5, var6.blockID, par1, par2, par3, this.mc.thePlayer);
+                        var9.func_77941_a(var5, var6.blockID, par1, par2, par3, this.mc.thePlayer);
 
                         if (var9.stackSize == 0)
                         {
@@ -162,7 +161,7 @@ public class PlayerControllerMP
      */
     public void clickBlock(int par1, int par2, int par3, int par4)
     {
-        if (!this.currentGameType.func_82752_c() || this.mc.thePlayer.func_82246_f(par1, par2, par3))
+        if (!this.currentGameType.isAdventure())
         {
             if (this.currentGameType.isCreative())
             {
@@ -172,11 +171,6 @@ public class PlayerControllerMP
             }
             else if (!this.isHittingBlock || par1 != this.currentBlockX || par2 != this.currentBlockY || par3 != this.currentblockZ)
             {
-                if (this.isHittingBlock)
-                {
-                    this.netClientHandler.addToSendQueue(new Packet14BlockDig(2, par1, par2, par3, par4));
-                }
-
                 this.netClientHandler.addToSendQueue(new Packet14BlockDig(0, par1, par2, par3, par4));
                 int var5 = this.mc.theWorld.getBlockId(par1, par2, par3);
 
@@ -423,7 +417,7 @@ public class PlayerControllerMP
         return par1EntityPlayer.interactWith(par2Entity);
     }
 
-    public ItemStack windowClick(int par1, int par2, int par3, int par4, EntityPlayer par5EntityPlayer)
+    public ItemStack windowClick(int par1, int par2, int par3, boolean par4, EntityPlayer par5EntityPlayer)
     {
         short var6 = par5EntityPlayer.craftingInventory.getNextTransactionID(par5EntityPlayer.inventory);
         ItemStack var7 = par5EntityPlayer.craftingInventory.slotClick(par2, par3, par4, par5EntityPlayer);

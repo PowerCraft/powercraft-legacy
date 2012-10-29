@@ -9,7 +9,6 @@ public class EntityAINearestAttackableTarget extends EntityAITarget
     EntityLiving targetEntity;
     Class targetClass;
     int targetChance;
-    private final IEntitySelector field_82643_g;
 
     /** Instance of EntityAINearestAttackableTargetSorter. */
     private EntityAINearestAttackableTargetSorter theNearestAttackableTargetSorter;
@@ -21,17 +20,11 @@ public class EntityAINearestAttackableTarget extends EntityAITarget
 
     public EntityAINearestAttackableTarget(EntityLiving par1EntityLiving, Class par2Class, float par3, int par4, boolean par5, boolean par6)
     {
-        this(par1EntityLiving, par2Class, par3, par4, par5, par6, (IEntitySelector)null);
-    }
-
-    public EntityAINearestAttackableTarget(EntityLiving par1, Class par2, float par3, int par4, boolean par5, boolean par6, IEntitySelector par7IEntitySelector)
-    {
-        super(par1, par3, par5, par6);
-        this.targetClass = par2;
+        super(par1EntityLiving, par3, par5, par6);
+        this.targetClass = par2Class;
         this.targetDistance = par3;
         this.targetChance = par4;
-        this.theNearestAttackableTargetSorter = new EntityAINearestAttackableTargetSorter(this, par1);
-        this.field_82643_g = par7IEntitySelector;
+        this.theNearestAttackableTargetSorter = new EntityAINearestAttackableTargetSorter(this, par1EntityLiving);
         this.setMutexBits(1);
     }
 
@@ -58,7 +51,7 @@ public class EntityAINearestAttackableTarget extends EntityAITarget
             }
             else
             {
-                List var5 = this.taskOwner.worldObj.func_82733_a(this.targetClass, this.taskOwner.boundingBox.expand((double)this.targetDistance, 4.0D, (double)this.targetDistance), this.field_82643_g);
+                List var5 = this.taskOwner.worldObj.getEntitiesWithinAABB(this.targetClass, this.taskOwner.boundingBox.expand((double)this.targetDistance, 4.0D, (double)this.targetDistance));
                 Collections.sort(var5, this.theNearestAttackableTargetSorter);
                 Iterator var2 = var5.iterator();
 

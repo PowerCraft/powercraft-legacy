@@ -159,11 +159,6 @@ public class MathHelper
         return par1 >= par2 ? par1 : par0Random.nextInt(par2 - par1 + 1) + par1;
     }
 
-    public static double func_82716_a(Random par0Random, double par1, double par3)
-    {
-        return par1 >= par3 ? par1 : par0Random.nextDouble() * (par3 - par1) + par1;
-    }
-
     public static double average(long[] par0ArrayOfLong)
     {
         long var1 = 0L;
@@ -217,80 +212,6 @@ public class MathHelper
         }
 
         return par0;
-    }
-
-    public static int func_82715_a(String par0Str, int par1)
-    {
-        int var2 = par1;
-
-        try
-        {
-            var2 = Integer.parseInt(par0Str);
-        }
-        catch (Throwable var4)
-        {
-            ;
-        }
-
-        return var2;
-    }
-
-    public static int func_82714_a(String par0Str, int par1, int par2)
-    {
-        int var3 = par1;
-
-        try
-        {
-            var3 = Integer.parseInt(par0Str);
-        }
-        catch (Throwable var5)
-        {
-            ;
-        }
-
-        if (var3 < par2)
-        {
-            var3 = par2;
-        }
-
-        return var3;
-    }
-
-    public static double func_82712_a(String par0Str, double par1)
-    {
-        double var3 = par1;
-
-        try
-        {
-            var3 = Double.parseDouble(par0Str);
-        }
-        catch (Throwable var6)
-        {
-            ;
-        }
-
-        return var3;
-    }
-
-    public static double func_82713_a(String par0Str, double par1, double par3)
-    {
-        double var5 = par1;
-
-        try
-        {
-            var5 = Double.parseDouble(par0Str);
-        }
-        catch (Throwable var8)
-        {
-            ;
-        }
-
-        if (var5 < par3)
-        {
-            var5 = par3;
-        }
-
-        return var5;
     }
 
     static

@@ -134,11 +134,7 @@ public class StatList
             while (var1.hasNext())
             {
                 IRecipe var2 = (IRecipe)var1.next();
-
-                if (var2.getRecipeOutput() != null)
-                {
-                    var0.add(Integer.valueOf(var2.getRecipeOutput().itemID));
-                }
+                var0.add(Integer.valueOf(var2.getRecipeOutput().itemID));
             }
 
             var1 = FurnaceRecipes.smelting().getSmeltingList().values().iterator();

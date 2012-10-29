@@ -21,7 +21,6 @@ public class NextTickListEntry implements Comparable
 
     /** Time this tick is scheduled to occur at */
     public long scheduledTime;
-    public int field_82754_f;
 
     /** The id of the tick entry */
     private long tickEntryID;
@@ -62,18 +61,13 @@ public class NextTickListEntry implements Comparable
         return this;
     }
 
-    public void func_82753_a(int par1)
-    {
-        this.field_82754_f = par1;
-    }
-
     /**
      * Compares this tick entry to another tick entry for sorting purposes. Compared first based on the scheduled time
      * and second based on tickEntryID.
      */
     public int comparer(NextTickListEntry par1NextTickListEntry)
     {
-        return this.scheduledTime < par1NextTickListEntry.scheduledTime ? -1 : (this.scheduledTime > par1NextTickListEntry.scheduledTime ? 1 : (this.field_82754_f != par1NextTickListEntry.field_82754_f ? this.field_82754_f - par1NextTickListEntry.field_82754_f : (this.tickEntryID < par1NextTickListEntry.tickEntryID ? -1 : (this.tickEntryID > par1NextTickListEntry.tickEntryID ? 1 : 0))));
+        return this.scheduledTime < par1NextTickListEntry.scheduledTime ? -1 : (this.scheduledTime > par1NextTickListEntry.scheduledTime ? 1 : (this.tickEntryID < par1NextTickListEntry.tickEntryID ? -1 : (this.tickEntryID > par1NextTickListEntry.tickEntryID ? 1 : 0)));
     }
 
     public int compareTo(Object par1Obj)

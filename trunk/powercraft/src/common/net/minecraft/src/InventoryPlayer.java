@@ -178,37 +178,6 @@ public class InventoryPlayer implements IInventory
         }
     }
 
-    public int func_82347_b(int par1, int par2)
-    {
-        int var3 = 0;
-        int var4;
-        ItemStack var5;
-
-        for (var4 = 0; var4 < this.mainInventory.length; ++var4)
-        {
-            var5 = this.mainInventory[var4];
-
-            if (var5 != null && (par1 <= -1 || var5.itemID == par1) && (par2 <= -1 || var5.getItemDamage() == par2))
-            {
-                var3 += var5.stackSize;
-                this.mainInventory[var4] = null;
-            }
-        }
-
-        for (var4 = 0; var4 < this.armorInventory.length; ++var4)
-        {
-            var5 = this.armorInventory[var4];
-
-            if (var5 != null && (par1 <= -1 || var5.itemID == par1) && (par2 <= -1 || var5.getItemDamage() == par2))
-            {
-                var3 += var5.stackSize;
-                this.armorInventory[var4] = null;
-            }
-        }
-
-        return var3;
-    }
-
     @SideOnly(Side.CLIENT)
     public void func_70439_a(Item par1Item, int par2)
     {
@@ -633,6 +602,8 @@ public class InventoryPlayer implements IInventory
         }
     }
 
+    @SideOnly(Side.CLIENT)
+
     /**
      * returns a player armor item (as itemstack) contained in specified armor slot.
      */
@@ -756,7 +727,7 @@ public class InventoryPlayer implements IInventory
         {
             var5 = var2[var4];
 
-            if (var5 != null && var5.isItemEqual(par1ItemStack))
+            if (var5 != null && var5.isStackEqual(par1ItemStack))
             {
                 return true;
             }
@@ -769,7 +740,7 @@ public class InventoryPlayer implements IInventory
         {
             var5 = var2[var4];
 
-            if (var5 != null && var5.isItemEqual(par1ItemStack))
+            if (var5 != null && var5.isStackEqual(par1ItemStack))
             {
                 return true;
             }

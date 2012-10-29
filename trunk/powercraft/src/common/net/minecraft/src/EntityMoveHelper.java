@@ -59,7 +59,7 @@ public class EntityMoveHelper
             {
                 float var10 = (float)(Math.atan2(var4, var2) * 180.0D / Math.PI) - 90.0F;
                 this.entity.rotationYaw = this.func_75639_a(this.entity.rotationYaw, var10, 30.0F);
-                this.entity.setAIMoveSpeed(this.speed * this.entity.getSpeedModifier());
+                this.entity.setAIMoveSpeed(this.speed);
 
                 if (var6 > 0.0D && var2 * var2 + var4 * var4 < 1.0D)
                 {

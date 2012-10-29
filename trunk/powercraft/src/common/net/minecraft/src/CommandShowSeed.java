@@ -17,14 +17,9 @@ public class CommandShowSeed extends CommandBase
         return "seed";
     }
 
-    public int func_82362_a()
-    {
-        return 2;
-    }
-
     public void processCommand(ICommandSender par1ICommandSender, String[] par2ArrayOfStr)
     {
-        EntityPlayerMP var3 = getCommandSenderAsPlayer(par1ICommandSender);
+        EntityPlayer var3 = getCommandSenderAsPlayer(par1ICommandSender);
         par1ICommandSender.sendChatToPlayer("Seed: " + var3.worldObj.getSeed());
     }
 }

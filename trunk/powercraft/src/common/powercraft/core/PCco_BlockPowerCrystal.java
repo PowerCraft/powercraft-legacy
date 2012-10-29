@@ -90,7 +90,7 @@ public class PCco_BlockPowerCrystal extends PC_Block implements PC_IConfigLoader
 	}
 
 	@Override
-	public int damageDropped(int i) {
+	protected int damageDropped(int i) {
 		return i;
 	}
 

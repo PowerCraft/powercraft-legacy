@@ -1,5 +1,8 @@
 package net.minecraft.src;
 
+import cpw.mods.fml.common.Side;
+import cpw.mods.fml.common.asm.SideOnly;
+
 public class StepSound
 {
     public final String stepSoundName;
@@ -23,12 +26,14 @@ public class StepSound
         return this.stepSoundPitch;
     }
 
+    @SideOnly(Side.CLIENT)
+
     /**
      * Used when a block breaks, EXA: Player break, Shep eating grass, etc..
      */
     public String getBreakSound()
     {
-        return "dig." + this.stepSoundName;
+        return "step." + this.stepSoundName;
     }
 
     /**
@@ -37,10 +42,5 @@ public class StepSound
     public String getStepSound()
     {
         return "step." + this.stepSoundName;
-    }
-
-    public String func_82593_b()
-    {
-        return this.getBreakSound();
     }
 }

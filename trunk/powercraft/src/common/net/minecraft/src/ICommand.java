@@ -21,6 +21,4 @@ public interface ICommand extends Comparable
      * Adds the strings available in this command to the given list of tab completion options.
      */
     List addTabCompletionOptions(ICommandSender var1, String[] var2);
-
-    boolean func_82358_a(int var1);
 }

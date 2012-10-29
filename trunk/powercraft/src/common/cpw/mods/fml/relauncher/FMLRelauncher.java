@@ -120,7 +120,7 @@ public class FMLRelauncher
     private Class<? super Object> setupNewClientHome(File minecraftHome)
     {
         Class<? super Object> client = ReflectionHelper.getClass(classLoader, "net.minecraft.client.Minecraft");
-        ReflectionHelper.setPrivateValue(client, null, minecraftHome, "minecraftDir", "an", "minecraftDir");
+        ReflectionHelper.setPrivateValue(client, null, minecraftHome, "minecraftDir", "am", "minecraftDir");
         return client;
     }
 
@@ -147,8 +147,8 @@ public class FMLRelauncher
     {
         FMLInjectionData.build(minecraftHome, classLoader);
         FMLRelaunchLog.minecraftHome = minecraftHome;
-        FMLRelaunchLog.info("Forge Mod Loader version %s.%s.%s.%s for Minecraft %s loading", FMLInjectionData.major, FMLInjectionData.minor,
-                FMLInjectionData.rev, FMLInjectionData.build, FMLInjectionData.mccversion, FMLInjectionData.mcpversion);
+        FMLRelaunchLog.info("Forge Mod Loader version %s.%s.%s.%s for Minecraft client:%s, server:%s loading", FMLInjectionData.major, FMLInjectionData.minor,
+                FMLInjectionData.rev, FMLInjectionData.build, FMLInjectionData.mccversion, FMLInjectionData.mcsversion);
 
         try
         {
@@ -188,7 +188,7 @@ public class FMLRelauncher
         if (str != null)
         {
             str = str.replace('/', File.separatorChar);
-            ReflectionHelper.setPrivateValue(mcMaster, null, new File(str), "minecraftDir", "an", "minecraftDir");
+            ReflectionHelper.setPrivateValue(mcMaster, null, new File(str), "minecraftDir", "am", "minecraftDir");
         }
         // We force minecraft to setup it's homedir very early on so we can
         // inject stuff into it
@@ -201,7 +201,7 @@ public class FMLRelauncher
         {
             // Hmmm
         }
-        File minecraftHome = ReflectionHelper.getPrivateValue(mcMaster, null, "minecraftDir", "an", "minecraftDir");
+        File minecraftHome = ReflectionHelper.getPrivateValue(mcMaster, null, "minecraftDir", "am", "minecraftDir");
         return minecraftHome;
     }
 

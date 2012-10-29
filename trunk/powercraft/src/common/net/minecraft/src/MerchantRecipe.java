@@ -1,8 +1,5 @@
 package net.minecraft.src;
 
-import cpw.mods.fml.common.Side;
-import cpw.mods.fml.common.asm.SideOnly;
-
 public class MerchantRecipe
 {
     /** Item the Villager buys. */
@@ -18,7 +15,6 @@ public class MerchantRecipe
      * Saves how much has been tool used when put into to slot to be enchanted.
      */
     private int toolUses;
-    private int field_82786_e;
 
     public MerchantRecipe(NBTTagCompound par1NBTTagCompound)
     {
@@ -30,7 +26,6 @@ public class MerchantRecipe
         this.itemToBuy = par1ItemStack;
         this.secondItemToBuy = par2ItemStack;
         this.itemToSell = par3ItemStack;
-        this.field_82786_e = 7;
     }
 
     public MerchantRecipe(ItemStack par1ItemStack, ItemStack par2ItemStack)
@@ -91,25 +86,14 @@ public class MerchantRecipe
         return this.hasSameIDsAs(par1MerchantRecipe) && (this.itemToBuy.stackSize < par1MerchantRecipe.itemToBuy.stackSize || this.secondItemToBuy != null && this.secondItemToBuy.stackSize < par1MerchantRecipe.secondItemToBuy.stackSize);
     }
 
+    public int getToolUses()
+    {
+        return this.toolUses;
+    }
+
     public void incrementToolUses()
     {
         ++this.toolUses;
-    }
-
-    public void func_82783_a(int par1)
-    {
-        this.field_82786_e += par1;
-    }
-
-    public boolean func_82784_g()
-    {
-        return this.toolUses >= this.field_82786_e;
-    }
-
-    @SideOnly(Side.CLIENT)
-    public void func_82785_h()
-    {
-        this.toolUses = this.field_82786_e;
     }
 
     public void readFromTags(NBTTagCompound par1NBTTagCompound)
@@ -128,15 +112,6 @@ public class MerchantRecipe
         {
             this.toolUses = par1NBTTagCompound.getInteger("uses");
         }
-
-        if (par1NBTTagCompound.hasKey("maxUses"))
-        {
-            this.field_82786_e = par1NBTTagCompound.getInteger("maxUses");
-        }
-        else
-        {
-            this.field_82786_e = 7;
-        }
     }
 
     public NBTTagCompound writeToTags()
@@ -151,7 +126,6 @@ public class MerchantRecipe
         }
 
         var1.setInteger("uses", this.toolUses);
-        var1.setInteger("maxUses", this.field_82786_e);
         return var1;
     }
 }

@@ -40,7 +40,7 @@ public class Item
     public static Item axeDiamond = (new ItemAxe(23, EnumToolMaterial.EMERALD)).setIconCoord(3, 7).setItemName("hatchetDiamond");
     public static Item stick = (new Item(24)).setIconCoord(5, 3).setFull3D().setItemName("stick").setCreativeTab(CreativeTabs.tabMaterials);
     public static Item bowlEmpty = (new Item(25)).setIconCoord(7, 4).setItemName("bowl").setCreativeTab(CreativeTabs.tabMaterials);
-    public static Item bowlSoup = (new ItemSoup(26, 6)).setIconCoord(8, 4).setItemName("mushroomStew");
+    public static Item bowlSoup = (new ItemSoup(26, 8)).setIconCoord(8, 4).setItemName("mushroomStew");
     public static Item swordGold = (new ItemSword(27, EnumToolMaterial.GOLD)).setIconCoord(4, 4).setItemName("swordGold");
     public static Item shovelGold = (new ItemSpade(28, EnumToolMaterial.GOLD)).setIconCoord(4, 5).setItemName("shovelGold");
     public static Item pickaxeGold = (new ItemPickaxe(29, EnumToolMaterial.GOLD)).setIconCoord(4, 6).setItemName("pickaxeGold");
@@ -79,7 +79,7 @@ public class Item
     public static Item flint = (new Item(62)).setIconCoord(6, 0).setItemName("flint").setCreativeTab(CreativeTabs.tabMaterials);
     public static Item porkRaw = (new ItemFood(63, 3, 0.3F, true)).setIconCoord(7, 5).setItemName("porkchopRaw");
     public static Item porkCooked = (new ItemFood(64, 8, 0.8F, true)).setIconCoord(8, 5).setItemName("porkchopCooked");
-    public static Item painting = (new ItemHangingEntity(65, EntityPainting.class)).setIconCoord(10, 1).setItemName("painting");
+    public static Item painting = (new ItemPainting(65)).setIconCoord(10, 1).setItemName("painting");
     public static Item appleGold = (new ItemAppleGold(66, 4, 1.2F, false)).setAlwaysEdible().setPotionEffect(Potion.regeneration.id, 5, 0, 1.0F).setIconCoord(11, 0).setItemName("appleGold");
     public static Item sign = (new ItemSign(67)).setIconCoord(10, 2).setItemName("sign");
     public static Item doorWood = (new ItemDoor(68, Material.wood)).setIconCoord(11, 2).setItemName("doorWood");
@@ -159,18 +159,6 @@ public class Item
     public static Item writableBook = (new ItemWritableBook(130)).setIconCoord(11, 11).setItemName("writingBook").setCreativeTab(CreativeTabs.tabMisc);
     public static Item writtenBook = (new ItemEditableBook(131)).setIconCoord(12, 11).setItemName("writtenBook");
     public static Item emerald = (new Item(132)).setIconCoord(10, 11).setItemName("emerald").setCreativeTab(CreativeTabs.tabMaterials);
-    public static Item field_82802_bI = (new ItemHangingEntity(133, EntityItemFrame.class)).setIconCoord(14, 12).setItemName("frame");
-    public static Item field_82796_bJ = (new ItemReed(134, Block.field_82516_cf)).setIconCoord(13, 11).setItemName("flowerPot").setCreativeTab(CreativeTabs.tabDecorations);
-    public static Item field_82797_bK = (new ItemSeedFood(135, 4, 0.6F, Block.field_82513_cg.blockID, Block.tilledField.blockID)).setIconCoord(8, 7).setItemName("carrots");
-    public static Item field_82794_bL = (new ItemSeedFood(136, 1, 0.3F, Block.field_82514_ch.blockID, Block.tilledField.blockID)).setIconCoord(7, 7).setItemName("potato");
-    public static Item field_82795_bM = (new ItemFood(137, 6, 0.6F, false)).setIconCoord(6, 7).setItemName("potatoBaked");
-    public static Item field_82800_bN = (new ItemFood(138, 2, 0.3F, false)).setPotionEffect(Potion.poison.id, 5, 0, 0.6F).setIconCoord(6, 8).setItemName("potatoPoisonous");
-    public static ItemEmptyMap field_82801_bO = (ItemEmptyMap)(new ItemEmptyMap(139)).setIconCoord(13, 12).setItemName("emptyMap");
-    public static Item field_82798_bP = (new ItemFood(140, 6, 1.2F, false)).setIconCoord(6, 9).setItemName("carrotGolden").setPotionEffect(PotionHelper.field_82818_l);
-    public static Item field_82799_bQ = (new ItemSkull(141)).setItemName("skull");
-    public static Item field_82793_bR = (new ItemCarrotOnAStick(142)).setIconCoord(6, 6).setItemName("carrotOnAStick");
-    public static Item field_82792_bS = (new ItemSimpleFoiled(143)).setIconCoord(9, 11).setItemName("netherStar").setCreativeTab(CreativeTabs.tabMaterials);
-    public static Item field_82791_bT = (new ItemFood(144, 8, 0.3F, false)).setIconCoord(8, 9).setItemName("pumpkinPie").setCreativeTab(CreativeTabs.tabFood);
     public static Item record13 = (new ItemRecord(2000, "13")).setIconCoord(0, 15).setItemName("record");
     public static Item recordCat = (new ItemRecord(2001, "cat")).setIconCoord(1, 15).setItemName("record");
     public static Item recordBlocks = (new ItemRecord(2002, "blocks")).setIconCoord(2, 15).setItemName("record");
@@ -259,16 +247,6 @@ public class Item
         return this.iconIndex;
     }
 
-    @SideOnly(Side.CLIENT)
-
-    /**
-     * Returns the icon index of the stack given as argument.
-     */
-    public final int getIconIndex(ItemStack par1ItemStack)
-    {
-        return this.getIconFromDamage(par1ItemStack.getItemDamage());
-    }
-
     /**
      * Callback for item usage. If the item does something special on right clicking, he will have one of those. Return
      * True if something happen and false if it don't. This is for ITEMS, not BLOCKS
@@ -293,6 +271,16 @@ public class Item
     public ItemStack onItemRightClick(ItemStack par1ItemStack, World par2World, EntityPlayer par3EntityPlayer)
     {
         return par1ItemStack;
+    }
+
+    @SideOnly(Side.CLIENT)
+
+    /**
+     * Returns the icon index of the stack given as argument.
+     */
+    public final int getIconIndex(ItemStack par1ItemStack)
+    {
+        return this.getIconFromDamage(par1ItemStack.getItemDamage());
     }
 
     public ItemStack onFoodEaten(ItemStack par1ItemStack, World par2World, EntityPlayer par3EntityPlayer)
@@ -426,6 +414,7 @@ public class Item
         return this;
     }
 
+    @SideOnly(Side.CLIENT)
     public String getLocalItemName(ItemStack par1ItemStack)
     {
         String var2 = this.getItemNameIS(par1ItemStack);
@@ -462,7 +451,7 @@ public class Item
      */
     public boolean getShareTag()
     {
-        return true;
+        return false;
     }
 
     public Item getContainerItem()
@@ -489,7 +478,7 @@ public class Item
     }
 
     @SideOnly(Side.CLIENT)
-    public int func_82790_a(ItemStack par1ItemStack, int par2)
+    public int getColorFromDamage(int par1, int par2)
     {
         return 16777215;
     }
@@ -564,8 +553,9 @@ public class Item
     /**
      * allows items to add custom lines of information to the mouseover description
      */
-    public void addInformation(ItemStack par1ItemStack, EntityPlayer par2EntityPlayer, List par3List, boolean par4) {}
+    public void addInformation(ItemStack par1ItemStack, List par2List) {}
 
+    @SideOnly(Side.CLIENT)
     public String getItemDisplayName(ItemStack par1ItemStack)
     {
         return ("" + StringTranslate.getInstance().translateNamedKey(this.getLocalItemName(par1ItemStack))).trim();
@@ -603,7 +593,7 @@ public class Item
         double var7 = par2EntityPlayer.prevPosX + (par2EntityPlayer.posX - par2EntityPlayer.prevPosX) * (double)var4;
         double var9 = par2EntityPlayer.prevPosY + (par2EntityPlayer.posY - par2EntityPlayer.prevPosY) * (double)var4 + 1.62D - (double)par2EntityPlayer.yOffset;
         double var11 = par2EntityPlayer.prevPosZ + (par2EntityPlayer.posZ - par2EntityPlayer.prevPosZ) * (double)var4;
-        Vec3 var13 = par1World.func_82732_R().getVecFromPool(var7, var9, var11);
+        Vec3 var13 = Vec3.getVec3Pool().getVecFromPool(var7, var9, var11);
         float var14 = MathHelper.cos(-var6 * 0.017453292F - (float)Math.PI);
         float var15 = MathHelper.sin(-var6 * 0.017453292F - (float)Math.PI);
         float var16 = -MathHelper.cos(-var5 * 0.017453292F);
@@ -670,16 +660,6 @@ public class Item
     public CreativeTabs getCreativeTab()
     {
         return this.tabToDisplayOn;
-    }
-
-    public boolean func_82788_x()
-    {
-        return true;
-    }
-
-    public boolean func_82789_a(ItemStack par1ItemStack, ItemStack par2ItemStack)
-    {
-        return false;
     }
 
     static

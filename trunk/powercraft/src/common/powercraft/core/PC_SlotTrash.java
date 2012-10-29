@@ -1,6 +1,5 @@
 package powercraft.core;
 
-import net.minecraft.src.EntityPlayer;
 import net.minecraft.src.ItemStack;
 import net.minecraft.src.Slot;
 
@@ -22,7 +21,7 @@ public class PC_SlotTrash extends Slot {
 	protected void onCrafting(ItemStack itemstack) {}
 
 	@Override
-	public void func_82870_a(EntityPlayer player, ItemStack par1ItemStack) {}
+	public void onPickupFromSlot(ItemStack par1ItemStack) {}
 
 	@Override
 	public boolean isItemValid(ItemStack par1ItemStack) {

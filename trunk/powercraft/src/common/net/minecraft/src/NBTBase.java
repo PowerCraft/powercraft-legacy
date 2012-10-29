@@ -6,8 +6,6 @@ import java.io.IOException;
 
 public abstract class NBTBase
 {
-    public static final String[] field_82578_b = new String[] {"END", "BYTE", "SHORT", "INT", "LONG", "FLOAT", "DOUBLE", "BYTE[]", "STRING", "LIST", "COMPOUND", "INT[]"};
-
     /** The UTF string key used to lookup values. */
     private String name;
 
@@ -78,19 +76,8 @@ public abstract class NBTBase
         {
             String var2 = par0DataInput.readUTF();
             NBTBase var3 = newTag(var1, var2);
-
-            try
-            {
-                var3.load(par0DataInput);
-                return var3;
-            }
-            catch (IOException var6)
-            {
-                CrashReport var5 = new CrashReport("loading nbt data", var6);
-                var5.addCrashSection("Tag name", var2);
-                var5.addCrashSection("Tag type", Byte.valueOf(var1));
-                throw new ReportedException(var5);
-            }
+            var3.load(par0DataInput);
+            return var3;
         }
     }
 

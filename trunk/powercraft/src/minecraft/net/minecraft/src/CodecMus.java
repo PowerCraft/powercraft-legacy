@@ -12,7 +12,7 @@ public class CodecMus extends CodecJOrbis
         {
             return new MusInputStream(this, this.url, this.urlConnection.getInputStream());
         }
-        catch (IOException e)
+        catch (IOException ex)
         {
             return null;
         }

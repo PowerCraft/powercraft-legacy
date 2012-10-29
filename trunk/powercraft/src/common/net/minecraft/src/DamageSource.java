@@ -14,10 +14,7 @@ public class DamageSource
     public static DamageSource generic = (new DamageSource("generic")).setDamageBypassesArmor();
     public static DamageSource explosion = (new DamageSource("explosion")).func_76351_m();
     public static DamageSource field_76375_l = new DamageSource("explosion");
-    public static DamageSource magic = (new DamageSource("magic")).setDamageBypassesArmor().func_82726_p();
-    public static DamageSource field_82727_n = (new DamageSource("wither")).setDamageBypassesArmor();
-    public static DamageSource field_82728_o = new DamageSource("anvil");
-    public static DamageSource field_82729_p = new DamageSource("fallingBlock");
+    public static DamageSource magic = (new DamageSource("magic")).setDamageBypassesArmor();
 
     /** This kind of damage can be blocked or not. */
     private boolean isUnblockable = false;
@@ -30,7 +27,6 @@ public class DamageSource
     /** This kind of damage is based on a projectile or not. */
     private boolean projectile;
     private boolean field_76381_t;
-    private boolean field_82730_x = false;
     public String damageType;
 
     public static DamageSource causeMobDamage(EntityLiving par0EntityLiving)
@@ -69,7 +65,7 @@ public class DamageSource
 
     public static DamageSource causeIndirectMagicDamage(Entity par0Entity, Entity par1Entity)
     {
-        return (new EntityDamageSourceIndirect("indirectMagic", par0Entity, par1Entity)).setDamageBypassesArmor().func_82726_p();
+        return (new EntityDamageSourceIndirect("indirectMagic", par0Entity, par1Entity)).setDamageBypassesArmor();
     }
 
     /**
@@ -177,16 +173,5 @@ public class DamageSource
     public boolean func_76350_n()
     {
         return this.field_76381_t;
-    }
-
-    public boolean func_82725_o()
-    {
-        return this.field_82730_x;
-    }
-
-    public DamageSource func_82726_p()
-    {
-        this.field_82730_x = true;
-        return this;
     }
 }

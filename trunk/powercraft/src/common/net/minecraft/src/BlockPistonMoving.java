@@ -193,12 +193,12 @@ public class BlockPistonMoving extends BlockContainer
             }
 
             int var8 = var5.getPistonOrientation();
-            this.minX = var6.func_83009_v() - (double)((float)Facing.offsetsXForSide[var8] * var7);
-            this.minY = var6.func_83008_x() - (double)((float)Facing.offsetsYForSide[var8] * var7);
-            this.minZ = var6.func_83005_z() - (double)((float)Facing.offsetsZForSide[var8] * var7);
-            this.maxX = var6.func_83007_w() - (double)((float)Facing.offsetsXForSide[var8] * var7);
-            this.maxY = var6.func_83010_y() - (double)((float)Facing.offsetsYForSide[var8] * var7);
-            this.maxZ = var6.func_83006_A() - (double)((float)Facing.offsetsZForSide[var8] * var7);
+            this.minX = var6.minX - (double)((float)Facing.offsetsXForSide[var8] * var7);
+            this.minY = var6.minY - (double)((float)Facing.offsetsYForSide[var8] * var7);
+            this.minZ = var6.minZ - (double)((float)Facing.offsetsZForSide[var8] * var7);
+            this.maxX = var6.maxX - (double)((float)Facing.offsetsXForSide[var8] * var7);
+            this.maxY = var6.maxY - (double)((float)Facing.offsetsYForSide[var8] * var7);
+            this.maxZ = var6.maxZ - (double)((float)Facing.offsetsZForSide[var8] * var7);
         }
     }
 

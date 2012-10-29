@@ -34,16 +34,6 @@ public class RenderSpider extends RenderLiving
             GL11.glEnable(GL11.GL_BLEND);
             GL11.glDisable(GL11.GL_ALPHA_TEST);
             GL11.glBlendFunc(GL11.GL_ONE, GL11.GL_ONE);
-
-            if (par1EntitySpider.func_82150_aj())
-            {
-                GL11.glDepthMask(false);
-            }
-            else
-            {
-                GL11.glDepthMask(true);
-            }
-
             char var5 = 61680;
             int var6 = var5 % 65536;
             int var7 = var5 / 65536;

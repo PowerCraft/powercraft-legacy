@@ -39,7 +39,7 @@ public class DedicatedServer extends MinecraftServer implements IServer
         var1.setDaemon(true);
         var1.start();
         ConsoleLogManager.init();
-        logger.info("Starting minecraft server version 1.4.2");
+        logger.info("Starting minecraft server version 1.3.2");
 
         if (Runtime.getRuntime().maxMemory() / 1024L / 1024L < 512L)
         {
@@ -67,6 +67,7 @@ public class DedicatedServer extends MinecraftServer implements IServer
         this.setAllowFlight(this.settings.getBooleanProperty("allow-flight", false));
         this.setTexturePack(this.settings.getProperty("texture-pack", ""));
         this.setMOTD(this.settings.getProperty("motd", "A Minecraft Server"));
+        spawnProtectionSize = this.settings.getIntProperty("spawn-protection-size", 16);
         this.canSpawnStructures = this.settings.getBooleanProperty("generate-structures", true);
         int var2 = this.settings.getIntProperty("gamemode", EnumGameType.SURVIVAL.getID());
         this.gameType = WorldSettings.getGameTypeById(var2);
@@ -91,10 +92,10 @@ public class DedicatedServer extends MinecraftServer implements IServer
         {
             this.networkThread = new DedicatedServerListenThread(this, var3, this.getServerPort());
         }
-        catch (IOException var16)
+        catch (IOException var15)
         {
             logger.warning("**** FAILED TO BIND TO PORT!");
-            logger.log(Level.WARNING, "The exception was: " + var16.toString());
+            logger.log(Level.WARNING, "The exception was: " + var15.toString());
             logger.warning("Perhaps a server is already running on that port?");
             return false;
         }
@@ -118,31 +119,30 @@ public class DedicatedServer extends MinecraftServer implements IServer
 
         String var6 = this.settings.getProperty("level-seed", "");
         String var7 = this.settings.getProperty("level-type", "DEFAULT");
-        String var8 = this.settings.getProperty("generator-settings", "");
-        long var9 = (new Random()).nextLong();
+        long var8 = (new Random()).nextLong();
 
         if (var6.length() > 0)
         {
             try
             {
-                long var11 = Long.parseLong(var6);
+                long var10 = Long.parseLong(var6);
 
-                if (var11 != 0L)
+                if (var10 != 0L)
                 {
-                    var9 = var11;
+                    var8 = var10;
                 }
             }
-            catch (NumberFormatException var15)
+            catch (NumberFormatException var14)
             {
-                var9 = (long)var6.hashCode();
+                var8 = (long)var6.hashCode();
             }
         }
 
-        WorldType var17 = WorldType.parseWorldType(var7);
+        WorldType var16 = WorldType.parseWorldType(var7);
 
-        if (var17 == null)
+        if (var16 == null)
         {
-            var17 = WorldType.DEFAULT;
+            var16 = WorldType.DEFAULT;
         }
 
         this.setBuildLimit(this.settings.getIntProperty("max-build-height", 256));
@@ -150,10 +150,10 @@ public class DedicatedServer extends MinecraftServer implements IServer
         this.setBuildLimit(MathHelper.clamp_int(this.getBuildLimit(), 64, 256));
         this.settings.setProperty("max-build-height", Integer.valueOf(this.getBuildLimit()));
         logger.info("Preparing level \"" + this.getFolderName() + "\"");
-        this.loadAllWorlds(this.getFolderName(), this.getFolderName(), var9, var17, var8);
-        long var12 = System.nanoTime() - var4;
-        String var14 = String.format("%.3fs", new Object[] {Double.valueOf((double)var12 / 1.0E9D)});
-        logger.info("Done (" + var14 + ")! For help, type \"help\" or \"?\"");
+        this.loadAllWorlds(this.getFolderName(), this.getFolderName(), var8, var16);
+        long var11 = System.nanoTime() - var4;
+        String var13 = String.format("%.3fs", new Object[] {Double.valueOf((double)var11 / 1.0E9D)});
+        logger.info("Done (" + var13 + ")! For help, type \"help\" or \"?\"");
 
         if (this.settings.getBooleanProperty("enable-query", false))
         {
@@ -355,23 +355,13 @@ public class DedicatedServer extends MinecraftServer implements IServer
         return "";
     }
 
-    public boolean func_82356_Z()
-    {
-        return this.settings.getBooleanProperty("enable-command-block", false);
-    }
-
-    public int func_82357_ak()
-    {
-        return this.settings.getIntProperty("spawn-protection", super.func_82357_ak());
-    }
-
     public ServerConfigurationManager getConfigurationManager()
     {
         return this.getDedicatedPlayerList();
     }
 
     @SideOnly(Side.SERVER)
-    public void func_82011_an()
+    public void func_79001_aj()
     {
         ServerGUI.initGUI(this);
         this.guiIsEnabled = true;

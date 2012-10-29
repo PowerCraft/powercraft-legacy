@@ -1,8 +1,5 @@
 package net.minecraft.src;
 
-import cpw.mods.fml.common.Side;
-import cpw.mods.fml.common.asm.SideOnly;
-
 public class BlockFence extends Block
 {
     public BlockFence(int par1, int par2)
@@ -143,16 +140,5 @@ public class BlockFence extends Block
     public static boolean isIdAFence(int par0)
     {
         return par0 == Block.fence.blockID || par0 == Block.netherFence.blockID;
-    }
-
-    @SideOnly(Side.CLIENT)
-
-    /**
-     * Returns true if the given side of this block type should be rendered, if the adjacent block is at the given
-     * coordinates.  Args: blockAccess, x, y, z, side
-     */
-    public boolean shouldSideBeRendered(IBlockAccess var1, int var2, int var3, int var4, int var5)
-    {
-        return var5 != 1 && var5 != 0 ? true : super.shouldSideBeRendered(var1, var2, var3, var4, var5);
     }
 }

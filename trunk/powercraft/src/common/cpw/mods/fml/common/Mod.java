@@ -18,9 +18,6 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
-import cpw.mods.fml.common.event.FMLInterModComms;
-import cpw.mods.fml.common.event.FMLInterModComms.IMCMessage;
-
 import net.minecraft.src.ItemBlock;
 
 /**
@@ -66,7 +63,7 @@ public @interface Mod
      * An optional bukkit plugin that will be injected into the bukkit plugin framework if
      * this mod is loaded into the FML framework and the bukkit coremod is present.
      * Instances of the bukkit plugin can be obtained via the {@link BukkitPluginRef} annotation on fields.
-     * @return The name of the plugin to load for this mod
+     * @return
      */
     String bukkitPlugin() default "";
     /**
@@ -102,7 +99,7 @@ public @interface Mod
     @Target(ElementType.METHOD)
     public @interface ServerStarting {}
     /**
-     * Mark the designated method as being called at the "server-started" phase
+     * Mark the designated method as being called at the "post-initialization" phase
      * @author cpw
      *
      */
@@ -110,22 +107,13 @@ public @interface Mod
     @Target(ElementType.METHOD)
     public @interface ServerStarted {}
     /**
-     * Mark the designated method as being called at the "server-stopping" phase
+     * Mark the designated method as being called at the "post-initialization" phase
      * @author cpw
      *
      */
     @Retention(RetentionPolicy.RUNTIME)
     @Target(ElementType.METHOD)
     public @interface ServerStopping {}
-    /**
-     * Mark the designated method as the receiver for {@link FMLInterModComms} messages
-     * Called between {@link Init} and {@link PostInit}
-     * @author cpw
-     *
-     */
-    @Retention(RetentionPolicy.RUNTIME)
-    @Target(ElementType.METHOD)
-    public @interface IMCCallback {}
     /**
      * Populate the annotated field with the mod instance.
      * @author cpw

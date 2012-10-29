@@ -6,17 +6,15 @@ import cpw.mods.fml.common.asm.SideOnly;
 public class EntityCreeper extends EntityMob
 {
     /**
+     * The amount of time since the creeper was close enough to the player to ignite
+     */
+    int timeSinceIgnited;
+
+    /**
      * Time when this creeper was last in an active state (Messed up code here, probably causes creeper animation to go
      * weird)
      */
-    private int lastActiveTime;
-
-    /**
-     * The amount of time since the creeper was close enough to the player to ignite
-     */
-    private int timeSinceIgnited;
-    private int field_82225_f = 30;
-    private int field_82226_g = 3;
+    int lastActiveTime;
 
     public EntityCreeper(World par1World)
     {
@@ -39,25 +37,6 @@ public class EntityCreeper extends EntityMob
     public boolean isAIEnabled()
     {
         return true;
-    }
-
-    public int func_82143_as()
-    {
-        return this.getAttackTarget() == null ? 3 : 3 + (this.health - 1);
-    }
-
-    /**
-     * Called when the mob is falling. Calculates and applies fall damage.
-     */
-    protected void fall(float par1)
-    {
-        super.fall(par1);
-        this.timeSinceIgnited = (int)((float)this.timeSinceIgnited + par1 * 1.5F);
-
-        if (this.timeSinceIgnited > this.field_82225_f - 5)
-        {
-            this.timeSinceIgnited = this.field_82225_f - 5;
-        }
     }
 
     public int getMaxHealth()
@@ -83,9 +62,6 @@ public class EntityCreeper extends EntityMob
         {
             par1NBTTagCompound.setBoolean("powered", true);
         }
-
-        par1NBTTagCompound.setShort("Fuse", (short)this.field_82225_f);
-        par1NBTTagCompound.setByte("ExplosionRadius", (byte)this.field_82226_g);
     }
 
     /**
@@ -95,16 +71,6 @@ public class EntityCreeper extends EntityMob
     {
         super.readEntityFromNBT(par1NBTTagCompound);
         this.dataWatcher.updateObject(17, Byte.valueOf((byte)(par1NBTTagCompound.getBoolean("powered") ? 1 : 0)));
-
-        if (par1NBTTagCompound.hasKey("Fuse"))
-        {
-            this.field_82225_f = par1NBTTagCompound.getShort("Fuse");
-        }
-
-        if (par1NBTTagCompound.hasKey("ExplosionRadius"))
-        {
-            this.field_82226_g = par1NBTTagCompound.getByte("ExplosionRadius");
-        }
     }
 
     /**
@@ -129,21 +95,19 @@ public class EntityCreeper extends EntityMob
                 this.timeSinceIgnited = 0;
             }
 
-            if (this.timeSinceIgnited >= this.field_82225_f)
+            if (this.timeSinceIgnited >= 30)
             {
-                this.timeSinceIgnited = this.field_82225_f;
+                this.timeSinceIgnited = 30;
 
                 if (!this.worldObj.isRemote)
                 {
-                    boolean var2 = this.worldObj.func_82736_K().func_82766_b("mobGriefing");
-
                     if (this.getPowered())
                     {
-                        this.worldObj.createExplosion(this, this.posX, this.posY, this.posZ, (float)(this.field_82226_g * 2), var2);
+                        this.worldObj.createExplosion(this, this.posX, this.posY, this.posZ, 6.0F);
                     }
                     else
                     {
-                        this.worldObj.createExplosion(this, this.posX, this.posY, this.posZ, (float)this.field_82226_g, var2);
+                        this.worldObj.createExplosion(this, this.posX, this.posY, this.posZ, 3.0F);
                     }
 
                     this.setDead();
@@ -159,7 +123,7 @@ public class EntityCreeper extends EntityMob
      */
     protected String getHurtSound()
     {
-        return "mob.creeper.say";
+        return "mob.creeper";
     }
 
     /**
@@ -167,7 +131,7 @@ public class EntityCreeper extends EntityMob
      */
     protected String getDeathSound()
     {
-        return "mob.creeper.death";
+        return "mob.creeperdeath";
     }
 
     /**
@@ -203,7 +167,7 @@ public class EntityCreeper extends EntityMob
      */
     public float setCreeperFlashTime(float par1)
     {
-        return ((float)this.lastActiveTime + (float)(this.timeSinceIgnited - this.lastActiveTime) * par1) / (float)(this.field_82225_f - 2);
+        return ((float)this.lastActiveTime + (float)(this.timeSinceIgnited - this.lastActiveTime) * par1) / 28.0F;
     }
 
     /**

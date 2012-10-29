@@ -1,9 +1,16 @@
 package powercraft.core;
 
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 
 import net.minecraft.src.EntityPlayer;
+import net.minecraft.src.NetworkManager;
+import net.minecraft.src.Packet250CustomPayload;
+import net.minecraft.src.TileEntity;
+import cpw.mods.fml.common.network.IPacketHandler;
+import cpw.mods.fml.common.network.PacketDispatcher;
+import cpw.mods.fml.common.network.Player;
 
 public class PC_ClientPacketHandler extends PC_PacketHandler {
 

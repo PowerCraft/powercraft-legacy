@@ -106,7 +106,15 @@ public class EntityClientPlayerMP extends EntityPlayerSP
 
         if (this.ridingEntity != null)
         {
-            this.sendQueue.addToSendQueue(new Packet13PlayerLookMove(this.motionX, -999.0D, -999.0D, this.motionZ, this.rotationYaw, this.rotationPitch, this.onGround));
+            if (var14)
+            {
+                this.sendQueue.addToSendQueue(new Packet11PlayerPosition(this.motionX, -999.0D, -999.0D, this.motionZ, this.onGround));
+            }
+            else
+            {
+                this.sendQueue.addToSendQueue(new Packet13PlayerLookMove(this.motionX, -999.0D, -999.0D, this.motionZ, this.rotationYaw, this.rotationPitch, this.onGround));
+            }
+
             var13 = false;
         }
         else if (var13 && var14)
@@ -121,7 +129,7 @@ public class EntityClientPlayerMP extends EntityPlayerSP
         {
             this.sendQueue.addToSendQueue(new Packet12PlayerLook(this.rotationYaw, this.rotationPitch, this.onGround));
         }
-        else
+        else if (this.wasOnGround != this.onGround)
         {
             this.sendQueue.addToSendQueue(new Packet10Flying(this.onGround));
         }
@@ -187,10 +195,7 @@ public class EntityClientPlayerMP extends EntityPlayerSP
      */
     protected void damageEntity(DamageSource par1DamageSource, int par2)
     {
-        if (!this.field_83001_bt)
-        {
-            this.setEntityHealth(this.getHealth() - par2);
-        }
+        this.setEntityHealth(this.getHealth() - par2);
     }
 
     /**

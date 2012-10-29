@@ -18,10 +18,6 @@ public class BlockCrops extends BlockFlower
         float var3 = 0.5F;
         this.setBlockBounds(0.5F - var3, 0.0F, 0.5F - var3, 0.5F + var3, 0.25F, 0.5F + var3);
         this.setCreativeTab((CreativeTabs)null);
-        this.setHardness(0.0F);
-        this.setStepSound(soundGrassFootstep);
-        this.disableStats();
-        this.setRequiresSelfNotify();
     }
 
     /**
@@ -140,16 +136,6 @@ public class BlockCrops extends BlockFlower
         return 6;
     }
 
-    protected int func_82532_h()
-    {
-        return Item.seeds.shiftedIndex;
-    }
-
-    protected int func_82533_j()
-    {
-        return Item.wheat.shiftedIndex;
-    }
-
     /**
      * Drops the block items with a specified chance of dropping the specified items
      */
@@ -157,32 +143,22 @@ public class BlockCrops extends BlockFlower
     {
         super.dropBlockAsItemWithChance(par1World, par2, par3, par4, par5, par6, 0);
     }
-
+        
     @Override 
     public ArrayList<ItemStack> getBlockDropped(World world, int x, int y, int z, int metadata, int fortune)
     {
         ArrayList<ItemStack> ret = new ArrayList<ItemStack>();
         if (metadata == 7)
-        {      
-            int count = quantityDropped(metadata, fortune, world.rand);
-            for(int i = 0; i < count; i++)
-            {
-                int id = idDropped(metadata, world.rand, 0);
-                if (id > 0)
-                {
-                    ret.add(new ItemStack(id, 1, damageDropped(metadata)));
-                }
-            }
+        {
+            ret.add(new ItemStack(Item.wheat));
         }
 
-        if (metadata >= 7)
+        for (int n = 0; n < 3 + fortune; n++)
         {
-            for (int n = 0; n < 3 + fortune; n++)
+
+            if (world.rand.nextInt(15) <= metadata)
             {
-                if (world.rand.nextInt(15) <= metadata)
-                {
-                    ret.add(new ItemStack(this.func_82532_h(), 1, 0));
-                }
+                ret.add(new ItemStack(Item.seeds));
             }
         }
 
@@ -194,7 +170,7 @@ public class BlockCrops extends BlockFlower
      */
     public int idDropped(int par1, Random par2Random, int par3)
     {
-        return par1 == 7 ? this.func_82533_j() : this.func_82532_h();
+        return par1 == 7 ? Item.wheat.shiftedIndex : -1;
     }
 
     /**
@@ -212,6 +188,6 @@ public class BlockCrops extends BlockFlower
      */
     public int idPicked(World par1World, int par2, int par3, int par4)
     {
-        return this.func_82532_h();
+        return Item.seeds.shiftedIndex;
     }
 }

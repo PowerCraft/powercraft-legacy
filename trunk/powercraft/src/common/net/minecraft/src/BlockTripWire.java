@@ -2,7 +2,6 @@ package net.minecraft.src;
 
 import cpw.mods.fml.common.Side;
 import cpw.mods.fml.common.asm.SideOnly;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Random;
 
@@ -232,18 +231,7 @@ public class BlockTripWire extends Block
 
         if (!var8.isEmpty())
         {
-            Iterator var9 = var8.iterator();
-
-            while (var9.hasNext())
-            {
-                Entity var10 = (Entity)var9.next();
-
-                if (!var10.func_82144_au())
-                {
-                    var7 = true;
-                    break;
-                }
-            }
+            var7 = true;
         }
 
         if (var7 && !var6)

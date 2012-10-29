@@ -44,8 +44,6 @@ public interface IWorldAccess
      */
     void playRecord(String var1, int var2, int var3, int var4);
 
-    void func_82746_a(int var1, int var2, int var3, int var4, int var5);
-
     /**
      * Plays a pre-canned sound effect along with potentially auxiliary data-driven one-shot behaviour (particles, etc).
      */

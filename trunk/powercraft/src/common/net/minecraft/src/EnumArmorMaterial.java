@@ -54,9 +54,4 @@ public enum EnumArmorMaterial
     {
         return this.enchantability;
     }
-
-    public int func_82845_b()
-    {
-        return this == CLOTH ? Item.leather.shiftedIndex : (this == CHAIN ? Item.ingotIron.shiftedIndex : (this == GOLD ? Item.ingotGold.shiftedIndex : (this == IRON ? Item.ingotIron.shiftedIndex : (this == DIAMOND ? Item.diamond.shiftedIndex : 0))));
-    }
 }

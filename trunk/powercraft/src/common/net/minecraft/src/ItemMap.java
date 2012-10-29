@@ -2,24 +2,25 @@ package net.minecraft.src;
 
 import cpw.mods.fml.common.Side;
 import cpw.mods.fml.common.asm.SideOnly;
-import java.util.List;
 
 public class ItemMap extends ItemMapBase
 {
     protected ItemMap(int par1)
     {
         super(par1);
-        this.setHasSubtypes(true);
+        this.setMaxStackSize(1);
+        this.setCreativeTab(CreativeTabs.tabMisc);
     }
 
     @SideOnly(Side.CLIENT)
     public static MapData getMPMapData(short par0, World par1World)
     {
-        String var2 = "map_" + par0;
-        MapData var3 = (MapData)par1World.loadItemData(MapData.class, var2);
+        MapData var3 = (MapData)par1World.loadItemData(MapData.class, "map_" + par0);
 
         if (var3 == null)
         {
+            int var4 = par1World.getUniqueDataId("map");
+            String var2 = "map_" + var4;
             var3 = new MapData(var2);
             par1World.setItemData(var2, var3);
         }
@@ -29,18 +30,16 @@ public class ItemMap extends ItemMapBase
 
     public MapData getMapData(ItemStack par1ItemStack, World par2World)
     {
-        String var3 = "map_" + par1ItemStack.getItemDamage();
-        MapData var4 = (MapData)par2World.loadItemData(MapData.class, var3);
+        MapData var4 = (MapData)par2World.loadItemData(MapData.class, "map_" + par1ItemStack.getItemDamage());
 
-        if (var4 == null && !par2World.isRemote)
+        if (var4 == null)
         {
             par1ItemStack.setItemDamage(par2World.getUniqueDataId("map"));
-            var3 = "map_" + par1ItemStack.getItemDamage();
+            String var3 = "map_" + par1ItemStack.getItemDamage();
             var4 = new MapData(var3);
+            var4.xCenter = par2World.getWorldInfo().getSpawnX();
+            var4.zCenter = par2World.getWorldInfo().getSpawnZ();
             var4.scale = 3;
-            int var5 = 128 * (1 << var4.scale);
-            var4.xCenter = Math.round((float)par2World.getWorldInfo().getSpawnX() / (float)var5) * var5;
-            var4.zCenter = Math.round((float)(par2World.getWorldInfo().getSpawnZ() / var5)) * var5;
             var4.dimension = par2World.provider.dimensionId;
             var4.markDirty();
             par2World.setItemData(var3, var4);
@@ -51,7 +50,7 @@ public class ItemMap extends ItemMapBase
 
     public void updateMapData(World par1World, Entity par2Entity, MapData par3MapData)
     {
-        if (par1World.provider.dimensionId == par3MapData.dimension && par2Entity instanceof EntityPlayer)
+        if (par1World.provider.dimensionId == par3MapData.dimension)
         {
             short var4 = 128;
             short var5 = 128;
@@ -67,198 +66,203 @@ public class ItemMap extends ItemMapBase
                 var11 /= 2;
             }
 
-            MapInfo var12 = par3MapData.func_82568_a((EntityPlayer)par2Entity);
-            ++var12.field_82569_d;
+            ++par3MapData.randomEffect;
 
-            for (int var13 = var9 - var11 + 1; var13 < var9 + var11; ++var13)
+            for (int var12 = var9 - var11 + 1; var12 < var9 + var11; ++var12)
             {
-                if ((var13 & 15) == (var12.field_82569_d & 15))
+                if ((var12 & 15) == (par3MapData.randomEffect & 15))
                 {
-                    int var14 = 255;
-                    int var15 = 0;
-                    double var16 = 0.0D;
+                    int var13 = 255;
+                    int var14 = 0;
+                    double var15 = 0.0D;
 
-                    for (int var18 = var10 - var11 - 1; var18 < var10 + var11; ++var18)
+                    for (int var17 = var10 - var11 - 1; var17 < var10 + var11; ++var17)
                     {
-                        if (var13 >= 0 && var18 >= -1 && var13 < var4 && var18 < var5)
+                        if (var12 >= 0 && var17 >= -1 && var12 < var4 && var17 < var5)
                         {
-                            int var19 = var13 - var9;
-                            int var20 = var18 - var10;
-                            boolean var21 = var19 * var19 + var20 * var20 > (var11 - 2) * (var11 - 2);
-                            int var22 = (var7 / var6 + var13 - var4 / 2) * var6;
-                            int var23 = (var8 / var6 + var18 - var5 / 2) * var6;
-                            int[] var24 = new int[Block.blocksList.length];
-                            Chunk var25 = par1World.getChunkFromBlockCoords(var22, var23);
+                            int var18 = var12 - var9;
+                            int var19 = var17 - var10;
+                            boolean var20 = var18 * var18 + var19 * var19 > (var11 - 2) * (var11 - 2);
+                            int var21 = (var7 / var6 + var12 - var4 / 2) * var6;
+                            int var22 = (var8 / var6 + var17 - var5 / 2) * var6;
+                            byte var23 = 0;
+                            byte var24 = 0;
+                            byte var25 = 0;
+                            int[] var26 = new int[Block.blocksList.length];
+                            Chunk var27 = par1World.getChunkFromBlockCoords(var21, var22);
 
-                            if (!var25.isEmpty())
+                            if (!var27.isEmpty())
                             {
-                                int var26 = var22 & 15;
-                                int var27 = var23 & 15;
-                                int var28 = 0;
-                                double var29 = 0.0D;
-                                int var31;
-                                int var32;
+                                int var28 = var21 & 15;
+                                int var29 = var22 & 15;
+                                int var30 = 0;
+                                double var31 = 0.0D;
+                                int var34;
+                                int var35;
                                 int var33;
-                                int var36;
+                                int var38;
 
                                 if (par1World.provider.hasNoSky)
                                 {
-                                    var31 = var22 + var23 * 231871;
-                                    var31 = var31 * var31 * 31287121 + var31 * 11;
+                                    var33 = var21 + var22 * 231871;
+                                    var33 = var33 * var33 * 31287121 + var33 * 11;
 
-                                    if ((var31 >> 20 & 1) == 0)
+                                    if ((var33 >> 20 & 1) == 0)
                                     {
-                                        var24[Block.dirt.blockID] += 10;
+                                        var26[Block.dirt.blockID] += 10;
                                     }
                                     else
                                     {
-                                        var24[Block.stone.blockID] += 10;
+                                        var26[Block.stone.blockID] += 10;
                                     }
 
-                                    var29 = 100.0D;
+                                    var31 = 100.0D;
                                 }
                                 else
                                 {
-                                    for (var31 = 0; var31 < var6; ++var31)
+                                    for (var33 = 0; var33 < var6; ++var33)
                                     {
-                                        for (var32 = 0; var32 < var6; ++var32)
+                                        for (var34 = 0; var34 < var6; ++var34)
                                         {
-                                            var33 = var25.getHeightValue(var31 + var26, var32 + var27) + 1;
-                                            int var34 = 0;
+                                            var35 = var27.getHeightValue(var33 + var28, var34 + var29) + 1;
+                                            int var36 = 0;
 
-                                            if (var33 > 1)
+                                            if (var35 > 1)
                                             {
-                                                boolean var35;
+                                                boolean var37 = false;
 
                                                 do
                                                 {
-                                                    var35 = true;
-                                                    var34 = var25.getBlockID(var31 + var26, var33 - 1, var32 + var27);
+                                                    var37 = true;
+                                                    var36 = var27.getBlockID(var33 + var28, var35 - 1, var34 + var29);
 
-                                                    if (var34 == 0)
+                                                    if (var36 == 0)
                                                     {
-                                                        var35 = false;
+                                                        var37 = false;
                                                     }
-                                                    else if (var33 > 0 && var34 > 0 && Block.blocksList[var34].blockMaterial.materialMapColor == MapColor.airColor)
+                                                    else if (var35 > 0 && var36 > 0 && Block.blocksList[var36].blockMaterial.materialMapColor == MapColor.airColor)
                                                     {
-                                                        var35 = false;
+                                                        var37 = false;
                                                     }
 
-                                                    if (!var35)
+                                                    if (!var37)
                                                     {
-                                                        --var33;
+                                                        --var35;
 
-                                                        if (var33 <= 0)
+                                                        if (var35 <= 0)
                                                         {
                                                             break;
                                                         }
 
-                                                        var34 = var25.getBlockID(var31 + var26, var33 - 1, var32 + var27);
+                                                        var36 = var27.getBlockID(var33 + var28, var35 - 1, var34 + var29);
                                                     }
                                                 }
-                                                while (var33 > 0 && !var35);
+                                                while (var35 > 0 && !var37);
 
-                                                if (var33 > 0 && var34 != 0 && Block.blocksList[var34].blockMaterial.isLiquid())
+                                                if (var35 > 0 && var36 != 0 && Block.blocksList[var36].blockMaterial.isLiquid())
                                                 {
-                                                    var36 = var33 - 1;
-                                                    boolean var37 = false;
-                                                    int var43;
+                                                    var38 = var35 - 1;
+                                                    boolean var39 = false;
+                                                    int var41;
 
                                                     do
                                                     {
-                                                        var43 = var25.getBlockID(var31 + var26, var36--, var32 + var27);
-                                                        ++var28;
+                                                        var41 = var27.getBlockID(var33 + var28, var38--, var34 + var29);
+                                                        ++var30;
                                                     }
-                                                    while (var36 > 0 && var43 != 0 && Block.blocksList[var43].blockMaterial.isLiquid());
+                                                    while (var38 > 0 && var41 != 0 && Block.blocksList[var41].blockMaterial.isLiquid());
                                                 }
                                             }
 
-                                            var29 += (double)var33 / (double)(var6 * var6);
-                                            ++var24[var34];
+                                            var31 += (double)var35 / (double)(var6 * var6);
+                                            ++var26[var36];
                                         }
                                     }
                                 }
 
-                                var28 /= var6 * var6;
-                                var31 = 0;
-                                var32 = 0;
+                                var30 /= var6 * var6;
+                                int var10000 = var23 / (var6 * var6);
+                                var10000 = var24 / (var6 * var6);
+                                var10000 = var25 / (var6 * var6);
+                                var33 = 0;
+                                var34 = 0;
 
-                                for (var33 = 0; var33 < Block.blocksList.length; ++var33)
+                                for (var35 = 0; var35 < Block.blocksList.length; ++var35)
                                 {
-                                    if (var24[var33] > var31)
+                                    if (var26[var35] > var33)
                                     {
-                                        var32 = var33;
-                                        var31 = var24[var33];
+                                        var34 = var35;
+                                        var33 = var26[var35];
                                     }
                                 }
 
-                                double var40 = (var29 - var16) * 4.0D / (double)(var6 + 4) + ((double)(var13 + var18 & 1) - 0.5D) * 0.4D;
-                                byte var39 = 1;
+                                double var43 = (var31 - var15) * 4.0D / (double)(var6 + 4) + ((double)(var12 + var17 & 1) - 0.5D) * 0.4D;
+                                byte var42 = 1;
 
-                                if (var40 > 0.6D)
+                                if (var43 > 0.6D)
                                 {
-                                    var39 = 2;
+                                    var42 = 2;
                                 }
 
-                                if (var40 < -0.6D)
+                                if (var43 < -0.6D)
                                 {
-                                    var39 = 0;
+                                    var42 = 0;
                                 }
 
-                                var36 = 0;
+                                var38 = 0;
 
-                                if (var32 > 0)
+                                if (var34 > 0)
                                 {
-                                    MapColor var42 = Block.blocksList[var32].blockMaterial.materialMapColor;
+                                    MapColor var45 = Block.blocksList[var34].blockMaterial.materialMapColor;
 
-                                    if (var42 == MapColor.waterColor)
+                                    if (var45 == MapColor.waterColor)
                                     {
-                                        var40 = (double)var28 * 0.1D + (double)(var13 + var18 & 1) * 0.2D;
-                                        var39 = 1;
+                                        var43 = (double)var30 * 0.1D + (double)(var12 + var17 & 1) * 0.2D;
+                                        var42 = 1;
 
-                                        if (var40 < 0.5D)
+                                        if (var43 < 0.5D)
                                         {
-                                            var39 = 2;
+                                            var42 = 2;
                                         }
 
-                                        if (var40 > 0.9D)
+                                        if (var43 > 0.9D)
                                         {
-                                            var39 = 0;
+                                            var42 = 0;
                                         }
                                     }
 
-                                    var36 = var42.colorIndex;
+                                    var38 = var45.colorIndex;
                                 }
 
-                                var16 = var29;
+                                var15 = var31;
 
-                                if (var18 >= 0 && var19 * var19 + var20 * var20 < var11 * var11 && (!var21 || (var13 + var18 & 1) != 0))
+                                if (var17 >= 0 && var18 * var18 + var19 * var19 < var11 * var11 && (!var20 || (var12 + var17 & 1) != 0))
                                 {
-                                    byte var41 = par3MapData.colors[var13 + var18 * var4];
-                                    byte var38 = (byte)(var36 * 4 + var39);
+                                    byte var44 = par3MapData.colors[var12 + var17 * var4];
+                                    byte var40 = (byte)(var38 * 4 + var42);
 
-                                    if (var41 != var38)
+                                    if (var44 != var40)
                                     {
-                                        if (var14 > var18)
+                                        if (var13 > var17)
                                         {
-                                            var14 = var18;
+                                            var13 = var17;
                                         }
 
-                                        if (var15 < var18)
+                                        if (var14 < var17)
                                         {
-                                            var15 = var18;
+                                            var14 = var17;
                                         }
 
-                                        par3MapData.colors[var13 + var18 * var4] = var38;
+                                        par3MapData.colors[var12 + var17 * var4] = var40;
                                     }
                                 }
                             }
                         }
                     }
 
-                    if (var14 <= var15)
+                    if (var13 <= var14)
                     {
-                        par3MapData.func_76194_a(var13, var14, var15);
+                        par3MapData.func_76194_a(var12, var13, var14);
                     }
                 }
             }
@@ -289,59 +293,27 @@ public class ItemMap extends ItemMapBase
     }
 
     /**
+     * Called when item is crafted/smelted. Used only by maps so far.
+     */
+    public void onCreated(ItemStack par1ItemStack, World par2World, EntityPlayer par3EntityPlayer)
+    {
+        par1ItemStack.setItemDamage(par2World.getUniqueDataId("map"));
+        String var4 = "map_" + par1ItemStack.getItemDamage();
+        MapData var5 = new MapData(var4);
+        par2World.setItemData(var4, var5);
+        var5.xCenter = MathHelper.floor_double(par3EntityPlayer.posX);
+        var5.zCenter = MathHelper.floor_double(par3EntityPlayer.posZ);
+        var5.scale = 3;
+        var5.dimension = par2World.provider.dimensionId;
+        var5.markDirty();
+    }
+
+    /**
      * returns null if no update is to be sent
      */
     public Packet createMapDataPacket(ItemStack par1ItemStack, World par2World, EntityPlayer par3EntityPlayer)
     {
         byte[] var4 = this.getMapData(par1ItemStack, par2World).func_76193_a(par1ItemStack, par2World, par3EntityPlayer);
         return var4 == null ? null : new Packet131MapData((short)Item.map.shiftedIndex, (short)par1ItemStack.getItemDamage(), var4);
-    }
-
-    /**
-     * Called when item is crafted/smelted. Used only by maps so far.
-     */
-    public void onCreated(ItemStack par1ItemStack, World par2World, EntityPlayer par3EntityPlayer)
-    {
-        if (par1ItemStack.hasTagCompound() && par1ItemStack.getTagCompound().getBoolean("map_is_scaling"))
-        {
-            MapData var4 = Item.map.getMapData(par1ItemStack, par2World);
-            par1ItemStack.setItemDamage(par2World.getUniqueDataId("map"));
-            MapData var5 = new MapData("map_" + par1ItemStack.getItemDamage());
-            var5.scale = (byte)(var4.scale + 1);
-
-            if (var5.scale > 4)
-            {
-                var5.scale = 4;
-            }
-
-            var5.xCenter = var4.xCenter;
-            var5.zCenter = var4.zCenter;
-            var5.dimension = var4.dimension;
-            var5.markDirty();
-            par2World.setItemData("map_" + par1ItemStack.getItemDamage(), var5);
-        }
-    }
-
-    @SideOnly(Side.CLIENT)
-
-    /**
-     * allows items to add custom lines of information to the mouseover description
-     */
-    public void addInformation(ItemStack par1ItemStack, EntityPlayer par2EntityPlayer, List par3List, boolean par4)
-    {
-        MapData var5 = this.getMapData(par1ItemStack, par2EntityPlayer.worldObj);
-
-        if (par4)
-        {
-            if (var5 == null)
-            {
-                par3List.add("Unknown map");
-            }
-            else
-            {
-                par3List.add("Scaling at 1:" + (1 << var5.scale));
-                par3List.add("(Level " + var5.scale + "/" + 4 + ")");
-            }
-        }
     }
 }

@@ -12,12 +12,10 @@ public interface ICommandSender
     /**
      * Returns true if the command sender is allowed to use the given command.
      */
-    boolean canCommandSenderUseCommand(int var1, String var2);
+    boolean canCommandSenderUseCommand(String var1);
 
     /**
      * Translates and formats the given string key with the given arguments.
      */
     String translateString(String var1, Object ... var2);
-
-    ChunkCoordinates func_82114_b();
 }

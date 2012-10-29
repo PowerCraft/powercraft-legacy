@@ -166,7 +166,7 @@ public class EntitySheep extends EntityAnimal implements IShearable
      */
     protected String getLivingSound()
     {
-        return "mob.sheep.say";
+        return "mob.sheep";
     }
 
     /**
@@ -174,7 +174,7 @@ public class EntitySheep extends EntityAnimal implements IShearable
      */
     protected String getHurtSound()
     {
-        return "mob.sheep.say";
+        return "mob.sheep";
     }
 
     /**
@@ -182,15 +182,7 @@ public class EntitySheep extends EntityAnimal implements IShearable
      */
     protected String getDeathSound()
     {
-        return "mob.sheep.say";
-    }
-
-    /**
-     * Plays step sound at given x, y, z for the entity
-     */
-    protected void playStepSound(int par1, int par2, int par3, int par4)
-    {
-        this.worldObj.playSoundAtEntity(this, "mob.sheep.step", 0.15F, 1.0F);
+        return "mob.sheep";
     }
 
     public int getFleeceColor()
@@ -279,11 +271,6 @@ public class EntitySheep extends EntityAnimal implements IShearable
         }
     }
 
-    public void func_82163_bD()
-    {
-        this.setFleeceColor(getRandomFleeceColor(this.worldObj.rand));
-    }
-
     @Override
     public boolean isShearable(ItemStack item, World world, int X, int Y, int Z) 
     {
@@ -300,7 +287,6 @@ public class EntitySheep extends EntityAnimal implements IShearable
         {
             ret.add(new ItemStack(Block.cloth.blockID, 1, getFleeceColor()));
         }
-        this.worldObj.playSoundAtEntity(this, "mob.sheep.shear", 1.0F, 1.0F);
         return ret;
     }
 }

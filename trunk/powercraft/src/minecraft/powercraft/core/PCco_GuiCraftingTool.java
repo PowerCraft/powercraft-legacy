@@ -1,7 +1,6 @@
 package powercraft.core;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 import java.util.Set;
@@ -91,7 +90,7 @@ public class PCco_GuiCraftingTool extends PCco_ContainerCraftingTool implements 
 		Collection<List<PCco_SlotDirectCrafting>> cls = moduleList.values();
 		for(List<PCco_SlotDirectCrafting> ls: cls){
 			for(PCco_SlotDirectCrafting s:ls){
-				List<String> info = (List<String>)s.getBackgroundStack().func_82840_a(thePlayer, false);
+				List<String> info = (List<String>)s.getBackgroundStack().getItemNameandInformation();
 				for(String infoString:info){
 					if (infoString.toLowerCase().contains(searchString)){
 						searchPage.slots.add(s);
@@ -101,7 +100,7 @@ public class PCco_GuiCraftingTool extends PCco_ContainerCraftingTool implements 
 			}
 		}
 		for(PCco_SlotDirectCrafting s:allMcSlots){
-			List<String> info = (List<String>)s.getBackgroundStack().func_82840_a(thePlayer, false);
+			List<String> info = (List<String>)s.getBackgroundStack().getItemNameandInformation();
 			for(String infoString:info){
 				if (infoString.toLowerCase().contains(searchString)){
 					searchPage.slots.add(s);
@@ -139,9 +138,7 @@ public class PCco_GuiCraftingTool extends PCco_ContainerCraftingTool implements 
 		
 		PC_GresTab t = new PC_GresTab();
 		
-		String[] keys = moduleList.keySet().toArray(new String[0]);
-		
-		Arrays.sort(keys);
+		Set<String> keys = moduleList.keySet();
 		
 		PC_GresWidget td=null;
 		

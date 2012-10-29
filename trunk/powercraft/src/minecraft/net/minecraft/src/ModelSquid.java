@@ -39,15 +39,15 @@ public class ModelSquid extends ModelBase
      * and legs, where par1 represents the time(so that arms and legs swing back and forth) and par2 represents how
      * "far" arms and legs can swing at most.
      */
-    public void setRotationAngles(float par1, float par2, float par3, float par4, float par5, float par6, Entity par7Entity)
+    public void setRotationAngles(float par1, float par2, float par3, float par4, float par5, float par6)
     {
-        ModelRenderer[] var8 = this.squidTentacles;
-        int var9 = var8.length;
+        ModelRenderer[] var7 = this.squidTentacles;
+        int var8 = var7.length;
 
-        for (int var10 = 0; var10 < var9; ++var10)
+        for (int var9 = 0; var9 < var8; ++var9)
         {
-            ModelRenderer var11 = var8[var10];
-            var11.rotateAngleX = par3;
+            ModelRenderer var10 = var7[var9];
+            var10.rotateAngleX = par3;
         }
     }
 
@@ -56,7 +56,7 @@ public class ModelSquid extends ModelBase
      */
     public void render(Entity par1Entity, float par2, float par3, float par4, float par5, float par6, float par7)
     {
-        this.setRotationAngles(par2, par3, par4, par5, par6, par7, par1Entity);
+        this.setRotationAngles(par2, par3, par4, par5, par6, par7);
         this.squidBody.render(par7);
         ModelRenderer[] var8 = this.squidTentacles;
         int var9 = var8.length;

@@ -64,13 +64,9 @@ public class EffectRenderer
             for (int var2 = 0; var2 < this.fxLayers[var1].size(); ++var2)
             {
                 EntityFX var3 = (EntityFX)this.fxLayers[var1].get(var2);
+                var3.onUpdate();
 
-                if (var3 != null)
-                {
-                    var3.onUpdate();
-                }
-
-                if (var3 == null || var3.isDead)
+                if (var3.isDead)
                 {
                     this.fxLayers[var1].remove(var2--);
                 }
@@ -132,7 +128,6 @@ public class EffectRenderer
                 for (int var11 = 0; var11 < this.fxLayers[var8].size(); ++var11)
                 {
                     EntityFX var12 = (EntityFX)this.fxLayers[var8].get(var11);
-                    if (var12 == null) continue;
                     var10.setBrightness(var12.getBrightnessForRender(par2));
                     var12.renderParticle(var10, par2, var3, var7, var4, var5, var6);
                 }
@@ -145,8 +140,7 @@ public class EffectRenderer
         {
             ForgeHooksClient.bindTexture(key, 0);
             for (EntityFX entry : effectList.get(key))
-            {
-                if (entry == null) continue;
+            {                
                 Tessellator tessallator = Tessellator.instance;
                 //GL11.glBindTexture(GL11.GL_TEXTURE_2D, renderer.getTexture(key));
                 tessallator.startDrawingQuads();
@@ -179,7 +173,6 @@ public class EffectRenderer
             for (int var11 = 0; var11 < this.fxLayers[var9].size(); ++var11)
             {
                 EntityFX var12 = (EntityFX)this.fxLayers[var9].get(var11);
-                if (var12 == null) continue;
                 var10.setBrightness(var12.getBrightnessForRender(par2));
                 var12.renderParticle(var10, par2, var4, var8, var5, var6, var7);
             }
@@ -233,38 +226,38 @@ public class EffectRenderer
         {
             Block var6 = Block.blocksList[var5];
             float var7 = 0.1F;
-            double var8 = (double)par1 + this.rand.nextDouble() * (var6.func_83007_w() - var6.func_83009_v() - (double)(var7 * 2.0F)) + (double)var7 + var6.func_83009_v();
-            double var10 = (double)par2 + this.rand.nextDouble() * (var6.func_83010_y() - var6.func_83008_x() - (double)(var7 * 2.0F)) + (double)var7 + var6.func_83008_x();
-            double var12 = (double)par3 + this.rand.nextDouble() * (var6.func_83006_A() - var6.func_83005_z() - (double)(var7 * 2.0F)) + (double)var7 + var6.func_83005_z();
+            double var8 = (double)par1 + this.rand.nextDouble() * (var6.maxX - var6.minX - (double)(var7 * 2.0F)) + (double)var7 + var6.minX;
+            double var10 = (double)par2 + this.rand.nextDouble() * (var6.maxY - var6.minY - (double)(var7 * 2.0F)) + (double)var7 + var6.minY;
+            double var12 = (double)par3 + this.rand.nextDouble() * (var6.maxZ - var6.minZ - (double)(var7 * 2.0F)) + (double)var7 + var6.minZ;
 
             if (par4 == 0)
             {
-                var10 = (double)par2 + var6.func_83008_x() - (double)var7;
+                var10 = (double)par2 + var6.minY - (double)var7;
             }
 
             if (par4 == 1)
             {
-                var10 = (double)par2 + var6.func_83010_y() + (double)var7;
+                var10 = (double)par2 + var6.maxY + (double)var7;
             }
 
             if (par4 == 2)
             {
-                var12 = (double)par3 + var6.func_83005_z() - (double)var7;
+                var12 = (double)par3 + var6.minZ - (double)var7;
             }
 
             if (par4 == 3)
             {
-                var12 = (double)par3 + var6.func_83006_A() + (double)var7;
+                var12 = (double)par3 + var6.maxZ + (double)var7;
             }
 
             if (par4 == 4)
             {
-                var8 = (double)par1 + var6.func_83009_v() - (double)var7;
+                var8 = (double)par1 + var6.minX - (double)var7;
             }
 
             if (par4 == 5)
             {
-                var8 = (double)par1 + var6.func_83007_w() + (double)var7;
+                var8 = (double)par1 + var6.maxX + (double)var7;
             }
 
             this.addEffect((new EntityDiggingFX(this.worldObj, var8, var10, var12, 0.0D, 0.0D, 0.0D, var6, par4, this.worldObj.getBlockMetadata(par1, par2, par3))).func_70596_a(par1, par2, par3).multiplyVelocity(0.2F).multipleParticleScaleBy(0.6F), var6);

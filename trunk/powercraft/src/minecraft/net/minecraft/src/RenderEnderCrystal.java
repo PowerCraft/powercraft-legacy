@@ -22,7 +22,7 @@ public class RenderEnderCrystal extends Render
     {
         if (this.field_76996_a != 1)
         {
-            this.field_76995_b = new ModelEnderCrystal(0.0F, true);
+            this.field_76995_b = new ModelEnderCrystal(0.0F);
             this.field_76996_a = 1;
         }
 

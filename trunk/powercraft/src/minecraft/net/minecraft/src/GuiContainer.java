@@ -32,7 +32,6 @@ public abstract class GuiContainer extends GuiScreen
      * Starting Y position for the Gui. Inconsistent use for Gui backgrounds.
      */
     protected int guiTop;
-    private Slot field_82320_o;
 
     public GuiContainer(Container par1Container)
     {
@@ -69,31 +68,31 @@ public abstract class GuiContainer extends GuiScreen
         GL11.glTranslatef((float)var4, (float)var5, 0.0F);
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
         GL11.glEnable(GL12.GL_RESCALE_NORMAL);
-        this.field_82320_o = null;
-        short var6 = 240;
+        Slot var6 = null;
         short var7 = 240;
-        OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, (float)var6 / 1.0F, (float)var7 / 1.0F);
+        short var8 = 240;
+        OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, (float)var7 / 1.0F, (float)var8 / 1.0F);
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 
-        for (int var10 = 0; var10 < this.inventorySlots.inventorySlots.size(); ++var10)
+        for (int var11 = 0; var11 < this.inventorySlots.inventorySlots.size(); ++var11)
         {
-            Slot var11 = (Slot)this.inventorySlots.inventorySlots.get(var10);
-            this.drawSlotInventory(var11);
+            Slot var14 = (Slot)this.inventorySlots.inventorySlots.get(var11);
+            this.drawSlotInventory(var14);
 
-            if (this.isMouseOverSlot(var11, par1, par2))
+            if (this.isMouseOverSlot(var14, par1, par2))
             {
-                this.field_82320_o = var11;
+                var6 = var14;
                 GL11.glDisable(GL11.GL_LIGHTING);
                 GL11.glDisable(GL11.GL_DEPTH_TEST);
-                int var8 = var11.xDisplayPosition;
-                int var9 = var11.yDisplayPosition;
-                this.drawGradientRect(var8, var9, var8 + 16, var9 + 16, -2130706433, -2130706433);
+                int var9 = var14.xDisplayPosition;
+                int var10 = var14.yDisplayPosition;
+                this.drawGradientRect(var9, var10, var9 + 16, var10 + 16, -2130706433, -2130706433);
                 GL11.glEnable(GL11.GL_LIGHTING);
                 GL11.glEnable(GL11.GL_DEPTH_TEST);
             }
         }
 
-        this.drawGuiContainerForegroundLayer(par1, par2);
+        this.drawGuiContainerForegroundLayer();
         InventoryPlayer var12 = this.mc.thePlayer.inventory;
 
         if (var12.getItemStack() != null)
@@ -101,15 +100,15 @@ public abstract class GuiContainer extends GuiScreen
             GL11.glTranslatef(0.0F, 0.0F, 32.0F);
             this.zLevel = 200.0F;
             itemRenderer.zLevel = 200.0F;
-            itemRenderer.func_82406_b(this.fontRenderer, this.mc.renderEngine, var12.getItemStack(), par1 - var4 - 8, par2 - var5 - 8);
+            itemRenderer.renderItemIntoGUI(this.fontRenderer, this.mc.renderEngine, var12.getItemStack(), par1 - var4 - 8, par2 - var5 - 8);
             itemRenderer.renderItemOverlayIntoGUI(this.fontRenderer, this.mc.renderEngine, var12.getItemStack(), par1 - var4 - 8, par2 - var5 - 8);
             this.zLevel = 0.0F;
             itemRenderer.zLevel = 0.0F;
         }
 
-        if (var12.getItemStack() == null && this.field_82320_o != null && this.field_82320_o.getHasStack())
+        if (var12.getItemStack() == null && var6 != null && var6.getHasStack())
         {
-            ItemStack var13 = this.field_82320_o.getStack();
+            ItemStack var13 = var6.getStack();
             this.func_74184_a(var13, par1 - var4, par2 - var5);
         }
 
@@ -125,7 +124,7 @@ public abstract class GuiContainer extends GuiScreen
         RenderHelper.disableStandardItemLighting();
         GL11.glDisable(GL11.GL_LIGHTING);
         GL11.glDisable(GL11.GL_DEPTH_TEST);
-        List var4 = par1ItemStack.func_82840_a(this.mc.thePlayer, this.mc.gameSettings.field_82882_x);
+        List var4 = par1ItemStack.getItemNameandInformation();
 
         if (!var4.isEmpty())
         {
@@ -231,7 +230,7 @@ public abstract class GuiContainer extends GuiScreen
     /**
      * Draw the foreground layer for the GuiContainer (everything in front of the items)
      */
-    protected void drawGuiContainerForegroundLayer(int par1, int par2) {}
+    protected void drawGuiContainerForegroundLayer() {}
 
     /**
      * Draw the background layer for the GuiContainer (everything behind the items)
@@ -267,7 +266,7 @@ public abstract class GuiContainer extends GuiScreen
         if (!var5)
         {
             GL11.glEnable(GL11.GL_DEPTH_TEST);
-            itemRenderer.func_82406_b(this.fontRenderer, this.mc.renderEngine, var4, var2, var3);
+            itemRenderer.renderItemIntoGUI(this.fontRenderer, this.mc.renderEngine, var4, var2, var3);
             itemRenderer.renderItemOverlayIntoGUI(this.fontRenderer, this.mc.renderEngine, var4, var2, var3);
         }
 
@@ -299,37 +298,29 @@ public abstract class GuiContainer extends GuiScreen
     protected void mouseClicked(int par1, int par2, int par3)
     {
         super.mouseClicked(par1, par2, par3);
-        boolean var4 = par3 == this.mc.gameSettings.keyBindPickBlock.keyCode + 100;
 
-        if (par3 == 0 || par3 == 1 || var4)
+        if (par3 == 0 || par3 == 1)
         {
-            Slot var5 = this.getSlotAtPosition(par1, par2);
-            int var6 = this.guiLeft;
-            int var7 = this.guiTop;
-            boolean var8 = par1 < var6 || par2 < var7 || par1 >= var6 + this.xSize || par2 >= var7 + this.ySize;
-            int var9 = -1;
+            Slot var4 = this.getSlotAtPosition(par1, par2);
+            int var5 = this.guiLeft;
+            int var6 = this.guiTop;
+            boolean var7 = par1 < var5 || par2 < var6 || par1 >= var5 + this.xSize || par2 >= var6 + this.ySize;
+            int var8 = -1;
 
-            if (var5 != null)
+            if (var4 != null)
             {
-                var9 = var5.slotNumber;
+                var8 = var4.slotNumber;
             }
 
-            if (var8)
+            if (var7)
             {
-                var9 = -999;
+                var8 = -999;
             }
 
-            if (var9 != -1)
+            if (var8 != -1)
             {
-                if (var4)
-                {
-                    this.handleMouseClick(var5, var9, par3, 3);
-                }
-                else
-                {
-                    boolean var10 = var9 != -999 && (Keyboard.isKeyDown(42) || Keyboard.isKeyDown(54));
-                    this.handleMouseClick(var5, var9, par3, var10 ? 1 : 0);
-                }
+                boolean var9 = var8 != -999 && (Keyboard.isKeyDown(42) || Keyboard.isKeyDown(54));
+                this.handleMouseClick(var4, var8, par3, var9);
             }
         }
     }
@@ -351,7 +342,7 @@ public abstract class GuiContainer extends GuiScreen
         return par5 >= par1 - 1 && par5 < par1 + par3 + 1 && par6 >= par2 - 1 && par6 < par2 + par4 + 1;
     }
 
-    protected void handleMouseClick(Slot par1Slot, int par2, int par3, int par4)
+    protected void handleMouseClick(Slot par1Slot, int par2, int par3, boolean par4)
     {
         if (par1Slot != null)
         {
@@ -370,30 +361,6 @@ public abstract class GuiContainer extends GuiScreen
         {
             this.mc.thePlayer.closeScreen();
         }
-
-        this.func_82319_a(par2);
-
-        if (par2 == this.mc.gameSettings.keyBindPickBlock.keyCode && this.field_82320_o != null && this.field_82320_o.getHasStack())
-        {
-            this.handleMouseClick(this.field_82320_o, this.field_82320_o.slotNumber, this.ySize, 3);
-        }
-    }
-
-    protected boolean func_82319_a(int par1)
-    {
-        if (this.mc.thePlayer.inventory.getItemStack() == null && this.field_82320_o != null)
-        {
-            for (int var2 = 0; var2 < 9; ++var2)
-            {
-                if (par1 == 2 + var2)
-                {
-                    this.handleMouseClick(this.field_82320_o, this.field_82320_o.slotNumber, var2, 2);
-                    return true;
-                }
-            }
-        }
-
-        return false;
     }
 
     /**

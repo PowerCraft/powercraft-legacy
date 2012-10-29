@@ -50,7 +50,7 @@ public class ItemBow extends Item
 
             if (var7 == 1.0F)
             {
-                var8.setIsCritical(true);
+                var8.func_70243_d(true);
             }
 
             int var9 = EnchantmentHelper.getEnchantmentLevel(Enchantment.power.effectId, par1ItemStack);

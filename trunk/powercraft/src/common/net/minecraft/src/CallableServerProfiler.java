@@ -5,20 +5,24 @@ import net.minecraft.server.MinecraftServer;
 
 public class CallableServerProfiler implements Callable
 {
-    final MinecraftServer field_82555_a;
+    /** Gets Minecraft Server profile. */
+    final MinecraftServer minecraftServerProfiler;
 
     public CallableServerProfiler(MinecraftServer par1MinecraftServer)
     {
-        this.field_82555_a = par1MinecraftServer;
+        this.minecraftServerProfiler = par1MinecraftServer;
     }
 
-    public String func_82554_a()
+    /**
+     * Gets if Server Profiler (aka Snooper) is enabled.
+     */
+    public String getServerProfilerEnabled()
     {
-        return this.field_82555_a.theProfiler.profilingEnabled ? this.field_82555_a.theProfiler.getNameOfLastSection() : "N/A (disabled)";
+        return this.minecraftServerProfiler.theProfiler.profilingEnabled ? this.minecraftServerProfiler.theProfiler.getNameOfLastSection() : "N/A (disabled)";
     }
 
     public Object call()
     {
-        return this.func_82554_a();
+        return this.getServerProfilerEnabled();
     }
 }

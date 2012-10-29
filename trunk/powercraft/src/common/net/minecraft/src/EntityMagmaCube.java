@@ -143,7 +143,7 @@ public class EntityMagmaCube extends EntitySlime
      */
     protected String getHurtSound()
     {
-        return "mob.slime." + (this.getSlimeSize() > 1 ? "big" : "small");
+        return "mob.slime";
     }
 
     /**
@@ -151,7 +151,7 @@ public class EntityMagmaCube extends EntitySlime
      */
     protected String getDeathSound()
     {
-        return "mob.slime." + (this.getSlimeSize() > 1 ? "big" : "small");
+        return "mob.slime";
     }
 
     /**

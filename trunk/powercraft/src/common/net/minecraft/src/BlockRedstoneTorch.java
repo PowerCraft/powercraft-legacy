@@ -34,7 +34,7 @@ public class BlockRedstoneTorch extends BlockTorch
 
         if (par5)
         {
-            ((List)redstoneUpdateInfoCache.get(par1World)).add(new RedstoneUpdateInfo(par2, par3, par4, par1World.func_82737_E()));
+            ((List)redstoneUpdateInfoCache.get(par1World)).add(new RedstoneUpdateInfo(par2, par3, par4, par1World.getWorldTime()));
         }
 
         int var6 = 0;
@@ -144,7 +144,7 @@ public class BlockRedstoneTorch extends BlockTorch
         boolean var6 = this.isIndirectlyPowered(par1World, par2, par3, par4);
         List var7 = (List)redstoneUpdateInfoCache.get(par1World);
 
-        while (var7 != null && !var7.isEmpty() && par1World.func_82737_E() - ((RedstoneUpdateInfo)var7.get(0)).updateTime > 60L)
+        while (var7 != null && !var7.isEmpty() && par1World.getWorldTime() - ((RedstoneUpdateInfo)var7.get(0)).updateTime > 60L)
         {
             var7.remove(0);
         }
@@ -188,9 +188,9 @@ public class BlockRedstoneTorch extends BlockTorch
     /**
      * Is this block indirectly powering the block on the specified side
      */
-    public boolean isIndirectlyPoweringTo(IBlockAccess par1IBlockAccess, int par2, int par3, int par4, int par5)
+    public boolean isIndirectlyPoweringTo(World par1World, int par2, int par3, int par4, int par5)
     {
-        return par5 == 0 ? this.isPoweringTo(par1IBlockAccess, par2, par3, par4, par5) : false;
+        return par5 == 0 ? this.isPoweringTo(par1World, par2, par3, par4, par5) : false;
     }
 
     /**
@@ -256,5 +256,22 @@ public class BlockRedstoneTorch extends BlockTorch
     public int idPicked(World par1World, int par2, int par3, int par4)
     {
         return Block.torchRedstoneActive.blockID;
+    }
+
+    /**
+     * Called when the time changes.
+     */
+    public void onTimeChanged(World par1World, long par2, long par4)
+    {
+        List var6 = (List)redstoneUpdateInfoCache.get(par1World);
+        RedstoneUpdateInfo var8;
+
+        if (var6 != null)
+        {
+            for (Iterator var7 = var6.iterator(); var7.hasNext(); var8.updateTime += par2)
+            {
+                var8 = (RedstoneUpdateInfo)var7.next();
+            }
+        }
     }
 }

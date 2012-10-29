@@ -20,11 +20,7 @@ public class RenderSlime extends RenderLiving
      */
     protected int shouldSlimeRenderPass(EntitySlime par1EntitySlime, int par2, float par3)
     {
-        if (par1EntitySlime.func_82150_aj())
-        {
-            return 0;
-        }
-        else if (par2 == 0)
+        if (par2 == 0)
         {
             this.setRenderPassModel(this.scaleAmount);
             GL11.glEnable(GL11.GL_NORMALIZE);

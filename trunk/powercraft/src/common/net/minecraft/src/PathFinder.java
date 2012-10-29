@@ -235,7 +235,9 @@ public class PathFinder
                         break;
                     }
 
-                    if (var9++ >= par1Entity.func_82143_as())
+                    ++var9;
+
+                    if (var9 >= 4)
                     {
                         return null;
                     }
@@ -280,68 +282,63 @@ public class PathFinder
      * -1 for water(if avoiding water) but otherwise clear, -2 for lava, -3 for fence, -4 for closed trapdoor, 2 if
      * otherwise clear except for open trapdoor or water(if not avoiding)
      */
-    public int getVerticalOffset(Entity par1Entity, int par2, int par3, int par4, PathPoint par5PathPoint)
+    private int getVerticalOffset(Entity par1Entity, int par2, int par3, int par4, PathPoint par5PathPoint)
     {
-        return func_82565_a(par1Entity, par2, par3, par4, par5PathPoint, this.isPathingInWater, this.isMovementBlockAllowed, this.isWoddenDoorAllowed);
-    }
+        boolean var6 = false;
 
-    public static int func_82565_a(Entity par0Entity, int par1, int par2, int par3, PathPoint par4PathPoint, boolean par5, boolean par6, boolean par7)
-    {
-        boolean var8 = false;
-
-        for (int var9 = par1; var9 < par1 + par4PathPoint.xCoord; ++var9)
+        for (int var7 = par2; var7 < par2 + par5PathPoint.xCoord; ++var7)
         {
-            for (int var10 = par2; var10 < par2 + par4PathPoint.yCoord; ++var10)
+            for (int var8 = par3; var8 < par3 + par5PathPoint.yCoord; ++var8)
             {
-                for (int var11 = par3; var11 < par3 + par4PathPoint.zCoord; ++var11)
+                for (int var9 = par4; var9 < par4 + par5PathPoint.zCoord; ++var9)
                 {
-                    int var12 = par0Entity.worldObj.getBlockId(var9, var10, var11);
+                    int var10 = this.worldMap.getBlockId(var7, var8, var9);
 
-                    if (var12 > 0)
+                    if (var10 > 0)
                     {
-                        if (var12 == Block.trapdoor.blockID)
+                        if (var10 == Block.trapdoor.blockID)
                         {
-                            var8 = true;
+                            var6 = true;
                         }
-                        else if (var12 != Block.waterMoving.blockID && var12 != Block.waterStill.blockID)
+                        else if (var10 != Block.waterMoving.blockID && var10 != Block.waterStill.blockID)
                         {
-                            if (!par7 && var12 == Block.doorWood.blockID)
+                            if (!this.isWoddenDoorAllowed && var10 == Block.doorWood.blockID)
                             {
                                 return 0;
                             }
                         }
                         else
                         {
-                            if (par5)
+                            if (this.isPathingInWater)
                             {
                                 return -1;
                             }
 
-                            var8 = true;
+                            var6 = true;
                         }
 
-                        Block var13 = Block.blocksList[var12];
+                        Block var11 = Block.blocksList[var10];
 
-                        if (!var13.getBlocksMovement(par0Entity.worldObj, var9, var10, var11) && (!par6 || var12 != Block.doorWood.blockID))
+                        if (!var11.getBlocksMovement(this.worldMap, var7, var8, var9) && (!this.isMovementBlockAllowed || var10 != Block.doorWood.blockID))
                         {
-                            if (var12 == Block.fence.blockID || var12 == Block.fenceGate.blockID || var12 == Block.field_82515_ce.blockID)
+                            if (var10 == Block.fence.blockID || var10 == Block.fenceGate.blockID)
                             {
                                 return -3;
                             }
 
-                            if (var12 == Block.trapdoor.blockID)
+                            if (var10 == Block.trapdoor.blockID)
                             {
                                 return -4;
                             }
 
-                            Material var14 = var13.blockMaterial;
+                            Material var12 = var11.blockMaterial;
 
-                            if (var14 != Material.lava)
+                            if (var12 != Material.lava)
                             {
                                 return 0;
                             }
 
-                            if (!par0Entity.handleLavaMovement())
+                            if (!par1Entity.handleLavaMovement())
                             {
                                 return -2;
                             }
@@ -351,7 +348,7 @@ public class PathFinder
             }
         }
 
-        return var8 ? 2 : 1;
+        return var6 ? 2 : 1;
     }
 
     /**

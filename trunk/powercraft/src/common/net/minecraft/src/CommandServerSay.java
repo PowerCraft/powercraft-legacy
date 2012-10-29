@@ -10,11 +10,6 @@ public class CommandServerSay extends CommandBase
         return "say";
     }
 
-    public int func_82362_a()
-    {
-        return 1;
-    }
-
     public String getCommandUsage(ICommandSender par1ICommandSender)
     {
         return par1ICommandSender.translateString("commands.say.usage", new Object[0]);
@@ -24,7 +19,7 @@ public class CommandServerSay extends CommandBase
     {
         if (par2ArrayOfStr.length > 0 && par2ArrayOfStr[0].length() > 0)
         {
-            String var3 = func_82361_a(par1ICommandSender, par2ArrayOfStr, 0, true);
+            String var3 = joinString(par2ArrayOfStr, 0);
             MinecraftServer.getServer().getConfigurationManager().sendPacketToAllPlayers(new Packet3Chat(String.format("[%s] %s", new Object[] {par1ICommandSender.getCommandSenderName(), var3})));
         }
         else

@@ -1,5 +1,7 @@
 package net.minecraft.src;
 
+import cpw.mods.fml.common.Side;
+import cpw.mods.fml.common.asm.SideOnly;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -148,6 +150,8 @@ public class EntityList
         return (String)classToStringMapping.get(par0Entity.getClass());
     }
 
+    @SideOnly(Side.CLIENT)
+
     /**
      * Finds the class using IDtoClassMapping and classToStringMapping
      */
@@ -164,14 +168,12 @@ public class EntityList
         addMapping(EntityPainting.class, "Painting", 9);
         addMapping(EntityArrow.class, "Arrow", 10);
         addMapping(EntitySnowball.class, "Snowball", 11);
-        addMapping(EntityLargeFireball.class, "Fireball", 12);
+        addMapping(EntityFireball.class, "Fireball", 12);
         addMapping(EntitySmallFireball.class, "SmallFireball", 13);
         addMapping(EntityEnderPearl.class, "ThrownEnderpearl", 14);
         addMapping(EntityEnderEye.class, "EyeOfEnderSignal", 15);
         addMapping(EntityPotion.class, "ThrownPotion", 16);
         addMapping(EntityExpBottle.class, "ThrownExpBottle", 17);
-        addMapping(EntityItemFrame.class, "ItemFrame", 18);
-        addMapping(EntityWitherSkull.class, "WitherSkull", 19);
         addMapping(EntityTNTPrimed.class, "PrimedTnt", 20);
         addMapping(EntityFallingSand.class, "FallingSand", 21);
         addMapping(EntityMinecart.class, "Minecart", 40);
@@ -192,9 +194,6 @@ public class EntityList
         addMapping(EntityBlaze.class, "Blaze", 61, 16167425, 16775294);
         addMapping(EntityMagmaCube.class, "LavaSlime", 62, 3407872, 16579584);
         addMapping(EntityDragon.class, "EnderDragon", 63);
-        addMapping(EntityWither.class, "WitherBoss", 64);
-        addMapping(EntityBat.class, "Bat", 65, 4996656, 986895);
-        addMapping(EntityWitch.class, "Witch", 66, 3407872, 5349438);
         addMapping(EntityPig.class, "Pig", 90, 15771042, 14377823);
         addMapping(EntitySheep.class, "Sheep", 91, 15198183, 16758197);
         addMapping(EntityCow.class, "Cow", 92, 4470310, 10592673);

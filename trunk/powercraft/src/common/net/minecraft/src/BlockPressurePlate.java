@@ -1,6 +1,5 @@
 package net.minecraft.src;
 
-import java.util.Iterator;
 import java.util.List;
 import java.util.Random;
 
@@ -141,18 +140,7 @@ public class BlockPressurePlate extends Block
 
         if (!var8.isEmpty())
         {
-            Iterator var9 = var8.iterator();
-
-            while (var9.hasNext())
-            {
-                Entity var10 = (Entity)var9.next();
-
-                if (!var10.func_82144_au())
-                {
-                    var6 = true;
-                    break;
-                }
-            }
+            var6 = true;
         }
 
         if (var6 && !var5)
@@ -222,9 +210,9 @@ public class BlockPressurePlate extends Block
     /**
      * Is this block indirectly powering the block on the specified side
      */
-    public boolean isIndirectlyPoweringTo(IBlockAccess par1IBlockAccess, int par2, int par3, int par4, int par5)
+    public boolean isIndirectlyPoweringTo(World par1World, int par2, int par3, int par4, int par5)
     {
-        return par1IBlockAccess.getBlockMetadata(par2, par3, par4) == 0 ? false : par5 == 1;
+        return par1World.getBlockMetadata(par2, par3, par4) == 0 ? false : par5 == 1;
     }
 
     /**

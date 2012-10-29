@@ -44,12 +44,12 @@ public abstract class PC_Module {
 		return getModMetadata().version;
 	}
 	
-	public String getTextureDirectory(){
+	public String getTextureFile(){
 		return "/"+getName()+"/";
 	}
 	
 	public String getTerrainFile() {
-		return getTextureDirectory()+"tiles.png";
+		return getTextureFile()+"tiles.png";
 	}
 	
 	protected void registerModule(){

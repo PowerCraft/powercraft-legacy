@@ -18,6 +18,5 @@ public class RecipesCrafting
         par1CraftingManager.addRecipe(new ItemStack(Block.fenceIron, 16), new Object[] {"###", "###", '#', Item.ingotIron});
         par1CraftingManager.addRecipe(new ItemStack(Block.thinGlass, 16), new Object[] {"###", "###", '#', Block.glass});
         par1CraftingManager.addRecipe(new ItemStack(Block.redstoneLampIdle, 1), new Object[] {" R ", "RGR", " R ", 'R', Item.redstone, 'G', Block.glowStone});
-        par1CraftingManager.addRecipe(new ItemStack(Block.field_82518_cd, 1), new Object[] {"GGG", "GSG", "OOO", 'G', Block.glass, 'S', Item.field_82792_bS, 'O', Block.obsidian});
     }
 }

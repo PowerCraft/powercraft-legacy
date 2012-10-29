@@ -8,7 +8,7 @@ import java.awt.image.DataBufferInt;
 import java.awt.image.ImageObserver;
 
 @SideOnly(Side.CLIENT)
-public class ImageBufferDownload implements IImageBuffer
+public class ImageBufferDownload implements ImageBuffer
 {
     private int[] imageData;
     private int imageWidth;

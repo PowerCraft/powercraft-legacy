@@ -63,19 +63,7 @@ public class PClo_GateType {
 		case PClo_GateType.XOR:
 			return i1 != i3;	
 		case PClo_GateType.XNOR:
-			return i1 == i3;
-		case PClo_GateType.AND3:
-			return i1 && i2 && i3;
-		case PClo_GateType.NAND3:
-			return !(i1 && i2 && i3);
-		case PClo_GateType.OR3:
-			return i1 || i2 || i3;
-		case PClo_GateType.NOR3:
-			return !(i1 || i2 || i3);
-		case PClo_GateType.XOR3:
-			return (i1 != i2) || (i2 != i3);	
-		case PClo_GateType.XNOR3:
-			return (i1 == i2) && (i2 == i3);	
+			return i1 == i3;		
 		default:
 			return false;
 		}

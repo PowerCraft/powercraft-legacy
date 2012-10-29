@@ -5,7 +5,7 @@ import cpw.mods.fml.common.asm.SideOnly;
 import java.util.Iterator;
 import java.util.List;
 
-public class EntityArrow extends Entity implements IProjectile
+public class EntityArrow extends Entity
 {
     private int xTile = -1;
     private int yTile = -1;
@@ -68,7 +68,7 @@ public class EntityArrow extends Entity implements IProjectile
             this.setLocationAndAngles(par2EntityLiving.posX + var16, this.posY, par2EntityLiving.posZ + var18, var14, var15);
             this.yOffset = 0.0F;
             float var20 = (float)var12 * 0.2F;
-            this.setThrowableHeading(var6, var8 + (double)var20, var10, par4, par5);
+            this.setArrowHeading(var6, var8 + (double)var20, var10, par4, par5);
         }
     }
 
@@ -92,7 +92,7 @@ public class EntityArrow extends Entity implements IProjectile
         this.motionX = (double)(-MathHelper.sin(this.rotationYaw / 180.0F * (float)Math.PI) * MathHelper.cos(this.rotationPitch / 180.0F * (float)Math.PI));
         this.motionZ = (double)(MathHelper.cos(this.rotationYaw / 180.0F * (float)Math.PI) * MathHelper.cos(this.rotationPitch / 180.0F * (float)Math.PI));
         this.motionY = (double)(-MathHelper.sin(this.rotationPitch / 180.0F * (float)Math.PI));
-        this.setThrowableHeading(this.motionX, this.motionY, this.motionZ, par3 * 1.5F, 1.0F);
+        this.setArrowHeading(this.motionX, this.motionY, this.motionZ, par3 * 1.5F, 1.0F);
     }
 
     protected void entityInit()
@@ -101,26 +101,27 @@ public class EntityArrow extends Entity implements IProjectile
     }
 
     /**
-     * Similar to setArrowHeading, it's point the throwable entity to a x, y, z direction.
+     * Uses the provided coordinates as a heading and determines the velocity from it with the set force and random
+     * variance. Args: x, y, z, force, forceVariation
      */
-    public void setThrowableHeading(double var1, double var3, double var5, float var7, float var8)
+    public void setArrowHeading(double par1, double par3, double par5, float par7, float par8)
     {
-        float var9 = MathHelper.sqrt_double(var1 * var1 + var3 * var3 + var5 * var5);
-        var1 /= (double)var9;
-        var3 /= (double)var9;
-        var5 /= (double)var9;
-        var1 += this.rand.nextGaussian() * 0.007499999832361937D * (double)var8;
-        var3 += this.rand.nextGaussian() * 0.007499999832361937D * (double)var8;
-        var5 += this.rand.nextGaussian() * 0.007499999832361937D * (double)var8;
-        var1 *= (double)var7;
-        var3 *= (double)var7;
-        var5 *= (double)var7;
-        this.motionX = var1;
-        this.motionY = var3;
-        this.motionZ = var5;
-        float var10 = MathHelper.sqrt_double(var1 * var1 + var5 * var5);
-        this.prevRotationYaw = this.rotationYaw = (float)(Math.atan2(var1, var5) * 180.0D / Math.PI);
-        this.prevRotationPitch = this.rotationPitch = (float)(Math.atan2(var3, (double)var10) * 180.0D / Math.PI);
+        float var9 = MathHelper.sqrt_double(par1 * par1 + par3 * par3 + par5 * par5);
+        par1 /= (double)var9;
+        par3 /= (double)var9;
+        par5 /= (double)var9;
+        par1 += this.rand.nextGaussian() * 0.007499999832361937D * (double)par8;
+        par3 += this.rand.nextGaussian() * 0.007499999832361937D * (double)par8;
+        par5 += this.rand.nextGaussian() * 0.007499999832361937D * (double)par8;
+        par1 *= (double)par7;
+        par3 *= (double)par7;
+        par5 *= (double)par7;
+        this.motionX = par1;
+        this.motionY = par3;
+        this.motionZ = par5;
+        float var10 = MathHelper.sqrt_double(par1 * par1 + par5 * par5);
+        this.prevRotationYaw = this.rotationYaw = (float)(Math.atan2(par1, par5) * 180.0D / Math.PI);
+        this.prevRotationPitch = this.rotationPitch = (float)(Math.atan2(par3, (double)var10) * 180.0D / Math.PI);
         this.ticksInGround = 0;
     }
 
@@ -180,7 +181,7 @@ public class EntityArrow extends Entity implements IProjectile
             Block.blocksList[var16].setBlockBoundsBasedOnState(this.worldObj, this.xTile, this.yTile, this.zTile);
             AxisAlignedBB var2 = Block.blocksList[var16].getCollisionBoundingBoxFromPool(this.worldObj, this.xTile, this.yTile, this.zTile);
 
-            if (var2 != null && var2.isVecInside(this.worldObj.func_82732_R().getVecFromPool(this.posX, this.posY, this.posZ)))
+            if (var2 != null && var2.isVecInside(Vec3.getVec3Pool().getVecFromPool(this.posX, this.posY, this.posZ)))
             {
                 this.inGround = true;
             }
@@ -218,15 +219,15 @@ public class EntityArrow extends Entity implements IProjectile
         else
         {
             ++this.ticksInAir;
-            Vec3 var17 = this.worldObj.func_82732_R().getVecFromPool(this.posX, this.posY, this.posZ);
-            Vec3 var3 = this.worldObj.func_82732_R().getVecFromPool(this.posX + this.motionX, this.posY + this.motionY, this.posZ + this.motionZ);
+            Vec3 var17 = Vec3.getVec3Pool().getVecFromPool(this.posX, this.posY, this.posZ);
+            Vec3 var3 = Vec3.getVec3Pool().getVecFromPool(this.posX + this.motionX, this.posY + this.motionY, this.posZ + this.motionZ);
             MovingObjectPosition var4 = this.worldObj.rayTraceBlocks_do_do(var17, var3, false, true);
-            var17 = this.worldObj.func_82732_R().getVecFromPool(this.posX, this.posY, this.posZ);
-            var3 = this.worldObj.func_82732_R().getVecFromPool(this.posX + this.motionX, this.posY + this.motionY, this.posZ + this.motionZ);
+            var17 = Vec3.getVec3Pool().getVecFromPool(this.posX, this.posY, this.posZ);
+            var3 = Vec3.getVec3Pool().getVecFromPool(this.posX + this.motionX, this.posY + this.motionY, this.posZ + this.motionZ);
 
             if (var4 != null)
             {
-                var3 = this.worldObj.func_82732_R().getVecFromPool(var4.hitVec.xCoord, var4.hitVec.yCoord, var4.hitVec.zCoord);
+                var3 = Vec3.getVec3Pool().getVecFromPool(var4.hitVec.xCoord, var4.hitVec.yCoord, var4.hitVec.zCoord);
             }
 
             Entity var5 = null;
@@ -272,7 +273,7 @@ public class EntityArrow extends Entity implements IProjectile
                     var20 = MathHelper.sqrt_double(this.motionX * this.motionX + this.motionY * this.motionY + this.motionZ * this.motionZ);
                     int var24 = MathHelper.ceiling_double_int((double)var20 * this.damage);
 
-                    if (this.getIsCritical())
+                    if (this.func_70241_g())
                     {
                         var24 += this.rand.nextInt(var24 / 2 + 2);
                     }
@@ -340,11 +341,11 @@ public class EntityArrow extends Entity implements IProjectile
                     this.worldObj.playSoundAtEntity(this, "random.bowhit", 1.0F, 1.2F / (this.rand.nextFloat() * 0.2F + 0.9F));
                     this.inGround = true;
                     this.arrowShake = 7;
-                    this.setIsCritical(false);
+                    this.func_70243_d(false);
                 }
             }
 
-            if (this.getIsCritical())
+            if (this.func_70241_g())
             {
                 for (int var21 = 0; var21 < 4; ++var21)
                 {
@@ -470,15 +471,6 @@ public class EntityArrow extends Entity implements IProjectile
         }
     }
 
-    /**
-     * returns if this entity triggers Block.onEntityWalking on the blocks they walk on. used for spiders and wolves to
-     * prevent them from trampling crops
-     */
-    protected boolean canTriggerWalking()
-    {
-        return false;
-    }
-
     @SideOnly(Side.CLIENT)
     public float getShadowSize()
     {
@@ -511,10 +503,7 @@ public class EntityArrow extends Entity implements IProjectile
         return false;
     }
 
-    /**
-     * Whether the arrow has a stream of critical hit particles flying behind it.
-     */
-    public void setIsCritical(boolean par1)
+    public void func_70243_d(boolean par1)
     {
         byte var2 = this.dataWatcher.getWatchableObjectByte(16);
 
@@ -528,10 +517,7 @@ public class EntityArrow extends Entity implements IProjectile
         }
     }
 
-    /**
-     * Whether the arrow has a stream of critical hit particles flying behind it.
-     */
-    public boolean getIsCritical()
+    public boolean func_70241_g()
     {
         byte var1 = this.dataWatcher.getWatchableObjectByte(16);
         return (var1 & 1) != 0;

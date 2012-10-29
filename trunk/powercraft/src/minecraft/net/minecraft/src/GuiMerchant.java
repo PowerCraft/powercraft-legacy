@@ -39,7 +39,7 @@ public class GuiMerchant extends GuiContainer
     /**
      * Draw the foreground layer for the GuiContainer (everything in front of the items)
      */
-    protected void drawGuiContainerForegroundLayer(int par1, int par2)
+    protected void drawGuiContainerForegroundLayer()
     {
         this.fontRenderer.drawString(StatCollector.translateToLocal("entity.Villager.name"), 56, 6, 4210752);
         this.fontRenderer.drawString(StatCollector.translateToLocal("container.inventory"), 8, this.ySize - 96 + 2, 4210752);
@@ -121,19 +121,9 @@ public class GuiMerchant extends GuiContainer
         {
             int var5 = (this.width - this.xSize) / 2;
             int var6 = (this.height - this.ySize) / 2;
+            GL11.glPushMatrix();
             int var7 = this.currentRecipeIndex;
             MerchantRecipe var8 = (MerchantRecipe)var4.get(var7);
-
-            if (var8.func_82784_g())
-            {
-                GL11.glBindTexture(GL11.GL_TEXTURE_2D, this.mc.renderEngine.getTexture("/gui/trading.png"));
-                GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-                GL11.glDisable(GL11.GL_LIGHTING);
-                this.drawTexturedModalRect(this.guiLeft + 83, this.guiTop + 21, 212, 0, 28, 21);
-                this.drawTexturedModalRect(this.guiLeft + 83, this.guiTop + 51, 212, 0, 28, 21);
-            }
-
-            GL11.glPushMatrix();
             ItemStack var9 = var8.getItemToBuy();
             ItemStack var10 = var8.getSecondItemToBuy();
             ItemStack var11 = var8.getItemToSell();
@@ -143,16 +133,16 @@ public class GuiMerchant extends GuiContainer
             GL11.glEnable(GL11.GL_COLOR_MATERIAL);
             GL11.glEnable(GL11.GL_LIGHTING);
             itemRenderer.zLevel = 100.0F;
-            itemRenderer.func_82406_b(this.fontRenderer, this.mc.renderEngine, var9, var5 + 36, var6 + 24);
+            itemRenderer.renderItemIntoGUI(this.fontRenderer, this.mc.renderEngine, var9, var5 + 36, var6 + 24);
             itemRenderer.renderItemOverlayIntoGUI(this.fontRenderer, this.mc.renderEngine, var9, var5 + 36, var6 + 24);
 
             if (var10 != null)
             {
-                itemRenderer.func_82406_b(this.fontRenderer, this.mc.renderEngine, var10, var5 + 62, var6 + 24);
+                itemRenderer.renderItemIntoGUI(this.fontRenderer, this.mc.renderEngine, var10, var5 + 62, var6 + 24);
                 itemRenderer.renderItemOverlayIntoGUI(this.fontRenderer, this.mc.renderEngine, var10, var5 + 62, var6 + 24);
             }
 
-            itemRenderer.func_82406_b(this.fontRenderer, this.mc.renderEngine, var11, var5 + 120, var6 + 24);
+            itemRenderer.renderItemIntoGUI(this.fontRenderer, this.mc.renderEngine, var11, var5 + 120, var6 + 24);
             itemRenderer.renderItemOverlayIntoGUI(this.fontRenderer, this.mc.renderEngine, var11, var5 + 120, var6 + 24);
             itemRenderer.zLevel = 0.0F;
             GL11.glDisable(GL11.GL_LIGHTING);

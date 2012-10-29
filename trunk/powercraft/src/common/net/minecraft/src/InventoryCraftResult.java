@@ -18,7 +18,7 @@ public class InventoryCraftResult implements IInventory
      */
     public ItemStack getStackInSlot(int par1)
     {
-        return this.stackResult[0];
+        return this.stackResult[par1];
     }
 
     /**
@@ -35,10 +35,10 @@ public class InventoryCraftResult implements IInventory
      */
     public ItemStack decrStackSize(int par1, int par2)
     {
-        if (this.stackResult[0] != null)
+        if (this.stackResult[par1] != null)
         {
-            ItemStack var3 = this.stackResult[0];
-            this.stackResult[0] = null;
+            ItemStack var3 = this.stackResult[par1];
+            this.stackResult[par1] = null;
             return var3;
         }
         else
@@ -53,10 +53,10 @@ public class InventoryCraftResult implements IInventory
      */
     public ItemStack getStackInSlotOnClosing(int par1)
     {
-        if (this.stackResult[0] != null)
+        if (this.stackResult[par1] != null)
         {
-            ItemStack var2 = this.stackResult[0];
-            this.stackResult[0] = null;
+            ItemStack var2 = this.stackResult[par1];
+            this.stackResult[par1] = null;
             return var2;
         }
         else
@@ -70,7 +70,7 @@ public class InventoryCraftResult implements IInventory
      */
     public void setInventorySlotContents(int par1, ItemStack par2ItemStack)
     {
-        this.stackResult[0] = par2ItemStack;
+        this.stackResult[par1] = par2ItemStack;
     }
 
     /**

@@ -12,7 +12,6 @@ public class RecipesFood
         par1CraftingManager.addRecipe(new ItemStack(Block.melon), new Object[] {"MMM", "MMM", "MMM", 'M', Item.melon});
         par1CraftingManager.addRecipe(new ItemStack(Item.melonSeeds), new Object[] {"M", 'M', Item.melon});
         par1CraftingManager.addRecipe(new ItemStack(Item.pumpkinSeeds, 4), new Object[] {"M", 'M', Block.pumpkin});
-        par1CraftingManager.addShapelessRecipe(new ItemStack(Item.field_82791_bT), new Object[] {Block.pumpkin, Item.sugar, Item.egg});
         par1CraftingManager.addShapelessRecipe(new ItemStack(Item.fermentedSpiderEye), new Object[] {Item.spiderEye, Block.mushroomBrown, Item.sugar});
         par1CraftingManager.addShapelessRecipe(new ItemStack(Item.speckledMelon), new Object[] {Item.melon, Item.goldNugget});
         par1CraftingManager.addShapelessRecipe(new ItemStack(Item.blazePowder, 2), new Object[] {Item.blazeRod});

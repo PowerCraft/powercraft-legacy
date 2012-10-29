@@ -2,53 +2,23 @@ package net.minecraft.src;
 
 import cpw.mods.fml.common.Side;
 import cpw.mods.fml.common.asm.SideOnly;
-import org.lwjgl.opengl.GL11;
 
 @SideOnly(Side.CLIENT)
 public class RenderWolf extends RenderLiving
 {
-    public RenderWolf(ModelBase par1ModelBase, ModelBase par2ModelBase, float par3)
+    public RenderWolf(ModelBase par1ModelBase, float par2)
     {
-        super(par1ModelBase, par3);
-        this.setRenderPassModel(par2ModelBase);
+        super(par1ModelBase, par2);
+    }
+
+    public void renderWolf(EntityWolf par1EntityWolf, double par2, double par4, double par6, float par8, float par9)
+    {
+        super.doRenderLiving(par1EntityWolf, par2, par4, par6, par8, par9);
     }
 
     protected float getTailRotation(EntityWolf par1EntityWolf, float par2)
     {
         return par1EntityWolf.getTailRotation();
-    }
-
-    protected int func_82447_a(EntityWolf par1EntityWolf, int par2, float par3)
-    {
-        float var4;
-
-        if (par2 == 0 && par1EntityWolf.getWolfShaking())
-        {
-            var4 = par1EntityWolf.getBrightness(par3) * par1EntityWolf.getShadingWhileShaking(par3);
-            this.loadTexture(par1EntityWolf.getTexture());
-            GL11.glColor3f(var4, var4, var4);
-            return 1;
-        }
-        else if (par2 == 1 && par1EntityWolf.isTamed())
-        {
-            this.loadTexture("/mob/wolf_collar.png");
-            var4 = 1.0F;
-            int var5 = par1EntityWolf.func_82186_bH();
-            GL11.glColor3f(var4 * EntitySheep.fleeceColorTable[var5][0], var4 * EntitySheep.fleeceColorTable[var5][1], var4 * EntitySheep.fleeceColorTable[var5][2]);
-            return 1;
-        }
-        else
-        {
-            return -1;
-        }
-    }
-
-    /**
-     * Queries whether should render the specified pass or not.
-     */
-    protected int shouldRenderPass(EntityLiving par1EntityLiving, int par2, float par3)
-    {
-        return this.func_82447_a((EntityWolf)par1EntityLiving, par2, par3);
     }
 
     /**
@@ -57,5 +27,21 @@ public class RenderWolf extends RenderLiving
     protected float handleRotationFloat(EntityLiving par1EntityLiving, float par2)
     {
         return this.getTailRotation((EntityWolf)par1EntityLiving, par2);
+    }
+
+    public void doRenderLiving(EntityLiving par1EntityLiving, double par2, double par4, double par6, float par8, float par9)
+    {
+        this.renderWolf((EntityWolf)par1EntityLiving, par2, par4, par6, par8, par9);
+    }
+
+    /**
+     * Actually renders the given argument. This is a synthetic bridge method, always casting down its argument and then
+     * handing it off to a worker function which does the actual work. In all probabilty, the class Render is generic
+     * (Render<T extends Entity) and this method has signature public void doRender(T entity, double d, double d1,
+     * double d2, float f, float f1). But JAD is pre 1.5 so doesn't do that.
+     */
+    public void doRender(Entity par1Entity, double par2, double par4, double par6, float par8, float par9)
+    {
+        this.renderWolf((EntityWolf)par1Entity, par2, par4, par6, par8, par9);
     }
 }

@@ -1,85 +1,49 @@
 package net.minecraft.src;
 
-import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
 import java.util.Random;
 
 public class ChunkProviderFlat implements IChunkProvider
 {
     private World worldObj;
     private Random random;
-    private final byte[] field_82700_c = new byte[256];
-    private final byte[] field_82698_d = new byte[256];
-    private final FlatGeneratorInfo field_82699_e;
-    private final List field_82696_f = new ArrayList();
-    private final boolean field_82697_g;
-    private final boolean field_82702_h;
-    private WorldGenLakes field_82703_i;
-    private WorldGenLakes field_82701_j;
+    private final boolean useStructures;
+    private MapGenVillage villageGen = new MapGenVillage(1);
 
-    public ChunkProviderFlat(World par1World, long par2, boolean par4, String par5Str)
+    public ChunkProviderFlat(World par1World, long par2, boolean par4)
     {
         this.worldObj = par1World;
+        this.useStructures = par4;
         this.random = new Random(par2);
-        this.field_82699_e = FlatGeneratorInfo.func_82651_a(par5Str);
+    }
 
-        if (par4)
+    private void generate(byte[] par1ArrayOfByte)
+    {
+        int var2 = par1ArrayOfByte.length / 256;
+
+        for (int var3 = 0; var3 < 16; ++var3)
         {
-            Map var6 = this.field_82699_e.func_82644_b();
-
-            if (var6.containsKey("village"))
+            for (int var4 = 0; var4 < 16; ++var4)
             {
-                Map var7 = (Map)var6.get("village");
-
-                if (!var7.containsKey("size"))
+                for (int var5 = 0; var5 < var2; ++var5)
                 {
-                    var7.put("size", "1");
+                    int var6 = 0;
+
+                    if (var5 == 0)
+                    {
+                        var6 = Block.bedrock.blockID;
+                    }
+                    else if (var5 <= 2)
+                    {
+                        var6 = Block.dirt.blockID;
+                    }
+                    else if (var5 == 3)
+                    {
+                        var6 = Block.grass.blockID;
+                    }
+
+                    par1ArrayOfByte[var3 << 11 | var4 << 7 | var5] = (byte)var6;
                 }
-
-                this.field_82696_f.add(new MapGenVillage(var7));
-            }
-
-            if (var6.containsKey("biome_1"))
-            {
-                this.field_82696_f.add(new MapGenScatteredFeature((Map)var6.get("biome_1")));
-            }
-
-            if (var6.containsKey("mineshaft"))
-            {
-                this.field_82696_f.add(new MapGenMineshaft((Map)var6.get("mineshaft")));
-            }
-
-            if (var6.containsKey("stronghold"))
-            {
-                this.field_82696_f.add(new MapGenStronghold((Map)var6.get("stronghold")));
-            }
-        }
-
-        this.field_82697_g = this.field_82699_e.func_82644_b().containsKey("decoration");
-
-        if (this.field_82699_e.func_82644_b().containsKey("lake"))
-        {
-            this.field_82703_i = new WorldGenLakes(Block.waterStill.blockID);
-        }
-
-        if (this.field_82699_e.func_82644_b().containsKey("lava_lake"))
-        {
-            this.field_82701_j = new WorldGenLakes(Block.lavaStill.blockID);
-        }
-
-        this.field_82702_h = this.field_82699_e.func_82644_b().containsKey("dungeon");
-        Iterator var9 = this.field_82699_e.func_82650_c().iterator();
-
-        while (var9.hasNext())
-        {
-            FlatLayerInfo var10 = (FlatLayerInfo)var9.next();
-
-            for (int var8 = var10.func_82656_d(); var8 < var10.func_82656_d() + var10.func_82657_a(); ++var8)
-            {
-                this.field_82700_c[var8] = (byte)(var10.func_82659_b() & 255);
-                this.field_82698_d[var8] = (byte)var10.func_82658_c();
             }
         }
     }
@@ -98,48 +62,25 @@ public class ChunkProviderFlat implements IChunkProvider
      */
     public Chunk provideChunk(int par1, int par2)
     {
-        Chunk var3 = new Chunk(this.worldObj, par1, par2);
+        byte[] var3 = new byte[32768];
+        this.generate(var3);
+        Chunk var4 = new Chunk(this.worldObj, var3, par1, par2);
 
-        for (int var4 = 0; var4 < this.field_82700_c.length; ++var4)
+        if (this.useStructures)
         {
-            int var5 = var4 >> 4;
-            ExtendedBlockStorage var6 = var3.getBlockStorageArray()[var5];
-
-            if (var6 == null)
-            {
-                var6 = new ExtendedBlockStorage(var4);
-                var3.getBlockStorageArray()[var5] = var6;
-            }
-
-            for (int var7 = 0; var7 < 16; ++var7)
-            {
-                for (int var8 = 0; var8 < 16; ++var8)
-                {
-                    var6.setExtBlockID(var7, var4 & 15, var8, this.field_82700_c[var4] & 255);
-                    var6.setExtBlockMetadata(var7, var4 & 15, var8, this.field_82698_d[var4]);
-                }
-            }
+            this.villageGen.generate(this, this.worldObj, par1, par2, var3);
         }
 
-        var3.generateSkylightMap();
-        BiomeGenBase[] var9 = this.worldObj.getWorldChunkManager().loadBlockGeneratorData((BiomeGenBase[])null, par1 * 16, par2 * 16, 16, 16);
-        byte[] var10 = var3.getBiomeArray();
+        BiomeGenBase[] var5 = this.worldObj.getWorldChunkManager().loadBlockGeneratorData((BiomeGenBase[])null, par1 * 16, par2 * 16, 16, 16);
+        byte[] var6 = var4.getBiomeArray();
 
-        for (int var11 = 0; var11 < var10.length; ++var11)
+        for (int var7 = 0; var7 < var6.length; ++var7)
         {
-            var10[var11] = (byte)var9[var11].biomeID;
+            var6[var7] = (byte)var5[var7].biomeID;
         }
 
-        Iterator var12 = this.field_82696_f.iterator();
-
-        while (var12.hasNext())
-        {
-            MapGenStructure var13 = (MapGenStructure)var12.next();
-            var13.generate(this, this.worldObj, par1, par2, (byte[])null);
-        }
-
-        var3.generateSkylightMap();
-        return var3;
+        var4.generateSkylightMap();
+        return var4;
     }
 
     /**
@@ -155,65 +96,14 @@ public class ChunkProviderFlat implements IChunkProvider
      */
     public void populate(IChunkProvider par1IChunkProvider, int par2, int par3)
     {
-        int var4 = par2 * 16;
-        int var5 = par3 * 16;
-        BiomeGenBase var6 = this.worldObj.getBiomeGenForCoords(var4 + 16, var5 + 16);
-        boolean var7 = false;
         this.random.setSeed(this.worldObj.getSeed());
-        long var8 = this.random.nextLong() / 2L * 2L + 1L;
-        long var10 = this.random.nextLong() / 2L * 2L + 1L;
-        this.random.setSeed((long)par2 * var8 + (long)par3 * var10 ^ this.worldObj.getSeed());
-        Iterator var12 = this.field_82696_f.iterator();
+        long var4 = this.random.nextLong() / 2L * 2L + 1L;
+        long var6 = this.random.nextLong() / 2L * 2L + 1L;
+        this.random.setSeed((long)par2 * var4 + (long)par3 * var6 ^ this.worldObj.getSeed());
 
-        while (var12.hasNext())
+        if (this.useStructures)
         {
-            MapGenStructure var13 = (MapGenStructure)var12.next();
-            boolean var14 = var13.generateStructuresInChunk(this.worldObj, this.random, par2, par3);
-
-            if (var13 instanceof MapGenVillage)
-            {
-                var7 |= var14;
-            }
-        }
-
-        int var17;
-        int var16;
-        int var18;
-
-        if (this.field_82703_i != null && !var7 && this.random.nextInt(4) == 0)
-        {
-            var16 = var4 + this.random.nextInt(16) + 8;
-            var17 = this.random.nextInt(128);
-            var18 = var5 + this.random.nextInt(16) + 8;
-            this.field_82703_i.generate(this.worldObj, this.random, var16, var17, var18);
-        }
-
-        if (this.field_82701_j != null && !var7 && this.random.nextInt(8) == 0)
-        {
-            var16 = var4 + this.random.nextInt(16) + 8;
-            var17 = this.random.nextInt(this.random.nextInt(120) + 8);
-            var18 = var5 + this.random.nextInt(16) + 8;
-
-            if (var17 < 63 || this.random.nextInt(10) == 0)
-            {
-                this.field_82701_j.generate(this.worldObj, this.random, var16, var17, var18);
-            }
-        }
-
-        if (this.field_82702_h)
-        {
-            for (var16 = 0; var16 < 8; ++var16)
-            {
-                var17 = var4 + this.random.nextInt(16) + 8;
-                var18 = this.random.nextInt(128);
-                int var15 = var5 + this.random.nextInt(16) + 8;
-                (new WorldGenDungeons()).generate(this.worldObj, this.random, var17, var18, var15);
-            }
-        }
-
-        if (this.field_82697_g)
-        {
-            var6.decorate(this.worldObj, this.random, var4, var5);
+            this.villageGen.generateStructuresInChunk(this.worldObj, this.random, par2, par3);
         }
     }
 
@@ -265,37 +155,11 @@ public class ChunkProviderFlat implements IChunkProvider
      */
     public ChunkPosition findClosestStructure(World par1World, String par2Str, int par3, int par4, int par5)
     {
-        if ("Stronghold".equals(par2Str))
-        {
-            Iterator var6 = this.field_82696_f.iterator();
-
-            while (var6.hasNext())
-            {
-                MapGenStructure var7 = (MapGenStructure)var6.next();
-
-                if (var7 instanceof MapGenStronghold)
-                {
-                    return var7.getNearestInstance(par1World, par3, par4, par5);
-                }
-            }
-        }
-
         return null;
     }
 
     public int getLoadedChunkCount()
     {
         return 0;
-    }
-
-    public void func_82695_e(int par1, int par2)
-    {
-        Iterator var3 = this.field_82696_f.iterator();
-
-        while (var3.hasNext())
-        {
-            MapGenStructure var4 = (MapGenStructure)var3.next();
-            var4.generate(this, this.worldObj, par1, par2, (byte[])null);
-        }
     }
 }

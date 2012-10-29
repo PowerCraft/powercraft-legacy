@@ -19,7 +19,7 @@ import javax.crypto.SecretKey;
 
 import cpw.mods.fml.common.network.FMLNetworkHandler;
 
-public class TcpConnection implements INetworkManager
+public class TcpConnection implements NetworkManager
 {
     public static AtomicInteger field_74471_a = new AtomicInteger();
     public static AtomicInteger field_74469_b = new AtomicInteger();
@@ -321,7 +321,7 @@ public class TcpConnection implements INetworkManager
 
         try
         {
-            Packet var2 = Packet.readPacket(this.socketInputStream, this.theNetHandler.isServerHandler(), this.networkSocket);
+            Packet var2 = Packet.readPacket(this.socketInputStream, this.theNetHandler.isServerHandler());
 
             if (var2 != null)
             {

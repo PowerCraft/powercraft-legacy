@@ -37,11 +37,11 @@ public class ModelGhast extends ModelBase
      * and legs, where par1 represents the time(so that arms and legs swing back and forth) and par2 represents how
      * "far" arms and legs can swing at most.
      */
-    public void setRotationAngles(float par1, float par2, float par3, float par4, float par5, float par6, Entity par7Entity)
+    public void setRotationAngles(float par1, float par2, float par3, float par4, float par5, float par6)
     {
-        for (int var8 = 0; var8 < this.tentacles.length; ++var8)
+        for (int var7 = 0; var7 < this.tentacles.length; ++var7)
         {
-            this.tentacles[var8].rotateAngleX = 0.2F * MathHelper.sin(par3 * 0.3F + (float)var8) + 0.4F;
+            this.tentacles[var7].rotateAngleX = 0.2F * MathHelper.sin(par3 * 0.3F + (float)var7) + 0.4F;
         }
     }
 
@@ -50,7 +50,7 @@ public class ModelGhast extends ModelBase
      */
     public void render(Entity par1Entity, float par2, float par3, float par4, float par5, float par6, float par7)
     {
-        this.setRotationAngles(par2, par3, par4, par5, par6, par7, par1Entity);
+        this.setRotationAngles(par2, par3, par4, par5, par6, par7);
         GL11.glPushMatrix();
         GL11.glTranslatef(0.0F, 0.6F, 0.0F);
         this.body.render(par7);

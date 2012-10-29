@@ -10,11 +10,6 @@ public class CommandGameMode extends CommandBase
         return "gamemode";
     }
 
-    public int func_82362_a()
-    {
-        return 2;
-    }
-
     public String getCommandUsage(ICommandSender par1ICommandSender)
     {
         return par1ICommandSender.translateString("commands.gamemode.usage", new Object[0]);
@@ -25,7 +20,7 @@ public class CommandGameMode extends CommandBase
         if (par2ArrayOfStr.length > 0)
         {
             EnumGameType var3 = this.getGameModeFromCommand(par1ICommandSender, par2ArrayOfStr[0]);
-            EntityPlayerMP var4 = par2ArrayOfStr.length >= 2 ? func_82359_c(par1ICommandSender, par2ArrayOfStr[1]) : getCommandSenderAsPlayer(par1ICommandSender);
+            EntityPlayer var4 = par2ArrayOfStr.length >= 2 ? this.getGameModeTargetPlayer(par2ArrayOfStr[1]) : getCommandSenderAsPlayer(par1ICommandSender);
             var4.sendGameTypeToPlayer(var3);
             String var5 = StatCollector.translateToLocal("gameMode." + var3.getName());
 
@@ -61,15 +56,27 @@ public class CommandGameMode extends CommandBase
     }
 
     /**
+     * Returns the target player for whom the gamemode should be changed.
+     */
+    protected EntityPlayer getGameModeTargetPlayer(String par1Str)
+    {
+        EntityPlayerMP var2 = MinecraftServer.getServer().getConfigurationManager().getPlayerForUsername(par1Str);
+
+        if (var2 == null)
+        {
+            throw new PlayerNotFoundException();
+        }
+        else
+        {
+            return var2;
+        }
+    }
+
+    /**
      * Returns String array containing all player usernames in the server.
      */
     protected String[] getListOfPlayerUsernames()
     {
         return MinecraftServer.getServer().getAllUsernames();
-    }
-
-    public boolean func_82358_a(int par1)
-    {
-        return par1 == 1;
     }
 }

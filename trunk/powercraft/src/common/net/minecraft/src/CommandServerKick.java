@@ -10,11 +10,6 @@ public class CommandServerKick extends CommandBase
         return "kick";
     }
 
-    public int func_82362_a()
-    {
-        return 3;
-    }
-
     public String getCommandUsage(ICommandSender par1ICommandSender)
     {
         return par1ICommandSender.translateString("commands.kick.usage", new Object[0]);
@@ -36,7 +31,7 @@ public class CommandServerKick extends CommandBase
             {
                 if (par2ArrayOfStr.length >= 2)
                 {
-                    var4 = func_82360_a(par1ICommandSender, par2ArrayOfStr, 1);
+                    var4 = joinString(par2ArrayOfStr, 1);
                     var5 = true;
                 }
 

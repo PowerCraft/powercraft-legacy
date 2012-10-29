@@ -186,6 +186,8 @@ public class StringTranslate
         }
     }
 
+    @SideOnly(Side.CLIENT)
+
     /**
      * Translate a key with a extra '.name' at end added, is used by blocks and items.
      */

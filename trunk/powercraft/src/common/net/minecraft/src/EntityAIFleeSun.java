@@ -82,7 +82,7 @@ public class EntityAIFleeSun extends EntityAIBase
 
             if (!this.theWorld.canBlockSeeTheSky(var3, var4, var5) && this.theCreature.getBlockPathWeight(var3, var4, var5) < 0.0F)
             {
-                return this.theWorld.func_82732_R().getVecFromPool((double)var3, (double)var4, (double)var5);
+                return Vec3.getVec3Pool().getVecFromPool((double)var3, (double)var4, (double)var5);
             }
         }
 

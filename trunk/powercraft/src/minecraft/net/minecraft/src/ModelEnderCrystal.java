@@ -16,17 +16,13 @@ public class ModelEnderCrystal extends ModelBase
     /** The base model for the Ender Crystal. */
     private ModelRenderer base;
 
-    public ModelEnderCrystal(float par1, boolean par2)
+    public ModelEnderCrystal(float par1)
     {
         this.glass.setTextureOffset(0, 0).addBox(-4.0F, -4.0F, -4.0F, 8, 8, 8);
         this.cube = new ModelRenderer(this, "cube");
         this.cube.setTextureOffset(32, 0).addBox(-4.0F, -4.0F, -4.0F, 8, 8, 8);
-
-        if (par2)
-        {
-            this.base = new ModelRenderer(this, "base");
-            this.base.setTextureOffset(0, 16).addBox(-6.0F, 0.0F, -6.0F, 12, 4, 12);
-        }
+        this.base = new ModelRenderer(this, "base");
+        this.base.setTextureOffset(0, 16).addBox(-6.0F, 0.0F, -6.0F, 12, 4, 12);
     }
 
     /**
@@ -37,12 +33,7 @@ public class ModelEnderCrystal extends ModelBase
         GL11.glPushMatrix();
         GL11.glScalef(2.0F, 2.0F, 2.0F);
         GL11.glTranslatef(0.0F, -0.5F, 0.0F);
-
-        if (this.base != null)
-        {
-            this.base.render(par7);
-        }
-
+        this.base.render(par7);
         GL11.glRotatef(par3, 0.0F, 1.0F, 0.0F);
         GL11.glTranslatef(0.0F, 0.8F + par4, 0.0F);
         GL11.glRotatef(60.0F, 0.7071F, 0.0F, 0.7071F);

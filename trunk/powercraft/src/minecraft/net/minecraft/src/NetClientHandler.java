@@ -36,7 +36,7 @@ public class NetClientHandler extends NetHandler
     private boolean disconnected = false;
 
     /** Reference to the NetworkManager object. */
-    private INetworkManager netManager;
+    private NetworkManager netManager;
     public String field_72560_a;
 
     /** Reference to the Minecraft object. */
@@ -174,7 +174,7 @@ public class NetClientHandler extends NetHandler
         this.currentServerMaxPlayers = par1Packet1Login.maxPlayers;
         this.mc.playerController.setGameType(par1Packet1Login.gameType);
         FMLNetworkHandler.onConnectionEstablishedToServer(this, netManager, par1Packet1Login);
-        this.mc.gameSettings.func_82879_c();
+        this.addToSendQueue(new Packet204ClientInfo(this.mc.gameSettings.language, this.mc.gameSettings.renderDistance, this.mc.gameSettings.chatVisibility, this.mc.gameSettings.chatColours, this.mc.gameSettings.difficulty));
     }
 
     public void handlePickupSpawn(Packet21PickupSpawn par1Packet21PickupSpawn)
@@ -182,7 +182,7 @@ public class NetClientHandler extends NetHandler
         double var2 = (double)par1Packet21PickupSpawn.xPosition / 32.0D;
         double var4 = (double)par1Packet21PickupSpawn.yPosition / 32.0D;
         double var6 = (double)par1Packet21PickupSpawn.zPosition / 32.0D;
-        EntityItem var8 = new EntityItem(this.worldClient, var2, var4, var6, par1Packet21PickupSpawn.itemID);
+        EntityItem var8 = new EntityItem(this.worldClient, var2, var4, var6, new ItemStack(par1Packet21PickupSpawn.itemID, par1Packet21PickupSpawn.count, par1Packet21PickupSpawn.itemDamage));
         var8.motionX = (double)par1Packet21PickupSpawn.rotation / 128.0D;
         var8.motionY = (double)par1Packet21PickupSpawn.pitch / 128.0D;
         var8.motionZ = (double)par1Packet21PickupSpawn.roll / 128.0D;
@@ -198,7 +198,6 @@ public class NetClientHandler extends NetHandler
         double var4 = (double)par1Packet23VehicleSpawn.yPosition / 32.0D;
         double var6 = (double)par1Packet23VehicleSpawn.zPosition / 32.0D;
         Object var8 = null;
-        boolean var9 = true;
 
         if (par1Packet23VehicleSpawn.type == 10)
         {
@@ -214,11 +213,11 @@ public class NetClientHandler extends NetHandler
         }
         else if (par1Packet23VehicleSpawn.type == 90)
         {
-            Entity var10 = this.getEntityByID(par1Packet23VehicleSpawn.throwerEntityId);
+            Entity var9 = this.getEntityByID(par1Packet23VehicleSpawn.throwerEntityId);
 
-            if (var10 instanceof EntityPlayer)
+            if (var9 instanceof EntityPlayer)
             {
-                var8 = new EntityFishHook(this.worldClient, var2, var4, var6, (EntityPlayer)var10);
+                var8 = new EntityFishHook(this.worldClient, var2, var4, var6, (EntityPlayer)var9);
             }
 
             par1Packet23VehicleSpawn.throwerEntityId = 0;
@@ -231,12 +230,6 @@ public class NetClientHandler extends NetHandler
         {
             var8 = new EntitySnowball(this.worldClient, var2, var4, var6);
         }
-        else if (par1Packet23VehicleSpawn.type == 71)
-        {
-            var8 = new EntityItemFrame(this.worldClient, (int)var2, (int)var4, (int)var6, par1Packet23VehicleSpawn.throwerEntityId);
-            par1Packet23VehicleSpawn.throwerEntityId = 0;
-            var9 = false;
-        }
         else if (par1Packet23VehicleSpawn.type == 65)
         {
             var8 = new EntityEnderPearl(this.worldClient, var2, var4, var6);
@@ -247,17 +240,12 @@ public class NetClientHandler extends NetHandler
         }
         else if (par1Packet23VehicleSpawn.type == 63)
         {
-            var8 = new EntityLargeFireball(this.worldClient, var2, var4, var6, (double)par1Packet23VehicleSpawn.speedX / 8000.0D, (double)par1Packet23VehicleSpawn.speedY / 8000.0D, (double)par1Packet23VehicleSpawn.speedZ / 8000.0D);
+            var8 = new EntityFireball(this.worldClient, var2, var4, var6, (double)par1Packet23VehicleSpawn.speedX / 8000.0D, (double)par1Packet23VehicleSpawn.speedY / 8000.0D, (double)par1Packet23VehicleSpawn.speedZ / 8000.0D);
             par1Packet23VehicleSpawn.throwerEntityId = 0;
         }
         else if (par1Packet23VehicleSpawn.type == 64)
         {
             var8 = new EntitySmallFireball(this.worldClient, var2, var4, var6, (double)par1Packet23VehicleSpawn.speedX / 8000.0D, (double)par1Packet23VehicleSpawn.speedY / 8000.0D, (double)par1Packet23VehicleSpawn.speedZ / 8000.0D);
-            par1Packet23VehicleSpawn.throwerEntityId = 0;
-        }
-        else if (par1Packet23VehicleSpawn.type == 66)
-        {
-            var8 = new EntityWitherSkull(this.worldClient, var2, var4, var6, (double)par1Packet23VehicleSpawn.speedX / 8000.0D, (double)par1Packet23VehicleSpawn.speedY / 8000.0D, (double)par1Packet23VehicleSpawn.speedZ / 8000.0D);
             par1Packet23VehicleSpawn.throwerEntityId = 0;
         }
         else if (par1Packet23VehicleSpawn.type == 62)
@@ -297,25 +285,20 @@ public class NetClientHandler extends NetHandler
             ((Entity)var8).serverPosX = par1Packet23VehicleSpawn.xPosition;
             ((Entity)var8).serverPosY = par1Packet23VehicleSpawn.yPosition;
             ((Entity)var8).serverPosZ = par1Packet23VehicleSpawn.zPosition;
+            ((Entity)var8).rotationYaw = 0.0F;
+            ((Entity)var8).rotationPitch = 0.0F;
+            Entity[] var15 = ((Entity)var8).getParts();
 
-            if (var9)
+            if (var15 != null)
             {
-                ((Entity)var8).rotationYaw = 0.0F;
-                ((Entity)var8).rotationPitch = 0.0F;
-            }
+                int var10 = par1Packet23VehicleSpawn.entityId - ((Entity)var8).entityId;
+                Entity[] var11 = var15;
+                int var12 = var15.length;
 
-            Entity[] var17 = ((Entity)var8).getParts();
-
-            if (var17 != null)
-            {
-                int var11 = par1Packet23VehicleSpawn.entityId - ((Entity)var8).entityId;
-                Entity[] var12 = var17;
-                int var13 = var17.length;
-
-                for (int var14 = 0; var14 < var13; ++var14)
+                for (int var13 = 0; var13 < var12; ++var13)
                 {
-                    Entity var15 = var12[var14];
-                    var15.entityId += var11;
+                    Entity var14 = var11[var13];
+                    var14.entityId += var10;
                 }
             }
 
@@ -326,12 +309,12 @@ public class NetClientHandler extends NetHandler
             {
                 if (par1Packet23VehicleSpawn.type == 60)
                 {
-                    Entity var16 = this.getEntityByID(par1Packet23VehicleSpawn.throwerEntityId);
+                    Entity var17 = this.getEntityByID(par1Packet23VehicleSpawn.throwerEntityId);
 
-                    if (var16 instanceof EntityLiving)
+                    if (var17 instanceof EntityLiving)
                     {
-                        EntityArrow var18 = (EntityArrow)var8;
-                        var18.shootingEntity = var16;
+                        EntityArrow var16 = (EntityArrow)var8;
+                        var16.shootingEntity = var17;
                     }
                 }
 
@@ -698,9 +681,11 @@ public class NetClientHandler extends NetHandler
 
         if (var2 != null)
         {
+            EntityPlayer var3;
+
             if (par1Packet18Animation.animate == 1)
             {
-                EntityLiving var3 = (EntityLiving)var2;
+                var3 = (EntityPlayer)var2;
                 var3.swingItem();
             }
             else if (par1Packet18Animation.animate == 2)
@@ -709,8 +694,8 @@ public class NetClientHandler extends NetHandler
             }
             else if (par1Packet18Animation.animate == 3)
             {
-                EntityPlayer var4 = (EntityPlayer)var2;
-                var4.wakeUpPlayer(false, false, false);
+                var3 = (EntityPlayer)var2;
+                var3.wakeUpPlayer(false, false, false);
             }
             else if (par1Packet18Animation.animate != 4)
             {
@@ -720,8 +705,8 @@ public class NetClientHandler extends NetHandler
                 }
                 else if (par1Packet18Animation.animate == 7)
                 {
-                    EntityCrit2FX var5 = new EntityCrit2FX(this.mc.theWorld, var2, "magicCrit");
-                    this.mc.effectRenderer.addEffect(var5);
+                    EntityCrit2FX var4 = new EntityCrit2FX(this.mc.theWorld, var2, "magicCrit");
+                    this.mc.effectRenderer.addEffect(var4);
                 }
                 else if (par1Packet18Animation.animate == 5 && var2 instanceof EntityOtherPlayerMP)
                 {
@@ -798,13 +783,12 @@ public class NetClientHandler extends NetHandler
 
     public void handleUpdateTime(Packet4UpdateTime par1Packet4UpdateTime)
     {
-        this.mc.theWorld.func_82738_a(par1Packet4UpdateTime.field_82562_a);
         this.mc.theWorld.setWorldTime(par1Packet4UpdateTime.time);
     }
 
     public void handleSpawnPosition(Packet6SpawnPosition par1Packet6SpawnPosition)
     {
-        this.mc.thePlayer.setSpawnChunk(new ChunkCoordinates(par1Packet6SpawnPosition.xPosition, par1Packet6SpawnPosition.yPosition, par1Packet6SpawnPosition.zPosition), true);
+        this.mc.thePlayer.setSpawnChunk(new ChunkCoordinates(par1Packet6SpawnPosition.xPosition, par1Packet6SpawnPosition.yPosition, par1Packet6SpawnPosition.zPosition));
         this.mc.theWorld.getWorldInfo().setSpawnPosition(par1Packet6SpawnPosition.xPosition, par1Packet6SpawnPosition.yPosition, par1Packet6SpawnPosition.zPosition);
     }
 
@@ -934,14 +918,6 @@ public class NetClientHandler extends NetHandler
             case 6:
                 var2.displayGUIMerchant(new NpcMerchant(var2));
                 var2.craftingInventory.windowId = par1Packet100OpenWindow.windowId;
-                break;
-            case 7:
-                var2.func_82240_a(new TileEntityBeacon());
-                var2.craftingInventory.windowId = par1Packet100OpenWindow.windowId;
-                break;
-            case 8:
-                var2.func_82244_d(MathHelper.floor_double(var2.posX), MathHelper.floor_double(var2.posY), MathHelper.floor_double(var2.posZ));
-                var2.craftingInventory.windowId = par1Packet100OpenWindow.windowId;
         }
     }
 
@@ -1047,28 +1023,22 @@ public class NetClientHandler extends NetHandler
         {
             TileEntity var2 = this.mc.theWorld.getBlockTileEntity(par1Packet132TileEntityData.xPosition, par1Packet132TileEntityData.yPosition, par1Packet132TileEntityData.zPosition);
 
-            if (var2 != null)
+            if (var2 != null && par1Packet132TileEntityData.actionType == 1 && var2 instanceof TileEntityMobSpawner)
             {
-                if (par1Packet132TileEntityData.actionType == 1 && var2 instanceof TileEntityMobSpawner)
-                {
-                    var2.readFromNBT(par1Packet132TileEntityData.customParam1);
-                }
-                else if (par1Packet132TileEntityData.actionType == 2 && var2 instanceof TileEntityCommandBlock)
-                {
-                    var2.readFromNBT(par1Packet132TileEntityData.customParam1);
-                }
-                else if (par1Packet132TileEntityData.actionType == 3 && var2 instanceof TileEntityBeacon)
-                {
-                    var2.readFromNBT(par1Packet132TileEntityData.customParam1);
-                }
-                else if (par1Packet132TileEntityData.actionType == 4 && var2 instanceof TileEntitySkull)
-                {
-                    var2.readFromNBT(par1Packet132TileEntityData.customParam1);
-                }
-                else
-                {
-                    var2.onDataPacket(netManager,  par1Packet132TileEntityData);
-                }
+                ((TileEntityMobSpawner)var2).readFromNBT(par1Packet132TileEntityData.customParam1);
+            }
+            else if (var2 != null)
+            {
+                var2.onDataPacket(netManager,  par1Packet132TileEntityData);
+            }
+            else
+            {
+                /*Packet132TileEntityData pkt = par1Packet132TileEntityData;
+                ModLoader.getLogger().log(Level.WARNING, String.format(
+                        "Received a TileEntityData packet for a location that did not have a TileEntity: (%d, %d, %d) %d: %d, %d, %d",
+                        pkt.xPosition, pkt.yPosition, pkt.zPosition,
+                        pkt.actionType,
+                        pkt.customParam1, pkt.customParam2, pkt.customParam3));*/
             }
         }
     }
@@ -1220,14 +1190,7 @@ public class NetClientHandler extends NetHandler
 
     public void handleDoorChange(Packet61DoorChange par1Packet61DoorChange)
     {
-        if (par1Packet61DoorChange.func_82560_d())
-        {
-            this.mc.theWorld.func_82739_e(par1Packet61DoorChange.sfxID, par1Packet61DoorChange.posX, par1Packet61DoorChange.posY, par1Packet61DoorChange.posZ, par1Packet61DoorChange.auxData);
-        }
-        else
-        {
-            this.mc.theWorld.playAuxSFX(par1Packet61DoorChange.sfxID, par1Packet61DoorChange.posX, par1Packet61DoorChange.posY, par1Packet61DoorChange.posZ, par1Packet61DoorChange.auxData);
-        }
+        this.mc.theWorld.playAuxSFX(par1Packet61DoorChange.sfxID, par1Packet61DoorChange.posX, par1Packet61DoorChange.posY, par1Packet61DoorChange.posZ, par1Packet61DoorChange.auxData);
     }
 
     /**
@@ -1317,7 +1280,6 @@ public class NetClientHandler extends NetHandler
         var2.capabilities.disableDamage = par1Packet202PlayerAbilities.getDisableDamage();
         var2.capabilities.allowFlying = par1Packet202PlayerAbilities.getAllowFlying();
         var2.capabilities.setFlySpeed(par1Packet202PlayerAbilities.getFlySpeed());
-        var2.capabilities.func_82877_b(par1Packet202PlayerAbilities.func_82558_j());
     }
 
     public void handleAutoComplete(Packet203AutoComplete par1Packet203AutoComplete)
@@ -1386,7 +1348,7 @@ public class NetClientHandler extends NetHandler
     /**
      * Return the NetworkManager instance used by this NetClientHandler
      */
-    public INetworkManager getNetManager()
+    public NetworkManager getNetManager()
     {
         return this.netManager;
     }

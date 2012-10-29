@@ -19,25 +19,12 @@ import cpw.mods.fml.relauncher.ArgsWrapper;
 import cpw.mods.fml.relauncher.FMLRelauncher;
 import net.minecraft.src.AnvilSaveConverter;
 import net.minecraft.src.AxisAlignedBB;
-import net.minecraft.src.BehaviorArrowDispense;
-import net.minecraft.src.BehaviorBucketEmptyDispense;
-import net.minecraft.src.BehaviorBucketFullDispense;
-import net.minecraft.src.BehaviorDispenseBoat;
-import net.minecraft.src.BehaviorDispenseFireball;
-import net.minecraft.src.BehaviorDispenseMinecart;
-import net.minecraft.src.BehaviorEggDispense;
-import net.minecraft.src.BehaviorExpBottleDispense;
-import net.minecraft.src.BehaviorMobEggDispense;
-import net.minecraft.src.BehaviorPotionDispense;
-import net.minecraft.src.BehaviorSnowballDispense;
-import net.minecraft.src.BlockDispenser;
 import net.minecraft.src.CallableIsServerModded;
 import net.minecraft.src.CallablePlayers;
-import net.minecraft.src.CallableServerMemoryStats;
 import net.minecraft.src.CallableServerProfiler;
 import net.minecraft.src.ChunkCoordinates;
 import net.minecraft.src.CommandBase;
-import net.minecraft.src.ConvertingProgressUpdate;
+import net.minecraft.src.ConvertProgressUpdater;
 import net.minecraft.src.CrashReport;
 import net.minecraft.src.DedicatedServer;
 import net.minecraft.src.DemoWorldServer;
@@ -49,7 +36,6 @@ import net.minecraft.src.IProgressUpdate;
 import net.minecraft.src.ISaveFormat;
 import net.minecraft.src.ISaveHandler;
 import net.minecraft.src.IUpdatePlayerListBox;
-import net.minecraft.src.Item;
 import net.minecraft.src.MathHelper;
 import net.minecraft.src.MinecraftException;
 import net.minecraft.src.NetworkListenThread;
@@ -65,7 +51,8 @@ import net.minecraft.src.StatList;
 import net.minecraft.src.StringTranslate;
 import net.minecraft.src.StringUtils;
 import net.minecraft.src.ThreadDedicatedServer;
-import net.minecraft.src.ThreadMinecraftServer;
+import net.minecraft.src.ThreadServerApplication;
+import net.minecraft.src.Vec3;
 import net.minecraft.src.WorldInfo;
 import net.minecraft.src.WorldManager;
 import net.minecraft.src.WorldServer;
@@ -156,6 +143,7 @@ public abstract class MinecraftServer implements Runnable, IPlayerUsage, IComman
     /** Stats are [dimension][tick%100] system.nanoTime is stored. */
     //public long[][] timeOfLastDimensionTick;
     public Hashtable<Integer, long[]> worldTickTimes = new Hashtable<Integer, long[]>();
+    public int spawnProtectionSize = 16;
     private KeyPair serverKeyPair;
 
     /** Username of the server owner (for integrated servers) */
@@ -186,27 +174,6 @@ public abstract class MinecraftServer implements Runnable, IPlayerUsage, IComman
         this.anvilFile = par1File;
         this.commandManager = new ServerCommandManager();
         this.anvilConverterForAnvilFile = new AnvilSaveConverter(par1File);
-        this.func_82355_al();
-    }
-
-    private void func_82355_al()
-    {
-        BlockDispenser.field_82527_a.func_82595_a(Item.arrow, new BehaviorArrowDispense(this));
-        BlockDispenser.field_82527_a.func_82595_a(Item.egg, new BehaviorEggDispense(this));
-        BlockDispenser.field_82527_a.func_82595_a(Item.snowball, new BehaviorSnowballDispense(this));
-        BlockDispenser.field_82527_a.func_82595_a(Item.expBottle, new BehaviorExpBottleDispense(this));
-        BlockDispenser.field_82527_a.func_82595_a(Item.potion, new BehaviorPotionDispense(this));
-        BlockDispenser.field_82527_a.func_82595_a(Item.monsterPlacer, new BehaviorMobEggDispense(this));
-        BlockDispenser.field_82527_a.func_82595_a(Item.fireballCharge, new BehaviorDispenseFireball(this));
-        BehaviorDispenseMinecart var1 = new BehaviorDispenseMinecart(this);
-        BlockDispenser.field_82527_a.func_82595_a(Item.minecartEmpty, var1);
-        BlockDispenser.field_82527_a.func_82595_a(Item.minecartCrate, var1);
-        BlockDispenser.field_82527_a.func_82595_a(Item.minecartPowered, var1);
-        BlockDispenser.field_82527_a.func_82595_a(Item.boat, new BehaviorDispenseBoat(this));
-        BehaviorBucketFullDispense var2 = new BehaviorBucketFullDispense(this);
-        BlockDispenser.field_82527_a.func_82595_a(Item.bucketLava, var2);
-        BlockDispenser.field_82527_a.func_82595_a(Item.bucketWater, var2);
-        BlockDispenser.field_82527_a.func_82595_a(Item.bucketEmpty, new BehaviorBucketEmptyDispense(this));
     }
 
     /**
@@ -220,7 +187,7 @@ public abstract class MinecraftServer implements Runnable, IPlayerUsage, IComman
         {
             logger.info("Converting map!");
             this.setUserMessage("menu.convertingLevel");
-            this.getActiveAnvilConverter().convertMapFormat(par1Str, new ConvertingProgressUpdate(this));
+            this.getActiveAnvilConverter().convertMapFormat(par1Str, new ConvertProgressUpdater(this));
         }
     }
 
@@ -239,33 +206,32 @@ public abstract class MinecraftServer implements Runnable, IPlayerUsage, IComman
         return this.userMessage;
     }
 
-    protected void loadAllWorlds(String par1Str, String par2Str, long par3, WorldType par5WorldType, String par6Str)
+    protected void loadAllWorlds(String par1Str, String par2Str, long par3, WorldType par5WorldType)
     {
         this.convertMapIfNeeded(par1Str);
         this.setUserMessage("menu.loadingLevel");
-        ISaveHandler var7 = this.anvilConverterForAnvilFile.getSaveLoader(par1Str, true);
-        WorldInfo var9 = var7.loadWorldInfo();
-        WorldSettings var8;
+        ISaveHandler var6 = this.anvilConverterForAnvilFile.getSaveLoader(par1Str, true);
+        WorldInfo var8 = var6.loadWorldInfo();
+        WorldSettings var7;
 
-        if (var9 == null)
+        if (var8 == null)
         {
-            var8 = new WorldSettings(par3, this.getGameType(), this.canStructuresSpawn(), this.isHardcore(), par5WorldType);
-            var8.func_82750_a(par6Str);
+            var7 = new WorldSettings(par3, this.getGameType(), this.canStructuresSpawn(), this.isHardcore(), par5WorldType);
         }
         else
         {
-            var8 = new WorldSettings(var9);
+            var7 = new WorldSettings(var8);
         }
 
         if (this.enableBonusChest)
         {
-            var8.enableBonusChest();
+            var7.enableBonusChest();
         }
 
-        WorldServer overWorld = (isDemo() ? new DemoWorldServer(this, var7, par2Str, 0, theProfiler) : new WorldServer(this, var7, par2Str, 0, var8, theProfiler));
+        WorldServer overWorld = (isDemo() ? new DemoWorldServer(this, var6, par2Str, 0, theProfiler) : new WorldServer(this, var6, par2Str, 0, var7, theProfiler));
         for (int dim : DimensionManager.getStaticDimensionIDs())
         {
-            WorldServer world = (dim == 0 ? overWorld : new WorldServerMulti(this, var7, par2Str, dim, var8, overWorld, theProfiler));
+            WorldServer world = (dim == 0 ? overWorld : new WorldServerMulti(this, var6, par2Str, dim, var7, overWorld, theProfiler));
             world.addWorldAccess(new WorldManager(this, world));
 
             if (!this.isSinglePlayer())
@@ -274,7 +240,6 @@ public abstract class MinecraftServer implements Runnable, IPlayerUsage, IComman
             }
 
             this.serverConfigManager.setPlayerManager(this.worldServers);
-
             MinecraftForge.EVENT_BUS.post(new WorldEvent.Load(world));
         }
 
@@ -285,28 +250,42 @@ public abstract class MinecraftServer implements Runnable, IPlayerUsage, IComman
 
     protected void initialWorldChunkLoad()
     {
-        int var5 = 0;
+        short var1 = 196;
+        long var2 = System.currentTimeMillis();
         this.setUserMessage("menu.generatingTerrain");
-        byte var6 = 0;
-        logger.info("Preparing start region for level " + var6);
-        WorldServer var7 = this.worldServers[var6];
-        ChunkCoordinates var8 = var7.getSpawnPoint();
-        long var9 = System.currentTimeMillis();
 
-        for (int var11 = -192; var11 <= 192 && this.isServerRunning(); var11 += 16)
+        for (int var4 = 0; var4 < 1; ++var4)
         {
-            for (int var12 = -192; var12 <= 192 && this.isServerRunning(); var12 += 16)
+            logger.info("Preparing start region for level " + var4);
+            WorldServer var5 = this.worldServers[var4];
+            ChunkCoordinates var6 = var5.getSpawnPoint();
+
+            for (int var7 = -var1; var7 <= var1 && this.isServerRunning(); var7 += 16)
             {
-                long var13 = System.currentTimeMillis();
-
-                if (var13 - var9 > 1000L)
+                for (int var8 = -var1; var8 <= var1 && this.isServerRunning(); var8 += 16)
                 {
-                    this.outputPercentRemaining("Preparing spawn area", var5 * 100 / 625);
-                    var9 = var13;
-                }
+                    long var9 = System.currentTimeMillis();
 
-                ++var5;
-                var7.theChunkProviderServer.loadChunk(var8.posX + var11 >> 4, var8.posZ + var12 >> 4);
+                    if (var9 < var2)
+                    {
+                        var2 = var9;
+                    }
+
+                    if (var9 > var2 + 1000L)
+                    {
+                        int var11 = (var1 * 2 + 1) * (var1 * 2 + 1);
+                        int var12 = (var7 + var1) * (var1 * 2 + 1) + var8 + 1;
+                        this.outputPercentRemaining("Preparing spawn area", var12 * 100 / var11);
+                        var2 = var9;
+                    }
+
+                    var5.theChunkProviderServer.loadChunk(var6.posX + var7 >> 4, var6.posZ + var8 >> 4);
+
+                    while (var5.updatingLighting() && this.isServerRunning())
+                    {
+                        ;
+                    }
+                }
             }
         }
 
@@ -571,6 +550,7 @@ public abstract class MinecraftServer implements Runnable, IPlayerUsage, IComman
         FMLCommonHandler.instance().rescheduleTicks(Side.SERVER);
         long var1 = System.nanoTime();
         AxisAlignedBB.getAABBPool().cleanPool();
+        Vec3.getVec3Pool().clear();
         FMLCommonHandler.instance().onPreServerTick();
         ++this.tickCounter;
 
@@ -632,27 +612,33 @@ public abstract class MinecraftServer implements Runnable, IPlayerUsage, IComman
             {
                 WorldServer var4 = DimensionManager.getWorld(id);
                 this.theProfiler.startSection(var4.getWorldInfo().getWorldName());
-                this.theProfiler.startSection("pools");
-                var4.func_82732_R().clear();
-                this.theProfiler.endSection();
 
                 if (this.tickCounter % 20 == 0)
                 {
                     this.theProfiler.startSection("timeSync");
-                    this.serverConfigManager.sendPacketToAllPlayersInDimension(new Packet4UpdateTime(var4.func_82737_E(), var4.getWorldTime()), var4.provider.dimensionId);
+                    this.serverConfigManager.sendPacketToAllPlayersInDimension(new Packet4UpdateTime(var4.getWorldTime()), var4.provider.dimensionId);
                     this.theProfiler.endSection();
                 }
 
                 this.theProfiler.startSection("tick");
                 FMLCommonHandler.instance().onPreWorldTick(var4);
                 var4.tick();
-                var4.updateEntities();
                 FMLCommonHandler.instance().onPostWorldTick(var4);
-                this.theProfiler.endSection();
-                this.theProfiler.startSection("tracker");
-                var4.getEntityTracker().updateTrackedEntities();
-                this.theProfiler.endSection();
-                this.theProfiler.endSection();
+                this.theProfiler.endStartSection("lights");
+
+                while (true)
+                {
+                    if (!var4.updatingLighting())
+                    {
+                        this.theProfiler.endSection();
+                        var4.updateEntities();
+                        this.theProfiler.startSection("tracker");
+                        var4.getEntityTracker().updateTrackedEntities();
+                        this.theProfiler.endSection();
+                        this.theProfiler.endSection();
+                        break;
+                    }
+                }
             }
 
             worldTickTimes.get(id)[this.tickCounter % 100] = System.nanoTime() - var2;
@@ -683,7 +669,7 @@ public abstract class MinecraftServer implements Runnable, IPlayerUsage, IComman
 
     public void startServerThread()
     {
-        (new ThreadMinecraftServer(this, "Server thread")).start();
+        (new ThreadServerApplication(this, "Server thread")).start();
     }
 
     /**
@@ -716,8 +702,7 @@ public abstract class MinecraftServer implements Runnable, IPlayerUsage, IComman
     public WorldServer worldServerForDimension(int par1)
     {
         WorldServer ret = DimensionManager.getWorld(par1);
-        if (ret == null)
-        {
+        if (ret == null) {
             DimensionManager.initDimension(par1);
             ret = DimensionManager.getWorld(par1);
         }
@@ -725,7 +710,11 @@ public abstract class MinecraftServer implements Runnable, IPlayerUsage, IComman
     }
 
     @SideOnly(Side.SERVER)
-    public void func_82010_a(IUpdatePlayerListBox par1IUpdatePlayerListBox)
+
+    /**
+     * Adds a player's name to the list of online players.
+     */
+    public void addToOnlinePlayerList(IUpdatePlayerListBox par1IUpdatePlayerListBox)
     {
         this.playersOnline.add(par1IUpdatePlayerListBox);
     }
@@ -759,7 +748,7 @@ public abstract class MinecraftServer implements Runnable, IPlayerUsage, IComman
      */
     public String getMinecraftVersion()
     {
-        return "1.4.2";
+        return "1.3.2";
     }
 
     /**
@@ -840,11 +829,6 @@ public abstract class MinecraftServer implements Runnable, IPlayerUsage, IComman
     {
         par1CrashReport.addCrashSectionCallable("Is Modded", new CallableIsServerModded(this));
         par1CrashReport.addCrashSectionCallable("Profiler Position", new CallableServerProfiler(this));
-
-        if (this.worldServers != null && this.worldServers.length > 0 && this.worldServers[0] != null)
-        {
-            par1CrashReport.addCrashSectionCallable("Vec3 Pool Size", new CallableServerMemoryStats(this));
-        }
 
         if (this.serverConfigManager != null)
         {
@@ -949,7 +933,7 @@ public abstract class MinecraftServer implements Runnable, IPlayerUsage, IComman
     /**
      * Returns true if the command sender is allowed to use the given command.
      */
-    public boolean canCommandSenderUseCommand(int par1, String par2Str)
+    public boolean canCommandSenderUseCommand(String par1Str)
     {
         return true;
     }
@@ -1241,8 +1225,6 @@ public abstract class MinecraftServer implements Runnable, IPlayerUsage, IComman
         this.allowFlight = par1;
     }
 
-    public abstract boolean func_82356_Z();
-
     public String getMOTD()
     {
         return this.motd;
@@ -1321,16 +1303,6 @@ public abstract class MinecraftServer implements Runnable, IPlayerUsage, IComman
     public PlayerUsageSnooper getPlayerUsageSnooper()
     {
         return this.usageSnooper;
-    }
-
-    public ChunkCoordinates func_82114_b()
-    {
-        return new ChunkCoordinates(0, 0, 0);
-    }
-
-    public int func_82357_ak()
-    {
-        return 16;
     }
 
     /**
@@ -1447,7 +1419,7 @@ public abstract class MinecraftServer implements Runnable, IPlayerUsage, IComman
 
             if (var1)
             {
-                var15.func_82011_an();
+                var15.func_79001_aj();
             }
 
             var15.startServerThread();

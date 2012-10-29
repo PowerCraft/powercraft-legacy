@@ -36,13 +36,13 @@ public class MovingObjectPosition
         this.blockY = par2;
         this.blockZ = par3;
         this.sideHit = par4;
-        this.hitVec = par5Vec3.myVec3LocalPool.getVecFromPool(par5Vec3.xCoord, par5Vec3.yCoord, par5Vec3.zCoord);
+        this.hitVec = Vec3.getVec3Pool().getVecFromPool(par5Vec3.xCoord, par5Vec3.yCoord, par5Vec3.zCoord);
     }
 
     public MovingObjectPosition(Entity par1Entity)
     {
         this.typeOfHit = EnumMovingObjectType.ENTITY;
         this.entityHit = par1Entity;
-        this.hitVec = par1Entity.worldObj.func_82732_R().getVecFromPool(par1Entity.posX, par1Entity.posY, par1Entity.posZ);
+        this.hitVec = Vec3.getVec3Pool().getVecFromPool(par1Entity.posX, par1Entity.posY, par1Entity.posZ);
     }
 }

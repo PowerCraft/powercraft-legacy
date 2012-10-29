@@ -34,18 +34,17 @@ class GuiSlotServer extends GuiSlot
         {
             int var3 = GuiMultiplayer.func_74020_c(this.parentGui);
             GuiMultiplayer.func_74015_a(this.parentGui, par1);
-            ServerData var4 = GuiMultiplayer.func_74006_a(this.parentGui).countServers() > par1 ? GuiMultiplayer.func_74006_a(this.parentGui).getServerData(par1) : null;
-            boolean var5 = GuiMultiplayer.func_74020_c(this.parentGui) >= 0 && GuiMultiplayer.func_74020_c(this.parentGui) < this.getSize() && (var4 == null || var4.field_82821_f == 47);
-            boolean var6 = GuiMultiplayer.func_74020_c(this.parentGui) < GuiMultiplayer.func_74006_a(this.parentGui).countServers();
-            GuiMultiplayer.getButtonSelect(this.parentGui).enabled = var5;
-            GuiMultiplayer.getButtonEdit(this.parentGui).enabled = var6;
-            GuiMultiplayer.getButtonDelete(this.parentGui).enabled = var6;
+            boolean var4 = GuiMultiplayer.func_74020_c(this.parentGui) >= 0 && GuiMultiplayer.func_74020_c(this.parentGui) < this.getSize();
+            boolean var5 = GuiMultiplayer.func_74020_c(this.parentGui) < GuiMultiplayer.func_74006_a(this.parentGui).countServers();
+            GuiMultiplayer.getButtonSelect(this.parentGui).enabled = var4;
+            GuiMultiplayer.getButtonEdit(this.parentGui).enabled = var5;
+            GuiMultiplayer.getButtonDelete(this.parentGui).enabled = var5;
 
-            if (par2 && var5)
+            if (par2 && var4)
             {
                 GuiMultiplayer.func_74008_b(this.parentGui, par1);
             }
-            else if (var6 && GuiScreen.isShiftKeyDown() && var3 >= 0 && var3 < GuiMultiplayer.func_74006_a(this.parentGui).countServers())
+            else if (var5 && GuiScreen.isShiftKeyDown() && var3 >= 0 && var3 < GuiMultiplayer.func_74006_a(this.parentGui).countServers())
             {
                 GuiMultiplayer.func_74006_a(this.parentGui).swapServers(var3, GuiMultiplayer.func_74020_c(this.parentGui));
             }
@@ -97,7 +96,7 @@ class GuiSlotServer extends GuiSlot
 
         if (this.parentGui.mc.gameSettings.hideServerAddress)
         {
-            this.parentGui.drawString(this.parentGui.fontRenderer, StatCollector.translateToLocal("selectServer.hiddenAddress"), par2 + 2, par3 + 12 + 11, 3158064);
+            this.parentGui.drawString(this.parentGui.fontRenderer, "(Hidden)", par2 + 2, par3 + 12 + 11, 3158064);
         }
         else
         {
@@ -144,95 +143,83 @@ class GuiSlotServer extends GuiSlot
             }
         }
 
-        boolean var7 = var6.field_82821_f > 47;
-        boolean var8 = var6.field_82821_f < 47;
-        boolean var9 = var7 || var8;
         this.parentGui.drawString(this.parentGui.fontRenderer, var6.serverName, par2 + 2, par3 + 1, 16777215);
         this.parentGui.drawString(this.parentGui.fontRenderer, var6.serverMOTD, par2 + 2, par3 + 12, 8421504);
         this.parentGui.drawString(this.parentGui.fontRenderer, var6.populationInfo, par2 + 215 - this.parentGui.fontRenderer.getStringWidth(var6.populationInfo), par3 + 12, 8421504);
 
-        if (var9)
+        if (this.parentGui.mc.gameSettings.hideServerAddress)
         {
-            String var10 = "\u00a74" + var6.field_82822_g;
-            this.parentGui.drawString(this.parentGui.fontRenderer, var10, par2 + 200 - this.parentGui.fontRenderer.getStringWidth(var10), par3 + 1, 8421504);
-        }
-
-        if (!this.parentGui.mc.gameSettings.hideServerAddress && !var6.func_82820_d())
-        {
-            this.parentGui.drawString(this.parentGui.fontRenderer, var6.serverIP, par2 + 2, par3 + 12 + 11, 3158064);
+            this.parentGui.drawString(this.parentGui.fontRenderer, "(Hidden)", par2 + 2, par3 + 12 + 11, 3158064);
         }
         else
         {
-            this.parentGui.drawString(this.parentGui.fontRenderer, StatCollector.translateToLocal("selectServer.hiddenAddress"), par2 + 2, par3 + 12 + 11, 3158064);
+            this.parentGui.drawString(this.parentGui.fontRenderer, var6.serverIP, par2 + 2, par3 + 12 + 11, 3158064);
         }
 
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
         this.parentGui.mc.renderEngine.bindTexture(this.parentGui.mc.renderEngine.getTexture("/gui/icons.png"));
-        byte var16 = 0;
-        boolean var11 = false;
-        String var12 = "";
-        int var15;
+        String var9 = "";
+        byte var7;
+        int var8;
 
-        if (var9)
+        if (var6.field_78841_f && var6.pingToServer != -2L)
         {
-            var12 = var7 ? "Client out of date!" : "Server out of date!";
-            var15 = 5;
-        }
-        else if (var6.field_78841_f && var6.pingToServer != -2L)
-        {
+            var7 = 0;
+            boolean var12 = false;
+
             if (var6.pingToServer < 0L)
             {
-                var15 = 5;
+                var8 = 5;
             }
             else if (var6.pingToServer < 150L)
             {
-                var15 = 0;
+                var8 = 0;
             }
             else if (var6.pingToServer < 300L)
             {
-                var15 = 1;
+                var8 = 1;
             }
             else if (var6.pingToServer < 600L)
             {
-                var15 = 2;
+                var8 = 2;
             }
             else if (var6.pingToServer < 1000L)
             {
-                var15 = 3;
+                var8 = 3;
             }
             else
             {
-                var15 = 4;
+                var8 = 4;
             }
 
             if (var6.pingToServer < 0L)
             {
-                var12 = "(no connection)";
+                var9 = "(no connection)";
             }
             else
             {
-                var12 = var6.pingToServer + "ms";
+                var9 = var6.pingToServer + "ms";
             }
         }
         else
         {
-            var16 = 1;
-            var15 = (int)(Minecraft.getSystemTime() / 100L + (long)(par1 * 2) & 7L);
+            var7 = 1;
+            var8 = (int)(Minecraft.getSystemTime() / 100L + (long)(par1 * 2) & 7L);
 
-            if (var15 > 4)
+            if (var8 > 4)
             {
-                var15 = 8 - var15;
+                var8 = 8 - var8;
             }
 
-            var12 = "Polling..";
+            var9 = "Polling..";
         }
 
-        this.parentGui.drawTexturedModalRect(par2 + 205, par3, 0 + var16 * 10, 176 + var15 * 8, 10, 8);
-        byte var13 = 4;
+        this.parentGui.drawTexturedModalRect(par2 + 205, par3, 0 + var7 * 10, 176 + var8 * 8, 10, 8);
+        byte var10 = 4;
 
-        if (this.mouseX >= par2 + 205 - var13 && this.mouseY >= par3 - var13 && this.mouseX <= par2 + 205 + 10 + var13 && this.mouseY <= par3 + 8 + var13)
+        if (this.mouseX >= par2 + 205 - var10 && this.mouseY >= par3 - var10 && this.mouseX <= par2 + 205 + 10 + var10 && this.mouseY <= par3 + 8 + var10)
         {
-            GuiMultiplayer.func_74009_a(this.parentGui, var12);
+            GuiMultiplayer.func_74009_a(this.parentGui, var9);
         }
     }
 }

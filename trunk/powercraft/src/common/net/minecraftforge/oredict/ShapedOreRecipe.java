@@ -9,7 +9,6 @@ import net.minecraft.src.InventoryCrafting;
 import net.minecraft.src.Item;
 import net.minecraft.src.ItemStack;
 import net.minecraft.src.ShapedRecipes;
-import net.minecraft.src.World;
 
 public class ShapedOreRecipe implements IRecipe 
 {
@@ -21,29 +20,21 @@ public class ShapedOreRecipe implements IRecipe
     private Object[] input = null;
     private int width = 0;
     private int height = 0;
-    private boolean mirrored = true;
+    private boolean mirriored = true;
 
-    public ShapedOreRecipe(Block     result, Object... recipe){ this(new ItemStack(result), recipe); }
-    public ShapedOreRecipe(Item      result, Object... recipe){ this(new ItemStack(result), recipe); }
-    public ShapedOreRecipe(ItemStack result, Object... recipe)
+    public ShapedOreRecipe(Block     result, Object... recipe){ this(result, true, recipe);}
+    public ShapedOreRecipe(Item      result, Object... recipe){ this(result, true, recipe); }
+    public ShapedOreRecipe(ItemStack result, Object... recipe){ this(result, true, recipe); }
+    public ShapedOreRecipe(Block     result, boolean mirrior, Object... recipe){ this(new ItemStack(result), mirrior, recipe);}
+    public ShapedOreRecipe(Item      result, boolean mirrior, Object... recipe){ this(new ItemStack(result), mirrior, recipe); }
+    
+    public ShapedOreRecipe(ItemStack result, boolean mirrior, Object... recipe)
     {
         output = result.copy();
-
+        mirriored = mirrior;
+        
         String shape = "";
         int idx = 0;
-
-        if (recipe[idx] instanceof Boolean)
-        {
-            mirrored = (Boolean)recipe[idx];
-            if (recipe[idx+1] instanceof Object[])
-            {
-                recipe = (Object[])recipe[idx+1];
-            }
-            else
-            {
-                idx = 1;
-            }
-        }
 
         if (recipe[idx] instanceof String[])
         {
@@ -67,7 +58,7 @@ public class ShapedOreRecipe implements IRecipe
                 height++;
             }
         }
-
+        
         if (width * height != shape.length())
         {
             String ret = "Invalid shaped ore recipe: ";
@@ -133,7 +124,7 @@ public class ShapedOreRecipe implements IRecipe
     public ItemStack getRecipeOutput(){ return output; }
 
     @Override
-    public boolean matches(InventoryCrafting inv, World world)
+    public boolean matches(InventoryCrafting inv)
     {        
         for (int x = 0; x <= MAX_CRAFT_GRID_WIDTH - width; x++)
         {
@@ -144,7 +135,7 @@ public class ShapedOreRecipe implements IRecipe
                     return true;
                 }
     
-                if (mirrored && checkMatch(inv, x, y, false))
+                if (mirriored && checkMatch(inv, x, y, false))
                 {
                     return true;
                 }
@@ -154,7 +145,7 @@ public class ShapedOreRecipe implements IRecipe
         return false;
     }
     
-    private boolean checkMatch(InventoryCrafting inv, int startX, int startY, boolean mirror)
+    private boolean checkMatch(InventoryCrafting inv, int startX, int startY, boolean mirrior)
     {
         for (int x = 0; x < MAX_CRAFT_GRID_WIDTH; x++)
         {
@@ -166,7 +157,7 @@ public class ShapedOreRecipe implements IRecipe
 
                 if (subX >= 0 && subY >= 0 && subX < width && subY < height)
                 {
-                    if (mirror)
+                    if (mirrior)
                     {
                         target = input[width - subX - 1 + subY * width];
                     }
@@ -218,9 +209,8 @@ public class ShapedOreRecipe implements IRecipe
         return (target.itemID == input.itemID && (target.getItemDamage() == -1 || target.getItemDamage() == input.getItemDamage()));
     }
     
-    public ShapedOreRecipe setMirrored(boolean mirror)
+    public void setMirriored(boolean mirrior)
     {
-        mirrored = mirror;
-        return this;
+        mirriored = mirrior;
     }
 }

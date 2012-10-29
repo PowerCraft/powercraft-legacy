@@ -18,7 +18,7 @@ public class TexturePackList
     /**
      * An instance of TexturePackDefault for the always available builtin texture pack.
      */
-    private static final ITexturePack defaultTexturePack = new TexturePackDefault();
+    private static final TexturePackBase defaultTexturePack = new TexturePackDefault();
 
     /** The Minecraft instance. */
     private final Minecraft mc;
@@ -39,7 +39,7 @@ public class TexturePackList
     private Map texturePackCache = new HashMap();
 
     /** The TexturePack that will be used. */
-    private ITexturePack selectedTexturePack;
+    private TexturePackBase selectedTexturePack;
 
     /** True if a texture pack is downloading in the background. */
     private boolean isDownloading;
@@ -74,17 +74,17 @@ public class TexturePackList
     /**
      * Sets the new TexturePack to be used, returning true if it has actually changed, false if nothing changed.
      */
-    public boolean setTexturePack(ITexturePack par1ITexturePack)
+    public boolean setTexturePack(TexturePackBase par1TexturePackBase)
     {
-        if (par1ITexturePack == this.selectedTexturePack)
+        if (par1TexturePackBase == this.selectedTexturePack)
         {
             return false;
         }
         else
         {
             this.isDownloading = false;
-            this.selectedTexturePack = par1ITexturePack;
-            this.mc.gameSettings.skin = par1ITexturePack.getTexturePackFileName();
+            this.selectedTexturePack = par1TexturePackBase;
+            this.mc.gameSettings.skin = par1TexturePackBase.getTexturePackFileName();
             this.mc.gameSettings.saveOptions();
             return true;
         }
@@ -114,7 +114,7 @@ public class TexturePackList
         HashMap var3 = new HashMap();
         GuiProgress var4 = new GuiProgress();
         var3.put("X-Minecraft-Username", this.mc.session.username);
-        var3.put("X-Minecraft-Version", "1.4.2");
+        var3.put("X-Minecraft-Version", "1.3.2");
         var3.put("X-Minecraft-Supported-Resolutions", "16");
         this.isDownloading = true;
         this.mc.displayGuiScreen(var4);
@@ -157,7 +157,7 @@ public class TexturePackList
 
             if (var4 != null)
             {
-                Object var5 = (ITexturePack)this.texturePackCache.get(var4);
+                Object var5 = (TexturePackBase)this.texturePackCache.get(var4);
 
                 if (var5 == null)
                 {
@@ -165,9 +165,9 @@ public class TexturePackList
                     this.texturePackCache.put(var4, var5);
                 }
 
-                if (((ITexturePack)var5).getTexturePackFileName().equals(this.mc.gameSettings.skin))
+                if (((TexturePackBase)var5).getTexturePackFileName().equals(this.mc.gameSettings.skin))
                 {
-                    this.selectedTexturePack = (ITexturePack)var5;
+                    this.selectedTexturePack = (TexturePackBase)var5;
                 }
 
                 var1.add(var5);
@@ -179,7 +179,7 @@ public class TexturePackList
 
         while (var2.hasNext())
         {
-            ITexturePack var6 = (ITexturePack)var2.next();
+            TexturePackBase var6 = (TexturePackBase)var2.next();
             var6.deleteTexturePack(this.mc.renderEngine);
             this.texturePackCache.remove(var6.getTexturePackID());
         }
@@ -212,7 +212,7 @@ public class TexturePackList
         return Collections.unmodifiableList(this.availableTexturePacks);
     }
 
-    public ITexturePack getSelectedTexturePack()
+    public TexturePackBase getSelectedTexturePack()
     {
         return this.selectedTexturePack;
     }
@@ -251,9 +251,9 @@ public class TexturePackList
     /**
      * Set the selectedTexturePack field (Inner class static accessor method).
      */
-    static ITexturePack setSelectedTexturePack(TexturePackList par0TexturePackList, ITexturePack par1ITexturePack)
+    static TexturePackBase setSelectedTexturePack(TexturePackList par0TexturePackList, TexturePackBase par1TexturePackBase)
     {
-        return par0TexturePackList.selectedTexturePack = par1ITexturePack;
+        return par0TexturePackList.selectedTexturePack = par1TexturePackBase;
     }
 
     /**

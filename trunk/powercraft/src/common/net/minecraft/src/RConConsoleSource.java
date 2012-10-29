@@ -35,7 +35,7 @@ public class RConConsoleSource implements ICommandSender
     /**
      * Returns true if the command sender is allowed to use the given command.
      */
-    public boolean canCommandSenderUseCommand(int par1, String par2Str)
+    public boolean canCommandSenderUseCommand(String par1Str)
     {
         return true;
     }
@@ -46,10 +46,5 @@ public class RConConsoleSource implements ICommandSender
     public String translateString(String par1Str, Object ... par2ArrayOfObj)
     {
         return StringTranslate.getInstance().translateKeyFormat(par1Str, par2ArrayOfObj);
-    }
-
-    public ChunkCoordinates func_82114_b()
-    {
-        return new ChunkCoordinates(0, 0, 0);
     }
 }

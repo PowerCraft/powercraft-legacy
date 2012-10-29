@@ -10,11 +10,6 @@ public class CommandServerTp extends CommandBase
         return "tp";
     }
 
-    public int func_82362_a()
-    {
-        return 2;
-    }
-
     public String getCommandUsage(ICommandSender par1ICommandSender)
     {
         return par1ICommandSender.translateString("commands.tp.usage", new Object[0]);
@@ -28,17 +23,18 @@ public class CommandServerTp extends CommandBase
         }
         else
         {
-            EntityPlayerMP var3;
+            MinecraftServer var3 = MinecraftServer.getServer();
+            EntityPlayerMP var4;
 
             if (par2ArrayOfStr.length != 2 && par2ArrayOfStr.length != 4)
             {
-                var3 = getCommandSenderAsPlayer(par1ICommandSender);
+                var4 = (EntityPlayerMP)getCommandSenderAsPlayer(par1ICommandSender);
             }
             else
             {
-                var3 = func_82359_c(par1ICommandSender, par2ArrayOfStr[0]);
+                var4 = var3.getConfigurationManager().getPlayerForUsername(par2ArrayOfStr[0]);
 
-                if (var3 == null)
+                if (var4 == null)
                 {
                     throw new PlayerNotFoundException();
                 }
@@ -48,70 +44,28 @@ public class CommandServerTp extends CommandBase
             {
                 if (par2ArrayOfStr.length == 1 || par2ArrayOfStr.length == 2)
                 {
-                    EntityPlayerMP var11 = func_82359_c(par1ICommandSender, par2ArrayOfStr[par2ArrayOfStr.length - 1]);
+                    EntityPlayerMP var10 = var3.getConfigurationManager().getPlayerForUsername(par2ArrayOfStr[par2ArrayOfStr.length - 1]);
 
-                    if (var11 == null)
+                    if (var10 == null)
                     {
                         throw new PlayerNotFoundException();
                     }
 
-                    var3.playerNetServerHandler.setPlayerLocation(var11.posX, var11.posY, var11.posZ, var11.rotationYaw, var11.rotationPitch);
-                    notifyAdmins(par1ICommandSender, "commands.tp.success", new Object[] {var3.getEntityName(), var11.getEntityName()});
+                    var4.playerNetServerHandler.setPlayerLocation(var10.posX, var10.posY, var10.posZ, var10.rotationYaw, var10.rotationPitch);
+                    notifyAdmins(par1ICommandSender, "commands.tp.success", new Object[] {var4.getEntityName(), var10.getEntityName()});
                 }
             }
-            else if (var3.worldObj != null)
+            else if (var4.worldObj != null)
             {
-                int var4 = par2ArrayOfStr.length - 3;
-                double var5 = this.func_82368_a(par1ICommandSender, var3.posX, par2ArrayOfStr[var4++]);
-                double var7 = this.func_82367_a(par1ICommandSender, var3.posY, par2ArrayOfStr[var4++], 0, 0);
-                double var9 = this.func_82368_a(par1ICommandSender, var3.posZ, par2ArrayOfStr[var4++]);
-                var3.setPositionAndUpdate(var5, var7, var9);
-                notifyAdmins(par1ICommandSender, "commands.tp.success.coordinates", new Object[] {var3.getEntityName(), Double.valueOf(var5), Double.valueOf(var7), Double.valueOf(var9)});
+                int var5 = par2ArrayOfStr.length - 3;
+                int var6 = 30000000;
+                int var7 = parseIntBounded(par1ICommandSender, par2ArrayOfStr[var5++], -var6, var6);
+                int var8 = parseIntBounded(par1ICommandSender, par2ArrayOfStr[var5++], 0, 256);
+                int var9 = parseIntBounded(par1ICommandSender, par2ArrayOfStr[var5++], -var6, var6);
+                var4.setPositionAndUpdate((double)((float)var7 + 0.5F), (double)var8, (double)((float)var9 + 0.5F));
+                notifyAdmins(par1ICommandSender, "commands.tp.coordinates", new Object[] {var4.getEntityName(), Integer.valueOf(var7), Integer.valueOf(var8), Integer.valueOf(var9)});
             }
         }
-    }
-
-    private double func_82368_a(ICommandSender par1ICommandSender, double par2, String par4Str)
-    {
-        return this.func_82367_a(par1ICommandSender, par2, par4Str, -30000000, 30000000);
-    }
-
-    private double func_82367_a(ICommandSender par1ICommandSender, double par2, String par4Str, int par5, int par6)
-    {
-        boolean var7 = par4Str.startsWith("~");
-        double var8 = var7 ? par2 : 0.0D;
-
-        if (!var7 || par4Str.length() > 1)
-        {
-            boolean var10 = par4Str.contains(".");
-
-            if (var7)
-            {
-                par4Str = par4Str.substring(1);
-            }
-
-            var8 += func_82363_b(par1ICommandSender, par4Str);
-
-            if (!var10 && !var7)
-            {
-                var8 += 0.5D;
-            }
-        }
-
-        if (par5 != 0 || par6 != 0)
-        {
-            if (var8 < (double)par5)
-            {
-                throw new NumberInvalidException("commands.generic.double.tooSmall", new Object[] {Double.valueOf(var8), Integer.valueOf(par5)});
-            }
-
-            if (var8 > (double)par6)
-            {
-                throw new NumberInvalidException("commands.generic.double.tooBig", new Object[] {Double.valueOf(var8), Integer.valueOf(par6)});
-            }
-        }
-
-        return var8;
     }
 
     /**
@@ -120,10 +74,5 @@ public class CommandServerTp extends CommandBase
     public List addTabCompletionOptions(ICommandSender par1ICommandSender, String[] par2ArrayOfStr)
     {
         return par2ArrayOfStr.length != 1 && par2ArrayOfStr.length != 2 ? null : getListOfStringsMatchingLastWord(par2ArrayOfStr, MinecraftServer.getServer().getAllUsernames());
-    }
-
-    public boolean func_82358_a(int par1)
-    {
-        return par1 == 0;
     }
 }

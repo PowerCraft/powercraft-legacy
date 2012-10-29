@@ -20,7 +20,7 @@ public class GuiVideoSettings extends GuiScreen
     private boolean is64bit = false;
 
     /** An array of all of EnumOption's video options. */
-    private static EnumOptions[] videoOptions = new EnumOptions[] {EnumOptions.GRAPHICS, EnumOptions.RENDER_DISTANCE, EnumOptions.AMBIENT_OCCLUSION, EnumOptions.FRAMERATE_LIMIT, EnumOptions.ANAGLYPH, EnumOptions.VIEW_BOBBING, EnumOptions.GUI_SCALE, EnumOptions.ADVANCED_OPENGL, EnumOptions.GAMMA, EnumOptions.RENDER_CLOUDS, EnumOptions.PARTICLES, EnumOptions.USE_SERVER_TEXTURES, EnumOptions.USE_FULLSCREEN, EnumOptions.ENABLE_VSYNC};
+    private static EnumOptions[] videoOptions = new EnumOptions[] {EnumOptions.GRAPHICS, EnumOptions.RENDER_DISTANCE, EnumOptions.AMBIENT_OCCLUSION, EnumOptions.FRAMERATE_LIMIT, EnumOptions.ANAGLYPH, EnumOptions.VIEW_BOBBING, EnumOptions.GUI_SCALE, EnumOptions.ADVANCED_OPENGL, EnumOptions.GAMMA, EnumOptions.RENDER_CLOUDS, EnumOptions.PARTICLES, EnumOptions.USE_SERVER_TEXTURES};
 
     public GuiVideoSettings(GuiScreen par1GuiScreen, GameSettings par2GameSettings)
     {
@@ -35,44 +35,43 @@ public class GuiVideoSettings extends GuiScreen
     {
         StringTranslate var1 = StringTranslate.getInstance();
         this.screenTitle = var1.translateKey("options.videoTitle");
-        this.controlList.clear();
+        int var2 = 0;
+        EnumOptions[] var3 = videoOptions;
+        int var4 = var3.length;
+        int var5;
+
+        for (var5 = 0; var5 < var4; ++var5)
+        {
+            EnumOptions var6 = var3[var5];
+
+            if (var6.getEnumFloat())
+            {
+                this.controlList.add(new GuiSlider(var6.returnEnumOrdinal(), this.width / 2 - 155 + var2 % 2 * 160, this.height / 6 + 24 * (var2 >> 1), var6, this.guiGameSettings.getKeyBinding(var6), this.guiGameSettings.getOptionFloatValue(var6)));
+            }
+            else
+            {
+                this.controlList.add(new GuiSmallButton(var6.returnEnumOrdinal(), this.width / 2 - 155 + var2 % 2 * 160, this.height / 6 + 24 * (var2 >> 1), var6, this.guiGameSettings.getKeyBinding(var6)));
+            }
+
+            ++var2;
+        }
+
         this.controlList.add(new GuiButton(200, this.width / 2 - 100, this.height / 6 + 168, var1.translateKey("gui.done")));
         this.is64bit = false;
-        String[] var2 = new String[] {"sun.arch.data.model", "com.ibm.vm.bitmode", "os.arch"};
-        String[] var3 = var2;
-        int var4 = var2.length;
+        String[] var9 = new String[] {"sun.arch.data.model", "com.ibm.vm.bitmode", "os.arch"};
+        String[] var10 = var9;
+        var5 = var9.length;
 
-        for (int var5 = 0; var5 < var4; ++var5)
+        for (int var11 = 0; var11 < var5; ++var11)
         {
-            String var6 = var3[var5];
-            String var7 = System.getProperty(var6);
+            String var7 = var10[var11];
+            String var8 = System.getProperty(var7);
 
-            if (var7 != null && var7.contains("64"))
+            if (var8 != null && var8.contains("64"))
             {
                 this.is64bit = true;
                 break;
             }
-        }
-
-        int var9 = 0;
-        var4 = this.is64bit ? 0 : -15;
-        EnumOptions[] var10 = videoOptions;
-        int var11 = var10.length;
-
-        for (int var12 = 0; var12 < var11; ++var12)
-        {
-            EnumOptions var8 = var10[var12];
-
-            if (var8.getEnumFloat())
-            {
-                this.controlList.add(new GuiSlider(var8.returnEnumOrdinal(), this.width / 2 - 155 + var9 % 2 * 160, this.height / 7 + var4 + 24 * (var9 >> 1), var8, this.guiGameSettings.getKeyBinding(var8), this.guiGameSettings.getOptionFloatValue(var8)));
-            }
-            else
-            {
-                this.controlList.add(new GuiSmallButton(var8.returnEnumOrdinal(), this.width / 2 - 155 + var9 % 2 * 160, this.height / 7 + var4 + 24 * (var9 >> 1), var8, this.guiGameSettings.getKeyBinding(var8)));
-            }
-
-            ++var9;
         }
     }
 
@@ -113,12 +112,12 @@ public class GuiVideoSettings extends GuiScreen
     public void drawScreen(int par1, int par2, float par3)
     {
         this.drawDefaultBackground();
-        this.drawCenteredString(this.fontRenderer, this.screenTitle, this.width / 2, this.is64bit ? 20 : 5, 16777215);
+        this.drawCenteredString(this.fontRenderer, this.screenTitle, this.width / 2, 20, 16777215);
 
         if (!this.is64bit && this.guiGameSettings.renderDistance == 0)
         {
-            this.drawCenteredString(this.fontRenderer, StatCollector.translateToLocal("options.farWarning1"), this.width / 2, this.height / 6 + 144 + 1, 11468800);
-            this.drawCenteredString(this.fontRenderer, StatCollector.translateToLocal("options.farWarning2"), this.width / 2, this.height / 6 + 144 + 13, 11468800);
+            this.drawCenteredString(this.fontRenderer, StatCollector.translateToLocal("options.farWarning1"), this.width / 2, this.height / 6 + 144, 11468800);
+            this.drawCenteredString(this.fontRenderer, StatCollector.translateToLocal("options.farWarning2"), this.width / 2, this.height / 6 + 144 + 12, 11468800);
         }
 
         super.drawScreen(par1, par2, par3);

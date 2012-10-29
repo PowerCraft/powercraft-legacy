@@ -22,7 +22,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.src.ModTextureStatic;
 import net.minecraft.src.RenderEngine;
 import net.minecraft.src.TextureFX;
-import net.minecraft.src.ITexturePack;
+import net.minecraft.src.TexturePackBase;
 
 import org.lwjgl.opengl.GL11;
 
@@ -171,7 +171,7 @@ public class TextureFXManager
         return id;
     }
 
-    public void onTexturePackChange(RenderEngine engine, ITexturePack texturepack, List<TextureFX> effects)
+    public void onTexturePackChange(RenderEngine engine, TexturePackBase texturepack, List<TextureFX> effects)
     {
         pruneOldTextureFX(texturepack, effects);
 
@@ -188,7 +188,7 @@ public class TextureFXManager
 
     private HashMap<Integer, Dimension> textureDims = new HashMap<Integer, Dimension>();
     private IdentityHashMap<TextureFX, Integer> effectTextures = new IdentityHashMap<TextureFX, Integer>();
-    private ITexturePack earlyTexturePack;
+    private TexturePackBase earlyTexturePack;
     public void setTextureDimensions(int id, int width, int height, List<TextureFX> effects)
     {
         Dimension dim = new Dimension(width, height);
@@ -226,7 +226,7 @@ public class TextureFXManager
     }
 
 
-    public void loadTextures(ITexturePack texturePack)
+    public void loadTextures(TexturePackBase texturePack)
     {
         registerTextureOverrides(client.renderEngine);
     }
@@ -261,7 +261,7 @@ public class TextureFXManager
     {
     }
 
-    public void onEarlyTexturePackLoad(ITexturePack fallback)
+    public void onEarlyTexturePackLoad(TexturePackBase fallback)
     {
         if (client==null) {
             // We're far too early- let's wait
@@ -272,7 +272,7 @@ public class TextureFXManager
     }
 
 
-    public void pruneOldTextureFX(ITexturePack var1, List<TextureFX> effects)
+    public void pruneOldTextureFX(TexturePackBase var1, List<TextureFX> effects)
     {
         ListIterator<TextureFX> li = addedTextureFX.listIterator();
         while (li.hasNext())

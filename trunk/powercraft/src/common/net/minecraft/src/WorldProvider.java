@@ -10,7 +10,6 @@ public abstract class WorldProvider
     /** world object being used */
     public World worldObj;
     public WorldType terrainType;
-    public String field_82913_c;
 
     /** World chunk manager being used to generate chunks */
     public WorldChunkManager worldChunkMgr;
@@ -41,7 +40,6 @@ public abstract class WorldProvider
     {
         this.worldObj = par1World;
         this.terrainType = par1World.getWorldInfo().getTerrainType();
-        this.field_82913_c = par1World.getWorldInfo().func_82571_y();
         this.registerWorldChunkManager();
         this.generateLightBrightnessTable();
     }
@@ -65,7 +63,7 @@ public abstract class WorldProvider
      */
     protected void registerWorldChunkManager()
     {
-        worldChunkMgr = terrainType.getChunkManager(worldObj);
+        this.worldChunkMgr = this.terrainType.getChunkManager(this.worldObj);
     }
 
     /**
@@ -73,7 +71,7 @@ public abstract class WorldProvider
      */
     public IChunkProvider getChunkProvider()
     {
-        return terrainType.getChunkGenerator(worldObj, field_82913_c);
+        return this.terrainType.getChunkGenerator(this.worldObj);
     }
 
     /**
@@ -176,7 +174,7 @@ public abstract class WorldProvider
         var4 *= var3 * 0.94F + 0.06F;
         var5 *= var3 * 0.94F + 0.06F;
         var6 *= var3 * 0.91F + 0.09F;
-        return this.worldObj.func_82732_R().getVecFromPool((double)var4, (double)var5, (double)var6);
+        return Vec3.getVec3Pool().getVecFromPool((double)var4, (double)var5, (double)var6);
     }
 
     /**

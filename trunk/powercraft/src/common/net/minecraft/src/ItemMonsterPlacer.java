@@ -2,6 +2,8 @@ package net.minecraft.src;
 
 import cpw.mods.fml.common.Side;
 import cpw.mods.fml.common.asm.SideOnly;
+import cpw.mods.fml.common.registry.VillagerRegistry;
+
 import java.util.Iterator;
 import java.util.List;
 
@@ -14,6 +16,7 @@ public class ItemMonsterPlacer extends Item
         this.setCreativeTab(CreativeTabs.tabMisc);
     }
 
+    @SideOnly(Side.CLIENT)
     public String getItemDisplayName(ItemStack par1ItemStack)
     {
         String var2 = ("" + StatCollector.translateToLocal(this.getItemName() + ".name")).trim();
@@ -28,9 +31,9 @@ public class ItemMonsterPlacer extends Item
     }
 
     @SideOnly(Side.CLIENT)
-    public int func_82790_a(ItemStack par1ItemStack, int par2)
+    public int getColorFromDamage(int par1, int par2)
     {
-        EntityEggInfo var3 = (EntityEggInfo)EntityList.entityEggs.get(Integer.valueOf(par1ItemStack.getItemDamage()));
+        EntityEggInfo var3 = (EntityEggInfo)EntityList.entityEggs.get(Integer.valueOf(par1));
         return var3 != null ? (par2 == 0 ? var3.primaryColor : var3.secondaryColor) : 16777215;
     }
 
@@ -57,7 +60,7 @@ public class ItemMonsterPlacer extends Item
                 var12 = 0.5D;
             }
 
-            if (spawnCreature(par3World, par1ItemStack.getItemDamage(), (double)par4 + 0.5D, (double)par5 + var12, (double)par6 + 0.5D) != null && !par2EntityPlayer.capabilities.isCreativeMode)
+            if (spawnCreature(par3World, par1ItemStack.getItemDamage(), (double)par4 + 0.5D, (double)par5 + var12, (double)par6 + 0.5D) && !par2EntityPlayer.capabilities.isCreativeMode)
             {
                 --par1ItemStack.stackSize;
             }
@@ -70,30 +73,33 @@ public class ItemMonsterPlacer extends Item
      * Spawns the creature specified by the egg's type in the location specified by the last three parameters.
      * Parameters: world, entityID, x, y, z.
      */
-    public static Entity spawnCreature(World var0, int var1, double var2, double var4, double var6)
+    public static boolean spawnCreature(World par0World, int par1, double par2, double par4, double par6)
     {
-        if (!EntityList.entityEggs.containsKey(Integer.valueOf(var1)))
+        if (!EntityList.entityEggs.containsKey(Integer.valueOf(par1)))
         {
-            return null;
+            return false;
         }
         else
         {
-            Entity var8 = null;
+            Entity var8 = EntityList.createEntityByID(par1, par0World);
 
-            for (int var9 = 0; var9 < 1; ++var9)
+            if (var8 != null)
             {
-                var8 = EntityList.createEntityByID(var1, var0);
+                var8.setLocationAndAngles(par2, par4, par6, par0World.rand.nextFloat() * 360.0F, 0.0F);
 
-                if (var8 != null)
+                if (var8 instanceof EntityVillager)
                 {
-                    var8.setLocationAndAngles(var2, var4, var6, var0.rand.nextFloat() * 360.0F, 0.0F);
-                    ((EntityLiving)var8).func_82163_bD();
-                    var0.spawnEntityInWorld(var8);
-                    ((EntityLiving)var8).playLivingSound();
+                    EntityVillager var9 = (EntityVillager)var8;
+                    VillagerRegistry.applyRandomTrade(var9, var9.getRNG());
+                    par0World.spawnEntityInWorld(var9);
+                    return true;
                 }
+
+                par0World.spawnEntityInWorld(var8);
+                ((EntityLiving)var8).playLivingSound();
             }
 
-            return var8;
+            return var8 != null;
         }
     }
 

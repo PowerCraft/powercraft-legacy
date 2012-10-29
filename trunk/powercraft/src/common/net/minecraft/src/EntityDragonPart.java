@@ -3,17 +3,17 @@ package net.minecraft.src;
 public class EntityDragonPart extends Entity
 {
     /** The dragon entity this dragon part belongs to */
-    public final IEntityMultiPart entityDragonObj;
+    public final EntityDragonBase entityDragonObj;
 
     /** The name of the Dragon Part */
     public final String name;
 
-    public EntityDragonPart(IEntityMultiPart par1, String par2, float par3, float par4)
+    public EntityDragonPart(EntityDragonBase par1EntityDragonBase, String par2Str, float par3, float par4)
     {
-        super(par1.func_82194_d());
+        super(par1EntityDragonBase.worldObj);
         this.setSize(par3, par4);
-        this.entityDragonObj = par1;
-        this.name = par2;
+        this.entityDragonObj = par1EntityDragonBase;
+        this.name = par2Str;
     }
 
     protected void entityInit() {}

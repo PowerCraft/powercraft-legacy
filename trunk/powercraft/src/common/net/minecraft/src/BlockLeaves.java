@@ -305,7 +305,7 @@ public class BlockLeaves extends BlockLeavesBase implements IShearable
     /**
      * Determines the damage on the item the block drops. Used in cloth and wood.
      */
-    public int damageDropped(int par1)
+    protected int damageDropped(int par1)
     {
         return par1 & 3;
     }

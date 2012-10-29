@@ -31,7 +31,7 @@ public class ItemShears extends Item
      */
     public boolean canHarvestBlock(Block par1Block)
     {
-        return par1Block.blockID == Block.web.blockID || par1Block.blockID == Block.redstoneWire.blockID || par1Block.blockID == Block.tripWire.blockID;
+        return par1Block.blockID == Block.web.blockID;
     }
 
     /**

@@ -4,7 +4,6 @@ import cpw.mods.fml.common.Side;
 import cpw.mods.fml.common.asm.SideOnly;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -19,6 +18,12 @@ public class MapData extends WorldSavedData
     public byte[] colors = new byte[16384];
 
     /**
+     * Incremented each update of the map item, used for the patchy updating map effect and the spinning player icons
+     * while in the End and Nether.
+     */
+    public int randomEffect;
+
+    /**
      * Holds a reference to the MapInfo of the players who own a copy of the map
      */
     public List playersArrayList = new ArrayList();
@@ -27,7 +32,7 @@ public class MapData extends WorldSavedData
      * Holds a reference to the players who own a copy of the map and a reference to their MapInfo
      */
     private Map playersHashMap = new HashMap();
-    public Map playersVisibleOnMap = new LinkedHashMap();
+    public List playersVisibleOnMap = new ArrayList();
 
     public MapData(String par1Str)
     {
@@ -123,20 +128,36 @@ public class MapData extends WorldSavedData
             this.playersArrayList.add(var3);
         }
 
-        if (!par1EntityPlayer.inventory.hasItemStack(par2ItemStack))
-        {
-            this.playersVisibleOnMap.remove(par1EntityPlayer.getCommandSenderName());
-        }
+        this.playersVisibleOnMap.clear();
 
-        for (int var5 = 0; var5 < this.playersArrayList.size(); ++var5)
+        for (int var14 = 0; var14 < this.playersArrayList.size(); ++var14)
         {
-            MapInfo var4 = (MapInfo)this.playersArrayList.get(var5);
+            MapInfo var4 = (MapInfo)this.playersArrayList.get(var14);
 
-            if (!var4.entityplayerObj.isDead && (var4.entityplayerObj.inventory.hasItemStack(par2ItemStack) || par2ItemStack.func_82839_y()))
+            if (!var4.entityplayerObj.isDead && var4.entityplayerObj.inventory.hasItemStack(par2ItemStack))
             {
-                if (!par2ItemStack.func_82839_y() && var4.entityplayerObj.dimension == this.dimension)
+                float var5 = (float)(var4.entityplayerObj.posX - (double)this.xCenter) / (float)(1 << this.scale);
+                float var6 = (float)(var4.entityplayerObj.posZ - (double)this.zCenter) / (float)(1 << this.scale);
+                byte var7 = 64;
+                byte var8 = 64;
+
+                if (var5 >= (float)(-var7) && var6 >= (float)(-var8) && var5 <= (float)var7 && var6 <= (float)var8)
                 {
-                    this.func_82567_a(0, var4.entityplayerObj.worldObj, var4.entityplayerObj.getCommandSenderName(), var4.entityplayerObj.posX, var4.entityplayerObj.posZ, (double)var4.entityplayerObj.rotationYaw);
+                    byte var9 = 0;
+                    byte var10 = (byte)((int)((double)(var5 * 2.0F) + 0.5D));
+                    byte var11 = (byte)((int)((double)(var6 * 2.0F) + 0.5D));
+                    byte var12 = (byte)((int)((double)var4.entityplayerObj.rotationYaw * 16.0D / 360.0D));
+
+                    if (this.dimension < 0)
+                    {
+                        int var13 = this.randomEffect / 10;
+                        var12 = (byte)(var13 * var13 * 34187121 + var13 * 121 >> 15 & 15);
+                    }
+
+                    if (var4.entityplayerObj.dimension == this.dimension)
+                    {
+                        this.playersVisibleOnMap.add(new MapCoord(this, var9, var10, var11, var12));
+                    }
                 }
             }
             else
@@ -145,67 +166,6 @@ public class MapData extends WorldSavedData
                 this.playersArrayList.remove(var4);
             }
         }
-
-        if (par2ItemStack.func_82839_y())
-        {
-            this.func_82567_a(1, par1EntityPlayer.worldObj, "frame-" + par2ItemStack.func_82836_z().entityId, (double)par2ItemStack.func_82836_z().xPosition, (double)par2ItemStack.func_82836_z().zPosition, (double)(par2ItemStack.func_82836_z().field_82332_a * 90));
-        }
-    }
-
-    private void func_82567_a(int par1, World par2World, String par3Str, double par4, double par6, double par8)
-    {
-        int var10 = 1 << this.scale;
-        float var11 = (float)(par4 - (double)this.xCenter) / (float)var10;
-        float var12 = (float)(par6 - (double)this.zCenter) / (float)var10;
-        byte var13 = (byte)((int)((double)(var11 * 2.0F) + 0.5D));
-        byte var14 = (byte)((int)((double)(var12 * 2.0F) + 0.5D));
-        byte var16 = 63;
-        byte var15;
-
-        if (var11 >= (float)(-var16) && var12 >= (float)(-var16) && var11 <= (float)var16 && var12 <= (float)var16)
-        {
-            par8 += par8 < 0.0D ? -8.0D : 8.0D;
-            var15 = (byte)((int)(par8 * 16.0D / 360.0D));
-
-            if (this.dimension < 0)
-            {
-                int var17 = (int)(par2World.getWorldInfo().getWorldTime() / 10L);
-                var15 = (byte)(var17 * var17 * 34187121 + var17 * 121 >> 15 & 15);
-            }
-        }
-        else
-        {
-            if (Math.abs(var11) >= 320.0F || Math.abs(var12) >= 320.0F)
-            {
-                this.playersVisibleOnMap.remove(par3Str);
-                return;
-            }
-
-            par1 = 6;
-            var15 = 0;
-
-            if (var11 <= (float)(-var16))
-            {
-                var13 = (byte)((int)((double)(var16 * 2) + 2.5D));
-            }
-
-            if (var12 <= (float)(-var16))
-            {
-                var14 = (byte)((int)((double)(var16 * 2) + 2.5D));
-            }
-
-            if (var11 >= (float)var16)
-            {
-                var13 = (byte)(var16 * 2 + 1);
-            }
-
-            if (var12 >= (float)var16)
-            {
-                var14 = (byte)(var16 * 2 + 1);
-            }
-        }
-
-        this.playersVisibleOnMap.put(par3Str, new MapCoord(this, (byte)par1, var13, var14, var15));
     }
 
     public byte[] func_76193_a(ItemStack par1ItemStack, World par2World, EntityPlayer par3EntityPlayer)
@@ -261,30 +221,12 @@ public class MapData extends WorldSavedData
 
             for (var2 = 0; var2 < (par1ArrayOfByte.length - 1) / 3; ++var2)
             {
-                byte var7 = (byte)(par1ArrayOfByte[var2 * 3 + 1] >> 4);
+                byte var7 = (byte)(par1ArrayOfByte[var2 * 3 + 1] % 16);
                 byte var8 = par1ArrayOfByte[var2 * 3 + 2];
                 byte var5 = par1ArrayOfByte[var2 * 3 + 3];
-                byte var6 = (byte)(par1ArrayOfByte[var2 * 3 + 1] & 15);
-                this.playersVisibleOnMap.put("icon-" + var2, new MapCoord(this, var7, var8, var5, var6));
+                byte var6 = (byte)(par1ArrayOfByte[var2 * 3 + 1] / 16);
+                this.playersVisibleOnMap.add(new MapCoord(this, var7, var8, var5, var6));
             }
         }
-        else if (par1ArrayOfByte[0] == 2)
-        {
-            this.scale = par1ArrayOfByte[1];
-        }
-    }
-
-    public MapInfo func_82568_a(EntityPlayer par1EntityPlayer)
-    {
-        MapInfo var2 = (MapInfo)this.playersHashMap.get(par1EntityPlayer);
-
-        if (var2 == null)
-        {
-            var2 = new MapInfo(this, par1EntityPlayer);
-            this.playersHashMap.put(par1EntityPlayer, var2);
-            this.playersArrayList.add(var2);
-        }
-
-        return var2;
     }
 }

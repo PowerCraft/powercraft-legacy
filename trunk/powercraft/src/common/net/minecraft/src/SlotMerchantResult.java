@@ -61,31 +61,34 @@ public class SlotMerchantResult extends Slot
         this.field_75231_g = 0;
     }
 
-    public void func_82870_a(EntityPlayer par1EntityPlayer, ItemStack par2ItemStack)
+    /**
+     * Called when the player picks up an item from an inventory slot
+     */
+    public void onPickupFromSlot(ItemStack par1ItemStack)
     {
-        this.onCrafting(par2ItemStack);
-        MerchantRecipe var3 = this.theMerchantInventory.getCurrentRecipe();
+        this.onCrafting(par1ItemStack);
+        MerchantRecipe var2 = this.theMerchantInventory.getCurrentRecipe();
 
-        if (var3 != null)
+        if (var2 != null)
         {
-            ItemStack var4 = this.theMerchantInventory.getStackInSlot(0);
-            ItemStack var5 = this.theMerchantInventory.getStackInSlot(1);
+            ItemStack var3 = this.theMerchantInventory.getStackInSlot(0);
+            ItemStack var4 = this.theMerchantInventory.getStackInSlot(1);
 
-            if (this.func_75230_a(var3, var4, var5) || this.func_75230_a(var3, var5, var4))
+            if (this.func_75230_a(var2, var3, var4) || this.func_75230_a(var2, var4, var3))
             {
+                if (var3 != null && var3.stackSize <= 0)
+                {
+                    var3 = null;
+                }
+
                 if (var4 != null && var4.stackSize <= 0)
                 {
                     var4 = null;
                 }
 
-                if (var5 != null && var5.stackSize <= 0)
-                {
-                    var5 = null;
-                }
-
-                this.theMerchantInventory.setInventorySlotContents(0, var4);
-                this.theMerchantInventory.setInventorySlotContents(1, var5);
-                this.theMerchant.useRecipe(var3);
+                this.theMerchantInventory.setInventorySlotContents(0, var3);
+                this.theMerchantInventory.setInventorySlotContents(1, var4);
+                this.theMerchant.useRecipe(var2);
             }
         }
     }

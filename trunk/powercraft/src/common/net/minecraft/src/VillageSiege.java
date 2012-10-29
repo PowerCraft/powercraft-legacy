@@ -181,8 +181,6 @@ public class VillageSiege
             try
             {
                 var2 = new EntityZombie(this.worldObj);
-                var2.func_82163_bD();
-                var2.func_82229_g(false);
             }
             catch (Exception var4)
             {
@@ -208,7 +206,7 @@ public class VillageSiege
 
             if (this.theVillage.isInRange(var5, var6, var7) && SpawnerAnimals.canCreatureTypeSpawnAtLocation(EnumCreatureType.monster, this.worldObj, var5, var6, var7))
             {
-                this.worldObj.func_82732_R().getVecFromPool((double)var5, (double)var6, (double)var7);
+                return Vec3.getVec3Pool().getVecFromPool((double)var5, (double)var6, (double)var7);
             }
         }
 

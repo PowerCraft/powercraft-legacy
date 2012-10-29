@@ -31,7 +31,7 @@ public class GuiModsMissing extends GuiErrorScreen
     public void drawScreen(int par1, int par2, float par3)
     {
         this.drawDefaultBackground();
-        int offset = Math.max(85 - modsMissing.missingMods.size() * 10, 10);
+        int offset = 85 - modsMissing.missingMods.size() * 10;
         this.drawCenteredString(this.fontRenderer, "Forge Mod Loader has found a problem with your minecraft installation", this.width / 2, offset, 0xFFFFFF);
         offset+=10;
         this.drawCenteredString(this.fontRenderer, "The mods and versions listed below could not be found", this.width / 2, offset, 0xFFFFFF);

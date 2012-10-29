@@ -60,7 +60,7 @@ public class ItemSlab extends ItemBlock
         {
             return false;
         }
-        else if (!par2EntityPlayer.func_82247_a(par4, par5, par6, par7, par1ItemStack))
+        else if (!par2EntityPlayer.canPlayerEdit(par4, par5, par6))
         {
             return false;
         }
