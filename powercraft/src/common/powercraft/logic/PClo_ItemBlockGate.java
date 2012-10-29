@@ -1,14 +1,16 @@
 package powercraft.logic;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
-import net.minecraft.src.CreativeTabs;
+import net.minecraft.src.Block;
+import net.minecraft.src.BlockContainer;
 import net.minecraft.src.EntityPlayer;
 import net.minecraft.src.ItemStack;
 import net.minecraft.src.MathHelper;
+import net.minecraft.src.World;
 import powercraft.core.PC_ItemBlock;
+import powercraft.core.PC_TileEntity;
 import powercraft.core.PC_Utils;
 
 public class PClo_ItemBlockGate extends PC_ItemBlock {
@@ -45,7 +47,7 @@ public class PClo_ItemBlockGate extends PC_ItemBlock {
 	
 	@Override
 	public int getIconFromDamage(int i) {
-		return PClo_BlockGate.on.getBlockTextureFromSideAndMetadata(1, 0);
+		return mod_PowerCraftLogic.gate.getBlockTextureFromSideAndMetadata(1, 0);
 	}
 
 	@Override
@@ -62,7 +64,7 @@ public class PClo_ItemBlockGate extends PC_ItemBlock {
 	public boolean shouldRotateAroundWhenRendering() {
 		return false;
 	}
-
+	
 	@Override
 	public void addInformation(ItemStack itemStack, EntityPlayer player, List list, boolean b) {
 		list.add(getDescriptionForGate(itemStack.getItemDamage()));

@@ -4,9 +4,12 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
 
+import net.minecraft.src.EntityPlayer;
+import net.minecraft.src.ItemStack;
 import net.minecraft.src.Packet;
 import net.minecraft.src.Packet250CustomPayload;
 import net.minecraft.src.TileEntity;
+import net.minecraft.src.World;
 
 public abstract class PC_TileEntity extends TileEntity {
 
@@ -37,6 +40,10 @@ public abstract class PC_TileEntity extends TileEntity {
 
 	public Object[] getData(){
 		return null;
+	}
+	
+	public void create(ItemStack stack, EntityPlayer player, World world, int x, int y, int z, int side, float hitX, float hitY, float hitZ){
+		
 	}
 	
 }

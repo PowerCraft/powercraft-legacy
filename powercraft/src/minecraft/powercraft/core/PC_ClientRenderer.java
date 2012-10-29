@@ -81,7 +81,6 @@ public class PC_ClientRenderer extends PC_Renderer implements ISimpleBlockRender
 	};
 
 	protected void iRenderInvBox(Object renderer, Block block, int metadata){
-		((RenderBlocks)renderer).func_83018_a(block);
 		Tessellator tessellator = Tessellator.instance;
 		RenderBlocks renderblocks = (RenderBlocks)renderer;
 		
@@ -97,6 +96,7 @@ public class PC_ClientRenderer extends PC_Renderer implements ISimpleBlockRender
 		}
 		
 		block.setBlockBoundsForItemRender();
+		((RenderBlocks)renderer).func_83018_a(block);
 		GL11.glTranslatef(-0.5F, -0.5F, -0.5F);
 		tessellator.startDrawingQuads();
 		tessellator.setNormal(0.0F, -1F, 0.0F);
@@ -128,55 +128,71 @@ public class PC_ClientRenderer extends PC_Renderer implements ISimpleBlockRender
 	
 	@Override
 	protected void iRenderBlockRotatedBox(IBlockAccess world, int x, int y, int z, Block block, int modelId, Object renderer){
-		RenderBlocks renderblocks = (RenderBlocks)renderer;
 		Tessellator tessellator = Tessellator.instance;
+		int metaAt = world.getBlockMetadata(x, y, z);
 
-		int metadata = PC_Utils.getMD(world, x, y, z);
-		
 		if (block instanceof PC_IRotatedBox) {
+
+			tessellator.draw();
+			tessellator.startDrawingQuads();
 
 			boolean swapped = swapTerrain(block);
 
-			boolean renderOnSide = ((PC_IRotatedBox) block).renderItemHorizontal();
+			block.setBlockBoundsBasedOnState(world, x, y, z);
+			((RenderBlocks)renderer).func_83018_a(block);
+			int l = ((PC_IRotatedBox) block).getRotation(metaAt);
+			int i1 = l;
+			((RenderBlocks)renderer).renderStandardBlock(block, x, y, z);
 
-			if (renderOnSide) {
-				block.setBlockBoundsForItemRender();
-			} else {
-				block.setBlockBounds(-0.1F, -0.1F, 0.4F, 1.1F, 1.1F, 0.6F);
+			tessellator.setBrightness(block.getMixedBrightnessForBlock(world, x, y, z));
+			tessellator.setColorOpaque_F(1.0F, 1.0F, 1.0F);
+			tessellator.setNormal(0.0F, 1F, 0.0F);
+			int k1 = block.getBlockTexture(world, x, y, z, 1);
+			int l1 = (k1 & 0xf) << 4;
+			int i2 = k1 & 0xf0;
+			double d5 = l1 / 256F;
+			double d6 = (l1 + 15.99F) / 256F;
+			double d7 = i2 / 256F;
+			double d8 = (i2 + 15.99F) / 256F;
+			double d9 = (block.func_83010_y());
+			double d10 = x + block.func_83007_w();
+			double d11 = x + block.func_83007_w();
+			double d12 = x + block.func_83009_v();
+			double d13 = x + block.func_83009_v();
+			double d14 = z + block.func_83005_z();
+			double d15 = z + block.func_83006_A();
+			double d16 = z + block.func_83006_A();
+			double d17 = z + block.func_83005_z();
+			double d18 = y + d9;
+			if (i1 == 2) {
+				d10 = d11 = x + block.func_83009_v();
+				d12 = d13 = x + block.func_83007_w();
+				d14 = d17 = z + block.func_83006_A();
+				d15 = d16 = z + block.func_83005_z();
+			} else if (i1 == 3) {
+				d10 = d13 = x + block.func_83009_v();
+				d11 = d12 = x + block.func_83007_w();
+				d14 = d15 = z + block.func_83005_z();
+				d16 = d17 = z + block.func_83006_A();
+			} else if (i1 == 1) {
+				d10 = d13 = x + block.func_83007_w();
+				d11 = d12 = x + block.func_83009_v();
+				d14 = d15 = z + block.func_83006_A();
+				d16 = d17 = z + block.func_83005_z();
 			}
-			GL11.glTranslatef(-0.5F, -0.5F, -0.5F);
-			tessellator.draw();
-			tessellator.startDrawingQuads();
-			tessellator.setNormal(0.0F, -1F, 0.0F);
-			renderblocks.renderBottomFace(block, 0.0D, 0.0D, 0.0D, block.getBlockTextureFromSideAndMetadata(renderOnSide ? 0 : 0, metadata));
-			tessellator.draw();
-			tessellator.startDrawingQuads();
-			tessellator.setNormal(0.0F, 1.0F, 0.0F);
-			renderblocks.renderTopFace(block, 0.0D, 0.0D, 0.0D, block.getBlockTextureFromSideAndMetadata(renderOnSide ? 1 : 0, metadata));
-			tessellator.draw();
-			tessellator.startDrawingQuads();
-			tessellator.setNormal(0.0F, 0.0F, -1F);
-			renderblocks.renderEastFace(block, 0.0D, 0.0D, 0.0D, block.getBlockTextureFromSideAndMetadata(renderOnSide ? 2 : 0, metadata));
-			tessellator.draw();
-			tessellator.startDrawingQuads();
-			tessellator.setNormal(0.0F, 0.0F, 1.0F);
-			renderblocks.renderWestFace(block, 0.0D, 0.0D, 0.0D, block.getBlockTextureFromSideAndMetadata(renderOnSide ? 3 : 1, metadata));
-			tessellator.draw();
-			tessellator.startDrawingQuads();
-			tessellator.setNormal(-1F, 0.0F, 0.0F);
-			renderblocks.renderNorthFace(block, 0.0D, 0.0D, 0.0D, block.getBlockTextureFromSideAndMetadata(renderOnSide ? 4 : 0, metadata));
-			tessellator.draw();
-			tessellator.startDrawingQuads();
-			tessellator.setNormal(1.0F, 0.0F, 0.0F);
-			renderblocks.renderSouthFace(block, 0.0D, 0.0D, 0.0D, block.getBlockTextureFromSideAndMetadata(renderOnSide ? 5 : 0, metadata));
-			tessellator.draw();
-			tessellator.startDrawingQuads();
-			GL11.glTranslatef(0.5F, 0.5F, 0.5F);
 
+			tessellator.addVertexWithUV(d13, d18, d17, d5, d7);
+			tessellator.addVertexWithUV(d12, d18, d16, d5, d8);
+			tessellator.addVertexWithUV(d11, d18, d15, d6, d8);
+			tessellator.addVertexWithUV(d10, d18, d14, d6, d7);
+
+			tessellator.draw();
+			tessellator.startDrawingQuads();
+			((RenderBlocks)renderer).func_83017_b();
 			resetTerrain(swapped);
 
-			return;
 		}
+
 	}
 	
 	@Override
@@ -187,7 +203,7 @@ public class PC_ClientRenderer extends PC_Renderer implements ISimpleBlockRender
 		if (block instanceof PC_IRotatedBox) {
 
 			boolean swapped = swapTerrain(block);
-			
+
 			boolean renderOnSide = ((PC_IRotatedBox) block).renderItemHorizontal();
 
 			if (renderOnSide) {
@@ -195,6 +211,8 @@ public class PC_ClientRenderer extends PC_Renderer implements ISimpleBlockRender
 			} else {
 				block.setBlockBounds(-0.1F, -0.1F, 0.4F, 1.1F, 1.1F, 0.6F);
 			}
+			
+			((RenderBlocks)renderer).func_83018_a(block);
 			GL11.glTranslatef(-0.5F, -0.5F, -0.5F);
 			tessellator.startDrawingQuads();
 			tessellator.setNormal(0.0F, -1F, 0.0F);
@@ -221,7 +239,7 @@ public class PC_ClientRenderer extends PC_Renderer implements ISimpleBlockRender
 			renderblocks.renderSouthFace(block, 0.0D, 0.0D, 0.0D, block.getBlockTextureFromSideAndMetadata(renderOnSide ? 5 : 0, metadata));
 			tessellator.draw();
 			GL11.glTranslatef(0.5F, 0.5F, 0.5F);
-
+			((RenderBlocks)renderer).func_83017_b();
 			resetTerrain(swapped);
 
 			return;

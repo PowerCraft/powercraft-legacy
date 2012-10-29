@@ -438,9 +438,49 @@ public class PC_Utils {
 	}
 	
 	public static int getMD(IBlockAccess world, int x, int y, int z){
-		if(world!=null)
-			return world.getBlockMetadata(x, y, z);
+		if(world!=null){
+			TileEntity te = getTE(world, x, y, z);
+			if(te==null)
+				return world.getBlockMetadata(x, y, z);
+			return te.blockMetadata;
+		}
 		return 0;
+	}
+
+	public static boolean isPlacingReversed() {
+		return false;
+	}
+
+	public static int reverseSide(int l) {
+		if (l == 0) {
+			l = 2;
+		} else if (l == 2) {
+			l = 0;
+		} else if (l == 1) {
+			l = 3;
+		} else if (l == 3) {
+			l = 1;
+		}
+
+		return l;
+	}
+
+	/**
+	 * Perform hide redstone update around this gate.
+	 * 
+	 * @param world
+	 * @param x
+	 * @param y
+	 * @param z
+	 * @param id
+	 */
+	public static void hugeUpdate(World world, int x, int y, int z, int blockID) {
+		world.notifyBlocksOfNeighborChange(x, y, z, blockID);
+	}
+
+	public static TileEntity setTE(World world, int x, int y, int z, TileEntity createTileEntity) {
+		world.setBlockTileEntity(x, y, z, createTileEntity);
+		return createTileEntity;
 	}
 	
 }
