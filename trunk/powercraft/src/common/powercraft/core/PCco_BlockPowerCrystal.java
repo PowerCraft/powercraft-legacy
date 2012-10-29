@@ -127,8 +127,6 @@ public class PCco_BlockPowerCrystal extends PC_Block implements PC_IConfigLoader
 	@Override
 	public void randomDisplayTick(World world, int i, int j, int k, Random random) {
 
-
-
 		int id_under = world.getBlockId(i, j - 1, k);
 		if (makeSound && PC_Utils.isSoundEnabled()) {
 			EntityPlayer player = world.getClosestPlayer(i + 0.5D, j + 0.5D, k + 0.5D, 12);

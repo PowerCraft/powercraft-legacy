@@ -27,8 +27,7 @@ public class mod_PowerCraftLogic extends PC_Module {
 	public static PClo_CommonProxy proxy;
 	
 	public static PC_Block pulsar;
-	public static PC_Block gateOff;
-	public static PC_Block gateOn;
+	public static PC_Block gate;
 	
 	public static mod_PowerCraftLogic getInstance(){
 		return (mod_PowerCraftLogic)PC_Module.getModule("PowerCraft-Logic");
@@ -97,7 +96,7 @@ public class mod_PowerCraftLogic extends PC_Module {
 	@Override
 	protected void initBlocks() {
 		pulsar = (PC_Block)PC_Utils.register(this, 461, PClo_BlockPulsar.class, PClo_TileEntityPulsar.class);
-		gateOn = (PC_Block)PC_Utils.register(this, 462, PClo_BlockGate.class, PClo_ItemBlockGate.class);
+		gate = (PC_Block)PC_Utils.register(this, 462, PClo_BlockGate.class, PClo_ItemBlockGate.class, PClo_TileEntityGate.class);
 	}
 
 	@Override
