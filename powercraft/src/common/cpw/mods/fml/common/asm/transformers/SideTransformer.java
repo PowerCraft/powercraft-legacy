@@ -23,8 +23,6 @@ public class SideTransformer implements IClassTransformer
     @Override
     public byte[] transform(String name, byte[] bytes)
     {
-    	if (bytes == null) { return null; }
-
         ClassNode classNode = new ClassNode();
         ClassReader classReader = new ClassReader(bytes);
         classReader.accept(classNode, 0);
@@ -35,7 +33,7 @@ public class SideTransformer implements IClassTransformer
             {
                 System.out.println(String.format("Attempted to load class %s for invalid side %s", classNode.name, SIDE));
             }
-            throw new RuntimeException(String.format("Attempted to load class %s for invalid side %s", classNode.name, SIDE));
+            return null;
         }
 
         Iterator<FieldNode> fields = classNode.fields.iterator();

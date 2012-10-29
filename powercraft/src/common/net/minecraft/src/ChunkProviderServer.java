@@ -155,12 +155,7 @@ public class ChunkProviderServer implements IChunkProvider
 
                 if (var3 != null)
                 {
-                    var3.lastSaveTime = this.currentServer.func_82737_E();
-
-                    if (this.currentChunkProvider != null)
-                    {
-                        this.currentChunkProvider.func_82695_e(par1, par2);
-                    }
+                    var3.lastSaveTime = this.currentServer.getWorldTime();
                 }
 
                 return var3;
@@ -200,7 +195,7 @@ public class ChunkProviderServer implements IChunkProvider
         {
             try
             {
-                par1Chunk.lastSaveTime = this.currentServer.func_82737_E();
+                par1Chunk.lastSaveTime = this.currentServer.getWorldTime();
                 this.currentChunkLoader.saveChunk(this.currentServer, par1Chunk);
             }
             catch (IOException var3)
@@ -356,6 +351,4 @@ public class ChunkProviderServer implements IChunkProvider
     {
         return this.loadedChunkHashMap.getNumHashElements();
     }
-
-    public void func_82695_e(int par1, int par2) {}
 }

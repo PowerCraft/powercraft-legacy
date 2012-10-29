@@ -36,7 +36,7 @@ import cpw.mods.fml.common.registry.LanguageRegistry;
  * Handles primary communication from hooked code into the system
  *
  * The FML entry point is {@link #beginServerLoading(MinecraftServer)} called from
- * {@link net.minecraft.src.DedicatedServer}
+ * {@link DedicatedServer}
  *
  * Obfuscated code should focus on this class and other members of the "server"
  * (or "client") code

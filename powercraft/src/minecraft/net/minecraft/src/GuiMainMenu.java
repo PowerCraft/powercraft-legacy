@@ -140,10 +140,6 @@ public class GuiMainMenu extends GuiScreen
         {
             this.splashText = "Happy new year!";
         }
-        else if (var1.get(2) + 1 == 10 && var1.get(5) == 31)
-        {
-            this.splashText = "OOoooOOOoooo! Spooky!";
-        }
 
         StringTranslate var2 = StringTranslate.getInstance();
         int var4 = this.height / 4 + 48;
@@ -459,7 +455,7 @@ public class GuiMainMenu extends GuiScreen
         GL11.glScalef(var8, var8, var8);
         this.drawCenteredString(this.fontRenderer, this.splashText, 0, -8, 16776960);
         GL11.glPopMatrix();
-        String var9 = "Minecraft 1.4.2";
+        String var9 = "Minecraft 1.3.2";
 
         if (this.mc.isDemo())
         {

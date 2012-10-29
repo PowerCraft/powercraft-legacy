@@ -58,7 +58,7 @@ public class mod_PowerCraftCore extends PC_Module{
 	
 	
 	/** Location of the file with updates */
-	public static final String updateInfoPath = "https://dl.dropbox.com/s/h25u8jwbsjyyuy5/Update.xml?dl=1"; 
+	public static final String updateInfoPath = "https://dl.dropbox.com/s/32vfqldp8gn8011/Update.xml?dl=1"; 
 	
 	public static mod_PowerCraftCore getInstance(){
 		return (mod_PowerCraftCore)PC_Module.getModule("PowerCraft-Core");
@@ -71,7 +71,7 @@ public class mod_PowerCraftCore extends PC_Module{
 		
 		preInit(event, proxy);
 		
-		getModMetadata().logoFile = getTextureDirectory()+"PowerCraft.png";
+		getModMetadata().logoFile = getTextureFile()+"PowerCraft.png";
 		
 	}
 	
@@ -104,7 +104,7 @@ public class mod_PowerCraftCore extends PC_Module{
 	@Override
 	protected List<String> loadTextureFiles(List<String> textures) {
 		textures.add(getTerrainFile());
-		textures.add(getTextureDirectory()+"PowerCraft.png");
+		textures.add(getTextureFile()+"PowerCraft.png");
 		return textures;
 	}
 

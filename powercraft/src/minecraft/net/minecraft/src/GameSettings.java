@@ -54,11 +54,8 @@ public class GameSettings
     public boolean serverTextures = true;
     public boolean snooperEnabled = true;
     public boolean fullScreen = false;
-    public boolean enableVsync = true;
+    public boolean enableVsync = false;
     public boolean hideServerAddress = false;
-    public boolean field_82882_x = false;
-    public boolean field_82881_y = true;
-    public boolean field_82880_z = true;
     public KeyBinding keyBindForward = new KeyBinding("key.forward", 17);
     public KeyBinding keyBindLeft = new KeyBinding("key.left", 30);
     public KeyBinding keyBindBack = new KeyBinding("key.back", 31);
@@ -325,11 +322,6 @@ public class GameSettings
             this.snooperEnabled = !this.snooperEnabled;
         }
 
-        if (par1EnumOptions == EnumOptions.SHOW_CAPE)
-        {
-            this.field_82880_z = !this.field_82880_z;
-        }
-
         if (par1EnumOptions == EnumOptions.USE_FULLSCREEN)
         {
             this.fullScreen = !this.fullScreen;
@@ -384,8 +376,6 @@ public class GameSettings
                 return this.fullScreen;
             case 13:
                 return this.enableVsync;
-            case 14:
-                return this.field_82880_z;
             default:
                 return false;
         }
@@ -601,21 +591,6 @@ public class GameSettings
                         this.hideServerAddress = var3[1].equals("true");
                     }
 
-                    if (var3[0].equals("advancedItemTooltips"))
-                    {
-                        this.field_82882_x = var3[1].equals("true");
-                    }
-
-                    if (var3[0].equals("pauseOnLostFocus"))
-                    {
-                        this.field_82881_y = var3[1].equals("true");
-                    }
-
-                    if (var3[0].equals("showCape"))
-                    {
-                        this.field_82880_z = var3[1].equals("true");
-                    }
-
                     KeyBinding[] var4 = this.keyBindings;
                     int var5 = var4.length;
 
@@ -692,9 +667,6 @@ public class GameSettings
             var1.println("fullscreen:" + this.fullScreen);
             var1.println("enableVsync:" + this.enableVsync);
             var1.println("hideServerAddress:" + this.hideServerAddress);
-            var1.println("advancedItemTooltips:" + this.field_82882_x);
-            var1.println("pauseOnLostFocus:" + this.field_82881_y);
-            var1.println("showCape:" + this.field_82880_z);
             KeyBinding[] var2 = this.keyBindings;
             int var3 = var2.length;
 
@@ -712,14 +684,9 @@ public class GameSettings
             var6.printStackTrace();
         }
 
-        this.func_82879_c();
-    }
-
-    public void func_82879_c()
-    {
         if (this.mc.thePlayer != null)
         {
-            this.mc.thePlayer.sendQueue.addToSendQueue(new Packet204ClientInfo(this.language, this.renderDistance, this.chatVisibility, this.chatColours, this.difficulty, this.field_82880_z));
+            this.mc.thePlayer.sendQueue.addToSendQueue(new Packet204ClientInfo(this.language, this.renderDistance, this.chatVisibility, this.chatColours, this.difficulty));
         }
     }
 

@@ -97,14 +97,4 @@ public class AABBPool
         this.nextPoolIndex = 0;
         this.listAABB.clear();
     }
-
-    public int func_83013_c()
-    {
-        return this.listAABB.size();
-    }
-
-    public int func_83012_d()
-    {
-        return this.nextPoolIndex;
-    }
 }

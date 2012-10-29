@@ -138,14 +138,14 @@ public class ThreadDownloadResources extends Thread
             int var6 = par2Str.indexOf("/");
             String var7 = par2Str.substring(0, var6);
 
-            if (var7.equalsIgnoreCase("sound3"))
+            if (!var7.equals("sound") && !var7.equals("newsound"))
             {
-                if (par5 != 0)
+                if (par5 != 1)
                 {
                     return;
                 }
             }
-            else if (par5 != 1)
+            else if (par5 != 0)
             {
                 return;
             }

@@ -1,7 +1,6 @@
 package net.minecraft.src;
 
 import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.event.Event;
 import net.minecraftforge.event.entity.player.FillBucketEvent;
 
 public class ItemBucket extends Item
@@ -41,7 +40,7 @@ public class ItemBucket extends Item
                 return par1ItemStack;
             }
 
-            if (event.getResult() == Event.Result.ALLOW)
+            if (event.isHandeled())
             {
                 if (par3EntityPlayer.capabilities.isCreativeMode)
                 {
@@ -74,7 +73,7 @@ public class ItemBucket extends Item
 
                 if (this.isFull == 0)
                 {
-                    if (!par3EntityPlayer.func_82247_a(var13, var14, var15, var12.sideHit, par1ItemStack))
+                    if (!par3EntityPlayer.canPlayerEdit(var13, var14, var15))
                     {
                         return par1ItemStack;
                     }
@@ -160,12 +159,12 @@ public class ItemBucket extends Item
                         ++var13;
                     }
 
-                    if (!par3EntityPlayer.func_82247_a(var13, var14, var15, var12.sideHit, par1ItemStack))
+                    if (!par3EntityPlayer.canPlayerEdit(var13, var14, var15))
                     {
                         return par1ItemStack;
                     }
 
-                    if (this.tryPlaceContainedLiquid(par2World, var5, var7, var9, var13, var14, var15) && !par3EntityPlayer.capabilities.isCreativeMode)
+                    if (this.func_77875_a(par2World, var5, var7, var9, var13, var14, var15) && !par3EntityPlayer.capabilities.isCreativeMode)
                     {
                         return new ItemStack(Item.bucketEmpty);
                     }
@@ -180,10 +179,7 @@ public class ItemBucket extends Item
         }
     }
 
-    /**
-     * Attempts to place the liquid contained inside the bucket.
-     */
-    public boolean tryPlaceContainedLiquid(World par1World, double par2, double par4, double par6, int par8, int par9, int par10)
+    public boolean func_77875_a(World par1World, double par2, double par4, double par6, int par8, int par9, int par10)
     {
         if (this.isFull <= 0)
         {

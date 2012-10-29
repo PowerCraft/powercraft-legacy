@@ -23,8 +23,6 @@ public class EntityMinecart extends Entity implements IInventory
     public int minecartType;
     public double pushX;
     public double pushZ;
-    protected final IUpdatePlayerListBox field_82344_g;
-    protected boolean field_82345_h;
     protected static final int[][][] field_70500_g = new int[][][] {{{0, 0, -1}, {0, 0, 1}}, {{ -1, 0, 0}, {1, 0, 0}}, {{ -1, -1, 0}, {1, 0, 0}}, {{ -1, 0, 0}, {1, -1, 0}}, {{0, 0, -1}, {0, -1, 1}}, {{0, -1, -1}, {0, 0, 1}}, {{0, 0, 1}, {1, 0, 0}}, {{0, 0, 1}, { -1, 0, 0}}, {{0, 0, -1}, { -1, 0, 0}}, {{0, 0, -1}, {1, 0, 0}}};
 
     /** appears to be the progress of the turn */
@@ -66,11 +64,9 @@ public class EntityMinecart extends Entity implements IInventory
         this.cargoItems = new ItemStack[36];
         this.fuel = 0;
         this.field_70499_f = false;
-        this.field_82345_h = true;
         this.preventEntitySpawning = true;
         this.setSize(0.98F, 0.7F);
         this.yOffset = this.height / 2.0F;
-        this.field_82344_g = par1World != null ? par1World.func_82735_a(this) : null;
 
         maxSpeedRail = defaultMaxSpeedRail;
         maxSpeedGround = defaultMaxSpeedGround;
@@ -217,57 +213,43 @@ public class EntityMinecart extends Entity implements IInventory
      */
     public void setDead()
     {
-        if (this.field_82345_h)
+        for (int var1 = 0; var1 < this.getSizeInventory(); ++var1)
         {
-            for (int var1 = 0; var1 < this.getSizeInventory(); ++var1)
+            ItemStack var2 = this.getStackInSlot(var1);
+
+            if (var2 != null)
             {
-                ItemStack var2 = this.getStackInSlot(var1);
+                float var3 = this.rand.nextFloat() * 0.8F + 0.1F;
+                float var4 = this.rand.nextFloat() * 0.8F + 0.1F;
+                float var5 = this.rand.nextFloat() * 0.8F + 0.1F;
 
-                if (var2 != null)
+                while (var2.stackSize > 0)
                 {
-                    float var3 = this.rand.nextFloat() * 0.8F + 0.1F;
-                    float var4 = this.rand.nextFloat() * 0.8F + 0.1F;
-                    float var5 = this.rand.nextFloat() * 0.8F + 0.1F;
+                    int var6 = this.rand.nextInt(21) + 10;
 
-                    while (var2.stackSize > 0)
+                    if (var6 > var2.stackSize)
                     {
-                        int var6 = this.rand.nextInt(21) + 10;
-
-                        if (var6 > var2.stackSize)
-                        {
-                            var6 = var2.stackSize;
-                        }
-
-                        var2.stackSize -= var6;
-                        EntityItem var7 = new EntityItem(this.worldObj, this.posX + (double)var3, this.posY + (double)var4, this.posZ + (double)var5, new ItemStack(var2.itemID, var6, var2.getItemDamage()));
-
-                        if (var2.hasTagCompound())
-                        {
-                            var7.item.setTagCompound((NBTTagCompound)var2.getTagCompound().copy());
-                        }
-
-                        float var8 = 0.05F;
-                        var7.motionX = (double)((float)this.rand.nextGaussian() * var8);
-                        var7.motionY = (double)((float)this.rand.nextGaussian() * var8 + 0.2F);
-                        var7.motionZ = (double)((float)this.rand.nextGaussian() * var8);
-                        this.worldObj.spawnEntityInWorld(var7);
+                        var6 = var2.stackSize;
                     }
+
+                    var2.stackSize -= var6;
+                    EntityItem var7 = new EntityItem(this.worldObj, this.posX + (double)var3, this.posY + (double)var4, this.posZ + (double)var5, new ItemStack(var2.itemID, var6, var2.getItemDamage()));
+
+                    if (var2.hasTagCompound())
+                    {
+                        var7.item.setTagCompound((NBTTagCompound)var2.getTagCompound().copy());
+                    }
+
+                    float var8 = 0.05F;
+                    var7.motionX = (double)((float)this.rand.nextGaussian() * var8);
+                    var7.motionY = (double)((float)this.rand.nextGaussian() * var8 + 0.2F);
+                    var7.motionZ = (double)((float)this.rand.nextGaussian() * var8);
+                    this.worldObj.spawnEntityInWorld(var7);
                 }
             }
         }
 
         super.setDead();
-
-        if (this.field_82344_g != null)
-        {
-            this.field_82344_g.update();
-        }
-    }
-
-    public void travelToTheEnd(int par1)
-    {
-        this.field_82345_h = false;
-        super.travelToTheEnd(par1);
     }
 
     /**
@@ -275,11 +257,6 @@ public class EntityMinecart extends Entity implements IInventory
      */
     public void onUpdate()
     {
-        if (this.field_82344_g != null)
-        {
-            this.field_82344_g.update();
-        }
-
         if (this.func_70496_j() > 0)
         {
             this.func_70497_h(this.func_70496_j() - 1);
@@ -526,13 +503,14 @@ public class EntityMinecart extends Entity implements IInventory
                         }
                     }
                 }
+
+                this.doBlockCollisions();
             }
             else
             {
                 moveMinecartOffRail(var1, var2, var3);
             }
 
-            this.doBlockCollisions();
             this.rotationPitch = 0.0F;
             double var47 = this.prevPosX - this.posX;
             double var48 = this.prevPosZ - this.posZ;
@@ -714,7 +692,7 @@ public class EntityMinecart extends Entity implements IInventory
                 par3 += 0.5D;
             }
 
-            return this.worldObj.func_82732_R().getVecFromPool(par1, par3, par5);
+            return Vec3.getVec3Pool().getVecFromPool(par1, par3, par5);
         }
         else
         {
@@ -849,8 +827,8 @@ public class EntityMinecart extends Entity implements IInventory
                     {
                         double var10 = par1Entity.posX - this.posX;
                         double var12 = par1Entity.posZ - this.posZ;
-                        Vec3 var14 = this.worldObj.func_82732_R().getVecFromPool(var10, 0.0D, var12).normalize();
-                        Vec3 var15 = this.worldObj.func_82732_R().getVecFromPool((double)MathHelper.cos(this.rotationYaw * (float)Math.PI / 180.0F), 0.0D, (double)MathHelper.sin(this.rotationYaw * (float)Math.PI / 180.0F)).normalize();
+                        Vec3 var14 = Vec3.getVec3Pool().getVecFromPool(var10, 0.0D, var12).normalize();
+                        Vec3 var15 = Vec3.getVec3Pool().getVecFromPool((double)MathHelper.cos(this.rotationYaw * (float)Math.PI / 180.0F), 0.0D, (double)MathHelper.sin(this.rotationYaw * (float)Math.PI / 180.0F)).normalize();
                         double var16 = Math.abs(var14.dotProduct(var15));
 
                         if (var16 < 0.800000011920929D)
@@ -1094,7 +1072,7 @@ public class EntityMinecart extends Entity implements IInventory
     /**
      * Is this minecart powered (Fuel > 0)
      */
-    public boolean isMinecartPowered()
+    protected boolean isMinecartPowered()
     {
         return (this.dataWatcher.getWatchableObjectByte(16) & 1) != 0;
     }

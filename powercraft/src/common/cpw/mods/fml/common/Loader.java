@@ -18,7 +18,6 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.util.Comparator;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
@@ -32,17 +31,14 @@ import com.google.common.base.CharMatcher;
 import com.google.common.base.Function;
 import com.google.common.base.Joiner;
 import com.google.common.base.Splitter;
-import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.BiMap;
 import com.google.common.collect.HashBiMap;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableMultiset;
 import com.google.common.collect.Iterables;
-import com.google.common.collect.LinkedHashMultimap;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
-import com.google.common.collect.SetMultimap;
 import com.google.common.collect.Sets;
 import com.google.common.collect.Multiset.Entry;
 import com.google.common.collect.Multisets;
@@ -52,7 +48,6 @@ import com.google.common.collect.TreeMultimap;
 
 import cpw.mods.fml.common.LoaderState.ModState;
 import cpw.mods.fml.common.discovery.ModDiscoverer;
-import cpw.mods.fml.common.event.FMLInterModComms;
 import cpw.mods.fml.common.event.FMLLoadEvent;
 import cpw.mods.fml.common.functions.ModIdFunction;
 import cpw.mods.fml.common.modloader.BaseModProxy;
@@ -109,7 +104,7 @@ public class Loader
     private static String rev;
     private static String build;
     private static String mccversion;
-    private static String mcpversion;
+    private static String mcsversion;
 
     /**
      * The class loader we load the mods into.
@@ -138,7 +133,6 @@ public class Loader
     private File canonicalModsDir;
     private LoadController modController;
     private MinecraftDummyContainer minecraft;
-	private MCPDummyContainer mcp;
 
     private static File minecraftDir;
     private static List<String> injectedContainers;
@@ -160,7 +154,7 @@ public class Loader
         rev = (String) data[2];
         build = (String) data[3];
         mccversion = (String) data[4];
-        mcpversion = (String) data[5];
+        mcsversion = (String) data[5];
         minecraftDir = (File) data[6];
         injectedContainers = (List<String>)data[7];
     }
@@ -176,7 +170,6 @@ public class Loader
         }
 
         minecraft = new MinecraftDummyContainer(actualMCVersion);
-        mcp = new MCPDummyContainer(MetadataCollection.from(getClass().getResourceAsStream("/mcpmod.info"), "MCP").getMetadataForId("mcp", null));
     }
 
     /**
@@ -306,8 +299,6 @@ public class Loader
     private ModDiscoverer identifyMods()
     {
         FMLLog.fine("Building injected Mod Containers %s", injectedContainers);
-        // Add in the MCP mod container
-        mods.add(new InjectedModContainer(mcp,new File("minecraft.jar")));
         File coremod = new File(minecraftDir,"coremods");
         for (String cont : injectedContainers)
         {
@@ -350,6 +341,7 @@ public class Loader
 
     private void identifyDuplicates(List<ModContainer> mods)
     {
+        boolean foundDupe = false;
         TreeMultimap<ModContainer, File> dupsearch = TreeMultimap.create(new ModIdComparator(), Ordering.arbitrary());
         for (ModContainer mc : mods)
         {
@@ -360,19 +352,15 @@ public class Loader
         }
 
         ImmutableMultiset<ModContainer> duplist = Multisets.copyHighestCountFirst(dupsearch.keys());
-        SetMultimap<ModContainer, File> dupes = LinkedHashMultimap.create();
         for (Entry<ModContainer> e : duplist.entrySet())
         {
             if (e.getCount() > 1)
             {
                 FMLLog.severe("Found a duplicate mod %s at %s", e.getElement().getModId(), dupsearch.get(e.getElement()));
-                dupes.putAll(e.getElement(),dupsearch.get(e.getElement()));
+                foundDupe = true;
             }
         }
-        if (!dupes.isEmpty())
-        {
-        	throw new DuplicateModsFoundException(dupes);
-        }
+        if (foundDupe) { throw new LoaderException(); }
     }
 
     /**
@@ -439,7 +427,7 @@ public class Loader
 
     public List<ModContainer> getModList()
     {
-        return instance().mods != null ? ImmutableList.copyOf(instance().mods) : ImmutableList.<ModContainer>of();
+        return ImmutableList.copyOf(instance().mods);
     }
 
     /**
@@ -463,7 +451,7 @@ public class Loader
         {
             if (nonMod.isFile())
             {
-                FMLLog.info("FML has found a non-mod file %s in your mods directory. It will now be injected into your classpath. This could severe stability issues, it should be removed if possible.", nonMod.getName());
+                FMLLog.severe("FML has found a non-mod file %s in your mods directory. It will now be injected into your classpath. This could severe stability issues, it should be removed if possible.", nonMod.getName());
                 try
                 {
                     modClassLoader.addFile(nonMod);
@@ -650,7 +638,6 @@ public class Loader
         // Mod controller should be in the initialization state here
         modController.distributeStateMessage(LoaderState.INITIALIZATION);
         modController.transition(LoaderState.POSTINITIALIZATION);
-        modController.distributeStateMessage(FMLInterModComms.IMCEvent.class);
         modController.distributeStateMessage(LoaderState.POSTINITIALIZATION);
         modController.transition(LoaderState.AVAILABLE);
         modController.distributeStateMessage(LoaderState.AVAILABLE);
@@ -676,7 +663,7 @@ public class Loader
 
     public List<ModContainer> getActiveModList()
     {
-        return modController != null ? modController.getActiveModList() : ImmutableList.<ModContainer>of();
+        return modController.getActiveModList();
     }
 
     public ModState getModState(ModContainer selectedMod)
@@ -733,12 +720,4 @@ public class Loader
     {
         return minecraft;
     }
-
-	public boolean hasReachedState(LoaderState state) {
-		return modController.hasReachedState(state);
-	}
-
-	public String getMCPVersionString() {
-		return String.format("MCP v%s", mcpversion);
-	}
 }

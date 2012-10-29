@@ -22,11 +22,6 @@ public class CommandDebug extends CommandBase
         return "debug";
     }
 
-    public int func_82362_a()
-    {
-        return 3;
-    }
-
     public void processCommand(ICommandSender par1ICommandSender, String[] par2ArrayOfStr)
     {
         if (par2ArrayOfStr.length == 1)

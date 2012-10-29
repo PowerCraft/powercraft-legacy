@@ -25,7 +25,7 @@ public abstract class PC_GresWidget extends Gui {
 	/** Minecraft instance */
 	protected static Minecraft mc = PC_ClientUtils.mc();
 
-	protected static String imgdir = mod_PowerCraftCore.getInstance().getTextureDirectory();
+	protected static String imgdir = mod_PowerCraftCore.getInstance().getTextureFile();
 	
 	protected enum MouseOver{
 		NON,

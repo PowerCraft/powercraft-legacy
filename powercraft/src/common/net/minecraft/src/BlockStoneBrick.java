@@ -34,7 +34,7 @@ public class BlockStoneBrick extends Block
     /**
      * Determines the damage on the item the block drops. Used in cloth and wood.
      */
-    public int damageDropped(int par1)
+    protected int damageDropped(int par1)
     {
         return par1;
     }

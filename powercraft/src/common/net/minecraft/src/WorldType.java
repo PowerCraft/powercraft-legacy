@@ -29,7 +29,6 @@ public class WorldType
 
     /** Default (1.1) world type. */
     public static final WorldType DEFAULT_1_1 = (new WorldType(8, "default_1_1", 0)).setCanBeCreated(false);
-    private final int field_82748_f;
 
     /** 'default' or 'flat' */
     private final String worldType;
@@ -57,7 +56,6 @@ public class WorldType
         this.worldType = par2Str;
         this.generatorVersion = par3;
         this.canBeCreated = true;
-        this.field_82748_f = par1;
         worldTypes[par1] = this;
         switch (par1)
         {
@@ -151,28 +149,14 @@ public class WorldType
         return null;
     }
 
-    @SideOnly(Side.CLIENT)
-    public int func_82747_f()
-    {
-        return this.field_82748_f;
-    }
-
     public WorldChunkManager getChunkManager(World world)
     {
-        if (this == FLAT)
-        {
-            FlatGeneratorInfo var1 = FlatGeneratorInfo.func_82651_a(world.getWorldInfo().func_82571_y());
-            return new WorldChunkManagerHell(BiomeGenBase.biomeList[var1.func_82648_a()], 0.5F, 0.5F);
-        }
-        else
-        {
-            return new WorldChunkManager(world);
-        }
+        return this == FLAT ? new WorldChunkManagerHell(BiomeGenBase.plains, 0.5F, 0.5F) : new WorldChunkManager(world);
     }
 
-    public IChunkProvider getChunkGenerator(World world, String generatorOptions)
-    { 
-        return (this == FLAT ? new ChunkProviderFlat(world, world.getSeed(), world.getWorldInfo().isMapFeaturesEnabled(), generatorOptions) : new ChunkProviderGenerate(world, world.getSeed(), world.getWorldInfo().isMapFeaturesEnabled()));
+    public IChunkProvider getChunkGenerator(World world)
+    {
+        return (this == FLAT ? new ChunkProviderFlat(world, world.getSeed(), world.getWorldInfo().isMapFeaturesEnabled()) : new ChunkProviderGenerate(world, world.getSeed(), world.getWorldInfo().isMapFeaturesEnabled()));
     }
 
     public int getMinimumSpawnHeight(World world)

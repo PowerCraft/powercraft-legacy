@@ -17,6 +17,7 @@ public class EntityBlaze extends EntityMob
         super(par1World);
         this.texture = "/mob/fire.png";
         this.isImmuneToFire = true;
+        this.attackStrength = 6;
         this.experienceValue = 10;
     }
 
@@ -233,10 +234,5 @@ public class EntityBlaze extends EntityMob
     protected boolean isValidLightLevel()
     {
         return true;
-    }
-
-    public int func_82193_c(Entity par1Entity)
-    {
-        return 6;
     }
 }

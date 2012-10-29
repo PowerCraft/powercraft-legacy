@@ -282,7 +282,7 @@ public class PathNavigate
 
     private Vec3 getEntityPosition()
     {
-        return this.worldObj.func_82732_R().getVecFromPool(this.theEntity.posX, (double)this.getPathableYPos(), this.theEntity.posZ);
+        return Vec3.getVec3Pool().getVecFromPool(this.theEntity.posX, (double)this.getPathableYPos(), this.theEntity.posZ);
     }
 
     /**

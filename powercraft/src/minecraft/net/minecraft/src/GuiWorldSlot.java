@@ -33,7 +33,6 @@ class GuiWorldSlot extends GuiSlot
         GuiSelectWorld.getSelectButton(this.parentWorldGui).enabled = var3;
         GuiSelectWorld.getRenameButton(this.parentWorldGui).enabled = var3;
         GuiSelectWorld.getDeleteButton(this.parentWorldGui).enabled = var3;
-        GuiSelectWorld.func_82312_f(this.parentWorldGui).enabled = var3;
 
         if (par2 && var3)
         {
@@ -69,21 +68,21 @@ class GuiWorldSlot extends GuiSlot
 
         if (var7 == null || MathHelper.stringNullOrLengthZero(var7))
         {
-            var7 = GuiSelectWorld.func_82313_g(this.parentWorldGui) + " " + (par1 + 1);
+            var7 = GuiSelectWorld.getLocalizedWorldName(this.parentWorldGui) + " " + (par1 + 1);
         }
 
         String var8 = var6.getFileName();
-        var8 = var8 + " (" + GuiSelectWorld.func_82315_h(this.parentWorldGui).format(new Date(var6.getLastTimePlayed()));
+        var8 = var8 + " (" + GuiSelectWorld.getDateFormatter(this.parentWorldGui).format(new Date(var6.getLastTimePlayed()));
         var8 = var8 + ")";
         String var9 = "";
 
         if (var6.requiresConversion())
         {
-            var9 = GuiSelectWorld.func_82311_i(this.parentWorldGui) + " " + var9;
+            var9 = GuiSelectWorld.getLocalizedMustConvert(this.parentWorldGui) + " " + var9;
         }
         else
         {
-            var9 = GuiSelectWorld.func_82314_j(this.parentWorldGui)[var6.getEnumGameType().getID()];
+            var9 = GuiSelectWorld.getLocalizedGameMode(this.parentWorldGui)[var6.getEnumGameType().getID()];
 
             if (var6.isHardcoreModeEnabled())
             {

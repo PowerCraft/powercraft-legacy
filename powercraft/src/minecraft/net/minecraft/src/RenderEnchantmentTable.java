@@ -57,7 +57,6 @@ public class RenderEnchantmentTable extends TileEntitySpecialRenderer
         }
 
         float var14 = par1TileEntityEnchantmentTable.bookSpreadPrev + (par1TileEntityEnchantmentTable.bookSpread - par1TileEntityEnchantmentTable.bookSpreadPrev) * par8;
-        GL11.glEnable(GL11.GL_CULL_FACE);
         this.enchantmentBook.render((Entity)null, var9, var12, var13, var14, 0.0F, 0.0625F);
         GL11.glPopMatrix();
     }

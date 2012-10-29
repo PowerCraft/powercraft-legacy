@@ -44,6 +44,35 @@ public class BlockGrass extends Block
         }
     }
 
+    /**
+     * Ticks the block if it's been scheduled
+     */
+    public void updateTick(World par1World, int par2, int par3, int par4, Random par5Random)
+    {
+        if (!par1World.isRemote)
+        {
+            if (par1World.getBlockLightValue(par2, par3 + 1, par4) < 4 && par1World.getBlockLightOpacity(par2, par3 + 1, par4) > 2)
+            {
+                par1World.setBlockWithNotify(par2, par3, par4, Block.dirt.blockID);
+            }
+            else if (par1World.getBlockLightValue(par2, par3 + 1, par4) >= 9)
+            {
+                for (int var6 = 0; var6 < 4; ++var6)
+                {
+                    int var7 = par2 + par5Random.nextInt(3) - 1;
+                    int var8 = par3 + par5Random.nextInt(5) - 3;
+                    int var9 = par4 + par5Random.nextInt(3) - 1;
+                    int var10 = par1World.getBlockId(var7, var8 + 1, var9);
+
+                    if (par1World.getBlockId(var7, var8, var9) == Block.dirt.blockID && par1World.getBlockLightValue(var7, var8 + 1, var9) >= 4 && par1World.getBlockLightOpacity(var7, var8 + 1, var9) <= 2)
+                    {
+                        par1World.setBlockWithNotify(var7, var8, var9, Block.grass.blockID);
+                    }
+                }
+            }
+        }
+    }
+
     @SideOnly(Side.CLIENT)
     public int getBlockColor()
     {
@@ -86,35 +115,6 @@ public class BlockGrass extends Block
         }
 
         return (var5 / 9 & 255) << 16 | (var6 / 9 & 255) << 8 | var7 / 9 & 255;
-    }
-
-    /**
-     * Ticks the block if it's been scheduled
-     */
-    public void updateTick(World par1World, int par2, int par3, int par4, Random par5Random)
-    {
-        if (!par1World.isRemote)
-        {
-            if (par1World.getBlockLightValue(par2, par3 + 1, par4) < 4 && par1World.getBlockLightOpacity(par2, par3 + 1, par4) > 2)
-            {
-                par1World.setBlockWithNotify(par2, par3, par4, Block.dirt.blockID);
-            }
-            else if (par1World.getBlockLightValue(par2, par3 + 1, par4) >= 9)
-            {
-                for (int var6 = 0; var6 < 4; ++var6)
-                {
-                    int var7 = par2 + par5Random.nextInt(3) - 1;
-                    int var8 = par3 + par5Random.nextInt(5) - 3;
-                    int var9 = par4 + par5Random.nextInt(3) - 1;
-                    int var10 = par1World.getBlockId(var7, var8 + 1, var9);
-
-                    if (par1World.getBlockId(var7, var8, var9) == Block.dirt.blockID && par1World.getBlockLightValue(var7, var8 + 1, var9) >= 4 && par1World.getBlockLightOpacity(var7, var8 + 1, var9) <= 2)
-                    {
-                        par1World.setBlockWithNotify(var7, var8, var9, Block.grass.blockID);
-                    }
-                }
-            }
-        }
     }
 
     /**

@@ -111,15 +111,8 @@ public class EntityAIVillagerMate extends EntityAIBase
 
     private boolean checkSufficientDoorsPresentForNewVillager()
     {
-        if (!this.villageObj.func_82686_i())
-        {
-            return false;
-        }
-        else
-        {
-            int var1 = (int)((double)((float)this.villageObj.getNumVillageDoors()) * 0.35D);
-            return this.villageObj.getNumVillagers() < var1;
-        }
+        int var1 = (int)((double)((float)this.villageObj.getNumVillageDoors()) * 0.35D);
+        return this.villageObj.getNumVillagers() < var1;
     }
 
     private void giveBirth()

@@ -3,7 +3,6 @@ package net.minecraft.src;
 import java.util.Iterator;
 
 import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.event.Event.Result;
 import net.minecraftforge.event.entity.item.ItemExpireEvent;
 import net.minecraftforge.event.entity.player.EntityItemPickupEvent;
 
@@ -129,7 +128,7 @@ public class EntityItem extends Entity
 
         ++this.age;
 
-        if (!this.worldObj.isRemote && this.age >= lifespan)
+        if (this.age >= lifespan)
         {
             ItemExpireEvent event = new ItemExpireEvent(this, (item.getItem() == null ? 6000 : item.getItem().getEntityLifespan(item, worldObj)));
             if (MinecraftForge.EVENT_BUS.post(event))
@@ -160,32 +159,25 @@ public class EntityItem extends Entity
             {
                 return false;
             }
-            else if (!par1EntityItem.item.hasTagCompound() && !this.item.hasTagCompound())
+            else if (par1EntityItem.item.getItem().getHasSubtypes() && par1EntityItem.item.getItemDamage() != this.item.getItemDamage())
             {
-                if (par1EntityItem.item.getItem().getHasSubtypes() && par1EntityItem.item.getItemDamage() != this.item.getItemDamage())
-                {
-                    return false;
-                }
-                else if (par1EntityItem.item.stackSize < this.item.stackSize)
-                {
-                    return par1EntityItem.func_70289_a(this);
-                }
-                else if (par1EntityItem.item.stackSize + this.item.stackSize > par1EntityItem.item.getMaxStackSize())
-                {
-                    return false;
-                }
-                else
-                {
-                    par1EntityItem.item.stackSize += this.item.stackSize;
-                    par1EntityItem.delayBeforeCanPickup = Math.max(par1EntityItem.delayBeforeCanPickup, this.delayBeforeCanPickup);
-                    par1EntityItem.age = Math.min(par1EntityItem.age, this.age);
-                    this.setDead();
-                    return true;
-                }
+                return false;
+            }
+            else if (par1EntityItem.item.stackSize < this.item.stackSize)
+            {
+                return par1EntityItem.func_70289_a(this);
+            }
+            else if (par1EntityItem.item.stackSize + this.item.stackSize > par1EntityItem.item.getMaxStackSize())
+            {
+                return false;
             }
             else
             {
-                return false;
+                par1EntityItem.item.stackSize += this.item.stackSize;
+                par1EntityItem.delayBeforeCanPickup = Math.max(par1EntityItem.delayBeforeCanPickup, this.delayBeforeCanPickup);
+                par1EntityItem.age = Math.min(par1EntityItem.age, this.age);
+                this.setDead();
+                return true;
             }
         }
         else
@@ -289,7 +281,7 @@ public class EntityItem extends Entity
 
             int var2 = this.item.stackSize;
 
-            if (this.delayBeforeCanPickup <= 0 && (event.getResult() == Result.ALLOW || var2 <= 0 || par1EntityPlayer.inventory.addItemStackToInventory(this.item)))
+            if (this.delayBeforeCanPickup <= 0 && (event.isHandled() || var2 <= 0 || par1EntityPlayer.inventory.addItemStackToInventory(this.item)))
             {
                 if (this.item.itemID == Block.wood.blockID)
                 {

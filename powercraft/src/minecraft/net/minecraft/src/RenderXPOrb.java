@@ -8,6 +8,10 @@ import org.lwjgl.opengl.GL12;
 @SideOnly(Side.CLIENT)
 public class RenderXPOrb extends Render
 {
+    /** Instance of RenderBlocks. */
+    private RenderBlocks renderBlocksXPOrb = new RenderBlocks();
+    public boolean field_77007_a = true;
+
     public RenderXPOrb()
     {
         this.shadowSize = 0.15F;

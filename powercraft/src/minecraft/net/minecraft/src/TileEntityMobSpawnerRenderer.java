@@ -7,6 +7,14 @@ import org.lwjgl.opengl.GL11;
 @SideOnly(Side.CLIENT)
 public class TileEntityMobSpawnerRenderer extends TileEntitySpecialRenderer
 {
+    /**
+     * Associate a TileEntityRenderer with this TileEntitySpecialRenderer
+     */
+    public void setTileEntityRenderer(TileEntityRenderer par1TileEntityRenderer)
+    {
+        super.setTileEntityRenderer(par1TileEntityRenderer);
+    }
+
     public void renderTileEntityMobSpawner(TileEntityMobSpawner par1TileEntityMobSpawner, double par2, double par4, double par6, float par8)
     {
         GL11.glPushMatrix();

@@ -411,7 +411,7 @@ public class GuiAchievements extends GuiScreen
 
                 GL11.glEnable(GL11.GL_LIGHTING);
                 GL11.glEnable(GL11.GL_CULL_FACE);
-                var37.func_82406_b(this.mc.fontRenderer, this.mc.renderEngine, var35.theItemStack, var42 + 3, var41 + 3);
+                var37.renderItemIntoGUI(this.mc.fontRenderer, this.mc.renderEngine, var35.theItemStack, var42 + 3, var41 + 3);
                 GL11.glDisable(GL11.GL_LIGHTING);
 
                 if (!this.statFileWriter.canUnlockAchievement(var35))

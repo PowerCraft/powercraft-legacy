@@ -94,7 +94,9 @@ public class EntityAITasks
         while (var2.hasNext())
         {
             var3 = (EntityAITaskEntry)var2.next();
+            this.theProfiler.startSection(var3.action.getClass().getSimpleName());
             var3.action.updateTask();
+            this.theProfiler.endSection();
         }
 
         this.theProfiler.endSection();

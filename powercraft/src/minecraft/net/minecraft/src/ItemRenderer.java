@@ -28,7 +28,7 @@ public class ItemRenderer
 
     /** Instance of RenderBlocks. */
     private RenderBlocks renderBlocksInstance = new RenderBlocks();
-    public final MapItemRenderer mapItemRenderer;
+    private MapItemRenderer mapItemRenderer;
 
     /** The index of the currently held item (0-8, or -1 if not yet updated) */
     private int equippedItemSlot = -1;
@@ -248,7 +248,7 @@ public class ItemRenderer
 
         if (var17 != null)
         {
-            var18 = Item.itemsList[var17.itemID].func_82790_a(var17, 0);
+            var18 = Item.itemsList[var17.itemID].getColorFromDamage(var17.getItemDamage(), 0);
             var20 = (float)(var18 >> 16 & 255) / 255.0F;
             var21 = (float)(var18 >> 8 & 255) / 255.0F;
             var10 = (float)(var18 & 255) / 255.0F;
@@ -306,7 +306,7 @@ public class ItemRenderer
                 var26 = (RenderPlayer)var24;
                 var13 = 1.0F;
                 GL11.glScalef(var13, var13, var13);
-                var26.func_82441_a(this.mc.thePlayer);
+                var26.drawFirstPersonHand();
                 GL11.glPopMatrix();
             }
 
@@ -336,16 +336,12 @@ public class ItemRenderer
             MapData var16 = ((ItemMap)var17.getItem()).getMapData(var17, this.mc.theWorld);
             if (custom == null)
             {
-                if (var16 != null)
-                {
-                    this.mapItemRenderer.renderMap(this.mc.thePlayer, this.mc.renderEngine, var16);
-                }
+                this.mapItemRenderer.renderMap(this.mc.thePlayer, this.mc.renderEngine, var16);
             }
             else
             {
                 custom.renderItem(FIRST_PERSON_MAP, var17, mc.thePlayer, mc.renderEngine, var16);
             }
-
             GL11.glPopMatrix();
         }
         else if (var17 != null)
@@ -448,7 +444,7 @@ public class ItemRenderer
                 this.renderItem(var3, var17, 0);
                 for (int x = 1; x < var17.getItem().getRenderPasses(var17.getItemDamage()); x++)
                 {
-                    int var25 = Item.itemsList[var17.itemID].func_82790_a(var17, x);
+                    int var25 = Item.itemsList[var17.itemID].getColorFromDamage(var17.getItemDamage(), 1);
                     var13 = (float)(var25 >> 16 & 255) / 255.0F;
                     var14 = (float)(var25 >> 8 & 255) / 255.0F;
                     var15 = (float)(var25 & 255) / 255.0F;
@@ -463,7 +459,7 @@ public class ItemRenderer
 
             GL11.glPopMatrix();
         }
-        else if (!var3.func_82150_aj())
+        else
         {
             GL11.glPushMatrix();
             var7 = 0.8F;
@@ -490,7 +486,7 @@ public class ItemRenderer
             var26 = (RenderPlayer)var24;
             var13 = 1.0F;
             GL11.glScalef(var13, var13, var13);
-            var26.func_82441_a(this.mc.thePlayer);
+            var26.drawFirstPersonHand();
             GL11.glPopMatrix();
         }
 

@@ -5,8 +5,6 @@ import java.util.logging.FileHandler;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import cpw.mods.fml.common.FMLLog;
-
 public class ConsoleLogManager
 {
     /** Log manager of Minecraft. */
@@ -18,7 +16,10 @@ public class ConsoleLogManager
     public static void init()
     {
         ConsoleLogFormatter var0 = new ConsoleLogFormatter();
-        loggerLogManager.setParent(FMLLog.getLogger());
+        loggerLogManager.setUseParentHandlers(false);
+        ConsoleHandler var1 = new ConsoleHandler();
+        var1.setFormatter(var0);
+        loggerLogManager.addHandler(var1);
 
         try
         {

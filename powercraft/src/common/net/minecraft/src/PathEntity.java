@@ -77,7 +77,7 @@ public class PathEntity
         double var3 = (double)this.points[par2].xCoord + (double)((int)(par1Entity.width + 1.0F)) * 0.5D;
         double var5 = (double)this.points[par2].yCoord;
         double var7 = (double)this.points[par2].zCoord + (double)((int)(par1Entity.width + 1.0F)) * 0.5D;
-        return par1Entity.worldObj.func_82732_R().getVecFromPool(var3, var5, var7);
+        return Vec3.getVec3Pool().getVecFromPool(var3, var5, var7);
     }
 
     /**

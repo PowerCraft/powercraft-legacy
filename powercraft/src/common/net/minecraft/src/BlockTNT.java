@@ -100,19 +100,11 @@ public class BlockTNT extends Block
     }
 
     /**
-     * Triggered whenever an entity collides with this block (enters into the block). Args: world, x, y, z, entity
+     * Returns an item stack containing a single instance of the current block type. 'i' is the block's subtype/damage
+     * and is ignored for blocks which do not support subtypes. Blocks which cannot be harvested should return null.
      */
-    public void onEntityCollidedWithBlock(World par1World, int par2, int par3, int par4, Entity par5Entity)
+    protected ItemStack createStackedBlock(int par1)
     {
-        if (par5Entity instanceof EntityArrow && !par1World.isRemote)
-        {
-            EntityArrow var6 = (EntityArrow)par5Entity;
-
-            if (var6.isBurning())
-            {
-                this.onBlockDestroyedByPlayer(par1World, par2, par3, par4, 1);
-                par1World.setBlockWithNotify(par2, par3, par4, 0);
-            }
-        }
+        return null;
     }
 }

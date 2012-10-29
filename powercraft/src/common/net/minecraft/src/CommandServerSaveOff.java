@@ -9,11 +9,6 @@ public class CommandServerSaveOff extends CommandBase
         return "save-off";
     }
 
-    public int func_82362_a()
-    {
-        return 4;
-    }
-
     public void processCommand(ICommandSender par1ICommandSender, String[] par2ArrayOfStr)
     {
         MinecraftServer var3 = MinecraftServer.getServer();

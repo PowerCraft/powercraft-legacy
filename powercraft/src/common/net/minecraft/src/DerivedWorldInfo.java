@@ -61,11 +61,6 @@ public class DerivedWorldInfo extends WorldInfo
         return this.theWorldInfo.getSpawnZ();
     }
 
-    public long func_82573_f()
-    {
-        return this.theWorldInfo.func_82573_f();
-    }
-
     /**
      * Get current world time
      */
@@ -173,7 +168,10 @@ public class DerivedWorldInfo extends WorldInfo
      */
     public void setSpawnY(int par1) {}
 
-    public void func_82572_b(long par1) {}
+    /**
+     * Set current world time
+     */
+    public void setWorldTime(long par1) {}
 
     @SideOnly(Side.CLIENT)
 
@@ -181,11 +179,6 @@ public class DerivedWorldInfo extends WorldInfo
      * Set the z spawn position to the passed in value
      */
     public void setSpawnZ(int par1) {}
-
-    /**
-     * Set current world time
-     */
-    public void setWorldTime(long par1) {}
 
     /**
      * Sets the spawn zone position. Args: x, y, z
@@ -262,9 +255,4 @@ public class DerivedWorldInfo extends WorldInfo
      * Sets the initialization status of the World.
      */
     public void setServerInitialized(boolean par1) {}
-
-    public GameRules func_82574_x()
-    {
-        return this.theWorldInfo.func_82574_x();
-    }
 }

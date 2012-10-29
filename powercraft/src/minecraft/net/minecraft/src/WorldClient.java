@@ -53,7 +53,6 @@ public class WorldClient extends World
     public void tick()
     {
         super.tick();
-        this.func_82738_a(this.func_82737_E() + 1L);
         this.setWorldTime(this.getWorldTime() + 1L);
         this.theProfiler.startSection("reEntryProcessing");
 
@@ -232,11 +231,11 @@ public class WorldClient extends World
     }
 
     /**
-     * Returns the Entity with the given ID, or null if it doesn't exist in this World.
+     * Lookup and return an Entity based on its ID
      */
     public Entity getEntityByID(int par1)
     {
-        return (Entity)(par1 == this.mc.thePlayer.entityId ? this.mc.thePlayer : (Entity)this.entityHashSet.lookup(par1));
+        return (Entity)this.entityHashSet.lookup(par1);
     }
 
     public Entity removeEntityFromWorld(int par1)
@@ -264,11 +263,6 @@ public class WorldClient extends World
     public void sendQuittingDisconnectingPacket()
     {
         this.sendQueue.quitWithPacket(new Packet255KickDisconnect("Quitting"));
-    }
-
-    public IUpdatePlayerListBox func_82735_a(EntityMinecart par1EntityMinecart)
-    {
-        return new SoundUpdaterMinecart(this.mc.sndManager, par1EntityMinecart, this.mc.thePlayer);
     }
 
     /**

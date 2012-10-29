@@ -87,6 +87,8 @@ public class BlockSilverfish extends Block
         return new ItemStack(var2);
     }
 
+    @SideOnly(Side.CLIENT)
+
     /**
      * Get the block's damage value (for use with pick block).
      */

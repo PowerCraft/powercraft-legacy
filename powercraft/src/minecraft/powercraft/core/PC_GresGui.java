@@ -40,7 +40,7 @@ public class PC_GresGui extends GuiContainer implements PC_IGresGui {
 	 * 
 	 * @param gui the gui
 	 */
-	public PC_GresGui(PC_GresBaseWithInventory gui) {
+	public PC_GresGui(EntityPlayer player, PC_GresBaseWithInventory gui) {
 		super(gui);
 		this.gui = (PC_IGresClient)gui;
 	}
@@ -50,7 +50,7 @@ public class PC_GresGui extends GuiContainer implements PC_IGresGui {
 	 * 
 	 * @param gui the gui
 	 */
-	public PC_GresGui(PC_IGresClient gui) {
+	public PC_GresGui(EntityPlayer player, PC_IGresClient gui) {
 		super(null);
 		this.gui = gui;
 	}
@@ -291,7 +291,7 @@ public class PC_GresGui extends GuiContainer implements PC_IGresGui {
 			}
 		}
 
-		drawGuiContainerForegroundLayer(par1, par2);
+		drawGuiContainerForegroundLayer();
 		if(mc.thePlayer==null){
 			GL11.glDisable(GL12.GL_RESCALE_NORMAL);
 			RenderHelper.disableStandardItemLighting();
@@ -304,7 +304,7 @@ public class PC_GresGui extends GuiContainer implements PC_IGresGui {
 			GL11.glTranslatef(0.0F, 0.0F, 32F);
 			zLevel = 200F;
 			itemRenderer.zLevel = 200F;
-			itemRenderer.func_82406_b(fontRenderer, mc.renderEngine, inventoryplayer.getItemStack(), par1 - i - 8, par2 - j - 8);
+			itemRenderer.renderItemIntoGUI(fontRenderer, mc.renderEngine, inventoryplayer.getItemStack(), par1 - i - 8, par2 - j - 8);
 			itemRenderer.renderItemOverlayIntoGUI(fontRenderer, mc.renderEngine, inventoryplayer.getItemStack(), par1 - i - 8, par2 - j - 8);
 			zLevel = 0.0F;
 			itemRenderer.zLevel = 0.0F;
@@ -326,7 +326,7 @@ public class PC_GresGui extends GuiContainer implements PC_IGresGui {
 
 			if (itemstack != null) {
 				@SuppressWarnings("rawtypes")
-				List list = itemstack.func_82840_a(mc.thePlayer, false);
+				List list = itemstack.getItemNameandInformation();
 
 				if (list.size() > 0) {
 					int l1 = 0;
@@ -453,7 +453,7 @@ public class PC_GresGui extends GuiContainer implements PC_IGresGui {
 					itemRenderer.zLevel = 99F;
 					zLevel = 99F;
 					GL11.glColor4f(1.0F, 1.0F, 1.0F, 0.2F);
-					itemRenderer.func_82406_b(fontRenderer, mc.renderEngine, dirslot.getBackgroundStack(), k, l);
+					itemRenderer.renderItemIntoGUI(fontRenderer, mc.renderEngine, dirslot.getBackgroundStack(), k, l);
 
 					if(dirslot.renderGrayWhenEmpty()) {
 						GL11.glDisable(GL11.GL_LIGHTING);
@@ -472,7 +472,7 @@ public class PC_GresGui extends GuiContainer implements PC_IGresGui {
 			}
 			
 		} else {
-			itemRenderer.func_82406_b(fontRenderer, mc.renderEngine, itemstack, k, l);
+			itemRenderer.renderItemIntoGUI(fontRenderer, mc.renderEngine, itemstack, k, l);
 			itemRenderer.renderItemOverlayIntoGUI(fontRenderer, mc.renderEngine, itemstack, k, l);
 		}
 
@@ -485,8 +485,7 @@ public class PC_GresGui extends GuiContainer implements PC_IGresGui {
 		return (PC_GresBaseWithInventory)inventorySlots;
 	}
 
-	@Override
-	protected void handleMouseClick(Slot par1Slot, int par2, int par3, int par4)
+	protected void handleMouseClick(Slot par1Slot, int par2, int par3, boolean par4)
     {
         if (par1Slot != null)
         {

@@ -16,7 +16,7 @@ public class DemoWorldManager extends ItemInWorldManager
     {
         super.updateBlockRemoving();
         ++this.field_73102_f;
-        long var1 = this.theWorld.func_82737_E();
+        long var1 = this.theWorld.getWorldTime();
         long var3 = var1 / 24000L + 1L;
 
         if (!this.field_73105_c && this.field_73102_f > 20)

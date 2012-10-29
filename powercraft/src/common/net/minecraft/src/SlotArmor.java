@@ -36,7 +36,7 @@ class SlotArmor extends Slot
      */
     public boolean isItemValid(ItemStack par1ItemStack)
     {
-        return par1ItemStack == null ? false : (par1ItemStack.getItem() instanceof ItemArmor ? ((ItemArmor)par1ItemStack.getItem()).armorType == this.armorType : (par1ItemStack.getItem().shiftedIndex != Block.pumpkin.blockID && par1ItemStack.getItem().shiftedIndex != Item.field_82799_bQ.shiftedIndex ? false : this.armorType == 0));
+        return par1ItemStack.getItem() instanceof ItemArmor ? ((ItemArmor)par1ItemStack.getItem()).armorType == this.armorType : (par1ItemStack.getItem().shiftedIndex == Block.pumpkin.blockID ? this.armorType == 0 : false);
     }
 
     @SideOnly(Side.CLIENT)

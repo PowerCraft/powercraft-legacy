@@ -15,7 +15,7 @@ public class EntityAIBreakDoor extends EntityAIDoorInteract
      */
     public boolean shouldExecute()
     {
-        return !super.shouldExecute() ? false : (!this.theEntity.worldObj.func_82736_K().func_82766_b("mobGriefing") ? false : !this.targetDoor.isDoorOpen(this.theEntity.worldObj, this.entityPosX, this.entityPosY, this.entityPosZ));
+        return !super.shouldExecute() ? false : !this.targetDoor.isDoorOpen(this.theEntity.worldObj, this.entityPosX, this.entityPosY, this.entityPosZ);
     }
 
     /**

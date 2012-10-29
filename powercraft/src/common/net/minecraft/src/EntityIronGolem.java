@@ -27,7 +27,7 @@ public class EntityIronGolem extends EntityGolem
         this.tasks.addTask(8, new EntityAILookIdle(this));
         this.targetTasks.addTask(1, new EntityAIDefendVillage(this));
         this.targetTasks.addTask(2, new EntityAIHurtByTarget(this, false));
-        this.targetTasks.addTask(3, new EntityAINearestAttackableTarget(this, EntityLiving.class, 16.0F, 0, false, true, IMob.field_82192_a));
+        this.targetTasks.addTask(3, new EntityAINearestAttackableTarget(this, EntityMob.class, 16.0F, 0, false, true));
     }
 
     protected void entityInit()
@@ -61,7 +61,7 @@ public class EntityIronGolem extends EntityGolem
             else
             {
                 ChunkCoordinates var1 = this.villageObj.getCenter();
-                this.setHomeArea(var1.posX, var1.posY, var1.posZ, (int)((float)this.villageObj.getVillageRadius() * 0.6F));
+                this.setHomeArea(var1.posX, var1.posY, var1.posZ, this.villageObj.getVillageRadius());
             }
         }
 
@@ -79,16 +79,6 @@ public class EntityIronGolem extends EntityGolem
     protected int decreaseAirSupply(int par1)
     {
         return par1;
-    }
-
-    protected void func_82167_n(Entity par1Entity)
-    {
-        if (par1Entity instanceof IMob && this.getRNG().nextInt(20) == 0)
-        {
-            this.setAttackTarget((EntityLiving)par1Entity);
-        }
-
-        super.func_82167_n(par1Entity);
     }
 
     /**
@@ -126,24 +116,6 @@ public class EntityIronGolem extends EntityGolem
     public boolean isExplosiveMob(Class par1Class)
     {
         return this.getBit1Flag() && EntityPlayer.class.isAssignableFrom(par1Class) ? false : super.isExplosiveMob(par1Class);
-    }
-
-    /**
-     * (abstract) Protected helper method to write subclass entity data to NBT.
-     */
-    public void writeEntityToNBT(NBTTagCompound par1NBTTagCompound)
-    {
-        super.writeEntityToNBT(par1NBTTagCompound);
-        par1NBTTagCompound.setBoolean("PlayerCreated", this.getBit1Flag());
-    }
-
-    /**
-     * (abstract) Protected helper method to read subclass entity data from NBT.
-     */
-    public void readEntityFromNBT(NBTTagCompound par1NBTTagCompound)
-    {
-        super.readEntityFromNBT(par1NBTTagCompound);
-        this.setBit1FlagTo(par1NBTTagCompound.getBoolean("PlayerCreated"));
     }
 
     public boolean attackEntityAsMob(Entity par1Entity)
@@ -271,18 +243,5 @@ public class EntityIronGolem extends EntityGolem
         {
             this.dataWatcher.updateObject(16, Byte.valueOf((byte)(var2 & -2)));
         }
-    }
-
-    /**
-     * Called when the mob's health reaches 0.
-     */
-    public void onDeath(DamageSource par1DamageSource)
-    {
-        if (!this.getBit1Flag() && this.attackingPlayer != null && this.villageObj != null)
-        {
-            this.villageObj.func_82688_a(this.attackingPlayer.getCommandSenderName(), -5);
-        }
-
-        super.onDeath(par1DamageSource);
     }
 }

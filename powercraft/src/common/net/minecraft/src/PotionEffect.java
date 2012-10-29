@@ -13,28 +13,15 @@ public class PotionEffect
 
     /** The amplifier of the potion effect */
     private int amplifier;
-    private boolean field_82723_d;
-    private boolean field_82724_e;
-
+    
     /** List of ItemStack that can cure the potion effect **/
     private List<ItemStack> curativeItems;
 
-    public PotionEffect(int par1, int par2)
-    {
-        this(par1, par2, 0);
-    }
-
     public PotionEffect(int par1, int par2, int par3)
-    {
-        this(par1, par2, par3, false);
-    }
-
-    public PotionEffect(int par1, int par2, int par3, boolean par4)
     {
         this.potionID = par1;
         this.duration = par2;
         this.amplifier = par3;
-        this.field_82724_e = par4;
         this.curativeItems = new ArrayList<ItemStack>();
         this.curativeItems.add(new ItemStack(Item.bucketMilk));
     }
@@ -66,10 +53,6 @@ public class PotionEffect
         else if (par1PotionEffect.amplifier == this.amplifier && this.duration < par1PotionEffect.duration)
         {
             this.duration = par1PotionEffect.duration;
-        }
-        else if (!par1PotionEffect.field_82724_e && this.field_82724_e)
-        {
-            this.field_82724_e = par1PotionEffect.field_82724_e;
         }
     }
 
@@ -148,16 +131,6 @@ public class PotionEffect
         }
     }
 
-    public void func_82721_a(boolean par1)
-    {
-        this.field_82723_d = par1;
-    }
-
-    public boolean func_82720_e()
-    {
-        return this.field_82724_e;
-    }
-
     public boolean onUpdate(EntityLiving par1EntityLiving)
     {
         if (this.duration > 0)
@@ -209,11 +182,6 @@ public class PotionEffect
             var1 = this.getEffectName() + ", Duration: " + this.getDuration();
         }
 
-        if (this.field_82723_d)
-        {
-            var1 = var1 + ", Splash: true";
-        }
-
         return Potion.potionTypes[this.potionID].isUsable() ? "(" + var1 + ")" : var1;
     }
 
@@ -226,25 +194,7 @@ public class PotionEffect
         else
         {
             PotionEffect var2 = (PotionEffect)par1Obj;
-            return this.potionID == var2.potionID && this.amplifier == var2.amplifier && this.duration == var2.duration && this.field_82723_d == var2.field_82723_d && this.field_82724_e == var2.field_82724_e;
+            return this.potionID == var2.potionID && this.amplifier == var2.amplifier && this.duration == var2.duration;
         }
-    }
-
-    public NBTTagCompound func_82719_a(NBTTagCompound par1NBTTagCompound)
-    {
-        par1NBTTagCompound.setByte("Id", (byte)this.getPotionID());
-        par1NBTTagCompound.setByte("Amplifier", (byte)this.getAmplifier());
-        par1NBTTagCompound.setInteger("Duration", this.getDuration());
-        par1NBTTagCompound.setBoolean("Ambient", this.func_82720_e());
-        return par1NBTTagCompound;
-    }
-
-    public static PotionEffect func_82722_b(NBTTagCompound par0NBTTagCompound)
-    {
-        byte var1 = par0NBTTagCompound.getByte("Id");
-        byte var2 = par0NBTTagCompound.getByte("Amplifier");
-        int var3 = par0NBTTagCompound.getInteger("Duration");
-        boolean var4 = par0NBTTagCompound.getBoolean("Ambient");
-        return new PotionEffect(var1, var3, var2, var4);
     }
 }

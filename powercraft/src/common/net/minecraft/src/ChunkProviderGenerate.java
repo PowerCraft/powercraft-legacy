@@ -42,7 +42,7 @@ public class ChunkProviderGenerate implements IChunkProvider
     private MapGenStronghold strongholdGenerator = new MapGenStronghold();
 
     /** Holds Village Generator */
-    private MapGenVillage villageGenerator = new MapGenVillage();
+    private MapGenVillage villageGenerator = new MapGenVillage(0);
 
     /** Holds Mineshaft Generator */
     private MapGenMineshaft mineshaftGenerator = new MapGenMineshaft();
@@ -585,7 +585,7 @@ public class ChunkProviderGenerate implements IChunkProvider
     public List getPossibleCreatures(EnumCreatureType par1EnumCreatureType, int par2, int par3, int par4)
     {
         BiomeGenBase var5 = this.worldObj.getBiomeGenForCoords(par2, par4);
-        return var5 == null ? null : (var5 == BiomeGenBase.swampland && par1EnumCreatureType == EnumCreatureType.monster && this.scatteredFeatureGenerator.hasStructureAt(par2, par3, par4) ? this.scatteredFeatureGenerator.func_82667_a() : var5.getSpawnableList(par1EnumCreatureType));
+        return var5 == null ? null : var5.getSpawnableList(par1EnumCreatureType);
     }
 
     /**
@@ -599,16 +599,5 @@ public class ChunkProviderGenerate implements IChunkProvider
     public int getLoadedChunkCount()
     {
         return 0;
-    }
-
-    public void func_82695_e(int par1, int par2)
-    {
-        if (this.mapFeaturesEnabled)
-        {
-            this.mineshaftGenerator.generate(this, this.worldObj, par1, par2, (byte[])null);
-            this.villageGenerator.generate(this, this.worldObj, par1, par2, (byte[])null);
-            this.strongholdGenerator.generate(this, this.worldObj, par1, par2, (byte[])null);
-            this.scatteredFeatureGenerator.generate(this, this.worldObj, par1, par2, (byte[])null);
-        }
     }
 }

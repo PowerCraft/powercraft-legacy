@@ -58,6 +58,4 @@ public interface IChunkProvider
     ChunkPosition findClosestStructure(World var1, String var2, int var3, int var4, int var5);
 
     int getLoadedChunkCount();
-
-    void func_82695_e(int var1, int var2);
 }

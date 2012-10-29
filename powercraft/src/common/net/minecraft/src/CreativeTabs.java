@@ -2,13 +2,11 @@ package net.minecraft.src;
 
 import cpw.mods.fml.common.Side;
 import cpw.mods.fml.common.asm.SideOnly;
-
-import java.util.Arrays;
 import java.util.List;
 
 public class CreativeTabs
 {
-    public static CreativeTabs[] creativeTabArray = new CreativeTabs[12];
+    public static final CreativeTabs[] creativeTabArray = new CreativeTabs[12];
     public static final CreativeTabs tabBlock = new CreativeTabBlock(0, "buildingBlocks");
     public static final CreativeTabs tabDecorations = new CreativeTabDeco(1, "decorations");
     public static final CreativeTabs tabRedstone = new CreativeTabRedstone(2, "redstone");
@@ -31,22 +29,8 @@ public class CreativeTabs
     /** Whether to draw the title in the foreground of the creative GUI */
     private boolean drawTitle = true;
 
-    public CreativeTabs(String label)
-    {
-        this(getNextID(), label);
-    }
-
     public CreativeTabs(int par1, String par2Str)
     {
-        if (par1 >= creativeTabArray.length)
-        {
-            CreativeTabs[] tmp = new CreativeTabs[par1 + 1];
-            for (int x = 0; x < creativeTabArray.length; x++)
-            {
-                tmp[x] = creativeTabArray[x];
-            }
-            creativeTabArray = tmp;
-        }
         this.tabIndex = par1;
         this.tabLabel = par2Str;
         creativeTabArray[par1] = this;
@@ -133,10 +117,6 @@ public class CreativeTabs
      */
     public int getTabColumn()
     {
-        if (tabIndex > 11)
-        {
-            return ((tabIndex - 12) % 10) % 5;
-        }
         return this.tabIndex % 6;
     }
 
@@ -147,10 +127,6 @@ public class CreativeTabs
      */
     public boolean isTabInFirstRow()
     {
-        if (tabIndex > 11)
-        {
-            return ((tabIndex - 12) % 10) < 5;
-        }
         return this.tabIndex < 6;
     }
 
@@ -173,27 +149,5 @@ public class CreativeTabs
                 var5.getSubItems(var5.shiftedIndex, this, par1List);
             }
         }
-    }
-
-    public int getTabPage()
-    {
-        if (tabIndex > 11)
-        {
-            return ((tabIndex - 12) / 10) + 1;
-        }
-        return 0;
-    }
-
-    public static int getNextID()
-    {
-        return creativeTabArray.length;
-    }
-
-    /**
-     * Get the ItemStack that will be rendered to the tab.
-     */
-    public ItemStack getIconItemStack()
-    {
-        return new ItemStack(getTabIconItem());
     }
 }

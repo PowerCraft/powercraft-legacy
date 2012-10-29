@@ -177,10 +177,10 @@ public class PC_ClientUtils extends PC_Utils {
 
 		try {
 			if(PC_GresBaseWithInventory.class.isAssignableFrom(c)){
-				mc().displayGuiScreen(new PC_GresGui((PC_GresBaseWithInventory)PC_Utils.createClass(c, new Class[]{EntityPlayer.class, Object[].class}, new Object[]{player, o})));
+				mc().displayGuiScreen(new PC_GresGui(player, (PC_GresBaseWithInventory)PC_Utils.createClass(c, new Class[]{EntityPlayer.class, Object[].class}, new Object[]{player, o})));
 				player.craftingInventory.windowId = guiID;
 			}else{
-				mc().displayGuiScreen(new PC_GresGui((PC_IGresClient)PC_Utils.createClass(c, new Class[]{EntityPlayer.class, Object[].class}, new Object[]{player, o})));
+				mc().displayGuiScreen(new PC_GresGui(player, (PC_IGresClient)PC_Utils.createClass(c, new Class[]{EntityPlayer.class, Object[].class}, new Object[]{player, o})));
 			}
 		} catch (Exception e) {
 			e.printStackTrace();

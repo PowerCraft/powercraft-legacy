@@ -32,7 +32,7 @@ public class ItemGlassBottle extends Item
                     return par1ItemStack;
                 }
 
-                if (!par3EntityPlayer.func_82247_a(var5, var6, var7, var4.sideHit, par1ItemStack))
+                if (!par3EntityPlayer.canPlayerEdit(var5, var6, var7))
                 {
                     return par1ItemStack;
                 }

@@ -6,7 +6,6 @@ import java.util.List;
 
 import net.minecraftforge.common.ForgeHooks;
 import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.event.Event.Result;
 import net.minecraftforge.event.entity.player.BonemealEvent;
 
 public class ItemDye extends Item
@@ -46,7 +45,7 @@ public class ItemDye extends Item
      */
     public boolean onItemUse(ItemStack par1ItemStack, EntityPlayer par2EntityPlayer, World par3World, int par4, int par5, int par6, int par7, float par8, float par9, float par10)
     {
-        if (!par2EntityPlayer.func_82247_a(par4, par5, par6, par7, par1ItemStack))
+        if (!par2EntityPlayer.canPlayerEdit(par4, par5, par6))
         {
             return false;
         }
@@ -65,9 +64,9 @@ public class ItemDye extends Item
                     return false;
                 }
 
-                if (event.getResult() == Result.ALLOW)
+                if (event.isHandeled())
                 {
-                    if (!par3World.isRemote)
+                   if (!par3World.isRemote)
                     {
                         par1ItemStack.stackSize--;
                     }
@@ -111,7 +110,7 @@ public class ItemDye extends Item
                     return true;
                 }
 
-                if (var11 > 0 && Block.blocksList[var11] instanceof BlockCrops)
+                if (var11 == Block.crops.blockID)
                 {
                     if (par3World.getBlockMetadata(par4, par5, par6) == 7)
                     {
@@ -120,7 +119,7 @@ public class ItemDye extends Item
 
                     if (!par3World.isRemote)
                     {
-                        ((BlockCrops)Block.blocksList[var11]).fertilize(par3World, par4, par5, par6);
+                        ((BlockCrops)Block.crops).fertilize(par3World, par4, par5, par6);
                         --par1ItemStack.stackSize;
                     }
 
@@ -143,7 +142,7 @@ public class ItemDye extends Item
                     if (!par3World.isRemote)
                     {
                         --par1ItemStack.stackSize;
-                        label137:
+                        label135:
 
                         for (var12 = 0; var12 < 128; ++var12)
                         {
@@ -159,7 +158,7 @@ public class ItemDye extends Item
 
                                 if (par3World.getBlockId(var13, var14 - 1, var15) != Block.grass.blockID || par3World.isBlockNormalCube(var13, var14, var15))
                                 {
-                                    continue label137;
+                                    continue label135;
                                 }
                             }
 

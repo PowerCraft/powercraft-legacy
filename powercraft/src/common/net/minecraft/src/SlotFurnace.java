@@ -36,10 +36,13 @@ public class SlotFurnace extends Slot
         return super.decrStackSize(par1);
     }
 
-    public void func_82870_a(EntityPlayer par1EntityPlayer, ItemStack par2ItemStack)
+    /**
+     * Called when the player picks up an item from an inventory slot
+     */
+    public void onPickupFromSlot(ItemStack par1ItemStack)
     {
-        this.onCrafting(par2ItemStack);
-        super.func_82870_a(par1EntityPlayer, par2ItemStack);
+        this.onCrafting(par1ItemStack);
+        super.onPickupFromSlot(par1ItemStack);
     }
 
     /**

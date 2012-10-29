@@ -158,12 +158,6 @@ public class Packet202PlayerAbilities extends Packet
         this.flySpeed = par1;
     }
 
-    @SideOnly(Side.CLIENT)
-    public float func_82558_j()
-    {
-        return this.walkSpeed;
-    }
-
     /**
      * Sets the walking speed.
      */

@@ -26,14 +26,22 @@ public class Packet21PickupSpawn extends Packet
 
     /** The item roll. */
     public byte roll;
-    public ItemStack itemID;
+    public int itemID;
+
+    /** The number of items. */
+    public int count;
+
+    /** The health of the item. */
+    public int itemDamage;
 
     public Packet21PickupSpawn() {}
 
     public Packet21PickupSpawn(EntityItem par1EntityItem)
     {
         this.entityId = par1EntityItem.entityId;
-        this.itemID = par1EntityItem.item.copy();
+        this.itemID = par1EntityItem.item.itemID;
+        this.count = par1EntityItem.item.stackSize;
+        this.itemDamage = par1EntityItem.item.getItemDamage();
         this.xPosition = MathHelper.floor_double(par1EntityItem.posX * 32.0D);
         this.yPosition = MathHelper.floor_double(par1EntityItem.posY * 32.0D);
         this.zPosition = MathHelper.floor_double(par1EntityItem.posZ * 32.0D);
@@ -48,7 +56,9 @@ public class Packet21PickupSpawn extends Packet
     public void readPacketData(DataInputStream par1DataInputStream) throws IOException
     {
         this.entityId = par1DataInputStream.readInt();
-        this.itemID = readItemStack(par1DataInputStream);
+        this.itemID = par1DataInputStream.readShort();
+        this.count = par1DataInputStream.readByte();
+        this.itemDamage = par1DataInputStream.readShort();
         this.xPosition = par1DataInputStream.readInt();
         this.yPosition = par1DataInputStream.readInt();
         this.zPosition = par1DataInputStream.readInt();
@@ -63,7 +73,9 @@ public class Packet21PickupSpawn extends Packet
     public void writePacketData(DataOutputStream par1DataOutputStream) throws IOException
     {
         par1DataOutputStream.writeInt(this.entityId);
-        writeItemStack(this.itemID, par1DataOutputStream);
+        par1DataOutputStream.writeShort(this.itemID);
+        par1DataOutputStream.writeByte(this.count);
+        par1DataOutputStream.writeShort(this.itemDamage);
         par1DataOutputStream.writeInt(this.xPosition);
         par1DataOutputStream.writeInt(this.yPosition);
         par1DataOutputStream.writeInt(this.zPosition);

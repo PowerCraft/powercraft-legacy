@@ -193,9 +193,7 @@ public class GuiMultiplayer extends GuiScreen
             {
                 this.editClicked = true;
                 ServerData var9 = this.internetServerList.getServerData(this.selectedServer);
-                this.theServerData = new ServerData(var9.serverName, var9.serverIP);
-                this.theServerData.func_82819_b(var9.func_82820_d());
-                this.mc.displayGuiScreen(new GuiScreenAddServer(this, this.theServerData));
+                this.mc.displayGuiScreen(new GuiScreenAddServer(this, this.theServerData = new ServerData(var9.serverName, var9.serverIP)));
             }
             else if (par1GuiButton.id == 0)
             {
@@ -262,7 +260,6 @@ public class GuiMultiplayer extends GuiScreen
                 ServerData var3 = this.internetServerList.getServerData(this.selectedServer);
                 var3.serverName = this.theServerData.serverName;
                 var3.serverIP = this.theServerData.serverIP;
-                var3.func_82819_b(this.theServerData.func_82820_d());
                 this.internetServerList.saveServerList();
             }
 
@@ -361,114 +358,86 @@ public class GuiMultiplayer extends GuiScreen
         this.mc.displayGuiScreen(new GuiConnecting(this.mc, par1ServerData));
     }
 
-    private static void func_74017_b(ServerData par1ServerData) throws IOException
+    private void func_74017_b(ServerData par1ServerData) throws IOException
     {
-        ServerAddress var1 = ServerAddress.func_78860_a(par1ServerData.serverIP);
-        Socket var2 = null;
-        DataInputStream var3 = null;
-        DataOutputStream var4 = null;
+        ServerAddress var2 = ServerAddress.func_78860_a(par1ServerData.serverIP);
+        Socket var3 = null;
+        DataInputStream var4 = null;
+        DataOutputStream var5 = null;
 
         try
         {
-            var2 = new Socket();
-            var2.setSoTimeout(3000);
-            var2.setTcpNoDelay(true);
-            var2.setTrafficClass(18);
-            var2.connect(new InetSocketAddress(var1.getIP(), var1.getPort()), 3000);
-            var3 = new DataInputStream(var2.getInputStream());
-            var4 = new DataOutputStream(var2.getOutputStream());
-            var4.write(254);
-            var4.write(1);
+            var3 = new Socket();
+            var3.setSoTimeout(3000);
+            var3.setTcpNoDelay(true);
+            var3.setTrafficClass(18);
+            var3.connect(new InetSocketAddress(var2.getIP(), var2.getPort()), 3000);
+            var4 = new DataInputStream(var3.getInputStream());
+            var5 = new DataOutputStream(var3.getOutputStream());
+            var5.write(254);
 
-            if (var3.read() != 255)
+            if (var4.read() != 255)
             {
                 throw new IOException("Bad message");
             }
 
-            String var5 = Packet.readString(var3, 256);
-            char[] var6 = var5.toCharArray();
+            String var6 = Packet.readString(var4, 256);
+            char[] var7 = var6.toCharArray();
 
-            for (int var7 = 0; var7 < var6.length; ++var7)
+            for (int var8 = 0; var8 < var7.length; ++var8)
             {
-                if (var6[var7] != 167 && var6[var7] != 0 && ChatAllowedCharacters.allowedCharacters.indexOf(var6[var7]) < 0)
+                if (var7[var8] != 167 && ChatAllowedCharacters.allowedCharacters.indexOf(var7[var8]) < 0)
                 {
-                    var6[var7] = 63;
+                    var7[var8] = 63;
                 }
             }
 
-            var5 = new String(var6);
-            int var8;
-            int var9;
-            String[] var26;
+            var6 = new String(var7);
+            String[] var27 = var6.split("\u00a7");
+            var6 = var27[0];
+            int var9 = -1;
+            int var10 = -1;
 
-            if (var5.startsWith("\u00a7") && var5.length() > 1)
+            try
             {
-                var26 = var5.substring(1).split("\u0000");
+                var9 = Integer.parseInt(var27[1]);
+                var10 = Integer.parseInt(var27[2]);
+            }
+            catch (Exception var25)
+            {
+                ;
+            }
 
-                if (MathHelper.func_82715_a(var26[0], 0) == 1)
-                {
-                    par1ServerData.serverMOTD = var26[3];
-                    par1ServerData.field_82821_f = MathHelper.func_82715_a(var26[1], par1ServerData.field_82821_f);
-                    par1ServerData.field_82822_g = var26[2];
-                    var8 = MathHelper.func_82715_a(var26[4], 0);
-                    var9 = MathHelper.func_82715_a(var26[5], 0);
+            par1ServerData.serverMOTD = "\u00a77" + var6;
 
-                    if (var8 >= 0 && var9 >= 0)
-                    {
-                        par1ServerData.populationInfo = "\u00a77" + var8 + "\u00a78/\u00a77" + var9;
-                    }
-                    else
-                    {
-                        par1ServerData.populationInfo = "\u00a78???";
-                    }
-                }
-                else
-                {
-                    par1ServerData.field_82822_g = "???";
-                    par1ServerData.serverMOTD = "\u00a78???";
-                    par1ServerData.field_82821_f = 48;
-                    par1ServerData.populationInfo = "\u00a78???";
-                }
+            if (var9 >= 0 && var10 > 0)
+            {
+                par1ServerData.populationInfo = "\u00a77" + var9 + "\u00a78/\u00a77" + var10;
             }
             else
             {
-                var26 = var5.split("\u00a7");
-                var5 = var26[0];
-                var8 = -1;
-                var9 = -1;
-
-                try
-                {
-                    var8 = Integer.parseInt(var26[1]);
-                    var9 = Integer.parseInt(var26[2]);
-                }
-                catch (Exception var24)
-                {
-                    ;
-                }
-
-                par1ServerData.serverMOTD = "\u00a77" + var5;
-
-                if (var8 >= 0 && var9 > 0)
-                {
-                    par1ServerData.populationInfo = "\u00a77" + var8 + "\u00a78/\u00a77" + var9;
-                }
-                else
-                {
-                    par1ServerData.populationInfo = "\u00a78???";
-                }
-
-                par1ServerData.field_82822_g = "1.3";
-                par1ServerData.field_82821_f = 46;
+                par1ServerData.populationInfo = "\u00a78???";
             }
         }
         finally
         {
             try
             {
-                if (var3 != null)
+                if (var4 != null)
                 {
-                    var3.close();
+                    var4.close();
+                }
+            }
+            catch (Throwable var24)
+            {
+                ;
+            }
+
+            try
+            {
+                if (var5 != null)
+                {
+                    var5.close();
                 }
             }
             catch (Throwable var23)
@@ -478,24 +447,12 @@ public class GuiMultiplayer extends GuiScreen
 
             try
             {
-                if (var4 != null)
+                if (var3 != null)
                 {
-                    var4.close();
+                    var3.close();
                 }
             }
             catch (Throwable var22)
-            {
-                ;
-            }
-
-            try
-            {
-                if (var2 != null)
-                {
-                    var2.close();
-                }
-            }
-            catch (Throwable var21)
             {
                 ;
             }
@@ -583,9 +540,9 @@ public class GuiMultiplayer extends GuiScreen
         return threadsPending++;
     }
 
-    static void func_82291_a(ServerData par0ServerData) throws IOException
+    static void func_74013_a(GuiMultiplayer par0GuiMultiplayer, ServerData par1ServerData) throws IOException
     {
-        func_74017_b(par0ServerData);
+        par0GuiMultiplayer.func_74017_b(par1ServerData);
     }
 
     static int func_74018_k()

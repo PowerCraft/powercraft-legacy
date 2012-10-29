@@ -1,6 +1,5 @@
 package cpw.mods.fml.common;
 
-import java.lang.reflect.InvocationTargetException;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -19,7 +18,6 @@ import com.google.common.eventbus.EventBus;
 import com.google.common.eventbus.Subscribe;
 
 import cpw.mods.fml.common.LoaderState.ModState;
-import cpw.mods.fml.common.event.FMLEvent;
 import cpw.mods.fml.common.event.FMLLoadEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.event.FMLStateEvent;
@@ -90,7 +88,6 @@ public class LoadController
         state = state.transition(!errors.isEmpty());
         if (state != desiredState)
         {
-            Throwable toThrow = null;
             FMLLog.severe("Fatal errors were detected during the transition from %s to %s. Loading cannot continue", oldState, desiredState);
             StringBuilder sb = new StringBuilder();
             printModStates(sb);
@@ -99,23 +96,10 @@ public class LoadController
             for (Entry<String, Throwable> error : errors.entries())
             {
                 FMLLog.log(Level.SEVERE, error.getValue(), "Caught exception from %s", error.getKey());
-                if (error.getValue() instanceof IFMLHandledException)
-                {
-                    toThrow = error.getValue();
-                }
-                else if (toThrow == null)
-                {
-                    toThrow = error.getValue();
-                }
             }
-            if (toThrow != null && toThrow instanceof RuntimeException)
-            {
-                throw (RuntimeException)toThrow;
-            }
-            else
-            {
-                throw new LoaderException(toThrow);
-            }
+
+            // Throw embedding the first error (usually the only one)
+            throw new LoaderException(errors.values().iterator().next());
         }
     }
 
@@ -125,7 +109,7 @@ public class LoadController
     }
 
     @Subscribe
-    public void propogateStateMessage(FMLEvent stateEvent)
+    public void propogateStateMessage(FMLStateEvent stateEvent)
     {
         if (stateEvent instanceof FMLPreInitializationEvent)
         {
@@ -136,20 +120,17 @@ public class LoadController
             activeContainer = mc;
             String modId = mc.getModId();
             stateEvent.applyModContainer(activeContainer());
-            FMLLog.finer("Sending event %s to mod %s", stateEvent.getEventType(), modId);
+            FMLLog.finer("Posting state event %s to mod %s", stateEvent.getEventType(), modId);
             eventChannels.get(modId).post(stateEvent);
-            FMLLog.finer("Sent event %s to mod %s", stateEvent.getEventType(), modId);
+            FMLLog.finer("State event %s delivered to mod %s", stateEvent.getEventType(), modId);
             activeContainer = null;
-            if (stateEvent instanceof FMLStateEvent)
+            if (!errors.containsKey(modId))
             {
-	            if (!errors.containsKey(modId))
-	            {
-	                modStates.put(modId, ((FMLStateEvent)stateEvent).getModState());
-	            }
-	            else
-	            {
-	                modStates.put(modId, ModState.ERRORED);
-	            }
+                modStates.put(modId, stateEvent.getModState());
+            }
+            else
+            {
+                modStates.put(modId, ModState.ERRORED);
             }
         }
     }
@@ -177,14 +158,7 @@ public class LoadController
 
     public void errorOccurred(ModContainer modContainer, Throwable exception)
     {
-        if (exception instanceof InvocationTargetException)
-        {
-            errors.put(modContainer.getModId(), ((InvocationTargetException)exception).getCause());
-        }
-        else
-        {
-            errors.put(modContainer.getModId(), exception);
-        }
+        errors.put(modContainer.getModId(), exception);
     }
 
     public void printModStates(StringBuilder ret)
@@ -233,8 +207,4 @@ public class LoadController
     {
         return this.state == state;
     }
-
-	boolean hasReachedState(LoaderState state) {
-		return this.state.ordinal()>=state.ordinal() && this.state!=LoaderState.ERRORED;
-	}
 }

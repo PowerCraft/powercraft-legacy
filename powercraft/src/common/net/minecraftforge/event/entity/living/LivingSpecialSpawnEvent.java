@@ -2,9 +2,7 @@ package net.minecraftforge.event.entity.living;
 
 import net.minecraft.src.EntityLiving;
 import net.minecraft.src.World;
-import net.minecraftforge.event.Cancelable;
 
-@Cancelable
 public class LivingSpecialSpawnEvent extends LivingEvent
 {
     public final World world;
@@ -20,5 +18,15 @@ public class LivingSpecialSpawnEvent extends LivingEvent
         this.x = x;
         this.y = y;
         this.z = z;
+    }
+    
+    public void setHandeled()
+    {
+        handeled = true;
+    }
+    
+    public boolean isHandeled()
+    {
+        return handeled;
     }
 }

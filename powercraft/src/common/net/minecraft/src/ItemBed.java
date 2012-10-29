@@ -46,7 +46,7 @@ public class ItemBed extends Item
                 var13 = 1;
             }
 
-            if (par2EntityPlayer.func_82247_a(par4, par5, par6, par7, par1ItemStack) && par2EntityPlayer.func_82247_a(par4 + var13, par5, par6 + var14, par7, par1ItemStack))
+            if (par2EntityPlayer.canPlayerEdit(par4, par5, par6) && par2EntityPlayer.canPlayerEdit(par4 + var13, par5, par6 + var14))
             {
                 if (par3World.isAirBlock(par4, par5, par6) && par3World.isAirBlock(par4 + var13, par5, par6 + var14) && par3World.doesBlockHaveSolidTopSurface(par4, par5 - 1, par6) && par3World.doesBlockHaveSolidTopSurface(par4 + var13, par5 - 1, par6 + var14))
                 {

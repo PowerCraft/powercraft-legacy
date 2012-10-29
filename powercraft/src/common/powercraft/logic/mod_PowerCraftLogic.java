@@ -19,7 +19,7 @@ import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.network.NetworkMod;
 
-@Mod(modid="PowerCraft-Logic", name="PowerCraft-Logic", version="0.0.1Alpha", dependencies="required-after:PowerCraft-Core")
+@Mod(modid="PowerCraft-Logik", name="PowerCraft-Logik", version="0.0.1Alpha", dependencies="required-after:PowerCraft-Core")
 @NetworkMod(clientSideRequired=true, serverSideRequired=true)
 public class mod_PowerCraftLogic extends PC_Module {
 
@@ -31,7 +31,7 @@ public class mod_PowerCraftLogic extends PC_Module {
 	public static PC_Block gateOn;
 	
 	public static mod_PowerCraftLogic getInstance(){
-		return (mod_PowerCraftLogic)PC_Module.getModule("PowerCraft-Logic");
+		return (mod_PowerCraftLogic)PC_Module.getModule("PowerCraft-Logik");
 	}
 	
 	@PreInit

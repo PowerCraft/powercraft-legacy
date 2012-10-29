@@ -12,7 +12,7 @@ import javax.imageio.ImageIO;
 import org.lwjgl.opengl.GL11;
 
 @SideOnly(Side.CLIENT)
-public abstract class TexturePackImplementation implements ITexturePack
+public abstract class TexturePackImplementation implements TexturePackBase
 {
     /**
      * Texture pack ID as returnd by generateTexturePackID(). Used only internally and not visible to the user.
@@ -171,7 +171,7 @@ public abstract class TexturePackImplementation implements ITexturePack
      */
     public InputStream getResourceAsStream(String par1Str)
     {
-        return ITexturePack.class.getResourceAsStream(par1Str);
+        return TexturePackBase.class.getResourceAsStream(par1Str);
     }
 
     /**

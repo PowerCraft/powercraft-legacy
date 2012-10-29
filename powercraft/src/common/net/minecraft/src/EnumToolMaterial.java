@@ -77,9 +77,4 @@ public enum EnumToolMaterial
     {
         return this.enchantability;
     }
-
-    public int func_82844_f()
-    {
-        return this == WOOD ? Block.planks.blockID : (this == STONE ? Block.cobblestone.blockID : (this == GOLD ? Item.ingotGold.shiftedIndex : (this == IRON ? Item.ingotIron.shiftedIndex : (this == EMERALD ? Item.diamond.shiftedIndex : 0))));
-    }
 }

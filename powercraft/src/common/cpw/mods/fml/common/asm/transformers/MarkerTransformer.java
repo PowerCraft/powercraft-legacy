@@ -89,7 +89,6 @@ public class MarkerTransformer implements IClassTransformer
     @Override
     public byte[] transform(String name, byte[] bytes)
     {
-    	if (bytes == null) { return null; }
         if (!markers.containsKey(name)) { return bytes; }
 
         ClassNode classNode = new ClassNode();

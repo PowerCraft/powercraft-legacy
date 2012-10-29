@@ -29,6 +29,16 @@ public class ItemEditableBook extends Item
         }
     }
 
+    /**
+     * Called whenever this item is equipped and the right mouse button is pressed. Args: itemStack, world, entityPlayer
+     */
+    public ItemStack onItemRightClick(ItemStack par1ItemStack, World par2World, EntityPlayer par3EntityPlayer)
+    {
+        par3EntityPlayer.displayGUIBook(par1ItemStack);
+        return par1ItemStack;
+    }
+
+    @SideOnly(Side.CLIENT)
     public String getItemDisplayName(ItemStack par1ItemStack)
     {
         if (par1ItemStack.hasTagCompound())
@@ -50,27 +60,18 @@ public class ItemEditableBook extends Item
     /**
      * allows items to add custom lines of information to the mouseover description
      */
-    public void addInformation(ItemStack par1ItemStack, EntityPlayer par2EntityPlayer, List par3List, boolean par4)
+    public void addInformation(ItemStack par1ItemStack, List par2List)
     {
         if (par1ItemStack.hasTagCompound())
         {
-            NBTTagCompound var5 = par1ItemStack.getTagCompound();
-            NBTTagString var6 = (NBTTagString)var5.getTag("author");
+            NBTTagCompound var3 = par1ItemStack.getTagCompound();
+            NBTTagString var4 = (NBTTagString)var3.getTag("author");
 
-            if (var6 != null)
+            if (var4 != null)
             {
-                par3List.add("\u00a77" + String.format(StatCollector.translateToLocalFormatted("book.byAuthor", new Object[] {var6.data}), new Object[0]));
+                par2List.add("\u00a77" + String.format(StatCollector.translateToLocalFormatted("book.byAuthor", new Object[] {var4.data}), new Object[0]));
             }
         }
-    }
-
-    /**
-     * Called whenever this item is equipped and the right mouse button is pressed. Args: itemStack, world, entityPlayer
-     */
-    public ItemStack onItemRightClick(ItemStack par1ItemStack, World par2World, EntityPlayer par3EntityPlayer)
-    {
-        par3EntityPlayer.displayGUIBook(par1ItemStack);
-        return par1ItemStack;
     }
 
     /**

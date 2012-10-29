@@ -139,6 +139,4 @@ public class ChunkProviderClient implements IChunkProvider
     {
         return this.chunkListing.size();
     }
-
-    public void func_82695_e(int par1, int par2) {}
 }

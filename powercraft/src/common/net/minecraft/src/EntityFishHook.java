@@ -244,15 +244,15 @@ public class EntityFishHook extends Entity
                 ++this.ticksInAir;
             }
 
-            Vec3 var20 = this.worldObj.func_82732_R().getVecFromPool(this.posX, this.posY, this.posZ);
-            Vec3 var2 = this.worldObj.func_82732_R().getVecFromPool(this.posX + this.motionX, this.posY + this.motionY, this.posZ + this.motionZ);
+            Vec3 var20 = Vec3.getVec3Pool().getVecFromPool(this.posX, this.posY, this.posZ);
+            Vec3 var2 = Vec3.getVec3Pool().getVecFromPool(this.posX + this.motionX, this.posY + this.motionY, this.posZ + this.motionZ);
             MovingObjectPosition var3 = this.worldObj.rayTraceBlocks(var20, var2);
-            var20 = this.worldObj.func_82732_R().getVecFromPool(this.posX, this.posY, this.posZ);
-            var2 = this.worldObj.func_82732_R().getVecFromPool(this.posX + this.motionX, this.posY + this.motionY, this.posZ + this.motionZ);
+            var20 = Vec3.getVec3Pool().getVecFromPool(this.posX, this.posY, this.posZ);
+            var2 = Vec3.getVec3Pool().getVecFromPool(this.posX + this.motionX, this.posY + this.motionY, this.posZ + this.motionZ);
 
             if (var3 != null)
             {
-                var2 = this.worldObj.func_82732_R().getVecFromPool(var3.hitVec.xCoord, var3.hitVec.yCoord, var3.hitVec.zCoord);
+                var2 = Vec3.getVec3Pool().getVecFromPool(var3.hitVec.xCoord, var3.hitVec.yCoord, var3.hitVec.zCoord);
             }
 
             Entity var4 = null;
@@ -485,7 +485,6 @@ public class EntityFishHook extends Entity
                 var13.motionZ = var7 * var11;
                 this.worldObj.spawnEntityInWorld(var13);
                 this.angler.addStat(StatList.fishCaughtStat, 1);
-                this.angler.worldObj.spawnEntityInWorld(new EntityXPOrb(this.angler.worldObj, this.angler.posX, this.angler.posY + 0.5D, this.angler.posZ + 0.5D, this.rand.nextInt(3) + 1));
                 var1 = 1;
             }
 

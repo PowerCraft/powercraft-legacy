@@ -16,7 +16,7 @@ public class PCco_ItemPowerDust extends PC_Item implements PC_IFuel {
 	}
 
 	@Override
-	public int func_82790_a(ItemStack itemStack, int pass) {
+	public int getColorFromDamage(int i, int j) {
 		return 0xFF3333;
 	}
 

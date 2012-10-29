@@ -1,5 +1,8 @@
 package net.minecraft.src;
 
+import cpw.mods.fml.common.Side;
+import cpw.mods.fml.common.asm.SideOnly;
+
 public class EntityEnderman extends EntityMob
 {
     public static boolean[] carriableBlocks = new boolean[256];
@@ -15,6 +18,7 @@ public class EntityEnderman extends EntityMob
         super(par1World);
         this.texture = "/mob/enderman.png";
         this.moveSpeed = 0.2F;
+        this.attackStrength = 7;
         this.setSize(0.6F, 2.9F);
         this.stepHeight = 1.0F;
     }
@@ -64,11 +68,6 @@ public class EntityEnderman extends EntityMob
         {
             if (this.shouldAttackPlayer(var1))
             {
-                if (this.field_70826_g == 0)
-                {
-                    this.worldObj.playSoundAtEntity(var1, "mob.endermen.stare", 1.0F, 1.0F);
-                }
-
                 if (this.field_70826_g++ == 5)
                 {
                     this.field_70826_g = 0;
@@ -99,7 +98,7 @@ public class EntityEnderman extends EntityMob
         else
         {
             Vec3 var3 = par1EntityPlayer.getLook(1.0F).normalize();
-            Vec3 var4 = this.worldObj.func_82732_R().getVecFromPool(this.posX - par1EntityPlayer.posX, this.boundingBox.minY + (double)(this.height / 2.0F) - (par1EntityPlayer.posY + (double)par1EntityPlayer.getEyeHeight()), this.posZ - par1EntityPlayer.posZ);
+            Vec3 var4 = Vec3.getVec3Pool().getVecFromPool(this.posX - par1EntityPlayer.posX, this.boundingBox.minY + (double)(this.height / 2.0F) - (par1EntityPlayer.posY + (double)par1EntityPlayer.getEyeHeight()), this.posZ - par1EntityPlayer.posZ);
             double var5 = var4.lengthVector();
             var4 = var4.normalize();
             double var7 = var3.dotProduct(var4);
@@ -121,7 +120,7 @@ public class EntityEnderman extends EntityMob
         this.moveSpeed = this.entityToAttack != null ? 6.5F : 0.3F;
         int var1;
 
-        if (!this.worldObj.isRemote && this.worldObj.func_82736_K().func_82766_b("mobGriefing"))
+        if (!this.worldObj.isRemote)
         {
             int var2;
             int var3;
@@ -238,7 +237,7 @@ public class EntityEnderman extends EntityMob
      */
     protected boolean teleportToEntity(Entity par1Entity)
     {
-        Vec3 var2 = this.worldObj.func_82732_R().getVecFromPool(this.posX - par1Entity.posX, this.boundingBox.minY + (double)(this.height / 2.0F) - par1Entity.posY + (double)par1Entity.getEyeHeight(), this.posZ - par1Entity.posZ);
+        Vec3 var2 = Vec3.getVec3Pool().getVecFromPool(this.posX - par1Entity.posX, this.boundingBox.minY + (double)(this.height / 2.0F) - par1Entity.posY + (double)par1Entity.getEyeHeight(), this.posZ - par1Entity.posZ);
         var2 = var2.normalize();
         double var3 = 16.0D;
         double var5 = this.posX + (this.rand.nextDouble() - 0.5D) * 8.0D - var2.xCoord * var3;
@@ -326,7 +325,7 @@ public class EntityEnderman extends EntityMob
      */
     protected String getLivingSound()
     {
-        return this.func_70823_r() ? "mob.endermen.scream" : "mob.endermen.idle";
+        return "mob.endermen.idle";
     }
 
     /**
@@ -431,6 +430,7 @@ public class EntityEnderman extends EntityMob
         }
     }
 
+    @SideOnly(Side.CLIENT)
     public boolean func_70823_r()
     {
         return this.dataWatcher.getWatchableObjectByte(18) > 0;
@@ -439,11 +439,6 @@ public class EntityEnderman extends EntityMob
     public void func_70819_e(boolean par1)
     {
         this.dataWatcher.updateObject(18, Byte.valueOf((byte)(par1 ? 1 : 0)));
-    }
-
-    public int func_82193_c(Entity par1Entity)
-    {
-        return 7;
     }
 
     static

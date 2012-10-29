@@ -2,40 +2,38 @@ package net.minecraft.src;
 
 public class EntityAIArrowAttack extends EntityAIBase
 {
+    World worldObj;
+
     /** The entity the AI instance has been applied to */
-    private final EntityLiving entityHost;
-    private final IRangedAttackMob field_82641_b;
-    private EntityLiving attackTarget;
+    EntityLiving entityHost;
+    EntityLiving attackTarget;
 
     /**
      * A decrementing tick that spawns a ranged attack once this value reaches 0. It is then set back to the
      * maxRangedAttackTime.
      */
-    private int rangedAttackTime = 0;
-    private float entityMoveSpeed;
-    private int field_75318_f = 0;
+    int rangedAttackTime = 0;
+    float entityMoveSpeed;
+    int field_75318_f = 0;
+
+    /**
+     * The ID of this ranged attack AI. This chooses which entity is to be used as a ranged attack.
+     */
+    int rangedAttackID;
 
     /**
      * The maximum time the AI has to wait before peforming another ranged attack.
      */
-    private int maxRangedAttackTime;
-    private float field_82642_h;
+    int maxRangedAttackTime;
 
-    public EntityAIArrowAttack(IRangedAttackMob par1IRangedAttackMob, float par2, int par3, float par4)
+    public EntityAIArrowAttack(EntityLiving par1EntityLiving, float par2, int par3, int par4)
     {
-        if (!(par1IRangedAttackMob instanceof EntityLiving))
-        {
-            throw new IllegalArgumentException("ArrowAttackGoal requires Mob implements RangedAttackMob");
-        }
-        else
-        {
-            this.field_82641_b = par1IRangedAttackMob;
-            this.entityHost = (EntityLiving)par1IRangedAttackMob;
-            this.entityMoveSpeed = par2;
-            this.maxRangedAttackTime = par3;
-            this.field_82642_h = par4 * par4;
-            this.setMutexBits(3);
-        }
+        this.entityHost = par1EntityLiving;
+        this.worldObj = par1EntityLiving.worldObj;
+        this.entityMoveSpeed = par2;
+        this.rangedAttackID = par3;
+        this.maxRangedAttackTime = par4;
+        this.setMutexBits(3);
     }
 
     /**
@@ -70,7 +68,6 @@ public class EntityAIArrowAttack extends EntityAIBase
     public void resetTask()
     {
         this.attackTarget = null;
-        this.field_75318_f = 0;
     }
 
     /**
@@ -78,10 +75,11 @@ public class EntityAIArrowAttack extends EntityAIBase
      */
     public void updateTask()
     {
-        double var1 = this.entityHost.getDistanceSq(this.attackTarget.posX, this.attackTarget.boundingBox.minY, this.attackTarget.posZ);
-        boolean var3 = this.entityHost.getEntitySenses().canSee(this.attackTarget);
+        double var1 = 100.0D;
+        double var3 = this.entityHost.getDistanceSq(this.attackTarget.posX, this.attackTarget.boundingBox.minY, this.attackTarget.posZ);
+        boolean var5 = this.entityHost.getEntitySenses().canSee(this.attackTarget);
 
-        if (var3)
+        if (var5)
         {
             ++this.field_75318_f;
         }
@@ -90,7 +88,7 @@ public class EntityAIArrowAttack extends EntityAIBase
             this.field_75318_f = 0;
         }
 
-        if (var1 <= (double)this.field_82642_h && this.field_75318_f >= 20)
+        if (var3 <= var1 && this.field_75318_f >= 20)
         {
             this.entityHost.getNavigator().clearPathEntity();
         }
@@ -104,11 +102,35 @@ public class EntityAIArrowAttack extends EntityAIBase
 
         if (this.rangedAttackTime <= 0)
         {
-            if (var1 <= (double)this.field_82642_h && var3)
+            if (var3 <= var1 && var5)
             {
-                this.field_82641_b.func_82196_d(this.attackTarget);
+                this.doRangedAttack();
                 this.rangedAttackTime = this.maxRangedAttackTime;
             }
+        }
+    }
+
+    /**
+     * Performs a ranged attack according to the AI's rangedAttackID.
+     */
+    private void doRangedAttack()
+    {
+        if (this.rangedAttackID == 1)
+        {
+            EntityArrow var1 = new EntityArrow(this.worldObj, this.entityHost, this.attackTarget, 1.6F, 12.0F);
+            this.worldObj.playSoundAtEntity(this.entityHost, "random.bow", 1.0F, 1.0F / (this.entityHost.getRNG().nextFloat() * 0.4F + 0.8F));
+            this.worldObj.spawnEntityInWorld(var1);
+        }
+        else if (this.rangedAttackID == 2)
+        {
+            EntitySnowball var9 = new EntitySnowball(this.worldObj, this.entityHost);
+            double var2 = this.attackTarget.posX - this.entityHost.posX;
+            double var4 = this.attackTarget.posY + (double)this.attackTarget.getEyeHeight() - 1.100000023841858D - var9.posY;
+            double var6 = this.attackTarget.posZ - this.entityHost.posZ;
+            float var8 = MathHelper.sqrt_double(var2 * var2 + var6 * var6) * 0.2F;
+            var9.setThrowableHeading(var2, var4 + (double)var8, var6, 1.6F, 12.0F);
+            this.worldObj.playSoundAtEntity(this.entityHost, "random.bow", 1.0F, 1.0F / (this.entityHost.getRNG().nextFloat() * 0.4F + 0.8F));
+            this.worldObj.spawnEntityInWorld(var9);
         }
     }
 }

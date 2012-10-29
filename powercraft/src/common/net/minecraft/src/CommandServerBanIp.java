@@ -15,11 +15,6 @@ public class CommandServerBanIp extends CommandBase
         return "ban-ip";
     }
 
-    public int func_82362_a()
-    {
-        return 3;
-    }
-
     /**
      * Returns true if the given command sender is allowed to use this command.
      */
@@ -42,7 +37,7 @@ public class CommandServerBanIp extends CommandBase
 
             if (par2ArrayOfStr.length >= 2)
             {
-                var4 = func_82360_a(par1ICommandSender, par2ArrayOfStr, 1);
+                var4 = joinString(par2ArrayOfStr, 1);
             }
 
             if (var3.matches())

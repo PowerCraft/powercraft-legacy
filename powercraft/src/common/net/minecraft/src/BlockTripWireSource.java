@@ -406,9 +406,9 @@ public class BlockTripWireSource extends Block
     /**
      * Is this block indirectly powering the block on the specified side
      */
-    public boolean isIndirectlyPoweringTo(IBlockAccess par1IBlockAccess, int par2, int par3, int par4, int par5)
+    public boolean isIndirectlyPoweringTo(World par1World, int par2, int par3, int par4, int par5)
     {
-        int var6 = par1IBlockAccess.getBlockMetadata(par2, par3, par4);
+        int var6 = par1World.getBlockMetadata(par2, par3, par4);
 
         if ((var6 & 8) != 8)
         {

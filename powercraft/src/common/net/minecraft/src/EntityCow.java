@@ -36,7 +36,7 @@ public class EntityCow extends EntityAnimal
      */
     protected String getLivingSound()
     {
-        return "mob.cow.say";
+        return "mob.cow";
     }
 
     /**
@@ -44,7 +44,7 @@ public class EntityCow extends EntityAnimal
      */
     protected String getHurtSound()
     {
-        return "mob.cow.hurt";
+        return "mob.cowhurt";
     }
 
     /**
@@ -52,15 +52,7 @@ public class EntityCow extends EntityAnimal
      */
     protected String getDeathSound()
     {
-        return "mob.cow.hurt";
-    }
-
-    /**
-     * Plays step sound at given x, y, z for the entity
-     */
-    protected void playStepSound(int par1, int par2, int par3, int par4)
-    {
-        this.worldObj.playSoundAtEntity(this, "mob.cow.step", 0.15F, 1.0F);
+        return "mob.cowhurt";
     }
 
     /**

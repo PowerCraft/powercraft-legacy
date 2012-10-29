@@ -6,7 +6,6 @@ import cpw.mods.fml.common.registry.VillagerRegistry;
 
 import java.util.Collections;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.Map;
 import java.util.Random;
 
@@ -27,9 +26,9 @@ public class EntityVillager extends EntityAgeable implements INpc, IMerchant
     /** addDefaultEquipmentAndRecipies is called if this is true */
     private boolean needsInitilization;
     private int wealth;
-    private String field_82189_bL;
-    private boolean field_82190_bM;
-    private float field_82191_bN;
+
+    /** Recipes for buying things from Villagers. */
+    private MerchantRecipe sellingRecipeList;
 
     /**
      * a villagers recipe list is intialized off this list ; the 2 params are min/max amount they will trade for 1
@@ -103,13 +102,7 @@ public class EntityVillager extends EntityAgeable implements INpc, IMerchant
             else
             {
                 ChunkCoordinates var1 = this.villageObj.getCenter();
-                this.setHomeArea(var1.posX, var1.posY, var1.posZ, (int)((float)this.villageObj.getVillageRadius() * 0.6F));
-
-                if (this.field_82190_bM)
-                {
-                    this.field_82190_bM = false;
-                    this.villageObj.func_82683_b(5);
-                }
+                this.setHomeArea(var1.posX, var1.posY, var1.posZ, this.villageObj.getVillageRadius());
             }
         }
 
@@ -121,29 +114,14 @@ public class EntityVillager extends EntityAgeable implements INpc, IMerchant
             {
                 if (this.needsInitilization)
                 {
-                    if (this.buyingList.size() > 1)
-                    {
-                        Iterator var3 = this.buyingList.iterator();
-
-                        while (var3.hasNext())
-                        {
-                            MerchantRecipe var2 = (MerchantRecipe)var3.next();
-
-                            if (var2.func_82784_g())
-                            {
-                                var2.func_82783_a(this.rand.nextInt(6) + this.rand.nextInt(6) + 2);
-                            }
-                        }
-                    }
-
                     this.addDefaultEquipmentAndRecipies(1);
                     this.needsInitilization = false;
+                }
 
-                    if (this.villageObj != null && this.field_82189_bL != null)
-                    {
-                        this.worldObj.setEntityState(this, (byte)14);
-                        this.villageObj.func_82688_a(this.field_82189_bL, 1);
-                    }
+                if (this.sellingRecipeList != null)
+                {
+                    this.buyingList.remove(this.sellingRecipeList);
+                    this.sellingRecipeList = null;
                 }
 
                 this.addPotionEffect(new PotionEffect(Potion.regeneration.id, 200, 0));
@@ -309,58 +287,7 @@ public class EntityVillager extends EntityAgeable implements INpc, IMerchant
         if (this.villageObj != null && par1EntityLiving != null)
         {
             this.villageObj.addOrRenewAgressor(par1EntityLiving);
-
-            if (par1EntityLiving instanceof EntityPlayer)
-            {
-                byte var2 = -1;
-
-                if (this.isChild())
-                {
-                    var2 = -3;
-                }
-
-                this.villageObj.func_82688_a(((EntityPlayer)par1EntityLiving).getCommandSenderName(), var2);
-
-                if (this.isEntityAlive())
-                {
-                    this.worldObj.setEntityState(this, (byte)13);
-                }
-            }
         }
-    }
-
-    /**
-     * Called when the mob's health reaches 0.
-     */
-    public void onDeath(DamageSource par1DamageSource)
-    {
-        if (this.villageObj != null)
-        {
-            Entity var2 = par1DamageSource.getEntity();
-
-            if (var2 != null)
-            {
-                if (var2 instanceof EntityPlayer)
-                {
-                    this.villageObj.func_82688_a(((EntityPlayer)var2).getCommandSenderName(), -2);
-                }
-                else if (var2 instanceof IMob)
-                {
-                    this.villageObj.func_82692_h();
-                }
-            }
-            else if (var2 == null)
-            {
-                EntityPlayer var3 = this.worldObj.getClosestPlayerToEntity(this, 16.0D);
-
-                if (var3 != null)
-                {
-                    this.villageObj.func_82692_h();
-                }
-            }
-        }
-
-        super.onDeath(par1DamageSource);
     }
 
     public void setCustomer(EntityPlayer par1EntityPlayer)
@@ -384,16 +311,17 @@ public class EntityVillager extends EntityAgeable implements INpc, IMerchant
 
         if (par1MerchantRecipe.hasSameIDsAs((MerchantRecipe)this.buyingList.get(this.buyingList.size() - 1)))
         {
-            this.timeUntilReset = 40;
+            this.timeUntilReset = 60;
             this.needsInitilization = true;
+        }
+        else if (this.buyingList.size() > 1)
+        {
+            int var2 = this.rand.nextInt(6) + this.rand.nextInt(6) + 3;
 
-            if (this.buyingPlayer != null)
+            if (var2 <= par1MerchantRecipe.getToolUses())
             {
-                this.field_82189_bL = this.buyingPlayer.getCommandSenderName();
-            }
-            else
-            {
-                this.field_82189_bL = null;
+                this.timeUntilReset = 20;
+                this.sellingRecipeList = par1MerchantRecipe;
             }
         }
 
@@ -413,68 +341,52 @@ public class EntityVillager extends EntityAgeable implements INpc, IMerchant
         return this.buyingList;
     }
 
-    private float func_82188_j(float par1)
-    {
-        float var2 = par1 + this.field_82191_bN;
-        return var2 > 0.9F ? 0.9F - (var2 - 0.9F) : var2;
-    }
-
     /**
      * based on the villagers profession add items, equipment, and recipies adds par1 random items to the list of things
      * that the villager wants to buy. (at most 1 of each wanted type is added)
      */
     private void addDefaultEquipmentAndRecipies(int par1)
     {
-        if (this.buyingList != null)
-        {
-            this.field_82191_bN = MathHelper.sqrt_float((float)this.buyingList.size()) * 0.2F;
-        }
-        else
-        {
-            this.field_82191_bN = 0.0F;
-        }
-
         MerchantRecipeList var2;
         var2 = new MerchantRecipeList();
-        VillagerRegistry.manageVillagerTrades(var2, this, this.getProfession(), this.rand);
-        label48:
+        label44:
 
         switch (this.getProfession())
         {
             case 0:
-                addMerchantItem(var2, Item.wheat.shiftedIndex, this.rand, this.func_82188_j(0.9F));
-                addMerchantItem(var2, Block.cloth.blockID, this.rand, this.func_82188_j(0.5F));
-                addMerchantItem(var2, Item.chickenRaw.shiftedIndex, this.rand, this.func_82188_j(0.5F));
-                addMerchantItem(var2, Item.fishCooked.shiftedIndex, this.rand, this.func_82188_j(0.4F));
-                addBlacksmithItem(var2, Item.bread.shiftedIndex, this.rand, this.func_82188_j(0.9F));
-                addBlacksmithItem(var2, Item.melon.shiftedIndex, this.rand, this.func_82188_j(0.3F));
-                addBlacksmithItem(var2, Item.appleRed.shiftedIndex, this.rand, this.func_82188_j(0.3F));
-                addBlacksmithItem(var2, Item.cookie.shiftedIndex, this.rand, this.func_82188_j(0.3F));
-                addBlacksmithItem(var2, Item.shears.shiftedIndex, this.rand, this.func_82188_j(0.3F));
-                addBlacksmithItem(var2, Item.flintAndSteel.shiftedIndex, this.rand, this.func_82188_j(0.3F));
-                addBlacksmithItem(var2, Item.chickenCooked.shiftedIndex, this.rand, this.func_82188_j(0.3F));
-                addBlacksmithItem(var2, Item.arrow.shiftedIndex, this.rand, this.func_82188_j(0.5F));
+                addMerchantItem(var2, Item.wheat.shiftedIndex, this.rand, 0.9F);
+                addMerchantItem(var2, Block.cloth.blockID, this.rand, 0.5F);
+                addMerchantItem(var2, Item.chickenRaw.shiftedIndex, this.rand, 0.5F);
+                addMerchantItem(var2, Item.fishCooked.shiftedIndex, this.rand, 0.4F);
+                addBlacksmithItem(var2, Item.bread.shiftedIndex, this.rand, 0.9F);
+                addBlacksmithItem(var2, Item.melon.shiftedIndex, this.rand, 0.3F);
+                addBlacksmithItem(var2, Item.appleRed.shiftedIndex, this.rand, 0.3F);
+                addBlacksmithItem(var2, Item.cookie.shiftedIndex, this.rand, 0.3F);
+                addBlacksmithItem(var2, Item.shears.shiftedIndex, this.rand, 0.3F);
+                addBlacksmithItem(var2, Item.flintAndSteel.shiftedIndex, this.rand, 0.3F);
+                addBlacksmithItem(var2, Item.chickenCooked.shiftedIndex, this.rand, 0.3F);
+                addBlacksmithItem(var2, Item.arrow.shiftedIndex, this.rand, 0.5F);
 
-                if (this.rand.nextFloat() < this.func_82188_j(0.5F))
+                if (this.rand.nextFloat() < 0.5F)
                 {
-                    var2.add(new MerchantRecipe(new ItemStack(Block.gravel, 10), new ItemStack(Item.emerald), new ItemStack(Item.flint.shiftedIndex, 4 + this.rand.nextInt(2), 0)));
+                    var2.add(new MerchantRecipe(new ItemStack(Block.gravel, 10), new ItemStack(Item.emerald), new ItemStack(Item.flint.shiftedIndex, 2 + this.rand.nextInt(2), 0)));
                 }
 
                 break;
             case 1:
-                addMerchantItem(var2, Item.paper.shiftedIndex, this.rand, this.func_82188_j(0.8F));
-                addMerchantItem(var2, Item.book.shiftedIndex, this.rand, this.func_82188_j(0.8F));
-                addMerchantItem(var2, Item.writtenBook.shiftedIndex, this.rand, this.func_82188_j(0.3F));
-                addBlacksmithItem(var2, Block.bookShelf.blockID, this.rand, this.func_82188_j(0.8F));
-                addBlacksmithItem(var2, Block.glass.blockID, this.rand, this.func_82188_j(0.2F));
-                addBlacksmithItem(var2, Item.compass.shiftedIndex, this.rand, this.func_82188_j(0.2F));
-                addBlacksmithItem(var2, Item.pocketSundial.shiftedIndex, this.rand, this.func_82188_j(0.2F));
+                addMerchantItem(var2, Item.paper.shiftedIndex, this.rand, 0.8F);
+                addMerchantItem(var2, Item.book.shiftedIndex, this.rand, 0.8F);
+                addMerchantItem(var2, Item.writtenBook.shiftedIndex, this.rand, 0.3F);
+                addBlacksmithItem(var2, Block.bookShelf.blockID, this.rand, 0.8F);
+                addBlacksmithItem(var2, Block.glass.blockID, this.rand, 0.2F);
+                addBlacksmithItem(var2, Item.compass.shiftedIndex, this.rand, 0.2F);
+                addBlacksmithItem(var2, Item.pocketSundial.shiftedIndex, this.rand, 0.2F);
                 break;
             case 2:
-                addBlacksmithItem(var2, Item.eyeOfEnder.shiftedIndex, this.rand, this.func_82188_j(0.3F));
-                addBlacksmithItem(var2, Item.expBottle.shiftedIndex, this.rand, this.func_82188_j(0.2F));
-                addBlacksmithItem(var2, Item.redstone.shiftedIndex, this.rand, this.func_82188_j(0.4F));
-                addBlacksmithItem(var2, Block.glowStone.blockID, this.rand, this.func_82188_j(0.3F));
+                addBlacksmithItem(var2, Item.eyeOfEnder.shiftedIndex, this.rand, 0.3F);
+                addBlacksmithItem(var2, Item.expBottle.shiftedIndex, this.rand, 0.2F);
+                addBlacksmithItem(var2, Item.redstone.shiftedIndex, this.rand, 0.4F);
+                addBlacksmithItem(var2, Block.glowStone.blockID, this.rand, 0.3F);
                 int[] var3 = new int[] {Item.swordSteel.shiftedIndex, Item.swordDiamond.shiftedIndex, Item.plateSteel.shiftedIndex, Item.plateDiamond.shiftedIndex, Item.axeSteel.shiftedIndex, Item.axeDiamond.shiftedIndex, Item.pickaxeSteel.shiftedIndex, Item.pickaxeDiamond.shiftedIndex};
                 int[] var4 = var3;
                 int var5 = var3.length;
@@ -484,12 +396,12 @@ public class EntityVillager extends EntityAgeable implements INpc, IMerchant
                 {
                     if (var6 >= var5)
                     {
-                        break label48;
+                        break label44;
                     }
 
                     int var7 = var4[var6];
 
-                    if (this.rand.nextFloat() < this.func_82188_j(0.05F))
+                    if (this.rand.nextFloat() < 0.1F)
                     {
                         var2.add(new MerchantRecipe(new ItemStack(var7, 1, 0), new ItemStack(Item.emerald, 2 + this.rand.nextInt(3), 0), EnchantmentHelper.addRandomEnchantment(this.rand, new ItemStack(var7, 1, 0), 5 + this.rand.nextInt(15))));
                     }
@@ -497,45 +409,47 @@ public class EntityVillager extends EntityAgeable implements INpc, IMerchant
                     ++var6;
                 }
             case 3:
-                addMerchantItem(var2, Item.coal.shiftedIndex, this.rand, this.func_82188_j(0.7F));
-                addMerchantItem(var2, Item.ingotIron.shiftedIndex, this.rand, this.func_82188_j(0.5F));
-                addMerchantItem(var2, Item.ingotGold.shiftedIndex, this.rand, this.func_82188_j(0.5F));
-                addMerchantItem(var2, Item.diamond.shiftedIndex, this.rand, this.func_82188_j(0.5F));
-                addBlacksmithItem(var2, Item.swordSteel.shiftedIndex, this.rand, this.func_82188_j(0.5F));
-                addBlacksmithItem(var2, Item.swordDiamond.shiftedIndex, this.rand, this.func_82188_j(0.5F));
-                addBlacksmithItem(var2, Item.axeSteel.shiftedIndex, this.rand, this.func_82188_j(0.3F));
-                addBlacksmithItem(var2, Item.axeDiamond.shiftedIndex, this.rand, this.func_82188_j(0.3F));
-                addBlacksmithItem(var2, Item.pickaxeSteel.shiftedIndex, this.rand, this.func_82188_j(0.5F));
-                addBlacksmithItem(var2, Item.pickaxeDiamond.shiftedIndex, this.rand, this.func_82188_j(0.5F));
-                addBlacksmithItem(var2, Item.shovelSteel.shiftedIndex, this.rand, this.func_82188_j(0.2F));
-                addBlacksmithItem(var2, Item.shovelDiamond.shiftedIndex, this.rand, this.func_82188_j(0.2F));
-                addBlacksmithItem(var2, Item.hoeSteel.shiftedIndex, this.rand, this.func_82188_j(0.2F));
-                addBlacksmithItem(var2, Item.hoeDiamond.shiftedIndex, this.rand, this.func_82188_j(0.2F));
-                addBlacksmithItem(var2, Item.bootsSteel.shiftedIndex, this.rand, this.func_82188_j(0.2F));
-                addBlacksmithItem(var2, Item.bootsDiamond.shiftedIndex, this.rand, this.func_82188_j(0.2F));
-                addBlacksmithItem(var2, Item.helmetSteel.shiftedIndex, this.rand, this.func_82188_j(0.2F));
-                addBlacksmithItem(var2, Item.helmetDiamond.shiftedIndex, this.rand, this.func_82188_j(0.2F));
-                addBlacksmithItem(var2, Item.plateSteel.shiftedIndex, this.rand, this.func_82188_j(0.2F));
-                addBlacksmithItem(var2, Item.plateDiamond.shiftedIndex, this.rand, this.func_82188_j(0.2F));
-                addBlacksmithItem(var2, Item.legsSteel.shiftedIndex, this.rand, this.func_82188_j(0.2F));
-                addBlacksmithItem(var2, Item.legsDiamond.shiftedIndex, this.rand, this.func_82188_j(0.2F));
-                addBlacksmithItem(var2, Item.bootsChain.shiftedIndex, this.rand, this.func_82188_j(0.1F));
-                addBlacksmithItem(var2, Item.helmetChain.shiftedIndex, this.rand, this.func_82188_j(0.1F));
-                addBlacksmithItem(var2, Item.plateChain.shiftedIndex, this.rand, this.func_82188_j(0.1F));
-                addBlacksmithItem(var2, Item.legsChain.shiftedIndex, this.rand, this.func_82188_j(0.1F));
+                addMerchantItem(var2, Item.coal.shiftedIndex, this.rand, 0.7F);
+                addMerchantItem(var2, Item.ingotIron.shiftedIndex, this.rand, 0.5F);
+                addMerchantItem(var2, Item.ingotGold.shiftedIndex, this.rand, 0.5F);
+                addMerchantItem(var2, Item.diamond.shiftedIndex, this.rand, 0.5F);
+                addBlacksmithItem(var2, Item.swordSteel.shiftedIndex, this.rand, 0.5F);
+                addBlacksmithItem(var2, Item.swordDiamond.shiftedIndex, this.rand, 0.5F);
+                addBlacksmithItem(var2, Item.axeSteel.shiftedIndex, this.rand, 0.3F);
+                addBlacksmithItem(var2, Item.axeDiamond.shiftedIndex, this.rand, 0.3F);
+                addBlacksmithItem(var2, Item.pickaxeSteel.shiftedIndex, this.rand, 0.5F);
+                addBlacksmithItem(var2, Item.pickaxeDiamond.shiftedIndex, this.rand, 0.5F);
+                addBlacksmithItem(var2, Item.shovelSteel.shiftedIndex, this.rand, 0.2F);
+                addBlacksmithItem(var2, Item.shovelDiamond.shiftedIndex, this.rand, 0.2F);
+                addBlacksmithItem(var2, Item.hoeSteel.shiftedIndex, this.rand, 0.2F);
+                addBlacksmithItem(var2, Item.hoeDiamond.shiftedIndex, this.rand, 0.2F);
+                addBlacksmithItem(var2, Item.bootsSteel.shiftedIndex, this.rand, 0.2F);
+                addBlacksmithItem(var2, Item.bootsDiamond.shiftedIndex, this.rand, 0.2F);
+                addBlacksmithItem(var2, Item.helmetSteel.shiftedIndex, this.rand, 0.2F);
+                addBlacksmithItem(var2, Item.helmetDiamond.shiftedIndex, this.rand, 0.2F);
+                addBlacksmithItem(var2, Item.plateSteel.shiftedIndex, this.rand, 0.2F);
+                addBlacksmithItem(var2, Item.plateDiamond.shiftedIndex, this.rand, 0.2F);
+                addBlacksmithItem(var2, Item.legsSteel.shiftedIndex, this.rand, 0.2F);
+                addBlacksmithItem(var2, Item.legsDiamond.shiftedIndex, this.rand, 0.2F);
+                addBlacksmithItem(var2, Item.bootsChain.shiftedIndex, this.rand, 0.1F);
+                addBlacksmithItem(var2, Item.helmetChain.shiftedIndex, this.rand, 0.1F);
+                addBlacksmithItem(var2, Item.plateChain.shiftedIndex, this.rand, 0.1F);
+                addBlacksmithItem(var2, Item.legsChain.shiftedIndex, this.rand, 0.1F);
                 break;
             case 4:
-                addMerchantItem(var2, Item.coal.shiftedIndex, this.rand, this.func_82188_j(0.7F));
-                addMerchantItem(var2, Item.porkRaw.shiftedIndex, this.rand, this.func_82188_j(0.5F));
-                addMerchantItem(var2, Item.beefRaw.shiftedIndex, this.rand, this.func_82188_j(0.5F));
-                addBlacksmithItem(var2, Item.saddle.shiftedIndex, this.rand, this.func_82188_j(0.1F));
-                addBlacksmithItem(var2, Item.plateLeather.shiftedIndex, this.rand, this.func_82188_j(0.3F));
-                addBlacksmithItem(var2, Item.bootsLeather.shiftedIndex, this.rand, this.func_82188_j(0.3F));
-                addBlacksmithItem(var2, Item.helmetLeather.shiftedIndex, this.rand, this.func_82188_j(0.3F));
-                addBlacksmithItem(var2, Item.legsLeather.shiftedIndex, this.rand, this.func_82188_j(0.3F));
-                addBlacksmithItem(var2, Item.porkCooked.shiftedIndex, this.rand, this.func_82188_j(0.3F));
-                addBlacksmithItem(var2, Item.beefCooked.shiftedIndex, this.rand, this.func_82188_j(0.3F));
+                addMerchantItem(var2, Item.coal.shiftedIndex, this.rand, 0.7F);
+                addMerchantItem(var2, Item.porkRaw.shiftedIndex, this.rand, 0.5F);
+                addMerchantItem(var2, Item.beefRaw.shiftedIndex, this.rand, 0.5F);
+                addBlacksmithItem(var2, Item.saddle.shiftedIndex, this.rand, 0.1F);
+                addBlacksmithItem(var2, Item.plateLeather.shiftedIndex, this.rand, 0.3F);
+                addBlacksmithItem(var2, Item.bootsLeather.shiftedIndex, this.rand, 0.3F);
+                addBlacksmithItem(var2, Item.helmetLeather.shiftedIndex, this.rand, 0.3F);
+                addBlacksmithItem(var2, Item.legsLeather.shiftedIndex, this.rand, 0.3F);
+                addBlacksmithItem(var2, Item.porkCooked.shiftedIndex, this.rand, 0.3F);
+                addBlacksmithItem(var2, Item.beefCooked.shiftedIndex, this.rand, 0.3F);
         }
+
+        VillagerRegistry.manageVillagerTrades(var2, this, this.getProfession(), this.rand);
 
         if (var2.isEmpty())
         {
@@ -619,14 +533,6 @@ public class EntityVillager extends EntityAgeable implements INpc, IMerchant
         {
             this.generateRandomParticles("heart");
         }
-        else if (par1 == 13)
-        {
-            this.generateRandomParticles("angryVillager");
-        }
-        else if (par1 == 14)
-        {
-            this.generateRandomParticles("happyVillager");
-        }
         else
         {
             super.handleHealthUpdate(par1);
@@ -649,24 +555,14 @@ public class EntityVillager extends EntityAgeable implements INpc, IMerchant
         }
     }
 
-    public void func_82163_bD()
-    {
-        VillagerRegistry.applyRandomTrade(this, worldObj.rand);
-    }
-
-    public void func_82187_q()
-    {
-        this.field_82190_bM = true;
-    }
-
     static
     {
         villagerStockList.put(Integer.valueOf(Item.coal.shiftedIndex), new Tuple(Integer.valueOf(16), Integer.valueOf(24)));
         villagerStockList.put(Integer.valueOf(Item.ingotIron.shiftedIndex), new Tuple(Integer.valueOf(8), Integer.valueOf(10)));
         villagerStockList.put(Integer.valueOf(Item.ingotGold.shiftedIndex), new Tuple(Integer.valueOf(8), Integer.valueOf(10)));
         villagerStockList.put(Integer.valueOf(Item.diamond.shiftedIndex), new Tuple(Integer.valueOf(4), Integer.valueOf(6)));
-        villagerStockList.put(Integer.valueOf(Item.paper.shiftedIndex), new Tuple(Integer.valueOf(24), Integer.valueOf(36)));
-        villagerStockList.put(Integer.valueOf(Item.book.shiftedIndex), new Tuple(Integer.valueOf(11), Integer.valueOf(13)));
+        villagerStockList.put(Integer.valueOf(Item.paper.shiftedIndex), new Tuple(Integer.valueOf(19), Integer.valueOf(30)));
+        villagerStockList.put(Integer.valueOf(Item.book.shiftedIndex), new Tuple(Integer.valueOf(12), Integer.valueOf(15)));
         villagerStockList.put(Integer.valueOf(Item.writtenBook.shiftedIndex), new Tuple(Integer.valueOf(1), Integer.valueOf(1)));
         villagerStockList.put(Integer.valueOf(Item.enderPearl.shiftedIndex), new Tuple(Integer.valueOf(3), Integer.valueOf(4)));
         villagerStockList.put(Integer.valueOf(Item.eyeOfEnder.shiftedIndex), new Tuple(Integer.valueOf(2), Integer.valueOf(3)));
@@ -724,6 +620,6 @@ public class EntityVillager extends EntityAgeable implements INpc, IMerchant
         blacksmithSellingList.put(Integer.valueOf(Item.beefCooked.shiftedIndex), new Tuple(Integer.valueOf(-7), Integer.valueOf(-5)));
         blacksmithSellingList.put(Integer.valueOf(Item.chickenCooked.shiftedIndex), new Tuple(Integer.valueOf(-8), Integer.valueOf(-6)));
         blacksmithSellingList.put(Integer.valueOf(Item.eyeOfEnder.shiftedIndex), new Tuple(Integer.valueOf(7), Integer.valueOf(11)));
-        blacksmithSellingList.put(Integer.valueOf(Item.arrow.shiftedIndex), new Tuple(Integer.valueOf(-12), Integer.valueOf(-8)));
+        blacksmithSellingList.put(Integer.valueOf(Item.arrow.shiftedIndex), new Tuple(Integer.valueOf(-5), Integer.valueOf(-19)));
     }
 }

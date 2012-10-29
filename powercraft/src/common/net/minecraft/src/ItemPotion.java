@@ -2,7 +2,6 @@ package net.minecraft.src;
 
 import cpw.mods.fml.common.Side;
 import cpw.mods.fml.common.asm.SideOnly;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
@@ -29,31 +28,7 @@ public class ItemPotion extends Item
      */
     public List getEffects(ItemStack par1ItemStack)
     {
-        if (par1ItemStack.hasTagCompound() && par1ItemStack.getTagCompound().hasKey("CustomPotionEffects"))
-        {
-            ArrayList var6 = new ArrayList();
-            NBTTagList var3 = par1ItemStack.getTagCompound().getTagList("CustomPotionEffects");
-
-            for (int var4 = 0; var4 < var3.tagCount(); ++var4)
-            {
-                NBTTagCompound var5 = (NBTTagCompound)var3.tagAt(var4);
-                var6.add(PotionEffect.func_82722_b(var5));
-            }
-
-            return var6;
-        }
-        else
-        {
-            List var2 = (List)this.effectCache.get(Integer.valueOf(par1ItemStack.getItemDamage()));
-
-            if (var2 == null)
-            {
-                var2 = PotionHelper.getPotionEffects(par1ItemStack.getItemDamage(), false);
-                this.effectCache.put(Integer.valueOf(par1ItemStack.getItemDamage()), var2);
-            }
-
-            return var2;
-        }
+        return this.getEffects(par1ItemStack.getItemDamage());
     }
 
     /**
@@ -140,7 +115,7 @@ public class ItemPotion extends Item
 
             if (!par2World.isRemote)
             {
-                par2World.spawnEntityInWorld(new EntityPotion(par2World, par3EntityPlayer, par1ItemStack));
+                par2World.spawnEntityInWorld(new EntityPotion(par2World, par3EntityPlayer, par1ItemStack.getItemDamage()));
             }
 
             return par1ItemStack;
@@ -190,15 +165,9 @@ public class ItemPotion extends Item
     }
 
     @SideOnly(Side.CLIENT)
-    public int getColorFromDamage(int par1)
+    public int getColorFromDamage(int par1, int par2)
     {
-        return PotionHelper.func_77915_a(par1, false);
-    }
-
-    @SideOnly(Side.CLIENT)
-    public int func_82790_a(ItemStack par1ItemStack, int par2)
-    {
-        return par2 > 0 ? 16777215 : this.getColorFromDamage(par1ItemStack.getItemDamage());
+        return par2 > 0 ? 16777215 : PotionHelper.func_77915_a(par1, false);
     }
 
     @SideOnly(Side.CLIENT)
@@ -236,6 +205,7 @@ public class ItemPotion extends Item
         }
     }
 
+    @SideOnly(Side.CLIENT)
     public String getItemDisplayName(ItemStack par1ItemStack)
     {
         if (par1ItemStack.getItemDamage() == 0)
@@ -273,45 +243,45 @@ public class ItemPotion extends Item
     /**
      * allows items to add custom lines of information to the mouseover description
      */
-    public void addInformation(ItemStack par1ItemStack, EntityPlayer par2EntityPlayer, List par3List, boolean par4)
+    public void addInformation(ItemStack par1ItemStack, List par2List)
     {
         if (par1ItemStack.getItemDamage() != 0)
         {
-            List var5 = Item.potion.getEffects(par1ItemStack);
+            List var3 = Item.potion.getEffects(par1ItemStack);
 
-            if (var5 != null && !var5.isEmpty())
+            if (var3 != null && !var3.isEmpty())
             {
-                Iterator var9 = var5.iterator();
+                Iterator var7 = var3.iterator();
 
-                while (var9.hasNext())
+                while (var7.hasNext())
                 {
-                    PotionEffect var7 = (PotionEffect)var9.next();
-                    String var8 = StatCollector.translateToLocal(var7.getEffectName()).trim();
+                    PotionEffect var5 = (PotionEffect)var7.next();
+                    String var6 = StatCollector.translateToLocal(var5.getEffectName()).trim();
 
-                    if (var7.getAmplifier() > 0)
+                    if (var5.getAmplifier() > 0)
                     {
-                        var8 = var8 + " " + StatCollector.translateToLocal("potion.potency." + var7.getAmplifier()).trim();
+                        var6 = var6 + " " + StatCollector.translateToLocal("potion.potency." + var5.getAmplifier()).trim();
                     }
 
-                    if (var7.getDuration() > 20)
+                    if (var5.getDuration() > 20)
                     {
-                        var8 = var8 + " (" + Potion.getDurationString(var7) + ")";
+                        var6 = var6 + " (" + Potion.getDurationString(var5) + ")";
                     }
 
-                    if (Potion.potionTypes[var7.getPotionID()].isBadEffect())
+                    if (Potion.potionTypes[var5.getPotionID()].isBadEffect())
                     {
-                        par3List.add("\u00a7c" + var8);
+                        par2List.add("\u00a7c" + var6);
                     }
                     else
                     {
-                        par3List.add("\u00a77" + var8);
+                        par2List.add("\u00a77" + var6);
                     }
                 }
             }
             else
             {
-                String var6 = StatCollector.translateToLocal("potion.empty").trim();
-                par3List.add("\u00a77" + var6);
+                String var4 = StatCollector.translateToLocal("potion.empty").trim();
+                par2List.add("\u00a77" + var4);
             }
         }
     }

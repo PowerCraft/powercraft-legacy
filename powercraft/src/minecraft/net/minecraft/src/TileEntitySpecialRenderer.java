@@ -26,16 +26,6 @@ public abstract class TileEntitySpecialRenderer
         }
     }
 
-    protected void func_82392_a(String par1Str, String par2Str)
-    {
-        RenderEngine var3 = this.tileEntityRenderer.renderEngine;
-
-        if (var3 != null)
-        {
-            var3.bindTexture(var3.getTextureForDownloadableImage(par1Str, par2Str));
-        }
-    }
-
     /**
      * Associate a TileEntityRenderer with this TileEntitySpecialRenderer
      */

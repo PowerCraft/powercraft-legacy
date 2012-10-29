@@ -299,7 +299,7 @@ public abstract class BaseMod implements cpw.mods.fml.common.modloader.BaseModPr
 
     /**
      * Only implemented on the client side
-     * {@link #serverChat(NetServerHandler, String)}
+     * {@link #serverChat(EntityPlayer, Packet3Chat)}
      *
      * @param text
      */
@@ -422,7 +422,7 @@ public abstract class BaseMod implements cpw.mods.fml.common.modloader.BaseModPr
      * Called when a client logs out of the server.
      */
     @Override
-    public void onClientLogout(INetworkManager mgr)
+    public void onClientLogout(NetworkManager mgr)
     {
 
     }

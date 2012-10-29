@@ -10,11 +10,6 @@ public class CommandServerPardon extends CommandBase
         return "pardon";
     }
 
-    public int func_82362_a()
-    {
-        return 3;
-    }
-
     public String getCommandUsage(ICommandSender par1ICommandSender)
     {
         return par1ICommandSender.translateString("commands.unban.usage", new Object[0]);

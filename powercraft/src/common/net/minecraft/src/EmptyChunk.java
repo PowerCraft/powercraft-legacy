@@ -177,7 +177,7 @@ public class EmptyChunk extends Chunk
     /**
      * Gets all entities that can be assigned to the specified class. Args: entityClass, aabb, listToFill
      */
-    public void getEntitiesOfTypeWithinAAAB(Class par1Class, AxisAlignedBB par2AxisAlignedBB, List par3List, IEntitySelector par4IEntitySelector) {}
+    public void getEntitiesOfTypeWithinAAAB(Class par1Class, AxisAlignedBB par2AxisAlignedBB, List par3List) {}
 
     /**
      * Returns true if this Chunk needs to be saved

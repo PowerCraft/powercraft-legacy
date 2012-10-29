@@ -13,11 +13,15 @@ public class EntityPigZombie extends EntityZombie
     /** A random delay until this PigZombie next makes a sound. */
     private int randomSoundDelay = 0;
 
+    /** The ItemStack that any PigZombie holds (a gold sword, in fact). */
+    private static final ItemStack defaultHeldItem = new ItemStack(Item.swordGold, 1);
+
     public EntityPigZombie(World par1World)
     {
         super(par1World);
         this.texture = "/mob/pigzombie.png";
         this.moveSpeed = 0.5F;
+        this.attackStrength = 5;
         this.isImmuneToFire = true;
     }
 
@@ -42,16 +46,6 @@ public class EntityPigZombie extends EntityZombie
         }
 
         super.onUpdate();
-    }
-
-    @SideOnly(Side.CLIENT)
-
-    /**
-     * Returns the texture's file path as a String.
-     */
-    public String getTexture()
-    {
-        return "/mob/pigzombie.png";
     }
 
     /**
@@ -173,17 +167,31 @@ public class EntityPigZombie extends EntityZombie
         }
     }
 
-    /**
-     * Called when a player interacts with a mob. e.g. gets milk from a cow, gets into the saddle on a pig.
-     */
-    public boolean interact(EntityPlayer par1EntityPlayer)
-    {
-        return false;
-    }
-
     protected void dropRareDrop(int par1)
     {
-        this.dropItem(Item.ingotGold.shiftedIndex, 1);
+        if (par1 > 0)
+        {
+            ItemStack var2 = new ItemStack(Item.swordGold);
+            EnchantmentHelper.addRandomEnchantment(this.rand, var2, 5);
+            this.entityDropItem(var2, 0.0F);
+        }
+        else
+        {
+            int var3 = this.rand.nextInt(3);
+
+            if (var3 == 0)
+            {
+                this.dropItem(Item.ingotGold.shiftedIndex, 1);
+            }
+            else if (var3 == 1)
+            {
+                this.dropItem(Item.swordGold.shiftedIndex, 1);
+            }
+            else if (var3 == 2)
+            {
+                this.dropItem(Item.helmetGold.shiftedIndex, 1);
+            }
+        }
     }
 
     /**
@@ -194,27 +202,13 @@ public class EntityPigZombie extends EntityZombie
         return Item.rottenFlesh.shiftedIndex;
     }
 
-    protected void func_82164_bB()
+    @SideOnly(Side.CLIENT)
+
+    /**
+     * Returns the item that this EntityLiving is holding, if any.
+     */
+    public ItemStack getHeldItem()
     {
-        this.func_70062_b(0, new ItemStack(Item.swordGold));
-    }
-
-    public void func_82163_bD()
-    {
-        super.func_82163_bD();
-        this.func_82229_g(false);
-    }
-
-    public int func_82193_c(Entity par1Entity)
-    {
-        ItemStack var2 = this.getHeldItem();
-        int var3 = 5;
-
-        if (var2 != null)
-        {
-            var3 += var2.getDamageVsEntity(this);
-        }
-
-        return var3;
+        return defaultHeldItem;
     }
 }

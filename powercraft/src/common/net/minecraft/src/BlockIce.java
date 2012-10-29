@@ -44,7 +44,7 @@ public class BlockIce extends BlockBreakable
         par2EntityPlayer.addStat(StatList.mineBlockStatArray[this.blockID], 1);
         par2EntityPlayer.addExhaustion(0.025F);
 
-        if (this.canSilkHarvest() && EnchantmentHelper.getSilkTouchModifier(par2EntityPlayer))
+        if (this.canSilkHarvest() && EnchantmentHelper.getSilkTouchModifier(par2EntityPlayer.inventory))
         {
             ItemStack var9 = this.createStackedBlock(par6);
 
@@ -61,7 +61,7 @@ public class BlockIce extends BlockBreakable
                 return;
             }
 
-            int var7 = EnchantmentHelper.getFortuneModifier(par2EntityPlayer);
+            int var7 = EnchantmentHelper.getFortuneModifier(par2EntityPlayer.inventory);
             this.dropBlockAsItem(par1World, par3, par4, par5, par6, var7);
             Material var8 = par1World.getBlockMaterial(par3, par4 - 1, par5);
 

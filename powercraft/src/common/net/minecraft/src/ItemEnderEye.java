@@ -17,7 +17,7 @@ public class ItemEnderEye extends Item
         int var11 = par3World.getBlockId(par4, par5, par6);
         int var12 = par3World.getBlockMetadata(par4, par5, par6);
 
-        if (par2EntityPlayer.func_82247_a(par4, par5, par6, par7, par1ItemStack) && var11 == Block.endPortalFrame.blockID && !BlockEndPortalFrame.isEnderEyeInserted(var12))
+        if (par2EntityPlayer.canPlayerEdit(par4, par5, par6) && var11 == Block.endPortalFrame.blockID && !BlockEndPortalFrame.isEnderEyeInserted(var12))
         {
             if (par3World.isRemote)
             {

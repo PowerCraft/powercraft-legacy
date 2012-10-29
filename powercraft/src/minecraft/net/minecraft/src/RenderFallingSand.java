@@ -26,7 +26,7 @@ public class RenderFallingSand extends Render
         World var11 = par1EntityFallingSand.getWorld();
         GL11.glDisable(GL11.GL_LIGHTING);
 
-        if (var10.getRenderType() != 0)
+        if (var10 == Block.dragonEgg)
         {
             this.renderBlocks.blockAccess = var11;
             Tessellator var12 = Tessellator.instance;
@@ -38,7 +38,6 @@ public class RenderFallingSand extends Render
         }
         else if (var10 != null)
         {
-            this.renderBlocks.func_83018_a(var10);
             this.renderBlocks.func_78588_a(var10, var11, MathHelper.floor_double(par1EntityFallingSand.posX), MathHelper.floor_double(par1EntityFallingSand.posY), MathHelper.floor_double(par1EntityFallingSand.posZ), par1EntityFallingSand.field_70285_b);
         }
 

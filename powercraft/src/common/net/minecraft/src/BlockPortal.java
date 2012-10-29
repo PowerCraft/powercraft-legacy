@@ -30,12 +30,7 @@ public class BlockPortal extends BlockBreakable
 
             if (var6 > 0 && !par1World.isBlockNormalCube(par2, var6 + 1, par4))
             {
-                Entity var7 = ItemMonsterPlacer.spawnCreature(par1World, 57, (double)par2 + 0.5D, (double)var6 + 1.1D, (double)par4 + 0.5D);
-
-                if (var7 != null)
-                {
-                    var7.timeUntilPortal = var7.func_82147_ab();
-                }
+                ItemMonsterPlacer.spawnCreature(par1World, 57, (double)par2 + 0.5D, (double)var6 + 1.1D, (double)par4 + 0.5D);
             }
         }
     }
@@ -220,6 +215,25 @@ public class BlockPortal extends BlockBreakable
         }
     }
 
+    /**
+     * Returns the quantity of items to drop on block destruction.
+     */
+    public int quantityDropped(Random par1Random)
+    {
+        return 0;
+    }
+
+    /**
+     * Triggered whenever an entity collides with this block (enters into the block). Args: world, x, y, z, entity
+     */
+    public void onEntityCollidedWithBlock(World par1World, int par2, int par3, int par4, Entity par5Entity)
+    {
+        if (par5Entity.ridingEntity == null && par5Entity.riddenByEntity == null)
+        {
+            par5Entity.setInPortal();
+        }
+    }
+
     @SideOnly(Side.CLIENT)
 
     /**
@@ -241,25 +255,6 @@ public class BlockPortal extends BlockBreakable
             boolean var10 = var6 || var7;
             boolean var11 = var8 || var9;
             return var10 && par5 == 4 ? true : (var10 && par5 == 5 ? true : (var11 && par5 == 2 ? true : var11 && par5 == 3));
-        }
-    }
-
-    /**
-     * Returns the quantity of items to drop on block destruction.
-     */
-    public int quantityDropped(Random par1Random)
-    {
-        return 0;
-    }
-
-    /**
-     * Triggered whenever an entity collides with this block (enters into the block). Args: world, x, y, z, entity
-     */
-    public void onEntityCollidedWithBlock(World par1World, int par2, int par3, int par4, Entity par5Entity)
-    {
-        if (par5Entity.ridingEntity == null && par5Entity.riddenByEntity == null)
-        {
-            par5Entity.setInPortal();
         }
     }
 

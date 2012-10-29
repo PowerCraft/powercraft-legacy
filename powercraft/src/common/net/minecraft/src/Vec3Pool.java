@@ -27,28 +27,21 @@ public class Vec3Pool
      */
     public Vec3 getVecFromPool(double par1, double par3, double par5)
     {
-        if (this.func_82589_e())
+        Vec3 var7;
+
+        if (this.nextFreeSpace >= this.vec3Cache.size())
         {
-            return new Vec3(this, par1, par3, par5);
+            var7 = new Vec3(par1, par3, par5);
+            this.vec3Cache.add(var7);
         }
         else
         {
-            Vec3 var7;
-
-            if (this.nextFreeSpace >= this.vec3Cache.size())
-            {
-                var7 = new Vec3(this, par1, par3, par5);
-                this.vec3Cache.add(var7);
-            }
-            else
-            {
-                var7 = (Vec3)this.vec3Cache.get(this.nextFreeSpace);
-                var7.setComponents(par1, par3, par5);
-            }
-
-            ++this.nextFreeSpace;
-            return var7;
+            var7 = (Vec3)this.vec3Cache.get(this.nextFreeSpace);
+            var7.setComponents(par1, par3, par5);
         }
+
+        ++this.nextFreeSpace;
+        return var7;
     }
 
     /**
@@ -56,52 +49,31 @@ public class Vec3Pool
      */
     public void clear()
     {
-        if (!this.func_82589_e())
+        if (this.nextFreeSpace > this.maximumSizeSinceLastTruncation)
         {
-            if (this.nextFreeSpace > this.maximumSizeSinceLastTruncation)
-            {
-                this.maximumSizeSinceLastTruncation = this.nextFreeSpace;
-            }
-
-            if (this.resetCount++ == this.truncateArrayResetThreshold)
-            {
-                int var1 = Math.max(this.maximumSizeSinceLastTruncation, this.vec3Cache.size() - this.minimumSize);
-
-                while (this.vec3Cache.size() > var1)
-                {
-                    this.vec3Cache.remove(var1);
-                }
-
-                this.maximumSizeSinceLastTruncation = 0;
-                this.resetCount = 0;
-            }
-
-            this.nextFreeSpace = 0;
+            this.maximumSizeSinceLastTruncation = this.nextFreeSpace;
         }
+
+        if (this.resetCount++ == this.truncateArrayResetThreshold)
+        {
+            int var1 = Math.max(this.maximumSizeSinceLastTruncation, this.vec3Cache.size() - this.minimumSize);
+
+            while (this.vec3Cache.size() > var1)
+            {
+                this.vec3Cache.remove(var1);
+            }
+
+            this.maximumSizeSinceLastTruncation = 0;
+            this.resetCount = 0;
+        }
+
+        this.nextFreeSpace = 0;
     }
 
     @SideOnly(Side.CLIENT)
     public void clearAndFreeCache()
     {
-        if (!this.func_82589_e())
-        {
-            this.nextFreeSpace = 0;
-            this.vec3Cache.clear();
-        }
-    }
-
-    public int func_82591_c()
-    {
-        return this.vec3Cache.size();
-    }
-
-    public int func_82590_d()
-    {
-        return this.nextFreeSpace;
-    }
-
-    private boolean func_82589_e()
-    {
-        return this.minimumSize < 0 || this.truncateArrayResetThreshold < 0;
+        this.nextFreeSpace = 0;
+        this.vec3Cache.clear();
     }
 }

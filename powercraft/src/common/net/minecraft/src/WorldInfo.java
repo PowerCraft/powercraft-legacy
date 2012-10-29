@@ -12,7 +12,6 @@ public class WorldInfo
     /** Holds the seed of the currently world. */
     private long randomSeed;
     private WorldType terrainType;
-    private String field_82576_c;
 
     /** The spawn zone position X coordinate. */
     private int spawnX;
@@ -22,7 +21,6 @@ public class WorldInfo
 
     /** The spawn zone position Z coordinate. */
     private int spawnZ;
-    private long field_82575_g;
 
     /** The current world time in ticks, ranging from 0 to 23999. */
     private long worldTime;
@@ -65,21 +63,16 @@ public class WorldInfo
     private boolean hardcore;
     private boolean allowCommands;
     private boolean initialized;
-    private GameRules field_82577_x;
     private Map<String,NBTBase> additionalProperties;
 
     protected WorldInfo()
     {
         this.terrainType = WorldType.DEFAULT;
-        this.field_82576_c = "";
-        this.field_82577_x = new GameRules();
     }
 
     public WorldInfo(NBTTagCompound par1NBTTagCompound)
     {
         this.terrainType = WorldType.DEFAULT;
-        this.field_82576_c = "";
-        this.field_82577_x = new GameRules();
         this.randomSeed = par1NBTTagCompound.getLong("RandomSeed");
 
         if (par1NBTTagCompound.hasKey("generatorName"))
@@ -102,11 +95,6 @@ public class WorldInfo
 
                 this.terrainType = this.terrainType.getWorldTypeForGeneratorVersion(var3);
             }
-
-            if (par1NBTTagCompound.hasKey("generatorOptions"))
-            {
-                this.field_82576_c = par1NBTTagCompound.getString("generatorOptions");
-            }
         }
 
         this.theGameType = EnumGameType.getByID(par1NBTTagCompound.getInteger("GameType"));
@@ -123,17 +111,7 @@ public class WorldInfo
         this.spawnX = par1NBTTagCompound.getInteger("SpawnX");
         this.spawnY = par1NBTTagCompound.getInteger("SpawnY");
         this.spawnZ = par1NBTTagCompound.getInteger("SpawnZ");
-        this.field_82575_g = par1NBTTagCompound.getLong("Time");
-
-        if (par1NBTTagCompound.hasKey("DayTime"))
-        {
-            this.worldTime = par1NBTTagCompound.getLong("DayTime");
-        }
-        else
-        {
-            this.worldTime = this.field_82575_g;
-        }
-
+        this.worldTime = par1NBTTagCompound.getLong("Time");
         this.lastTimePlayed = par1NBTTagCompound.getLong("LastPlayed");
         this.sizeOnDisk = par1NBTTagCompound.getLong("SizeOnDisk");
         this.levelName = par1NBTTagCompound.getString("LevelName");
@@ -167,25 +145,17 @@ public class WorldInfo
             this.playerTag = par1NBTTagCompound.getCompoundTag("Player");
             this.dimension = this.playerTag.getInteger("Dimension");
         }
-
-        if (par1NBTTagCompound.hasKey("GameRules"))
-        {
-            this.field_82577_x.func_82768_a(par1NBTTagCompound.getCompoundTag("GameRules"));
-        }
     }
 
     public WorldInfo(WorldSettings par1WorldSettings, String par2Str)
     {
         this.terrainType = WorldType.DEFAULT;
-        this.field_82576_c = "";
-        this.field_82577_x = new GameRules();
         this.randomSeed = par1WorldSettings.getSeed();
         this.theGameType = par1WorldSettings.getGameType();
         this.mapFeaturesEnabled = par1WorldSettings.isMapFeaturesEnabled();
         this.levelName = par2Str;
         this.hardcore = par1WorldSettings.getHardcoreEnabled();
         this.terrainType = par1WorldSettings.getTerrainType();
-        this.field_82576_c = par1WorldSettings.func_82749_j();
         this.allowCommands = par1WorldSettings.areCommandsAllowed();
         this.initialized = false;
     }
@@ -193,17 +163,13 @@ public class WorldInfo
     public WorldInfo(WorldInfo par1WorldInfo)
     {
         this.terrainType = WorldType.DEFAULT;
-        this.field_82576_c = "";
-        this.field_82577_x = new GameRules();
         this.randomSeed = par1WorldInfo.randomSeed;
         this.terrainType = par1WorldInfo.terrainType;
-        this.field_82576_c = par1WorldInfo.field_82576_c;
         this.theGameType = par1WorldInfo.theGameType;
         this.mapFeaturesEnabled = par1WorldInfo.mapFeaturesEnabled;
         this.spawnX = par1WorldInfo.spawnX;
         this.spawnY = par1WorldInfo.spawnY;
         this.spawnZ = par1WorldInfo.spawnZ;
-        this.field_82575_g = par1WorldInfo.field_82575_g;
         this.worldTime = par1WorldInfo.worldTime;
         this.lastTimePlayed = par1WorldInfo.lastTimePlayed;
         this.sizeOnDisk = par1WorldInfo.sizeOnDisk;
@@ -218,7 +184,6 @@ public class WorldInfo
         this.hardcore = par1WorldInfo.hardcore;
         this.allowCommands = par1WorldInfo.allowCommands;
         this.initialized = par1WorldInfo.initialized;
-        this.field_82577_x = par1WorldInfo.field_82577_x;
     }
 
     /**
@@ -246,14 +211,12 @@ public class WorldInfo
         par1NBTTagCompound.setLong("RandomSeed", this.randomSeed);
         par1NBTTagCompound.setString("generatorName", this.terrainType.getWorldTypeName());
         par1NBTTagCompound.setInteger("generatorVersion", this.terrainType.getGeneratorVersion());
-        par1NBTTagCompound.setString("generatorOptions", this.field_82576_c);
         par1NBTTagCompound.setInteger("GameType", this.theGameType.getID());
         par1NBTTagCompound.setBoolean("MapFeatures", this.mapFeaturesEnabled);
         par1NBTTagCompound.setInteger("SpawnX", this.spawnX);
         par1NBTTagCompound.setInteger("SpawnY", this.spawnY);
         par1NBTTagCompound.setInteger("SpawnZ", this.spawnZ);
-        par1NBTTagCompound.setLong("Time", this.field_82575_g);
-        par1NBTTagCompound.setLong("DayTime", this.worldTime);
+        par1NBTTagCompound.setLong("Time", this.worldTime);
         par1NBTTagCompound.setLong("SizeOnDisk", this.sizeOnDisk);
         par1NBTTagCompound.setLong("LastPlayed", System.currentTimeMillis());
         par1NBTTagCompound.setString("LevelName", this.levelName);
@@ -265,7 +228,6 @@ public class WorldInfo
         par1NBTTagCompound.setBoolean("hardcore", this.hardcore);
         par1NBTTagCompound.setBoolean("allowCommands", this.allowCommands);
         par1NBTTagCompound.setBoolean("initialized", this.initialized);
-        par1NBTTagCompound.setCompoundTag("GameRules", this.field_82577_x.func_82770_a());
 
         if (par2NBTTagCompound != null)
         {
@@ -303,11 +265,6 @@ public class WorldInfo
     public int getSpawnZ()
     {
         return this.spawnZ;
-    }
-
-    public long func_82573_f()
-    {
-        return this.field_82575_g;
     }
 
     /**
@@ -357,9 +314,12 @@ public class WorldInfo
         this.spawnY = par1;
     }
 
-    public void func_82572_b(long par1)
+    /**
+     * Set current world time
+     */
+    public void setWorldTime(long par1)
     {
-        this.field_82575_g = par1;
+        this.worldTime = par1;
     }
 
     @SideOnly(Side.CLIENT)
@@ -370,14 +330,6 @@ public class WorldInfo
     public void setSpawnZ(int par1)
     {
         this.spawnZ = par1;
-    }
-
-    /**
-     * Set current world time
-     */
-    public void setWorldTime(long par1)
-    {
-        this.worldTime = par1;
     }
 
     /**
@@ -535,11 +487,6 @@ public class WorldInfo
         this.terrainType = par1WorldType;
     }
 
-    public String func_82571_y()
-    {
-        return this.field_82576_c;
-    }
-
     /**
      * Returns true if commands are allowed on this World.
      */
@@ -562,11 +509,6 @@ public class WorldInfo
     public void setServerInitialized(boolean par1)
     {
         this.initialized = par1;
-    }
-
-    public GameRules func_82574_x()
-    {
-        return this.field_82577_x;
     }
 
     /**
