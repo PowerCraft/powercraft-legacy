@@ -1,5 +1,5 @@
-Minecraft Coder Pack 7.2 for Minecraft 1.3.2
-============================================
+Minecraft Coder Pack 7.19 for Minecraft 1.4.2
+=============================================
 MCP is (c) Copyright by the MCP Team
 
 License and terms of use.
@@ -215,6 +215,9 @@ and of course:
 
 History:
 ========
+7.19 - Updated to support Minecraft 1.4.2 and MinecraftServer 1.4.2
+7.18 - Updated to support Minecraft 1.4.1 and MinecraftServer 1.4.1 (pre-release)
+7.17 - Updated to support Minecraft 1.4 and MinecraftServer 1.4 (pre-relrease)
 7.2  - Updated to support Minecraft 1.3.2 and MinecraftServer 1.3.2
 7.0a - Added fernflower decompiler
 7.0  - Updated to support Minecraft 1.3.1 and MinecraftServer 1.3.1
@@ -259,7 +262,7 @@ History:
 
 Roadmap:
 ========
-7.3+ - New awesome features, improvements and updates :)
+7.19+ - New awesome features, improvements and updates :)
 
 _________________________________________________________________________________________________________________
 _________________________________________________________________________________________________________________
