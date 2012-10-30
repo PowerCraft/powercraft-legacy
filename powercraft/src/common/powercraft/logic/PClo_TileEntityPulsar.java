@@ -144,6 +144,11 @@ public class PClo_TileEntityPulsar extends PC_TileEntity {
 		return paused;
 	}
 	
+	public void setPaused(boolean paused){
+		PC_PacketHandler.setTileEntity(this, "paused", paused);
+		this.paused = paused;
+	}
+	
 	@Override
 	public void setData(Object[] o) {
 		int p = 0;
@@ -161,8 +166,8 @@ public class PClo_TileEntityPulsar extends PC_TileEntity {
 				paused = (Boolean)o[p++];
 			}else if(var.equals("change")){
 				if (worldObj.isRemote){
-					if (!silent && PC_Utils.isSoundEnabled() && worldObj.isRemote) {
-						worldObj.playSound(xCoord + 0.5D, yCoord + 0.5D, zCoord + 0.5D, "random.click", 1.0F, 1.0F);
+					if (!silent) {
+						PC_Utils.playSound(xCoord + 0.5D, yCoord + 0.5D, zCoord + 0.5D, "random.click", 1.0F, 1.0F);
 					}
 					worldObj.markBlockAsNeedsUpdate(xCoord, yCoord, zCoord);
 				}

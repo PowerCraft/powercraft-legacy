@@ -30,6 +30,7 @@ public class mod_PowerCraftLogic extends PC_Module {
 	public static PC_Block gate;
 	public static PC_Block flipFlop;
 	public static PC_Block delayer;
+	public static PC_Block special;
 	
 	public static mod_PowerCraftLogic getInstance(){
 		return (mod_PowerCraftLogic)PC_Module.getModule("PowerCraft-Logic");
@@ -89,8 +90,14 @@ public class mod_PowerCraftLogic extends PC_Module {
 				"pc.flipflop.RS.desc", "set/reset memory",
 				"pc.flipflop.T.desc", "divides signal by 2",
 				"pc.flipflop.random.desc", "changes state randomly on pulse",
-				"pc.gate.buffer.desc", "slows down signal",
-				"pc.gate.slowRepeater.desc", "makes pulses longer",
+				"pc.delayer.buffer.desc", "slows down signal",
+				"pc.delayer.slowRepeater.desc", "makes pulses longer",
+				"pc.special.day.desc", "on during day",
+				"pc.special.night.desc", "on during night",
+				"pc.special.rain.desc", "on during rain",
+				"pc.special.chestEmpty.desc", "on if nearby container is empty",
+				"pc.special.chestFull.desc", "on if nearby container is full",
+				"pc.special.special.desc", "spawner & pulsar control",
 				
 				"pc.gui.pulsar.silent", "Silent",
 				"pc.gui.pulsar.paused", "Pause",
@@ -111,6 +118,7 @@ public class mod_PowerCraftLogic extends PC_Module {
 		gate = (PC_Block)PC_Utils.register(this, 462, PClo_BlockGate.class, PClo_ItemBlockGate.class, PClo_TileEntityGate.class);
 		flipFlop = (PC_Block)PC_Utils.register(this, 463, PClo_BlockFlipFlop.class, PClo_ItemBlockFlipFlop.class, PClo_TileEntityFlipFlop.class);
 		delayer = (PC_Block)PC_Utils.register(this, 464, PClo_BlockDelayer.class, PClo_ItemBlockDelayer.class, PClo_TileEntityDelayer.class);
+		special = (PC_Block)PC_Utils.register(this, 465, PClo_BlockSpecial.class, PClo_ItemBlockSpecial.class, PClo_TileEntitySpecial.class);
 	}
 
 	@Override
