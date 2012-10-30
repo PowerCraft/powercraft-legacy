@@ -1,6 +1,7 @@
 package powercraft.core;
 
 import java.io.ByteArrayOutputStream;
+import java.io.File;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
 import java.lang.reflect.Field;
@@ -9,6 +10,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+import net.minecraft.server.MinecraftServer;
 import net.minecraft.src.AxisAlignedBB;
 import net.minecraft.src.Block;
 import net.minecraft.src.CraftingManager;
@@ -665,6 +667,14 @@ public class PC_Utils {
 				return;
 			}
 		}
+	}
+
+	protected File iGetMCDirectory(){
+		return MinecraftServer.getServer().getFile("");
+	}
+	
+	public static File getMCDirectory() {
+		return instance.iGetMCDirectory();
 	}
 	
 }
