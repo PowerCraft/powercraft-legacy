@@ -5,23 +5,27 @@ import java.io.IOException;
 import java.io.ObjectOutputStream;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
-import java.text.Annotation;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+import net.minecraft.src.AxisAlignedBB;
 import net.minecraft.src.Block;
 import net.minecraft.src.CraftingManager;
+import net.minecraft.src.EntityList;
+import net.minecraft.src.EntityLiving;
 import net.minecraft.src.EntityPlayer;
 import net.minecraft.src.EntityPlayerMP;
 import net.minecraft.src.EnumGameType;
 import net.minecraft.src.FurnaceRecipes;
 import net.minecraft.src.IBlockAccess;
+import net.minecraft.src.IInventory;
 import net.minecraft.src.IRecipe;
 import net.minecraft.src.Item;
 import net.minecraft.src.ItemStack;
 import net.minecraft.src.StringTranslate;
 import net.minecraft.src.TileEntity;
+import net.minecraft.src.TileEntityMobSpawner;
 import net.minecraft.src.World;
 import net.minecraftforge.common.Configuration;
 import cpw.mods.fml.common.registry.GameRegistry;
@@ -541,6 +545,126 @@ public class PC_Utils {
 					&& world.getBlockMetadata(x + 1, y, z) > 0);
 		}
 		return false;
+	}
+
+	public static boolean isChestEmpty(World world, int x, int y, int z) {
+		
+		IInventory invAt = PC_InvUtils.getCompositeInventoryAt(world, new PC_CoordI(x, y, z));
+		if (invAt != null) return PC_InvUtils.isInventoryEmpty(invAt);
+
+		List<IInventory> list = world.getEntitiesWithinAABB(IInventory.class,
+				AxisAlignedBB.getBoundingBox(x, y, z, x + 1, y + 1, z + 1).expand(0.6D, 0.6D, 0.6D));
+
+		if (list.size() >= 1) {
+			return PC_InvUtils.isInventoryEmpty(list.get(0));
+		}
+		
+		List<PC_IInventoryWrapper> list2 = world.getEntitiesWithinAABB(PC_IInventoryWrapper.class,
+				AxisAlignedBB.getBoundingBox(x, y, z, x + 1, y + 1, z + 1).expand(0.6D, 0.6D, 0.6D));
+
+		if (list2.size() >= 1) {
+			if(list2.get(0).getInventory() != null) {
+				return PC_InvUtils.isInventoryEmpty(list2.get(0).getInventory());
+			}
+		}
+
+		return false;
+		
+	}
+
+	public static boolean isChestFull(World world, int x, int y, int z, boolean allSlotsFull) {
+		
+		IInventory invAt = PC_InvUtils.getCompositeInventoryAt(world, new PC_CoordI(x, y, z));
+		if (invAt != null) {
+			if (allSlotsFull) {
+				return PC_InvUtils.isInventoryFull(invAt);
+			} else {
+				return PC_InvUtils.hasInventoryNoFreeSlots(invAt);
+			}
+		}
+
+		List<IInventory> list = world.getEntitiesWithinAABB(IInventory.class,
+				AxisAlignedBB.getBoundingBox(x, y, z, x + 1, y + 1, z + 1).expand(0.6D, 0.6D, 0.6D));
+
+		if (list.size() >= 1) {
+			if (allSlotsFull) {
+				return PC_InvUtils.isInventoryFull(list.get(0));
+			} else {
+				return PC_InvUtils.hasInventoryNoFreeSlots(list.get(0));
+			}
+		}
+
+		List<PC_IInventoryWrapper> list2 = world.getEntitiesWithinAABB(PC_IInventoryWrapper.class,
+				AxisAlignedBB.getBoundingBox(x, y, z, x + 1, y + 1, z + 1).expand(0.6D, 0.6D, 0.6D));
+
+		if (list2.size() >= 1) {
+			if (allSlotsFull) {
+				if(list2.get(0).getInventory() != null) {
+					return PC_InvUtils.isInventoryFull(list2.get(0).getInventory());
+				}
+			} else {
+				if(list2.get(0).getInventory() != null) {
+					return PC_InvUtils.hasInventoryNoFreeSlots(list2.get(0).getInventory());
+				}
+			}
+		}
+
+		return false;
+		
+	}
+
+	public static void spawnMobFromSpawner(World world, int x, int y, int z) {
+		TileEntity te = PC_Utils.getTE(world, x, y, z);
+		if (te != null && te instanceof TileEntityMobSpawner) {
+			spawnMobs(world, x, y, z, ((TileEntityMobSpawner) te).getMobID());
+		}
+	}
+	
+	/**
+	 * Spawn blocks near this Special Controller
+	 * 
+	 * @param world
+	 * @param x
+	 * @param y
+	 * @param z
+	 * @param type Mob "name" string
+	 */
+	public static void spawnMobs(World world, int x, int y, int z, String type) {
+		byte count = 5;
+
+		boolean spawnParticles = world.getClosestPlayer(x + 0.5D, y + 0.5D, z + 0.5D, 16D) != null;
+
+		for (int q = 0; q < count; q++) {
+			EntityLiving entityliving = (EntityLiving) EntityList.createEntityByName(type, world);
+			if (entityliving == null) {
+				return;
+			}
+			int c = world.getEntitiesWithinAABB(entityliving.getClass(),
+					AxisAlignedBB.getBoundingBox(x, y, z, x + 1, y + 1, z + 1).expand(8D, 4D, 8D)).size();
+			if (c >= 6) {
+				if (spawnParticles) {
+					double d = world.rand.nextGaussian() * 0.02D;
+					double d1 = world.rand.nextGaussian() * 0.02D;
+					double d2 = world.rand.nextGaussian() * 0.02D;
+					world.spawnParticle("smoke", x + 0.5D, y + 0.4D, z + 0.5D, d, d1, d2);
+				}
+				return;
+			}
+
+			double d3 = x + (world.rand.nextDouble() - world.rand.nextDouble()) * 3D;
+			double d4 = (y + world.rand.nextInt(3)) - 1;
+			double d5 = z + (world.rand.nextDouble() - world.rand.nextDouble()) * 3D;
+			entityliving.setLocationAndAngles(d3, d4, d5, world.rand.nextFloat() * 360F, 0.0F);
+			if (world.checkIfAABBIsClear(entityliving.boundingBox)
+					&& world.getCollidingBoundingBoxes(entityliving, entityliving.boundingBox).size() == 0) {
+				world.spawnEntityInWorld(entityliving);
+				if (spawnParticles) {
+					world.playAuxSFX(2004, x, y, z, 0);
+					entityliving.spawnExplosionParticle();
+				}
+				return;
+			}
+		}
 	}
 	
 }
