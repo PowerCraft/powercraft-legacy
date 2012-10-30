@@ -6,6 +6,7 @@ import java.util.List;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 
+import net.minecraft.server.MinecraftServer;
 import net.minecraft.src.Block;
 import net.minecraft.src.CallableMinecraftVersion;
 import net.minecraft.src.Item;
@@ -66,6 +67,8 @@ public class mod_PowerCraftCore extends PC_Module{
 	
 	@PreInit
 	public void preInit(FMLPreInitializationEvent event){
+		
+		MinecraftServer.getServer().getFile(getDataDirectory())
 		
 		proxy.initUtils();
 		
