@@ -1,0 +1,13 @@
+package powercraft.logic;
+
+import powercraft.core.PC_ItemBlock;
+
+public class PClo_ItemBlockFlipFlop extends PC_ItemBlock {
+
+	@Override
+	public String[] getDefaultNames() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+}

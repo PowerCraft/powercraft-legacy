@@ -1,0 +1,44 @@
+package powercraft.logic;
+
+import net.minecraft.src.NBTTagCompound;
+import powercraft.core.PC_TileEntity;
+import powercraft.core.PC_Utils;
+
+public class PClo_TileEntityGate extends PC_TileEntity {
+
+	private int type;
+	
+	@Override
+	public void readFromNBT(NBTTagCompound nbtTagCompound) {
+		super.readFromNBT(nbtTagCompound);
+		nbtTagCompound.setInteger("type", type);
+		
+	}
+
+	@Override
+	public void writeToNBT(NBTTagCompound nbtTagCompound) {
+		super.writeToNBT(nbtTagCompound);
+		type = nbtTagCompound.getInteger("type");
+	}
+
+	@Override
+	public void setData(Object[] o) {
+		int p = 0;
+		while(p<o.length){
+			String var = (String)o[p++];
+			if(var.equals("type")){
+				type = (Integer)o[p++];
+			}
+		}
+	}
+
+	@Override
+	public Object[] getData() {
+		return new Object[]{
+				"type", type
+		};
+	}
+	
+	
+	
+}

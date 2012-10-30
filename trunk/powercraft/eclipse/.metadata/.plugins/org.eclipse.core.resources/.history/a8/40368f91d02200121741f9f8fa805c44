@@ -1,0 +1,83 @@
+package powercraft.core;
+
+import powercraft.core.PC_GresTextEdit.PC_GresInputType;
+
+public class PC_GresTickEdit extends PC_GresWidget {
+
+	private PC_GresTextEdit ticks;
+	private PC_GresTextEdit secs;
+	private PC_GresTextEdit active;
+	
+	public PC_GresTickEdit(int ticks){
+		this.ticks = new PC_GresTextEdit(""+ticks, 10, PC_GresInputType.UNSIGNED_INT);
+		secs = new PC_GresTextEdit(""+PC_Utils.ticksToSecs(ticks), 10, PC_GresInputType.UNSIGNED_FLOAT);
+	}
+	
+	@Override
+	public PC_CoordI calcSize() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public void calcChildPositions() {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	protected PC_RectI render(PC_CoordI posOffset, PC_RectI scissorOld, double scale) {
+		
+		return null;
+	}
+
+	@Override
+	public MouseOver mouseOver(PC_CoordI mousePos) {
+		if (mpos.x < 0 || mpos.x >= size.x || mpos.y < 0 || mpos.y >= size.y)
+		return MouseOver.THIS;
+	}
+
+	@Override
+	public boolean mouseClick(PC_CoordI mousePos, int key) {
+		if(active!=null){
+			PC_CoordI pos = active.getPosition();
+			PC_CoordI mpos = mousePos.offset(-pos.x, -pos.y);
+			return active.mouseClick(mpos, key);
+		}
+		return false;
+	}
+
+	@Override
+	public void mouseMove(PC_CoordI mousePos) {
+		if(active!=null){
+			PC_CoordI pos = active.getPosition();
+			PC_CoordI mpos = mousePos.offset(-pos.x, -pos.y);
+			return active.mouseMove(mpos);
+		}
+	}
+
+	@Override
+	public void mouseWheel(int i) {
+		if(active!=null)
+			active.mouseWheel(i);
+	}
+
+	@Override
+	public boolean keyTyped(char c, int key) {
+		if(active!=null)
+			return active.keyTyped(c, key);
+		return false;
+	}
+
+	@Override
+	public void addedToWidget() {}
+
+	@Override
+	public void updateCursorCounter() {
+		if(active!=null)
+			active.updateCursorCounter();
+	}
+	
+	
+	
+}

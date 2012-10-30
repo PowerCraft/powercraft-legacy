@@ -1,0 +1,13 @@
+package powercraft.logic;
+
+import powercraft.core.PC_Block;
+
+public class PClo_BlockSpecial extends PC_Block {
+
+	@Override
+	public String getDefaultName() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+}

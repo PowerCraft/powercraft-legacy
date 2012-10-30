@@ -1,0 +1,153 @@
+package powercraft.logic;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import net.minecraft.src.Block;
+import net.minecraft.src.BlockContainer;
+import net.minecraft.src.EntityPlayer;
+import net.minecraft.src.ItemStack;
+import net.minecraft.src.MathHelper;
+import net.minecraft.src.World;
+import powercraft.core.PC_ItemBlock;
+import powercraft.core.PC_Utils;
+
+public class PClo_ItemBlockGate extends PC_ItemBlock {
+
+	public PClo_ItemBlockGate(int id){
+		super(id);
+		setMaxDamage(0);
+		setHasSubtypes(true);
+	}
+	
+	@Override
+	public String[] getDefaultNames() {
+		List<String> s =  new ArrayList<String>();
+		for(int i=0; i<PClo_GateType.TOTAL_GATE_COUNT; i++){
+			s.add(getItemName()+".gate"+i);
+			s.add("Gate "+PClo_GateType.names[i]);
+		};
+		s.add(getItemName());
+		s.add("Gate");
+		return s.toArray(new String[0]);
+	}
+	
+	@Override
+	public String getCraftingToolModule(){
+		return mod_PowerCraftLogic.getInstance().getNameWithoutPowerCraft();
+	}
+	
+	@Override
+	public List<ItemStack> getItemStacks(List<ItemStack> arrayList) {
+		for(int i=0; i<PClo_GateType.TOTAL_GATE_COUNT; i++)
+			arrayList.add(new ItemStack(this, 1, i));
+		return arrayList;
+	}
+	
+	@Override
+	public int getIconFromDamage(int i) {
+		return PClo_BlockGate.on.getBlockTextureFromSideAndMetadata(1, 0);
+	}
+
+	@Override
+	public String getItemNameIS(ItemStack itemstack) {
+		return getItemName() + ".gate" + itemstack.getItemDamage();
+	}
+	
+	@Override
+	public boolean isFull3D() {
+		return false;
+	}
+
+	@Override
+	public boolean shouldRotateAroundWhenRendering() {
+		return false;
+	}
+
+	@Override
+	public boolean onItemUse(ItemStack itemstack, EntityPlayer entityplayer, World world, int i, int j, int k, int l, float par8, float par9, float par10) {
+
+		int id = world.getBlockId(i, j, k);
+
+		if (id == Block.snow.blockID) {
+			l = 1;
+		} else if (id != Block.vine.blockID && id != Block.tallGrass.blockID && id != Block.deadBush.blockID) {
+			if (l == 0) {
+				j--;
+			}
+
+			if (l == 1) {
+				j++;
+			}
+
+			if (l == 2) {
+				k--;
+			}
+
+			if (l == 3) {
+				k++;
+			}
+
+			if (l == 4) {
+				i--;
+			}
+
+			if (l == 5) {
+				i++;
+			}
+		}
+
+		if (itemstack.stackSize == 0) {
+			return false;
+		}
+
+		if (!entityplayer.canPlayerEdit(i, j, k)) {
+			return false;
+		}
+
+		if (j == 255 && Block.blocksList[getBlockID()].blockMaterial.isSolid()) {
+			return false;
+		}
+
+		if (world.canPlaceEntityOnSide(mod_PClogic.gateOff.blockID, i, j, k, false, l, entityplayer)) {
+			Block block = mod_PClogic.gateOff;
+			if (world.setBlock(i, j, k, block.blockID)) {
+				// set tile entity
+				PClo_TileEntityGate teg = (PClo_TileEntityGate) world.getBlockTileEntity(i, j, k);
+				if (teg == null) {
+					teg = (PClo_TileEntityGate) ((BlockContainer) block).createNewTileEntity(world);
+				}
+				teg.gateType = itemstack.getItemDamage();
+				world.setBlockTileEntity(i, j, k, teg);
+				//block.onBlockPlaced(world, i, j, k, l);
+				block.onBlockPlacedBy(world, i, j, k, entityplayer);
+
+				PClo_BlockGate.hugeUpdate(world, i, j, k, block.blockID);
+				world.markBlocksDirty(i, j, k, i, j, k);
+				world.markBlockNeedsUpdate(i, j, k);
+
+				world.playSoundEffect(i + 0.5F, j + 0.5F, k + 0.5F, block.stepSound.getStepSound(), (block.stepSound.getVolume() + 1.0F) / 2.0F,
+						block.stepSound.getPitch() * 0.8F);
+
+				itemstack.stackSize--;
+			}
+		}
+		return true;
+	}
+	
+	@Override
+	public void addInformation(ItemStack itemStack, EntityPlayer player, List list, boolean b) {
+		list.add(getDescriptionForGate(itemStack.getItemDamage()));
+	}
+
+	/**
+	 * Get description bubble for gate
+	 * 
+	 * @param dmg gate item damage value
+	 * @return the description string
+	 */
+	public static String getDescriptionForGate(int dmg) {
+		return PC_Utils.tr("pc.gate." + PClo_GateType.names[MathHelper.clamp_int(dmg, 0, PClo_GateType.TOTAL_GATE_COUNT - 1)] + ".desc");
+	}
+	
+}
