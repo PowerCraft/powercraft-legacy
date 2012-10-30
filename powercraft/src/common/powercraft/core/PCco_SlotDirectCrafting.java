@@ -87,7 +87,7 @@ public class PCco_SlotDirectCrafting extends Slot implements PC_ISlotWithBackgro
 		}
 		return null;
 	}
-
+	
 	@Override
 	public void putStack(ItemStack itemstack) {}
 
@@ -621,5 +621,5 @@ public class PCco_SlotDirectCrafting extends Slot implements PC_ISlotWithBackgro
 	public boolean renderGrayWhenEmpty() {
 		return true;
 	}
-
+	
 }

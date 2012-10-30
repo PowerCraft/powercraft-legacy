@@ -65,11 +65,8 @@ public class PClo_BlockGate extends PC_Block implements PC_IRotatedBox, PC_ISwap
 	public void onNeighborBlockChange(World world, int x, int y, int z, int side) {
 		boolean on = isActive(world, x, y, z);
 		boolean outputActive = isOutputActive(world, x, y, z);
-		if (on && !outputActive) {
+		if (on != outputActive) 
 			world.scheduleBlockUpdate(x, y, z, blockID, tickRate());
-		} else if (!on && outputActive) {
-			world.scheduleBlockUpdate(x, y, z, blockID, tickRate());
-		}
 		
 	}
 
@@ -91,79 +88,10 @@ public class PClo_BlockGate extends PC_Block implements PC_IRotatedBox, PC_ISwap
 	
 	private boolean isOutputActive(World world, int x, int y, int z) {
 
-		return PClo_GateType.getGateOutput(getType(world, x, y, z), powered_from_input(world, x, y, z, 2), powered_from_input(world, x, y, z, 0),
-					powered_from_input(world, x, y, z, 1));
-	}
-	
-	/**
-	 * Is the gate powered from given input? This method takes care of rotation
-	 * for you. 0 BACK, 1 LEFT, 2 RIGHT, 3 FRONT, 4 BOTTOM, 5 TOP
-	 * 
-	 * @param world the World
-	 * @param x
-	 * @param y
-	 * @param z
-	 * @param inp the input number
-	 * @return is powered
-	 */
-	public static boolean powered_from_input(World world, int x, int y, int z, int inp) {
-
-		if(world==null)
-			return false;
+		int rot = getRotation_static(PC_Utils.getMD(world, x, y, z));
 		
-		if (inp == 4) {
-			boolean isProviding = (world.isBlockIndirectlyProvidingPowerTo(x, y - 1, z, 0) || (world.getBlockId(x, y - 1, z) == Block.redstoneWire.blockID && world
-					.getBlockMetadata(x, y - 1, z) > 0));
-			return isProviding;
-		}
-		if (inp == 5) {
-			boolean isProviding = (world.isBlockIndirectlyProvidingPowerTo(x, y + 1, z, 1) || (world.getBlockId(x, y + 1, z) == Block.redstoneWire.blockID && world
-					.getBlockMetadata(x, y + 1, z) > 0));
-			return isProviding;
-		}
-
-		int rotation = getRotation_static(world.getBlockMetadata(x, y, z));
-		int N0 = 0, N1 = 1, N2 = 2, N3 = 3;
-		if (inp == 0) {
-			N0 = 0;
-			N1 = 1;
-			N2 = 2;
-			N3 = 3;
-		}
-		if (inp == 1) {
-			N0 = 3;
-			N1 = 0;
-			N2 = 1;
-			N3 = 2;
-		} else if (inp == 2) {
-			N0 = 1;
-			N1 = 2;
-			N2 = 3;
-			N3 = 0;
-		} else if (inp == 3) {
-			N0 = 2;
-			N1 = 3;
-			N2 = 0;
-			N3 = 1;
-		}
-
-		if (rotation == N0) {
-			return (world.isBlockIndirectlyProvidingPowerTo(x, y, z + 1, 3) || world.getBlockId(x, y, z + 1) == Block.redstoneWire.blockID
-					&& world.getBlockMetadata(x, y, z + 1) > 0);
-		}
-		if (rotation == N1) {
-			return (world.isBlockIndirectlyProvidingPowerTo(x - 1, y, z, 4) || world.getBlockId(x - 1, y, z) == Block.redstoneWire.blockID
-					&& world.getBlockMetadata(x - 1, y, z) > 0);
-		}
-		if (rotation == N2) {
-			return (world.isBlockIndirectlyProvidingPowerTo(x, y, z - 1, 2) || world.getBlockId(x, y, z - 1) == Block.redstoneWire.blockID
-					&& world.getBlockMetadata(x, y, z - 1) > 0);
-		}
-		if (rotation == N3) {
-			return (world.isBlockIndirectlyProvidingPowerTo(x + 1, y, z, 5) || world.getBlockId(x + 1, y, z) == Block.redstoneWire.blockID
-					&& world.getBlockMetadata(x + 1, y, z) > 0);
-		}
-		return false;
+		return PClo_GateType.getGateOutput(getType(world, x, y, z), PC_Utils.poweredFromInput(world, x, y, z, PC_Utils.LEFT, rot), 
+				PC_Utils.poweredFromInput(world, x, y, z, PC_Utils.BACK, rot), PC_Utils.poweredFromInput(world, x, y, z, PC_Utils.RIGHT, rot));
 	}
 	
 	@Override
@@ -253,11 +181,7 @@ public class PClo_BlockGate extends PC_Block implements PC_IRotatedBox, PC_ISwap
 	}
 	
 	private int getTopFaceFromEnum(int meta) {
-		if (meta <= 15) {
-			return 16 + meta;
-		} else {
-			return 64 + meta;
-		}
+		return PClo_GateType.index[meta];
 	}
 
 	@Override

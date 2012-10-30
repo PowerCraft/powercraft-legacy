@@ -13,85 +13,6 @@ public class PCco_MainMenuHacks implements ITickHandler {
 	
 	private static GuiMainMenu lastHacked = null;
 	private static boolean updateWindowShowed = false;
-	
-	private static String[] splashes = {
-		// our features
-		"Weasel is fast!",
-		"Weasel powered!",
-		"Weasel rocks!",
-		"Weasel FTW!",
-		"Touch it!",
-		"Sniffing diamonds!",
-		"Power of the storm!",
-		"Hacked water!",
-		"Hacked splashes!",
-		"Miner! Oh boy!",
-		"Using Weasel",
-		"GRES",
-		"Transmutation!",
-		// our credits
-		"Modded by MightyPork!",
-		"Modded by MightyPork!",
-		"Modded by MightyPork!",
-		"Modded by MightyPork!",
-		"Modded by MightyPork!",
-		"Modded by MightyPork!",
-		"Modded by MightyPork!",
-		"Modded by MightyPork!",
-		"Modded by MightyPork!",
-		"Modded by MightyPork!",
-		"Modded by XOR19!",
-		"Modded by XOR19!",
-		"Modded by XOR19!",
-		"Modded by XOR19!",
-		"Modded by XOR19!",
-		"Modded by XOR19!",
-		"Modded by Rapus!",
-		"Modded by Rapus!",
-		"Modded by Rapus!",
-		"Modded by Rapus!",
-		"Modded by Rapus!",
-		"Reviewed by RxD!",
-		"Reviewed by RxD!",
-		"Reviewed by RxD!",
-		"Reviewed by RxD!",
-		"Modded by masters!",
-		// the mod name
-		"PowerCraft "+mod_PowerCraftCore.getInstance().getVersion(),
-		"PowerCraft "+mod_PowerCraftCore.getInstance().getVersion(),
-		"PowerCraft "+mod_PowerCraftCore.getInstance().getVersion(),
-		// making fun of crashes
-		"Null Pointers included!",
-		"ArrayIndexOutOfBoundsException",
-		"Null Pointer loves you!",
-		"Work in progress!",
-		"Unstable!",
-		"Buggy code!",
-		//random shouts
-		"Break it down!",
-		"Addictive!",
-		"Earth is flat!",
-		"Faster than Atari!",
-		"DAFUQ??",
-		"LWJGL",
-		"Don't press the button!",
-		"Press the button!",
-		"Ssssssssssssssss!",
-		"C'mon!",
-		"Redstone Wizzard!",
-		// advice
-		"Keep your mods up-to-date!",
-		"Read the changelog!",
-		"Read the log files!",
-		// also try
-		"Discoworld!",
-		"Also try ICE AGE mod!",
-		"Also try Backpack mod!",
-		// pieces of code
-		"while(true){}",
-		"GOSUB"
-	};
-	
 	private static Random rand = new Random();
 	
 	/**
@@ -108,7 +29,7 @@ public class PCco_MainMenuHacks implements ITickHandler {
 		PC_Logger.finest("Hacking main menu splashes");
 		if (rand.nextInt(2) == 0) {
 			try {
-				PC_Utils.setPrivateValue(GuiMainMenu.class, gui, 2, splashes[rand.nextInt(splashes.length)]);
+				PC_Utils.setPrivateValue(GuiMainMenu.class, gui, 2, PC_Module.getRandomSplash(rand));
 			} catch (Throwable t) {}
 		}
 	}
