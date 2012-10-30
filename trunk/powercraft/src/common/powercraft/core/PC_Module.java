@@ -4,6 +4,7 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Random;
 
 import net.minecraftforge.common.Configuration;
 import cpw.mods.fml.common.Loader;
@@ -14,6 +15,7 @@ import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 public abstract class PC_Module {
 
 	private static HashMap<String, PC_Module> modules = new HashMap<String, PC_Module>();
+	private static List<String> splashes = new ArrayList<String>();
 	private File cfgdir=null;
 	private Configuration config=null;
 	private PC_Proxy proxy;
@@ -118,11 +120,15 @@ public abstract class PC_Module {
 		initRecipes();
 		PC_Utils.registerGresArray(proxy.registerGuis());
 		PC_PacketHandler.registerPackethandlers(proxy.registerPackethandlers());
+		List<String> list = addSplashes(new ArrayList<String>());
+		if(list!=null)
+			splashes.addAll(list);
 	}
 	
 	protected abstract void initBlocks();
 	protected abstract void initItems();
 	protected abstract void initRecipes();
+	protected abstract List<String> addSplashes(List<String> list);
 	
 	protected void postInit(){
 		PC_Utils.saveLanguage(this);
@@ -135,6 +141,10 @@ public abstract class PC_Module {
 
 	public static String getPowerCraftFile() {
 		return "/PowerCraft/";
+	}
+	
+	public static String getRandomSplash(Random rand){
+		return splashes.get(rand.nextInt(splashes.size()));
 	}
 	
 }

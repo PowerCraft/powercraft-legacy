@@ -30,6 +30,27 @@ public class PClo_GateType {
 	}
 
 	/**
+	 * Gate teyture index
+	 */
+	public static int[] index = new int[TOTAL_GATE_COUNT];
+
+	static {
+		index[NOT] = 16;
+		index[AND] = 17;
+		index[NAND] = 18;
+		index[OR] = 19;
+		index[NOR] = 20;
+		index[XOR] = 21;
+		index[XNOR] = 22;
+		index[AND3] = 23;
+		index[NAND3] = 24;
+		index[OR3] = 25;
+		index[NOR3] = 26;
+		index[XOR3] = 27;
+		index[XNOR3] = 28;
+	}
+	
+	/**
 	 * Get number of "corner sides". Corner side is usually used to determine
 	 * input sides.
 	 * 
@@ -50,31 +71,31 @@ public class PClo_GateType {
 	
 	public static boolean getGateOutput(int gateType, boolean i1, boolean i2, boolean i3){
 		switch(gateType){
-		case PClo_GateType.NOT:
+		case NOT:
 			return !i2;
-		case PClo_GateType.AND:
+		case AND:
 			return i1 && i3;
-		case PClo_GateType.NAND:
+		case NAND:
 			return !(i1 && i3);
-		case PClo_GateType.OR:
+		case OR:
 			return i1 || i3;
-		case PClo_GateType.NOR:
+		case NOR:
 			return !(i1 || i3);
-		case PClo_GateType.XOR:
+		case XOR:
 			return i1 != i3;	
-		case PClo_GateType.XNOR:
+		case XNOR:
 			return i1 == i3;
-		case PClo_GateType.AND3:
+		case AND3:
 			return i1 && i2 && i3;
-		case PClo_GateType.NAND3:
+		case NAND3:
 			return !(i1 && i2 && i3);
-		case PClo_GateType.OR3:
+		case OR3:
 			return i1 || i2 || i3;
-		case PClo_GateType.NOR3:
+		case NOR3:
 			return !(i1 || i2 || i3);
-		case PClo_GateType.XOR3:
+		case XOR3:
 			return (i1 != i2) || (i2 != i3);	
-		case PClo_GateType.XNOR3:
+		case XNOR3:
 			return (i1 == i2) && (i2 == i3);	
 		default:
 			return false;

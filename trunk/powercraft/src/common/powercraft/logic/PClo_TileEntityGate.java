@@ -29,6 +29,7 @@ public class PClo_TileEntityGate extends PC_TileEntity {
 		PC_PacketHandler.setTileEntity(this, "state", b);
 		state = b;
 		PC_Utils.hugeUpdate(worldObj, xCoord, yCoord, zCoord, worldObj.getBlockId(xCoord, yCoord, zCoord));
+		worldObj.markBlockNeedsUpdate(xCoord, yCoord, zCoord);
 	}
 	
 	@Override
@@ -60,6 +61,7 @@ public class PClo_TileEntityGate extends PC_TileEntity {
 			}
 		}
 		PC_Utils.hugeUpdate(worldObj, xCoord, yCoord, zCoord, worldObj.getBlockId(xCoord, yCoord, zCoord));
+		worldObj.markBlockNeedsUpdate(xCoord, yCoord, zCoord);
 	}
 
 	@Override

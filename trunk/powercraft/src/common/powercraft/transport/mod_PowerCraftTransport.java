@@ -90,4 +90,10 @@ public class mod_PowerCraftTransport extends PC_Module {
 
 	}
 
+	@Override
+	protected List<String> addSplashes(List<String> list) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 }

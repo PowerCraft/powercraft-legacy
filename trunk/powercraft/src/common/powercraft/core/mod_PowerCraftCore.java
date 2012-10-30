@@ -165,6 +165,53 @@ public class mod_PowerCraftCore extends PC_Module{
 				'C', new ItemStack(powerCrystal, 1, -1), 'I', Item.ingotIron });
 	}
 	
+	@Override
+	protected List<String> addSplashes(List<String> list) {
+		// our features
+		list.add("Sniffing diamonds!");
+		list.add("GRES");
+		// our credits
+		for(int i=0; i<10; i++)
+			list.add("Modded by MightyPork!");
+		for(int i=0; i<6; i++)
+			list.add("Modded by XOR!");
+		for(int i=0; i<5; i++)
+			list.add("Modded by Rapus!");
+		for(int i=0; i<4; i++)
+			list.add("Reviewed by RxD");
+		list.add("Modded by masters!");
+		// the mod name
+		for(int i=0; i<3; i++)
+			list.add("PowerCraft "+mod_PowerCraftCore.getInstance().getVersion());
+		// making fun of crashes
+		list.add("Null Pointers included!");
+		list.add("ArrayIndexOutOfBoundsException");
+		list.add("Null Pointer loves you!");
+		list.add("Unstable!");
+		list.add("Buggy code!");
+		//random shouts
+		list.add("Break it down!");
+		list.add("Addictive!");
+		list.add("Earth is flat!");
+		list.add("Faster than Atari!");
+		list.add("DAFUQ??");
+		list.add("LWJGL");
+		list.add("Don't press the button!");
+		list.add("Press the button!");
+		list.add("Ssssssssssssssss!");
+		list.add("C'mon!");
+		list.add("Redstone Wizzard!");
+		// advice
+		list.add("Keep your mods up-to-date!");
+		list.add("Read the changelog!");
+		list.add("Read the log files!");
+		// also try
+		list.add("Discoworld!");
+		list.add("Also try ICE AGE mod!");
+		list.add("Also try Backpack mod!");
+		return list;
+	}
+	
 	public static void onUpdateInfoDownloaded(String page) {
 		PC_Logger.fine("\n\nUpdate information received from server.");
 

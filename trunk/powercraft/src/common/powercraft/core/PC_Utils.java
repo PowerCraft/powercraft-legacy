@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+import net.minecraft.src.Block;
 import net.minecraft.src.CraftingManager;
 import net.minecraft.src.EntityPlayer;
 import net.minecraft.src.EntityPlayerMP;
@@ -29,6 +30,7 @@ import cpw.mods.fml.common.registry.LanguageRegistry;
 public class PC_Utils {
 	
 	private static PC_Utils instance;
+	public static final int BACK = 0, LEFT = 1, RIGHT = 2, FRONT = 3, BOTTOM = 4, TOP = 5;
 	
 	public static boolean setUtilsInstance(PC_Utils instance){
 		if(PC_Utils.instance==null){
@@ -116,15 +118,8 @@ public class PC_Utils {
 			if(classes.length>3)
 				throw new IllegalArgumentException("Expackt only three Arguments");
 			try {
-				int blockID;
-				PC_Block block;
-				if(blockClass.isAnnotationPresent(PC_Shining.class)){
-					blockID = getConfigInt(config, Configuration.CATEGORY_BLOCK, blockClass.getName()+".on", defaultID);
-					block = (PC_Block) createClass(blockClass, new Class[]{int.class, boolean.class}, new Object[]{blockID, true});
-				}else{
-					blockID = getConfigInt(config, Configuration.CATEGORY_BLOCK, blockClass.getName(), defaultID);
-					block = (PC_Block) createClass(blockClass, new Class[]{int.class}, new Object[]{blockID});
-				}
+				int blockID = getConfigInt(config, Configuration.CATEGORY_BLOCK, blockClass.getName(), defaultID);
+				PC_Block block = (PC_Block) createClass(blockClass, new Class[]{int.class}, new Object[]{blockID});
 				if(block instanceof PC_IConfigLoader)
 					((PC_IConfigLoader) block).loadFromConfig(config);
 				if(itemBlockClass==null){
@@ -134,27 +129,6 @@ public class PC_Utils {
 					GameRegistry.registerBlock(block, itemBlockClass);
 					PC_ItemBlock itemBlock = (PC_ItemBlock)Item.itemsList[blockID];
 					registerLanguage(module, itemBlock.getDefaultNames());
-				}
-				if(blockClass.isAnnotationPresent(PC_Shining.class)){
-					blockID = getConfigInt(config, Configuration.CATEGORY_BLOCK, blockClass.getName()+".off", defaultID+1);
-					PC_Block blockOff = (PC_Block) createClass(blockClass, new Class[]{int.class, boolean.class}, new Object[]{blockID, false});
-					if(blockOff instanceof PC_IConfigLoader)
-						((PC_IConfigLoader) blockOff).loadFromConfig(config);
-					GameRegistry.registerBlock(blockOff);
-					Field[] fa = blockClass.getDeclaredFields();
-					for(Field f:fa){
-						PC_Shining.ON on = f.getAnnotation(PC_Shining.ON.class);
-						PC_Shining.OFF off = f.getAnnotation(PC_Shining.OFF.class);
-						if(on!=null){
-							block.setLightValue(on.lightValue()/15.0f);
-							f.setAccessible(true);
-							f.set(blockClass, block);
-						}else if(off!=null){
-							block.setLightValue(off.lightValue()/15.0f);
-							f.setAccessible(true);
-							f.set(blockClass, blockOff);
-						}
-					}
 				}
 				if(tileEntityClass!=null)
 					GameRegistry.registerTileEntity(tileEntityClass, tileEntityClass.getName());
@@ -478,6 +452,93 @@ public class PC_Utils {
 	public static TileEntity setTE(World world, int x, int y, int z, TileEntity createTileEntity) {
 		world.setBlockTileEntity(x, y, z, createTileEntity);
 		return createTileEntity;
+	}
+	
+	/**
+	 * Is the gate powered from given input? This method takes care of rotation
+	 * for you. 0 BACK, 1 LEFT, 2 RIGHT, 3 FRONT, 4 BOTTOM, 5 TOP
+	 * 
+	 * @param world the World
+	 * @param x
+	 * @param y
+	 * @param z
+	 * @param inp the input number
+	 * @return is powered
+	 */
+	
+	public static boolean poweredFromInput(World world, int x, int y, int z, int inp) {
+		return poweredFromInput(world, x, y, z, inp, 0);
+	}
+	
+	/**
+	 * Is the gate powered from given input? This method takes care of rotation
+	 * for you. 0 BACK, 1 LEFT, 2 RIGHT, 3 FRONT, 4 BOTTOM, 5 TOP
+	 * 
+	 * @param world the World
+	 * @param x
+	 * @param y
+	 * @param z
+	 * @param inp the input number
+	 * @param rotation the block rotation
+	 * @return is powered
+	 */
+	public static boolean poweredFromInput(World world, int x, int y, int z, int inp, int rotation) {
+
+		if(world==null)
+			return false;
+		
+		if (inp == 4) {
+			boolean isProviding = (world.isBlockIndirectlyProvidingPowerTo(x, y - 1, z, 0) || (world.getBlockId(x, y - 1, z) == Block.redstoneWire.blockID && world
+					.getBlockMetadata(x, y - 1, z) > 0));
+			return isProviding;
+		}
+		if (inp == 5) {
+			boolean isProviding = (world.isBlockIndirectlyProvidingPowerTo(x, y + 1, z, 1) || (world.getBlockId(x, y + 1, z) == Block.redstoneWire.blockID && world
+					.getBlockMetadata(x, y + 1, z) > 0));
+			return isProviding;
+		}
+
+		int N0 = 0, N1 = 1, N2 = 2, N3 = 3;
+		if (inp == 0) {
+			N0 = 0;
+			N1 = 1;
+			N2 = 2;
+			N3 = 3;
+		}
+		if (inp == 1) {
+			N0 = 3;
+			N1 = 0;
+			N2 = 1;
+			N3 = 2;
+		} else if (inp == 2) {
+			N0 = 1;
+			N1 = 2;
+			N2 = 3;
+			N3 = 0;
+		} else if (inp == 3) {
+			N0 = 2;
+			N1 = 3;
+			N2 = 0;
+			N3 = 1;
+		}
+
+		if (rotation == N0) {
+			return (world.isBlockIndirectlyProvidingPowerTo(x, y, z + 1, 3) || world.getBlockId(x, y, z + 1) == Block.redstoneWire.blockID
+					&& world.getBlockMetadata(x, y, z + 1) > 0);
+		}
+		if (rotation == N1) {
+			return (world.isBlockIndirectlyProvidingPowerTo(x - 1, y, z, 4) || world.getBlockId(x - 1, y, z) == Block.redstoneWire.blockID
+					&& world.getBlockMetadata(x - 1, y, z) > 0);
+		}
+		if (rotation == N2) {
+			return (world.isBlockIndirectlyProvidingPowerTo(x, y, z - 1, 2) || world.getBlockId(x, y, z - 1) == Block.redstoneWire.blockID
+					&& world.getBlockMetadata(x, y, z - 1) > 0);
+		}
+		if (rotation == N3) {
+			return (world.isBlockIndirectlyProvidingPowerTo(x + 1, y, z, 5) || world.getBlockId(x + 1, y, z) == Block.redstoneWire.blockID
+					&& world.getBlockMetadata(x + 1, y, z) > 0);
+		}
+		return false;
 	}
 	
 }
