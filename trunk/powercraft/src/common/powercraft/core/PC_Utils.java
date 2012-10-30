@@ -255,15 +255,17 @@ public class PC_Utils {
             e.printStackTrace();
         }
 		PC_PacketHandler.sendToPlayer(player, data);
-		Class c = guis.get(name);
-		if(PC_GresBaseWithInventory.class.isAssignableFrom(c)){
-			try {
-				PC_GresBaseWithInventory bwi = (PC_GresBaseWithInventory)createClass(c, new Class[]{EntityPlayer.class, Object[].class}, new Object[]{player, o});
-				player.craftingInventory = bwi;
-				player.craftingInventory.windowId = guiID;
-				player.craftingInventory.addCraftingToCrafters((EntityPlayerMP)player);
-			} catch (Exception e) {
-				e.printStackTrace();
+		if(guis.containsKey(name)){
+			Class c = guis.get(name);
+			if(PC_GresBaseWithInventory.class.isAssignableFrom(c)){
+				try {
+					PC_GresBaseWithInventory bwi = (PC_GresBaseWithInventory)createClass(c, new Class[]{EntityPlayer.class, Object[].class}, new Object[]{player, o});
+					player.craftingInventory = bwi;
+					player.craftingInventory.windowId = guiID;
+					player.craftingInventory.addCraftingToCrafters((EntityPlayerMP)player);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
 			}
 		}
 	}

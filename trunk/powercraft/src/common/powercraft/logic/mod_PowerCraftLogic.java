@@ -72,13 +72,6 @@ public class mod_PowerCraftLogic extends PC_Module {
 		PC_Utils.registerLanguage(this,
 				"pc.pulsar.clickMsg", "Period %s ticks (%s s)",
 				"pc.pulsar.clickMsgTime", "Period %s ticks (%s s), remains %s",
-				"pc.gui.pulsar.silent", "Silent",
-				"pc.gui.pulsar.paused", "Pause",
-				"pc.gui.pulsar.delay", "Delay (sec)",
-				"pc.gui.pulsar.hold", "Hold time (sec)",
-				"pc.gui.pulsar.ticks", "ticks",
-				"pc.gui.pulsar.errDelay", "Bad delay time!",
-				"pc.gui.pulsar.errHold", "Bad hold time!",
 				"pc.gate.not.desc", "negates input",
 				"pc.gate.and.desc", "both inputs on",
 				"pc.gate.nand.desc", "some inputs off",
@@ -97,7 +90,18 @@ public class mod_PowerCraftLogic extends PC_Module {
 				"pc.flipflop.T.desc", "divides signal by 2",
 				"pc.flipflop.random.desc", "changes state randomly on pulse",
 				"pc.gate.buffer.desc", "slows down signal",
-				"pc.gate.slowRepeater.desc", "makes pulses longer"
+				"pc.gate.slowRepeater.desc", "makes pulses longer",
+				
+				"pc.gui.pulsar.silent", "Silent",
+				"pc.gui.pulsar.paused", "Pause",
+				"pc.gui.pulsar.delay", "Delay (sec)",
+				"pc.gui.pulsar.hold", "Hold time (sec)",
+				"pc.gui.pulsar.ticks", "ticks",
+				"pc.gui.pulsar.errDelay", "Bad delay time!",
+				"pc.gui.pulsar.errHold", "Bad hold time!",
+				"pc.gui.delayer.delay", "Delay (sec)",
+				"pc.gui.pulsar.errintputzero", "Bad delay time!",
+				"pc.gui.delayer.errnoinput", "No Input!"
 		);
 	}
 
