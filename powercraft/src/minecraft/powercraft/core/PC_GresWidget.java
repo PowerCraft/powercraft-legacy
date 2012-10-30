@@ -740,13 +740,17 @@ public abstract class PC_GresWidget extends Gui {
 			GL11.glDisable(GL11.GL_BLEND);
 		}
 		
+		childRenderer(posOffset.offset(pos), scissorNew, scale);
+	}
+
+	public void childRenderer(PC_CoordI posOffset, PC_RectI scissorNew, double scale){
 		if (childs != null) {
 			for (int i = 0; i < childs.size(); i++) {
-				if (childs.get(i).visible) childs.get(i).updateRenderer(posOffset.offset(pos), scissorNew, scale);
+				if (childs.get(i).visible) childs.get(i).updateRenderer(posOffset, scissorNew, scale);
 			}
 		}
 	}
-
+	
 	/**
 	 * Do render this widget
 	 * 
