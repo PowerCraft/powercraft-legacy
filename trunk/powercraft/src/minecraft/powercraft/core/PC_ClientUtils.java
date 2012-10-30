@@ -14,6 +14,7 @@ import java.util.Set;
 import java.util.Map.Entry;
 
 import net.minecraft.client.Minecraft;
+import net.minecraft.server.MinecraftServer;
 import net.minecraft.src.EntityPlayer;
 import net.minecraft.src.EnumGameType;
 import net.minecraft.src.ModLoader;
@@ -201,4 +202,10 @@ public class PC_ClientUtils extends PC_Utils {
 		}
 		mc().thePlayer.addChatMessage(msg);
 	}
+	
+	@Override
+	protected File iGetMCDirectory(){
+		return Minecraft.getMinecraftDir();
+	}
+	
 }

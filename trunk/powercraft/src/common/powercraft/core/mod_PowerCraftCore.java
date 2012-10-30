@@ -68,11 +68,9 @@ public class mod_PowerCraftCore extends PC_Module{
 	@PreInit
 	public void preInit(FMLPreInitializationEvent event){
 		
-		MinecraftServer.getServer().getFile(getDataDirectory())
-		
 		proxy.initUtils();
 		
-		PC_Logger.init(event.getModConfigurationDirectory());
+		PC_Logger.init(PC_Utils.getMCDirectory());
 		
 		preInit(event, proxy);
 		
