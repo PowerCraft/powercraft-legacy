@@ -1,0 +1,65 @@
+package powercraft.logic;
+
+import java.util.Random;
+
+public class PClo_FlipFlopType {
+	/** Number of all the gate types */
+	public static final int TOTAL_FLIPFLOP_COUNT = 4;
+
+	@SuppressWarnings("javadoc")
+	public static final int D = 0, RS = 1, T = 2, RANDOM = 3;
+
+	/**
+	 * Gate names used for localization
+	 */
+	public static String[] names = new String[TOTAL_FLIPFLOP_COUNT];
+
+	static {
+		names[D] = "D";
+		names[RS] = "RS";
+		names[T] = "T";
+		names[RANDOM] = "random";
+	}
+
+	/**
+	 * Delayer teyture index
+	 */
+	public static int[] index = new int[TOTAL_FLIPFLOP_COUNT];
+
+	static {
+		index[D] = 29;
+		index[RS] = 30;
+		index[T] = 31;
+		index[RANDOM] = 87;
+	}
+	
+	public static boolean getFilpFlopState(int flipflopType, boolean i1, boolean i2, boolean i3, boolean io1, boolean io2, boolean io3, boolean state){
+		switch(flipflopType){
+		case D:
+			if(i1)
+				return false;
+			if(i3)
+				return i2;
+			break;
+		case RS:
+			if(i1)
+				return true;
+			if(i3)
+				return false;
+			break;
+		case T:
+			if(i2 && !io2)
+				return !state;
+			if(i1 || i3)
+				return false;
+			break;
+		case RANDOM:
+			if(i2 != io2)
+				return new Random().nextBoolean();
+		default:
+			return false;
+		}
+		return state;
+	}
+	
+}

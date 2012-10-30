@@ -1,2 +1,10 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<typeInfoHistroy/>
+<typeInfoHistroy>
+<typeInfo handle="=Minecraft/common&lt;powercraft.core{PC_IRotatedBox.java[PC_IRotatedBox" modifiers="513" timestamp="1351513042718"/>
+<typeInfo handle="=Minecraft/common&lt;powercraft.core{PC_ISwapTerrain.java[PC_ISwapTerrain" modifiers="513" timestamp="1351513042934"/>
+<typeInfo handle="=Minecraft/src&lt;powercraft.core{PC_GresWidget.java[PC_GresWidget" modifiers="1025" timestamp="1351628112604"/>
+<typeInfo handle="=Minecraft/src&lt;powercraft.core{PC_IGresClient.java[PC_IGresClient" modifiers="513" timestamp="1351513063655"/>
+<typeInfo handle="=Minecraft/common&lt;powercraft.core{PC_Block.java[PC_Block" modifiers="1025" timestamp="1351536312749"/>
+<typeInfo handle="=Minecraft/common&lt;powercraft.core{PC_ItemBlock.java[PC_ItemBlock" modifiers="1025" timestamp="1351527400657"/>
+<typeInfo handle="=Minecraft/common&lt;powercraft.core{PC_TileEntity.java[PC_TileEntity" modifiers="1025" timestamp="1351527413921"/>
+</typeInfoHistroy>
