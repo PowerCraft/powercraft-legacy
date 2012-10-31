@@ -47,6 +47,47 @@ public class PClo_BlockRepeater extends PC_Block implements PC_IRotatedBox, PC_I
 	@Override
 	public void updateTick(World world, int x, int y, int z, Random random) {
 		
+		int rot = getRotation_static(PC_Utils.getMD(world, x, y, z));
+		
+		PClo_TileEntityRepeater te = getTE(world, x, y, z);
+		
+		if(te.getType()==PClo_RepeaterType.CROSSING){
+			
+			int[] inp = { PC_Utils.poweredFromInput(world, x, y, z, PC_Utils.LEFT)?1:0, PC_Utils.poweredFromInput(world, x, y, z, PC_Utils.BACK)?1:0,
+					PC_Utils.poweredFromInput(world, x, y, z, PC_Utils.RIGHT)?1:0, PC_Utils.poweredFromInput(world, x, y, z, PC_Utils.FRONT)?1:0 };
+			int variant = te.getInp();
+			int shouldState = 0;
+			
+			switch (variant) {
+			case 0:
+				shouldState = inp[2] | inp[3]<<1;
+				break;
+
+			case 1:
+				shouldState = inp[3] | inp[0]<<1;
+				break;
+
+			case 2:
+				shouldState = inp[1] | inp[2]<<1;
+				break;
+
+			case 3:
+				shouldState = inp[0] | inp[1]<<1;
+				break;
+
+			}
+			
+			if(te.getState()!=shouldState){
+				te.setState(shouldState);
+			}
+			
+		}else{
+			boolean shouldState = PC_Utils.poweredFromInput(world, x, y, z, PC_Utils.BACK, rot);
+			if((te.getState()!=0)!=shouldState){
+				te.setState(shouldState?1:0);
+			}
+		}
+		
 	}
 
 	@Override
@@ -57,6 +98,13 @@ public class PClo_BlockRepeater extends PC_Block implements PC_IRotatedBox, PC_I
 	@Override
 	public void onNeighborBlockChange(World world, int x, int y, int z, int side) {
 		
+		PClo_TileEntityRepeater te = getTE(world, x, y, z);
+		
+		if(te.getType()==PClo_RepeaterType.REPEATER_STRAIGHT_I || te.getType()==PClo_RepeaterType.REPEATER_CORNER_I){
+			updateTick(world, x, y, z, new Random());
+		}else{
+			world.scheduleBlockUpdate(x, y, z, blockID, tickRate());
+		}
 		
 	}
 	
@@ -69,10 +117,130 @@ public class PClo_BlockRepeater extends PC_Block implements PC_IRotatedBox, PC_I
 	public boolean isPoweringTo(IBlockAccess world, int x, int y, int z, int side) {
 		int meta = PC_Utils.getMD(world, x, y, z);
 		int rotation = getRotation(meta);
+		PClo_TileEntityRepeater te = getTE(world, x, y, z);
+		int type = te.getType();
 		
-		if (!isActive(world, x, y, z)) return false;
+		boolean L = false, R = false, F = false, B = false;
+
+		int variant = te.getInp();
+
+		int state = te.getState();
+		boolean power1 = (state & 1)!=0 ;
+		boolean power2 = (state & 2)!=0 ;
 		
+		if(type==PClo_RepeaterType.CROSSING){
+			// check for rotation and variant.
+
+			switch (variant) {
+				case 0:
+					if (side == 5) {
+						return power1;
+					}
+					if (side == 2) {
+						return power2;
+					}
+					break;
+
+				case 1:
+					if (side == 2) {
+						return power1;
+					}
+					if (side == 4) {
+						return power2;
+					}
+					break;
+
+				case 2:
+					if (side == 3) {
+						return power1;
+					}
+					if (side == 5) {
+						return power2;
+					}
+					break;
+
+				case 3:
+					if (side == 4) {
+						return power1;
+					}
+					if (side == 3) {
+						return power2;
+					}
+					break;
+
+			}
+
+			return false;
+		}
 		
+		boolean power = state != 0;
+		if (!power) return false;
+
+		if (type == PClo_RepeaterType.SPLITTER_I) {
+			L = variant != 3;
+			R = variant != 1;
+			F = variant != 2;
+			B = false;
+
+		} else if (type == PClo_RepeaterType.REPEATER_STRAIGHT_I || type == PClo_RepeaterType.REPEATER_STRAIGHT) {
+			F = true;
+
+		} else if (type == PClo_RepeaterType.REPEATER_CORNER_I || type == PClo_RepeaterType.REPEATER_CORNER) {
+			L = variant == 0;
+			R = variant == 1;
+		}
+
+		switch (rotation) {
+			case 0:
+				switch (side) {
+					case 3:
+						return F;
+					case 4:
+						return R;
+					case 2:
+						return B;
+					case 5:
+						return L;
+				}
+				break;
+			case 1:
+				switch (side) {
+					case 3:
+						return L;
+					case 4:
+						return F;
+					case 2:
+						return R;
+					case 5:
+						return B;
+				}
+				break;
+			case 2:
+				switch (side) {
+					case 3:
+						return B;
+					case 4:
+						return L;
+					case 2:
+						return F;
+					case 5:
+						return R;
+				}
+				break;
+			case 3:
+				switch (side) {
+					case 3:
+						return R;
+					case 4:
+						return B;
+					case 2:
+						return L;
+					case 5:
+						return F;
+				}
+				break;
+
+		}
 		
 		return false;
 	}
@@ -124,7 +292,7 @@ public class PClo_BlockRepeater extends PC_Block implements PC_IRotatedBox, PC_I
 	public static boolean isActive(IBlockAccess world, int x, int y, int z){
 		PClo_TileEntityRepeater te = getTE(world, x, y, z);
 		if(te!=null)
-			return te.getState();
+			return te.getState() != 0;
 		return false;
 	}
 	

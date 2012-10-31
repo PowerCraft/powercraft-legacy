@@ -11,7 +11,7 @@ import powercraft.core.PC_Utils;
 public class PClo_TileEntityRepeater extends PC_TileEntity {
 	
 	private int type=-1;
-	private boolean state = false;
+	private int state = 0;
 	private int inp=-1;
 	
 	public void create(ItemStack stack, EntityPlayer player, World world, int x, int y, int z, int side, float hitX, float hitY, float hitZ){
@@ -23,11 +23,11 @@ public class PClo_TileEntityRepeater extends PC_TileEntity {
 		return type;
 	}
 	
-	public boolean getState(){
+	public int getState(){
 		return state;
 	}
 	
-	public void setState(boolean b){
+	public void setState(int b){
 		PC_PacketHandler.setTileEntity(this, "state", b);
 		state = b;
 		PC_Utils.hugeUpdate(worldObj, xCoord, yCoord, zCoord, worldObj.getBlockId(xCoord, yCoord, zCoord));
@@ -43,13 +43,14 @@ public class PClo_TileEntityRepeater extends PC_TileEntity {
 		PC_PacketHandler.setTileEntity(this, "inp", inp);
 		worldObj.markBlockNeedsUpdate(xCoord, yCoord, zCoord);
 		PC_Utils.notifyBlockOfNeighborChange(worldObj, xCoord, yCoord, zCoord, worldObj.getBlockId(xCoord, yCoord, zCoord));
+		PC_Utils.hugeUpdate(worldObj, xCoord, yCoord, zCoord, worldObj.getBlockId(xCoord, yCoord, zCoord));
 	}	
 	
 	@Override
 	public void readFromNBT(NBTTagCompound nbtTagCompound) {
 		super.readFromNBT(nbtTagCompound);
 		type = nbtTagCompound.getInteger("type");
-		state = nbtTagCompound.getBoolean("state");
+		state = nbtTagCompound.getInteger("state");
 		inp = nbtTagCompound.getInteger("inp");
 	}
 
@@ -57,7 +58,7 @@ public class PClo_TileEntityRepeater extends PC_TileEntity {
 	public void writeToNBT(NBTTagCompound nbtTagCompound) {
 		super.writeToNBT(nbtTagCompound);
 		nbtTagCompound.setInteger("type", type);
-		nbtTagCompound.setBoolean("state", state);
+		nbtTagCompound.setInteger("state", state);
 		nbtTagCompound.setInteger("inp", inp);
 	}
 
@@ -72,13 +73,14 @@ public class PClo_TileEntityRepeater extends PC_TileEntity {
 				else
 					p++;
 			}else if(var.equals("state")){
-				state = (Boolean)o[p++];
+				state = (Integer)o[p++];
 			}else if(var.equals("inp")){
 				inp = (Integer)o[p++];
 			}
 		}
-		PC_Utils.hugeUpdate(worldObj, xCoord, yCoord, zCoord, worldObj.getBlockId(xCoord, yCoord, zCoord));
 		worldObj.markBlockNeedsUpdate(xCoord, yCoord, zCoord);
+		PC_Utils.notifyBlockOfNeighborChange(worldObj, xCoord, yCoord, zCoord, worldObj.getBlockId(xCoord, yCoord, zCoord));
+		PC_Utils.hugeUpdate(worldObj, xCoord, yCoord, zCoord, worldObj.getBlockId(xCoord, yCoord, zCoord));
 	}
 
 	@Override
