@@ -141,7 +141,10 @@ public class PClo_BlockGate extends PC_Block implements PC_IRotatedBox, PC_ISwap
 	}
 	
 	public static PClo_TileEntityGate getTE(IBlockAccess world, int x, int y, int z){
-		return (PClo_TileEntityGate)PC_Utils.getTE(world, x, y, z);
+		TileEntity te = PC_Utils.getTE(world, x, y, z);;
+		if(te instanceof PClo_TileEntityGate)
+			return (PClo_TileEntityGate)te;
+		return null;
 	}
 	
 	public static int getType(IBlockAccess world, int x, int y, int z){
