@@ -335,6 +335,7 @@ public class mod_PowerCraftLogic extends PC_Module {
 
 	@Override
 	protected List<String> addSplashes(List<String> list) {
+		list.add("Adjustable clock pulse!");
 		return list;
 	}
 
