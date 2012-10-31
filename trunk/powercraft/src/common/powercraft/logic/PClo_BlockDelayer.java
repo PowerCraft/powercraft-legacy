@@ -155,7 +155,10 @@ public class PClo_BlockDelayer extends PC_Block  implements PC_IRotatedBox,
 	}
 	
 	public static PClo_TileEntityDelayer getTE(IBlockAccess world, int x, int y, int z){
-		return (PClo_TileEntityDelayer)PC_Utils.getTE(world, x, y, z);
+		TileEntity te = PC_Utils.getTE(world, x, y, z);;
+		if(te instanceof PClo_TileEntityDelayer)
+			return (PClo_TileEntityDelayer)te;
+		return null;
 	}
 	
 	public static int getType(IBlockAccess world, int x, int y, int z){

@@ -272,7 +272,10 @@ public class PClo_BlockRepeater extends PC_Block implements PC_IRotatedBox, PC_I
 	}
 	
 	public static PClo_TileEntityRepeater getTE(IBlockAccess world, int x, int y, int z){
-		return (PClo_TileEntityRepeater)PC_Utils.getTE(world, x, y, z);
+		TileEntity te = PC_Utils.getTE(world, x, y, z);
+		if(te instanceof PClo_TileEntityRepeater)
+			return (PClo_TileEntityRepeater)te;
+		return null;
 	}
 	
 	public static int getType(IBlockAccess world, int x, int y, int z){
