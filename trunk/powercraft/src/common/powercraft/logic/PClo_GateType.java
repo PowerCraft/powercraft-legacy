@@ -2,12 +2,13 @@ package powercraft.logic;
 
 public class PClo_GateType {
 	/** Number of all the gate types */
-	public static final int TOTAL_GATE_COUNT = 13;
+	public static final int TOTAL_GATE_COUNT = 7;
 
 	@SuppressWarnings("javadoc")
-	public static final int NOT = 0, AND = 1, NAND = 2, OR = 3, NOR = 4, XOR = 5, XNOR = 6, AND3 = 7, NAND3 = 8, OR3 = 9, NOR3 = 10, XOR3 = 11,
-			XNOR3 = 12;
+	public static final int NOT = 0, AND = 1, NAND = 2, OR = 3, NOR = 4, XOR = 5, XNOR = 6;
 
+	public static final int ROT_R_L = 0, ROT_L_D = 1, ROT_L_D_R = 2, ROT_R_D = 3;
+	
 	/**
 	 * Gate names used for localization
 	 */
@@ -21,12 +22,6 @@ public class PClo_GateType {
 		names[NOR] = "nor";
 		names[XOR] = "xor";
 		names[XNOR] = "xnor";
-		names[AND3] = "and3";
-		names[NAND3] = "nand3";
-		names[OR3] = "or3";
-		names[NOR3] = "nor3";
-		names[XOR3] = "xor3";
-		names[XNOR3] = "xnor3";
 	}
 
 	/**
@@ -35,19 +30,13 @@ public class PClo_GateType {
 	public static int[] index = new int[TOTAL_GATE_COUNT];
 
 	static {
-		index[NOT] = 16;
-		index[AND] = 17;
-		index[NAND] = 18;
-		index[OR] = 19;
-		index[NOR] = 20;
-		index[XOR] = 21;
-		index[XNOR] = 22;
-		index[AND3] = 23;
-		index[NAND3] = 24;
-		index[OR3] = 25;
-		index[NOR3] = 26;
-		index[XOR3] = 27;
-		index[XNOR3] = 28;
+		index[NOT] = 53;
+		index[AND] = 16;
+		index[NAND] = 20;
+		index[OR] = 24;
+		index[NOR] = 28;
+		index[XOR] = 56;
+		index[XNOR] = 60;
 	}
 	
 	/**
@@ -55,11 +44,16 @@ public class PClo_GateType {
 	 * input sides.
 	 * 
 	 * @param gateType
-	 * @return max variants
+	 * @param rotation
+	 * @return new rotation;
 	 */
-	public static int getMaxCornerSides(int gateType) {
-		if (gateType == AND || gateType == OR) return 3;
-		return 1;
+	public static int rotateCornerSides(int gateType, int rotation) {
+		if(gateType == NOT)
+			return ROT_L_D_R;
+		rotation++;
+		if(rotation>3)
+			rotation-=4;
+		return rotation;
 	}
 	
 	/*    op
@@ -69,37 +63,84 @@ public class PClo_GateType {
 	 *    i2
 	 */
 	
-	public static boolean getGateOutput(int gateType, boolean i1, boolean i2, boolean i3){
+	public static boolean getGateOutput(int gateType, int rotation, boolean i1, boolean i2, boolean i3){
 		switch(gateType){
 		case NOT:
 			return !i2;
 		case AND:
-			return i1 && i3;
+			switch(rotation){
+			case ROT_R_L:
+				return i1 && i3;
+			case ROT_L_D:
+				return i1 && i2;
+			case ROT_L_D_R:
+				return i1 && i2 && i3;
+			case ROT_R_D:
+				return i2 && i3;
+			}
+			break;
 		case NAND:
-			return !(i1 && i3);
+			switch(rotation){
+			case ROT_R_L:
+				return !(i1 && i3);
+			case ROT_L_D:
+				return !(i1 && i2);
+			case ROT_L_D_R:
+				return !(i1 && i2 && i3);
+			case ROT_R_D:
+				return !(i2 && i3);
+			}
+			break;
 		case OR:
-			return i1 || i3;
+			switch(rotation){
+			case ROT_R_L:
+				return i1 || i3;
+			case ROT_L_D:
+				return i1 || i2;
+			case ROT_L_D_R:
+				return i1 || i2 || i3;
+			case ROT_R_D:
+				return i2 || i3;
+			}
+			break;
 		case NOR:
-			return !(i1 || i3);
+			switch(rotation){
+			case ROT_R_L:
+				return !(i1 || i3);
+			case ROT_L_D:
+				return !(i1 || i2);
+			case ROT_L_D_R:
+				return !(i1 || i2 || i3);
+			case ROT_R_D:
+				return !(i2 || i3);
+			}
+			break;
 		case XOR:
-			return i1 != i3;	
+			switch(rotation){
+			case ROT_R_L:
+				return i1 != i3;
+			case ROT_L_D:
+				return i1 != i2;
+			case ROT_L_D_R:
+				return (i1 != i2) || (i2 != i3);
+			case ROT_R_D:
+				return i2 != i3;
+			}
+			break;
 		case XNOR:
-			return i1 == i3;
-		case AND3:
-			return i1 && i2 && i3;
-		case NAND3:
-			return !(i1 && i2 && i3);
-		case OR3:
-			return i1 || i2 || i3;
-		case NOR3:
-			return !(i1 || i2 || i3);
-		case XOR3:
-			return (i1 != i2) || (i2 != i3);	
-		case XNOR3:
-			return (i1 == i2) && (i2 == i3);	
-		default:
-			return false;
+			switch(rotation){
+			case ROT_R_L:
+				return i1 == i3;
+			case ROT_L_D:
+				return i1 == i2;
+			case ROT_L_D_R:
+				return (i1 == i2) && (i2 == i3);
+			case ROT_R_D:
+				return i2 == i3;
+			}
+			break;
 		}
+		return false;
 	}
 	
 }

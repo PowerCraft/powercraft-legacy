@@ -27,10 +27,10 @@ public class PClo_FlipFlopType {
 	public static int[] index = new int[TOTAL_FLIPFLOP_COUNT];
 
 	static {
-		index[D] = 29;
-		index[RS] = 30;
-		index[T] = 31;
-		index[RANDOM] = 87;
+		index[D] = 80;
+		index[RS] = 81;
+		index[T] = 82;
+		index[RANDOM] = 83;
 	}
 	
 }

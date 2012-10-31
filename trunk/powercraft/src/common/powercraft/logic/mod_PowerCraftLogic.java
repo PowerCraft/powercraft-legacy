@@ -31,6 +31,7 @@ public class mod_PowerCraftLogic extends PC_Module {
 	public static PC_Block flipFlop;
 	public static PC_Block delayer;
 	public static PC_Block special;
+	public static PC_Block repeater;
 	
 	public static mod_PowerCraftLogic getInstance(){
 		return (mod_PowerCraftLogic)PC_Module.getModule("PowerCraft-Logic");
@@ -80,12 +81,6 @@ public class mod_PowerCraftLogic extends PC_Module {
 				"pc.gate.nor.desc", "all inputs off",
 				"pc.gate.xor.desc", "inputs different",
 				"pc.gate.xnor.desc", "inputs equal",
-				"pc.gate.xnor3.desc", "all inputs equal",
-				"pc.gate.and3.desc", "all inputs on",
-				"pc.gate.nand3.desc", "some inputs off",
-				"pc.gate.or3.desc", "at least one input on",
-				"pc.gate.nor3.desc", "all inputs off",
-				"pc.gate.xor3.desc", "inputs different",
 				"pc.flipflop.D.desc", "latch memory",
 				"pc.flipflop.RS.desc", "set/reset memory",
 				"pc.flipflop.T.desc", "divides signal by 2",
@@ -98,6 +93,12 @@ public class mod_PowerCraftLogic extends PC_Module {
 				"pc.special.chestEmpty.desc", "on if nearby container is empty",
 				"pc.special.chestFull.desc", "on if nearby container is full",
 				"pc.special.special.desc", "spawner & pulsar control",
+				"pc.repeater.crossing.desc", "lets two wires intersect",
+				"pc.repeater.splitter.desc", "splits signal",
+				"pc.repeater.repeaterStraight.desc", "simple 1-tick repeater",
+				"pc.repeater.repeaterCorner.desc", "simple 1-tick corner repeater",
+				"pc.repeater.repeaterStraightInstant.desc", "instant repeater",
+				"pc.repeater.repeaterCornerInstant.desc", "instant corner repeater",
 				
 				"pc.gui.pulsar.silent", "Silent",
 				"pc.gui.pulsar.paused", "Pause",
@@ -119,6 +120,7 @@ public class mod_PowerCraftLogic extends PC_Module {
 		flipFlop = (PC_Block)PC_Utils.register(this, 463, PClo_BlockFlipFlop.class, PClo_ItemBlockFlipFlop.class, PClo_TileEntityFlipFlop.class);
 		delayer = (PC_Block)PC_Utils.register(this, 464, PClo_BlockDelayer.class, PClo_ItemBlockDelayer.class, PClo_TileEntityDelayer.class);
 		special = (PC_Block)PC_Utils.register(this, 465, PClo_BlockSpecial.class, PClo_ItemBlockSpecial.class, PClo_TileEntitySpecial.class);
+		repeater = (PC_Block)PC_Utils.register(this, 466, PClo_BlockRepeater.class, PClo_ItemBlockRepeater.class, PClo_TileEntityRepeater.class);
 	}
 
 	@Override
