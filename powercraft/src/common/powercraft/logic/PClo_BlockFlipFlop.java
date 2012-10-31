@@ -178,7 +178,10 @@ public class PClo_BlockFlipFlop extends PC_Block implements PC_IRotatedBox,
 	}
 	
 	public static PClo_TileEntityFlipFlop getTE(IBlockAccess world, int x, int y, int z){
-		return (PClo_TileEntityFlipFlop)PC_Utils.getTE(world, x, y, z);
+		TileEntity te = PC_Utils.getTE(world, x, y, z);;
+		if(te instanceof PClo_TileEntityFlipFlop)
+			return (PClo_TileEntityFlipFlop)te;
+		return null;
 	}
 	
 	public static int getType(IBlockAccess world, int x, int y, int z){
