@@ -79,6 +79,7 @@ public class PClo_TileEntityGate extends PC_TileEntity {
 		}
 		PC_Utils.hugeUpdate(worldObj, xCoord, yCoord, zCoord, worldObj.getBlockId(xCoord, yCoord, zCoord));
 		worldObj.markBlockNeedsUpdate(xCoord, yCoord, zCoord);
+		PC_Utils.notifyBlockOfNeighborChange(worldObj, xCoord, yCoord, zCoord, worldObj.getBlockId(xCoord, yCoord, zCoord));
 	}
 
 	@Override

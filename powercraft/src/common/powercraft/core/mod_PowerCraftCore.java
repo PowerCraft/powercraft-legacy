@@ -149,7 +149,10 @@ public class mod_PowerCraftCore extends PC_Module{
 	protected void initRecipes() {
 		// craftingTool
 		PC_Utils.addRecipe(new ItemStack(craftingTool),
-				new Object[] { " r ", "rIr", " r ",
+				new Object[] { 
+			" r ", 
+			"rIr", 
+			" r ",
 				'r', Item.redstone, 'I', Block.blockSteel });
 		
 		// Normal recipe for power dust
@@ -157,12 +160,17 @@ public class mod_PowerCraftCore extends PC_Module{
 		
 		// sniffer		
 		PC_Utils.addRecipe(new ItemStack(oreSniffer),
-				new Object[] { " G ", "GCG", " G ",
+				new Object[] { 
+			" G ", 
+			"GCG", 
+			" G ",
 				'C', new ItemStack(powerCrystal, 1, -1), 'G', Item.ingotGold });
 
 		// activator
 		PC_Utils.addRecipe(new ItemStack(activator, 1),
-				new Object[] { "C", "I",
+				new Object[] { 
+			"C", 
+			"I",
 				'C', new ItemStack(powerCrystal, 1, -1), 'I', Item.ingotIron });
 	}
 	
