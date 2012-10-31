@@ -8,6 +8,8 @@ import net.minecraft.src.CreativeTabs;
 import net.minecraft.src.EntityLiving;
 import net.minecraft.src.EntityPlayer;
 import net.minecraft.src.IBlockAccess;
+import net.minecraft.src.Item;
+import net.minecraft.src.ItemBlock;
 import net.minecraft.src.ItemStack;
 import net.minecraft.src.Material;
 import net.minecraft.src.MathHelper;
@@ -90,7 +92,7 @@ public class PClo_BlockGate extends PC_Block implements PC_IRotatedBox, PC_ISwap
 
 		int rot = getRotation_static(PC_Utils.getMD(world, x, y, z));
 		
-		return PClo_GateType.getGateOutput(getType(world, x, y, z), PC_Utils.poweredFromInput(world, x, y, z, PC_Utils.LEFT, rot), 
+		return PClo_GateType.getGateOutput(getType(world, x, y, z), getInp(world, x, y, z), PC_Utils.poweredFromInput(world, x, y, z, PC_Utils.LEFT, rot), 
 				PC_Utils.poweredFromInput(world, x, y, z, PC_Utils.BACK, rot), PC_Utils.poweredFromInput(world, x, y, z, PC_Utils.RIGHT, rot));
 	}
 	
@@ -149,6 +151,13 @@ public class PClo_BlockGate extends PC_Block implements PC_IRotatedBox, PC_ISwap
 		return 0;
 	}
 	
+	public static int getInp(IBlockAccess world, int x, int y, int z){
+		PClo_TileEntityGate te = getTE(world, x, y, z);
+		if(te!=null)
+			return te.getInp();
+		return 0;
+	}
+	
 	public static boolean isActive(IBlockAccess world, int x, int y, int z){
 		PClo_TileEntityGate te = getTE(world, x, y, z);
 		if(te!=null)
@@ -159,7 +168,7 @@ public class PClo_BlockGate extends PC_Block implements PC_IRotatedBox, PC_ISwap
 	@Override
 	public int getBlockTexture(IBlockAccess iblockaccess, int x, int y, int z, int side) {
 		if (side == 1) {
-			return getTopFaceFromEnum(getType(iblockaccess, x, y, z)) + (isActive(iblockaccess, x, y, z) ? 16 : 0);
+			return getTopFaceFromEnum(getType(iblockaccess, x, y, z), getInp(iblockaccess, x, y, z)) + (isActive(iblockaccess, x, y, z) ? 16 : 0);
 		}
 
 		if (side == 0) {
@@ -174,14 +183,14 @@ public class PClo_BlockGate extends PC_Block implements PC_IRotatedBox, PC_ISwap
 			return 6; // stone slab particles
 		}
 		if (side == 1) {
-			return getTopFaceFromEnum(meta) + 16; // top face
+			return getTopFaceFromEnum(meta, PClo_GateType.ROT_L_D_R) + 16; // top face
 		} else {
 			return 5; // side
 		}
 	}
 	
-	private int getTopFaceFromEnum(int meta) {
-		return PClo_GateType.index[meta];
+	private int getTopFaceFromEnum(int meta, int rotation) {
+		return PClo_GateType.index[meta]+rotation;
 	}
 
 	@Override
@@ -230,7 +239,21 @@ public class PClo_BlockGate extends PC_Block implements PC_IRotatedBox, PC_ISwap
 		onNeighborBlockChange(world, x, y, z, 0);
 		
 	}
-	
+
+	@Override
+	public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player, int par6, float par7, float par8, float par9) {
+		ItemStack ihold = player.getCurrentEquippedItem();
+		if (ihold != null) {
+			if (ihold.getItem().shiftedIndex == Item.stick.shiftedIndex) {
+				if(!world.isRemote)
+					getTE(world, x, y, z).rotInp();
+				return true;
+			}
+		}
+
+		return false;
+	}
+
 	@Override
 	public int getLightValue(IBlockAccess world, int x, int y, int z){
 		return isActive(world, x, y, z) ? 15 : 0;

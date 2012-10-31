@@ -27,12 +27,12 @@ public class PClo_SpecialType {
 	public static int[] index = new int[TOTAL_SPECIAL_COUNT];
 
 	static {
-		index[DAY] = 80;
-		index[NIGHT] = 93;
-		index[RAIN] = 81;
-		index[CHEST_EMPTY] = 82;
-		index[CHEST_FULL] = 83;
-		index[SPECIAL] = 84;
+		index[DAY] = 86;
+		index[NIGHT] = 87;
+		index[RAIN] = 88;
+		index[CHEST_EMPTY] = 89;
+		index[CHEST_FULL] = 90;
+		index[SPECIAL] = 91;
 	}
 	
 }

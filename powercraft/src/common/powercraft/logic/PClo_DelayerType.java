@@ -24,8 +24,8 @@ public class PClo_DelayerType {
 	public static int[] index = new int[TOTAL_DELAYER_COUNT];
 
 	static {
-		index[FIFO] = 85;
-		index[HOLD] = 86;
+		index[FIFO] = 84;
+		index[HOLD] = 85;
 	}
 	
 }

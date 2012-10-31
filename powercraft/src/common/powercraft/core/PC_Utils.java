@@ -676,5 +676,15 @@ public class PC_Utils {
 	public static File getMCDirectory() {
 		return instance.iGetMCDirectory();
 	}
+
+	public static void notifyBlockOfNeighborChange(World world, int x, int y, int z, int blockId) {
+		 Block block = Block.blocksList[world.getBlockId(x, y, z)];
+
+         if (block != null)
+         {
+        	 block.onNeighborBlockChange(world, x, y, z, blockId);
+         }
+		
+	}
 	
 }
