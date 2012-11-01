@@ -45,12 +45,6 @@ public class mod_PowerCraftCore extends PC_Module{
 
 	public static boolean hackSplashes = true;
 
-	public static String updateText;
-
-	public static String updateModVersion;
-
-	public static String lastIgnoredUpdateVersion;
-
 	public static PC_Block powerCrystal;
 	public static PC_Item powerDust;
 	public static PC_Item craftingTool;
@@ -59,7 +53,7 @@ public class mod_PowerCraftCore extends PC_Module{
 	
 	
 	/** Location of the file with updates */
-	public static final String updateInfoPath = "https://dl.dropbox.com/s/h25u8jwbsjyyuy5/Update.xml?dl=1"; 
+	public static final String updateInfoPath = "https://dl.dropbox.com/s/sv2dl6lb8qe5bd1/Update.xml?dl=1"; 
 	
 	public static mod_PowerCraftCore getInstance(){
 		return (mod_PowerCraftCore)PC_Module.getModule("PowerCraft-Core");
@@ -101,7 +95,6 @@ public class mod_PowerCraftCore extends PC_Module{
 	protected void initProperties(Configuration config) {
 		PC_Utils.enableSound(PC_Utils.getConfigBool(config, Configuration.CATEGORY_GENERAL, "enableSounds", true));
 		hackSplashes = PC_Utils.getConfigBool(config, Configuration.CATEGORY_GENERAL, "hackSplashes", true);
-		lastIgnoredUpdateVersion = PC_Utils.getConfigString(config, Configuration.CATEGORY_GENERAL, "lastIgnoredUpdateVersion", "");
 	}
 
 	@Override
@@ -259,24 +252,15 @@ public class mod_PowerCraftCore extends PC_Module{
 							langVersion = Integer.parseInt(sLangVersion);
 						}catch(NumberFormatException e){}
 						
-						System.out.println(sModuleVersion);
+						System.out.println(sMinecraftVersion);
 						
-						if(module.getVersion().compareToIgnoreCase(sModuleVersion)<0 && !lastIgnoredUpdateVersion.equalsIgnoreCase(sModuleVersion)){
+						if(new CallableMinecraftVersion(null).minecraftVersion().equalsIgnoreCase(sMinecraftVersion)){
 							
 							System.out.println("OK");
-							System.out.println(sMinecraftVersion);
 							
-							if(new CallableMinecraftVersion(null).minecraftVersion().equalsIgnoreCase(sMinecraftVersion)){
-								
-								System.out.println("OK");
-								
-								updateModVersion = sModuleVersion;
-								
+							if(module.updateInfo(sModuleVersion, sInfo.trim()))
 								showUpdateWindow = true;
-								
-								updateText = sInfo.trim();
-								
-							}
+							
 						}
 					}
 				}

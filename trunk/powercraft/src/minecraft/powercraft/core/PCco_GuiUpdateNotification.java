@@ -21,6 +21,16 @@ public class PCco_GuiUpdateNotification implements PC_IGresClient {
 		gs = (GuiScreen)o[0];
 	}
 
+	public PC_GresWidget getTabPage(PC_Module module){
+		PC_GresScrollArea sa = new PC_GresScrollArea(PC_GresScrollArea.HSCROLL|PC_GresScrollArea.VSCROLL);
+		sa.setSize(300, 100);
+		PC_GresLayoutH hg = new PC_GresLayoutH();
+		hg.setAlignH(PC_GresAlign.CENTER);
+		hg.add(new PC_GresLabelMultiline(module.getUpdateText(), 210).setAlignH(PC_GresAlign.LEFT).setColor(PC_GresWidget.textColorEnabled, 0x555599).setColor(PC_GresWidget.textColorHover, 0x555599));
+		sa.setChild(hg);
+		return sa;
+	}
+	
 	@Override
 	public void initGui(PC_IGresGui gui) {
 		PC_GresWindow w = new PC_GresWindow(240, 50, PC_Utils.tr("pc.gui.update.title"));
@@ -49,14 +59,25 @@ public class PCco_GuiUpdateNotification implements PC_IGresClient {
 		 */
 		w.add(hg);
 
-		w.add(new PC_GresSeparatorH(40, 5).setLineColor(0x999999));
+		PC_GresTab t = new PC_GresTab();
+		
+		PC_GresWidget core = null;
+		
+		for(PC_Module module: PC_Module.getAllModules()){
+			if(module.isUpdateAvailable()){
+				String name = module.getNameWithoutPowerCraft();
+				if(name.equalsIgnoreCase("Core")){
+					t.addTab(core = getTabPage(module), new PC_GresLabel(name));
+				}else{
+					t.addTab(getTabPage(module), new PC_GresLabel(name));
+				}
+			}
+		}
+		
+		if(core!=null)
+			t.makeTabVisible(core);
 
-		hg = new PC_GresLayoutH();
-		hg.setAlignH(PC_GresAlign.CENTER);
-		hg.add(new PC_GresLabelMultiline(mod_PowerCraftCore.updateText, 210).setAlignH(PC_GresAlign.LEFT).setColor(PC_GresWidget.textColorEnabled, 0x555599).setColor(PC_GresWidget.textColorHover, 0x555599));
-		w.add(hg);
-
-		w.add(new PC_GresSeparatorH(40, 5).setLineColor(0x999999));
+		w.add(t);
 
 		hg = new PC_GresLayoutH();
 		hg.setAlignH(PC_GresAlign.CENTER);
@@ -79,9 +100,7 @@ public class PCco_GuiUpdateNotification implements PC_IGresClient {
 		if (widget.getId() == 0) {
 
 			if (checkDisable.isChecked()) {
-				Configuration config = mod_PowerCraftCore.getInstance().getConfig();
-				config.get(Configuration.CATEGORY_GENERAL, "lastIgnoredUpdateVersion", "").value = mod_PowerCraftCore.updateModVersion;
-				config.save();
+				PC_Module.ignoreALLUpdateVersion();
 			}
 
 			GL11.glDisable(GL11.GL_LIGHTING);
@@ -89,7 +108,7 @@ public class PCco_GuiUpdateNotification implements PC_IGresClient {
 
 		} else if (widget.getId() == 1) {
 			try {
-				Desktop.getDesktop().browse(URI.create("http://powercrafting.net/viewtopic.php?f=3&t=4"));
+				Desktop.getDesktop().browse(URI.create("http://powercrafting.net/viewtopic.php?f=3&t=100"));
 			} catch (Throwable throwable) {
 				throwable.printStackTrace();
 			}
