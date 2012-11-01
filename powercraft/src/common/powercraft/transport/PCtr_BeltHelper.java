@@ -4,6 +4,16 @@ public class PCtr_BeltHelper {
 
 	/** belts' height in units. 0.0625F = one pixel in vanilla textures. */
 	public static final float HEIGHT = 0.0625F;
+	/**
+	 * selection box height. Affects only the wireframe, does not allow better
+	 * selection.
+	 */
+	public static final float HEIGHT_SELECTED = HEIGHT;
+	/**
+	 * collision box height - must be smaller than HEIGHT to let the items
+	 * collide -> get moved
+	 */
+	public static final float HEIGHT_COLLISION = HEIGHT;// - 0.0125F;
 
 	/**
 	 * Get unified rotation number form belt's meta.
