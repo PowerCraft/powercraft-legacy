@@ -6,14 +6,16 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Random;
 
+import net.minecraft.src.BaseMod;
+import net.minecraft.src.ModLoader;
 import net.minecraftforge.common.Configuration;
 import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.ModContainer;
 import cpw.mods.fml.common.ModMetadata;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 
-public abstract class PC_Module {
-
+public abstract class PC_Module{
+	
 	private static HashMap<String, PC_Module> modules = new HashMap<String, PC_Module>();
 	private static List<String> splashes = new ArrayList<String>();
 	private File cfgdir=null;
