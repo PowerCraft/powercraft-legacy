@@ -21,6 +21,10 @@ public abstract class PC_Module{
 	private File cfgdir=null;
 	private Configuration config=null;
 	private PC_Proxy proxy;
+	private boolean updateAvailable = false;
+	private String updateText;
+	private String updateModVersion = null;
+	private String lastIgnoredUpdateVersion;
 	
 	public ModContainer getModContainer(){
 		List<ModContainer> modContainers = Loader.instance().getActiveModList();
@@ -70,9 +74,9 @@ public abstract class PC_Module{
 		mm.description = "";
 		mm.logoFile = "";
 		mm.url = "http://powercrafting.net/";
-		if(this!=getModule("Core")){
+		PC_Module core = getModule("Core");
+		if(this!=core){
 			mm.parent = "PowerCraft-Core";
-			mm.parentMod = getModule("Core").getModContainer();
 		}
 		
 	}
@@ -103,6 +107,7 @@ public abstract class PC_Module{
 		this.proxy = proxy;
 		registerModule();
 		setCfgdir(event.getSuggestedConfigurationFile());
+		lastIgnoredUpdateVersion = PC_Utils.getConfigString(getConfig(), Configuration.CATEGORY_GENERAL, "lastIgnoredUpdateVersion", "");
 		initProperties(getConfig());
 		proxy.registerRenderer();
 		List<String> textures = loadTextureFiles(new ArrayList<String>());
@@ -136,10 +141,6 @@ public abstract class PC_Module{
 		PC_Utils.saveLanguage(this);
 		getConfig().save();
 	}
-	
-	public static boolean isUpdateAvailable() {
-		return true;
-	}
 
 	public static String getPowerCraftFile() {
 		return "/PowerCraft/";
@@ -147,6 +148,53 @@ public abstract class PC_Module{
 	
 	public static String getRandomSplash(Random rand){
 		return splashes.get(rand.nextInt(splashes.size()));
+	}
+
+	public boolean updateInfo(String sModuleVersion, String sInfo) {
+		System.out.println(sModuleVersion);
+		
+		if(getVersion().compareToIgnoreCase(sModuleVersion)<0 && !lastIgnoredUpdateVersion.equalsIgnoreCase(sModuleVersion)){
+			
+			System.out.println("OK");
+				
+			updateModVersion = sModuleVersion;
+			updateText = sInfo.trim();
+			
+			return true;
+			
+		}
+		
+		return false;
+	}
+	
+	public String getUpdateModVersion(){
+		return updateModVersion;
+	}
+	
+	public String getUpdateText(){
+		return updateText;
+	}
+	
+	public boolean isUpdateAvailable(){
+		return updateModVersion!=null;
+	}
+	
+	public void ignoreUpdateVersion(){
+		if(isUpdateAvailable()){
+			Configuration config = getConfig();
+			config.get(Configuration.CATEGORY_GENERAL, "lastIgnoredUpdateVersion", "").value = updateModVersion;
+			config.save();
+		}
+	}
+	
+	public static void ignoreALLUpdateVersion(){
+		for(PC_Module module: modules.values()){
+			module.ignoreUpdateVersion();
+		}
+	}
+
+	public static List<PC_Module> getAllModules() {
+		return new ArrayList<PC_Module>(modules.values());
 	}
 	
 }

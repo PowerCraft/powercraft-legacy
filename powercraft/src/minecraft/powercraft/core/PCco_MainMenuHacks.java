@@ -41,7 +41,7 @@ public class PCco_MainMenuHacks implements ITickHandler {
 		if(gs instanceof GuiMainMenu){
 			if(mod_PowerCraftCore.hackSplashes)
 				hackSplashes((GuiMainMenu)gs);
-			if(PC_Module.isUpdateAvailable() && mod_PowerCraftCore.showUpdateWindow && !updateWindowShowed){
+			if(mod_PowerCraftCore.showUpdateWindow && !updateWindowShowed){
 				PC_Utils.openGres("UpdateNotification", null, gs);
 				updateWindowShowed = true;
 			}
