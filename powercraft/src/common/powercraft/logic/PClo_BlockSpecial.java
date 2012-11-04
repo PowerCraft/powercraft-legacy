@@ -224,7 +224,9 @@ public class PClo_BlockSpecial extends PC_Block implements PC_IRotatedBox, PC_IS
 	}
 	
 	private int getTopFaceFromEnum(int meta) {
-		return PClo_SpecialType.index[meta];
+		if(meta>=0 && meta<PClo_SpecialType.TOTAL_SPECIAL_COUNT)
+			return PClo_SpecialType.index[meta];
+		return 6;
 	}
 
 	@Override

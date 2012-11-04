@@ -193,7 +193,9 @@ public class PClo_BlockGate extends PC_Block implements PC_IRotatedBox, PC_ISwap
 	}
 	
 	private int getTopFaceFromEnum(int meta, int rotation) {
-		return PClo_GateType.index[meta]+rotation;
+		if(meta>=0 && meta<PClo_GateType.TOTAL_GATE_COUNT)
+			return PClo_GateType.index[meta]+rotation;
+		return 6;
 	}
 
 	@Override

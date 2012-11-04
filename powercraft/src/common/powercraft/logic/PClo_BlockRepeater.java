@@ -325,7 +325,9 @@ public class PClo_BlockRepeater extends PC_Block implements PC_IRotatedBox, PC_I
 	}
 	
 	private int getTopFaceFromEnum(int meta, int rotation) {
-		return PClo_RepeaterType.index[meta]+rotation;
+		if(meta>=0 && meta<PClo_RepeaterType.TOTAL_REPEATER_COUNT)
+			return PClo_RepeaterType.index[meta]+rotation;
+		return 6;
 	}
 
 	@Override
