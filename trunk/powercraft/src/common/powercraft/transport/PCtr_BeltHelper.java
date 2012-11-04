@@ -453,6 +453,22 @@ public class PCtr_BeltHelper {
 	}
 	
 	/**
+	 * Is there a belt at...?
+	 * 
+	 * @param world the world
+	 * @param pos position to check
+	 * @return is a belt
+	 */
+	public static boolean isConveyorAt(World world, PC_CoordI pos) {
+		int id = pos.getId(world);
+		if(id>0){
+			if(Block.blocksList[id] instanceof PCtr_BlockBeltNormal)
+				return true;
+		}
+		return false;
+	}
+	
+	/**
 	 * is there belt or lift at...?
 	 * 
 	 * @param world the world
