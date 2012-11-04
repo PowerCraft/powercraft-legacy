@@ -118,5 +118,12 @@ public class PCtr_ItemBlockConveyor extends PC_ItemBlock {
 		}
 		return true;
 	}
+
+	@Override
+	public String getCraftingToolModule() {
+		return mod_PowerCraftTransport.getInstance().getNameWithoutPowerCraft();
+	}
+	
+	
 	
 }
