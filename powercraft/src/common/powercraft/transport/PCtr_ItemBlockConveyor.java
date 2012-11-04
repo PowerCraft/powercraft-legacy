@@ -28,7 +28,7 @@ public class PCtr_ItemBlockConveyor extends PC_ItemBlock {
 	public String[] getDefaultNames() {
 		PC_Block b = (PC_Block)Block.blocksList[getBlockID()];
 		return new String[]{
-				b.getBlockName(), b.getDefaultName()
+				b.getBlockName()+".name", b.getDefaultName()
 		};
 	}
 
