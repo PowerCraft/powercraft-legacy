@@ -101,6 +101,9 @@ public class PCtr_BeltHelper {
 		if (!entity.isEntityAlive()) {
 			return true;
 		}
+		if (entity.ridingEntity != null) {
+			return true;
+		}
 		if (entity instanceof EntityPlayer && ((EntityPlayer) entity).isSneaking()) {
 			return true;
 		}
@@ -576,7 +579,7 @@ public class PCtr_BeltHelper {
 		
 		// sound effect
 		if (motionEnabled && world.rand.nextInt(35) == 0) {
-			@SuppressWarnings("rawtypes")
+			//@SuppressWarnings("rawtypes")
 			List list = world.getEntitiesWithinAABBExcludingEntity(entity,
 					AxisAlignedBB.getBoundingBox(pos.x, pos.y, pos.z, pos.x + 1, pos.y + 1, pos.z + 1));
 			if (world.rand.nextInt(list.size() + 1) == 0) {
@@ -598,74 +601,78 @@ public class PCtr_BeltHelper {
 		//unstuck
 		if (entity.stepHeight <= 0.15F) entity.stepHeight = 0.25F;
 
-		entity.motionZ = MathHelper.clamp_float((float) entity.motionZ, (float) -max_horizontal_speed, (float) max_horizontal_speed);
-		entity.motionX = MathHelper.clamp_float((float) entity.motionX, (float) -max_horizontal_speed, (float) max_horizontal_speed);
+		float motionX, motionZ;
 
-
+		motionZ = MathHelper.clamp_float((float) entity.motionZ, (float) -max_horizontal_speed, (float) max_horizontal_speed);
+		motionX = MathHelper.clamp_float((float) entity.motionX, (float) -max_horizontal_speed, (float) max_horizontal_speed);
+		
 		switch (moveDirection) {
 
 
 			case 0: // Z--
-				if (entity.motionZ >= -max_horizontal_speed && motionEnabled) {
-					entity.motionZ -= horizontal_boost;
+				if (motionZ >= -max_horizontal_speed && motionEnabled) {
+					motionZ -= horizontal_boost;
 				}
 				if (bordersEnabled) {
 					if (entity.posX > pos.x + (1D - BORDERS)) {
-						entity.motionX -= BORDER_BOOST;
+						motionX -= BORDER_BOOST;
 					}
 
 					if (entity.posX < pos.x + BORDERS) {
-						entity.motionX += BORDER_BOOST;
+						motionX += BORDER_BOOST;
 					}
 				}
 
 				break;
 
 			case 1: // X++
-				if (entity.motionX <= max_horizontal_speed && motionEnabled) {
-					entity.motionX += horizontal_boost;
+				if (motionX <= max_horizontal_speed && motionEnabled) {
+					motionX += horizontal_boost;
 				}
 				if (bordersEnabled) {
 					if (entity.posZ > pos.z + BORDERS) {
-						entity.motionZ -= BORDER_BOOST;
+						motionZ -= BORDER_BOOST;
 					}
 
 					if (entity.posZ < pos.z + (1D - BORDERS)) {
-						entity.motionZ += BORDER_BOOST;
+						motionZ += BORDER_BOOST;
 					}
 				}
 				break;
 
 			case 2: // Z++
-				if (entity.motionZ <= max_horizontal_speed && motionEnabled) {
-					entity.motionZ += horizontal_boost;
+				if (motionZ <= max_horizontal_speed && motionEnabled) {
+					motionZ += horizontal_boost;
 				}
 				if (bordersEnabled) {
 					if (entity.posX > pos.x + (1D - BORDERS)) {
-						entity.motionX -= BORDER_BOOST;
+						motionX -= BORDER_BOOST;
 					}
 
 					if (entity.posX < pos.x + BORDERS) {
-						entity.motionX += BORDER_BOOST;
+						motionX += BORDER_BOOST;
 					}
 				}
 				break;
 
 			case 3: // X--
-				if (entity.motionX >= -max_horizontal_speed && motionEnabled) {
-					entity.motionX -= horizontal_boost; /* entity.motionY+=0.1; */
+				if (motionX >= -max_horizontal_speed && motionEnabled) {
+					motionX -= horizontal_boost; /* entity.motionY+=0.1; */
 				}
 				if (bordersEnabled) {
 					if (entity.posZ > pos.z + BORDERS) {
-						entity.motionZ -= BORDER_BOOST;
+						motionZ -= BORDER_BOOST;
 					}
 
 					if (entity.posZ < pos.z + (1D - BORDERS)) {
-						entity.motionZ += BORDER_BOOST;
+						motionZ += BORDER_BOOST;
 					}
 				}
 				break;
 		}
+		
+		entity.setVelocity(motionX, entity.motionY, motionZ);
+		//entity.setLocationAndAngles(entity.posX + motionX, entity.posY - entity.yOffset, entity.posZ + motionZ, entity.rotationYaw, entity.rotationPitch);
 		
 		if(entity.riddenByEntity!=null)
 			entity.updateRiderPosition();
