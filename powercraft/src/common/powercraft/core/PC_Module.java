@@ -2,12 +2,11 @@ package powercraft.core;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Random;
 
-import net.minecraft.src.BaseMod;
-import net.minecraft.src.ModLoader;
 import net.minecraftforge.common.Configuration;
 import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.ModContainer;
@@ -193,8 +192,10 @@ public abstract class PC_Module{
 		}
 	}
 
-	public static List<PC_Module> getAllModules() {
-		return new ArrayList<PC_Module>(modules.values());
+	public static PC_Module[] getAllModules() {
+		PC_Module[] moduleArray = modules.values().toArray(new PC_Module[0]);
+		Arrays.sort(moduleArray);
+		return moduleArray;
 	}
 	
 }
