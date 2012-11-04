@@ -20,7 +20,7 @@ import powercraft.core.PC_IRotatedBox;
 import powercraft.core.PC_ISwapTerrain;
 import powercraft.core.PC_Renderer;
 
-public class PCtr_BlockBeltNormal extends PC_Block implements PC_IRotatedBox, PC_ISwapTerrain, PC_ICraftingToolDisplayer {
+public class PCtr_BlockBeltNormal extends PC_Block implements PC_IRotatedBox, PC_ISwapTerrain {
 	
 	public PCtr_BlockBeltNormal(int id) {
 		super(id, 0, PCtr_MaterialConveyor.getMaterial());
@@ -114,18 +114,6 @@ public class PCtr_BlockBeltNormal extends PC_Block implements PC_IRotatedBox, PC
 	@Override
 	public boolean shouldSideBeRendered(IBlockAccess iblockaccess, int i, int j, int k, int l) {
 		return l != 1;
-	}
-
-	@Override
-	public String getCraftingToolModule() {
-		return mod_PowerCraftTransport.getInstance().getNameWithoutPowerCraft();
-	}
-
-	@Override
-	public List<ItemStack> getItemStacks(List<ItemStack> arrayList) {
-		List<ItemStack> l = new ArrayList<ItemStack>();
-		l.add(new ItemStack(this));
-		return l;
 	}
 	
 	@Override
