@@ -64,13 +64,7 @@ public class PClo_BlockPulsar extends PC_Block implements PC_ICraftingToolDispla
 	public void updateTick(World world, int i, int j, int k, Random random) {
 		super.updateTick(world, i, j, k, random);
 		world.markBlockAsNeedsUpdate(i, j, k);
-		world.notifyBlockChange(i, j, k, blockID);
-		world.notifyBlockChange(i + 1, j, k, blockID);
-		world.notifyBlockChange(i - 1, j, k, blockID);
-		world.notifyBlockChange(i, j, k + 1, blockID);
-		world.notifyBlockChange(i, j, k - 1, blockID);
-		world.notifyBlockChange(i, j + 1, k + 1, blockID);
-		world.notifyBlockChange(i, j - 1, k - 1, blockID);
+		PC_Utils.hugeUpdate(world, i, j, k, blockID);
 	}
 
 	@Override
