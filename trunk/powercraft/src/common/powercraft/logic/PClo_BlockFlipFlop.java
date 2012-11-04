@@ -223,7 +223,9 @@ public class PClo_BlockFlipFlop extends PC_Block implements PC_IRotatedBox,
 	}
 	
 	private int getTopFaceFromEnum(int meta) {
-		return PClo_FlipFlopType.index[meta];
+		if(meta>=0 && meta<PClo_FlipFlopType.TOTAL_FLIPFLOP_COUNT)
+			return PClo_FlipFlopType.index[meta];
+		return 6;
 	}
 	
 	@Override
