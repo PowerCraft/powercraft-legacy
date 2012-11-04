@@ -27,7 +27,7 @@ public class PCtr_BlockBeltNormal extends PC_Block implements PC_IRotatedBox, PC
 		setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, PCtr_BeltHelper.HEIGHT, 1.0F);
 		setHardness(0.22F);
 		setResistance(8.0F);
-		setBlockName("PCconveyorBelt");
+		setBlockName("PCConveyorBelt");
 		setStepSound(Block.soundMetalFootstep);
 		setCreativeTab(CreativeTabs.tabTransport);
 	}
