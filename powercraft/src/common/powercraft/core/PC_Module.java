@@ -193,9 +193,7 @@ public abstract class PC_Module{
 	}
 
 	public static PC_Module[] getAllModules() {
-		PC_Module[] moduleArray = modules.values().toArray(new PC_Module[0]);
-		Arrays.sort(moduleArray);
-		return moduleArray;
+		return modules.values().toArray(new PC_Module[0]);
 	}
 	
 }
