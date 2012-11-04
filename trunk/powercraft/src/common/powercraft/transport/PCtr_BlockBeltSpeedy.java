@@ -5,30 +5,21 @@ import net.minecraft.src.Block;
 import net.minecraft.src.CreativeTabs;
 import net.minecraft.src.Entity;
 import net.minecraft.src.EntityItem;
+import net.minecraft.src.EntityPlayer;
 import net.minecraft.src.IBlockAccess;
 import net.minecraft.src.World;
 
-public class PCtr_BlockBeltSpeedy extends PCtr_BlockBeltNormal {
+public class PCtr_BlockBeltSpeedy extends PCtr_BlockBeltBase {
 
 	public PCtr_BlockBeltSpeedy(int id) {
 		super(id);
-		setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, PCtr_BeltHelper.HEIGHT, 1.0F);
-		setHardness(0.22F);
-		setResistance(8.0F);
 		setBlockName("PCSpeedyBelt");
-		setStepSound(Block.soundMetalFootstep);
-		setCreativeTab(CreativeTabs.tabTransport);
 	}
 
 	@Override
 	public String getDefaultName() {
 		// TODO Auto-generated method stub
 		return "Speedy Belt";
-	}
-
-	@Override
-	public int getBlockTexture(IBlockAccess iblockaccess, int i, int j, int k, int l) {
-		return getBlockTextureFromSideAndMetadata(l, iblockaccess.getBlockMetadata(i, j, k));
 	}
 	
 	@Override
@@ -95,6 +86,13 @@ public class PCtr_BlockBeltSpeedy extends PCtr_BlockBeltNormal {
 
 		PCtr_BeltHelper.moveEntityOnBelt(world, pos, entity, true, !leadsToNowhere, direction, speed_max, boost);
 
+	}
+
+	@Override
+	public boolean onBlockActivated(World world, int i, int j, int k,
+			EntityPlayer entityplayer, int par6, float par7, float par8,
+			float par9) {
+		return PCtr_BeltHelper.blockActivated(world, i, j, k, entityplayer);
 	}
 	
 	
