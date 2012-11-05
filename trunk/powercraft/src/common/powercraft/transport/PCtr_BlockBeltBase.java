@@ -23,8 +23,8 @@ import powercraft.core.PC_Renderer;
 
 public abstract class PCtr_BlockBeltBase extends PC_Block implements PC_IRotatedBox, PC_ISwapTerrain {
 
-	public PCtr_BlockBeltBase(int id) {
-		super(id, 0, PCtr_MaterialConveyor.getMaterial());
+	public PCtr_BlockBeltBase(int id, int textureID) {
+		super(id, textureID, PCtr_MaterialConveyor.getMaterial());
 		setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, PCtr_BeltHelper.HEIGHT, 1.0F);
 		setHardness(0.22F);
 		setResistance(8.0F);
@@ -33,14 +33,10 @@ public abstract class PCtr_BlockBeltBase extends PC_Block implements PC_IRotated
 	}
 
 	@Override
-	public abstract void onEntityCollidedWithBlock(World world, int i, int j, int k, Entity entity);
-	@Override
 	public abstract String getDefaultName();
 	@Override
-	public abstract int getBlockTextureFromSideAndMetadata(int i, int j);
-	@Override
-	public abstract boolean onBlockActivated(World world, int i, int j, int k, EntityPlayer entityplayer, int par6, float par7, float par8, float par9);
-	
+	public abstract void onEntityCollidedWithBlock(World world, int i, int j, int k, Entity entity);
+
 	@Override
 	public String getTerrainFile() {
 		return mod_PowerCraftTransport.getInstance().getTerrainFile();
@@ -117,6 +113,23 @@ public abstract class PCtr_BlockBeltBase extends PC_Block implements PC_IRotated
 	@Override
 	public int tickRate() {
 		return 1;
+	}
+	
+	@Override
+	public int getBlockTextureFromSideAndMetadata(int i, int j){
+		if (i == 0) {
+			return 1;
+		}
+		if (i == 1) {
+			return blockIndexInTexture;
+		} else {
+			return 2;
+		}
+	}
+	
+	@Override
+	public boolean onBlockActivated(World world, int i, int j, int k, EntityPlayer entityplayer, int par6, float par7, float par8, float par9) {
+		return PCtr_BeltHelper.blockActivated(world, i, j, k, entityplayer);
 	}
 	
 }
