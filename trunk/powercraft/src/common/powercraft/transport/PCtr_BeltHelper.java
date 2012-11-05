@@ -5,8 +5,6 @@ import java.util.List;
 import net.minecraft.src.AxisAlignedBB;
 import net.minecraft.src.Block;
 import net.minecraft.src.Entity;
-import net.minecraft.src.EntityDiggingFX;
-import net.minecraft.src.EntityFX;
 import net.minecraft.src.EntityItem;
 import net.minecraft.src.EntityLiving;
 import net.minecraft.src.EntityMinecart;
@@ -16,12 +14,10 @@ import net.minecraft.src.IInventory;
 import net.minecraft.src.Item;
 import net.minecraft.src.ItemMinecart;
 import net.minecraft.src.ItemStack;
-import net.minecraft.src.MathHelper;
-import net.minecraft.src.ModLoader;
 import net.minecraft.src.World;
 import powercraft.core.PC_CoordI;
 import powercraft.core.PC_InvUtils;
-import powercraft.core.PC_ItemArmor;
+import powercraft.core.PC_MathHelper;
 import powercraft.core.PC_Utils;
 
 public class PCtr_BeltHelper {
@@ -115,10 +111,7 @@ public class PCtr_BeltHelper {
 				}
 			}
 		}
-		if (entity instanceof EntityDiggingFX) {
-			return false;
-		}
-		if (entity instanceof EntityFX) {
+		if (PC_Utils.isEntityFX(entity)) {
 			return true;
 		}
 		return false;
@@ -611,23 +604,23 @@ public class PCtr_BeltHelper {
 
 		float motionX, motionZ;
 
-		motionZ = MathHelper.clamp_float((float) entity.motionZ, (float) -max_horizontal_speed, (float) max_horizontal_speed);
-		motionX = MathHelper.clamp_float((float) entity.motionX, (float) -max_horizontal_speed, (float) max_horizontal_speed);
+		motionZ = PC_MathHelper.clamp_float((float) entity.motionZ, (float) -max_horizontal_speed, (float) max_horizontal_speed);
+		motionX = PC_MathHelper.clamp_float((float) entity.motionX, (float) -max_horizontal_speed, (float) max_horizontal_speed);
 		
 		switch (moveDirection) {
 
 
 			case 0: // Z--
 				if (motionZ >= -max_horizontal_speed && motionEnabled) {
-					motionZ -= horizontal_boost;
+					entity.addVelocity(0, 0, -horizontal_boost);
 				}
 				if (bordersEnabled) {
 					if (entity.posX > pos.x + (1D - BORDERS)) {
-						motionX -= BORDER_BOOST;
+						entity.addVelocity(-BORDER_BOOST, 0, 0);
 					}
 
 					if (entity.posX < pos.x + BORDERS) {
-						motionX += BORDER_BOOST;
+						entity.addVelocity(BORDER_BOOST, 0, 0);
 					}
 				}
 
@@ -635,51 +628,50 @@ public class PCtr_BeltHelper {
 
 			case 1: // X++
 				if (motionX <= max_horizontal_speed && motionEnabled) {
-					motionX += horizontal_boost;
+					entity.addVelocity(horizontal_boost, 0, 0);
 				}
 				if (bordersEnabled) {
 					if (entity.posZ > pos.z + BORDERS) {
-						motionZ -= BORDER_BOOST;
+						entity.addVelocity(0, 0, -BORDER_BOOST);
 					}
 
 					if (entity.posZ < pos.z + (1D - BORDERS)) {
-						motionZ += BORDER_BOOST;
+						entity.addVelocity(0, 0, BORDER_BOOST);
 					}
 				}
 				break;
 
 			case 2: // Z++
 				if (motionZ <= max_horizontal_speed && motionEnabled) {
-					motionZ += horizontal_boost;
+					entity.addVelocity(0, 0, horizontal_boost);
 				}
 				if (bordersEnabled) {
 					if (entity.posX > pos.x + (1D - BORDERS)) {
-						motionX -= BORDER_BOOST;
+						entity.addVelocity(-BORDER_BOOST, 0, 0);
 					}
 
 					if (entity.posX < pos.x + BORDERS) {
-						motionX += BORDER_BOOST;
+						entity.addVelocity(BORDER_BOOST, 0, 0);
 					}
 				}
 				break;
 
 			case 3: // X--
 				if (motionX >= -max_horizontal_speed && motionEnabled) {
-					motionX -= horizontal_boost; /* entity.motionY+=0.1; */
+					entity.addVelocity(-horizontal_boost, 0, 0);
 				}
 				if (bordersEnabled) {
 					if (entity.posZ > pos.z + BORDERS) {
-						motionZ -= BORDER_BOOST;
+						entity.addVelocity(0, 0, -BORDER_BOOST);
 					}
 
 					if (entity.posZ < pos.z + (1D - BORDERS)) {
-						motionZ += BORDER_BOOST;
+						entity.addVelocity(0, 0, BORDER_BOOST);
 					}
 				}
 				break;
 		}
 		
-		entity.setVelocity(motionX, entity.motionY, motionZ);
 		//entity.setLocationAndAngles(entity.posX + motionX, entity.posY - entity.yOffset, entity.posZ + motionZ, entity.rotationYaw, entity.rotationPitch);
 		
 		if(entity.riddenByEntity!=null)
@@ -705,7 +697,7 @@ public class PCtr_BeltHelper {
 	 * @return placed meta
 	 */
 	public static int getPlacedMeta(EntityLiving player) {
-		int l = MathHelper.floor_double(((player.rotationYaw * 4F) / 360F) + 2.5D) & 3;
+		int l = PC_MathHelper.floor_double(((player.rotationYaw * 4F) / 360F) + 2.5D) & 3;
 
 		if (PC_Utils.isPlacingReversed()) {
 			l = PC_Utils.reverseSide(l);

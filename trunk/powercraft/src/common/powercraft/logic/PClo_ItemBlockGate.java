@@ -3,14 +3,10 @@ package powercraft.logic;
 import java.util.ArrayList;
 import java.util.List;
 
-import net.minecraft.src.Block;
-import net.minecraft.src.BlockContainer;
 import net.minecraft.src.EntityPlayer;
 import net.minecraft.src.ItemStack;
-import net.minecraft.src.MathHelper;
-import net.minecraft.src.World;
 import powercraft.core.PC_ItemBlock;
-import powercraft.core.PC_TileEntity;
+import powercraft.core.PC_MathHelper;
 import powercraft.core.PC_Utils;
 
 public class PClo_ItemBlockGate extends PC_ItemBlock {
@@ -77,7 +73,7 @@ public class PClo_ItemBlockGate extends PC_ItemBlock {
 	 * @return the description string
 	 */
 	public static String getDescriptionForGate(int dmg) {
-		return PC_Utils.tr("pc.gate." + PClo_GateType.names[MathHelper.clamp_int(dmg, 0, PClo_GateType.TOTAL_GATE_COUNT - 1)] + ".desc");
+		return PC_Utils.tr("pc.gate." + PClo_GateType.names[PC_MathHelper.clamp_int(dmg, 0, PClo_GateType.TOTAL_GATE_COUNT - 1)] + ".desc");
 	}
 	
 }

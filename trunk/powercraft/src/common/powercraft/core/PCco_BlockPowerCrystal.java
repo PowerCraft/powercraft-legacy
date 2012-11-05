@@ -7,7 +7,6 @@ import net.minecraft.src.CreativeTabs;
 import net.minecraft.src.EntityPlayer;
 import net.minecraft.src.IBlockAccess;
 import net.minecraft.src.Material;
-import net.minecraft.src.MathHelper;
 import net.minecraft.src.World;
 import net.minecraftforge.common.Configuration;
 
@@ -66,12 +65,12 @@ public class PCco_BlockPowerCrystal extends PC_Block implements PC_IConfigLoader
 
 	@Override
 	public int getRenderColor(int i) {
-		return PC_Color.crystal_colors[MathHelper.clamp_int(i, 0, 7)];
+		return PC_Color.crystal_colors[PC_MathHelper.clamp_int(i, 0, 7)];
 	}
 
 	@Override
 	public int colorMultiplier(IBlockAccess iblockaccess, int i, int j, int k) {
-		return PC_Color.crystal_colors[MathHelper.clamp_int(iblockaccess.getBlockMetadata(i, j, k), 0, 7)];
+		return PC_Color.crystal_colors[PC_MathHelper.clamp_int(iblockaccess.getBlockMetadata(i, j, k), 0, 7)];
 	}
 	
 	@Override
@@ -233,13 +232,13 @@ public class PCco_BlockPowerCrystal extends PC_Block implements PC_IConfigLoader
 
 	@Override
 	public int getBlocksOnSpawnPoint(Random random) {
-		return random.nextInt(MathHelper.clamp_int(genCrystalsDepositMaxCount - 1, 1, 10)) + 2;
+		return random.nextInt(PC_MathHelper.clamp_int(genCrystalsDepositMaxCount - 1, 1, 10)) + 2;
 	}
 
 	@Override
 	public PC_CoordI getSpawnPoint(Random random) {
 		return new PC_CoordI(random.nextInt(16), 
-				random.nextInt(MathHelper.clamp_int(genCrystalsMaxY - genCrystalsMinY, 1, 255)) + genCrystalsMinY, 
+				random.nextInt(PC_MathHelper.clamp_int(genCrystalsMaxY - genCrystalsMinY, 1, 255)) + genCrystalsMinY, 
 				random.nextInt(16));
 	}
 	

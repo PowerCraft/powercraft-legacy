@@ -16,6 +16,7 @@ import net.minecraftforge.common.Configuration;
 import powercraft.core.PC_Block;
 import powercraft.core.PC_ItemArmor;
 import powercraft.core.PC_Module;
+import powercraft.core.PC_TileEntity;
 import powercraft.core.PC_Utils;
 import powercraft.logic.PClo_BlockPulsar;
 import powercraft.logic.PClo_CommonProxy;
@@ -32,6 +33,7 @@ public class mod_PowerCraftTransport extends PC_Module {
 	public static PC_Block speedyBelt;
 	public static PC_Block detectorBelt;
 	public static PC_Block breakBelt;
+	public static PC_Block redirectionBelt;
 	public static PC_ItemArmor slimeboots;
 	
 	public static mod_PowerCraftTransport getInstance() {
@@ -83,11 +85,12 @@ public class mod_PowerCraftTransport extends PC_Module {
 		speedyBelt = (PC_Block)PC_Utils.register(this, 468, PCtr_BlockBeltSpeedy.class, PCtr_ItemBlockConveyor.class);
 		detectorBelt = (PC_Block)PC_Utils.register(this, 469, PCtr_BlockBeltDetector.class, PCtr_ItemBlockConveyor.class);
 		breakBelt = (PC_Block)PC_Utils.register(this, 470, PCtr_BlockBeltBreak.class, PCtr_ItemBlockConveyor.class);
+		redirectionBelt = (PC_Block)PC_Utils.register(this, 471, PCtr_BlockBeltRedirector.class, PCtr_ItemBlockConveyor.class, PCtr_TileEntityRedirectionBelt.class);
 	}
 
 	@Override
 	protected void initItems() {
-		slimeboots = (PC_ItemArmor)PC_Utils.register(this, 471, PCtr_ItemArmorStickyBoots.class);
+		slimeboots = (PC_ItemArmor)PC_Utils.register(this, 472, PCtr_ItemArmorStickyBoots.class);
 	}
 
 	@Override

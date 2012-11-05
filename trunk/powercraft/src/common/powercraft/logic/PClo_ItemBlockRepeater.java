@@ -5,8 +5,8 @@ import java.util.List;
 
 import net.minecraft.src.EntityPlayer;
 import net.minecraft.src.ItemStack;
-import net.minecraft.src.MathHelper;
 import powercraft.core.PC_ItemBlock;
+import powercraft.core.PC_MathHelper;
 import powercraft.core.PC_Utils;
 
 public class PClo_ItemBlockRepeater extends PC_ItemBlock {
@@ -73,7 +73,7 @@ public class PClo_ItemBlockRepeater extends PC_ItemBlock {
 	 * @return the description string
 	 */
 	public static String getDescriptionForRepeater(int dmg) {
-		return PC_Utils.tr("pc.repeater." + PClo_RepeaterType.names[MathHelper.clamp_int(dmg, 0, PClo_RepeaterType.TOTAL_REPEATER_COUNT - 1)] + ".desc");
+		return PC_Utils.tr("pc.repeater." + PClo_RepeaterType.names[PC_MathHelper.clamp_int(dmg, 0, PClo_RepeaterType.TOTAL_REPEATER_COUNT - 1)] + ".desc");
 	}
 
 }

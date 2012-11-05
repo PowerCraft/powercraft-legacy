@@ -9,15 +9,14 @@ import net.minecraft.src.EntityLiving;
 import net.minecraft.src.EntityPlayer;
 import net.minecraft.src.IBlockAccess;
 import net.minecraft.src.Item;
-import net.minecraft.src.ItemBlock;
 import net.minecraft.src.ItemStack;
 import net.minecraft.src.Material;
-import net.minecraft.src.MathHelper;
 import net.minecraft.src.TileEntity;
 import net.minecraft.src.World;
 import powercraft.core.PC_Block;
 import powercraft.core.PC_IRotatedBox;
 import powercraft.core.PC_ISwapTerrain;
+import powercraft.core.PC_MathHelper;
 import powercraft.core.PC_Renderer;
 import powercraft.core.PC_Utils;
 
@@ -233,7 +232,7 @@ public class PClo_BlockGate extends PC_Block implements PC_IRotatedBox, PC_ISwap
 
 		int type = getType(world, x, y, z);
 
-		int l = ((MathHelper.floor_double(((entityliving.rotationYaw * 4F) / 360F) + 0.5D) & 3) + 2) % 4;
+		int l = ((PC_MathHelper.floor_double(((entityliving.rotationYaw * 4F) / 360F) + 0.5D) & 3) + 2) % 4;
 
 		if (PC_Utils.isPlacingReversed()) {
 			l = PC_Utils.reverseSide(l);

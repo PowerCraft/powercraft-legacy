@@ -4,7 +4,6 @@ import java.util.Random;
 
 import net.minecraft.src.Block;
 import net.minecraft.src.IChunkProvider;
-import net.minecraft.src.MathHelper;
 import net.minecraft.src.World;
 import cpw.mods.fml.common.IWorldGenerator;
 
@@ -25,7 +24,7 @@ public class PC_WorldGenerator implements IWorldGenerator {
 					int blocksCount = wsg.getBlocksOnSpawnPoint(random);
 					PC_CoordI pos = wsg.getSpawnPoint(random);
 					pos.x += chunkX * 16;
-					pos.y = MathHelper.clamp_int(pos.y, 1, 255);
+					pos.y = PC_MathHelper.clamp_int(pos.y, 1, 255);
 					pos.z += chunkZ * 16;
 		
 					new PC_WorldGenMinableMetadata(block.blockID, random.nextInt(8), blocksCount).generate(world, random, pos.x, pos.y, pos.z);
