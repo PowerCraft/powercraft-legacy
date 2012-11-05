@@ -1,14 +1,16 @@
 package powercraft.transport;
 
-import powercraft.core.PC_CoordI;
-import powercraft.core.PC_Utils;
-import net.minecraft.src.AABBPool;
+import java.util.List;
+import java.util.Random;
+
 import net.minecraft.src.AxisAlignedBB;
 import net.minecraft.src.Entity;
 import net.minecraft.src.EntityItem;
 import net.minecraft.src.EntityPlayer;
 import net.minecraft.src.IBlockAccess;
 import net.minecraft.src.World;
+import powercraft.core.PC_CoordI;
+import powercraft.core.PC_Utils;
 
 public class PCtr_BlockBeltDetector extends PCtr_BlockBeltBase {
 
@@ -43,7 +45,7 @@ public class PCtr_BlockBeltDetector extends PCtr_BlockBeltBase {
 	
 	@Override
 	public boolean isPoweringTo(IBlockAccess iblockaccess, int i, int j, int k, int l) {
-		return ;
+		return isActive(iblockaccess, i, j, k);
 	}
 
 	@Override
@@ -57,6 +59,37 @@ public class PCtr_BlockBeltDetector extends PCtr_BlockBeltBase {
 	}
 
 	@Override
+	public void updateTick(World world, int i, int j, int k, Random random) {
+		if (isActive(world, i, j, k)) {
+			setStateIfEntityInteractsWithDetector(world, i, j, k);
+		}
+	}
+
+	private boolean isActive(IBlockAccess world, int i, int j, int k) {
+		int meta = world.getBlockMetadata(i, j, k);
+		return PCtr_BeltHelper.isActive(meta);
+	}
+	
+	private void setStateIfEntityInteractsWithDetector(World world, int i, int j, int k) {
+
+		int meta = world.getBlockMetadata(i, j, k);
+		boolean isAlreadyActive = PCtr_BeltHelper.isActive(meta);
+		boolean isPressed = false;
+		List list = world.getEntitiesWithinAABBExcludingEntity(null, AxisAlignedBB.getBoundingBox(i, j, k, (i + 1), j + 1D, (k + 1)));
+		isPressed = list.size() > 0;
+		
+		if (isPressed != isAlreadyActive) {
+			world.setBlockMetadataWithNotify(i, j, k, PCtr_BeltHelper.getMeta(meta, isPressed));
+			PC_Utils.hugeUpdate(world, i, j, k, blockID);
+			world.markBlocksDirty(i, j, k, i, j, k);
+			PC_Utils.playSound(i + 0.5D, j + 0.125D, k + 0.5D, "random.click", 0.15F, 0.5F);
+		}
+		
+		if(isPressed)
+			world.scheduleBlockUpdate(i, j, k, blockID, tickRate());
+	}
+	
+	@Override
 	public void onEntityCollidedWithBlock(World world, int i, int j, int k,
 			Entity entity) {
 
@@ -66,6 +99,10 @@ public class PCtr_BlockBeltDetector extends PCtr_BlockBeltBase {
 			return;
 		}
 
+		if (!isActive(world, i, j, k)) {
+			setStateIfEntityInteractsWithDetector(world, i, j, k);
+		}
+		
 		if (entity instanceof EntityItem) {
 			PCtr_BeltHelper.packItems(world, pos);
 		}
@@ -106,7 +143,6 @@ public class PCtr_BlockBeltDetector extends PCtr_BlockBeltBase {
 		double speed_max = PCtr_BeltHelper.MAX_HORIZONTAL_SPEED;
 
 		double boost = PCtr_BeltHelper.HORIZONTAL_BOOST;
-		PC_Utils.hugeUpdate(world, i, j, k, blockID);
 		PCtr_BeltHelper.moveEntityOnBelt(world, pos, entity, true, !leadsToNowhere, direction, speed_max, boost);
 
 	}
