@@ -20,7 +20,7 @@ import powercraft.core.PC_IRotatedBox;
 import powercraft.core.PC_ISwapTerrain;
 import powercraft.core.PC_Renderer;
 
-public class PCtr_BlockBeltNormal extends PCtr_BlockBeltBase implements PC_IRotatedBox, PC_ISwapTerrain {
+public class PCtr_BlockBeltNormal extends PCtr_BlockBeltBase {
 	
 	public PCtr_BlockBeltNormal(int id) {
 		super(id);
@@ -29,7 +29,7 @@ public class PCtr_BlockBeltNormal extends PCtr_BlockBeltBase implements PC_IRota
 
 	@Override
 	public String getDefaultName() {
-		return "Belt";
+		return "Normal Belt";
 	}
 	
 	@Override
