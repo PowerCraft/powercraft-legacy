@@ -81,7 +81,6 @@ public class PCtr_BlockBeltDetector extends PCtr_BlockBeltBase {
 		if (isPressed != isAlreadyActive) {
 			world.setBlockMetadataWithNotify(i, j, k, PCtr_BeltHelper.getMeta(meta, isPressed));
 			PC_Utils.hugeUpdate(world, i, j, k, blockID);
-			world.markBlocksDirty(i, j, k, i, j, k);
 			PC_Utils.playSound(i + 0.5D, j + 0.125D, k + 0.5D, "random.click", 0.15F, 0.5F);
 		}
 		
