@@ -29,6 +29,7 @@ public class mod_PowerCraftTransport extends PC_Module {
 	public static PCtr_CommonProxy proxy;
 	public static PC_Block belt;
 	public static PC_Block speedyBelt;
+	public static PC_Block detectorBelt;
 	
 	public static mod_PowerCraftTransport getInstance() {
 		return (mod_PowerCraftTransport)PC_Module.getModule("PowerCraft-Transport");
@@ -77,7 +78,7 @@ public class mod_PowerCraftTransport extends PC_Module {
 	protected void initBlocks() {
 		belt = (PC_Block)PC_Utils.register(this, 467, PCtr_BlockBeltNormal.class, PCtr_ItemBlockConveyor.class);
 		speedyBelt = (PC_Block)PC_Utils.register(this, 468, PCtr_BlockBeltSpeedy.class, PCtr_ItemBlockConveyor.class);
-
+		detectorBelt = (PC_Block)PC_Utils.register(this, 469, PCtr_BlockBeltDetector.class, PCtr_ItemBlockConveyor.class);
 	}
 
 	@Override

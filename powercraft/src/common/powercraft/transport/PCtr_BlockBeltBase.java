@@ -113,4 +113,10 @@ public abstract class PCtr_BlockBeltBase extends PC_Block implements PC_IRotated
 		int l = PCtr_BeltHelper.getPlacedMeta(entityliving);
 		world.setBlockMetadataWithNotify(i, j, k, l);
 	}
+
+	@Override
+	public int tickRate() {
+		return 1;
+	}
+	
 }

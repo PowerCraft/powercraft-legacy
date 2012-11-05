@@ -744,4 +744,54 @@ public class PCtr_BeltHelper {
 		return false;
 	}
 	
+	public static boolean isActive(int meta) {
+		return meta == getActiveMeta(meta);
+	}
+	
+	/**
+	 * Modify metadata to mark that belt is "active"
+	 * 
+	 * @param meta
+	 * @return new meta
+	 */
+	public static int getActiveMeta(int meta) {
+		switch (meta) {
+			case 0:
+				return 6;
+			case 1:
+				return 7;
+			case 8:
+				return 14;
+			case 9:
+				return 15;
+		}
+		return meta;
+	}
+	
+	/**
+	 * Modify metadata to mark that belt is "passive"
+	 * 
+	 * @param meta
+	 * @return new meta
+	 */
+	public static int getPassiveMeta(int meta) {
+		switch (meta) {
+			case 6:
+				return 0;
+			case 7:
+				return 1;
+			case 14:
+				return 8;
+			case 15:
+				return 9;
+		}
+		return meta;
+	}
+	
+	public static int getMeta(int meta, boolean on) {
+		if(on)
+			return getActiveMeta(meta);
+		return getPassiveMeta(meta);
+	}
+	
 }
