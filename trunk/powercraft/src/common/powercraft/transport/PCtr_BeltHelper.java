@@ -21,6 +21,7 @@ import net.minecraft.src.ModLoader;
 import net.minecraft.src.World;
 import powercraft.core.PC_CoordI;
 import powercraft.core.PC_InvUtils;
+import powercraft.core.PC_ItemArmor;
 import powercraft.core.PC_Utils;
 
 public class PCtr_BeltHelper {
@@ -104,8 +105,15 @@ public class PCtr_BeltHelper {
 		if (entity.ridingEntity != null) {
 			return true;
 		}
-		if (entity instanceof EntityPlayer && ((EntityPlayer) entity).isSneaking()) {
-			return true;
+		if (entity instanceof EntityPlayer) {
+			if(((EntityPlayer) entity).isSneaking()){
+				return true;
+			}
+			if (((EntityPlayer) entity).inventory.armorItemInSlot(0) != null) {
+				if (((EntityPlayer) entity).inventory.armorItemInSlot(0).itemID == mod_PowerCraftTransport.slimeboots.shiftedIndex) {
+					return true;
+				}
+			}
 		}
 		if (entity instanceof EntityDiggingFX) {
 			return false;

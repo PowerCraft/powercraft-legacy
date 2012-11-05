@@ -15,10 +15,6 @@ public abstract class PC_Item extends Item implements PC_ICraftingToolDisplayer 
 
 	public abstract String[] getDefaultNames();
 
-	public String getCraftingToolModule() {
-		return null;
-	}
-
 	public List<ItemStack> getItemStacks(List<ItemStack> arrayList) {
 		arrayList.add(new ItemStack(this));
 		return arrayList;
