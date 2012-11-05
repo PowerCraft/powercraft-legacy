@@ -13,9 +13,6 @@ import net.minecraft.src.IInventory;
 import net.minecraft.src.InventoryLargeChest;
 import net.minecraft.src.Item;
 import net.minecraft.src.ItemStack;
-import net.minecraft.src.Material;
-import net.minecraft.src.MathHelper;
-import net.minecraft.src.ModLoader;
 import net.minecraft.src.NBTTagCompound;
 import net.minecraft.src.NBTTagList;
 import net.minecraft.src.TileEntity;
@@ -454,7 +451,7 @@ public class PC_InvUtils {
 
 		for (int i = 0; i < inventory.getSizeInventory(); i++) {
 			if (inventory.getStackInSlot(i) != null && inventory.getStackInSlot(i).itemID == mod_PowerCraftCore.powerCrystal.blockID) {
-				foundTable[MathHelper.clamp_int(inventory.getStackInSlot(i).getItemDamage(), 0, 7)] = true;
+				foundTable[PC_MathHelper.clamp_int(inventory.getStackInSlot(i).getItemDamage(), 0, 7)] = true;
 			}
 		}
 

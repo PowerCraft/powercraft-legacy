@@ -9,12 +9,12 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Set;
 
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.src.AxisAlignedBB;
 import net.minecraft.src.Block;
 import net.minecraft.src.CraftingManager;
+import net.minecraft.src.Entity;
 import net.minecraft.src.EntityList;
 import net.minecraft.src.EntityLiving;
 import net.minecraft.src.EntityPlayer;
@@ -710,6 +710,14 @@ public class PC_Utils {
 	
 	public static int addArmor(String name) {
 		return instance.iAddArmor(name);
+	}
+
+	protected boolean iIsEntityFX(Entity entity) {
+		return false;
+	}
+	
+	public static boolean isEntityFX(Entity entity) {
+		return instance.iIsEntityFX(entity);
 	}
 	
 }

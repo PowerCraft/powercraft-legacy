@@ -10,14 +10,14 @@ import java.io.ObjectInputStream;
 import java.io.OutputStreamWriter;
 import java.util.Arrays;
 import java.util.HashMap;
-import java.util.Set;
 import java.util.Map.Entry;
+import java.util.Set;
 
 import net.minecraft.client.Minecraft;
-import net.minecraft.server.MinecraftServer;
+import net.minecraft.src.Entity;
+import net.minecraft.src.EntityFX;
 import net.minecraft.src.EntityPlayer;
 import net.minecraft.src.EnumGameType;
-import net.minecraft.src.ModLoader;
 import net.minecraft.src.PlayerControllerMP;
 import net.minecraftforge.client.MinecraftForgeClient;
 import cpw.mods.fml.client.registry.RenderingRegistry;
@@ -212,6 +212,11 @@ public class PC_ClientUtils extends PC_Utils {
 	@Override
 	protected int iAddArmor(String name) {
 		return RenderingRegistry.addNewArmourRendererPrefix(name);
+	}
+	
+	@Override
+	protected boolean iIsEntityFX(Entity entity) {
+		return entity instanceof EntityFX;
 	}
 	
 }

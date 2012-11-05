@@ -1,12 +1,10 @@
 package powercraft.core;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import net.minecraft.src.Block;
 import net.minecraft.src.EntityPlayer;
 import net.minecraft.src.ItemStack;
-import net.minecraft.src.MathHelper;
 import net.minecraft.src.Slot;
 import net.minecraft.src.World;
 import powercraft.core.PC_GresWidget.PC_GresAlign;
@@ -46,7 +44,7 @@ public class PCco_GuiOreSnifferResultScreen extends PC_GresBaseWithInventory imp
 		this.start = new PC_CoordI((Integer)o[0], (Integer)o[1], (Integer)o[2]);
 		this.vector = new PC_CoordI(offsetX[(Integer)o[3]], offsetY[(Integer)o[3]], offsetZ[(Integer)o[3]]);
 				
-		int l = MathHelper.floor_double(((player.rotationYaw * 4F) / 360F) + 0.5D) & 3;
+		int l = PC_MathHelper.floor_double(((player.rotationYaw * 4F) / 360F) + 0.5D) & 3;
 
 		if (vector.equals(new PC_CoordI(0, -1, 0))) {
 

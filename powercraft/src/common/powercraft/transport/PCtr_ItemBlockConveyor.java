@@ -4,11 +4,11 @@ import net.minecraft.src.Block;
 import net.minecraft.src.Direction;
 import net.minecraft.src.EntityPlayer;
 import net.minecraft.src.ItemStack;
-import net.minecraft.src.MathHelper;
 import net.minecraft.src.World;
 import powercraft.core.PC_Block;
 import powercraft.core.PC_CoordI;
 import powercraft.core.PC_ItemBlock;
+import powercraft.core.PC_MathHelper;
 import powercraft.core.PC_Utils;
 
 public class PCtr_ItemBlockConveyor extends PC_ItemBlock {
@@ -79,7 +79,7 @@ public class PCtr_ItemBlockConveyor extends PC_ItemBlock {
 		// special placing rules for Ledge
 		if (PCtr_BeltHelper.isConveyorAt(world, new PC_CoordI(i, j - 1, k))) {			
 
-				int dir = ((MathHelper.floor_double(((entityplayer.rotationYaw * 4F) / 360F) + 0.5D) & 3) + 2) % 4;
+				int dir = ((PC_MathHelper.floor_double(((entityplayer.rotationYaw * 4F) / 360F) + 0.5D) & 3) + 2) % 4;
 
 				if (itemstack.getItemDamage() == 0 && PC_Utils.isPlacingReversed()) {
 					dir = PC_Utils.reverseSide(dir);
