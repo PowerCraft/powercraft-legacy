@@ -20,6 +20,7 @@ import net.minecraft.src.EnumGameType;
 import net.minecraft.src.ModLoader;
 import net.minecraft.src.PlayerControllerMP;
 import net.minecraftforge.client.MinecraftForgeClient;
+import cpw.mods.fml.client.registry.RenderingRegistry;
 import cpw.mods.fml.common.registry.LanguageRegistry;
 
 public class PC_ClientUtils extends PC_Utils {
@@ -206,6 +207,11 @@ public class PC_ClientUtils extends PC_Utils {
 	@Override
 	protected File iGetMCDirectory(){
 		return Minecraft.getMinecraftDir();
+	}
+	
+	@Override
+	protected int iAddArmor(String name) {
+		return RenderingRegistry.addNewArmourRendererPrefix(name);
 	}
 	
 }

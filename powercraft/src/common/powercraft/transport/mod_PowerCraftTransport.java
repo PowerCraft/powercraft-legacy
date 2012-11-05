@@ -14,6 +14,7 @@ import cpw.mods.fml.common.network.NetworkMod;
 
 import net.minecraftforge.common.Configuration;
 import powercraft.core.PC_Block;
+import powercraft.core.PC_ItemArmor;
 import powercraft.core.PC_Module;
 import powercraft.core.PC_Utils;
 import powercraft.logic.PClo_BlockPulsar;
@@ -31,6 +32,7 @@ public class mod_PowerCraftTransport extends PC_Module {
 	public static PC_Block speedyBelt;
 	public static PC_Block detectorBelt;
 	public static PC_Block breakBelt;
+	public static PC_ItemArmor slimeboots;
 	
 	public static mod_PowerCraftTransport getInstance() {
 		return (mod_PowerCraftTransport)PC_Module.getModule("PowerCraft-Transport");
@@ -85,8 +87,7 @@ public class mod_PowerCraftTransport extends PC_Module {
 
 	@Override
 	protected void initItems() {
-		// TODO Auto-generated method stub
-
+		slimeboots = (PC_ItemArmor)PC_Utils.register(this, 471, PCtr_ItemArmorStickyBoots.class);
 	}
 
 	@Override

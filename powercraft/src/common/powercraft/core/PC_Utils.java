@@ -102,6 +102,7 @@ public class PC_Utils {
 		Class<? extends PC_ItemBlock> itemBlockClass = null;
 		Class<? extends PC_TileEntity> tileEntityClass = null;
 		Class<? extends PC_Item> itemClass = null;
+		Class<? extends PC_ItemArmor> itemArmorClass = null;
 		
 		for(int i=classes.length-1; i>=0; i--){
 			if(PC_Block.class.isAssignableFrom(classes[i])){
@@ -112,13 +113,15 @@ public class PC_Utils {
 				tileEntityClass = classes[i];
 			}else if(PC_Item.class.isAssignableFrom(classes[i])){
 				itemClass = classes[i];
+			}else if(PC_ItemArmor.class.isAssignableFrom(classes[i])){
+				itemArmorClass = classes[i];
 			}
 		}
 		
-		if(blockClass == null && itemClass == null){
+		if(blockClass == null && itemClass == null && itemArmorClass == null){
 			throw new IllegalArgumentException("Need n Block or an Item");
 		}
-		if(blockClass != null && itemClass != null){
+		if(blockClass != null && itemClass != null && itemArmorClass != null){
 			throw new IllegalArgumentException("Need n Block or an Item but not both");
 		}
 		if(blockClass != null){
@@ -143,7 +146,7 @@ public class PC_Utils {
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
-		}else{
+		}else if(itemClass!=null){
 			if(classes.length>1)
 				throw new IllegalArgumentException("Expackt only one Item");
 			try {
@@ -153,6 +156,19 @@ public class PC_Utils {
 					((PC_IConfigLoader) item).loadFromConfig(config);
 				registerLanguage(module, item.getDefaultNames());
 				return item;
+			}catch (Exception e) {
+				e.printStackTrace();
+			}
+		}else if(itemArmorClass!=null){
+			if(classes.length>1)
+				throw new IllegalArgumentException("Expackt only one Item");
+			try {
+				int itemID = getConfigInt(config, Configuration.CATEGORY_ITEM, itemArmorClass.getName(), defaultID);
+				PC_ItemArmor itemArmor = (PC_ItemArmor) createClass(itemArmorClass, new Class[]{int.class}, new Object[]{itemID});
+				if(itemArmor instanceof PC_IConfigLoader)
+					((PC_IConfigLoader) itemArmor).loadFromConfig(config);
+				registerLanguage(module, itemArmor.getItemName(), itemArmor.getDefaultName());
+				return itemArmor;
 			}catch (Exception e) {
 				e.printStackTrace();
 			}
@@ -686,6 +702,14 @@ public class PC_Utils {
         	 block.onNeighborBlockChange(world, x, y, z, blockId);
          }
 		
+	}
+
+	protected int iAddArmor(String name) {
+		return 0;
+	}
+	
+	public static int addArmor(String name) {
+		return instance.iAddArmor(name);
 	}
 	
 }
