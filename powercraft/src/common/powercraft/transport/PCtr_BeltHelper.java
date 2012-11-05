@@ -465,7 +465,7 @@ public class PCtr_BeltHelper {
 	public static boolean isConveyorAt(World world, PC_CoordI pos) {
 		int id = pos.getId(world);
 		if(id>0){
-			if(Block.blocksList[id] instanceof PCtr_BlockBeltNormal)
+			if(Block.blocksList[id] instanceof PCtr_BlockBeltBase)
 				return true;
 		}
 		return false;
@@ -481,7 +481,7 @@ public class PCtr_BeltHelper {
 	public static boolean isTransporterAt(World world, PC_CoordI pos) {
 		int id = pos.getId(world);
 		if(id>0){
-			if(Block.blocksList[id] instanceof PCtr_BlockBeltNormal)
+			if(Block.blocksList[id] instanceof PCtr_BlockBeltBase)
 				return true;
 		}
 		return false;

@@ -15,32 +15,13 @@ import powercraft.core.PC_Utils;
 public class PCtr_BlockBeltDetector extends PCtr_BlockBeltBase {
 
 	public PCtr_BlockBeltDetector(int id) {
-		super(id);
+		super(id, 6);
 		setBlockName("PCDetectorBelt");
 	}
 
 	@Override
 	public String getDefaultName() {
 		return "Detection Belt";
-	}
-
-	@Override
-	public int getBlockTextureFromSideAndMetadata(int i, int j) {
-		if (i == 0) {
-			return 1;
-		}
-		if (i == 1) {
-			return 6;
-		} else {
-			return 2;
-		}
-	}
-
-	@Override
-	public boolean onBlockActivated(World world, int i, int j, int k,
-			EntityPlayer entityplayer, int par6, float par7, float par8,
-			float par9) {
-		return PCtr_BeltHelper.blockActivated(world, i, j, k, entityplayer);
 	}
 	
 	@Override
