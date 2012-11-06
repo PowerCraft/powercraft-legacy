@@ -14,12 +14,11 @@ import net.minecraft.src.TileEntity;
 import net.minecraft.src.World;
 import powercraft.core.PC_Block;
 import powercraft.core.PC_IRotatedBox;
-import powercraft.core.PC_ISwapTerrain;
 import powercraft.core.PC_MathHelper;
 import powercraft.core.PC_Renderer;
 import powercraft.core.PC_Utils;
 
-public class PClo_BlockSpecial extends PC_Block implements PC_IRotatedBox, PC_ISwapTerrain {
+public class PClo_BlockSpecial extends PC_Block implements PC_IRotatedBox {
 
 	public PClo_BlockSpecial(int id){
 		super(id, 6, Material.ground);
@@ -161,16 +160,6 @@ public class PClo_BlockSpecial extends PC_Block implements PC_IRotatedBox, PC_IS
     {
         return false;
     }
-	
-	@Override
-	public String getTextureFile() {
-		return getTerrainFile();
-	}
-
-	@Override
-	public String getTerrainFile() {
-		return mod_PowerCraftLogic.getInstance().getTerrainFile();
-	}
 	
 	@Override
 	public int getRenderType() {

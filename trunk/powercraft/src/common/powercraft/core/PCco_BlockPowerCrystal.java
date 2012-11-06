@@ -10,7 +10,7 @@ import net.minecraft.src.Material;
 import net.minecraft.src.World;
 import net.minecraftforge.common.Configuration;
 
-public class PCco_BlockPowerCrystal extends PC_Block implements PC_IConfigLoader, PC_ISwapTerrain, PC_IBlockRenderer, PC_IWorldSpawnGenerate {
+public class PCco_BlockPowerCrystal extends PC_Block implements PC_IConfigLoader, PC_IBlockRenderer, PC_IWorldSpawnGenerate {
 
 	/** enable sounds */
 	public static boolean makeSound;
@@ -42,11 +42,6 @@ public class PCco_BlockPowerCrystal extends PC_Block implements PC_IConfigLoader
 	@Override
 	public String getDefaultName() {
 		return "Power Crystal";
-	}
-	
-	@Override
-	public String getTextureFile() {
-		return getTerrainFile();
 	}
 
 	@Override
@@ -101,11 +96,6 @@ public class PCco_BlockPowerCrystal extends PC_Block implements PC_IConfigLoader
 	@Override
 	public int getMobilityFlag() {
 		return 0;
-	}
-
-	@Override
-	public String getTerrainFile() {
-		return mod_PowerCraftCore.getInstance().getTerrainFile();
 	}
 
 	@Override
@@ -172,7 +162,7 @@ public class PCco_BlockPowerCrystal extends PC_Block implements PC_IConfigLoader
 	@Override
 	public void renderInventoryBlock(Block block, int metadata, int modelID,
 			Object renderer) {
-		PC_Renderer.bindTexture(((PC_ISwapTerrain) block).getTerrainFile());
+		PC_Renderer.bindTexture(block.getTextureFile());
 		
 		Random posRand = new Random(metadata);
 
@@ -199,7 +189,7 @@ public class PCco_BlockPowerCrystal extends PC_Block implements PC_IConfigLoader
 			Block block, int modelId, Object renderer) {
 		PC_Renderer.tessellatorDraw();
 		PC_Renderer.tessellatorStartDrawingQuads();
-		PC_Renderer.bindTexture(((PC_ISwapTerrain) block).getTerrainFile());
+		PC_Renderer.bindTexture(block.getTextureFile());
 		
 		Random posRand = new Random(x + x * y * z + z + world.getBlockMetadata(x, y, z));
 

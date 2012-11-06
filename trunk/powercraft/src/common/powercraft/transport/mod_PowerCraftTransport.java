@@ -29,11 +29,12 @@ public class mod_PowerCraftTransport extends PC_Module {
 
 	@SidedProxy(clientSide = "powercraft.transport.PCtr_ClientProxy", serverSide = "powercraft.transport.PCtr_CommonProxy")
 	public static PCtr_CommonProxy proxy;
-	public static PC_Block belt;
+	public static PC_Block conveyorBelt;
 	public static PC_Block speedyBelt;
 	public static PC_Block detectorBelt;
 	public static PC_Block breakBelt;
 	public static PC_Block redirectionBelt;
+	public static PC_Block elevator;
 	public static PC_ItemArmor slimeboots;
 	
 	public static mod_PowerCraftTransport getInstance() {
@@ -81,16 +82,17 @@ public class mod_PowerCraftTransport extends PC_Module {
 
 	@Override
 	protected void initBlocks() {
-		belt = (PC_Block)PC_Utils.register(this, 467, PCtr_BlockBeltNormal.class, PCtr_ItemBlockConveyor.class);
+		conveyorBelt = (PC_Block)PC_Utils.register(this, 467, PCtr_BlockBeltNormal.class, PCtr_ItemBlockConveyor.class);
 		speedyBelt = (PC_Block)PC_Utils.register(this, 468, PCtr_BlockBeltSpeedy.class, PCtr_ItemBlockConveyor.class);
 		detectorBelt = (PC_Block)PC_Utils.register(this, 469, PCtr_BlockBeltDetector.class, PCtr_ItemBlockConveyor.class);
 		breakBelt = (PC_Block)PC_Utils.register(this, 470, PCtr_BlockBeltBreak.class, PCtr_ItemBlockConveyor.class);
 		redirectionBelt = (PC_Block)PC_Utils.register(this, 471, PCtr_BlockBeltRedirector.class, PCtr_ItemBlockConveyor.class, PCtr_TileEntityRedirectionBelt.class);
+		elevator = (PC_Block)PC_Utils.register(this, 472, PCtr_BlockElevator.class, PCtr_ItemBlockElevator.class);
 	}
 
 	@Override
 	protected void initItems() {
-		slimeboots = (PC_ItemArmor)PC_Utils.register(this, 472, PCtr_ItemArmorStickyBoots.class);
+		slimeboots = (PC_ItemArmor)PC_Utils.register(this, 473, PCtr_ItemArmorStickyBoots.class);
 	}
 
 	@Override

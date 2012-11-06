@@ -16,6 +16,7 @@ import net.minecraft.src.World;
 import powercraft.core.PC_Block;
 import powercraft.core.PC_ICraftingToolDisplayer;
 import powercraft.core.PC_PacketHandler;
+import powercraft.core.PC_Renderer;
 import powercraft.core.PC_Utils;
 
 public class PClo_BlockPulsar extends PC_Block implements PC_ICraftingToolDisplayer {
@@ -62,7 +63,6 @@ public class PClo_BlockPulsar extends PC_Block implements PC_ICraftingToolDispla
 
 	@Override
 	public void updateTick(World world, int i, int j, int k, Random random) {
-		super.updateTick(world, i, j, k, random);
 		world.markBlockAsNeedsUpdate(i, j, k);
 		PC_Utils.hugeUpdate(world, i, j, k, blockID);
 	}
@@ -175,6 +175,11 @@ public class PClo_BlockPulsar extends PC_Block implements PC_ICraftingToolDispla
 	public List<ItemStack> getItemStacks(List<ItemStack> arrayList) {
 		arrayList.add(new ItemStack(this));
 		return arrayList;
+	}
+
+	@Override
+	public String getTextureFile() {
+		return "/terrain.png";
 	}
 	
 }
