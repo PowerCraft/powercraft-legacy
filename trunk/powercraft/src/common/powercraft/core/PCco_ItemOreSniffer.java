@@ -35,16 +35,6 @@ public class PCco_ItemOreSniffer extends PC_Item {
 	}
 
 	@Override
-	public String getTextureFile() {
-		return mod_PowerCraftCore.getInstance().getTerrainFile();
-	}
-	
-	@Override
-	public String getCraftingToolModule() {
-		return mod_PowerCraftCore.getInstance().getNameWithoutPowerCraft();
-	}
-
-	@Override
 	public void addInformation(ItemStack itemStack, EntityPlayer player, List list, boolean b) {
 		list.add(PC_Utils.tr("pc.sniffer.desc"));
 	}

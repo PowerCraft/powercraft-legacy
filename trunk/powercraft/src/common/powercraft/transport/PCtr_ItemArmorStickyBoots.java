@@ -20,11 +20,6 @@ public class PCtr_ItemArmorStickyBoots extends PC_ItemArmor {
 	public String getDefaultName() {
 		return "Sticky Iron Boots";
 	}
-
-	@Override
-	public String getCraftingToolModule() {
-		return mod_PowerCraftTransport.getInstance().getNameWithoutPowerCraft();
-	}
 	
 	@Override
 	@SideOnly(Side.CLIENT)

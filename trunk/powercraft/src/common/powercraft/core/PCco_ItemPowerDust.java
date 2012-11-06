@@ -9,7 +9,7 @@ public class PCco_ItemPowerDust extends PC_Item implements PC_IFuel {
 	 * @param i ID
 	 */
 	public PCco_ItemPowerDust(int i) {
-		super(i);
+		super(i, false);
 		setIconCoord(13, 9);
 		setItemName("PCcoPowerDust");
 		setCreativeTab(CreativeTabs.tabMaterials);
@@ -35,9 +35,4 @@ public class PCco_ItemPowerDust extends PC_Item implements PC_IFuel {
 		return 3600;
 	}
 
-	@Override
-	public String getCraftingToolModule() {
-		return mod_PowerCraftCore.getInstance().getNameWithoutPowerCraft();
-	}
-	
 }

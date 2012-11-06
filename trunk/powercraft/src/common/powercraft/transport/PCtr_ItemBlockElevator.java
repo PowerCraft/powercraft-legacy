@@ -15,7 +15,6 @@ public class PCtr_ItemBlockElevator extends PC_ItemBlock {
 		super(i);
 		setMaxDamage(0);
 		setHasSubtypes(true);
-		setCreativeTab(CreativeTabs.tabTransport);
 	}
 	
 	@Override
@@ -27,11 +26,6 @@ public class PCtr_ItemBlockElevator extends PC_ItemBlock {
 	}
 
 	@Override
-	public int getIconFromDamage(int i) {
-		return 23;
-	}
-
-	@Override
 	public int getMetadata(int i) {
 		return i == 0 ? 0 : 1;
 	}
@@ -39,11 +33,6 @@ public class PCtr_ItemBlockElevator extends PC_ItemBlock {
 	@Override
 	public String getItemNameIS(ItemStack itemstack) {
 		return getItemName()+"."+(itemstack.getItemDamage() == 0 ? "up" : "down");
-	}
-
-	@Override
-	public String getCraftingToolModule() {
-		return mod_PowerCraftTransport.getInstance().getNameWithoutPowerCraft();
 	}
 
 	@Override

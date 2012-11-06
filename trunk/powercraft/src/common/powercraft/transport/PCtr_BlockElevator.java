@@ -2,6 +2,7 @@ package powercraft.transport;
 
 import net.minecraft.src.AxisAlignedBB;
 import net.minecraft.src.Block;
+import net.minecraft.src.CreativeTabs;
 import net.minecraft.src.Entity;
 import net.minecraft.src.EntityItem;
 import net.minecraft.src.EntityLiving;
@@ -23,6 +24,7 @@ public class PCtr_BlockElevator extends PC_Block {
 		setResistance(8.0F);
 		setBlockName("PCconveyorItemElevator");
 		setStepSound(Block.soundMetalFootstep);
+		setCreativeTab(CreativeTabs.tabTransport);
 	}
 
 	@Override
