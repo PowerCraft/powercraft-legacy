@@ -139,6 +139,7 @@ public class PC_Utils {
 				}else{
 					GameRegistry.registerBlock(block, itemBlockClass);
 					PC_ItemBlock itemBlock = (PC_ItemBlock)Item.itemsList[blockID];
+					itemBlock.setCraftingToolModule(module.getNameWithoutPowerCraft());
 					registerLanguage(module, itemBlock.getDefaultNames());
 				}
 				if(tileEntityClass!=null)
@@ -153,6 +154,8 @@ public class PC_Utils {
 			try {
 				int itemID = getConfigInt(config, Configuration.CATEGORY_ITEM, itemClass.getName(), defaultID);
 				PC_Item item = (PC_Item) createClass(itemClass, new Class[]{int.class}, new Object[]{itemID});
+				item.setCraftingToolModule(module.getNameWithoutPowerCraft());
+				item.setTextureFile(module.getTerrainFile());
 				if(item instanceof PC_IConfigLoader)
 					((PC_IConfigLoader) item).loadFromConfig(config);
 				registerLanguage(module, item.getDefaultNames());
@@ -166,6 +169,7 @@ public class PC_Utils {
 			try {
 				int itemID = getConfigInt(config, Configuration.CATEGORY_ITEM, itemArmorClass.getName(), defaultID);
 				PC_ItemArmor itemArmor = (PC_ItemArmor) createClass(itemArmorClass, new Class[]{int.class}, new Object[]{itemID});
+				itemArmor.setCraftingToolModule(module.getNameWithoutPowerCraft());
 				if(itemArmor instanceof PC_IConfigLoader)
 					((PC_IConfigLoader) itemArmor).loadFromConfig(config);
 				registerLanguage(module, itemArmor.getItemName(), itemArmor.getDefaultName());

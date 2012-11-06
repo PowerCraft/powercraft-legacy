@@ -30,11 +30,6 @@ public class PClo_ItemBlockDelayer extends PC_ItemBlock {
 	}
 	
 	@Override
-	public String getCraftingToolModule(){
-		return mod_PowerCraftLogic.getInstance().getNameWithoutPowerCraft();
-	}
-	
-	@Override
 	public List<ItemStack> getItemStacks(List<ItemStack> arrayList) {
 		for(int i=0; i<PClo_DelayerType.TOTAL_DELAYER_COUNT; i++)
 			arrayList.add(new ItemStack(this, 1, i));

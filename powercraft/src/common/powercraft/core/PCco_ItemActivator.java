@@ -35,17 +35,8 @@ public class PCco_ItemActivator extends PC_Item {
 	}
 	
 	@Override
-	public String getTextureFile() {
-		return mod_PowerCraftCore.getInstance().getTerrainFile();
-	}
-	
-	@Override
 	public String[] getDefaultNames() {
 		return new String[]{getItemName(), "Activator Crystal"};
-	}
-
-	public String getCraftingToolModule() {
-		return mod_PowerCraftCore.getInstance().getNameWithoutPowerCraft();
 	}
 	
 }

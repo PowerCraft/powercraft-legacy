@@ -12,16 +12,22 @@ import net.minecraft.src.World;
 
 public abstract class PC_ItemBlock extends ItemBlock implements PC_ICraftingToolDisplayer {
 
+	private String craftingToolModule;
+	
 	protected PC_ItemBlock(int id){
 		super(id);
 	}
-
+	
 	public abstract String[] getDefaultNames();
 	
 	public String getCraftingToolModule() {
-		return null;
+		return craftingToolModule;
 	}
 
+	public void setCraftingToolModule(String module){
+		craftingToolModule = module;
+	}
+	
 	public List<ItemStack> getItemStacks(List<ItemStack> arrayList) {
 		arrayList.add(new ItemStack(this));
 		return arrayList;

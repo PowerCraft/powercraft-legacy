@@ -12,12 +12,19 @@ import cpw.mods.fml.common.asm.SideOnly;
 
 public abstract class PC_Block extends BlockContainer {
 
+	private boolean canSetTextureFile = true;
+	
 	protected PC_Block(int id, Material material){
 		super(id, material);
 	}
 	
 	protected PC_Block(int id, int textureIndex, Material material){
 		super(id, textureIndex, material);
+	}
+
+	public PC_Block(int id, int textureIndex, Material material, boolean canSetTextureFile) {
+		super(id, textureIndex, material);
+		this.canSetTextureFile = canSetTextureFile;
 	}
 
 	public abstract String getDefaultName();
@@ -29,6 +36,12 @@ public abstract class PC_Block extends BlockContainer {
 	@Override
 	public int getRenderType() {
 		return PC_Renderer.getRendererID(true);
+	}
+	
+	@Override
+	public void setTextureFile(String texture) {
+		if(canSetTextureFile)
+			super.setTextureFile(texture);
 	}
 	
 	@Override

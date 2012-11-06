@@ -32,15 +32,5 @@ public class PCco_ItemCraftingTool extends PC_Item {
 	public String[] getDefaultNames() {
 		return new String[]{getItemName(), "Crafting Tool"};
 	}
-
-	@Override
-	public String getTextureFile() {
-		return mod_PowerCraftCore.getInstance().getTerrainFile();
-	}
-	
-	@Override
-	public String getCraftingToolModule() {
-		return mod_PowerCraftCore.getInstance().getNameWithoutPowerCraft();
-	}
 	
 }

@@ -55,11 +55,6 @@ public class PCco_ItemBlockPowerCrystal extends PC_ItemBlock {
 	public EnumRarity getRarity(ItemStack itemstack) {
 		return EnumRarity.rare;
 	}
-	
-	@Override
-	public String getCraftingToolModule() {
-		return mod_PowerCraftCore.getInstance().getNameWithoutPowerCraft();
-	}
 
 	@Override
 	public List<ItemStack> getItemStacks(List<ItemStack> arrayList) {

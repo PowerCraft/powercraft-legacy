@@ -22,7 +22,7 @@ import powercraft.core.PC_Utils;
 public class PClo_BlockPulsar extends PC_Block implements PC_ICraftingToolDisplayer {
 
 	public PClo_BlockPulsar(int id){
-		super(id, 74, Material.wood);
+		super(id, 74, Material.wood, false);
 		setHardness(0.8F);
 		setResistance(30.0F);
 		setBlockName("PCloRedstonePulsar");
