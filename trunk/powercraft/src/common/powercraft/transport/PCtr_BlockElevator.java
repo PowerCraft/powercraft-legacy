@@ -7,10 +7,10 @@ import net.minecraft.src.EntityItem;
 import net.minecraft.src.EntityLiving;
 import net.minecraft.src.EntityPlayer;
 import net.minecraft.src.IBlockAccess;
-import net.minecraft.src.MathHelper;
 import net.minecraft.src.World;
 import powercraft.core.PC_Block;
 import powercraft.core.PC_CoordI;
+import powercraft.core.PC_MathHelper;
 
 public class PCtr_BlockElevator extends PC_Block {
 
@@ -169,8 +169,8 @@ public class PCtr_BlockElevator extends PC_Block {
 			}
 
 			if (!(id != blockID || halted)) {
-				entity.motionZ = MathHelper.clamp_float((float) entity.motionZ, (float) -(BORDER_BOOST * 1.5D), (float) (BORDER_BOOST * 1.5D));
-				entity.motionX = MathHelper.clamp_float((float) entity.motionX, (float) -(BORDER_BOOST * 1.5D), (float) (BORDER_BOOST * 1.5D));
+				entity.motionZ = PC_MathHelper.clamp_float((float) entity.motionZ, (float) -(BORDER_BOOST * 1.5D), (float) (BORDER_BOOST * 1.5D));
+				entity.motionX = PC_MathHelper.clamp_float((float) entity.motionX, (float) -(BORDER_BOOST * 1.5D), (float) (BORDER_BOOST * 1.5D));
 			}
 		}
 
