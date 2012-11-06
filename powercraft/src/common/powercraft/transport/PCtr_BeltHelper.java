@@ -794,4 +794,41 @@ public class PCtr_BeltHelper {
 		return getPassiveMeta(meta);
 	}
 	
+	/**
+	 * Try to store item to all sides
+	 * 
+	 * @param world the world
+	 * @param pos belt / elevator pos
+	 * @param entity the entity
+	 * @return stored completely.
+	 */
+	public static boolean storeAllSides(World world, PC_CoordI pos, EntityItem entity) {
+
+		if (storeItemIntoMinecart(world, pos, entity)) {
+			return true;
+		}
+
+		if (storeEntityItemAt(world, pos.offset(0, 0, -1), entity)) {
+			return true;
+		}
+		if (storeEntityItemAt(world, pos.offset(0, 0, 1), entity)) {
+			return true;
+		}
+		if (storeEntityItemAt(world, pos.offset(-1, 0, 0), entity)) {
+			return true;
+		}
+		if (storeEntityItemAt(world, pos.offset(1, 0, 0), entity)) {
+			return true;
+		}
+
+		if (storeEntityItemAt(world, pos.offset(0, 1, 0), entity)) {
+			return true;
+		}
+
+		if (storeEntityItemAt(world, pos.offset(0, -1, 0), entity)) {
+			return true;
+		}
+		return false;
+	}
+	
 }

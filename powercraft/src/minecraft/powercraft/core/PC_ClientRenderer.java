@@ -27,7 +27,8 @@ public class PC_ClientRenderer extends PC_Renderer implements ISimpleBlockRender
 			((PC_IBlockRenderer) block).renderInventoryBlock(block, metadata, modelID, renderer);
 		}else if(block instanceof PC_IRotatedBox){
 			iRenderInvBlockRotatedBox(block, metadata, modelID, renderer);
-		}
+		}else
+			iRenderInvBlock(block, metadata, modelID, renderer);
 	}
 
 	@Override
@@ -37,7 +38,7 @@ public class PC_ClientRenderer extends PC_Renderer implements ISimpleBlockRender
 		}else if(block instanceof PC_IRotatedBox){
 			iRenderBlockRotatedBox(world, x, y, z, block, modelId, renderer);
 		}else
-			return false;
+			iRenderBlock(world, x, y, z, block, modelId, renderer);
 		return true;
 	}
 
@@ -245,6 +246,57 @@ public class PC_ClientRenderer extends PC_Renderer implements ISimpleBlockRender
 		}
 	}
 	
+	protected void iRenderBlock(IBlockAccess world, int x, int y, int z, Block block, int modelId, RenderBlocks renderer) {
+		Tessellator tessellator = Tessellator.instance;
+		tessellator.draw();
+		boolean swapped = swapTerrain(block);
+		tessellator.startDrawingQuads();
+		block.setBlockBoundsBasedOnState(world, x, y, z);
+		iRenderStandardBlock(renderer, block, x, y, z);
+		tessellator.draw();
+		tessellator.startDrawingQuads();
+		resetTerrain(swapped);
+	}
+	
+	protected void iRenderInvBlock(Block block, int metadata, int modelID, RenderBlocks renderer) {
+		RenderBlocks renderblocks = (RenderBlocks)renderer;
+		Tessellator tessellator = Tessellator.instance;
+
+		boolean swapped = swapTerrain(block);
+		
+		block.setBlockBoundsForItemRender();
+		((RenderBlocks)renderer).func_83018_a(block);
+		GL11.glTranslatef(-0.5F, -0.5F, -0.5F);
+		tessellator.startDrawingQuads();
+		tessellator.setNormal(0.0F, -1F, 0.0F);
+		renderblocks.renderBottomFace(block, 0.0D, 0.0D, 0.0D, block.getBlockTextureFromSideAndMetadata(0, metadata));
+		tessellator.draw();
+		tessellator.startDrawingQuads();
+		tessellator.setNormal(0.0F, 1.0F, 0.0F);
+		renderblocks.renderTopFace(block, 0.0D, 0.0D, 0.0D, block.getBlockTextureFromSideAndMetadata(1, metadata));
+		tessellator.draw();
+		tessellator.startDrawingQuads();
+		tessellator.setNormal(0.0F, 0.0F, -1F);
+		renderblocks.renderEastFace(block, 0.0D, 0.0D, 0.0D, block.getBlockTextureFromSideAndMetadata(2, metadata));
+		tessellator.draw();
+		tessellator.startDrawingQuads();
+		tessellator.setNormal(0.0F, 0.0F, 1.0F);
+		renderblocks.renderWestFace(block, 0.0D, 0.0D, 0.0D, block.getBlockTextureFromSideAndMetadata(3, metadata));
+		tessellator.draw();
+		tessellator.startDrawingQuads();
+		tessellator.setNormal(-1F, 0.0F, 0.0F);
+		renderblocks.renderNorthFace(block, 0.0D, 0.0D, 0.0D, block.getBlockTextureFromSideAndMetadata(4, metadata));
+		tessellator.draw();
+		tessellator.startDrawingQuads();
+		tessellator.setNormal(1.0F, 0.0F, 0.0F);
+		renderblocks.renderSouthFace(block, 0.0D, 0.0D, 0.0D, block.getBlockTextureFromSideAndMetadata(5, metadata));
+		tessellator.draw();
+		GL11.glTranslatef(0.5F, 0.5F, 0.5F);
+		((RenderBlocks)renderer).func_83017_b();
+		resetTerrain(swapped);
+
+	}
+	
 	/**
 	 * Use texture file as terrain.png
 	 * 
@@ -264,9 +316,8 @@ public class PC_ClientRenderer extends PC_Renderer implements ISimpleBlockRender
 	 *         original terrain.png
 	 */
 	public static boolean swapTerrain(Block block) {
-		RenderEngine renderengine = PC_ClientUtils.mc().renderEngine;
-		if (block instanceof PC_ISwapTerrain) {
-			renderengine.bindTexture(renderengine.getTexture(((PC_ISwapTerrain) block).getTerrainFile()));
+		if (block instanceof PC_Block && !block.getTextureFile().equalsIgnoreCase("/terrain.png")) {
+			swapTerrain(block.getTextureFile());
 			return true;
 		}
 		return false;
@@ -277,9 +328,11 @@ public class PC_ClientRenderer extends PC_Renderer implements ISimpleBlockRender
 	 * 
 	 * @param do_it false = do nothing
 	 */
-	public static void resetTerrain(Boolean do_it) {
-		RenderEngine renderengine = PC_ClientUtils.mc().renderEngine;
-		renderengine.bindTexture(renderengine.getTexture("/terrain.png"));
+	public static void resetTerrain(boolean do_it) {
+		if(do_it){
+			RenderEngine renderengine = PC_ClientUtils.mc().renderEngine;
+			renderengine.bindTexture(renderengine.getTexture("/terrain.png"));
+		}
 	}
 	
 }

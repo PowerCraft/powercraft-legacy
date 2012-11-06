@@ -14,13 +14,11 @@ import net.minecraft.src.TileEntity;
 import net.minecraft.src.World;
 import powercraft.core.PC_Block;
 import powercraft.core.PC_IRotatedBox;
-import powercraft.core.PC_ISwapTerrain;
 import powercraft.core.PC_MathHelper;
 import powercraft.core.PC_Renderer;
 import powercraft.core.PC_Utils;
 
-public class PClo_BlockDelayer extends PC_Block  implements PC_IRotatedBox,
-	PC_ISwapTerrain {
+public class PClo_BlockDelayer extends PC_Block  implements PC_IRotatedBox {
 
 	public PClo_BlockDelayer(int id) {
 		super(id, 6, Material.ground);
@@ -32,11 +30,6 @@ public class PClo_BlockDelayer extends PC_Block  implements PC_IRotatedBox,
 		setResistance(30.0F);
 		setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 0.1875F, 1.0F);
 		setCreativeTab(CreativeTabs.tabRedstone);
-	}
-
-	@Override
-	public String getTerrainFile() {
-		return mod_PowerCraftLogic.getInstance().getTerrainFile();
 	}
 
 	@Override
@@ -143,11 +136,6 @@ public class PClo_BlockDelayer extends PC_Block  implements PC_IRotatedBox,
     {
         return false;
     }
-	
-	@Override
-	public String getTextureFile() {
-		return getTerrainFile();
-	}
 	
 	@Override
 	public int getRenderType() {

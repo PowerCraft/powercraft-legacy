@@ -130,6 +130,7 @@ public class PC_Utils {
 			try {
 				int blockID = getConfigInt(config, Configuration.CATEGORY_BLOCK, blockClass.getName(), defaultID);
 				PC_Block block = (PC_Block) createClass(blockClass, new Class[]{int.class}, new Object[]{blockID});
+				block.setTextureFile(module.getTerrainFile());
 				if(block instanceof PC_IConfigLoader)
 					((PC_IConfigLoader) block).loadFromConfig(config);
 				if(itemBlockClass==null){

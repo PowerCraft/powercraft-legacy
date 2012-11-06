@@ -27,6 +27,11 @@ public abstract class PC_Block extends BlockContainer {
 	}
 	
 	@Override
+	public int getRenderType() {
+		return PC_Renderer.getRendererID(true);
+	}
+	
+	@Override
 	@SideOnly(Side.CLIENT)
 	public boolean shouldSideBeRendered(IBlockAccess world, int x, int y, int z, int side) {
 		if(side==1 && getRenderType()==PC_Renderer.getRendererID(true) && this instanceof PC_IRotatedBox)
