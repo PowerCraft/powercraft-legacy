@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.io.ObjectOutputStream;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Modifier;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -322,13 +323,21 @@ public class PC_Utils {
 	public static void setPrivateValue(Class c, Object o, int i, Object v) {
         try
         {
-            Field f = c.getDeclaredFields()[i];
+        	Field f = c.getDeclaredFields()[i];
             f.setAccessible(true);
+            Field field_modifiers = Field.class.getDeclaredField("modifiers");
+            field_modifiers.setAccessible(true);
+            int modifier = field_modifiers.getInt(f);
+            if((modifier & Modifier.FINAL)!=0){
+            	field_modifiers.setInt(f, modifier & ~Modifier.FINAL);
+            }
             f.set(o, v);
+            if((modifier & Modifier.FINAL)!=0){
+            	field_modifiers.setInt(f, modifier);
+            }
         }
-        catch (IllegalAccessException e)
-        {
-            
+        catch (Exception e) {
+            PC_Logger.severe("setPrivateValue failed with "+c+":"+o+":"+i);
         }
     }
 	

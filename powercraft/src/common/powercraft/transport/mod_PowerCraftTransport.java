@@ -35,6 +35,7 @@ public class mod_PowerCraftTransport extends PC_Module {
 	public static PC_Block breakBelt;
 	public static PC_Block redirectionBelt;
 	public static PC_Block separationBelt;
+	public static PC_Block ejectionBelt;
 	public static PC_Block elevator;
 	public static PC_ItemArmor slimeboots;
 	
@@ -81,7 +82,17 @@ public class mod_PowerCraftTransport extends PC_Module {
 				"pc.gui.separationBelt.group", "Ignore subtypes of",
 				"pc.gui.separationBelt.groupLogs", "Logs",
 				"pc.gui.separationBelt.groupPlanks", "Planks",
-				"pc.gui.separationBelt.groupAll", "All"
+				"pc.gui.separationBelt.groupAll", "All",
+				
+				"pc.gui.ejector.modeEjectTitle", "Ejection mode:",
+				"pc.gui.ejector.modeStacks", "Whole stacks",
+				"pc.gui.ejector.modeItems", "Single items",
+				"pc.gui.ejector.modeAll", "All contents at once",
+
+				"pc.gui.ejector.modeSelectTitle", "Method of selection:",
+				"pc.gui.ejector.modeSelectFirst", "First slot",
+				"pc.gui.ejector.modeSelectLast", "Last slot",
+				"pc.gui.ejector.modeSelectRandom", "Random slot"
 		);
 	}
 
@@ -93,12 +104,15 @@ public class mod_PowerCraftTransport extends PC_Module {
 		breakBelt = (PC_Block)PC_Utils.register(this, 470, PCtr_BlockBeltBreak.class, PCtr_ItemBlockConveyor.class);
 		redirectionBelt = (PC_Block)PC_Utils.register(this, 471, PCtr_BlockBeltRedirector.class, PCtr_ItemBlockConveyor.class, PCtr_TileEntityRedirectionBelt.class);
 		separationBelt = (PC_Block)PC_Utils.register(this, 472, PCtr_BlockBeltSeparator.class, PCtr_ItemBlockConveyor.class, PCtr_TileEntitySeparationBelt.class);
-		elevator = (PC_Block)PC_Utils.register(this, 473, PCtr_BlockElevator.class, PCtr_ItemBlockElevator.class);
+		ejectionBelt = (PC_Block)PC_Utils.register(this, 473, PCtr_BlockBeltEjector.class, PCtr_ItemBlockConveyor.class, PCtr_TileEntityEjectionBelt.class);
+		elevator = (PC_Block)PC_Utils.register(this, 474, PCtr_BlockElevator.class, PCtr_ItemBlockElevator.class);
+	
+		PCtr_BlockHackedWater.hackWater();
 	}
 
 	@Override
 	protected void initItems() {
-		slimeboots = (PC_ItemArmor)PC_Utils.register(this, 474, PCtr_ItemArmorStickyBoots.class);
+		slimeboots = (PC_ItemArmor)PC_Utils.register(this, 475, PCtr_ItemArmorStickyBoots.class);
 	}
 
 	@Override
