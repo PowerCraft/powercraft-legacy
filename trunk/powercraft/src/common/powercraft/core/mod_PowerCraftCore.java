@@ -178,7 +178,7 @@ public class mod_PowerCraftCore extends PC_Module{
 		for(int i=0; i<6; i++)
 			list.add("Modded by XOR!");
 		for(int i=0; i<5; i++)
-			list.add("Modded by Rapus!");
+			list.add("Modded by Rapus95!");
 		for(int i=0; i<4; i++)
 			list.add("Reviewed by RxD");
 		list.add("Modded by masters!");

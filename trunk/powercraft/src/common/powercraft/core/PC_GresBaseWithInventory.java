@@ -25,7 +25,7 @@ public abstract class PC_GresBaseWithInventory extends Container {
 	 * 
 	 * @param player the player
 	 */
-	public PC_GresBaseWithInventory(EntityPlayer player) {
+	public PC_GresBaseWithInventory(EntityPlayer player, Object[] o) {
 		thePlayer = player;
 		if (thePlayer != null) {
 			// lower player inventory
@@ -43,6 +43,8 @@ public abstract class PC_GresBaseWithInventory extends Container {
 			}
 		}
 
+		init(o);
+		
 		List<Slot> sl = getAllSlots(new ArrayList<Slot>());
 		if(sl!=null)
 			for(Slot s:sl)
@@ -50,6 +52,7 @@ public abstract class PC_GresBaseWithInventory extends Container {
 		
 	}
 
+	protected abstract void init(Object[] o);
 	protected abstract List<Slot> getAllSlots(List<Slot> slots);
 
 	@Override
