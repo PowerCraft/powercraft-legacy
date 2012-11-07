@@ -2,20 +2,19 @@ package powercraft.machines;
 
 import java.util.List;
 
+import net.minecraftforge.common.Configuration;
+import powercraft.core.PC_Block;
+import powercraft.core.PC_Module;
+import powercraft.core.PC_Utils;
 import cpw.mods.fml.common.Mod;
-import cpw.mods.fml.common.SidedProxy;
 import cpw.mods.fml.common.Mod.Init;
 import cpw.mods.fml.common.Mod.PostInit;
 import cpw.mods.fml.common.Mod.PreInit;
+import cpw.mods.fml.common.SidedProxy;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.network.NetworkMod;
-
-import net.minecraftforge.common.Configuration;
-import powercraft.core.PC_Module;
-import powercraft.transport.PCtr_CommonProxy;
-import powercraft.transport.mod_PowerCraftTransport;
 
 @Mod(modid="PowerCraft-Machines", name="PowerCraft-Machines", version="3.5.0AlphaA", dependencies="required-after:PowerCraft-Core")
 @NetworkMod(clientSideRequired=true, serverSideRequired=true)
@@ -23,6 +22,8 @@ public class mod_PowerCraftMachines extends PC_Module {
 
 	@SidedProxy(clientSide = "powercraft.machines.PCma_ClientProxy", serverSide = "powercraft.machines.PCma_CommonProxy")
 	public static PCma_CommonProxy proxy;
+	
+	public static PC_Block automaticWorkbench;
 	
 	public static mod_PowerCraftMachines getInstance() {
 		return (mod_PowerCraftMachines)PC_Module.getModule("PowerCraft-Machines");
@@ -57,8 +58,8 @@ public class mod_PowerCraftMachines extends PC_Module {
 
 	@Override
 	protected List<String> loadTextureFiles(List<String> textures) {
-		// TODO Auto-generated method stub
-		return null;
+		textures.add(getTerrainFile());
+		return textures;
 	}
 
 	@Override
@@ -69,8 +70,7 @@ public class mod_PowerCraftMachines extends PC_Module {
 
 	@Override
 	protected void initBlocks() {
-		// TODO Auto-generated method stub
-
+		automaticWorkbench = (PC_Block)PC_Utils.register(this, 476, PCma_BlockAutomaticWorkbench.class, PCma_TileEntityAutomaticWorkbench.class);
 	}
 
 	@Override
