@@ -118,7 +118,7 @@ public class PC_GresTab extends PC_GresWidget {
 	
 	private void renderButton(PC_CoordI posOffset, boolean left){
 		int state;
-		if((!left && tabIndex==0) || (left && noright)){
+		if((left && tabIndex==0) || (!left && noright)){
 			state = 0;
 		}else if (button==(left?1:2) && isMouseOver) {
 			if(isClicked)
@@ -283,10 +283,10 @@ public class PC_GresTab extends PC_GresWidget {
 					}
 					return false;
 				}else{
-					if(button==1){
+					if(button==2){
 						if(!noright)
 							tabIndex++;
-					}else if(button==2){
+					}else if(button==1){
 						tabIndex--;
 						if(tabIndex<0)
 							tabIndex=0;
