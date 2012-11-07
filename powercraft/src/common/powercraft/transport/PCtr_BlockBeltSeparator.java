@@ -30,7 +30,7 @@ public class PCtr_BlockBeltSeparator extends PCtr_BlockBeltBase {
 
 		int redir = 0;
 
-		if (entity instanceof EntityFX) {
+		if (PC_Utils.isEntityFX(entity)) {
 			return;
 		} // no derbish will be moved
 		if (!entity.isEntityAlive()) {

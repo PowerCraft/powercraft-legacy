@@ -152,7 +152,54 @@ public abstract class PC_Module{
 	public boolean updateInfo(String sModuleVersion, String sInfo) {
 		System.out.println(sModuleVersion);
 		
-		if(getVersion().compareToIgnoreCase(sModuleVersion)<0 && !lastIgnoredUpdateVersion.equalsIgnoreCase(sModuleVersion)){
+		String saVersion[], saNewVersion[];
+		
+		saVersion = getVersion().split("\\.");
+		saNewVersion = sModuleVersion.split("\\.");
+		
+		for(int i=0; i<saVersion.length; i++){
+			if(i>=saNewVersion.length)
+				return false;
+			int version = 0, newVersion = 0;
+			String sVersion = "", sNewVersion = "";
+			for(int j=0; j<saVersion[i].length(); j++){
+				char c = saVersion[i].charAt(j);
+				boolean num=true;
+				if(Character.isDigit(c) && num){
+					version *= 10;
+					version += c-'0';
+				}else{
+					num = false;
+					sVersion += c;
+				}
+			}
+			for(int j=0; j<saNewVersion[i].length(); j++){
+				char c = saNewVersion[i].charAt(j);
+				boolean num=true;
+				if(Character.isDigit(c) && num){
+					newVersion *= 10;
+					newVersion += c-'0';
+				}else{
+					num = false;
+					sNewVersion += c;
+				}
+			}
+			System.out.println(newVersion+":"+sNewVersion+"="+version+":"+sVersion);
+			if(newVersion>version){
+				break;
+			}else if(newVersion<version){
+				return false;
+			}else{
+				int comp = sNewVersion.compareToIgnoreCase(sVersion);
+				if(comp>0){
+					return false;
+				}else if(comp<0){
+					break;
+				}
+			}
+		}
+		
+		if(!lastIgnoredUpdateVersion.equalsIgnoreCase(sModuleVersion)){
 			
 			System.out.println("OK");
 				
