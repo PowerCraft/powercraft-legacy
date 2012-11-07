@@ -64,8 +64,9 @@ public class mod_PowerCraftMachines extends PC_Module {
 
 	@Override
 	protected void initLanguage() {
-		// TODO Auto-generated method stub
-
+		PC_Utils.registerLanguage(this, 
+				"pc.gui.automaticWorkbench.redstoneActivated", "Redstone triggered"
+				);
 	}
 
 	@Override
