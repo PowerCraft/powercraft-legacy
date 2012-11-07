@@ -1,5 +1,6 @@
 package powercraft.transport;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import net.minecraft.src.AxisAlignedBB;
@@ -14,8 +15,13 @@ import net.minecraft.src.IInventory;
 import net.minecraft.src.Item;
 import net.minecraft.src.ItemMinecart;
 import net.minecraft.src.ItemStack;
+import net.minecraft.src.TileEntityBrewingStand;
+import net.minecraft.src.TileEntityFurnace;
 import net.minecraft.src.World;
+import powercraft.core.PC_CoordD;
 import powercraft.core.PC_CoordI;
+import powercraft.core.PC_IInventoryWrapper;
+import powercraft.core.PC_ISpecialAccessInventory;
 import powercraft.core.PC_InvUtils;
 import powercraft.core.PC_MathHelper;
 import powercraft.core.PC_Utils;
@@ -829,6 +835,318 @@ public class PCtr_BeltHelper {
 			return true;
 		}
 		return false;
+	}
+	
+	/**
+	 * Dispense item from inventory at given location onto a belt
+	 * 
+	 * @param world
+	 * @param inventoryPos position where is the inventory
+	 * @param beltPos position of the belt to place the item on
+	 * @return success
+	 */
+	public static boolean dispenseFromInventoryAt(World world, PC_CoordI inventoryPos, PC_CoordI beltPos) {
+		IInventory inventory = PC_InvUtils.getCompositeInventoryAt(world, inventoryPos);
+		if (inventory == null) {
+			return false;
+		}
+		return dispenseItemOntoBelt(world, inventoryPos, inventory, beltPos);
+	}
+
+
+	/**
+	 * Try to dispense item from blocks around the belt.
+	 * 
+	 * @param world
+	 * @param beltPos the belt position
+	 */
+	public static void tryToDispenseItem(World world, PC_CoordI beltPos) {
+		int rot = getRotation(beltPos.getMeta(world));
+
+		// first try the inventory right behind this belt
+		if (rot == 2 && dispenseFromInventoryAt(world, beltPos.offset(0, 0, -1), beltPos)) {
+			return;
+		}
+		if (rot == 3 && dispenseFromInventoryAt(world, beltPos.offset(1, 0, 0), beltPos)) {
+			return;
+		}
+		if (rot == 0 && dispenseFromInventoryAt(world, beltPos.offset(0, 0, 1), beltPos)) {
+			return;
+		}
+		if (rot == 1 && dispenseFromInventoryAt(world, beltPos.offset(-1, 0, 0), beltPos)) {
+			return;
+		}
+
+		// try all the other sides
+		if (rot != 2 && dispenseFromInventoryAt(world, beltPos.offset(0, 0, -1), beltPos)) {
+			return;
+		}
+		if (rot != 3 && dispenseFromInventoryAt(world, beltPos.offset(1, 0, 0), beltPos)) {
+			return;
+		}
+		if (rot != 0 && dispenseFromInventoryAt(world, beltPos.offset(0, 0, 1), beltPos)) {
+			return;
+		}
+		if (rot != 1 && dispenseFromInventoryAt(world, beltPos.offset(-1, 0, 0), beltPos)) {
+			return;
+		}
+	}
+
+	/**
+	 * Dispense item from inventory onto a belt.
+	 * 
+	 * @param world
+	 * @param invPos pos of the inventory (for item positioning on the belt)
+	 * @param inventory the iinventory to eject item from
+	 * @param beltPos position of belt to place the item on
+	 * @return item dispensed
+	 */
+	public static boolean dispenseItemOntoBelt(World world, PC_CoordI invPos, IInventory inventory, PC_CoordI beltPos) {
+		ItemStack[] stacks = dispenseStuffFromInventory(world, beltPos, inventory);
+
+		if (stacks != null) {
+
+			stacks = PC_InvUtils.groupStacks(stacks);
+
+			for (ItemStack stack : stacks) {
+				createEntityItemOnBelt(world, invPos, beltPos, stack);
+			}
+
+			return true;
+		}
+		return false;
+	}
+
+	/**
+	 * Get closest minecart and dispense stack from it onto this belt.
+	 * 
+	 * @param world
+	 * @param beltPos
+	 * @return item dispensed.
+	 */
+	public static boolean dispenseStackFromNearbyMinecart(World world, PC_CoordI beltPos) {
+		List<Entity> hitList = world.getEntitiesWithinAABB(
+				IInventory.class,
+				AxisAlignedBB.getBoundingBox(beltPos.x, beltPos.y, beltPos.z, beltPos.x + 1, beltPos.y + 1, beltPos.z + 1).expand(0.6D, 0.6D,
+						0.6D));
+
+		if (hitList.size() > 0) {
+			for (Entity entityWithInventory : hitList) {
+
+				if (dispenseItemOntoBelt(world, new PC_CoordD(entityWithInventory.posX, entityWithInventory.posY, entityWithInventory.posZ).round(),
+						(IInventory) entityWithInventory, beltPos)) {
+					return true;
+				}
+
+			}
+		}
+		
+
+		List<Entity> hitList2 = world.getEntitiesWithinAABB(
+				PC_IInventoryWrapper.class,
+				AxisAlignedBB.getBoundingBox(beltPos.x, beltPos.y, beltPos.z, beltPos.x + 1, beltPos.y + 1, beltPos.z + 1).expand(0.6D, 0.6D,
+						0.6D));
+
+		if (hitList2.size() > 0) {
+			for (Entity entityWithInventory : hitList2) {
+				if(((PC_IInventoryWrapper)entityWithInventory).getInventory() != null) {	
+					if (dispenseItemOntoBelt(world, new PC_CoordD(entityWithInventory.posX, entityWithInventory.posY, entityWithInventory.posZ).round(),
+							((PC_IInventoryWrapper) entityWithInventory).getInventory(), beltPos)) {
+						return true;
+					}
+				}
+
+			}
+		}
+
+		return false;
+	}
+
+
+	/**
+	 * Check if the inventory is a special and needs special dispension method.
+	 * Furnace, BrewStand
+	 * 
+	 * @param inventory
+	 * @return needs special ejector
+	 */
+	static boolean isSpecialContainer(IInventory inventory) {
+		boolean flag = false;
+		flag |= inventory instanceof TileEntityFurnace;
+		flag |= inventory instanceof TileEntityBrewingStand;
+		return flag;
+	}
+
+	/**
+	 * Dispense item from inventroy which needs special method Furnace,
+	 * BrewStand
+	 * 
+	 * @param inventory the inventory
+	 * @return stack ejected
+	 */
+	static ItemStack dispenseFromSpecialContainer(IInventory inventory) {
+		if (inventory instanceof TileEntityFurnace) {
+			ItemStack stack = inventory.getStackInSlot(2);
+			if (stack != null && stack.stackSize > 0) {
+				inventory.setInventorySlotContents(2, null);
+				return stack;
+			}
+			return null;
+		}
+
+		if (inventory instanceof TileEntityBrewingStand) {
+
+			// check if brewing finished
+			if (((TileEntityBrewingStand) inventory).getBrewTime() != 0) {
+				return null;
+			}
+
+			for (int i = 0; i < 4; i++) {
+
+				ItemStack stack = inventory.getStackInSlot(i);
+
+				// if 0-2, its potion slot. If 3, its ingredient.
+				if ((i < 3 && (stack != null && stack.stackSize > 0 && stack.itemID == Item.potion.shiftedIndex && stack.getItemDamage() != 0))
+						|| (i == 3 && (stack != null))) {
+					inventory.setInventorySlotContents(i, null);
+					return stack;
+				}
+			}
+			return null;
+		}
+
+		return null;
+	}
+
+	/**
+	 * Remove first stack from inventory
+	 * 
+	 * @param world the world
+	 * @param beltPos position of the belt
+	 * @param inventory inv
+	 * @return the stack removed
+	 */
+	public static ItemStack[] dispenseStuffFromInventory(World world, PC_CoordI beltPos, IInventory inventory) {
+
+		if (isSpecialContainer(inventory)) {
+			return new ItemStack[] {dispenseFromSpecialContainer(inventory) };
+		}
+
+
+		PCtr_TileEntityEjectionBelt teb = (PCtr_TileEntityEjectionBelt) beltPos.getTileEntity(world);
+
+
+		List<ItemStack> stacks = new ArrayList<ItemStack>();
+
+		boolean modeStacks = teb.actionType == 0;
+		boolean modeItems = teb.actionType == 1;
+		boolean modeAll = teb.actionType == 2;
+
+		if (modeAll) {
+			for (int i = 0; i < inventory.getSizeInventory(); i++) {
+
+				// fix for inventories that want to keep their stuff
+				if (inventory instanceof PC_ISpecialAccessInventory) {
+					if (!((PC_ISpecialAccessInventory) inventory).canDispenseStackFrom(i)) {
+						continue;
+					}
+				}
+
+				ItemStack inSlot = inventory.getStackInSlot(i);
+				if (inSlot != null) {
+					stacks.add(inSlot);
+					inventory.setInventorySlotContents(i, null);
+				}
+			}
+			return PC_InvUtils.stacksToArray(stacks);
+		}
+
+		boolean random = teb.itemSelectMode == 2;
+		boolean first = teb.itemSelectMode == 0;
+		boolean last = teb.itemSelectMode == 1;
+
+		int numStacks = teb.numStacksEjected;
+		int numItems = teb.numItemsEjected;
+
+		if (modeStacks && numStacks == 0) return new ItemStack[] {};
+		if (modeItems && numItems == 0) return new ItemStack[] {};
+
+		int i = 0;
+
+		if (first) i = 0;
+		if (last) i = inventory.getSizeInventory() - 1;
+		if (random) i = teb.rand.nextInt(inventory.getSizeInventory());
+
+		int randomTries = inventory.getSizeInventory() * 2;
+
+		while (true) {
+
+			boolean accessDenied = false;
+
+			// fix for inventories that want to keep their stuff
+			if (inventory instanceof PC_ISpecialAccessInventory) {
+				if (!((PC_ISpecialAccessInventory) inventory).canDispenseStackFrom(i)) {
+					accessDenied = true;
+				}
+			}
+
+			ItemStack stack = inventory.getStackInSlot(i);
+			if (stack != null && stack.stackSize > 0 && !accessDenied) {
+
+				if (modeStacks) {
+					if (numStacks > 0) {
+						inventory.setInventorySlotContents(i, null);
+						stacks.add(stack);
+						numStacks--;
+						if (numStacks <= 0) break;
+					}
+				} else if (modeItems) {
+					if (numItems > 0) {
+						stack = inventory.decrStackSize(i, numItems);
+						numItems -= stack.stackSize;
+						stacks.add(stack);
+						if (numItems <= 0) break;
+					}
+				}
+
+			}
+
+			if (first) {
+				i++;
+				if (i >= inventory.getSizeInventory()) break;
+			} else if (last) {
+				i--;
+				if (i < 0) break;
+			} else if (random) {
+				i = teb.rand.nextInt(inventory.getSizeInventory());
+				randomTries--;
+				if (randomTries == 0) break;
+			}
+		}
+
+		return PC_InvUtils.stacksToArray(stacks);
+	}
+	
+	/**
+	 * Create entity item on belt
+	 * 
+	 * @param world the world
+	 * @param invPos position of inventory this item was taken from
+	 * @param beltPos the belt pos
+	 * @param stack stack to put in the item
+	 */
+	public static void createEntityItemOnBelt(World world, PC_CoordI invPos, PC_CoordI beltPos, ItemStack stack) {
+		EntityItem item = new EntityItem(world, beltPos.x + 0.5D, beltPos.y + 0.3D, beltPos.z + 0.5D, stack);
+		item.motionX = 0.0D;
+		item.motionY = 0.0D;
+		item.motionZ = 0.0D;
+
+		PC_CoordD vector = PC_CoordI.getVector(beltPos, invPos);
+		item.posX += 0.43D * vector.x;
+		item.posZ += 0.43D * vector.z;
+
+		item.delayBeforeCanPickup = 7;
+		world.spawnEntityInWorld(item);
 	}
 	
 }

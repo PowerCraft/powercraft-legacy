@@ -11,7 +11,7 @@ import powercraft.core.PC_Utils;
 public class PCtr_ContainerSeparationBelt extends PC_GresBaseWithInventory {
 
 	protected PCtr_TileEntitySeparationBelt tes;
-	protected List<Slot> lSlot = new ArrayList<Slot>();
+	protected List<Slot> lSlot;
 	
 	public PCtr_ContainerSeparationBelt(EntityPlayer player, Object[]o) {
 		super(player, o);
@@ -24,6 +24,7 @@ public class PCtr_ContainerSeparationBelt extends PC_GresBaseWithInventory {
 	
 	@Override
 	protected List<Slot> getAllSlots(List<Slot> slots) {
+		lSlot = new ArrayList<Slot>();
 		for(int i=0; i<tes.getSizeInventory(); i++)
 			lSlot.add(new Slot(tes, i, 0, 0));
 		slots.addAll(lSlot);
