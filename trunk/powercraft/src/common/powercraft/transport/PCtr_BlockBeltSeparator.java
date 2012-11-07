@@ -10,11 +10,13 @@ import net.minecraft.src.TileEntity;
 import net.minecraft.src.World;
 import powercraft.core.PC_CoordI;
 import powercraft.core.PC_InvUtils;
+import powercraft.core.PC_Utils;
 
 public class PCtr_BlockBeltSeparator extends PCtr_BlockBeltBase {
 
 	public PCtr_BlockBeltSeparator(int id) {
 		super(id, 7);
+		setBlockName("PCSeperatorBelt");
 	}
 
 	@Override
@@ -101,13 +103,13 @@ public class PCtr_BlockBeltSeparator extends PCtr_BlockBeltBase {
 			ItemStack ihold = entityplayer.getCurrentEquippedItem();
 			if (ihold != null) {
 				if (ihold.getItem() instanceof ItemBlock) {
-					if (ihold.itemID != blockID) {
+					if (ihold.itemID == blockID) {
 						return false;
 					}
 				}
 			}
 
-			//PC_Utils.openGres(entityplayer,PCtr_GuiSeparationBelt.class, i, j, k);
+			PC_Utils.openGres("SeperationBelt", entityplayer, i, j, k);
 			return true;
 		}
 	}

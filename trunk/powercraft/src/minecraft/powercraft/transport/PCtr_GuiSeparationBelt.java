@@ -30,7 +30,7 @@ public class PCtr_GuiSeparationBelt extends PCtr_ContainerSeparationBelt impleme
 
 	@Override
 	public void initGui(PC_IGresGui gui) {
-		PC_GresWindow w = new PC_GresWindow(00, 00, PC_Utils.tr("tile.PCconveyorFilter.name"));
+		PC_GresWindow w = new PC_GresWindow(00, 00, PC_Utils.tr("tile.PCSeperatorBelt.name"));
 		w.setWidthForInventory();
 		PC_GresLayoutH hg = new PC_GresLayoutH();
 		hg.add(new PC_GresImage(PC_Module.getModule("Core").getTextureDirectory() + "gres/widgets.png", 56, 66, 8, 15));

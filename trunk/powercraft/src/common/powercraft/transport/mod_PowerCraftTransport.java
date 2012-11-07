@@ -77,8 +77,12 @@ public class mod_PowerCraftTransport extends PC_Module {
 
 	@Override
 	protected void initLanguage() {
-		// TODO Auto-generated method stub
-
+		PC_Utils.registerLanguage(this, 
+				"pc.gui.separationBelt.group", "Ignore subtypes of",
+				"pc.gui.separationBelt.groupLogs", "Logs",
+				"pc.gui.separationBelt.groupPlanks", "Planks",
+				"pc.gui.separationBelt.groupAll", "All"
+		);
 	}
 
 	@Override
