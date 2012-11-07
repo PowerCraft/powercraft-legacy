@@ -23,7 +23,7 @@ import powercraft.logic.PClo_CommonProxy;
 import powercraft.logic.PClo_TileEntityPulsar;
 import powercraft.logic.mod_PowerCraftLogic;
 
-@Mod(modid="PowerCraft-Transport", name="PowerCraft-Transport", version="0.0.1Alpha", dependencies="required-after:PowerCraft-Core")
+@Mod(modid="PowerCraft-Transport", name="PowerCraft-Transport", version="3.5.0AlphaA", dependencies="required-after:PowerCraft-Core")
 @NetworkMod(clientSideRequired=true, serverSideRequired=true)
 public class mod_PowerCraftTransport extends PC_Module {
 
@@ -65,10 +65,7 @@ public class mod_PowerCraftTransport extends PC_Module {
 	}
 	
 	@Override
-	protected void initProperties(Configuration config) {
-		// TODO Auto-generated method stub
-
-	}
+	protected void initProperties(Configuration config) {}
 
 	@Override
 	protected List<String> loadTextureFiles(List<String> textures) {
