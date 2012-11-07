@@ -150,11 +150,8 @@ public abstract class PC_Module{
 	}
 
 	public boolean updateInfo(String sModuleVersion, String sInfo) {
-		System.out.println(sModuleVersion);
 		
 		if(PC_Utils.isVersionNewer(getVersion(), sModuleVersion) && !lastIgnoredUpdateVersion.equalsIgnoreCase(sModuleVersion)){
-			
-			System.out.println("OK");
 				
 			updateModVersion = sModuleVersion;
 			updateText = sInfo.trim();

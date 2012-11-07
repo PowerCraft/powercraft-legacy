@@ -242,21 +242,14 @@ public class mod_PowerCraftCore extends PC_Module{
 					String sInfo = element.getTextContent();
 					
 					PC_Module module = PC_Module.getModule(sModule);
-					System.out.println(sModule);
 					if(module!=null){
-						
-						System.out.println("Found");
 						
 						int langVersion = -1;
 						try{
 							langVersion = Integer.parseInt(sLangVersion);
 						}catch(NumberFormatException e){}
 						
-						System.out.println(sMinecraftVersion);
-						
 						if(new CallableMinecraftVersion(null).minecraftVersion().equalsIgnoreCase(sMinecraftVersion)){
-							
-							System.out.println("OK");
 							
 							if(module.updateInfo(sModuleVersion, sInfo.trim()))
 								showUpdateWindow = true;

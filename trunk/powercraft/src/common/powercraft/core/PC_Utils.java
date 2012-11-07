@@ -767,7 +767,6 @@ public class PC_Utils {
 					sNewVersion += c;
 				}
 			}
-			System.out.println(newVersion+":"+sNewVersion+"="+version+":"+sVersion);
 			if(newVersion>version){
 				return true;
 			}else if(newVersion<version){
