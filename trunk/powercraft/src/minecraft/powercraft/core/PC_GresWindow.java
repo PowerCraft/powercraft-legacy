@@ -18,7 +18,7 @@ public class PC_GresWindow extends PC_GresWidget {
 	 * The gap right under the top title.<br>
 	 * Applies only if title != ""
 	 */
-	protected int gapUnderTitle = 10;
+	public int gapUnderTitle = 10;
 
 	/**
 	 * @param minX minimal X size
