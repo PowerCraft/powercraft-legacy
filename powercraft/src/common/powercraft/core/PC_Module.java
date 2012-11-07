@@ -52,7 +52,7 @@ public abstract class PC_Module{
 	}
 	
 	public String getTextureDirectory(){
-		return "/"+getName()+"/";
+		return "/powercraft/"+getNameWithoutPowerCraft().toLowerCase()+"/textures/";
 	}
 	
 	public String getTerrainFile() {
