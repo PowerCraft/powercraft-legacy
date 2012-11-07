@@ -2,26 +2,24 @@ package powercraft.transport;
 
 import java.util.List;
 
-import cpw.mods.fml.common.Mod;
-import cpw.mods.fml.common.SidedProxy;
-import cpw.mods.fml.common.Mod.Init;
-import cpw.mods.fml.common.Mod.PostInit;
-import cpw.mods.fml.common.Mod.PreInit;
-import cpw.mods.fml.common.event.FMLInitializationEvent;
-import cpw.mods.fml.common.event.FMLPostInitializationEvent;
-import cpw.mods.fml.common.event.FMLPreInitializationEvent;
-import cpw.mods.fml.common.network.NetworkMod;
-
+import net.minecraft.src.Block;
+import net.minecraft.src.Item;
+import net.minecraft.src.ItemStack;
+import net.minecraft.src.ModLoader;
 import net.minecraftforge.common.Configuration;
 import powercraft.core.PC_Block;
 import powercraft.core.PC_ItemArmor;
 import powercraft.core.PC_Module;
-import powercraft.core.PC_TileEntity;
 import powercraft.core.PC_Utils;
-import powercraft.logic.PClo_BlockPulsar;
-import powercraft.logic.PClo_CommonProxy;
-import powercraft.logic.PClo_TileEntityPulsar;
-import powercraft.logic.mod_PowerCraftLogic;
+import cpw.mods.fml.common.Mod;
+import cpw.mods.fml.common.Mod.Init;
+import cpw.mods.fml.common.Mod.PostInit;
+import cpw.mods.fml.common.Mod.PreInit;
+import cpw.mods.fml.common.SidedProxy;
+import cpw.mods.fml.common.event.FMLInitializationEvent;
+import cpw.mods.fml.common.event.FMLPostInitializationEvent;
+import cpw.mods.fml.common.event.FMLPreInitializationEvent;
+import cpw.mods.fml.common.network.NetworkMod;
 
 @Mod(modid="PowerCraft-Transport", name="PowerCraft-Transport", version="3.5.0AlphaA", dependencies="required-after:PowerCraft-Core")
 @NetworkMod(clientSideRequired=true, serverSideRequired=true)
@@ -31,7 +29,7 @@ public class mod_PowerCraftTransport extends PC_Module {
 	public static PCtr_CommonProxy proxy;
 	public static PC_Block conveyorBelt;
 	public static PC_Block speedyBelt;
-	public static PC_Block detectorBelt;
+	public static PC_Block detectionBelt;
 	public static PC_Block breakBelt;
 	public static PC_Block redirectionBelt;
 	public static PC_Block separationBelt;
@@ -97,7 +95,7 @@ public class mod_PowerCraftTransport extends PC_Module {
 	protected void initBlocks() {
 		conveyorBelt = (PC_Block)PC_Utils.register(this, 467, PCtr_BlockBeltNormal.class, PCtr_ItemBlockConveyor.class);
 		speedyBelt = (PC_Block)PC_Utils.register(this, 468, PCtr_BlockBeltSpeedy.class, PCtr_ItemBlockConveyor.class);
-		detectorBelt = (PC_Block)PC_Utils.register(this, 469, PCtr_BlockBeltDetector.class, PCtr_ItemBlockConveyor.class);
+		detectionBelt = (PC_Block)PC_Utils.register(this, 469, PCtr_BlockBeltDetector.class, PCtr_ItemBlockConveyor.class);
 		breakBelt = (PC_Block)PC_Utils.register(this, 470, PCtr_BlockBeltBreak.class, PCtr_ItemBlockConveyor.class);
 		redirectionBelt = (PC_Block)PC_Utils.register(this, 471, PCtr_BlockBeltRedirector.class, PCtr_ItemBlockConveyor.class, PCtr_TileEntityRedirectionBelt.class);
 		separationBelt = (PC_Block)PC_Utils.register(this, 472, PCtr_BlockBeltSeparator.class, PCtr_ItemBlockConveyor.class, PCtr_TileEntitySeparationBelt.class);
@@ -114,8 +112,67 @@ public class mod_PowerCraftTransport extends PC_Module {
 
 	@Override
 	protected void initRecipes() {
-		// TODO Auto-generated method stub
+		ModLoader.addRecipe(
+				new ItemStack(conveyorBelt, 16),
+				new Object[] { "XXX", "YRY",
+					'X', Item.leather, 'Y', Item.ingotIron, 'R', Item.redstone });
 
+		ModLoader.addRecipe(
+				new ItemStack(conveyorBelt, 4),
+				new Object[] { "XXX", "YRY",
+					'X', Item.paper, 'Y', Item.ingotIron, 'R', Item.redstone });
+
+		ModLoader.addRecipe(
+				new ItemStack(speedyBelt, 16),
+				new Object[] { "XXX", "YRY",
+					'X', Item.leather, 'Y', Item.ingotGold, 'R', Item.redstone });
+
+		ModLoader.addRecipe(
+				new ItemStack(speedyBelt, 4),
+				new Object[] { "XXX", "YRY",
+					'X', Item.paper, 'Y', Item.ingotGold, 'R', Item.redstone });
+
+		ModLoader.addRecipe(
+				new ItemStack(ejectionBelt, 1),
+				new Object[] { "X", "Y", "Z",
+					'X', Item.bow, 'Y', conveyorBelt, 'Z', Item.redstone });
+
+		ModLoader.addRecipe(
+				new ItemStack(detectionBelt, 1),
+				new Object[] { "X", "Y", "Z",
+					'X', Block.pressurePlatePlanks, 'Y', conveyorBelt, 'Z', Item.redstone });
+
+		ModLoader.addRecipe(
+				new ItemStack(detectionBelt, 1),
+				new Object[] { "X", "Y", "Z",
+					'X', Block.pressurePlateStone, 'Y', conveyorBelt, 'Z', Item.redstone });
+
+		ModLoader.addRecipe(
+				new ItemStack(separationBelt, 1),
+				new Object[] { "X", "Y", "Z",
+					'X', Item.diamond, 'Y', conveyorBelt, 'Z', Item.redstone });
+
+		ModLoader.addRecipe(
+				new ItemStack(breakBelt, 1),
+				new Object[] { "X", "Y", "Z",
+					'X', Item.ingotIron, 'Y', conveyorBelt, 'Z', Item.redstone });
+
+		ModLoader.addRecipe(
+				new ItemStack(redirectionBelt, 1),
+				new Object[] { "X", "Y",
+					'X', conveyorBelt, 'Y', Item.redstone });
+
+		ModLoader.addRecipe(
+				new ItemStack(elevator, 6, 0),
+				new Object[] { "XGX", "X X", "XGX",
+					'X', conveyorBelt, 'G', Item.ingotGold });
+
+		ModLoader.addRecipe(
+				new ItemStack(elevator, 6, 1),
+				new Object[] { "XGX", "XRX", "XGX",
+					'X', conveyorBelt, 'G', Item.ingotGold, 'R', Item.redstone });
+		
+		ModLoader.addRecipe(new ItemStack(slimeboots), new Object[] {"B","S",'B', Item.bootsSteel,'S',Item.slimeBall});
 	}
 
 	@Override
