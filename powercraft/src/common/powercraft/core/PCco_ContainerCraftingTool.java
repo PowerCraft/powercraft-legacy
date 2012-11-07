@@ -5,6 +5,8 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 
+import powercraft.transport.PCtr_TileEntitySeparationBelt;
+
 import net.minecraft.src.Block;
 import net.minecraft.src.EntityPlayer;
 import net.minecraft.src.Item;
@@ -19,8 +21,11 @@ public class PCco_ContainerCraftingTool extends PC_GresBaseWithInventory{
 	protected HashMap<String, List<PCco_SlotDirectCrafting>> moduleList;
 	
 	public PCco_ContainerCraftingTool(EntityPlayer player, Object[]o){
-		super(player);
+		super(player, o);
 	}
+	
+	@Override
+	protected void init(Object[] o) {}
 	
 	@Override
 	protected List<Slot> getAllSlots(List<Slot> slots) {

@@ -34,7 +34,7 @@ public class PCco_GuiOreSnifferResultScreen extends PC_GresBaseWithInventory imp
 	}
 	
 	public PCco_GuiOreSnifferResultScreen(EntityPlayer player, Object[]o){
-		super(player);
+		super(player, o);
 		int[] offsetX = { 0, 0, 0, 0, 1, -1 };
 		int[] offsetZ = { 0, 0, 1, -1, 0, 0 };
 		int[] offsetY = { 1, -1, 0, 0, 0, 0 };
@@ -215,6 +215,9 @@ public class PCco_GuiOreSnifferResultScreen extends PC_GresBaseWithInventory imp
 		return false;
 	}
 
+	@Override
+	protected void init(Object[] o) {}
+	
 	@Override
 	protected List<Slot> getAllSlots(List<Slot> slots) {
 		for (int x = 0; x < 3; x++) {

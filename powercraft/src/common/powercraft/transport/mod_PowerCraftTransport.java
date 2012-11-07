@@ -34,6 +34,7 @@ public class mod_PowerCraftTransport extends PC_Module {
 	public static PC_Block detectorBelt;
 	public static PC_Block breakBelt;
 	public static PC_Block redirectionBelt;
+	public static PC_Block separationBelt;
 	public static PC_Block elevator;
 	public static PC_ItemArmor slimeboots;
 	
@@ -87,12 +88,13 @@ public class mod_PowerCraftTransport extends PC_Module {
 		detectorBelt = (PC_Block)PC_Utils.register(this, 469, PCtr_BlockBeltDetector.class, PCtr_ItemBlockConveyor.class);
 		breakBelt = (PC_Block)PC_Utils.register(this, 470, PCtr_BlockBeltBreak.class, PCtr_ItemBlockConveyor.class);
 		redirectionBelt = (PC_Block)PC_Utils.register(this, 471, PCtr_BlockBeltRedirector.class, PCtr_ItemBlockConveyor.class, PCtr_TileEntityRedirectionBelt.class);
-		elevator = (PC_Block)PC_Utils.register(this, 472, PCtr_BlockElevator.class, PCtr_ItemBlockElevator.class);
+		separationBelt = (PC_Block)PC_Utils.register(this, 472, PCtr_BlockBeltSeparator.class, PCtr_ItemBlockConveyor.class, PCtr_TileEntitySeparationBelt.class);
+		elevator = (PC_Block)PC_Utils.register(this, 473, PCtr_BlockElevator.class, PCtr_ItemBlockElevator.class);
 	}
 
 	@Override
 	protected void initItems() {
-		slimeboots = (PC_ItemArmor)PC_Utils.register(this, 473, PCtr_ItemArmorStickyBoots.class);
+		slimeboots = (PC_ItemArmor)PC_Utils.register(this, 474, PCtr_ItemArmorStickyBoots.class);
 	}
 
 	@Override
