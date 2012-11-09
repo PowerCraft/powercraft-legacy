@@ -13,7 +13,6 @@ public class PCtr_ItemArmorStickyBoots extends PC_ItemArmor {
 	public PCtr_ItemArmorStickyBoots(int id) {
 		super(id, EnumArmorMaterial.IRON, PC_Utils.addArmor("pcslime"), FEET);
 		setIconCoord(2, 3); 
-		setItemName("PCtrStickyIronBoots");
 	}
 
 	@Override

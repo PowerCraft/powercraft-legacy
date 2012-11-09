@@ -11,7 +11,6 @@ public class PCco_ItemPowerDust extends PC_Item implements PC_IFuel {
 	public PCco_ItemPowerDust(int i) {
 		super(i, false);
 		setIconCoord(13, 9);
-		setItemName("PCcoPowerDust");
 		setCreativeTab(CreativeTabs.tabMaterials);
 	}
 

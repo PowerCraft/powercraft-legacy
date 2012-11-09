@@ -22,10 +22,10 @@ public class PClo_ItemBlockGate extends PC_ItemBlock {
 		List<String> s =  new ArrayList<String>();
 		for(int i=0; i<PClo_GateType.TOTAL_GATE_COUNT; i++){
 			s.add(getItemName()+".gate"+i);
-			s.add("Gate "+PClo_GateType.names[i]);
+			s.add("gate "+PClo_GateType.names[i]);
 		};
 		s.add(getItemName());
-		s.add("Gate");
+		s.add("gate");
 		return s.toArray(new String[0]);
 	}
 	

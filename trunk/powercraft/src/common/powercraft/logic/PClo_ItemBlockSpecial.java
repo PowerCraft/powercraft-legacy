@@ -20,12 +20,15 @@ public class PClo_ItemBlockSpecial extends PC_ItemBlock {
 	@Override
 	public String[] getDefaultNames() {
 		List<String> s =  new ArrayList<String>();
-		for(int i=0; i<PClo_SpecialType.TOTAL_SPECIAL_COUNT; i++){
+		for(int i=0; i<PClo_SpecialType.TOTAL_SPECIAL_COUNT-1; i++){
 			s.add(getItemName()+".special"+i);
-			s.add("Special "+PClo_SpecialType.names[i]);
+			s.add("sensor "+PClo_SpecialType.names[i]);
 		};
+		int i=PClo_SpecialType.TOTAL_SPECIAL_COUNT-1;
+		s.add(getItemName()+".special"+i);
+		s.add(PClo_SpecialType.names[i]+" controller");
 		s.add(getItemName());
-		s.add("Special");
+		s.add("special");
 		return s.toArray(new String[0]);
 	}
 	

@@ -22,10 +22,10 @@ public class PClo_ItemBlockRepeater extends PC_ItemBlock {
 		List<String> s =  new ArrayList<String>();
 		for(int i=0; i<PClo_RepeaterType.TOTAL_REPEATER_COUNT; i++){
 			s.add(getItemName()+".repeater"+i);
-			s.add("Repeater "+PClo_RepeaterType.names[i]);
+			s.add(PClo_RepeaterType.names[i]+" repeater");
 		};
 		s.add(getItemName());
-		s.add("Repeater");
+		s.add("repeater");
 		return s.toArray(new String[0]);
 	}
 	

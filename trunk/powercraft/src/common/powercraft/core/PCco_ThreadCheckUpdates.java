@@ -6,10 +6,16 @@ import java.net.URL;
 
 public class PCco_ThreadCheckUpdates extends Thread {
 
+	private String url;
+	
+	public PCco_ThreadCheckUpdates(String url){
+		this.url = url;
+	}
+	
 	@Override
 	public void run() {
 		try {
-			URL url = new URL(mod_PowerCraftCore.updateInfoPath);
+			URL url = new URL(this.url);
 			BufferedReader reader = new BufferedReader(new InputStreamReader(url.openStream()));
 			String page = "";
 

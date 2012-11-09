@@ -22,7 +22,7 @@ public abstract class PCtr_BlockBeltBase extends PC_Block implements PC_IRotated
 		setStepSound(Block.soundMetalFootstep);
 		setCreativeTab(CreativeTabs.tabTransport);
 	}
-
+	
 	@Override
 	public abstract String getDefaultName();
 	@Override

@@ -9,12 +9,11 @@ public class PCtr_BlockBeltNormal extends PCtr_BlockBeltBase {
 	
 	public PCtr_BlockBeltNormal(int id) {
 		super(id, 0);
-		setBlockName("PCConveyorBelt");
 	}
 
 	@Override
 	public String getDefaultName() {
-		return "Normal Belt";
+		return "normal belt";
 	}
 	
 	// -------------MOVEMENT------------------

@@ -16,12 +16,11 @@ public class PCtr_BlockBeltSeparator extends PCtr_BlockBeltBase {
 
 	public PCtr_BlockBeltSeparator(int id) {
 		super(id, 7);
-		setBlockName("PCSeperatorBelt");
 	}
 
 	@Override
 	public String getDefaultName() {
-		return "Seperator Belt";
+		return "seperator belt";
 	}
 
 	@Override

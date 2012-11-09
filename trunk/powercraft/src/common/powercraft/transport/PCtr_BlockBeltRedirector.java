@@ -10,12 +10,11 @@ public class PCtr_BlockBeltRedirector extends PCtr_BlockBeltBase {
 
 	public PCtr_BlockBeltRedirector(int id){
 		super(id, 8);
-		setBlockName("PCRedirectorBelt");
 	}
 	
 	@Override
 	public String getDefaultName() {
-		return "Redirector Belt";
+		return "redirector belt";
 	}
 
 	/**

@@ -4,11 +4,10 @@ import java.util.List;
 
 import net.minecraft.src.Block;
 import net.minecraft.src.Item;
-import net.minecraft.src.ItemStack;
-import net.minecraft.src.ModLoader;
 import net.minecraftforge.common.Configuration;
 import powercraft.core.PC_Block;
 import powercraft.core.PC_ItemArmor;
+import powercraft.core.PC_ItemStack;
 import powercraft.core.PC_Module;
 import powercraft.core.PC_Utils;
 import cpw.mods.fml.common.Mod;
@@ -101,7 +100,7 @@ public class mod_PowerCraftTransport extends PC_Module {
 		separationBelt = (PC_Block)PC_Utils.register(this, 472, PCtr_BlockBeltSeparator.class, PCtr_ItemBlockConveyor.class, PCtr_TileEntitySeparationBelt.class);
 		ejectionBelt = (PC_Block)PC_Utils.register(this, 473, PCtr_BlockBeltEjector.class, PCtr_ItemBlockConveyor.class, PCtr_TileEntityEjectionBelt.class);
 		elevator = (PC_Block)PC_Utils.register(this, 474, PCtr_BlockElevator.class, PCtr_ItemBlockElevator.class);
-	
+		
 		PCtr_BlockHackedWater.hackWater();
 	}
 
@@ -112,67 +111,67 @@ public class mod_PowerCraftTransport extends PC_Module {
 
 	@Override
 	protected void initRecipes() {
-		ModLoader.addRecipe(
-				new ItemStack(conveyorBelt, 16),
+		PC_Utils.addRecipe(
+				new PC_ItemStack(conveyorBelt, 16),
 				new Object[] { "XXX", "YRY",
 					'X', Item.leather, 'Y', Item.ingotIron, 'R', Item.redstone });
 
-		ModLoader.addRecipe(
-				new ItemStack(conveyorBelt, 4),
+		PC_Utils.addRecipe(
+				new PC_ItemStack(conveyorBelt, 4),
 				new Object[] { "XXX", "YRY",
 					'X', Item.paper, 'Y', Item.ingotIron, 'R', Item.redstone });
 
-		ModLoader.addRecipe(
-				new ItemStack(speedyBelt, 16),
+		PC_Utils.addRecipe(
+				new PC_ItemStack(speedyBelt, 16),
 				new Object[] { "XXX", "YRY",
 					'X', Item.leather, 'Y', Item.ingotGold, 'R', Item.redstone });
 
-		ModLoader.addRecipe(
-				new ItemStack(speedyBelt, 4),
+		PC_Utils.addRecipe(
+				new PC_ItemStack(speedyBelt, 4),
 				new Object[] { "XXX", "YRY",
 					'X', Item.paper, 'Y', Item.ingotGold, 'R', Item.redstone });
 
-		ModLoader.addRecipe(
-				new ItemStack(ejectionBelt, 1),
+		PC_Utils.addRecipe(
+				new PC_ItemStack(ejectionBelt, 1),
 				new Object[] { "X", "Y", "Z",
 					'X', Item.bow, 'Y', conveyorBelt, 'Z', Item.redstone });
 
-		ModLoader.addRecipe(
-				new ItemStack(detectionBelt, 1),
+		PC_Utils.addRecipe(
+				new PC_ItemStack(detectionBelt, 1),
 				new Object[] { "X", "Y", "Z",
 					'X', Block.pressurePlatePlanks, 'Y', conveyorBelt, 'Z', Item.redstone });
 
-		ModLoader.addRecipe(
-				new ItemStack(detectionBelt, 1),
+		PC_Utils.addRecipe(
+				new PC_ItemStack(detectionBelt, 1),
 				new Object[] { "X", "Y", "Z",
 					'X', Block.pressurePlateStone, 'Y', conveyorBelt, 'Z', Item.redstone });
 
-		ModLoader.addRecipe(
-				new ItemStack(separationBelt, 1),
+		PC_Utils.addRecipe(
+				new PC_ItemStack(separationBelt, 1),
 				new Object[] { "X", "Y", "Z",
 					'X', Item.diamond, 'Y', conveyorBelt, 'Z', Item.redstone });
 
-		ModLoader.addRecipe(
-				new ItemStack(breakBelt, 1),
+		PC_Utils.addRecipe(
+				new PC_ItemStack(breakBelt, 1),
 				new Object[] { "X", "Y", "Z",
 					'X', Item.ingotIron, 'Y', conveyorBelt, 'Z', Item.redstone });
 
-		ModLoader.addRecipe(
-				new ItemStack(redirectionBelt, 1),
+		PC_Utils.addRecipe(
+				new PC_ItemStack(redirectionBelt, 1),
 				new Object[] { "X", "Y",
 					'X', conveyorBelt, 'Y', Item.redstone });
 
-		ModLoader.addRecipe(
-				new ItemStack(elevator, 6, 0),
+		PC_Utils.addRecipe(
+				new PC_ItemStack(elevator, 6, 0),
 				new Object[] { "XGX", "X X", "XGX",
 					'X', conveyorBelt, 'G', Item.ingotGold });
 
-		ModLoader.addRecipe(
-				new ItemStack(elevator, 6, 1),
+		PC_Utils.addRecipe(
+				new PC_ItemStack(elevator, 6, 1),
 				new Object[] { "XGX", "XRX", "XGX",
 					'X', conveyorBelt, 'G', Item.ingotGold, 'R', Item.redstone });
 		
-		ModLoader.addRecipe(new ItemStack(slimeboots), new Object[] {"B","S",'B', Item.bootsSteel,'S',Item.slimeBall});
+		PC_Utils.addRecipe(new PC_ItemStack(slimeboots), new Object[] {"B","S",'B', Item.bootsSteel,'S',Item.slimeBall});
 	}
 
 	@Override

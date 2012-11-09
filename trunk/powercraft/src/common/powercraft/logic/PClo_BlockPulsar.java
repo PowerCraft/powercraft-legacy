@@ -25,7 +25,6 @@ public class PClo_BlockPulsar extends PC_Block implements PC_ICraftingToolDispla
 		super(id, 74, Material.wood, false);
 		setHardness(0.8F);
 		setResistance(30.0F);
-		setBlockName("PCloRedstonePulsar");
 		setRequiresSelfNotify();
 		setStepSound(Block.soundWoodFootstep);
 		setCreativeTab(CreativeTabs.tabRedstone);

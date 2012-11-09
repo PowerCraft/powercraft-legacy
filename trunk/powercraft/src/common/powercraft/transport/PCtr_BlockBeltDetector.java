@@ -16,12 +16,11 @@ public class PCtr_BlockBeltDetector extends PCtr_BlockBeltBase {
 
 	public PCtr_BlockBeltDetector(int id) {
 		super(id, 6);
-		setBlockName("PCDetectorBelt");
 	}
 
 	@Override
 	public String getDefaultName() {
-		return "Detection Belt";
+		return "detection belt";
 	}
 	
 	@Override

@@ -22,7 +22,6 @@ public class PClo_BlockDelayer extends PC_Block  implements PC_IRotatedBox {
 
 	public PClo_BlockDelayer(int id) {
 		super(id, 6, Material.ground);
-		setBlockName("PCloLogicDelayer");
 		setHardness(0.35F);
 		setStepSound(Block.soundWoodFootstep);
 		disableStats();

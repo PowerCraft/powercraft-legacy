@@ -53,7 +53,7 @@ public class mod_PowerCraftCore extends PC_Module{
 	
 	
 	/** Location of the file with updates */
-	public static final String updateInfoPath = "https://dl.dropbox.com/s/sv2dl6lb8qe5bd1/Update.xml?dl=1"; 
+	public static final String updateInfoPath = "https://dl.dropbox.com/s/axurfxp6cxkr3nv/Update.xml?dl=1"; 
 	
 	public static mod_PowerCraftCore getInstance(){
 		return (mod_PowerCraftCore)PC_Module.getModule("PowerCraft-Core");
@@ -85,7 +85,7 @@ public class mod_PowerCraftCore extends PC_Module{
 	@PostInit
 	public void postInit(FMLPostInitializationEvent event){
 		
-		new PCco_ThreadCheckUpdates().start();
+		new PCco_ThreadCheckUpdates(updateInfoPath).start();
 		
 		postInit();
 		
@@ -107,21 +107,21 @@ public class mod_PowerCraftCore extends PC_Module{
 	@Override
 	protected void initLanguage() {
 		PC_Utils.registerLanguage(this, 
+				"pc.gui.ok", "OK",
+				"pc.gui.cancel", "Cancel",
+				"pc.gui.close", "Close",
+				"pc.gui.back", "Back",
 				"pc.gui.craftingTool.title", "Crafting Tool",
 				"pc.gui.craftingTool.trashAll", "Trash All",
 				"pc.gui.craftingTool.search", "Search",
 				"pc.gui.craftingTool.sort", "Sort",
-				"pc.sniffer.desc", "Portable radar device",
-				"pc.sniffer.distance", "Sniffing depth (blocks):",
 				"pc.gui.update.title", "Mod Update Notification",
 				"pc.gui.update.newVersionAvailable", "Update available!",
 				"pc.gui.update.readMore", "Read more...",
 				"pc.gui.update.version", "Using %1$s (%2$s), Available %3$s (%4$s)",
 				"pc.gui.update.doNotShowAgain", "Don't show again",
-				"pc.gui.ok", "OK",
-				"pc.gui.cancel", "Cancel",
-				"pc.gui.close", "Close",
-				"pc.gui.back", "Back"
+				"pc.sniffer.desc", "Portable radar device",
+				"pc.sniffer.distance", "Sniffing depth (blocks):"
 				);
 	}
 
@@ -141,7 +141,7 @@ public class mod_PowerCraftCore extends PC_Module{
 	@Override
 	protected void initRecipes() {
 		// craftingTool
-		PC_Utils.addRecipe(new ItemStack(craftingTool),
+		PC_Utils.addRecipe(new PC_ItemStack(craftingTool),
 				new Object[] { 
 			" r ", 
 			"rIr", 
@@ -149,22 +149,22 @@ public class mod_PowerCraftCore extends PC_Module{
 				'r', Item.redstone, 'I', Block.blockSteel });
 		
 		// Normal recipe for power dust
-		PC_Utils.addShapelessRecipe(new ItemStack(powerDust, 24, 0), new Object[] { new ItemStack(powerCrystal, 1, -1) });
+		PC_Utils.addShapelessRecipe(new PC_ItemStack(powerDust, 24, 0), new Object[] { new PC_ItemStack(powerCrystal, 1, -1) });
 		
 		// sniffer		
-		PC_Utils.addRecipe(new ItemStack(oreSniffer),
+		PC_Utils.addRecipe(new PC_ItemStack(oreSniffer),
 				new Object[] { 
 			" G ", 
 			"GCG", 
 			" G ",
-				'C', new ItemStack(powerCrystal, 1, -1), 'G', Item.ingotGold });
+				'C', new PC_ItemStack(powerCrystal, 1, -1), 'G', Item.ingotGold });
 
 		// activator
-		PC_Utils.addRecipe(new ItemStack(activator, 1),
+		PC_Utils.addRecipe(new PC_ItemStack(activator, 1, 0),
 				new Object[] { 
 			"C", 
 			"I",
-				'C', new ItemStack(powerCrystal, 1, -1), 'I', Item.ingotIron });
+				'C', new PC_ItemStack(powerCrystal, 1, -1), 'I', Item.ingotIron });
 	}
 	
 	@Override
@@ -255,6 +255,11 @@ public class mod_PowerCraftCore extends PC_Module{
 								showUpdateWindow = true;
 							
 						}
+						
+						if(langVersion > module.getLangVersion()){
+							new PCco_ThreadDownloadTranslations(sLangLink, module, langVersion).start();
+						}
+						
 					}
 				}
 				

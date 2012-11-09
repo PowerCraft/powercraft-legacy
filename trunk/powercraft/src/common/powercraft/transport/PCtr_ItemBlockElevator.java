@@ -22,6 +22,7 @@ public class PCtr_ItemBlockElevator extends PC_ItemBlock {
 		return new String[]{
 				getItemName()+".up", "elevator up",
 				getItemName()+".down", "elevator down",
+				getItemName(), "elevator"
 		};
 	}
 

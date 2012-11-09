@@ -13,12 +13,11 @@ public class PCtr_BlockBeltSpeedy extends PCtr_BlockBeltBase {
 
 	public PCtr_BlockBeltSpeedy(int id) {
 		super(id, 4);
-		setBlockName("PCSpeedyBelt");
 	}
 
 	@Override
 	public String getDefaultName() {
-		return "Speedy Belt";
+		return "speedy belt";
 	}
 
 	@Override

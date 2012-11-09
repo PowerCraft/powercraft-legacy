@@ -27,6 +27,8 @@ import net.minecraft.src.IInventory;
 import net.minecraft.src.IRecipe;
 import net.minecraft.src.Item;
 import net.minecraft.src.ItemStack;
+import net.minecraft.src.ShapedRecipes;
+import net.minecraft.src.ShapelessRecipes;
 import net.minecraft.src.StringTranslate;
 import net.minecraft.src.TileEntity;
 import net.minecraft.src.TileEntityMobSpawner;
@@ -97,6 +99,31 @@ public class PC_Utils {
 		return StringTranslate.getInstance().translateKeyFormat(identifier, (Object[])replacements);
 	}
 	
+	public static String isIDAvailable(int id, Class c){
+		if(id<0)
+			return "Out of bounds";
+		if(id<Block.blocksList.length){
+			if(Block.blocksList[id]!=null)
+				return Block.blocksList[id].getBlockName();
+		}else if(Block.class.isAssignableFrom(c))
+			return "Out of bounds";
+		if(id<Item.itemsList.length){
+			if(Item.itemsList[id]!=null)
+				return Item.itemsList[id].getItemName();
+			return null;
+		}
+		return "Out of bounds";
+	}
+	
+	public static boolean isIDAvailable(int id, Class c, boolean throwError) throws Exception{
+		String name = isIDAvailable(id, c);
+		if(!throwError || name==null)
+			return name==null;
+		String error = "ID "+id+" for class \""+c.getName()+"\" already used by \""+name+"\"";
+		PC_Logger.severe(error);
+		throw new Exception(error);
+	}
+	
 	public static Object register(PC_Module module, int defaultID, Class... classes){
 		Configuration config = module.getConfig();
 		Class<? extends PC_Block> blockClass = null;
@@ -120,17 +147,21 @@ public class PC_Utils {
 		}
 		
 		if(blockClass == null && itemClass == null && itemArmorClass == null){
-			throw new IllegalArgumentException("Need n Block or an Item");
+			throw new IllegalArgumentException("Need a Block or an Item");
 		}
 		if(blockClass != null && itemClass != null && itemArmorClass != null){
-			throw new IllegalArgumentException("Need n Block or an Item but not both");
+			throw new IllegalArgumentException("Need a Block or an Item but not both");
 		}
+		
 		if(blockClass != null){
 			if(classes.length>3)
-				throw new IllegalArgumentException("Expackt only three Arguments");
+				throw new IllegalArgumentException("Expects only three Arguments");
 			try {
+				
 				int blockID = getConfigInt(config, Configuration.CATEGORY_BLOCK, blockClass.getName(), defaultID);
+				isIDAvailable(blockID, blockClass, true);
 				PC_Block block = (PC_Block) createClass(blockClass, new Class[]{int.class}, new Object[]{blockID});
+				block.setBlockName(blockClass.getSimpleName());
 				block.setTextureFile(module.getTerrainFile());
 				if(block instanceof PC_IConfigLoader)
 					((PC_IConfigLoader) block).loadFromConfig(config);
@@ -151,10 +182,12 @@ public class PC_Utils {
 			}
 		}else if(itemClass!=null){
 			if(classes.length>1)
-				throw new IllegalArgumentException("Expackt only one Item");
+				throw new IllegalArgumentException("Expects only one Item");
 			try {
 				int itemID = getConfigInt(config, Configuration.CATEGORY_ITEM, itemClass.getName(), defaultID);
+				isIDAvailable(itemID, itemClass, true);
 				PC_Item item = (PC_Item) createClass(itemClass, new Class[]{int.class}, new Object[]{itemID});
+				item.setItemName(itemClass.getSimpleName());
 				item.setCraftingToolModule(module.getNameWithoutPowerCraft());
 				item.setTextureFile(module.getTerrainFile());
 				if(item instanceof PC_IConfigLoader)
@@ -166,10 +199,12 @@ public class PC_Utils {
 			}
 		}else if(itemArmorClass!=null){
 			if(classes.length>1)
-				throw new IllegalArgumentException("Expackt only one Item");
+				throw new IllegalArgumentException("Expects only one Item");
 			try {
 				int itemID = getConfigInt(config, Configuration.CATEGORY_ITEM, itemArmorClass.getName(), defaultID);
+				isIDAvailable(itemID, itemArmorClass, true);
 				PC_ItemArmor itemArmor = (PC_ItemArmor) createClass(itemArmorClass, new Class[]{int.class}, new Object[]{itemID});
+				itemArmor.setItemName(itemArmorClass.getSimpleName());
 				itemArmor.setCraftingToolModule(module.getNameWithoutPowerCraft());
 				if(itemArmor instanceof PC_IConfigLoader)
 					((PC_IConfigLoader) itemArmor).loadFromConfig(config);
@@ -233,12 +268,109 @@ public class PC_Utils {
 		}
 	}
 
-	public static void addShapelessRecipe(ItemStack itemStack, Object[] objects) {
-		GameRegistry.addShapelessRecipe(itemStack, objects);
+	public static void addShapelessRecipe(PC_ItemStack itemStack, Object[] objects) {
+		ArrayList<PC_ItemStack> var3 = new ArrayList<PC_ItemStack>();
+        Object[] var4 = objects;
+        int var5 = objects.length;
+
+        for (int var6 = 0; var6 < var5; ++var6)
+        {
+            Object var7 = var4[var6];
+
+            if (var7 instanceof PC_ItemStack)
+            {
+                var3.add(((PC_ItemStack)var7).copy());
+            }
+            else if (var7 instanceof Item)
+            {
+                var3.add(new PC_ItemStack(var7));
+            }
+            else
+            {
+                if (!(var7 instanceof Block))
+                {
+                    throw new RuntimeException("Invalid shapeless recipy!");
+                }
+
+                var3.add(new PC_ItemStack(var7));
+            }
+        }
+
+        GameRegistry.addRecipe(new PC_ShapelessRecipes(itemStack, var3));
 	}
 	
-	public static void addRecipe(ItemStack itemStack, Object[] objects) {
-		GameRegistry.addRecipe(itemStack, objects);
+	public static void addRecipe(PC_ItemStack itemStack, Object[] objects) {
+		String var3 = "";
+        int var4 = 0;
+        int var5 = 0;
+        int var6 = 0;
+        int var9;
+
+        if (objects[var4] instanceof String[])
+        {
+            String[] var7 = (String[])((String[])objects[var4++]);
+            String[] var8 = var7;
+            var9 = var7.length;
+
+            for (int var10 = 0; var10 < var9; ++var10)
+            {
+                String var11 = var8[var10];
+                ++var6;
+                var5 = var11.length();
+                var3 = var3 + var11;
+            }
+        }
+        else
+        {
+            while (objects[var4] instanceof String)
+            {
+                String var13 = (String)objects[var4++];
+                ++var6;
+                var5 = var13.length();
+                var3 = var3 + var13;
+            }
+        }
+
+        HashMap var14;
+
+        for (var14 = new HashMap(); var4 < objects.length; var4 += 2)
+        {
+            Character var16 = (Character)objects[var4];
+            PC_ItemStack var17 = null;
+
+            if (objects[var4 + 1] instanceof Item)
+            {
+                var17 = new PC_ItemStack(objects[var4 + 1]);
+            }
+            else if (objects[var4 + 1] instanceof Block)
+            {
+                var17 = new PC_ItemStack(objects[var4 + 1], 1, -1);
+            }
+            else if (objects[var4 + 1] instanceof PC_ItemStack)
+            {
+                var17 = (PC_ItemStack)objects[var4 + 1];
+            }
+
+            var14.put(var16, var17);
+        }
+
+        PC_ItemStack[] var15 = new PC_ItemStack[var5 * var6];
+
+        for (var9 = 0; var9 < var5 * var6; ++var9)
+        {
+            char var18 = var3.charAt(var9);
+
+            if (var14.containsKey(Character.valueOf(var18)))
+            {
+                var15[var9] = ((PC_ItemStack)var14.get(Character.valueOf(var18))).copy();
+            }
+            else
+            {
+                var15[var9] = null;
+            }
+        }
+		
+		GameRegistry.addRecipe(new PC_ShapedRecipes(var5, var6, var15, itemStack));
 	}
 	
 	protected static HashMap<String, Class> guis = new HashMap<String, Class>();

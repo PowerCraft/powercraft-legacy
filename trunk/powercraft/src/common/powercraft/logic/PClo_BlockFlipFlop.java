@@ -23,7 +23,6 @@ public class PClo_BlockFlipFlop extends PC_Block implements PC_IRotatedBox {
 	
 	public PClo_BlockFlipFlop(int id) {
 		super(id, 6, Material.ground);
-		setBlockName("PCloLogicFlipFlop");
 		setHardness(0.35F);
 		setStepSound(Block.soundWoodFootstep);
 		disableStats();
@@ -78,9 +77,9 @@ public class PClo_BlockFlipFlop extends PC_Block implements PC_IRotatedBox {
 		case PClo_FlipFlopType.RS:
 			shouldState = state;
 			if(i1)
-				shouldState = true;
-			if(i3)
 				shouldState = false;
+			if(i3)
+				shouldState = true;
 			break;
 		case PClo_FlipFlopType.T:
 			shouldState = state;

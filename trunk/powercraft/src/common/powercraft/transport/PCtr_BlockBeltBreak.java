@@ -10,12 +10,11 @@ public class PCtr_BlockBeltBreak extends PCtr_BlockBeltBase {
 
 	public PCtr_BlockBeltBreak(int id) {
 		super(id, 5);
-		setBlockName("PCBreakBelt");
 	}
 
 	@Override
 	public String getDefaultName() {
-		return "Break Belt";
+		return "break belt";
 	}
 	
 	@Override
