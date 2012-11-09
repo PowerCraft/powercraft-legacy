@@ -16,12 +16,11 @@ public class PCtr_BlockBeltEjector extends PCtr_BlockBeltBase {
 	
 	public PCtr_BlockBeltEjector(int id) {
 		super(id, 3);
-		setBlockName("PCEjectionBelt");
 	}
 
 	@Override
 	public String getDefaultName() {
-		return "Ejection Belt";
+		return "ejection belt";
 	}
 	
 	@Override

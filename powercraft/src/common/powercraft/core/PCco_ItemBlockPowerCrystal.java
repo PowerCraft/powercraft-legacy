@@ -15,18 +15,18 @@ public class PCco_ItemBlockPowerCrystal extends PC_ItemBlock {
 		setMaxDamage(0);
 		setHasSubtypes(true);
 	}
-
+	
 	@Override
 	public String[] getDefaultNames() {
 		return new String[]{
-				getItemName()+".color0", "Power Crystal",
-				getItemName()+".color1", "Power Crystal",
-				getItemName()+".color2", "Power Crystal",
-				getItemName()+".color3", "Power Crystal",
-				getItemName()+".color4", "Power Crystal",
-				getItemName()+".color5", "Power Crystal",
-				getItemName()+".color6", "Power Crystal",
-				getItemName()+".color7", "Power Crystal",
+				getItemName()+".color0", "Orange Power Crystal",
+				getItemName()+".color1", "Red Power Crystal",
+				getItemName()+".color2", "Green Power Crystal",
+				getItemName()+".color3", "Darkblue Power Crystal",
+				getItemName()+".color4", "Lightblue Power Crystal",
+				getItemName()+".color5", "Purple Power Crystal",
+				getItemName()+".color6", "Cyan Power Crystal",
+				getItemName()+".color7", "Yellow Power Crystal",
 				getItemName(), "Power Crystal"
 		};
 	}

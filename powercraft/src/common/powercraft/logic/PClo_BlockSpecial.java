@@ -22,7 +22,6 @@ public class PClo_BlockSpecial extends PC_Block implements PC_IRotatedBox {
 
 	public PClo_BlockSpecial(int id){
 		super(id, 6, Material.ground);
-		setBlockName("PCloLogicSpecial");
 		setHardness(0.35F);
 		setStepSound(Block.soundWoodFootstep);
 		disableStats();

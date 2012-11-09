@@ -22,14 +22,13 @@ public class PCtr_BlockElevator extends PC_Block {
 		super(id, 23, PCtr_MaterialElevator.getMaterial());
 		setHardness(0.5F);
 		setResistance(8.0F);
-		setBlockName("PCconveyorItemElevator");
 		setStepSound(Block.soundMetalFootstep);
 		setCreativeTab(CreativeTabs.tabTransport);
 	}
 
 	@Override
 	public String getDefaultName() {
-		return "Elevator";
+		return null;
 	}
 
 	@Override

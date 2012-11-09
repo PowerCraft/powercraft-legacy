@@ -16,7 +16,6 @@ public class PCco_ItemCraftingTool extends PC_Item {
 		super(i);
 		setMaxDamage(0);
 		setMaxStackSize(1);
-		setItemName("PCcoGateCrafter");
 		setCreativeTab(CreativeTabs.tabTools);
 		setIconIndex(0);
 	}

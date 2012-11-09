@@ -19,6 +19,7 @@ import net.minecraft.src.EntityFX;
 import net.minecraft.src.EntityPlayer;
 import net.minecraft.src.EnumGameType;
 import net.minecraft.src.PlayerControllerMP;
+import net.minecraft.src.World;
 import net.minecraftforge.client.MinecraftForgeClient;
 import cpw.mods.fml.client.registry.RenderingRegistry;
 import cpw.mods.fml.common.registry.LanguageRegistry;
@@ -102,9 +103,11 @@ public class PC_ClientUtils extends PC_Utils {
 					line = line.trim();
 					if(!(line.startsWith("#")||line.equals(""))){
 						int peq = line.indexOf('=');
-						String key = line.substring(0, peq).trim();
-						String value = line.substring(peq+1).trim();
-						registerLanguageForLang(module, language, key, value);
+						if(peq>0){
+							String key = line.substring(0, peq).trim();
+							String value = line.substring(peq+1).trim();
+							registerLanguageForLang(module, language, key, value);
+						}
 					}
 					line = lnr.readLine();
 				}
@@ -154,8 +157,9 @@ public class PC_ClientUtils extends PC_Utils {
 	
 	@Override
 	protected void iPlaySound(double x, double y, double z, String sound, float soundVolume, float pitch){
-		if(PC_Utils.isSoundEnabled()){
-			mc().theWorld.playSound(x, y, z, sound, soundVolume, pitch);
+		World world = mc().theWorld;
+		if(PC_Utils.isSoundEnabled() && world!=null){
+			world.playSound(x, y, z, sound, soundVolume, pitch);
 		}
 	}
 	

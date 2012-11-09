@@ -183,6 +183,15 @@ public abstract class PC_Module{
 		}
 	}
 	
+	public int getLangVersion() {
+		return PC_Utils.getConfigInt(getConfig(), Configuration.CATEGORY_GENERAL, "langVersion", 0);
+	}
+	
+	public void setLangVersion(int langVersion) {
+		getConfig().get(Configuration.CATEGORY_GENERAL, "langVersion", 0).value = ""+langVersion;
+		getConfig().save();
+	}
+	
 	public static void ignoreALLUpdateVersion(){
 		for(PC_Module module: modules.values()){
 			module.ignoreUpdateVersion();

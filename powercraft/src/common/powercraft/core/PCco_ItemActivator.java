@@ -15,7 +15,6 @@ public class PCco_ItemActivator extends PC_Item {
 		setMaxDamage(100);
 		setMaxStackSize(1);
 		setIconIndex(2);
-		setItemName("PCcoActivatorItem");
 		setCreativeTab(CreativeTabs.tabTools);
 	}
 	
@@ -36,7 +35,7 @@ public class PCco_ItemActivator extends PC_Item {
 	
 	@Override
 	public String[] getDefaultNames() {
-		return new String[]{getItemName(), "Activator Crystal"};
+		return new String[]{getItemName(), "Activation Crystal"};
 	}
 	
 }

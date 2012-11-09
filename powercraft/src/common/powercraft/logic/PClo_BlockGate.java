@@ -23,7 +23,6 @@ public class PClo_BlockGate extends PC_Block implements PC_IRotatedBox {
 	
 	public PClo_BlockGate(int id){
 		super(id, 6, Material.ground);
-		setBlockName("PCloLogicGate");
 		setHardness(0.35F);
 		setStepSound(Block.soundWoodFootstep);
 		disableStats();

@@ -22,10 +22,10 @@ public class PClo_ItemBlockFlipFlop extends PC_ItemBlock {
 		List<String> s =  new ArrayList<String>();
 		for(int i=0; i<PClo_FlipFlopType.TOTAL_FLIPFLOP_COUNT; i++){
 			s.add(getItemName()+".flipflop"+i);
-			s.add("FlipFlop "+PClo_FlipFlopType.names[i]);
+			s.add(PClo_FlipFlopType.names[i]+" flipflop");
 		};
 		s.add(getItemName());
-		s.add("FlipFlop");
+		s.add("flipFlop");
 		return s.toArray(new String[0]);
 	}
 	

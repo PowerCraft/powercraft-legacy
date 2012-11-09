@@ -27,7 +27,6 @@ public class PCma_BlockAutomaticWorkbench extends PC_Block implements PC_ISpecia
 		super(id, 62, Material.ground);
 		setHardness(0.7F);
 		setResistance(10.0F);
-		setBlockName("PCmaAutoWorkbench");
 		setStepSound(Block.soundMetalFootstep);
 		setCreativeTab(CreativeTabs.tabBrewing);
 	}

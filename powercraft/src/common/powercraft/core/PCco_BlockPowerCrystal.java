@@ -23,7 +23,6 @@ public class PCco_BlockPowerCrystal extends PC_Block implements PC_IConfigLoader
 		super(id, 49, Material.glass);
 		setHardness(0.5F);
 		setResistance(0.5F);
-		setBlockName("PCcoPowerCrystal");
 		setStepSound(Block.soundGlassFootstep);
 		setLightValue(1.0F);
 		setCreativeTab(CreativeTabs.tabMaterials);
@@ -41,7 +40,7 @@ public class PCco_BlockPowerCrystal extends PC_Block implements PC_IConfigLoader
 
 	@Override
 	public String getDefaultName() {
-		return "Power Crystal";
+		return null;
 	}
 
 	@Override

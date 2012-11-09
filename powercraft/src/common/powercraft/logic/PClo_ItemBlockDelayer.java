@@ -20,12 +20,12 @@ public class PClo_ItemBlockDelayer extends PC_ItemBlock {
 	@Override
 	public String[] getDefaultNames() {
 		List<String> s =  new ArrayList<String>();
-		for(int i=0; i<PClo_DelayerType.TOTAL_DELAYER_COUNT; i++){
-			s.add(getItemName()+".delayer"+i);
-			s.add("Delayer "+PClo_DelayerType.names[i]);
-		};
+		s.add(getItemName()+".delayer0");
+		s.add("buffered delayer");
+		s.add(getItemName()+".delayer1");
+		s.add("delayed repeater");
 		s.add(getItemName());
-		s.add("Delayer");
+		s.add("delayer");
 		return s.toArray(new String[0]);
 	}
 	
