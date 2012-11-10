@@ -9,6 +9,8 @@ import net.minecraft.src.CreativeTabs;
 import net.minecraft.src.EntityLiving;
 import net.minecraft.src.EntityPlayer;
 import net.minecraft.src.IBlockAccess;
+import net.minecraft.src.Item;
+import net.minecraft.src.ItemDye;
 import net.minecraft.src.ItemStack;
 import net.minecraft.src.Material;
 import net.minecraft.src.TileEntity;
@@ -160,6 +162,13 @@ public class PCli_BlockLight extends PC_Block implements PC_ICraftingToolDisplay
 
 	@Override
 	public boolean onBlockActivated(World world, int i, int j, int k, EntityPlayer entityplayer, int par6, float par7, float par8, float par9) {
+		ItemStack ihold = entityplayer.getCurrentEquippedItem();
+		if (ihold != null) {
+			if (ihold.getItem().shiftedIndex == Item.dyePowder.shiftedIndex) {
+				PC_Utils.<PCli_TileEntityLight>getTE(world, i, j, k, blockID).setColor(new PC_Color(PC_Color.getHexColorForName(ItemDye.dyeColorNames[ihold.getItemDamage()])));
+				return true;
+			}
+		}
 		PC_Utils.openGres("Light", entityplayer, i, j, k);
 		return true;
 	}
@@ -293,21 +302,6 @@ public class PCli_BlockLight extends PC_Block implements PC_ICraftingToolDisplay
 //		float sidehalf = 0.1875F;
 //		float height = 0.15F;
 //		setBlockBounds(0.5F - sidehalf, 0.5F - sidehalf, 0.5F - height / 2F, 0.5F + sidehalf, 0.5F + sidehalf, 0.5F + height / 2F);
-	}
-
-	@Override
-	public int getBlockColor() {
-		return 0xf0f0f0;
-	}
-
-	@Override
-	public int getRenderColor(int i) // item
-	{
-		try {
-			return PC_Color.light_colors[i % 16];
-		} catch (ArrayIndexOutOfBoundsException e) {
-			return 0xf0f0f0;
-		}
 	}
 
 	private PC_Color getColor(IBlockAccess w, int i, int j, int k) {
