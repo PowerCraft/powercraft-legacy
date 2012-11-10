@@ -654,6 +654,19 @@ public class PC_Utils {
 		return ""+d;
 	}
 	
+	public static <t extends TileEntity>t getTE(IBlockAccess world, int x, int y, int z){
+		if(world!=null){
+			TileEntity te = world.getBlockTileEntity(x, y, z);
+			try{
+				t tet = (t)te;
+				return tet;
+			}catch(ClassCastException e){
+				return null;
+			}
+		}
+		return null;
+	}
+	
 	public static <t extends TileEntity>t getTE(IBlockAccess world, int x, int y, int z, int blockID){
 		if(world!=null){
 			if(getBID(world, x, y, z)==blockID){
