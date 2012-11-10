@@ -2,6 +2,7 @@ package powercraft.core;
 
 import net.minecraft.src.Block;
 import net.minecraft.src.IBlockAccess;
+import net.minecraft.src.RenderEngine;
 
 public class PC_Renderer {
 
@@ -70,5 +71,40 @@ public class PC_Renderer {
 		renderer2d.iRenderInvBlockRotatedBox(block, metadata, modelID, renderer);
 	}
 	
+	protected void iRenderInvBoxWithTexture(Object renderer, Block block, int tectureID){}
+	
+	public static void renderInvBoxWithTexture(Object renderer, Block block, int tectureID) {
+		renderer2d.iRenderInvBoxWithTexture(renderer, block, tectureID);
+	}
+	
+	
+	protected void iSwapTerrain(String filename) {}
+
+	public static void swapTerrain(String filename) {
+		renderer2d.iSwapTerrain(filename);
+	}
+	
+	protected boolean iSwapTerrain(Block block) {
+		if (block instanceof PC_Block && !block.getTextureFile().equalsIgnoreCase("/terrain.png")) {
+			return true;
+		}
+		return false;
+	}
+
+	public static boolean swapTerrain(Block block) {
+		return renderer2d.iSwapTerrain(block);
+	}
+	
+	protected void iResetTerrain(boolean do_it) {}
+	
+	public static void resetTerrain(boolean do_it) {
+		renderer2d.iResetTerrain(do_it);
+	}
+	
+	protected void iglColor3f(float r, float g, float b) {}
+	
+	public static void glColor3f(float r, float g, float b) {
+		renderer2d.iglColor3f(r, g, b);
+	}
 	
 }

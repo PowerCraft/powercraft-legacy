@@ -8,7 +8,7 @@ import powercraft.core.PC_PacketHandler;
 import powercraft.core.PC_TileEntity;
 import powercraft.core.PC_Utils;
 
-public class PCli_TileEntityLight extends PC_TileEntity {
+public class PCli_TileEntityLight extends PC_TileEntity  {
 	private PC_Color color = null;
 	/** flag that this light is lamp, and not indicator */
 	private boolean isStable;
@@ -60,6 +60,7 @@ public class PCli_TileEntityLight extends PC_TileEntity {
 	public void setStable(boolean stable) {
 		PC_PacketHandler.setTileEntity(this, "isStable", stable);
 		isStable = stable;
+		worldObj.markBlockAsNeedsUpdate(xCoord, yCoord, zCoord);
 	}
 	
 	public boolean isStable(){
@@ -69,6 +70,7 @@ public class PCli_TileEntityLight extends PC_TileEntity {
 	public void setHuge(boolean huge) {
 		PC_PacketHandler.setTileEntity(this, "isHuge", huge);
 		isHuge = huge;
+		worldObj.markBlockAsNeedsUpdate(xCoord, yCoord, zCoord);
 	}
 	
 	public boolean isHuge(){

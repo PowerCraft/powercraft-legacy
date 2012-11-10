@@ -16,13 +16,18 @@ import net.minecraft.src.Material;
 import net.minecraft.src.TileEntity;
 import net.minecraft.src.World;
 import net.minecraftforge.common.Configuration;
+
+import org.lwjgl.opengl.GL11;
+
 import powercraft.core.PC_Block;
 import powercraft.core.PC_Color;
+import powercraft.core.PC_IBlockRenderer;
 import powercraft.core.PC_IConfigLoader;
 import powercraft.core.PC_ICraftingToolDisplayer;
+import powercraft.core.PC_Renderer;
 import powercraft.core.PC_Utils;
 
-public class PCli_BlockLight extends PC_Block implements PC_ICraftingToolDisplayer, PC_IConfigLoader {
+public class PCli_BlockLight extends PC_Block implements PC_ICraftingToolDisplayer, PC_IConfigLoader, PC_IBlockRenderer {
 	
 	private int lightValueOn=15;
 	
@@ -390,5 +395,22 @@ public class PCli_BlockLight extends PC_Block implements PC_ICraftingToolDisplay
 	public void loadFromConfig(Configuration config) {
 		lightValueOn = PC_Utils.getConfigInt(config, Configuration.CATEGORY_GENERAL, "LampLightValueOn", 12);
 	}
+
+	@Override
+	public void renderInventoryBlock(Block block, int metadata, int modelID, Object renderer) {
+		PC_Renderer.swapTerrain(block);
+		
+		float sidehalf = 0.1875F;
+		float height = 0.15F;
+		PC_Renderer.glColor3f(1.0f, 1.0f, 1.0f);
+		block.setBlockBounds(0.5F - sidehalf, 0.5F - sidehalf, 0.5F - height / 2F, 0.5F + sidehalf, 0.5F + sidehalf, 0.5F + height / 2F);
+		PC_Renderer.renderInvBoxWithTexture(renderer, block, 66);
+		
+		PC_Renderer.resetTerrain(true);
+
+	}
+
+	@Override
+	public void renderWorldBlock(IBlockAccess world, int x, int y, int z, Block block, int modelId, Object renderer) {}
 	
 }
