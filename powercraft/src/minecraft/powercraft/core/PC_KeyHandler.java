@@ -1,14 +1,11 @@
 package powercraft.core;
 
-import java.util.Arrays;
 import java.util.EnumSet;
 
-import org.lwjgl.input.Keyboard;
+import net.minecraft.src.KeyBinding;
 
 import com.google.common.collect.ObjectArrays;
-import com.google.common.primitives.Booleans;
 
-import net.minecraft.src.KeyBinding;
 import cpw.mods.fml.client.registry.KeyBindingRegistry.KeyHandler;
 import cpw.mods.fml.common.TickType;
 
@@ -25,11 +22,13 @@ public class PC_KeyHandler extends KeyHandler {
 
 	@Override
 	public void keyDown(EnumSet<TickType> types, KeyBinding kb, boolean tickEnd, boolean isRepeat) {
+		System.out.println("keyDown:" + kb.keyCode);
 		PC_ClientUtils.keyDown(kb.keyCode);
 	}
 
 	@Override
 	public void keyUp(EnumSet<TickType> types, KeyBinding kb, boolean tickEnd) {
+		System.out.println("keyUp:" + kb.keyCode);
 		PC_ClientUtils.keyUp(kb.keyCode);
 	}
 

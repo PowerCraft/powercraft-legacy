@@ -164,7 +164,7 @@ public class PC_ClientUtils extends PC_Utils {
 	@Override
 	protected void iPlaySound(double x, double y, double z, String sound, float soundVolume, float pitch){
 		World world = mc().theWorld;
-		if(PC_Utils.isSoundEnabled() && world!=null){
+		if(PC_Utils.isSoundEnabled() && world!=null && world.isRemote){
 			world.playSound(x, y, z, sound, soundVolume, pitch);
 		}
 	}
