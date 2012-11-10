@@ -43,6 +43,7 @@ public class PC_Utils implements PC_IPacketHandler {
 	
 	protected HashMap<EntityPlayer, List<String>> keyPressed = new HashMap<EntityPlayer, List<String>>();
 	protected int keyReverse;
+	protected HashMap<String, PC_Block> blocks = new HashMap<String, PC_Block>();
 	
 	public PC_Utils(){
 		PC_PacketHandler.registerPackethandler("PacketUtils", this);
@@ -184,6 +185,7 @@ public class PC_Utils implements PC_IPacketHandler {
 			int blockID = getConfigInt(config, Configuration.CATEGORY_BLOCK, blockClass.getName(), defaultID);
 			isIDAvailable(blockID, blockClass, true);
 			t block = createClass(blockClass, new Class[]{int.class}, new Object[]{blockID});
+			instance.blocks.put(blockClass.getSimpleName(), block);
 			block.setBlockName(blockClass.getSimpleName());
 			block.setTextureFile(module.getTerrainFile());
 			if(block instanceof PC_IConfigLoader)
@@ -1066,6 +1068,12 @@ public class PC_Utils implements PC_IPacketHandler {
 	
 	public static void setReverseKey(Configuration config){
 		instance.keyReverse = watchForKey(config, "keyReverse", 29);
+	}
+	
+	public static PC_Block getPCBlockByName(String name){
+		if(instance.blocks.containsKey(name))
+			return instance.blocks.get(name);
+		return null;
 	}
 	
 	protected static final int KEYEVENT = 0;
