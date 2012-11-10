@@ -61,6 +61,7 @@ public class mod_PowerCraftLight extends PC_Module {
 	@Override
 	protected List<String> loadTextureFiles(List<String> textures) {
 		textures.add(getTerrainFile());
+		textures.add(getTextureDirectory()+"block_light.png");
 		return textures;
 	}
 

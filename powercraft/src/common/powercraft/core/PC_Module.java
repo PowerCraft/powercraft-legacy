@@ -126,6 +126,7 @@ public abstract class PC_Module{
 		initRecipes();
 		PC_Utils.registerGresArray(proxy.registerGuis());
 		PC_PacketHandler.registerPackethandlers(proxy.registerPackethandlers());
+		proxy.registerTileEntitySpecialRenderers();
 		List<String> list = addSplashes(new ArrayList<String>());
 		if(list!=null)
 			splashes.addAll(list);

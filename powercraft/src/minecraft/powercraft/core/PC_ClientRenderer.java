@@ -297,12 +297,45 @@ public class PC_ClientRenderer extends PC_Renderer implements ISimpleBlockRender
 
 	}
 	
+	protected void iRenderInvBoxWithTexture(Object renderer, Block block, int tectureID){
+		RenderBlocks renderblocks = (RenderBlocks)renderer;
+		Tessellator tessellator = Tessellator.instance;
+		((RenderBlocks)renderer).func_83018_a(block);
+		GL11.glTranslatef(-0.5F, -0.5F, -0.5F);
+		tessellator.startDrawingQuads();
+		tessellator.setNormal(0.0F, -1F, 0.0F);
+		renderblocks.renderBottomFace(block, 0.0D, 0.0D, 0.0D, tectureID);
+		tessellator.draw();
+		tessellator.startDrawingQuads();
+		tessellator.setNormal(0.0F, 1.0F, 0.0F);
+		renderblocks.renderTopFace(block, 0.0D, 0.0D, 0.0D, tectureID);
+		tessellator.draw();
+		tessellator.startDrawingQuads();
+		tessellator.setNormal(0.0F, 0.0F, -1F);
+		renderblocks.renderEastFace(block, 0.0D, 0.0D, 0.0D, tectureID);
+		tessellator.draw();
+		tessellator.startDrawingQuads();
+		tessellator.setNormal(0.0F, 0.0F, 1.0F);
+		renderblocks.renderWestFace(block, 0.0D, 0.0D, 0.0D, tectureID);
+		tessellator.draw();
+		tessellator.startDrawingQuads();
+		tessellator.setNormal(-1F, 0.0F, 0.0F);
+		renderblocks.renderNorthFace(block, 0.0D, 0.0D, 0.0D, tectureID);
+		tessellator.draw();
+		tessellator.startDrawingQuads();
+		tessellator.setNormal(1.0F, 0.0F, 0.0F);
+		renderblocks.renderSouthFace(block, 0.0D, 0.0D, 0.0D, tectureID);
+		tessellator.draw();
+		GL11.glTranslatef(0.5F, 0.5F, 0.5F);
+		((RenderBlocks)renderer).func_83017_b();
+	}
+	
 	/**
 	 * Use texture file as terrain.png
 	 * 
 	 * @param filename name of the used texture file (png)
 	 */
-	public static void swapTerrain(String filename) {
+	protected void iSwapTerrain(String filename) {
 		RenderEngine renderengine = PC_ClientUtils.mc().renderEngine;
 		renderengine.bindTexture(renderengine.getTexture(filename));
 	}
@@ -315,7 +348,7 @@ public class PC_ClientRenderer extends PC_Renderer implements ISimpleBlockRender
 	 * @return true if terrain was swapped -> call resetTerrain() to re-enable
 	 *         original terrain.png
 	 */
-	public static boolean swapTerrain(Block block) {
+	protected boolean iSwapTerrain(Block block) {
 		if (block instanceof PC_Block && !block.getTextureFile().equalsIgnoreCase("/terrain.png")) {
 			swapTerrain(block.getTextureFile());
 			return true;
@@ -328,11 +361,15 @@ public class PC_ClientRenderer extends PC_Renderer implements ISimpleBlockRender
 	 * 
 	 * @param do_it false = do nothing
 	 */
-	public static void resetTerrain(boolean do_it) {
+	protected void iResetTerrain(boolean do_it) {
 		if(do_it){
 			RenderEngine renderengine = PC_ClientUtils.mc().renderEngine;
 			renderengine.bindTexture(renderengine.getTexture("/terrain.png"));
 		}
+	}
+	
+	protected void iglColor3f(float r, float g, float b) {
+		GL11.glColor3f(r, g, b);
 	}
 	
 }
