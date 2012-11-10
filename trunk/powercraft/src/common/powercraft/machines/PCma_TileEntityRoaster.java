@@ -17,6 +17,7 @@ import net.minecraft.src.ItemFood;
 import net.minecraft.src.ItemStack;
 import net.minecraft.src.NBTTagCompound;
 import net.minecraft.src.WorldChunkManager;
+import powercraft.core.PC_Block;
 import powercraft.core.PC_ISpecialAccessInventory;
 import powercraft.core.PC_InvUtils;
 import powercraft.core.PC_TileEntity;
@@ -166,7 +167,12 @@ public class PCma_TileEntityRoaster extends PC_TileEntity implements IInventory,
 			return;
 		}
 
-		boolean laser = worldObj.getBlockId(xCoord, yCoord + 1, zCoord) == mod_PCmachines.laser.blockID;
+		PC_Block laserB = PC_Utils.getPCBlockByName("PCli_BlockLaser");
+		
+		boolean laser = false;
+		if(laserB!=null){
+			 laser = PC_Utils.getBID(worldObj, xCoord, yCoord + 1, zCoord) == laserB.blockID;
+		}
 
 		if (burnTime > 0) {
 			burnTime -= laser ? 4 : 2; // laser consumes more
@@ -231,7 +237,7 @@ public class PCma_TileEntityRoaster extends PC_TileEntity implements IInventory,
 		nextItem:
 		for (EntityItem entityitem : itemsList) {
 
-			if (entityitem.isDead || mod_PCmachines.roasterIgnoreBlockIDs.contains(entityitem.item.itemID)) {
+			if (entityitem.isDead || mod_PowerCraftMachines.roasterIgnoreBlockIDs.contains(entityitem.item.itemID)) {
 				continue nextItem;
 			}
 			ItemStack result = getResult(entityitem.item);

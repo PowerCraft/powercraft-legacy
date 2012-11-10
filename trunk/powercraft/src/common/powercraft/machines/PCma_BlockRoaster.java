@@ -75,9 +75,7 @@ public class PCma_BlockRoaster extends PC_Block {
 		ItemStack ihold = entityplayer.getCurrentEquippedItem();
 		if (ihold != null) {
 			if (ihold.getItem() instanceof ItemBlock && ihold.getItem().shiftedIndex != blockID) {
-				if (Block.blocksList[ihold.getItem().shiftedIndex] instanceof PC_IBlockType) {
-					return false;
-				}
+				return false;
 			}
 		}
 
@@ -85,7 +83,7 @@ public class PCma_BlockRoaster extends PC_Block {
 			return true;
 		}
 
-		PC_Utils.openGres(entityplayer, PCma_GuiRoaster.class, i, j, k);
+		PC_Utils.openGres("Roaster", entityplayer, i, j, k);
 
 		return true;
 	}
@@ -224,32 +222,6 @@ public class PCma_BlockRoaster extends PC_Block {
 			}
 		}
 
-	}
-
-	@Override
-	public Set<String> getBlockFlags(World world, PC_CoordI pos) {
-
-		Set<String> set = new HashSet<String>();
-
-		set.add("NO_HARVEST");
-		set.add("HARVEST_STOP");
-		set.add("ROASTER");
-		set.add("FURNACE");
-		set.add("MACHINE");
-
-		if (isBurning(world, pos.x, pos.y, pos.z)) {
-			set.add("SMOKE");
-		}
-
-		return set;
-	}
-
-	@Override
-	public Set<String> getItemFlags(ItemStack stack) {
-		Set<String> set = new HashSet<String>();
-		set.add("NO_BUILD");
-		set.add("ROASTER");
-		return set;
 	}
 	
 }

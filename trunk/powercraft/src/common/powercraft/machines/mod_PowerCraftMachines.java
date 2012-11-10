@@ -25,6 +25,8 @@ public class mod_PowerCraftMachines extends PC_Module {
 	
 	public static PC_Block automaticWorkbench;
 	
+	public static List<Integer >roasterIgnoreBlockIDs;
+	
 	public static mod_PowerCraftMachines getInstance() {
 		return (mod_PowerCraftMachines)PC_Module.getModule("PowerCraft-Machines");
 	}
@@ -52,8 +54,7 @@ public class mod_PowerCraftMachines extends PC_Module {
 	
 	@Override
 	protected void initProperties(Configuration config) {
-		// TODO Auto-generated method stub
-
+		PC_Utils.parseIntList(PC_Utils.getConfigString(config, "roaster_ignored_blocks_list", Configuration.CATEGORY_GENERAL, "1"));
 	}
 
 	@Override
