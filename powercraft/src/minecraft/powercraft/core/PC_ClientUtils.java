@@ -22,11 +22,17 @@ import net.minecraft.src.PlayerControllerMP;
 import net.minecraft.src.World;
 import net.minecraftforge.client.MinecraftForgeClient;
 import cpw.mods.fml.client.registry.RenderingRegistry;
+import cpw.mods.fml.client.registry.KeyBindingRegistry;
 import cpw.mods.fml.common.registry.LanguageRegistry;
 
 public class PC_ClientUtils extends PC_Utils {
 	
 	private HashMap<PC_Module, HashMap<String, HashMap<String, String[]>>> moduleTranslation = new HashMap<PC_Module, HashMap<String, HashMap<String, String[]>>>();
+	private PC_KeyHandler keyHandler;
+	
+	public PC_ClientUtils(){
+		KeyBindingRegistry.registerKeyBinding(keyHandler = new PC_KeyHandler());
+	}
 	
 	public static Minecraft mc(){
 		return Minecraft.getMinecraft();
@@ -209,6 +215,11 @@ public class PC_ClientUtils extends PC_Utils {
 	}
 	
 	@Override
+	protected boolean iIsPlacingReversed(EntityPlayer player){
+		return isKeyPressed(mc().thePlayer, keyReverse);
+	}
+	
+	@Override
 	protected File iGetMCDirectory(){
 		return Minecraft.getMinecraftDir();
 	}
@@ -221,6 +232,21 @@ public class PC_ClientUtils extends PC_Utils {
 	@Override
 	protected boolean iIsEntityFX(Entity entity) {
 		return entity instanceof EntityFX;
+	}
+	
+	@Override
+	protected void iWatchForKey(String name, int key){
+		keyHandler.addKey(name, key);
+	}
+
+	public static void keyDown(int keyCode) {
+		instance.handleIncomingPacket(mc().thePlayer, new Object[]{KEYEVENT, true, keyCode});
+		PC_PacketHandler.sendToPacketHandler(mc().thePlayer, "PacketUtils", KEYEVENT, true, keyCode);
+	}
+
+	public static void keyUp(int keyCode) {
+		instance.handleIncomingPacket(mc().thePlayer, new Object[]{KEYEVENT, false, keyCode});
+		PC_PacketHandler.sendToPacketHandler(mc().thePlayer, "PacketUtils", KEYEVENT, false, keyCode);
 	}
 	
 }

@@ -17,7 +17,6 @@ import org.lwjgl.input.Keyboard;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.src.AxisAlignedBB;
 import net.minecraft.src.Block;
-import net.minecraft.src.BlockMobSpawner;
 import net.minecraft.src.CraftingManager;
 import net.minecraft.src.Entity;
 import net.minecraft.src.EntityList;
@@ -32,8 +31,6 @@ import net.minecraft.src.IRecipe;
 import net.minecraft.src.Item;
 import net.minecraft.src.ItemStack;
 import net.minecraft.src.NBTTagCompound;
-import net.minecraft.src.ShapedRecipes;
-import net.minecraft.src.ShapelessRecipes;
 import net.minecraft.src.StringTranslate;
 import net.minecraft.src.TileEntity;
 import net.minecraft.src.TileEntityMobSpawner;
@@ -42,10 +39,17 @@ import net.minecraftforge.common.Configuration;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.common.registry.LanguageRegistry;
 
-public class PC_Utils {
+public class PC_Utils implements PC_IPacketHandler {
 	
-	private static PC_Utils instance;
+	protected static PC_Utils instance;
 	public static final int BACK = 0, LEFT = 1, RIGHT = 2, FRONT = 3, BOTTOM = 4, TOP = 5;
+	
+	protected HashMap<EntityPlayer, List<Integer>> keyPressed = new HashMap<EntityPlayer, List<Integer>>();
+	protected int keyReverse;
+	
+	public PC_Utils(){
+		PC_PacketHandler.registerPackethandler("PacketUtils", this);
+	}
 	
 	public static boolean setUtilsInstance(PC_Utils instance){
 		if(PC_Utils.instance==null){
@@ -699,11 +703,12 @@ public class PC_Utils {
 		return 0;
 	}
 
+	protected boolean iIsPlacingReversed(EntityPlayer player){
+		return isKeyPressed(player, keyReverse);
+	}
+	
 	public static boolean isPlacingReversed(EntityPlayer player) {
-		if(isClient()){
-			return Keyboard.isKeyDown(Keyboard.KEY_LCONTROL);
-		}
-		return Keyboard.isKeyDown(Keyboard.KEY_LCONTROL);
+		return instance.iIsPlacingReversed(player);
 	}
 
 	public static int reverseSide(int l) {
@@ -1037,6 +1042,55 @@ public class PC_Utils {
 		NBTTagCompound nbttag = new NBTTagCompound();
 		nbt.writeToNBT(nbttag);
 		nbttagcompound.setCompoundTag(string, nbttag);
+	}
+
+	protected boolean iIsKeyPressed(EntityPlayer player, int key){
+		if(!keyPressed.containsKey(player))
+			return false;
+		List<Integer> keyList = keyPressed.get(player);
+		return keyList.contains(keyList);
+	}
+	
+	public static boolean isKeyPressed(EntityPlayer player, int key){
+		return instance.iIsKeyPressed(player, key);
+	}
+	
+	protected void iWatchForKey(String name, int key){}
+	
+	public static void watchForKey(String name, int key){
+		instance.iWatchForKey(name, key);
+	}
+	
+	public static void watchForKey(Configuration config, String name, int key) {
+		watchForKey(name, getConfigInt(config, Configuration.CATEGORY_GENERAL, name, key));
+	}
+	
+	public static void setReverseKey(Configuration config){
+		watchForKey("keyReverse", instance.keyReverse = getConfigInt(config, Configuration.CATEGORY_GENERAL, "keyReverse", 29));
+	}
+	
+	protected static final int KEYEVENT = 0;
+	
+	@Override
+	public boolean handleIncomingPacket(EntityPlayer player, Object[] o) {
+		switch((Integer)o[0]){
+		case KEYEVENT:
+			List<Integer> keyList;
+			if(keyPressed.containsKey(player))
+				keyList = keyPressed.get(player);
+			else
+				keyPressed.put(player, keyList = new ArrayList<Integer>());
+			int key = (Integer)o[2];
+			if((Boolean)o[1]){
+				if(!keyList.contains(key))
+					keyList.add(key);
+			}else{
+				if(keyList.contains(key))
+					keyList.remove((Object)key);
+			}
+			break;
+		}
+		return false;
 	}
 	
 }

@@ -13,12 +13,15 @@ import net.minecraft.src.Item;
 import net.minecraft.src.ItemStack;
 import net.minecraftforge.common.Configuration;
 
+import org.lwjgl.input.Keyboard;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 import org.xml.sax.SAXParseException;
 
+import cpw.mods.fml.client.registry.ClientRegistry;
+import cpw.mods.fml.client.registry.KeyBindingRegistry;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.Init;
 import cpw.mods.fml.common.Mod.PostInit;
@@ -95,6 +98,7 @@ public class mod_PowerCraftCore extends PC_Module{
 	protected void initProperties(Configuration config) {
 		PC_Utils.enableSound(PC_Utils.getConfigBool(config, Configuration.CATEGORY_GENERAL, "enableSounds", true));
 		hackSplashes = PC_Utils.getConfigBool(config, Configuration.CATEGORY_GENERAL, "hackSplashes", true);
+		PC_Utils.watchForKey(config, "keyReverse", 29);
 	}
 
 	@Override

@@ -1,11 +1,18 @@
 package powercraft.core;
 
+import cpw.mods.fml.client.registry.KeyBindingRegistry;
 import cpw.mods.fml.client.registry.RenderingRegistry;
 import cpw.mods.fml.common.Side;
 import cpw.mods.fml.common.registry.TickRegistry;
 
 public class PCco_ClientProxy extends PCco_CommonProxy {
 
+	
+	
+	public PCco_ClientProxy(){
+		
+	}
+	
 	@Override
 	public void initUtils(){
 		PC_Utils.setUtilsInstance(new PC_ClientUtils());
