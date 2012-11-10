@@ -49,7 +49,7 @@ public class PCma_BlockAutomaticWorkbench extends PC_Block implements PC_ISpecia
 	public void onBlockPlacedBy(World world, int i, int j, int k, EntityLiving entityliving) {
 		int l = MathHelper.floor_double(((entityliving.rotationYaw * 4F) / 360F) + 2.5D) & 3;
 
-		if (PC_Utils.isPlacingReversed()) {
+		if (entityliving instanceof EntityPlayer && PC_Utils.isPlacingReversed(((EntityPlayer)entityliving))) {
 			l = PC_Utils.reverseSide(l);
 		}
 

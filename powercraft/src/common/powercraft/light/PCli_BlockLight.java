@@ -332,7 +332,7 @@ public class PCli_BlockLight extends PC_Block implements PC_ICraftingToolDisplay
 	
 	@Override
 	public int getLightValue(IBlockAccess world, int x, int y, int z) {
-		PCli_TileEntityLight til = PC_Utils.getTE(world, x, y, z);
+		PCli_TileEntityLight til = PC_Utils.getTE(world, x, y, z, blockID);
 		if(til==null)
 			return 0;
 		return til.isActive()?lightValueOn:0;
