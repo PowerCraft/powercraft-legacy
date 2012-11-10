@@ -41,7 +41,7 @@ public class PC_Utils implements PC_IPacketHandler {
 	protected static PC_Utils instance;
 	public static final int BACK = 0, LEFT = 1, RIGHT = 2, FRONT = 3, BOTTOM = 4, TOP = 5;
 	
-	protected HashMap<EntityPlayer, List<Integer>> keyPressed = new HashMap<EntityPlayer, List<Integer>>();
+	protected HashMap<EntityPlayer, List<String>> keyPressed = new HashMap<EntityPlayer, List<String>>();
 	protected int keyReverse;
 	
 	public PC_Utils(){
@@ -701,7 +701,7 @@ public class PC_Utils implements PC_IPacketHandler {
 	}
 
 	protected boolean iIsPlacingReversed(EntityPlayer player){
-		return isKeyPressed(player, keyReverse);
+		return isKeyPressed(player, "keyReverse");
 	}
 	
 	public static boolean isPlacingReversed(EntityPlayer player) {
@@ -1041,14 +1041,14 @@ public class PC_Utils implements PC_IPacketHandler {
 		nbttagcompound.setCompoundTag(string, nbttag);
 	}
 
-	protected boolean iIsKeyPressed(EntityPlayer player, int key){
+	protected boolean iIsKeyPressed(EntityPlayer player, String key){
 		if(!keyPressed.containsKey(player))
 			return false;
-		List<Integer> keyList = keyPressed.get(player);
+		List<String> keyList = keyPressed.get(player);
 		return keyList.contains(key);
 	}
 	
-	public static boolean isKeyPressed(EntityPlayer player, int key){
+	public static boolean isKeyPressed(EntityPlayer player, String key){
 		return instance.iIsKeyPressed(player, key);
 	}
 	
@@ -1074,12 +1074,12 @@ public class PC_Utils implements PC_IPacketHandler {
 	public boolean handleIncomingPacket(EntityPlayer player, Object[] o) {
 		switch((Integer)o[0]){
 		case KEYEVENT:
-			List<Integer> keyList;
+			List<String> keyList;
 			if(keyPressed.containsKey(player))
 				keyList = keyPressed.get(player);
 			else
-				keyPressed.put(player, keyList = new ArrayList<Integer>());
-			int key = (Integer)o[2];
+				keyPressed.put(player, keyList = new ArrayList<String>());
+			String key = (String)o[2];
 			if((Boolean)o[1]){
 				if(!keyList.contains(key))
 					keyList.add(key);

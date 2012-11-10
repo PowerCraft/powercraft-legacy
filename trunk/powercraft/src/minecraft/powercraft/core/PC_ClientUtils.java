@@ -164,7 +164,7 @@ public class PC_ClientUtils extends PC_Utils {
 	@Override
 	protected void iPlaySound(double x, double y, double z, String sound, float soundVolume, float pitch){
 		World world = mc().theWorld;
-		if(PC_Utils.isSoundEnabled() && world!=null && world.isRemote){
+		if(PC_Utils.isSoundEnabled() && world!=null && mc().renderViewEntity!=null){
 			world.playSound(x, y, z, sound, soundVolume, pitch);
 		}
 	}
@@ -216,7 +216,7 @@ public class PC_ClientUtils extends PC_Utils {
 	
 	@Override
 	protected boolean iIsPlacingReversed(EntityPlayer player){
-		return isKeyPressed(mc().thePlayer, keyReverse);
+		return isKeyPressed(mc().thePlayer, "keyReverse");
 	}
 	
 	@Override
@@ -239,12 +239,12 @@ public class PC_ClientUtils extends PC_Utils {
 		keyHandler.addKey(name, key);
 	}
 
-	public static void keyDown(int keyCode) {
+	public static void keyDown(String keyCode) {
 		instance.handleIncomingPacket(mc().thePlayer, new Object[]{KEYEVENT, true, keyCode});
 		PC_PacketHandler.sendToPacketHandler(mc().thePlayer, "PacketUtils", KEYEVENT, true, keyCode);
 	}
 
-	public static void keyUp(int keyCode) {
+	public static void keyUp(String keyCode) {
 		instance.handleIncomingPacket(mc().thePlayer, new Object[]{KEYEVENT, false, keyCode});
 		PC_PacketHandler.sendToPacketHandler(mc().thePlayer, "PacketUtils", KEYEVENT, false, keyCode);
 	}
