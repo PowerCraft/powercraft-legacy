@@ -56,7 +56,6 @@ public class PC_PacketHandler implements IPacketHandler {
 			if(!player.worldObj.isRemote)
 				setTileEntityArray(te, o);
 		}else{
-			System.out.println("x:" + te.xCoord + " y:" + te.yCoord + " z:" + te.zCoord);
 			throw new IllegalArgumentException("Not a PC_TileEntity");
 		}
 	}
