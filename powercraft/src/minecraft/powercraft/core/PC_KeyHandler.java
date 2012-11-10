@@ -22,12 +22,12 @@ public class PC_KeyHandler extends KeyHandler {
 
 	@Override
 	public void keyDown(EnumSet<TickType> types, KeyBinding kb, boolean tickEnd, boolean isRepeat) {
-		PC_ClientUtils.keyDown(kb.keyCode);
+		PC_ClientUtils.keyDown(kb.keyDescription);
 	}
 
 	@Override
 	public void keyUp(EnumSet<TickType> types, KeyBinding kb, boolean tickEnd) {
-		PC_ClientUtils.keyUp(kb.keyCode);
+		PC_ClientUtils.keyUp(kb.keyDescription);
 	}
 
 	@Override
