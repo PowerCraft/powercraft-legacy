@@ -1080,7 +1080,6 @@ public class PC_Utils implements PC_IPacketHandler {
 			else
 				keyPressed.put(player, keyList = new ArrayList<Integer>());
 			int key = (Integer)o[2];
-			System.out.println(player + " pressed: "+key);
 			if((Boolean)o[1]){
 				if(!keyList.contains(key))
 					keyList.add(key);
