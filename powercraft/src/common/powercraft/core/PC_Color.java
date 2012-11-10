@@ -426,10 +426,6 @@ public class PC_Color implements PC_INBT, Serializable {
 	/** PowerCrystal colors */
 	public static final int crystal_colors[] = { 0xff9900, 0xff1111, 0x39ff11, 0x5555ff, 0xCCCCFF, 0xff33ff, 0x33ffff, 0xffff00 };
 
-	/** Control Light colors */
-	public static final int light_colors[] = { 0x333333, 0xff0000, 0x009900, 0x553300, 0x3333ff, 0x9900ff, 0x00ffff, 0x666666, 0x434343, 0xe881a8,
-			0x41ff34, 0xffff00, 0x6666ff, 0xff0099, 0xff9900, 0xf0f0f0 };
-
 	/**
 	 * Enum of dye colors. call dye.RED.meta for the int damage value.
 	 * 
