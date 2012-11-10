@@ -70,7 +70,6 @@ public class PCli_TileEntityLight extends PC_TileEntity  {
 	public void setHuge(boolean huge) {
 		PC_PacketHandler.setTileEntity(this, "isHuge", huge);
 		isHuge = huge;
-		worldObj.markBlockAsNeedsUpdate(xCoord, yCoord, zCoord);
 	}
 	
 	public boolean isHuge(){

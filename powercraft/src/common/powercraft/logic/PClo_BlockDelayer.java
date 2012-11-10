@@ -140,11 +140,6 @@ public class PClo_BlockDelayer extends PC_Block  implements PC_IRotatedBox, PC_I
         return false;
     }
 	
-	@Override
-	public int getRenderType() {
-		return PC_Renderer.getRendererID(true);
-	}
-	
 	public static PClo_TileEntityDelayer getTE(IBlockAccess world, int x, int y, int z){
 		TileEntity te = PC_Utils.getTE(world, x, y, z);;
 		if(te instanceof PClo_TileEntityDelayer)
