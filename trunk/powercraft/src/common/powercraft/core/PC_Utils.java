@@ -11,9 +11,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-import org.lwjgl.LWJGLUtil;
-import org.lwjgl.input.Keyboard;
-
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.src.AxisAlignedBB;
 import net.minecraft.src.Block;
@@ -1061,12 +1058,14 @@ public class PC_Utils implements PC_IPacketHandler {
 		instance.iWatchForKey(name, key);
 	}
 	
-	public static void watchForKey(Configuration config, String name, int key) {
-		watchForKey(name, getConfigInt(config, Configuration.CATEGORY_GENERAL, name, key));
+	public static int watchForKey(Configuration config, String name, int key) {
+		key = getConfigInt(config, Configuration.CATEGORY_GENERAL, name, key);
+		watchForKey(name, key);
+		return key;
 	}
 	
 	public static void setReverseKey(Configuration config){
-		watchForKey("keyReverse", instance.keyReverse = getConfigInt(config, Configuration.CATEGORY_GENERAL, "keyReverse", 29));
+		instance.keyReverse = watchForKey(config, "keyReverse", 29);
 	}
 	
 	protected static final int KEYEVENT = 0;
@@ -1081,6 +1080,7 @@ public class PC_Utils implements PC_IPacketHandler {
 			else
 				keyPressed.put(player, keyList = new ArrayList<Integer>());
 			int key = (Integer)o[2];
+			System.out.println(player + " pressed: "+key);
 			if((Boolean)o[1]){
 				if(!keyList.contains(key))
 					keyList.add(key);
