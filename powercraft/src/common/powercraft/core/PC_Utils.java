@@ -1099,5 +1099,29 @@ public class PC_Utils implements PC_IPacketHandler {
 		}
 		return false;
 	}
+
+	/**
+	 * Split comma separated list of integers.
+	 * 
+	 * @param list String containing the list.
+	 * @return array of integers or null.
+	 */
+	public static List<Integer> parseIntList(String list) {
+		if (list == null) {
+			return null;
+		}
+		String[] parts = list.split(",");
+
+		ArrayList<Integer> intList = new ArrayList<Integer>();
+
+		for (String part : parts) {
+			try {
+				intList.add(Integer.parseInt(part));
+			} catch (NumberFormatException e) {}
+		}
+
+		return intList;
+
+	}
 	
 }
