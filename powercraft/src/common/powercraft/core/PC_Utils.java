@@ -1045,7 +1045,7 @@ public class PC_Utils implements PC_IPacketHandler {
 		if(!keyPressed.containsKey(player))
 			return false;
 		List<Integer> keyList = keyPressed.get(player);
-		return keyList.contains(keyList);
+		return keyList.contains(key);
 	}
 	
 	public static boolean isKeyPressed(EntityPlayer player, int key){
