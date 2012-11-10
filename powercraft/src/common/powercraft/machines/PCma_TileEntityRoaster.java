@@ -26,7 +26,7 @@ import powercraft.core.PC_Utils;
 public class PCma_TileEntityRoaster extends PC_TileEntity implements IInventory, PC_ISpecialAccessInventory {
 	@Override
 	public boolean canPlayerInsertStackTo(int slot, ItemStack stack) {
-		return stack != null && (PC_Utils.isFuel(stack) || stack.itemID == Block.netherrack.blockID);
+		return stack != null && ((PC_Utils.isFuel(stack) || stack.itemID == Block.netherrack.blockID));
 	}
 
 	@Override

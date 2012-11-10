@@ -72,7 +72,7 @@ public class mod_PowerCraftLight extends PC_Module {
 
 	@Override
 	protected void initBlocks() {
-		light = PC_Utils.register(this, 477, PCli_BlockLight.class, PCli_TileEntityLight.class);
+		light = PC_Utils.register(this, 478, PCli_BlockLight.class, PCli_TileEntityLight.class);
 	}
 
 	@Override
