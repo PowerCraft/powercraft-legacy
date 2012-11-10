@@ -24,6 +24,7 @@ public class mod_PowerCraftMachines extends PC_Module {
 	public static PCma_CommonProxy proxy;
 	
 	public static PC_Block automaticWorkbench;
+	public static PC_Block roaster;
 	
 	public static List<Integer >roasterIgnoreBlockIDs;
 	
@@ -54,7 +55,7 @@ public class mod_PowerCraftMachines extends PC_Module {
 	
 	@Override
 	protected void initProperties(Configuration config) {
-		PC_Utils.parseIntList(PC_Utils.getConfigString(config, "roaster_ignored_blocks_list", Configuration.CATEGORY_GENERAL, "1"));
+		roasterIgnoreBlockIDs = PC_Utils.parseIntList(PC_Utils.getConfigString(config, "roaster_ignored_blocks_list", Configuration.CATEGORY_GENERAL, "1"));
 	}
 
 	@Override
@@ -66,13 +67,15 @@ public class mod_PowerCraftMachines extends PC_Module {
 	@Override
 	protected void initLanguage() {
 		PC_Utils.registerLanguage(this, 
-				"pc.gui.automaticWorkbench.redstoneActivated", "Redstone triggered"
+				"pc.gui.automaticWorkbench.redstoneActivated", "Redstone triggered",
+				"pc.roaster.insertFuel", "fuel"
 				);
 	}
 
 	@Override
 	protected void initBlocks() {
-		automaticWorkbench = (PC_Block)PC_Utils.register(this, 476, PCma_BlockAutomaticWorkbench.class, PCma_TileEntityAutomaticWorkbench.class);
+		automaticWorkbench = PC_Utils.register(this, 476, PCma_BlockAutomaticWorkbench.class, PCma_TileEntityAutomaticWorkbench.class);
+		roaster = PC_Utils.register(this, 477, PCma_BlockRoaster.class, PCma_TileEntityRoaster.class);
 	}
 
 	@Override

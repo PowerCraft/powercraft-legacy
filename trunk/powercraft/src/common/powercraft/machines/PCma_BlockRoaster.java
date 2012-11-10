@@ -1,10 +1,12 @@
 package powercraft.machines;
 
 import java.util.HashSet;
+import java.util.List;
 import java.util.Random;
 import java.util.Set;
 
 import net.minecraft.src.Block;
+import net.minecraft.src.CreativeTabs;
 import net.minecraft.src.EntityPlayer;
 import net.minecraft.src.IBlockAccess;
 import net.minecraft.src.ItemBlock;
@@ -14,17 +16,19 @@ import net.minecraft.src.TileEntity;
 import net.minecraft.src.World;
 import powercraft.core.PC_Block;
 import powercraft.core.PC_CoordI;
+import powercraft.core.PC_ICraftingToolDisplayer;
 import powercraft.core.PC_InvUtils;
 import powercraft.core.PC_Renderer;
 import powercraft.core.PC_Utils;
 
-public class PCma_BlockRoaster extends PC_Block {
+public class PCma_BlockRoaster extends PC_Block implements PC_ICraftingToolDisplayer {
 	private static final int TXDOWN = 62, TXTOP = 61, TXSIDE = 46;
 	
-	protected PCma_BlockRoaster(int id) {
+	public PCma_BlockRoaster(int id) {
 		super(id, TXDOWN, Material.ground);
 		setLightOpacity(0);
 		setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 0.75F, 1.0F);
+		setCreativeTab(CreativeTabs.tabBrewing);
 	}
 	
 	@Override
@@ -222,6 +226,17 @@ public class PCma_BlockRoaster extends PC_Block {
 			}
 		}
 
+	}
+
+	@Override
+	public String getCraftingToolModule() {
+		return mod_PowerCraftMachines.getInstance().getNameWithoutPowerCraft();
+	}
+
+	@Override
+	public List<ItemStack> getItemStacks(List<ItemStack> arrayList) {
+		arrayList.add(new ItemStack(this));
+		return arrayList;
 	}
 	
 }

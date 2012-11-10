@@ -7,7 +7,8 @@ public class PCma_CommonProxy extends PC_Proxy {
 	@Override
 	public Object[] registerGuis() {
 		return new Object[]{
-			"AutomaticWorkbench", PCma_ContainerAutomaticWorkbench.class	
+			"AutomaticWorkbench", PCma_ContainerAutomaticWorkbench.class,
+			"Roaster", PCma_ContainerRoaster.class
 		};
 	}
 
