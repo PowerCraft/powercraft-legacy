@@ -9,6 +9,7 @@ import powercraft.core.PC_GresColorPicker;
 import powercraft.core.PC_GresLayoutH;
 import powercraft.core.PC_GresLayoutV;
 import powercraft.core.PC_GresWidget;
+import powercraft.core.PC_PacketHandler;
 import powercraft.core.PC_GresWidget.PC_GresAlign;
 import powercraft.core.PC_GresWindow;
 import powercraft.core.PC_IGresClient;
@@ -29,6 +30,14 @@ public class PCli_GuiLight implements PC_IGresClient {
 	
 	public PCli_GuiLight(EntityPlayer player, Object[] o){
 		light = (PCli_TileEntityLight)PC_Utils.getTE(player.worldObj, (Integer)o[0], (Integer)o[1], (Integer)o[2]);
+	
+		color = this.light.getColor();
+		if(color==null) 
+			color = new PC_Color(PC_Color.getHexColorForName("white"));
+		else
+			color = color.copy();
+		isStable = this.light.isStable();
+		isHuge = this.light.isHuge();
 	}
 	
 	@Override
@@ -57,45 +66,46 @@ public class PCli_GuiLight implements PC_IGresClient {
 
 
 	@Override
-	public void onGuiClosed(PC_IGresGui gui) {
-		// TODO Auto-generated method stub
-
-	}
+	public void onGuiClosed(PC_IGresGui gui) {}
 
 	@Override
 	public void actionPerformed(PC_GresWidget widget, PC_IGresGui gui) {
-		// TODO Auto-generated method stub
+		if(widget == colorPicker){
+			colorWidget.setColor(((PC_GresColorPicker)widget).getColor());
+			color.setTo(colorPicker.getColor());
+		}else if(widget == checkHuge){
+			isHuge = ((PC_GresCheckBox)widget).isChecked();
+		}else if(widget == checkStable){
+			isStable = ((PC_GresCheckBox)widget).isChecked();
+		}else if(widget == accept){
+			PC_PacketHandler.setTileEntity(light, "color", color, "isHuge", isHuge, "isStable", isStable);
+			gui.close();
+		}else if (widget == cancel) {
+			gui.close();
+		}
 
 	}
 
 	@Override
 	public void onEscapePressed(PC_IGresGui gui) {
-		// TODO Auto-generated method stub
+		gui.close();
 
 	}
 
 	@Override
 	public void onReturnPressed(PC_IGresGui gui) {
-		// TODO Auto-generated method stub
-
+		PC_PacketHandler.setTileEntity(light, "color", color, "isHuge", isHuge, "isStable", isStable);
+		gui.close();
 	}
 
 	@Override
-	public void updateTick(PC_IGresGui gui) {
-		// TODO Auto-generated method stub
-
-	}
+	public void updateTick(PC_IGresGui gui) {}
 
 	@Override
-	public void updateScreen(PC_IGresGui gui) {
-		// TODO Auto-generated method stub
-
-	}
+	public void updateScreen(PC_IGresGui gui) {}
 
 	@Override
-	public boolean drawBackground(PC_IGresGui gui, int par1, int par2,
-			float par3) {
-		// TODO Auto-generated method stub
+	public boolean drawBackground(PC_IGresGui gui, int par1, int par2, float par3) {
 		return false;
 	}
 

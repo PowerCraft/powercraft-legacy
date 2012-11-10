@@ -2,21 +2,22 @@ package powercraft.light;
 
 import java.util.List;
 
+import net.minecraft.src.Block;
+import net.minecraft.src.Item;
+import net.minecraft.src.ItemStack;
+import net.minecraftforge.common.Configuration;
+import powercraft.core.PC_ItemStack;
+import powercraft.core.PC_Module;
+import powercraft.core.PC_Utils;
 import cpw.mods.fml.common.Mod;
-import cpw.mods.fml.common.SidedProxy;
 import cpw.mods.fml.common.Mod.Init;
 import cpw.mods.fml.common.Mod.PostInit;
 import cpw.mods.fml.common.Mod.PreInit;
+import cpw.mods.fml.common.SidedProxy;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.network.NetworkMod;
-
-import net.minecraftforge.common.Configuration;
-import powercraft.core.PC_Module;
-import powercraft.core.PC_Utils;
-import powercraft.logic.PClo_CommonProxy;
-import powercraft.logic.mod_PowerCraftLogic;
 
 @Mod(modid="PowerCraft-Light", name="PowerCraft-Light", version="3.5.0AlphaA", dependencies="required-after:PowerCraft-Core")
 @NetworkMod(clientSideRequired=true, serverSideRequired=true)
@@ -82,8 +83,10 @@ public class mod_PowerCraftLight extends PC_Module {
 
 	@Override
 	protected void initRecipes() {
-		// TODO Auto-generated method stub
-
+		PC_Utils.addShapelessRecipe(
+				new PC_ItemStack(light, 1, 0),
+				new Object[] {
+						Item.redstone, Block.glowStone});
 	}
 
 	@Override

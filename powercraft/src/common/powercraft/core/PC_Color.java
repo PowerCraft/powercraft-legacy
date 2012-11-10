@@ -497,4 +497,10 @@ public class PC_Color implements PC_INBT, Serializable {
 		return new PC_Color().setTo(hex);
 	}
 
+	public static Integer getHexColorForName(String text) {
+		if(namedColors.containsKey(text.toLowerCase()))
+			return namedColors.get(text.toLowerCase());
+		return null;
+	}
+
 }
