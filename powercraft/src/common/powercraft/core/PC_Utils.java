@@ -14,6 +14,7 @@ import java.util.List;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.src.AxisAlignedBB;
 import net.minecraft.src.Block;
+import net.minecraft.src.BlockMobSpawner;
 import net.minecraft.src.CraftingManager;
 import net.minecraft.src.Entity;
 import net.minecraft.src.EntityList;
@@ -27,6 +28,7 @@ import net.minecraft.src.IInventory;
 import net.minecraft.src.IRecipe;
 import net.minecraft.src.Item;
 import net.minecraft.src.ItemStack;
+import net.minecraft.src.NBTTagCompound;
 import net.minecraft.src.ShapedRecipes;
 import net.minecraft.src.ShapelessRecipes;
 import net.minecraft.src.StringTranslate;
@@ -124,7 +126,83 @@ public class PC_Utils {
 		throw new Exception(error);
 	}
 	
-	public static Object register(PC_Module module, int defaultID, Class... classes){
+	public static <t>t register(PC_Module module, int defaultID, Class<t> c){
+		Configuration config = module.getConfig();
+		if(PC_Block.class.isAssignableFrom(c)){
+			return (t)register(module, defaultID, (Class<PC_Block>)c, null, null);
+		}else if(PC_Item.class.isAssignableFrom(c)){
+			Class<PC_Item> itemClass = (Class<PC_Item>)c;
+			try {
+				int itemID = getConfigInt(config, Configuration.CATEGORY_ITEM, itemClass.getName(), defaultID);
+				isIDAvailable(itemID, itemClass, true);
+				PC_Item item = createClass(itemClass, new Class[]{int.class}, new Object[]{itemID});
+				item.setItemName(itemClass.getSimpleName());
+				item.setCraftingToolModule(module.getNameWithoutPowerCraft());
+				item.setTextureFile(module.getTerrainFile());
+				if(item instanceof PC_IConfigLoader)
+					((PC_IConfigLoader) item).loadFromConfig(config);
+				registerLanguage(module, item.getDefaultNames());
+				return (t)item;
+			}catch (Exception e) {
+				e.printStackTrace();
+			}
+		}else if(PC_ItemArmor.class.isAssignableFrom(c)){
+			Class<PC_ItemArmor> itemArmorClass = (Class<PC_ItemArmor>)c;
+			try {
+				int itemID = getConfigInt(config, Configuration.CATEGORY_ITEM, itemArmorClass.getName(), defaultID);
+				isIDAvailable(itemID, itemArmorClass, true);
+				PC_ItemArmor itemArmor = createClass(itemArmorClass, new Class[]{int.class}, new Object[]{itemID});
+				itemArmor.setItemName(itemArmorClass.getSimpleName());
+				itemArmor.setCraftingToolModule(module.getNameWithoutPowerCraft());
+				if(itemArmor instanceof PC_IConfigLoader)
+					((PC_IConfigLoader) itemArmor).loadFromConfig(config);
+				registerLanguage(module, itemArmor.getItemName(), itemArmor.getDefaultName());
+				return (t)itemArmor;
+			}catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+		throw new IllegalArgumentException("3th parameter need to be a class witch extends PC_Block or PC_Item or PC_ItemArmor");
+	}
+	
+	public static <t extends PC_Block>t register(PC_Module module, int defaultID, Class<t> blockClass, Class c){
+		if(PC_ItemBlock.class.isAssignableFrom(c)){
+			return register(module, defaultID, blockClass, (Class<PC_ItemBlock>)c, null);
+		}else if(PC_TileEntity.class.isAssignableFrom(c)){
+			return register(module, defaultID, blockClass, null, (Class<PC_TileEntity>)c);
+		}
+		throw new IllegalArgumentException("4th parameter need to be a class witch extends PC_ItemBlock or PC_TileEntity");
+	}
+	
+	public static <t extends PC_Block>t register(PC_Module module, int defaultID, Class<t> blockClass, Class<? extends PC_ItemBlock> itemBlockClass, Class<? extends PC_TileEntity> tileEntityClass){
+		Configuration config = module.getConfig();
+		try {
+			int blockID = getConfigInt(config, Configuration.CATEGORY_BLOCK, blockClass.getName(), defaultID);
+			isIDAvailable(blockID, blockClass, true);
+			t block = createClass(blockClass, new Class[]{int.class}, new Object[]{blockID});
+			block.setBlockName(blockClass.getSimpleName());
+			block.setTextureFile(module.getTerrainFile());
+			if(block instanceof PC_IConfigLoader)
+				((PC_IConfigLoader) block).loadFromConfig(config);
+			if(itemBlockClass==null){
+				GameRegistry.registerBlock(block);
+				registerLanguage(module, block.getBlockName(), block.getDefaultName());
+			}else{
+				GameRegistry.registerBlock(block, itemBlockClass);
+				PC_ItemBlock itemBlock = (PC_ItemBlock)Item.itemsList[blockID];
+				itemBlock.setCraftingToolModule(module.getNameWithoutPowerCraft());
+				registerLanguage(module, itemBlock.getDefaultNames());
+			}
+			if(tileEntityClass!=null)
+				GameRegistry.registerTileEntity(tileEntityClass, tileEntityClass.getName());
+			return block;
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+	
+	/*public static Object register(PC_Module module, int defaultID, Class... classes){
 		Configuration config = module.getConfig();
 		Class<? extends PC_Block> blockClass = null;
 		Class<? extends PC_ItemBlock> itemBlockClass = null;
@@ -215,9 +293,9 @@ public class PC_Utils {
 			}
 		}
 		return null;
-	}
+	}*/
 	
-	public static Object createClass(Class c, Class[] param, Object[] objects) throws InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException, SecurityException{
+	public static <t>t createClass(Class<t> c, Class[] param, Object[] objects) throws InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException, SecurityException{
 		return c.getConstructor(param).newInstance(objects);
 	}
 	
@@ -420,7 +498,7 @@ public class PC_Utils {
 			Class c = guis.get(name);
 			if(PC_GresBaseWithInventory.class.isAssignableFrom(c)){
 				try {
-					PC_GresBaseWithInventory bwi = (PC_GresBaseWithInventory)createClass(c, new Class[]{EntityPlayer.class, Object[].class}, new Object[]{player, o});
+					PC_GresBaseWithInventory bwi = createClass(c, new Class[]{EntityPlayer.class, Object[].class}, new Object[]{player, o});
 					player.craftingInventory = bwi;
 					player.craftingInventory.windowId = guiID;
 					player.craftingInventory.addCraftingToCrafters((EntityPlayerMP)player);
@@ -576,12 +654,28 @@ public class PC_Utils {
 		return ""+d;
 	}
 	
-	public static TileEntity getTE(IBlockAccess world, int x, int y, int z){
-		if(world!=null)
-			return world.getBlockTileEntity(x, y, z);
+	public static <t extends TileEntity>t getTE(IBlockAccess world, int x, int y, int z, int blockID){
+		if(world!=null){
+			if(getBID(world, x, y, z)==blockID){
+				TileEntity te = world.getBlockTileEntity(x, y, z);
+				try{
+					t tet = (t)te;
+					return tet;
+				}catch(ClassCastException e){
+					return null;
+				}
+			}
+		}
 		return null;
 	}
 	
+	public static int getBID(IBlockAccess world, int x, int y, int z) {
+		if(world!=null){
+			return world.getBlockId(x, y, z);
+		}
+		return 0;
+	}
+
 	public static int getMD(IBlockAccess world, int x, int y, int z){
 		if(world!=null){
 			return world.getBlockMetadata(x, y, z);
@@ -620,7 +714,7 @@ public class PC_Utils {
 		world.notifyBlocksOfNeighborChange(x, y, z, blockID);
 	}
 
-	public static TileEntity setTE(World world, int x, int y, int z, TileEntity createTileEntity) {
+	public static <t extends TileEntity>t setTE(World world, int x, int y, int z, t createTileEntity) {
 		world.setBlockTileEntity(x, y, z, createTileEntity);
 		return createTileEntity;
 	}
@@ -779,7 +873,7 @@ public class PC_Utils {
 	}
 
 	public static void spawnMobFromSpawner(World world, int x, int y, int z) {
-		TileEntity te = PC_Utils.getTE(world, x, y, z);
+		TileEntity te = PC_Utils.getTE(world, x, y, z, Block.mobSpawner.blockID);
 		if (te != null && te instanceof TileEntityMobSpawner) {
 			spawnMobs(world, x, y, z, ((TileEntityMobSpawner) te).getMobID());
 		}
@@ -913,6 +1007,17 @@ public class PC_Utils {
 			}
 		}
 		return false;
+	}
+
+	public static void loadFromNBT(NBTTagCompound nbttagcompound, String string, PC_INBT nbt) {
+		NBTTagCompound nbttag = nbttagcompound.getCompoundTag(string);
+		nbt.readFromNBT(nbttag);
+	}
+
+	public static void saveToNBT(NBTTagCompound nbttagcompound, String string, PC_INBT nbt) {
+		NBTTagCompound nbttag = new NBTTagCompound();
+		nbt.writeToNBT(nbttag);
+		nbttagcompound.setCompoundTag(string, nbttag);
 	}
 	
 }

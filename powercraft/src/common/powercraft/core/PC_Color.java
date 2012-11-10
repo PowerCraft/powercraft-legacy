@@ -1,5 +1,6 @@
 package powercraft.core;
 
+import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -7,7 +8,7 @@ import java.util.Random;
 
 import net.minecraft.src.NBTTagCompound;
 
-public class PC_Color implements PC_INBT {
+public class PC_Color implements PC_INBT, Serializable {
 
 	private static Map<String, String> magicColors = new HashMap<String, String>();
 	static {

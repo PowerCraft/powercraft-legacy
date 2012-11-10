@@ -12,14 +12,17 @@ import net.minecraft.src.ItemStack;
 import net.minecraft.src.Material;
 import net.minecraft.src.TileEntity;
 import net.minecraft.src.World;
+import net.minecraftforge.common.Configuration;
 import powercraft.core.PC_Block;
+import powercraft.core.PC_IConfigLoader;
 import powercraft.core.PC_IRotatedBox;
 import powercraft.core.PC_MathHelper;
 import powercraft.core.PC_Renderer;
 import powercraft.core.PC_Utils;
 
-public class PClo_BlockFlipFlop extends PC_Block implements PC_IRotatedBox {
+public class PClo_BlockFlipFlop extends PC_Block implements PC_IRotatedBox, PC_IConfigLoader {
 	private static Random rand = new Random();
+	private int lightValueOn=15;
 	
 	public PClo_BlockFlipFlop(int id) {
 		super(id, 6, Material.ground);
@@ -250,7 +253,7 @@ public class PClo_BlockFlipFlop extends PC_Block implements PC_IRotatedBox {
 	
 	@Override
 	public int getLightValue(IBlockAccess world, int x, int y, int z){
-		return isActive(world, x, y, z) ? 15 : 0;
+		return isActive(world, x, y, z) ? lightValueOn : 0;
 	}
 	
 	@Override
@@ -293,6 +296,11 @@ public class PClo_BlockFlipFlop extends PC_Block implements PC_IRotatedBox {
 
 		return remove;
 
+	}
+	
+	@Override
+	public void loadFromConfig(Configuration config) {
+		lightValueOn = PC_Utils.getConfigInt(config, Configuration.CATEGORY_GENERAL, "GatesLightValueOn", 7);
 	}
 	
 }

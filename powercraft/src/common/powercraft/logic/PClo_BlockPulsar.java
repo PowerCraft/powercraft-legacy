@@ -13,14 +13,18 @@ import net.minecraft.src.ItemStack;
 import net.minecraft.src.Material;
 import net.minecraft.src.TileEntity;
 import net.minecraft.src.World;
+import net.minecraftforge.common.Configuration;
 import powercraft.core.PC_Block;
+import powercraft.core.PC_IConfigLoader;
 import powercraft.core.PC_ICraftingToolDisplayer;
 import powercraft.core.PC_PacketHandler;
 import powercraft.core.PC_Renderer;
 import powercraft.core.PC_Utils;
 
-public class PClo_BlockPulsar extends PC_Block implements PC_ICraftingToolDisplayer {
+public class PClo_BlockPulsar extends PC_Block implements PC_ICraftingToolDisplayer, PC_IConfigLoader {
 
+	private int lightValueOn=15;
+	
 	public PClo_BlockPulsar(int id){
 		super(id, 74, Material.wood, false);
 		setHardness(0.8F);
@@ -143,9 +147,10 @@ public class PClo_BlockPulsar extends PC_Block implements PC_ICraftingToolDispla
 	 */
 	public boolean isActive(IBlockAccess iblockaccess, int x, int y, int z) {
 		TileEntity te = iblockaccess.getBlockTileEntity(x, y, z);
-		if (te == null) {
+		if (te == null || !(te instanceof PClo_TileEntityPulsar)) {
 			return false;
 		}
+		
 		PClo_TileEntityPulsar tep = (PClo_TileEntityPulsar) te;
 
 		return tep.isActive();
@@ -179,6 +184,16 @@ public class PClo_BlockPulsar extends PC_Block implements PC_ICraftingToolDispla
 	@Override
 	public String getTextureFile() {
 		return "/terrain.png";
+	}
+	
+	@Override
+	public int getLightValue(IBlockAccess world, int x, int y, int z) {
+		return isActive(world, x, y, z) ? lightValueOn : 0;
+	}
+
+	@Override
+	public void loadFromConfig(Configuration config) {
+		lightValueOn = PC_Utils.getConfigInt(config, Configuration.CATEGORY_GENERAL, "GatesLightValueOn", 7);
 	}
 	
 }
