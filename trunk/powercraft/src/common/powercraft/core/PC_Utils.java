@@ -597,7 +597,7 @@ public class PC_Utils implements PC_IPacketHandler {
 			return false;
 		}
 
-		return PC_InvUtils.getFuelValue(itemstack, 0f)>0;
+		return PC_InvUtils.getFuelValue(itemstack, 1f)>0;
 		
 	}
 	
