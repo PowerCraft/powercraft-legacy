@@ -35,7 +35,7 @@ public class PCco_ThreadDownloadTranslations extends Thread {
 
 				
 				
-				File file = new File(Minecraft.getMinecraftDir(), PC_Module.getPowerCraftFile() + "lang/" + ze.getName());
+				File file = new File(PC_Utils.getMCDirectory(), PC_Module.getPowerCraftFile() + "lang/" + ze.getName());
 				// file.mkdirs();
 
 				if (ze.getName().matches("en_US.+")) {
