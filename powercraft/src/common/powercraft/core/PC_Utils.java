@@ -11,6 +11,9 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+import org.lwjgl.LWJGLUtil;
+import org.lwjgl.input.Keyboard;
+
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.src.AxisAlignedBB;
 import net.minecraft.src.Block;
@@ -697,7 +700,10 @@ public class PC_Utils {
 	}
 
 	public static boolean isPlacingReversed(EntityPlayer player) {
-		return player.isSneaking();
+		if(isClient()){
+			return Keyboard.isKeyDown(Keyboard.KEY_LCONTROL);
+		}
+		return Keyboard.isKeyDown(Keyboard.KEY_LCONTROL);
 	}
 
 	public static int reverseSide(int l) {
