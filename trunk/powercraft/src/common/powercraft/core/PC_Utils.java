@@ -696,8 +696,8 @@ public class PC_Utils {
 		return 0;
 	}
 
-	public static boolean isPlacingReversed() {
-		return false;
+	public static boolean isPlacingReversed(EntityPlayer player) {
+		return player.isSneaking();
 	}
 
 	public static int reverseSide(int l) {

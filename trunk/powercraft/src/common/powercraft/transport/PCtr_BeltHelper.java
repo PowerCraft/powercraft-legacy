@@ -705,7 +705,7 @@ public class PCtr_BeltHelper {
 	public static int getPlacedMeta(EntityLiving player) {
 		int l = PC_MathHelper.floor_double(((player.rotationYaw * 4F) / 360F) + 2.5D) & 3;
 
-		if (PC_Utils.isPlacingReversed()) {
+		if (player instanceof EntityPlayer && PC_Utils.isPlacingReversed(((EntityPlayer)player))) {
 			l = PC_Utils.reverseSide(l);
 		}
 

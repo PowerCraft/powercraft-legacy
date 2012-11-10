@@ -241,7 +241,7 @@ public class PClo_BlockFlipFlop extends PC_Block implements PC_IRotatedBox, PC_I
 
 		int l = ((PC_MathHelper.floor_double(((entityliving.rotationYaw * 4F) / 360F) + 0.5D) & 3) + 2) % 4;
 
-		if (PC_Utils.isPlacingReversed()) {
+		if (entityliving instanceof EntityPlayer && PC_Utils.isPlacingReversed(((EntityPlayer)entityliving))) {
 			l = PC_Utils.reverseSide(l);
 		}
 		
