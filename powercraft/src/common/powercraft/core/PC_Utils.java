@@ -5,10 +5,12 @@ import java.io.File;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
 import java.lang.annotation.Annotation;
+import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Modifier;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 
@@ -1228,6 +1230,52 @@ public class PC_Utils implements PC_IPacketHandler {
 
 	public static String getGresImageDir() {
 		return PC_Module.getModule("Core").getTextureDirectory()+"gres/";
+	}
+
+	protected void iSpawnParticle(String name, Object[] o){
+		
+	}
+	
+	public static void spawnParticle(String name, Object...o) {
+		instance.iSpawnParticle(name, o);
+	}
+	
+	public static Constructor findBestConstructor(Class c, Class[] cp){
+		Constructor[] constructors = c.getConstructors();
+		for(Constructor constructor:constructors){
+			Class[] cep = constructor.getParameterTypes();
+			if((cep == null && cp == null) || (cep == null && cp.length==0) || (cep.length==0 && cp == null))
+				return constructor;
+			if(cep.length == cp.length){
+				boolean ok = true;
+				for(int i=0; i<cep.length; i++){
+					if(cep[i].isPrimitive()){
+						if(cep[i].equals(boolean.class)){
+							cep[i] = Boolean.class;
+						}else if(cep[i].equals(int.class)){
+							cep[i] = Integer.class;
+						}else if(cep[i].equals(Float.class)){
+							cep[i] = Float.class;
+						}else if(cep[i].equals(Double.class)){
+							cep[i] = Double.class;
+						}else if(cep[i].equals(long.class)){
+							cep[i] = Long.class;
+						}else if(cep[i].equals(char.class)){
+							cep[i] = Integer.class;
+						}else if(cep[i].equals(short.class)){
+							cep[i] = Short.class;
+						}
+					}
+					if(!cep[i].isAssignableFrom(cp[i])){
+						ok = false;
+						break;
+					}
+				}
+				if(ok)
+					return constructor;
+			}
+		}
+		return null;
 	}
 	
 }

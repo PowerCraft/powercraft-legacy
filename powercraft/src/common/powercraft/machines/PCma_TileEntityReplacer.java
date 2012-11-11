@@ -12,6 +12,7 @@ import net.minecraft.src.NBTTagList;
 import powercraft.core.PC_Color;
 import powercraft.core.PC_CoordD;
 import powercraft.core.PC_CoordI;
+import powercraft.core.PC_EntityLaserParticleFX;
 import powercraft.core.PC_ISpecialAccessInventory;
 import powercraft.core.PC_InvUtils;
 import powercraft.core.PC_TileEntity;
@@ -85,8 +86,6 @@ public class PCma_TileEntityReplacer extends PC_TileEntity implements IInventory
 	      rand = new Random();
 	    }
 
-
-
 	    if (aidEnabled && worldObj.isRemote) {
 
 	      double d = xCoord + rand.nextFloat();
@@ -96,8 +95,7 @@ public class PCma_TileEntityReplacer extends PC_TileEntity implements IInventory
 	      int a = rand.nextInt(3);
 	      int b = rand.nextInt(3);
 
-	     // ModLoader.getMinecraftInstance().effectRenderer.addEffect(new PC_EntityLaserParticleFX(worldObj, new PC_CoordD(d, d1, d2), aidcolor,
-	      //    new PC_CoordI(), 0));
+	      PC_Utils.spawnParticle("PC_EntityLaserParticleFX", worldObj, new PC_CoordD(d, d1, d2), aidcolor, new PC_CoordI(), 0);
 
 	      for (int q = 0; q < 8; q++) {
 
@@ -137,8 +135,7 @@ public class PCma_TileEntityReplacer extends PC_TileEntity implements IInventory
 	            break;
 	        }
 
-	        //ModLoader.getMinecraftInstance().effectRenderer.addEffect(new PC_EntityLaserParticleFX(worldObj, new PC_CoordD(d, d1, d2), aidcolor,
-	         //   new PC_CoordI(), 0));
+	        PC_Utils.spawnParticle("PC_EntityLaserParticleFX", worldObj, new PC_CoordD(d, d1, d2), aidcolor, new PC_CoordI(), 0);
 
 	      }
 	    }
@@ -274,10 +271,10 @@ public class PCma_TileEntityReplacer extends PC_TileEntity implements IInventory
 	  public boolean needsSpecialInserter() {
 	    return false;
 	  }
-
+	  
 	  @Override
 	  public boolean canUpdate() {
-	    return false;
+	    return true;
 	  }
 
 	  @Override
