@@ -8,6 +8,7 @@ import java.io.InputStreamReader;
 import java.io.LineNumberReader;
 import java.io.ObjectInputStream;
 import java.io.OutputStreamWriter;
+import java.lang.reflect.Constructor;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map.Entry;
@@ -24,13 +25,14 @@ import net.minecraft.src.TileEntitySpecialRenderer;
 import net.minecraft.src.World;
 import net.minecraftforge.client.MinecraftForgeClient;
 import cpw.mods.fml.client.registry.ClientRegistry;
-import cpw.mods.fml.client.registry.RenderingRegistry;
 import cpw.mods.fml.client.registry.KeyBindingRegistry;
+import cpw.mods.fml.client.registry.RenderingRegistry;
 import cpw.mods.fml.common.registry.LanguageRegistry;
 
 public class PC_ClientUtils extends PC_Utils {
 	
 	private HashMap<PC_Module, HashMap<String, HashMap<String, String[]>>> moduleTranslation = new HashMap<PC_Module, HashMap<String, HashMap<String, String[]>>>();
+	private HashMap<String, Class<? extends EntityFX>> entityFX = new HashMap<String, Class<? extends EntityFX>>();
 	private PC_KeyHandler keyHandler;
 	
 	public PC_ClientUtils(){
@@ -241,7 +243,7 @@ public class PC_ClientUtils extends PC_Utils {
 	protected void iWatchForKey(String name, int key){
 		keyHandler.addKey(name, key);
 	}
-
+	
 	public static void keyDown(String keyCode) {
 		instance.handleIncomingPacket(mc().thePlayer, new Object[]{KEYEVENT, true, keyCode});
 		PC_PacketHandler.sendToPacketHandler(mc().thePlayer, "PacketUtils", KEYEVENT, true, keyCode);
@@ -254,6 +256,44 @@ public class PC_ClientUtils extends PC_Utils {
 	
 	public static void bindTileEntitySpecialRenderer(Class <? extends TileEntity> tileEntityClass, TileEntitySpecialRenderer specialRenderer){
 		ClientRegistry.bindTileEntitySpecialRenderer(tileEntityClass, specialRenderer);
+	}
+	
+	public static void registerEnitiyFX(Class<? extends EntityFX> fx){
+		registerEnitiyFX(fx.getSimpleName(), fx);
+	}
+	
+	public static void registerEnitiyFX(String name, Class<? extends EntityFX> fx){
+		((PC_ClientUtils)instance).entityFX.put(name, fx);
+	}
+	
+	@Override
+	protected void iSpawnParticle(String name, Object[] o){
+		
+		if(!entityFX.containsKey(name))
+			return;
+		
+		Class c = entityFX.get(name);
+		
+		Class cp[] = new Class[o.length];
+		for(int i=0; i<o.length; i++)
+			cp[i] = o[i].getClass();
+		
+		Constructor cons = findBestConstructor(c, cp);
+		if(cons==null)
+			return;
+		
+		EntityFX fx=null;
+		
+		try {
+			fx = (EntityFX)cons.newInstance(o);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		if(fx!=null){
+			mc().effectRenderer.addEffect(fx);
+		}
+		
 	}
 	
 }

@@ -45,6 +45,7 @@ public class PCco_ClientProxy extends PCco_CommonProxy {
 	@Override
 	public void init(){
 		TickRegistry.registerTickHandler(new PCco_MainMenuHacks(), Side.CLIENT);
+		PC_ClientUtils.registerEnitiyFX(PC_EntityLaserParticleFX.class);
 	}
 	
 }
