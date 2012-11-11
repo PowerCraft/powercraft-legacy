@@ -114,9 +114,9 @@ public class mod_PowerCraftLogic extends PC_Module {
 				
 				
 				"pc.gui.special.chestEmpty.name", "Empty Chest",
-				"pc.gui.special.chestEmpty.inv", "Of",
+				"pc.gui.special.chestEmpty.inv", "No item of kind",
 				"pc.gui.special.chestFull.name", "Full Chest",
-				"pc.gui.special.chestFull.inv", "Place for"
+				"pc.gui.special.chestFull.inv", "Space for"
 		);
 	}
 
