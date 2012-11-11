@@ -69,8 +69,12 @@ public class mod_PowerCraftMachines extends PC_Module {
 	protected void initLanguage() {
 		PC_Utils.registerLanguage(this, 
 				"pc.gui.automaticWorkbench.redstoneActivated", "Redstone triggered",
-				"pc.roaster.insertFuel", "fuel"
-				);
+				"pc.roaster.insertFuel", "fuel",
+				"pc.gui.blockReplacer.title", "Block Replacer",
+				"pc.gui.blockReplacer.errWrongValue", "Expects a value between -16 and 16.",
+				"pc.gui.blockReplacer.err3zeros", "Expects at least 1 value unequal 0.",
+				"pc.gui.blockReplacer.particleFrame", "Particles"
+		);
 	}
 
 	@Override
