@@ -117,11 +117,11 @@ public class mod_PowerCraftLogic extends PC_Module {
 	@Override
 	protected void initBlocks() {
 		pulsar = (PC_Block)PC_Utils.register(this, 461, PClo_BlockPulsar.class, PClo_TileEntityPulsar.class);
-		gate = (PC_Block)PC_Utils.register(this, 462, PClo_BlockGate.class, PClo_ItemBlockGate.class, PClo_TileEntityGate.class);
-		flipFlop = (PC_Block)PC_Utils.register(this, 463, PClo_BlockFlipFlop.class, PClo_ItemBlockFlipFlop.class, PClo_TileEntityFlipFlop.class);
-		delayer = (PC_Block)PC_Utils.register(this, 464, PClo_BlockDelayer.class, PClo_ItemBlockDelayer.class, PClo_TileEntityDelayer.class);
-		special = (PC_Block)PC_Utils.register(this, 465, PClo_BlockSpecial.class, PClo_ItemBlockSpecial.class, PClo_TileEntitySpecial.class);
-		repeater = (PC_Block)PC_Utils.register(this, 466, PClo_BlockRepeater.class, PClo_ItemBlockRepeater.class, PClo_TileEntityRepeater.class);
+		gate = (PC_Block)PC_Utils.register(this, 463, PClo_BlockGate.class, PClo_ItemBlockGate.class, PClo_TileEntityGate.class);
+		flipFlop = (PC_Block)PC_Utils.register(this, 465, PClo_BlockFlipFlop.class, PClo_ItemBlockFlipFlop.class, PClo_TileEntityFlipFlop.class);
+		delayer = (PC_Block)PC_Utils.register(this, 467, PClo_BlockDelayer.class, PClo_ItemBlockDelayer.class, PClo_TileEntityDelayer.class);
+		special = (PC_Block)PC_Utils.register(this, 469, PClo_BlockSpecial.class, PClo_ItemBlockSpecial.class, PClo_TileEntitySpecial.class);
+		repeater = (PC_Block)PC_Utils.register(this, 471, PClo_BlockRepeater.class, PClo_ItemBlockRepeater.class, PClo_TileEntityRepeater.class);
 	}
 
 	@Override

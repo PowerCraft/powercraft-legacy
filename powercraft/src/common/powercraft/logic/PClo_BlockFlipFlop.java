@@ -18,13 +18,21 @@ import powercraft.core.PC_IConfigLoader;
 import powercraft.core.PC_IRotatedBox;
 import powercraft.core.PC_MathHelper;
 import powercraft.core.PC_Renderer;
+import powercraft.core.PC_Shining;
 import powercraft.core.PC_Utils;
+import powercraft.core.PC_Shining.OFF;
+import powercraft.core.PC_Shining.ON;
 
+@PC_Shining
 public class PClo_BlockFlipFlop extends PC_Block implements PC_IRotatedBox, PC_IConfigLoader {
 	private static Random rand = new Random();
-	private int lightValueOn=15;
+
+	@ON
+	public static PClo_BlockFlipFlop on;
+	@OFF
+	public static PClo_BlockFlipFlop off;
 	
-	public PClo_BlockFlipFlop(int id) {
+	public PClo_BlockFlipFlop(int id, boolean on) {
 		super(id, 6, Material.ground);
 		setHardness(0.35F);
 		setStepSound(Block.soundWoodFootstep);
@@ -32,7 +40,8 @@ public class PClo_BlockFlipFlop extends PC_Block implements PC_IRotatedBox, PC_I
 		setRequiresSelfNotify();
 		setResistance(30.0F);
 		setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 0.1875F, 1.0F);
-		setCreativeTab(CreativeTabs.tabRedstone);
+		if(on)
+			setCreativeTab(CreativeTabs.tabRedstone);
 	}
 
 	@Override
@@ -64,7 +73,7 @@ public class PClo_BlockFlipFlop extends PC_Block implements PC_IRotatedBox, PC_I
 		int rot = getRotation_static(PC_Utils.getMD(world, x, y, z));
 		
 		PClo_TileEntityFlipFlop te = getTE(world, x, y, z);
-		boolean state = te.getState();
+		boolean state = isActive(world, x, y, z);
 		
 		boolean i1 = PC_Utils.poweredFromInput(world, x, y, z, PC_Utils.RIGHT, rot);
 		boolean i2 = PC_Utils.poweredFromInput(world, x, y, z, PC_Utils.BACK, rot);
@@ -114,7 +123,7 @@ public class PClo_BlockFlipFlop extends PC_Block implements PC_IRotatedBox, PC_I
 		}
 		
 		if (state != shouldState) {
-			te.setState(shouldState);
+			PC_Utils.setBlockState(world, x, y, z, shouldState);
 		}
 	}
 
@@ -182,10 +191,7 @@ public class PClo_BlockFlipFlop extends PC_Block implements PC_IRotatedBox, PC_I
 	}
 	
 	public static boolean isActive(IBlockAccess world, int x, int y, int z){
-		PClo_TileEntityFlipFlop te = getTE(world, x, y, z);
-		if(te!=null)
-			return te.getState();
-		return false;
+		return PC_Utils.getBID(world, x, y, z) == on.blockID;
 	}
 	
 	@Override
@@ -252,11 +258,6 @@ public class PClo_BlockFlipFlop extends PC_Block implements PC_IRotatedBox, PC_I
 	}
 	
 	@Override
-	public int getLightValue(IBlockAccess world, int x, int y, int z){
-		return isActive(world, x, y, z) ? lightValueOn : 0;
-	}
-	
-	@Override
 	public void randomDisplayTick(World world, int x, int y, int z, Random random) {
 		if (!isActive(world, x, y, z)) {
 			return;
@@ -300,7 +301,7 @@ public class PClo_BlockFlipFlop extends PC_Block implements PC_IRotatedBox, PC_I
 	
 	@Override
 	public void loadFromConfig(Configuration config) {
-		lightValueOn = PC_Utils.getConfigInt(config, Configuration.CATEGORY_GENERAL, "GatesLightValueOn", 7);
+		on.setLightValue(PC_Utils.getConfigInt(config, Configuration.CATEGORY_GENERAL, "GatesLightValueOn", 7));
 	}
 	
 }

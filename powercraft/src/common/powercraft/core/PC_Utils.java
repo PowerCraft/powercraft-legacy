@@ -4,6 +4,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
+import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Modifier;
@@ -184,7 +185,18 @@ public class PC_Utils implements PC_IPacketHandler {
 		try {
 			int blockID = getConfigInt(config, Configuration.CATEGORY_BLOCK, blockClass.getName(), defaultID);
 			isIDAvailable(blockID, blockClass, true);
-			t block = createClass(blockClass, new Class[]{int.class}, new Object[]{blockID});
+			t block;
+			t blockOff;
+			if(blockClass.isAnnotationPresent(PC_Shining.class)){
+				block = createClass(blockClass, new Class[]{int.class, boolean.class}, new Object[]{blockID, true});
+				blockOff = createClass(blockClass, new Class[]{int.class, boolean.class}, new Object[]{blockID+1, false});
+				setFieldsWithAnnotationTo(blockClass, PC_Shining.ON.class, blockClass, block);
+				setFieldsWithAnnotationTo(blockClass, PC_Shining.OFF.class, blockClass, blockOff);
+				blockOff.setBlockName(blockClass.getSimpleName());
+				blockOff.setTextureFile(module.getTerrainFile());
+			}else{
+				block = createClass(blockClass, new Class[]{int.class}, new Object[]{blockID});
+			}
 			instance.blocks.put(blockClass.getSimpleName(), block);
 			block.setBlockName(blockClass.getSimpleName());
 			block.setTextureFile(module.getTerrainFile());
@@ -206,6 +218,63 @@ public class PC_Utils implements PC_IPacketHandler {
 			e.printStackTrace();
 		}
 		return null;
+	}
+	
+	public static void setFieldsWithAnnotationTo(Class c, Class<? extends Annotation> annotationClass, Object obj, Object value){
+		Field fa[] = c.getDeclaredFields();
+		for(Field f:fa){
+			if(f.isAnnotationPresent(annotationClass)){
+				f.setAccessible(true);
+				try {
+					f.set(obj, value);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+		}
+	}
+	
+	public static Object[] getFieldsWithAnnotationTo(Class c, Class<? extends Annotation> annotationClass, Object obj){
+		List<Object> l = new ArrayList<Object>();
+		Field fa[] = c.getDeclaredFields();
+		for(Field f:fa){
+			if(f.isAnnotationPresent(annotationClass)){
+				f.setAccessible(true);
+				try {
+					l.add(f.get(obj));
+				} catch (Exception e) {
+					e.printStackTrace();
+				} 
+			}
+		}
+		return l.toArray(new Object[0]);
+	}
+	
+	public static void setBlockState(World world, int x, int y, int z, boolean on){
+		Block b = Block.blocksList[getBID(world, x, y, z)];
+		if(b instanceof PC_Block){
+			int meta = getMD(world, x, y, z);
+			PC_TileEntity te = getTE(world, x, y, z);
+			Class c = b.getClass();
+			if(c.isAnnotationPresent(PC_Shining.class)){
+				Block bon = (Block)getFieldsWithAnnotationTo(c, PC_Shining.ON.class, c)[0];
+				Block boff = (Block)getFieldsWithAnnotationTo(c, PC_Shining.OFF.class, c)[0];
+				if((b == bon && !on) || (b == boff && on)){
+					if(te!=null)
+						te.lockInvalid(true);
+					if(on){
+						world.setBlockAndMetadataWithNotify(x, y, z, bon.blockID, meta);
+					}else{
+						world.setBlockAndMetadataWithNotify(x, y, z, boff.blockID, meta);
+					}
+					if(te!=null){
+						world.setBlockTileEntity(x, y, z, te);
+						te.blockType = null;
+						te.lockInvalid(false);
+					}
+				}
+			}
+		}
 	}
 	
 	public static <t>t createClass(Class<t> c, Class[] param, Object[] objects) throws InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException, SecurityException{
