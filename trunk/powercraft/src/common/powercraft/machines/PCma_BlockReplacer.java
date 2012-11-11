@@ -184,7 +184,7 @@ public class PCma_BlockReplacer extends PC_Block implements PC_ICraftingToolDisp
 				return false;
 			}
 
-			if (PC_Utils.canBuild(itemstack.getItem())) {
+			if (!PC_Utils.canBuild(itemstack.getItem())) {
 				return false;
 			}
 
@@ -310,26 +310,18 @@ public class PCma_BlockReplacer extends PC_Block implements PC_ICraftingToolDisp
 	private void swapBlocks(PCma_TileEntityReplacer te) {
 
 		PC_CoordI pos = te.getCoord().offset(te.coordOffset);
-
-		System.out.println("swap");
 		
 		if (pos.equals(te.getCoord())) {
 			return;
 		}
-
-		System.out.println("swap1");
 		
 		if (!replacer_canHarvestBlockAt(te.worldObj, pos)) {
 			return;
 		}
-
-		System.out.println("swap2");
 		
 		if (!replacer_canPlaceBlockAt(te.worldObj, te.buildBlock, pos)) {
 			return;
 		}
-
-		System.out.println("swap OK");
 		
 		PC_Struct2<ItemStack, Integer> harvested = replacer_harvestBlockAt(te.worldObj, pos);
 
