@@ -44,7 +44,7 @@ public class PC_Utils implements PC_IPacketHandler {
 	
 	protected HashMap<EntityPlayer, List<String>> keyPressed = new HashMap<EntityPlayer, List<String>>();
 	protected int keyReverse;
-	protected HashMap<String, PC_Block> blocks = new HashMap<String, PC_Block>();
+	protected HashMap<String, Object> objects = new HashMap<String, Object>();
 	
 	public PC_Utils(){
 		PC_PacketHandler.registerPackethandler("PacketUtils", this);
@@ -142,6 +142,7 @@ public class PC_Utils implements PC_IPacketHandler {
 				int itemID = getConfigInt(config, Configuration.CATEGORY_ITEM, itemClass.getName(), defaultID);
 				isIDAvailable(itemID, itemClass, true);
 				PC_Item item = createClass(itemClass, new Class[]{int.class}, new Object[]{itemID});
+				instance.objects.put(itemClass.getSimpleName(), item);
 				item.setItemName(itemClass.getSimpleName());
 				item.setCraftingToolModule(module.getNameWithoutPowerCraft());
 				item.setTextureFile(module.getTerrainFile());
@@ -158,6 +159,7 @@ public class PC_Utils implements PC_IPacketHandler {
 				int itemID = getConfigInt(config, Configuration.CATEGORY_ITEM, itemArmorClass.getName(), defaultID);
 				isIDAvailable(itemID, itemArmorClass, true);
 				PC_ItemArmor itemArmor = createClass(itemArmorClass, new Class[]{int.class}, new Object[]{itemID});
+				instance.objects.put(itemArmorClass.getSimpleName(), itemArmor);
 				itemArmor.setItemName(itemArmorClass.getSimpleName());
 				itemArmor.setCraftingToolModule(module.getNameWithoutPowerCraft());
 				if(itemArmor instanceof PC_IConfigLoader)
@@ -197,7 +199,7 @@ public class PC_Utils implements PC_IPacketHandler {
 			}else{
 				block = createClass(blockClass, new Class[]{int.class}, new Object[]{blockID});
 			}
-			instance.blocks.put(blockClass.getSimpleName(), block);
+			instance.objects.put(blockClass.getSimpleName(), block);
 			block.setBlockName(blockClass.getSimpleName());
 			block.setTextureFile(module.getTerrainFile());
 			if(block instanceof PC_IConfigLoader)
@@ -1047,9 +1049,32 @@ public class PC_Utils implements PC_IPacketHandler {
 	}
 	
 	public static PC_Block getPCBlockByName(String name){
-		if(instance.blocks.containsKey(name))
-			return instance.blocks.get(name);
+		if(instance.objects.containsKey(name)){
+			Object o = instance.objects.get(name);
+			if(o instanceof PC_Block)
+				return (PC_Block)o;
+		}
 		return null;
+	}
+	
+	public static PC_Item getPCItemByName(String name){
+		if(instance.objects.containsKey(name)){
+			Object o = instance.objects.get(name);
+			if(o instanceof PC_Item)
+				return (PC_Item)o;
+		}
+		return null;
+	}
+	
+	public static int getPCObjectIDByName(String name){
+		if(instance.objects.containsKey(name)){
+			Object o = instance.objects.get(name);
+			if(o instanceof PC_Item)
+				return ((PC_Item)o).shiftedIndex;
+			else if(o instanceof PC_Block)
+				return ((PC_Block)o).blockID;
+		}
+		return 0;
 	}
 	
 	protected static final int KEYEVENT = 0;
@@ -1098,6 +1123,92 @@ public class PC_Utils implements PC_IPacketHandler {
 
 		return intList;
 
+	}
+	
+	/**
+	 * Check if two objects are equal; null-safe test.
+	 * 
+	 * @param a first
+	 * @param b second
+	 * @return are equal
+	 */
+	public static boolean areObjectsEqual(Object a, Object b) {
+		return a == null ? b == null : a.equals(b);
+	}
+	
+	public static Block getBlock(World world, int x, int y, int z){
+		return Block.blocksList[PC_Utils.getBID(world, x, y, z)];
+	}
+	
+	public static boolean canHarvest(Block b){
+		if(b instanceof PC_Block){
+			return ((PC_Block)b).canBeHarvest();
+		}
+		return true;
+	}
+	
+	public static boolean canBuild(Item i){
+		if(i instanceof PC_Item){
+			return ((PC_Item)i).canBeBuild();
+		}
+		return true;
+	}
+	
+	
+	/**
+	 * Extract and remove chest at given position.
+	 * 
+	 * @param world the world
+	 * @param pos position of the chest
+	 * @return itemstack with contents of the harvested chest
+	 */
+	public static ItemStack extractAndRemoveChest(World world, PC_CoordI pos) {
+
+		if (canHarvest(getBlock(world, pos.x, pos.y, pos.z))) return null;
+
+		TileEntity tec = pos.getTileEntity(world);
+
+		if (tec == null) return null;
+
+		ItemStack stack = new ItemStack(Block.lockedChest.blockID, 1, 0);
+
+		NBTTagCompound blocktag = new NBTTagCompound();
+		pos.getTileEntity(world).writeToNBT(blocktag);
+
+		String name = "Unknown";
+		int dmg = pos.getId(world);
+
+		stack.setItemDamage(dmg);
+
+		blocktag.setString("BlockName", name);
+		blocktag.setInteger("BlockMeta", pos.getMeta(world));
+
+		stack.setTagCompound(blocktag);
+		if (tec instanceof IInventory) {
+
+			IInventory ic = (IInventory) tec;
+
+			for (int i = 0; i < ic.getSizeInventory(); i++) {
+				ic.setInventorySlotContents(i, null);
+			}
+		}
+
+		//Block.blocksList[pos.getId(world)].onBlockRemoval(world, pos.x, pos.y, pos.z);
+
+		//if (tec instanceof PC_TileEntity) ((PC_TileEntity) tec).onBlockPickup();
+
+		tec.invalidate();
+		//world.removeBlockTileEntity(pos.x, pos.y, pos.z);
+
+		pos.setBlock(world, 0, 0);
+
+
+		return stack;
+
+	}
+
+	public static String getGresImageDir() {
+		return PC_Module.getModule("Core").getTextureDirectory()+"gres/";
 	}
 	
 }

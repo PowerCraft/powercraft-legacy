@@ -6,7 +6,8 @@ public class PCma_ClientProxy extends PCma_CommonProxy {
 	public Object[] registerGuis() {
 		return new Object[]{
 				"AutomaticWorkbench", PCma_GuiAutomaticWorkbench.class,
-				"Roaster", PCma_GuiRoaster.class
+				"Roaster", PCma_GuiRoaster.class,
+				"Replacer", PCma_GuiReplacer.class
 			};
 	}
 
