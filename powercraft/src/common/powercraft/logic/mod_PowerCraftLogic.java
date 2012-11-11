@@ -110,7 +110,13 @@ public class mod_PowerCraftLogic extends PC_Module {
 				"pc.gui.pulsar.errHold", "Bad hold time!",
 				"pc.gui.delayer.delay", "Delay (sec)",
 				"pc.gui.pulsar.errintputzero", "Bad delay time!",
-				"pc.gui.delayer.errnoinput", "No Input!"
+				"pc.gui.delayer.errnoinput", "No Input!",
+				
+				
+				"pc.gui.special.chestEmpty.name", "Empty Chest",
+				"pc.gui.special.chestEmpty.inv", "Of",
+				"pc.gui.special.chestFull.name", "Full Chest",
+				"pc.gui.special.chestFull.inv", "Place for"
 		);
 	}
 

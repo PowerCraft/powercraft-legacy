@@ -8,7 +8,8 @@ public class PClo_ClientProxy extends PClo_CommonProxy {
 	public Object[] registerGuis() {
 		return new Object[]{
 			"Pulsar", PClo_GuiPulsar.class,
-			"Delayer", PClo_GuiDelayer.class
+			"Delayer", PClo_GuiDelayer.class,
+			"Special", PClo_GuiSpecial.class
 		};
 	}
 

@@ -292,7 +292,7 @@ public class PCtr_TileEntitySeparationBelt extends PCtr_TileEntityRedirectionBel
 	@Override
 	public void readFromNBT(NBTTagCompound nbttagcompound) {
 		super.readFromNBT(nbttagcompound);
-
+		
 		PC_InvUtils.loadInventoryFromNBT(nbttagcompound, "Items", this);
 		group_all = nbttagcompound.getBoolean("GroupAll");
 		group_logs = nbttagcompound.getBoolean("GroupLogs");
@@ -308,7 +308,7 @@ public class PCtr_TileEntitySeparationBelt extends PCtr_TileEntityRedirectionBel
 	@Override
 	public void writeToNBT(NBTTagCompound nbttagcompound) {
 		super.writeToNBT(nbttagcompound);
-
+		
 		PC_InvUtils.saveInventoryToNBT(nbttagcompound, "Items", this);
 
 		nbttagcompound.setBoolean("GroupAll", group_all);

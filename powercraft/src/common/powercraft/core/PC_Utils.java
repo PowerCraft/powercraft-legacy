@@ -807,16 +807,26 @@ public class PC_Utils implements PC_IPacketHandler {
 		return false;
 	}
 
-	public static boolean isChestEmpty(World world, int x, int y, int z) {
+	public static boolean isChestEmpty(World world, int x, int y, int z, ItemStack itemStack) {
 		
 		IInventory invAt = PC_InvUtils.getCompositeInventoryAt(world, new PC_CoordI(x, y, z));
-		if (invAt != null) return PC_InvUtils.isInventoryEmpty(invAt);
+		if (invAt != null){
+			if (itemStack == null || itemStack.itemID == 0) {
+				return PC_InvUtils.isInventoryEmpty(invAt);
+			}else{
+				return PC_InvUtils.isInventoryEmptyOf(invAt, itemStack);
+			}
+		}
 
 		List<IInventory> list = world.getEntitiesWithinAABB(IInventory.class,
 				AxisAlignedBB.getBoundingBox(x, y, z, x + 1, y + 1, z + 1).expand(0.6D, 0.6D, 0.6D));
 
 		if (list.size() >= 1) {
-			return PC_InvUtils.isInventoryEmpty(list.get(0));
+			if (itemStack == null || itemStack.itemID == 0) {
+				return PC_InvUtils.isInventoryEmpty(list.get(0));
+			}else{
+				return PC_InvUtils.isInventoryEmptyOf(list.get(0), itemStack);
+			}
 		}
 		
 		List<PC_IInventoryWrapper> list2 = world.getEntitiesWithinAABB(PC_IInventoryWrapper.class,
@@ -824,7 +834,11 @@ public class PC_Utils implements PC_IPacketHandler {
 
 		if (list2.size() >= 1) {
 			if(list2.get(0).getInventory() != null) {
-				return PC_InvUtils.isInventoryEmpty(list2.get(0).getInventory());
+				if (itemStack == null || itemStack.itemID == 0) {
+					return PC_InvUtils.isInventoryEmpty(list2.get(0).getInventory());
+				}else{
+					return PC_InvUtils.isInventoryEmptyOf(list2.get(0).getInventory(), itemStack);
+				}
 			}
 		}
 
@@ -832,14 +846,14 @@ public class PC_Utils implements PC_IPacketHandler {
 		
 	}
 
-	public static boolean isChestFull(World world, int x, int y, int z, boolean allSlotsFull) {
+	public static boolean isChestFull(World world, int x, int y, int z, ItemStack itemStack) {
 		
 		IInventory invAt = PC_InvUtils.getCompositeInventoryAt(world, new PC_CoordI(x, y, z));
 		if (invAt != null) {
-			if (allSlotsFull) {
-				return PC_InvUtils.isInventoryFull(invAt);
-			} else {
+			if (itemStack == null || itemStack.itemID == 0) {
 				return PC_InvUtils.hasInventoryNoFreeSlots(invAt);
+			} else {
+				return PC_InvUtils.hasInventoryPlaceFor(invAt, itemStack);
 			}
 		}
 
@@ -847,10 +861,10 @@ public class PC_Utils implements PC_IPacketHandler {
 				AxisAlignedBB.getBoundingBox(x, y, z, x + 1, y + 1, z + 1).expand(0.6D, 0.6D, 0.6D));
 
 		if (list.size() >= 1) {
-			if (allSlotsFull) {
-				return PC_InvUtils.isInventoryFull(list.get(0));
-			} else {
+			if (itemStack == null || itemStack.itemID == 0) {
 				return PC_InvUtils.hasInventoryNoFreeSlots(list.get(0));
+			} else {
+				return PC_InvUtils.hasInventoryPlaceFor(list.get(0), itemStack);
 			}
 		}
 
@@ -858,13 +872,11 @@ public class PC_Utils implements PC_IPacketHandler {
 				AxisAlignedBB.getBoundingBox(x, y, z, x + 1, y + 1, z + 1).expand(0.6D, 0.6D, 0.6D));
 
 		if (list2.size() >= 1) {
-			if (allSlotsFull) {
-				if(list2.get(0).getInventory() != null) {
-					return PC_InvUtils.isInventoryFull(list2.get(0).getInventory());
-				}
-			} else {
-				if(list2.get(0).getInventory() != null) {
+			if(list2.get(0).getInventory() != null) {
+				if (itemStack == null || itemStack.itemID == 0) {
 					return PC_InvUtils.hasInventoryNoFreeSlots(list2.get(0).getInventory());
+				} else {
+					return PC_InvUtils.hasInventoryPlaceFor(list2.get(0).getInventory(), itemStack);
 				}
 			}
 		}
@@ -874,9 +886,16 @@ public class PC_Utils implements PC_IPacketHandler {
 	}
 
 	public static void spawnMobFromSpawner(World world, int x, int y, int z) {
-		TileEntity te = PC_Utils.getTE(world, x, y, z, Block.mobSpawner.blockID);
-		if (te != null && te instanceof TileEntityMobSpawner) {
-			spawnMobs(world, x, y, z, ((TileEntityMobSpawner) te).getMobID());
+		TileEntityMobSpawner te = PC_Utils.getTE(world, x, y, z, Block.mobSpawner.blockID);
+		if (te != null) {
+			spawnMobs(world, x, y, z, te.getMobID());
+		}
+	}
+	
+	public static void preventSpawnerSpawning(World world, int x, int y, int z) {
+		TileEntityMobSpawner te = PC_Utils.getTE(world, x, y, z, Block.mobSpawner.blockID);
+		if (te != null) {
+			te.delay = 20;
 		}
 	}
 	

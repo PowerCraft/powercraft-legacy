@@ -152,6 +152,26 @@ public class PCma_TileEntityAutomaticWorkbench extends PC_TileEntity implements 
 		return true;
 	}
 
+	@Override
+	public boolean hasInventoryPlaceFor(ItemStack itemStack) {
+		for (int i = 0; i < 9; i++) {
+			if (getStackInSlot(i) == null || (getStackInSlot(i).isItemEqual(itemStack) && getStackInSlot(i).stackSize < Math.min(getInventoryStackLimit(), getStackInSlot(i).getMaxStackSize()))) {
+				return true;
+			}
+		}
+		return false;
+	}
+
+	@Override
+	public boolean isContainerEmptyOf(ItemStack itemStack) {
+		for (int i = 0; i < 9; i++) {
+			if (getStackInSlot(i) != null && !getStackInSlot(i).isItemEqual(itemStack)) {
+				return false;
+			}
+		}
+		return true;
+	}
+	
 	private boolean redstoneActivatedMode() {
 		return redstoneActivated;
 	}
@@ -582,4 +602,5 @@ public class PCma_TileEntityAutomaticWorkbench extends PC_TileEntity implements 
 		o[1] = redstoneActivated;
 		return o;
 	}
+
 }
