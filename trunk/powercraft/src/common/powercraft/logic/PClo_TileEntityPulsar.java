@@ -12,8 +12,6 @@ public class PClo_TileEntityPulsar extends PC_TileEntity {
 	private int delay = 10;
 	/** hold time in ticks */
 	private int holdtime = 4;
-	/** status whether pulsar is active */
-	private boolean active = false;
 	/** is the pulsar paused? */
 	private boolean paused = false;
 	/** makes sound */
@@ -38,7 +36,6 @@ public class PClo_TileEntityPulsar extends PC_TileEntity {
 		nbttagcompound.setInteger("delayTimer", delayTimer);
 		nbttagcompound.setInteger("delay", delay);
 		nbttagcompound.setInteger("holdtime", holdtime);
-		nbttagcompound.setBoolean("active", active);
 		nbttagcompound.setBoolean("paused", paused);
 		nbttagcompound.setBoolean("silent", silent);
 	}
@@ -49,7 +46,6 @@ public class PClo_TileEntityPulsar extends PC_TileEntity {
 		delayTimer = nbttagcompound.getInteger("delayTimer");
 		delay = nbttagcompound.getInteger("delay");
 		holdtime = nbttagcompound.getInteger("holdtime");
-		active = nbttagcompound.getBoolean("active");
 		paused = nbttagcompound.getBoolean("paused");
 		silent = nbttagcompound.getBoolean("silent");
 		if (delay < 2) {
@@ -75,7 +71,7 @@ public class PClo_TileEntityPulsar extends PC_TileEntity {
 	}
 
 	public boolean isActive() {
-		return active;
+		return PC_Utils.getBID(worldObj, xCoord, yCoord, zCoord) == PClo_BlockPulsar.on.blockID;
 	}
 	
 	@Override
@@ -86,22 +82,19 @@ public class PClo_TileEntityPulsar extends PC_TileEntity {
 
 		boolean change=false;
 		
-		if (delayTimer < 0 && !active) {
-			active = true;
+		if (delayTimer < 0 && !isActive()) {
+			PC_Utils.setBlockState(worldObj, xCoord, yCoord, zCoord, true);
 			updateBlock();
 			change=true;
 		}
 
 		delayTimer++;
 
-		if (delayTimer >= holdtime && active) {
-			active = false;
+		if (delayTimer >= holdtime && isActive()) {
+			PC_Utils.setBlockState(worldObj, xCoord, yCoord, zCoord, false);
 			updateBlock();
 			change=true;
 		}
-		
-		if(change)
-			PC_PacketHandler.setTileEntity(this, "active", active, "change");
 		
 		if (delayTimer >= delay) {
 			delayTimer = -1;
@@ -160,8 +153,6 @@ public class PClo_TileEntityPulsar extends PC_TileEntity {
 				delay = (Integer)o[p++];
 			}else if(var.equals("silent")){
 				silent = (Boolean)o[p++];
-			}else if(var.equals("active")){
-				active = (Boolean)o[p++];
 			}else if(var.equals("paused")){
 				paused = (Boolean)o[p++];
 			}else if(var.equals("change")){
@@ -169,10 +160,10 @@ public class PClo_TileEntityPulsar extends PC_TileEntity {
 					if (!silent) {
 						PC_Utils.playSound(xCoord + 0.5D, yCoord + 0.5D, zCoord + 0.5D, "random.click", 1.0F, 1.0F);
 					}
-					worldObj.markBlockAsNeedsUpdate(xCoord, yCoord, zCoord);
 				}
 			}
 		}
+		worldObj.markBlockAsNeedsUpdate(xCoord, yCoord, zCoord);
 	}
 
 	@Override
@@ -181,7 +172,6 @@ public class PClo_TileEntityPulsar extends PC_TileEntity {
 			"hold", holdtime,
 			"delay", delay,
 			"silent", silent,
-			"active", active,
 			"paused", paused
 		};
 	}

@@ -16,28 +16,33 @@ import net.minecraft.src.Material;
 import net.minecraft.src.TileEntity;
 import net.minecraft.src.World;
 import net.minecraftforge.common.Configuration;
-
-import org.lwjgl.opengl.GL11;
-
 import powercraft.core.PC_Block;
 import powercraft.core.PC_Color;
 import powercraft.core.PC_IBlockRenderer;
 import powercraft.core.PC_IConfigLoader;
 import powercraft.core.PC_ICraftingToolDisplayer;
 import powercraft.core.PC_Renderer;
+import powercraft.core.PC_Shining;
+import powercraft.core.PC_Shining.OFF;
+import powercraft.core.PC_Shining.ON;
 import powercraft.core.PC_Utils;
 
+@PC_Shining
 public class PCli_BlockLight extends PC_Block implements PC_ICraftingToolDisplayer, PC_IConfigLoader, PC_IBlockRenderer {
 	
-	private int lightValueOn=15;
+	@ON
+	public static PCli_BlockLight on;
+	@OFF
+	public static PCli_BlockLight off;
 	
-	public PCli_BlockLight(int id) {
+	public PCli_BlockLight(int id, boolean on) {
 		super(id, 66, Material.glass);
 		setHardness(0.3F);
 		setResistance(20F);
 		setStepSound(Block.soundStoneFootstep);
 		setRequiresSelfNotify();
-		setCreativeTab(CreativeTabs.tabDecorations);
+		if(on)
+			setCreativeTab(CreativeTabs.tabDecorations);
 	}
 
 	@Override
@@ -133,13 +138,13 @@ public class PCli_BlockLight extends PC_Block implements PC_ICraftingToolDisplay
 		if (l == 0) {
 			i1 = 5;
 		}*/
-		world.setBlockMetadataWithNotify(i, j, k, i1);
+		//world.setBlockMetadataWithNotify(i, j, k, i1);
 
 		PCli_TileEntityLight tileentity = PC_Utils.getTE(world, i, j, k);
 
 		if (tileentity != null && tileentity.isStable()) return;
 
-		onPoweredBlockChange(world, i, j, k, world.isBlockIndirectlyGettingPowered(i, j, k) || isAttachmentBlockPowered(world, i, j, k, i1));
+		onPoweredBlockChange(world, i, j, k, world.isBlockIndirectlyGettingPowered(i, j, k)/* || isAttachmentBlockPowered(world, i, j, k, i1)*/);
 	}
 
 	@Override
@@ -181,18 +186,18 @@ public class PCli_BlockLight extends PC_Block implements PC_ICraftingToolDisplay
 	@Override
 	public void onNeighborBlockChange(World world, int i, int j, int k, int l) {
 
-		int sidemeta = world.getBlockMetadata(i, j, k);
+		//int sidemeta = world.getBlockMetadata(i, j, k);
 
-		if (!canPlaceBlockOnSide(world, i, j, k, meta2side[sidemeta])) {
+		/*if (!canPlaceBlockOnSide(world, i, j, k, meta2side[sidemeta])) {
 			world.setBlockWithNotify(i, j, k, 0);// drop -> onremoval
 			return;
-		}
+		}*/
 
 		PCli_TileEntityLight tileentity = PC_Utils.getTE(world, i, j, k);
 		if (tileentity == null || tileentity.isStable())
 			return;
 
-		boolean powered = world.isBlockIndirectlyGettingPowered(i, j, k) || isAttachmentBlockPowered(world, i, j, k, sidemeta);
+		boolean powered = world.isBlockIndirectlyGettingPowered(i, j, k) /*|| isAttachmentBlockPowered(world, i, j, k, sidemeta)*/;
 		if (tileentity.isActive() != powered) {
 			world.scheduleBlockUpdate(i, j, k, blockID, 1);
 		}
@@ -205,9 +210,9 @@ public class PCli_BlockLight extends PC_Block implements PC_ICraftingToolDisplay
 
 		if (tileentity == null || tileentity.isStable()) return;
 
-		int sidemeta = world.getBlockMetadata(i, j, k);
+		//int sidemeta = world.getBlockMetadata(i, j, k);
 		boolean powered = world.isBlockGettingPowered(i, j, k) || world.isBlockIndirectlyGettingPowered(i, j, k)
-				|| isAttachmentBlockPowered(world, i, j, k, sidemeta);
+				/*|| isAttachmentBlockPowered(world, i, j, k, sidemeta)*/;
 		if (tileentity.isActive() != powered) {
 			onPoweredBlockChange(world, i, j, k, powered);
 		}
@@ -255,12 +260,11 @@ public class PCli_BlockLight extends PC_Block implements PC_ICraftingToolDisplay
 	 * @param rs_state
 	 */
 	public static void onPoweredBlockChange(World world, int x, int y, int z, boolean rs_state) {
-		int l = world.getBlockMetadata(x, y, z);
 		PCli_TileEntityLight tileentity = PC_Utils.getTE(world, x, y, z);
 
 		if ((tileentity == null || tileentity.isStable()) && rs_state == false) return;
 
-		tileentity.setActive(rs_state);
+		PC_Utils.setBlockState(world, x, y, z, rs_state);
 		
 	}
 
@@ -328,14 +332,6 @@ public class PCli_BlockLight extends PC_Block implements PC_ICraftingToolDisplay
 	public int idDropped(int i, Random random, int j) {
 		return -1;
 	}
-	
-	@Override
-	public int getLightValue(IBlockAccess world, int x, int y, int z) {
-		PCli_TileEntityLight til = PC_Utils.getTE(world, x, y, z, blockID);
-		if(til==null)
-			return 0;
-		return til.isActive()?lightValueOn:0;
-	}
 
 	@Override
 	public void randomDisplayTick(World world, int i, int j, int k, Random random) {
@@ -393,7 +389,7 @@ public class PCli_BlockLight extends PC_Block implements PC_ICraftingToolDisplay
 	
 	@Override
 	public void loadFromConfig(Configuration config) {
-		lightValueOn = PC_Utils.getConfigInt(config, Configuration.CATEGORY_GENERAL, "LampLightValueOn", 12);
+		on.setLightValue(PC_Utils.getConfigInt(config, Configuration.CATEGORY_GENERAL, "LampLightValueOn", 12)/16.0f);
 	}
 
 	@Override

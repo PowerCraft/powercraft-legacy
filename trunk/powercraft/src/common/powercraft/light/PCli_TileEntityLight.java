@@ -15,8 +15,6 @@ public class PCli_TileEntityLight extends PC_TileEntity  {
 	/** flag that this light huge */
 	private boolean isHuge;
 	
-	private boolean isActive;
-	
 	@Override
 	public void readFromNBT(NBTTagCompound nbttagcompound) {
 		super.readFromNBT(nbttagcompound);
@@ -25,7 +23,6 @@ public class PCli_TileEntityLight extends PC_TileEntity  {
 		PC_Utils.loadFromNBT(nbttagcompound, "color", color);
 		isStable = nbttagcompound.getBoolean("stable");
 		isHuge = nbttagcompound.getBoolean("huge");
-		isActive = nbttagcompound.getBoolean("active");
 	}
 
 	@Override
@@ -35,7 +32,6 @@ public class PCli_TileEntityLight extends PC_TileEntity  {
 			PC_Utils.saveToNBT(nbttagcompound, "color", color);
 		nbttagcompound.setBoolean("stable", isStable);
 		nbttagcompound.setBoolean("huge", isHuge);
-		nbttagcompound.setBoolean("active", isActive);
 	}
 
 	/**
@@ -76,17 +72,11 @@ public class PCli_TileEntityLight extends PC_TileEntity  {
 		return isHuge;
 	}
 	
-	public void setActive(boolean active) {
-		PC_PacketHandler.setTileEntity(this, "isActive", active);
-		isActive = active;
-		worldObj.markBlockAsNeedsUpdate(xCoord, yCoord, zCoord);
-	}
-	
 	/**
 	 * @return true if light is glowing
 	 */
 	public boolean isActive() {
-		return isActive;
+		return PC_Utils.getBID(worldObj, xCoord, yCoord, zCoord) == PCli_BlockLight.on.blockID;
 	}
 
 	@Override
@@ -105,8 +95,6 @@ public class PCli_TileEntityLight extends PC_TileEntity  {
 					bLight.updateTick(worldObj, xCoord, yCoord, zCoord, new Random());
 			}else if(var.equals("isHuge")){
 				isHuge = (Boolean)o[p++];
-			}else if(var.equals("isActive")){
-				isActive = (Boolean)o[p++];
 			}
 		}
 		worldObj.markBlockAsNeedsUpdate(xCoord, yCoord, zCoord);
@@ -117,8 +105,7 @@ public class PCli_TileEntityLight extends PC_TileEntity  {
 		return new Object[]{
 			"color", color,
 			"isStable", isStable,
-			"isHuge", isHuge,
-			"isActive", isActive
+			"isHuge", isHuge
 		};
 	}
 }

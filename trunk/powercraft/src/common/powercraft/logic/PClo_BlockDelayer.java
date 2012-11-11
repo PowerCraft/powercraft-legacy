@@ -17,14 +17,20 @@ import powercraft.core.PC_Block;
 import powercraft.core.PC_IConfigLoader;
 import powercraft.core.PC_IRotatedBox;
 import powercraft.core.PC_MathHelper;
-import powercraft.core.PC_Renderer;
+import powercraft.core.PC_Shining;
 import powercraft.core.PC_Utils;
+import powercraft.core.PC_Shining.OFF;
+import powercraft.core.PC_Shining.ON;
 
+@PC_Shining
 public class PClo_BlockDelayer extends PC_Block  implements PC_IRotatedBox, PC_IConfigLoader {
 
-	private int lightValueOn=15;
+	@ON
+	public static PClo_BlockDelayer on;
+	@OFF
+	public static PClo_BlockDelayer off;
 	
-	public PClo_BlockDelayer(int id) {
+	public PClo_BlockDelayer(int id, boolean on) {
 		super(id, 6, Material.ground);
 		setHardness(0.35F);
 		setStepSound(Block.soundWoodFootstep);
@@ -32,7 +38,8 @@ public class PClo_BlockDelayer extends PC_Block  implements PC_IRotatedBox, PC_I
 		setRequiresSelfNotify();
 		setResistance(30.0F);
 		setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 0.1875F, 1.0F);
-		setCreativeTab(CreativeTabs.tabRedstone);
+		if(on)
+			setCreativeTab(CreativeTabs.tabRedstone);
 	}
 
 	@Override
@@ -73,8 +80,8 @@ public class PClo_BlockDelayer extends PC_Block  implements PC_IRotatedBox, PC_I
 		boolean[] stateBuffer = te.getStateBuffer();
 		if(!stop && !reset){
 			boolean shouldState = stateBuffer[stateBuffer.length-1];
-			if(shouldState != te.getState())
-				te.setState(shouldState);
+			if(shouldState != isActive(world, x, y, z))
+				PC_Utils.setBlockState(world, x, y, z, shouldState);
 			for(int i=stateBuffer.length-1; i>0; i--){
 				stateBuffer[i] = stateBuffer[i-1];
 			}
@@ -82,8 +89,8 @@ public class PClo_BlockDelayer extends PC_Block  implements PC_IRotatedBox, PC_I
 			te.updateStateBuffer();
 		}
 		if(reset){
-			if(te.getState())
-				te.setState(false);
+			if(isActive(world, x, y, z))
+				PC_Utils.setBlockState(world, x, y, z, false);
 			for(int i=0; i<stateBuffer.length; i++)
 				stateBuffer[i] = false;
 			te.updateStateBuffer();
@@ -93,22 +100,6 @@ public class PClo_BlockDelayer extends PC_Block  implements PC_IRotatedBox, PC_I
 	@Override
 	public int tickRate() {
 		return 1;
-	}
-	
-	/**
-	 * Change the gate block from on (lighting) to off state, and preserve the
-	 * tile entity.
-	 * 
-	 * @param state new state, on or off
-	 * @param world
-	 * @param x
-	 * @param y
-	 * @param z
-	 */
-	private void changeGateFlipFlopState(boolean state, World world, int x, int y, int z) {
-		
-		((PClo_TileEntityDelayer)PC_Utils.getTE(world, x, y, z)).setState(state);
-
 	}
 	
 	@Override
@@ -155,10 +146,7 @@ public class PClo_BlockDelayer extends PC_Block  implements PC_IRotatedBox, PC_I
 	}
 	
 	public static boolean isActive(IBlockAccess world, int x, int y, int z){
-		PClo_TileEntityDelayer te = getTE(world, x, y, z);
-		if(te!=null)
-			return te.getState();
-		return false;
+		return PC_Utils.getBID(world, x, y, z) == on.blockID;
 	}
 	
 	@Override
@@ -232,11 +220,6 @@ public class PClo_BlockDelayer extends PC_Block  implements PC_IRotatedBox, PC_I
 		PC_Utils.openGres("Delayer", player, x, y, z);
 		return true;
 	}
-
-	@Override
-	public int getLightValue(IBlockAccess world, int x, int y, int z){
-		return isActive(world, x, y, z) ? lightValueOn : 0;
-	}
 	
 	@Override
 	public void randomDisplayTick(World world, int x, int y, int z, Random random) {
@@ -282,7 +265,7 @@ public class PClo_BlockDelayer extends PC_Block  implements PC_IRotatedBox, PC_I
 
 	@Override
 	public void loadFromConfig(Configuration config) {
-		lightValueOn = PC_Utils.getConfigInt(config, Configuration.CATEGORY_GENERAL, "GatesLightValueOn", 7);
+		on.setLightValue(PC_Utils.getConfigInt(config, Configuration.CATEGORY_GENERAL, "GatesLightValueOn", 7)/16.0f);
 	}
 
 }

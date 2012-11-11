@@ -19,19 +19,28 @@ import powercraft.core.PC_IConfigLoader;
 import powercraft.core.PC_ICraftingToolDisplayer;
 import powercraft.core.PC_PacketHandler;
 import powercraft.core.PC_Renderer;
+import powercraft.core.PC_Shining;
 import powercraft.core.PC_Utils;
+import powercraft.core.PC_Shining.OFF;
+import powercraft.core.PC_Shining.ON;
+import powercraft.light.PCli_BlockLight;
 
+@PC_Shining
 public class PClo_BlockPulsar extends PC_Block implements PC_ICraftingToolDisplayer, PC_IConfigLoader {
 
-	private int lightValueOn=15;
+	@ON
+	public static PClo_BlockPulsar on;
+	@OFF
+	public static PClo_BlockPulsar off;
 	
-	public PClo_BlockPulsar(int id){
+	public PClo_BlockPulsar(int id, boolean on){
 		super(id, 74, Material.wood, false);
 		setHardness(0.8F);
 		setResistance(30.0F);
 		setRequiresSelfNotify();
 		setStepSound(Block.soundWoodFootstep);
-		setCreativeTab(CreativeTabs.tabRedstone);
+		if(on)
+			setCreativeTab(CreativeTabs.tabRedstone);
 	}
 	
 	@Override
@@ -182,18 +191,8 @@ public class PClo_BlockPulsar extends PC_Block implements PC_ICraftingToolDispla
 	}
 
 	@Override
-	public String getTextureFile() {
-		return "/terrain.png";
-	}
-	
-	@Override
-	public int getLightValue(IBlockAccess world, int x, int y, int z) {
-		return isActive(world, x, y, z) ? lightValueOn : 0;
-	}
-
-	@Override
 	public void loadFromConfig(Configuration config) {
-		lightValueOn = PC_Utils.getConfigInt(config, Configuration.CATEGORY_GENERAL, "GatesLightValueOn", 7);
+		on.setLightValue(PC_Utils.getConfigInt(config, Configuration.CATEGORY_GENERAL, "GatesLightValueOn", 7)/16.0f);
 	}
 	
 }

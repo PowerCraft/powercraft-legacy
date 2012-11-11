@@ -11,7 +11,6 @@ import powercraft.core.PC_Utils;
 public class PClo_TileEntityFlipFlop extends PC_TileEntity {
 	
 	private int type=-1;
-	private boolean state = false;
 	private boolean clock = false;
 	
 	public void create(ItemStack stack, EntityPlayer player, World world, int x, int y, int z, int side, float hitX, float hitY, float hitZ){
@@ -20,10 +19,6 @@ public class PClo_TileEntityFlipFlop extends PC_TileEntity {
 	
 	public int getType() {
 		return type;
-	}
-	
-	public boolean getState(){
-		return state;
 	}
 	
 	public boolean getClock(){
@@ -35,18 +30,10 @@ public class PClo_TileEntityFlipFlop extends PC_TileEntity {
 		PC_PacketHandler.setTileEntity(this, "clock", clock);
 	}
 	
-	public void setState(boolean b){
-		PC_PacketHandler.setTileEntity(this, "state", b);
-		state = b;
-		PC_Utils.hugeUpdate(worldObj, xCoord, yCoord, zCoord, worldObj.getBlockId(xCoord, yCoord, zCoord));
-		worldObj.markBlockNeedsUpdate(xCoord, yCoord, zCoord);
-	}
-	
 	@Override
 	public void readFromNBT(NBTTagCompound nbtTagCompound) {
 		super.readFromNBT(nbtTagCompound);
 		type = nbtTagCompound.getInteger("type");
-		state = nbtTagCompound.getBoolean("state");
 		clock = nbtTagCompound.getBoolean("clock");
 	}
 
@@ -54,7 +41,6 @@ public class PClo_TileEntityFlipFlop extends PC_TileEntity {
 	public void writeToNBT(NBTTagCompound nbtTagCompound) {
 		super.writeToNBT(nbtTagCompound);
 		nbtTagCompound.setInteger("type", type);
-		nbtTagCompound.setBoolean("state", state);
 		nbtTagCompound.setBoolean("clock", clock);
 	}
 
@@ -68,8 +54,6 @@ public class PClo_TileEntityFlipFlop extends PC_TileEntity {
 					type = (Integer)o[p++];
 				else
 					p++;
-			}else if(var.equals("state")){
-				state = (Boolean)o[p++];
 			}else if(var.equals("clock")){
 				clock = (Boolean)o[p++];
 			}
@@ -82,7 +66,6 @@ public class PClo_TileEntityFlipFlop extends PC_TileEntity {
 	public Object[] getData() {
 		return new Object[]{
 				"type", type,
-				"state", state,
 				"clock", clock
 		};
 	}	

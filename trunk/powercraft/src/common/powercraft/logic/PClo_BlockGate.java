@@ -19,13 +19,20 @@ import powercraft.core.PC_IConfigLoader;
 import powercraft.core.PC_IRotatedBox;
 import powercraft.core.PC_MathHelper;
 import powercraft.core.PC_Renderer;
+import powercraft.core.PC_Shining;
 import powercraft.core.PC_Utils;
+import powercraft.core.PC_Shining.OFF;
+import powercraft.core.PC_Shining.ON;
 
+@PC_Shining
 public class PClo_BlockGate extends PC_Block implements PC_IRotatedBox, PC_IConfigLoader {
 	
-	private int lightValueOn=15;
+	@ON
+	public static PClo_BlockGate on;
+	@OFF
+	public static PClo_BlockGate off;
 	
-	public PClo_BlockGate(int id){
+	public PClo_BlockGate(int id, boolean on){
 		super(id, 6, Material.ground);
 		setHardness(0.35F);
 		setStepSound(Block.soundWoodFootstep);
@@ -33,7 +40,8 @@ public class PClo_BlockGate extends PC_Block implements PC_IRotatedBox, PC_IConf
 		setRequiresSelfNotify();
 		setResistance(30.0F);
 		setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 0.1875F, 1.0F);
-		setCreativeTab(CreativeTabs.tabRedstone);
+		if(on)
+			setCreativeTab(CreativeTabs.tabRedstone);
 	}
 	
 	@Override
@@ -50,13 +58,9 @@ public class PClo_BlockGate extends PC_Block implements PC_IRotatedBox, PC_IConf
 	public void updateTick(World world, int x, int y, int z, Random random) {
 		boolean on = isActive(world, x, y, z);
 		boolean outputActive = isOutputActive(world, x, y, z);
-		if (on && !outputActive) {
-			// turn off
-			changeGateState(false, world, x, y, z);
-		} else if (!on && outputActive) {
-			// turn on
-			changeGateState(true, world, x, y, z);
-		}
+		if (on != outputActive) {
+			PC_Utils.setBlockState(world, x, y, z, outputActive);
+		} 
 	}
 
 	@Override
@@ -71,22 +75,6 @@ public class PClo_BlockGate extends PC_Block implements PC_IRotatedBox, PC_IConf
 		if (on != outputActive) 
 			world.scheduleBlockUpdate(x, y, z, blockID, tickRate());
 		
-	}
-
-	/**
-	 * Change the gate block from on (lighting) to off state, and preserve the
-	 * tile entity.
-	 * 
-	 * @param state new state, on or off
-	 * @param world
-	 * @param x
-	 * @param y
-	 * @param z
-	 */
-	private void changeGateState(boolean state, World world, int x, int y, int z) {
-		
-		((PClo_TileEntityGate)PC_Utils.getTE(world, x, y, z)).setState(state);
-
 	}
 	
 	private boolean isOutputActive(World world, int x, int y, int z) {
@@ -153,10 +141,7 @@ public class PClo_BlockGate extends PC_Block implements PC_IRotatedBox, PC_IConf
 	}
 	
 	public static boolean isActive(IBlockAccess world, int x, int y, int z){
-		PClo_TileEntityGate te = getTE(world, x, y, z);
-		if(te!=null)
-			return te.getState();
-		return false;
+		return PC_Utils.getBID(world, x, y, z) == on.blockID;
 	}
 	
 	@Override
@@ -249,11 +234,6 @@ public class PClo_BlockGate extends PC_Block implements PC_IRotatedBox, PC_IConf
 
 		return false;
 	}
-
-	@Override
-	public int getLightValue(IBlockAccess world, int x, int y, int z){
-		return isActive(world, x, y, z) ? lightValueOn : 0;
-	}
 	
 	@Override
 	public void randomDisplayTick(World world, int x, int y, int z, Random random) {
@@ -299,7 +279,7 @@ public class PClo_BlockGate extends PC_Block implements PC_IRotatedBox, PC_IConf
 	
 	@Override
 	public void loadFromConfig(Configuration config) {
-		lightValueOn = PC_Utils.getConfigInt(config, Configuration.CATEGORY_GENERAL, "GatesLightValueOn", 7);
+		on.setLightValue(PC_Utils.getConfigInt(config, Configuration.CATEGORY_GENERAL, "GatesLightValueOn", 7));
 	}
 	
 }

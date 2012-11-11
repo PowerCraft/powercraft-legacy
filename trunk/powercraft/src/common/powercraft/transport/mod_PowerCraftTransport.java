@@ -92,21 +92,21 @@ public class mod_PowerCraftTransport extends PC_Module {
 
 	@Override
 	protected void initBlocks() {
-		conveyorBelt = (PC_Block)PC_Utils.register(this, 467, PCtr_BlockBeltNormal.class, PCtr_ItemBlockConveyor.class);
-		speedyBelt = (PC_Block)PC_Utils.register(this, 468, PCtr_BlockBeltSpeedy.class, PCtr_ItemBlockConveyor.class);
-		detectionBelt = (PC_Block)PC_Utils.register(this, 469, PCtr_BlockBeltDetector.class, PCtr_ItemBlockConveyor.class);
-		breakBelt = (PC_Block)PC_Utils.register(this, 470, PCtr_BlockBeltBreak.class, PCtr_ItemBlockConveyor.class);
-		redirectionBelt = (PC_Block)PC_Utils.register(this, 471, PCtr_BlockBeltRedirector.class, PCtr_ItemBlockConveyor.class, PCtr_TileEntityRedirectionBelt.class);
-		separationBelt = (PC_Block)PC_Utils.register(this, 472, PCtr_BlockBeltSeparator.class, PCtr_ItemBlockConveyor.class, PCtr_TileEntitySeparationBelt.class);
-		ejectionBelt = (PC_Block)PC_Utils.register(this, 473, PCtr_BlockBeltEjector.class, PCtr_ItemBlockConveyor.class, PCtr_TileEntityEjectionBelt.class);
-		elevator = (PC_Block)PC_Utils.register(this, 474, PCtr_BlockElevator.class, PCtr_ItemBlockElevator.class);
+		conveyorBelt = (PC_Block)PC_Utils.register(this, 473, PCtr_BlockBeltNormal.class, PCtr_ItemBlockConveyor.class);
+		speedyBelt = (PC_Block)PC_Utils.register(this, 474, PCtr_BlockBeltSpeedy.class, PCtr_ItemBlockConveyor.class);
+		detectionBelt = (PC_Block)PC_Utils.register(this, 475, PCtr_BlockBeltDetector.class, PCtr_ItemBlockConveyor.class);
+		breakBelt = (PC_Block)PC_Utils.register(this, 476, PCtr_BlockBeltBreak.class, PCtr_ItemBlockConveyor.class);
+		redirectionBelt = (PC_Block)PC_Utils.register(this, 477, PCtr_BlockBeltRedirector.class, PCtr_ItemBlockConveyor.class, PCtr_TileEntityRedirectionBelt.class);
+		separationBelt = (PC_Block)PC_Utils.register(this, 478, PCtr_BlockBeltSeparator.class, PCtr_ItemBlockConveyor.class, PCtr_TileEntitySeparationBelt.class);
+		ejectionBelt = (PC_Block)PC_Utils.register(this, 479, PCtr_BlockBeltEjector.class, PCtr_ItemBlockConveyor.class, PCtr_TileEntityEjectionBelt.class);
+		elevator = (PC_Block)PC_Utils.register(this, 480, PCtr_BlockElevator.class, PCtr_ItemBlockElevator.class);
 		
 		PCtr_BlockHackedWater.hackWater();
 	}
 
 	@Override
 	protected void initItems() {
-		slimeboots = (PC_ItemArmor)PC_Utils.register(this, 475, PCtr_ItemArmorStickyBoots.class);
+		slimeboots = (PC_ItemArmor)PC_Utils.register(this, 481, PCtr_ItemArmorStickyBoots.class);
 	}
 
 	@Override

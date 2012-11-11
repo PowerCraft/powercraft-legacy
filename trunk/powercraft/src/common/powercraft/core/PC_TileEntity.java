@@ -13,6 +13,8 @@ import net.minecraft.src.World;
 
 public abstract class PC_TileEntity extends TileEntity {
 
+	private boolean isInvalidLocked = false;
+
 	@Override
 	public Packet getDescriptionPacket() {
 		Object[] o = getData();
@@ -50,6 +52,30 @@ public abstract class PC_TileEntity extends TileEntity {
 	}
 	
 	public void create(ItemStack stack, EntityPlayer player, World world, int x, int y, int z, int side, float hitX, float hitY, float hitZ){
+		
+	}
+
+	public void lockInvalid(boolean validateLocked) {
+		isInvalidLocked = validateLocked;
+	}
+	
+	@Override
+	public final void invalidate() {
+		if(!isInvalidLocked){
+			super.invalidate();
+			setValidate(true);
+		}
+	}
+	
+	@Override
+	public final void validate() {
+		if(!isInvalidLocked){
+			super.validate();
+			setValidate(false);
+		}
+	}
+	
+	public void setValidate(boolean invalid) {
 		
 	}
 	

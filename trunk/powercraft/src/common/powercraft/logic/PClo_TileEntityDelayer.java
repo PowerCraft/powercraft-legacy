@@ -11,7 +11,6 @@ import powercraft.core.PC_Utils;
 public class PClo_TileEntityDelayer extends PC_TileEntity {
 	
 	private int type=-1;
-	private boolean state = false;
 	private boolean stateBuffer[] = new boolean[20];
 	
 	public void create(ItemStack stack, EntityPlayer player, World world, int x, int y, int z, int side, float hitX, float hitY, float hitZ){
@@ -20,10 +19,6 @@ public class PClo_TileEntityDelayer extends PC_TileEntity {
 	
 	public int getType() {
 		return type;
-	}
-	
-	public boolean getState(){
-		return state;
 	}
 	
 	public boolean[] getStateBuffer(){
@@ -43,13 +38,6 @@ public class PClo_TileEntityDelayer extends PC_TileEntity {
 		PC_PacketHandler.setTileEntity(this, "stateBuffer", stateBuffer);
 	}
 	
-	public void setState(boolean b){
-		PC_PacketHandler.setTileEntity(this, "state", b);
-		state = b;
-		PC_Utils.hugeUpdate(worldObj, xCoord, yCoord, zCoord, worldObj.getBlockId(xCoord, yCoord, zCoord));
-		worldObj.markBlockNeedsUpdate(xCoord, yCoord, zCoord);
-	}
-	
 	
 	
 	@Override
@@ -62,7 +50,7 @@ public class PClo_TileEntityDelayer extends PC_TileEntity {
 			reset = PC_Utils.poweredFromInput(worldObj, xCoord, yCoord, zCoord, PC_Utils.LEFT, rot);
 		}
 		if(!stop || reset)
-			worldObj.scheduleBlockUpdate(xCoord, yCoord, zCoord, mod_PowerCraftLogic.delayer.blockID, mod_PowerCraftLogic.delayer.tickRate());
+			worldObj.scheduleBlockUpdate(xCoord, yCoord, zCoord, PC_Utils.getBID(worldObj, xCoord, yCoord, zCoord), mod_PowerCraftLogic.delayer.tickRate());
 	}
 
 	@Override
@@ -74,7 +62,6 @@ public class PClo_TileEntityDelayer extends PC_TileEntity {
 	public void readFromNBT(NBTTagCompound nbtTagCompound) {
 		super.readFromNBT(nbtTagCompound);
 		type = nbtTagCompound.getInteger("type");
-		state = nbtTagCompound.getBoolean("state");
 		int length = nbtTagCompound.getInteger("delay");
 		stateBuffer = new boolean[length];
 		for(int i=0; i<length; i++){
@@ -86,7 +73,6 @@ public class PClo_TileEntityDelayer extends PC_TileEntity {
 	public void writeToNBT(NBTTagCompound nbtTagCompound) {
 		super.writeToNBT(nbtTagCompound);
 		nbtTagCompound.setInteger("type", type);
-		nbtTagCompound.setBoolean("state", state);
 		nbtTagCompound.setInteger("delay", stateBuffer.length);
 		for(int i=0; i<stateBuffer.length; i++){
 			nbtTagCompound.setBoolean("stateBuffer["+i+"]", stateBuffer[i]);
@@ -103,8 +89,6 @@ public class PClo_TileEntityDelayer extends PC_TileEntity {
 					type = (Integer)o[p++];
 				else
 					p++;
-			}else if(var.equals("state")){
-				state = (Boolean)o[p++];
 			}else if(var.equals("stateBuffer")){
 				stateBuffer = (boolean[])o[p++];
 			}
@@ -117,9 +101,8 @@ public class PClo_TileEntityDelayer extends PC_TileEntity {
 	public Object[] getData() {
 		return new Object[]{
 				"type", type,
-				"state", state,
 				"stateBuffer", stateBuffer
 		};
-	}	
+	}
 	
 }
