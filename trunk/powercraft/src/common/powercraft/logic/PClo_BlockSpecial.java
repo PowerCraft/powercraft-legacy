@@ -8,6 +8,7 @@ import net.minecraft.src.CreativeTabs;
 import net.minecraft.src.EntityLiving;
 import net.minecraft.src.EntityPlayer;
 import net.minecraft.src.IBlockAccess;
+import net.minecraft.src.ItemBlock;
 import net.minecraft.src.ItemStack;
 import net.minecraft.src.Material;
 import net.minecraft.src.TileEntity;
@@ -22,6 +23,7 @@ import powercraft.core.PC_Shining;
 import powercraft.core.PC_Utils;
 import powercraft.core.PC_Shining.OFF;
 import powercraft.core.PC_Shining.ON;
+import powercraft.transport.PCtr_BeltHelper;
 
 @PC_Shining
 public class PClo_BlockSpecial extends PC_Block implements PC_IRotatedBox, PC_IConfigLoader {
@@ -85,10 +87,10 @@ public class PClo_BlockSpecial extends PC_Block implements PC_IRotatedBox, PC_IC
 			shouldState = world.isRaining();
 			break;
 		case PClo_SpecialType.CHEST_EMPTY:
-			shouldState = PC_Utils.isChestEmpty(world, x + xAdd, y, z + zAdd);
+			shouldState = PC_Utils.isChestEmpty(world, x + xAdd, y, z + zAdd, te.getStackInSlot(0));
 			break;
 		case PClo_SpecialType.CHEST_FULL:
-			shouldState = PC_Utils.isChestFull(world, x + xAdd, y, z + zAdd, false);
+			shouldState = PC_Utils.isChestFull(world, x + xAdd, y, z + zAdd, te.getStackInSlot(0));
 			break;
 		case PClo_SpecialType.SPECIAL:
 			shouldState = PC_Utils.poweredFromInput(world, x, y, z, PC_Utils.BACK, rot);
@@ -314,6 +316,27 @@ public class PClo_BlockSpecial extends PC_Block implements PC_IRotatedBox, PC_IC
 
 	}
 
+	@Override
+	public boolean onBlockActivated(World world, int i, int j, int k, EntityPlayer entityplayer, int par6, float par7, float par8, float par9) {
+		
+		int type = getType(world, i, j, k);
+		
+		if(type != PClo_SpecialType.CHEST_EMPTY && type != PClo_SpecialType.CHEST_FULL)
+			return false;
+		
+		ItemStack ihold = entityplayer.getCurrentEquippedItem();
+		if (ihold != null) {
+			if (ihold.getItem() instanceof ItemBlock) {
+				if (ihold.itemID == blockID) {
+					return false;
+				}
+			}
+		}
+
+		PC_Utils.openGres("Special", entityplayer, i, j, k);
+		return true;
+	}
+	
 	@Override
 	public void loadFromConfig(Configuration config) {
 		on.setLightValue(PC_Utils.getConfigInt(config, Configuration.CATEGORY_GENERAL, "GatesLightValueOn", 7));

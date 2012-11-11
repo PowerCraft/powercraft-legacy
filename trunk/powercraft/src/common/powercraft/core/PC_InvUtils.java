@@ -635,4 +635,48 @@ public class PC_InvUtils {
 			}
 		}
 	}
+
+	public static boolean hasInventoryPlaceFor(IInventory inv, ItemStack itemStack) {
+		if (inv == null) {
+			return false;
+		}
+
+		if (inv instanceof PC_IStateReportingInventory) {
+			return ((PC_IStateReportingInventory) inv).hasInventoryPlaceFor(itemStack);
+		}
+
+		if (inv instanceof TileEntityFurnace) {
+			return inv.getStackInSlot(1) == null || (inv.getStackInSlot(1).isItemEqual(itemStack)
+					&& inv.getStackInSlot(1).stackSize == Math.min(inv.getInventoryStackLimit(), inv.getStackInSlot(1).getMaxStackSize()));
+		}
+
+		for (int i = 0; i < inv.getSizeInventory(); i++) {
+			if (inv.getStackInSlot(i) == null || (inv.getStackInSlot(i).isItemEqual(itemStack)
+					&& inv.getStackInSlot(i).stackSize < Math.min(inv.getInventoryStackLimit(), inv.getStackInSlot(i).getMaxStackSize()))) {
+				return true;
+			}
+		}
+		return false;
+	}
+
+	public static boolean isInventoryEmptyOf(IInventory inv, ItemStack itemStack) {
+		if (inv == null) {
+			return true;
+		}
+
+		if (inv instanceof PC_IStateReportingInventory) {
+			return ((PC_IStateReportingInventory) inv).isContainerEmptyOf(itemStack);
+		}
+
+		if (inv instanceof TileEntityFurnace) {
+			return inv.getStackInSlot(1) == null || !inv.getStackInSlot(1).isItemEqual(itemStack);
+		}
+
+		for (int i = 0; i < inv.getSizeInventory(); i++) {
+			if (inv.getStackInSlot(i) != null && inv.getStackInSlot(i).isItemEqual(itemStack)) {
+				return false;
+			}
+		}
+		return true;
+	}
 }
