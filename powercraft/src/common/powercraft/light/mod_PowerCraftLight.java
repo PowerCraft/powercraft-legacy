@@ -67,7 +67,10 @@ public class mod_PowerCraftLight extends PC_Module {
 
 	@Override
 	protected void initLanguage() {
-		// TODO Auto-generated method stub
+		PC_Utils.registerLanguage(this, 
+				"pc.gui.light.isHuge", "is Huge",
+				"pc.gui.light.isStable", "is Stable"
+				);
 
 	}
 

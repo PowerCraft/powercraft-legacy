@@ -42,12 +42,12 @@ public class PCli_GuiLight implements PC_IGresClient {
 	
 	@Override
 	public void initGui(PC_IGresGui gui) {
-		PC_GresWindow w = (PC_GresWindow) new PC_GresWindow("Light");
+		PC_GresWindow w = (PC_GresWindow) new PC_GresWindow(PC_Utils.tr("tile.PCma_BlockLight.name"));
 		PC_GresLayoutV v = (PC_GresLayoutV)new PC_GresLayoutV().setAlignH(PC_GresAlign.STRETCH);
 		
 		PC_GresLayoutH h = (PC_GresLayoutH)new PC_GresLayoutH().setAlignH(PC_GresAlign.JUSTIFIED);
-		h.add(checkHuge = (PC_GresCheckBox) new PC_GresCheckBox(PC_Utils.tr("tile.PCloLight.isHuge")).check(isHuge));
-		h.add(checkStable = (PC_GresCheckBox) new PC_GresCheckBox(PC_Utils.tr("tile.PCloLight.isStable")).check(isStable));
+		h.add(checkHuge = (PC_GresCheckBox) new PC_GresCheckBox(PC_Utils.tr("pc.gui.light.isHuge")).check(isHuge));
+		h.add(checkStable = (PC_GresCheckBox) new PC_GresCheckBox(PC_Utils.tr("pc.gui.light.isStable")).check(isStable));
 		v.add(h);
 		
 		h = (PC_GresLayoutH)new PC_GresLayoutH().setAlignH(PC_GresAlign.STRETCH);;
