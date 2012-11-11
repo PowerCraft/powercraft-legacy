@@ -28,7 +28,7 @@ public class PCma_BlockAutomaticWorkbench extends PC_Block implements PC_ISpecia
 		setHardness(0.7F);
 		setResistance(10.0F);
 		setStepSound(Block.soundMetalFootstep);
-		setCreativeTab(CreativeTabs.tabBrewing);
+		setCreativeTab(CreativeTabs.tabDecorations);
 	}
 	
 	@Override

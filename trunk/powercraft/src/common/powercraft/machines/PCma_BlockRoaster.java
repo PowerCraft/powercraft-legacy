@@ -28,7 +28,7 @@ public class PCma_BlockRoaster extends PC_Block implements PC_ICraftingToolDispl
 		super(id, TXDOWN, Material.ground);
 		setLightOpacity(0);
 		setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 0.75F, 1.0F);
-		setCreativeTab(CreativeTabs.tabBrewing);
+		setCreativeTab(CreativeTabs.tabDecorations);
 	}
 	
 	@Override

@@ -26,6 +26,10 @@ public abstract class PC_Item extends Item implements PC_ICraftingToolDisplayer 
 
 	public abstract String[] getDefaultNames();
 
+	public boolean canBeBuild(){
+		return true;
+	}
+	
 	public String getCraftingToolModule() {
 		return craftingToolModule;
 	}
