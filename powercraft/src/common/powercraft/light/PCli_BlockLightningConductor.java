@@ -14,7 +14,7 @@ import powercraft.logic.mod_PowerCraftLogic;
 
 public class PCli_BlockLightningConductor extends PC_Block {
 
-	protected PCli_BlockLightningConductor(int id) {
+	public PCli_BlockLightningConductor(int id) {
 		super(id, 22, Material.rock);
 		setHardness(1.5F);
 		setResistance(50.0F);
