@@ -39,7 +39,9 @@ public abstract class PC_ItemBlock extends ItemBlock implements PC_ICraftingTool
 	
 	public boolean placeBlockAt(ItemStack stack, EntityPlayer player, World world, int x, int y, int z, int side, float hitX, float hitY, float hitZ)
     {
-       if (!world.setBlockAndMetadataWithNotify(x, y, z, getBlockID(), getMetadata(stack.getItemDamage())))
+		int metadata = getMetadata(stack.getItemDamage());
+		
+       if (!world.setBlockAndMetadataWithNotify(x, y, z, getBlockID(), metadata))
        {
                return false;
        }
@@ -51,7 +53,7 @@ public abstract class PC_ItemBlock extends ItemBlock implements PC_ICraftingTool
     	   block.onBlockPlacedBy(world, x, y, z, player);
            PC_TileEntity te = (PC_TileEntity)PC_Utils.getTE(world, x, y, z);
            if(te==null){
-        	  te = (PC_TileEntity)PC_Utils.setTE(world, x, y, z, block.createTileEntity(world, 0));
+        	  te = (PC_TileEntity)PC_Utils.setTE(world, x, y, z, block.createTileEntity(world, metadata));
            }
            if(te!=null)
         	   te.create(stack, player, world, x, y, z, side, hitX, hitY, hitZ);

@@ -10,7 +10,6 @@ import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Modifier;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 
@@ -1276,6 +1275,71 @@ public class PC_Utils implements PC_IPacketHandler {
 			}
 		}
 		return null;
+	}
+	
+	
+	public static float giveConductorValueFor(Block b){
+		if(b == null)
+			return 0.0f;
+		if(b.blockID == Block.blockSteel.blockID)
+			return 0.9f;
+		if(b.blockID == Block.blockDiamond.blockID)
+			return 0.8f;
+		if(b.blockID == Block.blockGold.blockID)
+			return 0.7f;
+		if(b.blockID == Block.blockEmerald.blockID)
+			return 0.6f;
+		return 0.0f;
+	}
+	
+	private static void searchPowerReceiverConnectedTo(World world, int x, int y, int z, List<PC_Struct3<PC_CoordI, PC_IPowerReceiver, Float>> receivers, List<PC_Struct2<PC_CoordI, Float>> allpos, float power){
+		Block b = getBlock(world, x, y, z);
+		PC_CoordI pos = new PC_CoordI(x, y, z);
+		PC_Struct2<PC_CoordI, Float> oldStruct = null;
+		for(PC_Struct2<PC_CoordI, Float> s:allpos){
+			if(s.a.equals(pos)){
+				oldStruct = s;
+				break;
+			}
+		}
+		if(b instanceof PC_IPowerReceiver){
+			if(oldStruct == null){
+				receivers.add(new PC_Struct3<PC_CoordI, PC_IPowerReceiver, Float>(pos, (PC_IPowerReceiver)b, power));
+			}
+			return;
+		}
+		float value = giveConductorValueFor(b);
+		if(value<0.01f)
+			return;
+		if(oldStruct == null){
+			oldStruct = new PC_Struct2<PC_CoordI, Float>(pos, 0.0f);
+			allpos.add(oldStruct);
+		}
+		if(power>oldStruct.b){
+			oldStruct.b = power;
+			power *= value;
+			if(power>0.01f);
+			searchPowerReceiverConnectedTo(world, x+1, y, z, receivers, allpos, power);
+			searchPowerReceiverConnectedTo(world, x-1, y, z, receivers, allpos, power);
+			searchPowerReceiverConnectedTo(world, x, y+1, z, receivers, allpos, power);
+			searchPowerReceiverConnectedTo(world, x, y-1, z, receivers, allpos, power);
+			searchPowerReceiverConnectedTo(world, x, y, z+1, receivers, allpos, power);
+			searchPowerReceiverConnectedTo(world, x, y, z-1, receivers, allpos, power);
+		}
+	}
+	
+	public static List<PC_Struct3<PC_CoordI, PC_IPowerReceiver, Float>> getPowerReceiverConnectedTo(World world, int x, int y, int z){
+		List<PC_Struct3<PC_CoordI, PC_IPowerReceiver, Float>> receivers = new ArrayList<PC_Struct3<PC_CoordI,PC_IPowerReceiver,Float>>();
+		searchPowerReceiverConnectedTo(world, x, y, z, receivers, new ArrayList<PC_Struct2<PC_CoordI, Float>>(), 1.0f);
+		return receivers;
+	}
+	
+	public static void givePowerToBlock(World world, int x, int y, int z, float power){
+		List<PC_Struct3<PC_CoordI, PC_IPowerReceiver, Float>> powerReceivers = getPowerReceiverConnectedTo(world, x, y, z);
+		float receivers = powerReceivers.size();
+		for(PC_Struct3<PC_CoordI, PC_IPowerReceiver, Float> receiver:powerReceivers){
+			receiver.b.receivePower(world, receiver.a.x, receiver.a.y, receiver.a.z, power/receivers * receiver.c);
+		}
 	}
 	
 }

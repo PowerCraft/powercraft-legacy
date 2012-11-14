@@ -4,8 +4,8 @@ import java.util.List;
 
 import net.minecraft.src.Block;
 import net.minecraft.src.Item;
-import net.minecraft.src.ItemStack;
 import net.minecraftforge.common.Configuration;
+import powercraft.core.PC_Block;
 import powercraft.core.PC_ItemStack;
 import powercraft.core.PC_Module;
 import powercraft.core.PC_Utils;
@@ -25,7 +25,8 @@ public class mod_PowerCraftLight extends PC_Module {
 
 	@SidedProxy(clientSide = "powercraft.light.PCli_ClientProxy", serverSide = "powercraft.light.PCli_CommonProxy")
 	public static PCli_CommonProxy proxy;
-	public static PCli_BlockLight light;
+	public static PC_Block light;
+	public static PC_Block lightningConductor;
 	
 	public static mod_PowerCraftLight getInstance(){
 		return (mod_PowerCraftLight)PC_Module.getModule("PowerCraft-Light");
@@ -77,6 +78,7 @@ public class mod_PowerCraftLight extends PC_Module {
 	@Override
 	protected void initBlocks() {
 		light = PC_Utils.register(this, 485, PCli_BlockLight.class, PCli_TileEntityLight.class);
+		lightningConductor = PC_Utils.register(this, 487, PCli_BlockLightningConductor.class, PCli_ItemBlockLightningConductor.class, PCli_TileEntityLightningConductor.class);
 	}
 
 	@Override
