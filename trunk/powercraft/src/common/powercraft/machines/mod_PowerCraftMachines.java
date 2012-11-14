@@ -26,6 +26,7 @@ public class mod_PowerCraftMachines extends PC_Module {
 	public static PC_Block automaticWorkbench;
 	public static PC_Block roaster;
 	public static PC_Block replacer;
+	public static PC_Block transmutabox;
 	
 	public static List<Integer >roasterIgnoreBlockIDs;
 	
@@ -82,6 +83,7 @@ public class mod_PowerCraftMachines extends PC_Module {
 		automaticWorkbench = PC_Utils.register(this, 482, PCma_BlockAutomaticWorkbench.class, PCma_TileEntityAutomaticWorkbench.class);
 		roaster = PC_Utils.register(this, 483, PCma_BlockRoaster.class, PCma_TileEntityRoaster.class);
 		replacer = PC_Utils.register(this, 484, PCma_BlockReplacer.class, PCma_TileEntityReplacer.class);
+		transmutabox = PC_Utils.register(this, 485, PCma_BlockTransmutabox.class, PCma_TileEntityTransmutabox.class);
 	}
 
 	@Override

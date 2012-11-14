@@ -14,7 +14,7 @@ import powercraft.transport.PCtr_BeltHelper;
 
 public class PCli_ItemBlockLightningConductor extends PC_ItemBlock {
 
-	protected PCli_ItemBlockLightningConductor(int id) {
+	public PCli_ItemBlockLightningConductor(int id) {
 		super(id);
 		setMaxDamage(0);
 		setHasSubtypes(false);

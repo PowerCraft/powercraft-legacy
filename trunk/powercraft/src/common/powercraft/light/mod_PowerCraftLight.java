@@ -77,8 +77,8 @@ public class mod_PowerCraftLight extends PC_Module {
 
 	@Override
 	protected void initBlocks() {
-		light = PC_Utils.register(this, 485, PCli_BlockLight.class, PCli_TileEntityLight.class);
-		lightningConductor = PC_Utils.register(this, 487, PCli_BlockLightningConductor.class, PCli_ItemBlockLightningConductor.class, PCli_TileEntityLightningConductor.class);
+		light = PC_Utils.register(this, 486, PCli_BlockLight.class, PCli_TileEntityLight.class);
+		lightningConductor = PC_Utils.register(this, 488, PCli_BlockLightningConductor.class, PCli_ItemBlockLightningConductor.class, PCli_TileEntityLightningConductor.class);
 	}
 
 	@Override
