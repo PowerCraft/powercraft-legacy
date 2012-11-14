@@ -12,6 +12,7 @@ import java.lang.reflect.Modifier;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Random;
 
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.src.AxisAlignedBB;
@@ -1283,12 +1284,8 @@ public class PC_Utils implements PC_IPacketHandler {
 			return 0.0f;
 		if(b.blockID == Block.blockSteel.blockID)
 			return 0.9f;
-		if(b.blockID == Block.blockDiamond.blockID)
-			return 0.8f;
 		if(b.blockID == Block.blockGold.blockID)
 			return 0.7f;
-		if(b.blockID == Block.blockEmerald.blockID)
-			return 0.6f;
 		return 0.0f;
 	}
 	
@@ -1318,7 +1315,8 @@ public class PC_Utils implements PC_IPacketHandler {
 		if(power>oldStruct.b){
 			oldStruct.b = power;
 			power *= value;
-			if(power>0.01f);
+			if(power>0.01f)
+				return;
 			searchPowerReceiverConnectedTo(world, x+1, y, z, receivers, allpos, power);
 			searchPowerReceiverConnectedTo(world, x-1, y, z, receivers, allpos, power);
 			searchPowerReceiverConnectedTo(world, x, y+1, z, receivers, allpos, power);
@@ -1329,6 +1327,7 @@ public class PC_Utils implements PC_IPacketHandler {
 	}
 	
 	public static List<PC_Struct3<PC_CoordI, PC_IPowerReceiver, Float>> getPowerReceiverConnectedTo(World world, int x, int y, int z){
+		Random rand = new Random();
 		List<PC_Struct3<PC_CoordI, PC_IPowerReceiver, Float>> receivers = new ArrayList<PC_Struct3<PC_CoordI,PC_IPowerReceiver,Float>>();
 		searchPowerReceiverConnectedTo(world, x, y, z, receivers, new ArrayList<PC_Struct2<PC_CoordI, Float>>(), 1.0f);
 		return receivers;

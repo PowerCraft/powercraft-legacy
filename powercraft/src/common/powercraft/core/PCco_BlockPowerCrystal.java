@@ -101,11 +101,6 @@ public class PCco_BlockPowerCrystal extends PC_Block implements PC_IConfigLoader
 	public boolean renderAsNormalBlock() {
 		return false;
 	}
-
-	@Override
-	public int getRenderType() {
-		return PC_Renderer.getRendererID(true);
-	}
 	
 	@Override
 	public boolean isOpaqueCube() {
