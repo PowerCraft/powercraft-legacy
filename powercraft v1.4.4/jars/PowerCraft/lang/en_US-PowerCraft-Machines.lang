@@ -1,0 +1,20 @@
+# Translation File for "PowerCraft-Machines"
+pc.gui.automaticWorkbench.redstoneActivated = Redstone triggered
+pc.gui.blockReplacer.err3zeros = Expects at least 1 value unequal 0.
+pc.gui.blockReplacer.errWrongValue = Expects a value between -16 and 16.
+pc.gui.blockReplacer.particleFrame = Particles
+pc.gui.blockReplacer.title = Block Replacer
+pc.gui.xpbank.all = all
+pc.gui.xpbank.currentPlayerLevel = Your level:
+pc.gui.xpbank.deposit = Deposit:
+pc.gui.xpbank.oneLevel = 1 level
+pc.gui.xpbank.storagePoints = Stored XP:
+pc.gui.xpbank.withdraw = Withdraw:
+pc.gui.xpbank.xpLevels = levels
+pc.gui.xpbank.xpUnit = points
+pc.roaster.insertFuel = fuel
+tile.PCma_BlockAutomaticWorkbench.name = Automatic Workbench
+tile.PCma_BlockReplacer.name = Replacer
+tile.PCma_BlockRoaster.name = Roaster
+tile.PCma_BlockTransmutabox.name = Transmutabox
+tile.PCma_BlockXPBank.name = XP Bank

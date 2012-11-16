@@ -1,0 +1,5 @@
+# Translation File for "PowerCraft-Light"
+pc.gui.light.isHuge = is Huge
+pc.gui.light.isStable = is Stable
+tile.PCli_BlockLight.name = Light
+tile.PCli_BlockLightningConductor.name = Lightning Conductor
