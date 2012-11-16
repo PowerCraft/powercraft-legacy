@@ -1,0 +1,24 @@
+# Translation File for "PowerCraft-Transport"
+item.PCtr_ItemArmorStickyBoots.name = Sticky Iron Boots
+pc.gui.ejector.modeAll = All contents at once
+pc.gui.ejector.modeEjectTitle = Ejection mode:
+pc.gui.ejector.modeItems = Single items
+pc.gui.ejector.modeSelectFirst = First slot
+pc.gui.ejector.modeSelectLast = Last slot
+pc.gui.ejector.modeSelectRandom = Random slot
+pc.gui.ejector.modeSelectTitle = Method of selection:
+pc.gui.ejector.modeStacks = Whole stacks
+pc.gui.separationBelt.group = Ignore subtypes of
+pc.gui.separationBelt.groupAll = All
+pc.gui.separationBelt.groupLogs = Logs
+pc.gui.separationBelt.groupPlanks = Planks
+tile.PCtr_BlockBeltBreak.name = break belt
+tile.PCtr_BlockBeltDetector.name = detection belt
+tile.PCtr_BlockBeltEjector.name = ejection belt
+tile.PCtr_BlockBeltNormal.name = normal belt
+tile.PCtr_BlockBeltRedirector.name = redirector belt
+tile.PCtr_BlockBeltSeparator.name = seperator belt
+tile.PCtr_BlockBeltSpeedy.name = speedy belt
+tile.PCtr_BlockElevator.down.name = elevator down
+tile.PCtr_BlockElevator.name = elevator
+tile.PCtr_BlockElevator.up.name = elevator up
