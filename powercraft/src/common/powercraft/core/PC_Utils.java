@@ -484,7 +484,7 @@ public class PC_Utils implements PC_IPacketHandler {
 			Class c = guis.get(name);
 			if(PC_GresBaseWithInventory.class.isAssignableFrom(c)){
 				try {
-					PC_GresBaseWithInventory bwi = createClass(c, new Class[]{EntityPlayer.class, Object[].class}, new Object[]{player, o});
+					PC_GresBaseWithInventory bwi = (PC_GresBaseWithInventory)createClass(c, new Class[]{EntityPlayer.class, Object[].class}, new Object[]{player, o});
 					player.craftingInventory = bwi;
 					player.craftingInventory.windowId = guiID;
 					player.craftingInventory.addCraftingToCrafters((EntityPlayerMP)player);
