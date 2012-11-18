@@ -4,20 +4,16 @@ import java.util.List;
 
 public class EntityAIAvoidEntity extends EntityAIBase
 {
-    /** The entity we are attached to */
     private EntityCreature theEntity;
     private float farSpeed;
     private float nearSpeed;
     private Entity closestLivingEntity;
     private float distanceFromEntity;
 
-    /** The PathEntity of our entity */
     private PathEntity entityPathEntity;
 
-    /** The PathNavigate of our entity */
     private PathNavigate entityPathNavigate;
 
-    /** The class of the entity we should avoid */
     private Class targetEntityClass;
 
     public EntityAIAvoidEntity(EntityCreature par1EntityCreature, Class par2Class, float par3, float par4, float par5)
@@ -31,9 +27,6 @@ public class EntityAIAvoidEntity extends EntityAIBase
         this.setMutexBits(1);
     }
 
-    /**
-     * Returns whether the EntityAIBase should begin execution.
-     */
     public boolean shouldExecute()
     {
         if (this.targetEntityClass == EntityPlayer.class)
@@ -86,33 +79,21 @@ public class EntityAIAvoidEntity extends EntityAIBase
         }
     }
 
-    /**
-     * Returns whether an in-progress EntityAIBase should continue executing
-     */
     public boolean continueExecuting()
     {
         return !this.entityPathNavigate.noPath();
     }
 
-    /**
-     * Execute a one shot task or start executing a continuous task
-     */
     public void startExecuting()
     {
         this.entityPathNavigate.setPath(this.entityPathEntity, this.farSpeed);
     }
 
-    /**
-     * Resets the task
-     */
     public void resetTask()
     {
         this.closestLivingEntity = null;
     }
 
-    /**
-     * Updates the task
-     */
     public void updateTask()
     {
         if (this.theEntity.getDistanceSqToEntity(this.closestLivingEntity) < 49.0D)

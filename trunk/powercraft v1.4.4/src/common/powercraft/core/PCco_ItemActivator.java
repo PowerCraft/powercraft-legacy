@@ -8,34 +8,36 @@ import net.minecraft.src.EntityPlayer;
 import net.minecraft.src.ItemStack;
 import net.minecraft.src.World;
 
-public class PCco_ItemActivator extends PC_Item {
-	
-	public PCco_ItemActivator(int id){
-		super(id);
-		setMaxDamage(100);
-		setMaxStackSize(1);
-		setIconIndex(2);
-		setCreativeTab(CreativeTabs.tabTools);
-	}
-	
-	@Override
-	public boolean onItemUse(ItemStack itemstack, EntityPlayer entityplayer, World world, int i, int j, int k, int l, float par8, float par9, float par10) {
+public class PCco_ItemActivator extends PC_Item
+{
+    public PCco_ItemActivator(int id)
+    {
+        super(id);
+        setMaxDamage(100);
+        setMaxStackSize(1);
+        setIconIndex(2);
+        setCreativeTab(CreativeTabs.tabTools);
+    }
 
-		List<PC_IActivatorListener>listeners = PC_ActivatorListener.getListeners();
-		
-		for (PC_IActivatorListener listener : listeners) {
+    @Override
+    public boolean onItemUse(ItemStack itemstack, EntityPlayer entityplayer, World world, int i, int j, int k, int l, float par8, float par9, float par10)
+    {
+        List<PC_IActivatorListener>listeners = PC_ActivatorListener.getListeners();
 
-			if (listener.onActivatorUsedOnBlock(itemstack, entityplayer, world, new PC_CoordI(i, j, k))) {
-				return true;
-			}
+        for (PC_IActivatorListener listener : listeners)
+        {
+            if (listener.onActivatorUsedOnBlock(itemstack, entityplayer, world, new PC_CoordI(i, j, k)))
+            {
+                return true;
+            }
+        }
 
-		}
-		return false;
-	}
-	
-	@Override
-	public String[] getDefaultNames() {
-		return new String[]{getItemName(), "Activation Crystal"};
-	}
-	
+        return false;
+    }
+
+    @Override
+    public String[] getDefaultNames()
+    {
+        return new String[] {getItemName(), "Activation Crystal"};
+    }
 }

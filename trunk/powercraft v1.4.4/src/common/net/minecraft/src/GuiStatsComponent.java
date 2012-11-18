@@ -15,15 +15,10 @@ public class GuiStatsComponent extends JComponent
 {
     private static final DecimalFormat field_79020_a = new DecimalFormat("########0.000");
 
-    /** An array containing the columns that make up the memory use graph. */
     private int[] memoryUse = new int[256];
 
-    /**
-     * Counts the number of updates. Used as the index into the memoryUse array to display the latest value.
-     */
     private int updateCounter = 0;
 
-    /** An array containing the strings displayed in this stats component. */
     private String[] displayStrings = new String[11];
     private final MinecraftServer field_79017_e;
 
@@ -37,9 +32,6 @@ public class GuiStatsComponent extends JComponent
         this.setBackground(Color.BLACK);
     }
 
-    /**
-     * Updates the stat values and calls paint to redraw the component.
-     */
     private void updateStats()
     {
         this.displayStrings = new String[5 + DimensionManager.getIDs().length];
@@ -54,16 +46,18 @@ public class GuiStatsComponent extends JComponent
         if (this.field_79017_e.worldServers != null)
         {
             int var3 = 0;
+
             for (Integer id : DimensionManager.getIDs())
             {
                 this.displayStrings[5 + var3] = "Lvl " + id + " tick: " + field_79020_a.format(this.func_79015_a(this.field_79017_e.worldTickTimes.get(id)) * 1.0E-6D) + " ms";
-
                 WorldServer world = DimensionManager.getWorld(id);
+
                 if (world != null && world.theChunkProviderServer != null)
                 {
                     this.displayStrings[5 + var3] = this.displayStrings[5 + var3] + ", " + world.theChunkProviderServer.makeString();
                     this.displayStrings[5 + var3] = this.displayStrings[5 + var3] + ", Vec3: " + world.getWorldVec3Pool().func_82590_d() + " / " + world.getWorldVec3Pool().func_82591_c();
                 }
+
                 var3++;
             }
         }
@@ -110,9 +104,6 @@ public class GuiStatsComponent extends JComponent
         }
     }
 
-    /**
-     * Public static accessor to call updateStats.
-     */
     static void update(GuiStatsComponent par0GuiStatsComponent)
     {
         par0GuiStatsComponent.updateStats();

@@ -8,104 +8,126 @@ import powercraft.core.PC_PacketHandler;
 import powercraft.core.PC_TileEntity;
 import powercraft.core.PC_Utils;
 
-public class PCli_TileEntityLight extends PC_TileEntity  {
-	private PC_Color color = null;
-	/** flag that this light is lamp, and not indicator */
-	private boolean isStable;
-	/** flag that this light huge */
-	private boolean isHuge;
-	
-	@Override
-	public void readFromNBT(NBTTagCompound nbttagcompound) {
-		super.readFromNBT(nbttagcompound);
-		if(color==null)
-			color = new PC_Color();
-		PC_Utils.loadFromNBT(nbttagcompound, "color", color);
-		isStable = nbttagcompound.getBoolean("stable");
-		isHuge = nbttagcompound.getBoolean("huge");
-	}
+public class PCli_TileEntityLight extends PC_TileEntity
+{
+    private PC_Color color = null;
 
-	@Override
-	public void writeToNBT(NBTTagCompound nbttagcompound) {
-		super.writeToNBT(nbttagcompound);
-		if(color!=null)
-			PC_Utils.saveToNBT(nbttagcompound, "color", color);
-		nbttagcompound.setBoolean("stable", isStable);
-		nbttagcompound.setBoolean("huge", isHuge);
-	}
+    private boolean isStable;
 
-	/**
-	 * Set the light's color index
-	 * 
-	 * @param c color index
-	 */
-	public void setColor(PC_Color c) {
-		color = c;
-		worldObj.markBlockAsNeedsUpdate(xCoord, yCoord, zCoord);
-	}
+    private boolean isHuge;
 
-	/**
-	 * Get the light color index
-	 * 
-	 * @return color index
-	 */
-	public PC_Color getColor() {
-		return color;
-	}
+    @Override
+    public void readFromNBT(NBTTagCompound nbttagcompound)
+    {
+        super.readFromNBT(nbttagcompound);
 
-	public void setStable(boolean stable) {
-		PC_PacketHandler.setTileEntity(this, "isStable", stable);
-		isStable = stable;
-		worldObj.markBlockAsNeedsUpdate(xCoord, yCoord, zCoord);
-	}
-	
-	public boolean isStable(){
-		return isStable;
-	}
-	
-	public void setHuge(boolean huge) {
-		PC_PacketHandler.setTileEntity(this, "isHuge", huge);
-		isHuge = huge;
-	}
-	
-	public boolean isHuge(){
-		return isHuge;
-	}
-	
-	/**
-	 * @return true if light is glowing
-	 */
-	public boolean isActive() {
-		return PC_Utils.getBID(worldObj, xCoord, yCoord, zCoord) == PCli_BlockLight.on.blockID;
-	}
+        if (color == null)
+        {
+            color = new PC_Color();
+        }
 
-	@Override
-	public void setData(Object[] o) {
-		int p = 0;
-		while(p<o.length){
-			String var = (String)o[p++];
-			if(var.equals("color")){
-				color = (PC_Color)o[p++];
-			}else if(var.equals("isStable")){
-				isStable = (Boolean)o[p++];
-				PCli_BlockLight bLight = (PCli_BlockLight)getBlockType();
-				if(isStable)
-					bLight.onPoweredBlockChange(worldObj, xCoord, yCoord, zCoord, true);
-				else
-					bLight.updateTick(worldObj, xCoord, yCoord, zCoord, new Random());
-			}else if(var.equals("isHuge")){
-				isHuge = (Boolean)o[p++];
-			}
-		}
-		worldObj.markBlockAsNeedsUpdate(xCoord, yCoord, zCoord);
-	}
+        PC_Utils.loadFromNBT(nbttagcompound, "color", color);
+        isStable = nbttagcompound.getBoolean("stable");
+        isHuge = nbttagcompound.getBoolean("huge");
+    }
 
-	@Override
-	public Object[] getData() {
-		return new Object[]{
-			"color", color,
-			"isStable", isStable,
-			"isHuge", isHuge
-		};
-	}
+    @Override
+    public void writeToNBT(NBTTagCompound nbttagcompound)
+    {
+        super.writeToNBT(nbttagcompound);
+
+        if (color != null)
+        {
+            PC_Utils.saveToNBT(nbttagcompound, "color", color);
+        }
+
+        nbttagcompound.setBoolean("stable", isStable);
+        nbttagcompound.setBoolean("huge", isHuge);
+    }
+
+    public void setColor(PC_Color c)
+    {
+        color = c;
+        worldObj.markBlockAsNeedsUpdate(xCoord, yCoord, zCoord);
+    }
+
+    public PC_Color getColor()
+    {
+        return color;
+    }
+
+    public void setStable(boolean stable)
+    {
+        PC_PacketHandler.setTileEntity(this, "isStable", stable);
+        isStable = stable;
+        worldObj.markBlockAsNeedsUpdate(xCoord, yCoord, zCoord);
+    }
+
+    public boolean isStable()
+    {
+        return isStable;
+    }
+
+    public void setHuge(boolean huge)
+    {
+        PC_PacketHandler.setTileEntity(this, "isHuge", huge);
+        isHuge = huge;
+    }
+
+    public boolean isHuge()
+    {
+        return isHuge;
+    }
+
+    public boolean isActive()
+    {
+        return PC_Utils.getBID(worldObj, xCoord, yCoord, zCoord) == PCli_BlockLight.on.blockID;
+    }
+
+    @Override
+    public void setData(Object[] o)
+    {
+        int p = 0;
+
+        while (p < o.length)
+        {
+            String var = (String)o[p++];
+
+            if (var.equals("color"))
+            {
+                color = (PC_Color)o[p++];
+            }
+            else if (var.equals("isStable"))
+            {
+                isStable = (Boolean)o[p++];
+                PCli_BlockLight bLight = (PCli_BlockLight)getBlockType();
+
+                if (isStable)
+                {
+                    bLight.onPoweredBlockChange(worldObj, xCoord, yCoord, zCoord, true);
+                }
+                else
+                {
+                    bLight.updateTick(worldObj, xCoord, yCoord, zCoord, new Random());
+                }
+            }
+            else if (var.equals("isHuge"))
+            {
+                isHuge = (Boolean)o[p++];
+            }
+        }
+
+        worldObj.markBlockAsNeedsUpdate(xCoord, yCoord, zCoord);
+    }
+
+    @Override
+    public Object[] getData()
+    {
+        return new Object[]
+                {
+                    "color", color,
+                    "isStable", isStable,
+                    "isHuge", isHuge
+                };
+    }
 }

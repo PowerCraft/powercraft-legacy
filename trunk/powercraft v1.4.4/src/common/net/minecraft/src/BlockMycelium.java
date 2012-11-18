@@ -14,9 +14,6 @@ public class BlockMycelium extends Block
         this.setCreativeTab(CreativeTabs.tabBlock);
     }
 
-    /**
-     * From the specified side and block metadata retrieves the blocks texture. Args: side, metadata
-     */
     public int getBlockTextureFromSideAndMetadata(int par1, int par2)
     {
         return par1 == 1 ? 78 : (par1 == 0 ? 2 : 77);
@@ -24,9 +21,6 @@ public class BlockMycelium extends Block
 
     @SideOnly(Side.CLIENT)
 
-    /**
-     * Retrieves the block texture to use based on the display side. Args: iBlockAccess, x, y, z, side
-     */
     public int getBlockTexture(IBlockAccess par1IBlockAccess, int par2, int par3, int par4, int par5)
     {
         if (par5 == 1)
@@ -44,9 +38,6 @@ public class BlockMycelium extends Block
         }
     }
 
-    /**
-     * Ticks the block if it's been scheduled
-     */
     public void updateTick(World par1World, int par2, int par3, int par4, Random par5Random)
     {
         if (!par1World.isRemote)
@@ -75,9 +66,6 @@ public class BlockMycelium extends Block
 
     @SideOnly(Side.CLIENT)
 
-    /**
-     * A randomly called display update to be able to add particles or other items for display
-     */
     public void randomDisplayTick(World par1World, int par2, int par3, int par4, Random par5Random)
     {
         super.randomDisplayTick(par1World, par2, par3, par4, par5Random);
@@ -88,9 +76,6 @@ public class BlockMycelium extends Block
         }
     }
 
-    /**
-     * Returns the ID of the items to drop on destruction.
-     */
     public int idDropped(int par1, Random par2Random, int par3)
     {
         return Block.dirt.idDropped(0, par2Random, par3);

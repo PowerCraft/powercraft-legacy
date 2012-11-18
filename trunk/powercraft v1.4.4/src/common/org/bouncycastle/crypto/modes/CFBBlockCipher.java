@@ -60,17 +60,11 @@ public class CFBBlockCipher implements BlockCipher
         }
     }
 
-    /**
-     * Return the name of the algorithm the cipher implements.
-     */
     public String getAlgorithmName()
     {
         return this.field_71811_e.getAlgorithmName() + "/CFB" + this.field_71810_d * 8;
     }
 
-    /**
-     * Return the block size for this cipher (in bytes).
-     */
     public int getBlockSize()
     {
         return this.field_71810_d;

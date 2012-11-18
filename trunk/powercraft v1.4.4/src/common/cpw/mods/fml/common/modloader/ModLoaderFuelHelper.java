@@ -5,7 +5,6 @@ import cpw.mods.fml.common.IFuelHandler;
 
 public class ModLoaderFuelHelper implements IFuelHandler
 {
-
     private BaseModProxy mod;
 
     public ModLoaderFuelHelper(BaseModProxy mod)
@@ -18,5 +17,4 @@ public class ModLoaderFuelHelper implements IFuelHandler
     {
         return mod.addFuel(fuel.itemID, fuel.itemID);
     }
-
 }

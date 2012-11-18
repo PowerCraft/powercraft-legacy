@@ -11,5 +11,4 @@ public class ModNameFunction implements Function<ModContainer, String>
     {
         return input.getName();
     }
-
 }

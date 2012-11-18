@@ -8,7 +8,6 @@ import java.awt.event.WindowEvent;
 @SideOnly(Side.SERVER)
 final class ServerWindowAdapter extends WindowAdapter
 {
-    /** The Minecraft instance. */
     final DedicatedServer mc;
 
     ServerWindowAdapter(DedicatedServer par1DedicatedServer)

@@ -6,7 +6,6 @@ import cpw.mods.fml.common.IPickupNotifier;
 
 public class ModLoaderPickupNotifier implements IPickupNotifier
 {
-
     private BaseModProxy mod;
 
     public ModLoaderPickupNotifier(BaseModProxy mod)
@@ -19,5 +18,4 @@ public class ModLoaderPickupNotifier implements IPickupNotifier
     {
         mod.onItemPickup(player, item.item);
     }
-
 }

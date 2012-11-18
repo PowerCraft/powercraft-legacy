@@ -11,24 +11,15 @@ import cpw.mods.fml.common.registry.GameRegistry;
 
 public class EntityItem extends Entity
 {
-    /** The item stack of this EntityItem. */
     public ItemStack item;
 
-    /**
-     * The age of this EntityItem (used to animate it up and down as well as expire it)
-     */
     public int age = 0;
     public int delayBeforeCanPickup;
 
-    /** The health of this EntityItem. (For example, damage for tools) */
     private int health = 5;
 
-    /** The EntityItem's random initial float height. */
     public float hoverStart = (float)(Math.random() * Math.PI * 2.0D);
 
-    /**
-     * The maximum age of this EntityItem.  The item is expired once this is reached.
-     */
     public int lifespan = 6000;
 
     public EntityItem(World par1World, double par2, double par4, double par6, ItemStack par8ItemStack)
@@ -45,10 +36,6 @@ public class EntityItem extends Entity
         this.lifespan = (par8ItemStack.getItem() == null ? 6000 : par8ItemStack.getItem().getEntityLifespan(par8ItemStack, par1World));
     }
 
-    /**
-     * returns if this entity triggers Block.onEntityWalking on the blocks they walk on. used for spiders and wolves to
-     * prevent them from trampling crops
-     */
     protected boolean canTriggerWalking()
     {
         return false;
@@ -63,9 +50,6 @@ public class EntityItem extends Entity
 
     protected void entityInit() {}
 
-    /**
-     * Called to update the entity's position/logic.
-     */
     public void onUpdate()
     {
         super.onUpdate();
@@ -126,6 +110,7 @@ public class EntityItem extends Entity
         if (!this.worldObj.isRemote && this.age >= lifespan)
         {
             ItemExpireEvent event = new ItemExpireEvent(this, (item.getItem() == null ? 6000 : item.getItem().getEntityLifespan(item, worldObj)));
+
             if (MinecraftForge.EVENT_BUS.post(event))
             {
                 lifespan += event.extraLife;
@@ -205,26 +190,16 @@ public class EntityItem extends Entity
         this.age = 4800;
     }
 
-    /**
-     * Returns if this entity is in water and will end up adding the waters velocity to the entity
-     */
     public boolean handleWaterMovement()
     {
         return this.worldObj.handleMaterialAcceleration(this.boundingBox, Material.water, this);
     }
 
-    /**
-     * Will deal the specified amount of damage to the entity if the entity isn't immune to fire damage. Args:
-     * amountDamage
-     */
     protected void dealFireDamage(int par1)
     {
         this.attackEntityFrom(DamageSource.inFire, par1);
     }
 
-    /**
-     * Called when the entity is attacked.
-     */
     public boolean attackEntityFrom(DamageSource par1DamageSource, int par2)
     {
         if (this.func_85032_ar())
@@ -245,9 +220,6 @@ public class EntityItem extends Entity
         }
     }
 
-    /**
-     * (abstract) Protected helper method to write subclass entity data to NBT.
-     */
     public void writeEntityToNBT(NBTTagCompound par1NBTTagCompound)
     {
         par1NBTTagCompound.setShort("Health", (short)((byte)this.health));
@@ -260,9 +232,6 @@ public class EntityItem extends Entity
         }
     }
 
-    /**
-     * (abstract) Protected helper method to read subclass entity data from NBT.
-     */
     public void readEntityFromNBT(NBTTagCompound par1NBTTagCompound)
     {
         this.health = par1NBTTagCompound.getShort("Health") & 255;
@@ -281,9 +250,6 @@ public class EntityItem extends Entity
         }
     }
 
-    /**
-     * Called by a player entity when they collide with an entity
-     */
     public void onCollideWithPlayer(EntityPlayer par1EntityPlayer)
     {
         if (!this.worldObj.isRemote)
@@ -325,7 +291,6 @@ public class EntityItem extends Entity
                 }
 
                 GameRegistry.onPickupNotification(par1EntityPlayer, this);
-
                 this.func_85030_a("random.pop", 0.2F, ((this.rand.nextFloat() - this.rand.nextFloat()) * 0.7F + 1.0F) * 2.0F);
                 par1EntityPlayer.onItemPickup(this, var2);
 
@@ -337,25 +302,16 @@ public class EntityItem extends Entity
         }
     }
 
-    /**
-     * Gets the username of the entity.
-     */
     public String getEntityName()
     {
         return StatCollector.translateToLocal("item." + this.item.getItemName());
     }
 
-    /**
-     * If returns false, the item will not inflict any damage against entities.
-     */
     public boolean canAttackWithItem()
     {
         return false;
     }
 
-    /**
-     * Teleports the entity to another dimension. Params: Dimension number to teleport to
-     */
     public void travelToDimension(int par1)
     {
         super.travelToDimension(par1);

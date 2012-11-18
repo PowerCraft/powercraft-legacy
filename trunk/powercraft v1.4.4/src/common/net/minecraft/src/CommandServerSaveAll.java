@@ -9,9 +9,6 @@ public class CommandServerSaveAll extends CommandBase
         return "save-all";
     }
 
-    /**
-     * Return the required permission level for this command.
-     */
     public int getRequiredPermissionLevel()
     {
         return 4;

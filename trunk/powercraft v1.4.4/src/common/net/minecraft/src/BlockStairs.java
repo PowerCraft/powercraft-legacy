@@ -11,7 +11,6 @@ public class BlockStairs extends Block
     private static final int[] field_82545_b = new int[] {1, -1, 0, 0};
     private static final int[] field_82546_c = new int[] {0, 0, 1, -1};
 
-    /** The block that is used as model for the stair. */
     private final Block modelBlock;
     private final int field_72158_c;
     private boolean field_72156_cr = false;
@@ -29,9 +28,6 @@ public class BlockStairs extends Block
         this.setCreativeTab(CreativeTabs.tabBlock);
     }
 
-    /**
-     * Updates the blocks bounds based on its current state. Args: world, x, y, z
-     */
     public void setBlockBoundsBasedOnState(IBlockAccess par1IBlockAccess, int par2, int par3, int par4)
     {
         if (this.field_72156_cr)
@@ -44,26 +40,16 @@ public class BlockStairs extends Block
         }
     }
 
-    /**
-     * Is this block (a) opaque and (b) a full 1m cube?  This determines whether or not to render the shared face of two
-     * adjacent blocks and also whether the player can attach torches, redstone wire, etc to this block.
-     */
     public boolean isOpaqueCube()
     {
         return false;
     }
 
-    /**
-     * If this block doesn't render as an ordinary block it will return False (examples: signs, buttons, stairs, etc)
-     */
     public boolean renderAsNormalBlock()
     {
         return false;
     }
 
-    /**
-     * The type of render function that is called for this block
-     */
     public int getRenderType()
     {
         return 10;
@@ -334,9 +320,6 @@ public class BlockStairs extends Block
         return var13;
     }
 
-    /**
-     * if the specified block is in the given AABB, add its collision bounding box to the given list
-     */
     public void addCollidingBlockToList(World par1World, int par2, int par3, int par4, AxisAlignedBB par5AxisAlignedBB, List par6List, Entity par7Entity)
     {
         this.func_82541_d(par1World, par2, par3, par4);
@@ -354,25 +337,16 @@ public class BlockStairs extends Block
 
     @SideOnly(Side.CLIENT)
 
-    /**
-     * A randomly called display update to be able to add particles or other items for display
-     */
     public void randomDisplayTick(World par1World, int par2, int par3, int par4, Random par5Random)
     {
         this.modelBlock.randomDisplayTick(par1World, par2, par3, par4, par5Random);
     }
 
-    /**
-     * Called when the block is clicked by a player. Args: x, y, z, entityPlayer
-     */
     public void onBlockClicked(World par1World, int par2, int par3, int par4, EntityPlayer par5EntityPlayer)
     {
         this.modelBlock.onBlockClicked(par1World, par2, par3, par4, par5EntityPlayer);
     }
 
-    /**
-     * Called right before the block is destroyed by a player.  Args: world, x, y, z, metaData
-     */
     public void onBlockDestroyedByPlayer(World par1World, int par2, int par3, int par4, int par5)
     {
         this.modelBlock.onBlockDestroyedByPlayer(par1World, par2, par3, par4, par5);
@@ -380,9 +354,6 @@ public class BlockStairs extends Block
 
     @SideOnly(Side.CLIENT)
 
-    /**
-     * Goes straight to getLightBrightnessForSkyBlocks for Blocks, does some fancy computing for Fluids
-     */
     public int getMixedBrightnessForBlock(IBlockAccess par1IBlockAccess, int par2, int par3, int par4)
     {
         return this.modelBlock.getMixedBrightnessForBlock(par1IBlockAccess, par2, par3, par4);
@@ -390,33 +361,21 @@ public class BlockStairs extends Block
 
     @SideOnly(Side.CLIENT)
 
-    /**
-     * How bright to render this block based on the light its receiving. Args: iBlockAccess, x, y, z
-     */
     public float getBlockBrightness(IBlockAccess par1IBlockAccess, int par2, int par3, int par4)
     {
         return this.modelBlock.getBlockBrightness(par1IBlockAccess, par2, par3, par4);
     }
 
-    /**
-     * Returns how much this block can resist explosions from the passed in entity.
-     */
     public float getExplosionResistance(Entity par1Entity)
     {
         return this.modelBlock.getExplosionResistance(par1Entity);
     }
 
-    /**
-     * From the specified side and block metadata retrieves the blocks texture. Args: side, metadata
-     */
     public int getBlockTextureFromSideAndMetadata(int par1, int par2)
     {
         return this.modelBlock.getBlockTextureFromSideAndMetadata(par1, this.field_72158_c);
     }
 
-    /**
-     * Returns the block texture based on the side being looked at.  Args: side
-     */
     public int getBlockTextureFromSide(int par1)
     {
         return this.modelBlock.getBlockTextureFromSideAndMetadata(par1, this.field_72158_c);
@@ -424,17 +383,11 @@ public class BlockStairs extends Block
 
     @SideOnly(Side.CLIENT)
 
-    /**
-     * Returns which pass should this block be rendered on. 0 for solids and 1 for alpha
-     */
     public int getRenderBlockPass()
     {
         return this.modelBlock.getRenderBlockPass();
     }
 
-    /**
-     * How many world ticks before ticking
-     */
     public int tickRate()
     {
         return this.modelBlock.tickRate();
@@ -442,98 +395,62 @@ public class BlockStairs extends Block
 
     @SideOnly(Side.CLIENT)
 
-    /**
-     * Returns the bounding box of the wired rectangular prism to render.
-     */
     public AxisAlignedBB getSelectedBoundingBoxFromPool(World par1World, int par2, int par3, int par4)
     {
         return this.modelBlock.getSelectedBoundingBoxFromPool(par1World, par2, par3, par4);
     }
 
-    /**
-     * Can add to the passed in vector for a movement vector to be applied to the entity. Args: x, y, z, entity, vec3d
-     */
     public void velocityToAddToEntity(World par1World, int par2, int par3, int par4, Entity par5Entity, Vec3 par6Vec3)
     {
         this.modelBlock.velocityToAddToEntity(par1World, par2, par3, par4, par5Entity, par6Vec3);
     }
 
-    /**
-     * Returns if this block is collidable (only used by Fire). Args: x, y, z
-     */
     public boolean isCollidable()
     {
         return this.modelBlock.isCollidable();
     }
 
-    /**
-     * Returns whether this block is collideable based on the arguments passed in Args: blockMetaData, unknownFlag
-     */
     public boolean canCollideCheck(int par1, boolean par2)
     {
         return this.modelBlock.canCollideCheck(par1, par2);
     }
 
-    /**
-     * Checks to see if its valid to put this block at the specified coordinates. Args: world, x, y, z
-     */
     public boolean canPlaceBlockAt(World par1World, int par2, int par3, int par4)
     {
         return this.modelBlock.canPlaceBlockAt(par1World, par2, par3, par4);
     }
 
-    /**
-     * Called whenever the block is added into the world. Args: world, x, y, z
-     */
     public void onBlockAdded(World par1World, int par2, int par3, int par4)
     {
         this.onNeighborBlockChange(par1World, par2, par3, par4, 0);
         this.modelBlock.onBlockAdded(par1World, par2, par3, par4);
     }
 
-    /**
-     * ejects contained items into the world, and notifies neighbours of an update, as appropriate
-     */
     public void breakBlock(World par1World, int par2, int par3, int par4, int par5, int par6)
     {
         this.modelBlock.breakBlock(par1World, par2, par3, par4, par5, par6);
     }
 
-    /**
-     * Called whenever an entity is walking on top of this block. Args: world, x, y, z, entity
-     */
     public void onEntityWalking(World par1World, int par2, int par3, int par4, Entity par5Entity)
     {
         this.modelBlock.onEntityWalking(par1World, par2, par3, par4, par5Entity);
     }
 
-    /**
-     * Ticks the block if it's been scheduled
-     */
     public void updateTick(World par1World, int par2, int par3, int par4, Random par5Random)
     {
         this.modelBlock.updateTick(par1World, par2, par3, par4, par5Random);
     }
 
-    /**
-     * Called upon block activation (right click on the block.)
-     */
     public boolean onBlockActivated(World par1World, int par2, int par3, int par4, EntityPlayer par5EntityPlayer, int par6, float par7, float par8, float par9)
     {
         return this.modelBlock.onBlockActivated(par1World, par2, par3, par4, par5EntityPlayer, 0, 0.0F, 0.0F, 0.0F);
     }
 
-    /**
-     * Called upon the block being destroyed by an explosion
-     */
     public void onBlockDestroyedByExplosion(World par1World, int par2, int par3, int par4)
     {
         this.modelBlock.onBlockDestroyedByExplosion(par1World, par2, par3, par4);
     }
 
-    /**
-     * Called when the block is placed in the world.
-     */
     public void onBlockPlacedBy(World par1World, int par2, int par3, int par4, EntityLiving par5EntityLiving)
     {
         int var6 = MathHelper.floor_double((double)(par5EntityLiving.rotationYaw * 4.0F / 360.0F) + 0.5D) & 3;
@@ -565,10 +482,6 @@ public class BlockStairs extends Block
         return par5 != 0 && (par5 == 1 || (double)par7 <= 0.5D) ? par9 : par9 | 4;
     }
 
-    /**
-     * Ray traces through the blocks collision from start vector to end vector returning a ray trace hit. Args: world,
-     * x, y, z, startVec, endVec
-     */
     public MovingObjectPosition collisionRayTrace(World par1World, int par2, int par3, int par4, Vec3 par5Vec3, Vec3 par6Vec3)
     {
         MovingObjectPosition[] var7 = new MovingObjectPosition[8];

@@ -8,12 +8,6 @@ import net.minecraft.src.Packet250CustomPayload;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.FMLLog;
 
-/**
- * A simple utility class to send packet 250 packets around the place
- *
- * @author cpw
- *
- */
 public class PacketDispatcher
 {
     public static Packet250CustomPayload getPacket(String type, byte[] data)
@@ -37,6 +31,7 @@ public class PacketDispatcher
     public static void sendPacketToAllAround(double X, double Y, double Z, double range, int dimensionId, Packet packet)
     {
         MinecraftServer server = FMLCommonHandler.instance().getMinecraftServerInstance();
+
         if (server != null)
         {
             server.getConfigurationManager().sendToAllNear(X, Y, Z, range, dimensionId, packet);
@@ -50,6 +45,7 @@ public class PacketDispatcher
     public static void sendPacketToAllInDimension(Packet packet, int dimId)
     {
         MinecraftServer server = FMLCommonHandler.instance().getMinecraftServerInstance();
+
         if (server != null)
         {
             server.getConfigurationManager().sendPacketToAllPlayersInDimension(packet, dimId);
@@ -63,6 +59,7 @@ public class PacketDispatcher
     public static void sendPacketToAllPlayers(Packet packet)
     {
         MinecraftServer server = FMLCommonHandler.instance().getMinecraftServerInstance();
+
         if (server != null)
         {
             server.getConfigurationManager().sendPacketToAllPlayers(packet);

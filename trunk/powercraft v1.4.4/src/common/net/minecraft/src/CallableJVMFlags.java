@@ -8,7 +8,6 @@ import java.util.concurrent.Callable;
 
 class CallableJVMFlags implements Callable
 {
-    /** Reference to the CrashReport object. */
     final CrashReport theCrashReport;
 
     CallableJVMFlags(CrashReport par1CrashReport)
@@ -16,9 +15,6 @@ class CallableJVMFlags implements Callable
         this.theCrashReport = par1CrashReport;
     }
 
-    /**
-     * Returns the number of JVM Flags along with the passed JVM Flags.
-     */
     public String getJVMFlagsAsString()
     {
         RuntimeMXBean var1 = ManagementFactory.getRuntimeMXBean();

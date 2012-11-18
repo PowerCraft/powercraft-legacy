@@ -269,8 +269,10 @@ public class PC_ClientUtils extends PC_Utils {
 	@Override
 	protected void iSpawnParticle(String name, Object[] o){
 		
-		if(!entityFX.containsKey(name))
+		if(!entityFX.containsKey(name)){
+			System.err.println("no particle for \""+name+"\"");
 			return;
+		}
 		
 		Class c = entityFX.get(name);
 		
@@ -279,8 +281,10 @@ public class PC_ClientUtils extends PC_Utils {
 			cp[i] = o[i].getClass();
 		
 		Constructor cons = findBestConstructor(c, cp);
-		if(cons==null)
+		if(cons==null){
+			System.err.println("no best constructor for \""+name+"\"");
 			return;
+		}
 		
 		EntityFX fx=null;
 		

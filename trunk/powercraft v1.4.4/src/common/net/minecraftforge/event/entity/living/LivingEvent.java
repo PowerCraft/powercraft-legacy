@@ -12,15 +12,21 @@ public class LivingEvent extends EntityEvent
         super(entity);
         entityLiving = entity;
     }
-    
+
     @Cancelable
     public static class LivingUpdateEvent extends LivingEvent
     {
-        public LivingUpdateEvent(EntityLiving e){ super(e); }
+        public LivingUpdateEvent(EntityLiving e)
+        {
+            super(e);
+        }
     }
 
     public static class LivingJumpEvent extends LivingEvent
     {
-        public LivingJumpEvent(EntityLiving e){ super(e); }
+        public LivingJumpEvent(EntityLiving e)
+        {
+            super(e);
+        }
     }
 }

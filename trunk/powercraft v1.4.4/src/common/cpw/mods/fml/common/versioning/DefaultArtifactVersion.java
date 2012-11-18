@@ -2,7 +2,6 @@ package cpw.mods.fml.common.versioning;
 
 public class DefaultArtifactVersion implements ArtifactVersion
 {
-
     private ComparableVersion comparableVersion;
     private String label;
     private boolean unbounded;
@@ -56,10 +55,12 @@ public class DefaultArtifactVersion implements ArtifactVersion
         {
             return false;
         }
+
         if (unbounded)
         {
             return true;
         }
+
         if (range != null)
         {
             return range.containsVersion(source);
@@ -84,6 +85,6 @@ public class DefaultArtifactVersion implements ArtifactVersion
     @Override
     public String toString()
     {
-        return label == null ? comparableVersion.toString() : label + ( unbounded ? "" : "@" + range);
+        return label == null ? comparableVersion.toString() : label + (unbounded ? "" : "@" + range);
     }
 }

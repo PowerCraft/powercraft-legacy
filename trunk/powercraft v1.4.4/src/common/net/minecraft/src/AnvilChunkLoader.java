@@ -22,7 +22,6 @@ public class AnvilChunkLoader implements IThreadedFileIO, IChunkLoader
     private Set pendingAnvilChunksCoordinates = new HashSet();
     private Object syncLockObject = new Object();
 
-    /** Save directory for chunks using the Anvil format */
     final File chunkSaveLocation;
 
     public AnvilChunkLoader(File par1File)
@@ -30,9 +29,6 @@ public class AnvilChunkLoader implements IThreadedFileIO, IChunkLoader
         this.chunkSaveLocation = par1File;
     }
 
-    /**
-     * Loads the specified(XZ) chunk into the specified world.
-     */
     public Chunk loadChunk(World par1World, int par2, int par3) throws IOException
     {
         NBTTagCompound var4 = null;
@@ -69,9 +65,6 @@ public class AnvilChunkLoader implements IThreadedFileIO, IChunkLoader
         return this.checkedReadChunkFromNBT(par1World, par2, par3, var4);
     }
 
-    /**
-     * Wraps readChunkFromNBT. Checks the coordinates and several NBT tags.
-     */
     protected Chunk checkedReadChunkFromNBT(World par1World, int par2, int par3, NBTTagCompound par4NBTTagCompound)
     {
         if (!par4NBTTagCompound.hasKey("Level"))
@@ -144,9 +137,6 @@ public class AnvilChunkLoader implements IThreadedFileIO, IChunkLoader
         }
     }
 
-    /**
-     * Returns a boolean stating if the write was unsuccessful.
-     */
     public boolean writeNextIO()
     {
         AnvilChunkLoaderPending var1 = null;
@@ -185,27 +175,12 @@ public class AnvilChunkLoader implements IThreadedFileIO, IChunkLoader
         var2.close();
     }
 
-    /**
-     * Save extra data associated with this Chunk not normally saved during autosave, only during chunk unload.
-     * Currently unused.
-     */
     public void saveExtraChunkData(World par1World, Chunk par2Chunk) {}
 
-    /**
-     * Called every World.tick()
-     */
     public void chunkTick() {}
 
-    /**
-     * Save extra data not associated with any Chunk.  Not saved during autosave, only during world unload.  Currently
-     * unused.
-     */
     public void saveExtraData() {}
 
-    /**
-     * Writes the Chunk passed as an argument to the NBTTagCompound also passed, using the World argument to retrieve
-     * the Chunk's last update time.
-     */
     private void writeChunkToNBT(Chunk par1Chunk, World par2World, NBTTagCompound par3NBTTagCompound)
     {
         par3NBTTagCompound.setInteger("xPos", par1Chunk.xPosition);
@@ -281,6 +256,7 @@ public class AnvilChunkLoader implements IThreadedFileIO, IChunkLoader
         {
             TileEntity var21 = (TileEntity)var17.next();
             var10 = new NBTTagCompound();
+
             try
             {
                 var21.writeToNBT(var10);
@@ -319,10 +295,6 @@ public class AnvilChunkLoader implements IThreadedFileIO, IChunkLoader
         }
     }
 
-    /**
-     * Reads the data stored in the passed NBTTagCompound and creates a Chunk with that data in the passed World.
-     * Returns the created Chunk.
-     */
     private Chunk readChunkFromNBT(World par1World, NBTTagCompound par2NBTTagCompound)
     {
         int var3 = par2NBTTagCompound.getInteger("xPos");

@@ -2,26 +2,15 @@ package net.minecraft.src;
 
 public class EntityAIArrowAttack extends EntityAIBase
 {
-    /** The entity the AI instance has been applied to */
     private final EntityLiving entityHost;
 
-    /**
-     * The entity (as a RangedAttackMob) the AI instance has been applied to.
-     */
     private final IRangedAttackMob rangedAttackEntityHost;
     private EntityLiving attackTarget;
 
-    /**
-     * A decrementing tick that spawns a ranged attack once this value reaches 0. It is then set back to the
-     * maxRangedAttackTime.
-     */
     private int rangedAttackTime = 0;
     private float entityMoveSpeed;
     private int field_75318_f = 0;
 
-    /**
-     * The maximum time the AI has to wait before peforming another ranged attack.
-     */
     private int maxRangedAttackTime;
     private float field_82642_h;
 
@@ -43,9 +32,6 @@ public class EntityAIArrowAttack extends EntityAIBase
         }
     }
 
-    /**
-     * Returns whether the EntityAIBase should begin execution.
-     */
     public boolean shouldExecute()
     {
         EntityLiving var1 = this.entityHost.getAttackTarget();
@@ -61,17 +47,11 @@ public class EntityAIArrowAttack extends EntityAIBase
         }
     }
 
-    /**
-     * Returns whether an in-progress EntityAIBase should continue executing
-     */
     public boolean continueExecuting()
     {
         return this.shouldExecute() || !this.entityHost.getNavigator().noPath();
     }
 
-    /**
-     * Resets the task
-     */
     public void resetTask()
     {
         this.attackTarget = null;
@@ -79,9 +59,6 @@ public class EntityAIArrowAttack extends EntityAIBase
         this.rangedAttackTime = this.maxRangedAttackTime / 2;
     }
 
-    /**
-     * Updates the task
-     */
     public void updateTask()
     {
         double var1 = this.entityHost.getDistanceSq(this.attackTarget.posX, this.attackTarget.boundingBox.minY, this.attackTarget.posZ);

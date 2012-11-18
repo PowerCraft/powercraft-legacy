@@ -5,18 +5,14 @@ import java.util.List;
 
 public class PotionEffect
 {
-    /** ID value of the potion this effect matches. */
     private int potionID;
 
-    /** The duration of the potion effect */
     private int duration;
 
-    /** The amplifier of the potion effect */
     private int amplifier;
     private boolean field_82723_d;
     private boolean field_82724_e;
 
-    /** List of ItemStack that can cure the potion effect **/
     private List<ItemStack> curativeItems;
 
     public PotionEffect(int par1, int par2)
@@ -47,10 +43,6 @@ public class PotionEffect
         this.curativeItems = par1PotionEffect.getCurativeItems();
     }
 
-    /**
-     * merges the input PotionEffect into this one if this.amplifier <= tomerge.amplifier. The duration in the supplied
-     * potion effect is assumed to be greater.
-     */
     public void combine(PotionEffect par1PotionEffect)
     {
         if (this.potionID != par1PotionEffect.potionID)
@@ -73,9 +65,6 @@ public class PotionEffect
         }
     }
 
-    /**
-     * Retrieve the ID of the potion this effect matches.
-     */
     public int getPotionID()
     {
         return this.potionID;
@@ -90,24 +79,16 @@ public class PotionEffect
     {
         return this.amplifier;
     }
-    
-    /***
-     * Returns a list of curative items for the potion effect
-     * @return The list (ItemStack) of curative items for the potion effect 
-     */
+
     public List<ItemStack> getCurativeItems()
     {
         return this.curativeItems;
     }
-    
-    /***
-     * Checks the given ItemStack to see if it is in the list of curative items for the potion effect
-     * @param stack The ItemStack being checked against the list of curative items for the potion effect
-     * @return true if the given ItemStack is in the list of curative items for the potion effect, false otherwise
-     */
+
     public boolean isCurativeItem(ItemStack stack)
     {
         boolean found = false;
+
         for (ItemStack curativeItem : this.curativeItems)
         {
             if (curativeItem.isItemEqual(stack))
@@ -118,23 +99,16 @@ public class PotionEffect
 
         return found;
     }
-    
-    /***
-     * Sets the array of curative items for the potion effect 
-     * @param curativeItems The list of ItemStacks being set to the potion effect
-     */
+
     public void setCurativeItems(List<ItemStack> curativeItems)
     {
         this.curativeItems = curativeItems;
     }
-    
-    /***
-     * Adds the given stack to list of curative items for the potion effect
-     * @param stack The ItemStack being added to the curative item list
-     */
+
     public void addCurativeItem(ItemStack stack)
     {
         boolean found = false;
+
         for (ItemStack curativeItem : this.curativeItems)
         {
             if (curativeItem.isItemEqual(stack))
@@ -142,15 +116,13 @@ public class PotionEffect
                 found = true;
             }
         }
+
         if (!found)
         {
             this.curativeItems.add(stack);
         }
     }
 
-    /**
-     * Set whether this potion is a splash potion.
-     */
     public void setSplashPotion(boolean par1)
     {
         this.field_82723_d = par1;
@@ -233,9 +205,6 @@ public class PotionEffect
         }
     }
 
-    /**
-     * Write a custom potion effect to a potion item's NBT data.
-     */
     public NBTTagCompound writeCustomPotionEffectToNBT(NBTTagCompound par1NBTTagCompound)
     {
         par1NBTTagCompound.setByte("Id", (byte)this.getPotionID());
@@ -245,9 +214,6 @@ public class PotionEffect
         return par1NBTTagCompound;
     }
 
-    /**
-     * Read a custom potion effect from a potion item's NBT data.
-     */
     public static PotionEffect readCustomPotionEffectFromNBT(NBTTagCompound par0NBTTagCompound)
     {
         byte var1 = par0NBTTagCompound.getByte("Id");

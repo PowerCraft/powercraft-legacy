@@ -9,9 +9,6 @@ public class CommandServerPublishLocal extends CommandBase
         return "publish";
     }
 
-    /**
-     * Return the required permission level for this command.
-     */
     public int getRequiredPermissionLevel()
     {
         return 4;

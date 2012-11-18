@@ -7,24 +7,18 @@ import java.util.Map;
 
 public class ContainerRepair extends Container
 {
-    /** Here comes out item you merged and/or renamed. */
     private IInventory outputSlot = new InventoryCraftResult();
 
-    /**
-     * The 2slots where you put your items in that you want to merge and/or rename.
-     */
     private IInventory inputSlots = new InventoryRepair(this, "Repair", 2);
     private World theWorld;
     private int field_82861_i;
     private int field_82858_j;
     private int field_82859_k;
 
-    /** The maximum cost of repairing/renaming in the anvil. */
     public int maximumCost = 0;
     private int field_82856_l = 0;
     private String field_82857_m;
 
-    /** The player that has this container open. */
     private final EntityPlayer thePlayer;
 
     public ContainerRepair(InventoryPlayer par1InventoryPlayer, World par2World, int par3, int par4, int par5, EntityPlayer par6EntityPlayer)
@@ -53,9 +47,6 @@ public class ContainerRepair extends Container
         }
     }
 
-    /**
-     * Callback for when the crafting matrix is changed.
-     */
     public void onCraftMatrixChanged(IInventory par1IInventory)
     {
         super.onCraftMatrixChanged(par1IInventory);
@@ -197,8 +188,10 @@ public class ContainerRepair extends Container
                                 case 1:
                                     var23 = 8;
                                     break;
+
                                 case 2:
                                     var23 = 4;
+
                                 case 3:
                                 case 4:
                                 case 6:
@@ -207,9 +200,11 @@ public class ContainerRepair extends Container
                                 case 9:
                                 default:
                                     break;
+
                                 case 5:
                                     var23 = 2;
                                     break;
+
                                 case 10:
                                     var23 = 1;
                             }
@@ -249,8 +244,10 @@ public class ContainerRepair extends Container
                     case 1:
                         var22 = 8;
                         break;
+
                     case 2:
                         var22 = 4;
+
                     case 3:
                     case 4:
                     case 6:
@@ -259,9 +256,11 @@ public class ContainerRepair extends Container
                     case 9:
                     default:
                         break;
+
                     case 5:
                         var22 = 2;
                         break;
+
                     case 10:
                         var22 = 1;
                 }
@@ -329,9 +328,6 @@ public class ContainerRepair extends Container
         }
     }
 
-    /**
-     * Callback for when the crafting gui is closed.
-     */
     public void onCraftGuiClosed(EntityPlayer par1EntityPlayer)
     {
         super.onCraftGuiClosed(par1EntityPlayer);
@@ -355,9 +351,6 @@ public class ContainerRepair extends Container
         return this.theWorld.getBlockId(this.field_82861_i, this.field_82858_j, this.field_82859_k) != Block.anvil.blockID ? false : par1EntityPlayer.getDistanceSq((double)this.field_82861_i + 0.5D, (double)this.field_82858_j + 0.5D, (double)this.field_82859_k + 0.5D) <= 64.0D;
     }
 
-    /**
-     * Called when a player shift-clicks on a slot. You must override this or you will crash when someone does that.
-     */
     public ItemStack transferStackInSlot(EntityPlayer par1EntityPlayer, int par2)
     {
         ItemStack var3 = null;

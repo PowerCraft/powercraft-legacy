@@ -4,7 +4,6 @@ import java.util.concurrent.Callable;
 
 class CallableType implements Callable
 {
-    /** Reference to the DecitatedServer object. */
     final DedicatedServer theDecitatedServer;
 
     CallableType(DedicatedServer par1DedicatedServer)

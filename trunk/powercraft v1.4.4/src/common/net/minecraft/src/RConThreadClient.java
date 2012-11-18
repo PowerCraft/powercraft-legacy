@@ -9,18 +9,12 @@ import java.net.SocketTimeoutException;
 
 public class RConThreadClient extends RConThreadBase
 {
-    /**
-     * True if the client has succefssfully logged into the RCon, otherwise false
-     */
     private boolean loggedIn = false;
 
-    /** The client's Socket connection */
     private Socket clientSocket;
 
-    /** A buffer for incoming Socket data */
     private byte[] buffer = new byte[1460];
 
-    /** The RCon password */
     private String rconPassword;
 
     RConThreadClient(IServer par1IServer, Socket par2Socket)
@@ -92,6 +86,7 @@ public class RConThreadClient extends RConThreadBase
 
                             this.sendLoginFailedResponse();
                             continue;
+
                         case 3:
                             String var7 = RConUtils.getBytesAsString(this.buffer, var21, var2);
                             int var10000 = var21 + var7.length();
@@ -106,6 +101,7 @@ public class RConThreadClient extends RConThreadBase
                             this.loggedIn = false;
                             this.sendLoginFailedResponse();
                             continue;
+
                         default:
                             this.sendMultipacketResponse(var5, String.format("Unknown request %s", new Object[] {Integer.toHexString(var6)}));
                             continue;
@@ -134,9 +130,6 @@ public class RConThreadClient extends RConThreadBase
         }
     }
 
-    /**
-     * Sends the given response message to the client
-     */
     private void sendResponse(int par1, int par2, String par3Str) throws IOException
     {
         ByteArrayOutputStream var4 = new ByteArrayOutputStream(1248);
@@ -150,17 +143,11 @@ public class RConThreadClient extends RConThreadBase
         this.clientSocket.getOutputStream().write(var4.toByteArray());
     }
 
-    /**
-     * Sends the standard RCon 'authorization failed' response packet
-     */
     private void sendLoginFailedResponse() throws IOException
     {
         this.sendResponse(-1, 2, "");
     }
 
-    /**
-     * Splits the response message into individual packets and sends each one
-     */
     private void sendMultipacketResponse(int par1, String par2Str) throws IOException
     {
         int var3 = par2Str.length();
@@ -175,9 +162,6 @@ public class RConThreadClient extends RConThreadBase
         while (0 != var3);
     }
 
-    /**
-     * Closes the client socket
-     */
     private void closeSocket()
     {
         if (null != this.clientSocket)

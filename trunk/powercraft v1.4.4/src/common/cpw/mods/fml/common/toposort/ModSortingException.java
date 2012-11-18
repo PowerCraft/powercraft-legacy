@@ -37,5 +37,4 @@ public class ModSortingException extends RuntimeException
     {
         return sortingExceptionData;
     }
-
 }

@@ -6,12 +6,8 @@ import net.minecraftforge.common.IPlantable;
 
 public class ItemSeeds extends Item implements IPlantable
 {
-    /**
-     * The type of block this seed turns into (wheat or pumpkin stems for instance)
-     */
     private int blockType;
 
-    /** BlockID of the block the seeds can be planted on. */
     private int soilBlockID;
 
     public ItemSeeds(int par1, int par2, int par3)
@@ -22,10 +18,6 @@ public class ItemSeeds extends Item implements IPlantable
         this.setCreativeTab(CreativeTabs.tabMaterials);
     }
 
-    /**
-     * Callback for item usage. If the item does something special on right clicking, he will have one of those. Return
-     * True if something happen and false if it don't. This is for ITEMS, not BLOCKS
-     */
     public boolean onItemUse(ItemStack par1ItemStack, EntityPlayer par2EntityPlayer, World par3World, int par4, int par5, int par6, int par7, float par8, float par9, float par10)
     {
         if (par7 != 1)

@@ -31,6 +31,7 @@ public class ModDiscoverer
     {
         List<String> knownLibraries = ImmutableList.<String>builder().addAll(modClassLoader.getDefaultLibraries()).addAll(RelaunchLibraryManager.getLibraries()).build();
         File[] minecraftSources = modClassLoader.getParentSources();
+
         if (minecraftSources.length == 1 && minecraftSources[0].isFile())
         {
             FMLLog.fine("Minecraft is a file at %s, loading", minecraftSources[0].getAbsolutePath());
@@ -49,23 +50,21 @@ public class ModDiscoverer
                     else
                     {
                         FMLLog.fine("Found a minecraft related file at %s, examining for mod candidates", minecraftSources[i].getAbsolutePath());
-                        candidates.add(new ModCandidate(minecraftSources[i], minecraftSources[i], ContainerType.JAR, i==0, true));
+                        candidates.add(new ModCandidate(minecraftSources[i], minecraftSources[i], ContainerType.JAR, i == 0, true));
                     }
                 }
                 else if (minecraftSources[i].isDirectory())
                 {
                     FMLLog.fine("Found a minecraft related directory at %s, examining for mod candidates", minecraftSources[i].getAbsolutePath());
-                    candidates.add(new ModCandidate(minecraftSources[i], minecraftSources[i], ContainerType.DIR, i==0, true));
+                    candidates.add(new ModCandidate(minecraftSources[i], minecraftSources[i], ContainerType.DIR, i == 0, true));
                 }
             }
         }
-
     }
 
     public void findModDirMods(File modsDir)
     {
         File[] modList = modsDir.listFiles();
-        // Sort the files into alphabetical order first
         Arrays.sort(modList);
 
         for (File modFile : modList)
@@ -101,6 +100,7 @@ public class ModDiscoverer
             try
             {
                 List<ModContainer> mods = candidate.explore(dataTable);
+
                 if (mods.isEmpty() && !candidate.isClasspath())
                 {
                     nonModLibs.add(candidate.getModContainer());
@@ -132,5 +132,4 @@ public class ModDiscoverer
     {
         return nonModLibs;
     }
-
 }

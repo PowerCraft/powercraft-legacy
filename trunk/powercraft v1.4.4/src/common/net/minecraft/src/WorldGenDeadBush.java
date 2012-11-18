@@ -4,7 +4,6 @@ import java.util.Random;
 
 public class WorldGenDeadBush extends WorldGenerator
 {
-    /** stores the ID for WorldGenDeadBush */
     private int deadBushID;
 
     public WorldGenDeadBush(int par1)
@@ -15,17 +14,20 @@ public class WorldGenDeadBush extends WorldGenerator
     public boolean generate(World par1World, Random par2Random, int par3, int par4, int par5)
     {
         int var11;
-
         Block block = null;
-        do 
+
+        do
         {
             block = Block.blocksList[par1World.getBlockId(par3,  par4, par5)];
+
             if (block != null && !block.isLeaves(par1World, par3, par4, par5))
             {
                 break;
             }
+
             par4--;
-        } while (par4 > 0);
+        }
+        while (par4 > 0);
 
         for (int var7 = 0; var7 < 4; ++var7)
         {

@@ -11,9 +11,6 @@ public class PlayerPositionComparator implements Comparator
         this.theChunkCoordinates = par1ChunkCoordinates;
     }
 
-    /**
-     * Compare the position of two players.
-     */
     public int comparePlayers(EntityPlayerMP par1EntityPlayerMP, EntityPlayerMP par2EntityPlayerMP)
     {
         double var3 = par1EntityPlayerMP.getDistanceSq((double)this.theChunkCoordinates.posX, (double)this.theChunkCoordinates.posY, (double)this.theChunkCoordinates.posZ);

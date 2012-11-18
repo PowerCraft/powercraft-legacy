@@ -4,7 +4,6 @@ import net.minecraft.server.MinecraftServer;
 
 public class BehaviorDispenseBoat extends BehaviorDefaultDispenseItem
 {
-    /** Reference to the BehaviorDefaultDispenseItem object. */
     private final BehaviorDefaultDispenseItem defaultItemDispenseBehavior;
 
     final MinecraftServer mcServer;
@@ -15,9 +14,6 @@ public class BehaviorDispenseBoat extends BehaviorDefaultDispenseItem
         this.defaultItemDispenseBehavior = new BehaviorDefaultDispenseItem();
     }
 
-    /**
-     * Dispense the specified stack, play the dispense sound and spawn particles.
-     */
     public ItemStack dispenseStack(IBlockSource par1IBlockSource, ItemStack par2ItemStack)
     {
         EnumFacing var3 = EnumFacing.func_82600_a(par1IBlockSource.func_82620_h());
@@ -51,9 +47,6 @@ public class BehaviorDispenseBoat extends BehaviorDefaultDispenseItem
         return par2ItemStack;
     }
 
-    /**
-     * Play the dispense sound from the specified block.
-     */
     protected void playDispenseSound(IBlockSource par1IBlockSource)
     {
         par1IBlockSource.getWorld().playAuxSFX(1000, par1IBlockSource.getXInt(), par1IBlockSource.getYInt(), par1IBlockSource.getZInt(), 0);

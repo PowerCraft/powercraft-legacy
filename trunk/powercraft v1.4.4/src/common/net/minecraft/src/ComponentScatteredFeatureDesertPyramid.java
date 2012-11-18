@@ -9,7 +9,6 @@ public class ComponentScatteredFeatureDesertPyramid extends ComponentScatteredFe
 {
     private boolean[] field_74940_h = new boolean[4];
 
-    /** List of items to generate in chests of Temples. */
     public static final WeightedRandomChestContent[] itemsToGenerateInTemple = new WeightedRandomChestContent[] {new WeightedRandomChestContent(Item.diamond.shiftedIndex, 0, 1, 3, 3), new WeightedRandomChestContent(Item.ingotIron.shiftedIndex, 0, 1, 5, 10), new WeightedRandomChestContent(Item.ingotGold.shiftedIndex, 0, 2, 7, 15), new WeightedRandomChestContent(Item.emerald.shiftedIndex, 0, 1, 3, 2), new WeightedRandomChestContent(Item.bone.shiftedIndex, 0, 4, 6, 20), new WeightedRandomChestContent(Item.rottenFlesh.shiftedIndex, 0, 3, 7, 16)};
 
     public ComponentScatteredFeatureDesertPyramid(Random par1Random, int par2, int par3)
@@ -17,10 +16,6 @@ public class ComponentScatteredFeatureDesertPyramid extends ComponentScatteredFe
         super(par1Random, par2, 64, par3, 21, 15, 21);
     }
 
-    /**
-     * second Part of Structure generating, this for example places Spiderwebs, Mob Spawners, it closes Mineshafts at
-     * the end, it adds Fences...
-     */
     public boolean addComponentParts(World par1World, Random par2Random, StructureBoundingBox par3StructureBoundingBox)
     {
         this.fillWithBlocks(par1World, par3StructureBoundingBox, 0, -4, 0, this.scatteredFeatureSizeX - 1, 0, this.scatteredFeatureSizeZ - 1, Block.sandStone.blockID, Block.sandStone.blockID, false);

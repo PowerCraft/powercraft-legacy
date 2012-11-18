@@ -61,18 +61,12 @@ public class EntityPainting extends EntityHanging
         this.func_82328_a(par5);
     }
 
-    /**
-     * (abstract) Protected helper method to write subclass entity data to NBT.
-     */
     public void writeEntityToNBT(NBTTagCompound par1NBTTagCompound)
     {
         par1NBTTagCompound.setString("Motive", this.art.title);
         super.writeEntityToNBT(par1NBTTagCompound);
     }
 
-    /**
-     * (abstract) Protected helper method to read subclass entity data from NBT.
-     */
     public void readEntityFromNBT(NBTTagCompound par1NBTTagCompound)
     {
         String var2 = par1NBTTagCompound.getString("Motive");
@@ -107,9 +101,6 @@ public class EntityPainting extends EntityHanging
         return this.art.sizeY;
     }
 
-    /**
-     * Drop the item currently on this item frame.
-     */
     public void dropItemStack()
     {
         this.entityDropItem(new ItemStack(Item.painting), 0.0F);

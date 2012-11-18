@@ -8,7 +8,6 @@ import java.awt.event.FocusEvent;
 @SideOnly(Side.SERVER)
 class ServerGuiFocusAdapter extends FocusAdapter
 {
-    /** Reference to the ServerGui object. */
     final ServerGUI mcServerGui;
 
     ServerGuiFocusAdapter(ServerGUI par1ServerGUI)

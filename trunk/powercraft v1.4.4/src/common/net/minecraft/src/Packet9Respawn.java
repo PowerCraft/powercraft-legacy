@@ -8,12 +8,8 @@ public class Packet9Respawn extends Packet
 {
     public int respawnDimension;
 
-    /**
-     * The difficulty setting. 0 through 3 for peaceful, easy, normal, hard. The client always sends 1.
-     */
     public int difficulty;
 
-    /** Defaults to 128 */
     public int worldHeight;
     public EnumGameType gameType;
     public WorldType terrainType;
@@ -29,17 +25,11 @@ public class Packet9Respawn extends Packet
         this.terrainType = par3WorldType;
     }
 
-    /**
-     * Passes this Packet on to the NetHandler for processing.
-     */
     public void processPacket(NetHandler par1NetHandler)
     {
         par1NetHandler.handleRespawn(this);
     }
 
-    /**
-     * Abstract. Reads the raw packet data from the data stream.
-     */
     public void readPacketData(DataInputStream par1DataInputStream) throws IOException
     {
         this.respawnDimension = par1DataInputStream.readInt();
@@ -55,9 +45,6 @@ public class Packet9Respawn extends Packet
         }
     }
 
-    /**
-     * Abstract. Writes the raw packet data to the data stream.
-     */
     public void writePacketData(DataOutputStream par1DataOutputStream) throws IOException
     {
         par1DataOutputStream.writeInt(this.respawnDimension);
@@ -67,9 +54,6 @@ public class Packet9Respawn extends Packet
         writeString(this.terrainType.getWorldTypeName(), par1DataOutputStream);
     }
 
-    /**
-     * Abstract. Return the size of the packet (not counting the header).
-     */
     public int getPacketSize()
     {
         return 8 + (this.terrainType == null ? 0 : this.terrainType.getWorldTypeName().length());

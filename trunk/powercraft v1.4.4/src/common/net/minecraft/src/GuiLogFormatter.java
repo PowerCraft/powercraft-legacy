@@ -11,7 +11,6 @@ import java.util.logging.LogRecord;
 @SideOnly(Side.SERVER)
 class GuiLogFormatter extends Formatter
 {
-    /** Reference to the GuiLogOutputHandler. */
     final GuiLogOutputHandler outputHandler;
 
     GuiLogFormatter(GuiLogOutputHandler par1GuiLogOutputHandler)

@@ -11,12 +11,9 @@ import java.util.Map.Entry;
 
 public class MapGenStronghold extends MapGenStructure
 {
-    public static ArrayList<BiomeGenBase> allowedBiomes = new ArrayList<BiomeGenBase>(Arrays.asList(BiomeGenBase.desert, BiomeGenBase.forest, BiomeGenBase.extremeHills, BiomeGenBase.swampland, BiomeGenBase.taiga, BiomeGenBase.icePlains, BiomeGenBase.iceMountains, BiomeGenBase.desertHills, BiomeGenBase.forestHills, BiomeGenBase.extremeHillsEdge, BiomeGenBase.jungle, BiomeGenBase.jungleHills)); 
+    public static ArrayList<BiomeGenBase> allowedBiomes = new ArrayList<BiomeGenBase>(Arrays.asList(BiomeGenBase.desert, BiomeGenBase.forest, BiomeGenBase.extremeHills, BiomeGenBase.swampland, BiomeGenBase.taiga, BiomeGenBase.icePlains, BiomeGenBase.iceMountains, BiomeGenBase.desertHills, BiomeGenBase.forestHills, BiomeGenBase.extremeHillsEdge, BiomeGenBase.jungle, BiomeGenBase.jungleHills));
     private BiomeGenBase[] allowedBiomeGenBases;
 
-    /**
-     * is spawned false and set true once the defined BiomeGenBases were compared with the present ones
-     */
     private boolean ranBiomeCheck;
     private ChunkCoordIntPair[] structureCoords;
     private double field_82671_h;
@@ -110,10 +107,6 @@ public class MapGenStronghold extends MapGenStructure
         return false;
     }
 
-    /**
-     * Returns a list of other locations at which the structure generation has been run, or null if not relevant to this
-     * structure generator.
-     */
     protected List getCoordList()
     {
         ArrayList var1 = new ArrayList();

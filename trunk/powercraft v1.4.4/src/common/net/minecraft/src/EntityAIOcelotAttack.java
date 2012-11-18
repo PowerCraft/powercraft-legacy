@@ -14,9 +14,6 @@ public class EntityAIOcelotAttack extends EntityAIBase
         this.setMutexBits(3);
     }
 
-    /**
-     * Returns whether the EntityAIBase should begin execution.
-     */
     public boolean shouldExecute()
     {
         EntityLiving var1 = this.theEntity.getAttackTarget();
@@ -32,26 +29,17 @@ public class EntityAIOcelotAttack extends EntityAIBase
         }
     }
 
-    /**
-     * Returns whether an in-progress EntityAIBase should continue executing
-     */
     public boolean continueExecuting()
     {
         return !this.theVictim.isEntityAlive() ? false : (this.theEntity.getDistanceSqToEntity(this.theVictim) > 225.0D ? false : !this.theEntity.getNavigator().noPath() || this.shouldExecute());
     }
 
-    /**
-     * Resets the task
-     */
     public void resetTask()
     {
         this.theVictim = null;
         this.theEntity.getNavigator().clearPathEntity();
     }
 
-    /**
-     * Updates the task
-     */
     public void updateTask()
     {
         this.theEntity.getLookHelper().setLookPositionWithEntity(this.theVictim, 30.0F, 30.0F);

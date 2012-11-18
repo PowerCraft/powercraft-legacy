@@ -8,14 +8,11 @@ import java.util.Locale;
 
 public class StatBase
 {
-    /** The Stat ID */
     public final int statId;
 
-    /** The Stat name */
     public final String statName;
     public boolean isIndependent;
 
-    /** Holds the GUID of the stat. */
     public String statGuid;
     private final IStatType type;
     private static NumberFormat numberFormat = NumberFormat.getIntegerInstance(Locale.US);
@@ -37,19 +34,12 @@ public class StatBase
         this(par1, par2Str, simpleStatType);
     }
 
-    /**
-     * Initializes the current stat as independent (i.e., lacking prerequisites for being updated) and returns the
-     * current instance.
-     */
     public StatBase initIndependentStat()
     {
         this.isIndependent = true;
         return this;
     }
 
-    /**
-     * Register the stat into StatList.
-     */
     public StatBase registerStat()
     {
         if (StatList.oneShotStats.containsKey(Integer.valueOf(this.statId)))
@@ -67,9 +57,6 @@ public class StatBase
 
     @SideOnly(Side.CLIENT)
 
-    /**
-     * Returns whether or not the StatBase-derived class is a statistic (running counter) or an achievement (one-shot).
-     */
     public boolean isAchievement()
     {
         return false;

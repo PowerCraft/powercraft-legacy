@@ -10,12 +10,8 @@ public class EntityAIMate extends EntityAIBase
     World theWorld;
     private EntityAnimal targetMate;
 
-    /**
-     * Delay preventing a baby from spawning immediately when two mate-able animals find each other.
-     */
     int spawnBabyDelay = 0;
 
-    /** The speed the creature moves at during mating behavior. */
     float moveSpeed;
 
     public EntityAIMate(EntityAnimal par1EntityAnimal, float par2)
@@ -26,9 +22,6 @@ public class EntityAIMate extends EntityAIBase
         this.setMutexBits(3);
     }
 
-    /**
-     * Returns whether the EntityAIBase should begin execution.
-     */
     public boolean shouldExecute()
     {
         if (!this.theAnimal.isInLove())
@@ -42,26 +35,17 @@ public class EntityAIMate extends EntityAIBase
         }
     }
 
-    /**
-     * Returns whether an in-progress EntityAIBase should continue executing
-     */
     public boolean continueExecuting()
     {
         return this.targetMate.isEntityAlive() && this.targetMate.isInLove() && this.spawnBabyDelay < 60;
     }
 
-    /**
-     * Resets the task
-     */
     public void resetTask()
     {
         this.targetMate = null;
         this.spawnBabyDelay = 0;
     }
 
-    /**
-     * Updates the task
-     */
     public void updateTask()
     {
         this.theAnimal.getLookHelper().setLookPositionWithEntity(this.targetMate, 10.0F, (float)this.theAnimal.getVerticalFaceSpeed());
@@ -74,10 +58,6 @@ public class EntityAIMate extends EntityAIBase
         }
     }
 
-    /**
-     * Loops through nearby animals and finds another animal of the same type that can be mated with. Returns the first
-     * valid mate found.
-     */
     private EntityAnimal getNearbyMate()
     {
         float var1 = 8.0F;
@@ -99,9 +79,6 @@ public class EntityAIMate extends EntityAIBase
         return var4;
     }
 
-    /**
-     * Spawns a baby animal of the same type.
-     */
     private void spawnBaby()
     {
         EntityAgeable var1 = this.theAnimal.func_90011_a(this.targetMate);

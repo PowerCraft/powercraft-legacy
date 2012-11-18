@@ -12,9 +12,6 @@ public class BehaviorDispenseFireball extends BehaviorDefaultDispenseItem
         this.mcServer = par1MinecraftServer;
     }
 
-    /**
-     * Dispense the specified stack, play the dispense sound and spawn particles.
-     */
     public ItemStack dispenseStack(IBlockSource par1IBlockSource, ItemStack par2ItemStack)
     {
         EnumFacing var3 = EnumFacing.func_82600_a(par1IBlockSource.func_82620_h());
@@ -32,9 +29,6 @@ public class BehaviorDispenseFireball extends BehaviorDefaultDispenseItem
         return par2ItemStack;
     }
 
-    /**
-     * Play the dispense sound from the specified block.
-     */
     protected void playDispenseSound(IBlockSource par1IBlockSource)
     {
         par1IBlockSource.getWorld().playAuxSFX(1009, par1IBlockSource.getXInt(), par1IBlockSource.getYInt(), par1IBlockSource.getZInt(), 0);

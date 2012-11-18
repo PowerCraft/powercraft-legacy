@@ -6,15 +6,10 @@ public class EntityAIControlledByPlayer extends EntityAIBase
     private final float maxSpeed;
     private float currentSpeed = 0.0F;
 
-    /** Whether the entity's speed is boosted. */
     private boolean speedBoosted = false;
 
-    /**
-     * Counter for speed boosting, upon reaching maxSpeedBoostTime the speed boost will be disabled
-     */
     private int speedBoostTime = 0;
 
-    /** Maximum time the entity's speed should be boosted for. */
     private int maxSpeedBoostTime = 0;
 
     public EntityAIControlledByPlayer(EntityLiving par1EntityLiving, float par2)
@@ -24,34 +19,22 @@ public class EntityAIControlledByPlayer extends EntityAIBase
         this.setMutexBits(7);
     }
 
-    /**
-     * Execute a one shot task or start executing a continuous task
-     */
     public void startExecuting()
     {
         this.currentSpeed = 0.0F;
     }
 
-    /**
-     * Resets the task
-     */
     public void resetTask()
     {
         this.speedBoosted = false;
         this.currentSpeed = 0.0F;
     }
 
-    /**
-     * Returns whether the EntityAIBase should begin execution.
-     */
     public boolean shouldExecute()
     {
         return this.thisEntity.isEntityAlive() && this.thisEntity.riddenByEntity != null && this.thisEntity.riddenByEntity instanceof EntityPlayer && (this.speedBoosted || this.thisEntity.canBeSteered());
     }
 
-    /**
-     * Updates the task
-     */
     public void updateTask()
     {
         EntityPlayer var1 = (EntityPlayer)this.thisEntity.riddenByEntity;
@@ -174,17 +157,11 @@ public class EntityAIControlledByPlayer extends EntityAIBase
         this.thisEntity.moveEntityWithHeading(0.0F, var7);
     }
 
-    /**
-     * Return whether the entity's speed is boosted.
-     */
     public boolean isSpeedBoosted()
     {
         return this.speedBoosted;
     }
 
-    /**
-     * Boost the entity's movement speed.
-     */
     public void boostSpeed()
     {
         this.speedBoosted = true;
@@ -192,9 +169,6 @@ public class EntityAIControlledByPlayer extends EntityAIBase
         this.maxSpeedBoostTime = this.thisEntity.getRNG().nextInt(841) + 140;
     }
 
-    /**
-     * Return whether the entity is being controlled by a player.
-     */
     public boolean isControlledByPlayer()
     {
         return !this.isSpeedBoosted() && this.currentSpeed > this.maxSpeed * 0.3F;

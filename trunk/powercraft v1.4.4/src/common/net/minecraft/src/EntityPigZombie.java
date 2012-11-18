@@ -6,10 +6,8 @@ import java.util.List;
 
 public class EntityPigZombie extends EntityZombie
 {
-    /** Above zero if this PigZombie is Angry. */
     private int angerLevel = 0;
 
-    /** A random delay until this PigZombie next makes a sound. */
     private int randomSoundDelay = 0;
 
     public EntityPigZombie(World par1World)
@@ -20,17 +18,11 @@ public class EntityPigZombie extends EntityZombie
         this.isImmuneToFire = true;
     }
 
-    /**
-     * Returns true if the newer Entity AI code should be run
-     */
     protected boolean isAIEnabled()
     {
         return false;
     }
 
-    /**
-     * Called to update the entity's position/logic.
-     */
     public void onUpdate()
     {
         this.moveSpeed = this.entityToAttack != null ? 0.95F : 0.5F;
@@ -45,52 +37,33 @@ public class EntityPigZombie extends EntityZombie
 
     @SideOnly(Side.CLIENT)
 
-    /**
-     * Returns the texture's file path as a String.
-     */
     public String getTexture()
     {
         return "/mob/pigzombie.png";
     }
 
-    /**
-     * Checks if the entity's current position is a valid location to spawn this entity.
-     */
     public boolean getCanSpawnHere()
     {
         return this.worldObj.difficultySetting > 0 && this.worldObj.checkIfAABBIsClear(this.boundingBox) && this.worldObj.getCollidingBoundingBoxes(this, this.boundingBox).isEmpty() && !this.worldObj.isAnyLiquid(this.boundingBox);
     }
 
-    /**
-     * (abstract) Protected helper method to write subclass entity data to NBT.
-     */
     public void writeEntityToNBT(NBTTagCompound par1NBTTagCompound)
     {
         super.writeEntityToNBT(par1NBTTagCompound);
         par1NBTTagCompound.setShort("Anger", (short)this.angerLevel);
     }
 
-    /**
-     * (abstract) Protected helper method to read subclass entity data from NBT.
-     */
     public void readEntityFromNBT(NBTTagCompound par1NBTTagCompound)
     {
         super.readEntityFromNBT(par1NBTTagCompound);
         this.angerLevel = par1NBTTagCompound.getShort("Anger");
     }
 
-    /**
-     * Finds the closest player within 16 blocks to attack, or null if this Entity isn't interested in attacking
-     * (Animals, Spiders at day, peaceful PigZombies).
-     */
     protected Entity findPlayerToAttack()
     {
         return this.angerLevel == 0 ? null : super.findPlayerToAttack();
     }
 
-    /**
-     * Called when the entity is attacked.
-     */
     public boolean attackEntityFrom(DamageSource par1DamageSource, int par2)
     {
         if (this.func_85032_ar())
@@ -123,9 +96,6 @@ public class EntityPigZombie extends EntityZombie
         }
     }
 
-    /**
-     * Causes this PigZombie to become angry at the supplied Entity (which will be a player).
-     */
     private void becomeAngryAt(Entity par1Entity)
     {
         this.entityToAttack = par1Entity;
@@ -133,33 +103,21 @@ public class EntityPigZombie extends EntityZombie
         this.randomSoundDelay = this.rand.nextInt(40);
     }
 
-    /**
-     * Returns the sound this mob makes while it's alive.
-     */
     protected String getLivingSound()
     {
         return "mob.zombiepig.zpig";
     }
 
-    /**
-     * Returns the sound this mob makes when it is hurt.
-     */
     protected String getHurtSound()
     {
         return "mob.zombiepig.zpighurt";
     }
 
-    /**
-     * Returns the sound this mob makes on death.
-     */
     protected String getDeathSound()
     {
         return "mob.zombiepig.zpigdeath";
     }
 
-    /**
-     * Drop 0-2 items of this living's type
-     */
     protected void dropFewItems(boolean par1, int par2)
     {
         int var3 = this.rand.nextInt(2 + par2);
@@ -178,9 +136,6 @@ public class EntityPigZombie extends EntityZombie
         }
     }
 
-    /**
-     * Called when a player interacts with a mob. e.g. gets milk from a cow, gets into the saddle on a pig.
-     */
     public boolean interact(EntityPlayer par1EntityPlayer)
     {
         return false;
@@ -191,9 +146,6 @@ public class EntityPigZombie extends EntityZombie
         this.dropItem(Item.ingotGold.shiftedIndex, 1);
     }
 
-    /**
-     * Returns the item ID for the item the mob drops on death.
-     */
     protected int getDropItemId()
     {
         return Item.rottenFlesh.shiftedIndex;
@@ -204,18 +156,12 @@ public class EntityPigZombie extends EntityZombie
         this.setCurrentItemOrArmor(0, new ItemStack(Item.swordGold));
     }
 
-    /**
-     * Initialize this creature.
-     */
     public void initCreature()
     {
         super.initCreature();
         this.setVillager(false);
     }
 
-    /**
-     * Returns the amount of damage a mob should deal.
-     */
     public int getAttackStrength(Entity par1Entity)
     {
         ItemStack var2 = this.getHeldItem();

@@ -16,16 +16,16 @@ public class PlayerInteractEvent extends PlayerEvent
         RIGHT_CLICK_BLOCK,
         LEFT_CLICK_BLOCK
     }
-    
+
     public final Action action;
     public final int x;
     public final int y;
     public final int z;
     public final int face;
-    
+
     public Result useBlock = DEFAULT;
     public Result useItem = DEFAULT;
-    
+
     public PlayerInteractEvent(EntityPlayer player, Action action, int x, int y, int z, int face)
     {
         super(player);
@@ -34,9 +34,13 @@ public class PlayerInteractEvent extends PlayerEvent
         this.y = y;
         this.z = z;
         this.face = face;
-        if (face == -1) useBlock = DENY;
+
+        if (face == -1)
+        {
+            useBlock = DENY;
+        }
     }
-    
+
     @Override
     public void setCanceled(boolean cancel)
     {

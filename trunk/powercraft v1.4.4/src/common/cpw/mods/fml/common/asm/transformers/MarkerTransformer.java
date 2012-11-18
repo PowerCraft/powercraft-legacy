@@ -46,6 +46,7 @@ public class MarkerTransformer implements IClassTransformer
     {
         File file = new File(rulesFile);
         URL rulesResource;
+
         if (file.exists())
         {
             rulesResource = file.toURI().toURL();
@@ -54,6 +55,7 @@ public class MarkerTransformer implements IClassTransformer
         {
             rulesResource = Resources.getResource(rulesFile);
         }
+
         Resources.readLines(rulesResource, Charsets.UTF_8, new LineProcessor<Void>()
         {
             @Override
@@ -61,25 +63,30 @@ public class MarkerTransformer implements IClassTransformer
             {
                 return null;
             }
-
             @Override
             public boolean processLine(String input) throws IOException
             {
                 String line = Iterables.getFirst(Splitter.on('#').limit(2).split(input), "").trim();
-                if (line.length()==0)
+
+                if (line.length() == 0)
                 {
                     return true;
                 }
+
                 List<String> parts = Lists.newArrayList(Splitter.on(" ").trimResults().split(line));
-                if (parts.size()!=2)
+
+                if (parts.size() != 2)
                 {
-                    throw new RuntimeException("Invalid config file line "+ input);
+                    throw new RuntimeException("Invalid config file line " + input);
                 }
+
                 List<String> markerInterfaces = Lists.newArrayList(Splitter.on(",").trimResults().split(parts.get(1)));
+
                 for (String marker : markerInterfaces)
                 {
                     markers.put(parts.get(0), marker);
                 }
+
                 return true;
             }
         });
@@ -89,8 +96,15 @@ public class MarkerTransformer implements IClassTransformer
     @Override
     public byte[] transform(String name, byte[] bytes)
     {
-    	if (bytes == null) { return null; }
-        if (!markers.containsKey(name)) { return bytes; }
+        if (bytes == null)
+        {
+            return null;
+        }
+
+        if (!markers.containsKey(name))
+        {
+            return bytes;
+        }
 
         ClassNode classNode = new ClassNode();
         ClassReader classReader = new ClassReader(bytes);
@@ -116,6 +130,7 @@ public class MarkerTransformer implements IClassTransformer
 
         boolean hasTransformer = false;
         MarkerTransformer[] trans = new MarkerTransformer[args.length - 1];
+
         for (int x = 1; x < args.length; x++)
         {
             try
@@ -138,26 +153,13 @@ public class MarkerTransformer implements IClassTransformer
 
         File orig = new File(args[0]);
         File temp = new File(args[0] + ".ATBack");
+
         if (!orig.exists() && !temp.exists())
         {
             System.out.println("Could not find target jar: " + orig);
             return;
         }
-/*
-        if (temp.exists())
-        {
-            if (orig.exists() && !orig.renameTo(new File(args[0] + (new SimpleDateFormat(".yyyy.MM.dd.HHmmss")).format(new Date()))))
-            {
-                System.out.println("Could not backup existing file: " + orig);
-                return;
-            }
-            if (!temp.renameTo(orig))
-            {
-                System.out.println("Could not restore backup from previous run: " + temp);
-                return;
-            }
-        }
-*/
+
         if (!orig.renameTo(temp))
         {
             System.out.println("Could not rename file: " + orig + " -> " + temp);
@@ -205,6 +207,7 @@ public class MarkerTransformer implements IClassTransformer
             }
 
             ZipEntry entry;
+
             while ((entry = inJar.getNextEntry()) != null)
             {
                 if (entry.isDirectory())
@@ -215,11 +218,12 @@ public class MarkerTransformer implements IClassTransformer
 
                 byte[] data = new byte[4096];
                 ByteArrayOutputStream entryBuffer = new ByteArrayOutputStream();
-
                 int len;
+
                 do
                 {
                     len = inJar.read(data);
+
                     if (len > 0)
                     {
                         entryBuffer.write(data, 0, len);
@@ -228,7 +232,6 @@ public class MarkerTransformer implements IClassTransformer
                 while (len != -1);
 
                 byte[] entryData = entryBuffer.toByteArray();
-
                 String entryName = entry.getName();
 
                 if (entryName.endsWith(".class") && !entryName.startsWith("."))

@@ -2,16 +2,12 @@ package net.minecraft.src;
 
 class IntHashMapEntry
 {
-    /** The hash code of this entry */
     final int hashEntry;
 
-    /** The object stored in this entry */
     Object valueEntry;
 
-    /** The next entry in this slot */
     IntHashMapEntry nextEntry;
 
-    /** The id of the hash slot computed from the hash */
     final int slotHash;
 
     IntHashMapEntry(int par1, int par2, Object par3Obj, IntHashMapEntry par4IntHashMapEntry)
@@ -22,17 +18,11 @@ class IntHashMapEntry
         this.slotHash = par1;
     }
 
-    /**
-     * Returns the hash code for this entry
-     */
     public final int getHash()
     {
         return this.hashEntry;
     }
 
-    /**
-     * Returns the object stored in this entry
-     */
     public final Object getValue()
     {
         return this.valueEntry;

@@ -34,10 +34,6 @@ public class ItemMonsterPlacer extends Item
         return var3 != null ? (par2 == 0 ? var3.primaryColor : var3.secondaryColor) : 16777215;
     }
 
-    /**
-     * Callback for item usage. If the item does something special on right clicking, he will have one of those. Return
-     * True if something happen and false if it don't. This is for ITEMS, not BLOCKS
-     */
     public boolean onItemUse(ItemStack par1ItemStack, EntityPlayer par2EntityPlayer, World par3World, int par4, int par5, int par6, int par7, float par8, float par9, float par10)
     {
         if (par3World.isRemote)
@@ -66,10 +62,6 @@ public class ItemMonsterPlacer extends Item
         }
     }
 
-    /**
-     * Spawns the creature specified by the egg's type in the location specified by the last three parameters.
-     * Parameters: world, entityID, x, y, z.
-     */
     public static Entity spawnCreature(World par0World, int par1, double par2, double par4, double par6)
     {
         if (!EntityList.entityEggs.containsKey(Integer.valueOf(par1)))
@@ -105,9 +97,6 @@ public class ItemMonsterPlacer extends Item
 
     @SideOnly(Side.CLIENT)
 
-    /**
-     * Gets an icon index based on an item's damage value and the given render pass
-     */
     public int getIconFromDamageForRenderPass(int par1, int par2)
     {
         return par2 > 0 ? super.getIconFromDamageForRenderPass(par1, par2) + 16 : super.getIconFromDamageForRenderPass(par1, par2);
@@ -115,9 +104,6 @@ public class ItemMonsterPlacer extends Item
 
     @SideOnly(Side.CLIENT)
 
-    /**
-     * returns a list of items with the same ID, but different meta (eg: dye returns 16 items)
-     */
     public void getSubItems(int par1, CreativeTabs par2CreativeTabs, List par3List)
     {
         Iterator var4 = EntityList.entityEggs.values().iterator();

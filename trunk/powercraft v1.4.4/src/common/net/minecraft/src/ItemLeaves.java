@@ -12,9 +12,6 @@ public class ItemLeaves extends ItemBlock
         this.setHasSubtypes(true);
     }
 
-    /**
-     * Returns the metadata of the block which this Item (ItemBlock) can place
-     */
     public int getMetadata(int par1)
     {
         return par1 | 4;
@@ -22,9 +19,6 @@ public class ItemLeaves extends ItemBlock
 
     @SideOnly(Side.CLIENT)
 
-    /**
-     * Gets an icon index based on an item's damage value
-     */
     public int getIconFromDamage(int par1)
     {
         return Block.leaves.getBlockTextureFromSideAndMetadata(0, par1);

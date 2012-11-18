@@ -6,10 +6,8 @@ import java.util.List;
 
 public class ShapelessRecipes implements IRecipe
 {
-    /** Is the ItemStack that you get when craft the recipe. */
     private final ItemStack recipeOutput;
 
-    /** Is a List of ItemStack that composes the recipe. */
     public final List recipeItems;
 
     public ShapelessRecipes(ItemStack par1ItemStack, List par2List)
@@ -23,9 +21,6 @@ public class ShapelessRecipes implements IRecipe
         return this.recipeOutput;
     }
 
-    /**
-     * Used to check if a recipe matches current crafting inventory
-     */
     public boolean matches(InventoryCrafting par1InventoryCrafting, World par2World)
     {
         ArrayList var3 = new ArrayList(this.recipeItems);
@@ -64,17 +59,11 @@ public class ShapelessRecipes implements IRecipe
         return var3.isEmpty();
     }
 
-    /**
-     * Returns an Item that is the result of this recipe
-     */
     public ItemStack getCraftingResult(InventoryCrafting par1InventoryCrafting)
     {
         return this.recipeOutput.copy();
     }
 
-    /**
-     * Returns the size of the recipe area
-     */
     public int getRecipeSize()
     {
         return this.recipeItems.size();

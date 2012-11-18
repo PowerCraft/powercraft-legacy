@@ -107,9 +107,6 @@ public abstract class EntityHanging extends Entity
         return par1 == 32 ? 0.5F : (par1 == 64 ? 0.5F : 0.0F);
     }
 
-    /**
-     * Called to update the entity's position/logic.
-     */
     public void onUpdate()
     {
         if (this.tickCounter1++ == 100 && !this.worldObj.isRemote)
@@ -124,9 +121,6 @@ public abstract class EntityHanging extends Entity
         }
     }
 
-    /**
-     * checks to make sure painting can be placed there
-     */
     public boolean onValidSurface()
     {
         if (!this.worldObj.getCollidingBoundingBoxes(this, this.boundingBox).isEmpty())
@@ -204,9 +198,6 @@ public abstract class EntityHanging extends Entity
         }
     }
 
-    /**
-     * Returns true if other Entities should be prevented from moving through this Entity.
-     */
     public boolean canBeCollidedWith()
     {
         return true;
@@ -217,9 +208,6 @@ public abstract class EntityHanging extends Entity
         return par1Entity instanceof EntityPlayer ? this.attackEntityFrom(DamageSource.causePlayerDamage((EntityPlayer)par1Entity), 0) : false;
     }
 
-    /**
-     * Called when the entity is attacked.
-     */
     public boolean attackEntityFrom(DamageSource par1DamageSource, int par2)
     {
         if (this.func_85032_ar())
@@ -251,9 +239,6 @@ public abstract class EntityHanging extends Entity
         }
     }
 
-    /**
-     * Tries to moves the entity by the passed in displacement. Args: x, y, z
-     */
     public void moveEntity(double par1, double par3, double par5)
     {
         if (!this.worldObj.isRemote && !this.isDead && par1 * par1 + par3 * par3 + par5 * par5 > 0.0D)
@@ -263,9 +248,6 @@ public abstract class EntityHanging extends Entity
         }
     }
 
-    /**
-     * Adds to the current velocity of the entity. Args: x, y, z
-     */
     public void addVelocity(double par1, double par3, double par5)
     {
         if (!this.worldObj.isRemote && !this.isDead && par1 * par1 + par3 * par3 + par5 * par5 > 0.0D)
@@ -275,9 +257,6 @@ public abstract class EntityHanging extends Entity
         }
     }
 
-    /**
-     * (abstract) Protected helper method to write subclass entity data to NBT.
-     */
     public void writeEntityToNBT(NBTTagCompound par1NBTTagCompound)
     {
         par1NBTTagCompound.setByte("Direction", (byte)this.field_82332_a);
@@ -290,20 +269,20 @@ public abstract class EntityHanging extends Entity
             case 0:
                 par1NBTTagCompound.setByte("Dir", (byte)2);
                 break;
+
             case 1:
                 par1NBTTagCompound.setByte("Dir", (byte)1);
                 break;
+
             case 2:
                 par1NBTTagCompound.setByte("Dir", (byte)0);
                 break;
+
             case 3:
                 par1NBTTagCompound.setByte("Dir", (byte)3);
         }
     }
 
-    /**
-     * (abstract) Protected helper method to read subclass entity data from NBT.
-     */
     public void readEntityFromNBT(NBTTagCompound par1NBTTagCompound)
     {
         if (par1NBTTagCompound.hasKey("Direction"))
@@ -317,12 +296,15 @@ public abstract class EntityHanging extends Entity
                 case 0:
                     this.field_82332_a = 2;
                     break;
+
                 case 1:
                     this.field_82332_a = 1;
                     break;
+
                 case 2:
                     this.field_82332_a = 0;
                     break;
+
                 case 3:
                     this.field_82332_a = 3;
             }
@@ -338,8 +320,5 @@ public abstract class EntityHanging extends Entity
 
     public abstract int func_82330_g();
 
-    /**
-     * Drop the item currently on this item frame.
-     */
     public abstract void dropItemStack();
 }

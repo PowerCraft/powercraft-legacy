@@ -15,10 +15,11 @@ public class FMLForgePlugin implements IFMLLoadingPlugin
     @Override
     public String[] getASMTransformerClass()
     {
-        return new String[]{ 
-                                "net.minecraftforge.transformers.ForgeAccessTransformer",
-                                "net.minecraftforge.transformers.EventTransformer"
-                           };
+        return new String[]
+                {
+                    "net.minecraftforge.transformers.ForgeAccessTransformer",
+                    "net.minecraftforge.transformers.EventTransformer"
+                };
     }
 
     @Override

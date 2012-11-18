@@ -92,9 +92,6 @@ public class CrashReportCategory
         return var3.toString();
     }
 
-    /**
-     * Adds a Crashreport section with the given name with the value set to the result of the given Callable;
-     */
     public void addCrashSectionCallable(String par1Str, Callable par2Callable)
     {
         try
@@ -107,17 +104,11 @@ public class CrashReportCategory
         }
     }
 
-    /**
-     * Adds a Crashreport section with the given name with the given value (convered .toString())
-     */
     public void addCrashSection(String par1Str, Object par2Obj)
     {
         this.field_85077_c.add(new CrashReportCategoryEntry(par1Str, par2Obj));
     }
 
-    /**
-     * Adds a Crashreport section with the given name with the given Throwable
-     */
     public void addCrashSectionThrowable(String par1Str, Throwable par2Throwable)
     {
         this.addCrashSection(par1Str, par2Throwable);

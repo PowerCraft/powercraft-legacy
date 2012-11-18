@@ -2,11 +2,9 @@ package net.minecraft.src;
 
 public class ContainerPlayer extends Container
 {
-    /** The crafting matrix inventory. */
     public InventoryCrafting craftMatrix = new InventoryCrafting(this, 2, 2);
     public IInventory craftResult = new InventoryCraftResult();
 
-    /** Determines if inventory manipulation should be handled. */
     public boolean isLocalWorld = false;
     private final EntityPlayer thePlayer;
 
@@ -47,17 +45,11 @@ public class ContainerPlayer extends Container
         this.onCraftMatrixChanged(this.craftMatrix);
     }
 
-    /**
-     * Callback for when the crafting matrix is changed.
-     */
     public void onCraftMatrixChanged(IInventory par1IInventory)
     {
         this.craftResult.setInventorySlotContents(0, CraftingManager.getInstance().findMatchingRecipe(this.craftMatrix, this.thePlayer.worldObj));
     }
 
-    /**
-     * Callback for when the crafting gui is closed.
-     */
     public void onCraftGuiClosed(EntityPlayer par1EntityPlayer)
     {
         super.onCraftGuiClosed(par1EntityPlayer);
@@ -80,9 +72,6 @@ public class ContainerPlayer extends Container
         return true;
     }
 
-    /**
-     * Called when a player shift-clicks on a slot. You must override this or you will crash when someone does that.
-     */
     public ItemStack transferStackInSlot(EntityPlayer par1EntityPlayer, int par2)
     {
         ItemStack var3 = null;

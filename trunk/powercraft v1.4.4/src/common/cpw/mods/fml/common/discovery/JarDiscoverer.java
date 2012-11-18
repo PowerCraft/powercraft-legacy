@@ -24,12 +24,13 @@ public class JarDiscoverer implements ITypeDiscoverer
         List<ModContainer> foundMods = Lists.newArrayList();
         FMLLog.fine("Examining file %s for potential mods", candidate.getModContainer().getName());
         ZipFile jar = null;
+
         try
         {
             jar = new ZipFile(candidate.getModContainer());
-
             ZipEntry modInfo = jar.getEntry("mcmod.info");
             MetadataCollection mc = null;
+
             if (modInfo != null)
             {
                 FMLLog.finer("Located mcmod.info file in file %s", candidate.getModContainer().getName());
@@ -40,12 +41,15 @@ public class JarDiscoverer implements ITypeDiscoverer
                 FMLLog.fine("The mod container %s appears to be missing an mcmod.info file", candidate.getModContainer().getName());
                 mc = MetadataCollection.from(null, "");
             }
+
             for (ZipEntry ze : Collections.list(jar.entries()))
             {
                 Matcher match = classFile.matcher(ze.getName());
+
                 if (match.matches())
                 {
                     ASMModParser modParser;
+
                     try
                     {
                         modParser = new ASMModParser(jar.getInputStream(ze));
@@ -56,10 +60,12 @@ public class JarDiscoverer implements ITypeDiscoverer
                         jar.close();
                         throw e;
                     }
+
                     modParser.validate();
                     modParser.sendToTable(table, candidate);
                     ModContainer container = ModContainerFactory.instance().build(modParser, candidate.getModContainer(), candidate);
-                    if (container!=null)
+
+                    if (container != null)
                     {
                         table.addContainer(container);
                         foundMods.add(container);
@@ -85,7 +91,7 @@ public class JarDiscoverer implements ITypeDiscoverer
                 }
             }
         }
+
         return foundMods;
     }
-
 }

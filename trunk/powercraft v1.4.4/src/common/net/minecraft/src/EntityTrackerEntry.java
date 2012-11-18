@@ -12,7 +12,6 @@ public class EntityTrackerEntry
     public Entity myEntity;
     public int BlocksDistanceThreshold;
 
-    /** check for sync when ticks % updateFrequency==0 */
     public int updateFrequency;
     public int lastScaledXPosition;
     public int lastScaledYPosition;
@@ -28,14 +27,9 @@ public class EntityTrackerEntry
     private double posY;
     private double posZ;
 
-    /** set to true on first sendLocationToClients */
     private boolean isDataInitialized = false;
     private boolean sendVelocityUpdates;
 
-    /**
-     * every 400 ticks a  full teleport packet is sent, rather than just a "move me +x" command, so that position
-     * remains fully synced.
-     */
     private int ticksSinceLastForcedTeleport = 0;
     private Entity field_85178_v;
     private boolean ridingEntity = false;
@@ -66,9 +60,6 @@ public class EntityTrackerEntry
         return this.myEntity.entityId;
     }
 
-    /**
-     * also sends velocity, rotation, and riding info.
-     */
     public void sendLocationToAllClients(List par1List)
     {
         this.playerEntitiesUpdated = false;
@@ -253,9 +244,6 @@ public class EntityTrackerEntry
         }
     }
 
-    /**
-     * if this is a player, then it is not informed
-     */
     public void sendPacketToAllTrackingPlayers(Packet par1Packet)
     {
         Iterator var2 = this.trackedPlayers.iterator();
@@ -267,9 +255,6 @@ public class EntityTrackerEntry
         }
     }
 
-    /**
-     * if this is a player, then it recieves the message also
-     */
     public void sendPacketToAllAssociatedPlayers(Packet par1Packet)
     {
         this.sendPacketToAllTrackingPlayers(par1Packet);
@@ -300,9 +285,6 @@ public class EntityTrackerEntry
         }
     }
 
-    /**
-     * if the player is more than the distance threshold (typically 64) then the player is removed instead
-     */
     public void tryStartWachingThis(EntityPlayerMP par1EntityPlayerMP)
     {
         if (par1EntityPlayerMP != this.myEntity)
@@ -326,14 +308,15 @@ public class EntityTrackerEntry
                     this.motionX = this.myEntity.motionX;
                     this.motionY = this.myEntity.motionY;
                     this.motionZ = this.myEntity.motionZ;
-
                     int posX = MathHelper.floor_double(this.myEntity.posX * 32.0D);
                     int posY = MathHelper.floor_double(this.myEntity.posY * 32.0D);
                     int posZ = MathHelper.floor_double(this.myEntity.posZ * 32.0D);
+
                     if (posX != this.lastScaledXPosition || posY != this.lastScaledYPosition || posZ != this.lastScaledZPosition)
                     {
                         FMLNetworkHandler.makeEntitySpawnAdjustment(this.myEntity.entityId, par1EntityPlayerMP, this.lastScaledXPosition, this.lastScaledYPosition, this.lastScaledZPosition);
                     }
+
                     if (this.sendVelocityUpdates && !(var6 instanceof Packet24MobSpawn))
                     {
                         par1EntityPlayerMP.playerNetServerHandler.sendPacketToPlayer(new Packet28EntityVelocity(this.myEntity.entityId, this.myEntity.motionX, this.myEntity.motionY, this.myEntity.motionZ));

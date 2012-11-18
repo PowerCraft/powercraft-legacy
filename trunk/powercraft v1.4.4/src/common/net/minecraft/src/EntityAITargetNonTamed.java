@@ -10,9 +10,6 @@ public class EntityAITargetNonTamed extends EntityAINearestAttackableTarget
         this.theTameable = par1EntityTameable;
     }
 
-    /**
-     * Returns whether the EntityAIBase should begin execution.
-     */
     public boolean shouldExecute()
     {
         return this.theTameable.isTamed() ? false : super.shouldExecute();

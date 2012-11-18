@@ -26,17 +26,11 @@ public class ItemColored extends ItemBlock
         return this.blockRef.getRenderColor(par1ItemStack.getItemDamage());
     }
 
-    /**
-     * Returns the metadata of the block which this Item (ItemBlock) can place
-     */
     public int getMetadata(int par1)
     {
         return par1;
     }
 
-    /**
-     * Sets the array of strings to be used for name lookups from item damage to metadata
-     */
     public ItemColored setBlockNames(String[] par1ArrayOfStr)
     {
         this.blockNames = par1ArrayOfStr;
@@ -45,9 +39,6 @@ public class ItemColored extends ItemBlock
 
     @SideOnly(Side.CLIENT)
 
-    /**
-     * Gets an icon index based on an item's damage value
-     */
     public int getIconFromDamage(int par1)
     {
         return this.blockRef.getBlockTextureFromSideAndMetadata(0, par1);

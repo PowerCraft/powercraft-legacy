@@ -4,22 +4,10 @@ import java.util.Random;
 
 public class BlockFlowing extends BlockFluid
 {
-    /**
-     * Number of horizontally adjacent liquid source blocks. Diagonal doesn't count. Only source blocks of the same
-     * liquid as the block using the field are counted.
-     */
     int numAdjacentSources = 0;
 
-    /**
-     * Indicates whether the flow direction is optimal. Each array index corresponds to one of the four cardinal
-     * directions.
-     */
     boolean[] isOptimalFlowDirection = new boolean[4];
 
-    /**
-     * The estimated cost to flow in a given direction from the current point. Each array index corresponds to one of
-     * the four cardinal directions.
-     */
     int[] flowCost = new int[4];
 
     protected BlockFlowing(int par1, Material par2Material)
@@ -27,9 +15,6 @@ public class BlockFlowing extends BlockFluid
         super(par1, par2Material);
     }
 
-    /**
-     * Updates the flow for the BlockFlowing object.
-     */
     private void updateFlow(World par1World, int par2, int par3, int par4)
     {
         int var5 = par1World.getBlockMetadata(par2, par3, par4);
@@ -42,9 +27,6 @@ public class BlockFlowing extends BlockFluid
         return this.blockMaterial != Material.lava;
     }
 
-    /**
-     * Ticks the block if it's been scheduled
-     */
     public void updateTick(World par1World, int par2, int par3, int par4, Random par5Random)
     {
         int var6 = this.getFlowDecay(par1World, par2, par3, par4);
@@ -188,10 +170,6 @@ public class BlockFlowing extends BlockFluid
         }
     }
 
-    /**
-     * flowIntoBlock(World world, int x, int y, int z, int newFlowDecay) - Flows into the block at the coordinates and
-     * changes the block type to the liquid.
-     */
     private void flowIntoBlock(World par1World, int par2, int par3, int par4, int par5)
     {
         if (this.liquidCanDisplaceBlock(par1World, par2, par3, par4))
@@ -214,11 +192,6 @@ public class BlockFlowing extends BlockFluid
         }
     }
 
-    /**
-     * calculateFlowCost(World world, int x, int y, int z, int accumulatedCost, int previousDirectionOfFlow) - Used to
-     * determine the path of least resistance, this method returns the lowest possible flow cost for the direction of
-     * flow indicated. Each necessary horizontal flow adds to the flow cost.
-     */
     private int calculateFlowCost(World par1World, int par2, int par3, int par4, int par5, int par6)
     {
         int var7 = 1000;
@@ -273,11 +246,6 @@ public class BlockFlowing extends BlockFluid
         return var7;
     }
 
-    /**
-     * Returns a boolean array indicating which flow directions are optimal based on each direction's calculated flow
-     * cost. Each array index corresponds to one of the four cardinal directions. A value of true indicates the
-     * direction is optimal.
-     */
     private boolean[] getOptimalFlowDirections(World par1World, int par2, int par3, int par4)
     {
         int var5;
@@ -340,9 +308,6 @@ public class BlockFlowing extends BlockFluid
         return this.isOptimalFlowDirection;
     }
 
-    /**
-     * Returns true if block at coords blocks fluids
-     */
     private boolean blockBlocksFlow(World par1World, int par2, int par3, int par4)
     {
         int var5 = par1World.getBlockId(par2, par3, par4);
@@ -365,12 +330,6 @@ public class BlockFlowing extends BlockFluid
         }
     }
 
-    /**
-     * getSmallestFlowDecay(World world, intx, int y, int z, int currentSmallestFlowDecay) - Looks up the flow decay at
-     * the coordinates given and returns the smaller of this value or the provided currentSmallestFlowDecay. If one
-     * value is valid and the other isn't, the valid value will be returned. Valid values are >= 0. Flow decay is the
-     * amount that a liquid has dissipated. 0 indicates a source block.
-     */
     protected int getSmallestFlowDecay(World par1World, int par2, int par3, int par4, int par5)
     {
         int var6 = this.getFlowDecay(par1World, par2, par3, par4);
@@ -395,18 +354,12 @@ public class BlockFlowing extends BlockFluid
         }
     }
 
-    /**
-     * Returns true if the block at the coordinates can be displaced by the liquid.
-     */
     private boolean liquidCanDisplaceBlock(World par1World, int par2, int par3, int par4)
     {
         Material var5 = par1World.getBlockMaterial(par2, par3, par4);
         return var5 == this.blockMaterial ? false : (var5 == Material.lava ? false : !this.blockBlocksFlow(par1World, par2, par3, par4));
     }
 
-    /**
-     * Called whenever the block is added into the world. Args: world, x, y, z
-     */
     public void onBlockAdded(World par1World, int par2, int par3, int par4)
     {
         super.onBlockAdded(par1World, par2, par3, par4);

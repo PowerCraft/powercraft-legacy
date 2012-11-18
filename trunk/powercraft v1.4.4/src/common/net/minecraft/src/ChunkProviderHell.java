@@ -7,35 +7,23 @@ public class ChunkProviderHell implements IChunkProvider
 {
     private Random hellRNG;
 
-    /** A NoiseGeneratorOctaves used in generating nether terrain */
     private NoiseGeneratorOctaves netherNoiseGen1;
     private NoiseGeneratorOctaves netherNoiseGen2;
     private NoiseGeneratorOctaves netherNoiseGen3;
 
-    /** Determines whether slowsand or gravel can be generated at a location */
     private NoiseGeneratorOctaves slowsandGravelNoiseGen;
 
-    /**
-     * Determines whether something other than nettherack can be generated at a location
-     */
     private NoiseGeneratorOctaves netherrackExculsivityNoiseGen;
     public NoiseGeneratorOctaves netherNoiseGen6;
     public NoiseGeneratorOctaves netherNoiseGen7;
 
-    /** Is the world that the nether is getting generated. */
     private World worldObj;
     private double[] noiseField;
     public MapGenNetherBridge genNetherBridge = new MapGenNetherBridge();
 
-    /**
-     * Holds the noise used to determine whether slowsand can be generated at a location
-     */
     private double[] slowsandNoise = new double[256];
     private double[] gravelNoise = new double[256];
 
-    /**
-     * Holds the noise used to determine whether something other than netherrack can be generated at a location
-     */
     private double[] netherrackExclusivityNoise = new double[256];
     private MapGenBase netherCaveGenerator = new MapGenCavesHell();
     double[] noiseData1;
@@ -57,9 +45,6 @@ public class ChunkProviderHell implements IChunkProvider
         this.netherNoiseGen7 = new NoiseGeneratorOctaves(this.hellRNG, 16);
     }
 
-    /**
-     * Generates the shape of the terrain in the nether.
-     */
     public void generateNetherTerrain(int par1, int par2, byte[] par3ArrayOfByte)
     {
         byte var4 = 4;
@@ -134,9 +119,6 @@ public class ChunkProviderHell implements IChunkProvider
         }
     }
 
-    /**
-     * name based on ChunkProviderGenerate
-     */
     public void replaceBlocksForBiome(int par1, int par2, byte[] par3ArrayOfByte)
     {
         byte var4 = 64;
@@ -235,18 +217,11 @@ public class ChunkProviderHell implements IChunkProvider
         }
     }
 
-    /**
-     * loads or generates the chunk at the chunk location specified
-     */
     public Chunk loadChunk(int par1, int par2)
     {
         return this.provideChunk(par1, par2);
     }
 
-    /**
-     * Will return back a chunk, if it doesn't exist and its not a MP client it will generates all the blocks for the
-     * specified chunk from the map seed and chunk seed
-     */
     public Chunk provideChunk(int par1, int par2)
     {
         this.hellRNG.setSeed((long)par1 * 341873128712L + (long)par2 * 132897987541L);
@@ -268,10 +243,6 @@ public class ChunkProviderHell implements IChunkProvider
         return var4;
     }
 
-    /**
-     * generates a subset of the level's terrain data. Takes 7 arguments: the [empty] noise array, the position, and the
-     * size.
-     */
     private double[] initializeNoiseField(double[] par1ArrayOfDouble, int par2, int par3, int par4, int par5, int par6, int par7)
     {
         if (par1ArrayOfDouble == null)
@@ -412,17 +383,11 @@ public class ChunkProviderHell implements IChunkProvider
         return par1ArrayOfDouble;
     }
 
-    /**
-     * Checks to see if a chunk exists at x, y
-     */
     public boolean chunkExists(int par1, int par2)
     {
         return true;
     }
 
-    /**
-     * Populates chunk with ores etc etc
-     */
     public void populate(IChunkProvider par1IChunkProvider, int par2, int par3)
     {
         BlockSand.fallInstantly = true;
@@ -490,43 +455,26 @@ public class ChunkProviderHell implements IChunkProvider
         BlockSand.fallInstantly = false;
     }
 
-    /**
-     * Two modes of operation: if passed true, save all Chunks in one go.  If passed false, save up to two chunks.
-     * Return true if all chunks have been saved.
-     */
     public boolean saveChunks(boolean par1, IProgressUpdate par2IProgressUpdate)
     {
         return true;
     }
 
-    /**
-     * Unloads the 100 oldest chunks from memory, due to a bug with chunkSet.add() never being called it thinks the list
-     * is always empty and will not remove any chunks.
-     */
     public boolean unload100OldestChunks()
     {
         return false;
     }
 
-    /**
-     * Returns if the IChunkProvider supports saving.
-     */
     public boolean canSave()
     {
         return true;
     }
 
-    /**
-     * Converts the instance data to a readable string.
-     */
     public String makeString()
     {
         return "HellRandomLevelSource";
     }
 
-    /**
-     * Returns a list of creatures of the specified type that can spawn at the given location.
-     */
     public List getPossibleCreatures(EnumCreatureType par1EnumCreatureType, int par2, int par3, int par4)
     {
         if (par1EnumCreatureType == EnumCreatureType.monster && this.genNetherBridge.hasStructureAt(par2, par3, par4))
@@ -540,9 +488,6 @@ public class ChunkProviderHell implements IChunkProvider
         }
     }
 
-    /**
-     * Returns the location of the closest structure of the specified type. If not found returns null.
-     */
     public ChunkPosition findClosestStructure(World par1World, String par2Str, int par3, int par4, int par5)
     {
         return null;

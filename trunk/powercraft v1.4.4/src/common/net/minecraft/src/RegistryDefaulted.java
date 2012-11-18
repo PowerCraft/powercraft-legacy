@@ -2,9 +2,6 @@ package net.minecraft.src;
 
 public class RegistryDefaulted extends RegistrySimple
 {
-    /**
-     * Default object for this registry, returned when an object is not found.
-     */
     private final Object defaultObject;
 
     public RegistryDefaulted(Object par1Obj)

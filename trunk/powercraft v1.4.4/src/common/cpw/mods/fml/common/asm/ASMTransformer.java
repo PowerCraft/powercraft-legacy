@@ -24,8 +24,7 @@ public class ASMTransformer implements IClassTransformer
             cn.accept(cw);
             return cw.toByteArray();
         }
-        
+
         return bytes;
     }
-
 }

@@ -5,22 +5,15 @@ import cpw.mods.fml.common.asm.SideOnly;
 
 public class EntityXPOrb extends Entity
 {
-    /**
-     * A constantly increasing value that RenderXPOrb uses to control the colour shifting (Green / yellow)
-     */
     public int xpColor;
 
-    /** The age of the XP orb in ticks. */
     public int xpOrbAge = 0;
     public int field_70532_c;
 
-    /** The health of this XP orb. */
     private int xpOrbHealth = 5;
 
-    /** This is how much XP this orb has. */
     private int xpValue;
 
-    /** The closest EntityPlayer to this orb. */
     private EntityPlayer closestPlayer;
     private int field_80002_g;
 
@@ -37,10 +30,6 @@ public class EntityXPOrb extends Entity
         this.xpValue = par8;
     }
 
-    /**
-     * returns if this entity triggers Block.onEntityWalking on the blocks they walk on. used for spiders and wolves to
-     * prevent them from trampling crops
-     */
     protected boolean canTriggerWalking()
     {
         return false;
@@ -83,9 +72,6 @@ public class EntityXPOrb extends Entity
         return var4 | var5 << 16;
     }
 
-    /**
-     * Called to update the entity's position/logic.
-     */
     public void onUpdate()
     {
         super.onUpdate();
@@ -170,26 +156,16 @@ public class EntityXPOrb extends Entity
         }
     }
 
-    /**
-     * Returns if this entity is in water and will end up adding the waters velocity to the entity
-     */
     public boolean handleWaterMovement()
     {
         return this.worldObj.handleMaterialAcceleration(this.boundingBox, Material.water, this);
     }
 
-    /**
-     * Will deal the specified amount of damage to the entity if the entity isn't immune to fire damage. Args:
-     * amountDamage
-     */
     protected void dealFireDamage(int par1)
     {
         this.attackEntityFrom(DamageSource.inFire, par1);
     }
 
-    /**
-     * Called when the entity is attacked.
-     */
     public boolean attackEntityFrom(DamageSource par1DamageSource, int par2)
     {
         if (this.func_85032_ar())
@@ -210,9 +186,6 @@ public class EntityXPOrb extends Entity
         }
     }
 
-    /**
-     * (abstract) Protected helper method to write subclass entity data to NBT.
-     */
     public void writeEntityToNBT(NBTTagCompound par1NBTTagCompound)
     {
         par1NBTTagCompound.setShort("Health", (short)((byte)this.xpOrbHealth));
@@ -220,9 +193,6 @@ public class EntityXPOrb extends Entity
         par1NBTTagCompound.setShort("Value", (short)this.xpValue);
     }
 
-    /**
-     * (abstract) Protected helper method to read subclass entity data from NBT.
-     */
     public void readEntityFromNBT(NBTTagCompound par1NBTTagCompound)
     {
         this.xpOrbHealth = par1NBTTagCompound.getShort("Health") & 255;
@@ -230,9 +200,6 @@ public class EntityXPOrb extends Entity
         this.xpValue = par1NBTTagCompound.getShort("Value");
     }
 
-    /**
-     * Called by a player entity when they collide with an entity
-     */
     public void onCollideWithPlayer(EntityPlayer par1EntityPlayer)
     {
         if (!this.worldObj.isRemote)
@@ -248,9 +215,6 @@ public class EntityXPOrb extends Entity
         }
     }
 
-    /**
-     * Returns the XP value of this XP orb.
-     */
     public int getXpValue()
     {
         return this.xpValue;
@@ -258,26 +222,16 @@ public class EntityXPOrb extends Entity
 
     @SideOnly(Side.CLIENT)
 
-    /**
-     * Returns a number from 1 to 10 based on how much XP this orb is worth. This is used by RenderXPOrb to determine
-     * what texture to use.
-     */
     public int getTextureByXP()
     {
         return this.xpValue >= 2477 ? 10 : (this.xpValue >= 1237 ? 9 : (this.xpValue >= 617 ? 8 : (this.xpValue >= 307 ? 7 : (this.xpValue >= 149 ? 6 : (this.xpValue >= 73 ? 5 : (this.xpValue >= 37 ? 4 : (this.xpValue >= 17 ? 3 : (this.xpValue >= 7 ? 2 : (this.xpValue >= 3 ? 1 : 0)))))))));
     }
 
-    /**
-     * Get xp split rate (Is called until the xp drop code in EntityLiving.onEntityUpdate is complete)
-     */
     public static int getXPSplit(int par0)
     {
         return par0 >= 2477 ? 2477 : (par0 >= 1237 ? 1237 : (par0 >= 617 ? 617 : (par0 >= 307 ? 307 : (par0 >= 149 ? 149 : (par0 >= 73 ? 73 : (par0 >= 37 ? 37 : (par0 >= 17 ? 17 : (par0 >= 7 ? 7 : (par0 >= 3 ? 3 : 1)))))))));
     }
 
-    /**
-     * If returns false, the item will not inflict any damage against entities.
-     */
     public boolean canAttackWithItem()
     {
         return false;

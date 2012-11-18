@@ -6,22 +6,16 @@ import java.io.IOException;
 
 public class Packet34EntityTeleport extends Packet
 {
-    /** ID of the entity. */
     public int entityId;
 
-    /** X position of the entity. */
     public int xPosition;
 
-    /** Y position of the entity. */
     public int yPosition;
 
-    /** Z position of the entity. */
     public int zPosition;
 
-    /** Yaw of the entity. */
     public byte yaw;
 
-    /** Pitch of the entity. */
     public byte pitch;
 
     public Packet34EntityTeleport() {}
@@ -46,9 +40,6 @@ public class Packet34EntityTeleport extends Packet
         this.pitch = par6;
     }
 
-    /**
-     * Abstract. Reads the raw packet data from the data stream.
-     */
     public void readPacketData(DataInputStream par1DataInputStream) throws IOException
     {
         this.entityId = par1DataInputStream.readInt();
@@ -59,9 +50,6 @@ public class Packet34EntityTeleport extends Packet
         this.pitch = (byte)par1DataInputStream.read();
     }
 
-    /**
-     * Abstract. Writes the raw packet data to the data stream.
-     */
     public void writePacketData(DataOutputStream par1DataOutputStream) throws IOException
     {
         par1DataOutputStream.writeInt(this.entityId);
@@ -72,34 +60,21 @@ public class Packet34EntityTeleport extends Packet
         par1DataOutputStream.write(this.pitch);
     }
 
-    /**
-     * Passes this Packet on to the NetHandler for processing.
-     */
     public void processPacket(NetHandler par1NetHandler)
     {
         par1NetHandler.handleEntityTeleport(this);
     }
 
-    /**
-     * Abstract. Return the size of the packet (not counting the header).
-     */
     public int getPacketSize()
     {
         return 34;
     }
 
-    /**
-     * only false for the abstract Packet class, all real packets return true
-     */
     public boolean isRealPacket()
     {
         return true;
     }
 
-    /**
-     * eg return packet30entity.entityId == entityId; WARNING : will throw if you compare a packet to a different packet
-     * class
-     */
     public boolean containsSameEntityIDAs(Packet par1Packet)
     {
         Packet34EntityTeleport var2 = (Packet34EntityTeleport)par1Packet;

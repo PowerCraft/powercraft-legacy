@@ -10,9 +10,6 @@ public class ComponentStrongholdRightTurn extends ComponentStrongholdLeftTurn
         super(par1, par2Random, par3StructureBoundingBox, par4);
     }
 
-    /**
-     * Initiates construction of the Structure Component picked, at the current Location of StructGen
-     */
     public void buildComponent(StructureComponent par1StructureComponent, List par2List, Random par3Random)
     {
         if (this.coordBaseMode != 2 && this.coordBaseMode != 3)
@@ -25,10 +22,6 @@ public class ComponentStrongholdRightTurn extends ComponentStrongholdLeftTurn
         }
     }
 
-    /**
-     * second Part of Structure generating, this for example places Spiderwebs, Mob Spawners, it closes Mineshafts at
-     * the end, it adds Fences...
-     */
     public boolean addComponentParts(World par1World, Random par2Random, StructureBoundingBox par3StructureBoundingBox)
     {
         if (this.isLiquidInStructureBoundingBox(par1World, par3StructureBoundingBox))

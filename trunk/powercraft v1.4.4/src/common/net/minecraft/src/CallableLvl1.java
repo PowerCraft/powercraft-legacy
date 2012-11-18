@@ -6,7 +6,6 @@ class CallableLvl1 implements Callable
 {
     final int field_85179_a;
 
-    /** Reference to the World object. */
     final World theWorld;
 
     CallableLvl1(World par1World, int par2)

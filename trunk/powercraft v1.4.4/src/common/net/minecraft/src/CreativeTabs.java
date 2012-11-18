@@ -24,11 +24,9 @@ public class CreativeTabs
     private final int tabIndex;
     private final String tabLabel;
 
-    /** Texture to use. */
     private String backgroundImageName = "list_items.png";
     private boolean hasScrollbar = true;
 
-    /** Whether to draw the title in the foreground of the creative GUI */
     private boolean drawTitle = true;
 
     public CreativeTabs(String label)
@@ -41,12 +39,15 @@ public class CreativeTabs
         if (par1 >= creativeTabArray.length)
         {
             CreativeTabs[] tmp = new CreativeTabs[par1 + 1];
+
             for (int x = 0; x < creativeTabArray.length; x++)
             {
                 tmp[x] = creativeTabArray[x];
             }
+
             creativeTabArray = tmp;
         }
+
         this.tabIndex = par1;
         this.tabLabel = par2Str;
         creativeTabArray[par1] = this;
@@ -72,9 +73,6 @@ public class CreativeTabs
 
     @SideOnly(Side.CLIENT)
 
-    /**
-     * Gets the translated Label.
-     */
     public String getTranslatedTabLabel()
     {
         return StringTranslate.getInstance().translateKey("itemGroup." + this.getTabLabel());
@@ -88,9 +86,6 @@ public class CreativeTabs
 
     @SideOnly(Side.CLIENT)
 
-    /**
-     * the itemID for the item to be displayed on the tab
-     */
     public int getTabIconItemIndex()
     {
         return 1;
@@ -128,37 +123,30 @@ public class CreativeTabs
 
     @SideOnly(Side.CLIENT)
 
-    /**
-     * returns index % 6
-     */
     public int getTabColumn()
     {
         if (tabIndex > 11)
         {
             return ((tabIndex - 12) % 10) % 5;
         }
+
         return this.tabIndex % 6;
     }
 
     @SideOnly(Side.CLIENT)
 
-    /**
-     * returns tabIndex < 6
-     */
     public boolean isTabInFirstRow()
     {
         if (tabIndex > 11)
         {
             return ((tabIndex - 12) % 10) < 5;
         }
+
         return this.tabIndex < 6;
     }
 
     @SideOnly(Side.CLIENT)
 
-    /**
-     * only shows items which have tabToDisplayOn == this
-     */
     public void displayAllReleventItems(List par1List)
     {
         Item[] var2 = Item.itemsList;
@@ -173,7 +161,7 @@ public class CreativeTabs
                 continue;
             }
 
-            for(CreativeTabs tab : var5.getCreativeTabs())
+            for (CreativeTabs tab : var5.getCreativeTabs())
             {
                 if (tab == this)
                 {
@@ -189,6 +177,7 @@ public class CreativeTabs
         {
             return ((tabIndex - 12) / 10) + 1;
         }
+
         return 0;
     }
 
@@ -197,9 +186,6 @@ public class CreativeTabs
         return creativeTabArray.length;
     }
 
-    /**
-     * Get the ItemStack that will be rendered to the tab.
-     */
     public ItemStack getIconItemStack()
     {
         return new ItemStack(getTabIconItem());

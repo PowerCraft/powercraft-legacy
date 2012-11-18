@@ -7,7 +7,6 @@ class PlayerInstance
 {
     private final List playersInChunk;
 
-    /** note: this is final */
     private final ChunkCoordIntPair chunkLocation;
     private short[] locationOfBlockChange;
     private int numberOfTilesToUpdate;
@@ -25,9 +24,6 @@ class PlayerInstance
         par1PlayerManager.getWorldServer().theChunkProviderServer.loadChunk(par2, par3);
     }
 
-    /**
-     * called for all chunks within the visible radius of the player
-     */
     public void addPlayerToChunkWatchingList(EntityPlayerMP par1EntityPlayerMP)
     {
         if (this.playersInChunk.contains(par1EntityPlayerMP))
@@ -137,9 +133,6 @@ class PlayerInstance
                         if ((this.field_73260_f & 1 << var3) != 0)
                         {
                             var4 = var3 << 4;
-                            //BugFix: 16 makes it load an extra chunk, which isn't associated with a player, which makes it not unload unless a player walks near it.
-                            //ToDo: Find a way to efficiently clean abandoned chunks.
-                            //List var5 = PlayerManager.getWorldServer(this.myManager).getAllTileEntityInBox(var1, var4, var2, var1 + 15, var4 + 16, var2 + 15);
                             List var5 = PlayerManager.getWorldServer(this.myManager).getAllTileEntityInBox(var1, var4, var2, var1 + 16, var4 + 16, var2 + 16);
 
                             for (int var6 = 0; var6 < var5.size(); ++var6)

@@ -7,26 +7,14 @@ public class PlayerManager
 {
     private final WorldServer theWorldServer;
 
-    /** players in the current instance */
     private final List players = new ArrayList();
 
-    /**
-     * A map of chunk position (two ints concatenated into a long) to PlayerInstance
-     */
     private final LongHashMap playerInstances = new LongHashMap();
 
-    /**
-     * contains a PlayerInstance for every chunk they can see. the "player instance" cotains a list of all players who
-     * can also that chunk
-     */
     private final List chunkWatcherWithPlayers = new ArrayList();
 
-    /**
-     * Number of chunks the server sends to the client. Valid 3<=x<=15. In server.properties.
-     */
     private final int playerViewRadius;
 
-    /** x, z direction vectors: east, south, west, north */
     private final int[][] xzDirectionsConst = new int[][] {{1, 0}, {0, 1}, { -1, 0}, {0, -1}};
 
     public PlayerManager(WorldServer par1WorldServer, int par2)
@@ -51,9 +39,6 @@ public class PlayerManager
         return this.theWorldServer;
     }
 
-    /**
-     * updates all the player instances that need to be updated
-     */
     public void updatePlayerInstances()
     {
         for (int var1 = 0; var1 < this.chunkWatcherWithPlayers.size(); ++var1)
@@ -88,9 +73,6 @@ public class PlayerManager
         return var6;
     }
 
-    /**
-     * the "PlayerInstance"/ chunkWatcher will send this chunk to all players who are in line of sight
-     */
     public void flagChunkForUpdate(int par1, int par2, int par3)
     {
         int var4 = par1 >> 4;
@@ -103,9 +85,6 @@ public class PlayerManager
         }
     }
 
-    /**
-     * Adds an EntityPlayerMP to the PlayerManager.
-     */
     public void addPlayer(EntityPlayerMP par1EntityPlayerMP)
     {
         int var2 = (int)par1EntityPlayerMP.posX >> 4;
@@ -179,9 +158,6 @@ public class PlayerManager
         }
     }
 
-    /**
-     * Removes an EntityPlayerMP from the PlayerManager.
-     */
     public void removePlayer(EntityPlayerMP par1EntityPlayerMP)
     {
         int var2 = (int)par1EntityPlayerMP.managedPosX >> 4;
@@ -210,9 +186,6 @@ public class PlayerManager
         return var6 >= -par5 && var6 <= par5 ? var7 >= -par5 && var7 <= par5 : false;
     }
 
-    /**
-     * update chunks around a player being moved by server logic (e.g. cart, boat)
-     */
     public void updateMountedMovingPlayer(EntityPlayerMP par1EntityPlayerMP)
     {
         int var2 = (int)par1EntityPlayerMP.posX >> 4;

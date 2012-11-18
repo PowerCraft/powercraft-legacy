@@ -7,7 +7,7 @@ public class SingleIntervalHandler implements IScheduledTickHandler
     private ITickHandler wrapped;
     public SingleIntervalHandler(ITickHandler handler)
     {
-        this.wrapped=handler;
+        this.wrapped = handler;
     }
 
     @Override
@@ -39,5 +39,4 @@ public class SingleIntervalHandler implements IScheduledTickHandler
     {
         return 1;
     }
-
 }

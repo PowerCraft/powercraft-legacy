@@ -12,14 +12,11 @@ import net.minecraft.server.MinecraftServer;
 
 public abstract class NetworkListenThread
 {
-    /** Reference to the logger. */
     public static Logger logger = Logger.getLogger("Minecraft");
 
-    /** Reference to the MinecraftServer object. */
     private final MinecraftServer mcServer;
     private final List connections = Collections.synchronizedList(new ArrayList());
 
-    /** Whether the network listener object is listening. */
     public volatile boolean isListening = false;
 
     public NetworkListenThread(MinecraftServer par1MinecraftServer) throws IOException
@@ -28,9 +25,6 @@ public abstract class NetworkListenThread
         this.isListening = true;
     }
 
-    /**
-     * adds this connection to the list of currently connected players
-     */
     public void addPlayer(NetServerHandler par1NetServerHandler)
     {
         this.connections.add(par1NetServerHandler);
@@ -41,9 +35,6 @@ public abstract class NetworkListenThread
         this.isListening = false;
     }
 
-    /**
-     * processes packets and pending connections
-     */
     public void networkTick()
     {
         for (int var1 = 0; var1 < this.connections.size(); ++var1)

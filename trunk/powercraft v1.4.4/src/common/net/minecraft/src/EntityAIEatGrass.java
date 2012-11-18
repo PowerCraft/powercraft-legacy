@@ -5,7 +5,6 @@ public class EntityAIEatGrass extends EntityAIBase
     private EntityLiving theEntity;
     private World theWorld;
 
-    /** A decrementing tick used for the sheep's head offset and animation. */
     int eatGrassTick = 0;
 
     public EntityAIEatGrass(EntityLiving par1EntityLiving)
@@ -15,9 +14,6 @@ public class EntityAIEatGrass extends EntityAIBase
         this.setMutexBits(7);
     }
 
-    /**
-     * Returns whether the EntityAIBase should begin execution.
-     */
     public boolean shouldExecute()
     {
         if (this.theEntity.getRNG().nextInt(this.theEntity.isChild() ? 50 : 1000) != 0)
@@ -33,9 +29,6 @@ public class EntityAIEatGrass extends EntityAIBase
         }
     }
 
-    /**
-     * Execute a one shot task or start executing a continuous task
-     */
     public void startExecuting()
     {
         this.eatGrassTick = 40;
@@ -43,17 +36,11 @@ public class EntityAIEatGrass extends EntityAIBase
         this.theEntity.getNavigator().clearPathEntity();
     }
 
-    /**
-     * Resets the task
-     */
     public void resetTask()
     {
         this.eatGrassTick = 0;
     }
 
-    /**
-     * Returns whether an in-progress EntityAIBase should continue executing
-     */
     public boolean continueExecuting()
     {
         return this.eatGrassTick > 0;
@@ -64,9 +51,6 @@ public class EntityAIEatGrass extends EntityAIBase
         return this.eatGrassTick;
     }
 
-    /**
-     * Updates the task
-     */
     public void updateTask()
     {
         this.eatGrassTick = Math.max(0, this.eatGrassTick - 1);

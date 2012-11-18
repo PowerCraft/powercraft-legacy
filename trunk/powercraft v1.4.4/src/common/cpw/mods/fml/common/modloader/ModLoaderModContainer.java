@@ -1,16 +1,3 @@
-/*
- * The FML Forge Mod Loader suite.
- * Copyright (C) 2012 cpw
- *
- * This library is free software; you can redistribute it and/or modify it under the terms of the GNU Lesser General Public License as published by the Free
- * Software Foundation; either version 2.1 of the License, or any later version.
- *
- * This library is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR
- * A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more details.
- *
- * You should have received a copy of the GNU Lesser General Public License along with this library; if not, write to the Free Software Foundation, Inc., 51
- * Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA
- */
 package cpw.mods.fml.common.modloader;
 
 import java.io.File;
@@ -93,29 +80,22 @@ public class ModLoaderModContainer implements ModContainer
     {
         this.modClazzName = className;
         this.modSource = modSource;
-        this.modId = className.contains(".") ? className.substring(className.lastIndexOf('.')+1) : className;
+        this.modId = className.contains(".") ? className.substring(className.lastIndexOf('.') + 1) : className;
         this.sortingProperties = Strings.isNullOrEmpty(sortingProperties) ? "" : sortingProperties;
     }
 
-    /**
-     * We only instantiate this for "not mod mods"
-     * @param instance
-     */
-    ModLoaderModContainer(BaseModProxy instance) {
-        this.mod=instance;
+    ModLoaderModContainer(BaseModProxy instance)
+    {
+        this.mod = instance;
         this.gameTickHandler = new BaseModTicker(instance, false);
         this.guiTickHandler = new BaseModTicker(instance, true);
     }
 
-    /**
-     *
-     */
-    private void configureMod(Class<? extends BaseModProxy> modClazz, ASMDataTable asmData)
+    private void configureMod(Class <? extends BaseModProxy > modClazz, ASMDataTable asmData)
     {
         File configDir = Loader.instance().getConfigDir();
         File modConfig = new File(configDir, String.format("%s.cfg", getModId()));
         Properties props = new Properties();
-
         boolean existingConfigFound = false;
         boolean mlPropFound = false;
 
@@ -133,14 +113,14 @@ public class ModLoaderModContainer implements ModContainer
                 FMLLog.log(Level.SEVERE, e, "Error occured reading mod configuration file %s", modConfig.getName());
                 throw new LoaderException(e);
             }
+
             existingConfigFound = true;
         }
 
         StringBuffer comments = new StringBuffer();
         comments.append("MLProperties: name (type:default) min:max -- information\n");
-
-
         List<ModProperty> mlPropFields = Lists.newArrayList();
+
         try
         {
             for (ASMData dat : Sets.union(asmData.getAnnotationsFor(this).get("net.minecraft.src.MLProp"), asmData.getAnnotationsFor(this).get("MLProp")))
@@ -158,6 +138,7 @@ public class ModLoaderModContainer implements ModContainer
                     }
                 }
             }
+
             for (ModProperty property : mlPropFields)
             {
                 if (!Modifier.isStatic(property.field().getModifiers()))
@@ -165,6 +146,7 @@ public class ModLoaderModContainer implements ModContainer
                     FMLLog.info("The MLProp field %s in mod %s appears not to be static", property.field().getName(), getModId());
                     continue;
                 }
+
                 FMLLog.finest("Considering MLProp field %s", property.field().getName());
                 Field f = property.field();
                 String propertyName = !Strings.nullToEmpty(property.name()).isEmpty() ? property.name() : f.getName();
@@ -214,8 +196,10 @@ public class ModLoaderModContainer implements ModContainer
                     {
                         props.setProperty(propertyName, extractValue(propertyValue));
                     }
+
                     comments.append("\n");
                 }
+
                 mlPropFound = true;
             }
         }
@@ -229,9 +213,10 @@ public class ModLoaderModContainer implements ModContainer
 
             if (!mlPropFound && existingConfigFound)
             {
-                File mlPropBackup = new File(modConfig.getParent(),modConfig.getName()+".bak");
+                File mlPropBackup = new File(modConfig.getParent(), modConfig.getName() + ".bak");
                 FMLLog.fine("MLProp configuration file for %s found but not required. Attempting to rename file to %s", getModId(), mlPropBackup.getName());
                 boolean renamed = modConfig.renameTo(mlPropBackup);
+
                 if (renamed)
                 {
                     FMLLog.fine("Unused MLProp configuration file for %s renamed successfully to %s", getModId(), mlPropBackup.getName());
@@ -243,6 +228,7 @@ public class ModLoaderModContainer implements ModContainer
 
                 return;
             }
+
             try
             {
                 FileWriter configWriter = new FileWriter(modConfig);
@@ -298,13 +284,14 @@ public class ModLoaderModContainer implements ModContainer
             }
             else
             {
-                throw new IllegalArgumentException(String.format("MLProp declared on %s of type %s, an unsupported type",propertyName, type.getName()));
+                throw new IllegalArgumentException(String.format("MLProp declared on %s of type %s, an unsupported type", propertyName, type.getName()));
             }
 
             double dVal = n.doubleValue();
-            if ((property.min()!=Double.MIN_VALUE && dVal < property.min()) || (property.max()!=Double.MAX_VALUE && dVal > property.max()))
+
+            if ((property.min() != Double.MIN_VALUE && dVal < property.min()) || (property.max() != Double.MAX_VALUE && dVal > property.max()))
             {
-                FMLLog.warning("Configuration for %s.%s found value %s outside acceptable range %s,%s", modClazzName,propertyName, n, property.min(), property.max());
+                FMLLog.warning("Configuration for %s.%s found value %s outside acceptable range %s,%s", modClazzName, propertyName, n, property.min(), property.max());
                 return null;
             }
             else
@@ -313,7 +300,7 @@ public class ModLoaderModContainer implements ModContainer
             }
         }
 
-        throw new IllegalArgumentException(String.format("MLProp declared on %s of type %s, an unsupported type",propertyName, type.getName()));
+        throw new IllegalArgumentException(String.format("MLProp declared on %s of type %s, an unsupported type", propertyName, type.getName()));
     }
     private String extractValue(Object value)
     {
@@ -355,17 +342,13 @@ public class ModLoaderModContainer implements ModContainer
         return this.mod == mod;
     }
 
-    /**
-     * Find all the BaseMods in the system
-     * @param <A>
-     */
     public static <A extends BaseModProxy> List<A> findAll(Class<A> clazz)
     {
         ArrayList<A> modList = new ArrayList<A>();
 
         for (ModContainer mc : Loader.instance().getActiveModList())
         {
-            if (mc instanceof ModLoaderModContainer && mc.getMod()!=null)
+            if (mc instanceof ModLoaderModContainer && mc.getMod() != null)
             {
                 modList.add((A)((ModLoaderModContainer)mc).mod);
             }
@@ -404,7 +387,6 @@ public class ModLoaderModContainer implements ModContainer
         return dependencies;
     }
 
-
     public String toString()
     {
         return modId;
@@ -423,6 +405,7 @@ public class ModLoaderModContainer implements ModContainer
         {
             return "Not available";
         }
+
         return mod.getVersion();
     }
 
@@ -445,7 +428,7 @@ public class ModLoaderModContainer implements ModContainer
     @Override
     public void bindMetadata(MetadataCollection mc)
     {
-        Map<String, Object> dummyMetadata = ImmutableMap.<String,Object>builder().put("name", modId).put("version", "1.0").build();
+        Map<String, Object> dummyMetadata = ImmutableMap.<String, Object>builder().put("name", modId).put("version", "1.0").build();
         this.metadata = mc.getMetadataForId(modId, dummyMetadata);
         Loader.instance().computeDependencies(sortingProperties, getRequirements(), getDependencies(), getDependants());
     }
@@ -473,8 +456,6 @@ public class ModLoaderModContainer implements ModContainer
         }
     }
 
-    // Lifecycle mod events
-
     @Subscribe
     public void constructMod(FMLConstructionEvent event)
     {
@@ -485,23 +466,27 @@ public class ModLoaderModContainer implements ModContainer
             EnumSet<TickType> ticks = EnumSet.noneOf(TickType.class);
             this.gameTickHandler = new BaseModTicker(ticks, false);
             this.guiTickHandler = new BaseModTicker(ticks.clone(), true);
-            Class<? extends BaseModProxy> modClazz = (Class<? extends BaseModProxy>) modClassLoader.loadBaseModClass(modClazzName);
+            Class <? extends BaseModProxy > modClazz = (Class <? extends BaseModProxy >) modClassLoader.loadBaseModClass(modClazzName);
             configureMod(modClazz, event.getASMHarvestedData());
             isNetworkMod = FMLNetworkHandler.instance().registerNetworkMod(this, modClazz, event.getASMHarvestedData());
             ModLoaderNetworkHandler dummyHandler = null;
+
             if (!isNetworkMod)
             {
                 FMLLog.fine("Injecting dummy network mod handler for BaseMod %s", getModId());
                 dummyHandler = new ModLoaderNetworkHandler(this);
                 FMLNetworkHandler.instance().registerNetworkMod(dummyHandler);
             }
-            Constructor<? extends BaseModProxy> ctor = modClazz.getConstructor();
+
+            Constructor <? extends BaseModProxy > ctor = modClazz.getConstructor();
             ctor.setAccessible(true);
             mod = modClazz.newInstance();
+
             if (dummyHandler != null)
             {
                 dummyHandler.setBaseMod(mod);
             }
+
             ProxyInjector.inject(this, event.getASMHarvestedData(), FMLCommonHandler.instance().getSide());
         }
         catch (Exception e)
@@ -534,7 +519,6 @@ public class ModLoaderModContainer implements ModContainer
             Throwables.propagateIfPossible(e);
         }
     }
-
 
     @Subscribe
     public void init(FMLInitializationEvent event)
@@ -585,6 +569,7 @@ public class ModLoaderModContainer implements ModContainer
         {
             processedVersion = new DefaultArtifactVersion(modId, getVersion());
         }
+
         return processedVersion;
     }
 
@@ -603,7 +588,7 @@ public class ModLoaderModContainer implements ModContainer
     @Override
     public String getDisplayVersion()
     {
-        return metadata!=null ? metadata.version : getVersion();
+        return metadata != null ? metadata.version : getVersion();
     }
 
     public void addServerCommand(ICommand command)

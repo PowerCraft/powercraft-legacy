@@ -14,221 +14,195 @@ import java.util.logging.Logger;
 import net.minecraft.client.Minecraft;
 import net.minecraft.server.MinecraftServer;
 
-public class PC_Logger {
-	/**
-	 * Global PowerCraft's logger.
-	 */
-	private static final Logger logger = Logger.getLogger("PowerCraft");
-	/** Logging enabled */
-	public static boolean loggingEnabled = true;
-	/** Stdout printing enabled */
-	public static boolean printToStdout = false;
+public class PC_Logger
+{
+    private static final Logger logger = Logger.getLogger("PowerCraft");
 
-	public static void init(File file){
-		try {
-			FileHandler handler = new FileHandler(new File(file, "PowerCraft.log").getPath());
-			handler.setFormatter(new PC_LogFormatter());
-			logger.addHandler(handler);
-			loggingEnabled = true;
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		logger.setLevel(Level.ALL);
-		logger.info("PowerCraft logger initialized.");
-		logger.info((new SimpleDateFormat("yyyy/MM/dd HH:mm:ss")).format(new Date()));
-	}
-	
-	/**
-	 * Enable logging.
-	 * 
-	 * @param flag do enable logging
-	 */
-	public static void enableLogging(boolean flag) {
-		loggingEnabled = flag;
-	}
+    public static boolean loggingEnabled = true;
 
+    public static boolean printToStdout = false;
 
+    public static void init(File file)
+    {
+        try
+        {
+            FileHandler handler = new FileHandler(new File(file, "PowerCraft.log").getPath());
+            handler.setFormatter(new PC_LogFormatter());
+            logger.addHandler(handler);
+            loggingEnabled = true;
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+        }
 
-	/**
-	 * Enable debug mode - log also printed to stdout.
-	 * 
-	 * @param printToStdout
-	 */
-	public static void setPrintToStdout(boolean printToStdout) {
-		PC_Logger.printToStdout = printToStdout;
-	}
+        logger.setLevel(Level.ALL);
+        logger.info("PowerCraft logger initialized.");
+        logger.info((new SimpleDateFormat("yyyy/MM/dd HH:mm:ss")).format(new Date()));
+    }
 
-	/**
-	 * Log INFO message
-	 * 
-	 * @param msg message
-	 */
-	public static void info(String msg) {
-		if (!loggingEnabled) {
-			return;
-		}
-		logger.log(Level.INFO, msg);
-	}
+    public static void enableLogging(boolean flag)
+    {
+        loggingEnabled = flag;
+    }
 
-	/**
-	 * Log FINE (important) message
-	 * 
-	 * @param msg message
-	 */
-	public static void fine(String msg) {
-		if (!loggingEnabled) {
-			return;
-		}
-		logger.log(Level.FINE, msg);
-	}
+    public static void setPrintToStdout(boolean printToStdout)
+    {
+        PC_Logger.printToStdout = printToStdout;
+    }
 
-	/**
-	 * Log FINER (loss important) message
-	 * 
-	 * @param msg message
-	 */
-	public static void finer(String msg) {
-		if (!loggingEnabled) {
-			return;
-		}
-		logger.log(Level.FINER, msg);
-	}
+    public static void info(String msg)
+    {
+        if (!loggingEnabled)
+        {
+            return;
+        }
 
-	/**
-	 * Log FINEST (least important) message
-	 * 
-	 * @param msg message
-	 */
-	public static void finest(String msg) {
-		if (!loggingEnabled) {
-			return;
-		}
-		logger.log(Level.FINEST, msg);
-	}
+        logger.log(Level.INFO, msg);
+    }
 
-	/**
-	 * Log WARNING message
-	 * 
-	 * @param msg message
-	 */
-	public static void warning(String msg) {
-		if (!loggingEnabled) {
-			return;
-		}
-		logger.log(Level.WARNING, msg);
-	}
+    public static void fine(String msg)
+    {
+        if (!loggingEnabled)
+        {
+            return;
+        }
 
-	/**
-	 * Log SEVERE (critical warning) message
-	 * 
-	 * @param msg message
-	 */
-	public static void severe(String msg) {
-		if (!loggingEnabled) {
-			return;
-		}
-		logger.log(Level.SEVERE, msg);
-	}
+        logger.log(Level.FINE, msg);
+    }
 
-	/**
-	 * Log THROWING message
-	 * 
-	 * @param sourceClass class throwing the exception
-	 * @param sourceMethod method of the exception
-	 * @param thrown thrown exception
-	 */
-	public static void throwing(String sourceClass, String sourceMethod, Throwable thrown) {
-		if (!loggingEnabled) {
-			return;
-		}
-		logger.throwing(sourceClass, sourceMethod, thrown);
-	}
+    public static void finer(String msg)
+    {
+        if (!loggingEnabled)
+        {
+            return;
+        }
 
+        logger.log(Level.FINER, msg);
+    }
 
+    public static void finest(String msg)
+    {
+        if (!loggingEnabled)
+        {
+            return;
+        }
 
-	/**
-	 * PowerCraft Log file formatter.
-	 * 
-	 * @author MightyPork
-	 * @copy (c) 2012
-	 */
-	private static class PC_LogFormatter extends Formatter {
+        logger.log(Level.FINEST, msg);
+    }
 
-		/** Newline string constant */
-		private static final String nl = System.getProperty("line.separator");
+    public static void warning(String msg)
+    {
+        if (!loggingEnabled)
+        {
+            return;
+        }
 
+        logger.log(Level.WARNING, msg);
+    }
 
-		@Override
-		public String format(LogRecord record) {
+    public static void severe(String msg)
+    {
+        if (!loggingEnabled)
+        {
+            return;
+        }
 
-			StringBuffer buf = new StringBuffer(180);
+        logger.log(Level.SEVERE, msg);
+    }
 
-			if (record.getMessage().equals("\n")) {
-				return nl;
-			}
+    public static void throwing(String sourceClass, String sourceMethod, Throwable thrown)
+    {
+        if (!loggingEnabled)
+        {
+            return;
+        }
 
-			if (record.getMessage().charAt(0) == '\n') {
-				buf.append(nl);
-				record.setMessage(record.getMessage().substring(1));
-			}
+        logger.throwing(sourceClass, sourceMethod, thrown);
+    }
 
+    private static class PC_LogFormatter extends Formatter
+    {
+        private static final String nl = System.getProperty("line.separator");
 
+        @Override
+        public String format(LogRecord record)
+        {
+            StringBuffer buf = new StringBuffer(180);
 
-			Level level = record.getLevel();
-			String trail = "";
-			if (level == Level.CONFIG) {
-				trail = "CONFIG: ";
-			}
-			if (level == Level.FINE) {
-				trail = "";
-			}
-			if (level == Level.FINER) {
-				trail = "\t";
-			}
-			if (level == Level.FINEST) {
-				trail = "\t\t";
-			}
-			if (level == Level.INFO) {
-				trail = "INFO: ";
-			}
-			if (level == Level.SEVERE) {
-				trail = "SEVERE: ";
-			}
-			if (level == Level.WARNING) {
-				trail = "WARNING: ";
-			}
+            if (record.getMessage().equals("\n"))
+            {
+                return nl;
+            }
 
+            if (record.getMessage().charAt(0) == '\n')
+            {
+                buf.append(nl);
+                record.setMessage(record.getMessage().substring(1));
+            }
 
-			buf.append(trail);
-			buf.append(formatMessage(record));
+            Level level = record.getLevel();
+            String trail = "";
 
-			buf.append(nl);
+            if (level == Level.CONFIG)
+            {
+                trail = "CONFIG: ";
+            }
 
-			/*
-			 * if(record.getMessage().charAt(record.getMessage().length()-1) == '\n'){
-			 * buf.append(nl);
-			 * }
-			 */
+            if (level == Level.FINE)
+            {
+                trail = "";
+            }
 
-			Throwable throwable = record.getThrown();
-			if (throwable != null) {
+            if (level == Level.FINER)
+            {
+                trail = "\t";
+            }
 
-				buf.append("at ");
-				buf.append(record.getSourceClassName());
-				buf.append('.');
-				buf.append(record.getSourceMethodName());
-				buf.append(nl);
+            if (level == Level.FINEST)
+            {
+                trail = "\t\t";
+            }
 
-				StringWriter sink = new StringWriter();
-				throwable.printStackTrace(new PrintWriter(sink, true));
-				buf.append(sink.toString());
+            if (level == Level.INFO)
+            {
+                trail = "INFO: ";
+            }
 
-				buf.append(nl);
-			}
+            if (level == Level.SEVERE)
+            {
+                trail = "SEVERE: ";
+            }
 
-			if (PC_Logger.printToStdout) System.out.print(buf.toString());
+            if (level == Level.WARNING)
+            {
+                trail = "WARNING: ";
+            }
 
-			return buf.toString();
-		}
-	}
+            buf.append(trail);
+            buf.append(formatMessage(record));
+            buf.append(nl);
+            Throwable throwable = record.getThrown();
+
+            if (throwable != null)
+            {
+                buf.append("at ");
+                buf.append(record.getSourceClassName());
+                buf.append('.');
+                buf.append(record.getSourceMethodName());
+                buf.append(nl);
+                StringWriter sink = new StringWriter();
+                throwable.printStackTrace(new PrintWriter(sink, true));
+                buf.append(sink.toString());
+                buf.append(nl);
+            }
+
+            if (PC_Logger.printToStdout)
+            {
+                System.out.print(buf.toString());
+            }
+
+            return buf.toString();
+        }
+    }
 }

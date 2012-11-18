@@ -9,66 +9,47 @@ import cpw.mods.fml.common.asm.SideOnly;
 
 public class WorldInfo
 {
-    /** Holds the seed of the currently world. */
     private long randomSeed;
     private WorldType terrainType;
     private String field_82576_c;
 
-    /** The spawn zone position X coordinate. */
     private int spawnX;
 
-    /** The spawn zone position Y coordinate. */
     private int spawnY;
 
-    /** The spawn zone position Z coordinate. */
     private int spawnZ;
 
-    /** Total time for this world. */
     private long dayTime;
 
-    /** The current world time in ticks, ranging from 0 to 23999. */
     private long worldTime;
 
-    /** The last time the player was in this world. */
     private long lastTimePlayed;
 
-    /** The size of entire save of current world on the disk, isn't exactly. */
     private long sizeOnDisk;
     private NBTTagCompound playerTag;
     private int dimension;
 
-    /** The name of the save defined at world creation. */
     private String levelName;
 
-    /** Introduced in beta 1.3, is the save version for future control. */
     private int saveVersion;
 
-    /** True if it's raining, false otherwise. */
     private boolean raining;
 
-    /** Number of ticks until next rain. */
     private int rainTime;
 
-    /** Is thunderbolts failing now? */
     private boolean thundering;
 
-    /** Number of ticks untils next thunderbolt. */
     private int thunderTime;
 
-    /** The Game Type. */
     private EnumGameType theGameType;
 
-    /**
-     * Whether the map features (e.g. strongholds) generation is enabled or disabled.
-     */
     private boolean mapFeaturesEnabled;
 
-    /** Hardcore mode flag */
     private boolean hardcore;
     private boolean allowCommands;
     private boolean initialized;
     private GameRules theGameRules;
-    private Map<String,NBTBase> additionalProperties;
+    private Map<String, NBTBase> additionalProperties;
 
     protected WorldInfo()
     {
@@ -223,9 +204,6 @@ public class WorldInfo
         this.theGameRules = par1WorldInfo.theGameRules;
     }
 
-    /**
-     * Gets the NBTTagCompound for the worldInfo
-     */
     public NBTTagCompound getNBTTagCompound()
     {
         NBTTagCompound var1 = new NBTTagCompound();
@@ -233,9 +211,6 @@ public class WorldInfo
         return var1;
     }
 
-    /**
-     * Creates a new NBTTagCompound for the world, with the given NBTTag as the "Player"
-     */
     public NBTTagCompound cloneNBTCompound(NBTTagCompound par1NBTTagCompound)
     {
         NBTTagCompound var2 = new NBTTagCompound();
@@ -275,33 +250,21 @@ public class WorldInfo
         }
     }
 
-    /**
-     * Returns the seed of current world.
-     */
     public long getSeed()
     {
         return this.randomSeed;
     }
 
-    /**
-     * Returns the x spawn position
-     */
     public int getSpawnX()
     {
         return this.spawnX;
     }
 
-    /**
-     * Return the Y axis spawning point of the player.
-     */
     public int getSpawnY()
     {
         return this.spawnY;
     }
 
-    /**
-     * Returns the z spawn position
-     */
     public int getSpawnZ()
     {
         return this.spawnZ;
@@ -312,9 +275,6 @@ public class WorldInfo
         return this.dayTime;
     }
 
-    /**
-     * Get current world time
-     */
     public long getWorldTime()
     {
         return this.worldTime;
@@ -326,9 +286,6 @@ public class WorldInfo
         return this.sizeOnDisk;
     }
 
-    /**
-     * Returns the player's NBTTagCompound to be loaded
-     */
     public NBTTagCompound getPlayerNBTTagCompound()
     {
         return this.playerTag;
@@ -341,9 +298,6 @@ public class WorldInfo
 
     @SideOnly(Side.CLIENT)
 
-    /**
-     * Set the x spawn position to the passed in value
-     */
     public void setSpawnX(int par1)
     {
         this.spawnX = par1;
@@ -351,9 +305,6 @@ public class WorldInfo
 
     @SideOnly(Side.CLIENT)
 
-    /**
-     * Sets the y spawn position
-     */
     public void setSpawnY(int par1)
     {
         this.spawnY = par1;
@@ -366,25 +317,16 @@ public class WorldInfo
 
     @SideOnly(Side.CLIENT)
 
-    /**
-     * Set the z spawn position to the passed in value
-     */
     public void setSpawnZ(int par1)
     {
         this.spawnZ = par1;
     }
 
-    /**
-     * Set current world time
-     */
     public void setWorldTime(long par1)
     {
         this.worldTime = par1;
     }
 
-    /**
-     * Sets the spawn zone position. Args: x, y, z
-     */
     public void setSpawnPosition(int par1, int par2, int par3)
     {
         this.spawnX = par1;
@@ -392,9 +334,6 @@ public class WorldInfo
         this.spawnZ = par3;
     }
 
-    /**
-     * Get current world name
-     */
     public String getWorldName()
     {
         return this.levelName;
@@ -405,17 +344,11 @@ public class WorldInfo
         this.levelName = par1Str;
     }
 
-    /**
-     * Returns the save version of this world
-     */
     public int getSaveVersion()
     {
         return this.saveVersion;
     }
 
-    /**
-     * Sets the save version of the world
-     */
     public void setSaveVersion(int par1)
     {
         this.saveVersion = par1;
@@ -423,105 +356,66 @@ public class WorldInfo
 
     @SideOnly(Side.CLIENT)
 
-    /**
-     * Return the last time the player was in this world.
-     */
     public long getLastTimePlayed()
     {
         return this.lastTimePlayed;
     }
 
-    /**
-     * Returns true if it is thundering, false otherwise.
-     */
     public boolean isThundering()
     {
         return this.thundering;
     }
 
-    /**
-     * Sets whether it is thundering or not.
-     */
     public void setThundering(boolean par1)
     {
         this.thundering = par1;
     }
 
-    /**
-     * Returns the number of ticks until next thunderbolt.
-     */
     public int getThunderTime()
     {
         return this.thunderTime;
     }
 
-    /**
-     * Defines the number of ticks until next thunderbolt.
-     */
     public void setThunderTime(int par1)
     {
         this.thunderTime = par1;
     }
 
-    /**
-     * Returns true if it is raining, false otherwise.
-     */
     public boolean isRaining()
     {
         return this.raining;
     }
 
-    /**
-     * Sets whether it is raining or not.
-     */
     public void setRaining(boolean par1)
     {
         this.raining = par1;
     }
 
-    /**
-     * Return the number of ticks until rain.
-     */
     public int getRainTime()
     {
         return this.rainTime;
     }
 
-    /**
-     * Sets the number of ticks until rain.
-     */
     public void setRainTime(int par1)
     {
         this.rainTime = par1;
     }
 
-    /**
-     * Gets the GameType.
-     */
     public EnumGameType getGameType()
     {
         return this.theGameType;
     }
 
-    /**
-     * Get whether the map features (e.g. strongholds) generation is enabled or disabled.
-     */
     public boolean isMapFeaturesEnabled()
     {
         return this.mapFeaturesEnabled;
     }
 
-    /**
-     * Sets the GameType.
-     */
     public void setGameType(EnumGameType par1EnumGameType)
     {
         this.theGameType = par1EnumGameType;
     }
 
-    /**
-     * Returns true if hardcore mode is enabled, otherwise false
-     */
     public boolean isHardcoreModeEnabled()
     {
         return this.hardcore;
@@ -542,33 +436,21 @@ public class WorldInfo
         return this.field_82576_c;
     }
 
-    /**
-     * Returns true if commands are allowed on this World.
-     */
     public boolean areCommandsAllowed()
     {
         return this.allowCommands;
     }
 
-    /**
-     * Returns true if the World is initialized.
-     */
     public boolean isInitialized()
     {
         return this.initialized;
     }
 
-    /**
-     * Sets the initialization status of the World.
-     */
     public void setServerInitialized(boolean par1)
     {
         this.initialized = par1;
     }
 
-    /**
-     * Gets the GameRules class Instance.
-     */
     public GameRules getGameRulesInstance()
     {
         return this.theGameRules;
@@ -672,15 +554,8 @@ public class WorldInfo
         return par0WorldInfo.allowCommands;
     }
 
-    /**
-     * Allow access to additional mod specific world based properties
-     * Used by FML to store mod list associated with a world, and maybe an id map
-     * Used by Forge to store the dimensions available to a world
-     * @param additionalProperties
-     */
-    public void setAdditionalProperties(Map<String,NBTBase> additionalProperties)
+    public void setAdditionalProperties(Map<String, NBTBase> additionalProperties)
     {
-        // one time set for this
         if (this.additionalProperties == null)
         {
             this.additionalProperties = additionalProperties;
@@ -689,6 +564,6 @@ public class WorldInfo
 
     public NBTBase getAdditionalProperty(String additionalProperty)
     {
-        return this.additionalProperties!=null? this.additionalProperties.get(additionalProperty) : null;
+        return this.additionalProperties != null ? this.additionalProperties.get(additionalProperty) : null;
     }
 }

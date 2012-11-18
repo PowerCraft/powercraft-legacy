@@ -6,7 +6,6 @@ import org.objectweb.asm.Opcodes;
 
 public class ModFieldVisitor extends FieldVisitor
 {
-
     private String fieldName;
     private ASMModParser discoverer;
 
@@ -16,7 +15,7 @@ public class ModFieldVisitor extends FieldVisitor
         this.fieldName = name;
         this.discoverer = discoverer;
     }
-    
+
     @Override
     public AnnotationVisitor visitAnnotation(String annotationName, boolean runtimeVisible)
     {

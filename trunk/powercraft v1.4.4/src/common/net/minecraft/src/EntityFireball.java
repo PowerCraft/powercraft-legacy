@@ -28,10 +28,6 @@ public abstract class EntityFireball extends Entity
 
     @SideOnly(Side.CLIENT)
 
-    /**
-     * Checks if the entity is in range to render by using the past in distance and comparing it to its average edge
-     * length * 64 * renderDistanceWeight Args: distance
-     */
     public boolean isInRangeToRenderDist(double par1)
     {
         double var3 = this.boundingBox.getAverageEdgeLength() * 4.0D;
@@ -69,9 +65,6 @@ public abstract class EntityFireball extends Entity
         this.accelerationZ = par7 / var9 * 0.1D;
     }
 
-    /**
-     * Called to update the entity's position/logic.
-     */
     public void onUpdate()
     {
         if (!this.worldObj.isRemote && (this.shootingEntity != null && this.shootingEntity.isDead || !this.worldObj.blockExists((int)this.posX, (int)this.posY, (int)this.posZ)))
@@ -211,22 +204,13 @@ public abstract class EntityFireball extends Entity
         }
     }
 
-    /**
-     * Return the motion factor for this projectile. The factor is multiplied by the original motion.
-     */
     protected float getMotionFactor()
     {
         return 0.95F;
     }
 
-    /**
-     * Called when this EntityFireball hits a block or entity.
-     */
     protected abstract void onImpact(MovingObjectPosition var1);
 
-    /**
-     * (abstract) Protected helper method to write subclass entity data to NBT.
-     */
     public void writeEntityToNBT(NBTTagCompound par1NBTTagCompound)
     {
         par1NBTTagCompound.setShort("xTile", (short)this.xTile);
@@ -237,9 +221,6 @@ public abstract class EntityFireball extends Entity
         par1NBTTagCompound.setTag("direction", this.newDoubleNBTList(new double[] {this.motionX, this.motionY, this.motionZ}));
     }
 
-    /**
-     * (abstract) Protected helper method to read subclass entity data from NBT.
-     */
     public void readEntityFromNBT(NBTTagCompound par1NBTTagCompound)
     {
         this.xTile = par1NBTTagCompound.getShort("xTile");
@@ -261,9 +242,6 @@ public abstract class EntityFireball extends Entity
         }
     }
 
-    /**
-     * Returns true if other Entities should be prevented from moving through this Entity.
-     */
     public boolean canBeCollidedWith()
     {
         return true;
@@ -274,9 +252,6 @@ public abstract class EntityFireball extends Entity
         return 1.0F;
     }
 
-    /**
-     * Called when the entity is attacked.
-     */
     public boolean attackEntityFrom(DamageSource par1DamageSource, int par2)
     {
         if (this.func_85032_ar())
@@ -321,9 +296,6 @@ public abstract class EntityFireball extends Entity
         return 0.0F;
     }
 
-    /**
-     * Gets how bright this entity is.
-     */
     public float getBrightness(float par1)
     {
         return 1.0F;

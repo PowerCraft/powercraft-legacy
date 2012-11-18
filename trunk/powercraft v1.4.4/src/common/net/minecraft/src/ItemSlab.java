@@ -7,10 +7,8 @@ public class ItemSlab extends ItemBlock
 {
     private final boolean field_77891_a;
 
-    /** Instance of BlockHalfSlab. */
     private final BlockHalfSlab theHalfSlab;
 
-    /** Instance of BlockHalfSlab. */
     private final BlockHalfSlab theHalfSlab2;
 
     public ItemSlab(int par1, BlockHalfSlab par2BlockHalfSlab, BlockHalfSlab par3BlockHalfSlab, boolean par4)
@@ -25,17 +23,11 @@ public class ItemSlab extends ItemBlock
 
     @SideOnly(Side.CLIENT)
 
-    /**
-     * Gets an icon index based on an item's damage value
-     */
     public int getIconFromDamage(int par1)
     {
         return Block.blocksList[this.shiftedIndex].getBlockTextureFromSideAndMetadata(2, par1);
     }
 
-    /**
-     * Returns the metadata of the block which this Item (ItemBlock) can place
-     */
     public int getMetadata(int par1)
     {
         return par1;
@@ -46,10 +38,6 @@ public class ItemSlab extends ItemBlock
         return this.theHalfSlab.getFullSlabName(par1ItemStack.getItemDamage());
     }
 
-    /**
-     * Callback for item usage. If the item does something special on right clicking, he will have one of those. Return
-     * True if something happen and false if it don't. This is for ITEMS, not BLOCKS
-     */
     public boolean onItemUse(ItemStack par1ItemStack, EntityPlayer par2EntityPlayer, World par3World, int par4, int par5, int par6, int par7, float par8, float par9, float par10)
     {
         if (this.field_77891_a)
@@ -90,9 +78,6 @@ public class ItemSlab extends ItemBlock
 
     @SideOnly(Side.CLIENT)
 
-    /**
-     * Returns true if the given ItemBlock can be placed on the given side of the given block position.
-     */
     public boolean canPlaceItemBlockOnSide(World par1World, int par2, int par3, int par4, int par5, EntityPlayer par6EntityPlayer, ItemStack par7ItemStack)
     {
         int var8 = par2;

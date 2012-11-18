@@ -29,6 +29,7 @@ public enum EnumEntitySize
                 }
 
                 return MathHelper.floor_double(par1 * 32.0D);
+
             case 2:
                 if (var3 < 0.0D)
                 {
@@ -43,6 +44,7 @@ public enum EnumEntitySize
                 }
 
                 return MathHelper.ceiling_double_int(par1 * 32.0D);
+
             case 3:
                 if (var3 > 0.0D)
                 {
@@ -50,6 +52,7 @@ public enum EnumEntitySize
                 }
 
                 return MathHelper.ceiling_double_int(par1 * 32.0D);
+
             case 4:
                 if (var3 < 0.0D)
                 {
@@ -64,6 +67,7 @@ public enum EnumEntitySize
                 }
 
                 return MathHelper.floor_double(par1 * 32.0D);
+
             case 5:
                 if (var3 < 0.0D)
                 {
@@ -78,6 +82,7 @@ public enum EnumEntitySize
                 }
 
                 return MathHelper.ceiling_double_int(par1 * 32.0D);
+
             case 6:
             default:
                 if (var3 > 0.0D)

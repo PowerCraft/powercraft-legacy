@@ -22,7 +22,6 @@ import cpw.mods.fml.common.discovery.ModCandidate;
 
 public class ASMModParser
 {
-
     private Type asmType;
     private int classVersion;
     private Type asmSuperType;
@@ -107,11 +106,6 @@ public class ASMModParser
 
     public void validate()
     {
-//        if (classVersion > 50.0)
-//        {
-//
-//            throw new LoaderException(new RuntimeException("Mod compiled for Java 7 detected"));
-//        }
     }
 
     public boolean isBaseMod(List<String> rememberedTypes)
@@ -145,13 +139,11 @@ public class ASMModParser
     public void addAnnotationEnumProperty(String name, String desc, String value)
     {
         annotations.getFirst().addEnumProperty(name, desc, value);
-
     }
 
     public void endArray()
     {
         annotations.getFirst().endArray();
-
     }
 
     public void addSubAnnotation(String name, String desc)
@@ -162,7 +154,6 @@ public class ASMModParser
 
     public void endSubAnnotation()
     {
-        // take the child and stick it at the end
         ModAnnotation child = annotations.removeFirst();
         annotations.addLast(child);
     }

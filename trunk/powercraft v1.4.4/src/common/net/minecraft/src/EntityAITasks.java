@@ -6,13 +6,10 @@ import java.util.List;
 
 public class EntityAITasks
 {
-    /** A list of EntityAITaskEntrys in EntityAITasks. */
     public List taskEntries = new ArrayList();
 
-    /** A list of EntityAITaskEntrys that are currently being executed. */
     private List executingTaskEntries = new ArrayList();
 
-    /** Instance of Profiler. */
     private final Profiler theProfiler;
     private int field_75778_d = 0;
     private int field_75779_e = 3;
@@ -161,9 +158,6 @@ public class EntityAITasks
         return true;
     }
 
-    /**
-     * Returns whether two EntityAITaskEntries can be executed concurrently
-     */
     private boolean areTasksCompatible(EntityAITaskEntry par1EntityAITaskEntry, EntityAITaskEntry par2EntityAITaskEntry)
     {
         return (par1EntityAITaskEntry.action.getMutexBits() & par2EntityAITaskEntry.action.getMutexBits()) == 0;

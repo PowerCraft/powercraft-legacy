@@ -265,10 +265,6 @@ public class ItemMap extends ItemMapBase
         }
     }
 
-    /**
-     * Called each tick as long the item is on a player inventory. Uses by maps to check if is on a player hand and
-     * update it's contents.
-     */
     public void onUpdate(ItemStack par1ItemStack, World par2World, Entity par3Entity, int par4, boolean par5)
     {
         if (!par2World.isRemote)
@@ -288,18 +284,12 @@ public class ItemMap extends ItemMapBase
         }
     }
 
-    /**
-     * returns null if no update is to be sent
-     */
     public Packet createMapDataPacket(ItemStack par1ItemStack, World par2World, EntityPlayer par3EntityPlayer)
     {
         byte[] var4 = this.getMapData(par1ItemStack, par2World).func_76193_a(par1ItemStack, par2World, par3EntityPlayer);
         return var4 == null ? null : new Packet131MapData((short)Item.map.shiftedIndex, (short)par1ItemStack.getItemDamage(), var4);
     }
 
-    /**
-     * Called when item is crafted/smelted. Used only by maps so far.
-     */
     public void onCreated(ItemStack par1ItemStack, World par2World, EntityPlayer par3EntityPlayer)
     {
         if (par1ItemStack.hasTagCompound() && par1ItemStack.getTagCompound().getBoolean("map_is_scaling"))
@@ -324,9 +314,6 @@ public class ItemMap extends ItemMapBase
 
     @SideOnly(Side.CLIENT)
 
-    /**
-     * allows items to add custom lines of information to the mouseover description
-     */
     public void addInformation(ItemStack par1ItemStack, EntityPlayer par2EntityPlayer, List par3List, boolean par4)
     {
         MapData var5 = this.getMapData(par1ItemStack, par2EntityPlayer.worldObj);

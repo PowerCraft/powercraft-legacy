@@ -5,20 +5,15 @@ public class EntityAIOcelotSit extends EntityAIBase
     private final EntityOcelot theOcelot;
     private final float field_75404_b;
 
-    /** Tracks for how long the task has been executing */
     private int currentTick = 0;
     private int field_75402_d = 0;
 
-    /** For how long the Ocelot should be sitting */
     private int maxSittingTicks = 0;
 
-    /** X Coordinate of a nearby sitable block */
     private int sitableBlockX = 0;
 
-    /** Y Coordinate of a nearby sitable block */
     private int sitableBlockY = 0;
 
-    /** Z Coordinate of a nearby sitable block */
     private int sitableBlockZ = 0;
 
     public EntityAIOcelotSit(EntityOcelot par1EntityOcelot, float par2)
@@ -28,25 +23,16 @@ public class EntityAIOcelotSit extends EntityAIBase
         this.setMutexBits(5);
     }
 
-    /**
-     * Returns whether the EntityAIBase should begin execution.
-     */
     public boolean shouldExecute()
     {
         return this.theOcelot.isTamed() && !this.theOcelot.isSitting() && this.theOcelot.getRNG().nextDouble() <= 0.006500000134110451D && this.getNearbySitableBlockDistance();
     }
 
-    /**
-     * Returns whether an in-progress EntityAIBase should continue executing
-     */
     public boolean continueExecuting()
     {
         return this.currentTick <= this.maxSittingTicks && this.field_75402_d <= 60 && this.isSittableBlock(this.theOcelot.worldObj, this.sitableBlockX, this.sitableBlockY, this.sitableBlockZ);
     }
 
-    /**
-     * Execute a one shot task or start executing a continuous task
-     */
     public void startExecuting()
     {
         this.theOcelot.getNavigator().tryMoveToXYZ((double)((float)this.sitableBlockX) + 0.5D, (double)(this.sitableBlockY + 1), (double)((float)this.sitableBlockZ) + 0.5D, this.field_75404_b);
@@ -56,17 +42,11 @@ public class EntityAIOcelotSit extends EntityAIBase
         this.theOcelot.func_70907_r().setSitting(false);
     }
 
-    /**
-     * Resets the task
-     */
     public void resetTask()
     {
         this.theOcelot.setSitting(false);
     }
 
-    /**
-     * Updates the task
-     */
     public void updateTask()
     {
         ++this.currentTick;
@@ -88,9 +68,6 @@ public class EntityAIOcelotSit extends EntityAIBase
         }
     }
 
-    /**
-     * Searches for a block to sit on within a 8 block range, returns 0 if none found
-     */
     protected boolean getNearbySitableBlockDistance()
     {
         int var1 = (int)this.theOcelot.posY;
@@ -118,9 +95,6 @@ public class EntityAIOcelotSit extends EntityAIBase
         return var2 < 2.147483647E9D;
     }
 
-    /**
-     * Determines wheter the Ocelot wants to sit on the block at given coordinate
-     */
     protected boolean isSittableBlock(World par1World, int par2, int par3, int par4)
     {
         int var5 = par1World.getBlockId(par2, par3, par4);

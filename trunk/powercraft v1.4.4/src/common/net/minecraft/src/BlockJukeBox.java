@@ -8,17 +8,11 @@ public class BlockJukeBox extends BlockContainer
         this.setCreativeTab(CreativeTabs.tabDecorations);
     }
 
-    /**
-     * Returns the block texture based on the side being looked at.  Args: side
-     */
     public int getBlockTextureFromSide(int par1)
     {
         return this.blockIndexInTexture + (par1 == 1 ? 1 : 0);
     }
 
-    /**
-     * Called upon block activation (right click on the block.)
-     */
     public boolean onBlockActivated(World par1World, int par2, int par3, int par4, EntityPlayer par5EntityPlayer, int par6, float par7, float par8, float par9)
     {
         if (par1World.getBlockMetadata(par2, par3, par4) == 0)
@@ -47,9 +41,6 @@ public class BlockJukeBox extends BlockContainer
         }
     }
 
-    /**
-     * Ejects the current record inside of the jukebox.
-     */
     public void ejectRecord(World par1World, int par2, int par3, int par4)
     {
         if (!par1World.isRemote)
@@ -80,18 +71,12 @@ public class BlockJukeBox extends BlockContainer
         }
     }
 
-    /**
-     * ejects contained items into the world, and notifies neighbours of an update, as appropriate
-     */
     public void breakBlock(World par1World, int par2, int par3, int par4, int par5, int par6)
     {
         this.ejectRecord(par1World, par2, par3, par4);
         super.breakBlock(par1World, par2, par3, par4, par5, par6);
     }
 
-    /**
-     * Drops the block items with a specified chance of dropping the specified items
-     */
     public void dropBlockAsItemWithChance(World par1World, int par2, int par3, int par4, int par5, float par6, int par7)
     {
         if (!par1World.isRemote)
@@ -100,9 +85,6 @@ public class BlockJukeBox extends BlockContainer
         }
     }
 
-    /**
-     * Returns a new instance of a block's tile entity class. Called on placing the block.
-     */
     public TileEntity createNewTileEntity(World par1World)
     {
         return new TileEntityRecordPlayer();

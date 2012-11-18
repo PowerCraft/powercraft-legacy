@@ -4,7 +4,6 @@ class BehaviorPotionDispenseLogic extends BehaviorProjectileDispense
 {
     final ItemStack potionStackToDispense;
 
-    /** Reference to the BehaviorPotionDispense object. */
     final BehaviorPotionDispense potionDispenseBehavior;
 
     BehaviorPotionDispenseLogic(BehaviorPotionDispense par1, ItemStack par2)
@@ -13,9 +12,6 @@ class BehaviorPotionDispenseLogic extends BehaviorProjectileDispense
         this.potionStackToDispense = par2;
     }
 
-    /**
-     * Return the projectile entity spawned by this dispense behavior.
-     */
     protected IProjectile getProjectileEntity(World par1World, IPosition par2IPosition)
     {
         return new EntityPotion(par1World, par2IPosition.getX(), par2IPosition.getY(), par2IPosition.getZ(), this.potionStackToDispense.copy());

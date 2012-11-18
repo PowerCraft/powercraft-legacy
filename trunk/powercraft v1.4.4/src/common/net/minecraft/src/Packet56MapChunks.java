@@ -69,9 +69,6 @@ public class Packet56MapChunks extends Packet
         }
     }
 
-    /**
-     * Abstract. Reads the raw packet data from the data stream.
-     */
     public void readPacketData(DataInputStream par1DataInputStream) throws IOException
     {
         short var2 = par1DataInputStream.readShort();
@@ -121,7 +118,8 @@ public class Packet56MapChunks extends Packet
                 var7 += this.field_73590_a[var6] >> var8 & 1;
             }
 
-            int msb = 0; //BugFix: MC does not read the MSB array from the packet properly, causing issues for servers that use blocks > 256
+            int msb = 0;
+
             for (int x = 0; x < 16; x++)
             {
                 msb += (field_73588_b[var6] >> x) & 1;
@@ -134,9 +132,6 @@ public class Packet56MapChunks extends Packet
         }
     }
 
-    /**
-     * Abstract. Writes the raw packet data to the data stream.
-     */
     public void writePacketData(DataOutputStream par1DataOutputStream) throws IOException
     {
         par1DataOutputStream.writeShort(this.field_73589_c.length);
@@ -152,17 +147,11 @@ public class Packet56MapChunks extends Packet
         }
     }
 
-    /**
-     * Passes this Packet on to the NetHandler for processing.
-     */
     public void processPacket(NetHandler par1NetHandler)
     {
         par1NetHandler.handleMapChunks(this);
     }
 
-    /**
-     * Abstract. Return the size of the packet (not counting the header).
-     */
     public int getPacketSize()
     {
         return 6 + this.field_73585_g + 12 * this.func_73581_d();

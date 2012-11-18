@@ -14,163 +14,96 @@ public abstract class Entity
     public int entityId;
     public double renderDistanceWeight;
 
-    /**
-     * Blocks entities from spawning when they do their AABB check to make sure the spot is clear of entities that can
-     * prevent spawning.
-     */
     public boolean preventEntitySpawning;
 
-    /** The entity that is riding this entity */
     public Entity riddenByEntity;
 
-    /** The entity we are currently riding */
     public Entity ridingEntity;
 
-    /** Reference to the World object. */
     public World worldObj;
     public double prevPosX;
     public double prevPosY;
     public double prevPosZ;
 
-    /** Entity position X */
     public double posX;
 
-    /** Entity position Y */
     public double posY;
 
-    /** Entity position Z */
     public double posZ;
 
-    /** Entity motion X */
     public double motionX;
 
-    /** Entity motion Y */
     public double motionY;
 
-    /** Entity motion Z */
     public double motionZ;
 
-    /** Entity rotation Yaw */
     public float rotationYaw;
 
-    /** Entity rotation Pitch */
     public float rotationPitch;
     public float prevRotationYaw;
     public float prevRotationPitch;
 
-    /** Axis aligned bounding box. */
     public final AxisAlignedBB boundingBox;
     public boolean onGround;
 
-    /**
-     * True if after a move this entity has collided with something on X- or Z-axis
-     */
     public boolean isCollidedHorizontally;
 
-    /**
-     * True if after a move this entity has collided with something on Y-axis
-     */
     public boolean isCollidedVertically;
 
-    /**
-     * True if after a move this entity has collided with something either vertically or horizontally
-     */
     public boolean isCollided;
     public boolean velocityChanged;
     protected boolean isInWeb;
     public boolean field_70135_K;
 
-    /**
-     * Gets set by setDead, so this must be the flag whether an Entity is dead (inactive may be better term)
-     */
     public boolean isDead;
     public float yOffset;
 
-    /** How wide this entity is considered to be */
     public float width;
 
-    /** How high this entity is considered to be */
     public float height;
 
-    /** The previous ticks distance walked multiplied by 0.6 */
     public float prevDistanceWalkedModified;
 
-    /** The distance walked multiplied by 0.6 */
     public float distanceWalkedModified;
     public float field_82151_R;
     public float fallDistance;
 
-    /**
-     * The distance that has to be exceeded in order to triger a new step sound and an onEntityWalking event on a block
-     */
     private int nextStepDistance;
 
-    /**
-     * The entity's X coordinate at the previous tick, used to calculate position during rendering routines
-     */
     public double lastTickPosX;
 
-    /**
-     * The entity's Y coordinate at the previous tick, used to calculate position during rendering routines
-     */
     public double lastTickPosY;
 
-    /**
-     * The entity's Z coordinate at the previous tick, used to calculate position during rendering routines
-     */
     public double lastTickPosZ;
     public float ySize;
 
-    /**
-     * How high this entity can step up when running into a block to try to get over it (currently make note the entity
-     * will always step up this amount and not just the amount needed)
-     */
     public float stepHeight;
 
-    /**
-     * Whether this entity won't clip with collision or not (make note it won't disable gravity)
-     */
     public boolean noClip;
 
-    /**
-     * Reduces the velocity applied by entity collisions by the specified percent.
-     */
     public float entityCollisionReduction;
     protected Random rand;
 
-    /** How many ticks has this entity had ran since being alive */
     public int ticksExisted;
 
-    /**
-     * The amount of ticks you have to stand inside of fire before be set on fire
-     */
     public int fireResistance;
     private int fire;
 
-    /**
-     * Whether this entity is currently inside of water (if it handles water movement that is)
-     */
     protected boolean inWater;
 
-    /**
-     * Remaining time an entity will be "immune" to further damage after being hurt.
-     */
     public int hurtResistantTime;
     private boolean firstUpdate;
     @SideOnly(Side.CLIENT)
 
-    /** downloadable location of player's skin */
     public String skinUrl;
     @SideOnly(Side.CLIENT)
 
-    /** downloadable location of player's cloak */
     public String cloakUrl;
     protected boolean isImmuneToFire;
     protected DataWatcher dataWatcher;
     private double entityRiderPitchDelta;
     private double entityRiderYawDelta;
 
-    /** Has this entity been added to the chunk its within */
     public boolean addedToChunk;
     public int chunkCoordX;
     public int chunkCoordY;
@@ -182,24 +115,18 @@ public abstract class Entity
     @SideOnly(Side.CLIENT)
     public int serverPosZ;
 
-    /**
-     * Render entity even if it is outside the camera frustum. Only true in EntityFish for now. Used in RenderGlobal:
-     * render if ignoreFrustumCheck or in frustum.
-     */
     public boolean ignoreFrustumCheck;
     public boolean isAirBorne;
     public int timeUntilPortal;
 
-    /** Whether the entity is inside a Portal */
     protected boolean inPortal;
     private int field_82153_h;
 
-    /** Which dimension the player is in (-1 = the Nether, 0 = normal world) */
     public int dimension;
     protected int field_82152_aq;
     private boolean field_83001_bt;
     public EnumEntitySize myEntitySize;
-    /** Forge: Used to store custom data for each entity. */
+
     private NBTTagCompound customEntityData;
     public boolean captureDrops = false;
     public ArrayList<EntityItem> capturedDrops = new ArrayList<EntityItem>();
@@ -273,10 +200,6 @@ public abstract class Entity
 
     @SideOnly(Side.CLIENT)
 
-    /**
-     * Keeps moving the entity up so it isn't colliding with blocks and other requirements for this entity to be spawned
-     * (only actually used on players though its also on Entity)
-     */
     protected void preparePlayerToSpawn()
     {
         if (this.worldObj != null)
@@ -298,17 +221,11 @@ public abstract class Entity
         }
     }
 
-    /**
-     * Will get destroyed next tick.
-     */
     public void setDead()
     {
         this.isDead = true;
     }
 
-    /**
-     * Sets the width and height of the entity. Args: width, height
-     */
     protected void setSize(float par1, float par2)
     {
         this.width = par1;
@@ -341,18 +258,12 @@ public abstract class Entity
         }
     }
 
-    /**
-     * Sets the rotation of the entity
-     */
     protected void setRotation(float par1, float par2)
     {
         this.rotationYaw = par1 % 360.0F;
         this.rotationPitch = par2 % 360.0F;
     }
 
-    /**
-     * Sets the x,y,z of the entity from the given parameters. Also seems to set up a bounding box.
-     */
     public void setPosition(double par1, double par3, double par5)
     {
         this.posX = par1;
@@ -365,10 +276,6 @@ public abstract class Entity
 
     @SideOnly(Side.CLIENT)
 
-    /**
-     * Adds par1*0.15 to the entity's yaw, and *subtracts* par2*0.15 from the pitch. Clamps pitch from -90 to 90. Both
-     * arguments in degrees.
-     */
     public void setAngles(float par1, float par2)
     {
         float var3 = this.rotationPitch;
@@ -390,17 +297,11 @@ public abstract class Entity
         this.prevRotationYaw += this.rotationYaw - var4;
     }
 
-    /**
-     * Called to update the entity's position/logic.
-     */
     public void onUpdate()
     {
         this.onEntityUpdate();
     }
 
-    /**
-     * Gets called every tick from main Entity class
-     */
     public void onEntityUpdate()
     {
         this.worldObj.theProfiler.startSection("entityBaseTick");
@@ -533,17 +434,11 @@ public abstract class Entity
         this.worldObj.theProfiler.endSection();
     }
 
-    /**
-     * Return the amount of time this entity should stay in a portal before being transported.
-     */
     public int getMaxInPortalTime()
     {
         return 0;
     }
 
-    /**
-     * Called whenever the entity is walking inside of lava.
-     */
     protected void setOnFireFromLava()
     {
         if (!this.isImmuneToFire)
@@ -553,9 +448,6 @@ public abstract class Entity
         }
     }
 
-    /**
-     * Sets entity to burn for x amount of seconds, cannot lower amount of existing fire.
-     */
     public void setFire(int par1)
     {
         int var2 = par1 * 20;
@@ -566,25 +458,16 @@ public abstract class Entity
         }
     }
 
-    /**
-     * Removes fire from entity.
-     */
     public void extinguish()
     {
         this.fire = 0;
     }
 
-    /**
-     * sets the dead flag. Used when you fall off the bottom of the world.
-     */
     protected void kill()
     {
         this.setDead();
     }
 
-    /**
-     * Checks if the offset position from the entity's current position is inside of liquid. Args: x, y, z
-     */
     public boolean isOffsetPositionInLiquid(double par1, double par3, double par5)
     {
         AxisAlignedBB var7 = this.boundingBox.getOffsetBoundingBox(par1, par3, par5);
@@ -592,9 +475,6 @@ public abstract class Entity
         return !var8.isEmpty() ? false : !this.worldObj.isAnyLiquid(var7);
     }
 
-    /**
-     * Tries to moves the entity by the passed in displacement. Args: x, y, z
-     */
     public void moveEntity(double par1, double par3, double par5)
     {
         if (this.noClip)
@@ -948,9 +828,6 @@ public abstract class Entity
         }
     }
 
-    /**
-     * Checks for block collisions, and calls the associated onBlockCollided method for the collided block.
-     */
     protected void doBlockCollisions()
     {
         int var1 = MathHelper.floor_double(this.boundingBox.minX + 0.001D);
@@ -980,9 +857,6 @@ public abstract class Entity
         }
     }
 
-    /**
-     * Plays step sound at given x, y, z for the entity
-     */
     protected void playStepSound(int par1, int par2, int par3, int par4)
     {
         StepSound var5 = Block.blocksList[par4].stepSound;
@@ -1003,19 +877,11 @@ public abstract class Entity
         this.worldObj.playSoundAtEntity(this, par1Str, par2, par3);
     }
 
-    /**
-     * returns if this entity triggers Block.onEntityWalking on the blocks they walk on. used for spiders and wolves to
-     * prevent them from trampling crops
-     */
     protected boolean canTriggerWalking()
     {
         return true;
     }
 
-    /**
-     * Takes in the distance the entity has fallen this tick and whether its on the ground to update the fall distance
-     * and deal fall damage if landing on the ground.  Args: distanceFallenThisTick, onGround
-     */
     protected void updateFallState(double par1, boolean par3)
     {
         if (par3)
@@ -1032,18 +898,11 @@ public abstract class Entity
         }
     }
 
-    /**
-     * returns the bounding box for this entity
-     */
     public AxisAlignedBB getBoundingBox()
     {
         return null;
     }
 
-    /**
-     * Will deal the specified amount of damage to the entity if the entity isn't immune to fire damage. Args:
-     * amountDamage
-     */
     protected void dealFireDamage(int par1)
     {
         if (!this.isImmuneToFire)
@@ -1057,9 +916,6 @@ public abstract class Entity
         return this.isImmuneToFire;
     }
 
-    /**
-     * Called when the mob is falling. Calculates and applies fall damage.
-     */
     protected void fall(float par1)
     {
         if (this.riddenByEntity != null)
@@ -1068,26 +924,16 @@ public abstract class Entity
         }
     }
 
-    /**
-     * Checks if this entity is either in water or on an open air block in rain (used in wolves).
-     */
     public boolean isWet()
     {
         return this.inWater || this.worldObj.canLightningStrikeAt(MathHelper.floor_double(this.posX), MathHelper.floor_double(this.posY), MathHelper.floor_double(this.posZ)) || this.worldObj.canLightningStrikeAt(MathHelper.floor_double(this.posX), MathHelper.floor_double(this.posY + (double)this.height), MathHelper.floor_double(this.posZ));
     }
 
-    /**
-     * Checks if this entity is inside water (if inWater field is true as a result of handleWaterMovement() returning
-     * true)
-     */
     public boolean isInWater()
     {
         return this.inWater;
     }
 
-    /**
-     * Returns if this entity is in water and will end up adding the waters velocity to the entity
-     */
     public boolean handleWaterMovement()
     {
         if (this.worldObj.handleMaterialAcceleration(this.boundingBox.expand(0.0D, -0.4000000059604645D, 0.0D).contract(0.001D, 0.001D, 0.001D), Material.water, this))
@@ -1134,9 +980,6 @@ public abstract class Entity
         return this.inWater;
     }
 
-    /**
-     * Checks if the current block the entity is within of the specified material type
-     */
     public boolean isInsideOfMaterial(Material par1Material)
     {
         double var2 = this.posY + (double)this.getEyeHeight();
@@ -1162,17 +1005,11 @@ public abstract class Entity
         return 0.0F;
     }
 
-    /**
-     * Whether or not the current entity is in lava
-     */
     public boolean handleLavaMovement()
     {
         return this.worldObj.isMaterialInBB(this.boundingBox.expand(-0.10000000149011612D, -0.4000000059604645D, -0.10000000149011612D), Material.lava);
     }
 
-    /**
-     * Used in both water and by flying objects
-     */
     public void moveFlying(float par1, float par2, float par3)
     {
         float var4 = par1 * par1 + par2 * par2;
@@ -1214,9 +1051,6 @@ public abstract class Entity
         }
     }
 
-    /**
-     * Gets how bright this entity is.
-     */
     public float getBrightness(float par1)
     {
         int var2 = MathHelper.floor_double(this.posX);
@@ -1234,17 +1068,11 @@ public abstract class Entity
         }
     }
 
-    /**
-     * Sets the reference to the World object.
-     */
     public void setWorld(World par1World)
     {
         this.worldObj = par1World;
     }
 
-    /**
-     * Sets the entity's position and rotation. Args: posX, posY, posZ, yaw, pitch
-     */
     public void setPositionAndRotation(double par1, double par3, double par5, float par7, float par8)
     {
         this.prevPosX = this.posX = par1;
@@ -1269,9 +1097,6 @@ public abstract class Entity
         this.setRotation(par7, par8);
     }
 
-    /**
-     * Sets the location and Yaw/Pitch of an entity in the world
-     */
     public void setLocationAndAngles(double par1, double par3, double par5, float par7, float par8)
     {
         this.lastTickPosX = this.prevPosX = this.posX = par1;
@@ -1282,9 +1107,6 @@ public abstract class Entity
         this.setPosition(this.posX, this.posY, this.posZ);
     }
 
-    /**
-     * Returns the distance to the entity. Args: entity
-     */
     public float getDistanceToEntity(Entity par1Entity)
     {
         float var2 = (float)(this.posX - par1Entity.posX);
@@ -1293,9 +1115,6 @@ public abstract class Entity
         return MathHelper.sqrt_float(var2 * var2 + var3 * var3 + var4 * var4);
     }
 
-    /**
-     * Gets the squared distance to the position. Args: x, y, z
-     */
     public double getDistanceSq(double par1, double par3, double par5)
     {
         double var7 = this.posX - par1;
@@ -1304,9 +1123,6 @@ public abstract class Entity
         return var7 * var7 + var9 * var9 + var11 * var11;
     }
 
-    /**
-     * Gets the distance to the position. Args: x, y, z
-     */
     public double getDistance(double par1, double par3, double par5)
     {
         double var7 = this.posX - par1;
@@ -1315,9 +1131,6 @@ public abstract class Entity
         return (double)MathHelper.sqrt_double(var7 * var7 + var9 * var9 + var11 * var11);
     }
 
-    /**
-     * Returns the squared distance to the entity. Args: entity
-     */
     public double getDistanceSqToEntity(Entity par1Entity)
     {
         double var2 = this.posX - par1Entity.posX;
@@ -1326,14 +1139,8 @@ public abstract class Entity
         return var2 * var2 + var4 * var4 + var6 * var6;
     }
 
-    /**
-     * Called by a player entity when they collide with an entity
-     */
     public void onCollideWithPlayer(EntityPlayer par1EntityPlayer) {}
 
-    /**
-     * Applies a velocity to each of the entities pushing them away from each other. Args: entity
-     */
     public void applyEntityCollision(Entity par1Entity)
     {
         if (par1Entity.riddenByEntity != this && par1Entity.ridingEntity != this)
@@ -1366,9 +1173,6 @@ public abstract class Entity
         }
     }
 
-    /**
-     * Adds to the current velocity of the entity. Args: x, y, z
-     */
     public void addVelocity(double par1, double par3, double par5)
     {
         this.motionX += par1;
@@ -1377,17 +1181,11 @@ public abstract class Entity
         this.isAirBorne = true;
     }
 
-    /**
-     * Sets that this entity has been attacked.
-     */
     protected void setBeenAttacked()
     {
         this.velocityChanged = true;
     }
 
-    /**
-     * Called when the entity is attacked.
-     */
     public boolean attackEntityFrom(DamageSource par1DamageSource, int par2)
     {
         if (this.func_85032_ar())
@@ -1401,31 +1199,18 @@ public abstract class Entity
         }
     }
 
-    /**
-     * Returns true if other Entities should be prevented from moving through this Entity.
-     */
     public boolean canBeCollidedWith()
     {
         return false;
     }
 
-    /**
-     * Returns true if this entity should push and be pushed by other entities when colliding.
-     */
     public boolean canBePushed()
     {
         return false;
     }
 
-    /**
-     * Adds a value to the player score. Currently not actually used and the entity passed in does nothing. Args:
-     * entity, scoreToAdd
-     */
     public void addToPlayerScore(Entity par1Entity, int par2) {}
 
-    /**
-     * adds the ID of this entity to the NBT given
-     */
     public boolean addEntityID(NBTTagCompound par1NBTTagCompound)
     {
         String var2 = this.getEntityString();
@@ -1444,9 +1229,6 @@ public abstract class Entity
 
     @SideOnly(Side.CLIENT)
 
-    /**
-     * Checks using a Vec3d to determine if this entity is within range of that vector to be rendered. Args: vec3D
-     */
     public boolean isInRangeToRenderVec3D(Vec3 par1Vec3)
     {
         double var2 = this.posX - par1Vec3.xCoord;
@@ -1458,10 +1240,6 @@ public abstract class Entity
 
     @SideOnly(Side.CLIENT)
 
-    /**
-     * Checks if the entity is in range to render by using the past in distance and comparing it to its average edge
-     * length * 64 * renderDistanceWeight Args: distance
-     */
     public boolean isInRangeToRenderDist(double par1)
     {
         double var3 = this.boundingBox.getAverageEdgeLength();
@@ -1471,17 +1249,11 @@ public abstract class Entity
 
     @SideOnly(Side.CLIENT)
 
-    /**
-     * Returns the texture's file path as a String.
-     */
     public String getTexture()
     {
         return null;
     }
 
-    /**
-     * Save the entity to NBT (calls an abstract helper method to write extra data)
-     */
     public void writeToNBT(NBTTagCompound par1NBTTagCompound)
     {
         try
@@ -1496,15 +1268,18 @@ public abstract class Entity
             par1NBTTagCompound.setInteger("Dimension", this.dimension);
             par1NBTTagCompound.setBoolean("Invulnerable", this.field_83001_bt);
             par1NBTTagCompound.setInteger("PortalCooldown", this.timeUntilPortal);
+
             if (persistentID != null)
             {
                 par1NBTTagCompound.setLong("PersistentIDMSB", persistentID.getMostSignificantBits());
                 par1NBTTagCompound.setLong("PersistentIDLSB", persistentID.getLeastSignificantBits());
             }
+
             if (customEntityData != null)
             {
                 par1NBTTagCompound.setCompoundTag("ForgeData", customEntityData);
             }
+
             this.writeEntityToNBT(par1NBTTagCompound);
         }
         catch (Throwable var5)
@@ -1516,9 +1291,6 @@ public abstract class Entity
         }
     }
 
-    /**
-     * Reads the entity from NBT (calls an abstract helper method to read specialized data)
-     */
     public void readFromNBT(NBTTagCompound par1NBTTagCompound)
     {
         try
@@ -1559,14 +1331,17 @@ public abstract class Entity
             this.timeUntilPortal = par1NBTTagCompound.getInteger("PortalCooldown");
             this.setPosition(this.posX, this.posY, this.posZ);
             this.setRotation(this.rotationYaw, this.rotationPitch);
+
             if (par1NBTTagCompound.hasKey("ForgeData"))
             {
                 customEntityData = par1NBTTagCompound.getCompoundTag("ForgeData");
             }
+
             if (par1NBTTagCompound.hasKey("PersistentIDMSB") && par1NBTTagCompound.hasKey("PersistentIDLSB"))
             {
                 persistentID = new UUID(par1NBTTagCompound.getLong("PersistentIDMSB"), par1NBTTagCompound.getLong("PersistentIDLSB"));
             }
+
             this.readEntityFromNBT(par1NBTTagCompound);
         }
         catch (Throwable var5)
@@ -1578,27 +1353,15 @@ public abstract class Entity
         }
     }
 
-    /**
-     * Returns the string that identifies this Entity's class
-     */
     protected final String getEntityString()
     {
         return EntityList.getEntityString(this);
     }
 
-    /**
-     * (abstract) Protected helper method to read subclass entity data from NBT.
-     */
     protected abstract void readEntityFromNBT(NBTTagCompound var1);
 
-    /**
-     * (abstract) Protected helper method to write subclass entity data to NBT.
-     */
     protected abstract void writeEntityToNBT(NBTTagCompound var1);
 
-    /**
-     * creates a NBT list from the array of doubles passed to this function
-     */
     protected NBTTagList newDoubleNBTList(double ... par1ArrayOfDouble)
     {
         NBTTagList var2 = new NBTTagList();
@@ -1614,9 +1377,6 @@ public abstract class Entity
         return var2;
     }
 
-    /**
-     * Returns a new NBTTagList filled with the specified floats
-     */
     protected NBTTagList newFloatNBTList(float ... par1ArrayOfFloat)
     {
         NBTTagList var2 = new NBTTagList();
@@ -1638,29 +1398,21 @@ public abstract class Entity
         return this.height / 2.0F;
     }
 
-    /**
-     * Drops an item stack at the entity's position. Args: itemID, count
-     */
     public EntityItem dropItem(int par1, int par2)
     {
         return this.dropItemWithOffset(par1, par2, 0.0F);
     }
 
-    /**
-     * Drops an item stack with a specified y offset. Args: itemID, count, yOffset
-     */
     public EntityItem dropItemWithOffset(int par1, int par2, float par3)
     {
         return this.entityDropItem(new ItemStack(par1, par2, 0), par3);
     }
 
-    /**
-     * Drops an item at the position of the entity.
-     */
     public EntityItem entityDropItem(ItemStack par1ItemStack, float par2)
     {
         EntityItem var3 = new EntityItem(this.worldObj, this.posX, this.posY + (double)par2, this.posZ, par1ItemStack);
         var3.delayBeforeCanPickup = 10;
+
         if (captureDrops)
         {
             capturedDrops.add(var3);
@@ -1669,20 +1421,15 @@ public abstract class Entity
         {
             this.worldObj.spawnEntityInWorld(var3);
         }
+
         return var3;
     }
 
-    /**
-     * Checks whether target entity is alive.
-     */
     public boolean isEntityAlive()
     {
         return !this.isDead;
     }
 
-    /**
-     * Checks if this entity is inside of an opaque block
-     */
     public boolean isEntityInsideOpaqueBlock()
     {
         for (int var1 = 0; var1 < 8; ++var1)
@@ -1703,26 +1450,16 @@ public abstract class Entity
         return false;
     }
 
-    /**
-     * Called when a player interacts with a mob. e.g. gets milk from a cow, gets into the saddle on a pig.
-     */
     public boolean interact(EntityPlayer par1EntityPlayer)
     {
         return false;
     }
 
-    /**
-     * Returns a boundingBox used to collide the entity with other entities and blocks. This enables the entity to be
-     * pushable on contact, like boats or minecarts.
-     */
     public AxisAlignedBB getCollisionBox(Entity par1Entity)
     {
         return null;
     }
 
-    /**
-     * Handles updating while being ridden by an entity
-     */
     public void updateRidden()
     {
         if (this.ridingEntity.isDead)
@@ -1805,25 +1542,16 @@ public abstract class Entity
         this.riddenByEntity.setPosition(this.posX, this.posY + this.getMountedYOffset() + this.riddenByEntity.getYOffset(), this.posZ);
     }
 
-    /**
-     * Returns the Y Offset of this entity.
-     */
     public double getYOffset()
     {
         return (double)this.yOffset;
     }
 
-    /**
-     * Returns the Y offset from the entity's position for any entity riding this one.
-     */
     public double getMountedYOffset()
     {
         return (double)this.height * 0.75D;
     }
 
-    /**
-     * Called when a player mounts an entity. e.g. mounts a pig, mounts a boat.
-     */
     public void mountEntity(Entity par1Entity)
     {
         this.entityRiderPitchDelta = 0.0D;
@@ -1862,9 +1590,6 @@ public abstract class Entity
         }
     }
 
-    /**
-     * Called when a player unounts an entity.
-     */
     public void unmountEntity(Entity par1Entity)
     {
         double var3 = par1Entity.posX;
@@ -1905,10 +1630,6 @@ public abstract class Entity
 
     @SideOnly(Side.CLIENT)
 
-    /**
-     * Sets the position and rotation. Only difference from the other one is no bounding on the rotation. Args: posX,
-     * posY, posZ, yaw, pitch
-     */
     public void setPositionAndRotation2(double par1, double par3, double par5, float par7, float par8, int par9)
     {
         this.setPosition(par1, par3, par5);
@@ -1939,17 +1660,11 @@ public abstract class Entity
         return 0.1F;
     }
 
-    /**
-     * returns a (normalized) vector of where this entity is looking
-     */
     public Vec3 getLookVec()
     {
         return null;
     }
 
-    /**
-     * Called by portal blocks when an entity is within it.
-     */
     public void setInPortal()
     {
         if (this.timeUntilPortal > 0)
@@ -1970,9 +1685,6 @@ public abstract class Entity
         }
     }
 
-    /**
-     * Return the amount of cooldown before this entity can use a portal again.
-     */
     public int getPortalCooldown()
     {
         return 900;
@@ -1980,9 +1692,6 @@ public abstract class Entity
 
     @SideOnly(Side.CLIENT)
 
-    /**
-     * Sets the velocity to the args. Args: x, y, z
-     */
     public void setVelocity(double par1, double par3, double par5)
     {
         this.motionX = par1;
@@ -1995,9 +1704,6 @@ public abstract class Entity
 
     @SideOnly(Side.CLIENT)
 
-    /**
-     * Setups the entity to do the hurt animation. Only used by packets in multiplayer.
-     */
     public void performHurtAnimation() {}
 
     @SideOnly(Side.CLIENT)
@@ -2008,55 +1714,33 @@ public abstract class Entity
         return null;
     }
 
-    /**
-     * Sets the held item, or an armor slot. Slot 0 is held item. Slot 1-4 is armor. Params: Item, slot
-     */
     public void setCurrentItemOrArmor(int par1, ItemStack par2ItemStack) {}
 
-    /**
-     * Returns true if the entity is on fire. Used by render to add the fire effect on rendering.
-     */
     public boolean isBurning()
     {
         return this.fire > 0 || this.getFlag(0);
     }
 
-    /**
-     * Returns true if the entity is riding another entity, used by render to rotate the legs to be in 'sit' position
-     * for players.
-     */
     public boolean isRiding()
     {
         return (this.ridingEntity != null && ridingEntity.shouldRiderSit()) || this.getFlag(2);
     }
 
-    /**
-     * Returns if this entity is sneaking.
-     */
     public boolean isSneaking()
     {
         return this.getFlag(1);
     }
 
-    /**
-     * Sets the sneaking flag.
-     */
     public void setSneaking(boolean par1)
     {
         this.setFlag(1, par1);
     }
 
-    /**
-     * Get if the Entity is sprinting.
-     */
     public boolean isSprinting()
     {
         return this.getFlag(3);
     }
 
-    /**
-     * Set sprinting switch for Entity.
-     */
     public void setSprinting(boolean par1)
     {
         this.setFlag(3, par1);
@@ -2083,18 +1767,11 @@ public abstract class Entity
         this.setFlag(4, par1);
     }
 
-    /**
-     * Returns true if the flag is active for the entity. Known flags: 0) is burning; 1) is sneaking; 2) is riding
-     * something; 3) is sprinting; 4) is eating
-     */
     protected boolean getFlag(int par1)
     {
         return (this.dataWatcher.getWatchableObjectByte(0) & 1 << par1) != 0;
     }
 
-    /**
-     * Enable or disable a entity flag, see getEntityFlag to read the know flags.
-     */
     protected void setFlag(int par1, boolean par2)
     {
         byte var3 = this.dataWatcher.getWatchableObjectByte(0);
@@ -2119,9 +1796,6 @@ public abstract class Entity
         this.dataWatcher.updateObject(1, Short.valueOf((short)par1));
     }
 
-    /**
-     * Called when a lightning bolt hits the entity.
-     */
     public void onStruckByLightning(EntityLightningBolt par1EntityLightningBolt)
     {
         this.dealFireDamage(5);
@@ -2133,14 +1807,8 @@ public abstract class Entity
         }
     }
 
-    /**
-     * This method gets called when the entity kills another one.
-     */
     public void onKillEntity(EntityLiving par1EntityLiving) {}
 
-    /**
-     * Adds velocity to push the entity out of blocks at the specified x, y, z position Args: x, y, z
-     */
     protected boolean pushOutOfBlocks(double par1, double par3, double par5)
     {
         int var7 = MathHelper.floor_double(par1);
@@ -2232,18 +1900,12 @@ public abstract class Entity
         }
     }
 
-    /**
-     * Sets the Entity inside a web block.
-     */
     public void setInWeb()
     {
         this.isInWeb = true;
         this.fallDistance = 0.0F;
     }
 
-    /**
-     * Gets the username of the entity.
-     */
     public String getEntityName()
     {
         String var1 = EntityList.getEntityString(this);
@@ -2256,17 +1918,11 @@ public abstract class Entity
         return StatCollector.translateToLocal("entity." + var1 + ".name");
     }
 
-    /**
-     * Return the Entity parts making up this Entity (currently only for dragons)
-     */
     public Entity[] getParts()
     {
         return null;
     }
 
-    /**
-     * Returns true if Entity argument is equal to this Entity
-     */
     public boolean isEntityEqual(Entity par1Entity)
     {
         return this == par1Entity;
@@ -2279,14 +1935,8 @@ public abstract class Entity
 
     @SideOnly(Side.CLIENT)
 
-    /**
-     * Sets the head's yaw rotation of the entity.
-     */
     public void setHeadRotationYaw(float par1) {}
 
-    /**
-     * If returns false, the item will not inflict any damage against entities.
-     */
     public boolean canAttackWithItem()
     {
         return true;
@@ -2312,11 +1962,6 @@ public abstract class Entity
         this.setLocationAndAngles(par1Entity.posX, par1Entity.posY, par1Entity.posZ, par1Entity.rotationYaw, par1Entity.rotationPitch);
     }
 
-    /**
-     * Copies important data from another entity to this entity. Used when teleporting entities between worlds, as this
-     * actually deletes the teleporting entity and re-creates it on the other side. Params: Entity to copy from, unused
-     * (always true)
-     */
     public void copyDataFrom(Entity par1Entity, boolean par2)
     {
         NBTTagCompound var3 = new NBTTagCompound();
@@ -2326,9 +1971,6 @@ public abstract class Entity
         this.field_82152_aq = par1Entity.field_82152_aq;
     }
 
-    /**
-     * Teleports the entity to another dimension. Params: Dimension number to teleport to
-     */
     public void travelToDimension(int par1)
     {
         if (!this.worldObj.isRemote && !this.isDead)
@@ -2375,9 +2017,6 @@ public abstract class Entity
         return this.field_82152_aq;
     }
 
-    /**
-     * Return whether this entity should NOT trigger a pressure plate or a tripwire.
-     */
     public boolean doesEntityNotTriggerPressurePlate()
     {
         return false;
@@ -2399,36 +2038,21 @@ public abstract class Entity
         return this.isBurning();
     }
 
-    /* ================================== Forge Start =====================================*/
-    /**
-     * Returns a NBTTagCompound that can be used to store custom data for this entity.
-     * It will be written, and read from disc, so it persists over world saves.
-     * @return A NBTTagCompound
-     */
     public NBTTagCompound getEntityData()
     {
         if (customEntityData == null)
         {
             customEntityData = new NBTTagCompound();
         }
+
         return customEntityData;
     }
 
-    /**
-     * Used in model rendering to determine if the entity riding this entity should be in the 'sitting' position.
-     * @return false to prevent an entity that is mounted to this entity from displaying the 'sitting' animation.
-     */
     public boolean shouldRiderSit()
     {
         return true;
     }
 
-    /**
-     * Called when a user uses the creative pick block button on this entity.
-     *
-     * @param target The full target the player is looking at
-     * @return A ItemStack to add to the player's inventory, Null if nothing should be added.
-     */
     public ItemStack getPickedResult(MovingObjectPosition target)
     {
         if (this instanceof EntityPainting)
@@ -2446,6 +2070,7 @@ public abstract class Entity
         else if (this instanceof EntityItemFrame)
         {
             ItemStack held = ((EntityItemFrame)this).func_82335_i();
+
             if (held == null)
             {
                 return new ItemStack(Item.itemFrame);
@@ -2458,11 +2083,13 @@ public abstract class Entity
         else
         {
             int id = EntityList.getEntityID(this);
+
             if (id > 0 && EntityList.entityEggs.containsKey(id))
             {
                 return new ItemStack(Item.monsterPlacer, 1, id);
             }
         }
+
         return null;
     }
 

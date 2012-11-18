@@ -10,9 +10,6 @@ public class StringUtils
 
     @SideOnly(Side.CLIENT)
 
-    /**
-     * Returns the time elapsed for the given number of ticks, in "mm:ss" format.
-     */
     public static String ticksToElapsedTime(int par0)
     {
         int var1 = par0 / 20;

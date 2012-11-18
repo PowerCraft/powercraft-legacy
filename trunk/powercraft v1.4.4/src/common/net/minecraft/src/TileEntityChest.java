@@ -7,53 +7,34 @@ public class TileEntityChest extends TileEntity implements IInventory
 {
     private ItemStack[] chestContents = new ItemStack[36];
 
-    /** Determines if the check for adjacent chests has taken place. */
     public boolean adjacentChestChecked = false;
 
-    /** Contains the chest tile located adjacent to this one (if any) */
     public TileEntityChest adjacentChestZNeg;
 
-    /** Contains the chest tile located adjacent to this one (if any) */
     public TileEntityChest adjacentChestXPos;
 
-    /** Contains the chest tile located adjacent to this one (if any) */
     public TileEntityChest adjacentChestXNeg;
 
-    /** Contains the chest tile located adjacent to this one (if any) */
     public TileEntityChest adjacentChestZPosition;
 
-    /** The current angle of the lid (between 0 and 1) */
     public float lidAngle;
 
-    /** The angle of the lid last tick */
     public float prevLidAngle;
 
-    /** The number of players currently using this chest */
     public int numUsingPlayers;
 
-    /** Server sync counter (once per 20 ticks) */
     private int ticksSinceSync;
 
-    /**
-     * Returns the number of slots in the inventory.
-     */
     public int getSizeInventory()
     {
         return 27;
     }
 
-    /**
-     * Returns the stack in slot i
-     */
     public ItemStack getStackInSlot(int par1)
     {
         return this.chestContents[par1];
     }
 
-    /**
-     * Removes from an inventory slot (first arg) up to a specified number (second arg) of items and returns them in a
-     * new stack.
-     */
     public ItemStack decrStackSize(int par1, int par2)
     {
         if (this.chestContents[par1] != null)
@@ -86,10 +67,6 @@ public class TileEntityChest extends TileEntity implements IInventory
         }
     }
 
-    /**
-     * When some containers are closed they call this on each slot, then drop whatever it returns as an EntityItem -
-     * like when you close a workbench GUI.
-     */
     public ItemStack getStackInSlotOnClosing(int par1)
     {
         if (this.chestContents[par1] != null)
@@ -104,9 +81,6 @@ public class TileEntityChest extends TileEntity implements IInventory
         }
     }
 
-    /**
-     * Sets the given item stack to the specified slot in the inventory (can be crafting or armor sections).
-     */
     public void setInventorySlotContents(int par1, ItemStack par2ItemStack)
     {
         this.chestContents[par1] = par2ItemStack;
@@ -119,17 +93,11 @@ public class TileEntityChest extends TileEntity implements IInventory
         this.onInventoryChanged();
     }
 
-    /**
-     * Returns the name of the inventory.
-     */
     public String getInvName()
     {
         return "container.chest";
     }
 
-    /**
-     * Reads a tile entity from NBT.
-     */
     public void readFromNBT(NBTTagCompound par1NBTTagCompound)
     {
         super.readFromNBT(par1NBTTagCompound);
@@ -148,9 +116,6 @@ public class TileEntityChest extends TileEntity implements IInventory
         }
     }
 
-    /**
-     * Writes a tile entity to NBT.
-     */
     public void writeToNBT(NBTTagCompound par1NBTTagCompound)
     {
         super.writeToNBT(par1NBTTagCompound);
@@ -170,27 +135,16 @@ public class TileEntityChest extends TileEntity implements IInventory
         par1NBTTagCompound.setTag("Items", var2);
     }
 
-    /**
-     * Returns the maximum stack size for a inventory slot. Seems to always be 64, possibly will be extended. *Isn't
-     * this more of a set than a get?*
-     */
     public int getInventoryStackLimit()
     {
         return 64;
     }
 
-    /**
-     * Do not make give this method the name canInteractWith because it clashes with Container
-     */
     public boolean isUseableByPlayer(EntityPlayer par1EntityPlayer)
     {
         return this.worldObj.getBlockTileEntity(this.xCoord, this.yCoord, this.zCoord) != this ? false : par1EntityPlayer.getDistanceSq((double)this.xCoord + 0.5D, (double)this.yCoord + 0.5D, (double)this.zCoord + 0.5D) <= 64.0D;
     }
 
-    /**
-     * Causes the TileEntity to reset all it's cached values for it's container block, blockID, metaData and in the case
-     * of chests, the adjcacent chest check
-     */
     public void updateContainingBlockInfo()
     {
         super.updateContainingBlockInfo();
@@ -214,6 +168,7 @@ public class TileEntityChest extends TileEntity implements IInventory
                     }
 
                     break;
+
                 case 1:
                     if (this.adjacentChestXNeg != par1TileEntityChest)
                     {
@@ -221,6 +176,7 @@ public class TileEntityChest extends TileEntity implements IInventory
                     }
 
                     break;
+
                 case 2:
                     if (this.adjacentChestZNeg != par1TileEntityChest)
                     {
@@ -228,6 +184,7 @@ public class TileEntityChest extends TileEntity implements IInventory
                     }
 
                     break;
+
                 case 3:
                     if (this.adjacentChestXPos != par1TileEntityChest)
                     {
@@ -237,9 +194,6 @@ public class TileEntityChest extends TileEntity implements IInventory
         }
     }
 
-    /**
-     * Performs the check for adjacent chests to determine if this chest is double or not.
-     */
     public void checkForAdjacentChests()
     {
         if (!this.adjacentChestChecked)
@@ -292,10 +246,6 @@ public class TileEntityChest extends TileEntity implements IInventory
         }
     }
 
-    /**
-     * Allows the entity to update its state. Overridden in most subclasses, e.g. the mob spawner uses this to count
-     * ticks and creates a new spawn inside its implementation.
-     */
     public void updateEntity()
     {
         super.updateEntity();
@@ -393,9 +343,6 @@ public class TileEntityChest extends TileEntity implements IInventory
         }
     }
 
-    /**
-     * Called when a client event is received with the event number and argument, see World.sendClientEvent
-     */
     public void receiveClientEvent(int par1, int par2)
     {
         if (par1 == 1)
@@ -416,9 +363,6 @@ public class TileEntityChest extends TileEntity implements IInventory
         this.worldObj.addBlockEvent(this.xCoord, this.yCoord, this.zCoord, Block.chest.blockID, 1, this.numUsingPlayers);
     }
 
-    /**
-     * invalidates a tile entity
-     */
     public void invalidate()
     {
         super.invalidate();

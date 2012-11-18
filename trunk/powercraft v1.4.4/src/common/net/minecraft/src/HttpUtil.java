@@ -22,9 +22,6 @@ import java.util.logging.Logger;
 
 public class HttpUtil
 {
-    /**
-     * Builds an encoded HTTP POST content string from a string map
-     */
     public static String buildPostString(Map par0Map)
     {
         StringBuilder var1 = new StringBuilder();
@@ -66,17 +63,11 @@ public class HttpUtil
         return var1.toString();
     }
 
-    /**
-     * Sends a HTTP POST request to the given URL with data from a map
-     */
     public static String sendPost(URL par0URL, Map par1Map, boolean par2)
     {
         return sendPost(par0URL, buildPostString(par1Map), par2);
     }
 
-    /**
-     * Sends a HTTP POST request to the given URL with data from a string
-     */
     public static String sendPost(URL par0URL, String par1Str, boolean par2)
     {
         try
@@ -119,9 +110,6 @@ public class HttpUtil
 
     @SideOnly(Side.CLIENT)
 
-    /**
-     * The downloader for texturepacks stored in the server.
-     */
     public static void downloadTexturePack(File par0File, String par1Str, IDownloadSuccess par2IDownloadSuccess, Map par3Map, int par4, IProgressUpdate par5IProgressUpdate)
     {
         Thread var6 = new Thread(new HttpUtilRunnable(par5IProgressUpdate, par1Str, par3Map, par0File, par2IDownloadSuccess, par4));

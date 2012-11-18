@@ -7,7 +7,6 @@ import java.util.Random;
 
 public class BlockSilverfish extends Block
 {
-    /** Block names that can be a silverfish stone. */
     public static final String[] silverfishStoneTypes = new String[] {"stone", "cobble", "brick"};
 
     public BlockSilverfish(int par1)
@@ -17,17 +16,11 @@ public class BlockSilverfish extends Block
         this.setCreativeTab(CreativeTabs.tabDecorations);
     }
 
-    /**
-     * From the specified side and block metadata retrieves the blocks texture. Args: side, metadata
-     */
     public int getBlockTextureFromSideAndMetadata(int par1, int par2)
     {
         return par2 == 1 ? Block.cobblestone.blockIndexInTexture : (par2 == 2 ? Block.stoneBrick.blockIndexInTexture : Block.stone.blockIndexInTexture);
     }
 
-    /**
-     * Called right before the block is destroyed by a player.  Args: world, x, y, z, metaData
-     */
     public void onBlockDestroyedByPlayer(World par1World, int par2, int par3, int par4, int par5)
     {
         if (!par1World.isRemote)
@@ -41,35 +34,21 @@ public class BlockSilverfish extends Block
         super.onBlockDestroyedByPlayer(par1World, par2, par3, par4, par5);
     }
 
-    /**
-     * Returns the quantity of items to drop on block destruction.
-     */
     public int quantityDropped(Random par1Random)
     {
         return 0;
     }
 
-    /**
-     * Gets the blockID of the block this block is pretending to be according to this block's metadata.
-     */
     public static boolean getPosingIdByMetadata(int par0)
     {
         return par0 == Block.stone.blockID || par0 == Block.cobblestone.blockID || par0 == Block.stoneBrick.blockID;
     }
 
-    /**
-     * Returns the metadata to use when a Silverfish hides in the block. Sets the block to BlockSilverfish with this
-     * metadata. It changes the displayed texture client side to look like a normal block.
-     */
     public static int getMetadataForBlockType(int par0)
     {
         return par0 == Block.cobblestone.blockID ? 1 : (par0 == Block.stoneBrick.blockID ? 2 : 0);
     }
 
-    /**
-     * Returns an item stack containing a single instance of the current block type. 'i' is the block's subtype/damage
-     * and is ignored for blocks which do not support subtypes. Blocks which cannot be harvested should return null.
-     */
     protected ItemStack createStackedBlock(int par1)
     {
         Block var2 = Block.stone;
@@ -87,9 +66,6 @@ public class BlockSilverfish extends Block
         return new ItemStack(var2);
     }
 
-    /**
-     * Get the block's damage value (for use with pick block).
-     */
     public int getDamageValue(World par1World, int par2, int par3, int par4)
     {
         return par1World.getBlockMetadata(par2, par3, par4);
@@ -97,9 +73,6 @@ public class BlockSilverfish extends Block
 
     @SideOnly(Side.CLIENT)
 
-    /**
-     * returns a list of blocks with the same ID, but different meta (eg: wood returns 4 blocks)
-     */
     public void getSubBlocks(int par1, CreativeTabs par2CreativeTabs, List par3List)
     {
         for (int var4 = 0; var4 < 3; ++var4)

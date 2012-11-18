@@ -8,9 +8,6 @@ public abstract class EntityAIDoorInteract extends EntityAIBase
     protected int entityPosZ;
     protected BlockDoor targetDoor;
 
-    /**
-     * If is true then the Entity has stopped Door Interaction and compoleted the task.
-     */
     boolean hasStoppedDoorInteraction;
     float entityPositionX;
     float entityPositionZ;
@@ -20,9 +17,6 @@ public abstract class EntityAIDoorInteract extends EntityAIBase
         this.theEntity = par1EntityLiving;
     }
 
-    /**
-     * Returns whether the EntityAIBase should begin execution.
-     */
     public boolean shouldExecute()
     {
         if (!this.theEntity.isCollidedHorizontally)
@@ -67,17 +61,11 @@ public abstract class EntityAIDoorInteract extends EntityAIBase
         }
     }
 
-    /**
-     * Returns whether an in-progress EntityAIBase should continue executing
-     */
     public boolean continueExecuting()
     {
         return !this.hasStoppedDoorInteraction;
     }
 
-    /**
-     * Execute a one shot task or start executing a continuous task
-     */
     public void startExecuting()
     {
         this.hasStoppedDoorInteraction = false;
@@ -85,9 +73,6 @@ public abstract class EntityAIDoorInteract extends EntityAIBase
         this.entityPositionZ = (float)((double)((float)this.entityPosZ + 0.5F) - this.theEntity.posZ);
     }
 
-    /**
-     * Updates the task
-     */
     public void updateTask()
     {
         float var1 = (float)((double)((float)this.entityPosX + 0.5F) - this.theEntity.posX);
@@ -100,9 +85,6 @@ public abstract class EntityAIDoorInteract extends EntityAIBase
         }
     }
 
-    /**
-     * Determines if a door can be broken with AI.
-     */
     private BlockDoor findUsableDoor(int par1, int par2, int par3)
     {
         int var4 = this.theEntity.worldObj.getBlockId(par1, par2, par3);

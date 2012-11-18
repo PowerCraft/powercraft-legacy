@@ -8,19 +8,12 @@ public class Vec3
     public static final Vec3Pool field_82592_a = new Vec3Pool(-1, -1);
     public final Vec3Pool myVec3LocalPool;
 
-    /** X coordinate of Vec3D */
     public double xCoord;
 
-    /** Y coordinate of Vec3D */
     public double yCoord;
 
-    /** Z coordinate of Vec3D */
     public double zCoord;
 
-    /**
-     * Static method for creating a new Vec3D given the three x,y,z values. This is only called from the other static
-     * method which creates and places it in the list.
-     */
     public static Vec3 createVectorHelper(double par0, double par2, double par4)
     {
         return new Vec3(field_82592_a, par0, par2, par4);
@@ -49,9 +42,6 @@ public class Vec3
         this.myVec3LocalPool = par1Vec3Pool;
     }
 
-    /**
-     * Sets the x,y,z components of the vector as specified.
-     */
     protected Vec3 setComponents(double par1, double par3, double par5)
     {
         this.xCoord = par1;
@@ -62,17 +52,11 @@ public class Vec3
 
     @SideOnly(Side.CLIENT)
 
-    /**
-     * Returns a new vector with the result of the specified vector minus this.
-     */
     public Vec3 subtract(Vec3 par1Vec3)
     {
         return this.myVec3LocalPool.getVecFromPool(par1Vec3.xCoord - this.xCoord, par1Vec3.yCoord - this.yCoord, par1Vec3.zCoord - this.zCoord);
     }
 
-    /**
-     * Normalizes the vector to a length of 1 (except if it is the zero vector)
-     */
     public Vec3 normalize()
     {
         double var1 = (double)MathHelper.sqrt_double(this.xCoord * this.xCoord + this.yCoord * this.yCoord + this.zCoord * this.zCoord);
@@ -86,26 +70,16 @@ public class Vec3
 
     @SideOnly(Side.CLIENT)
 
-    /**
-     * Returns a new vector with the result of this vector x the specified vector.
-     */
     public Vec3 crossProduct(Vec3 par1Vec3)
     {
         return this.myVec3LocalPool.getVecFromPool(this.yCoord * par1Vec3.zCoord - this.zCoord * par1Vec3.yCoord, this.zCoord * par1Vec3.xCoord - this.xCoord * par1Vec3.zCoord, this.xCoord * par1Vec3.yCoord - this.yCoord * par1Vec3.xCoord);
     }
 
-    /**
-     * Adds the specified x,y,z vector components to this vector and returns the resulting vector. Does not change this
-     * vector.
-     */
     public Vec3 addVector(double par1, double par3, double par5)
     {
         return this.myVec3LocalPool.getVecFromPool(this.xCoord + par1, this.yCoord + par3, this.zCoord + par5);
     }
 
-    /**
-     * Euclidean distance between this and the specified vector, returned as double.
-     */
     public double distanceTo(Vec3 par1Vec3)
     {
         double var2 = par1Vec3.xCoord - this.xCoord;
@@ -114,9 +88,6 @@ public class Vec3
         return (double)MathHelper.sqrt_double(var2 * var2 + var4 * var4 + var6 * var6);
     }
 
-    /**
-     * The square of the Euclidean distance between this and the specified vector.
-     */
     public double squareDistanceTo(Vec3 par1Vec3)
     {
         double var2 = par1Vec3.xCoord - this.xCoord;
@@ -125,9 +96,6 @@ public class Vec3
         return var2 * var2 + var4 * var4 + var6 * var6;
     }
 
-    /**
-     * The square of the Euclidean distance between this and the vector of x,y,z components passed in.
-     */
     public double squareDistanceTo(double par1, double par3, double par5)
     {
         double var7 = par1 - this.xCoord;
@@ -136,18 +104,11 @@ public class Vec3
         return var7 * var7 + var9 * var9 + var11 * var11;
     }
 
-    /**
-     * Returns the length of the vector.
-     */
     public double lengthVector()
     {
         return (double)MathHelper.sqrt_double(this.xCoord * this.xCoord + this.yCoord * this.yCoord + this.zCoord * this.zCoord);
     }
 
-    /**
-     * Returns a new vector with x value equal to the second parameter, along the line between this vector and the
-     * passed in vector, or null if not possible.
-     */
     public Vec3 getIntermediateWithXValue(Vec3 par1Vec3, double par2)
     {
         double var4 = par1Vec3.xCoord - this.xCoord;
@@ -165,10 +126,6 @@ public class Vec3
         }
     }
 
-    /**
-     * Returns a new vector with y value equal to the second parameter, along the line between this vector and the
-     * passed in vector, or null if not possible.
-     */
     public Vec3 getIntermediateWithYValue(Vec3 par1Vec3, double par2)
     {
         double var4 = par1Vec3.xCoord - this.xCoord;
@@ -186,10 +143,6 @@ public class Vec3
         }
     }
 
-    /**
-     * Returns a new vector with z value equal to the second parameter, along the line between this vector and the
-     * passed in vector, or null if not possible.
-     */
     public Vec3 getIntermediateWithZValue(Vec3 par1Vec3, double par2)
     {
         double var4 = par1Vec3.xCoord - this.xCoord;
@@ -212,9 +165,6 @@ public class Vec3
         return "(" + this.xCoord + ", " + this.yCoord + ", " + this.zCoord + ")";
     }
 
-    /**
-     * Rotates the vector around the x axis by the specified angle.
-     */
     public void rotateAroundX(float par1)
     {
         float var2 = MathHelper.cos(par1);
@@ -227,9 +177,6 @@ public class Vec3
         this.zCoord = var8;
     }
 
-    /**
-     * Rotates the vector around the y axis by the specified angle.
-     */
     public void rotateAroundY(float par1)
     {
         float var2 = MathHelper.cos(par1);
@@ -244,9 +191,6 @@ public class Vec3
 
     @SideOnly(Side.CLIENT)
 
-    /**
-     * Rotates the vector around the z axis by the specified angle.
-     */
     public void rotateAroundZ(float par1)
     {
         float var2 = MathHelper.cos(par1);

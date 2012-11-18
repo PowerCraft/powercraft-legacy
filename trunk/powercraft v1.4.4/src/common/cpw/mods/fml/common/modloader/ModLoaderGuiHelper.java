@@ -7,7 +7,6 @@ import cpw.mods.fml.common.network.IGuiHandler;
 
 public class ModLoaderGuiHelper implements IGuiHandler
 {
-
     private BaseModProxy mod;
     private int id;
     private Container container;
@@ -39,5 +38,4 @@ public class ModLoaderGuiHelper implements IGuiHandler
     {
         return mod;
     }
-
 }

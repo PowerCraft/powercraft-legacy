@@ -18,7 +18,6 @@ public class MemoryConnection implements INetworkManager
     private MemoryConnection pairedConnection;
     private NetHandler myNetHandler;
 
-    /** set to true by {server,network}Shutdown */
     private boolean shuttingDown = false;
     private String shutdownReason = "";
     private Object[] field_74439_g;
@@ -29,17 +28,11 @@ public class MemoryConnection implements INetworkManager
         this.myNetHandler = par1NetHandler;
     }
 
-    /**
-     * Sets the NetHandler for this NetworkManager. Server-only.
-     */
     public void setNetHandler(NetHandler par1NetHandler)
     {
         this.myNetHandler = par1NetHandler;
     }
 
-    /**
-     * Adds the packet to the correct send queue (chunk data packets go to a separate queue).
-     */
     public void addToSendQueue(Packet par1Packet)
     {
         if (!this.shuttingDown)
@@ -48,9 +41,6 @@ public class MemoryConnection implements INetworkManager
         }
     }
 
-    /**
-     * Wakes reader and writer threads
-     */
     public void wakeThreads() {}
 
     @SideOnly(Side.CLIENT)
@@ -66,9 +56,6 @@ public class MemoryConnection implements INetworkManager
         return !this.shuttingDown && this.pairedConnection != null;
     }
 
-    /**
-     * Checks timeouts and processes all pending read packets.
-     */
     public void processReadPackets()
     {
         int var1 = 2500;
@@ -91,26 +78,16 @@ public class MemoryConnection implements INetworkManager
         }
     }
 
-    /**
-     * Return the InetSocketAddress of the remote endpoint
-     */
     public SocketAddress getSocketAddress()
     {
         return mySocketAddress;
     }
 
-    /**
-     * Shuts down the server. (Only actually used on the server)
-     */
     public void serverShutdown()
     {
         this.shuttingDown = true;
     }
 
-    /**
-     * Shuts down the network with the specified reason. Closes all streams and sockets, spawns NetworkMasterThread to
-     * stop reading and writing threads.
-     */
     public void networkShutdown(String par1Str, Object ... par2ArrayOfObj)
     {
         this.shuttingDown = true;
@@ -118,9 +95,6 @@ public class MemoryConnection implements INetworkManager
         this.field_74439_g = par2ArrayOfObj;
     }
 
-    /**
-     * returns 0 for memoryConnections
-     */
     public int packetSize()
     {
         return 0;
@@ -151,9 +125,6 @@ public class MemoryConnection implements INetworkManager
         return this.pairedConnection;
     }
 
-    /**
-     * acts immiditally if isWritePacket, otherwise adds it to the readCache to be processed next tick
-     */
     public void processOrCachePacket(Packet par1Packet)
     {
         String var2 = this.myNetHandler.isServerHandler() ? ">" : "<";

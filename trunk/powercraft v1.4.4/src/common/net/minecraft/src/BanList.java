@@ -19,7 +19,6 @@ public class BanList
     private final LowerStringMap theBanList = new LowerStringMap();
     private final File fileName;
 
-    /** set to true if not singlePlayer */
     private boolean listActive = true;
 
     public BanList(File par1File)
@@ -37,9 +36,6 @@ public class BanList
         this.listActive = par1;
     }
 
-    /**
-     * removes expired Bans before returning
-     */
     public Map getBannedList()
     {
         this.removeExpiredBans();
@@ -86,9 +82,6 @@ public class BanList
         }
     }
 
-    /**
-     * Loads the ban list from the file (adds every entry, does not clear the current list).
-     */
     public void loadBanList()
     {
         if (this.fileName.isFile())
@@ -133,9 +126,6 @@ public class BanList
         this.saveToFile(true);
     }
 
-    /**
-     * par1: include header
-     */
     public void saveToFile(boolean par1)
     {
         this.removeExpiredBans();

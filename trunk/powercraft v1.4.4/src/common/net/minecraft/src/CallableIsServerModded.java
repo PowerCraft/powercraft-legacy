@@ -5,7 +5,6 @@ import net.minecraft.server.MinecraftServer;
 
 public class CallableIsServerModded implements Callable
 {
-    /** Reference to the MinecraftServer object. */
     final MinecraftServer mcServer;
 
     public CallableIsServerModded(MinecraftServer par1MinecraftServer)

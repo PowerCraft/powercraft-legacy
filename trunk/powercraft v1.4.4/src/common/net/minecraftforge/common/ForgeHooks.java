@@ -44,20 +44,24 @@ public class ForgeHooks
     public static void plantGrass(World world, int x, int y, int z)
     {
         GrassEntry grass = (GrassEntry)WeightedRandom.getRandomItem(world.rand, grassList);
+
         if (grass == null || grass.block == null || !grass.block.canBlockStay(world, x, y, z))
         {
             return;
         }
+
         world.setBlockAndMetadataWithNotify(x, y, z, grass.block.blockID, grass.metadata);
     }
 
     public static ItemStack getGrassSeed(World world)
     {
         SeedEntry entry = (SeedEntry)WeightedRandom.getRandomItem(world.rand, seedList);
+
         if (entry == null || entry.seed == null)
         {
             return null;
         }
+
         return entry.seed.copy();
     }
 
@@ -74,12 +78,14 @@ public class ForgeHooks
         }
 
         ItemStack stack = player.inventory.getCurrentItem();
+
         if (stack == null)
         {
             return player.canHarvestBlock(block);
         }
 
         List info = (List)toolClasses.get(stack.getItem());
+
         if (info == null)
         {
             return player.canHarvestBlock(block);
@@ -88,8 +94,8 @@ public class ForgeHooks
         Object[] tmp = info.toArray();
         String toolClass = (String)tmp[0];
         int harvestLevel = (Integer)tmp[1];
-
         Integer blockHarvestLevel = (Integer)toolHarvestLevels.get(Arrays.asList(block, metadata, toolClass));
+
         if (blockHarvestLevel == null)
         {
             return player.canHarvestBlock(block);
@@ -99,6 +105,7 @@ public class ForgeHooks
         {
             return false;
         }
+
         return true;
     }
 
@@ -106,6 +113,7 @@ public class ForgeHooks
     {
         int metadata = world.getBlockMetadata(x, y, z);
         float hardness = block.getBlockHardness(world, x, y, z);
+
         if (hardness < 0.0F)
         {
             return 0.0F;
@@ -118,17 +126,19 @@ public class ForgeHooks
         }
         else
         {
-             return player.getCurrentPlayerStrVsBlock(block, metadata) / hardness / 30F;
+            return player.getCurrentPlayerStrVsBlock(block, metadata) / hardness / 30F;
         }
     }
 
     public static boolean isToolEffective(ItemStack stack, Block block, int metadata)
     {
         List toolClass = (List)toolClasses.get(stack.getItem());
+
         if (toolClass == null)
         {
             return false;
         }
+
         return toolEffectiveness.contains(Arrays.asList(block, metadata, (String)toolClass.get(0)));
     }
 
@@ -138,20 +148,18 @@ public class ForgeHooks
         {
             return;
         }
-        toolInit = true;
 
+        toolInit = true;
         MinecraftForge.setToolClass(Item.pickaxeWood,    "pickaxe", 0);
         MinecraftForge.setToolClass(Item.pickaxeStone,   "pickaxe", 1);
         MinecraftForge.setToolClass(Item.pickaxeSteel,   "pickaxe", 2);
         MinecraftForge.setToolClass(Item.pickaxeGold,    "pickaxe", 0);
         MinecraftForge.setToolClass(Item.pickaxeDiamond, "pickaxe", 3);
-
         MinecraftForge.setToolClass(Item.axeWood,    "axe", 0);
         MinecraftForge.setToolClass(Item.axeStone,   "axe", 1);
         MinecraftForge.setToolClass(Item.axeSteel,   "axe", 2);
         MinecraftForge.setToolClass(Item.axeGold,    "axe", 0);
         MinecraftForge.setToolClass(Item.axeDiamond, "axe", 3);
-
         MinecraftForge.setToolClass(Item.shovelWood,    "shovel", 0);
         MinecraftForge.setToolClass(Item.shovelStone,   "shovel", 1);
         MinecraftForge.setToolClass(Item.shovelSteel,   "shovel", 2);
@@ -209,9 +217,11 @@ public class ForgeHooks
     public static int getTotalArmorValue(EntityPlayer player)
     {
         int ret = 0;
+
         for (int x = 0; x < player.inventory.armorInventory.length; x++)
         {
             ItemStack stack = player.inventory.armorInventory[x];
+
             if (stack != null && stack.getItem() instanceof ISpecialArmor)
             {
                 ret += ((ISpecialArmor)stack.getItem()).getArmorDisplay(player, stack, x);
@@ -221,6 +231,7 @@ public class ForgeHooks
                 ret += ((ItemArmor)stack.getItem()).damageReduceAmount;
             }
         }
+
         return ret;
     }
 
@@ -232,9 +243,6 @@ public class ForgeHooks
         initTools();
     }
 
-    /**
-     * Called when a player uses 'pick block', calls new Entity and Block hooks.
-     */
     public static boolean onPickBlock(MovingObjectPosition target, EntityPlayer player, World world)
     {
         ItemStack result = null;
@@ -272,6 +280,7 @@ public class ForgeHooks
         for (int x = 0; x < 9; x++)
         {
             ItemStack stack = player.inventory.getStackInSlot(x);
+
             if (stack != null && stack.isItemEqual(result) && ItemStack.areItemStackTagsEqual(stack, result))
             {
                 player.inventory.currentItem = x;
@@ -285,6 +294,7 @@ public class ForgeHooks
         }
 
         int slot = player.inventory.getFirstEmptyStack();
+
         if (slot < 0 || slot >= 9)
         {
             slot = player.inventory.currentItem;
@@ -295,9 +305,6 @@ public class ForgeHooks
         return true;
     }
 
-    //Optifine Helper Functions u.u, these are here specifically for Optifine
-    //Note: When using Optfine, these methods are invoked using reflection, which
-    //incurs a major performance penalty.
     public static void onLivingSetAttackTarget(EntityLiving entity, EntityLiving target)
     {
         MinecraftForge.EVENT_BUS.post(new LivingSetAttackTargetEvent(entity, target));
@@ -351,8 +358,8 @@ public class ForgeHooks
         EntityItem ret = player.dropPlayerItemWithRandomChoice(item, false);
         player.capturedDrops.clear();
         player.captureDrops = false;
-
         ItemTossEvent event = new ItemTossEvent(ret, player);
+
         if (MinecraftForge.EVENT_BUS.post(event))
         {
             return null;

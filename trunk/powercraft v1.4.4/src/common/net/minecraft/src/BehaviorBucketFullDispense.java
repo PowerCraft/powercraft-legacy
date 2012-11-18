@@ -4,10 +4,8 @@ import net.minecraft.server.MinecraftServer;
 
 public class BehaviorBucketFullDispense extends BehaviorDefaultDispenseItem
 {
-    /** Reference to the BehaviorDefaultDispenseItem object. */
     private final BehaviorDefaultDispenseItem defaultItemDispenseBehavior;
 
-    /** Reference to the MinecraftServer object. */
     final MinecraftServer mcServer;
 
     public BehaviorBucketFullDispense(MinecraftServer par1)
@@ -16,9 +14,6 @@ public class BehaviorBucketFullDispense extends BehaviorDefaultDispenseItem
         this.defaultItemDispenseBehavior = new BehaviorDefaultDispenseItem();
     }
 
-    /**
-     * Dispense the specified stack, play the dispense sound and spawn particles.
-     */
     public ItemStack dispenseStack(IBlockSource par1IBlockSource, ItemStack par2ItemStack)
     {
         ItemBucket var3 = (ItemBucket)par2ItemStack.getItem();

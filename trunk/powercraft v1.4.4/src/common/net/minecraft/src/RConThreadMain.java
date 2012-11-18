@@ -12,22 +12,16 @@ import java.util.Map.Entry;
 
 public class RConThreadMain extends RConThreadBase
 {
-    /** Port RCon is running on */
     private int rconPort;
 
-    /** Port the server is running on */
     private int serverPort;
 
-    /** Hostname RCon is running on */
     private String hostname;
 
-    /** The RCon ServerSocket. */
     private ServerSocket serverSocket = null;
 
-    /** The RCon password */
     private String rconPassword;
 
-    /** A map of client addresses to their running Threads */
     private Map clientThreads;
 
     public RConThreadMain(IServer par1IServer)
@@ -66,9 +60,6 @@ public class RConThreadMain extends RConThreadBase
         this.clientThreads = new HashMap();
     }
 
-    /**
-     * Cleans up the clientThreads map by removing client Threads that are not running
-     */
     private void cleanClientThreadsMap()
     {
         Iterator var1 = this.clientThreads.entrySet().iterator();
@@ -120,9 +111,6 @@ public class RConThreadMain extends RConThreadBase
         }
     }
 
-    /**
-     * Creates a new Thread object from this class and starts running
-     */
     public void startThread()
     {
         if (0 == this.rconPassword.length())
