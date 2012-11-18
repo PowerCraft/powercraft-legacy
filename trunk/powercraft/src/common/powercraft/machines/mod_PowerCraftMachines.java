@@ -2,8 +2,11 @@ package powercraft.machines;
 
 import java.util.List;
 
+import net.minecraft.src.Block;
+import net.minecraft.src.Item;
 import net.minecraftforge.common.Configuration;
 import powercraft.core.PC_Block;
+import powercraft.core.PC_ItemStack;
 import powercraft.core.PC_Module;
 import powercraft.core.PC_Utils;
 import cpw.mods.fml.common.Mod;
@@ -94,8 +97,20 @@ public class mod_PowerCraftMachines extends PC_Module {
 
 	@Override
 	protected void initRecipes() {
-		// TODO Auto-generated method stub
+		PC_Utils.addRecipe(
+				new PC_ItemStack(roaster, 1),
+				new Object[] { "III", "IFI", "III",
+					'I', Item.ingotIron, 'F', Item.flintAndSteel });
 
+		PC_Utils.addRecipe(
+				new PC_ItemStack(automaticWorkbench, 1),
+				new Object[] { "X", "Y", "Z",
+					'X', Item.diamond, 'Y', Block.workbench, 'Z', Item.redstone });
+		
+		PC_Utils.addRecipe(
+				new PC_ItemStack(replacer, 1),
+				new Object[] { "B", "R", "H",
+					'B', Block.dispenser, 'R', Item.redstone, 'H', Block.dispenser});
 	}
 
 	@Override
