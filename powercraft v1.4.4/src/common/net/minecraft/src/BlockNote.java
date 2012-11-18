@@ -8,18 +8,11 @@ public class BlockNote extends BlockContainer
         this.setCreativeTab(CreativeTabs.tabRedstone);
     }
 
-    /**
-     * Returns the block texture based on the side being looked at.  Args: side
-     */
     public int getBlockTextureFromSide(int par1)
     {
         return this.blockIndexInTexture;
     }
 
-    /**
-     * Lets the block know when one of its neighbor changes. Doesn't know which neighbor changed (coordinates passed are
-     * their own) Args: x, y, z, neighbor blockID
-     */
     public void onNeighborBlockChange(World par1World, int par2, int par3, int par4, int par5)
     {
         if (par5 > 0)
@@ -39,9 +32,6 @@ public class BlockNote extends BlockContainer
         }
     }
 
-    /**
-     * Called upon block activation (right click on the block.)
-     */
     public boolean onBlockActivated(World par1World, int par2, int par3, int par4, EntityPlayer par5EntityPlayer, int par6, float par7, float par8, float par9)
     {
         if (par1World.isRemote)
@@ -62,9 +52,6 @@ public class BlockNote extends BlockContainer
         }
     }
 
-    /**
-     * Called when the block is clicked by a player. Args: x, y, z, entityPlayer
-     */
     public void onBlockClicked(World par1World, int par2, int par3, int par4, EntityPlayer par5EntityPlayer)
     {
         if (!par1World.isRemote)
@@ -78,18 +65,11 @@ public class BlockNote extends BlockContainer
         }
     }
 
-    /**
-     * Returns a new instance of a block's tile entity class. Called on placing the block.
-     */
     public TileEntity createNewTileEntity(World par1World)
     {
         return new TileEntityNote();
     }
 
-    /**
-     * Called when the block receives a BlockEvent - see World.addBlockEvent. By default, passes it on to the tile
-     * entity at this location. Args: world, x, y, z, blockID, EventID, event parameter
-     */
     public void onBlockEventReceived(World par1World, int par2, int par3, int par4, int par5, int par6)
     {
         float var7 = (float)Math.pow(2.0D, (double)(par6 - 12) / 12.0D);

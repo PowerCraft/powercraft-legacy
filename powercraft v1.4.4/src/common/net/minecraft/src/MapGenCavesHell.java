@@ -4,17 +4,11 @@ import java.util.Random;
 
 public class MapGenCavesHell extends MapGenBase
 {
-    /**
-     * Generates a larger initial cave node than usual. Called 25% of the time.
-     */
     protected void generateLargeCaveNode(int par1, int par2, byte[] par3ArrayOfByte, double par4, double par6, double par8)
     {
         this.generateCaveNode(par1, par2, par3ArrayOfByte, par4, par6, par8, 1.0F + this.rand.nextFloat() * 6.0F, 0.0F, 0.0F, -1, -1, 0.5D);
     }
 
-    /**
-     * Generates a node in the current cave system recursion tree.
-     */
     protected void generateCaveNode(int par1, int par2, byte[] par3ArrayOfByte, double par4, double par6, double par8, float par10, float par11, float par12, int par13, int par14, double par15)
     {
         double var17 = (double)(par1 * 16 + 8);
@@ -191,9 +185,6 @@ public class MapGenCavesHell extends MapGenBase
         }
     }
 
-    /**
-     * Recursively called by generate() (generate) and optionally by itself.
-     */
     protected void recursiveGenerate(World par1World, int par2, int par3, int par4, int par5, byte[] par6ArrayOfByte)
     {
         int var7 = this.rand.nextInt(this.rand.nextInt(this.rand.nextInt(10) + 1) + 1);

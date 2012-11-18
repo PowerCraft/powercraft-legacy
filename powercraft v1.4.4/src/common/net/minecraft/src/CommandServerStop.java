@@ -9,9 +9,6 @@ public class CommandServerStop extends CommandBase
         return "stop";
     }
 
-    /**
-     * Return the required permission level for this command.
-     */
     public int getRequiredPermissionLevel()
     {
         return 4;

@@ -9,42 +9,24 @@ import cpw.mods.fml.common.asm.SideOnly;
 
 public class TileEntityFurnace extends TileEntity implements IInventory, ISidedInventory
 {
-    /**
-     * The ItemStacks that hold the items currently being used in the furnace
-     */
     private ItemStack[] furnaceItemStacks = new ItemStack[3];
 
-    /** The number of ticks that the furnace will keep burning */
     public int furnaceBurnTime = 0;
 
-    /**
-     * The number of ticks that a fresh copy of the currently-burning item would keep the furnace burning for
-     */
     public int currentItemBurnTime = 0;
 
-    /** The number of ticks that the current item has been cooking for */
     public int furnaceCookTime = 0;
 
-    /**
-     * Returns the number of slots in the inventory.
-     */
     public int getSizeInventory()
     {
         return this.furnaceItemStacks.length;
     }
 
-    /**
-     * Returns the stack in slot i
-     */
     public ItemStack getStackInSlot(int par1)
     {
         return this.furnaceItemStacks[par1];
     }
 
-    /**
-     * Removes from an inventory slot (first arg) up to a specified number (second arg) of items and returns them in a
-     * new stack.
-     */
     public ItemStack decrStackSize(int par1, int par2)
     {
         if (this.furnaceItemStacks[par1] != null)
@@ -75,10 +57,6 @@ public class TileEntityFurnace extends TileEntity implements IInventory, ISidedI
         }
     }
 
-    /**
-     * When some containers are closed they call this on each slot, then drop whatever it returns as an EntityItem -
-     * like when you close a workbench GUI.
-     */
     public ItemStack getStackInSlotOnClosing(int par1)
     {
         if (this.furnaceItemStacks[par1] != null)
@@ -93,9 +71,6 @@ public class TileEntityFurnace extends TileEntity implements IInventory, ISidedI
         }
     }
 
-    /**
-     * Sets the given item stack to the specified slot in the inventory (can be crafting or armor sections).
-     */
     public void setInventorySlotContents(int par1, ItemStack par2ItemStack)
     {
         this.furnaceItemStacks[par1] = par2ItemStack;
@@ -106,17 +81,11 @@ public class TileEntityFurnace extends TileEntity implements IInventory, ISidedI
         }
     }
 
-    /**
-     * Returns the name of the inventory.
-     */
     public String getInvName()
     {
         return "container.furnace";
     }
 
-    /**
-     * Reads a tile entity from NBT.
-     */
     public void readFromNBT(NBTTagCompound par1NBTTagCompound)
     {
         super.readFromNBT(par1NBTTagCompound);
@@ -139,9 +108,6 @@ public class TileEntityFurnace extends TileEntity implements IInventory, ISidedI
         this.currentItemBurnTime = getItemBurnTime(this.furnaceItemStacks[1]);
     }
 
-    /**
-     * Writes a tile entity to NBT.
-     */
     public void writeToNBT(NBTTagCompound par1NBTTagCompound)
     {
         super.writeToNBT(par1NBTTagCompound);
@@ -163,10 +129,6 @@ public class TileEntityFurnace extends TileEntity implements IInventory, ISidedI
         par1NBTTagCompound.setTag("Items", var2);
     }
 
-    /**
-     * Returns the maximum stack size for a inventory slot. Seems to always be 64, possibly will be extended. *Isn't
-     * this more of a set than a get?*
-     */
     public int getInventoryStackLimit()
     {
         return 64;
@@ -174,10 +136,6 @@ public class TileEntityFurnace extends TileEntity implements IInventory, ISidedI
 
     @SideOnly(Side.CLIENT)
 
-    /**
-     * Returns an integer between 0 and the passed value representing how close the current item is to being completely
-     * cooked
-     */
     public int getCookProgressScaled(int par1)
     {
         return this.furnaceCookTime * par1 / 200;
@@ -185,10 +143,6 @@ public class TileEntityFurnace extends TileEntity implements IInventory, ISidedI
 
     @SideOnly(Side.CLIENT)
 
-    /**
-     * Returns an integer between 0 and the passed value representing how much burn time is left on the current fuel
-     * item, where 0 means that the item is exhausted and the passed value means that the item is fresh
-     */
     public int getBurnTimeRemainingScaled(int par1)
     {
         if (this.currentItemBurnTime == 0)
@@ -199,18 +153,11 @@ public class TileEntityFurnace extends TileEntity implements IInventory, ISidedI
         return this.furnaceBurnTime * par1 / this.currentItemBurnTime;
     }
 
-    /**
-     * Returns true if the furnace is currently burning
-     */
     public boolean isBurning()
     {
         return this.furnaceBurnTime > 0;
     }
 
-    /**
-     * Allows the entity to update its state. Overridden in most subclasses, e.g. the mob spawner uses this to count
-     * ticks and creates a new spawn inside its implementation.
-     */
     public void updateEntity()
     {
         boolean var1 = this.furnaceBurnTime > 0;
@@ -272,9 +219,6 @@ public class TileEntityFurnace extends TileEntity implements IInventory, ISidedI
         }
     }
 
-    /**
-     * Returns true if the furnace can smelt an item, i.e. has a source item, destination stack isn't full, etc.
-     */
     private boolean canSmelt()
     {
         if (this.furnaceItemStacks[0] == null)
@@ -284,17 +228,27 @@ public class TileEntityFurnace extends TileEntity implements IInventory, ISidedI
         else
         {
             ItemStack var1 = FurnaceRecipes.smelting().getSmeltingResult(this.furnaceItemStacks[0]);
-            if (var1 == null) return false;
-            if (this.furnaceItemStacks[2] == null) return true;
-            if (!this.furnaceItemStacks[2].isItemEqual(var1)) return false;
+
+            if (var1 == null)
+            {
+                return false;
+            }
+
+            if (this.furnaceItemStacks[2] == null)
+            {
+                return true;
+            }
+
+            if (!this.furnaceItemStacks[2].isItemEqual(var1))
+            {
+                return false;
+            }
+
             int result = furnaceItemStacks[2].stackSize + var1.stackSize;
             return (result <= getInventoryStackLimit() && result <= var1.getMaxStackSize());
         }
     }
 
-    /**
-     * Turn one item from the furnace source stack into the appropriate smelted item in the furnace result stack
-     */
     public void smeltItem()
     {
         if (this.canSmelt())
@@ -319,10 +273,6 @@ public class TileEntityFurnace extends TileEntity implements IInventory, ISidedI
         }
     }
 
-    /**
-     * Returns the number of ticks that the supplied fuel item will keep the furnace burning, or 0 if the item isn't
-     * fuel
-     */
     public static int getItemBurnTime(ItemStack par0ItemStack)
     {
         if (par0ItemStack == null)
@@ -348,29 +298,56 @@ public class TileEntityFurnace extends TileEntity implements IInventory, ISidedI
                     return 300;
                 }
             }
-            if (var2 instanceof ItemTool && ((ItemTool) var2).getToolMaterialName().equals("WOOD")) return 200;
-            if (var2 instanceof ItemSword && ((ItemSword) var2).func_77825_f().equals("WOOD")) return 200;
-            if (var2 instanceof ItemHoe && ((ItemHoe) var2).func_77842_f().equals("WOOD")) return 200;
-            if (var1 == Item.stick.shiftedIndex) return 100;
-            if (var1 == Item.coal.shiftedIndex) return 1600;
-            if (var1 == Item.bucketLava.shiftedIndex) return 20000;
-            if (var1 == Block.sapling.blockID) return 100;
-            if (var1 == Item.blazeRod.shiftedIndex) return 2400;
+
+            if (var2 instanceof ItemTool && ((ItemTool) var2).getToolMaterialName().equals("WOOD"))
+            {
+                return 200;
+            }
+
+            if (var2 instanceof ItemSword && ((ItemSword) var2).func_77825_f().equals("WOOD"))
+            {
+                return 200;
+            }
+
+            if (var2 instanceof ItemHoe && ((ItemHoe) var2).func_77842_f().equals("WOOD"))
+            {
+                return 200;
+            }
+
+            if (var1 == Item.stick.shiftedIndex)
+            {
+                return 100;
+            }
+
+            if (var1 == Item.coal.shiftedIndex)
+            {
+                return 1600;
+            }
+
+            if (var1 == Item.bucketLava.shiftedIndex)
+            {
+                return 20000;
+            }
+
+            if (var1 == Block.sapling.blockID)
+            {
+                return 100;
+            }
+
+            if (var1 == Item.blazeRod.shiftedIndex)
+            {
+                return 2400;
+            }
+
             return GameRegistry.getFuelValue(par0ItemStack);
         }
     }
 
-    /**
-     * Return true if item is a fuel source (getItemBurnTime() > 0).
-     */
     public static boolean isItemFuel(ItemStack par0ItemStack)
     {
         return getItemBurnTime(par0ItemStack) > 0;
     }
 
-    /**
-     * Do not make give this method the name canInteractWith because it clashes with Container
-     */
     public boolean isUseableByPlayer(EntityPlayer par1EntityPlayer)
     {
         return this.worldObj.getBlockTileEntity(this.xCoord, this.yCoord, this.zCoord) != this ? false : par1EntityPlayer.getDistanceSq((double)this.xCoord + 0.5D, (double)this.yCoord + 0.5D, (double)this.zCoord + 0.5D) <= 64.0D;
@@ -383,8 +360,16 @@ public class TileEntityFurnace extends TileEntity implements IInventory, ISidedI
     @Override
     public int getStartInventorySide(ForgeDirection side)
     {
-        if (side == ForgeDirection.DOWN) return 1;
-        if (side == ForgeDirection.UP) return 0; 
+        if (side == ForgeDirection.DOWN)
+        {
+            return 1;
+        }
+
+        if (side == ForgeDirection.UP)
+        {
+            return 0;
+        }
+
         return 2;
     }
 

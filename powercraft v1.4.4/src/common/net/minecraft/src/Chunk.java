@@ -16,73 +16,40 @@ import net.minecraftforge.event.world.ChunkEvent;
 
 public class Chunk
 {
-    /**
-     * Determines if the chunk is lit or not at a light value greater than 0.
-     */
     public static boolean isLit;
 
-    /**
-     * Used to store block IDs, block MSBs, Sky-light maps, Block-light maps, and metadata. Each entry corresponds to a
-     * logical segment of 16x16x16 blocks, stacked vertically.
-     */
     private ExtendedBlockStorage[] storageArrays;
 
-    /**
-     * Contains a 16x16 mapping on the X/Z plane of the biome ID to which each colum belongs.
-     */
     private byte[] blockBiomeArray;
 
-    /**
-     * A map, similar to heightMap, that tracks how far down precipitation can fall.
-     */
     public int[] precipitationHeightMap;
 
-    /** Which columns need their skylightMaps updated. */
     public boolean[] updateSkylightColumns;
 
-    /** Whether or not this Chunk is currently loaded into the World */
     public boolean isChunkLoaded;
 
-    /** Reference to the World object. */
     public World worldObj;
     public int[] heightMap;
 
-    /** The x coordinate of the chunk. */
     public final int xPosition;
 
-    /** The z coordinate of the chunk. */
     public final int zPosition;
     private boolean isGapLightingUpdated;
 
-    /** A Map of ChunkPositions to TileEntities in this chunk */
     public Map chunkTileEntityMap;
 
-    /**
-     * Array of Lists containing the entities in this Chunk. Each List represents a 16 block subchunk.
-     */
     public List[] entityLists;
 
-    /** Boolean value indicating if the terrain is populated. */
     public boolean isTerrainPopulated;
 
-    /**
-     * Set to true if the chunk has been modified and needs to be updated internally.
-     */
     public boolean isModified;
 
-    /**
-     * Whether this Chunk has any Entities and thus requires saving on every tick
-     */
     public boolean hasEntities;
 
-    /** The time according to World.worldTime when this chunk was last saved */
     public long lastSaveTime;
     public boolean deferRender;
     public int field_82912_p;
 
-    /**
-     * Contains the current round-robin relight check index, and is implied as the relight check location as well.
-     */
     private int queuedLightChecks;
     boolean field_76653_p;
 
@@ -128,8 +95,6 @@ public class Chunk
             {
                 for (int var8 = 0; var8 < var5; ++var8)
                 {
-                    /* FORGE: The following change, a cast from unsigned byte to int,
-                     * fixes a vanilla bug when generating new chunks that contain a block ID > 127 */
                     int var9 = par2ArrayOfByte[var6 << 11 | var7 << 7 | var8] & 0xFF;
 
                     if (var9 != 0)
@@ -148,16 +113,6 @@ public class Chunk
         }
     }
 
-    /**
-     * Metadata sensitive Chunk constructor for use in new ChunkProviders that
-     * use metadata sensitive blocks during generation.
-     *
-     * @param world The world this chunk belongs to
-     * @param ids A ByteArray containing all the BlockID's to set this chunk to
-     * @param metadata A ByteArray containing all the metadata to set this chunk to
-     * @param chunkX The chunk's X position
-     * @param chunkZ The Chunk's Z position
-     */
     public Chunk(World world, byte[] ids, byte[] metadata, int chunkX, int chunkZ)
     {
         this(world, chunkX, chunkZ);
@@ -170,7 +125,7 @@ public class Chunk
                 for (int y = 0; y < var5; ++y)
                 {
                     int idx = x << 11 | z << 7 | y;
-                   int id = ids[idx] & 0xFF;
+                    int id = ids[idx] & 0xFF;
                     int meta = metadata[idx];
 
                     if (id != 0)
@@ -190,25 +145,16 @@ public class Chunk
         }
     }
 
-    /**
-     * Checks whether the chunk is at the X/Z location specified
-     */
     public boolean isAtLocation(int par1, int par2)
     {
         return par1 == this.xPosition && par2 == this.zPosition;
     }
 
-    /**
-     * Returns the value in the height map at this x, z coordinate in the chunk
-     */
     public int getHeightValue(int par1, int par2)
     {
         return this.heightMap[par2 << 4 | par1];
     }
 
-    /**
-     * Returns the topmost ExtendedBlockStorage instance for this Chunk that actually contains a block.
-     */
     public int getTopFilledSegment()
     {
         for (int var1 = this.storageArrays.length - 1; var1 >= 0; --var1)
@@ -222,9 +168,6 @@ public class Chunk
         return 0;
     }
 
-    /**
-     * Returns the ExtendedBlockStorage array for this Chunk.
-     */
     public ExtendedBlockStorage[] getBlockStorageArray()
     {
         return this.storageArrays;
@@ -232,9 +175,6 @@ public class Chunk
 
     @SideOnly(Side.CLIENT)
 
-    /**
-     * Generates the height map for a chunk from scratch
-     */
     public void generateHeightMap()
     {
         int var1 = this.getTopFilledSegment();
@@ -272,9 +212,6 @@ public class Chunk
         this.isModified = true;
     }
 
-    /**
-     * Generates the initial skylight map for the chunk upon generation or load.
-     */
     public void generateSkylightMap()
     {
         int var1 = this.getTopFilledSegment();
@@ -351,18 +288,12 @@ public class Chunk
         }
     }
 
-    /**
-     * Propagates a given sky-visible block's light value downward and upward to neighboring blocks as necessary.
-     */
     private void propagateSkylightOcclusion(int par1, int par2)
     {
         this.updateSkylightColumns[par1 + par2 * 16] = true;
         this.isGapLightingUpdated = true;
     }
 
-    /**
-     * Runs delayed skylight updates.
-     */
     private void updateSkylight_do()
     {
         this.worldObj.theProfiler.startSection("recheckGaps");
@@ -414,9 +345,6 @@ public class Chunk
         this.worldObj.theProfiler.endSection();
     }
 
-    /**
-     * Checks the height of a block next to a sky-visible block and schedules a lighting update as necessary.
-     */
     private void checkSkylightNeighborHeight(int par1, int par2, int par3)
     {
         int var4 = this.worldObj.getHeightValue(par1, par2);
@@ -444,9 +372,6 @@ public class Chunk
         }
     }
 
-    /**
-     * Initiates the recalculation of both the block-light and sky-light for a given block inside a chunk.
-     */
     private void relightBlock(int par1, int par2, int par3)
     {
         int var4 = this.heightMap[par3 << 4 | par1] & 255;
@@ -566,9 +491,6 @@ public class Chunk
         return (block == null ? 0 : block.getLightOpacity(worldObj, x, par2, z));
     }
 
-    /**
-     * Return the ID of a block in the chunk.
-     */
     public int getBlockID(int par1, int par2, int par3)
     {
         if (par2 >> 4 >= this.storageArrays.length || par2 >> 4 < 0)
@@ -582,9 +504,6 @@ public class Chunk
         }
     }
 
-    /**
-     * Return the metadata corresponding to the given coordinates inside a chunk.
-     */
     public int getBlockMetadata(int par1, int par2, int par3)
     {
         if (par2 >> 4 >= this.storageArrays.length || par2 >> 4 < 0)
@@ -598,17 +517,11 @@ public class Chunk
         }
     }
 
-    /**
-     * Sets a blockID for a position in the chunk. Args: x, y, z, blockID
-     */
     public boolean setBlockID(int par1, int par2, int par3, int par4)
     {
         return this.setBlockIDWithMetadata(par1, par2, par3, par4, 0);
     }
 
-    /**
-     * Sets a blockID of a position within a chunk with metadata. Args: x, y, z, blockID, metadata
-     */
     public boolean setBlockIDWithMetadata(int par1, int par2, int par3, int par4, int par5)
     {
         int var6 = par3 << 4 | par1;
@@ -731,9 +644,6 @@ public class Chunk
         }
     }
 
-    /**
-     * Set the metadata of a block in the chunk
-     */
     public boolean setBlockMetadata(int par1, int par2, int par3, int par4)
     {
         ExtendedBlockStorage var5 = (par2 >> 4 >= storageArrays.length || par2 >> 4 < 0 ? null : storageArrays[par2 >> 4]);
@@ -772,19 +682,12 @@ public class Chunk
         }
     }
 
-    /**
-     * Gets the amount of light saved in this block (doesn't adjust for daylight)
-     */
     public int getSavedLightValue(EnumSkyBlock par1EnumSkyBlock, int par2, int par3, int par4)
     {
         ExtendedBlockStorage var5 = (par3 >> 4 >= storageArrays.length || par3 >> 4 < 0 ? null : storageArrays[par3 >> 4]);
         return var5 == null ? (this.canBlockSeeTheSky(par2, par3, par4) ? par1EnumSkyBlock.defaultLightValue : 0) : (par1EnumSkyBlock == EnumSkyBlock.Sky ? var5.getExtSkylightValue(par2, par3 & 15, par4) : (par1EnumSkyBlock == EnumSkyBlock.Block ? var5.getExtBlocklightValue(par2, par3 & 15, par4) : par1EnumSkyBlock.defaultLightValue));
     }
 
-    /**
-     * Sets the light value at the coordinate. If enumskyblock is set to sky it sets it in the skylightmap and if its a
-     * block then into the blocklightmap. Args enumSkyBlock, x, y, z, lightValue
-     */
     public void setLightValue(EnumSkyBlock par1EnumSkyBlock, int par2, int par3, int par4, int par5)
     {
         if (par3 >> 4 >= storageArrays.length || par3 >> 4 < 0)
@@ -815,9 +718,6 @@ public class Chunk
         }
     }
 
-    /**
-     * Gets the amount of light on a block taking into account sunlight
-     */
     public int getBlockLightValue(int par1, int par2, int par3, int par4)
     {
         ExtendedBlockStorage var5 = (par2 >> 4 >= storageArrays.length || par2 >> 4 < 0 ? null : storageArrays[par2 >> 4]);
@@ -847,9 +747,6 @@ public class Chunk
         }
     }
 
-    /**
-     * Adds an entity to the chunk. Args: entity
-     */
     public void addEntity(Entity par1Entity)
     {
         this.hasEntities = true;
@@ -873,6 +770,7 @@ public class Chunk
         {
             var4 = this.entityLists.length - 1;
         }
+
         MinecraftForge.EVENT_BUS.post(new EntityEvent.EnteringChunk(par1Entity, this.xPosition, this.zPosition, par1Entity.chunkCoordX, par1Entity.chunkCoordZ));
         par1Entity.addedToChunk = true;
         par1Entity.chunkCoordX = this.xPosition;
@@ -881,17 +779,11 @@ public class Chunk
         this.entityLists[var4].add(par1Entity);
     }
 
-    /**
-     * removes entity using its y chunk coordinate as its index
-     */
     public void removeEntity(Entity par1Entity)
     {
         this.removeEntityAtIndex(par1Entity, par1Entity.chunkCoordY);
     }
 
-    /**
-     * Removes entity at the specified index from the entity array.
-     */
     public void removeEntityAtIndex(Entity par1Entity, int par2)
     {
         if (par2 < 0)
@@ -907,17 +799,11 @@ public class Chunk
         this.entityLists[par2].remove(par1Entity);
     }
 
-    /**
-     * Returns whether is not a block above this one blocking sight to the sky (done via checking against the heightmap)
-     */
     public boolean canBlockSeeTheSky(int par1, int par2, int par3)
     {
         return par2 >= this.heightMap[par3 << 4 | par1];
     }
 
-    /**
-     * Gets the TileEntity for a given block in this chunk
-     */
     public TileEntity getChunkBlockTileEntity(int par1, int par2, int par3)
     {
         ChunkPosition var4 = new ChunkPosition(par1, par2, par3);
@@ -932,7 +818,6 @@ public class Chunk
         if (var5 == null)
         {
             int var6 = this.getBlockID(par1, par2, par3);
-
             int meta = this.getBlockMetadata(par1, par2, par3);
 
             if (var6 <= 0 || !Block.blocksList[var6].hasTileEntity(meta))
@@ -952,9 +837,6 @@ public class Chunk
         return var5;
     }
 
-    /**
-     * Adds a TileEntity to a chunk
-     */
     public void addTileEntity(TileEntity par1TileEntity)
     {
         int var2 = par1TileEntity.xCoord - this.xPosition * 16;
@@ -968,9 +850,6 @@ public class Chunk
         }
     }
 
-    /**
-     * Sets the TileEntity for a given block in this chunk
-     */
     public void setChunkBlockTileEntity(int par1, int par2, int par3, TileEntity par4TileEntity)
     {
         ChunkPosition var5 = new ChunkPosition(par1, par2, par3);
@@ -978,23 +857,22 @@ public class Chunk
         par4TileEntity.xCoord = this.xPosition * 16 + par1;
         par4TileEntity.yCoord = par2;
         par4TileEntity.zCoord = this.zPosition * 16 + par3;
-
         Block block = Block.blocksList[getBlockID(par1, par2, par3)];
+
         if (block != null && block.hasTileEntity(getBlockMetadata(par1, par2, par3)))
         {
             TileEntity old = (TileEntity)chunkTileEntityMap.get(var5);
+
             if (old != null)
             {
                 old.invalidate();
             }
+
             par4TileEntity.validate();
             this.chunkTileEntityMap.put(var5, par4TileEntity);
         }
     }
 
-    /**
-     * Removes the TileEntity for a given block in this chunk
-     */
     public void removeChunkBlockTileEntity(int par1, int par2, int par3)
     {
         ChunkPosition var4 = new ChunkPosition(par1, par2, par3);
@@ -1010,9 +888,6 @@ public class Chunk
         }
     }
 
-    /**
-     * Called when this Chunk is loaded by the ChunkProvider
-     */
     public void onChunkLoad()
     {
         this.isChunkLoaded = true;
@@ -1022,12 +897,10 @@ public class Chunk
         {
             this.worldObj.addLoadedEntities(this.entityLists[var1]);
         }
+
         MinecraftForge.EVENT_BUS.post(new ChunkEvent.Load(this));
     }
 
-    /**
-     * Called when this Chunk is unloaded by the ChunkProvider
-     */
     public void onChunkUnload()
     {
         this.isChunkLoaded = false;
@@ -1043,21 +916,15 @@ public class Chunk
         {
             this.worldObj.unloadEntities(this.entityLists[var3]);
         }
+
         MinecraftForge.EVENT_BUS.post(new ChunkEvent.Unload(this));
     }
 
-    /**
-     * Sets the isModified flag for this Chunk
-     */
     public void setChunkModified()
     {
         this.isModified = true;
     }
 
-    /**
-     * Fills the given list of all entities that intersect within the given bounding box that aren't the passed entity
-     * Args: entity, aabb, listToFill
-     */
     public void getEntitiesWithinAABBForEntity(Entity par1Entity, AxisAlignedBB par2AxisAlignedBB, List par3List)
     {
         int var4 = MathHelper.floor_double((par2AxisAlignedBB.minY - World.MAX_ENTITY_RADIUS) / 16.0D);
@@ -1103,9 +970,6 @@ public class Chunk
         }
     }
 
-    /**
-     * Gets all entities that can be assigned to the specified class. Args: entityClass, aabb, listToFill
-     */
     public void getEntitiesOfTypeWithinAAAB(Class par1Class, AxisAlignedBB par2AxisAlignedBB, List par3List, IEntitySelector par4IEntitySelector)
     {
         int var5 = MathHelper.floor_double((par2AxisAlignedBB.minY - World.MAX_ENTITY_RADIUS) / 16.0D);
@@ -1145,9 +1009,6 @@ public class Chunk
         }
     }
 
-    /**
-     * Returns true if this Chunk needs to be saved
-     */
     public boolean needsSaving(boolean par1)
     {
         if (par1)
@@ -1198,9 +1059,6 @@ public class Chunk
         }
     }
 
-    /**
-     * Gets the height to which rain/snow will fall. Calculates it if not already stored.
-     */
     public int getPrecipitationHeight(int par1, int par2)
     {
         int var3 = par1 | par2 << 4;
@@ -1232,9 +1090,6 @@ public class Chunk
         return var4;
     }
 
-    /**
-     * Checks whether skylight needs updated; if it does, calls updateSkylight_do
-     */
     public void updateSkylight()
     {
         if (this.isGapLightingUpdated && !this.worldObj.provider.hasNoSky)
@@ -1243,18 +1098,11 @@ public class Chunk
         }
     }
 
-    /**
-     * Gets a ChunkCoordIntPair representing the Chunk's position.
-     */
     public ChunkCoordIntPair getChunkCoordIntPair()
     {
         return new ChunkCoordIntPair(this.xPosition, this.zPosition);
     }
 
-    /**
-     * Returns whether the ExtendedBlockStorages containing levels (in blocks) from arg 1 to arg 2 are fully empty
-     * (true) or not (false).
-     */
     public boolean getAreLevelsEmpty(int par1, int par2)
     {
         if (par1 < 0)
@@ -1287,13 +1135,11 @@ public class Chunk
 
     @SideOnly(Side.CLIENT)
 
-    /**
-     * Initialise this chunk with new binary data
-     */
     public void fillChunk(byte[] par1ArrayOfByte, int par2, int par3, boolean par4)
     {
         Iterator iterator = chunkTileEntityMap.values().iterator();
-        while(iterator.hasNext())
+
+        while (iterator.hasNext())
         {
             TileEntity tileEntity = (TileEntity)iterator.next();
             tileEntity.updateContainingBlockInfo();
@@ -1397,9 +1243,9 @@ public class Chunk
         }
 
         this.generateHeightMap();
-
         List<TileEntity> invalidList = new ArrayList<TileEntity>();
         iterator = chunkTileEntityMap.values().iterator();
+
         while (iterator.hasNext())
         {
             TileEntity tileEntity = (TileEntity)iterator.next();
@@ -1407,10 +1253,12 @@ public class Chunk
             int y = tileEntity.yCoord;
             int z = tileEntity.zCoord & 15;
             Block block = tileEntity.getBlockType();
+
             if (block == null || block.blockID != getBlockID(x, y, z) || tileEntity.getBlockMetadata() != getBlockMetadata(x, y, z))
             {
                 invalidList.add(tileEntity);
             }
+
             tileEntity.updateContainingBlockInfo();
         }
 
@@ -1420,9 +1268,6 @@ public class Chunk
         }
     }
 
-    /**
-     * This method retrieves the biome at a set of coordinates
-     */
     public BiomeGenBase getBiomeGenForWorldCoords(int par1, int par2, WorldChunkManager par3WorldChunkManager)
     {
         int var4 = this.blockBiomeArray[par2 << 4 | par1] & 255;
@@ -1437,37 +1282,21 @@ public class Chunk
         return BiomeGenBase.biomeList[var4] == null ? BiomeGenBase.plains : BiomeGenBase.biomeList[var4];
     }
 
-    /**
-     * Returns an array containing a 16x16 mapping on the X/Z of block positions in this Chunk to biome IDs.
-     */
     public byte[] getBiomeArray()
     {
         return this.blockBiomeArray;
     }
 
-    /**
-     * Accepts a 256-entry array that contains a 16x16 mapping on the X/Z plane of block positions in this Chunk to
-     * biome IDs.
-     */
     public void setBiomeArray(byte[] par1ArrayOfByte)
     {
         this.blockBiomeArray = par1ArrayOfByte;
     }
 
-    /**
-     * Resets the relight check index to 0 for this Chunk.
-     */
     public void resetRelightChecks()
     {
         this.queuedLightChecks = 0;
     }
 
-    /**
-     * Called once-per-chunk-per-tick, and advances the round-robin relight check index per-storage-block by up to 8
-     * blocks at a time. In a worst-case scenario, can potentially take up to 1.6 seconds, calculated via
-     * (4096/(8*16))/20, to re-check all blocks in a chunk, which could explain both lagging light updates in certain
-     * cases as well as Nether relight
-     */
     public void enqueueRelightChecks()
     {
         for (int var1 = 0; var1 < 8; ++var1)
@@ -1526,13 +1355,14 @@ public class Chunk
         }
     }
 
-    /** FORGE: Used to remove only invalid TileEntities */
     public void cleanChunkBlockTileEntity(int x, int y, int z)
     {
         ChunkPosition position = new ChunkPosition(x, y, z);
+
         if (isChunkLoaded)
         {
             TileEntity entity = (TileEntity)chunkTileEntityMap.get(position);
+
             if (entity != null && entity.isInvalid())
             {
                 chunkTileEntityMap.remove(position);

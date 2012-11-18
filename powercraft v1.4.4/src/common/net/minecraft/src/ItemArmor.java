@@ -5,24 +5,14 @@ import cpw.mods.fml.common.asm.SideOnly;
 
 public class ItemArmor extends Item
 {
-    /** Holds the 'base' maxDamage that each armorType have. */
     private static final int[] maxDamageArray = new int[] {11, 16, 15, 13};
 
-    /**
-     * Stores the armor type: 0 is helmet, 1 is plate, 2 is legs and 3 is boots
-     */
     public final int armorType;
 
-    /** Holds the amount of damage that the armor reduces at full durability. */
     public final int damageReduceAmount;
 
-    /**
-     * Used on RenderPlayer to select the correspondent armor to be rendered on the player: 0 is cloth, 1 is chain, 2 is
-     * iron, 3 is diamond and 4 is gold.
-     */
     public final int renderIndex;
 
-    /** The EnumArmorMaterial used for this ItemArmor */
     private final EnumArmorMaterial material;
 
     public ItemArmor(int par1, EnumArmorMaterial par2EnumArmorMaterial, int par3, int par4)
@@ -63,33 +53,21 @@ public class ItemArmor extends Item
         return this.material == EnumArmorMaterial.CLOTH;
     }
 
-    /**
-     * Return the enchantability factor of the item, most of the time is based on material.
-     */
     public int getItemEnchantability()
     {
         return this.material.getEnchantability();
     }
 
-    /**
-     * Return the armor material for this armor item.
-     */
     public EnumArmorMaterial getArmorMaterial()
     {
         return this.material;
     }
 
-    /**
-     * Return whether the specified armor ItemStack has a color.
-     */
     public boolean hasColor(ItemStack par1ItemStack)
     {
         return this.material != EnumArmorMaterial.CLOTH ? false : (!par1ItemStack.hasTagCompound() ? false : (!par1ItemStack.getTagCompound().hasKey("display") ? false : par1ItemStack.getTagCompound().getCompoundTag("display").hasKey("color")));
     }
 
-    /**
-     * Return the color for the specified armor ItemStack.
-     */
     public int getColor(ItemStack par1ItemStack)
     {
         if (this.material != EnumArmorMaterial.CLOTH)
@@ -114,17 +92,11 @@ public class ItemArmor extends Item
 
     @SideOnly(Side.CLIENT)
 
-    /**
-     * Gets an icon index based on an item's damage value and the given render pass
-     */
     public int getIconFromDamageForRenderPass(int par1, int par2)
     {
         return par2 == 1 ? this.iconIndex + 144 : super.getIconFromDamageForRenderPass(par1, par2);
     }
 
-    /**
-     * Remove the color from the specified armor ItemStack.
-     */
     public void removeColor(ItemStack par1ItemStack)
     {
         if (this.material == EnumArmorMaterial.CLOTH)
@@ -170,18 +142,11 @@ public class ItemArmor extends Item
         }
     }
 
-    /**
-     * Return whether this item is repairable in an anvil.
-     */
     public boolean getIsRepairable(ItemStack par1ItemStack, ItemStack par2ItemStack)
     {
         return this.material.getArmorCraftingMaterial() == par2ItemStack.itemID ? true : super.getIsRepairable(par1ItemStack, par2ItemStack);
     }
 
-    /**
-     * Returns the 'max damage' factor array for the armor, each piece of armor have a durability factor (that gets
-     * multiplied by armor material factor)
-     */
     static int[] getMaxDamageArray()
     {
         return maxDamageArray;

@@ -6,16 +6,13 @@ import cpw.mods.fml.common.asm.SideOnly;
 @SideOnly(Side.CLIENT)
 public class SaveFormatComparator implements Comparable
 {
-    /** the file name of this save */
     private final String fileName;
 
-    /** the displayed name of this save file */
     private final String displayName;
     private final long lastTimePlayed;
     private final long sizeOnDisk;
     private final boolean requiresConversion;
 
-    /** Instance of EnumGameType. */
     private final EnumGameType theEnumGameType;
     private final boolean hardcore;
     private final boolean cheatsEnabled;
@@ -32,17 +29,11 @@ public class SaveFormatComparator implements Comparable
         this.cheatsEnabled = par10;
     }
 
-    /**
-     * return the file name
-     */
     public String getFileName()
     {
         return this.fileName;
     }
 
-    /**
-     * return the display name of the save
-     */
     public String getDisplayName()
     {
         return this.displayName;
@@ -63,9 +54,6 @@ public class SaveFormatComparator implements Comparable
         return this.lastTimePlayed < par1SaveFormatComparator.lastTimePlayed ? 1 : (this.lastTimePlayed > par1SaveFormatComparator.lastTimePlayed ? -1 : this.fileName.compareTo(par1SaveFormatComparator.fileName));
     }
 
-    /**
-     * Gets the EnumGameType.
-     */
     public EnumGameType getEnumGameType()
     {
         return this.theEnumGameType;
@@ -76,9 +64,6 @@ public class SaveFormatComparator implements Comparable
         return this.hardcore;
     }
 
-    /**
-     * @return {@code true} if cheats are enabled for this world
-     */
     public boolean getCheatsEnabled()
     {
         return this.cheatsEnabled;

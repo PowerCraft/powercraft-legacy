@@ -14,9 +14,6 @@ public class BlockMushroom extends BlockFlower
         this.setTickRandomly(true);
     }
 
-    /**
-     * Ticks the block if it's been scheduled
-     */
     public void updateTick(World par1World, int par2, int par3, int par4, Random par5Random)
     {
         if (par5Random.nextInt(25) == 0)
@@ -71,26 +68,16 @@ public class BlockMushroom extends BlockFlower
         }
     }
 
-    /**
-     * Checks to see if its valid to put this block at the specified coordinates. Args: world, x, y, z
-     */
     public boolean canPlaceBlockAt(World par1World, int par2, int par3, int par4)
     {
         return super.canPlaceBlockAt(par1World, par2, par3, par4) && this.canBlockStay(par1World, par2, par3, par4);
     }
 
-    /**
-     * Gets passed in the blockID of the block below and supposed to return true if its allowed to grow on the type of
-     * blockID passed in. Args: blockID
-     */
     protected boolean canThisPlantGrowOnThisBlockID(int par1)
     {
         return Block.opaqueCubeLookup[par1];
     }
 
-    /**
-     * Can this block stay at this position.  Similar to canPlaceBlockAt except gets checked often with plants.
-     */
     public boolean canBlockStay(World par1World, int par2, int par3, int par4)
     {
         if (par3 >= 0 && par3 < 256)
@@ -98,7 +85,7 @@ public class BlockMushroom extends BlockFlower
             int var5 = par1World.getBlockId(par2, par3 - 1, par4);
             Block soil = Block.blocksList[var5];
             return (var5 == Block.mycelium.blockID || par1World.getFullBlockLightValue(par2, par3, par4) < 13) &&
-                   (soil != null && soil.canSustainPlant(par1World, par2, par3 - 1, par4, ForgeDirection.UP, this));
+                    (soil != null && soil.canSustainPlant(par1World, par2, par3 - 1, par4, ForgeDirection.UP, this));
         }
         else
         {
@@ -106,9 +93,6 @@ public class BlockMushroom extends BlockFlower
         }
     }
 
-    /**
-     * Fertilize the mushroom.
-     */
     public boolean fertilizeMushroom(World par1World, int par2, int par3, int par4, Random par5Random)
     {
         int var6 = par1World.getBlockMetadata(par2, par3, par4);

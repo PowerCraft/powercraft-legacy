@@ -4,7 +4,6 @@ import java.util.concurrent.Callable;
 
 class CallableOSInfo implements Callable
 {
-    /** Reference to the CrashReport object. */
     final CrashReport theCrashReport;
 
     CallableOSInfo(CrashReport par1CrashReport)

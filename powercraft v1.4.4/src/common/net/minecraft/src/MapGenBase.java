@@ -4,13 +4,10 @@ import java.util.Random;
 
 public class MapGenBase
 {
-    /** The number of Chunks to gen-check in any given direction. */
     protected int range = 8;
 
-    /** The RNG used by the MapGen classes. */
     protected Random rand = new Random();
 
-    /** This world object. */
     protected World worldObj;
 
     public void generate(IChunkProvider par1IChunkProvider, World par2World, int par3, int par4, byte[] par5ArrayOfByte)
@@ -33,8 +30,5 @@ public class MapGenBase
         }
     }
 
-    /**
-     * Recursively called by generate() (generate) and optionally by itself.
-     */
     protected void recursiveGenerate(World par1World, int par2, int par3, int par4, int par5, byte[] par6ArrayOfByte) {}
 }

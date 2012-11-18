@@ -5,11 +5,9 @@ import cpw.mods.fml.common.asm.SideOnly;
 
 public class ContainerMerchant extends Container
 {
-    /** Instance of Merchant. */
     private IMerchant theMerchant;
     private InventoryMerchant merchantInventory;
 
-    /** Instance of World. */
     private final World theWorld;
 
     public ContainerMerchant(InventoryPlayer par1InventoryPlayer, IMerchant par2IMerchant, World par3World)
@@ -46,17 +44,11 @@ public class ContainerMerchant extends Container
         super.addCraftingToCrafters(par1ICrafting);
     }
 
-    /**
-     * Updates crafting matrix; called from onCraftMatrixChanged. Args: none
-     */
     public void updateCraftingResults()
     {
         super.updateCraftingResults();
     }
 
-    /**
-     * Callback for when the crafting matrix is changed.
-     */
     public void onCraftMatrixChanged(IInventory par1IInventory)
     {
         this.merchantInventory.resetRecipeAndSlots();
@@ -76,9 +68,6 @@ public class ContainerMerchant extends Container
         return this.theMerchant.getCustomer() == par1EntityPlayer;
     }
 
-    /**
-     * Called when a player shift-clicks on a slot. You must override this or you will crash when someone does that.
-     */
     public ItemStack transferStackInSlot(EntityPlayer par1EntityPlayer, int par2)
     {
         ItemStack var3 = null;
@@ -137,9 +126,6 @@ public class ContainerMerchant extends Container
         return var3;
     }
 
-    /**
-     * Callback for when the crafting gui is closed.
-     */
     public void onCraftGuiClosed(EntityPlayer par1EntityPlayer)
     {
         super.onCraftGuiClosed(par1EntityPlayer);

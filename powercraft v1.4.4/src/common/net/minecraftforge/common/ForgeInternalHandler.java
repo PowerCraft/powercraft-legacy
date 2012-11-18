@@ -23,13 +23,17 @@ public class ForgeInternalHandler
                 ForgeChunkManager.loadEntity(event.entity);
             }
         }
+
         Entity entity = event.entity;
+
         if (entity.getClass().equals(EntityItem.class))
         {
             ItemStack item = ((EntityItem)entity).item;
+
             if (item != null && item.getItem().hasCustomEntity(item))
             {
                 Entity newEntity = item.getItem().createEntity(event.world, entity, item);
+
                 if (newEntity != null)
                 {
                     entity.setDead();
@@ -49,6 +53,6 @@ public class ForgeInternalHandler
     @ForgeSubscribe(priority = EventPriority.HIGHEST)
     public void onDimensionSave(WorldEvent.Save event)
     {
-    	ForgeChunkManager.saveWorld(event.world);
+        ForgeChunkManager.saveWorld(event.world);
     }
 }

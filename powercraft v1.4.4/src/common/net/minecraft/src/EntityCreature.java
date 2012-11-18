@@ -4,15 +4,10 @@ public abstract class EntityCreature extends EntityLiving
 {
     private PathEntity pathToEntity;
 
-    /** The Entity this EntityCreature is set to attack. */
     protected Entity entityToAttack;
 
-    /**
-     * returns true if a creature has attacked recently only used for creepers and skeletons
-     */
     protected boolean hasAttacked = false;
 
-    /** Used to make a creature speed up and wander away when hit. */
     protected int fleeingTick = 0;
 
     public EntityCreature(World par1World)
@@ -20,9 +15,6 @@ public abstract class EntityCreature extends EntityLiving
         super(par1World);
     }
 
-    /**
-     * Disables a mob's ability to move on its own while true.
-     */
     protected boolean isMovementCeased()
     {
         return false;
@@ -164,9 +156,6 @@ public abstract class EntityCreature extends EntityLiving
         }
     }
 
-    /**
-     * Time remaining during which the Animal is sped up and flees.
-     */
     protected void updateWanderPath()
     {
         this.worldObj.theProfiler.startSection("stroll");
@@ -201,32 +190,18 @@ public abstract class EntityCreature extends EntityLiving
         this.worldObj.theProfiler.endSection();
     }
 
-    /**
-     * Basic mob attack. Default to touch of death in EntityCreature. Overridden by each mob to define their attack.
-     */
     protected void attackEntity(Entity par1Entity, float par2) {}
 
-    /**
-     * Takes a coordinate in and returns a weight to determine how likely this creature will try to path to the block.
-     * Args: x, y, z
-     */
     public float getBlockPathWeight(int par1, int par2, int par3)
     {
         return 0.0F;
     }
 
-    /**
-     * Finds the closest player within 16 blocks to attack, or null if this Entity isn't interested in attacking
-     * (Animals, Spiders at day, peaceful PigZombies).
-     */
     protected Entity findPlayerToAttack()
     {
         return null;
     }
 
-    /**
-     * Checks if the entity's current position is a valid location to spawn this entity.
-     */
     public boolean getCanSpawnHere()
     {
         int var1 = MathHelper.floor_double(this.posX);
@@ -235,42 +210,26 @@ public abstract class EntityCreature extends EntityLiving
         return super.getCanSpawnHere() && this.getBlockPathWeight(var1, var2, var3) >= 0.0F;
     }
 
-    /**
-     * Returns true if entity has a path to follow
-     */
     public boolean hasPath()
     {
         return this.pathToEntity != null;
     }
 
-    /**
-     * sets the Entities walk path in EntityCreature
-     */
     public void setPathToEntity(PathEntity par1PathEntity)
     {
         this.pathToEntity = par1PathEntity;
     }
 
-    /**
-     * Returns current entities target
-     */
     public Entity getEntityToAttack()
     {
         return this.entityToAttack;
     }
 
-    /**
-     * Sets the entity which is to be attacked.
-     */
     public void setTarget(Entity par1Entity)
     {
         this.entityToAttack = par1Entity;
     }
 
-    /**
-     * This method returns a value to be applied directly to entity speed, this factor is less than 1 when a slowdown
-     * potion effect is applied, more than 1 when a haste potion effect is applied and 2 for fleeing entities.
-     */
     public float getSpeedModifier()
     {
         float var1 = super.getSpeedModifier();

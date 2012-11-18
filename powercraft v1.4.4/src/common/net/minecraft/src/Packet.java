@@ -12,36 +12,23 @@ import java.util.Set;
 
 public abstract class Packet
 {
-    /** Maps packet id to packet class */
     public static IntHashMap packetIdToClassMap = new IntHashMap();
 
-    /** Maps packet class to packet id */
     private static Map packetClassToIdMap = new HashMap();
 
-    /** List of the client's packet IDs. */
     private static Set clientPacketIdList = new HashSet();
 
-    /** List of the server's packet IDs. */
     private static Set serverPacketIdList = new HashSet();
 
-    /** the system time in milliseconds when this packet was created. */
     public final long creationTimeMillis = System.currentTimeMillis();
     public static long receivedID;
     public static long receivedSize;
 
-    /** Assumed to be sequential by the profiler. */
     public static long sentID;
     public static long sentSize;
 
-    /**
-     * Only true for Packet51MapChunk, Packet52MultiBlockChange, Packet53BlockChange and Packet59ComplexEntity. Used to
-     * separate them into a different send queue.
-     */
     public boolean isChunkDataPacket = false;
 
-    /**
-     * Adds a two way mapping between the packet ID and packet class.
-     */
     static void addIdClassMapping(int par0, boolean par1, boolean par2, Class par3Class)
     {
         if (packetIdToClassMap.containsItem(par0))
@@ -69,9 +56,6 @@ public abstract class Packet
         }
     }
 
-    /**
-     * Returns a new instance of the specified Packet class.
-     */
     public static Packet getNewPacket(int par0)
     {
         try
@@ -87,18 +71,12 @@ public abstract class Packet
         }
     }
 
-    /**
-     * Writes a byte array to the DataOutputStream
-     */
     public static void writeByteArray(DataOutputStream par0DataOutputStream, byte[] par1ArrayOfByte) throws IOException
     {
         par0DataOutputStream.writeShort(par1ArrayOfByte.length);
         par0DataOutputStream.write(par1ArrayOfByte);
     }
 
-    /**
-     * the first short in the stream indicates the number of bytes to read
-     */
     public static byte[] readBytesFromStream(DataInputStream par0DataInputStream) throws IOException
     {
         short var1 = par0DataInputStream.readShort();
@@ -115,17 +93,11 @@ public abstract class Packet
         }
     }
 
-    /**
-     * Returns the ID of this packet.
-     */
     public final int getPacketId()
     {
         return ((Integer)packetClassToIdMap.get(this.getClass())).intValue();
     }
 
-    /**
-     * Read a packet, prefixed by its ID, from the data stream.
-     */
     public static Packet readPacket(DataInputStream par0DataInputStream, boolean par1, Socket par2Socket) throws IOException
     {
         boolean var3 = false;
@@ -176,9 +148,6 @@ public abstract class Packet
         return var4;
     }
 
-    /**
-     * Writes a packet, prefixed by its ID, to the data stream.
-     */
     public static void writePacket(Packet par0Packet, DataOutputStream par1DataOutputStream) throws IOException
     {
         par1DataOutputStream.write(par0Packet.getPacketId());
@@ -187,9 +156,6 @@ public abstract class Packet
         sentSize += (long)par0Packet.getPacketSize();
     }
 
-    /**
-     * Writes a String to the DataOutputStream
-     */
     public static void writeString(String par0Str, DataOutputStream par1DataOutputStream) throws IOException
     {
         if (par0Str.length() > 32767)
@@ -203,9 +169,6 @@ public abstract class Packet
         }
     }
 
-    /**
-     * Reads a string from a packet
-     */
     public static String readString(DataInputStream par0DataInputStream, int par1) throws IOException
     {
         short var2 = par0DataInputStream.readShort();
@@ -231,46 +194,24 @@ public abstract class Packet
         }
     }
 
-    /**
-     * Abstract. Reads the raw packet data from the data stream.
-     */
     public abstract void readPacketData(DataInputStream var1) throws IOException;
 
-    /**
-     * Abstract. Writes the raw packet data to the data stream.
-     */
     public abstract void writePacketData(DataOutputStream var1) throws IOException;
 
-    /**
-     * Passes this Packet on to the NetHandler for processing.
-     */
     public abstract void processPacket(NetHandler var1);
 
-    /**
-     * Abstract. Return the size of the packet (not counting the header).
-     */
     public abstract int getPacketSize();
 
-    /**
-     * only false for the abstract Packet class, all real packets return true
-     */
     public boolean isRealPacket()
     {
         return false;
     }
 
-    /**
-     * eg return packet30entity.entityId == entityId; WARNING : will throw if you compare a packet to a different packet
-     * class
-     */
     public boolean containsSameEntityIDAs(Packet par1Packet)
     {
         return false;
     }
 
-    /**
-     * if this returns false, processPacket is deffered for processReadPackets to handle
-     */
     public boolean isWritePacket()
     {
         return false;
@@ -282,9 +223,6 @@ public abstract class Packet
         return var1;
     }
 
-    /**
-     * Reads a ItemStack from the InputStream
-     */
     public static ItemStack readItemStack(DataInputStream par0DataInputStream) throws IOException
     {
         ItemStack var1 = null;
@@ -301,9 +239,6 @@ public abstract class Packet
         return var1;
     }
 
-    /**
-     * Writes the ItemStack's ID (short), then size (byte), then damage. (short)
-     */
     public static void writeItemStack(ItemStack par0ItemStack, DataOutputStream par1DataOutputStream) throws IOException
     {
         if (par0ItemStack == null)
@@ -326,9 +261,6 @@ public abstract class Packet
         }
     }
 
-    /**
-     * Reads a compressed NBTTagCompound from the InputStream
-     */
     public static NBTTagCompound readNBTTagCompound(DataInputStream par0DataInputStream) throws IOException
     {
         short var1 = par0DataInputStream.readShort();
@@ -345,9 +277,6 @@ public abstract class Packet
         }
     }
 
-    /**
-     * Writes a compressed NBTTagCompound to the OutputStream
-     */
     protected static void writeNBTTagCompound(NBTTagCompound par0NBTTagCompound, DataOutputStream par1DataOutputStream) throws IOException
     {
         if (par0NBTTagCompound == null)

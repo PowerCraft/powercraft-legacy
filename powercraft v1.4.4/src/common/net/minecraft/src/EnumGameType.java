@@ -18,25 +18,16 @@ public enum EnumGameType
         this.name = par4Str;
     }
 
-    /**
-     * Returns the ID of this game type
-     */
     public int getID()
     {
         return this.id;
     }
 
-    /**
-     * Returns the name of this game type
-     */
     public String getName()
     {
         return this.name;
     }
 
-    /**
-     * Configures the player capabilities based on the game type
-     */
     public void configurePlayerCapabilities(PlayerCapabilities par1PlayerCapabilities)
     {
         if (this == CREATIVE)
@@ -56,17 +47,11 @@ public enum EnumGameType
         par1PlayerCapabilities.allowEdit = !this.isAdventure();
     }
 
-    /**
-     * Returns true if this is the ADVENTURE game type
-     */
     public boolean isAdventure()
     {
         return this == ADVENTURE;
     }
 
-    /**
-     * Returns true if this is the CREATIVE game type
-     */
     public boolean isCreative()
     {
         return this == CREATIVE;
@@ -74,17 +59,11 @@ public enum EnumGameType
 
     @SideOnly(Side.CLIENT)
 
-    /**
-     * Returns true if this is the SURVIVAL or ADVENTURE game type
-     */
     public boolean isSurvivalOrAdventure()
     {
         return this == SURVIVAL || this == ADVENTURE;
     }
 
-    /**
-     * Returns the game type with the specified ID, or SURVIVAL if none found. Args: id
-     */
     public static EnumGameType getByID(int par0)
     {
         EnumGameType[] var1 = values();
@@ -105,9 +84,6 @@ public enum EnumGameType
 
     @SideOnly(Side.CLIENT)
 
-    /**
-     * Returns the game type with the specified name, or SURVIVAL if none found. This is case sensitive. Args: name
-     */
     public static EnumGameType getByName(String par0Str)
     {
         EnumGameType[] var1 = values();

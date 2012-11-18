@@ -13,7 +13,6 @@ public class EnumHelper
     private static Method fieldAccessorSet       = null;
     private static boolean isSetup               = false;
 
-    //Some enums are decompiled with extra arguments, so lets check for that
     private static Class[][] commonTypes =
     {
         {EnumAction.class},
@@ -29,7 +28,7 @@ public class EnumHelper
         {EnumSkyBlock.class, int.class},
         {EnumStatus.class},
         {EnumToolMaterial.class, int.class, int.class, float.class, int.class, int.class}
-    }; 
+    };
 
     public static EnumAction addAction(String name)
     {
@@ -113,11 +112,6 @@ public class EnumHelper
         isSetup = true;
     }
 
-    /*
-     * Everything below this is found at the site below, and updated to be able to compile in Eclipse/Java 1.6+
-     * Also modified for use in decompiled code.
-     * Found at: http://niceideas.ch/roller2/badtrash/entry/java_create_enum_instances_dynamically
-     */
     private static Object getConstructorAccessor(Class<?> enumClass, Class<?>[] additionalParameterTypes) throws Exception
     {
         Class<?>[] parameterTypes = new Class[additionalParameterTypes.length + 2];
@@ -165,30 +159,33 @@ public class EnumHelper
         blankField(enumClass, "enumConstants");
     }
 
-    public static <T extends Enum<? >> T addEnum(Class<T> enumType, String enumName, Object... paramValues)
+    public static < T extends Enum<? >> T addEnum(Class<T> enumType, String enumName, Object... paramValues)
     {
         return addEnum(commonTypes, enumType, enumName, paramValues);
     }
-    
-    public static <T extends Enum<? >> T addEnum(Class[][] map, Class<T> enumType, String enumName, Object... paramValues)
+
+    public static < T extends Enum<? >> T addEnum(Class[][] map, Class<T> enumType, String enumName, Object... paramValues)
     {
         for (Class[] lookup : map)
         {
             if (lookup[0] == enumType)
             {
                 Class<?>[] paramTypes = new Class<?>[lookup.length - 1];
+
                 if (paramTypes.length > 0)
                 {
                     System.arraycopy(lookup, 1, paramTypes, 0, paramTypes.length);
                 }
+
                 return addEnum(enumType, enumName, paramTypes, paramValues);
             }
         }
+
         return null;
     }
 
     @SuppressWarnings("unchecked")
-    public static <T extends Enum<? >> T addEnum(Class<T> enumType, String enumName, Class<?>[] paramTypes, Object[] paramValues)
+    public static < T extends Enum<? >> T addEnum(Class<T> enumType, String enumName, Class<?>[] paramTypes, Object[] paramValues)
     {
         if (!isSetup)
         {
@@ -197,18 +194,19 @@ public class EnumHelper
 
         Field valuesField = null;
         Field[] fields = enumType.getDeclaredFields();
-        int flags = Modifier.PRIVATE | Modifier.STATIC | Modifier.FINAL | 0x1000 /*SYNTHETIC*/;
+        int flags = Modifier.PRIVATE | Modifier.STATIC | Modifier.FINAL | 0x1000 ;
         String valueType = String.format("[L%s;", enumType.getName().replace('.', '/'));
 
         for (Field field : fields)
         {
             if ((field.getModifiers() & flags) == flags &&
-                    field.getType().getName().replace('.', '/').equals(valueType)) //Apparently some JVMs return .'s and some don't..
+                    field.getType().getName().replace('.', '/').equals(valueType))
             {
                 valuesField = field;
                 break;
             }
         }
+
         valuesField.setAccessible(true);
 
         try
@@ -219,7 +217,6 @@ public class EnumHelper
             values.add(newValue);
             setFailsafeFieldValue(valuesField, null, values.toArray((T[]) Array.newInstance(enumType, 0)));
             cleanEnumCache(enumType);
-
             return newValue;
         }
         catch (Exception e)

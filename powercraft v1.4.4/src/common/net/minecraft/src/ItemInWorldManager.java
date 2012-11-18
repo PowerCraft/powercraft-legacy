@@ -10,18 +10,13 @@ import net.minecraftforge.event.entity.player.PlayerInteractEvent.Action;
 
 public class ItemInWorldManager
 {
-    /** Forge reach distance */
     private double blockReachDistance = 5.0d;
-    /** The world object that this object is connected to. */
+
     public World theWorld;
 
-    /** The EntityPlayerMP object that this object is connected to. */
     public EntityPlayerMP thisPlayerMP;
     private EnumGameType gameType;
 
-    /**
-     * set to true on first call of destroyBlockInWorldPartially, false before any further calls
-     */
     private boolean isPartiallyDestroyedBlockWhole;
     private int initialDamage;
     private int partiallyDestroyedBlockX;
@@ -54,17 +49,11 @@ public class ItemInWorldManager
         return this.gameType;
     }
 
-    /**
-     * Get if we are in creative game mode.
-     */
     public boolean isCreative()
     {
         return this.gameType.isCreative();
     }
 
-    /**
-     * if the gameType is currently NOT_SET then change it to par1
-     */
     public void initializeGameType(EnumGameType par1EnumGameType)
     {
         if (this.gameType == EnumGameType.NOT_SET)
@@ -136,15 +125,12 @@ public class ItemInWorldManager
         }
     }
 
-    /**
-     * if not creative, it calls destroyBlockInWorldPartially untill the block is broken first. par4 is the specific
-     * side. tryHarvestBlock can also be the result of this call
-     */
     public void onBlockClicked(int par1, int par2, int par3, int par4)
     {
         if (!this.gameType.isAdventure() || this.thisPlayerMP.canCurrentToolHarvestBlock(par1, par2, par3))
         {
             PlayerInteractEvent event = ForgeEventFactory.onPlayerInteract(thisPlayerMP, Action.LEFT_CLICK_BLOCK, par1, par2, par3, par4);
+
             if (event.isCanceled())
             {
                 thisPlayerMP.playerNetServerHandler.sendPacketToPlayer(new Packet53BlockChange(par1, par2, par3, theWorld));
@@ -176,6 +162,7 @@ public class ItemInWorldManager
                     {
                         thisPlayerMP.playerNetServerHandler.sendPacketToPlayer(new Packet53BlockChange(par1, par2, par3, theWorld));
                     }
+
                     var5 = block.getPlayerRelativeBlockHardness(thisPlayerMP, thisPlayerMP.worldObj, par1, par2, par3);
                 }
 
@@ -185,6 +172,7 @@ public class ItemInWorldManager
                     {
                         thisPlayerMP.playerNetServerHandler.sendPacketToPlayer(new Packet53BlockChange(par1, par2, par3, theWorld));
                     }
+
                     return;
                 }
 
@@ -237,18 +225,12 @@ public class ItemInWorldManager
         }
     }
 
-    /**
-     * note: this ignores the pars passed in and continues to destroy the onClickedBlock
-     */
     public void destroyBlockInWorldPartially(int par1, int par2, int par3)
     {
         this.isPartiallyDestroyedBlockWhole = false;
         this.theWorld.destroyBlockInWorldPartially(this.thisPlayerMP.entityId, this.partiallyDestroyedBlockX, this.partiallyDestroyedBlockY, this.partiallyDestroyedBlockZ, -1);
     }
 
-    /**
-     * Removes a block and triggers the appropriate  events
-     */
     private boolean removeBlock(int par1, int par2, int par3)
     {
         Block var4 = Block.blocksList[this.theWorld.getBlockId(par1, par2, par3)];
@@ -269,9 +251,6 @@ public class ItemInWorldManager
         return var6;
     }
 
-    /**
-     * Attempts to harvest a block at the given coordinate
-     */
     public boolean tryHarvestBlock(int par1, int par2, int par3)
     {
         if (this.gameType.isAdventure() && !this.thisPlayerMP.canCurrentToolHarvestBlock(par1, par2, par3))
@@ -281,10 +260,12 @@ public class ItemInWorldManager
         else
         {
             ItemStack stack = thisPlayerMP.getCurrentEquippedItem();
+
             if (stack != null && stack.getItem().onBlockStartBreak(stack, par1, par2, par3, thisPlayerMP))
             {
                 return false;
             }
+
             int var4 = this.theWorld.getBlockId(par1, par2, par3);
             int var5 = this.theWorld.getBlockMetadata(par1, par2, par3);
             this.theWorld.playAuxSFXAtEntity(this.thisPlayerMP, 2001, par1, par2, par3, var4 + (this.theWorld.getBlockMetadata(par1, par2, par3) << 12));
@@ -300,6 +281,7 @@ public class ItemInWorldManager
                 ItemStack var7 = this.thisPlayerMP.getCurrentEquippedItem();
                 boolean var8 = false;
                 Block block = Block.blocksList[var4];
+
                 if (block != null)
                 {
                     var8 = block.canHarvestBlock(thisPlayerMP, var5);
@@ -317,6 +299,7 @@ public class ItemInWorldManager
                 }
 
                 var6 = this.removeBlock(par1, par2, par3);
+
                 if (var6 && var8)
                 {
                     Block.blocksList[var4].harvestBlock(this.theWorld, this.thisPlayerMP, par1, par2, par3, var5);
@@ -327,9 +310,6 @@ public class ItemInWorldManager
         }
     }
 
-    /**
-     * Attempts to right-click use an item by the given EntityPlayer in the given World
-     */
     public boolean tryUseItem(EntityPlayer par1EntityPlayer, World par2World, ItemStack par3ItemStack)
     {
         int var4 = par3ItemStack.stackSize;
@@ -369,13 +349,10 @@ public class ItemInWorldManager
         }
     }
 
-    /**
-     * Activate the clicked on block, otherwise use the held item. Args: player, world, itemStack, x, y, z, side,
-     * xOffset, yOffset, zOffset
-     */
     public boolean activateBlockOrUseItem(EntityPlayer par1EntityPlayer, World par2World, ItemStack par3ItemStack, int par4, int par5, int par6, int par7, float par8, float par9, float par10)
     {
         PlayerInteractEvent event = ForgeEventFactory.onPlayerInteract(par1EntityPlayer, Action.RIGHT_CLICK_BLOCK, par4, par5, par6, par7);
+
         if (event.isCanceled())
         {
             thisPlayerMP.playerNetServerHandler.sendPacketToPlayer(new Packet53BlockChange(par4, par5, par6, theWorld));
@@ -383,9 +360,14 @@ public class ItemInWorldManager
         }
 
         Item item = (par3ItemStack != null ? par3ItemStack.getItem() : null);
+
         if (item != null && item.onItemUseFirst(par3ItemStack, par1EntityPlayer, par2World, par4, par5, par6, par7, par8, par9, par10))
         {
-            if (par3ItemStack.stackSize <= 0) ForgeEventFactory.onPlayerDestroyItem(thisPlayerMP, par3ItemStack);
+            if (par3ItemStack.stackSize <= 0)
+            {
+                ForgeEventFactory.onPlayerDestroyItem(thisPlayerMP, par3ItemStack);
+            }
+
             return true;
         }
 
@@ -411,25 +393,22 @@ public class ItemInWorldManager
             int meta = par3ItemStack.getItemDamage();
             int size = par3ItemStack.stackSize;
             result = par3ItemStack.tryPlaceItemIntoWorld(par1EntityPlayer, par2World, par4, par5, par6, par7, par8, par9, par10);
+
             if (isCreative())
             {
                 par3ItemStack.setItemDamage(meta);
                 par3ItemStack.stackSize = size;
             }
-            if (par3ItemStack.stackSize <= 0) ForgeEventFactory.onPlayerDestroyItem(thisPlayerMP, par3ItemStack);
+
+            if (par3ItemStack.stackSize <= 0)
+            {
+                ForgeEventFactory.onPlayerDestroyItem(thisPlayerMP, par3ItemStack);
+            }
         }
 
-        /* Re-enable if this causes bukkit incompatibility, or re-write client side to only send a single packet per right click.
-        if (par3ItemStack != null && ((!result && event.useItem != Event.Result.DENY) || event.useItem == Event.Result.ALLOW))
-        {
-            this.tryUseItem(thisPlayerMP, par2World, par3ItemStack);
-        }*/
         return result;
     }
 
-    /**
-     * Sets the world instance.
-     */
     public void setWorld(WorldServer par1WorldServer)
     {
         this.theWorld = par1WorldServer;

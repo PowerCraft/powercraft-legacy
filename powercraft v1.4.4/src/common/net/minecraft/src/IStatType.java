@@ -7,8 +7,5 @@ public interface IStatType
 {
     @SideOnly(Side.CLIENT)
 
-    /**
-     * Formats a given stat for human consumption.
-     */
     String format(int var1);
 }

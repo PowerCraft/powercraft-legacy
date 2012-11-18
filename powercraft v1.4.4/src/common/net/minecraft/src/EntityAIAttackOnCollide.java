@@ -6,14 +6,10 @@ public class EntityAIAttackOnCollide extends EntityAIBase
     EntityLiving attacker;
     EntityLiving entityTarget;
 
-    /**
-     * An amount of decrementing ticks that allows the entity to attack once the tick reaches 0.
-     */
     int attackTick;
     float field_75440_e;
     boolean field_75437_f;
 
-    /** The PathEntity of our entity. */
     PathEntity entityPathEntity;
     Class classTarget;
     private int field_75445_i;
@@ -34,9 +30,6 @@ public class EntityAIAttackOnCollide extends EntityAIBase
         this.setMutexBits(3);
     }
 
-    /**
-     * Returns whether the EntityAIBase should begin execution.
-     */
     public boolean shouldExecute()
     {
         EntityLiving var1 = this.attacker.getAttackTarget();
@@ -57,36 +50,24 @@ public class EntityAIAttackOnCollide extends EntityAIBase
         }
     }
 
-    /**
-     * Returns whether an in-progress EntityAIBase should continue executing
-     */
     public boolean continueExecuting()
     {
         EntityLiving var1 = this.attacker.getAttackTarget();
         return var1 == null ? false : (!this.entityTarget.isEntityAlive() ? false : (!this.field_75437_f ? !this.attacker.getNavigator().noPath() : this.attacker.isWithinHomeDistance(MathHelper.floor_double(this.entityTarget.posX), MathHelper.floor_double(this.entityTarget.posY), MathHelper.floor_double(this.entityTarget.posZ))));
     }
 
-    /**
-     * Execute a one shot task or start executing a continuous task
-     */
     public void startExecuting()
     {
         this.attacker.getNavigator().setPath(this.entityPathEntity, this.field_75440_e);
         this.field_75445_i = 0;
     }
 
-    /**
-     * Resets the task
-     */
     public void resetTask()
     {
         this.entityTarget = null;
         this.attacker.getNavigator().clearPathEntity();
     }
 
-    /**
-     * Updates the task
-     */
     public void updateTask()
     {
         this.attacker.getLookHelper().setLookPositionWithEntity(this.entityTarget, 30.0F, 30.0F);

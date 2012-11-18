@@ -9,10 +9,6 @@ import java.util.Set;
 
 public class BlockRedstoneWire extends Block
 {
-    /**
-     * When false, power transmission methods do not look at other redstone wires. Used internally during
-     * updateCurrentStrength.
-     */
     private boolean wiresProvidePower = true;
     private Set blocksNeedingUpdate = new HashSet();
 
@@ -22,43 +18,26 @@ public class BlockRedstoneWire extends Block
         this.setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 0.0625F, 1.0F);
     }
 
-    /**
-     * From the specified side and block metadata retrieves the blocks texture. Args: side, metadata
-     */
     public int getBlockTextureFromSideAndMetadata(int par1, int par2)
     {
         return this.blockIndexInTexture;
     }
 
-    /**
-     * Returns a bounding box from the pool of bounding boxes (this means this box can change after the pool has been
-     * cleared to be reused)
-     */
     public AxisAlignedBB getCollisionBoundingBoxFromPool(World par1World, int par2, int par3, int par4)
     {
         return null;
     }
 
-    /**
-     * Is this block (a) opaque and (b) a full 1m cube?  This determines whether or not to render the shared face of two
-     * adjacent blocks and also whether the player can attach torches, redstone wire, etc to this block.
-     */
     public boolean isOpaqueCube()
     {
         return false;
     }
 
-    /**
-     * If this block doesn't render as an ordinary block it will return False (examples: signs, buttons, stairs, etc)
-     */
     public boolean renderAsNormalBlock()
     {
         return false;
     }
 
-    /**
-     * The type of render function that is called for this block
-     */
     public int getRenderType()
     {
         return 5;
@@ -66,27 +45,16 @@ public class BlockRedstoneWire extends Block
 
     @SideOnly(Side.CLIENT)
 
-    /**
-     * Returns a integer with hex for 0xrrggbb with this color multiplied against the blocks color. Note only called
-     * when first determining what to render.
-     */
     public int colorMultiplier(IBlockAccess par1IBlockAccess, int par2, int par3, int par4)
     {
         return 8388608;
     }
 
-    /**
-     * Checks to see if its valid to put this block at the specified coordinates. Args: world, x, y, z
-     */
     public boolean canPlaceBlockAt(World par1World, int par2, int par3, int par4)
     {
         return par1World.doesBlockHaveSolidTopSurface(par2, par3 - 1, par4) || par1World.getBlockId(par2, par3 - 1, par4) == Block.glowStone.blockID;
     }
 
-    /**
-     * Sets the strength of the wire current (0-15) for this block based on neighboring blocks and propagates to
-     * neighboring redstone wires
-     */
     private void updateAndPropagateCurrentStrength(World par1World, int par2, int par3, int par4)
     {
         this.calculateCurrentChanges(par1World, par2, par3, par4, par2, par3, par4);
@@ -249,10 +217,6 @@ public class BlockRedstoneWire extends Block
         }
     }
 
-    /**
-     * Calls World.notifyBlocksOfNeighborChange() for all neighboring blocks, but only if the given block is a redstone
-     * wire.
-     */
     private void notifyWireNeighborsOfNeighborChange(World par1World, int par2, int par3, int par4)
     {
         if (par1World.getBlockId(par2, par3, par4) == this.blockID)
@@ -267,9 +231,6 @@ public class BlockRedstoneWire extends Block
         }
     }
 
-    /**
-     * Called whenever the block is added into the world. Args: world, x, y, z
-     */
     public void onBlockAdded(World par1World, int par2, int par3, int par4)
     {
         super.onBlockAdded(par1World, par2, par3, par4);
@@ -322,9 +283,6 @@ public class BlockRedstoneWire extends Block
         }
     }
 
-    /**
-     * ejects contained items into the world, and notifies neighbours of an update, as appropriate
-     */
     public void breakBlock(World par1World, int par2, int par3, int par4, int par5, int par6)
     {
         super.breakBlock(par1World, par2, par3, par4, par5, par6);
@@ -381,10 +339,6 @@ public class BlockRedstoneWire extends Block
         }
     }
 
-    /**
-     * Returns the current strength at the specified block if it is greater than the passed value, or the passed value
-     * otherwise. Signature: (world, x, y, z, strength)
-     */
     private int getMaxCurrentStrength(World par1World, int par2, int par3, int par4, int par5)
     {
         if (par1World.getBlockId(par2, par3, par4) != this.blockID)
@@ -398,10 +352,6 @@ public class BlockRedstoneWire extends Block
         }
     }
 
-    /**
-     * Lets the block know when one of its neighbor changes. Doesn't know which neighbor changed (coordinates passed are
-     * their own) Args: x, y, z, neighbor blockID
-     */
     public void onNeighborBlockChange(World par1World, int par2, int par3, int par4, int par5)
     {
         if (!par1World.isRemote)
@@ -423,25 +373,16 @@ public class BlockRedstoneWire extends Block
         }
     }
 
-    /**
-     * Returns the ID of the items to drop on destruction.
-     */
     public int idDropped(int par1, Random par2Random, int par3)
     {
         return Item.redstone.shiftedIndex;
     }
 
-    /**
-     * Is this block indirectly powering the block on the specified side
-     */
     public boolean isIndirectlyPoweringTo(IBlockAccess par1IBlockAccess, int par2, int par3, int par4, int par5)
     {
         return !this.wiresProvidePower ? false : this.isPoweringTo(par1IBlockAccess, par2, par3, par4, par5);
     }
 
-    /**
-     * Is this block powering the block on the specified side
-     */
     public boolean isPoweringTo(IBlockAccess par1IBlockAccess, int par2, int par3, int par4, int par5)
     {
         if (!this.wiresProvidePower)
@@ -490,9 +431,6 @@ public class BlockRedstoneWire extends Block
         }
     }
 
-    /**
-     * Can this block provide power. Only wire currently seems to have this change based on its state.
-     */
     public boolean canProvidePower()
     {
         return this.wiresProvidePower;
@@ -500,9 +438,6 @@ public class BlockRedstoneWire extends Block
 
     @SideOnly(Side.CLIENT)
 
-    /**
-     * A randomly called display update to be able to add particles or other items for display
-     */
     public void randomDisplayTick(World par1World, int par2, int par3, int par4, Random par5Random)
     {
         int var6 = par1World.getBlockMetadata(par2, par3, par4);
@@ -537,9 +472,6 @@ public class BlockRedstoneWire extends Block
         }
     }
 
-    /**
-     * Returns true if the block coordinate passed can provide power, or is a redstone wire.
-     */
     public static boolean isPowerProviderOrWire(IBlockAccess par0IBlockAccess, int par1, int par2, int par3, int par4)
     {
         int var5 = par0IBlockAccess.getBlockId(par1, par2, par3);
@@ -563,10 +495,6 @@ public class BlockRedstoneWire extends Block
         }
     }
 
-    /**
-     * Returns true if the block coordinate passed can provide power, or is a redstone wire, or if its a repeater that
-     * is powered.
-     */
     public static boolean isPoweredOrRepeater(IBlockAccess par0IBlockAccess, int par1, int par2, int par3, int par4)
     {
         if (isPowerProviderOrWire(par0IBlockAccess, par1, par2, par3, par4))
@@ -591,9 +519,6 @@ public class BlockRedstoneWire extends Block
 
     @SideOnly(Side.CLIENT)
 
-    /**
-     * only called by clickMiddleMouseButton , and passed to inventory.setCurrentItem (along with isCreative)
-     */
     public int idPicked(World par1World, int par2, int par3, int par4)
     {
         return Item.redstone.shiftedIndex;

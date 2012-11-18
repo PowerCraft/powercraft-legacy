@@ -4,7 +4,6 @@ import net.minecraft.server.MinecraftServer;
 
 public class BehaviorExpBottleDispense extends BehaviorProjectileDispense
 {
-    /** Reference to the MinecraftServer object. */
     final MinecraftServer mcServer;
 
     public BehaviorExpBottleDispense(MinecraftServer par1)
@@ -12,9 +11,6 @@ public class BehaviorExpBottleDispense extends BehaviorProjectileDispense
         this.mcServer = par1;
     }
 
-    /**
-     * Return the projectile entity spawned by this dispense behavior.
-     */
     protected IProjectile getProjectileEntity(World par1World, IPosition par2IPosition)
     {
         return new EntityExpBottle(par1World, par2IPosition.getX(), par2IPosition.getY(), par2IPosition.getZ());

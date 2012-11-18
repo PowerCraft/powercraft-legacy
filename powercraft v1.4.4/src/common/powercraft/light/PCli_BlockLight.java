@@ -28,385 +28,371 @@ import powercraft.core.PC_Shining.ON;
 import powercraft.core.PC_Utils;
 
 @PC_Shining
-public class PCli_BlockLight extends PC_Block implements PC_ICraftingToolDisplayer, PC_IConfigLoader, PC_IBlockRenderer {
-	
-	@ON
-	public static PCli_BlockLight on;
-	@OFF
-	public static PCli_BlockLight off;
-	
-	public PCli_BlockLight(int id, boolean on) {
-		super(id, 66, Material.glass);
-		setHardness(0.3F);
-		setResistance(20F);
-		setStepSound(Block.soundStoneFootstep);
-		setRequiresSelfNotify();
-		if(on)
-			setCreativeTab(CreativeTabs.tabDecorations);
-	}
+public class PCli_BlockLight extends PC_Block implements PC_ICraftingToolDisplayer, PC_IConfigLoader, PC_IBlockRenderer
+{
+    @ON
+    public static PCli_BlockLight on;
+    @OFF
+    public static PCli_BlockLight off;
 
-	@Override
-	public String getDefaultName() {
-		return "Light";
-	}
+    public PCli_BlockLight(int id, boolean on)
+    {
+        super(id, 66, Material.glass);
+        setHardness(0.3F);
+        setResistance(20F);
+        setStepSound(Block.soundStoneFootstep);
+        setRequiresSelfNotify();
 
-	@Override
-	public TileEntity createNewTileEntity(World world) {
-		return new PCli_TileEntityLight();
-	}
+        if (on)
+        {
+            setCreativeTab(CreativeTabs.tabDecorations);
+        }
+    }
 
-	@Override
-	public int getBlockTexture(IBlockAccess par1iBlockAccess, int par2, int par3, int par4, int par5) {
-		PCli_TileEntityLight te = PC_Utils.getTE(par1iBlockAccess, par2, par3, par4);
-		if (te == null) return 
-				super.getBlockTexture(par1iBlockAccess, par2, par3, par4, par5);
-		if (!te.isHuge()) return 
-				66;
-		return 117;
-	}
+    @Override
+    public String getDefaultName()
+    {
+        return "Light";
+    }
 
-//	@Override
-//	public AxisAlignedBB getCollisionBoundingBoxFromPool(World world, int i, int j, int k) {
-//		return null;
-//	}
+    @Override
+    public TileEntity createNewTileEntity(World world)
+    {
+        return new PCli_TileEntityLight();
+    }
 
-	@Override
-	public boolean isOpaqueCube() {
-		return false;
-	}
+    @Override
+    public int getBlockTexture(IBlockAccess par1iBlockAccess, int par2, int par3, int par4, int par5)
+    {
+        PCli_TileEntityLight te = PC_Utils.getTE(par1iBlockAccess, par2, par3, par4);
 
-	@Override
-	public boolean renderAsNormalBlock() {
-		return false;
-	}
+        if (te == null) return
+                    super.getBlockTexture(par1iBlockAccess, par2, par3, par4, par5);
 
-	@Override
-	public boolean canPlaceBlockOnSide(World world, int i, int j, int k, int l) {
-//		if (l == 0 && world.isBlockNormalCube(i, j + 1, k)) {
-//			return true;
-//		}
-//		if (l == 1 && world.isBlockNormalCube(i, j - 1, k)) {
-//			return true;
-//		}
-//		if (l == 2 && world.isBlockNormalCube(i, j, k + 1)) {
-//			return true;
-//		}
-//		if (l == 3 && world.isBlockNormalCube(i, j, k - 1)) {
-//			return true;
-//		}
-//		if (l == 4 && world.isBlockNormalCube(i + 1, j, k)) {
-//			return true;
-//		}
-//		return l == 5 && world.isBlockNormalCube(i - 1, j, k);
+        if (!te.isHuge()) return
+                    66;
 
-		return true;
-	}
+        return 117;
+    }
 
-	@Override
-	public void onBlockPlacedBy(World world, int i, int j, int k, EntityLiving player) {
-//		int i1 = 0;
-//
-//		if (l == 1 && world.isBlockNormalCube(i, j - 1, k)) {
-//			i1 = 0;
-//		}
-//		if (l == 2 && world.isBlockNormalCube(i, j, k + 1)) {
-//			i1 = 1;
-//		} else if (l == 3 && world.isBlockNormalCube(i, j, k - 1)) {
-//			i1 = 2;
-//		} else if (l == 4 && world.isBlockNormalCube(i + 1, j, k)) {
-//			i1 = 3;
-//		} else if (l == 5 && world.isBlockNormalCube(i - 1, j, k)) {
-//			i1 = 4;
-//		}
-//		if (l == 0 && world.isBlockNormalCube(i, j + 1, k)) {
-//			i1 = 5;
-//		}
-		int i1 = 0;
-		/**@todo l=??*/
-		/*if (l == 1) {
-			i1 = 0;
-		}
-		if (l == 2) {
-			i1 = 1;
-		} else if (l == 3) {
-			i1 = 2;
-		} else if (l == 4) {
-			i1 = 3;
-		} else if (l == 5) {
-			i1 = 4;
-		}
-		if (l == 0) {
-			i1 = 5;
-		}*/
-		//world.setBlockMetadataWithNotify(i, j, k, i1);
+    @Override
+    public boolean isOpaqueCube()
+    {
+        return false;
+    }
 
-		PCli_TileEntityLight tileentity = PC_Utils.getTE(world, i, j, k);
+    @Override
+    public boolean renderAsNormalBlock()
+    {
+        return false;
+    }
 
-		if (tileentity != null && tileentity.isStable()) return;
+    @Override
+    public boolean canPlaceBlockOnSide(World world, int i, int j, int k, int l)
+    {
+        return true;
+    }
 
-		onPoweredBlockChange(world, i, j, k, world.isBlockIndirectlyGettingPowered(i, j, k)/* || isAttachmentBlockPowered(world, i, j, k, i1)*/);
-	}
+    @Override
+    public void onBlockPlacedBy(World world, int i, int j, int k, EntityLiving player)
+    {
+        int i1 = 0;
+        PCli_TileEntityLight tileentity = PC_Utils.getTE(world, i, j, k);
 
-	@Override
-	public boolean canPlaceBlockAt(World world, int i, int j, int k) {
-//		if (world.isBlockNormalCube(i, j - 1, k)) {
-//			return true;
-//		}
-//		if (world.isBlockNormalCube(i - 1, j, k)) {
-//			return true;
-//		}
-//		if (world.isBlockNormalCube(i + 1, j, k)) {
-//			return true;
-//		}
-//		if (world.isBlockNormalCube(i, j, k - 1)) {
-//			return true;
-//		}
-//		if (world.isBlockNormalCube(i, j + 1, k)) {
-//			return true;
-//		}
-//		return world.isBlockNormalCube(i, j, k + 1);
-		return true;
-	}
+        if (tileentity != null && tileentity.isStable())
+        {
+            return;
+        }
 
-	private int[] meta2side = { 1, 2, 3, 4, 5, 0 };
+        onPoweredBlockChange(world, i, j, k, world.isBlockIndirectlyGettingPowered(i, j, k));
+    }
 
-	@Override
-	public boolean onBlockActivated(World world, int i, int j, int k, EntityPlayer entityplayer, int par6, float par7, float par8, float par9) {
-		ItemStack ihold = entityplayer.getCurrentEquippedItem();
-		if (ihold != null) {
-			if (ihold.getItem().shiftedIndex == Item.dyePowder.shiftedIndex) {
-				PC_Utils.<PCli_TileEntityLight>getTE(world, i, j, k, blockID).setColor(new PC_Color(PC_Color.getHexColorForName(ItemDye.dyeColorNames[ihold.getItemDamage()])));
-				return true;
-			}
-		}
-		PC_Utils.openGres("Light", entityplayer, i, j, k);
-		return true;
-	}
+    @Override
+    public boolean canPlaceBlockAt(World world, int i, int j, int k)
+    {
+        return true;
+    }
 
-	@Override
-	public void onNeighborBlockChange(World world, int i, int j, int k, int l) {
+    private int[] meta2side = { 1, 2, 3, 4, 5, 0 };
 
-		//int sidemeta = world.getBlockMetadata(i, j, k);
+    @Override
+    public boolean onBlockActivated(World world, int i, int j, int k, EntityPlayer entityplayer, int par6, float par7, float par8, float par9)
+    {
+        ItemStack ihold = entityplayer.getCurrentEquippedItem();
 
-		/*if (!canPlaceBlockOnSide(world, i, j, k, meta2side[sidemeta])) {
-			world.setBlockWithNotify(i, j, k, 0);// drop -> onremoval
-			return;
-		}*/
+        if (ihold != null)
+        {
+            if (ihold.getItem().shiftedIndex == Item.dyePowder.shiftedIndex)
+            {
+                PC_Utils.<PCli_TileEntityLight>getTE(world, i, j, k, blockID).setColor(new PC_Color(PC_Color.getHexColorForName(ItemDye.dyeColorNames[ihold.getItemDamage()])));
+                return true;
+            }
+        }
 
-		PCli_TileEntityLight tileentity = PC_Utils.getTE(world, i, j, k, blockID);
-		if (tileentity == null || tileentity.isStable())
-			return;
+        PC_Utils.openGres("Light", entityplayer, i, j, k);
+        return true;
+    }
 
-		boolean powered = world.isBlockIndirectlyGettingPowered(i, j, k) /*|| isAttachmentBlockPowered(world, i, j, k, sidemeta)*/;
-		if (tileentity.isActive() != powered) {
-			world.scheduleBlockUpdate(i, j, k, blockID, 1);
-		}
-	}
+    @Override
+    public void onNeighborBlockChange(World world, int i, int j, int k, int l)
+    {
+        PCli_TileEntityLight tileentity = PC_Utils.getTE(world, i, j, k, blockID);
 
-	@Override
-	public void updateTick(World world, int i, int j, int k, Random random) {
+        if (tileentity == null || tileentity.isStable())
+        {
+            return;
+        }
 
-		PCli_TileEntityLight tileentity = PC_Utils.getTE(world, i, j, k);
+        boolean powered = world.isBlockIndirectlyGettingPowered(i, j, k) ;
 
-		if (tileentity == null || tileentity.isStable()) return;
+        if (tileentity.isActive() != powered)
+        {
+            world.scheduleBlockUpdate(i, j, k, blockID, 1);
+        }
+    }
 
-		//int sidemeta = world.getBlockMetadata(i, j, k);
-		boolean powered = world.isBlockGettingPowered(i, j, k) || world.isBlockIndirectlyGettingPowered(i, j, k)
-				/*|| isAttachmentBlockPowered(world, i, j, k, sidemeta)*/;
-		if (tileentity.isActive() != powered) {
-			onPoweredBlockChange(world, i, j, k, powered);
-		}
-	}
+    @Override
+    public void updateTick(World world, int i, int j, int k, Random random)
+    {
+        PCli_TileEntityLight tileentity = PC_Utils.getTE(world, i, j, k);
 
-	/**
-	 * Is block this light is attached to powered?
-	 * 
-	 * @param world
-	 * @param x
-	 * @param y
-	 * @param z
-	 * @param side light side (meta)
-	 * @return is powering the gate
-	 */
-	private boolean isAttachmentBlockPowered(World world, int x, int y, int z, int side) {
-		if (side == 0) {
-			return world.isBlockGettingPowered(x, y - 1, z) && world.getBlockId(x, y-1, x) != 0;
-		}
-		if (side == 1) {
-			return world.isBlockGettingPowered(x, y, z + 1) && world.getBlockId(x, y, x+1) != 0;
-		}
-		if (side == 2) {
-			return world.isBlockGettingPowered(x, y, z - 1) && world.getBlockId(x, y, x-1) != 0;
-		}
-		if (side == 3) {
-			return world.isBlockGettingPowered(x + 1, y, z) && world.getBlockId(x+1, y, x) != 0;
-		}
-		if (side == 4) {
-			return world.isBlockGettingPowered(x - 1, y, z) && world.getBlockId(x-1, y, x) != 0;
-		}
-		if (side == 5) {
-			return world.isBlockGettingPowered(x, y + 1, z) && world.getBlockId(x, y+1, x) != 0;
-		}
-		return false;
-	}
+        if (tileentity == null || tileentity.isStable())
+        {
+            return;
+        }
 
-	/**
-	 * Perform update after neighbor block changed.
-	 * 
-	 * @param world
-	 * @param x
-	 * @param y
-	 * @param z
-	 * @param rs_state
-	 */
-	public static void onPoweredBlockChange(World world, int x, int y, int z, boolean rs_state) {
-		PCli_TileEntityLight tileentity = PC_Utils.getTE(world, x, y, z);
+        boolean powered = world.isBlockGettingPowered(i, j, k) || world.isBlockIndirectlyGettingPowered(i, j, k)
+                ;
 
-		if ((tileentity == null || tileentity.isStable()) && rs_state == false) return;
+        if (tileentity.isActive() != powered)
+        {
+            onPoweredBlockChange(world, i, j, k, powered);
+        }
+    }
 
-		PC_Utils.setBlockState(world, x, y, z, rs_state);
-		
-	}
+    private boolean isAttachmentBlockPowered(World world, int x, int y, int z, int side)
+    {
+        if (side == 0)
+        {
+            return world.isBlockGettingPowered(x, y - 1, z) && world.getBlockId(x, y - 1, x) != 0;
+        }
 
-	@Override
-	public AxisAlignedBB getCollisionBoundingBoxFromPool(World par1World, int par2, int par3, int par4) {
-		setBlockBoundsBasedOnState(par1World, par2, par3, par4);
-		return super.getCollisionBoundingBoxFromPool(par1World, par2, par3, par4);
-	}
-	
-	@Override
-	public void setBlockBoundsBasedOnState(IBlockAccess iblockaccess, int i, int j, int k) {
-		int i1 = iblockaccess.getBlockMetadata(i, j, k);
+        if (side == 1)
+        {
+            return world.isBlockGettingPowered(x, y, z + 1) && world.getBlockId(x, y, x + 1) != 0;
+        }
 
-		PCli_TileEntityLight te = PC_Utils.getTE(iblockaccess, i, j, k);
-		if(te==null) return;
+        if (side == 2)
+        {
+            return world.isBlockGettingPowered(x, y, z - 1) && world.getBlockId(x, y, x - 1) != 0;
+        }
 
-		float sidehalf = te.isHuge ()? 0.5F : 0.1875F;
-		float height = te.isHuge() ? 0.0625F * 3 : 0.0625F * 2;
+        if (side == 3)
+        {
+            return world.isBlockGettingPowered(x + 1, y, z) && world.getBlockId(x + 1, y, x) != 0;
+        }
 
-		if (i1 == 0) // y-1
-		{
-			setBlockBounds((float) 0.5 - sidehalf, 0, (float) 0.5 - sidehalf, (float) 0.5 + sidehalf, height, (float) 0.5 + sidehalf);
-		} else if (i1 == 1) // z+1
-		{
-			setBlockBounds((float) 0.5 - sidehalf, (float) 0.5 - sidehalf, 1 - height, (float) 0.5 + sidehalf, (float) 0.5 + sidehalf, 1);
-		} else if (i1 == 2) // z-1
-		{
-			setBlockBounds((float) 0.5 - sidehalf, (float) 0.5 - sidehalf, 0, (float) 0.5 + sidehalf, (float) 0.5 + sidehalf, height);
-		} else if (i1 == 3) // x+1
-		{
-			setBlockBounds(1 - height, (float) 0.5 - sidehalf, (float) 0.5 - sidehalf, 1, (float) 0.5 + sidehalf, (float) 0.5 + sidehalf);
-		} else if (i1 == 4) // x-1
-		{
-			setBlockBounds(0, (float) 0.5 - sidehalf, (float) 0.5 - sidehalf, height, (float) 0.5 + sidehalf, (float) 0.5 + sidehalf);
-		}
-		if (i1 == 5) // y+1
-		{
-			setBlockBounds((float) 0.5 - sidehalf, 1 - height, (float) 0.5 - sidehalf, (float) 0.5 + sidehalf, 1, (float) 0.5 + sidehalf);
-		}
-	}
+        if (side == 4)
+        {
+            return world.isBlockGettingPowered(x - 1, y, z) && world.getBlockId(x - 1, y, x) != 0;
+        }
 
-	@Override
-	public void setBlockBoundsForItemRender() {
-//		float sidehalf = 0.1875F;
-//		float height = 0.15F;
-//		setBlockBounds(0.5F - sidehalf, 0.5F - sidehalf, 0.5F - height / 2F, 0.5F + sidehalf, 0.5F + sidehalf, 0.5F + height / 2F);
-	}
+        if (side == 5)
+        {
+            return world.isBlockGettingPowered(x, y + 1, z) && world.getBlockId(x, y + 1, x) != 0;
+        }
 
-	private PC_Color getColor(IBlockAccess w, int i, int j, int k) {
-		PCli_TileEntityLight tei = PC_Utils.getTE(w, i, j, k);
+        return false;
+    }
 
-		if (tei == null) {
-			return null;
-		}
+    public static void onPoweredBlockChange(World world, int x, int y, int z, boolean rs_state)
+    {
+        PCli_TileEntityLight tileentity = PC_Utils.getTE(world, x, y, z);
 
-		return tei.getColor();
-	}
+        if ((tileentity == null || tileentity.isStable()) && rs_state == false)
+        {
+            return;
+        }
 
-	@Override
-	public int quantityDropped(Random random) {
-		return 0;
-	}
+        PC_Utils.setBlockState(world, x, y, z, rs_state);
+    }
 
-	@Override
-	public int idDropped(int i, Random random, int j) {
-		return -1;
-	}
+    @Override
+    public AxisAlignedBB getCollisionBoundingBoxFromPool(World par1World, int par2, int par3, int par4)
+    {
+        setBlockBoundsBasedOnState(par1World, par2, par3, par4);
+        return super.getCollisionBoundingBoxFromPool(par1World, par2, par3, par4);
+    }
 
-	@Override
-	public void randomDisplayTick(World world, int i, int j, int k, Random random) {
-		PCli_TileEntityLight tei = PC_Utils.getTE(world, i, j, k);
-		if (!tei.isActive()) {
-			return;
-		}
+    @Override
+    public void setBlockBoundsBasedOnState(IBlockAccess iblockaccess, int i, int j, int k)
+    {
+        int i1 = iblockaccess.getBlockMetadata(i, j, k);
+        PCli_TileEntityLight te = PC_Utils.getTE(iblockaccess, i, j, k);
 
-		try {
-			if (tei.isHuge()) return;
-			if (tei.isStable() && world.rand.nextInt(3) != 0) return;
-		} catch (NullPointerException e) {}
+        if (te == null)
+        {
+            return;
+        }
 
-		int l = world.getBlockMetadata(i, j, k);
-		PC_Color color = getColor(world, i, j, k);
-		if(color==null)
-			return;
-		double ii = i + 0.5D;
-		double jj = j + 0.5D;
-		double kk = k + 0.5D;
-		double h = 0.22D;
+        float sidehalf = te.isHuge() ? 0.5F : 0.1875F;
+        float height = te.isHuge() ? 0.0625F * 3 : 0.0625F * 2;
 
-		double r = color.r, g = color.g, b = color.b;
+        if (i1 == 0)
+        {
+            setBlockBounds((float) 0.5 - sidehalf, 0, (float) 0.5 - sidehalf, (float) 0.5 + sidehalf, height, (float) 0.5 + sidehalf);
+        }
+        else if (i1 == 1)
+        {
+            setBlockBounds((float) 0.5 - sidehalf, (float) 0.5 - sidehalf, 1 - height, (float) 0.5 + sidehalf, (float) 0.5 + sidehalf, 1);
+        }
+        else if (i1 == 2)
+        {
+            setBlockBounds((float) 0.5 - sidehalf, (float) 0.5 - sidehalf, 0, (float) 0.5 + sidehalf, (float) 0.5 + sidehalf, height);
+        }
+        else if (i1 == 3)
+        {
+            setBlockBounds(1 - height, (float) 0.5 - sidehalf, (float) 0.5 - sidehalf, 1, (float) 0.5 + sidehalf, (float) 0.5 + sidehalf);
+        }
+        else if (i1 == 4)
+        {
+            setBlockBounds(0, (float) 0.5 - sidehalf, (float) 0.5 - sidehalf, height, (float) 0.5 + sidehalf, (float) 0.5 + sidehalf);
+        }
 
-		r = (r == 0) ? 0.001D : r;
-		g = (g == 0) ? 0.001D : g;
-		b = (b == 0) ? 0.001D : b;
+        if (i1 == 5)
+        {
+            setBlockBounds((float) 0.5 - sidehalf, 1 - height, (float) 0.5 - sidehalf, (float) 0.5 + sidehalf, 1, (float) 0.5 + sidehalf);
+        }
+    }
 
-		if (l == 0) {
-			world.spawnParticle("reddust", ii, j + h, kk, r, g, b);
-		} else if (l == 1) {
-			world.spawnParticle("reddust", ii, jj, k + 1 - h, r, g, b);
-		} else if (l == 2) {
-			world.spawnParticle("reddust", ii, jj, k + h, r, g, b);
-		} else if (l == 3) {
-			world.spawnParticle("reddust", i + 1 - h, jj, kk, r, g, b);
-		} else if (l == 4) {
-			world.spawnParticle("reddust", i + h, jj, kk, r, g, b);
-		}
-		if (l == 5) {
-			world.spawnParticle("reddust", i, jj + 1 - h, kk, r, g, b);
-		}
-	}
+    @Override
+    public void setBlockBoundsForItemRender()
+    {
+    }
 
-	@Override
-	public String getCraftingToolModule() {
-		return mod_PowerCraftLight.getInstance().getNameWithoutPowerCraft();
-	}
+    private PC_Color getColor(IBlockAccess w, int i, int j, int k)
+    {
+        PCli_TileEntityLight tei = PC_Utils.getTE(w, i, j, k);
 
-	@Override
-	public List<ItemStack> getItemStacks(List<ItemStack> arrayList) {
-		arrayList.add(new ItemStack(this));
-		return arrayList;
-	}
-	
-	@Override
-	public void loadFromConfig(Configuration config) {
-		on.setLightValue(PC_Utils.getConfigInt(config, Configuration.CATEGORY_GENERAL, "LampLightValueOn", 12)/16.0f);
-	}
+        if (tei == null)
+        {
+            return null;
+        }
 
-	@Override
-	public void renderInventoryBlock(Block block, int metadata, int modelID, Object renderer) {
-		PC_Renderer.swapTerrain(block);
-		
-		float sidehalf = 0.1875F;
-		float height = 0.15F;
-		PC_Renderer.glColor3f(1.0f, 1.0f, 1.0f);
-		block.setBlockBounds(0.5F - sidehalf, 0.5F - sidehalf, 0.5F - height / 2F, 0.5F + sidehalf, 0.5F + sidehalf, 0.5F + height / 2F);
-		PC_Renderer.renderInvBoxWithTexture(renderer, block, 66);
-		
-		PC_Renderer.resetTerrain(true);
+        return tei.getColor();
+    }
 
-	}
+    @Override
+    public int quantityDropped(Random random)
+    {
+        return 0;
+    }
 
-	@Override
-	public void renderWorldBlock(IBlockAccess world, int x, int y, int z, Block block, int modelId, Object renderer) {}
-	
+    @Override
+    public int idDropped(int i, Random random, int j)
+    {
+        return -1;
+    }
+
+    @Override
+    public void randomDisplayTick(World world, int i, int j, int k, Random random)
+    {
+        PCli_TileEntityLight tei = PC_Utils.getTE(world, i, j, k);
+
+        if (!tei.isActive())
+        {
+            return;
+        }
+
+        try
+        {
+            if (tei.isHuge())
+            {
+                return;
+            }
+
+            if (tei.isStable() && world.rand.nextInt(3) != 0)
+            {
+                return;
+            }
+        }
+        catch (NullPointerException e) {}
+
+        int l = world.getBlockMetadata(i, j, k);
+        PC_Color color = getColor(world, i, j, k);
+
+        if (color == null)
+        {
+            return;
+        }
+
+        double ii = i + 0.5D;
+        double jj = j + 0.5D;
+        double kk = k + 0.5D;
+        double h = 0.22D;
+        double r = color.r, g = color.g, b = color.b;
+        r = (r == 0) ? 0.001D : r;
+        g = (g == 0) ? 0.001D : g;
+        b = (b == 0) ? 0.001D : b;
+
+        if (l == 0)
+        {
+            world.spawnParticle("reddust", ii, j + h, kk, r, g, b);
+        }
+        else if (l == 1)
+        {
+            world.spawnParticle("reddust", ii, jj, k + 1 - h, r, g, b);
+        }
+        else if (l == 2)
+        {
+            world.spawnParticle("reddust", ii, jj, k + h, r, g, b);
+        }
+        else if (l == 3)
+        {
+            world.spawnParticle("reddust", i + 1 - h, jj, kk, r, g, b);
+        }
+        else if (l == 4)
+        {
+            world.spawnParticle("reddust", i + h, jj, kk, r, g, b);
+        }
+
+        if (l == 5)
+        {
+            world.spawnParticle("reddust", i, jj + 1 - h, kk, r, g, b);
+        }
+    }
+
+    @Override
+    public String getCraftingToolModule()
+    {
+        return mod_PowerCraftLight.getInstance().getNameWithoutPowerCraft();
+    }
+
+    @Override
+    public List<ItemStack> getItemStacks(List<ItemStack> arrayList)
+    {
+        arrayList.add(new ItemStack(this));
+        return arrayList;
+    }
+
+    @Override
+    public void loadFromConfig(Configuration config)
+    {
+        on.setLightValue(PC_Utils.getConfigInt(config, Configuration.CATEGORY_GENERAL, "LampLightValueOn", 12) / 16.0f);
+    }
+
+    @Override
+    public void renderInventoryBlock(Block block, int metadata, int modelID, Object renderer)
+    {
+        PC_Renderer.swapTerrain(block);
+        float sidehalf = 0.1875F;
+        float height = 0.15F;
+        PC_Renderer.glColor3f(1.0f, 1.0f, 1.0f);
+        block.setBlockBounds(0.5F - sidehalf, 0.5F - sidehalf, 0.5F - height / 2F, 0.5F + sidehalf, 0.5F + sidehalf, 0.5F + height / 2F);
+        PC_Renderer.renderInvBoxWithTexture(renderer, block, 66);
+        PC_Renderer.resetTerrain(true);
+    }
+
+    @Override
+    public void renderWorldBlock(IBlockAccess world, int x, int y, int z, Block block, int modelId, Object renderer) {}
 }

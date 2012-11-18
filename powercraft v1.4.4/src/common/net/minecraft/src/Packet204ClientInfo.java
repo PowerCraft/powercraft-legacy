@@ -28,9 +28,6 @@ public class Packet204ClientInfo extends Packet
         this.field_82564_f = par6;
     }
 
-    /**
-     * Abstract. Reads the raw packet data from the data stream.
-     */
     public void readPacketData(DataInputStream par1DataInputStream) throws IOException
     {
         this.language = readString(par1DataInputStream, 7);
@@ -42,9 +39,6 @@ public class Packet204ClientInfo extends Packet
         this.field_82564_f = par1DataInputStream.readBoolean();
     }
 
-    /**
-     * Abstract. Writes the raw packet data to the data stream.
-     */
     public void writePacketData(DataOutputStream par1DataOutputStream) throws IOException
     {
         writeString(this.language, par1DataOutputStream);
@@ -54,17 +48,11 @@ public class Packet204ClientInfo extends Packet
         par1DataOutputStream.writeBoolean(this.field_82564_f);
     }
 
-    /**
-     * Passes this Packet on to the NetHandler for processing.
-     */
     public void processPacket(NetHandler par1NetHandler)
     {
         par1NetHandler.handleClientInfo(this);
     }
 
-    /**
-     * Abstract. Return the size of the packet (not counting the header).
-     */
     public int getPacketSize()
     {
         return 7;
@@ -100,18 +88,11 @@ public class Packet204ClientInfo extends Packet
         return this.field_82564_f;
     }
 
-    /**
-     * only false for the abstract Packet class, all real packets return true
-     */
     public boolean isRealPacket()
     {
         return true;
     }
 
-    /**
-     * eg return packet30entity.entityId == entityId; WARNING : will throw if you compare a packet to a different packet
-     * class
-     */
     public boolean containsSameEntityIDAs(Packet par1Packet)
     {
         return true;

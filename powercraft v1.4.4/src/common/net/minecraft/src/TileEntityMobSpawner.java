@@ -6,15 +6,10 @@ import java.util.Iterator;
 
 public class TileEntityMobSpawner extends TileEntity
 {
-    /** The stored delay before a new spawn. */
     public int delay = -1;
 
-    /**
-     * The string ID of the mobs being spawned from this spawner. Defaults to pig, apparently.
-     */
     private String mobID = "Pig";
 
-    /** The extra NBT data to add to spawned entities */
     private NBTTagCompound spawnerTags = null;
     public double yaw;
     public double yaw2 = 0.0D;
@@ -43,18 +38,11 @@ public class TileEntityMobSpawner extends TileEntity
         this.mobID = par1Str;
     }
 
-    /**
-     * Returns true if there is a player in range (using World.getClosestPlayer)
-     */
     public boolean anyPlayerInRange()
     {
         return this.worldObj.getClosestPlayer((double)this.xCoord + 0.5D, (double)this.yCoord + 0.5D, (double)this.zCoord + 0.5D, (double)this.field_82349_r) != null;
     }
 
-    /**
-     * Allows the entity to update its state. Overridden in most subclasses, e.g. the mob spawner uses this to count
-     * ticks and creates a new spawn inside its implementation.
-     */
     public void updateEntity()
     {
         if (this.anyPlayerInRange())
@@ -156,9 +144,6 @@ public class TileEntityMobSpawner extends TileEntity
         }
     }
 
-    /**
-     * Sets the delay before a new spawn (base delay of 200 + random number up to 600).
-     */
     private void updateDelay()
     {
         if (this.maxSpawnDelay <= this.minSpawnDelay)
@@ -173,9 +158,6 @@ public class TileEntityMobSpawner extends TileEntity
         this.worldObj.addBlockEvent(this.xCoord, this.yCoord, this.zCoord, this.getBlockType().blockID, 1, 0);
     }
 
-    /**
-     * Reads a tile entity from NBT.
-     */
     public void readFromNBT(NBTTagCompound par1NBTTagCompound)
     {
         super.readFromNBT(par1NBTTagCompound);
@@ -210,9 +192,6 @@ public class TileEntityMobSpawner extends TileEntity
         }
     }
 
-    /**
-     * Writes a tile entity to NBT.
-     */
     public void writeToNBT(NBTTagCompound par1NBTTagCompound)
     {
         super.writeToNBT(par1NBTTagCompound);
@@ -233,9 +212,6 @@ public class TileEntityMobSpawner extends TileEntity
 
     @SideOnly(Side.CLIENT)
 
-    /**
-     * will create the entity from the internalID the first time it is accessed
-     */
     public Entity getMobEntity()
     {
         if (this.spawnedMob == null)
@@ -248,9 +224,6 @@ public class TileEntityMobSpawner extends TileEntity
         return this.spawnedMob;
     }
 
-    /**
-     * Overriden in a sign to provide the text.
-     */
     public Packet getDescriptionPacket()
     {
         NBTTagCompound var1 = new NBTTagCompound();
@@ -258,9 +231,6 @@ public class TileEntityMobSpawner extends TileEntity
         return new Packet132TileEntityData(this.xCoord, this.yCoord, this.zCoord, 1, var1);
     }
 
-    /**
-     * Called when a client event is received with the event number and argument, see World.sendClientEvent
-     */
     public void receiveClientEvent(int par1, int par2)
     {
         if (par1 == 1 && this.worldObj.isRemote)

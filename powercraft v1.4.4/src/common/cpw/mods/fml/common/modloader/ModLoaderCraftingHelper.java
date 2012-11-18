@@ -7,7 +7,6 @@ import cpw.mods.fml.common.ICraftingHandler;
 
 public class ModLoaderCraftingHelper implements ICraftingHandler
 {
-
     private BaseModProxy mod;
 
     public ModLoaderCraftingHelper(BaseModProxy mod)
@@ -26,5 +25,4 @@ public class ModLoaderCraftingHelper implements ICraftingHandler
     {
         mod.takenFromFurnace(player, item);
     }
-
 }

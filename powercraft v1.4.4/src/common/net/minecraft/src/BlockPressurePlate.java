@@ -6,7 +6,6 @@ import java.util.Random;
 
 public class BlockPressurePlate extends Block
 {
-    /** The mob type that can trigger this pressure plate. */
     private EnumMobType triggerMobType;
 
     protected BlockPressurePlate(int par1, int par2, EnumMobType par3EnumMobType, Material par4Material)
@@ -19,35 +18,21 @@ public class BlockPressurePlate extends Block
         this.setBlockBounds(var5, 0.0F, var5, 1.0F - var5, 0.03125F, 1.0F - var5);
     }
 
-    /**
-     * How many world ticks before ticking
-     */
     public int tickRate()
     {
         return 20;
     }
 
-    /**
-     * Returns a bounding box from the pool of bounding boxes (this means this box can change after the pool has been
-     * cleared to be reused)
-     */
     public AxisAlignedBB getCollisionBoundingBoxFromPool(World par1World, int par2, int par3, int par4)
     {
         return null;
     }
 
-    /**
-     * Is this block (a) opaque and (b) a full 1m cube?  This determines whether or not to render the shared face of two
-     * adjacent blocks and also whether the player can attach torches, redstone wire, etc to this block.
-     */
     public boolean isOpaqueCube()
     {
         return false;
     }
 
-    /**
-     * If this block doesn't render as an ordinary block it will return False (examples: signs, buttons, stairs, etc)
-     */
     public boolean renderAsNormalBlock()
     {
         return false;
@@ -58,18 +43,11 @@ public class BlockPressurePlate extends Block
         return true;
     }
 
-    /**
-     * Checks to see if its valid to put this block at the specified coordinates. Args: world, x, y, z
-     */
     public boolean canPlaceBlockAt(World par1World, int par2, int par3, int par4)
     {
         return par1World.doesBlockHaveSolidTopSurface(par2, par3 - 1, par4) || BlockFence.isIdAFence(par1World.getBlockId(par2, par3 - 1, par4));
     }
 
-    /**
-     * Lets the block know when one of its neighbor changes. Doesn't know which neighbor changed (coordinates passed are
-     * their own) Args: x, y, z, neighbor blockID
-     */
     public void onNeighborBlockChange(World par1World, int par2, int par3, int par4, int par5)
     {
         boolean var6 = false;
@@ -86,9 +64,6 @@ public class BlockPressurePlate extends Block
         }
     }
 
-    /**
-     * Ticks the block if it's been scheduled
-     */
     public void updateTick(World par1World, int par2, int par3, int par4, Random par5Random)
     {
         if (!par1World.isRemote)
@@ -100,9 +75,6 @@ public class BlockPressurePlate extends Block
         }
     }
 
-    /**
-     * Triggered whenever an entity collides with this block (enters into the block). Args: world, x, y, z, entity
-     */
     public void onEntityCollidedWithBlock(World par1World, int par2, int par3, int par4, Entity par5Entity)
     {
         if (!par1World.isRemote)
@@ -114,9 +86,6 @@ public class BlockPressurePlate extends Block
         }
     }
 
-    /**
-     * Checks if there are mobs on the plate. If a mob is on the plate and it is off, it turns it on, and vice versa.
-     */
     private void setStateIfMobInteractsWithPlate(World par1World, int par2, int par3, int par4)
     {
         boolean var5 = par1World.getBlockMetadata(par2, par3, par4) == 1;
@@ -179,9 +148,6 @@ public class BlockPressurePlate extends Block
         }
     }
 
-    /**
-     * ejects contained items into the world, and notifies neighbours of an update, as appropriate
-     */
     public void breakBlock(World par1World, int par2, int par3, int par4, int par5, int par6)
     {
         if (par6 > 0)
@@ -193,9 +159,6 @@ public class BlockPressurePlate extends Block
         super.breakBlock(par1World, par2, par3, par4, par5, par6);
     }
 
-    /**
-     * Updates the blocks bounds based on its current state. Args: world, x, y, z
-     */
     public void setBlockBoundsBasedOnState(IBlockAccess par1IBlockAccess, int par2, int par3, int par4)
     {
         boolean var5 = par1IBlockAccess.getBlockMetadata(par2, par3, par4) == 1;
@@ -211,33 +174,21 @@ public class BlockPressurePlate extends Block
         }
     }
 
-    /**
-     * Is this block powering the block on the specified side
-     */
     public boolean isPoweringTo(IBlockAccess par1IBlockAccess, int par2, int par3, int par4, int par5)
     {
         return par1IBlockAccess.getBlockMetadata(par2, par3, par4) > 0;
     }
 
-    /**
-     * Is this block indirectly powering the block on the specified side
-     */
     public boolean isIndirectlyPoweringTo(IBlockAccess par1IBlockAccess, int par2, int par3, int par4, int par5)
     {
         return par1IBlockAccess.getBlockMetadata(par2, par3, par4) == 0 ? false : par5 == 1;
     }
 
-    /**
-     * Can this block provide power. Only wire currently seems to have this change based on its state.
-     */
     public boolean canProvidePower()
     {
         return true;
     }
 
-    /**
-     * Sets the block's bounds for rendering it as an item
-     */
     public void setBlockBoundsForItemRender()
     {
         float var1 = 0.5F;
@@ -246,10 +197,6 @@ public class BlockPressurePlate extends Block
         this.setBlockBounds(0.5F - var1, 0.5F - var2, 0.5F - var3, 0.5F + var1, 0.5F + var2, 0.5F + var3);
     }
 
-    /**
-     * Returns the mobility information of the block, 0 = free, 1 = can't push but can move over, 2 = total immobility
-     * and stop pistons
-     */
     public int getMobilityFlag()
     {
         return 1;

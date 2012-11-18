@@ -4,14 +4,8 @@ import java.util.Random;
 
 public class WorldGeneratorBonusChest extends WorldGenerator
 {
-    /**
-     * Instance of WeightedRandomChestContent what will randomly generate items into the Bonus Chest.
-     */
     private final WeightedRandomChestContent[] theBonusChestGenerator;
 
-    /**
-     * Value of this int will determine how much items gonna generate in Bonus Chest.
-     */
     private final int itemsToGenerateInBonusChest;
 
     public WorldGeneratorBonusChest(WeightedRandomChestContent[] par1ArrayOfWeightedRandomChestContent, int par2)

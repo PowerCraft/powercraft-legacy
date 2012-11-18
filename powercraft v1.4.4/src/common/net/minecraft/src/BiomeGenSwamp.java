@@ -20,9 +20,6 @@ public class BiomeGenSwamp extends BiomeGenBase
         this.spawnableMonsterList.add(new SpawnListEntry(EntitySlime.class, 1, 1, 1));
     }
 
-    /**
-     * Gets a WorldGen appropriate for this biome.
-     */
     public WorldGenerator getRandomWorldGenForTrees(Random par1Random)
     {
         return this.worldGeneratorSwamp;
@@ -30,9 +27,6 @@ public class BiomeGenSwamp extends BiomeGenBase
 
     @SideOnly(Side.CLIENT)
 
-    /**
-     * Provides the basic grass color based on the biome temperature and rainfall
-     */
     public int getBiomeGrassColor()
     {
         double var1 = (double)this.getFloatTemperature();
@@ -42,9 +36,6 @@ public class BiomeGenSwamp extends BiomeGenBase
 
     @SideOnly(Side.CLIENT)
 
-    /**
-     * Provides the basic foliage color based on the biome temperature and rainfall
-     */
     public int getBiomeFoliageColor()
     {
         double var1 = (double)this.getFloatTemperature();

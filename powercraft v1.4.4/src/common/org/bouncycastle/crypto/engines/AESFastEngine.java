@@ -118,17 +118,11 @@ public class AESFastEngine implements BlockCipher
         }
     }
 
-    /**
-     * Return the name of the algorithm the cipher implements.
-     */
     public String getAlgorithmName()
     {
         return "AES";
     }
 
-    /**
-     * Return the block size for this cipher (in bytes).
-     */
     public int getBlockSize()
     {
         return 16;

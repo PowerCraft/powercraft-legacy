@@ -10,7 +10,6 @@ import java.util.logging.Logger;
 
 public class PropertyManager
 {
-    /** Reference to the logger. */
     public static Logger logger = Logger.getLogger("Minecraft");
     private Properties properties = new Properties();
     private File associatedFile;
@@ -55,19 +54,12 @@ public class PropertyManager
         }
     }
 
-    /**
-     * logs an info message then calls saveSettingsToFile Yes this appears to be a potential stack overflow - these 2
-     * functions call each other repeatdly if an exception occurs.
-     */
     public void logMessageAndSave()
     {
         logger.log(Level.INFO, "Generating new properties file");
         this.saveProperties();
     }
 
-    /**
-     * Writes the properties to the properties file.
-     */
     public void saveProperties()
     {
         FileOutputStream var1 = null;
@@ -98,17 +90,11 @@ public class PropertyManager
         }
     }
 
-    /**
-     * Returns this PropertyManager's file object used for property saving.
-     */
     public File getPropertiesFile()
     {
         return this.associatedFile;
     }
 
-    /**
-     * Gets a property. If it does not exist, set it to the specified value.
-     */
     public String getProperty(String par1Str, String par2Str)
     {
         if (!this.properties.containsKey(par1Str))
@@ -120,9 +106,6 @@ public class PropertyManager
         return this.properties.getProperty(par1Str, par2Str);
     }
 
-    /**
-     * Gets an integer property. If it does not exist, set it to the specified value.
-     */
     public int getIntProperty(String par1Str, int par2)
     {
         try
@@ -136,9 +119,6 @@ public class PropertyManager
         }
     }
 
-    /**
-     * Gets a boolean property. If it does not exist, set it to the specified value.
-     */
     public boolean getBooleanProperty(String par1Str, boolean par2)
     {
         try
@@ -152,9 +132,6 @@ public class PropertyManager
         }
     }
 
-    /**
-     * Saves an Object with the given property name.
-     */
     public void setProperty(String par1Str, Object par2Obj)
     {
         this.properties.setProperty(par1Str, "" + par2Obj);

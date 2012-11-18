@@ -82,6 +82,9 @@ public class PC_GresGui extends GuiContainer implements PC_IGresGui {
 
 	@Override
 	public void updateScreen() {
+		if(mc.thePlayer!=null&&inventorySlots!=null){
+			super.updateScreen();
+		}
 		if (lastFocus != null) {
 			lastFocus.updateCursorCounter();
 		}

@@ -7,15 +7,10 @@ import java.util.List;
 
 public class CraftingManager
 {
-    /** The static instance of this class */
     private static final CraftingManager instance = new CraftingManager();
 
-    /** A list of all the recipes added */
     private List recipes = new ArrayList();
 
-    /**
-     * Returns the static instance of this class
-     */
     public static final CraftingManager getInstance()
     {
         return instance;
@@ -129,9 +124,6 @@ public class CraftingManager
         System.out.println(this.recipes.size() + " recipes");
     }
 
-    /**
-     * Adds a recipe. See spreadsheet on first page for details.
-     */
     public void addRecipe(ItemStack par1ItemStack, Object ... par2ArrayOfObj)
     {
         String var3 = "";
@@ -294,9 +286,6 @@ public class CraftingManager
         }
     }
 
-    /**
-     * returns the List<> of all recipes
-     */
     public List getRecipeList()
     {
         return this.recipes;

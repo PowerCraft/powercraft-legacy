@@ -113,6 +113,7 @@ public class DummyModContainer implements ModContainer
         {
             processedVersion = new DefaultArtifactVersion(getModId(), getVersion());
         }
+
         return processedVersion;
     }
 

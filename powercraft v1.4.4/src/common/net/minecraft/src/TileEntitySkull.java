@@ -5,18 +5,12 @@ import cpw.mods.fml.common.asm.SideOnly;
 
 public class TileEntitySkull extends TileEntity
 {
-    /** Entity type for this skull. */
     private int skullType;
 
-    /** The skull's rotation. */
     private int skullRotation;
 
-    /** Extra data for this skull, used as player username by player heads */
     private String extraType = "";
 
-    /**
-     * Writes a tile entity to NBT.
-     */
     public void writeToNBT(NBTTagCompound par1NBTTagCompound)
     {
         super.writeToNBT(par1NBTTagCompound);
@@ -25,9 +19,6 @@ public class TileEntitySkull extends TileEntity
         par1NBTTagCompound.setString("ExtraType", this.extraType);
     }
 
-    /**
-     * Reads a tile entity from NBT.
-     */
     public void readFromNBT(NBTTagCompound par1NBTTagCompound)
     {
         super.readFromNBT(par1NBTTagCompound);
@@ -40,9 +31,6 @@ public class TileEntitySkull extends TileEntity
         }
     }
 
-    /**
-     * Overriden in a sign to provide the text.
-     */
     public Packet getDescriptionPacket()
     {
         NBTTagCompound var1 = new NBTTagCompound();

@@ -9,59 +9,54 @@ import net.minecraft.src.ItemStack;
 import net.minecraft.src.TileEntitySign;
 import net.minecraft.src.World;
 
-public class PC_ActivatorListener implements PC_IActivatorListener {
+public class PC_ActivatorListener implements PC_IActivatorListener
+{
+    private static List<PC_IActivatorListener> listeners = new ArrayList<PC_IActivatorListener>();
 
-	private static List<PC_IActivatorListener> listeners = new ArrayList<PC_IActivatorListener>();
-	
-	static{
-		registerListener(new PC_ActivatorListener());
-	}
-	
-	private PC_ActivatorListener(){}
-	
-	@Override
-	public boolean onActivatorUsedOnBlock(ItemStack stack, EntityPlayer player, World world, PC_CoordI pos) {
-		
-		
-		if (pos.getId(world) == Block.mobSpawner.blockID) {
+    static
+    {
+        registerListener(new PC_ActivatorListener());
+    }
 
-			if(world.isRemote)
-				PC_Utils.openGres("SpawnerEditor", player, pos.x, pos.y, pos.z);
+    private PC_ActivatorListener() {}
 
-			stack.damageItem(1, player);
+    @Override
+    public boolean onActivatorUsedOnBlock(ItemStack stack, EntityPlayer player, World world, PC_CoordI pos)
+    {
+        if (pos.getId(world) == Block.mobSpawner.blockID)
+        {
+            if (world.isRemote)
+            {
+                PC_Utils.openGres("SpawnerEditor", player, pos.x, pos.y, pos.z);
+            }
 
-			return true;
-		}
-		
-		if (pos.getId(world) == Block.signPost.blockID || pos.getId(world) == Block.signWall.blockID) {
+            stack.damageItem(1, player);
+            return true;
+        }
 
-			TileEntitySign tileentitysign = (TileEntitySign) world.getBlockTileEntity(pos.x, pos.y, pos.z);
+        if (pos.getId(world) == Block.signPost.blockID || pos.getId(world) == Block.signWall.blockID)
+        {
+            TileEntitySign tileentitysign = (TileEntitySign) world.getBlockTileEntity(pos.x, pos.y, pos.z);
 
-			if (tileentitysign != null) {
-				player.displayGUIEditSign(tileentitysign);
-				stack.damageItem(1, player);
-			}
+            if (tileentitysign != null)
+            {
+                player.displayGUIEditSign(tileentitysign);
+                stack.damageItem(1, player);
+            }
 
-			return true;
-		}
-		
-		
-		
-		return false;
-	}
+            return true;
+        }
 
-	/**
-	 * Register another listener to this item.<br>
-	 * Call the corresponding method on PC_Module to register custom listener.
-	 * 
-	 * @param listener the listener
-	 */
-	public static void registerListener(PC_IActivatorListener listener) {
-		listeners.add(listener);
-	}
-	
-	public static List<PC_IActivatorListener> getListeners() {
-		return new ArrayList<PC_IActivatorListener>(listeners);
-	}
-	
+        return false;
+    }
+
+    public static void registerListener(PC_IActivatorListener listener)
+    {
+        listeners.add(listener);
+    }
+
+    public static List<PC_IActivatorListener> getListeners()
+    {
+        return new ArrayList<PC_IActivatorListener>(listeners);
+    }
 }

@@ -7,9 +7,6 @@ public class ContainerBeacon extends Container
 {
     private TileEntityBeacon theBeacon;
 
-    /**
-     * This beacon's slot where you put in Emerald, Diamond, Gold or Iron Ingot.
-     */
     private final SlotBeacon beaconSlot;
     private int field_82865_g;
     private int field_82867_h;
@@ -49,9 +46,6 @@ public class ContainerBeacon extends Container
         par1ICrafting.updateCraftingInventoryInfo(this, 2, this.field_82868_i);
     }
 
-    /**
-     * Updates crafting matrix; called from onCraftMatrixChanged. Args: none
-     */
     public void updateCraftingResults()
     {
         super.updateCraftingResults();
@@ -86,9 +80,6 @@ public class ContainerBeacon extends Container
         return this.theBeacon.isUseableByPlayer(par1EntityPlayer);
     }
 
-    /**
-     * Called when a player shift-clicks on a slot. You must override this or you will crash when someone does that.
-     */
     public ItemStack transferStackInSlot(EntityPlayer par1EntityPlayer, int par2)
     {
         ItemStack var3 = null;

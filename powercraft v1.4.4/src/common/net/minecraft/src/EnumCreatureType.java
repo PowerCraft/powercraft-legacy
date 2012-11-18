@@ -7,18 +7,12 @@ public enum EnumCreatureType
     ambient(EntityAmbientCreature.class, 15, Material.air, true, false),
     waterCreature(EntityWaterMob.class, 5, Material.water, true, false);
 
-    /**
-     * The root class of creatures associated with this EnumCreatureType (IMobs for aggressive creatures, EntityAnimals
-     * for friendly ones)
-     */
     private final Class creatureClass;
     private final int maxNumberOfCreature;
     private final Material creatureMaterial;
 
-    /** A flag indicating whether this creature type is peaceful. */
     private final boolean isPeacefulCreature;
 
-    /** Whether this creature type is an animal. */
     private final boolean isAnimal;
 
     private EnumCreatureType(Class par3Class, int par4, Material par5Material, boolean par6, boolean par7)
@@ -45,17 +39,11 @@ public enum EnumCreatureType
         return this.creatureMaterial;
     }
 
-    /**
-     * Gets whether or not this creature type is peaceful.
-     */
     public boolean getPeacefulCreature()
     {
         return this.isPeacefulCreature;
     }
 
-    /**
-     * Return whether this creature type is an animal.
-     */
     public boolean getAnimal()
     {
         return this.isAnimal;

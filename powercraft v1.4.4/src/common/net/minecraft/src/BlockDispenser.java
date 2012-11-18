@@ -8,7 +8,6 @@ import java.util.Random;
 
 public class BlockDispenser extends BlockContainer
 {
-    /** Registry for all dispense behaviors. */
     public static final IRegistry dispenseBehaviorRegistry = new RegistryDefaulted(new BehaviorDefaultDispenseItem());
     private Random random = new Random();
 
@@ -19,35 +18,22 @@ public class BlockDispenser extends BlockContainer
         this.setCreativeTab(CreativeTabs.tabRedstone);
     }
 
-    /**
-     * How many world ticks before ticking
-     */
     public int tickRate()
     {
         return 4;
     }
 
-    /**
-     * Returns the ID of the items to drop on destruction.
-     */
     public int idDropped(int par1, Random par2Random, int par3)
     {
         return Block.dispenser.blockID;
     }
 
-    /**
-     * Called whenever the block is added into the world. Args: world, x, y, z
-     */
     public void onBlockAdded(World par1World, int par2, int par3, int par4)
     {
         super.onBlockAdded(par1World, par2, par3, par4);
         this.setDispenserDefaultDirection(par1World, par2, par3, par4);
     }
 
-    /**
-     * sets Dispenser block direction so that the front faces an non-opaque block; chooses west to be direction if all
-     * surrounding blocks are opaque.
-     */
     private void setDispenserDefaultDirection(World par1World, int par2, int par3, int par4)
     {
         if (!par1World.isRemote)
@@ -84,9 +70,6 @@ public class BlockDispenser extends BlockContainer
 
     @SideOnly(Side.CLIENT)
 
-    /**
-     * Retrieves the block texture to use based on the display side. Args: iBlockAccess, x, y, z, side
-     */
     public int getBlockTexture(IBlockAccess par1IBlockAccess, int par2, int par3, int par4, int par5)
     {
         if (par5 == 1)
@@ -104,17 +87,11 @@ public class BlockDispenser extends BlockContainer
         }
     }
 
-    /**
-     * Returns the block texture based on the side being looked at.  Args: side
-     */
     public int getBlockTextureFromSide(int par1)
     {
         return par1 == 1 ? this.blockIndexInTexture + 17 : (par1 == 0 ? this.blockIndexInTexture + 17 : (par1 == 3 ? this.blockIndexInTexture + 1 : this.blockIndexInTexture));
     }
 
-    /**
-     * Called upon block activation (right click on the block.)
-     */
     public boolean onBlockActivated(World par1World, int par2, int par3, int par4, EntityPlayer par5EntityPlayer, int par6, float par7, float par8, float par9)
     {
         if (par1World.isRemote)
@@ -161,10 +138,6 @@ public class BlockDispenser extends BlockContainer
         }
     }
 
-    /**
-     * Lets the block know when one of its neighbor changes. Doesn't know which neighbor changed (coordinates passed are
-     * their own) Args: x, y, z, neighbor blockID
-     */
     public void onNeighborBlockChange(World par1World, int par2, int par3, int par4, int par5)
     {
         if (par5 > 0 && Block.blocksList[par5].canProvidePower())
@@ -178,9 +151,6 @@ public class BlockDispenser extends BlockContainer
         }
     }
 
-    /**
-     * Ticks the block if it's been scheduled
-     */
     public void updateTick(World par1World, int par2, int par3, int par4, Random par5Random)
     {
         if (!par1World.isRemote && (par1World.isBlockIndirectlyGettingPowered(par2, par3, par4) || par1World.isBlockIndirectlyGettingPowered(par2, par3 + 1, par4)))
@@ -189,17 +159,11 @@ public class BlockDispenser extends BlockContainer
         }
     }
 
-    /**
-     * Returns a new instance of a block's tile entity class. Called on placing the block.
-     */
     public TileEntity createNewTileEntity(World par1World)
     {
         return new TileEntityDispenser();
     }
 
-    /**
-     * Called when the block is placed in the world.
-     */
     public void onBlockPlacedBy(World par1World, int par2, int par3, int par4, EntityLiving par5EntityLiving)
     {
         int var6 = MathHelper.floor_double((double)(par5EntityLiving.rotationYaw * 4.0F / 360.0F) + 0.5D) & 3;
@@ -225,9 +189,6 @@ public class BlockDispenser extends BlockContainer
         }
     }
 
-    /**
-     * ejects contained items into the world, and notifies neighbours of an update, as appropriate
-     */
     public void breakBlock(World par1World, int par2, int par3, int par4, int par5, int par6)
     {
         TileEntityDispenser var7 = (TileEntityDispenser)par1World.getBlockTileEntity(par2, par3, par4);

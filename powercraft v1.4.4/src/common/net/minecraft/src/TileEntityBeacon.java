@@ -7,7 +7,6 @@ import java.util.List;
 
 public class TileEntityBeacon extends TileEntity implements IInventory
 {
-    /** List of effects that Beacon can apply */
     public static final Potion[][] effectsList = new Potion[][] {{Potion.moveSpeed, Potion.digSpeed}, {Potion.resistance, Potion.jump}, {Potion.damageBoost}, {Potion.regeneration}};
     @SideOnly(Side.CLIENT)
     private long field_82137_b;
@@ -15,22 +14,14 @@ public class TileEntityBeacon extends TileEntity implements IInventory
     private float field_82138_c;
     private boolean field_82135_d;
 
-    /** Level of this beacon's pyramid. */
     private int levels = -1;
 
-    /** Primary potion effect given by this beacon. */
     private int primaryEffect;
 
-    /** Secondary potion effect given by this beacon. */
     private int secondaryEffect;
 
-    /** Item given to this beacon as payment. */
     private ItemStack payment;
 
-    /**
-     * Allows the entity to update its state. Overridden in most subclasses, e.g. the mob spawner uses this to count
-     * ticks and creates a new spawn inside its implementation.
-     */
     public void updateEntity()
     {
         if (this.worldObj.getTotalWorldTime() % 80L == 0L)
@@ -160,25 +151,16 @@ public class TileEntityBeacon extends TileEntity implements IInventory
         }
     }
 
-    /**
-     * Return the primary potion effect given by this beacon.
-     */
     public int getPrimaryEffect()
     {
         return this.primaryEffect;
     }
 
-    /**
-     * Return the secondary potion effect given by this beacon.
-     */
     public int getSecondaryEffect()
     {
         return this.secondaryEffect;
     }
 
-    /**
-     * Return the levels of this beacon's pyramid.
-     */
     public int getLevels()
     {
         return this.levels;
@@ -186,9 +168,6 @@ public class TileEntityBeacon extends TileEntity implements IInventory
 
     @SideOnly(Side.CLIENT)
 
-    /**
-     * Set the levels of this beacon's pyramid.
-     */
     public void setLevels(int par1)
     {
         this.levels = par1;
@@ -241,9 +220,6 @@ public class TileEntityBeacon extends TileEntity implements IInventory
         }
     }
 
-    /**
-     * Overriden in a sign to provide the text.
-     */
     public Packet getDescriptionPacket()
     {
         NBTTagCompound var1 = new NBTTagCompound();
@@ -257,9 +233,6 @@ public class TileEntityBeacon extends TileEntity implements IInventory
         return 65536.0D;
     }
 
-    /**
-     * Reads a tile entity from NBT.
-     */
     public void readFromNBT(NBTTagCompound par1NBTTagCompound)
     {
         super.readFromNBT(par1NBTTagCompound);
@@ -268,9 +241,6 @@ public class TileEntityBeacon extends TileEntity implements IInventory
         this.levels = par1NBTTagCompound.getInteger("Levels");
     }
 
-    /**
-     * Writes a tile entity to NBT.
-     */
     public void writeToNBT(NBTTagCompound par1NBTTagCompound)
     {
         super.writeToNBT(par1NBTTagCompound);
@@ -279,26 +249,16 @@ public class TileEntityBeacon extends TileEntity implements IInventory
         par1NBTTagCompound.setInteger("Levels", this.levels);
     }
 
-    /**
-     * Returns the number of slots in the inventory.
-     */
     public int getSizeInventory()
     {
         return 1;
     }
 
-    /**
-     * Returns the stack in slot i
-     */
     public ItemStack getStackInSlot(int par1)
     {
         return par1 == 0 ? this.payment : null;
     }
 
-    /**
-     * Removes from an inventory slot (first arg) up to a specified number (second arg) of items and returns them in a
-     * new stack.
-     */
     public ItemStack decrStackSize(int par1, int par2)
     {
         if (par1 == 0 && this.payment != null)
@@ -321,10 +281,6 @@ public class TileEntityBeacon extends TileEntity implements IInventory
         }
     }
 
-    /**
-     * When some containers are closed they call this on each slot, then drop whatever it returns as an EntityItem -
-     * like when you close a workbench GUI.
-     */
     public ItemStack getStackInSlotOnClosing(int par1)
     {
         if (par1 == 0 && this.payment != null)
@@ -339,9 +295,6 @@ public class TileEntityBeacon extends TileEntity implements IInventory
         }
     }
 
-    /**
-     * Sets the given item stack to the specified slot in the inventory (can be crafting or armor sections).
-     */
     public void setInventorySlotContents(int par1, ItemStack par2ItemStack)
     {
         if (par1 == 0)
@@ -350,26 +303,16 @@ public class TileEntityBeacon extends TileEntity implements IInventory
         }
     }
 
-    /**
-     * Returns the name of the inventory.
-     */
     public String getInvName()
     {
         return "container.beacon";
     }
 
-    /**
-     * Returns the maximum stack size for a inventory slot. Seems to always be 64, possibly will be extended. *Isn't
-     * this more of a set than a get?*
-     */
     public int getInventoryStackLimit()
     {
         return 1;
     }
 
-    /**
-     * Do not make give this method the name canInteractWith because it clashes with Container
-     */
     public boolean isUseableByPlayer(EntityPlayer par1EntityPlayer)
     {
         return this.worldObj.getBlockTileEntity(this.xCoord, this.yCoord, this.zCoord) != this ? false : par1EntityPlayer.getDistanceSq((double)this.xCoord + 0.5D, (double)this.yCoord + 0.5D, (double)this.zCoord + 0.5D) <= 64.0D;

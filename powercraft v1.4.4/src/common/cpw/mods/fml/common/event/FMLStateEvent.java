@@ -8,7 +8,6 @@ public abstract class FMLStateEvent extends FMLEvent
 {
     public FMLStateEvent(Object... data)
     {
-
     }
 
     public abstract ModState getModState();

@@ -9,9 +9,6 @@ public class CommandServerSaveOn extends CommandBase
         return "save-on";
     }
 
-    /**
-     * Return the required permission level for this command.
-     */
     public int getRequiredPermissionLevel()
     {
         return 4;

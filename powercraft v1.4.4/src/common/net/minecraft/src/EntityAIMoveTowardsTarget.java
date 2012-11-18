@@ -18,9 +18,6 @@ public class EntityAIMoveTowardsTarget extends EntityAIBase
         this.setMutexBits(1);
     }
 
-    /**
-     * Returns whether the EntityAIBase should begin execution.
-     */
     public boolean shouldExecute()
     {
         this.targetEntity = this.theEntity.getAttackTarget();
@@ -51,25 +48,16 @@ public class EntityAIMoveTowardsTarget extends EntityAIBase
         }
     }
 
-    /**
-     * Returns whether an in-progress EntityAIBase should continue executing
-     */
     public boolean continueExecuting()
     {
         return !this.theEntity.getNavigator().noPath() && this.targetEntity.isEntityAlive() && this.targetEntity.getDistanceSqToEntity(this.theEntity) < (double)(this.field_75426_g * this.field_75426_g);
     }
 
-    /**
-     * Resets the task
-     */
     public void resetTask()
     {
         this.targetEntity = null;
     }
 
-    /**
-     * Execute a one shot task or start executing a continuous task
-     */
     public void startExecuting()
     {
         this.theEntity.getNavigator().tryMoveToXYZ(this.movePosX, this.movePosY, this.movePosZ, this.field_75425_f);

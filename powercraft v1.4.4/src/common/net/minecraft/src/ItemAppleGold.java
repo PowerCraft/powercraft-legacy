@@ -20,9 +20,6 @@ public class ItemAppleGold extends ItemFood
 
     @SideOnly(Side.CLIENT)
 
-    /**
-     * Return an item rarity from EnumRarity
-     */
     public EnumRarity getRarity(ItemStack par1ItemStack)
     {
         return par1ItemStack.getItemDamage() == 0 ? EnumRarity.rare : EnumRarity.epic;
@@ -47,9 +44,6 @@ public class ItemAppleGold extends ItemFood
 
     @SideOnly(Side.CLIENT)
 
-    /**
-     * returns a list of items with the same ID, but different meta (eg: dye returns 16 items)
-     */
     public void getSubItems(int par1, CreativeTabs par2CreativeTabs, List par3List)
     {
         par3List.add(new ItemStack(par1, 1, 0));

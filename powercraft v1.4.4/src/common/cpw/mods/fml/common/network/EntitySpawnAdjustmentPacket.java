@@ -11,7 +11,6 @@ import cpw.mods.fml.common.FMLCommonHandler;
 
 public class EntitySpawnAdjustmentPacket extends FMLPacket
 {
-
     public EntitySpawnAdjustmentPacket()
     {
         super(Type.ENTITYSPAWNADJUSTMENT);
@@ -49,5 +48,4 @@ public class EntitySpawnAdjustmentPacket extends FMLPacket
     {
         FMLCommonHandler.instance().adjustEntityLocationOnClient(this);
     }
-
 }

@@ -12,9 +12,6 @@ public class BlockCocoa extends BlockDirectional
         this.setTickRandomly(true);
     }
 
-    /**
-     * Ticks the block if it's been scheduled
-     */
     public void updateTick(World par1World, int par2, int par3, int par4, Random par5Random)
     {
         if (!this.canBlockStay(par1World, par2, par3, par4))
@@ -35,9 +32,6 @@ public class BlockCocoa extends BlockDirectional
         }
     }
 
-    /**
-     * Can this block stay at this position.  Similar to canPlaceBlockAt except gets checked often with plants.
-     */
     public boolean canBlockStay(World par1World, int par2, int par3, int par4)
     {
         int var5 = getDirection(par1World.getBlockMetadata(par2, par3, par4));
@@ -47,35 +41,21 @@ public class BlockCocoa extends BlockDirectional
         return var6 == Block.wood.blockID && BlockLog.limitToValidMetadata(par1World.getBlockMetadata(par2, par3, par4)) == 3;
     }
 
-    /**
-     * The type of render function that is called for this block
-     */
     public int getRenderType()
     {
         return 28;
     }
 
-    /**
-     * If this block doesn't render as an ordinary block it will return False (examples: signs, buttons, stairs, etc)
-     */
     public boolean renderAsNormalBlock()
     {
         return false;
     }
 
-    /**
-     * Is this block (a) opaque and (b) a full 1m cube?  This determines whether or not to render the shared face of two
-     * adjacent blocks and also whether the player can attach torches, redstone wire, etc to this block.
-     */
     public boolean isOpaqueCube()
     {
         return false;
     }
 
-    /**
-     * Returns a bounding box from the pool of bounding boxes (this means this box can change after the pool has been
-     * cleared to be reused)
-     */
     public AxisAlignedBB getCollisionBoundingBoxFromPool(World par1World, int par2, int par3, int par4)
     {
         this.setBlockBoundsBasedOnState(par1World, par2, par3, par4);
@@ -84,18 +64,12 @@ public class BlockCocoa extends BlockDirectional
 
     @SideOnly(Side.CLIENT)
 
-    /**
-     * Returns the bounding box of the wired rectangular prism to render.
-     */
     public AxisAlignedBB getSelectedBoundingBoxFromPool(World par1World, int par2, int par3, int par4)
     {
         this.setBlockBoundsBasedOnState(par1World, par2, par3, par4);
         return super.getSelectedBoundingBoxFromPool(par1World, par2, par3, par4);
     }
 
-    /**
-     * Updates the blocks bounds based on its current state. Args: world, x, y, z
-     */
     public void setBlockBoundsBasedOnState(IBlockAccess par1IBlockAccess, int par2, int par3, int par4)
     {
         int var5 = par1IBlockAccess.getBlockMetadata(par2, par3, par4);
@@ -110,20 +84,20 @@ public class BlockCocoa extends BlockDirectional
             case 0:
                 this.setBlockBounds((8.0F - var10) / 16.0F, (12.0F - (float)var9) / 16.0F, (15.0F - (float)var8) / 16.0F, (8.0F + var10) / 16.0F, 0.75F, 0.9375F);
                 break;
+
             case 1:
                 this.setBlockBounds(0.0625F, (12.0F - (float)var9) / 16.0F, (8.0F - var10) / 16.0F, (1.0F + (float)var8) / 16.0F, 0.75F, (8.0F + var10) / 16.0F);
                 break;
+
             case 2:
                 this.setBlockBounds((8.0F - var10) / 16.0F, (12.0F - (float)var9) / 16.0F, 0.0625F, (8.0F + var10) / 16.0F, 0.75F, (1.0F + (float)var8) / 16.0F);
                 break;
+
             case 3:
                 this.setBlockBounds((15.0F - (float)var8) / 16.0F, (12.0F - (float)var9) / 16.0F, (8.0F - var10) / 16.0F, 0.9375F, 0.75F, (8.0F + var10) / 16.0F);
         }
     }
 
-    /**
-     * Called when the block is placed in the world.
-     */
     public void onBlockPlacedBy(World par1World, int par2, int par3, int par4, EntityLiving par5EntityLiving)
     {
         int var6 = ((MathHelper.floor_double((double)(par5EntityLiving.rotationYaw * 4.0F / 360.0F) + 0.5D) & 3) + 0) % 4;
@@ -140,10 +114,6 @@ public class BlockCocoa extends BlockDirectional
         return Direction.footInvisibleFaceRemap[Direction.vineGrowth[par5]];
     }
 
-    /**
-     * Lets the block know when one of its neighbor changes. Doesn't know which neighbor changed (coordinates passed are
-     * their own) Args: x, y, z, neighbor blockID
-     */
     public void onNeighborBlockChange(World par1World, int par2, int par3, int par4, int par5)
     {
         if (!this.canBlockStay(par1World, par2, par3, par4))
@@ -158,9 +128,6 @@ public class BlockCocoa extends BlockDirectional
         return (par0 & 12) >> 2;
     }
 
-    /**
-     * Drops the block items with a specified chance of dropping the specified items
-     */
     public void dropBlockAsItemWithChance(World par1World, int par2, int par3, int par4, int par5, float par6, int par7)
     {
         int var8 = func_72219_c(par5);
@@ -179,17 +146,11 @@ public class BlockCocoa extends BlockDirectional
 
     @SideOnly(Side.CLIENT)
 
-    /**
-     * only called by clickMiddleMouseButton , and passed to inventory.setCurrentItem (along with isCreative)
-     */
     public int idPicked(World par1World, int par2, int par3, int par4)
     {
         return Item.dyePowder.shiftedIndex;
     }
 
-    /**
-     * Get the block's damage value (for use with pick block).
-     */
     public int getDamageValue(World par1World, int par2, int par3, int par4)
     {
         return 3;

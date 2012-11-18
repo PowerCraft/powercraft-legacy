@@ -20,16 +20,13 @@ public class EntityTracker
         this.entityViewDistance = par1WorldServer.getMinecraftServer().getConfigurationManager().getEntityViewDistance();
     }
 
-    /**
-     * if entity is a player sends all tracked events to the player, otherwise, adds with a visibility and update arate
-     * based on the class type
-     */
     public void addEntityToTracker(Entity par1Entity)
     {
         if (EntityRegistry.instance().tryTrackingEntity(this, par1Entity))
         {
             return;
         }
+
         if (par1Entity instanceof EntityPlayerMP)
         {
             this.addEntityToTracker(par1Entity, 512, 2);
@@ -225,9 +222,6 @@ public class EntityTracker
         }
     }
 
-    /**
-     * does not send the packet to the entity if the entity is a player
-     */
     public void sendPacketToAllPlayersTrackingEntity(Entity par1Entity, Packet par2Packet)
     {
         EntityTrackerEntry var3 = (EntityTrackerEntry)this.trackedEntityIDs.lookup(par1Entity.entityId);
@@ -238,9 +232,6 @@ public class EntityTracker
         }
     }
 
-    /**
-     * sends to the entity if the entity is a player
-     */
     public void sendPacketToAllAssociatedPlayers(Entity par1Entity, Packet par2Packet)
     {
         EntityTrackerEntry var3 = (EntityTrackerEntry)this.trackedEntityIDs.lookup(par1Entity.entityId);

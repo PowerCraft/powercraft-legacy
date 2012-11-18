@@ -18,14 +18,9 @@ public class DataWatcher
     private static final HashMap dataTypes = new HashMap();
     private final Map watchedObjects = new HashMap();
 
-    /** true if one or more object was changed */
     private boolean objectChanged;
     private ReadWriteLock field_75694_d = new ReentrantReadWriteLock();
 
-    /**
-     * adds a new object to dataWatcher to watch, to update an already existing object see updateObject. Arguments: data
-     * Value Id, Object to add
-     */
     public void addObject(int par1, Object par2Obj)
     {
         Integer var3 = (Integer)dataTypes.get(par2Obj.getClass());
@@ -51,9 +46,6 @@ public class DataWatcher
         }
     }
 
-    /**
-     * Add a new object for the DataWatcher to watch, using the specified data type.
-     */
     public void addObjectByDataType(int par1, int par2)
     {
         WatchableObject var3 = new WatchableObject(par2, par1, (Object)null);
@@ -62,9 +54,6 @@ public class DataWatcher
         this.field_75694_d.writeLock().unlock();
     }
 
-    /**
-     * gets the bytevalue of a watchable object
-     */
     public byte getWatchableObjectByte(int par1)
     {
         return ((Byte)this.getWatchedObject(par1).getObject()).byteValue();
@@ -75,33 +64,21 @@ public class DataWatcher
         return ((Short)this.getWatchedObject(par1).getObject()).shortValue();
     }
 
-    /**
-     * gets a watchable object and returns it as a Integer
-     */
     public int getWatchableObjectInt(int par1)
     {
         return ((Integer)this.getWatchedObject(par1).getObject()).intValue();
     }
 
-    /**
-     * gets a watchable object and returns it as a String
-     */
     public String getWatchableObjectString(int par1)
     {
         return (String)this.getWatchedObject(par1).getObject();
     }
 
-    /**
-     * Get a watchable object as an ItemStack.
-     */
     public ItemStack getWatchableObjectItemStack(int par1)
     {
         return (ItemStack)this.getWatchedObject(par1).getObject();
     }
 
-    /**
-     * is threadsafe, unless it throws an exception, then
-     */
     private WatchableObject getWatchedObject(int par1)
     {
         this.field_75694_d.readLock().lock();
@@ -123,9 +100,6 @@ public class DataWatcher
         return var2;
     }
 
-    /**
-     * updates an already existing object
-     */
     public void updateObject(int par1, Object par2Obj)
     {
         WatchableObject var3 = this.getWatchedObject(par1);
@@ -149,9 +123,6 @@ public class DataWatcher
         return this.objectChanged;
     }
 
-    /**
-     * writes every object in passed list to dataoutputstream, terminated by 0x7F
-     */
     public static void writeObjectsInListToStream(List par0List, DataOutputStream par1DataOutputStream) throws IOException
     {
         if (par0List != null)
@@ -246,22 +217,28 @@ public class DataWatcher
             case 0:
                 par0DataOutputStream.writeByte(((Byte)par1WatchableObject.getObject()).byteValue());
                 break;
+
             case 1:
                 par0DataOutputStream.writeShort(((Short)par1WatchableObject.getObject()).shortValue());
                 break;
+
             case 2:
                 par0DataOutputStream.writeInt(((Integer)par1WatchableObject.getObject()).intValue());
                 break;
+
             case 3:
                 par0DataOutputStream.writeFloat(((Float)par1WatchableObject.getObject()).floatValue());
                 break;
+
             case 4:
                 Packet.writeString((String)par1WatchableObject.getObject(), par0DataOutputStream);
                 break;
+
             case 5:
                 ItemStack var4 = (ItemStack)par1WatchableObject.getObject();
                 Packet.writeItemStack(var4, par0DataOutputStream);
                 break;
+
             case 6:
                 ChunkCoordinates var3 = (ChunkCoordinates)par1WatchableObject.getObject();
                 par0DataOutputStream.writeInt(var3.posX);
@@ -290,21 +267,27 @@ public class DataWatcher
                 case 0:
                     var5 = new WatchableObject(var3, var4, Byte.valueOf(par0DataInputStream.readByte()));
                     break;
+
                 case 1:
                     var5 = new WatchableObject(var3, var4, Short.valueOf(par0DataInputStream.readShort()));
                     break;
+
                 case 2:
                     var5 = new WatchableObject(var3, var4, Integer.valueOf(par0DataInputStream.readInt()));
                     break;
+
                 case 3:
                     var5 = new WatchableObject(var3, var4, Float.valueOf(par0DataInputStream.readFloat()));
                     break;
+
                 case 4:
                     var5 = new WatchableObject(var3, var4, Packet.readString(par0DataInputStream, 64));
                     break;
+
                 case 5:
                     var5 = new WatchableObject(var3, var4, Packet.readItemStack(par0DataInputStream));
                     break;
+
                 case 6:
                     int var6 = par0DataInputStream.readInt();
                     int var7 = par0DataInputStream.readInt();

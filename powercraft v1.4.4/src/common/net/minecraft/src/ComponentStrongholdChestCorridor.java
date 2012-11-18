@@ -8,7 +8,6 @@ import static net.minecraftforge.common.ChestGenHooks.*;
 
 public class ComponentStrongholdChestCorridor extends ComponentStronghold
 {
-    /** List of items that Stronghold chests can contain. */
     public static final WeightedRandomChestContent[] strongholdChestContents = new WeightedRandomChestContent[] {new WeightedRandomChestContent(Item.enderPearl.shiftedIndex, 0, 1, 1, 10), new WeightedRandomChestContent(Item.diamond.shiftedIndex, 0, 1, 3, 3), new WeightedRandomChestContent(Item.ingotIron.shiftedIndex, 0, 1, 5, 10), new WeightedRandomChestContent(Item.ingotGold.shiftedIndex, 0, 1, 3, 5), new WeightedRandomChestContent(Item.redstone.shiftedIndex, 0, 4, 9, 5), new WeightedRandomChestContent(Item.bread.shiftedIndex, 0, 1, 3, 15), new WeightedRandomChestContent(Item.appleRed.shiftedIndex, 0, 1, 3, 15), new WeightedRandomChestContent(Item.pickaxeSteel.shiftedIndex, 0, 1, 1, 5), new WeightedRandomChestContent(Item.swordSteel.shiftedIndex, 0, 1, 1, 5), new WeightedRandomChestContent(Item.plateSteel.shiftedIndex, 0, 1, 1, 5), new WeightedRandomChestContent(Item.helmetSteel.shiftedIndex, 0, 1, 1, 5), new WeightedRandomChestContent(Item.legsSteel.shiftedIndex, 0, 1, 1, 5), new WeightedRandomChestContent(Item.bootsSteel.shiftedIndex, 0, 1, 1, 5), new WeightedRandomChestContent(Item.appleGold.shiftedIndex, 0, 1, 1, 1)};
     private final EnumDoor doorType;
     private boolean hasMadeChest;
@@ -21,9 +20,6 @@ public class ComponentStrongholdChestCorridor extends ComponentStronghold
         this.boundingBox = par3StructureBoundingBox;
     }
 
-    /**
-     * Initiates construction of the Structure Component picked, at the current Location of StructGen
-     */
     public void buildComponent(StructureComponent par1StructureComponent, List par2List, Random par3Random)
     {
         this.getNextComponentNormal((ComponentStrongholdStairs2)par1StructureComponent, par2List, par3Random, 1, 1);
@@ -35,10 +31,6 @@ public class ComponentStrongholdChestCorridor extends ComponentStronghold
         return canStrongholdGoDeeper(var7) && StructureComponent.findIntersecting(par0List, var7) == null ? new ComponentStrongholdChestCorridor(par6, par1Random, var7, par5) : null;
     }
 
-    /**
-     * second Part of Structure generating, this for example places Spiderwebs, Mob Spawners, it closes Mineshafts at
-     * the end, it adds Fences...
-     */
     public boolean addComponentParts(World par1World, Random par2Random, StructureBoundingBox par3StructureBoundingBox)
     {
         if (this.isLiquidInStructureBoundingBox(par1World, par3StructureBoundingBox))

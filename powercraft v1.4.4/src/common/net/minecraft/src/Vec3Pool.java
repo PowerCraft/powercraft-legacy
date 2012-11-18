@@ -10,7 +10,6 @@ public class Vec3Pool
     private final int truncateArrayResetThreshold;
     private final int minimumSize;
 
-    /** items at and above nextFreeSpace are assumed to be available */
     private final List vec3Cache = new ArrayList();
     private int nextFreeSpace = 0;
     private int maximumSizeSinceLastTruncation = 0;
@@ -22,9 +21,6 @@ public class Vec3Pool
         this.minimumSize = par2;
     }
 
-    /**
-     * extends the pool if all vecs are currently "out"
-     */
     public Vec3 getVecFromPool(double par1, double par3, double par5)
     {
         if (this.func_82589_e())
@@ -51,9 +47,6 @@ public class Vec3Pool
         }
     }
 
-    /**
-     * Will truncate the array everyN clears to the maximum size observed since the last truncation.
-     */
     public void clear()
     {
         if (!this.func_82589_e())

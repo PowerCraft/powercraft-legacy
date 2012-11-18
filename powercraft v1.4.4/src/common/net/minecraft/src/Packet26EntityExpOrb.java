@@ -6,13 +6,11 @@ import java.io.IOException;
 
 public class Packet26EntityExpOrb extends Packet
 {
-    /** Entity ID for the XP Orb */
     public int entityId;
     public int posX;
     public int posY;
     public int posZ;
 
-    /** The Orbs Experience points value. */
     public int xpValue;
 
     public Packet26EntityExpOrb() {}
@@ -26,9 +24,6 @@ public class Packet26EntityExpOrb extends Packet
         this.xpValue = par1EntityXPOrb.getXpValue();
     }
 
-    /**
-     * Abstract. Reads the raw packet data from the data stream.
-     */
     public void readPacketData(DataInputStream par1DataInputStream) throws IOException
     {
         this.entityId = par1DataInputStream.readInt();
@@ -38,9 +33,6 @@ public class Packet26EntityExpOrb extends Packet
         this.xpValue = par1DataInputStream.readShort();
     }
 
-    /**
-     * Abstract. Writes the raw packet data to the data stream.
-     */
     public void writePacketData(DataOutputStream par1DataOutputStream) throws IOException
     {
         par1DataOutputStream.writeInt(this.entityId);
@@ -50,17 +42,11 @@ public class Packet26EntityExpOrb extends Packet
         par1DataOutputStream.writeShort(this.xpValue);
     }
 
-    /**
-     * Passes this Packet on to the NetHandler for processing.
-     */
     public void processPacket(NetHandler par1NetHandler)
     {
         par1NetHandler.handleEntityExpOrb(this);
     }
 
-    /**
-     * Abstract. Return the size of the packet (not counting the header).
-     */
     public int getPacketSize()
     {
         return 18;

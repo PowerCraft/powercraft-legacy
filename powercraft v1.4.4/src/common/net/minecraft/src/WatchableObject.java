@@ -4,7 +4,6 @@ public class WatchableObject
 {
     private final int objectType;
 
-    /** id of max 31 */
     private final int dataValueId;
     private Object watchedObject;
     private boolean watched;
@@ -47,9 +46,6 @@ public class WatchableObject
         this.watched = par1;
     }
 
-    /**
-     * Set whether the specified watchable object is being watched.
-     */
     static boolean setWatchableObjectWatched(WatchableObject par0WatchableObject, boolean par1)
     {
         return par0WatchableObject.watched = par1;

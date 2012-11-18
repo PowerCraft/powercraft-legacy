@@ -4,25 +4,17 @@ import java.util.Iterator;
 
 public class MapInfo
 {
-    /** Reference for EntityPlayer object in MapInfo */
     public final EntityPlayer entityplayerObj;
     public int[] field_76209_b;
     public int[] field_76210_c;
 
-    /**
-     * updated by x = mod(x*11,128) +1  x-1 is used to index field_76209_b and field_76210_c
-     */
     private int currentRandomNumber;
     private int ticksUntilPlayerLocationMapUpdate;
 
-    /**
-     * a cache of the result from getPlayersOnMap so that it is not resent when nothing changes
-     */
     private byte[] lastPlayerLocationOnMap;
     public int field_82569_d;
     private boolean field_82570_i;
 
-    /** reference in MapInfo to MapData object */
     final MapData mapDataObj;
 
     public MapInfo(MapData par1MapData, EntityPlayer par2EntityPlayer)
@@ -42,10 +34,6 @@ public class MapInfo
         }
     }
 
-    /**
-     * returns a 1+players*3 array, of x,y, and color . the name of this function may be partially wrong, as there is a
-     * second branch to the code here
-     */
     public byte[] getPlayersOnMap(ItemStack par1ItemStack)
     {
         byte[] var2;

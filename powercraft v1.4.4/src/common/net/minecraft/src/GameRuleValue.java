@@ -12,9 +12,6 @@ class GameRuleValue
         this.setValue(par1Str);
     }
 
-    /**
-     * Set this game rule value.
-     */
     public void setValue(String par1Str)
     {
         this.valueString = par1Str;
@@ -39,17 +36,11 @@ class GameRuleValue
         }
     }
 
-    /**
-     * Gets the GameRule's value as String.
-     */
     public String getGameRuleStringValue()
     {
         return this.valueString;
     }
 
-    /**
-     * Gets the GameRule's value as boolean.
-     */
     public boolean getGameRuleBooleanValue()
     {
         return this.valueBoolean;

@@ -4,7 +4,6 @@ import java.util.concurrent.Callable;
 
 public class CallableMinecraftVersion implements Callable
 {
-    /** Reference to the CrashReport object. */
     final CrashReport theCrashReport;
 
     public CallableMinecraftVersion(CrashReport par1CrashReport)
@@ -12,9 +11,6 @@ public class CallableMinecraftVersion implements Callable
         this.theCrashReport = par1CrashReport;
     }
 
-    /**
-     * The current version of Minecraft
-     */
     public String minecraftVersion()
     {
         return "1.4.4";

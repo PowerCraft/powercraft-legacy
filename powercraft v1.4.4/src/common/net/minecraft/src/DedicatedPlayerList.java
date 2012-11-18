@@ -45,45 +45,30 @@ public class DedicatedPlayerList extends ServerConfigurationManager
         this.getDedicatedServerInstance().saveProperties();
     }
 
-    /**
-     * This adds a username to the ops list, then saves the op list
-     */
     public void addOp(String par1Str)
     {
         super.addOp(par1Str);
         this.saveOpsList();
     }
 
-    /**
-     * This removes a username from the ops list, then saves the op list
-     */
     public void removeOp(String par1Str)
     {
         super.removeOp(par1Str);
         this.saveOpsList();
     }
 
-    /**
-     * Remove the specified player from the whitelist.
-     */
     public void removeFromWhitelist(String par1Str)
     {
         super.removeFromWhitelist(par1Str);
         this.saveWhiteList();
     }
 
-    /**
-     * Add the specified player to the white list.
-     */
     public void addToWhiteList(String par1Str)
     {
         super.addToWhiteList(par1Str);
         this.saveWhiteList();
     }
 
-    /**
-     * Either does nothing, or calls readWhiteList.
-     */
     public void loadWhiteList()
     {
         this.readWhiteList();
@@ -173,9 +158,6 @@ public class DedicatedPlayerList extends ServerConfigurationManager
         }
     }
 
-    /**
-     * Determine if the player is allowed to connect based on current server settings.
-     */
     public boolean isAllowedToLogin(String par1Str)
     {
         par1Str = par1Str.trim().toLowerCase();

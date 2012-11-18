@@ -26,9 +26,6 @@ public abstract class BlockHalfSlab extends Block
         this.setLightOpacity(255);
     }
 
-    /**
-     * Updates the blocks bounds based on its current state. Args: world, x, y, z
-     */
     public void setBlockBoundsBasedOnState(IBlockAccess par1IBlockAccess, int par2, int par3, int par4)
     {
         if (this.isDoubleSlab)
@@ -50,9 +47,6 @@ public abstract class BlockHalfSlab extends Block
         }
     }
 
-    /**
-     * Sets the block's bounds for rendering it as an item
-     */
     public void setBlockBoundsForItemRender()
     {
         if (this.isDoubleSlab)
@@ -65,27 +59,17 @@ public abstract class BlockHalfSlab extends Block
         }
     }
 
-    /**
-     * if the specified block is in the given AABB, add its collision bounding box to the given list
-     */
     public void addCollidingBlockToList(World par1World, int par2, int par3, int par4, AxisAlignedBB par5AxisAlignedBB, List par6List, Entity par7Entity)
     {
         this.setBlockBoundsBasedOnState(par1World, par2, par3, par4);
         super.addCollidingBlockToList(par1World, par2, par3, par4, par5AxisAlignedBB, par6List, par7Entity);
     }
 
-    /**
-     * Returns the block texture based on the side being looked at.  Args: side
-     */
     public int getBlockTextureFromSide(int par1)
     {
         return this.getBlockTextureFromSideAndMetadata(par1, 0);
     }
 
-    /**
-     * Is this block (a) opaque and (b) a full 1m cube?  This determines whether or not to render the shared face of two
-     * adjacent blocks and also whether the player can attach torches, redstone wire, etc to this block.
-     */
     public boolean isOpaqueCube()
     {
         return this.isDoubleSlab;
@@ -96,25 +80,16 @@ public abstract class BlockHalfSlab extends Block
         return this.isDoubleSlab ? 0 : (par5 != 0 && (par5 == 1 || (double)par7 <= 0.5D) ? par9 : par9 | 8);
     }
 
-    /**
-     * Returns the quantity of items to drop on block destruction.
-     */
     public int quantityDropped(Random par1Random)
     {
         return this.isDoubleSlab ? 2 : 1;
     }
 
-    /**
-     * Determines the damage on the item the block drops. Used in cloth and wood.
-     */
     public int damageDropped(int par1)
     {
         return par1 & 7;
     }
 
-    /**
-     * If this block doesn't render as an ordinary block it will return False (examples: signs, buttons, stairs, etc)
-     */
     public boolean renderAsNormalBlock()
     {
         return this.isDoubleSlab;
@@ -122,10 +97,6 @@ public abstract class BlockHalfSlab extends Block
 
     @SideOnly(Side.CLIENT)
 
-    /**
-     * Returns true if the given side of this block type should be rendered, if the adjacent block is at the given
-     * coordinates.  Args: blockAccess, x, y, z, side
-     */
     public boolean shouldSideBeRendered(IBlockAccess par1IBlockAccess, int par2, int par3, int par4, int par5)
     {
         if (this.isDoubleSlab)
@@ -148,16 +119,10 @@ public abstract class BlockHalfSlab extends Block
 
     @SideOnly(Side.CLIENT)
 
-    /**
-     * Takes a block ID, returns true if it's the same as the ID for a stone or wooden single slab.
-     */
     private static boolean isBlockSingleSlab(int par0)
     {
         return par0 == Block.stoneSingleSlab.blockID || par0 == Block.woodSingleSlab.blockID;
     }
 
-    /**
-     * Returns the slab block name with step type.
-     */
     public abstract String getFullSlabName(int var1);
 }

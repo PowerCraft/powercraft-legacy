@@ -4,7 +4,6 @@ import javax.swing.JDialog;
 
 public interface IDownloadDisplay
 {
-
     void resetProgress(int sizeGuess);
 
     void setPokeThread(Thread currentThread);
@@ -18,5 +17,4 @@ public interface IDownloadDisplay
     Object makeDialog();
 
     void makeHeadless();
-
 }

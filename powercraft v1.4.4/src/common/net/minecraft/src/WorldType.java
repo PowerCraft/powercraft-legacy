@@ -15,36 +15,24 @@ public class WorldType
     public static final BiomeGenBase[] base11Biomes = new BiomeGenBase[] {BiomeGenBase.desert, BiomeGenBase.forest, BiomeGenBase.extremeHills, BiomeGenBase.swampland, BiomeGenBase.plains, BiomeGenBase.taiga};
     public static final BiomeGenBase[] base12Biomes = ObjectArrays.concat(base11Biomes, BiomeGenBase.jungle);
 
-    /** List of world types. */
     public static final WorldType[] worldTypes = new WorldType[16];
 
-    /** Default world type. */
     public static final WorldType DEFAULT = (new WorldType(0, "default", 1)).setVersioned();
 
-    /** Flat world type. */
     public static final WorldType FLAT = new WorldType(1, "flat");
 
-    /** Large Biome world Type. */
     public static final WorldType LARGE_BIOMES = new WorldType(2, "largeBiomes");
 
-    /** Default (1.1) world type. */
     public static final WorldType DEFAULT_1_1 = (new WorldType(8, "default_1_1", 0)).setCanBeCreated(false);
 
-    /** ID for this world type. */
     private final int worldTypeId;
 
-    /** 'default' or 'flat' */
     private final String worldType;
 
-    /** The int version of the ChunkProvider that generated this world. */
     private final int generatorVersion;
 
-    /**
-     * Whether this world type can be generated. Normally true; set to false for out-of-date generator versions.
-     */
     private boolean canBeCreated;
 
-    /** Whether this WorldType has a version or not. */
     private boolean isWorldTypeVersioned;
 
     protected BiomeGenBase[] biomesForWorldType;
@@ -61,13 +49,15 @@ public class WorldType
         this.canBeCreated = true;
         this.worldTypeId = par1;
         worldTypes[par1] = this;
+
         switch (par1)
         {
-        case 8:
-            biomesForWorldType = base11Biomes;
-            break;
-        default:
-            biomesForWorldType = base12Biomes;
+            case 8:
+                biomesForWorldType = base11Biomes;
+                break;
+
+            default:
+                biomesForWorldType = base12Biomes;
         }
     }
 
@@ -78,17 +68,11 @@ public class WorldType
 
     @SideOnly(Side.CLIENT)
 
-    /**
-     * Gets the translation key for the name of this world type.
-     */
     public String getTranslateName()
     {
         return "generator." + this.worldType;
     }
 
-    /**
-     * Returns generatorVersion.
-     */
     public int getGeneratorVersion()
     {
         return this.generatorVersion;
@@ -99,9 +83,6 @@ public class WorldType
         return this == DEFAULT && par1 == 0 ? DEFAULT_1_1 : this;
     }
 
-    /**
-     * Sets canBeCreated to the provided value, and returns this.
-     */
     private WorldType setCanBeCreated(boolean par1)
     {
         this.canBeCreated = par1;
@@ -110,26 +91,17 @@ public class WorldType
 
     @SideOnly(Side.CLIENT)
 
-    /**
-     * Gets whether this WorldType can be used to generate a new world.
-     */
     public boolean getCanBeCreated()
     {
         return this.canBeCreated;
     }
 
-    /**
-     * Flags this world type as having an associated version.
-     */
     private WorldType setVersioned()
     {
         this.isWorldTypeVersioned = true;
         return this;
     }
 
-    /**
-     * Returns true if this world Type has a version associated with it.
-     */
     public boolean isVersioned()
     {
         return this.isWorldTypeVersioned;
@@ -167,7 +139,7 @@ public class WorldType
     }
 
     public IChunkProvider getChunkGenerator(World world, String generatorOptions)
-    { 
+    {
         return (this == FLAT ? new ChunkProviderFlat(world, world.getSeed(), world.getWorldInfo().isMapFeaturesEnabled(), generatorOptions) : new ChunkProviderGenerate(world, world.getSeed(), world.getWorldInfo().isMapFeaturesEnabled()));
     }
 
@@ -191,7 +163,8 @@ public class WorldType
         return this == FLAT ? 1.0D : 0.03125D;
     }
 
-    public BiomeGenBase[] getBiomesForWorldType() {
+    public BiomeGenBase[] getBiomesForWorldType()
+    {
         return biomesForWorldType;
     }
 
@@ -214,16 +187,8 @@ public class WorldType
         return this == FLAT ? random.nextInt(4) != 1 : false;
     }
 
-    /**
-     * Called when 'Create New World' button is pressed before starting game
-     */
     public void onGUICreateWorldPress() { }
 
-    /**
-     * Gets the spawn fuzz for players who join the world.
-     * Useful for void world types.
-     * @return Fuzz for entity initial spawn in blocks.
-     */
     public int getSpawnFuzz()
     {
         return 20;

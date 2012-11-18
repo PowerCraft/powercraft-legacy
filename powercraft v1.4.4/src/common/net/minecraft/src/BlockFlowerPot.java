@@ -14,9 +14,6 @@ public class BlockFlowerPot extends Block
         this.setRequiresSelfNotify();
     }
 
-    /**
-     * Sets the block's bounds for rendering it as an item
-     */
     public void setBlockBoundsForItemRender()
     {
         float var1 = 0.375F;
@@ -24,34 +21,21 @@ public class BlockFlowerPot extends Block
         this.setBlockBounds(0.5F - var2, 0.0F, 0.5F - var2, 0.5F + var2, var1, 0.5F + var2);
     }
 
-    /**
-     * Is this block (a) opaque and (b) a full 1m cube?  This determines whether or not to render the shared face of two
-     * adjacent blocks and also whether the player can attach torches, redstone wire, etc to this block.
-     */
     public boolean isOpaqueCube()
     {
         return false;
     }
 
-    /**
-     * The type of render function that is called for this block
-     */
     public int getRenderType()
     {
         return 33;
     }
 
-    /**
-     * If this block doesn't render as an ordinary block it will return False (examples: signs, buttons, stairs, etc)
-     */
     public boolean renderAsNormalBlock()
     {
         return false;
     }
 
-    /**
-     * Called upon block activation (right click on the block.)
-     */
     public boolean onBlockActivated(World par1World, int par2, int par3, int par4, EntityPlayer par5EntityPlayer, int par6, float par7, float par8, float par9)
     {
         ItemStack var10 = par5EntityPlayer.inventory.getCurrentItem();
@@ -88,18 +72,12 @@ public class BlockFlowerPot extends Block
 
     @SideOnly(Side.CLIENT)
 
-    /**
-     * only called by clickMiddleMouseButton , and passed to inventory.setCurrentItem (along with isCreative)
-     */
     public int idPicked(World par1World, int par2, int par3, int par4)
     {
         ItemStack var5 = getPlantForMeta(par1World.getBlockMetadata(par2, par3, par4));
         return var5 == null ? Item.flowerPot.shiftedIndex : var5.itemID;
     }
 
-    /**
-     * Get the block's damage value (for use with pick block).
-     */
     public int getDamageValue(World par1World, int par2, int par3, int par4)
     {
         ItemStack var5 = getPlantForMeta(par1World.getBlockMetadata(par2, par3, par4));
@@ -112,18 +90,11 @@ public class BlockFlowerPot extends Block
         return true;
     }
 
-    /**
-     * Checks to see if its valid to put this block at the specified coordinates. Args: world, x, y, z
-     */
     public boolean canPlaceBlockAt(World par1World, int par2, int par3, int par4)
     {
         return super.canPlaceBlockAt(par1World, par2, par3, par4) && par1World.doesBlockHaveSolidTopSurface(par2, par3 - 1, par4);
     }
 
-    /**
-     * Lets the block know when one of its neighbor changes. Doesn't know which neighbor changed (coordinates passed are
-     * their own) Args: x, y, z, neighbor blockID
-     */
     public void onNeighborBlockChange(World par1World, int par2, int par3, int par4, int par5)
     {
         if (!par1World.doesBlockHaveSolidTopSurface(par2, par3 - 1, par4))
@@ -133,9 +104,6 @@ public class BlockFlowerPot extends Block
         }
     }
 
-    /**
-     * Drops the block items with a specified chance of dropping the specified items
-     */
     public void dropBlockAsItemWithChance(World par1World, int par2, int par3, int par4, int par5, float par6, int par7)
     {
         super.dropBlockAsItemWithChance(par1World, par2, par3, par4, par5, par6, par7);
@@ -151,51 +119,53 @@ public class BlockFlowerPot extends Block
         }
     }
 
-    /**
-     * Returns the ID of the items to drop on destruction.
-     */
     public int idDropped(int par1, Random par2Random, int par3)
     {
         return Item.flowerPot.shiftedIndex;
     }
 
-    /**
-     * Return the item associated with the specified flower pot metadata value.
-     */
     public static ItemStack getPlantForMeta(int par0)
     {
         switch (par0)
         {
             case 1:
                 return new ItemStack(Block.plantRed);
+
             case 2:
                 return new ItemStack(Block.plantYellow);
+
             case 3:
                 return new ItemStack(Block.sapling, 1, 0);
+
             case 4:
                 return new ItemStack(Block.sapling, 1, 1);
+
             case 5:
                 return new ItemStack(Block.sapling, 1, 2);
+
             case 6:
                 return new ItemStack(Block.sapling, 1, 3);
+
             case 7:
                 return new ItemStack(Block.mushroomRed);
+
             case 8:
                 return new ItemStack(Block.mushroomBrown);
+
             case 9:
                 return new ItemStack(Block.cactus);
+
             case 10:
                 return new ItemStack(Block.deadBush);
+
             case 11:
                 return new ItemStack(Block.tallGrass, 1, 2);
+
             default:
                 return null;
         }
     }
 
-    /**
-     * Return the flower pot metadata value associated with the specified item.
-     */
     public static int getMetaForPlant(ItemStack par0ItemStack)
     {
         int var1 = par0ItemStack.getItem().shiftedIndex;
@@ -232,10 +202,13 @@ public class BlockFlowerPot extends Block
                 {
                     case 0:
                         return 3;
+
                     case 1:
                         return 4;
+
                     case 2:
                         return 5;
+
                     case 3:
                         return 6;
                 }

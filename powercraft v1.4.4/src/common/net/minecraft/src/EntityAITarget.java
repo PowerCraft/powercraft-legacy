@@ -2,13 +2,9 @@ package net.minecraft.src;
 
 public abstract class EntityAITarget extends EntityAIBase
 {
-    /** The entity that this task belongs to */
     protected EntityLiving taskOwner;
     protected float targetDistance;
 
-    /**
-     * If true, EntityAI targets must be able to be seen (cannot be blocked by walls) to be suitable targets.
-     */
     protected boolean shouldCheckSight;
     private boolean field_75303_a;
     private int field_75301_b;
@@ -31,9 +27,6 @@ public abstract class EntityAITarget extends EntityAIBase
         this.field_75303_a = par4;
     }
 
-    /**
-     * Returns whether an in-progress EntityAIBase should continue executing
-     */
     public boolean continueExecuting()
     {
         EntityLiving var1 = this.taskOwner.getAttackTarget();
@@ -68,9 +61,6 @@ public abstract class EntityAITarget extends EntityAIBase
         }
     }
 
-    /**
-     * Execute a one shot task or start executing a continuous task
-     */
     public void startExecuting()
     {
         this.field_75301_b = 0;
@@ -78,17 +68,11 @@ public abstract class EntityAITarget extends EntityAIBase
         this.field_75298_g = 0;
     }
 
-    /**
-     * Resets the task
-     */
     public void resetTask()
     {
         this.taskOwner.setAttackTarget((EntityLiving)null);
     }
 
-    /**
-     * A method used to see if an entity is a suitable target through a number of checks.
-     */
     protected boolean isSuitableTarget(EntityLiving par1EntityLiving, boolean par2)
     {
         if (par1EntityLiving == null)

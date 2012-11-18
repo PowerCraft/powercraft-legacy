@@ -19,16 +19,11 @@ import javax.swing.border.TitledBorder;
 @SideOnly(Side.SERVER)
 public class ServerGUI extends JComponent
 {
-    /** Reference to the logger. */
     public static Logger logger = Logger.getLogger("Minecraft");
 
-    /** This is set to true after server GUI window has been initialized. */
     private static boolean serverGuiInitialized = false;
     private DedicatedServer serverInstance;
 
-    /**
-     * Sets up the server GUI
-     */
     public static void initGUI(DedicatedServer par0DedicatedServer)
     {
         try
@@ -67,9 +62,6 @@ public class ServerGUI extends JComponent
         }
     }
 
-    /**
-     * Returns a new JPanel with a new GuiStatsComponent inside.
-     */
     private JComponent getStatsComponent()
     {
         JPanel var1 = new JPanel(new BorderLayout());
@@ -79,9 +71,6 @@ public class ServerGUI extends JComponent
         return var1;
     }
 
-    /**
-     * Returns a new JScrollPane with a new PlayerListBox inside.
-     */
     private JComponent getPlayerListComponent()
     {
         PlayerListBox var1 = new PlayerListBox(this.serverInstance);
@@ -90,9 +79,6 @@ public class ServerGUI extends JComponent
         return var2;
     }
 
-    /**
-     * Returns a new JPanel with a new GuiStatsComponent inside.
-     */
     private JComponent getLogComponent()
     {
         JPanel var1 = new JPanel(new BorderLayout());

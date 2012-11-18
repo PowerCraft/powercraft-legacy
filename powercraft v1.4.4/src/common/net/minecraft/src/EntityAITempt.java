@@ -2,7 +2,6 @@ package net.minecraft.src;
 
 public class EntityAITempt extends EntityAIBase
 {
-    /** The entity using this AI that is tempted by the player. */
     private EntityCreature temptedEntity;
     private float field_75282_b;
     private double field_75283_c;
@@ -11,24 +10,13 @@ public class EntityAITempt extends EntityAIBase
     private double field_75278_f;
     private double field_75279_g;
 
-    /** The player that is tempting the entity that is using this AI. */
     private EntityPlayer temptingPlayer;
 
-    /**
-     * A counter that is decremented each time the shouldExecute method is called. The shouldExecute method will always
-     * return false if delayTemptCounter is greater than 0.
-     */
     private int delayTemptCounter = 0;
     private boolean field_75287_j;
 
-    /**
-     * This field saves the ID of the items that can be used to breed entities with this behaviour.
-     */
     private int breedingFood;
 
-    /**
-     * Whether the entity using this AI will be scared by the tempter's sudden movement.
-     */
     private boolean scaredByPlayerMovement;
     private boolean field_75286_m;
 
@@ -41,9 +29,6 @@ public class EntityAITempt extends EntityAIBase
         this.setMutexBits(3);
     }
 
-    /**
-     * Returns whether the EntityAIBase should begin execution.
-     */
     public boolean shouldExecute()
     {
         if (this.delayTemptCounter > 0)
@@ -67,9 +52,6 @@ public class EntityAITempt extends EntityAIBase
         }
     }
 
-    /**
-     * Returns whether an in-progress EntityAIBase should continue executing
-     */
     public boolean continueExecuting()
     {
         if (this.scaredByPlayerMovement)
@@ -100,9 +82,6 @@ public class EntityAITempt extends EntityAIBase
         return this.shouldExecute();
     }
 
-    /**
-     * Execute a one shot task or start executing a continuous task
-     */
     public void startExecuting()
     {
         this.field_75283_c = this.temptingPlayer.posX;
@@ -113,9 +92,6 @@ public class EntityAITempt extends EntityAIBase
         this.temptedEntity.getNavigator().setAvoidsWater(false);
     }
 
-    /**
-     * Resets the task
-     */
     public void resetTask()
     {
         this.temptingPlayer = null;
@@ -125,9 +101,6 @@ public class EntityAITempt extends EntityAIBase
         this.temptedEntity.getNavigator().setAvoidsWater(this.field_75286_m);
     }
 
-    /**
-     * Updates the task
-     */
     public void updateTask()
     {
         this.temptedEntity.getLookHelper().setLookPositionWithEntity(this.temptingPlayer, 30.0F, (float)this.temptedEntity.getVerticalFaceSpeed());

@@ -10,9 +10,6 @@ public class CommandGameMode extends CommandBase
         return "gamemode";
     }
 
-    /**
-     * Return the required permission level for this command.
-     */
     public int getRequiredPermissionLevel()
     {
         return 2;
@@ -48,33 +45,21 @@ public class CommandGameMode extends CommandBase
         }
     }
 
-    /**
-     * Gets the Game Mode specified in the command.
-     */
     protected EnumGameType getGameModeFromCommand(ICommandSender par1ICommandSender, String par2Str)
     {
         return !par2Str.equalsIgnoreCase(EnumGameType.SURVIVAL.getName()) && !par2Str.equalsIgnoreCase("s") ? (!par2Str.equalsIgnoreCase(EnumGameType.CREATIVE.getName()) && !par2Str.equalsIgnoreCase("c") ? (!par2Str.equalsIgnoreCase(EnumGameType.ADVENTURE.getName()) && !par2Str.equalsIgnoreCase("a") ? WorldSettings.getGameTypeById(parseIntBounded(par1ICommandSender, par2Str, 0, EnumGameType.values().length - 2)) : EnumGameType.ADVENTURE) : EnumGameType.CREATIVE) : EnumGameType.SURVIVAL;
     }
 
-    /**
-     * Adds the strings available in this command to the given list of tab completion options.
-     */
     public List addTabCompletionOptions(ICommandSender par1ICommandSender, String[] par2ArrayOfStr)
     {
         return par2ArrayOfStr.length == 1 ? getListOfStringsMatchingLastWord(par2ArrayOfStr, new String[] {"survival", "creative", "adventure"}): (par2ArrayOfStr.length == 2 ? getListOfStringsMatchingLastWord(par2ArrayOfStr, this.getListOfPlayerUsernames()) : null);
     }
 
-    /**
-     * Returns String array containing all player usernames in the server.
-     */
     protected String[] getListOfPlayerUsernames()
     {
         return MinecraftServer.getServer().getAllUsernames();
     }
 
-    /**
-     * Return whether the specified command parameter index is a username parameter.
-     */
     public boolean isUsernameIndex(int par1)
     {
         return par1 == 1;

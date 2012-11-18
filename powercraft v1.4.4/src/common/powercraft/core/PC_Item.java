@@ -10,51 +10,58 @@ import net.minecraft.src.CreativeTabs;
 import net.minecraft.src.Item;
 import net.minecraft.src.ItemStack;
 
-public abstract class PC_Item extends Item implements PC_ICraftingToolDisplayer {
+public abstract class PC_Item extends Item implements PC_ICraftingToolDisplayer
+{
+    private String craftingToolModule;
+    private boolean canSetTextureFile = true;
 
-	private String craftingToolModule;
-	private boolean canSetTextureFile = true;
-	
-	protected PC_Item(int id){
-		super(id);
-	}
+    protected PC_Item(int id)
+    {
+        super(id);
+    }
 
-	public PC_Item(int id, boolean canSetTextureFile) {
-		super(id);
-		this.canSetTextureFile = canSetTextureFile;
-	}
+    public PC_Item(int id, boolean canSetTextureFile)
+    {
+        super(id);
+        this.canSetTextureFile = canSetTextureFile;
+    }
 
-	public abstract String[] getDefaultNames();
+    public abstract String[] getDefaultNames();
 
-	public boolean canBeBuild(){
-		return true;
-	}
-	
-	public String getCraftingToolModule() {
-		return craftingToolModule;
-	}
+    public boolean canBeBuild()
+    {
+        return true;
+    }
 
-	public void setCraftingToolModule(String module){
-		craftingToolModule = module;
-	}
-	
-	public List<ItemStack> getItemStacks(List<ItemStack> arrayList) {
-		arrayList.add(new ItemStack(this));
-		return arrayList;
-	}
+    public String getCraftingToolModule()
+    {
+        return craftingToolModule;
+    }
 
-	public void getSubItems(int index, CreativeTabs creativeTab, List list){
-		list.addAll(getItemStacks(new ArrayList<ItemStack>()));
-	}
+    public void setCraftingToolModule(String module)
+    {
+        craftingToolModule = module;
+    }
 
-	@Override
-	public Item setTextureFile(String texture) {
-		if(canSetTextureFile){
-			super.setTextureFile(texture);
-		}
-		return this;
-	}
-	
-	
-	
+    public List<ItemStack> getItemStacks(List<ItemStack> arrayList)
+    {
+        arrayList.add(new ItemStack(this));
+        return arrayList;
+    }
+
+    public void getSubItems(int index, CreativeTabs creativeTab, List list)
+    {
+        list.addAll(getItemStacks(new ArrayList<ItemStack>()));
+    }
+
+    @Override
+    public Item setTextureFile(String texture)
+    {
+        if (canSetTextureFile)
+        {
+            super.setTextureFile(texture);
+        }
+
+        return this;
+    }
 }

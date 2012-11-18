@@ -14,7 +14,7 @@ public class PlayerEvent extends LivingEvent
         super(player);
         entityPlayer = player;
     }
-    
+
     public static class HarvestCheck extends PlayerEvent
     {
         public final Block block;

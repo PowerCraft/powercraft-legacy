@@ -6,7 +6,6 @@ import java.io.IOException;
 
 public class NBTTagInt extends NBTBase
 {
-    /** The integer value for the tag. */
     public int data;
 
     public NBTTagInt(String par1Str)
@@ -20,25 +19,16 @@ public class NBTTagInt extends NBTBase
         this.data = par2;
     }
 
-    /**
-     * Write the actual data contents of the tag, implemented in NBT extension classes
-     */
     void write(DataOutput par1DataOutput) throws IOException
     {
         par1DataOutput.writeInt(this.data);
     }
 
-    /**
-     * Read the actual data contents of the tag, implemented in NBT extension classes
-     */
     void load(DataInput par1DataInput) throws IOException
     {
         this.data = par1DataInput.readInt();
     }
 
-    /**
-     * Gets the type byte for the tag.
-     */
     public byte getId()
     {
         return (byte)3;
@@ -49,9 +39,6 @@ public class NBTTagInt extends NBTBase
         return "" + this.data;
     }
 
-    /**
-     * Creates a clone of the tag.
-     */
     public NBTBase copy()
     {
         return new NBTTagInt(this.getName(), this.data);

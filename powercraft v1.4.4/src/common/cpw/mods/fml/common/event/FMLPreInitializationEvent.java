@@ -39,7 +39,7 @@ public class FMLPreInitializationEvent extends FMLStateEvent
         this.modContainer = activeContainer;
         this.modMetadata = activeContainer.getMetadata();
         this.sourceFile = activeContainer.getSource();
-        this.suggestedConfigFile = new File(configurationDir, activeContainer.getModId()+".cfg");
+        this.suggestedConfigFile = new File(configurationDir, activeContainer.getModId() + ".cfg");
     }
 
     public File getSourceFile()
@@ -77,11 +77,6 @@ public class FMLPreInitializationEvent extends FMLStateEvent
         return null;
     }
 
-    /**
-     * Get a logger instance configured to write to the FML Log as a parent, identified by modid. Handy for mod logging!
-     *
-     * @return A logger
-     */
     public Logger getModLog()
     {
         Logger log = Logger.getLogger(modContainer.getModId());

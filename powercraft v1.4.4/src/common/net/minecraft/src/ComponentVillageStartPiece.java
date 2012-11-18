@@ -7,17 +7,11 @@ public class ComponentVillageStartPiece extends ComponentVillageWell
 {
     public final WorldChunkManager worldChunkMngr;
 
-    /** Boolean that determines if the village is in a desert or not. */
     public final boolean inDesert;
 
-    /** World terrain type, 0 for normal, 1 for flap map */
     public final int terrainType;
     public StructureVillagePieceWeight structVillagePieceWeight;
 
-    /**
-     * Contains List of all spawnable Structure Piece Weights. If no more Pieces of a type can be spawned, they are
-     * removed from this list
-     */
     public ArrayList structureVillageWeightedPieceList;
     public ArrayList field_74932_i = new ArrayList();
     public ArrayList field_74930_j = new ArrayList();

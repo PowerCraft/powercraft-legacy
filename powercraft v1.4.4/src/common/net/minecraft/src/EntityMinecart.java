@@ -14,12 +14,10 @@ import net.minecraftforge.event.entity.minecart.MinecartUpdateEvent;
 
 public class EntityMinecart extends Entity implements IInventory
 {
-    /** Array of item stacks stored in minecart (for storage minecarts). */
     protected ItemStack[] cargoItems;
     protected int fuel;
     protected boolean field_70499_f;
 
-    /** The type of minecart, 2 for powered, 1 for storage. */
     public int minecartType;
     public double pushX;
     public double pushZ;
@@ -27,7 +25,6 @@ public class EntityMinecart extends Entity implements IInventory
     protected boolean field_82345_h;
     protected static final int[][][] field_70500_g = new int[][][] {{{0, 0, -1}, {0, 0, 1}}, {{ -1, 0, 0}, {1, 0, 0}}, {{ -1, -1, 0}, {1, 0, 0}}, {{ -1, 0, 0}, {1, -1, 0}}, {{0, 0, -1}, {0, -1, 1}}, {{0, -1, -1}, {0, 0, 1}}, {{0, 0, 1}, {1, 0, 0}}, {{0, 0, 1}, { -1, 0, 0}}, {{0, 0, -1}, { -1, 0, 0}}, {{0, 0, -1}, {1, 0, 0}}};
 
-    /** appears to be the progress of the turn */
     protected int turnProgress;
     protected double minecartX;
     protected double minecartY;
@@ -41,7 +38,6 @@ public class EntityMinecart extends Entity implements IInventory
     @SideOnly(Side.CLIENT)
     protected double velocityZ;
 
-    /* Forge: Minecart Compatibility Layer Integration. */
     public static float defaultMaxSpeedRail = 0.4f;
     public static float defaultMaxSpeedGround = 0.4f;
     public static float defaultMaxSpeedAirLateral = 0.4f;
@@ -53,7 +49,6 @@ public class EntityMinecart extends Entity implements IInventory
     protected boolean canBePushed = true;
     private static IMinecartCollisionHandler collisionHandler = null;
 
-    /* Instance versions of the above physics properties */
     protected float maxSpeedRail;
     protected float maxSpeedGround;
     protected float maxSpeedAirLateral;
@@ -71,7 +66,6 @@ public class EntityMinecart extends Entity implements IInventory
         this.setSize(0.98F, 0.7F);
         this.yOffset = this.height / 2.0F;
         this.field_82344_g = par1World != null ? par1World.func_82735_a(this) : null;
-
         maxSpeedRail = defaultMaxSpeedRail;
         maxSpeedGround = defaultMaxSpeedGround;
         maxSpeedAirLateral = defaultMaxSpeedAirLateral;
@@ -85,10 +79,6 @@ public class EntityMinecart extends Entity implements IInventory
         minecartType = type;
     }
 
-    /**
-     * returns if this entity triggers Block.onEntityWalking on the blocks they walk on. used for spiders and wolves to
-     * prevent them from trampling crops
-     */
     protected boolean canTriggerWalking()
     {
         return false;
@@ -102,34 +92,26 @@ public class EntityMinecart extends Entity implements IInventory
         this.dataWatcher.addObject(19, new Integer(0));
     }
 
-    /**
-     * Returns a boundingBox used to collide the entity with other entities and blocks. This enables the entity to be
-     * pushable on contact, like boats or minecarts.
-     */
     public AxisAlignedBB getCollisionBox(Entity par1Entity)
     {
         if (getCollisionHandler() != null)
         {
             return getCollisionHandler().getCollisionBox(this, par1Entity);
         }
+
         return par1Entity.canBePushed() ? par1Entity.boundingBox : null;
     }
 
-    /**
-     * returns the bounding box for this entity
-     */
     public AxisAlignedBB getBoundingBox()
     {
         if (getCollisionHandler() != null)
         {
             return getCollisionHandler().getBoundingBox(this);
         }
+
         return null;
     }
 
-    /**
-     * Returns true if this entity should push and be pushed by other entities when colliding.
-     */
     public boolean canBePushed()
     {
         return canBePushed;
@@ -148,17 +130,11 @@ public class EntityMinecart extends Entity implements IInventory
         this.minecartType = par8;
     }
 
-    /**
-     * Returns the Y offset from the entity's position for any entity riding this one.
-     */
     public double getMountedYOffset()
     {
         return (double)this.height * 0.0D - 0.30000001192092896D;
     }
 
-    /**
-     * Called when the entity is attacked.
-     */
     public boolean attackEntityFrom(DamageSource par1DamageSource, int par2)
     {
         if (!this.worldObj.isRemote && !this.isDead)
@@ -201,9 +177,6 @@ public class EntityMinecart extends Entity implements IInventory
 
     @SideOnly(Side.CLIENT)
 
-    /**
-     * Setups the entity to do the hurt animation. Only used by packets in multiplayer.
-     */
     public void performHurtAnimation()
     {
         this.func_70494_i(-this.func_70493_k());
@@ -211,17 +184,11 @@ public class EntityMinecart extends Entity implements IInventory
         this.setDamage(this.getDamage() + this.getDamage() * 10);
     }
 
-    /**
-     * Returns true if other Entities should be prevented from moving through this Entity.
-     */
     public boolean canBeCollidedWith()
     {
         return !this.isDead;
     }
 
-    /**
-     * Will get destroyed next tick.
-     */
     public void setDead()
     {
         if (this.field_82345_h)
@@ -271,18 +238,12 @@ public class EntityMinecart extends Entity implements IInventory
         }
     }
 
-    /**
-     * Teleports the entity to another dimension. Params: Dimension number to teleport to
-     */
     public void travelToDimension(int par1)
     {
         this.field_82345_h = false;
         super.travelToDimension(par1);
     }
 
-    /**
-     * Called to update the entity's position/logic.
-     */
     public void onUpdate()
     {
         if (this.field_82344_g != null)
@@ -375,7 +336,6 @@ public class EntityMinecart extends Entity implements IInventory
                 }
 
                 adjustSlopeVelocities(var10);
-
                 int[][] var13 = field_70500_g[var10];
                 double var14 = (double)(var13[1][0] - var13[0][0]);
                 double var16 = (double)(var13[1][2] - var13[0][2]);
@@ -455,7 +415,6 @@ public class EntityMinecart extends Entity implements IInventory
                 this.posX = var26 + var14 * var24;
                 this.posZ = var28 + var16 * var24;
                 this.setPosition(this.posX, this.posY + (double)this.yOffset, this.posZ);
-
                 moveMinecartOnRail(var1, var2, var3);
 
                 if (var13[0][1] != 0 && MathHelper.floor_double(this.posX) - var1 == var13[0][0] && MathHelper.floor_double(this.posZ) - var3 == var13[0][2])
@@ -468,7 +427,6 @@ public class EntityMinecart extends Entity implements IInventory
                 }
 
                 applyDragAndPushForces();
-
                 Vec3 var52 = this.func_70489_a(this.posX, this.posY, this.posZ);
 
                 if (var52 != null && var9 != null)
@@ -496,10 +454,9 @@ public class EntityMinecart extends Entity implements IInventory
                 }
 
                 double var41;
-
                 updatePushForces();
 
-                if(shouldDoRailFunctions())
+                if (shouldDoRailFunctions())
                 {
                     ((BlockRail)Block.blocksList[var8]).onMinecartPass(worldObj, this, var1, var2, var3);
                 }
@@ -567,8 +524,8 @@ public class EntityMinecart extends Entity implements IInventory
             }
 
             this.setRotation(this.rotationYaw, this.rotationPitch);
-
             AxisAlignedBB box = null;
+
             if (getCollisionHandler() != null)
             {
                 box = getCollisionHandler().getMinecartCollisionBox(this);
@@ -629,7 +586,6 @@ public class EntityMinecart extends Entity implements IInventory
         else
         {
             int var13 = ((BlockRail)Block.blocksList[var12]).getBasicRailMetadata(worldObj, this, var9, var10, var11);
-
             par3 = (double)var10;
 
             if (var13 >= 2 && var13 <= 5)
@@ -733,9 +689,6 @@ public class EntityMinecart extends Entity implements IInventory
         }
     }
 
-    /**
-     * (abstract) Protected helper method to write subclass entity data to NBT.
-     */
     protected void writeEntityToNBT(NBTTagCompound par1NBTTagCompound)
     {
         par1NBTTagCompound.setInteger("Type", this.minecartType);
@@ -766,9 +719,6 @@ public class EntityMinecart extends Entity implements IInventory
         }
     }
 
-    /**
-     * (abstract) Protected helper method to read subclass entity data from NBT.
-     */
     protected void readEntityFromNBT(NBTTagCompound par1NBTTagCompound)
     {
         this.minecartType = par1NBTTagCompound.getInteger("Type");
@@ -777,6 +727,7 @@ public class EntityMinecart extends Entity implements IInventory
         {
             this.pushX = par1NBTTagCompound.getDouble("PushX");
             this.pushZ = par1NBTTagCompound.getDouble("PushZ");
+
             try
             {
                 this.fuel = par1NBTTagCompound.getInteger("Fuel");
@@ -811,17 +762,16 @@ public class EntityMinecart extends Entity implements IInventory
         return 0.0F;
     }
 
-    /**
-     * Applies a velocity to each of the entities pushing them away from each other. Args: entity
-     */
     public void applyEntityCollision(Entity par1Entity)
     {
         MinecraftForge.EVENT_BUS.post(new MinecartCollisionEvent(this, par1Entity));
+
         if (getCollisionHandler() != null)
         {
             getCollisionHandler().onEntityCollision(this, par1Entity);
             return;
         }
+
         if (!this.worldObj.isRemote)
         {
             if (par1Entity != this.riddenByEntity)
@@ -910,26 +860,16 @@ public class EntityMinecart extends Entity implements IInventory
         }
     }
 
-    /**
-     * Returns the number of slots in the inventory.
-     */
     public int getSizeInventory()
     {
         return (minecartType == 1 && getClass() == EntityMinecart.class ? 27 : 0);
     }
 
-    /**
-     * Returns the stack in slot i
-     */
     public ItemStack getStackInSlot(int par1)
     {
         return this.cargoItems[par1];
     }
 
-    /**
-     * Removes from an inventory slot (first arg) up to a specified number (second arg) of items and returns them in a
-     * new stack.
-     */
     public ItemStack decrStackSize(int par1, int par2)
     {
         if (this.cargoItems[par1] != null)
@@ -960,10 +900,6 @@ public class EntityMinecart extends Entity implements IInventory
         }
     }
 
-    /**
-     * When some containers are closed they call this on each slot, then drop whatever it returns as an EntityItem -
-     * like when you close a workbench GUI.
-     */
     public ItemStack getStackInSlotOnClosing(int par1)
     {
         if (this.cargoItems[par1] != null)
@@ -978,9 +914,6 @@ public class EntityMinecart extends Entity implements IInventory
         }
     }
 
-    /**
-     * Sets the given item stack to the specified slot in the inventory (can be crafting or armor sections).
-     */
     public void setInventorySlotContents(int par1, ItemStack par2ItemStack)
     {
         this.cargoItems[par1] = par2ItemStack;
@@ -991,31 +924,18 @@ public class EntityMinecart extends Entity implements IInventory
         }
     }
 
-    /**
-     * Returns the name of the inventory.
-     */
     public String getInvName()
     {
         return "container.minecart";
     }
 
-    /**
-     * Returns the maximum stack size for a inventory slot. Seems to always be 64, possibly will be extended. *Isn't
-     * this more of a set than a get?*
-     */
     public int getInventoryStackLimit()
     {
         return 64;
     }
 
-    /**
-     * Called when an the contents of an Inventory change, usually
-     */
     public void onInventoryChanged() {}
 
-    /**
-     * Called when a player interacts with a mob. e.g. gets milk from a cow, gets into the saddle on a pig.
-     */
     public boolean interact(EntityPlayer par1EntityPlayer)
     {
         if (MinecraftForge.EVENT_BUS.post(new MinecartInteractEvent(this, par1EntityPlayer)))
@@ -1065,10 +985,6 @@ public class EntityMinecart extends Entity implements IInventory
 
     @SideOnly(Side.CLIENT)
 
-    /**
-     * Sets the position and rotation. Only difference from the other one is no bounding on the rotation. Args: posX,
-     * posY, posZ, yaw, pitch
-     */
     public void setPositionAndRotation2(double par1, double par3, double par5, float par7, float par8, int par9)
     {
         this.minecartX = par1;
@@ -1084,9 +1000,6 @@ public class EntityMinecart extends Entity implements IInventory
 
     @SideOnly(Side.CLIENT)
 
-    /**
-     * Sets the velocity to the args. Args: x, y, z
-     */
     public void setVelocity(double par1, double par3, double par5)
     {
         this.velocityX = this.motionX = par1;
@@ -1094,25 +1007,16 @@ public class EntityMinecart extends Entity implements IInventory
         this.velocityZ = this.motionZ = par5;
     }
 
-    /**
-     * Do not make give this method the name canInteractWith because it clashes with Container
-     */
     public boolean isUseableByPlayer(EntityPlayer par1EntityPlayer)
     {
         return this.isDead ? false : par1EntityPlayer.getDistanceSqToEntity(this) <= 64.0D;
     }
 
-    /**
-     * Is this minecart powered (Fuel > 0)
-     */
     public boolean isMinecartPowered()
     {
         return (this.dataWatcher.getWatchableObjectByte(16) & 1) != 0;
     }
 
-    /**
-     * Set if this minecart is powered (Fuel > 0)
-     */
     protected void setMinecartPowered(boolean par1)
     {
         if (par1)
@@ -1129,19 +1033,11 @@ public class EntityMinecart extends Entity implements IInventory
 
     public void closeChest() {}
 
-    /**
-     * Sets the current amount of damage the minecart has taken. Decreases over time. The cart breaks when this is over
-     * 40.
-     */
     public void setDamage(int par1)
     {
         this.dataWatcher.updateObject(19, Integer.valueOf(par1));
     }
 
-    /**
-     * Gets the current amount of damage the minecart has taken. Decreases over time. The cart breaks when this is over
-     * 40.
-     */
     public int getDamage()
     {
         return this.dataWatcher.getWatchableObjectInt(19);
@@ -1167,162 +1063,100 @@ public class EntityMinecart extends Entity implements IInventory
         return this.dataWatcher.getWatchableObjectInt(18);
     }
 
-    /**
-     * Drops the cart as a item. The exact item dropped is defined by getItemDropped().
-     */
     public void dropCartAsItem()
     {
-        for(ItemStack item : getItemsDropped())
+        for (ItemStack item : getItemsDropped())
         {
             entityDropItem(item, 0);
         }
     }
 
-    /**
-     * Override this to define which items your cart drops when broken.
-     * This does not include items contained in the inventory,
-     * that is handled elsewhere.
-     * @return A list of items dropped.
-     */
     public List<ItemStack> getItemsDropped()
     {
         List<ItemStack> items = new ArrayList<ItemStack>();
         items.add(new ItemStack(Item.minecartEmpty));
 
-        switch(minecartType)
+        switch (minecartType)
         {
             case 1:
                 items.add(new ItemStack(Block.chest));
                 break;
+
             case 2:
                 items.add(new ItemStack(Block.stoneOvenIdle));
                 break;
         }
+
         return items;
     }
 
-    /**
-     * This function returns an ItemStack that represents this cart.
-     * This should be an ItemStack that can be used by the player to place the cart.
-     * This is the item that was registered with the cart via the registerMinecart function,
-     * but is not necessary the item the cart drops when destroyed.
-     * @return An ItemStack that can be used to place the cart.
-     */
     public ItemStack getCartItem()
     {
         return MinecartRegistry.getItemForCart(this);
     }
 
-    /**
-     * Returns true if this cart is self propelled.
-     * @return True if powered.
-     */
     public boolean isPoweredCart()
     {
         return minecartType == 2 && getClass() == EntityMinecart.class;
     }
 
-    /**
-     * Returns true if this cart is a storage cart
-     * Some carts may have inventories but not be storage carts
-     * and some carts without inventories may be storage carts.
-     * @return True if this cart should be classified as a storage cart.
-     */
     public boolean isStorageCart()
     {
         return minecartType == 1 && getClass() == EntityMinecart.class;
     }
 
-    /**
-     * Returns true if this cart can be ridden by an Entity.
-     * @return True if this cart can be ridden.
-     */
     public boolean canBeRidden()
     {
-        if(minecartType == 0 && getClass() == EntityMinecart.class)
+        if (minecartType == 0 && getClass() == EntityMinecart.class)
         {
             return true;
         }
+
         return false;
     }
 
-    /**
-     * Returns true if this cart can currently use rails.
-     * This function is mainly used to gracefully detach a minecart from a rail.
-     * @return True if the minecart can use rails.
-     */
     public boolean canUseRail()
     {
         return canUseRail;
     }
 
-    /**
-     * Set whether the minecart can use rails.
-     * This function is mainly used to gracefully detach a minecart from a rail.
-     * @param use Whether the minecart can currently use rails.
-     */
     public void setCanUseRail(boolean use)
     {
         canUseRail = use;
     }
 
-    /**
-     * Return false if this cart should not call IRail.onMinecartPass() and should ignore Powered Rails.
-     * @return True if this cart should call IRail.onMinecartPass().
-     */
     public boolean shouldDoRailFunctions()
     {
         return true;
     }
 
-    /**
-     * Simply returns the minecartType variable.
-     * @return minecartType
-     */
     public int getMinecartType()
     {
         return minecartType;
     }
 
-    /**
-     * Gets the current global Minecart Collision handler if none
-     * is registered, returns null
-     * @return The collision handler or null
-     */
     public static IMinecartCollisionHandler getCollisionHandler()
     {
         return collisionHandler;
     }
 
-    /**
-     * Sets the global Minecart Collision handler, overwrites any
-     * that is currently set.
-     * @param handler The new handler
-     */
     public static void setCollisionHandler(IMinecartCollisionHandler handler)
     {
         collisionHandler = handler;
     }
 
-    /**
-     * Carts should return their drag factor here
-     * @return The drag rate.
-     */
     protected double getDrag()
     {
         return riddenByEntity != null ? defaultDragRidden : defaultDragEmpty;
     }
 
-    /**
-     * Moved to allow overrides.
-     * This code applies drag and updates push forces.
-     */
     protected void applyDragAndPushForces()
     {
-        if(isPoweredCart())
+        if (isPoweredCart())
         {
             double d27 = MathHelper.sqrt_double(pushX * pushX + pushZ * pushZ);
-            if(d27 > 0.01D)
+
+            if (d27 > 0.01D)
             {
                 pushX /= d27;
                 pushZ /= d27;
@@ -1340,25 +1174,24 @@ public class EntityMinecart extends Entity implements IInventory
                 motionZ *= 0.9D;
             }
         }
+
         motionX *= getDrag();
         motionY *= 0.0D;
         motionZ *= getDrag();
     }
 
-    /**
-     * Moved to allow overrides.
-     * This code updates push forces.
-     */
     protected void updatePushForces()
     {
-        if(isPoweredCart())
+        if (isPoweredCart())
         {
             double push = MathHelper.sqrt_double(pushX * pushX + pushZ * pushZ);
-            if(push > 0.01D && motionX * motionX + motionZ * motionZ > 0.001D)
+
+            if (push > 0.01D && motionX * motionX + motionZ * motionZ > 0.001D)
             {
                 pushX /= push;
                 pushZ /= push;
-                if(pushX * motionX + pushZ * motionZ < 0.0D)
+
+                if (pushX * motionX + pushZ * motionZ < 0.0D)
                 {
                     pushX = 0.0D;
                     pushZ = 0.0D;
@@ -1372,67 +1205,101 @@ public class EntityMinecart extends Entity implements IInventory
         }
     }
 
-    /**
-     * Moved to allow overrides.
-     * This code handles minecart movement and speed capping when on a rail.
-     */
     protected void moveMinecartOnRail(int i, int j, int k)
     {
         int id = worldObj.getBlockId(i, j, k);
+
         if (!BlockRail.isRailBlock(id))
         {
-                return;
+            return;
         }
-        float railMaxSpeed = ((BlockRail)Block.blocksList[id]).getRailMaxSpeed(worldObj, this, i, j, k);
 
+        float railMaxSpeed = ((BlockRail)Block.blocksList[id]).getRailMaxSpeed(worldObj, this, i, j, k);
         double maxSpeed = Math.min(railMaxSpeed, getMaxSpeedRail());
         double mX = motionX;
         double mZ = motionZ;
-        if(riddenByEntity != null)
+
+        if (riddenByEntity != null)
         {
             mX *= 0.75D;
             mZ *= 0.75D;
         }
-        if(mX < -maxSpeed) mX = -maxSpeed;
-        if(mX >  maxSpeed) mX =  maxSpeed;
-        if(mZ < -maxSpeed) mZ = -maxSpeed;
-        if(mZ >  maxSpeed) mZ =  maxSpeed;
+
+        if (mX < -maxSpeed)
+        {
+            mX = -maxSpeed;
+        }
+
+        if (mX >  maxSpeed)
+        {
+            mX =  maxSpeed;
+        }
+
+        if (mZ < -maxSpeed)
+        {
+            mZ = -maxSpeed;
+        }
+
+        if (mZ >  maxSpeed)
+        {
+            mZ =  maxSpeed;
+        }
+
         moveEntity(mX, 0.0D, mZ);
     }
 
-    /**
-     * Moved to allow overrides.
-     * This code handles minecart movement and speed capping when not on a rail.
-     */
     protected void moveMinecartOffRail(int i, int j, int k)
     {
         double d2 = getMaxSpeedGround();
-        if(!onGround)
+
+        if (!onGround)
         {
             d2 = getMaxSpeedAirLateral();
         }
-        if(motionX < -d2) motionX = -d2;
-        if(motionX >  d2) motionX =  d2;
-        if(motionZ < -d2) motionZ = -d2;
-        if(motionZ >  d2) motionZ =  d2;
+
+        if (motionX < -d2)
+        {
+            motionX = -d2;
+        }
+
+        if (motionX >  d2)
+        {
+            motionX =  d2;
+        }
+
+        if (motionZ < -d2)
+        {
+            motionZ = -d2;
+        }
+
+        if (motionZ >  d2)
+        {
+            motionZ =  d2;
+        }
+
         double moveY = motionY;
-        if(getMaxSpeedAirVertical() > 0 && motionY > getMaxSpeedAirVertical())
+
+        if (getMaxSpeedAirVertical() > 0 && motionY > getMaxSpeedAirVertical())
         {
             moveY = getMaxSpeedAirVertical();
-            if(Math.abs(motionX) < 0.3f && Math.abs(motionZ) < 0.3f)
+
+            if (Math.abs(motionX) < 0.3f && Math.abs(motionZ) < 0.3f)
             {
                 moveY = 0.15f;
                 motionY = moveY;
             }
         }
-        if(onGround)
+
+        if (onGround)
         {
             motionX *= 0.5D;
             motionY *= 0.5D;
             motionZ *= 0.5D;
         }
+
         moveEntity(motionX, moveY, motionZ);
-        if(!onGround)
+
+        if (!onGround)
         {
             motionX *= getDragAir();
             motionY *= getDragAir();
@@ -1440,24 +1307,25 @@ public class EntityMinecart extends Entity implements IInventory
         }
     }
 
-    /**
-     * Moved to allow overrides.
-     * This code applies fuel consumption.
-     */
     protected void updateFuel()
     {
-        if (fuel > 0) fuel--;
-        if (fuel <= 0) pushX = pushZ = 0.0D;
+        if (fuel > 0)
+        {
+            fuel--;
+        }
+
+        if (fuel <= 0)
+        {
+            pushX = pushZ = 0.0D;
+        }
+
         setMinecartPowered(fuel > 0);
     }
 
-    /**
-     * Moved to allow overrides, This code handle slopes affecting velocity.
-     * @param metadata The blocks position metadata
-     */
     protected void adjustSlopeVelocities(int metadata)
     {
         double acceleration = 0.0078125D;
+
         if (metadata == 2)
         {
             motionX -= acceleration;
@@ -1476,18 +1344,6 @@ public class EntityMinecart extends Entity implements IInventory
         }
     }
 
-    /**
-     * Getters/setters for physics variables
-     */
-
-    /**
-     * Returns the carts max speed.
-     * Carts going faster than 1.1 cause issues with chunk loading.
-     * Carts cant traverse slopes or corners at greater than 0.5 - 0.6.
-     * This value is compared with the rails max speed to determine
-     * the carts current max speed. A normal rails max speed is 0.4.
-     * @return Carts max speed.
-     */
     public float getMaxSpeedRail()
     {
         return maxSpeedRail;

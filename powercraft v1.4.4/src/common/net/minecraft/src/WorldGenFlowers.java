@@ -4,7 +4,6 @@ import java.util.Random;
 
 public class WorldGenFlowers extends WorldGenerator
 {
-    /** The ID of the plant block used in this plant generator. */
     private int plantBlockId;
 
     public WorldGenFlowers(int par1)

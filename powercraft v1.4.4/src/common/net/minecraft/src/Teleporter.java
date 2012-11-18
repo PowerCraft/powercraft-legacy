@@ -9,7 +9,6 @@ public class Teleporter
 {
     private final WorldServer field_85192_a;
 
-    /** A private Random() function in Teleporter */
     private final Random random;
     private final LongHashMap field_85191_c = new LongHashMap();
     private final List field_85190_d = new ArrayList();
@@ -20,9 +19,6 @@ public class Teleporter
         this.random = new Random(par1WorldServer.getSeed());
     }
 
-    /**
-     * Place an entity in a nearby portal, creating one if necessary.
-     */
     public void placeInPortal(Entity par1Entity, double par2, double par4, double par6, float par8)
     {
         if (this.field_85192_a.provider.dimensionId != 1)
@@ -61,9 +57,6 @@ public class Teleporter
         }
     }
 
-    /**
-     * Place an entity in a nearby portal which already exists.
-     */
     public boolean placeInExistingPortal(Entity par1Entity, double par2, double par4, double par6, float par8)
     {
         short var9 = 128;

@@ -1,15 +1,3 @@
-/*
- * The FML Forge Mod Loader suite. Copyright (C) 2012 cpw
- *
- * This library is free software; you can redistribute it and/or modify it under the terms of the GNU Lesser General Public License as published by the Free
- * Software Foundation; either version 2.1 of the License, or any later version.
- *
- * This library is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR
- * A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more details.
- *
- * You should have received a copy of the GNU Lesser General Public License along with this library; if not, write to the Free Software Foundation, Inc., 51
- * Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA
- */
 package cpw.mods.fml.common.toposort;
 
 import java.util.Arrays;
@@ -24,10 +12,6 @@ import cpw.mods.fml.common.ModContainer;
 import cpw.mods.fml.common.toposort.TopologicalSort.DirectedGraph;
 import cpw.mods.fml.common.versioning.ArtifactVersion;
 
-/**
- * @author cpw
- *
- */
 public class ModSorter
 {
     private DirectedGraph<ModContainer> modGraph;
@@ -62,22 +46,21 @@ public class ModSorter
         {
             if (mod.isImmutable())
             {
-                // Immutable mods are always before everything
                 modGraph.addEdge(beforeAll, mod);
                 modGraph.addEdge(mod, before);
                 continue;
             }
+
             boolean preDepAdded = false;
             boolean postDepAdded = false;
 
             for (ArtifactVersion dep : mod.getDependencies())
             {
                 preDepAdded = true;
-
                 String modid = dep.getLabel();
+
                 if (modid.equals("*"))
                 {
-                    // We are "after" everything
                     modGraph.addEdge(mod, afterAll);
                     modGraph.addEdge(after, mod);
                     postDepAdded = true;
@@ -85,7 +68,9 @@ public class ModSorter
                 else
                 {
                     modGraph.addEdge(before, mod);
-                    if (Loader.isModLoaded(modid)) {
+
+                    if (Loader.isModLoaded(modid))
+                    {
                         modGraph.addEdge(nameLookup.get(modid), mod);
                     }
                 }
@@ -94,11 +79,10 @@ public class ModSorter
             for (ArtifactVersion dep : mod.getDependants())
             {
                 postDepAdded = true;
-
                 String modid = dep.getLabel();
+
                 if (modid.equals("*"))
                 {
-                    // We are "before" everything
                     modGraph.addEdge(beforeAll, mod);
                     modGraph.addEdge(mod, before);
                     preDepAdded = true;
@@ -106,7 +90,9 @@ public class ModSorter
                 else
                 {
                     modGraph.addEdge(mod, after);
-                    if (Loader.isModLoaded(modid)) {
+
+                    if (Loader.isModLoaded(modid))
+                    {
                         modGraph.addEdge(mod, nameLookup.get(modid));
                     }
                 }

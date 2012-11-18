@@ -2,13 +2,10 @@ package net.minecraft.src;
 
 public class ChunkPosition
 {
-    /** The x coordinate of this ChunkPosition */
     public final int x;
 
-    /** The y coordinate of this ChunkPosition */
     public final int y;
 
-    /** The z coordinate of this ChunkPosition */
     public final int z;
 
     public ChunkPosition(int par1, int par2, int par3)

@@ -5,7 +5,6 @@ import cpw.mods.fml.common.asm.SideOnly;
 
 public class EntityEnderCrystal extends Entity
 {
-    /** Used to create the rotation animation when rendering the crystal. */
     public int innerRotation;
     public int health;
 
@@ -27,10 +26,6 @@ public class EntityEnderCrystal extends Entity
         this.setPosition(par2, par4, par6);
     }
 
-    /**
-     * returns if this entity triggers Block.onEntityWalking on the blocks they walk on. used for spiders and wolves to
-     * prevent them from trampling crops
-     */
     protected boolean canTriggerWalking()
     {
         return false;
@@ -41,9 +36,6 @@ public class EntityEnderCrystal extends Entity
         this.dataWatcher.addObject(8, Integer.valueOf(this.health));
     }
 
-    /**
-     * Called to update the entity's position/logic.
-     */
     public void onUpdate()
     {
         this.prevPosX = this.posX;
@@ -61,14 +53,8 @@ public class EntityEnderCrystal extends Entity
         }
     }
 
-    /**
-     * (abstract) Protected helper method to write subclass entity data to NBT.
-     */
     protected void writeEntityToNBT(NBTTagCompound par1NBTTagCompound) {}
 
-    /**
-     * (abstract) Protected helper method to read subclass entity data from NBT.
-     */
     protected void readEntityFromNBT(NBTTagCompound par1NBTTagCompound) {}
 
     @SideOnly(Side.CLIENT)
@@ -77,17 +63,11 @@ public class EntityEnderCrystal extends Entity
         return 0.0F;
     }
 
-    /**
-     * Returns true if other Entities should be prevented from moving through this Entity.
-     */
     public boolean canBeCollidedWith()
     {
         return true;
     }
 
-    /**
-     * Called when the entity is attacked.
-     */
     public boolean attackEntityFrom(DamageSource par1DamageSource, int par2)
     {
         if (this.func_85032_ar())

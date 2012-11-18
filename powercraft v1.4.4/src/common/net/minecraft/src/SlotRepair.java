@@ -10,7 +10,6 @@ class SlotRepair extends Slot
 
     final int field_82871_d;
 
-    /** The anvil this slot belongs to. */
     final ContainerRepair anvil;
 
     SlotRepair(ContainerRepair par1ContainerRepair, IInventory par2IInventory, int par3, int par4, int par5, World par6World, int par7, int par8, int par9)
@@ -23,17 +22,11 @@ class SlotRepair extends Slot
         this.field_82871_d = par9;
     }
 
-    /**
-     * Check if the stack is a valid item for this slot. Always true beside for the armor slots.
-     */
     public boolean isItemValid(ItemStack par1ItemStack)
     {
         return false;
     }
 
-    /**
-     * Return whether this slot's stack can be taken from this slot.
-     */
     public boolean canTakeStack(EntityPlayer par1EntityPlayer)
     {
         return (par1EntityPlayer.capabilities.isCreativeMode || par1EntityPlayer.experienceLevel >= this.anvil.maximumCost) && this.anvil.maximumCost > 0 && this.getHasStack();

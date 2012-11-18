@@ -6,7 +6,6 @@ import java.util.Random;
 
 public abstract class StructureStart
 {
-    /** List of all StructureComponents that are part of this structure */
     protected LinkedList components = new LinkedList();
     protected StructureBoundingBox boundingBox;
 
@@ -20,9 +19,6 @@ public abstract class StructureStart
         return this.components;
     }
 
-    /**
-     * Keeps iterating Structure Pieces and spawning them until the checks tell it to stop
-     */
     public void generateStructure(World par1World, Random par2Random, StructureBoundingBox par3StructureBoundingBox)
     {
         Iterator var4 = this.components.iterator();
@@ -38,9 +34,6 @@ public abstract class StructureStart
         }
     }
 
-    /**
-     * Calculates total bounding box based on components' bounding boxes and saves it to boundingBox
-     */
     protected void updateBoundingBox()
     {
         this.boundingBox = StructureBoundingBox.getNewBoundingBox();
@@ -53,9 +46,6 @@ public abstract class StructureStart
         }
     }
 
-    /**
-     * offsets the structure Bounding Boxes up to a certain height, typically 63 - 10
-     */
     protected void markAvailableHeight(World par1World, Random par2Random, int par3)
     {
         int var4 = 63 - par3;
@@ -103,9 +93,6 @@ public abstract class StructureStart
         }
     }
 
-    /**
-     * currently only defined for Villages, returns true if Village has more than 2 non-road components
-     */
     public boolean isSizeableStructure()
     {
         return true;

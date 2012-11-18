@@ -11,34 +11,21 @@ public class BlockDragonEgg extends Block
         super(par1, par2, Material.dragonEgg);
     }
 
-    /**
-     * Called whenever the block is added into the world. Args: world, x, y, z
-     */
     public void onBlockAdded(World par1World, int par2, int par3, int par4)
     {
         par1World.scheduleBlockUpdate(par2, par3, par4, this.blockID, this.tickRate());
     }
 
-    /**
-     * Lets the block know when one of its neighbor changes. Doesn't know which neighbor changed (coordinates passed are
-     * their own) Args: x, y, z, neighbor blockID
-     */
     public void onNeighborBlockChange(World par1World, int par2, int par3, int par4, int par5)
     {
         par1World.scheduleBlockUpdate(par2, par3, par4, this.blockID, this.tickRate());
     }
 
-    /**
-     * Ticks the block if it's been scheduled
-     */
     public void updateTick(World par1World, int par2, int par3, int par4, Random par5Random)
     {
         this.fallIfPossible(par1World, par2, par3, par4);
     }
 
-    /**
-     * Checks if the dragon egg can fall down, and if so, makes it fall.
-     */
     private void fallIfPossible(World par1World, int par2, int par3, int par4)
     {
         if (BlockSand.canFallBelow(par1World, par2, par3 - 1, par4) && par3 >= 0)
@@ -67,26 +54,17 @@ public class BlockDragonEgg extends Block
         }
     }
 
-    /**
-     * Called upon block activation (right click on the block.)
-     */
     public boolean onBlockActivated(World par1World, int par2, int par3, int par4, EntityPlayer par5EntityPlayer, int par6, float par7, float par8, float par9)
     {
         this.teleportNearby(par1World, par2, par3, par4);
         return true;
     }
 
-    /**
-     * Called when the block is clicked by a player. Args: x, y, z, entityPlayer
-     */
     public void onBlockClicked(World par1World, int par2, int par3, int par4, EntityPlayer par5EntityPlayer)
     {
         this.teleportNearby(par1World, par2, par3, par4);
     }
 
-    /**
-     * Teleports the dragon egg somewhere else in a 31x19x31 area centered on the egg.
-     */
     private void teleportNearby(World par1World, int par2, int par3, int par4)
     {
         if (par1World.getBlockId(par2, par3, par4) == this.blockID)
@@ -127,26 +105,16 @@ public class BlockDragonEgg extends Block
         }
     }
 
-    /**
-     * How many world ticks before ticking
-     */
     public int tickRate()
     {
         return 5;
     }
 
-    /**
-     * Is this block (a) opaque and (b) a full 1m cube?  This determines whether or not to render the shared face of two
-     * adjacent blocks and also whether the player can attach torches, redstone wire, etc to this block.
-     */
     public boolean isOpaqueCube()
     {
         return false;
     }
 
-    /**
-     * If this block doesn't render as an ordinary block it will return False (examples: signs, buttons, stairs, etc)
-     */
     public boolean renderAsNormalBlock()
     {
         return false;
@@ -154,18 +122,11 @@ public class BlockDragonEgg extends Block
 
     @SideOnly(Side.CLIENT)
 
-    /**
-     * Returns true if the given side of this block type should be rendered, if the adjacent block is at the given
-     * coordinates.  Args: blockAccess, x, y, z, side
-     */
     public boolean shouldSideBeRendered(IBlockAccess par1IBlockAccess, int par2, int par3, int par4, int par5)
     {
         return true;
     }
 
-    /**
-     * The type of render function that is called for this block
-     */
     public int getRenderType()
     {
         return 27;
@@ -173,9 +134,6 @@ public class BlockDragonEgg extends Block
 
     @SideOnly(Side.CLIENT)
 
-    /**
-     * only called by clickMiddleMouseButton , and passed to inventory.setCurrentItem (along with isCreative)
-     */
     public int idPicked(World par1World, int par2, int par3, int par4)
     {
         return 0;

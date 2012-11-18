@@ -5,7 +5,6 @@ import cpw.mods.fml.common.asm.SideOnly;
 
 public class EntityItemFrame extends EntityHanging
 {
-    /** Chance for this item frame's item to drop from the frame. */
     private float itemDropChance = 1.0F;
 
     public EntityItemFrame(World par1World)
@@ -37,10 +36,6 @@ public class EntityItemFrame extends EntityHanging
 
     @SideOnly(Side.CLIENT)
 
-    /**
-     * Checks if the entity is in range to render by using the past in distance and comparing it to its average edge
-     * length * 64 * renderDistanceWeight Args: distance
-     */
     public boolean isInRangeToRenderDist(double par1)
     {
         double var3 = 16.0D;
@@ -48,9 +43,6 @@ public class EntityItemFrame extends EntityHanging
         return par1 < var3 * var3;
     }
 
-    /**
-     * Drop the item currently on this item frame.
-     */
     public void dropItemStack()
     {
         this.entityDropItem(new ItemStack(Item.itemFrame), 0.0F);
@@ -78,9 +70,6 @@ public class EntityItemFrame extends EntityHanging
         this.getDataWatcher().func_82708_h(2);
     }
 
-    /**
-     * Return the rotation of the item currently on this frame.
-     */
     public int getRotation()
     {
         return this.getDataWatcher().getWatchableObjectByte(3);
@@ -91,9 +80,6 @@ public class EntityItemFrame extends EntityHanging
         this.getDataWatcher().updateObject(3, Byte.valueOf((byte)(par1 % 4)));
     }
 
-    /**
-     * (abstract) Protected helper method to write subclass entity data to NBT.
-     */
     public void writeEntityToNBT(NBTTagCompound par1NBTTagCompound)
     {
         if (this.func_82335_i() != null)
@@ -106,9 +92,6 @@ public class EntityItemFrame extends EntityHanging
         super.writeEntityToNBT(par1NBTTagCompound);
     }
 
-    /**
-     * (abstract) Protected helper method to read subclass entity data from NBT.
-     */
     public void readEntityFromNBT(NBTTagCompound par1NBTTagCompound)
     {
         NBTTagCompound var2 = par1NBTTagCompound.getCompoundTag("Item");
@@ -127,9 +110,6 @@ public class EntityItemFrame extends EntityHanging
         super.readEntityFromNBT(par1NBTTagCompound);
     }
 
-    /**
-     * Called when a player interacts with a mob. e.g. gets milk from a cow, gets into the saddle on a pig.
-     */
     public boolean interact(EntityPlayer par1EntityPlayer)
     {
         if (this.func_82335_i() == null)

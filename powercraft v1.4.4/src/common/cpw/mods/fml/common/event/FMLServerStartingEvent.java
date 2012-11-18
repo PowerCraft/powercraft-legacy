@@ -7,7 +7,6 @@ import cpw.mods.fml.common.LoaderState.ModState;
 
 public class FMLServerStartingEvent extends FMLStateEvent
 {
-
     private MinecraftServer server;
 
     public FMLServerStartingEvent(Object... data)

@@ -15,9 +15,6 @@ public class ComponentVillagePathGen extends ComponentVillageRoadPiece
         this.averageGroundLevel = Math.max(par4StructureBoundingBox.getXSize(), par4StructureBoundingBox.getZSize());
     }
 
-    /**
-     * Initiates construction of the Structure Component picked, at the current Location of StructGen
-     */
     public void buildComponent(StructureComponent par1StructureComponent, List par2List, Random par3Random)
     {
         boolean var4 = false;
@@ -53,12 +50,15 @@ public class ComponentVillagePathGen extends ComponentVillageRoadPiece
                 case 0:
                     StructureVillagePieces.getNextStructureComponentVillagePath((ComponentVillageStartPiece)par1StructureComponent, par2List, par3Random, this.boundingBox.minX - 1, this.boundingBox.minY, this.boundingBox.maxZ - 2, 1, this.getComponentType());
                     break;
+
                 case 1:
                     StructureVillagePieces.getNextStructureComponentVillagePath((ComponentVillageStartPiece)par1StructureComponent, par2List, par3Random, this.boundingBox.minX, this.boundingBox.minY, this.boundingBox.minZ - 1, 2, this.getComponentType());
                     break;
+
                 case 2:
                     StructureVillagePieces.getNextStructureComponentVillagePath((ComponentVillageStartPiece)par1StructureComponent, par2List, par3Random, this.boundingBox.minX - 1, this.boundingBox.minY, this.boundingBox.minZ, 1, this.getComponentType());
                     break;
+
                 case 3:
                     StructureVillagePieces.getNextStructureComponentVillagePath((ComponentVillageStartPiece)par1StructureComponent, par2List, par3Random, this.boundingBox.maxX - 2, this.boundingBox.minY, this.boundingBox.minZ - 1, 2, this.getComponentType());
             }
@@ -71,12 +71,15 @@ public class ComponentVillagePathGen extends ComponentVillageRoadPiece
                 case 0:
                     StructureVillagePieces.getNextStructureComponentVillagePath((ComponentVillageStartPiece)par1StructureComponent, par2List, par3Random, this.boundingBox.maxX + 1, this.boundingBox.minY, this.boundingBox.maxZ - 2, 3, this.getComponentType());
                     break;
+
                 case 1:
                     StructureVillagePieces.getNextStructureComponentVillagePath((ComponentVillageStartPiece)par1StructureComponent, par2List, par3Random, this.boundingBox.minX, this.boundingBox.minY, this.boundingBox.maxZ + 1, 0, this.getComponentType());
                     break;
+
                 case 2:
                     StructureVillagePieces.getNextStructureComponentVillagePath((ComponentVillageStartPiece)par1StructureComponent, par2List, par3Random, this.boundingBox.maxX + 1, this.boundingBox.minY, this.boundingBox.minZ, 3, this.getComponentType());
                     break;
+
                 case 3:
                     StructureVillagePieces.getNextStructureComponentVillagePath((ComponentVillageStartPiece)par1StructureComponent, par2List, par3Random, this.boundingBox.maxX - 2, this.boundingBox.minY, this.boundingBox.maxZ + 1, 0, this.getComponentType());
             }
@@ -98,10 +101,6 @@ public class ComponentVillagePathGen extends ComponentVillageRoadPiece
         return null;
     }
 
-    /**
-     * second Part of Structure generating, this for example places Spiderwebs, Mob Spawners, it closes Mineshafts at
-     * the end, it adds Fences...
-     */
     public boolean addComponentParts(World par1World, Random par2Random, StructureBoundingBox par3StructureBoundingBox)
     {
         int var4 = this.getBiomeSpecificBlock(Block.gravel.blockID, 0);

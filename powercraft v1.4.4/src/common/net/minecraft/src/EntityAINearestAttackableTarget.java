@@ -11,7 +11,6 @@ public class EntityAINearestAttackableTarget extends EntityAITarget
     int targetChance;
     private final IEntitySelector field_82643_g;
 
-    /** Instance of EntityAINearestAttackableTargetSorter. */
     private EntityAINearestAttackableTargetSorter theNearestAttackableTargetSorter;
 
     public EntityAINearestAttackableTarget(EntityLiving par1EntityLiving, Class par2Class, float par3, int par4, boolean par5)
@@ -35,9 +34,6 @@ public class EntityAINearestAttackableTarget extends EntityAITarget
         this.setMutexBits(1);
     }
 
-    /**
-     * Returns whether the EntityAIBase should begin execution.
-     */
     public boolean shouldExecute()
     {
         if (this.targetChance > 0 && this.taskOwner.getRNG().nextInt(this.targetChance) != 0)
@@ -79,9 +75,6 @@ public class EntityAINearestAttackableTarget extends EntityAITarget
         }
     }
 
-    /**
-     * Execute a one shot task or start executing a continuous task
-     */
     public void startExecuting()
     {
         this.taskOwner.setAttackTarget(this.targetEntity);

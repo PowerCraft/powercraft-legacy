@@ -19,7 +19,6 @@ public class ModClassVisitor extends ClassVisitor
         this.discoverer = discoverer;
     }
 
-
     @Override
     public void visit(int version, int access, String name, String signature, String superName, String[] interfaces)
     {
@@ -32,7 +31,6 @@ public class ModClassVisitor extends ClassVisitor
         discoverer.startClassAnnotation(annotationName);
         return new ModAnnotationVisitor(discoverer);
     }
-
 
     @Override
     public FieldVisitor visitField(int access, String name, String desc, String signature, Object value)
@@ -47,6 +45,7 @@ public class ModClassVisitor extends ClassVisitor
         {
             return new ModMethodVisitor(name, discoverer);
         }
+
         return null;
     }
 }

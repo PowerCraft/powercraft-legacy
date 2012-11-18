@@ -4,17 +4,10 @@ public class EntityLookHelper
 {
     private EntityLiving entity;
 
-    /**
-     * The amount of change that is made each update for an entity facing a direction.
-     */
     private float deltaLookYaw;
 
-    /**
-     * The amount of change that is made each update for an entity facing a direction.
-     */
     private float deltaLookPitch;
 
-    /** Whether or not the entity is trying to look at something. */
     private boolean isLooking = false;
     private double posX;
     private double posY;
@@ -25,9 +18,6 @@ public class EntityLookHelper
         this.entity = par1EntityLiving;
     }
 
-    /**
-     * Sets position to look at using entity
-     */
     public void setLookPositionWithEntity(Entity par1Entity, float par2, float par3)
     {
         this.posX = par1Entity.posX;
@@ -47,9 +37,6 @@ public class EntityLookHelper
         this.isLooking = true;
     }
 
-    /**
-     * Sets position to look at
-     */
     public void setLookPosition(double par1, double par3, double par5, float par7, float par8)
     {
         this.posX = par1;
@@ -60,9 +47,6 @@ public class EntityLookHelper
         this.isLooking = true;
     }
 
-    /**
-     * Updates look
-     */
     public void onUpdateLook()
     {
         this.entity.rotationPitch = 0.0F;

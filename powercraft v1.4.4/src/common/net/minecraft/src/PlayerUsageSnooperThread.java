@@ -5,7 +5,6 @@ import java.util.TimerTask;
 
 class PlayerUsageSnooperThread extends TimerTask
 {
-    /** The PlayerUsageSnooper object. */
     final PlayerUsageSnooper snooper;
 
     PlayerUsageSnooperThread(PlayerUsageSnooper par1PlayerUsageSnooper)

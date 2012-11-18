@@ -19,149 +19,193 @@ import powercraft.core.PC_ISpecialInventoryTextures;
 import powercraft.core.PC_InvUtils;
 import powercraft.core.PC_Utils;
 
-public class PCma_BlockAutomaticWorkbench extends PC_Block implements PC_ISpecialInventoryTextures, PC_ICraftingToolDisplayer {
+public class PCma_BlockAutomaticWorkbench extends PC_Block implements PC_ISpecialInventoryTextures, PC_ICraftingToolDisplayer
+{
+    private static final int TXDOWN = 109, TXTOP = 154, TXSIDE = 138, TXFRONT = 106, TXBACK = 122;
 
-	private static final int TXDOWN = 109, TXTOP = 154, TXSIDE = 138, TXFRONT = 106, TXBACK = 122;
-	
-	public PCma_BlockAutomaticWorkbench(int id) {
-		super(id, 62, Material.ground);
-		setHardness(0.7F);
-		setResistance(10.0F);
-		setStepSound(Block.soundMetalFootstep);
-		setCreativeTab(CreativeTabs.tabDecorations);
-	}
-	
-	@Override
-	public String getDefaultName() {
-		return "Automatic Workbench";
-	}
+    public PCma_BlockAutomaticWorkbench(int id)
+    {
+        super(id, 62, Material.ground);
+        setHardness(0.7F);
+        setResistance(10.0F);
+        setStepSound(Block.soundMetalFootstep);
+        setCreativeTab(CreativeTabs.tabDecorations);
+    }
 
-	@Override
-	public void breakBlock(World world, int i, int j, int k, int par5, int par6) {
-		PCma_TileEntityAutomaticWorkbench tew = (PCma_TileEntityAutomaticWorkbench) world.getBlockTileEntity(i, j, k);
+    @Override
+    public String getDefaultName()
+    {
+        return "Automatic Workbench";
+    }
 
-		if (tew != null) PC_InvUtils.dropInventoryContents(tew, world, tew.getCoord());
+    @Override
+    public void breakBlock(World world, int i, int j, int k, int par5, int par6)
+    {
+        PCma_TileEntityAutomaticWorkbench tew = (PCma_TileEntityAutomaticWorkbench) world.getBlockTileEntity(i, j, k);
 
-		super.breakBlock(world, i, j, k, par5, par6);
-	}
+        if (tew != null)
+        {
+            PC_InvUtils.dropInventoryContents(tew, world, tew.getCoord());
+        }
 
-	@Override
-	public void onBlockPlacedBy(World world, int i, int j, int k, EntityLiving entityliving) {
-		int l = MathHelper.floor_double(((entityliving.rotationYaw * 4F) / 360F) + 2.5D) & 3;
+        super.breakBlock(world, i, j, k, par5, par6);
+    }
 
-		if (entityliving instanceof EntityPlayer && PC_Utils.isPlacingReversed(((EntityPlayer)entityliving))) {
-			l = PC_Utils.reverseSide(l);
-		}
+    @Override
+    public void onBlockPlacedBy(World world, int i, int j, int k, EntityLiving entityliving)
+    {
+        int l = MathHelper.floor_double(((entityliving.rotationYaw * 4F) / 360F) + 2.5D) & 3;
 
-		world.setBlockMetadataWithNotify(i, j, k, l);
-	}
+        if (entityliving instanceof EntityPlayer && PC_Utils.isPlacingReversed(((EntityPlayer)entityliving)))
+        {
+            l = PC_Utils.reverseSide(l);
+        }
 
-	@Override
-	public int getBlockTextureFromSideAndMetadata(int s, int m) {
+        world.setBlockMetadataWithNotify(i, j, k, l);
+    }
 
-		// act uses a bit strange metadata values, thus when using this piece copied from other machines, meta must be converted to the
-		// usual values.
-		if (m == 0) {
-			m = 2;
-		} else if (m == 1) {
-			m = 5;
-		} else if (m == 2) {
-			m = 3;
-		} else if (m == 3) {
-			m = 4;
-		}
+    @Override
+    public int getBlockTextureFromSideAndMetadata(int s, int m)
+    {
+        if (m == 0)
+        {
+            m = 2;
+        }
+        else if (m == 1)
+        {
+            m = 5;
+        }
+        else if (m == 2)
+        {
+            m = 3;
+        }
+        else if (m == 3)
+        {
+            m = 4;
+        }
 
-		if (s == 1) {
-			return TXTOP;
-		}
-		if (s == 0) {
-			return TXDOWN;
-		} else {
-			if (m == s) {
-				return TXBACK;
-			}
-			if ((m == 2 && s == 3) || (m == 3 && s == 2) || (m == 4 && s == 5) || (m == 5 && s == 4)) {
-				return TXFRONT;
-			}
-			return TXSIDE;
-		}
-	}
+        if (s == 1)
+        {
+            return TXTOP;
+        }
 
-	@Override
-	public int getInvTexture(int i, int m) {
-		if (i == 1) {
-			return TXTOP;
-		}
-		if (i == 0) {
-			return TXDOWN;
-		}
-		if (i == 3) {
-			return TXFRONT;
-		} else if (i == 4) {
-			return TXBACK;
-		} else {
-			return TXSIDE;
-		}
-	}
+        if (s == 0)
+        {
+            return TXDOWN;
+        }
+        else
+        {
+            if (m == s)
+            {
+                return TXBACK;
+            }
 
-	@Override
-	public int tickRate() {
-		return 1;
-	}
+            if ((m == 2 && s == 3) || (m == 3 && s == 2) || (m == 4 && s == 5) || (m == 5 && s == 4))
+            {
+                return TXFRONT;
+            }
 
-	@Override
-	public void onNeighborBlockChange(World world, int i, int j, int k, int l) {
-		if (l > 0 && Block.blocksList[l].canProvidePower()) {
-			boolean flag = world.isBlockIndirectlyGettingPowered(i, j, k) || world.isBlockIndirectlyGettingPowered(i, j + 1, k)
-					|| world.isBlockIndirectlyGettingPowered(i, j - 1, k);
-			if (flag) {
-				world.scheduleBlockUpdate(i, j, k, blockID, tickRate());
-			}
-		}
-	}
+            return TXSIDE;
+        }
+    }
 
-	@Override
-	public void updateTick(World world, int i, int j, int k, Random random) {
-		if (world.isBlockIndirectlyGettingPowered(i, j, k) || world.isBlockIndirectlyGettingPowered(i, j + 1, k)
-				|| world.isBlockIndirectlyGettingPowered(i, j - 1, k)) {
-			((PCma_TileEntityAutomaticWorkbench)PC_Utils.getTE(world, i, j, k)).doCrafting();
-		}
-	}
+    @Override
+    public int getInvTexture(int i, int m)
+    {
+        if (i == 1)
+        {
+            return TXTOP;
+        }
 
-	@Override
-	public boolean renderAsNormalBlock() {
-		return false;
-	}
-	
-	@Override
-	public boolean onBlockActivated(World world, int i, int j, int k, EntityPlayer entityplayer, int par6, float par7, float par8, float par9) {
-		ItemStack ihold = entityplayer.getCurrentEquippedItem();
-		if (ihold != null) {
-			if (ihold.getItem() instanceof ItemBlock && ihold.getItem().shiftedIndex != blockID) {
-				return false;
-			}
-		}
+        if (i == 0)
+        {
+            return TXDOWN;
+        }
 
-		//PCma_TileEntityAutomaticWorkbench inventory = getTE(world, i, j, k);
+        if (i == 3)
+        {
+            return TXFRONT;
+        }
+        else if (i == 4)
+        {
+            return TXBACK;
+        }
+        else
+        {
+            return TXSIDE;
+        }
+    }
 
-		PC_Utils.openGres("AutomaticWorkbench", entityplayer, i, j, k);
-		return true;
-	}
+    @Override
+    public int tickRate()
+    {
+        return 1;
+    }
 
-	@Override
-	public TileEntity createNewTileEntity(World world) {
-		return new PCma_TileEntityAutomaticWorkbench();
-	}
+    @Override
+    public void onNeighborBlockChange(World world, int i, int j, int k, int l)
+    {
+        if (l > 0 && Block.blocksList[l].canProvidePower())
+        {
+            boolean flag = world.isBlockIndirectlyGettingPowered(i, j, k) || world.isBlockIndirectlyGettingPowered(i, j + 1, k)
+                    || world.isBlockIndirectlyGettingPowered(i, j - 1, k);
 
-	@Override
-	public String getCraftingToolModule() {
-		return mod_PowerCraftMachines.getInstance().getNameWithoutPowerCraft();
-	}
+            if (flag)
+            {
+                world.scheduleBlockUpdate(i, j, k, blockID, tickRate());
+            }
+        }
+    }
 
-	@Override
-	public List<ItemStack> getItemStacks(List<ItemStack> arrayList) {
-		arrayList.add(new ItemStack(this));
-		return arrayList;
-	}
-	
+    @Override
+    public void updateTick(World world, int i, int j, int k, Random random)
+    {
+        if (world.isBlockIndirectlyGettingPowered(i, j, k) || world.isBlockIndirectlyGettingPowered(i, j + 1, k)
+                || world.isBlockIndirectlyGettingPowered(i, j - 1, k))
+        {
+            ((PCma_TileEntityAutomaticWorkbench)PC_Utils.getTE(world, i, j, k)).doCrafting();
+        }
+    }
+
+    @Override
+    public boolean renderAsNormalBlock()
+    {
+        return false;
+    }
+
+    @Override
+    public boolean onBlockActivated(World world, int i, int j, int k, EntityPlayer entityplayer, int par6, float par7, float par8, float par9)
+    {
+        ItemStack ihold = entityplayer.getCurrentEquippedItem();
+
+        if (ihold != null)
+        {
+            if (ihold.getItem() instanceof ItemBlock && ihold.getItem().shiftedIndex != blockID)
+            {
+                return false;
+            }
+        }
+
+        PC_Utils.openGres("AutomaticWorkbench", entityplayer, i, j, k);
+        return true;
+    }
+
+    @Override
+    public TileEntity createNewTileEntity(World world)
+    {
+        return new PCma_TileEntityAutomaticWorkbench();
+    }
+
+    @Override
+    public String getCraftingToolModule()
+    {
+        return mod_PowerCraftMachines.getInstance().getNameWithoutPowerCraft();
+    }
+
+    @Override
+    public List<ItemStack> getItemStacks(List<ItemStack> arrayList)
+    {
+        arrayList.add(new ItemStack(this));
+        return arrayList;
+    }
 }

@@ -7,26 +7,12 @@ public class IntCache
 {
     private static int intCacheSize = 256;
 
-    /**
-     * A list of pre-allocated int[256] arrays that are currently unused and can be returned by getIntCache()
-     */
     private static List freeSmallArrays = new ArrayList();
 
-    /**
-     * A list of pre-allocated int[256] arrays that were previously returned by getIntCache() and which will not be re-
-     * used again until resetIntCache() is called.
-     */
     private static List inUseSmallArrays = new ArrayList();
 
-    /**
-     * A list of pre-allocated int[cacheSize] arrays that are currently unused and can be returned by getIntCache()
-     */
     private static List freeLargeArrays = new ArrayList();
 
-    /**
-     * A list of pre-allocated int[cacheSize] arrays that were previously returned by getIntCache() and which will not
-     * be re-used again until resetIntCache() is called.
-     */
     private static List inUseLargeArrays = new ArrayList();
 
     public static synchronized int[] getIntCache(int par0)
@@ -71,9 +57,6 @@ public class IntCache
         }
     }
 
-    /**
-     * Mark all pre-allocated arrays as available for re-use by moving them to the appropriate free lists.
-     */
     public static synchronized void resetIntCache()
     {
         if (!freeLargeArrays.isEmpty())

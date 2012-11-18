@@ -2,24 +2,16 @@ package net.minecraft.src;
 
 public class TileEntityNote extends TileEntity
 {
-    /** Note to play */
     public byte note = 0;
 
-    /** stores the latest redstone state */
     public boolean previousRedstoneState = false;
 
-    /**
-     * Writes a tile entity to NBT.
-     */
     public void writeToNBT(NBTTagCompound par1NBTTagCompound)
     {
         super.writeToNBT(par1NBTTagCompound);
         par1NBTTagCompound.setByte("note", this.note);
     }
 
-    /**
-     * Reads a tile entity from NBT.
-     */
     public void readFromNBT(NBTTagCompound par1NBTTagCompound)
     {
         super.readFromNBT(par1NBTTagCompound);
@@ -36,18 +28,12 @@ public class TileEntityNote extends TileEntity
         }
     }
 
-    /**
-     * change pitch by -> (currentPitch + 1) % 25
-     */
     public void changePitch()
     {
         this.note = (byte)((this.note + 1) % 25);
         this.onInventoryChanged();
     }
 
-    /**
-     * plays the stored note
-     */
     public void triggerNote(World par1World, int par2, int par3, int par4)
     {
         if (par1World.getBlockMaterial(par2, par3 + 1, par4) == Material.air)

@@ -9,9 +9,6 @@ public class CommandServerList extends CommandBase
         return "list";
     }
 
-    /**
-     * Return the required permission level for this command.
-     */
     public int getRequiredPermissionLevel()
     {
         return 0;

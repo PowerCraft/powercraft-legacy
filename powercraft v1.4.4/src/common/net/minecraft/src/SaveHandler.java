@@ -12,22 +12,15 @@ import cpw.mods.fml.common.FMLCommonHandler;
 
 public class SaveHandler implements ISaveHandler, IPlayerFileData
 {
-    /** Reference to the logger. */
     private static final Logger logger = Logger.getLogger("Minecraft");
 
-    /** The directory in which to save world data. */
     private final File worldDirectory;
 
-    /** The directory in which to save player data. */
     private final File playersDirectory;
     private final File mapDataDir;
 
-    /**
-     * The time in milliseconds when this field was initialized. Stored in the session lock file.
-     */
     private final long initializationTime = System.currentTimeMillis();
 
-    /** The directory name of the world */
     private final String saveDirectoryName;
 
     public SaveHandler(File par1File, String par2Str, boolean par3)
@@ -47,9 +40,6 @@ public class SaveHandler implements ISaveHandler, IPlayerFileData
         this.setSessionLock();
     }
 
-    /**
-     * Creates a session lock file for this process
-     */
     private void setSessionLock()
     {
         try
@@ -73,17 +63,11 @@ public class SaveHandler implements ISaveHandler, IPlayerFileData
         }
     }
 
-    /**
-     * gets the File object corresponding to the base directory of this save (saves/404 for a save called 404 etc)
-     */
     protected File getSaveDirectory()
     {
         return this.worldDirectory;
     }
 
-    /**
-     * Checks the session lock to prevent save collisions
-     */
     public void checkSessionLock() throws MinecraftException
     {
         try
@@ -109,23 +93,18 @@ public class SaveHandler implements ISaveHandler, IPlayerFileData
         }
     }
 
-    /**
-     * Returns the chunk loader with the provided world provider
-     */
     public IChunkLoader getChunkLoader(WorldProvider par1WorldProvider)
     {
         throw new RuntimeException("Old Chunk Storage is no longer supported.");
     }
 
-    /**
-     * Loads and returns the world info
-     */
     public WorldInfo loadWorldInfo()
     {
         File var1 = new File(this.worldDirectory, "level.dat");
         NBTTagCompound var2;
         NBTTagCompound var3;
         WorldInfo worldInfo = null;
+
         if (var1.exists())
         {
             try
@@ -163,15 +142,13 @@ public class SaveHandler implements ISaveHandler, IPlayerFileData
         return null;
     }
 
-    /**
-     * Saves the given World Info with the given NBTTagCompound as the Player.
-     */
     public void saveWorldInfoWithPlayer(WorldInfo par1WorldInfo, NBTTagCompound par2NBTTagCompound)
     {
         NBTTagCompound var3 = par1WorldInfo.cloneNBTCompound(par2NBTTagCompound);
         NBTTagCompound var4 = new NBTTagCompound();
         var4.setTag("Data", var3);
         FMLCommonHandler.instance().handleWorldDataSave(this, par1WorldInfo, var4);
+
         try
         {
             File var5 = new File(this.worldDirectory, "level.dat_new");
@@ -204,15 +181,13 @@ public class SaveHandler implements ISaveHandler, IPlayerFileData
         }
     }
 
-    /**
-     * Saves the passed in world info.
-     */
     public void saveWorldInfo(WorldInfo par1WorldInfo)
     {
         NBTTagCompound var2 = par1WorldInfo.getNBTTagCompound();
         NBTTagCompound var3 = new NBTTagCompound();
         var3.setTag("Data", var2);
         FMLCommonHandler.instance().handleWorldDataSave(this, par1WorldInfo, var3);
+
         try
         {
             File var4 = new File(this.worldDirectory, "level.dat_new");
@@ -245,9 +220,6 @@ public class SaveHandler implements ISaveHandler, IPlayerFileData
         }
     }
 
-    /**
-     * Writes the player data to disk from the specified PlayerEntityMP.
-     */
     public void writePlayerData(EntityPlayer par1EntityPlayer)
     {
         try
@@ -271,9 +243,6 @@ public class SaveHandler implements ISaveHandler, IPlayerFileData
         }
     }
 
-    /**
-     * Reads the player data from disk into the specified PlayerEntityMP.
-     */
     public void readPlayerData(EntityPlayer par1EntityPlayer)
     {
         NBTTagCompound var2 = this.getPlayerData(par1EntityPlayer.username);
@@ -284,9 +253,6 @@ public class SaveHandler implements ISaveHandler, IPlayerFileData
         }
     }
 
-    /**
-     * Gets the player data for the given playername as a NBTTagCompound.
-     */
     public NBTTagCompound getPlayerData(String par1Str)
     {
         try
@@ -306,17 +272,11 @@ public class SaveHandler implements ISaveHandler, IPlayerFileData
         return null;
     }
 
-    /**
-     * returns null if no saveHandler is relevent (eg. SMP)
-     */
     public IPlayerFileData getSaveHandler()
     {
         return this;
     }
 
-    /**
-     * Returns an array of usernames for which player.dat exists for.
-     */
     public String[] getAvailablePlayerDat()
     {
         String[] var1 = this.playersDirectory.list();
@@ -332,22 +292,13 @@ public class SaveHandler implements ISaveHandler, IPlayerFileData
         return var1;
     }
 
-    /**
-     * Called to flush all changes to disk, waiting for them to complete.
-     */
     public void flush() {}
 
-    /**
-     * Gets the file location of the given map
-     */
     public File getMapFileFromName(String par1Str)
     {
         return new File(this.mapDataDir, par1Str + ".dat");
     }
 
-    /**
-     * Returns the name of the directory where world information is saved.
-     */
     public String getSaveDirectoryName()
     {
         return this.saveDirectoryName;

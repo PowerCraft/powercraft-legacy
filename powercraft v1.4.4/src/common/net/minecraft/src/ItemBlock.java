@@ -6,7 +6,6 @@ import java.util.List;
 
 public class ItemBlock extends Item
 {
-    /** The block ID of the Block associated with this ItemBlock */
     private int blockID;
 
     public ItemBlock(int par1)
@@ -17,18 +16,11 @@ public class ItemBlock extends Item
         isDefaultTexture = Block.blocksList[par1 + 256].isDefaultTexture;
     }
 
-    /**
-     * Returns the blockID for this Item
-     */
     public int getBlockID()
     {
         return this.blockID;
     }
 
-    /**
-     * Callback for item usage. If the item does something special on right clicking, he will have one of those. Return
-     * True if something happen and false if it don't. This is for ITEMS, not BLOCKS
-     */
     public boolean onItemUse(ItemStack par1ItemStack, EntityPlayer par2EntityPlayer, World par3World, int par4, int par5, int par6, int par7, float par8, float par9, float par10)
     {
         int var11 = par3World.getBlockId(par4, par5, par6);
@@ -105,9 +97,6 @@ public class ItemBlock extends Item
 
     @SideOnly(Side.CLIENT)
 
-    /**
-     * Returns true if the given ItemBlock can be placed on the given side of the given block position.
-     */
     public boolean canPlaceItemBlockOnSide(World par1World, int par2, int par3, int par4, int par5, EntityPlayer par6EntityPlayer, ItemStack par7ItemStack)
     {
         int var8 = par1World.getBlockId(par2, par3, par4);
@@ -165,9 +154,6 @@ public class ItemBlock extends Item
 
     @SideOnly(Side.CLIENT)
 
-    /**
-     * gets the CreativeTab this item is displayed on
-     */
     public CreativeTabs getCreativeTab()
     {
         return Block.blocksList[this.blockID].getCreativeTabToDisplayOn();
@@ -175,35 +161,24 @@ public class ItemBlock extends Item
 
     @SideOnly(Side.CLIENT)
 
-    /**
-     * returns a list of items with the same ID, but different meta (eg: dye returns 16 items)
-     */
     public void getSubItems(int par1, CreativeTabs par2CreativeTabs, List par3List)
     {
         Block.blocksList[this.blockID].getSubBlocks(par1, par2CreativeTabs, par3List);
     }
 
-    /**
-     * Called to actually place the block, after the location is determined
-     * and all permission checks have been made.
-     *
-     * @param stack The item stack that was used to place the block. This can be changed inside the method.
-     * @param player The player who is placing the block. Can be null if the block is not being placed by a player.
-     * @param side The side the player (or machine) right-clicked on.
-     */
     public boolean placeBlockAt(ItemStack stack, EntityPlayer player, World world, int x, int y, int z, int side, float hitX, float hitY, float hitZ, int metadata)
     {
-       if (!world.setBlockAndMetadataWithNotify(x, y, z, this.blockID, metadata))
-       {
-               return false;
-       }
+        if (!world.setBlockAndMetadataWithNotify(x, y, z, this.blockID, metadata))
+        {
+            return false;
+        }
 
-       if (world.getBlockId(x, y, z) == this.blockID)
-       {
-           Block.blocksList[this.blockID].onBlockPlacedBy(world, x, y, z, player);
-           Block.blocksList[this.blockID].func_85105_g(world, x, y, z, metadata);
-       }
+        if (world.getBlockId(x, y, z) == this.blockID)
+        {
+            Block.blocksList[this.blockID].onBlockPlacedBy(world, x, y, z, player);
+            Block.blocksList[this.blockID].func_85105_g(world, x, y, z, metadata);
+        }
 
-       return true;
+        return true;
     }
 }

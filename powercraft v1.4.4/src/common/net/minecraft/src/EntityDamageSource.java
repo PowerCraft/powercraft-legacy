@@ -15,9 +15,6 @@ public class EntityDamageSource extends DamageSource
         return this.damageSourceEntity;
     }
 
-    /**
-     * Returns the message to be displayed on player death.
-     */
     public String getDeathMessage(EntityPlayer par1EntityPlayer)
     {
         return StatCollector.translateToLocalFormatted("death." + this.damageType, new Object[] {par1EntityPlayer.username, this.damageSourceEntity.getEntityName()});

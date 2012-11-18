@@ -7,16 +7,12 @@ public class ComponentVillageField extends ComponentVillage
 {
     private int averageGroundLevel = -1;
 
-    /** First crop type for this field. */
     private int cropTypeA;
 
-    /** Second crop type for this field. */
     private int cropTypeB;
 
-    /** Third crop type for this field. */
     private int cropTypeC;
 
-    /** Fourth crop type for this field. */
     private int cropTypeD;
 
     public ComponentVillageField(ComponentVillageStartPiece par1ComponentVillageStartPiece, int par2, Random par3Random, StructureBoundingBox par4StructureBoundingBox, int par5)
@@ -30,17 +26,16 @@ public class ComponentVillageField extends ComponentVillage
         this.cropTypeD = this.pickRandomCrop(par3Random);
     }
 
-    /**
-     * Returns a crop type to be planted on this field.
-     */
     private int pickRandomCrop(Random par1Random)
     {
         switch (par1Random.nextInt(5))
         {
             case 0:
                 return Block.carrot.blockID;
+
             case 1:
                 return Block.potatoe.blockID;
+
             default:
                 return Block.crops.blockID;
         }
@@ -52,10 +47,6 @@ public class ComponentVillageField extends ComponentVillage
         return canVillageGoDeeper(var8) && StructureComponent.findIntersecting(par1List, var8) == null ? new ComponentVillageField(par0ComponentVillageStartPiece, par7, par2Random, var8, par6) : null;
     }
 
-    /**
-     * second Part of Structure generating, this for example places Spiderwebs, Mob Spawners, it closes Mineshafts at
-     * the end, it adds Fences...
-     */
     public boolean addComponentParts(World par1World, Random par2Random, StructureBoundingBox par3StructureBoundingBox)
     {
         if (this.averageGroundLevel < 0)

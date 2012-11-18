@@ -12,12 +12,12 @@ public class ChunkDataEvent extends ChunkEvent
         super(chunk);
         this.data = data;
     }
-    
+
     public NBTTagCompound getData()
     {
         return data;
     }
-    
+
     public static class Load extends ChunkDataEvent
     {
         public Load(Chunk chunk, NBTTagCompound data)

@@ -11,7 +11,6 @@ import java.util.Map;
 
 public class ItemPotion extends Item
 {
-    /** maps potion damage values to lists of effect names */
     private HashMap effectCache = new HashMap();
     private static final Map field_77835_b = new LinkedHashMap();
 
@@ -24,9 +23,6 @@ public class ItemPotion extends Item
         this.setCreativeTab(CreativeTabs.tabBrewing);
     }
 
-    /**
-     * Returns a list of potion effects for the specified itemstack.
-     */
     public List getEffects(ItemStack par1ItemStack)
     {
         if (par1ItemStack.hasTagCompound() && par1ItemStack.getTagCompound().hasKey("CustomPotionEffects"))
@@ -56,9 +52,6 @@ public class ItemPotion extends Item
         }
     }
 
-    /**
-     * Returns a list of effects for the specified potion damage value.
-     */
     public List getEffects(int par1)
     {
         List var2 = (List)this.effectCache.get(Integer.valueOf(par1));
@@ -108,25 +101,16 @@ public class ItemPotion extends Item
         return par1ItemStack;
     }
 
-    /**
-     * How long it takes to use or consume an item
-     */
     public int getMaxItemUseDuration(ItemStack par1ItemStack)
     {
         return 32;
     }
 
-    /**
-     * returns the action that specifies what animation to play when the items is being used
-     */
     public EnumAction getItemUseAction(ItemStack par1ItemStack)
     {
         return EnumAction.drink;
     }
 
-    /**
-     * Called whenever this item is equipped and the right mouse button is pressed. Args: itemStack, world, entityPlayer
-     */
     public ItemStack onItemRightClick(ItemStack par1ItemStack, World par2World, EntityPlayer par3EntityPlayer)
     {
         if (isSplash(par1ItemStack.getItemDamage()))
@@ -152,10 +136,6 @@ public class ItemPotion extends Item
         }
     }
 
-    /**
-     * Callback for item usage. If the item does something special on right clicking, he will have one of those. Return
-     * True if something happen and false if it don't. This is for ITEMS, not BLOCKS
-     */
     public boolean onItemUse(ItemStack par1ItemStack, EntityPlayer par2EntityPlayer, World par3World, int par4, int par5, int par6, int par7, float par8, float par9, float par10)
     {
         return false;
@@ -163,9 +143,6 @@ public class ItemPotion extends Item
 
     @SideOnly(Side.CLIENT)
 
-    /**
-     * Gets an icon index based on an item's damage value
-     */
     public int getIconFromDamage(int par1)
     {
         return isSplash(par1) ? 154 : 140;
@@ -173,17 +150,11 @@ public class ItemPotion extends Item
 
     @SideOnly(Side.CLIENT)
 
-    /**
-     * Gets an icon index based on an item's damage value and the given render pass
-     */
     public int getIconFromDamageForRenderPass(int par1, int par2)
     {
         return par2 == 0 ? 141 : super.getIconFromDamageForRenderPass(par1, par2);
     }
 
-    /**
-     * returns wether or not a potion is a throwable splash potion based on damage value
-     */
     public static boolean isSplash(int par0)
     {
         return (par0 & 16384) != 0;
@@ -270,9 +241,6 @@ public class ItemPotion extends Item
 
     @SideOnly(Side.CLIENT)
 
-    /**
-     * allows items to add custom lines of information to the mouseover description
-     */
     public void addInformation(ItemStack par1ItemStack, EntityPlayer par2EntityPlayer, List par3List, boolean par4)
     {
         if (par1ItemStack.getItemDamage() != 0)
@@ -325,9 +293,6 @@ public class ItemPotion extends Item
 
     @SideOnly(Side.CLIENT)
 
-    /**
-     * returns a list of items with the same ID, but different meta (eg: dye returns 16 items)
-     */
     public void getSubItems(int par1, CreativeTabs par2CreativeTabs, List par3List)
     {
         super.getSubItems(par1, par2CreativeTabs, par3List);

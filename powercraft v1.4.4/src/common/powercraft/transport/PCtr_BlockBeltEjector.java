@@ -12,130 +12,143 @@ import net.minecraft.src.World;
 import powercraft.core.PC_CoordI;
 import powercraft.core.PC_Utils;
 
-public class PCtr_BlockBeltEjector extends PCtr_BlockBeltBase {
-	
-	public PCtr_BlockBeltEjector(int id) {
-		super(id, 3);
-	}
+public class PCtr_BlockBeltEjector extends PCtr_BlockBeltBase
+{
+    public PCtr_BlockBeltEjector(int id)
+    {
+        super(id, 3);
+    }
 
-	@Override
-	public String getDefaultName() {
-		return "ejection belt";
-	}
-	
-	@Override
-	public void onEntityCollidedWithBlock(World world, int i, int j, int k, Entity entity) {
-		PC_CoordI pos = new PC_CoordI(i, j, k);
+    @Override
+    public String getDefaultName()
+    {
+        return "ejection belt";
+    }
 
-		if (PCtr_BeltHelper.isEntityIgnored(entity)) {
-			return;
-		}
+    @Override
+    public void onEntityCollidedWithBlock(World world, int i, int j, int k, Entity entity)
+    {
+        PC_CoordI pos = new PC_CoordI(i, j, k);
 
-		if (entity instanceof EntityItem) {
-			PCtr_BeltHelper.packItems(world, pos);
-		}
+        if (PCtr_BeltHelper.isEntityIgnored(entity))
+        {
+            return;
+        }
 
-		int direction = getRotation(pos.getMeta(world));
+        if (entity instanceof EntityItem)
+        {
+            PCtr_BeltHelper.packItems(world, pos);
+        }
 
-		PC_CoordI pos_leading_to = pos.copy();
-		switch (direction) {
-			case 0: // Z--
-				pos_leading_to.z--;
-				break;
+        int direction = getRotation(pos.getMeta(world));
+        PC_CoordI pos_leading_to = pos.copy();
 
-			case 1: // X++
-				pos_leading_to.x++;
-				break;
+        switch (direction)
+        {
+            case 0:
+                pos_leading_to.z--;
+                break;
 
-			case 2: // Z++
-				pos_leading_to.z++;
-				break;
+            case 1:
+                pos_leading_to.x++;
+                break;
 
-			case 3: // X--
-				pos_leading_to.x--;
-				break;
-		}
+            case 2:
+                pos_leading_to.z++;
+                break;
 
-		boolean leadsToNowhere = PCtr_BeltHelper.isBlocked(world, pos_leading_to);
-		leadsToNowhere = leadsToNowhere && PCtr_BeltHelper.isBeyondStorageBorder(world, direction, pos, entity, PCtr_BeltHelper.STORAGE_BORDER_LONG);
+            case 3:
+                pos_leading_to.x--;
+                break;
+        }
 
-		// longlife!
-		if (!leadsToNowhere) {
-			PCtr_BeltHelper.entityPreventDespawning(world, pos, true, entity);
-		}
+        boolean leadsToNowhere = PCtr_BeltHelper.isBlocked(world, pos_leading_to);
+        leadsToNowhere = leadsToNowhere && PCtr_BeltHelper.isBeyondStorageBorder(world, direction, pos, entity, PCtr_BeltHelper.STORAGE_BORDER_LONG);
 
+        if (!leadsToNowhere)
+        {
+            PCtr_BeltHelper.entityPreventDespawning(world, pos, true, entity);
+        }
 
+        double speed_max = PCtr_BeltHelper.MAX_HORIZONTAL_SPEED;
+        double boost = PCtr_BeltHelper.HORIZONTAL_BOOST;
+        PCtr_BeltHelper.moveEntityOnBelt(world, pos, entity, true, !leadsToNowhere, direction, speed_max, boost);
+    }
 
-		double speed_max = PCtr_BeltHelper.MAX_HORIZONTAL_SPEED;
+    @Override
+    public TileEntity createNewTileEntity(World world)
+    {
+        return new PCtr_TileEntityEjectionBelt();
+    }
 
-		double boost = PCtr_BeltHelper.HORIZONTAL_BOOST;
+    @Override
+    public boolean canProvidePower()
+    {
+        return true;
+    }
 
-		PCtr_BeltHelper.moveEntityOnBelt(world, pos, entity, true, !leadsToNowhere, direction, speed_max, boost);
-	}
+    private boolean isPowered(World world, PC_CoordI pos)
+    {
+        return pos.isPoweredIndirectly(world) || pos.offset(0, 1, 0).isPoweredIndirectly(world) || pos.offset(0, -1, 0).isPoweredIndirectly(world);
+    }
 
-	@Override
-	public TileEntity createNewTileEntity(World world) {
-		return new PCtr_TileEntityEjectionBelt();
-	}
-	
-	@Override
-	public boolean canProvidePower() {
-		return true;
-	}
-	
-	private boolean isPowered(World world, PC_CoordI pos) {
-		return pos.isPoweredIndirectly(world) || pos.offset(0, 1, 0).isPoweredIndirectly(world) || pos.offset(0, -1, 0).isPoweredIndirectly(world);
-	}
-	
-	@Override
-	public void onNeighborBlockChange(World world, int i, int j, int k, int l) {
-		if (l > 0) {
-			world.scheduleBlockUpdate(i, j, k, blockID, tickRate());
-		}
-	}
-	
-	@Override
-	public boolean onBlockActivated(World world, int i, int j, int k, EntityPlayer entityplayer, int par6, float par7, float par8, float par9) {
-		if (PCtr_BeltHelper.blockActivated(world, i, j, k, entityplayer)) {
-			return true;
-		} else {
-			ItemStack ihold = entityplayer.getCurrentEquippedItem();
-			if (ihold != null) {
-				if (ihold.getItem() instanceof ItemBlock) {
-					if (ihold.itemID == blockID) {
-						return false;
-					}
-				}
-			}
+    @Override
+    public void onNeighborBlockChange(World world, int i, int j, int k, int l)
+    {
+        if (l > 0)
+        {
+            world.scheduleBlockUpdate(i, j, k, blockID, tickRate());
+        }
+    }
 
-			PC_Utils.openGres("EjectionBelt", entityplayer, i, j, k);
+    @Override
+    public boolean onBlockActivated(World world, int i, int j, int k, EntityPlayer entityplayer, int par6, float par7, float par8, float par9)
+    {
+        if (PCtr_BeltHelper.blockActivated(world, i, j, k, entityplayer))
+        {
+            return true;
+        }
+        else
+        {
+            ItemStack ihold = entityplayer.getCurrentEquippedItem();
 
-			return true;
-		}
-	}
-	
-	@Override
-	public void updateTick(World world, int i, int j, int k, Random random) {
+            if (ihold != null)
+            {
+                if (ihold.getItem() instanceof ItemBlock)
+                {
+                    if (ihold.itemID == blockID)
+                    {
+                        return false;
+                    }
+                }
+            }
 
-		PC_CoordI pos = new PC_CoordI(i, j, k);
+            PC_Utils.openGres("EjectionBelt", entityplayer, i, j, k);
+            return true;
+        }
+    }
 
-		int meta = pos.getMeta(world);
+    @Override
+    public void updateTick(World world, int i, int j, int k, Random random)
+    {
+        PC_CoordI pos = new PC_CoordI(i, j, k);
+        int meta = pos.getMeta(world);
 
-		if (isPowered(world, pos)) {
+        if (isPowered(world, pos))
+        {
+            if (!PCtr_BeltHelper.isActive(meta))
+            {
+                if (!PCtr_BeltHelper.dispenseStackFromNearbyMinecart(world, pos))
+                {
+                    PCtr_BeltHelper.tryToDispenseItem(world, pos);
+                }
 
-			if (!PCtr_BeltHelper.isActive(meta)) {
-				if (!PCtr_BeltHelper.dispenseStackFromNearbyMinecart(world, pos)) {
-					PCtr_BeltHelper.tryToDispenseItem(world, pos);
-				}
-				pos.setMeta(world, PCtr_BeltHelper.getActiveMeta(meta));
-			}
-
-		} else if (PCtr_BeltHelper.isActive(meta)) {
-
-			pos.setMeta(world, PCtr_BeltHelper.getPassiveMeta(meta));
-
-		}
-
-	}
-	
+                pos.setMeta(world, PCtr_BeltHelper.getActiveMeta(meta));
+            }
+        }
+        else if (PCtr_BeltHelper.isActive(meta))
+        {
+            pos.setMeta(world, PCtr_BeltHelper.getPassiveMeta(meta));
+        }
+    }
 }

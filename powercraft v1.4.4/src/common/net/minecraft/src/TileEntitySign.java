@@ -5,19 +5,11 @@ import cpw.mods.fml.common.asm.SideOnly;
 
 public class TileEntitySign extends TileEntity
 {
-    /** An array of four strings storing the lines of text on the sign. */
     public String[] signText = new String[] {"", "", "", ""};
 
-    /**
-     * The index of the line currently being edited. Only used on client side, but defined on both. Note this is only
-     * really used when the > < are going to be visible.
-     */
     public int lineBeingEdited = -1;
     private boolean isEditable = true;
 
-    /**
-     * Writes a tile entity to NBT.
-     */
     public void writeToNBT(NBTTagCompound par1NBTTagCompound)
     {
         super.writeToNBT(par1NBTTagCompound);
@@ -27,9 +19,6 @@ public class TileEntitySign extends TileEntity
         par1NBTTagCompound.setString("Text4", this.signText[3]);
     }
 
-    /**
-     * Reads a tile entity from NBT.
-     */
     public void readFromNBT(NBTTagCompound par1NBTTagCompound)
     {
         this.isEditable = false;
@@ -46,9 +35,6 @@ public class TileEntitySign extends TileEntity
         }
     }
 
-    /**
-     * Overriden in a sign to provide the text.
-     */
     public Packet getDescriptionPacket()
     {
         String[] var1 = new String[4];
@@ -63,9 +49,6 @@ public class TileEntitySign extends TileEntity
 
     @SideOnly(Side.CLIENT)
 
-    /**
-     * Sets the sign's isEditable flag to the specified parameter.
-     */
     public void setEditable(boolean par1)
     {
         this.isEditable = par1;

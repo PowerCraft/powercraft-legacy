@@ -6,7 +6,6 @@ import java.util.Random;
 
 public class BlockRedstoneLight extends Block
 {
-    /** Whether this lamp block is the powered version. */
     private final boolean powered;
 
     public BlockRedstoneLight(int par1, boolean par2)
@@ -21,9 +20,6 @@ public class BlockRedstoneLight extends Block
         }
     }
 
-    /**
-     * Called whenever the block is added into the world. Args: world, x, y, z
-     */
     public void onBlockAdded(World par1World, int par2, int par3, int par4)
     {
         if (!par1World.isRemote)
@@ -39,10 +35,6 @@ public class BlockRedstoneLight extends Block
         }
     }
 
-    /**
-     * Lets the block know when one of its neighbor changes. Doesn't know which neighbor changed (coordinates passed are
-     * their own) Args: x, y, z, neighbor blockID
-     */
     public void onNeighborBlockChange(World par1World, int par2, int par3, int par4, int par5)
     {
         if (!par1World.isRemote)
@@ -58,9 +50,6 @@ public class BlockRedstoneLight extends Block
         }
     }
 
-    /**
-     * Ticks the block if it's been scheduled
-     */
     public void updateTick(World par1World, int par2, int par3, int par4, Random par5Random)
     {
         if (!par1World.isRemote && this.powered && !par1World.isBlockIndirectlyGettingPowered(par2, par3, par4))
@@ -69,9 +58,6 @@ public class BlockRedstoneLight extends Block
         }
     }
 
-    /**
-     * Returns the ID of the items to drop on destruction.
-     */
     public int idDropped(int par1, Random par2Random, int par3)
     {
         return Block.redstoneLampIdle.blockID;
@@ -79,9 +65,6 @@ public class BlockRedstoneLight extends Block
 
     @SideOnly(Side.CLIENT)
 
-    /**
-     * only called by clickMiddleMouseButton , and passed to inventory.setCurrentItem (along with isCreative)
-     */
     public int idPicked(World par1World, int par2, int par3, int par4)
     {
         return Block.redstoneLampIdle.blockID;

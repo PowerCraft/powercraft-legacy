@@ -23,9 +23,6 @@ public class ComponentStrongholdCrossing extends ComponentStronghold
         this.field_74999_h = par2Random.nextInt(3) > 0;
     }
 
-    /**
-     * Initiates construction of the Structure Component picked, at the current Location of StructGen
-     */
     public void buildComponent(StructureComponent par1StructureComponent, List par2List, Random par3Random)
     {
         int var4 = 3;
@@ -66,10 +63,6 @@ public class ComponentStrongholdCrossing extends ComponentStronghold
         return canStrongholdGoDeeper(var7) && StructureComponent.findIntersecting(par0List, var7) == null ? new ComponentStrongholdCrossing(par6, par1Random, var7, par5) : null;
     }
 
-    /**
-     * second Part of Structure generating, this for example places Spiderwebs, Mob Spawners, it closes Mineshafts at
-     * the end, it adds Fences...
-     */
     public boolean addComponentParts(World par1World, Random par2Random, StructureBoundingBox par3StructureBoundingBox)
     {
         if (this.isLiquidInStructureBoundingBox(par1World, par3StructureBoundingBox))

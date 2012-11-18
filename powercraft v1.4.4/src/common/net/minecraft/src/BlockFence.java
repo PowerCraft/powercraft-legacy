@@ -17,10 +17,6 @@ public class BlockFence extends Block
         this.setCreativeTab(CreativeTabs.tabDecorations);
     }
 
-    /**
-     * Returns a bounding box from the pool of bounding boxes (this means this box can change after the pool has been
-     * cleared to be reused)
-     */
     public AxisAlignedBB getCollisionBoundingBoxFromPool(World par1World, int par2, int par3, int par4)
     {
         boolean var5 = this.canConnectFenceTo(par1World, par2, par3, par4 - 1);
@@ -55,9 +51,6 @@ public class BlockFence extends Block
         return AxisAlignedBB.getAABBPool().addOrModifyAABBInPool((double)((float)par2 + var9), (double)par3, (double)((float)par4 + var11), (double)((float)par2 + var10), (double)((float)par3 + 1.5F), (double)((float)par4 + var12));
     }
 
-    /**
-     * Updates the blocks bounds based on its current state. Args: world, x, y, z
-     */
     public void setBlockBoundsBasedOnState(IBlockAccess par1IBlockAccess, int par2, int par3, int par4)
     {
         boolean var5 = this.canConnectFenceTo(par1IBlockAccess, par2, par3, par4 - 1);
@@ -92,18 +85,11 @@ public class BlockFence extends Block
         this.setBlockBounds(var9, 0.0F, var11, var10, 1.0F, var12);
     }
 
-    /**
-     * Is this block (a) opaque and (b) a full 1m cube?  This determines whether or not to render the shared face of two
-     * adjacent blocks and also whether the player can attach torches, redstone wire, etc to this block.
-     */
     public boolean isOpaqueCube()
     {
         return false;
     }
 
-    /**
-     * If this block doesn't render as an ordinary block it will return False (examples: signs, buttons, stairs, etc)
-     */
     public boolean renderAsNormalBlock()
     {
         return false;
@@ -114,17 +100,11 @@ public class BlockFence extends Block
         return false;
     }
 
-    /**
-     * The type of render function that is called for this block
-     */
     public int getRenderType()
     {
         return 11;
     }
 
-    /**
-     * Returns true if the specified block can be connected by a fence
-     */
     public boolean canConnectFenceTo(IBlockAccess par1IBlockAccess, int par2, int par3, int par4)
     {
         int var5 = par1IBlockAccess.getBlockId(par2, par3, par4);
@@ -147,10 +127,6 @@ public class BlockFence extends Block
 
     @SideOnly(Side.CLIENT)
 
-    /**
-     * Returns true if the given side of this block type should be rendered, if the adjacent block is at the given
-     * coordinates.  Args: blockAccess, x, y, z, side
-     */
     public boolean shouldSideBeRendered(IBlockAccess par1IBlockAccess, int par2, int par3, int par4, int par5)
     {
         return true;

@@ -28,138 +28,78 @@ import net.minecraftforge.event.entity.PlaySoundAtEntityEvent;
 
 public abstract class World implements IBlockAccess
 {
-    /**
-     * Used in the getEntitiesWithinAABB functions to expand the search area for entities.
-     * Modders should change this variable to a higher value if it is less then the radius
-     * of one of there entities.
-     */
     public static double MAX_ENTITY_RADIUS = 2.0D;
 
     public final MapStorage perWorldStorage;
 
-    /**
-     * boolean; if true updates scheduled by scheduleBlockUpdate happen immediately
-     */
     public boolean scheduledUpdatesAreImmediate = false;
 
-    /** A list of all Entities in all currently-loaded chunks */
     public List loadedEntityList = new ArrayList();
     protected List unloadedEntityList = new ArrayList();
 
-    /** A list of all TileEntities in all currently-loaded chunks */
     public List loadedTileEntityList = new ArrayList();
     private List addedTileEntityList = new ArrayList();
 
-    /** Entities marked for removal. */
     private List entityRemoval = new ArrayList();
 
-    /** Array list of players in the world. */
     public List playerEntities = new ArrayList();
 
-    /** a list of all the lightning entities */
     public List weatherEffects = new ArrayList();
     private long cloudColour = 16777215L;
 
-    /** How much light is subtracted from full daylight */
     public int skylightSubtracted = 0;
 
-    /**
-     * Contains the current Linear Congruential Generator seed for block updates. Used with an A value of 3 and a C
-     * value of 0x3c6ef35f, producing a highly planar series of values ill-suited for choosing random blocks in a
-     * 16x128x16 field.
-     */
     protected int updateLCG = (new Random()).nextInt();
 
-    /**
-     * magic number used to generate fast random numbers for 3d distribution within a chunk
-     */
     protected final int DIST_HASH_MAGIC = 1013904223;
     protected float prevRainingStrength;
     protected float rainingStrength;
     protected float prevThunderingStrength;
     protected float thunderingStrength;
 
-    /**
-     * Set to 2 whenever a lightning bolt is generated in SSP. Decrements if > 0 in updateWeather(). Value appears to be
-     * unused.
-     */
     protected int lastLightningBolt = 0;
 
-    /**
-     * If > 0, the sky and skylight colors are illuminated by a lightning flash
-     */
     public int lightningFlash = 0;
 
-    /** true while the world is editing blocks */
     public boolean editingBlocks = false;
 
-    /** Option > Difficulty setting (0 - 3) */
     public int difficultySetting;
 
-    /** RNG for World. */
     public Random rand = new Random();
 
-    /** The WorldProvider instance that World uses. */
     public final WorldProvider provider;
     protected List worldAccesses = new ArrayList();
 
-    /** Handles chunk operations and caching */
     protected IChunkProvider chunkProvider;
     protected final ISaveHandler saveHandler;
 
-    /**
-     * holds information about a world (size on disk, time, spawn point, seed, ...)
-     */
     protected WorldInfo worldInfo;
 
-    /** Boolean that is set to true when trying to find a spawn point */
     public boolean findingSpawnPoint;
     public MapStorage mapStorage;
     public VillageCollection villageCollectionObj;
     protected final VillageSiege villageSiegeObj = new VillageSiege(this);
     public final Profiler theProfiler;
 
-    /** The world-local pool of vectors */
     private final Vec3Pool vecPool = new Vec3Pool(300, 2000);
     private final Calendar theCalendar = Calendar.getInstance();
     private ArrayList collidingBoundingBoxes = new ArrayList();
     private boolean scanningTileEntities;
 
-    /** indicates if enemies are spawned or not */
     protected boolean spawnHostileMobs = true;
 
-    /** A flag indicating whether we should spawn peaceful mobs. */
     protected boolean spawnPeacefulMobs = true;
 
-    /** Positions to update */
     public Set activeChunkSet = new HashSet();
 
-    /** number of ticks until the next random ambients play */
     private int ambientTickCountdown;
 
-    /**
-     * is a temporary list of blocks and light values used when updating light levels. Holds up to 32x32x32 blocks (the
-     * maximum influence of a light source.) Every element is a packed bit value: 0000000000LLLLzzzzzzyyyyyyxxxxxx. The
-     * 4-bit L is a light level used when darkening blocks. 6-bit numbers x, y and z represent the block's offset from
-     * the original block, plus 32 (i.e. value of 31 would mean a -1 offset
-     */
     int[] lightUpdateBlockList;
 
-    /**
-     * entities within AxisAlignedBB excluding one, set and returned in getEntitiesWithinAABBExcludingEntity(Entity
-     * var1, AxisAlignedBB var2)
-     */
     private List entitiesWithinAABBExcludingEntity;
 
-    /**
-     * This is set to true when you are a client connected to a multiplayer world, false otherwise. As of Minecraft 1.3
-     * and the integrated server, this will always return true.
-     */
     public boolean isRemote;
 
-    /**
-     * Gets the biome for a given set of x/z coordinates
-     */
     public BiomeGenBase getBiomeGenForCoords(int par1, int par2)
     {
         return provider.getBiomeGenForCoords(par1, par2);
@@ -199,7 +139,6 @@ public abstract class World implements IBlockAccess
         perWorldStorage = new MapStorage((ISaveHandler)null);
     }
 
-    // Broken up so that the WorldClient gets the chance to set the mapstorage object before the dimension initializes
     @SideOnly(Side.CLIENT)
     protected void finishSetup()
     {
@@ -291,6 +230,7 @@ public abstract class World implements IBlockAccess
         {
             this.perWorldStorage = new MapStorage((ISaveHandler)null);
         }
+
         VillageCollection var6 = (VillageCollection)perWorldStorage.loadData(VillageCollection.class, "villages");
 
         if (var6 == null)
@@ -310,20 +250,18 @@ public abstract class World implements IBlockAccess
 
     private static MapStorage s_mapStorage;
     private static ISaveHandler s_savehandler;
-    //Provides a solution for different worlds getting different copies of the same data, potentially rewriting the data or causing race conditions/stale data
-    //Buildcraft has suffered from the issue this fixes.  If you load the same data from two different worlds they can get two different copies of the same object, thus the last saved gets final say.
+
     private MapStorage getMapStorage(ISaveHandler savehandler)
     {
-        if (s_savehandler != savehandler || s_mapStorage == null) {
+        if (s_savehandler != savehandler || s_mapStorage == null)
+        {
             s_mapStorage = new MapStorage(savehandler);
             s_savehandler = savehandler;
         }
+
         return s_mapStorage;
     }
 
-    /**
-     * Creates the chunk provider for this world. Called in the constructor. Retrieves provider from worldProvider?
-     */
     protected abstract IChunkProvider createChunkProvider();
 
     protected void initialize(WorldSettings par1WorldSettings)
@@ -333,18 +271,11 @@ public abstract class World implements IBlockAccess
 
     @SideOnly(Side.CLIENT)
 
-    /**
-     * Sets a new spawn location by finding an uncovered block at a random (x,z) location in the chunk.
-     */
     public void setSpawnLocation()
     {
         this.setSpawnLocation(8, 64, 8);
     }
 
-    /**
-     * Returns the block ID of the first block at this (x,z) location with air above it, searching from sea level
-     * upwards.
-     */
     public int getFirstUncoveredBlock(int par1, int par2)
     {
         int var3;
@@ -357,9 +288,6 @@ public abstract class World implements IBlockAccess
         return this.getBlockId(par1, var3, par2);
     }
 
-    /**
-     * Returns the block ID at coords x,y,z
-     */
     public int getBlockId(int par1, int par2, int par3)
     {
         if (par1 >= -30000000 && par3 >= -30000000 && par1 < 30000000 && par3 < 30000000)
@@ -402,18 +330,12 @@ public abstract class World implements IBlockAccess
         return par1 >= -30000000 && par3 >= -30000000 && par1 < 30000000 && par3 < 30000000 ? (par2 < 0 ? 0 : (par2 >= 256 ? 0 : this.getChunkFromChunkCoords(par1 >> 4, par3 >> 4).getBlockLightOpacity(par1 & 15, par2, par3 & 15))) : 0;
     }
 
-    /**
-     * Returns true if the block at the specified coordinates is empty
-     */
     public boolean isAirBlock(int par1, int par2, int par3)
     {
         int id = getBlockId(par1, par2, par3);
         return id == 0 || Block.blocksList[id] == null || Block.blocksList[id].isAirBlock(this, par1, par2, par3);
     }
 
-    /**
-     * Checks if a block at a given position should have a tile entity.
-     */
     public boolean blockHasTileEntity(int par1, int par2, int par3)
     {
         int var4 = this.getBlockId(par1, par2, par3);
@@ -427,25 +349,16 @@ public abstract class World implements IBlockAccess
         return Block.blocksList[var4] != null ? Block.blocksList[var4].getRenderType() : -1;
     }
 
-    /**
-     * Returns whether a block exists at world coordinates x, y, z
-     */
     public boolean blockExists(int par1, int par2, int par3)
     {
         return par2 >= 0 && par2 < 256 ? this.chunkExists(par1 >> 4, par3 >> 4) : false;
     }
 
-    /**
-     * Checks if any of the chunks within distance (argument 4) blocks of the given block exist
-     */
     public boolean doChunksNearChunkExist(int par1, int par2, int par3, int par4)
     {
         return this.checkChunksExist(par1 - par4, par2 - par4, par3 - par4, par1 + par4, par2 + par4, par3 + par4);
     }
 
-    /**
-     * Checks between a min and max all the chunks inbetween actually exist. Args: minX, minY, minZ, maxX, maxY, maxZ
-     */
     public boolean checkChunksExist(int par1, int par2, int par3, int par4, int par5, int par6)
     {
         if (par5 >= 0 && par2 < 256)
@@ -474,42 +387,26 @@ public abstract class World implements IBlockAccess
         }
     }
 
-    /**
-     * Returns whether a chunk exists at chunk coordinates x, y
-     */
     protected boolean chunkExists(int par1, int par2)
     {
         return this.chunkProvider.chunkExists(par1, par2);
     }
 
-    /**
-     * Returns a chunk looked up by block coordinates. Args: x, z
-     */
     public Chunk getChunkFromBlockCoords(int par1, int par2)
     {
         return this.getChunkFromChunkCoords(par1 >> 4, par2 >> 4);
     }
 
-    /**
-     * Returns back a chunk looked up by chunk coordinates Args: x, y
-     */
     public Chunk getChunkFromChunkCoords(int par1, int par2)
     {
         return this.chunkProvider.provideChunk(par1, par2);
     }
 
-    /**
-     * Sets the block ID and metadata of a block in global coordinates
-     */
     public boolean setBlockAndMetadata(int par1, int par2, int par3, int par4, int par5)
     {
         return this.setBlockAndMetadataWithUpdate(par1, par2, par3, par4, par5, true);
     }
 
-    /**
-     * Sets the block ID and metadata of a block, optionally marking it as needing update. Args: X,Y,Z, blockID,
-     * metadata, needsUpdate
-     */
     public boolean setBlockAndMetadataWithUpdate(int par1, int par2, int par3, int par4, int par5, boolean par6)
     {
         if (par1 >= -30000000 && par3 >= -30000000 && par1 < 30000000 && par3 < 30000000)
@@ -544,9 +441,6 @@ public abstract class World implements IBlockAccess
         }
     }
 
-    /**
-     * Sets the block to the specified blockID at the block coordinates Args x, y, z, blockID
-     */
     public boolean setBlock(int par1, int par2, int par3, int par4)
     {
         if (par1 >= -30000000 && par3 >= -30000000 && par1 < 30000000 && par3 < 30000000)
@@ -581,18 +475,12 @@ public abstract class World implements IBlockAccess
         }
     }
 
-    /**
-     * Returns the block's material.
-     */
     public Material getBlockMaterial(int par1, int par2, int par3)
     {
         int var4 = this.getBlockId(par1, par2, par3);
         return var4 == 0 ? Material.air : Block.blocksList[var4].blockMaterial;
     }
 
-    /**
-     * Returns the block metadata at coords x,y,z
-     */
     public int getBlockMetadata(int par1, int par2, int par3)
     {
         if (par1 >= -30000000 && par3 >= -30000000 && par1 < 30000000 && par3 < 30000000)
@@ -619,9 +507,6 @@ public abstract class World implements IBlockAccess
         }
     }
 
-    /**
-     * Sets the blocks metadata and if set will then notify blocks that this block changed. Args: x, y, z, metadata
-     */
     public void setBlockMetadataWithNotify(int par1, int par2, int par3, int par4)
     {
         if (this.setBlockMetadata(par1, par2, par3, par4))
@@ -630,9 +515,6 @@ public abstract class World implements IBlockAccess
         }
     }
 
-    /**
-     * Set the metadata of a block in global coordinates
-     */
     public boolean setBlockMetadata(int par1, int par2, int par3, int par4)
     {
         if (par1 >= -30000000 && par3 >= -30000000 && par1 < 30000000 && par3 < 30000000)
@@ -666,9 +548,6 @@ public abstract class World implements IBlockAccess
         }
     }
 
-    /**
-     * Sets a block and notifies relevant systems with the block change  Args: x, y, z, blockID
-     */
     public boolean setBlockWithNotify(int par1, int par2, int par3, int par4)
     {
         if (this.setBlock(par1, par2, par3, par4))
@@ -682,9 +561,6 @@ public abstract class World implements IBlockAccess
         }
     }
 
-    /**
-     * Sets the block ID and metadata, then notifies neighboring blocks of the change Params: x, y, z, BlockID, Metadata
-     */
     public boolean setBlockAndMetadataWithNotify(int par1, int par2, int par3, int par4, int par5)
     {
         if (this.setBlockAndMetadata(par1, par2, par3, par4, par5))
@@ -698,9 +574,6 @@ public abstract class World implements IBlockAccess
         }
     }
 
-    /**
-     * Marks the block as needing an update with the renderer. Args: x, y, z
-     */
     public void markBlockNeedsUpdate(int par1, int par2, int par3)
     {
         for (int var4 = 0; var4 < this.worldAccesses.size(); ++var4)
@@ -709,17 +582,11 @@ public abstract class World implements IBlockAccess
         }
     }
 
-    /**
-     * The block type change and need to notify other systems  Args: x, y, z, blockID
-     */
     public void notifyBlockChange(int par1, int par2, int par3, int par4)
     {
         this.notifyBlocksOfNeighborChange(par1, par2, par3, par4);
     }
 
-    /**
-     * marks a vertical line of blocks as dirty
-     */
     public void markBlocksDirtyVertical(int par1, int par2, int par3, int par4)
     {
         int var5;
@@ -742,9 +609,6 @@ public abstract class World implements IBlockAccess
         this.markBlocksDirty(par1, par3, par2, par1, par4, par2);
     }
 
-    /**
-     * calls the 'MarkBlockAsNeedsUpdate' in all block accesses in this world
-     */
     public void markBlockAsNeedsUpdate(int par1, int par2, int par3)
     {
         for (int var4 = 0; var4 < this.worldAccesses.size(); ++var4)
@@ -761,9 +625,6 @@ public abstract class World implements IBlockAccess
         }
     }
 
-    /**
-     * Notifies neighboring blocks that this specified block changed  Args: x, y, z, blockID
-     */
     public void notifyBlocksOfNeighborChange(int par1, int par2, int par3, int par4)
     {
         this.notifyBlockOfNeighborChange(par1 - 1, par2, par3, par4);
@@ -774,9 +635,6 @@ public abstract class World implements IBlockAccess
         this.notifyBlockOfNeighborChange(par1, par2, par3 + 1, par4);
     }
 
-    /**
-     * Notifies a block that one of its neighbor change to the specified type Args: x, y, z, blockID
-     */
     private void notifyBlockOfNeighborChange(int par1, int par2, int par3, int par4)
     {
         if (!this.editingBlocks && !this.isRemote)
@@ -813,17 +671,11 @@ public abstract class World implements IBlockAccess
         }
     }
 
-    /**
-     * Checks if the specified block is able to see the sky
-     */
     public boolean canBlockSeeTheSky(int par1, int par2, int par3)
     {
         return this.getChunkFromChunkCoords(par1 >> 4, par3 >> 4).canBlockSeeTheSky(par1 & 15, par2, par3 & 15);
     }
 
-    /**
-     * Does the same as getBlockLightValue_do but without checking if its not a normal block
-     */
     public int getFullBlockLightValue(int par1, int par2, int par3)
     {
         if (par2 < 0)
@@ -841,19 +693,11 @@ public abstract class World implements IBlockAccess
         }
     }
 
-    /**
-     * Gets the light value of a block location
-     */
     public int getBlockLightValue(int par1, int par2, int par3)
     {
         return this.getBlockLightValue_do(par1, par2, par3, true);
     }
 
-    /**
-     * Gets the light value of a block location. This is the actual function that gets the value and has a bool flag
-     * that indicates if its a half step block to get the maximum light value of a direct neighboring block (left,
-     * right, forward, back, and up)
-     */
     public int getBlockLightValue_do(int par1, int par2, int par3, boolean par4)
     {
         if (par1 >= -30000000 && par3 >= -30000000 && par1 < 30000000 && par3 < 30000000)
@@ -917,9 +761,6 @@ public abstract class World implements IBlockAccess
         }
     }
 
-    /**
-     * Returns the y coordinate with a block in it at this x, z coordinate
-     */
     public int getHeightValue(int par1, int par2)
     {
         if (par1 >= -30000000 && par2 >= -30000000 && par1 < 30000000 && par2 < 30000000)
@@ -962,10 +803,6 @@ public abstract class World implements IBlockAccess
 
     @SideOnly(Side.CLIENT)
 
-    /**
-     * Brightness for SkyBlock.Sky is clear white and (through color computing it is assumed) DEPENDENT ON DAYTIME.
-     * Brightness for SkyBlock.Block is yellowish and independent.
-     */
     public int getSkyBlockTypeBrightness(EnumSkyBlock par1EnumSkyBlock, int par2, int par3, int par4)
     {
         if (this.provider.hasNoSky && par1EnumSkyBlock == EnumSkyBlock.Sky)
@@ -1035,10 +872,6 @@ public abstract class World implements IBlockAccess
         }
     }
 
-    /**
-     * Returns saved light value without taking into account the time of day.  Either looks in the sky light map or
-     * block light map based on the enumSkyBlock arg.
-     */
     public int getSavedLightValue(EnumSkyBlock par1EnumSkyBlock, int par2, int par3, int par4)
     {
         if (par3 < 0)
@@ -1072,10 +905,6 @@ public abstract class World implements IBlockAccess
         }
     }
 
-    /**
-     * Sets the light value either into the sky map or block map depending on if enumSkyBlock is set to sky or block.
-     * Args: enumSkyBlock, x, y, z, lightValue
-     */
     public void setLightValue(EnumSkyBlock par1EnumSkyBlock, int par2, int par3, int par4, int par5)
     {
         if (par2 >= -30000000 && par4 >= -30000000 && par2 < 30000000 && par4 < 30000000)
@@ -1099,9 +928,6 @@ public abstract class World implements IBlockAccess
         }
     }
 
-    /**
-     * all WorldAcceses mark this block as dirty
-     */
     public void markBlockNeedsUpdateForAll(int par1, int par2, int par3)
     {
         for (int var4 = 0; var4 < this.worldAccesses.size(); ++var4)
@@ -1112,9 +938,6 @@ public abstract class World implements IBlockAccess
 
     @SideOnly(Side.CLIENT)
 
-    /**
-     * Any Light rendered on a 1.8 Block goes through here
-     */
     public int getLightBrightnessForSkyBlocks(int par1, int par2, int par3, int par4)
     {
         int var5 = this.getSkyBlockTypeBrightness(EnumSkyBlock.Sky, par1, par2, par3);
@@ -1141,26 +964,16 @@ public abstract class World implements IBlockAccess
         return this.provider.lightBrightnessTable[var5];
     }
 
-    /**
-     * Returns how bright the block is shown as which is the block's light value looked up in a lookup table (light
-     * values aren't linear for brightness). Args: x, y, z
-     */
     public float getLightBrightness(int par1, int par2, int par3)
     {
         return this.provider.lightBrightnessTable[this.getBlockLightValue(par1, par2, par3)];
     }
 
-    /**
-     * Checks whether its daytime by seeing if the light subtracted from the skylight is less than 4
-     */
     public boolean isDaytime()
     {
         return provider.isDaytime();
     }
 
-    /**
-     * ray traces all blocks, including non-collideable ones
-     */
     public MovingObjectPosition rayTraceBlocks(Vec3 par1Vec3, Vec3 par2Vec3)
     {
         return this.rayTraceBlocks_do_do(par1Vec3, par2Vec3, false, false);
@@ -1381,18 +1194,17 @@ public abstract class World implements IBlockAccess
         }
     }
 
-    /**
-     * Plays a sound at the entity's position. Args: entity, sound, volume (relative to 1.0), and frequency (or pitch,
-     * also relative to 1.0).
-     */
     public void playSoundAtEntity(Entity par1Entity, String par2Str, float par3, float par4)
     {
         PlaySoundAtEntityEvent event = new PlaySoundAtEntityEvent(par1Entity, par2Str, par3, par4);
+
         if (MinecraftForge.EVENT_BUS.post(event))
         {
             return;
         }
+
         par2Str = event.name;
+
         if (par1Entity != null && par2Str != null)
         {
             for (int var5 = 0; var5 < this.worldAccesses.size(); ++var5)
@@ -1413,11 +1225,6 @@ public abstract class World implements IBlockAccess
         }
     }
 
-    /**
-     * Play a sound effect. Many many parameters for this function. Not sure what they do, but a classic call is :
-     * (double)i + 0.5D, (double)j + 0.5D, (double)k + 0.5D, 'random.door_open', 1.0F, world.rand.nextFloat() * 0.1F +
-     * 0.9F with i,j,k position of the block.
-     */
     public void playSoundEffect(double par1, double par3, double par5, String par7Str, float par8, float par9)
     {
         if (par7Str != null)
@@ -1429,14 +1236,8 @@ public abstract class World implements IBlockAccess
         }
     }
 
-    /**
-     * par8 is loudness, all pars passed to minecraftInstance.sndManager.playSound
-     */
     public void playSound(double par1, double par3, double par5, String par7Str, float par8, float par9) {}
 
-    /**
-     * Plays a record at the specified coordinates of the specified name. Args: recordName, x, y, z
-     */
     public void playRecord(String par1Str, int par2, int par3, int par4)
     {
         for (int var5 = 0; var5 < this.worldAccesses.size(); ++var5)
@@ -1445,9 +1246,6 @@ public abstract class World implements IBlockAccess
         }
     }
 
-    /**
-     * Spawns a particle.  Args particleName, x, y, z, velX, velY, velZ
-     */
     public void spawnParticle(String par1Str, double par2, double par4, double par6, double par8, double par10, double par12)
     {
         for (int var14 = 0; var14 < this.worldAccesses.size(); ++var14)
@@ -1456,18 +1254,12 @@ public abstract class World implements IBlockAccess
         }
     }
 
-    /**
-     * adds a lightning bolt to the list of lightning bolts in this world.
-     */
     public boolean addWeatherEffect(Entity par1Entity)
     {
         this.weatherEffects.add(par1Entity);
         return true;
     }
 
-    /**
-     * Called to place all entities as part of a world
-     */
     public boolean spawnEntityInWorld(Entity par1Entity)
     {
         int var2 = MathHelper.floor_double(par1Entity.posX / 16.0D);
@@ -1504,9 +1296,6 @@ public abstract class World implements IBlockAccess
         }
     }
 
-    /**
-     * Start the skin for this entity downloading, if necessary, and increment its reference counter
-     */
     protected void obtainEntitySkin(Entity par1Entity)
     {
         for (int var2 = 0; var2 < this.worldAccesses.size(); ++var2)
@@ -1515,9 +1304,6 @@ public abstract class World implements IBlockAccess
         }
     }
 
-    /**
-     * Decrement the reference counter for this entity's skin image data
-     */
     protected void releaseEntitySkin(Entity par1Entity)
     {
         for (int var2 = 0; var2 < this.worldAccesses.size(); ++var2)
@@ -1526,10 +1312,6 @@ public abstract class World implements IBlockAccess
         }
     }
 
-    /**
-     * Dismounts the entity (and anything riding the entity), sets the dead flag, and removes the player entity from the
-     * player entity list. Called by the playerLoggedOut function.
-     */
     public void setEntityDead(Entity par1Entity)
     {
         if (par1Entity.riddenByEntity != null)
@@ -1551,9 +1333,6 @@ public abstract class World implements IBlockAccess
         }
     }
 
-    /**
-     * remove dat player from dem servers
-     */
     public void removeEntity(Entity par1Entity)
     {
         par1Entity.setDead();
@@ -1576,18 +1355,11 @@ public abstract class World implements IBlockAccess
         this.releaseEntitySkin(par1Entity);
     }
 
-    /**
-     * Adds a IWorldAccess to the list of worldAccesses
-     */
     public void addWorldAccess(IWorldAccess par1IWorldAccess)
     {
         this.worldAccesses.add(par1IWorldAccess);
     }
 
-    /**
-     * Returns a list of bounding boxes that collide with aabb excluding the passed in entity's collision. Args: entity,
-     * aabb
-     */
     public List getCollidingBoundingBoxes(Entity par1Entity, AxisAlignedBB par2AxisAlignedBB)
     {
         this.collidingBoundingBoxes.clear();
@@ -1640,9 +1412,6 @@ public abstract class World implements IBlockAccess
         return this.collidingBoundingBoxes;
     }
 
-    /**
-     * calculates and returns a list of colliding bounding boxes within a given AABB
-     */
     public List getAllCollidingBoundingBoxes(AxisAlignedBB par1AxisAlignedBB)
     {
         this.collidingBoundingBoxes.clear();
@@ -1675,9 +1444,6 @@ public abstract class World implements IBlockAccess
         return this.collidingBoundingBoxes;
     }
 
-    /**
-     * Returns the amount of skylight subtracted for the current time
-     */
     public int calculateSkylightSubtracted(float par1)
     {
         float var2 = this.getCelestialAngle(par1);
@@ -1702,9 +1468,6 @@ public abstract class World implements IBlockAccess
 
     @SideOnly(Side.CLIENT)
 
-    /**
-     * Removes a worldAccess from the worldAccesses object
-     */
     public void removeWorldAccess(IWorldAccess par1IWorldAccess)
     {
         this.worldAccesses.remove(par1IWorldAccess);
@@ -1734,9 +1497,6 @@ public abstract class World implements IBlockAccess
 
     @SideOnly(Side.CLIENT)
 
-    /**
-     * Calculates the color for the skybox
-     */
     public Vec3 getSkyColor(Entity par1Entity, float par2)
     {
         return provider.getSkyColor(par1Entity, par2);
@@ -1811,9 +1571,6 @@ public abstract class World implements IBlockAccess
         return this.getWorldVec3Pool().getVecFromPool((double)var10, (double)var11, (double)var12);
     }
 
-    /**
-     * calls calculateCelestialAngle
-     */
     public float getCelestialAngle(float par1)
     {
         return this.provider.calculateCelestialAngle(this.worldInfo.getWorldTime(), par1);
@@ -1827,9 +1584,6 @@ public abstract class World implements IBlockAccess
 
     @SideOnly(Side.CLIENT)
 
-    /**
-     * Return getCelestialAngle()*2*PI
-     */
     public float getCelestialAngleRadians(float par1)
     {
         float var2 = this.getCelestialAngle(par1);
@@ -1893,26 +1647,17 @@ public abstract class World implements IBlockAccess
 
     @SideOnly(Side.CLIENT)
 
-    /**
-     * Returns vector(ish) with R/G/B for fog
-     */
     public Vec3 getFogColor(float par1)
     {
         float var2 = this.getCelestialAngle(par1);
         return this.provider.getFogColor(var2, par1);
     }
 
-    /**
-     * Gets the height to which rain/snow will fall. Calculates it if not already stored.
-     */
     public int getPrecipitationHeight(int par1, int par2)
     {
         return this.getChunkFromBlockCoords(par1, par2).getPrecipitationHeight(par1 & 15, par2 & 15);
     }
 
-    /**
-     * Finds the highest block on the x, z coordinate that is solid and returns its y coord. Args x, z
-     */
     public int getTopSolidOrLiquidBlock(int par1, int par2)
     {
         Chunk var3 = this.getChunkFromBlockCoords(par1, par2);
@@ -1934,9 +1679,6 @@ public abstract class World implements IBlockAccess
 
     @SideOnly(Side.CLIENT)
 
-    /**
-     * How bright are stars in the sky
-     */
     public float getStarBrightness(float par1)
     {
         return provider.getStarBrightness(par1);
@@ -1961,21 +1703,12 @@ public abstract class World implements IBlockAccess
         return var3 * var3 * 0.5F;
     }
 
-    /**
-     * Schedules a tick to a block with a delay (Most commonly the tick rate)
-     */
     public void scheduleBlockUpdate(int par1, int par2, int par3, int par4, int par5) {}
 
     public void func_82740_a(int par1, int par2, int par3, int par4, int par5, int par6) {}
 
-    /**
-     * Schedules a block update from the saved information in a chunk. Called when the chunk is loaded.
-     */
     public void scheduleBlockUpdateFromLoad(int par1, int par2, int par3, int par4, int par5) {}
 
-    /**
-     * Updates (and cleans up) entities and tile entities
-     */
     public void updateEntities()
     {
         this.theProfiler.startSection("entities");
@@ -2155,8 +1888,9 @@ public abstract class World implements IBlockAccess
         {
             for (Object tile : entityRemoval)
             {
-               ((TileEntity)tile).onChunkUnload();
+                ((TileEntity)tile).onChunkUnload();
             }
+
             this.loadedTileEntityList.removeAll(this.entityRemoval);
             this.entityRemoval.clear();
         }
@@ -2200,41 +1934,36 @@ public abstract class World implements IBlockAccess
     public void addTileEntity(Collection par1Collection)
     {
         List dest = scanningTileEntities ? addedTileEntityList : loadedTileEntityList;
-        for(Object entity : par1Collection)
+
+        for (Object entity : par1Collection)
         {
-            if(((TileEntity)entity).canUpdate())
+            if (((TileEntity)entity).canUpdate())
             {
                 dest.add(entity);
             }
         }
     }
 
-    /**
-     * Will update the entity in the world if the chunk the entity is in is currently loaded. Args: entity
-     */
     public void updateEntity(Entity par1Entity)
     {
         this.updateEntityWithOptionalForce(par1Entity, true);
     }
 
-    /**
-     * Will update the entity in the world if the chunk the entity is in is currently loaded or its forced to update.
-     * Args: entity, forceUpdate
-     */
     public void updateEntityWithOptionalForce(Entity par1Entity, boolean par2)
     {
         int var3 = MathHelper.floor_double(par1Entity.posX);
         int var4 = MathHelper.floor_double(par1Entity.posZ);
-
         boolean isForced = getPersistentChunks().containsKey(new ChunkCoordIntPair(var3 >> 4, var4 >> 4));
         byte var5 = isForced ? (byte)0 : 32;
         boolean canUpdate = !par2 || this.checkChunksExist(var3 - var5, 0, var4 - var5, var3 + var5, 0, var4 + var5);
+
         if (!canUpdate)
         {
             EntityEvent.CanUpdate event = new EntityEvent.CanUpdate(par1Entity);
             MinecraftForge.EVENT_BUS.post(event);
             canUpdate = event.canUpdate;
         }
+
         if (canUpdate)
         {
             par1Entity.lastTickPosX = par1Entity.posX;
@@ -2321,17 +2050,11 @@ public abstract class World implements IBlockAccess
         }
     }
 
-    /**
-     * Returns true if there are no solid, live entities in the specified AxisAlignedBB
-     */
     public boolean checkIfAABBIsClear(AxisAlignedBB par1AxisAlignedBB)
     {
         return this.checkIfAABBIsClearExcludingEntity(par1AxisAlignedBB, (Entity)null);
     }
 
-    /**
-     * Returns true if there are no solid, live entities in the specified AxisAlignedBB, excluding the given entity
-     */
     public boolean checkIfAABBIsClearExcludingEntity(AxisAlignedBB par1AxisAlignedBB, Entity par2Entity)
     {
         List var3 = this.getEntitiesWithinAABBExcludingEntity((Entity)null, par1AxisAlignedBB);
@@ -2349,9 +2072,6 @@ public abstract class World implements IBlockAccess
         return true;
     }
 
-    /**
-     * Returns true if there are any blocks in the region constrained by an AxisAlignedBB
-     */
     public boolean isAABBNonEmpty(AxisAlignedBB par1AxisAlignedBB)
     {
         int var2 = MathHelper.floor_double(par1AxisAlignedBB.minX);
@@ -2395,9 +2115,6 @@ public abstract class World implements IBlockAccess
         return false;
     }
 
-    /**
-     * Returns if any of the blocks within the aabb are liquids. Args: aabb
-     */
     public boolean isAnyLiquid(AxisAlignedBB par1AxisAlignedBB)
     {
         int var2 = MathHelper.floor_double(par1AxisAlignedBB.minX);
@@ -2441,9 +2158,6 @@ public abstract class World implements IBlockAccess
         return false;
     }
 
-    /**
-     * Returns whether or not the given bounding box is on fire or not
-     */
     public boolean isBoundingBoxBurning(AxisAlignedBB par1AxisAlignedBB)
     {
         int var2 = MathHelper.floor_double(par1AxisAlignedBB.minX);
@@ -2470,6 +2184,7 @@ public abstract class World implements IBlockAccess
                         else
                         {
                             Block block = Block.blocksList[var11];
+
                             if (block != null && block.isBlockBurning(this, var8, var9, var10))
                             {
                                 return true;
@@ -2483,9 +2198,6 @@ public abstract class World implements IBlockAccess
         return false;
     }
 
-    /**
-     * handles the acceleration of an object whilst in water. Not sure if it is used elsewhere.
-     */
     public boolean handleMaterialAcceleration(AxisAlignedBB par1AxisAlignedBB, Material par2Material, Entity par3Entity)
     {
         int var4 = MathHelper.floor_double(par1AxisAlignedBB.minX);
@@ -2539,9 +2251,6 @@ public abstract class World implements IBlockAccess
         }
     }
 
-    /**
-     * Returns true if the given bounding box contains the given material
-     */
     public boolean isMaterialInBB(AxisAlignedBB par1AxisAlignedBB, Material par2Material)
     {
         int var3 = MathHelper.floor_double(par1AxisAlignedBB.minX);
@@ -2570,9 +2279,6 @@ public abstract class World implements IBlockAccess
         return false;
     }
 
-    /**
-     * checks if the given AABB is in the material given. Used while swimming.
-     */
     public boolean isAABBInMaterial(AxisAlignedBB par1AxisAlignedBB, Material par2Material)
     {
         int var3 = MathHelper.floor_double(par1AxisAlignedBB.minX);
@@ -2612,17 +2318,11 @@ public abstract class World implements IBlockAccess
         return false;
     }
 
-    /**
-     * Creates an explosion. Args: entity, x, y, z, strength
-     */
     public Explosion createExplosion(Entity par1Entity, double par2, double par4, double par6, float par8, boolean par9)
     {
         return this.newExplosion(par1Entity, par2, par4, par6, par8, false, par9);
     }
 
-    /**
-     * returns a new explosion. Does initiation (at time of writing Explosion is not finished)
-     */
     public Explosion newExplosion(Entity par1Entity, double par2, double par4, double par6, float par8, boolean par9, boolean par10)
     {
         Explosion var11 = new Explosion(this, par1Entity, par2, par4, par6, par8);
@@ -2633,9 +2333,6 @@ public abstract class World implements IBlockAccess
         return var11;
     }
 
-    /**
-     * Gets the percentage of real blocks within within a bounding box, along a specified vector.
-     */
     public float getBlockDensity(Vec3 par1Vec3, AxisAlignedBB par2AxisAlignedBB)
     {
         double var3 = 1.0D / ((par2AxisAlignedBB.maxX - par2AxisAlignedBB.minX) * 2.0D + 1.0D);
@@ -2667,10 +2364,6 @@ public abstract class World implements IBlockAccess
         return (float)var9 / (float)var10;
     }
 
-    /**
-     * If the block in the given direction of the given coordinate is fire, extinguish it. Args: Player, X,Y,Z,
-     * blockDirection
-     */
     public boolean extinguishFire(EntityPlayer par1EntityPlayer, int par2, int par3, int par4, int par5)
     {
         if (par5 == 0)
@@ -2717,9 +2410,6 @@ public abstract class World implements IBlockAccess
 
     @SideOnly(Side.CLIENT)
 
-    /**
-     * This string is 'All: (number of loaded entities)' Viewable by press ing F3
-     */
     public String getDebugLoadedEntities()
     {
         return "All: " + this.loadedEntityList.size();
@@ -2727,17 +2417,11 @@ public abstract class World implements IBlockAccess
 
     @SideOnly(Side.CLIENT)
 
-    /**
-     * Returns the name of the current chunk provider, by calling chunkprovider.makeString()
-     */
     public String getProviderName()
     {
         return this.chunkProvider.makeString();
     }
 
-    /**
-     * Returns the TileEntity associated with a given block in X,Y,Z coordinates, or null if no TileEntity exists
-     */
     public TileEntity getBlockTileEntity(int par1, int par2, int par3)
     {
         if (par2 >= 256)
@@ -2775,9 +2459,6 @@ public abstract class World implements IBlockAccess
         }
     }
 
-    /**
-     * Sets the TileEntity for a given block in X, Y, Z coordinates
-     */
     public void setBlockTileEntity(int par1, int par2, int par3, TileEntity par4TileEntity)
     {
         if (par4TileEntity == null || par4TileEntity.isInvalid())
@@ -2792,44 +2473,34 @@ public abstract class World implements IBlockAccess
         }
 
         Chunk chunk = getChunkFromChunkCoords(par1 >> 4, par3 >> 4);
+
         if (chunk != null)
         {
             chunk.setChunkBlockTileEntity(par1 & 15, par2, par3 & 15, par4TileEntity);
         }
     }
 
-    /**
-     * Removes the TileEntity for a given block in X,Y,Z coordinates
-     */
     public void removeBlockTileEntity(int par1, int par2, int par3)
     {
         Chunk chunk = getChunkFromChunkCoords(par1 >> 4, par3 >> 4);
+
         if (chunk != null)
         {
             chunk.removeChunkBlockTileEntity(par1 & 15, par2, par3 & 15);
         }
     }
 
-    /**
-     * adds tile entity to despawn list (renamed from markEntityForDespawn)
-     */
     public void markTileEntityForDespawn(TileEntity par1TileEntity)
     {
         this.entityRemoval.add(par1TileEntity);
     }
 
-    /**
-     * Returns true if the block at the specified coordinates is an opaque cube. Args: x, y, z
-     */
     public boolean isBlockOpaqueCube(int par1, int par2, int par3)
     {
         Block var4 = Block.blocksList[this.getBlockId(par1, par2, par3)];
         return var4 == null ? false : var4.isOpaqueCube();
     }
 
-    /**
-     * Indicate if a material is a normal solid opaque cube.
-     */
     public boolean isBlockNormalCube(int par1, int par2, int par3)
     {
         Block block = Block.blocksList[getBlockId(par1, par2, par3)];
@@ -2851,18 +2522,11 @@ public abstract class World implements IBlockAccess
         }
     }
 
-    /**
-     * Returns true if the block at the given coordinate has a solid (buildable) top surface.
-     */
     public boolean doesBlockHaveSolidTopSurface(int par1, int par2, int par3)
     {
         return isBlockSolidOnSide(par1, par2, par3, ForgeDirection.UP);
     }
 
-    /**
-     * Checks if the block is a solid, normal cube. If the chunk does not exist, or is not loaded, it returns the
-     * boolean parameter.
-     */
     public boolean isBlockNormalCubeDefault(int par1, int par2, int par3, boolean par4)
     {
         if (par1 >= -30000000 && par3 >= -30000000 && par1 < 30000000 && par3 < 30000000)
@@ -2885,9 +2549,6 @@ public abstract class World implements IBlockAccess
         }
     }
 
-    /**
-     * Called on construction of the World class to setup the initial skylight values
-     */
     public void calculateInitialSkylight()
     {
         int var1 = this.calculateSkylightSubtracted(1.0F);
@@ -2898,25 +2559,16 @@ public abstract class World implements IBlockAccess
         }
     }
 
-    /**
-     * Set which types of mobs are allowed to spawn (peaceful vs hostile).
-     */
     public void setAllowedSpawnTypes(boolean par1, boolean par2)
     {
         provider.setAllowedSpawnTypes(par1, par2);
     }
 
-    /**
-     * Runs a single tick for the world
-     */
     public void tick()
     {
         this.updateWeather();
     }
 
-    /**
-     * Called from World constructor to set rainingStrength and thunderingStrength
-     */
     private void calculateInitialWeather()
     {
         provider.calculateInitialWeather();
@@ -2935,9 +2587,6 @@ public abstract class World implements IBlockAccess
         }
     }
 
-    /**
-     * Updates all weather states.
-     */
     protected void updateWeather()
     {
         provider.updateWeather();
@@ -3053,7 +2702,6 @@ public abstract class World implements IBlockAccess
     {
         this.activeChunkSet.clear();
         this.activeChunkSet.addAll(getPersistentChunks().keySet());
-
         this.theProfiler.startSection("buildList");
         int var1;
         EntityPlayer var2;
@@ -3129,35 +2777,21 @@ public abstract class World implements IBlockAccess
         par3Chunk.enqueueRelightChecks();
     }
 
-    /**
-     * plays random cave ambient sounds and runs updateTick on random blocks within each chunk in the vacinity of a
-     * player
-     */
     protected void tickBlocksAndAmbiance()
     {
         this.setActivePlayerChunksAndCheckLight();
     }
 
-    /**
-     * checks to see if a given block is both water and is cold enough to freeze
-     */
     public boolean isBlockFreezable(int par1, int par2, int par3)
     {
         return this.canBlockFreeze(par1, par2, par3, false);
     }
 
-    /**
-     * checks to see if a given block is both water and has at least one immediately adjacent non-water block
-     */
     public boolean isBlockFreezableNaturally(int par1, int par2, int par3)
     {
         return this.canBlockFreeze(par1, par2, par3, true);
     }
 
-    /**
-     * checks to see if a given block is both water, and cold enough to freeze - if the par4 boolean is set, this will
-     * only return true if there is a non-water block immediately adjacent to the specified block
-     */
     public boolean canBlockFreeze(int par1, int par2, int par3, boolean par4)
     {
         return provider.canBlockFreeze(par1, par2, par3, par4);
@@ -3218,9 +2852,6 @@ public abstract class World implements IBlockAccess
         }
     }
 
-    /**
-     * Tests whether or not snow can be placed at a given location
-     */
     public boolean canSnowAt(int par1, int par2, int par3)
     {
         return provider.canSnowAt(par1, par2, par3);
@@ -3569,9 +3200,6 @@ public abstract class World implements IBlockAccess
         }
     }
 
-    /**
-     * Runs through the list of updates to run and ticks them
-     */
     public boolean tickUpdates(boolean par1)
     {
         return false;
@@ -3582,9 +3210,6 @@ public abstract class World implements IBlockAccess
         return null;
     }
 
-    /**
-     * Will get all entities within the specified AABB excluding the one passed into it. Args: entityToExclude, aabb
-     */
     public List getEntitiesWithinAABBExcludingEntity(Entity par1Entity, AxisAlignedBB par2AxisAlignedBB)
     {
         this.entitiesWithinAABBExcludingEntity.clear();
@@ -3607,9 +3232,6 @@ public abstract class World implements IBlockAccess
         return this.entitiesWithinAABBExcludingEntity;
     }
 
-    /**
-     * Returns all entities of the specified class type which intersect with the AABB. Args: entityClass, aabb
-     */
     public List getEntitiesWithinAABB(Class par1Class, AxisAlignedBB par2AxisAlignedBB)
     {
         return this.func_82733_a(par1Class, par2AxisAlignedBB, (IEntitySelector)null);
@@ -3662,24 +3284,15 @@ public abstract class World implements IBlockAccess
         return var5;
     }
 
-    /**
-     * Returns the Entity with the given ID, or null if it doesn't exist in this World.
-     */
     public abstract Entity getEntityByID(int var1);
 
     @SideOnly(Side.CLIENT)
 
-    /**
-     * Accessor for world Loaded Entity List
-     */
     public List getLoadedEntityList()
     {
         return this.loadedEntityList;
     }
 
-    /**
-     * marks the chunk that contains this tilentity as modified and then calls worldAccesses.doNothingWithTileEntity
-     */
     public void updateTileEntityChunkAndDoNothing(int par1, int par2, int par3, TileEntity par4TileEntity)
     {
         if (this.blockExists(par1, par2, par3))
@@ -3688,9 +3301,6 @@ public abstract class World implements IBlockAccess
         }
     }
 
-    /**
-     * Counts how many entities of an entity class exist in the world. Args: entityClass
-     */
     public int countEntities(Class par1Class)
     {
         int var2 = 0;
@@ -3708,14 +3318,12 @@ public abstract class World implements IBlockAccess
         return var2;
     }
 
-    /**
-     * adds entities to the loaded entities list, and loads thier skins.
-     */
     public void addLoadedEntities(List par1List)
     {
         for (int var2 = 0; var2 < par1List.size(); ++var2)
         {
             Entity entity = (Entity)par1List.get(var2);
+
             if (!MinecraftForge.EVENT_BUS.post(new EntityJoinWorldEvent(entity, this)))
             {
                 loadedEntityList.add(entity);
@@ -3724,17 +3332,11 @@ public abstract class World implements IBlockAccess
         }
     }
 
-    /**
-     * Adds a list of entities to be unloaded on the next pass of World.updateEntities()
-     */
     public void unloadEntities(List par1List)
     {
         this.unloadedEntityList.addAll(par1List);
     }
 
-    /**
-     * Returns true if the given Entity can be placed on the given side of the given block position.
-     */
     public boolean canPlaceEntityOnSide(int par1, int par2, int par3, int par4, boolean par5, int par6, Entity par7Entity)
     {
         int var8 = this.getBlockId(par2, par3, par4);
@@ -3805,27 +3407,17 @@ public abstract class World implements IBlockAccess
         return var21;
     }
 
-    /**
-     * Is this block powering in the specified direction Args: x, y, z, direction
-     */
     public boolean isBlockProvidingPowerTo(int par1, int par2, int par3, int par4)
     {
         int var5 = this.getBlockId(par1, par2, par3);
         return var5 == 0 ? false : Block.blocksList[var5].isIndirectlyPoweringTo(this, par1, par2, par3, par4);
     }
 
-    /**
-     * Whether one of the neighboring blocks is putting power into this block. Args: x, y, z
-     */
     public boolean isBlockGettingPowered(int par1, int par2, int par3)
     {
         return this.isBlockProvidingPowerTo(par1, par2 - 1, par3, 0) ? true : (this.isBlockProvidingPowerTo(par1, par2 + 1, par3, 1) ? true : (this.isBlockProvidingPowerTo(par1, par2, par3 - 1, 2) ? true : (this.isBlockProvidingPowerTo(par1, par2, par3 + 1, 3) ? true : (this.isBlockProvidingPowerTo(par1 - 1, par2, par3, 4) ? true : this.isBlockProvidingPowerTo(par1 + 1, par2, par3, 5)))));
     }
 
-    /**
-     * Is a block next to you getting powered (if its an attachable block) or is it providing power directly to you.
-     * Args: x, y, z, direction
-     */
     public boolean isBlockIndirectlyProvidingPowerTo(int par1, int par2, int par3, int par4)
     {
         if (this.isBlockNormalCube(par1, par2, par3))
@@ -3839,28 +3431,16 @@ public abstract class World implements IBlockAccess
         }
     }
 
-    /**
-     * Used to see if one of the blocks next to you or your block is getting power from a neighboring block. Used by
-     * items like TNT or Doors so they don't have redstone going straight into them.  Args: x, y, z
-     */
     public boolean isBlockIndirectlyGettingPowered(int par1, int par2, int par3)
     {
         return this.isBlockIndirectlyProvidingPowerTo(par1, par2 - 1, par3, 0) ? true : (this.isBlockIndirectlyProvidingPowerTo(par1, par2 + 1, par3, 1) ? true : (this.isBlockIndirectlyProvidingPowerTo(par1, par2, par3 - 1, 2) ? true : (this.isBlockIndirectlyProvidingPowerTo(par1, par2, par3 + 1, 3) ? true : (this.isBlockIndirectlyProvidingPowerTo(par1 - 1, par2, par3, 4) ? true : this.isBlockIndirectlyProvidingPowerTo(par1 + 1, par2, par3, 5)))));
     }
 
-    /**
-     * Gets the closest player to the entity within the specified distance (if distance is less than 0 then ignored).
-     * Args: entity, dist
-     */
     public EntityPlayer getClosestPlayerToEntity(Entity par1Entity, double par2)
     {
         return this.getClosestPlayer(par1Entity.posX, par1Entity.posY, par1Entity.posZ, par2);
     }
 
-    /**
-     * Gets the closest player to the point within the specified distance (distance can be set to less than 0 to not
-     * limit the distance). Args: x, y, z, dist
-     */
     public EntityPlayer getClosestPlayer(double par1, double par3, double par5, double par7)
     {
         double var9 = -1.0D;
@@ -3881,17 +3461,11 @@ public abstract class World implements IBlockAccess
         return var11;
     }
 
-    /**
-     * Returns the closest vulnerable player to this entity within the given radius, or null if none is found
-     */
     public EntityPlayer getClosestVulnerablePlayerToEntity(Entity par1Entity, double par2)
     {
         return this.getClosestVulnerablePlayer(par1Entity.posX, par1Entity.posY, par1Entity.posZ, par2);
     }
 
-    /**
-     * Returns the closest vulnerable player within the given radius, or null if none is found.
-     */
     public EntityPlayer getClosestVulnerablePlayer(double par1, double par3, double par5, double par7)
     {
         double var9 = -1.0D;
@@ -3934,9 +3508,6 @@ public abstract class World implements IBlockAccess
         return var11;
     }
 
-    /**
-     * Find a player by name in this world.
-     */
     public EntityPlayer getPlayerEntityByName(String par1Str)
     {
         for (int var2 = 0; var2 < this.playerEntities.size(); ++var2)
@@ -3952,14 +3523,8 @@ public abstract class World implements IBlockAccess
 
     @SideOnly(Side.CLIENT)
 
-    /**
-     * If on MP, sends a quitting packet.
-     */
     public void sendQuittingDisconnectingPacket() {}
 
-    /**
-     * Checks whether the session lock file was modified by another process
-     */
     public void checkSessionLock() throws MinecraftException
     {
         this.saveHandler.checkSessionLock();
@@ -3971,9 +3536,6 @@ public abstract class World implements IBlockAccess
         this.worldInfo.func_82572_b(par1);
     }
 
-    /**
-     * Retrieve the world seed from level.dat
-     */
     public long getSeed()
     {
         return provider.getSeed();
@@ -3989,17 +3551,11 @@ public abstract class World implements IBlockAccess
         return provider.getWorldTime();
     }
 
-    /**
-     * Sets the world time.
-     */
     public void setWorldTime(long par1)
     {
         provider.setWorldTime(par1);
     }
 
-    /**
-     * Returns the coordinates of the spawn point
-     */
     public ChunkCoordinates getSpawnPoint()
     {
         return provider.getSpawnPoint();
@@ -4013,9 +3569,6 @@ public abstract class World implements IBlockAccess
 
     @SideOnly(Side.CLIENT)
 
-    /**
-     * spwans an entity and loads surrounding chunks
-     */
     public void joinEntityInSurroundings(Entity par1Entity)
     {
         int var2 = MathHelper.floor_double(par1Entity.posX / 16.0D);
@@ -4039,9 +3592,6 @@ public abstract class World implements IBlockAccess
         }
     }
 
-    /**
-     * Called when checking if a certain block can be mined or not. The 'spawn safe zone' check is located here.
-     */
     public boolean canMineBlock(EntityPlayer par1EntityPlayer, int par2, int par3, int par4)
     {
         return provider.canMineBlock(par1EntityPlayer, par2, par3, par4);
@@ -4052,23 +3602,13 @@ public abstract class World implements IBlockAccess
         return true;
     }
 
-    /**
-     * sends a Packet 38 (Entity Status) to all tracked players of that entity
-     */
     public void setEntityState(Entity par1Entity, byte par2) {}
 
-    /**
-     * gets the IChunkProvider this world uses.
-     */
     public IChunkProvider getChunkProvider()
     {
         return this.chunkProvider;
     }
 
-    /**
-     * Adds a block event with the given Args to the blockEventCache. During the next tick(), the block specified will
-     * have its onBlockEvent handler called with the given parameters. Args: X,Y,Z, BlockID, EventID, EventParameter
-     */
     public void addBlockEvent(int par1, int par2, int par3, int par4, int par5, int par6)
     {
         if (par4 > 0)
@@ -4077,33 +3617,21 @@ public abstract class World implements IBlockAccess
         }
     }
 
-    /**
-     * Returns this world's current save handler
-     */
     public ISaveHandler getSaveHandler()
     {
         return this.saveHandler;
     }
 
-    /**
-     * Gets the World's WorldInfo instance
-     */
     public WorldInfo getWorldInfo()
     {
         return this.worldInfo;
     }
 
-    /**
-     * Gets the GameRules instance
-     */
     public GameRules getGameRules()
     {
         return this.worldInfo.getGameRulesInstance();
     }
 
-    /**
-     * Updates the flag that indicates whether or not all players in the world are sleeping.
-     */
     public void updateAllPlayersSleepingFlag() {}
 
     public float getWeightedThunderStrength(float par1)
@@ -4111,9 +3639,6 @@ public abstract class World implements IBlockAccess
         return (this.prevThunderingStrength + (this.thunderingStrength - this.prevThunderingStrength) * par1) * this.getRainStrength(par1);
     }
 
-    /**
-     * Not sure about this actually. Reverting this one myself.
-     */
     public float getRainStrength(float par1)
     {
         return this.prevRainingStrength + (this.rainingStrength - this.prevRainingStrength) * par1;
@@ -4126,17 +3651,11 @@ public abstract class World implements IBlockAccess
         this.rainingStrength = par1;
     }
 
-    /**
-     * Returns true if the current thunder strength (weighted with the rain strength) is greater than 0.9
-     */
     public boolean isThundering()
     {
         return (double)this.getWeightedThunderStrength(1.0F) > 0.9D;
     }
 
-    /**
-     * Returns true if the current rain strength is greater than 0.2
-     */
     public boolean isRaining()
     {
         return (double)this.getRainStrength(1.0F) > 0.2D;
@@ -4163,36 +3682,21 @@ public abstract class World implements IBlockAccess
         }
     }
 
-    /**
-     * Checks to see if the biome rainfall values for a given x,y,z coordinate set are extremely high
-     */
     public boolean isBlockHighHumidity(int par1, int par2, int par3)
     {
         return provider.isBlockHighHumidity(par1, par2, par3);
     }
 
-    /**
-     * Assigns the given String id to the given MapDataBase using the MapStorage, removing any existing ones of the same
-     * id.
-     */
     public void setItemData(String par1Str, WorldSavedData par2WorldSavedData)
     {
         this.mapStorage.setData(par1Str, par2WorldSavedData);
     }
 
-    /**
-     * Loads an existing MapDataBase corresponding to the given String id from disk using the MapStorage, instantiating
-     * the given Class, or returns null if none such file exists. args: Class to instantiate, String dataid
-     */
     public WorldSavedData loadItemData(Class par1Class, String par2Str)
     {
         return this.mapStorage.loadData(par1Class, par2Str);
     }
 
-    /**
-     * Returns an unique new data id from the MapStorage for the given prefix and saves the idCounts map to the
-     * 'idcounts' file.
-     */
     public int getUniqueDataId(String par1Str)
     {
         return this.mapStorage.getUniqueDataId(par1Str);
@@ -4206,17 +3710,11 @@ public abstract class World implements IBlockAccess
         }
     }
 
-    /**
-     * See description for playAuxSFX.
-     */
     public void playAuxSFX(int par1, int par2, int par3, int par4, int par5)
     {
         this.playAuxSFXAtEntity((EntityPlayer)null, par1, par2, par3, par4, par5);
     }
 
-    /**
-     * See description for playAuxSFX.
-     */
     public void playAuxSFXAtEntity(EntityPlayer par1EntityPlayer, int par2, int par3, int par4, int par5, int par6)
     {
         for (int var7 = 0; var7 < this.worldAccesses.size(); ++var7)
@@ -4225,17 +3723,11 @@ public abstract class World implements IBlockAccess
         }
     }
 
-    /**
-     * Returns current world height.
-     */
     public int getHeight()
     {
         return provider.getHeight();
     }
 
-    /**
-     * Returns current world height.
-     */
     public int getActualHeight()
     {
         return provider.getActualHeight();
@@ -4246,9 +3738,6 @@ public abstract class World implements IBlockAccess
         return null;
     }
 
-    /**
-     * puts the World Random seed to a specific state dependant on the inputs
-     */
     public Random setRandomSeed(int par1, int par2, int par3)
     {
         long var4 = (long)par1 * 341873128712L + (long)par2 * 132897987541L + this.getWorldInfo().getSeed() + (long)par3;
@@ -4256,9 +3745,6 @@ public abstract class World implements IBlockAccess
         return this.rand;
     }
 
-    /**
-     * Returns the location of the closest structure of the specified type. If not found returns null.
-     */
     public ChunkPosition findClosestStructure(String par1Str, int par2, int par3, int par4)
     {
         return this.getChunkProvider().findClosestStructure(this, par1Str, par2, par3, par4);
@@ -4266,9 +3752,6 @@ public abstract class World implements IBlockAccess
 
     @SideOnly(Side.CLIENT)
 
-    /**
-     * set by !chunk.getAreLevelsEmpty
-     */
     public boolean extendedLevelsInChunkCache()
     {
         return false;
@@ -4276,17 +3759,11 @@ public abstract class World implements IBlockAccess
 
     @SideOnly(Side.CLIENT)
 
-    /**
-     * Returns horizon height for use in rendering the sky.
-     */
     public double getHorizon()
     {
         return provider.getHorizon();
     }
 
-    /**
-     * Adds some basic stats of the world to the given crash report.
-     */
     public CrashReportCategory addWorldInfoToCrashReport(CrashReport par1CrashReport)
     {
         CrashReportCategory var2 = par1CrashReport.func_85057_a("Affected level", 1);
@@ -4306,10 +3783,6 @@ public abstract class World implements IBlockAccess
         return var2;
     }
 
-    /**
-     * Starts (or continues) destroying a block with given ID at the given coordinates for the given partially destroyed
-     * value
-     */
     public void destroyBlockInWorldPartially(int par1, int par2, int par3, int par4, int par5)
     {
         for (int var6 = 0; var6 < this.worldAccesses.size(); ++var6)
@@ -4319,17 +3792,11 @@ public abstract class World implements IBlockAccess
         }
     }
 
-    /**
-     * Return the Vec3Pool object for this world.
-     */
     public Vec3Pool getWorldVec3Pool()
     {
         return this.vecPool;
     }
 
-    /**
-     * returns a calendar object containing the current date
-     */
     public Calendar getCurrentDate()
     {
         if (this.getTotalWorldTime() % 600L == 0L)
@@ -4340,45 +3807,21 @@ public abstract class World implements IBlockAccess
         return this.theCalendar;
     }
 
-    /**
-     * Adds a single TileEntity to the world.
-     * @param entity The TileEntity to be added.
-     */
     public void addTileEntity(TileEntity entity)
     {
         List dest = scanningTileEntities ? addedTileEntityList : loadedTileEntityList;
-        if(entity.canUpdate())
+
+        if (entity.canUpdate())
         {
             dest.add(entity);
         }
     }
 
-    /**
-     * Determine if the given block is considered solid on the
-     * specified side.  Used by placement logic.
-     *
-     * @param X Block X Position
-     * @param Y Block Y Position
-     * @param Z Block Z Position
-     * @param side The Side in question
-     * @return True if the side is solid
-     */
     public boolean isBlockSolidOnSide(int X, int Y, int Z, ForgeDirection side)
     {
         return isBlockSolidOnSide(X, Y, Z, side, false);
     }
 
-    /**
-     * Determine if the given block is considered solid on the
-     * specified side.  Used by placement logic.
-     *
-     * @param X Block X Position
-     * @param Y Block Y Position
-     * @param Z Block Z Position
-     * @param side The Side in question
-     * @param _default The defult to return if the block doesn't exist.
-     * @return True if the side is solid
-     */
     public boolean isBlockSolidOnSide(int X, int Y, int Z, ForgeDirection side, boolean _default)
     {
         if (X < -30000000 || Z < -30000000 || X >= 30000000 || Z >= 30000000)
@@ -4387,13 +3830,15 @@ public abstract class World implements IBlockAccess
         }
 
         Chunk var5 = this.chunkProvider.provideChunk(X >> 4, Z >> 4);
+
         if (var5 == null || var5.isEmpty())
         {
             return _default;
         }
 
         Block block = Block.blocksList[getBlockId(X, Y, Z)];
-        if(block == null)
+
+        if (block == null)
         {
             return false;
         }
@@ -4401,11 +3846,6 @@ public abstract class World implements IBlockAccess
         return block.isBlockSolidOnSide(this, X, Y, Z, side);
     }
 
-    /**
-     * Get the persistent chunks for this world
-     *
-     * @return
-     */
     public ImmutableSetMultimap<ChunkCoordIntPair, Ticket> getPersistentChunks()
     {
         return ForgeChunkManager.getPersistentChunksFor(this);

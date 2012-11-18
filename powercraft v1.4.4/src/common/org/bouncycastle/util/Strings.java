@@ -2,9 +2,6 @@ package org.bouncycastle.util;
 
 public final class Strings
 {
-    /**
-     * A locale independent version of toLowerCase that returns a US ASCII lowercase String.
-     */
     public static String toLowerCase(String par0Str)
     {
         boolean var1 = false;

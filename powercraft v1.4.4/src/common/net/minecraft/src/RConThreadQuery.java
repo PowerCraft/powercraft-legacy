@@ -17,52 +17,35 @@ import java.util.Map.Entry;
 
 public class RConThreadQuery extends RConThreadBase
 {
-    /** The time of the last client auth check */
     private long lastAuthCheckTime;
 
-    /** The RCon query port */
     private int queryPort;
 
-    /** Port the server is running on */
     private int serverPort;
 
-    /** The maximum number of players allowed on the server */
     private int maxPlayers;
 
-    /** The current server message of the day */
     private String serverMotd;
 
-    /** The name of the currently loaded world */
     private String worldName;
 
-    /** The remote socket querying the server */
     private DatagramSocket querySocket = null;
 
-    /** A buffer for incoming DatagramPackets */
     private byte[] buffer = new byte[1460];
 
-    /** Storage for incoming DatagramPackets */
     private DatagramPacket incomingPacket = null;
     private Map field_72644_p;
 
-    /** The hostname of this query server */
     private String queryHostname;
 
-    /** The hostname of the running server */
     private String serverHostname;
 
-    /** A map of SocketAddress objects to RConThreadQueryAuth objects */
     private Map queryClients;
 
-    /**
-     * The time that this RConThreadQuery was constructed, from (new Date()).getTime()
-     */
     private long time;
 
-    /** The RConQuery output stream */
     private RConOutputStream output;
 
-    /** The time of the last query response sent */
     private long lastQueryResponseTime;
 
     public RConThreadQuery(IServer par1IServer)
@@ -111,17 +94,11 @@ public class RConThreadQuery extends RConThreadBase
         this.time = (new Date()).getTime();
     }
 
-    /**
-     * Sends a byte array as a DatagramPacket response to the client who sent the given DatagramPacket
-     */
     private void sendResponsePacket(byte[] par1ArrayOfByte, DatagramPacket par2DatagramPacket) throws IOException
     {
         this.querySocket.send(new DatagramPacket(par1ArrayOfByte, par1ArrayOfByte.length, par2DatagramPacket.getSocketAddress()));
     }
 
-    /**
-     * Parses an incoming DatagramPacket, returning true if the packet was valid
-     */
     private boolean parseIncomingPacket(DatagramPacket par1DatagramPacket) throws IOException
     {
         byte[] var2 = par1DatagramPacket.getData();
@@ -161,10 +138,12 @@ public class RConThreadQuery extends RConThreadBase
                         this.sendResponsePacket(var5.toByteArray(), par1DatagramPacket);
                         this.logDebug("Status [" + var4 + "]");
                     }
+
                 case 9:
                     this.sendAuthChallenge(par1DatagramPacket);
                     this.logDebug("Challenge [" + var4 + "]");
                     return true;
+
                 default:
                     return true;
             }
@@ -176,9 +155,6 @@ public class RConThreadQuery extends RConThreadBase
         }
     }
 
-    /**
-     * Creates a query response as a byte array for the specified query DatagramPacket
-     */
     private byte[] createQueryResponse(DatagramPacket par1DatagramPacket) throws IOException
     {
         long var2 = System.currentTimeMillis();
@@ -239,17 +215,11 @@ public class RConThreadQuery extends RConThreadBase
         }
     }
 
-    /**
-     * Returns the request ID provided by the authorized client
-     */
     private byte[] getRequestId(SocketAddress par1SocketAddress)
     {
         return ((RConThreadQueryAuth)this.queryClients.get(par1SocketAddress)).getRequestId();
     }
 
-    /**
-     * Returns true if the client has a valid auth, otherwise false
-     */
     private Boolean verifyClientAuth(DatagramPacket par1DatagramPacket)
     {
         SocketAddress var2 = par1DatagramPacket.getSocketAddress();
@@ -265,9 +235,6 @@ public class RConThreadQuery extends RConThreadBase
         }
     }
 
-    /**
-     * Sends an auth challenge DatagramPacket to the client and adds the client to the queryClients map
-     */
     private void sendAuthChallenge(DatagramPacket par1DatagramPacket) throws IOException
     {
         RConThreadQueryAuth var2 = new RConThreadQueryAuth(this, par1DatagramPacket);
@@ -275,9 +242,6 @@ public class RConThreadQuery extends RConThreadBase
         this.sendResponsePacket(var2.getChallengeValue(), par1DatagramPacket);
     }
 
-    /**
-     * Removes all clients whose auth is no longer valid
-     */
     private void cleanQueryClientsMap()
     {
         if (this.running)
@@ -338,9 +302,6 @@ public class RConThreadQuery extends RConThreadBase
         }
     }
 
-    /**
-     * Creates a new Thread object from this class and starts running
-     */
     public void startThread()
     {
         if (!this.running)
@@ -359,9 +320,6 @@ public class RConThreadQuery extends RConThreadBase
         }
     }
 
-    /**
-     * Stops the query server and reports the given Exception
-     */
     private void stopWithException(Exception par1Exception)
     {
         if (this.running)
@@ -376,9 +334,6 @@ public class RConThreadQuery extends RConThreadBase
         }
     }
 
-    /**
-     * Initializes the query system by binding it to a port
-     */
     private boolean initQuerySystem()
     {
         try

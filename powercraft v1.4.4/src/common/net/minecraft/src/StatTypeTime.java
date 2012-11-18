@@ -7,9 +7,6 @@ final class StatTypeTime implements IStatType
 {
     @SideOnly(Side.CLIENT)
 
-    /**
-     * Formats a given stat for human consumption.
-     */
     public String format(int par1)
     {
         double var2 = (double)par1 / 20.0D;

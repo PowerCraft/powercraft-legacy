@@ -221,12 +221,15 @@ public class PlayerSelector
                     case 0:
                         var5 = "x";
                         break;
+
                     case 1:
                         var5 = "y";
                         break;
+
                     case 2:
                         var5 = "z";
                         break;
+
                     case 3:
                         var5 = "r";
                 }

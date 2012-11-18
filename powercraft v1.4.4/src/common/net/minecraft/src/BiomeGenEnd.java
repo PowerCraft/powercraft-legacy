@@ -20,9 +20,6 @@ public class BiomeGenEnd extends BiomeGenBase
 
     @SideOnly(Side.CLIENT)
 
-    /**
-     * takes temperature, returns color
-     */
     public int getSkyColorByTemp(float par1)
     {
         return 0;

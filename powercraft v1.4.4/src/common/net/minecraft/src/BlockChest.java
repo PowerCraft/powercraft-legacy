@@ -18,34 +18,21 @@ public class BlockChest extends BlockContainer
         this.setBlockBounds(0.0625F, 0.0F, 0.0625F, 0.9375F, 0.875F, 0.9375F);
     }
 
-    /**
-     * Is this block (a) opaque and (b) a full 1m cube?  This determines whether or not to render the shared face of two
-     * adjacent blocks and also whether the player can attach torches, redstone wire, etc to this block.
-     */
     public boolean isOpaqueCube()
     {
         return false;
     }
 
-    /**
-     * If this block doesn't render as an ordinary block it will return False (examples: signs, buttons, stairs, etc)
-     */
     public boolean renderAsNormalBlock()
     {
         return false;
     }
 
-    /**
-     * The type of render function that is called for this block
-     */
     public int getRenderType()
     {
         return 22;
     }
 
-    /**
-     * Updates the blocks bounds based on its current state. Args: world, x, y, z
-     */
     public void setBlockBoundsBasedOnState(IBlockAccess par1IBlockAccess, int par2, int par3, int par4)
     {
         if (par1IBlockAccess.getBlockId(par2, par3, par4 - 1) == this.blockID)
@@ -70,9 +57,6 @@ public class BlockChest extends BlockContainer
         }
     }
 
-    /**
-     * Called whenever the block is added into the world. Args: world, x, y, z
-     */
     public void onBlockAdded(World par1World, int par2, int par3, int par4)
     {
         super.onBlockAdded(par1World, par2, par3, par4);
@@ -103,9 +87,6 @@ public class BlockChest extends BlockContainer
         }
     }
 
-    /**
-     * Called when the block is placed in the world.
-     */
     public void onBlockPlacedBy(World par1World, int par2, int par3, int par4, EntityLiving par5EntityLiving)
     {
         int var6 = par1World.getBlockId(par2, par3, par4 - 1);
@@ -171,9 +152,6 @@ public class BlockChest extends BlockContainer
         }
     }
 
-    /**
-     * Turns the adjacent chests to a double chest.
-     */
     public void unifyAdjacentChests(World par1World, int par2, int par3, int par4)
     {
         if (!par1World.isRemote)
@@ -285,25 +263,16 @@ public class BlockChest extends BlockContainer
 
     @SideOnly(Side.CLIENT)
 
-    /**
-     * Retrieves the block texture to use based on the display side. Args: iBlockAccess, x, y, z, side
-     */
     public int getBlockTexture(IBlockAccess par1IBlockAccess, int par2, int par3, int par4, int par5)
     {
         return 4;
     }
 
-    /**
-     * Returns the block texture based on the side being looked at.  Args: side
-     */
     public int getBlockTextureFromSide(int par1)
     {
         return 4;
     }
 
-    /**
-     * Checks to see if its valid to put this block at the specified coordinates. Args: world, x, y, z
-     */
     public boolean canPlaceBlockAt(World par1World, int par2, int par3, int par4)
     {
         int var5 = 0;
@@ -331,18 +300,11 @@ public class BlockChest extends BlockContainer
         return var5 > 1 ? false : (this.isThereANeighborChest(par1World, par2 - 1, par3, par4) ? false : (this.isThereANeighborChest(par1World, par2 + 1, par3, par4) ? false : (this.isThereANeighborChest(par1World, par2, par3, par4 - 1) ? false : !this.isThereANeighborChest(par1World, par2, par3, par4 + 1))));
     }
 
-    /**
-     * Checks the neighbor blocks to see if there is a chest there. Args: world, x, y, z
-     */
     private boolean isThereANeighborChest(World par1World, int par2, int par3, int par4)
     {
         return par1World.getBlockId(par2, par3, par4) != this.blockID ? false : (par1World.getBlockId(par2 - 1, par3, par4) == this.blockID ? true : (par1World.getBlockId(par2 + 1, par3, par4) == this.blockID ? true : (par1World.getBlockId(par2, par3, par4 - 1) == this.blockID ? true : par1World.getBlockId(par2, par3, par4 + 1) == this.blockID)));
     }
 
-    /**
-     * Lets the block know when one of its neighbor changes. Doesn't know which neighbor changed (coordinates passed are
-     * their own) Args: x, y, z, neighbor blockID
-     */
     public void onNeighborBlockChange(World par1World, int par2, int par3, int par4, int par5)
     {
         super.onNeighborBlockChange(par1World, par2, par3, par4, par5);
@@ -354,9 +316,6 @@ public class BlockChest extends BlockContainer
         }
     }
 
-    /**
-     * ejects contained items into the world, and notifies neighbours of an update, as appropriate
-     */
     public void breakBlock(World par1World, int par2, int par3, int par4, int par5, int par6)
     {
         TileEntityChest var7 = (TileEntityChest)par1World.getBlockTileEntity(par2, par3, par4);
@@ -401,9 +360,6 @@ public class BlockChest extends BlockContainer
         super.breakBlock(par1World, par2, par3, par4, par5, par6);
     }
 
-    /**
-     * Called upon block activation (right click on the block.)
-     */
     public boolean onBlockActivated(World par1World, int par2, int par3, int par4, EntityPlayer par5EntityPlayer, int par6, float par7, float par8, float par9)
     {
         Object var10 = (TileEntityChest)par1World.getBlockTileEntity(par2, par3, par4);
@@ -470,18 +426,11 @@ public class BlockChest extends BlockContainer
         }
     }
 
-    /**
-     * Returns a new instance of a block's tile entity class. Called on placing the block.
-     */
     public TileEntity createNewTileEntity(World par1World)
     {
         return new TileEntityChest();
     }
 
-    /**
-     * Looks for a sitting ocelot within certain bounds. Such an ocelot is considered to be blocking access to the
-     * chest.
-     */
     public static boolean isOcelotBlockingChest(World par0World, int par1, int par2, int par3)
     {
         Iterator var4 = par0World.getEntitiesWithinAABB(EntityOcelot.class, AxisAlignedBB.getAABBPool().addOrModifyAABBInPool((double)par1, (double)(par2 + 1), (double)par3, (double)(par1 + 1), (double)(par2 + 2), (double)(par3 + 1))).iterator();

@@ -10,9 +10,6 @@ public class CommandGive extends CommandBase
         return "give";
     }
 
-    /**
-     * Return the required permission level for this command.
-     */
     public int getRequiredPermissionLevel()
     {
         return 2;
@@ -60,9 +57,6 @@ public class CommandGive extends CommandBase
         }
     }
 
-    /**
-     * Adds the strings available in this command to the given list of tab completion options.
-     */
     public List addTabCompletionOptions(ICommandSender par1ICommandSender, String[] par2ArrayOfStr)
     {
         return par2ArrayOfStr.length == 1 ? getListOfStringsMatchingLastWord(par2ArrayOfStr, this.getPlayers()) : null;
@@ -73,9 +67,6 @@ public class CommandGive extends CommandBase
         return MinecraftServer.getServer().getAllUsernames();
     }
 
-    /**
-     * Return whether the specified command parameter index is a username parameter.
-     */
     public boolean isUsernameIndex(int par1)
     {
         return par1 == 0;

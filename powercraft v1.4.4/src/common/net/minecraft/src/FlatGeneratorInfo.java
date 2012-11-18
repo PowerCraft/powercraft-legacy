@@ -9,40 +9,26 @@ import java.util.Map.Entry;
 
 public class FlatGeneratorInfo
 {
-    /** List of layers on this preset. */
     private final List flatLayers = new ArrayList();
 
-    /** List of world features enabled on this preset. */
     private final Map worldFeatures = new HashMap();
     private int field_82654_c = 0;
 
-    /**
-     * Return the biome used on this preset.
-     */
     public int getBiome()
     {
         return this.field_82654_c;
     }
 
-    /**
-     * Set the biome used on this preset.
-     */
     public void setBiome(int par1)
     {
         this.field_82654_c = par1;
     }
 
-    /**
-     * Return the list of world features enabled on this preset.
-     */
     public Map getWorldFeatures()
     {
         return this.worldFeatures;
     }
 
-    /**
-     * Return the list of layers on this preset.
-     */
     public List getFlatLayers()
     {
         return this.flatLayers;

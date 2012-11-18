@@ -15,5 +15,4 @@ public class LivingHurtEvent extends LivingEvent
         this.source = source;
         this.ammount = ammount;
     }
-
 }

@@ -199,9 +199,6 @@ public class MapGenRavine extends MapGenBase
         }
     }
 
-    /**
-     * Recursively called by generate() (generate) and optionally by itself.
-     */
     protected void recursiveGenerate(World par1World, int par2, int par3, int par4, int par5, byte[] par6ArrayOfByte)
     {
         if (this.rand.nextInt(50) == 0)

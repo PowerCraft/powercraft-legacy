@@ -12,27 +12,17 @@ public class ComponentNetherBridgeCorridor3 extends ComponentNetherBridgePiece
         this.boundingBox = par3StructureBoundingBox;
     }
 
-    /**
-     * Initiates construction of the Structure Component picked, at the current Location of StructGen
-     */
     public void buildComponent(StructureComponent par1StructureComponent, List par2List, Random par3Random)
     {
         this.getNextComponentNormal((ComponentNetherBridgeStartPiece)par1StructureComponent, par2List, par3Random, 1, 0, true);
     }
 
-    /**
-     * Creates and returns a new component piece. Or null if it could not find enough room to place it.
-     */
     public static ComponentNetherBridgeCorridor3 createValidComponent(List par0List, Random par1Random, int par2, int par3, int par4, int par5, int par6)
     {
         StructureBoundingBox var7 = StructureBoundingBox.getComponentToAddBoundingBox(par2, par3, par4, -1, -7, 0, 5, 14, 10, par5);
         return isAboveGround(var7) && StructureComponent.findIntersecting(par0List, var7) == null ? new ComponentNetherBridgeCorridor3(par6, par1Random, var7, par5) : null;
     }
 
-    /**
-     * second Part of Structure generating, this for example places Spiderwebs, Mob Spawners, it closes Mineshafts at
-     * the end, it adds Fences...
-     */
     public boolean addComponentParts(World par1World, Random par2Random, StructureBoundingBox par3StructureBoundingBox)
     {
         int var4 = this.getMetadataWithOffset(Block.stairsNetherBrick.blockID, 2);

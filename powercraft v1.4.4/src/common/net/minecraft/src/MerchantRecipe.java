@@ -5,21 +5,14 @@ import cpw.mods.fml.common.asm.SideOnly;
 
 public class MerchantRecipe
 {
-    /** Item the Villager buys. */
     private ItemStack itemToBuy;
 
-    /** Second Item the Villager buys. */
     private ItemStack secondItemToBuy;
 
-    /** Item the Villager sells. */
     private ItemStack itemToSell;
 
-    /**
-     * Saves how much has been tool used when put into to slot to be enchanted.
-     */
     private int toolUses;
 
-    /** Maximum times this trade can be used. */
     private int maxTradeUses;
 
     public MerchantRecipe(NBTTagCompound par1NBTTagCompound)
@@ -45,49 +38,31 @@ public class MerchantRecipe
         this(par1ItemStack, new ItemStack(par2Item));
     }
 
-    /**
-     * Gets the itemToBuy.
-     */
     public ItemStack getItemToBuy()
     {
         return this.itemToBuy;
     }
 
-    /**
-     * Gets secondItemToBuy.
-     */
     public ItemStack getSecondItemToBuy()
     {
         return this.secondItemToBuy;
     }
 
-    /**
-     * Gets if Villager has secondItemToBuy.
-     */
     public boolean hasSecondItemToBuy()
     {
         return this.secondItemToBuy != null;
     }
 
-    /**
-     * Gets itemToSell.
-     */
     public ItemStack getItemToSell()
     {
         return this.itemToSell;
     }
 
-    /**
-     * checks if both the first and second ItemToBuy IDs are the same
-     */
     public boolean hasSameIDsAs(MerchantRecipe par1MerchantRecipe)
     {
         return this.itemToBuy.itemID == par1MerchantRecipe.itemToBuy.itemID && this.itemToSell.itemID == par1MerchantRecipe.itemToSell.itemID ? this.secondItemToBuy == null && par1MerchantRecipe.secondItemToBuy == null || this.secondItemToBuy != null && par1MerchantRecipe.secondItemToBuy != null && this.secondItemToBuy.itemID == par1MerchantRecipe.secondItemToBuy.itemID : false;
     }
 
-    /**
-     * checks first and second ItemToBuy ID's and count. Calls hasSameIDs
-     */
     public boolean hasSameItemsAs(MerchantRecipe par1MerchantRecipe)
     {
         return this.hasSameIDsAs(par1MerchantRecipe) && (this.itemToBuy.stackSize < par1MerchantRecipe.itemToBuy.stackSize || this.secondItemToBuy != null && this.secondItemToBuy.stackSize < par1MerchantRecipe.secondItemToBuy.stackSize);

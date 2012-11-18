@@ -13,9 +13,6 @@ public class EntityAIMoveIndoors extends EntityAIBase
         this.setMutexBits(1);
     }
 
-    /**
-     * Returns whether the EntityAIBase should begin execution.
-     */
     public boolean shouldExecute()
     {
         if ((!this.entityObj.worldObj.isDaytime() || this.entityObj.worldObj.isRaining()) && !this.entityObj.worldObj.provider.hasNoSky)
@@ -49,17 +46,11 @@ public class EntityAIMoveIndoors extends EntityAIBase
         }
     }
 
-    /**
-     * Returns whether an in-progress EntityAIBase should continue executing
-     */
     public boolean continueExecuting()
     {
         return !this.entityObj.getNavigator().noPath();
     }
 
-    /**
-     * Execute a one shot task or start executing a continuous task
-     */
     public void startExecuting()
     {
         this.insidePosX = -1;
@@ -79,9 +70,6 @@ public class EntityAIMoveIndoors extends EntityAIBase
         }
     }
 
-    /**
-     * Resets the task
-     */
     public void resetTask()
     {
         this.insidePosX = this.doorInfo.getInsidePosX();

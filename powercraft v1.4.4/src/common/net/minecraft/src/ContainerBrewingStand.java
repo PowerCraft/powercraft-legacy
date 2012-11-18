@@ -7,7 +7,6 @@ public class ContainerBrewingStand extends Container
 {
     private TileEntityBrewingStand tileBrewingStand;
 
-    /** Instance of Slot. */
     private final Slot theSlot;
     private int brewTime = 0;
 
@@ -40,9 +39,6 @@ public class ContainerBrewingStand extends Container
         par1ICrafting.updateCraftingInventoryInfo(this, 0, this.tileBrewingStand.getBrewTime());
     }
 
-    /**
-     * Updates crafting matrix; called from onCraftMatrixChanged. Args: none
-     */
     public void updateCraftingResults()
     {
         super.updateCraftingResults();
@@ -74,9 +70,6 @@ public class ContainerBrewingStand extends Container
         return this.tileBrewingStand.isUseableByPlayer(par1EntityPlayer);
     }
 
-    /**
-     * Called when a player shift-clicks on a slot. You must override this or you will crash when someone does that.
-     */
     public ItemStack transferStackInSlot(EntityPlayer par1EntityPlayer, int par2)
     {
         ItemStack var3 = null;

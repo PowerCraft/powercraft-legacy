@@ -13,9 +13,6 @@ public abstract class EntityThrowable extends Entity implements IProjectile
     protected boolean inGround = false;
     public int throwableShake = 0;
 
-    /**
-     * Is the entity that throws this 'thing' (snowball, ender pearl, eye of ender or potion)
-     */
     private EntityLiving thrower;
     private String field_85053_h = null;
     private int ticksInGround;
@@ -31,10 +28,6 @@ public abstract class EntityThrowable extends Entity implements IProjectile
 
     @SideOnly(Side.CLIENT)
 
-    /**
-     * Checks if the entity is in range to render by using the past in distance and comparing it to its average edge
-     * length * 64 * renderDistanceWeight Args: distance
-     */
     public boolean isInRangeToRenderDist(double par1)
     {
         double var3 = this.boundingBox.getAverageEdgeLength() * 4.0D;
@@ -79,9 +72,6 @@ public abstract class EntityThrowable extends Entity implements IProjectile
         return 0.0F;
     }
 
-    /**
-     * Similar to setArrowHeading, it's point the throwable entity to a x, y, z direction.
-     */
     public void setThrowableHeading(double par1, double par3, double par5, float par7, float par8)
     {
         float var9 = MathHelper.sqrt_double(par1 * par1 + par3 * par3 + par5 * par5);
@@ -105,9 +95,6 @@ public abstract class EntityThrowable extends Entity implements IProjectile
 
     @SideOnly(Side.CLIENT)
 
-    /**
-     * Sets the velocity to the args. Args: x, y, z
-     */
     public void setVelocity(double par1, double par3, double par5)
     {
         this.motionX = par1;
@@ -122,9 +109,6 @@ public abstract class EntityThrowable extends Entity implements IProjectile
         }
     }
 
-    /**
-     * Called to update the entity's position/logic.
-     */
     public void onUpdate()
     {
         this.lastTickPosX = this.posX;
@@ -273,22 +257,13 @@ public abstract class EntityThrowable extends Entity implements IProjectile
         this.setPosition(this.posX, this.posY, this.posZ);
     }
 
-    /**
-     * Gets the amount of gravity to apply to the thrown entity with each tick.
-     */
     protected float getGravityVelocity()
     {
         return 0.03F;
     }
 
-    /**
-     * Called when this EntityThrowable hits a block or entity.
-     */
     protected abstract void onImpact(MovingObjectPosition var1);
 
-    /**
-     * (abstract) Protected helper method to write subclass entity data to NBT.
-     */
     public void writeEntityToNBT(NBTTagCompound par1NBTTagCompound)
     {
         par1NBTTagCompound.setShort("xTile", (short)this.xTile);
@@ -306,9 +281,6 @@ public abstract class EntityThrowable extends Entity implements IProjectile
         par1NBTTagCompound.setString("ownerName", this.field_85053_h == null ? "" : this.field_85053_h);
     }
 
-    /**
-     * (abstract) Protected helper method to read subclass entity data from NBT.
-     */
     public void readEntityFromNBT(NBTTagCompound par1NBTTagCompound)
     {
         this.xTile = par1NBTTagCompound.getShort("xTile");

@@ -2,7 +2,6 @@ package net.minecraft.src;
 
 class StructureNetherBridgePieceWeight
 {
-    /** The class of the StructureComponent to which this weight corresponds. */
     public Class weightClass;
     public final int field_78826_b;
     public int field_78827_c;

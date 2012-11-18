@@ -10,9 +10,6 @@ public class RecipesWeapons
         this.recipeItems = new Object[][] {{Block.planks, Block.cobblestone, Item.ingotIron, Item.diamond, Item.ingotGold}, {Item.swordWood, Item.swordStone, Item.swordSteel, Item.swordDiamond, Item.swordGold}};
     }
 
-    /**
-     * Adds the weapon recipes to the CraftingManager.
-     */
     public void addRecipes(CraftingManager par1CraftingManager)
     {
         for (int var2 = 0; var2 < this.recipeItems[0].length; ++var2)

@@ -7,10 +7,8 @@ public class BlockEventData
     private int coordZ;
     private int blockID;
 
-    /** Different for each blockID */
     private int eventID;
 
-    /** Different for each blockID, eventID */
     private int eventParameter;
 
     public BlockEventData(int par1, int par2, int par3, int par4, int par5, int par6)
@@ -23,49 +21,31 @@ public class BlockEventData
         this.blockID = par4;
     }
 
-    /**
-     * Get the X coordinate.
-     */
     public int getX()
     {
         return this.coordX;
     }
 
-    /**
-     * Get the Y coordinate.
-     */
     public int getY()
     {
         return this.coordY;
     }
 
-    /**
-     * Get the Z coordinate.
-     */
     public int getZ()
     {
         return this.coordZ;
     }
 
-    /**
-     * Get the Event ID (different for each BlockID)
-     */
     public int getEventID()
     {
         return this.eventID;
     }
 
-    /**
-     * Get the Event Parameter (different for each BlockID,EventID)
-     */
     public int getEventParameter()
     {
         return this.eventParameter;
     }
 
-    /**
-     * Gets the BlockID for this BlockEventData
-     */
     public int getBlockID()
     {
         return this.blockID;

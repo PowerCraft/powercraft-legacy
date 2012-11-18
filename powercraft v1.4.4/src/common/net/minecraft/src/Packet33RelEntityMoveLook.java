@@ -22,9 +22,6 @@ public class Packet33RelEntityMoveLook extends Packet30Entity
         this.rotating = true;
     }
 
-    /**
-     * Abstract. Reads the raw packet data from the data stream.
-     */
     public void readPacketData(DataInputStream par1DataInputStream) throws IOException
     {
         super.readPacketData(par1DataInputStream);
@@ -35,9 +32,6 @@ public class Packet33RelEntityMoveLook extends Packet30Entity
         this.pitch = par1DataInputStream.readByte();
     }
 
-    /**
-     * Abstract. Writes the raw packet data to the data stream.
-     */
     public void writePacketData(DataOutputStream par1DataOutputStream) throws IOException
     {
         super.writePacketData(par1DataOutputStream);
@@ -48,9 +42,6 @@ public class Packet33RelEntityMoveLook extends Packet30Entity
         par1DataOutputStream.writeByte(this.pitch);
     }
 
-    /**
-     * Abstract. Return the size of the packet (not counting the header).
-     */
     public int getPacketSize()
     {
         return 9;

@@ -11,7 +11,6 @@ public class BanEntry
 {
     public static final SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss Z");
 
-    /** Creates Ban Entry in the logger. */
     public static Logger loggerBanEntry = Logger.getLogger("Minecraft");
     private final String username;
     private Date banStartDate = new Date();
@@ -34,9 +33,6 @@ public class BanEntry
         return this.banStartDate;
     }
 
-    /**
-     * null == start ban now
-     */
     public void setBanStartDate(Date par1Date)
     {
         this.banStartDate = par1Date != null ? par1Date : new Date();

@@ -2,7 +2,6 @@ package net.minecraft.src;
 
 public class ServerCommand
 {
-    /** The command string. */
     public final String command;
     public final ICommandSender sender;
 

@@ -9,34 +9,25 @@ import java.util.List;
 
 public class Packet24MobSpawn extends Packet
 {
-    /** The entity ID. */
     public int entityId;
 
-    /** The type of mob. */
     public int type;
 
-    /** The X position of the entity. */
     public int xPosition;
 
-    /** The Y position of the entity. */
     public int yPosition;
 
-    /** The Z position of the entity. */
     public int zPosition;
     public int velocityX;
     public int velocityY;
     public int velocityZ;
 
-    /** The yaw of the entity. */
     public byte yaw;
 
-    /** The pitch of the entity. */
     public byte pitch;
 
-    /** The yaw of the entity's head. */
     public byte headYaw;
 
-    /** Indexed metadata for Mob, terminated by 0x7F */
     private DataWatcher metaData;
     private List metadata;
 
@@ -93,9 +84,6 @@ public class Packet24MobSpawn extends Packet
         this.metaData = par1EntityLiving.getDataWatcher();
     }
 
-    /**
-     * Abstract. Reads the raw packet data from the data stream.
-     */
     public void readPacketData(DataInputStream par1DataInputStream) throws IOException
     {
         this.entityId = par1DataInputStream.readInt();
@@ -112,9 +100,6 @@ public class Packet24MobSpawn extends Packet
         this.metadata = DataWatcher.readWatchableObjects(par1DataInputStream);
     }
 
-    /**
-     * Abstract. Writes the raw packet data to the data stream.
-     */
     public void writePacketData(DataOutputStream par1DataOutputStream) throws IOException
     {
         par1DataOutputStream.writeInt(this.entityId);
@@ -131,17 +116,11 @@ public class Packet24MobSpawn extends Packet
         this.metaData.writeWatchableObjects(par1DataOutputStream);
     }
 
-    /**
-     * Passes this Packet on to the NetHandler for processing.
-     */
     public void processPacket(NetHandler par1NetHandler)
     {
         par1NetHandler.handleMobSpawn(this);
     }
 
-    /**
-     * Abstract. Return the size of the packet (not counting the header).
-     */
     public int getPacketSize()
     {
         return 26;

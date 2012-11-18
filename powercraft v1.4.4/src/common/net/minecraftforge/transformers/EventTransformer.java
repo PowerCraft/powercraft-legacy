@@ -26,6 +26,7 @@ public class EventTransformer implements IClassTransformer
         {
             return bytes;
         }
+
         ClassReader cr = new ClassReader(bytes);
         ClassNode classNode = new ClassNode();
         cr.accept(classNode, 0);
@@ -38,6 +39,7 @@ public class EventTransformer implements IClassTransformer
                 classNode.accept(cw);
                 return cw.toByteArray();
             }
+
             return bytes;
         }
         catch (Exception e)
@@ -52,6 +54,7 @@ public class EventTransformer implements IClassTransformer
     private boolean buildEvents(ClassNode classNode) throws Exception
     {
         Class<?> parent = this.getClass().getClassLoader().loadClass(classNode.superName.replace('/', '.'));
+
         if (!Event.class.isAssignableFrom(parent))
         {
             return false;
@@ -60,74 +63,56 @@ public class EventTransformer implements IClassTransformer
         boolean hasSetup = false;
         boolean hasGetListenerList = false;
         boolean hasDefaultCtr = false;
-
         Class<?> listenerListClazz = Class.forName("net.minecraftforge.event.ListenerList", false, getClass().getClassLoader());
         Type tList = Type.getType(listenerListClazz);
 
         for (MethodNode method : (List<MethodNode>)classNode.methods)
         {
-                if (method.name.equals("setup") &&
+            if (method.name.equals("setup") &&
                     method.desc.equals(Type.getMethodDescriptor(VOID_TYPE)) &&
                     (method.access & ACC_PROTECTED) == ACC_PROTECTED)
-                {
-                    hasSetup = true;
-                }
-                if (method.name.equals("getListenerList") &&
+            {
+                hasSetup = true;
+            }
+
+            if (method.name.equals("getListenerList") &&
                     method.desc.equals(Type.getMethodDescriptor(tList)) &&
                     (method.access & ACC_PUBLIC) == ACC_PUBLIC)
-                {
-                    hasGetListenerList = true;
-                }
-                if (method.name.equals("<init>") &&
+            {
+                hasGetListenerList = true;
+            }
+
+            if (method.name.equals("<init>") &&
                     method.desc.equals(Type.getMethodDescriptor(VOID_TYPE)))
-                {
-                    hasDefaultCtr = true;
-                }
+            {
+                hasDefaultCtr = true;
+            }
         }
 
         if (hasSetup)
         {
-                if (!hasGetListenerList)
-                {
-                        throw new RuntimeException("Event class defines setup() but does not define getListenerList! " + classNode.name);
-                }
-                else
-                {
-                        return false;
-                }
+            if (!hasGetListenerList)
+            {
+                throw new RuntimeException("Event class defines setup() but does not define getListenerList! " + classNode.name);
+            }
+            else
+            {
+                return false;
+            }
         }
 
         Type tSuper = Type.getType(classNode.superName);
-
-        //Add private static ListenerList LISTENER_LIST
         classNode.fields.add(new FieldNode(ACC_PRIVATE | ACC_STATIC, "LISTENER_LIST", tList.getDescriptor(), null, null));
-
-        /*Add:
-         *      public <init>()
-         *      {
-         *              super();
-         *      }
-         */
         MethodNode method = new MethodNode(ASM4, ACC_PUBLIC, "<init>", getMethodDescriptor(VOID_TYPE), null, null);
         method.instructions.add(new VarInsnNode(ALOAD, 0));
         method.instructions.add(new MethodInsnNode(INVOKESPECIAL, tSuper.getInternalName(), "<init>", getMethodDescriptor(VOID_TYPE)));
         method.instructions.add(new InsnNode(RETURN));
+
         if (!hasDefaultCtr)
         {
             classNode.methods.add(method);
         }
 
-        /*Add:
-         *      protected void setup()
-         *      {
-         *              super.setup();
-         *              if (LISTENER_LIST != NULL)
-         *              {
-         *                      return;
-         *              }
-         *              LISTENER_LIST = new ListenerList(super.getListenerList());
-         *      }
-         */
         method = new MethodNode(ASM4, ACC_PROTECTED, "setup", getMethodDescriptor(VOID_TYPE), null, null);
         method.instructions.add(new VarInsnNode(ALOAD, 0));
         method.instructions.add(new MethodInsnNode(INVOKESPECIAL, tSuper.getInternalName(), "setup", getMethodDescriptor(VOID_TYPE)));
@@ -145,18 +130,10 @@ public class EventTransformer implements IClassTransformer
         method.instructions.add(new FieldInsnNode(PUTSTATIC, classNode.name, "LISTENER_LIST", tList.getDescriptor()));
         method.instructions.add(new InsnNode(RETURN));
         classNode.methods.add(method);
-
-        /*Add:
-         *      public ListenerList getListenerList()
-         *      {
-         *              return this.LISTENER_LIST;
-         *      }
-         */
         method = new MethodNode(ASM4, ACC_PUBLIC, "getListenerList", getMethodDescriptor(tList), null, null);
         method.instructions.add(new FieldInsnNode(GETSTATIC, classNode.name, "LISTENER_LIST", tList.getDescriptor()));
         method.instructions.add(new InsnNode(ARETURN));
         classNode.methods.add(method);
         return true;
     }
-
 }

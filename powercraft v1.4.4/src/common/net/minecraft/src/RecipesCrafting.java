@@ -2,9 +2,6 @@ package net.minecraft.src;
 
 public class RecipesCrafting
 {
-    /**
-     * Adds the crafting recipes to the CraftingManager.
-     */
     public void addRecipes(CraftingManager par1CraftingManager)
     {
         par1CraftingManager.addRecipe(new ItemStack(Block.chest), new Object[] {"###", "# #", "###", '#', Block.planks});

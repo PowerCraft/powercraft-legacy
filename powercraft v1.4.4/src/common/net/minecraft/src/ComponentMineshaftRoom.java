@@ -7,7 +7,6 @@ import java.util.Random;
 
 public class ComponentMineshaftRoom extends StructureComponent
 {
-    /** List of other Mineshaft components linked to this room. */
     private List roomsLinkedToTheRoom = new LinkedList();
 
     public ComponentMineshaftRoom(int par1, Random par2Random, int par3, int par4)
@@ -16,9 +15,6 @@ public class ComponentMineshaftRoom extends StructureComponent
         this.boundingBox = new StructureBoundingBox(par3, 50, par4, par3 + 7 + par2Random.nextInt(6), 54 + par2Random.nextInt(6), par4 + 7 + par2Random.nextInt(6));
     }
 
-    /**
-     * Initiates construction of the Structure Component picked, at the current Location of StructGen
-     */
     public void buildComponent(StructureComponent par1StructureComponent, List par2List, Random par3Random)
     {
         int var4 = this.getComponentType();
@@ -106,10 +102,6 @@ public class ComponentMineshaftRoom extends StructureComponent
         }
     }
 
-    /**
-     * second Part of Structure generating, this for example places Spiderwebs, Mob Spawners, it closes Mineshafts at
-     * the end, it adds Fences...
-     */
     public boolean addComponentParts(World par1World, Random par2Random, StructureBoundingBox par3StructureBoundingBox)
     {
         if (this.isLiquidInStructureBoundingBox(par1World, par3StructureBoundingBox))
