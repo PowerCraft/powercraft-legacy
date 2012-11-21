@@ -2,6 +2,8 @@ package powercraft.core;
 
 import java.util.Random;
 
+import powercraft.core.PC_BeamTracer.result;
+
 import net.minecraft.src.Block;
 import net.minecraft.src.CreativeTabs;
 import net.minecraft.src.EntityPlayer;
@@ -10,7 +12,7 @@ import net.minecraft.src.Material;
 import net.minecraft.src.World;
 import net.minecraftforge.common.Configuration;
 
-public class PCco_BlockPowerCrystal extends PC_Block implements PC_IConfigLoader, PC_IBlockRenderer, PC_IWorldSpawnGenerate
+public class PCco_BlockPowerCrystal extends PC_Block implements PC_IConfigLoader, PC_IBlockRenderer, PC_IWorldSpawnGenerate, PC_IBeamSpecialHandling
 {
     public static boolean makeSound;
     public static int genCrystalsInChunk;
@@ -237,4 +239,10 @@ public class PCco_BlockPowerCrystal extends PC_Block implements PC_IConfigLoader
                 random.nextInt(PC_MathHelper.clamp_int(genCrystalsMaxY - genCrystalsMinY, 1, 255)) + genCrystalsMinY,
                 random.nextInt(16));
     }
+
+	@Override
+	public result onHitByBeamTracer(PC_BeamTracer beamTracer, PC_CoordI cnt, PC_CoordI move, PC_Color color, float strength, int distanceToMove) {
+		color.setTo(colorMultiplier(beamTracer.getWorld(), cnt.x, cnt.y, cnt.z));
+		return result.CONTINUE;
+	}
 }

@@ -101,6 +101,7 @@ public class mod_PowerCraftCore extends PC_Module
     {
         textures.add(getTerrainFile());
         textures.add(getTextureDirectory() + "PowerCraft.png");
+        textures.add(getTextureDirectory() + "laser.png");
         return textures;
     }
 

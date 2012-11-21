@@ -130,7 +130,7 @@ public class PCco_GuiOreSnifferResultScreen extends PC_GresBaseWithInventory imp
 	
 	@Override
 	public void initGui(PC_IGresGui gui) {
-		PC_GresWindow w = new PC_GresWindow(PC_Utils.tr("item.PCcoOreSnifferItem.name"));
+		PC_GresWindow w = new PC_GresWindow(PC_Utils.tr("item.PCco_ItemOreSniffer.name"));
 		w.padding.setTo(10, 10);
 		w.gapUnderTitle = 15;
 
