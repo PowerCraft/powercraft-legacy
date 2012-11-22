@@ -199,7 +199,7 @@ public class PCli_ItemLaserComposition extends PC_Item
 	}
 
 	public static boolean onBlockHit(PC_BeamTracer beamTracer, Block block, PC_CoordI coord, ItemStack itemstack) {
-		if(!block.isOpaqueCube())
+		if(block.isOpaqueCube())
 			return true;
 		return false;
 	}
