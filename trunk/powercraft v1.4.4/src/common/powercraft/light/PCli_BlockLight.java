@@ -92,11 +92,27 @@ public class PCli_BlockLight extends PC_Block implements PC_ICraftingToolDisplay
     {
         return true;
     }
-
+    
     @Override
+	public int func_85104_a(World world, int x, int y, int z, int l, float par6, float par7, float par8, int par9) {
+    	int metadata = 0;
+		if (l == 2) {
+			metadata = 1;
+		} else if (l == 3) {
+			metadata = 2;
+		} else if (l == 4) {
+			metadata = 3;
+		} else if (l == 5) {
+			metadata = 4;
+		}else if (l == 0) {
+			metadata = 5;
+		}
+		return metadata;
+	}
+
+	@Override
     public void onBlockPlacedBy(World world, int i, int j, int k, EntityLiving player)
     {
-        int i1 = 0;
         PCli_TileEntityLight tileentity = PC_Utils.getTE(world, i, j, k);
 
         if (tileentity != null && tileentity.isStable())

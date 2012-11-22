@@ -81,6 +81,7 @@ public class PC_ClientRenderer extends PC_Renderer implements ISimpleBlockRender
 		((RenderBlocks)renderer).func_83017_b();
 	};
 
+	@Override
 	protected void iRenderInvBox(Object renderer, Block block, int metadata){
 		Tessellator tessellator = Tessellator.instance;
 		RenderBlocks renderblocks = (RenderBlocks)renderer;
@@ -297,6 +298,7 @@ public class PC_ClientRenderer extends PC_Renderer implements ISimpleBlockRender
 
 	}
 	
+	@Override
 	protected void iRenderInvBoxWithTexture(Object renderer, Block block, int tectureID){
 		RenderBlocks renderblocks = (RenderBlocks)renderer;
 		Tessellator tessellator = Tessellator.instance;
@@ -335,6 +337,7 @@ public class PC_ClientRenderer extends PC_Renderer implements ISimpleBlockRender
 	 * 
 	 * @param filename name of the used texture file (png)
 	 */
+	@Override
 	protected void iSwapTerrain(String filename) {
 		RenderEngine renderengine = PC_ClientUtils.mc().renderEngine;
 		renderengine.bindTexture(renderengine.getTexture(filename));
@@ -348,6 +351,7 @@ public class PC_ClientRenderer extends PC_Renderer implements ISimpleBlockRender
 	 * @return true if terrain was swapped -> call resetTerrain() to re-enable
 	 *         original terrain.png
 	 */
+	@Override
 	protected boolean iSwapTerrain(Block block) {
 		if (block instanceof PC_Block && !block.getTextureFile().equalsIgnoreCase("/terrain.png")) {
 			swapTerrain(block.getTextureFile());
@@ -361,6 +365,7 @@ public class PC_ClientRenderer extends PC_Renderer implements ISimpleBlockRender
 	 * 
 	 * @param do_it false = do nothing
 	 */
+	@Override
 	protected void iResetTerrain(boolean do_it) {
 		if(do_it){
 			RenderEngine renderengine = PC_ClientUtils.mc().renderEngine;
@@ -368,8 +373,34 @@ public class PC_ClientRenderer extends PC_Renderer implements ISimpleBlockRender
 		}
 	}
 	
-	protected void iglColor3f(float r, float g, float b) {
-		GL11.glColor3f(r, g, b);
+	@Override
+	protected void iglColor4f(float r, float g, float b, float a) {
+		GL11.glColor4f(r, g, b, a);
+	}
+	
+	@Override
+	protected void iglPushMatrix() {
+		GL11.glPushMatrix();
+	}
+
+	@Override
+	protected void iglPopMatrix() {
+		GL11.glPopMatrix();
+	}
+
+	@Override
+	protected void iglTranslatef(float x, float y, float z) {
+		GL11.glTranslatef(x, y, z);
+	}
+	
+	@Override
+	protected void iglRotatef(float angel, float x, float y, float z) {
+		GL11.glRotatef(angel, x, y, z);
+	}
+
+	@Override
+	protected void iglScalef(float x, float y, float z) {
+		GL11.glScalef(x, y, z);
 	}
 	
 }

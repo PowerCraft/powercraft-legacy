@@ -7,8 +7,10 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.HashMap;
 
+import net.minecraft.src.CompressedStreamTools;
 import net.minecraft.src.EntityPlayer;
 import net.minecraft.src.INetworkManager;
+import net.minecraft.src.NBTTagCompound;
 import net.minecraft.src.Packet250CustomPayload;
 import net.minecraft.src.TileEntity;
 import net.minecraft.src.World;
@@ -69,7 +71,8 @@ public class PC_PacketHandler implements IPacketHandler
 
         if (te instanceof PC_TileEntity)
         {
-            ((PC_TileEntity) te).setData(o);
+        	
+        	((PC_TileEntity) te).setData(o);
 
             if (!player.worldObj.isRemote)
             {

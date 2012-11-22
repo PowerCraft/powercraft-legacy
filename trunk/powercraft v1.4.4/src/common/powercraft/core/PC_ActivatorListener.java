@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import net.minecraft.src.Block;
+import net.minecraft.src.Direction;
+import net.minecraft.src.EntityItem;
 import net.minecraft.src.EntityPlayer;
 import net.minecraft.src.ItemStack;
 import net.minecraft.src.TileEntitySign;
@@ -46,7 +48,7 @@ public class PC_ActivatorListener implements PC_IActivatorListener
 
             return true;
         }
-
+        
         return false;
     }
 

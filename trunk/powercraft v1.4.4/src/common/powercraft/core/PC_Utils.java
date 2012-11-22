@@ -306,6 +306,8 @@ public class PC_Utils implements PC_IPacketHandler
             if (tileEntityClass != null)
             {
                 GameRegistry.registerTileEntity(tileEntityClass, tileEntityClass.getName());
+                if(PC_ITileEntityRenderer.class.isAssignableFrom(tileEntityClass))
+                	instance.iTileEntitySpecialRenderer(tileEntityClass);
             }
 
             return block;
@@ -318,6 +320,10 @@ public class PC_Utils implements PC_IPacketHandler
         return null;
     }
 
+	protected void iTileEntitySpecialRenderer(Class <? extends TileEntity> tileEntityClass){
+		
+	}
+    
     public static void setFieldsWithAnnotationTo(Class c, Class <? extends Annotation > annotationClass, Object obj, Object value)
     {
         Field fa[] = c.getDeclaredFields();
@@ -1405,13 +1411,13 @@ public class PC_Utils implements PC_IPacketHandler
         {
             Object o = instance.objects.get(name);
 
-            if (o instanceof PC_Item)
+            if (o instanceof Item)
             {
-                return ((PC_Item)o).shiftedIndex;
+                return ((Item)o).shiftedIndex;
             }
-            else if (o instanceof PC_Block)
+            else if (o instanceof Block)
             {
-                return ((PC_Block)o).blockID;
+                return ((Block)o).blockID;
             }
         }
 
@@ -1573,7 +1579,7 @@ public class PC_Utils implements PC_IPacketHandler
 
     public static ItemStack extractAndRemoveChest(World world, PC_CoordI pos)
     {
-        if (canHarvest(getBlock(world, pos.x, pos.y, pos.z)))
+        if (!canHarvest(getBlock(world, pos.x, pos.y, pos.z)))
         {
             return null;
         }
@@ -1585,13 +1591,11 @@ public class PC_Utils implements PC_IPacketHandler
             return null;
         }
 
-        ItemStack stack = new ItemStack(Block.lockedChest.blockID, 1, 0);
+        ItemStack stack = new ItemStack(mod_PowerCraftCore.blockSaver, 1, 0);
         NBTTagCompound blocktag = new NBTTagCompound();
         pos.getTileEntity(world).writeToNBT(blocktag);
-        String name = "Unknown";
         int dmg = pos.getId(world);
         stack.setItemDamage(dmg);
-        blocktag.setString("BlockName", name);
         blocktag.setInteger("BlockMeta", pos.getMeta(world));
         stack.setTagCompound(blocktag);
 
@@ -1792,7 +1796,7 @@ public class PC_Utils implements PC_IPacketHandler
 
     public static void dropItemStack(World world, ItemStack itemstack, PC_CoordI pos)
     {
-        if (itemstack != null)
+        if (itemstack != null && !world.isRemote)
         {
             float f = rand.nextFloat() * 0.8F + 0.1F;
             float f1 = rand.nextFloat() * 0.8F + 0.1F;

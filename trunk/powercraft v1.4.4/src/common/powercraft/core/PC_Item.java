@@ -7,6 +7,7 @@ import cpw.mods.fml.common.Side;
 import cpw.mods.fml.common.asm.SideOnly;
 
 import net.minecraft.src.CreativeTabs;
+import net.minecraft.src.InventoryCrafting;
 import net.minecraft.src.Item;
 import net.minecraft.src.ItemStack;
 
@@ -64,4 +65,7 @@ public abstract class PC_Item extends Item implements PC_ICraftingToolDisplayer
 
         return this;
     }
+
+	public void doCrafting(ItemStack itemStack, InventoryCrafting inventoryCrafting) {
+	}
 }

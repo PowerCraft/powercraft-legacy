@@ -4,8 +4,10 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
 
+import net.minecraft.src.CompressedStreamTools;
 import net.minecraft.src.EntityPlayer;
 import net.minecraft.src.ItemStack;
+import net.minecraft.src.NBTTagCompound;
 import net.minecraft.src.Packet;
 import net.minecraft.src.Packet250CustomPayload;
 import net.minecraft.src.TileEntity;
@@ -19,7 +21,7 @@ public abstract class PC_TileEntity extends TileEntity
     public Packet getDescriptionPacket()
     {
         Object[] o = getData();
-
+        
         if (o == null)
         {
             return null;
@@ -35,7 +37,7 @@ public abstract class PC_TileEntity extends TileEntity
             sendData.writeInt(xCoord);
             sendData.writeInt(yCoord);
             sendData.writeInt(zCoord);
-            sendData.writeObject(o);
+           	sendData.writeObject(o);
             sendData.writeInt(PC_PacketHandler.PACKETTILEENTITY);
         }
         catch (IOException e)
@@ -50,7 +52,7 @@ public abstract class PC_TileEntity extends TileEntity
     {
         return new PC_CoordI(xCoord, yCoord, zCoord);
     }
-
+    
     public void setData(Object[] o)
     {
     }

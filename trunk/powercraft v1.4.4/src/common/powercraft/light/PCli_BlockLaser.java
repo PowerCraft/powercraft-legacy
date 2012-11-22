@@ -14,15 +14,17 @@ import net.minecraft.src.TileEntity;
 import net.minecraft.src.World;
 import powercraft.core.PC_Block;
 import powercraft.core.PC_CoordI;
+import powercraft.core.PC_IBlockRenderer;
 import powercraft.core.PC_ICraftingToolDisplayer;
 import powercraft.core.PC_MathHelper;
+import powercraft.core.PC_Renderer;
 import powercraft.core.PC_Utils;
 
-public class PCli_BlockLaser extends PC_Block implements PC_ICraftingToolDisplayer
+public class PCli_BlockLaser extends PC_Block implements PC_ICraftingToolDisplayer, PC_IBlockRenderer
 {
     public PCli_BlockLaser(int id)
     {
-        super(id, Material.ground);
+        super(id, 2, Material.ground);
         setStepSound(Block.soundMetalFootstep);
         setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 1.0F, 1.0F);
         setHardness(0.7F);
@@ -133,9 +135,9 @@ public class PCli_BlockLaser extends PC_Block implements PC_ICraftingToolDisplay
         {
             PCli_TileEntityLaser te = PC_Utils.getTE(world, x, y, z, blockID);
 
-            if (te != null)
+            if (te != null && te.getItemStack()!=null)
             {
-                PC_Utils.dropItemStack(world, new ItemStack(mod_PowerCraftLight.getInstance().laserComposition, 1, te.getType()), new PC_CoordI(x, y, z));
+                PC_Utils.dropItemStack(world, te.getItemStack(), new PC_CoordI(x, y, z));
             }
         }
     }
@@ -156,5 +158,42 @@ public class PCli_BlockLaser extends PC_Block implements PC_ICraftingToolDisplay
 	public List<ItemStack> getItemStacks(List<ItemStack> arrayList) {
 		arrayList.add(new ItemStack(this));
 		return arrayList;
+	}
+
+	@Override
+	public void renderInventoryBlock(Block block, int metadata, int modelID, Object renderer) {
+		PC_Renderer.renderInvBox(renderer, block, metadata);
+		block.setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 1.0F, 1.0F);
+
+		// cobble body
+		Block.cobblestone.setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 0.2F, 1.0F);
+		PC_Renderer.renderInvBox(renderer, Block.cobblestone, 0);
+		Block.cobblestone.setBlockBounds(0.4F, 0.2F, 0.4F, 0.6F, 0.3F, 0.6F);
+		PC_Renderer.renderInvBox(renderer, Block.cobblestone, 0);
+		// reset
+		Block.cobblestone.setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 1.0F, 1.0F);
+	}
+
+	@Override
+	public void renderWorldBlock(IBlockAccess world, int x, int y, int z, Block block, int modelId, Object renderer) {
+		Block.cobblestone.setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 0.2F, 1.0F);
+		PC_Renderer.renderStandardBlock(renderer, Block.cobblestone, x, y, z);
+		Block.cobblestone.setBlockBounds(0.3F, 0.2F, 0.3F, 0.7F, 0.3F, 0.7F);
+		PC_Renderer.renderStandardBlock(renderer, Block.cobblestone, x, y, z);
+		Block.cobblestone.setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 1.0F, 1.0F);
+		PC_Renderer.tessellatorDraw();
+		PC_Renderer.swapTerrain(block);
+		PC_Renderer.tessellatorStartDrawingQuads();
+		int metadata = PC_Utils.getMD(world, x, y, z);
+		if(metadata == 2 || metadata == 3){
+			block.setBlockBounds(0.3F, 0.3F, 0.2F, 0.7F, 0.7F, 0.8F);
+		}else if(metadata == 4 || metadata == 5){
+			block.setBlockBounds(0.2F, 0.3F, 0.3F, 0.8F, 0.7F, 0.7F);
+		}
+		PC_Renderer.renderStandardBlock(renderer, block, x, y, z);
+		block.setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 1.0F, 1.0F);
+		PC_Renderer.tessellatorDraw();
+		PC_Renderer.resetTerrain(true);
+		PC_Renderer.tessellatorStartDrawingQuads();
 	}
 }

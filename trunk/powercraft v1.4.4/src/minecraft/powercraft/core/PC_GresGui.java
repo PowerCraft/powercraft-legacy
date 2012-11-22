@@ -3,6 +3,7 @@ package powercraft.core;
 
 import java.util.List;
 
+import net.minecraft.client.Minecraft;
 import net.minecraft.src.Container;
 import net.minecraft.src.EntityPlayer;
 import net.minecraft.src.GuiContainer;
@@ -511,5 +512,21 @@ public class PC_GresGui extends GuiContainer implements PC_IGresGui {
 	public void registerAction(PC_GresWidget widget) {
 		gui.actionPerformed(widget, this);
 	}
+	
+	/**
+     * Handles mouse input.
+     */
+    public void handleMouseInput()
+    {
+        int var1 = Mouse.getEventX() * this.width / this.mc.displayWidth;
+        int var2 = this.height - Mouse.getEventY() * this.height / this.mc.displayHeight - 1;
+
+        if (Mouse.getEventButtonState())
+        {
+            this.mouseClicked(var1, var2, Mouse.getEventButton());
+        }else{
+            this.mouseMovedOrUp(var1, var2, Mouse.getEventButton());
+        }
+    }
 	
 }

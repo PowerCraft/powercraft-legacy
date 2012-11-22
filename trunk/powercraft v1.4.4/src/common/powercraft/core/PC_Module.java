@@ -154,7 +154,6 @@ public abstract class PC_Module
         proxy.init();
         initBlocks();
         initItems();
-        initRecipes();
         PC_Utils.registerGresArray(proxy.registerGuis());
         PC_PacketHandler.registerPackethandlers(proxy.registerPackethandlers());
         proxy.registerTileEntitySpecialRenderers();
@@ -168,15 +167,17 @@ public abstract class PC_Module
 
     protected abstract void initBlocks();
     protected abstract void initItems();
-    protected abstract void initRecipes();
     protected abstract List<String> addSplashes(List<String> list);
 
     protected void postInit()
     {
+    	initRecipes();
         PC_Utils.saveLanguage(this);
         getConfig().save();
     }
 
+    protected abstract void initRecipes();
+    
     public static String getPowerCraftFile()
     {
         return "/PowerCraft/";

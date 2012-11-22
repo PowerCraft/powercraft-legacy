@@ -31,6 +31,11 @@ public class PCtr_BlockBeltSeparator extends PCtr_BlockBeltBase
         PC_CoordI pos = new PC_CoordI(i, j, k);
         int redir = 0;
 
+        if (PCtr_BeltHelper.isEntityIgnored(entity))
+        {
+            return;
+        }
+        
         if (PC_Utils.isEntityFX(entity))
         {
             return;
