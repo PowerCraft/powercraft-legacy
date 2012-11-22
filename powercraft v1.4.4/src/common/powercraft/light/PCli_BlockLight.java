@@ -21,6 +21,7 @@ import powercraft.core.PC_Color;
 import powercraft.core.PC_IBlockRenderer;
 import powercraft.core.PC_IConfigLoader;
 import powercraft.core.PC_ICraftingToolDisplayer;
+import powercraft.core.PC_MathHelper;
 import powercraft.core.PC_Renderer;
 import powercraft.core.PC_Shining;
 import powercraft.core.PC_Shining.OFF;
@@ -108,8 +109,8 @@ public class PCli_BlockLight extends PC_Block implements PC_ICraftingToolDisplay
 			metadata = 5;
 		}
 		return metadata;
-	}
-
+    }
+    
 	@Override
     public void onBlockPlacedBy(World world, int i, int j, int k, EntityLiving player)
     {
