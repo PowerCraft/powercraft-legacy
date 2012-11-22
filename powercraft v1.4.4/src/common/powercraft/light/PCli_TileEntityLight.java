@@ -10,7 +10,7 @@ import powercraft.core.PC_Utils;
 
 public class PCli_TileEntityLight extends PC_TileEntity
 {
-    private PC_Color color = null;
+    private PC_Color color = new PC_Color();
 
     private boolean isStable;
 
@@ -21,11 +21,6 @@ public class PCli_TileEntityLight extends PC_TileEntity
     {
         super.readFromNBT(nbttagcompound);
 
-        if (color == null)
-        {
-            color = new PC_Color();
-        }
-
         PC_Utils.loadFromNBT(nbttagcompound, "color", color);
         isStable = nbttagcompound.getBoolean("stable");
         isHuge = nbttagcompound.getBoolean("huge");
@@ -35,11 +30,8 @@ public class PCli_TileEntityLight extends PC_TileEntity
     public void writeToNBT(NBTTagCompound nbttagcompound)
     {
         super.writeToNBT(nbttagcompound);
-
-        if (color != null)
-        {
-            PC_Utils.saveToNBT(nbttagcompound, "color", color);
-        }
+        
+        PC_Utils.saveToNBT(nbttagcompound, "color", color);
 
         nbttagcompound.setBoolean("stable", isStable);
         nbttagcompound.setBoolean("huge", isHuge);
@@ -47,7 +39,7 @@ public class PCli_TileEntityLight extends PC_TileEntity
 
     public void setColor(PC_Color c)
     {
-        color = c;
+        color.setTo(c);
         worldObj.markBlockAsNeedsUpdate(xCoord, yCoord, zCoord);
     }
 
@@ -95,7 +87,7 @@ public class PCli_TileEntityLight extends PC_TileEntity
 
             if (var.equals("color"))
             {
-                color = (PC_Color)o[p++];
+                color.setTo((PC_Color)o[p++]);
             }
             else if (var.equals("isStable"))
             {

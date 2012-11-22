@@ -29,6 +29,7 @@ public class mod_PowerCraftLight extends PC_Module
     public static PC_Block light;
     public static PC_Block lightningConductor;
     public static PC_Block laser;
+    public static PC_Block mirrow;
     public static PC_Item laserComposition;
 
     public static mod_PowerCraftLight getInstance()
@@ -64,6 +65,7 @@ public class mod_PowerCraftLight extends PC_Module
     {
         textures.add(getTerrainFile());
         textures.add(getTextureDirectory() + "block_light.png");
+        textures.add(getTextureDirectory() + "mirror.png");
         return textures;
     }
 
@@ -72,7 +74,8 @@ public class mod_PowerCraftLight extends PC_Module
     {
         PC_Utils.registerLanguage(this,
                 "pc.gui.light.isHuge", "is Huge",
-                "pc.gui.light.isStable", "is Stable"
+                "pc.gui.light.isStable", "is Stable",
+                "pc.damage.laser", "laser killed %s"
                                  );
     }
 
@@ -82,11 +85,13 @@ public class mod_PowerCraftLight extends PC_Module
         light = PC_Utils.register(this, 489, PCli_BlockLight.class, PCli_TileEntityLight.class);
         lightningConductor = PC_Utils.register(this, 491, PCli_BlockLightningConductor.class, PCli_ItemBlockLightningConductor.class, PCli_TileEntityLightningConductor.class);
         laser = PC_Utils.register(this, 492, PCli_BlockLaser.class, PCli_TileEntityLaser.class);
+        mirrow = PC_Utils.register(this, 493, PCli_BlockMirrow.class, PCli_TileEntityMirrow.class);
     }
 
     @Override
     protected void initItems()
     {
+    	laserComposition = PC_Utils.register(this, 494, PCli_ItemLaserComposition.class);
     }
 
     @Override
@@ -103,6 +108,27 @@ public class mod_PowerCraftLight extends PC_Module
                 new Object[] { " X ", " X ", "XXX",
                         'X', Block.blockSteel
                              });
+        
+        PC_Utils.addRecipe(
+                new PC_ItemStack(laserComposition),
+                new Object[] { "XXX", "XPX", "XXX",
+                        'X', Block.glass, 'P', new PC_ItemStack(PC_Utils.getPCBlockByName("PCco_BlockPowerCrystal"), 1, 0)
+                             });
+        
+        PC_Utils.addRecipe(
+                new PC_ItemStack(laserComposition),
+                new Object[] { "XXX", "XPX", "XXX",
+                        'X', Block.glass, 'P', new PC_ItemStack(PC_Utils.getPCBlockByName("PCco_BlockPowerCrystal"), 1, 1)
+                             });
+        
+        for(int i=2; i<10; i++){
+        	Object[] o = new Object[i];
+        	for(int j=0; j<i; j++){
+        		o[j] = new PC_ItemStack(laserComposition);
+        	}
+        	 PC_Utils.addShapelessRecipe( new PC_ItemStack(laserComposition), o);
+        }
+        
     }
 
     @Override

@@ -123,10 +123,50 @@ public class PC_Renderer
         renderer2d.iResetTerrain(do_it);
     }
 
-    protected void iglColor3f(float r, float g, float b) {}
-
     public static void glColor3f(float r, float g, float b)
     {
-        renderer2d.iglColor3f(r, g, b);
+    	glColor4f(r, g, b, 1.0f);
     }
+    
+    protected void iglColor4f(float r, float g, float b, float a) {}
+    
+    public static void glColor4f(float red, float green, float blue, float a) {
+    	renderer2d.iglColor4f(red, green, blue, a);
+	}
+    
+    protected void iglPushMatrix() {}
+
+    public static void glPushMatrix()
+    {
+        renderer2d.iglPushMatrix();
+    }
+    
+    protected void iglPopMatrix() {}
+
+    public static void glPopMatrix()
+    {
+        renderer2d.iglPopMatrix();
+    }
+    
+    protected void iglTranslatef(float x, float y, float z) {}
+
+    public static void glTranslatef(float x, float y, float z)
+    {
+        renderer2d.iglTranslatef(x, y, z);
+    }
+    
+    protected void iglRotatef(float angel, float x, float y, float z) {}
+
+    public static void glRotatef(float angel, float x, float y, float z)
+    {
+        renderer2d.iglRotatef(angel, x, y, z);
+    }
+    
+    protected void iglScalef(float x, float y, float z) {}
+
+    public static void glScalef(float x, float y, float z)
+    {
+        renderer2d.iglScalef(x, y, z);
+    }
+    
 }

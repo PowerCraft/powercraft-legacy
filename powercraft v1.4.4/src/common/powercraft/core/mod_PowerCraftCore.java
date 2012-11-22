@@ -55,6 +55,7 @@ public class mod_PowerCraftCore extends PC_Module
     public static PC_Item craftingTool;
     public static PC_Item oreSniffer;
     public static PC_Item activator;
+	public static PC_Item blockSaver;
 
     public static final String updateInfoPath = "https://dl.dropbox.com/s/axurfxp6cxkr3nv/Update.xml?dl=1";
 
@@ -140,6 +141,7 @@ public class mod_PowerCraftCore extends PC_Module
         craftingTool = (PC_Item)PC_Utils.register(this, 458, PCco_ItemCraftingTool.class);
         oreSniffer = (PC_Item)PC_Utils.register(this, 459, PCco_ItemOreSniffer.class);
         activator = (PC_Item)PC_Utils.register(this, 460, PCco_ItemActivator.class);
+        blockSaver = (PC_Item)PC_Utils.register(this, 500, PCco_ItemBlockSaver.class);
     }
 
     @Override

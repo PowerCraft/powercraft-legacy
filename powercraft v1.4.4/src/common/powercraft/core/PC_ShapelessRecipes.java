@@ -66,7 +66,11 @@ public class PC_ShapelessRecipes implements IRecipe, PC_ICraftingInputGetter
 
     public ItemStack getCraftingResult(InventoryCrafting par1InventoryCrafting)
     {
-        return recipeOutput.toItemStack();
+    	ItemStack itemStack = getRecipeOutput().copy();
+    	if(itemStack.getItem() instanceof PC_Item){
+    		((PC_Item)itemStack.getItem()).doCrafting(itemStack, par1InventoryCrafting);
+    	}
+        return itemStack;
     }
 
     public int getRecipeSize()

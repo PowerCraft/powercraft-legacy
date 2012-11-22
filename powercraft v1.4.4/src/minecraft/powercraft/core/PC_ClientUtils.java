@@ -254,6 +254,11 @@ public class PC_ClientUtils extends PC_Utils {
 		PC_PacketHandler.sendToPacketHandler(mc().theWorld, "PacketUtils", KEYEVENT, false, keyCode);
 	}
 	
+	@Override
+	protected void iTileEntitySpecialRenderer(Class <? extends TileEntity> tileEntityClass){
+		bindTileEntitySpecialRenderer(tileEntityClass, PC_TileEntitySpecialRenderer.getInstance());
+	}
+	
 	public static void bindTileEntitySpecialRenderer(Class <? extends TileEntity> tileEntityClass, TileEntitySpecialRenderer specialRenderer){
 		ClientRegistry.bindTileEntitySpecialRenderer(tileEntityClass, specialRenderer);
 	}
