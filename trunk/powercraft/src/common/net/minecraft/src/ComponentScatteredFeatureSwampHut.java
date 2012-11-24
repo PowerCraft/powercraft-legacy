@@ -4,17 +4,13 @@ import java.util.Random;
 
 public class ComponentScatteredFeatureSwampHut extends ComponentScatteredFeature
 {
-    private boolean field_82682_h;
+    private boolean hasWitch;
 
     public ComponentScatteredFeatureSwampHut(Random par1Random, int par2, int par3)
     {
         super(par1Random, par2, 64, par3, 7, 5, 9);
     }
 
-    /**
-     * second Part of Structure generating, this for example places Spiderwebs, Mob Spawners, it closes Mineshafts at
-     * the end, it adds Fences...
-     */
     public boolean addComponentParts(World par1World, Random par2Random, StructureBoundingBox par3StructureBoundingBox)
     {
         if (!this.func_74935_a(par1World, par3StructureBoundingBox, 0))
@@ -39,7 +35,7 @@ public class ComponentScatteredFeatureSwampHut extends ComponentScatteredFeature
             this.placeBlockAtCurrentPosition(par1World, 0, 0, 1, 3, 4, par3StructureBoundingBox);
             this.placeBlockAtCurrentPosition(par1World, 0, 0, 5, 3, 4, par3StructureBoundingBox);
             this.placeBlockAtCurrentPosition(par1World, 0, 0, 5, 3, 5, par3StructureBoundingBox);
-            this.placeBlockAtCurrentPosition(par1World, Block.field_82516_cf.blockID, 7, 1, 3, 5, par3StructureBoundingBox);
+            this.placeBlockAtCurrentPosition(par1World, Block.flowerPot.blockID, 7, 1, 3, 5, par3StructureBoundingBox);
             this.placeBlockAtCurrentPosition(par1World, Block.workbench.blockID, 0, 3, 2, 6, par3StructureBoundingBox);
             this.placeBlockAtCurrentPosition(par1World, Block.cauldron.blockID, 0, 4, 2, 6, par3StructureBoundingBox);
             this.placeBlockAtCurrentPosition(par1World, Block.fence.blockID, 0, 1, 2, 1, par3StructureBoundingBox);
@@ -63,7 +59,7 @@ public class ComponentScatteredFeatureSwampHut extends ComponentScatteredFeature
                 }
             }
 
-            if (!this.field_82682_h)
+            if (!this.hasWitch)
             {
                 var8 = this.getXWithOffset(2, 5);
                 var9 = this.getYWithOffset(2);
@@ -71,10 +67,10 @@ public class ComponentScatteredFeatureSwampHut extends ComponentScatteredFeature
 
                 if (par3StructureBoundingBox.isVecInside(var8, var9, var10))
                 {
-                    this.field_82682_h = true;
+                    this.hasWitch = true;
                     EntityWitch var11 = new EntityWitch(par1World);
                     var11.setLocationAndAngles((double)var8 + 0.5D, (double)var9, (double)var10 + 0.5D, 0.0F, 0.0F);
-                    var11.func_82163_bD();
+                    var11.initCreature();
                     par1World.spawnEntityInWorld(var11);
                 }
             }

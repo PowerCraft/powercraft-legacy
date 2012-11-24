@@ -41,7 +41,7 @@ public class RenderingRegistry
     public static int addNewArmourRendererPrefix(String armor)
     {
         RenderPlayer.armorFilenamePrefix = ObjectArrays.concat(RenderPlayer.armorFilenamePrefix, armor);
-        RenderBiped.field_82424_k = RenderPlayer.armorFilenamePrefix;
+        RenderBiped.bipedArmorFilenamePrefix = RenderPlayer.armorFilenamePrefix;
         return RenderPlayer.armorFilenamePrefix.length - 1;
     }
 

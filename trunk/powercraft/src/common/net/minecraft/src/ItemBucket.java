@@ -6,7 +6,6 @@ import net.minecraftforge.event.entity.player.FillBucketEvent;
 
 public class ItemBucket extends Item
 {
-    /** field for checking if the bucket has been filled. */
     private int isFull;
 
     public ItemBucket(int par1, int par2)
@@ -17,9 +16,6 @@ public class ItemBucket extends Item
         this.setCreativeTab(CreativeTabs.tabMisc);
     }
 
-    /**
-     * Called whenever this item is equipped and the right mouse button is pressed. Args: itemStack, world, entityPlayer
-     */
     public ItemStack onItemRightClick(ItemStack par1ItemStack, World par2World, EntityPlayer par3EntityPlayer)
     {
         float var4 = 1.0F;
@@ -36,6 +32,7 @@ public class ItemBucket extends Item
         else
         {
             FillBucketEvent event = new FillBucketEvent(par3EntityPlayer, par1ItemStack, par2World, var12);
+
             if (MinecraftForge.EVENT_BUS.post(event))
             {
                 return par1ItemStack;
@@ -180,9 +177,6 @@ public class ItemBucket extends Item
         }
     }
 
-    /**
-     * Attempts to place the liquid contained inside the bucket.
-     */
     public boolean tryPlaceContainedLiquid(World par1World, double par2, double par4, double par6, int par8, int par9, int par10)
     {
         if (this.isFull <= 0)

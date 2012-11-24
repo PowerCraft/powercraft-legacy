@@ -11,15 +11,12 @@ public class TileEntityPiston extends TileEntity
     private int storedBlockID;
     private int storedMetadata;
 
-    /** the side the front of the piston is on */
     private int storedOrientation;
 
-    /** if this piston is extending or not */
     private boolean extending;
     private boolean shouldHeadBeRendered;
     private float progress;
 
-    /** the progress in (de)extending */
     private float lastProgress;
     private List pushedObjects = new ArrayList();
 
@@ -39,25 +36,16 @@ public class TileEntityPiston extends TileEntity
         return this.storedBlockID;
     }
 
-    /**
-     * Returns block data at the location of this entity (client-only).
-     */
     public int getBlockMetadata()
     {
         return this.storedMetadata;
     }
 
-    /**
-     * Returns true if a piston is extending
-     */
     public boolean isExtending()
     {
         return this.extending;
     }
 
-    /**
-     * Returns the orientation of the piston as an int
-     */
     public int getPistonOrientation()
     {
         return this.storedOrientation;
@@ -69,10 +57,6 @@ public class TileEntityPiston extends TileEntity
         return this.shouldHeadBeRendered;
     }
 
-    /**
-     * Get interpolated progress value (between lastProgress and progress) given the fractional time between ticks as an
-     * argument.
-     */
     public float getProgress(float par1)
     {
         if (par1 > 1.0F)
@@ -134,9 +118,6 @@ public class TileEntityPiston extends TileEntity
         return this.extending ? (this.getProgress(par1) - 1.0F) * (float)Facing.offsetsZForSide[this.storedOrientation] : (1.0F - this.getProgress(par1)) * (float)Facing.offsetsZForSide[this.storedOrientation];
     }
 
-    /**
-     * removes a pistons tile entity (and if the piston is moving, stops it)
-     */
     public void clearPistonTileEntity()
     {
         if (this.lastProgress < 1.0F && this.worldObj != null)
@@ -152,10 +133,6 @@ public class TileEntityPiston extends TileEntity
         }
     }
 
-    /**
-     * Allows the entity to update its state. Overridden in most subclasses, e.g. the mob spawner uses this to count
-     * ticks and creates a new spawn inside its implementation.
-     */
     public void updateEntity()
     {
         this.lastProgress = this.progress;
@@ -187,9 +164,6 @@ public class TileEntityPiston extends TileEntity
         }
     }
 
-    /**
-     * Reads a tile entity from NBT.
-     */
     public void readFromNBT(NBTTagCompound par1NBTTagCompound)
     {
         super.readFromNBT(par1NBTTagCompound);
@@ -200,9 +174,6 @@ public class TileEntityPiston extends TileEntity
         this.extending = par1NBTTagCompound.getBoolean("extending");
     }
 
-    /**
-     * Writes a tile entity to NBT.
-     */
     public void writeToNBT(NBTTagCompound par1NBTTagCompound)
     {
         super.writeToNBT(par1NBTTagCompound);

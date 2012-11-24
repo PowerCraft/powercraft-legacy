@@ -16,8 +16,8 @@ public class GuiScreenDemo extends GuiScreen
     {
         this.controlList.clear();
         byte var1 = -16;
-        this.controlList.add(new GuiButton(1, this.width / 2 - 116, this.height / 4 + 132 + var1, 114, 20, StatCollector.translateToLocal("demo.help.buy")));
-        this.controlList.add(new GuiButton(2, this.width / 2 + 2, this.height / 4 + 132 + var1, 114, 20, StatCollector.translateToLocal("demo.help.later")));
+        this.controlList.add(new GuiButton(1, this.width / 2 - 116, this.height / 2 + 62 + var1, 114, 20, StatCollector.translateToLocal("demo.help.buy")));
+        this.controlList.add(new GuiButton(2, this.width / 2 + 2, this.height / 2 + 62 + var1, 114, 20, StatCollector.translateToLocal("demo.help.later")));
     }
 
     /**
@@ -77,21 +77,22 @@ public class GuiScreenDemo extends GuiScreen
     {
         this.drawDefaultBackground();
         int var4 = (this.width - 248) / 2 + 10;
-        this.fontRenderer.drawString(StatCollector.translateToLocal("demo.help.title"), var4, 44, 2039583);
-        GameSettings var6 = this.mc.gameSettings;
-        byte var7 = 60;
-        String var5 = StatCollector.translateToLocal("demo.help.movementShort");
-        var5 = String.format(var5, new Object[] {Keyboard.getKeyName(var6.keyBindForward.keyCode), Keyboard.getKeyName(var6.keyBindLeft.keyCode), Keyboard.getKeyName(var6.keyBindBack.keyCode), Keyboard.getKeyName(var6.keyBindRight.keyCode)});
-        this.fontRenderer.drawString(var5, var4, var7, 5197647);
-        var5 = StatCollector.translateToLocal("demo.help.movementMouse");
-        this.fontRenderer.drawString(var5, var4, var7 + 12, 5197647);
-        var5 = StatCollector.translateToLocal("demo.help.jump");
-        var5 = String.format(var5, new Object[] {Keyboard.getKeyName(var6.keyBindJump.keyCode)});
-        this.fontRenderer.drawString(var5, var4, var7 + 24, 5197647);
-        var5 = StatCollector.translateToLocal("demo.help.inventory");
-        var5 = String.format(var5, new Object[] {Keyboard.getKeyName(var6.keyBindInventory.keyCode)});
-        this.fontRenderer.drawString(var5, var4, var7 + 36, 5197647);
-        this.fontRenderer.drawSplitString(StatCollector.translateToLocal("demo.help.fullWrapped"), var4, var7 + 68, 218, 2039583);
+        int var5 = (this.height - 166) / 2 + 8;
+        this.fontRenderer.drawString(StatCollector.translateToLocal("demo.help.title"), var4, var5, 2039583);
+        var5 += 12;
+        GameSettings var7 = this.mc.gameSettings;
+        String var6 = StatCollector.translateToLocal("demo.help.movementShort");
+        var6 = String.format(var6, new Object[] {Keyboard.getKeyName(var7.keyBindForward.keyCode), Keyboard.getKeyName(var7.keyBindLeft.keyCode), Keyboard.getKeyName(var7.keyBindBack.keyCode), Keyboard.getKeyName(var7.keyBindRight.keyCode)});
+        this.fontRenderer.drawString(var6, var4, var5, 5197647);
+        var6 = StatCollector.translateToLocal("demo.help.movementMouse");
+        this.fontRenderer.drawString(var6, var4, var5 + 12, 5197647);
+        var6 = StatCollector.translateToLocal("demo.help.jump");
+        var6 = String.format(var6, new Object[] {Keyboard.getKeyName(var7.keyBindJump.keyCode)});
+        this.fontRenderer.drawString(var6, var4, var5 + 24, 5197647);
+        var6 = StatCollector.translateToLocal("demo.help.inventory");
+        var6 = String.format(var6, new Object[] {Keyboard.getKeyName(var7.keyBindInventory.keyCode)});
+        this.fontRenderer.drawString(var6, var4, var5 + 36, 5197647);
+        this.fontRenderer.drawSplitString(StatCollector.translateToLocal("demo.help.fullWrapped"), var4, var5 + 68, 218, 2039583);
         super.drawScreen(par1, par2, par3);
     }
 }

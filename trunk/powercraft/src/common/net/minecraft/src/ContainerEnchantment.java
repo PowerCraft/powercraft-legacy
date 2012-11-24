@@ -8,20 +8,16 @@ import java.util.Random;
 
 public class ContainerEnchantment extends Container
 {
-    /** SlotEnchantmentTable object with ItemStack to be enchanted */
     public IInventory tableInventory = new SlotEnchantmentTable(this, "Enchant", 1);
 
-    /** current world (for bookshelf counting) */
     private World worldPointer;
     private int posX;
     private int posY;
     private int posZ;
     private Random rand = new Random();
 
-    /** used as seed for EnchantmentNameParts (see GuiEnchantment) */
     public long nameSeed;
 
-    /** 3-member array storing the enchantment levels of each slot */
     public int[] enchantLevels = new int[3];
 
     public ContainerEnchantment(InventoryPlayer par1InventoryPlayer, World par2World, int par3, int par4, int par5)
@@ -55,17 +51,13 @@ public class ContainerEnchantment extends Container
         par1ICrafting.updateCraftingInventoryInfo(this, 2, this.enchantLevels[2]);
     }
 
-    /**
-     * Updates crafting matrix; called from onCraftMatrixChanged. Args: none
-     */
     public void updateCraftingResults()
     {
         super.updateCraftingResults();
-        Iterator var1 = this.crafters.iterator();
 
-        while (var1.hasNext())
+        for (int var1 = 0; var1 < this.crafters.size(); ++var1)
         {
-            ICrafting var2 = (ICrafting)var1.next();
+            ICrafting var2 = (ICrafting)this.crafters.get(var1);
             var2.updateCraftingInventoryInfo(this, 0, this.enchantLevels[0]);
             var2.updateCraftingInventoryInfo(this, 1, this.enchantLevels[1]);
             var2.updateCraftingInventoryInfo(this, 2, this.enchantLevels[2]);
@@ -85,9 +77,6 @@ public class ContainerEnchantment extends Container
         }
     }
 
-    /**
-     * Callback for when the crafting matrix is changed.
-     */
     public void onCraftMatrixChanged(IInventory par1IInventory)
     {
         if (par1IInventory == this.tableInventory)
@@ -164,9 +153,6 @@ public class ContainerEnchantment extends Container
         }
     }
 
-    /**
-     * enchants the item on the table using the specified slot; also deducts XP from player
-     */
     public boolean enchantItem(EntityPlayer par1EntityPlayer, int par2)
     {
         ItemStack var3 = this.tableInventory.getStackInSlot(0);
@@ -179,7 +165,7 @@ public class ContainerEnchantment extends Container
 
                 if (var4 != null)
                 {
-                    par1EntityPlayer.func_82242_a(-this.enchantLevels[par2]);
+                    par1EntityPlayer.addExperienceLevel(-this.enchantLevels[par2]);
                     Iterator var5 = var4.iterator();
 
                     while (var5.hasNext())
@@ -200,9 +186,6 @@ public class ContainerEnchantment extends Container
         }
     }
 
-    /**
-     * Callback for when the crafting gui is closed.
-     */
     public void onCraftGuiClosed(EntityPlayer par1EntityPlayer)
     {
         super.onCraftGuiClosed(par1EntityPlayer);
@@ -223,7 +206,7 @@ public class ContainerEnchantment extends Container
         return this.worldPointer.getBlockId(this.posX, this.posY, this.posZ) != Block.enchantmentTable.blockID ? false : par1EntityPlayer.getDistanceSq((double)this.posX + 0.5D, (double)this.posY + 0.5D, (double)this.posZ + 0.5D) <= 64.0D;
     }
 
-    public ItemStack func_82846_b(EntityPlayer par1EntityPlayer, int par2)
+    public ItemStack transferStackInSlot(EntityPlayer par1EntityPlayer, int par2)
     {
         ItemStack var3 = null;
         Slot var4 = (Slot)this.inventorySlots.get(par2);
@@ -273,7 +256,7 @@ public class ContainerEnchantment extends Container
                 return null;
             }
 
-            var4.func_82870_a(par1EntityPlayer, var5);
+            var4.onPickupFromSlot(par1EntityPlayer, var5);
         }
 
         return var3;

@@ -4,13 +4,10 @@ import java.util.Random;
 
 abstract class ComponentScatteredFeature extends StructureComponent
 {
-    /** The size of the bounding box for this feature in the X axis */
     protected final int scatteredFeatureSizeX;
 
-    /** The size of the bounding box for this feature in the Y axis */
     protected final int scatteredFeatureSizeY;
 
-    /** The size of the bounding box for this feature in the Z axis */
     protected final int scatteredFeatureSizeZ;
     protected int field_74936_d = -1;
 
@@ -28,6 +25,7 @@ abstract class ComponentScatteredFeature extends StructureComponent
             case 2:
                 this.boundingBox = new StructureBoundingBox(par2, par3, par4, par2 + par5 - 1, par3 + par6 - 1, par4 + par7 - 1);
                 break;
+
             default:
                 this.boundingBox = new StructureBoundingBox(par2, par3, par4, par2 + par7 - 1, par3 + par6 - 1, par4 + par5 - 1);
         }

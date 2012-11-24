@@ -4,13 +4,10 @@ import java.util.Random;
 
 public class WorldGenHugeTrees extends WorldGenerator
 {
-    /** The base height of the tree */
     private final int baseHeight;
 
-    /** Sets the metadata for the wood blocks used */
     private final int woodMetadata;
 
-    /** Sets the metadata for the leaves used in huge trees */
     private final int leavesMetadata;
 
     public WorldGenHugeTrees(boolean par1, int par2, int par3, int par4)
@@ -55,12 +52,12 @@ public class WorldGenHugeTrees extends WorldGenerator
                         {
                             var12 = par1World.getBlockId(var10, var8, var11);
 
-                            if (var12 != 0 && 
-                               (Block.blocksList[var12] != null && !Block.blocksList[var12].isLeaves(par1World, var10, var8, var11)) && 
-                               var12 != Block.grass.blockID && 
-                               var12 != Block.dirt.blockID && 
-                               (Block.blocksList[var12] != null && !Block.blocksList[var12].isWood(par1World, var10, var8, var11)) &&
-                               var12 != Block.sapling.blockID)
+                            if (var12 != 0 &&
+                                    (Block.blocksList[var12] != null && !Block.blocksList[var12].isLeaves(par1World, var10, var8, var11)) &&
+                                    var12 != Block.grass.blockID &&
+                                    var12 != Block.dirt.blockID &&
+                                    (Block.blocksList[var12] != null && !Block.blocksList[var12].isWood(par1World, var10, var8, var11)) &&
+                                    var12 != Block.sapling.blockID)
                             {
                                 var7 = false;
                             }
@@ -220,13 +217,12 @@ public class WorldGenHugeTrees extends WorldGenerator
                 for (int var13 = par3 - var10; var13 <= par3 + var10 + 1; ++var13)
                 {
                     int var14 = var13 - par3;
-
                     Block block = Block.blocksList[par1World.getBlockId(var11, var8, var13)];
 
-                    if ((var12 >= 0 || var14 >= 0 || var12 * var12 + var14 * var14 <= var10 * var10) && 
-                        (var12 <= 0 && var14 <= 0 || var12 * var12 + var14 * var14 <= (var10 + 1) * (var10 + 1)) && 
-                        (par6Random.nextInt(4) != 0 || var12 * var12 + var14 * var14 <= (var10 - 1) * (var10 - 1)) && 
-                        (block == null || block.canBeReplacedByLeaves(par1World, var11, var8, var13)))
+                    if ((var12 >= 0 || var14 >= 0 || var12 * var12 + var14 * var14 <= var10 * var10) &&
+                            (var12 <= 0 && var14 <= 0 || var12 * var12 + var14 * var14 <= (var10 + 1) * (var10 + 1)) &&
+                            (par6Random.nextInt(4) != 0 || var12 * var12 + var14 * var14 <= (var10 - 1) * (var10 - 1)) &&
+                            (block == null || block.canBeReplacedByLeaves(par1World, var11, var8, var13)))
                     {
                         this.setBlockAndMetadata(par1World, var11, var8, var13, Block.leaves.blockID, this.leavesMetadata);
                     }

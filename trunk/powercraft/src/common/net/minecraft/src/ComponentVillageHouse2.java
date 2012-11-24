@@ -8,7 +8,6 @@ import static net.minecraftforge.common.ChestGenHooks.*;
 
 public class ComponentVillageHouse2 extends ComponentVillage
 {
-    /** List of items that Village's Blacksmith chest can contain. */
     public static final WeightedRandomChestContent[] villageBlacksmithChestContents = new WeightedRandomChestContent[] {new WeightedRandomChestContent(Item.diamond.shiftedIndex, 0, 1, 3, 3), new WeightedRandomChestContent(Item.ingotIron.shiftedIndex, 0, 1, 5, 10), new WeightedRandomChestContent(Item.ingotGold.shiftedIndex, 0, 1, 3, 5), new WeightedRandomChestContent(Item.bread.shiftedIndex, 0, 1, 3, 15), new WeightedRandomChestContent(Item.appleRed.shiftedIndex, 0, 1, 3, 15), new WeightedRandomChestContent(Item.pickaxeSteel.shiftedIndex, 0, 1, 1, 5), new WeightedRandomChestContent(Item.swordSteel.shiftedIndex, 0, 1, 1, 5), new WeightedRandomChestContent(Item.plateSteel.shiftedIndex, 0, 1, 1, 5), new WeightedRandomChestContent(Item.helmetSteel.shiftedIndex, 0, 1, 1, 5), new WeightedRandomChestContent(Item.legsSteel.shiftedIndex, 0, 1, 1, 5), new WeightedRandomChestContent(Item.bootsSteel.shiftedIndex, 0, 1, 1, 5), new WeightedRandomChestContent(Block.obsidian.blockID, 0, 3, 7, 5), new WeightedRandomChestContent(Block.sapling.blockID, 0, 3, 7, 5)};
     private int averageGroundLevel = -1;
     private boolean hasMadeChest;
@@ -26,10 +25,6 @@ public class ComponentVillageHouse2 extends ComponentVillage
         return canVillageGoDeeper(var8) && StructureComponent.findIntersecting(par1List, var8) == null ? new ComponentVillageHouse2(par0ComponentVillageStartPiece, par7, par2Random, var8, par6) : null;
     }
 
-    /**
-     * second Part of Structure generating, this for example places Spiderwebs, Mob Spawners, it closes Mineshafts at
-     * the end, it adds Fences...
-     */
     public boolean addComponentParts(World par1World, Random par2Random, StructureBoundingBox par3StructureBoundingBox)
     {
         if (this.averageGroundLevel < 0)
@@ -116,9 +111,6 @@ public class ComponentVillageHouse2 extends ComponentVillage
         return true;
     }
 
-    /**
-     * Returns the villager type to spawn in this component, based on the number of villagers already spawned.
-     */
     protected int getVillagerType(int par1)
     {
         return 3;

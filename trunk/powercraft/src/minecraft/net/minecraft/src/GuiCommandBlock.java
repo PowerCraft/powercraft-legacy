@@ -9,12 +9,15 @@ import org.lwjgl.input.Keyboard;
 @SideOnly(Side.CLIENT)
 public class GuiCommandBlock extends GuiScreen
 {
-    private GuiTextField field_82318_a;
-    private final TileEntityCommandBlock field_82317_b;
+    /** Text field containing the command block's command. */
+    private GuiTextField commandTextField;
+
+    /** Command block being edited. */
+    private final TileEntityCommandBlock commandBlock;
 
     public GuiCommandBlock(TileEntityCommandBlock par1)
     {
-        this.field_82317_b = par1;
+        this.commandBlock = par1;
     }
 
     /**
@@ -22,7 +25,7 @@ public class GuiCommandBlock extends GuiScreen
      */
     public void updateScreen()
     {
-        this.field_82318_a.updateCursorCounter();
+        this.commandTextField.updateCursorCounter();
     }
 
     /**
@@ -35,10 +38,10 @@ public class GuiCommandBlock extends GuiScreen
         this.controlList.clear();
         this.controlList.add(new GuiButton(0, this.width / 2 - 100, this.height / 4 + 96 + 12, var1.translateKey("gui.done")));
         this.controlList.add(new GuiButton(1, this.width / 2 - 100, this.height / 4 + 120 + 12, var1.translateKey("gui.cancel")));
-        this.field_82318_a = new GuiTextField(this.fontRenderer, this.width / 2 - 150, 60, 300, 20);
-        this.field_82318_a.setMaxStringLength(32767);
-        this.field_82318_a.setFocused(true);
-        this.field_82318_a.setText(this.field_82317_b.func_82353_c());
+        this.commandTextField = new GuiTextField(this.fontRenderer, this.width / 2 - 150, 60, 300, 20);
+        this.commandTextField.setMaxStringLength(32767);
+        this.commandTextField.setFocused(true);
+        this.commandTextField.setText(this.commandBlock.getCommand());
     }
 
     /**
@@ -68,10 +71,10 @@ public class GuiCommandBlock extends GuiScreen
 
                 try
                 {
-                    var4.writeInt(this.field_82317_b.xCoord);
-                    var4.writeInt(this.field_82317_b.yCoord);
-                    var4.writeInt(this.field_82317_b.zCoord);
-                    Packet.writeString(this.field_82318_a.getText(), var4);
+                    var4.writeInt(this.commandBlock.xCoord);
+                    var4.writeInt(this.commandBlock.yCoord);
+                    var4.writeInt(this.commandBlock.zCoord);
+                    Packet.writeString(this.commandTextField.getText(), var4);
                     this.mc.getSendQueue().addToSendQueue(new Packet250CustomPayload(var2, var3.toByteArray()));
                 }
                 catch (Exception var6)
@@ -89,8 +92,8 @@ public class GuiCommandBlock extends GuiScreen
      */
     protected void keyTyped(char par1, int par2)
     {
-        this.field_82318_a.textboxKeyTyped(par1, par2);
-        ((GuiButton)this.controlList.get(0)).enabled = this.field_82318_a.getText().trim().length() > 0;
+        this.commandTextField.textboxKeyTyped(par1, par2);
+        ((GuiButton)this.controlList.get(0)).enabled = this.commandTextField.getText().trim().length() > 0;
 
         if (par1 == 13)
         {
@@ -104,7 +107,7 @@ public class GuiCommandBlock extends GuiScreen
     protected void mouseClicked(int par1, int par2, int par3)
     {
         super.mouseClicked(par1, par2, par3);
-        this.field_82318_a.mouseClicked(par1, par2, par3);
+        this.commandTextField.mouseClicked(par1, par2, par3);
     }
 
     /**
@@ -119,7 +122,7 @@ public class GuiCommandBlock extends GuiScreen
         this.drawString(this.fontRenderer, var4.translateKey("advMode.nearestPlayer"), this.width / 2 - 150, 97, 10526880);
         this.drawString(this.fontRenderer, var4.translateKey("advMode.randomPlayer"), this.width / 2 - 150, 108, 10526880);
         this.drawString(this.fontRenderer, var4.translateKey("advMode.allPlayers"), this.width / 2 - 150, 119, 10526880);
-        this.field_82318_a.drawTextBox();
+        this.commandTextField.drawTextBox();
         super.drawScreen(par1, par2, par3);
     }
 }

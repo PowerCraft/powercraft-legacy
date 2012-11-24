@@ -1,0 +1,14 @@
+{
+  "user":{
+    "name":"XOR",
+    "sessionid":"local"
+  },
+  "stats-change":[
+    {"1100":468},
+    {"2000":2806},
+    {"1003":1},
+    {"1000":1},
+    {"2010":2}
+  ],
+  "checksum":"23fa3a63c000c5aa620cf78043adaff"
+}

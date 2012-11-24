@@ -2,18 +2,16 @@ package net.minecraft.src;
 
 public class ContainerPlayer extends Container
 {
-    /** The crafting matrix inventory. */
     public InventoryCrafting craftMatrix = new InventoryCrafting(this, 2, 2);
     public IInventory craftResult = new InventoryCraftResult();
 
-    /** Determines if inventory manipulation should be handled. */
     public boolean isLocalWorld = false;
-    private final EntityPlayer field_82862_h;
+    private final EntityPlayer thePlayer;
 
     public ContainerPlayer(InventoryPlayer par1InventoryPlayer, boolean par2, EntityPlayer par3EntityPlayer)
     {
         this.isLocalWorld = par2;
-        this.field_82862_h = par3EntityPlayer;
+        this.thePlayer = par3EntityPlayer;
         this.addSlotToContainer(new SlotCrafting(par1InventoryPlayer.player, this.craftMatrix, this.craftResult, 0, 144, 36));
         int var4;
         int var5;
@@ -47,17 +45,11 @@ public class ContainerPlayer extends Container
         this.onCraftMatrixChanged(this.craftMatrix);
     }
 
-    /**
-     * Callback for when the crafting matrix is changed.
-     */
     public void onCraftMatrixChanged(IInventory par1IInventory)
     {
-        this.craftResult.setInventorySlotContents(0, CraftingManager.getInstance().func_82787_a(this.craftMatrix, this.field_82862_h.worldObj));
+        this.craftResult.setInventorySlotContents(0, CraftingManager.getInstance().findMatchingRecipe(this.craftMatrix, this.thePlayer.worldObj));
     }
 
-    /**
-     * Callback for when the crafting gui is closed.
-     */
     public void onCraftGuiClosed(EntityPlayer par1EntityPlayer)
     {
         super.onCraftGuiClosed(par1EntityPlayer);
@@ -80,7 +72,7 @@ public class ContainerPlayer extends Container
         return true;
     }
 
-    public ItemStack func_82846_b(EntityPlayer par1EntityPlayer, int par2)
+    public ItemStack transferStackInSlot(EntityPlayer par1EntityPlayer, int par2)
     {
         ItemStack var3 = null;
         Slot var4 = (Slot)this.inventorySlots.get(par2);
@@ -155,7 +147,7 @@ public class ContainerPlayer extends Container
                 return null;
             }
 
-            var4.func_82870_a(par1EntityPlayer, var5);
+            var4.onPickupFromSlot(par1EntityPlayer, var5);
         }
 
         return var3;

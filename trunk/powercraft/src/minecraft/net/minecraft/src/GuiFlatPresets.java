@@ -12,19 +12,22 @@ import org.lwjgl.input.Keyboard;
 @SideOnly(Side.CLIENT)
 public class GuiFlatPresets extends GuiScreen
 {
-    private static RenderItem field_82305_a = new RenderItem();
-    private static final List field_82301_b = new ArrayList();
-    private final GuiCreateFlatWorld field_82302_c;
+    /** RenderItem instance used to render preset icons. */
+    private static RenderItem presetIconRenderer = new RenderItem();
+
+    /** List of defined flat world presets. */
+    private static final List presets = new ArrayList();
+    private final GuiCreateFlatWorld createFlatWorldGui;
     private String field_82300_d;
     private String field_82308_m;
     private String field_82306_n;
-    private GuiFlatPresetsListSlot field_82307_o;
-    private GuiButton field_82304_p;
-    private GuiTextField field_82303_q;
+    private GuiFlatPresetsListSlot theFlatPresetsListSlot;
+    private GuiButton theButton;
+    private GuiTextField theTextField;
 
     public GuiFlatPresets(GuiCreateFlatWorld par1)
     {
-        this.field_82302_c = par1;
+        this.createFlatWorldGui = par1;
     }
 
     /**
@@ -37,11 +40,11 @@ public class GuiFlatPresets extends GuiScreen
         this.field_82300_d = StatCollector.translateToLocal("createWorld.customize.presets.title");
         this.field_82308_m = StatCollector.translateToLocal("createWorld.customize.presets.share");
         this.field_82306_n = StatCollector.translateToLocal("createWorld.customize.presets.list");
-        this.field_82303_q = new GuiTextField(this.fontRenderer, 50, 40, this.width - 100, 20);
-        this.field_82307_o = new GuiFlatPresetsListSlot(this);
-        this.field_82303_q.setMaxStringLength(1230);
-        this.field_82303_q.setText(this.field_82302_c.func_82275_e());
-        this.controlList.add(this.field_82304_p = new GuiButton(0, this.width / 2 - 155, this.height - 28, 150, 20, StatCollector.translateToLocal("createWorld.customize.presets.select")));
+        this.theTextField = new GuiTextField(this.fontRenderer, 50, 40, this.width - 100, 20);
+        this.theFlatPresetsListSlot = new GuiFlatPresetsListSlot(this);
+        this.theTextField.setMaxStringLength(1230);
+        this.theTextField.setText(this.createFlatWorldGui.func_82275_e());
+        this.controlList.add(this.theButton = new GuiButton(0, this.width / 2 - 155, this.height - 28, 150, 20, StatCollector.translateToLocal("createWorld.customize.presets.select")));
         this.controlList.add(new GuiButton(1, this.width / 2 + 5, this.height - 28, 150, 20, StatCollector.translateToLocal("gui.cancel")));
         this.func_82296_g();
     }
@@ -59,7 +62,7 @@ public class GuiFlatPresets extends GuiScreen
      */
     protected void mouseClicked(int par1, int par2, int par3)
     {
-        this.field_82303_q.mouseClicked(par1, par2, par3);
+        this.theTextField.mouseClicked(par1, par2, par3);
         super.mouseClicked(par1, par2, par3);
     }
 
@@ -68,7 +71,7 @@ public class GuiFlatPresets extends GuiScreen
      */
     protected void keyTyped(char par1, int par2)
     {
-        if (!this.field_82303_q.textboxKeyTyped(par1, par2))
+        if (!this.theTextField.textboxKeyTyped(par1, par2))
         {
             super.keyTyped(par1, par2);
         }
@@ -81,12 +84,12 @@ public class GuiFlatPresets extends GuiScreen
     {
         if (par1GuiButton.id == 0 && this.func_82293_j())
         {
-            this.field_82302_c.func_82273_a(this.field_82303_q.getText());
-            this.mc.displayGuiScreen(this.field_82302_c);
+            this.createFlatWorldGui.func_82273_a(this.theTextField.getText());
+            this.mc.displayGuiScreen(this.createFlatWorldGui);
         }
         else if (par1GuiButton.id == 1)
         {
-            this.mc.displayGuiScreen(this.field_82302_c);
+            this.mc.displayGuiScreen(this.createFlatWorldGui);
         }
     }
 
@@ -96,11 +99,11 @@ public class GuiFlatPresets extends GuiScreen
     public void drawScreen(int par1, int par2, float par3)
     {
         this.drawDefaultBackground();
-        this.field_82307_o.drawScreen(par1, par2, par3);
+        this.theFlatPresetsListSlot.drawScreen(par1, par2, par3);
         this.drawCenteredString(this.fontRenderer, this.field_82300_d, this.width / 2, 8, 16777215);
         this.drawString(this.fontRenderer, this.field_82308_m, 50, 30, 10526880);
         this.drawString(this.fontRenderer, this.field_82306_n, 50, 70, 10526880);
-        this.field_82303_q.drawTextBox();
+        this.theTextField.drawTextBox();
         super.drawScreen(par1, par2, par3);
     }
 
@@ -109,36 +112,42 @@ public class GuiFlatPresets extends GuiScreen
      */
     public void updateScreen()
     {
-        this.field_82303_q.updateCursorCounter();
+        this.theTextField.updateCursorCounter();
         super.updateScreen();
     }
 
     public void func_82296_g()
     {
         boolean var1 = this.func_82293_j();
-        this.field_82304_p.enabled = var1;
+        this.theButton.enabled = var1;
     }
 
     private boolean func_82293_j()
     {
-        return this.field_82307_o.field_82459_a > -1 && this.field_82307_o.field_82459_a < field_82301_b.size() || this.field_82303_q.getText().length() > 1;
+        return this.theFlatPresetsListSlot.field_82459_a > -1 && this.theFlatPresetsListSlot.field_82459_a < presets.size() || this.theTextField.getText().length() > 1;
     }
 
-    private static void func_82297_a(String par0Str, int par1, BiomeGenBase par2BiomeGenBase, FlatLayerInfo ... par3ArrayOfFlatLayerInfo)
+    /**
+     * Add a flat world preset with no world features.
+     */
+    public static void addPresetNoFeatures(String par0Str, int par1, BiomeGenBase par2BiomeGenBase, FlatLayerInfo ... par3ArrayOfFlatLayerInfo)
     {
-        func_82294_a(par0Str, par1, par2BiomeGenBase, (List)null, par3ArrayOfFlatLayerInfo);
+        addPreset(par0Str, par1, par2BiomeGenBase, (List)null, par3ArrayOfFlatLayerInfo);
     }
 
-    private static void func_82294_a(String par0Str, int par1, BiomeGenBase par2BiomeGenBase, List par3List, FlatLayerInfo ... par4ArrayOfFlatLayerInfo)
+    /**
+     * Add a flat world preset.
+     */
+    public static void addPreset(String par0Str, int par1, BiomeGenBase par2BiomeGenBase, List par3List, FlatLayerInfo ... par4ArrayOfFlatLayerInfo)
     {
         FlatGeneratorInfo var5 = new FlatGeneratorInfo();
 
         for (int var6 = par4ArrayOfFlatLayerInfo.length - 1; var6 >= 0; --var6)
         {
-            var5.func_82650_c().add(par4ArrayOfFlatLayerInfo[var6]);
+            var5.getFlatLayers().add(par4ArrayOfFlatLayerInfo[var6]);
         }
 
-        var5.func_82647_a(par2BiomeGenBase.biomeID);
+        var5.setBiome(par2BiomeGenBase.biomeID);
         var5.func_82645_d();
 
         if (par3List != null)
@@ -148,42 +157,48 @@ public class GuiFlatPresets extends GuiScreen
             while (var8.hasNext())
             {
                 String var7 = (String)var8.next();
-                var5.func_82644_b().put(var7, new HashMap());
+                var5.getWorldFeatures().put(var7, new HashMap());
             }
         }
 
-        field_82301_b.add(new GuiFlatPresetsItem(par1, par0Str, var5.toString()));
+        presets.add(new GuiFlatPresetsItem(par1, par0Str, var5.toString()));
     }
 
-    static RenderItem func_82299_h()
+    /**
+     * Return the RenderItem instance used to render preset icons.
+     */
+    static RenderItem getPresetIconRenderer()
     {
-        return field_82305_a;
+        return presetIconRenderer;
     }
 
-    static List func_82295_i()
+    /**
+     * Return the list of defined flat world presets.
+     */
+    static List getPresets()
     {
-        return field_82301_b;
+        return presets;
     }
 
     static GuiFlatPresetsListSlot func_82292_a(GuiFlatPresets par0GuiFlatPresets)
     {
-        return par0GuiFlatPresets.field_82307_o;
+        return par0GuiFlatPresets.theFlatPresetsListSlot;
     }
 
     static GuiTextField func_82298_b(GuiFlatPresets par0GuiFlatPresets)
     {
-        return par0GuiFlatPresets.field_82303_q;
+        return par0GuiFlatPresets.theTextField;
     }
 
     static
     {
-        func_82294_a("Classic Flat", Block.grass.blockID, BiomeGenBase.plains, Arrays.asList(new String[] {"village"}), new FlatLayerInfo[] {new FlatLayerInfo(1, Block.grass.blockID), new FlatLayerInfo(2, Block.dirt.blockID), new FlatLayerInfo(1, Block.bedrock.blockID)});
-        func_82294_a("Tunnelers\' Dream", Block.stone.blockID, BiomeGenBase.extremeHills, Arrays.asList(new String[] {"biome_1", "dungeon", "decoration", "stronghold", "mineshaft"}), new FlatLayerInfo[] {new FlatLayerInfo(1, Block.grass.blockID), new FlatLayerInfo(5, Block.dirt.blockID), new FlatLayerInfo(230, Block.stone.blockID), new FlatLayerInfo(1, Block.bedrock.blockID)});
-        func_82294_a("Water World", Block.waterMoving.blockID, BiomeGenBase.plains, Arrays.asList(new String[] {"village", "biome_1"}), new FlatLayerInfo[] {new FlatLayerInfo(90, Block.waterStill.blockID), new FlatLayerInfo(5, Block.sand.blockID), new FlatLayerInfo(5, Block.dirt.blockID), new FlatLayerInfo(5, Block.stone.blockID), new FlatLayerInfo(1, Block.bedrock.blockID)});
-        func_82294_a("Overworld", Block.tallGrass.blockID, BiomeGenBase.plains, Arrays.asList(new String[] {"village", "biome_1", "decoration", "stronghold", "mineshaft", "dungeon", "lake", "lava_lake"}), new FlatLayerInfo[] {new FlatLayerInfo(1, Block.grass.blockID), new FlatLayerInfo(3, Block.dirt.blockID), new FlatLayerInfo(59, Block.stone.blockID), new FlatLayerInfo(1, Block.bedrock.blockID)});
-        func_82294_a("Snowy Kingdom", Block.snow.blockID, BiomeGenBase.icePlains, Arrays.asList(new String[] {"village", "biome_1"}), new FlatLayerInfo[] {new FlatLayerInfo(1, Block.snow.blockID), new FlatLayerInfo(1, Block.grass.blockID), new FlatLayerInfo(3, Block.dirt.blockID), new FlatLayerInfo(59, Block.stone.blockID), new FlatLayerInfo(1, Block.bedrock.blockID)});
-        func_82294_a("Bottomless Pit", Item.feather.shiftedIndex, BiomeGenBase.plains, Arrays.asList(new String[] {"village", "biome_1"}), new FlatLayerInfo[] {new FlatLayerInfo(1, Block.grass.blockID), new FlatLayerInfo(3, Block.dirt.blockID), new FlatLayerInfo(2, Block.cobblestone.blockID)});
-        func_82294_a("Desert", Block.sand.blockID, BiomeGenBase.desert, Arrays.asList(new String[] {"village", "biome_1", "decoration", "stronghold", "mineshaft", "dungeon"}), new FlatLayerInfo[] {new FlatLayerInfo(8, Block.sand.blockID), new FlatLayerInfo(52, Block.sandStone.blockID), new FlatLayerInfo(3, Block.stone.blockID), new FlatLayerInfo(1, Block.bedrock.blockID)});
-        func_82297_a("Redstone Ready", Item.redstone.shiftedIndex, BiomeGenBase.desert, new FlatLayerInfo[] {new FlatLayerInfo(52, Block.sandStone.blockID), new FlatLayerInfo(3, Block.stone.blockID), new FlatLayerInfo(1, Block.bedrock.blockID)});
+        addPreset("Classic Flat", Block.grass.blockID, BiomeGenBase.plains, Arrays.asList(new String[] {"village"}), new FlatLayerInfo[] {new FlatLayerInfo(1, Block.grass.blockID), new FlatLayerInfo(2, Block.dirt.blockID), new FlatLayerInfo(1, Block.bedrock.blockID)});
+        addPreset("Tunnelers\' Dream", Block.stone.blockID, BiomeGenBase.extremeHills, Arrays.asList(new String[] {"biome_1", "dungeon", "decoration", "stronghold", "mineshaft"}), new FlatLayerInfo[] {new FlatLayerInfo(1, Block.grass.blockID), new FlatLayerInfo(5, Block.dirt.blockID), new FlatLayerInfo(230, Block.stone.blockID), new FlatLayerInfo(1, Block.bedrock.blockID)});
+        addPreset("Water World", Block.waterMoving.blockID, BiomeGenBase.plains, Arrays.asList(new String[] {"village", "biome_1"}), new FlatLayerInfo[] {new FlatLayerInfo(90, Block.waterStill.blockID), new FlatLayerInfo(5, Block.sand.blockID), new FlatLayerInfo(5, Block.dirt.blockID), new FlatLayerInfo(5, Block.stone.blockID), new FlatLayerInfo(1, Block.bedrock.blockID)});
+        addPreset("Overworld", Block.tallGrass.blockID, BiomeGenBase.plains, Arrays.asList(new String[] {"village", "biome_1", "decoration", "stronghold", "mineshaft", "dungeon", "lake", "lava_lake"}), new FlatLayerInfo[] {new FlatLayerInfo(1, Block.grass.blockID), new FlatLayerInfo(3, Block.dirt.blockID), new FlatLayerInfo(59, Block.stone.blockID), new FlatLayerInfo(1, Block.bedrock.blockID)});
+        addPreset("Snowy Kingdom", Block.snow.blockID, BiomeGenBase.icePlains, Arrays.asList(new String[] {"village", "biome_1"}), new FlatLayerInfo[] {new FlatLayerInfo(1, Block.snow.blockID), new FlatLayerInfo(1, Block.grass.blockID), new FlatLayerInfo(3, Block.dirt.blockID), new FlatLayerInfo(59, Block.stone.blockID), new FlatLayerInfo(1, Block.bedrock.blockID)});
+        addPreset("Bottomless Pit", Item.feather.shiftedIndex, BiomeGenBase.plains, Arrays.asList(new String[] {"village", "biome_1"}), new FlatLayerInfo[] {new FlatLayerInfo(1, Block.grass.blockID), new FlatLayerInfo(3, Block.dirt.blockID), new FlatLayerInfo(2, Block.cobblestone.blockID)});
+        addPreset("Desert", Block.sand.blockID, BiomeGenBase.desert, Arrays.asList(new String[] {"village", "biome_1", "decoration", "stronghold", "mineshaft", "dungeon"}), new FlatLayerInfo[] {new FlatLayerInfo(8, Block.sand.blockID), new FlatLayerInfo(52, Block.sandStone.blockID), new FlatLayerInfo(3, Block.stone.blockID), new FlatLayerInfo(1, Block.bedrock.blockID)});
+        addPresetNoFeatures("Redstone Ready", Item.redstone.shiftedIndex, BiomeGenBase.desert, new FlatLayerInfo[] {new FlatLayerInfo(52, Block.sandStone.blockID), new FlatLayerInfo(3, Block.stone.blockID), new FlatLayerInfo(1, Block.bedrock.blockID)});
     }
 }

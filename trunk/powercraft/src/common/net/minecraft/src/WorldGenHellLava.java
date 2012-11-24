@@ -4,7 +4,6 @@ import java.util.Random;
 
 public class WorldGenHellLava extends WorldGenerator
 {
-    /** Stores the ID for WorldGenHellLava */
     private int hellLavaID;
 
     public WorldGenHellLava(int par1)

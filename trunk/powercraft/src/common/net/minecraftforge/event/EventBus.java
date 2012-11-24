@@ -6,14 +6,12 @@ import java.util.ArrayList;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
-
-
 import com.google.common.reflect.TypeToken;
 
 public class EventBus
 {
     private static int maxID = 0;
-    
+
     private ConcurrentHashMap<Object, ArrayList<IEventListener>> listeners = new ConcurrentHashMap<Object, ArrayList<IEventListener>>();
     private final int busID = maxID++;
 
@@ -21,10 +19,11 @@ public class EventBus
     {
         ListenerList.resize(busID + 1);
     }
-    
+
     public void register(Object target)
     {
-        Set<? extends Class<?>> supers = TypeToken.of(target.getClass()).getTypes().rawTypes();
+        Set <? extends Class<? >> supers = TypeToken.of(target.getClass()).getTypes().rawTypes();
+
         for (Method method : target.getClass().getMethods())
         {
             for (Class<?> cls : supers)
@@ -32,24 +31,26 @@ public class EventBus
                 try
                 {
                     Method real = cls.getDeclaredMethod(method.getName(), method.getParameterTypes());
+
                     if (real.isAnnotationPresent(ForgeSubscribe.class))
                     {
                         Class<?>[] parameterTypes = method.getParameterTypes();
+
                         if (parameterTypes.length != 1)
                         {
                             throw new IllegalArgumentException(
-                                "Method " + method + " has @ForgeSubscribe annotation, but requires " + parameterTypes.length +
-                                " arguments.  Event handler methods must require a single argument."
+                                    "Method " + method + " has @ForgeSubscribe annotation, but requires " + parameterTypes.length +
+                                    " arguments.  Event handler methods must require a single argument."
                             );
                         }
-                        
+
                         Class<?> eventType = parameterTypes[0];
-                        
+
                         if (!Event.class.isAssignableFrom(eventType))
                         {
-                            throw new IllegalArgumentException("Method " + method + " has @ForgeSubscribe annotation, but takes a argument that is not a Event " + eventType); 
+                            throw new IllegalArgumentException("Method " + method + " has @ForgeSubscribe annotation, but takes a argument that is not a Event " + eventType);
                         }
-                                                
+
                         register(eventType, target, method);
                         break;
                     }
@@ -71,13 +72,14 @@ public class EventBus
             Event event = (Event)ctr.newInstance();
             ASMEventHandler listener = new ASMEventHandler(target, method);
             event.getListenerList().register(busID, listener.getPriority(), listener);
+            ArrayList<IEventListener> others = listeners.get(target);
 
-            ArrayList<IEventListener> others = listeners.get(target); 
             if (others == null)
             {
                 others = new ArrayList<IEventListener>();
                 listeners.put(target, others);
             }
+
             others.add(listener);
         }
         catch (Exception e)
@@ -89,19 +91,22 @@ public class EventBus
     public void unregister(Object object)
     {
         ArrayList<IEventListener> list = listeners.remove(object);
+
         for (IEventListener listener : list)
         {
             ListenerList.unregiterAll(busID, listener);
         }
     }
-    
+
     public boolean post(Event event)
     {
         IEventListener[] listeners = event.getListenerList().getListeners(busID);
+
         for (IEventListener listener : listeners)
         {
             listener.invoke(event);
         }
+
         return (event.isCancelable() ? event.isCanceled() : false);
     }
 }

@@ -11,10 +11,8 @@ import net.minecraft.server.MinecraftServer;
 
 public class CommandDebug extends CommandBase
 {
-    /** Time the debugging started in milliseconds. */
     private long startTime = 0L;
 
-    /** The number of ticks when debugging started. */
     private int startTicks = 0;
 
     public String getCommandName()
@@ -22,7 +20,7 @@ public class CommandDebug extends CommandBase
         return "debug";
     }
 
-    public int func_82362_a()
+    public int getRequiredPermissionLevel()
     {
         return 3;
     }
@@ -132,9 +130,6 @@ public class CommandDebug extends CommandBase
         }
     }
 
-    /**
-     * Returns a random "witty" comment.
-     */
     private static String getWittyComment()
     {
         String[] var0 = new String[] {"Shiny numbers!", "Am I not running fast enough? :(", "I\'m working as hard as I can!", "Will I ever be good enough for you? :(", "Speedy. Zoooooom!", "Hello world", "40% better than a crash report.", "Now with extra numbers", "Now with less numbers", "Now with the same numbers", "You should add flames to things, it makes them go faster!", "Do you feel the need for... optimization?", "*cracks redstone whip*", "Maybe if you treated it better then it\'ll have more motivation to work faster! Poor server."};
@@ -149,9 +144,6 @@ public class CommandDebug extends CommandBase
         }
     }
 
-    /**
-     * Adds the strings available in this command to the given list of tab completion options.
-     */
     public List addTabCompletionOptions(ICommandSender par1ICommandSender, String[] par2ArrayOfStr)
     {
         return par2ArrayOfStr.length == 1 ? getListOfStringsMatchingLastWord(par2ArrayOfStr, new String[] {"start", "stop"}): null;

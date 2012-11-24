@@ -2,7 +2,6 @@ package net.minecraft.src;
 
 public class ContainerWorkbench extends Container
 {
-    /** The crafting matrix inventory (3x3). */
     public InventoryCrafting craftMatrix = new InventoryCrafting(this, 3, 3);
     public IInventory craftResult = new InventoryCraftResult();
     private World worldObj;
@@ -44,17 +43,11 @@ public class ContainerWorkbench extends Container
         this.onCraftMatrixChanged(this.craftMatrix);
     }
 
-    /**
-     * Callback for when the crafting matrix is changed.
-     */
     public void onCraftMatrixChanged(IInventory par1IInventory)
     {
-        this.craftResult.setInventorySlotContents(0, CraftingManager.getInstance().func_82787_a(this.craftMatrix, this.worldObj));
+        this.craftResult.setInventorySlotContents(0, CraftingManager.getInstance().findMatchingRecipe(this.craftMatrix, this.worldObj));
     }
 
-    /**
-     * Callback for when the crafting gui is closed.
-     */
     public void onCraftGuiClosed(EntityPlayer par1EntityPlayer)
     {
         super.onCraftGuiClosed(par1EntityPlayer);
@@ -78,7 +71,7 @@ public class ContainerWorkbench extends Container
         return this.worldObj.getBlockId(this.posX, this.posY, this.posZ) != Block.workbench.blockID ? false : par1EntityPlayer.getDistanceSq((double)this.posX + 0.5D, (double)this.posY + 0.5D, (double)this.posZ + 0.5D) <= 64.0D;
     }
 
-    public ItemStack func_82846_b(EntityPlayer par1EntityPlayer, int par2)
+    public ItemStack transferStackInSlot(EntityPlayer par1EntityPlayer, int par2)
     {
         ItemStack var3 = null;
         Slot var4 = (Slot)this.inventorySlots.get(par2);
@@ -130,7 +123,7 @@ public class ContainerWorkbench extends Container
                 return null;
             }
 
-            var4.func_82870_a(par1EntityPlayer, var5);
+            var4.onPickupFromSlot(par1EntityPlayer, var5);
         }
 
         return var3;

@@ -12,12 +12,9 @@ public class EntitySnowman extends EntityGolem implements IRangedAttackMob
         this.tasks.addTask(2, new EntityAIWander(this, 0.2F));
         this.tasks.addTask(3, new EntityAIWatchClosest(this, EntityPlayer.class, 6.0F));
         this.tasks.addTask(4, new EntityAILookIdle(this));
-        this.targetTasks.addTask(1, new EntityAINearestAttackableTarget(this, EntityLiving.class, 16.0F, 0, true, false, IMob.field_82192_a));
+        this.targetTasks.addTask(1, new EntityAINearestAttackableTarget(this, EntityLiving.class, 16.0F, 0, true, false, IMob.mobSelector));
     }
 
-    /**
-     * Returns true if the newer Entity AI code should be run
-     */
     public boolean isAIEnabled()
     {
         return true;
@@ -28,10 +25,6 @@ public class EntitySnowman extends EntityGolem implements IRangedAttackMob
         return 4;
     }
 
-    /**
-     * Called frequently so the entity can update its state every tick as required. For example, zombies and skeletons
-     * use this to react to sunlight and start to burn.
-     */
     public void onLivingUpdate()
     {
         super.onLivingUpdate();
@@ -62,17 +55,11 @@ public class EntitySnowman extends EntityGolem implements IRangedAttackMob
         }
     }
 
-    /**
-     * Returns the item ID for the item the mob drops on death.
-     */
     protected int getDropItemId()
     {
         return Item.snowball.shiftedIndex;
     }
 
-    /**
-     * Drop 0-2 items of this living's type
-     */
     protected void dropFewItems(boolean par1, int par2)
     {
         int var3 = this.rand.nextInt(16);
@@ -83,7 +70,7 @@ public class EntitySnowman extends EntityGolem implements IRangedAttackMob
         }
     }
 
-    public void func_82196_d(EntityLiving par1EntityLiving)
+    public void attackEntityWithRangedAttack(EntityLiving par1EntityLiving)
     {
         EntitySnowball var2 = new EntitySnowball(this.worldObj, this);
         double var3 = par1EntityLiving.posX - this.posX;
@@ -91,7 +78,7 @@ public class EntitySnowman extends EntityGolem implements IRangedAttackMob
         double var7 = par1EntityLiving.posZ - this.posZ;
         float var9 = MathHelper.sqrt_double(var3 * var3 + var7 * var7) * 0.2F;
         var2.setThrowableHeading(var3, var5 + (double)var9, var7, 1.6F, 12.0F);
-        this.worldObj.playSoundAtEntity(this, "random.bow", 1.0F, 1.0F / (this.getRNG().nextFloat() * 0.4F + 0.8F));
+        this.func_85030_a("random.bow", 1.0F, 1.0F / (this.getRNG().nextFloat() * 0.4F + 0.8F));
         this.worldObj.spawnEntityInWorld(var2);
     }
 }

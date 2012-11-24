@@ -24,7 +24,7 @@ public class FMLPostInitializationEvent extends FMLStateEvent
         {
             try
             {
-                Class<?> clz = Class.forName(className,true,Loader.instance().getModClassLoader());
+                Class<?> clz = Class.forName(className, true, Loader.instance().getModClassLoader());
                 return clz.newInstance();
             }
             catch (Exception e)
@@ -33,6 +33,7 @@ public class FMLPostInitializationEvent extends FMLStateEvent
                 return null;
             }
         }
+
         return null;
     }
 }

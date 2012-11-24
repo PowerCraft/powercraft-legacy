@@ -2,13 +2,11 @@ package net.minecraft.src;
 
 import cpw.mods.fml.common.Side;
 import cpw.mods.fml.common.asm.SideOnly;
-import java.util.Iterator;
 
 public class ContainerBrewingStand extends Container
 {
     private TileEntityBrewingStand tileBrewingStand;
 
-    /** Instance of Slot. */
     private final Slot theSlot;
     private int brewTime = 0;
 
@@ -41,17 +39,13 @@ public class ContainerBrewingStand extends Container
         par1ICrafting.updateCraftingInventoryInfo(this, 0, this.tileBrewingStand.getBrewTime());
     }
 
-    /**
-     * Updates crafting matrix; called from onCraftMatrixChanged. Args: none
-     */
     public void updateCraftingResults()
     {
         super.updateCraftingResults();
-        Iterator var1 = this.crafters.iterator();
 
-        while (var1.hasNext())
+        for (int var1 = 0; var1 < this.crafters.size(); ++var1)
         {
-            ICrafting var2 = (ICrafting)var1.next();
+            ICrafting var2 = (ICrafting)this.crafters.get(var1);
 
             if (this.brewTime != this.tileBrewingStand.getBrewTime())
             {
@@ -76,7 +70,7 @@ public class ContainerBrewingStand extends Container
         return this.tileBrewingStand.isUseableByPlayer(par1EntityPlayer);
     }
 
-    public ItemStack func_82846_b(EntityPlayer par1EntityPlayer, int par2)
+    public ItemStack transferStackInSlot(EntityPlayer par1EntityPlayer, int par2)
     {
         ItemStack var3 = null;
         Slot var4 = (Slot)this.inventorySlots.get(par2);
@@ -145,7 +139,7 @@ public class ContainerBrewingStand extends Container
                 return null;
             }
 
-            var4.func_82870_a(par1EntityPlayer, var5);
+            var4.onPickupFromSlot(par1EntityPlayer, var5);
         }
 
         return var3;

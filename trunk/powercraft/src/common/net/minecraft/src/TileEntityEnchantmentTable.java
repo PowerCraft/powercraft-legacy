@@ -4,31 +4,22 @@ import java.util.Random;
 
 public class TileEntityEnchantmentTable extends TileEntity
 {
-    /** Used by the render to make the book 'bounce' */
     public int tickCount;
 
-    /** Value used for determining how the page flip should look. */
     public float pageFlip;
 
-    /** The last tick's pageFlip value. */
     public float pageFlipPrev;
     public float field_70373_d;
     public float field_70374_e;
 
-    /** The amount that the book is open. */
     public float bookSpread;
 
-    /** The amount that the book is open. */
     public float bookSpreadPrev;
     public float bookRotation2;
     public float bookRotationPrev;
     public float bookRotation;
     private static Random rand = new Random();
 
-    /**
-     * Allows the entity to update its state. Overridden in most subclasses, e.g. the mob spawner uses this to count
-     * ticks and creates a new spawn inside its implementation.
-     */
     public void updateEntity()
     {
         super.updateEntity();

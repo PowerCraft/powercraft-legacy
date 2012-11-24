@@ -35,7 +35,7 @@ public class EntityRegistry
 {
     public class EntityRegistration
     {
-        private Class<? extends Entity> entityClass;
+        private Class <? extends Entity > entityClass;
         private ModContainer container;
         private String entityName;
         private int modId;
@@ -44,7 +44,7 @@ public class EntityRegistry
         private boolean sendsVelocityUpdates;
         private Function<EntitySpawnPacket, Entity> customSpawnCallback;
         private boolean usesVanillaSpawning;
-        public EntityRegistration(ModContainer mc, Class<? extends Entity> entityClass, String entityName, int id, int trackingRange, int updateFrequency, boolean sendsVelocityUpdates)
+        public EntityRegistration(ModContainer mc, Class <? extends Entity > entityClass, String entityName, int id, int trackingRange, int updateFrequency, boolean sendsVelocityUpdates)
         {
             this.container = mc;
             this.entityClass = entityClass;
@@ -54,7 +54,7 @@ public class EntityRegistry
             this.updateFrequency = updateFrequency;
             this.sendsVelocityUpdates = sendsVelocityUpdates;
         }
-        public Class<? extends Entity> getEntityClass()
+        public Class <? extends Entity > getEntityClass()
         {
             return entityClass;
         }
@@ -106,8 +106,8 @@ public class EntityRegistry
 
     private BitSet availableIndicies;
     private ListMultimap<ModContainer, EntityRegistration> entityRegistrations = ArrayListMultimap.create();
-    private Map<String,ModContainer> entityNames = Maps.newHashMap();
-    private BiMap<Class<? extends Entity>, EntityRegistration> entityClassRegistrations = HashBiMap.create();
+    private Map<String, ModContainer> entityNames = Maps.newHashMap();
+    private BiMap < Class <? extends Entity > , EntityRegistration > entityClassRegistrations = HashBiMap.create();
     public static EntityRegistry instance()
     {
         return INSTANCE;
@@ -116,37 +116,29 @@ public class EntityRegistry
     private EntityRegistry()
     {
         availableIndicies = new BitSet(256);
-        availableIndicies.set(1,255);
+        availableIndicies.set(1, 255);
+
         for (Object id : EntityList.IDtoClassMapping.keySet())
         {
             availableIndicies.clear((Integer)id);
         }
     }
 
-    /**
-     * Register the mod entity type with FML
-
-     * @param entityClass The entity class
-     * @param entityName A unique name for the entity
-     * @param id A mod specific ID for the entity
-     * @param mod The mod
-     * @param trackingRange The range at which MC will send tracking updates
-     * @param updateFrequency The frequency of tracking updates
-     * @param sendsVelocityUpdates Whether to send velocity information packets as well
-     */
-    public static void registerModEntity(Class<? extends Entity> entityClass, String entityName, int id, Object mod, int trackingRange, int updateFrequency, boolean sendsVelocityUpdates)
+    public static void registerModEntity(Class <? extends Entity > entityClass, String entityName, int id, Object mod, int trackingRange, int updateFrequency, boolean sendsVelocityUpdates)
     {
         instance().doModEntityRegistration(entityClass, entityName, id, mod, trackingRange, updateFrequency, sendsVelocityUpdates);
     }
 
-    private void doModEntityRegistration(Class<? extends Entity> entityClass, String entityName, int id, Object mod, int trackingRange, int updateFrequency, boolean sendsVelocityUpdates)
+    private void doModEntityRegistration(Class <? extends Entity > entityClass, String entityName, int id, Object mod, int trackingRange, int updateFrequency, boolean sendsVelocityUpdates)
     {
         ModContainer mc = FMLCommonHandler.instance().findContainerFor(mod);
         EntityRegistration er = new EntityRegistration(mc, entityClass, entityName, id, trackingRange, updateFrequency, sendsVelocityUpdates);
+
         try
         {
             entityClassRegistrations.put(entityClass, er);
             entityNames.put(entityName, mc);
+
             if (!EntityList.classToStringMapping.containsKey(entityClass))
             {
                 String entityModName = String.format("%s.%s", mc.getModId(), entityName);
@@ -164,6 +156,7 @@ public class EntityRegistry
             FMLLog.log(Level.WARNING, e, "The mod %s tried to register the entity (name,class) (%s,%s) one or both of which are already registered", mc.getModId(), entityName, entityClass.getName());
             return;
         }
+
         entityRegistrations.put(mc, er);
     }
 
@@ -173,6 +166,7 @@ public class EntityRegistry
         {
             ModContainer activeModContainer = Loader.instance().activeModContainer();
             String modId = "unknown";
+
             if (activeModContainer != null)
             {
                 modId = activeModContainer.getModId();
@@ -181,17 +175,19 @@ public class EntityRegistry
             {
                 FMLLog.severe("There is a rogue mod failing to register entities from outside the context of mod loading. This is incredibly dangerous and should be stopped.");
             }
+
             FMLLog.warning("The mod %s tried to register the entity class %s which was already registered - if you wish to override default naming for FML mod entities, register it here first", modId, entityClass);
             return;
         }
+
         id = instance().validateAndClaimId(id);
         EntityList.addMapping(entityClass, entityName, id);
     }
 
     private int validateAndClaimId(int id)
     {
-        // workaround for broken ML
         int realId = id;
+
         if (id < Byte.MIN_VALUE)
         {
             FMLLog.warning("Compensating for modloader out of range compensation by mod : entityId %d for mod %s is now %d", id, Loader.instance().activeModContainer().getModId(), realId);
@@ -202,6 +198,7 @@ public class EntityRegistry
         {
             realId += Byte.MAX_VALUE;
         }
+
         try
         {
             UnsignedBytes.checkedCast(realId);
@@ -215,6 +212,7 @@ public class EntityRegistry
         {
             FMLLog.severe("The mod %s has attempted to register an entity ID %d which is already reserved. This could cause severe problems", Loader.instance().activeModContainer().getModId(), id);
         }
+
         availableIndicies.clear(realId);
         return realId;
     }
@@ -225,6 +223,7 @@ public class EntityRegistry
         {
             ModContainer activeModContainer = Loader.instance().activeModContainer();
             String modId = "unknown";
+
             if (activeModContainer != null)
             {
                 modId = activeModContainer.getModId();
@@ -233,9 +232,11 @@ public class EntityRegistry
             {
                 FMLLog.severe("There is a rogue mod failing to register entities from outside the context of mod loading. This is incredibly dangerous and should be stopped.");
             }
+
             FMLLog.warning("The mod %s tried to register the entity class %s which was already registered - if you wish to override default naming for FML mod entities, register it here first", modId, entityClass);
             return;
         }
+
         instance().validateAndClaimId(id);
         EntityList.addMapping(entityClass, entityName, id, backgroundEggColour, foregroundEggColour);
     }
@@ -249,7 +250,6 @@ public class EntityRegistry
 
             for (SpawnListEntry entry : spawns)
             {
-                //Adjusting an existing spawn entry
                 if (entry.entityClass == entityClass)
                 {
                     entry.itemWeight = weightedProb;
@@ -265,7 +265,7 @@ public class EntityRegistry
 
     public static void addSpawn(String entityName, int weightedProb, int min, int max, EnumCreatureType spawnList, BiomeGenBase... biomes)
     {
-        Class <? extends Entity > entityClazz = (Class<? extends Entity>) EntityList.stringToClassMapping.get(entityName);
+        Class <? extends Entity > entityClazz = (Class <? extends Entity >) EntityList.stringToClassMapping.get(entityName);
 
         if (EntityLiving.class.isAssignableFrom(entityClazz))
         {
@@ -283,6 +283,7 @@ public class EntityRegistry
             while (spawns.hasNext())
             {
                 SpawnListEntry entry = spawns.next();
+
                 if (entry.entityClass == entityClass)
                 {
                     spawns.remove();
@@ -293,7 +294,7 @@ public class EntityRegistry
 
     public static void removeSpawn(String entityName, EnumCreatureType spawnList, BiomeGenBase... biomes)
     {
-        Class <? extends Entity > entityClazz = (Class<? extends Entity>) EntityList.stringToClassMapping.get(entityName);
+        Class <? extends Entity > entityClazz = (Class <? extends Entity >) EntityList.stringToClassMapping.get(entityName);
 
         if (EntityLiving.class.isAssignableFrom(entityClazz))
         {
@@ -304,24 +305,28 @@ public class EntityRegistry
     public static int findGlobalUniqueEntityId()
     {
         int res = instance().availableIndicies.nextSetBit(0);
+
         if (res < 0)
         {
             throw new RuntimeException("No more entity indicies left");
         }
+
         return res;
     }
 
-    public EntityRegistration lookupModSpawn(Class<? extends Entity> clazz, boolean keepLooking)
+    public EntityRegistration lookupModSpawn(Class <? extends Entity > clazz, boolean keepLooking)
     {
         Class<?> localClazz = clazz;
 
         do
         {
             EntityRegistration er = entityClassRegistrations.get(localClazz);
+
             if (er != null)
             {
                 return er;
             }
+
             localClazz = localClazz.getSuperclass();
             keepLooking = (!Object.class.equals(localClazz));
         }
@@ -339,42 +344,35 @@ public class EntityRegistry
                 return er;
             }
         }
+
         return null;
     }
 
     public boolean tryTrackingEntity(EntityTracker entityTracker, Entity entity)
     {
-
         EntityRegistration er = lookupModSpawn(entity.getClass(), true);
+
         if (er != null)
         {
             entityTracker.addEntityToTracker(entity, er.getTrackingRange(), er.getUpdateFrequency(), er.sendsVelocityUpdates());
             return true;
         }
+
         return false;
     }
 
-    /**
-     *
-     * DO NOT USE THIS METHOD
-     *
-     * @param entityClass
-     * @param entityTypeId
-     * @param updateRange
-     * @param updateInterval
-     * @param sendVelocityInfo
-     */
     @Deprecated
-    public static EntityRegistration registerModLoaderEntity(Object mod, Class<? extends Entity> entityClass, int entityTypeId, int updateRange, int updateInterval,
+    public static EntityRegistration registerModLoaderEntity(Object mod, Class <? extends Entity > entityClass, int entityTypeId, int updateRange, int updateInterval,
             boolean sendVelocityInfo)
     {
         String entityName = (String) EntityList.classToStringMapping.get(entityClass);
+
         if (entityName == null)
         {
             throw new IllegalArgumentException(String.format("The ModLoader mod %s has tried to register an entity tracker for a non-existent entity type %s", Loader.instance().activeModContainer().getModId(), entityClass.getCanonicalName()));
         }
+
         instance().doModEntityRegistration(entityClass, entityName, entityTypeId, mod, updateRange, updateInterval, sendVelocityInfo);
         return instance().entityClassRegistrations.get(entityClass);
     }
-
 }

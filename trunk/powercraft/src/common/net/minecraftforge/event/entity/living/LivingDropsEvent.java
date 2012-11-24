@@ -15,7 +15,7 @@ public class LivingDropsEvent extends LivingEvent
     public final int lootingLevel;
     public final boolean recentlyHit;
     public final int specialDropValue;
-    
+
     public LivingDropsEvent(EntityLiving entity, DamageSource source, ArrayList<EntityItem> drops, int lootingLevel, boolean recentlyHit, int specialDropValue)
     {
         super(entity);

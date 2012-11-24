@@ -7,7 +7,10 @@ import org.lwjgl.opengl.GL11;
 @SideOnly(Side.CLIENT)
 public class TileEntityBeaconRenderer extends TileEntitySpecialRenderer
 {
-    public void func_82398_a(TileEntityBeacon par1TileEntityBeacon, double par2, double par4, double par6, float par8)
+    /**
+     * Render a beacon tile entity.
+     */
+    public void renderTileEntityBeaconAt(TileEntityBeacon par1TileEntityBeacon, double par2, double par4, double par6, float par8)
     {
         float var9 = par1TileEntityBeacon.func_82125_v_();
 
@@ -22,7 +25,7 @@ public class TileEntityBeaconRenderer extends TileEntitySpecialRenderer
             GL11.glDisable(GL11.GL_BLEND);
             GL11.glDepthMask(true);
             GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE);
-            float var11 = (float)par1TileEntityBeacon.getWorldObj().func_82737_E() + par8;
+            float var11 = (float)par1TileEntityBeacon.getWorldObj().getTotalWorldTime() + par8;
             float var12 = -var11 * 0.2F - (float)MathHelper.floor_float(-var11 * 0.1F);
             byte var13 = 1;
             double var14 = (double)var11 * 0.025D * (1.0D - (double)(var13 & 1) * 2.5D);
@@ -102,6 +105,6 @@ public class TileEntityBeaconRenderer extends TileEntitySpecialRenderer
 
     public void renderTileEntityAt(TileEntity par1TileEntity, double par2, double par4, double par6, float par8)
     {
-        this.func_82398_a((TileEntityBeacon)par1TileEntity, par2, par4, par6, par8);
+        this.renderTileEntityBeaconAt((TileEntityBeacon)par1TileEntity, par2, par4, par6, par8);
     }
 }

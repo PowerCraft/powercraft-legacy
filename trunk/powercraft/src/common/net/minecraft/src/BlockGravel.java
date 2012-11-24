@@ -9,9 +9,6 @@ public class BlockGravel extends BlockSand
         super(par1, par2);
     }
 
-    /**
-     * Returns the ID of the items to drop on destruction.
-     */
     public int idDropped(int par1, Random par2Random, int par3)
     {
         if (par3 > 3)

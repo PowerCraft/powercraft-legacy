@@ -7,7 +7,7 @@ public class CommandKill extends CommandBase
         return "kill";
     }
 
-    public int func_82362_a()
+    public int getRequiredPermissionLevel()
     {
         return 0;
     }

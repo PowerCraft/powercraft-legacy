@@ -23,7 +23,10 @@ public class SideTransformer implements IClassTransformer
     @Override
     public byte[] transform(String name, byte[] bytes)
     {
-    	if (bytes == null) { return null; }
+        if (bytes == null)
+        {
+            return null;
+        }
 
         ClassNode classNode = new ClassNode();
         ClassReader classReader = new ClassReader(bytes);
@@ -35,32 +38,40 @@ public class SideTransformer implements IClassTransformer
             {
                 System.out.println(String.format("Attempted to load class %s for invalid side %s", classNode.name, SIDE));
             }
+
             throw new RuntimeException(String.format("Attempted to load class %s for invalid side %s", classNode.name, SIDE));
         }
 
         Iterator<FieldNode> fields = classNode.fields.iterator();
-        while(fields.hasNext())
+
+        while (fields.hasNext())
         {
             FieldNode field = fields.next();
+
             if (remove((List<AnnotationNode>)field.visibleAnnotations, SIDE))
             {
                 if (DEBUG)
                 {
                     System.out.println(String.format("Removing Field: %s.%s", classNode.name, field.name));
                 }
+
                 fields.remove();
             }
         }
+
         Iterator<MethodNode> methods = classNode.methods.iterator();
-        while(methods.hasNext())
+
+        while (methods.hasNext())
         {
             MethodNode method = methods.next();
+
             if (remove((List<AnnotationNode>)method.visibleAnnotations, SIDE))
             {
                 if (DEBUG)
                 {
                     System.out.println(String.format("Removing Method: %s.%s%s", classNode.name, method.name, method.desc));
                 }
+
                 methods.remove();
             }
         }
@@ -69,13 +80,14 @@ public class SideTransformer implements IClassTransformer
         classNode.accept(writer);
         return writer.toByteArray();
     }
-    
+
     private boolean remove(List<AnnotationNode> anns, String side)
     {
         if (anns == null)
         {
             return false;
         }
+
         for (AnnotationNode ann : anns)
         {
             if (ann.desc.equals(Type.getDescriptor(SideOnly.class)))
@@ -85,10 +97,11 @@ public class SideTransformer implements IClassTransformer
                     for (int x = 0; x < ann.values.size() - 1; x += 2)
                     {
                         Object key = ann.values.get(x);
-                        Object value = ann.values.get(x+1);
+                        Object value = ann.values.get(x + 1);
+
                         if (key instanceof String && key.equals("value"))
                         {
-                            if (value instanceof String[] )
+                            if (value instanceof String[])
                             {
                                 if (!((String[])value)[1].equals(side))
                                 {
@@ -100,6 +113,7 @@ public class SideTransformer implements IClassTransformer
                 }
             }
         }
+
         return false;
     }
 }

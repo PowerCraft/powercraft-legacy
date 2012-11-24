@@ -6,14 +6,19 @@ import cpw.mods.fml.common.asm.SideOnly;
 @SideOnly(Side.CLIENT)
 class GuiFlatPresetsItem
 {
-    public int field_82911_a;
-    public String field_82909_b;
-    public String field_82910_c;
+    /** ID for the item used as icon for this preset. */
+    public int iconId;
+
+    /** Name for this preset. */
+    public String presetName;
+
+    /** Data for this preset. */
+    public String presetData;
 
     public GuiFlatPresetsItem(int par1, String par2Str, String par3Str)
     {
-        this.field_82911_a = par1;
-        this.field_82909_b = par2Str;
-        this.field_82910_c = par3Str;
+        this.iconId = par1;
+        this.presetName = par2Str;
+        this.presetData = par3Str;
     }
 }

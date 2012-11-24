@@ -15,9 +15,6 @@ public class ItemCarrotOnAStick extends Item
 
     @SideOnly(Side.CLIENT)
 
-    /**
-     * Returns True is the item is renderer in full 3D when hold.
-     */
     public boolean isFull3D()
     {
         return true;
@@ -25,27 +22,20 @@ public class ItemCarrotOnAStick extends Item
 
     @SideOnly(Side.CLIENT)
 
-    /**
-     * Returns true if this item should be rotated by 180 degrees around the Y axis when being held in an entities
-     * hands.
-     */
     public boolean shouldRotateAroundWhenRendering()
     {
         return true;
     }
 
-    /**
-     * Called whenever this item is equipped and the right mouse button is pressed. Args: itemStack, world, entityPlayer
-     */
     public ItemStack onItemRightClick(ItemStack par1ItemStack, World par2World, EntityPlayer par3EntityPlayer)
     {
         if (par3EntityPlayer.isRiding() && par3EntityPlayer.ridingEntity instanceof EntityPig)
         {
             EntityPig var4 = (EntityPig)par3EntityPlayer.ridingEntity;
 
-            if (var4.func_82183_n().func_82633_h() && par1ItemStack.getMaxDamage() - par1ItemStack.getItemDamage() >= 7)
+            if (var4.getAIControlledByPlayer().isControlledByPlayer() && par1ItemStack.getMaxDamage() - par1ItemStack.getItemDamage() >= 7)
             {
-                var4.func_82183_n().func_82632_g();
+                var4.getAIControlledByPlayer().boostSpeed();
                 par1ItemStack.damageItem(7, par3EntityPlayer);
 
                 if (par1ItemStack.stackSize == 0)

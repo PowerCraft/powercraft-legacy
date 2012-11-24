@@ -1,0 +1,7 @@
+package powercraft.light;
+
+import powercraft.core.PC_TileEntity;
+
+public class PCli_TileEntityLaserSensor extends PC_TileEntity {
+
+}

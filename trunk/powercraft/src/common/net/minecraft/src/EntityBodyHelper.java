@@ -2,7 +2,6 @@ package net.minecraft.src;
 
 public class EntityBodyHelper
 {
-    /** Instance of EntityLiving. */
     private EntityLiving theLiving;
     private int field_75666_b = 0;
     private float field_75667_c = 0.0F;

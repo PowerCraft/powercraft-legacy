@@ -58,7 +58,7 @@ public class IntegratedServerListenThread extends NetworkListenThread
 
             try
             {
-                this.myServerListenThread = new ServerListenThread(this, null, var1);
+                this.myServerListenThread = new ServerListenThread(this, (InetAddress)null, var1);
                 this.myServerListenThread.start();
             }
             catch (IOException var3)

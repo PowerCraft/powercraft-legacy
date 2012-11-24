@@ -2,22 +2,14 @@ package net.minecraft.src;
 
 public class TileEntityEnderChest extends TileEntity
 {
-    /** The current angle of the chest lid (between 0 and 1) */
     public float lidAngle;
 
-    /** The angle of the chest lid last tick */
     public float prevLidAngle;
 
-    /** The number of players currently using this ender chest. */
     public int numUsingPlayers;
 
-    /** Server sync counter (once per 20 ticks) */
     private int ticksSinceSync;
 
-    /**
-     * Allows the entity to update its state. Overridden in most subclasses, e.g. the mob spawner uses this to count
-     * ticks and creates a new spawn inside its implementation.
-     */
     public void updateEntity()
     {
         super.updateEntity();
@@ -72,9 +64,6 @@ public class TileEntityEnderChest extends TileEntity
         }
     }
 
-    /**
-     * Called when a client event is received with the event number and argument, see World.sendClientEvent
-     */
     public void receiveClientEvent(int par1, int par2)
     {
         if (par1 == 1)
@@ -83,9 +72,6 @@ public class TileEntityEnderChest extends TileEntity
         }
     }
 
-    /**
-     * invalidates a tile entity
-     */
     public void invalidate()
     {
         this.updateContainingBlockInfo();

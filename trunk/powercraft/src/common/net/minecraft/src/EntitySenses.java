@@ -14,18 +14,12 @@ public class EntitySenses
         this.entityObj = par1EntityLiving;
     }
 
-    /**
-     * Clears canSeeCachePositive and canSeeCacheNegative.
-     */
     public void clearSensingCache()
     {
         this.field_75524_b.clear();
         this.field_75525_c.clear();
     }
 
-    /**
-     * Checks, whether 'our' entity can see the entity given as argument (true) or not (false), caching the result.
-     */
     public boolean canSee(Entity par1Entity)
     {
         if (this.field_75524_b.contains(par1Entity))

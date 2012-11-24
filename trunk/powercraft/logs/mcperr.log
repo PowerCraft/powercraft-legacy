@@ -1,2 +1,131 @@
-09:46:54 - !! renaming disabled !!
-09:50:36 - !! renaming disabled !!
+17:37:25 - !! renaming disabled !!
+17:39:16 - !! renaming disabled !!
+22:18:43 - '"C:\Program Files\Java\jdk1.7.0_09\bin\javac" -encoding UTF-8 -Xlint:-options -deprecation -g -sourc...' failed : 1
+22:18:43 - 
+22:18:43 - == ERRORS FOUND ==
+22:18:43 - 
+22:18:43 - src\minecraft\powercraft\core\PC_ClientRenderer.java:19: warning: [deprecation] instance() in RenderingRegistry has been deprecated
+22:18:43 - 			render3dId = RenderingRegistry.instance().getNextAvailableRenderId();
+22:18:43 - 			                              ^
+22:18:43 - 
+22:18:43 - src\minecraft\powercraft\core\PC_ClientRenderer.java:21: warning: [deprecation] instance() in RenderingRegistry has been deprecated
+22:18:43 - 			render2dId = RenderingRegistry.instance().getNextAvailableRenderId();
+22:18:43 - 			                              ^
+22:18:43 - 
+22:18:43 - src\common\powercraft\core\PC_Utils.java:488: error: incompatible types
+22:18:43 - 					PC_GresBaseWithInventory bwi = createClass(c, new Class[]{EntityPlayer.class, Object[].class}, new Object[]{player, o});
+22:18:43 - 					                                          ^
+22:18:43 - 
+22:18:43 -   required: PC_GresBaseWithInventory
+22:18:43 -   found:    Object
+22:18:43 - src\common\powercraft\core\PC_Utils.java:592: warning: [deprecation] getSmeltingResult(int) in FurnaceRecipes has been deprecated
+22:18:43 - 		if (itemstack == null || FurnaceRecipes.smelting().getSmeltingResult(itemstack.getItem().shiftedIndex) == null) {
+22:18:43 - 		                                                  ^
+22:18:43 - 
+22:18:43 - src\common\powercraft\core\PC_Block.java:66: warning: [deprecation] hasTileEntity() in Block has been deprecated
+22:18:43 - 		return block.renderAsNormalBlock() && !block.hasTileEntity();
+22:18:43 - 		                                            ^
+22:18:43 - 
+22:18:43 - src\common\powercraft\machines\PCma_TileEntityRoaster.java:393: warning: [deprecation] getSmeltingResult(int) in FurnaceRecipes has been deprecated
+22:18:43 - 		return FurnaceRecipes.smelting().getSmeltingResult(item.getItem().shiftedIndex);
+22:18:43 - 		                                ^
+22:18:43 - 
+22:18:43 - src\common\powercraft\core\PC_FakePlayer.java:98: warning: [deprecation] getCurrentPlayerStrVsBlock(Block) in EntityPlayer has been deprecated
+22:18:43 - 	public float getCurrentPlayerStrVsBlock(Block block) {
+22:18:43 - 	             ^
+22:18:43 - 
+22:18:43 - src\common\powercraft\machines\PCma_BlockReplacer.java:191: warning: [deprecation] hasTileEntity() in Block has been deprecated
+22:18:43 - 			if (block.hasTileEntity()) {
+22:18:43 - 			         ^
+22:18:43 - 
+22:18:43 - 1 error
+22:18:43 - 7 warnings
+22:18:43 - ==================
+22:18:43 - 
+22:21:38 - '"C:\Program Files\Java\jdk1.7.0_09\bin\javac" -encoding UTF-8 -Xlint:-options -deprecation -g -sourc...' failed : 1
+22:21:38 - 
+22:21:38 - == ERRORS FOUND ==
+22:21:38 - 
+22:21:38 - src\minecraft\powercraft\core\PC_ClientRenderer.java:19: warning: [deprecation] instance() in RenderingRegistry has been deprecated
+22:21:38 - 			render3dId = RenderingRegistry.instance().getNextAvailableRenderId();
+22:21:38 - 			                              ^
+22:21:38 - 
+22:21:38 - src\minecraft\powercraft\core\PC_ClientRenderer.java:21: warning: [deprecation] instance() in RenderingRegistry has been deprecated
+22:21:38 - 			render2dId = RenderingRegistry.instance().getNextAvailableRenderId();
+22:21:38 - 			                              ^
+22:21:38 - 
+22:21:38 - src\common\powercraft\core\PC_Utils.java:488: error: incompatible types
+22:21:38 - 					PC_GresBaseWithInventory bwi = createClass(c, new Class[]{EntityPlayer.class, Object[].class}, new Object[]{player, o});
+22:21:38 - 					                                          ^
+22:21:38 - 
+22:21:38 -   required: PC_GresBaseWithInventory
+22:21:38 -   found:    Object
+22:21:38 - src\common\powercraft\core\PC_Utils.java:592: warning: [deprecation] getSmeltingResult(int) in FurnaceRecipes has been deprecated
+22:21:38 - 		if (itemstack == null || FurnaceRecipes.smelting().getSmeltingResult(itemstack.getItem().shiftedIndex) == null) {
+22:21:38 - 		                                                  ^
+22:21:38 - 
+22:21:38 - src\common\powercraft\core\PC_Block.java:66: warning: [deprecation] hasTileEntity() in Block has been deprecated
+22:21:38 - 		return block.renderAsNormalBlock() && !block.hasTileEntity();
+22:21:38 - 		                                            ^
+22:21:38 - 
+22:21:38 - src\common\powercraft\machines\PCma_TileEntityRoaster.java:393: warning: [deprecation] getSmeltingResult(int) in FurnaceRecipes has been deprecated
+22:21:38 - 		return FurnaceRecipes.smelting().getSmeltingResult(item.getItem().shiftedIndex);
+22:21:38 - 		                                ^
+22:21:38 - 
+22:21:38 - src\common\powercraft\core\PC_FakePlayer.java:98: warning: [deprecation] getCurrentPlayerStrVsBlock(Block) in EntityPlayer has been deprecated
+22:21:38 - 	public float getCurrentPlayerStrVsBlock(Block block) {
+22:21:38 - 	             ^
+22:21:38 - 
+22:21:38 - src\common\powercraft\machines\PCma_BlockReplacer.java:191: warning: [deprecation] hasTileEntity() in Block has been deprecated
+22:21:38 - 			if (block.hasTileEntity()) {
+22:21:38 - 			         ^
+22:21:38 - 
+22:21:38 - 1 error
+22:21:38 - 7 warnings
+22:21:38 - ==================
+22:21:38 - 
+22:25:39 - '"C:\Program Files\Java\jdk1.7.0_09\bin\javac" -encoding UTF-8 -Xlint:-options -deprecation -g -sourc...' failed : 1
+22:25:39 - 
+22:25:39 - == ERRORS FOUND ==
+22:25:39 - 
+22:25:39 - src\minecraft\powercraft\core\PC_ClientRenderer.java:19: warning: [deprecation] instance() in RenderingRegistry has been deprecated
+22:25:39 - 			render3dId = RenderingRegistry.instance().getNextAvailableRenderId();
+22:25:39 - 			                              ^
+22:25:39 - 
+22:25:39 - src\minecraft\powercraft\core\PC_ClientRenderer.java:21: warning: [deprecation] instance() in RenderingRegistry has been deprecated
+22:25:39 - 			render2dId = RenderingRegistry.instance().getNextAvailableRenderId();
+22:25:39 - 			                              ^
+22:25:39 - 
+22:25:39 - src\common\powercraft\core\PC_Utils.java:488: error: incompatible types
+22:25:39 - 					PC_GresBaseWithInventory bwi = createClass(c, new Class[]{EntityPlayer.class, Object[].class}, new Object[]{player, o});
+22:25:39 - 					                                          ^
+22:25:39 - 
+22:25:39 -   required: PC_GresBaseWithInventory
+22:25:39 -   found:    Object
+22:25:39 - src\common\powercraft\core\PC_Utils.java:592: warning: [deprecation] getSmeltingResult(int) in FurnaceRecipes has been deprecated
+22:25:39 - 		if (itemstack == null || FurnaceRecipes.smelting().getSmeltingResult(itemstack.getItem().shiftedIndex) == null) {
+22:25:39 - 		                                                  ^
+22:25:39 - 
+22:25:39 - src\common\powercraft\core\PC_Block.java:66: warning: [deprecation] hasTileEntity() in Block has been deprecated
+22:25:39 - 		return block.renderAsNormalBlock() && !block.hasTileEntity();
+22:25:39 - 		                                            ^
+22:25:39 - 
+22:25:39 - src\common\powercraft\machines\PCma_TileEntityRoaster.java:393: warning: [deprecation] getSmeltingResult(int) in FurnaceRecipes has been deprecated
+22:25:39 - 		return FurnaceRecipes.smelting().getSmeltingResult(item.getItem().shiftedIndex);
+22:25:39 - 		                                ^
+22:25:39 - 
+22:25:39 - src\common\powercraft\core\PC_FakePlayer.java:98: warning: [deprecation] getCurrentPlayerStrVsBlock(Block) in EntityPlayer has been deprecated
+22:25:39 - 	public float getCurrentPlayerStrVsBlock(Block block) {
+22:25:39 - 	             ^
+22:25:39 - 
+22:25:39 - src\common\powercraft\machines\PCma_BlockReplacer.java:191: warning: [deprecation] hasTileEntity() in Block has been deprecated
+22:25:39 - 			if (block.hasTileEntity()) {
+22:25:39 - 			         ^
+22:25:39 - 
+22:25:39 - 1 error
+22:25:39 - 7 warnings
+22:25:39 - ==================
+22:25:39 - 
+00:36:57 - !! Modified jar detected. Unpredictable results !!
+00:36:57 - !! client already decompiled. Run cleanup before decompiling again !!
+00:36:57 - !! Modified jar detected. Unpredictable results !!

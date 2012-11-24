@@ -4,27 +4,26 @@ import net.minecraft.server.MinecraftServer;
 
 public class BehaviorMobEggDispense extends BehaviorDefaultDispenseItem
 {
-    /** Gets Minecraft Server players. */
-    final MinecraftServer minecraftServerPlayers;
+    final MinecraftServer mcServer;
 
     public BehaviorMobEggDispense(MinecraftServer par1)
     {
-        this.minecraftServerPlayers = par1;
+        this.mcServer = par1;
     }
 
-    public ItemStack func_82487_b(IBlockSource par1IBlockSource, ItemStack par2ItemStack)
+    public ItemStack dispenseStack(IBlockSource par1IBlockSource, ItemStack par2ItemStack)
     {
         EnumFacing var3 = EnumFacing.func_82600_a(par1IBlockSource.func_82620_h());
-        double var4 = par1IBlockSource.func_82615_a() + (double)var3.func_82601_c();
-        double var6 = (double)((float)par1IBlockSource.func_82622_e() + 0.2F);
-        double var8 = par1IBlockSource.func_82616_c() + (double)var3.func_82599_e();
-        ItemMonsterPlacer.spawnCreature(par1IBlockSource.func_82618_k(), par2ItemStack.getItemDamage(), var4, var6, var8);
+        double var4 = par1IBlockSource.getX() + (double)var3.func_82601_c();
+        double var6 = (double)((float)par1IBlockSource.getYInt() + 0.2F);
+        double var8 = par1IBlockSource.getZ() + (double)var3.func_82599_e();
+        ItemMonsterPlacer.spawnCreature(par1IBlockSource.getWorld(), par2ItemStack.getItemDamage(), var4, var6, var8);
         par2ItemStack.splitStack(1);
         return par2ItemStack;
     }
 
-    protected void func_82485_a(IBlockSource par1IBlockSource)
+    protected void playDispenseSound(IBlockSource par1IBlockSource)
     {
-        par1IBlockSource.func_82618_k().playAuxSFX(1002, par1IBlockSource.func_82623_d(), par1IBlockSource.func_82622_e(), par1IBlockSource.func_82621_f(), 0);
+        par1IBlockSource.getWorld().playAuxSFX(1002, par1IBlockSource.getXInt(), par1IBlockSource.getYInt(), par1IBlockSource.getZInt(), 0);
     }
 }

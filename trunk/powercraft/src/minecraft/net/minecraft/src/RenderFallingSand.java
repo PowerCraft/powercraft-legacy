@@ -26,13 +26,13 @@ public class RenderFallingSand extends Render
         World var11 = par1EntityFallingSand.getWorld();
         GL11.glDisable(GL11.GL_LIGHTING);
 
-        if (var10.getRenderType() != 0)
+        if (var10 instanceof BlockAnvil && var10.getRenderType() == 35)
         {
             this.renderBlocks.blockAccess = var11;
             Tessellator var12 = Tessellator.instance;
             var12.startDrawingQuads();
             var12.setTranslation((double)((float)(-MathHelper.floor_double(par1EntityFallingSand.posX)) - 0.5F), (double)((float)(-MathHelper.floor_double(par1EntityFallingSand.posY)) - 0.5F), (double)((float)(-MathHelper.floor_double(par1EntityFallingSand.posZ)) - 0.5F));
-            this.renderBlocks.renderBlockByRenderType(var10, MathHelper.floor_double(par1EntityFallingSand.posX), MathHelper.floor_double(par1EntityFallingSand.posY), MathHelper.floor_double(par1EntityFallingSand.posZ));
+            this.renderBlocks.func_85096_a((BlockAnvil)var10, MathHelper.floor_double(par1EntityFallingSand.posX), MathHelper.floor_double(par1EntityFallingSand.posY), MathHelper.floor_double(par1EntityFallingSand.posZ), par1EntityFallingSand.field_70285_b);
             var12.setTranslation(0.0D, 0.0D, 0.0D);
             var12.draw();
         }

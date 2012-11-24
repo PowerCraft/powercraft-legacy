@@ -1,0 +1,75 @@
+---- Minecraft Crash Report ----
+// Everything's going to plan. No, really, that was supposed to happen.
+
+Time: 18.11.12 19:47
+Description: Exception while ticking a block
+
+java.lang.NoSuchMethodError: net.minecraft.src.TileEntityMobSpawner.getMobID()Ljava/lang/String;
+	at powercraft.core.PC_Utils.spawnMobFromSpawner(PC_Utils.java:1134)
+	at powercraft.logic.PClo_BlockSpecial.spawnMobsFromSpawners(PClo_BlockSpecial.java:141)
+	at powercraft.logic.PClo_BlockSpecial.updateTick(PClo_BlockSpecial.java:123)
+	at net.minecraft.src.WorldServer.tickUpdates(WorldServer.java:486)
+	at net.minecraft.src.WorldServer.tick(WorldServer.java:121)
+	at net.minecraft.server.MinecraftServer.updateTimeLightAndEntities(MinecraftServer.java:581)
+	at net.minecraft.src.DedicatedServer.updateTimeLightAndEntities(DedicatedServer.java:234)
+	at net.minecraft.server.MinecraftServer.tick(MinecraftServer.java:511)
+	at net.minecraft.server.MinecraftServer.run(MinecraftServer.java:426)
+	at net.minecraft.src.ThreadMinecraftServer.run(ThreadMinecraftServer.java:17)
+
+
+A detailed walkthrough of the error, its code path and all known details is as follows:
+---------------------------------------------------------------------------------------
+
+-- Head --
+Stacktrace:
+	at powercraft.core.PC_Utils.spawnMobFromSpawner(PC_Utils.java:1134)
+	at powercraft.logic.PClo_BlockSpecial.spawnMobsFromSpawners(PClo_BlockSpecial.java:141)
+	at powercraft.logic.PClo_BlockSpecial.updateTick(PClo_BlockSpecial.java:123)
+
+-- Block being ticked --
+Details:
+	Block type: ID #470 (tile.PClo_BlockSpecial // powercraft.logic.PClo_BlockSpecial)
+	Block data value: 0 / 0x0 / 0b0000
+	Block location: World: (10,64,184), Chunk: (at 10,4,8 in 0,11; contains blocks 0,0,176 to 15,255,191), Region: (0,0; contains chunks 0,0 to 31,31, blocks 0,0,0 to 511,255,511)
+Stacktrace:
+	at net.minecraft.src.WorldServer.tickUpdates(WorldServer.java:486)
+	at net.minecraft.src.WorldServer.tick(WorldServer.java:121)
+
+-- Affected level --
+Details:
+	Level name: mcpworld
+	All players: 1 total; [EntityPlayerMP['XOR'/6442, l='mcpworld', x=10,38, y=64,00, z=185,99]]
+	Chunk stats: ServerChunkCache: 427 Drop: 0
+	Level seed: 1611349139
+	Level generator: ID 02 - largeBiomes, ver 0. Features enabled: true
+	Level generator options: 
+	Level spawn location: World: (-3,64,194), Chunk: (at 13,4,2 in -1,12; contains blocks -16,0,192 to -1,255,207), Region: (-1,0; contains chunks -32,0 to -1,31, blocks -512,0,0 to -1,255,511)
+	Level time: 23401 game time, 23401 day time
+	Level dimension: 0
+	Level storage version: 0x04ABD - Anvil
+	Level weather: Rain time: 15257 (now: false), thunder time: 114590 (now: false)
+	Level game mode: Game mode: survival (ID 0). Hardcore: false. Cheats: false
+Stacktrace:
+	at net.minecraft.server.MinecraftServer.updateTimeLightAndEntities(MinecraftServer.java:581)
+	at net.minecraft.src.DedicatedServer.updateTimeLightAndEntities(DedicatedServer.java:234)
+	at net.minecraft.server.MinecraftServer.tick(MinecraftServer.java:511)
+	at net.minecraft.server.MinecraftServer.run(MinecraftServer.java:426)
+	at net.minecraft.src.ThreadMinecraftServer.run(ThreadMinecraftServer.java:17)
+
+-- System Details --
+Details:
+	Minecraft Version: 1.4.4
+	Operating System: Windows 7 (amd64) version 6.1
+	Java Version: 1.7.0_09, Oracle Corporation
+	Java VM Version: Java HotSpot(TM) 64-Bit Server VM (mixed mode), Oracle Corporation
+	Memory: 979521256 bytes (934 MB) / 1038876672 bytes (990 MB) up to 1038876672 bytes (990 MB)
+	JVM Flags: 3 total; -Xincgc -Xmx1024M -Xms1024M
+	AABB Pool Size: 2323 (130088 bytes; 0 MB) allocated, 0 (0 bytes; 0 MB) used
+	Suspicious classes: $Proxy3, $Proxy4, $Proxy5, ...[com.google.common.base.Preconditions, Charsets, Splitter, ...], [com.google.common.cache.CacheLoader, CacheBuilder, Cache, ...], [com.google.common.collect.Multimap, ListMultimap, AbstractMultimap, ...], [com.google.common.eventbus.EventBus, HandlerFindingStrategy, AnnotatedHandlerFinder, ...], [com.google.common.hash.Hashing, HashFunction, AbstractStreamingHashFunction, ...], [com.google.common.io.LineProcessor, Resources, InputSupplier, ...], [com.google.common.primitives.Ints, UnsignedBytes, Bytes], [com.google.common.reflect.TypeCapture, TypeToken, SimpleTypeToken, ...], [com.google.common.util.concurrent.UncheckedExecutionException, ExecutionError, MoreExecutors, ...], [cpw.mods.fml.common.Loader, LoaderException, DuplicateModsFoundException, ...], [cpw.mods.fml.common.asm.FMLSanityChecker, MLDetectorClassVisitor, SideOnly], [cpw.mods.fml.common.asm.transformers.AccessTransformer, Modifier, MarkerTransformer, ...], [cpw.mods.fml.common.discovery.ModDiscoverer, ASMDataTable, ModCandidate, ...], [cpw.mods.fml.common.discovery.asm.ASMModParser, ModClassVisitor, ModFieldVisitor, ...], [cpw.mods.fml.common.event.FMLEvent, FMLLoadEvent, FMLStateEvent, ...], [cpw.mods.fml.common.functions.ModIdFunction], [cpw.mods.fml.common.modloader.BaseModProxy], [cpw.mods.fml.common.network.Player, FMLNetworkHandler, NetworkModHandler, ...], [cpw.mods.fml.common.registry.BlockProxy, ItemProxy, LanguageRegistry, ...], [cpw.mods.fml.common.toposort.ModSortingException, ModSorter, DirectedGraph, ...], [cpw.mods.fml.common.versioning.ArtifactVersion, VersionParser, InvalidVersionSpecificationException, ...], [cpw.mods.fml.server.FMLServerHandler], [net.minecraft.src.CallableMinecraftVersion, ICommandSender, IPlayerUsage, ...], [net.minecraftforge.common.IPlantable, IShearable, ISidedInventory, ...], [net.minecraftforge.event.Event, ListenerList, CommandEvent, ...], [net.minecraftforge.event.entity.EntityEvent, EntityJoinWorldEvent, PlaySoundAtEntityEvent, ...], [net.minecraftforge.event.entity.item.ItemEvent, ItemExpireEvent, ItemTossEvent], [net.minecraftforge.event.entity.living.LivingEvent, LivingSpecialSpawnEvent, LivingHurtEvent, ...], [net.minecraftforge.event.entity.player.PlayerEvent, ArrowLooseEvent, ArrowNockEvent, ...], [net.minecraftforge.event.world.WorldEvent, Unload, Load, ...], [net.minecraftforge.oredict.OreDictionary, OreRegisterEvent, ShapedOreRecipe, ...], [net.minecraftforge.transformers.ForgeAccessTransformer, EventTransformer], [org.objectweb.asm.ClassVisitor, ClassWriter, AnnotationVisitor, ...], [org.objectweb.asm.tree.ClassNode, AnnotationNode, MethodNode, ...], [powercraft.core.PC_Module, mod_PowerCraftCore, PC_Proxy, ...], [powercraft.light.mod_PowerCraftLight, PCli_CommonProxy, PCli_BlockLight, ...], [powercraft.logic.mod_PowerCraftLogic, PClo_CommonProxy, PClo_BlockPulsar, ...], [powercraft.machines.mod_PowerCraftMachines, PCma_CommonProxy, PCma_BlockAutomaticWorkbench, ...], [powercraft.transport.mod_PowerCraftTransport, PCtr_CommonProxy, PCtr_BlockBeltBase, ...]
+	IntCache: cache: 0, tcache: 0, allocated: 3, tallocated: 71
+	FML: ~~ERROR~~ NullPointerException: null
+	Profiler Position: N/A (disabled)
+	Vec3 Pool Size: 368 (20608 bytes; 0 MB) allocated, 0 (0 bytes; 0 MB) used
+	Player Count: 1 / 10; [EntityPlayerMP['XOR'/6442, l='mcpworld', x=10,38, y=64,00, z=185,99]]
+	Is Modded: Definitely; Server brand changed to 'forge,fml'
+	Type: Dedicated Server (map_server.txt)

@@ -10,7 +10,6 @@ import com.google.common.collect.Lists;
 
 public class ModMethodVisitor extends MethodVisitor
 {
-
     private ASMModParser discoverer;
     private boolean inCode;
     private LinkedList<Label> labels = Lists.newLinkedList();
@@ -27,7 +26,7 @@ public class ModMethodVisitor extends MethodVisitor
     {
         labels.clear();
     }
-    
+
     @Override
     public void visitLdcInsn(Object cst)
     {
@@ -49,7 +48,7 @@ public class ModMethodVisitor extends MethodVisitor
     {
         labels.push(label);
     }
-    
+
     @Override
     public void visitEnd()
     {

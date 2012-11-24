@@ -23,430 +23,510 @@ import powercraft.core.PC_InvUtils;
 import powercraft.core.PC_TileEntity;
 import powercraft.core.PC_Utils;
 
-public class PCma_TileEntityRoaster extends PC_TileEntity implements IInventory, PC_ISpecialAccessInventory {
-	@Override
-	public boolean canPlayerInsertStackTo(int slot, ItemStack stack) {
-		return stack != null && PC_Utils.isFuel(stack);
-	}
+public class PCma_TileEntityRoaster extends PC_TileEntity implements IInventory, PC_ISpecialAccessInventory
+{
+    @Override
+    public boolean canPlayerInsertStackTo(int slot, ItemStack stack)
+    {
+        return stack != null && PC_Utils.isFuel(stack);
+    }
 
-	@Override
-	public boolean canMachineInsertStackTo(int slot, ItemStack stack) {
-		return canPlayerInsertStackTo(slot, stack);
-	}
+    @Override
+    public boolean canMachineInsertStackTo(int slot, ItemStack stack)
+    {
+        return canPlayerInsertStackTo(slot, stack);
+    }
 
-	@Override
-	public boolean insertStackIntoInventory(ItemStack stack) {
-		return PC_InvUtils.addWholeItemStackToInventory(this, stack);
-	}
+    @Override
+    public boolean insertStackIntoInventory(ItemStack stack)
+    {
+        return PC_InvUtils.addWholeItemStackToInventory(this, stack);
+    }
 
-	@Override
-	public boolean canDispenseStackFrom(int slot) {
-		return true;
-	}
+    @Override
+    public boolean canDispenseStackFrom(int slot)
+    {
+        return true;
+    }
 
-	private ItemStack roasterContents[];
-	private Random random;
-	/** max allowes stack size */
-	public static final int MAXSTACK = 16;
-	/** # of slots */
-	public static final int SIZE = 9;
-	/** fuel in the fireplace buffer */
-	public int burnTime = 0;
-	/** netherrack in fireplace buffer */
-	public int netherTime = 0;
-	/** timer till next "growing tick" to warts */
-	public int netherActionTime = 100;
-	private boolean noNetherrack = false;
+    private ItemStack roasterContents[];
+    private Random random;
 
-	/**
-	 * roaster TE
-	 */
-	public PCma_TileEntityRoaster() {
-		roasterContents = new ItemStack[SIZE];
-		random = new Random();
-	}
+    public static final int MAXSTACK = 16;
 
-	@Override
-	public int getSizeInventory() {
-		return SIZE;
-	}
+    public static final int SIZE = 9;
 
-	@Override
-	public ItemStack getStackInSlot(int i) {
-		return roasterContents[i];
-	}
+    public int burnTime = 0;
 
-	@Override
-	public ItemStack decrStackSize(int i, int j) {
-		if (roasterContents[i] != null) {
-			if (roasterContents[i].stackSize <= j) {
-				ItemStack itemstack = roasterContents[i];
-				roasterContents[i] = null;
-				onInventoryChanged();
-				return itemstack;
-			}
-			ItemStack itemstack1 = roasterContents[i].splitStack(j);
-			if (roasterContents[i].stackSize == 0) {
-				roasterContents[i] = null;
-			}
-			onInventoryChanged();
-			return itemstack1;
-		} else {
-			return null;
-		}
-	}
+    public int netherTime = 0;
 
-	@Override
-	public void setInventorySlotContents(int i, ItemStack itemstack) {
-		roasterContents[i] = itemstack;
-		if (itemstack != null && itemstack.stackSize > getInventoryStackLimit()) {
-			itemstack.stackSize = getInventoryStackLimit();
-		}
-		onInventoryChanged();
-	}
+    public int netherActionTime = 100;
+    private boolean noNetherrack = false;
 
-	@Override
-	public String getInvName() {
-		return PC_Utils.tr("tile.PCmaRoaster.name") + " - " + PC_Utils.tr("pc.roaster.insertFuel");
-	}
+    public PCma_TileEntityRoaster()
+    {
+        roasterContents = new ItemStack[SIZE];
+        random = new Random();
+    }
 
-	@Override
-	public void readFromNBT(NBTTagCompound nbttagcompound) {
-		super.readFromNBT(nbttagcompound);
-		PC_InvUtils.loadInventoryFromNBT(nbttagcompound, "Items", this);
+    @Override
+    public int getSizeInventory()
+    {
+        return SIZE;
+    }
 
-		burnTime = nbttagcompound.getInteger("burning");
-		netherTime = nbttagcompound.getInteger("netherTime");
-		netherActionTime = nbttagcompound.getInteger("netherActionTime");
-	}
+    @Override
+    public ItemStack getStackInSlot(int i)
+    {
+        return roasterContents[i];
+    }
 
-	@Override
-	public void writeToNBT(NBTTagCompound nbttagcompound) {
-		super.writeToNBT(nbttagcompound);
+    @Override
+    public ItemStack decrStackSize(int i, int j)
+    {
+        if (roasterContents[i] != null)
+        {
+            if (roasterContents[i].stackSize <= j)
+            {
+                ItemStack itemstack = roasterContents[i];
+                roasterContents[i] = null;
+                onInventoryChanged();
+                return itemstack;
+            }
 
-		PC_InvUtils.saveInventoryToNBT(nbttagcompound, "Items", this);
+            ItemStack itemstack1 = roasterContents[i].splitStack(j);
 
-		nbttagcompound.setInteger("burning", burnTime);
-		nbttagcompound.setInteger("netherTime", netherTime);
-		nbttagcompound.setInteger("netherActionTime", netherActionTime);
-	}
+            if (roasterContents[i].stackSize == 0)
+            {
+                roasterContents[i] = null;
+            }
 
-	@Override
-	public int getInventoryStackLimit() {
-		return MAXSTACK;
-	}
+            onInventoryChanged();
+            return itemstack1;
+        }
+        else
+        {
+            return null;
+        }
+    }
 
-	@Override
-	public boolean isUseableByPlayer(EntityPlayer entityplayer) {
-		if (worldObj.getBlockTileEntity(xCoord, yCoord, zCoord) != this) {
-			return false;
-		}
-		return entityplayer.getDistanceSq(xCoord + 0.5D, yCoord + 0.5D, zCoord + 0.5D) <= 64D;
-	}
+    @Override
+    public void setInventorySlotContents(int i, ItemStack itemstack)
+    {
+        roasterContents[i] = itemstack;
 
-	@Override
-	public void openChest() {}
+        if (itemstack != null && itemstack.stackSize > getInventoryStackLimit())
+        {
+            itemstack.stackSize = getInventoryStackLimit();
+        }
 
-	@Override
-	public void closeChest() {
-		noNetherrack = false; // force check for netherrack
-	}
+        onInventoryChanged();
+    }
 
-	/**
-	 * @return forge = can't update, false
-	 */
-	@Override
-	public boolean canUpdate() {
-		return true;
-	}
+    @Override
+    public String getInvName()
+    {
+        return PC_Utils.tr("tile.PCmaRoaster.name") + " - " + PC_Utils.tr("pc.roaster.insertFuel");
+    }
 
-	@Override
-	public void updateEntity() {
-		// not powered -> off
-		if (!PCma_BlockRoaster.isIndirectlyPowered(worldObj, xCoord, yCoord, zCoord)) {
-			return;
-		}
+    @Override
+    public void readFromNBT(NBTTagCompound nbttagcompound)
+    {
+        super.readFromNBT(nbttagcompound);
+        PC_InvUtils.loadInventoryFromNBT(nbttagcompound, "Items", this);
+        burnTime = nbttagcompound.getInteger("burning");
+        netherTime = nbttagcompound.getInteger("netherTime");
+        netherActionTime = nbttagcompound.getInteger("netherActionTime");
+    }
 
-		PC_Block laserB = PC_Utils.getPCBlockByName("PCli_BlockLaser");
-		
-		boolean laser = false;
-		if(laserB!=null){
-			 laser = PC_Utils.getBID(worldObj, xCoord, yCoord + 1, zCoord) == laserB.blockID;
-		}
+    @Override
+    public void writeToNBT(NBTTagCompound nbttagcompound)
+    {
+        super.writeToNBT(nbttagcompound);
+        PC_InvUtils.saveInventoryToNBT(nbttagcompound, "Items", this);
+        nbttagcompound.setInteger("burning", burnTime);
+        nbttagcompound.setInteger("netherTime", netherTime);
+        nbttagcompound.setInteger("netherActionTime", netherActionTime);
+    }
 
-		if (burnTime > 0) {
-			burnTime -= laser ? 4 : 2; // laser consumes more
-		}
-		// fuel.
-		if (burnTime <= 0) {
-			addFuelForTime(40);
-		}
-		if (!laser) {
-			smeltItems();
-		}
-		if (!laser && burnTime > 0) {
-			burnCreatures();
-		}
-		if (netherTime > 0) {
-			netherTime--;
-		}
+    @Override
+    public int getInventoryStackLimit()
+    {
+        return MAXSTACK;
+    }
 
-		if (netherTime <= 0 && !noNetherrack) {
-			addNetherrack();
-		}
+    @Override
+    public boolean isUseableByPlayer(EntityPlayer entityplayer)
+    {
+        if (worldObj.getBlockTileEntity(xCoord, yCoord, zCoord) != this)
+        {
+            return false;
+        }
 
-		if (netherActionTime > 0 && netherTime > 0) {
-			netherActionTime--;
-		}
+        return entityplayer.getDistanceSq(xCoord + 0.5D, yCoord + 0.5D, zCoord + 0.5D) <= 64D;
+    }
 
-		if (netherActionTime <= 0) {
-			int success = 0;
-			for (int i = 0; i < 10; i++) {
-				if (netherAction()) {
-					success++;
-				}
-				if (success == 4) {
-					break;
-				}
-			}
+    @Override
+    public void openChest() {}
 
-			//
-			WorldChunkManager worldchunkmanager = worldObj.getWorldChunkManager();
-			if (worldchunkmanager != null) {
-				BiomeGenBase biomegenbase = worldchunkmanager.getBiomeGenAt(xCoord, zCoord);
-				if (biomegenbase instanceof BiomeGenHell) {
-					netherActionTime = 50 + random.nextInt(150);
-				} else {
-					netherActionTime = 100 + random.nextInt(200);
-				}
-			} else {
-				netherActionTime = 100 + random.nextInt(200);
-			}
+    @Override
+    public void closeChest()
+    {
+        noNetherrack = false;
+    }
 
-		}
+    @Override
+    public boolean canUpdate()
+    {
+        return true;
+    }
 
-	}
+    @Override
+    public void updateEntity()
+    {
+        if (!PCma_BlockRoaster.isIndirectlyPowered(worldObj, xCoord, yCoord, zCoord))
+        {
+            return;
+        }
 
-	/**
-	 * Do smelt items above the device.
-	 */
-	public void smeltItems() {
-		List<EntityItem> itemsList = worldObj.getEntitiesWithinAABB(net.minecraft.src.EntityItem.class,
-				AxisAlignedBB.getBoundingBox(xCoord, yCoord, zCoord, xCoord + 1, yCoord + 2, zCoord + 1));
+        PC_Block laserB = PC_Utils.getPCBlockByName("PCli_BlockLaser");
+        boolean laser = false;
 
-		nextItem:
-		for (EntityItem entityitem : itemsList) {
+        if (laserB != null)
+        {
+            laser = PC_Utils.getBID(worldObj, xCoord, yCoord + 1, zCoord) == laserB.blockID;
+        }
 
-			if (entityitem.isDead || mod_PowerCraftMachines.roasterIgnoreBlockIDs.contains(entityitem.item.itemID)) {
-				continue nextItem;
-			}
-			ItemStack result = getResult(entityitem.item);
-			if (result == null) {
-				continue nextItem;
-			}
+        if (burnTime > 0)
+        {
+            burnTime -= laser ? 4 : 2;
+        }
 
-			if (burnTime <= getItemSmeltTime(entityitem.item)) {
-				if (!addFuelForItem(entityitem.item)) {
-					continue nextItem;
-				}
-			}
+        if (burnTime <= 0)
+        {
+            addFuelForTime(40);
+        }
 
-			if (burnTime >= getItemSmeltTime(entityitem.item)) {
-				// DO smelting.
-				burnTime -= getItemSmeltTime(entityitem.item);
-				EntityItem eitem = new EntityItem(worldObj, entityitem.posX - 0.1F + random.nextFloat() * 0.2F, entityitem.posY, entityitem.posZ
-						- 0.1F + random.nextFloat() * 0.2F, result.copy());
-				eitem.motionX = entityitem.motionX;
-				eitem.motionY = entityitem.motionY;
-				eitem.motionZ = entityitem.motionZ;
-				eitem.delayBeforeCanPickup = 7;
-				if(!worldObj.isRemote)
-					worldObj.spawnEntityInWorld(eitem);
-				if (--entityitem.item.stackSize <= 0) {
-					entityitem.setDead();
-				}
-			}
-		}
-	}
+        if (!laser)
+        {
+            smeltItems();
+        }
 
-	/**
-	 * Burn creatures on top.
-	 */
-	public void burnCreatures() {
-		if (burnTime <= 0) {
-			return;
-		}
+        if (!laser && burnTime > 0)
+        {
+            burnCreatures();
+        }
 
-		List<EntityLiving> entities = worldObj.getEntitiesWithinAABB(net.minecraft.src.EntityLiving.class,
-				AxisAlignedBB.getBoundingBox(xCoord, yCoord, zCoord, xCoord + 1, yCoord + 2, zCoord + 1));
+        if (netherTime > 0)
+        {
+            netherTime--;
+        }
 
-		nextEliving:
-		for (EntityLiving eliving : entities) {
-			if (eliving.isDead) {
-				continue nextEliving;
-			}
-			if(!eliving.isImmuneToFire()){
-				eliving.attackEntityFrom(DamageSource.inFire, 3);
-			}
-			if (!eliving.isWet()) {
-				eliving.setFire(15);
-			}
-		}
-	}
+        if (netherTime <= 0 && !noNetherrack)
+        {
+            addNetherrack();
+        }
 
-	/**
-	 * make netherwarts grow
-	 * 
-	 * @return some warts affected
-	 */
-	public boolean netherAction() {
-		int x = -6 + random.nextInt(13);
-		int z = -6 + random.nextInt(13);
+        if (netherActionTime > 0 && netherTime > 0)
+        {
+            netherActionTime--;
+        }
 
-		for (int y = -2; y <= 2; y++) {
-			int id = worldObj.getBlockId(xCoord + x, yCoord + y, zCoord + z);
-			int meta = worldObj.getBlockMetadata(xCoord + x, yCoord + y, zCoord + z);
+        if (netherActionTime <= 0)
+        {
+            int success = 0;
 
-			if (id == Block.netherStalk.blockID) {
-				if (meta < 3) {
-					worldObj.setBlockMetadataWithNotify(xCoord + x, yCoord + y, zCoord + z, ++meta);
-					return true;
-				}
-			}
+            for (int i = 0; i < 10; i++)
+            {
+                if (netherAction())
+                {
+                    success++;
+                }
 
-			if (id == Block.gravel.blockID) {
-				worldObj.setBlockWithNotify(xCoord + x, yCoord + y, zCoord + z, Block.slowSand.blockID);
-				return true;
-			}
-		}
-		return false;
-	}
+                if (success == 4)
+                {
+                    break;
+                }
+            }
 
-	/**
-	 * Add fuel needed to smelt this item
-	 * 
-	 * @param itemstack
-	 * @return fuel added
-	 */
-	private boolean addFuelForItem(ItemStack itemstack) {
-		for (int s = 0; s < getSizeInventory(); s++) {
-			int bt = PC_InvUtils.getFuelValue(getStackInSlot(s), 1.0D);
-			if (bt > 0) {
-				burnTime += bt;
-				decrStackSize(s, 1);
-				if (burnTime >= getItemSmeltTime(itemstack)) {
-					return true;
-				}
-			}
-		}
-		if (burnTime >= getItemSmeltTime(itemstack)) {
-			return true;
-		}
-		return false;
-	}
+            WorldChunkManager worldchunkmanager = worldObj.getWorldChunkManager();
 
-	/**
-	 * Add fuel which last this time
-	 * 
-	 * @param time
-	 * @return added enough
-	 */
-	private boolean addFuelForTime(int time) {
-		for (int s = 0; s < getSizeInventory(); s++) {
-			int bt = PC_InvUtils.getFuelValue(getStackInSlot(s), 1.0D);
-			if (bt > 0) {
-				burnTime += bt;
-				decrStackSize(s, 1);
-				if (burnTime >= time) {
-					return true;
-				}
-			}
-		}
-		if (burnTime >= time) {
-			return true;
-		}
-		return false;
-	}
+            if (worldchunkmanager != null)
+            {
+                BiomeGenBase biomegenbase = worldchunkmanager.getBiomeGenAt(xCoord, zCoord);
 
-	/**
-	 * Add some netherrack
-	 */
-	private void addNetherrack() {
-		for (int s = 0; s < getSizeInventory(); s++) {
-			if (getStackInSlot(s) != null && getStackInSlot(s).itemID == Block.netherrack.blockID) {
-				netherTime += 600;
-				decrStackSize(s, 1);
-				noNetherrack = false;
-				return;
-			}
-		}
-		noNetherrack = true;
-	}
+                if (biomegenbase instanceof BiomeGenHell)
+                {
+                    netherActionTime = 50 + random.nextInt(150);
+                }
+                else
+                {
+                    netherActionTime = 100 + random.nextInt(200);
+                }
+            }
+            else
+            {
+                netherActionTime = 100 + random.nextInt(200);
+            }
+        }
+    }
 
-	/**
-	 * Get smelting result
-	 * 
-	 * @param item smelted item
-	 * @return resulting stack
-	 */
-	private ItemStack getResult(ItemStack item) {
-		return FurnaceRecipes.smelting().getSmeltingResult(item.getItem().shiftedIndex);
-	}
+    public void smeltItems()
+    {
+        List<EntityItem> itemsList = worldObj.getEntitiesWithinAABB(net.minecraft.src.EntityItem.class,
+                AxisAlignedBB.getBoundingBox(xCoord, yCoord, zCoord, xCoord + 1, yCoord + 2, zCoord + 1));
+        nextItem:
 
-	/**
-	 * @param stack
-	 * @return how long it takes to smelt (this is used only to measure amount
-	 *         of fuel consumed, smelting is instant)
-	 */
-	private int getItemSmeltTime(ItemStack stack) {
-		if (stack.getItem() instanceof ItemFood) {
-			return 180;
-		}
-		if (stack.itemID == Block.wood.blockID) {
-			return 300;
-		}
-		return 350;
-	}
+        for (EntityItem entityitem : itemsList)
+        {
+            if (entityitem.isDead || mod_PowerCraftMachines.roasterIgnoreBlockIDs.contains(entityitem.item.itemID))
+            {
+                continue nextItem;
+            }
 
-	@Override
-	public ItemStack getStackInSlotOnClosing(int par1) {
-		if (roasterContents[par1] != null) {
-			ItemStack itemstack = roasterContents[par1];
-			roasterContents[par1] = null;
-			return itemstack;
-		} else {
-			return null;
-		}
-	}
+            ItemStack result = getResult(entityitem.item);
 
-	@Override
-	public boolean needsSpecialInserter() {
-		return false;
-	}
+            if (result == null)
+            {
+                continue nextItem;
+            }
 
-	@Override
-	public void setData(Object[] o) {
-		int p = 0;
-		while(p<o.length){
-			String var = (String)o[p++];
-			if(var.equals("burnTime"))
-				burnTime = (Integer)o[p++];
-			else if(var.equals("netherTime"))
-				netherTime = (Integer)o[p++];
-			else if(var.equals("netherActionTime"))
-				netherActionTime = (Integer)o[p++];
-			else if(var.equals("noNetherrack"))
-				noNetherrack = (Boolean)o[p++];
-		}
-	}
+            if (burnTime <= getItemSmeltTime(entityitem.item))
+            {
+                if (!addFuelForItem(entityitem.item))
+                {
+                    continue nextItem;
+                }
+            }
 
-	@Override
-	public Object[] getData() {
-		return new Object[]{
-				"burnTime", burnTime,
-				"netherTime", netherTime,
-				"netherActionTime", netherActionTime,
-				"noNetherrack", noNetherrack
-		};
-	}
+            if (burnTime >= getItemSmeltTime(entityitem.item))
+            {
+                burnTime -= getItemSmeltTime(entityitem.item);
+                EntityItem eitem = new EntityItem(worldObj, entityitem.posX - 0.1F + random.nextFloat() * 0.2F, entityitem.posY, entityitem.posZ
+                        - 0.1F + random.nextFloat() * 0.2F, result.copy());
+                eitem.motionX = entityitem.motionX;
+                eitem.motionY = entityitem.motionY;
+                eitem.motionZ = entityitem.motionZ;
+                eitem.delayBeforeCanPickup = 7;
+
+                if (!worldObj.isRemote)
+                {
+                    worldObj.spawnEntityInWorld(eitem);
+                }
+
+                if (--entityitem.item.stackSize <= 0)
+                {
+                    entityitem.setDead();
+                }
+            }
+        }
+    }
+
+    public void burnCreatures()
+    {
+        if (burnTime <= 0)
+        {
+            return;
+        }
+
+        List<EntityLiving> entities = worldObj.getEntitiesWithinAABB(net.minecraft.src.EntityLiving.class,
+                AxisAlignedBB.getBoundingBox(xCoord, yCoord, zCoord, xCoord + 1, yCoord + 2, zCoord + 1));
+        nextEliving:
+
+        for (EntityLiving eliving : entities)
+        {
+            if (eliving.isDead)
+            {
+                continue nextEliving;
+            }
+
+            if (!eliving.isImmuneToFire())
+            {
+                eliving.attackEntityFrom(DamageSource.inFire, 3);
+            }
+
+            if (!eliving.isWet())
+            {
+                eliving.setFire(15);
+            }
+        }
+    }
+
+    public boolean netherAction()
+    {
+        int x = -6 + random.nextInt(13);
+        int z = -6 + random.nextInt(13);
+
+        for (int y = -2; y <= 2; y++)
+        {
+            int id = worldObj.getBlockId(xCoord + x, yCoord + y, zCoord + z);
+            int meta = worldObj.getBlockMetadata(xCoord + x, yCoord + y, zCoord + z);
+
+            if (id == Block.netherStalk.blockID)
+            {
+                if (meta < 3)
+                {
+                    worldObj.setBlockMetadataWithNotify(xCoord + x, yCoord + y, zCoord + z, ++meta);
+                    return true;
+                }
+            }
+
+            if (id == Block.gravel.blockID)
+            {
+                worldObj.setBlockWithNotify(xCoord + x, yCoord + y, zCoord + z, Block.slowSand.blockID);
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    private boolean addFuelForItem(ItemStack itemstack)
+    {
+        for (int s = 0; s < getSizeInventory(); s++)
+        {
+            int bt = PC_InvUtils.getFuelValue(getStackInSlot(s), 1.0D);
+
+            if (bt > 0)
+            {
+                burnTime += bt;
+                decrStackSize(s, 1);
+
+                if (burnTime >= getItemSmeltTime(itemstack))
+                {
+                    return true;
+                }
+            }
+        }
+
+        if (burnTime >= getItemSmeltTime(itemstack))
+        {
+            return true;
+        }
+
+        return false;
+    }
+
+    private boolean addFuelForTime(int time)
+    {
+        for (int s = 0; s < getSizeInventory(); s++)
+        {
+            int bt = PC_InvUtils.getFuelValue(getStackInSlot(s), 1.0D);
+
+            if (bt > 0)
+            {
+                burnTime += bt;
+                decrStackSize(s, 1);
+
+                if (burnTime >= time)
+                {
+                    return true;
+                }
+            }
+        }
+
+        if (burnTime >= time)
+        {
+            return true;
+        }
+
+        return false;
+    }
+
+    private void addNetherrack()
+    {
+        for (int s = 0; s < getSizeInventory(); s++)
+        {
+            if (getStackInSlot(s) != null && getStackInSlot(s).itemID == Block.netherrack.blockID)
+            {
+                netherTime += 600;
+                decrStackSize(s, 1);
+                noNetherrack = false;
+                return;
+            }
+        }
+
+        noNetherrack = true;
+    }
+
+    private ItemStack getResult(ItemStack item)
+    {
+        return FurnaceRecipes.smelting().getSmeltingResult(item.getItem().shiftedIndex);
+    }
+
+    private int getItemSmeltTime(ItemStack stack)
+    {
+        if (stack.getItem() instanceof ItemFood)
+        {
+            return 180;
+        }
+
+        if (stack.itemID == Block.wood.blockID)
+        {
+            return 300;
+        }
+
+        return 350;
+    }
+
+    @Override
+    public ItemStack getStackInSlotOnClosing(int par1)
+    {
+        if (roasterContents[par1] != null)
+        {
+            ItemStack itemstack = roasterContents[par1];
+            roasterContents[par1] = null;
+            return itemstack;
+        }
+        else
+        {
+            return null;
+        }
+    }
+
+    @Override
+    public boolean needsSpecialInserter()
+    {
+        return false;
+    }
+
+    @Override
+    public void setData(Object[] o)
+    {
+        int p = 0;
+
+        while (p < o.length)
+        {
+            String var = (String)o[p++];
+
+            if (var.equals("burnTime"))
+            {
+                burnTime = (Integer)o[p++];
+            }
+            else if (var.equals("netherTime"))
+            {
+                netherTime = (Integer)o[p++];
+            }
+            else if (var.equals("netherActionTime"))
+            {
+                netherActionTime = (Integer)o[p++];
+            }
+            else if (var.equals("noNetherrack"))
+            {
+                noNetherrack = (Boolean)o[p++];
+            }
+        }
+    }
+
+    @Override
+    public Object[] getData()
+    {
+        return new Object[]
+                {
+                    "burnTime", burnTime,
+                    "netherTime", netherTime,
+                    "netherActionTime", netherActionTime,
+                    "noNetherrack", noNetherrack
+                };
+    }
 }

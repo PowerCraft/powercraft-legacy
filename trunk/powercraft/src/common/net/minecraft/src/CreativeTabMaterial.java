@@ -12,9 +12,6 @@ final class CreativeTabMaterial extends CreativeTabs
 
     @SideOnly(Side.CLIENT)
 
-    /**
-     * the itemID for the item to be displayed on the tab
-     */
     public int getTabIconItemIndex()
     {
         return Item.stick.shiftedIndex;

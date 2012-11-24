@@ -4,11 +4,9 @@ import java.util.Random;
 
 public class WorldGenMinable extends WorldGenerator
 {
-    /** The block ID of the ore to be placed using this generator. */
     private int minableBlockId;
     private int minableBlockMeta = 0;
 
-    /** The number of blocks to generate. */
     private int numberOfBlocks;
 
     public WorldGenMinable(int par1, int par2)
@@ -63,8 +61,8 @@ public class WorldGenMinable extends WorldGenerator
                             for (int var44 = var34; var44 <= var37; ++var44)
                             {
                                 double var45 = ((double)var44 + 0.5D - var24) / (var28 / 2.0D);
-
                                 Block block = Block.blocksList[par1World.getBlockId(var38, var41, var44)];
+
                                 if (var39 * var39 + var42 * var42 + var45 * var45 < 1.0D && (block != null && block.isGenMineableReplaceable(par1World, var38, var41, var44)))
                                 {
                                     par1World.setBlockAndMetadata(var38, var41, var44, this.minableBlockId, minableBlockMeta);

@@ -13,7 +13,7 @@ public enum ContainerType
 
     private ITypeDiscoverer discoverer;
 
-    private ContainerType(Class<? extends ITypeDiscoverer> discovererClass)
+    private ContainerType(Class <? extends ITypeDiscoverer > discovererClass)
     {
         try
         {

@@ -43,7 +43,7 @@ class GuiSnooperList extends GuiSlot
         this.snooperGui.fontRenderer.drawString((String)GuiSnooper.func_74094_b(this.snooperGui).get(par1), 230, par3, 16777215);
     }
 
-    protected int func_77225_g()
+    protected int getScrollBarX()
     {
         return this.snooperGui.width - 10;
     }

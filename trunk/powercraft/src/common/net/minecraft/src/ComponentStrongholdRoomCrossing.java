@@ -8,7 +8,7 @@ import static net.minecraftforge.common.ChestGenHooks.*;
 
 public class ComponentStrongholdRoomCrossing extends ComponentStronghold
 {
-    public static final WeightedRandomChestContent[] field_75014_c = new WeightedRandomChestContent[] {new WeightedRandomChestContent(Item.ingotIron.shiftedIndex, 0, 1, 5, 10), new WeightedRandomChestContent(Item.ingotGold.shiftedIndex, 0, 1, 3, 5), new WeightedRandomChestContent(Item.redstone.shiftedIndex, 0, 4, 9, 5), new WeightedRandomChestContent(Item.coal.shiftedIndex, 0, 3, 8, 10), new WeightedRandomChestContent(Item.bread.shiftedIndex, 0, 1, 3, 15), new WeightedRandomChestContent(Item.appleRed.shiftedIndex, 0, 1, 3, 15), new WeightedRandomChestContent(Item.pickaxeSteel.shiftedIndex, 0, 1, 1, 1)};
+    public static final WeightedRandomChestContent[] strongholdRoomCrossingChestContents = new WeightedRandomChestContent[] {new WeightedRandomChestContent(Item.ingotIron.shiftedIndex, 0, 1, 5, 10), new WeightedRandomChestContent(Item.ingotGold.shiftedIndex, 0, 1, 3, 5), new WeightedRandomChestContent(Item.redstone.shiftedIndex, 0, 4, 9, 5), new WeightedRandomChestContent(Item.coal.shiftedIndex, 0, 3, 8, 10), new WeightedRandomChestContent(Item.bread.shiftedIndex, 0, 1, 3, 15), new WeightedRandomChestContent(Item.appleRed.shiftedIndex, 0, 1, 3, 15), new WeightedRandomChestContent(Item.pickaxeSteel.shiftedIndex, 0, 1, 1, 1)};
     protected final EnumDoor doorType;
     protected final int roomType;
 
@@ -21,9 +21,6 @@ public class ComponentStrongholdRoomCrossing extends ComponentStronghold
         this.roomType = par2Random.nextInt(5);
     }
 
-    /**
-     * Initiates construction of the Structure Component picked, at the current Location of StructGen
-     */
     public void buildComponent(StructureComponent par1StructureComponent, List par2List, Random par3Random)
     {
         this.getNextComponentNormal((ComponentStrongholdStairs2)par1StructureComponent, par2List, par3Random, 4, 1);
@@ -37,10 +34,6 @@ public class ComponentStrongholdRoomCrossing extends ComponentStronghold
         return canStrongholdGoDeeper(var7) && StructureComponent.findIntersecting(par0List, var7) == null ? new ComponentStrongholdRoomCrossing(par6, par1Random, var7, par5) : null;
     }
 
-    /**
-     * second Part of Structure generating, this for example places Spiderwebs, Mob Spawners, it closes Mineshafts at
-     * the end, it adds Fences...
-     */
     public boolean addComponentParts(World par1World, Random par2Random, StructureBoundingBox par3StructureBoundingBox)
     {
         if (this.isLiquidInStructureBoundingBox(par1World, par3StructureBoundingBox))
@@ -75,6 +68,7 @@ public class ComponentStrongholdRoomCrossing extends ComponentStronghold
                     this.placeBlockAtCurrentPosition(par1World, Block.stoneSingleSlab.blockID, 0, 5, 1, 4, par3StructureBoundingBox);
                     this.placeBlockAtCurrentPosition(par1World, Block.stoneSingleSlab.blockID, 0, 5, 1, 6, par3StructureBoundingBox);
                     break;
+
                 case 1:
                     for (var4 = 0; var4 < 5; ++var4)
                     {
@@ -89,6 +83,7 @@ public class ComponentStrongholdRoomCrossing extends ComponentStronghold
                     this.placeBlockAtCurrentPosition(par1World, Block.stoneBrick.blockID, 0, 5, 3, 5, par3StructureBoundingBox);
                     this.placeBlockAtCurrentPosition(par1World, Block.waterMoving.blockID, 0, 5, 4, 5, par3StructureBoundingBox);
                     break;
+
                 case 2:
                     for (var4 = 1; var4 <= 9; ++var4)
                     {

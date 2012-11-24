@@ -21,7 +21,6 @@ public class RegionFile
     private final int[] chunkTimestamps = new int[1024];
     private ArrayList sectorFree;
 
-    /** McRegion sizeDelta */
     private int sizeDelta;
     private long lastModified = 0L;
 
@@ -103,9 +102,6 @@ public class RegionFile
         }
     }
 
-    /**
-     * args: x, y - get uncompressed chunk stream from the region file
-     */
     public synchronized DataInputStream getChunkDataInputStream(int par1, int par2)
     {
         if (this.outOfBounds(par1, par2))
@@ -176,17 +172,11 @@ public class RegionFile
         }
     }
 
-    /**
-     * args: x, z - get an output stream used to write chunk data, data is on disk when the returned stream is closed
-     */
     public DataOutputStream getChunkDataOutputStream(int par1, int par2)
     {
         return this.outOfBounds(par1, par2) ? null : new DataOutputStream(new DeflaterOutputStream(new RegionFileChunkBuffer(this, par1, par2)));
     }
 
-    /**
-     * args: x, z, data, length - write chunk data at (x, z) to disk
-     */
     protected synchronized void write(int par1, int par2, byte[] par3ArrayOfByte, int par4)
     {
         try
@@ -283,9 +273,6 @@ public class RegionFile
         }
     }
 
-    /**
-     * args: sectorNumber, data, length - write the chunk data to this RegionFile
-     */
     private void write(int par1, byte[] par2ArrayOfByte, int par3) throws IOException
     {
         this.dataFile.seek((long)(par1 * 4096));
@@ -294,33 +281,21 @@ public class RegionFile
         this.dataFile.write(par2ArrayOfByte, 0, par3);
     }
 
-    /**
-     * args: x, z - check region bounds
-     */
     private boolean outOfBounds(int par1, int par2)
     {
         return par1 < 0 || par1 >= 32 || par2 < 0 || par2 >= 32;
     }
 
-    /**
-     * args: x, y - get chunk's offset in region file
-     */
     private int getOffset(int par1, int par2)
     {
         return this.offsets[par1 + par2 * 32];
     }
 
-    /**
-     * args: x, z, - true if chunk has been saved / converted
-     */
     public boolean isChunkSaved(int par1, int par2)
     {
         return this.getOffset(par1, par2) != 0;
     }
 
-    /**
-     * args: x, z, offset - sets the chunk's offset in the region file
-     */
     private void setOffset(int par1, int par2, int par3) throws IOException
     {
         this.offsets[par1 + par2 * 32] = par3;
@@ -328,9 +303,6 @@ public class RegionFile
         this.dataFile.writeInt(par3);
     }
 
-    /**
-     * args: x, z, timestamp - sets the chunk's write timestamp
-     */
     private void setChunkTimestamp(int par1, int par2, int par3) throws IOException
     {
         this.chunkTimestamps[par1 + par2 * 32] = par3;
@@ -338,9 +310,6 @@ public class RegionFile
         this.dataFile.writeInt(par3);
     }
 
-    /**
-     * close this RegionFile and prevent further writes
-     */
     public void close() throws IOException
     {
         if (this.dataFile != null)

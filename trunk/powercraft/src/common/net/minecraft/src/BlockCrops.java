@@ -24,18 +24,11 @@ public class BlockCrops extends BlockFlower
         this.setRequiresSelfNotify();
     }
 
-    /**
-     * Gets passed in the blockID of the block below and supposed to return true if its allowed to grow on the type of
-     * blockID passed in. Args: blockID
-     */
     protected boolean canThisPlantGrowOnThisBlockID(int par1)
     {
         return par1 == Block.tilledField.blockID;
     }
 
-    /**
-     * Ticks the block if it's been scheduled
-     */
     public void updateTick(World par1World, int par2, int par3, int par4, Random par5Random)
     {
         super.updateTick(par1World, par2, par3, par4, par5Random);
@@ -57,19 +50,11 @@ public class BlockCrops extends BlockFlower
         }
     }
 
-    /**
-     * Apply bonemeal to the crops.
-     */
     public void fertilize(World par1World, int par2, int par3, int par4)
     {
         par1World.setBlockMetadataWithNotify(par2, par3, par4, 7);
     }
 
-    /**
-     * Gets the growth rate for the crop. Setup to encourage rows by halving growth rate if there is diagonals, crops on
-     * different sides that aren't opposing, and by adding growth for every crop next to this one (and for crop below
-     * this one). Args: x, y, z
-     */
     private float getGrowthRate(World par1World, int par2, int par3, int par4)
     {
         float var5 = 1.0F;
@@ -119,9 +104,6 @@ public class BlockCrops extends BlockFlower
         return var5;
     }
 
-    /**
-     * From the specified side and block metadata retrieves the blocks texture. Args: side, metadata
-     */
     public int getBlockTextureFromSideAndMetadata(int par1, int par2)
     {
         if (par2 < 0)
@@ -132,48 +114,30 @@ public class BlockCrops extends BlockFlower
         return this.blockIndexInTexture + par2;
     }
 
-    /**
-     * The type of render function that is called for this block
-     */
     public int getRenderType()
     {
         return 6;
     }
 
-    protected int func_82532_h()
+    protected int getSeedItem()
     {
         return Item.seeds.shiftedIndex;
     }
 
-    protected int func_82533_j()
+    protected int getCropItem()
     {
         return Item.wheat.shiftedIndex;
     }
 
-    /**
-     * Drops the block items with a specified chance of dropping the specified items
-     */
     public void dropBlockAsItemWithChance(World par1World, int par2, int par3, int par4, int par5, float par6, int par7)
     {
         super.dropBlockAsItemWithChance(par1World, par2, par3, par4, par5, par6, 0);
     }
 
-    @Override 
+    @Override
     public ArrayList<ItemStack> getBlockDropped(World world, int x, int y, int z, int metadata, int fortune)
     {
-        ArrayList<ItemStack> ret = new ArrayList<ItemStack>();
-        if (metadata == 7)
-        {      
-            int count = quantityDropped(metadata, fortune, world.rand);
-            for(int i = 0; i < count; i++)
-            {
-                int id = idDropped(metadata, world.rand, 0);
-                if (id > 0)
-                {
-                    ret.add(new ItemStack(id, 1, damageDropped(metadata)));
-                }
-            }
-        }
+        ArrayList<ItemStack> ret = super.getBlockDropped(world, x, y, z, metadata, fortune);
 
         if (metadata >= 7)
         {
@@ -181,7 +145,7 @@ public class BlockCrops extends BlockFlower
             {
                 if (world.rand.nextInt(15) <= metadata)
                 {
-                    ret.add(new ItemStack(this.func_82532_h(), 1, 0));
+                    ret.add(new ItemStack(this.getSeedItem(), 1, 0));
                 }
             }
         }
@@ -189,17 +153,11 @@ public class BlockCrops extends BlockFlower
         return ret;
     }
 
-    /**
-     * Returns the ID of the items to drop on destruction.
-     */
     public int idDropped(int par1, Random par2Random, int par3)
     {
-        return par1 == 7 ? this.func_82533_j() : this.func_82532_h();
+        return par1 == 7 ? this.getCropItem() : this.getSeedItem();
     }
 
-    /**
-     * Returns the quantity of items to drop on block destruction.
-     */
     public int quantityDropped(Random par1Random)
     {
         return 1;
@@ -207,11 +165,8 @@ public class BlockCrops extends BlockFlower
 
     @SideOnly(Side.CLIENT)
 
-    /**
-     * only called by clickMiddleMouseButton , and passed to inventory.setCurrentItem (along with isCreative)
-     */
     public int idPicked(World par1World, int par2, int par3, int par4)
     {
-        return this.func_82532_h();
+        return this.getSeedItem();
     }
 }

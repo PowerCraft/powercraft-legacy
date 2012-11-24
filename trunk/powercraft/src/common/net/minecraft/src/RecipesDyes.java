@@ -2,9 +2,6 @@ package net.minecraft.src;
 
 public class RecipesDyes
 {
-    /**
-     * Adds the dye recipes to the CraftingManager.
-     */
     public void addRecipes(CraftingManager par1CraftingManager)
     {
         for (int var2 = 0; var2 < 16; ++var2)

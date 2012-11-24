@@ -1,0 +1,8 @@
+package powercraft.light;
+
+import powercraft.core.PC_ITileEntityRenderer;
+import powercraft.core.PC_TileEntity;
+
+public class PCli_TileEntityMirrow extends PC_TileEntity implements PC_ITileEntityRenderer<PCli_TileEntityMirrow> {
+
+}

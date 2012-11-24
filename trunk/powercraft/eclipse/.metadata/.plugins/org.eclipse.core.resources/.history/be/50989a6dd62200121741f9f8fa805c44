@@ -1,7 +1,0 @@
-package powercraft.logic;
-
-import powercraft.core.PC_TileEntity;
-
-public class PClo_TileEntitySpecial extends PC_TileEntity {
-
-}

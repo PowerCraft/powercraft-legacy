@@ -8,15 +8,10 @@ import cpw.mods.fml.common.registry.GameRegistry;
 
 public class SlotCrafting extends Slot
 {
-    /** The craft matrix inventory linked to this result slot. */
     private final IInventory craftMatrix;
 
-    /** The player that is using the GUI where this slot resides. */
     private EntityPlayer thePlayer;
 
-    /**
-     * The number of items that have been crafted so far. Gets passed to ItemStack.onCrafting before being reset.
-     */
     private int amountCrafted;
 
     public SlotCrafting(EntityPlayer par1EntityPlayer, IInventory par2IInventory, IInventory par3IInventory, int par4, int par5, int par6)
@@ -26,18 +21,11 @@ public class SlotCrafting extends Slot
         this.craftMatrix = par2IInventory;
     }
 
-    /**
-     * Check if the stack is a valid item for this slot. Always true beside for the armor slots.
-     */
     public boolean isItemValid(ItemStack par1ItemStack)
     {
         return false;
     }
 
-    /**
-     * Decrease the size of the stack in slot (first int arg) by the amount of the second int arg. Returns the new
-     * stack.
-     */
     public ItemStack decrStackSize(int par1)
     {
         if (this.getHasStack())
@@ -48,19 +36,12 @@ public class SlotCrafting extends Slot
         return super.decrStackSize(par1);
     }
 
-    /**
-     * the itemStack passed in is the output - ie, iron ingots, and pickaxes, not ore and wood. Typically increases an
-     * internal count then calls onCrafting(item).
-     */
     protected void onCrafting(ItemStack par1ItemStack, int par2)
     {
         this.amountCrafted += par2;
         this.onCrafting(par1ItemStack);
     }
 
-    /**
-     * the itemStack passed in is the output - ie, iron ingots, and pickaxes, not ore and wood.
-     */
     protected void onCrafting(ItemStack par1ItemStack)
     {
         par1ItemStack.onCrafting(this.thePlayer.worldObj, this.thePlayer, this.amountCrafted);
@@ -108,7 +89,7 @@ public class SlotCrafting extends Slot
         }
     }
 
-    public void func_82870_a(EntityPlayer par1EntityPlayer, ItemStack par2ItemStack)
+    public void onPickupFromSlot(EntityPlayer par1EntityPlayer, ItemStack par2ItemStack)
     {
         GameRegistry.onItemCrafted(par1EntityPlayer, par2ItemStack, craftMatrix);
         this.onCrafting(par2ItemStack);
@@ -124,7 +105,7 @@ public class SlotCrafting extends Slot
                 if (var4.getItem().hasContainerItem())
                 {
                     ItemStack var5 = var4.getItem().getContainerItemStack(var4);
-                    
+
                     if (var5.isItemStackDamageable() && var5.getItemDamage() > var5.getMaxDamage())
                     {
                         MinecraftForge.EVENT_BUS.post(new PlayerDestroyItemEvent(thePlayer, var5));

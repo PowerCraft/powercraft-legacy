@@ -1,31 +1,25 @@
 package powercraft.logic;
 
-public class PClo_DelayerType {
+public class PClo_DelayerType
+{
+    public static final int TOTAL_DELAYER_COUNT = 2;
 
-	/** Number of all the delayer types */
-	public static final int TOTAL_DELAYER_COUNT = 2;
+    @SuppressWarnings("javadoc")
+    public static final int FIFO = 0, HOLD = 1;
 
-	@SuppressWarnings("javadoc")
-	public static final int FIFO = 0, HOLD = 1;
+    public static String[] names = new String[TOTAL_DELAYER_COUNT];
 
-	/**
-	 * Delayer names used for localization
-	 */
-	public static String[] names = new String[TOTAL_DELAYER_COUNT];
+    static
+    {
+        names[FIFO] = "buffer";
+        names[HOLD] = "slowRepeater";
+    }
 
-	static {
-		names[FIFO] = "buffer";
-		names[HOLD] = "slowRepeater";
-	}
-	
-	/**
-	 * Delayer teyture index
-	 */
-	public static int[] index = new int[TOTAL_DELAYER_COUNT];
+    public static int[] index = new int[TOTAL_DELAYER_COUNT];
 
-	static {
-		index[FIFO] = 84;
-		index[HOLD] = 85;
-	}
-	
+    static
+    {
+        index[FIFO] = 84;
+        index[HOLD] = 85;
+    }
 }

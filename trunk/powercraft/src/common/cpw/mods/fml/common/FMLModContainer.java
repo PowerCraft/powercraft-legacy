@@ -1,15 +1,3 @@
-/*
- * The FML Forge Mod Loader suite. Copyright (C) 2012 cpw
- *
- * This library is free software; you can redistribute it and/or modify it under the terms of the GNU Lesser General Public License as published by the Free
- * Software Foundation; either version 2.1 of the License, or any later version.
- *
- * This library is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR
- * A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more details.
- *
- * You should have received a copy of the GNU Lesser General Public License along with this library; if not, write to the Free Software Foundation, Inc., 51
- * Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA
- */
 package cpw.mods.fml.common;
 
 import java.io.File;
@@ -74,25 +62,24 @@ public class FMLModContainer implements ModContainer
     private boolean overridesMetadata;
     private EventBus eventBus;
     private LoadController controller;
-    private Multimap<Class<? extends Annotation>, Object> annotations;
+    private Multimap < Class <? extends Annotation > , Object > annotations;
     private DefaultArtifactVersion processedVersion;
     private boolean isNetworkMod;
 
-    private static final BiMap<Class<? extends FMLEvent>, Class<? extends Annotation>> modAnnotationTypes = ImmutableBiMap.<Class<? extends FMLEvent>, Class<? extends Annotation>>builder()
-        .put(FMLPreInitializationEvent.class, Mod.PreInit.class)
-        .put(FMLInitializationEvent.class, Mod.Init.class)
-        .put(FMLPostInitializationEvent.class, Mod.PostInit.class)
-        .put(FMLServerStartingEvent.class, Mod.ServerStarting.class)
-        .put(FMLServerStartedEvent.class, Mod.ServerStarted.class)
-        .put(FMLServerStoppingEvent.class, Mod.ServerStopping.class)
-        .put(IMCEvent.class,Mod.IMCCallback.class)
-        .build();
-    private static final BiMap<Class<? extends Annotation>, Class<? extends FMLEvent>> modTypeAnnotations = modAnnotationTypes.inverse();
+    private static final BiMap < Class <? extends FMLEvent > , Class <? extends Annotation >> modAnnotationTypes = ImmutableBiMap. < Class <? extends FMLEvent > , Class <? extends Annotation >> builder()
+            .put(FMLPreInitializationEvent.class, Mod.PreInit.class)
+            .put(FMLInitializationEvent.class, Mod.Init.class)
+            .put(FMLPostInitializationEvent.class, Mod.PostInit.class)
+            .put(FMLServerStartingEvent.class, Mod.ServerStarting.class)
+            .put(FMLServerStartedEvent.class, Mod.ServerStarted.class)
+            .put(FMLServerStoppingEvent.class, Mod.ServerStopping.class)
+            .put(IMCEvent.class, Mod.IMCCallback.class)
+            .build();
+    private static final BiMap < Class <? extends Annotation > , Class <? extends FMLEvent >> modTypeAnnotations = modAnnotationTypes.inverse();
     private String annotationDependencies;
     private VersionRange minecraftAccepted;
 
-
-    public FMLModContainer(String className, File modSource, Map<String,Object> modDescriptor)
+    public FMLModContainer(String className, File modSource, Map<String, Object> modDescriptor)
     {
         this.className = className;
         this.source = modSource;
@@ -155,27 +142,32 @@ public class FMLModContainer implements ModContainer
         {
             FMLLog.finest("Using mcmod dependency info : %s %s %s", modMetadata.requiredMods, modMetadata.dependencies, modMetadata.dependants);
         }
+
         if (Strings.isNullOrEmpty(modMetadata.name))
         {
             FMLLog.info("Mod %s is missing the required element 'name'. Substituting %s", getModId(), getModId());
             modMetadata.name = getModId();
         }
+
         internalVersion = (String) descriptor.get("version");
+
         if (Strings.isNullOrEmpty(internalVersion))
         {
             Properties versionProps = searchForVersionProperties();
+
             if (versionProps != null)
             {
-                internalVersion = versionProps.getProperty(getModId()+".version");
+                internalVersion = versionProps.getProperty(getModId() + ".version");
                 FMLLog.fine("Found version %s for mod %s in version.properties, using", internalVersion, getModId());
             }
-
         }
+
         if (Strings.isNullOrEmpty(internalVersion) && !Strings.isNullOrEmpty(modMetadata.version))
         {
             FMLLog.warning("Mod %s is missing the required element 'version' and a version.properties file could not be found. Falling back to metadata version %s", getModId(), modMetadata.version);
             internalVersion = modMetadata.version;
         }
+
         if (Strings.isNullOrEmpty(internalVersion))
         {
             FMLLog.warning("Mod %s is missing the required element 'version' and no fallback can be found. Substituting '1.0'.", getModId());
@@ -183,6 +175,7 @@ public class FMLModContainer implements ModContainer
         }
 
         String mcVersionString = (String) descriptor.get("acceptedMinecraftVersions");
+
         if (!Strings.isNullOrEmpty(mcVersionString))
         {
             minecraftAccepted = VersionParser.parseRange(mcVersionString);
@@ -199,20 +192,24 @@ public class FMLModContainer implements ModContainer
         {
             FMLLog.fine("Attempting to load the file version.properties from %s to locate a version number for %s", getSource().getName(), getModId());
             Properties version = null;
+
             if (getSource().isFile())
             {
                 ZipFile source = new ZipFile(getSource());
                 ZipEntry versionFile = source.getEntry("version.properties");
-                if (versionFile!=null)
+
+                if (versionFile != null)
                 {
                     version = new Properties();
                     version.load(source.getInputStream(versionFile));
                 }
+
                 source.close();
             }
             else if (getSource().isDirectory())
             {
-                File propsFile = new File(getSource(),"version.properties");
+                File propsFile = new File(getSource(), "version.properties");
+
                 if (propsFile.exists() && propsFile.isFile())
                 {
                     version = new Properties();
@@ -221,6 +218,7 @@ public class FMLModContainer implements ModContainer
                     fis.close();
                 }
             }
+
             return version;
         }
         catch (Exception e)
@@ -290,9 +288,9 @@ public class FMLModContainer implements ModContainer
         }
     }
 
-    private Multimap<Class<? extends Annotation>, Object> gatherAnnotations(Class<?> clazz) throws Exception
+    private Multimap < Class <? extends Annotation > , Object > gatherAnnotations(Class<?> clazz) throws Exception
     {
-        Multimap<Class<? extends Annotation>,Object> anns = ArrayListMultimap.create();
+        Multimap < Class <? extends Annotation > , Object > anns = ArrayListMultimap.create();
 
         for (Method m : clazz.getDeclaredMethods())
         {
@@ -314,13 +312,13 @@ public class FMLModContainer implements ModContainer
                 }
             }
         }
+
         return anns;
     }
 
     private void processFieldAnnotations(ASMDataTable asmDataTable) throws Exception
     {
         SetMultimap<String, ASMData> annotations = asmDataTable.getAnnotationsFor(this);
-
         parseSimpleFieldAnnotation(annotations, Instance.class.getName(), new Function<ModContainer, Object>()
         {
             public Object apply(ModContainer mc)
@@ -335,19 +333,13 @@ public class FMLModContainer implements ModContainer
                 return mc.getMetadata();
             }
         });
-
-//TODO
-//        for (Object o : annotations.get(Block.class))
-//        {
-//            Field f = (Field) o;
-//            f.set(modInstance, GameRegistry.buildBlock(this, f.getType(), f.getAnnotation(Block.class)));
-//        }
     }
 
     private void parseSimpleFieldAnnotation(SetMultimap<String, ASMData> annotations, String annotationClassName, Function<ModContainer, Object> retreiver) throws IllegalAccessException
     {
         String[] annName = annotationClassName.split("\\.");
         String annotationName = annName[annName.length - 1];
+
         for (ASMData targets : annotations.get(annotationClassName))
         {
             String targetMod = (String) targets.getAnnotationInfo().get("value");
@@ -356,6 +348,7 @@ public class FMLModContainer implements ModContainer
             ModContainer mc = this;
             boolean isStatic = false;
             Class<?> clz = modInstance.getClass();
+
             if (!Strings.isNullOrEmpty(targetMod))
             {
                 if (Loader.isModLoaded(targetMod))
@@ -367,6 +360,7 @@ public class FMLModContainer implements ModContainer
                     mc = null;
                 }
             }
+
             if (mc != null)
             {
                 try
@@ -383,18 +377,22 @@ public class FMLModContainer implements ModContainer
                     FMLLog.log(Level.WARNING, e, "Attempting to load @%s in class %s for %s and failing", annotationName, targets.getClassName(), mc.getModId());
                 }
             }
+
             if (f != null)
             {
                 Object target = null;
+
                 if (!isStatic)
                 {
                     target = modInstance;
+
                     if (!modInstance.getClass().equals(clz))
                     {
                         FMLLog.warning("Unable to inject @%s in non-static field %s.%s for %s as it is NOT the primary mod instance", annotationName, targets.getClassName(), targets.getObjectName(), mc.getModId());
                         continue;
                     }
                 }
+
                 f.set(target, injectedMod);
             }
         }
@@ -409,7 +407,6 @@ public class FMLModContainer implements ModContainer
             modClassLoader.addFile(source);
             Class<?> clazz = Class.forName(className, true, modClassLoader);
             ASMDataTable asmHarvestedAnnotations = event.getASMHarvestedData();
-            // TODO
             asmHarvestedAnnotations.getAnnotationsFor(this);
             annotations = gatherAnnotations(clazz);
             isNetworkMod = FMLNetworkHandler.instance().registerNetworkMod(this, clazz, event.getASMHarvestedData());
@@ -427,11 +424,13 @@ public class FMLModContainer implements ModContainer
     @Subscribe
     public void handleModStateEvent(FMLEvent event)
     {
-        Class<? extends Annotation> annotation = modAnnotationTypes.get(event.getClass());
+        Class <? extends Annotation > annotation = modAnnotationTypes.get(event.getClass());
+
         if (annotation == null)
         {
             return;
         }
+
         try
         {
             for (Object o : annotations.get(annotation))
@@ -454,6 +453,7 @@ public class FMLModContainer implements ModContainer
         {
             processedVersion = new DefaultArtifactVersion(getModId(), getVersion());
         }
+
         return processedVersion;
     }
     @Override

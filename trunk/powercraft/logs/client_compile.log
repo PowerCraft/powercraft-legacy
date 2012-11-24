@@ -1,2 +1,24 @@
+src\minecraft\powercraft\core\PC_ClientRenderer.java:19: warning: [deprecation] instance() in RenderingRegistry has been deprecated
+			render3dId = RenderingRegistry.instance().getNextAvailableRenderId();
+			                              ^
+src\minecraft\powercraft\core\PC_ClientRenderer.java:21: warning: [deprecation] instance() in RenderingRegistry has been deprecated
+			render2dId = RenderingRegistry.instance().getNextAvailableRenderId();
+			                              ^
+src\common\powercraft\core\PC_Utils.java:773: warning: [deprecation] getSmeltingResult(int) in FurnaceRecipes has been deprecated
+        if (itemstack == null || FurnaceRecipes.smelting().getSmeltingResult(itemstack.getItem().shiftedIndex) == null)
+                                                          ^
+src\common\powercraft\core\PC_Block.java:84: warning: [deprecation] hasTileEntity() in Block has been deprecated
+        return block.renderAsNormalBlock() && !block.hasTileEntity();
+                                                    ^
+src\common\powercraft\core\PC_FakePlayer.java:98: warning: [deprecation] getCurrentPlayerStrVsBlock(Block) in EntityPlayer has been deprecated
+    public float getCurrentPlayerStrVsBlock(Block block)
+                 ^
+src\common\powercraft\machines\PCma_TileEntityRoaster.java:454: warning: [deprecation] getSmeltingResult(int) in FurnaceRecipes has been deprecated
+        return FurnaceRecipes.smelting().getSmeltingResult(item.getItem().shiftedIndex);
+                                        ^
+src\common\powercraft\machines\PCma_BlockReplacer.java:214: warning: [deprecation] hasTileEntity() in Block has been deprecated
+            if (block.hasTileEntity())
+                     ^
 Note: Some input files use unchecked or unsafe operations.
 Note: Recompile with -Xlint:unchecked for details.
+7 warnings

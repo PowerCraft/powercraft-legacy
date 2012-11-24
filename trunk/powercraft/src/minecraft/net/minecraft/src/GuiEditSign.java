@@ -47,7 +47,13 @@ public class GuiEditSign extends GuiScreen
     public void onGuiClosed()
     {
         Keyboard.enableRepeatEvents(false);
-        this.mc.getSendQueue().addToSendQueue(new Packet130UpdateSign(this.entitySign.xCoord, this.entitySign.yCoord, this.entitySign.zCoord, this.entitySign.signText));
+        NetClientHandler var1 = this.mc.getSendQueue();
+
+        if (var1 != null)
+        {
+            var1.addToSendQueue(new Packet130UpdateSign(this.entitySign.xCoord, this.entitySign.yCoord, this.entitySign.zCoord, this.entitySign.signText));
+        }
+
         this.entitySign.setEditable(true);
     }
 

@@ -18,9 +18,6 @@ public class EntityCow extends EntityAnimal
         this.tasks.addTask(7, new EntityAILookIdle(this));
     }
 
-    /**
-     * Returns true if the newer Entity AI code should be run
-     */
     public boolean isAIEnabled()
     {
         return true;
@@ -31,57 +28,36 @@ public class EntityCow extends EntityAnimal
         return 10;
     }
 
-    /**
-     * Returns the sound this mob makes while it's alive.
-     */
     protected String getLivingSound()
     {
         return "mob.cow.say";
     }
 
-    /**
-     * Returns the sound this mob makes when it is hurt.
-     */
     protected String getHurtSound()
     {
         return "mob.cow.hurt";
     }
 
-    /**
-     * Returns the sound this mob makes on death.
-     */
     protected String getDeathSound()
     {
         return "mob.cow.hurt";
     }
 
-    /**
-     * Plays step sound at given x, y, z for the entity
-     */
     protected void playStepSound(int par1, int par2, int par3, int par4)
     {
-        this.worldObj.playSoundAtEntity(this, "mob.cow.step", 0.15F, 1.0F);
+        this.func_85030_a("mob.cow.step", 0.15F, 1.0F);
     }
 
-    /**
-     * Returns the volume for the sounds this mob makes.
-     */
     protected float getSoundVolume()
     {
         return 0.4F;
     }
 
-    /**
-     * Returns the item ID for the item the mob drops on death.
-     */
     protected int getDropItemId()
     {
         return Item.leather.shiftedIndex;
     }
 
-    /**
-     * Drop 0-2 items of this living's type
-     */
     protected void dropFewItems(boolean par1, int par2)
     {
         int var3 = this.rand.nextInt(3) + this.rand.nextInt(1 + par2);
@@ -107,9 +83,6 @@ public class EntityCow extends EntityAnimal
         }
     }
 
-    /**
-     * Called when a player interacts with a mob. e.g. gets milk from a cow, gets into the saddle on a pig.
-     */
     public boolean interact(EntityPlayer par1EntityPlayer)
     {
         ItemStack var2 = par1EntityPlayer.inventory.getCurrentItem();
@@ -133,11 +106,13 @@ public class EntityCow extends EntityAnimal
         }
     }
 
-    /**
-     * This function is used when two same-species animals in 'love mode' breed to generate the new baby animal.
-     */
-    public EntityAnimal spawnBabyAnimal(EntityAnimal par1EntityAnimal)
+    public EntityCow spawnBabyAnimal(EntityAgeable par1EntityAgeable)
     {
         return new EntityCow(this.worldObj);
+    }
+
+    public EntityAgeable func_90011_a(EntityAgeable par1EntityAgeable)
+    {
+        return this.spawnBabyAnimal(par1EntityAgeable);
     }
 }

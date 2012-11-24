@@ -1,0 +1,25 @@
+package powercraft.light;
+
+import powercraft.core.PC_ITileEntityRenderer;
+import powercraft.core.PC_TileEntity;
+
+public class PCli_TileEntityMirrow extends PC_TileEntity implements PC_ITileEntityRenderer {
+
+	private int mirrorColor = -1;
+
+	public void setMirrorColor(int itemDamage) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public int getMirrorColor() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public void renderTileEntityAt(double x, double y, double z, float rot) {
+		
+	}
+	
+}

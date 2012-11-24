@@ -9,7 +9,7 @@ public class CommandToggleDownfall extends CommandBase
         return "toggledownfall";
     }
 
-    public int func_82362_a()
+    public int getRequiredPermissionLevel()
     {
         return 2;
     }
@@ -20,9 +20,6 @@ public class CommandToggleDownfall extends CommandBase
         notifyAdmins(par1ICommandSender, "commands.downfall.success", new Object[0]);
     }
 
-    /**
-     * Toggle rain and enable thundering.
-     */
     protected void toggleDownfall()
     {
         MinecraftServer.getServer().worldServers[0].toggleRain();

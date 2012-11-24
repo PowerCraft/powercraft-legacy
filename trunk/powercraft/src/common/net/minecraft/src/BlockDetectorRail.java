@@ -11,25 +11,16 @@ public class BlockDetectorRail extends BlockRail
         this.setTickRandomly(true);
     }
 
-    /**
-     * How many world ticks before ticking
-     */
     public int tickRate()
     {
         return 20;
     }
 
-    /**
-     * Can this block provide power. Only wire currently seems to have this change based on its state.
-     */
     public boolean canProvidePower()
     {
         return true;
     }
 
-    /**
-     * Triggered whenever an entity collides with this block (enters into the block). Args: world, x, y, z, entity
-     */
     public void onEntityCollidedWithBlock(World par1World, int par2, int par3, int par4, Entity par5Entity)
     {
         if (!par1World.isRemote)
@@ -43,9 +34,6 @@ public class BlockDetectorRail extends BlockRail
         }
     }
 
-    /**
-     * Ticks the block if it's been scheduled
-     */
     public void updateTick(World par1World, int par2, int par3, int par4, Random par5Random)
     {
         if (!par1World.isRemote)
@@ -59,25 +47,16 @@ public class BlockDetectorRail extends BlockRail
         }
     }
 
-    /**
-     * Is this block powering the block on the specified side
-     */
     public boolean isPoweringTo(IBlockAccess par1IBlockAccess, int par2, int par3, int par4, int par5)
     {
         return (par1IBlockAccess.getBlockMetadata(par2, par3, par4) & 8) != 0;
     }
 
-    /**
-     * Is this block indirectly powering the block on the specified side
-     */
     public boolean isIndirectlyPoweringTo(IBlockAccess par1IBlockAccess, int par2, int par3, int par4, int par5)
     {
         return (par1IBlockAccess.getBlockMetadata(par2, par3, par4) & 8) == 0 ? false : par5 == 1;
     }
 
-    /**
-     * Update the detector rail power state if a minecart enter, stays or leave the block.
-     */
     private void setStateIfMinecartInteractsWithRail(World par1World, int par2, int par3, int par4, int par5)
     {
         boolean var6 = (par5 & 8) != 0;

@@ -8,11 +8,14 @@ import org.lwjgl.opengl.GL12;
 @SideOnly(Side.CLIENT)
 public class TileEntitySkullRenderer extends TileEntitySpecialRenderer
 {
-    public static TileEntitySkullRenderer field_82397_a;
+    public static TileEntitySkullRenderer skullRenderer;
     private ModelSkeletonHead field_82396_c = new ModelSkeletonHead(0, 0, 64, 32);
     private ModelSkeletonHead field_82395_d = new ModelSkeletonHead(0, 0, 64, 64);
 
-    public void func_82394_a(TileEntitySkull par1TileEntitySkull, double par2, double par4, double par6, float par8)
+    /**
+     * Render a skull tile entity.
+     */
+    public void renderTileEntitySkullAt(TileEntitySkull par1TileEntitySkull, double par2, double par4, double par6, float par8)
     {
         this.func_82393_a((float)par2, (float)par4, (float)par6, par1TileEntitySkull.getBlockMetadata() & 7, (float)(par1TileEntitySkull.func_82119_b() * 360) / 16.0F, par1TileEntitySkull.func_82117_a(), par1TileEntitySkull.func_82120_c());
     }
@@ -23,7 +26,7 @@ public class TileEntitySkullRenderer extends TileEntitySpecialRenderer
     public void setTileEntityRenderer(TileEntityRenderer par1TileEntityRenderer)
     {
         super.setTileEntityRenderer(par1TileEntityRenderer);
-        field_82397_a = this;
+        skullRenderer = this;
     }
 
     public void func_82393_a(float par1, float par2, float par3, int par4, float par5, int par6, String par7Str)
@@ -48,9 +51,9 @@ public class TileEntitySkullRenderer extends TileEntitySpecialRenderer
                 {
                     String var9 = "http://skins.minecraft.net/MinecraftSkins/" + StringUtils.stripControlCodes(par7Str) + ".png";
 
-                    if (!field_82397_a.tileEntityRenderer.renderEngine.func_82773_c(var9))
+                    if (!skullRenderer.tileEntityRenderer.renderEngine.func_82773_c(var9))
                     {
-                        field_82397_a.tileEntityRenderer.renderEngine.obtainImageData(var9, new ImageBufferDownload());
+                        skullRenderer.tileEntityRenderer.renderEngine.obtainImageData(var9, new ImageBufferDownload());
                     }
 
                     this.func_82392_a(var9, "/mob/char.png");
@@ -104,6 +107,6 @@ public class TileEntitySkullRenderer extends TileEntitySpecialRenderer
 
     public void renderTileEntityAt(TileEntity par1TileEntity, double par2, double par4, double par6, float par8)
     {
-        this.func_82394_a((TileEntitySkull)par1TileEntity, par2, par4, par6, par8);
+        this.renderTileEntitySkullAt((TileEntitySkull)par1TileEntity, par2, par4, par6, par8);
     }
 }

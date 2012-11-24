@@ -32,12 +32,12 @@ public class PanelCrashReport extends Panel
         {
             var5 = var5 + "Generated " + (new SimpleDateFormat()).format(new Date()) + "\n";
             var5 = var5 + "\n";
-            var5 = var5 + par1CrashReport.getSections();
+            var5 = var5 + par1CrashReport.func_90021_c();
             var4 = GL11.glGetString(GL11.GL_VENDOR);
         }
-        catch (Throwable var8)
+        catch (Throwable var9)
         {
-            var5 = var5 + "[failed to get system properties (" + var8 + ")]\n";
+            var5 = var5 + "[failed to get system properties (" + var9 + ")]\n";
         }
 
         var5 = var5 + "\n\n";
@@ -72,7 +72,7 @@ public class PanelCrashReport extends Panel
             var6 = var6 + "      Minecraft has crashed!      \n";
             var6 = var6 + "      ----------------------      \n";
             var6 = var6 + "\n";
-            var6 = var6 + "Minecraft has stopped running because it encountered a problem; " + par1CrashReport.getDescription() + "\n";
+            var6 = var6 + "Minecraft has stopped running because it encountered a problem; " + par1CrashReport.getDescription() + "\n\n";
             File var7 = par1CrashReport.getFile();
 
             if (var7 == null)
@@ -83,7 +83,9 @@ public class PanelCrashReport extends Panel
 
             if (var7 != null)
             {
-                var6 = var6 + "This error has been saved to " + var7.getAbsolutePath() + " for your convenience. Please include a copy of this file if you report this crash to anyone.";
+                String var8 = var7.getAbsolutePath();
+                var6 = var6 + "A full error report has been saved to " + var8 + " - Please include a copy of that file (Not this screen!) if you report this crash to anyone; without it, they will not be able to help fix the crash :(";
+                var5 = "Full report at:\n" + var8 + "\nPlease show that file to Mojang, NOT just this screen!\n\n" + var5;
             }
             else
             {
@@ -101,12 +103,12 @@ public class PanelCrashReport extends Panel
         var6 = var6 + "--- END ERROR REPORT " + Integer.toHexString(var6.hashCode()) + " ----------\n";
         var6 = var6 + "\n";
         var6 = var6 + "\n";
-        TextArea var9 = new TextArea(var6, 0, 0, 1);
-        var9.setFont(new Font("Monospaced", 0, 12));
+        TextArea var10 = new TextArea(var6, 0, 0, 1);
+        var10.setFont(new Font("Monospaced", 0, 12));
         this.add(new CanvasMojangLogo(), "North");
         this.add(new CanvasCrashReport(80), "East");
         this.add(new CanvasCrashReport(80), "West");
         this.add(new CanvasCrashReport(100), "South");
-        this.add(var9, "Center");
+        this.add(var10, "Center");
     }
 }

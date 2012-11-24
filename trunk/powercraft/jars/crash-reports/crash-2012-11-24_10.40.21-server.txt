@@ -1,0 +1,52 @@
+---- Minecraft Crash Report ----
+// I blame Dinnerbone.
+
+Time: 24.11.12 10:40
+Description: Ticking memory connection
+
+java.lang.ArrayIndexOutOfBoundsException: -1
+	at java.util.ArrayList.fastRemove(Unknown Source)
+	at java.util.ArrayList.remove(Unknown Source)
+	at net.minecraft.src.PlayerInstance.sendThisChunkToPlayer(PlayerInstance.java:45)
+	at net.minecraft.src.PlayerManager.removePlayer(PlayerManager.java:174)
+	at net.minecraft.src.ServerConfigurationManager.playerLoggedOut(ServerConfigurationManager.java:170)
+	at net.minecraft.src.NetServerHandler.handleErrorMessage(NetServerHandler.java:577)
+	at net.minecraft.src.MemoryConnection.processReadPackets(MemoryConnection.java:76)
+	at net.minecraft.src.NetServerHandler.networkTick(NetServerHandler.java:66)
+	at net.minecraft.src.NetworkListenThread.networkTick(NetworkListenThread.java:46)
+	at net.minecraft.src.IntegratedServerListenThread.networkTick(IntegratedServerListenThread.java:111)
+	at net.minecraft.server.MinecraftServer.updateTimeLightAndEntities(MinecraftServer.java:615)
+	at net.minecraft.server.MinecraftServer.tick(MinecraftServer.java:511)
+	at net.minecraft.src.IntegratedServer.tick(IntegratedServer.java:110)
+	at net.minecraft.server.MinecraftServer.run(MinecraftServer.java:426)
+	at net.minecraft.src.ThreadMinecraftServer.run(ThreadMinecraftServer.java:17)
+
+
+A detailed walkthrough of the error, its code path and all known details is as follows:
+---------------------------------------------------------------------------------------
+
+-- System Details --
+Details:
+	Minecraft Version: 1.4.4
+	Operating System: Windows 7 (amd64) version 6.1
+	Java Version: 1.7.0_09, Oracle Corporation
+	Java VM Version: Java HotSpot(TM) 64-Bit Server VM (mixed mode), Oracle Corporation
+	Memory: 873404024 bytes (832 MB) / 1038876672 bytes (990 MB) up to 1038876672 bytes (990 MB)
+	JVM Flags: 3 total; -Xincgc -Xmx1024M -Xms1024M
+	AABB Pool Size: 5906 (330736 bytes; 0 MB) allocated, 5413 (303128 bytes; 0 MB) used
+	Suspicious classes: $Proxy3, $Proxy4, $Proxy5, ...[com.google.common.base.Preconditions, Charsets, Splitter, ...], [com.google.common.cache.CacheLoader, CacheBuilder, Cache, ...], [com.google.common.collect.Multimap, ListMultimap, AbstractMultimap, ...], [com.google.common.eventbus.EventBus, HandlerFindingStrategy, AnnotatedHandlerFinder, ...], [com.google.common.hash.Hashing, HashFunction, AbstractStreamingHashFunction, ...], [com.google.common.io.LineProcessor, Resources, InputSupplier, ...], [com.google.common.primitives.Ints, UnsignedBytes, Bytes], [com.google.common.reflect.TypeCapture, TypeToken, SimpleTypeToken, ...], [com.google.common.util.concurrent.UncheckedExecutionException, ExecutionError, MoreExecutors, ...], [cpw.mods.fml.client.ITextureFX, FMLTextureFX, TextureFXManager, ...], [cpw.mods.fml.client.modloader.ModLoaderClientHelper, ModLoaderKeyBindingHandler], [cpw.mods.fml.client.registry.ISimpleBlockRenderingHandler, KeyHandler, KeyBindingRegistry, ...], [cpw.mods.fml.common.Loader, LoaderException, DuplicateModsFoundException, ...], [cpw.mods.fml.common.asm.FMLSanityChecker, MLDetectorClassVisitor, SideOnly], [cpw.mods.fml.common.asm.transformers.AccessTransformer, Modifier, MarkerTransformer, ...], [cpw.mods.fml.common.discovery.ModDiscoverer, ASMDataTable, ModCandidate, ...], [cpw.mods.fml.common.discovery.asm.ASMModParser, ModClassVisitor, ModAnnotationVisitor, ...], [cpw.mods.fml.common.event.FMLLoadEvent, FMLEvent, FMLStateEvent, ...], [cpw.mods.fml.common.functions.ModIdFunction], [cpw.mods.fml.common.modloader.IModLoaderSidedHelper, ModLoaderHelper, ModLoaderVillageTradeHandler, ...], [cpw.mods.fml.common.network.Player, IPacketHandler, IConnectionHandler, ...], [cpw.mods.fml.common.registry.BlockProxy, ItemProxy, LanguageRegistry, ...], [cpw.mods.fml.common.toposort.ModSortingException, ModSorter, DirectedGraph, ...], [cpw.mods.fml.common.versioning.ArtifactVersion, VersionParser, InvalidVersionSpecificationException, ...], [net.minecraft.src.CallableMinecraftVersion, IPlayerUsage, MinecraftError, ...], [net.minecraftforge.client.ForgeHooksClient, MinecraftForgeClient, IItemRenderer, ...], [net.minecraftforge.client.event.TextureLoadEvent, DrawBlockHighlightEvent, RenderWorldLastEvent, ...], [net.minecraftforge.client.event.sound.SoundEvent, SoundLoadEvent, SoundResultEvent, ...], [net.minecraftforge.common.IPlantable, IShearable, ISidedInventory, ...], [net.minecraftforge.event.Event, ListenerList, EventBus, ...], [net.minecraftforge.event.entity.EntityEvent, EntityJoinWorldEvent, PlaySoundAtEntityEvent, ...], [net.minecraftforge.event.entity.item.ItemEvent, ItemExpireEvent, ItemTossEvent], [net.minecraftforge.event.entity.living.LivingEvent, LivingSpecialSpawnEvent, LivingUpdateEvent, ...], [net.minecraftforge.event.entity.player.PlayerEvent, ArrowLooseEvent, ArrowNockEvent, ...], [net.minecraftforge.event.world.WorldEvent, Load, Save, ...], [net.minecraftforge.oredict.OreDictionary, OreRegisterEvent, ShapedOreRecipe, ...], [net.minecraftforge.transformers.ForgeAccessTransformer, EventTransformer], [org.objectweb.asm.ClassVisitor, ClassWriter, MethodVisitor, ...], [org.objectweb.asm.tree.ClassNode, MethodNode, FieldNode, ...], [powercraft.core.PC_Module, mod_PowerCraftCore, PC_Proxy, ...], [powercraft.light.mod_PowerCraftLight, PCli_CommonProxy, PCli_ClientProxy, ...], [powercraft.logic.mod_PowerCraftLogic, PClo_CommonProxy, PClo_ClientProxy, ...], [powercraft.machines.mod_PowerCraftMachines, PCma_CommonProxy, PCma_ClientProxy, ...], [powercraft.transport.mod_PowerCraftTransport, PCtr_CommonProxy, PCtr_ClientProxy, ...]
+	IntCache: cache: 0, tcache: 0, allocated: 3, tallocated: 63
+	FML: MCP v7.21 FML v4.4.4.442 Minecraft Forge 6.3.0.372 8 mods loaded, 8 mods active
+	mcp [Minecraft Coder Pack] (minecraft.jar) Unloaded->Constructed->Pre-initialized->Initialized->Post-initialized->Available->Available->Available
+	FML [Forge Mod Loader] (coremods) Unloaded->Constructed->Pre-initialized->Initialized->Post-initialized->Available->Available->Available
+	Forge [Minecraft Forge] (coremods) Unloaded->Constructed->Pre-initialized->Initialized->Post-initialized->Available->Available->Available
+	PowerCraft-Core [PowerCraft-Core] (bin) Unloaded->Constructed->Pre-initialized->Initialized->Post-initialized->Available->Available->Available
+	PowerCraft-Light [PowerCraft-Light] (bin) Unloaded->Constructed->Pre-initialized->Initialized->Post-initialized->Available->Available->Available
+	PowerCraft-Logic [PowerCraft-Logic] (bin) Unloaded->Constructed->Pre-initialized->Initialized->Post-initialized->Available->Available->Available
+	PowerCraft-Machines [PowerCraft-Machines] (bin) Unloaded->Constructed->Pre-initialized->Initialized->Post-initialized->Available->Available->Available
+	PowerCraft-Transport [PowerCraft-Transport] (bin) Unloaded->Constructed->Pre-initialized->Initialized->Post-initialized->Available->Available->Available
+	Profiler Position: N/A (disabled)
+	Vec3 Pool Size: 1270 (71120 bytes; 0 MB) allocated, 1034 (57904 bytes; 0 MB) used
+	Player Count: 0 / 8; []
+	Type: Integrated Server (map_client.txt)
+	Is Modded: Definitely; Client brand changed to 'forge,fml'

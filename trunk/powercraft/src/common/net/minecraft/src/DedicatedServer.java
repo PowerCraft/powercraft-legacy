@@ -30,16 +30,13 @@ public class DedicatedServer extends MinecraftServer implements IServer
         new DedicatedServerSleepThread(this);
     }
 
-    /**
-     * Initialises the server and starts it.
-     */
     protected boolean startServer() throws IOException
     {
         DedicatedServerCommandThread var1 = new DedicatedServerCommandThread(this);
         var1.setDaemon(true);
         var1.start();
         ConsoleLogManager.init();
-        logger.info("Starting minecraft server version 1.4.2");
+        logger.info("Starting minecraft server version 1.4.4");
 
         if (Runtime.getRuntime().maxMemory() / 1024L / 1024L < 512L)
         {
@@ -47,7 +44,6 @@ public class DedicatedServer extends MinecraftServer implements IServer
         }
 
         FMLCommonHandler.instance().onServerStart(this);
-
         logger.info("Loading properties");
         this.settings = new PropertyManager(new File("server.properties"));
 
@@ -67,6 +63,16 @@ public class DedicatedServer extends MinecraftServer implements IServer
         this.setAllowFlight(this.settings.getBooleanProperty("allow-flight", false));
         this.setTexturePack(this.settings.getProperty("texture-pack", ""));
         this.setMOTD(this.settings.getProperty("motd", "A Minecraft Server"));
+
+        if (this.settings.getIntProperty("difficulty", 1) < 0)
+        {
+            this.settings.setProperty("difficulty", Integer.valueOf(0));
+        }
+        else if (this.settings.getIntProperty("difficulty", 1) > 3)
+        {
+            this.settings.setProperty("difficulty", Integer.valueOf(3));
+        }
+
         this.canSpawnStructures = this.settings.getBooleanProperty("generate-structures", true);
         int var2 = this.settings.getIntProperty("gamemode", EnumGameType.SURVIVAL.getID());
         this.gameType = WorldSettings.getGameTypeById(var2);
@@ -168,6 +174,7 @@ public class DedicatedServer extends MinecraftServer implements IServer
             this.theRConThreadMain = new RConThreadMain(this);
             this.theRConThreadMain.startThread();
         }
+
         FMLCommonHandler.instance().handleServerStarting(this);
         return true;
     }
@@ -182,25 +189,16 @@ public class DedicatedServer extends MinecraftServer implements IServer
         return this.gameType;
     }
 
-    /**
-     * Defaults to "1" (Easy) for the dedicated server, defaults to "2" (Normal) on the client.
-     */
     public int getDifficulty()
     {
         return this.settings.getIntProperty("difficulty", 1);
     }
 
-    /**
-     * Defaults to false.
-     */
     public boolean isHardcore()
     {
         return this.settings.getBooleanProperty("hardcore", false);
     }
 
-    /**
-     * Called on exit from the main run() loop.
-     */
     protected void finalTick(CrashReport par1CrashReport)
     {
         while (this.isServerRunning())
@@ -218,19 +216,14 @@ public class DedicatedServer extends MinecraftServer implements IServer
         }
     }
 
-    /**
-     * Adds the server info, including from theWorldServer, to the crash report.
-     */
     public CrashReport addServerInfoToCrashReport(CrashReport par1CrashReport)
     {
         par1CrashReport = super.addServerInfoToCrashReport(par1CrashReport);
-        par1CrashReport.addCrashSectionCallable("Type", new CallableType(this));
+        par1CrashReport.func_85056_g().addCrashSectionCallable("Is Modded", new CallableType(this));
+        par1CrashReport.func_85056_g().addCrashSectionCallable("Type", new CallableServerType(this));
         return par1CrashReport;
     }
 
-    /**
-     * Directly calls System.exit(0), instantly killing the program.
-     */
     protected void systemExitNow()
     {
         System.exit(0);
@@ -259,9 +252,6 @@ public class DedicatedServer extends MinecraftServer implements IServer
         super.addServerStatsToSnooper(par1PlayerUsageSnooper);
     }
 
-    /**
-     * Returns whether snooping is enabled or not.
-     */
     public boolean isSnooperEnabled()
     {
         return this.settings.getBooleanProperty("snooper-enabled", true);
@@ -296,41 +286,26 @@ public class DedicatedServer extends MinecraftServer implements IServer
         return this.networkThread;
     }
 
-    /**
-     * Gets an integer property. If it does not exist, set it to the specified value.
-     */
     public int getIntProperty(String par1Str, int par2)
     {
         return this.settings.getIntProperty(par1Str, par2);
     }
 
-    /**
-     * Gets a string property. If it does not exist, set it to the specified value.
-     */
     public String getStringProperty(String par1Str, String par2Str)
     {
         return this.settings.getProperty(par1Str, par2Str);
     }
 
-    /**
-     * Gets a boolean property. If it does not exist, set it to the specified value.
-     */
     public boolean getBooleanProperty(String par1Str, boolean par2)
     {
         return this.settings.getBooleanProperty(par1Str, par2);
     }
 
-    /**
-     * Saves an Object with the given property name.
-     */
     public void setProperty(String par1Str, Object par2Obj)
     {
         this.settings.setProperty(par1Str, par2Obj);
     }
 
-    /**
-     * Saves all of the server properties to the properties file.
-     */
     public void saveProperties()
     {
         this.settings.saveProperties();
@@ -347,22 +322,19 @@ public class DedicatedServer extends MinecraftServer implements IServer
         return this.guiIsEnabled;
     }
 
-    /**
-     * On dedicated does nothing. On integrated, sets commandsAllowedForAll, gameType and allows external connections.
-     */
     public String shareToLAN(EnumGameType par1EnumGameType, boolean par2)
     {
         return "";
     }
 
-    public boolean func_82356_Z()
+    public boolean isCommandBlockEnabled()
     {
         return this.settings.getBooleanProperty("enable-command-block", false);
     }
 
-    public int func_82357_ak()
+    public int getSpawnProtectionSize()
     {
-        return this.settings.getIntProperty("spawn-protection", super.func_82357_ak());
+        return this.settings.getIntProperty("spawn-protection", super.getSpawnProtectionSize());
     }
 
     public ServerConfigurationManager getConfigurationManager()

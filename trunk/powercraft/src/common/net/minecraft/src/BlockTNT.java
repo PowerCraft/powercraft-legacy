@@ -10,17 +10,11 @@ public class BlockTNT extends Block
         this.setCreativeTab(CreativeTabs.tabRedstone);
     }
 
-    /**
-     * Returns the block texture based on the side being looked at.  Args: side
-     */
     public int getBlockTextureFromSide(int par1)
     {
         return par1 == 0 ? this.blockIndexInTexture + 2 : (par1 == 1 ? this.blockIndexInTexture + 1 : this.blockIndexInTexture);
     }
 
-    /**
-     * Called whenever the block is added into the world. Args: world, x, y, z
-     */
     public void onBlockAdded(World par1World, int par2, int par3, int par4)
     {
         super.onBlockAdded(par1World, par2, par3, par4);
@@ -32,10 +26,6 @@ public class BlockTNT extends Block
         }
     }
 
-    /**
-     * Lets the block know when one of its neighbor changes. Doesn't know which neighbor changed (coordinates passed are
-     * their own) Args: x, y, z, neighbor blockID
-     */
     public void onNeighborBlockChange(World par1World, int par2, int par3, int par4, int par5)
     {
         if (par5 > 0 && Block.blocksList[par5].canProvidePower() && par1World.isBlockIndirectlyGettingPowered(par2, par3, par4))
@@ -45,17 +35,11 @@ public class BlockTNT extends Block
         }
     }
 
-    /**
-     * Returns the quantity of items to drop on block destruction.
-     */
     public int quantityDropped(Random par1Random)
     {
         return 1;
     }
 
-    /**
-     * Called upon the block being destroyed by an explosion
-     */
     public void onBlockDestroyedByExplosion(World par1World, int par2, int par3, int par4)
     {
         if (!par1World.isRemote)
@@ -66,9 +50,6 @@ public class BlockTNT extends Block
         }
     }
 
-    /**
-     * Called right before the block is destroyed by a player.  Args: world, x, y, z, metaData
-     */
     public void onBlockDestroyedByPlayer(World par1World, int par2, int par3, int par4, int par5)
     {
         if (!par1World.isRemote)
@@ -82,9 +63,6 @@ public class BlockTNT extends Block
         }
     }
 
-    /**
-     * Called upon block activation (right click on the block.)
-     */
     public boolean onBlockActivated(World par1World, int par2, int par3, int par4, EntityPlayer par5EntityPlayer, int par6, float par7, float par8, float par9)
     {
         if (par5EntityPlayer.getCurrentEquippedItem() != null && par5EntityPlayer.getCurrentEquippedItem().itemID == Item.flintAndSteel.shiftedIndex)
@@ -99,9 +77,6 @@ public class BlockTNT extends Block
         }
     }
 
-    /**
-     * Triggered whenever an entity collides with this block (enters into the block). Args: world, x, y, z, entity
-     */
     public void onEntityCollidedWithBlock(World par1World, int par2, int par3, int par4, Entity par5Entity)
     {
         if (par5Entity instanceof EntityArrow && !par1World.isRemote)
@@ -114,5 +89,10 @@ public class BlockTNT extends Block
                 par1World.setBlockWithNotify(par2, par3, par4, 0);
             }
         }
+    }
+
+    public boolean func_85103_a(Explosion par1Explosion)
+    {
+        return false;
     }
 }

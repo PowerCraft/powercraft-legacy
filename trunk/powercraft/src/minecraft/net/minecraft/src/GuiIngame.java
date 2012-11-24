@@ -184,7 +184,7 @@ public class GuiIngame extends Gui
                     {
                         var26 += 36;
                     }
-                    else if (this.mc.thePlayer.isPotionActive(Potion.field_82731_v))
+                    else if (this.mc.thePlayer.isPotionActive(Potion.wither))
                     {
                         var26 += 72;
                     }
@@ -381,13 +381,13 @@ public class GuiIngame extends Gui
             this.mc.mcProfiler.startSection("demo");
             String var36 = "";
 
-            if (this.mc.theWorld.func_82737_E() >= 120500L)
+            if (this.mc.theWorld.getTotalWorldTime() >= 120500L)
             {
                 var36 = StatCollector.translateToLocal("demo.demoExpired");
             }
             else
             {
-                var36 = String.format(StatCollector.translateToLocal("demo.remainingTime"), new Object[] {StringUtils.ticksToElapsedTime((int)(120500L - this.mc.theWorld.func_82737_E()))});
+                var36 = String.format(StatCollector.translateToLocal("demo.remainingTime"), new Object[] {StringUtils.ticksToElapsedTime((int)(120500L - this.mc.theWorld.getTotalWorldTime()))});
             }
 
             var12 = var8.getStringWidth(var36);
@@ -399,7 +399,7 @@ public class GuiIngame extends Gui
         {
             this.mc.mcProfiler.startSection("debug");
             GL11.glPushMatrix();
-            var8.drawStringWithShadow("Minecraft 1.4.2 (" + this.mc.debug + ")", 2, 2, 16777215);
+            var8.drawStringWithShadow("Minecraft 1.4.4 (" + this.mc.debug + ")", 2, 2, 16777215);
             var8.drawStringWithShadow(this.mc.debugInfoRenders(), 2, 12, 16777215);
             var8.drawStringWithShadow(this.mc.getEntityDebug(), 2, 22, 16777215);
             var8.drawStringWithShadow(this.mc.debugInfoEntities(), 2, 32, 16777215);
@@ -419,7 +419,7 @@ public class GuiIngame extends Gui
             this.drawString(var8, String.format("y: %.3f (feet pos, %.3f eyes pos)", new Object[] {Double.valueOf(this.mc.thePlayer.boundingBox.minY), Double.valueOf(this.mc.thePlayer.posY)}), 2, 72, 14737632);
             this.drawString(var8, String.format("z: %.5f (%d) // c: %d (%d)", new Object[] {Double.valueOf(this.mc.thePlayer.posZ), Integer.valueOf(var23), Integer.valueOf(var23 >> 4), Integer.valueOf(var23 & 15)}), 2, 80, 14737632);
             var24 = MathHelper.floor_double((double)(this.mc.thePlayer.rotationYaw * 4.0F / 360.0F) + 0.5D) & 3;
-            this.drawString(var8, "f: " + var24 + " (" + Direction.field_82373_c[var24] + ") / " + MathHelper.wrapAngleTo180_float(this.mc.thePlayer.rotationYaw), 2, 88, 14737632);
+            this.drawString(var8, "f: " + var24 + " (" + Direction.directions[var24] + ") / " + MathHelper.wrapAngleTo180_float(this.mc.thePlayer.rotationYaw), 2, 88, 14737632);
 
             if (this.mc.theWorld != null && this.mc.theWorld.blockExists(var47, var22, var23))
             {
@@ -557,7 +557,7 @@ public class GuiIngame extends Gui
      */
     private void renderBossHealth()
     {
-        if (BossStatus.field_82827_c != null && BossStatus.field_82826_b > 0)
+        if (BossStatus.bossName != null && BossStatus.field_82826_b > 0)
         {
             --BossStatus.field_82826_b;
             FontRenderer var1 = this.mc.fontRenderer;
@@ -565,7 +565,7 @@ public class GuiIngame extends Gui
             int var3 = var2.getScaledWidth();
             short var4 = 182;
             int var5 = var3 / 2 - var4 / 2;
-            int var6 = (int)(BossStatus.field_82828_a * (float)(var4 + 1));
+            int var6 = (int)(BossStatus.healthScale * (float)(var4 + 1));
             byte var7 = 12;
             this.drawTexturedModalRect(var5, var7, 0, 74, var4, 5);
             this.drawTexturedModalRect(var5, var7, 0, 74, var4, 5);
@@ -575,7 +575,7 @@ public class GuiIngame extends Gui
                 this.drawTexturedModalRect(var5, var7, 0, 79, var6, 5);
             }
 
-            String var8 = BossStatus.field_82827_c;
+            String var8 = BossStatus.bossName;
             var1.drawStringWithShadow(var8, var3 / 2 - var1.getStringWidth(var8) / 2, var7 - 10, 16777215);
             GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
             GL11.glBindTexture(GL11.GL_TEXTURE_2D, this.mc.renderEngine.getTexture("/gui/icons.png"));
@@ -694,7 +694,7 @@ public class GuiIngame extends Gui
                 GL11.glTranslatef((float)(-(par2 + 8)), (float)(-(par3 + 12)), 0.0F);
             }
 
-            itemRenderer.func_82406_b(this.mc.fontRenderer, this.mc.renderEngine, var5, par2, par3);
+            itemRenderer.renderItemAndEffectIntoGUI(this.mc.fontRenderer, this.mc.renderEngine, var5, par2, par3);
 
             if (var6 > 0.0F)
             {

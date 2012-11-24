@@ -27,8 +27,11 @@ public class PC_ClientRenderer extends PC_Renderer implements ISimpleBlockRender
 			((PC_IBlockRenderer) block).renderInventoryBlock(block, metadata, modelID, renderer);
 		}else if(block instanceof PC_IRotatedBox){
 			iRenderInvBlockRotatedBox(block, metadata, modelID, renderer);
-		}else
-			iRenderInvBlock(block, metadata, modelID, renderer);
+		}else{
+			boolean swapped = swapTerrain(block);
+			iRenderInvBox(renderer, block, metadata);
+			resetTerrain(swapped);
+		}
 	}
 
 	@Override
@@ -81,6 +84,7 @@ public class PC_ClientRenderer extends PC_Renderer implements ISimpleBlockRender
 		((RenderBlocks)renderer).func_83017_b();
 	};
 
+	@Override
 	protected void iRenderInvBox(Object renderer, Block block, int metadata){
 		Tessellator tessellator = Tessellator.instance;
 		RenderBlocks renderblocks = (RenderBlocks)renderer;
@@ -154,31 +158,31 @@ public class PC_ClientRenderer extends PC_Renderer implements ISimpleBlockRender
 			double d6 = (l1 + 15.99F) / 256F;
 			double d7 = i2 / 256F;
 			double d8 = (i2 + 15.99F) / 256F;
-			double d9 = (block.func_83010_y());
-			double d10 = x + block.func_83007_w();
-			double d11 = x + block.func_83007_w();
-			double d12 = x + block.func_83009_v();
-			double d13 = x + block.func_83009_v();
-			double d14 = z + block.func_83005_z();
-			double d15 = z + block.func_83006_A();
-			double d16 = z + block.func_83006_A();
-			double d17 = z + block.func_83005_z();
+			double d9 = (block.getBlockBoundsMaxY());
+			double d10 = x + block.getBlockBoundsMaxX();
+			double d11 = x + block.getBlockBoundsMaxX();
+			double d12 = x + block.getBlockBoundsMinY();
+			double d13 = x + block.getBlockBoundsMinY();
+			double d14 = z + block.getBlockBoundsMinZ();
+			double d15 = z + block.getBlockBoundsMaxZ();
+			double d16 = z + block.getBlockBoundsMaxZ();
+			double d17 = z + block.getBlockBoundsMinZ();
 			double d18 = y + d9;
 			if (l == 2) {
-				d10 = d11 = x + block.func_83009_v();
-				d12 = d13 = x + block.func_83007_w();
-				d14 = d17 = z + block.func_83006_A();
-				d15 = d16 = z + block.func_83005_z();
+				d10 = d11 = x + block.getBlockBoundsMinY();
+				d12 = d13 = x + block.getBlockBoundsMaxX();
+				d14 = d17 = z + block.getBlockBoundsMaxZ();
+				d15 = d16 = z + block.getBlockBoundsMinZ();
 			} else if (l == 3) {
-				d10 = d13 = x + block.func_83009_v();
-				d11 = d12 = x + block.func_83007_w();
-				d14 = d15 = z + block.func_83005_z();
-				d16 = d17 = z + block.func_83006_A();
+				d10 = d13 = x + block.getBlockBoundsMinY();
+				d11 = d12 = x + block.getBlockBoundsMaxX();
+				d14 = d15 = z + block.getBlockBoundsMinZ();
+				d16 = d17 = z + block.getBlockBoundsMaxZ();
 			} else if (l == 1) {
-				d10 = d13 = x + block.func_83007_w();
-				d11 = d12 = x + block.func_83009_v();
-				d14 = d15 = z + block.func_83006_A();
-				d16 = d17 = z + block.func_83005_z();
+				d10 = d13 = x + block.getBlockBoundsMaxX();
+				d11 = d12 = x + block.getBlockBoundsMinY();
+				d14 = d15 = z + block.getBlockBoundsMaxZ();
+				d16 = d17 = z + block.getBlockBoundsMinZ();
 			}
 
 			tessellator.addVertexWithUV(d13, d18, d17, d5, d7);
@@ -297,6 +301,7 @@ public class PC_ClientRenderer extends PC_Renderer implements ISimpleBlockRender
 
 	}
 	
+	@Override
 	protected void iRenderInvBoxWithTexture(Object renderer, Block block, int tectureID){
 		RenderBlocks renderblocks = (RenderBlocks)renderer;
 		Tessellator tessellator = Tessellator.instance;
@@ -335,6 +340,7 @@ public class PC_ClientRenderer extends PC_Renderer implements ISimpleBlockRender
 	 * 
 	 * @param filename name of the used texture file (png)
 	 */
+	@Override
 	protected void iSwapTerrain(String filename) {
 		RenderEngine renderengine = PC_ClientUtils.mc().renderEngine;
 		renderengine.bindTexture(renderengine.getTexture(filename));
@@ -348,6 +354,7 @@ public class PC_ClientRenderer extends PC_Renderer implements ISimpleBlockRender
 	 * @return true if terrain was swapped -> call resetTerrain() to re-enable
 	 *         original terrain.png
 	 */
+	@Override
 	protected boolean iSwapTerrain(Block block) {
 		if (block instanceof PC_Block && !block.getTextureFile().equalsIgnoreCase("/terrain.png")) {
 			swapTerrain(block.getTextureFile());
@@ -361,6 +368,7 @@ public class PC_ClientRenderer extends PC_Renderer implements ISimpleBlockRender
 	 * 
 	 * @param do_it false = do nothing
 	 */
+	@Override
 	protected void iResetTerrain(boolean do_it) {
 		if(do_it){
 			RenderEngine renderengine = PC_ClientUtils.mc().renderEngine;
@@ -368,8 +376,49 @@ public class PC_ClientRenderer extends PC_Renderer implements ISimpleBlockRender
 		}
 	}
 	
-	protected void iglColor3f(float r, float g, float b) {
-		GL11.glColor3f(r, g, b);
+	@Override
+	protected void iglColor4f(float r, float g, float b, float a) {
+		GL11.glColor4f(r, g, b, a);
+	}
+	
+	@Override
+	protected void iglPushMatrix() {
+		GL11.glPushMatrix();
+	}
+
+	@Override
+	protected void iglPopMatrix() {
+		GL11.glPopMatrix();
+	}
+
+	@Override
+	protected void iglTranslatef(float x, float y, float z) {
+		GL11.glTranslatef(x, y, z);
+	}
+	
+	@Override
+	protected void iglRotatef(float angel, float x, float y, float z) {
+		GL11.glRotatef(angel, x, y, z);
+	}
+
+	@Override
+	protected void iglScalef(float x, float y, float z) {
+		GL11.glScalef(x, y, z);
+	}
+
+	@Override
+	protected void iglEnable(int i) {
+		GL11.glEnable(i);
+	}
+
+	@Override
+	protected void iglDisable(int i) {
+		GL11.glDisable(i);
+	}
+		
+	@Override
+	protected void iglBlendFunc(int i, int j) {
+		GL11.glBlendFunc(i, j);
 	}
 	
 }

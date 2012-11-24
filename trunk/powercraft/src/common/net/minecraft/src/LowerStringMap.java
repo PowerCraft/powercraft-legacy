@@ -36,9 +36,6 @@ public class LowerStringMap implements Map
         return this.internalMap.get(par1Obj.toString().toLowerCase());
     }
 
-    /**
-     * a map already defines a general put
-     */
     public Object putLower(String par1Str, Object par2Obj)
     {
         return this.internalMap.put(par1Str.toLowerCase(), par2Obj);

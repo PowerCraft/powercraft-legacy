@@ -10,9 +10,6 @@ public class BiomeEndDecorator extends BiomeDecorator
         this.spikeGen = new WorldGenSpikes(Block.whiteStone.blockID);
     }
 
-    /**
-     * The method that does the work of actually decorating chunks
-     */
     protected void decorate()
     {
         this.generateOres();

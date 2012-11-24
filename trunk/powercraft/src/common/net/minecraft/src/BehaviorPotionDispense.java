@@ -4,19 +4,18 @@ import net.minecraft.server.MinecraftServer;
 
 public class BehaviorPotionDispense implements IBehaviorDispenseItem
 {
-    private final BehaviorDefaultDispenseItem field_82484_c;
+    private final BehaviorDefaultDispenseItem defaultItemDispenseBehavior;
 
-    /** Gets Minecraft Server profile. */
-    final MinecraftServer minecraftServerProfiler;
+    final MinecraftServer mcServer;
 
     public BehaviorPotionDispense(MinecraftServer par1)
     {
-        this.minecraftServerProfiler = par1;
-        this.field_82484_c = new BehaviorDefaultDispenseItem();
+        this.mcServer = par1;
+        this.defaultItemDispenseBehavior = new BehaviorDefaultDispenseItem();
     }
 
-    public ItemStack func_82482_a(IBlockSource par1IBlockSource, ItemStack par2ItemStack)
+    public ItemStack dispense(IBlockSource par1IBlockSource, ItemStack par2ItemStack)
     {
-        return ItemPotion.isSplash(par2ItemStack.getItemDamage()) ? (new BehaviorPotionDispenseLogic(this, par2ItemStack)).func_82482_a(par1IBlockSource, par2ItemStack) : this.field_82484_c.func_82482_a(par1IBlockSource, par2ItemStack);
+        return ItemPotion.isSplash(par2ItemStack.getItemDamage()) ? (new BehaviorPotionDispenseLogic(this, par2ItemStack)).dispense(par1IBlockSource, par2ItemStack) : this.defaultItemDispenseBehavior.dispense(par1IBlockSource, par2ItemStack);
     }
 }

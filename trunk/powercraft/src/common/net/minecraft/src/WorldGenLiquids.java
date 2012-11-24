@@ -4,7 +4,6 @@ import java.util.Random;
 
 public class WorldGenLiquids extends WorldGenerator
 {
-    /** The ID of the liquid block used in this liquid generator. */
     private int liquidBlockId;
 
     public WorldGenLiquids(int par1)

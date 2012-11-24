@@ -28,7 +28,7 @@ public class LoadController
 {
     private Loader loader;
     private EventBus masterChannel;
-    private ImmutableMap<String,EventBus> eventChannels;
+    private ImmutableMap<String, EventBus> eventChannels;
     private LoaderState state;
     private Multimap<String, ModState> modStates = ArrayListMultimap.create();
     private Multimap<String, Throwable> errors = ArrayListMultimap.create();
@@ -42,10 +42,7 @@ public class LoadController
         this.loader = loader;
         this.masterChannel = new EventBus("FMLMainChannel");
         this.masterChannel.register(this);
-
         state = LoaderState.NOINIT;
-
-
     }
 
     @Subscribe
@@ -58,6 +55,7 @@ public class LoadController
         {
             EventBus bus = new EventBus(mod.getModId());
             boolean isActive = mod.registerBus(bus, this);
+
             if (isActive)
             {
                 FMLLog.fine("Activating mod %s", mod.getModId());
@@ -88,6 +86,7 @@ public class LoadController
     {
         LoaderState oldState = state;
         state = state.transition(!errors.isEmpty());
+
         if (state != desiredState)
         {
             Throwable toThrow = null;
@@ -96,9 +95,11 @@ public class LoadController
             printModStates(sb);
             FMLLog.severe(sb.toString());
             FMLLog.severe("The following problems were captured during this phase");
+
             for (Entry<String, Throwable> error : errors.entries())
             {
                 FMLLog.log(Level.SEVERE, error.getValue(), "Caught exception from %s", error.getKey());
+
                 if (error.getValue() instanceof IFMLHandledException)
                 {
                     toThrow = error.getValue();
@@ -108,9 +109,10 @@ public class LoadController
                     toThrow = error.getValue();
                 }
             }
+
             if (toThrow != null && toThrow instanceof RuntimeException)
             {
-                throw (RuntimeException)toThrow;
+                throw(RuntimeException)toThrow;
             }
             else
             {
@@ -131,6 +133,7 @@ public class LoadController
         {
             modObjectList = buildModObjectList();
         }
+
         for (ModContainer mc : activeModList)
         {
             activeContainer = mc;
@@ -140,16 +143,17 @@ public class LoadController
             eventChannels.get(modId).post(stateEvent);
             FMLLog.finer("Sent event %s to mod %s", stateEvent.getEventType(), modId);
             activeContainer = null;
+
             if (stateEvent instanceof FMLStateEvent)
             {
-	            if (!errors.containsKey(modId))
-	            {
-	                modStates.put(modId, ((FMLStateEvent)stateEvent).getModState());
-	            }
-	            else
-	            {
-	                modStates.put(modId, ModState.ERRORED);
-	            }
+                if (!errors.containsKey(modId))
+                {
+                    modStates.put(modId, ((FMLStateEvent)stateEvent).getModState());
+                }
+                else
+                {
+                    modStates.put(modId, ModState.ERRORED);
+                }
             }
         }
     }
@@ -157,21 +161,25 @@ public class LoadController
     public ImmutableBiMap<ModContainer, Object> buildModObjectList()
     {
         ImmutableBiMap.Builder<ModContainer, Object> builder = ImmutableBiMap.<ModContainer, Object>builder();
+
         for (ModContainer mc : activeModList)
         {
-            if (!mc.isImmutable() && mc.getMod()!=null)
+            if (!mc.isImmutable() && mc.getMod() != null)
             {
                 builder.put(mc, mc.getMod());
             }
-            if (mc.getMod()==null && !mc.isImmutable() && state!=LoaderState.CONSTRUCTING)
+
+            if (mc.getMod() == null && !mc.isImmutable() && state != LoaderState.CONSTRUCTING)
             {
                 FMLLog.severe("There is a severe problem with %s - it appears not to have constructed correctly", mc.getModId());
+
                 if (state != LoaderState.CONSTRUCTING)
                 {
                     this.errorOccurred(mc, new RuntimeException());
                 }
             }
         }
+
         return builder.build();
     }
 
@@ -226,6 +234,7 @@ public class LoadController
             FMLLog.severe("Detected an attempt by a mod %s to perform game activity during mod construction. This is a serious programming error.", activeContainer);
             return buildModObjectList();
         }
+
         return ImmutableBiMap.copyOf(modObjectList);
     }
 
@@ -234,7 +243,8 @@ public class LoadController
         return this.state == state;
     }
 
-	boolean hasReachedState(LoaderState state) {
-		return this.state.ordinal()>=state.ordinal() && this.state!=LoaderState.ERRORED;
-	}
+    boolean hasReachedState(LoaderState state)
+    {
+        return this.state.ordinal() >= state.ordinal() && this.state != LoaderState.ERRORED;
+    }
 }

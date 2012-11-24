@@ -17,5 +17,4 @@ public class PlayerSleepInBedEvent extends PlayerEvent
         this.y = y;
         this.z = z;
     }
-
 }

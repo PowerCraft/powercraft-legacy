@@ -16,7 +16,7 @@ public class OpenGuiPacket extends FMLPacket
     private int x;
     private int y;
     private int z;
-    
+
     public OpenGuiPacket()
     {
         super(Type.GUIOPEN);
@@ -26,12 +26,12 @@ public class OpenGuiPacket extends FMLPacket
     public byte[] generatePacket(Object... data)
     {
         ByteArrayDataOutput dat = ByteStreams.newDataOutput();
-        dat.writeInt((Integer) data[0]); // windowId
-        dat.writeInt((Integer) data[1]); // networkId
-        dat.writeInt((Integer) data[2]); // modGuiId
-        dat.writeInt((Integer) data[3]); // x
-        dat.writeInt((Integer) data[4]); // y
-        dat.writeInt((Integer) data[5]); // z
+        dat.writeInt((Integer) data[0]);
+        dat.writeInt((Integer) data[1]);
+        dat.writeInt((Integer) data[2]);
+        dat.writeInt((Integer) data[3]);
+        dat.writeInt((Integer) data[4]);
+        dat.writeInt((Integer) data[5]);
         return dat.toByteArray();
     }
 
@@ -55,5 +55,4 @@ public class OpenGuiPacket extends FMLPacket
         player.openGui(networkId, modGuiId, player.worldObj, x, y, z);
         player.craftingInventory.windowId = windowId;
     }
-
 }

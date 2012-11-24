@@ -1,0 +1,13 @@
+package powercraft.machines;
+
+import powercraft.core.PC_ISpecialInventoryTextures;
+
+public class PCma_BlockBlockBuilder implements PC_ISpecialInventoryTextures {
+
+	@Override
+	public int getInvTexture(int side, int meta) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+}

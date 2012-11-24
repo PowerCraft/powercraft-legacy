@@ -7,9 +7,6 @@ final class MaterialWeb extends Material
         super(par1MapColor);
     }
 
-    /**
-     * Returns if this material is considered solid or not
-     */
     public boolean blocksMovement()
     {
         return false;

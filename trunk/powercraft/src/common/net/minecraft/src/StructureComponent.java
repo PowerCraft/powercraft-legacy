@@ -8,10 +8,8 @@ public abstract class StructureComponent
 {
     protected StructureBoundingBox boundingBox;
 
-    /** switches the Coordinate System base off the Bounding Box */
     protected int coordBaseMode;
 
-    /** The type ID of this component. */
     protected int componentType;
 
     protected StructureComponent(int par1)
@@ -20,15 +18,8 @@ public abstract class StructureComponent
         this.coordBaseMode = -1;
     }
 
-    /**
-     * Initiates construction of the Structure Component picked, at the current Location of StructGen
-     */
     public void buildComponent(StructureComponent par1StructureComponent, List par2List, Random par3Random) {}
 
-    /**
-     * second Part of Structure generating, this for example places Spiderwebs, Mob Spawners, it closes Mineshafts at
-     * the end, it adds Fences...
-     */
     public abstract boolean addComponentParts(World var1, Random var2, StructureBoundingBox var3);
 
     public StructureBoundingBox getBoundingBox()
@@ -36,17 +27,11 @@ public abstract class StructureComponent
         return this.boundingBox;
     }
 
-    /**
-     * Returns the component type ID of this component.
-     */
     public int getComponentType()
     {
         return this.componentType;
     }
 
-    /**
-     * Discover if bounding box can fit within the current bounding box object.
-     */
     public static StructureComponent findIntersecting(List par0List, StructureBoundingBox par1StructureBoundingBox)
     {
         Iterator var2 = par0List.iterator();
@@ -71,9 +56,6 @@ public abstract class StructureComponent
         return new ChunkPosition(this.boundingBox.getCenterX(), this.boundingBox.getCenterY(), this.boundingBox.getCenterZ());
     }
 
-    /**
-     * checks the entire StructureBoundingBox for Liquids
-     */
     protected boolean isLiquidInStructureBoundingBox(World par1World, StructureBoundingBox par2StructureBoundingBox)
     {
         int var3 = Math.max(this.boundingBox.minX - 1, par2StructureBoundingBox.minX);
@@ -156,10 +138,13 @@ public abstract class StructureComponent
             case 0:
             case 2:
                 return this.boundingBox.minX + par1;
+
             case 1:
                 return this.boundingBox.maxX - par2;
+
             case 3:
                 return this.boundingBox.minX + par2;
+
             default:
                 return par1;
         }
@@ -176,20 +161,19 @@ public abstract class StructureComponent
         {
             case 0:
                 return this.boundingBox.minZ + par2;
+
             case 1:
             case 3:
                 return this.boundingBox.minZ + par1;
+
             case 2:
                 return this.boundingBox.maxZ - par2;
+
             default:
                 return par2;
         }
     }
 
-    /**
-     * Returns the direction-shifted metadata for blocks that require orientation, e.g. doors, stairs, ladders.
-     * Parameters: block ID, original metadata
-     */
     protected int getMetadataWithOffset(int par1, int par2)
     {
         if (par1 == Block.rail.blockID)
@@ -267,7 +251,7 @@ public abstract class StructureComponent
                         }
                     }
                 }
-                else if (par1 == Block.button.blockID)
+                else if (par1 == Block.stoneButton.blockID)
                 {
                     if (this.coordBaseMode == 0)
                     {
@@ -520,9 +504,6 @@ public abstract class StructureComponent
         return par2;
     }
 
-    /**
-     * current Position depends on currently set Coordinates mode, is computed here
-     */
     protected void placeBlockAtCurrentPosition(World par1World, int par2, int par3, int par4, int par5, int par6, StructureBoundingBox par7StructureBoundingBox)
     {
         int var8 = this.getXWithOffset(par4, par6);
@@ -543,10 +524,6 @@ public abstract class StructureComponent
         return !par5StructureBoundingBox.isVecInside(var6, var7, var8) ? 0 : par1World.getBlockId(var6, var7, var8);
     }
 
-    /**
-     * arguments: (World worldObj, StructureBoundingBox structBB, int minX, int minY, int minZ, int maxX, int maxY, int
-     * maxZ)
-     */
     protected void fillWithAir(World par1World, StructureBoundingBox par2StructureBoundingBox, int par3, int par4, int par5, int par6, int par7, int par8)
     {
         for (int var9 = par4; var9 <= par7; ++var9)
@@ -561,10 +538,6 @@ public abstract class StructureComponent
         }
     }
 
-    /**
-     * arguments: (World worldObj, StructureBoundingBox structBB, int minX, int minY, int minZ, int maxX, int maxY, int
-     * maxZ, int placeBlockId, int replaceBlockId, boolean alwaysreplace)
-     */
     protected void fillWithBlocks(World par1World, StructureBoundingBox par2StructureBoundingBox, int par3, int par4, int par5, int par6, int par7, int par8, int par9, int par10, boolean par11)
     {
         for (int var12 = par4; var12 <= par7; ++var12)
@@ -589,11 +562,6 @@ public abstract class StructureComponent
         }
     }
 
-    /**
-     * arguments: (World worldObj, StructureBoundingBox structBB, int minX, int minY, int minZ, int maxX, int maxY, int
-     * maxZ, int placeBlockId, int placeBlockMetadata, int replaceBlockId, int replaceBlockMetadata, boolean
-     * alwaysreplace)
-     */
     protected void fillWithMetadataBlocks(World par1World, StructureBoundingBox par2StructureBoundingBox, int par3, int par4, int par5, int par6, int par7, int par8, int par9, int par10, int par11, int par12, boolean par13)
     {
         for (int var14 = par4; var14 <= par7; ++var14)
@@ -618,10 +586,6 @@ public abstract class StructureComponent
         }
     }
 
-    /**
-     * arguments: World worldObj, StructureBoundingBox structBB, int minX, int minY, int minZ, int maxX, int maxY, int
-     * maxZ, boolean alwaysreplace, Random rand, StructurePieceBlockSelector blockselector
-     */
     protected void fillWithRandomizedBlocks(World par1World, StructureBoundingBox par2StructureBoundingBox, int par3, int par4, int par5, int par6, int par7, int par8, boolean par9, Random par10Random, StructurePieceBlockSelector par11StructurePieceBlockSelector)
     {
         for (int var12 = par4; var12 <= par7; ++var12)
@@ -640,10 +604,6 @@ public abstract class StructureComponent
         }
     }
 
-    /**
-     * arguments: World worldObj, StructureBoundingBox structBB, Random rand, float randLimit, int minX, int minY, int
-     * minZ, int maxX, int maxY, int maxZ, int olaceBlockId, int replaceBlockId, boolean alwaysreplace
-     */
     protected void randomlyFillWithBlocks(World par1World, StructureBoundingBox par2StructureBoundingBox, Random par3Random, float par4, int par5, int par6, int par7, int par8, int par9, int par10, int par11, int par12, boolean par13)
     {
         for (int var14 = par6; var14 <= par9; ++var14)
@@ -668,9 +628,6 @@ public abstract class StructureComponent
         }
     }
 
-    /**
-     * Randomly decides if placing or not. Used for Decoration such as Torches and Spiderwebs
-     */
     protected void randomlyPlaceBlock(World par1World, StructureBoundingBox par2StructureBoundingBox, Random par3Random, float par4, int par5, int par6, int par7, int par8, int par9)
     {
         if (par3Random.nextFloat() < par4)
@@ -679,10 +636,6 @@ public abstract class StructureComponent
         }
     }
 
-    /**
-     * arguments: World worldObj, StructureBoundingBox structBB, int minX, int minY, int minZ, int maxX, int maxY, int
-     * maxZ, int placeBlockId, boolean alwaysreplace
-     */
     protected void randomlyRareFillWithBlocks(World par1World, StructureBoundingBox par2StructureBoundingBox, int par3, int par4, int par5, int par6, int par7, int par8, int par9, boolean par10)
     {
         float var11 = (float)(par6 - par3 + 1);
@@ -717,9 +670,6 @@ public abstract class StructureComponent
         }
     }
 
-    /**
-     * Deletes all continuous blocks from selected position upwards. Stops at hitting air.
-     */
     protected void clearCurrentPositionBlocksUpwards(World par1World, int par2, int par3, int par4, StructureBoundingBox par5StructureBoundingBox)
     {
         int var6 = this.getXWithOffset(par2, par4);
@@ -736,9 +686,6 @@ public abstract class StructureComponent
         }
     }
 
-    /**
-     * Overwrites air and liquids from selected position downwards, stops at hitting anything else.
-     */
     protected void fillCurrentPositionBlocksDownwards(World par1World, int par2, int par3, int par4, int par5, int par6, StructureBoundingBox par7StructureBoundingBox)
     {
         int var8 = this.getXWithOffset(par4, par6);
@@ -755,9 +702,6 @@ public abstract class StructureComponent
         }
     }
 
-    /**
-     * Used to generate chests with items in it. ex: Temple Chests, Village Blacksmith Chests, Mineshaft Chests.
-     */
     protected boolean generateStructureChestContents(World par1World, StructureBoundingBox par2StructureBoundingBox, Random par3Random, int par4, int par5, int par6, WeightedRandomChestContent[] par7ArrayOfWeightedRandomChestContent, int par8)
     {
         int var9 = this.getXWithOffset(par4, par6);
@@ -782,9 +726,6 @@ public abstract class StructureComponent
         }
     }
 
-    /**
-     * Used to generate dispenser contents for structures. ex: Jungle Temples.
-     */
     protected boolean generateStructureDispenserContents(World par1World, StructureBoundingBox par2StructureBoundingBox, Random par3Random, int par4, int par5, int par6, int par7, WeightedRandomChestContent[] par8ArrayOfWeightedRandomChestContent, int par9)
     {
         int var10 = this.getXWithOffset(par4, par6);

@@ -11,7 +11,6 @@ public class VillageSiege
     private int field_75533_d;
     private int field_75534_e;
 
-    /** Instance of Village. */
     private Village theVillage;
     private int field_75532_g;
     private int field_75538_h;
@@ -22,9 +21,6 @@ public class VillageSiege
         this.worldObj = par1World;
     }
 
-    /**
-     * Runs a single tick for the village siege
-     */
     public void tick()
     {
         boolean var1 = false;
@@ -181,8 +177,8 @@ public class VillageSiege
             try
             {
                 var2 = new EntityZombie(this.worldObj);
-                var2.func_82163_bD();
-                var2.func_82229_g(false);
+                var2.initCreature();
+                var2.setVillager(false);
             }
             catch (Exception var4)
             {
@@ -208,7 +204,7 @@ public class VillageSiege
 
             if (this.theVillage.isInRange(var5, var6, var7) && SpawnerAnimals.canCreatureTypeSpawnAtLocation(EnumCreatureType.monster, this.worldObj, var5, var6, var7))
             {
-                this.worldObj.func_82732_R().getVecFromPool((double)var5, (double)var6, (double)var7);
+                this.worldObj.getWorldVec3Pool().getVecFromPool((double)var5, (double)var6, (double)var7);
             }
         }
 

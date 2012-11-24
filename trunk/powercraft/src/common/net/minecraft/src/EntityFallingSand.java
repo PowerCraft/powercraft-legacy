@@ -10,7 +10,6 @@ public class EntityFallingSand extends Entity
     public int blockID;
     public int field_70285_b;
 
-    /** How long the block has been falling for. */
     public int fallTime;
     public boolean field_70284_d;
     private boolean field_82157_e;
@@ -57,10 +56,6 @@ public class EntityFallingSand extends Entity
         this.prevPosZ = par6;
     }
 
-    /**
-     * returns if this entity triggers Block.onEntityWalking on the blocks they walk on. used for spiders and wolves to
-     * prevent them from trampling crops
-     */
     protected boolean canTriggerWalking()
     {
         return false;
@@ -68,17 +63,11 @@ public class EntityFallingSand extends Entity
 
     protected void entityInit() {}
 
-    /**
-     * Returns true if other Entities should be prevented from moving through this Entity.
-     */
     public boolean canBeCollidedWith()
     {
         return !this.isDead;
     }
 
-    /**
-     * Called to update the entity's position/logic.
-     */
     public void onUpdate()
     {
         if (this.blockID == 0)
@@ -129,7 +118,7 @@ public class EntityFallingSand extends Entity
                         {
                             if (Block.blocksList[this.blockID] instanceof BlockSand)
                             {
-                                ((BlockSand)Block.blocksList[this.blockID]).func_82519_a_(this.worldObj, var1, var2, var3, this.field_70285_b);
+                                ((BlockSand)Block.blocksList[this.blockID]).onFinishFalling(this.worldObj, var1, var2, var3, this.field_70285_b);
                             }
                         }
                         else if (this.field_70284_d && !this.field_82157_e)
@@ -151,9 +140,6 @@ public class EntityFallingSand extends Entity
         }
     }
 
-    /**
-     * Called when the mob is falling. Calculates and applies fall damage.
-     */
     protected void fall(float par1)
     {
         if (this.field_82155_f)
@@ -163,7 +149,7 @@ public class EntityFallingSand extends Entity
             if (var2 > 0)
             {
                 ArrayList var3 = new ArrayList(this.worldObj.getEntitiesWithinAABBExcludingEntity(this, this.boundingBox));
-                DamageSource var4 = this.blockID == Block.field_82510_ck.blockID ? DamageSource.field_82728_o : DamageSource.field_82729_p;
+                DamageSource var4 = this.blockID == Block.anvil.blockID ? DamageSource.anvil : DamageSource.fallingBlock;
                 Iterator var5 = var3.iterator();
 
                 while (var5.hasNext())
@@ -172,7 +158,7 @@ public class EntityFallingSand extends Entity
                     var6.attackEntityFrom(var4, Math.min(MathHelper.floor_float((float)var2 * this.field_82158_h), this.field_82156_g));
                 }
 
-                if (this.blockID == Block.field_82510_ck.blockID && (double)this.rand.nextFloat() < 0.05000000074505806D + (double)var2 * 0.05D)
+                if (this.blockID == Block.anvil.blockID && (double)this.rand.nextFloat() < 0.05000000074505806D + (double)var2 * 0.05D)
                 {
                     int var7 = this.field_70285_b >> 2;
                     int var8 = this.field_70285_b & 3;
@@ -191,9 +177,6 @@ public class EntityFallingSand extends Entity
         }
     }
 
-    /**
-     * (abstract) Protected helper method to write subclass entity data to NBT.
-     */
     protected void writeEntityToNBT(NBTTagCompound par1NBTTagCompound)
     {
         par1NBTTagCompound.setByte("Tile", (byte)this.blockID);
@@ -205,9 +188,6 @@ public class EntityFallingSand extends Entity
         par1NBTTagCompound.setInteger("FallHurtMax", this.field_82156_g);
     }
 
-    /**
-     * (abstract) Protected helper method to read subclass entity data from NBT.
-     */
     protected void readEntityFromNBT(NBTTagCompound par1NBTTagCompound)
     {
         this.blockID = par1NBTTagCompound.getByte("Tile") & 255;
@@ -220,7 +200,7 @@ public class EntityFallingSand extends Entity
             this.field_82158_h = par1NBTTagCompound.getFloat("FallHurtAmount");
             this.field_82156_g = par1NBTTagCompound.getInteger("FallHurtMax");
         }
-        else if (this.blockID == Block.field_82510_ck.blockID)
+        else if (this.blockID == Block.anvil.blockID)
         {
             this.field_82155_f = true;
         }
@@ -251,5 +231,11 @@ public class EntityFallingSand extends Entity
     public void func_82154_e(boolean par1)
     {
         this.field_82155_f = par1;
+    }
+
+    @SideOnly(Side.CLIENT)
+    public boolean func_90999_ad()
+    {
+        return false;
     }
 }

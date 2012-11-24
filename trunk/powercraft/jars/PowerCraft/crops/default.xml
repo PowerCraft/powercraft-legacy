@@ -1,0 +1,41 @@
+<?xml version='1.1' encoding='UTF-8' ?>
+<!-- 
+  BLOCK HARVESTER CONFIG FILE
+  You can add your own crops into this file.
+  Any other xml files in this folder will be parsed too.
+
+  If you make a setup file for some mod, please post it on forums.
+
+  Special values:
+    metaMature  = -1  ...  any metadata
+    metaReplant = -1  ...  do not replant
+
+    Item meta   <  0  ...  get item with meta = blockMeta & abs(THIS_NUMBER) - useful for leaves
+
+  Item meta can be ranged - use 4-7 for random meta in range 4 to 7 (inclusive).
+  You can also use range for item count (eg. 0-5). 
+
+  Higher rarity number means more rare. Use 1 for regular drops. 
+-->
+
+<crops>
+
+	<crop name='Wheat'>
+		<block id='59' metaMature='7' metaReplant='0' />
+		<item id='296' meta='0' count='1' rarity='1' priority='1' /><!-- wheat -->
+		<item id='295' meta='0' count='0-2' rarity='1' priority='1' /><!-- seeds -->
+	</crop>
+
+	<crop name='Nether Wart'>
+		<block id='115' metaMature='3' metaReplant='0' />
+		<item id='372' meta='0' count='2-5' rarity='1' priority='1' /><!-- wart seeds -->
+	</crop>
+
+	<crop name='Leaves'>
+		<block id='18' metaMature='-1' metaReplant='-1' />
+		<item id='260' meta='0'  count='1' rarity='1/200' priority='1' /><!-- apple -->
+		<item id='6'   meta='-3' count='1' rarity='1/20'  priority='2' /><!-- sapling -->
+		<item id='18'  meta='-3' count='1' rarity='1'   priority='3' /><!-- leaf -->
+	</crop>
+
+</crops>

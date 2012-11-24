@@ -4,9 +4,6 @@ import java.util.ArrayList;
 
 public class RecipesArmorDyes implements IRecipe
 {
-    /**
-     * Used to check if a recipe matches current crafting inventory
-     */
     public boolean matches(InventoryCrafting par1InventoryCrafting, World par2World)
     {
         ItemStack var3 = null;
@@ -22,7 +19,7 @@ public class RecipesArmorDyes implements IRecipe
                 {
                     ItemArmor var7 = (ItemArmor)var6.getItem();
 
-                    if (var7.func_82812_d() != EnumArmorMaterial.CLOTH || var3 != null)
+                    if (var7.getArmorMaterial() != EnumArmorMaterial.CLOTH || var3 != null)
                     {
                         return false;
                     }
@@ -44,9 +41,6 @@ public class RecipesArmorDyes implements IRecipe
         return var3 != null && !var4.isEmpty();
     }
 
-    /**
-     * Returns an Item that is the result of this recipe
-     */
     public ItemStack getCraftingResult(InventoryCrafting par1InventoryCrafting)
     {
         ItemStack var2 = null;
@@ -70,16 +64,16 @@ public class RecipesArmorDyes implements IRecipe
                 {
                     var6 = (ItemArmor)var8.getItem();
 
-                    if (var6.func_82812_d() != EnumArmorMaterial.CLOTH || var2 != null)
+                    if (var6.getArmorMaterial() != EnumArmorMaterial.CLOTH || var2 != null)
                     {
                         return null;
                     }
 
                     var2 = var8.copy();
 
-                    if (var6.func_82816_b_(var8))
+                    if (var6.hasColor(var8))
                     {
-                        var9 = var6.func_82814_b(var2);
+                        var9 = var6.getColor(var2);
                         var10 = (float)(var9 >> 16 & 255) / 255.0F;
                         var11 = (float)(var9 >> 8 & 255) / 255.0F;
                         float var12 = (float)(var9 & 255) / 255.0F;
@@ -131,9 +125,6 @@ public class RecipesArmorDyes implements IRecipe
         }
     }
 
-    /**
-     * Returns the size of the recipe area
-     */
     public int getRecipeSize()
     {
         return 10;

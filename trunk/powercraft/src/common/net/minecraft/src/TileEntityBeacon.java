@@ -7,24 +7,24 @@ import java.util.List;
 
 public class TileEntityBeacon extends TileEntity implements IInventory
 {
-    public static final Potion[][] field_82139_a = new Potion[][] {{Potion.moveSpeed, Potion.digSpeed}, {Potion.resistance, Potion.jump}, {Potion.damageBoost}, {Potion.regeneration}};
+    public static final Potion[][] effectsList = new Potion[][] {{Potion.moveSpeed, Potion.digSpeed}, {Potion.resistance, Potion.jump}, {Potion.damageBoost}, {Potion.regeneration}};
     @SideOnly(Side.CLIENT)
     private long field_82137_b;
     @SideOnly(Side.CLIENT)
     private float field_82138_c;
     private boolean field_82135_d;
-    private int field_82136_e = -1;
-    private int field_82133_f;
-    private int field_82134_g;
-    private ItemStack field_82140_h;
 
-    /**
-     * Allows the entity to update its state. Overridden in most subclasses, e.g. the mob spawner uses this to count
-     * ticks and creates a new spawn inside its implementation.
-     */
+    private int levels = -1;
+
+    private int primaryEffect;
+
+    private int secondaryEffect;
+
+    private ItemStack payment;
+
     public void updateEntity()
     {
-        if (this.worldObj.func_82737_E() % 80L == 0L)
+        if (this.worldObj.getTotalWorldTime() % 80L == 0L)
         {
             this.func_82131_u();
             this.func_82124_t();
@@ -33,12 +33,12 @@ public class TileEntityBeacon extends TileEntity implements IInventory
 
     private void func_82124_t()
     {
-        if (this.field_82135_d && this.field_82136_e > 0 && !this.worldObj.isRemote && this.field_82133_f > 0)
+        if (this.field_82135_d && this.levels > 0 && !this.worldObj.isRemote && this.primaryEffect > 0)
         {
-            double var1 = (double)(this.field_82136_e * 8 + 8);
+            double var1 = (double)(this.levels * 8 + 8);
             byte var3 = 0;
 
-            if (this.field_82136_e >= 4 && this.field_82133_f == this.field_82134_g)
+            if (this.levels >= 4 && this.primaryEffect == this.secondaryEffect)
             {
                 var3 = 1;
             }
@@ -51,17 +51,17 @@ public class TileEntityBeacon extends TileEntity implements IInventory
             while (var6.hasNext())
             {
                 var7 = (EntityPlayer)var6.next();
-                var7.addPotionEffect(new PotionEffect(this.field_82133_f, 180, var3, true));
+                var7.addPotionEffect(new PotionEffect(this.primaryEffect, 180, var3, true));
             }
 
-            if (this.field_82136_e >= 4 && this.field_82133_f != this.field_82134_g && this.field_82134_g > 0)
+            if (this.levels >= 4 && this.primaryEffect != this.secondaryEffect && this.secondaryEffect > 0)
             {
                 var6 = var5.iterator();
 
                 while (var6.hasNext())
                 {
                     var7 = (EntityPlayer)var6.next();
-                    var7.addPotionEffect(new PotionEffect(this.field_82134_g, 180, 0, true));
+                    var7.addPotionEffect(new PotionEffect(this.secondaryEffect, 180, 0, true));
                 }
             }
         }
@@ -72,14 +72,14 @@ public class TileEntityBeacon extends TileEntity implements IInventory
         if (!this.worldObj.canBlockSeeTheSky(this.xCoord, this.yCoord + 1, this.zCoord))
         {
             this.field_82135_d = false;
-            this.field_82136_e = 0;
+            this.levels = 0;
         }
         else
         {
             this.field_82135_d = true;
-            this.field_82136_e = 0;
+            this.levels = 0;
 
-            for (int var1 = 1; var1 <= 4; this.field_82136_e = var1++)
+            for (int var1 = 1; var1 <= 4; this.levels = var1++)
             {
                 int var2 = this.yCoord - var1;
 
@@ -95,8 +95,9 @@ public class TileEntityBeacon extends TileEntity implements IInventory
                     for (int var5 = this.zCoord - var1; var5 <= this.zCoord + var1; ++var5)
                     {
                         int var6 = this.worldObj.getBlockId(var4, var2, var5);
+                        Block block = Block.blocksList[var6];
 
-                        if (var6 != Block.blockEmerald.blockID && var6 != Block.blockGold.blockID && var6 != Block.blockDiamond.blockID && var6 != Block.blockSteel.blockID)
+                        if (block == null || !block.isBeaconBase(worldObj, var4, var2, var5, xCoord, yCoord, zCoord))
                         {
                             var3 = false;
                             break;
@@ -110,7 +111,7 @@ public class TileEntityBeacon extends TileEntity implements IInventory
                 }
             }
 
-            if (this.field_82136_e == 0)
+            if (this.levels == 0)
             {
                 this.field_82135_d = false;
             }
@@ -126,8 +127,8 @@ public class TileEntityBeacon extends TileEntity implements IInventory
         }
         else
         {
-            int var1 = (int)(this.worldObj.func_82737_E() - this.field_82137_b);
-            this.field_82137_b = this.worldObj.func_82737_E();
+            int var1 = (int)(this.worldObj.getTotalWorldTime() - this.field_82137_b);
+            this.field_82137_b = this.worldObj.getTotalWorldTime();
 
             if (var1 > 1)
             {
@@ -150,34 +151,35 @@ public class TileEntityBeacon extends TileEntity implements IInventory
         }
     }
 
-    public int func_82126_i()
+    public int getPrimaryEffect()
     {
-        return this.field_82133_f;
+        return this.primaryEffect;
     }
 
-    public int func_82132_j()
+    public int getSecondaryEffect()
     {
-        return this.field_82134_g;
+        return this.secondaryEffect;
     }
 
-    public int func_82130_k()
+    public int getLevels()
     {
-        return this.field_82136_e;
+        return this.levels;
     }
 
     @SideOnly(Side.CLIENT)
-    public void func_82129_c(int par1)
+
+    public void setLevels(int par1)
     {
-        this.field_82136_e = par1;
+        this.levels = par1;
     }
 
     public void func_82128_d(int par1)
     {
-        this.field_82133_f = 0;
+        this.primaryEffect = 0;
 
-        for (int var2 = 0; var2 < this.field_82136_e && var2 < 3; ++var2)
+        for (int var2 = 0; var2 < this.levels && var2 < 3; ++var2)
         {
-            Potion[] var3 = field_82139_a[var2];
+            Potion[] var3 = effectsList[var2];
             int var4 = var3.length;
 
             for (int var5 = 0; var5 < var4; ++var5)
@@ -186,7 +188,7 @@ public class TileEntityBeacon extends TileEntity implements IInventory
 
                 if (var6.id == par1)
                 {
-                    this.field_82133_f = par1;
+                    this.primaryEffect = par1;
                     return;
                 }
             }
@@ -195,13 +197,13 @@ public class TileEntityBeacon extends TileEntity implements IInventory
 
     public void func_82127_e(int par1)
     {
-        this.field_82134_g = 0;
+        this.secondaryEffect = 0;
 
-        if (this.field_82136_e >= 4)
+        if (this.levels >= 4)
         {
             for (int var2 = 0; var2 < 4; ++var2)
             {
-                Potion[] var3 = field_82139_a[var2];
+                Potion[] var3 = effectsList[var2];
                 int var4 = var3.length;
 
                 for (int var5 = 0; var5 < var4; ++var5)
@@ -210,7 +212,7 @@ public class TileEntityBeacon extends TileEntity implements IInventory
 
                     if (var6.id == par1)
                     {
-                        this.field_82134_g = par1;
+                        this.secondaryEffect = par1;
                         return;
                     }
                 }
@@ -218,9 +220,6 @@ public class TileEntityBeacon extends TileEntity implements IInventory
         }
     }
 
-    /**
-     * Overriden in a sign to provide the text.
-     */
     public Packet getDescriptionPacket()
     {
         NBTTagCompound var1 = new NBTTagCompound();
@@ -234,62 +233,46 @@ public class TileEntityBeacon extends TileEntity implements IInventory
         return 65536.0D;
     }
 
-    /**
-     * Reads a tile entity from NBT.
-     */
     public void readFromNBT(NBTTagCompound par1NBTTagCompound)
     {
         super.readFromNBT(par1NBTTagCompound);
-        this.field_82133_f = par1NBTTagCompound.getInteger("Primary");
-        this.field_82134_g = par1NBTTagCompound.getInteger("Secondary");
-        this.field_82136_e = par1NBTTagCompound.getInteger("Levels");
+        this.primaryEffect = par1NBTTagCompound.getInteger("Primary");
+        this.secondaryEffect = par1NBTTagCompound.getInteger("Secondary");
+        this.levels = par1NBTTagCompound.getInteger("Levels");
     }
 
-    /**
-     * Writes a tile entity to NBT.
-     */
     public void writeToNBT(NBTTagCompound par1NBTTagCompound)
     {
         super.writeToNBT(par1NBTTagCompound);
-        par1NBTTagCompound.setInteger("Primary", this.field_82133_f);
-        par1NBTTagCompound.setInteger("Secondary", this.field_82134_g);
-        par1NBTTagCompound.setInteger("Levels", this.field_82136_e);
+        par1NBTTagCompound.setInteger("Primary", this.primaryEffect);
+        par1NBTTagCompound.setInteger("Secondary", this.secondaryEffect);
+        par1NBTTagCompound.setInteger("Levels", this.levels);
     }
 
-    /**
-     * Returns the number of slots in the inventory.
-     */
     public int getSizeInventory()
     {
         return 1;
     }
 
-    /**
-     * Returns the stack in slot i
-     */
     public ItemStack getStackInSlot(int par1)
     {
-        return par1 == 0 ? this.field_82140_h : null;
+        return par1 == 0 ? this.payment : null;
     }
 
-    /**
-     * Removes from an inventory slot (first arg) up to a specified number (second arg) of items and returns them in a
-     * new stack.
-     */
     public ItemStack decrStackSize(int par1, int par2)
     {
-        if (par1 == 0 && this.field_82140_h != null)
+        if (par1 == 0 && this.payment != null)
         {
-            if (par2 >= this.field_82140_h.stackSize)
+            if (par2 >= this.payment.stackSize)
             {
-                ItemStack var3 = this.field_82140_h;
-                this.field_82140_h = null;
+                ItemStack var3 = this.payment;
+                this.payment = null;
                 return var3;
             }
             else
             {
-                this.field_82140_h.stackSize -= par2;
-                return new ItemStack(this.field_82140_h.itemID, par2, this.field_82140_h.getItemDamage());
+                this.payment.stackSize -= par2;
+                return new ItemStack(this.payment.itemID, par2, this.payment.getItemDamage());
             }
         }
         else
@@ -298,16 +281,12 @@ public class TileEntityBeacon extends TileEntity implements IInventory
         }
     }
 
-    /**
-     * When some containers are closed they call this on each slot, then drop whatever it returns as an EntityItem -
-     * like when you close a workbench GUI.
-     */
     public ItemStack getStackInSlotOnClosing(int par1)
     {
-        if (par1 == 0 && this.field_82140_h != null)
+        if (par1 == 0 && this.payment != null)
         {
-            ItemStack var2 = this.field_82140_h;
-            this.field_82140_h = null;
+            ItemStack var2 = this.payment;
+            this.payment = null;
             return var2;
         }
         else
@@ -316,37 +295,24 @@ public class TileEntityBeacon extends TileEntity implements IInventory
         }
     }
 
-    /**
-     * Sets the given item stack to the specified slot in the inventory (can be crafting or armor sections).
-     */
     public void setInventorySlotContents(int par1, ItemStack par2ItemStack)
     {
         if (par1 == 0)
         {
-            this.field_82140_h = par2ItemStack;
+            this.payment = par2ItemStack;
         }
     }
 
-    /**
-     * Returns the name of the inventory.
-     */
     public String getInvName()
     {
         return "container.beacon";
     }
 
-    /**
-     * Returns the maximum stack size for a inventory slot. Seems to always be 64, possibly will be extended. *Isn't
-     * this more of a set than a get?*
-     */
     public int getInventoryStackLimit()
     {
         return 1;
     }
 
-    /**
-     * Do not make give this method the name canInteractWith because it clashes with Container
-     */
     public boolean isUseableByPlayer(EntityPlayer par1EntityPlayer)
     {
         return this.worldObj.getBlockTileEntity(this.xCoord, this.yCoord, this.zCoord) != this ? false : par1EntityPlayer.getDistanceSq((double)this.xCoord + 0.5D, (double)this.yCoord + 0.5D, (double)this.zCoord + 0.5D) <= 64.0D;

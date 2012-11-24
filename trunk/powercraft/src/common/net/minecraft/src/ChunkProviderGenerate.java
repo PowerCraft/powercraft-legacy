@@ -5,73 +5,50 @@ import java.util.Random;
 
 public class ChunkProviderGenerate implements IChunkProvider
 {
-    /** RNG. */
     private Random rand;
 
-    /** A NoiseGeneratorOctaves used in generating terrain */
     private NoiseGeneratorOctaves noiseGen1;
 
-    /** A NoiseGeneratorOctaves used in generating terrain */
     private NoiseGeneratorOctaves noiseGen2;
 
-    /** A NoiseGeneratorOctaves used in generating terrain */
     private NoiseGeneratorOctaves noiseGen3;
 
-    /** A NoiseGeneratorOctaves used in generating terrain */
     private NoiseGeneratorOctaves noiseGen4;
 
-    /** A NoiseGeneratorOctaves used in generating terrain */
     public NoiseGeneratorOctaves noiseGen5;
 
-    /** A NoiseGeneratorOctaves used in generating terrain */
     public NoiseGeneratorOctaves noiseGen6;
     public NoiseGeneratorOctaves mobSpawnerNoise;
 
-    /** Reference to the World object. */
     private World worldObj;
 
-    /** are map structures going to be generated (e.g. strongholds) */
     private final boolean mapFeaturesEnabled;
 
-    /** Holds the overall noise array used in chunk generation */
     private double[] noiseArray;
     private double[] stoneNoise = new double[256];
     private MapGenBase caveGenerator = new MapGenCaves();
 
-    /** Holds Stronghold Generator */
     private MapGenStronghold strongholdGenerator = new MapGenStronghold();
 
-    /** Holds Village Generator */
     private MapGenVillage villageGenerator = new MapGenVillage();
 
-    /** Holds Mineshaft Generator */
     private MapGenMineshaft mineshaftGenerator = new MapGenMineshaft();
     private MapGenScatteredFeature scatteredFeatureGenerator = new MapGenScatteredFeature();
 
-    /** Holds ravine generator */
     private MapGenBase ravineGenerator = new MapGenRavine();
 
-    /** The biomes that are used to generate the chunk */
     private BiomeGenBase[] biomesForGeneration;
 
-    /** A double array that hold terrain noise from noiseGen3 */
     double[] noise3;
 
-    /** A double array that hold terrain noise */
     double[] noise1;
 
-    /** A double array that hold terrain noise from noiseGen2 */
     double[] noise2;
 
-    /** A double array that hold terrain noise from noiseGen5 */
     double[] noise5;
 
-    /** A double array that holds terrain noise from noiseGen6 */
     double[] noise6;
 
-    /**
-     * Used to store the 5x5 parabolic field that is used during terrain generation.
-     */
     float[] parabolicField;
     int[][] field_73219_j = new int[32][32];
 
@@ -89,10 +66,6 @@ public class ChunkProviderGenerate implements IChunkProvider
         this.mobSpawnerNoise = new NoiseGeneratorOctaves(this.rand, 8);
     }
 
-    /**
-     * Generates the shape of the terrain for the chunk though its all stone though the water is frozen if the
-     * temperature is low enough
-     */
     public void generateTerrain(int par1, int par2, byte[] par3ArrayOfByte)
     {
         byte var4 = 4;
@@ -167,9 +140,6 @@ public class ChunkProviderGenerate implements IChunkProvider
         }
     }
 
-    /**
-     * Replaces the stone that was placed in with blocks that match the biome
-     */
     public void replaceBlocksForBiome(int par1, int par2, byte[] par3ArrayOfByte, BiomeGenBase[] par4ArrayOfBiomeGenBase)
     {
         byte var5 = 63;
@@ -259,18 +229,11 @@ public class ChunkProviderGenerate implements IChunkProvider
         }
     }
 
-    /**
-     * loads or generates the chunk at the chunk location specified
-     */
     public Chunk loadChunk(int par1, int par2)
     {
         return this.provideChunk(par1, par2);
     }
 
-    /**
-     * Will return back a chunk, if it doesn't exist and its not a MP client it will generates all the blocks for the
-     * specified chunk from the map seed and chunk seed
-     */
     public Chunk provideChunk(int par1, int par2)
     {
         this.rand.setSeed((long)par1 * 341873128712L + (long)par2 * 132897987541L);
@@ -301,10 +264,6 @@ public class ChunkProviderGenerate implements IChunkProvider
         return var4;
     }
 
-    /**
-     * generates a subset of the level's terrain data. Takes 7 arguments: the [empty] noise array, the position, and the
-     * size.
-     */
     private double[] initializeNoiseField(double[] par1ArrayOfDouble, int par2, int par3, int par4, int par5, int par6, int par7)
     {
         if (par1ArrayOfDouble == null)
@@ -452,17 +411,11 @@ public class ChunkProviderGenerate implements IChunkProvider
         return par1ArrayOfDouble;
     }
 
-    /**
-     * Checks to see if a chunk exists at x, y
-     */
     public boolean chunkExists(int par1, int par2)
     {
         return true;
     }
 
-    /**
-     * Populates chunk with ores etc etc
-     */
     public void populate(IChunkProvider par1IChunkProvider, int par2, int par3)
     {
         BlockSand.fallInstantly = true;
@@ -545,52 +498,32 @@ public class ChunkProviderGenerate implements IChunkProvider
         BlockSand.fallInstantly = false;
     }
 
-    /**
-     * Two modes of operation: if passed true, save all Chunks in one go.  If passed false, save up to two chunks.
-     * Return true if all chunks have been saved.
-     */
     public boolean saveChunks(boolean par1, IProgressUpdate par2IProgressUpdate)
     {
         return true;
     }
 
-    /**
-     * Unloads the 100 oldest chunks from memory, due to a bug with chunkSet.add() never being called it thinks the list
-     * is always empty and will not remove any chunks.
-     */
     public boolean unload100OldestChunks()
     {
         return false;
     }
 
-    /**
-     * Returns if the IChunkProvider supports saving.
-     */
     public boolean canSave()
     {
         return true;
     }
 
-    /**
-     * Converts the instance data to a readable string.
-     */
     public String makeString()
     {
         return "RandomLevelSource";
     }
 
-    /**
-     * Returns a list of creatures of the specified type that can spawn at the given location.
-     */
     public List getPossibleCreatures(EnumCreatureType par1EnumCreatureType, int par2, int par3, int par4)
     {
         BiomeGenBase var5 = this.worldObj.getBiomeGenForCoords(par2, par4);
         return var5 == null ? null : (var5 == BiomeGenBase.swampland && par1EnumCreatureType == EnumCreatureType.monster && this.scatteredFeatureGenerator.hasStructureAt(par2, par3, par4) ? this.scatteredFeatureGenerator.func_82667_a() : var5.getSpawnableList(par1EnumCreatureType));
     }
 
-    /**
-     * Returns the location of the closest structure of the specified type. If not found returns null.
-     */
     public ChunkPosition findClosestStructure(World par1World, String par2Str, int par3, int par4, int par5)
     {
         return "Stronghold".equals(par2Str) && this.strongholdGenerator != null ? this.strongholdGenerator.getNearestInstance(par1World, par3, par4, par5) : null;

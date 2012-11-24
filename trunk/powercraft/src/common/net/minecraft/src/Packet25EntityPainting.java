@@ -25,9 +25,6 @@ public class Packet25EntityPainting extends Packet
         this.title = par1EntityPainting.art.title;
     }
 
-    /**
-     * Abstract. Reads the raw packet data from the data stream.
-     */
     public void readPacketData(DataInputStream par1DataInputStream) throws IOException
     {
         this.entityId = par1DataInputStream.readInt();
@@ -38,9 +35,6 @@ public class Packet25EntityPainting extends Packet
         this.direction = par1DataInputStream.readInt();
     }
 
-    /**
-     * Abstract. Writes the raw packet data to the data stream.
-     */
     public void writePacketData(DataOutputStream par1DataOutputStream) throws IOException
     {
         par1DataOutputStream.writeInt(this.entityId);
@@ -51,17 +45,11 @@ public class Packet25EntityPainting extends Packet
         par1DataOutputStream.writeInt(this.direction);
     }
 
-    /**
-     * Passes this Packet on to the NetHandler for processing.
-     */
     public void processPacket(NetHandler par1NetHandler)
     {
         par1NetHandler.handleEntityPainting(this);
     }
 
-    /**
-     * Abstract. Return the size of the packet (not counting the header).
-     */
     public int getPacketSize()
     {
         return 24;

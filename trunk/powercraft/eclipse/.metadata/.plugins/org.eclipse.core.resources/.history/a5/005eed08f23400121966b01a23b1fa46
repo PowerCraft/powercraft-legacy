@@ -1,0 +1,225 @@
+package powercraft.light;
+
+import java.util.List;
+
+import net.minecraft.src.Block;
+import net.minecraft.src.CreativeTabs;
+import net.minecraft.src.Entity;
+import net.minecraft.src.EntityItem;
+import net.minecraft.src.EntityPlayer;
+import net.minecraft.src.InventoryCrafting;
+import net.minecraft.src.ItemStack;
+import net.minecraft.src.NBTTagCompound;
+import net.minecraft.src.TileEntity;
+import net.minecraft.src.World;
+import powercraft.core.PC_BeamTracer;
+import powercraft.core.PC_Color;
+import powercraft.core.PC_CoordI;
+import powercraft.core.PC_Item;
+import powercraft.core.PC_Utils;
+import cpw.mods.fml.common.Side;
+import cpw.mods.fml.common.asm.SideOnly;
+
+public class PCli_ItemLaserComposition extends PC_Item
+{
+    public PCli_ItemLaserComposition(int id)
+    {
+        super(id);
+        setMaxStackSize(1);
+        setHasSubtypes(true);
+        setCreativeTab(CreativeTabs.tabDecorations);
+    }
+
+    @Override
+    public String[] getDefaultNames()
+    {
+        return new String[]
+                {
+                    getItemName(), "Laser Composition",
+                    getItemName() + ".kill", "Kill Level %s",
+                    getItemName() + ".distance", "Distance Level %s"
+                };
+    }
+
+    @Override
+    public int getMetadata(int i)
+    {
+        return i;
+    }
+    
+    @Override
+	@SideOnly(Side.CLIENT)
+	public boolean requiresMultipleRenderPasses() {
+		return true;
+    }
+
+    /**
+	 * Get texture from damage and pass
+	 * 
+	 * @param dmg damage
+	 * @param pass pass 0-1
+	 */
+	@Override
+	public int getIconFromDamageForRenderPass(int dmg, int pass) {
+		return pass == 0 ? 0 : 1;
+	}
+    
+	@Override
+    public int getColorFromItemStack(ItemStack itemStack, int pass)
+    {
+		if(pass==0)
+			return 0xFFFFFF;
+        return getColorForItemStack(itemStack).getHex();
+    }
+
+	
+	
+    @Override
+    public boolean onItemUse(ItemStack itemstack, EntityPlayer entityplayer, World world, int i, int j, int k, int l, float par8, float par9, float par10)
+    {
+    	
+    	TileEntity te = PC_Utils.getTE(world, i, j, k);
+    	
+    	if(te instanceof PCli_TileEntityLaser){
+    		
+    		((PCli_TileEntityLaser)te).setItemStack(itemstack.copy());
+    		
+    		itemstack.stackSize = 0;
+    		
+    		return true;
+    		
+    	}
+
+        return false;
+    }
+    
+	@Override
+    public void addInformation(ItemStack itemStack, EntityPlayer player, List list, boolean b)
+    {
+		NBTTagCompound nbtTagCompound = itemStack.getTagCompound();
+        if(nbtTagCompound==null){
+        	nbtTagCompound = new NBTTagCompound();
+        	itemStack.setTagCompound(nbtTagCompound);
+        }
+        int levelKill = nbtTagCompound.getInteger("level.kill");
+        int levelDistance = nbtTagCompound.getInteger("level.distance");
+        
+        if (levelKill > 0)
+        {
+        	list.add(PC_Utils.tr(getItemName() + ".kill.name", ("" + levelKill)));
+        }
+
+        if (levelDistance > 0)
+        {
+        	list.add(PC_Utils.tr(getItemName() + ".distance.name", ("" + levelDistance)));
+        }
+    }
+	
+    @Override
+	public void doCrafting(ItemStack itemStack, InventoryCrafting inventoryCrafting) {
+    	ItemStack is = inventoryCrafting.getStackInRowAndColumn(1, 1);
+    	int levelKill = 0;
+        int levelDistance = 0;
+    	
+    	if(is != null && is.itemID == PC_Utils.getPCObjectIDByName("PCco_BlockPowerCrystal")){
+    		switch(is.getItemDamage()){
+    		case 0:
+    			levelDistance = 1;
+    			break;
+    		case 1:
+    			levelKill = 1;
+    			break;
+    		}
+    	}else{
+    		int size = inventoryCrafting.getSizeInventory();
+    		for(int i=0; i<size; i++){
+    			is = inventoryCrafting.getStackInSlot(i);
+    			if(is!=null){
+    				if(is.itemID == shiftedIndex){
+    					if(is.stackTagCompound!=null){
+    						levelDistance += is.stackTagCompound.getInteger("level.distance");
+    						levelKill += is.stackTagCompound.getInteger("level.kill");
+    					}
+    				}
+    			}
+    		}
+    	}
+    	
+    	itemStack.stackTagCompound = new NBTTagCompound();
+		itemStack.stackTagCompound.setInteger("level.distance", levelDistance);
+		itemStack.stackTagCompound.setInteger("level.kill", levelKill);
+	}
+    
+	@Override
+	public List<ItemStack> getItemStacks(List<ItemStack> arrayList) {
+		ItemStack itemStack = new ItemStack(this);
+		itemStack.stackTagCompound = new NBTTagCompound();
+		itemStack.stackTagCompound.setInteger("level.distance", 1);
+		arrayList.add(itemStack);
+		itemStack = new ItemStack(this);
+		itemStack.stackTagCompound = new NBTTagCompound();
+		itemStack.stackTagCompound.setInteger("level.kill", 1);
+		arrayList.add(itemStack);
+		return arrayList;
+	}
+
+	public static PC_Color getColorForItemStack(ItemStack itemstack)
+    {
+    	if(itemstack==null){
+    		return new PC_Color(1.0f, 1.0f, 1.0f);
+    	}
+
+        NBTTagCompound nbtTagCompound = itemstack.getTagCompound();
+        if(nbtTagCompound==null){
+        	nbtTagCompound = new NBTTagCompound();
+        	itemstack.setTagCompound(nbtTagCompound);
+        }
+        int levelKill = nbtTagCompound.getInteger("level.kill");
+        int maxLevel = levelKill;
+        if(maxLevel==0){
+        	return new PC_Color(1.0f, 1.0f, 1.0f);
+        }
+        PC_Color c = new PC_Color();
+        c.r = levelKill / (float)maxLevel;
+        c.g = 0.0f;
+        c.b = 0.0f;
+        return c;
+    }
+    
+	public static int getLengthLimit(ItemStack itemstack) {
+		if(itemstack==null)
+			return 20;
+		NBTTagCompound nbtTagCompound = itemstack.getTagCompound();
+		if(nbtTagCompound==null){
+			nbtTagCompound = new NBTTagCompound();
+	        itemstack.setTagCompound(nbtTagCompound);
+	    }
+		int levelDistance = nbtTagCompound.getInteger("level.distance");
+		return 20+levelDistance*10;
+	}
+
+	public static boolean onBlockHit(PC_BeamTracer beamTracer, Block block, PC_CoordI coord, ItemStack itemstack) {
+		if(!block.isOpaqueCube())
+			return true;
+		return false;
+	}
+
+	public static boolean onEntityHit(PC_BeamTracer beamTracer, Entity entity, PC_CoordI coord, ItemStack itemstack) {
+		if(itemstack==null)
+			return true;
+		NBTTagCompound nbtTagCompound = itemstack.getTagCompound();
+        if(nbtTagCompound==null){
+        	nbtTagCompound = new NBTTagCompound();
+        	itemstack.setTagCompound(nbtTagCompound);
+        }
+        int levelKill = nbtTagCompound.getInteger("level.kill");
+        if(levelKill>0)
+        	if(entity instanceof EntityItem && levelKill>2){
+        		entity.setDead();
+        	}else{
+        		entity.attackEntityFrom(PCli_DamageSourceLaser.getDamageSource(), levelKill);
+        	}
+		return levelKill<=4;
+	}
+	
+}

@@ -32,7 +32,6 @@ import net.minecraft.src.BehaviorPotionDispense;
 import net.minecraft.src.BehaviorSnowballDispense;
 import net.minecraft.src.BlockDispenser;
 import net.minecraft.src.CallableIsServerModded;
-import net.minecraft.src.CallablePlayers;
 import net.minecraft.src.CallableServerMemoryStats;
 import net.minecraft.src.CallableServerProfiler;
 import net.minecraft.src.ChunkCoordinates;
@@ -76,72 +75,49 @@ import net.minecraftforge.common.DimensionManager;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.world.WorldEvent;
 
-public abstract class MinecraftServer implements Runnable, IPlayerUsage, ICommandSender
+public abstract class MinecraftServer implements ICommandSender, Runnable, IPlayerUsage
 {
-    /** The logging system. */
     public static Logger logger = Logger.getLogger("Minecraft");
 
-    /** Instance of Minecraft Server. */
     private static MinecraftServer mcServer = null;
     private final ISaveFormat anvilConverterForAnvilFile;
 
-    /** The PlayerUsageSnooper instance. */
     private final PlayerUsageSnooper usageSnooper = new PlayerUsageSnooper("server", this);
     private final File anvilFile;
 
-    /** List of names of players who are online. */
-    private final List playersOnline = new ArrayList();
+    private final List tickables = new ArrayList();
     private final ICommandManager commandManager;
     public final Profiler theProfiler = new Profiler();
 
-    /** The server's hostname. */
     private String hostname;
 
-    /** The server's port. */
     private int serverPort = -1;
 
-    /** The server world instances. */
     public WorldServer[] worldServers;
 
-    /** The ServerConfigurationManager instance. */
     private ServerConfigurationManager serverConfigManager;
 
-    /**
-     * Indicates whether the server is running or not. Set to false to initiate a shutdown.
-     */
     private boolean serverRunning = true;
 
-    /** Indicates to other classes that the server is safely stopped. */
     private boolean serverStopped = false;
 
-    /** Incremented every tick. */
     private int tickCounter = 0;
 
-    /**
-     * The task the server is currently working on(and will output on outputPercentRemaining).
-     */
     public String currentTask;
 
-    /** The percentage of the current task finished so far. */
     public int percentDone;
 
-    /** True if the server is in online mode. */
     private boolean onlineMode;
 
-    /** True if the server has animals turned on. */
     private boolean canSpawnAnimals;
     private boolean canSpawnNPCs;
 
-    /** Indicates whether PvP is active on the server or not. */
     private boolean pvpEnabled;
 
-    /** Determines if flight is allowed or not. */
     private boolean allowFlight;
 
-    /** The server MOTD string. */
     private String motd;
 
-    /** Maximum build height. */
     private int buildLimit;
     private long lastSentPacketID;
     private long lastSentPacketSize;
@@ -153,12 +129,9 @@ public abstract class MinecraftServer implements Runnable, IPlayerUsage, IComman
     public final long[] receivedPacketSizeArray = new long[100];
     public final long[] tickTimeArray = new long[100];
 
-    /** Stats are [dimension][tick%100] system.nanoTime is stored. */
-    //public long[][] timeOfLastDimensionTick;
     public Hashtable<Integer, long[]> worldTickTimes = new Hashtable<Integer, long[]>();
     private KeyPair serverKeyPair;
 
-    /** Username of the server owner (for integrated servers) */
     private String serverOwner;
     private String folderName;
     @SideOnly(Side.CLIENT)
@@ -166,16 +139,10 @@ public abstract class MinecraftServer implements Runnable, IPlayerUsage, IComman
     private boolean isDemo;
     private boolean enableBonusChest;
 
-    /**
-     * If true, there is no need to save chunks or stop the server, because that is already being done.
-     */
     private boolean worldIsBeingDeleted;
     private String texturePack = "";
     private boolean serverIsRunning = false;
 
-    /**
-     * Set when warned for "Can't keep up", which triggers again after 15 seconds.
-     */
     private long timeOfLastWarning;
     private String userMessage;
     private boolean startProfiling;
@@ -186,32 +153,29 @@ public abstract class MinecraftServer implements Runnable, IPlayerUsage, IComman
         this.anvilFile = par1File;
         this.commandManager = new ServerCommandManager();
         this.anvilConverterForAnvilFile = new AnvilSaveConverter(par1File);
-        this.func_82355_al();
+        this.registerDispenseBehaviors();
     }
 
-    private void func_82355_al()
+    private void registerDispenseBehaviors()
     {
-        BlockDispenser.field_82527_a.func_82595_a(Item.arrow, new BehaviorArrowDispense(this));
-        BlockDispenser.field_82527_a.func_82595_a(Item.egg, new BehaviorEggDispense(this));
-        BlockDispenser.field_82527_a.func_82595_a(Item.snowball, new BehaviorSnowballDispense(this));
-        BlockDispenser.field_82527_a.func_82595_a(Item.expBottle, new BehaviorExpBottleDispense(this));
-        BlockDispenser.field_82527_a.func_82595_a(Item.potion, new BehaviorPotionDispense(this));
-        BlockDispenser.field_82527_a.func_82595_a(Item.monsterPlacer, new BehaviorMobEggDispense(this));
-        BlockDispenser.field_82527_a.func_82595_a(Item.fireballCharge, new BehaviorDispenseFireball(this));
+        BlockDispenser.dispenseBehaviorRegistry.putObject(Item.arrow, new BehaviorArrowDispense(this));
+        BlockDispenser.dispenseBehaviorRegistry.putObject(Item.egg, new BehaviorEggDispense(this));
+        BlockDispenser.dispenseBehaviorRegistry.putObject(Item.snowball, new BehaviorSnowballDispense(this));
+        BlockDispenser.dispenseBehaviorRegistry.putObject(Item.expBottle, new BehaviorExpBottleDispense(this));
+        BlockDispenser.dispenseBehaviorRegistry.putObject(Item.potion, new BehaviorPotionDispense(this));
+        BlockDispenser.dispenseBehaviorRegistry.putObject(Item.monsterPlacer, new BehaviorMobEggDispense(this));
+        BlockDispenser.dispenseBehaviorRegistry.putObject(Item.fireballCharge, new BehaviorDispenseFireball(this));
         BehaviorDispenseMinecart var1 = new BehaviorDispenseMinecart(this);
-        BlockDispenser.field_82527_a.func_82595_a(Item.minecartEmpty, var1);
-        BlockDispenser.field_82527_a.func_82595_a(Item.minecartCrate, var1);
-        BlockDispenser.field_82527_a.func_82595_a(Item.minecartPowered, var1);
-        BlockDispenser.field_82527_a.func_82595_a(Item.boat, new BehaviorDispenseBoat(this));
+        BlockDispenser.dispenseBehaviorRegistry.putObject(Item.minecartEmpty, var1);
+        BlockDispenser.dispenseBehaviorRegistry.putObject(Item.minecartCrate, var1);
+        BlockDispenser.dispenseBehaviorRegistry.putObject(Item.minecartPowered, var1);
+        BlockDispenser.dispenseBehaviorRegistry.putObject(Item.boat, new BehaviorDispenseBoat(this));
         BehaviorBucketFullDispense var2 = new BehaviorBucketFullDispense(this);
-        BlockDispenser.field_82527_a.func_82595_a(Item.bucketLava, var2);
-        BlockDispenser.field_82527_a.func_82595_a(Item.bucketWater, var2);
-        BlockDispenser.field_82527_a.func_82595_a(Item.bucketEmpty, new BehaviorBucketEmptyDispense(this));
+        BlockDispenser.dispenseBehaviorRegistry.putObject(Item.bucketLava, var2);
+        BlockDispenser.dispenseBehaviorRegistry.putObject(Item.bucketWater, var2);
+        BlockDispenser.dispenseBehaviorRegistry.putObject(Item.bucketEmpty, new BehaviorBucketEmptyDispense(this));
     }
 
-    /**
-     * Initialises the server and starts it.
-     */
     protected abstract boolean startServer() throws IOException;
 
     protected void convertMapIfNeeded(String par1Str)
@@ -224,9 +188,6 @@ public abstract class MinecraftServer implements Runnable, IPlayerUsage, IComman
         }
     }
 
-    /**
-     * Typically "menu.convertingLevel", "menu.loadingLevel" or others.
-     */
     protected synchronized void setUserMessage(String par1Str)
     {
         this.userMessage = par1Str;
@@ -263,6 +224,7 @@ public abstract class MinecraftServer implements Runnable, IPlayerUsage, IComman
         }
 
         WorldServer overWorld = (isDemo() ? new DemoWorldServer(this, var7, par2Str, 0, theProfiler) : new WorldServer(this, var7, par2Str, 0, var8, theProfiler));
+
         for (int dim : DimensionManager.getStaticDimensionIDs())
         {
             WorldServer world = (dim == 0 ? overWorld : new WorldServerMulti(this, var7, par2Str, dim, var8, overWorld, theProfiler));
@@ -274,11 +236,10 @@ public abstract class MinecraftServer implements Runnable, IPlayerUsage, IComman
             }
 
             this.serverConfigManager.setPlayerManager(this.worldServers);
-
             MinecraftForge.EVENT_BUS.post(new WorldEvent.Load(world));
         }
 
-        this.serverConfigManager.setPlayerManager(new WorldServer[]{ overWorld });
+        this.serverConfigManager.setPlayerManager(new WorldServer[] { overWorld });
         this.setDifficultyForAllWorlds(this.getDifficulty());
         this.initialWorldChunkLoad();
     }
@@ -317,19 +278,10 @@ public abstract class MinecraftServer implements Runnable, IPlayerUsage, IComman
 
     public abstract EnumGameType getGameType();
 
-    /**
-     * Defaults to "1" (Easy) for the dedicated server, defaults to "2" (Normal) on the client.
-     */
     public abstract int getDifficulty();
 
-    /**
-     * Defaults to false.
-     */
     public abstract boolean isHardcore();
 
-    /**
-     * Used to display a percent remaining given text and the percentage.
-     */
     protected void outputPercentRemaining(String par1Str, int par2)
     {
         this.currentTask = par1Str;
@@ -337,18 +289,12 @@ public abstract class MinecraftServer implements Runnable, IPlayerUsage, IComman
         logger.info(par1Str + ": " + par2 + "%");
     }
 
-    /**
-     * Set current task to null and set its percentage to 0.
-     */
     protected void clearCurrentTask()
     {
         this.currentTask = null;
         this.percentDone = 0;
     }
 
-    /**
-     * par1 indicates if a log message should be output.
-     */
     protected void saveAllWorlds(boolean par1)
     {
         if (!this.worldIsBeingDeleted)
@@ -380,9 +326,6 @@ public abstract class MinecraftServer implements Runnable, IPlayerUsage, IComman
         }
     }
 
-    /**
-     * Saves all necessary data as preparation for stopping the server.
-     */
     public void stopServer()
     {
         if (!this.worldIsBeingDeleted)
@@ -403,15 +346,13 @@ public abstract class MinecraftServer implements Runnable, IPlayerUsage, IComman
 
             logger.info("Saving worlds");
             this.saveAllWorlds(false);
-            WorldServer[] var1 = this.worldServers;
-            int var2 = var1.length;
 
-            for (int var3 = 0; var3 < var2; ++var3)
+            for (int var1 = 0; var1 < this.worldServers.length; ++var1)
             {
-                WorldServer var4 = var1[var3];
-                MinecraftForge.EVENT_BUS.post(new WorldEvent.Unload(var4));
-                var4.flush();
-                DimensionManager.setWorld(var4.provider.dimensionId, null);
+                WorldServer var2 = this.worldServers[var1];
+                MinecraftForge.EVENT_BUS.post(new WorldEvent.Unload(var2));
+                var2.flush();
+                DimensionManager.setWorld(var2.provider.dimensionId, null);
             }
 
             if (this.usageSnooper != null && this.usageSnooper.isSnooperRunning())
@@ -421,9 +362,6 @@ public abstract class MinecraftServer implements Runnable, IPlayerUsage, IComman
         }
     }
 
-    /**
-     * "getHostname" is already taken, but both return the hostname.
-     */
     public String getServerHostname()
     {
         return this.hostname;
@@ -439,9 +377,6 @@ public abstract class MinecraftServer implements Runnable, IPlayerUsage, IComman
         return this.serverRunning;
     }
 
-    /**
-     * Sets the serverRunning variable to false, in order to get the server to shut down.
-     */
     public void initiateShutdown()
     {
         this.serverRunning = false;
@@ -455,7 +390,6 @@ public abstract class MinecraftServer implements Runnable, IPlayerUsage, IComman
             {
                 FMLCommonHandler.instance().handleServerStarted();
                 long var1 = System.currentTimeMillis();
-
                 FMLCommonHandler.instance().onWorldLoadTick(worldServers);
 
                 for (long var50 = 0L; this.serverRunning; this.serverIsRunning = true)
@@ -495,6 +429,7 @@ public abstract class MinecraftServer implements Runnable, IPlayerUsage, IComman
 
                     Thread.sleep(1L);
                 }
+
                 FMLCommonHandler.instance().handleServerStopping();
             }
             else
@@ -553,19 +488,10 @@ public abstract class MinecraftServer implements Runnable, IPlayerUsage, IComman
         return new File(".");
     }
 
-    /**
-     * Called on exit from the main run() loop.
-     */
     protected void finalTick(CrashReport par1CrashReport) {}
 
-    /**
-     * Directly calls System.exit(0), instantly killing the program.
-     */
     protected void systemExitNow() {}
 
-    /**
-     * Main function called by run() every loop.
-     */
     public void tick()
     {
         FMLCommonHandler.instance().rescheduleTicks(Side.SERVER);
@@ -623,9 +549,12 @@ public abstract class MinecraftServer implements Runnable, IPlayerUsage, IComman
     public void updateTimeLightAndEntities()
     {
         this.theProfiler.startSection("levels");
+        int var1;
+        Integer[] ids = DimensionManager.getIDs();
 
-        for (Integer id : DimensionManager.getIDs())
+        for (int x = 0; x < ids.length; x++)
         {
+            int id = ids[x];
             long var2 = System.nanoTime();
 
             if (id == 0 || this.getAllowNether())
@@ -633,20 +562,42 @@ public abstract class MinecraftServer implements Runnable, IPlayerUsage, IComman
                 WorldServer var4 = DimensionManager.getWorld(id);
                 this.theProfiler.startSection(var4.getWorldInfo().getWorldName());
                 this.theProfiler.startSection("pools");
-                var4.func_82732_R().clear();
+                var4.getWorldVec3Pool().clear();
                 this.theProfiler.endSection();
 
                 if (this.tickCounter % 20 == 0)
                 {
                     this.theProfiler.startSection("timeSync");
-                    this.serverConfigManager.sendPacketToAllPlayersInDimension(new Packet4UpdateTime(var4.func_82737_E(), var4.getWorldTime()), var4.provider.dimensionId);
+                    this.serverConfigManager.sendPacketToAllPlayersInDimension(new Packet4UpdateTime(var4.getTotalWorldTime(), var4.getWorldTime()), var4.provider.dimensionId);
                     this.theProfiler.endSection();
                 }
 
                 this.theProfiler.startSection("tick");
                 FMLCommonHandler.instance().onPreWorldTick(var4);
-                var4.tick();
-                var4.updateEntities();
+                CrashReport var6;
+
+                try
+                {
+                    var4.tick();
+                }
+                catch (Throwable var8)
+                {
+                    var6 = CrashReport.func_85055_a(var8, "Exception ticking world");
+                    var4.addWorldInfoToCrashReport(var6);
+                    throw new ReportedException(var6);
+                }
+
+                try
+                {
+                    var4.updateEntities();
+                }
+                catch (Throwable var7)
+                {
+                    var6 = CrashReport.func_85055_a(var7, "Exception ticking world entities");
+                    var4.addWorldInfoToCrashReport(var6);
+                    throw new ReportedException(var6);
+                }
+
                 FMLCommonHandler.instance().onPostWorldTick(var4);
                 this.theProfiler.endSection();
                 this.theProfiler.startSection("tracker");
@@ -665,12 +616,10 @@ public abstract class MinecraftServer implements Runnable, IPlayerUsage, IComman
         this.theProfiler.endStartSection("players");
         this.serverConfigManager.sendPlayerInfoToAllPlayers();
         this.theProfiler.endStartSection("tickables");
-        Iterator var5 = this.playersOnline.iterator();
 
-        while (var5.hasNext())
+        for (var1 = 0; var1 < this.tickables.size(); ++var1)
         {
-            IUpdatePlayerListBox var6 = (IUpdatePlayerListBox)var5.next();
-            var6.update();
+            ((IUpdatePlayerListBox)this.tickables.get(var1)).update();
         }
 
         this.theProfiler.endSection();
@@ -686,109 +635,75 @@ public abstract class MinecraftServer implements Runnable, IPlayerUsage, IComman
         (new ThreadMinecraftServer(this, "Server thread")).start();
     }
 
-    /**
-     * Returns a File object from the specified string.
-     */
     public File getFile(String par1Str)
     {
         return new File(this.getDataDirectory(), par1Str);
     }
 
-    /**
-     * Logs the message with a level of INFO.
-     */
     public void logInfo(String par1Str)
     {
         logger.info(par1Str);
     }
 
-    /**
-     * Logs the message with a level of WARN.
-     */
     public void logWarning(String par1Str)
     {
         logger.warning(par1Str);
     }
 
-    /**
-     * Gets the worldServer by the given dimension.
-     */
     public WorldServer worldServerForDimension(int par1)
     {
         WorldServer ret = DimensionManager.getWorld(par1);
+
         if (ret == null)
         {
             DimensionManager.initDimension(par1);
             ret = DimensionManager.getWorld(par1);
         }
+
         return ret;
     }
 
     @SideOnly(Side.SERVER)
     public void func_82010_a(IUpdatePlayerListBox par1IUpdatePlayerListBox)
     {
-        this.playersOnline.add(par1IUpdatePlayerListBox);
+        this.tickables.add(par1IUpdatePlayerListBox);
     }
 
-    /**
-     * Returns the server's hostname.
-     */
     public String getHostname()
     {
         return this.hostname;
     }
 
-    /**
-     * Never used, but "getServerPort" is already taken.
-     */
     public int getPort()
     {
         return this.serverPort;
     }
 
-    /**
-     * minecraftServer.getMOTD is used in 2 places instead (it is a non-virtual function which returns the same thing)
-     */
     public String getServerMOTD()
     {
         return this.motd;
     }
 
-    /**
-     * Returns the server's Minecraft version as string.
-     */
     public String getMinecraftVersion()
     {
-        return "1.4.2";
+        return "1.4.4";
     }
 
-    /**
-     * Returns the number of players currently on the server.
-     */
     public int getCurrentPlayerCount()
     {
         return this.serverConfigManager.getCurrentPlayerCount();
     }
 
-    /**
-     * Returns the maximum number of players allowed on the server.
-     */
     public int getMaxPlayers()
     {
         return this.serverConfigManager.getMaxPlayers();
     }
 
-    /**
-     * Returns an array of the usernames of all the connected players.
-     */
     public String[] getAllUsernames()
     {
         return this.serverConfigManager.getAllUsernames();
     }
 
-    /**
-     * Used by RCon's Query in the form of "MajorServerMod 1.2.3: MyPlugin 1.3; AnotherPlugin 2.1; AndSoForth 1.0".
-     */
     public String getPlugins()
     {
         return "";
@@ -801,25 +716,16 @@ public abstract class MinecraftServer implements Runnable, IPlayerUsage, IComman
         return RConConsoleSource.consoleBuffer.getChatBuffer();
     }
 
-    /**
-     * Returns true if debugging is enabled, false otherwise.
-     */
     public boolean isDebuggingEnabled()
     {
         return false;
     }
 
-    /**
-     * Logs the error message with a level of SEVERE.
-     */
     public void logSevere(String par1Str)
     {
         logger.log(Level.SEVERE, par1Str);
     }
 
-    /**
-     * If isDebuggingEnabled(), logs the message with a level of INFO.
-     */
     public void logDebug(String par1Str)
     {
         if (this.isDebuggingEnabled())
@@ -833,46 +739,23 @@ public abstract class MinecraftServer implements Runnable, IPlayerUsage, IComman
         return "forge,fml";
     }
 
-    /**
-     * Adds the server info, including from theWorldServer, to the crash report.
-     */
     public CrashReport addServerInfoToCrashReport(CrashReport par1CrashReport)
     {
-        par1CrashReport.addCrashSectionCallable("Is Modded", new CallableIsServerModded(this));
-        par1CrashReport.addCrashSectionCallable("Profiler Position", new CallableServerProfiler(this));
+        par1CrashReport.func_85056_g().addCrashSectionCallable("Profiler Position", new CallableIsServerModded(this));
 
         if (this.worldServers != null && this.worldServers.length > 0 && this.worldServers[0] != null)
         {
-            par1CrashReport.addCrashSectionCallable("Vec3 Pool Size", new CallableServerMemoryStats(this));
+            par1CrashReport.func_85056_g().addCrashSectionCallable("Vec3 Pool Size", new CallableServerProfiler(this));
         }
 
         if (this.serverConfigManager != null)
         {
-            par1CrashReport.addCrashSectionCallable("Player Count", new CallablePlayers(this));
-        }
-
-        if (this.worldServers != null)
-        {
-            WorldServer[] var2 = this.worldServers;
-            int var3 = var2.length;
-
-            for (int var4 = 0; var4 < var3; ++var4)
-            {
-                WorldServer var5 = var2[var4];
-
-                if (var5 != null)
-                {
-                    var5.addWorldInfoToCrashReport(par1CrashReport);
-                }
-            }
+            par1CrashReport.func_85056_g().addCrashSectionCallable("Player Count", new CallableServerMemoryStats(this));
         }
 
         return par1CrashReport;
     }
 
-    /**
-     * If par2Str begins with /, then it searches for commands, otherwise it returns players.
-     */
     public List getPossibleCompletions(ICommandSender par1ICommandSender, String par2Str)
     {
         ArrayList var3 = new ArrayList();
@@ -925,17 +808,11 @@ public abstract class MinecraftServer implements Runnable, IPlayerUsage, IComman
         }
     }
 
-    /**
-     * Gets mcServer.
-     */
     public static MinecraftServer getServer()
     {
         return mcServer;
     }
 
-    /**
-     * Gets the name of this command sender (usually username, but possibly "Rcon")
-     */
     public String getCommandSenderName()
     {
         return "Server";
@@ -946,17 +823,11 @@ public abstract class MinecraftServer implements Runnable, IPlayerUsage, IComman
         logger.info(StringUtils.stripControlCodes(par1Str));
     }
 
-    /**
-     * Returns true if the command sender is allowed to use the given command.
-     */
     public boolean canCommandSenderUseCommand(int par1, String par2Str)
     {
         return true;
     }
 
-    /**
-     * Translates and formats the given string key with the given arguments.
-     */
     public String translateString(String par1Str, Object ... par2ArrayOfObj)
     {
         return StringTranslate.getInstance().translateKeyFormat(par1Str, par2ArrayOfObj);
@@ -967,17 +838,11 @@ public abstract class MinecraftServer implements Runnable, IPlayerUsage, IComman
         return this.commandManager;
     }
 
-    /**
-     * Gets KeyPair instanced in MinecraftServer.
-     */
     public KeyPair getKeyPair()
     {
         return this.serverKeyPair;
     }
 
-    /**
-     * Gets serverPort.
-     */
     public int getServerPort()
     {
         return this.serverPort;
@@ -988,17 +853,11 @@ public abstract class MinecraftServer implements Runnable, IPlayerUsage, IComman
         this.serverPort = par1;
     }
 
-    /**
-     * Returns the username of the server owner (for integrated servers)
-     */
     public String getServerOwner()
     {
         return this.serverOwner;
     }
 
-    /**
-     * Sets the username of the owner of this server (in the case of an integrated server)
-     */
     public void setServerOwner(String par1Str)
     {
         this.serverOwner = par1Str;
@@ -1068,17 +927,11 @@ public abstract class MinecraftServer implements Runnable, IPlayerUsage, IComman
         return true;
     }
 
-    /**
-     * Gets whether this is a demo or not.
-     */
     public boolean isDemo()
     {
         return this.isDemo;
     }
 
-    /**
-     * Sets whether this is a demo or not.
-     */
     public void setDemo(boolean par1)
     {
         this.isDemo = par1;
@@ -1094,10 +947,6 @@ public abstract class MinecraftServer implements Runnable, IPlayerUsage, IComman
         return this.anvilConverterForAnvilFile;
     }
 
-    /**
-     * WARNING : directly calls
-     * getActiveAnvilConverter().deleteWorldDirectory(theWorldServer[0].getSaveHandler().getSaveDirectoryName());
-     */
     public void deleteWorldAndStopServer()
     {
         this.worldIsBeingDeleted = true;
@@ -1173,17 +1022,11 @@ public abstract class MinecraftServer implements Runnable, IPlayerUsage, IComman
         par1PlayerUsageSnooper.addData("dedicated", Boolean.valueOf(this.isDedicatedServer()));
     }
 
-    /**
-     * Returns whether snooping is enabled or not.
-     */
     public boolean isSnooperEnabled()
     {
         return true;
     }
 
-    /**
-     * This is checked to be 16 upon receiving the packet, otherwise the packet is ignored.
-     */
     public int textureSize()
     {
         return 16;
@@ -1241,7 +1084,7 @@ public abstract class MinecraftServer implements Runnable, IPlayerUsage, IComman
         this.allowFlight = par1;
     }
 
-    public abstract boolean func_82356_Z();
+    public abstract boolean isCommandBlockEnabled();
 
     public String getMOTD()
     {
@@ -1278,9 +1121,6 @@ public abstract class MinecraftServer implements Runnable, IPlayerUsage, IComman
         this.serverConfigManager = par1ServerConfigurationManager;
     }
 
-    /**
-     * Sets the game type for all worlds.
-     */
     public void setGameType(EnumGameType par1EnumGameType)
     {
         for (int var2 = 0; var2 < this.worldServers.length; ++var2)
@@ -1302,9 +1142,6 @@ public abstract class MinecraftServer implements Runnable, IPlayerUsage, IComman
         return false;
     }
 
-    /**
-     * On dedicated does nothing. On integrated, sets commandsAllowedForAll, gameType and allows external connections.
-     */
     public abstract String shareToLAN(EnumGameType var1, boolean var2);
 
     public int getTickCounter()
@@ -1323,19 +1160,16 @@ public abstract class MinecraftServer implements Runnable, IPlayerUsage, IComman
         return this.usageSnooper;
     }
 
-    public ChunkCoordinates func_82114_b()
+    public ChunkCoordinates getPlayerCoordinates()
     {
         return new ChunkCoordinates(0, 0, 0);
     }
 
-    public int func_82357_ak()
+    public int getSpawnProtectionSize()
     {
         return 16;
     }
 
-    /**
-     * Gets the current player count, maximum player count, and player entity list.
-     */
     public static ServerConfigurationManager getServerConfigurationManager(MinecraftServer par0MinecraftServer)
     {
         return par0MinecraftServer.serverConfigManager;

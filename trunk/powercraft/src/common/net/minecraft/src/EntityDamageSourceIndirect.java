@@ -20,11 +20,8 @@ public class EntityDamageSourceIndirect extends EntityDamageSource
         return this.indirectEntity;
     }
 
-    /**
-     * Returns the message to be displayed on player death.
-     */
     public String getDeathMessage(EntityPlayer par1EntityPlayer)
     {
-        return StatCollector.translateToLocalFormatted("death." + this.damageType, new Object[] {par1EntityPlayer.username, this.indirectEntity.getEntityName()});
+        return StatCollector.translateToLocalFormatted("death." + this.damageType, new Object[] {par1EntityPlayer.username, this.indirectEntity == null ? this.damageSourceEntity.getEntityName() : this.indirectEntity.getEntityName()});
     }
 }

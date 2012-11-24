@@ -1,6 +1,5 @@
 package net.minecraft.src;
 
-import java.util.Iterator;
 import java.util.List;
 
 public class ItemBoat extends Item
@@ -12,9 +11,6 @@ public class ItemBoat extends Item
         this.setCreativeTab(CreativeTabs.tabTransport);
     }
 
-    /**
-     * Called whenever this item is equipped and the right mouse button is pressed. Args: itemStack, world, entityPlayer
-     */
     public ItemStack onItemRightClick(ItemStack par1ItemStack, World par2World, EntityPlayer par3EntityPlayer)
     {
         float var4 = 1.0F;
@@ -23,7 +19,7 @@ public class ItemBoat extends Item
         double var7 = par3EntityPlayer.prevPosX + (par3EntityPlayer.posX - par3EntityPlayer.prevPosX) * (double)var4;
         double var9 = par3EntityPlayer.prevPosY + (par3EntityPlayer.posY - par3EntityPlayer.prevPosY) * (double)var4 + 1.62D - (double)par3EntityPlayer.yOffset;
         double var11 = par3EntityPlayer.prevPosZ + (par3EntityPlayer.posZ - par3EntityPlayer.prevPosZ) * (double)var4;
-        Vec3 var13 = par2World.func_82732_R().getVecFromPool(var7, var9, var11);
+        Vec3 var13 = par2World.getWorldVec3Pool().getVecFromPool(var7, var9, var11);
         float var14 = MathHelper.cos(-var6 * 0.017453292F - (float)Math.PI);
         float var15 = MathHelper.sin(-var6 * 0.017453292F - (float)Math.PI);
         float var16 = -MathHelper.cos(-var5 * 0.017453292F);
@@ -44,11 +40,11 @@ public class ItemBoat extends Item
             boolean var26 = false;
             float var27 = 1.0F;
             List var28 = par2World.getEntitiesWithinAABBExcludingEntity(par3EntityPlayer, par3EntityPlayer.boundingBox.addCoord(var25.xCoord * var21, var25.yCoord * var21, var25.zCoord * var21).expand((double)var27, (double)var27, (double)var27));
-            Iterator var29 = var28.iterator();
+            int var29;
 
-            while (var29.hasNext())
+            for (var29 = 0; var29 < var28.size(); ++var29)
             {
-                Entity var30 = (Entity)var29.next();
+                Entity var30 = (Entity)var28.get(var29);
 
                 if (var30.canBeCollidedWith())
                 {
@@ -70,18 +66,25 @@ public class ItemBoat extends Item
             {
                 if (var24.typeOfHit == EnumMovingObjectType.TILE)
                 {
-                    int var35 = var24.blockX;
+                    var29 = var24.blockX;
                     int var33 = var24.blockY;
                     int var34 = var24.blockZ;
 
+                    if (par2World.getBlockId(var29, var33, var34) == Block.snow.blockID)
+                    {
+                        --var33;
+                    }
+
+                    EntityBoat var35 = new EntityBoat(par2World, (double)((float)var29 + 0.5F), (double)((float)var33 + 1.0F), (double)((float)var34 + 0.5F));
+
+                    if (!par2World.getCollidingBoundingBoxes(var35, var35.boundingBox.expand(-0.1D, -0.1D, -0.1D)).isEmpty())
+                    {
+                        return par1ItemStack;
+                    }
+
                     if (!par2World.isRemote)
                     {
-                        if (par2World.getBlockId(var35, var33, var34) == Block.snow.blockID)
-                        {
-                            --var33;
-                        }
-
-                        par2World.spawnEntityInWorld(new EntityBoat(par2World, (double)((float)var35 + 0.5F), (double)((float)var33 + 1.0F), (double)((float)var34 + 0.5F)));
+                        par2World.spawnEntityInWorld(var35);
                     }
 
                     if (!par3EntityPlayer.capabilities.isCreativeMode)

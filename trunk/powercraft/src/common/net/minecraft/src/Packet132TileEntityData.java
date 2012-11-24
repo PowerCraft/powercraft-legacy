@@ -6,19 +6,14 @@ import java.io.IOException;
 
 public class Packet132TileEntityData extends Packet
 {
-    /** The X position of the tile entity to update. */
     public int xPosition;
 
-    /** The Y position of the tile entity to update. */
     public int yPosition;
 
-    /** The Z position of the tile entity to update. */
     public int zPosition;
 
-    /** The type of update to perform on the tile entity. */
     public int actionType;
 
-    /** Custom parameter 1 passed to the tile entity on update. */
     public NBTTagCompound customParam1;
 
     public Packet132TileEntityData()
@@ -36,9 +31,6 @@ public class Packet132TileEntityData extends Packet
         this.customParam1 = par5NBTTagCompound;
     }
 
-    /**
-     * Abstract. Reads the raw packet data from the data stream.
-     */
     public void readPacketData(DataInputStream par1DataInputStream) throws IOException
     {
         this.xPosition = par1DataInputStream.readInt();
@@ -48,9 +40,6 @@ public class Packet132TileEntityData extends Packet
         this.customParam1 = readNBTTagCompound(par1DataInputStream);
     }
 
-    /**
-     * Abstract. Writes the raw packet data to the data stream.
-     */
     public void writePacketData(DataOutputStream par1DataOutputStream) throws IOException
     {
         par1DataOutputStream.writeInt(this.xPosition);
@@ -60,17 +49,11 @@ public class Packet132TileEntityData extends Packet
         writeNBTTagCompound(this.customParam1, par1DataOutputStream);
     }
 
-    /**
-     * Passes this Packet on to the NetHandler for processing.
-     */
     public void processPacket(NetHandler par1NetHandler)
     {
         par1NetHandler.handleTileEntityData(this);
     }
 
-    /**
-     * Abstract. Return the size of the packet (not counting the header).
-     */
     public int getPacketSize()
     {
         return 25;

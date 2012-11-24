@@ -46,7 +46,7 @@ public class RenderWither extends RenderLiving
 
     protected int func_82417_a(EntityWither par1EntityWither, int par2, float par3)
     {
-        if (par1EntityWither.func_82205_o())
+        if (par1EntityWither.isArmored())
         {
             if (par1EntityWither.func_82150_aj())
             {

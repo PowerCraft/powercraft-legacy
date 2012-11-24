@@ -4,20 +4,16 @@ import java.util.concurrent.Callable;
 
 class CallableLvl3 implements Callable
 {
-    /** Gets loaded Entities. */
-    final World worldLvl3;
+    final World theWorld;
 
     CallableLvl3(World par1World)
     {
-        this.worldLvl3 = par1World;
+        this.theWorld = par1World;
     }
 
-    /**
-     * Returns the result of the ChunkProvider's makeString
-     */
     public String getChunkProvider()
     {
-        return this.worldLvl3.chunkProvider.makeString();
+        return this.theWorld.chunkProvider.makeString();
     }
 
     public Object call()

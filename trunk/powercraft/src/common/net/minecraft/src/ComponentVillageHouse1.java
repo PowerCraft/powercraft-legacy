@@ -20,10 +20,6 @@ public class ComponentVillageHouse1 extends ComponentVillage
         return canVillageGoDeeper(var8) && StructureComponent.findIntersecting(par1List, var8) == null ? new ComponentVillageHouse1(par0ComponentVillageStartPiece, par7, par2Random, var8, par6) : null;
     }
 
-    /**
-     * second Part of Structure generating, this for example places Spiderwebs, Mob Spawners, it closes Mineshafts at
-     * the end, it adds Fences...
-     */
     public boolean addComponentParts(World par1World, Random par2Random, StructureBoundingBox par3StructureBoundingBox)
     {
         if (this.averageGroundLevel < 0)
@@ -124,9 +120,6 @@ public class ComponentVillageHouse1 extends ComponentVillage
         return true;
     }
 
-    /**
-     * Returns the villager type to spawn in this component, based on the number of villagers already spawned.
-     */
     protected int getVillagerType(int par1)
     {
         return 1;

@@ -1,4 +1,4 @@
-Minecraft Coder Pack 7.19 for Minecraft 1.4.2
+Minecraft Coder Pack 7.21 for Minecraft 1.4.4
 =============================================
 MCP is (c) Copyright by the MCP Team
 
@@ -215,6 +215,8 @@ and of course:
 
 History:
 ========
+7.21 - Updated to support Minecraft 1.4.4 and MinecraftServer 1.4.4
+7.20 - Updated to support Minecraft 1.4.3 and MinecraftServer 1.4.3
 7.19 - Updated to support Minecraft 1.4.2 and MinecraftServer 1.4.2
 7.18 - Updated to support Minecraft 1.4.1 and MinecraftServer 1.4.1 (pre-release)
 7.17 - Updated to support Minecraft 1.4 and MinecraftServer 1.4 (pre-relrease)
@@ -262,7 +264,7 @@ History:
 
 Roadmap:
 ========
-7.19+ - New awesome features, improvements and updates :)
+7.22+ - New awesome features, improvements and updates :)
 
 _________________________________________________________________________________________________________________
 _________________________________________________________________________________________________________________

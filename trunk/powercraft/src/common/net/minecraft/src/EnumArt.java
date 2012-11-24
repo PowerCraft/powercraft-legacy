@@ -29,10 +29,8 @@ public enum EnumArt
     Skeleton("Skeleton", 64, 48, 192, 64),
     DonkeyKong("DonkeyKong", 64, 48, 192, 112);
 
-    /** Holds the maximum length of paintings art title. */
     public static final int maxArtTitleLength = "SkullAndRoses".length();
 
-    /** Painting Title. */
     public final String title;
     public final int sizeX;
     public final int sizeY;

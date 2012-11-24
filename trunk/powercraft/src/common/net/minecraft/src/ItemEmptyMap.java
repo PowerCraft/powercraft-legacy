@@ -8,9 +8,6 @@ public class ItemEmptyMap extends ItemMapBase
         this.setCreativeTab(CreativeTabs.tabMisc);
     }
 
-    /**
-     * Called whenever this item is equipped and the right mouse button is pressed. Args: itemStack, world, entityPlayer
-     */
     public ItemStack onItemRightClick(ItemStack par1ItemStack, World par2World, EntityPlayer par3EntityPlayer)
     {
         ItemStack var4 = new ItemStack(Item.map, 1, par2World.getUniqueDataId("map"));

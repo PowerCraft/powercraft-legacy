@@ -10,10 +10,8 @@ import net.minecraft.server.MinecraftServer;
 @SideOnly(Side.SERVER)
 class ServerGuiCommandListener implements ActionListener
 {
-    /** Text field. */
     final JTextField textField;
 
-    /** Reference to the ServerGui object. */
     final ServerGUI mcServerGui;
 
     ServerGuiCommandListener(ServerGUI par1ServerGUI, JTextField par2JTextField)

@@ -7,7 +7,6 @@ import cpw.mods.fml.common.network.IChatListener;
 
 public class ModLoaderChatListener implements IChatListener
 {
-
     private BaseModProxy mod;
 
     public ModLoaderChatListener(BaseModProxy mod)
@@ -28,5 +27,4 @@ public class ModLoaderChatListener implements IChatListener
         mod.clientChat(message.message);
         return message;
     }
-
 }

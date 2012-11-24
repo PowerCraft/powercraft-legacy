@@ -8,21 +8,20 @@ import net.minecraft.client.Minecraft;
 @SideOnly(Side.CLIENT)
 public class CallableTexturePack implements Callable
 {
-    /** The Minecraft instance. */
-    final Minecraft mc;
+    final Minecraft field_90051_a;
 
     public CallableTexturePack(Minecraft par1Minecraft)
     {
-        this.mc = par1Minecraft;
+        this.field_90051_a = par1Minecraft;
     }
 
-    public String getTexturePack()
+    public String func_90050_a()
     {
-        return this.mc.gameSettings.skin;
+        return this.field_90051_a.gameSettings.skin;
     }
 
     public Object call()
     {
-        return this.getTexturePack();
+        return this.func_90050_a();
     }
 }

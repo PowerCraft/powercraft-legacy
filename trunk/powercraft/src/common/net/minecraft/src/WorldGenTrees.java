@@ -4,16 +4,12 @@ import java.util.Random;
 
 public class WorldGenTrees extends WorldGenerator
 {
-    /** The minimum height of a generated tree. */
     private final int minTreeHeight;
 
-    /** True if this tree should grow Vines. */
     private final boolean vinesGrow;
 
-    /** The metadata value of the wood to use in tree generation. */
     private final int metaWood;
 
-    /** The metadata value of the leaves to use in tree generation. */
     private final int metaLeaves;
 
     public WorldGenTrees(boolean par1)
@@ -63,14 +59,13 @@ public class WorldGenTrees extends WorldGenerator
                         if (var8 >= 0 && var8 < 256)
                         {
                             var12 = par1World.getBlockId(var10, var8, var11);
-
                             Block block = Block.blocksList[var12];
 
-                            if (var12 != 0 && 
-                               !block.isLeaves(par1World, var10, var8, var11) && 
-                                var12 != Block.grass.blockID && 
-                                var12 != Block.dirt.blockID && 
-                               !block.isWood(par1World, var10, var8, var11))
+                            if (var12 != 0 &&
+                                    !block.isLeaves(par1World, var10, var8, var11) &&
+                                    var12 != Block.grass.blockID &&
+                                    var12 != Block.dirt.blockID &&
+                                    !block.isWood(par1World, var10, var8, var11))
                             {
                                 var7 = false;
                             }
@@ -112,11 +107,10 @@ public class WorldGenTrees extends WorldGenerator
                             for (int var16 = par5 - var13; var16 <= par5 + var13; ++var16)
                             {
                                 int var17 = var16 - par5;
-
                                 Block block = Block.blocksList[par1World.getBlockId(var14, var11, var16)];
 
-                                if ((Math.abs(var15) != var13 || Math.abs(var17) != var13 || par2Random.nextInt(2) != 0 && var12 != 0) && 
-                                    (block == null || block.canBeReplacedByLeaves(par1World, var14, var11, var16)))
+                                if ((Math.abs(var15) != var13 || Math.abs(var17) != var13 || par2Random.nextInt(2) != 0 && var12 != 0) &&
+                                        (block == null || block.canBeReplacedByLeaves(par1World, var14, var11, var16)))
                                 {
                                     this.setBlockAndMetadata(par1World, var14, var11, var16, Block.leaves.blockID, this.metaLeaves);
                                 }
@@ -127,7 +121,6 @@ public class WorldGenTrees extends WorldGenerator
                     for (var11 = 0; var11 < var6; ++var11)
                     {
                         var12 = par1World.getBlockId(par3, par4 + var11, par5);
-
                         Block block = Block.blocksList[var12];
 
                         if (var12 == 0 || block == null || block.isLeaves(par1World, par3, par4 + var11, par5))
@@ -171,6 +164,7 @@ public class WorldGenTrees extends WorldGenerator
                                 for (var15 = par5 - var13; var15 <= par5 + var13; ++var15)
                                 {
                                     Block block = Block.blocksList[par1World.getBlockId(var14, var11, var15)];
+
                                     if (block != null && block.isLeaves(par1World, var14, var11, var15))
                                     {
                                         if (par2Random.nextInt(4) == 0 && par1World.getBlockId(var14 - 1, var11, var15) == 0)
@@ -227,9 +221,6 @@ public class WorldGenTrees extends WorldGenerator
         }
     }
 
-    /**
-     * Grows vines downward from the given block for a given length. Args: World, x, starty, z, vine-length
-     */
     private void growVines(World par1World, int par2, int par3, int par4, int par5)
     {
         this.setBlockAndMetadata(par1World, par2, par3, par4, Block.vine.blockID, par5);

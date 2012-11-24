@@ -1,0 +1,20 @@
+package powercraft.light;
+
+import powercraft.core.PC_TileEntity;
+
+public class PCli_TileEntityLaserSensor extends PC_TileEntity {
+
+	private boolean active=false;
+	
+	public void hitByBeam() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public boolean isActive() {
+		return active;
+	}
+
+	
+	
+}

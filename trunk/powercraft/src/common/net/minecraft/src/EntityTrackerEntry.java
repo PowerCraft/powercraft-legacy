@@ -12,7 +12,6 @@ public class EntityTrackerEntry
     public Entity myEntity;
     public int BlocksDistanceThreshold;
 
-    /** check for sync when ticks % updateFrequency==0 */
     public int updateFrequency;
     public int lastScaledXPosition;
     public int lastScaledYPosition;
@@ -28,16 +27,12 @@ public class EntityTrackerEntry
     private double posY;
     private double posZ;
 
-    /** set to true on first sendLocationToClients */
     private boolean isDataInitialized = false;
     private boolean sendVelocityUpdates;
 
-    /**
-     * every 400 ticks a  full teleport packet is sent, rather than just a "move me +x" command, so that position
-     * remains fully synced.
-     */
     private int ticksSinceLastForcedTeleport = 0;
-    private Entity ridingEntity;
+    private Entity field_85178_v;
+    private boolean ridingEntity = false;
     public boolean playerEntitiesUpdated = false;
     public Set trackedPlayers = new HashSet();
 
@@ -65,9 +60,6 @@ public class EntityTrackerEntry
         return this.myEntity.entityId;
     }
 
-    /**
-     * also sends velocity, rotation, and riding info.
-     */
     public void sendLocationToAllClients(List par1List)
     {
         this.playerEntitiesUpdated = false;
@@ -82,9 +74,9 @@ public class EntityTrackerEntry
             this.sendEventsToPlayers(par1List);
         }
 
-        if (this.ridingEntity != this.myEntity.ridingEntity)
+        if (this.field_85178_v != this.myEntity.ridingEntity)
         {
-            this.ridingEntity = this.myEntity.ridingEntity;
+            this.field_85178_v = this.myEntity.ridingEntity;
             this.sendPacketToAllTrackingPlayers(new Packet39AttachEntity(this.myEntity, this.myEntity.ridingEntity));
         }
 
@@ -96,21 +88,21 @@ public class EntityTrackerEntry
             if (var24 != null && var24.getItem() instanceof ItemMap)
             {
                 MapData var26 = Item.map.getMapData(var24, this.myEntity.worldObj);
-                Iterator var27 = par1List.iterator();
+                Iterator var29 = par1List.iterator();
 
-                while (var27.hasNext())
+                while (var29.hasNext())
                 {
-                    EntityPlayer var29 = (EntityPlayer)var27.next();
-                    EntityPlayerMP var30 = (EntityPlayerMP)var29;
-                    var26.updateVisiblePlayers(var30, var24);
+                    EntityPlayer var30 = (EntityPlayer)var29.next();
+                    EntityPlayerMP var31 = (EntityPlayerMP)var30;
+                    var26.updateVisiblePlayers(var31, var24);
 
-                    if (var30.playerNetServerHandler.packetSize() <= 5)
+                    if (var31.playerNetServerHandler.packetSize() <= 5)
                     {
-                        Packet var31 = Item.map.createMapDataPacket(var24, this.myEntity.worldObj, var30);
+                        Packet var32 = Item.map.createMapDataPacket(var24, this.myEntity.worldObj, var31);
 
-                        if (var31 != null)
+                        if (var32 != null)
                         {
-                            var30.playerNetServerHandler.sendPacketToPlayer(var31);
+                            var31.playerNetServerHandler.sendPacketToPlayer(var32);
                         }
                     }
                 }
@@ -143,7 +135,7 @@ public class EntityTrackerEntry
                 boolean var11 = Math.abs(var7) >= 4 || Math.abs(var8) >= 4 || Math.abs(var9) >= 4 || this.ticks % 60 == 0;
                 boolean var12 = Math.abs(var5 - this.lastYaw) >= 4 || Math.abs(var6 - this.lastPitch) >= 4;
 
-                if (var7 >= -128 && var7 < 128 && var8 >= -128 && var8 < 128 && var9 >= -128 && var9 < 128 && this.ticksSinceLastForcedTeleport <= 400)
+                if (var7 >= -128 && var7 < 128 && var8 >= -128 && var8 < 128 && var9 >= -128 && var9 < 128 && this.ticksSinceLastForcedTeleport <= 400 && !this.ridingEntity)
                 {
                     if (var11 && var12)
                     {
@@ -186,11 +178,11 @@ public class EntityTrackerEntry
                     this.sendPacketToAllTrackingPlayers((Packet)var10);
                 }
 
-                DataWatcher var32 = this.myEntity.getDataWatcher();
+                DataWatcher var33 = this.myEntity.getDataWatcher();
 
-                if (var32.hasChanges())
+                if (var33.hasChanges())
                 {
-                    this.sendPacketToAllAssociatedPlayers(new Packet40EntityMetadata(this.myEntity.entityId, var32, false));
+                    this.sendPacketToAllAssociatedPlayers(new Packet40EntityMetadata(this.myEntity.entityId, var33, false));
                 }
 
                 if (var11)
@@ -205,6 +197,8 @@ public class EntityTrackerEntry
                     this.lastYaw = var5;
                     this.lastPitch = var6;
                 }
+
+                this.ridingEntity = false;
             }
             else
             {
@@ -222,6 +216,14 @@ public class EntityTrackerEntry
                 this.lastScaledXPosition = this.myEntity.myEntitySize.multiplyBy32AndRound(this.myEntity.posX);
                 this.lastScaledYPosition = MathHelper.floor_double(this.myEntity.posY * 32.0D);
                 this.lastScaledZPosition = this.myEntity.myEntitySize.multiplyBy32AndRound(this.myEntity.posZ);
+                DataWatcher var27 = this.myEntity.getDataWatcher();
+
+                if (var27.hasChanges())
+                {
+                    this.sendPacketToAllAssociatedPlayers(new Packet40EntityMetadata(this.myEntity.entityId, var27, false));
+                }
+
+                this.ridingEntity = true;
             }
 
             var2 = MathHelper.floor_float(this.myEntity.func_70079_am() * 256.0F / 360.0F);
@@ -242,9 +244,6 @@ public class EntityTrackerEntry
         }
     }
 
-    /**
-     * if this is a player, then it is not informed
-     */
     public void sendPacketToAllTrackingPlayers(Packet par1Packet)
     {
         Iterator var2 = this.trackedPlayers.iterator();
@@ -256,9 +255,6 @@ public class EntityTrackerEntry
         }
     }
 
-    /**
-     * if this is a player, then it recieves the message also
-     */
     public void sendPacketToAllAssociatedPlayers(Packet par1Packet)
     {
         this.sendPacketToAllTrackingPlayers(par1Packet);
@@ -289,9 +285,6 @@ public class EntityTrackerEntry
         }
     }
 
-    /**
-     * if the player is more than the distance threshold (typically 64) then the player is removed instead
-     */
     public void tryStartWachingThis(EntityPlayerMP par1EntityPlayerMP)
     {
         if (par1EntityPlayerMP != this.myEntity)
@@ -315,14 +308,15 @@ public class EntityTrackerEntry
                     this.motionX = this.myEntity.motionX;
                     this.motionY = this.myEntity.motionY;
                     this.motionZ = this.myEntity.motionZ;
-
                     int posX = MathHelper.floor_double(this.myEntity.posX * 32.0D);
                     int posY = MathHelper.floor_double(this.myEntity.posY * 32.0D);
                     int posZ = MathHelper.floor_double(this.myEntity.posZ * 32.0D);
+
                     if (posX != this.lastScaledXPosition || posY != this.lastScaledYPosition || posZ != this.lastScaledZPosition)
                     {
                         FMLNetworkHandler.makeEntitySpawnAdjustment(this.myEntity.entityId, par1EntityPlayerMP, this.lastScaledXPosition, this.lastScaledYPosition, this.lastScaledZPosition);
                     }
+
                     if (this.sendVelocityUpdates && !(var6 instanceof Packet24MobSpawn))
                     {
                         par1EntityPlayerMP.playerNetServerHandler.sendPacketToPlayer(new Packet28EntityVelocity(this.myEntity.entityId, this.myEntity.motionX, this.myEntity.motionY, this.myEntity.motionZ));
@@ -384,12 +378,9 @@ public class EntityTrackerEntry
 
     public void sendEventsToPlayers(List par1List)
     {
-        Iterator var2 = par1List.iterator();
-
-        while (var2.hasNext())
+        for (int var2 = 0; var2 < par1List.size(); ++var2)
         {
-            EntityPlayer var3 = (EntityPlayer)var2.next();
-            this.tryStartWachingThis((EntityPlayerMP)var3);
+            this.tryStartWachingThis((EntityPlayerMP)par1List.get(var2));
         }
     }
 

@@ -17,9 +17,9 @@ public class EntityWitherSkull extends EntityFireball
         this.setSize(0.3125F, 0.3125F);
     }
 
-    protected float func_82341_c()
+    protected float getMotionFactor()
     {
-        return this.func_82342_d() ? 0.73F : super.func_82341_c();
+        return this.isInvulnerable() ? 0.73F : super.getMotionFactor();
     }
 
     @SideOnly(Side.CLIENT)
@@ -29,9 +29,6 @@ public class EntityWitherSkull extends EntityFireball
         this.setSize(0.3125F, 0.3125F);
     }
 
-    /**
-     * Returns true if the entity is on fire. Used by render to add the fire effect on rendering.
-     */
     public boolean isBurning()
     {
         return false;
@@ -41,7 +38,7 @@ public class EntityWitherSkull extends EntityFireball
     {
         float var6 = super.func_82146_a(par1Explosion, par2Block, par3, par4, par5);
 
-        if (this.func_82342_d() && par2Block != Block.bedrock)
+        if (this.isInvulnerable() && par2Block != Block.bedrock && par2Block != Block.endPortal && par2Block != Block.endPortalFrame)
         {
             var6 = Math.min(0.8F, var6);
         }
@@ -49,9 +46,6 @@ public class EntityWitherSkull extends EntityFireball
         return var6;
     }
 
-    /**
-     * Called when this EntityFireball hits a block or entity.
-     */
     protected void onImpact(MovingObjectPosition par1MovingObjectPosition)
     {
         if (!this.worldObj.isRemote)
@@ -88,27 +82,21 @@ public class EntityWitherSkull extends EntityFireball
 
                     if (var2 > 0)
                     {
-                        ((EntityLiving)par1MovingObjectPosition.entityHit).addPotionEffect(new PotionEffect(Potion.field_82731_v.id, 20 * var2, 1));
+                        ((EntityLiving)par1MovingObjectPosition.entityHit).addPotionEffect(new PotionEffect(Potion.wither.id, 20 * var2, 1));
                     }
                 }
             }
 
-            this.worldObj.newExplosion(this, this.posX, this.posY, this.posZ, 1.0F, false, this.worldObj.func_82736_K().func_82766_b("mobGriefing"));
+            this.worldObj.newExplosion(this, this.posX, this.posY, this.posZ, 1.0F, false, this.worldObj.getGameRules().getGameRuleBooleanValue("mobGriefing"));
             this.setDead();
         }
     }
 
-    /**
-     * Returns true if other Entities should be prevented from moving through this Entity.
-     */
     public boolean canBeCollidedWith()
     {
         return false;
     }
 
-    /**
-     * Called when the entity is attacked.
-     */
     public boolean attackEntityFrom(DamageSource par1DamageSource, int par2)
     {
         return false;
@@ -119,12 +107,12 @@ public class EntityWitherSkull extends EntityFireball
         this.dataWatcher.addObject(10, Byte.valueOf((byte)0));
     }
 
-    public boolean func_82342_d()
+    public boolean isInvulnerable()
     {
         return this.dataWatcher.getWatchableObjectByte(10) == 1;
     }
 
-    public void func_82343_e(boolean par1)
+    public void setInvulnerable(boolean par1)
     {
         this.dataWatcher.updateObject(10, Byte.valueOf((byte)(par1 ? 1 : 0)));
     }

@@ -43,8 +43,6 @@ public class FMLInjectionData
         build = properties.getProperty("fmlbuild.build.number", "missing");
         mccversion = properties.getProperty("fmlbuild.mcversion", "missing");
         mcpversion = properties.getProperty("fmlbuild.mcpversion", "missing");
-
-
     }
 
     public static Object[] data()

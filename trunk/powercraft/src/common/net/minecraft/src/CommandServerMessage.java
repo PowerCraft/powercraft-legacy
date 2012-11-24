@@ -16,7 +16,7 @@ public class CommandServerMessage extends CommandBase
         return "tell";
     }
 
-    public int func_82362_a()
+    public int getRequiredPermissionLevel()
     {
         return 0;
     }
@@ -48,15 +48,12 @@ public class CommandServerMessage extends CommandBase
         }
     }
 
-    /**
-     * Adds the strings available in this command to the given list of tab completion options.
-     */
     public List addTabCompletionOptions(ICommandSender par1ICommandSender, String[] par2ArrayOfStr)
     {
         return getListOfStringsMatchingLastWord(par2ArrayOfStr, MinecraftServer.getServer().getAllUsernames());
     }
 
-    public boolean func_82358_a(int par1)
+    public boolean isUsernameIndex(int par1)
     {
         return par1 == 0;
     }

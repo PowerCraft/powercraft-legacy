@@ -76,7 +76,7 @@ public class PCco_GuiSpawnerEditor implements PC_IGresClient {
 		
 		int id = widget.getId()-1;
 		if(id>=0){
-			PC_PacketHandler.sendToPacketHandler(thePlayer, "MobSpawner", tems.xCoord, tems.yCoord, tems.zCoord, entityIds.get(id));
+			PC_PacketHandler.sendToPacketHandler(thePlayer.worldObj, "MobSpawner", tems.xCoord, tems.yCoord, tems.zCoord, entityIds.get(id));
 		}
 		
 	}

@@ -3,33 +3,27 @@ package net.minecraft.src;
 import cpw.mods.fml.common.Side;
 import cpw.mods.fml.common.asm.SideOnly;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
+import static net.minecraft.src.BiomeGenBase.*;
 
 public class WorldChunkManager
 {
+    public static ArrayList<BiomeGenBase> allowedBiomes = new ArrayList<BiomeGenBase>(Arrays.asList(forest, plains, taiga, taigaHills, forestHills, jungle. jungleHills));
     private GenLayer genBiomes;
 
-    /** A GenLayer containing the indices into BiomeGenBase.biomeList[] */
     private GenLayer biomeIndexLayer;
 
-    /** The BiomeCache object for this world. */
     private BiomeCache biomeCache;
 
-    /** A list of biomes that the player can spawn in. */
     private List biomesToSpawnIn;
 
     protected WorldChunkManager()
     {
         this.biomeCache = new BiomeCache(this);
         this.biomesToSpawnIn = new ArrayList();
-        this.biomesToSpawnIn.add(BiomeGenBase.forest);
-        this.biomesToSpawnIn.add(BiomeGenBase.plains);
-        this.biomesToSpawnIn.add(BiomeGenBase.taiga);
-        this.biomesToSpawnIn.add(BiomeGenBase.taigaHills);
-        this.biomesToSpawnIn.add(BiomeGenBase.forestHills);
-        this.biomesToSpawnIn.add(BiomeGenBase.jungle);
-        this.biomesToSpawnIn.add(BiomeGenBase.jungleHills);
+        this.biomesToSpawnIn.addAll(allowedBiomes);
     }
 
     public WorldChunkManager(long par1, WorldType par3WorldType)
@@ -45,25 +39,16 @@ public class WorldChunkManager
         this(par1World.getSeed(), par1World.getWorldInfo().getTerrainType());
     }
 
-    /**
-     * Gets the list of valid biomes for the player to spawn in.
-     */
     public List getBiomesToSpawnIn()
     {
         return this.biomesToSpawnIn;
     }
 
-    /**
-     * Returns the BiomeGenBase related to the x, z position on the world.
-     */
     public BiomeGenBase getBiomeGenAt(int par1, int par2)
     {
         return this.biomeCache.getBiomeGenAt(par1, par2);
     }
 
-    /**
-     * Returns a list of rainfall values for the specified blocks. Args: listToReuse, x, z, width, length.
-     */
     public float[] getRainfall(float[] par1ArrayOfFloat, int par2, int par3, int par4, int par5)
     {
         IntCache.resetIntCache();
@@ -92,17 +77,11 @@ public class WorldChunkManager
 
     @SideOnly(Side.CLIENT)
 
-    /**
-     * Return an adjusted version of a given temperature based on the y height
-     */
     public float getTemperatureAtHeight(float par1, int par2)
     {
         return par1;
     }
 
-    /**
-     * Returns a list of temperatures to use for the specified blocks.  Args: listToReuse, x, y, width, length
-     */
     public float[] getTemperatures(float[] par1ArrayOfFloat, int par2, int par3, int par4, int par5)
     {
         IntCache.resetIntCache();
@@ -129,9 +108,6 @@ public class WorldChunkManager
         return par1ArrayOfFloat;
     }
 
-    /**
-     * Returns an array of biomes for the location input.
-     */
     public BiomeGenBase[] getBiomesForGeneration(BiomeGenBase[] par1ArrayOfBiomeGenBase, int par2, int par3, int par4, int par5)
     {
         IntCache.resetIntCache();
@@ -151,19 +127,11 @@ public class WorldChunkManager
         return par1ArrayOfBiomeGenBase;
     }
 
-    /**
-     * Returns biomes to use for the blocks and loads the other data like temperature and humidity onto the
-     * WorldChunkManager Args: oldBiomeList, x, z, width, depth
-     */
     public BiomeGenBase[] loadBlockGeneratorData(BiomeGenBase[] par1ArrayOfBiomeGenBase, int par2, int par3, int par4, int par5)
     {
         return this.getBiomeGenAt(par1ArrayOfBiomeGenBase, par2, par3, par4, par5, true);
     }
 
-    /**
-     * Return a list of biomes for the specified blocks. Args: listToReuse, x, y, width, length, cacheFlag (if false,
-     * don't check biomeCache to avoid infinite loop in BiomeCacheBlock)
-     */
     public BiomeGenBase[] getBiomeGenAt(BiomeGenBase[] par1ArrayOfBiomeGenBase, int par2, int par3, int par4, int par5, boolean par6)
     {
         IntCache.resetIntCache();
@@ -192,9 +160,6 @@ public class WorldChunkManager
         }
     }
 
-    /**
-     * checks given Chunk's Biomes against List of allowed ones
-     */
     public boolean areBiomesViable(int par1, int par2, int par3, List par4List)
     {
         IntCache.resetIntCache();
@@ -219,10 +184,6 @@ public class WorldChunkManager
         return true;
     }
 
-    /**
-     * Finds a valid position within a range, that is in one of the listed biomes. Searches {par1,par2} +-par3 blocks.
-     * Strongly favors positive y positions.
-     */
     public ChunkPosition findBiomePosition(int par1, int par2, int par3, List par4List, Random par5Random)
     {
         IntCache.resetIntCache();
@@ -236,7 +197,7 @@ public class WorldChunkManager
         ChunkPosition var13 = null;
         int var14 = 0;
 
-        for (int var15 = 0; var15 < var12.length; ++var15)
+        for (int var15 = 0; var15 < var10 * var11; ++var15)
         {
             int var16 = var6 + var15 % var10 << 2;
             int var17 = var7 + var15 / var10 << 2;
@@ -252,9 +213,6 @@ public class WorldChunkManager
         return var13;
     }
 
-    /**
-     * Calls the WorldChunkManager's biomeCache.cleanupCache()
-     */
     public void cleanupCache()
     {
         this.biomeCache.cleanupCache();

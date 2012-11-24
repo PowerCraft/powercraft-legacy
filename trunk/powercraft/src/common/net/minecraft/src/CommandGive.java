@@ -10,7 +10,7 @@ public class CommandGive extends CommandBase
         return "give";
     }
 
-    public int func_82362_a()
+    public int getRequiredPermissionLevel()
     {
         return 2;
     }
@@ -57,9 +57,6 @@ public class CommandGive extends CommandBase
         }
     }
 
-    /**
-     * Adds the strings available in this command to the given list of tab completion options.
-     */
     public List addTabCompletionOptions(ICommandSender par1ICommandSender, String[] par2ArrayOfStr)
     {
         return par2ArrayOfStr.length == 1 ? getListOfStringsMatchingLastWord(par2ArrayOfStr, this.getPlayers()) : null;
@@ -70,7 +67,7 @@ public class CommandGive extends CommandBase
         return MinecraftServer.getServer().getAllUsernames();
     }
 
-    public boolean func_82358_a(int par1)
+    public boolean isUsernameIndex(int par1)
     {
         return par1 == 0;
     }

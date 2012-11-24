@@ -23,7 +23,7 @@ public class GuiEnchantment extends GuiContainer
     public float field_74210_s;
     public float field_74209_t;
     public float field_74208_u;
-    ItemStack field_74207_v;
+    ItemStack theItemStack;
 
     public GuiEnchantment(InventoryPlayer par1InventoryPlayer, World par2World, int par3, int par4, int par5)
     {
@@ -197,9 +197,9 @@ public class GuiEnchantment extends GuiContainer
     {
         ItemStack var1 = this.inventorySlots.getSlot(0).getStack();
 
-        if (!ItemStack.areItemStacksEqual(var1, this.field_74207_v))
+        if (!ItemStack.areItemStacksEqual(var1, this.theItemStack))
         {
-            this.field_74207_v = var1;
+            this.theItemStack = var1;
 
             do
             {

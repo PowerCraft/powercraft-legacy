@@ -15,43 +15,26 @@ public class BlockTorch extends Block
         this.setCreativeTab(CreativeTabs.tabDecorations);
     }
 
-    /**
-     * Returns a bounding box from the pool of bounding boxes (this means this box can change after the pool has been
-     * cleared to be reused)
-     */
     public AxisAlignedBB getCollisionBoundingBoxFromPool(World par1World, int par2, int par3, int par4)
     {
         return null;
     }
 
-    /**
-     * Is this block (a) opaque and (b) a full 1m cube?  This determines whether or not to render the shared face of two
-     * adjacent blocks and also whether the player can attach torches, redstone wire, etc to this block.
-     */
     public boolean isOpaqueCube()
     {
         return false;
     }
 
-    /**
-     * If this block doesn't render as an ordinary block it will return False (examples: signs, buttons, stairs, etc)
-     */
     public boolean renderAsNormalBlock()
     {
         return false;
     }
 
-    /**
-     * The type of render function that is called for this block
-     */
     public int getRenderType()
     {
         return 2;
     }
 
-    /**
-     * Gets if we can place a torch on a block.
-     */
     private boolean canPlaceTorchOn(World par1World, int par2, int par3, int par4)
     {
         if (par1World.doesBlockHaveSolidTopSurface(par2, par3, par4))
@@ -65,56 +48,47 @@ public class BlockTorch extends Block
         }
     }
 
-    /**
-     * Checks to see if its valid to put this block at the specified coordinates. Args: world, x, y, z
-     */
     public boolean canPlaceBlockAt(World par1World, int par2, int par3, int par4)
     {
         return par1World.isBlockSolidOnSide(par2 - 1, par3, par4, EAST,  true) ||
-               par1World.isBlockSolidOnSide(par2 + 1, par3, par4, WEST,  true) ||
-               par1World.isBlockSolidOnSide(par2, par3, par4 - 1, SOUTH, true) ||
-               par1World.isBlockSolidOnSide(par2, par3, par4 + 1, NORTH, true) ||
-               canPlaceTorchOn(par1World, par2, par3 - 1, par4);
+                par1World.isBlockSolidOnSide(par2 + 1, par3, par4, WEST,  true) ||
+                par1World.isBlockSolidOnSide(par2, par3, par4 - 1, SOUTH, true) ||
+                par1World.isBlockSolidOnSide(par2, par3, par4 + 1, NORTH, true) ||
+                canPlaceTorchOn(par1World, par2, par3 - 1, par4);
     }
 
-    /**
-     * called before onBlockPlacedBy by ItemBlock and ItemReed
-     */
-    public void updateBlockMetadata(World par1World, int par2, int par3, int par4, int par5, float par6, float par7, float par8)
+    public int func_85104_a(World par1World, int par2, int par3, int par4, int par5, float par6, float par7, float par8, int par9)
     {
-        int var9 = par1World.getBlockMetadata(par2, par3, par4);
+        int var10 = par9;
 
         if (par5 == 1 && this.canPlaceTorchOn(par1World, par2, par3 - 1, par4))
         {
-            var9 = 5;
+            var10 = 5;
         }
 
         if (par5 == 2 && par1World.isBlockSolidOnSide(par2, par3, par4 + 1, NORTH, true))
         {
-            var9 = 4;
+            var10 = 4;
         }
 
         if (par5 == 3 && par1World.isBlockSolidOnSide(par2, par3, par4 - 1, SOUTH, true))
         {
-            var9 = 3;
+            var10 = 3;
         }
 
         if (par5 == 4 && par1World.isBlockSolidOnSide(par2 + 1, par3, par4, WEST, true))
         {
-            var9 = 2;
+            var10 = 2;
         }
 
         if (par5 == 5 && par1World.isBlockSolidOnSide(par2 - 1, par3, par4, EAST, true))
         {
-            var9 = 1;
+            var10 = 1;
         }
 
-        par1World.setBlockMetadataWithNotify(par2, par3, par4, var9);
+        return var10;
     }
 
-    /**
-     * Ticks the block if it's been scheduled
-     */
     public void updateTick(World par1World, int par2, int par3, int par4, Random par5Random)
     {
         super.updateTick(par1World, par2, par3, par4, par5Random);
@@ -125,39 +99,35 @@ public class BlockTorch extends Block
         }
     }
 
-    /**
-     * Called whenever the block is added into the world. Args: world, x, y, z
-     */
     public void onBlockAdded(World par1World, int par2, int par3, int par4)
     {
-        if (par1World.isBlockSolidOnSide(par2 - 1, par3, par4, EAST, true))
+        if (par1World.getBlockMetadata(par2, par3, par4) == 0)
         {
-            par1World.setBlockMetadataWithNotify(par2, par3, par4, 1);
-        }
-        else if (par1World.isBlockSolidOnSide(par2 + 1, par3, par4, WEST, true))
-        {
-            par1World.setBlockMetadataWithNotify(par2, par3, par4, 2);
-        }
-        else if (par1World.isBlockSolidOnSide(par2, par3, par4 - 1, SOUTH, true))
-        {
-            par1World.setBlockMetadataWithNotify(par2, par3, par4, 3);
-        }
-        else if (par1World.isBlockSolidOnSide(par2, par3, par4 + 1, NORTH, true))
-        {
-            par1World.setBlockMetadataWithNotify(par2, par3, par4, 4);
-        }
-        else if (this.canPlaceTorchOn(par1World, par2, par3 - 1, par4))
-        {
-            par1World.setBlockMetadataWithNotify(par2, par3, par4, 5);
+            if (par1World.isBlockSolidOnSide(par2 - 1, par3, par4, EAST, true))
+            {
+                par1World.setBlockMetadataWithNotify(par2, par3, par4, 1);
+            }
+            else if (par1World.isBlockSolidOnSide(par2 + 1, par3, par4, WEST, true))
+            {
+                par1World.setBlockMetadataWithNotify(par2, par3, par4, 2);
+            }
+            else if (par1World.isBlockSolidOnSide(par2, par3, par4 - 1, SOUTH, true))
+            {
+                par1World.setBlockMetadataWithNotify(par2, par3, par4, 3);
+            }
+            else if (par1World.isBlockSolidOnSide(par2, par3, par4 + 1, NORTH, true))
+            {
+                par1World.setBlockMetadataWithNotify(par2, par3, par4, 4);
+            }
+            else if (this.canPlaceTorchOn(par1World, par2, par3 - 1, par4))
+            {
+                par1World.setBlockMetadataWithNotify(par2, par3, par4, 5);
+            }
         }
 
         this.dropTorchIfCantStay(par1World, par2, par3, par4);
     }
 
-    /**
-     * Lets the block know when one of its neighbor changes. Doesn't know which neighbor changed (coordinates passed are
-     * their own) Args: x, y, z, neighbor blockID
-     */
     public void onNeighborBlockChange(World par1World, int par2, int par3, int par4, int par5)
     {
         if (this.dropTorchIfCantStay(par1World, par2, par3, par4))
@@ -198,10 +168,6 @@ public class BlockTorch extends Block
         }
     }
 
-    /**
-     * Tests if the block can remain at its current location and will drop as an item if it is unable to stay. Returns
-     * True if it can stay and False if it drops. Args: world, x, y, z
-     */
     private boolean dropTorchIfCantStay(World par1World, int par2, int par3, int par4)
     {
         if (!this.canPlaceBlockAt(par1World, par2, par3, par4))
@@ -220,10 +186,6 @@ public class BlockTorch extends Block
         }
     }
 
-    /**
-     * Ray traces through the blocks collision from start vector to end vector returning a ray trace hit. Args: world,
-     * x, y, z, startVec, endVec
-     */
     public MovingObjectPosition collisionRayTrace(World par1World, int par2, int par3, int par4, Vec3 par5Vec3, Vec3 par6Vec3)
     {
         int var7 = par1World.getBlockMetadata(par2, par3, par4) & 7;
@@ -256,9 +218,6 @@ public class BlockTorch extends Block
 
     @SideOnly(Side.CLIENT)
 
-    /**
-     * A randomly called display update to be able to add particles or other items for display
-     */
     public void randomDisplayTick(World par1World, int par2, int par3, int par4, Random par5Random)
     {
         int var6 = par1World.getBlockMetadata(par2, par3, par4);

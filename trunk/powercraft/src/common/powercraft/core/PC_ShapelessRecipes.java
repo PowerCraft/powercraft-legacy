@@ -9,12 +9,10 @@ import net.minecraft.src.InventoryCrafting;
 import net.minecraft.src.ItemStack;
 import net.minecraft.src.World;
 
-public class PC_ShapelessRecipes implements IRecipe {
-
-	/** Is the ItemStack that you get when craft the recipe. */
+public class PC_ShapelessRecipes implements IRecipe, PC_ICraftingInputGetter
+{
     private final PC_ItemStack recipeOutput;
 
-    /** Is a List of ItemStack that composes the recipe. */
     private final List<PC_ItemStack> recipeItems;
 
     public PC_ShapelessRecipes(PC_ItemStack par1ItemStack, List<PC_ItemStack> par2List)
@@ -28,9 +26,6 @@ public class PC_ShapelessRecipes implements IRecipe {
         return recipeOutput.toItemStack();
     }
 
-    /**
-     * Used to check if a recipe matches current crafting inventory
-     */
     public boolean matches(InventoryCrafting par1InventoryCrafting, World par2World)
     {
         ArrayList var3 = new ArrayList(this.recipeItems);
@@ -39,7 +34,7 @@ public class PC_ShapelessRecipes implements IRecipe {
         {
             for (int var5 = 0; var5 < 3; ++var5)
             {
-            	ItemStack var6 = par1InventoryCrafting.getStackInRowAndColumn(var5, var4);
+                ItemStack var6 = par1InventoryCrafting.getStackInRowAndColumn(var5, var4);
 
                 if (var6 != null)
                 {
@@ -48,7 +43,7 @@ public class PC_ShapelessRecipes implements IRecipe {
 
                     while (var8.hasNext())
                     {
-                    	PC_ItemStack var9 = (PC_ItemStack)var8.next();
+                        PC_ItemStack var9 = (PC_ItemStack)var8.next();
 
                         if (var9.equals(var6))
                         {
@@ -69,20 +64,31 @@ public class PC_ShapelessRecipes implements IRecipe {
         return var3.isEmpty();
     }
 
-    /**
-     * Returns an Item that is the result of this recipe
-     */
     public ItemStack getCraftingResult(InventoryCrafting par1InventoryCrafting)
     {
-        return recipeOutput.toItemStack();
+    	ItemStack itemStack = getRecipeOutput().copy();
+    	if(itemStack.getItem() instanceof PC_Item){
+    		((PC_Item)itemStack.getItem()).doCrafting(itemStack, par1InventoryCrafting);
+    	}
+        return itemStack;
     }
 
-    /**
-     * Returns the size of the recipe area
-     */
     public int getRecipeSize()
     {
         return this.recipeItems.size();
     }
 
+    @Override
+    public List<ItemStack> getExpectedInput(List<ItemStack> itemStacks)
+    {
+        for (int i = 0; i < recipeItems.size(); i++)
+        {
+            if (recipeItems.get(i) != null)
+            {
+                itemStacks.add(recipeItems.get(i).toItemStack());
+            }
+        }
+
+        return itemStacks;
+    }
 }

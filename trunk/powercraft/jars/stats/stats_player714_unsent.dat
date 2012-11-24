@@ -1,12 +1,15 @@
 {
   "user":{
-    "name":"Player714",
+    "name":"XOR",
     "sessionid":"local"
   },
   "stats-change":[
-    {"1100":260},
+    {"5242880":2},
+    {"16908342":1},
     {"1000":1},
-    {"1003":1}
+    {"2000":174},
+    {"1003":1},
+    {"1100":576}
   ],
-  "checksum":"141a658d6cc1aa2c067ec49fef9c993"
+  "checksum":"4c0492e338ea6d5077deae463edb3ef1"
 }

@@ -8,22 +8,24 @@ import powercraft.core.PC_Utils;
 import cpw.mods.fml.common.Side;
 import cpw.mods.fml.common.asm.SideOnly;
 
-public class PCtr_ItemArmorStickyBoots extends PC_ItemArmor {
+public class PCtr_ItemArmorStickyBoots extends PC_ItemArmor
+{
+    public PCtr_ItemArmorStickyBoots(int id)
+    {
+        super(id, EnumArmorMaterial.IRON, PC_Utils.addArmor("pcslime"), FEET);
+        setIconCoord(2, 3);
+    }
 
-	public PCtr_ItemArmorStickyBoots(int id) {
-		super(id, EnumArmorMaterial.IRON, PC_Utils.addArmor("pcslime"), FEET);
-		setIconCoord(2, 3); 
-	}
+    @Override
+    public String getDefaultName()
+    {
+        return "Sticky Iron Boots";
+    }
 
-	@Override
-	public String getDefaultName() {
-		return "Sticky Iron Boots";
-	}
-	
-	@Override
-	@SideOnly(Side.CLIENT)
-	public int func_82790_a(ItemStack par1ItemStack, int par2) {
-		return 0x99ff99;
-	}
-	
+    @Override
+    @SideOnly(Side.CLIENT)
+    public int getColorFromItemStack(ItemStack par1ItemStack, int par2)
+    {
+        return 0x99ff99;
+    }
 }

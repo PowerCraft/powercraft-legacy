@@ -4,17 +4,17 @@ import java.util.concurrent.Callable;
 
 class CallableType implements Callable
 {
-    /** Gets Decitated Server type. */
-    final DedicatedServer minecraftServerType;
+    final DedicatedServer theDecitatedServer;
 
     CallableType(DedicatedServer par1DedicatedServer)
     {
-        this.minecraftServerType = par1DedicatedServer;
+        this.theDecitatedServer = par1DedicatedServer;
     }
 
     public String getType()
     {
-        return "Dedicated Server";
+        String var1 = this.theDecitatedServer.getServerModName();
+        return !var1.equals("vanilla") ? "Definitely; Server brand changed to \'" + var1 + "\'" : "Unknown (can\'t tell)";
     }
 
     public Object call()

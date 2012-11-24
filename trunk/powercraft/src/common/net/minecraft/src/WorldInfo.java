@@ -9,77 +9,60 @@ import cpw.mods.fml.common.asm.SideOnly;
 
 public class WorldInfo
 {
-    /** Holds the seed of the currently world. */
     private long randomSeed;
     private WorldType terrainType;
     private String field_82576_c;
 
-    /** The spawn zone position X coordinate. */
     private int spawnX;
 
-    /** The spawn zone position Y coordinate. */
     private int spawnY;
 
-    /** The spawn zone position Z coordinate. */
     private int spawnZ;
-    private long field_82575_g;
 
-    /** The current world time in ticks, ranging from 0 to 23999. */
+    private long dayTime;
+
     private long worldTime;
 
-    /** The last time the player was in this world. */
     private long lastTimePlayed;
 
-    /** The size of entire save of current world on the disk, isn't exactly. */
     private long sizeOnDisk;
     private NBTTagCompound playerTag;
     private int dimension;
 
-    /** The name of the save defined at world creation. */
     private String levelName;
 
-    /** Introduced in beta 1.3, is the save version for future control. */
     private int saveVersion;
 
-    /** True if it's raining, false otherwise. */
     private boolean raining;
 
-    /** Number of ticks until next rain. */
     private int rainTime;
 
-    /** Is thunderbolts failing now? */
     private boolean thundering;
 
-    /** Number of ticks untils next thunderbolt. */
     private int thunderTime;
 
-    /** The Game Type. */
     private EnumGameType theGameType;
 
-    /**
-     * Whether the map features (e.g. strongholds) generation is enabled or disabled.
-     */
     private boolean mapFeaturesEnabled;
 
-    /** Hardcore mode flag */
     private boolean hardcore;
     private boolean allowCommands;
     private boolean initialized;
-    private GameRules field_82577_x;
-    private Map<String,NBTBase> additionalProperties;
+    private GameRules theGameRules;
+    private Map<String, NBTBase> additionalProperties;
 
     protected WorldInfo()
     {
         this.terrainType = WorldType.DEFAULT;
         this.field_82576_c = "";
-        this.field_82577_x = new GameRules();
+        this.theGameRules = new GameRules();
     }
 
     public WorldInfo(NBTTagCompound par1NBTTagCompound)
     {
         this.terrainType = WorldType.DEFAULT;
         this.field_82576_c = "";
-        this.field_82577_x = new GameRules();
+        this.theGameRules = new GameRules();
         this.randomSeed = par1NBTTagCompound.getLong("RandomSeed");
 
         if (par1NBTTagCompound.hasKey("generatorName"))
@@ -123,7 +106,7 @@ public class WorldInfo
         this.spawnX = par1NBTTagCompound.getInteger("SpawnX");
         this.spawnY = par1NBTTagCompound.getInteger("SpawnY");
         this.spawnZ = par1NBTTagCompound.getInteger("SpawnZ");
-        this.field_82575_g = par1NBTTagCompound.getLong("Time");
+        this.dayTime = par1NBTTagCompound.getLong("Time");
 
         if (par1NBTTagCompound.hasKey("DayTime"))
         {
@@ -131,7 +114,7 @@ public class WorldInfo
         }
         else
         {
-            this.worldTime = this.field_82575_g;
+            this.worldTime = this.dayTime;
         }
 
         this.lastTimePlayed = par1NBTTagCompound.getLong("LastPlayed");
@@ -170,7 +153,7 @@ public class WorldInfo
 
         if (par1NBTTagCompound.hasKey("GameRules"))
         {
-            this.field_82577_x.func_82768_a(par1NBTTagCompound.getCompoundTag("GameRules"));
+            this.theGameRules.readGameRulesFromNBT(par1NBTTagCompound.getCompoundTag("GameRules"));
         }
     }
 
@@ -178,7 +161,7 @@ public class WorldInfo
     {
         this.terrainType = WorldType.DEFAULT;
         this.field_82576_c = "";
-        this.field_82577_x = new GameRules();
+        this.theGameRules = new GameRules();
         this.randomSeed = par1WorldSettings.getSeed();
         this.theGameType = par1WorldSettings.getGameType();
         this.mapFeaturesEnabled = par1WorldSettings.isMapFeaturesEnabled();
@@ -194,7 +177,7 @@ public class WorldInfo
     {
         this.terrainType = WorldType.DEFAULT;
         this.field_82576_c = "";
-        this.field_82577_x = new GameRules();
+        this.theGameRules = new GameRules();
         this.randomSeed = par1WorldInfo.randomSeed;
         this.terrainType = par1WorldInfo.terrainType;
         this.field_82576_c = par1WorldInfo.field_82576_c;
@@ -203,7 +186,7 @@ public class WorldInfo
         this.spawnX = par1WorldInfo.spawnX;
         this.spawnY = par1WorldInfo.spawnY;
         this.spawnZ = par1WorldInfo.spawnZ;
-        this.field_82575_g = par1WorldInfo.field_82575_g;
+        this.dayTime = par1WorldInfo.dayTime;
         this.worldTime = par1WorldInfo.worldTime;
         this.lastTimePlayed = par1WorldInfo.lastTimePlayed;
         this.sizeOnDisk = par1WorldInfo.sizeOnDisk;
@@ -218,12 +201,9 @@ public class WorldInfo
         this.hardcore = par1WorldInfo.hardcore;
         this.allowCommands = par1WorldInfo.allowCommands;
         this.initialized = par1WorldInfo.initialized;
-        this.field_82577_x = par1WorldInfo.field_82577_x;
+        this.theGameRules = par1WorldInfo.theGameRules;
     }
 
-    /**
-     * Gets the NBTTagCompound for the worldInfo
-     */
     public NBTTagCompound getNBTTagCompound()
     {
         NBTTagCompound var1 = new NBTTagCompound();
@@ -231,9 +211,6 @@ public class WorldInfo
         return var1;
     }
 
-    /**
-     * Creates a new NBTTagCompound for the world, with the given NBTTag as the "Player"
-     */
     public NBTTagCompound cloneNBTCompound(NBTTagCompound par1NBTTagCompound)
     {
         NBTTagCompound var2 = new NBTTagCompound();
@@ -252,7 +229,7 @@ public class WorldInfo
         par1NBTTagCompound.setInteger("SpawnX", this.spawnX);
         par1NBTTagCompound.setInteger("SpawnY", this.spawnY);
         par1NBTTagCompound.setInteger("SpawnZ", this.spawnZ);
-        par1NBTTagCompound.setLong("Time", this.field_82575_g);
+        par1NBTTagCompound.setLong("Time", this.dayTime);
         par1NBTTagCompound.setLong("DayTime", this.worldTime);
         par1NBTTagCompound.setLong("SizeOnDisk", this.sizeOnDisk);
         par1NBTTagCompound.setLong("LastPlayed", System.currentTimeMillis());
@@ -265,7 +242,7 @@ public class WorldInfo
         par1NBTTagCompound.setBoolean("hardcore", this.hardcore);
         par1NBTTagCompound.setBoolean("allowCommands", this.allowCommands);
         par1NBTTagCompound.setBoolean("initialized", this.initialized);
-        par1NBTTagCompound.setCompoundTag("GameRules", this.field_82577_x.func_82770_a());
+        par1NBTTagCompound.setCompoundTag("GameRules", this.theGameRules.writeGameRulesToNBT());
 
         if (par2NBTTagCompound != null)
         {
@@ -273,46 +250,31 @@ public class WorldInfo
         }
     }
 
-    /**
-     * Returns the seed of current world.
-     */
     public long getSeed()
     {
         return this.randomSeed;
     }
 
-    /**
-     * Returns the x spawn position
-     */
     public int getSpawnX()
     {
         return this.spawnX;
     }
 
-    /**
-     * Return the Y axis spawning point of the player.
-     */
     public int getSpawnY()
     {
         return this.spawnY;
     }
 
-    /**
-     * Returns the z spawn position
-     */
     public int getSpawnZ()
     {
         return this.spawnZ;
     }
 
-    public long func_82573_f()
+    public long getWorldTotalTime()
     {
-        return this.field_82575_g;
+        return this.dayTime;
     }
 
-    /**
-     * Get current world time
-     */
     public long getWorldTime()
     {
         return this.worldTime;
@@ -324,9 +286,6 @@ public class WorldInfo
         return this.sizeOnDisk;
     }
 
-    /**
-     * Returns the player's NBTTagCompound to be loaded
-     */
     public NBTTagCompound getPlayerNBTTagCompound()
     {
         return this.playerTag;
@@ -339,9 +298,6 @@ public class WorldInfo
 
     @SideOnly(Side.CLIENT)
 
-    /**
-     * Set the x spawn position to the passed in value
-     */
     public void setSpawnX(int par1)
     {
         this.spawnX = par1;
@@ -349,9 +305,6 @@ public class WorldInfo
 
     @SideOnly(Side.CLIENT)
 
-    /**
-     * Sets the y spawn position
-     */
     public void setSpawnY(int par1)
     {
         this.spawnY = par1;
@@ -359,30 +312,21 @@ public class WorldInfo
 
     public void func_82572_b(long par1)
     {
-        this.field_82575_g = par1;
+        this.dayTime = par1;
     }
 
     @SideOnly(Side.CLIENT)
 
-    /**
-     * Set the z spawn position to the passed in value
-     */
     public void setSpawnZ(int par1)
     {
         this.spawnZ = par1;
     }
 
-    /**
-     * Set current world time
-     */
     public void setWorldTime(long par1)
     {
         this.worldTime = par1;
     }
 
-    /**
-     * Sets the spawn zone position. Args: x, y, z
-     */
     public void setSpawnPosition(int par1, int par2, int par3)
     {
         this.spawnX = par1;
@@ -390,9 +334,6 @@ public class WorldInfo
         this.spawnZ = par3;
     }
 
-    /**
-     * Get current world name
-     */
     public String getWorldName()
     {
         return this.levelName;
@@ -403,17 +344,11 @@ public class WorldInfo
         this.levelName = par1Str;
     }
 
-    /**
-     * Returns the save version of this world
-     */
     public int getSaveVersion()
     {
         return this.saveVersion;
     }
 
-    /**
-     * Sets the save version of the world
-     */
     public void setSaveVersion(int par1)
     {
         this.saveVersion = par1;
@@ -421,105 +356,66 @@ public class WorldInfo
 
     @SideOnly(Side.CLIENT)
 
-    /**
-     * Return the last time the player was in this world.
-     */
     public long getLastTimePlayed()
     {
         return this.lastTimePlayed;
     }
 
-    /**
-     * Returns true if it is thundering, false otherwise.
-     */
     public boolean isThundering()
     {
         return this.thundering;
     }
 
-    /**
-     * Sets whether it is thundering or not.
-     */
     public void setThundering(boolean par1)
     {
         this.thundering = par1;
     }
 
-    /**
-     * Returns the number of ticks until next thunderbolt.
-     */
     public int getThunderTime()
     {
         return this.thunderTime;
     }
 
-    /**
-     * Defines the number of ticks until next thunderbolt.
-     */
     public void setThunderTime(int par1)
     {
         this.thunderTime = par1;
     }
 
-    /**
-     * Returns true if it is raining, false otherwise.
-     */
     public boolean isRaining()
     {
         return this.raining;
     }
 
-    /**
-     * Sets whether it is raining or not.
-     */
     public void setRaining(boolean par1)
     {
         this.raining = par1;
     }
 
-    /**
-     * Return the number of ticks until rain.
-     */
     public int getRainTime()
     {
         return this.rainTime;
     }
 
-    /**
-     * Sets the number of ticks until rain.
-     */
     public void setRainTime(int par1)
     {
         this.rainTime = par1;
     }
 
-    /**
-     * Gets the GameType.
-     */
     public EnumGameType getGameType()
     {
         return this.theGameType;
     }
 
-    /**
-     * Get whether the map features (e.g. strongholds) generation is enabled or disabled.
-     */
     public boolean isMapFeaturesEnabled()
     {
         return this.mapFeaturesEnabled;
     }
 
-    /**
-     * Sets the GameType.
-     */
     public void setGameType(EnumGameType par1EnumGameType)
     {
         this.theGameType = par1EnumGameType;
     }
 
-    /**
-     * Returns true if hardcore mode is enabled, otherwise false
-     */
     public boolean isHardcoreModeEnabled()
     {
         return this.hardcore;
@@ -540,44 +436,126 @@ public class WorldInfo
         return this.field_82576_c;
     }
 
-    /**
-     * Returns true if commands are allowed on this World.
-     */
     public boolean areCommandsAllowed()
     {
         return this.allowCommands;
     }
 
-    /**
-     * Returns true if the World is initialized.
-     */
     public boolean isInitialized()
     {
         return this.initialized;
     }
 
-    /**
-     * Sets the initialization status of the World.
-     */
     public void setServerInitialized(boolean par1)
     {
         this.initialized = par1;
     }
 
-    public GameRules func_82574_x()
+    public GameRules getGameRulesInstance()
     {
-        return this.field_82577_x;
+        return this.theGameRules;
     }
 
-    /**
-     * Allow access to additional mod specific world based properties
-     * Used by FML to store mod list associated with a world, and maybe an id map
-     * Used by Forge to store the dimensions available to a world
-     * @param additionalProperties
-     */
-    public void setAdditionalProperties(Map<String,NBTBase> additionalProperties)
+    public void func_85118_a(CrashReportCategory par1CrashReportCategory)
     {
-        // one time set for this
+        par1CrashReportCategory.addCrashSectionCallable("Level seed", new CallableLevelSeed(this));
+        par1CrashReportCategory.addCrashSectionCallable("Level generator", new CallableLevelGenerator(this));
+        par1CrashReportCategory.addCrashSectionCallable("Level generator options", new CallableLevelGeneratorOptions(this));
+        par1CrashReportCategory.addCrashSectionCallable("Level spawn location", new CallableLevelSpawnLocation(this));
+        par1CrashReportCategory.addCrashSectionCallable("Level time", new CallableLevelTime(this));
+        par1CrashReportCategory.addCrashSectionCallable("Level dimension", new CallableLevelDimension(this));
+        par1CrashReportCategory.addCrashSectionCallable("Level storage version", new CallableLevelStorageVersion(this));
+        par1CrashReportCategory.addCrashSectionCallable("Level weather", new CallableLevelWeather(this));
+        par1CrashReportCategory.addCrashSectionCallable("Level game mode", new CallableLevelGamemode(this));
+    }
+
+    static WorldType func_85132_a(WorldInfo par0WorldInfo)
+    {
+        return par0WorldInfo.terrainType;
+    }
+
+    static boolean func_85128_b(WorldInfo par0WorldInfo)
+    {
+        return par0WorldInfo.mapFeaturesEnabled;
+    }
+
+    static String func_85130_c(WorldInfo par0WorldInfo)
+    {
+        return par0WorldInfo.field_82576_c;
+    }
+
+    static int func_85125_d(WorldInfo par0WorldInfo)
+    {
+        return par0WorldInfo.spawnX;
+    }
+
+    static int func_85124_e(WorldInfo par0WorldInfo)
+    {
+        return par0WorldInfo.spawnY;
+    }
+
+    static int func_85123_f(WorldInfo par0WorldInfo)
+    {
+        return par0WorldInfo.spawnZ;
+    }
+
+    static long func_85126_g(WorldInfo par0WorldInfo)
+    {
+        return par0WorldInfo.dayTime;
+    }
+
+    static long func_85129_h(WorldInfo par0WorldInfo)
+    {
+        return par0WorldInfo.worldTime;
+    }
+
+    static int func_85122_i(WorldInfo par0WorldInfo)
+    {
+        return par0WorldInfo.dimension;
+    }
+
+    static int func_85121_j(WorldInfo par0WorldInfo)
+    {
+        return par0WorldInfo.saveVersion;
+    }
+
+    static int func_85119_k(WorldInfo par0WorldInfo)
+    {
+        return par0WorldInfo.rainTime;
+    }
+
+    static boolean func_85127_l(WorldInfo par0WorldInfo)
+    {
+        return par0WorldInfo.raining;
+    }
+
+    static int func_85133_m(WorldInfo par0WorldInfo)
+    {
+        return par0WorldInfo.thunderTime;
+    }
+
+    static boolean func_85116_n(WorldInfo par0WorldInfo)
+    {
+        return par0WorldInfo.thundering;
+    }
+
+    static EnumGameType func_85120_o(WorldInfo par0WorldInfo)
+    {
+        return par0WorldInfo.theGameType;
+    }
+
+    static boolean func_85117_p(WorldInfo par0WorldInfo)
+    {
+        return par0WorldInfo.hardcore;
+    }
+
+    static boolean func_85131_q(WorldInfo par0WorldInfo)
+    {
+        return par0WorldInfo.allowCommands;
+    }
+
+    public void setAdditionalProperties(Map<String, NBTBase> additionalProperties)
+    {
         if (this.additionalProperties == null)
         {
             this.additionalProperties = additionalProperties;
@@ -586,6 +564,6 @@ public class WorldInfo
 
     public NBTBase getAdditionalProperty(String additionalProperty)
     {
-        return this.additionalProperties!=null? this.additionalProperties.get(additionalProperty) : null;
+        return this.additionalProperties != null ? this.additionalProperties.get(additionalProperty) : null;
     }
 }

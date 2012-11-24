@@ -4,35 +4,37 @@ import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.net.URL;
 
-public class PCco_ThreadCheckUpdates extends Thread {
+public class PCco_ThreadCheckUpdates extends Thread
+{
+    private String url;
 
-	private String url;
-	
-	public PCco_ThreadCheckUpdates(String url){
-		this.url = url;
-	}
-	
-	@Override
-	public void run() {
-		try {
-			URL url = new URL(this.url);
-			BufferedReader reader = new BufferedReader(new InputStreamReader(url.openStream()));
-			String page = "";
+    public PCco_ThreadCheckUpdates(String url)
+    {
+        this.url = url;
+    }
 
-			String line;
-			while ((line = reader.readLine()) != null) {
-				page += line + "\n";
-			}
+    @Override
+    public void run()
+    {
+        try
+        {
+            URL url = new URL(this.url);
+            BufferedReader reader = new BufferedReader(new InputStreamReader(url.openStream()));
+            String page = "";
+            String line;
 
-			reader.close();
+            while ((line = reader.readLine()) != null)
+            {
+                page += line + "\n";
+            }
 
-			mod_PowerCraftCore.onUpdateInfoDownloaded(page);
-
-		} catch (Exception e) {
-			PC_Logger.throwing("PCco_ThreadCheckUpdates", "run", e);
-			e.printStackTrace();
-
-			// don't bother with returning to core module, it'd only result in null pointer exception.
-		}
-	}
+            reader.close();
+            mod_PowerCraftCore.onUpdateInfoDownloaded(page);
+        }
+        catch (Exception e)
+        {
+            PC_Logger.throwing("PCco_ThreadCheckUpdates", "run", e);
+            e.printStackTrace();
+        }
+    }
 }

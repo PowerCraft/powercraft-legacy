@@ -10,7 +10,7 @@ public class CommandGameRule extends CommandBase
         return "gamerule";
     }
 
-    public int func_82362_a()
+    public int getRequiredPermissionLevel()
     {
         return 2;
     }
@@ -28,9 +28,9 @@ public class CommandGameRule extends CommandBase
         {
             var6 = par2ArrayOfStr[0];
             String var7 = par2ArrayOfStr[1];
-            GameRules var8 = this.func_82366_d();
+            GameRules var8 = this.getGameRules();
 
-            if (var8.func_82765_e(var6))
+            if (var8.hasRule(var6))
             {
                 var8.func_82764_b(var6, var7);
                 notifyAdmins(par1ICommandSender, "commands.gamerule.success", new Object[0]);
@@ -43,11 +43,11 @@ public class CommandGameRule extends CommandBase
         else if (par2ArrayOfStr.length == 1)
         {
             var6 = par2ArrayOfStr[0];
-            GameRules var4 = this.func_82366_d();
+            GameRules var4 = this.getGameRules();
 
-            if (var4.func_82765_e(var6))
+            if (var4.hasRule(var6))
             {
-                String var5 = var4.func_82767_a(var6);
+                String var5 = var4.getGameRuleStringValue(var6);
                 par1ICommandSender.sendChatToPlayer(var6 + " = " + var5);
             }
             else
@@ -57,8 +57,8 @@ public class CommandGameRule extends CommandBase
         }
         else if (par2ArrayOfStr.length == 0)
         {
-            GameRules var3 = this.func_82366_d();
-            par1ICommandSender.sendChatToPlayer(joinNiceString(var3.func_82763_b()));
+            GameRules var3 = this.getGameRules();
+            par1ICommandSender.sendChatToPlayer(joinNiceString(var3.getRules()));
         }
         else
         {
@@ -66,16 +66,13 @@ public class CommandGameRule extends CommandBase
         }
     }
 
-    /**
-     * Adds the strings available in this command to the given list of tab completion options.
-     */
     public List addTabCompletionOptions(ICommandSender par1ICommandSender, String[] par2ArrayOfStr)
     {
-        return par2ArrayOfStr.length == 1 ? getListOfStringsMatchingLastWord(par2ArrayOfStr, this.func_82366_d().func_82763_b()) : (par2ArrayOfStr.length == 2 ? getListOfStringsMatchingLastWord(par2ArrayOfStr, new String[] {"true", "false"}): null);
+        return par2ArrayOfStr.length == 1 ? getListOfStringsMatchingLastWord(par2ArrayOfStr, this.getGameRules().getRules()) : (par2ArrayOfStr.length == 2 ? getListOfStringsMatchingLastWord(par2ArrayOfStr, new String[] {"true", "false"}): null);
     }
 
-    private GameRules func_82366_d()
+    private GameRules getGameRules()
     {
-        return MinecraftServer.getServer().worldServerForDimension(0).func_82736_K();
+        return MinecraftServer.getServer().worldServerForDimension(0).getGameRules();
     }
 }

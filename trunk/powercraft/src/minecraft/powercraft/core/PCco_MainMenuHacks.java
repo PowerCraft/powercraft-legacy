@@ -4,6 +4,7 @@ import java.util.EnumSet;
 import java.util.Random;
 
 import net.minecraft.client.Minecraft;
+import net.minecraft.src.GuiConnecting;
 import net.minecraft.src.GuiMainMenu;
 import net.minecraft.src.GuiScreen;
 import cpw.mods.fml.common.ITickHandler;
@@ -13,6 +14,7 @@ public class PCco_MainMenuHacks implements ITickHandler {
 	
 	private static GuiMainMenu lastHacked = null;
 	private static boolean updateWindowShowed = false;
+	private static boolean usernameHacked = false;
 	private static Random rand = new Random();
 	
 	/**
@@ -45,6 +47,10 @@ public class PCco_MainMenuHacks implements ITickHandler {
 				PC_Utils.openGres("UpdateNotification", null, gs);
 				updateWindowShowed = true;
 			}
+		}
+		if(!(usernameHacked || mod_PowerCraftCore.useUserName.equals(""))){
+			
+			PC_ClientUtils.mc().session.username = mod_PowerCraftCore.useUserName;
 		}
 	}
 

@@ -2,28 +2,19 @@ package net.minecraft.src;
 
 public class NextTickListEntry implements Comparable
 {
-    /** The id number for the next tick entry */
     private static long nextTickEntryID = 0L;
 
-    /** X position this tick is occuring at */
     public int xCoord;
 
-    /** Y position this tick is occuring at */
     public int yCoord;
 
-    /** Z position this tick is occuring at */
     public int zCoord;
 
-    /**
-     * blockID of the scheduled tick (ensures when the tick occurs its still for this block)
-     */
     public int blockID;
 
-    /** Time this tick is scheduled to occur at */
     public long scheduledTime;
     public int field_82754_f;
 
-    /** The id of the tick entry */
     private long tickEntryID;
 
     public NextTickListEntry(int par1, int par2, int par3, int par4)
@@ -53,9 +44,6 @@ public class NextTickListEntry implements Comparable
         return (this.xCoord * 1024 * 1024 + this.zCoord * 1024 + this.yCoord) * 256 + this.blockID;
     }
 
-    /**
-     * Sets the scheduled time for this tick entry
-     */
     public NextTickListEntry setScheduledTime(long par1)
     {
         this.scheduledTime = par1;
@@ -67,10 +55,6 @@ public class NextTickListEntry implements Comparable
         this.field_82754_f = par1;
     }
 
-    /**
-     * Compares this tick entry to another tick entry for sorting purposes. Compared first based on the scheduled time
-     * and second based on tickEntryID.
-     */
     public int comparer(NextTickListEntry par1NextTickListEntry)
     {
         return this.scheduledTime < par1NextTickListEntry.scheduledTime ? -1 : (this.scheduledTime > par1NextTickListEntry.scheduledTime ? 1 : (this.field_82754_f != par1NextTickListEntry.field_82754_f ? this.field_82754_f - par1NextTickListEntry.field_82754_f : (this.tickEntryID < par1NextTickListEntry.tickEntryID ? -1 : (this.tickEntryID > par1NextTickListEntry.tickEntryID ? 1 : 0))));

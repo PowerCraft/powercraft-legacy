@@ -143,16 +143,16 @@ public class GuiMerchant extends GuiContainer
             GL11.glEnable(GL11.GL_COLOR_MATERIAL);
             GL11.glEnable(GL11.GL_LIGHTING);
             itemRenderer.zLevel = 100.0F;
-            itemRenderer.func_82406_b(this.fontRenderer, this.mc.renderEngine, var9, var5 + 36, var6 + 24);
+            itemRenderer.renderItemAndEffectIntoGUI(this.fontRenderer, this.mc.renderEngine, var9, var5 + 36, var6 + 24);
             itemRenderer.renderItemOverlayIntoGUI(this.fontRenderer, this.mc.renderEngine, var9, var5 + 36, var6 + 24);
 
             if (var10 != null)
             {
-                itemRenderer.func_82406_b(this.fontRenderer, this.mc.renderEngine, var10, var5 + 62, var6 + 24);
+                itemRenderer.renderItemAndEffectIntoGUI(this.fontRenderer, this.mc.renderEngine, var10, var5 + 62, var6 + 24);
                 itemRenderer.renderItemOverlayIntoGUI(this.fontRenderer, this.mc.renderEngine, var10, var5 + 62, var6 + 24);
             }
 
-            itemRenderer.func_82406_b(this.fontRenderer, this.mc.renderEngine, var11, var5 + 120, var6 + 24);
+            itemRenderer.renderItemAndEffectIntoGUI(this.fontRenderer, this.mc.renderEngine, var11, var5 + 120, var6 + 24);
             itemRenderer.renderItemOverlayIntoGUI(this.fontRenderer, this.mc.renderEngine, var11, var5 + 120, var6 + 24);
             itemRenderer.zLevel = 0.0F;
             GL11.glDisable(GL11.GL_LIGHTING);

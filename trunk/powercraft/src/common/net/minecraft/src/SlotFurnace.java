@@ -4,7 +4,6 @@ import cpw.mods.fml.common.registry.GameRegistry;
 
 public class SlotFurnace extends Slot
 {
-    /** The player that is using the GUI where this slot resides. */
     private EntityPlayer thePlayer;
     private int field_75228_b;
 
@@ -14,18 +13,11 @@ public class SlotFurnace extends Slot
         this.thePlayer = par1EntityPlayer;
     }
 
-    /**
-     * Check if the stack is a valid item for this slot. Always true beside for the armor slots.
-     */
     public boolean isItemValid(ItemStack par1ItemStack)
     {
         return false;
     }
 
-    /**
-     * Decrease the size of the stack in slot (first int arg) by the amount of the second int arg. Returns the new
-     * stack.
-     */
     public ItemStack decrStackSize(int par1)
     {
         if (this.getHasStack())
@@ -36,25 +28,18 @@ public class SlotFurnace extends Slot
         return super.decrStackSize(par1);
     }
 
-    public void func_82870_a(EntityPlayer par1EntityPlayer, ItemStack par2ItemStack)
+    public void onPickupFromSlot(EntityPlayer par1EntityPlayer, ItemStack par2ItemStack)
     {
         this.onCrafting(par2ItemStack);
-        super.func_82870_a(par1EntityPlayer, par2ItemStack);
+        super.onPickupFromSlot(par1EntityPlayer, par2ItemStack);
     }
 
-    /**
-     * the itemStack passed in is the output - ie, iron ingots, and pickaxes, not ore and wood. Typically increases an
-     * internal count then calls onCrafting(item).
-     */
     protected void onCrafting(ItemStack par1ItemStack, int par2)
     {
         this.field_75228_b += par2;
         this.onCrafting(par1ItemStack);
     }
 
-    /**
-     * the itemStack passed in is the output - ie, iron ingots, and pickaxes, not ore and wood.
-     */
     protected void onCrafting(ItemStack par1ItemStack)
     {
         par1ItemStack.onCrafting(this.thePlayer.worldObj, this.thePlayer, this.field_75228_b);
@@ -62,7 +47,7 @@ public class SlotFurnace extends Slot
         if (!this.thePlayer.worldObj.isRemote)
         {
             int var2 = this.field_75228_b;
-            float var3 = FurnaceRecipes.smelting().getExperience(par1ItemStack.itemID);
+            float var3 = FurnaceRecipes.smelting().getExperience(par1ItemStack);
             int var4;
 
             if (var3 == 0.0F)
@@ -89,9 +74,7 @@ public class SlotFurnace extends Slot
             }
         }
 
-
         this.field_75228_b = 0;
-
         GameRegistry.onItemSmelted(thePlayer, par1ItemStack);
 
         if (par1ItemStack.itemID == Item.ingotIron.shiftedIndex)

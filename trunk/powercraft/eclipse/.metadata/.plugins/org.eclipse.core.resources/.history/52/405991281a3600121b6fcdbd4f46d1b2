@@ -1,0 +1,65 @@
+package powercraft.light;
+
+import net.minecraft.src.NBTTagCompound;
+import powercraft.core.PC_PacketHandler;
+import powercraft.core.PC_TileEntity;
+
+public class PCli_TileEntityPrism extends PC_TileEntity {
+
+	/**
+	 * List of prism's sides, flags whether there are attached glass panels.
+	 * starts with up and down, but the order does not really matter here.
+	 */
+	private boolean[] prismSides = { false, false, false, false, false, false, false, false, false, false };
+	
+	public boolean getPrismSide(int side) {
+		if (side < 0 || side > 9) {
+			return false;
+		}
+		return prismSides[side];
+	}
+
+	public void setPrismSide(int side, boolean state) {
+		if (side < 0 || side> 9) {
+			return;
+		}
+		prismSides[side] = state;
+		PC_PacketHandler.setTileEntity(this, "prismSides", prismSides);
+	}
+
+	@Override
+	public void writeToNBT(NBTTagCompound tag) {
+		super.writeToNBT(tag);
+
+		for(int i=0; i<prismSides.length; i++){
+			tag.setBoolean("prismSide"+i, prismSides[i]);
+		}
+	}
+
+	@Override
+	public void readFromNBT(NBTTagCompound tag) {
+		super.readFromNBT(tag);
+		for(int i=0; i<prismSides.length; i++){
+			prismSides[i] = tag.getBoolean("prismSide"+i);
+		}
+	}
+	
+	@Override
+	public void setData(Object[] o) {
+		int p = 0;
+		while(p<o.length){
+			String var = (String)o[p++];
+			if(var.equals("prismSides"))
+				prismSides = (boolean[])o[p++];
+		}
+	}
+
+	@Override
+	public Object[] getData() {
+		return new Object[]{
+				"prismSides",
+				prismSides
+		};
+	}
+	
+}

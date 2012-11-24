@@ -9,12 +9,8 @@ import cpw.mods.fml.common.FMLLog;
 
 public class ConsoleLogManager
 {
-    /** Log manager of Minecraft. */
     public static Logger loggerLogManager = Logger.getLogger("Minecraft");
 
-    /**
-     * Initialises the console logger.
-     */
     public static void init()
     {
         ConsoleLogFormatter var0 = new ConsoleLogFormatter();

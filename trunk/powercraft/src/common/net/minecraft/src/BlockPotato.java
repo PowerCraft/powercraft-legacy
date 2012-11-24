@@ -7,9 +7,6 @@ public class BlockPotato extends BlockCrops
         super(par1, 200);
     }
 
-    /**
-     * From the specified side and block metadata retrieves the blocks texture. Args: side, metadata
-     */
     public int getBlockTextureFromSideAndMetadata(int par1, int par2)
     {
         if (par2 < 7)
@@ -27,19 +24,16 @@ public class BlockPotato extends BlockCrops
         }
     }
 
-    protected int func_82532_h()
+    protected int getSeedItem()
     {
-        return Item.field_82794_bL.shiftedIndex;
+        return Item.potatoe.shiftedIndex;
     }
 
-    protected int func_82533_j()
+    protected int getCropItem()
     {
-        return Item.field_82794_bL.shiftedIndex;
+        return Item.potatoe.shiftedIndex;
     }
 
-    /**
-     * Drops the block items with a specified chance of dropping the specified items
-     */
     public void dropBlockAsItemWithChance(World par1World, int par2, int par3, int par4, int par5, float par6, int par7)
     {
         super.dropBlockAsItemWithChance(par1World, par2, par3, par4, par5, par6, 0);
@@ -48,7 +42,7 @@ public class BlockPotato extends BlockCrops
         {
             if (par5 >= 7 && par1World.rand.nextInt(50) == 0)
             {
-                this.dropBlockAsItem_do(par1World, par2, par3, par4, new ItemStack(Item.field_82800_bN));
+                this.dropBlockAsItem_do(par1World, par2, par3, par4, new ItemStack(Item.poisonousPotato));
             }
         }
     }

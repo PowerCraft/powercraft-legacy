@@ -7,9 +7,6 @@ public class BlockCarrot extends BlockCrops
         super(par1, 200);
     }
 
-    /**
-     * From the specified side and block metadata retrieves the blocks texture. Args: side, metadata
-     */
     public int getBlockTextureFromSideAndMetadata(int par1, int par2)
     {
         if (par2 < 7)
@@ -27,13 +24,13 @@ public class BlockCarrot extends BlockCrops
         }
     }
 
-    protected int func_82532_h()
+    protected int getSeedItem()
     {
-        return Item.field_82797_bK.shiftedIndex;
+        return Item.carrot.shiftedIndex;
     }
 
-    protected int func_82533_j()
+    protected int getCropItem()
     {
-        return Item.field_82797_bK.shiftedIndex;
+        return Item.carrot.shiftedIndex;
     }
 }

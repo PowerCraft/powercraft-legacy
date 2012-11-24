@@ -7,17 +7,17 @@ import java.util.concurrent.Callable;
 @SideOnly(Side.CLIENT)
 class CallableType3 implements Callable
 {
-    /** Gets Intergated Server type. */
-    final IntegratedServer minecraftServerType3;
+    /** Reference to the IntegratedServer object. */
+    final IntegratedServer theIntegratedServer;
 
     CallableType3(IntegratedServer par1IntegratedServer)
     {
-        this.minecraftServerType3 = par1IntegratedServer;
+        this.theIntegratedServer = par1IntegratedServer;
     }
 
     public String getType()
     {
-        return "Integrated Server";
+        return "Integrated Server (map_client.txt)";
     }
 
     public Object call()

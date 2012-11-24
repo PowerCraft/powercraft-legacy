@@ -10,7 +10,7 @@ public class CommandServerPardon extends CommandBase
         return "pardon";
     }
 
-    public int func_82362_a()
+    public int getRequiredPermissionLevel()
     {
         return 3;
     }
@@ -20,9 +20,6 @@ public class CommandServerPardon extends CommandBase
         return par1ICommandSender.translateString("commands.unban.usage", new Object[0]);
     }
 
-    /**
-     * Returns true if the given command sender is allowed to use this command.
-     */
     public boolean canCommandSenderUseCommand(ICommandSender par1ICommandSender)
     {
         return MinecraftServer.getServer().getConfigurationManager().getBannedPlayers().isListActive() && super.canCommandSenderUseCommand(par1ICommandSender);
@@ -41,9 +38,6 @@ public class CommandServerPardon extends CommandBase
         }
     }
 
-    /**
-     * Adds the strings available in this command to the given list of tab completion options.
-     */
     public List addTabCompletionOptions(ICommandSender par1ICommandSender, String[] par2ArrayOfStr)
     {
         return par2ArrayOfStr.length == 1 ? getListOfStringsFromIterableMatchingLastWord(par2ArrayOfStr, MinecraftServer.getServer().getConfigurationManager().getBannedPlayers().getBannedList().keySet()) : null;

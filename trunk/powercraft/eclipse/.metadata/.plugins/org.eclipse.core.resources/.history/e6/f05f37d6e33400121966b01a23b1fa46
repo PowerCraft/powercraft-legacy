@@ -1,0 +1,7 @@
+package powercraft.light;
+
+import net.minecraft.src.DamageSource;
+
+public class PCli_DamageSourceLaser extends DamageSource {
+
+}

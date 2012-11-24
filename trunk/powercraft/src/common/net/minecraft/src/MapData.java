@@ -15,17 +15,10 @@ public class MapData extends WorldSavedData
     public int dimension;
     public byte scale;
 
-    /** colours */
     public byte[] colors = new byte[16384];
 
-    /**
-     * Holds a reference to the MapInfo of the players who own a copy of the map
-     */
     public List playersArrayList = new ArrayList();
 
-    /**
-     * Holds a reference to the players who own a copy of the map and a reference to their MapInfo
-     */
     private Map playersHashMap = new HashMap();
     public Map playersVisibleOnMap = new LinkedHashMap();
 
@@ -34,9 +27,6 @@ public class MapData extends WorldSavedData
         super(par1Str);
     }
 
-    /**
-     * reads in data from the NBTTagCompound into this MapDataBase
-     */
     public void readFromNBT(NBTTagCompound par1NBTTagCompound)
     {
         NBTBase dimension = par1NBTTagCompound.getTag("dimension");
@@ -49,6 +39,7 @@ public class MapData extends WorldSavedData
         {
             this.dimension = ((NBTTagInt)dimension).data;
         }
+
         this.xCenter = par1NBTTagCompound.getInteger("xCenter");
         this.zCenter = par1NBTTagCompound.getInteger("zCenter");
         this.scale = par1NBTTagCompound.getByte("scale");
@@ -97,9 +88,6 @@ public class MapData extends WorldSavedData
         }
     }
 
-    /**
-     * write data to NBTTagCompound from this MapDataBase, similar to Entities and TileEntities
-     */
     public void writeToNBT(NBTTagCompound par1NBTTagCompound)
     {
         par1NBTTagCompound.setInteger("dimension", this.dimension);
@@ -111,9 +99,6 @@ public class MapData extends WorldSavedData
         par1NBTTagCompound.setByteArray("colors", this.colors);
     }
 
-    /**
-     * Adds the player passed to the list of visible players and checks to see which players are visible
-     */
     public void updateVisiblePlayers(EntityPlayer par1EntityPlayer, ItemStack par2ItemStack)
     {
         if (!this.playersHashMap.containsKey(par1EntityPlayer))
@@ -132,9 +117,9 @@ public class MapData extends WorldSavedData
         {
             MapInfo var4 = (MapInfo)this.playersArrayList.get(var5);
 
-            if (!var4.entityplayerObj.isDead && (var4.entityplayerObj.inventory.hasItemStack(par2ItemStack) || par2ItemStack.func_82839_y()))
+            if (!var4.entityplayerObj.isDead && (var4.entityplayerObj.inventory.hasItemStack(par2ItemStack) || par2ItemStack.isOnItemFrame()))
             {
-                if (!par2ItemStack.func_82839_y() && var4.entityplayerObj.dimension == this.dimension)
+                if (!par2ItemStack.isOnItemFrame() && var4.entityplayerObj.dimension == this.dimension)
                 {
                     this.func_82567_a(0, var4.entityplayerObj.worldObj, var4.entityplayerObj.getCommandSenderName(), var4.entityplayerObj.posX, var4.entityplayerObj.posZ, (double)var4.entityplayerObj.rotationYaw);
                 }
@@ -146,9 +131,9 @@ public class MapData extends WorldSavedData
             }
         }
 
-        if (par2ItemStack.func_82839_y())
+        if (par2ItemStack.isOnItemFrame())
         {
-            this.func_82567_a(1, par1EntityPlayer.worldObj, "frame-" + par2ItemStack.func_82836_z().entityId, (double)par2ItemStack.func_82836_z().xPosition, (double)par2ItemStack.func_82836_z().zPosition, (double)(par2ItemStack.func_82836_z().field_82332_a * 90));
+            this.func_82567_a(1, par1EntityPlayer.worldObj, "frame-" + par2ItemStack.getItemFrame().entityId, (double)par2ItemStack.getItemFrame().xPosition, (double)par2ItemStack.getItemFrame().zPosition, (double)(par2ItemStack.getItemFrame().field_82332_a * 90));
         }
     }
 
@@ -236,9 +221,6 @@ public class MapData extends WorldSavedData
 
     @SideOnly(Side.CLIENT)
 
-    /**
-     * Updates the client's map with information from other players in MP
-     */
     public void updateMPMapData(byte[] par1ArrayOfByte)
     {
         int var2;

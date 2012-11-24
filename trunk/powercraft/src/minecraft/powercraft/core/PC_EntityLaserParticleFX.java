@@ -25,16 +25,13 @@ public class PC_EntityLaserParticleFX extends EntityReddustFX {
 	 * @param par beam half (0 - both, 1 - first, 2 - second) - used to draw
 	 *            half-block beam when the direction changes on this block.
 	 */
-	public PC_EntityLaserParticleFX(World par1World, PC_CoordD pos, PC_Color color, PC_CoordI motion, int par) {
+	public PC_EntityLaserParticleFX(World par1World, PC_CoordD pos, PC_Color color, PC_CoordD motion, int par) {
 		super(par1World, pos.x, pos.y, pos.z, 0.45F, (float) color.r, (float) color.g, (float) color.b);
 
-		motionX = 0.04F;
-		motionZ = 0.04F;
-		motionY = 0.04F;
-
-		motionX *= motion.x;
-		motionY *= motion.y;
-		motionZ *= motion.z;
+		motionX = motion.x;
+		motionZ = motion.y;
+		motionY = motion.z;
+		
 		part = par;
 
 		noClip = true;

@@ -9,7 +9,6 @@ import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.common.ModContainer;
 import cpw.mods.fml.common.discovery.asm.ASMModParser;
 
-
 public class ModCandidate
 {
     private File classPathRoot;
@@ -50,6 +49,7 @@ public class ModCandidate
     public List<ModContainer> explore(ASMDataTable table)
     {
         List<ModContainer> mods = sourceType.findMods(this, table);
+
         if (!baseModCandidateTypes.isEmpty())
         {
             FMLLog.info("Attempting to reparse the mod container %s", getModContainer().getName());

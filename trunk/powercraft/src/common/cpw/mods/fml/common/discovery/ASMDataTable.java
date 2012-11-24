@@ -23,8 +23,8 @@ public class ASMDataTable
         private String annotationName;
         private String className;
         private String objectName;
-        private Map<String,Object> annotationInfo;
-        public ASMData(ModCandidate candidate, String annotationName, String className, String objectName, Map<String,Object> info)
+        private Map<String, Object> annotationInfo;
+        public ASMData(ModCandidate candidate, String annotationName, String className, String objectName, Map<String, Object> info)
         {
             this.candidate = candidate;
             this.annotationName = annotationName;
@@ -67,22 +67,25 @@ public class ASMDataTable
         }
     }
     private SetMultimap<String, ASMData> globalAnnotationData = HashMultimap.create();
-    private Map<ModContainer, SetMultimap<String,ASMData>> containerAnnotationData;
+    private Map<ModContainer, SetMultimap<String, ASMData>> containerAnnotationData;
 
     private List<ModContainer> containers = Lists.newArrayList();
 
-    public SetMultimap<String,ASMData> getAnnotationsFor(ModContainer container)
+    public SetMultimap<String, ASMData> getAnnotationsFor(ModContainer container)
     {
         if (containerAnnotationData == null)
         {
-            ImmutableMap.Builder<ModContainer, SetMultimap<String, ASMData>> mapBuilder = ImmutableMap.<ModContainer, SetMultimap<String,ASMData>>builder();
+            ImmutableMap.Builder<ModContainer, SetMultimap<String, ASMData>> mapBuilder = ImmutableMap.<ModContainer, SetMultimap<String, ASMData>>builder();
+
             for (ModContainer cont : containers)
             {
                 Multimap<String, ASMData> values = Multimaps.filterValues(globalAnnotationData, new ModContainerPredicate(cont));
                 mapBuilder.put(cont, ImmutableSetMultimap.copyOf(values));
             }
+
             containerAnnotationData = mapBuilder.build();
         }
+
         return containerAnnotationData.get(container);
     }
 
@@ -91,7 +94,7 @@ public class ASMDataTable
         return globalAnnotationData.get(annotation);
     }
 
-    public void addASMData(ModCandidate candidate, String annotation, String className, String objectName, Map<String,Object> annotationInfo)
+    public void addASMData(ModCandidate candidate, String annotation, String className, String objectName, Map<String, Object> annotationInfo)
     {
         globalAnnotationData.put(annotation, new ASMData(candidate, annotation, className, objectName, annotationInfo));
     }

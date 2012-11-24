@@ -5,16 +5,17 @@ import cpw.mods.fml.common.asm.SideOnly;
 
 public class ContainerBeacon extends Container
 {
-    private TileEntityBeacon field_82866_e;
-    private final SlotBeacon field_82864_f;
+    private TileEntityBeacon theBeacon;
+
+    private final SlotBeacon beaconSlot;
     private int field_82865_g;
     private int field_82867_h;
     private int field_82868_i;
 
     public ContainerBeacon(InventoryPlayer par1InventoryPlayer, TileEntityBeacon par2TileEntityBeacon)
     {
-        this.field_82866_e = par2TileEntityBeacon;
-        this.addSlotToContainer(this.field_82864_f = new SlotBeacon(this, par2TileEntityBeacon, 0, 136, 110));
+        this.theBeacon = par2TileEntityBeacon;
+        this.addSlotToContainer(this.beaconSlot = new SlotBeacon(this, par2TileEntityBeacon, 0, 136, 110));
         byte var3 = 36;
         short var4 = 137;
         int var5;
@@ -32,9 +33,9 @@ public class ContainerBeacon extends Container
             this.addSlotToContainer(new Slot(par1InventoryPlayer, var5, var3 + var5 * 18, 58 + var4));
         }
 
-        this.field_82865_g = par2TileEntityBeacon.func_82130_k();
-        this.field_82867_h = par2TileEntityBeacon.func_82126_i();
-        this.field_82868_i = par2TileEntityBeacon.func_82132_j();
+        this.field_82865_g = par2TileEntityBeacon.getLevels();
+        this.field_82867_h = par2TileEntityBeacon.getPrimaryEffect();
+        this.field_82868_i = par2TileEntityBeacon.getSecondaryEffect();
     }
 
     public void addCraftingToCrafters(ICrafting par1ICrafting)
@@ -45,9 +46,6 @@ public class ContainerBeacon extends Container
         par1ICrafting.updateCraftingInventoryInfo(this, 2, this.field_82868_i);
     }
 
-    /**
-     * Updates crafting matrix; called from onCraftMatrixChanged. Args: none
-     */
     public void updateCraftingResults()
     {
         super.updateCraftingResults();
@@ -58,31 +56,31 @@ public class ContainerBeacon extends Container
     {
         if (par1 == 0)
         {
-            this.field_82866_e.func_82129_c(par2);
+            this.theBeacon.setLevels(par2);
         }
 
         if (par1 == 1)
         {
-            this.field_82866_e.func_82128_d(par2);
+            this.theBeacon.func_82128_d(par2);
         }
 
         if (par1 == 2)
         {
-            this.field_82866_e.func_82127_e(par2);
+            this.theBeacon.func_82127_e(par2);
         }
     }
 
     public TileEntityBeacon func_82863_d()
     {
-        return this.field_82866_e;
+        return this.theBeacon;
     }
 
     public boolean canInteractWith(EntityPlayer par1EntityPlayer)
     {
-        return this.field_82866_e.isUseableByPlayer(par1EntityPlayer);
+        return this.theBeacon.isUseableByPlayer(par1EntityPlayer);
     }
 
-    public ItemStack func_82846_b(EntityPlayer par1EntityPlayer, int par2)
+    public ItemStack transferStackInSlot(EntityPlayer par1EntityPlayer, int par2)
     {
         ItemStack var3 = null;
         Slot var4 = (Slot)this.inventorySlots.get(par2);
@@ -101,7 +99,7 @@ public class ContainerBeacon extends Container
 
                 var4.onSlotChange(var5, var3);
             }
-            else if (!this.field_82864_f.getHasStack() && this.field_82864_f.isItemValid(var5) && var5.stackSize == 1)
+            else if (!this.beaconSlot.getHasStack() && this.beaconSlot.isItemValid(var5) && var5.stackSize == 1)
             {
                 if (!this.mergeItemStack(var5, 0, 1, false))
                 {
@@ -141,7 +139,7 @@ public class ContainerBeacon extends Container
                 return null;
             }
 
-            var4.func_82870_a(par1EntityPlayer, var5);
+            var4.onPickupFromSlot(par1EntityPlayer, var5);
         }
 
         return var3;

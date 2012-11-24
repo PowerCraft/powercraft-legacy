@@ -6,17 +6,10 @@ import java.util.Random;
 
 public class ComponentNetherBridgeStartPiece extends ComponentNetherBridgeCrossing3
 {
-    /** Instance of StructureNetherBridgePieceWeight. */
     public StructureNetherBridgePieceWeight theNetherBridgePieceWeight;
 
-    /**
-     * Contains the list of valid piece weights for the set of nether bridge structure pieces.
-     */
     public List primaryWeights = new ArrayList();
 
-    /**
-     * Contains the list of valid piece weights for the secondary set of nether bridge structure pieces.
-     */
     public List secondaryWeights;
     public ArrayList field_74967_d = new ArrayList();
 

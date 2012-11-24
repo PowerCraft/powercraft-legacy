@@ -2,53 +2,44 @@ package net.minecraft.src;
 
 public class EntityAIControlledByPlayer extends EntityAIBase
 {
-    private final EntityLiving field_82640_a;
-    private final float field_82638_b;
-    private float field_82639_c = 0.0F;
-    private boolean field_82636_d = false;
-    private int field_82637_e = 0;
-    private int field_82635_f = 0;
+    private final EntityLiving thisEntity;
+    private final float maxSpeed;
+    private float currentSpeed = 0.0F;
+
+    private boolean speedBoosted = false;
+
+    private int speedBoostTime = 0;
+
+    private int maxSpeedBoostTime = 0;
 
     public EntityAIControlledByPlayer(EntityLiving par1EntityLiving, float par2)
     {
-        this.field_82640_a = par1EntityLiving;
-        this.field_82638_b = par2;
+        this.thisEntity = par1EntityLiving;
+        this.maxSpeed = par2;
         this.setMutexBits(7);
     }
 
-    /**
-     * Execute a one shot task or start executing a continuous task
-     */
     public void startExecuting()
     {
-        this.field_82639_c = 0.0F;
+        this.currentSpeed = 0.0F;
     }
 
-    /**
-     * Resets the task
-     */
     public void resetTask()
     {
-        this.field_82636_d = false;
-        this.field_82639_c = 0.0F;
+        this.speedBoosted = false;
+        this.currentSpeed = 0.0F;
     }
 
-    /**
-     * Returns whether the EntityAIBase should begin execution.
-     */
     public boolean shouldExecute()
     {
-        return this.field_82640_a.isEntityAlive() && this.field_82640_a.riddenByEntity != null && this.field_82640_a.riddenByEntity instanceof EntityPlayer && (this.field_82636_d || this.field_82640_a.func_82171_bF());
+        return this.thisEntity.isEntityAlive() && this.thisEntity.riddenByEntity != null && this.thisEntity.riddenByEntity instanceof EntityPlayer && (this.speedBoosted || this.thisEntity.canBeSteered());
     }
 
-    /**
-     * Updates the task
-     */
     public void updateTask()
     {
-        EntityPlayer var1 = (EntityPlayer)this.field_82640_a.riddenByEntity;
-        EntityCreature var2 = (EntityCreature)this.field_82640_a;
-        float var3 = MathHelper.wrapAngleTo180_float(var1.rotationYaw - this.field_82640_a.rotationYaw) * 0.5F;
+        EntityPlayer var1 = (EntityPlayer)this.thisEntity.riddenByEntity;
+        EntityCreature var2 = (EntityCreature)this.thisEntity;
+        float var3 = MathHelper.wrapAngleTo180_float(var1.rotationYaw - this.thisEntity.rotationYaw) * 0.5F;
 
         if (var3 > 5.0F)
         {
@@ -60,39 +51,39 @@ public class EntityAIControlledByPlayer extends EntityAIBase
             var3 = -5.0F;
         }
 
-        this.field_82640_a.rotationYaw = MathHelper.wrapAngleTo180_float(this.field_82640_a.rotationYaw + var3);
+        this.thisEntity.rotationYaw = MathHelper.wrapAngleTo180_float(this.thisEntity.rotationYaw + var3);
 
-        if (this.field_82639_c < this.field_82638_b)
+        if (this.currentSpeed < this.maxSpeed)
         {
-            this.field_82639_c += (this.field_82638_b - this.field_82639_c) * 0.01F;
+            this.currentSpeed += (this.maxSpeed - this.currentSpeed) * 0.01F;
         }
 
-        if (this.field_82639_c > this.field_82638_b)
+        if (this.currentSpeed > this.maxSpeed)
         {
-            this.field_82639_c = this.field_82638_b;
+            this.currentSpeed = this.maxSpeed;
         }
 
-        int var4 = MathHelper.floor_double(this.field_82640_a.posX);
-        int var5 = MathHelper.floor_double(this.field_82640_a.posY);
-        int var6 = MathHelper.floor_double(this.field_82640_a.posZ);
-        float var7 = this.field_82639_c;
+        int var4 = MathHelper.floor_double(this.thisEntity.posX);
+        int var5 = MathHelper.floor_double(this.thisEntity.posY);
+        int var6 = MathHelper.floor_double(this.thisEntity.posZ);
+        float var7 = this.currentSpeed;
 
-        if (this.field_82636_d)
+        if (this.speedBoosted)
         {
-            if (this.field_82637_e++ > this.field_82635_f)
+            if (this.speedBoostTime++ > this.maxSpeedBoostTime)
             {
-                this.field_82636_d = false;
+                this.speedBoosted = false;
             }
 
-            var7 += var7 * 1.15F * MathHelper.sin((float)this.field_82637_e / (float)this.field_82635_f * (float)Math.PI);
+            var7 += var7 * 1.15F * MathHelper.sin((float)this.speedBoostTime / (float)this.maxSpeedBoostTime * (float)Math.PI);
         }
 
         float var8 = 0.91F;
 
-        if (this.field_82640_a.onGround)
+        if (this.thisEntity.onGround)
         {
             var8 = 0.54600006F;
-            int var9 = this.field_82640_a.worldObj.getBlockId(MathHelper.floor_float((float)var4), MathHelper.floor_float((float)var5) - 1, MathHelper.floor_float((float)var6));
+            int var9 = this.thisEntity.worldObj.getBlockId(MathHelper.floor_float((float)var4), MathHelper.floor_float((float)var5) - 1, MathHelper.floor_float((float)var6));
 
             if (var9 > 0)
             {
@@ -114,12 +105,12 @@ public class EntityAIControlledByPlayer extends EntityAIBase
         {
             if (var15 < 0.0F)
             {
-                var15 -= this.field_82640_a.width / 2.0F;
+                var15 -= this.thisEntity.width / 2.0F;
             }
 
             if (var15 > 0.0F)
             {
-                var15 += this.field_82640_a.width / 2.0F;
+                var15 += this.thisEntity.width / 2.0F;
             }
 
             var16 = 0.0F;
@@ -130,29 +121,29 @@ public class EntityAIControlledByPlayer extends EntityAIBase
 
             if (var16 < 0.0F)
             {
-                var16 -= this.field_82640_a.width / 2.0F;
+                var16 -= this.thisEntity.width / 2.0F;
             }
 
             if (var16 > 0.0F)
             {
-                var16 += this.field_82640_a.width / 2.0F;
+                var16 += this.thisEntity.width / 2.0F;
             }
         }
 
-        int var17 = MathHelper.floor_double(this.field_82640_a.posX + (double)var15);
-        int var18 = MathHelper.floor_double(this.field_82640_a.posZ + (double)var16);
-        PathPoint var19 = new PathPoint(MathHelper.floor_float(this.field_82640_a.width + 1.0F), MathHelper.floor_float(this.field_82640_a.height + var1.height + 1.0F), MathHelper.floor_float(this.field_82640_a.width + 1.0F));
+        int var17 = MathHelper.floor_double(this.thisEntity.posX + (double)var15);
+        int var18 = MathHelper.floor_double(this.thisEntity.posZ + (double)var16);
+        PathPoint var19 = new PathPoint(MathHelper.floor_float(this.thisEntity.width + 1.0F), MathHelper.floor_float(this.thisEntity.height + var1.height + 1.0F), MathHelper.floor_float(this.thisEntity.width + 1.0F));
 
-        if ((var4 != var17 || var6 != var18) && PathFinder.func_82565_a(this.field_82640_a, var17, var5, var18, var19, false, false, true) == 0 && PathFinder.func_82565_a(this.field_82640_a, var4, var5 + 1, var6, var19, false, false, true) == 1 && PathFinder.func_82565_a(this.field_82640_a, var17, var5 + 1, var18, var19, false, false, true) == 1)
+        if ((var4 != var17 || var6 != var18) && PathFinder.func_82565_a(this.thisEntity, var17, var5, var18, var19, false, false, true) == 0 && PathFinder.func_82565_a(this.thisEntity, var4, var5 + 1, var6, var19, false, false, true) == 1 && PathFinder.func_82565_a(this.thisEntity, var17, var5 + 1, var18, var19, false, false, true) == 1)
         {
             var2.getJumpHelper().setJumping();
         }
 
-        if (!var1.capabilities.isCreativeMode && this.field_82639_c >= this.field_82638_b * 0.5F && this.field_82640_a.getRNG().nextFloat() < 0.006F && !this.field_82636_d)
+        if (!var1.capabilities.isCreativeMode && this.currentSpeed >= this.maxSpeed * 0.5F && this.thisEntity.getRNG().nextFloat() < 0.006F && !this.speedBoosted)
         {
             ItemStack var20 = var1.getHeldItem();
 
-            if (var20 != null && var20.itemID == Item.field_82793_bR.shiftedIndex)
+            if (var20 != null && var20.itemID == Item.carrotOnAStick.shiftedIndex)
             {
                 var20.damageItem(1, var1);
 
@@ -163,23 +154,23 @@ public class EntityAIControlledByPlayer extends EntityAIBase
             }
         }
 
-        this.field_82640_a.moveEntityWithHeading(0.0F, var7);
+        this.thisEntity.moveEntityWithHeading(0.0F, var7);
     }
 
-    public boolean func_82634_f()
+    public boolean isSpeedBoosted()
     {
-        return this.field_82636_d;
+        return this.speedBoosted;
     }
 
-    public void func_82632_g()
+    public void boostSpeed()
     {
-        this.field_82636_d = true;
-        this.field_82637_e = 0;
-        this.field_82635_f = this.field_82640_a.getRNG().nextInt(841) + 140;
+        this.speedBoosted = true;
+        this.speedBoostTime = 0;
+        this.maxSpeedBoostTime = this.thisEntity.getRNG().nextInt(841) + 140;
     }
 
-    public boolean func_82633_h()
+    public boolean isControlledByPlayer()
     {
-        return !this.func_82634_f() && this.field_82639_c > this.field_82638_b * 0.3F;
+        return !this.isSpeedBoosted() && this.currentSpeed > this.maxSpeed * 0.3F;
     }
 }

@@ -1,0 +1,9 @@
+package powercraft.core;
+
+import net.minecraft.src.TileEntity;
+
+public interface PC_ITileEntityRenderer<t extends TileEntity> {
+	
+	public void renderTileEntityAt(t tileEntity, double x, double y, double z, float rot);
+	
+}

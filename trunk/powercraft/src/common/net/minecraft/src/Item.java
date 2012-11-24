@@ -9,10 +9,8 @@ public class Item
 {
     private CreativeTabs tabToDisplayOn = null;
 
-    /** The RNG used by the Item subclasses. */
     protected static Random itemRand = new Random();
 
-    /** A 32000 elements Item array. */
     public static Item[] itemsList = new Item[32000];
     public static Item shovelSteel = (new ItemSpade(0, EnumToolMaterial.IRON)).setIconCoord(2, 5).setItemName("shovelIron");
     public static Item pickaxeSteel = (new ItemPickaxe(1, EnumToolMaterial.IRON)).setIconCoord(2, 6).setItemName("pickaxeIron");
@@ -118,9 +116,6 @@ public class Item
     public static Item cookie = (new ItemFood(101, 2, 0.1F, false)).setIconCoord(12, 5).setItemName("cookie");
     public static ItemMap map = (ItemMap)(new ItemMap(102)).setIconCoord(12, 3).setItemName("map");
 
-    /**
-     * Item introduced on 1.7 version, is a shear to cut leaves (you can keep the block) or get wool from sheeps.
-     */
     public static ItemShears shears = (ItemShears)(new ItemShears(103)).setIconCoord(13, 5).setItemName("shears");
     public static Item melon = (new ItemFood(104, 2, 0.3F, false)).setIconCoord(13, 6).setItemName("melon");
     public static Item pumpkinSeeds = (new ItemSeeds(105, Block.pumpkinStem.blockID, Block.tilledField.blockID)).setIconCoord(13, 3).setItemName("seeds_pumpkin");
@@ -147,30 +142,24 @@ public class Item
     public static Item speckledMelon = (new Item(126)).setIconCoord(9, 8).setItemName("speckledMelon").setPotionEffect(PotionHelper.speckledMelonEffect).setCreativeTab(CreativeTabs.tabBrewing);
     public static Item monsterPlacer = (new ItemMonsterPlacer(127)).setIconCoord(9, 9).setItemName("monsterPlacer");
 
-    /**
-     * Bottle o' Enchanting. Drops between 1 and 3 experience orbs when thrown.
-     */
     public static Item expBottle = (new ItemExpBottle(128)).setIconCoord(11, 10).setItemName("expBottle");
 
-    /**
-     * Fire Charge. When used in a dispenser it fires a fireball similiar to a Ghast's.
-     */
     public static Item fireballCharge = (new ItemFireball(129)).setIconCoord(14, 2).setItemName("fireball");
     public static Item writableBook = (new ItemWritableBook(130)).setIconCoord(11, 11).setItemName("writingBook").setCreativeTab(CreativeTabs.tabMisc);
     public static Item writtenBook = (new ItemEditableBook(131)).setIconCoord(12, 11).setItemName("writtenBook");
     public static Item emerald = (new Item(132)).setIconCoord(10, 11).setItemName("emerald").setCreativeTab(CreativeTabs.tabMaterials);
-    public static Item field_82802_bI = (new ItemHangingEntity(133, EntityItemFrame.class)).setIconCoord(14, 12).setItemName("frame");
-    public static Item field_82796_bJ = (new ItemReed(134, Block.field_82516_cf)).setIconCoord(13, 11).setItemName("flowerPot").setCreativeTab(CreativeTabs.tabDecorations);
-    public static Item field_82797_bK = (new ItemSeedFood(135, 4, 0.6F, Block.field_82513_cg.blockID, Block.tilledField.blockID)).setIconCoord(8, 7).setItemName("carrots");
-    public static Item field_82794_bL = (new ItemSeedFood(136, 1, 0.3F, Block.field_82514_ch.blockID, Block.tilledField.blockID)).setIconCoord(7, 7).setItemName("potato");
-    public static Item field_82795_bM = (new ItemFood(137, 6, 0.6F, false)).setIconCoord(6, 7).setItemName("potatoBaked");
-    public static Item field_82800_bN = (new ItemFood(138, 2, 0.3F, false)).setPotionEffect(Potion.poison.id, 5, 0, 0.6F).setIconCoord(6, 8).setItemName("potatoPoisonous");
-    public static ItemEmptyMap field_82801_bO = (ItemEmptyMap)(new ItemEmptyMap(139)).setIconCoord(13, 12).setItemName("emptyMap");
-    public static Item field_82798_bP = (new ItemFood(140, 6, 1.2F, false)).setIconCoord(6, 9).setItemName("carrotGolden").setPotionEffect(PotionHelper.field_82818_l);
-    public static Item field_82799_bQ = (new ItemSkull(141)).setItemName("skull");
-    public static Item field_82793_bR = (new ItemCarrotOnAStick(142)).setIconCoord(6, 6).setItemName("carrotOnAStick");
-    public static Item field_82792_bS = (new ItemSimpleFoiled(143)).setIconCoord(9, 11).setItemName("netherStar").setCreativeTab(CreativeTabs.tabMaterials);
-    public static Item field_82791_bT = (new ItemFood(144, 8, 0.3F, false)).setIconCoord(8, 9).setItemName("pumpkinPie").setCreativeTab(CreativeTabs.tabFood);
+    public static Item itemFrame = (new ItemHangingEntity(133, EntityItemFrame.class)).setIconCoord(14, 12).setItemName("frame");
+    public static Item flowerPot = (new ItemReed(134, Block.flowerPot)).setIconCoord(13, 11).setItemName("flowerPot").setCreativeTab(CreativeTabs.tabDecorations);
+    public static Item carrot = (new ItemSeedFood(135, 4, 0.6F, Block.carrot.blockID, Block.tilledField.blockID)).setIconCoord(8, 7).setItemName("carrots");
+    public static Item potatoe = (new ItemSeedFood(136, 1, 0.3F, Block.potatoe.blockID, Block.tilledField.blockID)).setIconCoord(7, 7).setItemName("potato");
+    public static Item bakedPotato = (new ItemFood(137, 6, 0.6F, false)).setIconCoord(6, 7).setItemName("potatoBaked");
+    public static Item poisonousPotato = (new ItemFood(138, 2, 0.3F, false)).setPotionEffect(Potion.poison.id, 5, 0, 0.6F).setIconCoord(6, 8).setItemName("potatoPoisonous");
+    public static ItemEmptyMap emptyMap = (ItemEmptyMap)(new ItemEmptyMap(139)).setIconCoord(13, 12).setItemName("emptyMap");
+    public static Item goldenCarrot = (new ItemFood(140, 6, 1.2F, false)).setIconCoord(6, 9).setItemName("carrotGolden").setPotionEffect(PotionHelper.field_82818_l);
+    public static Item skull = (new ItemSkull(141)).setItemName("skull");
+    public static Item carrotOnAStick = (new ItemCarrotOnAStick(142)).setIconCoord(6, 6).setItemName("carrotOnAStick");
+    public static Item netherStar = (new ItemSimpleFoiled(143)).setIconCoord(9, 11).setItemName("netherStar").setCreativeTab(CreativeTabs.tabMaterials);
+    public static Item pumpkinPie = (new ItemFood(144, 8, 0.3F, false)).setIconCoord(8, 9).setItemName("pumpkinPie").setCreativeTab(CreativeTabs.tabFood);
     public static Item record13 = (new ItemRecord(2000, "13")).setIconCoord(0, 15).setItemName("record");
     public static Item recordCat = (new ItemRecord(2001, "cat")).setIconCoord(1, 15).setItemName("record");
     public static Item recordBlocks = (new ItemRecord(2002, "blocks")).setIconCoord(2, 15).setItemName("record");
@@ -182,36 +171,27 @@ public class Item
     public static Item recordStrad = (new ItemRecord(2008, "strad")).setIconCoord(8, 15).setItemName("record");
     public static Item recordWard = (new ItemRecord(2009, "ward")).setIconCoord(9, 15).setItemName("record");
     public static Item record11 = (new ItemRecord(2010, "11")).setIconCoord(10, 15).setItemName("record");
+    public static Item field_85180_cf = (new ItemRecord(2011, "wait")).setIconCoord(11, 15).setItemName("record");
 
-    /** Item index + 256 */
     public final int shiftedIndex;
 
-    /** Maximum size of the stack. */
     protected int maxStackSize = 64;
 
-    /** Maximum damage an item can handle. */
     private int maxDamage = 0;
 
-    /** Icon index in the icons table. */
     protected int iconIndex;
 
-    /** If true, render the object in full 3D, like weapons and tools. */
     protected boolean bFull3D = false;
 
-    /**
-     * Some items (like dyes) have multiple subtypes on same item, this is field define this behavior
-     */
     protected boolean hasSubtypes = false;
     private Item containerItem = null;
     private String potionEffect = null;
 
-    /** full name of item from language file */
     private String itemName;
 
-    /** FORGE: To disable repair recipes. */
     protected boolean canRepair = true;
 
-    protected Item(int par1)
+    public Item(int par1)
     {
         this.shiftedIndex = 256 + par1;
 
@@ -228,9 +208,6 @@ public class Item
         }
     }
 
-    /**
-     * Sets the icon index for this item. Returns the item.
-     */
     public Item setIconIndex(int par1)
     {
         this.iconIndex = par1;
@@ -251,9 +228,6 @@ public class Item
 
     @SideOnly(Side.CLIENT)
 
-    /**
-     * Gets an icon index based on an item's damage value
-     */
     public int getIconFromDamage(int par1)
     {
         return this.iconIndex;
@@ -261,35 +235,21 @@ public class Item
 
     @SideOnly(Side.CLIENT)
 
-    /**
-     * Returns the icon index of the stack given as argument.
-     */
     public final int getIconIndex(ItemStack par1ItemStack)
     {
         return this.getIconFromDamage(par1ItemStack.getItemDamage());
     }
 
-    /**
-     * Callback for item usage. If the item does something special on right clicking, he will have one of those. Return
-     * True if something happen and false if it don't. This is for ITEMS, not BLOCKS
-     */
     public boolean onItemUse(ItemStack par1ItemStack, EntityPlayer par2EntityPlayer, World par3World, int par4, int par5, int par6, int par7, float par8, float par9, float par10)
     {
         return false;
     }
 
-    /**
-     * Returns the strength of the stack against a given block. 1.0F base, (Quality+1)*2 if correct blocktype, 1.5F if
-     * sword
-     */
     public float getStrVsBlock(ItemStack par1ItemStack, Block par2Block)
     {
         return 1.0F;
     }
 
-    /**
-     * Called whenever this item is equipped and the right mouse button is pressed. Args: itemStack, world, entityPlayer
-     */
     public ItemStack onItemRightClick(ItemStack par1ItemStack, World par2World, EntityPlayer par3EntityPlayer)
     {
         return par1ItemStack;
@@ -300,17 +260,11 @@ public class Item
         return par1ItemStack;
     }
 
-    /**
-     * Returns the maximum size of the stack for a specific item. *Isn't this more a Set than a Get?*
-     */
     public int getItemStackLimit()
     {
         return this.maxStackSize;
     }
 
-    /**
-     * Returns the metadata of the block which this Item (ItemBlock) can place
-     */
     public int getMetadata(int par1)
     {
         return 0;
@@ -327,17 +281,11 @@ public class Item
         return this;
     }
 
-    /**
-     * Returns the maximum damage an item can take.
-     */
     public int getMaxDamage()
     {
         return this.maxDamage;
     }
 
-    /**
-     * set max damage of an Item
-     */
     public Item setMaxDamage(int par1)
     {
         this.maxDamage = par1;
@@ -349,10 +297,6 @@ public class Item
         return this.maxDamage > 0 && !this.hasSubtypes;
     }
 
-    /**
-     * Current implementations of this method in child classes do not use the entry argument beside ev. They just raise
-     * the damage on the stack.
-     */
     public boolean hitEntity(ItemStack par1ItemStack, EntityLiving par2EntityLiving, EntityLiving par3EntityLiving)
     {
         return false;
@@ -363,33 +307,21 @@ public class Item
         return false;
     }
 
-    /**
-     * Returns the damage against a given entity.
-     */
     public int getDamageVsEntity(Entity par1Entity)
     {
         return 1;
     }
 
-    /**
-     * Returns if the item (tool) can harvest results from the block type.
-     */
     public boolean canHarvestBlock(Block par1Block)
     {
         return false;
     }
 
-    /**
-     * dye sheep, place saddles, etc ...
-     */
     public boolean itemInteractionForEntity(ItemStack par1ItemStack, EntityLiving par2EntityLiving)
     {
         return false;
     }
 
-    /**
-     * Sets bFull3D to True and return the object.
-     */
     public Item setFull3D()
     {
         this.bFull3D = true;
@@ -398,9 +330,6 @@ public class Item
 
     @SideOnly(Side.CLIENT)
 
-    /**
-     * Returns True is the item is renderer in full 3D when hold.
-     */
     public boolean isFull3D()
     {
         return this.bFull3D;
@@ -408,18 +337,11 @@ public class Item
 
     @SideOnly(Side.CLIENT)
 
-    /**
-     * Returns true if this item should be rotated by 180 degrees around the Y axis when being held in an entities
-     * hands.
-     */
     public boolean shouldRotateAroundWhenRendering()
     {
         return false;
     }
 
-    /**
-     * set name of item from language file
-     */
     public Item setItemName(String par1Str)
     {
         this.itemName = "item." + par1Str;
@@ -448,18 +370,11 @@ public class Item
         return this;
     }
 
-    /**
-     * If this returns true, after a recipe involving this item is crafted the container item will be added to the
-     * player's inventory instead of remaining in the crafting grid.
-     */
     public boolean doesContainerItemLeaveCraftingGrid(ItemStack par1ItemStack)
     {
         return true;
     }
 
-    /**
-     * If this function returns true (or the item is damageable), the ItemStack's NBT tag will be sent to the client.
-     */
     public boolean getShareTag()
     {
         return true;
@@ -470,9 +385,6 @@ public class Item
         return this.containerItem;
     }
 
-    /**
-     * True if this Item has a container item (a.k.a. crafting result)
-     */
     public boolean hasContainerItem()
     {
         return this.containerItem != null;
@@ -489,71 +401,43 @@ public class Item
     }
 
     @SideOnly(Side.CLIENT)
-    public int func_82790_a(ItemStack par1ItemStack, int par2)
+    public int getColorFromItemStack(ItemStack par1ItemStack, int par2)
     {
         return 16777215;
     }
 
-    /**
-     * Called each tick as long the item is on a player inventory. Uses by maps to check if is on a player hand and
-     * update it's contents.
-     */
     public void onUpdate(ItemStack par1ItemStack, World par2World, Entity par3Entity, int par4, boolean par5) {}
 
-    /**
-     * Called when item is crafted/smelted. Used only by maps so far.
-     */
     public void onCreated(ItemStack par1ItemStack, World par2World, EntityPlayer par3EntityPlayer) {}
 
-    /**
-     * false for all Items except sub-classes of ItemMapBase
-     */
     public boolean isMap()
     {
         return false;
     }
 
-    /**
-     * returns the action that specifies what animation to play when the items is being used
-     */
     public EnumAction getItemUseAction(ItemStack par1ItemStack)
     {
         return EnumAction.none;
     }
 
-    /**
-     * How long it takes to use or consume an item
-     */
     public int getMaxItemUseDuration(ItemStack par1ItemStack)
     {
         return 0;
     }
 
-    /**
-     * called when the player releases the use item button. Args: itemstack, world, entityplayer, itemInUseCount
-     */
     public void onPlayerStoppedUsing(ItemStack par1ItemStack, World par2World, EntityPlayer par3EntityPlayer, int par4) {}
 
-    /**
-     * Sets the string representing this item's effect on a potion when used as an ingredient.
-     */
     protected Item setPotionEffect(String par1Str)
     {
         this.potionEffect = par1Str;
         return this;
     }
 
-    /**
-     * Returns a string representing what this item does to a potion.
-     */
     public String getPotionEffect()
     {
         return this.potionEffect;
     }
 
-    /**
-     * Returns true if this item serves as a potion ingredient (its ingredient information is not null).
-     */
     public boolean isPotionIngredient()
     {
         return this.potionEffect != null;
@@ -561,9 +445,6 @@ public class Item
 
     @SideOnly(Side.CLIENT)
 
-    /**
-     * allows items to add custom lines of information to the mouseover description
-     */
     public void addInformation(ItemStack par1ItemStack, EntityPlayer par2EntityPlayer, List par3List, boolean par4) {}
 
     public String getItemDisplayName(ItemStack par1ItemStack)
@@ -579,17 +460,11 @@ public class Item
 
     @SideOnly(Side.CLIENT)
 
-    /**
-     * Return an item rarity from EnumRarity
-     */
     public EnumRarity getRarity(ItemStack par1ItemStack)
     {
         return par1ItemStack.isItemEnchanted() ? EnumRarity.rare : EnumRarity.common;
     }
 
-    /**
-     * Checks isDamagable and if it cannot be stacked
-     */
     public boolean isItemTool(ItemStack par1ItemStack)
     {
         return this.getItemStackLimit() == 1 && this.isDamageable();
@@ -603,7 +478,7 @@ public class Item
         double var7 = par2EntityPlayer.prevPosX + (par2EntityPlayer.posX - par2EntityPlayer.prevPosX) * (double)var4;
         double var9 = par2EntityPlayer.prevPosY + (par2EntityPlayer.posY - par2EntityPlayer.prevPosY) * (double)var4 + 1.62D - (double)par2EntityPlayer.yOffset;
         double var11 = par2EntityPlayer.prevPosZ + (par2EntityPlayer.posZ - par2EntityPlayer.prevPosZ) * (double)var4;
-        Vec3 var13 = par1World.func_82732_R().getVecFromPool(var7, var9, var11);
+        Vec3 var13 = par1World.getWorldVec3Pool().getVecFromPool(var7, var9, var11);
         float var14 = MathHelper.cos(-var6 * 0.017453292F - (float)Math.PI);
         float var15 = MathHelper.sin(-var6 * 0.017453292F - (float)Math.PI);
         float var16 = -MathHelper.cos(-var5 * 0.017453292F);
@@ -611,17 +486,16 @@ public class Item
         float var18 = var15 * var16;
         float var20 = var14 * var16;
         double var21 = 5.0D;
+
         if (par2EntityPlayer instanceof EntityPlayerMP)
         {
             var21 = ((EntityPlayerMP)par2EntityPlayer).theItemInWorldManager.getBlockReachDistance();
         }
+
         Vec3 var23 = var13.addVector((double)var18 * var21, (double)var17 * var21, (double)var20 * var21);
         return par1World.rayTraceBlocks_do_do(var13, var23, par3, !par3);
     }
 
-    /**
-     * Return the enchantability factor of the item, most of the time is based on material.
-     */
     public int getItemEnchantability()
     {
         return 0;
@@ -635,9 +509,6 @@ public class Item
 
     @SideOnly(Side.CLIENT)
 
-    /**
-     * Gets an icon index based on an item's damage value and the given render pass
-     */
     public int getIconFromDamageForRenderPass(int par1, int par2)
     {
         return this.getIconFromDamage(par1);
@@ -645,17 +516,11 @@ public class Item
 
     @SideOnly(Side.CLIENT)
 
-    /**
-     * returns a list of items with the same ID, but different meta (eg: dye returns 16 items)
-     */
     public void getSubItems(int par1, CreativeTabs par2CreativeTabs, List par3List)
     {
         par3List.add(new ItemStack(par1, 1, 0));
     }
 
-    /**
-     * returns this;
-     */
     public Item setCreativeTab(CreativeTabs par1CreativeTabs)
     {
         this.tabToDisplayOn = par1CreativeTabs;
@@ -664,9 +529,6 @@ public class Item
 
     @SideOnly(Side.CLIENT)
 
-    /**
-     * gets the CreativeTab this item is displayed on
-     */
     public CreativeTabs getCreativeTab()
     {
         return this.tabToDisplayOn;
@@ -677,7 +539,7 @@ public class Item
         return true;
     }
 
-    public boolean func_82789_a(ItemStack par1ItemStack, ItemStack par2ItemStack)
+    public boolean getIsRepairable(ItemStack par1ItemStack, ItemStack par2ItemStack)
     {
         return false;
     }
@@ -687,239 +549,119 @@ public class Item
         StatList.initStats();
     }
 
-    /* =========================================================== FORGE START ===============================================================*/
     public boolean isDefaultTexture = true;
     private String currentTexture = "/gui/items.png";
 
-    /**
-     * Called when a player drops the item into the world,
-     * returning false from this will prevent the item from
-     * being removed from the players inventory and spawning
-     * in the world
-     * 
-     * @param player The player that dropped the item
-     * @param item The item stack, before the item is removed.
-     */
     public boolean onDroppedByPlayer(ItemStack item, EntityPlayer player)
     {
         return true;
     }
 
-    /**
-     * This is called when the item is used, before the block is activated.
-     * @param stack The Item Stack
-     * @param player The Player that used the item
-     * @param world The Current World
-     * @param x Target X Position
-     * @param y Target Y Position
-     * @param z Target Z Position
-     * @param side The side of the target hit
-     * @return Return true to prevent any further processing.
-     */
-    public boolean onItemUseFirst(ItemStack stack, EntityPlayer player, World world, int x, int y, int z, int side, float hitX, float hitY, float hitZ) 
+    public boolean onItemUseFirst(ItemStack stack, EntityPlayer player, World world, int x, int y, int z, int side, float hitX, float hitY, float hitZ)
     {
         return onItemUseFirst(stack, player, world, x, y, z, side);
     }
-    
-    /**
-     * See onItemUseFirst above, this is deprecated in favor of the more aware version.
-     * Only here for compaibility.
-     */
+
     @Deprecated
-    public boolean onItemUseFirst(ItemStack stack, EntityPlayer player, World world, int x, int y, int z, int side) 
+    public boolean onItemUseFirst(ItemStack stack, EntityPlayer player, World world, int x, int y, int z, int side)
     {
         return false;
     }
 
-    /**
-     * Metadata-sensitive version of getStrVsBlock
-     * @param itemstack The Item Stack
-     * @param block The block the item is trying to break
-     * @param metadata The items current metadata
-     * @return The damage strength
-     */
     public float getStrVsBlock(ItemStack itemstack, Block block, int metadata)
     {
         return getStrVsBlock(itemstack, block);
     }
 
-    /**
-     * Called by CraftingManager to determine if an item is reparable.
-     * @return True if reparable
-     */
-    public boolean isRepairable() 
+    public boolean isRepairable()
     {
         return canRepair && isDamageable();
     }
 
-    /**
-     * Call to disable repair recipes.
-     * @return The current Item instance
-     */
-    public Item setNoRepair() 
+    public Item setNoRepair()
     {
         canRepair = false;
         return this;
     }
 
-    /**
-     * Called before a block is broken.  Return true to prevent default block harvesting.
-     *
-     * Note: In SMP, this is called on both client and server sides!
-     * 
-     * @param itemstack The current ItemStack
-     * @param X The X Position
-     * @param Y The X Position
-     * @param Z The X Position
-     * @param player The Player that is wielding the item
-     * @return True to prevent harvesting, false to continue as normal
-     */
-    public boolean onBlockStartBreak(ItemStack itemstack, int X, int Y, int Z, EntityPlayer player) 
+    public boolean onBlockStartBreak(ItemStack itemstack, int X, int Y, int Z, EntityPlayer player)
     {
         return false;
     }
 
-    /**
-     * Called each tick while using an item.
-     * @param stack The Item being used
-     * @param player The Player using the item
-     * @param count The amount of time in tick the item has been used for continuously
-     */
-    public void onUsingItemTick(ItemStack stack, EntityPlayer player, int count) 
+    public void onUsingItemTick(ItemStack stack, EntityPlayer player, int count)
     {
     }
 
-    /**
-     * Called when the player Left Clicks (attacks) an entity.
-     * Processed before damage is done, if return value is true further processing is canceled
-     * and the entity is not attacked.
-     * 
-     * @param stack The Item being used
-     * @param player The player that is attacking
-     * @param entity The entity being attacked
-     * @return True to cancel the rest of the interaction.
-     */
-    public boolean onLeftClickEntity(ItemStack stack, EntityPlayer player, Entity entity) 
+    public boolean onLeftClickEntity(ItemStack stack, EntityPlayer player, Entity entity)
     {
         return false;
     }
 
-    /**
-     * Player, Render pass, and item usage sensitive version of getIconIndex.
-     *   
-     * @param stack The item stack to get the icon for. (Usually this, and usingItem will be the same if usingItem is not null)
-     * @param renderPass The pass to get the icon for, 0 is default.
-     * @param player The player holding the item
-     * @param usingItem The item the player is actively using. Can be null if not using anything.
-     * @param useRemaining The ticks remaining for the active item.
-     * @return The icon index
-     */
     public int getIconIndex(ItemStack stack, int renderPass, EntityPlayer player, ItemStack usingItem, int useRemaining)
     {
-        /*
-         * Here is an example usage for Vanilla bows.
-        if (usingItem != null && usingItem.getItem().shiftedIndex == Item.bow.shiftedIndex)
-        {
-            int k = usingItem.getMaxItemUseDuration() - useRemaining;
-            if (k >= 18) return 133;
-            if (k >  13) return 117;
-            if (k >   0) return 101;
-        }
-         */
         return getIconIndex(stack);
     }
 
-    /**
-     * Returns the number of render passes/layers this item has.
-     * Usually equates to ItemRenderer.renderItem being called for this many passes.
-     * Does not get called unless requiresMultipleRenderPasses() is true;
-     * 
-     * @param metadata The item's metadata
-     * @return The number of passes to run.
-     */
     public int getRenderPasses(int metadata)
     {
         return requiresMultipleRenderPasses() ? 2 : 1;
     }
 
-    /**
-     * Grabs the current texture file used for this block
-     */
     public String getTextureFile()
     {
         if (this instanceof ItemBlock)
         {
             return Block.blocksList[((ItemBlock)this).getBlockID()].getTextureFile();
         }
+
         return currentTexture;
     }
 
-    /**
-     * Sets the current texture file for this item, used when rendering.
-     * Default is "/gui/items.png"
-     * 
-     * @param texture The texture file
-     */
-    public void setTextureFile(String texture)
+    public Item setTextureFile(String texture)
     {
         currentTexture = texture;
         isDefaultTexture = false;
+        return this;
     }
 
-    /**
-     * ItemStack sensitive version of getContainerItem.
-     * Returns a full ItemStack instance of the result.
-     * 
-     * @param itemStack The current ItemStack
-     * @return The resulting ItemStack
-     */
     public ItemStack getContainerItemStack(ItemStack itemStack)
     {
         if (!hasContainerItem())
         {
             return null;
         }
+
         return new ItemStack(getContainerItem());
     }
 
-    /**
-     * Retrieves the normal 'lifespan' of this item when it is dropped on the ground as a EntityItem.
-     * This is in ticks, standard result is 6000, or 5 mins.
-     * 
-     * @param itemStack The current ItemStack
-     * @param world The world the entity is in
-     * @return The normal lifespan in ticks.
-     */
     public int getEntityLifespan(ItemStack itemStack, World world)
     {
         return 6000;
     }
 
-    /**
-     * Determines if this Item has a special entity for when they are in the world.
-     * Is called when a EntityItem is spawned in the world, if true and Item#createCustomEntity 
-     * returns non null, the EntityItem will be destroyed and the new Entity will be added to the world.
-     * 
-     * @param stack The current item stack
-     * @return True of the item has a custom entity, If true, Item#createCustomEntity will be called
-     */
     public boolean hasCustomEntity(ItemStack stack)
     {
         return false;
     }
 
-    /**
-     * This function should return a new entity to replace the dropped item.
-     * Returning null here will not kill the EntityItem and will leave it to function normally.
-     * Called when the item it placed in a world.
-     * 
-     * @param world The world object
-     * @param location The EntityItem object, useful for getting the position of the entity
-     * @param itemstack The current item stack
-     * @return A new Entity object to spawn or null
-     */
     public Entity createEntity(World world, Entity location, ItemStack itemstack)
     {
         return null;
+    }
+
+    public CreativeTabs[] getCreativeTabs()
+    {
+        return new CreativeTabs[] { getCreativeTab() };
+    }
+
+    public float getSmeltingExperience(ItemStack item)
+    {
+        return -1;
+    }
+
+    public int getIconFromItemStackForMultiplePasses(ItemStack stack, int pass)
+    {
+        return getIconFromDamageForRenderPass(stack.getItemDamage(), pass);
     }
 }

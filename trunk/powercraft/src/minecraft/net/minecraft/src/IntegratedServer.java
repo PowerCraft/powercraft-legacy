@@ -76,7 +76,7 @@ public class IntegratedServer extends MinecraftServer
      */
     protected boolean startServer() throws IOException
     {
-        logger.info("Starting integrated minecraft server version 1.4.2");
+        logger.info("Starting integrated minecraft server version 1.4.4");
         this.setOnlineMode(false);
         this.setCanSpawnAnimals(true);
         this.setCanSpawnNPCs(true);
@@ -169,8 +169,8 @@ public class IntegratedServer extends MinecraftServer
     public CrashReport addServerInfoToCrashReport(CrashReport par1CrashReport)
     {
         par1CrashReport = super.addServerInfoToCrashReport(par1CrashReport);
-        par1CrashReport.addCrashSectionCallable("Type", new CallableType3(this));
-        par1CrashReport.addCrashSectionCallable("Is Modded", new CallableIsModded(this));
+        par1CrashReport.func_85056_g().addCrashSectionCallable("Type", new CallableType3(this));
+        par1CrashReport.func_85056_g().addCrashSectionCallable("Is Modded", new CallableIsModded(this));
         return par1CrashReport;
     }
 
@@ -254,7 +254,10 @@ public class IntegratedServer extends MinecraftServer
         this.getConfigurationManager().setGameType(par1EnumGameType);
     }
 
-    public boolean func_82356_Z()
+    /**
+     * Return whether command blocks are enabled.
+     */
+    public boolean isCommandBlockEnabled()
     {
         return true;
     }

@@ -1,17 +1,12 @@
 package net.minecraft.src;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
-
-import cpw.mods.fml.common.FMLCommonHandler;
-import cpw.mods.fml.common.Side;
 
 class PlayerInstance
 {
     private final List playersInChunk;
 
-    /** note: this is final */
     private final ChunkCoordIntPair chunkLocation;
     private short[] locationOfBlockChange;
     private int numberOfTilesToUpdate;
@@ -29,9 +24,6 @@ class PlayerInstance
         par1PlayerManager.getWorldServer().theChunkProviderServer.loadChunk(par2, par3);
     }
 
-    /**
-     * called for all chunks within the visible radius of the player
-     */
     public void addPlayerToChunkWatchingList(EntityPlayerMP par1EntityPlayerMP)
     {
         if (this.playersInChunk.contains(par1EntityPlayerMP))
@@ -95,11 +87,9 @@ class PlayerInstance
 
     public void sendToAllPlayersWatchingChunk(Packet par1Packet)
     {
-        Iterator var2 = this.playersInChunk.iterator();
-
-        while (var2.hasNext())
+        for (int var2 = 0; var2 < this.playersInChunk.size(); ++var2)
         {
-            EntityPlayerMP var3 = (EntityPlayerMP)var2.next();
+            EntityPlayerMP var3 = (EntityPlayerMP)this.playersInChunk.get(var2);
 
             if (!var3.loadedChunks.contains(this.chunkLocation))
             {
@@ -143,16 +133,11 @@ class PlayerInstance
                         if ((this.field_73260_f & 1 << var3) != 0)
                         {
                             var4 = var3 << 4;
-                            //BugFix: 16 makes it load an extra chunk, which isn't associated with a player, which makes it not unload unless a player walks near it.
-                            //ToDo: Find a way to efficiently clean abandoned chunks.
-                            //List var5 = PlayerManager.getWorldServer(this.myManager).getAllTileEntityInBox(var1, var4, var2, var1 + 16, var4 + 16, var2 + 16);
-                            List var5 = PlayerManager.getWorldServer(this.myManager).getAllTileEntityInBox(var1, var4, var2, var1 + 15, var4 + 16, var2 + 15);
-                            Iterator var6 = var5.iterator();
+                            List var5 = PlayerManager.getWorldServer(this.myManager).getAllTileEntityInBox(var1, var4, var2, var1 + 16, var4 + 16, var2 + 16);
 
-                            while (var6.hasNext())
+                            for (int var6 = 0; var6 < var5.size(); ++var6)
                             {
-                                TileEntity var7 = (TileEntity)var6.next();
-                                this.sendTileToAllPlayersWatchingChunk(var7);
+                                this.sendTileToAllPlayersWatchingChunk((TileEntity)var5.get(var6));
                             }
                         }
                     }

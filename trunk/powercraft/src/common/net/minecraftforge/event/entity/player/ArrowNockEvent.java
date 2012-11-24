@@ -8,7 +8,7 @@ import net.minecraftforge.event.Cancelable;
 public class ArrowNockEvent extends PlayerEvent
 {
     public ItemStack result;
-    
+
     public ArrowNockEvent(EntityPlayer player, ItemStack result)
     {
         super(player);

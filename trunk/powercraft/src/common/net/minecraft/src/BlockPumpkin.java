@@ -2,7 +2,6 @@ package net.minecraft.src;
 
 public class BlockPumpkin extends BlockDirectional
 {
-    /** Boolean used to seperate different states of blocks */
     private boolean blockType;
 
     protected BlockPumpkin(int par1, int par2, boolean par3)
@@ -14,9 +13,6 @@ public class BlockPumpkin extends BlockDirectional
         this.setCreativeTab(CreativeTabs.tabBlock);
     }
 
-    /**
-     * From the specified side and block metadata retrieves the blocks texture. Args: side, metadata
-     */
     public int getBlockTextureFromSideAndMetadata(int par1, int par2)
     {
         if (par1 == 1)
@@ -40,17 +36,11 @@ public class BlockPumpkin extends BlockDirectional
         }
     }
 
-    /**
-     * Returns the block texture based on the side being looked at.  Args: side
-     */
     public int getBlockTextureFromSide(int par1)
     {
         return par1 == 1 ? this.blockIndexInTexture : (par1 == 0 ? this.blockIndexInTexture : (par1 == 3 ? this.blockIndexInTexture + 1 + 16 : this.blockIndexInTexture + 16));
     }
 
-    /**
-     * Called whenever the block is added into the world. Args: world, x, y, z
-     */
     public void onBlockAdded(World par1World, int par2, int par3, int par4)
     {
         super.onBlockAdded(par1World, par2, par3, par4);
@@ -125,18 +115,12 @@ public class BlockPumpkin extends BlockDirectional
         }
     }
 
-    /**
-     * Checks to see if its valid to put this block at the specified coordinates. Args: world, x, y, z
-     */
     public boolean canPlaceBlockAt(World par1World, int par2, int par3, int par4)
     {
         int var5 = par1World.getBlockId(par2, par3, par4);
         return (var5 == 0 || Block.blocksList[var5].blockMaterial.isGroundCover()) && par1World.doesBlockHaveSolidTopSurface(par2, par3 - 1, par4);
     }
 
-    /**
-     * Called when the block is placed in the world.
-     */
     public void onBlockPlacedBy(World par1World, int par2, int par3, int par4, EntityLiving par5EntityLiving)
     {
         int var6 = MathHelper.floor_double((double)(par5EntityLiving.rotationYaw * 4.0F / 360.0F) + 2.5D) & 3;

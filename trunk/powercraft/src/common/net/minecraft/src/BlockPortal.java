@@ -12,9 +12,6 @@ public class BlockPortal extends BlockBreakable
         this.setTickRandomly(true);
     }
 
-    /**
-     * Ticks the block if it's been scheduled
-     */
     public void updateTick(World par1World, int par2, int par3, int par4, Random par5Random)
     {
         super.updateTick(par1World, par2, par3, par4, par5Random);
@@ -34,24 +31,17 @@ public class BlockPortal extends BlockBreakable
 
                 if (var7 != null)
                 {
-                    var7.timeUntilPortal = var7.func_82147_ab();
+                    var7.timeUntilPortal = var7.getPortalCooldown();
                 }
             }
         }
     }
 
-    /**
-     * Returns a bounding box from the pool of bounding boxes (this means this box can change after the pool has been
-     * cleared to be reused)
-     */
     public AxisAlignedBB getCollisionBoundingBoxFromPool(World par1World, int par2, int par3, int par4)
     {
         return null;
     }
 
-    /**
-     * Updates the blocks bounds based on its current state. Args: world, x, y, z
-     */
     public void setBlockBoundsBasedOnState(IBlockAccess par1IBlockAccess, int par2, int par3, int par4)
     {
         float var5;
@@ -71,26 +61,16 @@ public class BlockPortal extends BlockBreakable
         }
     }
 
-    /**
-     * Is this block (a) opaque and (b) a full 1m cube?  This determines whether or not to render the shared face of two
-     * adjacent blocks and also whether the player can attach torches, redstone wire, etc to this block.
-     */
     public boolean isOpaqueCube()
     {
         return false;
     }
 
-    /**
-     * If this block doesn't render as an ordinary block it will return False (examples: signs, buttons, stairs, etc)
-     */
     public boolean renderAsNormalBlock()
     {
         return false;
     }
 
-    /**
-     * Checks to see if this location is valid to create a portal and will return True if it does. Args: world, x, y, z
-     */
     public boolean tryToCreatePortal(World par1World, int par2, int par3, int par4)
     {
         byte var5 = 0;
@@ -161,10 +141,6 @@ public class BlockPortal extends BlockBreakable
         }
     }
 
-    /**
-     * Lets the block know when one of its neighbor changes. Doesn't know which neighbor changed (coordinates passed are
-     * their own) Args: x, y, z, neighbor blockID
-     */
     public void onNeighborBlockChange(World par1World, int par2, int par3, int par4, int par5)
     {
         byte var6 = 0;
@@ -222,10 +198,6 @@ public class BlockPortal extends BlockBreakable
 
     @SideOnly(Side.CLIENT)
 
-    /**
-     * Returns true if the given side of this block type should be rendered, if the adjacent block is at the given
-     * coordinates.  Args: blockAccess, x, y, z, side
-     */
     public boolean shouldSideBeRendered(IBlockAccess par1IBlockAccess, int par2, int par3, int par4, int par5)
     {
         if (par1IBlockAccess.getBlockId(par2, par3, par4) == this.blockID)
@@ -244,17 +216,11 @@ public class BlockPortal extends BlockBreakable
         }
     }
 
-    /**
-     * Returns the quantity of items to drop on block destruction.
-     */
     public int quantityDropped(Random par1Random)
     {
         return 0;
     }
 
-    /**
-     * Triggered whenever an entity collides with this block (enters into the block). Args: world, x, y, z, entity
-     */
     public void onEntityCollidedWithBlock(World par1World, int par2, int par3, int par4, Entity par5Entity)
     {
         if (par5Entity.ridingEntity == null && par5Entity.riddenByEntity == null)
@@ -265,9 +231,6 @@ public class BlockPortal extends BlockBreakable
 
     @SideOnly(Side.CLIENT)
 
-    /**
-     * Returns which pass should this block be rendered on. 0 for solids and 1 for alpha
-     */
     public int getRenderBlockPass()
     {
         return 1;
@@ -275,9 +238,6 @@ public class BlockPortal extends BlockBreakable
 
     @SideOnly(Side.CLIENT)
 
-    /**
-     * A randomly called display update to be able to add particles or other items for display
-     */
     public void randomDisplayTick(World par1World, int par2, int par3, int par4, Random par5Random)
     {
         if (par5Random.nextInt(100) == 0)
@@ -315,9 +275,6 @@ public class BlockPortal extends BlockBreakable
 
     @SideOnly(Side.CLIENT)
 
-    /**
-     * only called by clickMiddleMouseButton , and passed to inventory.setCurrentItem (along with isCreative)
-     */
     public int idPicked(World par1World, int par2, int par3, int par4)
     {
         return 0;

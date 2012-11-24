@@ -6,7 +6,7 @@ import java.util.List;
 
 public class ItemSkull extends Item
 {
-    private static final String[] field_82807_a = new String[] {"skeleton", "wither", "zombie", "char", "creeper"};
+    private static final String[] skullTypes = new String[] {"skeleton", "wither", "zombie", "char", "creeper"};
     private static final int[] field_82806_b = new int[] {224, 225, 226, 227, 228};
 
     public ItemSkull(int par1)
@@ -17,10 +17,6 @@ public class ItemSkull extends Item
         this.setHasSubtypes(true);
     }
 
-    /**
-     * Callback for item usage. If the item does something special on right clicking, he will have one of those. Return
-     * True if something happen and false if it don't. This is for ITEMS, not BLOCKS
-     */
     public boolean onItemUse(ItemStack par1ItemStack, EntityPlayer par2EntityPlayer, World par3World, int par4, int par5, int par6, int par7, float par8, float par9, float par10)
     {
         if (par7 == 0)
@@ -62,13 +58,13 @@ public class ItemSkull extends Item
             {
                 return false;
             }
-            else if (!Block.field_82512_cj.canPlaceBlockAt(par3World, par4, par5, par6))
+            else if (!Block.skull.canPlaceBlockAt(par3World, par4, par5, par6))
             {
                 return false;
             }
             else
             {
-                par3World.setBlockAndMetadataWithNotify(par4, par5, par6, Block.field_82512_cj.blockID, par7);
+                par3World.setBlockAndMetadataWithNotify(par4, par5, par6, Block.skull.blockID, par7);
                 int var11 = 0;
 
                 if (par7 == 1)
@@ -89,7 +85,7 @@ public class ItemSkull extends Item
 
                     ((TileEntitySkull)var12).func_82118_a(par1ItemStack.getItemDamage(), var13);
                     ((TileEntitySkull)var12).func_82116_a(var11);
-                    ((BlockSkull)Block.field_82512_cj).func_82529_a(par3World, par4, par5, par6, (TileEntitySkull)var12);
+                    ((BlockSkull)Block.skull).func_82529_a(par3World, par4, par5, par6, (TileEntitySkull)var12);
                 }
 
                 --par1ItemStack.stackSize;
@@ -100,20 +96,14 @@ public class ItemSkull extends Item
 
     @SideOnly(Side.CLIENT)
 
-    /**
-     * returns a list of items with the same ID, but different meta (eg: dye returns 16 items)
-     */
     public void getSubItems(int par1, CreativeTabs par2CreativeTabs, List par3List)
     {
-        for (int var4 = 0; var4 < field_82807_a.length; ++var4)
+        for (int var4 = 0; var4 < skullTypes.length; ++var4)
         {
             par3List.add(new ItemStack(par1, 1, var4));
         }
     }
 
-    /**
-     * Returns the metadata of the block which this Item (ItemBlock) can place
-     */
     public int getMetadata(int par1)
     {
         return par1;
@@ -121,12 +111,9 @@ public class ItemSkull extends Item
 
     @SideOnly(Side.CLIENT)
 
-    /**
-     * Gets an icon index based on an item's damage value
-     */
     public int getIconFromDamage(int par1)
     {
-        if (par1 < 0 || par1 >= field_82807_a.length)
+        if (par1 < 0 || par1 >= skullTypes.length)
         {
             par1 = 0;
         }
@@ -138,12 +125,12 @@ public class ItemSkull extends Item
     {
         int var2 = par1ItemStack.getItemDamage();
 
-        if (var2 < 0 || var2 >= field_82807_a.length)
+        if (var2 < 0 || var2 >= skullTypes.length)
         {
             var2 = 0;
         }
 
-        return super.getItemName() + "." + field_82807_a[var2];
+        return super.getItemName() + "." + skullTypes[var2];
     }
 
     public String getItemDisplayName(ItemStack par1ItemStack)

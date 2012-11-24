@@ -12,9 +12,6 @@ public class BiomeGenTaiga extends BiomeGenBase
         this.theBiomeDecorator.grassPerChunk = 1;
     }
 
-    /**
-     * Gets a WorldGen appropriate for this biome.
-     */
     public WorldGenerator getRandomWorldGenForTrees(Random par1Random)
     {
         return (WorldGenerator)(par1Random.nextInt(3) == 0 ? new WorldGenTaiga1() : new WorldGenTaiga2(false));

@@ -10,7 +10,7 @@ public class CommandServerTp extends CommandBase
         return "tp";
     }
 
-    public int func_82362_a()
+    public int getRequiredPermissionLevel()
     {
         return 2;
     }
@@ -53,6 +53,12 @@ public class CommandServerTp extends CommandBase
                     if (var11 == null)
                     {
                         throw new PlayerNotFoundException();
+                    }
+
+                    if (var11.worldObj != var3.worldObj)
+                    {
+                        notifyAdmins(par1ICommandSender, "commands.tp.notSameDimension", new Object[0]);
+                        return;
                     }
 
                     var3.playerNetServerHandler.setPlayerLocation(var11.posX, var11.posY, var11.posZ, var11.rotationYaw, var11.rotationPitch);
@@ -114,15 +120,12 @@ public class CommandServerTp extends CommandBase
         return var8;
     }
 
-    /**
-     * Adds the strings available in this command to the given list of tab completion options.
-     */
     public List addTabCompletionOptions(ICommandSender par1ICommandSender, String[] par2ArrayOfStr)
     {
         return par2ArrayOfStr.length != 1 && par2ArrayOfStr.length != 2 ? null : getListOfStringsMatchingLastWord(par2ArrayOfStr, MinecraftServer.getServer().getAllUsernames());
     }
 
-    public boolean func_82358_a(int par1)
+    public boolean isUsernameIndex(int par1)
     {
         return par1 == 0;
     }

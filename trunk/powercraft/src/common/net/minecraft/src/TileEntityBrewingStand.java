@@ -9,36 +9,22 @@ import net.minecraftforge.common.ForgeDirection;
 
 public class TileEntityBrewingStand extends TileEntity implements IInventory, ISidedInventory
 {
-    /** The itemstacks currently placed in the slots of the brewing stand */
     private ItemStack[] brewingItemStacks = new ItemStack[4];
     private int brewTime;
 
-    /**
-     * an integer with each bit specifying whether that slot of the stand contains a potion
-     */
     private int filledSlots;
     private int ingredientID;
 
-    /**
-     * Returns the name of the inventory.
-     */
     public String getInvName()
     {
         return "container.brewing";
     }
 
-    /**
-     * Returns the number of slots in the inventory.
-     */
     public int getSizeInventory()
     {
         return this.brewingItemStacks.length;
     }
 
-    /**
-     * Allows the entity to update its state. Overridden in most subclasses, e.g. the mob spawner uses this to count
-     * ticks and creates a new spawn inside its implementation.
-     */
     public void updateEntity()
     {
         if (this.brewTime > 0)
@@ -175,17 +161,11 @@ public class TileEntityBrewingStand extends TileEntity implements IInventory, IS
         }
     }
 
-    /**
-     * The result of brewing a potion of the specified damage value with an ingredient itemstack.
-     */
     private int getPotionResult(int par1, ItemStack par2ItemStack)
     {
         return par2ItemStack == null ? par1 : (Item.itemsList[par2ItemStack.itemID].isPotionIngredient() ? PotionHelper.applyIngredient(par1, Item.itemsList[par2ItemStack.itemID].getPotionEffect()) : par1);
     }
 
-    /**
-     * Reads a tile entity from NBT.
-     */
     public void readFromNBT(NBTTagCompound par1NBTTagCompound)
     {
         super.readFromNBT(par1NBTTagCompound);
@@ -206,9 +186,6 @@ public class TileEntityBrewingStand extends TileEntity implements IInventory, IS
         this.brewTime = par1NBTTagCompound.getShort("BrewTime");
     }
 
-    /**
-     * Writes a tile entity to NBT.
-     */
     public void writeToNBT(NBTTagCompound par1NBTTagCompound)
     {
         super.writeToNBT(par1NBTTagCompound);
@@ -229,18 +206,11 @@ public class TileEntityBrewingStand extends TileEntity implements IInventory, IS
         par1NBTTagCompound.setTag("Items", var2);
     }
 
-    /**
-     * Returns the stack in slot i
-     */
     public ItemStack getStackInSlot(int par1)
     {
         return par1 >= 0 && par1 < this.brewingItemStacks.length ? this.brewingItemStacks[par1] : null;
     }
 
-    /**
-     * Removes from an inventory slot (first arg) up to a specified number (second arg) of items and returns them in a
-     * new stack.
-     */
     public ItemStack decrStackSize(int par1, int par2)
     {
         if (par1 >= 0 && par1 < this.brewingItemStacks.length)
@@ -255,10 +225,6 @@ public class TileEntityBrewingStand extends TileEntity implements IInventory, IS
         }
     }
 
-    /**
-     * When some containers are closed they call this on each slot, then drop whatever it returns as an EntityItem -
-     * like when you close a workbench GUI.
-     */
     public ItemStack getStackInSlotOnClosing(int par1)
     {
         if (par1 >= 0 && par1 < this.brewingItemStacks.length)
@@ -273,9 +239,6 @@ public class TileEntityBrewingStand extends TileEntity implements IInventory, IS
         }
     }
 
-    /**
-     * Sets the given item stack to the specified slot in the inventory (can be crafting or armor sections).
-     */
     public void setInventorySlotContents(int par1, ItemStack par2ItemStack)
     {
         if (par1 >= 0 && par1 < this.brewingItemStacks.length)
@@ -284,18 +247,11 @@ public class TileEntityBrewingStand extends TileEntity implements IInventory, IS
         }
     }
 
-    /**
-     * Returns the maximum stack size for a inventory slot. Seems to always be 64, possibly will be extended. *Isn't
-     * this more of a set than a get?*
-     */
     public int getInventoryStackLimit()
     {
         return 1;
     }
 
-    /**
-     * Do not make give this method the name canInteractWith because it clashes with Container
-     */
     public boolean isUseableByPlayer(EntityPlayer par1EntityPlayer)
     {
         return this.worldObj.getBlockTileEntity(this.xCoord, this.yCoord, this.zCoord) != this ? false : par1EntityPlayer.getDistanceSq((double)this.xCoord + 0.5D, (double)this.yCoord + 0.5D, (double)this.zCoord + 0.5D) <= 64.0D;
@@ -311,9 +267,6 @@ public class TileEntityBrewingStand extends TileEntity implements IInventory, IS
         this.brewTime = par1;
     }
 
-    /**
-     * returns an integer with each bit specifying wether that slot of the stand contains a potion
-     */
     public int getFilledSlots()
     {
         int var1 = 0;

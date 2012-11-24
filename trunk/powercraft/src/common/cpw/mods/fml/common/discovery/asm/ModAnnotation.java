@@ -15,7 +15,6 @@ public class ModAnnotation
 {
     public class EnumHolder
     {
-
         private String desc;
         private String value;
 
@@ -24,12 +23,11 @@ public class ModAnnotation
             this.desc = desc;
             this.value = value;
         }
-
     }
     AnnotationType type;
     Type asmType;
     String member;
-    Map<String,Object> values = Maps.newHashMap();
+    Map<String, Object> values = Maps.newHashMap();
     private ArrayList<Object> arrayList;
     private Object array;
     private String arrayName;
@@ -40,7 +38,7 @@ public class ModAnnotation
         this.asmType = asmType;
         this.member = member;
     }
-    
+
     public ModAnnotation(AnnotationType type, Type asmType, ModAnnotation parent)
     {
         this.type = type;
@@ -51,9 +49,9 @@ public class ModAnnotation
     public String toString()
     {
         return Objects.toStringHelper("Annotation")
-                .add("type",type)
-                .add("name",asmType.getClassName())
-                .add("member",member)
+                .add("type", type)
+                .add("name", asmType.getClassName())
+                .add("member", member)
                 .add("values", values)
                 .toString();
     }
@@ -89,12 +87,12 @@ public class ModAnnotation
             values.put(key, value);
         }
     }
-    
+
     public void addEnumProperty(String key, String enumName, String value)
     {
         values.put(key, new EnumHolder(enumName, value));
     }
-    
+
     public void endArray()
     {
         values.put(arrayName, arrayList);

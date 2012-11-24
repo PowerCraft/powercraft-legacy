@@ -6,7 +6,6 @@ import java.util.List;
 
 public class BlockPistonBase extends Block
 {
-    /** This pistons is the sticky one? */
     private boolean isSticky;
 
     public BlockPistonBase(int par1, int par2, boolean par3)
@@ -20,53 +19,32 @@ public class BlockPistonBase extends Block
 
     @SideOnly(Side.CLIENT)
 
-    /**
-     * Return the either 106 or 107 as the texture index depending on the isSticky flag. This will actually never get
-     * called by TileEntityRendererPiston.renderPiston() because TileEntityPiston.shouldRenderHead() will always return
-     * false.
-     */
     public int getPistonExtensionTexture()
     {
         return this.isSticky ? 106 : 107;
     }
 
-    /**
-     * From the specified side and block metadata retrieves the blocks texture. Args: side, metadata
-     */
     public int getBlockTextureFromSideAndMetadata(int par1, int par2)
     {
         int var3 = getOrientation(par2);
         return var3 > 5 ? this.blockIndexInTexture : (par1 == var3 ? (!isExtended(par2) && this.minX <= 0.0D && this.minY <= 0.0D && this.minZ <= 0.0D && this.maxX >= 1.0D && this.maxY >= 1.0D && this.maxZ >= 1.0D ? this.blockIndexInTexture : 110) : (par1 == Facing.faceToSide[var3] ? 109 : 108));
     }
 
-    /**
-     * The type of render function that is called for this block
-     */
     public int getRenderType()
     {
         return 16;
     }
 
-    /**
-     * Is this block (a) opaque and (b) a full 1m cube?  This determines whether or not to render the shared face of two
-     * adjacent blocks and also whether the player can attach torches, redstone wire, etc to this block.
-     */
     public boolean isOpaqueCube()
     {
         return false;
     }
 
-    /**
-     * Called upon block activation (right click on the block.)
-     */
     public boolean onBlockActivated(World par1World, int par2, int par3, int par4, EntityPlayer par5EntityPlayer, int par6, float par7, float par8, float par9)
     {
         return false;
     }
 
-    /**
-     * Called when the block is placed in the world.
-     */
     public void onBlockPlacedBy(World par1World, int par2, int par3, int par4, EntityLiving par5EntityLiving)
     {
         int var6 = determineOrientation(par1World, par2, par3, par4, (EntityPlayer)par5EntityLiving);
@@ -78,10 +56,6 @@ public class BlockPistonBase extends Block
         }
     }
 
-    /**
-     * Lets the block know when one of its neighbor changes. Doesn't know which neighbor changed (coordinates passed are
-     * their own) Args: x, y, z, neighbor blockID
-     */
     public void onNeighborBlockChange(World par1World, int par2, int par3, int par4, int par5)
     {
         if (!par1World.isRemote)
@@ -90,9 +64,6 @@ public class BlockPistonBase extends Block
         }
     }
 
-    /**
-     * Called whenever the block is added into the world. Args: world, x, y, z
-     */
     public void onBlockAdded(World par1World, int par2, int par3, int par4)
     {
         if (!par1World.isRemote && par1World.getBlockTileEntity(par2, par3, par4) == null)
@@ -101,9 +72,6 @@ public class BlockPistonBase extends Block
         }
     }
 
-    /**
-     * handles attempts to extend or retract the piston.
-     */
     private void updatePistonState(World par1World, int par2, int par3, int par4)
     {
         int var5 = par1World.getBlockMetadata(par2, par3, par4);
@@ -127,18 +95,11 @@ public class BlockPistonBase extends Block
         }
     }
 
-    /**
-     * checks the block to that side to see if it is indirectly powered.
-     */
     private boolean isIndirectlyPowered(World par1World, int par2, int par3, int par4, int par5)
     {
         return par5 != 0 && par1World.isBlockIndirectlyProvidingPowerTo(par2, par3 - 1, par4, 0) ? true : (par5 != 1 && par1World.isBlockIndirectlyProvidingPowerTo(par2, par3 + 1, par4, 1) ? true : (par5 != 2 && par1World.isBlockIndirectlyProvidingPowerTo(par2, par3, par4 - 1, 2) ? true : (par5 != 3 && par1World.isBlockIndirectlyProvidingPowerTo(par2, par3, par4 + 1, 3) ? true : (par5 != 5 && par1World.isBlockIndirectlyProvidingPowerTo(par2 + 1, par3, par4, 5) ? true : (par5 != 4 && par1World.isBlockIndirectlyProvidingPowerTo(par2 - 1, par3, par4, 4) ? true : (par1World.isBlockIndirectlyProvidingPowerTo(par2, par3, par4, 0) ? true : (par1World.isBlockIndirectlyProvidingPowerTo(par2, par3 + 2, par4, 1) ? true : (par1World.isBlockIndirectlyProvidingPowerTo(par2, par3 + 1, par4 - 1, 2) ? true : (par1World.isBlockIndirectlyProvidingPowerTo(par2, par3 + 1, par4 + 1, 3) ? true : (par1World.isBlockIndirectlyProvidingPowerTo(par2 - 1, par3 + 1, par4, 4) ? true : par1World.isBlockIndirectlyProvidingPowerTo(par2 + 1, par3 + 1, par4, 5)))))))))));
     }
 
-    /**
-     * Called when the block receives a BlockEvent - see World.addBlockEvent. By default, passes it on to the tile
-     * entity at this location. Args: world, x, y, z, blockID, EventID, event parameter
-     */
     public void onBlockEventReceived(World par1World, int par2, int par3, int par4, int par5, int par6)
     {
         if (par5 == 0)
@@ -224,9 +185,6 @@ public class BlockPistonBase extends Block
         }
     }
 
-    /**
-     * Updates the blocks bounds based on its current state. Args: world, x, y, z
-     */
     public void setBlockBoundsBasedOnState(IBlockAccess par1IBlockAccess, int par2, int par3, int par4)
     {
         int var5 = par1IBlockAccess.getBlockMetadata(par2, par3, par4);
@@ -238,18 +196,23 @@ public class BlockPistonBase extends Block
                 case 0:
                     this.setBlockBounds(0.0F, 0.25F, 0.0F, 1.0F, 1.0F, 1.0F);
                     break;
+
                 case 1:
                     this.setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 0.75F, 1.0F);
                     break;
+
                 case 2:
                     this.setBlockBounds(0.0F, 0.0F, 0.25F, 1.0F, 1.0F, 1.0F);
                     break;
+
                 case 3:
                     this.setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 1.0F, 0.75F);
                     break;
+
                 case 4:
                     this.setBlockBounds(0.25F, 0.0F, 0.0F, 1.0F, 1.0F, 1.0F);
                     break;
+
                 case 5:
                     this.setBlockBounds(0.0F, 0.0F, 0.0F, 0.75F, 1.0F, 1.0F);
             }
@@ -260,60 +223,38 @@ public class BlockPistonBase extends Block
         }
     }
 
-    /**
-     * Sets the block's bounds for rendering it as an item
-     */
     public void setBlockBoundsForItemRender()
     {
         this.setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 1.0F, 1.0F);
     }
 
-    /**
-     * if the specified block is in the given AABB, add its collision bounding box to the given list
-     */
     public void addCollidingBlockToList(World par1World, int par2, int par3, int par4, AxisAlignedBB par5AxisAlignedBB, List par6List, Entity par7Entity)
     {
         this.setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 1.0F, 1.0F);
         super.addCollidingBlockToList(par1World, par2, par3, par4, par5AxisAlignedBB, par6List, par7Entity);
     }
 
-    /**
-     * Returns a bounding box from the pool of bounding boxes (this means this box can change after the pool has been
-     * cleared to be reused)
-     */
     public AxisAlignedBB getCollisionBoundingBoxFromPool(World par1World, int par2, int par3, int par4)
     {
         this.setBlockBoundsBasedOnState(par1World, par2, par3, par4);
         return super.getCollisionBoundingBoxFromPool(par1World, par2, par3, par4);
     }
 
-    /**
-     * If this block doesn't render as an ordinary block it will return False (examples: signs, buttons, stairs, etc)
-     */
     public boolean renderAsNormalBlock()
     {
         return false;
     }
 
-    /**
-     * returns an int which describes the direction the piston faces
-     */
     public static int getOrientation(int par0)
     {
         return par0 & 7;
     }
 
-    /**
-     * Determine if the metadata is related to something powered.
-     */
     public static boolean isExtended(int par0)
     {
         return (par0 & 8) != 0;
     }
 
-    /**
-     * gets the way this piston should face for that entity that placed it.
-     */
     public static int determineOrientation(World par0World, int par1, int par2, int par3, EntityPlayer par4EntityPlayer)
     {
         if (MathHelper.abs((float)par4EntityPlayer.posX - (float)par1) < 2.0F && MathHelper.abs((float)par4EntityPlayer.posZ - (float)par3) < 2.0F)
@@ -335,9 +276,6 @@ public class BlockPistonBase extends Block
         return var7 == 0 ? 2 : (var7 == 1 ? 5 : (var7 == 2 ? 3 : (var7 == 3 ? 4 : 0)));
     }
 
-    /**
-     * returns true if the piston can push the specified block
-     */
     private static boolean canPushBlock(int par0, World par1World, int par2, int par3, int par4, boolean par5)
     {
         if (par0 == Block.obsidian.blockID)
@@ -372,9 +310,6 @@ public class BlockPistonBase extends Block
         }
     }
 
-    /**
-     * checks to see if this piston could push the blocks in front of it.
-     */
     private static boolean canExtend(World par0World, int par1, int par2, int par3, int par4)
     {
         int var5 = par1 + Facing.offsetsXForSide[par4];
@@ -420,9 +355,6 @@ public class BlockPistonBase extends Block
         }
     }
 
-    /**
-     * attempts to extend the piston. returns false if impossible.
-     */
     private boolean tryExtend(World par1World, int par2, int par3, int par4, int par5)
     {
         int var6 = par2 + Facing.offsetsXForSide[par5];

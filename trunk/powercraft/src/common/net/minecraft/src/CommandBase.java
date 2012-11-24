@@ -9,7 +9,7 @@ public abstract class CommandBase implements ICommand
 {
     private static IAdminCommand theAdmin = null;
 
-    public int func_82362_a()
+    public int getRequiredPermissionLevel()
     {
         return 4;
     }
@@ -24,25 +24,16 @@ public abstract class CommandBase implements ICommand
         return null;
     }
 
-    /**
-     * Returns true if the given command sender is allowed to use this command.
-     */
     public boolean canCommandSenderUseCommand(ICommandSender par1ICommandSender)
     {
-        return par1ICommandSender.canCommandSenderUseCommand(this.func_82362_a(), this.getCommandName());
+        return par1ICommandSender.canCommandSenderUseCommand(this.getRequiredPermissionLevel(), this.getCommandName());
     }
 
-    /**
-     * Adds the strings available in this command to the given list of tab completion options.
-     */
     public List addTabCompletionOptions(ICommandSender par1ICommandSender, String[] par2ArrayOfStr)
     {
         return null;
     }
 
-    /**
-     * Parses an int from the given string.
-     */
     public static int parseInt(ICommandSender par0ICommandSender, String par1Str)
     {
         try
@@ -55,17 +46,11 @@ public abstract class CommandBase implements ICommand
         }
     }
 
-    /**
-     * Parses an int from the given sring with a specified minimum.
-     */
     public static int parseIntWithMin(ICommandSender par0ICommandSender, String par1Str, int par2)
     {
         return parseIntBounded(par0ICommandSender, par1Str, par2, Integer.MAX_VALUE);
     }
 
-    /**
-     * Parses an int from the given string within a specified bound.
-     */
     public static int parseIntBounded(ICommandSender par0ICommandSender, String par1Str, int par2, int par3)
     {
         int var4 = parseInt(par0ICommandSender, par1Str);
@@ -96,9 +81,6 @@ public abstract class CommandBase implements ICommand
         }
     }
 
-    /**
-     * Returns the given ICommandSender as a EntityPlayer or throw an exception.
-     */
     public static EntityPlayerMP getCommandSenderAsPlayer(ICommandSender par0ICommandSender)
     {
         if (par0ICommandSender instanceof EntityPlayerMP)
@@ -172,9 +154,6 @@ public abstract class CommandBase implements ICommand
         return var4.toString();
     }
 
-    /**
-     * Joins the given string array into a "x, y, and z" seperated string.
-     */
     public static String joinNiceString(Object[] par0ArrayOfObj)
     {
         StringBuilder var1 = new StringBuilder();
@@ -201,18 +180,11 @@ public abstract class CommandBase implements ICommand
         return var1.toString();
     }
 
-    /**
-     * Returns true if the given substring is exactly equal to the start of the given string (case insensitive).
-     */
     public static boolean doesStringStartWith(String par0Str, String par1Str)
     {
         return par1Str.regionMatches(true, 0, par0Str, 0, par0Str.length());
     }
 
-    /**
-     * Returns a List of strings (chosen from the given strings) which the last word in the given string array is a
-     * beginning-match for. (Tab completion).
-     */
     public static List getListOfStringsMatchingLastWord(String[] par0ArrayOfStr, String ... par1ArrayOfStr)
     {
         String var2 = par0ArrayOfStr[par0ArrayOfStr.length - 1];
@@ -233,10 +205,6 @@ public abstract class CommandBase implements ICommand
         return var3;
     }
 
-    /**
-     * Returns a List of strings (chosen from the given string iterable) which the last word in the given string array
-     * is a beginning-match for. (Tab completion).
-     */
     public static List getListOfStringsFromIterableMatchingLastWord(String[] par0ArrayOfStr, Iterable par1Iterable)
     {
         String var2 = par0ArrayOfStr[par0ArrayOfStr.length - 1];
@@ -256,7 +224,7 @@ public abstract class CommandBase implements ICommand
         return var3;
     }
 
-    public boolean func_82358_a(int par1)
+    public boolean isUsernameIndex(int par1)
     {
         return false;
     }
@@ -274,17 +242,11 @@ public abstract class CommandBase implements ICommand
         }
     }
 
-    /**
-     * Sets the static IAdminCommander.
-     */
     public static void setAdminCommander(IAdminCommand par0IAdminCommand)
     {
         theAdmin = par0IAdminCommand;
     }
 
-    /**
-     * Compares the name of this command to the name of the given command.
-     */
     public int compareNameTo(ICommand par1ICommand)
     {
         return this.getCommandName().compareTo(par1ICommand.getCommandName());

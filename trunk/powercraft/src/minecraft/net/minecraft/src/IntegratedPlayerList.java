@@ -2,6 +2,7 @@ package net.minecraft.src;
 
 import cpw.mods.fml.common.Side;
 import cpw.mods.fml.common.asm.SideOnly;
+import java.net.SocketAddress;
 import net.minecraft.server.MinecraftServer;
 
 @SideOnly(Side.CLIENT)
@@ -27,6 +28,14 @@ public class IntegratedPlayerList extends ServerConfigurationManager
         }
 
         super.writePlayerData(par1EntityPlayerMP);
+    }
+
+    /**
+     * checks ban-lists, then white-lists, then space for the server. Returns null on success, or an error message
+     */
+    public String allowUserToConnect(SocketAddress par1SocketAddress, String par2Str)
+    {
+        return par2Str.equalsIgnoreCase(this.getIntegratedServer().getServerOwner()) ? "That name is already taken." : super.allowUserToConnect(par1SocketAddress, par2Str);
     }
 
     /**

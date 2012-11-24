@@ -9,7 +9,7 @@ public class CommandServerSaveAll extends CommandBase
         return "save-all";
     }
 
-    public int func_82362_a()
+    public int getRequiredPermissionLevel()
     {
         return 4;
     }

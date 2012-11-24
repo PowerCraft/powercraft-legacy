@@ -7,13 +7,13 @@ import cpw.mods.fml.common.asm.SideOnly;
 
 public class EnumOSHelper
 {
-    public static final int[] enumOSMappingHelperArray = new int[EnumOS.values().length];
+    public static final int[] field_90049_a = new int[EnumOS.values().length];
 
     static
     {
         try
         {
-            enumOSMappingHelperArray[EnumOS.LINUX.ordinal()] = 1;
+            field_90049_a[EnumOS.LINUX.ordinal()] = 1;
         }
         catch (NoSuchFieldError var4)
         {
@@ -22,7 +22,7 @@ public class EnumOSHelper
 
         try
         {
-            enumOSMappingHelperArray[EnumOS.SOLARIS.ordinal()] = 2;
+            field_90049_a[EnumOS.SOLARIS.ordinal()] = 2;
         }
         catch (NoSuchFieldError var3)
         {
@@ -31,7 +31,7 @@ public class EnumOSHelper
 
         try
         {
-            enumOSMappingHelperArray[EnumOS.WINDOWS.ordinal()] = 3;
+            field_90049_a[EnumOS.WINDOWS.ordinal()] = 3;
         }
         catch (NoSuchFieldError var2)
         {
@@ -40,7 +40,7 @@ public class EnumOSHelper
 
         try
         {
-            enumOSMappingHelperArray[EnumOS.MACOS.ordinal()] = 4;
+            field_90049_a[EnumOS.MACOS.ordinal()] = 4;
         }
         catch (NoSuchFieldError var1)
         {

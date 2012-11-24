@@ -8,8 +8,7 @@ import static net.minecraftforge.common.ChestGenHooks.*;
 
 public class ComponentStrongholdLibrary extends ComponentStronghold
 {
-    /** List of items that Stronghold Library chests can contain. */
-    public static final WeightedRandomChestContent[] strongholdLibraryChestContents = new WeightedRandomChestContent[] {new WeightedRandomChestContent(Item.book.shiftedIndex, 0, 1, 3, 20), new WeightedRandomChestContent(Item.paper.shiftedIndex, 0, 2, 7, 20), new WeightedRandomChestContent(Item.field_82801_bO.shiftedIndex, 0, 1, 1, 1), new WeightedRandomChestContent(Item.compass.shiftedIndex, 0, 1, 1, 1)};
+    public static final WeightedRandomChestContent[] strongholdLibraryChestContents = new WeightedRandomChestContent[] {new WeightedRandomChestContent(Item.book.shiftedIndex, 0, 1, 3, 20), new WeightedRandomChestContent(Item.paper.shiftedIndex, 0, 2, 7, 20), new WeightedRandomChestContent(Item.emptyMap.shiftedIndex, 0, 1, 1, 1), new WeightedRandomChestContent(Item.compass.shiftedIndex, 0, 1, 1, 1)};
     protected final EnumDoor doorType;
     private final boolean isLargeRoom;
 
@@ -39,10 +38,6 @@ public class ComponentStrongholdLibrary extends ComponentStronghold
         return new ComponentStrongholdLibrary(par6, par1Random, var7, par5);
     }
 
-    /**
-     * second Part of Structure generating, this for example places Spiderwebs, Mob Spawners, it closes Mineshafts at
-     * the end, it adds Fences...
-     */
     public boolean addComponentParts(World par1World, Random par2Random, StructureBoundingBox par3StructureBoundingBox)
     {
         if (this.isLiquidInStructureBoundingBox(par1World, par3StructureBoundingBox))

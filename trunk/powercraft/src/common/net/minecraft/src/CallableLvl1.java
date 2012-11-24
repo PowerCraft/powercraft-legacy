@@ -4,17 +4,26 @@ import java.util.concurrent.Callable;
 
 class CallableLvl1 implements Callable
 {
-    /** Gets loaded Entities. */
-    final World worldLvl1;
+    final int field_85179_a;
 
-    CallableLvl1(World par1World)
+    final World theWorld;
+
+    CallableLvl1(World par1World, int par2)
     {
-        this.worldLvl1 = par1World;
+        this.theWorld = par1World;
+        this.field_85179_a = par2;
     }
 
     public String getWorldEntitiesAsString()
     {
-        return this.worldLvl1.loadedEntityList.size() + " total; " + this.worldLvl1.loadedEntityList.toString();
+        try
+        {
+            return String.format("ID #%d (%s // %s)", new Object[] {Integer.valueOf(this.field_85179_a), Block.blocksList[this.field_85179_a].getBlockName(), Block.blocksList[this.field_85179_a].getClass().getCanonicalName()});
+        }
+        catch (Throwable var2)
+        {
+            return "ID #" + this.field_85179_a;
+        }
     }
 
     public Object call()

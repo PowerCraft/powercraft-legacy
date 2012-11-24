@@ -214,11 +214,11 @@ public abstract class Render
                 }
 
                 var19.setColorRGBA_F(1.0F, 1.0F, 1.0F, (float)var20);
-                double var22 = (double)par8 + par1Block.func_83009_v() + par13;
-                double var24 = (double)par8 + par1Block.func_83007_w() + par13;
-                double var26 = (double)par9 + par1Block.func_83008_x() + par15 + 0.015625D;
-                double var28 = (double)par10 + par1Block.func_83005_z() + par17;
-                double var30 = (double)par10 + par1Block.func_83006_A() + par17;
+                double var22 = (double)par8 + par1Block.getBlockBoundsMinX() + par13;
+                double var24 = (double)par8 + par1Block.getBlockBoundsMaxX() + par13;
+                double var26 = (double)par9 + par1Block.getBlockBoundsMinY() + par15 + 0.015625D;
+                double var28 = (double)par10 + par1Block.getBlockBoundsMinZ() + par17;
+                double var30 = (double)par10 + par1Block.getBlockBoundsMaxZ() + par17;
                 float var32 = (float)((par2 - var22) / 2.0D / (double)par12 + 0.5D);
                 float var33 = (float)((par2 - var24) / 2.0D / (double)par12 + 0.5D);
                 float var34 = (float)((par6 - var28) / 2.0D / (double)par12 + 0.5D);
@@ -334,7 +334,7 @@ public abstract class Render
             }
         }
 
-        if (par1Entity.isBurning())
+        if (par1Entity.func_90999_ad())
         {
             this.renderEntityOnFire(par1Entity, par2, par4, par6, par9);
         }

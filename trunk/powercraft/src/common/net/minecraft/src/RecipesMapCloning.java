@@ -2,9 +2,6 @@ package net.minecraft.src;
 
 public class RecipesMapCloning implements IRecipe
 {
-    /**
-     * Used to check if a recipe matches current crafting inventory
-     */
     public boolean matches(InventoryCrafting par1InventoryCrafting, World par2World)
     {
         int var3 = 0;
@@ -27,7 +24,7 @@ public class RecipesMapCloning implements IRecipe
                 }
                 else
                 {
-                    if (var6.itemID != Item.field_82801_bO.shiftedIndex)
+                    if (var6.itemID != Item.emptyMap.shiftedIndex)
                     {
                         return false;
                     }
@@ -40,9 +37,6 @@ public class RecipesMapCloning implements IRecipe
         return var4 != null && var3 > 0;
     }
 
-    /**
-     * Returns an Item that is the result of this recipe
-     */
     public ItemStack getCraftingResult(InventoryCrafting par1InventoryCrafting)
     {
         int var2 = 0;
@@ -65,7 +59,7 @@ public class RecipesMapCloning implements IRecipe
                 }
                 else
                 {
-                    if (var5.itemID != Item.field_82801_bO.shiftedIndex)
+                    if (var5.itemID != Item.emptyMap.shiftedIndex)
                     {
                         return null;
                     }
@@ -77,7 +71,14 @@ public class RecipesMapCloning implements IRecipe
 
         if (var3 != null && var2 >= 1)
         {
-            return new ItemStack(Item.map, var2 + 1, var3.getItemDamage());
+            ItemStack var6 = new ItemStack(Item.map, var2 + 1, var3.getItemDamage());
+
+            if (var3.hasDisplayName())
+            {
+                var6.setItemName(var3.getDisplayName());
+            }
+
+            return var6;
         }
         else
         {
@@ -85,9 +86,6 @@ public class RecipesMapCloning implements IRecipe
         }
     }
 
-    /**
-     * Returns the size of the recipe area
-     */
     public int getRecipeSize()
     {
         return 9;

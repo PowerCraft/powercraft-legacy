@@ -1,317 +1,439 @@
-2012-10-16 10:32:21 [INFO] [ForgeModLoader] Forge Mod Loader version 3.1.35.394 for Minecraft client:1.3.2, server:1.3.2 loading
-2012-10-16 10:32:24 [INFO] [STDOUT] 195 recipes
-2012-10-16 10:32:24 [INFO] [STDOUT] 27 achievements
-2012-10-16 10:32:27 [INFO] [STDERR] 2012-10-16 10:32:27 [INFO] Starting minecraft server version 1.3.2
-2012-10-16 10:32:27 [INFO] [ForgeModLoader] Attempting early MinecraftForge initialization
-2012-10-16 10:32:27 [INFO] [STDOUT] MinecraftForge v4.2.5.303 Initialized
-2012-10-16 10:32:27 [INFO] [ForgeModLoader] MinecraftForge v4.2.5.303 Initialized
-2012-10-16 10:32:28 [INFO] [ForgeModLoader] Completed early MinecraftForge initialization
-2012-10-16 10:32:28 [FINE] [ForgeModLoader] Building injected Mod Containers [cpw.mods.fml.common.FMLDummyContainer, net.minecraftforge.common.ForgeDummyContainer]
-2012-10-16 10:32:28 [FINE] [ForgeModLoader] Attempting to load mods contained in the minecraft jar file and associated classes
-2012-10-16 10:32:28 [FINE] [ForgeModLoader] Found a minecraft related directory at D:\Projekte\Minecraft1.3.2\eclipse\Minecraft\bin, examining for mod candidates
-2012-10-16 10:32:28 [FINE] [ForgeModLoader] Skipping known library file D:\Projekte\Minecraft1.3.2\jars\bin\jinput.jar
-2012-10-16 10:32:28 [FINE] [ForgeModLoader] Skipping known library file D:\Projekte\Minecraft1.3.2\jars\bin\lwjgl_util.jar
-2012-10-16 10:32:28 [FINE] [ForgeModLoader] Skipping known library file D:\Projekte\Minecraft1.3.2\jars\bin\lwjgl.jar
-2012-10-16 10:32:28 [FINE] [ForgeModLoader] Found a minecraft related file at D:\Projekte\Minecraft1.3.2\jars\bin\minecraft.jar, examining for mod candidates
-2012-10-16 10:32:28 [FINE] [ForgeModLoader] Skipping known library file D:\Projekte\Minecraft1.3.2\lib\argo-2.25.jar
-2012-10-16 10:32:28 [FINE] [ForgeModLoader] Skipping known library file D:\Projekte\Minecraft1.3.2\lib\asm-all-4.0.jar
-2012-10-16 10:32:28 [FINE] [ForgeModLoader] Skipping known library file D:\Projekte\Minecraft1.3.2\lib\guava-12.0.1.jar
-2012-10-16 10:32:28 [FINE] [ForgeModLoader] Skipping known library file D:\Projekte\Minecraft1.3.2\jars\lib\argo-2.25.jar
-2012-10-16 10:32:28 [FINE] [ForgeModLoader] Skipping known library file D:\Projekte\Minecraft1.3.2\jars\lib\guava-12.0.1.jar
-2012-10-16 10:32:28 [FINE] [ForgeModLoader] Skipping known library file D:\Projekte\Minecraft1.3.2\jars\lib\asm-all-4.0.jar
-2012-10-16 10:32:28 [FINE] [ForgeModLoader] Minecraft jar mods loaded successfully
-2012-10-16 10:32:28 [INFO] [ForgeModLoader] Searching D:\Projekte\Minecraft1.3.2\jars\mods for mods
-2012-10-16 10:32:28 [FINE] [ForgeModLoader] Examining directory bin for potential mods
-2012-10-16 10:32:28 [FINE] [ForgeModLoader] No mcmod.info file found in directory bin
-2012-10-16 10:32:28 [FINEST] [ForgeModLoader] Recursing into package cpw
-2012-10-16 10:32:28 [FINEST] [ForgeModLoader] Recursing into package cpw.mods
-2012-10-16 10:32:28 [FINEST] [ForgeModLoader] Recursing into package cpw.mods.fml
-2012-10-16 10:32:28 [FINEST] [ForgeModLoader] Recursing into package cpw.mods.fml.client
-2012-10-16 10:32:28 [FINEST] [ForgeModLoader] Recursing into package cpw.mods.fml.client.modloader
-2012-10-16 10:32:28 [FINEST] [ForgeModLoader] Recursing into package cpw.mods.fml.client.registry
-2012-10-16 10:32:28 [FINEST] [ForgeModLoader] Recursing into package cpw.mods.fml.common
-2012-10-16 10:32:28 [FINEST] [ForgeModLoader] Recursing into package cpw.mods.fml.common.asm
-2012-10-16 10:32:28 [FINEST] [ForgeModLoader] Recursing into package cpw.mods.fml.common.asm.transformers
-2012-10-16 10:32:28 [FINEST] [ForgeModLoader] Recursing into package cpw.mods.fml.common.discovery
-2012-10-16 10:32:28 [FINEST] [ForgeModLoader] Recursing into package cpw.mods.fml.common.discovery.asm
-2012-10-16 10:32:28 [FINEST] [ForgeModLoader] Recursing into package cpw.mods.fml.common.event
-2012-10-16 10:32:28 [FINEST] [ForgeModLoader] Recursing into package cpw.mods.fml.common.functions
-2012-10-16 10:32:29 [FINEST] [ForgeModLoader] Recursing into package cpw.mods.fml.common.modloader
-2012-10-16 10:32:29 [FINEST] [ForgeModLoader] Recursing into package cpw.mods.fml.common.network
-2012-10-16 10:32:29 [FINEST] [ForgeModLoader] Recursing into package cpw.mods.fml.common.registry
-2012-10-16 10:32:29 [FINEST] [ForgeModLoader] Recursing into package cpw.mods.fml.common.toposort
-2012-10-16 10:32:29 [FINEST] [ForgeModLoader] Recursing into package cpw.mods.fml.common.versioning
-2012-10-16 10:32:29 [FINEST] [ForgeModLoader] Recursing into package cpw.mods.fml.relauncher
-2012-10-16 10:32:29 [FINEST] [ForgeModLoader] Recursing into package cpw.mods.fml.server
-2012-10-16 10:32:29 [FINEST] [ForgeModLoader] Recursing into package ibxm
-2012-10-16 10:32:29 [FINEST] [ForgeModLoader] Recursing into package net
-2012-10-16 10:32:29 [FINEST] [ForgeModLoader] Recursing into package net.minecraft
-2012-10-16 10:32:29 [FINEST] [ForgeModLoader] Recursing into package net.minecraft.client
-2012-10-16 10:32:29 [FINEST] [ForgeModLoader] Recursing into package net.minecraft.server
-2012-10-16 10:32:29 [FINEST] [ForgeModLoader] Recursing into package net.minecraft.src
-2012-10-16 10:32:41 [FINEST] [ForgeModLoader] Recursing into package net.minecraftforge
-2012-10-16 10:32:41 [FINEST] [ForgeModLoader] Recursing into package net.minecraftforge.classloading
-2012-10-16 10:32:41 [FINEST] [ForgeModLoader] Recursing into package net.minecraftforge.client
-2012-10-16 10:32:41 [FINEST] [ForgeModLoader] Recursing into package net.minecraftforge.client.event
-2012-10-16 10:32:41 [FINEST] [ForgeModLoader] Recursing into package net.minecraftforge.client.event.sound
-2012-10-16 10:32:41 [FINEST] [ForgeModLoader] Recursing into package net.minecraftforge.common
-2012-10-16 10:32:41 [FINEST] [ForgeModLoader] Recursing into package net.minecraftforge.event
-2012-10-16 10:32:41 [FINEST] [ForgeModLoader] Recursing into package net.minecraftforge.event.entity
-2012-10-16 10:32:41 [FINEST] [ForgeModLoader] Recursing into package net.minecraftforge.event.entity.item
-2012-10-16 10:32:41 [FINEST] [ForgeModLoader] Recursing into package net.minecraftforge.event.entity.living
-2012-10-16 10:32:41 [FINEST] [ForgeModLoader] Recursing into package net.minecraftforge.event.entity.minecart
-2012-10-16 10:32:41 [FINEST] [ForgeModLoader] Recursing into package net.minecraftforge.event.entity.player
-2012-10-16 10:32:42 [FINEST] [ForgeModLoader] Recursing into package net.minecraftforge.event.world
-2012-10-16 10:32:42 [FINEST] [ForgeModLoader] Recursing into package net.minecraftforge.oredict
-2012-10-16 10:32:42 [FINEST] [ForgeModLoader] Recursing into package net.minecraftforge.transformers
-2012-10-16 10:32:42 [FINEST] [ForgeModLoader] Recursing into package org
-2012-10-16 10:32:42 [FINEST] [ForgeModLoader] Recursing into package org.bouncycastle
-2012-10-16 10:32:42 [FINEST] [ForgeModLoader] Recursing into package org.bouncycastle.asn1
-2012-10-16 10:32:42 [FINEST] [ForgeModLoader] Recursing into package org.bouncycastle.asn1.bc
-2012-10-16 10:32:42 [FINEST] [ForgeModLoader] Recursing into package org.bouncycastle.asn1.pkcs
-2012-10-16 10:32:42 [FINEST] [ForgeModLoader] Recursing into package org.bouncycastle.crypto
-2012-10-16 10:32:42 [FINEST] [ForgeModLoader] Recursing into package org.bouncycastle.crypto.engines
-2012-10-16 10:32:42 [FINEST] [ForgeModLoader] Recursing into package org.bouncycastle.crypto.io
-2012-10-16 10:32:42 [FINEST] [ForgeModLoader] Recursing into package org.bouncycastle.crypto.modes
-2012-10-16 10:32:42 [FINEST] [ForgeModLoader] Recursing into package org.bouncycastle.crypto.params
-2012-10-16 10:32:42 [FINEST] [ForgeModLoader] Recursing into package org.bouncycastle.jcajce
-2012-10-16 10:32:42 [FINEST] [ForgeModLoader] Recursing into package org.bouncycastle.jcajce.provider
-2012-10-16 10:32:42 [FINEST] [ForgeModLoader] Recursing into package org.bouncycastle.jcajce.provider.config
-2012-10-16 10:32:42 [FINEST] [ForgeModLoader] Recursing into package org.bouncycastle.jcajce.provider.util
-2012-10-16 10:32:42 [FINEST] [ForgeModLoader] Recursing into package org.bouncycastle.jce
-2012-10-16 10:32:42 [FINEST] [ForgeModLoader] Recursing into package org.bouncycastle.jce.provider
-2012-10-16 10:32:42 [FINEST] [ForgeModLoader] Recursing into package org.bouncycastle.util
-2012-10-16 10:32:42 [FINEST] [ForgeModLoader] Recursing into package paulscode
-2012-10-16 10:32:42 [FINEST] [ForgeModLoader] Recursing into package paulscode.sound
-2012-10-16 10:32:42 [FINEST] [ForgeModLoader] Recursing into package paulscode.sound.codecs
-2012-10-16 10:32:42 [FINEST] [ForgeModLoader] Recursing into package powercraft
-2012-10-16 10:32:42 [FINEST] [ForgeModLoader] Recursing into package powercraft.core
-2012-10-16 10:32:42 [FINE] [ForgeModLoader] Identified a class powercraft.core.mod_PowerCraftCore following modloader naming convention but not directly a BaseMod or currently seen subclass
-2012-10-16 10:32:42 [FINE] [ForgeModLoader] Identified an FMLMod type mod powercraft.core.mod_PowerCraftCore
-2012-10-16 10:32:42 [FINEST] [ForgeModLoader] Parsed dependency info : [] [] [*]
-2012-10-16 10:32:42 [INFO] [ForgeModLoader] Attempting to reparse the mod container bin
-2012-10-16 10:32:42 [FINE] [ForgeModLoader] Examining directory bin for potential mods
-2012-10-16 10:32:42 [FINE] [ForgeModLoader] No mcmod.info file found in directory bin
-2012-10-16 10:32:43 [FINEST] [ForgeModLoader] Recursing into package cpw
-2012-10-16 10:32:43 [FINEST] [ForgeModLoader] Recursing into package cpw.mods
-2012-10-16 10:32:43 [FINEST] [ForgeModLoader] Recursing into package cpw.mods.fml
-2012-10-16 10:32:43 [FINEST] [ForgeModLoader] Recursing into package cpw.mods.fml.client
-2012-10-16 10:32:43 [FINEST] [ForgeModLoader] Recursing into package cpw.mods.fml.client.modloader
-2012-10-16 10:32:43 [FINEST] [ForgeModLoader] Recursing into package cpw.mods.fml.client.registry
-2012-10-16 10:32:43 [FINEST] [ForgeModLoader] Recursing into package cpw.mods.fml.common
-2012-10-16 10:32:43 [FINEST] [ForgeModLoader] Recursing into package cpw.mods.fml.common.asm
-2012-10-16 10:32:43 [FINEST] [ForgeModLoader] Recursing into package cpw.mods.fml.common.asm.transformers
-2012-10-16 10:32:43 [FINEST] [ForgeModLoader] Recursing into package cpw.mods.fml.common.discovery
-2012-10-16 10:32:43 [FINEST] [ForgeModLoader] Recursing into package cpw.mods.fml.common.discovery.asm
-2012-10-16 10:32:43 [FINEST] [ForgeModLoader] Recursing into package cpw.mods.fml.common.event
-2012-10-16 10:32:43 [FINEST] [ForgeModLoader] Recursing into package cpw.mods.fml.common.functions
-2012-10-16 10:32:43 [FINEST] [ForgeModLoader] Recursing into package cpw.mods.fml.common.modloader
-2012-10-16 10:32:43 [FINEST] [ForgeModLoader] Recursing into package cpw.mods.fml.common.network
-2012-10-16 10:32:44 [FINEST] [ForgeModLoader] Recursing into package cpw.mods.fml.common.registry
-2012-10-16 10:32:44 [FINEST] [ForgeModLoader] Recursing into package cpw.mods.fml.common.toposort
-2012-10-16 10:32:44 [FINEST] [ForgeModLoader] Recursing into package cpw.mods.fml.common.versioning
-2012-10-16 10:32:45 [FINEST] [ForgeModLoader] Recursing into package cpw.mods.fml.relauncher
-2012-10-16 10:32:45 [FINEST] [ForgeModLoader] Recursing into package cpw.mods.fml.server
-2012-10-16 10:32:45 [FINEST] [ForgeModLoader] Recursing into package ibxm
-2012-10-16 10:32:45 [FINEST] [ForgeModLoader] Recursing into package net
-2012-10-16 10:32:45 [FINEST] [ForgeModLoader] Recursing into package net.minecraft
-2012-10-16 10:32:45 [FINEST] [ForgeModLoader] Recursing into package net.minecraft.client
-2012-10-16 10:32:45 [FINEST] [ForgeModLoader] Recursing into package net.minecraft.server
-2012-10-16 10:32:45 [FINEST] [ForgeModLoader] Recursing into package net.minecraft.src
-2012-10-16 10:32:50 [FINEST] [ForgeModLoader] Recursing into package net.minecraftforge
-2012-10-16 10:32:50 [FINEST] [ForgeModLoader] Recursing into package net.minecraftforge.classloading
-2012-10-16 10:32:50 [FINEST] [ForgeModLoader] Recursing into package net.minecraftforge.client
-2012-10-16 10:32:50 [FINEST] [ForgeModLoader] Recursing into package net.minecraftforge.client.event
-2012-10-16 10:32:50 [FINEST] [ForgeModLoader] Recursing into package net.minecraftforge.client.event.sound
-2012-10-16 10:32:50 [FINEST] [ForgeModLoader] Recursing into package net.minecraftforge.common
-2012-10-16 10:32:50 [FINEST] [ForgeModLoader] Recursing into package net.minecraftforge.event
-2012-10-16 10:32:50 [FINEST] [ForgeModLoader] Recursing into package net.minecraftforge.event.entity
-2012-10-16 10:32:50 [FINEST] [ForgeModLoader] Recursing into package net.minecraftforge.event.entity.item
-2012-10-16 10:32:50 [FINEST] [ForgeModLoader] Recursing into package net.minecraftforge.event.entity.living
-2012-10-16 10:32:50 [FINEST] [ForgeModLoader] Recursing into package net.minecraftforge.event.entity.minecart
-2012-10-16 10:32:50 [FINEST] [ForgeModLoader] Recursing into package net.minecraftforge.event.entity.player
-2012-10-16 10:32:50 [FINEST] [ForgeModLoader] Recursing into package net.minecraftforge.event.world
-2012-10-16 10:32:50 [FINEST] [ForgeModLoader] Recursing into package net.minecraftforge.oredict
-2012-10-16 10:32:50 [FINEST] [ForgeModLoader] Recursing into package net.minecraftforge.transformers
-2012-10-16 10:32:50 [FINEST] [ForgeModLoader] Recursing into package org
-2012-10-16 10:32:50 [FINEST] [ForgeModLoader] Recursing into package org.bouncycastle
-2012-10-16 10:32:50 [FINEST] [ForgeModLoader] Recursing into package org.bouncycastle.asn1
-2012-10-16 10:32:50 [FINEST] [ForgeModLoader] Recursing into package org.bouncycastle.asn1.bc
-2012-10-16 10:32:50 [FINEST] [ForgeModLoader] Recursing into package org.bouncycastle.asn1.pkcs
-2012-10-16 10:32:50 [FINEST] [ForgeModLoader] Recursing into package org.bouncycastle.crypto
-2012-10-16 10:32:50 [FINEST] [ForgeModLoader] Recursing into package org.bouncycastle.crypto.engines
-2012-10-16 10:32:50 [FINEST] [ForgeModLoader] Recursing into package org.bouncycastle.crypto.io
-2012-10-16 10:32:50 [FINEST] [ForgeModLoader] Recursing into package org.bouncycastle.crypto.modes
-2012-10-16 10:32:50 [FINEST] [ForgeModLoader] Recursing into package org.bouncycastle.crypto.params
-2012-10-16 10:32:50 [FINEST] [ForgeModLoader] Recursing into package org.bouncycastle.jcajce
-2012-10-16 10:32:50 [FINEST] [ForgeModLoader] Recursing into package org.bouncycastle.jcajce.provider
-2012-10-16 10:32:50 [FINEST] [ForgeModLoader] Recursing into package org.bouncycastle.jcajce.provider.config
-2012-10-16 10:32:50 [FINEST] [ForgeModLoader] Recursing into package org.bouncycastle.jcajce.provider.util
-2012-10-16 10:32:50 [FINEST] [ForgeModLoader] Recursing into package org.bouncycastle.jce
-2012-10-16 10:32:50 [FINEST] [ForgeModLoader] Recursing into package org.bouncycastle.jce.provider
-2012-10-16 10:32:50 [FINEST] [ForgeModLoader] Recursing into package org.bouncycastle.util
-2012-10-16 10:32:50 [FINEST] [ForgeModLoader] Recursing into package paulscode
-2012-10-16 10:32:50 [FINEST] [ForgeModLoader] Recursing into package paulscode.sound
-2012-10-16 10:32:50 [FINEST] [ForgeModLoader] Recursing into package paulscode.sound.codecs
-2012-10-16 10:32:50 [FINEST] [ForgeModLoader] Recursing into package powercraft
-2012-10-16 10:32:50 [FINEST] [ForgeModLoader] Recursing into package powercraft.core
-2012-10-16 10:32:51 [FINE] [ForgeModLoader] Identified a class powercraft.core.mod_PowerCraftCore following modloader naming convention but not directly a BaseMod or currently seen subclass
-2012-10-16 10:32:51 [FINE] [ForgeModLoader] Identified an FMLMod type mod powercraft.core.mod_PowerCraftCore
-2012-10-16 10:32:51 [FINEST] [ForgeModLoader] Parsed dependency info : [] [] [*]
-2012-10-16 10:32:51 [FINE] [ForgeModLoader] Examining file minecraft.jar for potential mods
-2012-10-16 10:32:51 [FINE] [ForgeModLoader] The mod container minecraft.jar appears to be missing an mcmod.info file
-2012-10-16 10:32:51 [INFO] [ForgeModLoader] Forge Mod Loader has identified 3 mods to load
-2012-10-16 10:32:51 [FINE] [ForgeModLoader] Received a system property request ''
-2012-10-16 10:32:51 [FINE] [ForgeModLoader] System property request managing the state of 0 mods
-2012-10-16 10:32:51 [FINE] [ForgeModLoader] After merging, found state information for 0 mods
-2012-10-16 10:32:51 [FINE] [ForgeModLoader] Activating mod FML
-2012-10-16 10:32:51 [FINE] [ForgeModLoader] Activating mod Forge
-2012-10-16 10:32:51 [FINE] [ForgeModLoader] Enabling mod PowerCraft_Core
-2012-10-16 10:32:51 [FINE] [ForgeModLoader] Activating mod PowerCraft_Core
-2012-10-16 10:32:51 [FINE] [ForgeModLoader] Verifying mod requirements are satisfied
-2012-10-16 10:32:51 [FINE] [ForgeModLoader] All mod requirements are satisfied
-2012-10-16 10:32:51 [FINE] [ForgeModLoader] Sorting mods into an ordered list
-2012-10-16 10:32:51 [FINE] [ForgeModLoader] Mod sorting completed successfully
-2012-10-16 10:32:51 [FINE] [ForgeModLoader] Mod sorting data:
-2012-10-16 10:32:51 [FINE] [ForgeModLoader] 	PowerCraft_Core(PowerCraft-Core:0.0.1Alpha): bin (before:*)
-2012-10-16 10:32:51 [FINER] [ForgeModLoader] Posting state event FMLConstructionEvent to mod FML
-2012-10-16 10:32:51 [FINER] [ForgeModLoader] State event FMLConstructionEvent delivered to mod FML
-2012-10-16 10:32:51 [FINER] [ForgeModLoader] Posting state event FMLConstructionEvent to mod Forge
-2012-10-16 10:32:51 [FINER] [ForgeModLoader] State event FMLConstructionEvent delivered to mod Forge
-2012-10-16 10:32:51 [FINER] [ForgeModLoader] Posting state event FMLConstructionEvent to mod PowerCraft_Core
-2012-10-16 10:32:52 [FINEST] [ForgeModLoader] Testing mod PowerCraft_Core to very it can accept it's own version in a remote connection
-2012-10-16 10:32:52 [FINEST] [ForgeModLoader] The mod PowerCraft_Core accepts it's own version (0.0.1Alpha)
-2012-10-16 10:32:52 [FINE] [ForgeModLoader] Attempting to inject @SidedProxy classes into PowerCraft_Core
-2012-10-16 10:32:52 [FINER] [ForgeModLoader] State event FMLConstructionEvent delivered to mod PowerCraft_Core
-2012-10-16 10:32:52 [FINER] [ForgeModLoader] Posting state event FMLPreInitializationEvent to mod FML
-2012-10-16 10:32:52 [FINER] [ForgeModLoader] State event FMLPreInitializationEvent delivered to mod FML
-2012-10-16 10:32:52 [FINER] [ForgeModLoader] Posting state event FMLPreInitializationEvent to mod Forge
-2012-10-16 10:32:52 [INFO] [ForgeModLoader] Configured a dormant chunk cache size of 0
-2012-10-16 10:32:52 [FINER] [ForgeModLoader] State event FMLPreInitializationEvent delivered to mod Forge
-2012-10-16 10:32:52 [FINER] [ForgeModLoader] Posting state event FMLPreInitializationEvent to mod PowerCraft_Core
-2012-10-16 10:32:52 [FINER] [ForgeModLoader] State event FMLPreInitializationEvent delivered to mod PowerCraft_Core
-2012-10-16 10:32:52 [INFO] [STDERR] 2012-10-16 10:32:52 [INFO] Loading properties
-2012-10-16 10:32:52 [INFO] [STDERR] 2012-10-16 10:32:52 [INFO] Default game type: SURVIVAL
-2012-10-16 10:32:52 [INFO] [STDERR] 2012-10-16 10:32:52 [INFO] Generating keypair
-2012-10-16 10:32:54 [INFO] [STDERR] 2012-10-16 10:32:54 [INFO] Starting Minecraft server on *:25565
-2012-10-16 10:32:56 [INFO] [STDERR] 2012-10-16 10:32:56 [WARNING] **** SERVER IS RUNNING IN OFFLINE/INSECURE MODE!
-2012-10-16 10:32:56 [INFO] [STDERR] 2012-10-16 10:32:56 [WARNING] The server will make no attempt to authenticate usernames. Beware.
-2012-10-16 10:32:56 [INFO] [STDERR] 2012-10-16 10:32:56 [WARNING] While this makes the game possible to play without internet access, it also opens up the ability for hackers to connect with any username they choose.
-2012-10-16 10:32:56 [INFO] [STDERR] 2012-10-16 10:32:56 [WARNING] To change this, set "online-mode" to "true" in the server.properties file.
-2012-10-16 10:32:56 [FINER] [ForgeModLoader] Posting state event FMLInitializationEvent to mod FML
-2012-10-16 10:32:56 [FINER] [ForgeModLoader] State event FMLInitializationEvent delivered to mod FML
-2012-10-16 10:32:56 [FINER] [ForgeModLoader] Posting state event FMLInitializationEvent to mod Forge
-2012-10-16 10:32:56 [FINER] [ForgeModLoader] State event FMLInitializationEvent delivered to mod Forge
-2012-10-16 10:32:56 [FINER] [ForgeModLoader] Posting state event FMLInitializationEvent to mod PowerCraft_Core
-2012-10-16 10:32:56 [FINER] [ForgeModLoader] State event FMLInitializationEvent delivered to mod PowerCraft_Core
-2012-10-16 10:32:56 [FINER] [ForgeModLoader] Posting state event FMLPostInitializationEvent to mod FML
-2012-10-16 10:32:56 [FINER] [ForgeModLoader] State event FMLPostInitializationEvent delivered to mod FML
-2012-10-16 10:32:56 [FINER] [ForgeModLoader] Posting state event FMLPostInitializationEvent to mod Forge
-2012-10-16 10:32:56 [FINER] [ForgeModLoader] State event FMLPostInitializationEvent delivered to mod Forge
-2012-10-16 10:32:56 [FINER] [ForgeModLoader] Posting state event FMLPostInitializationEvent to mod PowerCraft_Core
-2012-10-16 10:32:56 [FINER] [ForgeModLoader] State event FMLPostInitializationEvent delivered to mod PowerCraft_Core
-2012-10-16 10:32:56 [FINER] [ForgeModLoader] Posting state event FMLLoadCompleteEvent to mod FML
-2012-10-16 10:32:56 [FINER] [ForgeModLoader] State event FMLLoadCompleteEvent delivered to mod FML
-2012-10-16 10:32:56 [FINER] [ForgeModLoader] Posting state event FMLLoadCompleteEvent to mod Forge
-2012-10-16 10:32:56 [FINER] [ForgeModLoader] State event FMLLoadCompleteEvent delivered to mod Forge
-2012-10-16 10:32:56 [FINER] [ForgeModLoader] Posting state event FMLLoadCompleteEvent to mod PowerCraft_Core
-2012-10-16 10:32:56 [FINER] [ForgeModLoader] State event FMLLoadCompleteEvent delivered to mod PowerCraft_Core
-2012-10-16 10:32:56 [INFO] [ForgeModLoader] Forge Mod Loader has successfully loaded 3 mods
-2012-10-16 10:32:56 [INFO] [STDERR] 2012-10-16 10:32:56 [WARNING] Failed to load operators list: java.io.FileNotFoundException: .\ops.txt (Das System kann die angegebene Datei nicht finden)
-2012-10-16 10:32:56 [INFO] [STDERR] 2012-10-16 10:32:56 [WARNING] Failed to load white-list: java.io.FileNotFoundException: .\white-list.txt (Das System kann die angegebene Datei nicht finden)
-2012-10-16 10:32:57 [INFO] [STDERR] 2012-10-16 10:32:57 [INFO] Preparing level "mcpworld"
-2012-10-16 10:32:58 [INFO] [ForgeModLoader] Loading dimension 0 (mcpworld) (net.minecraft.src.DedicatedServer@39adf7)
-2012-10-16 10:32:58 [INFO] [ForgeModLoader] Loading dimension 1 (mcpworld) (net.minecraft.src.DedicatedServer@39adf7)
-2012-10-16 10:32:58 [INFO] [ForgeModLoader] Loading dimension -1 (mcpworld) (net.minecraft.src.DedicatedServer@39adf7)
-2012-10-16 10:32:58 [INFO] [STDERR] 2012-10-16 10:32:58 [INFO] Preparing start region for level 0
-2012-10-16 10:32:59 [INFO] [STDERR] 2012-10-16 10:32:59 [INFO] Preparing spawn area: 3%
-2012-10-16 10:33:00 [INFO] [STDERR] 2012-10-16 10:33:00 [INFO] Preparing spawn area: 4%
-2012-10-16 10:33:02 [INFO] [STDERR] 2012-10-16 10:33:02 [INFO] Preparing spawn area: 8%
-2012-10-16 10:33:03 [INFO] [STDERR] 2012-10-16 10:33:03 [INFO] Preparing spawn area: 12%
-2012-10-16 10:33:04 [INFO] [STDERR] 2012-10-16 10:33:04 [INFO] Preparing spawn area: 16%
-2012-10-16 10:33:05 [INFO] [STDERR] 2012-10-16 10:33:05 [INFO] Preparing spawn area: 20%
-2012-10-16 10:33:06 [INFO] [STDERR] 2012-10-16 10:33:06 [INFO] Preparing spawn area: 20%
-2012-10-16 10:33:07 [INFO] [STDERR] 2012-10-16 10:33:07 [INFO] Preparing spawn area: 24%
-2012-10-16 10:33:08 [INFO] [STDERR] 2012-10-16 10:33:08 [INFO] Preparing spawn area: 28%
-2012-10-16 10:33:09 [INFO] [STDERR] 2012-10-16 10:33:09 [INFO] Preparing spawn area: 28%
-2012-10-16 10:33:10 [INFO] [STDERR] 2012-10-16 10:33:10 [INFO] Preparing spawn area: 32%
-2012-10-16 10:33:11 [INFO] [STDERR] 2012-10-16 10:33:11 [INFO] Preparing spawn area: 36%
-2012-10-16 10:33:12 [INFO] [STDERR] 2012-10-16 10:33:12 [INFO] Preparing spawn area: 36%
-2012-10-16 10:33:13 [INFO] [STDERR] 2012-10-16 10:33:13 [INFO] Preparing spawn area: 40%
-2012-10-16 10:33:14 [INFO] [STDERR] 2012-10-16 10:33:14 [INFO] Preparing spawn area: 44%
-2012-10-16 10:33:15 [INFO] [STDERR] 2012-10-16 10:33:15 [INFO] Preparing spawn area: 48%
-2012-10-16 10:33:17 [INFO] [STDERR] 2012-10-16 10:33:17 [INFO] Preparing spawn area: 48%
-2012-10-16 10:33:18 [INFO] [STDERR] 2012-10-16 10:33:18 [INFO] Preparing spawn area: 52%
-2012-10-16 10:33:19 [INFO] [STDERR] 2012-10-16 10:33:19 [INFO] Preparing spawn area: 56%
-2012-10-16 10:33:20 [INFO] [STDERR] 2012-10-16 10:33:20 [INFO] Preparing spawn area: 60%
-2012-10-16 10:33:22 [INFO] [STDERR] 2012-10-16 10:33:22 [INFO] Preparing spawn area: 61%
-2012-10-16 10:33:23 [INFO] [STDERR] 2012-10-16 10:33:23 [INFO] Preparing spawn area: 65%
-2012-10-16 10:33:24 [INFO] [STDERR] 2012-10-16 10:33:24 [INFO] Preparing spawn area: 69%
-2012-10-16 10:33:25 [INFO] [STDERR] 2012-10-16 10:33:25 [INFO] Preparing spawn area: 73%
-2012-10-16 10:33:26 [INFO] [STDERR] 2012-10-16 10:33:26 [INFO] Preparing spawn area: 77%
-2012-10-16 10:33:27 [INFO] [STDERR] 2012-10-16 10:33:27 [INFO] Preparing spawn area: 81%
-2012-10-16 10:33:28 [INFO] [STDERR] 2012-10-16 10:33:28 [INFO] Preparing spawn area: 81%
-2012-10-16 10:33:30 [INFO] [STDERR] 2012-10-16 10:33:30 [INFO] Preparing spawn area: 85%
-2012-10-16 10:33:31 [INFO] [STDERR] 2012-10-16 10:33:31 [INFO] Preparing spawn area: 89%
-2012-10-16 10:33:32 [INFO] [STDERR] 2012-10-16 10:33:32 [INFO] Preparing spawn area: 89%
-2012-10-16 10:33:33 [INFO] [STDERR] 2012-10-16 10:33:33 [INFO] Preparing spawn area: 93%
-2012-10-16 10:33:34 [INFO] [STDERR] 2012-10-16 10:33:34 [INFO] Preparing spawn area: 97%
-2012-10-16 10:33:36 [INFO] [STDERR] 2012-10-16 10:33:36 [INFO] Preparing spawn area: 97%
-2012-10-16 10:33:37 [INFO] [STDERR] 2012-10-16 10:33:37 [INFO] Preparing spawn area: 97%
-2012-10-16 10:33:37 [INFO] [STDERR] 2012-10-16 10:33:37 [INFO] Done (40,279s)! For help, type "help" or "?"
-2012-10-16 10:33:37 [FINER] [ForgeModLoader] Posting state event FMLServerStartingEvent to mod FML
-2012-10-16 10:33:37 [FINER] [ForgeModLoader] State event FMLServerStartingEvent delivered to mod FML
-2012-10-16 10:33:37 [FINER] [ForgeModLoader] Posting state event FMLServerStartingEvent to mod Forge
-2012-10-16 10:33:37 [FINER] [ForgeModLoader] State event FMLServerStartingEvent delivered to mod Forge
-2012-10-16 10:33:37 [FINER] [ForgeModLoader] Posting state event FMLServerStartingEvent to mod PowerCraft_Core
-2012-10-16 10:33:37 [FINER] [ForgeModLoader] State event FMLServerStartingEvent delivered to mod PowerCraft_Core
-2012-10-16 10:33:37 [FINER] [ForgeModLoader] Posting state event FMLServerStartedEvent to mod FML
-2012-10-16 10:33:37 [FINER] [ForgeModLoader] State event FMLServerStartedEvent delivered to mod FML
-2012-10-16 10:33:37 [FINER] [ForgeModLoader] Posting state event FMLServerStartedEvent to mod Forge
-2012-10-16 10:33:37 [FINER] [ForgeModLoader] State event FMLServerStartedEvent delivered to mod Forge
-2012-10-16 10:33:37 [FINER] [ForgeModLoader] Posting state event FMLServerStartedEvent to mod PowerCraft_Core
-2012-10-16 10:33:37 [FINER] [ForgeModLoader] State event FMLServerStartedEvent delivered to mod PowerCraft_Core
-2012-10-16 10:33:37 [INFO] [STDERR] 2012-10-16 10:33:37 [INFO] /127.0.0.1:1209 lost connection
-2012-10-16 10:33:38 [FINEST] [ForgeModLoader] Received valid FML login packet from /127.0.0.1:1211
-2012-10-16 10:33:38 [INFO] [STDERR] 2012-10-16 10:33:38 [INFO] User Player727 connecting with mods [PowerCraft_Core]
-2012-10-16 10:33:38 [INFO] [ForgeModLoader] User Player727 connecting with mods [PowerCraft_Core]
-2012-10-16 10:33:39 [INFO] [STDERR] 2012-10-16 10:33:39 [INFO] Player727[/127.0.0.1:1211] logged in with entity id 381 at (-13.5, 65.62000000476837, 235.5)
-2012-10-16 10:33:42 [INFO] [STDERR] 2012-10-16 10:33:41 [WARNING] Can't keep up! Did the system time change, or is the server overloaded?
-2012-10-16 10:34:05 [INFO] [STDERR] 2012-10-16 10:34:05 [WARNING] Can't keep up! Did the system time change, or is the server overloaded?
-2012-10-16 10:34:33 [INFO] [STDERR] 2012-10-16 10:34:33 [WARNING] Can't keep up! Did the system time change, or is the server overloaded?
-2012-10-16 10:34:35 [INFO] [STDERR] java.net.SocketException: Connection reset
-2012-10-16 10:34:35 [INFO] [STDERR] 	at java.net.SocketInputStream.read(Unknown Source)
-2012-10-16 10:34:35 [INFO] [STDERR] 	at java.net.SocketInputStream.read(Unknown Source)
-2012-10-16 10:34:35 [INFO] [STDERR] 	at java.io.FilterInputStream.read(Unknown Source)
-2012-10-16 10:34:35 [INFO] [STDERR] 	at org.bouncycastle.crypto.io.CipherInputStream.func_74852_a(CipherInputStream.java:42)
-2012-10-16 10:34:35 [INFO] [STDERR] 	at org.bouncycastle.crypto.io.CipherInputStream.read(CipherInputStream.java:108)
-2012-10-16 10:34:35 [INFO] [STDERR] 	at java.io.FilterInputStream.read(Unknown Source)
-2012-10-16 10:34:35 [INFO] [STDERR] 	at net.minecraft.src.Packet.readPacket(Packet.java:136)
-2012-10-16 10:34:35 [INFO] [STDERR] 	at net.minecraft.src.TcpConnection.readPacket(TcpConnection.java:324)
-2012-10-16 10:34:35 [INFO] [STDERR] 	at net.minecraft.src.TcpConnection.readNetworkPacket(TcpConnection.java:525)
-2012-10-16 10:34:35 [INFO] [STDERR] 	at net.minecraft.src.TcpReaderThread.run(TcpReaderThread.java:23)
-2012-10-16 10:34:35 [INFO] [STDERR] 2012-10-16 10:34:35 [INFO] Player727 lost connection: disconnect.genericReason
-2012-10-16 10:34:35 [FINER] [ForgeModLoader] Posting state event FMLServerStoppingEvent to mod FML
-2012-10-16 10:34:35 [FINER] [ForgeModLoader] State event FMLServerStoppingEvent delivered to mod FML
-2012-10-16 10:34:35 [FINER] [ForgeModLoader] Posting state event FMLServerStoppingEvent to mod Forge
-2012-10-16 10:34:35 [FINER] [ForgeModLoader] State event FMLServerStoppingEvent delivered to mod Forge
-2012-10-16 10:34:35 [FINER] [ForgeModLoader] Posting state event FMLServerStoppingEvent to mod PowerCraft_Core
-2012-10-16 10:34:35 [FINER] [ForgeModLoader] State event FMLServerStoppingEvent delivered to mod PowerCraft_Core
-2012-10-16 10:34:35 [INFO] [STDERR] 2012-10-16 10:34:35 [INFO] Stopping server
-2012-10-16 10:34:35 [INFO] [STDERR] java.net.SocketException: socket closed
-2012-10-16 10:34:35 [INFO] [STDERR] 	at java.net.TwoStacksPlainSocketImpl.socketAccept(Native Method)
-2012-10-16 10:34:35 [INFO] [STDERR] 	at java.net.AbstractPlainSocketImpl.accept(Unknown Source)
-2012-10-16 10:34:35 [INFO] [STDERR] 	at java.net.PlainSocketImpl.accept(Unknown Source)
-2012-10-16 10:34:35 [INFO] [STDERR] 	at java.net.ServerSocket.implAccept(Unknown Source)
-2012-10-16 10:34:35 [INFO] [STDERR] 	at java.net.ServerSocket.accept(Unknown Source)
-2012-10-16 10:34:35 [INFO] [STDERR] 	at net.minecraft.src.ServerListenThread.run(ServerListenThread.java:75)
-2012-10-16 10:34:35 [INFO] [STDERR] 2012-10-16 10:34:35 [INFO] Saving players
-2012-10-16 10:34:35 [INFO] [STDOUT] Closing listening thread
-2012-10-16 10:34:35 [INFO] [STDERR] 2012-10-16 10:34:35 [INFO] Saving worlds
-2012-10-16 10:34:35 [INFO] [STDERR] 2012-10-16 10:34:35 [INFO] Saving chunks for level 'mcpworld'/Overworld
-2012-10-16 10:34:35 [INFO] [STDERR] 2012-10-16 10:34:35 [INFO] Saving chunks for level 'mcpworld'/Nether
-2012-10-16 10:34:35 [INFO] [STDERR] 2012-10-16 10:34:35 [INFO] Saving chunks for level 'mcpworld'/The End
-2012-10-16 10:34:37 [INFO] [ForgeModLoader] Unloading dimension 0
-2012-10-16 10:34:37 [INFO] [ForgeModLoader] Unloading dimension -1
-2012-10-16 10:34:37 [INFO] [ForgeModLoader] Unloading dimension 1
-2012-10-16 10:34:37 [INFO] [STDERR] 2012-10-16 10:34:37 [INFO] Stopping server
+2012-11-24 22:42:56 [INFO] [ForgeModLoader] Forge Mod Loader version 4.4.4.442 for Minecraft 1.4.4 loading
+2012-11-24 22:42:57 [INFO] [STDOUT] 208 recipes
+2012-11-24 22:42:57 [INFO] [STDOUT] 27 achievements
+2012-11-24 22:42:58 [INFO] [Minecraft] Starting minecraft server version 1.4.4
+2012-11-24 22:42:58 [INFO] [ForgeModLoader] Attempting early MinecraftForge initialization
+2012-11-24 22:42:58 [INFO] [STDOUT] MinecraftForge v6.3.0.372 Initialized
+2012-11-24 22:42:58 [INFO] [ForgeModLoader] MinecraftForge v6.3.0.372 Initialized
+2012-11-24 22:42:58 [INFO] [STDOUT] Replaced 84 ore recipies
+2012-11-24 22:42:58 [INFO] [ForgeModLoader] Completed early MinecraftForge initialization
+2012-11-24 22:42:58 [FINE] [ForgeModLoader] Building injected Mod Containers [cpw.mods.fml.common.FMLDummyContainer, net.minecraftforge.common.ForgeDummyContainer]
+2012-11-24 22:42:58 [FINE] [ForgeModLoader] Attempting to load mods contained in the minecraft jar file and associated classes
+2012-11-24 22:42:58 [FINE] [ForgeModLoader] Found a minecraft related directory at C:\Users\Nils\PowerCraft v1.4.4\eclipse\Minecraft\bin, examining for mod candidates
+2012-11-24 22:42:58 [FINE] [ForgeModLoader] Skipping known library file C:\Users\Nils\PowerCraft v1.4.4\jars\bin\jinput.jar
+2012-11-24 22:42:58 [FINE] [ForgeModLoader] Skipping known library file C:\Users\Nils\PowerCraft v1.4.4\jars\bin\lwjgl_util.jar
+2012-11-24 22:42:58 [FINE] [ForgeModLoader] Skipping known library file C:\Users\Nils\PowerCraft v1.4.4\jars\bin\lwjgl.jar
+2012-11-24 22:42:58 [FINE] [ForgeModLoader] Found a minecraft related file at C:\Users\Nils\PowerCraft v1.4.4\jars\bin\minecraft.jar, examining for mod candidates
+2012-11-24 22:42:58 [FINE] [ForgeModLoader] Skipping known library file C:\Users\Nils\PowerCraft v1.4.4\lib\argo-2.25.jar
+2012-11-24 22:42:58 [FINE] [ForgeModLoader] Skipping known library file C:\Users\Nils\PowerCraft v1.4.4\lib\asm-all-4.0.jar
+2012-11-24 22:42:58 [FINE] [ForgeModLoader] Skipping known library file C:\Users\Nils\PowerCraft v1.4.4\lib\guava-12.0.1.jar
+2012-11-24 22:42:58 [FINE] [ForgeModLoader] Skipping known library file C:\Users\Nils\PowerCraft v1.4.4\jars\lib\argo-2.25.jar
+2012-11-24 22:42:58 [FINE] [ForgeModLoader] Skipping known library file C:\Users\Nils\PowerCraft v1.4.4\jars\lib\guava-12.0.1.jar
+2012-11-24 22:42:58 [FINE] [ForgeModLoader] Skipping known library file C:\Users\Nils\PowerCraft v1.4.4\jars\lib\asm-all-4.0.jar
+2012-11-24 22:42:58 [FINE] [ForgeModLoader] Minecraft jar mods loaded successfully
+2012-11-24 22:42:58 [INFO] [ForgeModLoader] Searching C:\Users\Nils\PowerCraft v1.4.4\jars\mods for mods
+2012-11-24 22:42:58 [FINE] [ForgeModLoader] Examining directory bin for potential mods
+2012-11-24 22:42:58 [FINE] [ForgeModLoader] No mcmod.info file found in directory bin
+2012-11-24 22:42:58 [FINEST] [ForgeModLoader] Recursing into package cpw
+2012-11-24 22:42:58 [FINEST] [ForgeModLoader] Recursing into package cpw.mods
+2012-11-24 22:42:58 [FINEST] [ForgeModLoader] Recursing into package cpw.mods.fml
+2012-11-24 22:42:58 [FINEST] [ForgeModLoader] Recursing into package cpw.mods.fml.client
+2012-11-24 22:42:58 [FINEST] [ForgeModLoader] Recursing into package cpw.mods.fml.client.modloader
+2012-11-24 22:42:58 [FINEST] [ForgeModLoader] Recursing into package cpw.mods.fml.client.registry
+2012-11-24 22:42:58 [FINEST] [ForgeModLoader] Recursing into package cpw.mods.fml.common
+2012-11-24 22:42:58 [FINEST] [ForgeModLoader] Recursing into package cpw.mods.fml.common.asm
+2012-11-24 22:42:58 [FINEST] [ForgeModLoader] Recursing into package cpw.mods.fml.common.asm.transformers
+2012-11-24 22:42:58 [FINEST] [ForgeModLoader] Recursing into package cpw.mods.fml.common.discovery
+2012-11-24 22:42:58 [FINEST] [ForgeModLoader] Recursing into package cpw.mods.fml.common.discovery.asm
+2012-11-24 22:42:58 [FINEST] [ForgeModLoader] Recursing into package cpw.mods.fml.common.event
+2012-11-24 22:42:58 [FINEST] [ForgeModLoader] Recursing into package cpw.mods.fml.common.functions
+2012-11-24 22:42:58 [FINEST] [ForgeModLoader] Recursing into package cpw.mods.fml.common.modloader
+2012-11-24 22:42:58 [FINEST] [ForgeModLoader] Recursing into package cpw.mods.fml.common.network
+2012-11-24 22:42:58 [FINEST] [ForgeModLoader] Recursing into package cpw.mods.fml.common.registry
+2012-11-24 22:42:58 [FINEST] [ForgeModLoader] Recursing into package cpw.mods.fml.common.toposort
+2012-11-24 22:42:58 [FINEST] [ForgeModLoader] Recursing into package cpw.mods.fml.common.versioning
+2012-11-24 22:42:58 [FINEST] [ForgeModLoader] Recursing into package cpw.mods.fml.relauncher
+2012-11-24 22:42:58 [FINEST] [ForgeModLoader] Recursing into package cpw.mods.fml.server
+2012-11-24 22:42:58 [FINEST] [ForgeModLoader] Recursing into package ibxm
+2012-11-24 22:42:58 [FINEST] [ForgeModLoader] Recursing into package net
+2012-11-24 22:42:58 [FINEST] [ForgeModLoader] Recursing into package net.minecraft
+2012-11-24 22:42:58 [FINEST] [ForgeModLoader] Recursing into package net.minecraft.client
+2012-11-24 22:42:58 [FINEST] [ForgeModLoader] Recursing into package net.minecraft.server
+2012-11-24 22:42:58 [FINEST] [ForgeModLoader] Recursing into package net.minecraft.src
+2012-11-24 22:42:58 [FINEST] [ForgeModLoader] Recursing into package net.minecraftforge
+2012-11-24 22:42:58 [FINEST] [ForgeModLoader] Recursing into package net.minecraftforge.classloading
+2012-11-24 22:42:58 [FINEST] [ForgeModLoader] Recursing into package net.minecraftforge.client
+2012-11-24 22:42:58 [FINEST] [ForgeModLoader] Recursing into package net.minecraftforge.client.event
+2012-11-24 22:42:58 [FINEST] [ForgeModLoader] Recursing into package net.minecraftforge.client.event.sound
+2012-11-24 22:42:58 [FINEST] [ForgeModLoader] Recursing into package net.minecraftforge.common
+2012-11-24 22:42:58 [FINEST] [ForgeModLoader] Recursing into package net.minecraftforge.event
+2012-11-24 22:42:58 [FINEST] [ForgeModLoader] Recursing into package net.minecraftforge.event.entity
+2012-11-24 22:42:58 [FINEST] [ForgeModLoader] Recursing into package net.minecraftforge.event.entity.item
+2012-11-24 22:42:58 [FINEST] [ForgeModLoader] Recursing into package net.minecraftforge.event.entity.living
+2012-11-24 22:42:58 [FINEST] [ForgeModLoader] Recursing into package net.minecraftforge.event.entity.minecart
+2012-11-24 22:42:58 [FINEST] [ForgeModLoader] Recursing into package net.minecraftforge.event.entity.player
+2012-11-24 22:42:58 [FINEST] [ForgeModLoader] Recursing into package net.minecraftforge.event.world
+2012-11-24 22:42:58 [FINEST] [ForgeModLoader] Recursing into package net.minecraftforge.liquids
+2012-11-24 22:42:58 [FINEST] [ForgeModLoader] Recursing into package net.minecraftforge.oredict
+2012-11-24 22:42:58 [FINEST] [ForgeModLoader] Recursing into package net.minecraftforge.transformers
+2012-11-24 22:42:58 [FINEST] [ForgeModLoader] Recursing into package org
+2012-11-24 22:42:58 [FINEST] [ForgeModLoader] Recursing into package org.bouncycastle
+2012-11-24 22:42:58 [FINEST] [ForgeModLoader] Recursing into package org.bouncycastle.asn1
+2012-11-24 22:42:58 [FINEST] [ForgeModLoader] Recursing into package org.bouncycastle.asn1.bc
+2012-11-24 22:42:58 [FINEST] [ForgeModLoader] Recursing into package org.bouncycastle.asn1.pkcs
+2012-11-24 22:42:58 [FINEST] [ForgeModLoader] Recursing into package org.bouncycastle.crypto
+2012-11-24 22:42:58 [FINEST] [ForgeModLoader] Recursing into package org.bouncycastle.crypto.engines
+2012-11-24 22:42:58 [FINEST] [ForgeModLoader] Recursing into package org.bouncycastle.crypto.io
+2012-11-24 22:42:58 [FINEST] [ForgeModLoader] Recursing into package org.bouncycastle.crypto.modes
+2012-11-24 22:42:58 [FINEST] [ForgeModLoader] Recursing into package org.bouncycastle.crypto.params
+2012-11-24 22:42:58 [FINEST] [ForgeModLoader] Recursing into package org.bouncycastle.jcajce
+2012-11-24 22:42:58 [FINEST] [ForgeModLoader] Recursing into package org.bouncycastle.jcajce.provider
+2012-11-24 22:42:58 [FINEST] [ForgeModLoader] Recursing into package org.bouncycastle.jcajce.provider.config
+2012-11-24 22:42:58 [FINEST] [ForgeModLoader] Recursing into package org.bouncycastle.jcajce.provider.util
+2012-11-24 22:42:58 [FINEST] [ForgeModLoader] Recursing into package org.bouncycastle.jce
+2012-11-24 22:42:58 [FINEST] [ForgeModLoader] Recursing into package org.bouncycastle.jce.provider
+2012-11-24 22:42:58 [FINEST] [ForgeModLoader] Recursing into package org.bouncycastle.util
+2012-11-24 22:42:58 [FINEST] [ForgeModLoader] Recursing into package paulscode
+2012-11-24 22:42:58 [FINEST] [ForgeModLoader] Recursing into package paulscode.sound
+2012-11-24 22:42:58 [FINEST] [ForgeModLoader] Recursing into package paulscode.sound.codecs
+2012-11-24 22:42:58 [FINEST] [ForgeModLoader] Recursing into package powercraft
+2012-11-24 22:42:58 [FINEST] [ForgeModLoader] Recursing into package powercraft.core
+2012-11-24 22:42:58 [FINE] [ForgeModLoader] Identified a class powercraft.core.mod_PowerCraftCore following modloader naming convention but not directly a BaseMod or currently seen subclass
+2012-11-24 22:42:58 [FINE] [ForgeModLoader] Identified an FMLMod type mod powercraft.core.mod_PowerCraftCore
+2012-11-24 22:42:58 [FINEST] [ForgeModLoader] Parsed dependency info : [] [] [*]
+2012-11-24 22:42:58 [FINEST] [ForgeModLoader] Recursing into package powercraft.light
+2012-11-24 22:42:58 [FINE] [ForgeModLoader] Identified a class powercraft.light.mod_PowerCraftLight following modloader naming convention but not directly a BaseMod or currently seen subclass
+2012-11-24 22:42:58 [FINE] [ForgeModLoader] Identified an FMLMod type mod powercraft.light.mod_PowerCraftLight
+2012-11-24 22:42:58 [FINEST] [ForgeModLoader] Parsed dependency info : [PowerCraft-Core] [PowerCraft-Core] []
+2012-11-24 22:42:58 [FINEST] [ForgeModLoader] Recursing into package powercraft.logic
+2012-11-24 22:42:58 [FINE] [ForgeModLoader] Identified a class powercraft.logic.mod_PowerCraftLogic following modloader naming convention but not directly a BaseMod or currently seen subclass
+2012-11-24 22:42:58 [FINE] [ForgeModLoader] Identified an FMLMod type mod powercraft.logic.mod_PowerCraftLogic
+2012-11-24 22:42:58 [FINEST] [ForgeModLoader] Parsed dependency info : [PowerCraft-Core] [PowerCraft-Core] []
+2012-11-24 22:42:58 [FINEST] [ForgeModLoader] Recursing into package powercraft.machines
+2012-11-24 22:42:58 [FINE] [ForgeModLoader] Identified a class powercraft.machines.mod_PowerCraftMachines following modloader naming convention but not directly a BaseMod or currently seen subclass
+2012-11-24 22:42:58 [FINE] [ForgeModLoader] Identified an FMLMod type mod powercraft.machines.mod_PowerCraftMachines
+2012-11-24 22:42:58 [FINEST] [ForgeModLoader] Parsed dependency info : [PowerCraft-Core] [PowerCraft-Core] []
+2012-11-24 22:42:58 [FINEST] [ForgeModLoader] Recursing into package powercraft.transport
+2012-11-24 22:42:58 [FINE] [ForgeModLoader] Identified a class powercraft.transport.mod_PowerCraftTransport following modloader naming convention but not directly a BaseMod or currently seen subclass
+2012-11-24 22:42:58 [FINE] [ForgeModLoader] Identified an FMLMod type mod powercraft.transport.mod_PowerCraftTransport
+2012-11-24 22:42:58 [FINEST] [ForgeModLoader] Parsed dependency info : [PowerCraft-Core] [PowerCraft-Core] []
+2012-11-24 22:42:58 [INFO] [ForgeModLoader] Attempting to reparse the mod container bin
+2012-11-24 22:42:58 [FINE] [ForgeModLoader] Examining directory bin for potential mods
+2012-11-24 22:42:58 [FINE] [ForgeModLoader] No mcmod.info file found in directory bin
+2012-11-24 22:42:58 [FINEST] [ForgeModLoader] Recursing into package cpw
+2012-11-24 22:42:58 [FINEST] [ForgeModLoader] Recursing into package cpw.mods
+2012-11-24 22:42:58 [FINEST] [ForgeModLoader] Recursing into package cpw.mods.fml
+2012-11-24 22:42:58 [FINEST] [ForgeModLoader] Recursing into package cpw.mods.fml.client
+2012-11-24 22:42:58 [FINEST] [ForgeModLoader] Recursing into package cpw.mods.fml.client.modloader
+2012-11-24 22:42:58 [FINEST] [ForgeModLoader] Recursing into package cpw.mods.fml.client.registry
+2012-11-24 22:42:58 [FINEST] [ForgeModLoader] Recursing into package cpw.mods.fml.common
+2012-11-24 22:42:58 [FINEST] [ForgeModLoader] Recursing into package cpw.mods.fml.common.asm
+2012-11-24 22:42:58 [FINEST] [ForgeModLoader] Recursing into package cpw.mods.fml.common.asm.transformers
+2012-11-24 22:42:58 [FINEST] [ForgeModLoader] Recursing into package cpw.mods.fml.common.discovery
+2012-11-24 22:42:58 [FINEST] [ForgeModLoader] Recursing into package cpw.mods.fml.common.discovery.asm
+2012-11-24 22:42:58 [FINEST] [ForgeModLoader] Recursing into package cpw.mods.fml.common.event
+2012-11-24 22:42:58 [FINEST] [ForgeModLoader] Recursing into package cpw.mods.fml.common.functions
+2012-11-24 22:42:58 [FINEST] [ForgeModLoader] Recursing into package cpw.mods.fml.common.modloader
+2012-11-24 22:42:58 [FINEST] [ForgeModLoader] Recursing into package cpw.mods.fml.common.network
+2012-11-24 22:42:58 [FINEST] [ForgeModLoader] Recursing into package cpw.mods.fml.common.registry
+2012-11-24 22:42:58 [FINEST] [ForgeModLoader] Recursing into package cpw.mods.fml.common.toposort
+2012-11-24 22:42:58 [FINEST] [ForgeModLoader] Recursing into package cpw.mods.fml.common.versioning
+2012-11-24 22:42:58 [FINEST] [ForgeModLoader] Recursing into package cpw.mods.fml.relauncher
+2012-11-24 22:42:58 [FINEST] [ForgeModLoader] Recursing into package cpw.mods.fml.server
+2012-11-24 22:42:58 [FINEST] [ForgeModLoader] Recursing into package ibxm
+2012-11-24 22:42:58 [FINEST] [ForgeModLoader] Recursing into package net
+2012-11-24 22:42:58 [FINEST] [ForgeModLoader] Recursing into package net.minecraft
+2012-11-24 22:42:58 [FINEST] [ForgeModLoader] Recursing into package net.minecraft.client
+2012-11-24 22:42:58 [FINEST] [ForgeModLoader] Recursing into package net.minecraft.server
+2012-11-24 22:42:58 [FINEST] [ForgeModLoader] Recursing into package net.minecraft.src
+2012-11-24 22:42:59 [FINEST] [ForgeModLoader] Recursing into package net.minecraftforge
+2012-11-24 22:42:59 [FINEST] [ForgeModLoader] Recursing into package net.minecraftforge.classloading
+2012-11-24 22:42:59 [FINEST] [ForgeModLoader] Recursing into package net.minecraftforge.client
+2012-11-24 22:42:59 [FINEST] [ForgeModLoader] Recursing into package net.minecraftforge.client.event
+2012-11-24 22:42:59 [FINEST] [ForgeModLoader] Recursing into package net.minecraftforge.client.event.sound
+2012-11-24 22:42:59 [FINEST] [ForgeModLoader] Recursing into package net.minecraftforge.common
+2012-11-24 22:42:59 [FINEST] [ForgeModLoader] Recursing into package net.minecraftforge.event
+2012-11-24 22:42:59 [FINEST] [ForgeModLoader] Recursing into package net.minecraftforge.event.entity
+2012-11-24 22:42:59 [FINEST] [ForgeModLoader] Recursing into package net.minecraftforge.event.entity.item
+2012-11-24 22:42:59 [FINEST] [ForgeModLoader] Recursing into package net.minecraftforge.event.entity.living
+2012-11-24 22:42:59 [FINEST] [ForgeModLoader] Recursing into package net.minecraftforge.event.entity.minecart
+2012-11-24 22:42:59 [FINEST] [ForgeModLoader] Recursing into package net.minecraftforge.event.entity.player
+2012-11-24 22:42:59 [FINEST] [ForgeModLoader] Recursing into package net.minecraftforge.event.world
+2012-11-24 22:42:59 [FINEST] [ForgeModLoader] Recursing into package net.minecraftforge.liquids
+2012-11-24 22:42:59 [FINEST] [ForgeModLoader] Recursing into package net.minecraftforge.oredict
+2012-11-24 22:42:59 [FINEST] [ForgeModLoader] Recursing into package net.minecraftforge.transformers
+2012-11-24 22:42:59 [FINEST] [ForgeModLoader] Recursing into package org
+2012-11-24 22:42:59 [FINEST] [ForgeModLoader] Recursing into package org.bouncycastle
+2012-11-24 22:42:59 [FINEST] [ForgeModLoader] Recursing into package org.bouncycastle.asn1
+2012-11-24 22:42:59 [FINEST] [ForgeModLoader] Recursing into package org.bouncycastle.asn1.bc
+2012-11-24 22:42:59 [FINEST] [ForgeModLoader] Recursing into package org.bouncycastle.asn1.pkcs
+2012-11-24 22:42:59 [FINEST] [ForgeModLoader] Recursing into package org.bouncycastle.crypto
+2012-11-24 22:42:59 [FINEST] [ForgeModLoader] Recursing into package org.bouncycastle.crypto.engines
+2012-11-24 22:42:59 [FINEST] [ForgeModLoader] Recursing into package org.bouncycastle.crypto.io
+2012-11-24 22:42:59 [FINEST] [ForgeModLoader] Recursing into package org.bouncycastle.crypto.modes
+2012-11-24 22:42:59 [FINEST] [ForgeModLoader] Recursing into package org.bouncycastle.crypto.params
+2012-11-24 22:42:59 [FINEST] [ForgeModLoader] Recursing into package org.bouncycastle.jcajce
+2012-11-24 22:42:59 [FINEST] [ForgeModLoader] Recursing into package org.bouncycastle.jcajce.provider
+2012-11-24 22:42:59 [FINEST] [ForgeModLoader] Recursing into package org.bouncycastle.jcajce.provider.config
+2012-11-24 22:42:59 [FINEST] [ForgeModLoader] Recursing into package org.bouncycastle.jcajce.provider.util
+2012-11-24 22:42:59 [FINEST] [ForgeModLoader] Recursing into package org.bouncycastle.jce
+2012-11-24 22:42:59 [FINEST] [ForgeModLoader] Recursing into package org.bouncycastle.jce.provider
+2012-11-24 22:42:59 [FINEST] [ForgeModLoader] Recursing into package org.bouncycastle.util
+2012-11-24 22:42:59 [FINEST] [ForgeModLoader] Recursing into package paulscode
+2012-11-24 22:42:59 [FINEST] [ForgeModLoader] Recursing into package paulscode.sound
+2012-11-24 22:42:59 [FINEST] [ForgeModLoader] Recursing into package paulscode.sound.codecs
+2012-11-24 22:42:59 [FINEST] [ForgeModLoader] Recursing into package powercraft
+2012-11-24 22:42:59 [FINEST] [ForgeModLoader] Recursing into package powercraft.core
+2012-11-24 22:42:59 [FINE] [ForgeModLoader] Identified a class powercraft.core.mod_PowerCraftCore following modloader naming convention but not directly a BaseMod or currently seen subclass
+2012-11-24 22:42:59 [FINE] [ForgeModLoader] Identified an FMLMod type mod powercraft.core.mod_PowerCraftCore
+2012-11-24 22:42:59 [FINEST] [ForgeModLoader] Parsed dependency info : [] [] [*]
+2012-11-24 22:42:59 [FINEST] [ForgeModLoader] Recursing into package powercraft.light
+2012-11-24 22:42:59 [FINE] [ForgeModLoader] Identified a class powercraft.light.mod_PowerCraftLight following modloader naming convention but not directly a BaseMod or currently seen subclass
+2012-11-24 22:42:59 [FINE] [ForgeModLoader] Identified an FMLMod type mod powercraft.light.mod_PowerCraftLight
+2012-11-24 22:42:59 [FINEST] [ForgeModLoader] Parsed dependency info : [PowerCraft-Core] [PowerCraft-Core] []
+2012-11-24 22:42:59 [FINEST] [ForgeModLoader] Recursing into package powercraft.logic
+2012-11-24 22:42:59 [FINE] [ForgeModLoader] Identified a class powercraft.logic.mod_PowerCraftLogic following modloader naming convention but not directly a BaseMod or currently seen subclass
+2012-11-24 22:42:59 [FINE] [ForgeModLoader] Identified an FMLMod type mod powercraft.logic.mod_PowerCraftLogic
+2012-11-24 22:42:59 [FINEST] [ForgeModLoader] Parsed dependency info : [PowerCraft-Core] [PowerCraft-Core] []
+2012-11-24 22:42:59 [FINEST] [ForgeModLoader] Recursing into package powercraft.machines
+2012-11-24 22:42:59 [FINE] [ForgeModLoader] Identified a class powercraft.machines.mod_PowerCraftMachines following modloader naming convention but not directly a BaseMod or currently seen subclass
+2012-11-24 22:42:59 [FINE] [ForgeModLoader] Identified an FMLMod type mod powercraft.machines.mod_PowerCraftMachines
+2012-11-24 22:42:59 [FINEST] [ForgeModLoader] Parsed dependency info : [PowerCraft-Core] [PowerCraft-Core] []
+2012-11-24 22:42:59 [FINEST] [ForgeModLoader] Recursing into package powercraft.transport
+2012-11-24 22:42:59 [FINE] [ForgeModLoader] Identified a class powercraft.transport.mod_PowerCraftTransport following modloader naming convention but not directly a BaseMod or currently seen subclass
+2012-11-24 22:42:59 [FINE] [ForgeModLoader] Identified an FMLMod type mod powercraft.transport.mod_PowerCraftTransport
+2012-11-24 22:42:59 [FINEST] [ForgeModLoader] Parsed dependency info : [PowerCraft-Core] [PowerCraft-Core] []
+2012-11-24 22:42:59 [FINE] [ForgeModLoader] Examining file minecraft.jar for potential mods
+2012-11-24 22:42:59 [FINE] [ForgeModLoader] The mod container minecraft.jar appears to be missing an mcmod.info file
+2012-11-24 22:42:59 [INFO] [ForgeModLoader] Forge Mod Loader has identified 8 mods to load
+2012-11-24 22:42:59 [FINE] [ForgeModLoader] Received a system property request ''
+2012-11-24 22:42:59 [FINE] [ForgeModLoader] System property request managing the state of 0 mods
+2012-11-24 22:42:59 [FINE] [ForgeModLoader] After merging, found state information for 0 mods
+2012-11-24 22:42:59 [FINE] [ForgeModLoader] Activating mod mcp
+2012-11-24 22:42:59 [FINE] [ForgeModLoader] Activating mod FML
+2012-11-24 22:42:59 [FINE] [ForgeModLoader] Activating mod Forge
+2012-11-24 22:42:59 [FINE] [ForgeModLoader] Enabling mod PowerCraft-Core
+2012-11-24 22:42:59 [FINE] [ForgeModLoader] Activating mod PowerCraft-Core
+2012-11-24 22:42:59 [FINE] [ForgeModLoader] Enabling mod PowerCraft-Light
+2012-11-24 22:42:59 [FINE] [ForgeModLoader] Activating mod PowerCraft-Light
+2012-11-24 22:42:59 [FINE] [ForgeModLoader] Enabling mod PowerCraft-Logic
+2012-11-24 22:42:59 [FINE] [ForgeModLoader] Activating mod PowerCraft-Logic
+2012-11-24 22:42:59 [FINE] [ForgeModLoader] Enabling mod PowerCraft-Machines
+2012-11-24 22:42:59 [FINE] [ForgeModLoader] Activating mod PowerCraft-Machines
+2012-11-24 22:42:59 [FINE] [ForgeModLoader] Enabling mod PowerCraft-Transport
+2012-11-24 22:42:59 [FINE] [ForgeModLoader] Activating mod PowerCraft-Transport
+2012-11-24 22:42:59 [FINE] [ForgeModLoader] Verifying mod requirements are satisfied
+2012-11-24 22:42:59 [FINE] [ForgeModLoader] All mod requirements are satisfied
+2012-11-24 22:42:59 [FINE] [ForgeModLoader] Sorting mods into an ordered list
+2012-11-24 22:42:59 [FINE] [ForgeModLoader] Mod sorting completed successfully
+2012-11-24 22:42:59 [FINE] [ForgeModLoader] Mod sorting data:
+2012-11-24 22:42:59 [FINE] [ForgeModLoader] 	PowerCraft-Core(PowerCraft-Core:3.5.0AlphaC): bin (before:*)
+2012-11-24 22:42:59 [FINE] [ForgeModLoader] 	PowerCraft-Light(PowerCraft-Light:3.5.0AlphaC): bin (required-after:PowerCraft-Core)
+2012-11-24 22:42:59 [FINE] [ForgeModLoader] 	PowerCraft-Logic(PowerCraft-Logic:3.5.0AlphaC): bin (required-after:PowerCraft-Core)
+2012-11-24 22:42:59 [FINE] [ForgeModLoader] 	PowerCraft-Machines(PowerCraft-Machines:3.5.0AlphaC): bin (required-after:PowerCraft-Core)
+2012-11-24 22:42:59 [FINE] [ForgeModLoader] 	PowerCraft-Transport(PowerCraft-Transport:3.5.0AlphaC): bin (required-after:PowerCraft-Core)
+2012-11-24 22:42:59 [FINER] [ForgeModLoader] Sending event FMLConstructionEvent to mod mcp
+2012-11-24 22:42:59 [FINER] [ForgeModLoader] Sent event FMLConstructionEvent to mod mcp
+2012-11-24 22:42:59 [FINER] [ForgeModLoader] Sending event FMLConstructionEvent to mod FML
+2012-11-24 22:42:59 [FINER] [ForgeModLoader] Sent event FMLConstructionEvent to mod FML
+2012-11-24 22:42:59 [FINER] [ForgeModLoader] Sending event FMLConstructionEvent to mod Forge
+2012-11-24 22:42:59 [FINER] [ForgeModLoader] Sent event FMLConstructionEvent to mod Forge
+2012-11-24 22:42:59 [FINER] [ForgeModLoader] Sending event FMLConstructionEvent to mod PowerCraft-Core
+2012-11-24 22:42:59 [FINEST] [ForgeModLoader] Testing mod PowerCraft-Core to verify it accepts its own version in a remote connection
+2012-11-24 22:42:59 [FINEST] [ForgeModLoader] The mod PowerCraft-Core accepts its own version (3.5.0AlphaC)
+2012-11-24 22:42:59 [FINE] [ForgeModLoader] Attempting to inject @SidedProxy classes into PowerCraft-Core
+2012-11-24 22:42:59 [FINER] [ForgeModLoader] Sent event FMLConstructionEvent to mod PowerCraft-Core
+2012-11-24 22:42:59 [FINER] [ForgeModLoader] Sending event FMLConstructionEvent to mod PowerCraft-Light
+2012-11-24 22:42:59 [FINEST] [ForgeModLoader] Testing mod PowerCraft-Light to verify it accepts its own version in a remote connection
+2012-11-24 22:42:59 [FINEST] [ForgeModLoader] The mod PowerCraft-Light accepts its own version (3.5.0AlphaC)
+2012-11-24 22:42:59 [FINE] [ForgeModLoader] Attempting to inject @SidedProxy classes into PowerCraft-Light
+2012-11-24 22:42:59 [FINER] [ForgeModLoader] Sent event FMLConstructionEvent to mod PowerCraft-Light
+2012-11-24 22:42:59 [FINER] [ForgeModLoader] Sending event FMLConstructionEvent to mod PowerCraft-Logic
+2012-11-24 22:42:59 [FINEST] [ForgeModLoader] Testing mod PowerCraft-Logic to verify it accepts its own version in a remote connection
+2012-11-24 22:42:59 [FINEST] [ForgeModLoader] The mod PowerCraft-Logic accepts its own version (3.5.0AlphaC)
+2012-11-24 22:42:59 [FINE] [ForgeModLoader] Attempting to inject @SidedProxy classes into PowerCraft-Logic
+2012-11-24 22:42:59 [FINER] [ForgeModLoader] Sent event FMLConstructionEvent to mod PowerCraft-Logic
+2012-11-24 22:42:59 [FINER] [ForgeModLoader] Sending event FMLConstructionEvent to mod PowerCraft-Machines
+2012-11-24 22:42:59 [FINEST] [ForgeModLoader] Testing mod PowerCraft-Machines to verify it accepts its own version in a remote connection
+2012-11-24 22:42:59 [FINEST] [ForgeModLoader] The mod PowerCraft-Machines accepts its own version (3.5.0AlphaC)
+2012-11-24 22:42:59 [FINE] [ForgeModLoader] Attempting to inject @SidedProxy classes into PowerCraft-Machines
+2012-11-24 22:42:59 [FINER] [ForgeModLoader] Sent event FMLConstructionEvent to mod PowerCraft-Machines
+2012-11-24 22:42:59 [FINER] [ForgeModLoader] Sending event FMLConstructionEvent to mod PowerCraft-Transport
+2012-11-24 22:42:59 [FINEST] [ForgeModLoader] Testing mod PowerCraft-Transport to verify it accepts its own version in a remote connection
+2012-11-24 22:42:59 [FINEST] [ForgeModLoader] The mod PowerCraft-Transport accepts its own version (3.5.0AlphaC)
+2012-11-24 22:42:59 [FINE] [ForgeModLoader] Attempting to inject @SidedProxy classes into PowerCraft-Transport
+2012-11-24 22:42:59 [FINER] [ForgeModLoader] Sent event FMLConstructionEvent to mod PowerCraft-Transport
+2012-11-24 22:42:59 [FINER] [ForgeModLoader] Sending event FMLPreInitializationEvent to mod mcp
+2012-11-24 22:42:59 [FINER] [ForgeModLoader] Sent event FMLPreInitializationEvent to mod mcp
+2012-11-24 22:42:59 [FINER] [ForgeModLoader] Sending event FMLPreInitializationEvent to mod FML
+2012-11-24 22:42:59 [FINER] [ForgeModLoader] Sent event FMLPreInitializationEvent to mod FML
+2012-11-24 22:42:59 [FINER] [ForgeModLoader] Sending event FMLPreInitializationEvent to mod Forge
+2012-11-24 22:42:59 [INFO] [ForgeModLoader] Configured a dormant chunk cache size of 0
+2012-11-24 22:42:59 [FINER] [ForgeModLoader] Sent event FMLPreInitializationEvent to mod Forge
+2012-11-24 22:42:59 [FINER] [ForgeModLoader] Sending event FMLPreInitializationEvent to mod PowerCraft-Core
+2012-11-24 22:42:59 [FINER] [ForgeModLoader] Sent event FMLPreInitializationEvent to mod PowerCraft-Core
+2012-11-24 22:42:59 [FINER] [ForgeModLoader] Sending event FMLPreInitializationEvent to mod PowerCraft-Light
+2012-11-24 22:42:59 [FINER] [ForgeModLoader] Sent event FMLPreInitializationEvent to mod PowerCraft-Light
+2012-11-24 22:42:59 [FINER] [ForgeModLoader] Sending event FMLPreInitializationEvent to mod PowerCraft-Logic
+2012-11-24 22:42:59 [FINER] [ForgeModLoader] Sent event FMLPreInitializationEvent to mod PowerCraft-Logic
+2012-11-24 22:42:59 [FINER] [ForgeModLoader] Sending event FMLPreInitializationEvent to mod PowerCraft-Machines
+2012-11-24 22:42:59 [FINER] [ForgeModLoader] Sent event FMLPreInitializationEvent to mod PowerCraft-Machines
+2012-11-24 22:42:59 [FINER] [ForgeModLoader] Sending event FMLPreInitializationEvent to mod PowerCraft-Transport
+2012-11-24 22:42:59 [FINER] [ForgeModLoader] Sent event FMLPreInitializationEvent to mod PowerCraft-Transport
+2012-11-24 22:42:59 [INFO] [Minecraft] Loading properties
+2012-11-24 22:42:59 [INFO] [Minecraft] Default game type: SURVIVAL
+2012-11-24 22:42:59 [INFO] [Minecraft] Generating keypair
+2012-11-24 22:43:00 [INFO] [Minecraft] Starting Minecraft server on *:25565
+2012-11-24 22:43:00 [WARNING] [Minecraft] **** SERVER IS RUNNING IN OFFLINE/INSECURE MODE!
+2012-11-24 22:43:00 [WARNING] [Minecraft] The server will make no attempt to authenticate usernames. Beware.
+2012-11-24 22:43:00 [WARNING] [Minecraft] While this makes the game possible to play without internet access, it also opens up the ability for hackers to connect with any username they choose.
+2012-11-24 22:43:00 [WARNING] [Minecraft] To change this, set "online-mode" to "true" in the server.properties file.
+2012-11-24 22:43:00 [FINER] [ForgeModLoader] Sending event FMLInitializationEvent to mod mcp
+2012-11-24 22:43:00 [FINER] [ForgeModLoader] Sent event FMLInitializationEvent to mod mcp
+2012-11-24 22:43:00 [FINER] [ForgeModLoader] Sending event FMLInitializationEvent to mod FML
+2012-11-24 22:43:00 [FINER] [ForgeModLoader] Sent event FMLInitializationEvent to mod FML
+2012-11-24 22:43:00 [FINER] [ForgeModLoader] Sending event FMLInitializationEvent to mod Forge
+2012-11-24 22:43:00 [FINER] [ForgeModLoader] Sent event FMLInitializationEvent to mod Forge
+2012-11-24 22:43:00 [FINER] [ForgeModLoader] Sending event FMLInitializationEvent to mod PowerCraft-Core
+2012-11-24 22:43:00 [FINER] [ForgeModLoader] Sent event FMLInitializationEvent to mod PowerCraft-Core
+2012-11-24 22:43:00 [FINER] [ForgeModLoader] Sending event FMLInitializationEvent to mod PowerCraft-Light
+2012-11-24 22:43:00 [FINER] [ForgeModLoader] Sent event FMLInitializationEvent to mod PowerCraft-Light
+2012-11-24 22:43:00 [FINER] [ForgeModLoader] Sending event FMLInitializationEvent to mod PowerCraft-Logic
+2012-11-24 22:43:00 [FINER] [ForgeModLoader] Sent event FMLInitializationEvent to mod PowerCraft-Logic
+2012-11-24 22:43:00 [FINER] [ForgeModLoader] Sending event FMLInitializationEvent to mod PowerCraft-Machines
+2012-11-24 22:43:00 [FINER] [ForgeModLoader] Sent event FMLInitializationEvent to mod PowerCraft-Machines
+2012-11-24 22:43:00 [FINER] [ForgeModLoader] Sending event FMLInitializationEvent to mod PowerCraft-Transport
+2012-11-24 22:43:00 [FINER] [ForgeModLoader] Sent event FMLInitializationEvent to mod PowerCraft-Transport
+2012-11-24 22:43:00 [FINER] [ForgeModLoader] Sending event IMCEvent to mod mcp
+2012-11-24 22:43:00 [FINER] [ForgeModLoader] Sent event IMCEvent to mod mcp
+2012-11-24 22:43:00 [FINER] [ForgeModLoader] Sending event IMCEvent to mod FML
+2012-11-24 22:43:00 [FINER] [ForgeModLoader] Sent event IMCEvent to mod FML
+2012-11-24 22:43:00 [FINER] [ForgeModLoader] Sending event IMCEvent to mod Forge
+2012-11-24 22:43:00 [FINER] [ForgeModLoader] Sent event IMCEvent to mod Forge
+2012-11-24 22:43:00 [FINER] [ForgeModLoader] Sending event IMCEvent to mod PowerCraft-Core
+2012-11-24 22:43:00 [FINER] [ForgeModLoader] Sent event IMCEvent to mod PowerCraft-Core
+2012-11-24 22:43:00 [FINER] [ForgeModLoader] Sending event IMCEvent to mod PowerCraft-Light
+2012-11-24 22:43:00 [FINER] [ForgeModLoader] Sent event IMCEvent to mod PowerCraft-Light
+2012-11-24 22:43:00 [FINER] [ForgeModLoader] Sending event IMCEvent to mod PowerCraft-Logic
+2012-11-24 22:43:00 [FINER] [ForgeModLoader] Sent event IMCEvent to mod PowerCraft-Logic
+2012-11-24 22:43:00 [FINER] [ForgeModLoader] Sending event IMCEvent to mod PowerCraft-Machines
+2012-11-24 22:43:00 [FINER] [ForgeModLoader] Sent event IMCEvent to mod PowerCraft-Machines
+2012-11-24 22:43:00 [FINER] [ForgeModLoader] Sending event IMCEvent to mod PowerCraft-Transport
+2012-11-24 22:43:00 [FINER] [ForgeModLoader] Sent event IMCEvent to mod PowerCraft-Transport
+2012-11-24 22:43:00 [FINER] [ForgeModLoader] Sending event FMLPostInitializationEvent to mod mcp
+2012-11-24 22:43:00 [FINER] [ForgeModLoader] Sent event FMLPostInitializationEvent to mod mcp
+2012-11-24 22:43:00 [FINER] [ForgeModLoader] Sending event FMLPostInitializationEvent to mod FML
+2012-11-24 22:43:00 [FINER] [ForgeModLoader] Sent event FMLPostInitializationEvent to mod FML
+2012-11-24 22:43:00 [FINER] [ForgeModLoader] Sending event FMLPostInitializationEvent to mod Forge
+2012-11-24 22:43:00 [FINER] [ForgeModLoader] Sent event FMLPostInitializationEvent to mod Forge
+2012-11-24 22:43:00 [FINER] [ForgeModLoader] Sending event FMLPostInitializationEvent to mod PowerCraft-Core
+2012-11-24 22:43:00 [FINER] [ForgeModLoader] Sent event FMLPostInitializationEvent to mod PowerCraft-Core
+2012-11-24 22:43:00 [FINER] [ForgeModLoader] Sending event FMLPostInitializationEvent to mod PowerCraft-Light
+2012-11-24 22:43:00 [FINER] [ForgeModLoader] Sent event FMLPostInitializationEvent to mod PowerCraft-Light
+2012-11-24 22:43:00 [FINER] [ForgeModLoader] Sending event FMLPostInitializationEvent to mod PowerCraft-Logic
+2012-11-24 22:43:00 [FINER] [ForgeModLoader] Sent event FMLPostInitializationEvent to mod PowerCraft-Logic
+2012-11-24 22:43:00 [FINER] [ForgeModLoader] Sending event FMLPostInitializationEvent to mod PowerCraft-Machines
+2012-11-24 22:43:00 [FINER] [ForgeModLoader] Sent event FMLPostInitializationEvent to mod PowerCraft-Machines
+2012-11-24 22:43:00 [FINER] [ForgeModLoader] Sending event FMLPostInitializationEvent to mod PowerCraft-Transport
+2012-11-24 22:43:00 [FINER] [ForgeModLoader] Sent event FMLPostInitializationEvent to mod PowerCraft-Transport
+2012-11-24 22:43:00 [FINER] [ForgeModLoader] Sending event FMLLoadCompleteEvent to mod mcp
+2012-11-24 22:43:00 [FINER] [ForgeModLoader] Sent event FMLLoadCompleteEvent to mod mcp
+2012-11-24 22:43:00 [FINER] [ForgeModLoader] Sending event FMLLoadCompleteEvent to mod FML
+2012-11-24 22:43:00 [FINER] [ForgeModLoader] Sent event FMLLoadCompleteEvent to mod FML
+2012-11-24 22:43:00 [FINER] [ForgeModLoader] Sending event FMLLoadCompleteEvent to mod Forge
+2012-11-24 22:43:00 [FINER] [ForgeModLoader] Sent event FMLLoadCompleteEvent to mod Forge
+2012-11-24 22:43:00 [FINER] [ForgeModLoader] Sending event FMLLoadCompleteEvent to mod PowerCraft-Core
+2012-11-24 22:43:00 [FINER] [ForgeModLoader] Sent event FMLLoadCompleteEvent to mod PowerCraft-Core
+2012-11-24 22:43:00 [FINER] [ForgeModLoader] Sending event FMLLoadCompleteEvent to mod PowerCraft-Light
+2012-11-24 22:43:00 [FINER] [ForgeModLoader] Sent event FMLLoadCompleteEvent to mod PowerCraft-Light
+2012-11-24 22:43:00 [FINER] [ForgeModLoader] Sending event FMLLoadCompleteEvent to mod PowerCraft-Logic
+2012-11-24 22:43:00 [FINER] [ForgeModLoader] Sent event FMLLoadCompleteEvent to mod PowerCraft-Logic
+2012-11-24 22:43:00 [FINER] [ForgeModLoader] Sending event FMLLoadCompleteEvent to mod PowerCraft-Machines
+2012-11-24 22:43:00 [FINER] [ForgeModLoader] Sent event FMLLoadCompleteEvent to mod PowerCraft-Machines
+2012-11-24 22:43:00 [FINER] [ForgeModLoader] Sending event FMLLoadCompleteEvent to mod PowerCraft-Transport
+2012-11-24 22:43:00 [FINER] [ForgeModLoader] Sent event FMLLoadCompleteEvent to mod PowerCraft-Transport
+2012-11-24 22:43:00 [INFO] [ForgeModLoader] Forge Mod Loader has successfully loaded 8 mods
+2012-11-24 22:43:00 [INFO] [Minecraft] Preparing level "mcpworld"
+2012-11-24 22:43:00 [INFO] [ForgeModLoader] Loading dimension 0 (mcpworld) (net.minecraft.src.DedicatedServer@665db0a0)
+2012-11-24 22:43:00 [INFO] [ForgeModLoader] Loading dimension 1 (mcpworld) (net.minecraft.src.DedicatedServer@665db0a0)
+2012-11-24 22:43:01 [INFO] [ForgeModLoader] Loading dimension -1 (mcpworld) (net.minecraft.src.DedicatedServer@665db0a0)
+2012-11-24 22:43:01 [INFO] [Minecraft] Preparing start region for level 0
+2012-11-24 22:43:02 [INFO] [Minecraft] Preparing spawn area: 51%
+2012-11-24 22:43:03 [INFO] [Minecraft] Preparing spawn area: 96%
+2012-11-24 22:43:03 [INFO] [Minecraft] Done (2,303s)! For help, type "help" or "?"
+2012-11-24 22:43:03 [FINER] [ForgeModLoader] Sending event FMLServerStartingEvent to mod mcp
+2012-11-24 22:43:03 [FINER] [ForgeModLoader] Sent event FMLServerStartingEvent to mod mcp
+2012-11-24 22:43:03 [FINER] [ForgeModLoader] Sending event FMLServerStartingEvent to mod FML
+2012-11-24 22:43:03 [FINER] [ForgeModLoader] Sent event FMLServerStartingEvent to mod FML
+2012-11-24 22:43:03 [FINER] [ForgeModLoader] Sending event FMLServerStartingEvent to mod Forge
+2012-11-24 22:43:03 [FINER] [ForgeModLoader] Sent event FMLServerStartingEvent to mod Forge
+2012-11-24 22:43:03 [FINER] [ForgeModLoader] Sending event FMLServerStartingEvent to mod PowerCraft-Core
+2012-11-24 22:43:03 [FINER] [ForgeModLoader] Sent event FMLServerStartingEvent to mod PowerCraft-Core
+2012-11-24 22:43:03 [FINER] [ForgeModLoader] Sending event FMLServerStartingEvent to mod PowerCraft-Light
+2012-11-24 22:43:03 [FINER] [ForgeModLoader] Sent event FMLServerStartingEvent to mod PowerCraft-Light
+2012-11-24 22:43:03 [FINER] [ForgeModLoader] Sending event FMLServerStartingEvent to mod PowerCraft-Logic
+2012-11-24 22:43:03 [FINER] [ForgeModLoader] Sent event FMLServerStartingEvent to mod PowerCraft-Logic
+2012-11-24 22:43:03 [FINER] [ForgeModLoader] Sending event FMLServerStartingEvent to mod PowerCraft-Machines
+2012-11-24 22:43:03 [FINER] [ForgeModLoader] Sent event FMLServerStartingEvent to mod PowerCraft-Machines
+2012-11-24 22:43:03 [FINER] [ForgeModLoader] Sending event FMLServerStartingEvent to mod PowerCraft-Transport
+2012-11-24 22:43:03 [FINER] [ForgeModLoader] Sent event FMLServerStartingEvent to mod PowerCraft-Transport
+2012-11-24 22:43:03 [FINER] [ForgeModLoader] Sending event FMLServerStartedEvent to mod mcp
+2012-11-24 22:43:03 [FINER] [ForgeModLoader] Sent event FMLServerStartedEvent to mod mcp
+2012-11-24 22:43:03 [FINER] [ForgeModLoader] Sending event FMLServerStartedEvent to mod FML
+2012-11-24 22:43:03 [FINER] [ForgeModLoader] Sent event FMLServerStartedEvent to mod FML
+2012-11-24 22:43:03 [FINER] [ForgeModLoader] Sending event FMLServerStartedEvent to mod Forge
+2012-11-24 22:43:03 [FINER] [ForgeModLoader] Sent event FMLServerStartedEvent to mod Forge
+2012-11-24 22:43:03 [FINER] [ForgeModLoader] Sending event FMLServerStartedEvent to mod PowerCraft-Core
+2012-11-24 22:43:03 [FINER] [ForgeModLoader] Sent event FMLServerStartedEvent to mod PowerCraft-Core
+2012-11-24 22:43:03 [FINER] [ForgeModLoader] Sending event FMLServerStartedEvent to mod PowerCraft-Light
+2012-11-24 22:43:03 [FINER] [ForgeModLoader] Sent event FMLServerStartedEvent to mod PowerCraft-Light
+2012-11-24 22:43:03 [FINER] [ForgeModLoader] Sending event FMLServerStartedEvent to mod PowerCraft-Logic
+2012-11-24 22:43:03 [FINER] [ForgeModLoader] Sent event FMLServerStartedEvent to mod PowerCraft-Logic
+2012-11-24 22:43:03 [FINER] [ForgeModLoader] Sending event FMLServerStartedEvent to mod PowerCraft-Machines
+2012-11-24 22:43:03 [FINER] [ForgeModLoader] Sent event FMLServerStartedEvent to mod PowerCraft-Machines
+2012-11-24 22:43:03 [FINER] [ForgeModLoader] Sending event FMLServerStartedEvent to mod PowerCraft-Transport
+2012-11-24 22:43:03 [FINER] [ForgeModLoader] Sent event FMLServerStartedEvent to mod PowerCraft-Transport
+2012-11-24 22:43:15 [FINEST] [ForgeModLoader] Received valid FML login packet from /127.0.0.1:49767
+2012-11-24 22:43:15 [INFO] [Minecraft] User XOR connecting with mods [PowerCraft-Light, PowerCraft-Machines, PowerCraft-Core, PowerCraft-Transport, PowerCraft-Logic]
+2012-11-24 22:43:15 [INFO] [ForgeModLoader] User XOR connecting with mods [PowerCraft-Light, PowerCraft-Machines, PowerCraft-Core, PowerCraft-Transport, PowerCraft-Logic]
+2012-11-24 22:43:15 [INFO] [Minecraft] XOR[/127.0.0.1:49767] logged in with entity id 360 at (6.274307281093797, 64.0, 186.09778135867856)
+2012-11-24 22:54:40 [INFO] [STDERR] java.net.SocketException: Connection reset
+2012-11-24 22:54:40 [INFO] [STDERR] 	at java.net.SocketInputStream.read(Unknown Source)
+2012-11-24 22:54:40 [INFO] [STDERR] 	at java.net.SocketInputStream.read(Unknown Source)
+2012-11-24 22:54:40 [INFO] [STDERR] 	at java.io.FilterInputStream.read(Unknown Source)
+2012-11-24 22:54:40 [INFO] [STDERR] 	at org.bouncycastle.crypto.io.CipherInputStream.func_74852_a(CipherInputStream.java:42)
+2012-11-24 22:54:40 [INFO] [STDERR] 	at org.bouncycastle.crypto.io.CipherInputStream.read(CipherInputStream.java:108)
+2012-11-24 22:54:40 [INFO] [STDERR] 	at java.io.FilterInputStream.read(Unknown Source)
+2012-11-24 22:54:40 [INFO] [STDERR] 	at net.minecraft.src.Packet.readPacket(Packet.java:110)
+2012-11-24 22:54:40 [INFO] [STDERR] 	at net.minecraft.src.TcpConnection.readPacket(TcpConnection.java:276)
+2012-11-24 22:54:40 [INFO] [STDERR] 	at net.minecraft.src.TcpConnection.readNetworkPacket(TcpConnection.java:465)
+2012-11-24 22:54:40 [INFO] [STDERR] 	at net.minecraft.src.TcpReaderThread.run(TcpReaderThread.java:23)
+2012-11-24 22:54:40 [INFO] [Minecraft] XOR lost connection: disconnect.genericReason
+2012-11-24 22:54:43 [FINER] [ForgeModLoader] Sending event FMLServerStoppingEvent to mod mcp
+2012-11-24 22:54:43 [FINER] [ForgeModLoader] Sent event FMLServerStoppingEvent to mod mcp
+2012-11-24 22:54:43 [FINER] [ForgeModLoader] Sending event FMLServerStoppingEvent to mod FML
+2012-11-24 22:54:43 [FINER] [ForgeModLoader] Sent event FMLServerStoppingEvent to mod FML
+2012-11-24 22:54:43 [FINER] [ForgeModLoader] Sending event FMLServerStoppingEvent to mod Forge
+2012-11-24 22:54:43 [FINER] [ForgeModLoader] Sent event FMLServerStoppingEvent to mod Forge
+2012-11-24 22:54:43 [FINER] [ForgeModLoader] Sending event FMLServerStoppingEvent to mod PowerCraft-Core
+2012-11-24 22:54:43 [FINER] [ForgeModLoader] Sent event FMLServerStoppingEvent to mod PowerCraft-Core
+2012-11-24 22:54:43 [FINER] [ForgeModLoader] Sending event FMLServerStoppingEvent to mod PowerCraft-Light
+2012-11-24 22:54:43 [FINER] [ForgeModLoader] Sent event FMLServerStoppingEvent to mod PowerCraft-Light
+2012-11-24 22:54:43 [FINER] [ForgeModLoader] Sending event FMLServerStoppingEvent to mod PowerCraft-Logic
+2012-11-24 22:54:43 [FINER] [ForgeModLoader] Sent event FMLServerStoppingEvent to mod PowerCraft-Logic
+2012-11-24 22:54:43 [FINER] [ForgeModLoader] Sending event FMLServerStoppingEvent to mod PowerCraft-Machines
+2012-11-24 22:54:43 [FINER] [ForgeModLoader] Sent event FMLServerStoppingEvent to mod PowerCraft-Machines
+2012-11-24 22:54:43 [FINER] [ForgeModLoader] Sending event FMLServerStoppingEvent to mod PowerCraft-Transport
+2012-11-24 22:54:43 [FINER] [ForgeModLoader] Sent event FMLServerStoppingEvent to mod PowerCraft-Transport
+2012-11-24 22:54:43 [INFO] [Minecraft] Stopping server
+2012-11-24 22:54:43 [INFO] [Minecraft] Saving players
+2012-11-24 22:54:43 [INFO] [STDERR] java.net.SocketException: socket closed
+2012-11-24 22:54:43 [INFO] [Minecraft] Saving worlds
+2012-11-24 22:54:43 [INFO] [STDERR] 	at java.net.DualStackPlainSocketImpl.accept0(Native Method)
+2012-11-24 22:54:43 [INFO] [STDERR] 	at java.net.DualStackPlainSocketImpl.socketAccept(Unknown Source)
+2012-11-24 22:54:43 [INFO] [STDERR] 	at java.net.AbstractPlainSocketImpl.accept(Unknown Source)
+2012-11-24 22:54:43 [INFO] [STDERR] 	at java.net.PlainSocketImpl.accept(Unknown Source)
+2012-11-24 22:54:43 [INFO] [STDERR] 	at java.net.ServerSocket.implAccept(Unknown Source)
+2012-11-24 22:54:43 [INFO] [STDERR] 	at java.net.ServerSocket.accept(Unknown Source)
+2012-11-24 22:54:43 [INFO] [Minecraft] Saving chunks for level 'mcpworld'/Overworld
+2012-11-24 22:54:43 [INFO] [STDERR] 	at net.minecraft.src.ServerListenThread.run(ServerListenThread.java:75)
+2012-11-24 22:54:43 [INFO] [STDOUT] Closing listening thread
+2012-11-24 22:54:43 [INFO] [Minecraft] Saving chunks for level 'mcpworld'/Nether
+2012-11-24 22:54:43 [INFO] [Minecraft] Saving chunks for level 'mcpworld'/The End
+2012-11-24 22:54:43 [INFO] [ForgeModLoader] Unloading dimension 0
+2012-11-24 22:54:43 [INFO] [ForgeModLoader] Unloading dimension 1
+2012-11-24 22:54:43 [INFO] [Minecraft] Stopping server
+2012-11-24 22:54:43 [INFO] [Minecraft] Saving players
+2012-11-24 22:54:43 [INFO] [Minecraft] Saving worlds
+2012-11-24 22:54:43 [INFO] [Minecraft] Saving chunks for level 'mcpworld'/Nether
+2012-11-24 22:54:43 [INFO] [ForgeModLoader] Unloading dimension -1

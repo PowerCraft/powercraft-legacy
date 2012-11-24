@@ -8,33 +8,35 @@ import java.util.Random;
 
 public abstract class MapGenStructure extends MapGenBase
 {
-    /**
-     * Used to store a list of all structures that have been recursively generated. Used so that during recursive
-     * generation, the structure generator can avoid generating structures that intersect ones that have already been
-     * placed.
-     */
     protected Map structureMap = new HashMap();
 
-    /**
-     * Recursively called by generate() (generate) and optionally by itself.
-     */
     protected void recursiveGenerate(World par1World, int par2, int par3, int par4, int par5, byte[] par6ArrayOfByte)
     {
         if (!this.structureMap.containsKey(Long.valueOf(ChunkCoordIntPair.chunkXZ2Int(par2, par3))))
         {
             this.rand.nextInt();
 
-            if (this.canSpawnStructureAtCoords(par2, par3))
+            try
             {
-                StructureStart var7 = this.getStructureStart(par2, par3);
-                this.structureMap.put(Long.valueOf(ChunkCoordIntPair.chunkXZ2Int(par2, par3)), var7);
+                if (this.canSpawnStructureAtCoords(par2, par3))
+                {
+                    StructureStart var7 = this.getStructureStart(par2, par3);
+                    this.structureMap.put(Long.valueOf(ChunkCoordIntPair.chunkXZ2Int(par2, par3)), var7);
+                }
+            }
+            catch (Throwable var10)
+            {
+                CrashReport var8 = CrashReport.func_85055_a(var10, "Exception preparing structure feature");
+                CrashReportCategory var9 = var8.func_85058_a("Feature being prepared");
+                var9.addCrashSectionCallable("Is feature chunk", new CallableIsFeatureChunk(this, par2, par3));
+                var9.addCrashSection("Chunk location", String.format("%d,%d", new Object[] {Integer.valueOf(par2), Integer.valueOf(par3)}));
+                var9.addCrashSectionCallable("Chunk pos hash", new CallableChunkPosHash(this, par2, par3));
+                var9.addCrashSectionCallable("Structure type", new CallableStructureType(this));
+                throw new ReportedException(var8);
             }
         }
     }
 
-    /**
-     * Generates structures in specified chunk next to existing structures. Does *not* generate StructureStarts.
-     */
     public boolean generateStructuresInChunk(World par1World, Random par2Random, int par3, int par4)
     {
         int var5 = (par3 << 4) + 8;
@@ -56,9 +58,6 @@ public abstract class MapGenStructure extends MapGenBase
         return var7;
     }
 
-    /**
-     * Returns true if the structure generator has generated a structure located at the given position tuple.
-     */
     public boolean hasStructureAt(int par1, int par2, int par3)
     {
         Iterator var4 = this.structureMap.values().iterator();
@@ -163,10 +162,6 @@ public abstract class MapGenStructure extends MapGenBase
         }
     }
 
-    /**
-     * Returns a list of other locations at which the structure generation has been run, or null if not relevant to this
-     * structure generator.
-     */
     protected List getCoordList()
     {
         return null;

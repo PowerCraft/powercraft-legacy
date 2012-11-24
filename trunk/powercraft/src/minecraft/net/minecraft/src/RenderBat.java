@@ -7,21 +7,25 @@ import org.lwjgl.opengl.GL11;
 @SideOnly(Side.CLIENT)
 public class RenderBat extends RenderLiving
 {
-    private int field_82446_a;
+    /**
+     * not actually sure this is size, is not used as of now, but the model would be recreated if the value changed and
+     * it seems a good match for a bats size
+     */
+    private int renderedBatSize;
 
     public RenderBat()
     {
         super(new ModelBat(), 0.25F);
-        this.field_82446_a = ((ModelBat)this.mainModel).func_82889_a();
+        this.renderedBatSize = ((ModelBat)this.mainModel).getBatSize();
     }
 
     public void func_82443_a(EntityBat par1EntityBat, double par2, double par4, double par6, float par8, float par9)
     {
-        int var10 = ((ModelBat)this.mainModel).func_82889_a();
+        int var10 = ((ModelBat)this.mainModel).getBatSize();
 
-        if (var10 != this.field_82446_a)
+        if (var10 != this.renderedBatSize)
         {
-            this.field_82446_a = var10;
+            this.renderedBatSize = var10;
             this.mainModel = new ModelBat();
         }
 
@@ -40,7 +44,7 @@ public class RenderBat extends RenderLiving
 
     protected void func_82444_a(EntityBat par1EntityBat, float par2, float par3, float par4)
     {
-        if (!par1EntityBat.func_82235_h())
+        if (!par1EntityBat.getIsBatHanging())
         {
             GL11.glTranslatef(0.0F, MathHelper.cos(par2 * 0.3F) * 0.1F, 0.0F);
         }

@@ -13,7 +13,8 @@ public class EntityWither extends EntityMob implements IBossDisplayData, IRanged
     private int[] field_82223_h = new int[2];
     private int[] field_82224_i = new int[2];
     private int field_82222_j;
-    private static final IEntitySelector field_82219_bJ = new EntityWitherAttackFilter();
+
+    private static final IEntitySelector attackEntitySelector = new EntityWitherAttackFilter();
 
     public EntityWither(World par1World)
     {
@@ -30,7 +31,7 @@ public class EntityWither extends EntityMob implements IBossDisplayData, IRanged
         this.tasks.addTask(6, new EntityAIWatchClosest(this, EntityPlayer.class, 8.0F));
         this.tasks.addTask(7, new EntityAILookIdle(this));
         this.targetTasks.addTask(1, new EntityAIHurtByTarget(this, false));
-        this.targetTasks.addTask(2, new EntityAINearestAttackableTarget(this, EntityLiving.class, 30.0F, 0, false, false, field_82219_bJ));
+        this.targetTasks.addTask(2, new EntityAINearestAttackableTarget(this, EntityLiving.class, 30.0F, 0, false, false, attackEntitySelector));
         this.experienceValue = 50;
     }
 
@@ -44,18 +45,12 @@ public class EntityWither extends EntityMob implements IBossDisplayData, IRanged
         this.dataWatcher.addObject(20, new Integer(0));
     }
 
-    /**
-     * (abstract) Protected helper method to write subclass entity data to NBT.
-     */
     public void writeEntityToNBT(NBTTagCompound par1NBTTagCompound)
     {
         super.writeEntityToNBT(par1NBTTagCompound);
         par1NBTTagCompound.setInteger("Invul", this.func_82212_n());
     }
 
-    /**
-     * (abstract) Protected helper method to read subclass entity data from NBT.
-     */
     public void readEntityFromNBT(NBTTagCompound par1NBTTagCompound)
     {
         super.readEntityFromNBT(par1NBTTagCompound);
@@ -69,25 +64,16 @@ public class EntityWither extends EntityMob implements IBossDisplayData, IRanged
         return this.height / 8.0F;
     }
 
-    /**
-     * Returns the sound this mob makes while it's alive.
-     */
     protected String getLivingSound()
     {
         return "mob.wither.idle";
     }
 
-    /**
-     * Returns the sound this mob makes when it is hurt.
-     */
     protected String getHurtSound()
     {
         return "mob.wither.hurt";
     }
 
-    /**
-     * Returns the sound this mob makes on death.
-     */
     protected String getDeathSound()
     {
         return "mob.wither.death";
@@ -95,19 +81,12 @@ public class EntityWither extends EntityMob implements IBossDisplayData, IRanged
 
     @SideOnly(Side.CLIENT)
 
-    /**
-     * Returns the texture's file path as a String.
-     */
     public String getTexture()
     {
         int var1 = this.func_82212_n();
         return var1 > 0 && (var1 > 80 || var1 / 5 % 2 != 1) ? "/mob/wither_invul.png" : "/mob/wither.png";
     }
 
-    /**
-     * Called frequently so the entity can update its state every tick as required. For example, zombies and skeletons
-     * use this to react to sunlight and start to burn.
-     */
     public void onLivingUpdate()
     {
         if (!this.worldObj.isRemote)
@@ -120,13 +99,13 @@ public class EntityWither extends EntityMob implements IBossDisplayData, IRanged
         double var6;
         double var8;
 
-        if (!this.worldObj.isRemote && this.func_82203_t(0) > 0)
+        if (!this.worldObj.isRemote && this.getWatchedTargetId(0) > 0)
         {
-            Entity var1 = this.worldObj.getEntityByID(this.func_82203_t(0));
+            Entity var1 = this.worldObj.getEntityByID(this.getWatchedTargetId(0));
 
             if (var1 != null)
             {
-                if (this.posY < var1.posY || !this.func_82205_o() && this.posY < var1.posY + 5.0D)
+                if (this.posY < var1.posY || !this.isArmored() && this.posY < var1.posY + 5.0D)
                 {
                     if (this.motionY < 0.0D)
                     {
@@ -167,7 +146,7 @@ public class EntityWither extends EntityMob implements IBossDisplayData, IRanged
 
         for (var20 = 0; var20 < 2; ++var20)
         {
-            var21 = this.func_82203_t(var20 + 1);
+            var21 = this.getWatchedTargetId(var20 + 1);
             Entity var3 = null;
 
             if (var21 > 0)
@@ -195,7 +174,7 @@ public class EntityWither extends EntityMob implements IBossDisplayData, IRanged
             }
         }
 
-        boolean var22 = this.func_82205_o();
+        boolean var22 = this.isArmored();
 
         for (var21 = 0; var21 < 3; ++var21)
         {
@@ -229,7 +208,7 @@ public class EntityWither extends EntityMob implements IBossDisplayData, IRanged
 
             if (var1 <= 0)
             {
-                this.worldObj.newExplosion(this, this.posX, this.posY + (double)this.getEyeHeight(), this.posZ, 7.0F, false, this.worldObj.func_82736_K().func_82766_b("mobGriefing"));
+                this.worldObj.newExplosion(this, this.posX, this.posY + (double)this.getEyeHeight(), this.posZ, 7.0F, false, this.worldObj.getGameRules().getGameRuleBooleanValue("mobGriefing"));
                 this.worldObj.func_82739_e(1013, (int)this.posX, (int)this.posY, (int)this.posZ, 0);
             }
 
@@ -269,7 +248,7 @@ public class EntityWither extends EntityMob implements IBossDisplayData, IRanged
                         }
                     }
 
-                    var13 = this.func_82203_t(var1);
+                    var13 = this.getWatchedTargetId(var1);
 
                     if (var13 > 0)
                     {
@@ -288,7 +267,7 @@ public class EntityWither extends EntityMob implements IBossDisplayData, IRanged
                     }
                     else
                     {
-                        List var14 = this.worldObj.func_82733_a(EntityLiving.class, this.boundingBox.expand(20.0D, 8.0D, 20.0D), field_82219_bJ);
+                        List var14 = this.worldObj.func_82733_a(EntityLiving.class, this.boundingBox.expand(20.0D, 8.0D, 20.0D), attackEntitySelector);
 
                         for (int var17 = 0; var17 < 10 && !var14.isEmpty(); ++var17)
                         {
@@ -330,7 +309,7 @@ public class EntityWither extends EntityMob implements IBossDisplayData, IRanged
             {
                 --this.field_82222_j;
 
-                if (this.field_82222_j == 0 && this.worldObj.func_82736_K().func_82766_b("mobGriefing"))
+                if (this.field_82222_j == 0 && this.worldObj.getGameRules().getGameRuleBooleanValue("mobGriefing"))
                 {
                     var1 = MathHelper.floor_double(this.posY);
                     var13 = MathHelper.floor_double(this.posX);
@@ -348,7 +327,7 @@ public class EntityWither extends EntityMob implements IBossDisplayData, IRanged
                                 int var10 = var16 + var20;
                                 int var11 = this.worldObj.getBlockId(var21, var9, var10);
 
-                                if (var11 > 0 && var11 != Block.bedrock.blockID)
+                                if (var11 > 0 && var11 != Block.bedrock.blockID && var11 != Block.endPortal.blockID && var11 != Block.endPortalFrame.blockID)
                                 {
                                     int var12 = this.worldObj.getBlockMetadata(var21, var9, var10);
                                     this.worldObj.playAuxSFX(2001, var21, var9, var10, var11 + (var12 << 12));
@@ -380,14 +359,8 @@ public class EntityWither extends EntityMob implements IBossDisplayData, IRanged
         this.setEntityHealth(this.getMaxHealth() / 3);
     }
 
-    /**
-     * Sets the Entity inside a web block.
-     */
     public void setInWeb() {}
 
-    /**
-     * Returns the current armor value as determined by a call to InventoryPlayer.getTotalArmorValue
-     */
     public int getTotalArmorValue()
     {
         return 4;
@@ -461,7 +434,7 @@ public class EntityWither extends EntityMob implements IBossDisplayData, IRanged
 
         if (par8)
         {
-            var21.func_82343_e(true);
+            var21.setInvulnerable(true);
         }
 
         var21.posY = var11;
@@ -470,17 +443,18 @@ public class EntityWither extends EntityMob implements IBossDisplayData, IRanged
         this.worldObj.spawnEntityInWorld(var21);
     }
 
-    public void func_82196_d(EntityLiving par1EntityLiving)
+    public void attackEntityWithRangedAttack(EntityLiving par1EntityLiving)
     {
         this.func_82216_a(0, par1EntityLiving);
     }
 
-    /**
-     * Called when the entity is attacked.
-     */
     public boolean attackEntityFrom(DamageSource par1DamageSource, int par2)
     {
-        if (par1DamageSource == DamageSource.drown)
+        if (this.func_85032_ar())
+        {
+            return false;
+        }
+        else if (par1DamageSource == DamageSource.drown)
         {
             return false;
         }
@@ -492,7 +466,7 @@ public class EntityWither extends EntityMob implements IBossDisplayData, IRanged
         {
             Entity var3;
 
-            if (this.func_82205_o())
+            if (this.isArmored())
             {
                 var3 = par1DamageSource.getSourceOfDamage();
 
@@ -525,17 +499,11 @@ public class EntityWither extends EntityMob implements IBossDisplayData, IRanged
         }
     }
 
-    /**
-     * Drop 0-2 items of this living's type
-     */
     protected void dropFewItems(boolean par1, int par2)
     {
-        this.dropItem(Item.field_82792_bS.shiftedIndex, 1);
+        this.dropItem(Item.netherStar.shiftedIndex, 1);
     }
 
-    /**
-     * Makes the entity despawn if requirements are reached
-     */
     protected void despawnEntity()
     {
         this.entityAge = 0;
@@ -547,35 +515,20 @@ public class EntityWither extends EntityMob implements IBossDisplayData, IRanged
         return 15728880;
     }
 
-    /**
-     * Returns true if other Entities should be prevented from moving through this Entity.
-     */
     public boolean canBeCollidedWith()
     {
         return !this.isDead;
     }
 
-    /**
-     * Returns the health points of the dragon.
-     */
     public int getDragonHealth()
     {
         return this.dataWatcher.getWatchableObjectInt(16);
     }
 
-    /**
-     * Called when the mob is falling. Calculates and applies fall damage.
-     */
     protected void fall(float par1) {}
 
-    /**
-     * adds a PotionEffect to the entity
-     */
     public void addPotionEffect(PotionEffect par1PotionEffect) {}
 
-    /**
-     * Returns true if the newer Entity AI code should be run
-     */
     protected boolean isAIEnabled()
     {
         return true;
@@ -608,7 +561,7 @@ public class EntityWither extends EntityMob implements IBossDisplayData, IRanged
         this.dataWatcher.updateObject(20, Integer.valueOf(par1));
     }
 
-    public int func_82203_t(int par1)
+    public int getWatchedTargetId(int par1)
     {
         return this.dataWatcher.getWatchableObjectInt(17 + par1);
     }
@@ -618,14 +571,11 @@ public class EntityWither extends EntityMob implements IBossDisplayData, IRanged
         this.dataWatcher.updateObject(17 + par1, Integer.valueOf(par2));
     }
 
-    public boolean func_82205_o()
+    public boolean isArmored()
     {
         return this.getDragonHealth() <= this.getMaxHealth() / 2;
     }
 
-    /**
-     * Get this Entity's EnumCreatureAttribute
-     */
     public EnumCreatureAttribute getCreatureAttribute()
     {
         return EnumCreatureAttribute.UNDEAD;

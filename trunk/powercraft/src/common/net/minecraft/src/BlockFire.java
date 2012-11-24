@@ -8,13 +8,8 @@ import static net.minecraftforge.common.ForgeDirection.*;
 
 public class BlockFire extends Block
 {
-    /** The chance this block will encourage nearby blocks to catch on fire */
     private int[] chanceToEncourageFire = new int[256];
 
-    /**
-     * This is an array indexed by block ID the larger the number in the array the more likely a block type will catch
-     * fires
-     */
     private int[] abilityToCatchFire = new int[256];
 
     protected BlockFire(int par1, int par2)
@@ -23,10 +18,6 @@ public class BlockFire extends Block
         this.setTickRandomly(true);
     }
 
-    /**
-     * This method is called on a block after all other blocks gets already created. You can use it to reference and
-     * configure something on the block that needs the others ones.
-     */
     public void initializeBlock()
     {
         abilityToCatchFire = Block.blockFlammability;
@@ -48,72 +39,44 @@ public class BlockFire extends Block
         this.setBurnRate(Block.vine.blockID, 15, 100);
     }
 
-    /**
-     * Sets the burn rate for a block. The larger abilityToCatchFire the more easily it will catch. The larger
-     * chanceToEncourageFire the faster it will burn and spread to other blocks. Args: blockID, chanceToEncourageFire,
-     * abilityToCatchFire
-     */
     private void setBurnRate(int par1, int par2, int par3)
     {
         Block.setBurnProperties(par1, par2, par3);
     }
 
-    /**
-     * Returns a bounding box from the pool of bounding boxes (this means this box can change after the pool has been
-     * cleared to be reused)
-     */
     public AxisAlignedBB getCollisionBoundingBoxFromPool(World par1World, int par2, int par3, int par4)
     {
         return null;
     }
 
-    /**
-     * Is this block (a) opaque and (b) a full 1m cube?  This determines whether or not to render the shared face of two
-     * adjacent blocks and also whether the player can attach torches, redstone wire, etc to this block.
-     */
     public boolean isOpaqueCube()
     {
         return false;
     }
 
-    /**
-     * If this block doesn't render as an ordinary block it will return False (examples: signs, buttons, stairs, etc)
-     */
     public boolean renderAsNormalBlock()
     {
         return false;
     }
 
-    /**
-     * The type of render function that is called for this block
-     */
     public int getRenderType()
     {
         return 3;
     }
 
-    /**
-     * Returns the quantity of items to drop on block destruction.
-     */
     public int quantityDropped(Random par1Random)
     {
         return 0;
     }
 
-    /**
-     * How many world ticks before ticking
-     */
     public int tickRate()
     {
         return 30;
     }
 
-    /**
-     * Ticks the block if it's been scheduled
-     */
     public void updateTick(World par1World, int par2, int par3, int par4, Random par5Random)
     {
-        if (par1World.func_82736_K().func_82766_b("doFireTick"))
+        if (par1World.getGameRules().getGameRuleBooleanValue("doFireTick"))
         {
             Block base = Block.blocksList[par1World.getBlockId(par2, par3 - 1, par4)];
             boolean var6 = (base != null && base.isFireSource(par1World, par2, par3 - 1, par4, par1World.getBlockMetadata(par2, par3 - 1, par4), UP));
@@ -159,10 +122,10 @@ public class BlockFire extends Block
                         var9 = -50;
                     }
 
-                    this.tryToCatchBlockOnFire(par1World, par2 + 1, par3, par4, 300 + var9, par5Random, var7, WEST );
-                    this.tryToCatchBlockOnFire(par1World, par2 - 1, par3, par4, 300 + var9, par5Random, var7, EAST );
-                    this.tryToCatchBlockOnFire(par1World, par2, par3 - 1, par4, 250 + var9, par5Random, var7, UP   );
-                    this.tryToCatchBlockOnFire(par1World, par2, par3 + 1, par4, 250 + var9, par5Random, var7, DOWN );
+                    this.tryToCatchBlockOnFire(par1World, par2 + 1, par3, par4, 300 + var9, par5Random, var7, WEST);
+                    this.tryToCatchBlockOnFire(par1World, par2 - 1, par3, par4, 300 + var9, par5Random, var7, EAST);
+                    this.tryToCatchBlockOnFire(par1World, par2, par3 - 1, par4, 250 + var9, par5Random, var7, UP);
+                    this.tryToCatchBlockOnFire(par1World, par2, par3 + 1, par4, 250 + var9, par5Random, var7, DOWN);
                     this.tryToCatchBlockOnFire(par1World, par2, par3, par4 - 1, 300 + var9, par5Random, var7, SOUTH);
                     this.tryToCatchBlockOnFire(par1World, par2, par3, par4 + 1, 300 + var9, par5Random, var7, NORTH);
 
@@ -228,6 +191,7 @@ public class BlockFire extends Block
     {
         int var8 = 0;
         Block block = Block.blocksList[par1World.getBlockId(par2, par3, par4)];
+
         if (block != null)
         {
             var8 = block.getFlammability(par1World, par2, par3, par4, par1World.getBlockMetadata(par2, par3, par4), face);
@@ -260,22 +224,16 @@ public class BlockFire extends Block
         }
     }
 
-    /**
-     * Returns true if at least one block next to this one can burn.
-     */
     private boolean canNeighborBurn(World par1World, int par2, int par3, int par4)
     {
-        return canBlockCatchFire(par1World, par2 + 1, par3, par4, WEST ) ||
-               canBlockCatchFire(par1World, par2 - 1, par3, par4, EAST ) ||
-               canBlockCatchFire(par1World, par2, par3 - 1, par4, UP   ) ||
-               canBlockCatchFire(par1World, par2, par3 + 1, par4, DOWN ) ||
-               canBlockCatchFire(par1World, par2, par3, par4 - 1, SOUTH) ||
-               canBlockCatchFire(par1World, par2, par3, par4 + 1, NORTH);
+        return canBlockCatchFire(par1World, par2 + 1, par3, par4, WEST) ||
+                canBlockCatchFire(par1World, par2 - 1, par3, par4, EAST) ||
+                canBlockCatchFire(par1World, par2, par3 - 1, par4, UP) ||
+                canBlockCatchFire(par1World, par2, par3 + 1, par4, DOWN) ||
+                canBlockCatchFire(par1World, par2, par3, par4 - 1, SOUTH) ||
+                canBlockCatchFire(par1World, par2, par3, par4 + 1, NORTH);
     }
 
-    /**
-     * Gets the highest chance of a neighbor block encouraging this block to catch fire
-     */
     private int getChanceOfNeighborsEncouragingFire(World par1World, int par2, int par3, int par4)
     {
         byte var5 = 0;
@@ -296,48 +254,28 @@ public class BlockFire extends Block
         }
     }
 
-    /**
-     * Returns if this block is collidable (only used by Fire). Args: x, y, z
-     */
     public boolean isCollidable()
     {
         return false;
     }
 
-    /**
-     * Checks the specified block coordinate to see if it can catch fire.  Args: blockAccess, x, y, z
-     * Deprecated for a side-sensitive version
-     */
     @Deprecated
     public boolean canBlockCatchFire(IBlockAccess par1IBlockAccess, int par2, int par3, int par4)
     {
         return canBlockCatchFire(par1IBlockAccess, par2, par3, par4, UP);
     }
 
-    /**
-     * Retrieves a specified block's chance to encourage their neighbors to burn and if the number is greater than the
-     * current number passed in it will return its number instead of the passed in one.  Args: world, x, y, z,
-     * curChanceToEncourageFire
-     * Deprecated for a side-sensitive version
-     */
     @Deprecated
     public int getChanceToEncourageFire(World par1World, int par2, int par3, int par4, int par5)
     {
         return getChanceToEncourageFire(par1World, par2, par3, par4, par5, UP);
     }
 
-    /**
-     * Checks to see if its valid to put this block at the specified coordinates. Args: world, x, y, z
-     */
     public boolean canPlaceBlockAt(World par1World, int par2, int par3, int par4)
     {
         return par1World.doesBlockHaveSolidTopSurface(par2, par3 - 1, par4) || this.canNeighborBurn(par1World, par2, par3, par4);
     }
 
-    /**
-     * Lets the block know when one of its neighbor changes. Doesn't know which neighbor changed (coordinates passed are
-     * their own) Args: x, y, z, neighbor blockID
-     */
     public void onNeighborBlockChange(World par1World, int par2, int par3, int par4, int par5)
     {
         if (!par1World.doesBlockHaveSolidTopSurface(par2, par3 - 1, par4) && !this.canNeighborBurn(par1World, par2, par3, par4))
@@ -346,9 +284,6 @@ public class BlockFire extends Block
         }
     }
 
-    /**
-     * Called whenever the block is added into the world. Args: world, x, y, z
-     */
     public void onBlockAdded(World par1World, int par2, int par3, int par4)
     {
         if (par1World.provider.dimensionId > 0 || par1World.getBlockId(par2, par3 - 1, par4) != Block.obsidian.blockID || !Block.portal.tryToCreatePortal(par1World, par2, par3, par4))
@@ -366,9 +301,6 @@ public class BlockFire extends Block
 
     @SideOnly(Side.CLIENT)
 
-    /**
-     * A randomly called display update to be able to add particles or other items for display
-     */
     public void randomDisplayTick(World par1World, int par2, int par3, int par4, Random par5Random)
     {
         if (par5Random.nextInt(24) == 0)
@@ -449,46 +381,29 @@ public class BlockFire extends Block
             }
         }
     }
-    
-    /**
-     * Side sensitive version that calls the block function.
-     * 
-     * @param world The current world
-     * @param x X Position
-     * @param y Y Position
-     * @param z Z Position
-     * @param face The side the fire is coming from
-     * @return True if the face can catch fire.
-     */
+
     public boolean canBlockCatchFire(IBlockAccess world, int x, int y, int z, ForgeDirection face)
     {
         Block block = Block.blocksList[world.getBlockId(x, y, z)];
+
         if (block != null)
         {
             return block.isFlammable(world, x, y, z, world.getBlockMetadata(x, y, z), face);
         }
+
         return false;
     }
 
-    /**
-     * Side sensitive version that calls the block function.
-     * 
-     * @param world The current world
-     * @param x X Position
-     * @param y Y Position
-     * @param z Z Position
-     * @param oldChance The previous maximum chance.
-     * @param face The side the fire is coming from
-     * @return The chance of the block catching fire, or oldChance if it is higher
-     */
     public int getChanceToEncourageFire(World world, int x, int y, int z, int oldChance, ForgeDirection face)
     {
         int newChance = 0;
         Block block = Block.blocksList[world.getBlockId(x, y, z)];
+
         if (block != null)
         {
             newChance = block.getFireSpreadSpeed(world, x, y, z, world.getBlockMetadata(x, y, z), face);
         }
+
         return (newChance > oldChance ? newChance : oldChance);
     }
 }

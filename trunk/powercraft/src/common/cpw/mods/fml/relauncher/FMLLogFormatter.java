@@ -1,9 +1,5 @@
 package cpw.mods.fml.relauncher;
 
-/**
- * Copied from ConsoleLogFormatter for shared use on the client
- *
- */
 import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.text.SimpleDateFormat;
@@ -53,12 +49,13 @@ final class FMLLogFormatter extends Formatter
 
         if (record.getLoggerName() != null)
         {
-            msg.append("["+record.getLoggerName()+"] ");
+            msg.append("[" + record.getLoggerName() + "] ");
         }
         else
         {
             msg.append("[] ");
         }
+
         msg.append(record.getMessage());
         msg.append(LINE_SEPARATOR);
         Throwable thr = record.getThrown();

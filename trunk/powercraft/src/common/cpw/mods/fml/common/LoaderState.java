@@ -13,16 +13,11 @@ import cpw.mods.fml.common.event.FMLServerStartingEvent;
 import cpw.mods.fml.common.event.FMLServerStoppingEvent;
 import cpw.mods.fml.common.event.FMLStateEvent;
 
-/**
- * The state enum used to help track state progression for the loader
- * @author cpw
- *
- */
 public enum LoaderState
 {
-    NOINIT("Uninitialized",null),
-    LOADING("Loading",null),
-    CONSTRUCTING("Constructing mods",FMLConstructionEvent.class),
+    NOINIT("Uninitialized", null),
+    LOADING("Loading", null),
+    CONSTRUCTING("Constructing mods", FMLConstructionEvent.class),
     PREINITIALIZATION("Pre-initializing mods", FMLPreInitializationEvent.class),
     INITIALIZATION("Initializing mods", FMLInitializationEvent.class),
     POSTINITIALIZATION("Post-initializing mods", FMLPostInitializationEvent.class),
@@ -30,13 +25,12 @@ public enum LoaderState
     SERVER_STARTING("Server starting", FMLServerStartingEvent.class),
     SERVER_STARTED("Server started", FMLServerStartedEvent.class),
     SERVER_STOPPING("Server stopping", FMLServerStoppingEvent.class),
-    ERRORED("Mod Loading errored",null);
+    ERRORED("Mod Loading errored", null);
 
-
-    private Class<? extends FMLStateEvent> eventClass;
+    private Class <? extends FMLStateEvent > eventClass;
     private String name;
 
-    private LoaderState(String name, Class<? extends FMLStateEvent> event)
+    private LoaderState(String name, Class <? extends FMLStateEvent > event)
     {
         this.name = name;
         this.eventClass = event;
@@ -48,12 +42,13 @@ public enum LoaderState
         {
             return ERRORED;
         }
-        // stopping -> available
+
         if (this == SERVER_STOPPING)
         {
             return AVAILABLE;
         }
-        return values()[ordinal() < values().length ? ordinal()+1 : ordinal()];
+
+        return values()[ordinal() < values().length ? ordinal() + 1 : ordinal()];
     }
 
     public boolean hasEvent()
@@ -74,8 +69,12 @@ public enum LoaderState
     }
     public LoaderState requiredState()
     {
-        if (this == NOINIT) return NOINIT;
-        return LoaderState.values()[this.ordinal()-1];
+        if (this == NOINIT)
+        {
+            return NOINIT;
+        }
+
+        return LoaderState.values()[this.ordinal() - 1];
     }
     public enum ModState
     {

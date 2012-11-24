@@ -8,24 +8,20 @@ import net.minecraft.client.Minecraft;
 @SideOnly(Side.CLIENT)
 public class CallableClientProfiler implements Callable
 {
-    /** Gets skin of Minecraft player. */
-    final Minecraft minecraftClientProfiler;
+    final Minecraft field_90046_a;
 
     public CallableClientProfiler(Minecraft par1Minecraft)
     {
-        this.minecraftClientProfiler = par1Minecraft;
+        this.field_90046_a = par1Minecraft;
     }
 
-    /**
-     * Gets if Client Profiler (aka Snooper) is enabled.
-     */
-    public String getClientProfilerEnabled()
+    public String func_90045_a()
     {
-        return this.minecraftClientProfiler.mcProfiler.profilingEnabled ? this.minecraftClientProfiler.mcProfiler.getNameOfLastSection() : "N/A (disabled)";
+        return this.field_90046_a.mcProfiler.profilingEnabled ? this.field_90046_a.mcProfiler.getNameOfLastSection() : "N/A (disabled)";
     }
 
     public Object call()
     {
-        return this.getClientProfilerEnabled();
+        return this.func_90045_a();
     }
 }

@@ -6,9 +6,6 @@ class StructureStrongholdStones extends StructurePieceBlockSelector
 {
     private StructureStrongholdStones() {}
 
-    /**
-     * picks Block Ids and Metadata (Silverfish)
-     */
     public void selectBlocks(Random par1Random, int par2, int par3, int par4, boolean par5)
     {
         if (par5)

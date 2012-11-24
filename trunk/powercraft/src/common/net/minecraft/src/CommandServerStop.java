@@ -9,7 +9,7 @@ public class CommandServerStop extends CommandBase
         return "stop";
     }
 
-    public int func_82362_a()
+    public int getRequiredPermissionLevel()
     {
         return 4;
     }

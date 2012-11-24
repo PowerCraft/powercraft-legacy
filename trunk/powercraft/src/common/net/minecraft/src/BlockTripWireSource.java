@@ -14,105 +14,80 @@ public class BlockTripWireSource extends Block
         this.setTickRandomly(true);
     }
 
-    /**
-     * Returns a bounding box from the pool of bounding boxes (this means this box can change after the pool has been
-     * cleared to be reused)
-     */
     public AxisAlignedBB getCollisionBoundingBoxFromPool(World par1World, int par2, int par3, int par4)
     {
         return null;
     }
 
-    /**
-     * Is this block (a) opaque and (b) a full 1m cube?  This determines whether or not to render the shared face of two
-     * adjacent blocks and also whether the player can attach torches, redstone wire, etc to this block.
-     */
     public boolean isOpaqueCube()
     {
         return false;
     }
 
-    /**
-     * If this block doesn't render as an ordinary block it will return False (examples: signs, buttons, stairs, etc)
-     */
     public boolean renderAsNormalBlock()
     {
         return false;
     }
 
-    /**
-     * The type of render function that is called for this block
-     */
     public int getRenderType()
     {
         return 29;
     }
 
-    /**
-     * How many world ticks before ticking
-     */
     public int tickRate()
     {
         return 10;
     }
 
-    /**
-     * checks to see if you can place this block can be placed on that side of a block: BlockLever overrides
-     */
     public boolean canPlaceBlockOnSide(World par1World, int par2, int par3, int par4, int par5)
     {
         ForgeDirection dir = ForgeDirection.getOrientation(par5);
         return (dir == NORTH && par1World.isBlockSolidOnSide(par2, par3, par4 + 1, NORTH)) ||
-               (dir == SOUTH && par1World.isBlockSolidOnSide(par2, par3, par4 - 1, SOUTH)) ||
-               (dir == WEST  && par1World.isBlockSolidOnSide(par2 + 1, par3, par4, WEST )) ||
-               (dir == EAST  && par1World.isBlockSolidOnSide(par2 - 1, par3, par4, EAST ));
+                (dir == SOUTH && par1World.isBlockSolidOnSide(par2, par3, par4 - 1, SOUTH)) ||
+                (dir == WEST  && par1World.isBlockSolidOnSide(par2 + 1, par3, par4, WEST)) ||
+                (dir == EAST  && par1World.isBlockSolidOnSide(par2 - 1, par3, par4, EAST));
     }
 
-    /**
-     * Checks to see if its valid to put this block at the specified coordinates. Args: world, x, y, z
-     */
     public boolean canPlaceBlockAt(World par1World, int par2, int par3, int par4)
     {
         return par1World.isBlockSolidOnSide(par2 - 1, par3, par4, SOUTH) ||
-               par1World.isBlockSolidOnSide(par2 + 1, par3, par4, NORTH) ||
-               par1World.isBlockSolidOnSide(par2, par3, par4 - 1, EAST ) ||
-               par1World.isBlockSolidOnSide(par2, par3, par4 + 1, WEST );
+                par1World.isBlockSolidOnSide(par2 + 1, par3, par4, NORTH) ||
+                par1World.isBlockSolidOnSide(par2, par3, par4 - 1, EAST) ||
+                par1World.isBlockSolidOnSide(par2, par3, par4 + 1, WEST);
     }
 
-    /**
-     * called before onBlockPlacedBy by ItemBlock and ItemReed
-     */
-    public void updateBlockMetadata(World par1World, int par2, int par3, int par4, int par5, float par6, float par7, float par8)
+    public int func_85104_a(World par1World, int par2, int par3, int par4, int par5, float par6, float par7, float par8, int par9)
     {
-        byte var9 = 0;
+        byte var10 = 0;
 
         if (par5 == 2 && par1World.isBlockSolidOnSide(par2, par3, par4 + 1, WEST, true))
         {
-            var9 = 2;
+            var10 = 2;
         }
 
         if (par5 == 3 && par1World.isBlockSolidOnSide(par2, par3, par4 - 1, EAST, true))
         {
-            var9 = 0;
+            var10 = 0;
         }
 
         if (par5 == 4 && par1World.isBlockSolidOnSide(par2 + 1, par3, par4, NORTH, true))
         {
-            var9 = 1;
+            var10 = 1;
         }
 
         if (par5 == 5 && par1World.isBlockSolidOnSide(par2 - 1, par3, par4, SOUTH, true))
         {
-            var9 = 3;
+            var10 = 3;
         }
 
-        this.func_72143_a(par1World, par2, par3, par4, this.blockID, var9, false, -1, 0);
+        return var10;
     }
 
-    /**
-     * Lets the block know when one of its neighbor changes. Doesn't know which neighbor changed (coordinates passed are
-     * their own) Args: x, y, z, neighbor blockID
-     */
+    public void func_85105_g(World par1World, int par2, int par3, int par4, int par5)
+    {
+        this.func_72143_a(par1World, par2, par3, par4, this.blockID, par5, false, -1, 0);
+    }
+
     public void onNeighborBlockChange(World par1World, int par2, int par3, int par4, int par5)
     {
         if (par5 != this.blockID)
@@ -263,17 +238,11 @@ public class BlockTripWireSource extends Block
         }
     }
 
-    /**
-     * Ticks the block if it's been scheduled
-     */
     public void updateTick(World par1World, int par2, int par3, int par4, Random par5Random)
     {
         this.func_72143_a(par1World, par2, par3, par4, this.blockID, par1World.getBlockMetadata(par2, par3, par4), true, -1, 0);
     }
 
-    /**
-     * only of the conditions are right
-     */
     private void playSoundEffect(World par1World, int par2, int par3, int par4, boolean par5, boolean par6, boolean par7, boolean par8)
     {
         if (par6 && !par8)
@@ -330,9 +299,6 @@ public class BlockTripWireSource extends Block
         }
     }
 
-    /**
-     * Updates the blocks bounds based on its current state. Args: world, x, y, z
-     */
     public void setBlockBoundsBasedOnState(IBlockAccess par1IBlockAccess, int par2, int par3, int par4)
     {
         int var5 = par1IBlockAccess.getBlockMetadata(par2, par3, par4) & 3;
@@ -356,9 +322,6 @@ public class BlockTripWireSource extends Block
         }
     }
 
-    /**
-     * ejects contained items into the world, and notifies neighbours of an update, as appropriate
-     */
     public void breakBlock(World par1World, int par2, int par3, int par4, int par5, int par6)
     {
         boolean var7 = (par6 & 4) == 4;
@@ -395,17 +358,11 @@ public class BlockTripWireSource extends Block
         super.breakBlock(par1World, par2, par3, par4, par5, par6);
     }
 
-    /**
-     * Is this block powering the block on the specified side
-     */
     public boolean isPoweringTo(IBlockAccess par1IBlockAccess, int par2, int par3, int par4, int par5)
     {
         return (par1IBlockAccess.getBlockMetadata(par2, par3, par4) & 8) == 8;
     }
 
-    /**
-     * Is this block indirectly powering the block on the specified side
-     */
     public boolean isIndirectlyPoweringTo(IBlockAccess par1IBlockAccess, int par2, int par3, int par4, int par5)
     {
         int var6 = par1IBlockAccess.getBlockMetadata(par2, par3, par4);
@@ -421,9 +378,6 @@ public class BlockTripWireSource extends Block
         }
     }
 
-    /**
-     * Can this block provide power. Only wire currently seems to have this change based on its state.
-     */
     public boolean canProvidePower()
     {
         return true;

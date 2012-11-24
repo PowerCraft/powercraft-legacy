@@ -12,9 +12,6 @@ public class ComponentMineshaftCorridor extends StructureComponent
     private final boolean hasSpiders;
     private boolean spawnerPlaced;
 
-    /**
-     * A count of the different sections of this mine. The space between ceiling supports.
-     */
     private int sectionCount;
 
     public ComponentMineshaftCorridor(int par1, Random par2Random, StructureBoundingBox par3StructureBoundingBox, int par4)
@@ -50,14 +47,17 @@ public class ComponentMineshaftCorridor extends StructureComponent
                     var6.maxX = par2 + 2;
                     var6.maxZ = par4 + (var8 - 1);
                     break;
+
                 case 1:
                     var6.minX = par2 - (var8 - 1);
                     var6.maxZ = par4 + 2;
                     break;
+
                 case 2:
                     var6.maxX = par2 + 2;
                     var6.minZ = par4 - (var8 - 1);
                     break;
+
                 case 3:
                     var6.maxX = par2 + (var8 - 1);
                     var6.maxZ = par4 + 2;
@@ -72,9 +72,6 @@ public class ComponentMineshaftCorridor extends StructureComponent
         return var7 > 0 ? var6 : null;
     }
 
-    /**
-     * Initiates construction of the Structure Component picked, at the current Location of StructGen
-     */
     public void buildComponent(StructureComponent par1StructureComponent, List par2List, Random par3Random)
     {
         int var4 = this.getComponentType();
@@ -97,6 +94,7 @@ public class ComponentMineshaftCorridor extends StructureComponent
                 }
 
                 break;
+
             case 1:
                 if (var5 <= 1)
                 {
@@ -112,6 +110,7 @@ public class ComponentMineshaftCorridor extends StructureComponent
                 }
 
                 break;
+
             case 2:
                 if (var5 <= 1)
                 {
@@ -127,6 +126,7 @@ public class ComponentMineshaftCorridor extends StructureComponent
                 }
 
                 break;
+
             case 3:
                 if (var5 <= 1)
                 {
@@ -182,10 +182,6 @@ public class ComponentMineshaftCorridor extends StructureComponent
         }
     }
 
-    /**
-     * second Part of Structure generating, this for example places Spiderwebs, Mob Spawners, it closes Mineshafts at
-     * the end, it adds Fences...
-     */
     public boolean addComponentParts(World par1World, Random par2Random, StructureBoundingBox par3StructureBoundingBox)
     {
         if (this.isLiquidInStructureBoundingBox(par1World, par3StructureBoundingBox))
@@ -233,7 +229,6 @@ public class ComponentMineshaftCorridor extends StructureComponent
                 this.randomlyPlaceBlock(par1World, par3StructureBoundingBox, par2Random, 0.05F, 2, 2, var10 + 2, Block.web.blockID, 0);
                 this.randomlyPlaceBlock(par1World, par3StructureBoundingBox, par2Random, 0.05F, 1, 2, var10 - 1, Block.torchWood.blockID, 0);
                 this.randomlyPlaceBlock(par1World, par3StructureBoundingBox, par2Random, 0.05F, 1, 2, var10 + 1, Block.torchWood.blockID, 0);
-
                 ChestGenHooks info = ChestGenHooks.getInfo(MINESHAFT_CORRIDOR);
 
                 if (par2Random.nextInt(100) == 0)

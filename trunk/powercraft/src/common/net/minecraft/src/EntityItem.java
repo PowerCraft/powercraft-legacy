@@ -11,24 +11,15 @@ import cpw.mods.fml.common.registry.GameRegistry;
 
 public class EntityItem extends Entity
 {
-    /** The item stack of this EntityItem. */
     public ItemStack item;
 
-    /**
-     * The age of this EntityItem (used to animate it up and down as well as expire it)
-     */
     public int age = 0;
     public int delayBeforeCanPickup;
 
-    /** The health of this EntityItem. (For example, damage for tools) */
     private int health = 5;
 
-    /** The EntityItem's random initial float height. */
     public float hoverStart = (float)(Math.random() * Math.PI * 2.0D);
 
-    /**
-     * The maximum age of this EntityItem.  The item is expired once this is reached.
-     */
     public int lifespan = 6000;
 
     public EntityItem(World par1World, double par2, double par4, double par6, ItemStack par8ItemStack)
@@ -45,10 +36,6 @@ public class EntityItem extends Entity
         this.lifespan = (par8ItemStack.getItem() == null ? 6000 : par8ItemStack.getItem().getEntityLifespan(par8ItemStack, par1World));
     }
 
-    /**
-     * returns if this entity triggers Block.onEntityWalking on the blocks they walk on. used for spiders and wolves to
-     * prevent them from trampling crops
-     */
     protected boolean canTriggerWalking()
     {
         return false;
@@ -63,9 +50,6 @@ public class EntityItem extends Entity
 
     protected void entityInit() {}
 
-    /**
-     * Called to update the entity's position/logic.
-     */
     public void onUpdate()
     {
         super.onUpdate();
@@ -79,7 +63,7 @@ public class EntityItem extends Entity
         this.prevPosY = this.posY;
         this.prevPosZ = this.posZ;
         this.motionY -= 0.03999999910593033D;
-        this.pushOutOfBlocks(this.posX, (this.boundingBox.minY + this.boundingBox.maxY) / 2.0D, this.posZ);
+        this.noClip = this.pushOutOfBlocks(this.posX, (this.boundingBox.minY + this.boundingBox.maxY) / 2.0D, this.posZ);
         this.moveEntity(this.motionX, this.motionY, this.motionZ);
         boolean var1 = (int)this.prevPosX != (int)this.posX || (int)this.prevPosY != (int)this.posY || (int)this.prevPosZ != (int)this.posZ;
 
@@ -90,37 +74,31 @@ public class EntityItem extends Entity
                 this.motionY = 0.20000000298023224D;
                 this.motionX = (double)((this.rand.nextFloat() - this.rand.nextFloat()) * 0.2F);
                 this.motionZ = (double)((this.rand.nextFloat() - this.rand.nextFloat()) * 0.2F);
-                this.worldObj.playSoundAtEntity(this, "random.fizz", 0.4F, 2.0F + this.rand.nextFloat() * 0.4F);
+                this.func_85030_a("random.fizz", 0.4F, 2.0F + this.rand.nextFloat() * 0.4F);
             }
 
             if (!this.worldObj.isRemote)
             {
-                Iterator var2 = this.worldObj.getEntitiesWithinAABB(EntityItem.class, this.boundingBox.expand(0.5D, 0.0D, 0.5D)).iterator();
-
-                while (var2.hasNext())
-                {
-                    EntityItem var3 = (EntityItem)var2.next();
-                    this.func_70289_a(var3);
-                }
+                this.func_85054_d();
             }
         }
 
-        float var4 = 0.98F;
+        float var2 = 0.98F;
 
         if (this.onGround)
         {
-            var4 = 0.58800006F;
-            int var5 = this.worldObj.getBlockId(MathHelper.floor_double(this.posX), MathHelper.floor_double(this.boundingBox.minY) - 1, MathHelper.floor_double(this.posZ));
+            var2 = 0.58800006F;
+            int var3 = this.worldObj.getBlockId(MathHelper.floor_double(this.posX), MathHelper.floor_double(this.boundingBox.minY) - 1, MathHelper.floor_double(this.posZ));
 
-            if (var5 > 0)
+            if (var3 > 0)
             {
-                var4 = Block.blocksList[var5].slipperiness * 0.98F;
+                var2 = Block.blocksList[var3].slipperiness * 0.98F;
             }
         }
 
-        this.motionX *= (double)var4;
+        this.motionX *= (double)var2;
         this.motionY *= 0.9800000190734863D;
-        this.motionZ *= (double)var4;
+        this.motionZ *= (double)var2;
 
         if (this.onGround)
         {
@@ -132,6 +110,7 @@ public class EntityItem extends Entity
         if (!this.worldObj.isRemote && this.age >= lifespan)
         {
             ItemExpireEvent event = new ItemExpireEvent(this, (item.getItem() == null ? 6000 : item.getItem().getEntityLifespan(item, worldObj)));
+
             if (MinecraftForge.EVENT_BUS.post(event))
             {
                 lifespan += event.extraLife;
@@ -148,6 +127,17 @@ public class EntityItem extends Entity
         }
     }
 
+    private void func_85054_d()
+    {
+        Iterator var1 = this.worldObj.getEntitiesWithinAABB(EntityItem.class, this.boundingBox.expand(0.5D, 0.0D, 0.5D)).iterator();
+
+        while (var1.hasNext())
+        {
+            EntityItem var2 = (EntityItem)var1.next();
+            this.func_70289_a(var2);
+        }
+    }
+
     public boolean func_70289_a(EntityItem par1EntityItem)
     {
         if (par1EntityItem == this)
@@ -160,32 +150,33 @@ public class EntityItem extends Entity
             {
                 return false;
             }
-            else if (!par1EntityItem.item.hasTagCompound() && !this.item.hasTagCompound())
+            else if (par1EntityItem.item.hasTagCompound() ^ this.item.hasTagCompound())
             {
-                if (par1EntityItem.item.getItem().getHasSubtypes() && par1EntityItem.item.getItemDamage() != this.item.getItemDamage())
-                {
-                    return false;
-                }
-                else if (par1EntityItem.item.stackSize < this.item.stackSize)
-                {
-                    return par1EntityItem.func_70289_a(this);
-                }
-                else if (par1EntityItem.item.stackSize + this.item.stackSize > par1EntityItem.item.getMaxStackSize())
-                {
-                    return false;
-                }
-                else
-                {
-                    par1EntityItem.item.stackSize += this.item.stackSize;
-                    par1EntityItem.delayBeforeCanPickup = Math.max(par1EntityItem.delayBeforeCanPickup, this.delayBeforeCanPickup);
-                    par1EntityItem.age = Math.min(par1EntityItem.age, this.age);
-                    this.setDead();
-                    return true;
-                }
+                return false;
+            }
+            else if (par1EntityItem.item.hasTagCompound() && !par1EntityItem.item.getTagCompound().equals(this.item.getTagCompound()))
+            {
+                return false;
+            }
+            else if (par1EntityItem.item.getItem().getHasSubtypes() && par1EntityItem.item.getItemDamage() != this.item.getItemDamage())
+            {
+                return false;
+            }
+            else if (par1EntityItem.item.stackSize < this.item.stackSize)
+            {
+                return par1EntityItem.func_70289_a(this);
+            }
+            else if (par1EntityItem.item.stackSize + this.item.stackSize > par1EntityItem.item.getMaxStackSize())
+            {
+                return false;
             }
             else
             {
-                return false;
+                par1EntityItem.item.stackSize += this.item.stackSize;
+                par1EntityItem.delayBeforeCanPickup = Math.max(par1EntityItem.delayBeforeCanPickup, this.delayBeforeCanPickup);
+                par1EntityItem.age = Math.min(par1EntityItem.age, this.age);
+                this.setDead();
+                return true;
             }
         }
         else
@@ -199,42 +190,36 @@ public class EntityItem extends Entity
         this.age = 4800;
     }
 
-    /**
-     * Returns if this entity is in water and will end up adding the waters velocity to the entity
-     */
     public boolean handleWaterMovement()
     {
         return this.worldObj.handleMaterialAcceleration(this.boundingBox, Material.water, this);
     }
 
-    /**
-     * Will deal the specified amount of damage to the entity if the entity isn't immune to fire damage. Args:
-     * amountDamage
-     */
     protected void dealFireDamage(int par1)
     {
         this.attackEntityFrom(DamageSource.inFire, par1);
     }
 
-    /**
-     * Called when the entity is attacked.
-     */
     public boolean attackEntityFrom(DamageSource par1DamageSource, int par2)
     {
-        this.setBeenAttacked();
-        this.health -= par2;
-
-        if (this.health <= 0)
+        if (this.func_85032_ar())
         {
-            this.setDead();
+            return false;
         }
+        else
+        {
+            this.setBeenAttacked();
+            this.health -= par2;
 
-        return false;
+            if (this.health <= 0)
+            {
+                this.setDead();
+            }
+
+            return false;
+        }
     }
 
-    /**
-     * (abstract) Protected helper method to write subclass entity data to NBT.
-     */
     public void writeEntityToNBT(NBTTagCompound par1NBTTagCompound)
     {
         par1NBTTagCompound.setShort("Health", (short)((byte)this.health));
@@ -247,9 +232,6 @@ public class EntityItem extends Entity
         }
     }
 
-    /**
-     * (abstract) Protected helper method to read subclass entity data from NBT.
-     */
     public void readEntityFromNBT(NBTTagCompound par1NBTTagCompound)
     {
         this.health = par1NBTTagCompound.getShort("Health") & 255;
@@ -268,9 +250,6 @@ public class EntityItem extends Entity
         }
     }
 
-    /**
-     * Called by a player entity when they collide with an entity
-     */
     public void onCollideWithPlayer(EntityPlayer par1EntityPlayer)
     {
         if (!this.worldObj.isRemote)
@@ -312,8 +291,7 @@ public class EntityItem extends Entity
                 }
 
                 GameRegistry.onPickupNotification(par1EntityPlayer, this);
-
-                this.worldObj.playSoundAtEntity(this, "random.pop", 0.2F, ((this.rand.nextFloat() - this.rand.nextFloat()) * 0.7F + 1.0F) * 2.0F);
+                this.func_85030_a("random.pop", 0.2F, ((this.rand.nextFloat() - this.rand.nextFloat()) * 0.7F + 1.0F) * 2.0F);
                 par1EntityPlayer.onItemPickup(this, var2);
 
                 if (this.item.stackSize <= 0)
@@ -324,19 +302,23 @@ public class EntityItem extends Entity
         }
     }
 
-    /**
-     * Gets the username of the entity.
-     */
     public String getEntityName()
     {
         return StatCollector.translateToLocal("item." + this.item.getItemName());
     }
 
-    /**
-     * If returns false, the item will not inflict any damage against entities.
-     */
     public boolean canAttackWithItem()
     {
         return false;
+    }
+
+    public void travelToDimension(int par1)
+    {
+        super.travelToDimension(par1);
+
+        if (!this.worldObj.isRemote)
+        {
+            this.func_85054_d();
+        }
     }
 }

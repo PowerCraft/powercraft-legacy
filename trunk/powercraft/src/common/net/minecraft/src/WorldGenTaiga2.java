@@ -44,7 +44,6 @@ public class WorldGenTaiga2 extends WorldGenerator
                         if (var11 >= 0 && var11 < 256)
                         {
                             var15 = par1World.getBlockId(var13, var11, var14);
-
                             Block block = Block.blocksList[var15];
 
                             if (var15 != 0 && block != null && !block.isLeaves(par1World, var13, var11, var14))
@@ -88,11 +87,10 @@ public class WorldGenTaiga2 extends WorldGenerator
                             for (int var19 = par5 - var21; var19 <= par5 + var21; ++var19)
                             {
                                 int var20 = var19 - par5;
-
                                 Block block = Block.blocksList[par1World.getBlockId(var17, var16, var19)];
 
-                                if ((Math.abs(var18) != var21 || Math.abs(var20) != var21 || var21 <= 0) && 
-                                    (block == null || block.canBeReplacedByLeaves(par1World, var17, var16, var19)))
+                                if ((Math.abs(var18) != var21 || Math.abs(var20) != var21 || var21 <= 0) &&
+                                        (block == null || block.canBeReplacedByLeaves(par1World, var17, var16, var19)))
                                 {
                                     this.setBlockAndMetadata(par1World, var17, var16, var19, Block.leaves.blockID, 1);
                                 }
@@ -121,7 +119,6 @@ public class WorldGenTaiga2 extends WorldGenerator
                     for (var16 = 0; var16 < var6 - var15; ++var16)
                     {
                         var17 = par1World.getBlockId(par3, par4 + var16, par5);
-
                         Block block = Block.blocksList[var17];
 
                         if (var17 == 0 || block == null || block.isLeaves(par1World, par3, par4 + var16, par5))

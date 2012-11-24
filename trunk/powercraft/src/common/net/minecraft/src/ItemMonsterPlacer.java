@@ -28,16 +28,12 @@ public class ItemMonsterPlacer extends Item
     }
 
     @SideOnly(Side.CLIENT)
-    public int func_82790_a(ItemStack par1ItemStack, int par2)
+    public int getColorFromItemStack(ItemStack par1ItemStack, int par2)
     {
         EntityEggInfo var3 = (EntityEggInfo)EntityList.entityEggs.get(Integer.valueOf(par1ItemStack.getItemDamage()));
         return var3 != null ? (par2 == 0 ? var3.primaryColor : var3.secondaryColor) : 16777215;
     }
 
-    /**
-     * Callback for item usage. If the item does something special on right clicking, he will have one of those. Return
-     * True if something happen and false if it don't. This is for ITEMS, not BLOCKS
-     */
     public boolean onItemUse(ItemStack par1ItemStack, EntityPlayer par2EntityPlayer, World par3World, int par4, int par5, int par6, int par7, float par8, float par9, float par10)
     {
         if (par3World.isRemote)
@@ -52,7 +48,7 @@ public class ItemMonsterPlacer extends Item
             par6 += Facing.offsetsZForSide[par7];
             double var12 = 0.0D;
 
-            if (par7 == 1 && var11 == Block.fence.blockID || var11 == Block.netherFence.blockID)
+            if (par7 == 1 && Block.blocksList[var11] != null && Block.blocksList[var11].getRenderType() == 11)
             {
                 var12 = 0.5D;
             }
@@ -66,13 +62,9 @@ public class ItemMonsterPlacer extends Item
         }
     }
 
-    /**
-     * Spawns the creature specified by the egg's type in the location specified by the last three parameters.
-     * Parameters: world, entityID, x, y, z.
-     */
-    public static Entity spawnCreature(World var0, int var1, double var2, double var4, double var6)
+    public static Entity spawnCreature(World par0World, int par1, double par2, double par4, double par6)
     {
-        if (!EntityList.entityEggs.containsKey(Integer.valueOf(var1)))
+        if (!EntityList.entityEggs.containsKey(Integer.valueOf(par1)))
         {
             return null;
         }
@@ -82,13 +74,13 @@ public class ItemMonsterPlacer extends Item
 
             for (int var9 = 0; var9 < 1; ++var9)
             {
-                var8 = EntityList.createEntityByID(var1, var0);
+                var8 = EntityList.createEntityByID(par1, par0World);
 
                 if (var8 != null)
                 {
-                    var8.setLocationAndAngles(var2, var4, var6, var0.rand.nextFloat() * 360.0F, 0.0F);
-                    ((EntityLiving)var8).func_82163_bD();
-                    var0.spawnEntityInWorld(var8);
+                    var8.setLocationAndAngles(par2, par4, par6, par0World.rand.nextFloat() * 360.0F, 0.0F);
+                    ((EntityLiving)var8).initCreature();
+                    par0World.spawnEntityInWorld(var8);
                     ((EntityLiving)var8).playLivingSound();
                 }
             }
@@ -105,9 +97,6 @@ public class ItemMonsterPlacer extends Item
 
     @SideOnly(Side.CLIENT)
 
-    /**
-     * Gets an icon index based on an item's damage value and the given render pass
-     */
     public int getIconFromDamageForRenderPass(int par1, int par2)
     {
         return par2 > 0 ? super.getIconFromDamageForRenderPass(par1, par2) + 16 : super.getIconFromDamageForRenderPass(par1, par2);
@@ -115,9 +104,6 @@ public class ItemMonsterPlacer extends Item
 
     @SideOnly(Side.CLIENT)
 
-    /**
-     * returns a list of items with the same ID, but different meta (eg: dye returns 16 items)
-     */
     public void getSubItems(int par1, CreativeTabs par2CreativeTabs, List par3List)
     {
         Iterator var4 = EntityList.entityEggs.values().iterator();

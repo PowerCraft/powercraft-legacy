@@ -1,0 +1,254 @@
+package powercraft.light;
+
+import java.util.Random;
+
+import net.minecraft.src.Block;
+import net.minecraft.src.CreativeTabs;
+import net.minecraft.src.EntityPlayer;
+import net.minecraft.src.IBlockAccess;
+import net.minecraft.src.ItemBlock;
+import net.minecraft.src.ItemStack;
+import net.minecraft.src.Material;
+import net.minecraft.src.MathHelper;
+import net.minecraft.src.TileEntity;
+import net.minecraft.src.World;
+import powercraft.core.PC_Block;
+import powercraft.core.PC_Utils;
+
+public class PCli_BlockMirrow extends PC_Block {
+
+	public PCli_BlockMirrow(int id) {
+		super(id, Material.glass);
+		float f = 0.4F;
+		float f1 = 1.0F;
+		setBlockBounds(0.5F - f, 0.1F, 0.5F - f, 0.5F + f, f1 - 0.1F, 0.5F + f);
+		setHardness(1.0F);
+		setResistance(4.0F);
+		setStepSound(Block.soundStoneFootstep);
+		setCreativeTab(CreativeTabs.tabDecorations);
+	}
+
+	@Override
+	public String getDefaultName() {
+		return "Mirrow";
+	}
+
+	@Override
+	public TileEntity createNewTileEntity(World world) {
+		return new PCli_TileEntityMirrow();
+	}
+	
+	@Override
+	public boolean renderAsNormalBlock() {
+		return false;
+	}
+
+	@Override
+	public boolean getBlocksMovement(IBlockAccess par1IBlockAccess, int par2, int par3, int i) {
+		return true;
+	}
+
+	@Override
+	public boolean isOpaqueCube() {
+		return false;
+	}
+
+	@Override
+	public boolean onBlockActivated(World world, int i, int j, int k, EntityPlayer player, int par6, float par7, float par8, float par9) {
+		ItemStack ihold = player.getCurrentEquippedItem();
+		if (ihold != null) {
+			if (ihold.itemID == PC_Utils.getPCObjectIDByName("PCco_BlockPowerCrystal")) {
+
+				PCli_TileEntityMirrow teo = PC_Utils.getTE(world, i, j, k, blockID);
+				if (teo != null) {
+					teo.setMirrorColor(ihold.getItemDamage());
+				}
+
+				return true;
+			}
+
+			if (ihold.getItem() instanceof ItemBlock && ihold.itemID != blockID) {
+				Block bhold = Block.blocksList[ihold.getItem().shiftedIndex];
+				if (bhold instanceof PC_IBlockType) {
+					return false;
+				}
+			}
+		}
+
+		if (isMirror(world, i, j, k)) {
+			int m = MathHelper.floor_double((((player.rotationYaw + 180F) * 16F) / 360F) + 0.5D) & 0xf;
+			world.setBlockMetadataWithNotify(i, j, k, m);
+		} else {
+			// prism...
+
+			int angle = MathHelper.floor_double((((player.rotationYaw + 180F) * 16F) / 360F) + 0.5D) & 0xf;
+			angle &= 0xE;
+			angle = angle >> 1;
+			angle += 2;
+			if (angle > 7) {
+				angle = angle - 8;
+			}
+
+			angle += 2;
+
+			// if close enough
+			if (MathHelper.abs((float) player.posX - (i + 0.5F)) < 1.3F && MathHelper.abs((float) player.posZ - (k + 0.5F)) < 1.3F) {
+				double d = (player.posY + 1.8200000000000001D) - player.yOffset;
+
+				if (d - j > 2D) {
+					angle = 1;
+				}
+
+				if (j - d > 0.0D) {
+					angle = 0;
+				}
+			}
+
+			boolean drop = true;
+			if (ihold != null) {
+				if (ihold.getItem().shiftedIndex == Block.thinGlass.blockID) {
+
+					if (isGlassPanelOnSide(world, i, j, k, angle) == false) {
+
+						PCma_TileEntityOptical teo = getTE(world, i, j, k);
+						if (teo != null) {
+							teo.setPrismSide(angle, true);
+						}
+						if (!PC_Utils.isCreative()) {
+							ihold.stackSize--;
+						}
+						drop = false;
+
+					}
+
+				}
+			}
+			if (drop) {
+
+				if (isGlassPanelOnSide(world, i, j, k, angle)) {
+
+					PCma_TileEntityOptical teo = getTE(world, i, j, k);
+					if (teo != null) {
+						teo.setPrismSide(angle, false);
+					}
+					if (!PC_Utils.isCreative()) {
+						dropBlockAsItem_do(world, i, j, k, new ItemStack(Block.thinGlass, 1));
+					}
+
+				}
+
+			}
+
+		}
+		return true;
+	}
+
+	/**
+	 * Get tile entity at position in world
+	 * 
+	 * @param iblockaccess
+	 * @param x
+	 * @param y
+	 * @param z
+	 * @return the tile entity
+	 */
+	public static PCma_TileEntityOptical getTE(IBlockAccess iblockaccess, int x, int y, int z) {
+		TileEntity te = iblockaccess.getBlockTileEntity(x, y, z);
+		if (te == null) {
+			return null;
+		}
+		PCma_TileEntityOptical tem = (PCma_TileEntityOptical) te;
+
+		return tem;
+	}
+
+	/**
+	 * Check if prism's side is active (with glass pane)
+	 * 
+	 * @param iblockaccess
+	 * @param x
+	 * @param y
+	 * @param z
+	 * @param side
+	 * @return has glass panel
+	 */
+	public static boolean isGlassPanelOnSide(IBlockAccess iblockaccess, int x, int y, int z, int side) {
+
+		PCma_TileEntityOptical teo = getTE(iblockaccess, x, y, z);
+
+		if (teo == null) {
+			return false;
+		}
+
+		return getTE(iblockaccess, x, y, z).getPrismSide(side);
+	}
+
+	/**
+	 * Check if device is mirror
+	 * 
+	 * @param iblockaccess
+	 * @param x
+	 * @param y
+	 * @param z
+	 * @return is mirror
+	 */
+	public static boolean isMirror(IBlockAccess iblockaccess, int x, int y, int z) {
+
+		PCma_TileEntityOptical teo = getTE(iblockaccess, x, y, z);
+
+		return teo != null && teo.isMirror();
+
+	}
+
+	/**
+	 * Get mirror color
+	 * 
+	 * @param iblockaccess
+	 * @param x
+	 * @param y
+	 * @param z
+	 * @return the color index (crystal meta)
+	 */
+	public static int getMirrorColor(IBlockAccess iblockaccess, int x, int y, int z) {
+
+		PCma_TileEntityOptical teo = getTE(iblockaccess, x, y, z);
+
+		if (teo == null) {
+			return 0;
+		}
+		return teo.getMirrorColor();
+
+	}
+
+	/**
+	 * Check if device is prism
+	 * 
+	 * @param iblockaccess
+	 * @param x
+	 * @param y
+	 * @param z
+	 * @return is prism
+	 */
+	public static boolean isPrism(IBlockAccess iblockaccess, int x, int y, int z) {
+		PCma_TileEntityOptical teo = getTE(iblockaccess, x, y, z);
+
+		return teo != null && teo.isPrism();
+	}
+
+	@Override
+	public int getRenderColor(int i) {
+		if (i == 0) {
+			return 0x999999;
+		}
+		return 0xffffcc;
+	}
+
+	@Override
+	public int colorMultiplier(IBlockAccess iblockaccess, int i, int j, int k) {
+		if (isMirror(iblockaccess, i, j, k)) {
+			return 0x999999;
+		}
+		return 0xffffcc;
+	}
+	
+}

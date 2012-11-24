@@ -62,12 +62,10 @@ public class GLAllocation
         }
 
         field_74531_a.clear();
-        var0 = field_74530_b.iterator();
 
-        while (var0.hasNext())
+        for (int var2 = 0; var2 < field_74530_b.size(); ++var2)
         {
-            int var2 = ((Integer)var0.next()).intValue();
-            GL11.glDeleteTextures(var2);
+            GL11.glDeleteTextures(((Integer)field_74530_b.get(var2)).intValue());
         }
 
         field_74530_b.clear();

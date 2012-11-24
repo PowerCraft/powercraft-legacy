@@ -1,24 +1,21 @@
 package powercraft.core;
 
+import java.util.List;
+
 import net.minecraft.src.IRecipe;
 import net.minecraft.src.InventoryCrafting;
 import net.minecraft.src.ItemStack;
 import net.minecraft.src.World;
 
-public class PC_ShapedRecipes implements IRecipe {
-
-	/** How many horizontal slots this recipe is wide. */
+public class PC_ShapedRecipes implements IRecipe, PC_ICraftingInputGetter
+{
     private int recipeWidth;
 
-    /** How many vertical slots this recipe uses. */
     private int recipeHeight;
 
-    /** Is a array of ItemStack that composes the recipe. */
     private PC_ItemStack[] recipeItems;
 
-    /** Is the ItemStack that you get when craft the recipe. */
     private PC_ItemStack recipeOutput;
-
 
     public PC_ShapedRecipes(int par1, int par2, PC_ItemStack[] par3ArrayOfItemStack, PC_ItemStack par4ItemStack)
     {
@@ -33,9 +30,6 @@ public class PC_ShapedRecipes implements IRecipe {
         return recipeOutput.toItemStack();
     }
 
-    /**
-     * Used to check if a recipe matches current crafting inventory
-     */
     public boolean matches(InventoryCrafting par1InventoryCrafting, World par2World)
     {
         for (int var3 = 0; var3 <= 3 - this.recipeWidth; ++var3)
@@ -57,9 +51,6 @@ public class PC_ShapedRecipes implements IRecipe {
         return false;
     }
 
-    /**
-     * Checks if the region of a crafting inventory is match for the recipe.
-     */
     private boolean checkMatch(InventoryCrafting par1InventoryCrafting, int par2, int par3, boolean par4)
     {
         for (int var5 = 0; var5 < 3; ++var5)
@@ -91,9 +82,10 @@ public class PC_ShapedRecipes implements IRecipe {
                         return false;
                     }
 
-                    if(!var9.equals(var10))
-                    	return false;
-                    	
+                    if (!var9.equals(var10))
+                    {
+                        return false;
+                    }
                 }
             }
         }
@@ -101,20 +93,31 @@ public class PC_ShapedRecipes implements IRecipe {
         return true;
     }
 
-    /**
-     * Returns an Item that is the result of this recipe
-     */
     public ItemStack getCraftingResult(InventoryCrafting par1InventoryCrafting)
     {
-        return this.getRecipeOutput().copy();
+    	ItemStack itemStack = getRecipeOutput().copy();
+    	if(itemStack.getItem() instanceof PC_Item){
+    		((PC_Item)itemStack.getItem()).doCrafting(itemStack, par1InventoryCrafting);
+    	}
+        return itemStack;
     }
 
-    /**
-     * Returns the size of the recipe area
-     */
     public int getRecipeSize()
     {
         return this.recipeWidth * this.recipeHeight;
     }
 
+    @Override
+    public List<ItemStack> getExpectedInput(List<ItemStack> itemStacks)
+    {
+        for (PC_ItemStack itemStack: recipeItems)
+        {
+            if (itemStack != null)
+            {
+                itemStacks.add(itemStack.toItemStack());
+            }
+        }
+
+        return itemStacks;
+    }
 }

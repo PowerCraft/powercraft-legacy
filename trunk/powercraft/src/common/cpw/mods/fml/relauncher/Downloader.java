@@ -27,21 +27,21 @@ public class Downloader extends JOptionPane implements IDownloadDisplay
     private Box makeProgressPanel()
     {
         Box box = Box.createVerticalBox();
-        box.add(Box.createRigidArea(new Dimension(0,10)));
+        box.add(Box.createRigidArea(new Dimension(0, 10)));
         JLabel welcomeLabel = new JLabel("<html><b><font size='+1'>FML is setting up your minecraft environment</font></b></html>");
         box.add(welcomeLabel);
         welcomeLabel.setAlignmentY(LEFT_ALIGNMENT);
         welcomeLabel = new JLabel("<html>Please wait, FML has some tasks to do before you can play</html>");
         welcomeLabel.setAlignmentY(LEFT_ALIGNMENT);
         box.add(welcomeLabel);
-        box.add(Box.createRigidArea(new Dimension(0,10)));
+        box.add(Box.createRigidArea(new Dimension(0, 10)));
         currentActivity = new JLabel("Currently doing ...");
         box.add(currentActivity);
-        box.add(Box.createRigidArea(new Dimension(0,10)));
+        box.add(Box.createRigidArea(new Dimension(0, 10)));
         progress = new JProgressBar(0, 100);
         progress.setStringPainted(true);
         box.add(progress);
-        box.add(Box.createRigidArea(new Dimension(0,30)));
+        box.add(Box.createRigidArea(new Dimension(0, 30)));
         return box;
     }
 
@@ -55,7 +55,7 @@ public class Downloader extends JOptionPane implements IDownloadDisplay
             @Override
             public void propertyChange(PropertyChangeEvent evt)
             {
-                if (evt.getSource() == Downloader.this && evt.getPropertyName()==VALUE_PROPERTY)
+                if (evt.getSource() == Downloader.this && evt.getPropertyName() == VALUE_PROPERTY)
                 {
                     requestClose("This will stop minecraft from launching\nAre you sure you want to do this?");
                 }
@@ -83,11 +83,14 @@ public class Downloader extends JOptionPane implements IDownloadDisplay
     protected void requestClose(String message)
     {
         int shouldClose = JOptionPane.showConfirmDialog(container, message, "Are you sure you want to stop?", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE);
+
         if (shouldClose == JOptionPane.YES_OPTION)
         {
             container.dispose();
         }
+
         stopIt = true;
+
         if (pokeThread != null)
         {
             pokeThread.interrupt();
@@ -97,15 +100,16 @@ public class Downloader extends JOptionPane implements IDownloadDisplay
     public void updateProgressString(String progressUpdate, Object... data)
     {
         FMLLog.finest(progressUpdate, data);
-        if (currentActivity!=null)
+
+        if (currentActivity != null)
         {
-            currentActivity.setText(String.format(progressUpdate,data));
+            currentActivity.setText(String.format(progressUpdate, data));
         }
     }
 
     public void resetProgress(int sizeGuess)
     {
-        if (progress!=null)
+        if (progress != null)
         {
             progress.getModel().setRangeProperties(0, 0, 0, sizeGuess, false);
         }
@@ -113,7 +117,7 @@ public class Downloader extends JOptionPane implements IDownloadDisplay
 
     public void updateProgress(int fullLength)
     {
-        if (progress!=null)
+        if (progress != null)
         {
             progress.getModel().setValue(fullLength);
         }

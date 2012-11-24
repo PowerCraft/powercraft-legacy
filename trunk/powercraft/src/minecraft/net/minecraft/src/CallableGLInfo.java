@@ -9,24 +9,21 @@ import org.lwjgl.opengl.GL11;
 @SideOnly(Side.CLIENT)
 public class CallableGLInfo implements Callable
 {
-    /** Gets Minecraft Open GL Info. */
-    final Minecraft minecraftGLInfo;
+    /** The Minecraft instance. */
+    final Minecraft mc;
 
     public CallableGLInfo(Minecraft par1Minecraft)
     {
-        this.minecraftGLInfo = par1Minecraft;
+        this.mc = par1Minecraft;
     }
 
-    /**
-     * Gets what OpenGL version you have.
-     */
-    public String getGLVersion()
+    public String getTexturePack()
     {
         return GL11.glGetString(GL11.GL_RENDERER) + " GL version " + GL11.glGetString(GL11.GL_VERSION) + ", " + GL11.glGetString(GL11.GL_VENDOR);
     }
 
     public Object call()
     {
-        return this.getGLVersion();
+        return this.getTexturePack();
     }
 }

@@ -16,7 +16,9 @@ public class RenderBiped extends RenderLiving
     protected float field_77070_b;
     protected ModelBiped field_82423_g;
     protected ModelBiped field_82425_h;
-    public static String[] field_82424_k = new String[] {"cloth", "chain", "iron", "diamond", "gold"};
+
+    /** List of armor texture filenames. */
+    public static String[] bipedArmorFilenamePrefix = new String[] {"cloth", "chain", "iron", "diamond", "gold"};
 
     public RenderBiped(ModelBiped par1ModelBiped, float par2)
     {
@@ -42,7 +44,7 @@ public class RenderBiped extends RenderLiving
      */
     protected int shouldRenderPass(EntityLiving par1EntityLiving, int par2, float par3)
     {
-        ItemStack var4 = par1EntityLiving.func_82169_q(3 - par2);
+        ItemStack var4 = par1EntityLiving.getCurrentArmor(3 - par2);
 
         if (var4 != null)
         {
@@ -51,7 +53,7 @@ public class RenderBiped extends RenderLiving
             if (var5 instanceof ItemArmor)
             {
                 ItemArmor var6 = (ItemArmor)var5;
-                this.loadTexture(ForgeHooksClient.getArmorTexture(var4, "/armor/" + field_82424_k[var6.renderIndex] + "_" + (par2 == 2 ? 2 : 1) + ".png"));
+                this.loadTexture(ForgeHooksClient.getArmorTexture(var4, "/armor/" + bipedArmorFilenamePrefix[var6.renderIndex] + "_" + (par2 == 2 ? 2 : 1) + ".png"));
                 ModelBiped var7 = par2 == 2 ? this.field_82425_h : this.field_82423_g;
                 var7.bipedHead.showModel = par2 == 0;
                 var7.bipedHeadwear.showModel = par2 == 0;
@@ -79,9 +81,9 @@ public class RenderBiped extends RenderLiving
 
                 float var8 = 1.0F;
 
-                if (var6.func_82812_d() == EnumArmorMaterial.CLOTH)
+                if (var6.getArmorMaterial() == EnumArmorMaterial.CLOTH)
                 {
-                    int var9 = var6.func_82814_b(var4);
+                    int var9 = var6.getColor(var4);
                     float var10 = (float)(var9 >> 16 & 255) / 255.0F;
                     float var11 = (float)(var9 >> 8 & 255) / 255.0F;
                     float var12 = (float)(var9 & 255) / 255.0F;
@@ -111,7 +113,7 @@ public class RenderBiped extends RenderLiving
 
     protected void func_82408_c(EntityLiving par1EntityLiving, int par2, float par3)
     {
-        ItemStack var4 = par1EntityLiving.func_82169_q(3 - par2);
+        ItemStack var4 = par1EntityLiving.getCurrentArmor(3 - par2);
 
         if (var4 != null)
         {
@@ -120,7 +122,7 @@ public class RenderBiped extends RenderLiving
             if (var5 instanceof ItemArmor)
             {
                 ItemArmor var6 = (ItemArmor)var5;
-                this.loadTexture("/armor/" + field_82424_k[var6.renderIndex] + "_" + (par2 == 2 ? 2 : 1) + "_b.png");
+                this.loadTexture("/armor/" + bipedArmorFilenamePrefix[var6.renderIndex] + "_" + (par2 == 2 ? 2 : 1) + "_b.png");
                 float var7 = 1.0F;
                 GL11.glColor3f(var7, var7, var7);
             }
@@ -158,7 +160,7 @@ public class RenderBiped extends RenderLiving
         GL11.glColor3f(var3, var3, var3);
         super.renderEquippedItems(par1EntityLiving, par2);
         ItemStack var4 = par1EntityLiving.getHeldItem();
-        ItemStack var5 = par1EntityLiving.func_82169_q(3);
+        ItemStack var5 = par1EntityLiving.getCurrentArmor(3);
         float var6;
 
         if (var5 != null)
@@ -181,7 +183,7 @@ public class RenderBiped extends RenderLiving
 
                 this.renderManager.itemRenderer.renderItem(par1EntityLiving, var5, 0);
             }
-            else if (var5.getItem().shiftedIndex == Item.field_82799_bQ.shiftedIndex)
+            else if (var5.getItem().shiftedIndex == Item.skull.shiftedIndex)
             {
                 var6 = 1.0625F;
                 GL11.glScalef(var6, -var6, -var6);
@@ -192,7 +194,7 @@ public class RenderBiped extends RenderLiving
                     var7 = var5.getTagCompound().getString("SkullOwner");
                 }
 
-                TileEntitySkullRenderer.field_82397_a.func_82393_a(-0.5F, 0.0F, -0.5F, 1, 180.0F, var5.getItemDamage(), var7);
+                TileEntitySkullRenderer.skullRenderer.func_82393_a(-0.5F, 0.0F, -0.5F, 1, 180.0F, var5.getItemDamage(), var7);
             }
 
             GL11.glPopMatrix();
@@ -223,7 +225,7 @@ public class RenderBiped extends RenderLiving
                 var6 *= 0.75F;
                 GL11.glRotatef(20.0F, 1.0F, 0.0F, 0.0F);
                 GL11.glRotatef(45.0F, 0.0F, 1.0F, 0.0F);
-                GL11.glScalef(var6, -var6, var6);
+                GL11.glScalef(-var6, -var6, var6);
             }
             else if (var4.itemID == Item.bow.shiftedIndex)
             {

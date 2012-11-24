@@ -7,7 +7,6 @@ public class EntityAIHurtByTarget extends EntityAITarget
 {
     boolean field_75312_a;
 
-    /** The PathNavigate of our entity. */
     EntityLiving entityPathNavigate;
 
     public EntityAIHurtByTarget(EntityLiving par1EntityLiving, boolean par2)
@@ -17,25 +16,16 @@ public class EntityAIHurtByTarget extends EntityAITarget
         this.setMutexBits(1);
     }
 
-    /**
-     * Returns whether the EntityAIBase should begin execution.
-     */
     public boolean shouldExecute()
     {
         return this.isSuitableTarget(this.taskOwner.getAITarget(), true);
     }
 
-    /**
-     * Returns whether an in-progress EntityAIBase should continue executing
-     */
     public boolean continueExecuting()
     {
         return this.taskOwner.getAITarget() != null && this.taskOwner.getAITarget() != this.entityPathNavigate;
     }
 
-    /**
-     * Execute a one shot task or start executing a continuous task
-     */
     public void startExecuting()
     {
         this.taskOwner.setAttackTarget(this.taskOwner.getAITarget());
