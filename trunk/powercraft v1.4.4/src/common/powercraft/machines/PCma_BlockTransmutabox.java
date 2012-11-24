@@ -130,6 +130,7 @@ public class PCma_BlockTransmutabox extends PC_Block implements PC_IPowerReceive
         PC_Renderer.renderStandardBlock(renderer, block, x, y, z);
         block.setBlockBounds(0.8f, 0.0f, 0.8f, 1.0f, 0.2f, 1.0f);
         PC_Renderer.renderStandardBlock(renderer, block, x, y, z);
+        block.setBlockBounds(0.0f, 0.0f, 0.0f, 1.0f, 1.0f, 1.0f);
         block.blockIndexInTexture = 0;
         PC_Renderer.tessellatorDraw();
         PC_Renderer.resetTerrain(true);
