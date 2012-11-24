@@ -14,11 +14,6 @@ public class PCli_ClientProxy extends PCli_CommonProxy {
 		};
 	}
 
-	@Override
-	public void registerTileEntitySpecialRenderers() {
-		PC_ClientUtils.bindTileEntitySpecialRenderer(PCli_TileEntityLight.class, new PCli_TileEntityLightRenderer());
-	}
-
 	
 	
 }

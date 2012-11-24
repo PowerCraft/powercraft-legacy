@@ -1,5 +1,7 @@
 package powercraft.light;
 
+import java.util.List;
+
 import net.minecraft.src.Block;
 import net.minecraft.src.CreativeTabs;
 import net.minecraft.src.EntityLiving;
@@ -19,11 +21,12 @@ import powercraft.core.PC_CoordD;
 import powercraft.core.PC_CoordI;
 import powercraft.core.PC_IBeamSpecialHandling;
 import powercraft.core.PC_IBlockRenderer;
+import powercraft.core.PC_ICraftingToolDisplayer;
 import powercraft.core.PC_MathHelper;
 import powercraft.core.PC_Renderer;
 import powercraft.core.PC_Utils;
 
-public class PCli_BlockMirrow extends PC_Block implements PC_IBeamSpecialHandling, PC_IBlockRenderer {
+public class PCli_BlockMirrow extends PC_Block implements PC_IBeamSpecialHandling, PC_IBlockRenderer, PC_ICraftingToolDisplayer {
 
 	public PCli_BlockMirrow(int id) {
 		super(id, Material.glass);
@@ -245,32 +248,34 @@ public class PCli_BlockMirrow extends PC_Block implements PC_IBeamSpecialHandlin
 	
 	@Override
 	public result onHitByBeamTracer(PC_BeamTracer beamTracer, PC_CoordI cnt, PC_CoordI move, PC_Color color, float strength, int distanceToMove) {
-		// vertical beam
-		if (move.x == 0 && move.z == 0) {
-
-			int a = mirrorTo45[PC_Utils.getMD(beamTracer.getWorld(), cnt.x, cnt.y, cnt.z)];
-			PC_CoordI reflected = getMoveFromAngle(a).getInverted();
-
-			move.x = reflected.x;
-			move.z = reflected.z;
-
-		} else {
-			float beamAngle = getAngleFromMove(move);
-			float mAngle = mirrorAngle[PC_Utils.getMD(beamTracer.getWorld(), cnt.x, cnt.y, cnt.z)];
-
-			float diff = angleDiff(beamAngle, mAngle);
-
-			// the reflection
-			float beamNew = beamAngle + diff * 2;
-
-			beamNew = fixAngle(beamNew);
-
-			PC_CoordI reflected = getMoveFromAngle(beamNew).getInverted();
-
-			move.x = reflected.x;
-			move.z = reflected.z;
+		int mirrorColor = PCli_BlockMirrow.getMirrorColor(beamTracer.getWorld(), cnt.x, cnt.y, cnt.z);
+		if (mirrorColor == -1 || mirrorColor == color.getMeta()) {
+			// vertical beam
+			if (move.x == 0 && move.z == 0) {
+	
+				int a = mirrorTo45[PC_Utils.getMD(beamTracer.getWorld(), cnt.x, cnt.y, cnt.z)];
+				PC_CoordI reflected = getMoveFromAngle(a).getInverted();
+	
+				move.x = reflected.x;
+				move.z = reflected.z;
+	
+			} else {
+				float beamAngle = getAngleFromMove(move);
+				float mAngle = mirrorAngle[PC_Utils.getMD(beamTracer.getWorld(), cnt.x, cnt.y, cnt.z)];
+	
+				float diff = angleDiff(beamAngle, mAngle);
+	
+				// the reflection
+				float beamNew = beamAngle + diff * 2;
+	
+				beamNew = fixAngle(beamNew);
+	
+				PC_CoordI reflected = getMoveFromAngle(beamNew).getInverted();
+	
+				move.x = reflected.x;
+				move.z = reflected.z;
+			}
 		}
-		
 		return result.CONTINUE;
 	}
 
@@ -290,6 +295,17 @@ public class PCli_BlockMirrow extends PC_Block implements PC_IBeamSpecialHandlin
 	@Override
 	public void renderWorldBlock(IBlockAccess world, int x, int y, int z, Block block, int modelId, Object renderer) {
 		
+	}
+
+	@Override
+	public String getCraftingToolModule() {
+		return mod_PowerCraftLight.getInstance().getNameWithoutPowerCraft();
+	}
+
+	@Override
+	public List<ItemStack> getItemStacks(List<ItemStack> arrayList) {
+		arrayList.add(new ItemStack(this));
+		return arrayList;
 	}
 	
 }

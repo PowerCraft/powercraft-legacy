@@ -2,13 +2,17 @@ package powercraft.light;
 
 import java.util.Random;
 
+import org.lwjgl.opengl.GL11;
+
 import net.minecraft.src.NBTTagCompound;
 import powercraft.core.PC_Color;
+import powercraft.core.PC_ITileEntityRenderer;
 import powercraft.core.PC_PacketHandler;
+import powercraft.core.PC_Renderer;
 import powercraft.core.PC_TileEntity;
 import powercraft.core.PC_Utils;
 
-public class PCli_TileEntityLight extends PC_TileEntity
+public class PCli_TileEntityLight extends PC_TileEntity implements PC_ITileEntityRenderer
 {
     private PC_Color color = new PC_Color();
 
@@ -16,6 +20,8 @@ public class PCli_TileEntityLight extends PC_TileEntity
 
     private boolean isHuge;
 
+    private static PCli_ModelLight model = new PCli_ModelLight();
+    
     @Override
     public void readFromNBT(NBTTagCompound nbttagcompound)
     {
@@ -122,4 +128,56 @@ public class PCli_TileEntityLight extends PC_TileEntity
                     "isHuge", isHuge
                 };
     }
+
+	@Override
+	public void renderTileEntityAt(double x, double y, double z, float rot) {
+
+		PC_Renderer.glPushMatrix();
+		float f = 1.0F;
+
+		PC_Renderer.glTranslatef((float) x + 0.5F, (float) y + 0.5F, (float) z + 0.5F);
+		
+		PC_Renderer.bindTexture(mod_PowerCraftLight.getInstance().getTextureDirectory() + "block_light.png");
+
+		PC_Renderer.glPushMatrix();
+		PC_Renderer.glScalef(f, -f, -f);
+
+		PC_Color clr = getColor();
+		if(clr!=null)
+			PC_Renderer.glColor4f((float)clr.r, (float)clr.g, (float)clr.b, 1.0f);
+		else
+			PC_Renderer.glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
+
+		int meta = getCoord().getMeta(worldObj);
+		switch (meta) {
+			case 0:
+				break;
+			case 1:
+				PC_Renderer.glRotatef(-90, 1, 0, 0);
+				break;
+			case 2:
+				PC_Renderer.glRotatef(90, 1, 0, 0);
+				break;
+			case 3:
+				PC_Renderer.glRotatef(-90, 0, 0, 1);
+				break;
+			case 4:
+				PC_Renderer.glRotatef(90, 0, 0, 1);
+				break;
+			case 5:
+				PC_Renderer.glRotatef(180, 1, 0, 0);
+				break;
+		}
+
+		if (isHuge()) {
+			model.renderHuge();
+		} else {
+			model.renderNormal();
+		}
+
+		PC_Renderer.glPopMatrix();
+
+		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
+		GL11.glPopMatrix();
+	}
 }

@@ -12,15 +12,19 @@ import net.minecraft.src.ItemStack;
 import net.minecraft.src.Material;
 import net.minecraft.src.TileEntity;
 import net.minecraft.src.World;
+import powercraft.core.PC_BeamTracer;
+import powercraft.core.PC_BeamTracer.result;
 import powercraft.core.PC_Block;
+import powercraft.core.PC_Color;
 import powercraft.core.PC_CoordI;
+import powercraft.core.PC_IBeamSpecialHandling;
 import powercraft.core.PC_IBlockRenderer;
 import powercraft.core.PC_ICraftingToolDisplayer;
 import powercraft.core.PC_MathHelper;
 import powercraft.core.PC_Renderer;
 import powercraft.core.PC_Utils;
 
-public class PCli_BlockLaser extends PC_Block implements PC_ICraftingToolDisplayer, PC_IBlockRenderer
+public class PCli_BlockLaser extends PC_Block implements PC_ICraftingToolDisplayer, PC_IBlockRenderer, PC_IBeamSpecialHandling
 {
     public PCli_BlockLaser(int id)
     {
@@ -71,6 +75,16 @@ public class PCli_BlockLaser extends PC_Block implements PC_ICraftingToolDisplay
     @Override
     public boolean onBlockActivated(World world, int i, int j, int k, EntityPlayer entityplayer, int par6, float par7, float par8, float par9)
     {
+        PCli_TileEntityLaser te = PC_Utils.getTE(world, i, j, k, blockID);
+
+        if (te != null && te.getItemStack()!=null)
+        {
+        	if (!PC_Utils.isCreative(entityplayer))
+            {
+        		PC_Utils.dropItemStack(world, te.getItemStack(), new PC_CoordI(i, j, k));
+            }
+            te.setItemStack(null);
+        }
         return false;
     }
 
@@ -176,24 +190,11 @@ public class PCli_BlockLaser extends PC_Block implements PC_ICraftingToolDisplay
 
 	@Override
 	public void renderWorldBlock(IBlockAccess world, int x, int y, int z, Block block, int modelId, Object renderer) {
-		Block.cobblestone.setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 0.2F, 1.0F);
-		PC_Renderer.renderStandardBlock(renderer, Block.cobblestone, x, y, z);
-		Block.cobblestone.setBlockBounds(0.3F, 0.2F, 0.3F, 0.7F, 0.3F, 0.7F);
-		PC_Renderer.renderStandardBlock(renderer, Block.cobblestone, x, y, z);
-		Block.cobblestone.setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 1.0F, 1.0F);
-		PC_Renderer.tessellatorDraw();
-		PC_Renderer.swapTerrain(block);
-		PC_Renderer.tessellatorStartDrawingQuads();
-		int metadata = PC_Utils.getMD(world, x, y, z);
-		if(metadata == 2 || metadata == 3){
-			block.setBlockBounds(0.3F, 0.3F, 0.2F, 0.7F, 0.7F, 0.8F);
-		}else if(metadata == 4 || metadata == 5){
-			block.setBlockBounds(0.2F, 0.3F, 0.3F, 0.8F, 0.7F, 0.7F);
-		}
-		PC_Renderer.renderStandardBlock(renderer, block, x, y, z);
-		block.setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 1.0F, 1.0F);
-		PC_Renderer.tessellatorDraw();
-		PC_Renderer.resetTerrain(true);
-		PC_Renderer.tessellatorStartDrawingQuads();
+		
+	}
+
+	@Override
+	public result onHitByBeamTracer(PC_BeamTracer beamTracer, PC_CoordI cnt, PC_CoordI move, PC_Color color, float strength, int distanceToMove) {
+		return result.STOP;
 	}
 }

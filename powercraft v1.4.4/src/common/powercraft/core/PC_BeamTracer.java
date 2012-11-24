@@ -265,7 +265,7 @@ public class PC_BeamTracer {
 	 * @param par_color starting color object
 	 * @param limit length limit for this fork
 	 */
-	protected void forkBeam(PC_CoordI par_cnt, PC_CoordI par_move, PC_Color par_color, float strength, int limit) {
+	public void forkBeam(PC_CoordI par_cnt, PC_CoordI par_move, PC_Color par_color, float strength, int limit) {
 		// copy parameters to prevent interference
 		PC_CoordI cnt = par_cnt.copy();
 		PC_CoordI move = par_move.copy();

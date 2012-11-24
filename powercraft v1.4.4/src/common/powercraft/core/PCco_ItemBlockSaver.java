@@ -154,5 +154,12 @@ public class PCco_ItemBlockSaver extends PC_Item {
 		ItemStack is = new ItemStack(i);
 		list.add(i.getItemDisplayName(is));
 	}
+
+	@Override
+	public String getCraftingToolModule() {
+		return null;
+	}
+	
+	
 	
 }

@@ -47,20 +47,24 @@ public class PCco_ContainerCraftingTool extends PC_GresBaseWithInventory
                     List<ItemStack> l = ((PC_ICraftingToolDisplayer)i).getItemStacks(new ArrayList<ItemStack>());
                     List<PCco_SlotDirectCrafting> ls;
 
-                    if (moduleList.containsKey(module))
-                    {
-                        ls = moduleList.get(module);
-                    }
-                    else
-                    {
-                        moduleList.put(module, ls = new ArrayList<PCco_SlotDirectCrafting>());
-                    }
+                    if(module!=null){
+                    
+	                    if (moduleList.containsKey(module))
+	                    {
+	                        ls = moduleList.get(module);
+	                    }
+	                    else
+	                    {
+	                        moduleList.put(module, ls = new ArrayList<PCco_SlotDirectCrafting>());
+	                    }
+	
+	                    for (ItemStack is: l)
+	                    {
+	                        ls.add(new PCco_SlotDirectCrafting(thePlayer, is, 0, -444, -444));
+	                    }
 
-                    for (ItemStack is: l)
-                    {
-                        ls.add(new PCco_SlotDirectCrafting(thePlayer, is, 0, -444, -444));
                     }
-
+                    
                     continue;
                 }
 

@@ -243,6 +243,7 @@ public class PCco_BlockPowerCrystal extends PC_Block implements PC_IConfigLoader
 	@Override
 	public result onHitByBeamTracer(PC_BeamTracer beamTracer, PC_CoordI cnt, PC_CoordI move, PC_Color color, float strength, int distanceToMove) {
 		color.setTo(colorMultiplier(beamTracer.getWorld(), cnt.x, cnt.y, cnt.z));
+		color.setMeta(PC_Utils.getMD(beamTracer.getWorld(), cnt.x, cnt.y, cnt.z));
 		return result.CONTINUE;
 	}
 }
