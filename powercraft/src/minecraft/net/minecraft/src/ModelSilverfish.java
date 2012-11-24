@@ -54,24 +54,16 @@ public class ModelSilverfish extends ModelBase
     public void render(Entity par1Entity, float par2, float par3, float par4, float par5, float par6, float par7)
     {
         this.setRotationAngles(par2, par3, par4, par5, par6, par7, par1Entity);
-        ModelRenderer[] var8 = this.silverfishBodyParts;
-        int var9 = var8.length;
-        int var10;
-        ModelRenderer var11;
+        int var8;
 
-        for (var10 = 0; var10 < var9; ++var10)
+        for (var8 = 0; var8 < this.silverfishBodyParts.length; ++var8)
         {
-            var11 = var8[var10];
-            var11.render(par7);
+            this.silverfishBodyParts[var8].render(par7);
         }
 
-        var8 = this.silverfishWings;
-        var9 = var8.length;
-
-        for (var10 = 0; var10 < var9; ++var10)
+        for (var8 = 0; var8 < this.silverfishWings.length; ++var8)
         {
-            var11 = var8[var10];
-            var11.render(par7);
+            this.silverfishWings[var8].render(par7);
         }
     }
 

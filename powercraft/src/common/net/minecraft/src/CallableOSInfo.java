@@ -4,12 +4,11 @@ import java.util.concurrent.Callable;
 
 class CallableOSInfo implements Callable
 {
-    /** Gets OS Info for Crash Report. */
-    final CrashReport crashReportOSInfo;
+    final CrashReport theCrashReport;
 
     CallableOSInfo(CrashReport par1CrashReport)
     {
-        this.crashReportOSInfo = par1CrashReport;
+        this.theCrashReport = par1CrashReport;
     }
 
     public String getOsAsString()

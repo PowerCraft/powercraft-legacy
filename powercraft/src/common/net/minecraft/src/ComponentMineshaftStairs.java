@@ -12,9 +12,6 @@ public class ComponentMineshaftStairs extends StructureComponent
         this.boundingBox = par3StructureBoundingBox;
     }
 
-    /**
-     * Trys to find a valid place to put this component.
-     */
     public static StructureBoundingBox findValidPlacement(List par0List, Random par1Random, int par2, int par3, int par4, int par5)
     {
         StructureBoundingBox var6 = new StructureBoundingBox(par2, par3 - 5, par4, par2, par3 + 2, par4);
@@ -25,14 +22,17 @@ public class ComponentMineshaftStairs extends StructureComponent
                 var6.maxX = par2 + 2;
                 var6.maxZ = par4 + 8;
                 break;
+
             case 1:
                 var6.minX = par2 - 8;
                 var6.maxZ = par4 + 2;
                 break;
+
             case 2:
                 var6.maxX = par2 + 2;
                 var6.minZ = par4 - 8;
                 break;
+
             case 3:
                 var6.maxX = par2 + 8;
                 var6.maxZ = par4 + 2;
@@ -41,9 +41,6 @@ public class ComponentMineshaftStairs extends StructureComponent
         return StructureComponent.findIntersecting(par0List, var6) != null ? null : var6;
     }
 
-    /**
-     * Initiates construction of the Structure Component picked, at the current Location of StructGen
-     */
     public void buildComponent(StructureComponent par1StructureComponent, List par2List, Random par3Random)
     {
         int var4 = this.getComponentType();
@@ -53,21 +50,20 @@ public class ComponentMineshaftStairs extends StructureComponent
             case 0:
                 StructureMineshaftPieces.getNextComponent(par1StructureComponent, par2List, par3Random, this.boundingBox.minX, this.boundingBox.minY, this.boundingBox.maxZ + 1, 0, var4);
                 break;
+
             case 1:
                 StructureMineshaftPieces.getNextComponent(par1StructureComponent, par2List, par3Random, this.boundingBox.minX - 1, this.boundingBox.minY, this.boundingBox.minZ, 1, var4);
                 break;
+
             case 2:
                 StructureMineshaftPieces.getNextComponent(par1StructureComponent, par2List, par3Random, this.boundingBox.minX, this.boundingBox.minY, this.boundingBox.minZ - 1, 2, var4);
                 break;
+
             case 3:
                 StructureMineshaftPieces.getNextComponent(par1StructureComponent, par2List, par3Random, this.boundingBox.maxX + 1, this.boundingBox.minY, this.boundingBox.minZ, 3, var4);
         }
     }
 
-    /**
-     * second Part of Structure generating, this for example places Spiderwebs, Mob Spawners, it closes Mineshafts at
-     * the end, it adds Fences...
-     */
     public boolean addComponentParts(World par1World, Random par2Random, StructureBoundingBox par3StructureBoundingBox)
     {
         if (this.isLiquidInStructureBoundingBox(par1World, par3StructureBoundingBox))

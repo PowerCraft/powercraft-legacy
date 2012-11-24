@@ -2,7 +2,6 @@ package net.minecraft.src;
 
 import cpw.mods.fml.common.Side;
 import cpw.mods.fml.common.asm.SideOnly;
-import java.util.Iterator;
 import java.util.List;
 
 public class EntityBoat extends Entity
@@ -32,10 +31,6 @@ public class EntityBoat extends Entity
         this.yOffset = this.height / 2.0F;
     }
 
-    /**
-     * returns if this entity triggers Block.onEntityWalking on the blocks they walk on. used for spiders and wolves to
-     * prevent them from trampling crops
-     */
     protected boolean canTriggerWalking()
     {
         return false;
@@ -48,26 +43,16 @@ public class EntityBoat extends Entity
         this.dataWatcher.addObject(19, new Integer(0));
     }
 
-    /**
-     * Returns a boundingBox used to collide the entity with other entities and blocks. This enables the entity to be
-     * pushable on contact, like boats or minecarts.
-     */
     public AxisAlignedBB getCollisionBox(Entity par1Entity)
     {
         return par1Entity.boundingBox;
     }
 
-    /**
-     * returns the bounding box for this entity
-     */
     public AxisAlignedBB getBoundingBox()
     {
         return this.boundingBox;
     }
 
-    /**
-     * Returns true if this entity should push and be pushed by other entities when colliding.
-     */
     public boolean canBePushed()
     {
         return true;
@@ -85,20 +70,18 @@ public class EntityBoat extends Entity
         this.prevPosZ = par6;
     }
 
-    /**
-     * Returns the Y offset from the entity's position for any entity riding this one.
-     */
     public double getMountedYOffset()
     {
         return (double)this.height * 0.0D - 0.30000001192092896D;
     }
 
-    /**
-     * Called when the entity is attacked.
-     */
     public boolean attackEntityFrom(DamageSource par1DamageSource, int par2)
     {
-        if (!this.worldObj.isRemote && !this.isDead)
+        if (this.func_85032_ar())
+        {
+            return false;
+        }
+        else if (!this.worldObj.isRemote && !this.isDead)
         {
             this.setForwardDirection(-this.getForwardDirection());
             this.setTimeSinceHit(10);
@@ -131,9 +114,6 @@ public class EntityBoat extends Entity
 
     @SideOnly(Side.CLIENT)
 
-    /**
-     * Setups the entity to do the hurt animation. Only used by packets in multiplayer.
-     */
     public void performHurtAnimation()
     {
         this.setForwardDirection(-this.getForwardDirection());
@@ -141,9 +121,6 @@ public class EntityBoat extends Entity
         this.setDamageTaken(this.getDamageTaken() * 11);
     }
 
-    /**
-     * Returns true if other Entities should be prevented from moving through this Entity.
-     */
     public boolean canBeCollidedWith()
     {
         return !this.isDead;
@@ -151,10 +128,6 @@ public class EntityBoat extends Entity
 
     @SideOnly(Side.CLIENT)
 
-    /**
-     * Sets the position and rotation. Only difference from the other one is no bounding on the rotation. Args: posX,
-     * posY, posZ, yaw, pitch
-     */
     public void setPositionAndRotation2(double par1, double par3, double par5, float par7, float par8, int par9)
     {
         if (this.field_70279_a)
@@ -188,9 +161,6 @@ public class EntityBoat extends Entity
 
     @SideOnly(Side.CLIENT)
 
-    /**
-     * Sets the velocity to the args. Args: x, y, z
-     */
     public void setVelocity(double par1, double par3, double par5)
     {
         this.velocityX = this.motionX = par1;
@@ -198,9 +168,6 @@ public class EntityBoat extends Entity
         this.velocityZ = this.motionZ = par5;
     }
 
-    /**
-     * Called to update the entity's position/logic.
-     */
     public void onUpdate()
     {
         super.onUpdate();
@@ -414,14 +381,13 @@ public class EntityBoat extends Entity
             if (!this.worldObj.isRemote)
             {
                 List var16 = this.worldObj.getEntitiesWithinAABBExcludingEntity(this, this.boundingBox.expand(0.20000000298023224D, 0.0D, 0.20000000298023224D));
+                int var27;
 
                 if (var16 != null && !var16.isEmpty())
                 {
-                    Iterator var28 = var16.iterator();
-
-                    while (var28.hasNext())
+                    for (var27 = 0; var27 < var16.size(); ++var27)
                     {
-                        Entity var18 = (Entity)var28.next();
+                        Entity var18 = (Entity)var16.get(var27);
 
                         if (var18 != this.riddenByEntity && var18.canBePushed() && var18 instanceof EntityBoat)
                         {
@@ -430,25 +396,25 @@ public class EntityBoat extends Entity
                     }
                 }
 
-                for (int var27 = 0; var27 < 4; ++var27)
+                for (var27 = 0; var27 < 4; ++var27)
                 {
-                    int var29 = MathHelper.floor_double(this.posX + ((double)(var27 % 2) - 0.5D) * 0.8D);
+                    int var28 = MathHelper.floor_double(this.posX + ((double)(var27 % 2) - 0.5D) * 0.8D);
                     int var19 = MathHelper.floor_double(this.posZ + ((double)(var27 / 2) - 0.5D) * 0.8D);
 
                     for (int var20 = 0; var20 < 2; ++var20)
                     {
                         int var21 = MathHelper.floor_double(this.posY) + var20;
-                        int var22 = this.worldObj.getBlockId(var29, var21, var19);
-                        int var23 = this.worldObj.getBlockMetadata(var29, var21, var19);
+                        int var22 = this.worldObj.getBlockId(var28, var21, var19);
+                        int var23 = this.worldObj.getBlockMetadata(var28, var21, var19);
 
                         if (var22 == Block.snow.blockID)
                         {
-                            this.worldObj.setBlockWithNotify(var29, var21, var19, 0);
+                            this.worldObj.setBlockWithNotify(var28, var21, var19, 0);
                         }
                         else if (var22 == Block.waterlily.blockID)
                         {
-                            Block.waterlily.dropBlockAsItemWithChance(this.worldObj, var29, var21, var19, var23, 0.3F, 0);
-                            this.worldObj.setBlockWithNotify(var29, var21, var19, 0);
+                            Block.waterlily.dropBlockAsItemWithChance(this.worldObj, var28, var21, var19, var23, 0.3F, 0);
+                            this.worldObj.setBlockWithNotify(var28, var21, var19, 0);
                         }
                     }
                 }
@@ -471,25 +437,10 @@ public class EntityBoat extends Entity
         }
     }
 
-    /**
-     * (abstract) Protected helper method to write subclass entity data to NBT.
-     */
     protected void writeEntityToNBT(NBTTagCompound par1NBTTagCompound) {}
 
-    /**
-     * (abstract) Protected helper method to read subclass entity data from NBT.
-     */
     protected void readEntityFromNBT(NBTTagCompound par1NBTTagCompound) {}
 
-    @SideOnly(Side.CLIENT)
-    public float getShadowSize()
-    {
-        return 0.0F;
-    }
-
-    /**
-     * Called when a player interacts with a mob. e.g. gets milk from a cow, gets into the saddle on a pig.
-     */
     public boolean interact(EntityPlayer par1EntityPlayer)
     {
         if (this.riddenByEntity != null && this.riddenByEntity instanceof EntityPlayer && this.riddenByEntity != par1EntityPlayer)
@@ -507,49 +458,37 @@ public class EntityBoat extends Entity
         }
     }
 
-    /**
-     * Sets the damage taken from the last hit.
-     */
     public void setDamageTaken(int par1)
     {
         this.dataWatcher.updateObject(19, Integer.valueOf(par1));
     }
 
-    /**
-     * Gets the damage taken from the last hit.
-     */
+    @SideOnly(Side.CLIENT)
+    public float getShadowSize()
+    {
+        return 0.0F;
+    }
+
     public int getDamageTaken()
     {
         return this.dataWatcher.getWatchableObjectInt(19);
     }
 
-    /**
-     * Sets the time to count down from since the last time entity was hit.
-     */
     public void setTimeSinceHit(int par1)
     {
         this.dataWatcher.updateObject(17, Integer.valueOf(par1));
     }
 
-    /**
-     * Gets the time since the last hit.
-     */
     public int getTimeSinceHit()
     {
         return this.dataWatcher.getWatchableObjectInt(17);
     }
 
-    /**
-     * Sets the forward direction of the entity.
-     */
     public void setForwardDirection(int par1)
     {
         this.dataWatcher.updateObject(18, Integer.valueOf(par1));
     }
 
-    /**
-     * Gets the forward direction of the entity.
-     */
     public int getForwardDirection()
     {
         return this.dataWatcher.getWatchableObjectInt(18);

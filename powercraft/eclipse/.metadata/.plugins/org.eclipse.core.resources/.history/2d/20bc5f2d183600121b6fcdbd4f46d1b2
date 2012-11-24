@@ -1,0 +1,43 @@
+package powercraft.light;
+
+import net.minecraft.src.Block;
+import net.minecraft.src.IBlockAccess;
+import powercraft.core.PC_BeamTracer;
+import powercraft.core.PC_BeamTracer.result;
+import powercraft.core.PC_Block;
+import powercraft.core.PC_Color;
+import powercraft.core.PC_CoordI;
+import powercraft.core.PC_IBeamSpecialHandling;
+import powercraft.core.PC_IBlockRenderer;
+
+public class PCli_BlockPrism extends PC_Block implements
+		PC_IBeamSpecialHandling, PC_IBlockRenderer {
+
+	@Override
+	public void renderInventoryBlock(Block block, int metadata, int modelID,
+			Object renderer) {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void renderWorldBlock(IBlockAccess world, int x, int y, int z,
+			Block block, int modelId, Object renderer) {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public result onHitByBeamTracer(PC_BeamTracer beamTracer, PC_CoordI cnt,
+			PC_CoordI move, PC_Color color, float strength, int distanceToMove) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public String getDefaultName() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+}

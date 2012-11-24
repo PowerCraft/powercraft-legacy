@@ -1,9 +1,37 @@
-2012-10-18 16:14:40 [INFO] [ForgeModLoader] Forge Mod Loader version 3.1.35.394 for Minecraft client:1.3.2, server:1.3.2 loading
-2012-10-18 16:14:41 [FINEST] [ForgeModLoader] All core mods are successfully located
-2012-10-18 16:14:41 [FINEST] [ForgeModLoader] Discovering coremods
-2012-10-18 16:14:43 [FINEST] [ForgeModLoader] Found library file argo-2.25.jar present and correct in lib dir
-
-2012-10-18 16:14:45 [FINEST] [ForgeModLoader] Found library file guava-12.0.1.jar present and correct in lib dir
-
-2012-10-18 16:14:46 [FINEST] [ForgeModLoader] Found library file asm-all-4.0.jar present and correct in lib dir
-
+2012-11-24 23:07:12 [INFO] [ForgeModLoader] Forge Mod Loader version 4.4.4.442 for Minecraft 1.4.4 loading
+2012-11-24 23:07:12 [FINEST] [ForgeModLoader] All core mods are successfully located
+2012-11-24 23:07:12 [FINEST] [ForgeModLoader] Discovering coremods
+2012-11-24 23:07:12 [FINEST] [ForgeModLoader] Found library file argo-2.25.jar present and correct in lib dir
+2012-11-24 23:07:12 [FINEST] [ForgeModLoader] Found library file guava-12.0.1.jar present and correct in lib dir
+2012-11-24 23:07:12 [FINEST] [ForgeModLoader] Found library file asm-all-4.0.jar present and correct in lib dir
+2012-11-24 23:07:12 [FINEST] [ForgeModLoader] Running coremod plugins
+2012-11-24 23:07:12 [FINEST] [ForgeModLoader] Running coremod plugin FMLCorePlugin
+2012-11-24 23:07:12 [FINEST] [ForgeModLoader] Coremod plugin FMLCorePlugin run successfully
+2012-11-24 23:07:12 [FINEST] [ForgeModLoader] Running coremod plugin FMLForgePlugin
+2012-11-24 23:07:12 [FINEST] [ForgeModLoader] Coremod plugin FMLForgePlugin run successfully
+2012-11-24 23:07:12 [FINEST] [ForgeModLoader] Validating minecraft
+2012-11-24 23:07:12 [FINEST] [ForgeModLoader] Minecraft validated, launching...
+2012-11-24 23:07:13 [INFO] [STDOUT] 27 achievements
+2012-11-24 23:07:13 [INFO] [STDOUT] 208 recipes
+2012-11-24 23:07:13 [INFO] [STDOUT] Setting user: Player460, -
+2012-11-24 23:07:13 [INFO] [STDERR] Client asked for parameter: server
+2012-11-24 23:07:13 [INFO] [STDOUT] LWJGL Version: 2.4.2
+2012-11-24 23:07:14 [INFO] [STDERR] Exception in thread "Minecraft main thread" java.lang.NoClassDefFoundError: cpw/mods/fml/client/TextureFXManager
+2012-11-24 23:07:14 [INFO] [STDERR] 	at net.minecraft.src.RenderEngine.setupTexture(RenderEngine.java:292)
+2012-11-24 23:07:14 [INFO] [STDERR] 	at net.minecraft.src.RenderEngine.getTexture(RenderEngine.java:212)
+2012-11-24 23:07:14 [INFO] [STDERR] 	at net.minecraft.client.Minecraft.loadScreen(Minecraft.java:521)
+2012-11-24 23:07:14 [INFO] [STDERR] 	at net.minecraft.client.Minecraft.startGame(Minecraft.java:421)
+2012-11-24 23:07:14 [INFO] [STDERR] 	at net.minecraft.client.Minecraft.run(Minecraft.java:756)
+2012-11-24 23:07:14 [INFO] [STDERR] 	at java.lang.Thread.run(Unknown Source)
+2012-11-24 23:07:14 [INFO] [STDERR] Caused by: java.lang.ClassNotFoundException: cpw.mods.fml.client.TextureFXManager
+2012-11-24 23:07:14 [INFO] [STDERR] 	at cpw.mods.fml.relauncher.RelaunchClassLoader.findClass(RelaunchClassLoader.java:139)
+2012-11-24 23:07:14 [INFO] [STDERR] 	at java.lang.ClassLoader.loadClass(Unknown Source)
+2012-11-24 23:07:14 [INFO] [STDERR] 	at java.lang.ClassLoader.loadClass(Unknown Source)
+2012-11-24 23:07:14 [INFO] [STDERR] 	... 6 more
+2012-11-24 23:07:14 [INFO] [STDERR] Caused by: java.lang.NullPointerException
+2012-11-24 23:07:14 [INFO] [STDERR] 	at org.objectweb.asm.ClassReader.<init>(Unknown Source)
+2012-11-24 23:07:14 [INFO] [STDERR] 	at net.minecraftforge.transformers.EventTransformer.transform(EventTransformer.java:30)
+2012-11-24 23:07:14 [INFO] [STDERR] 	at cpw.mods.fml.relauncher.RelaunchClassLoader.runTransformers(RelaunchClassLoader.java:178)
+2012-11-24 23:07:14 [INFO] [STDERR] 	at cpw.mods.fml.relauncher.RelaunchClassLoader.findClass(RelaunchClassLoader.java:131)
+2012-11-24 23:07:14 [INFO] [STDERR] 	... 8 more
+2012-11-24 23:07:20 [INFO] [STDERR] Someone is closing me!

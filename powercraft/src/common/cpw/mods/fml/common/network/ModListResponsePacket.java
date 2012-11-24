@@ -26,7 +26,7 @@ import cpw.mods.fml.common.ModContainer;
 
 public class ModListResponsePacket extends FMLPacket
 {
-    private Map<String,String> modVersions;
+    private Map<String, String> modVersions;
     private List<String> missingMods;
 
     public ModListResponsePacket()
@@ -37,20 +37,24 @@ public class ModListResponsePacket extends FMLPacket
     @Override
     public byte[] generatePacket(Object... data)
     {
-        Map<String,String> modVersions = (Map<String, String>) data[0];
+        Map<String, String> modVersions = (Map<String, String>) data[0];
         List<String> missingMods = (List<String>) data[1];
         ByteArrayDataOutput dat = ByteStreams.newDataOutput();
         dat.writeInt(modVersions.size());
+
         for (Entry<String, String> version : modVersions.entrySet())
         {
             dat.writeUTF(version.getKey());
             dat.writeUTF(version.getValue());
         }
+
         dat.writeInt(missingMods.size());
+
         for (String missing : missingMods)
         {
             dat.writeUTF(missing);
         }
+
         return dat.toByteArray();
     }
 
@@ -60,6 +64,7 @@ public class ModListResponsePacket extends FMLPacket
         ByteArrayDataInput dat = ByteStreams.newDataInput(data);
         int versionListSize = dat.readInt();
         modVersions = Maps.newHashMapWithExpectedSize(versionListSize);
+
         for (int i = 0; i < versionListSize; i++)
         {
             String modName = dat.readUTF();
@@ -74,6 +79,7 @@ public class ModListResponsePacket extends FMLPacket
         {
             missingMods.add(dat.readUTF());
         }
+
         return this;
     }
 
@@ -88,16 +94,18 @@ public class ModListResponsePacket extends FMLPacket
         {
             ModContainer mc = indexedModList.get(m);
             NetworkModHandler networkMod = handler.findNetworkModHandler(mc);
+
             if (networkMod.requiresClientSide())
             {
                 missingClientMods.add(m);
             }
         }
 
-        for (Entry<String,String> modVersion : modVersions.entrySet())
+        for (Entry<String, String> modVersion : modVersions.entrySet())
         {
             ModContainer mc = indexedModList.get(modVersion.getKey());
             NetworkModHandler networkMod = handler.findNetworkModHandler(mc);
+
             if (!networkMod.acceptVersion(modVersion.getValue()))
             {
                 versionIncorrectMods.add(modVersion.getKey());
@@ -106,12 +114,12 @@ public class ModListResponsePacket extends FMLPacket
 
         Packet250CustomPayload pkt = new Packet250CustomPayload();
         pkt.channel = "FML";
-        if (missingClientMods.size()>0 || versionIncorrectMods.size() > 0)
+
+        if (missingClientMods.size() > 0 || versionIncorrectMods.size() > 0)
         {
             pkt.data = FMLPacket.makePacket(MOD_MISSING, missingClientMods, versionIncorrectMods);
             Logger.getLogger("Minecraft").info(String.format("User %s connection failed: missing %s, bad versions %s", userName, missingClientMods, versionIncorrectMods));
             FMLLog.info("User %s connection failed: missing %s, bad versions %s", userName, missingClientMods, versionIncorrectMods);
-            // Mark this as bad
             FMLNetworkHandler.setHandlerState((NetLoginHandler) netHandler, FMLNetworkHandler.MISSING_MODS_OR_VERSIONS);
         }
         else
@@ -123,8 +131,6 @@ public class ModListResponsePacket extends FMLPacket
 
         pkt.length = pkt.data.length;
         network.addToSendQueue(pkt);
-        // reset the continuation flag - we have completed extra negotiation and the login should complete now
         NetLoginHandler.func_72531_a((NetLoginHandler) netHandler, true);
     }
-
 }

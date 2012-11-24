@@ -2,7 +2,9 @@ package cpw.mods.fml.common.event;
 
 import java.io.File;
 import java.util.Properties;
+import java.util.logging.Logger;
 
+import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.common.LoaderState.ModState;
 import cpw.mods.fml.common.FMLModContainer;
 import cpw.mods.fml.common.ModContainer;
@@ -37,7 +39,7 @@ public class FMLPreInitializationEvent extends FMLStateEvent
         this.modContainer = activeContainer;
         this.modMetadata = activeContainer.getMetadata();
         this.sourceFile = activeContainer.getSource();
-        this.suggestedConfigFile = new File(configurationDir, activeContainer.getModId()+".cfg");
+        this.suggestedConfigFile = new File(configurationDir, activeContainer.getModId() + ".cfg");
     }
 
     public File getSourceFile()
@@ -73,5 +75,12 @@ public class FMLPreInitializationEvent extends FMLStateEvent
         }
 
         return null;
+    }
+
+    public Logger getModLog()
+    {
+        Logger log = Logger.getLogger(modContainer.getModId());
+        log.setParent(FMLLog.getLogger());
+        return log;
     }
 }

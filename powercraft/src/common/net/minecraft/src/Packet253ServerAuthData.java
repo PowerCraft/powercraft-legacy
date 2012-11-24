@@ -22,9 +22,6 @@ public class Packet253ServerAuthData extends Packet
         this.verifyToken = par3ArrayOfByte;
     }
 
-    /**
-     * Abstract. Reads the raw packet data from the data stream.
-     */
     public void readPacketData(DataInputStream par1DataInputStream) throws IOException
     {
         this.serverId = readString(par1DataInputStream, 20);
@@ -32,9 +29,6 @@ public class Packet253ServerAuthData extends Packet
         this.verifyToken = readBytesFromStream(par1DataInputStream);
     }
 
-    /**
-     * Abstract. Writes the raw packet data to the data stream.
-     */
     public void writePacketData(DataOutputStream par1DataOutputStream) throws IOException
     {
         writeString(this.serverId, par1DataOutputStream);
@@ -42,17 +36,11 @@ public class Packet253ServerAuthData extends Packet
         writeByteArray(par1DataOutputStream, this.verifyToken);
     }
 
-    /**
-     * Passes this Packet on to the NetHandler for processing.
-     */
     public void processPacket(NetHandler par1NetHandler)
     {
         par1NetHandler.handleServerAuthData(this);
     }
 
-    /**
-     * Abstract. Return the size of the packet (not counting the header).
-     */
     public int getPacketSize()
     {
         return 2 + this.serverId.length() * 2 + 2 + this.publicKey.getEncoded().length + 2 + this.verifyToken.length;

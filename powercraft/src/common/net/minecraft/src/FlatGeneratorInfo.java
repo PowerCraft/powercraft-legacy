@@ -9,28 +9,29 @@ import java.util.Map.Entry;
 
 public class FlatGeneratorInfo
 {
-    private final List field_82655_a = new ArrayList();
-    private final Map field_82653_b = new HashMap();
+    private final List flatLayers = new ArrayList();
+
+    private final Map worldFeatures = new HashMap();
     private int field_82654_c = 0;
 
-    public int func_82648_a()
+    public int getBiome()
     {
         return this.field_82654_c;
     }
 
-    public void func_82647_a(int par1)
+    public void setBiome(int par1)
     {
         this.field_82654_c = par1;
     }
 
-    public Map func_82644_b()
+    public Map getWorldFeatures()
     {
-        return this.field_82653_b;
+        return this.worldFeatures;
     }
 
-    public List func_82650_c()
+    public List getFlatLayers()
     {
-        return this.field_82655_a;
+        return this.flatLayers;
     }
 
     public void func_82645_d()
@@ -38,10 +39,10 @@ public class FlatGeneratorInfo
         int var1 = 0;
         FlatLayerInfo var3;
 
-        for (Iterator var2 = this.field_82655_a.iterator(); var2.hasNext(); var1 += var3.func_82657_a())
+        for (Iterator var2 = this.flatLayers.iterator(); var2.hasNext(); var1 += var3.getLayerCount())
         {
             var3 = (FlatLayerInfo)var2.next();
-            var3.func_82660_d(var1);
+            var3.setMinY(var1);
         }
     }
 
@@ -52,24 +53,24 @@ public class FlatGeneratorInfo
         var1.append(";");
         int var2;
 
-        for (var2 = 0; var2 < this.field_82655_a.size(); ++var2)
+        for (var2 = 0; var2 < this.flatLayers.size(); ++var2)
         {
             if (var2 > 0)
             {
                 var1.append(",");
             }
 
-            var1.append(((FlatLayerInfo)this.field_82655_a.get(var2)).toString());
+            var1.append(((FlatLayerInfo)this.flatLayers.get(var2)).toString());
         }
 
         var1.append(";");
         var1.append(this.field_82654_c);
 
-        if (!this.field_82653_b.isEmpty())
+        if (!this.worldFeatures.isEmpty())
         {
             var1.append(";");
             var2 = 0;
-            Iterator var3 = this.field_82653_b.entrySet().iterator();
+            Iterator var3 = this.worldFeatures.entrySet().iterator();
 
             while (var3.hasNext())
             {
@@ -169,7 +170,7 @@ public class FlatGeneratorInfo
         }
 
         FlatLayerInfo var9 = new FlatLayerInfo(var3, var4, var5);
-        var9.func_82660_d(par1);
+        var9.setMinY(par1);
         return var9;
     }
 
@@ -194,7 +195,7 @@ public class FlatGeneratorInfo
                 }
 
                 var1.add(var8);
-                var3 += var8.func_82657_a();
+                var3 += var8.getLayerCount();
             }
 
             return var1;
@@ -224,7 +225,7 @@ public class FlatGeneratorInfo
 
                 if (var5 != null && !var5.isEmpty())
                 {
-                    var3.func_82650_c().addAll(var5);
+                    var3.getFlatLayers().addAll(var5);
                     var3.func_82645_d();
                     int var6 = BiomeGenBase.plains.biomeID;
 
@@ -233,7 +234,7 @@ public class FlatGeneratorInfo
                         var6 = MathHelper.func_82715_a(var1[var4++], var6);
                     }
 
-                    var3.func_82647_a(var6);
+                    var3.setBiome(var6);
 
                     if (var2 > 0 && var1.length > var4)
                     {
@@ -249,7 +250,7 @@ public class FlatGeneratorInfo
 
                             if (var12[0].length() > 0)
                             {
-                                var3.func_82644_b().put(var12[0], var13);
+                                var3.getWorldFeatures().put(var12[0], var13);
 
                                 if (var12.length > 1 && var12[1].endsWith(")") && var12[1].length() > 1)
                                 {
@@ -270,7 +271,7 @@ public class FlatGeneratorInfo
                     }
                     else
                     {
-                        var3.func_82644_b().put("village", new HashMap());
+                        var3.getWorldFeatures().put("village", new HashMap());
                     }
 
                     return var3;
@@ -290,12 +291,12 @@ public class FlatGeneratorInfo
     public static FlatGeneratorInfo func_82649_e()
     {
         FlatGeneratorInfo var0 = new FlatGeneratorInfo();
-        var0.func_82647_a(BiomeGenBase.plains.biomeID);
-        var0.func_82650_c().add(new FlatLayerInfo(1, Block.bedrock.blockID));
-        var0.func_82650_c().add(new FlatLayerInfo(2, Block.dirt.blockID));
-        var0.func_82650_c().add(new FlatLayerInfo(1, Block.grass.blockID));
+        var0.setBiome(BiomeGenBase.plains.biomeID);
+        var0.getFlatLayers().add(new FlatLayerInfo(1, Block.bedrock.blockID));
+        var0.getFlatLayers().add(new FlatLayerInfo(2, Block.dirt.blockID));
+        var0.getFlatLayers().add(new FlatLayerInfo(1, Block.grass.blockID));
         var0.func_82645_d();
-        var0.func_82644_b().put("village", new HashMap());
+        var0.getWorldFeatures().put("village", new HashMap());
         return var0;
     }
 }

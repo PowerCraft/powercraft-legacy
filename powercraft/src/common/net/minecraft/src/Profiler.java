@@ -9,24 +9,16 @@ import java.util.Map;
 
 public class Profiler
 {
-    /** List of parent sections */
     private final List sectionList = new ArrayList();
 
-    /** List of timestamps (System.nanoTime) */
     private final List timestampList = new ArrayList();
 
-    /** Flag profiling enabled */
     public boolean profilingEnabled = false;
 
-    /** Current profiling section */
     private String profilingSection = "";
 
-    /** Profiling map */
     private final Map profilingMap = new HashMap();
 
-    /**
-     * Clear profiling.
-     */
     public void clearProfiling()
     {
         this.profilingMap.clear();
@@ -34,9 +26,6 @@ public class Profiler
         this.sectionList.clear();
     }
 
-    /**
-     * Start section
-     */
     public void startSection(String par1Str)
     {
         if (this.profilingEnabled)
@@ -52,9 +41,6 @@ public class Profiler
         }
     }
 
-    /**
-     * End section
-     */
     public void endSection()
     {
         if (this.profilingEnabled)
@@ -82,9 +68,6 @@ public class Profiler
         }
     }
 
-    /**
-     * Get profiling data
-     */
     public List getProfilingData(String par1Str)
     {
         if (!this.profilingEnabled)
@@ -163,9 +146,6 @@ public class Profiler
         }
     }
 
-    /**
-     * End current section and start a new section
-     */
     public void endStartSection(String par1Str)
     {
         this.endSection();

@@ -9,21 +9,21 @@ import org.lwjgl.Sys;
 @SideOnly(Side.CLIENT)
 public class CallableLWJGLVersion implements Callable
 {
-    /** Gets Minecraft LWJGL version. */
-    final Minecraft minecraftLWJGLVersion;
+    /** Reference to the Minecraft object. */
+    final Minecraft mc;
 
     public CallableLWJGLVersion(Minecraft par1Minecraft)
     {
-        this.minecraftLWJGLVersion = par1Minecraft;
+        this.mc = par1Minecraft;
     }
 
-    public String getLWJGLVersion()
+    public String getType()
     {
         return Sys.getVersion();
     }
 
     public Object call()
     {
-        return this.getLWJGLVersion();
+        return this.getType();
     }
 }

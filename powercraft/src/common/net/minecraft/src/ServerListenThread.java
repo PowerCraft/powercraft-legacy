@@ -29,9 +29,9 @@ public class ServerListenThread extends Thread
     {
         super("Listen thread");
         this.myNetworkListenThread = par1NetworkListenThread;
-        this.myServerAddress = par2InetAddress;
         this.myPort = par3;
         this.myServerSocket = new ServerSocket(par3, 0, par2InetAddress);
+        this.myServerAddress = par2InetAddress == null ? this.myServerSocket.getInetAddress() : par2InetAddress;
         this.myServerSocket.setPerformancePreferences(0, 2, 1);
     }
 
@@ -52,8 +52,8 @@ public class ServerListenThread extends Thread
                 catch (Exception var6)
                 {
                     var3.raiseErrorAndDisconnect("Internal server error");
-                    FMLLog.log(Level.SEVERE, var6, "Error handling login related packet - connection from %s refused", var3.clientUsername);
-                    logger.log(Level.WARNING, "Failed to handle packet: " + var6, var6);
+                    FMLLog.log(Level.SEVERE, var6, "Error handling login related packet - connection from %s refused", var3.getUsernameAndAddress());
+                    logger.log(Level.WARNING, "Failed to handle packet for " + var3.getUsernameAndAddress() + ": " + var6, var6);
                 }
 
                 if (var3.connectionComplete)

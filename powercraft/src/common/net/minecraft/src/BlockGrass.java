@@ -14,9 +14,6 @@ public class BlockGrass extends Block
         this.setCreativeTab(CreativeTabs.tabBlock);
     }
 
-    /**
-     * From the specified side and block metadata retrieves the blocks texture. Args: side, metadata
-     */
     public int getBlockTextureFromSideAndMetadata(int par1, int par2)
     {
         return par1 == 1 ? 0 : (par1 == 0 ? 2 : 3);
@@ -24,9 +21,6 @@ public class BlockGrass extends Block
 
     @SideOnly(Side.CLIENT)
 
-    /**
-     * Retrieves the block texture to use based on the display side. Args: iBlockAccess, x, y, z, side
-     */
     public int getBlockTexture(IBlockAccess par1IBlockAccess, int par2, int par3, int par4, int par5)
     {
         if (par5 == 1)
@@ -54,9 +48,6 @@ public class BlockGrass extends Block
 
     @SideOnly(Side.CLIENT)
 
-    /**
-     * Returns the color this block should be rendered. Used by leaves.
-     */
     public int getRenderColor(int par1)
     {
         return this.getBlockColor();
@@ -64,10 +55,6 @@ public class BlockGrass extends Block
 
     @SideOnly(Side.CLIENT)
 
-    /**
-     * Returns a integer with hex for 0xrrggbb with this color multiplied against the blocks color. Note only called
-     * when first determining what to render.
-     */
     public int colorMultiplier(IBlockAccess par1IBlockAccess, int par2, int par3, int par4)
     {
         int var5 = 0;
@@ -88,9 +75,6 @@ public class BlockGrass extends Block
         return (var5 / 9 & 255) << 16 | (var6 / 9 & 255) << 8 | var7 / 9 & 255;
     }
 
-    /**
-     * Ticks the block if it's been scheduled
-     */
     public void updateTick(World par1World, int par2, int par3, int par4, Random par5Random)
     {
         if (!par1World.isRemote)
@@ -117,9 +101,6 @@ public class BlockGrass extends Block
         }
     }
 
-    /**
-     * Returns the ID of the items to drop on destruction.
-     */
     public int idDropped(int par1, Random par2Random, int par3)
     {
         return Block.dirt.idDropped(0, par2Random, par3);

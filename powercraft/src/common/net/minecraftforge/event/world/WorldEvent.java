@@ -14,16 +14,25 @@ public class WorldEvent extends Event
 
     public static class Load extends WorldEvent
     {
-        public Load(World world) { super(world); }
+        public Load(World world)
+        {
+            super(world);
+        }
     }
 
     public static class Unload extends WorldEvent
     {
-        public Unload(World world) { super(world); }
+        public Unload(World world)
+        {
+            super(world);
+        }
     }
 
     public static class Save extends WorldEvent
     {
-        public Save(World world) { super(world); }
+        public Save(World world)
+        {
+            super(world);
+        }
     }
 }

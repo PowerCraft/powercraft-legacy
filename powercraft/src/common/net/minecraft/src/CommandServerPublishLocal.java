@@ -9,7 +9,7 @@ public class CommandServerPublishLocal extends CommandBase
         return "publish";
     }
 
-    public int func_82362_a()
+    public int getRequiredPermissionLevel()
     {
         return 4;
     }

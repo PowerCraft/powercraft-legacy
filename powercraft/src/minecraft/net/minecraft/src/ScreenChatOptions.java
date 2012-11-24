@@ -8,7 +8,7 @@ public class ScreenChatOptions extends GuiScreen
 {
     /** An array of all EnumOptions which are to do with chat. */
     private static final EnumOptions[] allScreenChatOptions = new EnumOptions[] {EnumOptions.CHAT_VISIBILITY, EnumOptions.CHAT_COLOR, EnumOptions.CHAT_LINKS, EnumOptions.CHAT_OPACITY, EnumOptions.CHAT_LINKS_PROMPT};
-    private static final EnumOptions[] field_82267_b = new EnumOptions[] {EnumOptions.SHOW_CAPE};
+    private static final EnumOptions[] allMultiplayerOptions = new EnumOptions[] {EnumOptions.SHOW_CAPE};
 
     /** Instance of GuiScreen. */
     private final GuiScreen theGuiScreen;
@@ -62,7 +62,7 @@ public class ScreenChatOptions extends GuiScreen
 
         this.field_82269_o = this.height / 6 + 24 * (var2 >> 1);
         var2 += 2;
-        var3 = field_82267_b;
+        var3 = allMultiplayerOptions;
         var4 = var3.length;
 
         for (var5 = 0; var5 < var4; ++var5)

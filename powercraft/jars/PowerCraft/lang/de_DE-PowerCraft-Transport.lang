@@ -1,0 +1,24 @@
+# Translation File for "PowerCraft-Transport"
+item.PCtr_ItemArmorStickyBoots.name = Klebrige Eisenschuhe
+pc.gui.ejector.modeAll = Gesamter Inhalt auf einmal
+pc.gui.ejector.modeEjectTitle = Auswurfmodus:
+pc.gui.ejector.modeItems = Einzelnes Item
+pc.gui.ejector.modeSelectFirst = Erster Slot
+pc.gui.ejector.modeSelectLast = Letzter Slot
+pc.gui.ejector.modeSelectRandom = Zufälliger Slot
+pc.gui.ejector.modeSelectTitle = Auswahlverfahren:
+pc.gui.ejector.modeStacks = Gesamter Stack
+pc.gui.separationBelt.group = Ignoriere folgende Untertypen:
+pc.gui.separationBelt.groupAll = Alle
+pc.gui.separationBelt.groupLogs = Holz
+pc.gui.separationBelt.groupPlanks = Bretter
+tile.PCtr_BlockBeltBreak.name = Bremsendes Förderband
+tile.PCtr_BlockBeltDetector.name = Erkennungsband
+tile.PCtr_BlockBeltEjector.name = Auswurfband
+tile.PCtr_BlockBeltNormal.name = Förderband
+tile.PCtr_BlockBeltRedirector.name = Umleitungsband
+tile.PCtr_BlockBeltSeparator.name = Sortierband
+tile.PCtr_BlockBeltSpeedy.name = Schnelles Förderband
+tile.PCtr_BlockElevator.down.name = Aufzug abwärts
+tile.PCtr_BlockElevator.name = Aufzug
+tile.PCtr_BlockElevator.up.name = Aufzug aufwärts

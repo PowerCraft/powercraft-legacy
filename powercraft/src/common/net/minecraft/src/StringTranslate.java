@@ -14,13 +14,8 @@ import cpw.mods.fml.common.registry.LanguageRegistry;
 
 public class StringTranslate
 {
-    /** Is the private singleton instance of StringTranslate. */
     private static StringTranslate instance = new StringTranslate("en_US");
 
-    /**
-     * Contains all key/value pairs to be translated - is loaded from '/lang/en_US.lang' when the StringTranslate is
-     * created.
-     */
     public Properties translateTable = new Properties();
     private TreeMap languageList;
     public String currentLanguage;
@@ -32,9 +27,6 @@ public class StringTranslate
         this.setLanguage(par1Str);
     }
 
-    /**
-     * Return the StringTranslate singleton instance
-     */
     public static StringTranslate getInstance()
     {
         return instance;
@@ -91,6 +83,7 @@ public class StringTranslate
                 }
             }
         }
+
         LanguageRegistry.instance().loadLanguageTable(par1Properties, par2Str);
     }
 
@@ -161,17 +154,11 @@ public class StringTranslate
         return this.isUnicode;
     }
 
-    /**
-     * Translate a key to current language.
-     */
     public String translateKey(String par1Str)
     {
         return this.translateTable.getProperty(par1Str, par1Str);
     }
 
-    /**
-     * Translate a key to current language applying String.format()
-     */
     public String translateKeyFormat(String par1Str, Object ... par2ArrayOfObj)
     {
         String var3 = this.translateTable.getProperty(par1Str, par1Str);
@@ -186,9 +173,6 @@ public class StringTranslate
         }
     }
 
-    /**
-     * Translate a key with a extra '.name' at end added, is used by blocks and items.
-     */
     public String translateNamedKey(String par1Str)
     {
         return this.translateTable.getProperty(par1Str + ".name", "");

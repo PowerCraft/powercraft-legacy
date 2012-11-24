@@ -6,7 +6,6 @@ import net.minecraft.server.MinecraftServer;
 
 public class DedicatedServerListenThread extends NetworkListenThread
 {
-    /** Instance of ServerListenThread. */
     private final ServerListenThread theServerListenThread;
 
     public DedicatedServerListenThread(MinecraftServer par1MinecraftServer, InetAddress par2InetAddress, int par3) throws IOException
@@ -23,9 +22,6 @@ public class DedicatedServerListenThread extends NetworkListenThread
         this.theServerListenThread.interrupt();
     }
 
-    /**
-     * processes packets and pending connections
-     */
     public void networkTick()
     {
         this.theServerListenThread.processPendingConnections();

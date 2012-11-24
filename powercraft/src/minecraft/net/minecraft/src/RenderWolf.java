@@ -33,7 +33,7 @@ public class RenderWolf extends RenderLiving
         {
             this.loadTexture("/mob/wolf_collar.png");
             var4 = 1.0F;
-            int var5 = par1EntityWolf.func_82186_bH();
+            int var5 = par1EntityWolf.getCollarColor();
             GL11.glColor3f(var4 * EntitySheep.fleeceColorTable[var5][0], var4 * EntitySheep.fleeceColorTable[var5][1], var4 * EntitySheep.fleeceColorTable[var5][2]);
             return 1;
         }

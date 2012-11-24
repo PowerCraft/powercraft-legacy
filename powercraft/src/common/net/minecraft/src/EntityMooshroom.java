@@ -13,9 +13,6 @@ public class EntityMooshroom extends EntityCow implements IShearable
         this.setSize(0.9F, 1.3F);
     }
 
-    /**
-     * Called when a player interacts with a mob. e.g. gets milk from a cow, gets into the saddle on a pig.
-     */
     public boolean interact(EntityPlayer par1EntityPlayer)
     {
         ItemStack var2 = par1EntityPlayer.inventory.getCurrentItem();
@@ -38,22 +35,24 @@ public class EntityMooshroom extends EntityCow implements IShearable
         return super.interact(par1EntityPlayer);
     }
 
-    /**
-     * This function is used when two same-species animals in 'love mode' breed to generate the new baby animal.
-     */
-    public EntityAnimal spawnBabyAnimal(EntityAnimal par1EntityAnimal)
+    public EntityMooshroom spawnBabyAnimal(EntityAgeable par1EntityAgeable)
     {
         return new EntityMooshroom(this.worldObj);
     }
-    
+
+    public EntityAgeable func_90011_a(EntityAgeable par1EntityAgeable)
+    {
+        return this.spawnBabyAnimal(par1EntityAgeable);
+    }
+
     @Override
-    public boolean isShearable(ItemStack item, World world, int X, int Y, int Z) 
+    public boolean isShearable(ItemStack item, World world, int X, int Y, int Z)
     {
         return getGrowingAge() >= 0;
     }
 
     @Override
-    public ArrayList<ItemStack> onSheared(ItemStack item, World world, int X, int Y, int Z, int fortune) 
+    public ArrayList<ItemStack> onSheared(ItemStack item, World world, int X, int Y, int Z, int fortune)
     {
         setDead();
         EntityCow entitycow = new EntityCow(worldObj);
@@ -62,12 +61,13 @@ public class EntityMooshroom extends EntityCow implements IShearable
         entitycow.renderYawOffset = renderYawOffset;
         worldObj.spawnEntityInWorld(entitycow);
         worldObj.spawnParticle("largeexplode", posX, posY + (double)(height / 2.0F), posZ, 0.0D, 0.0D, 0.0D);
-        
         ArrayList<ItemStack> ret = new ArrayList<ItemStack>();
+
         for (int x = 0; x < 5; x++)
         {
             ret.add(new ItemStack(Block.mushroomRed));
         }
+
         return ret;
     }
 }

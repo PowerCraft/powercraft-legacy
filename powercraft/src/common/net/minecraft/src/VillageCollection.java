@@ -8,10 +8,6 @@ public class VillageCollection extends WorldSavedData
 {
     private World worldObj;
 
-    /**
-     * This is a black hole. You can add data to this list through a public interface, but you can't query that
-     * information in any way and it's not used internally either.
-     */
     private final List villagerPositionsList = new ArrayList();
     private final List newDoors = new ArrayList();
     private final List villageList = new ArrayList();
@@ -41,10 +37,6 @@ public class VillageCollection extends WorldSavedData
         }
     }
 
-    /**
-     * This is a black hole. You can add data to this list through a public interface, but you can't query that
-     * information in any way and it's not used internally either.
-     */
     public void addVillagerPosition(int par1, int par2, int par3)
     {
         if (this.villagerPositionsList.size() <= 64)
@@ -56,9 +48,6 @@ public class VillageCollection extends WorldSavedData
         }
     }
 
-    /**
-     * Runs a single tick for the village collection
-     */
     public void tick()
     {
         ++this.tickCounter;
@@ -96,18 +85,11 @@ public class VillageCollection extends WorldSavedData
         }
     }
 
-    /**
-     * Get a list of villages.
-     */
     public List getVillageList()
     {
         return this.villageList;
     }
 
-    /**
-     * Finds the nearest village, but only the given coordinates are withing it's bounding box plus the given the
-     * distance.
-     */
     public Village findNearestVillage(int par1, int par2, int par3, int par4)
     {
         Village var5 = null;
@@ -144,11 +126,11 @@ public class VillageCollection extends WorldSavedData
 
     private void addNewDoorsToVillageOrCreateVillage()
     {
-        Iterator var1 = this.newDoors.iterator();
+        int var1 = 0;
 
-        while (var1.hasNext())
+        while (var1 < this.newDoors.size())
         {
-            VillageDoorInfo var2 = (VillageDoorInfo)var1.next();
+            VillageDoorInfo var2 = (VillageDoorInfo)this.newDoors.get(var1);
             boolean var3 = false;
             Iterator var4 = this.villageList.iterator();
 
@@ -177,6 +159,7 @@ public class VillageCollection extends WorldSavedData
                     this.markDirty();
                 }
 
+                ++var1;
                 break;
             }
         }
@@ -331,9 +314,6 @@ public class VillageCollection extends WorldSavedData
         return var4 == Block.doorWood.blockID;
     }
 
-    /**
-     * reads in data from the NBTTagCompound into this MapDataBase
-     */
     public void readFromNBT(NBTTagCompound par1NBTTagCompound)
     {
         this.tickCounter = par1NBTTagCompound.getInteger("Tick");
@@ -343,14 +323,11 @@ public class VillageCollection extends WorldSavedData
         {
             NBTTagCompound var4 = (NBTTagCompound)var2.tagAt(var3);
             Village var5 = new Village();
-            var5.func_82690_a(var4);
+            var5.readVillageDataFromNBT(var4);
             this.villageList.add(var5);
         }
     }
 
-    /**
-     * write data to NBTTagCompound from this MapDataBase, similar to Entities and TileEntities
-     */
     public void writeToNBT(NBTTagCompound par1NBTTagCompound)
     {
         par1NBTTagCompound.setInteger("Tick", this.tickCounter);
@@ -361,7 +338,7 @@ public class VillageCollection extends WorldSavedData
         {
             Village var4 = (Village)var3.next();
             NBTTagCompound var5 = new NBTTagCompound("Village");
-            var4.func_82689_b(var5);
+            var4.writeVillageDataToNBT(var5);
             var2.appendTag(var5);
         }
 

@@ -1,0 +1,41 @@
+package powercraft.machines;
+
+import net.minecraft.src.Block;
+import net.minecraft.src.Entity;
+import powercraft.core.PC_BeamTracer;
+import powercraft.core.PC_Block;
+import powercraft.core.PC_CoordI;
+import powercraft.core.PC_IBeamHandler;
+import powercraft.core.PC_ISpecialInventoryTextures;
+
+public class PCma_BlockHarvester extends PC_Block implements
+		PC_ISpecialInventoryTextures, PC_IBeamHandler {
+	private static final int TXDOWN = 109, TXTOP = 155, TXSIDE = 139, TXFRONT = 107, TXBACK = 123;
+	
+	@Override
+	public boolean onBlockHit(PC_BeamTracer beamTracer, Block block,
+			PC_CoordI coord) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public boolean onEntityHit(PC_BeamTracer beamTracer, Entity entity,
+			PC_CoordI coord) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public int getInvTexture(int side, int meta) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public String getDefaultName() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+}

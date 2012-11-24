@@ -4,10 +4,8 @@ public class ChunkCoordinates implements Comparable
 {
     public int posX;
 
-    /** the y coordinate */
     public int posY;
 
-    /** the z coordinate */
     public int posZ;
 
     public ChunkCoordinates() {}
@@ -44,9 +42,6 @@ public class ChunkCoordinates implements Comparable
         return this.posX + this.posZ << 8 + this.posY << 16;
     }
 
-    /**
-     * Compare the coordinate with another coordinate
-     */
     public int compareChunkCoordinate(ChunkCoordinates par1ChunkCoordinates)
     {
         return this.posY == par1ChunkCoordinates.posY ? (this.posZ == par1ChunkCoordinates.posZ ? this.posX - par1ChunkCoordinates.posX : this.posZ - par1ChunkCoordinates.posZ) : this.posY - par1ChunkCoordinates.posY;
@@ -59,9 +54,6 @@ public class ChunkCoordinates implements Comparable
         this.posZ = par3;
     }
 
-    /**
-     * Returns the squared distance between this coordinates and the coordinates given as argument.
-     */
     public float getDistanceSquared(int par1, int par2, int par3)
     {
         int var4 = this.posX - par1;
@@ -70,7 +62,7 @@ public class ChunkCoordinates implements Comparable
         return (float)(var4 * var4 + var5 * var5 + var6 * var6);
     }
 
-    public float func_82371_e(ChunkCoordinates par1ChunkCoordinates)
+    public float getDistanceSquaredToChunkCoordinates(ChunkCoordinates par1ChunkCoordinates)
     {
         return this.getDistanceSquared(par1ChunkCoordinates.posX, par1ChunkCoordinates.posY, par1ChunkCoordinates.posZ);
     }

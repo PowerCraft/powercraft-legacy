@@ -17,6 +17,7 @@ public class ServerCommandManager extends CommandHandler implements IAdminComman
         this.registerCommand(new CommandXP());
         this.registerCommand(new CommandServerTp());
         this.registerCommand(new CommandGive());
+        this.registerCommand(new CommandEnchant());
         this.registerCommand(new CommandServerEmote());
         this.registerCommand(new CommandShowSeed());
         this.registerCommand(new CommandHelp());
@@ -52,15 +53,11 @@ public class ServerCommandManager extends CommandHandler implements IAdminComman
         CommandBase.setAdminCommander(this);
     }
 
-    /**
-     * Sends a message to the admins of the server from a given CommandSender with the given resource string and given
-     * extra srings. If the int par2 is even or zero, the original sender is also notified.
-     */
     public void notifyAdmins(ICommandSender par1ICommandSender, int par2, String par3Str, Object ... par4ArrayOfObj)
     {
         boolean var5 = true;
 
-        if (par1ICommandSender instanceof TileEntityCommandBlock && !MinecraftServer.getServer().worldServers[0].func_82736_K().func_82766_b("commandBlockOutput"))
+        if (par1ICommandSender instanceof TileEntityCommandBlock && !MinecraftServer.getServer().worldServers[0].getGameRules().getGameRuleBooleanValue("commandBlockOutput"))
         {
             var5 = false;
         }

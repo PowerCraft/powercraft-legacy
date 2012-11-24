@@ -6,9 +6,6 @@ import java.util.Random;
 
 public class WeightedRandom
 {
-    /**
-     * Returns the total weight of all items in a collection.
-     */
     public static int getTotalWeight(Collection par0Collection)
     {
         int var1 = 0;
@@ -22,9 +19,6 @@ public class WeightedRandom
         return var1;
     }
 
-    /**
-     * Returns a random choice from the input items, with a total weight value.
-     */
     public static WeightedRandomItem getRandomItem(Random par0Random, Collection par1Collection, int par2)
     {
         if (par2 <= 0)
@@ -53,17 +47,11 @@ public class WeightedRandom
         }
     }
 
-    /**
-     * Returns a random choice from the input items.
-     */
     public static WeightedRandomItem getRandomItem(Random par0Random, Collection par1Collection)
     {
         return getRandomItem(par0Random, par1Collection, getTotalWeight(par1Collection));
     }
 
-    /**
-     * Returns the total weight of all items in a array.
-     */
     public static int getTotalWeight(WeightedRandomItem[] par0ArrayOfWeightedRandomItem)
     {
         int var1 = 0;
@@ -79,9 +67,6 @@ public class WeightedRandom
         return var1;
     }
 
-    /**
-     * Returns a random choice from the input array of items, with a total weight value.
-     */
     public static WeightedRandomItem getRandomItem(Random par0Random, WeightedRandomItem[] par1ArrayOfWeightedRandomItem, int par2)
     {
         if (par2 <= 0)
@@ -109,9 +94,6 @@ public class WeightedRandom
         }
     }
 
-    /**
-     * Returns a random choice from the input items.
-     */
     public static WeightedRandomItem getRandomItem(Random par0Random, WeightedRandomItem[] par1ArrayOfWeightedRandomItem)
     {
         return getRandomItem(par0Random, par1ArrayOfWeightedRandomItem, getTotalWeight(par1ArrayOfWeightedRandomItem));

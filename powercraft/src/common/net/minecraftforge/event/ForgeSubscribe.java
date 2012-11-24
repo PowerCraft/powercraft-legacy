@@ -10,6 +10,8 @@ import static java.lang.annotation.ElementType.*;
 @Target(value = METHOD)
 public @interface ForgeSubscribe
 {
-    public EventPriority priority() default EventPriority.NORMAL;
-    public boolean receiveCanceled() default false;
+
+public EventPriority priority() default EventPriority.NORMAL;
+
+public boolean receiveCanceled() default false;
 }

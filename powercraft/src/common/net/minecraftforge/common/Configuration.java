@@ -1,8 +1,3 @@
-/**
- * This software is provided under the terms of the Minecraft Forge Public
- * License v1.0.
- */
-
 package net.minecraftforge.common;
 
 import java.io.*;
@@ -13,19 +8,21 @@ import java.util.Date;
 import java.util.Locale;
 import java.util.Map;
 import java.util.TreeMap;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import com.google.common.base.CharMatcher;
 import com.google.common.base.Splitter;
 import com.google.common.collect.Maps;
 
+import cpw.mods.fml.common.FMLCommonHandler;
+import cpw.mods.fml.common.Loader;
+import cpw.mods.fml.relauncher.FMLInjectionData;
+
 import net.minecraft.src.Block;
 import net.minecraft.src.Item;
 import static net.minecraftforge.common.Property.Type.*;
 
-/**
- * This class offers advanced configurations capabilities, allowing to provide
- * various categories for configuration variables.
- */
 public class Configuration
 {
     private static boolean[] configBlocks = new boolean[Block.blocksList.length];
@@ -37,28 +34,45 @@ public class Configuration
     public static final String CATEGORY_ITEM    = "item";
     public static final String ALLOWED_CHARS = "._-";
     public static final String DEFAULT_ENCODING = "UTF-8";
+    private static final Pattern CONFIG_START = Pattern.compile("START: \"([^\\\"]+)\"");
+    private static final Pattern CONFIG_END = Pattern.compile("END: \"([^\\\"]+)\"");
     private static final CharMatcher allowedProperties = CharMatcher.JAVA_LETTER_OR_DIGIT.or(CharMatcher.anyOf(ALLOWED_CHARS));
+    private static Configuration PARENT = null;
 
     File file;
 
     public Map<String, Map<String, Property>> categories = new TreeMap<String, Map<String, Property>>();
+    private Map<String, Configuration> children = new TreeMap<String, Configuration>();
 
-    private Map<String,String> customCategoryComments = Maps.newHashMap();
+    private Map<String, String> customCategoryComments = Maps.newHashMap();
     private boolean caseSensitiveCustomCategories;
     public String defaultEncoding = DEFAULT_ENCODING;
-    
+    private String fileName = null;
+    public boolean isChild = false;
+
     static
     {
         Arrays.fill(configBlocks, false);
         Arrays.fill(configItems,  false);
     }
 
-    /**
-     * Create a configuration file for the file given in parameter.
-     */
+    public Configuration() {}
+
     public Configuration(File file)
     {
         this.file = file;
+        String basePath = ((File)(FMLInjectionData.data()[6])).getAbsolutePath().replace(File.separatorChar, '/').replace("/.", "");
+        String path = file.getAbsolutePath().replace(File.separatorChar, '/').replace("/./", "/").replace(basePath, "");
+
+        if (PARENT != null)
+        {
+            PARENT.setChild(path, this);
+            isChild = true;
+        }
+        else
+        {
+            load();
+        }
     }
 
     public Configuration(File file, boolean caseSensitiveCustomCategories)
@@ -67,12 +81,6 @@ public class Configuration
         this.caseSensitiveCustomCategories = caseSensitiveCustomCategories;
     }
 
-    /**
-     * Gets or create a block id property. If the block id property key is
-     * already in the configuration, then it will be used. Otherwise,
-     * defaultId will be used, except if already taken, in which case this
-     * will try to determine a free default id.
-     */
     public Property getBlock(String key, int defaultID)
     {
         return getBlock(CATEGORY_BLOCK, key, defaultID);
@@ -155,20 +163,24 @@ public class Configuration
     public Property get(String category, String key, int defaultValue)
     {
         Property prop = get(category, key, Integer.toString(defaultValue), INTEGER);
+
         if (!prop.isIntValue())
         {
             prop.value = Integer.toString(defaultValue);
         }
+
         return prop;
     }
 
     public Property get(String category, String key, boolean defaultValue)
     {
         Property prop = get(category, key, Boolean.toString(defaultValue), BOOLEAN);
+
         if (!prop.isBooleanValue())
         {
             prop.value = Boolean.toString(defaultValue);
         }
+
         return prop;
     }
 
@@ -186,7 +198,7 @@ public class Configuration
 
         Map<String, Property> source = categories.get(category);
 
-        if(source == null)
+        if (source == null)
         {
             source = new TreeMap<String, Property>();
             categories.put(category, source);
@@ -221,7 +233,13 @@ public class Configuration
 
     public void load()
     {
+        if (PARENT != null && PARENT != this)
+        {
+            return;
+        }
+
         BufferedReader buffer = null;
+
         try
         {
             if (file.getParentFile() != null)
@@ -239,7 +257,6 @@ public class Configuration
                 UnicodeInputStreamReader input = new UnicodeInputStreamReader(new FileInputStream(file), defaultEncoding);
                 defaultEncoding = input.getEncoding();
                 buffer = new BufferedReader(input);
-
                 String line;
                 Map<String, Property> currentMap = null;
 
@@ -252,9 +269,30 @@ public class Configuration
                         break;
                     }
 
+                    Matcher start = CONFIG_START.matcher(line);
+                    Matcher end = CONFIG_END.matcher(line);
+
+                    if (start.matches())
+                    {
+                        fileName = start.group(1);
+                        categories = new TreeMap<String, Map<String, Property>>();
+                        customCategoryComments = Maps.newHashMap();
+                        continue;
+                    }
+                    else if (end.matches())
+                    {
+                        fileName = end.group(1);
+                        Configuration child = new Configuration();
+                        child.categories = categories;
+                        child.customCategoryComments = customCategoryComments;
+                        this.children.put(fileName, child);
+                        continue;
+                    }
+
                     int nameStart = -1, nameEnd = -1;
                     boolean skip = false;
                     boolean quoted = false;
+
                     for (int i = 0; i < line.length() && !skip; ++i)
                     {
                         if (Character.isLetterOrDigit(line.charAt(i)) || ALLOWED_CHARS.indexOf(line.charAt(i)) != -1 || (quoted && line.charAt(i) != '"'))
@@ -268,7 +306,6 @@ public class Configuration
                         }
                         else if (Character.isWhitespace(line.charAt(i)))
                         {
-                            // ignore space charaters
                         }
                         else
                         {
@@ -283,16 +320,18 @@ public class Configuration
                                     {
                                         quoted = false;
                                     }
+
                                     if (!quoted && nameStart == -1)
                                     {
                                         quoted = true;
                                     }
+
                                     break;
 
                                 case '{':
                                     String scopeName = line.substring(nameStart, nameEnd + 1);
-
                                     currentMap = categories.get(scopeName);
+
                                     if (currentMap == null)
                                     {
                                         currentMap = new TreeMap<String, Property>();
@@ -317,9 +356,7 @@ public class Configuration
                                     prop.setName(propertyName);
                                     prop.value = line.substring(i + 1);
                                     i = line.length();
-
                                     currentMap.put(propertyName, prop);
-
                                     break;
 
                                 default:
@@ -327,6 +364,7 @@ public class Configuration
                             }
                         }
                     }
+
                     if (quoted)
                     {
                         throw new RuntimeException("unmatched quote");
@@ -345,13 +383,20 @@ public class Configuration
                 try
                 {
                     buffer.close();
-                } catch (IOException e){}
+                }
+                catch (IOException e) {}
             }
         }
     }
 
     public void save()
     {
+        if (PARENT != null && PARENT != this)
+        {
+            PARENT.save();
+            return;
+        }
+
         try
         {
             if (file.getParentFile() != null)
@@ -368,36 +413,22 @@ public class Configuration
             {
                 FileOutputStream fos = new FileOutputStream(file);
                 BufferedWriter buffer = new BufferedWriter(new OutputStreamWriter(fos, defaultEncoding));
-
                 buffer.write("# Configuration file\r\n");
                 buffer.write("# Generated on " + DateFormat.getInstance().format(new Date()) + "\r\n");
                 buffer.write("\r\n");
 
-                for(Map.Entry<String, Map<String, Property>> category : categories.entrySet())
+                if (children.isEmpty())
                 {
-                    buffer.write("####################\r\n");
-                    buffer.write("# " + category.getKey() + " \r\n");
-                    if (customCategoryComments.containsKey(category.getKey()))
+                    save(buffer);
+                }
+                else
+                {
+                    for (Map.Entry<String, Configuration> entry : children.entrySet())
                     {
-                        buffer.write("#===================\r\n");
-                        String comment = customCategoryComments.get(category.getKey());
-                        Splitter splitter = Splitter.onPattern("\r?\n");
-                        for (String commentLine : splitter.split(comment))
-                        {
-                            buffer.write("# ");
-                            buffer.write(commentLine+"\r\n");
-                        }
+                        buffer.write("START: \"" + entry.getKey() + "\"\r\n");
+                        entry.getValue().save(buffer);
+                        buffer.write("END: \"" + entry.getKey() + "\"\r\n\r\n");
                     }
-                    buffer.write("####################\r\n\r\n");
-
-                    String catKey = category.getKey();
-                    if (!allowedProperties.matchesAllOf(catKey))
-                    {
-                    	catKey = '"'+catKey+'"';
-                    }
-                    buffer.write(catKey + " {\r\n");
-                    writeProperties(buffer, category.getValue().values());
-                    buffer.write("}\r\n\r\n");
                 }
 
                 buffer.close();
@@ -410,10 +441,47 @@ public class Configuration
         }
     }
 
+    private void save(BufferedWriter out) throws IOException
+    {
+        for (Map.Entry<String, Map<String, Property>> category : categories.entrySet())
+        {
+            out.write("####################\r\n");
+            out.write("# " + category.getKey() + " \r\n");
+
+            if (customCategoryComments.containsKey(category.getKey()))
+            {
+                out.write("#===================\r\n");
+                String comment = customCategoryComments.get(category.getKey());
+                Splitter splitter = Splitter.onPattern("\r?\n");
+
+                for (String commentLine : splitter.split(comment))
+                {
+                    out.write("# ");
+                    out.write(commentLine + "\r\n");
+                }
+            }
+
+            out.write("####################\r\n\r\n");
+            String catKey = category.getKey();
+
+            if (!allowedProperties.matchesAllOf(catKey))
+            {
+                catKey = '"' + catKey + '"';
+            }
+
+            out.write(catKey + " {\r\n");
+            writeProperties(out, category.getValue().values());
+            out.write("}\r\n\r\n");
+        }
+    }
+
     public void addCustomCategoryComment(String category, String comment)
     {
         if (!caseSensitiveCustomCategories)
+        {
             category = category.toLowerCase(Locale.ENGLISH);
+        }
+
         customCategoryComments.put(category, comment);
     }
 
@@ -424,19 +492,44 @@ public class Configuration
             if (property.comment != null)
             {
                 Splitter splitter = Splitter.onPattern("\r?\n");
+
                 for (String commentLine : splitter.split(property.comment))
                 {
                     buffer.write("   # " + commentLine + "\r\n");
                 }
             }
+
             String propName = property.getName();
+
             if (!allowedProperties.matchesAllOf(propName))
             {
-            	propName = '"'+propName+'"';
+                propName = '"' + propName + '"';
             }
+
             buffer.write("   " + propName + "=" + property.value);
             buffer.write("\r\n");
         }
+    }
+
+    private void setChild(String name, Configuration child)
+    {
+        if (!children.containsKey(name))
+        {
+            children.put(name, child);
+        }
+        else
+        {
+            Configuration old = children.get(name);
+            child.categories = old.categories;
+            child.customCategoryComments = old.customCategoryComments;
+            child.fileName = old.fileName;
+        }
+    }
+
+    public static void enableGlobalConfig()
+    {
+        PARENT = new Configuration(new File(Loader.instance().getConfigDir(), "global.cfg"));
+        PARENT.load();
     }
 
     public static class UnicodeInputStreamReader extends Reader
@@ -449,11 +542,9 @@ public class Configuration
             defaultEnc = encoding;
             String enc = encoding;
             byte[] data = new byte[4];
-
             PushbackInputStream pbStream = new PushbackInputStream(source, data.length);
             int read = pbStream.read(data, 0, data.length);
             int size = 0;
-
             int bom16 = (data[0] & 0xFF) << 8 | (data[1] & 0xFF);
             int bom24 = bom16 << 8 | (data[2] & 0xFF);
             int bom32 = bom24 << 8 | (data[3] & 0xFF);
@@ -478,8 +569,8 @@ public class Configuration
                 enc = "UTF-32BE";
                 size = 4;
             }
-            else if (bom32 == 0xFFFE0000) //This will never happen as it'll be caught by UTF-16LE,
-            {                             //but if anyone ever runs across a 32LE file, i'd like to disect it.
+            else if (bom32 == 0xFFFE0000)
+            {
                 enc = "UTF-32LE";
                 size = 4;
             }

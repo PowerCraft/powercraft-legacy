@@ -14,23 +14,20 @@ public class DamageSource
     public static DamageSource generic = (new DamageSource("generic")).setDamageBypassesArmor();
     public static DamageSource explosion = (new DamageSource("explosion")).func_76351_m();
     public static DamageSource field_76375_l = new DamageSource("explosion");
-    public static DamageSource magic = (new DamageSource("magic")).setDamageBypassesArmor().func_82726_p();
-    public static DamageSource field_82727_n = (new DamageSource("wither")).setDamageBypassesArmor();
-    public static DamageSource field_82728_o = new DamageSource("anvil");
-    public static DamageSource field_82729_p = new DamageSource("fallingBlock");
+    public static DamageSource magic = (new DamageSource("magic")).setDamageBypassesArmor().setMagicDamage();
+    public static DamageSource wither = (new DamageSource("wither")).setDamageBypassesArmor();
+    public static DamageSource anvil = new DamageSource("anvil");
+    public static DamageSource fallingBlock = new DamageSource("fallingBlock");
 
-    /** This kind of damage can be blocked or not. */
     private boolean isUnblockable = false;
     private boolean isDamageAllowedInCreativeMode = false;
     private float hungerDamage = 0.3F;
 
-    /** This kind of damage is based on fire or not. */
     private boolean fireDamage;
 
-    /** This kind of damage is based on a projectile or not. */
     private boolean projectile;
     private boolean field_76381_t;
-    private boolean field_82730_x = false;
+    private boolean magicDamage = false;
     public String damageType;
 
     public static DamageSource causeMobDamage(EntityLiving par0EntityLiving)
@@ -38,25 +35,16 @@ public class DamageSource
         return new EntityDamageSource("mob", par0EntityLiving);
     }
 
-    /**
-     * returns an EntityDamageSource of type player
-     */
     public static DamageSource causePlayerDamage(EntityPlayer par0EntityPlayer)
     {
         return new EntityDamageSource("player", par0EntityPlayer);
     }
 
-    /**
-     * returns EntityDamageSourceIndirect of an arrow
-     */
     public static DamageSource causeArrowDamage(EntityArrow par0EntityArrow, Entity par1Entity)
     {
         return (new EntityDamageSourceIndirect("arrow", par0EntityArrow, par1Entity)).setProjectile();
     }
 
-    /**
-     * returns EntityDamageSourceIndirect of a fireball
-     */
     public static DamageSource causeFireballDamage(EntityFireball par0EntityFireball, Entity par1Entity)
     {
         return par1Entity == null ? (new EntityDamageSourceIndirect("onFire", par0EntityFireball, par0EntityFireball)).setFireDamage().setProjectile() : (new EntityDamageSourceIndirect("fireball", par0EntityFireball, par1Entity)).setFireDamage().setProjectile();
@@ -69,20 +57,14 @@ public class DamageSource
 
     public static DamageSource causeIndirectMagicDamage(Entity par0Entity, Entity par1Entity)
     {
-        return (new EntityDamageSourceIndirect("indirectMagic", par0Entity, par1Entity)).setDamageBypassesArmor().func_82726_p();
+        return (new EntityDamageSourceIndirect("indirectMagic", par0Entity, par1Entity)).setDamageBypassesArmor().setMagicDamage();
     }
 
-    /**
-     * Returns true if the damage is projectile based.
-     */
     public boolean isProjectile()
     {
         return this.projectile;
     }
 
-    /**
-     * Define the damage type as projectile based.
-     */
     public DamageSource setProjectile()
     {
         this.projectile = true;
@@ -94,9 +76,6 @@ public class DamageSource
         return this.isUnblockable;
     }
 
-    /**
-     * How much satiate(food) is consumed by this DamageSource
-     */
     public float getHungerDamage()
     {
         return this.hungerDamage;
@@ -135,34 +114,22 @@ public class DamageSource
         return this;
     }
 
-    /**
-     * Define the damage type as fire based.
-     */
     protected DamageSource setFireDamage()
     {
         this.fireDamage = true;
         return this;
     }
 
-    /**
-     * Returns the message to be displayed on player death.
-     */
     public String getDeathMessage(EntityPlayer par1EntityPlayer)
     {
         return StatCollector.translateToLocalFormatted("death." + this.damageType, new Object[] {par1EntityPlayer.username});
     }
 
-    /**
-     * Returns true if the damage is fire based.
-     */
-    public boolean fireDamage()
+    public boolean isFireDamage()
     {
         return this.fireDamage;
     }
 
-    /**
-     * Return the name of damage type.
-     */
     public String getDamageType()
     {
         return this.damageType;
@@ -179,14 +146,14 @@ public class DamageSource
         return this.field_76381_t;
     }
 
-    public boolean func_82725_o()
+    public boolean isMagicDamage()
     {
-        return this.field_82730_x;
+        return this.magicDamage;
     }
 
-    public DamageSource func_82726_p()
+    public DamageSource setMagicDamage()
     {
-        this.field_82730_x = true;
+        this.magicDamage = true;
         return this;
     }
 }

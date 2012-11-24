@@ -7,18 +7,131 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
-import net.minecraft.src.Block;
-import net.minecraft.src.Item;
-import net.minecraft.src.ItemStack;
+import net.minecraft.src.*;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.Event;
 
 public class OreDictionary
 {
+    private static boolean hasInit = false;
     private static int maxID = 0;
     private static HashMap<String, Integer> oreIDs = new HashMap<String, Integer>();
     private static HashMap<Integer, ArrayList<ItemStack>> oreStacks = new HashMap<Integer, ArrayList<ItemStack>>();
     
+    static {
+        initVanillaEntries();
+    }
+
+    public static void initVanillaEntries()
+    {
+        if (!hasInit)
+        {
+            registerOre("logWood",     new ItemStack(Block.wood, 1, -1));
+            registerOre("plankWood",   new ItemStack(Block.planks, 1, -1));
+            registerOre("slabWood",    new ItemStack(Block.woodSingleSlab, 1, -1));
+            registerOre("stairWood",   Block.stairCompactPlanks);
+            registerOre("stairWood",   Block.stairsWoodBirch);
+            registerOre("stairWood",   Block.stairsWoodJungle);
+            registerOre("stairWood",   Block.stairsWoodSpruce);
+            registerOre("stickWood",   Item.stick);
+            registerOre("treeSapling", new ItemStack(Block.sapling, 1, -1));
+            registerOre("treeLeaves",  new ItemStack(Block.leaves, 1, -1));
+        }
+
+        // Build our list of items to replace with ore tags
+        Map<ItemStack, String> replacements = new HashMap<ItemStack, String>();
+        replacements.put(new ItemStack(Block.planks, 1, -1), "plankWood");
+        replacements.put(new ItemStack(Item.stick), "stickWood");
+
+        // Register dyes
+        String[] dyes = 
+        {
+            "dyeBlack",
+            "dyeRed",
+            "dyeGreen",
+            "dyeBrown",
+            "dyeBlue",
+            "dyePurple",
+            "dyeCyan",
+            "dyeLightGray",
+            "dyeGray",
+            "dyePink",
+            "dyeLime",
+            "dyeYellow",
+            "dyeLightBlue",
+            "dyeMagenta",
+            "dyeOrange",
+            "dyeWhite"
+        };
+
+        for(int i = 0; i < 16; i++)
+        {
+            ItemStack dye = new ItemStack(Item.dyePowder, 1, i);
+            if (!hasInit)
+            {
+                registerOre(dyes[i], dye);
+            }
+            replacements.put(dye, dyes[i]);
+        }
+        hasInit = true;
+
+        ItemStack[] replaceStacks = replacements.keySet().toArray(new ItemStack[0]);
+
+        // Ignore recipes for the following items
+        ItemStack[] exclusions = new ItemStack[]
+        {
+            new ItemStack(Block.blockLapis),
+            new ItemStack(Item.cookie),
+        };
+
+        List recipes = CraftingManager.getInstance().getRecipeList();
+        List<IRecipe> recipesToRemove = new ArrayList<IRecipe>();
+        List<IRecipe> recipesToAdd = new ArrayList<IRecipe>();
+
+        // Search vanilla recipes for recipes to replace
+        for(Object obj : recipes)
+        {
+            if(obj instanceof ShapedRecipes)
+            {
+                ShapedRecipes recipe = (ShapedRecipes)obj;
+                ItemStack output = recipe.getRecipeOutput();
+                if (output != null && containsMatch(false, exclusions, output))
+                {
+                    continue;
+                }
+
+                if(containsMatch(true, recipe.recipeItems, replaceStacks))
+                {
+                    recipesToRemove.add(recipe);
+                    recipesToAdd.add(new ShapedOreRecipe(recipe, replacements));
+                }
+            }
+            else if(obj instanceof ShapelessRecipes)
+            {
+                ShapelessRecipes recipe = (ShapelessRecipes)obj;
+                ItemStack output = recipe.getRecipeOutput();
+                if (output != null && containsMatch(false, exclusions, output))
+                {
+                    continue;
+                }
+
+                if(containsMatch(true, (ItemStack[])recipe.recipeItems.toArray(new ItemStack[0]), replaceStacks))
+                {
+                    recipesToRemove.add((IRecipe)obj);
+                    IRecipe newRecipe = new ShapelessOreRecipe(recipe, replacements);
+                    recipesToAdd.add(newRecipe);
+                }
+            }
+        }
+
+        recipes.removeAll(recipesToRemove);
+        recipes.addAll(recipesToAdd);
+        if (recipesToRemove.size() > 0)
+        {
+            System.out.println("Replaced " + recipesToRemove.size() + " ore recipies");
+        }
+    }
+
     /**
      * Gets the integer ID for the specified ore name. 
      * If the name does not have a ID it assigns it a new one.
@@ -95,7 +208,31 @@ public class OreDictionary
         }
         return val;
     }
-    
+
+    private static boolean containsMatch(boolean strict, ItemStack[] inputs, ItemStack... targets)
+    {
+        for (ItemStack input : inputs)
+        {
+            for (ItemStack target : targets)
+            {
+                if (itemMatches(target, input, strict))
+                {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    public static boolean itemMatches(ItemStack target, ItemStack input, boolean strict)
+    {
+        if (input == null && target != null || input != null && target == null)
+        {
+            return false;
+        }
+        return (target.itemID == input.itemID && ((target.getItemDamage() == -1 && !strict) || target.getItemDamage() == input.getItemDamage()));
+    }
+
     //Convenience functions that make for cleaner code mod side. They all drill down to registerOre(String, int, ItemStack)
     public static void registerOre(String name, Item      ore){ registerOre(name, new ItemStack(ore));  }
     public static void registerOre(String name, Block     ore){ registerOre(name, new ItemStack(ore));  }

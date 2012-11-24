@@ -7,7 +7,6 @@ import net.minecraftforge.event.Cancelable;
 @Cancelable
 public class EntityJoinWorldEvent extends EntityEvent
 {
-
     public final World world;
 
     public EntityJoinWorldEvent(Entity entity, World world)

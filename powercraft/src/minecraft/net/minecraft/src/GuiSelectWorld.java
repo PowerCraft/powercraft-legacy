@@ -203,7 +203,10 @@ public class GuiSelectWorld extends GuiScreen
                 var3 = "World" + par1;
             }
 
-            this.mc.launchIntegratedServer(var2, var3, (WorldSettings)null);
+            if (this.mc.getSaveLoader().func_90033_f(var2))
+            {
+                this.mc.launchIntegratedServer(var2, var3, (WorldSettings)null);
+            }
         }
     }
 

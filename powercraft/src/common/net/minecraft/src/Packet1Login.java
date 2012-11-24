@@ -8,27 +8,23 @@ import cpw.mods.fml.common.network.FMLNetworkHandler;
 
 public class Packet1Login extends Packet
 {
-    /** The player's entity ID */
     public int clientEntityId = 0;
     public WorldType terrainType;
     public boolean field_73560_c;
     public EnumGameType gameType;
 
-    /** -1: The Nether, 0: The Overworld, 1: The End */
     public int dimension;
 
-    /** The difficulty setting byte. */
     public byte difficultySetting;
 
-    /** Defaults to 128 */
     public byte worldHeight;
 
-    /** The maximum players. */
     public byte maxPlayers;
 
     private boolean vanillaCompatible;
 
-    public Packet1Login() {
+    public Packet1Login()
+    {
         this.vanillaCompatible = FMLNetworkHandler.vanillaLoginPacketCompatibility();
     }
 
@@ -45,9 +41,6 @@ public class Packet1Login extends Packet
         this.vanillaCompatible = false;
     }
 
-    /**
-     * Abstract. Reads the raw packet data from the data stream.
-     */
     public void readPacketData(DataInputStream par1DataInputStream) throws IOException
     {
         this.clientEntityId = par1DataInputStream.readInt();
@@ -63,6 +56,7 @@ public class Packet1Login extends Packet
         this.field_73560_c = (var3 & 8) == 8;
         int var4 = var3 & -9;
         this.gameType = EnumGameType.getByID(var4);
+
         if (vanillaCompatible)
         {
             this.dimension = par1DataInputStream.readByte();
@@ -71,14 +65,12 @@ public class Packet1Login extends Packet
         {
             this.dimension = par1DataInputStream.readInt();
         }
+
         this.difficultySetting = par1DataInputStream.readByte();
         this.worldHeight = par1DataInputStream.readByte();
         this.maxPlayers = par1DataInputStream.readByte();
     }
 
-    /**
-     * Abstract. Writes the raw packet data to the data stream.
-     */
     public void writePacketData(DataOutputStream par1DataOutputStream) throws IOException
     {
         par1DataOutputStream.writeInt(this.clientEntityId);
@@ -91,6 +83,7 @@ public class Packet1Login extends Packet
         }
 
         par1DataOutputStream.writeByte(var2);
+
         if (vanillaCompatible)
         {
             par1DataOutputStream.writeByte(this.dimension);
@@ -99,22 +92,17 @@ public class Packet1Login extends Packet
         {
             par1DataOutputStream.writeInt(this.dimension);
         }
+
         par1DataOutputStream.writeByte(this.difficultySetting);
         par1DataOutputStream.writeByte(this.worldHeight);
         par1DataOutputStream.writeByte(this.maxPlayers);
     }
 
-    /**
-     * Passes this Packet on to the NetHandler for processing.
-     */
     public void processPacket(NetHandler par1NetHandler)
     {
         par1NetHandler.handleLogin(this);
     }
 
-    /**
-     * Abstract. Return the size of the packet (not counting the header).
-     */
     public int getPacketSize()
     {
         int var1 = 0;

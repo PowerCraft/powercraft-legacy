@@ -8,7 +8,8 @@ import org.lwjgl.input.Mouse;
 @SideOnly(Side.CLIENT)
 public class MouseHelper
 {
-    private Component windowComponent;
+    private final Component windowComponent;
+    private final GameSettings field_85184_d;
 
     /** Mouse delta X this frame */
     public int deltaX;
@@ -16,9 +17,10 @@ public class MouseHelper
     /** Mouse delta Y this frame */
     public int deltaY;
 
-    public MouseHelper(Component par1Component)
+    public MouseHelper(Component par1Component, GameSettings par2GameSettings)
     {
         this.windowComponent = par1Component;
+        this.field_85184_d = par2GameSettings;
     }
 
     /**

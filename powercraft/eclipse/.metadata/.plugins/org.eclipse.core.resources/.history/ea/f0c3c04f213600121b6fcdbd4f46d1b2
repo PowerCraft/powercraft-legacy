@@ -1,0 +1,7 @@
+package powercraft.machines;
+
+import powercraft.core.PC_TileEntity;
+
+public class PCma_TileEntityBlockBuilder extends PC_TileEntity {
+
+}

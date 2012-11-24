@@ -7,12 +7,12 @@ import org.lwjgl.opengl.GL11;
 @SideOnly(Side.CLIENT)
 public class GuiBrewingStand extends GuiContainer
 {
-    private TileEntityBrewingStand field_74217_o;
+    private TileEntityBrewingStand brewingStand;
 
     public GuiBrewingStand(InventoryPlayer par1InventoryPlayer, TileEntityBrewingStand par2TileEntityBrewingStand)
     {
         super(new ContainerBrewingStand(par1InventoryPlayer, par2TileEntityBrewingStand));
-        this.field_74217_o = par2TileEntityBrewingStand;
+        this.brewingStand = par2TileEntityBrewingStand;
     }
 
     /**
@@ -35,7 +35,7 @@ public class GuiBrewingStand extends GuiContainer
         int var5 = (this.width - this.xSize) / 2;
         int var6 = (this.height - this.ySize) / 2;
         this.drawTexturedModalRect(var5, var6, 0, 0, this.xSize, this.ySize);
-        int var7 = this.field_74217_o.getBrewTime();
+        int var7 = this.brewingStand.getBrewTime();
 
         if (var7 > 0)
         {

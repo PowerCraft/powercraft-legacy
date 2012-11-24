@@ -14,7 +14,7 @@ public class RenderSkeleton extends RenderBiped
 
     protected void func_82438_a(EntitySkeleton par1EntitySkeleton, float par2)
     {
-        if (par1EntitySkeleton.func_82202_m() == 1)
+        if (par1EntitySkeleton.getSkeletonType() == 1)
         {
             GL11.glScalef(1.2F, 1.2F, 1.2F);
         }

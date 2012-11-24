@@ -9,124 +9,109 @@ import static net.minecraftforge.common.ForgeDirection.*;
 
 public class BlockButton extends Block
 {
-    private final boolean field_82537_a;
+    private final boolean sensible;
 
     protected BlockButton(int par1, int par2, boolean par3)
     {
         super(par1, par2, Material.circuits);
         this.setTickRandomly(true);
         this.setCreativeTab(CreativeTabs.tabRedstone);
-        this.field_82537_a = par3;
+        this.sensible = par3;
     }
 
-    /**
-     * Returns a bounding box from the pool of bounding boxes (this means this box can change after the pool has been
-     * cleared to be reused)
-     */
     public AxisAlignedBB getCollisionBoundingBoxFromPool(World par1World, int par2, int par3, int par4)
     {
         return null;
     }
 
-    /**
-     * How many world ticks before ticking
-     */
     public int tickRate()
     {
-        return this.field_82537_a ? 30 : 20;
+        return this.sensible ? 30 : 20;
     }
 
-    /**
-     * Is this block (a) opaque and (b) a full 1m cube?  This determines whether or not to render the shared face of two
-     * adjacent blocks and also whether the player can attach torches, redstone wire, etc to this block.
-     */
     public boolean isOpaqueCube()
     {
         return false;
     }
 
-    /**
-     * If this block doesn't render as an ordinary block it will return False (examples: signs, buttons, stairs, etc)
-     */
     public boolean renderAsNormalBlock()
     {
         return false;
     }
 
-    /**
-     * checks to see if you can place this block can be placed on that side of a block: BlockLever overrides
-     */
     public boolean canPlaceBlockOnSide(World par1World, int par2, int par3, int par4, int par5)
     {
         ForgeDirection dir = ForgeDirection.getOrientation(par5);
         return (dir == NORTH && par1World.isBlockSolidOnSide(par2, par3, par4 + 1, NORTH)) ||
-               (dir == SOUTH && par1World.isBlockSolidOnSide(par2, par3, par4 - 1, SOUTH)) ||
-               (dir == WEST  && par1World.isBlockSolidOnSide(par2 + 1, par3, par4, WEST)) ||
-               (dir == EAST  && par1World.isBlockSolidOnSide(par2 - 1, par3, par4, EAST));
+                (dir == SOUTH && par1World.isBlockSolidOnSide(par2, par3, par4 - 1, SOUTH)) ||
+                (dir == WEST  && par1World.isBlockSolidOnSide(par2 + 1, par3, par4, WEST)) ||
+                (dir == EAST  && par1World.isBlockSolidOnSide(par2 - 1, par3, par4, EAST));
     }
 
-    /**
-     * Checks to see if its valid to put this block at the specified coordinates. Args: world, x, y, z
-     */
     public boolean canPlaceBlockAt(World par1World, int par2, int par3, int par4)
     {
         return (par1World.isBlockSolidOnSide(par2 - 1, par3, par4, EAST)) ||
-               (par1World.isBlockSolidOnSide(par2 + 1, par3, par4, WEST)) ||
-               (par1World.isBlockSolidOnSide(par2, par3, par4 - 1, SOUTH)) ||
-               (par1World.isBlockSolidOnSide(par2, par3, par4 + 1, NORTH));
+                (par1World.isBlockSolidOnSide(par2 + 1, par3, par4, WEST)) ||
+                (par1World.isBlockSolidOnSide(par2, par3, par4 - 1, SOUTH)) ||
+                (par1World.isBlockSolidOnSide(par2, par3, par4 + 1, NORTH));
     }
 
-    /**
-     * called before onBlockPlacedBy by ItemBlock and ItemReed
-     */
-    public void updateBlockMetadata(World par1World, int par2, int par3, int par4, int par5, float par6, float par7, float par8)
+    public int func_85104_a(World par1World, int par2, int par3, int par4, int par5, float par6, float par7, float par8, int par9)
     {
-        int var9 = par1World.getBlockMetadata(par2, par3, par4);
-        int var10 = var9 & 8;
-        var9 &= 7;
-        
+        int var10 = par1World.getBlockMetadata(par2, par3, par4);
+        int var11 = var10 & 8;
+        var10 &= 7;
         ForgeDirection dir = ForgeDirection.getOrientation(par5);
 
         if (dir == NORTH && par1World.isBlockSolidOnSide(par2, par3, par4 + 1, NORTH))
         {
-            var9 = 4;
+            var10 = 4;
         }
         else if (dir == SOUTH && par1World.isBlockSolidOnSide(par2, par3, par4 - 1, SOUTH))
         {
-            var9 = 3;
+            var10 = 3;
         }
         else if (dir == WEST && par1World.isBlockSolidOnSide(par2 + 1, par3, par4, WEST))
         {
-            var9 = 2;
+            var10 = 2;
         }
         else if (dir == EAST && par1World.isBlockSolidOnSide(par2 - 1, par3, par4, EAST))
         {
-            var9 = 1;
+            var10 = 1;
         }
         else
         {
-            var9 = this.getOrientation(par1World, par2, par3, par4);
+            var10 = this.getOrientation(par1World, par2, par3, par4);
         }
 
-        par1World.setBlockMetadataWithNotify(par2, par3, par4, var9 + var10);
+        return var10 + var11;
     }
 
-    /**
-     * Get side which this button is facing.
-     */
     private int getOrientation(World par1World, int par2, int par3, int par4)
     {
-        if (par1World.isBlockSolidOnSide(par2 - 1, par3, par4, EAST)) return 1; 
-        if (par1World.isBlockSolidOnSide(par2 + 1, par3, par4, WEST)) return 2; 
-        if (par1World.isBlockSolidOnSide(par2, par3, par4 - 1, SOUTH)) return 3; 
-        if (par1World.isBlockSolidOnSide(par2, par3, par4 + 1, NORTH)) return 4;
+        if (par1World.isBlockSolidOnSide(par2 - 1, par3, par4, EAST))
+        {
+            return 1;
+        }
+
+        if (par1World.isBlockSolidOnSide(par2 + 1, par3, par4, WEST))
+        {
+            return 2;
+        }
+
+        if (par1World.isBlockSolidOnSide(par2, par3, par4 - 1, SOUTH))
+        {
+            return 3;
+        }
+
+        if (par1World.isBlockSolidOnSide(par2, par3, par4 + 1, NORTH))
+        {
+            return 4;
+        }
+
         return 1;
     }
 
-    /**
-     * Lets the block know when one of its neighbor changes. Doesn't know which neighbor changed (coordinates passed are
-     * their own) Args: x, y, z, neighbor blockID
-     */
     public void onNeighborBlockChange(World par1World, int par2, int par3, int par4, int par5)
     {
         if (this.redundantCanPlaceBlockAt(par1World, par2, par3, par4))
@@ -162,9 +147,6 @@ public class BlockButton extends Block
         }
     }
 
-    /**
-     * This method is redundant, check it out...
-     */
     private boolean redundantCanPlaceBlockAt(World par1World, int par2, int par3, int par4)
     {
         if (!this.canPlaceBlockAt(par1World, par2, par3, par4))
@@ -179,9 +161,6 @@ public class BlockButton extends Block
         }
     }
 
-    /**
-     * Updates the blocks bounds based on its current state. Args: world, x, y, z
-     */
     public void setBlockBoundsBasedOnState(IBlockAccess par1IBlockAccess, int par2, int par3, int par4)
     {
         int var5 = par1IBlockAccess.getBlockMetadata(par2, par3, par4);
@@ -220,14 +199,8 @@ public class BlockButton extends Block
         }
     }
 
-    /**
-     * Called when the block is clicked by a player. Args: x, y, z, entityPlayer
-     */
     public void onBlockClicked(World par1World, int par2, int par3, int par4, EntityPlayer par5EntityPlayer) {}
 
-    /**
-     * Called upon block activation (right click on the block.)
-     */
     public boolean onBlockActivated(World par1World, int par2, int par3, int par4, EntityPlayer par5EntityPlayer, int par6, float par7, float par8, float par9)
     {
         int var10 = par1World.getBlockMetadata(par2, par3, par4);
@@ -249,9 +222,6 @@ public class BlockButton extends Block
         }
     }
 
-    /**
-     * ejects contained items into the world, and notifies neighbours of an update, as appropriate
-     */
     public void breakBlock(World par1World, int par2, int par3, int par4, int par5, int par6)
     {
         if ((par6 & 8) > 0)
@@ -263,17 +233,11 @@ public class BlockButton extends Block
         super.breakBlock(par1World, par2, par3, par4, par5, par6);
     }
 
-    /**
-     * Is this block powering the block on the specified side
-     */
     public boolean isPoweringTo(IBlockAccess par1IBlockAccess, int par2, int par3, int par4, int par5)
     {
         return (par1IBlockAccess.getBlockMetadata(par2, par3, par4) & 8) > 0;
     }
 
-    /**
-     * Is this block indirectly powering the block on the specified side
-     */
     public boolean isIndirectlyPoweringTo(IBlockAccess par1IBlockAccess, int par2, int par3, int par4, int par5)
     {
         int var6 = par1IBlockAccess.getBlockMetadata(par2, par3, par4);
@@ -289,17 +253,11 @@ public class BlockButton extends Block
         }
     }
 
-    /**
-     * Can this block provide power. Only wire currently seems to have this change based on its state.
-     */
     public boolean canProvidePower()
     {
         return true;
     }
 
-    /**
-     * Ticks the block if it's been scheduled
-     */
     public void updateTick(World par1World, int par2, int par3, int par4, Random par5Random)
     {
         if (!par1World.isRemote)
@@ -308,7 +266,7 @@ public class BlockButton extends Block
 
             if ((var6 & 8) != 0)
             {
-                if (this.field_82537_a)
+                if (this.sensible)
                 {
                     this.func_82535_o(par1World, par2, par3, par4);
                 }
@@ -324,9 +282,6 @@ public class BlockButton extends Block
         }
     }
 
-    /**
-     * Sets the block's bounds for rendering it as an item
-     */
     public void setBlockBoundsForItemRender()
     {
         float var1 = 0.1875F;
@@ -335,14 +290,11 @@ public class BlockButton extends Block
         this.setBlockBounds(0.5F - var1, 0.5F - var2, 0.5F - var3, 0.5F + var1, 0.5F + var2, 0.5F + var3);
     }
 
-    /**
-     * Triggered whenever an entity collides with this block (enters into the block). Args: world, x, y, z, entity
-     */
     public void onEntityCollidedWithBlock(World par1World, int par2, int par3, int par4, Entity par5Entity)
     {
         if (!par1World.isRemote)
         {
-            if (this.field_82537_a)
+            if (this.sensible)
             {
                 if ((par1World.getBlockMetadata(par2, par3, par4) & 8) == 0)
                 {

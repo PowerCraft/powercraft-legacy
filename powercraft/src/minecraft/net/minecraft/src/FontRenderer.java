@@ -7,6 +7,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.text.Bidi;
 import java.util.Arrays;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Random;
 import javax.imageio.ImageIO;
@@ -317,22 +318,18 @@ public class FontRenderer
      */
     public int drawStringWithShadow(String par1Str, int par2, int par3, int par4)
     {
-        this.resetStyles();
-
-        if (this.bidiFlag)
-        {
-            par1Str = this.bidiReorder(par1Str);
-        }
-
-        int var5 = this.renderString(par1Str, par2 + 1, par3 + 1, par4, true);
-        var5 = Math.max(var5, this.renderString(par1Str, par2, par3, par4, false));
-        return var5;
+        return this.func_85187_a(par1Str, par2, par3, par4, true);
     }
 
     /**
      * Draws the specified string.
      */
-    public void drawString(String par1Str, int par2, int par3, int par4)
+    public int drawString(String par1Str, int par2, int par3, int par4)
+    {
+        return this.func_85187_a(par1Str, par2, par3, par4, false);
+    }
+
+    public int func_85187_a(String par1Str, int par2, int par3, int par4, boolean par5)
     {
         this.resetStyles();
 
@@ -341,7 +338,19 @@ public class FontRenderer
             par1Str = this.bidiReorder(par1Str);
         }
 
-        this.renderString(par1Str, par2, par3, par4, false);
+        int var6;
+
+        if (par5)
+        {
+            var6 = this.renderString(par1Str, par2 + 1, par3 + 1, par4, true);
+            var6 = Math.max(var6, this.renderString(par1Str, par2, par3, par4, false));
+        }
+        else
+        {
+            var6 = this.renderString(par1Str, par2, par3, par4, false);
+        }
+
+        return var6;
     }
 
     /**
@@ -585,7 +594,11 @@ public class FontRenderer
      */
     private int renderString(String par1Str, int par2, int par3, int par4, boolean par5)
     {
-        if (par1Str != null)
+        if (par1Str == null)
+        {
+            return 0;
+        }
+        else
         {
             this.boundTextureName = 0;
 
@@ -608,10 +621,6 @@ public class FontRenderer
             this.posY = (float)par3;
             this.renderStringAtPos(par1Str, par5);
             return (int)this.posX;
-        }
-        else
-        {
-            return 0;
         }
     }
 
@@ -802,15 +811,6 @@ public class FontRenderer
         this.resetStyles();
         this.textColor = par5;
         par1Str = this.trimStringNewline(par1Str);
-        this.renderSplitStringNoShadow(par1Str, par2, par3, par4, par5);
-    }
-
-    /**
-     * renders a multi-line string with wordwrap (maximum length is parameter k) by means of renderSplitString
-     */
-    private void renderSplitStringNoShadow(String par1Str, int par2, int par3, int par4, int par5)
-    {
-        this.textColor = par5;
         this.renderSplitString(par1Str, par2, par3, par4, false);
     }
 
@@ -820,87 +820,12 @@ public class FontRenderer
      */
     private void renderSplitString(String par1Str, int par2, int par3, int par4, boolean par5)
     {
-        String[] var6 = par1Str.split("\n");
+        List var6 = this.listFormattedStringToWidth(par1Str, par4);
 
-        if (var6.length > 1)
+        for (Iterator var7 = var6.iterator(); var7.hasNext(); par3 += this.FONT_HEIGHT)
         {
-            boolean var12 = false;
-            String[] var13 = var6;
-            int var14 = var6.length;
-
-            for (int var15 = 0; var15 < var14; ++var15)
-            {
-                String var16 = var13[var15];
-
-                if (var12)
-                {
-                    var16 = "\u00a7" + var16;
-                    var12 = false;
-                }
-
-                if (var16.endsWith("\u00a7"))
-                {
-                    var12 = true;
-                    var16 = var16.substring(0, var16.length() - 1);
-                }
-
-                this.renderSplitString(var16, par2, par3, par4, par5);
-                par3 += this.splitStringWidth(var16, par4);
-            }
-        }
-        else
-        {
-            String[] var7 = par1Str.split(" ");
-            int var8 = 0;
-            String var9;
-
-            for (var9 = ""; var8 < var7.length; ++var8)
-            {
-                String var10 = var7[var8];
-
-                if (this.getStringWidth(var10) >= par4)
-                {
-                    if (var9.length() > 0)
-                    {
-                        this.renderStringAligned(var9, par2, par3, par4, this.textColor, par5);
-                        par3 += this.FONT_HEIGHT;
-                    }
-
-                    do
-                    {
-                        int var11;
-
-                        for (var11 = 1; this.getStringWidth(var10.substring(0, var11)) < par4; ++var11)
-                        {
-                            ;
-                        }
-
-                        this.renderStringAligned(var10.substring(0, var11 - 1), par2, par3, par4, this.textColor, par5);
-                        par3 += this.FONT_HEIGHT;
-                        var10 = var10.substring(var11 - 1);
-                    }
-                    while (this.getStringWidth(var10) >= par4);
-
-                    var9 = var10;
-                }
-                else if (this.getStringWidth(var9 + " " + var10) >= par4)
-                {
-                    this.renderStringAligned(var9, par2, par3, par4, this.textColor, par5);
-                    par3 += this.FONT_HEIGHT;
-                    var9 = var10;
-                }
-                else
-                {
-                    if (var9.length() > 0)
-                    {
-                        var9 = var9 + " ";
-                    }
-
-                    var9 = var9 + var10;
-                }
-            }
-
-            this.renderStringAligned(var9, par2, par3, par4, this.textColor, par5);
+            String var8 = (String)var7.next();
+            this.renderStringAligned(var8, par2, par3, par4, this.textColor, par5);
         }
     }
 
@@ -909,81 +834,7 @@ public class FontRenderer
      */
     public int splitStringWidth(String par1Str, int par2)
     {
-        String[] var3 = par1Str.split("\n");
-        int var6;
-        String var8;
-
-        if (var3.length > 1)
-        {
-            int var10 = 0;
-            String[] var11 = var3;
-            var6 = var3.length;
-
-            for (int var12 = 0; var12 < var6; ++var12)
-            {
-                var8 = var11[var12];
-                var10 += this.splitStringWidth(var8, par2);
-            }
-
-            return var10;
-        }
-        else
-        {
-            String[] var4 = par1Str.split(" ");
-            int var5 = 0;
-            var6 = 0;
-            String var7;
-
-            for (var7 = ""; var6 < var4.length; ++var6)
-            {
-                var8 = var4[var6];
-
-                if (this.getStringWidth(var8) >= par2)
-                {
-                    if (var7.length() > 0)
-                    {
-                        var5 += this.FONT_HEIGHT;
-                    }
-
-                    do
-                    {
-                        int var9;
-
-                        for (var9 = 1; this.getStringWidth(var8.substring(0, var9)) < par2; ++var9)
-                        {
-                            ;
-                        }
-
-                        var5 += this.FONT_HEIGHT;
-                        var8 = var8.substring(var9 - 1);
-                    }
-                    while (this.getStringWidth(var8) >= par2);
-
-                    var7 = var8;
-                }
-                else if (this.getStringWidth(var7 + " " + var8) >= par2)
-                {
-                    var5 += this.FONT_HEIGHT;
-                    var7 = var8;
-                }
-                else
-                {
-                    if (var7.length() > 0)
-                    {
-                        var7 = var7 + " ";
-                    }
-
-                    var7 = var7 + var8;
-                }
-            }
-
-            if (var7.length() > 0)
-            {
-                var5 += this.FONT_HEIGHT;
-            }
-
-            return var5;
-        }
+        return this.FONT_HEIGHT * this.listFormattedStringToWidth(par1Str, par2).size();
     }
 
     /**
@@ -995,7 +846,11 @@ public class FontRenderer
         this.unicodeFlag = par1;
     }
 
-    public boolean func_82883_a()
+    /**
+     * Get unicodeFlag controlling whether strings should be rendered with Unicode fonts instead of the default.png
+     * font.
+     */
+    public boolean getUnicodeFlag()
     {
         return this.unicodeFlag;
     }
@@ -1030,8 +885,10 @@ public class FontRenderer
         else
         {
             String var4 = par1Str.substring(0, var3);
-            String var5 = getFormatFromString(var4) + par1Str.substring(var3 + (par1Str.charAt(var3) == 32 ? 1 : 0));
-            return var4 + "\n" + this.wrapFormattedStringToWidth(var5, par2);
+            char var5 = par1Str.charAt(var3);
+            boolean var6 = var5 == 32 || var5 == 10;
+            String var7 = getFormatFromString(var4) + par1Str.substring(var3 + (var6 ? 1 : 0));
+            return var4 + "\n" + this.wrapFormattedStringToWidth(var7, par2);
         }
     }
 
@@ -1051,6 +908,11 @@ public class FontRenderer
 
             switch (var8)
             {
+                case 10:
+                    --var5;
+                    break;
+                case 32:
+                    var6 = var5;
                 case 167:
                     if (var5 < var3 - 1)
                     {
@@ -1071,8 +933,6 @@ public class FontRenderer
                     }
 
                     break;
-                case 32:
-                    var6 = var5;
                 default:
                     var4 += this.getCharWidth(var8);
 

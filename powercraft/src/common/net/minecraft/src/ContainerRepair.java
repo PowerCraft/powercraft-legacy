@@ -7,27 +7,30 @@ import java.util.Map;
 
 public class ContainerRepair extends Container
 {
-    private IInventory field_82852_f = new InventoryCraftResult();
-    private IInventory field_82853_g = new InventoryRepair(this, "Repair", 2);
-    private World field_82860_h;
+    private IInventory outputSlot = new InventoryCraftResult();
+
+    private IInventory inputSlots = new InventoryRepair(this, "Repair", 2);
+    private World theWorld;
     private int field_82861_i;
     private int field_82858_j;
     private int field_82859_k;
-    public int field_82854_e = 0;
+
+    public int maximumCost = 0;
     private int field_82856_l = 0;
     private String field_82857_m;
-    private final EntityPlayer field_82855_n;
+
+    private final EntityPlayer thePlayer;
 
     public ContainerRepair(InventoryPlayer par1InventoryPlayer, World par2World, int par3, int par4, int par5, EntityPlayer par6EntityPlayer)
     {
-        this.field_82860_h = par2World;
+        this.theWorld = par2World;
         this.field_82861_i = par3;
         this.field_82858_j = par4;
         this.field_82859_k = par5;
-        this.field_82855_n = par6EntityPlayer;
-        this.addSlotToContainer(new Slot(this.field_82853_g, 0, 27, 47));
-        this.addSlotToContainer(new Slot(this.field_82853_g, 1, 76, 47));
-        this.addSlotToContainer(new SlotRepair(this, this.field_82852_f, 2, 134, 47, par2World, par3, par4, par5));
+        this.thePlayer = par6EntityPlayer;
+        this.addSlotToContainer(new Slot(this.inputSlots, 0, 27, 47));
+        this.addSlotToContainer(new Slot(this.inputSlots, 1, 76, 47));
+        this.addSlotToContainer(new SlotRepair(this, this.outputSlot, 2, 134, 47, par2World, par3, par4, par5));
         int var7;
 
         for (var7 = 0; var7 < 3; ++var7)
@@ -44,14 +47,11 @@ public class ContainerRepair extends Container
         }
     }
 
-    /**
-     * Callback for when the crafting matrix is changed.
-     */
     public void onCraftMatrixChanged(IInventory par1IInventory)
     {
         super.onCraftMatrixChanged(par1IInventory);
 
-        if (par1IInventory == this.field_82853_g)
+        if (par1IInventory == this.inputSlots)
         {
             this.func_82848_d();
         }
@@ -59,23 +59,23 @@ public class ContainerRepair extends Container
 
     public void func_82848_d()
     {
-        ItemStack var1 = this.field_82853_g.getStackInSlot(0);
-        this.field_82854_e = 0;
+        ItemStack var1 = this.inputSlots.getStackInSlot(0);
+        this.maximumCost = 0;
         int var2 = 0;
         byte var3 = 0;
         int var4 = 0;
 
         if (var1 == null)
         {
-            this.field_82852_f.setInventorySlotContents(0, (ItemStack)null);
-            this.field_82854_e = 0;
+            this.outputSlot.setInventorySlotContents(0, (ItemStack)null);
+            this.maximumCost = 0;
         }
         else
         {
             ItemStack var5 = var1.copy();
-            ItemStack var6 = this.field_82853_g.getStackInSlot(1);
-            Map var7 = EnchantmentHelper.func_82781_a(var5);
-            int var18 = var3 + var1.func_82838_A() + (var6 == null ? 0 : var6.func_82838_A());
+            ItemStack var6 = this.inputSlots.getStackInSlot(1);
+            Map var7 = EnchantmentHelper.getEnchantments(var5);
+            int var18 = var3 + var1.getRepairCost() + (var6 == null ? 0 : var6.getRepairCost());
             this.field_82856_l = 0;
             int var8;
             int var9;
@@ -86,14 +86,14 @@ public class ContainerRepair extends Container
 
             if (var6 != null)
             {
-                if (var5.isItemStackDamageable() && Item.itemsList[var5.itemID].func_82789_a(var1, var6))
+                if (var5.isItemStackDamageable() && Item.itemsList[var5.itemID].getIsRepairable(var1, var6))
                 {
                     var8 = Math.min(var5.getItemDamageForDisplay(), var5.getMaxDamage() / 4);
 
                     if (var8 <= 0)
                     {
-                        this.field_82852_f.setInventorySlotContents(0, (ItemStack)null);
-                        this.field_82854_e = 0;
+                        this.outputSlot.setInventorySlotContents(0, (ItemStack)null);
+                        this.maximumCost = 0;
                         return;
                     }
 
@@ -111,8 +111,8 @@ public class ContainerRepair extends Container
                 {
                     if (var5.itemID != var6.itemID || !var5.isItemStackDamageable())
                     {
-                        this.field_82852_f.setInventorySlotContents(0, (ItemStack)null);
-                        this.field_82854_e = 0;
+                        this.outputSlot.setInventorySlotContents(0, (ItemStack)null);
+                        this.maximumCost = 0;
                         return;
                     }
 
@@ -136,7 +136,7 @@ public class ContainerRepair extends Container
                         }
                     }
 
-                    Map var19 = EnchantmentHelper.func_82781_a(var6);
+                    Map var19 = EnchantmentHelper.getEnchantments(var6);
                     var20 = var19.keySet().iterator();
 
                     while (var20.hasNext())
@@ -188,8 +188,10 @@ public class ContainerRepair extends Container
                                 case 1:
                                     var23 = 8;
                                     break;
+
                                 case 2:
                                     var23 = 4;
+
                                 case 3:
                                 case 4:
                                 case 6:
@@ -198,9 +200,11 @@ public class ContainerRepair extends Container
                                 case 9:
                                 default:
                                     break;
+
                                 case 5:
                                     var23 = 2;
                                     break;
+
                                 case 10:
                                     var23 = 1;
                             }
@@ -211,17 +215,17 @@ public class ContainerRepair extends Container
                 }
             }
 
-            if (this.field_82857_m != null && !this.field_82857_m.equalsIgnoreCase(var1.func_82833_r()) && this.field_82857_m.length() > 0)
+            if (this.field_82857_m != null && !this.field_82857_m.equalsIgnoreCase(var1.getDisplayName()) && this.field_82857_m.length() > 0)
             {
                 var4 = var1.isItemStackDamageable() ? 7 : var1.stackSize * 5;
                 var2 += var4;
 
-                if (var1.func_82837_s())
+                if (var1.hasDisplayName())
                 {
                     var18 += var4 / 2;
                 }
 
-                var5.func_82834_c(this.field_82857_m);
+                var5.setItemName(this.field_82857_m);
             }
 
             var8 = 0;
@@ -240,8 +244,10 @@ public class ContainerRepair extends Container
                     case 1:
                         var22 = 8;
                         break;
+
                     case 2:
                         var22 = 4;
+
                     case 3:
                     case 4:
                     case 6:
@@ -250,44 +256,46 @@ public class ContainerRepair extends Container
                     case 9:
                     default:
                         break;
+
                     case 5:
                         var22 = 2;
                         break;
+
                     case 10:
                         var22 = 1;
                 }
             }
 
-            this.field_82854_e = var18 + var2;
+            this.maximumCost = var18 + var2;
 
             if (var2 <= 0)
             {
                 var5 = null;
             }
 
-            if (var4 == var2 && var4 > 0 && this.field_82854_e >= 40)
+            if (var4 == var2 && var4 > 0 && this.maximumCost >= 40)
             {
                 System.out.println("Naming an item only, cost too high; giving discount to cap cost to 39 levels");
-                this.field_82854_e = 39;
+                this.maximumCost = 39;
             }
 
-            if (this.field_82854_e >= 40 && !this.field_82855_n.capabilities.isCreativeMode)
+            if (this.maximumCost >= 40 && !this.thePlayer.capabilities.isCreativeMode)
             {
                 var5 = null;
             }
 
             if (var5 != null)
             {
-                var9 = var5.func_82838_A();
+                var9 = var5.getRepairCost();
 
-                if (var6 != null && var9 < var6.func_82838_A())
+                if (var6 != null && var9 < var6.getRepairCost())
                 {
-                    var9 = var6.func_82838_A();
+                    var9 = var6.getRepairCost();
                 }
 
-                if (var5.func_82837_s())
+                if (var5.hasDisplayName())
                 {
-                    var9 -= 5;
+                    var9 -= 9;
                 }
 
                 if (var9 < 0)
@@ -296,11 +304,11 @@ public class ContainerRepair extends Container
                 }
 
                 var9 += 2;
-                var5.func_82841_c(var9);
-                EnchantmentHelper.func_82782_a(var7, var5);
+                var5.setRepairCost(var9);
+                EnchantmentHelper.setEnchantments(var7, var5);
             }
 
-            this.field_82852_f.setInventorySlotContents(0, var5);
+            this.outputSlot.setInventorySlotContents(0, var5);
             this.updateCraftingResults();
         }
     }
@@ -308,21 +316,27 @@ public class ContainerRepair extends Container
     public void addCraftingToCrafters(ICrafting par1ICrafting)
     {
         super.addCraftingToCrafters(par1ICrafting);
-        par1ICrafting.updateCraftingInventoryInfo(this, 0, this.field_82854_e);
+        par1ICrafting.updateCraftingInventoryInfo(this, 0, this.maximumCost);
     }
 
-    /**
-     * Callback for when the crafting gui is closed.
-     */
+    @SideOnly(Side.CLIENT)
+    public void updateProgressBar(int par1, int par2)
+    {
+        if (par1 == 0)
+        {
+            this.maximumCost = par2;
+        }
+    }
+
     public void onCraftGuiClosed(EntityPlayer par1EntityPlayer)
     {
         super.onCraftGuiClosed(par1EntityPlayer);
 
-        if (!this.field_82860_h.isRemote)
+        if (!this.theWorld.isRemote)
         {
-            for (int var2 = 0; var2 < this.field_82853_g.getSizeInventory(); ++var2)
+            for (int var2 = 0; var2 < this.inputSlots.getSizeInventory(); ++var2)
             {
-                ItemStack var3 = this.field_82853_g.getStackInSlotOnClosing(var2);
+                ItemStack var3 = this.inputSlots.getStackInSlotOnClosing(var2);
 
                 if (var3 != null)
                 {
@@ -332,21 +346,12 @@ public class ContainerRepair extends Container
         }
     }
 
-    @SideOnly(Side.CLIENT)
-    public void updateProgressBar(int par1, int par2)
-    {
-        if (par1 == 0)
-        {
-            this.field_82854_e = par2;
-        }
-    }
-
     public boolean canInteractWith(EntityPlayer par1EntityPlayer)
     {
-        return this.field_82860_h.getBlockId(this.field_82861_i, this.field_82858_j, this.field_82859_k) != Block.field_82510_ck.blockID ? false : par1EntityPlayer.getDistanceSq((double)this.field_82861_i + 0.5D, (double)this.field_82858_j + 0.5D, (double)this.field_82859_k + 0.5D) <= 64.0D;
+        return this.theWorld.getBlockId(this.field_82861_i, this.field_82858_j, this.field_82859_k) != Block.anvil.blockID ? false : par1EntityPlayer.getDistanceSq((double)this.field_82861_i + 0.5D, (double)this.field_82858_j + 0.5D, (double)this.field_82859_k + 0.5D) <= 64.0D;
     }
 
-    public ItemStack func_82846_b(EntityPlayer par1EntityPlayer, int par2)
+    public ItemStack transferStackInSlot(EntityPlayer par1EntityPlayer, int par2)
     {
         ItemStack var3 = null;
         Slot var4 = (Slot)this.inventorySlots.get(par2);
@@ -391,7 +396,7 @@ public class ContainerRepair extends Container
                 return null;
             }
 
-            var4.func_82870_a(par1EntityPlayer, var5);
+            var4.onPickupFromSlot(par1EntityPlayer, var5);
         }
 
         return var3;
@@ -403,7 +408,7 @@ public class ContainerRepair extends Container
 
         if (this.getSlot(2).getHasStack())
         {
-            this.getSlot(2).getStack().func_82834_c(this.field_82857_m);
+            this.getSlot(2).getStack().setItemName(this.field_82857_m);
         }
 
         this.func_82848_d();
@@ -411,7 +416,7 @@ public class ContainerRepair extends Container
 
     static IInventory func_82851_a(ContainerRepair par0ContainerRepair)
     {
-        return par0ContainerRepair.field_82853_g;
+        return par0ContainerRepair.inputSlots;
     }
 
     static int func_82849_b(ContainerRepair par0ContainerRepair)

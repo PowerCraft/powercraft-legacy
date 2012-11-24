@@ -10,15 +10,10 @@ public class Packet54PlayNoteBlock extends Packet
     public int yLocation;
     public int zLocation;
 
-    /** 1=Double Bass, 2=Snare Drum, 3=Clicks / Sticks, 4=Bass Drum, 5=Harp */
     public int instrumentType;
 
-    /**
-     * The pitch of the note (between 0-24 inclusive where 0 is the lowest and 24 is the highest).
-     */
     public int pitch;
 
-    /** The block ID this action is set for. */
     public int blockId;
 
     public Packet54PlayNoteBlock() {}
@@ -33,9 +28,6 @@ public class Packet54PlayNoteBlock extends Packet
         this.blockId = par4;
     }
 
-    /**
-     * Abstract. Reads the raw packet data from the data stream.
-     */
     public void readPacketData(DataInputStream par1DataInputStream) throws IOException
     {
         this.xLocation = par1DataInputStream.readInt();
@@ -46,9 +38,6 @@ public class Packet54PlayNoteBlock extends Packet
         this.blockId = par1DataInputStream.readShort() & 4095;
     }
 
-    /**
-     * Abstract. Writes the raw packet data to the data stream.
-     */
     public void writePacketData(DataOutputStream par1DataOutputStream) throws IOException
     {
         par1DataOutputStream.writeInt(this.xLocation);
@@ -59,17 +48,11 @@ public class Packet54PlayNoteBlock extends Packet
         par1DataOutputStream.writeShort(this.blockId & 4095);
     }
 
-    /**
-     * Passes this Packet on to the NetHandler for processing.
-     */
     public void processPacket(NetHandler par1NetHandler)
     {
         par1NetHandler.handleBlockEvent(this);
     }
 
-    /**
-     * Abstract. Return the size of the packet (not counting the header).
-     */
     public int getPacketSize()
     {
         return 14;

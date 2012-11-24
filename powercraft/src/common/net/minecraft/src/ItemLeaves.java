@@ -12,9 +12,6 @@ public class ItemLeaves extends ItemBlock
         this.setHasSubtypes(true);
     }
 
-    /**
-     * Returns the metadata of the block which this Item (ItemBlock) can place
-     */
     public int getMetadata(int par1)
     {
         return par1 | 4;
@@ -22,16 +19,13 @@ public class ItemLeaves extends ItemBlock
 
     @SideOnly(Side.CLIENT)
 
-    /**
-     * Gets an icon index based on an item's damage value
-     */
     public int getIconFromDamage(int par1)
     {
         return Block.leaves.getBlockTextureFromSideAndMetadata(0, par1);
     }
 
     @SideOnly(Side.CLIENT)
-    public int func_82790_a(ItemStack par1ItemStack, int par2)
+    public int getColorFromItemStack(ItemStack par1ItemStack, int par2)
     {
         int var3 = par1ItemStack.getItemDamage();
         return (var3 & 1) == 1 ? ColorizerFoliage.getFoliageColorPine() : ((var3 & 2) == 2 ? ColorizerFoliage.getFoliageColorBirch() : ColorizerFoliage.getFoliageColorBasic());

@@ -3,7 +3,6 @@ package net.minecraft.src;
 import cpw.mods.fml.common.Side;
 import cpw.mods.fml.common.asm.SideOnly;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 import org.lwjgl.opengl.GL11;
 
@@ -133,8 +132,7 @@ public class ModelRenderer
                 }
 
                 GL11.glTranslatef(this.field_82906_o, this.field_82908_p, this.field_82907_q);
-                Iterator var2;
-                ModelRenderer var3;
+                int var2;
 
                 if (this.rotateAngleX == 0.0F && this.rotateAngleY == 0.0F && this.rotateAngleZ == 0.0F)
                 {
@@ -144,12 +142,9 @@ public class ModelRenderer
 
                         if (this.childModels != null)
                         {
-                            var2 = this.childModels.iterator();
-
-                            while (var2.hasNext())
+                            for (var2 = 0; var2 < this.childModels.size(); ++var2)
                             {
-                                var3 = (ModelRenderer)var2.next();
-                                var3.render(par1);
+                                ((ModelRenderer)this.childModels.get(var2)).render(par1);
                             }
                         }
                     }
@@ -160,12 +155,9 @@ public class ModelRenderer
 
                         if (this.childModels != null)
                         {
-                            var2 = this.childModels.iterator();
-
-                            while (var2.hasNext())
+                            for (var2 = 0; var2 < this.childModels.size(); ++var2)
                             {
-                                var3 = (ModelRenderer)var2.next();
-                                var3.render(par1);
+                                ((ModelRenderer)this.childModels.get(var2)).render(par1);
                             }
                         }
 
@@ -196,12 +188,9 @@ public class ModelRenderer
 
                     if (this.childModels != null)
                     {
-                        var2 = this.childModels.iterator();
-
-                        while (var2.hasNext())
+                        for (var2 = 0; var2 < this.childModels.size(); ++var2)
                         {
-                            var3 = (ModelRenderer)var2.next();
-                            var3.render(par1);
+                            ((ModelRenderer)this.childModels.get(var2)).render(par1);
                         }
                     }
 
@@ -303,12 +292,10 @@ public class ModelRenderer
         this.displayList = GLAllocation.generateDisplayLists(1);
         GL11.glNewList(this.displayList, GL11.GL_COMPILE);
         Tessellator var2 = Tessellator.instance;
-        Iterator var3 = this.cubeList.iterator();
 
-        while (var3.hasNext())
+        for (int var3 = 0; var3 < this.cubeList.size(); ++var3)
         {
-            ModelBox var4 = (ModelBox)var3.next();
-            var4.render(var2, par1);
+            ((ModelBox)this.cubeList.get(var3)).render(var2, par1);
         }
 
         GL11.glEndList();

@@ -8,7 +8,8 @@ import org.lwjgl.opengl.GL11;
 @SideOnly(Side.CLIENT)
 class GuiBeaconButton extends GuiButton
 {
-    private final String field_82259_k;
+    /** Texture for this button. */
+    private final String buttonTexture;
     private final int field_82257_l;
     private final int field_82258_m;
     private boolean field_82256_n;
@@ -16,7 +17,7 @@ class GuiBeaconButton extends GuiButton
     protected GuiBeaconButton(int par1, int par2, int par3, String par4Str, int par5, int par6)
     {
         super(par1, par2, par3, 22, 22, "");
-        this.field_82259_k = par4Str;
+        this.buttonTexture = par4Str;
         this.field_82257_l = par5;
         this.field_82258_m = par6;
     }
@@ -49,9 +50,9 @@ class GuiBeaconButton extends GuiButton
 
             this.drawTexturedModalRect(this.xPosition, this.yPosition, var5, var4, this.width, this.height);
 
-            if (!"/gui/beacon.png".equals(this.field_82259_k))
+            if (!"/gui/beacon.png".equals(this.buttonTexture))
             {
-                GL11.glBindTexture(GL11.GL_TEXTURE_2D, par1Minecraft.renderEngine.getTexture(this.field_82259_k));
+                GL11.glBindTexture(GL11.GL_TEXTURE_2D, par1Minecraft.renderEngine.getTexture(this.buttonTexture));
             }
 
             this.drawTexturedModalRect(this.xPosition + 2, this.yPosition + 2, this.field_82257_l, this.field_82258_m, 18, 18);

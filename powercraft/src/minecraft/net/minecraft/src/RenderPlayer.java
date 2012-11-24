@@ -18,6 +18,8 @@ public class RenderPlayer extends RenderLiving
     private ModelBiped modelArmorChestplate;
     private ModelBiped modelArmor;
     public static String[] armorFilenamePrefix = new String[] {"cloth", "chain", "iron", "diamond", "gold"};
+    public static float NAME_TAG_RANGE = 64.0f;
+    public static float NAME_TAG_RANGE_SNEAK = 32.0f;
 
     public RenderPlayer()
     {
@@ -69,9 +71,9 @@ public class RenderPlayer extends RenderLiving
 
                 float var8 = 1.0F;
 
-                if (var6.func_82812_d() == EnumArmorMaterial.CLOTH)
+                if (var6.getArmorMaterial() == EnumArmorMaterial.CLOTH)
                 {
-                    int var9 = var6.func_82814_b(var4);
+                    int var9 = var6.getColor(var4);
                     float var10 = (float)(var9 >> 16 & 255) / 255.0F;
                     float var11 = (float)(var9 >> 8 & 255) / 255.0F;
                     float var12 = (float)(var9 & 255) / 255.0F;
@@ -152,14 +154,6 @@ public class RenderPlayer extends RenderLiving
         this.modelArmorChestplate.heldItemRight = this.modelArmor.heldItemRight = this.modelBipedMain.heldItemRight = 0;
     }
 
-    protected void func_82440_a(EntityPlayer par1EntityPlayer, float par2, float par3, float par4, float par5, float par6, float par7)
-    {
-        if (!par1EntityPlayer.func_82150_aj())
-        {
-            super.renderModel(par1EntityPlayer, par2, par3, par4, par5, par6, par7);
-        }
-    }
-
     /**
      * Used to render a player's name above their head
      */
@@ -170,7 +164,7 @@ public class RenderPlayer extends RenderLiving
             float var8 = 1.6F;
             float var9 = 0.016666668F * var8;
             double var10 = par1EntityPlayer.getDistanceSqToEntity(this.renderManager.livingPlayer);
-            float var12 = par1EntityPlayer.isSneaking() ? 32.0F : 64.0F;
+            float var12 = par1EntityPlayer.isSneaking() ? NAME_TAG_RANGE_SNEAK : NAME_TAG_RANGE;
 
             if (var10 < (double)(var12 * var12))
             {
@@ -228,6 +222,7 @@ public class RenderPlayer extends RenderLiving
         float var3 = 1.0F;
         GL11.glColor3f(var3, var3, var3);
         super.renderEquippedItems(par1EntityPlayer, par2);
+        super.func_85093_e(par1EntityPlayer, par2);
         ItemStack var4 = par1EntityPlayer.inventory.armorItemInSlot(3);
 
         if (var4 != null)
@@ -240,7 +235,7 @@ public class RenderPlayer extends RenderLiving
             {
                 IItemRenderer customRenderer = MinecraftForgeClient.getItemRenderer(var4, EQUIPPED);
                 boolean is3D = (customRenderer != null && customRenderer.shouldUseRenderHelper(EQUIPPED, var4, BLOCK_3D));
-        
+
                 if (is3D || RenderBlocks.renderItemIn3d(Block.blocksList[var4.itemID].getRenderType()))
                 {
                     var5 = 0.625F;
@@ -251,7 +246,7 @@ public class RenderPlayer extends RenderLiving
 
                 this.renderManager.itemRenderer.renderItem(par1EntityPlayer, var4, 0);
             }
-            else if (var4.getItem().shiftedIndex == Item.field_82799_bQ.shiftedIndex)
+            else if (var4.getItem().shiftedIndex == Item.skull.shiftedIndex)
             {
                 var5 = 1.0625F;
                 GL11.glScalef(var5, -var5, -var5);
@@ -262,13 +257,14 @@ public class RenderPlayer extends RenderLiving
                     var6 = var4.getTagCompound().getString("SkullOwner");
                 }
 
-                TileEntitySkullRenderer.field_82397_a.func_82393_a(-0.5F, 0.0F, -0.5F, 1, 180.0F, var4.getItemDamage(), var6);
+                TileEntitySkullRenderer.skullRenderer.func_82393_a(-0.5F, 0.0F, -0.5F, 1, 180.0F, var4.getItemDamage(), var6);
             }
 
             GL11.glPopMatrix();
         }
 
         float var7;
+        float var8;
 
         if (par1EntityPlayer.username.equals("deadmau5") && this.loadDownloadableImageTexture(par1EntityPlayer.skinUrl, (String)null))
         {
@@ -283,7 +279,7 @@ public class RenderPlayer extends RenderLiving
                 GL11.glTranslatef(0.0F, -0.375F, 0.0F);
                 GL11.glRotatef(-var7, 1.0F, 0.0F, 0.0F);
                 GL11.glRotatef(-var25, 0.0F, 1.0F, 0.0F);
-                float var8 = 1.3333334F;
+                var8 = 1.3333334F;
                 GL11.glScalef(var8, var8, var8);
                 this.modelBipedMain.renderEars(0.0625F);
                 GL11.glPopMatrix();
@@ -360,7 +356,7 @@ public class RenderPlayer extends RenderLiving
 
             IItemRenderer customRenderer = MinecraftForgeClient.getItemRenderer(var21, EQUIPPED);
             boolean is3D = (customRenderer != null && customRenderer.shouldUseRenderHelper(EQUIPPED, var21, BLOCK_3D));
-            
+
             if (var21.getItem() instanceof ItemBlock && (is3D || RenderBlocks.renderItemIn3d(Block.blocksList[var21.itemID].getRenderType())))
             {
                 var7 = 0.5F;
@@ -368,7 +364,7 @@ public class RenderPlayer extends RenderLiving
                 var7 *= 0.75F;
                 GL11.glRotatef(20.0F, 1.0F, 0.0F, 0.0F);
                 GL11.glRotatef(45.0F, 0.0F, 1.0F, 0.0F);
-                GL11.glScalef(var7, -var7, var7);
+                GL11.glScalef(-var7, -var7, var7);
             }
             else if (var21.itemID == Item.bow.shiftedIndex)
             {
@@ -412,13 +408,17 @@ public class RenderPlayer extends RenderLiving
                 GL11.glRotatef(20.0F, 0.0F, 0.0F, 1.0F);
             }
 
+            float var10;
+            int var27;
+            float var28;
+
             if (var21.getItem().requiresMultipleRenderPasses())
             {
-                for (int var27 = 0; var27 < var21.getItem().getRenderPasses(var21.getItemDamage()); ++var27)
+                for (var27 = 0; var27 < var21.getItem().getRenderPasses(var21.getItemDamage()); ++var27)
                 {
-                    int var26 = var21.getItem().func_82790_a(var21, var27);
-                    float var28 = (float)(var26 >> 16 & 255) / 255.0F;
-                    float var10 = (float)(var26 >> 8 & 255) / 255.0F;
+                    int var26 = var21.getItem().getColorFromItemStack(var21, var27);
+                    var28 = (float)(var26 >> 16 & 255) / 255.0F;
+                    var10 = (float)(var26 >> 8 & 255) / 255.0F;
                     var11 = (float)(var26 & 255) / 255.0F;
                     GL11.glColor4f(var28, var10, var11, 1.0F);
                     this.renderManager.itemRenderer.renderItem(par1EntityPlayer, var21, var27);
@@ -426,6 +426,11 @@ public class RenderPlayer extends RenderLiving
             }
             else
             {
+                var27 = var21.getItem().getColorFromItemStack(var21, 0);
+                var8 = (float)(var27 >> 16 & 255) / 255.0F;
+                var28 = (float)(var27 >> 8 & 255) / 255.0F;
+                var10 = (float)(var27 & 255) / 255.0F;
+                GL11.glColor4f(var8, var28, var10, 1.0F);
                 this.renderManager.itemRenderer.renderItem(par1EntityPlayer, var21, 0);
             }
 
@@ -526,14 +531,6 @@ public class RenderPlayer extends RenderLiving
     protected void renderLivingAt(EntityLiving par1EntityLiving, double par2, double par4, double par6)
     {
         this.renderPlayerSleep((EntityPlayer)par1EntityLiving, par2, par4, par6);
-    }
-
-    /**
-     * Renders the model in RenderLiving
-     */
-    protected void renderModel(EntityLiving par1EntityLiving, float par2, float par3, float par4, float par5, float par6, float par7)
-    {
-        this.func_82440_a((EntityPlayer)par1EntityLiving, par2, par3, par4, par5, par6, par7);
     }
 
     public void doRenderLiving(EntityLiving par1EntityLiving, double par2, double par4, double par6, float par8, float par9)

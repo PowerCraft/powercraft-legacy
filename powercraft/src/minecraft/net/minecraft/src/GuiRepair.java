@@ -35,7 +35,7 @@ public class GuiRepair extends GuiContainer implements ICrafting
         this.field_82326_p.func_82266_h(-1);
         this.field_82326_p.setEnableBackgroundDrawing(false);
         this.field_82326_p.setMaxStringLength(30);
-        this.inventorySlots.func_82847_b(this);
+        this.inventorySlots.removeCraftingFromCrafters(this);
         this.inventorySlots.addCraftingToCrafters(this);
     }
 
@@ -46,7 +46,7 @@ public class GuiRepair extends GuiContainer implements ICrafting
     {
         super.onGuiClosed();
         Keyboard.enableRepeatEvents(false);
-        this.inventorySlots.func_82847_b(this);
+        this.inventorySlots.removeCraftingFromCrafters(this);
     }
 
     /**
@@ -57,13 +57,13 @@ public class GuiRepair extends GuiContainer implements ICrafting
         GL11.glDisable(GL11.GL_LIGHTING);
         this.fontRenderer.drawString(StatCollector.translateToLocal("container.repair"), 60, 6, 4210752);
 
-        if (this.field_82327_o.field_82854_e > 0)
+        if (this.field_82327_o.maximumCost > 0)
         {
             int var3 = 8453920;
             boolean var4 = true;
-            String var5 = StatCollector.translateToLocalFormatted("container.repair.cost", new Object[] {Integer.valueOf(this.field_82327_o.field_82854_e)});
+            String var5 = StatCollector.translateToLocalFormatted("container.repair.cost", new Object[] {Integer.valueOf(this.field_82327_o.maximumCost)});
 
-            if (this.field_82327_o.field_82854_e >= 40 && !this.mc.thePlayer.capabilities.isCreativeMode)
+            if (this.field_82327_o.maximumCost >= 40 && !this.mc.thePlayer.capabilities.isCreativeMode)
             {
                 var5 = StatCollector.translateToLocal("container.repair.expensive");
                 var3 = 16736352;
@@ -72,7 +72,7 @@ public class GuiRepair extends GuiContainer implements ICrafting
             {
                 var4 = false;
             }
-            else if (!this.field_82327_o.getSlot(2).func_82869_a(this.field_82325_q.player))
+            else if (!this.field_82327_o.getSlot(2).canTakeStack(this.field_82325_q.player))
             {
                 var3 = 16736352;
             }
@@ -83,7 +83,7 @@ public class GuiRepair extends GuiContainer implements ICrafting
                 int var7 = this.xSize - 8 - this.fontRenderer.getStringWidth(var5);
                 byte var8 = 67;
 
-                if (this.fontRenderer.func_82883_a())
+                if (this.fontRenderer.getUnicodeFlag())
                 {
                     drawRect(var7 - 3, var8 - 2, this.xSize - 7, var8 + 10, -16777216);
                     drawRect(var7 - 2, var8 - 1, this.xSize - 8, var8 + 9, -12895429);
@@ -168,7 +168,7 @@ public class GuiRepair extends GuiContainer implements ICrafting
     {
         if (par2 == 0)
         {
-            this.field_82326_p.setText(par3ItemStack == null ? "" : par3ItemStack.func_82833_r());
+            this.field_82326_p.setText(par3ItemStack == null ? "" : par3ItemStack.getDisplayName());
             this.field_82326_p.func_82265_c(par3ItemStack != null);
 
             if (par3ItemStack != null)

@@ -145,7 +145,7 @@ def csv_header(csvfile):
 class Commands(object):
     """Contains the commands and initialisation for a full mcp run"""
 
-    MCPVersion = '7.19'
+    MCPVersion = '7.21'
     _default_config = 'conf/mcp.cfg'
     _version_config = 'conf/version.cfg'
 
@@ -794,6 +794,8 @@ class Commands(object):
         binlk = {CLIENT: self.binclient, SERVER: self.binserver}
         testlk = {CLIENT: self.testclient, SERVER: self.testserver}
 
+        if side == SERVER:
+            return self.checkbins(CLIENT)
         if not os.path.exists(os.path.join(binlk[side], os.path.normpath(testlk[side] + '.class'))):
             return False
         return True
@@ -1073,7 +1075,7 @@ class Commands(object):
             raise
 
     def startserver(self):
-        classpath = [self.binserver, self.srcshared] + self.cpathserver
+        classpath = [self.binclient, self.srcshared] + self.cpathserver
         classpath = [os.path.join('..', p) for p in classpath]
         classpath = os.pathsep.join(classpath)
         os.chdir(self.dirjars)

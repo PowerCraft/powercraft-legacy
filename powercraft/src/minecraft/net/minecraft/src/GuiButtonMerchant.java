@@ -8,12 +8,15 @@ import org.lwjgl.opengl.GL11;
 @SideOnly(Side.CLIENT)
 public class GuiButtonMerchant extends GuiButton
 {
-    private final boolean field_73749_j;
+    /**
+     * If true, then next page button will face to right, if false then next page button will face to left.
+     */
+    private final boolean mirrored;
 
     public GuiButtonMerchant(int par1, int par2, int par3, boolean par4)
     {
         super(par1, par2, par3, 12, 19, "");
-        this.field_73749_j = par4;
+        this.mirrored = par4;
     }
 
     /**
@@ -38,7 +41,7 @@ public class GuiButtonMerchant extends GuiButton
                 var6 += this.width;
             }
 
-            if (!this.field_73749_j)
+            if (!this.mirrored)
             {
                 var5 += this.height;
             }

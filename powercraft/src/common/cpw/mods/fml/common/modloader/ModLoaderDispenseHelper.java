@@ -9,7 +9,6 @@ import cpw.mods.fml.common.IDispenserHandler;
 
 public class ModLoaderDispenseHelper implements IDispenserHandler
 {
-
     private BaseModProxy mod;
 
     public ModLoaderDispenseHelper(BaseModProxy mod)
@@ -21,8 +20,6 @@ public class ModLoaderDispenseHelper implements IDispenserHandler
     public int dispense(int x, int y, int z, int xVelocity, int zVelocity, World world, ItemStack item, Random random, double entX, double entY,
             double entZ)
     {
-        int ret = mod.dispenseEntity(world, item, random, x, y, z, xVelocity, zVelocity, entX, entY, entZ);
-        return ret == 0 ? -1 : ret;
+        return -1;
     }
-
 }

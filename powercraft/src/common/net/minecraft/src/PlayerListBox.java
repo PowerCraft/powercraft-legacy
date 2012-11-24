@@ -9,10 +9,8 @@ import net.minecraft.server.MinecraftServer;
 @SideOnly(Side.SERVER)
 public class PlayerListBox extends JList implements IUpdatePlayerListBox
 {
-    /** Reference to the MinecraftServer object. */
     private MinecraftServer mcServer;
 
-    /** Counts the number of updates. */
     private int updateCounter = 0;
 
     public PlayerListBox(MinecraftServer par1MinecraftServer)
@@ -21,9 +19,6 @@ public class PlayerListBox extends JList implements IUpdatePlayerListBox
         par1MinecraftServer.func_82010_a(this);
     }
 
-    /**
-     * Updates the JList with a new model.
-     */
     public void update()
     {
         if (this.updateCounter++ % 20 == 0)

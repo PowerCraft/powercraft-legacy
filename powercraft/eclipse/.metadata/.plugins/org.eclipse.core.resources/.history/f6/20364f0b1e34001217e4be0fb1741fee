@@ -1,0 +1,15 @@
+package powercraft.core;
+
+public class PCco_ItemBlockSaver extends PC_Item {
+
+	protected PCco_ItemBlockSaver(int id) {
+		super(id);
+	}
+
+	@Override
+	public String[] getDefaultNames() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+}

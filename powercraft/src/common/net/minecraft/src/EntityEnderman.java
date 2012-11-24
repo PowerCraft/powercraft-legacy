@@ -4,9 +4,6 @@ public class EntityEnderman extends EntityMob
 {
     public static boolean[] carriableBlocks = new boolean[256];
 
-    /**
-     * Counter to delay the teleportation of an enderman towards the currently attacked target
-     */
     private int teleportDelay = 0;
     private int field_70826_g = 0;
 
@@ -32,9 +29,6 @@ public class EntityEnderman extends EntityMob
         this.dataWatcher.addObject(18, new Byte((byte)0));
     }
 
-    /**
-     * (abstract) Protected helper method to write subclass entity data to NBT.
-     */
     public void writeEntityToNBT(NBTTagCompound par1NBTTagCompound)
     {
         super.writeEntityToNBT(par1NBTTagCompound);
@@ -42,9 +36,6 @@ public class EntityEnderman extends EntityMob
         par1NBTTagCompound.setShort("carriedData", (short)this.getCarryingData());
     }
 
-    /**
-     * (abstract) Protected helper method to read subclass entity data from NBT.
-     */
     public void readEntityFromNBT(NBTTagCompound par1NBTTagCompound)
     {
         super.readEntityFromNBT(par1NBTTagCompound);
@@ -52,10 +43,6 @@ public class EntityEnderman extends EntityMob
         this.setCarryingData(par1NBTTagCompound.getShort("carriedData"));
     }
 
-    /**
-     * Finds the closest player within 16 blocks to attack, or null if this Entity isn't interested in attacking
-     * (Animals, Spiders at day, peaceful PigZombies).
-     */
     protected Entity findPlayerToAttack()
     {
         EntityPlayer var1 = this.worldObj.getClosestVulnerablePlayerToEntity(this, 64.0D);
@@ -85,9 +72,6 @@ public class EntityEnderman extends EntityMob
         return null;
     }
 
-    /**
-     * Checks to see if this enderman should be attacking this player
-     */
     private boolean shouldAttackPlayer(EntityPlayer par1EntityPlayer)
     {
         ItemStack var2 = par1EntityPlayer.inventory.armorInventory[3];
@@ -99,7 +83,7 @@ public class EntityEnderman extends EntityMob
         else
         {
             Vec3 var3 = par1EntityPlayer.getLook(1.0F).normalize();
-            Vec3 var4 = this.worldObj.func_82732_R().getVecFromPool(this.posX - par1EntityPlayer.posX, this.boundingBox.minY + (double)(this.height / 2.0F) - (par1EntityPlayer.posY + (double)par1EntityPlayer.getEyeHeight()), this.posZ - par1EntityPlayer.posZ);
+            Vec3 var4 = this.worldObj.getWorldVec3Pool().getVecFromPool(this.posX - par1EntityPlayer.posX, this.boundingBox.minY + (double)(this.height / 2.0F) - (par1EntityPlayer.posY + (double)par1EntityPlayer.getEyeHeight()), this.posZ - par1EntityPlayer.posZ);
             double var5 = var4.lengthVector();
             var4 = var4.normalize();
             double var7 = var3.dotProduct(var4);
@@ -107,10 +91,6 @@ public class EntityEnderman extends EntityMob
         }
     }
 
-    /**
-     * Called frequently so the entity can update its state every tick as required. For example, zombies and skeletons
-     * use this to react to sunlight and start to burn.
-     */
     public void onLivingUpdate()
     {
         if (this.isWet())
@@ -121,7 +101,7 @@ public class EntityEnderman extends EntityMob
         this.moveSpeed = this.entityToAttack != null ? 6.5F : 0.3F;
         int var1;
 
-        if (!this.worldObj.isRemote && this.worldObj.func_82736_K().func_82766_b("mobGriefing"))
+        if (!this.worldObj.isRemote && this.worldObj.getGameRules().getGameRuleBooleanValue("mobGriefing"))
         {
             int var2;
             int var3;
@@ -222,9 +202,6 @@ public class EntityEnderman extends EntityMob
         super.onLivingUpdate();
     }
 
-    /**
-     * Teleport the enderman to a random nearby position
-     */
     protected boolean teleportRandomly()
     {
         double var1 = this.posX + (this.rand.nextDouble() - 0.5D) * 64.0D;
@@ -233,12 +210,9 @@ public class EntityEnderman extends EntityMob
         return this.teleportTo(var1, var3, var5);
     }
 
-    /**
-     * Teleport the enderman to another entity
-     */
     protected boolean teleportToEntity(Entity par1Entity)
     {
-        Vec3 var2 = this.worldObj.func_82732_R().getVecFromPool(this.posX - par1Entity.posX, this.boundingBox.minY + (double)(this.height / 2.0F) - par1Entity.posY + (double)par1Entity.getEyeHeight(), this.posZ - par1Entity.posZ);
+        Vec3 var2 = this.worldObj.getWorldVec3Pool().getVecFromPool(this.posX - par1Entity.posX, this.boundingBox.minY + (double)(this.height / 2.0F) - par1Entity.posY + (double)par1Entity.getEyeHeight(), this.posZ - par1Entity.posZ);
         var2 = var2.normalize();
         double var3 = 16.0D;
         double var5 = this.posX + (this.rand.nextDouble() - 0.5D) * 8.0D - var2.xCoord * var3;
@@ -247,9 +221,6 @@ public class EntityEnderman extends EntityMob
         return this.teleportTo(var5, var7, var9);
     }
 
-    /**
-     * Teleport the enderman
-     */
     protected boolean teleportTo(double par1, double par3, double par5)
     {
         double var7 = this.posX;
@@ -316,46 +287,31 @@ public class EntityEnderman extends EntityMob
             }
 
             this.worldObj.playSoundEffect(var7, var9, var11, "mob.endermen.portal", 1.0F, 1.0F);
-            this.worldObj.playSoundAtEntity(this, "mob.endermen.portal", 1.0F, 1.0F);
+            this.func_85030_a("mob.endermen.portal", 1.0F, 1.0F);
             return true;
         }
     }
 
-    /**
-     * Returns the sound this mob makes while it's alive.
-     */
     protected String getLivingSound()
     {
         return this.func_70823_r() ? "mob.endermen.scream" : "mob.endermen.idle";
     }
 
-    /**
-     * Returns the sound this mob makes when it is hurt.
-     */
     protected String getHurtSound()
     {
         return "mob.endermen.hit";
     }
 
-    /**
-     * Returns the sound this mob makes on death.
-     */
     protected String getDeathSound()
     {
         return "mob.endermen.death";
     }
 
-    /**
-     * Returns the item ID for the item the mob drops on death.
-     */
     protected int getDropItemId()
     {
         return Item.enderPearl.shiftedIndex;
     }
 
-    /**
-     * Drop 0-2 items of this living's type
-     */
     protected void dropFewItems(boolean par1, int par2)
     {
         int var3 = this.getDropItemId();
@@ -371,44 +327,33 @@ public class EntityEnderman extends EntityMob
         }
     }
 
-    /**
-     * Set the id of the block an enderman carries
-     */
     public void setCarried(int par1)
     {
         this.dataWatcher.updateObject(16, Byte.valueOf((byte)(par1 & 255)));
     }
 
-    /**
-     * Get the id of the block an enderman carries
-     */
     public int getCarried()
     {
         return this.dataWatcher.getWatchableObjectByte(16);
     }
 
-    /**
-     * Set the metadata of the block an enderman carries
-     */
     public void setCarryingData(int par1)
     {
         this.dataWatcher.updateObject(17, Byte.valueOf((byte)(par1 & 255)));
     }
 
-    /**
-     * Get the metadata of the block an enderman carries
-     */
     public int getCarryingData()
     {
         return this.dataWatcher.getWatchableObjectByte(17);
     }
 
-    /**
-     * Called when the entity is attacked.
-     */
     public boolean attackEntityFrom(DamageSource par1DamageSource, int par2)
     {
-        if (par1DamageSource instanceof EntityDamageSourceIndirect)
+        if (this.func_85032_ar())
+        {
+            return false;
+        }
+        else if (par1DamageSource instanceof EntityDamageSourceIndirect)
         {
             for (int var3 = 0; var3 < 64; ++var3)
             {
@@ -441,7 +386,7 @@ public class EntityEnderman extends EntityMob
         this.dataWatcher.updateObject(18, Byte.valueOf((byte)(par1 ? 1 : 0)));
     }
 
-    public int func_82193_c(Entity par1Entity)
+    public int getAttackStrength(Entity par1Entity)
     {
         return 7;
     }

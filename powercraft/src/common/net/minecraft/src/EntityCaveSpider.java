@@ -19,9 +19,6 @@ public class EntityCaveSpider extends EntitySpider
 
     @SideOnly(Side.CLIENT)
 
-    /**
-     * How large the spider should be scaled.
-     */
     public float spiderScaleAmount()
     {
         return 0.7F;
@@ -61,5 +58,5 @@ public class EntityCaveSpider extends EntitySpider
         }
     }
 
-    public void func_82163_bD() {}
+    public void initCreature() {}
 }

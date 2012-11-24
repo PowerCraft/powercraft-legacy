@@ -21,9 +21,6 @@ public class EntityLargeFireball extends EntityFireball
         super(par1World, par2EntityLiving, par3, par5, par7);
     }
 
-    /**
-     * Called when this EntityFireball hits a block or entity.
-     */
     protected void onImpact(MovingObjectPosition par1MovingObjectPosition)
     {
         if (!this.worldObj.isRemote)
@@ -33,7 +30,7 @@ public class EntityLargeFireball extends EntityFireball
                 par1MovingObjectPosition.entityHit.attackEntityFrom(DamageSource.causeFireballDamage(this, this.shootingEntity), 6);
             }
 
-            this.worldObj.newExplosion((Entity)null, this.posX, this.posY, this.posZ, 1.0F, true, this.worldObj.func_82736_K().func_82766_b("mobGriefing"));
+            this.worldObj.newExplosion((Entity)null, this.posX, this.posY, this.posZ, 1.0F, true, this.worldObj.getGameRules().getGameRuleBooleanValue("mobGriefing"));
             this.setDead();
         }
     }

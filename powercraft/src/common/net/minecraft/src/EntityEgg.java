@@ -17,14 +17,11 @@ public class EntityEgg extends EntityThrowable
         super(par1World, par2, par4, par6);
     }
 
-    /**
-     * Called when this EntityThrowable hits a block or entity.
-     */
     protected void onImpact(MovingObjectPosition par1MovingObjectPosition)
     {
         if (par1MovingObjectPosition.entityHit != null)
         {
-            par1MovingObjectPosition.entityHit.attackEntityFrom(DamageSource.causeThrownDamage(this, this.thrower), 0);
+            par1MovingObjectPosition.entityHit.attackEntityFrom(DamageSource.causeThrownDamage(this, this.func_85052_h()), 0);
         }
 
         if (!this.worldObj.isRemote && this.rand.nextInt(8) == 0)

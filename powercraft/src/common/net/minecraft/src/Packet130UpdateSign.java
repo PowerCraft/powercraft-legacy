@@ -25,9 +25,6 @@ public class Packet130UpdateSign extends Packet
         this.signLines = new String[] {par4ArrayOfStr[0], par4ArrayOfStr[1], par4ArrayOfStr[2], par4ArrayOfStr[3]};
     }
 
-    /**
-     * Abstract. Reads the raw packet data from the data stream.
-     */
     public void readPacketData(DataInputStream par1DataInputStream) throws IOException
     {
         this.xPosition = par1DataInputStream.readInt();
@@ -41,9 +38,6 @@ public class Packet130UpdateSign extends Packet
         }
     }
 
-    /**
-     * Abstract. Writes the raw packet data to the data stream.
-     */
     public void writePacketData(DataOutputStream par1DataOutputStream) throws IOException
     {
         par1DataOutputStream.writeInt(this.xPosition);
@@ -56,17 +50,11 @@ public class Packet130UpdateSign extends Packet
         }
     }
 
-    /**
-     * Passes this Packet on to the NetHandler for processing.
-     */
     public void processPacket(NetHandler par1NetHandler)
     {
         par1NetHandler.handleUpdateSign(this);
     }
 
-    /**
-     * Abstract. Return the size of the packet (not counting the header).
-     */
     public int getPacketSize()
     {
         int var1 = 0;

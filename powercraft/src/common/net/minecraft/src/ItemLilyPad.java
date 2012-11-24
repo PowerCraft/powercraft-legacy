@@ -10,9 +10,6 @@ public class ItemLilyPad extends ItemColored
         super(par1, false);
     }
 
-    /**
-     * Called whenever this item is equipped and the right mouse button is pressed. Args: itemStack, world, entityPlayer
-     */
     public ItemStack onItemRightClick(ItemStack par1ItemStack, World par2World, EntityPlayer par3EntityPlayer)
     {
         MovingObjectPosition var4 = this.getMovingObjectPositionFromPlayer(par2World, par3EntityPlayer, true);
@@ -55,7 +52,7 @@ public class ItemLilyPad extends ItemColored
     }
 
     @SideOnly(Side.CLIENT)
-    public int func_82790_a(ItemStack par1ItemStack, int par2)
+    public int getColorFromItemStack(ItemStack par1ItemStack, int par2)
     {
         return Block.waterlily.getRenderColor(par1ItemStack.getItemDamage());
     }

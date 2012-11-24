@@ -230,7 +230,12 @@ public class GuiContainerCreative extends InventoryEffectRenderer
     public void onGuiClosed()
     {
         super.onGuiClosed();
-        this.mc.thePlayer.inventorySlots.func_82847_b(this.field_82324_x);
+
+        if (this.mc.thePlayer != null && this.mc.thePlayer.inventory != null)
+        {
+            this.mc.thePlayer.inventorySlots.removeCraftingFromCrafters(this.field_82324_x);
+        }
+
         Keyboard.enableRepeatEvents(false);
     }
 
@@ -296,7 +301,7 @@ public class GuiContainerCreative extends InventoryEffectRenderer
         {
             ItemStack var10 = (ItemStack)var8.next();
             boolean var11 = false;
-            Iterator var6 = var10.func_82840_a(this.mc.thePlayer, this.mc.gameSettings.field_82882_x).iterator();
+            Iterator var6 = var10.getTooltip(this.mc.thePlayer, this.mc.gameSettings.advancedItemTooltips).iterator();
 
             while (true)
             {
@@ -644,17 +649,17 @@ public class GuiContainerCreative extends InventoryEffectRenderer
         var9 = var8 + 112;
         this.mc.renderEngine.bindTexture(var4);
 
+        if (var5.shouldHidePlayerInventory())
+        {
+            this.drawTexturedModalRect(var11, var8 + (int)((float)(var9 - var8 - 17) * this.currentScroll), 232 + (this.needsScrollBars() ? 0 : 12), 0, 12, 15);
+        }
+
         if (var5 == null || var5.getTabPage() != tabPage)
         {
             if (var5 != CreativeTabs.tabAllSearch && var5 != CreativeTabs.tabInventory)
             {
                 return;
             }
-        }
-
-        if (var5.shouldHidePlayerInventory())
-        {
-            this.drawTexturedModalRect(var11, var8 + (int)((float)(var9 - var8 - 17) * this.currentScroll), 232 + (this.needsScrollBars() ? 0 : 12), 0, 12, 15);
         }
 
         this.renderCreativeTab(var5);
@@ -791,7 +796,7 @@ public class GuiContainerCreative extends InventoryEffectRenderer
         GL11.glEnable(GL11.GL_LIGHTING);
         GL11.glEnable(GL12.GL_RESCALE_NORMAL);
         ItemStack var10 = par1CreativeTabs.getIconItemStack();
-        itemRenderer.func_82406_b(this.fontRenderer, this.mc.renderEngine, var10, var7, var8);
+        itemRenderer.renderItemAndEffectIntoGUI(this.fontRenderer, this.mc.renderEngine, var10, var7, var8);
         itemRenderer.renderItemOverlayIntoGUI(this.fontRenderer, this.mc.renderEngine, var10, var7, var8);
         GL11.glDisable(GL11.GL_LIGHTING);
         itemRenderer.zLevel = 0.0F;

@@ -2,7 +2,7 @@ package net.minecraft.src;
 
 public interface IBehaviorDispenseItem
 {
-    IBehaviorDispenseItem field_82483_a = new BehaviorDispenseItemProvider();
+    IBehaviorDispenseItem itemDispenseBehaviorProvider = new BehaviorDispenseItemProvider();
 
-    ItemStack func_82482_a(IBlockSource var1, ItemStack var2);
+    ItemStack dispense(IBlockSource var1, ItemStack var2);
 }

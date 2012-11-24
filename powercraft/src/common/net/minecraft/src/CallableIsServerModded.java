@@ -5,17 +5,16 @@ import net.minecraft.server.MinecraftServer;
 
 public class CallableIsServerModded implements Callable
 {
-    final MinecraftServer field_82557_a;
+    final MinecraftServer mcServer;
 
     public CallableIsServerModded(MinecraftServer par1MinecraftServer)
     {
-        this.field_82557_a = par1MinecraftServer;
+        this.mcServer = par1MinecraftServer;
     }
 
     public String func_82556_a()
     {
-        String var1 = this.field_82557_a.getServerModName();
-        return !var1.equals("vanilla") ? "Definitely; \'" + var1 + "\'" : "Unknown (can\'t tell)";
+        return this.mcServer.theProfiler.profilingEnabled ? this.mcServer.theProfiler.getNameOfLastSection() : "N/A (disabled)";
     }
 
     public Object call()

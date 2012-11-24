@@ -2,6 +2,9 @@ package net.minecraftforge.oredict;
 
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.Map;
+import java.util.Map.Entry;
+import java.util.List;
 
 import net.minecraft.src.Block;
 import net.minecraft.src.CraftingManager;
@@ -12,17 +15,24 @@ import net.minecraft.src.ItemStack;
 import net.minecraft.src.ShapelessRecipes;
 import net.minecraft.src.World;
 
-public class ShapelessOreRecipe implements IRecipe 
+public class ShapelessOreRecipe implements IRecipe
 {
     private ItemStack output = null;
-    private ArrayList input = new ArrayList();    
+    private ArrayList input = new ArrayList();
 
-    public ShapelessOreRecipe(Block result, Object... recipe){ this(new ItemStack(result), recipe); }
-    public ShapelessOreRecipe(Item  result, Object... recipe){ this(new ItemStack(result), recipe); }
-    
+    public ShapelessOreRecipe(Block result, Object... recipe)
+    {
+        this(new ItemStack(result), recipe);
+    }
+    public ShapelessOreRecipe(Item  result, Object... recipe)
+    {
+        this(new ItemStack(result), recipe);
+    }
+
     public ShapelessOreRecipe(ItemStack result, Object... recipe)
     {
         output = result.copy();
+
         for (Object in : recipe)
         {
             if (in instanceof ItemStack)
@@ -44,27 +54,59 @@ public class ShapelessOreRecipe implements IRecipe
             else
             {
                 String ret = "Invalid shapeless ore recipe: ";
+
                 for (Object tmp :  recipe)
                 {
                     ret += tmp + ", ";
                 }
+
                 ret += output;
                 throw new RuntimeException(ret);
             }
         }
     }
 
-    @Override
-    public int getRecipeSize(){ return input.size(); }
+    ShapelessOreRecipe(ShapelessRecipes recipe, Map<ItemStack, String> replacements)
+    {
+        output = recipe.getRecipeOutput();
+
+        for (ItemStack ingred : ((List<ItemStack>)recipe.recipeItems))
+        {
+            Object finalObj = ingred;
+
+            for (Entry<ItemStack, String> replace : replacements.entrySet())
+            {
+                if (OreDictionary.itemMatches(replace.getKey(), ingred, false))
+                {
+                    finalObj = OreDictionary.getOres(replace.getValue());
+                    break;
+                }
+            }
+
+            input.add(finalObj);
+        }
+    }
 
     @Override
-    public ItemStack getRecipeOutput(){ return output; }
-    
+    public int getRecipeSize()
+    {
+        return input.size();
+    }
+
     @Override
-    public ItemStack getCraftingResult(InventoryCrafting var1){ return output.copy(); }
-    
+    public ItemStack getRecipeOutput()
+    {
+        return output;
+    }
+
     @Override
-    public boolean matches(InventoryCrafting var1, World world) 
+    public ItemStack getCraftingResult(InventoryCrafting var1)
+    {
+        return output.copy();
+    }
+
+    @Override
+    public boolean matches(InventoryCrafting var1, World world)
     {
         ArrayList required = new ArrayList(input);
 
@@ -80,9 +122,8 @@ public class ShapelessOreRecipe implements IRecipe
                 while (req.hasNext())
                 {
                     boolean match = false;
-                    
                     Object next = req.next();
-                    
+
                     if (next instanceof ItemStack)
                     {
                         match = checkItemEquals((ItemStack)next, slot);
@@ -112,7 +153,7 @@ public class ShapelessOreRecipe implements IRecipe
 
         return required.isEmpty();
     }
-    
+
     private boolean checkItemEquals(ItemStack target, ItemStack input)
     {
         return (target.itemID == input.itemID && (target.getItemDamage() == -1 || target.getItemDamage() == input.getItemDamage()));

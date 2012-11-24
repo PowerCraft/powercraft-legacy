@@ -1,0 +1,28 @@
+# If this log is to be used for incremental obfuscation / patch generation, 
+# add any '.class', '.method', '.field' and '.attribute' restrictions here:
+
+
+#-DO-NOT-EDIT-BELOW-THIS-LINE------------------DO-NOT-EDIT-BELOW-THIS-LINE--
+#
+# RetroGuard MCP v3.6.5
+#
+# Logfile created on Fri Nov 16 23:05:35 CET 2012
+#
+# Jar file to be obfuscated:           server_recomp.jar
+# Target Jar file for obfuscated code: server_reobf.jar
+# RetroGuard Script file used:         retroguard_ro.cfg
+#
+# WARNING - identifier from script file not found in JAR: Application (MethodNotFound)
+# WARNING - identifier from script file not found in JAR: Applet (ClassNotFound)
+#
+# Memory in use after class data structure built: 7548432 bytes
+# Total memory available                        : 127074304 bytes
+#
+#
+# Names reserved from obfuscation:
+#
+#
+#
+# Obfuscated name mappings (some of these may be unchanged due to polymorphism constraints):
+#
+.package_map . .

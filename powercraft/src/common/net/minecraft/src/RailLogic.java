@@ -1,20 +1,15 @@
 package net.minecraft.src;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 public class RailLogic
 {
-    /** Reference to the World object. */
     private World worldObj;
     private int trackX;
     private int trackY;
     private int trackZ;
 
-    /**
-     * A boolean value that is true if the rail is powered, and false if its not.
-     */
     private final boolean isPoweredRail;
     private List connectedTracks;
 
@@ -30,7 +25,6 @@ public class RailLogic
         this.trackY = par4;
         this.trackZ = par5;
         int var6 = par2World.getBlockId(par3, par4, par5);
-
         BlockRail target = (BlockRail)Block.blocksList[var6];
         int var7 = target.getBasicRailMetadata(par2World, null, par3, par4, par5);
         isPoweredRail = !target.isFlexibleRail(par2World, par3, par4, par5);
@@ -94,9 +88,6 @@ public class RailLogic
         }
     }
 
-    /**
-     * Neighboring tracks have potentially been broken, so prune the connected track list
-     */
     private void refreshConnectedTracks()
     {
         for (int var1 = 0; var1 < this.connectedTracks.size(); ++var1)
@@ -126,43 +117,32 @@ public class RailLogic
 
     private boolean isConnectedTo(RailLogic par1RailLogic)
     {
-        Iterator var2 = this.connectedTracks.iterator();
-        ChunkPosition var3;
-
-        do
+        for (int var2 = 0; var2 < this.connectedTracks.size(); ++var2)
         {
-            if (!var2.hasNext())
+            ChunkPosition var3 = (ChunkPosition)this.connectedTracks.get(var2);
+
+            if (var3.x == par1RailLogic.trackX && var3.z == par1RailLogic.trackZ)
             {
-                return false;
+                return true;
             }
-
-            var3 = (ChunkPosition)var2.next();
         }
-        while (var3.x != par1RailLogic.trackX || var3.z != par1RailLogic.trackZ);
 
-        return true;
+        return false;
     }
 
-    /**
-     * Returns true if the specified block is in the same railway.
-     */
     private boolean isInTrack(int par1, int par2, int par3)
     {
-        Iterator var4 = this.connectedTracks.iterator();
-        ChunkPosition var5;
-
-        do
+        for (int var4 = 0; var4 < this.connectedTracks.size(); ++var4)
         {
-            if (!var4.hasNext())
+            ChunkPosition var5 = (ChunkPosition)this.connectedTracks.get(var4);
+
+            if (var5.x == par1 && var5.z == par3)
             {
-                return false;
+                return true;
             }
-
-            var5 = (ChunkPosition)var4.next();
         }
-        while (var5.x != par1 || var5.z != par3);
 
-        return true;
+        return false;
     }
 
     private int getAdjacentTracks()
@@ -192,9 +172,6 @@ public class RailLogic
         return var1;
     }
 
-    /**
-     * Determines whether or not the track can bend to meet the specified rail
-     */
     private boolean canConnectTo(RailLogic par1RailLogic)
     {
         if (this.isConnectedTo(par1RailLogic))
@@ -216,9 +193,6 @@ public class RailLogic
         }
     }
 
-    /**
-     * The specified neighbor has just formed a new connection, so update accordingly
-     */
     private void connectToNeighbor(RailLogic par1RailLogic)
     {
         this.connectedTracks.add(new ChunkPosition(par1RailLogic.trackX, par1RailLogic.trackY, par1RailLogic.trackZ));
@@ -302,9 +276,6 @@ public class RailLogic
         this.worldObj.setBlockMetadataWithNotify(this.trackX, this.trackY, this.trackZ, var7);
     }
 
-    /**
-     * Determines whether or not the target rail can connect to this rail
-     */
     private boolean canConnectFrom(int par1, int par2, int par3)
     {
         RailLogic var4 = this.getMinecartTrackLogic(new ChunkPosition(par1, par2, par3));
@@ -320,9 +291,6 @@ public class RailLogic
         }
     }
 
-    /**
-     * Completely recalculates the track shape based on neighboring tracks and power state
-     */
     public void refreshTrackShape(boolean par1, boolean par2)
     {
         boolean var3 = this.canConnectFrom(this.trackX, this.trackY, this.trackZ - 1);
@@ -467,29 +435,24 @@ public class RailLogic
         if (par2 || this.worldObj.getBlockMetadata(this.trackX, this.trackY, this.trackZ) != var8)
         {
             this.worldObj.setBlockMetadataWithNotify(this.trackX, this.trackY, this.trackZ, var8);
-            Iterator var9 = this.connectedTracks.iterator();
 
-            while (var9.hasNext())
+            for (int var9 = 0; var9 < this.connectedTracks.size(); ++var9)
             {
-                ChunkPosition var10 = (ChunkPosition)var9.next();
-                RailLogic var11 = this.getMinecartTrackLogic(var10);
+                RailLogic var10 = this.getMinecartTrackLogic((ChunkPosition)this.connectedTracks.get(var9));
 
-                if (var11 != null)
+                if (var10 != null)
                 {
-                    var11.refreshConnectedTracks();
+                    var10.refreshConnectedTracks();
 
-                    if (var11.canConnectTo(this))
+                    if (var10.canConnectTo(this))
                     {
-                        var11.connectToNeighbor(this);
+                        var10.connectToNeighbor(this);
                     }
                 }
             }
         }
     }
 
-    /**
-     * Get the number of adjacent tracks
-     */
     public static int getAdjacentTracks(RailLogic par0RailLogic)
     {
         return par0RailLogic.getAdjacentTracks();

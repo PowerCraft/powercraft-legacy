@@ -10,9 +10,9 @@ import java.util.Random;
 
 public class Explosion
 {
-    /** whether or not the explosion sets fire to blocks around it */
     public boolean isFlaming = false;
-    public boolean field_82755_b = true;
+
+    public boolean isSmoking = true;
     private int field_77289_h = 16;
     private Random explosionRNG = new Random();
     private World worldObj;
@@ -21,7 +21,8 @@ public class Explosion
     public double explosionZ;
     public Entity exploder;
     public float explosionSize;
-    public List field_77281_g = new ArrayList();
+
+    public List affectedBlockPositions = new ArrayList();
     private Map field_77288_k = new HashMap();
 
     public Explosion(World par1World, Entity par2Entity, double par3, double par5, double par7, float par9)
@@ -34,9 +35,6 @@ public class Explosion
         this.explosionZ = par7;
     }
 
-    /**
-     * Does the first part of the explosion (destroy blocks)
-     */
     public void doExplosionA()
     {
         float var1 = this.explosionSize;
@@ -96,7 +94,7 @@ public class Explosion
             }
         }
 
-        this.field_77281_g.addAll(var2);
+        this.affectedBlockPositions.addAll(var2);
         this.explosionSize *= 2.0F;
         var3 = MathHelper.floor_double(this.explosionX - (double)this.explosionSize - 1.0D);
         var4 = MathHelper.floor_double(this.explosionX + (double)this.explosionSize + 1.0D);
@@ -105,7 +103,7 @@ public class Explosion
         int var7 = MathHelper.floor_double(this.explosionZ - (double)this.explosionSize - 1.0D);
         int var29 = MathHelper.floor_double(this.explosionZ + (double)this.explosionSize + 1.0D);
         List var9 = this.worldObj.getEntitiesWithinAABBExcludingEntity(this.exploder, AxisAlignedBB.getAABBPool().addOrModifyAABBInPool((double)var3, (double)var5, (double)var7, (double)var4, (double)var28, (double)var29));
-        Vec3 var30 = this.worldObj.func_82732_R().getVecFromPool(this.explosionX, this.explosionY, this.explosionZ);
+        Vec3 var30 = this.worldObj.getWorldVec3Pool().getVecFromPool(this.explosionX, this.explosionY, this.explosionZ);
 
         for (int var11 = 0; var11 < var9.size(); ++var11)
         {
@@ -133,7 +131,7 @@ public class Explosion
 
                     if (var31 instanceof EntityPlayer)
                     {
-                        this.field_77288_k.put((EntityPlayer)var31, this.worldObj.func_82732_R().getVecFromPool(var15 * var34, var17 * var34, var19 * var34));
+                        this.field_77288_k.put((EntityPlayer)var31, this.worldObj.getWorldVec3Pool().getVecFromPool(var15 * var34, var17 * var34, var19 * var34));
                     }
                 }
             }
@@ -142,14 +140,11 @@ public class Explosion
         this.explosionSize = var1;
     }
 
-    /**
-     * Does the second part of the explosion (sound, particles, drop spawn)
-     */
     public void doExplosionB(boolean par1)
     {
         this.worldObj.playSoundEffect(this.explosionX, this.explosionY, this.explosionZ, "random.explode", 4.0F, (1.0F + (this.worldObj.rand.nextFloat() - this.worldObj.rand.nextFloat()) * 0.2F) * 0.7F);
 
-        if (this.explosionSize >= 2.0F && this.field_82755_b)
+        if (this.explosionSize >= 2.0F && this.isSmoking)
         {
             this.worldObj.spawnParticle("hugeexplosion", this.explosionX, this.explosionY, this.explosionZ, 1.0D, 0.0D, 0.0D);
         }
@@ -165,9 +160,9 @@ public class Explosion
         int var6;
         int var7;
 
-        if (this.field_82755_b)
+        if (this.isSmoking)
         {
-            var2 = this.field_77281_g.iterator();
+            var2 = this.affectedBlockPositions.iterator();
 
             while (var2.hasNext())
             {
@@ -200,21 +195,26 @@ public class Explosion
 
                 if (var7 > 0)
                 {
-                    Block.blocksList[var7].dropBlockAsItemWithChance(this.worldObj, var4, var5, var6, this.worldObj.getBlockMetadata(var4, var5, var6), 0.3F, 0);
+                    Block var25 = Block.blocksList[var7];
+
+                    if (var25.func_85103_a(this))
+                    {
+                        var25.dropBlockAsItemWithChance(this.worldObj, var4, var5, var6, this.worldObj.getBlockMetadata(var4, var5, var6), 0.3F, 0);
+                    }
 
                     if (this.worldObj.setBlockAndMetadataWithUpdate(var4, var5, var6, 0, 0, this.worldObj.isRemote))
                     {
                         this.worldObj.notifyBlocksOfNeighborChange(var4, var5, var6, 0);
                     }
 
-                    Block.blocksList[var7].onBlockDestroyedByExplosion(this.worldObj, var4, var5, var6);
+                    var25.onBlockDestroyedByExplosion(this.worldObj, var4, var5, var6);
                 }
             }
         }
 
         if (this.isFlaming)
         {
-            var2 = this.field_77281_g.iterator();
+            var2 = this.affectedBlockPositions.iterator();
 
             while (var2.hasNext())
             {

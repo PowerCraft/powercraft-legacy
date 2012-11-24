@@ -6,7 +6,6 @@ import net.minecraft.src.ICommandSender;
 @Cancelable
 public class CommandEvent extends Event
 {
-
     public final ICommand command;
     public final ICommandSender sender;
     public String[] parameters;

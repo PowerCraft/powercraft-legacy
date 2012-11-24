@@ -8,11 +8,11 @@ import net.minecraft.client.Minecraft;
 @SideOnly(Side.CLIENT)
 public class CreativeCrafting implements ICrafting
 {
-    private final Minecraft field_82250_a;
+    private final Minecraft mc;
 
     public CreativeCrafting(Minecraft par1)
     {
-        this.field_82250_a = par1;
+        this.mc = par1;
     }
 
     public void sendContainerAndContentsToPlayer(Container par1Container, List par2List) {}
@@ -22,7 +22,7 @@ public class CreativeCrafting implements ICrafting
      */
     public void updateCraftingInventorySlot(Container par1Container, int par2, ItemStack par3ItemStack)
     {
-        this.field_82250_a.playerController.sendSlotPacket(par3ItemStack, par2);
+        this.mc.playerController.sendSlotPacket(par3ItemStack, par2);
     }
 
     /**

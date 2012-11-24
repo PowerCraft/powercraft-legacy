@@ -9,7 +9,6 @@ import java.util.logging.LogRecord;
 
 final class ConsoleLogFormatter extends Formatter
 {
-    /** Date Formatter of Log/Console. */
     private SimpleDateFormat simpleDateFormatLogFormatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
     public String format(LogRecord par1LogRecord)

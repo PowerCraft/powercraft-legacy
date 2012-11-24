@@ -2,19 +2,19 @@ package net.minecraft.src;
 
 class BehaviorPotionDispenseLogic extends BehaviorProjectileDispense
 {
-    final ItemStack field_82501_b;
+    final ItemStack potionStackToDispense;
 
-    final BehaviorPotionDispense field_82502_c;
+    final BehaviorPotionDispense potionDispenseBehavior;
 
     BehaviorPotionDispenseLogic(BehaviorPotionDispense par1, ItemStack par2)
     {
-        this.field_82502_c = par1;
-        this.field_82501_b = par2;
+        this.potionDispenseBehavior = par1;
+        this.potionStackToDispense = par2;
     }
 
-    protected IProjectile func_82499_a(World par1World, IPosition par2IPosition)
+    protected IProjectile getProjectileEntity(World par1World, IPosition par2IPosition)
     {
-        return new EntityPotion(par1World, par2IPosition.func_82615_a(), par2IPosition.func_82617_b(), par2IPosition.func_82616_c(), this.field_82501_b.copy());
+        return new EntityPotion(par1World, par2IPosition.getX(), par2IPosition.getY(), par2IPosition.getZ(), this.potionStackToDispense.copy());
     }
 
     protected float func_82498_a()

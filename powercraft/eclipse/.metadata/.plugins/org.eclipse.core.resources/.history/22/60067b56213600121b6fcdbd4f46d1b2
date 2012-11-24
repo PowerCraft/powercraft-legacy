@@ -1,0 +1,13 @@
+package powercraft.machines;
+
+import net.minecraft.src.IInventory;
+import powercraft.core.PC_TileEntity;
+
+public class PCma_TileEntityBlockBuilder extends PC_TileEntity implements IInventory {
+
+	public void useItem() {
+		// TODO Auto-generated method stub
+		
+	}
+
+}

@@ -37,6 +37,7 @@ public class RenderManager
     public double viewerPosX;
     public double viewerPosY;
     public double viewerPosZ;
+    public static boolean field_85095_o = false;
 
     private RenderManager()
     {
@@ -189,13 +190,102 @@ public class RenderManager
      */
     public void renderEntityWithPosYaw(Entity par1Entity, double par2, double par4, double par6, float par8, float par9)
     {
-        Render var10 = this.getEntityRenderObject(par1Entity);
+        Render var10 = null;
 
-        if (var10 != null && this.renderEngine != null)
+        try
         {
-            var10.doRender(par1Entity, par2, par4, par6, par8, par9);
-            var10.doRenderShadowAndFire(par1Entity, par2, par4, par6, par8, par9);
+            var10 = this.getEntityRenderObject(par1Entity);
+
+            if (var10 != null && this.renderEngine != null)
+            {
+                if (field_85095_o)
+                {
+                    try
+                    {
+                        this.func_85094_b(par1Entity, par2, par4, par6, par8, par9);
+                    }
+                    catch (Throwable var17)
+                    {
+                        throw new ReportedException(CrashReport.func_85055_a(var17, "Rendering entity hitbox in world"));
+                    }
+                }
+
+                try
+                {
+                    var10.doRender(par1Entity, par2, par4, par6, par8, par9);
+                }
+                catch (Throwable var16)
+                {
+                    throw new ReportedException(CrashReport.func_85055_a(var16, "Rendering entity in world"));
+                }
+
+                try
+                {
+                    var10.doRenderShadowAndFire(par1Entity, par2, par4, par6, par8, par9);
+                }
+                catch (Throwable var15)
+                {
+                    throw new ReportedException(CrashReport.func_85055_a(var15, "Post-rendering entity in world"));
+                }
+            }
         }
+        catch (Throwable var18)
+        {
+            CrashReport var12 = CrashReport.func_85055_a(var18, "Rendering entity in world");
+            CrashReportCategory var13 = var12.func_85058_a("Entity being rendered");
+            par1Entity.func_85029_a(var13);
+            CrashReportCategory var14 = var12.func_85058_a("Renderer details");
+            var14.addCrashSection("Assigned renderer", var10);
+            var14.addCrashSection("Location", CrashReportCategory.func_85074_a(par2, par4, par6));
+            var14.addCrashSection("Rotation", Float.valueOf(par8));
+            var14.addCrashSection("Delta", Float.valueOf(par9));
+            throw new ReportedException(var12);
+        }
+    }
+
+    private void func_85094_b(Entity par1Entity, double par2, double par4, double par6, float par8, float par9)
+    {
+        GL11.glDepthMask(false);
+        GL11.glDisable(GL11.GL_TEXTURE_2D);
+        GL11.glDisable(GL11.GL_LIGHTING);
+        GL11.glDisable(GL11.GL_CULL_FACE);
+        GL11.glDisable(GL11.GL_BLEND);
+        GL11.glPushMatrix();
+        Tessellator var10 = Tessellator.instance;
+        var10.startDrawingQuads();
+        var10.setColorRGBA(255, 255, 255, 32);
+        double var11 = (double)(-par1Entity.width / 2.0F);
+        double var13 = (double)(-par1Entity.width / 2.0F);
+        double var15 = (double)(par1Entity.width / 2.0F);
+        double var17 = (double)(-par1Entity.width / 2.0F);
+        double var19 = (double)(-par1Entity.width / 2.0F);
+        double var21 = (double)(par1Entity.width / 2.0F);
+        double var23 = (double)(par1Entity.width / 2.0F);
+        double var25 = (double)(par1Entity.width / 2.0F);
+        double var27 = (double)par1Entity.height;
+        var10.addVertex(par2 + var11, par4 + var27, par6 + var13);
+        var10.addVertex(par2 + var11, par4, par6 + var13);
+        var10.addVertex(par2 + var15, par4, par6 + var17);
+        var10.addVertex(par2 + var15, par4 + var27, par6 + var17);
+        var10.addVertex(par2 + var23, par4 + var27, par6 + var25);
+        var10.addVertex(par2 + var23, par4, par6 + var25);
+        var10.addVertex(par2 + var19, par4, par6 + var21);
+        var10.addVertex(par2 + var19, par4 + var27, par6 + var21);
+        var10.addVertex(par2 + var15, par4 + var27, par6 + var17);
+        var10.addVertex(par2 + var15, par4, par6 + var17);
+        var10.addVertex(par2 + var23, par4, par6 + var25);
+        var10.addVertex(par2 + var23, par4 + var27, par6 + var25);
+        var10.addVertex(par2 + var19, par4 + var27, par6 + var21);
+        var10.addVertex(par2 + var19, par4, par6 + var21);
+        var10.addVertex(par2 + var11, par4, par6 + var13);
+        var10.addVertex(par2 + var11, par4 + var27, par6 + var13);
+        var10.draw();
+        GL11.glPopMatrix();
+        GL11.glEnable(GL11.GL_TEXTURE_2D);
+        GL11.glEnable(GL11.GL_LIGHTING);
+        GL11.glEnable(GL11.GL_CULL_FACE);
+        GL11.glDisable(GL11.GL_BLEND);
+        GL11.glDepthMask(true);
     }
 
     /**

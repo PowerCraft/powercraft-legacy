@@ -1,6 +1,5 @@
 package powercraft.core;
 
-import cpw.mods.fml.client.registry.KeyBindingRegistry;
 import cpw.mods.fml.client.registry.RenderingRegistry;
 import cpw.mods.fml.common.Side;
 import cpw.mods.fml.common.registry.TickRegistry;
@@ -46,6 +45,7 @@ public class PCco_ClientProxy extends PCco_CommonProxy {
 	public void init(){
 		TickRegistry.registerTickHandler(new PCco_MainMenuHacks(), Side.CLIENT);
 		PC_ClientUtils.registerEnitiyFX(PC_EntityLaserParticleFX.class);
+		PC_ClientUtils.registerEnitiyFX(PC_EntityLaserFX.class);
 	}
 	
 }

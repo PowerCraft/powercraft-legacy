@@ -1,0 +1,7 @@
+package powercraft.light;
+
+import powercraft.core.PC_TileEntity;
+
+public class PCli_TileEntityPrism extends PC_TileEntity {
+
+}

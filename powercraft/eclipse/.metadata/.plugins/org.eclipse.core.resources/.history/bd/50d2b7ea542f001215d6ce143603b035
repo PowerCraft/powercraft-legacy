@@ -1,0 +1,184 @@
+package powercraft.machines;
+
+import java.util.Random;
+
+import net.minecraft.src.Block;
+import net.minecraft.src.EntityPlayer;
+import net.minecraft.src.IBlockAccess;
+import net.minecraft.src.IInventory;
+import net.minecraft.src.ItemStack;
+import powercraft.core.PC_IBlockRenderer;
+import powercraft.core.PC_ISpecialAccessInventory;
+import powercraft.core.PC_IStateReportingInventory;
+import powercraft.core.PC_Renderer;
+import powercraft.core.PC_TileEntity;
+import powercraft.core.PC_Utils;
+
+public class PCma_TileEntityTransmutabox extends PC_TileEntity implements IInventory, PC_ISpecialAccessInventory, PC_IStateReportingInventory {
+
+	private ItemStack[] itemStcks = new ItemStack[49];
+	
+	@Override
+	public boolean insertStackIntoInventory(ItemStack stack) {
+		return false;
+	}
+
+	@Override
+	public boolean needsSpecialInserter() {
+		return false;
+	}
+
+	@Override
+	public boolean canPlayerInsertStackTo(int slot, ItemStack stack) {
+		if(slot>=1 && slot<10){
+			return PC_Utils.isFuel(stack);
+		}
+		return true;
+	}
+
+	@Override
+	public boolean canMachineInsertStackTo(int slot, ItemStack stack) {
+		if(slot==0)
+			return false;
+		if(slot>=1 && slot<=10){
+			return PC_Utils.isFuel(stack);
+		}
+		return true;
+	}
+
+	@Override
+	public boolean canDispenseStackFrom(int slot) {
+		return true;
+	}
+
+	@Override
+	public int getSizeInventory() {
+		return 49;
+	}
+
+	@Override
+	public ItemStack getStackInSlot(int var1) {
+		return itemStcks[var1];
+	}
+
+	@Override
+	public ItemStack decrStackSize(int i, int j) {
+		if (itemStcks[i] != null) {
+			if (itemStcks[i].stackSize <= j) {
+				ItemStack itemstack = itemStcks[i];
+				itemStcks[i] = null;
+				onInventoryChanged();
+				return itemstack;
+			}
+			ItemStack itemstack1 = itemStcks[i].splitStack(j);
+			if (itemStcks[i].stackSize == 0) {
+				itemStcks[i] = null;
+			}
+			onInventoryChanged();
+			return itemstack1;
+		} else {
+			return null;
+		}
+	}
+
+	@Override
+	public ItemStack getStackInSlotOnClosing(int var1) {
+		if (itemStcks[var1] != null) {
+			ItemStack itemstack = itemStcks[var1];
+			itemStcks[var1] = null;
+			return itemstack;
+		} else {
+			return null;
+		}
+	}
+
+	@Override
+	public void setInventorySlotContents(int var1, ItemStack var2) {
+		itemStcks[var1] = var2;
+		if (var2 != null && var2.stackSize > getInventoryStackLimit()) {
+			var2.stackSize = getInventoryStackLimit();
+		}
+		onInventoryChanged();
+	}
+
+	@Override
+	public String getInvName() {
+		return "Transmutabox Inventory";
+	}
+
+	@Override
+	public int getInventoryStackLimit() {
+		return 64;
+	}
+
+	@Override
+	public boolean isUseableByPlayer(EntityPlayer var1) {
+		return true;
+	}
+
+	@Override
+	public void openChest() {}
+
+	@Override
+	public void closeChest() {}
+
+	@Override
+	public boolean isContainerEmpty() {
+		for (int i = 10; i < 49; i++) {
+			if (getStackInSlot(i) != null) {
+				return false;
+			}
+		}
+		return true;
+	}
+
+	@Override
+	public boolean isContainerFull() {
+		for (int i = 10; i < 49; i++) {
+			if (getStackInSlot(i) == null && getStackInSlot(i + 9) != null) {
+				return false;
+			} else if (getStackInSlot(i) != null && getStackInSlot(i + 9) != null) {
+				if (getStackInSlot(i).stackSize < Math.min(getStackInSlot(i).getMaxStackSize(), getInventoryStackLimit())) {
+					return false;
+				}
+			}
+		}
+		return true;
+	}
+
+
+	@Override
+	public boolean hasContainerNoFreeSlots() {
+		for (int i = 10; i < 49; i++) {
+			if (getStackInSlot(i) == null && getStackInSlot(i + 9) != null) {
+				return false;
+			}
+		}
+		return true;
+	}
+
+	@Override
+	public boolean hasInventoryPlaceFor(ItemStack itemStack) {
+		for (int i = 10; i < 49; i++) {
+			if (getStackInSlot(i) == null || (getStackInSlot(i).isItemEqual(itemStack) && getStackInSlot(i).stackSize < Math.min(getInventoryStackLimit(), getStackInSlot(i).getMaxStackSize()))) {
+				return true;
+			}
+		}
+		return false;
+	}
+
+	@Override
+	public boolean isContainerEmptyOf(ItemStack itemStack) {
+		for (int i = 10; i < 49; i++) {
+			if (getStackInSlot(i) != null && !getStackInSlot(i).isItemEqual(itemStack)) {
+				return false;
+			}
+		}
+		return true;
+	}
+
+	public void change(int i) {
+		System.out.println("change");
+	}
+	
+}

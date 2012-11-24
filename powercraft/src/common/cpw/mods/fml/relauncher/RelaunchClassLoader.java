@@ -17,9 +17,8 @@ import java.util.logging.Level;
 
 public class RelaunchClassLoader extends URLClassLoader
 {
-    // Left behind for CCC/NEI compatibility
     private static String[] excludedPackages = new String[0];
-    // Left behind for CCC/NEI compatibility
+
     private static String[] transformerExclusions = new String[0];
 
     private List<URL> sources;
@@ -27,6 +26,7 @@ public class RelaunchClassLoader extends URLClassLoader
 
     private List<IClassTransformer> transformers;
     private Map<String, Class> cachedClasses;
+    private Set<String> invalidClasses;
 
     private Set<String> classLoaderExceptions = new HashSet<String>();
     private Set<String> transformerExceptions = new HashSet<String>();
@@ -36,18 +36,14 @@ public class RelaunchClassLoader extends URLClassLoader
         super(sources, null);
         this.sources = new ArrayList<URL>(Arrays.asList(sources));
         this.parent = getClass().getClassLoader();
-        this.cachedClasses = new HashMap<String,Class>(1000);
+        this.cachedClasses = new HashMap<String, Class>(1000);
+        this.invalidClasses = new HashSet<String>(1000);
         this.transformers = new ArrayList<IClassTransformer>(2);
-//        ReflectionHelper.setPrivateValue(ClassLoader.class, null, this, "scl");
         Thread.currentThread().setContextClassLoader(this);
-
-        // standard classloader exclusions
         addClassLoaderExclusion("java.");
         addClassLoaderExclusion("sun.");
         addClassLoaderExclusion("cpw.mods.fml.relauncher.");
         addClassLoaderExclusion("net.minecraftforge.classloading.");
-
-        // standard transformer exclusions
         addTransformerExclusion("javax.");
         addTransformerExclusion("org.objectweb.asm.");
         addTransformerExclusion("com.google.common.");
@@ -69,12 +65,17 @@ public class RelaunchClassLoader extends URLClassLoader
     @Override
     public Class<?> findClass(String name) throws ClassNotFoundException
     {
-        // NEI/CCC compatibility code
+        if (invalidClasses.contains(name))
+        {
+            throw new ClassNotFoundException(name);
+        }
+
         if (excludedPackages.length != 0)
         {
             classLoaderExceptions.addAll(Arrays.asList(excludedPackages));
             excludedPackages = new String[0];
         }
+
         if (transformerExclusions.length != 0)
         {
             transformerExceptions.addAll(Arrays.asList(transformerExclusions));
@@ -98,23 +99,34 @@ public class RelaunchClassLoader extends URLClassLoader
         {
             if (name.startsWith(st))
             {
-                Class<?> cl = super.findClass(name);
-                cachedClasses.put(name, cl);
-                return cl;
+                try
+                {
+                    Class<?> cl = super.findClass(name);
+                    cachedClasses.put(name, cl);
+                    return cl;
+                }
+                catch (ClassNotFoundException e)
+                {
+                    invalidClasses.add(name);
+                    throw e;
+                }
             }
         }
 
         try
         {
             int lastDot = name.lastIndexOf('.');
+
             if (lastDot > -1)
             {
                 String pkgname = name.substring(0, lastDot);
-                if (getPackage(pkgname)==null)
+
+                if (getPackage(pkgname) == null)
                 {
                     definePackage(pkgname, null, null, null, null, null, null, null);
                 }
             }
+
             byte[] basicClass = getClassBytes(name);
             byte[] transformedClass = runTransformers(name, basicClass);
             Class<?> cl = defineClass(name, transformedClass, 0, transformedClass.length);
@@ -123,6 +135,7 @@ public class RelaunchClassLoader extends URLClassLoader
         }
         catch (Throwable e)
         {
+            invalidClasses.add(name);
             throw new ClassNotFoundException(name, e);
         }
     }
@@ -130,13 +143,16 @@ public class RelaunchClassLoader extends URLClassLoader
     public byte[] getClassBytes(String name) throws IOException
     {
         InputStream classStream = null;
+
         try
         {
             URL classResource = findResource(name.replace('.', '/').concat(".class"));
+
             if (classResource == null)
             {
                 return null;
             }
+
             classStream = classResource.openStream();
             return readFully(classStream);
         }
@@ -150,7 +166,6 @@ public class RelaunchClassLoader extends URLClassLoader
                 }
                 catch (IOException e)
                 {
-                    // Swallow the close exception
                 }
             }
         }
@@ -162,6 +177,7 @@ public class RelaunchClassLoader extends URLClassLoader
         {
             basicClass = transformer.transform(name, basicClass);
         }
+
         return basicClass;
     }
 
@@ -177,13 +193,13 @@ public class RelaunchClassLoader extends URLClassLoader
         return sources;
     }
 
-
     private byte[] readFully(InputStream stream)
     {
         try
         {
             ByteArrayOutputStream bos = new ByteArrayOutputStream(stream.available());
             int r;
+
             while ((r = stream.read()) != -1)
             {
                 bos.write(r);
@@ -193,7 +209,6 @@ public class RelaunchClassLoader extends URLClassLoader
         }
         catch (Throwable t)
         {
-            /// HMMM
             return new byte[0];
         }
     }

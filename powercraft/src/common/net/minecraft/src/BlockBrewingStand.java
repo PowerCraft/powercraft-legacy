@@ -15,42 +15,26 @@ public class BlockBrewingStand extends BlockContainer
         this.blockIndexInTexture = 157;
     }
 
-    /**
-     * Is this block (a) opaque and (b) a full 1m cube?  This determines whether or not to render the shared face of two
-     * adjacent blocks and also whether the player can attach torches, redstone wire, etc to this block.
-     */
     public boolean isOpaqueCube()
     {
         return false;
     }
 
-    /**
-     * The type of render function that is called for this block
-     */
     public int getRenderType()
     {
         return 25;
     }
 
-    /**
-     * Returns a new instance of a block's tile entity class. Called on placing the block.
-     */
     public TileEntity createNewTileEntity(World par1World)
     {
         return new TileEntityBrewingStand();
     }
 
-    /**
-     * If this block doesn't render as an ordinary block it will return False (examples: signs, buttons, stairs, etc)
-     */
     public boolean renderAsNormalBlock()
     {
         return false;
     }
 
-    /**
-     * if the specified block is in the given AABB, add its collision bounding box to the given list
-     */
     public void addCollidingBlockToList(World par1World, int par2, int par3, int par4, AxisAlignedBB par5AxisAlignedBB, List par6List, Entity par7Entity)
     {
         this.setBlockBounds(0.4375F, 0.0F, 0.4375F, 0.5625F, 0.875F, 0.5625F);
@@ -59,17 +43,11 @@ public class BlockBrewingStand extends BlockContainer
         super.addCollidingBlockToList(par1World, par2, par3, par4, par5AxisAlignedBB, par6List, par7Entity);
     }
 
-    /**
-     * Sets the block's bounds for rendering it as an item
-     */
     public void setBlockBoundsForItemRender()
     {
         this.setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 0.125F, 1.0F);
     }
 
-    /**
-     * Called upon block activation (right click on the block.)
-     */
     public boolean onBlockActivated(World par1World, int par2, int par3, int par4, EntityPlayer par5EntityPlayer, int par6, float par7, float par8, float par9)
     {
         if (par1World.isRemote)
@@ -91,9 +69,6 @@ public class BlockBrewingStand extends BlockContainer
 
     @SideOnly(Side.CLIENT)
 
-    /**
-     * A randomly called display update to be able to add particles or other items for display
-     */
     public void randomDisplayTick(World par1World, int par2, int par3, int par4, Random par5Random)
     {
         double var6 = (double)((float)par2 + 0.4F + par5Random.nextFloat() * 0.2F);
@@ -102,9 +77,6 @@ public class BlockBrewingStand extends BlockContainer
         par1World.spawnParticle("smoke", var6, var8, var10, 0.0D, 0.0D, 0.0D);
     }
 
-    /**
-     * ejects contained items into the world, and notifies neighbours of an update, as appropriate
-     */
     public void breakBlock(World par1World, int par2, int par3, int par4, int par5, int par6)
     {
         TileEntity var7 = par1World.getBlockTileEntity(par2, par3, par4);
@@ -147,9 +119,6 @@ public class BlockBrewingStand extends BlockContainer
         super.breakBlock(par1World, par2, par3, par4, par5, par6);
     }
 
-    /**
-     * Returns the ID of the items to drop on destruction.
-     */
     public int idDropped(int par1, Random par2Random, int par3)
     {
         return Item.brewingStand.shiftedIndex;
@@ -157,9 +126,6 @@ public class BlockBrewingStand extends BlockContainer
 
     @SideOnly(Side.CLIENT)
 
-    /**
-     * only called by clickMiddleMouseButton , and passed to inventory.setCurrentItem (along with isCreative)
-     */
     public int idPicked(World par1World, int par2, int par3, int par4)
     {
         return Item.brewingStand.shiftedIndex;

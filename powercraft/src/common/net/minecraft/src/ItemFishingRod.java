@@ -15,9 +15,6 @@ public class ItemFishingRod extends Item
 
     @SideOnly(Side.CLIENT)
 
-    /**
-     * Returns True is the item is renderer in full 3D when hold.
-     */
     public boolean isFull3D()
     {
         return true;
@@ -25,18 +22,11 @@ public class ItemFishingRod extends Item
 
     @SideOnly(Side.CLIENT)
 
-    /**
-     * Returns true if this item should be rotated by 180 degrees around the Y axis when being held in an entities
-     * hands.
-     */
     public boolean shouldRotateAroundWhenRendering()
     {
         return true;
     }
 
-    /**
-     * Called whenever this item is equipped and the right mouse button is pressed. Args: itemStack, world, entityPlayer
-     */
     public ItemStack onItemRightClick(ItemStack par1ItemStack, World par2World, EntityPlayer par3EntityPlayer)
     {
         if (par3EntityPlayer.fishEntity != null)

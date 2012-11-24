@@ -13,10 +13,6 @@ public class BlockBreakable extends Block
         this.localFlag = par4;
     }
 
-    /**
-     * Is this block (a) opaque and (b) a full 1m cube?  This determines whether or not to render the shared face of two
-     * adjacent blocks and also whether the player can attach torches, redstone wire, etc to this block.
-     */
     public boolean isOpaqueCube()
     {
         return false;
@@ -24,10 +20,6 @@ public class BlockBreakable extends Block
 
     @SideOnly(Side.CLIENT)
 
-    /**
-     * Returns true if the given side of this block type should be rendered, if the adjacent block is at the given
-     * coordinates.  Args: blockAccess, x, y, z, side
-     */
     public boolean shouldSideBeRendered(IBlockAccess par1IBlockAccess, int par2, int par3, int par4, int par5)
     {
         int var6 = par1IBlockAccess.getBlockId(par2, par3, par4);

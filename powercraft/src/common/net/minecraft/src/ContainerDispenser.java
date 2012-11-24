@@ -37,7 +37,7 @@ public class ContainerDispenser extends Container
         return this.tileEntityDispenser.isUseableByPlayer(par1EntityPlayer);
     }
 
-    public ItemStack func_82846_b(EntityPlayer par1EntityPlayer, int par2)
+    public ItemStack transferStackInSlot(EntityPlayer par1EntityPlayer, int par2)
     {
         ItemStack var3 = null;
         Slot var4 = (Slot)this.inventorySlots.get(par2);
@@ -73,7 +73,7 @@ public class ContainerDispenser extends Container
                 return null;
             }
 
-            var4.func_82870_a(par1EntityPlayer, var5);
+            var4.onPickupFromSlot(par1EntityPlayer, var5);
         }
 
         return var3;

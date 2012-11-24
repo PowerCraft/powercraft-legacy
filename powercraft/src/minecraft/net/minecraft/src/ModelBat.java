@@ -6,48 +6,62 @@ import cpw.mods.fml.common.asm.SideOnly;
 @SideOnly(Side.CLIENT)
 public class ModelBat extends ModelBase
 {
-    private ModelRenderer field_82895_a;
-    private ModelRenderer field_82893_b;
-    private ModelRenderer field_82894_c;
-    private ModelRenderer field_82891_d;
-    private ModelRenderer field_82892_e;
-    private ModelRenderer field_82890_f;
+    private ModelRenderer batHead;
+
+    /** The body box of the bat model. */
+    private ModelRenderer batBody;
+
+    /** The inner right wing box of the bat model. */
+    private ModelRenderer batRightWing;
+
+    /** The inner left wing box of the bat model. */
+    private ModelRenderer batLeftWing;
+
+    /** The outer right wing box of the bat model. */
+    private ModelRenderer batOuterRightWing;
+
+    /** The outer left wing box of the bat model. */
+    private ModelRenderer batOuterLeftWing;
 
     public ModelBat()
     {
         this.textureWidth = 64;
         this.textureHeight = 64;
-        this.field_82895_a = new ModelRenderer(this, 0, 0);
-        this.field_82895_a.addBox(-3.0F, -3.0F, -3.0F, 6, 6, 6);
+        this.batHead = new ModelRenderer(this, 0, 0);
+        this.batHead.addBox(-3.0F, -3.0F, -3.0F, 6, 6, 6);
         ModelRenderer var1 = new ModelRenderer(this, 24, 0);
         var1.addBox(-4.0F, -6.0F, -2.0F, 3, 4, 1);
-        this.field_82895_a.addChild(var1);
+        this.batHead.addChild(var1);
         ModelRenderer var2 = new ModelRenderer(this, 24, 0);
         var2.mirror = true;
         var2.addBox(1.0F, -6.0F, -2.0F, 3, 4, 1);
-        this.field_82895_a.addChild(var2);
-        this.field_82893_b = new ModelRenderer(this, 0, 16);
-        this.field_82893_b.addBox(-3.0F, 4.0F, -3.0F, 6, 12, 6);
-        this.field_82893_b.setTextureOffset(0, 34).addBox(-5.0F, 16.0F, 0.0F, 10, 6, 1);
-        this.field_82894_c = new ModelRenderer(this, 42, 0);
-        this.field_82894_c.addBox(-12.0F, 1.0F, 1.5F, 10, 16, 1);
-        this.field_82892_e = new ModelRenderer(this, 24, 16);
-        this.field_82892_e.setRotationPoint(-12.0F, 1.0F, 1.5F);
-        this.field_82892_e.addBox(-8.0F, 1.0F, 0.0F, 8, 12, 1);
-        this.field_82891_d = new ModelRenderer(this, 42, 0);
-        this.field_82891_d.mirror = true;
-        this.field_82891_d.addBox(2.0F, 1.0F, 1.5F, 10, 16, 1);
-        this.field_82890_f = new ModelRenderer(this, 24, 16);
-        this.field_82890_f.mirror = true;
-        this.field_82890_f.setRotationPoint(12.0F, 1.0F, 1.5F);
-        this.field_82890_f.addBox(0.0F, 1.0F, 0.0F, 8, 12, 1);
-        this.field_82893_b.addChild(this.field_82894_c);
-        this.field_82893_b.addChild(this.field_82891_d);
-        this.field_82894_c.addChild(this.field_82892_e);
-        this.field_82891_d.addChild(this.field_82890_f);
+        this.batHead.addChild(var2);
+        this.batBody = new ModelRenderer(this, 0, 16);
+        this.batBody.addBox(-3.0F, 4.0F, -3.0F, 6, 12, 6);
+        this.batBody.setTextureOffset(0, 34).addBox(-5.0F, 16.0F, 0.0F, 10, 6, 1);
+        this.batRightWing = new ModelRenderer(this, 42, 0);
+        this.batRightWing.addBox(-12.0F, 1.0F, 1.5F, 10, 16, 1);
+        this.batOuterRightWing = new ModelRenderer(this, 24, 16);
+        this.batOuterRightWing.setRotationPoint(-12.0F, 1.0F, 1.5F);
+        this.batOuterRightWing.addBox(-8.0F, 1.0F, 0.0F, 8, 12, 1);
+        this.batLeftWing = new ModelRenderer(this, 42, 0);
+        this.batLeftWing.mirror = true;
+        this.batLeftWing.addBox(2.0F, 1.0F, 1.5F, 10, 16, 1);
+        this.batOuterLeftWing = new ModelRenderer(this, 24, 16);
+        this.batOuterLeftWing.mirror = true;
+        this.batOuterLeftWing.setRotationPoint(12.0F, 1.0F, 1.5F);
+        this.batOuterLeftWing.addBox(0.0F, 1.0F, 0.0F, 8, 12, 1);
+        this.batBody.addChild(this.batRightWing);
+        this.batBody.addChild(this.batLeftWing);
+        this.batRightWing.addChild(this.batOuterRightWing);
+        this.batLeftWing.addChild(this.batOuterLeftWing);
     }
 
-    public int func_82889_a()
+    /**
+     * not actually sure this is size, is not used as of now, but the model would be recreated if the value changed and
+     * it seems a good match for a bats size
+     */
+    public int getBatSize()
     {
         return 36;
     }
@@ -59,39 +73,39 @@ public class ModelBat extends ModelBase
     {
         EntityBat var8 = (EntityBat)par1Entity;
 
-        if (var8.func_82235_h())
+        if (var8.getIsBatHanging())
         {
-            this.field_82895_a.rotateAngleX = par6 / (180F / (float)Math.PI);
-            this.field_82895_a.rotateAngleY = (float)Math.PI - par5 / (180F / (float)Math.PI);
-            this.field_82895_a.rotateAngleZ = (float)Math.PI;
-            this.field_82895_a.setRotationPoint(0.0F, -2.0F, 0.0F);
-            this.field_82894_c.setRotationPoint(-3.0F, 0.0F, 3.0F);
-            this.field_82891_d.setRotationPoint(3.0F, 0.0F, 3.0F);
-            this.field_82893_b.rotateAngleX = (float)Math.PI;
-            this.field_82894_c.rotateAngleX = -0.15707964F;
-            this.field_82894_c.rotateAngleY = -((float)Math.PI * 2F / 5F);
-            this.field_82892_e.rotateAngleY = -1.7278761F;
-            this.field_82891_d.rotateAngleX = this.field_82894_c.rotateAngleX;
-            this.field_82891_d.rotateAngleY = -this.field_82894_c.rotateAngleY;
-            this.field_82890_f.rotateAngleY = -this.field_82892_e.rotateAngleY;
+            this.batHead.rotateAngleX = par6 / (180F / (float)Math.PI);
+            this.batHead.rotateAngleY = (float)Math.PI - par5 / (180F / (float)Math.PI);
+            this.batHead.rotateAngleZ = (float)Math.PI;
+            this.batHead.setRotationPoint(0.0F, -2.0F, 0.0F);
+            this.batRightWing.setRotationPoint(-3.0F, 0.0F, 3.0F);
+            this.batLeftWing.setRotationPoint(3.0F, 0.0F, 3.0F);
+            this.batBody.rotateAngleX = (float)Math.PI;
+            this.batRightWing.rotateAngleX = -0.15707964F;
+            this.batRightWing.rotateAngleY = -((float)Math.PI * 2F / 5F);
+            this.batOuterRightWing.rotateAngleY = -1.7278761F;
+            this.batLeftWing.rotateAngleX = this.batRightWing.rotateAngleX;
+            this.batLeftWing.rotateAngleY = -this.batRightWing.rotateAngleY;
+            this.batOuterLeftWing.rotateAngleY = -this.batOuterRightWing.rotateAngleY;
         }
         else
         {
-            this.field_82895_a.rotateAngleX = par6 / (180F / (float)Math.PI);
-            this.field_82895_a.rotateAngleY = par5 / (180F / (float)Math.PI);
-            this.field_82895_a.rotateAngleZ = 0.0F;
-            this.field_82895_a.setRotationPoint(0.0F, 0.0F, 0.0F);
-            this.field_82894_c.setRotationPoint(0.0F, 0.0F, 0.0F);
-            this.field_82891_d.setRotationPoint(0.0F, 0.0F, 0.0F);
-            this.field_82893_b.rotateAngleX = ((float)Math.PI / 4F) + MathHelper.cos(par4 * 0.1F) * 0.15F;
-            this.field_82893_b.rotateAngleY = 0.0F;
-            this.field_82894_c.rotateAngleY = MathHelper.cos(par4 * 1.3F) * (float)Math.PI * 0.25F;
-            this.field_82891_d.rotateAngleY = -this.field_82894_c.rotateAngleY;
-            this.field_82892_e.rotateAngleY = this.field_82894_c.rotateAngleY * 0.5F;
-            this.field_82890_f.rotateAngleY = -this.field_82894_c.rotateAngleY * 0.5F;
+            this.batHead.rotateAngleX = par6 / (180F / (float)Math.PI);
+            this.batHead.rotateAngleY = par5 / (180F / (float)Math.PI);
+            this.batHead.rotateAngleZ = 0.0F;
+            this.batHead.setRotationPoint(0.0F, 0.0F, 0.0F);
+            this.batRightWing.setRotationPoint(0.0F, 0.0F, 0.0F);
+            this.batLeftWing.setRotationPoint(0.0F, 0.0F, 0.0F);
+            this.batBody.rotateAngleX = ((float)Math.PI / 4F) + MathHelper.cos(par4 * 0.1F) * 0.15F;
+            this.batBody.rotateAngleY = 0.0F;
+            this.batRightWing.rotateAngleY = MathHelper.cos(par4 * 1.3F) * (float)Math.PI * 0.25F;
+            this.batLeftWing.rotateAngleY = -this.batRightWing.rotateAngleY;
+            this.batOuterRightWing.rotateAngleY = this.batRightWing.rotateAngleY * 0.5F;
+            this.batOuterLeftWing.rotateAngleY = -this.batRightWing.rotateAngleY * 0.5F;
         }
 
-        this.field_82895_a.render(par7);
-        this.field_82893_b.render(par7);
+        this.batHead.render(par7);
+        this.batBody.render(par7);
     }
 }

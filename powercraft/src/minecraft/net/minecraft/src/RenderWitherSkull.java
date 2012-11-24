@@ -8,7 +8,8 @@ import org.lwjgl.opengl.GL12;
 @SideOnly(Side.CLIENT)
 public class RenderWitherSkull extends Render
 {
-    ModelSkeletonHead field_82401_a = new ModelSkeletonHead();
+    /** The Skeleton's head model. */
+    ModelSkeletonHead skeletonHeadModel = new ModelSkeletonHead();
 
     private float func_82400_a(float par1, float par2, float par3)
     {
@@ -39,7 +40,7 @@ public class RenderWitherSkull extends Render
         GL11.glScalef(-1.0F, -1.0F, 1.0F);
         GL11.glEnable(GL11.GL_ALPHA_TEST);
 
-        if (par1EntityWitherSkull.func_82342_d())
+        if (par1EntityWitherSkull.isInvulnerable())
         {
             this.loadDownloadableImageTexture((String)null, "/mob/wither_invul.png");
         }
@@ -48,7 +49,7 @@ public class RenderWitherSkull extends Render
             this.loadDownloadableImageTexture((String)null, "/mob/wither.png");
         }
 
-        this.field_82401_a.render(par1EntityWitherSkull, 0.0F, 0.0F, 0.0F, var10, var11, var12);
+        this.skeletonHeadModel.render(par1EntityWitherSkull, 0.0F, 0.0F, 0.0F, var10, var11, var12);
         GL11.glPopMatrix();
     }
 

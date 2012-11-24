@@ -7,12 +7,12 @@ import java.util.concurrent.Callable;
 @SideOnly(Side.CLIENT)
 class CallableMPL2 implements Callable
 {
-    /** Initialises the WorldClient for CallableMPL2. */
-    final WorldClient worldClientMPL2;
+    /** Reference to the WorldClient object. */
+    final WorldClient theWorldClient;
 
     CallableMPL2(WorldClient par1WorldClient)
     {
-        this.worldClientMPL2 = par1WorldClient;
+        this.theWorldClient = par1WorldClient;
     }
 
     /**
@@ -20,7 +20,7 @@ class CallableMPL2 implements Callable
      */
     public String getEntitySpawnQueueCountAndList()
     {
-        return WorldClient.getEntitySpawnQueue(this.worldClientMPL2).size() + " total; " + WorldClient.getEntitySpawnQueue(this.worldClientMPL2).toString();
+        return WorldClient.getEntitySpawnQueue(this.theWorldClient).size() + " total; " + WorldClient.getEntitySpawnQueue(this.theWorldClient).toString();
     }
 
     public Object call()

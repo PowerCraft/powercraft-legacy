@@ -103,26 +103,22 @@ public class ThreadDownloadResources extends Thread
     private void loadResource(File par1File, String par2Str)
     {
         File[] var3 = par1File.listFiles();
-        File[] var4 = var3;
-        int var5 = var3.length;
 
-        for (int var6 = 0; var6 < var5; ++var6)
+        for (int var4 = 0; var4 < var3.length; ++var4)
         {
-            File var7 = var4[var6];
-
-            if (var7.isDirectory())
+            if (var3[var4].isDirectory())
             {
-                this.loadResource(var7, par2Str + var7.getName() + "/");
+                this.loadResource(var3[var4], par2Str + var3[var4].getName() + "/");
             }
             else
             {
                 try
                 {
-                    this.mc.installResource(par2Str + var7.getName(), var7);
+                    this.mc.installResource(par2Str + var3[var4].getName(), var3[var4]);
                 }
-                catch (Exception var9)
+                catch (Exception var6)
                 {
-                    System.out.println("Failed to add " + par2Str + var7.getName());
+                    System.out.println("Failed to add " + par2Str + var3[var4].getName());
                 }
             }
         }

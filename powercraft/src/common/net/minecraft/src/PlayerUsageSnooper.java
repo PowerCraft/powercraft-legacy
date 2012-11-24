@@ -16,20 +16,16 @@ import java.util.Map.Entry;
 
 public class PlayerUsageSnooper
 {
-    /** String map for report data */
     private Map dataMap = new HashMap();
     private final String uniqueID = UUID.randomUUID().toString();
 
-    /** URL of the server to send the report to */
     private final URL serverUrl;
     private final IPlayerUsage playerStatsCollector;
 
-    /** set to fire the snooperThread every 15 mins */
     private final java.util.Timer threadTrigger = new java.util.Timer("Snooper Timer", true);
     private final Object syncLock = new Object();
     private boolean isRunning = false;
 
-    /** incremented on every getSelfCounterFor */
     private int selfCounter = 0;
 
     public PlayerUsageSnooper(String par1Str, IPlayerUsage par2IPlayerUsage)
@@ -46,9 +42,6 @@ public class PlayerUsageSnooper
         this.playerStatsCollector = par2IPlayerUsage;
     }
 
-    /**
-     * Note issuing start multiple times is not an error.
-     */
     public void startSnooper()
     {
         if (!this.isRunning)
@@ -67,7 +60,7 @@ public class PlayerUsageSnooper
         this.addData("os_version", System.getProperty("os.version"));
         this.addData("os_architecture", System.getProperty("os.arch"));
         this.addData("java_version", System.getProperty("java.version"));
-        this.addData("version", "1.4.2");
+        this.addData("version", "1.4.4");
         this.playerStatsCollector.addServerTypeToSnooper(this);
     }
 
@@ -100,9 +93,6 @@ public class PlayerUsageSnooper
         this.playerStatsCollector.addServerStatsToSnooper(this);
     }
 
-    /**
-     * Adds information to the report
-     */
     public void addData(String par1Str, Object par2Obj)
     {
         Object var3 = this.syncLock;
@@ -165,9 +155,6 @@ public class PlayerUsageSnooper
         return par0PlayerUsageSnooper.dataMap;
     }
 
-    /**
-     * returns a value indicating how many times this function has been run on the snooper
-     */
     static int getSelfCounterFor(PlayerUsageSnooper par0PlayerUsageSnooper)
     {
         return par0PlayerUsageSnooper.selfCounter++;

@@ -50,7 +50,6 @@ public class FMLNetworkHandler
     private static final int PROTOCOL_VERSION = 0x1;
     private static final FMLNetworkHandler INSTANCE = new FMLNetworkHandler();
 
-    // List of states for connections from clients to server
     static final int LOGIN_RECEIVED = 1;
     static final int CONNECTION_VALID = 2;
     static final int FML_OUT_OF_DATE = -1;
@@ -69,6 +68,7 @@ public class FMLNetworkHandler
         {
             handler.handleVanilla250Packet(packet);
         }
+
         if (target.equals("FML"))
         {
             instance().handleFMLPacket(packet, network, handler);
@@ -88,6 +88,7 @@ public class FMLNetworkHandler
     {
         FMLPacket pkt = FMLPacket.readPacket(packet.data);
         String userName = "";
+
         if (netHandler instanceof NetLoginHandler)
         {
             userName = ((NetLoginHandler) netHandler).clientUsername;
@@ -95,6 +96,7 @@ public class FMLNetworkHandler
         else
         {
             EntityPlayer pl = netHandler.getPlayer();
+
             if (pl != null)
             {
                 userName = pl.getCommandSenderName();
@@ -115,71 +117,64 @@ public class FMLNetworkHandler
         {
             if (handleVanillaLoginKick(netLoginHandler, server, address, userName))
             {
-                // No FML on the client
                 FMLLog.fine("Connection from %s rejected - no FML packet received from client", userName);
                 netLoginHandler.completeConnection("You don't have FML installed, you cannot connect to this server");
                 return;
             }
             else
             {
-                // Vanilla kicked us for some reason - bye now!
                 FMLLog.fine("Connection from %s was closed by vanilla minecraft", userName);
                 return;
             }
-
         }
+
         switch (loginStates.get(netLoginHandler))
         {
-        case LOGIN_RECEIVED:
-            // mods can try and kick undesireables here
-            String modKick = NetworkRegistry.instance().connectionReceived(netLoginHandler, netLoginHandler.myTCPConnection);
-            if (modKick != null)
-            {
-                netLoginHandler.completeConnection(modKick);
+            case LOGIN_RECEIVED:
+                String modKick = NetworkRegistry.instance().connectionReceived(netLoginHandler, netLoginHandler.myTCPConnection);
+
+                if (modKick != null)
+                {
+                    netLoginHandler.completeConnection(modKick);
+                    loginStates.remove(netLoginHandler);
+                    return;
+                }
+
+                if (!handleVanillaLoginKick(netLoginHandler, server, address, userName))
+                {
+                    loginStates.remove(netLoginHandler);
+                    return;
+                }
+
+                NetLoginHandler.func_72531_a(netLoginHandler, false);
+                netLoginHandler.myTCPConnection.addToSendQueue(getModListRequestPacket());
+                loginStates.put(netLoginHandler, CONNECTION_VALID);
+                break;
+
+            case CONNECTION_VALID:
+                netLoginHandler.completeConnection(null);
                 loginStates.remove(netLoginHandler);
-                return;
-            }
-            // The vanilla side wanted to kick
-            if (!handleVanillaLoginKick(netLoginHandler, server, address, userName))
-            {
+                break;
+
+            case MISSING_MODS_OR_VERSIONS:
+                netLoginHandler.completeConnection("The server requires mods that are absent or out of date on your client");
                 loginStates.remove(netLoginHandler);
-                return;
-            }
-            // Reset the "connection completed" flag so processing can continue
-            NetLoginHandler.func_72531_a(netLoginHandler, false);
-            // Send the mod list request packet to the client from the server
-            netLoginHandler.myTCPConnection.addToSendQueue(getModListRequestPacket());
-            loginStates.put(netLoginHandler, CONNECTION_VALID);
-            break;
-        case CONNECTION_VALID:
-            netLoginHandler.completeConnection(null);
-            loginStates.remove(netLoginHandler);
-            break;
-        case MISSING_MODS_OR_VERSIONS:
-            netLoginHandler.completeConnection("The server requires mods that are absent or out of date on your client");
-            loginStates.remove(netLoginHandler);
-            break;
-        case FML_OUT_OF_DATE:
-            netLoginHandler.completeConnection("Your client is not running a new enough version of FML to connect to this server");
-            loginStates.remove(netLoginHandler);
-            break;
-        default:
-            netLoginHandler.completeConnection("There was a problem during FML negotiation");
-            loginStates.remove(netLoginHandler);
-            break;
+                break;
+
+            case FML_OUT_OF_DATE:
+                netLoginHandler.completeConnection("Your client is not running a new enough version of FML to connect to this server");
+                loginStates.remove(netLoginHandler);
+                break;
+
+            default:
+                netLoginHandler.completeConnection("There was a problem during FML negotiation");
+                loginStates.remove(netLoginHandler);
+                break;
         }
     }
 
-    /**
-     * @param netLoginHandler
-     * @param server
-     * @param address
-     * @param userName
-     * @return if the user can carry on
-     */
     private boolean handleVanillaLoginKick(NetLoginHandler netLoginHandler, MinecraftServer server, SocketAddress address, String userName)
     {
-        // Vanilla reasons first
         ServerConfigurationManager playerList = server.getConfigurationManager();
         String kickReason = playerList.allowUserToConnect(address, userName);
 
@@ -187,6 +182,7 @@ public class FMLNetworkHandler
         {
             netLoginHandler.completeConnection(kickReason);
         }
+
         return kickReason == null;
     }
 
@@ -224,12 +220,9 @@ public class FMLNetworkHandler
 
     public static Packet1Login getFMLFakeLoginPacket()
     {
-        // Always reset compat to zero before sending our fake packet
         FMLCommonHandler.instance().getSidedDelegate().setClientCompatibilityLevel((byte) 0);
         Packet1Login fake = new Packet1Login();
-        // Hash FML using a simple function
         fake.clientEntityId = FML_HASH;
-        // The FML protocol version
         fake.dimension = PROTOCOL_VERSION;
         fake.gameType = EnumGameType.NOT_SET;
         fake.terrainType = WorldType.worldTypes[0];
@@ -249,6 +242,7 @@ public class FMLNetworkHandler
     public boolean registerNetworkMod(ModContainer container, Class<?> networkModClass, ASMDataTable asmData)
     {
         NetworkModHandler handler = new NetworkModHandler(container, networkModClass, asmData);
+
         if (handler.isNetworkMod())
         {
             registerNetworkMod(handler);
@@ -293,6 +287,7 @@ public class FMLNetworkHandler
     {
         Map<String, ModContainer> mods = Loader.instance().getIndexedModList();
         NetworkModHandler handler = findNetworkModHandler(mods.get(key));
+
         if (handler != null)
         {
             handler.setNetworkId(value);
@@ -315,13 +310,14 @@ public class FMLNetworkHandler
         NetworkRegistry.instance().connectionClosed(manager, player);
     }
 
-
     public static void openGui(EntityPlayer player, Object mod, int modGuiId, World world, int x, int y, int z)
     {
         ModContainer mc = FMLCommonHandler.instance().findContainerFor(mod);
+
         if (mc == null)
         {
             NetworkModHandler nmh = instance().findNetworkModHandler(mod);
+
             if (nmh != null)
             {
                 mc = nmh.getContainer();
@@ -332,6 +328,7 @@ public class FMLNetworkHandler
                 return;
             }
         }
+
         if (player instanceof EntityPlayerMP)
         {
             NetworkRegistry.instance().openRemoteGui(mc, (EntityPlayerMP) player, modGuiId, world, x, y, z);
@@ -345,14 +342,17 @@ public class FMLNetworkHandler
     public static Packet getEntitySpawningPacket(Entity entity)
     {
         EntityRegistration er = EntityRegistry.instance().lookupModSpawn(entity.getClass(), false);
+
         if (er == null)
         {
             return null;
         }
+
         if (er.usesVanillaSpawning())
         {
             return null;
         }
+
         return PacketDispatcher.getPacket("FML", FMLPacket.makePacket(Type.ENTITYSPAWN, er, entity, instance().findNetworkModHandler(er.getContainer())));
     }
 
@@ -367,11 +367,13 @@ public class FMLNetworkHandler
         InetAddress add = null;
         List<InetAddress> addresses = Lists.newArrayList();
         InetAddress localHost = InetAddress.getLocalHost();
+
         for (NetworkInterface ni : Collections.list(NetworkInterface.getNetworkInterfaces()))
         {
             if (!ni.isLoopback() && ni.isUp())
             {
                 addresses.addAll(Collections.list(ni.getInetAddresses()));
+
                 if (addresses.contains(localHost))
                 {
                     add = localHost;
@@ -379,6 +381,7 @@ public class FMLNetworkHandler
                 }
             }
         }
+
         if (add == null && !addresses.isEmpty())
         {
             for (InetAddress addr: addresses)
@@ -390,10 +393,12 @@ public class FMLNetworkHandler
                 }
             }
         }
+
         if (add == null)
         {
             add = localHost;
         }
+
         return add;
     }
 
@@ -406,12 +411,10 @@ public class FMLNetworkHandler
     {
         if (handler instanceof NetServerHandler || mapData.itemID != Item.map.shiftedIndex)
         {
-            // Server side and not "map" packets are always handled by us
             NetworkRegistry.instance().handleTinyPacket(handler, mapData);
         }
         else
         {
-            // Fallback to the net client handler implementation
             FMLCommonHandler.instance().handleTinyPacket(handler, mapData);
         }
     }

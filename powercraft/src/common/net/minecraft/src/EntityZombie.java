@@ -6,7 +6,7 @@ import java.util.Calendar;
 
 public class EntityZombie extends EntityMob
 {
-    private int field_82234_d = 0;
+    private int conversionTime = 0;
 
     public EntityZombie(World par1World)
     {
@@ -28,10 +28,6 @@ public class EntityZombie extends EntityMob
         this.targetTasks.addTask(2, new EntityAINearestAttackableTarget(this, EntityVillager.class, 16.0F, 0, false));
     }
 
-    /**
-     * This method returns a value to be applied directly to entity speed, this factor is less than 1 when a slowdown
-     * potion effect is applied, more than 1 when a haste potion effect is applied and 2 for fleeing entities.
-     */
     public float getSpeedModifier()
     {
         return super.getSpeedModifier() * (this.isChild() ? 1.5F : 1.0F);
@@ -47,12 +43,9 @@ public class EntityZombie extends EntityMob
 
     @SideOnly(Side.CLIENT)
 
-    /**
-     * Returns the texture's file path as a String.
-     */
     public String getTexture()
     {
-        return this.func_82231_m() ? "/mob/zombie_villager.png" : "/mob/zombie.png";
+        return this.isVillager() ? "/mob/zombie_villager.png" : "/mob/zombie.png";
     }
 
     public int getMaxHealth()
@@ -60,9 +53,6 @@ public class EntityZombie extends EntityMob
         return 20;
     }
 
-    /**
-     * Returns the current armor value as determined by a call to InventoryPlayer.getTotalArmorValue
-     */
     public int getTotalArmorValue()
     {
         int var1 = super.getTotalArmorValue() + 2;
@@ -75,41 +65,31 @@ public class EntityZombie extends EntityMob
         return var1;
     }
 
-    /**
-     * Returns true if the newer Entity AI code should be run
-     */
     protected boolean isAIEnabled()
     {
         return true;
     }
 
-    /**
-     * If Animal, checks if the age timer is negative
-     */
     public boolean isChild()
     {
         return this.getDataWatcher().getWatchableObjectByte(12) == 1;
     }
 
-    public void func_82227_f(boolean par1)
+    public void setChild(boolean par1)
     {
         this.getDataWatcher().updateObject(12, Byte.valueOf((byte)1));
     }
 
-    public boolean func_82231_m()
+    public boolean isVillager()
     {
         return this.getDataWatcher().getWatchableObjectByte(13) == 1;
     }
 
-    public void func_82229_g(boolean par1)
+    public void setVillager(boolean par1)
     {
         this.getDataWatcher().updateObject(13, Byte.valueOf((byte)(par1 ? 1 : 0)));
     }
 
-    /**
-     * Called frequently so the entity can update its state every tick as required. For example, zombies and skeletons
-     * use this to react to sunlight and start to burn.
-     */
     public void onLivingUpdate()
     {
         if (this.worldObj.isDaytime() && !this.worldObj.isRemote && !this.isChild())
@@ -130,7 +110,7 @@ public class EntityZombie extends EntityMob
                         if (var3.getItemDamageForDisplay() >= var3.getMaxDamage())
                         {
                             this.renderBrokenItemStack(var3);
-                            this.func_70062_b(4, (ItemStack)null);
+                            this.setCurrentItemOrArmor(4, (ItemStack)null);
                         }
                     }
 
@@ -147,26 +127,23 @@ public class EntityZombie extends EntityMob
         super.onLivingUpdate();
     }
 
-    /**
-     * Called to update the entity's position/logic.
-     */
     public void onUpdate()
     {
         if (!this.worldObj.isRemote && this.func_82230_o())
         {
-            int var1 = this.func_82233_q();
-            this.field_82234_d -= var1;
+            int var1 = this.getConversionTimeBoost();
+            this.conversionTime -= var1;
 
-            if (this.field_82234_d <= 0)
+            if (this.conversionTime <= 0)
             {
-                this.func_82232_p();
+                this.convertToVillager();
             }
         }
 
         super.onUpdate();
     }
 
-    public int func_82193_c(Entity par1Entity)
+    public int getAttackStrength(Entity par1Entity)
     {
         ItemStack var2 = this.getHeldItem();
         int var3 = 4;
@@ -179,49 +156,31 @@ public class EntityZombie extends EntityMob
         return var3;
     }
 
-    /**
-     * Returns the sound this mob makes while it's alive.
-     */
     protected String getLivingSound()
     {
         return "mob.zombie.say";
     }
 
-    /**
-     * Returns the sound this mob makes when it is hurt.
-     */
     protected String getHurtSound()
     {
         return "mob.zombie.hurt";
     }
 
-    /**
-     * Returns the sound this mob makes on death.
-     */
     protected String getDeathSound()
     {
         return "mob.zombie.death";
     }
 
-    /**
-     * Plays step sound at given x, y, z for the entity
-     */
     protected void playStepSound(int par1, int par2, int par3, int par4)
     {
-        this.worldObj.playSoundAtEntity(this, "mob.zombie.step", 0.15F, 1.0F);
+        this.func_85030_a("mob.zombie.step", 0.15F, 1.0F);
     }
 
-    /**
-     * Returns the item ID for the item the mob drops on death.
-     */
     protected int getDropItemId()
     {
         return Item.rottenFlesh.shiftedIndex;
     }
 
-    /**
-     * Get this Entity's EnumCreatureAttribute
-     */
     public EnumCreatureAttribute getCreatureAttribute()
     {
         return EnumCreatureAttribute.UNDEAD;
@@ -234,11 +193,13 @@ public class EntityZombie extends EntityMob
             case 0:
                 this.dropItem(Item.ingotIron.shiftedIndex, 1);
                 break;
+
             case 1:
-                this.dropItem(Item.field_82797_bK.shiftedIndex, 1);
+                this.dropItem(Item.carrot.shiftedIndex, 1);
                 break;
+
             case 2:
-                this.dropItem(Item.field_82794_bL.shiftedIndex, 1);
+                this.dropItem(Item.potatoe.shiftedIndex, 1);
         }
     }
 
@@ -252,18 +213,15 @@ public class EntityZombie extends EntityMob
 
             if (var1 == 0)
             {
-                this.func_70062_b(0, new ItemStack(Item.swordSteel));
+                this.setCurrentItemOrArmor(0, new ItemStack(Item.swordSteel));
             }
             else
             {
-                this.func_70062_b(0, new ItemStack(Item.shovelSteel));
+                this.setCurrentItemOrArmor(0, new ItemStack(Item.shovelSteel));
             }
         }
     }
 
-    /**
-     * (abstract) Protected helper method to write subclass entity data to NBT.
-     */
     public void writeEntityToNBT(NBTTagCompound par1NBTTagCompound)
     {
         super.writeEntityToNBT(par1NBTTagCompound);
@@ -273,40 +231,34 @@ public class EntityZombie extends EntityMob
             par1NBTTagCompound.setBoolean("IsBaby", true);
         }
 
-        if (this.func_82231_m())
+        if (this.isVillager())
         {
             par1NBTTagCompound.setBoolean("IsVillager", true);
         }
 
-        par1NBTTagCompound.setInteger("ConversionTime", this.func_82230_o() ? this.field_82234_d : -1);
+        par1NBTTagCompound.setInteger("ConversionTime", this.func_82230_o() ? this.conversionTime : -1);
     }
 
-    /**
-     * (abstract) Protected helper method to read subclass entity data from NBT.
-     */
     public void readEntityFromNBT(NBTTagCompound par1NBTTagCompound)
     {
         super.readEntityFromNBT(par1NBTTagCompound);
 
         if (par1NBTTagCompound.getBoolean("IsBaby"))
         {
-            this.func_82227_f(true);
+            this.setChild(true);
         }
 
         if (par1NBTTagCompound.getBoolean("IsVillager"))
         {
-            this.func_82229_g(true);
+            this.setVillager(true);
         }
 
         if (par1NBTTagCompound.hasKey("ConversionTime") && par1NBTTagCompound.getInteger("ConversionTime") > -1)
         {
-            this.func_82228_a(par1NBTTagCompound.getInteger("ConversionTime"));
+            this.startConversion(par1NBTTagCompound.getInteger("ConversionTime"));
         }
     }
 
-    /**
-     * This method gets called when the entity kills another one.
-     */
     public void onKillEntity(EntityLiving par1EntityLiving)
     {
         super.onKillEntity(par1EntityLiving);
@@ -321,12 +273,12 @@ public class EntityZombie extends EntityMob
             EntityZombie var2 = new EntityZombie(this.worldObj);
             var2.func_82149_j(par1EntityLiving);
             this.worldObj.setEntityDead(par1EntityLiving);
-            var2.func_82163_bD();
-            var2.func_82229_g(true);
+            var2.initCreature();
+            var2.setVillager(true);
 
             if (par1EntityLiving.isChild())
             {
-                var2.func_82227_f(true);
+                var2.setChild(true);
             }
 
             this.worldObj.spawnEntityInWorld(var2);
@@ -334,13 +286,13 @@ public class EntityZombie extends EntityMob
         }
     }
 
-    public void func_82163_bD()
+    public void initCreature()
     {
-        this.field_82172_bs = this.rand.nextFloat() < field_82181_as[this.worldObj.difficultySetting];
+        this.canPickUpLoot = this.rand.nextFloat() < field_82181_as[this.worldObj.difficultySetting];
 
         if (this.worldObj.rand.nextFloat() < 0.05F)
         {
-            this.func_82229_g(true);
+            this.setVillager(true);
         }
 
         this.func_82164_bB();
@@ -348,24 +300,21 @@ public class EntityZombie extends EntityMob
 
         if (this.getCurrentItemOrArmor(4) == null)
         {
-            Calendar var1 = this.worldObj.func_83015_S();
+            Calendar var1 = this.worldObj.getCurrentDate();
 
             if (var1.get(2) + 1 == 10 && var1.get(5) == 31 && this.rand.nextFloat() < 0.25F)
             {
-                this.func_70062_b(4, new ItemStack(this.rand.nextFloat() < 0.1F ? Block.pumpkinLantern : Block.pumpkin));
-                this.field_82174_bp[4] = 0.0F;
+                this.setCurrentItemOrArmor(4, new ItemStack(this.rand.nextFloat() < 0.1F ? Block.pumpkinLantern : Block.pumpkin));
+                this.equipmentDropChances[4] = 0.0F;
             }
         }
     }
 
-    /**
-     * Called when a player interacts with a mob. e.g. gets milk from a cow, gets into the saddle on a pig.
-     */
     public boolean interact(EntityPlayer par1EntityPlayer)
     {
         ItemStack var2 = par1EntityPlayer.getCurrentEquippedItem();
 
-        if (var2 != null && var2.getItem() == Item.appleGold && var2.getItemDamage() == 0 && this.func_82231_m() && this.isPotionActive(Potion.weakness))
+        if (var2 != null && var2.getItem() == Item.appleGold && var2.getItemDamage() == 0 && this.isVillager() && this.isPotionActive(Potion.weakness))
         {
             if (!par1EntityPlayer.capabilities.isCreativeMode)
             {
@@ -379,7 +328,7 @@ public class EntityZombie extends EntityMob
 
             if (!this.worldObj.isRemote)
             {
-                this.func_82228_a(this.rand.nextInt(2401) + 3600);
+                this.startConversion(this.rand.nextInt(2401) + 3600);
             }
 
             return true;
@@ -390,11 +339,11 @@ public class EntityZombie extends EntityMob
         }
     }
 
-    protected void func_82228_a(int par1)
+    protected void startConversion(int par1)
     {
-        this.field_82234_d = par1;
+        this.conversionTime = par1;
         this.getDataWatcher().updateObject(14, Byte.valueOf((byte)1));
-        this.func_82170_o(Potion.weakness.id);
+        this.removePotionEffect(Potion.weakness.id);
         this.addPotionEffect(new PotionEffect(Potion.damageBoost.id, par1, Math.min(this.worldObj.difficultySetting - 1, 0)));
         this.worldObj.setEntityState(this, (byte)16);
     }
@@ -417,11 +366,11 @@ public class EntityZombie extends EntityMob
         return this.getDataWatcher().getWatchableObjectByte(14) == 1;
     }
 
-    protected void func_82232_p()
+    protected void convertToVillager()
     {
         EntityVillager var1 = new EntityVillager(this.worldObj);
         var1.func_82149_j(this);
-        var1.func_82163_bD();
+        var1.initCreature();
         var1.func_82187_q();
 
         if (this.isChild())
@@ -435,7 +384,7 @@ public class EntityZombie extends EntityMob
         this.worldObj.playAuxSFXAtEntity((EntityPlayer)null, 1017, (int)this.posX, (int)this.posY, (int)this.posZ, 0);
     }
 
-    protected int func_82233_q()
+    protected int getConversionTimeBoost()
     {
         int var1 = 1;
 

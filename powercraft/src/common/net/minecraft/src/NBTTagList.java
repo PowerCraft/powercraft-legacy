@@ -11,12 +11,8 @@ import java.util.List;
 
 public class NBTTagList extends NBTBase
 {
-    /** The array list containing the tags encapsulated in this list. */
     private List tagList = new ArrayList();
 
-    /**
-     * The type byte for the tags in the list - they must all be of the same type.
-     */
     private byte tagType;
 
     public NBTTagList()
@@ -29,9 +25,6 @@ public class NBTTagList extends NBTBase
         super(par1Str);
     }
 
-    /**
-     * Write the actual data contents of the tag, implemented in NBT extension classes
-     */
     void write(DataOutput par1DataOutput) throws IOException
     {
         if (!this.tagList.isEmpty())
@@ -45,18 +38,13 @@ public class NBTTagList extends NBTBase
 
         par1DataOutput.writeByte(this.tagType);
         par1DataOutput.writeInt(this.tagList.size());
-        Iterator var2 = this.tagList.iterator();
 
-        while (var2.hasNext())
+        for (int var2 = 0; var2 < this.tagList.size(); ++var2)
         {
-            NBTBase var3 = (NBTBase)var2.next();
-            var3.write(par1DataOutput);
+            ((NBTBase)this.tagList.get(var2)).write(par1DataOutput);
         }
     }
 
-    /**
-     * Read the actual data contents of the tag, implemented in NBT extension classes
-     */
     void load(DataInput par1DataInput) throws IOException
     {
         this.tagType = par1DataInput.readByte();
@@ -71,9 +59,6 @@ public class NBTTagList extends NBTBase
         }
     }
 
-    /**
-     * Gets the type byte for the tag.
-     */
     public byte getId()
     {
         return (byte)9;
@@ -84,10 +69,6 @@ public class NBTTagList extends NBTBase
         return "" + this.tagList.size() + " entries of type " + NBTBase.getTagName(this.tagType);
     }
 
-    /**
-     * Adds the provided tag to the end of the list. There is no check to verify this tag is of the same type as any
-     * previous tag.
-     */
     public void appendTag(NBTBase par1NBTBase)
     {
         this.tagType = par1NBTBase.getId();
@@ -96,33 +77,21 @@ public class NBTTagList extends NBTBase
 
     @SideOnly(Side.CLIENT)
 
-    /**
-     * Removes a tag at the given index.
-     */
     public NBTBase removeTag(int par1)
     {
         return (NBTBase)this.tagList.remove(par1);
     }
 
-    /**
-     * Retrieves the tag at the specified index from the list.
-     */
     public NBTBase tagAt(int par1)
     {
         return (NBTBase)this.tagList.get(par1);
     }
 
-    /**
-     * Returns the number of tags in the list.
-     */
     public int tagCount()
     {
         return this.tagList.size();
     }
 
-    /**
-     * Creates a clone of the tag.
-     */
     public NBTBase copy()
     {
         NBTTagList var1 = new NBTTagList(this.getName());

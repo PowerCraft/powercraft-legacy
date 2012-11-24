@@ -1,2 +1,53 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<qualifiedTypeNameHistroy/>
+<qualifiedTypeNameHistroy>
+<fullyQualifiedTypeName name="powercraft.machines.PCma_ContainerTransmutabox"/>
+<fullyQualifiedTypeName name="powercraft.core.PC_GresInventoryPlayer"/>
+<fullyQualifiedTypeName name="powercraft.core.PC_GresLayoutH"/>
+<fullyQualifiedTypeName name="powercraft.core.PC_GresWidget.PC_GresAlign"/>
+<fullyQualifiedTypeName name="powercraft.core.PC_GresInventoryBigSlot"/>
+<fullyQualifiedTypeName name="powercraft.core.PC_GresInventory"/>
+<fullyQualifiedTypeName name="net.minecraft.src.Entity"/>
+<fullyQualifiedTypeName name="powercraft.core.PC_GresProgressBar"/>
+<fullyQualifiedTypeName name="powercraft.machines.PCma_BlockXPBank"/>
+<fullyQualifiedTypeName name="powercraft.machines.PCma_TileEntityXPBank"/>
+<fullyQualifiedTypeName name="powercraft.machines.PCma_GuiXPBank"/>
+<fullyQualifiedTypeName name="powercraft.core.PC_IBlockRenderer"/>
+<fullyQualifiedTypeName name="java.util.List"/>
+<fullyQualifiedTypeName name="net.minecraft.src.NBTTagCompound"/>
+<fullyQualifiedTypeName name="powercraft.core.PC_ClientUtils"/>
+<fullyQualifiedTypeName name="powercraft.core.mod_PowerCraftCore"/>
+<fullyQualifiedTypeName name="powercraft.transport.PCtr_BeltHelper"/>
+<fullyQualifiedTypeName name="powercraft.light.PCli_ItemLaserComposition"/>
+<fullyQualifiedTypeName name="powercraft.core.PC_TileEntity"/>
+<fullyQualifiedTypeName name="powercraft.core.PC_TileEntitySpecialRenderer"/>
+<fullyQualifiedTypeName name="java.lang.Override"/>
+<fullyQualifiedTypeName name="powercraft.light.PCli_BlockMirrow"/>
+<fullyQualifiedTypeName name="powercraft.light.PCli_TileEntityMirrow"/>
+<fullyQualifiedTypeName name="powercraft.core.PC_CoordD"/>
+<fullyQualifiedTypeName name="powercraft.core.PC_Color"/>
+<fullyQualifiedTypeName name="powercraft.core.PC_IBeamSpecialHandling"/>
+<fullyQualifiedTypeName name="powercraft.core.PC_CoordI"/>
+<fullyQualifiedTypeName name="powercraft.core.PC_ITileEntityRenderer"/>
+<fullyQualifiedTypeName name="powercraft.core.PC_Renderer"/>
+<fullyQualifiedTypeName name="org.lwjgl.opengl.GL11"/>
+<fullyQualifiedTypeName name="net.minecraft.src.IBlockAccess"/>
+<fullyQualifiedTypeName name="powercraft.machines.mod_PowerCraftMachines"/>
+<fullyQualifiedTypeName name="net.minecraft.src.ItemStack"/>
+<fullyQualifiedTypeName name="powercraft.machines.PCma_BlockBlockBuilder"/>
+<fullyQualifiedTypeName name="powercraft.machines.PCma_TileEntityBlockBuilder"/>
+<fullyQualifiedTypeName name="net.minecraft.src.CreativeTabs"/>
+<fullyQualifiedTypeName name="org.w3c.dom.Document"/>
+<fullyQualifiedTypeName name="net.minecraft.src.Item"/>
+<fullyQualifiedTypeName name="org.w3c.dom.Node"/>
+<fullyQualifiedTypeName name="org.w3c.dom.Element"/>
+<fullyQualifiedTypeName name="net.minecraft.src.Block"/>
+<fullyQualifiedTypeName name="powercraft.core.PC_Module"/>
+<fullyQualifiedTypeName name="powercraft.core.PC_Utils"/>
+<fullyQualifiedTypeName name="powercraft.machines.PCma_BlockHarvester"/>
+<fullyQualifiedTypeName name="powercraft.machines.PCma_CropHarvestingManager"/>
+<fullyQualifiedTypeName name="powercraft.machines.PCma_TreeHarvestingManager"/>
+<fullyQualifiedTypeName name="powercraft.core.PC_ICraftingToolDisplayer"/>
+<fullyQualifiedTypeName name="powercraft.light.PCli_TileEntityLaser"/>
+<fullyQualifiedTypeName name="powercraft.core.PC_PacketHandler"/>
+<fullyQualifiedTypeName name="powercraft.light.mod_PowerCraftLight"/>
+</qualifiedTypeNameHistroy>

@@ -14,14 +14,11 @@ public class ComponentStrongholdPortalRoom extends ComponentStronghold
         this.boundingBox = par3StructureBoundingBox;
     }
 
-    /**
-     * Initiates construction of the Structure Component picked, at the current Location of StructGen
-     */
     public void buildComponent(StructureComponent par1StructureComponent, List par2List, Random par3Random)
     {
         if (par1StructureComponent != null)
         {
-            ((ComponentStrongholdStairs2)par1StructureComponent).portalRoom = this;
+            ((ComponentStrongholdStairs2)par1StructureComponent).strongholdPortalRoom = this;
         }
     }
 
@@ -31,10 +28,6 @@ public class ComponentStrongholdPortalRoom extends ComponentStronghold
         return canStrongholdGoDeeper(var7) && StructureComponent.findIntersecting(par0List, var7) == null ? new ComponentStrongholdPortalRoom(par6, par1Random, var7, par5) : null;
     }
 
-    /**
-     * second Part of Structure generating, this for example places Spiderwebs, Mob Spawners, it closes Mineshafts at
-     * the end, it adds Fences...
-     */
     public boolean addComponentParts(World par1World, Random par2Random, StructureBoundingBox par3StructureBoundingBox)
     {
         this.fillWithRandomizedBlocks(par1World, par3StructureBoundingBox, 0, 0, 0, 10, 7, 15, false, par2Random, StructureStrongholdPieces.getStrongholdStones());
@@ -86,14 +79,17 @@ public class ComponentStrongholdPortalRoom extends ComponentStronghold
                 var14 = 0;
                 var7 = 2;
                 break;
+
             case 1:
                 var14 = 1;
                 var7 = 3;
                 var8 = 0;
                 var9 = 2;
+
             case 2:
             default:
                 break;
+
             case 3:
                 var14 = 3;
                 var7 = 1;

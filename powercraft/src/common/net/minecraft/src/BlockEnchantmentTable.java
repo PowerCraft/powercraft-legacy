@@ -14,9 +14,6 @@ public class BlockEnchantmentTable extends BlockContainer
         this.setCreativeTab(CreativeTabs.tabDecorations);
     }
 
-    /**
-     * If this block doesn't render as an ordinary block it will return False (examples: signs, buttons, stairs, etc)
-     */
     public boolean renderAsNormalBlock()
     {
         return false;
@@ -24,9 +21,6 @@ public class BlockEnchantmentTable extends BlockContainer
 
     @SideOnly(Side.CLIENT)
 
-    /**
-     * A randomly called display update to be able to add particles or other items for display
-     */
     public void randomDisplayTick(World par1World, int par2, int par3, int par4, Random par5Random)
     {
         super.randomDisplayTick(par1World, par2, par3, par4, par5Random);
@@ -59,42 +53,26 @@ public class BlockEnchantmentTable extends BlockContainer
         }
     }
 
-    /**
-     * Is this block (a) opaque and (b) a full 1m cube?  This determines whether or not to render the shared face of two
-     * adjacent blocks and also whether the player can attach torches, redstone wire, etc to this block.
-     */
     public boolean isOpaqueCube()
     {
         return false;
     }
 
-    /**
-     * From the specified side and block metadata retrieves the blocks texture. Args: side, metadata
-     */
     public int getBlockTextureFromSideAndMetadata(int par1, int par2)
     {
         return this.getBlockTextureFromSide(par1);
     }
 
-    /**
-     * Returns the block texture based on the side being looked at.  Args: side
-     */
     public int getBlockTextureFromSide(int par1)
     {
         return par1 == 0 ? this.blockIndexInTexture + 17 : (par1 == 1 ? this.blockIndexInTexture : this.blockIndexInTexture + 16);
     }
 
-    /**
-     * Returns a new instance of a block's tile entity class. Called on placing the block.
-     */
     public TileEntity createNewTileEntity(World par1World)
     {
         return new TileEntityEnchantmentTable();
     }
 
-    /**
-     * Called upon block activation (right click on the block.)
-     */
     public boolean onBlockActivated(World par1World, int par2, int par3, int par4, EntityPlayer par5EntityPlayer, int par6, float par7, float par8, float par9)
     {
         if (par1World.isRemote)

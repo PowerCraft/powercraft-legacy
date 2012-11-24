@@ -17,42 +17,26 @@ public class BlockVine extends Block implements IShearable
         this.setCreativeTab(CreativeTabs.tabDecorations);
     }
 
-    /**
-     * Sets the block's bounds for rendering it as an item
-     */
     public void setBlockBoundsForItemRender()
     {
         this.setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 1.0F, 1.0F);
     }
 
-    /**
-     * The type of render function that is called for this block
-     */
     public int getRenderType()
     {
         return 20;
     }
 
-    /**
-     * Is this block (a) opaque and (b) a full 1m cube?  This determines whether or not to render the shared face of two
-     * adjacent blocks and also whether the player can attach torches, redstone wire, etc to this block.
-     */
     public boolean isOpaqueCube()
     {
         return false;
     }
 
-    /**
-     * If this block doesn't render as an ordinary block it will return False (examples: signs, buttons, stairs, etc)
-     */
     public boolean renderAsNormalBlock()
     {
         return false;
     }
 
-    /**
-     * Updates the blocks bounds based on its current state. Args: world, x, y, z
-     */
     public void setBlockBoundsBasedOnState(IBlockAccess par1IBlockAccess, int par2, int par3, int par4)
     {
         int var6 = par1IBlockAccess.getBlockMetadata(par2, par3, par4);
@@ -121,40 +105,35 @@ public class BlockVine extends Block implements IShearable
         this.setBlockBounds(var7, var8, var9, var10, var11, var12);
     }
 
-    /**
-     * Returns a bounding box from the pool of bounding boxes (this means this box can change after the pool has been
-     * cleared to be reused)
-     */
     public AxisAlignedBB getCollisionBoundingBoxFromPool(World par1World, int par2, int par3, int par4)
     {
         return null;
     }
 
-    /**
-     * checks to see if you can place this block can be placed on that side of a block: BlockLever overrides
-     */
     public boolean canPlaceBlockOnSide(World par1World, int par2, int par3, int par4, int par5)
     {
         switch (par5)
         {
             case 1:
                 return this.canBePlacedOn(par1World.getBlockId(par2, par3 + 1, par4));
+
             case 2:
                 return this.canBePlacedOn(par1World.getBlockId(par2, par3, par4 + 1));
+
             case 3:
                 return this.canBePlacedOn(par1World.getBlockId(par2, par3, par4 - 1));
+
             case 4:
                 return this.canBePlacedOn(par1World.getBlockId(par2 + 1, par3, par4));
+
             case 5:
                 return this.canBePlacedOn(par1World.getBlockId(par2 - 1, par3, par4));
+
             default:
                 return false;
         }
     }
 
-    /**
-     * returns true if a vine can be placed on that block (checks for render as normal block and if it is solid)
-     */
     private boolean canBePlacedOn(int par1)
     {
         if (par1 == 0)
@@ -168,9 +147,6 @@ public class BlockVine extends Block implements IShearable
         }
     }
 
-    /**
-     * Returns if the vine can stay in the world. It also changes the metadata according to neighboring blocks.
-     */
     private boolean canVineStay(World par1World, int par2, int par3, int par4)
     {
         int var5 = par1World.getBlockMetadata(par2, par3, par4);
@@ -212,9 +188,6 @@ public class BlockVine extends Block implements IShearable
 
     @SideOnly(Side.CLIENT)
 
-    /**
-     * Returns the color this block should be rendered. Used by leaves.
-     */
     public int getRenderColor(int par1)
     {
         return ColorizerFoliage.getFoliageColorBasic();
@@ -222,19 +195,11 @@ public class BlockVine extends Block implements IShearable
 
     @SideOnly(Side.CLIENT)
 
-    /**
-     * Returns a integer with hex for 0xrrggbb with this color multiplied against the blocks color. Note only called
-     * when first determining what to render.
-     */
     public int colorMultiplier(IBlockAccess par1IBlockAccess, int par2, int par3, int par4)
     {
         return par1IBlockAccess.getBiomeGenForCoords(par2, par4).getBiomeFoliageColor();
     }
 
-    /**
-     * Lets the block know when one of its neighbor changes. Doesn't know which neighbor changed (coordinates passed are
-     * their own) Args: x, y, z, neighbor blockID
-     */
     public void onNeighborBlockChange(World par1World, int par2, int par3, int par4, int par5)
     {
         if (!par1World.isRemote && !this.canVineStay(par1World, par2, par3, par4))
@@ -244,9 +209,6 @@ public class BlockVine extends Block implements IShearable
         }
     }
 
-    /**
-     * Ticks the block if it's been scheduled
-     */
     public void updateTick(World par1World, int par2, int par3, int par4, Random par5Random)
     {
         if (!par1World.isRemote && par1World.rand.nextInt(4) == 0)
@@ -385,75 +347,62 @@ public class BlockVine extends Block implements IShearable
         }
     }
 
-    /**
-     * called before onBlockPlacedBy by ItemBlock and ItemReed
-     */
-    public void updateBlockMetadata(World par1World, int par2, int par3, int par4, int par5, float par6, float par7, float par8)
+    public int func_85104_a(World par1World, int par2, int par3, int par4, int par5, float par6, float par7, float par8, int par9)
     {
-        byte var9 = 0;
+        byte var10 = 0;
 
         switch (par5)
         {
             case 2:
-                var9 = 1;
+                var10 = 1;
                 break;
+
             case 3:
-                var9 = 4;
+                var10 = 4;
                 break;
+
             case 4:
-                var9 = 8;
+                var10 = 8;
                 break;
+
             case 5:
-                var9 = 2;
+                var10 = 2;
         }
 
-        if (var9 != 0)
-        {
-            par1World.setBlockMetadataWithNotify(par2, par3, par4, var9);
-        }
+        return var10 != 0 ? var10 : par9;
     }
 
-    /**
-     * Returns the ID of the items to drop on destruction.
-     */
     public int idDropped(int par1, Random par2Random, int par3)
     {
         return 0;
     }
 
-    /**
-     * Returns the quantity of items to drop on block destruction.
-     */
     public int quantityDropped(Random par1Random)
     {
         return 0;
     }
 
-    /**
-     * Called when the player destroys a block with an item that can harvest it. (i, j, k) are the coordinates of the
-     * block and l is the block's subtype/damage.
-     */
     public void harvestBlock(World par1World, EntityPlayer par2EntityPlayer, int par3, int par4, int par5, int par6)
     {
         super.harvestBlock(par1World, par2EntityPlayer, par3, par4, par5, par6);
     }
-    
+
     @Override
-    public boolean isShearable(ItemStack item, World world, int x, int y, int z) 
+    public boolean isShearable(ItemStack item, World world, int x, int y, int z)
     {
         return true;
     }
-    
+
     @Override
-    public ArrayList<ItemStack> onSheared(ItemStack item, World world, int x, int y, int z, int fortune) 
+    public ArrayList<ItemStack> onSheared(ItemStack item, World world, int x, int y, int z, int fortune)
     {
         ArrayList<ItemStack> ret = new ArrayList<ItemStack>();
         ret.add(new ItemStack(this, 1, 0));
         return ret;
     }
-    
+
     @Override
-    public boolean isLadder(World world, int x, int y, int z) 
+    public boolean isLadder(World world, int x, int y, int z)
     {
         return true;
     }

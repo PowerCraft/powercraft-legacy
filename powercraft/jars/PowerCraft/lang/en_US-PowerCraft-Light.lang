@@ -1,0 +1,14 @@
+# Translation File for "PowerCraft-Light"
+item.PCli_ItemLaserComposition.distance.name = Distance Level %s
+item.PCli_ItemLaserComposition.kill.name = Kill Level %s
+item.PCli_ItemLaserComposition.name = Laser Composition
+item.PCli_ItemLaserComposition.sensor.name = Sensor Level %s
+pc.damage.laser = laser killed %s
+pc.gui.light.isHuge = is Huge
+pc.gui.light.isStable = is Stable
+tile.PCli_BlockLaser.name = Laser
+tile.PCli_BlockLaserSensor.name = Laser Sensor
+tile.PCli_BlockLight.name = Light
+tile.PCli_BlockLightningConductor.name = Lightning Conductor
+tile.PCli_BlockMirrow.name = Mirrow
+tile.PCli_BlockPrism.name = Prism

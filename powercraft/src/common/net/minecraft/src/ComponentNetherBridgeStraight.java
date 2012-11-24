@@ -12,27 +12,17 @@ public class ComponentNetherBridgeStraight extends ComponentNetherBridgePiece
         this.boundingBox = par3StructureBoundingBox;
     }
 
-    /**
-     * Initiates construction of the Structure Component picked, at the current Location of StructGen
-     */
     public void buildComponent(StructureComponent par1StructureComponent, List par2List, Random par3Random)
     {
         this.getNextComponentNormal((ComponentNetherBridgeStartPiece)par1StructureComponent, par2List, par3Random, 1, 3, false);
     }
 
-    /**
-     * Creates and returns a new component piece. Or null if it could not find enough room to place it.
-     */
     public static ComponentNetherBridgeStraight createValidComponent(List par0List, Random par1Random, int par2, int par3, int par4, int par5, int par6)
     {
         StructureBoundingBox var7 = StructureBoundingBox.getComponentToAddBoundingBox(par2, par3, par4, -1, -3, 0, 5, 10, 19, par5);
         return isAboveGround(var7) && StructureComponent.findIntersecting(par0List, var7) == null ? new ComponentNetherBridgeStraight(par6, par1Random, var7, par5) : null;
     }
 
-    /**
-     * second Part of Structure generating, this for example places Spiderwebs, Mob Spawners, it closes Mineshafts at
-     * the end, it adds Fences...
-     */
     public boolean addComponentParts(World par1World, Random par2Random, StructureBoundingBox par3StructureBoundingBox)
     {
         this.fillWithBlocks(par1World, par3StructureBoundingBox, 0, 3, 0, 4, 4, 18, Block.netherBrick.blockID, Block.netherBrick.blockID, false);

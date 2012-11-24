@@ -19,12 +19,15 @@ public class RenderItemFrame extends Render
         int var14 = par1EntityItemFrame.yPosition;
         int var15 = par1EntityItemFrame.zPosition + Direction.offsetZ[par1EntityItemFrame.field_82332_a];
         GL11.glTranslatef((float)var13 - var10, (float)var14 - var11, (float)var15 - var12);
-        this.func_82403_a(par1EntityItemFrame);
+        this.renderFrameItemAsBlock(par1EntityItemFrame);
         this.func_82402_b(par1EntityItemFrame);
         GL11.glPopMatrix();
     }
 
-    private void func_82403_a(EntityItemFrame par1EntityItemFrame)
+    /**
+     * Render the item frame's item as a block.
+     */
+    private void renderFrameItemAsBlock(EntityItemFrame par1EntityItemFrame)
     {
         GL11.glPushMatrix();
         GL11.glBindTexture(GL11.GL_TEXTURE_2D, this.renderManager.renderEngine.getTexture("/terrain.png"));
@@ -74,9 +77,9 @@ public class RenderItemFrame extends Render
             GL11.glPushMatrix();
             GL11.glTranslatef(-0.453125F * (float)Direction.offsetX[par1EntityItemFrame.field_82332_a], -0.18F, -0.453125F * (float)Direction.offsetZ[par1EntityItemFrame.field_82332_a]);
             GL11.glRotatef(180.0F + par1EntityItemFrame.rotationYaw, 0.0F, 1.0F, 0.0F);
-            GL11.glRotatef((float)(-90 * par1EntityItemFrame.func_82333_j()), 0.0F, 0.0F, 1.0F);
+            GL11.glRotatef((float)(-90 * par1EntityItemFrame.getRotation()), 0.0F, 0.0F, 1.0F);
 
-            switch (par1EntityItemFrame.func_82333_j())
+            switch (par1EntityItemFrame.getRotation())
             {
                 case 1:
                     GL11.glTranslatef(-0.16F, -0.16F, 0.0F);
@@ -95,7 +98,7 @@ public class RenderItemFrame extends Render
                 GL11.glRotatef(180.0F, 0.0F, 1.0F, 0.0F);
                 GL11.glRotatef(180.0F, 0.0F, 0.0F, 1.0F);
                 GL11.glScalef(0.00390625F, 0.00390625F, 0.00390625F);
-                GL11.glTranslatef(-65.0F, -107.0F, -1.0F);
+                GL11.glTranslatef(-65.0F, -107.0F, -3.0F);
                 GL11.glNormal3f(0.0F, 0.0F, -1.0F);
                 var4.startDrawingQuads();
                 byte var5 = 7;

@@ -19,9 +19,6 @@ public class EntityAIFleeSun extends EntityAIBase
         this.setMutexBits(1);
     }
 
-    /**
-     * Returns whether the EntityAIBase should begin execution.
-     */
     public boolean shouldExecute()
     {
         if (!this.theWorld.isDaytime())
@@ -54,17 +51,11 @@ public class EntityAIFleeSun extends EntityAIBase
         }
     }
 
-    /**
-     * Returns whether an in-progress EntityAIBase should continue executing
-     */
     public boolean continueExecuting()
     {
         return !this.theCreature.getNavigator().noPath();
     }
 
-    /**
-     * Execute a one shot task or start executing a continuous task
-     */
     public void startExecuting()
     {
         this.theCreature.getNavigator().tryMoveToXYZ(this.shelterX, this.shelterY, this.shelterZ, this.movementSpeed);
@@ -82,7 +73,7 @@ public class EntityAIFleeSun extends EntityAIBase
 
             if (!this.theWorld.canBlockSeeTheSky(var3, var4, var5) && this.theCreature.getBlockPathWeight(var3, var4, var5) < 0.0F)
             {
-                return this.theWorld.func_82732_R().getVecFromPool((double)var3, (double)var4, (double)var5);
+                return this.theWorld.getWorldVec3Pool().getVecFromPool((double)var3, (double)var4, (double)var5);
             }
         }
 

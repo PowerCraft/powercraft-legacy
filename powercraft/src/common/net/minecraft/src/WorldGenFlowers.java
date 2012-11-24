@@ -4,7 +4,6 @@ import java.util.Random;
 
 public class WorldGenFlowers extends WorldGenerator
 {
-    /** The ID of the plant block used in this plant generator. */
     private int plantBlockId;
 
     public WorldGenFlowers(int par1)
@@ -20,7 +19,7 @@ public class WorldGenFlowers extends WorldGenerator
             int var8 = par4 + par2Random.nextInt(4) - par2Random.nextInt(4);
             int var9 = par5 + par2Random.nextInt(8) - par2Random.nextInt(8);
 
-            if (par1World.isAirBlock(var7, var8, var9) && Block.blocksList[this.plantBlockId].canBlockStay(par1World, var7, var8, var9))
+            if (par1World.isAirBlock(var7, var8, var9) && (!par1World.provider.hasNoSky || var8 < 127) && Block.blocksList[this.plantBlockId].canBlockStay(par1World, var7, var8, var9))
             {
                 par1World.setBlock(var7, var8, var9, this.plantBlockId);
             }

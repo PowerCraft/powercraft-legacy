@@ -5,10 +5,8 @@ import net.minecraft.server.MinecraftServer;
 
 public class WorldManager implements IWorldAccess
 {
-    /** Reference to the MinecraftServer object. */
     private MinecraftServer mcServer;
 
-    /** The WorldServer object. */
     private WorldServer theWorldServer;
 
     public WorldManager(MinecraftServer par1MinecraftServer, WorldServer par2WorldServer)
@@ -17,63 +15,39 @@ public class WorldManager implements IWorldAccess
         this.theWorldServer = par2WorldServer;
     }
 
-    /**
-     * Spawns a particle. Arg: particleType, x, y, z, velX, velY, velZ
-     */
     public void spawnParticle(String par1Str, double par2, double par4, double par6, double par8, double par10, double par12) {}
 
-    /**
-     * Start the skin for this entity downloading, if necessary, and increment its reference counter
-     */
     public void obtainEntitySkin(Entity par1Entity)
     {
         this.theWorldServer.getEntityTracker().addEntityToTracker(par1Entity);
     }
 
-    /**
-     * Decrement the reference counter for this entity's skin image data
-     */
     public void releaseEntitySkin(Entity par1Entity)
     {
         this.theWorldServer.getEntityTracker().removeEntityFromAllTrackingPlayers(par1Entity);
     }
 
-    /**
-     * Plays the specified sound. Arg: soundName, x, y, z, volume, pitch
-     */
     public void playSound(String par1Str, double par2, double par4, double par6, float par8, float par9)
     {
         this.mcServer.getConfigurationManager().sendToAllNear(par2, par4, par6, par8 > 1.0F ? (double)(16.0F * par8) : 16.0D, this.theWorldServer.provider.dimensionId, new Packet62LevelSound(par1Str, par2, par4, par6, par8, par9));
     }
 
-    /**
-     * Called across all registered IWorldAccess instances when a block range is invalidated. Args: minX, minY, minZ,
-     * maxX, maxY, maxZ
-     */
+    public void func_85102_a(EntityPlayer par1EntityPlayer, String par2Str, double par3, double par5, double par7, float par9, float par10)
+    {
+        this.mcServer.getConfigurationManager().sendToAllNearExcept(par1EntityPlayer, par3, par5, par7, par9 > 1.0F ? (double)(16.0F * par9) : 16.0D, this.theWorldServer.provider.dimensionId, new Packet62LevelSound(par2Str, par3, par5, par7, par9, par10));
+    }
+
     public void markBlockRangeNeedsUpdate(int par1, int par2, int par3, int par4, int par5, int par6) {}
 
-    /**
-     * Will mark the block and neighbors that their renderers need an update (could be all the same renderer
-     * potentially) Args: x, y, z
-     */
     public void markBlockNeedsUpdate(int par1, int par2, int par3)
     {
         this.theWorldServer.getPlayerManager().flagChunkForUpdate(par1, par2, par3);
     }
 
-    /**
-     * As of mc 1.2.3 this method has exactly the same signature and does exactly the same as markBlockNeedsUpdate
-     */
     public void markBlockNeedsUpdate2(int par1, int par2, int par3) {}
 
-    /**
-     * Plays the specified record. Arg: recordName, x, y, z
-     */
     public void playRecord(String par1Str, int par2, int par3, int par4) {}
 
-    /**
-     * Plays a pre-canned sound effect along with potentially auxiliary data-driven one-shot behaviour (particles, etc).
-     */
     public void playAuxSFX(EntityPlayer par1EntityPlayer, int par2, int par3, int par4, int par5, int par6)
     {
         this.mcServer.getConfigurationManager().sendToAllNearExcept(par1EntityPlayer, (double)par3, (double)par4, (double)par5, 64.0D, this.theWorldServer.provider.dimensionId, new Packet61DoorChange(par2, par3, par4, par5, par6, false));
@@ -84,10 +58,6 @@ public class WorldManager implements IWorldAccess
         this.mcServer.getConfigurationManager().sendPacketToAllPlayers(new Packet61DoorChange(par1, par2, par3, par4, par5, true));
     }
 
-    /**
-     * Starts (or continues) destroying a block with given ID at the given coordinates for the given partially destroyed
-     * value
-     */
     public void destroyBlockPartially(int par1, int par2, int par3, int par4, int par5)
     {
         Iterator var6 = this.mcServer.getConfigurationManager().playerEntityList.iterator();

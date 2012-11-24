@@ -8,7 +8,6 @@ import java.net.URLEncoder;
 
 class ThreadLoginVerifier extends Thread
 {
-    /** The login handler that spawned this thread. */
     final NetLoginHandler loginHandler;
 
     ThreadLoginVerifier(NetLoginHandler par1NetLoginHandler)

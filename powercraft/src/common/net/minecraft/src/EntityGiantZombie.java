@@ -16,16 +16,12 @@ public class EntityGiantZombie extends EntityMob
         return 100;
     }
 
-    /**
-     * Takes a coordinate in and returns a weight to determine how likely this creature will try to path to the block.
-     * Args: x, y, z
-     */
     public float getBlockPathWeight(int par1, int par2, int par3)
     {
         return this.worldObj.getLightBrightness(par1, par2, par3) - 0.5F;
     }
 
-    public int func_82193_c(Entity par1Entity)
+    public int getAttackStrength(Entity par1Entity)
     {
         return 50;
     }

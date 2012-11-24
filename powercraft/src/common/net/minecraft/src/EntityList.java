@@ -3,30 +3,24 @@ package net.minecraft.src;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.logging.Level;
+
+import cpw.mods.fml.common.FMLLog;
 
 public class EntityList
 {
-    /** Provides a mapping between entity classes and a string */
     public static Map stringToClassMapping = new HashMap();
 
-    /** Provides a mapping between a string and an entity classes */
     public static Map classToStringMapping = new HashMap();
 
-    /** provides a mapping between an entityID and an Entity Class */
     public static Map IDtoClassMapping = new HashMap();
 
-    /** provides a mapping between an Entity Class and an entity ID */
     private static Map classToIDMapping = new HashMap();
 
-    /** Maps entity names to their numeric identifiers */
     private static Map stringToIDMapping = new HashMap();
 
-    /** This is a HashMap of the Creative Entity Eggs/Spawners. */
     public static HashMap entityEggs = new LinkedHashMap();
 
-    /**
-     * adds a mapping between Entity classes and both a string representation and an ID
-     */
     public static void addMapping(Class par0Class, String par1Str, int par2)
     {
         stringToClassMapping.put(par1Str, par0Class);
@@ -36,18 +30,12 @@ public class EntityList
         stringToIDMapping.put(par1Str, Integer.valueOf(par2));
     }
 
-    /**
-     * Adds a entity mapping with egg info.
-     */
     public static void addMapping(Class par0Class, String par1Str, int par2, int par3, int par4)
     {
         addMapping(par0Class, par1Str, par2);
         entityEggs.put(Integer.valueOf(par2), new EntityEggInfo(par2, par3, par4));
     }
 
-    /**
-     * Create a new instance of an entity in the world by using the entity name.
-     */
     public static Entity createEntityByName(String par0Str, World par1World)
     {
         Entity var2 = null;
@@ -69,16 +57,14 @@ public class EntityList
         return var2;
     }
 
-    /**
-     * create a new instance of an entity from NBT store
-     */
     public static Entity createEntityFromNBT(NBTTagCompound par0NBTTagCompound, World par1World)
     {
         Entity var2 = null;
+        Class var3 = null;
 
         try
         {
-            Class var3 = (Class)stringToClassMapping.get(par0NBTTagCompound.getString("id"));
+            var3 = (Class)stringToClassMapping.get(par0NBTTagCompound.getString("id"));
 
             if (var3 != null)
             {
@@ -92,7 +78,17 @@ public class EntityList
 
         if (var2 != null)
         {
-            var2.readFromNBT(par0NBTTagCompound);
+            try
+            {
+                var2.readFromNBT(par0NBTTagCompound);
+            }
+            catch (Exception e)
+            {
+                FMLLog.log(Level.SEVERE, e,
+                        "An Entity %s(%s) has thrown an exception during loading, its state cannot be restored. Report this to the mod author",
+                        par0NBTTagCompound.getString("id"), var3.getName());
+                var2 = null;
+            }
         }
         else
         {
@@ -102,9 +98,6 @@ public class EntityList
         return var2;
     }
 
-    /**
-     * Create a new instance of an entity in the world by using an entity ID.
-     */
     public static Entity createEntityByID(int par0, World par1World)
     {
         Entity var2 = null;
@@ -131,26 +124,22 @@ public class EntityList
         return var2;
     }
 
-    /**
-     * gets the entityID of a specific entity
-     */
     public static int getEntityID(Entity par0Entity)
     {
         Class var1 = par0Entity.getClass();
         return classToIDMapping.containsKey(var1) ? ((Integer)classToIDMapping.get(var1)).intValue() : 0;
     }
 
-    /**
-     * Gets the string representation of a specific entity.
-     */
+    public static Class func_90035_a(int par0)
+    {
+        return (Class)IDtoClassMapping.get(Integer.valueOf(par0));
+    }
+
     public static String getEntityString(Entity par0Entity)
     {
         return (String)classToStringMapping.get(par0Entity.getClass());
     }
 
-    /**
-     * Finds the class using IDtoClassMapping and classToStringMapping
-     */
     public static String getStringFromID(int par0)
     {
         Class var1 = (Class)IDtoClassMapping.get(Integer.valueOf(par0));

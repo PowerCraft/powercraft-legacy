@@ -1,6 +1,7 @@
 package net.minecraft.src;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
@@ -10,11 +11,9 @@ import java.util.Map.Entry;
 
 public class MapGenStronghold extends MapGenStructure
 {
+    public static ArrayList<BiomeGenBase> allowedBiomes = new ArrayList<BiomeGenBase>(Arrays.asList(BiomeGenBase.desert, BiomeGenBase.forest, BiomeGenBase.extremeHills, BiomeGenBase.swampland, BiomeGenBase.taiga, BiomeGenBase.icePlains, BiomeGenBase.iceMountains, BiomeGenBase.desertHills, BiomeGenBase.forestHills, BiomeGenBase.extremeHillsEdge, BiomeGenBase.jungle, BiomeGenBase.jungleHills));
     private BiomeGenBase[] allowedBiomeGenBases;
 
-    /**
-     * is spawned false and set true once the defined BiomeGenBases were compared with the present ones
-     */
     private boolean ranBiomeCheck;
     private ChunkCoordIntPair[] structureCoords;
     private double field_82671_h;
@@ -22,7 +21,7 @@ public class MapGenStronghold extends MapGenStructure
 
     public MapGenStronghold()
     {
-        this.allowedBiomeGenBases = new BiomeGenBase[] {BiomeGenBase.desert, BiomeGenBase.forest, BiomeGenBase.extremeHills, BiomeGenBase.swampland, BiomeGenBase.taiga, BiomeGenBase.icePlains, BiomeGenBase.iceMountains, BiomeGenBase.desertHills, BiomeGenBase.forestHills, BiomeGenBase.extremeHillsEdge, BiomeGenBase.jungle, BiomeGenBase.jungleHills};
+        this.allowedBiomeGenBases = allowedBiomes.toArray(new BiomeGenBase[0]);
         this.structureCoords = new ChunkCoordIntPair[3];
         this.field_82671_h = 32.0D;
         this.field_82672_i = 3;
@@ -30,7 +29,7 @@ public class MapGenStronghold extends MapGenStructure
 
     public MapGenStronghold(Map par1Map)
     {
-        this.allowedBiomeGenBases = new BiomeGenBase[] {BiomeGenBase.desert, BiomeGenBase.forest, BiomeGenBase.extremeHills, BiomeGenBase.swampland, BiomeGenBase.taiga, BiomeGenBase.icePlains, BiomeGenBase.iceMountains, BiomeGenBase.desertHills, BiomeGenBase.forestHills, BiomeGenBase.extremeHillsEdge, BiomeGenBase.jungle, BiomeGenBase.jungleHills};
+        this.allowedBiomeGenBases = allowedBiomes.toArray(new BiomeGenBase[0]);
         this.structureCoords = new ChunkCoordIntPair[3];
         this.field_82671_h = 32.0D;
         this.field_82672_i = 3;
@@ -108,10 +107,6 @@ public class MapGenStronghold extends MapGenStructure
         return false;
     }
 
-    /**
-     * Returns a list of other locations at which the structure generation has been run, or null if not relevant to this
-     * structure generator.
-     */
     protected List getCoordList()
     {
         ArrayList var1 = new ArrayList();
@@ -135,7 +130,7 @@ public class MapGenStronghold extends MapGenStructure
     {
         StructureStrongholdStart var3;
 
-        for (var3 = new StructureStrongholdStart(this.worldObj, this.rand, par1, par2); var3.getComponents().isEmpty() || ((ComponentStrongholdStairs2)var3.getComponents().get(0)).portalRoom == null; var3 = new StructureStrongholdStart(this.worldObj, this.rand, par1, par2))
+        for (var3 = new StructureStrongholdStart(this.worldObj, this.rand, par1, par2); var3.getComponents().isEmpty() || ((ComponentStrongholdStairs2)var3.getComponents().get(0)).strongholdPortalRoom == null; var3 = new StructureStrongholdStart(this.worldObj, this.rand, par1, par2))
         {
             ;
         }

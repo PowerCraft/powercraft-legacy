@@ -4,12 +4,9 @@ public class RecipesMapExtending extends ShapedRecipes
 {
     public RecipesMapExtending()
     {
-        super(3, 3, new ItemStack[] {new ItemStack(Item.paper), new ItemStack(Item.paper), new ItemStack(Item.paper), new ItemStack(Item.paper), new ItemStack(Item.map, 0, -1), new ItemStack(Item.paper), new ItemStack(Item.paper), new ItemStack(Item.paper), new ItemStack(Item.paper)}, new ItemStack(Item.field_82801_bO, 0, 0));
+        super(3, 3, new ItemStack[] {new ItemStack(Item.paper), new ItemStack(Item.paper), new ItemStack(Item.paper), new ItemStack(Item.paper), new ItemStack(Item.map, 0, -1), new ItemStack(Item.paper), new ItemStack(Item.paper), new ItemStack(Item.paper), new ItemStack(Item.paper)}, new ItemStack(Item.emptyMap, 0, 0));
     }
 
-    /**
-     * Used to check if a recipe matches current crafting inventory
-     */
     public boolean matches(InventoryCrafting par1InventoryCrafting, World par2World)
     {
         if (!super.matches(par1InventoryCrafting, par2World))
@@ -42,9 +39,6 @@ public class RecipesMapExtending extends ShapedRecipes
         }
     }
 
-    /**
-     * Returns an Item that is the result of this recipe
-     */
     public ItemStack getCraftingResult(InventoryCrafting par1InventoryCrafting)
     {
         ItemStack var2 = null;

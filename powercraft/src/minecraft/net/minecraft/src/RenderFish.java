@@ -45,7 +45,7 @@ public class RenderFish extends Render
         {
             float var20 = par1EntityFishHook.angler.getSwingProgress(par9);
             float var21 = MathHelper.sin(MathHelper.sqrt_float(var20) * (float)Math.PI);
-            Vec3 var22 = par1EntityFishHook.worldObj.func_82732_R().getVecFromPool(-0.5D, 0.03D, 0.8D);
+            Vec3 var22 = par1EntityFishHook.worldObj.getWorldVec3Pool().getVecFromPool(-0.5D, 0.03D, 0.8D);
             var22.rotateAroundX(-(par1EntityFishHook.angler.prevRotationPitch + (par1EntityFishHook.angler.rotationPitch - par1EntityFishHook.angler.prevRotationPitch) * par9) * (float)Math.PI / 180.0F);
             var22.rotateAroundY(-(par1EntityFishHook.angler.prevRotationYaw + (par1EntityFishHook.angler.rotationYaw - par1EntityFishHook.angler.prevRotationYaw) * par9) * (float)Math.PI / 180.0F);
             var22.rotateAroundY(var21 * 0.5F);

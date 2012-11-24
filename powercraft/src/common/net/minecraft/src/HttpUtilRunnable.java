@@ -52,100 +52,104 @@ final class HttpUtilRunnable implements Runnable
 
         try
         {
-            byte[] var4 = new byte[4096];
-            URL var5 = new URL(this.sourceURL);
-            var1 = var5.openConnection();
-            float var6 = 0.0F;
-            float var7 = (float)this.field_76177_c.entrySet().size();
-            Iterator var8 = this.field_76177_c.entrySet().iterator();
-
-            while (var8.hasNext())
+            try
             {
-                Entry var9 = (Entry)var8.next();
-                var1.setRequestProperty((String)var9.getKey(), (String)var9.getValue());
+                byte[] var4 = new byte[4096];
+                URL var5 = new URL(this.sourceURL);
+                var1 = var5.openConnection();
+                float var6 = 0.0F;
+                float var7 = (float)this.field_76177_c.entrySet().size();
+                Iterator var8 = this.field_76177_c.entrySet().iterator();
+
+                while (var8.hasNext())
+                {
+                    Entry var9 = (Entry)var8.next();
+                    var1.setRequestProperty((String)var9.getKey(), (String)var9.getValue());
+
+                    if (this.feedbackHook != null)
+                    {
+                        this.feedbackHook.setLoadingProgress((int)(++var6 / var7 * 100.0F));
+                    }
+                }
+
+                var2 = var1.getInputStream();
+                var7 = (float)var1.getContentLength();
+                int var28 = var1.getContentLength();
 
                 if (this.feedbackHook != null)
                 {
-                    this.feedbackHook.setLoadingProgress((int)(++var6 / var7 * 100.0F));
+                    this.feedbackHook.resetProgresAndWorkingMessage(String.format("Downloading file (%.2f MB)...", new Object[] {Float.valueOf(var7 / 1000.0F / 1000.0F)}));
                 }
-            }
 
-            var2 = var1.getInputStream();
-            var7 = (float)var1.getContentLength();
-            int var28 = var1.getContentLength();
-
-            if (this.feedbackHook != null)
-            {
-                this.feedbackHook.resetProgresAndWorkingMessage(String.format("Downloading file (%.2f MB)...", new Object[] {Float.valueOf(var7 / 1000.0F / 1000.0F)}));
-            }
-
-            if (this.destinationFile.exists())
-            {
-                long var29 = this.destinationFile.length();
-
-                if (var29 == (long)var28)
+                if (this.destinationFile.exists())
                 {
-                    this.downloadSuccess.onSuccess(this.destinationFile);
+                    long var29 = this.destinationFile.length();
 
+                    if (var29 == (long)var28)
+                    {
+                        this.downloadSuccess.onSuccess(this.destinationFile);
+
+                        if (this.feedbackHook != null)
+                        {
+                            this.feedbackHook.onNoMoreProgress();
+                        }
+
+                        return;
+                    }
+
+                    System.out.println("Deleting " + this.destinationFile + " as it does not match what we currently have (" + var28 + " vs our " + var29 + ").");
+                    this.destinationFile.delete();
+                }
+
+                var3 = new DataOutputStream(new FileOutputStream(this.destinationFile));
+
+                if (this.field_76173_f > 0 && var7 > (float)this.field_76173_f)
+                {
                     if (this.feedbackHook != null)
                     {
                         this.feedbackHook.onNoMoreProgress();
                     }
 
-                    return;
+                    throw new IOException("Filesize is bigger than maximum allowed (file is " + var6 + ", limit is " + this.field_76173_f + ")");
                 }
 
-                System.out.println("Deleting " + this.destinationFile + " as it does not match what we currently have (" + var28 + " vs our " + var29 + ").");
-                this.destinationFile.delete();
-            }
+                boolean var31 = false;
+                int var30;
 
-            var3 = new DataOutputStream(new FileOutputStream(this.destinationFile));
+                while ((var30 = var2.read(var4)) >= 0)
+                {
+                    var6 += (float)var30;
 
-            if (this.field_76173_f > 0 && var7 > (float)this.field_76173_f)
-            {
+                    if (this.feedbackHook != null)
+                    {
+                        this.feedbackHook.setLoadingProgress((int)(var6 / var7 * 100.0F));
+                    }
+
+                    if (this.field_76173_f > 0 && var6 > (float)this.field_76173_f)
+                    {
+                        if (this.feedbackHook != null)
+                        {
+                            this.feedbackHook.onNoMoreProgress();
+                        }
+
+                        throw new IOException("Filesize was bigger than maximum allowed (got >= " + var6 + ", limit was " + this.field_76173_f + ")");
+                    }
+
+                    var3.write(var4, 0, var30);
+                }
+
+                this.downloadSuccess.onSuccess(this.destinationFile);
+
                 if (this.feedbackHook != null)
                 {
                     this.feedbackHook.onNoMoreProgress();
+                    return;
                 }
-
-                throw new IOException("Filesize is bigger than maximum allowed (file is " + var6 + ", limit is " + this.field_76173_f + ")");
             }
-
-            boolean var31 = false;
-            int var30;
-
-            while ((var30 = var2.read(var4)) >= 0)
+            catch (Throwable var26)
             {
-                var6 += (float)var30;
-
-                if (this.feedbackHook != null)
-                {
-                    this.feedbackHook.setLoadingProgress((int)(var6 / var7 * 100.0F));
-                }
-
-                if (this.field_76173_f > 0 && var6 > (float)this.field_76173_f)
-                {
-                    if (this.feedbackHook != null)
-                    {
-                        this.feedbackHook.onNoMoreProgress();
-                    }
-
-                    throw new IOException("Filesize was bigger than maximum allowed (got >= " + var6 + ", limit was " + this.field_76173_f + ")");
-                }
-
-                var3.write(var4, 0, var30);
+                var26.printStackTrace();
             }
-
-            this.downloadSuccess.onSuccess(this.destinationFile);
-
-            if (this.feedbackHook != null)
-            {
-                this.feedbackHook.onNoMoreProgress();
-            }
-        }
-        catch (Throwable var26)
-        {
-            var26.printStackTrace();
         }
         finally
         {

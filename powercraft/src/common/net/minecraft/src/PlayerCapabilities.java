@@ -5,21 +5,14 @@ import cpw.mods.fml.common.asm.SideOnly;
 
 public class PlayerCapabilities
 {
-    /** Disables player damage. */
     public boolean disableDamage = false;
 
-    /** Sets/indicates whether the player is flying. */
     public boolean isFlying = false;
 
-    /** whether or not to allow the player to fly when they double jump. */
     public boolean allowFlying = false;
 
-    /**
-     * Used to determine if creative mode is enabled, and therefore if items should be depleted on usage
-     */
     public boolean isCreativeMode = false;
 
-    /** Indicates whether the player is allowed to modify the surroundings */
     public boolean allowEdit = true;
     private float flySpeed = 0.05F;
     private float walkSpeed = 0.1F;

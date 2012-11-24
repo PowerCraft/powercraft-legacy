@@ -10,7 +10,7 @@ public class CommandSetSpawnpoint extends CommandBase
         return "spawnpoint";
     }
 
-    public int func_82362_a()
+    public int getRequiredPermissionLevel()
     {
         return 2;
     }
@@ -45,21 +45,18 @@ public class CommandSetSpawnpoint extends CommandBase
                 throw new WrongUsageException("commands.spawnpoint.usage", new Object[0]);
             }
 
-            ChunkCoordinates var11 = var3.func_82114_b();
+            ChunkCoordinates var11 = var3.getPlayerCoordinates();
             var3.setSpawnChunk(var11, true);
             notifyAdmins(par1ICommandSender, "commands.spawnpoint.success", new Object[] {var3.getEntityName(), Integer.valueOf(var11.posX), Integer.valueOf(var11.posY), Integer.valueOf(var11.posZ)});
         }
     }
 
-    /**
-     * Adds the strings available in this command to the given list of tab completion options.
-     */
     public List addTabCompletionOptions(ICommandSender par1ICommandSender, String[] par2ArrayOfStr)
     {
         return par2ArrayOfStr.length != 1 && par2ArrayOfStr.length != 2 ? null : getListOfStringsMatchingLastWord(par2ArrayOfStr, MinecraftServer.getServer().getAllUsernames());
     }
 
-    public boolean func_82358_a(int par1)
+    public boolean isUsernameIndex(int par1)
     {
         return par1 == 0;
     }

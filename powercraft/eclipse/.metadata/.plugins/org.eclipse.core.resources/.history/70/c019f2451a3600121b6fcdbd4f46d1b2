@@ -1,0 +1,7 @@
+package powercraft.light;
+
+import net.minecraft.src.ModelBase;
+
+public class PCma_ModelPrism extends ModelBase {
+
+}

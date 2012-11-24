@@ -1,0 +1,19 @@
+package powercraft.light;
+
+import net.minecraft.src.Material;
+import powercraft.core.PC_Block;
+import powercraft.core.PC_ITileEntityRenderer;
+
+public class PCli_BlockMirrow extends PC_Block {
+
+	public PCli_BlockMirrow(int id) {
+		super(id, textureIndex, Material.glass);
+	}
+
+	@Override
+	public String getDefaultName() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+}

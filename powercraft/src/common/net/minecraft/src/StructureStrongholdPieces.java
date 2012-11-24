@@ -13,9 +13,6 @@ public class StructureStrongholdPieces
     static int totalWeight = 0;
     private static final StructureStrongholdStones strongholdStones = new StructureStrongholdStones((StructureStrongholdPieceWeight2)null);
 
-    /**
-     * sets up Arrays with the Structure pieces and their weights
-     */
     public static void prepareStructurePieces()
     {
         structurePieceList = new ArrayList();
@@ -51,9 +48,6 @@ public class StructureStrongholdPieces
         return var0;
     }
 
-    /**
-     * translates the PieceWeight class to the Component class
-     */
     private static ComponentStronghold getStrongholdComponentFromWeightedPiece(Class par0Class, List par1List, Random par2Random, int par3, int par4, int par5, int par6, int par7)
     {
         Object var8 = null;
@@ -140,7 +134,7 @@ public class StructureStrongholdPieces
 
                     if (var9 < 0)
                     {
-                        if (!var11.canSpawnMoreStructuresOfType(par7) || var11 == par0ComponentStrongholdStairs2.field_75027_a)
+                        if (!var11.canSpawnMoreStructuresOfType(par7) || var11 == par0ComponentStrongholdStairs2.strongholdPieceWeight)
                         {
                             break;
                         }
@@ -150,7 +144,7 @@ public class StructureStrongholdPieces
                         if (var12 != null)
                         {
                             ++var11.instancesSpawned;
-                            par0ComponentStrongholdStairs2.field_75027_a = var11;
+                            par0ComponentStrongholdStairs2.strongholdPieceWeight = var11;
 
                             if (!var11.canSpawnMoreStructures())
                             {

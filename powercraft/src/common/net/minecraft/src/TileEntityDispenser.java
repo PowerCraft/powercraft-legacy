@@ -6,31 +6,18 @@ public class TileEntityDispenser extends TileEntity implements IInventory
 {
     private ItemStack[] dispenserContents = new ItemStack[9];
 
-    /**
-     * random number generator for instance. Used in random item stack selection.
-     */
     private Random dispenserRandom = new Random();
 
-    /**
-     * Returns the number of slots in the inventory.
-     */
     public int getSizeInventory()
     {
         return 9;
     }
 
-    /**
-     * Returns the stack in slot i
-     */
     public ItemStack getStackInSlot(int par1)
     {
         return this.dispenserContents[par1];
     }
 
-    /**
-     * Removes from an inventory slot (first arg) up to a specified number (second arg) of items and returns them in a
-     * new stack.
-     */
     public ItemStack decrStackSize(int par1, int par2)
     {
         if (this.dispenserContents[par1] != null)
@@ -63,10 +50,6 @@ public class TileEntityDispenser extends TileEntity implements IInventory
         }
     }
 
-    /**
-     * When some containers are closed they call this on each slot, then drop whatever it returns as an EntityItem -
-     * like when you close a workbench GUI.
-     */
     public ItemStack getStackInSlotOnClosing(int par1)
     {
         if (this.dispenserContents[par1] != null)
@@ -97,9 +80,6 @@ public class TileEntityDispenser extends TileEntity implements IInventory
         return var1;
     }
 
-    /**
-     * Sets the given item stack to the specified slot in the inventory (can be crafting or armor sections).
-     */
     public void setInventorySlotContents(int par1, ItemStack par2ItemStack)
     {
         this.dispenserContents[par1] = par2ItemStack;
@@ -126,17 +106,11 @@ public class TileEntityDispenser extends TileEntity implements IInventory
         return -1;
     }
 
-    /**
-     * Returns the name of the inventory.
-     */
     public String getInvName()
     {
         return "container.dispenser";
     }
 
-    /**
-     * Reads a tile entity from NBT.
-     */
     public void readFromNBT(NBTTagCompound par1NBTTagCompound)
     {
         super.readFromNBT(par1NBTTagCompound);
@@ -155,9 +129,6 @@ public class TileEntityDispenser extends TileEntity implements IInventory
         }
     }
 
-    /**
-     * Writes a tile entity to NBT.
-     */
     public void writeToNBT(NBTTagCompound par1NBTTagCompound)
     {
         super.writeToNBT(par1NBTTagCompound);
@@ -177,18 +148,11 @@ public class TileEntityDispenser extends TileEntity implements IInventory
         par1NBTTagCompound.setTag("Items", var2);
     }
 
-    /**
-     * Returns the maximum stack size for a inventory slot. Seems to always be 64, possibly will be extended. *Isn't
-     * this more of a set than a get?*
-     */
     public int getInventoryStackLimit()
     {
         return 64;
     }
 
-    /**
-     * Do not make give this method the name canInteractWith because it clashes with Container
-     */
     public boolean isUseableByPlayer(EntityPlayer par1EntityPlayer)
     {
         return this.worldObj.getBlockTileEntity(this.xCoord, this.yCoord, this.zCoord) != this ? false : par1EntityPlayer.getDistanceSq((double)this.xCoord + 0.5D, (double)this.yCoord + 0.5D, (double)this.zCoord + 0.5D) <= 64.0D;

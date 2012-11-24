@@ -7,9 +7,6 @@ public class ItemPiston extends ItemBlock
         super(par1);
     }
 
-    /**
-     * Returns the metadata of the block which this Item (ItemBlock) can place
-     */
     public int getMetadata(int par1)
     {
         return 7;

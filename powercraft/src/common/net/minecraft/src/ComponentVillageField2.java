@@ -14,18 +14,20 @@ public class ComponentVillageField2 extends ComponentVillage
         super(par1ComponentVillageStartPiece, par2);
         this.coordBaseMode = par5;
         this.boundingBox = par4StructureBoundingBox;
-        this.field_82675_b = this.func_82674_a(par3Random);
-        this.field_82676_c = this.func_82674_a(par3Random);
+        this.field_82675_b = this.pickRandomCrop(par3Random);
+        this.field_82676_c = this.pickRandomCrop(par3Random);
     }
 
-    private int func_82674_a(Random par1Random)
+    private int pickRandomCrop(Random par1Random)
     {
         switch (par1Random.nextInt(5))
         {
             case 0:
-                return Block.field_82513_cg.blockID;
+                return Block.carrot.blockID;
+
             case 1:
-                return Block.field_82514_ch.blockID;
+                return Block.potatoe.blockID;
+
             default:
                 return Block.crops.blockID;
         }
@@ -37,10 +39,6 @@ public class ComponentVillageField2 extends ComponentVillage
         return canVillageGoDeeper(var8) && StructureComponent.findIntersecting(par1List, var8) == null ? new ComponentVillageField2(par0ComponentVillageStartPiece, par7, par2Random, var8, par6) : null;
     }
 
-    /**
-     * second Part of Structure generating, this for example places Spiderwebs, Mob Spawners, it closes Mineshafts at
-     * the end, it adds Fences...
-     */
     public boolean addComponentParts(World par1World, Random par2Random, StructureBoundingBox par3StructureBoundingBox)
     {
         if (this.averageGroundLevel < 0)

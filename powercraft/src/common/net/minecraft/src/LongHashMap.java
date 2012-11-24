@@ -2,45 +2,27 @@ package net.minecraft.src;
 
 public class LongHashMap
 {
-    /** the array of all elements in the hash */
     private transient LongHashMapEntry[] hashArray = new LongHashMapEntry[16];
 
-    /** the number of elements in the hash array */
     private transient int numHashElements;
 
-    /**
-     * the maximum amount of elements in the hash (probably 3/4 the size due to meh hashing function)
-     */
     private int capacity = 12;
 
-    /**
-     * percent of the hasharray that can be used without hash colliding probably
-     */
     private final float percentUseable = 0.75F;
 
-    /** count of times elements have been added/removed */
     private transient volatile int modCount;
 
-    /**
-     * returns the hashed key given the original key
-     */
     private static int getHashedKey(long par0)
     {
         return hash((int)(par0 ^ par0 >>> 32));
     }
 
-    /**
-     * the hash function
-     */
     private static int hash(int par0)
     {
         par0 ^= par0 >>> 20 ^ par0 >>> 12;
         return par0 ^ par0 >>> 7 ^ par0 >>> 4;
     }
 
-    /**
-     * gets the index in the hash given the array length and the hashed key
-     */
     private static int getHashIndex(int par0, int par1)
     {
         return par0 & par1 - 1;
@@ -51,9 +33,6 @@ public class LongHashMap
         return this.numHashElements;
     }
 
-    /**
-     * get the value from the map given the key
-     */
     public Object getValueByKey(long par1)
     {
         int var3 = getHashedKey(par1);
@@ -89,9 +68,6 @@ public class LongHashMap
         return null;
     }
 
-    /**
-     * Add a key-value pair.
-     */
     public void add(long par1, Object par3Obj)
     {
         int var4 = getHashedKey(par1);
@@ -110,9 +86,6 @@ public class LongHashMap
         this.createKey(var4, par1, par3Obj, var5);
     }
 
-    /**
-     * resizes the table
-     */
     private void resizeTable(int par1)
     {
         LongHashMapEntry[] var2 = this.hashArray;
@@ -131,9 +104,6 @@ public class LongHashMap
         }
     }
 
-    /**
-     * copies the hash table to the specified array
-     */
     private void copyHashTableTo(LongHashMapEntry[] par1ArrayOfLongHashMapEntry)
     {
         LongHashMapEntry[] var2 = this.hashArray;
@@ -161,18 +131,12 @@ public class LongHashMap
         }
     }
 
-    /**
-     * calls the removeKey method and returns removed object
-     */
     public Object remove(long par1)
     {
         LongHashMapEntry var3 = this.removeKey(par1);
         return var3 == null ? null : var3.value;
     }
 
-    /**
-     * removes the key from the hash linked list
-     */
     final LongHashMapEntry removeKey(long par1)
     {
         int var3 = getHashedKey(par1);
@@ -208,9 +172,6 @@ public class LongHashMap
         return var6;
     }
 
-    /**
-     * creates the key in the hash table
-     */
     private void createKey(int par1, long par2, Object par4Obj, int par5)
     {
         LongHashMapEntry var6 = this.hashArray[par5];
@@ -222,9 +183,6 @@ public class LongHashMap
         }
     }
 
-    /**
-     * public method to get the hashed key(hashCode)
-     */
     static int getHashCode(long par0)
     {
         return getHashedKey(par0);

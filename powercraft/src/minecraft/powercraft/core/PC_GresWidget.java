@@ -656,7 +656,7 @@ public abstract class PC_GresWidget extends Gui {
 	 * @param text the string
 	 * @return length in pixels
 	 */
-	protected int getStringWidth(String text) {
+	public int getStringWidth(String text) {
 		FontRenderer fr = getFontRenderer();
 		return fr.getStringWidth(text);
 	}

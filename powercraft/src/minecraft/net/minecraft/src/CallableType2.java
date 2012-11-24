@@ -8,21 +8,20 @@ import net.minecraft.client.Minecraft;
 @SideOnly(Side.CLIENT)
 public class CallableType2 implements Callable
 {
-    /** Gets Client Server type. */
-    final Minecraft minecraftServerType2;
+    final Minecraft mc;
 
     public CallableType2(Minecraft par1Minecraft)
     {
-        this.minecraftServerType2 = par1Minecraft;
+        this.mc = par1Minecraft;
     }
 
-    public String getType()
+    public String func_82886_a()
     {
-        return "Client";
+        return "Client (map_client.txt)";
     }
 
     public Object call()
     {
-        return this.getType();
+        return this.func_82886_a();
     }
 }

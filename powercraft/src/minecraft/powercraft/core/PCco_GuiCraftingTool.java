@@ -91,7 +91,7 @@ public class PCco_GuiCraftingTool extends PCco_ContainerCraftingTool implements 
 		Collection<List<PCco_SlotDirectCrafting>> cls = moduleList.values();
 		for(List<PCco_SlotDirectCrafting> ls: cls){
 			for(PCco_SlotDirectCrafting s:ls){
-				List<String> info = (List<String>)s.getBackgroundStack().func_82840_a(thePlayer, false);
+				List<String> info = (List<String>)s.getBackgroundStack().getTooltip(thePlayer, false);
 				for(String infoString:info){
 					if (infoString.toLowerCase().contains(searchString)){
 						searchPage.slots.add(s);
@@ -101,7 +101,7 @@ public class PCco_GuiCraftingTool extends PCco_ContainerCraftingTool implements 
 			}
 		}
 		for(PCco_SlotDirectCrafting s:allMcSlots){
-			List<String> info = (List<String>)s.getBackgroundStack().func_82840_a(thePlayer, false);
+			List<String> info = (List<String>)s.getBackgroundStack().getTooltip(thePlayer, false);
 			for(String infoString:info){
 				if (infoString.toLowerCase().contains(searchString)){
 					searchPage.slots.add(s);
@@ -225,7 +225,7 @@ public class PCco_GuiCraftingTool extends PCco_ContainerCraftingTool implements 
 					}
 				}
 			}
-			PC_PacketHandler.sendToPacketHandler(thePlayer, "DeleteAllPlayerStacks", "Delete");
+			PC_PacketHandler.sendToPacketHandler(thePlayer.worldObj, "DeleteAllPlayerStacks", "Delete");
 		}
 		if(widget==sort){
 			InventoryPlayer inv = thePlayer.inventory;
@@ -269,7 +269,7 @@ public class PCco_GuiCraftingTool extends PCco_ContainerCraftingTool implements 
 				inv.addItemStackToInventory(stack);
 			}
 			
-			PC_PacketHandler.sendToPacketHandler(thePlayer, "DeleteAllPlayerStacks", "Sort");
+			PC_PacketHandler.sendToPacketHandler(thePlayer.worldObj, "DeleteAllPlayerStacks", "Sort");
 			
 		}
 		for(Page p:pages){

@@ -1,0 +1,21 @@
+package powercraft.machines;
+
+import powercraft.core.PC_ISpecialInventoryTextures;
+
+public class PCma_BlockBlockBuilder extends PC_Block implements PC_ISpecialInventoryTextures {
+	private static final int TXDOWN = 109, TXTOP = 156, TXSIDE = 140, TXFRONT = 108, TXBACK = 124;
+	
+	
+	
+	@Override
+	public int getInvTexture(int side, int meta) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public boolean renderAsNormalBlock() {
+		return false;
+	}
+	
+}

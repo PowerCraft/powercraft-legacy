@@ -1,0 +1,318 @@
+package powercraft.core;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
+
+import net.minecraft.src.AxisAlignedBB;
+import net.minecraft.src.Block;
+import net.minecraft.src.Entity;
+import net.minecraft.src.World;
+
+public class PC_BeamTracer {
+
+	private Random rand = new Random();
+	private PC_CoordI startCoord, startMove;
+	
+	/**
+	 * The beam color.<br>
+	 * This object also contains information about beam visibility (particles
+	 * enabled) and power crystal metadata.
+	 */
+	private PC_Color origColor;
+	
+	private PC_IBeamHandler handler;
+	
+	/** The current world */
+	private World world;
+
+	private boolean canChangeColor = false;
+	private boolean particlesBidi = false;
+	private boolean canHitEntity = false;
+
+	private int maxTotalLength = 8000;
+	private int crystal_add = 40;
+	private int start_limit = 40;
+	private int maximum_current_limit = 80;
+	
+	/**
+	 * Laser beam raytracer
+	 * 
+	 * @param worldObj the world
+	 * @param handler laser handler (interface)
+	 */
+	public PC_BeamTracer(World worldObj, PC_IBeamHandler handler) {
+		this.handler = handler;
+		this.world = worldObj;
+	}
+	
+	
+	/**
+	 * Set if the beam can change color on PowerCrystals
+	 * 
+	 * @param state boolean value
+	 * @return self
+	 */
+	public PC_BeamTracer setCanChangeColor(boolean state) {
+		canChangeColor = state;
+		return this;
+	}
+
+
+	/**
+	 * Set starting range
+	 * 
+	 * @param length range in blocks
+	 * @return self
+	 */
+	public PC_BeamTracer setStartLength(int length) {
+		start_limit = length;
+		return this;
+	}
+
+	/**
+	 * Set maximum current limit. When crystal adds some length, it is checked
+	 * against this limit and shortened if needed.<br>
+	 * If set to small number, crystals won't add more than this number.
+	 * 
+	 * @param length range in blocks
+	 * @return self
+	 */
+	public PC_BeamTracer setMaxLengthAfterCrystal(int length) {
+		maximum_current_limit = length;
+		return this;
+	}
+
+	/**
+	 * Set how many blocks a crystal adds.
+	 * 
+	 * @param length range in blocks
+	 * @return self
+	 */
+	public PC_BeamTracer setCrystalAddedLength(int length) {
+		crystal_add = length;
+		return this;
+	}
+
+	/**
+	 * Set the highest possible length (all forked beams together)
+	 * 
+	 * @param length range in blocks
+	 * @return self
+	 */
+	public PC_BeamTracer setTotalLengthLimit(int length) {
+		maxTotalLength = length;
+		return this;
+	}
+
+
+	/**
+	 * Set starting coordinates of the beam (the device)
+	 * 
+	 * @param x
+	 * @param y
+	 * @param z
+	 * @return self
+	 */
+	public PC_BeamTracer setStartCoord(int x, int y, int z) {
+		startCoord = new PC_CoordI(x, y, z);
+		return this;
+	}
+
+
+	/**
+	 * Set starting coordinates of the beam (the device)
+	 * 
+	 * @param coord
+	 * @return self
+	 */
+	public PC_BeamTracer setStartCoord(PC_CoordI coord) {
+		startCoord = coord.copy();
+		return this;
+	}
+
+
+	/**
+	 * Set starting movement vector of the beam
+	 * 
+	 * @param x
+	 * @param y
+	 * @param z
+	 * @return self
+	 */
+	public PC_BeamTracer setStartMove(int x, int y, int z) {
+		startMove = new PC_CoordI(x, y, z);
+		return this;
+	}
+
+
+	/**
+	 * Set starting movement vector of the beam
+	 * 
+	 * @param coord
+	 * @return self
+	 */
+	public PC_BeamTracer setStartMove(PC_CoordI coord) {
+		startMove = coord.copy();
+		return this;
+	}
+
+
+	/**
+	 * Set starting beam color (can be changed by power crystals)
+	 * 
+	 * @param color color object representing the color;<br>
+	 *            Color must also contain information about beam metadata, and
+	 *            visibility flag.
+	 * @return self
+	 */
+	public PC_BeamTracer setColor(PC_Color color) {
+		origColor = color.copy();
+		return this;
+	}
+
+
+	/**
+	 * Set initial beam color
+	 * 
+	 * @param r
+	 * @param g
+	 * @param b
+	 * @param meta metadata of corresponding power crystal -1 <br>
+	 *            (crystals meta starts at 1, which equals 0 here)
+	 * @return self
+	 */
+	public PC_BeamTracer setColor(double r, double g, double b, int meta) {
+		origColor = new PC_Color(r, g, b);
+		origColor.setMeta(meta);
+		return this;
+	}
+
+
+	/**
+	 * Set that the particles will "move" both forward and backward to simulate
+	 * reflected beam for sensors.
+	 * 
+	 * @param bidi
+	 * @return self
+	 */
+	public PC_BeamTracer setParticlesBidirectional(boolean bidi) {
+		particlesBidi = bidi;
+		return this;
+	}
+
+
+	/**
+	 * Set whether the beam can detect entities
+	 * 
+	 * @param state
+	 * @return self
+	 */
+	public PC_BeamTracer setDetectEntities(boolean state) {
+		canHitEntity = state;
+		return this;
+	}
+
+
+	/**
+	 * Total beam length in this flash. <br>
+	 * Used to prevent infinite loops and stack overflow.
+	 */
+	private int totalLength = 0;
+
+
+	/**
+	 * Send one light quantum and spawn particles on the way.
+	 */
+	public void flash() {
+		totalLength = 0;
+
+		forkBeam(startCoord, startMove, origColor, start_limit);
+	}
+
+
+	/**
+	 * Fork current beam. To be called only by subclasses.
+	 * 
+	 * @param par_cnt starting coordinate
+	 * @param par_move starting movement
+	 * @param par_color starting color object
+	 * @param limit length limit for this fork
+	 */
+	protected void forkBeam(PC_CoordI par_cnt, PC_CoordI par_move, PC_Color par_color, int limit) {
+		// copy parameters to prevent interference
+		PC_CoordI cnt = par_cnt.copy();
+		PC_CoordI move = par_move.copy();
+		PC_Color color = par_color.copy();
+
+		// changed dir on this block - for particle renderer
+		boolean chdir = false;
+
+		// old direction
+		PC_CoordI moveOld = move.copy();
+
+
+		mainloop:
+		for (int c = 0; c < limit; c++) {
+
+			if (++totalLength > maxTotalLength) {
+				break mainloop;
+			}
+
+			chdir = false;
+
+			cnt.add(move);
+
+			int id = cnt.getId(world);
+			int meta = cnt.getMeta(world);
+
+			Block b = Block.blocksList[id];
+			
+			boolean blockHit = false; 
+			
+			if (b!=null && b instanceof PC_IBeamSpecialHandling){
+				blockHit = !((PC_IBeamSpecialHandling)b).onHitByBeamTracer(this);
+			}
+
+			if( blockHit ){
+				if (!handler.onBlockHit(this, cnt)) {
+
+					// break loop
+					return;
+
+				}
+			}
+
+			if (canHitEntity) {
+
+				// check for entities in this block.
+				/**
+				 * @todo getBoundingBox??
+				 */
+				List<Entity> hitList = world.getEntitiesWithinAABB(net.minecraft.src.Entity.class,
+						AxisAlignedBB.getBoundingBox(cnt.x, cnt.y, cnt.z, cnt.x + 1, cnt.y + 1, cnt.z + 1));
+
+				List<Entity> newHitList = new ArrayList<Entity>();
+				
+				for(Entity entity:hitList){
+					if(entity instanceof PC_IBeamSpecialHandling){
+						if(!((PC_IBeamSpecialHandling)entity).onHitByBeamTracer(this)){
+							newHitList.add(entity);
+						}
+					}else{
+						newHitList.add(entity);
+					}
+				}
+				
+				if (hitList.size() > 0) {
+					if (!handler.onEntityHit(this, newHitList)) {
+						return;
+					}
+				}
+			}
+		}
+
+	}
+	
+	
+}

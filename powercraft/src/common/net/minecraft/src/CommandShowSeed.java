@@ -4,9 +4,6 @@ import net.minecraft.server.MinecraftServer;
 
 public class CommandShowSeed extends CommandBase
 {
-    /**
-     * Returns true if the given command sender is allowed to use this command.
-     */
     public boolean canCommandSenderUseCommand(ICommandSender par1ICommandSender)
     {
         return MinecraftServer.getServer().isSinglePlayer() || super.canCommandSenderUseCommand(par1ICommandSender);
@@ -17,14 +14,14 @@ public class CommandShowSeed extends CommandBase
         return "seed";
     }
 
-    public int func_82362_a()
+    public int getRequiredPermissionLevel()
     {
         return 2;
     }
 
     public void processCommand(ICommandSender par1ICommandSender, String[] par2ArrayOfStr)
     {
-        EntityPlayerMP var3 = getCommandSenderAsPlayer(par1ICommandSender);
-        par1ICommandSender.sendChatToPlayer("Seed: " + var3.worldObj.getSeed());
+        Object var3 = par1ICommandSender instanceof EntityPlayer ? ((EntityPlayer)par1ICommandSender).worldObj : MinecraftServer.getServer().worldServerForDimension(0);
+        par1ICommandSender.sendChatToPlayer("Seed: " + ((World)var3).getSeed());
     }
 }

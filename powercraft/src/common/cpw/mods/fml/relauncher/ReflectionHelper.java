@@ -1,25 +1,8 @@
-/*
- * The FML Forge Mod Loader suite. Copyright (C) 2012 cpw
- *
- * This library is free software; you can redistribute it and/or modify it under the terms of the GNU Lesser General Public License as published by the Free
- * Software Foundation; either version 2.1 of the License, or any later version.
- *
- * This library is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR
- * A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more details.
- *
- * You should have received a copy of the GNU Lesser General Public License along with this library; if not, write to the Free Software Foundation, Inc., 51
- * Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA
- */
 package cpw.mods.fml.relauncher;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
-/**
- * Some reflection helper code.
- *
- * @author cpw
- *
- */
+
 public class ReflectionHelper
 {
     public static class UnableToFindMethodException extends RuntimeException
@@ -31,7 +14,6 @@ public class ReflectionHelper
             super(failed);
             this.methodNames = methodNames;
         }
-
     }
 
     public static class UnableToFindClassException extends RuntimeException
@@ -43,12 +25,10 @@ public class ReflectionHelper
             super(err);
             this.classNames = classNames;
         }
-
     }
 
     public static class UnableToAccessFieldException extends RuntimeException
     {
-
         private String[] fieldNameList;
 
         public UnableToAccessFieldException(String[] fieldNames, Exception e)
@@ -71,6 +51,7 @@ public class ReflectionHelper
     public static Field findField(Class<?> clazz, String... fieldNames)
     {
         Exception failed = null;
+
         for (String fieldName : fieldNames)
         {
             try
@@ -84,6 +65,7 @@ public class ReflectionHelper
                 failed = e;
             }
         }
+
         throw new UnableToFindFieldException(fieldNames, failed);
     }
 
@@ -141,14 +123,15 @@ public class ReflectionHelper
         }
     }
 
-    public static Class<? super Object> getClass(ClassLoader loader, String... classNames)
+    public static Class <? super Object > getClass(ClassLoader loader, String... classNames)
     {
         Exception err = null;
+
         for (String className : classNames)
         {
             try
             {
-                return (Class<? super Object>) Class.forName(className, false, loader);
+                return (Class <? super Object >) Class.forName(className, false, loader);
             }
             catch (Exception e)
             {
@@ -159,10 +142,10 @@ public class ReflectionHelper
         throw new UnableToFindClassException(classNames, err);
     }
 
-
-    public static <E> Method findMethod(Class<? super E> clazz, E instance, String[] methodNames, Class<?>... methodTypes)
+    public static <E> Method findMethod(Class <? super E > clazz, E instance, String[] methodNames, Class<?>... methodTypes)
     {
         Exception failed = null;
+
         for (String methodName : methodNames)
         {
             try
@@ -176,6 +159,7 @@ public class ReflectionHelper
                 failed = e;
             }
         }
+
         throw new UnableToFindMethodException(methodNames, failed);
     }
 }

@@ -6,30 +6,36 @@ import java.util.Random;
 public class ComponentVillageField extends ComponentVillage
 {
     private int averageGroundLevel = -1;
-    private int field_82679_b;
-    private int field_82680_c;
-    private int field_82678_d;
-    private int field_82681_h;
+
+    private int cropTypeA;
+
+    private int cropTypeB;
+
+    private int cropTypeC;
+
+    private int cropTypeD;
 
     public ComponentVillageField(ComponentVillageStartPiece par1ComponentVillageStartPiece, int par2, Random par3Random, StructureBoundingBox par4StructureBoundingBox, int par5)
     {
         super(par1ComponentVillageStartPiece, par2);
         this.coordBaseMode = par5;
         this.boundingBox = par4StructureBoundingBox;
-        this.field_82679_b = this.func_82677_a(par3Random);
-        this.field_82680_c = this.func_82677_a(par3Random);
-        this.field_82678_d = this.func_82677_a(par3Random);
-        this.field_82681_h = this.func_82677_a(par3Random);
+        this.cropTypeA = this.pickRandomCrop(par3Random);
+        this.cropTypeB = this.pickRandomCrop(par3Random);
+        this.cropTypeC = this.pickRandomCrop(par3Random);
+        this.cropTypeD = this.pickRandomCrop(par3Random);
     }
 
-    private int func_82677_a(Random par1Random)
+    private int pickRandomCrop(Random par1Random)
     {
         switch (par1Random.nextInt(5))
         {
             case 0:
-                return Block.field_82513_cg.blockID;
+                return Block.carrot.blockID;
+
             case 1:
-                return Block.field_82514_ch.blockID;
+                return Block.potatoe.blockID;
+
             default:
                 return Block.crops.blockID;
         }
@@ -41,10 +47,6 @@ public class ComponentVillageField extends ComponentVillage
         return canVillageGoDeeper(var8) && StructureComponent.findIntersecting(par1List, var8) == null ? new ComponentVillageField(par0ComponentVillageStartPiece, par7, par2Random, var8, par6) : null;
     }
 
-    /**
-     * second Part of Structure generating, this for example places Spiderwebs, Mob Spawners, it closes Mineshafts at
-     * the end, it adds Fences...
-     */
     public boolean addComponentParts(World par1World, Random par2Random, StructureBoundingBox par3StructureBoundingBox)
     {
         if (this.averageGroundLevel < 0)
@@ -75,14 +77,14 @@ public class ComponentVillageField extends ComponentVillage
 
         for (var4 = 1; var4 <= 7; ++var4)
         {
-            this.placeBlockAtCurrentPosition(par1World, this.field_82679_b, MathHelper.getRandomIntegerInRange(par2Random, 2, 7), 1, 1, var4, par3StructureBoundingBox);
-            this.placeBlockAtCurrentPosition(par1World, this.field_82679_b, MathHelper.getRandomIntegerInRange(par2Random, 2, 7), 2, 1, var4, par3StructureBoundingBox);
-            this.placeBlockAtCurrentPosition(par1World, this.field_82680_c, MathHelper.getRandomIntegerInRange(par2Random, 2, 7), 4, 1, var4, par3StructureBoundingBox);
-            this.placeBlockAtCurrentPosition(par1World, this.field_82680_c, MathHelper.getRandomIntegerInRange(par2Random, 2, 7), 5, 1, var4, par3StructureBoundingBox);
-            this.placeBlockAtCurrentPosition(par1World, this.field_82678_d, MathHelper.getRandomIntegerInRange(par2Random, 2, 7), 7, 1, var4, par3StructureBoundingBox);
-            this.placeBlockAtCurrentPosition(par1World, this.field_82678_d, MathHelper.getRandomIntegerInRange(par2Random, 2, 7), 8, 1, var4, par3StructureBoundingBox);
-            this.placeBlockAtCurrentPosition(par1World, this.field_82681_h, MathHelper.getRandomIntegerInRange(par2Random, 2, 7), 10, 1, var4, par3StructureBoundingBox);
-            this.placeBlockAtCurrentPosition(par1World, this.field_82681_h, MathHelper.getRandomIntegerInRange(par2Random, 2, 7), 11, 1, var4, par3StructureBoundingBox);
+            this.placeBlockAtCurrentPosition(par1World, this.cropTypeA, MathHelper.getRandomIntegerInRange(par2Random, 2, 7), 1, 1, var4, par3StructureBoundingBox);
+            this.placeBlockAtCurrentPosition(par1World, this.cropTypeA, MathHelper.getRandomIntegerInRange(par2Random, 2, 7), 2, 1, var4, par3StructureBoundingBox);
+            this.placeBlockAtCurrentPosition(par1World, this.cropTypeB, MathHelper.getRandomIntegerInRange(par2Random, 2, 7), 4, 1, var4, par3StructureBoundingBox);
+            this.placeBlockAtCurrentPosition(par1World, this.cropTypeB, MathHelper.getRandomIntegerInRange(par2Random, 2, 7), 5, 1, var4, par3StructureBoundingBox);
+            this.placeBlockAtCurrentPosition(par1World, this.cropTypeC, MathHelper.getRandomIntegerInRange(par2Random, 2, 7), 7, 1, var4, par3StructureBoundingBox);
+            this.placeBlockAtCurrentPosition(par1World, this.cropTypeC, MathHelper.getRandomIntegerInRange(par2Random, 2, 7), 8, 1, var4, par3StructureBoundingBox);
+            this.placeBlockAtCurrentPosition(par1World, this.cropTypeD, MathHelper.getRandomIntegerInRange(par2Random, 2, 7), 10, 1, var4, par3StructureBoundingBox);
+            this.placeBlockAtCurrentPosition(par1World, this.cropTypeD, MathHelper.getRandomIntegerInRange(par2Random, 2, 7), 11, 1, var4, par3StructureBoundingBox);
         }
 
         for (var4 = 0; var4 < 9; ++var4)

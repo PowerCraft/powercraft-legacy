@@ -32,7 +32,8 @@ public enum EnumOptions
     SNOOPER_ENABLED("options.snooper", false, true),
     USE_FULLSCREEN("options.fullscreen", false, true),
     ENABLE_VSYNC("options.vsync", false, true),
-    SHOW_CAPE("options.showCape", false, true);
+    SHOW_CAPE("options.showCape", false, true),
+    TOUCHSCREEN("options.touchscreen", false, true);
     private final boolean enumFloat;
     private final boolean enumBoolean;
     private final String enumString;

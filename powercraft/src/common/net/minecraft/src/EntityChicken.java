@@ -9,7 +9,6 @@ public class EntityChicken extends EntityAnimal
     public float field_70888_h;
     public float field_70889_i = 1.0F;
 
-    /** The time until the next egg is spawned. */
     public int timeUntilNextEgg;
 
     public EntityChicken(World par1World)
@@ -29,9 +28,6 @@ public class EntityChicken extends EntityAnimal
         this.tasks.addTask(7, new EntityAILookIdle(this));
     }
 
-    /**
-     * Returns true if the newer Entity AI code should be run
-     */
     public boolean isAIEnabled()
     {
         return true;
@@ -42,10 +38,6 @@ public class EntityChicken extends EntityAnimal
         return 4;
     }
 
-    /**
-     * Called frequently so the entity can update its state every tick as required. For example, zombies and skeletons
-     * use this to react to sunlight and start to burn.
-     */
     public void onLivingUpdate()
     {
         super.onLivingUpdate();
@@ -79,60 +71,39 @@ public class EntityChicken extends EntityAnimal
 
         if (!this.isChild() && !this.worldObj.isRemote && --this.timeUntilNextEgg <= 0)
         {
-            this.worldObj.playSoundAtEntity(this, "mob.chicken.plop", 1.0F, (this.rand.nextFloat() - this.rand.nextFloat()) * 0.2F + 1.0F);
+            this.func_85030_a("mob.chicken.plop", 1.0F, (this.rand.nextFloat() - this.rand.nextFloat()) * 0.2F + 1.0F);
             this.dropItem(Item.egg.shiftedIndex, 1);
             this.timeUntilNextEgg = this.rand.nextInt(6000) + 6000;
         }
     }
 
-    /**
-     * Called when the mob is falling. Calculates and applies fall damage.
-     */
     protected void fall(float par1) {}
 
-    /**
-     * Returns the sound this mob makes while it's alive.
-     */
     protected String getLivingSound()
     {
         return "mob.chicken.say";
     }
 
-    /**
-     * Returns the sound this mob makes when it is hurt.
-     */
     protected String getHurtSound()
     {
         return "mob.chicken.hurt";
     }
 
-    /**
-     * Returns the sound this mob makes on death.
-     */
     protected String getDeathSound()
     {
         return "mob.chicken.hurt";
     }
 
-    /**
-     * Plays step sound at given x, y, z for the entity
-     */
     protected void playStepSound(int par1, int par2, int par3, int par4)
     {
-        this.worldObj.playSoundAtEntity(this, "mob.chicken.step", 0.15F, 1.0F);
+        this.func_85030_a("mob.chicken.step", 0.15F, 1.0F);
     }
 
-    /**
-     * Returns the item ID for the item the mob drops on death.
-     */
     protected int getDropItemId()
     {
         return Item.feather.shiftedIndex;
     }
 
-    /**
-     * Drop 0-2 items of this living's type
-     */
     protected void dropFewItems(boolean par1, int par2)
     {
         int var3 = this.rand.nextInt(3) + this.rand.nextInt(1 + par2);
@@ -152,19 +123,18 @@ public class EntityChicken extends EntityAnimal
         }
     }
 
-    /**
-     * This function is used when two same-species animals in 'love mode' breed to generate the new baby animal.
-     */
-    public EntityAnimal spawnBabyAnimal(EntityAnimal par1EntityAnimal)
+    public EntityChicken spawnBabyAnimal(EntityAgeable par1EntityAgeable)
     {
         return new EntityChicken(this.worldObj);
     }
 
-    /**
-     * Checks if the parameter is an wheat item.
-     */
-    public boolean isWheat(ItemStack par1ItemStack)
+    public boolean isBreedingItem(ItemStack par1ItemStack)
     {
         return par1ItemStack != null && par1ItemStack.getItem() instanceof ItemSeeds;
+    }
+
+    public EntityAgeable func_90011_a(EntityAgeable par1EntityAgeable)
+    {
+        return this.spawnBabyAnimal(par1EntityAgeable);
     }
 }

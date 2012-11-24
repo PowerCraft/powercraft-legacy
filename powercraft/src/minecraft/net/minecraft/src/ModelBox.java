@@ -59,7 +59,7 @@ public class ModelBox
             par4 = var14;
         }
 
-        PositionTextureVertex var26 = new PositionTextureVertex(par4, par5, par6, 0.0F, 0.0F);
+        PositionTextureVertex var23 = new PositionTextureVertex(par4, par5, par6, 0.0F, 0.0F);
         PositionTextureVertex var15 = new PositionTextureVertex(var11, par5, par6, 0.0F, 8.0F);
         PositionTextureVertex var16 = new PositionTextureVertex(var11, var12, par6, 8.0F, 8.0F);
         PositionTextureVertex var17 = new PositionTextureVertex(par4, var12, par6, 8.0F, 0.0F);
@@ -67,7 +67,7 @@ public class ModelBox
         PositionTextureVertex var19 = new PositionTextureVertex(var11, par5, var13, 0.0F, 8.0F);
         PositionTextureVertex var20 = new PositionTextureVertex(var11, var12, var13, 8.0F, 8.0F);
         PositionTextureVertex var21 = new PositionTextureVertex(par4, var12, var13, 8.0F, 0.0F);
-        this.vertexPositions[0] = var26;
+        this.vertexPositions[0] = var23;
         this.vertexPositions[1] = var15;
         this.vertexPositions[2] = var16;
         this.vertexPositions[3] = var17;
@@ -76,21 +76,17 @@ public class ModelBox
         this.vertexPositions[6] = var20;
         this.vertexPositions[7] = var21;
         this.quadList[0] = new TexturedQuad(new PositionTextureVertex[] {var19, var15, var16, var20}, par2 + par9 + par7, par3 + par9, par2 + par9 + par7 + par9, par3 + par9 + par8, par1ModelRenderer.textureWidth, par1ModelRenderer.textureHeight);
-        this.quadList[1] = new TexturedQuad(new PositionTextureVertex[] {var26, var18, var21, var17}, par2, par3 + par9, par2 + par9, par3 + par9 + par8, par1ModelRenderer.textureWidth, par1ModelRenderer.textureHeight);
-        this.quadList[2] = new TexturedQuad(new PositionTextureVertex[] {var19, var18, var26, var15}, par2 + par9, par3, par2 + par9 + par7, par3 + par9, par1ModelRenderer.textureWidth, par1ModelRenderer.textureHeight);
+        this.quadList[1] = new TexturedQuad(new PositionTextureVertex[] {var23, var18, var21, var17}, par2, par3 + par9, par2 + par9, par3 + par9 + par8, par1ModelRenderer.textureWidth, par1ModelRenderer.textureHeight);
+        this.quadList[2] = new TexturedQuad(new PositionTextureVertex[] {var19, var18, var23, var15}, par2 + par9, par3, par2 + par9 + par7, par3 + par9, par1ModelRenderer.textureWidth, par1ModelRenderer.textureHeight);
         this.quadList[3] = new TexturedQuad(new PositionTextureVertex[] {var16, var17, var21, var20}, par2 + par9 + par7, par3 + par9, par2 + par9 + par7 + par7, par3, par1ModelRenderer.textureWidth, par1ModelRenderer.textureHeight);
-        this.quadList[4] = new TexturedQuad(new PositionTextureVertex[] {var15, var26, var17, var16}, par2 + par9, par3 + par9, par2 + par9 + par7, par3 + par9 + par8, par1ModelRenderer.textureWidth, par1ModelRenderer.textureHeight);
+        this.quadList[4] = new TexturedQuad(new PositionTextureVertex[] {var15, var23, var17, var16}, par2 + par9, par3 + par9, par2 + par9 + par7, par3 + par9 + par8, par1ModelRenderer.textureWidth, par1ModelRenderer.textureHeight);
         this.quadList[5] = new TexturedQuad(new PositionTextureVertex[] {var18, var19, var20, var21}, par2 + par9 + par7 + par9, par3 + par9, par2 + par9 + par7 + par9 + par7, par3 + par9 + par8, par1ModelRenderer.textureWidth, par1ModelRenderer.textureHeight);
 
         if (par1ModelRenderer.mirror)
         {
-            TexturedQuad[] var22 = this.quadList;
-            int var23 = var22.length;
-
-            for (int var24 = 0; var24 < var23; ++var24)
+            for (int var22 = 0; var22 < this.quadList.length; ++var22)
             {
-                TexturedQuad var25 = var22[var24];
-                var25.flipFace();
+                this.quadList[var22].flipFace();
             }
         }
     }
@@ -101,13 +97,9 @@ public class ModelBox
     @SideOnly(Side.CLIENT)
     public void render(Tessellator par1Tessellator, float par2)
     {
-        TexturedQuad[] var3 = this.quadList;
-        int var4 = var3.length;
-
-        for (int var5 = 0; var5 < var4; ++var5)
+        for (int var3 = 0; var3 < this.quadList.length; ++var3)
         {
-            TexturedQuad var6 = var3[var5];
-            var6.draw(par1Tessellator, par2);
+            this.quadList[var3].draw(par1Tessellator, par2);
         }
     }
 

@@ -28,10 +28,6 @@ public abstract class BlockFluid extends Block
 
     @SideOnly(Side.CLIENT)
 
-    /**
-     * Returns a integer with hex for 0xrrggbb with this color multiplied against the blocks color. Note only called
-     * when first determining what to render.
-     */
     public int colorMultiplier(IBlockAccess par1IBlockAccess, int par2, int par3, int par4)
     {
         if (this.blockMaterial != Material.water)
@@ -59,9 +55,6 @@ public abstract class BlockFluid extends Block
         }
     }
 
-    /**
-     * Returns the percentage of the fluid block that is air, based on the given flow decay of the fluid.
-     */
     public static float getFluidHeightPercent(int par0)
     {
         if (par0 >= 8)
@@ -72,27 +65,16 @@ public abstract class BlockFluid extends Block
         return (float)(par0 + 1) / 9.0F;
     }
 
-    /**
-     * Returns the block texture based on the side being looked at.  Args: side
-     */
     public int getBlockTextureFromSide(int par1)
     {
         return par1 != 0 && par1 != 1 ? this.blockIndexInTexture + 1 : this.blockIndexInTexture;
     }
 
-    /**
-     * Returns the amount of fluid decay at the coordinates, or -1 if the block at the coordinates is not the same
-     * material as the fluid.
-     */
     protected int getFlowDecay(World par1World, int par2, int par3, int par4)
     {
         return par1World.getBlockMaterial(par2, par3, par4) == this.blockMaterial ? par1World.getBlockMetadata(par2, par3, par4) : -1;
     }
 
-    /**
-     * Returns the flow decay but converts values indicating falling liquid (values >=8) to their effective source block
-     * value of zero.
-     */
     protected int getEffectiveFlowDecay(IBlockAccess par1IBlockAccess, int par2, int par3, int par4)
     {
         if (par1IBlockAccess.getBlockMaterial(par2, par3, par4) != this.blockMaterial)
@@ -112,35 +94,21 @@ public abstract class BlockFluid extends Block
         }
     }
 
-    /**
-     * If this block doesn't render as an ordinary block it will return False (examples: signs, buttons, stairs, etc)
-     */
     public boolean renderAsNormalBlock()
     {
         return false;
     }
 
-    /**
-     * Is this block (a) opaque and (b) a full 1m cube?  This determines whether or not to render the shared face of two
-     * adjacent blocks and also whether the player can attach torches, redstone wire, etc to this block.
-     */
     public boolean isOpaqueCube()
     {
         return false;
     }
 
-    /**
-     * Returns whether this block is collideable based on the arguments passed in Args: blockMetaData, unknownFlag
-     */
     public boolean canCollideCheck(int par1, boolean par2)
     {
         return par2 && par1 == 0;
     }
 
-    /**
-     * Returns Returns true if the given side of this block type should be rendered (if it's solid or not), if the
-     * adjacent block is at the given coordinates. Args: blockAccess, x, y, z, side
-     */
     public boolean isBlockSolid(IBlockAccess par1IBlockAccess, int par2, int par3, int par4, int par5)
     {
         Material var6 = par1IBlockAccess.getBlockMaterial(par2, par3, par4);
@@ -149,55 +117,35 @@ public abstract class BlockFluid extends Block
 
     @SideOnly(Side.CLIENT)
 
-    /**
-     * Returns true if the given side of this block type should be rendered, if the adjacent block is at the given
-     * coordinates.  Args: blockAccess, x, y, z, side
-     */
     public boolean shouldSideBeRendered(IBlockAccess par1IBlockAccess, int par2, int par3, int par4, int par5)
     {
         Material var6 = par1IBlockAccess.getBlockMaterial(par2, par3, par4);
         return var6 == this.blockMaterial ? false : (par5 == 1 ? true : (var6 == Material.ice ? false : super.shouldSideBeRendered(par1IBlockAccess, par2, par3, par4, par5)));
     }
 
-    /**
-     * Returns a bounding box from the pool of bounding boxes (this means this box can change after the pool has been
-     * cleared to be reused)
-     */
     public AxisAlignedBB getCollisionBoundingBoxFromPool(World par1World, int par2, int par3, int par4)
     {
         return null;
     }
 
-    /**
-     * The type of render function that is called for this block
-     */
     public int getRenderType()
     {
         return 4;
     }
 
-    /**
-     * Returns the ID of the items to drop on destruction.
-     */
     public int idDropped(int par1, Random par2Random, int par3)
     {
         return 0;
     }
 
-    /**
-     * Returns the quantity of items to drop on block destruction.
-     */
     public int quantityDropped(Random par1Random)
     {
         return 0;
     }
 
-    /**
-     * Returns a vector indicating the direction and intensity of fluid flow.
-     */
     private Vec3 getFlowVector(IBlockAccess par1IBlockAccess, int par2, int par3, int par4)
     {
-        Vec3 var5 = par1IBlockAccess.func_82732_R().getVecFromPool(0.0D, 0.0D, 0.0D);
+        Vec3 var5 = par1IBlockAccess.getWorldVec3Pool().getVecFromPool(0.0D, 0.0D, 0.0D);
         int var6 = this.getEffectiveFlowDecay(par1IBlockAccess, par2, par3, par4);
 
         for (int var7 = 0; var7 < 4; ++var7)
@@ -302,9 +250,6 @@ public abstract class BlockFluid extends Block
         return var5;
     }
 
-    /**
-     * Can add to the passed in vector for a movement vector to be applied to the entity. Args: x, y, z, entity, vec3d
-     */
     public void velocityToAddToEntity(World par1World, int par2, int par3, int par4, Entity par5Entity, Vec3 par6Vec3)
     {
         Vec3 var7 = this.getFlowVector(par1World, par2, par3, par4);
@@ -313,9 +258,6 @@ public abstract class BlockFluid extends Block
         par6Vec3.zCoord += var7.zCoord;
     }
 
-    /**
-     * How many world ticks before ticking
-     */
     public int tickRate()
     {
         return this.blockMaterial == Material.water ? 5 : (this.blockMaterial == Material.lava ? 30 : 0);
@@ -323,9 +265,6 @@ public abstract class BlockFluid extends Block
 
     @SideOnly(Side.CLIENT)
 
-    /**
-     * Goes straight to getLightBrightnessForSkyBlocks for Blocks, does some fancy computing for Fluids
-     */
     public int getMixedBrightnessForBlock(IBlockAccess par1IBlockAccess, int par2, int par3, int par4)
     {
         int var5 = par1IBlockAccess.getLightBrightnessForSkyBlocks(par2, par3, par4, 0);
@@ -339,9 +278,6 @@ public abstract class BlockFluid extends Block
 
     @SideOnly(Side.CLIENT)
 
-    /**
-     * How bright to render this block based on the light its receiving. Args: iBlockAccess, x, y, z
-     */
     public float getBlockBrightness(IBlockAccess par1IBlockAccess, int par2, int par3, int par4)
     {
         float var5 = par1IBlockAccess.getLightBrightness(par2, par3, par4);
@@ -351,9 +287,6 @@ public abstract class BlockFluid extends Block
 
     @SideOnly(Side.CLIENT)
 
-    /**
-     * Returns which pass should this block be rendered on. 0 for solids and 1 for alpha
-     */
     public int getRenderBlockPass()
     {
         return this.blockMaterial == Material.water ? 1 : 0;
@@ -361,9 +294,6 @@ public abstract class BlockFluid extends Block
 
     @SideOnly(Side.CLIENT)
 
-    /**
-     * A randomly called display update to be able to add particles or other items for display
-     */
     public void randomDisplayTick(World par1World, int par2, int par3, int par4, Random par5Random)
     {
         int var6;
@@ -511,9 +441,6 @@ public abstract class BlockFluid extends Block
 
     @SideOnly(Side.CLIENT)
 
-    /**
-     * the sin and cos of this number determine the surface gradient of the flowing block.
-     */
     public static double getFlowDirection(IBlockAccess par0IBlockAccess, int par1, int par2, int par3, Material par4Material)
     {
         Vec3 var5 = null;
@@ -531,26 +458,16 @@ public abstract class BlockFluid extends Block
         return var5.xCoord == 0.0D && var5.zCoord == 0.0D ? -1000.0D : Math.atan2(var5.zCoord, var5.xCoord) - (Math.PI / 2D);
     }
 
-    /**
-     * Called whenever the block is added into the world. Args: world, x, y, z
-     */
     public void onBlockAdded(World par1World, int par2, int par3, int par4)
     {
         this.checkForHarden(par1World, par2, par3, par4);
     }
 
-    /**
-     * Lets the block know when one of its neighbor changes. Doesn't know which neighbor changed (coordinates passed are
-     * their own) Args: x, y, z, neighbor blockID
-     */
     public void onNeighborBlockChange(World par1World, int par2, int par3, int par4, int par5)
     {
         this.checkForHarden(par1World, par2, par3, par4);
     }
 
-    /**
-     * Forces lava to check to see if it is colliding with water, and then decide what it should harden to.
-     */
     private void checkForHarden(World par1World, int par2, int par3, int par4)
     {
         if (par1World.getBlockId(par2, par3, par4) == this.blockID)
@@ -603,9 +520,6 @@ public abstract class BlockFluid extends Block
         }
     }
 
-    /**
-     * Creates fizzing sound and smoke. Used when lava flows over block or mixes with water.
-     */
     protected void triggerLavaMixEffects(World par1World, int par2, int par3, int par4)
     {
         par1World.playSoundEffect((double)((float)par2 + 0.5F), (double)((float)par3 + 0.5F), (double)((float)par4 + 0.5F), "random.fizz", 0.5F, 2.6F + (par1World.rand.nextFloat() - par1World.rand.nextFloat()) * 0.8F);

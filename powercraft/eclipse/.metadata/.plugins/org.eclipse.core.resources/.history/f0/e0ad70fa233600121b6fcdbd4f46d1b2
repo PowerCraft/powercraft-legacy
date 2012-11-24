@@ -1,0 +1,22 @@
+package powercraft.machines;
+
+import java.util.List;
+
+import net.minecraft.src.Slot;
+import powercraft.core.PC_GresBaseWithInventory;
+
+public class PCma_ContainerBlockBuilder extends PC_GresBaseWithInventory {
+
+	@Override
+	protected void init(Object[] o) {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	protected List<Slot> getAllSlots(List<Slot> slots) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+}

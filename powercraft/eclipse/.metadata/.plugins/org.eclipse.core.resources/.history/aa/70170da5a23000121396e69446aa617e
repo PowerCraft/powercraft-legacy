@@ -1,0 +1,10 @@
+package powercraft.core;
+
+import java.util.Random;
+
+public class PC_BeamTracer {
+
+	private Random rand = new Random();
+	private PC_CoordI startCoord, startMove;
+	
+}

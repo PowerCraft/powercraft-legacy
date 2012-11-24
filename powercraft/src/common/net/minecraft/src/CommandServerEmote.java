@@ -10,7 +10,7 @@ public class CommandServerEmote extends CommandBase
         return "me";
     }
 
-    public int func_82362_a()
+    public int getRequiredPermissionLevel()
     {
         return 0;
     }
@@ -33,9 +33,6 @@ public class CommandServerEmote extends CommandBase
         }
     }
 
-    /**
-     * Adds the strings available in this command to the given list of tab completion options.
-     */
     public List addTabCompletionOptions(ICommandSender par1ICommandSender, String[] par2ArrayOfStr)
     {
         return getListOfStringsMatchingLastWord(par2ArrayOfStr, MinecraftServer.getServer().getAllUsernames());

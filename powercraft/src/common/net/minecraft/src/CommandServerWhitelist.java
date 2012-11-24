@@ -11,7 +11,7 @@ public class CommandServerWhitelist extends CommandBase
         return "whitelist";
     }
 
-    public int func_82362_a()
+    public int getRequiredPermissionLevel()
     {
         return 3;
     }
@@ -81,9 +81,6 @@ public class CommandServerWhitelist extends CommandBase
         throw new WrongUsageException("commands.whitelist.usage", new Object[0]);
     }
 
-    /**
-     * Adds the strings available in this command to the given list of tab completion options.
-     */
     public List addTabCompletionOptions(ICommandSender par1ICommandSender, String[] par2ArrayOfStr)
     {
         if (par2ArrayOfStr.length == 1)

@@ -7,7 +7,6 @@ import cpw.mods.fml.common.versioning.VersionRange;
 
 public class MinecraftDummyContainer extends DummyModContainer
 {
-
     private VersionRange staticRange;
     public MinecraftDummyContainer(String actualMCVersion)
     {
@@ -15,9 +14,8 @@ public class MinecraftDummyContainer extends DummyModContainer
         getMetadata().modId = "Minecraft";
         getMetadata().name = "Minecraft";
         getMetadata().version = actualMCVersion;
-        staticRange = VersionParser.parseRange("["+actualMCVersion+"]");
+        staticRange = VersionParser.parseRange("[" + actualMCVersion + "]");
     }
-
 
     public VersionRange getStaticVersionRange()
     {

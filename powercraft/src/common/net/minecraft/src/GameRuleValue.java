@@ -2,24 +2,24 @@ package net.minecraft.src;
 
 class GameRuleValue
 {
-    private String field_82762_a;
-    private boolean field_82760_b;
-    private int field_82761_c;
-    private double field_82759_d;
+    private String valueString;
+    private boolean valueBoolean;
+    private int valueInteger;
+    private double valueDouble;
 
     public GameRuleValue(String par1Str)
     {
-        this.func_82757_a(par1Str);
+        this.setValue(par1Str);
     }
 
-    public void func_82757_a(String par1Str)
+    public void setValue(String par1Str)
     {
-        this.field_82762_a = par1Str;
-        this.field_82760_b = Boolean.parseBoolean(par1Str);
+        this.valueString = par1Str;
+        this.valueBoolean = Boolean.parseBoolean(par1Str);
 
         try
         {
-            this.field_82761_c = Integer.parseInt(par1Str);
+            this.valueInteger = Integer.parseInt(par1Str);
         }
         catch (NumberFormatException var4)
         {
@@ -28,7 +28,7 @@ class GameRuleValue
 
         try
         {
-            this.field_82759_d = Double.parseDouble(par1Str);
+            this.valueDouble = Double.parseDouble(par1Str);
         }
         catch (NumberFormatException var3)
         {
@@ -36,13 +36,13 @@ class GameRuleValue
         }
     }
 
-    public String func_82756_a()
+    public String getGameRuleStringValue()
     {
-        return this.field_82762_a;
+        return this.valueString;
     }
 
-    public boolean func_82758_b()
+    public boolean getGameRuleBooleanValue()
     {
-        return this.field_82760_b;
+        return this.valueBoolean;
     }
 }

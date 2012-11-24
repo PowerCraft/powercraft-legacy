@@ -6,13 +6,10 @@ import java.util.List;
 
 public class EntityAITasks
 {
-    /** A list of EntityAITaskEntrys in EntityAITasks. */
     public List taskEntries = new ArrayList();
 
-    /** A list of EntityAITaskEntrys that are currently being executed. */
     private List executingTaskEntries = new ArrayList();
 
-    /** Instance of Profiler. */
     private final Profiler theProfiler;
     private int field_75778_d = 0;
     private int field_75779_e = 3;
@@ -25,6 +22,28 @@ public class EntityAITasks
     public void addTask(int par1, EntityAIBase par2EntityAIBase)
     {
         this.taskEntries.add(new EntityAITaskEntry(this, par1, par2EntityAIBase));
+    }
+
+    public void func_85156_a(EntityAIBase par1EntityAIBase)
+    {
+        Iterator var2 = this.taskEntries.iterator();
+
+        while (var2.hasNext())
+        {
+            EntityAITaskEntry var3 = (EntityAITaskEntry)var2.next();
+            EntityAIBase var4 = var3.action;
+
+            if (var4 == par1EntityAIBase)
+            {
+                if (this.executingTaskEntries.contains(var3))
+                {
+                    var4.resetTask();
+                    this.executingTaskEntries.remove(var3);
+                }
+
+                var2.remove();
+            }
+        }
     }
 
     public void onUpdateTasks()
@@ -139,9 +158,6 @@ public class EntityAITasks
         return true;
     }
 
-    /**
-     * Returns whether two EntityAITaskEntries can be executed concurrently
-     */
     private boolean areTasksCompatible(EntityAITaskEntry par1EntityAITaskEntry, EntityAITaskEntry par2EntityAITaskEntry)
     {
         return (par1EntityAITaskEntry.action.getMutexBits() & par2EntityAITaskEntry.action.getMutexBits()) == 0;

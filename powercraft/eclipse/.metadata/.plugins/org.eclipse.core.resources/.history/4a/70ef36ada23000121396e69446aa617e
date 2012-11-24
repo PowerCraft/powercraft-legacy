@@ -1,0 +1,47 @@
+package powercraft.core;
+
+import java.util.Random;
+
+import net.minecraft.src.World;
+
+public class PC_BeamTracer {
+
+	private Random rand = new Random();
+	private PC_CoordI startCoord, startMove;
+	
+	/**
+	 * The beam color.<br>
+	 * This object also contains information about beam visibility (particles
+	 * enabled) and power crystal metadata.
+	 */
+	private PC_Color origColor;
+	
+	private PC_IBeamHandler handler;
+	
+	/** The current world */
+	private World world;
+
+	private boolean canChangeColor = false;
+	private boolean particlesBidi = false;
+	private boolean canHitEntity = false;
+
+	private int maxTotalLength = 8000;
+	private int crystal_add = 40;
+	private int start_limit = 40;
+	private int maximum_current_limit = 80;
+	
+	/**
+	 * Laser beam raytracer
+	 * 
+	 * @param worldObj the world
+	 * @param handler laser handler (interface)
+	 */
+	public PC_BeamTracerBase(World worldObj, PC_IBeamHandler handler) {
+		this.handler = handler;
+		this.world = worldObj;
+	}
+	
+	
+	
+	
+}

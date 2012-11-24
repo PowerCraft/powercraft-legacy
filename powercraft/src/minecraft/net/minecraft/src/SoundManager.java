@@ -39,7 +39,9 @@ public class SoundManager
 
     /** A reference to the game settings. */
     private GameSettings options;
-    private Set field_82470_g = new HashSet();
+
+    /** Identifiers of all currently playing sounds. Type: HashSet<String> */
+    private Set playingSounds = new HashSet();
 
     /** Set to true when the SoundManager has been initialised. */
     private static boolean loaded = false;
@@ -201,27 +203,31 @@ public class SoundManager
         {
             if (par1EntityLiving != null)
             {
-                float var3 = par1EntityLiving.prevRotationYaw + (par1EntityLiving.rotationYaw - par1EntityLiving.prevRotationYaw) * par2;
-                double var4 = par1EntityLiving.prevPosX + (par1EntityLiving.posX - par1EntityLiving.prevPosX) * (double)par2;
-                double var6 = par1EntityLiving.prevPosY + (par1EntityLiving.posY - par1EntityLiving.prevPosY) * (double)par2;
-                double var8 = par1EntityLiving.prevPosZ + (par1EntityLiving.posZ - par1EntityLiving.prevPosZ) * (double)par2;
-                float var10 = MathHelper.cos(-var3 * 0.017453292F - (float)Math.PI);
-                float var11 = MathHelper.sin(-var3 * 0.017453292F - (float)Math.PI);
-                float var12 = -var11;
-                float var13 = 0.0F;
-                float var14 = -var10;
-                float var15 = 0.0F;
-                float var16 = 1.0F;
-                float var17 = 0.0F;
-                sndSystem.setListenerPosition((float)var4, (float)var6, (float)var8);
-                sndSystem.setListenerOrientation(var12, var13, var14, var15, var16, var17);
+                float var3 = par1EntityLiving.prevRotationPitch + (par1EntityLiving.rotationPitch - par1EntityLiving.prevRotationPitch) * par2;
+                float var4 = par1EntityLiving.prevRotationYaw + (par1EntityLiving.rotationYaw - par1EntityLiving.prevRotationYaw) * par2;
+                double var5 = par1EntityLiving.prevPosX + (par1EntityLiving.posX - par1EntityLiving.prevPosX) * (double)par2;
+                double var7 = par1EntityLiving.prevPosY + (par1EntityLiving.posY - par1EntityLiving.prevPosY) * (double)par2;
+                double var9 = par1EntityLiving.prevPosZ + (par1EntityLiving.posZ - par1EntityLiving.prevPosZ) * (double)par2;
+                float var11 = MathHelper.cos(-var4 * 0.017453292F - (float)Math.PI);
+                float var12 = MathHelper.sin(-var4 * 0.017453292F - (float)Math.PI);
+                float var13 = -var12;
+                float var14 = -MathHelper.sin(-var3 * 0.017453292F - (float)Math.PI);
+                float var15 = -var11;
+                float var16 = 0.0F;
+                float var17 = 1.0F;
+                float var18 = 0.0F;
+                sndSystem.setListenerPosition((float)var5, (float)var7, (float)var9);
+                sndSystem.setListenerOrientation(var13, var14, var15, var16, var17, var18);
             }
         }
     }
 
-    public void func_82464_d()
+    /**
+     * Stops all currently playing sounds
+     */
+    public void stopAllSounds()
     {
-        Iterator var1 = this.field_82470_g.iterator();
+        Iterator var1 = this.playingSounds.iterator();
 
         while (var1.hasNext())
         {
@@ -229,7 +235,7 @@ public class SoundManager
             sndSystem.stop(var2);
         }
 
-        this.field_82470_g.clear();
+        this.playingSounds.clear();
     }
 
     public void playStreaming(String par1Str, float par2, float par3, float par4)
@@ -265,16 +271,23 @@ public class SoundManager
         }
     }
 
-    public void func_82460_a(Entity par1Entity)
+    /**
+     * Updates the sound associated with the entity with that entity's position and velocity. Args: the entity
+     */
+    public void updateSoundLocation(Entity par1Entity)
     {
-        this.func_82462_a(par1Entity, par1Entity);
+        this.updateSoundLocation(par1Entity, par1Entity);
     }
 
-    public void func_82462_a(Entity par1Entity, Entity par2Entity)
+    /**
+     * Updates the sound associated with soundEntity with the position and velocity of trackEntity. Args: soundEntity,
+     * trackEntity
+     */
+    public void updateSoundLocation(Entity par1Entity, Entity par2Entity)
     {
         String var3 = "entity_" + par1Entity.entityId;
 
-        if (this.field_82470_g.contains(var3))
+        if (this.playingSounds.contains(var3))
         {
             if (sndSystem.playing(var3))
             {
@@ -283,14 +296,17 @@ public class SoundManager
             }
             else
             {
-                this.field_82470_g.remove(var3);
+                this.playingSounds.remove(var3);
             }
         }
     }
 
-    public boolean func_82465_b(Entity par1Entity)
+    /**
+     * Returns true if a sound is currently associated with the given entity, or false otherwise.
+     */
+    public boolean isEntitySoundPlaying(Entity par1Entity)
     {
-        if (par1Entity != null && loaded && this.options.musicVolume != 0.0F)
+        if (par1Entity != null && loaded)
         {
             String var2 = "entity_" + par1Entity.entityId;
             return sndSystem.playing(var2);
@@ -301,27 +317,34 @@ public class SoundManager
         }
     }
 
-    public void func_82469_c(Entity par1Entity)
+    /**
+     * Stops playing the sound associated with the given entity
+     */
+    public void stopEntitySound(Entity par1Entity)
     {
-        if (par1Entity != null && loaded && this.options.musicVolume != 0.0F)
+        if (par1Entity != null && loaded)
         {
             String var2 = "entity_" + par1Entity.entityId;
 
-            if (this.field_82470_g.contains(var2))
+            if (this.playingSounds.contains(var2))
             {
                 if (sndSystem.playing(var2))
                 {
                     sndSystem.stop(var2);
                 }
 
-                this.field_82470_g.remove(var2);
+                this.playingSounds.remove(var2);
             }
         }
     }
 
-    public void func_82468_a(Entity par1Entity, float par2)
+    /**
+     * Sets the volume of the sound associated with the given entity, if one is playing. The volume is scaled by the
+     * global sound volume. Args: the entity, the volume (from 0 to 1)
+     */
+    public void setEntitySoundVolume(Entity par1Entity, float par2)
     {
-        if (par1Entity != null && loaded && this.options.musicVolume != 0.0F)
+        if (par1Entity != null && loaded)
         {
             if (loaded && this.options.soundVolume != 0.0F)
             {
@@ -335,9 +358,12 @@ public class SoundManager
         }
     }
 
-    public void func_82463_b(Entity par1Entity, float par2)
+    /**
+     * Sets the pitch of the sound associated with the given entity, if one is playing. Args: the entity, the pitch
+     */
+    public void setEntitySoundPitch(Entity par1Entity, float par2)
     {
-        if (par1Entity != null && loaded && this.options.musicVolume != 0.0F)
+        if (par1Entity != null && loaded)
         {
             if (loaded && this.options.soundVolume != 0.0F)
             {
@@ -351,7 +377,12 @@ public class SoundManager
         }
     }
 
-    public void func_82467_a(String par1Str, Entity par2Entity, float par3, float par4, boolean par5)
+    /**
+     * If a sound is already playing from the given entity, update the position and velocity of that sound to match the
+     * entity. Otherwise, start playing a sound from that entity. Args: The sound name, the entity, the volume, the
+     * pitch, unknown flag
+     */
+    public void playEntitySound(String par1Str, Entity par2Entity, float par3, float par4, boolean par5)
     {
         if (par2Entity != null)
         {
@@ -359,9 +390,9 @@ public class SoundManager
             {
                 String var6 = "entity_" + par2Entity.entityId;
 
-                if (this.field_82470_g.contains(var6))
+                if (this.playingSounds.contains(var6))
                 {
-                    this.func_82460_a(par2Entity);
+                    this.updateSoundLocation(par2Entity);
                 }
                 else
                 {
@@ -398,7 +429,7 @@ public class SoundManager
                         sndSystem.setVolume(var6, par3 * this.options.soundVolume);
                         sndSystem.setVelocity(var6, (float)par2Entity.motionX, (float)par2Entity.motionY, (float)par2Entity.motionZ);
                         sndSystem.play(var6);
-                        this.field_82470_g.add(var6);
+                        this.playingSounds.add(var6);
                     }
                 }
             }
@@ -472,9 +503,12 @@ public class SoundManager
         }
     }
 
-    public void func_82466_e()
+    /**
+     * Pauses all currently playing sounds
+     */
+    public void pauseAllSounds()
     {
-        Iterator var1 = this.field_82470_g.iterator();
+        Iterator var1 = this.playingSounds.iterator();
 
         while (var1.hasNext())
         {
@@ -483,9 +517,12 @@ public class SoundManager
         }
     }
 
-    public void func_82461_f()
+    /**
+     * Resumes playing all currently playing sounds (after pauseAllSounds)
+     */
+    public void resumeAllSounds()
     {
-        Iterator var1 = this.field_82470_g.iterator();
+        Iterator var1 = this.playingSounds.iterator();
 
         while (var1.hasNext())
         {

@@ -9,7 +9,7 @@ public class ArrowLooseEvent extends PlayerEvent
 {
     public final ItemStack bow;
     public int charge;
-    
+
     public ArrowLooseEvent(EntityPlayer player, ItemStack bow, int charge)
     {
         super(player);

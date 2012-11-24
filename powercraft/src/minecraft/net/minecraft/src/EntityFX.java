@@ -186,4 +186,9 @@ public class EntityFX extends Entity
     {
         return false;
     }
+
+    public String toString()
+    {
+        return this.getClass().getSimpleName() + ", Pos (" + this.posX + "," + this.posY + "," + this.posZ + "), RGBA (" + this.particleRed + "," + this.particleGreen + "," + this.particleBlue + "," + this.field_82339_as + "), Age " + this.particleAge;
+    }
 }

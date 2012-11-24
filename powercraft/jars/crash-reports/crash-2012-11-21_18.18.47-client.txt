@@ -1,0 +1,86 @@
+---- Minecraft Crash Report ----
+// Don't be sad. I'll do better next time, I promise!
+
+Time: 21.11.12 18:18
+Description: Rendering screen
+
+java.lang.ArithmeticException: / by zero
+	at powercraft.light.PCli_ItemLaserComposition.getColorForItemStack(PCli_ItemLaserComposition.java:81)
+	at powercraft.light.PCli_ItemLaserComposition.getColorFromItemStack(PCli_ItemLaserComposition.java:68)
+	at net.minecraft.src.RenderItem.renderItemIntoGUI(RenderItem.java:293)
+	at net.minecraft.src.RenderItem.renderItemAndEffectIntoGUI(RenderItem.java:320)
+	at powercraft.core.PC_GresGui.drawSlotInventory(PC_GresGui.java:480)
+	at powercraft.core.PC_GresGui.drawScreen(PC_GresGui.java:285)
+	at net.minecraft.src.EntityRenderer.updateCameraAndRender(EntityRenderer.java:977)
+	at net.minecraft.client.Minecraft.runGameLoop(Minecraft.java:888)
+	at net.minecraft.client.Minecraft.run(Minecraft.java:783)
+	at java.lang.Thread.run(Unknown Source)
+
+
+A detailed walkthrough of the error, its code path and all known details is as follows:
+---------------------------------------------------------------------------------------
+
+-- Head --
+Stacktrace:
+	at powercraft.light.PCli_ItemLaserComposition.getColorForItemStack(PCli_ItemLaserComposition.java:81)
+	at powercraft.light.PCli_ItemLaserComposition.getColorFromItemStack(PCli_ItemLaserComposition.java:68)
+	at net.minecraft.src.RenderItem.renderItemIntoGUI(RenderItem.java:293)
+	at net.minecraft.src.RenderItem.renderItemAndEffectIntoGUI(RenderItem.java:320)
+	at powercraft.core.PC_GresGui.drawSlotInventory(PC_GresGui.java:480)
+	at powercraft.core.PC_GresGui.drawScreen(PC_GresGui.java:285)
+
+-- Screen render details --
+Details:
+	Screen name: powercraft.core.PC_GresGui
+	Mouse location: Scaled: (213, 119). Absolute: (427, 240)
+	Screen size: Scaled: (427, 240). Absolute: (854, 480). Scale factor of 2
+
+-- Affected level --
+Details:
+	Level name: MpServer
+	All players: 1 total; [EntityClientPlayerMP['XOR'/380, l='MpServer', x=-293,39, y=75,38, z=263,38]]
+	Chunk stats: MultiplayerChunkCache: 295
+	Level seed: 0
+	Level generator: ID 00 - default, ver 1. Features enabled: false
+	Level generator options: 
+	Level spawn location: World: (-256,64,252), Chunk: (at 0,4,12 in -16,15; contains blocks -256,0,240 to -241,255,255), Region: (-1,0; contains chunks -32,0 to -1,31, blocks -512,0,0 to -1,255,511)
+	Level time: 88377 game time, 88377 day time
+	Level dimension: 0
+	Level storage version: 0x00000 - Unknown?
+	Level weather: Rain time: 0 (now: false), thunder time: 0 (now: false)
+	Level game mode: Game mode: creative (ID 1). Hardcore: false. Cheats: false
+	Forced entities: 102 total; [EntityChicken['Chicken'/282, l='MpServer', x=-225,82, y=69,03, z=278,75], EntityZombie['Zombie'/281, l='MpServer', x=-221,53, y=67,00, z=258,00], EntityChicken['Chicken'/280, l='MpServer', x=-219,47, y=70,00, z=229,66], EntityPig['Pig'/258, l='MpServer', x=-255,81, y=68,00, z=274,34], EntityChicken['Chicken'/259, l='MpServer', x=-244,41, y=69,00, z=297,56], EntitySkeleton['Skeleton'/262, l='MpServer', x=-246,50, y=64,00, z=330,50], EntitySlime['Slime'/260, l='MpServer', x=-240,31, y=11,00, z=304,69], EntityChicken['Chicken'/261, l='MpServer', x=-240,47, y=71,00, z=313,53], EntityChicken['Chicken'/266, l='MpServer', x=-238,50, y=73,00, z=197,50], EntityChicken['Chicken'/267, l='MpServer', x=-234,53, y=62,36, z=234,56], EntityChicken['Chicken'/268, l='MpServer', x=-232,53, y=71,00, z=275,53], EntityChicken['Chicken'/269, l='MpServer', x=-238,09, y=68,00, z=321,41], EntityCreeper['Creeper'/63, l='MpServer', x=-372,25, y=30,00, z=217,16], EntityZombie['Zombie'/60, l='MpServer', x=-373,50, y=68,00, z=197,50], EntityChicken['Chicken'/71, l='MpServer', x=-371,44, y=68,00, z=257,56], EntityCreeper['Creeper'/76, l='MpServer', x=-370,00, y=44,00, z=334,41], EntityChicken['Chicken'/77, l='MpServer', x=-373,44, y=66,00, z=333,56], EntityCreeper['Creeper'/72, l='MpServer', x=-368,63, y=38,00, z=274,03], EntityBat['Bat'/73, l='MpServer', x=-369,25, y=53,10, z=289,25], EntityCreeper['Creeper'/93, l='MpServer', x=-359,53, y=52,00, z=236,03], EntityBat['Bat'/92, l='MpServer', x=-359,80, y=21,00, z=234,95], EntitySkeleton['Skeleton'/95, l='MpServer', x=-362,50, y=49,00, z=286,50], EntitySpider['Spider'/94, l='MpServer', x=-363,22, y=73,00, z=244,16], EntitySkeleton['Skeleton'/89, l='MpServer', x=-356,16, y=16,00, z=214,50], EntityBat['Bat'/88, l='MpServer', x=-373,03, y=21,30, z=207,73], EntitySkeleton['Skeleton'/91, l='MpServer', x=-366,56, y=26,00, z=225,06], EntityZombie['Zombie'/90, l='MpServer', x=-367,50, y=31,00, z=211,50], EntityBat['Bat'/102, l='MpServer', x=-360,13, y=15,43, z=319,45], EntityBat['Bat'/103, l='MpServer', x=-356,68, y=18,48, z=317,63], EntityBat['Bat'/100, l='MpServer', x=-366,25, y=34,10, z=297,56], EntityChicken['Chicken'/101, l='MpServer', x=-364,44, y=70,00, z=295,56], EntitySkeleton['Skeleton'/98, l='MpServer', x=-358,84, y=25,00, z=297,50], EntityBat['Bat'/99, l='MpServer', x=-365,25, y=20,20, z=305,05], EntitySheep['Sheep'/97, l='MpServer', x=-354,97, y=71,00, z=279,97], EntityCreeper['Creeper'/110, l='MpServer', x=-361,50, y=24,00, z=340,50], EntityCreeper['Creeper'/108, l='MpServer', x=-357,75, y=23,00, z=334,22], EntitySpider['Spider'/109, l='MpServer', x=-364,40, y=44,00, z=321,94], EntityZombie['Zombie'/106, l='MpServer', x=-361,25, y=66,00, z=309,66], EntityBat['Bat'/107, l='MpServer', x=-357,66, y=15,10, z=324,25], EntityCreeper['Creeper'/104, l='MpServer', x=-352,50, y=63,00, z=316,50], EntityCreeper['Creeper'/105, l='MpServer', x=-353,50, y=63,00, z=317,50], EntityChicken['Chicken'/127, l='MpServer', x=-338,92, y=73,00, z=232,51], EntityPig['Pig'/126, l='MpServer', x=-347,03, y=71,00, z=220,88], EntitySkeleton['Skeleton'/125, l='MpServer', x=-339,72, y=68,00, z=196,25], EntitySkeleton['Skeleton'/124, l='MpServer', x=-349,38, y=26,00, z=201,94], EntitySkeleton['Skeleton'/123, l='MpServer', x=-341,88, y=72,00, z=186,50], EntityZombie['Zombie'/139, l='MpServer', x=-334,53, y=37,00, z=195,03], EntityChicken['Chicken'/138, l='MpServer', x=-329,88, y=74,00, z=185,81], EntityChicken['Chicken'/141, l='MpServer', x=-321,09, y=74,00, z=232,84], EntitySpider['Spider'/140, l='MpServer', x=-332,35, y=73,00, z=222,86], EntityChicken['Chicken'/143, l='MpServer', x=-328,13, y=75,00, z=252,14], EntityBat['Bat'/142, l='MpServer', x=-324,89, y=24,84, z=245,70], EntityBat['Bat'/129, l='MpServer', x=-334,64, y=61,00, z=319,53], EntityCreeper['Creeper'/128, l='MpServer', x=-344,91, y=71,00, z=225,31], EntityBat['Bat'/130, l='MpServer', x=-341,25, y=18,10, z=321,75], EntityCreeper['Creeper'/157, l='MpServer', x=-319,50, y=74,00, z=228,50], EntitySpider['Spider'/158, l='MpServer', x=-314,28, y=73,00, z=225,25], EntityCreeper['Creeper'/159, l='MpServer', x=-308,00, y=73,00, z=237,59], EntityCreeper['Creeper'/144, l='MpServer', x=-334,06, y=48,00, z=287,66], EntitySpider['Spider'/145, l='MpServer', x=-322,00, y=71,00, z=299,81], EntityChicken['Chicken'/146, l='MpServer', x=-331,53, y=66,00, z=329,56], EntityZombie['Zombie'/147, l='MpServer', x=-322,50, y=44,00, z=343,50], EntitySpider['Spider'/148, l='MpServer', x=-328,50, y=43,00, z=339,50], EntityClientPlayerMP['XOR'/380, l='MpServer', x=-293,39, y=75,38, z=263,38], EntitySpider['Spider'/150, l='MpServer', x=-332,34, y=69,00, z=342,82], EntityChicken['Chicken'/163, l='MpServer', x=-316,44, y=71,00, z=304,41], EntitySkeleton['Skeleton'/162, l='MpServer', x=-314,50, y=30,00, z=249,94], EntitySkeleton['Skeleton'/161, l='MpServer', x=-313,47, y=29,00, z=251,31], EntityZombie['Zombie'/160, l='MpServer', x=-312,68, y=29,00, z=252,40], EntityZombie['Zombie'/166, l='MpServer', x=-317,45, y=68,00, z=335,43], EntityZombie['Zombie'/165, l='MpServer', x=-308,03, y=50,00, z=322,53], EntityChicken['Chicken'/164, l='MpServer', x=-316,47, y=71,00, z=318,53], EntityChicken['Chicken'/186, l='MpServer', x=-297,59, y=68,00, z=214,34], EntitySkeleton['Skeleton'/187, l='MpServer', x=-291,50, y=65,00, z=208,50], EntityZombie['Zombie'/190, l='MpServer', x=-288,78, y=69,00, z=305,28], EntityChicken['Chicken'/191, l='MpServer', x=-297,01, y=69,00, z=323,56], EntityZombie['Zombie'/188, l='MpServer', x=-298,03, y=70,00, z=297,59], EntityCreeper['Creeper'/189, l='MpServer', x=-301,66, y=70,00, z=318,00], EntityChicken['Chicken'/182, l='MpServer', x=-303,59, y=61,56, z=199,41], EntityItem['item.item.egg'/183, l='MpServer', x=-300,84, y=59,13, z=201,75], EntityChicken['Chicken'/197, l='MpServer', x=-291,59, y=70,00, z=341,34], EntitySkeleton['Skeleton'/196, l='MpServer', x=-302,50, y=58,00, z=342,50], EntitySkeleton['Skeleton'/193, l='MpServer', x=-302,50, y=58,00, z=343,50], EntityChicken['Chicken'/192, l='MpServer', x=-289,56, y=67,38, z=330,53], EntitySkeleton['Skeleton'/195, l='MpServer', x=-303,50, y=58,00, z=342,50], EntitySkeleton['Skeleton'/216, l='MpServer', x=-286,50, y=65,00, z=210,50], EntityBat['Bat'/217, l='MpServer', x=-274,43, y=22,01, z=266,44], EntityCreeper['Creeper'/218, l='MpServer', x=-273,50, y=69,00, z=310,50], EntityCreeper['Creeper'/219, l='MpServer', x=-275,50, y=69,00, z=313,50], EntityPig['Pig'/214, l='MpServer', x=-287,84, y=63,00, z=203,50], EntityZombie['Zombie'/215, l='MpServer', x=-272,50, y=64,00, z=207,31], EntitySkeleton['Skeleton'/239, l='MpServer', x=-260,50, y=63,00, z=339,50], EntityCreeper['Creeper'/238, l='MpServer', x=-256,50, y=63,00, z=336,50], EntityZombie['Zombie'/236, l='MpServer', x=-269,50, y=68,00, z=324,50], EntitySkeleton['Skeleton'/235, l='MpServer', x=-264,09, y=70,00, z=297,47], EntityCreeper['Creeper'/234, l='MpServer', x=-265,14, y=70,00, z=294,75], EntitySkeleton['Skeleton'/233, l='MpServer', x=-271,50, y=69,00, z=272,06], EntityChicken['Chicken'/232, l='MpServer', x=-262,53, y=67,28, z=277,37], EntitySkeleton['Skeleton'/231, l='MpServer', x=-262,53, y=66,00, z=268,78], EntityBat['Bat'/230, l='MpServer', x=-263,73, y=19,48, z=254,01], EntityZombie['Zombie'/229, l='MpServer', x=-259,50, y=19,00, z=252,50], EntityItem['item.item.egg'/183, l='MpServer', x=-300,84, y=59,13, z=201,75]]
+	Retry entities: 0 total; []
+Stacktrace:
+	at net.minecraft.src.WorldClient.addWorldInfoToCrashReport(WorldClient.java:425)
+	at net.minecraft.client.Minecraft.addGraphicsAndWorldToCrashReport(Minecraft.java:2385)
+	at net.minecraft.client.Minecraft.run(Minecraft.java:799)
+	at java.lang.Thread.run(Unknown Source)
+
+-- System Details --
+Details:
+	Minecraft Version: 1.4.4
+	Operating System: Windows 7 (amd64) version 6.1
+	Java Version: 1.7.0_09, Oracle Corporation
+	Java VM Version: Java HotSpot(TM) 64-Bit Server VM (mixed mode), Oracle Corporation
+	Memory: 760542912 bytes (725 MB) / 1038876672 bytes (990 MB) up to 1038876672 bytes (990 MB)
+	JVM Flags: 3 total; -Xincgc -Xmx1024M -Xms1024M
+	AABB Pool Size: 21638 (1211728 bytes; 1 MB) allocated, 1332 (74592 bytes; 0 MB) used
+	Suspicious classes: $Proxy3, $Proxy4, $Proxy5, ...[com.google.common.base.Preconditions, Charsets, Splitter, ...], [com.google.common.cache.CacheLoader, CacheBuilder, Cache, ...], [com.google.common.collect.Multimap, ListMultimap, AbstractMultimap, ...], [com.google.common.eventbus.EventBus, HandlerFindingStrategy, AnnotatedHandlerFinder, ...], [com.google.common.hash.Hashing, HashFunction, AbstractStreamingHashFunction, ...], [com.google.common.io.LineProcessor, Resources, InputSupplier, ...], [com.google.common.primitives.Ints, UnsignedBytes, Bytes], [com.google.common.reflect.TypeCapture, TypeToken, SimpleTypeToken, ...], [com.google.common.util.concurrent.UncheckedExecutionException, ExecutionError, MoreExecutors, ...], [cpw.mods.fml.client.ITextureFX, FMLTextureFX, TextureFXManager, ...], [cpw.mods.fml.client.modloader.ModLoaderClientHelper, ModLoaderKeyBindingHandler], [cpw.mods.fml.client.registry.ISimpleBlockRenderingHandler, KeyHandler, KeyBindingRegistry, ...], [cpw.mods.fml.common.Loader, LoaderException, DuplicateModsFoundException, ...], [cpw.mods.fml.common.asm.FMLSanityChecker, MLDetectorClassVisitor, SideOnly], [cpw.mods.fml.common.asm.transformers.AccessTransformer, Modifier, MarkerTransformer, ...], [cpw.mods.fml.common.discovery.ModDiscoverer, ASMDataTable, ModCandidate, ...], [cpw.mods.fml.common.discovery.asm.ASMModParser, ModClassVisitor, ModAnnotationVisitor, ...], [cpw.mods.fml.common.event.FMLLoadEvent, FMLEvent, FMLStateEvent, ...], [cpw.mods.fml.common.functions.ModIdFunction], [cpw.mods.fml.common.modloader.IModLoaderSidedHelper, ModLoaderHelper, ModLoaderVillageTradeHandler, ...], [cpw.mods.fml.common.network.Player, IPacketHandler, IConnectionHandler, ...], [cpw.mods.fml.common.registry.BlockProxy, ItemProxy, LanguageRegistry, ...], [cpw.mods.fml.common.toposort.ModSortingException, ModSorter, DirectedGraph, ...], [cpw.mods.fml.common.versioning.ArtifactVersion, VersionParser, InvalidVersionSpecificationException, ...], [net.minecraft.src.CallableMinecraftVersion, IPlayerUsage, MinecraftError, ...], [net.minecraftforge.client.ForgeHooksClient, MinecraftForgeClient, IItemRenderer, ...], [net.minecraftforge.client.event.TextureLoadEvent, DrawBlockHighlightEvent, RenderWorldLastEvent, ...], [net.minecraftforge.client.event.sound.SoundEvent, SoundLoadEvent, SoundResultEvent, ...], [net.minecraftforge.common.IPlantable, IShearable, ISidedInventory, ...], [net.minecraftforge.event.Event, ListenerList, EventBus, ...], [net.minecraftforge.event.entity.EntityEvent, EntityJoinWorldEvent, PlaySoundAtEntityEvent, ...], [net.minecraftforge.event.entity.item.ItemEvent, ItemExpireEvent, ItemTossEvent], [net.minecraftforge.event.entity.living.LivingEvent, LivingSpecialSpawnEvent, LivingAttackEvent, ...], [net.minecraftforge.event.entity.player.PlayerEvent, ArrowLooseEvent, ArrowNockEvent, ...], [net.minecraftforge.event.world.WorldEvent, Load, Save, ...], [net.minecraftforge.oredict.OreDictionary, OreRegisterEvent, ShapedOreRecipe, ...], [net.minecraftforge.transformers.ForgeAccessTransformer, EventTransformer], [org.objectweb.asm.ClassVisitor, ClassWriter, MethodVisitor, ...], [org.objectweb.asm.tree.ClassNode, MethodNode, FieldNode, ...], [powercraft.core.PC_Module, mod_PowerCraftCore, PC_Proxy, ...], [powercraft.light.mod_PowerCraftLight, PCli_CommonProxy, PCli_ClientProxy, ...], [powercraft.logic.mod_PowerCraftLogic, PClo_CommonProxy, PClo_ClientProxy, ...], [powercraft.machines.mod_PowerCraftMachines, PCma_CommonProxy, PCma_ClientProxy, ...], [powercraft.transport.mod_PowerCraftTransport, PCtr_CommonProxy, PCtr_ClientProxy, ...]
+	IntCache: cache: 0, tcache: 0, allocated: 1, tallocated: 63
+	FML: MCP v7.21 FML v4.4.4.442 Minecraft Forge 6.3.0.372 8 mods loaded, 8 mods active
+	mcp [Minecraft Coder Pack] (minecraft.jar) Unloaded->Constructed->Pre-initialized->Initialized->Post-initialized->Available->Available->Available
+	FML [Forge Mod Loader] (coremods) Unloaded->Constructed->Pre-initialized->Initialized->Post-initialized->Available->Available->Available
+	Forge [Minecraft Forge] (coremods) Unloaded->Constructed->Pre-initialized->Initialized->Post-initialized->Available->Available->Available
+	PowerCraft-Core [PowerCraft-Core] (bin) Unloaded->Constructed->Pre-initialized->Initialized->Post-initialized->Available->Available->Available
+	PowerCraft-Light [PowerCraft-Light] (bin) Unloaded->Constructed->Pre-initialized->Initialized->Post-initialized->Available->Available->Available
+	PowerCraft-Logic [PowerCraft-Logic] (bin) Unloaded->Constructed->Pre-initialized->Initialized->Post-initialized->Available->Available->Available
+	PowerCraft-Machines [PowerCraft-Machines] (bin) Unloaded->Constructed->Pre-initialized->Initialized->Post-initialized->Available->Available->Available
+	PowerCraft-Transport [PowerCraft-Transport] (bin) Unloaded->Constructed->Pre-initialized->Initialized->Post-initialized->Available->Available->Available
+	LWJGL: 2.4.2
+	OpenGL: GeForce GTX 560/PCIe/SSE2 GL version 4.2.0, NVIDIA Corporation
+	Is Modded: Definitely; Client brand changed to 'forge,fml'
+	Type: Client (map_client.txt)
+	Texture Pack: Default
+	Profiler Position: N/A (disabled)
+	Vec3 Pool Size: 1037 (58072 bytes; 0 MB) allocated, 265 (14840 bytes; 0 MB) used

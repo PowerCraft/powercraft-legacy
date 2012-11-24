@@ -2,7 +2,6 @@ package net.minecraft.src;
 
 import cpw.mods.fml.common.Side;
 import cpw.mods.fml.common.asm.SideOnly;
-import java.util.Iterator;
 import java.util.List;
 
 public abstract class EntityFireball extends Entity
@@ -29,10 +28,6 @@ public abstract class EntityFireball extends Entity
 
     @SideOnly(Side.CLIENT)
 
-    /**
-     * Checks if the entity is in range to render by using the past in distance and comparing it to its average edge
-     * length * 64 * renderDistanceWeight Args: distance
-     */
     public boolean isInRangeToRenderDist(double par1)
     {
         double var3 = this.boundingBox.getAverageEdgeLength() * 4.0D;
@@ -70,9 +65,6 @@ public abstract class EntityFireball extends Entity
         this.accelerationZ = par7 / var9 * 0.1D;
     }
 
-    /**
-     * Called to update the entity's position/logic.
-     */
     public void onUpdate()
     {
         if (!this.worldObj.isRemote && (this.shootingEntity != null && this.shootingEntity.isDead || !this.worldObj.blockExists((int)this.posX, (int)this.posY, (int)this.posZ)))
@@ -112,25 +104,24 @@ public abstract class EntityFireball extends Entity
                 ++this.ticksInAir;
             }
 
-            Vec3 var15 = this.worldObj.func_82732_R().getVecFromPool(this.posX, this.posY, this.posZ);
-            Vec3 var2 = this.worldObj.func_82732_R().getVecFromPool(this.posX + this.motionX, this.posY + this.motionY, this.posZ + this.motionZ);
+            Vec3 var15 = this.worldObj.getWorldVec3Pool().getVecFromPool(this.posX, this.posY, this.posZ);
+            Vec3 var2 = this.worldObj.getWorldVec3Pool().getVecFromPool(this.posX + this.motionX, this.posY + this.motionY, this.posZ + this.motionZ);
             MovingObjectPosition var3 = this.worldObj.rayTraceBlocks(var15, var2);
-            var15 = this.worldObj.func_82732_R().getVecFromPool(this.posX, this.posY, this.posZ);
-            var2 = this.worldObj.func_82732_R().getVecFromPool(this.posX + this.motionX, this.posY + this.motionY, this.posZ + this.motionZ);
+            var15 = this.worldObj.getWorldVec3Pool().getVecFromPool(this.posX, this.posY, this.posZ);
+            var2 = this.worldObj.getWorldVec3Pool().getVecFromPool(this.posX + this.motionX, this.posY + this.motionY, this.posZ + this.motionZ);
 
             if (var3 != null)
             {
-                var2 = this.worldObj.func_82732_R().getVecFromPool(var3.hitVec.xCoord, var3.hitVec.yCoord, var3.hitVec.zCoord);
+                var2 = this.worldObj.getWorldVec3Pool().getVecFromPool(var3.hitVec.xCoord, var3.hitVec.yCoord, var3.hitVec.zCoord);
             }
 
             Entity var4 = null;
             List var5 = this.worldObj.getEntitiesWithinAABBExcludingEntity(this, this.boundingBox.addCoord(this.motionX, this.motionY, this.motionZ).expand(1.0D, 1.0D, 1.0D));
             double var6 = 0.0D;
-            Iterator var8 = var5.iterator();
 
-            while (var8.hasNext())
+            for (int var8 = 0; var8 < var5.size(); ++var8)
             {
-                Entity var9 = (Entity)var8.next();
+                Entity var9 = (Entity)var5.get(var8);
 
                 if (var9.canBeCollidedWith() && (!var9.isEntityEqual(this.shootingEntity) || this.ticksInAir >= 25))
                 {
@@ -189,7 +180,7 @@ public abstract class EntityFireball extends Entity
 
             this.rotationPitch = this.prevRotationPitch + (this.rotationPitch - this.prevRotationPitch) * 0.2F;
             this.rotationYaw = this.prevRotationYaw + (this.rotationYaw - this.prevRotationYaw) * 0.2F;
-            float var17 = this.func_82341_c();
+            float var17 = this.getMotionFactor();
 
             if (this.isInWater())
             {
@@ -213,19 +204,13 @@ public abstract class EntityFireball extends Entity
         }
     }
 
-    protected float func_82341_c()
+    protected float getMotionFactor()
     {
         return 0.95F;
     }
 
-    /**
-     * Called when this EntityFireball hits a block or entity.
-     */
     protected abstract void onImpact(MovingObjectPosition var1);
 
-    /**
-     * (abstract) Protected helper method to write subclass entity data to NBT.
-     */
     public void writeEntityToNBT(NBTTagCompound par1NBTTagCompound)
     {
         par1NBTTagCompound.setShort("xTile", (short)this.xTile);
@@ -236,9 +221,6 @@ public abstract class EntityFireball extends Entity
         par1NBTTagCompound.setTag("direction", this.newDoubleNBTList(new double[] {this.motionX, this.motionY, this.motionZ}));
     }
 
-    /**
-     * (abstract) Protected helper method to read subclass entity data from NBT.
-     */
     public void readEntityFromNBT(NBTTagCompound par1NBTTagCompound)
     {
         this.xTile = par1NBTTagCompound.getShort("xTile");
@@ -260,9 +242,6 @@ public abstract class EntityFireball extends Entity
         }
     }
 
-    /**
-     * Returns true if other Entities should be prevented from moving through this Entity.
-     */
     public boolean canBeCollidedWith()
     {
         return true;
@@ -273,37 +252,41 @@ public abstract class EntityFireball extends Entity
         return 1.0F;
     }
 
-    /**
-     * Called when the entity is attacked.
-     */
     public boolean attackEntityFrom(DamageSource par1DamageSource, int par2)
     {
-        this.setBeenAttacked();
-
-        if (par1DamageSource.getEntity() != null)
+        if (this.func_85032_ar())
         {
-            Vec3 var3 = par1DamageSource.getEntity().getLookVec();
-
-            if (var3 != null)
-            {
-                this.motionX = var3.xCoord;
-                this.motionY = var3.yCoord;
-                this.motionZ = var3.zCoord;
-                this.accelerationX = this.motionX * 0.1D;
-                this.accelerationY = this.motionY * 0.1D;
-                this.accelerationZ = this.motionZ * 0.1D;
-            }
-
-            if (par1DamageSource.getEntity() instanceof EntityLiving)
-            {
-                this.shootingEntity = (EntityLiving)par1DamageSource.getEntity();
-            }
-
-            return true;
+            return false;
         }
         else
         {
-            return false;
+            this.setBeenAttacked();
+
+            if (par1DamageSource.getEntity() != null)
+            {
+                Vec3 var3 = par1DamageSource.getEntity().getLookVec();
+
+                if (var3 != null)
+                {
+                    this.motionX = var3.xCoord;
+                    this.motionY = var3.yCoord;
+                    this.motionZ = var3.zCoord;
+                    this.accelerationX = this.motionX * 0.1D;
+                    this.accelerationY = this.motionY * 0.1D;
+                    this.accelerationZ = this.motionZ * 0.1D;
+                }
+
+                if (par1DamageSource.getEntity() instanceof EntityLiving)
+                {
+                    this.shootingEntity = (EntityLiving)par1DamageSource.getEntity();
+                }
+
+                return true;
+            }
+            else
+            {
+                return false;
+            }
         }
     }
 
@@ -313,9 +296,6 @@ public abstract class EntityFireball extends Entity
         return 0.0F;
     }
 
-    /**
-     * Gets how bright this entity is.
-     */
     public float getBrightness(float par1)
     {
         return 1.0F;

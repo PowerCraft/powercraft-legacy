@@ -1,0 +1,64 @@
+package powercraft.machines;
+
+import net.minecraft.src.Material;
+import powercraft.core.PC_Block;
+import powercraft.core.PC_ISpecialInventoryTextures;
+
+public class PCma_BlockBlockBuilder extends PC_Block implements PC_ISpecialInventoryTextures {
+	private static final int TXDOWN = 109, TXTOP = 156, TXSIDE = 140, TXFRONT = 108, TXBACK = 124;
+	
+	public PCma_BlockBlockBuilder(int id) {
+		super(id, TXDOWN, Material.ground);
+	}
+
+	@Override
+	public String getDefaultName() {
+		return "Block Builder";
+	}
+
+	@Override
+	public boolean renderAsNormalBlock() {
+		return false;
+	}
+	
+	@Override
+	public int getBlockTextureFromSideAndMetadata(int s, int m) {
+		if (s == 1) {
+			return TXTOP;
+		}
+		if (s == 0) {
+			return TXDOWN;
+		} else {
+			if (m == s) {
+				return TXFRONT;
+			}
+			if ((m == 2 && s == 3) || (m == 3 && s == 2) || (m == 4 && s == 5) || (m == 5 && s == 4)) {
+				return TXBACK;
+			}
+			return TXSIDE;
+		}
+	}
+
+	@Override
+	public int getInvTexture(int i, int m) {
+		if (i == 1) {
+			return TXTOP;
+		}
+		if (i == 0) {
+			return TXDOWN;
+		}
+		if (i == 3) {
+			return TXFRONT;
+		} else if (i == 4) {
+			return TXBACK;
+		} else {
+			return TXSIDE;
+		}
+	}
+	
+	@Override
+	public int tickRate() {
+		return 1;
+	}
+	
+}

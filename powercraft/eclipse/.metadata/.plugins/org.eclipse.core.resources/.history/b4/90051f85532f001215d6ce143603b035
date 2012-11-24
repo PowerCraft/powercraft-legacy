@@ -1,0 +1,229 @@
+package powercraft.machines;
+
+import java.util.Random;
+
+import net.minecraft.src.Block;
+import net.minecraft.src.EntityPlayer;
+import net.minecraft.src.IBlockAccess;
+import net.minecraft.src.IInventory;
+import net.minecraft.src.ItemStack;
+import powercraft.core.PC_IBlockRenderer;
+import powercraft.core.PC_ISpecialAccessInventory;
+import powercraft.core.PC_IStateReportingInventory;
+import powercraft.core.PC_Renderer;
+import powercraft.core.PC_TileEntity;
+import powercraft.core.PC_Utils;
+
+public class PCma_TileEntityTransmutabox extends PC_TileEntity implements IInventory, PC_ISpecialAccessInventory, PC_IStateReportingInventory {
+
+	private ItemStack[] itemStcks = new ItemStack[49];
+	
+	@Override
+	public boolean insertStackIntoInventory(ItemStack stack) {
+		return false;
+	}
+
+	@Override
+	public boolean needsSpecialInserter() {
+		return false;
+	}
+
+	@Override
+	public boolean canPlayerInsertStackTo(int slot, ItemStack stack) {
+		if(slot>=1 && slot<10){
+			return PC_Utils.isFuel(stack);
+		}
+		return true;
+	}
+
+	@Override
+	public boolean canMachineInsertStackTo(int slot, ItemStack stack) {
+		if(slot==0)
+			return false;
+		if(slot>=1 && slot<=10){
+			return PC_Utils.isFuel(stack);
+		}
+		return true;
+	}
+
+	@Override
+	public boolean canDispenseStackFrom(int slot) {
+		return true;
+	}
+
+	@Override
+	public int getSizeInventory() {
+		return 49;
+	}
+
+	@Override
+	public ItemStack getStackInSlot(int var1) {
+		return itemStcks[var1];
+	}
+
+	@Override
+	public ItemStack decrStackSize(int i, int j) {
+		if (itemStcks[i] != null) {
+			if (itemStcks[i].stackSize <= j) {
+				ItemStack itemstack = itemStcks[i];
+				itemStcks[i] = null;
+				onInventoryChanged();
+				return itemstack;
+			}
+			ItemStack itemstack1 = itemStcks[i].splitStack(j);
+			if (itemStcks[i].stackSize == 0) {
+				itemStcks[i] = null;
+			}
+			onInventoryChanged();
+			return itemstack1;
+		} else {
+			return null;
+		}
+	}
+
+	@Override
+	public ItemStack getStackInSlotOnClosing(int var1) {
+		if (itemStcks[var1] != null) {
+			ItemStack itemstack = itemStcks[var1];
+			itemStcks[var1] = null;
+			return itemstack;
+		} else {
+			return null;
+		}
+	}
+
+	@Override
+	public void setInventorySlotContents(int var1, ItemStack var2) {
+		itemStcks[var1] = var2;
+		if (var2 != null && var2.stackSize > getInventoryStackLimit()) {
+			var2.stackSize = getInventoryStackLimit();
+		}
+		onInventoryChanged();
+	}
+
+	@Override
+	public String getInvName() {
+		return "Transmutabox Inventory";
+	}
+
+	@Override
+	public int getInventoryStackLimit() {
+		return 64;
+	}
+
+	@Override
+	public boolean isUseableByPlayer(EntityPlayer var1) {
+		return true;
+	}
+
+	@Override
+	public void openChest() {}
+
+	@Override
+	public void closeChest() {}
+
+	@Override
+	public boolean isContainerEmpty() {
+		for (int i = 10; i < 49; i++) {
+			if (getStackInSlot(i) != null) {
+				return false;
+			}
+		}
+		return true;
+	}
+
+	@Override
+	public boolean isContainerFull() {
+		for (int i = 10; i < 49; i++) {
+			if (getStackInSlot(i) == null && getStackInSlot(i + 9) != null) {
+				return false;
+			} else if (getStackInSlot(i) != null && getStackInSlot(i + 9) != null) {
+				if (getStackInSlot(i).stackSize < Math.min(getStackInSlot(i).getMaxStackSize(), getInventoryStackLimit())) {
+					return false;
+				}
+			}
+		}
+		return true;
+	}
+
+
+	@Override
+	public boolean hasContainerNoFreeSlots() {
+		for (int i = 10; i < 49; i++) {
+			if (getStackInSlot(i) == null && getStackInSlot(i + 9) != null) {
+				return false;
+			}
+		}
+		return true;
+	}
+
+	@Override
+	public boolean hasInventoryPlaceFor(ItemStack itemStack) {
+		for (int i = 10; i < 49; i++) {
+			if (getStackInSlot(i) == null || (getStackInSlot(i).isItemEqual(itemStack) && getStackInSlot(i).stackSize < Math.min(getInventoryStackLimit(), getStackInSlot(i).getMaxStackSize()))) {
+				return true;
+			}
+		}
+		return false;
+	}
+
+	@Override
+	public boolean isContainerEmptyOf(ItemStack itemStack) {
+		for (int i = 10; i < 49; i++) {
+			if (getStackInSlot(i) != null && !getStackInSlot(i).isItemEqual(itemStack)) {
+				return false;
+			}
+		}
+		return true;
+	}
+
+	public void change(int i) {
+		
+	}
+
+	@Override
+	public void renderInventoryBlock(Block block, int metadata, int modelID, Object renderer) {
+		PC_Renderer.swapTerrain(block);
+
+		block.setBlockBounds(0.1f, 0.1f, 0.1f, 0.9f, 0.9f, 0.9f);
+		PC_Renderer.renderInvBox(renderer, block, metadata);
+		
+		block.setBlockBounds(0.0f, 0.1f, 0.1f, 0.9f, 0.9f, 0.9f);
+		PC_Renderer.renderInvBoxWithTexture(renderer, block, 1);
+		
+		block.setBlockBounds(0, 0, 0, 1, 1, 1);
+		PC_Renderer.resetTerrain(true);
+	}
+
+	@Override
+	public void renderWorldBlock(IBlockAccess world, int x, int y, int z, Block block, int modelId, Object renderer) {
+		PC_Renderer.tessellatorDraw();
+		PC_Renderer.swapTerrain(block);
+		PC_Renderer.tessellatorStartDrawingQuads();
+		
+		Random posRand = new Random(x + x * y * z + z + world.getBlockMetadata(x, y, z));
+
+		for (int q = 3 + posRand.nextInt(2); q > 0; q--) {
+			float i, j, k, a, b, c;
+
+			i = posRand.nextFloat() * 0.6F;
+			j = (q == 2 ? 0.001F : posRand.nextFloat() * 0.6F);
+			k = posRand.nextFloat() * 0.6F;
+
+			a = i + 0.3F + posRand.nextFloat() * (0.7F - i);
+			b = j + 0.3F + posRand.nextFloat() * (0.7F - j);
+			c = k + 0.3F + posRand.nextFloat() * (0.7F - k);
+
+			block.setBlockBounds(i, j, k, a, b, c);
+			PC_Renderer.renderStandardBlock(renderer, block, x, y, z);
+		}
+		block.setBlockBounds(0, 0, 0, 1, 1, 1);
+		
+		PC_Renderer.tessellatorDraw();
+		PC_Renderer.resetTerrain(true);
+		PC_Renderer.tessellatorStartDrawingQuads();
+	}
+	
+	
+	
+}

@@ -1,0 +1,12 @@
+package powercraft.machines;
+
+import powercraft.core.PC_TileEntity;
+
+public class PCma_TileEntityBlockBuilder extends PC_TileEntity implements IInventor {
+
+	public void useItem() {
+		// TODO Auto-generated method stub
+		
+	}
+
+}

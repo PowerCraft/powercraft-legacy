@@ -16,13 +16,13 @@ import java.util.logging.Logger;
 
 public class FMLRelaunchLog
 {
-
     private static class ConsoleLogWrapper extends Handler
     {
         @Override
         public void publish(LogRecord record)
         {
             boolean currInt = Thread.interrupted();
+
             try
             {
                 ConsoleLogThread.recordQueue.put(record);
@@ -31,6 +31,7 @@ public class FMLRelaunchLog
             {
                 e.printStackTrace(errCache);
             }
+
             if (currInt)
             {
                 Thread.currentThread().interrupt();
@@ -40,14 +41,12 @@ public class FMLRelaunchLog
         @Override
         public void flush()
         {
-
         }
 
         @Override
         public void close() throws SecurityException
         {
         }
-
     }
     private static class ConsoleLogThread implements Runnable
     {
@@ -59,6 +58,7 @@ public class FMLRelaunchLog
             do
             {
                 LogRecord lr;
+
                 try
                 {
                     lr = recordQueue.take();
@@ -68,7 +68,6 @@ public class FMLRelaunchLog
                 {
                     e.printStackTrace(errCache);
                     Thread.interrupted();
-                    // Stupid
                 }
             }
             while (true);
@@ -89,31 +88,28 @@ public class FMLRelaunchLog
         public void flush() throws IOException
         {
             String record;
-            synchronized(FMLRelaunchLog.class)
+
+            synchronized (FMLRelaunchLog.class)
             {
                 super.flush();
                 record = this.toString();
                 super.reset();
-
                 currentMessage.append(record.replace(FMLLogFormatter.LINE_SEPARATOR, "\n"));
-                if (currentMessage.lastIndexOf("\n")>=0)
+
+                if (currentMessage.lastIndexOf("\n") >= 0)
                 {
-                    // Are we longer than just the line separator?
-                    if (currentMessage.length()>1)
+                    if (currentMessage.length() > 1)
                     {
-                        // Trim the line separator
-                        currentMessage.setLength(currentMessage.length()-1);
+                        currentMessage.setLength(currentMessage.length() - 1);
                         log.log(Level.INFO, currentMessage.toString());
                     }
+
                     currentMessage.setLength(0);
                 }
             }
         }
     }
-    /**
-     * Our special logger for logging issues to. We copy various assets from the
-     * Minecraft logger to acheive a similar appearance.
-     */
+
     public static FMLRelaunchLog log = new FMLRelaunchLog();
 
     static File minecraftHome;
@@ -127,31 +123,26 @@ public class FMLRelaunchLog
     private FMLRelaunchLog()
     {
     }
-    /**
-     * Configure the FML logger
-     */
+
     private static void configureLogging()
     {
         LogManager.getLogManager().reset();
         Logger globalLogger = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
         globalLogger.setLevel(Level.OFF);
-
         log.myLog = Logger.getLogger("ForgeModLoader");
-
         Logger stdOut = Logger.getLogger("STDOUT");
         stdOut.setParent(log.myLog);
         Logger stdErr = Logger.getLogger("STDERR");
         stdErr.setParent(log.myLog);
         FMLLogFormatter formatter = new FMLLogFormatter();
-
-        // Console handler captures the normal stderr before it gets replaced
         log.myLog.setUseParentHandlers(false);
         log.myLog.addHandler(new ConsoleLogWrapper());
         consoleLogThread = new Thread(new ConsoleLogThread());
         consoleLogThread.start();
-        ConsoleLogThread.wrappedHandler.setLevel(Level.parse(System.getProperty("fml.log.level","INFO")));
+        ConsoleLogThread.wrappedHandler.setLevel(Level.parse(System.getProperty("fml.log.level", "INFO")));
         ConsoleLogThread.wrappedHandler.setFormatter(formatter);
         log.myLog.setLevel(Level.ALL);
+
         try
         {
             File logPath = new File(minecraftHome, FMLRelauncher.logFileNamePattern);
@@ -164,13 +155,9 @@ public class FMLRelaunchLog
         {
         }
 
-        // Set system out to a log stream
         errCache = System.err;
-
         System.setOut(new PrintStream(new LoggingOutStream(stdOut), true));
         System.setErr(new PrintStream(new LoggingOutStream(stdErr), true));
-
-        // Reset global logging to shut up other logging sources (thanks guava!)
         configured = true;
     }
 
@@ -180,6 +167,7 @@ public class FMLRelaunchLog
         {
             configureLogging();
         }
+
         log.myLog.log(level, String.format(format, data));
     }
 
@@ -189,6 +177,7 @@ public class FMLRelaunchLog
         {
             configureLogging();
         }
+
         log.myLog.log(level, String.format(format, data), ex);
     }
 

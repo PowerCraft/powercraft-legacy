@@ -126,6 +126,17 @@ public class ModLoader
     {
         ModLoaderHelper.addCommand(command);
     }
+
+    /**
+     * Add a behaviour to the dispenser
+     *
+     * @param item
+     * @param behavior
+     */
+    public static void addDispenserBehavior(Item item, IBehaviorDispenseItem behavior)
+    {
+    	BlockDispenser.dispenseBehaviorRegistry.putObject(item, behavior);
+    }
     /**
      * Add localization for the specified string
      *

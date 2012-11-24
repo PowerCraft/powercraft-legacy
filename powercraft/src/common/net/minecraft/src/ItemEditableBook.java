@@ -47,9 +47,6 @@ public class ItemEditableBook extends Item
 
     @SideOnly(Side.CLIENT)
 
-    /**
-     * allows items to add custom lines of information to the mouseover description
-     */
     public void addInformation(ItemStack par1ItemStack, EntityPlayer par2EntityPlayer, List par3List, boolean par4)
     {
         if (par1ItemStack.hasTagCompound())
@@ -64,18 +61,12 @@ public class ItemEditableBook extends Item
         }
     }
 
-    /**
-     * Called whenever this item is equipped and the right mouse button is pressed. Args: itemStack, world, entityPlayer
-     */
     public ItemStack onItemRightClick(ItemStack par1ItemStack, World par2World, EntityPlayer par3EntityPlayer)
     {
         par3EntityPlayer.displayGUIBook(par1ItemStack);
         return par1ItemStack;
     }
 
-    /**
-     * If this function returns true (or the item is damageable), the ItemStack's NBT tag will be sent to the client.
-     */
     public boolean getShareTag()
     {
         return true;

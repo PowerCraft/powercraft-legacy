@@ -208,7 +208,7 @@ public class PC_ClientUtils extends PC_Utils {
 	
 	@Override
 	protected EnumGameType iGetGameTypeFor(EntityPlayer player){
-		return (EnumGameType)PC_Utils.getPrivateValue(PlayerControllerMP.class, mc().playerController, 10);
+		return (EnumGameType)PC_Utils.getPrivateValue(PlayerControllerMP.class, mc().playerController, 11);
 	}
 	
 	@Override
@@ -246,12 +246,17 @@ public class PC_ClientUtils extends PC_Utils {
 	
 	public static void keyDown(String keyCode) {
 		instance.handleIncomingPacket(mc().thePlayer, new Object[]{KEYEVENT, true, keyCode});
-		PC_PacketHandler.sendToPacketHandler(mc().thePlayer, "PacketUtils", KEYEVENT, true, keyCode);
+		PC_PacketHandler.sendToPacketHandler(mc().theWorld, "PacketUtils", KEYEVENT, true, keyCode);
 	}
 
 	public static void keyUp(String keyCode) {
 		instance.handleIncomingPacket(mc().thePlayer, new Object[]{KEYEVENT, false, keyCode});
-		PC_PacketHandler.sendToPacketHandler(mc().thePlayer, "PacketUtils", KEYEVENT, false, keyCode);
+		PC_PacketHandler.sendToPacketHandler(mc().theWorld, "PacketUtils", KEYEVENT, false, keyCode);
+	}
+	
+	@Override
+	protected void iTileEntitySpecialRenderer(Class <? extends TileEntity> tileEntityClass){
+		bindTileEntitySpecialRenderer(tileEntityClass, PC_TileEntitySpecialRenderer.getInstance());
 	}
 	
 	public static void bindTileEntitySpecialRenderer(Class <? extends TileEntity> tileEntityClass, TileEntitySpecialRenderer specialRenderer){
@@ -269,8 +274,10 @@ public class PC_ClientUtils extends PC_Utils {
 	@Override
 	protected void iSpawnParticle(String name, Object[] o){
 		
-		if(!entityFX.containsKey(name))
+		if(!entityFX.containsKey(name)){
+			System.err.println("no particle for \""+name+"\"");
 			return;
+		}
 		
 		Class c = entityFX.get(name);
 		
@@ -279,8 +286,10 @@ public class PC_ClientUtils extends PC_Utils {
 			cp[i] = o[i].getClass();
 		
 		Constructor cons = findBestConstructor(c, cp);
-		if(cons==null)
+		if(cons==null){
+			System.err.println("no best constructor for \""+name+"\"");
 			return;
+		}
 		
 		EntityFX fx=null;
 		

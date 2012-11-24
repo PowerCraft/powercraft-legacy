@@ -3,6 +3,7 @@ package powercraft.core;
 
 import java.util.List;
 
+import net.minecraft.client.Minecraft;
 import net.minecraft.src.Container;
 import net.minecraft.src.EntityPlayer;
 import net.minecraft.src.GuiContainer;
@@ -82,6 +83,9 @@ public class PC_GresGui extends GuiContainer implements PC_IGresGui {
 
 	@Override
 	public void updateScreen() {
+		if(mc.thePlayer!=null&&inventorySlots!=null){
+			super.updateScreen();
+		}
 		if (lastFocus != null) {
 			lastFocus.updateCursorCounter();
 		}
@@ -119,7 +123,7 @@ public class PC_GresGui extends GuiContainer implements PC_IGresGui {
 	public void onGuiClosed() {
 		Keyboard.enableRepeatEvents(false);
 		gui.onGuiClosed(this);
-		if(inventorySlots!=null){
+		if(mc.thePlayer!=null&&inventorySlots!=null){
 			super.onGuiClosed();
 		}
 	}
@@ -202,7 +206,9 @@ public class PC_GresGui extends GuiContainer implements PC_IGresGui {
 	 */
 	@Override
 	protected void mouseMovedOrUp(int x, int y, int state) {
-		super.mouseMovedOrUp(x, y, state);
+		if(mc.thePlayer!=null&&inventorySlots!=null){
+			super.mouseMovedOrUp(x, y, state);
+		}
 		if (state != -1) {
 			mouseUp(x, y, state);
 		} else {
@@ -304,7 +310,7 @@ public class PC_GresGui extends GuiContainer implements PC_IGresGui {
 			GL11.glTranslatef(0.0F, 0.0F, 32F);
 			zLevel = 200F;
 			itemRenderer.zLevel = 200F;
-			itemRenderer.func_82406_b(fontRenderer, mc.renderEngine, inventoryplayer.getItemStack(), par1 - i - 8, par2 - j - 8);
+			itemRenderer.renderItemAndEffectIntoGUI(fontRenderer, mc.renderEngine, inventoryplayer.getItemStack(), par1 - i - 8, par2 - j - 8);
 			itemRenderer.renderItemOverlayIntoGUI(fontRenderer, mc.renderEngine, inventoryplayer.getItemStack(), par1 - i - 8, par2 - j - 8);
 			zLevel = 0.0F;
 			itemRenderer.zLevel = 0.0F;
@@ -326,7 +332,7 @@ public class PC_GresGui extends GuiContainer implements PC_IGresGui {
 
 			if (itemstack != null) {
 				@SuppressWarnings("rawtypes")
-				List list = itemstack.func_82840_a(mc.thePlayer, false);
+				List list = itemstack.getTooltip(mc.thePlayer, false);
 
 				if (list.size() > 0) {
 					int l1 = 0;
@@ -453,7 +459,7 @@ public class PC_GresGui extends GuiContainer implements PC_IGresGui {
 					itemRenderer.zLevel = 99F;
 					zLevel = 99F;
 					GL11.glColor4f(1.0F, 1.0F, 1.0F, 0.2F);
-					itemRenderer.func_82406_b(fontRenderer, mc.renderEngine, dirslot.getBackgroundStack(), k, l);
+					itemRenderer.renderItemAndEffectIntoGUI(fontRenderer, mc.renderEngine, dirslot.getBackgroundStack(), k, l);
 
 					if(dirslot.renderGrayWhenEmpty()) {
 						GL11.glDisable(GL11.GL_LIGHTING);
@@ -472,7 +478,7 @@ public class PC_GresGui extends GuiContainer implements PC_IGresGui {
 			}
 			
 		} else {
-			itemRenderer.func_82406_b(fontRenderer, mc.renderEngine, itemstack, k, l);
+			itemRenderer.renderItemAndEffectIntoGUI(fontRenderer, mc.renderEngine, itemstack, k, l);
 			itemRenderer.renderItemOverlayIntoGUI(fontRenderer, mc.renderEngine, itemstack, k, l);
 		}
 
@@ -506,5 +512,21 @@ public class PC_GresGui extends GuiContainer implements PC_IGresGui {
 	public void registerAction(PC_GresWidget widget) {
 		gui.actionPerformed(widget, this);
 	}
+	
+	/**
+     * Handles mouse input.
+     */
+    public void handleMouseInput()
+    {
+        int var1 = Mouse.getEventX() * this.width / this.mc.displayWidth;
+        int var2 = this.height - Mouse.getEventY() * this.height / this.mc.displayHeight - 1;
+
+        if (Mouse.getEventButtonState())
+        {
+            this.mouseClicked(var1, var2, Mouse.getEventButton());
+        }else{
+            this.mouseMovedOrUp(var1, var2, Mouse.getEventButton());
+        }
+    }
 	
 }

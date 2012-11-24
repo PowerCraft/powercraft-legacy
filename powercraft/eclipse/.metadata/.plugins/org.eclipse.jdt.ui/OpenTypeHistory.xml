@@ -1,10 +1,18 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <typeInfoHistroy>
-<typeInfo handle="=Minecraft/common&lt;powercraft.core{PC_IRotatedBox.java[PC_IRotatedBox" modifiers="513" timestamp="1351513042718"/>
-<typeInfo handle="=Minecraft/common&lt;powercraft.core{PC_ISwapTerrain.java[PC_ISwapTerrain" modifiers="513" timestamp="1351513042934"/>
-<typeInfo handle="=Minecraft/src&lt;powercraft.core{PC_GresWidget.java[PC_GresWidget" modifiers="1025" timestamp="1351628112604"/>
+<typeInfo handle="=Minecraft/common&lt;powercraft.machines{PCma_ContainerTransmutabox.java[PCma_ContainerTransmutabox" modifiers="1" timestamp="1353109196243"/>
+<typeInfo handle="=Minecraft/common&lt;powercraft.core{PC_Item.java[PC_Item" modifiers="1025" timestamp="1353522162406"/>
+<typeInfo handle="=Minecraft/common&lt;net.minecraft.src{DamageSource.java[DamageSource" modifiers="1" timestamp="1353109193147"/>
+<typeInfo handle="=Minecraft/src&lt;net.minecraft.src{TileEntitySpecialRenderer.java[TileEntitySpecialRenderer" modifiers="1025" timestamp="1352997606253"/>
+<typeInfo handle="=Minecraft/common&lt;powercraft.core{PC_IBeamSpecialHandling.java[PC_IBeamSpecialHandling" modifiers="513" timestamp="1353266173112"/>
+<typeInfo handle="=Minecraft/common&lt;powercraft.core{PC_IActivatorListener.java[PC_IActivatorListener" modifiers="513" timestamp="1353109195974"/>
+<typeInfo handle="=Minecraft/common&lt;powercraft.core{PC_IBlockRenderer.java[PC_IBlockRenderer" modifiers="513" timestamp="1353109195976"/>
+<typeInfo handle="=Minecraft/src&lt;net.minecraft.src{ModelBase.java[ModelBase" modifiers="1025" timestamp="1352997605872"/>
+<typeInfo handle="=Minecraft/common&lt;powercraft.core{PC_TileEntity.java[PC_TileEntity" modifiers="1025" timestamp="1353528397843"/>
+<typeInfo handle="=Minecraft/common&lt;powercraft.core{PC_GresBaseWithInventory.java[PC_GresBaseWithInventory" modifiers="1025" timestamp="1353109195972"/>
+<typeInfo handle="=Minecraft/common&lt;powercraft.machines{PCma_ContainerBlockBuilder.java[PCma_ContainerBlockBuilder" modifiers="1" timestamp="1353753906937"/>
 <typeInfo handle="=Minecraft/src&lt;powercraft.core{PC_IGresClient.java[PC_IGresClient" modifiers="513" timestamp="1351513063655"/>
-<typeInfo handle="=Minecraft/common&lt;powercraft.core{PC_Block.java[PC_Block" modifiers="1025" timestamp="1351536312749"/>
-<typeInfo handle="=Minecraft/common&lt;powercraft.core{PC_ItemBlock.java[PC_ItemBlock" modifiers="1025" timestamp="1351527400657"/>
-<typeInfo handle="=Minecraft/common&lt;powercraft.core{PC_TileEntity.java[PC_TileEntity" modifiers="1025" timestamp="1351527413921"/>
+<typeInfo handle="=Minecraft/common&lt;powercraft.core{PC_Block.java[PC_Block" modifiers="1025" timestamp="1353758323428"/>
+<typeInfo handle="=Minecraft/common&lt;powercraft.core{PC_ISpecialInventoryTextures.java[PC_ISpecialInventoryTextures" modifiers="513" timestamp="1353109196018"/>
+<typeInfo handle="=Minecraft/common&lt;powercraft.core{PC_IBeamHandler.java[PC_IBeamHandler" modifiers="513" timestamp="1353449885727"/>
 </typeInfoHistroy>

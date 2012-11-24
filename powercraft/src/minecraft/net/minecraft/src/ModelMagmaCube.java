@@ -67,13 +67,10 @@ public class ModelMagmaCube extends ModelBase
     {
         this.setRotationAngles(par2, par3, par4, par5, par6, par7, par1Entity);
         this.field_78108_b.render(par7);
-        ModelRenderer[] var8 = this.field_78109_a;
-        int var9 = var8.length;
 
-        for (int var10 = 0; var10 < var9; ++var10)
+        for (int var8 = 0; var8 < this.field_78109_a.length; ++var8)
         {
-            ModelRenderer var11 = var8[var10];
-            var11.render(par7);
+            this.field_78109_a[var8].render(par7);
         }
     }
 }

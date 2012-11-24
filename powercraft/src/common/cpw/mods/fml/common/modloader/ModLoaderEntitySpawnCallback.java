@@ -12,7 +12,6 @@ import net.minecraft.src.Entity;
 
 public class ModLoaderEntitySpawnCallback implements Function<EntitySpawnPacket, Entity>
 {
-
     private BaseModProxy mod;
     private EntityRegistration registration;
     private boolean isAnimal;

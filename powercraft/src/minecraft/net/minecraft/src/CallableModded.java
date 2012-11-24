@@ -9,26 +9,25 @@ import net.minecraft.client.Minecraft;
 @SideOnly(Side.CLIENT)
 public class CallableModded implements Callable
 {
-    /** Gets if Minecraft is Modded. */
-    final Minecraft minecraftModded;
+    /** Reference to the Minecraft object. */
+    final Minecraft mc;
 
     public CallableModded(Minecraft par1Minecraft)
     {
-        this.minecraftModded = par1Minecraft;
+        this.mc = par1Minecraft;
     }
 
     /**
-     * Returns "Definitely" if the brand is not vanilla, "Very likely" if there are no signers for the Minecraft class,
-     * otherwise "Probably not".
+     * Gets if Client Profiler (aka Snooper) is enabled.
      */
-    public String getModded()
+    public String getClientProfilerEnabled()
     {
         String var1 = ClientBrandRetriever.getClientModName();
-        return !var1.equals("vanilla") ? "Definitely; \'" + var1 + "\'" : (Minecraft.class.getSigners() == null ? "Very likely" : "Probably not");
+        return !var1.equals("vanilla") ? "Definitely; Client brand changed to \'" + var1 + "\'" : (Minecraft.class.getSigners() == null ? "Very likely; Jar signature invalidated" : "Probably not. Jar signature remains and client brand is untouched.");
     }
 
     public Object call()
     {
-        return this.getModded();
+        return this.getClientProfilerEnabled();
     }
 }

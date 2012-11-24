@@ -7,16 +7,12 @@ import java.io.IOException;
 
 public class Packet52MultiBlockChange extends Packet
 {
-    /** Chunk X position. */
     public int xPosition;
 
-    /** Chunk Z position. */
     public int zPosition;
 
-    /** The metadata for each block changed. */
     public byte[] metadataArray;
 
-    /** The size of the arrays. */
     public int size;
     private static byte[] field_73449_e = new byte[0];
 
@@ -74,9 +70,6 @@ public class Packet52MultiBlockChange extends Packet
         }
     }
 
-    /**
-     * Abstract. Reads the raw packet data from the data stream.
-     */
     public void readPacketData(DataInputStream par1DataInputStream) throws IOException
     {
         this.xPosition = par1DataInputStream.readInt();
@@ -91,9 +84,6 @@ public class Packet52MultiBlockChange extends Packet
         }
     }
 
-    /**
-     * Abstract. Writes the raw packet data to the data stream.
-     */
     public void writePacketData(DataOutputStream par1DataOutputStream) throws IOException
     {
         par1DataOutputStream.writeInt(this.xPosition);
@@ -111,17 +101,11 @@ public class Packet52MultiBlockChange extends Packet
         }
     }
 
-    /**
-     * Passes this Packet on to the NetHandler for processing.
-     */
     public void processPacket(NetHandler par1NetHandler)
     {
         par1NetHandler.handleMultiBlockChange(this);
     }
 
-    /**
-     * Abstract. Return the size of the packet (not counting the header).
-     */
     public int getPacketSize()
     {
         return 10 + this.size * 4;

@@ -19,7 +19,11 @@ public class DestroyBlockProgress
      * damage ranges from 1 to 10. -1 causes the client to delete the partial block renderer.
      */
     private int partialBlockProgress;
-    private int field_82745_f;
+
+    /**
+     * keeps track of how many ticks this PartiallyDestroyedBlock already exists
+     */
+    private int createdAtCloudUpdateTick;
 
     public DestroyBlockProgress(int par1, int par2, int par3, int par4)
     {
@@ -63,13 +67,19 @@ public class DestroyBlockProgress
         return this.partialBlockProgress;
     }
 
-    public void func_82744_b(int par1)
+    /**
+     * saves the current Cloud update tick into the PartiallyDestroyedBlock
+     */
+    public void setCloudUpdateTick(int par1)
     {
-        this.field_82745_f = par1;
+        this.createdAtCloudUpdateTick = par1;
     }
 
-    public int func_82743_f()
+    /**
+     * retrieves the 'date' at which the PartiallyDestroyedBlock was created
+     */
+    public int getCreationCloudUpdateTick()
     {
-        return this.field_82745_f;
+        return this.createdAtCloudUpdateTick;
     }
 }

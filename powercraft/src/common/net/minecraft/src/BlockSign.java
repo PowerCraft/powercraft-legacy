@@ -8,7 +8,6 @@ public class BlockSign extends BlockContainer
 {
     private Class signEntityClass;
 
-    /** Whether this is a freestanding sign or a wall-mounted sign */
     private boolean isFreestanding;
 
     protected BlockSign(int par1, Class par2Class, boolean par3)
@@ -22,10 +21,6 @@ public class BlockSign extends BlockContainer
         this.setBlockBounds(0.5F - var4, 0.0F, 0.5F - var4, 0.5F + var4, var5, 0.5F + var4);
     }
 
-    /**
-     * Returns a bounding box from the pool of bounding boxes (this means this box can change after the pool has been
-     * cleared to be reused)
-     */
     public AxisAlignedBB getCollisionBoundingBoxFromPool(World par1World, int par2, int par3, int par4)
     {
         return null;
@@ -33,18 +28,12 @@ public class BlockSign extends BlockContainer
 
     @SideOnly(Side.CLIENT)
 
-    /**
-     * Returns the bounding box of the wired rectangular prism to render.
-     */
     public AxisAlignedBB getSelectedBoundingBoxFromPool(World par1World, int par2, int par3, int par4)
     {
         this.setBlockBoundsBasedOnState(par1World, par2, par3, par4);
         return super.getSelectedBoundingBoxFromPool(par1World, par2, par3, par4);
     }
 
-    /**
-     * Updates the blocks bounds based on its current state. Args: world, x, y, z
-     */
     public void setBlockBoundsBasedOnState(IBlockAccess par1IBlockAccess, int par2, int par3, int par4)
     {
         if (!this.isFreestanding)
@@ -79,17 +68,11 @@ public class BlockSign extends BlockContainer
         }
     }
 
-    /**
-     * The type of render function that is called for this block
-     */
     public int getRenderType()
     {
         return -1;
     }
 
-    /**
-     * If this block doesn't render as an ordinary block it will return False (examples: signs, buttons, stairs, etc)
-     */
     public boolean renderAsNormalBlock()
     {
         return false;
@@ -100,18 +83,11 @@ public class BlockSign extends BlockContainer
         return true;
     }
 
-    /**
-     * Is this block (a) opaque and (b) a full 1m cube?  This determines whether or not to render the shared face of two
-     * adjacent blocks and also whether the player can attach torches, redstone wire, etc to this block.
-     */
     public boolean isOpaqueCube()
     {
         return false;
     }
 
-    /**
-     * Returns a new instance of a block's tile entity class. Called on placing the block.
-     */
     public TileEntity createNewTileEntity(World par1World)
     {
         try
@@ -124,18 +100,11 @@ public class BlockSign extends BlockContainer
         }
     }
 
-    /**
-     * Returns the ID of the items to drop on destruction.
-     */
     public int idDropped(int par1, Random par2Random, int par3)
     {
         return Item.sign.shiftedIndex;
     }
 
-    /**
-     * Lets the block know when one of its neighbor changes. Doesn't know which neighbor changed (coordinates passed are
-     * their own) Args: x, y, z, neighbor blockID
-     */
     public void onNeighborBlockChange(World par1World, int par2, int par3, int par4, int par5)
     {
         boolean var6 = false;
@@ -184,9 +153,6 @@ public class BlockSign extends BlockContainer
 
     @SideOnly(Side.CLIENT)
 
-    /**
-     * only called by clickMiddleMouseButton , and passed to inventory.setCurrentItem (along with isCreative)
-     */
     public int idPicked(World par1World, int par2, int par3, int par4)
     {
         return Item.sign.shiftedIndex;

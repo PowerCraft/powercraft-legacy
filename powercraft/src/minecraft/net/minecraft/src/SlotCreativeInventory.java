@@ -17,9 +17,9 @@ class SlotCreativeInventory extends Slot
         this.theSlot = par2Slot;
     }
 
-    public void func_82870_a(EntityPlayer par1EntityPlayer, ItemStack par2ItemStack)
+    public void onPickupFromSlot(EntityPlayer par1EntityPlayer, ItemStack par2ItemStack)
     {
-        this.theSlot.func_82870_a(par1EntityPlayer, par2ItemStack);
+        this.theSlot.onPickupFromSlot(par1EntityPlayer, par2ItemStack);
     }
 
     /**

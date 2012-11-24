@@ -15,15 +15,10 @@ public class MapStorage
 {
     private ISaveHandler saveHandler;
 
-    /** Map of item data String id to loaded MapDataBases */
     private Map loadedDataMap = new HashMap();
 
-    /** List of loaded MapDataBases. */
     private List loadedDataList = new ArrayList();
 
-    /**
-     * Map of MapDataBase id String prefixes ('map' etc) to max known unique Short id (the 0 part etc) for that prefix
-     */
     private Map idCounts = new HashMap();
 
     public MapStorage(ISaveHandler par1ISaveHandler)
@@ -32,10 +27,6 @@ public class MapStorage
         this.loadIdCounts();
     }
 
-    /**
-     * Loads an existing MapDataBase corresponding to the given String id from disk, instantiating the given Class, or
-     * returns null if none such file exists. args: Class to instantiate, String dataid
-     */
     public WorldSavedData loadData(Class par1Class, String par2Str)
     {
         WorldSavedData var3 = (WorldSavedData)this.loadedDataMap.get(par2Str);
@@ -85,9 +76,6 @@ public class MapStorage
         }
     }
 
-    /**
-     * Assigns the given String id to the given MapDataBase, removing any existing ones of the same id.
-     */
     public void setData(String par1Str, WorldSavedData par2WorldSavedData)
     {
         if (par2WorldSavedData == null)
@@ -106,16 +94,11 @@ public class MapStorage
         }
     }
 
-    /**
-     * Saves all dirty loaded MapDataBases to disk.
-     */
     public void saveAllData()
     {
-        Iterator var1 = this.loadedDataList.iterator();
-
-        while (var1.hasNext())
+        for (int var1 = 0; var1 < this.loadedDataList.size(); ++var1)
         {
-            WorldSavedData var2 = (WorldSavedData)var1.next();
+            WorldSavedData var2 = (WorldSavedData)this.loadedDataList.get(var1);
 
             if (var2.isDirty())
             {
@@ -125,9 +108,6 @@ public class MapStorage
         }
     }
 
-    /**
-     * Saves the given MapDataBase to disk.
-     */
     private void saveData(WorldSavedData par1WorldSavedData)
     {
         if (this.saveHandler != null)
@@ -154,9 +134,6 @@ public class MapStorage
         }
     }
 
-    /**
-     * Loads the idCounts Map from the 'idcounts' file.
-     */
     private void loadIdCounts()
     {
         try
@@ -197,9 +174,6 @@ public class MapStorage
         }
     }
 
-    /**
-     * Returns an unique new data id for the given prefix and saves the idCounts map to the 'idcounts' file.
-     */
     public int getUniqueDataId(String par1Str)
     {
         Short var2 = (Short)this.idCounts.get(par1Str);

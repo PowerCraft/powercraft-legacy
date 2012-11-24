@@ -4,7 +4,6 @@ import java.util.Random;
 
 public class WorldGenBigMushroom extends WorldGenerator
 {
-    /** The mushroom type. 0 for brown, 1 for red. */
     private int mushroomType = -1;
 
     public WorldGenBigMushroom(int par1)
@@ -53,9 +52,8 @@ public class WorldGenBigMushroom extends WorldGenerator
                         if (var9 >= 0 && var9 < 256)
                         {
                             var13 = par1World.getBlockId(var11, var9, var12);
-
                             Block block = Block.blocksList[var13];
-                            
+
                             if (var13 != 0 && block != null && !block.isLeaves(par1World, var11, var9, var12))
                             {
                                 var8 = false;
@@ -196,7 +194,6 @@ public class WorldGenBigMushroom extends WorldGenerator
                     for (var11 = 0; var11 < var7; ++var11)
                     {
                         var12 = par1World.getBlockId(par3, par4 + var11, par5);
-
                         Block block = Block.blocksList[var12];
 
                         if (block == null || block.canBeReplacedByLeaves(par1World, par3, par4 + var11, par5))

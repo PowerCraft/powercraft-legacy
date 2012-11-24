@@ -4,18 +4,13 @@ import java.util.concurrent.Callable;
 
 class CallableMemoryInfo implements Callable
 {
-    /** Gets Memory Information for Crash Report. */
-    final CrashReport crashReportMemoryInfo;
+    final CrashReport theCrashReport;
 
     CallableMemoryInfo(CrashReport par1CrashReport)
     {
-        this.crashReportMemoryInfo = par1CrashReport;
+        this.theCrashReport = par1CrashReport;
     }
 
-    /**
-     * Returns the memory information as a String.  Includes the Free Memory in bytes and MB, Total Memory in bytes and
-     * MB, and Max Memory in Bytes and MB.
-     */
     public String getMemoryInfoAsString()
     {
         Runtime var1 = Runtime.getRuntime();

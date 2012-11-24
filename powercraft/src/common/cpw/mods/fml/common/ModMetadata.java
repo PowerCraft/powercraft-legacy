@@ -1,17 +1,3 @@
-/*
- * The FML Forge Mod Loader suite.
- * Copyright (C) 2012 cpw
- *
- * This library is free software; you can redistribute it and/or modify it under the terms of the GNU Lesser General Public License as published by the Free
- * Software Foundation; either version 2.1 of the License, or any later version.
- *
- * This library is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR
- * A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more details.
- *
- * You should have received a copy of the GNU Lesser General Public License along with this library; if not, write to the Free Software Foundation, Inc., 51
- * Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA
- */
-
 package cpw.mods.fml.common;
 
 import static argo.jdom.JsonNodeBuilders.aStringBuilder;
@@ -39,10 +25,6 @@ import cpw.mods.fml.common.functions.ModNameFunction;
 import cpw.mods.fml.common.versioning.ArtifactVersion;
 import cpw.mods.fml.common.versioning.VersionParser;
 
-/**
- * @author cpw
- *
- */
 public class ModMetadata
 {
     private static final class JsonStringConverter implements Function<JsonNode, Object>
@@ -95,11 +77,13 @@ public class ModMetadata
     {
         Map<JsonStringNode, Object> processedFields = Maps.transformValues(node.getFields(), new JsonStringConverter());
         modId = (String)processedFields.get(aStringBuilder("modid"));
+
         if (Strings.isNullOrEmpty(modId))
         {
             FMLLog.log(Level.SEVERE, "Found an invalid mod metadata file - missing modid");
             throw new LoaderException();
         }
+
         name = Strings.nullToEmpty((String)processedFields.get(aStringBuilder("name")));
         description = Strings.nullToEmpty((String)processedFields.get(aStringBuilder("description")));
         url = Strings.nullToEmpty((String)processedFields.get(aStringBuilder("url")));
@@ -108,7 +92,7 @@ public class ModMetadata
         version = Strings.nullToEmpty((String)processedFields.get(aStringBuilder("version")));
         credits = Strings.nullToEmpty((String)processedFields.get(aStringBuilder("credits")));
         parent =  Strings.nullToEmpty((String)processedFields.get(aStringBuilder("parent")));
-        authorList = Objects.firstNonNull(((List<String>)processedFields.get(aStringBuilder("authors"))),Objects.firstNonNull(((List<String>)processedFields.get(aStringBuilder("authorList"))), authorList));
+        authorList = Objects.firstNonNull(((List<String>)processedFields.get(aStringBuilder("authors"))), Objects.firstNonNull(((List<String>)processedFields.get(aStringBuilder("authorList"))), authorList));
         requiredMods = processReferences(processedFields.get(aStringBuilder("requiredMods")), HashSet.class);
         dependencies = processReferences(processedFields.get(aStringBuilder("dependencies")), ArrayList.class);
         dependants = processReferences(processedFields.get(aStringBuilder("dependants")), ArrayList.class);
@@ -119,26 +103,28 @@ public class ModMetadata
     {
     }
 
-    private <T extends Collection<ArtifactVersion>> T processReferences(Object refs, Class<? extends T> retType)
+    private <T extends Collection<ArtifactVersion>> T processReferences(Object refs, Class <? extends T > retType)
     {
         T res = null;
+
         try
         {
             res = retType.newInstance();
         }
         catch (Exception e)
         {
-            // unpossible
         }
 
         if (refs == null)
         {
             return res;
         }
+
         for (String ref : ((List<String>)refs))
         {
             res.add(VersionParser.parseVersionReference(ref));
         }
+
         return res;
     }
 

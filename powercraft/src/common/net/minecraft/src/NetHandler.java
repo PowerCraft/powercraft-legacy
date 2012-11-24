@@ -2,20 +2,10 @@ package net.minecraft.src;
 
 public abstract class NetHandler
 {
-    /**
-     * determine if it is a server handler
-     */
     public abstract boolean isServerHandler();
 
-    /**
-     * Handle Packet51MapChunk (full chunk update of blocks, metadata, light levels, and optionally biome data)
-     */
     public void handleMapChunk(Packet51MapChunk par1Packet51MapChunk) {}
 
-    /**
-     * Default handler called for packets that don't have their own handlers in NetClientHandler; currentlly does
-     * nothing.
-     */
     public void unexpectedPacket(Packet par1Packet) {}
 
     public void handleErrorMessage(String par1Str, Object[] par2ArrayOfObj) {}
@@ -105,9 +95,6 @@ public abstract class NetHandler
         this.unexpectedPacket(par1Packet18Animation);
     }
 
-    /**
-     * runs registerPacket on the given Packet19EntityAction
-     */
     public void handleEntityAction(Packet19EntityAction par1Packet19EntityAction)
     {
         this.unexpectedPacket(par1Packet19EntityAction);
@@ -143,25 +130,16 @@ public abstract class NetHandler
         this.unexpectedPacket(par1Packet6SpawnPosition);
     }
 
-    /**
-     * Packet handler
-     */
     public void handleEntityVelocity(Packet28EntityVelocity par1Packet28EntityVelocity)
     {
         this.unexpectedPacket(par1Packet28EntityVelocity);
     }
 
-    /**
-     * Packet handler
-     */
     public void handleEntityMetadata(Packet40EntityMetadata par1Packet40EntityMetadata)
     {
         this.unexpectedPacket(par1Packet40EntityMetadata);
     }
 
-    /**
-     * Packet handler
-     */
     public void handleAttachEntity(Packet39AttachEntity par1Packet39AttachEntity)
     {
         this.unexpectedPacket(par1Packet39AttachEntity);
@@ -172,25 +150,16 @@ public abstract class NetHandler
         this.unexpectedPacket(par1Packet7UseEntity);
     }
 
-    /**
-     * Packet handler
-     */
     public void handleEntityStatus(Packet38EntityStatus par1Packet38EntityStatus)
     {
         this.unexpectedPacket(par1Packet38EntityStatus);
     }
 
-    /**
-     * Recieves player health from the server and then proceeds to set it locally on the client.
-     */
     public void handleUpdateHealth(Packet8UpdateHealth par1Packet8UpdateHealth)
     {
         this.unexpectedPacket(par1Packet8UpdateHealth);
     }
 
-    /**
-     * respawns the player
-     */
     public void handleRespawn(Packet9Respawn par1Packet9Respawn)
     {
         this.unexpectedPacket(par1Packet9Respawn);
@@ -226,9 +195,6 @@ public abstract class NetHandler
         this.unexpectedPacket(par1Packet104WindowItems);
     }
 
-    /**
-     * Updates Client side signs
-     */
     public void handleUpdateSign(Packet130UpdateSign par1Packet130UpdateSign)
     {
         this.unexpectedPacket(par1Packet130UpdateSign);
@@ -249,9 +215,6 @@ public abstract class NetHandler
         this.unexpectedPacket(par1Packet106Transaction);
     }
 
-    /**
-     * Packet handler
-     */
     public void handleEntityPainting(Packet25EntityPainting par1Packet25EntityPainting)
     {
         this.unexpectedPacket(par1Packet25EntityPainting);
@@ -262,9 +225,6 @@ public abstract class NetHandler
         this.unexpectedPacket(par1Packet54PlayNoteBlock);
     }
 
-    /**
-     * Increment player statistics
-     */
     public void handleStatistic(Packet200Statistic par1Packet200Statistic)
     {
         this.unexpectedPacket(par1Packet200Statistic);
@@ -280,17 +240,11 @@ public abstract class NetHandler
         this.unexpectedPacket(par1Packet70GameEvent);
     }
 
-    /**
-     * Handles weather packet
-     */
     public void handleWeather(Packet71Weather par1Packet71Weather)
     {
         this.unexpectedPacket(par1Packet71Weather);
     }
 
-    /**
-     * Contains logic for handling packets containing arbitrary unique item data. Currently this is only for maps.
-     */
     public void handleMapData(Packet131MapData par1Packet131MapData)
     {
         this.unexpectedPacket(par1Packet131MapData);
@@ -301,65 +255,41 @@ public abstract class NetHandler
         this.unexpectedPacket(par1Packet61DoorChange);
     }
 
-    /**
-     * Handle a server ping packet.
-     */
     public void handleServerPing(Packet254ServerPing par1Packet254ServerPing)
     {
         this.unexpectedPacket(par1Packet254ServerPing);
     }
 
-    /**
-     * Handle an entity effect packet.
-     */
     public void handleEntityEffect(Packet41EntityEffect par1Packet41EntityEffect)
     {
         this.unexpectedPacket(par1Packet41EntityEffect);
     }
 
-    /**
-     * Handle a remove entity effect packet.
-     */
     public void handleRemoveEntityEffect(Packet42RemoveEntityEffect par1Packet42RemoveEntityEffect)
     {
         this.unexpectedPacket(par1Packet42RemoveEntityEffect);
     }
 
-    /**
-     * Handle a player information packet.
-     */
     public void handlePlayerInfo(Packet201PlayerInfo par1Packet201PlayerInfo)
     {
         this.unexpectedPacket(par1Packet201PlayerInfo);
     }
 
-    /**
-     * Handle a keep alive packet.
-     */
     public void handleKeepAlive(Packet0KeepAlive par1Packet0KeepAlive)
     {
         this.unexpectedPacket(par1Packet0KeepAlive);
     }
 
-    /**
-     * Handle an experience packet.
-     */
     public void handleExperience(Packet43Experience par1Packet43Experience)
     {
         this.unexpectedPacket(par1Packet43Experience);
     }
 
-    /**
-     * Handle a creative slot packet.
-     */
     public void handleCreativeSetSlot(Packet107CreativeSetSlot par1Packet107CreativeSetSlot)
     {
         this.unexpectedPacket(par1Packet107CreativeSetSlot);
     }
 
-    /**
-     * Handle a entity experience orb packet.
-     */
     public void handleEntityExpOrb(Packet26EntityExpOrb par1Packet26EntityExpOrb)
     {
         this.unexpectedPacket(par1Packet26EntityExpOrb);
@@ -379,9 +309,6 @@ public abstract class NetHandler
         this.unexpectedPacket(par1Packet132TileEntityData);
     }
 
-    /**
-     * Handle a player abilities packet.
-     */
     public void handlePlayerAbilities(Packet202PlayerAbilities par1Packet202PlayerAbilities)
     {
         this.unexpectedPacket(par1Packet202PlayerAbilities);
@@ -414,9 +341,6 @@ public abstract class NetHandler
         this.unexpectedPacket(par1Packet56MapChunks);
     }
 
-    /**
-     * packet.processPacket is only called if this returns true
-     */
     public boolean canProcessPackets()
     {
         return false;

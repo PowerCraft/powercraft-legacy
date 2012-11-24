@@ -38,7 +38,6 @@ import org.bouncycastle.jce.provider.BouncyCastleProvider;
 
 public class CryptManager
 {
-    /** ISO_8859_1 */
     public static final Charset charSet = Charset.forName("ISO_8859_1");
 
     @SideOnly(Side.CLIENT)
@@ -157,9 +156,6 @@ public class CryptManager
         return null;
     }
 
-    /**
-     * Creates the Chiper Instance.
-     */
     private static Cipher createTheChiperInstance(int par0, String par1Str, Key par2Key)
     {
         try

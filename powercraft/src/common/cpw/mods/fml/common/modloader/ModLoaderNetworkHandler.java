@@ -7,7 +7,6 @@ import cpw.mods.fml.common.network.NetworkModHandler;
 
 public class ModLoaderNetworkHandler extends NetworkModHandler
 {
-
     private BaseModProxy baseMod;
     public ModLoaderNetworkHandler(ModLoaderModContainer mlmc)
     {

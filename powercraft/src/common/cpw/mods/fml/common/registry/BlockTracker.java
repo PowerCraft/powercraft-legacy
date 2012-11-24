@@ -13,9 +13,10 @@ class BlockTracker
     {
         allocatedBlocks = new BitSet(4096);
         allocatedBlocks.set(0, 4096);
+
         for (int i = 0; i < Block.blocksList.length; i++)
         {
-            if (Block.blocksList[i]!=null)
+            if (Block.blocksList[i] != null)
             {
                 allocatedBlocks.clear(i);
             }
@@ -44,6 +45,4 @@ class BlockTracker
     {
         allocatedBlocks.clear(id);
     }
-
-
 }

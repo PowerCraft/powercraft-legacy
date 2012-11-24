@@ -1,0 +1,83 @@
+package powercraft.light;
+
+import net.minecraft.src.Block;
+import net.minecraft.src.CreativeTabs;
+import net.minecraft.src.IBlockAccess;
+import net.minecraft.src.Material;
+import net.minecraft.src.TileEntity;
+import net.minecraft.src.World;
+import powercraft.core.PC_BeamTracer;
+import powercraft.core.PC_BeamTracer.result;
+import powercraft.core.PC_Block;
+import powercraft.core.PC_Color;
+import powercraft.core.PC_CoordI;
+import powercraft.core.PC_IBeamSpecialHandling;
+import powercraft.core.PC_IBlockRenderer;
+import powercraft.core.PC_Renderer;
+
+public class PCli_BlockPrism extends PC_Block implements
+		PC_IBeamSpecialHandling, PC_IBlockRenderer {
+
+	public PCli_BlockPrism(int id) {
+		super(id, Material.glass);
+		float f = 0.4F;
+		float f1 = 1.0F;
+		setBlockBounds(0.5F - f, 0.1F, 0.5F - f, 0.5F + f, f1 - 0.1F, 0.5F + f);
+		setHardness(1.0F);
+		setResistance(4.0F);
+		setStepSound(Block.soundStoneFootstep);
+		setCreativeTab(CreativeTabs.tabDecorations);
+	}
+
+	@Override
+	public String getDefaultName() {
+		return "Prism";
+	}
+	
+	@Override
+	public TileEntity createNewTileEntity(World world) {
+		return new PCli_TileEntityPrism();
+	}
+	
+	@Override
+	public boolean renderAsNormalBlock() {
+		return false;
+	}
+
+	@Override
+	public boolean getBlocksMovement(IBlockAccess par1IBlockAccess, int par2, int par3, int i) {
+		return true;
+	}
+
+	@Override
+	public boolean isOpaqueCube() {
+		return false;
+	}
+	
+	@Override
+	public void renderInventoryBlock(Block block, int metadata, int modelID, Object renderer) {
+		Block ice = Block.ice;
+		float px = 0.0625F;
+		ice.setBlockBounds(3 * px, 3 * px, 3 * px, 12 * px, 12 * px, 12 * px);
+		PC_Renderer.renderInvBox(renderer, ice, 0);
+		ice.setBlockBounds(4 * px, 4 * px, 2 * px, 11 * px, 11 * px, 13 * px);
+		PC_Renderer.renderInvBox(renderer, ice, 0);
+		ice.setBlockBounds(2 * px, 4 * px, 4 * px, 13 * px, 11 * px, 11 * px);
+		PC_Renderer.renderInvBox(renderer, ice, 0);
+		ice.setBlockBounds(4 * px, 2 * px, 4 * px, 11 * px, 13 * px, 11 * px);
+		PC_Renderer.renderInvBox(renderer, ice, 0);
+		ice.setBlockBounds(0, 0, 0, 1, 1, 1);
+	}
+
+	@Override
+	public void renderWorldBlock(IBlockAccess world, int x, int y, int z,Block block, int modelId, Object renderer) {
+		
+	}
+
+	@Override
+	public result onHitByBeamTracer(PC_BeamTracer beamTracer, PC_CoordI cnt, PC_CoordI move, PC_Color color, float strength, int distanceToMove) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+}

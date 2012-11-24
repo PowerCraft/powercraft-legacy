@@ -12,15 +12,10 @@ import net.minecraftforge.event.entity.living.LivingSpecialSpawnEvent;
 
 public final class SpawnerAnimals
 {
-    /** The 17x17 area around the player where mobs can spawn */
     private static HashMap eligibleChunksForSpawning = new HashMap();
 
-    /** An array of entity classes that spawn at night. */
     protected static final Class[] nightSpawnEntities = new Class[] {EntitySpider.class, EntityZombie.class, EntitySkeleton.class};
 
-    /**
-     * Given a chunk, find a random position in it.
-     */
     protected static ChunkPosition getRandomSpawningPointInChunk(World par0World, int par1, int par2)
     {
         Chunk var3 = par0World.getChunkFromChunkCoords(par1, par2);
@@ -30,10 +25,6 @@ public final class SpawnerAnimals
         return new ChunkPosition(var4, var6, var5);
     }
 
-    /**
-     * adds all chunks within the spawn radius of the players to eligibleChunksForSpawning. pars: the world,
-     * hostileCreatures, passiveCreatures. returns number of eligible chunks.
-     */
     public static final int findChunksForSpawning(WorldServer par0WorldServer, boolean par1, boolean par2, boolean par3)
     {
         if (!par1 && !par2)
@@ -81,7 +72,7 @@ public final class SpawnerAnimals
             {
                 EnumCreatureType var35 = var33[var34];
 
-                if ((!var35.getPeacefulCreature() || par2) && (var35.getPeacefulCreature() || par1) && (!var35.func_82705_e() || par3) && par0WorldServer.countEntities(var35.getCreatureClass()) <= var35.getMaxNumberOfCreature() * eligibleChunksForSpawning.size() / 256)
+                if ((!var35.getPeacefulCreature() || par2) && (var35.getPeacefulCreature() || par1) && (!var35.getAnimal() || par3) && par0WorldServer.countEntities(var35.getCreatureClass()) <= var35.getMaxNumberOfCreature() * eligibleChunksForSpawning.size() / 256)
                 {
                     Iterator var37 = eligibleChunksForSpawning.keySet().iterator();
                     ArrayList<ChunkCoordIntPair> tmp = new ArrayList(eligibleChunksForSpawning.keySet());
@@ -199,14 +190,11 @@ public final class SpawnerAnimals
         }
     }
 
-    /**
-     * Returns whether or not the specified creature type can spawn at the specified location.
-     */
     public static boolean canCreatureTypeSpawnAtLocation(EnumCreatureType par0EnumCreatureType, World par1World, int par2, int par3, int par4)
     {
         if (par0EnumCreatureType.getCreatureMaterial() == Material.water)
         {
-            return par1World.getBlockMaterial(par2, par3, par4).isLiquid() && !par1World.isBlockNormalCube(par2, par3 + 1, par4);
+            return par1World.getBlockMaterial(par2, par3, par4).isLiquid() && par1World.getBlockMaterial(par2, par3 - 1, par4).isLiquid() && !par1World.isBlockNormalCube(par2, par3 + 1, par4);
         }
         else if (!par1World.doesBlockHaveSolidTopSurface(par2, par3 - 1, par4))
         {
@@ -220,9 +208,6 @@ public final class SpawnerAnimals
         }
     }
 
-    /**
-     * determines if a skeleton spawns on a spider, and if a sheep is a different color
-     */
     private static void creatureSpecificInit(EntityLiving par0EntityLiving, World par1World, float par2, float par3, float par4)
     {
         if (MinecraftForge.EVENT_BUS.post(new LivingSpecialSpawnEvent(par0EntityLiving, par1World, par2, par3, par4)))
@@ -230,12 +215,9 @@ public final class SpawnerAnimals
             return;
         }
 
-        par0EntityLiving.func_82163_bD();
+        par0EntityLiving.initCreature();
     }
 
-    /**
-     * Called during chunk generation to spawn initial creatures.
-     */
     public static void performWorldGenSpawning(World par0World, BiomeGenBase par1BiomeGenBase, int par2, int par3, int par4, int par5, Random par6Random)
     {
         List var7 = par1BiomeGenBase.getSpawnableList(EnumCreatureType.creature);

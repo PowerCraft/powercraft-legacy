@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
 
 public abstract class ModelBase
 {
@@ -40,6 +41,11 @@ public abstract class ModelBase
      * and third as in the setRotationAngles method.
      */
     public void setLivingAnimations(EntityLiving par1EntityLiving, float par2, float par3, float par4) {}
+
+    public ModelRenderer func_85181_a(Random par1Random)
+    {
+        return (ModelRenderer)this.boxList.get(par1Random.nextInt(this.boxList.size()));
+    }
 
     protected void setTextureOffset(String par1Str, int par2, int par3)
     {

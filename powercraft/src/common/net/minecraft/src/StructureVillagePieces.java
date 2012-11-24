@@ -22,7 +22,6 @@ public class StructureVillagePieces
         var2.add(new StructureVillagePieceWeight(ComponentVillageHouse2.class, 15, MathHelper.getRandomIntegerInRange(par0Random, 0, 1 + par1)));
         var2.add(new StructureVillagePieceWeight(ComponentVillageHouse3.class, 8, MathHelper.getRandomIntegerInRange(par0Random, 0 + par1, 3 + par1 * 2)));
         VillagerRegistry.addExtraVillageComponents(var2, par0Random, par1);
-
         Iterator var3 = var2.iterator();
 
         while (var3.hasNext())
@@ -104,9 +103,6 @@ public class StructureVillagePieces
         return (ComponentVillage)var10;
     }
 
-    /**
-     * attempts to find a next Village Component to be spawned
-     */
     private static ComponentVillage getNextVillageComponent(ComponentVillageStartPiece par0ComponentVillageStartPiece, List par1List, Random par2Random, int par3, int par4, int par5, int par6, int par7)
     {
         int var8 = func_75079_a(par0ComponentVillageStartPiece.structureVillageWeightedPieceList);
@@ -168,9 +164,6 @@ public class StructureVillagePieces
         }
     }
 
-    /**
-     * attempts to find a next Structure Component to be spawned, private Village function
-     */
     private static StructureComponent getNextVillageStructureComponent(ComponentVillageStartPiece par0ComponentVillageStartPiece, List par1List, Random par2Random, int par3, int par4, int par5, int par6, int par7)
     {
         if (par7 > 50)
@@ -240,9 +233,6 @@ public class StructureVillagePieces
         }
     }
 
-    /**
-     * attempts to find a next Structure Component to be spawned
-     */
     static StructureComponent getNextStructureComponent(ComponentVillageStartPiece par0ComponentVillageStartPiece, List par1List, Random par2Random, int par3, int par4, int par5, int par6, int par7)
     {
         return getNextVillageStructureComponent(par0ComponentVillageStartPiece, par1List, par2Random, par3, par4, par5, par6, par7);

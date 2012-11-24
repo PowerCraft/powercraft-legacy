@@ -6,7 +6,7 @@ import java.util.List;
 
 public class BlockWall extends Block
 {
-    public static final String[] field_82539_a = new String[] {"normal", "mossy"};
+    public static final String[] types = new String[] {"normal", "mossy"};
 
     public BlockWall(int par1, Block par2Block)
     {
@@ -17,25 +17,16 @@ public class BlockWall extends Block
         this.setCreativeTab(CreativeTabs.tabBlock);
     }
 
-    /**
-     * From the specified side and block metadata retrieves the blocks texture. Args: side, metadata
-     */
     public int getBlockTextureFromSideAndMetadata(int par1, int par2)
     {
         return par2 == 1 ? Block.cobblestoneMossy.blockIndexInTexture : super.getBlockTextureFromSide(par1);
     }
 
-    /**
-     * The type of render function that is called for this block
-     */
     public int getRenderType()
     {
         return 32;
     }
 
-    /**
-     * If this block doesn't render as an ordinary block it will return False (examples: signs, buttons, stairs, etc)
-     */
     public boolean renderAsNormalBlock()
     {
         return false;
@@ -46,24 +37,17 @@ public class BlockWall extends Block
         return false;
     }
 
-    /**
-     * Is this block (a) opaque and (b) a full 1m cube?  This determines whether or not to render the shared face of two
-     * adjacent blocks and also whether the player can attach torches, redstone wire, etc to this block.
-     */
     public boolean isOpaqueCube()
     {
         return false;
     }
 
-    /**
-     * Updates the blocks bounds based on its current state. Args: world, x, y, z
-     */
     public void setBlockBoundsBasedOnState(IBlockAccess par1IBlockAccess, int par2, int par3, int par4)
     {
-        boolean var5 = this.func_82538_d(par1IBlockAccess, par2, par3, par4 - 1);
-        boolean var6 = this.func_82538_d(par1IBlockAccess, par2, par3, par4 + 1);
-        boolean var7 = this.func_82538_d(par1IBlockAccess, par2 - 1, par3, par4);
-        boolean var8 = this.func_82538_d(par1IBlockAccess, par2 + 1, par3, par4);
+        boolean var5 = this.canConnectWallTo(par1IBlockAccess, par2, par3, par4 - 1);
+        boolean var6 = this.canConnectWallTo(par1IBlockAccess, par2, par3, par4 + 1);
+        boolean var7 = this.canConnectWallTo(par1IBlockAccess, par2 - 1, par3, par4);
+        boolean var8 = this.canConnectWallTo(par1IBlockAccess, par2 + 1, par3, par4);
         float var9 = 0.25F;
         float var10 = 0.75F;
         float var11 = 0.25F;
@@ -106,45 +90,14 @@ public class BlockWall extends Block
         this.setBlockBounds(var9, 0.0F, var11, var10, var13, var12);
     }
 
-    /**
-     * Returns a bounding box from the pool of bounding boxes (this means this box can change after the pool has been
-     * cleared to be reused)
-     */
     public AxisAlignedBB getCollisionBoundingBoxFromPool(World par1World, int par2, int par3, int par4)
     {
-        boolean var5 = this.func_82538_d(par1World, par2, par3, par4 - 1);
-        boolean var6 = this.func_82538_d(par1World, par2, par3, par4 + 1);
-        boolean var7 = this.func_82538_d(par1World, par2 - 1, par3, par4);
-        boolean var8 = this.func_82538_d(par1World, par2 + 1, par3, par4);
-        float var9 = 0.375F;
-        float var10 = 0.625F;
-        float var11 = 0.375F;
-        float var12 = 0.625F;
-
-        if (var5)
-        {
-            var11 = 0.0F;
-        }
-
-        if (var6)
-        {
-            var12 = 1.0F;
-        }
-
-        if (var7)
-        {
-            var9 = 0.0F;
-        }
-
-        if (var8)
-        {
-            var10 = 1.0F;
-        }
-
-        return AxisAlignedBB.getAABBPool().addOrModifyAABBInPool((double)((float)par2 + var9), (double)par3, (double)((float)par4 + var11), (double)((float)par2 + var10), (double)((float)par3 + 1.5F), (double)((float)par4 + var12));
+        this.setBlockBoundsBasedOnState(par1World, par2, par3, par4);
+        this.maxY = 1.5D;
+        return super.getCollisionBoundingBoxFromPool(par1World, par2, par3, par4);
     }
 
-    public boolean func_82538_d(IBlockAccess par1IBlockAccess, int par2, int par3, int par4)
+    public boolean canConnectWallTo(IBlockAccess par1IBlockAccess, int par2, int par3, int par4)
     {
         int var5 = par1IBlockAccess.getBlockId(par2, par3, par4);
 
@@ -161,18 +114,12 @@ public class BlockWall extends Block
 
     @SideOnly(Side.CLIENT)
 
-    /**
-     * returns a list of blocks with the same ID, but different meta (eg: wood returns 4 blocks)
-     */
     public void getSubBlocks(int par1, CreativeTabs par2CreativeTabs, List par3List)
     {
         par3List.add(new ItemStack(par1, 1, 0));
         par3List.add(new ItemStack(par1, 1, 1));
     }
 
-    /**
-     * Determines the damage on the item the block drops. Used in cloth and wood.
-     */
     public int damageDropped(int par1)
     {
         return par1;
@@ -180,12 +127,8 @@ public class BlockWall extends Block
 
     @SideOnly(Side.CLIENT)
 
-    /**
-     * Returns true if the given side of this block type should be rendered, if the adjacent block is at the given
-     * coordinates.  Args: blockAccess, x, y, z, side
-     */
-    public boolean shouldSideBeRendered(IBlockAccess var1, int var2, int var3, int var4, int var5)
+    public boolean shouldSideBeRendered(IBlockAccess par1IBlockAccess, int par2, int par3, int par4, int par5)
     {
-        return var5 == 0 ? super.shouldSideBeRendered(var1, var2, var3, var4, var5) : true;
+        return par5 == 0 ? super.shouldSideBeRendered(par1IBlockAccess, par2, par3, par4, par5) : true;
     }
 }

@@ -42,7 +42,6 @@ public class WorldGenForest extends WorldGenerator
                         if (var8 >= 0 && var8 < 256)
                         {
                             var12 = par1World.getBlockId(var10, var8, var11);
-
                             Block block = Block.blocksList[var12];
 
                             if (var12 != 0 && (block != null && !block.isLeaves(par1World, var10,  var8, var11)))
@@ -83,11 +82,10 @@ public class WorldGenForest extends WorldGenerator
                             for (int var14 = par5 - var11; var14 <= par5 + var11; ++var14)
                             {
                                 int var15 = var14 - par5;
-
                                 Block block = Block.blocksList[par1World.getBlockId(var12, var16, var14)];
-                                
-                                if ((Math.abs(var13) != var11 || Math.abs(var15) != var11 || par2Random.nextInt(2) != 0 && var10 != 0) && 
-                                    (block == null || block.canBeReplacedByLeaves(par1World, var12, var16, var14)))
+
+                                if ((Math.abs(var13) != var11 || Math.abs(var15) != var11 || par2Random.nextInt(2) != 0 && var10 != 0) &&
+                                        (block == null || block.canBeReplacedByLeaves(par1World, var12, var16, var14)))
                                 {
                                     this.setBlockAndMetadata(par1World, var12, var16, var14, Block.leaves.blockID, 2);
                                 }
@@ -98,7 +96,6 @@ public class WorldGenForest extends WorldGenerator
                     for (var16 = 0; var16 < var6; ++var16)
                     {
                         var10 = par1World.getBlockId(par3, par4 + var16, par5);
-
                         Block block = Block.blocksList[var10];
 
                         if (var10 == 0 || block == null || block.isLeaves(par1World, par3, par4 + var16, par5))

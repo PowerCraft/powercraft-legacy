@@ -7,8 +7,9 @@ import java.util.List;
 
 public class EntityWitch extends EntityMob implements IRangedAttackMob
 {
-    private static final int[] field_82199_d = new int[] {Item.lightStoneDust.shiftedIndex, Item.sugar.shiftedIndex, Item.redstone.shiftedIndex, Item.spiderEye.shiftedIndex, Item.glassBottle.shiftedIndex, Item.gunpowder.shiftedIndex, Item.stick.shiftedIndex, Item.stick.shiftedIndex};
-    private int field_82200_e = 0;
+    private static final int[] witchDrops = new int[] {Item.lightStoneDust.shiftedIndex, Item.sugar.shiftedIndex, Item.redstone.shiftedIndex, Item.spiderEye.shiftedIndex, Item.glassBottle.shiftedIndex, Item.gunpowder.shiftedIndex, Item.stick.shiftedIndex, Item.stick.shiftedIndex};
+
+    private int witchAttackTimer = 0;
 
     public EntityWitch(World par1World)
     {
@@ -30,36 +31,27 @@ public class EntityWitch extends EntityMob implements IRangedAttackMob
         this.getDataWatcher().addObject(21, Byte.valueOf((byte)0));
     }
 
-    /**
-     * Returns the sound this mob makes while it's alive.
-     */
     protected String getLivingSound()
     {
         return "mob.witch.idle";
     }
 
-    /**
-     * Returns the sound this mob makes when it is hurt.
-     */
     protected String getHurtSound()
     {
         return "mob.witch.hurt";
     }
 
-    /**
-     * Returns the sound this mob makes on death.
-     */
     protected String getDeathSound()
     {
         return "mob.witch.death";
     }
 
-    public void func_82197_f(boolean par1)
+    public void setAggressive(boolean par1)
     {
         this.getDataWatcher().updateObject(21, Byte.valueOf((byte)(par1 ? 1 : 0)));
     }
 
-    public boolean func_82198_m()
+    public boolean getAggressive()
     {
         return this.getDataWatcher().getWatchableObjectByte(21) == 1;
     }
@@ -69,29 +61,22 @@ public class EntityWitch extends EntityMob implements IRangedAttackMob
         return 26;
     }
 
-    /**
-     * Returns true if the newer Entity AI code should be run
-     */
     public boolean isAIEnabled()
     {
         return true;
     }
 
-    /**
-     * Called frequently so the entity can update its state every tick as required. For example, zombies and skeletons
-     * use this to react to sunlight and start to burn.
-     */
     public void onLivingUpdate()
     {
         if (!this.worldObj.isRemote)
         {
-            if (this.func_82198_m())
+            if (this.getAggressive())
             {
-                if (this.field_82200_e-- <= 0)
+                if (this.witchAttackTimer-- <= 0)
                 {
-                    this.func_82197_f(false);
+                    this.setAggressive(false);
                     ItemStack var1 = this.getHeldItem();
-                    this.func_70062_b(0, (ItemStack)null);
+                    this.setCurrentItemOrArmor(0, (ItemStack)null);
 
                     if (var1 != null && var1.itemID == Item.potion.shiftedIndex)
                     {
@@ -133,9 +118,9 @@ public class EntityWitch extends EntityMob implements IRangedAttackMob
 
                 if (var5 > -1)
                 {
-                    this.func_70062_b(0, new ItemStack(Item.potion, 1, var5));
-                    this.field_82200_e = this.getHeldItem().getMaxItemUseDuration();
-                    this.func_82197_f(true);
+                    this.setCurrentItemOrArmor(0, new ItemStack(Item.potion, 1, var5));
+                    this.witchAttackTimer = this.getHeldItem().getMaxItemUseDuration();
+                    this.setAggressive(true);
                 }
             }
 
@@ -148,9 +133,6 @@ public class EntityWitch extends EntityMob implements IRangedAttackMob
         super.onLivingUpdate();
     }
 
-    /**
-     * Reduces damage, depending on potions
-     */
     protected int applyPotionDamageCalculations(DamageSource par1DamageSource, int par2)
     {
         par2 = super.applyPotionDamageCalculations(par1DamageSource, par2);
@@ -160,7 +142,7 @@ public class EntityWitch extends EntityMob implements IRangedAttackMob
             par2 = 0;
         }
 
-        if (par1DamageSource.func_82725_o())
+        if (par1DamageSource.isMagicDamage())
         {
             par2 = (int)((double)par2 * 0.15D);
         }
@@ -184,15 +166,11 @@ public class EntityWitch extends EntityMob implements IRangedAttackMob
         }
     }
 
-    /**
-     * This method returns a value to be applied directly to entity speed, this factor is less than 1 when a slowdown
-     * potion effect is applied, more than 1 when a haste potion effect is applied and 2 for fleeing entities.
-     */
     public float getSpeedModifier()
     {
         float var1 = super.getSpeedModifier();
 
-        if (this.func_82198_m())
+        if (this.getAggressive())
         {
             var1 *= 0.75F;
         }
@@ -200,9 +178,6 @@ public class EntityWitch extends EntityMob implements IRangedAttackMob
         return var1;
     }
 
-    /**
-     * Drop 0-2 items of this living's type
-     */
     protected void dropFewItems(boolean par1, int par2)
     {
         int var3 = this.rand.nextInt(3) + 1;
@@ -210,7 +185,7 @@ public class EntityWitch extends EntityMob implements IRangedAttackMob
         for (int var4 = 0; var4 < var3; ++var4)
         {
             int var5 = this.rand.nextInt(3);
-            int var6 = field_82199_d[this.rand.nextInt(field_82199_d.length)];
+            int var6 = witchDrops[this.rand.nextInt(witchDrops.length)];
 
             if (par2 > 0)
             {
@@ -224,9 +199,9 @@ public class EntityWitch extends EntityMob implements IRangedAttackMob
         }
     }
 
-    public void func_82196_d(EntityLiving par1EntityLiving)
+    public void attackEntityWithRangedAttack(EntityLiving par1EntityLiving)
     {
-        if (!this.func_82198_m())
+        if (!this.getAggressive())
         {
             EntityPotion var2 = new EntityPotion(this.worldObj, this, 32732);
             var2.rotationPitch -= -20.0F;
@@ -237,15 +212,15 @@ public class EntityWitch extends EntityMob implements IRangedAttackMob
 
             if (var9 >= 8.0F && !par1EntityLiving.isPotionActive(Potion.moveSlowdown))
             {
-                var2.func_82340_a(32698);
+                var2.setPotionDamage(32698);
             }
             else if (par1EntityLiving.getHealth() >= 8 && !par1EntityLiving.isPotionActive(Potion.poison))
             {
-                var2.func_82340_a(32660);
+                var2.setPotionDamage(32660);
             }
             else if (var9 <= 3.0F && !par1EntityLiving.isPotionActive(Potion.weakness) && this.rand.nextFloat() < 0.25F)
             {
-                var2.func_82340_a(32696);
+                var2.setPotionDamage(32696);
             }
 
             var2.setThrowableHeading(var3, var5 + (double)(var9 * 0.2F), var7, 0.75F, 8.0F);

@@ -1,0 +1,26 @@
+package powercraft.light;
+
+import net.minecraft.src.Block;
+import net.minecraft.src.CreativeTabs;
+import net.minecraft.src.Material;
+import powercraft.core.PC_Block;
+
+public class PCli_BlockLaserSensor extends PC_Block {
+
+	public PCli_BlockLaserSensor(int id) {
+		super(id, 2, Material.ground);
+		setStepSound(Block.soundMetalFootstep);
+        setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 1.0F, 1.0F);
+        setHardness(0.7F);
+        setResistance(10.0F);
+        setCreativeTab(CreativeTabs.tabDecorations);
+	}
+
+	@Override
+	public String getDefaultName() {
+		return "Laser Sensor";
+	}
+
+	
+	
+}

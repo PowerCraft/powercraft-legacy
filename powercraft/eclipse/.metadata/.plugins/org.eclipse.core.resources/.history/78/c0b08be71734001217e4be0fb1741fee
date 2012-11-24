@@ -1,0 +1,138 @@
+package powercraft.light;
+
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.ObjectOutputStream;
+import java.util.List;
+import java.util.Random;
+
+import net.minecraft.src.Block;
+import net.minecraft.src.CompressedStreamTools;
+import net.minecraft.src.Entity;
+import net.minecraft.src.EntityPlayer;
+import net.minecraft.src.ItemStack;
+import net.minecraft.src.NBTTagCompound;
+import net.minecraft.src.World;
+import powercraft.core.PC_BeamTracer;
+import powercraft.core.PC_Color;
+import powercraft.core.PC_CoordI;
+import powercraft.core.PC_IBeamHandler;
+import powercraft.core.PC_InvUtils;
+import powercraft.core.PC_TileEntity;
+import powercraft.core.PC_Utils;
+
+public class PCli_TileEntityLaser extends PC_TileEntity implements PC_IBeamHandler
+{
+    private boolean active = false;
+    private ItemStack itemstack;
+    private PC_BeamTracer laser;
+
+	public boolean isActive()
+    {
+        return active;
+    }
+
+    @Override
+    public boolean canUpdate()
+    {
+        return true;
+    }
+
+    @Override
+    public void updateEntity()
+    {
+    	if(laser==null){
+	    	laser = new PC_BeamTracer(worldObj, this);
+	    	laser.setStartCoord(getCoord());
+	    	int metadata = PC_Utils.getMD(worldObj, xCoord, yCoord, zCoord);
+	    	laser.setStartMove(metadata == 4?1:metadata == 5?-1:0, 0, metadata == 2?1:metadata == 3?-1:0);
+	    	laser.setColor(PCli_ItemLaserComposition.getColorForItemStack(itemstack));
+	    	laser.setTotalLengthLimit(PCli_ItemLaserComposition.getLengthLimit(itemstack));
+	    	laser.setDetectEntities(true);
+    	}
+    	laser.flash();
+    }
+
+    @Override
+    public void readFromNBT(NBTTagCompound nbttagcompound)
+    {
+        super.readFromNBT(nbttagcompound);
+        active = nbttagcompound.getBoolean("on");
+        itemstack = null;
+        if(nbttagcompound.hasKey("itemstack")){
+        	itemstack = ItemStack.loadItemStackFromNBT(nbttagcompound.getCompoundTag("itemstack"));
+        	laser = null;
+        }
+    }
+
+    @Override
+    public void writeToNBT(NBTTagCompound nbttagcompound)
+    {
+        super.writeToNBT(nbttagcompound);
+        nbttagcompound.setBoolean("on", active);
+        if(itemstack!=null){
+	        NBTTagCompound nbttag = new NBTTagCompound();
+	        itemstack.writeToNBT(nbttag);
+	        nbttagcompound.setCompoundTag("itemstack", nbttag);
+        }
+    }
+
+	@Override
+	public boolean onBlockHit(PC_BeamTracer beamTracer, Block block, PC_CoordI coord) {
+		if(!block.isOpaqueCube())
+			return false;
+		return true;
+	}
+
+	@Override
+	public boolean onEntityHit(PC_BeamTracer beamTracer, Entity entity, PC_CoordI coord) {
+		return true;
+	}
+
+	public ItemStack getItemStack() {
+		return itemstack;
+	}
+	
+	public void setItemStack(ItemStack itemstack) {
+		this.itemstack = itemstack;
+		laser = null;
+	}
+
+	@Override
+	public void setData(Object[] o) {
+		int p = 0;
+
+        while (p < o.length)
+        {
+            String var = (String)o[p++];
+
+            if (var.equals("nbt"))
+            {
+            	try {
+					readFromNBT(CompressedStreamTools.decompress((byte[])o[p++]));
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+            }
+   
+        }
+	}
+
+	@Override
+	public Object[] getData() {
+		NBTTagCompound nbt = new NBTTagCompound("PCPacket");
+		writeToNBT(nbt);
+		try {
+			return new Object[]{
+				"nbt", CompressedStreamTools.compress(nbt)
+			};
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return null;
+	}
+	
+}
+

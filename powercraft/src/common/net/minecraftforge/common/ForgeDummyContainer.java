@@ -1,5 +1,6 @@
 package net.minecraftforge.common;
 
+import java.io.File;
 import java.util.Arrays;
 import java.util.Map;
 
@@ -33,18 +34,32 @@ public class ForgeDummyContainer extends DummyModContainer implements WorldAcces
         meta.credits     = "Made possible with help from many people";
         meta.authorList  = Arrays.asList("LexManos", "Eloraam", "Spacetoad");
         meta.description = "Minecraft Forge is a common open source API allowing a broad range of mods " +
-                           "to work cooperatively together. It allows many mods to be created without " +
-                           "them editing the main Minecraft code.";
+                "to work cooperatively together. It allows many mods to be created without " +
+                "them editing the main Minecraft code.";
         meta.url         = "http://MinecraftForge.net";
         meta.updateUrl   = "http://MinecraftForge.net/forum/index.php/topic,5.0.html";
         meta.screenshots = new String[0];
         meta.logoFile    = "/forge_logo.png";
+        Configuration config = new Configuration(new File(Loader.instance().getConfigDir(), "forge.cfg"));
+
+        if (!config.isChild)
+        {
+            config.load();
+            Property enableGlobalCfg = config.get(Configuration.CATEGORY_GENERAL, "enableGlobalConfig", false);
+
+            if (enableGlobalCfg.getBoolean(false))
+            {
+                Configuration.enableGlobalConfig();
+            }
+
+            config.save();
+        }
     }
 
     @Override
     public boolean registerBus(EventBus bus, LoadController controller)
     {
-    	bus.register(this);
+        bus.register(this);
         return true;
     }
 
@@ -53,10 +68,11 @@ public class ForgeDummyContainer extends DummyModContainer implements WorldAcces
     {
         ForgeChunkManager.captureConfig(evt.getModConfigurationDirectory());
     }
+
     @Subscribe
     public void postInit(FMLPostInitializationEvent evt)
     {
-    	ForgeChunkManager.loadConfiguration();
+        ForgeChunkManager.loadConfiguration();
     }
 
     @Override

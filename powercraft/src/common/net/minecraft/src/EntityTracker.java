@@ -20,16 +20,13 @@ public class EntityTracker
         this.entityViewDistance = par1WorldServer.getMinecraftServer().getConfigurationManager().getEntityViewDistance();
     }
 
-    /**
-     * if entity is a player sends all tracked events to the player, otherwise, adds with a visibility and update arate
-     * based on the class type
-     */
     public void addEntityToTracker(Entity par1Entity)
     {
         if (EntityRegistry.instance().tryTrackingEntity(this, par1Entity))
         {
             return;
         }
+
         if (par1Entity instanceof EntityPlayerMP)
         {
             this.addEntityToTracker(par1Entity, 512, 2);
@@ -208,29 +205,23 @@ public class EntityTracker
             }
         }
 
-        var2 = var1.iterator();
-
-        while (var2.hasNext())
+        for (int var6 = 0; var6 < var1.size(); ++var6)
         {
-            EntityPlayerMP var7 = (EntityPlayerMP)var2.next();
-            EntityPlayerMP var4 = var7;
-            Iterator var5 = this.trackedEntities.iterator();
+            EntityPlayerMP var7 = (EntityPlayerMP)var1.get(var6);
+            Iterator var4 = this.trackedEntities.iterator();
 
-            while (var5.hasNext())
+            while (var4.hasNext())
             {
-                EntityTrackerEntry var6 = (EntityTrackerEntry)var5.next();
+                EntityTrackerEntry var5 = (EntityTrackerEntry)var4.next();
 
-                if (var6.myEntity != var4)
+                if (var5.myEntity != var7)
                 {
-                    var6.tryStartWachingThis(var4);
+                    var5.tryStartWachingThis(var7);
                 }
             }
         }
     }
 
-    /**
-     * does not send the packet to the entity if the entity is a player
-     */
     public void sendPacketToAllPlayersTrackingEntity(Entity par1Entity, Packet par2Packet)
     {
         EntityTrackerEntry var3 = (EntityTrackerEntry)this.trackedEntityIDs.lookup(par1Entity.entityId);
@@ -241,9 +232,6 @@ public class EntityTracker
         }
     }
 
-    /**
-     * sends to the entity if the entity is a player
-     */
     public void sendPacketToAllAssociatedPlayers(Entity par1Entity, Packet par2Packet)
     {
         EntityTrackerEntry var3 = (EntityTrackerEntry)this.trackedEntityIDs.lookup(par1Entity.entityId);
@@ -262,6 +250,21 @@ public class EntityTracker
         {
             EntityTrackerEntry var3 = (EntityTrackerEntry)var2.next();
             var3.removePlayerFromTracker(par1EntityPlayerMP);
+        }
+    }
+
+    public void func_85172_a(EntityPlayerMP par1EntityPlayerMP, Chunk par2Chunk)
+    {
+        Iterator var3 = this.trackedEntities.iterator();
+
+        while (var3.hasNext())
+        {
+            EntityTrackerEntry var4 = (EntityTrackerEntry)var3.next();
+
+            if (var4.myEntity != par1EntityPlayerMP && var4.myEntity.chunkCoordX == par2Chunk.xPosition && var4.myEntity.chunkCoordZ == par2Chunk.zPosition)
+            {
+                var4.tryStartWachingThis(par1EntityPlayerMP);
+            }
         }
     }
 }

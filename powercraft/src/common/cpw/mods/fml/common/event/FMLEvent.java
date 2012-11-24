@@ -9,7 +9,7 @@ public class FMLEvent
         return getClass().getSimpleName();
     }
 
-	public void applyModContainer(ModContainer activeContainer) {
-	    // NO OP
-	}
+    public void applyModContainer(ModContainer activeContainer)
+    {
+    }
 }

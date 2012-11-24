@@ -14,19 +14,12 @@ public class ComponentNetherBridgeThrone extends ComponentNetherBridgePiece
         this.boundingBox = par3StructureBoundingBox;
     }
 
-    /**
-     * Creates and returns a new component piece. Or null if it could not find enough room to place it.
-     */
     public static ComponentNetherBridgeThrone createValidComponent(List par0List, Random par1Random, int par2, int par3, int par4, int par5, int par6)
     {
         StructureBoundingBox var7 = StructureBoundingBox.getComponentToAddBoundingBox(par2, par3, par4, -2, 0, 0, 7, 8, 9, par5);
         return isAboveGround(var7) && StructureComponent.findIntersecting(par0List, var7) == null ? new ComponentNetherBridgeThrone(par6, par1Random, var7, par5) : null;
     }
 
-    /**
-     * second Part of Structure generating, this for example places Spiderwebs, Mob Spawners, it closes Mineshafts at
-     * the end, it adds Fences...
-     */
     public boolean addComponentParts(World par1World, Random par2Random, StructureBoundingBox par3StructureBoundingBox)
     {
         this.fillWithBlocks(par1World, par3StructureBoundingBox, 0, 2, 0, 6, 7, 7, 0, 0, false);

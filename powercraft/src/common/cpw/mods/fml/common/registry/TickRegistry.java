@@ -13,12 +13,6 @@ import cpw.mods.fml.common.SingleIntervalHandler;
 
 public class TickRegistry
 {
-
-    /**
-     * We register our delegate here
-     * @param handler
-     */
-
     public static class TickQueueElement implements Comparable<TickQueueElement>
     {
         public TickQueueElement(IScheduledTickHandler ticker, long tickCounter)
@@ -34,7 +28,7 @@ public class TickRegistry
 
         public void update(long tickCounter)
         {
-            next = tickCounter + Math.max(ticker.nextTickSpacing(),1);
+            next = tickCounter + Math.max(ticker.nextTickSpacing(), 1);
         }
 
         private long next;
@@ -57,10 +51,6 @@ public class TickRegistry
         getQueue(side).add(new TickQueueElement(handler, getCounter(side).get()));
     }
 
-    /**
-     * @param side
-     * @return
-     */
     private static PriorityQueue<TickQueueElement> getQueue(Side side)
     {
         return side.isClient() ? clientTickHandlers : serverTickHandlers;
@@ -85,10 +75,11 @@ public class TickRegistry
 
             while (true)
             {
-                if (tickHandlers.size()==0 || !tickHandlers.peek().scheduledNow(tick))
+                if (tickHandlers.size() == 0 || !tickHandlers.peek().scheduledNow(tick))
                 {
                     break;
                 }
+
                 TickRegistry.TickQueueElement tickQueueElement  = tickHandlers.poll();
                 tickQueueElement.update(tick);
                 tickHandlers.offer(tickQueueElement);
@@ -96,5 +87,4 @@ public class TickRegistry
             }
         }
     }
-
 }

@@ -10,7 +10,7 @@ public class CommandXP extends CommandBase
         return "xp";
     }
 
-    public int func_82362_a()
+    public int getRequiredPermissionLevel()
     {
         return 2;
     }
@@ -59,12 +59,12 @@ public class CommandXP extends CommandBase
             {
                 if (var7)
                 {
-                    var3.func_82242_a(-var6);
+                    var3.addExperienceLevel(-var6);
                     notifyAdmins(par1ICommandSender, "commands.xp.success.negative.levels", new Object[] {Integer.valueOf(var6), var3.getEntityName()});
                 }
                 else
                 {
-                    var3.func_82242_a(var6);
+                    var3.addExperienceLevel(var6);
                     notifyAdmins(par1ICommandSender, "commands.xp.success.levels", new Object[] {Integer.valueOf(var6), var3.getEntityName()});
                 }
             }
@@ -81,9 +81,6 @@ public class CommandXP extends CommandBase
         }
     }
 
-    /**
-     * Adds the strings available in this command to the given list of tab completion options.
-     */
     public List addTabCompletionOptions(ICommandSender par1ICommandSender, String[] par2ArrayOfStr)
     {
         return par2ArrayOfStr.length == 2 ? getListOfStringsMatchingLastWord(par2ArrayOfStr, this.getAllUsernames()) : null;
@@ -94,7 +91,7 @@ public class CommandXP extends CommandBase
         return MinecraftServer.getServer().getAllUsernames();
     }
 
-    public boolean func_82358_a(int par1)
+    public boolean isUsernameIndex(int par1)
     {
         return par1 == 1;
     }

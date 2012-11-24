@@ -1,0 +1,17 @@
+package powercraft.core;
+
+import net.minecraft.src.Block;
+import net.minecraft.src.TileEntity;
+import net.minecraft.src.TileEntitySpecialRenderer;
+
+public class PC_TileEntitySpecialRenderer extends TileEntitySpecialRenderer {
+	
+	@Override
+	public void renderTileEntityAt(TileEntity tileEntity, double x, double y, double z, float rot) {
+		Block b = tileEntity.getBlockType();
+		if(b instanceof PC_ITileEntityRenderer){
+			((PC_ITileEntityRenderer)b).renderTileEntityAt()
+		}
+	}
+
+}

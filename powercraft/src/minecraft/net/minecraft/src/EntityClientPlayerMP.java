@@ -187,7 +187,7 @@ public class EntityClientPlayerMP extends EntityPlayerSP
      */
     protected void damageEntity(DamageSource par1DamageSource, int par2)
     {
-        if (!this.field_83001_bt)
+        if (!this.func_85032_ar())
         {
             this.setEntityHealth(this.getHealth() - par2);
         }

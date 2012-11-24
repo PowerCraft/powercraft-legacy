@@ -49,26 +49,11 @@ public class GameRegistry
     private static List<IPickupNotifier> pickupHandlers = Lists.newArrayList();
     private static List<IPlayerTracker> playerTrackers = Lists.newArrayList();
 
-    /**
-     * Register a world generator - something that inserts new block types into the world
-     *
-     * @param generator
-     */
     public static void registerWorldGenerator(IWorldGenerator generator)
     {
         worldGenerators.add(generator);
     }
 
-    /**
-     * Callback hook for world gen - if your mod wishes to add extra mod related generation to the world
-     * call this
-     *
-     * @param chunkX
-     * @param chunkZ
-     * @param world
-     * @param chunkGenerator
-     * @param chunkProvider
-     */
     public static void generateWorld(int chunkX, int chunkZ, World world, IChunkProvider chunkGenerator, IChunkProvider chunkProvider)
     {
         long worldSeed = world.getSeed();
@@ -87,17 +72,12 @@ public class GameRegistry
     {
         dispenserHandlers.add(handler);
     }
-    /**
-     * Register a handler for dispensers
-     *
-     * @param handler
-     */
+
     @Deprecated
     public static void registerDispenserHandler(final IDispenseHandler handler)
     {
         registerDispenserHandler(new IDispenserHandler()
         {
-
             @Override
             public int dispense(int x, int y, int z, int xVelocity, int zVelocity, World world, ItemStack item, Random random, double entX, double entY, double entZ)
             {
@@ -106,38 +86,21 @@ public class GameRegistry
         });
     }
 
-
-    /**
-     * Callback hook for dispenser activities - if you add a block and want mods to be able
-     * to extend their dispenser related activities to it call this
-     *
-     * @param world
-     * @param x
-     * @param y
-     * @param z
-     * @param xVelocity
-     * @param zVelocity
-     * @param item
-     */
     public static int tryDispense(World world, int x, int y, int z, int xVelocity, int zVelocity, ItemStack item, Random random, double entX, double entY, double entZ)
     {
         for (IDispenserHandler handler : dispenserHandlers)
         {
             int dispensed = handler.dispense(x, y, z, xVelocity, zVelocity, world, item, random, entX, entY, entZ);
-            if (dispensed>-1)
+
+            if (dispensed > -1)
             {
                 return dispensed;
             }
         }
+
         return -1;
     }
-    /**
-     * Internal method for creating an @Block instance
-     * @param container
-     * @param type
-     * @param annotation
-     * @throws Exception
-     */
+
     public static Object buildBlock(ModContainer container, Class<?> type, Block annotation) throws Exception
     {
         Object o = type.getConstructor(int.class).newInstance(findSpareBlockId());
@@ -145,37 +108,23 @@ public class GameRegistry
         return o;
     }
 
-    /**
-     * Private and not yet working properly
-     *
-     * @return
-     */
     private static int findSpareBlockId()
     {
         return BlockTracker.nextBlockId();
     }
 
-    /**
-     * Register a block with the world
-     *
-     */
     public static void registerBlock(net.minecraft.src.Block block)
     {
         registerBlock(block, ItemBlock.class);
     }
 
-    /**
-     * Register a block with the world, with the specified item class
-     *
-     * @param block
-     * @param itemclass
-     */
-    public static void registerBlock(net.minecraft.src.Block block, Class<? extends ItemBlock> itemclass)
+    public static void registerBlock(net.minecraft.src.Block block, Class <? extends ItemBlock > itemclass)
     {
         if (Loader.instance().isInState(LoaderState.CONSTRUCTING))
         {
             FMLLog.warning("The mod %s is attempting to register a block whilst it it being constructed. This is bad modding practice - please use a proper mod lifecycle event.", Loader.instance().activeModContainer());
         }
+
         try
         {
             assert block != null : "registerBlock: block cannot be null";
@@ -188,6 +137,7 @@ public class GameRegistry
             FMLLog.log(Level.SEVERE, e, "Caught an exception during block registration");
             throw new LoaderException(e);
         }
+
         blockRegistry.put(Loader.instance().activeModContainer(), (BlockProxy) block);
     }
 
@@ -211,7 +161,7 @@ public class GameRegistry
         FurnaceRecipes.smelting().addSmelting(input, output, xp);
     }
 
-    public static void registerTileEntity(Class<? extends TileEntity> tileEntityClass, String id)
+    public static void registerTileEntity(Class <? extends TileEntity > tileEntityClass, String id)
     {
         TileEntity.addMapping(tileEntityClass, id);
     }
@@ -233,10 +183,12 @@ public class GameRegistry
     public static int getFuelValue(ItemStack itemStack)
     {
         int fuelValue = 0;
+
         for (IFuelHandler handler : fuelHandlers)
         {
             fuelValue = Math.max(fuelValue, handler.getBurnTime(itemStack));
         }
+
         return fuelValue;
     }
 
@@ -275,31 +227,39 @@ public class GameRegistry
     }
 
     public static void registerPlayerTracker(IPlayerTracker tracker)
-	{
-		playerTrackers.add(tracker);
-	}
+    {
+        playerTrackers.add(tracker);
+    }
 
-	public static void onPlayerLogin(EntityPlayer player)
-	{
-		for(IPlayerTracker tracker : playerTrackers)
-			tracker.onPlayerLogin(player);
-	}
+    public static void onPlayerLogin(EntityPlayer player)
+    {
+        for (IPlayerTracker tracker : playerTrackers)
+        {
+            tracker.onPlayerLogin(player);
+        }
+    }
 
-	public static void onPlayerLogout(EntityPlayer player)
-	{
-		for(IPlayerTracker tracker : playerTrackers)
-			tracker.onPlayerLogout(player);
-	}
+    public static void onPlayerLogout(EntityPlayer player)
+    {
+        for (IPlayerTracker tracker : playerTrackers)
+        {
+            tracker.onPlayerLogout(player);
+        }
+    }
 
-	public static void onPlayerChangedDimension(EntityPlayer player)
-	{
-		for(IPlayerTracker tracker : playerTrackers)
-			tracker.onPlayerChangedDimension(player);
-	}
+    public static void onPlayerChangedDimension(EntityPlayer player)
+    {
+        for (IPlayerTracker tracker : playerTrackers)
+        {
+            tracker.onPlayerChangedDimension(player);
+        }
+    }
 
-	public static void onPlayerRespawn(EntityPlayer player)
-	{
-		for(IPlayerTracker tracker : playerTrackers)
-			tracker.onPlayerRespawn(player);
-	}
+    public static void onPlayerRespawn(EntityPlayer player)
+    {
+        for (IPlayerTracker tracker : playerTrackers)
+        {
+            tracker.onPlayerRespawn(player);
+        }
+    }
 }

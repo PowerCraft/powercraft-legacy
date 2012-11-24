@@ -11,5 +11,4 @@ public class PlayerDestroyItemEvent extends PlayerEvent
         super(player);
         this.original = original;
     }
-
 }

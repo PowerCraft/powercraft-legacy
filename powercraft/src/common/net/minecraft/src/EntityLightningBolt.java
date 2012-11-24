@@ -2,24 +2,14 @@ package net.minecraft.src;
 
 import cpw.mods.fml.common.Side;
 import cpw.mods.fml.common.asm.SideOnly;
-import java.util.Iterator;
 import java.util.List;
 
 public class EntityLightningBolt extends EntityWeatherEffect
 {
-    /**
-     * Declares which state the lightning bolt is in. Whether it's in the air, hit the ground, etc.
-     */
     private int lightningState;
 
-    /**
-     * A random long that is used to change the vertex of the lightning rendered in RenderLightningBolt
-     */
     public long boltVertex = 0L;
 
-    /**
-     * Determines the time before the EntityLightningBolt is destroyed. It is a random integer decremented over time.
-     */
     private int boltLivingTime;
 
     public EntityLightningBolt(World par1World, double par2, double par4, double par6)
@@ -30,7 +20,7 @@ public class EntityLightningBolt extends EntityWeatherEffect
         this.boltVertex = this.rand.nextLong();
         this.boltLivingTime = this.rand.nextInt(3) + 1;
 
-        if (par1World.difficultySetting >= 2 && par1World.doChunksNearChunkExist(MathHelper.floor_double(par2), MathHelper.floor_double(par4), MathHelper.floor_double(par6), 10))
+        if (!par1World.isRemote && par1World.difficultySetting >= 2 && par1World.doChunksNearChunkExist(MathHelper.floor_double(par2), MathHelper.floor_double(par4), MathHelper.floor_double(par6), 10))
         {
             int var8 = MathHelper.floor_double(par2);
             int var9 = MathHelper.floor_double(par4);
@@ -55,9 +45,6 @@ public class EntityLightningBolt extends EntityWeatherEffect
         }
     }
 
-    /**
-     * Called to update the entity's position/logic.
-     */
     public void onUpdate()
     {
         super.onUpdate();
@@ -82,7 +69,7 @@ public class EntityLightningBolt extends EntityWeatherEffect
                 this.lightningState = 1;
                 this.boltVertex = this.rand.nextLong();
 
-                if (this.worldObj.doChunksNearChunkExist(MathHelper.floor_double(this.posX), MathHelper.floor_double(this.posY), MathHelper.floor_double(this.posZ), 10))
+                if (!this.worldObj.isRemote && this.worldObj.doChunksNearChunkExist(MathHelper.floor_double(this.posX), MathHelper.floor_double(this.posY), MathHelper.floor_double(this.posZ), 10))
                 {
                     int var1 = MathHelper.floor_double(this.posX);
                     int var2 = MathHelper.floor_double(this.posY);
@@ -96,15 +83,14 @@ public class EntityLightningBolt extends EntityWeatherEffect
             }
         }
 
-        if (this.lightningState >= 0)
+        if (!this.worldObj.isRemote && this.lightningState >= 0)
         {
             double var6 = 3.0D;
             List var7 = this.worldObj.getEntitiesWithinAABBExcludingEntity(this, AxisAlignedBB.getAABBPool().addOrModifyAABBInPool(this.posX - var6, this.posY - var6, this.posZ - var6, this.posX + var6, this.posY + 6.0D + var6, this.posZ + var6));
-            Iterator var4 = var7.iterator();
 
-            while (var4.hasNext())
+            for (int var4 = 0; var4 < var7.size(); ++var4)
             {
-                Entity var5 = (Entity)var4.next();
+                Entity var5 = (Entity)var7.get(var4);
                 var5.onStruckByLightning(this);
             }
 
@@ -114,21 +100,12 @@ public class EntityLightningBolt extends EntityWeatherEffect
 
     protected void entityInit() {}
 
-    /**
-     * (abstract) Protected helper method to read subclass entity data from NBT.
-     */
     protected void readEntityFromNBT(NBTTagCompound par1NBTTagCompound) {}
 
-    /**
-     * (abstract) Protected helper method to write subclass entity data to NBT.
-     */
     protected void writeEntityToNBT(NBTTagCompound par1NBTTagCompound) {}
 
     @SideOnly(Side.CLIENT)
 
-    /**
-     * Checks using a Vec3d to determine if this entity is within range of that vector to be rendered. Args: vec3D
-     */
     public boolean isInRangeToRenderVec3D(Vec3 par1Vec3)
     {
         return this.lightningState >= 0;

@@ -58,13 +58,10 @@ public class ModelSquid extends ModelBase
     {
         this.setRotationAngles(par2, par3, par4, par5, par6, par7, par1Entity);
         this.squidBody.render(par7);
-        ModelRenderer[] var8 = this.squidTentacles;
-        int var9 = var8.length;
 
-        for (int var10 = 0; var10 < var9; ++var10)
+        for (int var8 = 0; var8 < this.squidTentacles.length; ++var8)
         {
-            ModelRenderer var11 = var8[var10];
-            var11.render(par7);
+            this.squidTentacles[var8].render(par7);
         }
     }
 }

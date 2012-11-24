@@ -13,17 +13,11 @@ public class BlockCauldron extends Block
         this.blockIndexInTexture = 154;
     }
 
-    /**
-     * From the specified side and block metadata retrieves the blocks texture. Args: side, metadata
-     */
     public int getBlockTextureFromSideAndMetadata(int par1, int par2)
     {
         return par1 == 1 ? 138 : (par1 == 0 ? 155 : 154);
     }
 
-    /**
-     * if the specified block is in the given AABB, add its collision bounding box to the given list
-     */
     public void addCollidingBlockToList(World par1World, int par2, int par3, int par4, AxisAlignedBB par5AxisAlignedBB, List par6List, Entity par7Entity)
     {
         this.setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 0.3125F, 1.0F);
@@ -40,42 +34,26 @@ public class BlockCauldron extends Block
         this.setBlockBoundsForItemRender();
     }
 
-    /**
-     * Sets the block's bounds for rendering it as an item
-     */
     public void setBlockBoundsForItemRender()
     {
         this.setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 1.0F, 1.0F);
     }
 
-    /**
-     * Is this block (a) opaque and (b) a full 1m cube?  This determines whether or not to render the shared face of two
-     * adjacent blocks and also whether the player can attach torches, redstone wire, etc to this block.
-     */
     public boolean isOpaqueCube()
     {
         return false;
     }
 
-    /**
-     * The type of render function that is called for this block
-     */
     public int getRenderType()
     {
         return 24;
     }
 
-    /**
-     * If this block doesn't render as an ordinary block it will return False (examples: signs, buttons, stairs, etc)
-     */
     public boolean renderAsNormalBlock()
     {
         return false;
     }
 
-    /**
-     * Called upon block activation (right click on the block.)
-     */
     public boolean onBlockActivated(World par1World, int par2, int par3, int par4, EntityPlayer par5EntityPlayer, int par6, float par7, float par8, float par9)
     {
         if (par1World.isRemote)
@@ -135,10 +113,10 @@ public class BlockCauldron extends Block
                             par1World.setBlockMetadataWithNotify(par2, par3, par4, var11 - 1);
                         }
                     }
-                    else if (var11 > 0 && var10.getItem() instanceof ItemArmor && ((ItemArmor)var10.getItem()).func_82812_d() == EnumArmorMaterial.CLOTH)
+                    else if (var11 > 0 && var10.getItem() instanceof ItemArmor && ((ItemArmor)var10.getItem()).getArmorMaterial() == EnumArmorMaterial.CLOTH)
                     {
                         ItemArmor var13 = (ItemArmor)var10.getItem();
-                        var13.func_82815_c(var10);
+                        var13.removeColor(var10);
                         par1World.setBlockMetadataWithNotify(par2, par3, par4, var11 - 1);
                         return true;
                     }
@@ -149,9 +127,6 @@ public class BlockCauldron extends Block
         }
     }
 
-    /**
-     * currently only used by BlockCauldron to incrament meta-data during rain
-     */
     public void fillWithRain(World par1World, int par2, int par3, int par4)
     {
         if (par1World.rand.nextInt(20) == 1)
@@ -165,9 +140,6 @@ public class BlockCauldron extends Block
         }
     }
 
-    /**
-     * Returns the ID of the items to drop on destruction.
-     */
     public int idDropped(int par1, Random par2Random, int par3)
     {
         return Item.cauldron.shiftedIndex;
@@ -175,9 +147,6 @@ public class BlockCauldron extends Block
 
     @SideOnly(Side.CLIENT)
 
-    /**
-     * only called by clickMiddleMouseButton , and passed to inventory.setCurrentItem (along with isCreative)
-     */
     public int idPicked(World par1World, int par2, int par3, int par4)
     {
         return Item.cauldron.shiftedIndex;

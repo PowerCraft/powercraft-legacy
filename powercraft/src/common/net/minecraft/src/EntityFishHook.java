@@ -2,18 +2,14 @@ package net.minecraft.src;
 
 import cpw.mods.fml.common.Side;
 import cpw.mods.fml.common.asm.SideOnly;
-import java.util.Iterator;
 import java.util.List;
 
 public class EntityFishHook extends Entity
 {
-    /** The tile this entity is on, X position */
     private int xTile;
 
-    /** The tile this entity is on, Y position */
     private int yTile;
 
-    /** The tile this entity is on, Z position */
     private int zTile;
     private int inTile;
     private boolean inGround;
@@ -22,13 +18,8 @@ public class EntityFishHook extends Entity
     private int ticksInGround;
     private int ticksInAir;
 
-    /** the number of ticks remaining until this fish can no longer be caught */
     private int ticksCatchable;
 
-    /**
-     * The entity that the fishing rod is connected to, if any. When you right click on the fishing rod and the hook
-     * falls on to an entity, this it that entity.
-     */
     public Entity bobber;
     private int fishPosRotationIncrements;
     private double fishX;
@@ -102,10 +93,6 @@ public class EntityFishHook extends Entity
 
     @SideOnly(Side.CLIENT)
 
-    /**
-     * Checks if the entity is in range to render by using the past in distance and comparing it to its average edge
-     * length * 64 * renderDistanceWeight Args: distance
-     */
     public boolean isInRangeToRenderDist(double par1)
     {
         double var3 = this.boundingBox.getAverageEdgeLength() * 4.0D;
@@ -136,10 +123,6 @@ public class EntityFishHook extends Entity
 
     @SideOnly(Side.CLIENT)
 
-    /**
-     * Sets the position and rotation. Only difference from the other one is no bounding on the rotation. Args: posX,
-     * posY, posZ, yaw, pitch
-     */
     public void setPositionAndRotation2(double par1, double par3, double par5, float par7, float par8, int par9)
     {
         this.fishX = par1;
@@ -155,9 +138,6 @@ public class EntityFishHook extends Entity
 
     @SideOnly(Side.CLIENT)
 
-    /**
-     * Sets the velocity to the args. Args: x, y, z
-     */
     public void setVelocity(double par1, double par3, double par5)
     {
         this.velocityX = this.motionX = par1;
@@ -165,9 +145,6 @@ public class EntityFishHook extends Entity
         this.velocityZ = this.motionZ = par5;
     }
 
-    /**
-     * Called to update the entity's position/logic.
-     */
     public void onUpdate()
     {
         super.onUpdate();
@@ -244,26 +221,25 @@ public class EntityFishHook extends Entity
                 ++this.ticksInAir;
             }
 
-            Vec3 var20 = this.worldObj.func_82732_R().getVecFromPool(this.posX, this.posY, this.posZ);
-            Vec3 var2 = this.worldObj.func_82732_R().getVecFromPool(this.posX + this.motionX, this.posY + this.motionY, this.posZ + this.motionZ);
+            Vec3 var20 = this.worldObj.getWorldVec3Pool().getVecFromPool(this.posX, this.posY, this.posZ);
+            Vec3 var2 = this.worldObj.getWorldVec3Pool().getVecFromPool(this.posX + this.motionX, this.posY + this.motionY, this.posZ + this.motionZ);
             MovingObjectPosition var3 = this.worldObj.rayTraceBlocks(var20, var2);
-            var20 = this.worldObj.func_82732_R().getVecFromPool(this.posX, this.posY, this.posZ);
-            var2 = this.worldObj.func_82732_R().getVecFromPool(this.posX + this.motionX, this.posY + this.motionY, this.posZ + this.motionZ);
+            var20 = this.worldObj.getWorldVec3Pool().getVecFromPool(this.posX, this.posY, this.posZ);
+            var2 = this.worldObj.getWorldVec3Pool().getVecFromPool(this.posX + this.motionX, this.posY + this.motionY, this.posZ + this.motionZ);
 
             if (var3 != null)
             {
-                var2 = this.worldObj.func_82732_R().getVecFromPool(var3.hitVec.xCoord, var3.hitVec.yCoord, var3.hitVec.zCoord);
+                var2 = this.worldObj.getWorldVec3Pool().getVecFromPool(var3.hitVec.xCoord, var3.hitVec.yCoord, var3.hitVec.zCoord);
             }
 
             Entity var4 = null;
             List var5 = this.worldObj.getEntitiesWithinAABBExcludingEntity(this, this.boundingBox.addCoord(this.motionX, this.motionY, this.motionZ).expand(1.0D, 1.0D, 1.0D));
             double var6 = 0.0D;
-            Iterator var8 = var5.iterator();
             double var13;
 
-            while (var8.hasNext())
+            for (int var8 = 0; var8 < var5.size(); ++var8)
             {
-                Entity var9 = (Entity)var8.next();
+                Entity var9 = (Entity)var5.get(var8);
 
                 if (var9.canBeCollidedWith() && (var9 != this.angler || this.ticksInAir >= 5))
                 {
@@ -373,7 +349,7 @@ public class EntityFishHook extends Entity
                         {
                             this.ticksCatchable = this.rand.nextInt(30) + 10;
                             this.motionY -= 0.20000000298023224D;
-                            this.worldObj.playSoundAtEntity(this, "random.splash", 0.25F, 1.0F + (this.rand.nextFloat() - this.rand.nextFloat()) * 0.4F);
+                            this.func_85030_a("random.splash", 0.25F, 1.0F + (this.rand.nextFloat() - this.rand.nextFloat()) * 0.4F);
                             float var30 = (float)MathHelper.floor_double(this.boundingBox.minY);
                             int var15;
                             float var17;
@@ -418,9 +394,6 @@ public class EntityFishHook extends Entity
         }
     }
 
-    /**
-     * (abstract) Protected helper method to write subclass entity data to NBT.
-     */
     public void writeEntityToNBT(NBTTagCompound par1NBTTagCompound)
     {
         par1NBTTagCompound.setShort("xTile", (short)this.xTile);
@@ -431,9 +404,6 @@ public class EntityFishHook extends Entity
         par1NBTTagCompound.setByte("inGround", (byte)(this.inGround ? 1 : 0));
     }
 
-    /**
-     * (abstract) Protected helper method to read subclass entity data from NBT.
-     */
     public void readEntityFromNBT(NBTTagCompound par1NBTTagCompound)
     {
         this.xTile = par1NBTTagCompound.getShort("xTile");
@@ -500,9 +470,6 @@ public class EntityFishHook extends Entity
         }
     }
 
-    /**
-     * Will get destroyed next tick.
-     */
     public void setDead()
     {
         super.setDead();

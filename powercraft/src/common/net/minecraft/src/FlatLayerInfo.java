@@ -2,64 +2,66 @@ package net.minecraft.src;
 
 public class FlatLayerInfo
 {
-    private int field_82664_a;
-    private int field_82662_b;
-    private int field_82663_c;
-    private int field_82661_d;
+    private int layerCount;
+
+    private int layerFillBlock;
+
+    private int layerFillBlockMeta;
+    private int layerMinimumY;
 
     public FlatLayerInfo(int par1, int par2)
     {
-        this.field_82664_a = 1;
-        this.field_82662_b = 0;
-        this.field_82663_c = 0;
-        this.field_82661_d = 0;
-        this.field_82664_a = par1;
-        this.field_82662_b = par2;
+        this.layerCount = 1;
+        this.layerFillBlock = 0;
+        this.layerFillBlockMeta = 0;
+        this.layerMinimumY = 0;
+        this.layerCount = par1;
+        this.layerFillBlock = par2;
     }
 
     public FlatLayerInfo(int par1, int par2, int par3)
     {
         this(par1, par2);
-        this.field_82663_c = par3;
+        this.layerFillBlockMeta = par3;
     }
 
-    public int func_82657_a()
+    public int getLayerCount()
     {
-        return this.field_82664_a;
+        return this.layerCount;
     }
 
-    public int func_82659_b()
+    public int getFillBlock()
     {
-        return this.field_82662_b;
+        return this.layerFillBlock;
     }
 
-    public int func_82658_c()
+    public int getFillBlockMeta()
     {
-        return this.field_82663_c;
+        return this.layerFillBlockMeta;
     }
 
-    public int func_82656_d()
+    public int getMinY()
     {
-        return this.field_82661_d;
+        return this.layerMinimumY;
     }
 
-    public void func_82660_d(int par1)
+    public void setMinY(int par1)
     {
-        this.field_82661_d = par1;
+        this.layerMinimumY = par1;
     }
 
     public String toString()
     {
-        String var1 = Integer.toString(this.field_82662_b);
+        String var1 = Integer.toString(this.layerFillBlock);
 
-        if (this.field_82664_a > 1)
+        if (this.layerCount > 1)
         {
-            var1 = this.field_82664_a + "x" + var1;
+            var1 = this.layerCount + "x" + var1;
         }
 
-        if (this.field_82663_c > 0)
+        if (this.layerFillBlockMeta > 0)
         {
-            var1 = var1 + ":" + this.field_82663_c;
+            var1 = var1 + ":" + this.layerFillBlockMeta;
         }
 
         return var1;

@@ -2,7 +2,6 @@ package net.minecraft.src;
 
 class DedicatedServerSleepThread extends Thread
 {
-    /** Instance of the DecitatedServer. */
     final DedicatedServer theDecitatedServer;
 
     DedicatedServerSleepThread(DedicatedServer par1DedicatedServer)

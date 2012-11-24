@@ -13,5 +13,4 @@ public class LivingDeathEvent extends LivingEvent
         super(entity);
         this.source = source;
     }
-
 }

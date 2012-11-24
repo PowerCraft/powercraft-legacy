@@ -1,0 +1,27 @@
+package powercraft.light;
+
+import powercraft.core.PC_TileEntity;
+
+public class PCli_TileEntityPrism extends PC_TileEntity {
+
+	/**
+	 * List of prism's sides, flags whether there are attached glass panels.
+	 * starts with up and down, but the order does not really matter here.
+	 */
+	private boolean[] prismSides = { false, false, false, false, false, false, false, false, false, false };
+	
+	public boolean getPrismSide(int side) {
+		if (side < 0 || side > 9) {
+			return false;
+		}
+		return prismSides[i];
+	}
+
+	public void setPrismSide(int side, boolean state) {
+		if (side < 0 || side> 9) {
+			return;
+		}
+		prismSides[side] = state;
+	}
+
+}

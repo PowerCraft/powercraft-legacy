@@ -23,12 +23,16 @@ public class ServerData
 
     /** last server ping that showed up in the server browser */
     public long pingToServer;
-    public int field_82821_f = 47;
-    public String field_82822_g = "1.4.2";
+    public int field_82821_f = 49;
+
+    /** Game version for this server. */
+    public String gameVersion = "1.4.4";
     public boolean field_78841_f = false;
     private boolean field_78842_g = true;
     private boolean acceptsTextures = false;
-    private boolean field_82823_k = false;
+
+    /** Whether to hide the IP address for this server. */
+    private boolean hideAddress = false;
 
     public ServerData(String par1Str, String par2Str)
     {
@@ -44,7 +48,7 @@ public class ServerData
         NBTTagCompound var1 = new NBTTagCompound();
         var1.setString("name", this.serverName);
         var1.setString("ip", this.serverIP);
-        var1.setBoolean("hideAddress", this.field_82823_k);
+        var1.setBoolean("hideAddress", this.hideAddress);
 
         if (!this.field_78842_g)
         {
@@ -72,12 +76,12 @@ public class ServerData
 
     public boolean func_82820_d()
     {
-        return this.field_82823_k;
+        return this.hideAddress;
     }
 
     public void func_82819_b(boolean par1)
     {
-        this.field_82823_k = par1;
+        this.hideAddress = par1;
     }
 
     /**
@@ -86,7 +90,7 @@ public class ServerData
     public static ServerData getServerDataFromNBTCompound(NBTTagCompound par0NBTTagCompound)
     {
         ServerData var1 = new ServerData(par0NBTTagCompound.getString("name"), par0NBTTagCompound.getString("ip"));
-        var1.field_82823_k = par0NBTTagCompound.getBoolean("hideAddress");
+        var1.hideAddress = par0NBTTagCompound.getBoolean("hideAddress");
 
         if (par0NBTTagCompound.hasKey("acceptTextures"))
         {

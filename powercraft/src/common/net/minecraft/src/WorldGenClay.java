@@ -4,10 +4,8 @@ import java.util.Random;
 
 public class WorldGenClay extends WorldGenerator
 {
-    /** The block ID for clay. */
     private int clayBlockId;
 
-    /** The number of blocks to generate. */
     private int numberOfBlocks;
 
     public WorldGenClay(int par1)

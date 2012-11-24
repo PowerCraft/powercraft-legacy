@@ -1,17 +1,3 @@
-/*
- * The FML Forge Mod Loader suite.
- * Copyright (C) 2012 cpw
- *
- * This library is free software; you can redistribute it and/or modify it under the terms of the GNU Lesser General Public License as published by the Free
- * Software Foundation; either version 2.1 of the License, or any later version.
- *
- * This library is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR
- * A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more details.
- *
- * You should have received a copy of the GNU Lesser General Public License along with this library; if not, write to the Free Software Foundation, Inc., 51
- * Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA
- */
-
 package cpw.mods.fml.common.modloader;
 
 import java.util.EnumSet;
@@ -32,6 +18,7 @@ import net.minecraft.src.IAnimals;
 import net.minecraft.src.ICommand;
 import net.minecraft.src.TradeEntry;
 import cpw.mods.fml.common.FMLCommonHandler;
+import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.common.ICraftingHandler;
 import cpw.mods.fml.common.IDispenseHandler;
 import cpw.mods.fml.common.IDispenserHandler;
@@ -50,10 +37,6 @@ import cpw.mods.fml.common.registry.EntityRegistry.EntityRegistration;
 import cpw.mods.fml.common.registry.VillagerRegistry.IVillageTradeHandler;
 import cpw.mods.fml.common.registry.VillagerRegistry;
 
-/**
- * @author cpw
- *
- */
 @SuppressWarnings("deprecation")
 public class ModLoaderHelper
 {
@@ -63,20 +46,38 @@ public class ModLoaderHelper
 
     public static void updateStandardTicks(BaseModProxy mod, boolean enable, boolean useClock)
     {
-        ModLoaderModContainer mlmc = (ModLoaderModContainer) Loader.instance().activeModContainer();
+        ModLoaderModContainer mlmc = (ModLoaderModContainer) Loader.instance().getReversedModObjectList().get(mod);
+
+        if (mlmc == null)
+        {
+            mlmc = (ModLoaderModContainer) Loader.instance().activeModContainer();
+        }
+
+        if (mlmc == null)
+        {
+            FMLLog.severe("Attempted to register ModLoader ticking for invalid BaseMod %s", mod);
+            return;
+        }
+
         BaseModTicker ticker = mlmc.getGameTickHandler();
         EnumSet<TickType> ticks = ticker.ticks();
-        // If we're enabled we get render ticks
-        if (enable && !useClock) {
+
+        if (enable && !useClock)
+        {
             ticks.add(TickType.RENDER);
-        } else {
+        }
+        else
+        {
             ticks.remove(TickType.RENDER);
         }
-        // If we're enabled but we want clock ticks, or we're server side we get game ticks
-        if (enable && (useClock || FMLCommonHandler.instance().getSide().isServer())) {
+
+        if (enable && (useClock || FMLCommonHandler.instance().getSide().isServer()))
+        {
             ticks.add(TickType.CLIENT);
             ticks.add(TickType.WORLDLOAD);
-        } else {
+        }
+        else
+        {
             ticks.remove(TickType.CLIENT);
             ticks.remove(TickType.WORLDLOAD);
         }
@@ -84,19 +85,37 @@ public class ModLoaderHelper
 
     public static void updateGUITicks(BaseModProxy mod, boolean enable, boolean useClock)
     {
-        ModLoaderModContainer mlmc = (ModLoaderModContainer) Loader.instance().activeModContainer();
+        ModLoaderModContainer mlmc = (ModLoaderModContainer) Loader.instance().getReversedModObjectList().get(mod);
+
+        if (mlmc == null)
+        {
+            mlmc = (ModLoaderModContainer) Loader.instance().activeModContainer();
+        }
+
+        if (mlmc == null)
+        {
+            FMLLog.severe("Attempted to register ModLoader ticking for invalid BaseMod %s", mod);
+            return;
+        }
+
         EnumSet<TickType> ticks = mlmc.getGUITickHandler().ticks();
-        // If we're enabled and we don't want clock ticks we get render ticks
-        if (enable && !useClock) {
+
+        if (enable && !useClock)
+        {
             ticks.add(TickType.RENDER);
-        } else {
+        }
+        else
+        {
             ticks.remove(TickType.RENDER);
         }
-        // If we're enabled but we want clock ticks, or we're server side we get world ticks
-        if (enable && useClock) {
+
+        if (enable && useClock)
+        {
             ticks.add(TickType.CLIENT);
             ticks.add(TickType.WORLDLOAD);
-        } else {
+        }
+        else
+        {
             ticks.remove(TickType.CLIENT);
             ticks.remove(TickType.WORLDLOAD);
         }
@@ -160,6 +179,7 @@ public class ModLoaderHelper
         {
             return sidedHelper.getClientGui(mod, player, ID, x, y, z);
         }
+
         return null;
     }
 
@@ -168,8 +188,7 @@ public class ModLoaderHelper
         return new ModLoaderDispenseHelper(mod);
     }
 
-
-    public static void buildEntityTracker(BaseModProxy mod, Class<? extends Entity> entityClass, int entityTypeId, int updateRange, int updateInterval,
+    public static void buildEntityTracker(BaseModProxy mod, Class <? extends Entity > entityClass, int entityTypeId, int updateRange, int updateInterval,
             boolean sendVelocityInfo)
     {
         EntityRegistration er = EntityRegistry.registerModLoaderEntity(mod, entityClass, entityTypeId, updateRange, updateInterval, sendVelocityInfo);
@@ -181,6 +200,7 @@ public class ModLoaderHelper
     public static void registerTrade(int profession, TradeEntry entry)
     {
         assert profession < tradeHelpers.length : "The profession is out of bounds";
+
         if (tradeHelpers[profession] == null)
         {
             tradeHelpers[profession] = new ModLoaderVillageTradeHandler();
@@ -193,7 +213,8 @@ public class ModLoaderHelper
     public static void addCommand(ICommand command)
     {
         ModLoaderModContainer mlmc = (ModLoaderModContainer) Loader.instance().activeModContainer();
-        if (mlmc!=null)
+
+        if (mlmc != null)
         {
             mlmc.addServerCommand(command);
         }

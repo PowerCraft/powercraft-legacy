@@ -1,0 +1,50 @@
+package powercraft.core;
+
+import org.lwjgl.opengl.GL11;
+
+import com.google.common.collect.SetMultimap;
+
+import net.minecraft.src.EntityFX;
+import net.minecraft.src.Tessellator;
+import net.minecraft.src.World;
+
+public class PC_EntityLaserFX extends EntityFX {
+	
+	public PC_EntityLaserFX(World world, PC_CoordI cnt, PC_CoordI move, float strength, PC_Color color) {
+		super(world, cnt.x + 0.5, cnt.y + 0.5, cnt.z + 0.5, 0.0, 0.0, 0.0);
+		motionX = move.x;
+		motionY = move.y;
+		motionZ = move.z;
+		setRBGColorF((float)color.r, (float)color.g, (float)color.b);
+		particleScale = strength * 10.0F;
+	}
+
+	@Override
+	public void renderParticle(Tessellator tessellator, float tickTime, float rotationX, float rotationXZ, float rotationZ, float rotationYZ, float rotationXY) {
+		float var8 = 0;
+        float var9 = var8 + 0.0624375F;
+        float var10 = 0;
+        float var11 = var10 + 0.0624375F;
+        float size = 0.1F * this.particleScale;
+        float x1 = (float)(this.posX - interpPosX);
+        float y1 = (float)(this.posY - interpPosY);
+        float z1 = (float)(this.posZ - interpPosZ);
+        float x2 = x1 + (float)motionX;
+        float y2 = x2 + (float)motionY;
+        float z2 = x3 + (float)motionZ;
+        
+        
+        tessellator.setColorRGBA_F(this.particleRed, this.particleGreen, this.particleBlue, 1.0F);
+        /*tessellator.addVertexWithUV((double)(x - rotationX * size - rotationYZ * size), (double)(y - rotationXZ * size), (double)(z - rotationZ * size - rotationXY * size), (double)var9, (double)var11);
+        tessellator.addVertexWithUV((double)(x - rotationX * size + rotationYZ * size), (double)(y + rotationXZ * size), (double)(z - rotationZ * size + rotationXY * size), (double)var9, (double)var10);
+        tessellator.addVertexWithUV((double)(x + rotationX * size + rotationYZ * size), (double)(y + rotationXZ * size), (double)(z + rotationZ * size + rotationXY * size), (double)var8, (double)var10);
+        tessellator.addVertexWithUV((double)(x + rotationX * size - rotationYZ * size), (double)(y - rotationXZ * size), (double)(z + rotationZ * size - rotationXY * size), (double)var8, (double)var11);*/
+        setDead();
+	}
+	
+	@Override
+	public void onUpdate(){
+		 
+	}
+	
+}

@@ -5,9 +5,9 @@
 	</section>
 	<section name="DialogBounds_SearchDialog">
 		<item value="676" key="DIALOG_WIDTH"/>
-		<item value="108" key="DIALOG_Y_ORIGIN"/>
+		<item value="244" key="DIALOG_Y_ORIGIN"/>
 		<item value="427" key="DIALOG_HEIGHT"/>
-		<item value="353" key="DIALOG_X_ORIGIN"/>
+		<item value="630" key="DIALOG_X_ORIGIN"/>
 		<item value="1|Segoe UI|9.0|0|WINDOWS|1|-12|0|0|0|400|0|0|0|1|0|0|0|0|Segoe UI" key="DIALOG_FONT_NAME"/>
 	</section>
 	<section name="Search">
@@ -39,15 +39,15 @@
 		<item value="false" key="SEARCH_DERIVED"/>
 		<item value="1" key="HISTORY_SIZE"/>
 		<section name="EXTENSIONS">
-			<item value="*" key="0"/>
+			<item value="*.java" key="0"/>
 		</section>
 		<section name="HISTORY0">
 			<item value="false" key="isRegExSearch"/>
-			<item value="networkmanager" key="textPattern"/>
+			<item value="ItemArmor" key="textPattern"/>
 			<item value="0" key="scope"/>
 			<item value="true" key="ignoreCase"/>
 			<list key="fileNamePatterns">
-				<item value="*"/>
+				<item value="*.java"/>
 			</list>
 			<list key="workingSets">
 			</list>

@@ -1,0 +1,54 @@
+package powercraft.light;
+
+import net.minecraft.src.NBTTagCompound;
+import powercraft.core.PC_ITileEntityRenderer;
+import powercraft.core.PC_TileEntity;
+
+public class PCli_TileEntityMirrow extends PC_TileEntity implements PC_ITileEntityRenderer {
+
+	private int mirrorColor = -1;
+
+	public void setMirrorColor(int mirrorColor) {
+		this.mirrorColor = mirrorColor;
+	}
+
+	public int getMirrorColor() {
+		return mirrorColor;
+	}
+
+	@Override
+	public void writeToNBT(NBTTagCompound tag) {
+		super.writeToNBT(tag);
+		tag.setInteger("optMirrorColor", 1 + mirrorColor);
+	}
+
+	@Override
+	public void readFromNBT(NBTTagCompound tag) {
+		super.readFromNBT(tag);
+		mirrorColor = tag.getInteger("optMirrorColor") - 1;
+	}
+	
+	@Override
+	public void renderTileEntityAt(double x, double y, double z, float rot) {
+		
+	}
+	
+	@Override
+	public void setData(Object[] o) {
+		int p = 0;
+		while(p<o.length){
+			String var = (String)o[p++];
+			if(var.equals("mirrorColor"))
+				mirrorColor = (Integer)o[p++];
+		}
+	}
+
+	@Override
+	public Object[] getData() {
+		return new Object[]{
+				"mirrorColor",
+				mirrorColor
+		};
+	}
+	
+}

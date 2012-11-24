@@ -8,7 +8,6 @@ public class EntityGhast extends EntityFlying implements IMob
     public double waypointZ;
     private Entity targetedEntity = null;
 
-    /** Cooldown time between target loss and new target aquirement. */
     private int aggroCooldown = 0;
     public int prevAttackCounter = 0;
     public int attackCounter = 0;
@@ -22,12 +21,13 @@ public class EntityGhast extends EntityFlying implements IMob
         this.experienceValue = 5;
     }
 
-    /**
-     * Called when the entity is attacked.
-     */
     public boolean attackEntityFrom(DamageSource par1DamageSource, int par2)
     {
-        if ("fireball".equals(par1DamageSource.getDamageType()) && par1DamageSource.getEntity() instanceof EntityPlayer)
+        if (this.func_85032_ar())
+        {
+            return false;
+        }
+        else if ("fireball".equals(par1DamageSource.getDamageType()) && par1DamageSource.getEntity() instanceof EntityPlayer)
         {
             super.attackEntityFrom(par1DamageSource, 1000);
             ((EntityPlayer)par1DamageSource.getEntity()).triggerAchievement(AchievementList.ghast);
@@ -50,9 +50,6 @@ public class EntityGhast extends EntityFlying implements IMob
         return 10;
     }
 
-    /**
-     * Called to update the entity's position/logic.
-     */
     public void onUpdate()
     {
         super.onUpdate();
@@ -173,9 +170,6 @@ public class EntityGhast extends EntityFlying implements IMob
         }
     }
 
-    /**
-     * True if the ghast has an unobstructed line of travel to the waypoint.
-     */
     private boolean isCourseTraversable(double par1, double par3, double par5, double par7)
     {
         double var9 = (this.waypointX - this.posX) / par7;
@@ -196,41 +190,26 @@ public class EntityGhast extends EntityFlying implements IMob
         return true;
     }
 
-    /**
-     * Returns the sound this mob makes while it's alive.
-     */
     protected String getLivingSound()
     {
         return "mob.ghast.moan";
     }
 
-    /**
-     * Returns the sound this mob makes when it is hurt.
-     */
     protected String getHurtSound()
     {
         return "mob.ghast.scream";
     }
 
-    /**
-     * Returns the sound this mob makes on death.
-     */
     protected String getDeathSound()
     {
         return "mob.ghast.death";
     }
 
-    /**
-     * Returns the item ID for the item the mob drops on death.
-     */
     protected int getDropItemId()
     {
         return Item.gunpowder.shiftedIndex;
     }
 
-    /**
-     * Drop 0-2 items of this living's type
-     */
     protected void dropFewItems(boolean par1, int par2)
     {
         int var3 = this.rand.nextInt(2) + this.rand.nextInt(1 + par2);
@@ -249,25 +228,16 @@ public class EntityGhast extends EntityFlying implements IMob
         }
     }
 
-    /**
-     * Returns the volume for the sounds this mob makes.
-     */
     protected float getSoundVolume()
     {
         return 10.0F;
     }
 
-    /**
-     * Checks if the entity's current position is a valid location to spawn this entity.
-     */
     public boolean getCanSpawnHere()
     {
         return this.rand.nextInt(20) == 0 && super.getCanSpawnHere() && this.worldObj.difficultySetting > 0;
     }
 
-    /**
-     * Will return how many at most can spawn in a chunk at once.
-     */
     public int getMaxSpawnedInChunk()
     {
         return 1;

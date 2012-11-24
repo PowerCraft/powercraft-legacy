@@ -6,25 +6,18 @@ import java.io.IOException;
 
 public class Packet21PickupSpawn extends Packet
 {
-    /** Unique entity ID. */
     public int entityId;
 
-    /** The item X position. */
     public int xPosition;
 
-    /** The item Y position. */
     public int yPosition;
 
-    /** The item Z position. */
     public int zPosition;
 
-    /** The item rotation. */
     public byte rotation;
 
-    /** The item pitch. */
     public byte pitch;
 
-    /** The item roll. */
     public byte roll;
     public ItemStack itemID;
 
@@ -42,9 +35,6 @@ public class Packet21PickupSpawn extends Packet
         this.roll = (byte)((int)(par1EntityItem.motionZ * 128.0D));
     }
 
-    /**
-     * Abstract. Reads the raw packet data from the data stream.
-     */
     public void readPacketData(DataInputStream par1DataInputStream) throws IOException
     {
         this.entityId = par1DataInputStream.readInt();
@@ -57,9 +47,6 @@ public class Packet21PickupSpawn extends Packet
         this.roll = par1DataInputStream.readByte();
     }
 
-    /**
-     * Abstract. Writes the raw packet data to the data stream.
-     */
     public void writePacketData(DataOutputStream par1DataOutputStream) throws IOException
     {
         par1DataOutputStream.writeInt(this.entityId);
@@ -72,17 +59,11 @@ public class Packet21PickupSpawn extends Packet
         par1DataOutputStream.writeByte(this.roll);
     }
 
-    /**
-     * Passes this Packet on to the NetHandler for processing.
-     */
     public void processPacket(NetHandler par1NetHandler)
     {
         par1NetHandler.handlePickupSpawn(this);
     }
 
-    /**
-     * Abstract. Return the size of the packet (not counting the header).
-     */
     public int getPacketSize()
     {
         return 24;

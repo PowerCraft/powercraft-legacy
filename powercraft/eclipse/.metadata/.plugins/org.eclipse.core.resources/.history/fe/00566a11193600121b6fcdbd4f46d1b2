@@ -1,0 +1,12 @@
+package powercraft.light;
+
+import powercraft.core.PC_TileEntity;
+
+public class PCli_TileEntityPrism extends PC_TileEntity {
+
+	public boolean getPrismSide(int side) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+}
