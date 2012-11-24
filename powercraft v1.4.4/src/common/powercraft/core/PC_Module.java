@@ -179,7 +179,7 @@ public abstract class PC_Module
     
     public static String getPowerCraftFile()
     {
-        return "/PowerCraft/";
+        return PC_Utils.getMCDirectory() + "/PowerCraft/";
     }
 
     public static String getRandomSplash(Random rand)

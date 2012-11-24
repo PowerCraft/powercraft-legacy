@@ -12,7 +12,8 @@ public class PCma_CommonProxy extends PC_Proxy
                     "AutomaticWorkbench", PCma_ContainerAutomaticWorkbench.class,
                     "Roaster", PCma_ContainerRoaster.class,
                     "Replacer", PCma_ContainerReplacer.class,
-                    "Transmutabox", PCma_ContainerTransmutabox.class
+                    "Transmutabox", PCma_ContainerTransmutabox.class,
+                    "BlockBuilder", PCma_ContainerBlockBuilder.class
                 };
     }
 }

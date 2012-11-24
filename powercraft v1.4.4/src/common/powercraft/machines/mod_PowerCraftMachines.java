@@ -31,7 +31,9 @@ public class mod_PowerCraftMachines extends PC_Module
     public static PC_Block replacer;
     public static PC_Block transmutabox;
     public static PC_Block xpBank;
-
+    public static PC_Block blockBuilder;
+    public static PC_Block harvester;
+    
     public static List<Integer >roasterIgnoreBlockIDs;
 
     public static mod_PowerCraftMachines getInstance()
@@ -49,6 +51,8 @@ public class mod_PowerCraftMachines extends PC_Module
     public void init(FMLInitializationEvent event)
     {
         init();
+        PCma_CropHarvestingManager.loadCrops();
+        PCma_TreeHarvestingManager.loadTrees();
     }
 
     @PostInit
@@ -99,6 +103,8 @@ public class mod_PowerCraftMachines extends PC_Module
         replacer = PC_Utils.register(this, 484, PCma_BlockReplacer.class, PCma_TileEntityReplacer.class);
         transmutabox = PC_Utils.register(this, 485, PCma_BlockTransmutabox.class, PCma_TileEntityTransmutabox.class);
         xpBank = PC_Utils.register(this, 486, PCma_BlockXPBank.class, PCma_TileEntityXPBank.class);
+        blockBuilder = PC_Utils.register(this, 487, PCma_BlockBlockBuilder.class, PCma_TileEntityBlockBuilder.class);
+        harvester = PC_Utils.register(this, 488, PCma_BlockHarvester.class);
     }
 
     @Override

@@ -157,6 +157,9 @@ public class PC_BeamTracer {
 		return this;
 	}
 
+	public PC_CoordI getStartCoord() {
+		return startCoord.copy();
+	}
 
 	/**
 	 * Set starting movement vector of the beam
