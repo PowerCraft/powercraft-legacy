@@ -20,7 +20,7 @@ import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.network.NetworkMod;
 
-@Mod(modid = "PowerCraft-Logic", name = "PowerCraft-Logic", version = "3.5.0AlphaB", dependencies = "required-after:PowerCraft-Core")
+@Mod(modid = "PowerCraft-Logic", name = "PowerCraft-Logic", version = "3.5.0AlphaC", dependencies = "required-after:PowerCraft-Core")
 @NetworkMod(clientSideRequired = true, serverSideRequired = true)
 public class mod_PowerCraftLogic extends PC_Module
 {

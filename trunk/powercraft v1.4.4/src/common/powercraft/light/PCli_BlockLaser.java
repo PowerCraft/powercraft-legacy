@@ -122,6 +122,13 @@ public class PCli_BlockLaser extends PC_Block implements PC_ICraftingToolDisplay
         }
 
         world.setBlockMetadataWithNotify(i, j, k, l);
+        
+        PCli_TileEntityLaser te = PC_Utils.getTE(world, i, j, k, blockID);
+        
+        if(te!=null){
+        	te.setKiller(PC_Utils.isBlock(world, new PC_CoordI(i, j-1, k), "PCma_BlockRoaster"));
+        }
+        
     }
 
     @Override
@@ -162,6 +169,15 @@ public class PCli_BlockLaser extends PC_Block implements PC_ICraftingToolDisplay
         PC_Utils.hugeUpdate(world, i, j, k, blockID);
         super.breakBlock(world, i, j, k, par5, par6);
     }
+    
+	@Override
+	public void onNeighborBlockChange(World world, int x, int y,int z, int par5) {
+		 PCli_TileEntityLaser te = PC_Utils.getTE(world, x, y, z, blockID);
+	        
+        if(te!=null){
+        	te.setKiller(PC_Utils.isBlock(world, new PC_CoordI(x, y-1, z), "PCma_BlockRoaster"));
+        }
+	}
 
 	@Override
 	public String getCraftingToolModule() {
