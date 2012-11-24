@@ -1,6 +1,7 @@
 package powercraft.machines;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 import java.util.Set;
 
@@ -31,12 +32,13 @@ import powercraft.core.PC_Block;
 import powercraft.core.PC_Color;
 import powercraft.core.PC_CoordI;
 import powercraft.core.PC_IBeamHandler;
+import powercraft.core.PC_ICraftingToolDisplayer;
 import powercraft.core.PC_ISpecialInventoryTextures;
 import powercraft.core.PC_InvUtils;
 import powercraft.core.PC_Utils;
 
 public class PCma_BlockHarvester extends PC_Block implements
-		PC_ISpecialInventoryTextures, PC_IBeamHandler {
+		PC_ISpecialInventoryTextures, PC_IBeamHandler, PC_ICraftingToolDisplayer {
 
 	private static final int TXDOWN = 109, TXTOP = 155, TXSIDE = 139, TXFRONT = 107, TXBACK = 123;
 	/**
@@ -520,4 +522,15 @@ public class PCma_BlockHarvester extends PC_Block implements
 		return 0;
 	}
 
+	@Override
+	public String getCraftingToolModule() {
+		return mod_PowerCraftMachines.getInstance().getNameWithoutPowerCraft();
+	}
+
+	@Override
+	public List<ItemStack> getItemStacks(List<ItemStack> arrayList) {
+		arrayList.add(new ItemStack(this));
+		return arrayList;
+	}
+	
 }

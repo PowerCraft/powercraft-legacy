@@ -127,6 +127,27 @@ public class mod_PowerCraftMachines extends PC_Module
                 new Object[] { "ODO", "OGO", "O O",
                         'O', Block.obsidian, 'D', Block.blockDiamond, 'G', Item.ghastTear
                              });
+        
+        PC_Utils.addRecipe(
+				new PC_ItemStack(transmutabox, 1, 0),
+				new Object[] { "SOS", "OPO", "SOS",
+					'S', Block.blockSteel, 'O', Block.obsidian, 'P', Block.stoneOvenIdle });
+        
+        PC_Utils.addRecipe(
+				new PC_ItemStack(blockBuilder, 1),
+				new Object[] { "G", "D",
+					'G', Item.ingotGold, 'D', Block.dispenser });
+
+        PC_Utils.addRecipe(
+				new PC_ItemStack(harvester, 1),
+				new Object[] { "P", "D",
+					'P', Item.ingotIron, 'D', Block.dispenser });
+		
+        PC_Utils.addRecipe(
+				new PC_ItemStack(replacer, 1),
+				new Object[] { "B", "R", "H",
+					'B', blockBuilder, 'R', Item.redstone, 'H', harvester});
+        
     }
 
     @Override

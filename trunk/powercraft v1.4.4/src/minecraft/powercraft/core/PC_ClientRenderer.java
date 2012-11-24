@@ -27,8 +27,11 @@ public class PC_ClientRenderer extends PC_Renderer implements ISimpleBlockRender
 			((PC_IBlockRenderer) block).renderInventoryBlock(block, metadata, modelID, renderer);
 		}else if(block instanceof PC_IRotatedBox){
 			iRenderInvBlockRotatedBox(block, metadata, modelID, renderer);
-		}else
-			iRenderInvBlock(block, metadata, modelID, renderer);
+		}else{
+			boolean swapped = swapTerrain(block);
+			iRenderInvBox(renderer, block, metadata);
+			resetTerrain(swapped);
+		}
 	}
 
 	@Override
