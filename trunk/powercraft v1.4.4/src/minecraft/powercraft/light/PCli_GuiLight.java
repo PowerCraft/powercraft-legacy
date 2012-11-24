@@ -42,7 +42,7 @@ public class PCli_GuiLight implements PC_IGresClient {
 	
 	@Override
 	public void initGui(PC_IGresGui gui) {
-		PC_GresWindow w = (PC_GresWindow) new PC_GresWindow(PC_Utils.tr("tile.PCma_BlockLight.name"));
+		PC_GresWindow w = (PC_GresWindow) new PC_GresWindow(PC_Utils.tr("tile.PCli_BlockLight.name"));
 		PC_GresLayoutV v = (PC_GresLayoutV)new PC_GresLayoutV().setAlignH(PC_GresAlign.STRETCH);
 		
 		PC_GresLayoutH h = (PC_GresLayoutH)new PC_GresLayoutH().setAlignH(PC_GresAlign.JUSTIFIED);
