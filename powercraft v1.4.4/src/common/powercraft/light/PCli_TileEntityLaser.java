@@ -26,6 +26,7 @@ public class PCli_TileEntityLaser extends PC_TileEntity implements PC_IBeamHandl
     private ItemStack itemstack;
     private PC_BeamTracer laser;
     private boolean isKiller = false;
+    private boolean powered = false;
     
     public boolean isKiller()
     {
@@ -37,9 +38,18 @@ public class PCli_TileEntityLaser extends PC_TileEntity implements PC_IBeamHandl
     	PC_PacketHandler.setTileEntity(this, "isKiller", isKiller);
 	}
 
+    public void setPowerd(boolean powered) {
+    	if(this.powered != powered){
+    		this.powered = powered;
+    		PC_PacketHandler.setTileEntity(this, "powered", powered);
+    	}
+	}
+    
 	public boolean isActive()
     {
-        return active;
+		if(PCli_ItemLaserComposition.isSensor(itemstack))
+			return active;
+		return false;
     }
 
     @Override
@@ -51,6 +61,8 @@ public class PCli_TileEntityLaser extends PC_TileEntity implements PC_IBeamHandl
     @Override
     public void updateEntity()
     {
+    	if(!PCli_ItemLaserComposition.isSensor(itemstack) && !powered && !isRoasterBurning())
+    		return;
     	if(laser==null){
 	    	laser = new PC_BeamTracer(worldObj, this);
 	    	laser.setStartCoord(getCoord());
@@ -60,7 +72,15 @@ public class PCli_TileEntityLaser extends PC_TileEntity implements PC_IBeamHandl
 	    	laser.setDetectEntities(true);
     	}
     	laser.setStartLength(PCli_ItemLaserComposition.getLengthLimit(itemstack, isRoasterBurning()));
+    	boolean oldActive = active;
+    	active = false;
     	laser.flash();
+    	if(PCli_ItemLaserComposition.isSensor(itemstack)){
+	    	if(oldActive != active){
+	    		PC_PacketHandler.setTileEntity(this, "on", active);
+	    		PC_Utils.hugeUpdate(worldObj, xCoord, yCoord, zCoord, mod_PowerCraftLight.laser.blockID);
+	    	}
+    	}
     }
 
     @Override
@@ -69,6 +89,7 @@ public class PCli_TileEntityLaser extends PC_TileEntity implements PC_IBeamHandl
         super.readFromNBT(nbttagcompound);
         active = nbttagcompound.getBoolean("on");
         isKiller = nbttagcompound.getBoolean("isKiller");
+        powered = nbttagcompound.getBoolean("powered");
         itemstack = null;
         if(nbttagcompound.hasKey("itemstack")){
         	itemstack = ItemStack.loadItemStackFromNBT(nbttagcompound.getCompoundTag("itemstack"));
@@ -82,6 +103,7 @@ public class PCli_TileEntityLaser extends PC_TileEntity implements PC_IBeamHandl
         super.writeToNBT(nbttagcompound);
         nbttagcompound.setBoolean("on", active);
         nbttagcompound.setBoolean("isKiller", isKiller);
+        nbttagcompound.setBoolean("powered", powered);
         if(itemstack!=null){
 	        NBTTagCompound nbttag = new NBTTagCompound();
 	        itemstack.writeToNBT(nbttag);
@@ -109,6 +131,7 @@ public class PCli_TileEntityLaser extends PC_TileEntity implements PC_IBeamHandl
 
 	@Override
 	public boolean onEntityHit(PC_BeamTracer beamTracer, Entity entity, PC_CoordI coord) {
+		active = true;
 		return PCli_ItemLaserComposition.onEntityHit(beamTracer, entity, coord, itemstack, isRoasterBurning());
 	}
 
@@ -138,9 +161,14 @@ public class PCli_TileEntityLaser extends PC_TileEntity implements PC_IBeamHandl
 				}
             }else if(var.equals("isKiller")){
             	isKiller = (Boolean)o[p++];
+            }else if(var.equals("on")){
+            	active = (Boolean)o[p++];
+            }else if(var.equals("powered")){
+            	powered = (Boolean)o[p++];
             }
    
         }
+        PC_Utils.hugeUpdate(worldObj, xCoord, yCoord, zCoord, mod_PowerCraftLight.laser.blockID);
 	}
 
 	@Override
@@ -150,7 +178,9 @@ public class PCli_TileEntityLaser extends PC_TileEntity implements PC_IBeamHandl
 		try {
 			return new Object[]{
 				"nbt", CompressedStreamTools.compress(nbt),
-				"isKiller", isKiller
+				"isKiller", isKiller,
+				"on", active,
+				"powered", powered
 			};
 		} catch (IOException e) {
 			e.printStackTrace();

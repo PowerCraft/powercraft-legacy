@@ -37,7 +37,8 @@ public class PCli_ItemLaserComposition extends PC_Item
                 {
                     getItemName(), "Laser Composition",
                     getItemName() + ".kill", "Kill Level %s",
-                    getItemName() + ".distance", "Distance Level %s"
+                    getItemName() + ".distance", "Distance Level %s",
+                    getItemName() + ".sensor", "Sensor Level %s"
                 };
     }
 
@@ -103,6 +104,7 @@ public class PCli_ItemLaserComposition extends PC_Item
         }
         int levelKill = nbtTagCompound.getInteger("level.kill");
         int levelDistance = nbtTagCompound.getInteger("level.distance");
+        int levelSensor = nbtTagCompound.getInteger("level.sensor");
         
         if (levelKill > 0)
         {
@@ -113,6 +115,11 @@ public class PCli_ItemLaserComposition extends PC_Item
         {
         	list.add(PC_Utils.tr(getItemName() + ".distance.name", ("" + levelDistance)));
         }
+        
+        if (levelSensor > 0)
+        {
+        	list.add(PC_Utils.tr(getItemName() + ".sensor.name", ("" + levelSensor)));
+        }
     }
 	
     @Override
@@ -120,7 +127,8 @@ public class PCli_ItemLaserComposition extends PC_Item
     	ItemStack is = inventoryCrafting.getStackInRowAndColumn(1, 1);
     	int levelKill = 0;
         int levelDistance = 0;
-    	
+    	int levelSensor = 0;
+        
     	if(is != null && is.itemID == PC_Utils.getPCObjectIDByName("PCco_BlockPowerCrystal")){
     		switch(is.getItemDamage()){
     		case 0:
@@ -128,6 +136,9 @@ public class PCli_ItemLaserComposition extends PC_Item
     			break;
     		case 1:
     			levelKill = 1;
+    			break;
+    		case 2:
+    			levelSensor = 1;
     			break;
     		}
     	}else{
@@ -139,6 +150,7 @@ public class PCli_ItemLaserComposition extends PC_Item
     					if(is.stackTagCompound!=null){
     						levelDistance += is.stackTagCompound.getInteger("level.distance");
     						levelKill += is.stackTagCompound.getInteger("level.kill");
+    						levelSensor += is.stackTagCompound.getInteger("level.sensor");
     					}
     				}
     			}
@@ -148,6 +160,7 @@ public class PCli_ItemLaserComposition extends PC_Item
     	itemStack.stackTagCompound = new NBTTagCompound();
 		itemStack.stackTagCompound.setInteger("level.distance", levelDistance);
 		itemStack.stackTagCompound.setInteger("level.kill", levelKill);
+		itemStack.stackTagCompound.setInteger("level.sensor", levelSensor);
 	}
     
 	@Override
@@ -159,6 +172,10 @@ public class PCli_ItemLaserComposition extends PC_Item
 		itemStack = new ItemStack(this);
 		itemStack.stackTagCompound = new NBTTagCompound();
 		itemStack.stackTagCompound.setInteger("level.kill", 1);
+		arrayList.add(itemStack);
+		itemStack = new ItemStack(this);
+		itemStack.stackTagCompound = new NBTTagCompound();
+		itemStack.stackTagCompound.setInteger("level.sensor", 1);
 		arrayList.add(itemStack);
 		return arrayList;
 	}
@@ -218,10 +235,22 @@ public class PCli_ItemLaserComposition extends PC_Item
         if(levelKill>0)
         	if(entity instanceof EntityItem && levelKill>2){
         		entity.setDead();
-        	}else{
+        	}else if(!(entity instanceof EntityItem)){
         		entity.attackEntityFrom(PCli_DamageSourceLaser.getDamageSource(), levelKill);
         	}
 		return levelKill<=4;
+	}
+
+	public static boolean isSensor(ItemStack itemstack) {
+		if(itemstack==null)
+			return false;
+		NBTTagCompound nbtTagCompound = itemstack.getTagCompound();
+        if(nbtTagCompound==null){
+        	nbtTagCompound = new NBTTagCompound();
+        	itemstack.setTagCompound(nbtTagCompound);
+        }
+        int levelSensor = nbtTagCompound.getInteger("level.sensor");
+		return levelSensor>0;
 	}
 	
 }

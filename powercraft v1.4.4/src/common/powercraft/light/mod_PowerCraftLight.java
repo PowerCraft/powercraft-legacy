@@ -31,6 +31,7 @@ public class mod_PowerCraftLight extends PC_Module
     public static PC_Block laser;
     public static PC_Block mirrow;
     public static PC_Block prism;
+    public static PC_Block laserSensor;
     public static PC_Item laserComposition;
 
     public static mod_PowerCraftLight getInstance()
@@ -88,12 +89,13 @@ public class mod_PowerCraftLight extends PC_Module
         laser = PC_Utils.register(this, 492, PCli_BlockLaser.class, PCli_TileEntityLaser.class);
         mirrow = PC_Utils.register(this, 493, PCli_BlockMirrow.class, PCli_TileEntityMirrow.class);
         prism = PC_Utils.register(this, 494, PCli_BlockPrism.class, PCli_TileEntityPrism.class);
+        laserSensor = PC_Utils.register(this, 495, PCli_BlockLaserSensor.class, PCli_TileEntityLaserSensor.class);
     }
 
     @Override
     protected void initItems()
     {
-    	laserComposition = PC_Utils.register(this, 495, PCli_ItemLaserComposition.class);
+    	laserComposition = PC_Utils.register(this, 496, PCli_ItemLaserComposition.class);
     }
 
     @Override
