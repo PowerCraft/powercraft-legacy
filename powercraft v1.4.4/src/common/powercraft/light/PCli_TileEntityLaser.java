@@ -7,11 +7,14 @@ import net.minecraft.src.CompressedStreamTools;
 import net.minecraft.src.Entity;
 import net.minecraft.src.ItemStack;
 import net.minecraft.src.NBTTagCompound;
+import net.minecraft.src.World;
 import powercraft.core.PC_BeamTracer;
+import powercraft.core.PC_Block;
 import powercraft.core.PC_Color;
 import powercraft.core.PC_CoordI;
 import powercraft.core.PC_IBeamHandler;
 import powercraft.core.PC_ITileEntityRenderer;
+import powercraft.core.PC_PacketHandler;
 import powercraft.core.PC_Renderer;
 import powercraft.core.PC_TileEntity;
 import powercraft.core.PC_Utils;
@@ -28,8 +31,12 @@ public class PCli_TileEntityLaser extends PC_TileEntity implements PC_IBeamHandl
     {
         return isKiller;
     }
-
     
+    public void setKiller(boolean b) {
+    	isKiller = b;
+    	PC_PacketHandler.setTileEntity(this, "isKiller", isKiller);
+	}
+
 	public boolean isActive()
     {
         return active;
@@ -50,9 +57,9 @@ public class PCli_TileEntityLaser extends PC_TileEntity implements PC_IBeamHandl
 	    	int metadata = PC_Utils.getMD(worldObj, xCoord, yCoord, zCoord);
 	    	laser.setStartMove(metadata == 4?1:metadata == 5?-1:0, 0, metadata == 2?1:metadata == 3?-1:0);
 	    	laser.setColor(PCli_ItemLaserComposition.getColorForItemStack(itemstack));
-	    	laser.setStartLength(PCli_ItemLaserComposition.getLengthLimit(itemstack));
 	    	laser.setDetectEntities(true);
     	}
+    	laser.setStartLength(PCli_ItemLaserComposition.getLengthLimit(itemstack, isRoasterBurning()));
     	laser.flash();
     }
 
@@ -82,14 +89,27 @@ public class PCli_TileEntityLaser extends PC_TileEntity implements PC_IBeamHandl
         }
     }
 
+    private boolean isRoasterBurning(){
+    	boolean isBurning = false;
+		if(isKiller){
+			Block b = PC_Utils.getBlock(worldObj, xCoord, yCoord-1, zCoord);
+			if(b instanceof PC_Block){
+				Object o = ((PC_Block)b).sendInfo(worldObj, xCoord, yCoord-1, zCoord, "isBurning", null);
+				if(o instanceof Boolean)
+					isBurning = (Boolean)o;
+			}
+		}
+		return isBurning;
+    }
+    
 	@Override
 	public boolean onBlockHit(PC_BeamTracer beamTracer, Block block, PC_CoordI coord) {
-		return PCli_ItemLaserComposition.onBlockHit(beamTracer, block, coord, itemstack);
+		return PCli_ItemLaserComposition.onBlockHit(beamTracer, block, coord, itemstack, isRoasterBurning());
 	}
 
 	@Override
 	public boolean onEntityHit(PC_BeamTracer beamTracer, Entity entity, PC_CoordI coord) {
-		return PCli_ItemLaserComposition.onEntityHit(beamTracer, entity, coord, itemstack);
+		return PCli_ItemLaserComposition.onEntityHit(beamTracer, entity, coord, itemstack, isRoasterBurning());
 	}
 
 	public ItemStack getItemStack() {
@@ -116,6 +136,8 @@ public class PCli_TileEntityLaser extends PC_TileEntity implements PC_IBeamHandl
 				} catch (IOException e) {
 					e.printStackTrace();
 				}
+            }else if(var.equals("isKiller")){
+            	isKiller = (Boolean)o[p++];
             }
    
         }
@@ -127,7 +149,8 @@ public class PCli_TileEntityLaser extends PC_TileEntity implements PC_IBeamHandl
 		writeToNBT(nbt);
 		try {
 			return new Object[]{
-				"nbt", CompressedStreamTools.compress(nbt)
+				"nbt", CompressedStreamTools.compress(nbt),
+				"isKiller", isKiller
 			};
 		} catch (IOException e) {
 			e.printStackTrace();

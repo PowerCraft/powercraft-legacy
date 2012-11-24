@@ -229,8 +229,15 @@ public class PCma_BlockRoaster extends PC_Block implements PC_ICraftingToolDispl
             }
         }
     }
-
+    
     @Override
+	public Object sendInfo(World world, int x, int y, int z, String id, Object o) {
+		if(id.equalsIgnoreCase("isBurning"))
+			return isBurning(world, x, y, z);
+		return null;
+	}
+
+	@Override
     public String getCraftingToolModule()
     {
         return mod_PowerCraftMachines.getInstance().getNameWithoutPowerCraft();
@@ -242,4 +249,5 @@ public class PCma_BlockRoaster extends PC_Block implements PC_ICraftingToolDispl
         arrayList.add(new ItemStack(this));
         return arrayList;
     }
+    
 }

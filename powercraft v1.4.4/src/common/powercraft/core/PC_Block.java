@@ -63,6 +63,10 @@ public abstract class PC_Block extends BlockContainer
         return this;
     }
 
+    public Object sendInfo(World world, int x, int y, int z, String id, Object o){
+    	return o;
+    }
+    
     @Override
     @SideOnly(Side.CLIENT)
     public boolean shouldSideBeRendered(IBlockAccess world, int x, int y, int z, int side)
@@ -91,4 +95,5 @@ public abstract class PC_Block extends BlockContainer
 
         return new ItemStack(block.blockID, 1, var2);
     }
+    
 }

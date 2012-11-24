@@ -20,7 +20,7 @@ import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.network.NetworkMod;
 
-@Mod(modid = "PowerCraft-Light", name = "PowerCraft-Light", version = "3.5.0AlphaB", dependencies = "required-after:PowerCraft-Core")
+@Mod(modid = "PowerCraft-Light", name = "PowerCraft-Light", version = "3.5.0AlphaC", dependencies = "required-after:PowerCraft-Core")
 @NetworkMod(clientSideRequired = true, serverSideRequired = true)
 public class mod_PowerCraftLight extends PC_Module
 {
@@ -116,6 +116,16 @@ public class mod_PowerCraftLight extends PC_Module
                 new Object[] { "XXX", "XPX", "XXX",
                         'X', Block.glass, 'P', new PC_ItemStack(PC_Utils.getPCBlockByName("PCco_BlockPowerCrystal"), 1, 0)
                              });
+        
+        PC_Utils.addRecipe(
+				new PC_ItemStack(laser, 1),
+				new Object[] { " WD", " S ", "SSS",
+					'S', Block.stone, 'W', new PC_ItemStack(Block.planks, 1, -1), 'D', Item.diamond });
+
+        PC_Utils.addRecipe(
+				new PC_ItemStack(laser, 1),
+				new Object[] { " WD", " S ", "SSS",
+					'S', Block.cobblestone, 'W', new PC_ItemStack(Block.planks, 1, -1), 'D', Item.diamond });
         
         PC_Utils.addRecipe(
 				new PC_ItemStack(mirrow, 2, 0),
