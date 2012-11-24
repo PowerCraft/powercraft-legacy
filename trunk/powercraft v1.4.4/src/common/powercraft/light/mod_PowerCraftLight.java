@@ -119,26 +119,25 @@ public class mod_PowerCraftLight extends PC_Module
                         'X', Block.glass, 'P', new PC_ItemStack(PC_Utils.getPCBlockByName("PCco_BlockPowerCrystal"), 1, 0)
                              });
         
-        PC_Utils.addRecipe(
-				new PC_ItemStack(laser, 1),
+        PC_Utils.addRecipe(new PC_ItemStack(laser, 1),
 				new Object[] { " WD", " S ", "SSS",
 					'S', Block.stone, 'W', new PC_ItemStack(Block.planks, 1, -1), 'D', Item.diamond });
-
-        PC_Utils.addRecipe(
-				new PC_ItemStack(laser, 1),
+        
+        PC_Utils.addRecipe(new PC_ItemStack(laser, 1),
 				new Object[] { " WD", " S ", "SSS",
 					'S', Block.cobblestone, 'W', new PC_ItemStack(Block.planks, 1, -1), 'D', Item.diamond });
         
-        PC_Utils.addRecipe(
-				new PC_ItemStack(mirrow, 2, 0),
+        PC_Utils.addRecipe(new PC_ItemStack(laserSensor, 1),
+        		new Object[] { "L", "R", 
+        	'L', new PC_ItemStack(laser, 1), 'R', Item.redstone });
+        
+        PC_Utils.addRecipe(new PC_ItemStack(mirrow, 2, 0),
 				new Object[] { "GI", " I",	'G', Block.thinGlass, 'I', Item.ingotIron });
         
-        PC_Utils.addRecipe(
-				new PC_ItemStack(prism, 1, 1),
+        PC_Utils.addRecipe(new PC_ItemStack(prism, 1, 1),
 				new Object[] { "GG", "GG", 'G', Block.glass });
         
-        PC_Utils.addRecipe(
-                new PC_ItemStack(laserComposition),
+        PC_Utils.addRecipe(new PC_ItemStack(laserComposition),
                 new Object[] { "XXX", "XPX", "XXX",
                         'X', Block.glass, 'P', new PC_ItemStack(PC_Utils.getPCBlockByName("PCco_BlockPowerCrystal"), 1, 1)
                              });
