@@ -9,7 +9,8 @@ public class PCma_ClientProxy extends PCma_CommonProxy {
 				"Roaster", PCma_GuiRoaster.class,
 				"Replacer", PCma_GuiReplacer.class,
 				"Transmutabox", PCma_GuiTransmutabox.class,
-				"XPBank", PCma_GuiXPBank.class
+				"XPBank", PCma_GuiXPBank.class,
+				"BlockBuilder", PCma_GuiBlockBuilder.class
 			};
 	}
 

@@ -293,7 +293,7 @@ public class PCma_TileEntityTransmutabox extends PC_TileEntity implements IInven
 
         for (int j = 9; j < 49; j++)
         {
-            if (itemStacks[j] != null && !itemStacks[j].equals(itemStacks[0]))
+            if (itemStacks[j] != null && !itemStacks[j].isItemEqual(itemStacks[0]))
             {
                 if (itemStacks[j].stackSize > i - changed)
                 {
@@ -325,7 +325,7 @@ public class PCma_TileEntityTransmutabox extends PC_TileEntity implements IInven
                     changed -= itemStacks[j].getMaxStackSize();
                 }
             }
-            else if (itemStacks[j].equals(itemStacks[0]))
+            else if (itemStacks[j].isItemEqual(itemStacks[0]))
             {
                 if (itemStacks[j].getMaxStackSize() - itemStacks[j].stackSize > changed)
                 {

@@ -1828,4 +1828,12 @@ public class PC_Utils implements PC_IPacketHandler
             }
         }
     }
+
+	public static boolean isBlock(IBlockAccess world, PC_CoordI pos, String...names) {
+		int blockID = getBID(world, pos.x, pos.y, pos.z);
+		for(String name:names)
+			if(blockID == getPCObjectIDByName(name))
+				return true;
+		return false;
+	}
 }
