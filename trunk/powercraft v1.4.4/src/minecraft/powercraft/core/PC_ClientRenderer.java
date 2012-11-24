@@ -402,5 +402,20 @@ public class PC_ClientRenderer extends PC_Renderer implements ISimpleBlockRender
 	protected void iglScalef(float x, float y, float z) {
 		GL11.glScalef(x, y, z);
 	}
+
+	@Override
+	protected void iglEnable(int i) {
+		GL11.glEnable(i);
+	}
+
+	@Override
+	protected void iglDisable(int i) {
+		GL11.glDisable(i);
+	}
+		
+	@Override
+	protected void iglBlendFunc(int i, int j) {
+		GL11.glBlendFunc(i, j);
+	}
 	
 }

@@ -168,5 +168,23 @@ public class PC_Renderer
     {
         renderer2d.iglScalef(x, y, z);
     }
+
+    protected void iglEnable(int i) {}
+    
+	public static void glEnable(int i) {
+		 renderer2d.iglEnable(i);
+	}
+
+	protected void iglDisable(int i) {}
+	
+	public static void glDisable(int i) {
+		renderer2d.iglDisable(i);
+	}
+
+	protected void iglBlendFunc(int i, int j) {}
+	
+	public static void glBlendFunc(int i, int j) {
+		renderer2d.iglBlendFunc(i, j);
+	}
     
 }

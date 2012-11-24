@@ -30,6 +30,7 @@ public class mod_PowerCraftLight extends PC_Module
     public static PC_Block lightningConductor;
     public static PC_Block laser;
     public static PC_Block mirrow;
+    public static PC_Block prism;
     public static PC_Item laserComposition;
 
     public static mod_PowerCraftLight getInstance()
@@ -86,12 +87,13 @@ public class mod_PowerCraftLight extends PC_Module
         lightningConductor = PC_Utils.register(this, 491, PCli_BlockLightningConductor.class, PCli_ItemBlockLightningConductor.class, PCli_TileEntityLightningConductor.class);
         laser = PC_Utils.register(this, 492, PCli_BlockLaser.class, PCli_TileEntityLaser.class);
         mirrow = PC_Utils.register(this, 493, PCli_BlockMirrow.class, PCli_TileEntityMirrow.class);
+        prism = PC_Utils.register(this, 494, PCli_BlockPrism.class, PCli_TileEntityPrism.class);
     }
 
     @Override
     protected void initItems()
     {
-    	laserComposition = PC_Utils.register(this, 494, PCli_ItemLaserComposition.class);
+    	laserComposition = PC_Utils.register(this, 495, PCli_ItemLaserComposition.class);
     }
 
     @Override
@@ -114,6 +116,14 @@ public class mod_PowerCraftLight extends PC_Module
                 new Object[] { "XXX", "XPX", "XXX",
                         'X', Block.glass, 'P', new PC_ItemStack(PC_Utils.getPCBlockByName("PCco_BlockPowerCrystal"), 1, 0)
                              });
+        
+        PC_Utils.addRecipe(
+				new PC_ItemStack(mirrow, 2, 0),
+				new Object[] { "GI", " I",	'G', Block.thinGlass, 'I', Item.ingotIron });
+        
+        PC_Utils.addRecipe(
+				new PC_ItemStack(prism, 1, 1),
+				new Object[] { "GG", "GG", 'G', Block.glass });
         
         PC_Utils.addRecipe(
                 new PC_ItemStack(laserComposition),

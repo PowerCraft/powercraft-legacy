@@ -14,9 +14,5 @@ public class PC_Proxy
         return null;
     }
 
-    public void registerTileEntitySpecialRenderers()
-    {
-    }
-
     public void init() {}
 }
