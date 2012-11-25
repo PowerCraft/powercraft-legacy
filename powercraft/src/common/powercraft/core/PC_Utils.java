@@ -409,6 +409,8 @@ public class PC_Utils implements PC_IPacketHandler
                         te.getBlockType();
                         te.lockInvalid(false);
                     }
+                    hugeUpdate(world, x, y, z, b.blockID);
+                    
                 }
             }
         }
