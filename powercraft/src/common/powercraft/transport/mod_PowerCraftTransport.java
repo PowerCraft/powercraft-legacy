@@ -20,7 +20,7 @@ import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.network.NetworkMod;
 
-@Mod(modid = "PowerCraft-Transport", name = "PowerCraft-Transport", version = "3.5.0AlphaC", dependencies = "required-after:PowerCraft-Core")
+@Mod(modid = "PowerCraft-Transport", name = "PowerCraft-Transport", version = "3.5.0AlphaD", dependencies = "required-after:PowerCraft-Core")
 @NetworkMod(clientSideRequired = true, serverSideRequired = true)
 public class mod_PowerCraftTransport extends PC_Module
 {
