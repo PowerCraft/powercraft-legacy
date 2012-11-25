@@ -1846,4 +1846,14 @@ public class PC_Utils implements PC_IPacketHandler
 		}
 		return false;
 	}
+
+	public static boolean hasFlag(World world, PC_CoordI pos, String info) {
+		Block b = getBlock(world, pos.x, pos.y, pos.z);
+		if(b instanceof PC_Block){
+			Object o = ((PC_Block)b).sendInfo(world, pos.x, pos.y, pos.z, info, null);
+			if(o instanceof Boolean)
+				return (Boolean)o;
+		}
+		return false;
+	}
 }

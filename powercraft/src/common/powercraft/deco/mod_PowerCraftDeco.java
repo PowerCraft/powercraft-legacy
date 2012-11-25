@@ -28,6 +28,7 @@ public class mod_PowerCraftDeco extends PC_Module {
 
 	public static PC_Block redstoneStorage;
 	public static PC_Block ironFrame;
+	public static PC_Block chimney;
 
     public static mod_PowerCraftDeco getInstance()
     {
@@ -76,6 +77,7 @@ public class mod_PowerCraftDeco extends PC_Module {
 	protected void initBlocks() {
 		redstoneStorage = PC_Utils.register(this, 516, PCde_BlockRedstoneStorage.class);
 		ironFrame = PC_Utils.register(this, 517, PCde_BlockIronFrame.class, PCde_TileEntityIronFrame.class);
+		chimney = PC_Utils.register(this, 518, PCde_BlockChimney.class, PCde_ItemBlockChimney.class, PCde_TileEntityChimney.class);
 	}
 
 	@Override
