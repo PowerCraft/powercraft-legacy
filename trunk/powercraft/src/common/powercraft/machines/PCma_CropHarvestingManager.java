@@ -215,10 +215,10 @@ public class PCma_CropHarvestingManager {
 		PC_Logger.finer("Loading XML configuration for crops.");
 
 		if (!folder.exists()) {
-			folder.mkdir();
+			folder.mkdirs();
 		}
 
-		if (!(new File(folder + "/" + "default.xml")).exists()) {
+		if (!(new File(folder + "/default.xml")).exists()) {
 
 			try {
 				PC_Logger.finest("Generating default crops config in " + folder + "/default.xml");
