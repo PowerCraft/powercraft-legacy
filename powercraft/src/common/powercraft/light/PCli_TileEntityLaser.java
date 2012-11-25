@@ -34,8 +34,10 @@ public class PCli_TileEntityLaser extends PC_TileEntity implements PC_IBeamHandl
     }
     
     public void setKiller(boolean b) {
-    	isKiller = b;
-    	PC_PacketHandler.setTileEntity(this, "isKiller", isKiller);
+    	if(isKiller != b){
+	    	isKiller = b;
+	    	PC_PacketHandler.setTileEntity(this, "isKiller", isKiller);
+    	}
 	}
 
     public void setPowerd(boolean powered) {

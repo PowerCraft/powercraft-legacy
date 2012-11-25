@@ -177,9 +177,12 @@ public abstract class PC_Module
 
     protected abstract void initRecipes();
     
-    public static String getPowerCraftFile()
+    public static File getPowerCraftFile()
     {
-        return PC_Utils.getMCDirectory() + "/PowerCraft/";
+    	File file = new File(PC_Utils.getMCDirectory(), "/PowerCraft/");
+    	if(file.exists())
+    		file.mkdirs();
+        return file;
     }
 
     public static String getRandomSplash(Random rand)
