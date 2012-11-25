@@ -1836,4 +1836,14 @@ public class PC_Utils implements PC_IPacketHandler
 				return true;
 		return false;
 	}
+
+	public static boolean hasFlag(int blockID, String info) {
+		Block b = Block.blocksList[blockID];
+		if(b instanceof PC_Block){
+			Object o = ((PC_Block)b).sendInfo(null, 0, 0, 0, info, null);
+			if(o instanceof Boolean)
+				return (Boolean)o;
+		}
+		return false;
+	}
 }
