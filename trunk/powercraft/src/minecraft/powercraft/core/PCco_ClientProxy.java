@@ -1,5 +1,6 @@
 package powercraft.core;
 
+import net.minecraft.src.EntitySmokeFX;
 import cpw.mods.fml.client.registry.RenderingRegistry;
 import cpw.mods.fml.common.Side;
 import cpw.mods.fml.common.registry.TickRegistry;
@@ -46,6 +47,7 @@ public class PCco_ClientProxy extends PCco_CommonProxy {
 		TickRegistry.registerTickHandler(new PCco_MainMenuHacks(), Side.CLIENT);
 		PC_ClientUtils.registerEnitiyFX(PC_EntityLaserParticleFX.class);
 		PC_ClientUtils.registerEnitiyFX(PC_EntityLaserFX.class);
+		PC_ClientUtils.registerEnitiyFX(EntitySmokeFX.class);
 	}
 	
 }
