@@ -133,4 +133,19 @@ public class PCli_BlockLaserSensor extends PC_Block implements PC_ICraftingToolD
 		return result.STOP;
 	}
 	
+	@Override
+	public List<String> getBlockFlags(World world, PC_CoordI pos, List<String> list) {
+
+		list.add(PC_Utils.NO_HARVEST);
+		list.add(PC_Utils.HARVEST_STOP);
+		
+		return list;
+	}
+
+	@Override
+	public List<String> getItemFlags(ItemStack stack, List<String> list) {
+		list.add(PC_Utils.NO_BUILD);
+		return list;
+	}
+	
 }

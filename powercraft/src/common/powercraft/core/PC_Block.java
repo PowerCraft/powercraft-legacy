@@ -17,7 +17,8 @@ import cpw.mods.fml.common.asm.SideOnly;
 public abstract class PC_Block extends BlockContainer
 {
     private boolean canSetTextureFile = true;
-
+    private String module;
+    
     protected PC_Block(int id, Material material)
     {
         super(id, material);
@@ -36,16 +37,19 @@ public abstract class PC_Block extends BlockContainer
 
     public abstract String getDefaultName();
 
-    public boolean canBeHarvest()
-    {
-        return true;
-    }
-
     public TileEntity createNewTileEntity(World world)
     {
         return null;
     }
 
+    public void setModule(String module){
+    	this.module = module;
+    }
+    
+    public String getModule(){
+    	return module;
+    }
+    
     @Override
     public int getRenderType()
     {
@@ -95,5 +99,13 @@ public abstract class PC_Block extends BlockContainer
 
         return new ItemStack(block.blockID, 1, var2);
     }
+    
+	public List<String> getBlockFlags(World world, PC_CoordI pos, List<String> list){
+		return null;
+	}
+
+	public List<String> getItemFlags(ItemStack stack, List<String> list){
+		return null;
+	}
     
 }

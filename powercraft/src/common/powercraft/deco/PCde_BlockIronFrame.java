@@ -10,9 +10,11 @@ import net.minecraft.src.Material;
 import net.minecraft.src.TileEntity;
 import net.minecraft.src.World;
 import powercraft.core.PC_Block;
+import powercraft.core.PC_CoordI;
 import powercraft.core.PC_IBlockRenderer;
 import powercraft.core.PC_ICraftingToolDisplayer;
 import powercraft.core.PC_Renderer;
+import powercraft.core.PC_Utils;
 
 public class PCde_BlockIronFrame extends PC_Block implements PC_ICraftingToolDisplayer, PC_IBlockRenderer {
 
@@ -33,8 +35,6 @@ public class PCde_BlockIronFrame extends PC_Block implements PC_ICraftingToolDis
 	public TileEntity createNewTileEntity(World world) {
 		return new PCde_TileEntityIronFrame();
 	}
-	
-	
 	
 	@Override
 	public boolean isOpaqueCube() {
@@ -99,4 +99,20 @@ public class PCde_BlockIronFrame extends PC_Block implements PC_ICraftingToolDis
 		
 	}
 
+	@Override
+	public List<String> getBlockFlags(World world, PC_CoordI pos, List<String> list) {
+
+		list.add(PC_Utils.NO_HARVEST);
+		list.add(PC_Utils.NO_PICKUP);
+		list.add(PC_Utils.PASSIVE);
+
+		return list;
+	}
+
+	@Override
+	public List<String> getItemFlags(ItemStack stack, List<String> list) {
+		list.add(PC_Utils.NO_BUILD);
+		return list;
+	}
+	
 }

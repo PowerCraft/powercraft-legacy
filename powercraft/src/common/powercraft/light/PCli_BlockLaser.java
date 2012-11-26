@@ -24,7 +24,7 @@ import powercraft.core.PC_MathHelper;
 import powercraft.core.PC_Renderer;
 import powercraft.core.PC_Utils;
 
-public class PCli_BlockLaser extends PC_Block implements PC_ICraftingToolDisplayer, PC_IBlockRenderer, PC_IBeamSpecialHandling
+public class PCli_BlockLaser extends PC_Block implements PC_ICraftingToolDisplayer, PC_IBlockRenderer
 {
     public PCli_BlockLaser(int id)
     {
@@ -211,9 +211,21 @@ public class PCli_BlockLaser extends PC_Block implements PC_ICraftingToolDisplay
 	public void renderWorldBlock(IBlockAccess world, int x, int y, int z, Block block, int modelId, Object renderer) {
 		
 	}
+	
+	@Override
+	public List<String> getBlockFlags(World world, PC_CoordI pos, List<String> list) {
+
+		list.add(PC_Utils.NO_HARVEST);
+		list.add(PC_Utils.HARVEST_STOP);
+		list.add(PC_Utils.BEAMTRACER_STOP);
+		
+		return list;
+	}
 
 	@Override
-	public result onHitByBeamTracer(PC_BeamTracer beamTracer, PC_CoordI cnt, PC_CoordI move, PC_Color color, float strength, int distanceToMove) {
-		return result.STOP;
+	public List<String> getItemFlags(ItemStack stack, List<String> list) {
+		list.add(PC_Utils.NO_BUILD);
+		return list;
 	}
+	
 }

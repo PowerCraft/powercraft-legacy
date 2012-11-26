@@ -9,6 +9,7 @@ import net.minecraft.src.Entity;
 import net.minecraft.src.EntityLiving;
 import net.minecraft.src.EntityPlayer;
 import net.minecraft.src.IBlockAccess;
+import net.minecraft.src.ItemStack;
 import net.minecraft.src.Material;
 import net.minecraft.src.TileEntity;
 import net.minecraft.src.World;
@@ -230,4 +231,20 @@ public class PCde_BlockStairs extends PC_Block implements PC_IBlockRenderer {
 		
 	}
 
+	@Override
+	public List<String> getBlockFlags(World world, PC_CoordI pos, List<String> list) {
+
+		list.add(PC_Utils.NO_HARVEST);
+		list.add(PC_Utils.NO_PICKUP);
+		list.add(PC_Utils.PASSIVE);
+		
+		return list;
+	}
+
+	@Override
+	public List<String> getItemFlags(ItemStack stack, List<String> list) {
+		list.add(PC_Utils.NO_BUILD);
+		return list;
+	}
+	
 }

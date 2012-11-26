@@ -7,10 +7,12 @@ import net.minecraft.src.Block;
 import net.minecraft.src.CreativeTabs;
 import net.minecraft.src.Entity;
 import net.minecraft.src.IBlockAccess;
+import net.minecraft.src.ItemStack;
 import net.minecraft.src.Material;
 import net.minecraft.src.TileEntity;
 import net.minecraft.src.World;
 import powercraft.core.PC_Block;
+import powercraft.core.PC_CoordI;
 import powercraft.core.PC_IBlockRenderer;
 import powercraft.core.PC_Renderer;
 import powercraft.core.PC_Utils;
@@ -43,12 +45,6 @@ public class PCli_BlockLightningConductor extends PC_Block implements PC_IBlockR
         }
 
         return null;
-    }
-
-    @Override
-    public boolean canBeHarvest()
-    {
-        return false;
     }
 
     @Override
@@ -130,4 +126,22 @@ public class PCli_BlockLightningConductor extends PC_Block implements PC_IBlockR
         PC_Renderer.resetTerrain(true);
         PC_Renderer.tessellatorStartDrawingQuads();
     }
+    
+    @Override
+	public List<String> getBlockFlags(World world, PC_CoordI pos, List<String> list) {
+
+		list.add(PC_Utils.NO_HARVEST);
+		list.add(PC_Utils.NO_PICKUP);
+		list.add(PC_Utils.HARVEST_STOP);
+		list.add(PC_Utils.BEAMTRACER_STOP);
+		
+		return list;
+	}
+
+	@Override
+	public List<String> getItemFlags(ItemStack stack, List<String> list) {
+		list.add(PC_Utils.NO_BUILD);
+		return list;
+	}
+    
 }

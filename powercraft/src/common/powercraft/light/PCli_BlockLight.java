@@ -18,6 +18,7 @@ import net.minecraft.src.World;
 import net.minecraftforge.common.Configuration;
 import powercraft.core.PC_Block;
 import powercraft.core.PC_Color;
+import powercraft.core.PC_CoordI;
 import powercraft.core.PC_IBlockRenderer;
 import powercraft.core.PC_IConfigLoader;
 import powercraft.core.PC_ICraftingToolDisplayer;
@@ -412,4 +413,21 @@ public class PCli_BlockLight extends PC_Block implements PC_ICraftingToolDisplay
 
     @Override
     public void renderWorldBlock(IBlockAccess world, int x, int y, int z, Block block, int modelId, Object renderer) {}
+    
+    @Override
+	public List<String> getBlockFlags(World world, PC_CoordI pos, List<String> list) {
+
+		list.add(PC_Utils.NO_HARVEST);
+		list.add(PC_Utils.NO_PICKUP);
+		list.add(PC_Utils.HARVEST_STOP);
+		
+		return list;
+	}
+
+	@Override
+	public List<String> getItemFlags(ItemStack stack, List<String> list) {
+		list.add(PC_Utils.NO_BUILD);
+		return list;
+	}
+    
 }

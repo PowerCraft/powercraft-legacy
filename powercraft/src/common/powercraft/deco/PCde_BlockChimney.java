@@ -1,12 +1,18 @@
 package powercraft.deco;
 
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+
 import net.minecraft.src.Block;
 import net.minecraft.src.CreativeTabs;
 import net.minecraft.src.IBlockAccess;
+import net.minecraft.src.ItemStack;
 import net.minecraft.src.Material;
 import net.minecraft.src.TileEntity;
 import net.minecraft.src.World;
 import powercraft.core.PC_Block;
+import powercraft.core.PC_CoordI;
 import powercraft.core.PC_IBlockRenderer;
 import powercraft.core.PC_Renderer;
 import powercraft.core.PC_Utils;
@@ -86,6 +92,22 @@ public class PCde_BlockChimney extends PC_Block implements PC_IBlockRenderer {
 		
 		bl.setBlockBounds(0, 0, 0, 1, 1, 1);
 		
+	}
+	
+	@Override
+	public List<String> getBlockFlags(World world, PC_CoordI pos, List<String> list) {
+
+		list.add(PC_Utils.NO_HARVEST);
+		list.add(PC_Utils.NO_PICKUP);
+		list.add(PC_Utils.PASSIVE);
+		list.add(PC_Utils.BEAMTRACER_STOP);
+		return list;
+	}
+
+	@Override
+	public List<String> getItemFlags(ItemStack stack, List<String> list) {
+		list.add(PC_Utils.NO_BUILD);
+		return list;
 	}
 	
 }
