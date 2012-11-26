@@ -51,6 +51,10 @@ public class PC_Utils implements PC_IPacketHandler
 
     private static Random rand = new Random();
 
+    public static String NO_HARVEST = "NO_HARVEST", HARVEST_STOP = "HARVEST_STOP", NO_BUILD = "NO_BUILD", SMOKE = "SMOKE",
+    		NO_PICKUP = "NO_PICKUP", BEAMTRACER_STOP = "BEAMTRACER_STOP", PASSIVE = "PASSIVE";
+    
+    
     public PC_Utils()
     {
         PC_PacketHandler.registerPackethandler("PacketUtils", this);
@@ -1559,29 +1563,9 @@ public class PC_Utils implements PC_IPacketHandler
         return Block.blocksList[PC_Utils.getBID(world, x, y, z)];
     }
 
-    public static boolean canHarvest(Block b)
-    {
-        if (b instanceof PC_Block)
-        {
-            return ((PC_Block)b).canBeHarvest();
-        }
-
-        return true;
-    }
-
-    public static boolean canBuild(Item i)
-    {
-        if (i instanceof PC_Item)
-        {
-            return ((PC_Item)i).canBeBuild();
-        }
-
-        return true;
-    }
-
     public static ItemStack extractAndRemoveChest(World world, PC_CoordI pos)
     {
-        if (!canHarvest(getBlock(world, pos.x, pos.y, pos.z)))
+        if (!hasFlag(world, pos, NO_HARVEST))
         {
             return null;
         }
@@ -1838,24 +1822,39 @@ public class PC_Utils implements PC_IPacketHandler
 				return true;
 		return false;
 	}
-
-	public static boolean hasFlag(int blockID, String info) {
-		Block b = Block.blocksList[blockID];
+	
+	public static boolean hasFlag(World world, PC_CoordI pos, String flag) {
+		Block b = getBlock(world, pos.x, pos.y, pos.z);
 		if(b instanceof PC_Block){
-			Object o = ((PC_Block)b).sendInfo(null, 0, 0, 0, info, null);
-			if(o instanceof Boolean)
-				return (Boolean)o;
+			List<String> list = ((PC_Block)b).getBlockFlags(world, pos, new ArrayList<String>());
+			if(list != null){
+				return list.contains(flag);
+			}
+		}
+		return false;
+	}
+	
+	public static boolean hasFlag(ItemStack is, String flag) {
+		Block b = Block.blocksList[is.itemID];
+		if(b instanceof PC_Block){
+			List<String> list = ((PC_Block)b).getItemFlags(is, new ArrayList<String>());
+			if(list != null){
+				return list.contains(flag);
+			}
 		}
 		return false;
 	}
 
-	public static boolean hasFlag(World world, PC_CoordI pos, String info) {
-		Block b = getBlock(world, pos.x, pos.y, pos.z);
-		if(b instanceof PC_Block){
-			Object o = ((PC_Block)b).sendInfo(world, pos.x, pos.y, pos.z, info, null);
-			if(o instanceof Boolean)
-				return (Boolean)o;
+	public static Block getBlock(World world, PC_CoordI pos) {
+		return getBlock(world, pos.x, pos.y, pos.z);
+	}
+
+	public static String getModule(Object o) {
+		if(o instanceof PC_Block){
+			return ((PC_Block) o).getModule();
+		}else if(o instanceof PC_ICraftingToolDisplayer){
+			return ((PC_ICraftingToolDisplayer) o).getCraftingToolModule();
 		}
-		return false;
+		return null;
 	}
 }

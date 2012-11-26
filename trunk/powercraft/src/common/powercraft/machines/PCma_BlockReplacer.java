@@ -170,7 +170,7 @@ public class PCma_BlockReplacer extends PC_Block implements PC_ICraftingToolDisp
             return true;
         }
 
-        if (PC_Utils.canHarvest(PC_Utils.getBlock(world, pos.x, pos.y, pos.z)))
+        if (!PC_Utils.hasFlag(world, pos, PC_Utils.NO_HARVEST))
         {
             return false;
         }
@@ -206,7 +206,7 @@ public class PCma_BlockReplacer extends PC_Block implements PC_ICraftingToolDisp
                 return false;
             }
 
-            if (!PC_Utils.canBuild(itemstack.getItem()))
+            if (PC_Utils.hasFlag(itemstack, PC_Utils.NO_BUILD))
             {
                 return false;
             }
@@ -469,4 +469,20 @@ public class PCma_BlockReplacer extends PC_Block implements PC_ICraftingToolDisp
         arrayList.add(new ItemStack(this));
         return arrayList;
     }
+    
+    @Override
+   	public List<String> getBlockFlags(World world, PC_CoordI pos, List<String> list) {
+
+   		list.add(PC_Utils.NO_HARVEST);
+   		list.add(PC_Utils.NO_PICKUP);
+   		list.add(PC_Utils.HARVEST_STOP);
+   		return list;
+   	}
+
+   	@Override
+   	public List<String> getItemFlags(ItemStack stack, List<String> list) {
+   		list.add(PC_Utils.NO_BUILD);
+   		return list;
+   	}
+    
 }

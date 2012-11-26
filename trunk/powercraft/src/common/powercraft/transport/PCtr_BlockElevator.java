@@ -1,5 +1,7 @@
 package powercraft.transport;
 
+import java.util.List;
+
 import net.minecraft.src.AxisAlignedBB;
 import net.minecraft.src.Block;
 import net.minecraft.src.CreativeTabs;
@@ -8,10 +10,12 @@ import net.minecraft.src.EntityItem;
 import net.minecraft.src.EntityLiving;
 import net.minecraft.src.EntityPlayer;
 import net.minecraft.src.IBlockAccess;
+import net.minecraft.src.ItemStack;
 import net.minecraft.src.World;
 import powercraft.core.PC_Block;
 import powercraft.core.PC_CoordI;
 import powercraft.core.PC_MathHelper;
+import powercraft.core.PC_Utils;
 
 public class PCtr_BlockElevator extends PC_Block
 {
@@ -237,4 +241,19 @@ public class PCtr_BlockElevator extends PC_Block
     {
         return getRenderColor(world.getBlockMetadata(i, j, k));
     }
+    
+    @Override
+   	public List<String> getBlockFlags(World world, PC_CoordI pos, List<String> list) {
+
+   		list.add(PC_Utils.NO_HARVEST);
+   		list.add(PC_Utils.NO_PICKUP);
+   		return list;
+   	}
+
+   	@Override
+   	public List<String> getItemFlags(ItemStack stack, List<String> list) {
+   		list.add(PC_Utils.NO_BUILD);
+   		return list;
+   	}
+    
 }

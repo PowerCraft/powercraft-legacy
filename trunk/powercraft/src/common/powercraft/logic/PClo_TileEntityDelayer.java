@@ -30,7 +30,7 @@ public class PClo_TileEntityDelayer extends PC_TileEntity
 
     public void updateStateBuffer()
     {
-        PC_PacketHandler.setTileEntity(this, "stateBuffer", stateBuffer);
+        //PC_PacketHandler.setTileEntity(this, "stateBuffer", stateBuffer);
     }
 
     public int getDelay()
@@ -41,7 +41,7 @@ public class PClo_TileEntityDelayer extends PC_TileEntity
     public void setDelay(int delay)
     {
         stateBuffer = new boolean[delay];
-        PC_PacketHandler.setTileEntity(this, "stateBuffer", stateBuffer);
+        //PC_PacketHandler.setTileEntity(this, "stateBuffer", stateBuffer);
     }
 
     @Override

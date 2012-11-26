@@ -1,5 +1,6 @@
 package powercraft.logic;
 
+import java.util.List;
 import java.util.Random;
 
 import net.minecraft.src.AxisAlignedBB;
@@ -14,6 +15,7 @@ import net.minecraft.src.TileEntity;
 import net.minecraft.src.World;
 import net.minecraftforge.common.Configuration;
 import powercraft.core.PC_Block;
+import powercraft.core.PC_CoordI;
 import powercraft.core.PC_IConfigLoader;
 import powercraft.core.PC_IRotatedBox;
 import powercraft.core.PC_MathHelper;
@@ -338,4 +340,19 @@ public class PClo_BlockDelayer extends PC_Block  implements PC_IRotatedBox, PC_I
     {
         on.setLightValue(PC_Utils.getConfigInt(config, Configuration.CATEGORY_GENERAL, "GatesLightValueOn", 7) / 16.0f);
     }
+    
+    @Override
+	public List<String> getBlockFlags(World world, PC_CoordI pos, List<String> list) {
+
+		list.add(PC_Utils.NO_HARVEST);
+		list.add(PC_Utils.NO_PICKUP);
+		return list;
+	}
+
+	@Override
+	public List<String> getItemFlags(ItemStack stack, List<String> list) {
+		list.add(PC_Utils.NO_BUILD);
+		return list;
+	}
+    
 }

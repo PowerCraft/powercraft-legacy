@@ -36,7 +36,7 @@ public class PClo_GuiPulsar implements PC_IGresClient {
 	
 	@Override
 	public void initGui(PC_IGresGui gui) {
-		PC_GresWindow w = new PC_GresWindow(PC_Utils.tr("tile.PCloRedstonePulsar.name"));
+		PC_GresWindow w = new PC_GresWindow(PC_Utils.tr("tile.PClo_BlockPulsar.name"));
 		
 		w.setAlignH(PC_GresAlign.STRETCH);
 		PC_GresWidget hg, vg;

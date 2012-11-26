@@ -73,7 +73,4 @@ public abstract class PC_ItemBlock extends ItemBlock implements PC_ICraftingTool
         return true;
     }
 
-	public boolean canBuild() {
-		return true;
-	}
 }

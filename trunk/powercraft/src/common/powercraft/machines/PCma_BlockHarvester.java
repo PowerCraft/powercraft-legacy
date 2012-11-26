@@ -261,10 +261,8 @@ public class PCma_BlockHarvester extends PC_Block implements
 				return false;
 			}
 		}
-
-		Block b = PC_Utils.getBlock(world, coord.x, coord.y, coord.z);
 		
-		if(b instanceof PC_Block && !((PC_Block)b).canBeHarvest()){
+		if(PC_Utils.hasFlag(world, coord, PC_Utils.HARVEST_STOP)){
 			return true;
 		}
 
@@ -275,7 +273,7 @@ public class PCma_BlockHarvester extends PC_Block implements
 				|| id == Block.fire.blockID || Block.blocksList[id] instanceof BlockTorch || id == Block.redstoneWire.blockID
 				|| id == Block.lever.blockID || id == Block.woodenButton.blockID || id == Block.stoneButton.blockID || Block.blocksList[id] instanceof BlockRedstoneRepeater
 				|| id == Block.pistonStickyBase.blockID || id == Block.pistonBase.blockID || id == Block.pistonExtension.blockID
-				|| id == Block.pistonMoving.blockID || Block.blocksList[id] instanceof BlockRail) {
+				|| id == Block.pistonMoving.blockID || Block.blocksList[id] instanceof BlockRail || PC_Utils.hasFlag(world, coord, PC_Utils.NO_HARVEST)) {
 
 			return false;
 		}
@@ -484,18 +482,18 @@ public class PCma_BlockHarvester extends PC_Block implements
 
 		EntityItem entityitem = new EntityItem(world, dx, dy - 0.29999999999999999D, dz, itemstack);
 		double throwSpeed = world.rand.nextDouble() * 0.10000000000000001D + 0.20000000000000001D;
-
-		/**@TOTO Set<String> blocktype = PC_BlockUtils.getBlockFlags(world, devPos.offset(dispIncX, 0, dispIncZ));
-
-		if (blocktype.contains("BELT") || blocktype.contains("LIFT")) {
+		
+		String module = PC_Utils.getModule(PC_Utils.getBlock(world, devPos));
+		
+		if (module!=null && module.equalsIgnoreCase("Transport")) {
 			entityitem.motionX = 0;
 			entityitem.motionY = 0;
 			entityitem.motionZ = 0;
-		} else {*/
+		} else {
 			entityitem.motionX = dispIncX * throwSpeed;
 			entityitem.motionY = 0.20000000298023224D;
 			entityitem.motionZ = dispIncZ * throwSpeed;
-		//}
+		}
 
 		entityitem.delayBeforeCanPickup = 5;
 		world.spawnEntityInWorld(entityitem);
@@ -527,5 +525,20 @@ public class PCma_BlockHarvester extends PC_Block implements
 		arrayList.add(new ItemStack(this));
 		return arrayList;
 	}
+	
+	@Override
+   	public List<String> getBlockFlags(World world, PC_CoordI pos, List<String> list) {
+
+   		list.add(PC_Utils.NO_HARVEST);
+   		list.add(PC_Utils.NO_PICKUP);
+   		list.add(PC_Utils.HARVEST_STOP);
+   		return list;
+   	}
+
+   	@Override
+   	public List<String> getItemFlags(ItemStack stack, List<String> list) {
+   		list.add(PC_Utils.NO_BUILD);
+   		return list;
+   	}
 	
 }

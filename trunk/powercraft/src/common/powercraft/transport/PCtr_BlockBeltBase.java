@@ -1,5 +1,7 @@
 package powercraft.transport;
 
+import java.util.List;
+
 import net.minecraft.src.AxisAlignedBB;
 import net.minecraft.src.Block;
 import net.minecraft.src.CreativeTabs;
@@ -7,10 +9,13 @@ import net.minecraft.src.Entity;
 import net.minecraft.src.EntityLiving;
 import net.minecraft.src.EntityPlayer;
 import net.minecraft.src.IBlockAccess;
+import net.minecraft.src.ItemStack;
 import net.minecraft.src.World;
 import powercraft.core.PC_Block;
+import powercraft.core.PC_CoordI;
 import powercraft.core.PC_IRotatedBox;
 import powercraft.core.PC_Renderer;
+import powercraft.core.PC_Utils;
 
 public abstract class PCtr_BlockBeltBase extends PC_Block implements PC_IRotatedBox
 {
@@ -127,4 +132,19 @@ public abstract class PCtr_BlockBeltBase extends PC_Block implements PC_IRotated
     {
         return PCtr_BeltHelper.blockActivated(world, i, j, k, entityplayer);
     }
+    
+    @Override
+   	public List<String> getBlockFlags(World world, PC_CoordI pos, List<String> list) {
+
+   		list.add(PC_Utils.NO_HARVEST);
+   		list.add(PC_Utils.NO_PICKUP);
+   		return list;
+   	}
+
+   	@Override
+   	public List<String> getItemFlags(ItemStack stack, List<String> list) {
+   		list.add(PC_Utils.NO_BUILD);
+   		return list;
+   	}
+    
 }

@@ -250,4 +250,19 @@ public class PCma_BlockRoaster extends PC_Block implements PC_ICraftingToolDispl
         return arrayList;
     }
     
+    @Override
+   	public List<String> getBlockFlags(World world, PC_CoordI pos, List<String> list) {
+
+   		list.add(PC_Utils.NO_HARVEST);
+   		list.add(PC_Utils.NO_PICKUP);
+   		list.add(PC_Utils.HARVEST_STOP);
+   		return list;
+   	}
+
+   	@Override
+   	public List<String> getItemFlags(ItemStack stack, List<String> list) {
+   		list.add(PC_Utils.NO_BUILD);
+   		return list;
+   	}
+    
 }

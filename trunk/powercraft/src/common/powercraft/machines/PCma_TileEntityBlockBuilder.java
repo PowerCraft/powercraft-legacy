@@ -176,24 +176,21 @@ public class PCma_TileEntityBlockBuilder extends PC_TileEntity implements IInven
 		}
 
 		// ending block
-		Block b = PC_Utils.getBlock(worldObj, front.x, front.y, front.z);
-		boolean harvest_stop = false;
-		if(b instanceof PC_Block)
-			harvest_stop = !((PC_Block)b).canBeHarvest();
 		if (id == 49
 				|| id == 7
 				|| id == 98
-				|| (harvest_stop && !(PC_Utils.isBlock(worldObj, front, "PCtr_BlockBelt")))) {
+				|| (PC_Utils.hasFlag(worldObj, front, PC_Utils.HARVEST_STOP))) {
 			return -1;
 		}
 
 		// try to place front
 		if (itemstack.getItem() instanceof ItemBlock) {
 
-			ItemBlock item = ((ItemBlock) itemstack.getItem());
-			if (item instanceof PC_ItemBlock && !((PC_ItemBlock)item).canBuild()) {
+			if(PC_Utils.hasFlag(itemstack, PC_Utils.NO_BUILD)){
 				return 0;
 			}
+			
+			ItemBlock item = ((ItemBlock) itemstack.getItem());
 
 			if (Block.blocksList[item.shiftedIndex].canPlaceBlockAt(worldObj, x + incX, y, z + incZ)) {
 				worldObj.setBlockAndMetadataWithNotify(x + incX, y, z + incZ, item.shiftedIndex, item.getMetadata(itemstack.getItemDamage()));
@@ -210,11 +207,14 @@ public class PCma_TileEntityBlockBuilder extends PC_TileEntity implements IInven
 
 		// use on front block (usually bonemeal on crops)
 		if (!isEmptyBlock(idFront) && !(itemstack.getItem() instanceof ItemReed)) {
+			System.out.println("try2useItem");
 			int dmgOrig = itemstack.getItemDamage();
 			int sizeOrig = itemstack.stackSize;
 
 			if (itemstack.getItem().onItemUse(itemstack, fakeplayer, worldObj, x + incX, y, z + incZ, 1, 0.0f, 0.0f, 0.0f)) {
 
+				System.out.println("OK");
+				
 				if (itemstack.getItem() instanceof ItemMonsterPlacer) {
 					return 1;
 				}

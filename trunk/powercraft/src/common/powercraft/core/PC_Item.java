@@ -10,6 +10,7 @@ import net.minecraft.src.CreativeTabs;
 import net.minecraft.src.InventoryCrafting;
 import net.minecraft.src.Item;
 import net.minecraft.src.ItemStack;
+import net.minecraft.src.World;
 
 public abstract class PC_Item extends Item implements PC_ICraftingToolDisplayer
 {
@@ -28,11 +29,6 @@ public abstract class PC_Item extends Item implements PC_ICraftingToolDisplayer
     }
 
     public abstract String[] getDefaultNames();
-
-    public boolean canBeBuild()
-    {
-        return true;
-    }
 
     public String getCraftingToolModule()
     {
@@ -68,4 +64,5 @@ public abstract class PC_Item extends Item implements PC_ICraftingToolDisplayer
 
 	public void doCrafting(ItemStack itemStack, InventoryCrafting inventoryCrafting) {
 	}
+	
 }

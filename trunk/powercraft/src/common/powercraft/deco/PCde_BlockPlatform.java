@@ -161,4 +161,21 @@ public class PCde_BlockPlatform extends PC_Block implements PC_IBlockRenderer {
 	public void renderWorldBlock(IBlockAccess world, int x, int y, int z, Block block, int modelId, Object renderer) {
 		
 	}
+	
+	@Override
+	public List<String> getBlockFlags(World world, PC_CoordI pos, List<String> list) {
+
+		list.add(PC_Utils.NO_HARVEST);
+		list.add(PC_Utils.NO_PICKUP);
+		list.add(PC_Utils.PASSIVE);
+		
+		return list;
+	}
+
+	@Override
+	public List<String> getItemFlags(ItemStack stack, List<String> list) {
+		list.add(PC_Utils.NO_BUILD);
+		return list;
+	}
+	
 }
