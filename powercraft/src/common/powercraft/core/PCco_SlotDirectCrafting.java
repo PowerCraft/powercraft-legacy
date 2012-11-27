@@ -261,7 +261,7 @@ public class PCco_SlotDirectCrafting extends Slot implements PC_ISlotWithBackgro
             alloc = 0;
         }
 
-        if (ModLoader.getMinecraftInstance().playerController.isInCreativeMode() || survivalCheating)
+        if (PC_Utils.isCreative(thePlayer) || survivalCheating)
         {
             return true;
         }
@@ -312,7 +312,7 @@ public class PCco_SlotDirectCrafting extends Slot implements PC_ISlotWithBackgro
             alloc = 0;
         }
 
-        if (ModLoader.getMinecraftInstance().playerController.isInCreativeMode() || survivalCheating)
+        if (PC_Utils.isCreative(thePlayer) || survivalCheating)
         {
             return -1;
         }
@@ -334,7 +334,7 @@ public class PCco_SlotDirectCrafting extends Slot implements PC_ISlotWithBackgro
 
     private boolean consumePlayerItems(ItemStack stack1, int count)
     {
-        if (ModLoader.getMinecraftInstance().playerController.isInCreativeMode() || survivalCheating)
+        if (PC_Utils.isCreative(thePlayer) || survivalCheating)
         {
             return true;
         }
@@ -418,7 +418,7 @@ public class PCco_SlotDirectCrafting extends Slot implements PC_ISlotWithBackgro
 
     private boolean tryToFindMaterialsForRecipe(IRecipe irecipe)
     {
-        if (ModLoader.getMinecraftInstance().playerController.isInCreativeMode() || survivalCheating)
+        if (PC_Utils.isCreative(thePlayer) || survivalCheating)
         {
             return true;
         }
