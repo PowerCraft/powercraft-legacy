@@ -1565,7 +1565,7 @@ public class PC_Utils implements PC_IPacketHandler
 
     public static ItemStack extractAndRemoveChest(World world, PC_CoordI pos)
     {
-        if (!hasFlag(world, pos, NO_HARVEST))
+        if (hasFlag(world, pos, NO_HARVEST))
         {
             return null;
         }
