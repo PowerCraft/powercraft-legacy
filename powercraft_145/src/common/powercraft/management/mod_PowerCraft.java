@@ -89,6 +89,7 @@ public class mod_PowerCraft {
 		GameRegistry.registerWorldGenerator(new PC_WorldGenerator());
 		GameRegistry.registerFuelHandler(new PC_FuelHandler());
 		List<PC_IModule> modules = PC_Utils.getModules();
+		proxy.init();
 		PC_Logger.enterSection("Module Init");
 		for(PC_IModule module:modules){
 			module.init();
@@ -114,7 +115,60 @@ public class mod_PowerCraft {
 					}
 				}
 			}
-			PC_Logger.exitSection();
+			
+			PC_GlobalVariables.splashes.add("GRES");
+
+	        for (int i = 0; i < 10; i++)
+	        {
+	        	PC_GlobalVariables.splashes.add("Modded by MightyPork!");
+	        }
+
+	        for (int i = 0; i < 6; i++)
+	        {
+	        	PC_GlobalVariables.splashes.add("Modded by XOR!");
+	        }
+
+	        for (int i = 0; i < 5; i++)
+	        {
+	        	PC_GlobalVariables.splashes.add("Modded by Rapus95!");
+	        }
+
+	        for (int i = 0; i < 4; i++)
+	        {
+	        	PC_GlobalVariables.splashes.add("Reviewed by RxD");
+	        }
+
+	        PC_GlobalVariables.splashes.add("Modded by masters!");
+
+	        for (int i = 0; i < 3; i++)
+	        {
+	        	PC_GlobalVariables.splashes.add("PowerCraft " + getModMetadata().version);
+	        }
+
+	        PC_GlobalVariables.splashes.add("Null Pointers included!");
+	        PC_GlobalVariables.splashes.add("ArrayIndexOutOfBoundsException");
+	        PC_GlobalVariables.splashes.add("Null Pointer loves you!");
+	        PC_GlobalVariables.splashes.add("Unstable!");
+	        PC_GlobalVariables.splashes.add("Buggy code!");
+	        PC_GlobalVariables.splashes.add("Break it down!");
+	        PC_GlobalVariables.splashes.add("Addictive!");
+	        PC_GlobalVariables.splashes.add("Earth is flat!");
+	        PC_GlobalVariables.splashes.add("Faster than Atari!");
+	        PC_GlobalVariables.splashes.add("DAFUQ??");
+	        PC_GlobalVariables.splashes.add("LWJGL");
+	        PC_GlobalVariables.splashes.add("Don't press the button!");
+	        PC_GlobalVariables.splashes.add("Press the button!");
+	        PC_GlobalVariables.splashes.add("Ssssssssssssssss!");
+	        PC_GlobalVariables.splashes.add("C'mon!");
+	        PC_GlobalVariables.splashes.add("Redstone Wizzard!");
+	        PC_GlobalVariables.splashes.add("Keep your mods up-to-date!");
+	        PC_GlobalVariables.splashes.add("Read the changelog!");
+	        PC_GlobalVariables.splashes.add("Read the log files!");
+	        PC_GlobalVariables.splashes.add("Discoworld!");
+	        PC_GlobalVariables.splashes.add("Also try ICE AGE mod!");
+	        PC_GlobalVariables.splashes.add("Also try Backpack mod!");
+	        
+	        PC_Logger.exitSection();
 		}
 		PC_Logger.exitSection();
 	}

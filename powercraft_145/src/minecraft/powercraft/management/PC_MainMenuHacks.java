@@ -37,7 +37,7 @@ public class PC_MainMenuHacks implements ITickHandler {
 	
 	
 	
-	private static Object getRandomSplash() {
+	private static String getRandomSplash() {
 		return PC_GlobalVariables.splashes.get(rand.nextInt(PC_GlobalVariables.splashes.size()));
 	}
 
