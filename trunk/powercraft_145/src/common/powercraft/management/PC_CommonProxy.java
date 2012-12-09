@@ -10,4 +10,9 @@ public class PC_CommonProxy {
 		PC_ServerHacks.hackServer();
 	}
 
+	public void init() {
+		new PC_Renderer(true);
+        new PC_Renderer(false);
+	}
+	
 }
