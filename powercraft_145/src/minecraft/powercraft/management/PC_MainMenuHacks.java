@@ -55,8 +55,12 @@ public class PC_MainMenuHacks implements ITickHandler {
 				updateWindowShowed = true;
 			}
 		}
-		if(!(usernameHacked || PC_GlobalVariables.useUserName.equals(""))){
-			PC_ClientUtils.mc().session.username = PC_GlobalVariables.useUserName;
+		if(!(usernameHacked)){
+			String useUserName = PC_GlobalVariables.useUserName;
+			if(!useUserName.equals("")){
+				PC_ClientUtils.mc().session.username = useUserName;
+			}
+			usernameHacked = true;
 		}
 	}
 

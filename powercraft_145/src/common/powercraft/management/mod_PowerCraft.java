@@ -37,6 +37,7 @@ public class mod_PowerCraft {
 		proxy.initUtils();
 		PC_Logger.init(PC_Utils.getPowerCraftFile());
 		PC_Logger.enterSection("PreInit");
+		PC_GlobalVariables.loadConfig();
 		PC_Logger.enterSection("Register Hacks");
 		hackInfo();
 		proxy.hack();
@@ -203,6 +204,7 @@ public class mod_PowerCraft {
 		for(PC_IModule module:modules){
 			PC_Utils.saveConfig(module);
 		}
+		PC_GlobalVariables.saveConfig();
 		PC_Logger.exitSection();
 		PC_Logger.exitSection();
 	}

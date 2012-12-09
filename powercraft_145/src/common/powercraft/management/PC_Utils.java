@@ -1851,7 +1851,7 @@ public class PC_Utils implements PC_IPacketHandler
 	
 	public static void registerModule(PC_IModule module){
 		PC_Configuration config = null;
-		File f = new File(PC_Utils.getMCDirectory(), "config/"+module.getName()+".cfg");
+		File f = new File(PC_Utils.getMCDirectory(), "config/PowerCraft-"+module.getName()+".cfg");
 		if(f.exists()){
 			try {
 				InputStream is = new FileInputStream(f);
@@ -1883,7 +1883,7 @@ public class PC_Utils implements PC_IPacketHandler
 	
 	public static void saveConfig(PC_IModule module) {
 		PC_Configuration config = getConfig(module);
-		File f = new File(PC_Utils.getMCDirectory(), "config/"+module.getName()+".cfg");
+		File f = new File(PC_Utils.getMCDirectory(), "config/PowerCraft-"+module.getName()+".cfg");
 		if(config!=null){
 			try {
 				OutputStream os = new FileOutputStream(f);
