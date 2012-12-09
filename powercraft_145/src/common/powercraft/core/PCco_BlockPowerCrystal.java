@@ -214,7 +214,7 @@ public class PCco_BlockPowerCrystal extends PC_Block
 	public Object msg(World world, PC_VecI pos, int msg, Object... obj) {
 		switch(msg){
 		case PC_Utils.MSG_LOAD_FROM_CONFIG:
-			setLightValue(((PC_Configuration)obj[0]).getInt("PCco_BlockPowerCrystal.bright", 16) * 0.0625F);
+			setLightValue(((PC_Configuration)obj[0]).getInt("PCco_BlockPowerCrystal.brightness", 16) * 0.0625F);
 			makeSound = ((PC_Configuration)obj[0]).getBoolean("PCco_BlockPowerCrystal.makeSound", true);
 			genCrystalsInChunk = ((PC_Configuration)obj[0]).getInt("PCco_BlockPowerCrystal.spawn.in_chunk", 3, "Number of deposits in each 16x16 chunk.");
     		genCrystalsDepositMaxCount = ((PC_Configuration)obj[0]).getInt("PCco_BlockPowerCrystal.spawn.deposit_max_size", 4, "Highest crystal count in one deposit");
