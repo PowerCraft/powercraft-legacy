@@ -38,12 +38,6 @@ public class PowerCraftCore implements PC_IModule {
 	}
 
 	@Override
-	public List<PC_LangEntry> initLanguage(List<PC_LangEntry> lang) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
 	public void initBlocks() {
 		// TODO Auto-generated method stub
 		

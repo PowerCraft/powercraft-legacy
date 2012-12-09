@@ -15,7 +15,6 @@ public interface PC_IModule {
 	public void postInit();
 	
 	public void initProperties(PC_Configuration config);
-	public List<PC_LangEntry> initLanguage(List<PC_LangEntry> lang);
 	public void initBlocks();
 	public void initItems();
 	public List<IRecipe> initRecipes(List<IRecipe> recipes);
