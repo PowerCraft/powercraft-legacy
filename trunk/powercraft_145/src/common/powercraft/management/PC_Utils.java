@@ -62,7 +62,9 @@ public class PC_Utils implements PC_IPacketHandler
     public static String NO_HARVEST = "NO_HARVEST", HARVEST_STOP = "HARVEST_STOP", NO_BUILD = "NO_BUILD", SMOKE = "SMOKE",
     		NO_PICKUP = "NO_PICKUP", BEAMTRACER_STOP = "BEAMTRACER_STOP", PASSIVE = "PASSIVE";
     
-    public static int MSG_DEFAULTNAME=1, MSG_BLOCKFLAGS=2, MSG_ITEMFLAGS=3;
+    public static final int MSG_DEFAULT_NAME=1, MSG_BLOCK_FLAGS=2, MSG_ITEM_FLAGS=3, MSG_RENDER_INVENTORY_BLOCK=4, MSG_RENDER_WORLD_BLOCK=5,
+    		MSG_SPAWNS_IN_CHUNK=6, MSG_BLOCKS_ON_SPAWN_POINT=7, MSG_SPAWN_POINT=8, MSG_SPAWN_POINT_METADATA=9, MSG_LOAD_FROM_CONFIG=10,
+    		MSG_ON_HIT_BY_BEAM_TRACER=11;
     
     protected PC_Utils(){
         PC_PacketHandler.registerPackethandler("PacketUtils", this);
@@ -185,13 +187,13 @@ public class PC_Utils implements PC_IPacketHandler
         throw new Exception(error);
     }
     
-    public static <t>t register(PC_IModule module, int defaultID, Class<t> c)
+    public static <t>t register(PC_IModule module, Class<t> c)
     {
     	PC_Configuration config = getConfig(module);
 
         if (PC_Block.class.isAssignableFrom(c))
         {
-            return (t)register(module, defaultID, (Class<PC_Block>)c, null, null);
+            return (t)register(module, (Class<PC_Block>)c, null, null);
         }
         else if (PC_Item.class.isAssignableFrom(c))
         {
@@ -205,12 +207,9 @@ public class PC_Utils implements PC_IPacketHandler
                 item.setModule(module);
                 item.setTextureFile(getTerrainFile(module));
 
-                if (item instanceof PC_IConfigLoader)
-                {
-                    ((PC_IConfigLoader) item).loadFromConfig(config);
-                }
+                item.msg(PC_Utils.MSG_LOAD_FROM_CONFIG, config);
 
-                List<PC_Struct3<String, String, String[]>> l = (List<PC_Struct3<String, String, String[]>>)item.msg(MSG_DEFAULTNAME, new ArrayList<PC_Struct3<String, String, String[]>>());
+                List<PC_Struct3<String, String, String[]>> l = (List<PC_Struct3<String, String, String[]>>)item.msg(MSG_DEFAULT_NAME, new ArrayList<PC_Struct3<String, String, String[]>>());
                 if(l!=null){
                 	registerLanguage(module, l.toArray(new PC_Struct3[0]));
                 }
@@ -232,11 +231,8 @@ public class PC_Utils implements PC_IPacketHandler
                 itemArmor.setItemName(itemArmorClass.getSimpleName());
                 itemArmor.setModule(module);
 
-                if (itemArmor instanceof PC_IConfigLoader)
-                {
-                    ((PC_IConfigLoader) itemArmor).loadFromConfig(config);
-                }
-
+                itemArmor.msg(PC_Utils.MSG_LOAD_FROM_CONFIG, config);
+                
                 registerLanguage(module, new PC_Struct3<String, String, String[]>(itemArmor.getItemName(), itemArmor.getDefaultName(), null));
                 return (t)itemArmor;
             }
@@ -249,21 +245,21 @@ public class PC_Utils implements PC_IPacketHandler
         throw new IllegalArgumentException("3th parameter need to be a class witch extends PC_Block or PC_Item or PC_ItemArmor");
     }
 
-    public static <t extends PC_Block>t register(PC_IModule module, int defaultID, Class<t> blockClass, Class c)
+    public static <t extends PC_Block>t register(PC_IModule module, Class<t> blockClass, Class c)
     {
         if (PC_ItemBlock.class.isAssignableFrom(c))
         {
-            return register(module, defaultID, blockClass, (Class<PC_ItemBlock>)c, null);
+            return register(module, blockClass, (Class<PC_ItemBlock>)c, null);
         }
         else if (PC_TileEntity.class.isAssignableFrom(c))
         {
-            return register(module, defaultID, blockClass, null, (Class<PC_TileEntity>)c);
+            return register(module, blockClass, null, (Class<PC_TileEntity>)c);
         }
 
         throw new IllegalArgumentException("4th parameter need to be a class witch extends PC_ItemBlock or PC_TileEntity");
     }
 
-    public static <t extends PC_Block>t register(PC_IModule module, int defaultID, Class<t> blockClass, Class <? extends PC_ItemBlock > itemBlockClass, Class <? extends PC_TileEntity > tileEntityClass)
+    public static <t extends PC_Block>t register(PC_IModule module, Class<t> blockClass, Class <? extends PC_ItemBlock > itemBlockClass, Class <? extends PC_TileEntity > tileEntityClass)
     {
     	PC_Configuration config = getConfig(module);
 
@@ -290,10 +286,7 @@ public class PC_Utils implements PC_IPacketHandler
             block.setBlockName(blockClass.getSimpleName());
             block.setTextureFile(getTerrainFile(module));
 
-            if (block instanceof PC_IConfigLoader)
-            {
-                ((PC_IConfigLoader) block).loadFromConfig(config);
-            }
+            block.msg(PC_Utils.MSG_LOAD_FROM_CONFIG, config);
             
             mod_PowerCraft.registerBlock(block, itemBlockClass);
 
@@ -303,13 +296,13 @@ public class PC_Utils implements PC_IPacketHandler
             
             if (itemBlockClass == null)
             {
-                registerLanguage(module, new PC_Struct3<String, String, String[]>(block.getBlockName(), (String)block.msg(null, null, MSG_DEFAULTNAME), null));
+                registerLanguage(module, new PC_Struct3<String, String, String[]>(block.getBlockName(), (String)block.msg(MSG_DEFAULT_NAME), null));
             }
             else
             {
                 PC_ItemBlock ib = (PC_ItemBlock)itemBlock;
                 ib.setModule(module);
-                List<PC_Struct3<String, String, String[]>> l = ib.getDefaultNames(new ArrayList<PC_Struct3<String, String, String[]>>());
+                List<PC_Struct3<String, String, String[]>> l = (List<PC_Struct3<String, String, String[]>>)ib.msg(MSG_DEFAULT_NAME, new ArrayList<PC_Struct3<String, String, String[]>>());
                 if(l!=null){
                 	registerLanguage(module, l.toArray(new PC_Struct3[0]));
                 }
@@ -1713,8 +1706,8 @@ public class PC_Utils implements PC_IPacketHandler
 	
 	public static boolean hasFlag(World world, PC_VecI pos, String flag) {
 		Block b = getBlock(world, pos.x, pos.y, pos.z);
-		if(b instanceof PC_MSG){
-			List<String> list = (List<String>)((PC_MSG)b).msg(MSG_BLOCKFLAGS, world, pos, new ArrayList<String>());
+		if(b instanceof PC_IMSG){
+			List<String> list = (List<String>)((PC_IMSG)b).msg(MSG_BLOCK_FLAGS, world, pos, new ArrayList<String>());
 			if(list != null){
 				return list.contains(flag);
 			}
@@ -1725,8 +1718,8 @@ public class PC_Utils implements PC_IPacketHandler
 	public static boolean hasFlag(ItemStack is, String flag) {
 		if(is.itemID<Block.blocksList.length){
 			Block b = Block.blocksList[is.itemID];
-			if(b instanceof PC_MSG){
-				List<String> list = (List<String>) ((PC_MSG)b).msg(MSG_ITEMFLAGS, is, new ArrayList<String>());
+			if(b instanceof PC_IMSG){
+				List<String> list = (List<String>) ((PC_IMSG)b).msg(MSG_ITEM_FLAGS, is, new ArrayList<String>());
 				if(list != null){
 					return list.contains(flag);
 				}
@@ -1734,8 +1727,8 @@ public class PC_Utils implements PC_IPacketHandler
 		}
 
 		Item i = is.getItem();
-		if(i instanceof PC_MSG){
-			List<String> list = (List<String>) ((PC_MSG) i).msg(MSG_ITEMFLAGS, is, new ArrayList<String>());
+		if(i instanceof PC_IMSG){
+			List<String> list = (List<String>) ((PC_IMSG) i).msg(MSG_ITEM_FLAGS, is, new ArrayList<String>());
 			if(list != null){
 				return list.contains(flag);
 			}

@@ -13,7 +13,7 @@ import net.minecraft.src.Item;
 import net.minecraft.src.ItemStack;
 import net.minecraft.src.World;
 
-public abstract class PC_Item extends Item implements PC_IItemInfo, PC_MSG
+public abstract class PC_Item extends Item implements PC_IItemInfo, PC_IMSG
 {
     private PC_IModule module;
     private boolean canSetTextureFile = true;

@@ -3,6 +3,7 @@ package powercraft.management;
 import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.util.Arrays;
 import java.util.HashMap;
 
 public class PC_Configuration {
@@ -18,7 +19,7 @@ public class PC_Configuration {
 	}
 	
 	public PC_Property getProperty(String key, Object defaultValue, String[] comment){
-		String[] keys = key.split(".");
+		String[] keys = key.split("\\.");
 		PC_Property prop = baseProp;
 		for(int i=0; i<keys.length; i++){
 			if(prop.hasChildren()){
@@ -40,34 +41,34 @@ public class PC_Configuration {
 	}
 	
 	public int getInt(String key){
-		return getInt(key, 0, null);
+		return getInt(key, 0);
 	}
 	
-	public int getInt(String key, int defaultValue, String[] comment){
+	public int getInt(String key, int defaultValue, String... comment){
 		return getProperty(key, defaultValue, comment).getInt();
 	}
 	
 	public float getFloat(String key){
-		return getFloat(key, 0.0f, null);
+		return getFloat(key, 0.0f);
 	}
 	
-	public float getFloat(String key, float defaultValue, String[] comment){
+	public float getFloat(String key, float defaultValue, String... comment){
 		return getProperty(key, defaultValue, comment).getFloat();
 	}
 	
 	public boolean getBoolean(String key){
-		return getBoolean(key, false, null);
+		return getBoolean(key, false);
 	}
 	
-	public boolean getBoolean(String key, boolean defaultValue, String[] comment){
+	public boolean getBoolean(String key, boolean defaultValue, String... comment){
 		return getProperty(key, defaultValue, comment).getBoolean();
 	}
 	
 	public String getString(String key){
-		return getString(key, "", null);
+		return getString(key, "");
 	}
 	
-	public String getString(String key, String defaultValue, String[] comment){
+	public String getString(String key, String defaultValue, String... comment){
 		return getProperty(key, defaultValue, comment).getString();
 	}
 	

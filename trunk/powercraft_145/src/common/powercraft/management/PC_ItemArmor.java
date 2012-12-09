@@ -6,7 +6,7 @@ import net.minecraft.src.EnumArmorMaterial;
 import net.minecraft.src.ItemArmor;
 import net.minecraft.src.ItemStack;
 
-public abstract class PC_ItemArmor extends ItemArmor implements PC_IItemInfo
+public abstract class PC_ItemArmor extends ItemArmor implements PC_IItemInfo, PC_IMSG
 {
     public static final int HEAD = 0, TORSO = 1, LEGS = 2, FEET = 3;
 

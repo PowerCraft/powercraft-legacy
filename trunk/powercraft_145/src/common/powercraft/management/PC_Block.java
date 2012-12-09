@@ -14,7 +14,7 @@ import net.minecraft.src.World;
 import cpw.mods.fml.common.Side;
 import cpw.mods.fml.common.asm.SideOnly;
 
-public abstract class PC_Block extends BlockContainer implements PC_MSG
+public abstract class PC_Block extends BlockContainer implements PC_IMSG
 {
     private boolean canSetTextureFile = true;
     private String module;

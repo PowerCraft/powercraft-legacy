@@ -10,7 +10,7 @@ import net.minecraft.src.ItemBlock;
 import net.minecraft.src.ItemStack;
 import net.minecraft.src.World;
 
-public abstract class PC_ItemBlock extends ItemBlock implements PC_IItemInfo
+public abstract class PC_ItemBlock extends ItemBlock implements PC_IItemInfo, PC_IMSG
 {
     private PC_IModule module;
 
@@ -18,8 +18,6 @@ public abstract class PC_ItemBlock extends ItemBlock implements PC_IItemInfo
     {
         super(id);
     }
-
-    public abstract List<PC_Struct3<String, String, String[]>> getDefaultNames(List<PC_Struct3<String, String, String[]>> list);
 
     @Override
     public PC_IModule getModule()

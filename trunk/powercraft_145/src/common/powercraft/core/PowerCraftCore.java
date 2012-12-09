@@ -6,6 +6,7 @@ import net.minecraft.src.IRecipe;
 import powercraft.management.PC_Configuration;
 import powercraft.management.PC_IModule;
 import powercraft.management.PC_LangEntry;
+import powercraft.management.PC_Utils;
 
 public class PowerCraftCore implements PC_IModule {
 
@@ -39,8 +40,7 @@ public class PowerCraftCore implements PC_IModule {
 
 	@Override
 	public void initBlocks() {
-		// TODO Auto-generated method stub
-		
+		PC_Utils.register(this, PCco_BlockPowerCrystal.class, PCco_ItemBlockPowerCrystal.class);
 	}
 
 	@Override
