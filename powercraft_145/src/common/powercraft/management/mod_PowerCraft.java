@@ -59,15 +59,15 @@ public class mod_PowerCraft {
 			module.initProperties(PC_Utils.getConfig(module));
 		}
 		PC_Logger.exitSection();
-		PC_Logger.enterSection("Module Language Init");
-		for(PC_IModule module:modules){
-			List<PC_LangEntry> l = module.initLanguage(new ArrayList<PC_LangEntry>());
-			if(l!=null){
-				PC_Utils.registerLanguage(module, l.toArray(new PC_LangEntry[0]));
-			}
-		}
-		PC_Logger.exitSection();
 		if(PC_Utils.isClient()){
+		PC_Logger.enterSection("Module Language Init");
+			for(PC_IModule module:modules){
+				List<PC_LangEntry> l = ((PC_IClientModule) module).initLanguage(new ArrayList<PC_LangEntry>());
+				if(l!=null){
+					PC_Utils.registerLanguage(module, l.toArray(new PC_LangEntry[0]));
+				}
+			}
+			PC_Logger.exitSection();
 			PC_Logger.enterSection("Module Texture Init");
 			for(PC_IModule module:modules){
 				if(module instanceof PC_IClientModule){

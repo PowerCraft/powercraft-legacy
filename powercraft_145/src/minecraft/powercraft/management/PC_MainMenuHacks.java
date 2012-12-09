@@ -56,7 +56,6 @@ public class PC_MainMenuHacks implements ITickHandler {
 			}
 		}
 		if(!(usernameHacked || PC_GlobalVariables.useUserName.equals(""))){
-			
 			PC_ClientUtils.mc().session.username = PC_GlobalVariables.useUserName;
 		}
 	}
@@ -73,7 +72,7 @@ public class PC_MainMenuHacks implements ITickHandler {
 
 	@Override
 	public String getLabel() {
-		return "PCco_MainMenuHacks";
+		return "PC_MainMenuHacks";
 	}
 
 }
