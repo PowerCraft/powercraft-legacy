@@ -78,7 +78,7 @@ public class PC_ClientUtils extends PC_Utils {
 		if(langs.containsKey(lang))
 			translation = langs.get(lang);
 		else
-			langs.put(lang, translation = new PC_Configuration(null));
+			langs.put(lang, translation = new PC_Configuration());
 		for(PC_Struct3<String, String, String[]> trans:translations){
 			if(trans.a.startsWith("tile.") || trans.a.startsWith("item.")){
 				if(!trans.a.endsWith(".name")){

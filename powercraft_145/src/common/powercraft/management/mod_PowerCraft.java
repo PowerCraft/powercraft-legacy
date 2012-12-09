@@ -233,7 +233,7 @@ public class mod_PowerCraft {
          mm.authorList = new ArrayList<String>();
          mm.authorList.add("XOR");
          mm.authorList.add("Rapus");
-         mm.credits = "MightyPork, RxD";
+         mm.credits = "MightyPork, RxD, LOLerul2";
          mm.description = "";
          mm.logoFile = PC_Utils.getPowerCraftLoaderImageDir() + "PowerCraft.png";
          mm.url = "http://powercrafting.net/";
