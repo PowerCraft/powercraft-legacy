@@ -64,7 +64,7 @@ public class PC_Utils implements PC_IPacketHandler
     
     public static final int MSG_DEFAULT_NAME=1, MSG_BLOCK_FLAGS=2, MSG_ITEM_FLAGS=3, MSG_RENDER_INVENTORY_BLOCK=4, MSG_RENDER_WORLD_BLOCK=5,
     		MSG_SPAWNS_IN_CHUNK=6, MSG_BLOCKS_ON_SPAWN_POINT=7, MSG_SPAWN_POINT=8, MSG_SPAWN_POINT_METADATA=9, MSG_LOAD_FROM_CONFIG=10,
-    		MSG_ON_HIT_BY_BEAM_TRACER=11;
+    		MSG_ON_HIT_BY_BEAM_TRACER=11, MSG_BURN_TIME=12, MSG_RECIVE_POWER=13, MSG_CAN_RECIVE_POWER=14;
     
     protected PC_Utils(){
         PC_PacketHandler.registerPackethandler("PacketUtils", this);
@@ -1583,7 +1583,7 @@ public class PC_Utils implements PC_IPacketHandler
         return 0.0f;
     }
 
-    private static void searchPowerReceiverConnectedTo(World world, int x, int y, int z, List<PC_Struct3<PC_VecI, PC_IPowerReceiver, Float>> receivers, List<PC_Struct2<PC_VecI, Float>> allpos, float power)
+    private static void searchPowerReceiverConnectedTo(World world, int x, int y, int z, List<PC_Struct3<PC_VecI, PC_IMSG, Float>> receivers, List<PC_Struct2<PC_VecI, Float>> allpos, float power)
     {
         Block b = getBlock(world, x, y, z);
         PC_VecI pos = new PC_VecI(x, y, z);
@@ -1598,13 +1598,15 @@ public class PC_Utils implements PC_IPacketHandler
             }
         }
 
-        if (b instanceof PC_IPowerReceiver)
+        if (b instanceof PC_IMSG)
         {
-            if (oldStruct == null)
-            {
-                receivers.add(new PC_Struct3<PC_VecI, PC_IPowerReceiver, Float>(pos, (PC_IPowerReceiver)b, power));
-            }
-
+        	Object o = ((PC_IMSG) b).msg(PC_Utils.MSG_CAN_RECIVE_POWER, b);
+        	if(o instanceof Boolean && ((Boolean)o) == true){
+	            if (oldStruct == null)
+	            {
+	                receivers.add(new PC_Struct3<PC_VecI, PC_IMSG, Float>(pos, (PC_IMSG)b, power));
+	            }
+        	}
             return;
         }
 
@@ -1640,10 +1642,10 @@ public class PC_Utils implements PC_IPacketHandler
         }
     }
 
-    public static List<PC_Struct3<PC_VecI, PC_IPowerReceiver, Float>> getPowerReceiverConnectedTo(World world, int x, int y, int z)
+    public static List<PC_Struct3<PC_VecI, PC_IMSG, Float>> getPowerReceiverConnectedTo(World world, int x, int y, int z)
     {
         Random rand = new Random();
-        List<PC_Struct3<PC_VecI, PC_IPowerReceiver, Float>> receivers = new ArrayList<PC_Struct3<PC_VecI, PC_IPowerReceiver, Float>>();
+        List<PC_Struct3<PC_VecI, PC_IMSG, Float>> receivers = new ArrayList<PC_Struct3<PC_VecI, PC_IMSG, Float>>();
         List<PC_Struct2<PC_VecI, Float>> blocks = new ArrayList<PC_Struct2<PC_VecI, Float>>();
         searchPowerReceiverConnectedTo(world, x, y, z, receivers, blocks, 1.0f);
         PC_PacketHandler.sendToPacketHandler(true, world, "PacketUtils", SPAWNPARTICLEONBLOCKS, blocks);
@@ -1652,12 +1654,12 @@ public class PC_Utils implements PC_IPacketHandler
 
     public static void givePowerToBlock(World world, int x, int y, int z, float power)
     {
-        List<PC_Struct3<PC_VecI, PC_IPowerReceiver, Float>> powerReceivers = getPowerReceiverConnectedTo(world, x, y, z);
+        List<PC_Struct3<PC_VecI, PC_IMSG, Float>> powerReceivers = getPowerReceiverConnectedTo(world, x, y, z);
         float receivers = powerReceivers.size();
 
-        for (PC_Struct3<PC_VecI, PC_IPowerReceiver, Float> receiver: powerReceivers)
+        for (PC_Struct3<PC_VecI, PC_IMSG, Float> receiver: powerReceivers)
         {
-            receiver.b.receivePower(world, receiver.a.x, receiver.a.y, receiver.a.z, power / receivers * receiver.c);
+            receiver.b.msg(PC_Utils.MSG_RECIVE_POWER, world, receiver.a.x, receiver.a.y, receiver.a.z, power / receivers * receiver.c);
         }
     }
 
