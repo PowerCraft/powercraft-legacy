@@ -3,7 +3,9 @@ package powercraft.deco;
 import java.util.List;
 
 import net.minecraft.src.ItemStack;
-import powercraft.core.PC_ItemBlock;
+import powercraft.management.PC_ItemBlock;
+import powercraft.management.PC_Struct3;
+import powercraft.management.PC_Utils;
 
 public class PCde_ItemBlockChimney extends PC_ItemBlock {
 
@@ -14,16 +16,6 @@ public class PCde_ItemBlockChimney extends PC_ItemBlock {
 		super(id);
 		setMaxDamage(0);
 		setHasSubtypes(true);
-	}
-	
-	@Override
-	public String[] getDefaultNames() {
-		return new String[]{
-				getItemName(), "Chimney",
-				getItemName() + ".type0", "Cobblestone Chimney",
-				getItemName() + ".type1", "Brick Chimney",
-				getItemName() + ".type2", "StoneBrick Chimney",
-		};
 	}
 
 	@Override
@@ -42,6 +34,19 @@ public class PCde_ItemBlockChimney extends PC_ItemBlock {
 		arrayList.add(new ItemStack(this, 1, 1));
 		arrayList.add(new ItemStack(this, 1, 2));
 		return arrayList;
+	}
+
+	@Override
+	public Object msg(int msg, Object... obj) {
+		switch(msg){
+		case PC_Utils.MSG_DEFAULT_NAME:
+			List<PC_Struct3<String, String, String[]>> names = (List<PC_Struct3<String, String, String[]>>)obj[0];
+			names.add(new PC_Struct3<String, String, String[]>(getItemName() + ".type0", "Cobblestone Chimney", null));
+			names.add(new PC_Struct3<String, String, String[]>(getItemName() + ".type1", "Brick Chimney", null));
+			names.add(new PC_Struct3<String, String, String[]>(getItemName() + ".type2", "StoneBrick Chimney", null));
+            return names;
+		}
+		return null;
 	}
 	
 }

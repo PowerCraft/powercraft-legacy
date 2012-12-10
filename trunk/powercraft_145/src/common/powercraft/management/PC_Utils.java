@@ -234,7 +234,10 @@ public class PC_Utils implements PC_IPacketHandler
 
                 itemArmor.msg(PC_Utils.MSG_LOAD_FROM_CONFIG, config);
                 
-                registerLanguage(module, new PC_Struct3<String, String, String[]>(itemArmor.getItemName(), itemArmor.getDefaultName(), null));
+                List<PC_Struct3<String, String, String[]>> l = (List<PC_Struct3<String, String, String[]>>)itemArmor.msg(MSG_DEFAULT_NAME, new ArrayList<PC_Struct3<String, String, String[]>>());
+                if(l!=null){
+                	registerLanguage(module, l.toArray(new PC_Struct3[0]));
+                }
                 return (t)itemArmor;
             }
             catch (Exception e)
@@ -1931,7 +1934,7 @@ public class PC_Utils implements PC_IPacketHandler
 	}
 	
 	public static String getGresImgDir() {
-		return getPowerCraftLoaderImageDir() + "Gres/";
+		return getPowerCraftLoaderImageDir() + "gres/";
 	}
 	
 	public static boolean usingForge() {
