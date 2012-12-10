@@ -1,22 +1,21 @@
 package powercraft.transport;
 
 import net.minecraft.src.Entity;
-import net.minecraft.src.EntityFX;
 import net.minecraft.src.EntityItem;
 import net.minecraft.src.EntityPlayer;
 import net.minecraft.src.ItemBlock;
 import net.minecraft.src.ItemStack;
 import net.minecraft.src.TileEntity;
 import net.minecraft.src.World;
-import powercraft.core.PC_CoordI;
-import powercraft.core.PC_InvUtils;
-import powercraft.core.PC_Utils;
+import powercraft.management.PC_InvUtils;
+import powercraft.management.PC_Utils;
+import powercraft.management.PC_VecI;
 
 public class PCtr_BlockBeltSeparator extends PCtr_BlockBeltBase
 {
-    public PCtr_BlockBeltSeparator(int id)
+    public PCtr_BlockBeltSeparator()
     {
-        super(id, 7);
+        super(7);
     }
 
     @Override
@@ -149,4 +148,10 @@ public class PCtr_BlockBeltSeparator extends PCtr_BlockBeltBase
 
         super.breakBlock(world, i, j, k, par5, par6);
     }
+
+	@Override
+	public Object msg(World world, PC_VecI pos, int msg, Object... obj) {
+		// TODO Auto-generated method stub
+		return null;
+	}
 }

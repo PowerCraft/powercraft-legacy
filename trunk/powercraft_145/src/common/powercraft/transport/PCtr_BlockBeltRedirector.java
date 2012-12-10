@@ -4,13 +4,13 @@ import net.minecraft.src.Entity;
 import net.minecraft.src.EntityItem;
 import net.minecraft.src.TileEntity;
 import net.minecraft.src.World;
-import powercraft.core.PC_CoordI;
+import powercraft.management.PC_VecI;
 
 public class PCtr_BlockBeltRedirector extends PCtr_BlockBeltBase
 {
-    public PCtr_BlockBeltRedirector(int id)
+    public PCtr_BlockBeltRedirector()
     {
-        super(id, 8);
+        super(8);
     }
 
     @Override
@@ -97,4 +97,10 @@ public class PCtr_BlockBeltRedirector extends PCtr_BlockBeltBase
         double boost = PCtr_BeltHelper.HORIZONTAL_BOOST;
         PCtr_BeltHelper.moveEntityOnBelt(world, pos, entity, true, !leadsToNowhere, direction, speed_max, boost);
     }
+
+	@Override
+	public Object msg(World world, PC_VecI pos, int msg, Object... obj) {
+		// TODO Auto-generated method stub
+		return null;
+	}
 }

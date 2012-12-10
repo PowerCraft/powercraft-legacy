@@ -3,7 +3,7 @@ package powercraft.transport;
 import java.util.Random;
 
 import net.minecraft.src.NBTTagCompound;
-import powercraft.core.PC_TileEntity;
+import powercraft.management.PC_TileEntity;
 
 public class PCtr_TileEntityEjectionBelt extends PC_TileEntity
 {

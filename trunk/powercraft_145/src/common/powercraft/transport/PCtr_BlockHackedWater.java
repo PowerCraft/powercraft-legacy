@@ -8,9 +8,8 @@ import net.minecraft.src.Entity;
 import net.minecraft.src.EntityItem;
 import net.minecraft.src.Material;
 import net.minecraft.src.World;
-import powercraft.core.PC_CoordI;
-import powercraft.core.PC_Logger;
-import powercraft.core.PC_Utils;
+import powercraft.management.PC_Logger;
+import powercraft.management.PC_Utils;
 
 public class PCtr_BlockHackedWater extends BlockStationary
 {

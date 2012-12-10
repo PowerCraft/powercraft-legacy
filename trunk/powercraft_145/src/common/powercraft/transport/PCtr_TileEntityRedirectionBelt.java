@@ -1,7 +1,6 @@
 package powercraft.transport;
 
 import net.minecraft.src.Entity;
-import powercraft.core.PC_CoordI;
 
 public class PCtr_TileEntityRedirectionBelt extends PCtr_TileEntityRedirectionBeltBase
 {

@@ -1,10 +1,10 @@
 package powercraft.transport;
 
+import powercraft.management.PC_VecI;
 import net.minecraft.src.Entity;
 import net.minecraft.src.EntityItem;
 import net.minecraft.src.EntityMinecart;
 import net.minecraft.src.World;
-import powercraft.core.PC_CoordI;
 
 public class PCtr_BlockBeltBreak extends PCtr_BlockBeltBase
 {
@@ -111,4 +111,10 @@ public class PCtr_BlockBeltBreak extends PCtr_BlockBeltBase
     {
         return pos.isPoweredIndirectly(world) || pos.offset(0, 1, 0).isPoweredIndirectly(world) || pos.offset(0, -1, 0).isPoweredIndirectly(world);
     }
+
+	@Override
+	public Object msg(World world, PC_VecI pos, int msg, Object... obj) {
+		// TODO Auto-generated method stub
+		return null;
+	}
 }

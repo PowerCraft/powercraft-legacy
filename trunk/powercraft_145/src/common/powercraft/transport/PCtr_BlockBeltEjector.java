@@ -9,14 +9,14 @@ import net.minecraft.src.ItemBlock;
 import net.minecraft.src.ItemStack;
 import net.minecraft.src.TileEntity;
 import net.minecraft.src.World;
-import powercraft.core.PC_CoordI;
-import powercraft.core.PC_Utils;
+import powercraft.management.PC_Utils;
+import powercraft.management.PC_VecI;
 
 public class PCtr_BlockBeltEjector extends PCtr_BlockBeltBase
 {
-    public PCtr_BlockBeltEjector(int id)
+    public PCtr_BlockBeltEjector()
     {
-        super(id, 3);
+        super(3);
     }
 
     @Override
@@ -151,4 +151,10 @@ public class PCtr_BlockBeltEjector extends PCtr_BlockBeltBase
             pos.setMeta(world, PCtr_BeltHelper.getPassiveMeta(meta));
         }
     }
+
+	@Override
+	public Object msg(World world, PC_VecI pos, int msg, Object... obj) {
+		// TODO Auto-generated method stub
+		return null;
+	}
 }

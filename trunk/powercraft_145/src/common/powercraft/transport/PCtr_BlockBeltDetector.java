@@ -6,17 +6,16 @@ import java.util.Random;
 import net.minecraft.src.AxisAlignedBB;
 import net.minecraft.src.Entity;
 import net.minecraft.src.EntityItem;
-import net.minecraft.src.EntityPlayer;
 import net.minecraft.src.IBlockAccess;
 import net.minecraft.src.World;
-import powercraft.core.PC_CoordI;
-import powercraft.core.PC_Utils;
+import powercraft.management.PC_Utils;
+import powercraft.management.PC_VecI;
 
 public class PCtr_BlockBeltDetector extends PCtr_BlockBeltBase
 {
-    public PCtr_BlockBeltDetector(int id)
+    public PCtr_BlockBeltDetector()
     {
-        super(id, 6);
+        super(6);
     }
 
     @Override
@@ -134,4 +133,10 @@ public class PCtr_BlockBeltDetector extends PCtr_BlockBeltBase
         double boost = PCtr_BeltHelper.HORIZONTAL_BOOST;
         PCtr_BeltHelper.moveEntityOnBelt(world, pos, entity, true, !leadsToNowhere, direction, speed_max, boost);
     }
+
+	@Override
+	public Object msg(World world, PC_VecI pos, int msg, Object... obj) {
+		// TODO Auto-generated method stub
+		return null;
+	}
 }

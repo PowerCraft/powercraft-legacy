@@ -2,9 +2,8 @@ package powercraft.transport;
 
 import java.util.List;
 
-import net.minecraft.src.CreativeTabs;
 import net.minecraft.src.ItemStack;
-import powercraft.core.PC_ItemBlock;
+import powercraft.management.PC_ItemBlock;
 
 public class PCtr_ItemBlockElevator extends PC_ItemBlock
 {
@@ -45,4 +44,10 @@ public class PCtr_ItemBlockElevator extends PC_ItemBlock
         arrayList.add(new ItemStack(this, 1, 1));
         return arrayList;
     }
+
+	@Override
+	public Object msg(int msg, Object... obj) {
+		// TODO Auto-generated method stub
+		return null;
+	}
 }

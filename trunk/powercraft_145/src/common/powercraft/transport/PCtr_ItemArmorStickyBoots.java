@@ -1,10 +1,8 @@
 package powercraft.transport;
 
-import net.minecraft.src.CreativeTabs;
 import net.minecraft.src.EnumArmorMaterial;
 import net.minecraft.src.ItemStack;
-import powercraft.core.PC_ItemArmor;
-import powercraft.core.PC_Utils;
+import powercraft.management.PC_ItemArmor;
 import cpw.mods.fml.common.Side;
 import cpw.mods.fml.common.asm.SideOnly;
 
@@ -35,4 +33,10 @@ public class PCtr_ItemArmorStickyBoots extends PC_ItemArmor
     {
         return 0x99ff99;
     }
+
+	@Override
+	public Object msg(int msg, Object... obj) {
+		// TODO Auto-generated method stub
+		return null;
+	}
 }
