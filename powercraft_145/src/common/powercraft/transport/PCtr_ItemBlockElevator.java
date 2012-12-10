@@ -4,6 +4,8 @@ import java.util.List;
 
 import net.minecraft.src.ItemStack;
 import powercraft.management.PC_ItemBlock;
+import powercraft.management.PC_Struct3;
+import powercraft.management.PC_Utils;
 
 public class PCtr_ItemBlockElevator extends PC_ItemBlock
 {
@@ -12,17 +14,6 @@ public class PCtr_ItemBlockElevator extends PC_ItemBlock
         super(i);
         setMaxDamage(0);
         setHasSubtypes(true);
-    }
-
-    @Override
-    public String[] getDefaultNames()
-    {
-        return new String[]
-                {
-                    getItemName() + ".up", "elevator up",
-                    getItemName() + ".down", "elevator down",
-                    getItemName(), "elevator"
-                };
     }
 
     @Override
@@ -47,7 +38,13 @@ public class PCtr_ItemBlockElevator extends PC_ItemBlock
 
 	@Override
 	public Object msg(int msg, Object... obj) {
-		// TODO Auto-generated method stub
+		switch(msg){
+		case PC_Utils.MSG_DEFAULT_NAME:
+			List<PC_Struct3<String, String, String[]>> names = (List<PC_Struct3<String, String, String[]>>)obj[0];
+			names.add(new PC_Struct3<String, String, String[]>(getItemName() + ".up", "elevator up", null));
+			names.add(new PC_Struct3<String, String, String[]>(getItemName() + ".down", "elevator down", null));
+            return names;
+		}
 		return null;
 	}
 }

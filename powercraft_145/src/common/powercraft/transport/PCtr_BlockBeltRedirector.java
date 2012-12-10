@@ -16,7 +16,7 @@ public class PCtr_BlockBeltRedirector extends PCtr_BlockBeltBase
 
     public boolean isPowered(World world, PC_VecI pos)
     {
-        return pos.isPoweredIndirectly(world) || pos.offset(0, 1, 0).isPoweredIndirectly(world) || pos.offset(0, -1, 0).isPoweredIndirectly(world);
+    	return PC_Utils.isPoweredIndirectly(world, pos) || PC_Utils.isPoweredIndirectly(world, pos.offset(0, 1, 0)) || PC_Utils.isPoweredIndirectly(world, pos.offset(0, -1, 0));
     }
 
     @Override
@@ -47,7 +47,7 @@ public class PCtr_BlockBeltRedirector extends PCtr_BlockBeltBase
 
         PCtr_TileEntityRedirectionBeltBase teRedir = (PCtr_TileEntityRedirectionBeltBase) world.getBlockTileEntity(i, j, k);
         int redir = teRedir.getDirection(entity);
-        int direction = getRotation(pos.getMeta(world)) + redir;
+        int direction = getRotation(PC_Utils.getMD(world, pos)) + redir;
 
         if (direction == -1)
         {

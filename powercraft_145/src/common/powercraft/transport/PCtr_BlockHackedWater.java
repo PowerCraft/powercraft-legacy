@@ -10,6 +10,7 @@ import net.minecraft.src.Material;
 import net.minecraft.src.World;
 import powercraft.management.PC_Logger;
 import powercraft.management.PC_Utils;
+import powercraft.management.PC_VecI;
 
 public class PCtr_BlockHackedWater extends BlockStationary
 {

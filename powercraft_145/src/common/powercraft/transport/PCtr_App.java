@@ -49,21 +49,13 @@ public class PCtr_App implements PC_IModule
 	}
 
 	@Override
-	public void preInit() {
-		// TODO Auto-generated method stub
-		
-	}
+	public void preInit() {}
 
 	@Override
-	public void init() {
-		
-	}
+	public void init() {}
 
 	@Override
-	public void postInit() {
-		// TODO Auto-generated method stub
-		
-	}
+	public void postInit() {}
 
 	@Override
 	public void initProperties(PC_Configuration config) {
@@ -93,80 +85,72 @@ public class PCtr_App implements PC_IModule
 
 	@Override
 	public List<IRecipe> initRecipes(List<IRecipe> recipes) {
-		recipes.add(new PC_ShapedRecipes(
-                new PC_ItemStack(conveyorBelt, 16),
-                new Object[] { "XXX", "YRY",
-                        'X', Item.leather, 'Y', Item.ingotIron, 'R', Item.redstone
-                             }));
-        recipes.add(new PC_ShapedRecipes(
-                new PC_ItemStack(conveyorBelt, 4),
-                new Object[] { "XXX", "YRY",
-                        'X', Item.paper, 'Y', Item.ingotIron, 'R', Item.redstone
-                             }));
-        recipes.add(new PC_ShapedRecipes(
-                new PC_ItemStack(speedyBelt, 16),
-                new Object[] { "XXX", "YRY",
-                        'X', Item.leather, 'Y', Item.ingotGold, 'R', Item.redstone
-                             }));
-        recipes.add(new PC_ShapedRecipes(
-                new PC_ItemStack(speedyBelt, 4),
-                new Object[] { "XXX", "YRY",
-                        'X', Item.paper, 'Y', Item.ingotGold, 'R', Item.redstone
-                             }));
-        recipes.add(new PC_ShapedRecipes(
-                new PC_ItemStack(ejectionBelt, 1),
-                new Object[] { "X", "Y", "Z",
-                        'X', Item.bow, 'Y', conveyorBelt, 'Z', Item.redstone
-                             }));
-        recipes.add(new PC_ShapedRecipes(
-                new PC_ItemStack(detectionBelt, 1),
-                new Object[] { "X", "Y", "Z",
-                        'X', Block.pressurePlatePlanks, 'Y', conveyorBelt, 'Z', Item.redstone
-                             }));
-        recipes.add(new PC_ShapedRecipes(
-                new PC_ItemStack(detectionBelt, 1),
-                new Object[] { "X", "Y", "Z",
-                        'X', Block.pressurePlateStone, 'Y', conveyorBelt, 'Z', Item.redstone
-                             }));
-        recipes.add(new PC_ShapedRecipes(
-                new PC_ItemStack(separationBelt, 1),
-                new Object[] { "X", "Y", "Z",
-                        'X', Item.diamond, 'Y', conveyorBelt, 'Z', Item.redstone
-                             }));
-        recipes.add(new PC_ShapedRecipes(
-                new PC_ItemStack(breakBelt, 1),
-                new Object[] { "X", "Y", "Z",
-                        'X', Item.ingotIron, 'Y', conveyorBelt, 'Z', Item.redstone
-                             }));
-        recipes.add(new PC_ShapedRecipes(
-                new PC_ItemStack(redirectionBelt, 1),
-                new Object[] { "X", "Y",
-                        'X', conveyorBelt, 'Y', Item.redstone
-                             }));
-        recipes.add(new PC_ShapedRecipes(
-                new PC_ItemStack(elevator, 6, 0),
-                new Object[] { "XGX", "X X", "XGX",
-                        'X', conveyorBelt, 'G', Item.ingotGold
-                             }));
-        recipes.add(new PC_ShapedRecipes(
-                new PC_ItemStack(elevator, 6, 1),
-                new Object[] { "XGX", "XRX", "XGX",
-                        'X', conveyorBelt, 'G', Item.ingotGold, 'R', Item.redstone
-                             }));
-        recipes.add(new PC_ShapedRecipes(
-        		new PC_ItemStack(slimeboots),
-        		new Object[] {"B", "S", 'B',
-        			Item.bootsSteel, 'S', Item.slimeBall}));
+		recipes.add(new PC_ShapedRecipes(new PC_ItemStack(conveyorBelt, 16),
+                	"XXX", 
+                	"YRY",
+                        'X', Item.leather, 'Y', Item.ingotIron, 'R', Item.redstone));
+        recipes.add(new PC_ShapedRecipes(new PC_ItemStack(conveyorBelt, 4),
+                	"XXX",
+                	"YRY",
+                        'X', Item.paper, 'Y', Item.ingotIron, 'R', Item.redstone));
+        recipes.add(new PC_ShapedRecipes(new PC_ItemStack(speedyBelt, 16),
+                	"XXX", 
+                	"YRY",
+                        'X', Item.leather, 'Y', Item.ingotGold, 'R', Item.redstone));
+        recipes.add(new PC_ShapedRecipes(new PC_ItemStack(speedyBelt, 4),
+                	"XXX", 
+                	"YRY",
+                        'X', Item.paper, 'Y', Item.ingotGold, 'R', Item.redstone));
+        recipes.add(new PC_ShapedRecipes(new PC_ItemStack(ejectionBelt, 1),
+                	"X", 
+                	"Y", 
+                	"Z",
+                        'X', Item.bow, 'Y', conveyorBelt, 'Z', Item.redstone));
+        recipes.add(new PC_ShapedRecipes(new PC_ItemStack(detectionBelt, 1),
+                	"X", 
+                	"Y", 
+                	"Z",
+                        'X', Block.pressurePlatePlanks, 'Y', conveyorBelt, 'Z', Item.redstone));
+        recipes.add(new PC_ShapedRecipes(new PC_ItemStack(detectionBelt, 1),
+        			"X", 
+        			"Y", 
+        			"Z",
+                        'X', Block.pressurePlateStone, 'Y', conveyorBelt, 'Z', Item.redstone));
+        recipes.add(new PC_ShapedRecipes(new PC_ItemStack(separationBelt, 1),
+                	"X", 
+                	"Y", 
+                	"Z",
+                        'X', Item.diamond, 'Y', conveyorBelt, 'Z', Item.redstone));
+        recipes.add(new PC_ShapedRecipes(new PC_ItemStack(breakBelt, 1),
+                	"X", 
+                	"Y", 
+                	"Z",
+                        'X', Item.ingotIron, 'Y', conveyorBelt, 'Z', Item.redstone));
+        recipes.add(new PC_ShapedRecipes(new PC_ItemStack(redirectionBelt, 1),
+                	"X",
+                	"Y",
+                        'X', conveyorBelt, 'Y', Item.redstone));
+        recipes.add(new PC_ShapedRecipes(new PC_ItemStack(elevator, 6, 0),
+                	"XGX", 
+                	"X X", 
+                	"XGX",
+                        'X', conveyorBelt, 'G', Item.ingotGold));
+        recipes.add(new PC_ShapedRecipes(new PC_ItemStack(elevator, 6, 1),
+                	"XGX", 
+                	"XRX", 
+                	"XGX",
+                        'X', conveyorBelt, 'G', Item.ingotGold, 'R', Item.redstone));
+        recipes.add(new PC_ShapedRecipes(new PC_ItemStack(slimeboots),
+        			"B", 
+        			"S", 
+        			'B', Item.bootsSteel, 'S', Item.slimeBall));
         
-     
-   
-		return null;
+		return recipes;
 	}
 
 	@Override
-	public List<PC_Struct2<String, Class>> registerGuis(
-			List<PC_Struct2<String, Class>> guis) {
-		// TODO Auto-generated method stub
-		return null;
+	public List<PC_Struct2<String, Class>> registerGuis(List<PC_Struct2<String, Class>> guis) {
+		guis.add(new PC_Struct2<String, Class>("SeparationBelt", PCtr_ContainerSeparationBelt.class));
+		return guis;
 	}
 }

@@ -64,7 +64,7 @@ public class PCtr_BlockElevator extends PC_Block
             }
         }
 
-        boolean down = (pos.getMeta(world) == 1);
+        boolean down = (PC_Utils.getMD(world, pos) == 1);
         PCtr_BeltHelper.entityPreventDespawning(world, pos, true, entity);
         boolean halted = world.isBlockGettingPowered(i, j, k);
         double BBOOST = (entity instanceof EntityPlayer) ? BORDER_BOOST / 4.0D : BORDER_BOOST;

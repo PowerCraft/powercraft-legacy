@@ -38,7 +38,7 @@ public class PCtr_BlockBeltNormal extends PCtr_BlockBeltBase
             }
         }
 
-        int direction = getRotation(pos.getMeta(world));
+        int direction = getRotation(PC_Utils.getMD(world, pos));
         PC_VecI pos_leading_to = pos.copy();
 
         switch (direction)

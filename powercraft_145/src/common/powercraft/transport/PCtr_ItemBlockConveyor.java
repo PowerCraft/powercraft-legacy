@@ -1,5 +1,7 @@
 package powercraft.transport;
 
+import java.util.List;
+
 import net.minecraft.src.Block;
 import net.minecraft.src.Direction;
 import net.minecraft.src.EntityPlayer;
@@ -8,7 +10,9 @@ import net.minecraft.src.World;
 import powercraft.management.PC_Block;
 import powercraft.management.PC_ItemBlock;
 import powercraft.management.PC_MathHelper;
+import powercraft.management.PC_Struct3;
 import powercraft.management.PC_Utils;
+import powercraft.management.PC_VecI;
 
 public class PCtr_ItemBlockConveyor extends PC_ItemBlock
 {
@@ -23,16 +27,6 @@ public class PCtr_ItemBlockConveyor extends PC_ItemBlock
     public int getBlockID()
     {
         return shiftedIndex;
-    }
-
-    @Override
-    public String[] getDefaultNames()
-    {
-        PC_Block b = (PC_Block)Block.blocksList[getBlockID()];
-        return new String[]
-                {
-                    b.getBlockName() + ".name", b.getDefaultName()
-                };
     }
 
     @Override
@@ -83,7 +77,7 @@ public class PCtr_ItemBlockConveyor extends PC_ItemBlock
         {
             return false;
         }
-        else if (!entityplayer.func_82247_a(i, j, k, l, itemstack))
+        else if (!entityplayer.canPlayerEdit(i, j, k, l, itemstack))
         {
             return false;
         }
@@ -120,8 +114,8 @@ public class PCtr_ItemBlockConveyor extends PC_ItemBlock
             if (world.setBlock(i, j, k, block.blockID))
             {
                 block.onBlockPlacedBy(world, i, j, k, entityplayer);
-                world.markBlocksDirty(i, j, k, i, j, k);
-                world.markBlockNeedsUpdate(i, j, k);
+                world.markBlockRangeForRenderUpdate(i, j, k, i, j, k);
+                world.markBlockForUpdate(i, j, k);
                 world.playSoundEffect(i + 0.5F, j + 0.5F, k + 0.5F, block.stepSound.getStepSound(), (block.stepSound.getVolume() + 1.0F) / 2.0F,
                         block.stepSound.getPitch() * 0.8F);
                 itemstack.stackSize--;
@@ -133,7 +127,13 @@ public class PCtr_ItemBlockConveyor extends PC_ItemBlock
 
 	@Override
 	public Object msg(int msg, Object... obj) {
-		// TODO Auto-generated method stub
+		switch(msg){
+		case PC_Utils.MSG_DEFAULT_NAME:
+			PC_Block b = (PC_Block)Block.blocksList[getBlockID()];
+			List<PC_Struct3<String, String, String[]>> names = (List<PC_Struct3<String, String, String[]>>)obj[0];
+			names.add(new PC_Struct3<String, String, String[]>(b.getBlockName(), (String)b.msg(PC_Utils.MSG_DEFAULT_NAME), null));
+            return names;
+		}
 		return null;
 	}
 }
