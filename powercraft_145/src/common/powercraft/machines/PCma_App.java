@@ -3,17 +3,18 @@ package powercraft.machines;
 import java.util.List;
 
 import net.minecraft.src.Block;
+import net.minecraft.src.IRecipe;
 import net.minecraft.src.Item;
 import net.minecraftforge.common.Configuration;
-import powercraft.core.PC_Block;
-import powercraft.core.PC_ItemStack;
-import powercraft.core.PC_Module;
-import powercraft.core.PC_Utils;
-import cpw.mods.fml.common.Mod;
+import powercraft.management.PC_Block;
+import powercraft.management.PC_Configuration;
+import powercraft.management.PC_IModule;
+import powercraft.management.PC_ItemStack;
+import powercraft.management.PC_Struct2;
+import powercraft.management.PC_Utils;
 import cpw.mods.fml.common.Mod.Init;
 import cpw.mods.fml.common.Mod.PostInit;
 import cpw.mods.fml.common.Mod.PreInit;
-import cpw.mods.fml.common.SidedProxy;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
@@ -21,7 +22,7 @@ import cpw.mods.fml.common.network.NetworkMod;
 
 //@Mod(modid = "PowerCraft-Machines", name = "PowerCraft-Machines", version = "3.5.0AlphaC", dependencies = "required-after:PowerCraft-Core")
 @NetworkMod(clientSideRequired = true, serverSideRequired = true)
-public class PCma_App extends PC_Module
+public class PCma_App implements PC_IModule
 {
 
     public static PC_Block automaticWorkbench;
@@ -39,59 +40,7 @@ public class PCma_App extends PC_Module
         return (PCma_App)PC_Module.getModule("PowerCraft-Machines");
     }
 
-    @PreInit
-    public void preInit(FMLPreInitializationEvent event)
-    {
-        preInit(event, proxy);
-    }
-
-    @Init
-    public void init(FMLInitializationEvent event)
-    {
-        init();
-        PCma_CropHarvestingManager.loadCrops();
-        PCma_TreeHarvestingManager.loadTrees();
-    }
-
-    @PostInit
-    public void postInit(FMLPostInitializationEvent event)
-    {
-        postInit();
-    }
-
-    @Override
-    protected void initProperties(Configuration config)
-    {
-        roasterIgnoreBlockIDs = PC_Utils.parseIntList(PC_Utils.getConfigString(config, "roaster_ignored_blocks_list", Configuration.CATEGORY_GENERAL, "1"));
-    }
-
-    @Override
-    protected List<String> loadTextureFiles(List<String> textures)
-    {
-        textures.add(getTerrainFile());
-        return textures;
-    }
-
-    @Override
-    protected void initLanguage()
-    {
-        PC_Utils.registerLanguage(this,
-                "pc.gui.automaticWorkbench.redstoneActivated", "Redstone triggered",
-                "pc.roaster.insertFuel", "fuel",
-                "pc.gui.blockReplacer.title", "Block Replacer",
-                "pc.gui.blockReplacer.errWrongValue", "Expects a value between -16 and 16.",
-                "pc.gui.blockReplacer.err3zeros", "Expects at least 1 value unequal 0.",
-                "pc.gui.blockReplacer.particleFrame", "Particles",
-                "pc.gui.xpbank.storagePoints", "Stored XP:",
-                "pc.gui.xpbank.currentPlayerLevel", "Your level:",
-                "pc.gui.xpbank.xpUnit", "points",
-                "pc.gui.xpbank.xpLevels", "levels",
-                "pc.gui.xpbank.withdraw", "Withdraw:",
-                "pc.gui.xpbank.deposit", "Deposit:",
-                "pc.gui.xpbank.oneLevel", "1 level",
-                "pc.gui.xpbank.all", "all"
-                                 );
-    }
+   
 
     @Override
     protected void initBlocks()
@@ -153,4 +102,53 @@ public class PCma_App extends PC_Module
     {
         return null;
     }
+
+	@Override
+	public String getName() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public String getVersion() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public void preInit() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void init() {
+        PCma_CropHarvestingManager.loadCrops();
+        PCma_TreeHarvestingManager.loadTrees();
+	}
+
+	@Override
+	public void postInit() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void initProperties(PC_Configuration config) {
+		roasterIgnoreBlockIDs = PC_Utils.parseIntList(PC_Utils.getConfigString(config,
+				"roaster_ignored_blocks_list", Configuration.CATEGORY_GENERAL, "1"));
+	}
+
+	@Override
+	public List<IRecipe> initRecipes(List<IRecipe> recipes) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public List<PC_Struct2<String, Class>> registerGuis(
+			List<PC_Struct2<String, Class>> guis) {
+		// TODO Auto-generated method stub
+		return null;
+	}
 }

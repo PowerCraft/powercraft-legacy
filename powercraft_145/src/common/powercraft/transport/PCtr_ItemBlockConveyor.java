@@ -5,11 +5,10 @@ import net.minecraft.src.Direction;
 import net.minecraft.src.EntityPlayer;
 import net.minecraft.src.ItemStack;
 import net.minecraft.src.World;
-import powercraft.core.PC_Block;
-import powercraft.core.PC_CoordI;
-import powercraft.core.PC_ItemBlock;
-import powercraft.core.PC_MathHelper;
-import powercraft.core.PC_Utils;
+import powercraft.management.PC_Block;
+import powercraft.management.PC_ItemBlock;
+import powercraft.management.PC_MathHelper;
+import powercraft.management.PC_Utils;
 
 public class PCtr_ItemBlockConveyor extends PC_ItemBlock
 {
@@ -131,4 +130,10 @@ public class PCtr_ItemBlockConveyor extends PC_ItemBlock
 
         return true;
     }
+
+	@Override
+	public Object msg(int msg, Object... obj) {
+		// TODO Auto-generated method stub
+		return null;
+	}
 }

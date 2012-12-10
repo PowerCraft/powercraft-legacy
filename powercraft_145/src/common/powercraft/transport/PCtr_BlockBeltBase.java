@@ -11,17 +11,15 @@ import net.minecraft.src.EntityPlayer;
 import net.minecraft.src.IBlockAccess;
 import net.minecraft.src.ItemStack;
 import net.minecraft.src.World;
-import powercraft.core.PC_Block;
-import powercraft.core.PC_CoordI;
-import powercraft.core.PC_IRotatedBox;
-import powercraft.core.PC_Renderer;
-import powercraft.core.PC_Utils;
+import powercraft.management.PC_Block;
+import powercraft.management.PC_IRotatedBox;
+import powercraft.management.PC_Utils;
 
 public abstract class PCtr_BlockBeltBase extends PC_Block implements PC_IRotatedBox
 {
-    public PCtr_BlockBeltBase(int id, int textureID)
+    public PCtr_BlockBeltBase(int textureID)
     {
-        super(id, textureID, PCtr_MaterialConveyor.getMaterial());
+        super(textureID, PCtr_MaterialConveyor.getMaterial());
         setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, PCtr_BeltHelper.HEIGHT, 1.0F);
         setHardness(0.22F);
         setResistance(8.0F);

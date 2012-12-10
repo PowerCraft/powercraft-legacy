@@ -5,7 +5,7 @@ import java.util.Hashtable;
 import java.util.Random;
 
 import net.minecraft.src.Entity;
-import powercraft.core.PC_TileEntity;
+import powercraft.management.PC_TileEntity;
 
 public abstract class PCtr_TileEntityRedirectionBeltBase extends PC_TileEntity
 {

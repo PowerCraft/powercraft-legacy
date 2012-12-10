@@ -12,19 +12,19 @@ import net.minecraft.src.EntityPlayer;
 import net.minecraft.src.IBlockAccess;
 import net.minecraft.src.ItemStack;
 import net.minecraft.src.World;
-import powercraft.core.PC_Block;
-import powercraft.core.PC_CoordI;
-import powercraft.core.PC_MathHelper;
-import powercraft.core.PC_Utils;
+import powercraft.management.PC_Block;
+import powercraft.management.PC_MathHelper;
+import powercraft.management.PC_Utils;
+import powercraft.management.PC_VecI;
 
 public class PCtr_BlockElevator extends PC_Block
 {
     private static final double BORDERS = 0.25D;
     private static final double BORDER_BOOST = 0.062D;
 
-    public PCtr_BlockElevator(int id)
+    public PCtr_BlockElevator()
     {
-        super(id, 23, PCtr_MaterialElevator.getMaterial());
+        super(23, PCtr_MaterialElevator.getMaterial());
         setHardness(0.5F);
         setResistance(8.0F);
         setStepSound(Block.soundMetalFootstep);
@@ -255,5 +255,11 @@ public class PCtr_BlockElevator extends PC_Block
    		list.add(PC_Utils.NO_BUILD);
    		return list;
    	}
+
+	@Override
+	public Object msg(World world, PC_VecI pos, int msg, Object... obj) {
+		// TODO Auto-generated method stub
+		return null;
+	}
     
 }

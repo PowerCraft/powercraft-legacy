@@ -3,13 +3,13 @@ package powercraft.transport;
 import net.minecraft.src.Entity;
 import net.minecraft.src.EntityItem;
 import net.minecraft.src.World;
-import powercraft.core.PC_CoordI;
+import powercraft.management.PC_VecI;
 
 public class PCtr_BlockBeltNormal extends PCtr_BlockBeltBase
 {
-    public PCtr_BlockBeltNormal(int id)
+    public PCtr_BlockBeltNormal()
     {
-        super(id, 0);
+        super(0);
     }
 
     @Override
@@ -77,4 +77,10 @@ public class PCtr_BlockBeltNormal extends PCtr_BlockBeltBase
         double boost = PCtr_BeltHelper.HORIZONTAL_BOOST;
         PCtr_BeltHelper.moveEntityOnBelt(world, pos, entity, true, !leadsToNowhere, direction, speed_max, boost);
     }
+
+	@Override
+	public Object msg(World world, PC_VecI pos, int msg, Object... obj) {
+		// TODO Auto-generated method stub
+		return null;
+	}
 }

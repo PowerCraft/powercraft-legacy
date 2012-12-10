@@ -1,23 +1,23 @@
 package powercraft.transport;
 
 import net.minecraft.src.EntityPlayer;
-import powercraft.core.PC_GresButton;
-import powercraft.core.PC_GresGap;
-import powercraft.core.PC_GresLabel;
-import powercraft.core.PC_GresLayoutH;
-import powercraft.core.PC_GresLayoutV;
-import powercraft.core.PC_GresRadioButton;
-import powercraft.core.PC_PacketHandler;
-import powercraft.core.PC_GresRadioButton.PC_GresRadioGroup;
-import powercraft.core.PC_GresSeparatorH;
-import powercraft.core.PC_GresTextEdit;
-import powercraft.core.PC_GresTextEdit.PC_GresInputType;
-import powercraft.core.PC_GresWidget;
-import powercraft.core.PC_GresWidget.PC_GresAlign;
-import powercraft.core.PC_GresWindow;
-import powercraft.core.PC_IGresClient;
-import powercraft.core.PC_IGresGui;
-import powercraft.core.PC_Utils;
+import powercraft.management.PC_GresButton;
+import powercraft.management.PC_GresGap;
+import powercraft.management.PC_GresLabel;
+import powercraft.management.PC_GresLayoutH;
+import powercraft.management.PC_GresLayoutV;
+import powercraft.management.PC_GresRadioButton;
+import powercraft.management.PC_GresRadioButton.PC_GresRadioGroup;
+import powercraft.management.PC_GresSeparatorH;
+import powercraft.management.PC_GresTextEdit;
+import powercraft.management.PC_GresTextEdit.PC_GresInputType;
+import powercraft.management.PC_GresWidget;
+import powercraft.management.PC_GresWidget.PC_GresAlign;
+import powercraft.management.PC_GresWindow;
+import powercraft.management.PC_IGresClient;
+import powercraft.management.PC_IGresGui;
+import powercraft.management.PC_PacketHandler;
+import powercraft.management.PC_Utils;
 
 public class PCtr_GuiEjectionBelt implements PC_IGresClient {
 	

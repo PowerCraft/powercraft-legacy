@@ -1,19 +1,15 @@
 package powercraft.transport;
 
-import powercraft.core.PC_CoordI;
-import net.minecraft.src.Block;
-import net.minecraft.src.CreativeTabs;
 import net.minecraft.src.Entity;
 import net.minecraft.src.EntityItem;
-import net.minecraft.src.EntityPlayer;
-import net.minecraft.src.IBlockAccess;
 import net.minecraft.src.World;
+import powercraft.management.PC_VecI;
 
 public class PCtr_BlockBeltSpeedy extends PCtr_BlockBeltBase
 {
-    public PCtr_BlockBeltSpeedy(int id)
+    public PCtr_BlockBeltSpeedy()
     {
-        super(id, 4);
+        super(4);
     }
 
     @Override
@@ -71,4 +67,10 @@ public class PCtr_BlockBeltSpeedy extends PCtr_BlockBeltBase
         double boost = PCtr_BeltHelper.HORIZONTAL_BOOST * 2;
         PCtr_BeltHelper.moveEntityOnBelt(world, pos, entity, true, !leadsToNowhere, direction, speed_max, boost);
     }
+
+	@Override
+	public Object msg(World world, PC_VecI pos, int msg, Object... obj) {
+		// TODO Auto-generated method stub
+		return null;
+	}
 }
