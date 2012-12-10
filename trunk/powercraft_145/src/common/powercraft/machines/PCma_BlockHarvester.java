@@ -517,7 +517,7 @@ public class PCma_BlockHarvester extends PC_Block implements
 
 	@Override
 	public String getCraftingToolModule() {
-		return mod_PowerCraftMachines.getInstance().getNameWithoutPowerCraft();
+		return PCma_App.getInstance().getNameWithoutPowerCraft();
 	}
 
 	@Override

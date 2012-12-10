@@ -240,7 +240,7 @@ public class PCma_BlockRoaster extends PC_Block implements PC_ICraftingToolDispl
 	@Override
     public String getCraftingToolModule()
     {
-        return mod_PowerCraftMachines.getInstance().getNameWithoutPowerCraft();
+        return PCma_App.getInstance().getNameWithoutPowerCraft();
     }
 
     @Override

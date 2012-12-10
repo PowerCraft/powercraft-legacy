@@ -6,12 +6,14 @@ import net.minecraft.src.CreativeTabs;
 import net.minecraft.src.EntityPlayer;
 import net.minecraft.src.ItemStack;
 import net.minecraft.src.World;
+import powercraft.management.PC_Item;
+import powercraft.management.PC_Struct3;
+import powercraft.management.PC_Utils;
 
 public class PCco_ItemOreSniffer extends PC_Item
 {
-    public PCco_ItemOreSniffer(int id)
+    public PCco_ItemOreSniffer()
     {
-        super(id);
         setMaxStackSize(1);
         setMaxDamage(500);
         setIconIndex(1);
@@ -31,14 +33,19 @@ public class PCco_ItemOreSniffer extends PC_Item
     }
 
     @Override
-    public String[] getDefaultNames()
-    {
-        return new String[] {getItemName(), "Ore Sniffer"};
-    }
-
-    @Override
     public void addInformation(ItemStack itemStack, EntityPlayer player, List list, boolean b)
     {
         list.add(PC_Utils.tr("pc.sniffer.desc"));
     }
+
+	@Override
+	public Object msg(int msg, Object... obj) {
+		switch(msg){
+		case PC_Utils.MSG_DEFAULT_NAME:
+			List<PC_Struct3<String, String, String[]>> names = (List<PC_Struct3<String, String, String[]>>)obj[0];
+			names.add(new PC_Struct3<String, String, String[]>(getItemName(), "Ore Sniffer", null));
+            return names;
+		}
+		return null;
+	}
 }

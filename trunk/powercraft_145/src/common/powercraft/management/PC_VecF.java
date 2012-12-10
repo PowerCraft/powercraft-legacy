@@ -100,6 +100,21 @@ public class PC_VecF implements Serializable, PC_Vec<Float, PC_VecF> {
 	}
 
 	@Override
+	public PC_VecF offset(PC_Vec vec) {
+		return copy().add(vec);
+	}
+	
+	@Override
+	public PC_VecF offset(Float n) {
+		return copy().add(n);
+	}
+	
+	@Override
+	public PC_VecF offset(Float x, Float y, Float z) {
+		return copy().add(x, y, z);
+	}
+	
+	@Override
 	public PC_VecF sub(PC_Vec vec) {
 		return sub(vec.getX().floatValue(), vec.getY().floatValue(), vec.getZ().floatValue());
 	}
@@ -267,6 +282,21 @@ public class PC_VecF implements Serializable, PC_Vec<Float, PC_VecF> {
 	@Override
 	public PC_VecF copy() {
 		return new PC_VecF(this);
+	}
+	
+	@Override
+	public boolean equals(Object o) {
+		if(!(o instanceof PC_Vec)){
+			return false;
+		}
+		PC_Vec vec = (PC_Vec)o;
+		if(x != vec.getX().floatValue())
+			return false;
+		if(y != vec.getY().floatValue())
+			return false;
+		if(z != vec.getZ().floatValue())
+			return false;
+		return true;
 	}
 	
 }

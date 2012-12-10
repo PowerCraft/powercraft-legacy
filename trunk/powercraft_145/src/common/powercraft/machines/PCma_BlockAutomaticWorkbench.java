@@ -200,7 +200,7 @@ public class PCma_BlockAutomaticWorkbench extends PC_Block implements PC_ISpecia
     @Override
     public String getCraftingToolModule()
     {
-        return mod_PowerCraftMachines.getInstance().getNameWithoutPowerCraft();
+        return PCma_App.getInstance().getNameWithoutPowerCraft();
     }
 
     @Override

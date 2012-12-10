@@ -6,12 +6,14 @@ import net.minecraft.src.CreativeTabs;
 import net.minecraft.src.EntityPlayer;
 import net.minecraft.src.ItemStack;
 import net.minecraft.src.World;
+import powercraft.management.PC_Item;
+import powercraft.management.PC_Struct3;
+import powercraft.management.PC_Utils;
 
 public class PCco_ItemCraftingTool extends PC_Item
 {
-    public PCco_ItemCraftingTool(int i)
+    public PCco_ItemCraftingTool()
     {
-        super(i);
         setMaxDamage(0);
         setMaxStackSize(1);
         setCreativeTab(CreativeTabs.tabTools);
@@ -29,9 +31,14 @@ public class PCco_ItemCraftingTool extends PC_Item
         return itemstack;
     }
 
-    @Override
-    public String[] getDefaultNames()
-    {
-        return new String[] {getItemName(), "Crafting Tool"};
-    }
+	@Override
+	public Object msg(int msg, Object... obj) {
+		switch(msg){
+		case PC_Utils.MSG_DEFAULT_NAME:
+			List<PC_Struct3<String, String, String[]>> names = (List<PC_Struct3<String, String, String[]>>)obj[0];
+			names.add(new PC_Struct3<String, String, String[]>(getItemName(), "Crafting Tool", null));
+            return names;
+		}
+		return null;
+	}
 }

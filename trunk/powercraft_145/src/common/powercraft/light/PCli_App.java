@@ -20,12 +20,10 @@ import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.network.NetworkMod;
 
-@Mod(modid = "PowerCraft-Light", name = "PowerCraft-Light", version = "3.5.0AlphaC", dependencies = "required-after:PowerCraft-Core")
+//@Mod(modid = "PowerCraft-Light", name = "PowerCraft-Light", version = "3.5.0AlphaC", dependencies = "required-after:PowerCraft-Core")
 @NetworkMod(clientSideRequired = true, serverSideRequired = true)
-public class mod_PowerCraftLight extends PC_Module
+public class PCli_App extends PC_Module
 {
-    @SidedProxy(clientSide = "powercraft.light.PCli_ClientProxy", serverSide = "powercraft.light.PCli_CommonProxy")
-    public static PCli_CommonProxy proxy;
     public static PC_Block light;
     public static PC_Block lightningConductor;
     public static PC_Block laser;
@@ -34,9 +32,9 @@ public class mod_PowerCraftLight extends PC_Module
     public static PC_Block laserSensor;
     public static PC_Item laserComposition;
 
-    public static mod_PowerCraftLight getInstance()
+    public static PCli_App getInstance()
     {
-        return (mod_PowerCraftLight)PC_Module.getModule("PowerCraft-Light");
+        return (PCli_App)PC_Module.getModule("PowerCraft-Light");
     }
 
     @PreInit

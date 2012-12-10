@@ -460,7 +460,7 @@ public class PCma_BlockReplacer extends PC_Block implements PC_ICraftingToolDisp
     @Override
     public String getCraftingToolModule()
     {
-        return mod_PowerCraftMachines.getInstance().getNameWithoutPowerCraft();
+        return PCma_App.getInstance().getNameWithoutPowerCraft();
     }
 
     @Override

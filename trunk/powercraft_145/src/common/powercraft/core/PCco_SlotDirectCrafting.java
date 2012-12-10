@@ -9,12 +9,12 @@ import net.minecraft.src.EntityPlayer;
 import net.minecraft.src.IRecipe;
 import net.minecraft.src.Item;
 import net.minecraft.src.ItemStack;
-import net.minecraft.src.ModLoader;
 import net.minecraft.src.ShapedRecipes;
 import net.minecraft.src.ShapelessRecipes;
 import net.minecraft.src.Slot;
-
-import org.lwjgl.input.Keyboard;
+import powercraft.management.PC_IRecipeInputInfo;
+import powercraft.management.PC_ISlotWithBackground;
+import powercraft.management.PC_Utils;
 
 public class PCco_SlotDirectCrafting extends Slot implements PC_ISlotWithBackground
 {
@@ -434,9 +434,9 @@ public class PCco_SlotDirectCrafting extends Slot implements PC_ISlotWithBackgro
         {
             ItemStack[] tmps;
 
-            if (irecipe instanceof PC_ICraftingInputGetter)
+            if (irecipe instanceof PC_IRecipeInputInfo)
             {
-                tmps = ((PC_ICraftingInputGetter) irecipe).getExpectedInput(new ArrayList<ItemStack>()).toArray(new ItemStack[0]);
+                tmps = ((PC_IRecipeInputInfo) irecipe).getExpectedInput(new ArrayList<ItemStack>()).toArray(new ItemStack[0]);
             }
             else if (irecipe instanceof ShapedRecipes)
             {

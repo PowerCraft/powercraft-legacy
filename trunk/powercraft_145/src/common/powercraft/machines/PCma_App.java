@@ -19,12 +19,10 @@ import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.network.NetworkMod;
 
-@Mod(modid = "PowerCraft-Machines", name = "PowerCraft-Machines", version = "3.5.0AlphaC", dependencies = "required-after:PowerCraft-Core")
+//@Mod(modid = "PowerCraft-Machines", name = "PowerCraft-Machines", version = "3.5.0AlphaC", dependencies = "required-after:PowerCraft-Core")
 @NetworkMod(clientSideRequired = true, serverSideRequired = true)
-public class mod_PowerCraftMachines extends PC_Module
+public class PCma_App extends PC_Module
 {
-    @SidedProxy(clientSide = "powercraft.machines.PCma_ClientProxy", serverSide = "powercraft.machines.PCma_CommonProxy")
-    public static PCma_CommonProxy proxy;
 
     public static PC_Block automaticWorkbench;
     public static PC_Block roaster;
@@ -36,9 +34,9 @@ public class mod_PowerCraftMachines extends PC_Module
     
     public static List<Integer >roasterIgnoreBlockIDs;
 
-    public static mod_PowerCraftMachines getInstance()
+    public static PCma_App getInstance()
     {
-        return (mod_PowerCraftMachines)PC_Module.getModule("PowerCraft-Machines");
+        return (PCma_App)PC_Module.getModule("PowerCraft-Machines");
     }
 
     @PreInit

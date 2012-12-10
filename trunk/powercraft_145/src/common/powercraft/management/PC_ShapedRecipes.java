@@ -49,7 +49,7 @@ public class PC_ShapedRecipes implements IRecipe, PC_IRecipeInputInfo {
 			hm.put(c, is);
 		}
 
-		PC_ItemStack[] recipeItems = new PC_ItemStack[recipeWidth
+		recipeItems = new PC_ItemStack[recipeWidth
 				* recipeHeight];
 
 		for (length = 0; length < recipeWidth * recipeHeight; ++length) {

@@ -59,7 +59,7 @@ public class PClo_TileEntityDelayer extends PC_TileEntity
 
         if (!stop || reset)
         {
-            worldObj.scheduleBlockUpdate(xCoord, yCoord, zCoord, PC_Utils.getBID(worldObj, xCoord, yCoord, zCoord), mod_PowerCraftLogic.delayer.tickRate());
+            worldObj.scheduleBlockUpdate(xCoord, yCoord, zCoord, PC_Utils.getBID(worldObj, xCoord, yCoord, zCoord), PClo_App.delayer.tickRate());
         }
     }
 

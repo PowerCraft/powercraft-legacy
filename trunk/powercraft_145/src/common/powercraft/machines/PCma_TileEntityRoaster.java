@@ -279,7 +279,7 @@ public class PCma_TileEntityRoaster extends PC_TileEntity implements IInventory,
 
         for (EntityItem entityitem : itemsList)
         {
-            if (entityitem.isDead || mod_PowerCraftMachines.roasterIgnoreBlockIDs.contains(entityitem.item.itemID))
+            if (entityitem.isDead || PCma_App.roasterIgnoreBlockIDs.contains(entityitem.item.itemID))
             {
                 continue nextItem;
             }

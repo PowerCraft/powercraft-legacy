@@ -10,7 +10,7 @@ public class PCtr_TileEntityRedirectionBelt extends PCtr_TileEntityRedirectionBe
     @Override
     protected int calculateItemDirection(Entity entity)
     {
-        PCtr_BlockBeltRedirector block = ((PCtr_BlockBeltRedirector) mod_PowerCraftTransport.redirectionBelt);
+        PCtr_BlockBeltRedirector block = ((PCtr_BlockBeltRedirector) PCtr_App.redirectionBelt);
         PC_CoordI pos = getCoord();
         int meta = block.getRotation(pos.getMeta(worldObj));
         int redir = 0;

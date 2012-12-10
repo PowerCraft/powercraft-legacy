@@ -5,20 +5,22 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 
-import powercraft.transport.PCtr_TileEntitySeparationBelt;
-
 import net.minecraft.src.Block;
 import net.minecraft.src.EntityPlayer;
 import net.minecraft.src.Item;
 import net.minecraft.src.ItemBlock;
 import net.minecraft.src.ItemStack;
 import net.minecraft.src.Slot;
+import powercraft.management.PC_GresBaseWithInventory;
+import powercraft.management.PC_IItemInfo;
+import powercraft.management.PC_IModule;
+import powercraft.management.PC_Utils;
 
 public class PCco_ContainerCraftingTool extends PC_GresBaseWithInventory
 {
     protected Slot trash;
     protected List<PCco_SlotDirectCrafting> allMcSlots;
-    protected HashMap<String, List<PCco_SlotDirectCrafting>> moduleList;
+    protected HashMap<PC_IModule, List<PCco_SlotDirectCrafting>> moduleList;
 
     public PCco_ContainerCraftingTool(EntityPlayer player, Object[]o)
     {
@@ -32,8 +34,8 @@ public class PCco_ContainerCraftingTool extends PC_GresBaseWithInventory
     protected List<Slot> getAllSlots(List<Slot> slots)
     {
         allMcSlots = new ArrayList<PCco_SlotDirectCrafting>();
-        moduleList = new HashMap<String, List<PCco_SlotDirectCrafting>>();
-        slots.add(trash = new PC_SlotTrash());
+        moduleList = new HashMap<PC_IModule, List<PCco_SlotDirectCrafting>>();
+        slots.add(trash = new PCco_SlotTrash());
 
         for (Item i: Item.itemsList)
         {
@@ -41,10 +43,10 @@ public class PCco_ContainerCraftingTool extends PC_GresBaseWithInventory
             {
                 List<ItemStack> a = new ArrayList<ItemStack>();
 
-                if (i instanceof PC_ICraftingToolDisplayer)
+                if (i instanceof PC_IItemInfo)
                 {
-                    String module = ((PC_ICraftingToolDisplayer)i).getCraftingToolModule();
-                    List<ItemStack> l = ((PC_ICraftingToolDisplayer)i).getItemStacks(new ArrayList<ItemStack>());
+                	PC_IModule module = ((PC_IItemInfo)i).getModule();
+                    List<ItemStack> l = ((PC_IItemInfo)i).getItemStacks(new ArrayList<ItemStack>());
                     List<PCco_SlotDirectCrafting> ls;
 
                     if(module!=null){
@@ -73,10 +75,10 @@ public class PCco_ContainerCraftingTool extends PC_GresBaseWithInventory
                     int id = ((ItemBlock)i).getBlockID();
                     Block b = Block.blocksList[id];
 
-                    if (b != null && b instanceof PC_ICraftingToolDisplayer)
+                    if (b != null && b instanceof PC_IItemInfo)
                     {
-                        String module = ((PC_ICraftingToolDisplayer)b).getCraftingToolModule();
-                        List<ItemStack> l = ((PC_ICraftingToolDisplayer)b).getItemStacks(new ArrayList<ItemStack>());
+                    	PC_IModule module = ((PC_IItemInfo)b).getModule();
+                        List<ItemStack> l = ((PC_IItemInfo)b).getItemStacks(new ArrayList<ItemStack>());
                         List<PCco_SlotDirectCrafting> ls;
 
                         if (moduleList.containsKey(module))

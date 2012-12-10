@@ -1,8 +1,6 @@
 package powercraft.deco;
 
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 import net.minecraft.src.Block;
 import net.minecraft.src.CreativeTabs;
@@ -11,25 +9,18 @@ import net.minecraft.src.ItemStack;
 import net.minecraft.src.Material;
 import net.minecraft.src.TileEntity;
 import net.minecraft.src.World;
-import powercraft.core.PC_Block;
-import powercraft.core.PC_CoordI;
-import powercraft.core.PC_IBlockRenderer;
-import powercraft.core.PC_Renderer;
-import powercraft.core.PC_Utils;
+import powercraft.management.PC_Block;
+import powercraft.management.PC_Renderer;
+import powercraft.management.PC_Utils;
 
-public class PCde_BlockChimney extends PC_Block implements PC_IBlockRenderer {
+public class PCde_BlockChimney extends PC_Block {
 
-	public PCde_BlockChimney(int id) {
-		super(id, 0, Material.rock, false);
+	public PCde_BlockChimney() {
+		super(0, Material.rock, false);
 		setHardness(1.5F);
 		setResistance(50.0F);
 		setStepSound(Block.soundMetalFootstep);
 		setCreativeTab(CreativeTabs.tabDecorations);
-	}
-
-	@Override
-	public String getDefaultName() {
-		return null;
 	}
 	
 	@Override

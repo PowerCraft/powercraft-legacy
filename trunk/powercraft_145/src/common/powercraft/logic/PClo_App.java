@@ -20,12 +20,10 @@ import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.network.NetworkMod;
 
-@Mod(modid = "PowerCraft-Logic", name = "PowerCraft-Logic", version = "3.5.0AlphaC", dependencies = "required-after:PowerCraft-Core")
+//@Mod(modid = "PowerCraft-Logic", name = "PowerCraft-Logic", version = "3.5.0AlphaC", dependencies = "required-after:PowerCraft-Core")
 @NetworkMod(clientSideRequired = true, serverSideRequired = true)
-public class mod_PowerCraftLogic extends PC_Module
+public class PClo_App extends PC_Module
 {
-    @SidedProxy(clientSide = "powercraft.logic.PClo_ClientProxy", serverSide = "powercraft.logic.PClo_CommonProxy")
-    public static PClo_CommonProxy proxy;
 
     public static PC_Block pulsar;
     public static PC_Block gate;
@@ -34,9 +32,9 @@ public class mod_PowerCraftLogic extends PC_Module
     public static PC_Block special;
     public static PC_Block repeater;
 
-    public static mod_PowerCraftLogic getInstance()
+    public static PClo_App getInstance()
     {
-        return (mod_PowerCraftLogic)PC_Module.getModule("PowerCraft-Logic");
+        return (PClo_App)PC_Module.getModule("PowerCraft-Logic");
     }
 
     @PreInit

@@ -379,7 +379,7 @@ public class PClo_BlockSpecial extends PC_Block implements PC_IRotatedBox, PC_IC
 
         if (remove && !PC_Utils.isCreative(player))
         {
-            dropBlockAsItem_do(world, x, y, z, new ItemStack(mod_PowerCraftLogic.special, 1, type));
+            dropBlockAsItem_do(world, x, y, z, new ItemStack(PClo_App.special, 1, type));
         }
 
         return remove;

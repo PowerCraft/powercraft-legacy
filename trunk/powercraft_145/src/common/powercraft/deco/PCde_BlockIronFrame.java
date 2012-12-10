@@ -9,17 +9,14 @@ import net.minecraft.src.ItemStack;
 import net.minecraft.src.Material;
 import net.minecraft.src.TileEntity;
 import net.minecraft.src.World;
-import powercraft.core.PC_Block;
-import powercraft.core.PC_CoordI;
-import powercraft.core.PC_IBlockRenderer;
-import powercraft.core.PC_ICraftingToolDisplayer;
-import powercraft.core.PC_Renderer;
-import powercraft.core.PC_Utils;
+import powercraft.management.PC_Block;
+import powercraft.management.PC_Renderer;
+import powercraft.management.PC_Utils;
 
 public class PCde_BlockIronFrame extends PC_Block implements PC_ICraftingToolDisplayer, PC_IBlockRenderer {
 
 	public PCde_BlockIronFrame(int id) {
-		super(id, 22, Material.rock);
+		super(22, Material.rock);
 		setHardness(1.5F);
 		setResistance(50.0F);
 		setStepSound(Block.soundMetalFootstep);
@@ -43,7 +40,7 @@ public class PCde_BlockIronFrame extends PC_Block implements PC_ICraftingToolDis
 
 	@Override
 	public String getCraftingToolModule() {
-		return mod_PowerCraftDeco.getInstance().getNameWithoutPowerCraft();
+		return PCde_App.getInstance().getNameWithoutPowerCraft();
 	}
 
 	@Override

@@ -50,7 +50,7 @@ public class PClo_ItemBlockRepeater extends PC_ItemBlock
     @Override
     public int getIconFromDamage(int i)
     {
-        return mod_PowerCraftLogic.repeater.getBlockTextureFromSideAndMetadata(1, 0);
+        return PClo_App.repeater.getBlockTextureFromSideAndMetadata(1, 0);
     }
 
     @Override

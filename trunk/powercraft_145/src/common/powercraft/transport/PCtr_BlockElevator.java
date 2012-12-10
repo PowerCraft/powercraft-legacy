@@ -206,7 +206,7 @@ public class PCtr_BlockElevator extends PC_Block
 
         if (down && bottom)
         {
-            return mod_PowerCraftTransport.conveyorBelt.getCollisionBoundingBoxFromPool(world, i, j, k);
+            return PCtr_App.conveyorBelt.getCollisionBoundingBoxFromPool(world, i, j, k);
         }
 
         return null;

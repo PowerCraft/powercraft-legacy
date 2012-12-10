@@ -80,7 +80,7 @@ public class PCli_TileEntityLaser extends PC_TileEntity implements PC_IBeamHandl
     	if(PCli_ItemLaserComposition.isSensor(itemstack)){
 	    	if(oldActive != active){
 	    		PC_PacketHandler.setTileEntity(this, "on", active);
-	    		PC_Utils.hugeUpdate(worldObj, xCoord, yCoord, zCoord, mod_PowerCraftLight.laser.blockID);
+	    		PC_Utils.hugeUpdate(worldObj, xCoord, yCoord, zCoord, PCli_App.laser.blockID);
 	    	}
     	}
     }
@@ -170,7 +170,7 @@ public class PCli_TileEntityLaser extends PC_TileEntity implements PC_IBeamHandl
             }
    
         }
-        PC_Utils.hugeUpdate(worldObj, xCoord, yCoord, zCoord, mod_PowerCraftLight.laser.blockID);
+        PC_Utils.hugeUpdate(worldObj, xCoord, yCoord, zCoord, PCli_App.laser.blockID);
 	}
 
 	@Override
@@ -206,7 +206,7 @@ public class PCli_TileEntityLaser extends PC_TileEntity implements PC_IBeamHandl
 
 		float f1 = meta2angle[getBlockMetadata()];
 
-		PC_Renderer.bindTexture(mod_PowerCraftLight.getInstance().getTextureDirectory() + "laser.png");
+		PC_Renderer.bindTexture(PCli_App.getInstance().getTextureDirectory() + "laser.png");
 
 		PC_Renderer.glPushMatrix();
 		PC_Renderer.glRotatef(-f1, 0.0F, 1.0F, 0.0F);

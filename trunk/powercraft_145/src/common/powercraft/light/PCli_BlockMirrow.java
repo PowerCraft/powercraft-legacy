@@ -299,7 +299,7 @@ public class PCli_BlockMirrow extends PC_Block implements PC_IBeamSpecialHandlin
 
 	@Override
 	public String getCraftingToolModule() {
-		return mod_PowerCraftLight.getInstance().getNameWithoutPowerCraft();
+		return PCli_App.getInstance().getNameWithoutPowerCraft();
 	}
 
 	@Override

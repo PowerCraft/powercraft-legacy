@@ -45,7 +45,7 @@ public class PClo_ItemBlockDelayer extends PC_ItemBlock
     @Override
     public int getIconFromDamage(int i)
     {
-        return mod_PowerCraftLogic.delayer.getBlockTextureFromSideAndMetadata(1, 0);
+        return PClo_App.delayer.getBlockTextureFromSideAndMetadata(1, 0);
     }
 
     @Override

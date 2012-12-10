@@ -190,7 +190,7 @@ public class PClo_BlockPulsar extends PC_Block implements PC_ICraftingToolDispla
     @Override
     public String getCraftingToolModule()
     {
-        return mod_PowerCraftLogic.getInstance().getNameWithoutPowerCraft();
+        return PClo_App.getInstance().getNameWithoutPowerCraft();
     }
 
     @Override

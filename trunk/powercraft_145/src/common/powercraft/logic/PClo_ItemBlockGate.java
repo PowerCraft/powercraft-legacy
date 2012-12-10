@@ -50,7 +50,7 @@ public class PClo_ItemBlockGate extends PC_ItemBlock
     @Override
     public int getIconFromDamage(int i)
     {
-        return mod_PowerCraftLogic.gate.getBlockTextureFromSideAndMetadata(1, 0);
+        return PClo_App.gate.getBlockTextureFromSideAndMetadata(1, 0);
     }
 
     @Override

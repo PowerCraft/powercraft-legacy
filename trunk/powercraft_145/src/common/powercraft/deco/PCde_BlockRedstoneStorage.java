@@ -38,7 +38,7 @@ public class PCde_BlockRedstoneStorage extends PC_Block implements PC_ICraftingT
 
 	@Override
 	public String getCraftingToolModule() {
-		return mod_PowerCraftDeco.getInstance().getNameWithoutPowerCraft();
+		return PCde_App.getInstance().getNameWithoutPowerCraft();
 	}
 
 	@Override

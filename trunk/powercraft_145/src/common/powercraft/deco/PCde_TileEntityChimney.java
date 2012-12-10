@@ -67,7 +67,7 @@ public class PCde_TileEntityChimney extends PC_TileEntity {
 	}
 
 	private boolean isBlockChimney(PC_CoordI pos) {
-		if (pos.getId(worldObj) == mod_PowerCraftDeco.chimney.blockID) {
+		if (pos.getId(worldObj) == PCde_App.chimney.blockID) {
 			return true;
 		}
 		return false;

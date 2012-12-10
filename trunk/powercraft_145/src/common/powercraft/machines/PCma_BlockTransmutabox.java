@@ -135,7 +135,7 @@ public class PCma_BlockTransmutabox extends PC_Block implements PC_IPowerReceive
     @Override
     public String getCraftingToolModule()
     {
-        return mod_PowerCraftMachines.getInstance().getNameWithoutPowerCraft();
+        return PCma_App.getInstance().getNameWithoutPowerCraft();
     }
 
     @Override

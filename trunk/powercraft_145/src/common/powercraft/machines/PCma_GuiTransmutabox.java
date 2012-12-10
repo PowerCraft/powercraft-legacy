@@ -24,7 +24,7 @@ public class PCma_GuiTransmutabox extends PCma_ContainerTransmutabox implements
 
 	@Override
 	public void initGui(PC_IGresGui gui) {
-		PC_GresWidget w = new PC_GresWindow(PC_Utils.tr(mod_PowerCraftMachines.transmutabox.getBlockName()+".name"));
+		PC_GresWidget w = new PC_GresWindow(PC_Utils.tr(PCma_App.transmutabox.getBlockName()+".name"));
 		
 		PC_GresWidget hl = new PC_GresLayoutH();
 		hl.setAlignH(PC_GresAlign.JUSTIFIED);

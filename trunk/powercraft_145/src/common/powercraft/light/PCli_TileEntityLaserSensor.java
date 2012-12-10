@@ -19,7 +19,7 @@ public class PCli_TileEntityLaserSensor extends PC_TileEntity {
 		if(!active){
 			active = true;
 			PC_PacketHandler.setTileEntity(this, "active", active);
-			PC_Utils.hugeUpdate(worldObj, xCoord, yCoord, zCoord, mod_PowerCraftLight.laserSensor.blockID);
+			PC_Utils.hugeUpdate(worldObj, xCoord, yCoord, zCoord, PCli_App.laserSensor.blockID);
 		}
 	}
 
@@ -38,7 +38,7 @@ public class PCli_TileEntityLaserSensor extends PC_TileEntity {
     		if(--coolDown==0){
     			active = false;
     			PC_PacketHandler.setTileEntity(this, "active", active);
-    			PC_Utils.hugeUpdate(worldObj, xCoord, yCoord, zCoord, mod_PowerCraftLight.laserSensor.blockID);
+    			PC_Utils.hugeUpdate(worldObj, xCoord, yCoord, zCoord, PCli_App.laserSensor.blockID);
     		}
     	}
     }
@@ -74,7 +74,7 @@ public class PCli_TileEntityLaserSensor extends PC_TileEntity {
             }
    
         }
-        PC_Utils.hugeUpdate(worldObj, xCoord, yCoord, zCoord, mod_PowerCraftLight.laser.blockID);
+        PC_Utils.hugeUpdate(worldObj, xCoord, yCoord, zCoord, PCli_App.laser.blockID);
 	}
 
 	@Override

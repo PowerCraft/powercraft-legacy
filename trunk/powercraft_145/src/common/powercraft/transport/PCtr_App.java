@@ -20,12 +20,10 @@ import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.network.NetworkMod;
 
-@Mod(modid = "PowerCraft-Transport", name = "PowerCraft-Transport", version = "3.5.0AlphaC", dependencies = "required-after:PowerCraft-Core")
+//@Mod(modid = "PowerCraft-Transport", name = "PowerCraft-Transport", version = "3.5.0AlphaC", dependencies = "required-after:PowerCraft-Core")
 @NetworkMod(clientSideRequired = true, serverSideRequired = true)
-public class mod_PowerCraftTransport extends PC_Module
+public class PCtr_App extends PC_Module
 {
-    @SidedProxy(clientSide = "powercraft.transport.PCtr_ClientProxy", serverSide = "powercraft.transport.PCtr_CommonProxy")
-    public static PCtr_CommonProxy proxy;
     public static PC_Block conveyorBelt;
     public static PC_Block speedyBelt;
     public static PC_Block detectionBelt;
@@ -36,9 +34,9 @@ public class mod_PowerCraftTransport extends PC_Module
     public static PC_Block elevator;
     public static PC_ItemArmor slimeboots;
 
-    public static mod_PowerCraftTransport getInstance()
+    public static PCtr_App getInstance()
     {
-        return (mod_PowerCraftTransport)PC_Module.getModule("PowerCraft-Transport");
+        return (PCtr_App)PC_Module.getModule("PowerCraft-Transport");
     }
 
     @PreInit

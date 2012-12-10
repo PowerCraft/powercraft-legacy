@@ -121,7 +121,7 @@ public class PClo_TileEntityPulsar extends PC_TileEntity
     {
         if (worldObj != null)
         {
-            worldObj.scheduleBlockUpdate(xCoord, yCoord, zCoord, mod_PowerCraftLogic.pulsar.blockID, 1);
+            worldObj.scheduleBlockUpdate(xCoord, yCoord, zCoord, PClo_App.pulsar.blockID, 1);
         }
     }
 

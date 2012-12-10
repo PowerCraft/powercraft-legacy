@@ -12,8 +12,17 @@ import net.minecraft.src.EntityList;
 import net.minecraft.src.EntityLiving;
 import net.minecraft.src.EntityPlayer;
 import net.minecraft.src.TileEntityMobSpawner;
-import powercraft.core.PC_GresRadioButton.PC_GresRadioGroup;
-import powercraft.core.PC_GresWidget.PC_GresAlign;
+import powercraft.management.PC_GresLayoutV;
+import powercraft.management.PC_GresRadioButton;
+import powercraft.management.PC_GresRadioButton.PC_GresRadioGroup;
+import powercraft.management.PC_GresScrollArea;
+import powercraft.management.PC_GresWidget;
+import powercraft.management.PC_GresWidget.PC_GresAlign;
+import powercraft.management.PC_GresWindow;
+import powercraft.management.PC_IGresClient;
+import powercraft.management.PC_IGresGui;
+import powercraft.management.PC_PacketHandler;
+import powercraft.management.PC_Utils;
 
 public class PCco_GuiSpawnerEditor implements PC_IGresClient {
 

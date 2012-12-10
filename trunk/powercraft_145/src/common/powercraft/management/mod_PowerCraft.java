@@ -111,6 +111,16 @@ public class mod_PowerCraft {
 			module.initItems();
 		}
 		PC_Logger.exitSection();
+		PC_Logger.enterSection("Module Gui Init");
+		for(PC_IModule module:modules){
+			List<PC_Struct2<String,Class>> l = module.registerGuis(new ArrayList<PC_Struct2<String,Class>>());
+			if(l!=null){
+				for(PC_Struct2<String,Class> g:l){
+					PC_Utils.registerGres(g.a, g.b);
+				}
+			}
+		}
+		PC_Logger.exitSection();
 		if(PC_Utils.isClient()){
 			PC_Logger.enterSection("Module Splashes Init");
 			for(PC_IModule module:modules){

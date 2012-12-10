@@ -13,7 +13,7 @@ public class PC_GresWindow extends PC_GresWidget {
 	/**
 	 * distance to the window frame
 	 */
-	protected PC_VecI padding = new PC_VecI(10, 4);
+	public PC_VecI padding = new PC_VecI(10, 4);
 	/**
 	 * The gap right under the top title.<br>
 	 * Applies only if title != ""
