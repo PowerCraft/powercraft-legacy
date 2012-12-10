@@ -1,20 +1,20 @@
 package powercraft.light;
 
 import net.minecraft.src.EntityPlayer;
-import powercraft.core.PC_Color;
-import powercraft.core.PC_GresButton;
-import powercraft.core.PC_GresCheckBox;
-import powercraft.core.PC_GresColor;
-import powercraft.core.PC_GresColorPicker;
-import powercraft.core.PC_GresLayoutH;
-import powercraft.core.PC_GresLayoutV;
-import powercraft.core.PC_GresWidget;
-import powercraft.core.PC_PacketHandler;
-import powercraft.core.PC_GresWidget.PC_GresAlign;
-import powercraft.core.PC_GresWindow;
-import powercraft.core.PC_IGresClient;
-import powercraft.core.PC_IGresGui;
-import powercraft.core.PC_Utils;
+import powercraft.management.PC_Color;
+import powercraft.management.PC_GresButton;
+import powercraft.management.PC_GresCheckBox;
+import powercraft.management.PC_GresColor;
+import powercraft.management.PC_GresColorPicker;
+import powercraft.management.PC_GresLayoutH;
+import powercraft.management.PC_GresLayoutV;
+import powercraft.management.PC_GresWidget;
+import powercraft.management.PC_GresWidget.PC_GresAlign;
+import powercraft.management.PC_GresWindow;
+import powercraft.management.PC_IGresClient;
+import powercraft.management.PC_IGresGui;
+import powercraft.management.PC_PacketHandler;
+import powercraft.management.PC_Utils;
 
 public class PCli_GuiLight implements PC_IGresClient {
 

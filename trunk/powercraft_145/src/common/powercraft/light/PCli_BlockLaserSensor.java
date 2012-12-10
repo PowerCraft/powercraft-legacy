@@ -5,39 +5,29 @@ import java.util.List;
 import net.minecraft.src.AxisAlignedBB;
 import net.minecraft.src.Block;
 import net.minecraft.src.CreativeTabs;
-import net.minecraft.src.EntityLiving;
-import net.minecraft.src.EntityPlayer;
 import net.minecraft.src.IBlockAccess;
 import net.minecraft.src.ItemStack;
 import net.minecraft.src.Material;
 import net.minecraft.src.TileEntity;
 import net.minecraft.src.World;
-import powercraft.core.PC_BeamTracer;
-import powercraft.core.PC_Block;
-import powercraft.core.PC_Color;
-import powercraft.core.PC_VecI;
-import powercraft.core.PC_IBeamSpecialHandling;
-import powercraft.core.PC_IBlockRenderer;
-import powercraft.core.PC_ICraftingToolDisplayer;
-import powercraft.core.PC_MathHelper;
-import powercraft.core.PC_Renderer;
-import powercraft.core.PC_Utils;
-import powercraft.core.PC_BeamTracer.result;
+import powercraft.management.PC_BeamTracer;
+import powercraft.management.PC_BeamTracer.result;
+import powercraft.management.PC_Block;
+import powercraft.management.PC_Color;
+import powercraft.management.PC_IItemInfo;
+import powercraft.management.PC_Renderer;
+import powercraft.management.PC_Utils;
+import powercraft.management.PC_VecI;
 
-public class PCli_BlockLaserSensor extends PC_Block implements PC_ICraftingToolDisplayer, PC_IBlockRenderer, PC_IBeamSpecialHandling {
+public class PCli_BlockLaserSensor extends PC_Block implements PC_IItemInfo {
 
-	public PCli_BlockLaserSensor(int id) {
-		super(id, 0, Material.ground, false);
+	public PCli_BlockLaserSensor() {
+		super(0, Material.ground, false);
 		setStepSound(Block.soundMetalFootstep);
         setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 1.0F, 1.0F);
         setHardness(0.7F);
         setResistance(10.0F);
         setCreativeTab(CreativeTabs.tabDecorations);
-	}
-
-	@Override
-	public String getDefaultName() {
-		return "Laser Sensor";
 	}
 
 	@Override
@@ -71,20 +61,13 @@ public class PCli_BlockLaserSensor extends PC_Block implements PC_ICraftingToolD
     }
 
     @Override
-    public boolean isPoweringTo(IBlockAccess world, int i, int j, int k, int l)
-    {
-        return ((PCli_TileEntityLaserSensor) PC_Utils.getTE(world, i, j, k)).isActive();
-    }
-
-    @Override
-    public boolean isIndirectlyPoweringTo(IBlockAccess world, int i, int j, int k, int l)
-    {
-        return isPoweringTo(world, i, j, k, l);
-    }
+	public boolean isProvidingWeakPower(IBlockAccess world, int x, int y, int z, int s) {
+    	return ((PCli_TileEntityLaser) PC_Utils.getTE(world, x, y, z)).isActive();
+	}
 
 	@Override
-	public String getCraftingToolModule() {
-		return PCli_App.getInstance().getNameWithoutPowerCraft();
+	public boolean isProvidingStrongPower(IBlockAccess world, int x, int y, int z, int s) {
+		return isProvidingWeakPower(world, x, y, z, s);
 	}
 
 	@Override
@@ -93,7 +76,6 @@ public class PCli_BlockLaserSensor extends PC_Block implements PC_ICraftingToolD
 		return arrayList;
 	}
 
-	@Override
 	public void renderInventoryBlock(Block block, int metadata, int modelID, Object renderer) {
 		Block.ice.setBlockBounds(0.3F, 0.3F, 0.3F, 0.7F, 0.7F, 0.7F);
 		PC_Renderer.renderInvBox(renderer, Block.ice, 0);
@@ -108,7 +90,6 @@ public class PCli_BlockLaserSensor extends PC_Block implements PC_ICraftingToolD
 		Block.cobblestone.setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 1.0F, 1.0F);
 	}
 
-	@Override
 	public void renderWorldBlock(IBlockAccess world, int x, int y, int z, Block block, int modelId, Object renderer) {
 		Block.ice.setBlockBounds(0.3F, 0.3F, 0.3F, 0.7F, 0.7F, 0.7F);
 		PC_Renderer.renderStandardBlock(renderer, Block.ice, x, y, z);
@@ -123,7 +104,6 @@ public class PCli_BlockLaserSensor extends PC_Block implements PC_ICraftingToolD
 		Block.cobblestone.setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 1.0F, 1.0F);
 	}
 
-	@Override
 	public result onHitByBeamTracer(PC_BeamTracer beamTracer, PC_VecI cnt, PC_VecI move, PC_Color color, float strength, int distanceToMove) {
 		World world = beamTracer.getWorld();
 		PCli_TileEntityLaserSensor te = PC_Utils.getTE(world, cnt.x, cnt.y, cnt.z, blockID);
@@ -132,20 +112,33 @@ public class PCli_BlockLaserSensor extends PC_Block implements PC_ICraftingToolD
 		}
 		return result.STOP;
 	}
-	
-	@Override
-	public List<String> getBlockFlags(World world, PC_VecI pos, List<String> list) {
-
-		list.add(PC_Utils.NO_HARVEST);
-		list.add(PC_Utils.HARVEST_STOP);
-		
-		return list;
-	}
 
 	@Override
-	public List<String> getItemFlags(ItemStack stack, List<String> list) {
-		list.add(PC_Utils.NO_BUILD);
-		return list;
+	public Object msg(World world, PC_VecI pos, int msg, Object... obj) {
+		switch(msg){
+		case PC_Utils.MSG_RENDER_INVENTORY_BLOCK:
+			renderInventoryBlock((Block)obj[0], (Integer)obj[1], (Integer)obj[2], obj[3]);
+			break;
+		case PC_Utils.MSG_RENDER_WORLD_BLOCK:
+			renderWorldBlock((IBlockAccess)obj[0], (Integer)obj[1], (Integer)obj[2], (Integer)obj[3], (Block)obj[4], (Integer)obj[5], obj[6]);
+			break;
+		case PC_Utils.MSG_DEFAULT_NAME:
+			return "Laser Sensor";
+		case PC_Utils.MSG_BLOCK_FLAGS:{
+			List<String> list = (List<String>)obj[0];
+			list.add(PC_Utils.NO_HARVEST);
+			list.add(PC_Utils.HARVEST_STOP);
+	   		return list;
+		}case PC_Utils.MSG_ITEM_FLAGS:{
+			List<String> list = (List<String>)obj[1];
+			list.add(PC_Utils.NO_BUILD);
+			return list;
+		}case PC_Utils.MSG_ON_HIT_BY_BEAM_TRACER:
+			return onHitByBeamTracer((PC_BeamTracer)obj[0], (PC_VecI)obj[1], (PC_VecI)obj[2], (PC_Color)obj[3], (Float)obj[4], (Integer)obj[5]);
+		default:
+			return null;
+		}
+		return true;
 	}
 	
 }

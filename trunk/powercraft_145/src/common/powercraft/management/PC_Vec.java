@@ -1,6 +1,6 @@
 package powercraft.management;
 
-public interface PC_Vec<t extends Number, ret extends PC_Vec> {
+public interface PC_Vec<t extends Number, ret extends PC_Vec> extends PC_INBT {
 
 	public t getX();
 	public t getY();

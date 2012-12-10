@@ -1,12 +1,11 @@
 package powercraft.light;
 
-import org.lwjgl.opengl.GL11;
-
 import net.minecraft.src.NBTTagCompound;
-import powercraft.core.PC_ITileEntityRenderer;
-import powercraft.core.PC_PacketHandler;
-import powercraft.core.PC_Renderer;
-import powercraft.core.PC_TileEntity;
+import powercraft.management.PC_ITileEntityRenderer;
+import powercraft.management.PC_PacketHandler;
+import powercraft.management.PC_Renderer;
+import powercraft.management.PC_TileEntity;
+import powercraft.management.PC_Utils;
 
 public class PCli_TileEntityPrism extends PC_TileEntity implements PC_ITileEntityRenderer {
 
@@ -81,7 +80,7 @@ public class PCli_TileEntityPrism extends PC_TileEntity implements PC_ITileEntit
 
 		PC_Renderer.glTranslatef((float) x + 0.5F, (float) y + 0.5F, (float) z + 0.5F);
 
-		PC_Renderer.bindTexture(PCli_App.getInstance().getTextureDirectory()+"prism.png");
+		PC_Renderer.bindTexture(PC_Utils.getTextureDirectory(PC_Utils.getModule("Light"))+"prism.png");
 
 		PC_Renderer.glPushMatrix();
 		PC_Renderer.glScalef(f, -f, -f);

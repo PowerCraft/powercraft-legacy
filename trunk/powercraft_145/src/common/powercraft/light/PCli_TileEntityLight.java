@@ -2,15 +2,16 @@ package powercraft.light;
 
 import java.util.Random;
 
+import net.minecraft.src.NBTTagCompound;
+
 import org.lwjgl.opengl.GL11;
 
-import net.minecraft.src.NBTTagCompound;
-import powercraft.core.PC_Color;
-import powercraft.core.PC_ITileEntityRenderer;
-import powercraft.core.PC_PacketHandler;
-import powercraft.core.PC_Renderer;
-import powercraft.core.PC_TileEntity;
-import powercraft.core.PC_Utils;
+import powercraft.management.PC_Color;
+import powercraft.management.PC_ITileEntityRenderer;
+import powercraft.management.PC_PacketHandler;
+import powercraft.management.PC_Renderer;
+import powercraft.management.PC_TileEntity;
+import powercraft.management.PC_Utils;
 
 public class PCli_TileEntityLight extends PC_TileEntity implements PC_ITileEntityRenderer
 {
@@ -46,7 +47,7 @@ public class PCli_TileEntityLight extends PC_TileEntity implements PC_ITileEntit
     public void setColor(PC_Color c)
     {
         color.setTo(c);
-        worldObj.markBlockAsNeedsUpdate(xCoord, yCoord, zCoord);
+        worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
     }
 
     public PC_Color getColor()
@@ -58,7 +59,7 @@ public class PCli_TileEntityLight extends PC_TileEntity implements PC_ITileEntit
     {
         PC_PacketHandler.setTileEntity(this, "isStable", stable);
         isStable = stable;
-        worldObj.markBlockAsNeedsUpdate(xCoord, yCoord, zCoord);
+        worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
     }
 
     public boolean isStable()
@@ -115,7 +116,7 @@ public class PCli_TileEntityLight extends PC_TileEntity implements PC_ITileEntit
             }
         }
 
-        worldObj.markBlockAsNeedsUpdate(xCoord, yCoord, zCoord);
+        worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
     }
 
     @Override
@@ -137,18 +138,18 @@ public class PCli_TileEntityLight extends PC_TileEntity implements PC_ITileEntit
 
 		PC_Renderer.glTranslatef((float) x + 0.5F, (float) y + 0.5F, (float) z + 0.5F);
 		
-		PC_Renderer.bindTexture(PCli_App.getInstance().getTextureDirectory() + "block_light.png");
+		PC_Renderer.bindTexture(PC_Utils.getTextureDirectory(PC_Utils.getModule("Light")) + "block_light.png");
 
 		PC_Renderer.glPushMatrix();
 		PC_Renderer.glScalef(f, -f, -f);
 
 		PC_Color clr = getColor();
 		if(clr!=null)
-			PC_Renderer.glColor4f((float)clr.r, (float)clr.g, (float)clr.b, 1.0f);
+			PC_Renderer.glColor4f(clr.x, clr.y, clr.z, 1.0f);
 		else
 			PC_Renderer.glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
 
-		int meta = getCoord().getMeta(worldObj);
+		int meta = PC_Utils.getMD(worldObj, getCoord());
 		switch (meta) {
 			case 0:
 				break;

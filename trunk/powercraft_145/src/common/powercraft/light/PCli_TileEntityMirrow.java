@@ -1,11 +1,11 @@
 package powercraft.light;
 
-import net.minecraft.src.ModelRenderer;
 import net.minecraft.src.NBTTagCompound;
-import powercraft.core.PC_Color;
-import powercraft.core.PC_ITileEntityRenderer;
-import powercraft.core.PC_Renderer;
-import powercraft.core.PC_TileEntity;
+import powercraft.management.PC_Color;
+import powercraft.management.PC_ITileEntityRenderer;
+import powercraft.management.PC_Renderer;
+import powercraft.management.PC_TileEntity;
+import powercraft.management.PC_Utils;
 
 public class PCli_TileEntityMirrow extends PC_TileEntity implements PC_ITileEntityRenderer {
 
@@ -71,7 +71,7 @@ public class PCli_TileEntityMirrow extends PC_TileEntity implements PC_ITileEnti
 		PC_Renderer.glTranslatef((float) x + 0.5F, (float) y + 0.5F /* *f0 */, (float) z + 0.5F);
 		float f1 = (getBlockMetadata() * 360) / 16F;
 
-		PC_Renderer.bindTexture(PCli_App.getInstance().getTextureDirectory() + "mirror.png");
+		PC_Renderer.bindTexture(PC_Utils.getTextureDirectory(PC_Utils.getModule("Light")) + "mirror.png");
 
 		PC_Renderer.glPushMatrix();
 		PC_Renderer.glRotatef(-f1, 0.0F, 1.0F, 0.0F);

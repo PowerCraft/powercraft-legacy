@@ -13,20 +13,16 @@ import net.minecraft.src.Material;
 import net.minecraft.src.MathHelper;
 import net.minecraft.src.TileEntity;
 import net.minecraft.src.World;
-import powercraft.core.PC_BeamTracer;
-import powercraft.core.PC_BeamTracer.result;
-import powercraft.core.PC_Block;
-import powercraft.core.PC_Color;
-import powercraft.core.PC_VecD;
-import powercraft.core.PC_VecI;
-import powercraft.core.PC_IBeamSpecialHandling;
-import powercraft.core.PC_IBlockRenderer;
-import powercraft.core.PC_ICraftingToolDisplayer;
-import powercraft.core.PC_MathHelper;
-import powercraft.core.PC_Renderer;
-import powercraft.core.PC_Utils;
+import powercraft.management.PC_BeamTracer;
+import powercraft.management.PC_BeamTracer.result;
+import powercraft.management.PC_Block;
+import powercraft.management.PC_Color;
+import powercraft.management.PC_IItemInfo;
+import powercraft.management.PC_Renderer;
+import powercraft.management.PC_Utils;
+import powercraft.management.PC_VecI;
 
-public class PCli_BlockMirrow extends PC_Block implements PC_IBeamSpecialHandling, PC_IBlockRenderer, PC_ICraftingToolDisplayer {
+public class PCli_BlockMirrow extends PC_Block implements PC_IItemInfo {
 
 	public PCli_BlockMirrow(int id) {
 		super(id, Material.glass);
@@ -37,11 +33,6 @@ public class PCli_BlockMirrow extends PC_Block implements PC_IBeamSpecialHandlin
 		setResistance(4.0F);
 		setStepSound(Block.soundStoneFootstep);
 		setCreativeTab(CreativeTabs.tabDecorations);
-	}
-
-	@Override
-	public String getDefaultName() {
-		return "Mirrow";
 	}
 
 	@Override
@@ -246,15 +237,17 @@ public class PCli_BlockMirrow extends PC_Block implements PC_IBeamSpecialHandlin
 
 	}
 	
-	@Override
 	public result onHitByBeamTracer(PC_BeamTracer beamTracer, PC_VecI cnt, PC_VecI move, PC_Color color, float strength, int distanceToMove) {
 		int mirrorColor = PCli_BlockMirrow.getMirrorColor(beamTracer.getWorld(), cnt.x, cnt.y, cnt.z);
-		if (mirrorColor == -1 || mirrorColor == color.getMeta()) {
+		PC_Color c = null;
+		if(mirrorColor>=0)
+			c = PC_Color.fromHex(PC_Color.crystal_colors[mirrorColor]);
+		if (c==null || color.equals(c)) {
 			// vertical beam
 			if (move.x == 0 && move.z == 0) {
 	
 				int a = mirrorTo45[PC_Utils.getMD(beamTracer.getWorld(), cnt.x, cnt.y, cnt.z)];
-				PC_VecI reflected = getMoveFromAngle(a).getInverted();
+				PC_VecI reflected = getMoveFromAngle(a).mul(-1);
 	
 				move.x = reflected.x;
 				move.z = reflected.z;
@@ -270,7 +263,7 @@ public class PCli_BlockMirrow extends PC_Block implements PC_IBeamSpecialHandlin
 	
 				beamNew = fixAngle(beamNew);
 	
-				PC_VecI reflected = getMoveFromAngle(beamNew).getInverted();
+				PC_VecI reflected = getMoveFromAngle(beamNew).mul(-1);
 	
 				move.x = reflected.x;
 				move.z = reflected.z;
@@ -279,7 +272,6 @@ public class PCli_BlockMirrow extends PC_Block implements PC_IBeamSpecialHandlin
 		return result.CONTINUE;
 	}
 
-	@Override
 	public void renderInventoryBlock(Block block, int metadata, int modelID, Object renderer) {
 		Block steel = Block.blockSteel;
 		float px = 0.0625F;
@@ -293,34 +285,37 @@ public class PCli_BlockMirrow extends PC_Block implements PC_IBeamSpecialHandlin
 	}
 
 	@Override
-	public void renderWorldBlock(IBlockAccess world, int x, int y, int z, Block block, int modelId, Object renderer) {
-		
-	}
-
-	@Override
-	public String getCraftingToolModule() {
-		return PCli_App.getInstance().getNameWithoutPowerCraft();
-	}
-
-	@Override
 	public List<ItemStack> getItemStacks(List<ItemStack> arrayList) {
 		arrayList.add(new ItemStack(this));
 		return arrayList;
 	}
-	
-	@Override
-	public List<String> getBlockFlags(World world, PC_VecI pos, List<String> list) {
-
-		list.add(PC_Utils.NO_HARVEST);
-		list.add(PC_Utils.NO_PICKUP);
-		list.add(PC_Utils.PASSIVE);
-		return list;
-	}
 
 	@Override
-	public List<String> getItemFlags(ItemStack stack, List<String> list) {
-		list.add(PC_Utils.NO_BUILD);
-		return list;
+	public Object msg(World world, PC_VecI pos, int msg, Object... obj) {
+		switch(msg){
+		case PC_Utils.MSG_RENDER_INVENTORY_BLOCK:
+			renderInventoryBlock((Block)obj[0], (Integer)obj[1], (Integer)obj[2], obj[3]);
+			break;
+		case PC_Utils.MSG_RENDER_WORLD_BLOCK:
+			break;
+		case PC_Utils.MSG_BLOCK_FLAGS:{
+			List<String> list = (List<String>)obj[0];
+			list.add(PC_Utils.NO_HARVEST);
+			list.add(PC_Utils.NO_PICKUP);
+			list.add(PC_Utils.PASSIVE);
+	   		return list;
+		}case PC_Utils.MSG_ITEM_FLAGS:{
+			List<String> list = (List<String>)obj[1];
+			list.add(PC_Utils.NO_BUILD);
+			return list;
+		}case PC_Utils.MSG_DEFAULT_NAME:
+			return "Mirrow";
+		case PC_Utils.MSG_ON_HIT_BY_BEAM_TRACER:
+			return onHitByBeamTracer((PC_BeamTracer)obj[0], (PC_VecI)obj[1], (PC_VecI)obj[2], (PC_Color)obj[3], (Float)obj[4], (Integer)obj[5]);
+		default:
+			return null;
+		}
+		return true;
 	}
 	
 }

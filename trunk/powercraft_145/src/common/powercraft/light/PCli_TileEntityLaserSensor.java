@@ -1,13 +1,9 @@
 package powercraft.light;
 
-import java.io.IOException;
-
-import net.minecraft.src.CompressedStreamTools;
-import net.minecraft.src.ItemStack;
 import net.minecraft.src.NBTTagCompound;
-import powercraft.core.PC_PacketHandler;
-import powercraft.core.PC_TileEntity;
-import powercraft.core.PC_Utils;
+import powercraft.management.PC_PacketHandler;
+import powercraft.management.PC_TileEntity;
+import powercraft.management.PC_Utils;
 
 public class PCli_TileEntityLaserSensor extends PC_TileEntity {
 

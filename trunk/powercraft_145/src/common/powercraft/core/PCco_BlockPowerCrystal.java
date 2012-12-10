@@ -24,8 +24,6 @@ public class PCco_BlockPowerCrystal extends PC_Block
     public static int genCrystalsMaxY;
     public static int genCrystalsMinY;
 
-    public static final int crystal_colors[] = { 0xff9900, 0xff1111, 0x39ff11, 0x5555ff, 0xCCCCFF, 0xff33ff, 0x33ffff, 0xffff00 };
-    
     public PCco_BlockPowerCrystal()
     {
         super(4, Material.glass);
@@ -45,19 +43,19 @@ public class PCco_BlockPowerCrystal extends PC_Block
     @Override
     public int getBlockColor()
     {
-        return crystal_colors[2];
+        return PC_Color.crystal_colors[2];
     }
 
     @Override
     public int getRenderColor(int i)
     {
-        return crystal_colors[PC_MathHelper.clamp_int(i, 0, 7)];
+        return PC_Color.crystal_colors[PC_MathHelper.clamp_int(i, 0, 7)];
     }
 
     @Override
     public int colorMultiplier(IBlockAccess iblockaccess, int i, int j, int k)
     {
-        return crystal_colors[PC_MathHelper.clamp_int(iblockaccess.getBlockMetadata(i, j, k), 0, 7)];
+        return PC_Color.crystal_colors[PC_MathHelper.clamp_int(iblockaccess.getBlockMetadata(i, j, k), 0, 7)];
     }
 
     @Override
