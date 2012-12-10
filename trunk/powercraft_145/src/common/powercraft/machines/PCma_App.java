@@ -40,20 +40,6 @@ public class PCma_App implements PC_IModule
         return (PCma_App)PC_Module.getModule("PowerCraft-Machines");
     }
 
-   
-
-    @Override
-    protected void initBlocks()
-    {
-        automaticWorkbench = PC_Utils.register(this, 482, PCma_BlockAutomaticWorkbench.class, PCma_TileEntityAutomaticWorkbench.class);
-        roaster = PC_Utils.register(this, 483, PCma_BlockRoaster.class, PCma_TileEntityRoaster.class);
-        replacer = PC_Utils.register(this, 484, PCma_BlockReplacer.class, PCma_TileEntityReplacer.class);
-        transmutabox = PC_Utils.register(this, 485, PCma_BlockTransmutabox.class, PCma_TileEntityTransmutabox.class);
-        xpBank = PC_Utils.register(this, 486, PCma_BlockXPBank.class, PCma_TileEntityXPBank.class);
-        blockBuilder = PC_Utils.register(this, 487, PCma_BlockBlockBuilder.class, PCma_TileEntityBlockBuilder.class);
-        harvester = PC_Utils.register(this, 488, PCma_BlockHarvester.class);
-    }
-
     @Override
     protected void initItems()
     {
@@ -150,5 +136,16 @@ public class PCma_App implements PC_IModule
 			List<PC_Struct2<String, Class>> guis) {
 		// TODO Auto-generated method stub
 		return null;
+	}
+
+	@Override
+	public void initBlocks() {
+        automaticWorkbench = PC_Utils.register(this, PCma_BlockAutomaticWorkbench.class, PCma_TileEntityAutomaticWorkbench.class);
+        roaster = PC_Utils.register(this, PCma_BlockRoaster.class, PCma_TileEntityRoaster.class);
+        replacer = PC_Utils.register(this, PCma_BlockReplacer.class, PCma_TileEntityReplacer.class);
+        transmutabox = PC_Utils.register(this, PCma_BlockTransmutabox.class, PCma_TileEntityTransmutabox.class);
+        xpBank = PC_Utils.register(this, PCma_BlockXPBank.class, PCma_TileEntityXPBank.class);
+        blockBuilder = PC_Utils.register(this, PCma_BlockBlockBuilder.class, PCma_TileEntityBlockBuilder.class);
+        harvester = PC_Utils.register(this, PCma_BlockHarvester.class);
 	}
 }
