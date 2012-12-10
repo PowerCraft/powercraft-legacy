@@ -34,7 +34,7 @@ public class PCtr_BlockBeltEjector extends PCtr_BlockBeltBase
             PCtr_BeltHelper.packItems(world, pos);
         }
 
-        int direction = getRotation(pos.getMeta(world));
+        int direction = getRotation(PC_Utils.getMD(world, pos));
         PC_VecI pos_leading_to = pos.copy();
 
         switch (direction)
@@ -83,7 +83,7 @@ public class PCtr_BlockBeltEjector extends PCtr_BlockBeltBase
 
     private boolean isPowered(World world, PC_VecI pos)
     {
-        return pos.isPoweredIndirectly(world) || pos.offset(0, 1, 0).isPoweredIndirectly(world) || pos.offset(0, -1, 0).isPoweredIndirectly(world);
+    	return PC_Utils.isPoweredIndirectly(world, pos) || PC_Utils.isPoweredIndirectly(world, pos.offset(0, 1, 0)) || PC_Utils.isPoweredIndirectly(world, pos.offset(0, -1, 0));
     }
 
     @Override
@@ -126,7 +126,7 @@ public class PCtr_BlockBeltEjector extends PCtr_BlockBeltBase
     public void updateTick(World world, int i, int j, int k, Random random)
     {
         PC_VecI pos = new PC_VecI(i, j, k);
-        int meta = pos.getMeta(world);
+        int meta = PC_Utils.getMD(world, pos);
 
         if (isPowered(world, pos))
         {
@@ -137,12 +137,12 @@ public class PCtr_BlockBeltEjector extends PCtr_BlockBeltBase
                     PCtr_BeltHelper.tryToDispenseItem(world, pos);
                 }
 
-                pos.setMeta(world, PCtr_BeltHelper.getActiveMeta(meta));
+                PC_Utils.setMD(world, pos, PCtr_BeltHelper.getActiveMeta(meta));
             }
         }
         else if (PCtr_BeltHelper.isActive(meta))
         {
-            pos.setMeta(world, PCtr_BeltHelper.getPassiveMeta(meta));
+        	PC_Utils.setMD(world, pos, PCtr_BeltHelper.getPassiveMeta(meta));
         }
     }
 

@@ -18,17 +18,19 @@ public class PCtr_BlockBeltDetector extends PCtr_BlockBeltBase
         super(6);
     }
 
+    
+    
     @Override
-    public boolean isPoweringTo(IBlockAccess iblockaccess, int i, int j, int k, int l)
-    {
-        return isActive(iblockaccess, i, j, k);
-    }
+	public boolean isProvidingWeakPower(IBlockAccess world, int x, int y, int z, int s) {
+    	return isActive(world, x, y, z);
+	}
 
-    @Override
-    public boolean isIndirectlyPoweringTo(IBlockAccess world, int i, int j, int k, int l)
-    {
-        return isPoweringTo(world, i, j, k, l);
-    }
+
+
+	@Override
+	public boolean isProvidingStrongPower(IBlockAccess world, int x, int y, int z, int s) {
+		return isProvidingWeakPower(world, x, y, z, s);
+	}
 
     @Override
     public boolean canProvidePower()
@@ -93,7 +95,7 @@ public class PCtr_BlockBeltDetector extends PCtr_BlockBeltBase
             PCtr_BeltHelper.packItems(world, pos);
         }
 
-        int direction = getRotation(pos.getMeta(world));
+        int direction = getRotation(PC_Utils.getMD(world, pos));
         PC_VecI pos_leading_to = pos.copy();
 
         switch (direction)
