@@ -12,7 +12,7 @@ import net.minecraft.src.Material;
 import net.minecraft.src.TileEntity;
 import net.minecraft.src.World;
 import powercraft.core.PC_Block;
-import powercraft.core.PC_CoordI;
+import powercraft.core.PC_VecI;
 import powercraft.core.PC_IBlockRenderer;
 import powercraft.core.PC_ICraftingToolDisplayer;
 import powercraft.core.PC_Renderer;
@@ -56,7 +56,7 @@ public class PCde_BlockPlatform extends PC_Block implements PC_IBlockRenderer {
 	@Override
 	public void addCollidingBlockToList(World world, int x, int y, int z, AxisAlignedBB axisalignedbb, List arraylist, Entity entity) {
 
-		boolean[] fences = getFencesShownLedge(world, new PC_CoordI(x, y, z));
+		boolean[] fences = getFencesShownLedge(world, new PC_VecI(x, y, z));
 
 		if (fences[0]) {
 			setBlockBounds(1 - 0.0625F, 0, 0, 1, 1.0F, 1);
@@ -95,7 +95,7 @@ public class PCde_BlockPlatform extends PC_Block implements PC_IBlockRenderer {
 	 * @param pos block pos
 	 * @return bool{X+, X-, Z+, Z-}
 	 */
-	public static boolean[] getFencesShownLedge(World world, PC_CoordI pos) {
+	public static boolean[] getFencesShownLedge(World world, PC_VecI pos) {
 		boolean sides[] = { false, false, false, false, true };
 		sides[0] = isFallBlock(world, pos.offset(1, 0, 0)) && isFallBlock(world, pos.offset(1, -1, 0));
 		sides[1] = isFallBlock(world, pos.offset(-1, 0, 0)) && isFallBlock(world, pos.offset(-1, -1, 0));
@@ -105,7 +105,7 @@ public class PCde_BlockPlatform extends PC_Block implements PC_IBlockRenderer {
 		return sides;
 	}
 
-	private static boolean isFallBlock(World world, PC_CoordI pos) {
+	private static boolean isFallBlock(World world, PC_VecI pos) {
 		int id = pos.getId(world);
 		if (id == 0 || Block.blocksList[id] == null) {
 			return true;
@@ -127,7 +127,7 @@ public class PCde_BlockPlatform extends PC_Block implements PC_IBlockRenderer {
 		return false;
 	}
 
-	private static boolean isClimbBlock(World world, PC_CoordI pos) {
+	private static boolean isClimbBlock(World world, PC_VecI pos) {
 		int id = pos.getId(world);
 		if (id == 0 || Block.blocksList[id] == null) {
 			return false;
@@ -163,7 +163,7 @@ public class PCde_BlockPlatform extends PC_Block implements PC_IBlockRenderer {
 	}
 	
 	@Override
-	public List<String> getBlockFlags(World world, PC_CoordI pos, List<String> list) {
+	public List<String> getBlockFlags(World world, PC_VecI pos, List<String> list) {
 
 		list.add(PC_Utils.NO_HARVEST);
 		list.add(PC_Utils.NO_PICKUP);

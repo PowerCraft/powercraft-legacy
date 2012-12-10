@@ -22,7 +22,7 @@ import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 import org.xml.sax.SAXParseException;
 
-import powercraft.core.PC_CoordI;
+import powercraft.core.PC_VecI;
 import powercraft.core.PC_InvUtils;
 import powercraft.core.PC_Logger;
 import powercraft.core.PC_Module;
@@ -116,7 +116,7 @@ public class PCma_TreeHarvestingManager {
 	 * @param treeStart
 	 * @return output array of stacks
 	 */
-	public static ItemStack[] harvestTreeAt(World world, PC_CoordI treeStart) {
+	public static ItemStack[] harvestTreeAt(World world, PC_VecI treeStart) {
 
 		PC_Struct3<PC_Struct2<Integer, Integer>, PC_Struct2<Integer, Integer>, PC_Struct2<Integer, Integer>> treeData = getStructForTree(
 				treeStart.getId(world), treeStart.getMeta(world));
@@ -151,7 +151,7 @@ public class PCma_TreeHarvestingManager {
 	 * @param harvestedStacks list of stacks to eject
 	 * @param treeData structure describing the current tree
 	 */
-	public static void chopTree(World world, PC_CoordI treeRootPos, PC_CoordI pos, ArrayList<ItemStack> harvestedStacks,
+	public static void chopTree(World world, PC_VecI treeRootPos, PC_VecI pos, ArrayList<ItemStack> harvestedStacks,
 			PC_Struct3<PC_Struct2<Integer, Integer>, PC_Struct2<Integer, Integer>, PC_Struct2<Integer, Integer>> treeData) {
 
 		if (cnt >= MAXLOGS || pos.distanceHorizontalTo(treeRootPos) > 10) {
@@ -223,7 +223,7 @@ public class PCma_TreeHarvestingManager {
 			for (int x = pos.x - 1; x <= pos.x + 1; x++) {
 				for (int y = pos.y - 1; y <= pos.y + 1; y++) {
 					for (int z = pos.z - 1; z <= pos.z + 1; z++) {
-						PC_CoordI here = new PC_CoordI(x, y, z);
+						PC_VecI here = new PC_VecI(x, y, z);
 						int here_id = here.getId(world);
 						int here_meta = here.getMeta(world);
 						if ((here_id == wood_id && ((here_meta&3) == wood_meta || wood_meta == -1))

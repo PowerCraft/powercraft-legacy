@@ -88,7 +88,7 @@ public class PCtr_ItemBlockConveyor extends PC_ItemBlock
             return false;
         }
 
-        if (PCtr_BeltHelper.isConveyorAt(world, new PC_CoordI(i, j - 1, k)))
+        if (PCtr_BeltHelper.isConveyorAt(world, new PC_VecI(i, j - 1, k)))
         {
             int dir = ((PC_MathHelper.floor_double(((entityplayer.rotationYaw * 4F) / 360F) + 0.5D) & 3) + 2) % 4;
 
@@ -100,7 +100,7 @@ public class PCtr_ItemBlockConveyor extends PC_ItemBlock
             j--;
             int m = 0;
 
-            while (PCtr_BeltHelper.isConveyorAt(world, new PC_CoordI(i, j, k)) && m <= 128)
+            while (PCtr_BeltHelper.isConveyorAt(world, new PC_VecI(i, j, k)) && m <= 128)
             {
                 i -= Direction.offsetX[dir];
                 k -= Direction.offsetZ[dir];

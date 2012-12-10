@@ -5,7 +5,7 @@ import java.util.Random;
 import net.minecraft.src.Block;
 import net.minecraft.src.EntitySmokeFX;
 import net.minecraft.src.ModLoader;
-import powercraft.core.PC_CoordI;
+import powercraft.core.PC_VecI;
 import powercraft.core.PC_TileEntity;
 import powercraft.core.PC_Utils;
 
@@ -45,7 +45,7 @@ public class PCde_TileEntityChimney extends PC_TileEntity {
 		}
 	}
 
-	private boolean doesBlockSmoke(PC_CoordI pos) {
+	private boolean doesBlockSmoke(PC_VecI pos) {
 		int id = pos.getId(worldObj);
 		if (id == Block.stoneOvenActive.blockID) return true;
 		if (id == Block.fire.blockID) return true;
@@ -54,7 +54,7 @@ public class PCde_TileEntityChimney extends PC_TileEntity {
 		return false;
 	}
 
-	private boolean doesBlockSmokeOpenly(PC_CoordI pos) {
+	private boolean doesBlockSmokeOpenly(PC_VecI pos) {
 		int id = pos.getId(worldObj);
 		if (id == Block.fire.blockID) return true;
 
@@ -62,11 +62,11 @@ public class PCde_TileEntityChimney extends PC_TileEntity {
 		return false;
 	}
 
-	private boolean isBlockLitFurnace(PC_CoordI pos) {
+	private boolean isBlockLitFurnace(PC_VecI pos) {
 		return pos.getId(worldObj) == Block.stoneOvenActive.blockID;
 	}
 
-	private boolean isBlockChimney(PC_CoordI pos) {
+	private boolean isBlockChimney(PC_VecI pos) {
 		if (pos.getId(worldObj) == PCde_App.chimney.blockID) {
 			return true;
 		}
@@ -78,7 +78,7 @@ public class PCde_TileEntityChimney extends PC_TileEntity {
 			return;
 		if (worldObj.isAirBlock(xCoord, yCoord + 1, zCoord)) { //test if air is above chimney	    
 
-			PC_CoordI cursor = getCoord().copy();
+			PC_VecI cursor = getCoord().copy();
 
 			boolean smoke = false;
 

@@ -15,7 +15,7 @@ import net.minecraft.src.MathHelper;
 import net.minecraft.src.TileEntity;
 import net.minecraft.src.World;
 import powercraft.core.PC_Block;
-import powercraft.core.PC_CoordI;
+import powercraft.core.PC_VecI;
 import powercraft.core.PC_FakePlayer;
 import powercraft.core.PC_ICraftingToolDisplayer;
 import powercraft.core.PC_Struct2;
@@ -161,7 +161,7 @@ public class PCma_BlockReplacer extends PC_Block implements PC_ICraftingToolDisp
         world.scheduleBlockUpdate(i, j, k, blockID, tickRate());
     }
 
-    private boolean replacer_canHarvestBlockAt(World world, PC_CoordI pos)
+    private boolean replacer_canHarvestBlockAt(World world, PC_VecI pos)
     {
         int id = pos.getMeta(world);
 
@@ -183,7 +183,7 @@ public class PCma_BlockReplacer extends PC_Block implements PC_ICraftingToolDisp
         return true;
     }
 
-    private boolean replacer_canPlaceBlockAt(World world, ItemStack itemstack, PC_CoordI pos)
+    private boolean replacer_canPlaceBlockAt(World world, ItemStack itemstack, PC_VecI pos)
     {
         if (itemstack == null)
         {
@@ -224,7 +224,7 @@ public class PCma_BlockReplacer extends PC_Block implements PC_ICraftingToolDisp
         }
     }
 
-    private boolean replacer_placeBlockAt(World world, int meta, ItemStack itemstack, PC_CoordI pos)
+    private boolean replacer_placeBlockAt(World world, int meta, ItemStack itemstack, PC_VecI pos)
     {
         if (itemstack == null)
         {
@@ -287,7 +287,7 @@ public class PCma_BlockReplacer extends PC_Block implements PC_ICraftingToolDisp
         return true;
     }
 
-    private PC_Struct2<ItemStack, Integer> replacer_harvestBlockAt(World world, PC_CoordI pos)
+    private PC_Struct2<ItemStack, Integer> replacer_harvestBlockAt(World world, PC_VecI pos)
     {
         ItemStack loot = null;
         int meta = pos.getMeta(world);
@@ -337,7 +337,7 @@ public class PCma_BlockReplacer extends PC_Block implements PC_ICraftingToolDisp
 
     private void swapBlocks(PCma_TileEntityReplacer te)
     {
-        PC_CoordI pos = te.getCoord().offset(te.coordOffset);
+        PC_VecI pos = te.getCoord().offset(te.coordOffset);
 
         if (pos.equals(te.getCoord()))
         {
@@ -471,7 +471,7 @@ public class PCma_BlockReplacer extends PC_Block implements PC_ICraftingToolDisp
     }
     
     @Override
-   	public List<String> getBlockFlags(World world, PC_CoordI pos, List<String> list) {
+   	public List<String> getBlockFlags(World world, PC_VecI pos, List<String> list) {
 
    		list.add(PC_Utils.NO_HARVEST);
    		list.add(PC_Utils.NO_PICKUP);

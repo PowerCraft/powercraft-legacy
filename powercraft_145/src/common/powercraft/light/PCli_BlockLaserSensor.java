@@ -15,7 +15,7 @@ import net.minecraft.src.World;
 import powercraft.core.PC_BeamTracer;
 import powercraft.core.PC_Block;
 import powercraft.core.PC_Color;
-import powercraft.core.PC_CoordI;
+import powercraft.core.PC_VecI;
 import powercraft.core.PC_IBeamSpecialHandling;
 import powercraft.core.PC_IBlockRenderer;
 import powercraft.core.PC_ICraftingToolDisplayer;
@@ -124,7 +124,7 @@ public class PCli_BlockLaserSensor extends PC_Block implements PC_ICraftingToolD
 	}
 
 	@Override
-	public result onHitByBeamTracer(PC_BeamTracer beamTracer, PC_CoordI cnt, PC_CoordI move, PC_Color color, float strength, int distanceToMove) {
+	public result onHitByBeamTracer(PC_BeamTracer beamTracer, PC_VecI cnt, PC_VecI move, PC_Color color, float strength, int distanceToMove) {
 		World world = beamTracer.getWorld();
 		PCli_TileEntityLaserSensor te = PC_Utils.getTE(world, cnt.x, cnt.y, cnt.z, blockID);
 		if(te!=null){
@@ -134,7 +134,7 @@ public class PCli_BlockLaserSensor extends PC_Block implements PC_ICraftingToolD
 	}
 	
 	@Override
-	public List<String> getBlockFlags(World world, PC_CoordI pos, List<String> list) {
+	public List<String> getBlockFlags(World world, PC_VecI pos, List<String> list) {
 
 		list.add(PC_Utils.NO_HARVEST);
 		list.add(PC_Utils.HARVEST_STOP);

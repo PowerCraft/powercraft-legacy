@@ -16,7 +16,7 @@ import net.minecraft.src.TileEntity;
 import net.minecraft.src.World;
 import net.minecraftforge.common.Configuration;
 import powercraft.core.PC_Block;
-import powercraft.core.PC_CoordI;
+import powercraft.core.PC_VecI;
 import powercraft.core.PC_IConfigLoader;
 import powercraft.core.PC_IRotatedBox;
 import powercraft.core.PC_MathHelper;
@@ -351,7 +351,7 @@ public class PClo_BlockGate extends PC_Block implements PC_IRotatedBox, PC_IConf
     }
     
     @Override
-   	public List<String> getBlockFlags(World world, PC_CoordI pos, List<String> list) {
+   	public List<String> getBlockFlags(World world, PC_VecI pos, List<String> list) {
 
    		list.add(PC_Utils.NO_HARVEST);
    		list.add(PC_Utils.NO_PICKUP);

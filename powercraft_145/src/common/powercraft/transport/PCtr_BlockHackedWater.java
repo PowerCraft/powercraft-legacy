@@ -53,8 +53,8 @@ public class PCtr_BlockHackedWater extends BlockStationary
         {
             if (rand.nextFloat() < 0.8F && ((EntityItem) entity).age % 20 == 0 && world.getBlockMetadata(i, j, k) != 0)
             {
-                PCtr_BeltHelper.storeAllSides(world, new PC_CoordI(i, j, k), (EntityItem) entity);
-                PCtr_BeltHelper.packItems(world, new PC_CoordI(i, j, k));
+                PCtr_BeltHelper.storeAllSides(world, new PC_VecI(i, j, k), (EntityItem) entity);
+                PCtr_BeltHelper.packItems(world, new PC_VecI(i, j, k));
             }
 
             if (entity.motionY < 0)

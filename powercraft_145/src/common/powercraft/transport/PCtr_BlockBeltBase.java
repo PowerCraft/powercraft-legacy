@@ -132,7 +132,7 @@ public abstract class PCtr_BlockBeltBase extends PC_Block implements PC_IRotated
     }
     
     @Override
-   	public List<String> getBlockFlags(World world, PC_CoordI pos, List<String> list) {
+   	public List<String> getBlockFlags(World world, PC_VecI pos, List<String> list) {
 
    		list.add(PC_Utils.NO_HARVEST);
    		list.add(PC_Utils.NO_PICKUP);

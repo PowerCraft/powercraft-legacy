@@ -16,7 +16,7 @@ import net.minecraft.src.ItemReed;
 import net.minecraft.src.ItemStack;
 import net.minecraft.src.NBTTagCompound;
 import powercraft.core.PC_Block;
-import powercraft.core.PC_CoordI;
+import powercraft.core.PC_VecI;
 import powercraft.core.PC_FakePlayer;
 import powercraft.core.PC_InvUtils;
 import powercraft.core.PC_ItemBlock;
@@ -147,9 +147,9 @@ public class PCma_TileEntityBlockBuilder extends PC_TileEntity implements IInven
 		x += dist * incX;
 		z += dist * incZ;
 
-		PC_CoordI front = new PC_CoordI(x + incX, y, z + incZ);
-		PC_CoordI below = new PC_CoordI(x + incX, y - 1, z + incZ);
-		PC_CoordI above = new PC_CoordI(x + incX, y + 1, z + incZ);
+		PC_VecI front = new PC_VecI(x + incX, y, z + incZ);
+		PC_VecI below = new PC_VecI(x + incX, y - 1, z + incZ);
+		PC_VecI above = new PC_VecI(x + incX, y + 1, z + incZ);
 
 
 		int idFront = front.getId(worldObj);

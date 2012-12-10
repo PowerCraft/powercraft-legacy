@@ -5,7 +5,7 @@ import net.minecraft.src.Direction;
 import net.minecraft.src.EntityPlayer;
 import net.minecraft.src.ItemStack;
 import net.minecraft.src.World;
-import powercraft.core.PC_CoordI;
+import powercraft.core.PC_VecI;
 import powercraft.core.PC_ItemBlock;
 import powercraft.core.PC_MathHelper;
 import powercraft.core.PC_TileEntity;

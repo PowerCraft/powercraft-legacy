@@ -276,6 +276,7 @@ public class PC_Utils implements PC_IPacketHandler
                 setFieldsWithAnnotationTo(blockClass, PC_Shining.ON.class, blockClass, block);
                 setFieldsWithAnnotationTo(blockClass, PC_Shining.OFF.class, blockClass, blockOff);
                 blockOff.setBlockName(blockClass.getSimpleName());
+                blockOff.setModule(module);
                 blockOff.setTextureFile(getTerrainFile(module));
             }
             else
@@ -285,6 +286,7 @@ public class PC_Utils implements PC_IPacketHandler
 
             instance.objects.put(blockClass.getSimpleName(), block);
             block.setBlockName(blockClass.getSimpleName());
+            block.setModule(module);
             block.setTextureFile(getTerrainFile(module));
 
             block.msg(PC_Utils.MSG_LOAD_FROM_CONFIG, config);
@@ -753,6 +755,20 @@ public class PC_Utils implements PC_IPacketHandler
     {
         return getMD(world, vec.x, vec.y, vec.z);
     }
+    
+    public static boolean getMD(World world, int x, int y, int z, int md)
+    {
+        if (world != null)
+        {
+            return world.setBlockMetadata(x, y, z, md);
+        }
+
+        return false;
+    }
+    
+	public static boolean setMD(World world, PC_VecI pos, int md) {
+		return getMD(world, pos.x, pos.y, pos.z, md);
+	}
     
     protected boolean iIsPlacingReversed(EntityPlayer player)
     {

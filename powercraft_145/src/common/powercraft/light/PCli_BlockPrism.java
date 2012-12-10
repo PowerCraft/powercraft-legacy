@@ -16,7 +16,7 @@ import powercraft.core.PC_BeamTracer;
 import powercraft.core.PC_BeamTracer.result;
 import powercraft.core.PC_Block;
 import powercraft.core.PC_Color;
-import powercraft.core.PC_CoordI;
+import powercraft.core.PC_VecI;
 import powercraft.core.PC_IBeamSpecialHandling;
 import powercraft.core.PC_IBlockRenderer;
 import powercraft.core.PC_ICraftingToolDisplayer;
@@ -127,7 +127,7 @@ public class PCli_BlockPrism extends PC_Block implements
 					teo.setPrismSide(angle, false);
 				}
 				if (!PC_Utils.isCreative(player)) {
-					PC_Utils.dropItemStack(world, new ItemStack(Block.thinGlass, 1), new PC_CoordI(i, j, k));
+					PC_Utils.dropItemStack(world, new ItemStack(Block.thinGlass, 1), new PC_VecI(i, j, k));
 				}
 
 			}
@@ -190,9 +190,9 @@ public class PCli_BlockPrism extends PC_Block implements
 	}
 
 	/** prism redirection vector for side */
-	private static final PC_CoordI[] prismMove = { new PC_CoordI(0, -1, 0), new PC_CoordI(0, 1, 0), new PC_CoordI(1, 0, 0), new PC_CoordI(1, 0, 1),
-			new PC_CoordI(0, 0, 1), new PC_CoordI(-1, 0, 1), new PC_CoordI(-1, 0, 0), new PC_CoordI(-1, 0, -1), new PC_CoordI(0, 0, -1),
-			new PC_CoordI(1, 0, -1) };
+	private static final PC_VecI[] prismMove = { new PC_VecI(0, -1, 0), new PC_VecI(0, 1, 0), new PC_VecI(1, 0, 0), new PC_VecI(1, 0, 1),
+			new PC_VecI(0, 0, 1), new PC_VecI(-1, 0, 1), new PC_VecI(-1, 0, 0), new PC_VecI(-1, 0, -1), new PC_VecI(0, 0, -1),
+			new PC_VecI(1, 0, -1) };
 	
 	/**
 	 * Get index of prism side which faces the beam
@@ -200,7 +200,7 @@ public class PCli_BlockPrism extends PC_Block implements
 	 * @param move beam movement vector
 	 * @return side number
 	 */
-	private int getPrismSideFacingMove(PC_CoordI move) {
+	private int getPrismSideFacingMove(PC_VecI move) {
 		for (int i = 0; i < 10; i++) {
 			if (prismMove[i].equals(move.getInverted())) {
 				return i;
@@ -215,12 +215,12 @@ public class PCli_BlockPrism extends PC_Block implements
 	 * @param side the side number
 	 * @return vector (coord)
 	 */
-	private PC_CoordI getPrismOutputMove(int side) {
+	private PC_VecI getPrismOutputMove(int side) {
 		return prismMove[side];
 	}
 	
 	@Override
-	public result onHitByBeamTracer(PC_BeamTracer beamTracer, PC_CoordI cnt, PC_CoordI move, PC_Color color, float strength, int distanceToMove) {
+	public result onHitByBeamTracer(PC_BeamTracer beamTracer, PC_VecI cnt, PC_VecI move, PC_Color color, float strength, int distanceToMove) {
 
 		PCli_TileEntityPrism prism = PC_Utils.getTE(beamTracer.getWorld(), cnt.x, cnt.y, cnt.z);
 
@@ -240,7 +240,7 @@ public class PCli_BlockPrism extends PC_Block implements
 		if (sideCount >= 1) {
 
 			for (int h = 0; h < sideCount; h++) {
-				PC_CoordI newMove = getPrismOutputMove(side[h]).copy();
+				PC_VecI newMove = getPrismOutputMove(side[h]).copy();
 
 				beamTracer.forkBeam(cnt, newMove, color, strength, distanceToMove / Math.round((sideCount * 0.75F)));
 			}
@@ -266,7 +266,7 @@ public class PCli_BlockPrism extends PC_Block implements
 	}
 
 	@Override
-	public List<String> getBlockFlags(World world, PC_CoordI pos, List<String> list) {
+	public List<String> getBlockFlags(World world, PC_VecI pos, List<String> list) {
 
 		list.add(PC_Utils.NO_HARVEST);
 		list.add(PC_Utils.NO_PICKUP);

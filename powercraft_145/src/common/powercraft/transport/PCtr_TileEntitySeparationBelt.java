@@ -246,8 +246,8 @@ public class PCtr_TileEntitySeparationBelt extends PCtr_TileEntityRedirectionBel
                     break;
             }
 
-            translate[2] = (PCtr_BeltHelper.isTransporterAt(worldObj, new PC_CoordI(leftX, yCoord, leftZ)) ? -1 : 0);
-            translate[0] = (PCtr_BeltHelper.isTransporterAt(worldObj, new PC_CoordI(rightX, yCoord, rightZ)) ? 1 : 0);
+            translate[2] = (PCtr_BeltHelper.isTransporterAt(worldObj, new PC_VecI(leftX, yCoord, leftZ)) ? -1 : 0);
+            translate[0] = (PCtr_BeltHelper.isTransporterAt(worldObj, new PC_VecI(rightX, yCoord, rightZ)) ? 1 : 0);
 
             if (translate[0] == translate[2])
             {
