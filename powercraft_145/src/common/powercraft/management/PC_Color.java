@@ -55,11 +55,15 @@ public class PC_Color extends PC_VecF {
 	    return r255 << 16 | g255 << 8 | b255;
 	}
 
-	 public PC_Color setTo(int hex){
+	public PC_Color setTo(int hex){
         x = red(hex);
         y = green(hex);
         z = blue(hex);
         return this;
+	}
+	
+	public PC_Color copy(){
+        return new PC_Color(this);
 	}
 	
 	public static float red(int hex){
@@ -76,6 +80,11 @@ public class PC_Color extends PC_VecF {
 	 
 	public static PC_Color fromHex(int hex) {
 		return new PC_Color().setTo(hex);
+	}
+
+	public boolean isVisible() {
+		// TODO Auto-generated method stub
+		return false;
 	}
 	
 }

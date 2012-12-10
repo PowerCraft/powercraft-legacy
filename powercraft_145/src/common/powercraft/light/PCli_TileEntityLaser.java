@@ -7,17 +7,17 @@ import net.minecraft.src.CompressedStreamTools;
 import net.minecraft.src.Entity;
 import net.minecraft.src.ItemStack;
 import net.minecraft.src.NBTTagCompound;
-import net.minecraft.src.World;
-import powercraft.core.PC_BeamTracer;
-import powercraft.core.PC_Block;
-import powercraft.core.PC_Color;
-import powercraft.core.PC_VecI;
-import powercraft.core.PC_IBeamHandler;
-import powercraft.core.PC_ITileEntityRenderer;
-import powercraft.core.PC_PacketHandler;
-import powercraft.core.PC_Renderer;
-import powercraft.core.PC_TileEntity;
-import powercraft.core.PC_Utils;
+import powercraft.management.PC_BeamTracer;
+import powercraft.management.PC_Block;
+import powercraft.management.PC_Color;
+import powercraft.management.PC_IBeamHandler;
+import powercraft.management.PC_IMSG;
+import powercraft.management.PC_ITileEntityRenderer;
+import powercraft.management.PC_PacketHandler;
+import powercraft.management.PC_Renderer;
+import powercraft.management.PC_TileEntity;
+import powercraft.management.PC_Utils;
+import powercraft.management.PC_VecI;
 
 public class PCli_TileEntityLaser extends PC_TileEntity implements PC_IBeamHandler, PC_ITileEntityRenderer
 {
@@ -117,8 +117,8 @@ public class PCli_TileEntityLaser extends PC_TileEntity implements PC_IBeamHandl
     	boolean isBurning = false;
 		if(isKiller){
 			Block b = PC_Utils.getBlock(worldObj, xCoord, yCoord-1, zCoord);
-			if(b instanceof PC_Block){
-				Object o = ((PC_Block)b).sendInfo(worldObj, xCoord, yCoord-1, zCoord, "isBurning", null);
+			if(b instanceof PC_IMSG){
+				Object o = ((PC_IMSG)b).msg(PC_Utils.MSG_STR_MSG, worldObj, getCoord().offset(0, -1, 0), "isBurning");
 				if(o instanceof Boolean)
 					isBurning = (Boolean)o;
 			}
@@ -206,14 +206,14 @@ public class PCli_TileEntityLaser extends PC_TileEntity implements PC_IBeamHandl
 
 		float f1 = meta2angle[getBlockMetadata()];
 
-		PC_Renderer.bindTexture(PCli_App.getInstance().getTextureDirectory() + "laser.png");
+		PC_Renderer.bindTexture(PC_Utils.getTextureDirectory(PC_Utils.getModule("Light")) + "laser.png");
 
 		PC_Renderer.glPushMatrix();
 		PC_Renderer.glRotatef(-f1, 0.0F, 1.0F, 0.0F);
 		PC_Renderer.glScalef(f, -f, -f);
 		modelLaser.renderLaser();
 		PC_Color color = PCli_ItemLaserComposition.getColorForItemStack(itemstack);
-		PC_Renderer.glColor4f((float)color.r, (float)color.g, (float)color.b, 1.0F);
+		PC_Renderer.glColor4f((float)color.x, (float)color.y, (float)color.z, 1.0F);
 		modelLaser.renderLens();
 		PC_Renderer.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 		PC_Renderer.glPopMatrix();

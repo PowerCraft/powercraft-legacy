@@ -140,7 +140,7 @@ public abstract class PCtr_BlockBeltBase extends PC_Block implements PC_IRotated
 			list.add(PC_Utils.NO_BUILD);
 			return list;
 		}case PC_Utils.MSG_BLOCK_FLAGS:{
-			List<String> list = (List<String>)obj[1];
+			List<String> list = (List<String>)obj[0];
 	   		list.add(PC_Utils.NO_HARVEST);
 	   		list.add(PC_Utils.NO_PICKUP);
 	   		return list;

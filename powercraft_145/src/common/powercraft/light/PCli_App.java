@@ -3,26 +3,24 @@ package powercraft.light;
 import java.util.List;
 
 import net.minecraft.src.Block;
+import net.minecraft.src.IRecipe;
 import net.minecraft.src.Item;
 import net.minecraftforge.common.Configuration;
-import powercraft.core.PC_Block;
-import powercraft.core.PC_Item;
-import powercraft.core.PC_ItemStack;
-import powercraft.core.PC_Module;
-import powercraft.core.PC_Utils;
-import cpw.mods.fml.common.Mod;
+import powercraft.management.PC_Block;
+import powercraft.management.PC_Configuration;
+import powercraft.management.PC_IModule;
+import powercraft.management.PC_Item;
+import powercraft.management.PC_ItemStack;
+import powercraft.management.PC_Struct2;
+import powercraft.management.PC_Utils;
 import cpw.mods.fml.common.Mod.Init;
 import cpw.mods.fml.common.Mod.PostInit;
 import cpw.mods.fml.common.Mod.PreInit;
-import cpw.mods.fml.common.SidedProxy;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
-import cpw.mods.fml.common.network.NetworkMod;
 
-//@Mod(modid = "PowerCraft-Light", name = "PowerCraft-Light", version = "3.5.0AlphaC", dependencies = "required-after:PowerCraft-Core")
-@NetworkMod(clientSideRequired = true, serverSideRequired = true)
-public class PCli_App extends PC_Module
+public class PCli_App implements PC_IModule
 {
     public static PC_Block light;
     public static PC_Block lightningConductor;
@@ -32,74 +30,48 @@ public class PCli_App extends PC_Module
     public static PC_Block laserSensor;
     public static PC_Item laserComposition;
 
-    public static PCli_App getInstance()
-    {
-        return (PCli_App)PC_Module.getModule("PowerCraft-Light");
-    }
+	@Override
+	public String getName() {
+		return "Light";
+	}
 
-    @PreInit
-    public void preInit(FMLPreInitializationEvent event)
-    {
-        preInit(event, proxy);
-    }
+	@Override
+	public String getVersion() {
+		return "1.0AlphaA";
+	}
 
-    @Init
-    public void init(FMLInitializationEvent event)
-    {
-        init();
-    }
+	@Override
+	public void preInit() {}
 
-    @PostInit
-    public void postInit(FMLPostInitializationEvent event)
-    {
-        postInit();
-    }
+	@Override
+	public void init() {}
 
-    @Override
-    protected void initProperties(Configuration config)
-    {
-    }
+	@Override
+	public void postInit() {}
 
-    @Override
-    protected List<String> loadTextureFiles(List<String> textures)
+	@Override
+	public void initProperties(PC_Configuration config) {}
+
+	@Override
+	public void initBlocks()
     {
-        textures.add(getTerrainFile());
-        textures.add(getTextureDirectory() + "block_light.png");
-        textures.add(getTextureDirectory() + "mirror.png");
-        return textures;
+        light = PC_Utils.register(this, PCli_BlockLight.class, PCli_TileEntityLight.class);
+        lightningConductor = PC_Utils.register(this, PCli_BlockLightningConductor.class, PCli_ItemBlockLightningConductor.class, PCli_TileEntityLightningConductor.class);
+        laser = PC_Utils.register(this, PCli_BlockLaser.class, PCli_TileEntityLaser.class);
+        mirrow = PC_Utils.register(this, PCli_BlockMirrow.class, PCli_TileEntityMirrow.class);
+        prism = PC_Utils.register(this, PCli_BlockPrism.class, PCli_TileEntityPrism.class);
+        laserSensor = PC_Utils.register(this, PCli_BlockLaserSensor.class, PCli_TileEntityLaserSensor.class);
     }
 
     @Override
-    protected void initLanguage()
+    public void initItems()
     {
-        PC_Utils.registerLanguage(this,
-                "pc.gui.light.isHuge", "is Huge",
-                "pc.gui.light.isStable", "is Stable",
-                "pc.damage.laser", "laser killed %s"
-                                 );
+    	laserComposition = PC_Utils.register(this, PCli_ItemLaserComposition.class);
     }
-
-    @Override
-    protected void initBlocks()
-    {
-        light = PC_Utils.register(this, 489, PCli_BlockLight.class, PCli_TileEntityLight.class);
-        lightningConductor = PC_Utils.register(this, 491, PCli_BlockLightningConductor.class, PCli_ItemBlockLightningConductor.class, PCli_TileEntityLightningConductor.class);
-        laser = PC_Utils.register(this, 492, PCli_BlockLaser.class, PCli_TileEntityLaser.class);
-        mirrow = PC_Utils.register(this, 493, PCli_BlockMirrow.class, PCli_TileEntityMirrow.class);
-        prism = PC_Utils.register(this, 494, PCli_BlockPrism.class, PCli_TileEntityPrism.class);
-        laserSensor = PC_Utils.register(this, 495, PCli_BlockLaserSensor.class, PCli_TileEntityLaserSensor.class);
-    }
-
-    @Override
-    protected void initItems()
-    {
-    	laserComposition = PC_Utils.register(this, 496, PCli_ItemLaserComposition.class);
-    }
-
-    @Override
-    protected void initRecipes()
-    {
-        PC_Utils.addShapelessRecipe(
+	
+	@Override
+	public List<IRecipe> initRecipes(List<IRecipe> recipes) {
+		PC_Utils.addShapelessRecipe(
                 new PC_ItemStack(light),
                 new Object[]
                 {
@@ -151,12 +123,12 @@ public class PCli_App extends PC_Module
         	}
         	 PC_Utils.addShapelessRecipe( new PC_ItemStack(laserComposition), o);
         }
-        
-    }
+		return null;
+	}
 
-    @Override
-    protected List<String> addSplashes(List<String> list)
-    {
-        return null;
-    }
+	@Override
+	public List<PC_Struct2<String, Class>> registerGuis(List<PC_Struct2<String, Class>> guis) {
+		// TODO Auto-generated method stub
+		return null;
+	}
 }

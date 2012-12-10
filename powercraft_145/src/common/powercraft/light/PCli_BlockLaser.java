@@ -1,6 +1,7 @@
 package powercraft.light;
 
 import java.util.List;
+import java.util.Random;
 
 import net.minecraft.src.AxisAlignedBB;
 import net.minecraft.src.Block;
@@ -12,34 +13,24 @@ import net.minecraft.src.ItemStack;
 import net.minecraft.src.Material;
 import net.minecraft.src.TileEntity;
 import net.minecraft.src.World;
-import powercraft.core.PC_BeamTracer;
-import powercraft.core.PC_BeamTracer.result;
-import powercraft.core.PC_Block;
-import powercraft.core.PC_Color;
-import powercraft.core.PC_VecI;
-import powercraft.core.PC_IBeamSpecialHandling;
-import powercraft.core.PC_IBlockRenderer;
-import powercraft.core.PC_ICraftingToolDisplayer;
-import powercraft.core.PC_MathHelper;
-import powercraft.core.PC_Renderer;
-import powercraft.core.PC_Utils;
+import powercraft.management.PC_Block;
+import powercraft.management.PC_Configuration;
+import powercraft.management.PC_IItemInfo;
+import powercraft.management.PC_MathHelper;
+import powercraft.management.PC_Renderer;
+import powercraft.management.PC_Utils;
+import powercraft.management.PC_VecI;
 
-public class PCli_BlockLaser extends PC_Block implements PC_ICraftingToolDisplayer, PC_IBlockRenderer
+public class PCli_BlockLaser extends PC_Block implements PC_IItemInfo
 {
-    public PCli_BlockLaser(int id)
+    public PCli_BlockLaser()
     {
-        super(id, 2, Material.ground);
+        super(2, Material.ground);
         setStepSound(Block.soundMetalFootstep);
         setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 1.0F, 1.0F);
         setHardness(0.7F);
         setResistance(10.0F);
         setCreativeTab(CreativeTabs.tabDecorations);
-    }
-
-    @Override
-    public String getDefaultName()
-    {
-        return "Laser";
     }
 
     @Override
@@ -138,16 +129,14 @@ public class PCli_BlockLaser extends PC_Block implements PC_ICraftingToolDisplay
     }
 
     @Override
-    public boolean isPoweringTo(IBlockAccess world, int i, int j, int k, int l)
-    {
-        return ((PCli_TileEntityLaser) PC_Utils.getTE(world, i, j, k)).isActive();
-    }
+	public boolean isProvidingWeakPower(IBlockAccess world, int x, int y, int z, int s) {
+    	return ((PCli_TileEntityLaser) PC_Utils.getTE(world, x, y, z)).isActive();
+	}
 
-    @Override
-    public boolean isIndirectlyPoweringTo(IBlockAccess world, int i, int j, int k, int l)
-    {
-        return isPoweringTo(world, i, j, k, l);
-    }
+	@Override
+	public boolean isProvidingStrongPower(IBlockAccess world, int x, int y, int z, int s) {
+		return isProvidingWeakPower(world, x, y, z, s);
+	}
 
     @Override
     public void onBlockHarvested(World world, int x, int y, int z, int metadata, EntityPlayer player)
@@ -183,17 +172,11 @@ public class PCli_BlockLaser extends PC_Block implements PC_ICraftingToolDisplay
 	}
 
 	@Override
-	public String getCraftingToolModule() {
-		return PCli_App.getInstance().getNameWithoutPowerCraft();
-	}
-
-	@Override
 	public List<ItemStack> getItemStacks(List<ItemStack> arrayList) {
 		arrayList.add(new ItemStack(this));
 		return arrayList;
 	}
 
-	@Override
 	public void renderInventoryBlock(Block block, int metadata, int modelID, Object renderer) {
 		PC_Renderer.renderInvBox(renderer, block, metadata);
 		block.setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 1.0F, 1.0F);
@@ -208,24 +191,30 @@ public class PCli_BlockLaser extends PC_Block implements PC_ICraftingToolDisplay
 	}
 
 	@Override
-	public void renderWorldBlock(IBlockAccess world, int x, int y, int z, Block block, int modelId, Object renderer) {
-		
-	}
-	
-	@Override
-	public List<String> getBlockFlags(World world, PC_VecI pos, List<String> list) {
-
-		list.add(PC_Utils.NO_HARVEST);
-		list.add(PC_Utils.HARVEST_STOP);
-		list.add(PC_Utils.BEAMTRACER_STOP);
-		
-		return list;
-	}
-
-	@Override
-	public List<String> getItemFlags(ItemStack stack, List<String> list) {
-		list.add(PC_Utils.NO_BUILD);
-		return list;
+	public Object msg(World world, PC_VecI pos, int msg, Object... obj) {
+		switch(msg){
+		case PC_Utils.MSG_RENDER_INVENTORY_BLOCK:
+			renderInventoryBlock((Block)obj[0], (Integer)obj[1], (Integer)obj[2], obj[3]);
+			break;
+		case PC_Utils.MSG_RENDER_WORLD_BLOCK:
+			break;
+		case PC_Utils.MSG_DEFAULT_NAME:
+			return "Laser";
+		case PC_Utils.MSG_BLOCK_FLAGS:{
+			List<String> list = (List<String>)obj[0];
+			list.add(PC_Utils.NO_HARVEST);
+			list.add(PC_Utils.HARVEST_STOP);
+			list.add(PC_Utils.BEAMTRACER_STOP);
+	   		return list;
+		}case PC_Utils.MSG_ITEM_FLAGS:{
+			List<String> list = (List<String>)obj[1];
+			list.add(PC_Utils.NO_BUILD);
+			return list;
+		}
+		default:
+			return null;
+		}
+		return true;
 	}
 	
 }

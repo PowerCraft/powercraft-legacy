@@ -1,0 +1,34 @@
+package powercraft.light;
+
+import java.util.List;
+
+import powercraft.management.PC_IClientModule;
+import powercraft.management.PC_LangEntry;
+import powercraft.management.PC_Utils;
+
+public class PCli_AppClient extends PCli_App implements PC_IClientModule {
+
+	@Override
+    public List<String> loadTextureFiles(List<String> textures)
+    {
+        textures.add(PC_Utils.getTerrainFile(this));
+        textures.add(PC_Utils.getTextureDirectory(this) + "block_light.png");
+        textures.add(PC_Utils.getTextureDirectory(this) + "mirror.png");
+        return textures;
+    }
+	
+	@Override
+	public List<PC_LangEntry> initLanguage(List<PC_LangEntry> lang) {
+		lang.add(new PC_LangEntry("pc.gui.light.isHuge", "is Huge"));
+		lang.add(new PC_LangEntry("pc.gui.light.isStable", "is Stable"));
+		lang.add(new PC_LangEntry("pc.damage.laser", "laser killed %s"));
+		return lang;
+	}
+
+	@Override
+	public List<String> addSplashes(List<String> list) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+}
