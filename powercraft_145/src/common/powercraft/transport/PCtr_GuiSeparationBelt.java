@@ -32,7 +32,7 @@ public class PCtr_GuiSeparationBelt extends PCtr_ContainerSeparationBelt impleme
 		PC_GresWindow w = new PC_GresWindow(00, 00, PC_Utils.tr("tile.PCSeperatorBelt.name"));
 		w.setWidthForInventory();
 		PC_GresLayoutH hg = new PC_GresLayoutH();
-		hg.add(new PC_GresImage(PC_Module.getModule("Core").getTextureDirectory() + "gres/widgets.png", 56, 66, 8, 15));
+		hg.add(new PC_GresImage(PC_Utils.getGresImgDir()+"widgets.png", 56, 66, 8, 15));
 
 		PC_GresInventory left, right;
 
@@ -47,7 +47,7 @@ public class PCtr_GuiSeparationBelt extends PCtr_ContainerSeparationBelt impleme
 				right.setSlot(lSlot.get(i), i % 3, (int) Math.floor(i / 6));
 			}
 		}
-		hg.add(new PC_GresImage(PC_Module.getModule("Core").getTextureDirectory() + "gres/widgets.png", 64, 66, 8, 15));
+		hg.add(new PC_GresImage(PC_Utils.getGresImgDir()+"widgets.png", 64, 66, 8, 15));
 		w.add(hg);
 
 		PC_GresLayoutV vg = new PC_GresLayoutV();

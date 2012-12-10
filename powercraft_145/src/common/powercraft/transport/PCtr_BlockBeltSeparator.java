@@ -19,12 +19,6 @@ public class PCtr_BlockBeltSeparator extends PCtr_BlockBeltBase
     }
 
     @Override
-    public String getDefaultName()
-    {
-        return "seperator belt";
-    }
-
-    @Override
     public void onEntityCollidedWithBlock(World world, int i, int j, int k, Entity entity)
     {
         PC_VecI pos = new PC_VecI(i, j, k);
@@ -148,10 +142,14 @@ public class PCtr_BlockBeltSeparator extends PCtr_BlockBeltBase
 
         super.breakBlock(world, i, j, k, par5, par6);
     }
-
+    
 	@Override
-	public Object msg(World world, PC_VecI pos, int msg, Object... obj) {
-		// TODO Auto-generated method stub
+	protected Object msg2(World world, PC_VecI pos, int msg, Object... obj) {
+		switch (msg){
+		case PC_Utils.MSG_DEFAULT_NAME:{
+			return "separation belt";
+		}
+		}
 		return null;
 	}
 }

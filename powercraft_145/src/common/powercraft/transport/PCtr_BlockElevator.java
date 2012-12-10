@@ -32,12 +32,6 @@ public class PCtr_BlockElevator extends PC_Block
     }
 
     @Override
-    public String getDefaultName()
-    {
-        return null;
-    }
-
-    @Override
     public int damageDropped(int i)
     {
         return i;
@@ -241,24 +235,21 @@ public class PCtr_BlockElevator extends PC_Block
     {
         return getRenderColor(world.getBlockMetadata(i, j, k));
     }
-    
-    @Override
-   	public List<String> getBlockFlags(World world, PC_VecI pos, List<String> list) {
-
-   		list.add(PC_Utils.NO_HARVEST);
-   		list.add(PC_Utils.NO_PICKUP);
-   		return list;
-   	}
-
-   	@Override
-   	public List<String> getItemFlags(ItemStack stack, List<String> list) {
-   		list.add(PC_Utils.NO_BUILD);
-   		return list;
-   	}
 
 	@Override
 	public Object msg(World world, PC_VecI pos, int msg, Object... obj) {
-		// TODO Auto-generated method stub
+		switch (msg){
+		case PC_Utils.MSG_ITEM_FLAGS:{
+			List<String> list = (List<String>)obj[1];
+			list.add(PC_Utils.NO_BUILD);
+			return list;
+		}case PC_Utils.MSG_BLOCK_FLAGS:{
+			List<String> list = (List<String>)obj[1];
+	   		list.add(PC_Utils.NO_HARVEST);
+	   		list.add(PC_Utils.NO_PICKUP);
+	   		return list;
+		}
+		}
 		return null;
 	}
     

@@ -3,6 +3,7 @@ package powercraft.transport;
 import net.minecraft.src.Entity;
 import net.minecraft.src.EntityItem;
 import net.minecraft.src.World;
+import powercraft.management.PC_Utils;
 import powercraft.management.PC_VecI;
 
 public class PCtr_BlockBeltSpeedy extends PCtr_BlockBeltBase
@@ -10,12 +11,6 @@ public class PCtr_BlockBeltSpeedy extends PCtr_BlockBeltBase
     public PCtr_BlockBeltSpeedy()
     {
         super(4);
-    }
-
-    @Override
-    public String getDefaultName()
-    {
-        return "speedy belt";
     }
 
     @Override
@@ -69,8 +64,12 @@ public class PCtr_BlockBeltSpeedy extends PCtr_BlockBeltBase
     }
 
 	@Override
-	public Object msg(World world, PC_VecI pos, int msg, Object... obj) {
-		// TODO Auto-generated method stub
+	protected Object msg2(World world, PC_VecI pos, int msg, Object... obj) {
+		switch (msg){
+		case PC_Utils.MSG_DEFAULT_NAME:{
+			return "speedy belt";
+		}
+		}
 		return null;
 	}
 }

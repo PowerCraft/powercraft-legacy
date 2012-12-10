@@ -1,6 +1,7 @@
 package powercraft.transport;
 
 import net.minecraft.src.Entity;
+import powercraft.management.PC_VecI;
 
 public class PCtr_TileEntityRedirectionBelt extends PCtr_TileEntityRedirectionBeltBase
 {
