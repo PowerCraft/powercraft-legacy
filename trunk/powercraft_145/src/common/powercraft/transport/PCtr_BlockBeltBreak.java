@@ -11,9 +11,9 @@ import net.minecraft.src.World;
 
 public class PCtr_BlockBeltBreak extends PCtr_BlockBeltBase
 {
-    public PCtr_BlockBeltBreak(int id)
+    public PCtr_BlockBeltBreak()
     {
-        super(id, 5);
+        super(5);
     }
 
     @Override
