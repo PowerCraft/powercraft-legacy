@@ -34,6 +34,8 @@ public class PC_HackedSaveHandler extends AnvilSaveHandler {
 	public void loadBlockID(){
 		if(!PC_Utils.loadPCObjectsIDs(getSaveDirectory())){
 			saveBlockID();
+		}else{
+			PC_Utils.savePCObjectsIDs(getSaveDirectory());
 		}
 	}
 	

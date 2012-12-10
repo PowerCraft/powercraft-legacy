@@ -26,7 +26,7 @@ public abstract class PC_Item extends Item implements PC_IItemInfo, PC_IMSG
 
     public PC_Item(boolean canSetTextureFile)
     {
-        super(PC_Utils.getFreeItemID());
+        super(PC_Utils.getFreeItemID()-256);
         this.canSetTextureFile = canSetTextureFile;
     }
     

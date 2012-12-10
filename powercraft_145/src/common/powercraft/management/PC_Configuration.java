@@ -87,5 +87,15 @@ public class PC_Configuration {
 	public PC_Property getProperty() {
 		return baseProp;
 	}
+
+	public void setInt(String key, int i) {
+		PC_Property prop = getProperty(key, i, null);
+		prop.setValue(i, prop.getComment());
+	}
+
+	public void setString(String key, String s) {
+		PC_Property prop = getProperty(key, s, null);
+		prop.setValue(s, prop.getComment());
+	}
 	
 }

@@ -64,7 +64,8 @@ public class PC_Utils implements PC_IPacketHandler
     
     public static final int MSG_DEFAULT_NAME=1, MSG_BLOCK_FLAGS=2, MSG_ITEM_FLAGS=3, MSG_RENDER_INVENTORY_BLOCK=4, MSG_RENDER_WORLD_BLOCK=5,
     		MSG_SPAWNS_IN_CHUNK=6, MSG_BLOCKS_ON_SPAWN_POINT=7, MSG_SPAWN_POINT=8, MSG_SPAWN_POINT_METADATA=9, MSG_LOAD_FROM_CONFIG=10,
-    		MSG_ON_HIT_BY_BEAM_TRACER=11, MSG_BURN_TIME=12, MSG_RECIVE_POWER=13, MSG_CAN_RECIVE_POWER=14;
+    		MSG_ON_HIT_BY_BEAM_TRACER=11, MSG_BURN_TIME=12, MSG_RECIVE_POWER=13, MSG_CAN_RECIVE_POWER=14, MSG_ON_ACTIVATOR_USED_ON_BLOCK = 15,
+    		MSG_DONT_SHOW_IN_CRAFTING_TOOL=16;
     
     protected PC_Utils(){
         PC_PacketHandler.registerPackethandler("PacketUtils", this);
@@ -1478,12 +1479,12 @@ public class PC_Utils implements PC_IPacketHandler
         return stack;
     }
 
-    public static void setBID(World world, int x, int y, int z, int id, int meta) {
-    	world.setBlockAndMetadataWithNotify(x, y, z, id, meta);
+    public static boolean setBID(World world, int x, int y, int z, int id, int meta) {
+    	return world.setBlockAndMetadataWithNotify(x, y, z, id, meta);
 	}
     
-    public static void setBID(World world, PC_VecI pos, int id, int meta) {
-    	setBID(world, pos.x, pos.y, pos.z, id, meta);
+    public static boolean setBID(World world, PC_VecI pos, int id, int meta) {
+    	return setBID(world, pos.x, pos.y, pos.z, id, meta);
 	}
 
 	protected void iSpawnParticle(String name, Object[] o)
@@ -1919,6 +1920,10 @@ public class PC_Utils implements PC_IPacketHandler
 	
 	public static boolean usingForge() {
 		return true;
+	}
+	
+	public static List<Object> getRgisterdObjects() {
+		return new ArrayList<Object>(objects.values());
 	}
 	
 }
