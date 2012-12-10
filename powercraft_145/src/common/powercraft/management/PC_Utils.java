@@ -1372,7 +1372,7 @@ public class PC_Utils implements PC_IPacketHandler
                 {
                     for (int i = 0; i < 100 * block.b; i++)
                     {
-                        Block b = Block.blocksList[block.a.getBID(player.worldObj)];
+                        Block b = Block.blocksList[getBID(player.worldObj, block.a)];
                         int side = rand.nextInt(6);
                         PC_VecF pos;
                         PC_VecF move;
@@ -1465,7 +1465,7 @@ public class PC_Utils implements PC_IPacketHandler
             return null;
         }
 
-        TileEntity tec = pos.getTE(world);
+        TileEntity tec = getTE(world, pos);
 
         if (tec == null)
         {
@@ -1474,10 +1474,10 @@ public class PC_Utils implements PC_IPacketHandler
 
         ItemStack stack = new ItemStack(getPCObjectIDByName("PCco_ItemBlockSaver"), 1, 0);
         NBTTagCompound blocktag = new NBTTagCompound();
-        pos.getTE(world).writeToNBT(blocktag);
-        int dmg = pos.getBID(world);
+        getTE(world, pos).writeToNBT(blocktag);
+        int dmg = getBID(world, pos);
         stack.setItemDamage(dmg);
-        blocktag.setInteger("BlockMeta", pos.getMD(world));
+        blocktag.setInteger("BlockMeta", getMD(world, pos));
         stack.setTagCompound(blocktag);
 
         if (tec instanceof IInventory)
