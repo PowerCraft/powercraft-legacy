@@ -12,7 +12,7 @@ import net.minecraft.src.Material;
 import net.minecraft.src.TileEntity;
 import net.minecraft.src.World;
 import powercraft.core.PC_Block;
-import powercraft.core.PC_CoordI;
+import powercraft.core.PC_VecI;
 import powercraft.core.PC_IBlockRenderer;
 import powercraft.core.PC_ICraftingToolDisplayer;
 import powercraft.core.PC_IPowerReceiver;
@@ -146,7 +146,7 @@ public class PCma_BlockTransmutabox extends PC_Block implements PC_IPowerReceive
     }
     
     @Override
-   	public List<String> getBlockFlags(World world, PC_CoordI pos, List<String> list) {
+   	public List<String> getBlockFlags(World world, PC_VecI pos, List<String> list) {
 
    		list.add(PC_Utils.NO_HARVEST);
    		list.add(PC_Utils.NO_PICKUP);

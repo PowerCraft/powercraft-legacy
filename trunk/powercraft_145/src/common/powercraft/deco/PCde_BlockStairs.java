@@ -14,7 +14,7 @@ import net.minecraft.src.Material;
 import net.minecraft.src.TileEntity;
 import net.minecraft.src.World;
 import powercraft.core.PC_Block;
-import powercraft.core.PC_CoordI;
+import powercraft.core.PC_VecI;
 import powercraft.core.PC_IBlockRenderer;
 import powercraft.core.PC_MathHelper;
 import powercraft.core.PC_Renderer;
@@ -47,7 +47,7 @@ public class PCde_BlockStairs extends PC_Block implements PC_IBlockRenderer {
 	 * @param pos block pos
 	 * @return bool{X+, X-, Z+, Z-}
 	 */
-	public static boolean[] getFencesShownStairsAbsolute(World world, PC_CoordI pos) {
+	public static boolean[] getFencesShownStairsAbsolute(World world, PC_VecI pos) {
 		boolean fences[] = { false, false, false, false };
 
 		int j = pos.getMeta(world);
@@ -76,7 +76,7 @@ public class PCde_BlockStairs extends PC_Block implements PC_IBlockRenderer {
 	 * @param pos
 	 * @return left, right
 	 */
-	public static boolean[] getFencesShownStairsRelative(World world, PC_CoordI pos) {
+	public static boolean[] getFencesShownStairsRelative(World world, PC_VecI pos) {
 		boolean fences[] = getFencesShownStairsAbsolute(world, pos);
 		boolean rel[] = { false, false };
 
@@ -99,7 +99,7 @@ public class PCde_BlockStairs extends PC_Block implements PC_IBlockRenderer {
 		return rel;
 	}
 
-	private static boolean isFallBlock(World world, PC_CoordI pos) {
+	private static boolean isFallBlock(World world, PC_VecI pos) {
 		int id = pos.getId(world);
 		if (id == 0 || Block.blocksList[id] == null) {
 			return true;
@@ -121,7 +121,7 @@ public class PCde_BlockStairs extends PC_Block implements PC_IBlockRenderer {
 		return false;
 	}
 
-	private static boolean isClimbBlock(World world, PC_CoordI pos) {
+	private static boolean isClimbBlock(World world, PC_VecI pos) {
 		int id = pos.getId(world);
 		if (id == 0 || Block.blocksList[id] == null) {
 			return false;
@@ -164,7 +164,7 @@ public class PCde_BlockStairs extends PC_Block implements PC_IBlockRenderer {
 		}
 
 		// X+, X-, Z+, Z-
-		boolean[] fences = getFencesShownStairsAbsolute(world, new PC_CoordI(x, y, z));
+		boolean[] fences = getFencesShownStairsAbsolute(world, new PC_VecI(x, y, z));
 
 		if (fences[0]) {
 			setBlockBounds(1 - 0.0625F, 0, 0, 1, 1.8F, 1);
@@ -232,7 +232,7 @@ public class PCde_BlockStairs extends PC_Block implements PC_IBlockRenderer {
 	}
 
 	@Override
-	public List<String> getBlockFlags(World world, PC_CoordI pos, List<String> list) {
+	public List<String> getBlockFlags(World world, PC_VecI pos, List<String> list) {
 
 		list.add(PC_Utils.NO_HARVEST);
 		list.add(PC_Utils.NO_PICKUP);

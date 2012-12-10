@@ -1,7 +1,7 @@
 package powercraft.deco;
 
 import net.minecraft.src.Block;
-import powercraft.core.PC_CoordI;
+import powercraft.core.PC_VecI;
 import powercraft.core.PC_ITileEntityRenderer;
 import powercraft.core.PC_Renderer;
 import powercraft.core.PC_TileEntity;
@@ -37,7 +37,7 @@ public class PCde_TileEntityIronFrame extends PC_TileEntity implements PC_ITileE
 		PC_Renderer.glPopMatrix();
 	}
 
-	private boolean needsFullFace(PC_CoordI pos) {
+	private boolean needsFullFace(PC_VecI pos) {
 		int id = pos.getId(worldObj);
 		if (id == Block.torchWood.blockID) return true;
 		if (id == Block.torchRedstoneActive.blockID) return true;

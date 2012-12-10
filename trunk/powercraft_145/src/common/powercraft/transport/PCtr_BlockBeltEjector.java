@@ -28,7 +28,7 @@ public class PCtr_BlockBeltEjector extends PCtr_BlockBeltBase
     @Override
     public void onEntityCollidedWithBlock(World world, int i, int j, int k, Entity entity)
     {
-        PC_CoordI pos = new PC_CoordI(i, j, k);
+        PC_VecI pos = new PC_VecI(i, j, k);
 
         if (PCtr_BeltHelper.isEntityIgnored(entity))
         {
@@ -41,7 +41,7 @@ public class PCtr_BlockBeltEjector extends PCtr_BlockBeltBase
         }
 
         int direction = getRotation(pos.getMeta(world));
-        PC_CoordI pos_leading_to = pos.copy();
+        PC_VecI pos_leading_to = pos.copy();
 
         switch (direction)
         {
@@ -87,7 +87,7 @@ public class PCtr_BlockBeltEjector extends PCtr_BlockBeltBase
         return true;
     }
 
-    private boolean isPowered(World world, PC_CoordI pos)
+    private boolean isPowered(World world, PC_VecI pos)
     {
         return pos.isPoweredIndirectly(world) || pos.offset(0, 1, 0).isPoweredIndirectly(world) || pos.offset(0, -1, 0).isPoweredIndirectly(world);
     }
@@ -131,7 +131,7 @@ public class PCtr_BlockBeltEjector extends PCtr_BlockBeltBase
     @Override
     public void updateTick(World world, int i, int j, int k, Random random)
     {
-        PC_CoordI pos = new PC_CoordI(i, j, k);
+        PC_VecI pos = new PC_VecI(i, j, k);
         int meta = pos.getMeta(world);
 
         if (isPowered(world, pos))

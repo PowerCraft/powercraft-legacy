@@ -16,7 +16,7 @@ import powercraft.core.PC_BeamTracer;
 import powercraft.core.PC_BeamTracer.result;
 import powercraft.core.PC_Block;
 import powercraft.core.PC_Color;
-import powercraft.core.PC_CoordI;
+import powercraft.core.PC_VecI;
 import powercraft.core.PC_IBeamSpecialHandling;
 import powercraft.core.PC_IBlockRenderer;
 import powercraft.core.PC_ICraftingToolDisplayer;
@@ -81,7 +81,7 @@ public class PCli_BlockLaser extends PC_Block implements PC_ICraftingToolDisplay
         {
         	if (!PC_Utils.isCreative(entityplayer))
             {
-        		PC_Utils.dropItemStack(world, te.getItemStack(), new PC_CoordI(i, j, k));
+        		PC_Utils.dropItemStack(world, te.getItemStack(), new PC_VecI(i, j, k));
             }
             te.setItemStack(null);
         }
@@ -126,7 +126,7 @@ public class PCli_BlockLaser extends PC_Block implements PC_ICraftingToolDisplay
         PCli_TileEntityLaser te = PC_Utils.getTE(world, i, j, k, blockID);
         
         if(te!=null){
-        	te.setKiller(PC_Utils.isBlock(world, new PC_CoordI(i, j-1, k), "PCma_BlockRoaster"));
+        	te.setKiller(PC_Utils.isBlock(world, new PC_VecI(i, j-1, k), "PCma_BlockRoaster"));
         }
         
     }
@@ -158,7 +158,7 @@ public class PCli_BlockLaser extends PC_Block implements PC_ICraftingToolDisplay
 
             if (te != null && te.getItemStack()!=null)
             {
-                PC_Utils.dropItemStack(world, te.getItemStack(), new PC_CoordI(x, y, z));
+                PC_Utils.dropItemStack(world, te.getItemStack(), new PC_VecI(x, y, z));
             }
         }
     }
@@ -175,7 +175,7 @@ public class PCli_BlockLaser extends PC_Block implements PC_ICraftingToolDisplay
 		PCli_TileEntityLaser te = PC_Utils.getTE(world, x, y, z, blockID);
 	        
         if(te!=null){
-        	te.setKiller(PC_Utils.isBlock(world, new PC_CoordI(x, y-1, z), "PCma_BlockRoaster"));
+        	te.setKiller(PC_Utils.isBlock(world, new PC_VecI(x, y-1, z), "PCma_BlockRoaster"));
         	boolean powered = world.isBlockIndirectlyGettingPowered(x, y, z);
         	te.setPowerd(powered);
         }
@@ -213,7 +213,7 @@ public class PCli_BlockLaser extends PC_Block implements PC_ICraftingToolDisplay
 	}
 	
 	@Override
-	public List<String> getBlockFlags(World world, PC_CoordI pos, List<String> list) {
+	public List<String> getBlockFlags(World world, PC_VecI pos, List<String> list) {
 
 		list.add(PC_Utils.NO_HARVEST);
 		list.add(PC_Utils.HARVEST_STOP);

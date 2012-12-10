@@ -17,8 +17,8 @@ import powercraft.core.PC_BeamTracer;
 import powercraft.core.PC_BeamTracer.result;
 import powercraft.core.PC_Block;
 import powercraft.core.PC_Color;
-import powercraft.core.PC_CoordD;
-import powercraft.core.PC_CoordI;
+import powercraft.core.PC_VecD;
+import powercraft.core.PC_VecI;
 import powercraft.core.PC_IBeamSpecialHandling;
 import powercraft.core.PC_IBlockRenderer;
 import powercraft.core.PC_ICraftingToolDisplayer;
@@ -136,7 +136,7 @@ public class PCli_BlockMirrow extends PC_Block implements PC_IBeamSpecialHandlin
 	 * @param move movement vector
 	 * @return angle
 	 */
-	private static float getAngleFromMove(PC_CoordI move) {
+	private static float getAngleFromMove(PC_VecI move) {
 		float beamAngle = 0;
 		if (move.x == 0 && move.z == -1) {
 			beamAngle = 0;
@@ -180,25 +180,25 @@ public class PCli_BlockMirrow extends PC_Block implements PC_IBeamSpecialHandlin
 	 * @param angle
 	 * @return vector (coord)
 	 */
-	private static PC_CoordI getMoveFromAngle(float angle) {
+	private static PC_VecI getMoveFromAngle(float angle) {
 		int angleint = Math.round(angle);
 		switch (angleint) {
 			case 0:
-				return new PC_CoordI(0, 0, -1);
+				return new PC_VecI(0, 0, -1);
 			case 45:
-				return new PC_CoordI(1, 0, -1);
+				return new PC_VecI(1, 0, -1);
 			case 90:
-				return new PC_CoordI(1, 0, 0);
+				return new PC_VecI(1, 0, 0);
 			case 135:
-				return new PC_CoordI(1, 0, 1);
+				return new PC_VecI(1, 0, 1);
 			case 180:
-				return new PC_CoordI(0, 0, 1);
+				return new PC_VecI(0, 0, 1);
 			case 225:
-				return new PC_CoordI(-1, 0, 1);
+				return new PC_VecI(-1, 0, 1);
 			case 270:
-				return new PC_CoordI(-1, 0, 0);
+				return new PC_VecI(-1, 0, 0);
 			case 315:
-				return new PC_CoordI(-1, 0, -1);
+				return new PC_VecI(-1, 0, -1);
 		}
 		return null;
 	}
@@ -247,14 +247,14 @@ public class PCli_BlockMirrow extends PC_Block implements PC_IBeamSpecialHandlin
 	}
 	
 	@Override
-	public result onHitByBeamTracer(PC_BeamTracer beamTracer, PC_CoordI cnt, PC_CoordI move, PC_Color color, float strength, int distanceToMove) {
+	public result onHitByBeamTracer(PC_BeamTracer beamTracer, PC_VecI cnt, PC_VecI move, PC_Color color, float strength, int distanceToMove) {
 		int mirrorColor = PCli_BlockMirrow.getMirrorColor(beamTracer.getWorld(), cnt.x, cnt.y, cnt.z);
 		if (mirrorColor == -1 || mirrorColor == color.getMeta()) {
 			// vertical beam
 			if (move.x == 0 && move.z == 0) {
 	
 				int a = mirrorTo45[PC_Utils.getMD(beamTracer.getWorld(), cnt.x, cnt.y, cnt.z)];
-				PC_CoordI reflected = getMoveFromAngle(a).getInverted();
+				PC_VecI reflected = getMoveFromAngle(a).getInverted();
 	
 				move.x = reflected.x;
 				move.z = reflected.z;
@@ -270,7 +270,7 @@ public class PCli_BlockMirrow extends PC_Block implements PC_IBeamSpecialHandlin
 	
 				beamNew = fixAngle(beamNew);
 	
-				PC_CoordI reflected = getMoveFromAngle(beamNew).getInverted();
+				PC_VecI reflected = getMoveFromAngle(beamNew).getInverted();
 	
 				move.x = reflected.x;
 				move.z = reflected.z;
@@ -309,7 +309,7 @@ public class PCli_BlockMirrow extends PC_Block implements PC_IBeamSpecialHandlin
 	}
 	
 	@Override
-	public List<String> getBlockFlags(World world, PC_CoordI pos, List<String> list) {
+	public List<String> getBlockFlags(World world, PC_VecI pos, List<String> list) {
 
 		list.add(PC_Utils.NO_HARVEST);
 		list.add(PC_Utils.NO_PICKUP);

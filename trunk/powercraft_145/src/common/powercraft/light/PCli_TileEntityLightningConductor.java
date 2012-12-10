@@ -8,8 +8,8 @@ import net.minecraft.src.ItemStack;
 import net.minecraft.src.NBTTagCompound;
 import net.minecraft.src.World;
 import powercraft.core.PC_Color;
-import powercraft.core.PC_CoordD;
-import powercraft.core.PC_CoordI;
+import powercraft.core.PC_VecD;
+import powercraft.core.PC_VecI;
 import powercraft.core.PC_InvUtils;
 import powercraft.core.PC_TileEntity;
 import powercraft.core.PC_Utils;
@@ -68,23 +68,23 @@ public class PCli_TileEntityLightningConductor extends PC_TileEntity
             {
                 for (int i = 0; i < 2; i++)
                 {
-                    PC_Utils.spawnParticle("PC_EntityLaserParticleFX", worldObj, new PC_CoordD(getCoord())
+                    PC_Utils.spawnParticle("PC_EntityLaserParticleFX", worldObj, new PC_VecD(getCoord())
                             .offset(-0.1F + rand.nextFloat() * 1.2F, rand.nextFloat() * 0.8F - 1.0f, -0.1F + rand.nextFloat() * 1.2F), new PC_Color(0.6,
-                                    0.6, 1), new PC_CoordD(), 0);
+                                    0.6, 1), new PC_VecD(), 0);
                 }
 
                 for (int i = 0; i < 2; i++)
                 {
-                    PC_Utils.spawnParticle("PC_EntityLaserParticleFX", worldObj, new PC_CoordD(getCoord())
+                    PC_Utils.spawnParticle("PC_EntityLaserParticleFX", worldObj, new PC_VecD(getCoord())
                             .offset(0.1F + rand.nextFloat() * 0.8F, rand.nextFloat() * 0.8F - 0.2f, 0.1F + rand.nextFloat() * 0.8F), new PC_Color(
-                                    0.6, 0.6, 1), new PC_CoordD(), 0);
+                                    0.6, 0.6, 1), new PC_VecD(), 0);
                 }
 
                 for (int i = 0; i < 2; i++)
                 {
-                    PC_Utils.spawnParticle("PC_EntityLaserParticleFX", worldObj, new PC_CoordD(getCoord())
+                    PC_Utils.spawnParticle("PC_EntityLaserParticleFX", worldObj, new PC_VecD(getCoord())
                             .offset(0.2F + rand.nextFloat() * 0.6F, rand.nextFloat() * 0.9F - 0.4f, 0.2F + rand.nextFloat() * 0.6F), new PC_Color(
-                                    0.6, 0.6, 1), new PC_CoordD(), 0);
+                                    0.6, 0.6, 1), new PC_VecD(), 0);
                 }
             }
         }

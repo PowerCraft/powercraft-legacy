@@ -52,7 +52,7 @@ public class PCtr_BlockElevator extends PC_Block
     @Override
     public void onEntityCollidedWithBlock(World world, int i, int j, int k, Entity entity)
     {
-        PC_CoordI pos = new PC_CoordI(i, j, k);
+        PC_VecI pos = new PC_VecI(i, j, k);
 
         if (PCtr_BeltHelper.isEntityIgnored(entity))
         {
@@ -243,7 +243,7 @@ public class PCtr_BlockElevator extends PC_Block
     }
     
     @Override
-   	public List<String> getBlockFlags(World world, PC_CoordI pos, List<String> list) {
+   	public List<String> getBlockFlags(World world, PC_VecI pos, List<String> list) {
 
    		list.add(PC_Utils.NO_HARVEST);
    		list.add(PC_Utils.NO_PICKUP);

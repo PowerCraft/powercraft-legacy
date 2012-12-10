@@ -17,7 +17,7 @@ import cpw.mods.fml.common.asm.SideOnly;
 public abstract class PC_Block extends BlockContainer implements PC_IMSG
 {
     private boolean canSetTextureFile = true;
-    private String module;
+    private PC_IModule module;
 	private ItemBlock itemBlock;
 	private Block replacedBlock = null;
 	private Item replacedItemBlock = null;
@@ -71,11 +71,11 @@ public abstract class PC_Block extends BlockContainer implements PC_IMSG
         return null;
     }
 
-    public void setModule(String module){
+    public void setModule(PC_IModule module){
     	this.module = module;
     }
     
-    public String getModule(){
+    public PC_IModule getModule(){
     	return module;
     }
     

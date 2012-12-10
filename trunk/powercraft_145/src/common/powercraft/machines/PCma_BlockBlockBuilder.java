@@ -14,7 +14,7 @@ import net.minecraft.src.MathHelper;
 import net.minecraft.src.TileEntity;
 import net.minecraft.src.World;
 import powercraft.core.PC_Block;
-import powercraft.core.PC_CoordI;
+import powercraft.core.PC_VecI;
 import powercraft.core.PC_ICraftingToolDisplayer;
 import powercraft.core.PC_ISpecialInventoryTextures;
 import powercraft.core.PC_InvUtils;
@@ -219,7 +219,7 @@ public class PCma_BlockBlockBuilder extends PC_Block implements PC_ISpecialInven
 	}
 	
 	@Override
-   	public List<String> getBlockFlags(World world, PC_CoordI pos, List<String> list) {
+   	public List<String> getBlockFlags(World world, PC_VecI pos, List<String> list) {
 
    		list.add(PC_Utils.NO_HARVEST);
    		list.add(PC_Utils.NO_PICKUP);

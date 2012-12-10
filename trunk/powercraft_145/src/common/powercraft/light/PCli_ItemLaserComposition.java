@@ -14,7 +14,7 @@ import net.minecraft.src.TileEntity;
 import net.minecraft.src.World;
 import powercraft.core.PC_BeamTracer;
 import powercraft.core.PC_Color;
-import powercraft.core.PC_CoordI;
+import powercraft.core.PC_VecI;
 import powercraft.core.PC_Item;
 import powercraft.core.PC_Utils;
 import cpw.mods.fml.common.Side;
@@ -215,14 +215,14 @@ public class PCli_ItemLaserComposition extends PC_Item
 		return (20+levelDistance*10)*(b?2:1);
 	}
 
-	public static boolean onBlockHit(PC_BeamTracer beamTracer, Block block, PC_CoordI coord, ItemStack itemstack, boolean isBurning) {
+	public static boolean onBlockHit(PC_BeamTracer beamTracer, Block block, PC_VecI coord, ItemStack itemstack, boolean isBurning) {
 		if(block.isOpaqueCube() && !PC_Utils.hasFlag(beamTracer.getWorld(), coord, PC_Utils.BEAMTRACER_STOP)){
 			return true;
 		}
 		return false;
 	}
 
-	public static boolean onEntityHit(PC_BeamTracer beamTracer, Entity entity, PC_CoordI coord, ItemStack itemstack, boolean isBurning) {
+	public static boolean onEntityHit(PC_BeamTracer beamTracer, Entity entity, PC_VecI coord, ItemStack itemstack, boolean isBurning) {
 		if(itemstack==null)
 			return true;
 		NBTTagCompound nbtTagCompound = itemstack.getTagCompound();

@@ -30,7 +30,7 @@ import net.minecraft.src.World;
 import powercraft.core.PC_BeamTracer;
 import powercraft.core.PC_Block;
 import powercraft.core.PC_Color;
-import powercraft.core.PC_CoordI;
+import powercraft.core.PC_VecI;
 import powercraft.core.PC_IBeamHandler;
 import powercraft.core.PC_ICraftingToolDisplayer;
 import powercraft.core.PC_ISpecialInventoryTextures;
@@ -199,9 +199,9 @@ public class PCma_BlockHarvester extends PC_Block implements
 		int incZ = Facing.offsetsZForSide[deviceMeta];
 		int incX = Facing.offsetsXForSide[deviceMeta];
 
-		PC_CoordI move = new PC_CoordI(incX, 0, incZ);
+		PC_VecI move = new PC_VecI(incX, 0, incZ);
 
-		PC_CoordI cnt = new PC_CoordI(x, y, z);
+		PC_VecI cnt = new PC_VecI(x, y, z);
 		PC_BeamTracer beamTracer = new PC_BeamTracer(world, this);
 
 		beamTracer.setStartCoord(cnt);
@@ -244,7 +244,7 @@ public class PCma_BlockHarvester extends PC_Block implements
 	
 	
 	@Override
-	public boolean onBlockHit(PC_BeamTracer beamTracer, Block block, PC_CoordI coord) {
+	public boolean onBlockHit(PC_BeamTracer beamTracer, Block block, PC_VecI coord) {
 		World world = beamTracer.getWorld();
 		int id = coord.getId(world);
 		int meta = coord.getMeta(world);
@@ -390,7 +390,7 @@ public class PCma_BlockHarvester extends PC_Block implements
 
 
 	@Override
-	public boolean onEntityHit(PC_BeamTracer beamTracer, Entity entity, PC_CoordI coord) {
+	public boolean onEntityHit(PC_BeamTracer beamTracer, Entity entity, PC_VecI coord) {
 
 		World world = beamTracer.getWorld();
 		
@@ -409,7 +409,7 @@ public class PCma_BlockHarvester extends PC_Block implements
 			int iPLUS1 = -Facing.offsetsXForSide[l];
 			int kPLUS1 = -Facing.offsetsZForSide[l];
 
-			PC_CoordI startCoord = beamTracer.getStartCoord();
+			PC_VecI startCoord = beamTracer.getStartCoord();
 			
 			cart.posX = startCoord.x + iPLUS1 * 1.5D;
 			cart.posY = startCoord.y;
@@ -465,7 +465,7 @@ public class PCma_BlockHarvester extends PC_Block implements
 	}
 
 
-	private void dispenseItem(World world, PC_CoordI devPos, ItemStack itemstack) {
+	private void dispenseItem(World world, PC_VecI devPos, ItemStack itemstack) {
 
 		if (itemstack == null || itemstack.stackSize <= 0) {
 			return;
@@ -527,7 +527,7 @@ public class PCma_BlockHarvester extends PC_Block implements
 	}
 	
 	@Override
-   	public List<String> getBlockFlags(World world, PC_CoordI pos, List<String> list) {
+   	public List<String> getBlockFlags(World world, PC_VecI pos, List<String> list) {
 
    		list.add(PC_Utils.NO_HARVEST);
    		list.add(PC_Utils.NO_PICKUP);

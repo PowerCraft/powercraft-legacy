@@ -27,7 +27,7 @@ public class PCtr_BlockBeltSeparator extends PCtr_BlockBeltBase
     @Override
     public void onEntityCollidedWithBlock(World world, int i, int j, int k, Entity entity)
     {
-        PC_CoordI pos = new PC_CoordI(i, j, k);
+        PC_VecI pos = new PC_VecI(i, j, k);
         int redir = 0;
 
         if (PCtr_BeltHelper.isEntityIgnored(entity))
@@ -65,7 +65,7 @@ public class PCtr_BlockBeltSeparator extends PCtr_BlockBeltBase
             rotation += 4;
         }
 
-        PC_CoordI pos_leading_to = pos.copy();
+        PC_VecI pos_leading_to = pos.copy();
 
         switch (rotation)
         {

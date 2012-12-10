@@ -11,7 +11,7 @@ import net.minecraft.src.World;
 import powercraft.core.PC_BeamTracer;
 import powercraft.core.PC_Block;
 import powercraft.core.PC_Color;
-import powercraft.core.PC_CoordI;
+import powercraft.core.PC_VecI;
 import powercraft.core.PC_IBeamHandler;
 import powercraft.core.PC_ITileEntityRenderer;
 import powercraft.core.PC_PacketHandler;
@@ -127,12 +127,12 @@ public class PCli_TileEntityLaser extends PC_TileEntity implements PC_IBeamHandl
     }
     
 	@Override
-	public boolean onBlockHit(PC_BeamTracer beamTracer, Block block, PC_CoordI coord) {
+	public boolean onBlockHit(PC_BeamTracer beamTracer, Block block, PC_VecI coord) {
 		return PCli_ItemLaserComposition.onBlockHit(beamTracer, block, coord, itemstack, isRoasterBurning());
 	}
 
 	@Override
-	public boolean onEntityHit(PC_BeamTracer beamTracer, Entity entity, PC_CoordI coord) {
+	public boolean onEntityHit(PC_BeamTracer beamTracer, Entity entity, PC_VecI coord) {
 		active = true;
 		return PCli_ItemLaserComposition.onEntityHit(beamTracer, entity, coord, itemstack, isRoasterBurning());
 	}

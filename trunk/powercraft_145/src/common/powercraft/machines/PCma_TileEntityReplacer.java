@@ -10,8 +10,8 @@ import net.minecraft.src.ModLoader;
 import net.minecraft.src.NBTTagCompound;
 import net.minecraft.src.NBTTagList;
 import powercraft.core.PC_Color;
-import powercraft.core.PC_CoordD;
-import powercraft.core.PC_CoordI;
+import powercraft.core.PC_VecD;
+import powercraft.core.PC_VecI;
 import powercraft.core.PC_EntityLaserParticleFX;
 import powercraft.core.PC_ISpecialAccessInventory;
 import powercraft.core.PC_InvUtils;
@@ -25,7 +25,7 @@ public class PCma_TileEntityReplacer extends PC_TileEntity implements IInventory
     private static final int MAXSTACK = 1;
     private static final int SIZE = 1;
 
-    public PC_CoordI coordOffset = new PC_CoordI(0, 1, 0);
+    public PC_VecI coordOffset = new PC_VecI(0, 1, 0);
 
     public boolean aidEnabled = false;
     private PC_Color aidcolor;
@@ -83,7 +83,7 @@ public class PCma_TileEntityReplacer extends PC_TileEntity implements IInventory
             double d2 = zCoord + rand.nextFloat();
             int a = rand.nextInt(3);
             int b = rand.nextInt(3);
-            PC_Utils.spawnParticle("PC_EntityLaserParticleFX", worldObj, new PC_CoordD(d, d1, d2), aidcolor, new PC_CoordD(), 0);
+            PC_Utils.spawnParticle("PC_EntityLaserParticleFX", worldObj, new PC_VecD(d, d1, d2), aidcolor, new PC_VecD(), 0);
 
             for (int q = 0; q < 8; q++)
             {
@@ -131,7 +131,7 @@ public class PCma_TileEntityReplacer extends PC_TileEntity implements IInventory
                         break;
                 }
 
-                PC_Utils.spawnParticle("PC_EntityLaserParticleFX", worldObj, new PC_CoordD(d, d1, d2), aidcolor, new PC_CoordI(), 0);
+                PC_Utils.spawnParticle("PC_EntityLaserParticleFX", worldObj, new PC_VecD(d, d1, d2), aidcolor, new PC_VecI(), 0);
             }
         }
 
@@ -226,7 +226,7 @@ public class PCma_TileEntityReplacer extends PC_TileEntity implements IInventory
         aidEnabled = nbttagcompound.getBoolean("aid");
         extraMeta = nbttagcompound.getInteger("extraMeta");
 
-        if (coordOffset.equals(new PC_CoordI(0, 0, 0)))
+        if (coordOffset.equals(new PC_VecI(0, 0, 0)))
         {
             coordOffset.setTo(0, 1, 0);
         }
