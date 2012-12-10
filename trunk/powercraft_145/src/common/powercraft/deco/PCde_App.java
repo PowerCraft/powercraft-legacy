@@ -9,6 +9,8 @@ import powercraft.management.PC_Block;
 import powercraft.management.PC_Configuration;
 import powercraft.management.PC_IModule;
 import powercraft.management.PC_ItemStack;
+import powercraft.management.PC_ShapedRecipes;
+import powercraft.management.PC_ShapelessRecipes;
 import powercraft.management.PC_Struct2;
 import powercraft.management.PC_Utils;
 
@@ -50,63 +52,65 @@ public class PCde_App implements PC_IModule {
 	}
 
 	@Override
-	public void initItems() {
-		// TODO Auto-generated method stub
-
-	}
+	public void initItems() {}
 
 	@Override
 	public List<IRecipe> initRecipes(List<IRecipe> recipes) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-	
-	/*@Override
-	protected void initRecipes() {
+		recipes.add(new PC_ShapedRecipes(new PC_ItemStack(ironFrame, 32, 0),
+					"XXX", 
+					"X X", 
+					"XXX",
+						'X', Item.ingotIron));	
 		
-		PC_Utils.addRecipe(
-				new PC_ItemStack(ironFrame, 32, 0),
-				new Object[] { "XXX", "X X", "XXX",
-					'X', Item.ingotIron });	
+		recipes.add(new PC_ShapedRecipes(new PC_ItemStack(redstoneStorage, 1, 1),
+					"XXX", 
+					"XXX", 
+					"XXX",
+						'X', Item.redstone));
 		
-		PC_Utils.addRecipe(
-				new PC_ItemStack(redstoneStorage, 1, 1),
-				new Object[] { "XXX", "XXX", "XXX",
-					'X', Item.redstone });
-		
-		PC_Utils.addShapelessRecipe(
-				new PC_ItemStack(Item.redstone, 9, 0),
-				new Object[] { new PC_ItemStack(redstoneStorage) });
+		recipes.add(new PC_ShapelessRecipes(new PC_ItemStack(Item.redstone, 9, 0),
+				new PC_ItemStack(redstoneStorage)));
 		
 		
-		PC_Utils.addRecipe(
-				new PC_ItemStack(platform, 15),
-				new Object[] { "X  ", "X  ", "XXX",
-					'X', Item.ingotIron });	
+		recipes.add(new PC_ShapedRecipes(new PC_ItemStack(platform, 15),
+					"X  ", 
+					"X  ", 
+					"XXX",
+						'X', Item.ingotIron));	
 		
-		PC_Utils.addRecipe(
-				new PC_ItemStack(stairs, 15),
-				new Object[] { "X  ", "XX ", " XX",
-					'X', Item.ingotIron });			
-
-		PC_Utils.addShapelessRecipe(
-				new PC_ItemStack(Item.ingotIron),
-				new Object[] {new PC_ItemStack(platform, 1),new PC_ItemStack(platform, 1),new PC_ItemStack(platform, 1)});
+		recipes.add(new PC_ShapedRecipes(new PC_ItemStack(stairs, 15),
+					"X  ", 
+					"XX ", 
+					" XX",
+						'X', Item.ingotIron));			
 		
-		PC_Utils.addShapelessRecipe(
-				new PC_ItemStack(Item.ingotIron),
-				new Object[] {new PC_ItemStack(stairs, 1),new PC_ItemStack(stairs, 1),new PC_ItemStack(stairs, 1)});
+		recipes.add(new PC_ShapelessRecipes(new PC_ItemStack(Item.ingotIron),
+				new PC_ItemStack(platform, 1), new PC_ItemStack(platform, 1), new PC_ItemStack(platform, 1)));
+		
+		recipes.add(new PC_ShapelessRecipes(new PC_ItemStack(Item.ingotIron),
+				new PC_ItemStack(stairs, 1),new PC_ItemStack(stairs, 1),new PC_ItemStack(stairs, 1)));
 		
 		// chimneys
-		PC_Utils.addRecipe(new PC_ItemStack(chimney,6,0),new Object[] {"X X", "X X", "X X", Character.valueOf('X'), Block.cobblestone});
-		PC_Utils.addRecipe(new PC_ItemStack(chimney,6,1),new Object[] {"X X", "X X", "X X", Character.valueOf('X'), Block.brick});
-		PC_Utils.addRecipe(new PC_ItemStack(chimney,6,2),new Object[] {"X X", "X X", "X X", Character.valueOf('X'), Block.stoneBrick});
-		
-	}*/
+		recipes.add(new PC_ShapedRecipes(new PC_ItemStack(chimney,6,0),
+				"X X", 
+				"X X", 
+				"X X", 
+					'X', Block.cobblestone));
+		recipes.add(new PC_ShapedRecipes(new PC_ItemStack(chimney,6,1),
+				"X X", 
+				"X X", 
+				"X X", 
+					'X', Block.brick));
+		recipes.add(new PC_ShapedRecipes(new PC_ItemStack(chimney,6,2),
+				"X X", 
+				"X X", 
+				"X X", 
+					'X', Block.stoneBrick));
+		return recipes;
+	}
 
 	@Override
 	public List<PC_Struct2<String, Class>> registerGuis(List<PC_Struct2<String, Class>> guis) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 

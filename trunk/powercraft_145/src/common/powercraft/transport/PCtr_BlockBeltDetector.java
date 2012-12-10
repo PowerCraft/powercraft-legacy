@@ -18,14 +18,10 @@ public class PCtr_BlockBeltDetector extends PCtr_BlockBeltBase
         super(6);
     }
 
-    
-    
     @Override
 	public boolean isProvidingWeakPower(IBlockAccess world, int x, int y, int z, int s) {
     	return isActive(world, x, y, z);
 	}
-
-
 
 	@Override
 	public boolean isProvidingStrongPower(IBlockAccess world, int x, int y, int z, int s) {

@@ -12,34 +12,22 @@ import net.minecraft.src.ItemStack;
 import net.minecraft.src.NBTTagCompound;
 import net.minecraft.src.TileEntity;
 import net.minecraft.src.World;
-import powercraft.core.PC_BeamTracer;
-import powercraft.core.PC_Color;
-import powercraft.core.PC_VecI;
-import powercraft.core.PC_Item;
-import powercraft.core.PC_Utils;
+import powercraft.management.PC_BeamTracer;
+import powercraft.management.PC_Color;
+import powercraft.management.PC_Item;
+import powercraft.management.PC_Struct3;
+import powercraft.management.PC_Utils;
+import powercraft.management.PC_VecI;
 import cpw.mods.fml.common.Side;
 import cpw.mods.fml.common.asm.SideOnly;
 
 public class PCli_ItemLaserComposition extends PC_Item
 {
-    public PCli_ItemLaserComposition(int id)
+    public PCli_ItemLaserComposition()
     {
-        super(id);
         setMaxStackSize(1);
         setHasSubtypes(true);
         setCreativeTab(CreativeTabs.tabDecorations);
-    }
-
-    @Override
-    public String[] getDefaultNames()
-    {
-        return new String[]
-                {
-                    getItemName(), "Laser Composition",
-                    getItemName() + ".kill", "Kill Level %s",
-                    getItemName() + ".distance", "Distance Level %s",
-                    getItemName() + ".sensor", "Sensor Level %s"
-                };
     }
 
     @Override
@@ -197,9 +185,9 @@ public class PCli_ItemLaserComposition extends PC_Item
         	return new PC_Color(1.0f, 1.0f, 1.0f);
         }
         PC_Color c = new PC_Color();
-        c.r = levelKill / (float)maxLevel;
-        c.g = 0.0f;
-        c.b = 0.0f;
+        c.x = levelKill / (float)maxLevel;
+        c.y = 0.0f;
+        c.z = 0.0f;
         return c;
     }
     
@@ -252,6 +240,19 @@ public class PCli_ItemLaserComposition extends PC_Item
         }
         int levelSensor = nbtTagCompound.getInteger("level.sensor");
 		return levelSensor>0;
+	}
+
+	@Override
+	public Object msg(int msg, Object... obj) {
+		switch(msg){
+		case PC_Utils.MSG_DEFAULT_NAME:
+			List<PC_Struct3<String, String, String[]>> names = (List<PC_Struct3<String, String, String[]>>)obj[0];
+			names.add(new PC_Struct3<String, String, String[]>(getItemName() + ".kill", "Kill Level %s", null));
+			names.add(new PC_Struct3<String, String, String[]>( getItemName() + ".distance", "Distance Level %s", null));
+			names.add(new PC_Struct3<String, String, String[]>(getItemName() + ".sensor", "Sensor Level %s", null));;
+            return names;
+		}
+		return null;
 	}
 	
 }
