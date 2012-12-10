@@ -285,18 +285,6 @@ public class PC_VecI implements Serializable, PC_Vec<Integer, PC_VecI>{
 		return new PC_VecI(this);
 	}
 
-	public TileEntity getTE(IBlockAccess world) {
-		return PC_Utils.getTE(world, this);
-	}
-
-	public int getMD(IBlockAccess world) {
-		return PC_Utils.getMD(world, this);
-	}
-	
-	public int getBID(IBlockAccess world) {
-		return PC_Utils.getBID(world, this);
-	}
-
 	@Override
 	public boolean equals(Object o) {
 		if(!(o instanceof PC_Vec)){

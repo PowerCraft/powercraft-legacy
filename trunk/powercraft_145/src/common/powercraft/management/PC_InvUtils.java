@@ -23,7 +23,7 @@ public class PC_InvUtils
 {
     public static IInventory getCompositeInventoryAt(IBlockAccess world, PC_VecI pos)
     {
-        TileEntity te = pos.getTE(world);
+        TileEntity te = PC_Utils.getTE(world, pos);
 
         if (te == null)
         {
@@ -41,28 +41,28 @@ public class PC_InvUtils
         }
 
         IInventory inv = (IInventory) te;
-        int id = pos.getBID(world);
+        int id = PC_Utils.getBID(world, pos);
 
         if (id == Block.chest.blockID)
         {
-            if (pos.copy().add(-1, 0, 0).getBID(world) == Block.chest.blockID)
+            if (PC_Utils.getBID(world, pos.offset(-1, 0, 0)) == Block.chest.blockID)
             {
-                inv = new InventoryLargeChest("Large chest", (IInventory) pos.copy().add(-1, 0, 0).getTE(world), inv);
+                inv = new InventoryLargeChest("Large chest", (IInventory) PC_Utils.getTE(world, pos.offset(-1, 0, 0)), inv);
             }
 
-            if (pos.copy().add(1, 0, 0).getBID(world) == Block.chest.blockID)
+            if (PC_Utils.getBID(world, pos.offset(1, 0, 0)) == Block.chest.blockID)
             {
-                inv = new InventoryLargeChest("Large chest", inv, (IInventory) pos.copy().add(1, 0, 0).getTE(world));
+                inv = new InventoryLargeChest("Large chest", inv, (IInventory) PC_Utils.getTE(world, pos.offset(1, 0, 0)));
             }
 
-            if (pos.copy().add(0, 0, -1).getBID(world) == Block.chest.blockID)
+            if (PC_Utils.getBID(world, pos.offset(0, 0, -1)) == Block.chest.blockID)
             {
-                inv = new InventoryLargeChest("Large chest", (IInventory) pos.copy().add(0, 0, -1).getTE(world), inv);
+                inv = new InventoryLargeChest("Large chest", (IInventory) PC_Utils.getTE(world, pos.offset(0, 0, -1)), inv);
             }
 
-            if (pos.copy().add(0, 0, 1).getBID(world) == Block.chest.blockID)
+            if (PC_Utils.getBID(world, pos.offset(0, 0, 1)) == Block.chest.blockID)
             {
-                inv = new InventoryLargeChest("Large chest", inv, (IInventory) pos.copy().add(0, 0, 1).getTE(world));
+                inv = new InventoryLargeChest("Large chest", inv, (IInventory) PC_Utils.getTE(world, pos.offset(0, 0, 1)));
             }
         }
 
