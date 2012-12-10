@@ -4,6 +4,7 @@ import java.util.List;
 
 import powercraft.management.PC_IClientModule;
 import powercraft.management.PC_LangEntry;
+import powercraft.management.PC_Struct2;
 import powercraft.management.PC_Utils;
 
 public class PCli_AppClient extends PCli_App implements PC_IClientModule {
@@ -31,4 +32,10 @@ public class PCli_AppClient extends PCli_App implements PC_IClientModule {
 		return null;
 	}
 
+	@Override
+	public List<PC_Struct2<String, Class>> registerGuis(List<PC_Struct2<String, Class>> guis) {
+		guis.add(new PC_Struct2<String, Class>("Light", PCli_GuiLight.class));
+		return guis;
+	}
+	
 }

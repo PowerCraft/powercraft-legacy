@@ -2,6 +2,8 @@ package powercraft.management;
 
 import java.io.Serializable;
 
+import net.minecraft.src.NBTTagCompound;
+
 public class PC_VecF implements Serializable, PC_Vec<Float, PC_VecF> {
 	
 	public float x;
@@ -297,6 +299,20 @@ public class PC_VecF implements Serializable, PC_Vec<Float, PC_VecF> {
 		if(z != vec.getZ().floatValue())
 			return false;
 		return true;
+	}
+
+	@Override
+	public void readFromNBT(NBTTagCompound nbttag) {
+		x = nbttag.getFloat("x");
+		y = nbttag.getFloat("y");
+		z = nbttag.getFloat("z");
+	}
+
+	@Override
+	public void writeToNBT(NBTTagCompound nbttag) {
+		nbttag.setFloat("x", x);
+		nbttag.setFloat("y", y);
+		nbttag.setFloat("z", z);
 	}
 	
 }

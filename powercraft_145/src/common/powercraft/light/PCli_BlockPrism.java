@@ -12,19 +12,16 @@ import net.minecraft.src.Material;
 import net.minecraft.src.MathHelper;
 import net.minecraft.src.TileEntity;
 import net.minecraft.src.World;
-import powercraft.core.PC_BeamTracer;
-import powercraft.core.PC_BeamTracer.result;
-import powercraft.core.PC_Block;
-import powercraft.core.PC_Color;
-import powercraft.core.PC_VecI;
-import powercraft.core.PC_IBeamSpecialHandling;
-import powercraft.core.PC_IBlockRenderer;
-import powercraft.core.PC_ICraftingToolDisplayer;
-import powercraft.core.PC_Renderer;
-import powercraft.core.PC_Utils;
+import powercraft.management.PC_BeamTracer;
+import powercraft.management.PC_BeamTracer.result;
+import powercraft.management.PC_Block;
+import powercraft.management.PC_Color;
+import powercraft.management.PC_IItemInfo;
+import powercraft.management.PC_Renderer;
+import powercraft.management.PC_Utils;
+import powercraft.management.PC_VecI;
 
-public class PCli_BlockPrism extends PC_Block implements
-		PC_IBeamSpecialHandling, PC_IBlockRenderer, PC_ICraftingToolDisplayer {
+public class PCli_BlockPrism extends PC_Block implements PC_IItemInfo {
 
 	public PCli_BlockPrism(int id) {
 		super(id, Material.glass);
@@ -35,11 +32,6 @@ public class PCli_BlockPrism extends PC_Block implements
 		setResistance(4.0F);
 		setStepSound(Block.soundStoneFootstep);
 		setCreativeTab(CreativeTabs.tabDecorations);
-	}
-
-	@Override
-	public String getDefaultName() {
-		return "Prism";
 	}
 	
 	@Override
@@ -168,7 +160,6 @@ public class PCli_BlockPrism extends PC_Block implements
 		return 0xffffcc;
 	}
 	
-	@Override
 	public void renderInventoryBlock(Block block, int metadata, int modelID, Object renderer) {
 		Block ice = Block.ice;
 		float px = 0.0625F;
@@ -184,11 +175,6 @@ public class PCli_BlockPrism extends PC_Block implements
 		ice.setBlockBounds(0, 0, 0, 1, 1, 1);
 	}
 
-	@Override
-	public void renderWorldBlock(IBlockAccess world, int x, int y, int z,Block block, int modelId, Object renderer) {
-		
-	}
-
 	/** prism redirection vector for side */
 	private static final PC_VecI[] prismMove = { new PC_VecI(0, -1, 0), new PC_VecI(0, 1, 0), new PC_VecI(1, 0, 0), new PC_VecI(1, 0, 1),
 			new PC_VecI(0, 0, 1), new PC_VecI(-1, 0, 1), new PC_VecI(-1, 0, 0), new PC_VecI(-1, 0, -1), new PC_VecI(0, 0, -1),
@@ -202,7 +188,7 @@ public class PCli_BlockPrism extends PC_Block implements
 	 */
 	private int getPrismSideFacingMove(PC_VecI move) {
 		for (int i = 0; i < 10; i++) {
-			if (prismMove[i].equals(move.getInverted())) {
+			if (prismMove[i].equals(move.mul(-1))) {
 				return i;
 			}
 		}
@@ -219,7 +205,6 @@ public class PCli_BlockPrism extends PC_Block implements
 		return prismMove[side];
 	}
 	
-	@Override
 	public result onHitByBeamTracer(PC_BeamTracer beamTracer, PC_VecI cnt, PC_VecI move, PC_Color color, float strength, int distanceToMove) {
 
 		PCli_TileEntityPrism prism = PC_Utils.getTE(beamTracer.getWorld(), cnt.x, cnt.y, cnt.z);
@@ -255,29 +240,37 @@ public class PCli_BlockPrism extends PC_Block implements
 	}
 
 	@Override
-	public String getCraftingToolModule() {
-		return PCli_App.getInstance().getNameWithoutPowerCraft();
-	}
-
-	@Override
 	public List<ItemStack> getItemStacks(List<ItemStack> arrayList) {
 		arrayList.add(new ItemStack(this));
 		return arrayList;
 	}
-
+	
 	@Override
-	public List<String> getBlockFlags(World world, PC_VecI pos, List<String> list) {
-
-		list.add(PC_Utils.NO_HARVEST);
-		list.add(PC_Utils.NO_PICKUP);
-		list.add(PC_Utils.PASSIVE);
-		return list;
-	}
-
-	@Override
-	public List<String> getItemFlags(ItemStack stack, List<String> list) {
-		list.add(PC_Utils.NO_BUILD);
-		return list;
+	public Object msg(World world, PC_VecI pos, int msg, Object... obj) {
+		switch(msg){
+		case PC_Utils.MSG_RENDER_INVENTORY_BLOCK:
+			renderInventoryBlock((Block)obj[0], (Integer)obj[1], (Integer)obj[2], obj[3]);
+			break;
+		case PC_Utils.MSG_RENDER_WORLD_BLOCK:
+			break;
+		case PC_Utils.MSG_BLOCK_FLAGS:{
+			List<String> list = (List<String>)obj[0];
+			list.add(PC_Utils.NO_HARVEST);
+			list.add(PC_Utils.NO_PICKUP);
+			list.add(PC_Utils.PASSIVE);
+	   		return list;
+		}case PC_Utils.MSG_ITEM_FLAGS:{
+			List<String> list = (List<String>)obj[1];
+			list.add(PC_Utils.NO_BUILD);
+			return list;
+		}case PC_Utils.MSG_DEFAULT_NAME:
+			return "Prism";
+		case PC_Utils.MSG_ON_HIT_BY_BEAM_TRACER:
+			return onHitByBeamTracer((PC_BeamTracer)obj[0], (PC_VecI)obj[1], (PC_VecI)obj[2], (PC_Color)obj[3], (Float)obj[4], (Integer)obj[5]);
+		default:
+			return null;
+		}
+		return true;
 	}
 	
 }

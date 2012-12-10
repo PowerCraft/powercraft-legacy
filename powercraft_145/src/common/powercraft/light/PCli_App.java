@@ -11,6 +11,8 @@ import powercraft.management.PC_Configuration;
 import powercraft.management.PC_IModule;
 import powercraft.management.PC_Item;
 import powercraft.management.PC_ItemStack;
+import powercraft.management.PC_ShapedRecipes;
+import powercraft.management.PC_ShapelessRecipes;
 import powercraft.management.PC_Struct2;
 import powercraft.management.PC_Utils;
 import cpw.mods.fml.common.Mod.Init;
@@ -71,64 +73,72 @@ public class PCli_App implements PC_IModule
 	
 	@Override
 	public List<IRecipe> initRecipes(List<IRecipe> recipes) {
-		PC_Utils.addShapelessRecipe(
-                new PC_ItemStack(light),
-                new Object[]
-                {
-                    Item.redstone, Block.glowStone
-                });
-        PC_Utils.addRecipe(
-                new PC_ItemStack(lightningConductor),
-                new Object[] { " X ", " X ", "XXX",
-                        'X', Block.blockSteel
-                             });
+		recipes.add(new PC_ShapelessRecipes(new PC_ItemStack(light),
+                Item.redstone, Block.glowStone));
+		
+		recipes.add(new PC_ShapedRecipes(new PC_ItemStack(lightningConductor),
+                	" X ", 
+                	" X ", 
+                	"XXX",
+                        'X', Block.blockSteel));
         
-        PC_Utils.addRecipe(new PC_ItemStack(laser, 1),
-				new Object[] { " WD", " S ", "SSS",
-					'S', Block.stone, 'W', new PC_ItemStack(Block.planks, 1, -1), 'D', Item.diamond });
+		recipes.add(new PC_ShapedRecipes(new PC_ItemStack(laser, 1),
+					" WD", 
+					" S ", 
+					"SSS",
+						'S', Block.stone, 'W', new PC_ItemStack(Block.planks, 1, -1), 'D', Item.diamond));
         
-        PC_Utils.addRecipe(new PC_ItemStack(laser, 1),
-				new Object[] { " WD", " S ", "SSS",
-					'S', Block.cobblestone, 'W', new PC_ItemStack(Block.planks, 1, -1), 'D', Item.diamond });
+		recipes.add(new PC_ShapedRecipes(new PC_ItemStack(laser, 1),
+					" WD", 
+					" S ", 
+					"SSS",
+						'S', Block.cobblestone, 'W', new PC_ItemStack(Block.planks, 1, -1), 'D', Item.diamond));
         
-        PC_Utils.addRecipe(new PC_ItemStack(laserSensor, 1),
-        		new Object[] { "L", "R", 
-        	'L', new PC_ItemStack(laser, 1), 'R', Item.redstone });
+		recipes.add(new PC_ShapedRecipes(new PC_ItemStack(laserSensor, 1),
+        			"L", 
+        			"R", 
+        				'L', new PC_ItemStack(laser, 1), 'R', Item.redstone));
         
-        PC_Utils.addRecipe(new PC_ItemStack(mirrow, 2, 0),
-				new Object[] { "GI", " I",	'G', Block.thinGlass, 'I', Item.ingotIron });
+        recipes.add(new PC_ShapedRecipes(new PC_ItemStack(mirrow, 2, 0),
+					"GI", 
+					" I",	
+						'G', Block.thinGlass, 'I', Item.ingotIron));
         
-        PC_Utils.addRecipe(new PC_ItemStack(prism, 1, 1),
-				new Object[] { "GG", "GG", 'G', Block.glass });
+        recipes.add(new PC_ShapedRecipes(new PC_ItemStack(prism, 1, 1),
+					"GG", 
+					"GG", 
+						'G', Block.glass));
         
-        PC_Utils.addRecipe(new PC_ItemStack(laserComposition),
-                new Object[] { "XXX", "XPX", "XXX",
-                        'X', Block.glass, 'P', new PC_ItemStack(PC_Utils.getPCBlockByName("PCco_BlockPowerCrystal"), 1, 0)
-                             });
+        recipes.add(new PC_ShapedRecipes(new PC_ItemStack(laserComposition),
+                	"XXX", 
+                	"XPX", 
+                	"XXX",
+                        'X', Block.glass, 'P', new PC_ItemStack(PC_Utils.getPCBlockByName("PCco_BlockPowerCrystal"), 1, 0)));
         
-        PC_Utils.addRecipe(new PC_ItemStack(laserComposition),
-                new Object[] { "XXX", "XPX", "XXX",
-                        'X', Block.glass, 'P', new PC_ItemStack(PC_Utils.getPCBlockByName("PCco_BlockPowerCrystal"), 1, 1)
-                             });
+        recipes.add(new PC_ShapedRecipes(new PC_ItemStack(laserComposition),
+                	"XXX", 
+                	"XPX", 
+                	"XXX",
+                        'X', Block.glass, 'P', new PC_ItemStack(PC_Utils.getPCBlockByName("PCco_BlockPowerCrystal"), 1, 1)));
         
-        PC_Utils.addRecipe(new PC_ItemStack(laserComposition),
-                new Object[] { "XXX", "XPX", "XXX",
-                        'X', Block.glass, 'P', new PC_ItemStack(PC_Utils.getPCBlockByName("PCco_BlockPowerCrystal"), 1, 2)
-                             });
+        recipes.add(new PC_ShapedRecipes(new PC_ItemStack(laserComposition),
+                	"XXX", 
+                	"XPX", 
+                	"XXX",
+                        'X', Block.glass, 'P', new PC_ItemStack(PC_Utils.getPCBlockByName("PCco_BlockPowerCrystal"), 1, 2)));
         
         for(int i=2; i<10; i++){
         	Object[] o = new Object[i];
         	for(int j=0; j<i; j++){
         		o[j] = new PC_ItemStack(laserComposition);
         	}
-        	 PC_Utils.addShapelessRecipe( new PC_ItemStack(laserComposition), o);
+        	recipes.add(new PC_ShapelessRecipes(new PC_ItemStack(laserComposition), o));
         }
-		return null;
+		return recipes;
 	}
 
 	@Override
 	public List<PC_Struct2<String, Class>> registerGuis(List<PC_Struct2<String, Class>> guis) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 }

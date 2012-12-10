@@ -34,7 +34,7 @@ public class PCco_ItemBlockPowerCrystal extends PC_ItemBlock {
     @Override
     public int getColorFromItemStack(ItemStack itemStack, int pass)
     {
-        return PCco_BlockPowerCrystal.crystal_colors[PC_MathHelper.clamp_int(itemStack.getItemDamage(), 0, 7)];
+        return PC_Color.crystal_colors[PC_MathHelper.clamp_int(itemStack.getItemDamage(), 0, 7)];
     }
 
     @Override

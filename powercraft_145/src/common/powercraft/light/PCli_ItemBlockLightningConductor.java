@@ -1,16 +1,15 @@
 package powercraft.light;
 
+import java.util.List;
+
 import net.minecraft.src.Block;
-import net.minecraft.src.Direction;
 import net.minecraft.src.EntityPlayer;
 import net.minecraft.src.ItemStack;
 import net.minecraft.src.World;
-import powercraft.core.PC_VecI;
-import powercraft.core.PC_ItemBlock;
-import powercraft.core.PC_MathHelper;
-import powercraft.core.PC_TileEntity;
-import powercraft.core.PC_Utils;
-import powercraft.transport.PCtr_BeltHelper;
+import powercraft.management.PC_ItemBlock;
+import powercraft.management.PC_Struct3;
+import powercraft.management.PC_TileEntity;
+import powercraft.management.PC_Utils;
 
 public class PCli_ItemBlockLightningConductor extends PC_ItemBlock
 {
@@ -19,15 +18,6 @@ public class PCli_ItemBlockLightningConductor extends PC_ItemBlock
         super(id);
         setMaxDamage(0);
         setHasSubtypes(false);
-    }
-
-    @Override
-    public String[] getDefaultNames()
-    {
-        return new String[]
-                {
-                    getItemName(), "Lightning Conductor"
-                };
     }
 
     @Override
@@ -73,4 +63,15 @@ public class PCli_ItemBlockLightningConductor extends PC_ItemBlock
 
         return true;
     }
+
+	@Override
+	public Object msg(int msg, Object... obj) {
+		switch(msg){
+		case PC_Utils.MSG_DEFAULT_NAME:
+			List<PC_Struct3<String, String, String[]>> names = (List<PC_Struct3<String, String, String[]>>)obj[0];
+			names.add(new PC_Struct3<String, String, String[]>(getItemName(), "Lightning Conductor", null));
+            return names;
+		}
+		return null;
+	}
 }

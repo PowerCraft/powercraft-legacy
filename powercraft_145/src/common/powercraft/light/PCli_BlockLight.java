@@ -16,30 +16,28 @@ import net.minecraft.src.Material;
 import net.minecraft.src.TileEntity;
 import net.minecraft.src.World;
 import net.minecraftforge.common.Configuration;
-import powercraft.core.PC_Block;
-import powercraft.core.PC_Color;
-import powercraft.core.PC_VecI;
-import powercraft.core.PC_IBlockRenderer;
-import powercraft.core.PC_IConfigLoader;
-import powercraft.core.PC_ICraftingToolDisplayer;
-import powercraft.core.PC_MathHelper;
-import powercraft.core.PC_Renderer;
-import powercraft.core.PC_Shining;
-import powercraft.core.PC_Shining.OFF;
-import powercraft.core.PC_Shining.ON;
-import powercraft.core.PC_Utils;
+import powercraft.management.PC_Block;
+import powercraft.management.PC_Color;
+import powercraft.management.PC_Configuration;
+import powercraft.management.PC_IItemInfo;
+import powercraft.management.PC_Renderer;
+import powercraft.management.PC_Shining;
+import powercraft.management.PC_Shining.OFF;
+import powercraft.management.PC_Shining.ON;
+import powercraft.management.PC_Utils;
+import powercraft.management.PC_VecI;
 
 @PC_Shining
-public class PCli_BlockLight extends PC_Block implements PC_ICraftingToolDisplayer, PC_IConfigLoader, PC_IBlockRenderer
+public class PCli_BlockLight extends PC_Block implements PC_IItemInfo
 {
     @ON
     public static PCli_BlockLight on;
     @OFF
     public static PCli_BlockLight off;
 
-    public PCli_BlockLight(int id, boolean on)
+    public PCli_BlockLight(boolean on)
     {
-        super(id, 66, Material.glass);
+        super(66, Material.glass);
         setHardness(0.3F);
         setResistance(20F);
         setStepSound(Block.soundStoneFootstep);
@@ -49,12 +47,6 @@ public class PCli_BlockLight extends PC_Block implements PC_ICraftingToolDisplay
         {
             setCreativeTab(CreativeTabs.tabDecorations);
         }
-    }
-
-    @Override
-    public String getDefaultName()
-    {
-        return "Light";
     }
 
     @Override
@@ -348,7 +340,7 @@ public class PCli_BlockLight extends PC_Block implements PC_ICraftingToolDisplay
         double jj = j + 0.5D;
         double kk = k + 0.5D;
         double h = 0.22D;
-        double r = color.r, g = color.g, b = color.b;
+        double r = color.x, g = color.y, b = color.z;
         r = (r == 0) ? 0.001D : r;
         g = (g == 0) ? 0.001D : g;
         b = (b == 0) ? 0.001D : b;
@@ -381,25 +373,12 @@ public class PCli_BlockLight extends PC_Block implements PC_ICraftingToolDisplay
     }
 
     @Override
-    public String getCraftingToolModule()
-    {
-        return PCli_App.getInstance().getNameWithoutPowerCraft();
-    }
-
-    @Override
     public List<ItemStack> getItemStacks(List<ItemStack> arrayList)
     {
         arrayList.add(new ItemStack(this));
         return arrayList;
     }
 
-    @Override
-    public void loadFromConfig(Configuration config)
-    {
-        on.setLightValue(PC_Utils.getConfigInt(config, Configuration.CATEGORY_GENERAL, "LampLightValueOn", 12) / 16.0f);
-    }
-
-    @Override
     public void renderInventoryBlock(Block block, int metadata, int modelID, Object renderer)
     {
         PC_Renderer.swapTerrain(block);
@@ -411,23 +390,33 @@ public class PCli_BlockLight extends PC_Block implements PC_ICraftingToolDisplay
         PC_Renderer.resetTerrain(true);
     }
 
-    @Override
-    public void renderWorldBlock(IBlockAccess world, int x, int y, int z, Block block, int modelId, Object renderer) {}
-    
-    @Override
-	public List<String> getBlockFlags(World world, PC_VecI pos, List<String> list) {
-
-		list.add(PC_Utils.NO_HARVEST);
-		list.add(PC_Utils.NO_PICKUP);
-		list.add(PC_Utils.HARVEST_STOP);
-		
-		return list;
-	}
-
 	@Override
-	public List<String> getItemFlags(ItemStack stack, List<String> list) {
-		list.add(PC_Utils.NO_BUILD);
-		return list;
+	public Object msg(World world, PC_VecI pos, int msg, Object... obj) {
+		switch(msg){
+		case PC_Utils.MSG_LOAD_FROM_CONFIG:
+			on.setLightValue(((PC_Configuration)obj[0]).getInt("PCli_BlockLight.brightness", 15) * 0.0625F);
+		case PC_Utils.MSG_RENDER_INVENTORY_BLOCK:
+			renderInventoryBlock((Block)obj[0], (Integer)obj[1], (Integer)obj[2], obj[3]);
+			break;
+		case PC_Utils.MSG_RENDER_WORLD_BLOCK:
+			break;
+		case PC_Utils.MSG_DEFAULT_NAME:
+			return "Light";
+		case PC_Utils.MSG_BLOCK_FLAGS:{
+			List<String> list = (List<String>)obj[0];
+			list.add(PC_Utils.NO_HARVEST);
+			list.add(PC_Utils.NO_PICKUP);
+			list.add(PC_Utils.HARVEST_STOP);
+	   		return list;
+		}case PC_Utils.MSG_ITEM_FLAGS:{
+			List<String> list = (List<String>)obj[1];
+			list.add(PC_Utils.NO_BUILD);
+			return list;
+		}
+		default:
+			return null;
+		}
+		return true;
 	}
     
 }

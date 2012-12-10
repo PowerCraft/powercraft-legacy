@@ -1,9 +1,8 @@
 package powercraft.light;
 
-import powercraft.core.PC_Utils;
 import net.minecraft.src.DamageSource;
 import net.minecraft.src.EntityPlayer;
-import net.minecraft.src.StatCollector;
+import powercraft.management.PC_Utils;
 
 public class PCli_DamageSourceLaser extends DamageSource {
 

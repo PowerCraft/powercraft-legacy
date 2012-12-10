@@ -3,6 +3,7 @@ package powercraft.management;
 import java.io.Serializable;
 
 import net.minecraft.src.IBlockAccess;
+import net.minecraft.src.NBTTagCompound;
 import net.minecraft.src.TileEntity;
 import net.minecraft.src.World;
 
@@ -298,6 +299,20 @@ public class PC_VecI implements Serializable, PC_Vec<Integer, PC_VecI>{
 		if(z != vec.getZ().intValue())
 			return false;
 		return true;
+	}
+	
+	@Override
+	public void readFromNBT(NBTTagCompound nbttag) {
+		x = nbttag.getInteger("x");
+		y = nbttag.getInteger("y");
+		z = nbttag.getInteger("z");
+	}
+
+	@Override
+	public void writeToNBT(NBTTagCompound nbttag) {
+		nbttag.setInteger("x", x);
+		nbttag.setInteger("y", y);
+		nbttag.setInteger("z", z);
 	}
 	
 }
