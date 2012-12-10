@@ -256,7 +256,7 @@ public class PCli_BlockPrism extends PC_Block implements
 
 	@Override
 	public String getCraftingToolModule() {
-		return mod_PowerCraftLight.getInstance().getNameWithoutPowerCraft();
+		return PCli_App.getInstance().getNameWithoutPowerCraft();
 	}
 
 	@Override

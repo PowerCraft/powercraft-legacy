@@ -7,12 +7,18 @@ import net.minecraft.src.EntityPlayer;
 import net.minecraft.src.IInventory;
 import net.minecraft.src.InventoryPlayer;
 import net.minecraft.src.ItemStack;
+import powercraft.management.PC_IPacketHandler;
+import powercraft.management.PC_InvUtils;
+import powercraft.management.PC_Utils;
 
 public class PCco_DeleteAllPlayerStacks implements PC_IPacketHandler
 {
     @Override
     public boolean handleIncomingPacket(EntityPlayer player, Object[] o)
     {
+    	
+    	final int craftingTool = PC_Utils.getPCObjectIDByName("PCco_ItemCraftingTool");
+    	
         if ("Delete".equals(o[0]))
         {
             IInventory inv = player.inventory;
@@ -23,7 +29,7 @@ public class PCco_DeleteAllPlayerStacks implements PC_IPacketHandler
 
                 if (stack != null)
                 {
-                    if (stack.itemID != mod_PowerCraftCore.craftingTool.shiftedIndex)
+                    if (stack.itemID != craftingTool)
                     {
                         inv.decrStackSize(i, inv.getStackInSlot(i).stackSize);
                     }
@@ -70,9 +76,9 @@ public class PCco_DeleteAllPlayerStacks implements PC_IPacketHandler
                     }
 
                     if (lowest == null
-                            || (checked.itemID == mod_PowerCraftCore.craftingTool.shiftedIndex && lowest.itemID != mod_PowerCraftCore.craftingTool.shiftedIndex)
+                            || (checked.itemID == craftingTool && lowest.itemID != craftingTool)
                             || ((lowest.itemID * 32000 * 64 + lowest.getItemDamage() * 64 + lowest.stackSize) > (checked.itemID * 32000 * 64
-                                    + checked.getItemDamage() * 64 + checked.stackSize) && lowest.itemID != mod_PowerCraftCore.craftingTool.shiftedIndex))
+                                    + checked.getItemDamage() * 64 + checked.stackSize) && lowest.itemID != craftingTool))
                     {
                         lowest = checked;
                         indexLowest = i;

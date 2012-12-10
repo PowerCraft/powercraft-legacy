@@ -329,7 +329,7 @@ public class PClo_BlockDelayer extends PC_Block  implements PC_IRotatedBox, PC_I
 
         if (remove && !PC_Utils.isCreative(player))
         {
-            dropBlockAsItem_do(world, x, y, z, new ItemStack(mod_PowerCraftLogic.delayer, 1, type));
+            dropBlockAsItem_do(world, x, y, z, new ItemStack(PClo_App.delayer, 1, type));
         }
 
         return remove;

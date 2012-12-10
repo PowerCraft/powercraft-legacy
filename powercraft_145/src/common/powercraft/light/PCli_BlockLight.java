@@ -383,7 +383,7 @@ public class PCli_BlockLight extends PC_Block implements PC_ICraftingToolDisplay
     @Override
     public String getCraftingToolModule()
     {
-        return mod_PowerCraftLight.getInstance().getNameWithoutPowerCraft();
+        return PCli_App.getInstance().getNameWithoutPowerCraft();
     }
 
     @Override

@@ -4,13 +4,27 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
-import java.util.Set;
 
 import net.minecraft.src.EntityPlayer;
 import net.minecraft.src.IInventory;
 import net.minecraft.src.InventoryPlayer;
 import net.minecraft.src.ItemStack;
-import powercraft.core.PC_GresWidget.PC_GresAlign;
+import powercraft.management.PC_GresButton;
+import powercraft.management.PC_GresInventory;
+import powercraft.management.PC_GresInventoryBigSlot;
+import powercraft.management.PC_GresLabel;
+import powercraft.management.PC_GresLayoutH;
+import powercraft.management.PC_GresLayoutV;
+import powercraft.management.PC_GresTab;
+import powercraft.management.PC_GresTextEdit;
+import powercraft.management.PC_GresWidget;
+import powercraft.management.PC_GresWidget.PC_GresAlign;
+import powercraft.management.PC_GresWindow;
+import powercraft.management.PC_IGresClient;
+import powercraft.management.PC_IGresGui;
+import powercraft.management.PC_InvUtils;
+import powercraft.management.PC_PacketHandler;
+import powercraft.management.PC_Utils;
 
 public class PCco_GuiCraftingTool extends PCco_ContainerCraftingTool implements PC_IGresClient {
 
@@ -211,6 +225,7 @@ public class PCco_GuiCraftingTool extends PCco_ContainerCraftingTool implements 
 	
 	@Override
 	public void actionPerformed(PC_GresWidget widget, PC_IGresGui gui) {
+		final int craftingTool = PC_Utils.getPCObjectIDByName("PCco_ItemCraftingTool");
 		if(widget==search){
 			searchItems();
 			return;
@@ -220,7 +235,7 @@ public class PCco_GuiCraftingTool extends PCco_ContainerCraftingTool implements 
 			for (int i = 0; i < inv.getSizeInventory() - 4; i++) {
 				ItemStack stack = inv.getStackInSlot(i);
 				if (stack != null) {
-					if (stack.itemID != mod_PowerCraftCore.craftingTool.shiftedIndex) {
+					if (stack.itemID != craftingTool) {
 						inv.decrStackSize(i, inv.getStackInSlot(i).stackSize);
 					}
 				}
@@ -255,9 +270,9 @@ public class PCco_GuiCraftingTool extends PCco_ContainerCraftingTool implements 
 					}
 
 					if (lowest == null
-							|| (checked.itemID == mod_PowerCraftCore.craftingTool.shiftedIndex && lowest.itemID != mod_PowerCraftCore.craftingTool.shiftedIndex)
+							|| (checked.itemID == craftingTool && lowest.itemID != craftingTool)
 							|| ((lowest.itemID * 32000 * 64 + lowest.getItemDamage() * 64 + lowest.stackSize) > (checked.itemID * 32000 * 64
-									+ checked.getItemDamage() * 64 + checked.stackSize) && lowest.itemID != mod_PowerCraftCore.craftingTool.shiftedIndex)) {
+									+ checked.getItemDamage() * 64 + checked.stackSize) && lowest.itemID != craftingTool)) {
 						lowest = checked;
 						indexLowest = i;
 					}

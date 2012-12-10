@@ -2,6 +2,7 @@ package powercraft.core;
 
 import net.minecraft.src.EntityPlayer;
 import net.minecraft.src.TileEntityMobSpawner;
+import powercraft.management.PC_Utils;
 
 public class PCco_ClientMobSpawnerSetter extends PCco_MobSpawnerSetter {
 

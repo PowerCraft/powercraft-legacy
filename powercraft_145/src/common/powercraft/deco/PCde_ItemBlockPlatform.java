@@ -70,7 +70,7 @@ public class PCde_ItemBlockPlatform extends PC_ItemBlock {
 		
 		int bID = PC_Utils.getBID(world, i, j - 1, k);
 		
-		if (bID == mod_PowerCraftDeco.stairs.blockID || bID == mod_PowerCraftDeco.platform.blockID) {
+		if (bID == PCde_App.stairs.blockID || bID == PCde_App.platform.blockID) {
 
 			int dir = ((MathHelper.floor_double(((entityplayer.rotationYaw * 4F) / 360F) + 0.5D) & 3) + 2) % 4;
 
@@ -82,7 +82,7 @@ public class PCde_ItemBlockPlatform extends PC_ItemBlock {
 			i -= Direction.offsetX[dir];
 			k -= Direction.offsetZ[dir];
 
-			if (bID == mod_PowerCraftDeco.stairs.blockID) {
+			if (bID == PCde_App.stairs.blockID) {
 
 				if (meta == dir) {
 
@@ -103,8 +103,8 @@ public class PCde_ItemBlockPlatform extends PC_ItemBlock {
 			return false;
 		}
 
-		if (world.canPlaceEntityOnSide(mod_PowerCraftDeco.platform.blockID, i, j, k, false, l, entityplayer)) {
-			Block block = mod_PowerCraftDeco.platform;
+		if (world.canPlaceEntityOnSide(PCde_App.platform.blockID, i, j, k, false, l, entityplayer)) {
+			Block block = PCde_App.platform;
 			if (world.setBlock(i, j, k, block.blockID)) {
 				// set tile entity
 				PCde_TileEntityPlatform ted = (PCde_TileEntityPlatform) world.getBlockTileEntity(i, j, k);

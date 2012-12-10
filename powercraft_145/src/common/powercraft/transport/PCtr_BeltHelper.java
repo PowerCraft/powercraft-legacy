@@ -98,7 +98,7 @@ public class PCtr_BeltHelper
 
             if (((EntityPlayer) entity).inventory.armorItemInSlot(0) != null)
             {
-                if (((EntityPlayer) entity).inventory.armorItemInSlot(0).itemID == mod_PowerCraftTransport.slimeboots.shiftedIndex)
+                if (((EntityPlayer) entity).inventory.armorItemInSlot(0).itemID == PCtr_App.slimeboots.shiftedIndex)
                 {
                     return true;
                 }

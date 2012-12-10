@@ -166,7 +166,7 @@ public class PCma_BlockXPBank extends PC_Block implements PC_IBlockRenderer, PC_
     @Override
     public String getCraftingToolModule()
     {
-        return mod_PowerCraftMachines.getInstance().getNameWithoutPowerCraft();
+        return PCma_App.getInstance().getNameWithoutPowerCraft();
     }
 
     @Override

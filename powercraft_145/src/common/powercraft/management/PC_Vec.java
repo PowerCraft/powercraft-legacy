@@ -17,6 +17,10 @@ public interface PC_Vec<t extends Number, ret extends PC_Vec> {
 	public ret add(t n);
 	public ret add(t x, t y, t z);
 	
+	public ret offset(PC_Vec vec);
+	public ret offset(t n);
+	public ret offset(t x, t y, t z);
+	
 	public ret sub(PC_Vec vec);
 	public ret sub(t n);
 	public ret sub(t x, t y, t z);

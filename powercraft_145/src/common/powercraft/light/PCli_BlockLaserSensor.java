@@ -84,7 +84,7 @@ public class PCli_BlockLaserSensor extends PC_Block implements PC_ICraftingToolD
 
 	@Override
 	public String getCraftingToolModule() {
-		return mod_PowerCraftLight.getInstance().getNameWithoutPowerCraft();
+		return PCli_App.getInstance().getNameWithoutPowerCraft();
 	}
 
 	@Override

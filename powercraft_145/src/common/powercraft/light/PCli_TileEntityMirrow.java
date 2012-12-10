@@ -71,7 +71,7 @@ public class PCli_TileEntityMirrow extends PC_TileEntity implements PC_ITileEnti
 		PC_Renderer.glTranslatef((float) x + 0.5F, (float) y + 0.5F /* *f0 */, (float) z + 0.5F);
 		float f1 = (getBlockMetadata() * 360) / 16F;
 
-		PC_Renderer.bindTexture(mod_PowerCraftLight.getInstance().getTextureDirectory() + "mirror.png");
+		PC_Renderer.bindTexture(PCli_App.getInstance().getTextureDirectory() + "mirror.png");
 
 		PC_Renderer.glPushMatrix();
 		PC_Renderer.glRotatef(-f1, 0.0F, 1.0F, 0.0F);

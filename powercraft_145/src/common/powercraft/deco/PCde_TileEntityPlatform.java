@@ -17,7 +17,7 @@ public class PCde_TileEntityPlatform extends PC_TileEntity implements
 
 		PC_Renderer.glTranslatef((float) x + 0.5F, (float) y + 0.5F, (float) z + 0.5F);
 
-		PC_Renderer.bindTexture(mod_PowerCraftDeco.getInstance().getTextureDirectory()+"block_deco.png");
+		PC_Renderer.bindTexture(PCde_App.getInstance().getTextureDirectory()+"block_deco.png");
 
 		PC_Renderer.glPushMatrix();
 		PC_Renderer.glScalef(f, -f, -f);

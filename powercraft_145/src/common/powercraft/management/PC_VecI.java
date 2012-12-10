@@ -101,6 +101,21 @@ public class PC_VecI implements Serializable, PC_Vec<Integer, PC_VecI>{
 	}
 
 	@Override
+	public PC_VecI offset(PC_Vec vec) {
+		return copy().add(vec);
+	}
+	
+	@Override
+	public PC_VecI offset(Integer n) {
+		return copy().add(n);
+	}
+	
+	@Override
+	public PC_VecI offset(Integer x, Integer y, Integer z) {
+		return copy().add(x, y, z);
+	}
+	
+	@Override
 	public PC_VecI sub(PC_Vec vec) {
 		return sub(vec.getX().intValue(), vec.getY().intValue(), vec.getZ().intValue());
 	}
@@ -280,6 +295,21 @@ public class PC_VecI implements Serializable, PC_Vec<Integer, PC_VecI>{
 	
 	public int getBID(IBlockAccess world) {
 		return PC_Utils.getBID(world, this);
+	}
+
+	@Override
+	public boolean equals(Object o) {
+		if(!(o instanceof PC_Vec)){
+			return false;
+		}
+		PC_Vec vec = (PC_Vec)o;
+		if(x != vec.getX().intValue())
+			return false;
+		if(y != vec.getY().intValue())
+			return false;
+		if(z != vec.getZ().intValue())
+			return false;
+		return true;
 	}
 	
 }

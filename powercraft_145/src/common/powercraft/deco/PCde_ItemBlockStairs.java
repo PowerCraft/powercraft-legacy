@@ -68,7 +68,7 @@ public class PCde_ItemBlockStairs extends PC_ItemBlock {
 		// special placing rules for Ledge
 		int bID = PC_Utils.getBID(world, i, j - 1, k);
 		
-		if (bID == mod_PowerCraftDeco.stairs.blockID || bID == mod_PowerCraftDeco.platform.blockID) {
+		if (bID == PCde_App.stairs.blockID || bID == PCde_App.platform.blockID) {
 
 
 			int dir = ((MathHelper.floor_double(((entityplayer.rotationYaw * 4F) / 360F) + 0.5D) & 3) + 2) % 4;
@@ -78,7 +78,7 @@ public class PCde_ItemBlockStairs extends PC_ItemBlock {
 			i -= Direction.offsetX[dir];
 			k -= Direction.offsetZ[dir];
 
-			if (bID == mod_PowerCraftDeco.stairs.blockID) {
+			if (bID == PCde_App.stairs.blockID) {
 
 				if (meta == dir) {
 
@@ -90,7 +90,7 @@ public class PCde_ItemBlockStairs extends PC_ItemBlock {
 					j--;
 				}
 
-			} else if (bID == mod_PowerCraftDeco.platform.blockID) {
+			} else if (bID == PCde_App.platform.blockID) {
 				if (PC_Utils.isPlacingReversed(entityplayer)) {
 					j--;
 				}
@@ -104,8 +104,8 @@ public class PCde_ItemBlockStairs extends PC_ItemBlock {
 			return false;
 		}
 
-		if (world.canPlaceEntityOnSide(mod_PowerCraftDeco.stairs.blockID, i, j, k, false, l, entityplayer)) {
-			Block block = mod_PowerCraftDeco.stairs;
+		if (world.canPlaceEntityOnSide(PCde_App.stairs.blockID, i, j, k, false, l, entityplayer)) {
+			Block block = PCde_App.stairs;
 			if (world.setBlock(i, j, k, block.blockID)) {
 				// set tile entity
 				PCde_TileEntityStairs ted = (PCde_TileEntityStairs) world.getBlockTileEntity(i, j, k);

@@ -30,7 +30,7 @@ public class PCma_GuiXPBank implements PC_IGresClient {
 	
 	@Override
 	public void initGui(PC_IGresGui gui) {
-		PC_GresWindow w = new PC_GresWindow(PC_Utils.tr(mod_PowerCraftMachines.xpBank.getBlockName()+".name"));
+		PC_GresWindow w = new PC_GresWindow(PC_Utils.tr(PCma_App.xpBank.getBlockName()+".name"));
 		w.setAlignH(PC_GresAlign.CENTER);
 
 		if (xpbank.getXP() < 0) xpbank.setXP(0);
