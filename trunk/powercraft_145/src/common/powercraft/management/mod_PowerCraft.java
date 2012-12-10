@@ -32,6 +32,8 @@ public class mod_PowerCraft {
 	@SidedProxy(clientSide = "powercraft.management.PC_ClientProxy", serverSide = "powercraft.management.PC_CommonProxy")
 	public static PC_CommonProxy proxy;
 
+	private static final String updateInfoPath = "https://dl.dropbox.com/s/axurfxp6cxkr3nv/Update.xml?dl=1";
+	
 	@PreInit
 	public void preInit(FMLPreInitializationEvent event) {
 		proxy.initUtils();
@@ -48,6 +50,9 @@ public class mod_PowerCraft {
 		try {
 			PC_ModuleLoader.load(new File(mod_PowerCraft.class.getResource("../../").toURI()));
 		} catch (URISyntaxException e) {}
+		PC_Logger.exitSection();
+		PC_Logger.enterSection("Download Update Info");
+		PC_UpdateManager.downloadUpdateInfo(updateInfoPath);
 		PC_Logger.exitSection();
 		PC_Logger.enterSection("Module PreInit");
 		List<PC_IModule> modules = PC_Utils.getModules();

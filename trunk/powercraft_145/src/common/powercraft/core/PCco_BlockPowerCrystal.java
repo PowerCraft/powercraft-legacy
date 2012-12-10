@@ -28,7 +28,7 @@ public class PCco_BlockPowerCrystal extends PC_Block
     
     public PCco_BlockPowerCrystal()
     {
-        super(49, Material.glass);
+        super(4, Material.glass);
         setHardness(0.5F);
         setResistance(0.5F);
         setStepSound(Block.soundGlassFootstep);

@@ -4,6 +4,7 @@ import java.util.List;
 
 import powercraft.management.PC_IClientModule;
 import powercraft.management.PC_LangEntry;
+import powercraft.management.PC_Utils;
 
 public class PowerCraftCoreClient extends PowerCraftCore implements PC_IClientModule {
 
@@ -15,8 +16,8 @@ public class PowerCraftCoreClient extends PowerCraftCore implements PC_IClientMo
 	
 	@Override
 	public List<String> loadTextureFiles(List<String> textures) {
-		// TODO Auto-generated method stub
-		return null;
+		textures.add(PC_Utils.getTerrainFile(this));
+		return textures;
 	}
 
 	
