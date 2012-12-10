@@ -12,6 +12,7 @@ import net.minecraft.src.World;
 import powercraft.management.PC_Block;
 import powercraft.management.PC_Renderer;
 import powercraft.management.PC_Utils;
+import powercraft.management.PC_VecI;
 
 public class PCde_BlockChimney extends PC_Block {
 
@@ -33,7 +34,6 @@ public class PCde_BlockChimney extends PC_Block {
 		return false;
 	}
 
-	@Override
 	public void renderInventoryBlock(Block block, int metadata, int modelID, Object renderer) {
 		final float px = 0.0625F;
 		float w = px * 3;
@@ -55,7 +55,6 @@ public class PCde_BlockChimney extends PC_Block {
 		bl.setBlockBounds(0, 0, 0, 1, 1, 1);
 	}
 
-	@Override
 	public void renderWorldBlock(IBlockAccess world, int x, int y, int z, Block block, int modelId, Object renderer) {
 		
 		final float px = 0.0625F;
@@ -85,7 +84,6 @@ public class PCde_BlockChimney extends PC_Block {
 		
 	}
 	
-	@Override
 	public List<String> getBlockFlags(World world, PC_VecI pos, List<String> list) {
 
 		list.add(PC_Utils.NO_HARVEST);
@@ -95,10 +93,37 @@ public class PCde_BlockChimney extends PC_Block {
 		return list;
 	}
 
-	@Override
 	public List<String> getItemFlags(ItemStack stack, List<String> list) {
 		list.add(PC_Utils.NO_BUILD);
 		return list;
+	}
+
+	@Override
+	public Object msg(World world, PC_VecI pos, int msg, Object... obj) {
+		switch(msg){
+		case PC_Utils.MSG_RENDER_INVENTORY_BLOCK:
+			renderInventoryBlock((Block)obj[0], (Integer)obj[1], (Integer)obj[2], obj[3]);
+			break;
+		case PC_Utils.MSG_RENDER_WORLD_BLOCK:
+			renderWorldBlock((IBlockAccess)obj[0], (Integer)obj[1], (Integer)obj[2], (Integer)obj[3], (Block)obj[4], (Integer)obj[5], obj[6]);
+			break;
+		case PC_Utils.MSG_BLOCK_FLAGS:{
+			List<String> list = (List<String>)obj[0];
+			list.add(PC_Utils.NO_HARVEST);
+			list.add(PC_Utils.NO_PICKUP);
+			list.add(PC_Utils.PASSIVE);
+			list.add(PC_Utils.BEAMTRACER_STOP);
+			return list;
+		}
+		case PC_Utils.MSG_ITEM_FLAGS:{
+			List<String> list = (List<String>)obj[1];
+			list.add(PC_Utils.NO_BUILD);
+			return list;
+		}
+		default:
+			return null;
+		}
+		return true;
 	}
 	
 }

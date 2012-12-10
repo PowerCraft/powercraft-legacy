@@ -10,10 +10,12 @@ import net.minecraft.src.Material;
 import net.minecraft.src.TileEntity;
 import net.minecraft.src.World;
 import powercraft.management.PC_Block;
+import powercraft.management.PC_IItemInfo;
 import powercraft.management.PC_Renderer;
 import powercraft.management.PC_Utils;
+import powercraft.management.PC_VecI;
 
-public class PCde_BlockIronFrame extends PC_Block implements PC_ICraftingToolDisplayer, PC_IBlockRenderer {
+public class PCde_BlockIronFrame extends PC_Block implements PC_IItemInfo {
 
 	public PCde_BlockIronFrame(int id) {
 		super(22, Material.rock);
@@ -110,6 +112,12 @@ public class PCde_BlockIronFrame extends PC_Block implements PC_ICraftingToolDis
 	public List<String> getItemFlags(ItemStack stack, List<String> list) {
 		list.add(PC_Utils.NO_BUILD);
 		return list;
+	}
+
+	@Override
+	public Object msg(World world, PC_VecI pos, int msg, Object... obj) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 	
 }
