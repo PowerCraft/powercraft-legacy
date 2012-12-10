@@ -1942,4 +1942,20 @@ public class PC_Utils implements PC_IPacketHandler
 		return new ArrayList<Object>(objects.values());
 	}
 	
+	public static boolean isPoweredDirectly(World world, int x, int y, int z){
+		 return world.isBlockGettingPowered(x, y, z);
+	}
+	
+	public static boolean isPoweredDirectly(World world, PC_VecI pos){
+        return isPoweredDirectly(world, pos.x, pos.y, pos.z);
+    }
+
+	public static boolean isPoweredIndirectly(World world, int x, int y, int z){
+        return world.isBlockIndirectlyGettingPowered(x, y, z);
+    }
+	
+    public static boolean isPoweredIndirectly(World world, PC_VecI pos){
+        return isPoweredIndirectly(world, pos.x, pos.y, pos.z);
+    }
+	
 }

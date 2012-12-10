@@ -1,13 +1,11 @@
 package powercraft.transport;
 
-import java.util.List;
-
-import powercraft.management.PC_Utils;
-import powercraft.management.PC_VecI;
 import net.minecraft.src.Entity;
 import net.minecraft.src.EntityItem;
 import net.minecraft.src.EntityMinecart;
 import net.minecraft.src.World;
+import powercraft.management.PC_Utils;
+import powercraft.management.PC_VecI;
 
 public class PCtr_BlockBeltBreak extends PCtr_BlockBeltBase
 {
@@ -106,7 +104,7 @@ public class PCtr_BlockBeltBreak extends PCtr_BlockBeltBase
 
     private boolean isPowered(World world, PC_VecI pos)
     {
-        return pos.isPoweredIndirectly(world) || pos.offset(0, 1, 0).isPoweredIndirectly(world) || pos.offset(0, -1, 0).isPoweredIndirectly(world);
+    	return PC_Utils.isPoweredIndirectly(world, pos) || PC_Utils.isPoweredIndirectly(world, pos.offset(0, 1, 0)) || PC_Utils.isPoweredIndirectly(world, pos.offset(0, -1, 0));
     }
 
 	@Override
