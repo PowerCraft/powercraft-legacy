@@ -42,11 +42,11 @@ public class PCde_App implements PC_IModule {
 
 	@Override
 	public void initBlocks() {
-		/*redstoneStorage = PC_Utils.register(this, PCde_BlockRedstoneStorage.class);
+		redstoneStorage = PC_Utils.register(this, PCde_BlockRedstoneStorage.class);
 		ironFrame = PC_Utils.register(this, PCde_BlockIronFrame.class, PCde_TileEntityIronFrame.class);
 		chimney = PC_Utils.register(this, PCde_BlockChimney.class, PCde_ItemBlockChimney.class, PCde_TileEntityChimney.class);
 		platform = PC_Utils.register(this, PCde_BlockPlatform.class, PCde_ItemBlockPlatform.class, PCde_TileEntityPlatform.class);
-		stairs = PC_Utils.register(this, PCde_BlockStairs.class, PCde_ItemBlockStairs.class, PCde_TileEntityStairs.class);*/
+		stairs = PC_Utils.register(this, PCde_BlockStairs.class, PCde_ItemBlockStairs.class, PCde_TileEntityStairs.class);
 	}
 
 	@Override

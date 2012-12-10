@@ -35,6 +35,7 @@ public class PCde_TileEntityStairs extends PC_TileEntity implements PC_ITileEnti
 
 		PC_Renderer.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 		PC_Renderer.glPopMatrix();
+		
 	}
 
 }

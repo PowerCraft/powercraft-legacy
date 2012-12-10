@@ -11,26 +11,19 @@ import net.minecraft.src.ItemStack;
 import net.minecraft.src.Material;
 import net.minecraft.src.TileEntity;
 import net.minecraft.src.World;
-import powercraft.core.PC_Block;
-import powercraft.core.PC_VecI;
-import powercraft.core.PC_IBlockRenderer;
-import powercraft.core.PC_ICraftingToolDisplayer;
-import powercraft.core.PC_Renderer;
-import powercraft.core.PC_Utils;
+import powercraft.management.PC_Block;
+import powercraft.management.PC_Renderer;
+import powercraft.management.PC_Utils;
+import powercraft.management.PC_VecI;
 
-public class PCde_BlockPlatform extends PC_Block implements PC_IBlockRenderer {
+public class PCde_BlockPlatform extends PC_Block {
 
-	public PCde_BlockPlatform(int id) {
-		super(id, 22, Material.rock);
+	public PCde_BlockPlatform() {
+		super(22, Material.rock);
 		setHardness(1.5F);
 		setResistance(30.0F);
 		setStepSound(Block.soundMetalFootstep);
 		setCreativeTab(CreativeTabs.tabDecorations);
-	}
-
-	@Override
-	public String getDefaultName() {
-		return null;
 	}
 	
 	@Override
@@ -106,7 +99,7 @@ public class PCde_BlockPlatform extends PC_Block implements PC_IBlockRenderer {
 	}
 
 	private static boolean isFallBlock(World world, PC_VecI pos) {
-		int id = pos.getId(world);
+		int id = PC_Utils.getBID(world, pos);
 		if (id == 0 || Block.blocksList[id] == null) {
 			return true;
 		}
@@ -128,7 +121,7 @@ public class PCde_BlockPlatform extends PC_Block implements PC_IBlockRenderer {
 	}
 
 	private static boolean isClimbBlock(World world, PC_VecI pos) {
-		int id = pos.getId(world);
+		int id = PC_Utils.getBID(world, pos);
 		if (id == 0 || Block.blocksList[id] == null) {
 			return false;
 		}
@@ -144,7 +137,6 @@ public class PCde_BlockPlatform extends PC_Block implements PC_IBlockRenderer {
 		setBlockBounds(0, 0, 0, 1, 0.0625F, 1);
 	}
 
-	@Override
 	public void renderInventoryBlock(Block block, int metadata, int modelID, Object renderer) {
 		float p = 0.0625F;
 		boolean swapped = PC_Renderer.swapTerrain(block);
@@ -158,24 +150,29 @@ public class PCde_BlockPlatform extends PC_Block implements PC_IBlockRenderer {
 	}
 
 	@Override
-	public void renderWorldBlock(IBlockAccess world, int x, int y, int z, Block block, int modelId, Object renderer) {
-		
-	}
-	
-	@Override
-	public List<String> getBlockFlags(World world, PC_VecI pos, List<String> list) {
-
-		list.add(PC_Utils.NO_HARVEST);
-		list.add(PC_Utils.NO_PICKUP);
-		list.add(PC_Utils.PASSIVE);
-		
-		return list;
-	}
-
-	@Override
-	public List<String> getItemFlags(ItemStack stack, List<String> list) {
-		list.add(PC_Utils.NO_BUILD);
-		return list;
+	public Object msg(World world, PC_VecI pos, int msg, Object... obj) {
+		switch(msg){
+		case PC_Utils.MSG_RENDER_INVENTORY_BLOCK:
+			renderInventoryBlock((Block)obj[0], (Integer)obj[1], (Integer)obj[2], obj[3]);
+			break;
+		case PC_Utils.MSG_RENDER_WORLD_BLOCK:
+			break;
+		case PC_Utils.MSG_BLOCK_FLAGS:{
+			List<String> list = (List<String>)obj[0];
+			list.add(PC_Utils.NO_HARVEST);
+			list.add(PC_Utils.NO_PICKUP);
+			list.add(PC_Utils.PASSIVE);
+			return list;
+		}
+		case PC_Utils.MSG_ITEM_FLAGS:{
+			List<String> list = (List<String>)obj[1];
+			list.add(PC_Utils.NO_BUILD);
+			return list;
+		}
+		default:
+			return null;
+		}
+		return true;
 	}
 	
 }

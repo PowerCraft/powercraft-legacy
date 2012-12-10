@@ -1,28 +1,23 @@
 package powercraft.deco;
 
+import java.util.List;
+
 import net.minecraft.src.Block;
 import net.minecraft.src.BlockContainer;
 import net.minecraft.src.Direction;
 import net.minecraft.src.EntityPlayer;
 import net.minecraft.src.ItemStack;
 import net.minecraft.src.MathHelper;
-import net.minecraft.src.TileEntity;
 import net.minecraft.src.World;
-import powercraft.core.PC_ItemBlock;
-import powercraft.core.PC_Utils;
+import powercraft.management.PC_ItemBlock;
+import powercraft.management.PC_Struct3;
+import powercraft.management.PC_Utils;
 
 public class PCde_ItemBlockPlatform extends PC_ItemBlock {
 
 	public PCde_ItemBlockPlatform(int id) {
 		super(id);
 		setMaxDamage(0);
-	}
-
-	@Override
-	public String[] getDefaultNames() {
-		return new String[]{
-				getItemName(), "Platform"
-		};
 	}
 
 	@Override
@@ -59,7 +54,7 @@ public class PCde_ItemBlockPlatform extends PC_ItemBlock {
 
 		if (itemstack.stackSize == 0) {
 			return false;
-		}else if (!entityplayer.func_82247_a(i, j, k, l, itemstack))
+		}else if (!entityplayer.canPlayerEdit(i, j, k, l, itemstack))
         {
             return false;
         }
@@ -114,9 +109,9 @@ public class PCde_ItemBlockPlatform extends PC_ItemBlock {
 				world.setBlockTileEntity(i, j, k, ted);
 				//block.onBlockPlaced(world, i, j, k, l);
 				block.onBlockPlacedBy(world, i, j, k, entityplayer);
-
-				world.markBlocksDirty(i, j, k, i, j, k);
-				world.markBlockNeedsUpdate(i, j, k);
+				
+				world.markBlockRangeForRenderUpdate(i, j, k, i, j, k);
+				world.markBlockForUpdate(i, j, k);
 
 				world.playSoundEffect(i + 0.5F, j + 0.5F, k + 0.5F, block.stepSound.getStepSound(), (block.stepSound.getVolume() + 1.0F) / 2.0F,
 						block.stepSound.getPitch() * 0.8F);
@@ -125,6 +120,17 @@ public class PCde_ItemBlockPlatform extends PC_ItemBlock {
 			}
 		}
 		return true;
+	}
+
+	@Override
+	public Object msg(int msg, Object... obj) {
+		switch(msg){
+		case PC_Utils.MSG_DEFAULT_NAME:
+			List<PC_Struct3<String, String, String[]>> names = (List<PC_Struct3<String, String, String[]>>)obj[0];
+			names.add(new PC_Struct3<String, String, String[]>(getItemName(), "Platform", null));
+            return names;
+		}
+		return null;
 	}
 	
 }

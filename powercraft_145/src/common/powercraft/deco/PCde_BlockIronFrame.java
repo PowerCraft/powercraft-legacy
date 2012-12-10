@@ -26,11 +26,6 @@ public class PCde_BlockIronFrame extends PC_Block implements PC_IItemInfo {
 	}
 
 	@Override
-	public String getDefaultName() {
-		return "Iron Frame";
-	}
-
-	@Override
 	public TileEntity createNewTileEntity(World world) {
 		return new PCde_TileEntityIronFrame();
 	}
@@ -41,17 +36,11 @@ public class PCde_BlockIronFrame extends PC_Block implements PC_IItemInfo {
 	}
 
 	@Override
-	public String getCraftingToolModule() {
-		return PCde_App.getInstance().getNameWithoutPowerCraft();
-	}
-
-	@Override
 	public List<ItemStack> getItemStacks(List<ItemStack> arrayList) {
 		arrayList.add(new ItemStack(this));
 		return arrayList;
 	}
 
-	@Override
 	public void renderInventoryBlock(Block block, int metadata, int modelID, Object renderer) {
 		boolean swapped = PC_Renderer.swapTerrain(block);
 
@@ -94,30 +83,31 @@ public class PCde_BlockIronFrame extends PC_Block implements PC_IItemInfo {
 	}
 
 	@Override
-	public void renderWorldBlock(IBlockAccess world, int x, int y, int z, Block block, int modelId, Object renderer) {
-		
-	}
-
-	@Override
-	public List<String> getBlockFlags(World world, PC_VecI pos, List<String> list) {
-
-		list.add(PC_Utils.NO_HARVEST);
-		list.add(PC_Utils.NO_PICKUP);
-		list.add(PC_Utils.PASSIVE);
-
-		return list;
-	}
-
-	@Override
-	public List<String> getItemFlags(ItemStack stack, List<String> list) {
-		list.add(PC_Utils.NO_BUILD);
-		return list;
-	}
-
-	@Override
 	public Object msg(World world, PC_VecI pos, int msg, Object... obj) {
-		// TODO Auto-generated method stub
-		return null;
+		switch(msg){
+		case PC_Utils.MSG_RENDER_INVENTORY_BLOCK:
+			renderInventoryBlock((Block)obj[0], (Integer)obj[1], (Integer)obj[2], obj[3]);
+			break;
+		case PC_Utils.MSG_RENDER_WORLD_BLOCK:
+			break;
+		case PC_Utils.MSG_BLOCK_FLAGS:{
+			List<String> list = (List<String>)obj[0];
+			list.add(PC_Utils.NO_HARVEST);
+			list.add(PC_Utils.NO_PICKUP);
+			list.add(PC_Utils.PASSIVE);
+			return list;
+		}
+		case PC_Utils.MSG_ITEM_FLAGS:{
+			List<String> list = (List<String>)obj[1];
+			list.add(PC_Utils.NO_BUILD);
+			return list;
+		}
+		case PC_Utils.MSG_DEFAULT_NAME:
+			return "Iron Frame";
+		default:
+			return null;
+		}
+		return true;
 	}
 	
 }
