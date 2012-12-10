@@ -1,5 +1,8 @@
 package powercraft.transport;
 
+import java.util.List;
+
+import powercraft.management.PC_Utils;
 import powercraft.management.PC_VecI;
 import net.minecraft.src.Entity;
 import net.minecraft.src.EntityItem;
@@ -11,12 +14,6 @@ public class PCtr_BlockBeltBreak extends PCtr_BlockBeltBase
     public PCtr_BlockBeltBreak(int id)
     {
         super(id, 5);
-    }
-
-    @Override
-    public String getDefaultName()
-    {
-        return "break belt";
     }
 
     @Override
@@ -113,8 +110,12 @@ public class PCtr_BlockBeltBreak extends PCtr_BlockBeltBase
     }
 
 	@Override
-	public Object msg(World world, PC_VecI pos, int msg, Object... obj) {
-		// TODO Auto-generated method stub
+	protected Object msg2(World world, PC_VecI pos, int msg, Object... obj) {
+		switch (msg){
+		case PC_Utils.MSG_DEFAULT_NAME:{
+			return "break belt";
+		}
+		}
 		return null;
 	}
 }

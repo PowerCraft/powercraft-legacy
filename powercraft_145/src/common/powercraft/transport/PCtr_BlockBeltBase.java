@@ -14,6 +14,7 @@ import net.minecraft.src.World;
 import powercraft.management.PC_Block;
 import powercraft.management.PC_IRotatedBox;
 import powercraft.management.PC_Utils;
+import powercraft.management.PC_VecI;
 
 public abstract class PCtr_BlockBeltBase extends PC_Block implements PC_IRotatedBox
 {
@@ -27,8 +28,6 @@ public abstract class PCtr_BlockBeltBase extends PC_Block implements PC_IRotated
         setCreativeTab(CreativeTabs.tabTransport);
     }
 
-    @Override
-    public abstract String getDefaultName();
     @Override
     public abstract void onEntityCollidedWithBlock(World world, int i, int j, int k, Entity entity);
 
@@ -131,18 +130,23 @@ public abstract class PCtr_BlockBeltBase extends PC_Block implements PC_IRotated
         return PCtr_BeltHelper.blockActivated(world, i, j, k, entityplayer);
     }
     
-    @Override
-   	public List<String> getBlockFlags(World world, PC_VecI pos, List<String> list) {
+    protected abstract Object msg2(World world, PC_VecI pos, int msg, Object... obj);
 
-   		list.add(PC_Utils.NO_HARVEST);
-   		list.add(PC_Utils.NO_PICKUP);
-   		return list;
-   	}
-
-   	@Override
-   	public List<String> getItemFlags(ItemStack stack, List<String> list) {
-   		list.add(PC_Utils.NO_BUILD);
-   		return list;
-   	}
+	@Override
+	public Object msg(World world, PC_VecI pos, int msg, Object... obj) {
+		switch (msg){
+		case PC_Utils.MSG_ITEM_FLAGS:{
+			List<String> list = (List<String>)obj[1];
+			list.add(PC_Utils.NO_BUILD);
+			return list;
+		}case PC_Utils.MSG_BLOCK_FLAGS:{
+			List<String> list = (List<String>)obj[1];
+	   		list.add(PC_Utils.NO_HARVEST);
+	   		list.add(PC_Utils.NO_PICKUP);
+	   		return list;
+		}default:
+			return msg2(world, pos, msg, obj);
+		}
+	}
     
 }
