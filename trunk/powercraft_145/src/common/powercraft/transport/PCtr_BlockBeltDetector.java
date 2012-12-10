@@ -19,12 +19,6 @@ public class PCtr_BlockBeltDetector extends PCtr_BlockBeltBase
     }
 
     @Override
-    public String getDefaultName()
-    {
-        return "detection belt";
-    }
-
-    @Override
     public boolean isPoweringTo(IBlockAccess iblockaccess, int i, int j, int k, int l)
     {
         return isActive(iblockaccess, i, j, k);
@@ -135,8 +129,12 @@ public class PCtr_BlockBeltDetector extends PCtr_BlockBeltBase
     }
 
 	@Override
-	public Object msg(World world, PC_VecI pos, int msg, Object... obj) {
-		// TODO Auto-generated method stub
+	protected Object msg2(World world, PC_VecI pos, int msg, Object... obj) {
+		switch (msg){
+		case PC_Utils.MSG_DEFAULT_NAME:{
+			return "detection belt";
+		}
+		}
 		return null;
 	}
 }

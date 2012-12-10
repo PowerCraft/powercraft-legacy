@@ -3,6 +3,7 @@ package powercraft.transport;
 import net.minecraft.src.EnumArmorMaterial;
 import net.minecraft.src.ItemStack;
 import powercraft.management.PC_ItemArmor;
+import powercraft.management.PC_Utils;
 import cpw.mods.fml.common.Side;
 import cpw.mods.fml.common.asm.SideOnly;
 
@@ -36,7 +37,11 @@ public class PCtr_ItemArmorStickyBoots extends PC_ItemArmor
 
 	@Override
 	public Object msg(int msg, Object... obj) {
-		// TODO Auto-generated method stub
+		switch (msg){
+		case PC_Utils.MSG_DEFAULT_NAME:{
+			return "Sticky Iron Boots";
+		}
+		}
 		return null;
 	}
 }

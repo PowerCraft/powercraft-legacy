@@ -20,12 +20,6 @@ public class PCtr_BlockBeltEjector extends PCtr_BlockBeltBase
     }
 
     @Override
-    public String getDefaultName()
-    {
-        return "ejection belt";
-    }
-
-    @Override
     public void onEntityCollidedWithBlock(World world, int i, int j, int k, Entity entity)
     {
         PC_VecI pos = new PC_VecI(i, j, k);
@@ -153,8 +147,12 @@ public class PCtr_BlockBeltEjector extends PCtr_BlockBeltBase
     }
 
 	@Override
-	public Object msg(World world, PC_VecI pos, int msg, Object... obj) {
-		// TODO Auto-generated method stub
+	protected Object msg2(World world, PC_VecI pos, int msg, Object... obj) {
+		switch (msg){
+		case PC_Utils.MSG_DEFAULT_NAME:{
+			return "ejection belt";
+		}
+		}
 		return null;
 	}
 }
