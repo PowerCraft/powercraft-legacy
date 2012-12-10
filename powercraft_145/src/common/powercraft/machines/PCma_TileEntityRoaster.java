@@ -17,11 +17,11 @@ import net.minecraft.src.ItemFood;
 import net.minecraft.src.ItemStack;
 import net.minecraft.src.NBTTagCompound;
 import net.minecraft.src.WorldChunkManager;
-import powercraft.core.PC_Block;
-import powercraft.core.PC_ISpecialAccessInventory;
-import powercraft.core.PC_InvUtils;
-import powercraft.core.PC_TileEntity;
-import powercraft.core.PC_Utils;
+import powercraft.management.PC_Block;
+import powercraft.management.PC_ISpecialAccessInventory;
+import powercraft.management.PC_InvUtils;
+import powercraft.management.PC_TileEntity;
+import powercraft.management.PC_Utils;
 
 public class PCma_TileEntityRoaster extends PC_TileEntity implements IInventory, PC_ISpecialAccessInventory
 {

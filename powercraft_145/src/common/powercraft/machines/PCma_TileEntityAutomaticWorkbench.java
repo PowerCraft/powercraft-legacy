@@ -11,11 +11,11 @@ import net.minecraft.src.IInventory;
 import net.minecraft.src.InventoryCrafting;
 import net.minecraft.src.ItemStack;
 import net.minecraft.src.NBTTagCompound;
-import powercraft.core.PC_ISpecialAccessInventory;
-import powercraft.core.PC_IStateReportingInventory;
-import powercraft.core.PC_InvUtils;
-import powercraft.core.PC_TileEntity;
-import powercraft.core.PC_Utils;
+import powercraft.management.PC_ISpecialAccessInventory;
+import powercraft.management.PC_IStateReportingInventory;
+import powercraft.management.PC_InvUtils;
+import powercraft.management.PC_TileEntity;
+import powercraft.management.PC_Utils;
 
 public class PCma_TileEntityAutomaticWorkbench extends PC_TileEntity implements IInventory, PC_IStateReportingInventory, PC_ISpecialAccessInventory
 {
