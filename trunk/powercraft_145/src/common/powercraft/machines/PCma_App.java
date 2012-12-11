@@ -10,6 +10,7 @@ import powercraft.management.PC_Block;
 import powercraft.management.PC_Configuration;
 import powercraft.management.PC_IModule;
 import powercraft.management.PC_ItemStack;
+import powercraft.management.PC_ShapedRecipes;
 import powercraft.management.PC_Struct2;
 import powercraft.management.PC_Utils;
 import cpw.mods.fml.common.Mod.Init;
@@ -33,79 +34,20 @@ public class PCma_App implements PC_IModule
     public static PC_Block blockBuilder;
     public static PC_Block harvester;
     
-    public static List<Integer >roasterIgnoreBlockIDs;
-
-    public static PCma_App getInstance()
-    {
-        return (PCma_App)PC_Module.getModule("PowerCraft-Machines");
-    }
-
-    @Override
-    protected void initItems()
-    {
-    }
-
-    @Override
-    protected void initRecipes()
-    {
-        PC_Utils.addRecipe(new PC_ItemStack(automaticWorkbench),
-                new Object[] { "X", "Y", "Z",
-                        'X', Item.diamond, 'Y', Block.workbench, 'Z', Item.redstone
-                             });
-        PC_Utils.addRecipe(new PC_ItemStack(roaster),
-                new Object[] { "III", "IFI", "III",
-                        'I', Item.ingotIron, 'F', Item.flintAndSteel
-                             });
-        PC_Utils.addRecipe(new PC_ItemStack(xpBank),
-                new Object[] { "ODO", "OGO", "O O",
-                        'O', Block.obsidian, 'D', Block.blockDiamond, 'G', Item.ghastTear
-                             });
-        
-        PC_Utils.addRecipe(
-				new PC_ItemStack(transmutabox, 1, 0),
-				new Object[] { "SOS", "OPO", "SOS",
-					'S', Block.blockSteel, 'O', Block.obsidian, 'P', Block.stoneOvenIdle });
-        
-        PC_Utils.addRecipe(
-				new PC_ItemStack(blockBuilder, 1),
-				new Object[] { "G", "D",
-					'G', Item.ingotGold, 'D', Block.dispenser });
-
-        PC_Utils.addRecipe(
-				new PC_ItemStack(harvester, 1),
-				new Object[] { "P", "D",
-					'P', Item.ingotIron, 'D', Block.dispenser });
-		
-        PC_Utils.addRecipe(
-				new PC_ItemStack(replacer, 1),
-				new Object[] { "B", "R", "H",
-					'B', blockBuilder, 'R', Item.redstone, 'H', harvester});
-        
-    }
-
-    @Override
-    protected List<String> addSplashes(List<String> list)
-    {
-        return null;
-    }
+    public static List<Integer> roasterIgnoreBlockIDs;
 
 	@Override
 	public String getName() {
-		// TODO Auto-generated method stub
-		return null;
+		return "Machines";
 	}
 
 	@Override
 	public String getVersion() {
-		// TODO Auto-generated method stub
-		return null;
+		return "1.0AlphaA";
 	}
 
 	@Override
-	public void preInit() {
-		// TODO Auto-generated method stub
-		
-	}
+	public void preInit() {}
 
 	@Override
 	public void init() {
@@ -114,28 +56,12 @@ public class PCma_App implements PC_IModule
 	}
 
 	@Override
-	public void postInit() {
-		// TODO Auto-generated method stub
-		
-	}
+	public void postInit() {}
 
 	@Override
 	public void initProperties(PC_Configuration config) {
 		roasterIgnoreBlockIDs = PC_Utils.parseIntList(PC_Utils.getConfigString(config,
 				"roaster_ignored_blocks_list", Configuration.CATEGORY_GENERAL, "1"));
-	}
-
-	@Override
-	public List<IRecipe> initRecipes(List<IRecipe> recipes) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public List<PC_Struct2<String, Class>> registerGuis(
-			List<PC_Struct2<String, Class>> guis) {
-		// TODO Auto-generated method stub
-		return null;
 	}
 
 	@Override
@@ -147,5 +73,59 @@ public class PCma_App implements PC_IModule
         xpBank = PC_Utils.register(this, PCma_BlockXPBank.class, PCma_TileEntityXPBank.class);
         blockBuilder = PC_Utils.register(this, PCma_BlockBlockBuilder.class, PCma_TileEntityBlockBuilder.class);
         harvester = PC_Utils.register(this, PCma_BlockHarvester.class);
+	}
+	
+	@Override
+    public void initItems()
+    {
+    }
+	
+	@Override
+	public List<IRecipe> initRecipes(List<IRecipe> recipes) {
+		recipes.add(new PC_ShapedRecipes(new PC_ItemStack(automaticWorkbench),
+                	"X", 
+                	"Y", 
+                	"Z",
+                        'X', Item.diamond, 'Y', Block.workbench, 'Z', Item.redstone));
+		recipes.add(new PC_ShapedRecipes(new PC_ItemStack(roaster),
+                	"III", 
+                	"IFI", 
+                	"III",
+                        'I', Item.ingotIron, 'F', Item.flintAndSteel));
+		recipes.add(new PC_ShapedRecipes(new PC_ItemStack(xpBank),
+                	"ODO", 
+                	"OGO", 
+                	"O O",
+                        'O', Block.obsidian, 'D', Block.blockDiamond, 'G', Item.ghastTear));
+        
+		recipes.add(new PC_ShapedRecipes(new PC_ItemStack(transmutabox, 1, 0),
+					"SOS", 
+					"OPO", 
+					"SOS",
+						'S', Block.blockSteel, 'O', Block.obsidian, 'P', Block.stoneOvenIdle));
+        
+		recipes.add(new PC_ShapedRecipes(new PC_ItemStack(blockBuilder, 1),
+					"G", 
+					"D",
+						'G', Item.ingotGold, 'D', Block.dispenser));
+
+		recipes.add(new PC_ShapedRecipes(new PC_ItemStack(harvester, 1),
+					"P", 
+					"D",
+						'P', Item.ingotIron, 'D', Block.dispenser));
+		
+		recipes.add(new PC_ShapedRecipes(new PC_ItemStack(replacer, 1),
+					"B", 
+					"R", 
+					"H",
+						'B', blockBuilder, 'R', Item.redstone, 'H', harvester));
+		return null;
+	}
+
+	@Override
+	public List<PC_Struct2<String, Class>> registerGuis(
+			List<PC_Struct2<String, Class>> guis) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 }

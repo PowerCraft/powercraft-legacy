@@ -7,9 +7,9 @@ import net.minecraft.src.AxisAlignedBB;
 import net.minecraft.src.EntityPlayer;
 import net.minecraft.src.EntityXPOrb;
 import net.minecraft.src.NBTTagCompound;
-import powercraft.core.PC_PacketHandler;
-import powercraft.core.PC_TileEntity;
-import powercraft.core.PC_Utils;
+import powercraft.management.PC_PacketHandler;
+import powercraft.management.PC_TileEntity;
+import powercraft.management.PC_Utils;
 
 public class PCma_TileEntityXPBank extends PC_TileEntity
 {
@@ -214,8 +214,8 @@ public class PCma_TileEntityXPBank extends PC_TileEntity
 
     private void notifyResize()
     {
-        worldObj.markBlocksDirty(xCoord, yCoord, zCoord, xCoord, yCoord, zCoord);
-        worldObj.markBlockNeedsUpdate(xCoord, yCoord, zCoord);
+        worldObj.markBlockRangeForRenderUpdate(xCoord, yCoord, zCoord, xCoord, yCoord, zCoord);
+        worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
     }
 
     @Override

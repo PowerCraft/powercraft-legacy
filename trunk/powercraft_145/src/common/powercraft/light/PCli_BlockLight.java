@@ -395,6 +395,7 @@ public class PCli_BlockLight extends PC_Block implements PC_IItemInfo
 		switch(msg){
 		case PC_Utils.MSG_LOAD_FROM_CONFIG:
 			on.setLightValue(((PC_Configuration)obj[0]).getInt("PCli_BlockLight.brightness", 15) * 0.0625F);
+			break;
 		case PC_Utils.MSG_RENDER_INVENTORY_BLOCK:
 			renderInventoryBlock((Block)obj[0], (Integer)obj[1], (Integer)obj[2], obj[3]);
 			break;

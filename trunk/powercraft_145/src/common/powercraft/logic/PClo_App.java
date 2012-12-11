@@ -10,6 +10,7 @@ import powercraft.management.PC_Block;
 import powercraft.management.PC_Configuration;
 import powercraft.management.PC_IModule;
 import powercraft.management.PC_ItemStack;
+import powercraft.management.PC_ShapedRecipes;
 import powercraft.management.PC_Struct2;
 import powercraft.management.PC_Utils;
 import cpw.mods.fml.common.Mod.Init;
@@ -66,226 +67,139 @@ public class PClo_App implements PC_IModule
 	
 	@Override
 	public List<IRecipe> initRecipes(List<IRecipe> recipes) {
-		PC_Utils.addRecipe(new PC_ItemStack(pulsar, 1, 0),
-                new Object[]
-                {
+		recipes.add(new PC_ShapedRecipes(new PC_ItemStack(pulsar, 1, 0),
                     " r ",
                     "ror",
                     " r ",
-                    'r', Item.redstone, 'o', Block.obsidian
-                });
-        PC_Utils.addRecipe(new PC_ItemStack(gate, 1, PClo_GateType.NOT),
-                new Object[]
-                {
-                    "rst",
-                    'r', Item.redstone, 's', Block.stone, 't', Block.torchRedstoneActive
-                });
-        PC_Utils.addRecipe(new PC_ItemStack(gate, 1, PClo_GateType.AND),
-                new Object[]
-                {
+                    	'r', Item.redstone, 'o', Block.obsidian));
+		recipes.add(new PC_ShapedRecipes(new PC_ItemStack(gate, 1, PClo_GateType.NOT),
+					"rst",
+                    	'r', Item.redstone, 's', Block.stone, 't', Block.torchRedstoneActive));
+		recipes.add(new PC_ShapedRecipes(new PC_ItemStack(gate, 1, PClo_GateType.AND),
                     " r ",
                     "sss",
                     "rrr",
-                    'r', Item.redstone, 's', Block.stone
-                });
-        PC_Utils.addRecipe(new PC_ItemStack(gate, 1, PClo_GateType.OR),
-                new Object[]
-                {
+                    	'r', Item.redstone, 's', Block.stone));
+		recipes.add(new PC_ShapedRecipes(new PC_ItemStack(gate, 1, PClo_GateType.OR),
                     " r ",
                     "rsr",
                     " r ",
-                    'r', Item.redstone, 's', Block.stone
-                });
-        PC_Utils.addRecipe(new PC_ItemStack(gate, 1, PClo_GateType.XOR),
-                new Object[]
-                {
+                    	'r', Item.redstone, 's', Block.stone));
+		recipes.add(new PC_ShapedRecipes(new PC_ItemStack(gate, 1, PClo_GateType.XOR),
                     "r",
                     "x",
-                    'r', Item.redstone, 'x', new PC_ItemStack(gate, 1, PClo_GateType.OR)
-                });
-        PC_Utils.addRecipe(new PC_ItemStack(gate, 1, PClo_GateType.NAND),
-                new Object[]
-                {
+                    	'r', Item.redstone, 'x', new PC_ItemStack(gate, 1, PClo_GateType.OR)));
+		recipes.add(new PC_ShapedRecipes(new PC_ItemStack(gate, 1, PClo_GateType.NAND),
                     "n",
                     "a",
-                    'n', new PC_ItemStack(gate, 1, PClo_GateType.NOT), 'a', new PC_ItemStack(gate, 1, PClo_GateType.AND)
-                });
-        PC_Utils.addRecipe(new PC_ItemStack(gate, 1, PClo_GateType.NOR),
-                new Object[]
-                {
+                    	'n', new PC_ItemStack(gate, 1, PClo_GateType.NOT), 'a', new PC_ItemStack(gate, 1, PClo_GateType.AND)));
+		recipes.add(new PC_ShapedRecipes(new PC_ItemStack(gate, 1, PClo_GateType.NOR),
                     "n",
                     "o",
-                    'n', new PC_ItemStack(gate, 1, PClo_GateType.NOT), 'o', new PC_ItemStack(gate, 1, PClo_GateType.OR)
-                });
-        PC_Utils.addRecipe(new PC_ItemStack(gate, 1, PClo_GateType.XNOR),
-                new Object[]
-                {
+                    	'n', new PC_ItemStack(gate, 1, PClo_GateType.NOT), 'o', new PC_ItemStack(gate, 1, PClo_GateType.OR)));
+		recipes.add(new PC_ShapedRecipes(new PC_ItemStack(gate, 1, PClo_GateType.XNOR),
                     "n",
                     "x",
-                    'n', new PC_ItemStack(gate, 1, PClo_GateType.NOT), 'x', new PC_ItemStack(gate, 1, PClo_GateType.XOR)
-                });
-        PC_Utils.addRecipe(new PC_ItemStack(gate, 1, PClo_GateType.XNOR),
-                new Object[]
-                {
+                    	'n', new PC_ItemStack(gate, 1, PClo_GateType.NOT), 'x', new PC_ItemStack(gate, 1, PClo_GateType.XOR)));
+        recipes.add(new PC_ShapedRecipes(new PC_ItemStack(gate, 1, PClo_GateType.XNOR),
                     "n",
                     "x",
-                    'n', new PC_ItemStack(gate, 1, PClo_GateType.NOT), 'x', new PC_ItemStack(gate, 1, PClo_GateType.XOR)
-                });
-        PC_Utils.addRecipe(new PC_ItemStack(flipFlop, 1, PClo_FlipFlopType.D),
-                new Object[]
-                {
+                    	'n', new PC_ItemStack(gate, 1, PClo_GateType.NOT), 'x', new PC_ItemStack(gate, 1, PClo_GateType.XOR)));
+        recipes.add(new PC_ShapedRecipes(new PC_ItemStack(flipFlop, 1, PClo_FlipFlopType.D),
                     " S ",
                     "RSR",
                     " S ",
-                    'S', Block.stone, 'R', Item.redstone
-                });
-        PC_Utils.addRecipe(new PC_ItemStack(flipFlop, 1, PClo_FlipFlopType.RS),
-                new Object[]
-                {
+                    	'S', Block.stone, 'R', Item.redstone));
+        recipes.add(new PC_ShapedRecipes(new PC_ItemStack(flipFlop, 1, PClo_FlipFlopType.RS),
                     " R ",
                     "SLS",
                     "R R",
-                    'R', Item.redstone, 'S', Block.stone, 'L', Block.lever
-                });
-        PC_Utils.addRecipe(new PC_ItemStack(flipFlop, 1, PClo_FlipFlopType.T),
-                new Object[]
-                {
-                    "RSR",
-                    'R', Item.redstone, 'S', Block.stone
-                });
-        PC_Utils.addRecipe(new PC_ItemStack(flipFlop, 1, PClo_FlipFlopType.RANDOM),
-                new Object[] { "R", "T",
-                        'R', Item.redstone, 'T', new PC_ItemStack(flipFlop, 1, PClo_FlipFlopType.T)
-                             });
-        PC_Utils.addRecipe(new PC_ItemStack(delayer, 1, PClo_DelayerType.FIFO),
-                new Object[]
-                {
+                    	'R', Item.redstone, 'S', Block.stone, 'L', Block.lever));
+        recipes.add(new PC_ShapedRecipes(new PC_ItemStack(flipFlop, 1, PClo_FlipFlopType.T),
+                	"RSR",
+                		'R', Item.redstone, 'S', Block.stone));
+        recipes.add(new PC_ShapedRecipes(new PC_ItemStack(flipFlop, 1, PClo_FlipFlopType.RANDOM),
+    				"R",
+    				"T",
+                    	'R', Item.redstone, 'T', new PC_ItemStack(flipFlop, 1, PClo_FlipFlopType.T)));
+        recipes.add(new PC_ShapedRecipes(new PC_ItemStack(delayer, 1, PClo_DelayerType.FIFO),
                     "DDD",
                     "SSS",
-                    'D', Item.redstoneRepeater, 'S', Block.stone
-                });
-        PC_Utils.addRecipe(new PC_ItemStack(delayer, 1, PClo_DelayerType.HOLD),
-                new Object[]
-                {
+                    	'D', Item.redstoneRepeater, 'S', Block.stone));
+        recipes.add(new PC_ShapedRecipes(new PC_ItemStack(delayer, 1, PClo_DelayerType.HOLD),
                     "DD",
                     "SS",
-                    'D', Item.redstoneRepeater, 'S', Block.stone
-                });
-        PC_Utils.addRecipe(new PC_ItemStack(special, 1, PClo_SpecialType.DAY),
-                new Object[]
-                {
-                    "G",
+                    	'D', Item.redstoneRepeater, 'S', Block.stone));
+        recipes.add(new PC_ShapedRecipes(new PC_ItemStack(special, 1, PClo_SpecialType.DAY),
+                	"G",
                     "P",
-                    'G', Item.lightStoneDust, 'P', Block.pressurePlatePlanks
-                });
-        PC_Utils.addRecipe(new PC_ItemStack(special, 1, PClo_SpecialType.DAY),
-                new Object[]
-                {
-                    "G",
+                    	'G', Item.lightStoneDust, 'P', Block.pressurePlatePlanks));
+        recipes.add(new PC_ShapedRecipes(new PC_ItemStack(special, 1, PClo_SpecialType.DAY),
+                	"G",
                     "P",
-                    'G', Item.lightStoneDust, 'P', Block.pressurePlateStone
-                });
-        PC_Utils.addRecipe(new PC_ItemStack(special, 1, PClo_SpecialType.NIGHT),
-                new Object[]
-                {
+                    	'G', Item.lightStoneDust, 'P', Block.pressurePlateStone));
+        recipes.add(new PC_ShapedRecipes(new PC_ItemStack(special, 1, PClo_SpecialType.NIGHT),
                     "N",
                     "G",
-                    'N', new PC_ItemStack(gate, 1, PClo_GateType.NOT), 'G', new PC_ItemStack(special, 1, PClo_SpecialType.DAY)
-                });
-        PC_Utils.addRecipe(new PC_ItemStack(special, 1, PClo_SpecialType.RAIN),
-                new Object[]
-                {
-                    "L",
+                    	'N', new PC_ItemStack(gate, 1, PClo_GateType.NOT), 'G', new PC_ItemStack(special, 1, PClo_SpecialType.DAY)));
+        recipes.add(new PC_ShapedRecipes(new PC_ItemStack(special, 1, PClo_SpecialType.RAIN),
+                	"L",
                     "P",
-                    'L', new PC_ItemStack(Item.dyePowder, 1, 4), 'P', Block.pressurePlatePlanks
-                });
-        PC_Utils.addRecipe(new PC_ItemStack(special, 1, PClo_SpecialType.RAIN),
-                new Object[]
-                {
-                    "L",
+                    	'L', new PC_ItemStack(Item.dyePowder, 1, 4), 'P', Block.pressurePlatePlanks));
+        recipes.add(new PC_ShapedRecipes(new PC_ItemStack(special, 1, PClo_SpecialType.RAIN),
+        			"L",
                     "P",
-                    'L', new PC_ItemStack(Item.dyePowder, 1, 4), 'P', Block.pressurePlateStone
-                });
-        PC_Utils.addRecipe(new PC_ItemStack(special, 1, PClo_SpecialType.CHEST_EMPTY),
-                new Object[]
-                {
-                    "C",
+                    	'L', new PC_ItemStack(Item.dyePowder, 1, 4), 'P', Block.pressurePlateStone));
+        recipes.add(new PC_ShapedRecipes(new PC_ItemStack(special, 1, PClo_SpecialType.CHEST_EMPTY),
+                	"C",
                     "P",
-                    'C', Block.chest, 'P', Block.pressurePlatePlanks
-                });
-        PC_Utils.addRecipe(new PC_ItemStack(special, 1, PClo_SpecialType.CHEST_EMPTY),
-                new Object[]
-                {
-                    "C",
+                    	'C', Block.chest, 'P', Block.pressurePlatePlanks));
+        recipes.add(new PC_ShapedRecipes(new PC_ItemStack(special, 1, PClo_SpecialType.CHEST_EMPTY),
+                	"C",
                     "P",
-                    'C', Block.chest, 'P', Block.pressurePlateStone
-                });
-        PC_Utils.addRecipe(new PC_ItemStack(special, 1, PClo_SpecialType.CHEST_FULL),
-                new Object[]
-                {
-                    "I",
+                    	'C', Block.chest, 'P', Block.pressurePlateStone));
+        recipes.add(new PC_ShapedRecipes(new PC_ItemStack(special, 1, PClo_SpecialType.CHEST_FULL),
+                	"I",
                     "G",
-                    'I', new PC_ItemStack(gate, 1, PClo_GateType.NOT), 'G', new PC_ItemStack(special, 1, PClo_SpecialType.CHEST_EMPTY)
-                });
-        PC_Utils.addRecipe(new PC_ItemStack(special, 1, PClo_SpecialType.SPECIAL),
-                new Object[]
-                {
-                    " I",
+                    	'I', new PC_ItemStack(gate, 1, PClo_GateType.NOT), 'G', new PC_ItemStack(special, 1, PClo_SpecialType.CHEST_EMPTY)));
+        recipes.add(new PC_ShapedRecipes(new PC_ItemStack(special, 1, PClo_SpecialType.SPECIAL),
+                	" I",
                     "RS",
-                    'R', Item.redstone, 'S', Block.stone, 'I', Item.ingotIron
-                });
-        PC_Utils.addRecipe(new PC_ItemStack(repeater, 1, PClo_RepeaterType.REPEATER_STRAIGHT),
-                new Object[]
-                {
+                    	'R', Item.redstone, 'S', Block.stone, 'I', Item.ingotIron));
+        recipes.add(new PC_ShapedRecipes(new PC_ItemStack(repeater, 1, PClo_RepeaterType.REPEATER_STRAIGHT),
+                	"R",
                     "R",
                     "R",
-                    "R",
-                    'R', Item.redstone
-                });
-        PC_Utils.addRecipe(new PC_ItemStack(repeater, 1, PClo_RepeaterType.REPEATER_CORNER),
-                new Object[]
-                {
-                    "RR",
+                    	'R', Item.redstone));
+        recipes.add(new PC_ShapedRecipes(new PC_ItemStack(repeater, 1, PClo_RepeaterType.REPEATER_CORNER),
+                	"RR",
                     " R",
-                    'R', Item.redstone
-                });
-        PC_Utils.addRecipe(new PC_ItemStack(repeater, 1, PClo_RepeaterType.REPEATER_STRAIGHT_I),
-                new Object[]
-                {
-                    "R",
+                    	'R', Item.redstone));
+        recipes.add(new PC_ShapedRecipes(new PC_ItemStack(repeater, 1, PClo_RepeaterType.REPEATER_STRAIGHT_I),
+                	"R",
                     "S",
-                    'R', Item.redstone, 'S', new PC_ItemStack(repeater, 1, PClo_RepeaterType.REPEATER_STRAIGHT)
-                });
-        PC_Utils.addRecipe(new PC_ItemStack(repeater, 1, PClo_RepeaterType.REPEATER_CORNER_I),
-                new Object[]
-                {
-                    "R",
+                    	'R', Item.redstone, 'S', new PC_ItemStack(repeater, 1, PClo_RepeaterType.REPEATER_STRAIGHT)));
+        recipes.add(new PC_ShapedRecipes(new PC_ItemStack(repeater, 1, PClo_RepeaterType.REPEATER_CORNER_I),
+        			"R",
                     "S",
-                    'R', Item.redstone, 'S', new PC_ItemStack(repeater, 1, PClo_RepeaterType.REPEATER_CORNER)
-                });
-        PC_Utils.addRecipe(new PC_ItemStack(repeater, 1, PClo_RepeaterType.CROSSING),
-                new Object[]
-                {
-                    " r ",
+                    	'R', Item.redstone, 'S', new PC_ItemStack(repeater, 1, PClo_RepeaterType.REPEATER_CORNER)));
+        recipes.add(new PC_ShapedRecipes(new PC_ItemStack(repeater, 1, PClo_RepeaterType.CROSSING),
+            		" r ",
                     "rrr",
                     " r ",
-                    'r', Item.redstone
-                });
-        PC_Utils.addRecipe(new PC_ItemStack(repeater, 1, PClo_RepeaterType.SPLITTER_I),
-                new Object[]
-                {
-                    "SrS",
+                    	'r', Item.redstone));
+        recipes.add(new PC_ShapedRecipes(new PC_ItemStack(repeater, 1, PClo_RepeaterType.SPLITTER_I),
+        			"SrS",
                     "rrr",
                     "SrS",
-                    'r', Item.redstone, 'S', Block.stone
-                });
-		return null;
+                    	'r', Item.redstone, 'S', Block.stone));
+		return recipes;
 	}
 
 	@Override
 	public List<PC_Struct2<String, Class>> registerGuis(
 			List<PC_Struct2<String, Class>> guis) {
-		// TODO Auto-generated method stub
-		return null;
+			guis.add(new PC_Struct2<String, Class>("Special", PClo_ContainerSpecial.class));
+		return guis;
 	}
 }

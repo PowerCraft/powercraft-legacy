@@ -15,13 +15,10 @@ import net.minecraft.src.ItemMonsterPlacer;
 import net.minecraft.src.ItemReed;
 import net.minecraft.src.ItemStack;
 import net.minecraft.src.NBTTagCompound;
-import powercraft.core.PC_Block;
-import powercraft.core.PC_VecI;
-import powercraft.core.PC_FakePlayer;
-import powercraft.core.PC_InvUtils;
-import powercraft.core.PC_ItemBlock;
-import powercraft.core.PC_TileEntity;
-import powercraft.core.PC_Utils;
+import powercraft.management.PC_InvUtils;
+import powercraft.management.PC_TileEntity;
+import powercraft.management.PC_Utils;
+import powercraft.management.PC_VecI;
 
 public class PCma_TileEntityBlockBuilder extends PC_TileEntity implements IInventory {
 

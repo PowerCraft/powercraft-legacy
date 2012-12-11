@@ -5,9 +5,10 @@ import java.util.List;
 
 import net.minecraft.src.EntityPlayer;
 import net.minecraft.src.ItemStack;
-import powercraft.core.PC_ItemBlock;
-import powercraft.core.PC_MathHelper;
-import powercraft.core.PC_Utils;
+import powercraft.management.PC_ItemBlock;
+import powercraft.management.PC_MathHelper;
+import powercraft.management.PC_Struct3;
+import powercraft.management.PC_Utils;
 
 public class PClo_ItemBlockGate extends PC_ItemBlock
 {
@@ -16,24 +17,6 @@ public class PClo_ItemBlockGate extends PC_ItemBlock
         super(id);
         setMaxDamage(0);
         setHasSubtypes(true);
-    }
-
-    @Override
-    public String[] getDefaultNames()
-    {
-        List<String> s =  new ArrayList<String>();
-
-        for (int i = 0; i < PClo_GateType.TOTAL_GATE_COUNT; i++)
-        {
-            s.add(getItemName() + ".gate" + i);
-            s.add("gate " + PClo_GateType.names[i]);
-        };
-
-        s.add(getItemName());
-
-        s.add("gate");
-
-        return s.toArray(new String[0]);
     }
 
     @Override
@@ -81,4 +64,18 @@ public class PClo_ItemBlockGate extends PC_ItemBlock
     {
         return PC_Utils.tr("pc.gate." + PClo_GateType.names[PC_MathHelper.clamp_int(dmg, 0, PClo_GateType.TOTAL_GATE_COUNT - 1)] + ".desc");
     }
+
+	@Override
+	public Object msg(int msg, Object... obj) {
+		switch(msg){
+		case PC_Utils.MSG_DEFAULT_NAME:
+			List<PC_Struct3<String, String, String[]>> names = (List<PC_Struct3<String, String, String[]>>)obj[0];
+			for (int i = 0; i < PClo_GateType.TOTAL_GATE_COUNT; i++)
+	        {
+				names.add(new PC_Struct3<String, String, String[]>(getItemName() + ".gate"+i, "gate "+PClo_GateType.names[i], null));
+	        };
+            return names;
+		}
+		return null;
+	}
 }

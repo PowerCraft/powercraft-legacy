@@ -16,6 +16,7 @@ import net.minecraft.src.TileEntity;
 import net.minecraft.src.World;
 import net.minecraftforge.common.Configuration;
 import powercraft.management.PC_Block;
+import powercraft.management.PC_Configuration;
 import powercraft.management.PC_IRotatedBox;
 import powercraft.management.PC_MathHelper;
 import powercraft.management.PC_Renderer;
@@ -154,15 +155,8 @@ public class PClo_BlockSpecial extends PC_Block implements PC_IRotatedBox
     }
 
     @Override
-    public boolean isIndirectlyPoweringTo(IBlockAccess world, int x, int y, int z, int side)
-    {
-        return isPoweringTo(world, x, y, z, side);
-    }
-
-    @Override
-    public boolean isPoweringTo(IBlockAccess world, int x, int y, int z, int side)
-    {
-        int meta = PC_Utils.getMD(world, x, y, z);
+   	public boolean isProvidingWeakPower(IBlockAccess world, int x, int y, int z, int s) {
+    	int meta = PC_Utils.getMD(world, x, y, z);
         int rotation = getRotation(meta);
 
         if (!isActive(world, x, y, z))
@@ -179,7 +173,7 @@ public class PClo_BlockSpecial extends PC_Block implements PC_IRotatedBox
 
             case PClo_SpecialType.CHEST_EMPTY:
             case PClo_SpecialType.CHEST_FULL:
-                if ((rotation == 0 && side == 3) || (rotation == 1 && side == 4) || (rotation == 2 && side == 2) || (rotation == 3 && side == 5))
+                if ((rotation == 0 && s == 3) || (rotation == 1 && s == 4) || (rotation == 2 && s == 2) || (rotation == 3 && s == 5))
                 {
                     return true;
                 }
@@ -188,7 +182,12 @@ public class PClo_BlockSpecial extends PC_Block implements PC_IRotatedBox
         }
 
         return false;
-    }
+   	}
+
+   	@Override
+   	public boolean isProvidingStrongPower(IBlockAccess world, int x, int y, int z, int s) {
+   		return isProvidingWeakPower(world, x, y, z, s);
+   	}
 
     @Override
     public boolean canProvidePower()
@@ -404,23 +403,27 @@ public class PClo_BlockSpecial extends PC_Block implements PC_IRotatedBox
         return true;
     }
 
-    @Override
-    public void loadFromConfig(Configuration config)
-    {
-        on.setLightValue(PC_Utils.getConfigInt(config, Configuration.CATEGORY_GENERAL, "GatesLightValueOn", 7));
-    }
-    
-    @Override
-   	public List<String> getBlockFlags(World world, PC_VecI pos, List<String> list) {
-
-   		list.add(PC_Utils.NO_HARVEST);
-   		list.add(PC_Utils.NO_PICKUP);
-   		return list;
-   	}
-
-   	@Override
-   	public List<String> getItemFlags(ItemStack stack, List<String> list) {
-   		list.add(PC_Utils.NO_BUILD);
-   		return list;
-   	}
+	@Override
+	public Object msg(World world, PC_VecI pos, int msg, Object... obj) {
+		switch(msg){
+		case PC_Utils.MSG_LOAD_FROM_CONFIG:
+			on.setLightValue(((PC_Configuration)obj[0]).getInt("PClo_BlockSpecial.brightness", 15) * 0.0625F);
+			break;
+		case PC_Utils.MSG_DEFAULT_NAME:
+			return "Light";
+		case PC_Utils.MSG_BLOCK_FLAGS:{
+			List<String> list = (List<String>)obj[0];
+			list.add(PC_Utils.NO_HARVEST);
+			list.add(PC_Utils.NO_PICKUP);
+	   		return list;
+		}case PC_Utils.MSG_ITEM_FLAGS:{
+			List<String> list = (List<String>)obj[1];
+			list.add(PC_Utils.NO_BUILD);
+			return list;
+		}
+		default:
+			return null;
+		}
+		return true;
+	}
 }
