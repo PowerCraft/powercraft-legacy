@@ -15,29 +15,27 @@ import net.minecraft.src.Material;
 import net.minecraft.src.TileEntity;
 import net.minecraft.src.World;
 import net.minecraftforge.common.Configuration;
-import powercraft.core.PC_Block;
-import powercraft.core.PC_VecI;
-import powercraft.core.PC_IConfigLoader;
-import powercraft.core.PC_IRotatedBox;
-import powercraft.core.PC_MathHelper;
-import powercraft.core.PC_Renderer;
-import powercraft.core.PC_Shining;
-import powercraft.core.PC_Utils;
-import powercraft.core.PC_Shining.OFF;
-import powercraft.core.PC_Shining.ON;
-import powercraft.transport.PCtr_BeltHelper;
+import powercraft.management.PC_Block;
+import powercraft.management.PC_IRotatedBox;
+import powercraft.management.PC_MathHelper;
+import powercraft.management.PC_Renderer;
+import powercraft.management.PC_Shining;
+import powercraft.management.PC_Shining.OFF;
+import powercraft.management.PC_Shining.ON;
+import powercraft.management.PC_Utils;
+import powercraft.management.PC_VecI;
 
 @PC_Shining
-public class PClo_BlockSpecial extends PC_Block implements PC_IRotatedBox, PC_IConfigLoader
+public class PClo_BlockSpecial extends PC_Block implements PC_IRotatedBox
 {
     @ON
     public static PClo_BlockSpecial on;
     @OFF
     public static PClo_BlockSpecial off;
 
-    public PClo_BlockSpecial(int id, boolean on)
+    public PClo_BlockSpecial(boolean on)
     {
-        super(id, 6, Material.ground);
+        super(6, Material.ground);
         setHardness(0.35F);
         setStepSound(Block.soundWoodFootstep);
         disableStats();
@@ -49,12 +47,6 @@ public class PClo_BlockSpecial extends PC_Block implements PC_IRotatedBox, PC_IC
         {
             setCreativeTab(CreativeTabs.tabRedstone);
         }
-    }
-
-    @Override
-    public String getDefaultName()
-    {
-        return null;
     }
 
     @Override

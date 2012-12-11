@@ -14,27 +14,26 @@ import net.minecraft.src.Material;
 import net.minecraft.src.TileEntity;
 import net.minecraft.src.World;
 import net.minecraftforge.common.Configuration;
-import powercraft.core.PC_Block;
-import powercraft.core.PC_VecI;
-import powercraft.core.PC_IConfigLoader;
-import powercraft.core.PC_IRotatedBox;
-import powercraft.core.PC_MathHelper;
-import powercraft.core.PC_Shining;
-import powercraft.core.PC_Utils;
-import powercraft.core.PC_Shining.OFF;
-import powercraft.core.PC_Shining.ON;
+import powercraft.management.PC_Block;
+import powercraft.management.PC_IRotatedBox;
+import powercraft.management.PC_MathHelper;
+import powercraft.management.PC_Shining;
+import powercraft.management.PC_Shining.OFF;
+import powercraft.management.PC_Shining.ON;
+import powercraft.management.PC_Utils;
+import powercraft.management.PC_VecI;
 
 @PC_Shining
-public class PClo_BlockDelayer extends PC_Block  implements PC_IRotatedBox, PC_IConfigLoader
+public class PClo_BlockDelayer extends PC_Block  implements PC_IRotatedBox
 {
     @ON
     public static PClo_BlockDelayer on;
     @OFF
     public static PClo_BlockDelayer off;
 
-    public PClo_BlockDelayer(int id, boolean on)
+    public PClo_BlockDelayer(boolean on)
     {
-        super(id, 6, Material.ground);
+        super(6, Material.ground);
         setHardness(0.35F);
         setStepSound(Block.soundWoodFootstep);
         disableStats();
@@ -63,12 +62,6 @@ public class PClo_BlockDelayer extends PC_Block  implements PC_IRotatedBox, PC_I
     public boolean renderItemHorizontal()
     {
         return false;
-    }
-
-    @Override
-    public String getDefaultName()
-    {
-        return null;
     }
 
     @Override
@@ -135,15 +128,8 @@ public class PClo_BlockDelayer extends PC_Block  implements PC_IRotatedBox, PC_I
     }
 
     @Override
-    public boolean isIndirectlyPoweringTo(IBlockAccess world, int x, int y, int z, int side)
-    {
-        return isPoweringTo(world, x, y, z, side);
-    }
-
-    @Override
-    public boolean isPoweringTo(IBlockAccess world, int x, int y, int z, int side)
-    {
-        int meta = PC_Utils.getMD(world, x, y, z);
+   	public boolean isProvidingWeakPower(IBlockAccess world, int x, int y, int z, int s) {
+    	int meta = PC_Utils.getMD(world, x, y, z);
         int rotation = getRotation(meta);
 
         if (!isActive(world, x, y, z))
@@ -151,13 +137,18 @@ public class PClo_BlockDelayer extends PC_Block  implements PC_IRotatedBox, PC_I
             return false;
         }
 
-        if ((rotation == 0 && side == 3) || (rotation == 1 && side == 4) || (rotation == 2 && side == 2) || (rotation == 3 && side == 5))
+        if ((rotation == 0 && s == 3) || (rotation == 1 && s == 4) || (rotation == 2 && s == 2) || (rotation == 3 && s == 5))
         {
             return true;
         }
 
         return false;
-    }
+   	}
+
+   	@Override
+   	public boolean isProvidingStrongPower(IBlockAccess world, int x, int y, int z, int s) {
+   		return isProvidingWeakPower(world, x, y, z, s);
+   	}
 
     @Override
     public boolean canProvidePower()

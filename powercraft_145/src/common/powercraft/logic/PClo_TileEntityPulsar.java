@@ -1,9 +1,9 @@
 package powercraft.logic;
 
 import net.minecraft.src.NBTTagCompound;
-import powercraft.core.PC_PacketHandler;
-import powercraft.core.PC_TileEntity;
-import powercraft.core.PC_Utils;
+import powercraft.management.PC_PacketHandler;
+import powercraft.management.PC_TileEntity;
+import powercraft.management.PC_Utils;
 
 public class PClo_TileEntityPulsar extends PC_TileEntity
 {
@@ -194,7 +194,7 @@ public class PClo_TileEntityPulsar extends PC_TileEntity
             }
         }
 
-        worldObj.markBlockAsNeedsUpdate(xCoord, yCoord, zCoord);
+        worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
     }
 
     @Override
