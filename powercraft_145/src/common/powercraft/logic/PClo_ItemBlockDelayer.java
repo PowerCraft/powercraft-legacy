@@ -5,9 +5,10 @@ import java.util.List;
 
 import net.minecraft.src.EntityPlayer;
 import net.minecraft.src.ItemStack;
-import powercraft.core.PC_ItemBlock;
-import powercraft.core.PC_MathHelper;
-import powercraft.core.PC_Utils;
+import powercraft.management.PC_ItemBlock;
+import powercraft.management.PC_MathHelper;
+import powercraft.management.PC_Struct3;
+import powercraft.management.PC_Utils;
 
 public class PClo_ItemBlockDelayer extends PC_ItemBlock
 {
@@ -16,19 +17,6 @@ public class PClo_ItemBlockDelayer extends PC_ItemBlock
         super(id);
         setMaxDamage(0);
         setHasSubtypes(true);
-    }
-
-    @Override
-    public String[] getDefaultNames()
-    {
-        List<String> s =  new ArrayList<String>();
-        s.add(getItemName() + ".delayer0");
-        s.add("buffered delayer");
-        s.add(getItemName() + ".delayer1");
-        s.add("delayed repeater");
-        s.add(getItemName());
-        s.add("delayer");
-        return s.toArray(new String[0]);
     }
 
     @Override
@@ -76,4 +64,16 @@ public class PClo_ItemBlockDelayer extends PC_ItemBlock
     {
         return PC_Utils.tr("pc.delayer." + PClo_DelayerType.names[PC_MathHelper.clamp_int(dmg, 0, PClo_DelayerType.TOTAL_DELAYER_COUNT - 1)] + ".desc");
     }
+
+	@Override
+	public Object msg(int msg, Object... obj) {
+		switch(msg){
+		case PC_Utils.MSG_DEFAULT_NAME:
+			List<PC_Struct3<String, String, String[]>> names = (List<PC_Struct3<String, String, String[]>>)obj[0];
+			names.add(new PC_Struct3<String, String, String[]>(getItemName() + ".delayer0", "buffered delayer", null));
+            names.add(new PC_Struct3<String, String, String[]>(getItemName() + ".delayer1", "delayed repeater", null));
+            return names;
+		}
+		return null;
+	}
 }

@@ -4,6 +4,7 @@ import java.util.List;
 
 import powercraft.management.PC_IClientModule;
 import powercraft.management.PC_LangEntry;
+import powercraft.management.PC_Struct2;
 import powercraft.management.PC_Utils;
 
 public class PClo_AppClient extends PClo_App implements PC_IClientModule {
@@ -67,5 +68,15 @@ public class PClo_AppClient extends PClo_App implements PC_IClientModule {
         list.add("Adjustable clock pulse!");
         return list;
     }
+
+	@Override
+	public List<PC_Struct2<String, Class>> registerGuis(
+			List<PC_Struct2<String, Class>> guis) {
+		guis.add(new PC_Struct2<String, Class>("Delayer", PClo_GuiDelayer.class));
+		guis.add(new PC_Struct2<String, Class>("Pulsar", PClo_GuiPulsar.class));
+		guis.add(new PC_Struct2<String, Class>("Special", PClo_GuiSpecial.class));
+		return guis;
+	}
+	
 	
 }

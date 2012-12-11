@@ -9,7 +9,6 @@ import java.util.ArrayList;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 
-import net.minecraft.client.Minecraft;
 import net.minecraft.src.Block;
 import net.minecraft.src.Item;
 import net.minecraft.src.ItemStack;
@@ -22,20 +21,19 @@ import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 import org.xml.sax.SAXParseException;
 
-import powercraft.core.PC_VecI;
-import powercraft.core.PC_InvUtils;
-import powercraft.core.PC_Logger;
-import powercraft.core.PC_Module;
-import powercraft.core.PC_Struct2;
-import powercraft.core.PC_Struct3;
-import powercraft.core.PC_Utils;
+import powercraft.management.PC_InvUtils;
+import powercraft.management.PC_Logger;
+import powercraft.management.PC_Struct2;
+import powercraft.management.PC_Struct3;
+import powercraft.management.PC_Utils;
+import powercraft.management.PC_VecI;
 
 public class PCma_TreeHarvestingManager {
 
 	/**
 	 * Folder with the crops xml files
 	 */
-	private static final File folder = new File(PC_Module.getPowerCraftFile(), "/trees");
+	private static final File folder = new File(PC_Utils.getPowerCraftFile(), "/trees");
 
 	private static boolean treesLoaded = false;
 
@@ -119,7 +117,7 @@ public class PCma_TreeHarvestingManager {
 	public static ItemStack[] harvestTreeAt(World world, PC_VecI treeStart) {
 
 		PC_Struct3<PC_Struct2<Integer, Integer>, PC_Struct2<Integer, Integer>, PC_Struct2<Integer, Integer>> treeData = getStructForTree(
-				treeStart.getId(world), treeStart.getMeta(world));
+				PC_Utils.getBID(world, treeStart), PC_Utils.getMD(world, treeStart));
 		ArrayList<ItemStack> harvestedStacks = new ArrayList<ItemStack>();
 
 		if (treeData != null) {
@@ -157,9 +155,8 @@ public class PCma_TreeHarvestingManager {
 		if (cnt >= MAXLOGS || pos.distanceHorizontalTo(treeRootPos) > 10) {
 			return;
 		}
-
-		int id = pos.getId(world);
-		int meta = pos.getMeta(world);
+		int id = PC_Utils.getBID(world, pos);
+		int meta = PC_Utils.getMD(world, pos);
 
 		int wood_id = treeData.a.a;
 		int wood_meta = treeData.a.b;
@@ -172,7 +169,7 @@ public class PCma_TreeHarvestingManager {
 
 		if(id == 127){
 			harvestedStacks.add(new ItemStack(351, meta>=2?3:1, 3));
-			pos.setBlock(world, 0, 0);
+			PC_Utils.setBID(world, pos, 0, 0);
 			return;
 		}
 		
@@ -198,15 +195,15 @@ public class PCma_TreeHarvestingManager {
 
 			if (cnt == 0) {
 				// if not in tree, simply stop.
-				if (pos.offset(0, 1, 0).getId(world) != wood_id || (pos.offset(0, 1, 0).getMeta(world) != wood_meta && wood_meta != -1)) {
+				if (PC_Utils.getBID(world, pos.offset(0, 1, 0)) != wood_id || PC_Utils.getMD(world, pos.offset(0, 1, 0)) != wood_meta && wood_meta != -1)) {
 					pos.notifyNigbours(world);
 					return;
 				}
-				if (pos.offset(0, 2, 0).getId(world) != wood_id || (pos.offset(0, 2, 0).getMeta(world) != wood_meta && wood_meta != -1)) {
+				if (PC_Utils.getBID(world, pos.offset(0, 2, 0)) != wood_id || PC_Utils.getMD(world, pos.offset(0, 2, 0)) != wood_meta && wood_meta != -1)) {
 					pos.notifyNigbours(world);
 					return;
 				}
-				if (pos.offset(0, 3, 0).getId(world) != wood_id || (pos.offset(0, 3, 0).getMeta(world) != wood_meta && wood_meta != -1)) {
+				if (PC_Utils.getBID(world, pos.offset(0, 3, 0)) != wood_id || PC_Utils.getMD(world, pos.offset(0, 3, 0)) != wood_meta && wood_meta != -1)) {
 					pos.notifyNigbours(world);
 					return;
 				}

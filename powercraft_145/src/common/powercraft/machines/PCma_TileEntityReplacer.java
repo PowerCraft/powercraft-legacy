@@ -6,17 +6,15 @@ import net.minecraft.src.EntityPlayer;
 import net.minecraft.src.IInventory;
 import net.minecraft.src.ItemBlock;
 import net.minecraft.src.ItemStack;
-import net.minecraft.src.ModLoader;
 import net.minecraft.src.NBTTagCompound;
 import net.minecraft.src.NBTTagList;
-import powercraft.core.PC_Color;
-import powercraft.core.PC_VecD;
-import powercraft.core.PC_VecI;
-import powercraft.core.PC_EntityLaserParticleFX;
-import powercraft.core.PC_ISpecialAccessInventory;
-import powercraft.core.PC_InvUtils;
-import powercraft.core.PC_TileEntity;
-import powercraft.core.PC_Utils;
+import powercraft.management.PC_Color;
+import powercraft.management.PC_ISpecialAccessInventory;
+import powercraft.management.PC_InvUtils;
+import powercraft.management.PC_TileEntity;
+import powercraft.management.PC_Utils;
+import powercraft.management.PC_VecF;
+import powercraft.management.PC_VecI;
 
 public class PCma_TileEntityReplacer extends PC_TileEntity implements IInventory, PC_ISpecialAccessInventory
 {
@@ -44,30 +42,30 @@ public class PCma_TileEntityReplacer extends PC_TileEntity implements IInventory
         {
             init = true;
             Random rnd = new Random((145896555 + xCoord) ^ yCoord ^ (zCoord ^ 132));
-            double used = 2D;
-            double r = rnd.nextDouble() * 1D;
+            float used = 2.0f;
+            float r = rnd.nextFloat();
             used -= r;
-            double g = rnd.nextDouble() * 1D;
+            float g = rnd.nextFloat();
             used -= g;
-            double b = used;
+            float b = used;
 
             if (rnd.nextBoolean())
             {
-                double f = r;
+                float f = r;
                 r = g;
                 g = f;
             }
 
             if (rnd.nextBoolean())
             {
-                double f = g;
+            	float f = g;
                 g = b;
                 b = f;
             }
 
             if (rnd.nextBoolean())
             {
-                double f = b;
+            	float f = b;
                 b = r;
                 r = f;
             }
@@ -79,11 +77,11 @@ public class PCma_TileEntityReplacer extends PC_TileEntity implements IInventory
         if (aidEnabled && worldObj.isRemote)
         {
             double d = xCoord + rand.nextFloat();
-            double d1 = yCoord + 1.1D;
+            double d1 = yCoord + 1.1f;
             double d2 = zCoord + rand.nextFloat();
             int a = rand.nextInt(3);
             int b = rand.nextInt(3);
-            PC_Utils.spawnParticle("PC_EntityLaserParticleFX", worldObj, new PC_VecD(d, d1, d2), aidcolor, new PC_VecD(), 0);
+            PC_Utils.spawnParticle("PC_EntityLaserParticleFX", worldObj, new PC_VecF((float)d, (float)d1, (float)d2), aidcolor, new PC_VecI(), 0);
 
             for (int q = 0; q < 8; q++)
             {
@@ -131,7 +129,7 @@ public class PCma_TileEntityReplacer extends PC_TileEntity implements IInventory
                         break;
                 }
 
-                PC_Utils.spawnParticle("PC_EntityLaserParticleFX", worldObj, new PC_VecD(d, d1, d2), aidcolor, new PC_VecI(), 0);
+                PC_Utils.spawnParticle("PC_EntityLaserParticleFX", worldObj, new PC_VecF((float)d, (float)d1, (float)d2), aidcolor, new PC_VecI(), 0);
             }
         }
 

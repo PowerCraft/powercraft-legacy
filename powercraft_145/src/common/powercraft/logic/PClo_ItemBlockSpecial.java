@@ -5,9 +5,10 @@ import java.util.List;
 
 import net.minecraft.src.EntityPlayer;
 import net.minecraft.src.ItemStack;
-import powercraft.core.PC_ItemBlock;
-import powercraft.core.PC_MathHelper;
-import powercraft.core.PC_Utils;
+import powercraft.management.PC_ItemBlock;
+import powercraft.management.PC_MathHelper;
+import powercraft.management.PC_Struct3;
+import powercraft.management.PC_Utils;
 
 public class PClo_ItemBlockSpecial extends PC_ItemBlock
 {
@@ -16,30 +17,6 @@ public class PClo_ItemBlockSpecial extends PC_ItemBlock
         super(id);
         setMaxDamage(0);
         setHasSubtypes(true);
-    }
-
-    @Override
-    public String[] getDefaultNames()
-    {
-        List<String> s =  new ArrayList<String>();
-
-        for (int i = 0; i < PClo_SpecialType.TOTAL_SPECIAL_COUNT - 1; i++)
-        {
-            s.add(getItemName() + ".special" + i);
-            s.add("sensor " + PClo_SpecialType.names[i]);
-        };
-
-        int i = PClo_SpecialType.TOTAL_SPECIAL_COUNT - 1;
-
-        s.add(getItemName() + ".special" + i);
-
-        s.add(PClo_SpecialType.names[i] + " controller");
-
-        s.add(getItemName());
-
-        s.add("special");
-
-        return s.toArray(new String[0]);
     }
 
     @Override
@@ -87,4 +64,23 @@ public class PClo_ItemBlockSpecial extends PC_ItemBlock
     {
         return PC_Utils.tr("pc.special." + PClo_SpecialType.names[PC_MathHelper.clamp_int(dmg, 0, PClo_SpecialType.TOTAL_SPECIAL_COUNT - 1)] + ".desc");
     }
+
+	@Override
+	public Object msg(int msg, Object... obj) {
+		switch(msg){
+		case PC_Utils.MSG_DEFAULT_NAME:
+			List<PC_Struct3<String, String, String[]>> names = (List<PC_Struct3<String, String, String[]>>)obj[0];
+	        for (int i = 0; i < PClo_SpecialType.TOTAL_SPECIAL_COUNT - 1; i++)
+	        {
+	            names.add(new PC_Struct3<String, String, String[]>(getItemName() + ".special"+i, "sensor "+PClo_SpecialType.names[i], null));       
+	        };
+
+	        int i = PClo_SpecialType.TOTAL_SPECIAL_COUNT - 1;
+
+	        names.add(new PC_Struct3<String, String, String[]>(getItemName() + ".special"+i, PClo_SpecialType.names[i]+" controller", null));
+
+            return names;
+		}
+		return null;
+	}
 }

@@ -15,6 +15,7 @@ import net.minecraft.src.TileEntity;
 import net.minecraft.src.World;
 import net.minecraftforge.common.Configuration;
 import powercraft.management.PC_Block;
+import powercraft.management.PC_Configuration;
 import powercraft.management.PC_IRotatedBox;
 import powercraft.management.PC_MathHelper;
 import powercraft.management.PC_Shining;
@@ -326,24 +327,28 @@ public class PClo_BlockDelayer extends PC_Block  implements PC_IRotatedBox
         return remove;
     }
 
-    @Override
-    public void loadFromConfig(Configuration config)
-    {
-        on.setLightValue(PC_Utils.getConfigInt(config, Configuration.CATEGORY_GENERAL, "GatesLightValueOn", 7) / 16.0f);
-    }
-    
-    @Override
-	public List<String> getBlockFlags(World world, PC_VecI pos, List<String> list) {
-
-		list.add(PC_Utils.NO_HARVEST);
-		list.add(PC_Utils.NO_PICKUP);
-		return list;
-	}
-
 	@Override
-	public List<String> getItemFlags(ItemStack stack, List<String> list) {
-		list.add(PC_Utils.NO_BUILD);
-		return list;
+	public Object msg(World world, PC_VecI pos, int msg, Object... obj) {
+		switch(msg){
+		case PC_Utils.MSG_LOAD_FROM_CONFIG:
+			on.setLightValue(((PC_Configuration)obj[0]).getInt("PClo_BlockDelayer.brightness", 15) * 0.0625F);
+			break;
+		case PC_Utils.MSG_DEFAULT_NAME:
+			return "Light";
+		case PC_Utils.MSG_BLOCK_FLAGS:{
+			List<String> list = (List<String>)obj[0];
+			list.add(PC_Utils.NO_HARVEST);
+			list.add(PC_Utils.NO_PICKUP);
+	   		return list;
+		}case PC_Utils.MSG_ITEM_FLAGS:{
+			List<String> list = (List<String>)obj[1];
+			list.add(PC_Utils.NO_BUILD);
+			return list;
+		}
+		default:
+			return null;
+		}
+		return true;
 	}
     
 }
