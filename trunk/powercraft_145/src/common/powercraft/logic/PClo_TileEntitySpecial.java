@@ -5,10 +5,10 @@ import net.minecraft.src.IInventory;
 import net.minecraft.src.ItemStack;
 import net.minecraft.src.NBTTagCompound;
 import net.minecraft.src.World;
-import powercraft.core.PC_ISpecialAccessInventory;
-import powercraft.core.PC_InvUtils;
-import powercraft.core.PC_TileEntity;
-import powercraft.core.PC_Utils;
+import powercraft.management.PC_ISpecialAccessInventory;
+import powercraft.management.PC_InvUtils;
+import powercraft.management.PC_TileEntity;
+import powercraft.management.PC_Utils;
 
 public class PClo_TileEntitySpecial extends PC_TileEntity implements IInventory, PC_ISpecialAccessInventory
 {
@@ -134,7 +134,7 @@ public class PClo_TileEntitySpecial extends PC_TileEntity implements IInventory,
         }
 
         PC_Utils.hugeUpdate(worldObj, xCoord, yCoord, zCoord, worldObj.getBlockId(xCoord, yCoord, zCoord));
-        worldObj.markBlockNeedsUpdate(xCoord, yCoord, zCoord);
+        worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
     }
 
     @Override

@@ -4,9 +4,9 @@ import net.minecraft.src.EntityPlayer;
 import net.minecraft.src.ItemStack;
 import net.minecraft.src.NBTTagCompound;
 import net.minecraft.src.World;
-import powercraft.core.PC_PacketHandler;
-import powercraft.core.PC_TileEntity;
-import powercraft.core.PC_Utils;
+import powercraft.management.PC_PacketHandler;
+import powercraft.management.PC_TileEntity;
+import powercraft.management.PC_Utils;
 
 public class PClo_TileEntityFlipFlop extends PC_TileEntity
 {
@@ -77,7 +77,7 @@ public class PClo_TileEntityFlipFlop extends PC_TileEntity
         }
 
         PC_Utils.hugeUpdate(worldObj, xCoord, yCoord, zCoord, worldObj.getBlockId(xCoord, yCoord, zCoord));
-        worldObj.markBlockNeedsUpdate(xCoord, yCoord, zCoord);
+        worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
     }
 
     @Override

@@ -15,28 +15,27 @@ import net.minecraft.src.Material;
 import net.minecraft.src.TileEntity;
 import net.minecraft.src.World;
 import net.minecraftforge.common.Configuration;
-import powercraft.core.PC_Block;
-import powercraft.core.PC_VecI;
-import powercraft.core.PC_IConfigLoader;
-import powercraft.core.PC_IRotatedBox;
-import powercraft.core.PC_MathHelper;
-import powercraft.core.PC_Renderer;
-import powercraft.core.PC_Shining;
-import powercraft.core.PC_Utils;
-import powercraft.core.PC_Shining.OFF;
-import powercraft.core.PC_Shining.ON;
+import powercraft.management.PC_Block;
+import powercraft.management.PC_IRotatedBox;
+import powercraft.management.PC_MathHelper;
+import powercraft.management.PC_Renderer;
+import powercraft.management.PC_Shining;
+import powercraft.management.PC_Shining.OFF;
+import powercraft.management.PC_Shining.ON;
+import powercraft.management.PC_Utils;
+import powercraft.management.PC_VecI;
 
 @PC_Shining
-public class PClo_BlockRepeater extends PC_Block implements PC_IRotatedBox, PC_IConfigLoader
+public class PClo_BlockRepeater extends PC_Block implements PC_IRotatedBox
 {
     @ON
     public static PClo_BlockRepeater on;
     @OFF
     public static PClo_BlockRepeater off;
 
-    public PClo_BlockRepeater(int id, boolean on)
+    public PClo_BlockRepeater(boolean on)
     {
-        super(id, 6, Material.ground);
+        super(6, Material.ground);
         setHardness(0.35F);
         setStepSound(Block.soundWoodFootstep);
         disableStats();
@@ -48,12 +47,6 @@ public class PClo_BlockRepeater extends PC_Block implements PC_IRotatedBox, PC_I
         {
             setCreativeTab(CreativeTabs.tabRedstone);
         }
-    }
-
-    @Override
-    public String getDefaultName()
-    {
-        return null;
     }
 
     @Override
@@ -134,15 +127,8 @@ public class PClo_BlockRepeater extends PC_Block implements PC_IRotatedBox, PC_I
     }
 
     @Override
-    public boolean isIndirectlyPoweringTo(IBlockAccess world, int x, int y, int z, int side)
-    {
-        return isPoweringTo(world, x, y, z, side);
-    }
-
-    @Override
-    public boolean isPoweringTo(IBlockAccess world, int x, int y, int z, int side)
-    {
-        int meta = PC_Utils.getMD(world, x, y, z);
+   	public boolean isProvidingWeakPower(IBlockAccess world, int x, int y, int z, int s) {
+    	int meta = PC_Utils.getMD(world, x, y, z);
         int rotation = getRotation(meta);
         PClo_TileEntityRepeater te = getTE(world, x, y, z);
         int type = te.getType();
@@ -158,12 +144,12 @@ public class PClo_BlockRepeater extends PC_Block implements PC_IRotatedBox, PC_I
             switch (variant)
             {
                 case 0:
-                    if (side == 5)
+                    if (s == 5)
                     {
                         return power1;
                     }
 
-                    if (side == 2)
+                    if (s == 2)
                     {
                         return power2;
                     }
@@ -171,12 +157,12 @@ public class PClo_BlockRepeater extends PC_Block implements PC_IRotatedBox, PC_I
                     break;
 
                 case 1:
-                    if (side == 2)
+                    if (s == 2)
                     {
                         return power1;
                     }
 
-                    if (side == 4)
+                    if (s == 4)
                     {
                         return power2;
                     }
@@ -184,12 +170,12 @@ public class PClo_BlockRepeater extends PC_Block implements PC_IRotatedBox, PC_I
                     break;
 
                 case 2:
-                    if (side == 3)
+                    if (s == 3)
                     {
                         return power1;
                     }
 
-                    if (side == 5)
+                    if (s == 5)
                     {
                         return power2;
                     }
@@ -197,12 +183,12 @@ public class PClo_BlockRepeater extends PC_Block implements PC_IRotatedBox, PC_I
                     break;
 
                 case 3:
-                    if (side == 4)
+                    if (s == 4)
                     {
                         return power1;
                     }
 
-                    if (side == 3)
+                    if (s == 3)
                     {
                         return power2;
                     }
@@ -240,7 +226,7 @@ public class PClo_BlockRepeater extends PC_Block implements PC_IRotatedBox, PC_I
         switch (rotation)
         {
             case 0:
-                switch (side)
+                switch (s)
                 {
                     case 3:
                         return F;
@@ -258,7 +244,7 @@ public class PClo_BlockRepeater extends PC_Block implements PC_IRotatedBox, PC_I
                 break;
 
             case 1:
-                switch (side)
+                switch (s)
                 {
                     case 3:
                         return L;
@@ -276,7 +262,7 @@ public class PClo_BlockRepeater extends PC_Block implements PC_IRotatedBox, PC_I
                 break;
 
             case 2:
-                switch (side)
+                switch (s)
                 {
                     case 3:
                         return B;
@@ -294,7 +280,7 @@ public class PClo_BlockRepeater extends PC_Block implements PC_IRotatedBox, PC_I
                 break;
 
             case 3:
-                switch (side)
+                switch (s)
                 {
                     case 3:
                         return R;
@@ -313,7 +299,12 @@ public class PClo_BlockRepeater extends PC_Block implements PC_IRotatedBox, PC_I
         }
 
         return false;
-    }
+   	}
+
+   	@Override
+   	public boolean isProvidingStrongPower(IBlockAccess world, int x, int y, int z, int s) {
+   		return isProvidingWeakPower(world, x, y, z, s);
+   	}
 
     @Override
     public boolean canProvidePower()

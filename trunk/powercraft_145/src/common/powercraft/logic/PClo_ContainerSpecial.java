@@ -5,8 +5,8 @@ import java.util.List;
 
 import net.minecraft.src.EntityPlayer;
 import net.minecraft.src.Slot;
-import powercraft.core.PC_GresBaseWithInventory;
-import powercraft.core.PC_Utils;
+import powercraft.management.PC_GresBaseWithInventory;
+import powercraft.management.PC_Utils;
 
 public class PClo_ContainerSpecial extends PC_GresBaseWithInventory
 {
