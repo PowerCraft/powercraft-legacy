@@ -3,17 +3,17 @@ package powercraft.machines;
 import java.util.Random;
 
 import net.minecraft.src.EntityPlayer;
-import powercraft.core.PC_ClientUtils;
-import powercraft.core.PC_GresButton;
-import powercraft.core.PC_GresLabel;
-import powercraft.core.PC_GresLayoutH;
-import powercraft.core.PC_GresSeparatorH;
-import powercraft.core.PC_GresWidget;
-import powercraft.core.PC_GresWidget.PC_GresAlign;
-import powercraft.core.PC_GresWindow;
-import powercraft.core.PC_IGresClient;
-import powercraft.core.PC_IGresGui;
-import powercraft.core.PC_Utils;
+import powercraft.management.PC_ClientUtils;
+import powercraft.management.PC_GresButton;
+import powercraft.management.PC_GresLabel;
+import powercraft.management.PC_GresLayoutH;
+import powercraft.management.PC_GresSeparatorH;
+import powercraft.management.PC_GresWidget;
+import powercraft.management.PC_GresWidget.PC_GresAlign;
+import powercraft.management.PC_GresWindow;
+import powercraft.management.PC_IGresClient;
+import powercraft.management.PC_IGresGui;
+import powercraft.management.PC_Utils;
 
 public class PCma_GuiXPBank implements PC_IGresClient {
 
@@ -88,7 +88,7 @@ public class PCma_GuiXPBank implements PC_IGresClient {
 	
 	@Override
 	public void onGuiClosed(PC_IGresGui gui) {
-		xpbank.worldObj.markBlockAsNeedsUpdate(xpbank.xCoord, xpbank.yCoord, xpbank.zCoord);
+		xpbank.worldObj.markBlockForUpdate(xpbank.xCoord, xpbank.yCoord, xpbank.zCoord);
 	}
 
 	@Override

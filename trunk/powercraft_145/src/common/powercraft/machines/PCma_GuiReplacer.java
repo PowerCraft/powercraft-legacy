@@ -1,25 +1,25 @@
 package powercraft.machines;
 
 import net.minecraft.src.EntityPlayer;
-import powercraft.core.PC_VecI;
-import powercraft.core.PC_GresButton;
-import powercraft.core.PC_GresButtonImage;
-import powercraft.core.PC_GresCheckBox;
-import powercraft.core.PC_GresGap;
-import powercraft.core.PC_GresInventoryBigSlot;
-import powercraft.core.PC_GresInventoryPlayer;
-import powercraft.core.PC_GresLabel;
-import powercraft.core.PC_GresLayoutH;
-import powercraft.core.PC_GresLayoutV;
-import powercraft.core.PC_GresTextEdit;
-import powercraft.core.PC_PacketHandler;
-import powercraft.core.PC_GresTextEdit.PC_GresInputType;
-import powercraft.core.PC_GresWidget;
-import powercraft.core.PC_GresWidget.PC_GresAlign;
-import powercraft.core.PC_GresWindow;
-import powercraft.core.PC_IGresClient;
-import powercraft.core.PC_IGresGui;
-import powercraft.core.PC_Utils;
+import powercraft.management.PC_GresButton;
+import powercraft.management.PC_GresButtonImage;
+import powercraft.management.PC_GresCheckBox;
+import powercraft.management.PC_GresGap;
+import powercraft.management.PC_GresInventoryBigSlot;
+import powercraft.management.PC_GresInventoryPlayer;
+import powercraft.management.PC_GresLabel;
+import powercraft.management.PC_GresLayoutH;
+import powercraft.management.PC_GresLayoutV;
+import powercraft.management.PC_GresTextEdit;
+import powercraft.management.PC_GresTextEdit.PC_GresInputType;
+import powercraft.management.PC_GresWidget;
+import powercraft.management.PC_GresWidget.PC_GresAlign;
+import powercraft.management.PC_GresWindow;
+import powercraft.management.PC_IGresClient;
+import powercraft.management.PC_IGresGui;
+import powercraft.management.PC_PacketHandler;
+import powercraft.management.PC_Utils;
+import powercraft.management.PC_VecI;
 
 public class PCma_GuiReplacer extends PCma_ContainerReplacer implements PC_IGresClient {
 
@@ -51,9 +51,9 @@ public class PCma_GuiReplacer extends PCma_ContainerReplacer implements PC_IGres
 		hg1.add(new PC_GresLabel("X"));
 		hg1.add(textedit[0] = new PC_GresTextEdit("" + teReplacer.coordOffset.x, 3, PC_GresInputType.INT).setWidgetMargin(1));
 		vg = new PC_GresLayoutV().setWidgetMargin(1);
-		vg.add(new PC_GresButtonImage(PC_Utils.getGresImageDir() + "widgets.png", new PC_VecI(44, 18), new PC_VecI(6, 4)).setButtonPadding(3, 3)
+		vg.add(new PC_GresButtonImage(PC_Utils.getGresImgDir() + "widgets.png", new PC_VecI(44, 18), new PC_VecI(6, 4)).setButtonPadding(3, 3)
 				.setId(102).setWidgetMargin(0));
-		vg.add(new PC_GresButtonImage(PC_Utils.getGresImageDir() + "widgets.png", new PC_VecI(50, 18), new PC_VecI(6, 4)).setButtonPadding(3, 3)
+		vg.add(new PC_GresButtonImage(PC_Utils.getGresImgDir() + "widgets.png", new PC_VecI(50, 18), new PC_VecI(6, 4)).setButtonPadding(3, 3)
 				.setId(101).setWidgetMargin(0));
 		hg1.add(vg);
 		hg.add(hg1);
@@ -64,9 +64,9 @@ public class PCma_GuiReplacer extends PCma_ContainerReplacer implements PC_IGres
 		hg1.add(new PC_GresLabel("Y"));
 		hg1.add(textedit[1] = new PC_GresTextEdit("" + teReplacer.coordOffset.y, 3, PC_GresInputType.INT).setWidgetMargin(1));
 		vg = new PC_GresLayoutV().setWidgetMargin(1);
-		vg.add(new PC_GresButtonImage(PC_Utils.getGresImageDir() + "widgets.png", new PC_VecI(44, 18), new PC_VecI(6, 4)).setButtonPadding(3, 3)
+		vg.add(new PC_GresButtonImage(PC_Utils.getGresImgDir() + "widgets.png", new PC_VecI(44, 18), new PC_VecI(6, 4)).setButtonPadding(3, 3)
 				.setId(202).setWidgetMargin(0));
-		vg.add(new PC_GresButtonImage(PC_Utils.getGresImageDir() + "widgets.png", new PC_VecI(50, 18), new PC_VecI(6, 4)).setButtonPadding(3, 3)
+		vg.add(new PC_GresButtonImage(PC_Utils.getGresImgDir() + "widgets.png", new PC_VecI(50, 18), new PC_VecI(6, 4)).setButtonPadding(3, 3)
 				.setId(201).setWidgetMargin(0));
 		hg1.add(vg);
 		hg.add(hg1);
@@ -77,9 +77,9 @@ public class PCma_GuiReplacer extends PCma_ContainerReplacer implements PC_IGres
 		hg1.add(new PC_GresLabel("Z"));
 		hg1.add(textedit[2] = new PC_GresTextEdit("" + teReplacer.coordOffset.z, 3, PC_GresInputType.INT).setWidgetMargin(1));
 		vg = new PC_GresLayoutV().setWidgetMargin(1);
-		vg.add(new PC_GresButtonImage(PC_Utils.getGresImageDir() + "widgets.png", new PC_VecI(44, 18), new PC_VecI(6, 4)).setButtonPadding(3, 3)
+		vg.add(new PC_GresButtonImage(PC_Utils.getGresImgDir() + "widgets.png", new PC_VecI(44, 18), new PC_VecI(6, 4)).setButtonPadding(3, 3)
 				.setId(302).setWidgetMargin(0));
-		vg.add(new PC_GresButtonImage(PC_Utils.getGresImageDir() + "widgets.png", new PC_VecI(50, 18), new PC_VecI(6, 4)).setButtonPadding(3, 3)
+		vg.add(new PC_GresButtonImage(PC_Utils.getGresImgDir() + "widgets.png", new PC_VecI(50, 18), new PC_VecI(6, 4)).setButtonPadding(3, 3)
 				.setId(301).setWidgetMargin(0));
 		hg1.add(vg);
 		hg.add(hg1);

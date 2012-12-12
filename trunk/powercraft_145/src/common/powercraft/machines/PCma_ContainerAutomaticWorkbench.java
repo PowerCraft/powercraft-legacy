@@ -7,8 +7,8 @@ import net.minecraft.src.EntityPlayer;
 import net.minecraft.src.IInventory;
 import net.minecraft.src.InventoryCraftResult;
 import net.minecraft.src.Slot;
-import powercraft.core.PC_GresBaseWithInventory;
-import powercraft.core.PC_Utils;
+import powercraft.management.PC_GresBaseWithInventory;
+import powercraft.management.PC_Utils;
 
 public class PCma_ContainerAutomaticWorkbench extends PC_GresBaseWithInventory
 {
