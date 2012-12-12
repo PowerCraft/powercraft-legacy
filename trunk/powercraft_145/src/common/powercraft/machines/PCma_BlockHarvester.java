@@ -3,7 +3,6 @@ package powercraft.machines;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
-import java.util.Set;
 
 import net.minecraft.src.Block;
 import net.minecraft.src.BlockRail;
@@ -27,18 +26,18 @@ import net.minecraft.src.ItemStack;
 import net.minecraft.src.Material;
 import net.minecraft.src.MathHelper;
 import net.minecraft.src.World;
-import powercraft.core.PC_BeamTracer;
-import powercraft.core.PC_Block;
-import powercraft.core.PC_Color;
-import powercraft.core.PC_VecI;
-import powercraft.core.PC_IBeamHandler;
-import powercraft.core.PC_ICraftingToolDisplayer;
-import powercraft.core.PC_ISpecialInventoryTextures;
-import powercraft.core.PC_InvUtils;
-import powercraft.core.PC_Utils;
+import powercraft.management.PC_BeamTracer;
+import powercraft.management.PC_Block;
+import powercraft.management.PC_Color;
+import powercraft.management.PC_IBeamHandler;
+import powercraft.management.PC_IItemInfo;
+import powercraft.management.PC_ISpecialInventoryTextures;
+import powercraft.management.PC_InvUtils;
+import powercraft.management.PC_Utils;
+import powercraft.management.PC_VecI;
 
 public class PCma_BlockHarvester extends PC_Block implements
-		PC_ISpecialInventoryTextures, PC_IBeamHandler, PC_ICraftingToolDisplayer {
+		PC_ISpecialInventoryTextures, PC_IBeamHandler, PC_IItemInfo {
 
 	private static final int TXDOWN = 109, TXTOP = 155, TXSIDE = 139, TXFRONT = 107, TXBACK = 123;
 	/**
@@ -47,17 +46,12 @@ public class PCma_BlockHarvester extends PC_Block implements
 	 */
 	public static final int ENDBLOCK = 98;
 	
-	public PCma_BlockHarvester(int id) {
-		super(id, TXSIDE, Material.ground);
+	public PCma_BlockHarvester() {
+		super(TXSIDE, Material.ground);
 		setHardness(0.7F);
 		setResistance(10.0F);
 		setStepSound(Block.soundStoneFootstep);
 		setCreativeTab(CreativeTabs.tabDecorations);
-	}
-	
-	@Override
-	public String getDefaultName() {
-		return "Harvester";
 	}
 	
 	@Override
@@ -216,8 +210,7 @@ public class PCma_BlockHarvester extends PC_Block implements
 
 		PC_Color color = new PC_Color();
 
-		color.setTo(0.001D, 1.0D, 0.001D);
-		color.setMeta(2);
+		color.setTo(0.001f, 1.0f, 0.001f);
 
 		beamTracer.setColor(color);
 
@@ -246,8 +239,8 @@ public class PCma_BlockHarvester extends PC_Block implements
 	@Override
 	public boolean onBlockHit(PC_BeamTracer beamTracer, Block block, PC_VecI coord) {
 		World world = beamTracer.getWorld();
-		int id = coord.getId(world);
-		int meta = coord.getMeta(world);
+		int id = PC_Utils.getBID(world, coord);
+		int meta = PC_Utils.getMD(world, coord);
 
 		if (id == 49 || id == 7 || id == ENDBLOCK) {
 			return true;
@@ -256,7 +249,7 @@ public class PCma_BlockHarvester extends PC_Block implements
 
 		// sapling on grass
 		if (PCma_TreeHarvestingManager.isBlockTreeSapling(id, meta)) {
-			int underId = coord.offset(0, -1, 0).getId(world);
+			int underId = PC_Utils.getBID(world, coord.offset(0, -1, 0));
 			if (underId == Block.dirt.blockID || underId == Block.grass.blockID || underId == Block.mycelium.blockID) {
 				return false;
 			}
@@ -483,7 +476,11 @@ public class PCma_BlockHarvester extends PC_Block implements
 		EntityItem entityitem = new EntityItem(world, dx, dy - 0.29999999999999999D, dz, itemstack);
 		double throwSpeed = world.rand.nextDouble() * 0.10000000000000001D + 0.20000000000000001D;
 		
-		String module = PC_Utils.getModule(PC_Utils.getBlock(world, devPos));
+		Block b = PC_Utils.getBlock(world, devPos);
+		String module = null;
+		if(b instanceof PC_Block){
+			module = ((PC_Block) b).getModule().getName();
+		}
 		
 		if (module!=null && module.equalsIgnoreCase("Transport")) {
 			entityitem.motionX = 0;
@@ -516,29 +513,29 @@ public class PCma_BlockHarvester extends PC_Block implements
 	}
 
 	@Override
-	public String getCraftingToolModule() {
-		return PCma_App.getInstance().getNameWithoutPowerCraft();
-	}
-
-	@Override
 	public List<ItemStack> getItemStacks(List<ItemStack> arrayList) {
 		arrayList.add(new ItemStack(this));
 		return arrayList;
 	}
 	
 	@Override
-   	public List<String> getBlockFlags(World world, PC_VecI pos, List<String> list) {
-
-   		list.add(PC_Utils.NO_HARVEST);
-   		list.add(PC_Utils.NO_PICKUP);
-   		list.add(PC_Utils.HARVEST_STOP);
-   		return list;
-   	}
-
-   	@Override
-   	public List<String> getItemFlags(ItemStack stack, List<String> list) {
-   		list.add(PC_Utils.NO_BUILD);
-   		return list;
-   	}
-	
+	public Object msg(World world, PC_VecI pos, int msg, Object... obj) {
+		switch (msg){
+		case PC_Utils.MSG_DEFAULT_NAME:
+			return "Harvester";
+		case PC_Utils.MSG_BLOCK_FLAGS:{
+			List<String> list = (List<String>)obj[1];
+	   		list.add(PC_Utils.NO_HARVEST);
+	   		list.add(PC_Utils.NO_PICKUP);
+	   		list.add(PC_Utils.HARVEST_STOP);
+	   		return list;
+		}case PC_Utils.MSG_ITEM_FLAGS:{
+			List<String> list = (List<String>)obj[1];
+			list.add(PC_Utils.NO_BUILD);
+			return list;
+		}
+		}
+		return null;
+	}
+   	
 }

@@ -15,6 +15,7 @@ import net.minecraft.src.MathHelper;
 import net.minecraft.src.TileEntity;
 import net.minecraft.src.World;
 import powercraft.management.PC_Block;
+import powercraft.management.PC_FakePlayer;
 import powercraft.management.PC_IItemInfo;
 import powercraft.management.PC_Struct2;
 import powercraft.management.PC_Utils;
@@ -227,7 +228,7 @@ public class PCma_BlockReplacer extends PC_Block implements PC_IItemInfo
 
         if (itemstack.itemID == Block.lockedChest.blockID)
         {
-            pos.setBlockNoNotify(world, 0, 0);
+        	PC_Utils.setBIDNoNotify(world, pos, 0, 0);
             world.removeBlockTileEntity(pos.x, pos.y, pos.z);
 
             if (!Item.itemsList[Block.lockedChest.blockID].onItemUse(itemstack, new PC_FakePlayer(world), world, pos.x, pos.y + 1, pos.z, 0, 0.0f, 0.0f, 0.0f))
@@ -239,7 +240,7 @@ public class PCma_BlockReplacer extends PC_Block implements PC_IItemInfo
 
             if (meta != -1)
             {
-                pos.setMetaNoNotify(world, meta);
+            	PC_Utils.setMDNoNotify(world, pos, meta);
             }
 
             return true;
@@ -261,8 +262,8 @@ public class PCma_BlockReplacer extends PC_Block implements PC_IItemInfo
         {
             iblock = (ItemBlock) Item.itemsList[Block.lavaMoving.blockID];
         }
-
-        if (pos.setBlockNoNotify(world, iblock.getBlockID(), iblock.getMetadata(itemstack.getItemDamage())))
+        
+        if (PC_Utils.setBIDNoNotify(world, pos, iblock.getBlockID(), iblock.getMetadata(itemstack.getItemDamage())))
         {
             if (PC_Utils.getBID(world, pos) == iblock.getBlockID())
             {
@@ -271,7 +272,7 @@ public class PCma_BlockReplacer extends PC_Block implements PC_IItemInfo
 
             if (meta != -1 && !iblock.getHasSubtypes())
             {
-                pos.setMetaNoNotify(world, meta);
+            	PC_Utils.setMDNoNotify(world, pos, meta);
             }
 
             itemstack.stackSize--;
