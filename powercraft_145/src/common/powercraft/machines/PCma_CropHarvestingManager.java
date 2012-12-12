@@ -11,7 +11,6 @@ import java.util.Random;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 
-import net.minecraft.client.Minecraft;
 import net.minecraft.src.Item;
 import net.minecraft.src.ItemStack;
 
@@ -22,10 +21,9 @@ import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 import org.xml.sax.SAXParseException;
 
-import powercraft.core.PC_InvUtils;
-import powercraft.core.PC_Logger;
-import powercraft.core.PC_Module;
-import powercraft.core.PC_Utils;
+import powercraft.management.PC_InvUtils;
+import powercraft.management.PC_Logger;
+import powercraft.management.PC_Utils;
 
 /**
  * Custom Crops manager
@@ -44,7 +42,7 @@ public class PCma_CropHarvestingManager {
 	/**
 	 * Folder with the crops xml files
 	 */
-	private static final File folder = new File(PC_Module.getPowerCraftFile(), "/crops");
+	private static final File folder = new File(PC_Utils.getPowerCraftFile(), "/crops");
 
 	private static boolean cropsLoaded = false;
 
