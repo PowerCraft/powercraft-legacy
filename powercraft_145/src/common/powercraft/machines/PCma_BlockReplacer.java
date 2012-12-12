@@ -14,30 +14,23 @@ import net.minecraft.src.Material;
 import net.minecraft.src.MathHelper;
 import net.minecraft.src.TileEntity;
 import net.minecraft.src.World;
-import powercraft.core.PC_Block;
-import powercraft.core.PC_VecI;
-import powercraft.core.PC_FakePlayer;
-import powercraft.core.PC_ICraftingToolDisplayer;
-import powercraft.core.PC_Struct2;
-import powercraft.core.PC_Utils;
+import powercraft.management.PC_Block;
+import powercraft.management.PC_IItemInfo;
+import powercraft.management.PC_Struct2;
+import powercraft.management.PC_Utils;
+import powercraft.management.PC_VecI;
 
-public class PCma_BlockReplacer extends PC_Block implements PC_ICraftingToolDisplayer
+public class PCma_BlockReplacer extends PC_Block implements PC_IItemInfo
 {
     private static final int TXDOWN = 109, TXTOP = 153, TXSIDE = 137;
 
-    public PCma_BlockReplacer(int id)
+    public PCma_BlockReplacer()
     {
-        super(id, TXSIDE, Material.ground);
+        super(TXSIDE, Material.ground);
         setHardness(0.7F);
         setResistance(10.0F);
         setStepSound(Block.soundStoneFootstep);
         setCreativeTab(CreativeTabs.tabDecorations);
-    }
-
-    @Override
-    public String getDefaultName()
-    {
-        return "Replacer";
     }
 
     @Override
@@ -163,7 +156,7 @@ public class PCma_BlockReplacer extends PC_Block implements PC_ICraftingToolDisp
 
     private boolean replacer_canHarvestBlockAt(World world, PC_VecI pos)
     {
-        int id = pos.getMeta(world);
+        int id = PC_Utils.getMD(world, pos);
 
         if (id == 0 || Block.blocksList[id] == null)
         {
@@ -194,7 +187,7 @@ public class PCma_BlockReplacer extends PC_Block implements PC_ICraftingToolDisp
 
         if (item.shiftedIndex == Block.lockedChest.blockID)
         {
-            return pos.getTileEntity(world) == null;
+            return PC_Utils.getTE(world, pos) == null;
         }
 
         if (item instanceof ItemBlock)
@@ -228,7 +221,7 @@ public class PCma_BlockReplacer extends PC_Block implements PC_ICraftingToolDisp
     {
         if (itemstack == null)
         {
-            pos.setBlock(world, 0, 0);
+        	PC_Utils.setBID(world, pos, 0, 0);
             return true;
         }
 
@@ -271,7 +264,7 @@ public class PCma_BlockReplacer extends PC_Block implements PC_ICraftingToolDisp
 
         if (pos.setBlockNoNotify(world, iblock.getBlockID(), iblock.getMetadata(itemstack.getItemDamage())))
         {
-            if (pos.getId(world) == iblock.getBlockID())
+            if (PC_Utils.getBID(world, pos) == iblock.getBlockID())
             {
                 world.notifyBlockChange(pos.x, pos.y, pos.z, iblock.getBlockID());
             }
@@ -290,19 +283,19 @@ public class PCma_BlockReplacer extends PC_Block implements PC_ICraftingToolDisp
     private PC_Struct2<ItemStack, Integer> replacer_harvestBlockAt(World world, PC_VecI pos)
     {
         ItemStack loot = null;
-        int meta = pos.getMeta(world);
+        int meta = PC_Utils.getMD(world, pos);
 
         if (!replacer_canHarvestBlockAt(world, pos))
         {
             return null;
         }
 
-        if (pos.getTileEntity(world) != null)
+        if (PC_Utils.getTE(world, pos) != null)
         {
             return new PC_Struct2<ItemStack, Integer>(PC_Utils.extractAndRemoveChest(world, pos), meta);
         }
 
-        Block block = Block.blocksList[pos.getId(world)];
+        Block block = Block.blocksList[PC_Utils.getBID(world, pos)];
 
         if (block == null)
         {
@@ -311,17 +304,17 @@ public class PCma_BlockReplacer extends PC_Block implements PC_ICraftingToolDisp
 
         if (PC_Block.canSilkHarvest(block))
         {
-            loot = PC_Block.createStackedBlock(block, pos.getMeta(world));
+            loot = PC_Block.createStackedBlock(block, PC_Utils.getMD(world, pos));
         }
         else
         {
             int dropId = block.blockID;
-            int dropMeta = block.damageDropped(pos.getMeta(world));
+            int dropMeta = block.damageDropped(PC_Utils.getMD(world, pos));
             int dropQuant = block.quantityDropped(world.rand);
 
             if (dropId <= 0)
             {
-                dropId = pos.getId(world);
+                dropId = PC_Utils.getBID(world, pos);
             }
 
             if (dropQuant <= 0)
@@ -458,31 +451,30 @@ public class PCma_BlockReplacer extends PC_Block implements PC_ICraftingToolDisp
     }
 
     @Override
-    public String getCraftingToolModule()
-    {
-        return PCma_App.getInstance().getNameWithoutPowerCraft();
-    }
-
-    @Override
     public List<ItemStack> getItemStacks(List<ItemStack> arrayList)
     {
         arrayList.add(new ItemStack(this));
         return arrayList;
     }
-    
-    @Override
-   	public List<String> getBlockFlags(World world, PC_VecI pos, List<String> list) {
 
-   		list.add(PC_Utils.NO_HARVEST);
-   		list.add(PC_Utils.NO_PICKUP);
-   		list.add(PC_Utils.HARVEST_STOP);
-   		return list;
-   	}
-
-   	@Override
-   	public List<String> getItemFlags(ItemStack stack, List<String> list) {
-   		list.add(PC_Utils.NO_BUILD);
-   		return list;
-   	}
+	@Override
+	public Object msg(World world, PC_VecI pos, int msg, Object... obj) {
+		switch (msg){
+		case PC_Utils.MSG_DEFAULT_NAME:
+			return "Replacer";
+		case PC_Utils.MSG_ITEM_FLAGS:{
+			List<String> list = (List<String>)obj[1];
+			list.add(PC_Utils.NO_BUILD);
+			return list;
+		}case PC_Utils.MSG_BLOCK_FLAGS:{
+			List<String> list = (List<String>)obj[1];
+	   		list.add(PC_Utils.NO_HARVEST);
+	   		list.add(PC_Utils.NO_PICKUP);
+	   		list.add(PC_Utils.HARVEST_STOP);
+	   		return list;
+		}
+		}
+		return null;
+	}
     
 }

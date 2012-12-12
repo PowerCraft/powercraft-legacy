@@ -13,30 +13,24 @@ import net.minecraft.src.Material;
 import net.minecraft.src.MathHelper;
 import net.minecraft.src.TileEntity;
 import net.minecraft.src.World;
-import powercraft.core.PC_Block;
-import powercraft.core.PC_VecI;
-import powercraft.core.PC_ICraftingToolDisplayer;
-import powercraft.core.PC_ISpecialInventoryTextures;
-import powercraft.core.PC_InvUtils;
-import powercraft.core.PC_Utils;
+import powercraft.management.PC_Block;
+import powercraft.management.PC_IItemInfo;
+import powercraft.management.PC_ISpecialInventoryTextures;
+import powercraft.management.PC_InvUtils;
+import powercraft.management.PC_Utils;
+import powercraft.management.PC_VecI;
 
-public class PCma_BlockAutomaticWorkbench extends PC_Block implements PC_ISpecialInventoryTextures, PC_ICraftingToolDisplayer
+public class PCma_BlockAutomaticWorkbench extends PC_Block implements PC_ISpecialInventoryTextures, PC_IItemInfo
 {
     private static final int TXDOWN = 109, TXTOP = 154, TXSIDE = 138, TXFRONT = 106, TXBACK = 122;
 
-    public PCma_BlockAutomaticWorkbench(int id)
+    public PCma_BlockAutomaticWorkbench()
     {
-        super(id, 62, Material.ground);
+        super(62, Material.ground);
         setHardness(0.7F);
         setResistance(10.0F);
         setStepSound(Block.soundMetalFootstep);
         setCreativeTab(CreativeTabs.tabDecorations);
-    }
-
-    @Override
-    public String getDefaultName()
-    {
-        return "Automatic Workbench";
     }
 
     @Override
@@ -196,33 +190,32 @@ public class PCma_BlockAutomaticWorkbench extends PC_Block implements PC_ISpecia
     {
         return new PCma_TileEntityAutomaticWorkbench();
     }
-
-    @Override
-    public String getCraftingToolModule()
-    {
-        return PCma_App.getInstance().getNameWithoutPowerCraft();
-    }
-
+    
     @Override
     public List<ItemStack> getItemStacks(List<ItemStack> arrayList)
     {
         arrayList.add(new ItemStack(this));
         return arrayList;
     }
-    
-    @Override
-   	public List<String> getBlockFlags(World world, PC_VecI pos, List<String> list) {
 
-   		list.add(PC_Utils.NO_HARVEST);
-   		list.add(PC_Utils.NO_PICKUP);
-   		list.add(PC_Utils.HARVEST_STOP);
-   		return list;
-   	}
-
-   	@Override
-   	public List<String> getItemFlags(ItemStack stack, List<String> list) {
-   		list.add(PC_Utils.NO_BUILD);
-   		return list;
-   	}
+	@Override
+	public Object msg(World world, PC_VecI pos, int msg, Object... obj) {
+		switch (msg){
+		case PC_Utils.MSG_DEFAULT_NAME:
+			return "Automatic Workbench";
+		case PC_Utils.MSG_ITEM_FLAGS:{
+			List<String> list = (List<String>)obj[1];
+			list.add(PC_Utils.NO_BUILD);
+			return list;
+		}case PC_Utils.MSG_BLOCK_FLAGS:{
+			List<String> list = (List<String>)obj[1];
+	   		list.add(PC_Utils.NO_HARVEST);
+	   		list.add(PC_Utils.NO_PICKUP);
+	   		list.add(PC_Utils.HARVEST_STOP);
+	   		return list;
+		}
+		}
+		return null;
+	}
    	
 }
