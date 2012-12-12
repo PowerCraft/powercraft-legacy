@@ -11,8 +11,18 @@ public class PCco_AppClient extends PCco_App implements PC_IClientModule {
 
 	@Override
 	public List<PC_LangEntry> initLanguage(List<PC_LangEntry> lang) {
-		// TODO Auto-generated method stub
-		return null;
+		lang.add(new PC_LangEntry("pc.gui.craftingTool.title", "Crafting Tool"));
+		lang.add(new PC_LangEntry("pc.gui.craftingTool.trashAll", "Trash All"));
+		lang.add(new PC_LangEntry("pc.gui.craftingTool.search", "Search"));
+		lang.add(new PC_LangEntry("pc.gui.craftingTool.sort", "Sort"));
+		lang.add(new PC_LangEntry("pc.gui.update.title", "Mod Update Notification"));
+		lang.add(new PC_LangEntry("pc.gui.update.newVersionAvailable", "Update available!"));
+		lang.add(new PC_LangEntry("pc.gui.update.readMore", "Read more..."));
+		lang.add(new PC_LangEntry("pc.gui.update.version", "Using %1$s (%2$s), Available %3$s (%4$s)"));
+		lang.add(new PC_LangEntry("pc.gui.update.doNotShowAgain", "Don't show again"));
+		lang.add(new PC_LangEntry("pc.sniffer.desc", "Portable radar device"));
+		lang.add(new PC_LangEntry("pc.sniffer.distance", "Sniffing depth (blocks):"));
+		return lang;
 	}
 	
 	@Override
