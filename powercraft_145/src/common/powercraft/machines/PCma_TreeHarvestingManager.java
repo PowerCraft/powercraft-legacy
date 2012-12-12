@@ -152,7 +152,7 @@ public class PCma_TreeHarvestingManager {
 	public static void chopTree(World world, PC_VecI treeRootPos, PC_VecI pos, ArrayList<ItemStack> harvestedStacks,
 			PC_Struct3<PC_Struct2<Integer, Integer>, PC_Struct2<Integer, Integer>, PC_Struct2<Integer, Integer>> treeData) {
 
-		if (cnt >= MAXLOGS || pos.distanceHorizontalTo(treeRootPos) > 10) {
+		if (cnt >= MAXLOGS || pos.distanceTo(treeRootPos.x, pos.y, treeRootPos.z) > 10) {
 			return;
 		}
 		int id = PC_Utils.getBID(world, pos);
@@ -185,7 +185,7 @@ public class PCma_TreeHarvestingManager {
 				harvestedStacks.add(dropped);
 			}
 
-			pos.setBlockNoNotify(world, 0, 0);
+			PC_Utils.setBIDNoNotify(world, pos, 0, 0);
 
 			if (world.rand.nextInt(10 - ((id == wood_id && (meta == wood_meta || wood_meta == -1)) ? 8 : 0)) == 0) {
 				if (PC_Utils.isSoundEnabled()) {
@@ -195,16 +195,16 @@ public class PCma_TreeHarvestingManager {
 
 			if (cnt == 0) {
 				// if not in tree, simply stop.
-				if (PC_Utils.getBID(world, pos.offset(0, 1, 0)) != wood_id || PC_Utils.getMD(world, pos.offset(0, 1, 0)) != wood_meta && wood_meta != -1)) {
-					pos.notifyNigbours(world);
+				if (PC_Utils.getBID(world, pos.offset(0, 1, 0)) != wood_id || (PC_Utils.getMD(world, pos.offset(0, 1, 0)) != wood_meta && wood_meta != -1)) {
+					PC_Utils.notifyNeighbour(world, pos);
 					return;
 				}
-				if (PC_Utils.getBID(world, pos.offset(0, 2, 0)) != wood_id || PC_Utils.getMD(world, pos.offset(0, 2, 0)) != wood_meta && wood_meta != -1)) {
-					pos.notifyNigbours(world);
+				if (PC_Utils.getBID(world, pos.offset(0, 2, 0)) != wood_id || (PC_Utils.getMD(world, pos.offset(0, 2, 0)) != wood_meta && wood_meta != -1)) {
+					PC_Utils.notifyNeighbour(world, pos);
 					return;
 				}
-				if (PC_Utils.getBID(world, pos.offset(0, 3, 0)) != wood_id || PC_Utils.getMD(world, pos.offset(0, 3, 0)) != wood_meta && wood_meta != -1)) {
-					pos.notifyNigbours(world);
+				if (PC_Utils.getBID(world, pos.offset(0, 3, 0)) != wood_id || (PC_Utils.getMD(world, pos.offset(0, 3, 0)) != wood_meta && wood_meta != -1)) {
+					PC_Utils.notifyNeighbour(world, pos);
 					return;
 				}
 			}
@@ -212,7 +212,7 @@ public class PCma_TreeHarvestingManager {
 
 			cnt++;
 			if (cnt >= MAXLOGS) {
-				pos.notifyNigbours(world);
+				PC_Utils.notifyNeighbour(world, pos);
 				return;
 			}
 
@@ -233,7 +233,7 @@ public class PCma_TreeHarvestingManager {
 				}
 			}
 			
-			pos.notifyNigbours(world);
+			PC_Utils.notifyNeighbour(world, pos);
 			
 			// replant sapling.
 			if (PC_Utils.getBID(world, pos.offset(0, -1, 0)) == Block.dirt.blockID) {

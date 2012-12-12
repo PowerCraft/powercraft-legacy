@@ -34,6 +34,8 @@ public interface PC_Vec<t extends Number, ret extends PC_Vec> extends PC_INBT {
 	public ret div(t x, t y, t z);
 	
 	public double length();
+	public double distanceTo(PC_Vec vec);
+	public double distanceTo(t x, t y, t z);
 	
 	public ret normalize();
 	
