@@ -176,6 +176,16 @@ public class PC_VecF implements Serializable, PC_Vec<Float, PC_VecF> {
 	}
 
 	@Override
+	public double distanceTo(PC_Vec vec){
+		return copy().sub(vec).length();
+	}
+	
+	@Override
+	public double distanceTo(Float x, Float y, Float z){
+		return copy().sub(x, y, z).length();
+	}
+	
+	@Override
 	public PC_VecF normalize() {
 		double length = length();
 		x /= length;

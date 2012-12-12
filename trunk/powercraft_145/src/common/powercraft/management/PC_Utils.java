@@ -1506,6 +1506,22 @@ public class PC_Utils implements PC_IPacketHandler
     	return setBID(world, pos.x, pos.y, pos.z, id, meta);
 	}
 
+    public static void notifyNeighbour(World world, int x, int y, int z) {
+    	world.notifyBlocksOfNeighborChange(x, y, z, getBID(world, x, y, z));
+	}
+    
+    public static void notifyNeighbour(World world, PC_VecI pos) {
+    	notifyNeighbour(world, pos.x, pos.y, pos.z);
+	}
+    
+    public static boolean setBIDNoNotify(World world, int x, int y, int z, int id, int meta) {
+    	return world.setBlockAndMetadata(x, y, z, id, meta);
+	}
+    
+    public static boolean setBIDNoNotify(World world, PC_VecI pos, int id, int meta) {
+    	return setBID(world, pos.x, pos.y, pos.z, id, meta);
+	}
+    
 	protected void iSpawnParticle(String name, Object[] o)
     {
     }
