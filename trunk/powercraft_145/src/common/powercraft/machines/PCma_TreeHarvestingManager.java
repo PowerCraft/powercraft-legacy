@@ -221,8 +221,8 @@ public class PCma_TreeHarvestingManager {
 				for (int y = pos.y - 1; y <= pos.y + 1; y++) {
 					for (int z = pos.z - 1; z <= pos.z + 1; z++) {
 						PC_VecI here = new PC_VecI(x, y, z);
-						int here_id = here.getId(world);
-						int here_meta = here.getMeta(world);
+						int here_id = PC_Utils.getBID(world, here);
+						int here_meta = PC_Utils.getMD(world, here);
 						if ((here_id == wood_id && ((here_meta&3) == wood_meta || wood_meta == -1))
 								|| (here_id == leaves_id && ((here_meta & 3) == leaves_meta || leaves_meta == -1))
 								|| (here_id == 127/*Cacao*/)) {
@@ -236,9 +236,9 @@ public class PCma_TreeHarvestingManager {
 			pos.notifyNigbours(world);
 			
 			// replant sapling.
-			if (pos.offset(0, -1, 0).getId(world) == Block.dirt.blockID) {
+			if (PC_Utils.getBID(world, pos.offset(0, -1, 0)) == Block.dirt.blockID) {
 				if (sapling_id > 0 && sapling_meta >= 0) {
-					pos.setBlock(world, sapling_id, sapling_meta);
+					PC_Utils.setBID(world, pos, sapling_id, sapling_meta);
 				}
 			}
 
