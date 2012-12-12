@@ -5,20 +5,13 @@ import java.util.List;
 import net.minecraft.src.Block;
 import net.minecraft.src.IRecipe;
 import net.minecraft.src.Item;
-import net.minecraftforge.common.Configuration;
 import powercraft.management.PC_Block;
-import powercraft.management.PC_Configuration;
 import powercraft.management.PC_IModule;
 import powercraft.management.PC_ItemStack;
+import powercraft.management.PC_Property;
 import powercraft.management.PC_ShapedRecipes;
 import powercraft.management.PC_Struct2;
 import powercraft.management.PC_Utils;
-import cpw.mods.fml.common.Mod.Init;
-import cpw.mods.fml.common.Mod.PostInit;
-import cpw.mods.fml.common.Mod.PreInit;
-import cpw.mods.fml.common.event.FMLInitializationEvent;
-import cpw.mods.fml.common.event.FMLPostInitializationEvent;
-import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 
 public class PClo_App implements PC_IModule
 {
@@ -50,7 +43,7 @@ public class PClo_App implements PC_IModule
 	public void postInit() {}
 
 	@Override
-	public void initProperties(PC_Configuration config) {}
+	public void initProperties(PC_Property config) {}
 
 	@Override
 	public void initBlocks(){

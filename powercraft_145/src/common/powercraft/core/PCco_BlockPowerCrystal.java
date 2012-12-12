@@ -10,8 +10,8 @@ import net.minecraft.src.Material;
 import net.minecraft.src.World;
 import powercraft.management.PC_Block;
 import powercraft.management.PC_Color;
-import powercraft.management.PC_Configuration;
 import powercraft.management.PC_MathHelper;
+import powercraft.management.PC_Property;
 import powercraft.management.PC_Renderer;
 import powercraft.management.PC_Utils;
 import powercraft.management.PC_VecI;
@@ -212,12 +212,12 @@ public class PCco_BlockPowerCrystal extends PC_Block
 	public Object msg(World world, PC_VecI pos, int msg, Object... obj) {
 		switch(msg){
 		case PC_Utils.MSG_LOAD_FROM_CONFIG:
-			setLightValue(((PC_Configuration)obj[0]).getInt("PCco_BlockPowerCrystal.brightness", 16) * 0.0625F);
-			makeSound = ((PC_Configuration)obj[0]).getBoolean("PCco_BlockPowerCrystal.makeSound", true);
-			genCrystalsInChunk = ((PC_Configuration)obj[0]).getInt("PCco_BlockPowerCrystal.spawn.in_chunk", 3, "Number of deposits in each 16x16 chunk.");
-    		genCrystalsDepositMaxCount = ((PC_Configuration)obj[0]).getInt("PCco_BlockPowerCrystal.spawn.deposit_max_size", 4, "Highest crystal count in one deposit");
-    		genCrystalsMaxY = ((PC_Configuration)obj[0]).getInt("PCco_BlockPowerCrystal.spawn.min_y", 5, "Min Y coordinate of crystal deposits.");
-    		genCrystalsMinY = ((PC_Configuration)obj[0]).getInt("PCco_BlockPowerCrystal.spawn.max_y", 15, "Max Y coordinate of crystal deposits.");
+			setLightValue(((PC_Property)obj[0]).getInt("brightness", 16) * 0.0625F);
+			makeSound = ((PC_Property)obj[0]).getBoolean("makeSound", true);
+			genCrystalsInChunk = ((PC_Property)obj[0]).getInt("spawn.in_chunk", 3, "Number of deposits in each 16x16 chunk.");
+    		genCrystalsDepositMaxCount = ((PC_Property)obj[0]).getInt("spawn.deposit_max_size", 4, "Highest crystal count in one deposit");
+    		genCrystalsMaxY = ((PC_Property)obj[0]).getInt("spawn.min_y", 5, "Min Y coordinate of crystal deposits.");
+    		genCrystalsMinY = ((PC_Property)obj[0]).getInt("spawn.max_y", 15, "Max Y coordinate of crystal deposits.");
 			break;
 		case PC_Utils.MSG_RENDER_INVENTORY_BLOCK:
 			renderInventoryBlock((Block)obj[0], (Integer)obj[1], (Integer)obj[2], obj[3]);

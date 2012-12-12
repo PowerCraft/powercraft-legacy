@@ -16,20 +16,20 @@ public class PC_GlobalVariables {
 	public static boolean showUpdateWindow = false;
 	public static String useUserName = "";
 	
-	public static PC_Configuration config;
+	public static PC_Property config;
 	
 	public static void loadConfig(){
 		File f = new File(PC_Utils.getMCDirectory(), "config/PowerCraft.cfg");
 		if(f.exists()){
 			try {
 				InputStream is = new FileInputStream(f);
-				config = PC_Configuration.load(is);
+				config = PC_Property.loadFromFile(is);
 			} catch (FileNotFoundException e) {
 				PC_Logger.severe("Can't find File "+f);
 			}
 		}
 		if(config==null){
-			config = new PC_Configuration();
+			config = new PC_Property(null);
 		}
 		
 		hackSplashes = config.getBoolean("hacks.splash", true);

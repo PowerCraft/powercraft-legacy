@@ -55,7 +55,7 @@ public class PC_Utils implements PC_IPacketHandler
     protected static HashMap<String, Object> objects = new HashMap<String, Object>();
 
     private static Random rand = new Random();
-    private static HashMap<String, PC_Struct2<PC_IModule, PC_Configuration>> modules = new HashMap<String, PC_Struct2<PC_IModule, PC_Configuration>>();
+    private static HashMap<String, PC_Struct2<PC_IModule, PC_Property>> modules = new HashMap<String, PC_Struct2<PC_IModule, PC_Property>>();
     
     protected static boolean isSoundEnabled = false;
     
@@ -190,7 +190,7 @@ public class PC_Utils implements PC_IPacketHandler
     
     public static <t>t register(PC_IModule module, Class<t> c)
     {
-    	PC_Configuration config = getConfig(module);
+    	PC_Property config = getConfig(module);
 
         if (PC_Block.class.isAssignableFrom(c))
         {
@@ -208,7 +208,7 @@ public class PC_Utils implements PC_IPacketHandler
                 item.setModule(module);
                 item.setTextureFile(getTerrainFile(module));
 
-                item.msg(PC_Utils.MSG_LOAD_FROM_CONFIG, config);
+                item.msg(PC_Utils.MSG_LOAD_FROM_CONFIG, config.getProperty(itemClass.getSimpleName(), null, null));
 
                 List<PC_Struct3<String, String, String[]>> l = (List<PC_Struct3<String, String, String[]>>)item.msg(MSG_DEFAULT_NAME, new ArrayList<PC_Struct3<String, String, String[]>>());
                 if(l!=null){
@@ -232,7 +232,7 @@ public class PC_Utils implements PC_IPacketHandler
                 itemArmor.setItemName(itemArmorClass.getSimpleName());
                 itemArmor.setModule(module);
 
-                itemArmor.msg(PC_Utils.MSG_LOAD_FROM_CONFIG, config);
+                itemArmor.msg(PC_Utils.MSG_LOAD_FROM_CONFIG, config.getProperty(itemArmorClass.getSimpleName(), null, null));
                 
                 List<PC_Struct3<String, String, String[]>> l = (List<PC_Struct3<String, String, String[]>>)itemArmor.msg(MSG_DEFAULT_NAME, new ArrayList<PC_Struct3<String, String, String[]>>());
                 if(l!=null){
@@ -265,7 +265,7 @@ public class PC_Utils implements PC_IPacketHandler
 
     public static <t extends PC_Block>t register(PC_IModule module, Class<t> blockClass, Class <? extends PC_ItemBlock > itemBlockClass, Class <? extends PC_TileEntity > tileEntityClass)
     {
-    	PC_Configuration config = getConfig(module);
+    	PC_Property config = getConfig(module);
 
         try
         {
@@ -292,7 +292,7 @@ public class PC_Utils implements PC_IPacketHandler
             block.setModule(module);
             block.setTextureFile(getTerrainFile(module));
 
-            block.msg(PC_Utils.MSG_LOAD_FROM_CONFIG, config);
+            block.msg(PC_Utils.MSG_LOAD_FROM_CONFIG, config.getProperty(blockClass.getSimpleName(), null, null));
             
             mod_PowerCraft.registerBlock(block, itemBlockClass);
 
@@ -1268,14 +1268,14 @@ public class PC_Utils implements PC_IPacketHandler
         instance.iWatchForKey(name, key);
     }
 
-    public static int watchForKey(PC_Configuration config, String name, int key)
+    public static int watchForKey(PC_Property config, String name, int key)
     {
     	key = config.getInt("key.name", key, new String[]{"Key for rotate placing"});
         watchForKey(name, key);
         return key;
     }
 
-    public static void setReverseKey(PC_Configuration config)
+    public static void setReverseKey(PC_Property config)
     {
         instance.keyReverse = watchForKey(config, "keyReverse", 29);
     }
@@ -1894,20 +1894,20 @@ public class PC_Utils implements PC_IPacketHandler
 	}
 	
 	public static void registerModule(PC_IModule module){
-		PC_Configuration config = null;
+		PC_Property config = null;
 		File f = new File(PC_Utils.getMCDirectory(), "config/PowerCraft-"+module.getName()+".cfg");
 		if(f.exists()){
 			try {
 				InputStream is = new FileInputStream(f);
-				config = PC_Configuration.load(is);
+				config = PC_Property.loadFromFile(is);
 			} catch (FileNotFoundException e) {
 				PC_Logger.severe("Can't find File "+f);
 			}
 		}
 		if(config==null){
-			config = new PC_Configuration();
+			config = new PC_Property(null);
 		}
-		modules.put(module.getName(), new PC_Struct2<PC_IModule, PC_Configuration>(module, config));
+		modules.put(module.getName(), new PC_Struct2<PC_IModule, PC_Property>(module, config));
 	}
 	
 	public static String getTextureDirectory(PC_IModule module){
@@ -1918,7 +1918,7 @@ public class PC_Utils implements PC_IPacketHandler
 		return getTextureDirectory(module) + "tiles.png";
 	}
 	
-	public static PC_Configuration getConfig(PC_IModule module) {
+	public static PC_Property getConfig(PC_IModule module) {
 		if(modules.containsKey(module.getName())){
 			return modules.get(module.getName()).b;
 		}
@@ -1926,7 +1926,7 @@ public class PC_Utils implements PC_IPacketHandler
 	}
 	
 	public static void saveConfig(PC_IModule module) {
-		PC_Configuration config = getConfig(module);
+		PC_Property config = getConfig(module);
 		File f = new File(PC_Utils.getMCDirectory(), "config/PowerCraft-"+module.getName()+".cfg");
 		if(config!=null){
 			try {
@@ -1947,7 +1947,7 @@ public class PC_Utils implements PC_IPacketHandler
 	
 	public static List<PC_IModule> getModules(){
 		List<PC_IModule> list = new ArrayList<PC_IModule>();
-		for(PC_Struct2<PC_IModule, PC_Configuration> s:modules.values()){
+		for(PC_Struct2<PC_IModule, PC_Property> s:modules.values()){
 			list.add(s.a);
 		}
 		return list;

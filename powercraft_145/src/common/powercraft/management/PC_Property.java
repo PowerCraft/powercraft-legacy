@@ -92,6 +92,11 @@ public class PC_Property {
 		comment = desc;
 	}
 	
+	public PC_Property(){
+		value = new HashMap<String, PC_Property>();
+		comment = null;
+	}
+	
 	public String getString(){
 		return value.toString();
 	}
@@ -215,5 +220,80 @@ public class PC_Property {
 			comment = prop.comment;
 		}
 	}
+	
+	public PC_Property getProperty(String key, Object defaultValue, String[] comment){
+		String[] keys = key.split("\\.");
+		PC_Property prop = this;
+		for(int i=0; i<keys.length; i++){
+			if(prop.hasChildren()){
+				HashMap<String, PC_Property> hm = prop.getPropertys();
+				if(hm.containsKey(keys[i])){
+					prop = hm.get(keys[i]);
+				}else{
+					if(i==keys.length-1){
+						hm.put(keys[i], prop = new PC_Property(defaultValue, comment));
+					}else{
+						hm.put(keys[i], prop = new PC_Property());
+					}
+				}
+			}else{
+				break;
+			}
+		}
+		return prop;
+	}
+	
+	public int getInt(String key){
+		return getInt(key, 0);
+	}
+	
+	public int getInt(String key, int defaultValue, String... comment){
+		return getProperty(key, defaultValue, comment).getInt();
+	}
+	
+	public float getFloat(String key){
+		return getFloat(key, 0.0f);
+	}
+	
+	public float getFloat(String key, float defaultValue, String... comment){
+		return getProperty(key, defaultValue, comment).getFloat();
+	}
+	
+	public boolean getBoolean(String key){
+		return getBoolean(key, false);
+	}
+	
+	public boolean getBoolean(String key, boolean defaultValue, String... comment){
+		return getProperty(key, defaultValue, comment).getBoolean();
+	}
+	
+	public String getString(String key){
+		return getString(key, "");
+	}
+	
+	public String getString(String key, String defaultValue, String... comment){
+		return getProperty(key, defaultValue, comment).getString();
+	}
+
+	public void setInt(String key, int i) {
+		PC_Property prop = getProperty(key, i, null);
+		prop.setValue(i, prop.getComment());
+	}
+
+	public void setFloat(String key, float f) {
+		PC_Property prop = getProperty(key, f, null);
+		prop.setValue(f, prop.getComment());
+	}
+	
+	public void setBoolean(String key, boolean b) {
+		PC_Property prop = getProperty(key, b, null);
+		prop.setValue(b, prop.getComment());
+	}
+	
+	public void setString(String key, String s) {
+		PC_Property prop = getProperty(key, s, null);
+		prop.setValue(s, prop.getComment());
+	}
+	
 	
 }

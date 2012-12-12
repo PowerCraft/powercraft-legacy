@@ -32,7 +32,7 @@ import cpw.mods.fml.client.registry.RenderingRegistry;
 
 public class PC_ClientUtils extends PC_Utils {
 	
-	private HashMap<PC_IModule, HashMap<String, PC_Configuration>> moduleTranslation = new HashMap<PC_IModule, HashMap<String, PC_Configuration>>();
+	private HashMap<PC_IModule, HashMap<String, PC_Property>> moduleTranslation = new HashMap<PC_IModule, HashMap<String, PC_Property>>();
 	private HashMap<String, Class<? extends EntityFX>> entityFX = new HashMap<String, Class<? extends EntityFX>>();
 	private PC_KeyHandler keyHandler;
 	
@@ -69,16 +69,16 @@ public class PC_ClientUtils extends PC_Utils {
 	
 	@Override
 	protected void iRegisterLanguage(PC_IModule module, String lang, PC_Struct3<String, String, String[]>[] translations){
-		HashMap<String, PC_Configuration> langs;
+		HashMap<String, PC_Property> langs;
 		if(moduleTranslation.containsKey(module))
 			langs = moduleTranslation.get(module);
 		else
-			moduleTranslation.put(module, langs = new HashMap<String, PC_Configuration>());
-		PC_Configuration translation;
+			moduleTranslation.put(module, langs = new HashMap<String, PC_Property>());
+		PC_Property translation;
 		if(langs.containsKey(lang))
 			translation = langs.get(lang);
 		else
-			langs.put(lang, translation = new PC_Configuration());
+			langs.put(lang, translation = new PC_Property(null));
 		for(PC_Struct3<String, String, String[]> trans:translations){
 			if(trans.a.startsWith("tile.") || trans.a.startsWith("item.")){
 				if(!trans.a.endsWith(".name")){
@@ -117,18 +117,18 @@ public class PC_ClientUtils extends PC_Utils {
 			
 			try {
 				
-				PC_Configuration prop = PC_Configuration.load(new FileInputStream(folder.getCanonicalPath()+ "/" + filename));
+				PC_Property prop = PC_Property.loadFromFile(new FileInputStream(folder.getCanonicalPath()+ "/" + filename));
 				
-				HashMap<String, PC_Configuration> langs;
+				HashMap<String, PC_Property> langs;
 				if(moduleTranslation.containsKey(module))
 					langs = moduleTranslation.get(module);
 				else
-					moduleTranslation.put(module, langs = new HashMap<String, PC_Configuration>());
-				PC_Configuration translation;
+					moduleTranslation.put(module, langs = new HashMap<String, PC_Property>());
+				PC_Property translation;
 				if(langs.containsKey(language))
 					translation = langs.get(language);
 				else
-					langs.put(language, translation = new PC_Configuration());
+					langs.put(language, translation = new PC_Property(null));
 				
 				translation.replaceWith(prop);
 				
@@ -144,12 +144,12 @@ public class PC_ClientUtils extends PC_Utils {
 	}
 	
 	private void updateLangRegistry() {
-		for(HashMap<String, PC_Configuration> e1:moduleTranslation.values()){
-			for(Entry<String, PC_Configuration> e2:e1.entrySet()){
-				PC_Configuration conf = e2.getValue();
+		for(HashMap<String, PC_Property> e1:moduleTranslation.values()){
+			for(Entry<String, PC_Property> e2:e1.entrySet()){
+				PC_Property conf = e2.getValue();
 				String lang = e2.getKey();
 				
-				registerLang(lang, "", conf.getProperty());
+				registerLang(lang, "", conf);
 				
 			}
 		}
@@ -173,8 +173,8 @@ public class PC_ClientUtils extends PC_Utils {
 	protected void iSaveLanguage(PC_IModule module){
 		if(!moduleTranslation.containsKey(module))
 			return;
-		Set<Entry<String, PC_Configuration>> langs = moduleTranslation.get(module).entrySet();
-		for(Entry<String, PC_Configuration> langEntry:langs){
+		Set<Entry<String, PC_Property>> langs = moduleTranslation.get(module).entrySet();
+		for(Entry<String, PC_Property> langEntry:langs){
 			
 			try {
 				File f = new File(getPowerCraftFile(), "lang");
