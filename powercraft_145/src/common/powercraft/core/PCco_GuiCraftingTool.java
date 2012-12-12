@@ -57,11 +57,9 @@ public class PCco_GuiCraftingTool extends PCco_ContainerCraftingTool implements 
 		PC_GresLayoutV lv = new PC_GresLayoutV();
 		lv.setAlignH(PC_GresAlign.STRETCH);
 		page.slots = new ArrayList<PCco_SlotDirectCrafting>();
-		Collection<List<PC_Struct2<PC_IModule, PCco_SlotDirectCrafting>>> cls = moduleList.values();
-		for(List<PC_Struct2<PC_IModule, PCco_SlotDirectCrafting>> ls: cls){
-			for(PC_Struct2<PC_IModule, PCco_SlotDirectCrafting> s:ls){
-				page.slots.add(s.b);
-			}
+		List<PC_Struct2<PC_IModule, PCco_SlotDirectCrafting>> cls = moduleList.get(name);
+		for(PC_Struct2<PC_IModule, PCco_SlotDirectCrafting> s: cls){
+			page.slots.add(s.b);
 		}
 		page.scroll = page.slots.size()>12*9;
 		lv.add(page.inv = new PC_GresInventory(12, page.scroll?8:9));
