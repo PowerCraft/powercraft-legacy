@@ -60,8 +60,7 @@ public class PCma_App implements PC_IModule
 
 	@Override
 	public void initProperties(PC_Configuration config) {
-		roasterIgnoreBlockIDs = PC_Utils.parseIntList(PC_Utils.getConfigString(config,
-				"roaster_ignored_blocks_list", Configuration.CATEGORY_GENERAL, "1"));
+		roasterIgnoreBlockIDs = PC_Utils.parseIntList(config.getString("PCma_BlockRoaster.roasterIgnoreBlockIDs", "1"));
 	}
 
 	@Override
