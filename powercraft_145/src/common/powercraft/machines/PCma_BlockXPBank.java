@@ -12,6 +12,14 @@ import net.minecraft.src.ItemStack;
 import net.minecraft.src.Material;
 import net.minecraft.src.TileEntity;
 import net.minecraft.src.World;
+<<<<<<< .mine
+import powercraft.management.PC_Block;
+import powercraft.management.PC_IItemInfo;
+import powercraft.management.PC_ITileEntityRenderer;
+import powercraft.management.PC_Renderer;
+import powercraft.management.PC_Utils;
+import powercraft.management.PC_VecI;
+=======
 import powercraft.light.PCli_TileEntityLaser;
 import powercraft.management.PC_Block;
 import powercraft.management.PC_Configuration;
@@ -20,6 +28,7 @@ import powercraft.management.PC_MathHelper;
 import powercraft.management.PC_Renderer;
 import powercraft.management.PC_Utils;
 import powercraft.management.PC_VecI;
+>>>>>>> .r568
 
 public class PCma_BlockXPBank extends PC_Block implements PC_IItemInfo
 {
@@ -99,14 +108,29 @@ public class PCma_BlockXPBank extends PC_Block implements PC_IItemInfo
     }
 
     @Override
+<<<<<<< .mine
+    public boolean isProvidingStrongPower(IBlockAccess iblockaccess, int i, int j, int k, int l)
+    {
+        return ((PCma_TileEntityXPBank) iblockaccess.getBlockTileEntity(i, j, k)).getXP() > 0;
+    }
+=======
    	public boolean isProvidingWeakPower(IBlockAccess world, int x, int y, int z, int s) {
        	return ((PCma_TileEntityXPBank) world.getBlockTileEntity(x, y, z)).getXP() > 0;
    	}
+>>>>>>> .r568
 
+<<<<<<< .mine
+    @Override
+    public boolean isProvidingWeakPower(IBlockAccess world, int x, int y, int z, int r)
+    {
+        return isProvidingStrongPower(world, x, y, z, r);
+    }
+=======
    	@Override
    	public boolean isProvidingStrongPower(IBlockAccess world, int x, int y, int z, int s) {
    		return isProvidingWeakPower(world, x, y, z, s);
    	}
+>>>>>>> .r568
 
     @Override
     public void onBlockHarvested(World world, int i, int j, int k, int par5, EntityPlayer player)
@@ -162,6 +186,33 @@ public class PCma_BlockXPBank extends PC_Block implements PC_IItemInfo
         return arrayList;
     }
 
+<<<<<<< .mine
+	@Override
+	public Object msg(World world, PC_VecI pos, int msg, Object... obj) {
+		switch (msg){
+		case PC_Utils.MSG_DEFAULT_NAME:
+			return "XP Bank";
+		case PC_Utils.MSG_ITEM_FLAGS:{
+			List<String> list = (List<String>)obj[1];
+			list.add(PC_Utils.NO_BUILD);
+			return list;
+		}case PC_Utils.MSG_BLOCK_FLAGS:{
+			List<String> list = (List<String>)obj[1];
+	   		list.add(PC_Utils.NO_HARVEST);
+	   		list.add(PC_Utils.NO_PICKUP);
+	   		list.add(PC_Utils.HARVEST_STOP);
+	   		return list;
+		}case PC_Utils.MSG_RENDER_INVENTORY_BLOCK:{
+			renderInventoryBlock((Block)obj[0], (Integer)obj[1], (Integer)obj[2], obj[3]);
+			return true;
+		}case PC_Utils.MSG_RENDER_WORLD_BLOCK:{
+			renderWorldBlock((IBlockAccess)obj[0], (Integer)obj[1], (Integer)obj[2], (Integer)obj[3], (Block)obj[4], (Integer)obj[5], obj[6]);
+			return true;
+		}
+		}
+		return null;
+	}
+=======
 	@Override
 	public Object msg(World world, PC_VecI pos, int msg, Object... obj) {
 		switch(msg){
@@ -189,6 +240,7 @@ public class PCma_BlockXPBank extends PC_Block implements PC_IItemInfo
 		}
 		return true;
 	}
+>>>>>>> .r568
     
    	
    	

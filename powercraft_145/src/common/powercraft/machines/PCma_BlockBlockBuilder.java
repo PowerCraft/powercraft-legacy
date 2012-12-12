@@ -20,11 +20,20 @@ import powercraft.management.PC_InvUtils;
 import powercraft.management.PC_Utils;
 import powercraft.management.PC_VecI;
 
+<<<<<<< .mine
+public class PCma_BlockBlockBuilder extends PC_Block implements PC_ISpecialInventoryTextures, PC_IItemInfo{
+=======
 public class PCma_BlockBlockBuilder extends PC_Block implements PC_ISpecialInventoryTextures, PC_IItemInfo {
+>>>>>>> .r568
 	private static final int TXDOWN = 109, TXTOP = 156, TXSIDE = 140, TXFRONT = 108, TXBACK = 124;
 	
+<<<<<<< .mine
+	public PCma_BlockBlockBuilder() {
+		super(TXDOWN, Material.ground);
+=======
 	public PCma_BlockBlockBuilder(int id) {
 		super(TXDOWN, Material.ground);
+>>>>>>> .r568
 		setHardness(0.7F);
 		setResistance(10.0F);
 		setStepSound(Block.soundStoneFootstep);
@@ -207,7 +216,29 @@ public class PCma_BlockBlockBuilder extends PC_Block implements PC_ISpecialInven
 		arrayList.add(new ItemStack(this));
 		return arrayList;
 	}
+
+<<<<<<< .mine
+	@Override
+	public Object msg(World world, PC_VecI pos, int msg, Object... obj) {
+		switch (msg){
+		case PC_Utils.MSG_DEFAULT_NAME:
+			return "Block Builder";
+		case PC_Utils.MSG_ITEM_FLAGS:{
+			List<String> list = (List<String>)obj[1];
+			list.add(PC_Utils.NO_BUILD);
+			return list;
+		}case PC_Utils.MSG_BLOCK_FLAGS:{
+			List<String> list = (List<String>)obj[1];
+	   		list.add(PC_Utils.NO_HARVEST);
+	   		list.add(PC_Utils.NO_PICKUP);
+	   		list.add(PC_Utils.HARVEST_STOP);
+	   		return list;
+		}
+		}
+		return null;
+	}
 	
+=======
    	@Override
 	public Object msg(World world, PC_VecI pos, int msg, Object... obj) {
 		switch (msg){
@@ -228,4 +259,5 @@ public class PCma_BlockBlockBuilder extends PC_Block implements PC_ISpecialInven
 		return null;
 	}
    	
+>>>>>>> .r568
 }
