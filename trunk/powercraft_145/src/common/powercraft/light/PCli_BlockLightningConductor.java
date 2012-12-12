@@ -17,9 +17,9 @@ import cpw.mods.fml.common.asm.SideOnly;
 
 public class PCli_BlockLightningConductor extends PC_Block
 {
-    public PCli_BlockLightningConductor()
+    public PCli_BlockLightningConductor(int id)
     {
-        super(22, Material.rock);
+        super(id, 22, Material.rock);
         setHardness(1.5F);
         setResistance(50.0F);
         setStepSound(Block.soundMetalFootstep);

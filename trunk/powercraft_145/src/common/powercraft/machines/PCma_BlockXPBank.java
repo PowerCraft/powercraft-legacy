@@ -21,9 +21,9 @@ import powercraft.management.PC_VecI;
 
 public class PCma_BlockXPBank extends PC_Block implements PC_IItemInfo
 {
-    public PCma_BlockXPBank()
+    public PCma_BlockXPBank(int id)
     {
-        super(Material.ground);
+        super(id, Material.ground);
         setStepSound(Block.soundPowderFootstep);
         setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 1.0F, 1.0F);
         setHardness(6.0F);

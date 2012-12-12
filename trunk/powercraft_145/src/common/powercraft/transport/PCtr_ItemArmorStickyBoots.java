@@ -12,9 +12,9 @@ import cpw.mods.fml.common.asm.SideOnly;
 
 public class PCtr_ItemArmorStickyBoots extends PC_ItemArmor
 {
-    public PCtr_ItemArmorStickyBoots()
+    public PCtr_ItemArmorStickyBoots(int id)
     {
-        super(EnumArmorMaterial.IRON, 2, FEET);
+        super(id, EnumArmorMaterial.IRON, 2, FEET);
         setIconCoord(2, 3);
     }
 

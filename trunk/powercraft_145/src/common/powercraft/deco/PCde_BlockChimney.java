@@ -16,8 +16,8 @@ import powercraft.management.PC_VecI;
 
 public class PCde_BlockChimney extends PC_Block {
 
-	public PCde_BlockChimney() {
-		super(0, Material.rock, false);
+	public PCde_BlockChimney(int id) {
+		super(id, 0, Material.rock, false);
 		setHardness(1.5F);
 		setResistance(50.0F);
 		setStepSound(Block.soundMetalFootstep);

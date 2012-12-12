@@ -14,9 +14,9 @@ public abstract class PC_ItemArmor extends ItemArmor implements PC_IItemInfo, PC
     private PC_IModule module;
     private Item replacedItem = null;
     
-    protected PC_ItemArmor(EnumArmorMaterial material, int textureID, int type)
+    protected PC_ItemArmor(int id, EnumArmorMaterial material, int textureID, int type)
     {
-        super(PC_Utils.getFreeItemID()-256 ,material, textureID, type);
+        super(id-256 ,material, textureID, type);
     }
 
     public void setItemID(int id){

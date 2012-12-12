@@ -8,9 +8,9 @@ import powercraft.management.PC_VecI;
 
 public class PCtr_BlockBeltSpeedy extends PCtr_BlockBeltBase
 {
-    public PCtr_BlockBeltSpeedy()
+    public PCtr_BlockBeltSpeedy(int id)
     {
-        super(4);
+        super(id, 4);
     }
 
     @Override

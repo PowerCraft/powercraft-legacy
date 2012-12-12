@@ -24,9 +24,9 @@ public class PCco_BlockPowerCrystal extends PC_Block
     public static int genCrystalsMaxY;
     public static int genCrystalsMinY;
 
-    public PCco_BlockPowerCrystal()
+    public PCco_BlockPowerCrystal(int id)
     {
-        super(4, Material.glass);
+        super(id, 4, Material.glass);
         setHardness(0.5F);
         setResistance(0.5F);
         setStepSound(Block.soundGlassFootstep);

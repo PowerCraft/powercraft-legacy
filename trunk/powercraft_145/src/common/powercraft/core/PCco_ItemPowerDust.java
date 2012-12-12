@@ -10,8 +10,8 @@ import powercraft.management.PC_Utils;
 
 public class PCco_ItemPowerDust extends PC_Item {
 
-	public PCco_ItemPowerDust() {
-		super(false);
+	public PCco_ItemPowerDust(int id) {
+		super(id, false);
 	    setIconCoord(13, 9);
 	    setCreativeTab(CreativeTabs.tabMaterials);
 	}

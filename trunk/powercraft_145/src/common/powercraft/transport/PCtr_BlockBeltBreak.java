@@ -9,9 +9,9 @@ import powercraft.management.PC_VecI;
 
 public class PCtr_BlockBeltBreak extends PCtr_BlockBeltBase
 {
-    public PCtr_BlockBeltBreak()
+    public PCtr_BlockBeltBreak(int id)
     {
-        super(5);
+        super(id, 5);
     }
 
     @Override

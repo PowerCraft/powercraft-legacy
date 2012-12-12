@@ -33,9 +33,9 @@ public class PClo_BlockSpecial extends PC_Block implements PC_IRotatedBox
     @OFF
     public static PClo_BlockSpecial off;
 
-    public PClo_BlockSpecial(boolean on)
+    public PClo_BlockSpecial(int id, boolean on)
     {
-        super(6, Material.ground);
+        super(id, 6, Material.ground);
         setHardness(0.35F);
         setStepSound(Block.soundWoodFootstep);
         disableStats();

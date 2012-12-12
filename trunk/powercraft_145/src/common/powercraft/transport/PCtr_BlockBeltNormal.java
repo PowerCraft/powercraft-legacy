@@ -8,9 +8,9 @@ import powercraft.management.PC_VecI;
 
 public class PCtr_BlockBeltNormal extends PCtr_BlockBeltBase
 {
-    public PCtr_BlockBeltNormal()
+    public PCtr_BlockBeltNormal(int id)
     {
-        super(0);
+        super(id, 0);
     }
 
     @Override

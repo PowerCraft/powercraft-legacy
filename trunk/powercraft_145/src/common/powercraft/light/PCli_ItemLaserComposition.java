@@ -23,8 +23,9 @@ import cpw.mods.fml.common.asm.SideOnly;
 
 public class PCli_ItemLaserComposition extends PC_Item
 {
-    public PCli_ItemLaserComposition()
+    public PCli_ItemLaserComposition(int id)
     {
+    	super(id);
         setMaxStackSize(1);
         setHasSubtypes(true);
         setCreativeTab(CreativeTabs.tabDecorations);

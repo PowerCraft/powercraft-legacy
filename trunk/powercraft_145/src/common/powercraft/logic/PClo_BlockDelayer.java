@@ -31,9 +31,9 @@ public class PClo_BlockDelayer extends PC_Block  implements PC_IRotatedBox
     @OFF
     public static PClo_BlockDelayer off;
 
-    public PClo_BlockDelayer(boolean on)
+    public PClo_BlockDelayer(int id, boolean on)
     {
-        super(6, Material.ground);
+        super(id, 6, Material.ground);
         setHardness(0.35F);
         setStepSound(Block.soundWoodFootstep);
         disableStats();

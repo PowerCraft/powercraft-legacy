@@ -9,9 +9,9 @@ import powercraft.management.PC_VecI;
 
 public class PCtr_BlockBeltRedirector extends PCtr_BlockBeltBase
 {
-    public PCtr_BlockBeltRedirector()
+    public PCtr_BlockBeltRedirector(int id)
     {
-        super(8);
+        super(id, 8);
     }
 
     public boolean isPowered(World world, PC_VecI pos)

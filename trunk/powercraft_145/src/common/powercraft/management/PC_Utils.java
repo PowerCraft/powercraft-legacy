@@ -202,13 +202,19 @@ public class PC_Utils implements PC_IPacketHandler
 
             try
             {
-                PC_Item item = createClass(itemClass, new Class[] {}, new Object[] {});
+            	config = config.getProperty(itemClass.getSimpleName(), null, null);
+            	int id = config.getInt("defaultID", 0);
+            	if(!isItemIDFree(id)){
+            		id = getFreeItemID();
+            		config.setInt("defaultID", id);
+            	}
+                PC_Item item = createClass(itemClass, new Class[] {int.class}, new Object[] {id});
                 instance.objects.put(itemClass.getSimpleName(), item);
                 item.setItemName(itemClass.getSimpleName());
                 item.setModule(module);
                 item.setTextureFile(getTerrainFile(module));
 
-                item.msg(PC_Utils.MSG_LOAD_FROM_CONFIG, config.getProperty(itemClass.getSimpleName(), null, null));
+                item.msg(PC_Utils.MSG_LOAD_FROM_CONFIG, config);
 
                 List<PC_Struct3<String, String, String[]>> l = (List<PC_Struct3<String, String, String[]>>)item.msg(MSG_DEFAULT_NAME, new ArrayList<PC_Struct3<String, String, String[]>>());
                 if(l!=null){
@@ -227,7 +233,13 @@ public class PC_Utils implements PC_IPacketHandler
 
             try
             {
-                PC_ItemArmor itemArmor = createClass(itemArmorClass, new Class[] {}, new Object[] {});
+            	config = config.getProperty(itemArmorClass.getSimpleName(), null, null);
+            	int id = config.getInt("defaultID", 0);
+            	if(!isItemIDFree(id)){
+            		id = getFreeItemID();
+            		config.setInt("defaultID", id);
+            	}
+                PC_ItemArmor itemArmor = createClass(itemArmorClass, new Class[] {int.class}, new Object[] {id});
                 instance.objects.put(itemArmorClass.getSimpleName(), itemArmor);
                 itemArmor.setItemName(itemArmorClass.getSimpleName());
                 itemArmor.setModule(module);
@@ -269,13 +281,29 @@ public class PC_Utils implements PC_IPacketHandler
 
         try
         {
+        	config = config.getProperty(blockClass.getSimpleName(), null, null);
+        	
             t block;
             t blockOff;
-
+            
             if (blockClass.isAnnotationPresent(PC_Shining.class))
             {
-                block = createClass(blockClass, new Class[] {boolean.class}, new Object[] {true});
-                blockOff = createClass(blockClass, new Class[] {boolean.class}, new Object[] {false});
+            	
+             	int idOn = config.getInt("defaultID.on", 0);
+             	if(!isBlockIDFree(idOn)){
+             		idOn = getFreeBlockID();
+             		config.setInt("defaultID.on", idOn);
+             	}
+            	
+                block = createClass(blockClass, new Class[] {int.class, boolean.class}, new Object[] {idOn, true});
+                
+                int idOff = config.getInt("defaultID.off", 0);
+             	if(!isBlockIDFree(idOff)){
+             		idOff = getFreeBlockID();
+             		config.setInt("defaultID.off", idOff);
+             	}
+                
+                blockOff = createClass(blockClass, new Class[] {int.class, boolean.class}, new Object[] {idOff, false});
                 setFieldsWithAnnotationTo(blockClass, PC_Shining.ON.class, blockClass, block);
                 setFieldsWithAnnotationTo(blockClass, PC_Shining.OFF.class, blockClass, blockOff);
                 blockOff.setBlockName(blockClass.getSimpleName());
@@ -284,7 +312,12 @@ public class PC_Utils implements PC_IPacketHandler
             }
             else
             {
-                block = createClass(blockClass, new Class[] {}, new Object[] {});
+             	int id = config.getInt("defaultID", 0);
+             	if(!isBlockIDFree(id)){
+             		id = getFreeBlockID();
+             		config.setInt("defaultID", id);
+             	}
+                block = createClass(blockClass, new Class[] {int.class}, new Object[] {id});
             }
 
             instance.objects.put(blockClass.getSimpleName(), block);
@@ -1878,6 +1911,12 @@ public class PC_Utils implements PC_IPacketHandler
 		return -1;
 	}
 	
+	public static boolean isBlockIDFree(int id){
+		if(id<=0)
+			return false;
+		return Block.blocksList[id]==null;
+	}
+	
 	public static int getFreeItemID() {
 		for(int i=Block.blocksList.length; i<Item.itemsList.length; i++){
 			if(Item.itemsList[i] == null)
@@ -1886,6 +1925,12 @@ public class PC_Utils implements PC_IPacketHandler
 		return -1;
 	}
 
+	public static boolean isItemIDFree(int id){
+		if(id<=0)
+			return false;
+		return Item.itemsList[id]==null;
+	}
+	
 	public static File createFile(File pfile, String name) {
 		File file = new File(pfile, name);
     	if(!file.exists())

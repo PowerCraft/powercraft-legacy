@@ -18,8 +18,8 @@ public class PCde_BlockRedstoneStorage extends PC_Block implements PC_IItemInfo 
 	private boolean wiresProvidePower = true;
 	private Set blocksNeedingUpdate = new HashSet();
 	
-	public PCde_BlockRedstoneStorage() {
-		super(129, Material.rock);
+	public PCde_BlockRedstoneStorage(int id) {
+		super(id, 129, Material.rock);
 		setHardness(1.5F);
 		setResistance(50.0F);
 		setStepSound(Block.soundMetalFootstep);

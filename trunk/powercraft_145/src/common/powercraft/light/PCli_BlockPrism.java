@@ -23,8 +23,8 @@ import powercraft.management.PC_VecI;
 
 public class PCli_BlockPrism extends PC_Block implements PC_IItemInfo {
 
-	public PCli_BlockPrism() {
-		super(Material.glass);
+	public PCli_BlockPrism(int id) {
+		super(id, Material.glass);
 		float f = 0.4F;
 		float f1 = 1.0F;
 		setBlockBounds(0.5F - f, 0.1F, 0.5F - f, 0.5F + f, f1 - 0.1F, 0.5F + f);

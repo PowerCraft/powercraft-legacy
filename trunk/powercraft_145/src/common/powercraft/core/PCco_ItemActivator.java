@@ -17,7 +17,8 @@ import powercraft.management.PC_VecI;
 
 public class PCco_ItemActivator extends PC_Item{
     
-	public PCco_ItemActivator(){
+	public PCco_ItemActivator(int id){
+		super(id);
         setMaxDamage(100);
         setMaxStackSize(1);
         setIconIndex(2);

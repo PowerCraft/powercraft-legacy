@@ -12,8 +12,9 @@ import powercraft.management.PC_Utils;
 
 public class PCco_ItemCraftingTool extends PC_Item
 {
-    public PCco_ItemCraftingTool()
+    public PCco_ItemCraftingTool(int id)
     {
+    	super(id);
         setMaxDamage(0);
         setMaxStackSize(1);
         setCreativeTab(CreativeTabs.tabTools);

@@ -12,8 +12,9 @@ import powercraft.management.PC_Utils;
 
 public class PCco_ItemOreSniffer extends PC_Item
 {
-    public PCco_ItemOreSniffer()
+    public PCco_ItemOreSniffer(int id)
     {
+    	super(id);
         setMaxStackSize(1);
         setMaxDamage(500);
         setIconIndex(1);
