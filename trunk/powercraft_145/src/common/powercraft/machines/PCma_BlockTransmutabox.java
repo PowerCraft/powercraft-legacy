@@ -1,7 +1,6 @@
 package powercraft.machines;
 
 import java.util.List;
-import java.util.Random;
 
 import net.minecraft.src.Block;
 import net.minecraft.src.CreativeTabs;
@@ -11,26 +10,23 @@ import net.minecraft.src.ItemStack;
 import net.minecraft.src.Material;
 import net.minecraft.src.TileEntity;
 import net.minecraft.src.World;
-import powercraft.core.PC_Block;
-import powercraft.core.PC_VecI;
-import powercraft.core.PC_IBlockRenderer;
-import powercraft.core.PC_ICraftingToolDisplayer;
-import powercraft.core.PC_IPowerReceiver;
-import powercraft.core.PC_Renderer;
-import powercraft.core.PC_Utils;
+import powercraft.management.PC_Block;
+import powercraft.management.PC_IItemInfo;
+import powercraft.management.PC_Renderer;
+import powercraft.management.PC_Utils;
+import powercraft.management.PC_VecI;
 
-public class PCma_BlockTransmutabox extends PC_Block implements PC_IPowerReceiver, PC_IBlockRenderer, PC_ICraftingToolDisplayer
+public class PCma_BlockTransmutabox extends PC_Block implements PC_IItemInfo
 {
-    public PCma_BlockTransmutabox(int id)
+    public PCma_BlockTransmutabox()
     {
-        super(id, 0, Material.rock);
+        super(0, Material.rock);
         setHardness(1.5F);
         setResistance(50.0F);
         setStepSound(Block.soundMetalFootstep);
         setCreativeTab(CreativeTabs.tabDecorations);
     }
 
-    @Override
     public void receivePower(World world, int x, int y, int z, float power)
     {
         PCma_TileEntityTransmutabox te = PC_Utils.getTE(world, x, y, z, blockID);
@@ -39,12 +35,6 @@ public class PCma_BlockTransmutabox extends PC_Block implements PC_IPowerReceive
         {
             te.change((int)(power - 100) / 10);
         }
-    }
-
-    @Override
-    public String getDefaultName()
-    {
-        return "Transmutabox";
     }
 
     @Override
@@ -74,7 +64,6 @@ public class PCma_BlockTransmutabox extends PC_Block implements PC_IPowerReceive
         return true;
     }
 
-    @Override
     public void renderInventoryBlock(Block block, int metadata, int modelID, Object renderer)
     {
         PC_Renderer.swapTerrain(block);
@@ -100,7 +89,6 @@ public class PCma_BlockTransmutabox extends PC_Block implements PC_IPowerReceive
         PC_Renderer.resetTerrain(true);
     }
 
-    @Override
     public void renderWorldBlock(IBlockAccess world, int x, int y, int z, Block block, int modelId, Object renderer)
     {
         PC_Renderer.tessellatorDraw();
@@ -133,31 +121,40 @@ public class PCma_BlockTransmutabox extends PC_Block implements PC_IPowerReceive
     }
 
     @Override
-    public String getCraftingToolModule()
-    {
-        return PCma_App.getInstance().getNameWithoutPowerCraft();
-    }
-
-    @Override
     public List<ItemStack> getItemStacks(List<ItemStack> arrayList)
     {
         arrayList.add(new ItemStack(this));
         return arrayList;
     }
-    
-    @Override
-   	public List<String> getBlockFlags(World world, PC_VecI pos, List<String> list) {
 
-   		list.add(PC_Utils.NO_HARVEST);
-   		list.add(PC_Utils.NO_PICKUP);
-   		list.add(PC_Utils.HARVEST_STOP);
-   		return list;
-   	}
-
-   	@Override
-   	public List<String> getItemFlags(ItemStack stack, List<String> list) {
-   		list.add(PC_Utils.NO_BUILD);
-   		return list;
-   	}
+	@Override
+	public Object msg(World world, PC_VecI pos, int msg, Object... obj) {
+		switch (msg){
+		case PC_Utils.MSG_DEFAULT_NAME:
+			return "Transmutabox";
+		case PC_Utils.MSG_ITEM_FLAGS:{
+			List<String> list = (List<String>)obj[1];
+			list.add(PC_Utils.NO_BUILD);
+			return list;
+		}case PC_Utils.MSG_BLOCK_FLAGS:{
+			List<String> list = (List<String>)obj[1];
+	   		list.add(PC_Utils.NO_HARVEST);
+	   		list.add(PC_Utils.NO_PICKUP);
+	   		list.add(PC_Utils.HARVEST_STOP);
+	   		return list;
+		}case PC_Utils.MSG_RENDER_INVENTORY_BLOCK:{
+			renderInventoryBlock((Block)obj[0], (Integer)obj[1], (Integer)obj[2], obj[3]);
+			return true;
+		}case PC_Utils.MSG_RENDER_WORLD_BLOCK:{
+			renderWorldBlock((IBlockAccess)obj[0], (Integer)obj[1], (Integer)obj[2], (Integer)obj[3], (Block)obj[4], (Integer)obj[5], obj[6]);
+			return true;
+		}case PC_Utils.MSG_CAN_RECIVE_POWER:{
+			return true;
+		}case PC_Utils.MSG_RECIVE_POWER:{
+			receivePower(world, (Integer)obj[0], (Integer)obj[1], (Integer)obj[2], (Float)obj[3]);
+		}
+		}
+		return null;
+	}
     
 }
