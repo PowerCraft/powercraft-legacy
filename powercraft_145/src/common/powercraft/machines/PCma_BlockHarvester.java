@@ -46,8 +46,8 @@ public class PCma_BlockHarvester extends PC_Block implements
 	 */
 	public static final int ENDBLOCK = 98;
 	
-	public PCma_BlockHarvester() {
-		super(TXSIDE, Material.ground);
+	public PCma_BlockHarvester(int id) {
+		super(id, TXSIDE, Material.ground);
 		setHardness(0.7F);
 		setResistance(10.0F);
 		setStepSound(Block.soundStoneFootstep);

@@ -13,9 +13,9 @@ import powercraft.management.PC_VecI;
 
 public class PCtr_BlockBeltSeparator extends PCtr_BlockBeltBase
 {
-    public PCtr_BlockBeltSeparator()
+    public PCtr_BlockBeltSeparator(int id)
     {
-        super(7);
+        super(id, 7);
     }
 
     @Override

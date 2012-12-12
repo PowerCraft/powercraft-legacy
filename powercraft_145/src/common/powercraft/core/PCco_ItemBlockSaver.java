@@ -18,7 +18,8 @@ import cpw.mods.fml.common.asm.SideOnly;
 
 public class PCco_ItemBlockSaver extends PC_Item {
 
-	public PCco_ItemBlockSaver() {
+	public PCco_ItemBlockSaver(int id) {
+		super(id);
 		setIconIndex(3);
 	}
 

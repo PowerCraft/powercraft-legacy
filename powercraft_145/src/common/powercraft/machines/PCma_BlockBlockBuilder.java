@@ -23,8 +23,8 @@ import powercraft.management.PC_VecI;
 public class PCma_BlockBlockBuilder extends PC_Block implements PC_ISpecialInventoryTextures, PC_IItemInfo{
 	private static final int TXDOWN = 109, TXTOP = 156, TXSIDE = 140, TXFRONT = 108, TXBACK = 124;
 	
-	public PCma_BlockBlockBuilder() {
-		super(TXDOWN, Material.ground);
+	public PCma_BlockBlockBuilder(int id) {
+		super(id, TXDOWN, Material.ground);
 		setHardness(0.7F);
 		setResistance(10.0F);
 		setStepSound(Block.soundStoneFootstep);

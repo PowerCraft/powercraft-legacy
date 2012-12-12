@@ -33,9 +33,9 @@ public class PClo_BlockGate extends PC_Block implements PC_IRotatedBox
     @OFF
     public static PClo_BlockGate off;
 
-    public PClo_BlockGate(boolean on)
+    public PClo_BlockGate(int id, boolean on)
     {
-        super(6, Material.ground);
+        super(id, 6, Material.ground);
         setHardness(0.35F);
         setStepSound(Block.soundWoodFootstep);
         disableStats();

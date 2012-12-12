@@ -21,9 +21,9 @@ public class PCma_BlockRoaster extends PC_Block implements PC_IItemInfo
 {
     private static final int TXDOWN = 62, TXTOP = 61, TXSIDE = 46;
 
-    public PCma_BlockRoaster()
+    public PCma_BlockRoaster(int id)
     {
-        super(TXDOWN, Material.ground);
+        super(id, TXDOWN, Material.ground);
         setLightOpacity(0);
         setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 0.75F, 1.0F);
         setCreativeTab(CreativeTabs.tabDecorations);

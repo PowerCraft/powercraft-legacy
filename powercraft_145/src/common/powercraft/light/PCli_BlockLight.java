@@ -34,9 +34,9 @@ public class PCli_BlockLight extends PC_Block implements PC_IItemInfo
     @OFF
     public static PCli_BlockLight off;
 
-    public PCli_BlockLight(boolean on)
+    public PCli_BlockLight(int id, boolean on)
     {
-        super(66, Material.glass);
+        super(id, 66, Material.glass);
         setHardness(0.3F);
         setResistance(20F);
         setStepSound(Block.soundStoneFootstep);

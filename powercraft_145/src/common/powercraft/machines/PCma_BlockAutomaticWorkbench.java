@@ -24,9 +24,9 @@ public class PCma_BlockAutomaticWorkbench extends PC_Block implements PC_ISpecia
 {
     private static final int TXDOWN = 109, TXTOP = 154, TXSIDE = 138, TXFRONT = 106, TXBACK = 122;
 
-    public PCma_BlockAutomaticWorkbench()
+    public PCma_BlockAutomaticWorkbench(int id)
     {
-        super(62, Material.ground);
+        super(id, 62, Material.ground);
         setHardness(0.7F);
         setResistance(10.0F);
         setStepSound(Block.soundMetalFootstep);

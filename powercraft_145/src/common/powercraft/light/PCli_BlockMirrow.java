@@ -24,8 +24,8 @@ import powercraft.management.PC_VecI;
 
 public class PCli_BlockMirrow extends PC_Block implements PC_IItemInfo {
 
-	public PCli_BlockMirrow() {
-		super(Material.glass);
+	public PCli_BlockMirrow(int id) {
+		super(id, Material.glass);
 		float f = 0.4F;
 		float f1 = 1.0F;
 		setBlockBounds(0.5F - f, 0.1F, 0.5F - f, 0.5F + f, f1 - 0.1F, 0.5F + f);

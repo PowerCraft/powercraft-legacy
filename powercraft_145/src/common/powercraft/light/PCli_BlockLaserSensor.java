@@ -21,8 +21,8 @@ import powercraft.management.PC_VecI;
 
 public class PCli_BlockLaserSensor extends PC_Block implements PC_IItemInfo {
 
-	public PCli_BlockLaserSensor() {
-		super(0, Material.ground, false);
+	public PCli_BlockLaserSensor(int id) {
+		super(id, 0, Material.ground, false);
 		setStepSound(Block.soundMetalFootstep);
         setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 1.0F, 1.0F);
         setHardness(0.7F);

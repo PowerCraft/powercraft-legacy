@@ -25,9 +25,9 @@ public class PCma_BlockReplacer extends PC_Block implements PC_IItemInfo
 {
     private static final int TXDOWN = 109, TXTOP = 153, TXSIDE = 137;
 
-    public PCma_BlockReplacer()
+    public PCma_BlockReplacer(int id)
     {
-        super(TXSIDE, Material.ground);
+        super(id, TXSIDE, Material.ground);
         setHardness(0.7F);
         setResistance(10.0F);
         setStepSound(Block.soundStoneFootstep);

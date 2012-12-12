@@ -22,9 +22,9 @@ public class PCtr_BlockElevator extends PC_Block
     private static final double BORDERS = 0.25D;
     private static final double BORDER_BOOST = 0.062D;
 
-    public PCtr_BlockElevator()
+    public PCtr_BlockElevator(int id)
     {
-        super(23, PCtr_MaterialElevator.getMaterial());
+        super(id, 23, PCtr_MaterialElevator.getMaterial());
         setHardness(0.5F);
         setResistance(8.0F);
         setStepSound(Block.soundMetalFootstep);

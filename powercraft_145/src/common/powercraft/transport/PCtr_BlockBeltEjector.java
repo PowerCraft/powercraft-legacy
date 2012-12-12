@@ -14,9 +14,9 @@ import powercraft.management.PC_VecI;
 
 public class PCtr_BlockBeltEjector extends PCtr_BlockBeltBase
 {
-    public PCtr_BlockBeltEjector()
+    public PCtr_BlockBeltEjector(int id)
     {
-        super(3);
+        super(id, 3);
     }
 
     @Override

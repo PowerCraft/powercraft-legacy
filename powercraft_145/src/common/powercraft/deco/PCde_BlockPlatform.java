@@ -18,8 +18,8 @@ import powercraft.management.PC_VecI;
 
 public class PCde_BlockPlatform extends PC_Block {
 
-	public PCde_BlockPlatform() {
-		super(22, Material.rock);
+	public PCde_BlockPlatform(int id) {
+		super(id, 22, Material.rock);
 		setHardness(1.5F);
 		setResistance(30.0F);
 		setStepSound(Block.soundMetalFootstep);

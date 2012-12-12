@@ -31,9 +31,9 @@ public class PClo_BlockPulsar extends PC_Block implements PC_IItemInfo
     @OFF
     public static PClo_BlockPulsar off;
 
-    public PClo_BlockPulsar(boolean on)
+    public PClo_BlockPulsar(int id, boolean on)
     {
-        super(74, Material.wood, false);
+        super(id, 74, Material.wood, false);
         setHardness(0.8F);
         setResistance(30.0F);
         setRequiresSelfNotify();

@@ -18,9 +18,9 @@ import powercraft.management.PC_VecI;
 
 public class PCma_BlockTransmutabox extends PC_Block implements PC_IItemInfo
 {
-    public PCma_BlockTransmutabox()
+    public PCma_BlockTransmutabox(int id)
     {
-        super(0, Material.rock);
+        super(id, 0, Material.rock);
         setHardness(1.5F);
         setResistance(50.0F);
         setStepSound(Block.soundMetalFootstep);

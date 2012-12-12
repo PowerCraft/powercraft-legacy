@@ -21,21 +21,20 @@ public abstract class PC_Block extends BlockContainer implements PC_IMSG
 	private ItemBlock itemBlock;
 	private Block replacedBlock = null;
 	private Item replacedItemBlock = null;
-    
 	
-    protected PC_Block(Material material)
+    protected PC_Block(int id, Material material)
     {
-        this(0, material);
+        this(id, 0, material);
     }
 
-    protected PC_Block(int textureIndex, Material material)
+    protected PC_Block(int id, int textureIndex, Material material)
     {
-    	this(textureIndex, material, true);
+    	this(id, textureIndex, material, true);
     }
 
-    public PC_Block(int textureIndex, Material material, boolean canSetTextureFile)
+    public PC_Block(int id, int textureIndex, Material material, boolean canSetTextureFile)
     {
-        super(PC_Utils.getFreeBlockID(), textureIndex, material);
+        super(id, textureIndex, material);
         this.canSetTextureFile = canSetTextureFile;
     }
     

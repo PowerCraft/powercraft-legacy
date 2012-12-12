@@ -13,9 +13,9 @@ import powercraft.management.PC_VecI;
 
 public class PCtr_BlockBeltDetector extends PCtr_BlockBeltBase
 {
-    public PCtr_BlockBeltDetector()
+    public PCtr_BlockBeltDetector(int id)
     {
-        super(6);
+        super(id, 6);
     }
 
     @Override

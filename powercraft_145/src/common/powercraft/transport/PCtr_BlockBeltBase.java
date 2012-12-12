@@ -18,9 +18,9 @@ import powercraft.management.PC_VecI;
 
 public abstract class PCtr_BlockBeltBase extends PC_Block implements PC_IRotatedBox
 {
-    public PCtr_BlockBeltBase(int textureID)
+    public PCtr_BlockBeltBase(int id, int textureID)
     {
-        super(textureID, PCtr_MaterialConveyor.getMaterial());
+        super(id, textureID, PCtr_MaterialConveyor.getMaterial());
         setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, PCtr_BeltHelper.HEIGHT, 1.0F);
         setHardness(0.22F);
         setResistance(8.0F);
