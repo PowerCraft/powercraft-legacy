@@ -65,7 +65,7 @@ public class PC_Utils implements PC_IPacketHandler
     public static final int MSG_DEFAULT_NAME=1, MSG_BLOCK_FLAGS=2, MSG_ITEM_FLAGS=3, MSG_RENDER_INVENTORY_BLOCK=4, MSG_RENDER_WORLD_BLOCK=5,
     		MSG_SPAWNS_IN_CHUNK=6, MSG_BLOCKS_ON_SPAWN_POINT=7, MSG_SPAWN_POINT=8, MSG_SPAWN_POINT_METADATA=9, MSG_LOAD_FROM_CONFIG=10,
     		MSG_ON_HIT_BY_BEAM_TRACER=11, MSG_BURN_TIME=12, MSG_RECIVE_POWER=13, MSG_CAN_RECIVE_POWER=14, MSG_ON_ACTIVATOR_USED_ON_BLOCK = 15,
-    		MSG_DONT_SHOW_IN_CRAFTING_TOOL=16, MSG_STR_MSG=17;
+    		MSG_DONT_SHOW_IN_CRAFTING_TOOL=16, MSG_STR_MSG=17, MSG_RENDER_ITEM_HORIZONTAL=18, MSG_ROTATION=19;
     
     protected PC_Utils(){
         PC_PacketHandler.registerPackethandler("PacketUtils", this);
@@ -244,7 +244,7 @@ public class PC_Utils implements PC_IPacketHandler
                 itemArmor.setItemName(itemArmorClass.getSimpleName());
                 itemArmor.setModule(module);
 
-                itemArmor.msg(PC_Utils.MSG_LOAD_FROM_CONFIG, config.getProperty(itemArmorClass.getSimpleName(), null, null));
+                itemArmor.msg(PC_Utils.MSG_LOAD_FROM_CONFIG, config);
                 
                 List<PC_Struct3<String, String, String[]>> l = (List<PC_Struct3<String, String, String[]>>)itemArmor.msg(MSG_DEFAULT_NAME, new ArrayList<PC_Struct3<String, String, String[]>>());
                 if(l!=null){
@@ -325,7 +325,7 @@ public class PC_Utils implements PC_IPacketHandler
             block.setModule(module);
             block.setTextureFile(getTerrainFile(module));
 
-            block.msg(PC_Utils.MSG_LOAD_FROM_CONFIG, config.getProperty(blockClass.getSimpleName(), null, null));
+            block.msg(PC_Utils.MSG_LOAD_FROM_CONFIG, config);
             
             mod_PowerCraft.registerBlock(block, itemBlockClass);
 
@@ -390,7 +390,7 @@ public class PC_Utils implements PC_IPacketHandler
         }
     }
 
-    public static Object[] getFieldsWithAnnotationTo(Class c, Class <? extends Annotation > annotationClass, Object obj)
+    public static Object[] getFieldsWithAnnotation(Class c, Class <? extends Annotation > annotationClass, Object obj)
     {
         List<Object> l = new ArrayList<Object>();
         Field fa[] = c.getDeclaredFields();
@@ -427,8 +427,8 @@ public class PC_Utils implements PC_IPacketHandler
 
             if (c.isAnnotationPresent(PC_Shining.class))
             {
-                Block bon = (Block)getFieldsWithAnnotationTo(c, PC_Shining.ON.class, c)[0];
-                Block boff = (Block)getFieldsWithAnnotationTo(c, PC_Shining.OFF.class, c)[0];
+                Block bon = (Block)getFieldsWithAnnotation(c, PC_Shining.ON.class, c)[0];
+                Block boff = (Block)getFieldsWithAnnotation(c, PC_Shining.OFF.class, c)[0];
 
                 if ((b == bon && !on) || (b == boff && on))
                 {
@@ -1882,10 +1882,12 @@ public class PC_Utils implements PC_IPacketHandler
 	
 	private static void setPCObjectID(Object o, int id){
 		if(o instanceof PC_Item){
-			 ((PC_Item) o).setItemID(id);
-		 }else if(o instanceof PC_Block){
-			 ((PC_Block) o).setBlockID(id);
-		 }
+			((PC_Item) o).setItemID(id);
+		}else if(o instanceof PC_Block){
+			((PC_Block) o).setBlockID(id);
+		}else if(o instanceof PC_ItemArmor){
+			((PC_ItemArmor) o).setItemID(id);
+		}
 	}
 	
 	public static void resetPCObjectsIDs(){
@@ -1894,10 +1896,25 @@ public class PC_Utils implements PC_IPacketHandler
 		}
 		for(Object o: objects.values()){
 			int id = -1;
+			if(o instanceof PC_IItemInfo){
+				if(o.getClass().isAnnotationPresent(PC_Shining.class)){
+					Object[] on = getFieldsWithAnnotation(o.getClass(), PC_Shining.ON.class, o);
+					Object[] off = getFieldsWithAnnotation(o.getClass(), PC_Shining.OFF.class, o);
+					if(on!=null && on.length>0 && on[0] == o){
+						id = getConfig(((PC_IItemInfo) o).getModule()).getInt(objects.getClass().getSimpleName()+".defaultID.on", 0);
+					}else{
+						id = getConfig(((PC_IItemInfo) o).getModule()).getInt(objects.getClass().getSimpleName()+".defaultID.off", 0);
+					}
+					}else{
+					id = getConfig(((PC_IItemInfo) o).getModule()).getInt(objects.getClass().getSimpleName()+".defaultID", 0);
+				}
+			}
 			if(o instanceof PC_Item){
 				id = getFreeItemID();
 			}else if(o instanceof PC_Block){
 				id = getFreeBlockID();
+			}else if(o instanceof PC_ItemArmor){
+				id = getFreeItemID();
 			}
 			setPCObjectID(o, id);
 		}

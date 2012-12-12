@@ -1083,10 +1083,10 @@ public class PC_GresTextEditMultiline extends PC_GresWidget {
 			calcScrollPosition();
 		}
 
-		renderTextureSliced(offsetPos.copy().add((int) hScrollPos + 1, size.y - 11, 0), imgdir + "gres/scrollbar_handle.png", new PC_VecI(
+		renderTextureSliced(offsetPos.copy().add((int) hScrollPos + 1, size.y - 11, 0), imgdir + "scrollbar_handle.png", new PC_VecI(
 				hScrollSize - 1, 10), new PC_VecI(0, 0), new PC_VecI(256, 256));
 
-		renderTextureSliced(offsetPos.copy().add(size.x - 11, 1 + (int) vScrollPos, 0), imgdir + "gres/scrollbar_handle.png", new PC_VecI(
+		renderTextureSliced(offsetPos.copy().add(size.x - 11, 1 + (int) vScrollPos, 0), imgdir + "scrollbar_handle.png", new PC_VecI(
 				10, vScrollSize - 1), new PC_VecI(0, 0), new PC_VecI(256, 256));
 
 		if ((!(mouseSelectStart.x == mouseSelectEnd.x && mouseSelectStart.y == mouseSelectEnd.y)) && hasFocus) {

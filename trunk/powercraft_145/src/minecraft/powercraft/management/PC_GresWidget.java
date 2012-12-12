@@ -1015,7 +1015,7 @@ public abstract class PC_GresWidget extends Gui {
 			txC = 0xffffa0; // yellow
 		}
 	
-		renderTextureSliced_static(widget, pos, imgdir + "gres/button.png", size, new PC_VecI(0, state * 50), new PC_VecI(256, 50));
+		renderTextureSliced_static(widget, pos, imgdir + "button.png", size, new PC_VecI(0, state * 50), new PC_VecI(256, 50));
 	
 		widget.drawCenteredString(widget.getFontRenderer(), text, pos.x + size.x / 2, pos.y + (size.y - widget.getFontRenderer().FONT_HEIGHT)
 				/ 2, txC);

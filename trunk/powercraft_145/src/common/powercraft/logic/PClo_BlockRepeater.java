@@ -15,7 +15,6 @@ import net.minecraft.src.Material;
 import net.minecraft.src.TileEntity;
 import net.minecraft.src.World;
 import powercraft.management.PC_Block;
-import powercraft.management.PC_IRotatedBox;
 import powercraft.management.PC_MathHelper;
 import powercraft.management.PC_Property;
 import powercraft.management.PC_Renderer;
@@ -26,7 +25,7 @@ import powercraft.management.PC_Utils;
 import powercraft.management.PC_VecI;
 
 @PC_Shining
-public class PClo_BlockRepeater extends PC_Block implements PC_IRotatedBox
+public class PClo_BlockRepeater extends PC_Block
 {
     @ON
     public static PClo_BlockRepeater on;
@@ -129,7 +128,7 @@ public class PClo_BlockRepeater extends PC_Block implements PC_IRotatedBox
     @Override
    	public boolean isProvidingWeakPower(IBlockAccess world, int x, int y, int z, int s) {
     	int meta = PC_Utils.getMD(world, x, y, z);
-        int rotation = getRotation(meta);
+        int rotation = getRotation_static(meta);
         PClo_TileEntityRepeater te = getTE(world, x, y, z);
         int type = te.getType();
         boolean L = false, R = false, F = false, B = false;
@@ -410,21 +409,9 @@ public class PClo_BlockRepeater extends PC_Block implements PC_IRotatedBox
         return 6;
     }
 
-    @Override
-    public int getRotation(int meta)
-    {
-        return getRotation_static(meta);
-    }
-
     public static int getRotation_static(int meta)
     {
         return meta & 0x3;
-    }
-
-    @Override
-    public boolean renderItemHorizontal()
-    {
-        return false;
     }
 
     @Override
@@ -544,7 +531,10 @@ public class PClo_BlockRepeater extends PC_Block implements PC_IRotatedBox
 			List<String> list = (List<String>)obj[1];
 			list.add(PC_Utils.NO_BUILD);
 			return list;
-		}
+		}case PC_Utils.MSG_RENDER_ITEM_HORIZONTAL:
+			return false;
+		case PC_Utils.MSG_ROTATION:
+			return getRotation_static((Integer)obj[0]);
 		default:
 			return null;
 		}

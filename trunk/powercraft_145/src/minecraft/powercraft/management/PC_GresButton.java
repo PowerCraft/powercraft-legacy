@@ -92,7 +92,7 @@ public class PC_GresButton extends PC_GresWidget {
 			txC = 0xffffa0; // yellow
 		}
 
-		renderTextureSliced(offsetPos, imgdir + "gres/button.png", size, new PC_VecI(0, state * 50), new PC_VecI(256, 50));
+		renderTextureSliced(offsetPos, imgdir + "button.png", size, new PC_VecI(0, state * 50), new PC_VecI(256, 50));
 
 		drawCenteredString(getFontRenderer(), text, offsetPos.x + pos.x + size.x / 2, offsetPos.y + pos.y + (size.y - getFontRenderer().FONT_HEIGHT)
 				/ 2, txC);

@@ -224,7 +224,7 @@ public class PCtr_TileEntitySeparationBelt extends PCtr_TileEntityRedirectionBel
             int leftX = xCoord, leftZ = zCoord;
             int rightX = xCoord, rightZ = zCoord;
 
-            switch (((PCtr_BlockBeltSeparator) PCtr_App.separationBelt).getRotation(meta))
+            switch (PCtr_BeltHelper.getRotation(meta))
             {
                 case 0:
                     leftX++;

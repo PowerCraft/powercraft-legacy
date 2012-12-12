@@ -84,6 +84,11 @@ public class mod_PowerCraft {
 				}
 			}
 			PC_Utils.registerTextureFiles(PC_Utils.getPowerCraftLoaderImageDir() + "PowerCraft.png");
+			PC_Utils.registerTextureFiles(PC_Utils.getGresImgDir() + "button.png");
+			PC_Utils.registerTextureFiles(PC_Utils.getGresImgDir() + "dialog.png");
+			PC_Utils.registerTextureFiles(PC_Utils.getGresImgDir() + "frame.png");
+			PC_Utils.registerTextureFiles(PC_Utils.getGresImgDir() + "scrollbar_handle.png");
+			PC_Utils.registerTextureFiles(PC_Utils.getGresImgDir() + "widgets.png");
 			PC_Logger.exitSection();
 		}
 		PC_Logger.exitSection();

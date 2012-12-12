@@ -54,7 +54,7 @@ public class PC_GresInventory extends PC_GresWidget {
 
 	@Override
 	protected PC_RectI render(PC_VecI posOffset, PC_RectI scissorOld, double scale) {
-		String texture = imgdir + "gres/widgets.png";
+		String texture = imgdir + "widgets.png";
 		PC_VecI posOnScrren = getPositionOnScreen();
 		PC_VecI widgetPos = null;
 		PC_GresWidget w = this;
