@@ -65,7 +65,7 @@ public class PC_GresButtonImage extends PC_GresButton {
 			state = 1; // enabled and not hover
 		}
 
-		renderTextureSliced(offsetPos, imgdir + "gres/button.png", size, new PC_VecI(0, state * 50), new PC_VecI(256, 50));
+		renderTextureSliced(offsetPos, imgdir + "button.png", size, new PC_VecI(0, state * 50), new PC_VecI(256, 50));
 
 		// and here goes the image
 		GL11.glBindTexture(GL11.GL_TEXTURE_2D, mc.renderEngine.getTexture(texture));

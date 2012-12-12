@@ -55,7 +55,7 @@ public class PCtr_BlockBeltBreak extends PCtr_BlockBeltBase
             }
         }
 
-        int meta = getRotation(world.getBlockMetadata(i, j, k));
+        int meta = PCtr_BeltHelper.getRotation(world.getBlockMetadata(i, j, k));
         int direction = meta;
 
         if (direction == -1)

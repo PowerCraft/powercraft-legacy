@@ -9,14 +9,12 @@ import net.minecraft.src.Entity;
 import net.minecraft.src.EntityLiving;
 import net.minecraft.src.EntityPlayer;
 import net.minecraft.src.IBlockAccess;
-import net.minecraft.src.ItemStack;
 import net.minecraft.src.World;
 import powercraft.management.PC_Block;
-import powercraft.management.PC_IRotatedBox;
 import powercraft.management.PC_Utils;
 import powercraft.management.PC_VecI;
 
-public abstract class PCtr_BlockBeltBase extends PC_Block implements PC_IRotatedBox
+public abstract class PCtr_BlockBeltBase extends PC_Block
 {
     public PCtr_BlockBeltBase(int id, int textureID)
     {
@@ -30,19 +28,7 @@ public abstract class PCtr_BlockBeltBase extends PC_Block implements PC_IRotated
 
     @Override
     public abstract void onEntityCollidedWithBlock(World world, int i, int j, int k, Entity entity);
-
-    @Override
-    public int getRotation(int meta)
-    {
-        return PCtr_BeltHelper.getRotation(meta);
-    }
-
-    @Override
-    public boolean renderItemHorizontal()
-    {
-        return false;
-    }
-
+    
     @Override
     public int getBlockTexture(IBlockAccess iblockaccess, int i, int j, int k, int l)
     {
@@ -144,7 +130,11 @@ public abstract class PCtr_BlockBeltBase extends PC_Block implements PC_IRotated
 	   		list.add(PC_Utils.NO_HARVEST);
 	   		list.add(PC_Utils.NO_PICKUP);
 	   		return list;
-		}default:
+		}case PC_Utils.MSG_RENDER_ITEM_HORIZONTAL:
+			return false;
+		case PC_Utils.MSG_ROTATION:
+			return PCtr_BeltHelper.getRotation((Integer)obj[0]);
+		default:
 			return msg2(world, pos, msg, obj);
 		}
 	}

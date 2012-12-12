@@ -101,7 +101,7 @@ public class PC_GresFrame extends PC_GresWidget {
 
 	@Override
 	protected PC_RectI render(PC_VecI mpos, PC_RectI scissorOld, double scale) {
-		renderTextureSliced(mpos, imgdir + "gres/frame.png", size, new PC_VecI(0, 0), new PC_VecI(256, 256));
+		renderTextureSliced(mpos, imgdir + "frame.png", size, new PC_VecI(0, 0), new PC_VecI(256, 256));
 		return null;
 	}
 

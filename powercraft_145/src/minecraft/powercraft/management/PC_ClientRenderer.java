@@ -25,23 +25,23 @@ public class PC_ClientRenderer extends PC_Renderer implements ISimpleBlockRender
 	public void renderInventoryBlock(Block block, int metadata, int modelID, RenderBlocks renderer) {
 		if(block instanceof PC_IMSG){
 			((PC_IMSG)block).msg(PC_Utils.MSG_RENDER_INVENTORY_BLOCK, block, metadata, modelID, renderer);
-		}else if(block instanceof PC_IRotatedBox){
-			iRenderInvBlockRotatedBox(block, metadata, modelID, renderer);
 		}else{
+			iRenderInvBlockRotatedBox(block, metadata, modelID, renderer);
+		}/*else{
 			boolean swapped = swapTerrain(block);
 			iRenderInvBox(renderer, block, metadata);
 			resetTerrain(swapped);
-		}
+		}*/
 	}
 
 	@Override
 	public boolean renderWorldBlock(IBlockAccess world, int x, int y, int z, Block block, int modelId, RenderBlocks renderer) {
 		if(block instanceof PC_IMSG){
 			((PC_IMSG) block).msg(PC_Utils.MSG_RENDER_WORLD_BLOCK, world, x, y, z, block, modelId, renderer);
-		}else if(block instanceof PC_IRotatedBox){
+		}else{
 			iRenderBlockRotatedBox(world, x, y, z, block, modelId, renderer);
-		}else
-			iRenderBlock(world, x, y, z, block, modelId, renderer);
+		}/*else
+			iRenderBlock(world, x, y, z, block, modelId, renderer);*/
 		return true;
 	}
 
@@ -136,7 +136,7 @@ public class PC_ClientRenderer extends PC_Renderer implements ISimpleBlockRender
 		Tessellator tessellator = Tessellator.instance;
 		int metaAt = world.getBlockMetadata(x, y, z);
 
-		if (block instanceof PC_IRotatedBox) {
+		if (block instanceof PC_IMSG) {
 
 			tessellator.draw();
 			tessellator.startDrawingQuads();
@@ -145,7 +145,10 @@ public class PC_ClientRenderer extends PC_Renderer implements ISimpleBlockRender
 
 			block.setBlockBoundsBasedOnState(world, x, y, z);
 			((RenderBlocks)renderer).func_83018_a(block);
-			int l = ((PC_IRotatedBox) block).getRotation(metaAt);
+			Object o=((PC_IMSG) block).msg(PC_Utils.MSG_ROTATION, metaAt);
+			int l = 0;
+			if(o instanceof Integer)
+				l = (Integer)o;
 			((RenderBlocks)renderer).renderStandardBlock(block, x, y, z);
 
 			tessellator.setBrightness(block.getMixedBrightnessForBlock(world, x, y, z));
@@ -204,11 +207,14 @@ public class PC_ClientRenderer extends PC_Renderer implements ISimpleBlockRender
 		RenderBlocks renderblocks = (RenderBlocks)renderer;
 		Tessellator tessellator = Tessellator.instance;
 		
-		if (block instanceof PC_IRotatedBox) {
+		if (block instanceof PC_IMSG) {
 
 			boolean swapped = swapTerrain(block);
 
-			boolean renderOnSide = ((PC_IRotatedBox) block).renderItemHorizontal();
+			Object o=((PC_IMSG) block).msg(PC_Utils.MSG_RENDER_ITEM_HORIZONTAL);
+			boolean renderOnSide = false;
+			if(o instanceof Boolean)
+				renderOnSide = (Boolean)o;
 
 			if (renderOnSide) {
 				block.setBlockBoundsForItemRender();

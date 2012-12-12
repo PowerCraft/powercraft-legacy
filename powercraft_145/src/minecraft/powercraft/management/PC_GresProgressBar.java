@@ -264,7 +264,7 @@ public class PC_GresProgressBar extends PC_GresWidget {
 	@Override
 	protected PC_RectI render(PC_VecI offsetPos, PC_RectI scissorOld, double scale) {
 
-		String texture = imgdir + "gres/widgets.png";
+		String texture = imgdir + "widgets.png";
 
 		renderTextureSliced(offsetPos, texture, size.copy().add(showLabel ? -(labelWidth + 3) : 0, 0, 0), new PC_VecI(0, 11 * 2), new PC_VecI(256, 11));
 

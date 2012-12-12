@@ -46,7 +46,7 @@ public class PCtr_BlockBeltSeparator extends PCtr_BlockBeltBase
 
         PCtr_TileEntitySeparationBelt tes = (PCtr_TileEntitySeparationBelt) world.getBlockTileEntity(i, j, k);
         redir = tes.getDirection(entity);
-        int rotation = getRotation(world.getBlockMetadata(i, j, k));
+        int rotation = PCtr_BeltHelper.getRotation(world.getBlockMetadata(i, j, k));
         rotation += redir;
 
         while (rotation >= 4)

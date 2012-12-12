@@ -14,7 +14,7 @@ public class PC_GresColor extends PC_GresWidget {
 
 	private PC_VecI imgSize = new PC_VecI(11, 11);
 	private PC_VecI imgOffset = new PC_VecI(57, 0);
-	private String texture = imgdir + "gres/widgets.png";
+	private String texture = imgdir + "widgets.png";
 	private PC_Color bulbColor;
 	public boolean showAsRect = false;
 

@@ -28,7 +28,7 @@ public class PCtr_BlockBeltSpeedy extends PCtr_BlockBeltBase
             PCtr_BeltHelper.packItems(world, pos);
         }
 
-        int direction = getRotation(PC_Utils.getMD(world, pos));
+        int direction = PCtr_BeltHelper.getRotation(PC_Utils.getMD(world, pos));
         PC_VecI pos_leading_to = pos.copy();
 
         switch (direction)
