@@ -15,11 +15,10 @@ import net.minecraft.src.ItemStack;
 import net.minecraft.src.Material;
 import net.minecraft.src.TileEntity;
 import net.minecraft.src.World;
-import net.minecraftforge.common.Configuration;
 import powercraft.management.PC_Block;
 import powercraft.management.PC_Color;
-import powercraft.management.PC_Configuration;
 import powercraft.management.PC_IItemInfo;
+import powercraft.management.PC_Property;
 import powercraft.management.PC_Renderer;
 import powercraft.management.PC_Shining;
 import powercraft.management.PC_Shining.OFF;
@@ -394,7 +393,7 @@ public class PCli_BlockLight extends PC_Block implements PC_IItemInfo
 	public Object msg(World world, PC_VecI pos, int msg, Object... obj) {
 		switch(msg){
 		case PC_Utils.MSG_LOAD_FROM_CONFIG:
-			on.setLightValue(((PC_Configuration)obj[0]).getInt("PCli_BlockLight.brightness", 15) * 0.0625F);
+			on.setLightValue(((PC_Property)obj[0]).getInt("brightness", 15) * 0.0625F);
 			break;
 		case PC_Utils.MSG_RENDER_INVENTORY_BLOCK:
 			renderInventoryBlock((Block)obj[0], (Integer)obj[1], (Integer)obj[2], obj[3]);

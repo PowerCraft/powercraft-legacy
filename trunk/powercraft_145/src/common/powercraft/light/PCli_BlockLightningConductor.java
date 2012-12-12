@@ -1,18 +1,14 @@
 package powercraft.light;
 
 import java.util.List;
-import java.util.Random;
 
 import net.minecraft.src.Block;
 import net.minecraft.src.CreativeTabs;
 import net.minecraft.src.IBlockAccess;
-import net.minecraft.src.ItemStack;
 import net.minecraft.src.Material;
 import net.minecraft.src.TileEntity;
 import net.minecraft.src.World;
 import powercraft.management.PC_Block;
-import powercraft.management.PC_Configuration;
-import powercraft.management.PC_MathHelper;
 import powercraft.management.PC_Renderer;
 import powercraft.management.PC_Utils;
 import powercraft.management.PC_VecI;

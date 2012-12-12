@@ -6,10 +6,10 @@ import net.minecraft.src.Block;
 import net.minecraft.src.IRecipe;
 import net.minecraft.src.Item;
 import powercraft.management.PC_Block;
-import powercraft.management.PC_Configuration;
 import powercraft.management.PC_IModule;
 import powercraft.management.PC_ItemArmor;
 import powercraft.management.PC_ItemStack;
+import powercraft.management.PC_Property;
 import powercraft.management.PC_ShapedRecipes;
 import powercraft.management.PC_Struct2;
 import powercraft.management.PC_Utils;
@@ -46,7 +46,7 @@ public class PCtr_App implements PC_IModule
 	public void postInit() {}
 
 	@Override
-	public void initProperties(PC_Configuration config) {
+	public void initProperties(PC_Property config) {
 		// TODO Auto-generated method stub
 		
 	}

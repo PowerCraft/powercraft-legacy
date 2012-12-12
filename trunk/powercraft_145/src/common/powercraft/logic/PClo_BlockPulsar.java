@@ -13,11 +13,10 @@ import net.minecraft.src.ItemStack;
 import net.minecraft.src.Material;
 import net.minecraft.src.TileEntity;
 import net.minecraft.src.World;
-import net.minecraftforge.common.Configuration;
 import powercraft.management.PC_Block;
-import powercraft.management.PC_Configuration;
 import powercraft.management.PC_IItemInfo;
 import powercraft.management.PC_PacketHandler;
+import powercraft.management.PC_Property;
 import powercraft.management.PC_Shining;
 import powercraft.management.PC_Shining.OFF;
 import powercraft.management.PC_Shining.ON;
@@ -188,7 +187,7 @@ public class PClo_BlockPulsar extends PC_Block implements PC_IItemInfo
 	public Object msg(World world, PC_VecI pos, int msg, Object... obj) {
 		switch(msg){
 		case PC_Utils.MSG_LOAD_FROM_CONFIG:
-			on.setLightValue(((PC_Configuration)obj[0]).getInt("PClo_BlockPulsar.brightness", 7) * 0.0625F);
+			on.setLightValue(((PC_Property)obj[0]).getInt("brightness", 7) * 0.0625F);
 		case PC_Utils.MSG_DEFAULT_NAME:
 			return "Redstone Pulsar";
 		case PC_Utils.MSG_BLOCK_FLAGS:{

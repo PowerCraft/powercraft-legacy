@@ -6,9 +6,9 @@ import net.minecraft.src.Block;
 import net.minecraft.src.IRecipe;
 import net.minecraft.src.Item;
 import powercraft.management.PC_Block;
-import powercraft.management.PC_Configuration;
 import powercraft.management.PC_IModule;
 import powercraft.management.PC_ItemStack;
+import powercraft.management.PC_Property;
 import powercraft.management.PC_ShapedRecipes;
 import powercraft.management.PC_ShapelessRecipes;
 import powercraft.management.PC_Struct2;
@@ -40,7 +40,7 @@ public class PCde_App implements PC_IModule {
 	
 	
 	@Override
-	public void initProperties(PC_Configuration config) {}
+	public void initProperties(PC_Property config) {}
 
 	@Override
 	public void initBlocks() {

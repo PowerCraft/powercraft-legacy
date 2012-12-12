@@ -16,7 +16,7 @@ public interface PC_IModule {
 	
 	public void postInit();
 	
-	public void initProperties(PC_Configuration config);
+	public void initProperties(PC_Property config);
 	public void initBlocks();
 	public void initItems();
 	public List<IRecipe> initRecipes(List<IRecipe> recipes);
