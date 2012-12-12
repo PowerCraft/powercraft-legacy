@@ -12,30 +12,26 @@ import net.minecraft.src.ItemStack;
 import net.minecraft.src.Material;
 import net.minecraft.src.TileEntity;
 import net.minecraft.src.World;
-import powercraft.core.PC_Block;
-import powercraft.core.PC_VecI;
-import powercraft.core.PC_IBlockRenderer;
-import powercraft.core.PC_ICraftingToolDisplayer;
-import powercraft.core.PC_Renderer;
-import powercraft.core.PC_Utils;
+import powercraft.light.PCli_TileEntityLaser;
+import powercraft.management.PC_Block;
+import powercraft.management.PC_Configuration;
+import powercraft.management.PC_IItemInfo;
+import powercraft.management.PC_MathHelper;
+import powercraft.management.PC_Renderer;
+import powercraft.management.PC_Utils;
+import powercraft.management.PC_VecI;
 
-public class PCma_BlockXPBank extends PC_Block implements PC_IBlockRenderer, PC_ICraftingToolDisplayer
+public class PCma_BlockXPBank extends PC_Block implements PC_IItemInfo
 {
-    public PCma_BlockXPBank(int id)
+    public PCma_BlockXPBank()
     {
-        super(id, Material.ground);
+        super(Material.ground);
         setStepSound(Block.soundPowderFootstep);
         setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 1.0F, 1.0F);
         setHardness(6.0F);
         setResistance(100.0F);
         setLightValue(0.5F);
         setCreativeTab(CreativeTabs.tabDecorations);
-    }
-
-    @Override
-    public String getDefaultName()
-    {
-        return "XP Bank";
     }
 
     @Override
@@ -103,16 +99,14 @@ public class PCma_BlockXPBank extends PC_Block implements PC_IBlockRenderer, PC_
     }
 
     @Override
-    public boolean isPoweringTo(IBlockAccess iblockaccess, int i, int j, int k, int l)
-    {
-        return ((PCma_TileEntityXPBank) iblockaccess.getBlockTileEntity(i, j, k)).getXP() > 0;
-    }
+   	public boolean isProvidingWeakPower(IBlockAccess world, int x, int y, int z, int s) {
+       	return ((PCma_TileEntityXPBank) world.getBlockTileEntity(x, y, z)).getXP() > 0;
+   	}
 
-    @Override
-    public boolean isIndirectlyPoweringTo(IBlockAccess world, int x, int y, int z, int r)
-    {
-        return isPoweringTo(world, x, y, z, r);
-    }
+   	@Override
+   	public boolean isProvidingStrongPower(IBlockAccess world, int x, int y, int z, int s) {
+   		return isProvidingWeakPower(world, x, y, z, s);
+   	}
 
     @Override
     public void onBlockHarvested(World world, int i, int j, int k, int par5, EntityPlayer player)
@@ -124,7 +118,6 @@ public class PCma_BlockXPBank extends PC_Block implements PC_IBlockRenderer, PC_
         catch (NullPointerException npe) {}
     }
 
-    @Override
     public void renderInventoryBlock(Block block, int metadata, int modelID, Object renderer)
     {
         PC_Renderer.renderInvBox(renderer, block, metadata);
@@ -142,7 +135,6 @@ public class PCma_BlockXPBank extends PC_Block implements PC_IBlockRenderer, PC_
         Block.obsidian.setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 1.0F, 1.0F);
     }
 
-    @Override
     public void renderWorldBlock(IBlockAccess world, int x, int y, int z, Block block, int modelId, Object renderer)
     {
         PC_Renderer.swapTerrain(block);
@@ -164,31 +156,40 @@ public class PCma_BlockXPBank extends PC_Block implements PC_IBlockRenderer, PC_
     }
 
     @Override
-    public String getCraftingToolModule()
-    {
-        return PCma_App.getInstance().getNameWithoutPowerCraft();
-    }
-
-    @Override
     public List<ItemStack> getItemStacks(List<ItemStack> arrayList)
     {
         arrayList.add(new ItemStack(this));
         return arrayList;
     }
-    
-    @Override
-   	public List<String> getBlockFlags(World world, PC_VecI pos, List<String> list) {
 
-   		list.add(PC_Utils.NO_HARVEST);
-   		list.add(PC_Utils.NO_PICKUP);
-   		list.add(PC_Utils.HARVEST_STOP);
-   		return list;
-   	}
-
-   	@Override
-   	public List<String> getItemFlags(ItemStack stack, List<String> list) {
-   		list.add(PC_Utils.NO_BUILD);
-   		return list;
-   	}
+	@Override
+	public Object msg(World world, PC_VecI pos, int msg, Object... obj) {
+		switch(msg){
+		case PC_Utils.MSG_DEFAULT_NAME:
+			return "XP Bank";
+		case PC_Utils.MSG_RENDER_INVENTORY_BLOCK:
+			renderInventoryBlock((Block)obj[0], (Integer)obj[1], (Integer)obj[2], obj[3]);
+			break;
+		case PC_Utils.MSG_RENDER_WORLD_BLOCK:
+			renderWorldBlock((IBlockAccess)obj[0], (Integer)obj[1], (Integer)obj[2], (Integer)obj[3], (Block)obj[4], (Integer)obj[5], obj[6]);
+			break;
+		case PC_Utils.MSG_BLOCK_FLAGS:{
+			List<String> list = (List<String>)obj[0];
+			list.add(PC_Utils.NO_HARVEST);
+			list.add(PC_Utils.NO_PICKUP);
+			list.add(PC_Utils.HARVEST_STOP);
+	   		return list;
+		}case PC_Utils.MSG_ITEM_FLAGS:{
+			List<String> list = (List<String>)obj[1];
+			list.add(PC_Utils.NO_BUILD);
+			return list;
+		}
+		default:
+			return null;
+		}
+		return true;
+	}
     
+   	
+   	
 }
