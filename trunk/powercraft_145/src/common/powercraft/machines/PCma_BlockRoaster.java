@@ -1,11 +1,8 @@
 package powercraft.machines;
 
-import java.util.HashSet;
 import java.util.List;
 import java.util.Random;
-import java.util.Set;
 
-import net.minecraft.src.Block;
 import net.minecraft.src.CreativeTabs;
 import net.minecraft.src.EntityPlayer;
 import net.minecraft.src.IBlockAccess;
@@ -14,29 +11,22 @@ import net.minecraft.src.ItemStack;
 import net.minecraft.src.Material;
 import net.minecraft.src.TileEntity;
 import net.minecraft.src.World;
-import powercraft.core.PC_Block;
-import powercraft.core.PC_VecI;
-import powercraft.core.PC_ICraftingToolDisplayer;
-import powercraft.core.PC_InvUtils;
-import powercraft.core.PC_Renderer;
-import powercraft.core.PC_Utils;
+import powercraft.management.PC_Block;
+import powercraft.management.PC_IItemInfo;
+import powercraft.management.PC_InvUtils;
+import powercraft.management.PC_Utils;
+import powercraft.management.PC_VecI;
 
-public class PCma_BlockRoaster extends PC_Block implements PC_ICraftingToolDisplayer
+public class PCma_BlockRoaster extends PC_Block implements PC_IItemInfo
 {
     private static final int TXDOWN = 62, TXTOP = 61, TXSIDE = 46;
 
-    public PCma_BlockRoaster(int id)
+    public PCma_BlockRoaster()
     {
-        super(id, TXDOWN, Material.ground);
+        super(TXDOWN, Material.ground);
         setLightOpacity(0);
         setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 0.75F, 1.0F);
         setCreativeTab(CreativeTabs.tabDecorations);
-    }
-
-    @Override
-    public String getDefaultName()
-    {
-        return "Roaster";
     }
 
     @Override
@@ -229,19 +219,6 @@ public class PCma_BlockRoaster extends PC_Block implements PC_ICraftingToolDispl
             }
         }
     }
-    
-    @Override
-	public Object sendInfo(World world, int x, int y, int z, String id, Object o) {
-		if(id.equalsIgnoreCase("isBurning"))
-			return isBurning(world, x, y, z);
-		return null;
-	}
-
-	@Override
-    public String getCraftingToolModule()
-    {
-        return PCma_App.getInstance().getNameWithoutPowerCraft();
-    }
 
     @Override
     public List<ItemStack> getItemStacks(List<ItemStack> arrayList)
@@ -249,20 +226,28 @@ public class PCma_BlockRoaster extends PC_Block implements PC_ICraftingToolDispl
         arrayList.add(new ItemStack(this));
         return arrayList;
     }
-    
-    @Override
-   	public List<String> getBlockFlags(World world, PC_VecI pos, List<String> list) {
 
-   		list.add(PC_Utils.NO_HARVEST);
-   		list.add(PC_Utils.NO_PICKUP);
-   		list.add(PC_Utils.HARVEST_STOP);
-   		return list;
-   	}
-
-   	@Override
-   	public List<String> getItemFlags(ItemStack stack, List<String> list) {
-   		list.add(PC_Utils.NO_BUILD);
-   		return list;
-   	}
+	@Override
+	public Object msg(World world, PC_VecI pos, int msg, Object... obj) {
+		switch (msg){
+		case PC_Utils.MSG_DEFAULT_NAME:
+			return "Roaster";
+		case PC_Utils.MSG_ITEM_FLAGS:{
+			List<String> list = (List<String>)obj[1];
+			list.add(PC_Utils.NO_BUILD);
+			return list;
+		}case PC_Utils.MSG_BLOCK_FLAGS:{
+			List<String> list = (List<String>)obj[1];
+	   		list.add(PC_Utils.NO_HARVEST);
+	   		list.add(PC_Utils.NO_PICKUP);
+	   		list.add(PC_Utils.HARVEST_STOP);
+	   		return list;
+		}case PC_Utils.MSG_STR_MSG:{
+			if("isBurning".equalsIgnoreCase((String) obj[0]))
+				return isBurning(world, (Integer)obj[1], (Integer)obj[2], (Integer)obj[3]);
+		}
+		}
+		return null;
+	}
     
 }
