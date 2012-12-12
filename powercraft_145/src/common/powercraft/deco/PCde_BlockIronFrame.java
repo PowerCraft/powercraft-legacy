@@ -17,7 +17,7 @@ import powercraft.management.PC_VecI;
 
 public class PCde_BlockIronFrame extends PC_Block implements PC_IItemInfo {
 
-	public PCde_BlockIronFrame(int id) {
+	public PCde_BlockIronFrame() {
 		super(22, Material.rock);
 		setHardness(1.5F);
 		setResistance(50.0F);
