@@ -23,9 +23,13 @@ public class PC_ClientRenderer extends PC_Renderer implements ISimpleBlockRender
 	
 	@Override
 	public void renderInventoryBlock(Block block, int metadata, int modelID, RenderBlocks renderer) {
+		boolean b = false;
 		if(block instanceof PC_IMSG){
-			((PC_IMSG)block).msg(PC_Utils.MSG_RENDER_INVENTORY_BLOCK, block, metadata, modelID, renderer);
-		}else{
+			Object o = ((PC_IMSG)block).msg(PC_Utils.MSG_RENDER_INVENTORY_BLOCK, block, metadata, modelID, renderer);
+			if(o instanceof Boolean)
+				b = (Boolean)o;
+		}
+		if(!b){
 			iRenderInvBlockRotatedBox(block, metadata, modelID, renderer);
 		}/*else{
 			boolean swapped = swapTerrain(block);
@@ -36,9 +40,13 @@ public class PC_ClientRenderer extends PC_Renderer implements ISimpleBlockRender
 
 	@Override
 	public boolean renderWorldBlock(IBlockAccess world, int x, int y, int z, Block block, int modelId, RenderBlocks renderer) {
+		boolean b = false;
 		if(block instanceof PC_IMSG){
-			((PC_IMSG) block).msg(PC_Utils.MSG_RENDER_WORLD_BLOCK, world, x, y, z, block, modelId, renderer);
-		}else{
+			Object o = ((PC_IMSG) block).msg(PC_Utils.MSG_RENDER_WORLD_BLOCK, world, x, y, z, block, modelId, renderer);
+			if(o instanceof Boolean)
+				b = (Boolean)o;
+		}
+		if(!b){
 			iRenderBlockRotatedBox(world, x, y, z, block, modelId, renderer);
 		}/*else
 			iRenderBlock(world, x, y, z, block, modelId, renderer);*/
@@ -141,63 +149,63 @@ public class PC_ClientRenderer extends PC_Renderer implements ISimpleBlockRender
 			tessellator.draw();
 			tessellator.startDrawingQuads();
 
-			boolean swapped = swapTerrain(block);
-
 			block.setBlockBoundsBasedOnState(world, x, y, z);
 			((RenderBlocks)renderer).func_83018_a(block);
 			Object o=((PC_IMSG) block).msg(PC_Utils.MSG_ROTATION, metaAt);
-			int l = 0;
-			if(o instanceof Integer)
-				l = (Integer)o;
-			((RenderBlocks)renderer).renderStandardBlock(block, x, y, z);
-
-			tessellator.setBrightness(block.getMixedBrightnessForBlock(world, x, y, z));
-			tessellator.setColorOpaque_F(1.0F, 1.0F, 1.0F);
-			tessellator.setNormal(0.0F, 1F, 0.0F);
-			int k1 = block.getBlockTexture(world, x, y, z, 1);
-			int l1 = (k1 & 0xf) << 4;
-			int i2 = k1 & 0xf0;
-			double d5 = l1 / 256F;
-			double d6 = (l1 + 15.99F) / 256F;
-			double d7 = i2 / 256F;
-			double d8 = (i2 + 15.99F) / 256F;
-			double d9 = (block.getBlockBoundsMaxY());
-			double d10 = x + block.getBlockBoundsMaxX();
-			double d11 = x + block.getBlockBoundsMaxX();
-			double d12 = x + block.getBlockBoundsMinY();
-			double d13 = x + block.getBlockBoundsMinY();
-			double d14 = z + block.getBlockBoundsMinZ();
-			double d15 = z + block.getBlockBoundsMaxZ();
-			double d16 = z + block.getBlockBoundsMaxZ();
-			double d17 = z + block.getBlockBoundsMinZ();
-			double d18 = y + d9;
-			if (l == 2) {
-				d10 = d11 = x + block.getBlockBoundsMinY();
-				d12 = d13 = x + block.getBlockBoundsMaxX();
-				d14 = d17 = z + block.getBlockBoundsMaxZ();
-				d15 = d16 = z + block.getBlockBoundsMinZ();
-			} else if (l == 3) {
-				d10 = d13 = x + block.getBlockBoundsMinY();
-				d11 = d12 = x + block.getBlockBoundsMaxX();
-				d14 = d15 = z + block.getBlockBoundsMinZ();
-				d16 = d17 = z + block.getBlockBoundsMaxZ();
-			} else if (l == 1) {
-				d10 = d13 = x + block.getBlockBoundsMaxX();
-				d11 = d12 = x + block.getBlockBoundsMinY();
-				d14 = d15 = z + block.getBlockBoundsMaxZ();
-				d16 = d17 = z + block.getBlockBoundsMinZ();
+			if(o instanceof Integer){
+				boolean swapped = swapTerrain(block);
+				int l = (Integer)o;
+				((RenderBlocks)renderer).renderStandardBlock(block, x, y, z);
+	
+				tessellator.setBrightness(block.getMixedBrightnessForBlock(world, x, y, z));
+				tessellator.setColorOpaque_F(1.0F, 1.0F, 1.0F);
+				tessellator.setNormal(0.0F, 1F, 0.0F);
+				int k1 = block.getBlockTexture(world, x, y, z, 1);
+				int l1 = (k1 & 0xf) << 4;
+				int i2 = k1 & 0xf0;
+				double d5 = l1 / 256F;
+				double d6 = (l1 + 15.99F) / 256F;
+				double d7 = i2 / 256F;
+				double d8 = (i2 + 15.99F) / 256F;
+				double d9 = (block.getBlockBoundsMaxY());
+				double d10 = x + block.getBlockBoundsMaxX();
+				double d11 = x + block.getBlockBoundsMaxX();
+				double d12 = x + block.getBlockBoundsMinY();
+				double d13 = x + block.getBlockBoundsMinY();
+				double d14 = z + block.getBlockBoundsMinZ();
+				double d15 = z + block.getBlockBoundsMaxZ();
+				double d16 = z + block.getBlockBoundsMaxZ();
+				double d17 = z + block.getBlockBoundsMinZ();
+				double d18 = y + d9;
+				if (l == 2) {
+					d10 = d11 = x + block.getBlockBoundsMinY();
+					d12 = d13 = x + block.getBlockBoundsMaxX();
+					d14 = d17 = z + block.getBlockBoundsMaxZ();
+					d15 = d16 = z + block.getBlockBoundsMinZ();
+				} else if (l == 3) {
+					d10 = d13 = x + block.getBlockBoundsMinY();
+					d11 = d12 = x + block.getBlockBoundsMaxX();
+					d14 = d15 = z + block.getBlockBoundsMinZ();
+					d16 = d17 = z + block.getBlockBoundsMaxZ();
+				} else if (l == 1) {
+					d10 = d13 = x + block.getBlockBoundsMaxX();
+					d11 = d12 = x + block.getBlockBoundsMinY();
+					d14 = d15 = z + block.getBlockBoundsMaxZ();
+					d16 = d17 = z + block.getBlockBoundsMinZ();
+				}
+	
+				tessellator.addVertexWithUV(d13, d18, d17, d5, d7);
+				tessellator.addVertexWithUV(d12, d18, d16, d5, d8);
+				tessellator.addVertexWithUV(d11, d18, d15, d6, d8);
+				tessellator.addVertexWithUV(d10, d18, d14, d6, d7);
+	
+				tessellator.draw();
+				tessellator.startDrawingQuads();
+				((RenderBlocks)renderer).func_83017_b();
+				resetTerrain(swapped);
+			}else{
+				iRenderBlock(world, x, y, z, block, modelId, (RenderBlocks)renderer);
 			}
-
-			tessellator.addVertexWithUV(d13, d18, d17, d5, d7);
-			tessellator.addVertexWithUV(d12, d18, d16, d5, d8);
-			tessellator.addVertexWithUV(d11, d18, d15, d6, d8);
-			tessellator.addVertexWithUV(d10, d18, d14, d6, d7);
-
-			tessellator.draw();
-			tessellator.startDrawingQuads();
-			((RenderBlocks)renderer).func_83017_b();
-			resetTerrain(swapped);
-
 		}
 
 	}
@@ -212,46 +220,47 @@ public class PC_ClientRenderer extends PC_Renderer implements ISimpleBlockRender
 			boolean swapped = swapTerrain(block);
 
 			Object o=((PC_IMSG) block).msg(PC_Utils.MSG_RENDER_ITEM_HORIZONTAL);
-			boolean renderOnSide = false;
-			if(o instanceof Boolean)
-				renderOnSide = (Boolean)o;
-
-			if (renderOnSide) {
-				block.setBlockBoundsForItemRender();
-			} else {
-				block.setBlockBounds(-0.1F, -0.1F, 0.4F, 1.1F, 1.1F, 0.6F);
+			if(o instanceof Boolean){
+				boolean renderOnSide = (Boolean)o;
+	
+				if (renderOnSide) {
+					block.setBlockBoundsForItemRender();
+				} else {
+					block.setBlockBounds(-0.1F, -0.1F, 0.4F, 1.1F, 1.1F, 0.6F);
+				}
+				
+				((RenderBlocks)renderer).func_83018_a(block);
+				GL11.glTranslatef(-0.5F, -0.5F, -0.5F);
+				tessellator.startDrawingQuads();
+				tessellator.setNormal(0.0F, -1F, 0.0F);
+				renderblocks.renderBottomFace(block, 0.0D, 0.0D, 0.0D, block.getBlockTextureFromSideAndMetadata(renderOnSide ? 0 : 0, metadata));
+				tessellator.draw();
+				tessellator.startDrawingQuads();
+				tessellator.setNormal(0.0F, 1.0F, 0.0F);
+				renderblocks.renderTopFace(block, 0.0D, 0.0D, 0.0D, block.getBlockTextureFromSideAndMetadata(renderOnSide ? 1 : 0, metadata));
+				tessellator.draw();
+				tessellator.startDrawingQuads();
+				tessellator.setNormal(0.0F, 0.0F, -1F);
+				renderblocks.renderEastFace(block, 0.0D, 0.0D, 0.0D, block.getBlockTextureFromSideAndMetadata(renderOnSide ? 2 : 0, metadata));
+				tessellator.draw();
+				tessellator.startDrawingQuads();
+				tessellator.setNormal(0.0F, 0.0F, 1.0F);
+				renderblocks.renderWestFace(block, 0.0D, 0.0D, 0.0D, block.getBlockTextureFromSideAndMetadata(renderOnSide ? 3 : 1, metadata));
+				tessellator.draw();
+				tessellator.startDrawingQuads();
+				tessellator.setNormal(-1F, 0.0F, 0.0F);
+				renderblocks.renderNorthFace(block, 0.0D, 0.0D, 0.0D, block.getBlockTextureFromSideAndMetadata(renderOnSide ? 4 : 0, metadata));
+				tessellator.draw();
+				tessellator.startDrawingQuads();
+				tessellator.setNormal(1.0F, 0.0F, 0.0F);
+				renderblocks.renderSouthFace(block, 0.0D, 0.0D, 0.0D, block.getBlockTextureFromSideAndMetadata(renderOnSide ? 5 : 0, metadata));
+				tessellator.draw();
+				GL11.glTranslatef(0.5F, 0.5F, 0.5F);
+				((RenderBlocks)renderer).func_83017_b();
+			}else{
+				iRenderInvBox(renderer, block, metadata);
 			}
-			
-			((RenderBlocks)renderer).func_83018_a(block);
-			GL11.glTranslatef(-0.5F, -0.5F, -0.5F);
-			tessellator.startDrawingQuads();
-			tessellator.setNormal(0.0F, -1F, 0.0F);
-			renderblocks.renderBottomFace(block, 0.0D, 0.0D, 0.0D, block.getBlockTextureFromSideAndMetadata(renderOnSide ? 0 : 0, metadata));
-			tessellator.draw();
-			tessellator.startDrawingQuads();
-			tessellator.setNormal(0.0F, 1.0F, 0.0F);
-			renderblocks.renderTopFace(block, 0.0D, 0.0D, 0.0D, block.getBlockTextureFromSideAndMetadata(renderOnSide ? 1 : 0, metadata));
-			tessellator.draw();
-			tessellator.startDrawingQuads();
-			tessellator.setNormal(0.0F, 0.0F, -1F);
-			renderblocks.renderEastFace(block, 0.0D, 0.0D, 0.0D, block.getBlockTextureFromSideAndMetadata(renderOnSide ? 2 : 0, metadata));
-			tessellator.draw();
-			tessellator.startDrawingQuads();
-			tessellator.setNormal(0.0F, 0.0F, 1.0F);
-			renderblocks.renderWestFace(block, 0.0D, 0.0D, 0.0D, block.getBlockTextureFromSideAndMetadata(renderOnSide ? 3 : 1, metadata));
-			tessellator.draw();
-			tessellator.startDrawingQuads();
-			tessellator.setNormal(-1F, 0.0F, 0.0F);
-			renderblocks.renderNorthFace(block, 0.0D, 0.0D, 0.0D, block.getBlockTextureFromSideAndMetadata(renderOnSide ? 4 : 0, metadata));
-			tessellator.draw();
-			tessellator.startDrawingQuads();
-			tessellator.setNormal(1.0F, 0.0F, 0.0F);
-			renderblocks.renderSouthFace(block, 0.0D, 0.0D, 0.0D, block.getBlockTextureFromSideAndMetadata(renderOnSide ? 5 : 0, metadata));
-			tessellator.draw();
-			GL11.glTranslatef(0.5F, 0.5F, 0.5F);
-			((RenderBlocks)renderer).func_83017_b();
 			resetTerrain(swapped);
-
 			return;
 		}
 	}
