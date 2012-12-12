@@ -1,24 +1,20 @@
 package powercraft.machines;
 
 import net.minecraft.src.EntityPlayer;
-import net.minecraft.src.IInventory;
-import net.minecraft.src.InventoryCraftResult;
-import powercraft.core.PC_GresCheckBox;
-import powercraft.core.PC_GresFrame;
-import powercraft.core.PC_GresGap;
-import powercraft.core.PC_GresImage;
-import powercraft.core.PC_GresInventory;
-import powercraft.core.PC_GresInventoryBigSlot;
-import powercraft.core.PC_GresInventoryPlayer;
-import powercraft.core.PC_GresLayoutH;
-import powercraft.core.PC_GresWidget;
-import powercraft.core.PC_GresWindow;
-import powercraft.core.PC_IGresClient;
-import powercraft.core.PC_IGresGui;
-import powercraft.core.PC_Module;
-import powercraft.core.PC_PacketHandler;
-import powercraft.core.PC_Utils;
-import powercraft.core.mod_PowerCraftCore;
+import powercraft.management.PC_GresCheckBox;
+import powercraft.management.PC_GresFrame;
+import powercraft.management.PC_GresGap;
+import powercraft.management.PC_GresImage;
+import powercraft.management.PC_GresInventory;
+import powercraft.management.PC_GresInventoryBigSlot;
+import powercraft.management.PC_GresInventoryPlayer;
+import powercraft.management.PC_GresLayoutH;
+import powercraft.management.PC_GresWidget;
+import powercraft.management.PC_GresWindow;
+import powercraft.management.PC_IGresClient;
+import powercraft.management.PC_IGresGui;
+import powercraft.management.PC_PacketHandler;
+import powercraft.management.PC_Utils;
 
 public class PCma_GuiAutomaticWorkbench extends PCma_ContainerAutomaticWorkbench implements PC_IGresClient {
 
@@ -53,7 +49,7 @@ public class PCma_GuiAutomaticWorkbench extends PCma_ContainerAutomaticWorkbench
 
 		hg1.add(inv);
 
-		hg1.add(new PC_GresImage(PC_Module.getModule("Core").getTextureDirectory() + "gres/widgets.png", 44, 66, 12, 11));
+		hg1.add(new PC_GresImage(PC_Utils.getGresImgDir() + "widgets.png", 44, 66, 12, 11));
 
 		hg1.add(new PC_GresInventoryBigSlot(lSlot.get(0)));
 

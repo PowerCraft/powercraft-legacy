@@ -1,14 +1,14 @@
 package powercraft.machines;
 
 import net.minecraft.src.EntityPlayer;
-import powercraft.core.PC_GresInventory;
-import powercraft.core.PC_GresInventoryPlayer;
-import powercraft.core.PC_GresWidget;
-import powercraft.core.PC_GresWidget.PC_GresAlign;
-import powercraft.core.PC_GresWindow;
-import powercraft.core.PC_IGresClient;
-import powercraft.core.PC_IGresGui;
-import powercraft.core.PC_Utils;
+import powercraft.management.PC_GresInventory;
+import powercraft.management.PC_GresInventoryPlayer;
+import powercraft.management.PC_GresWidget;
+import powercraft.management.PC_GresWidget.PC_GresAlign;
+import powercraft.management.PC_GresWindow;
+import powercraft.management.PC_IGresClient;
+import powercraft.management.PC_IGresGui;
+import powercraft.management.PC_Utils;
 
 public class PCma_GuiBlockBuilder extends PCma_ContainerBlockBuilder implements PC_IGresClient {
 
