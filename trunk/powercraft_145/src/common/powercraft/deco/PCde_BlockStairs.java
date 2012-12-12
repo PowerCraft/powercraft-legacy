@@ -21,8 +21,8 @@ import powercraft.management.PC_VecI;
 
 public class PCde_BlockStairs extends PC_Block {
 
-	public PCde_BlockStairs(int id) {
-		super(id, Material.rock);
+	public PCde_BlockStairs() {
+		super(Material.rock);
 		setHardness(1.5F);
 		setResistance(30.0F);
 		setStepSound(Block.soundMetalFootstep);
