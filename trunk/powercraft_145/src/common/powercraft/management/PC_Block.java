@@ -131,7 +131,7 @@ public abstract class PC_Block extends BlockContainer implements PC_IMSG
 	public void setBlockID(int id) {
 		int oldID = blockID;
 		if(PC_Utils.setPrivateValue(Block.class, this, 170, id)){
-	    	if(PC_Utils.setPrivateValue(Item.class, this, 160, id)){
+	    	if(PC_Utils.setPrivateValue(Item.class, itemBlock, 160, id)){
 	    		if(oldID!=-1){
 	    			Block.blocksList[oldID] = replacedBlock;
 	    			Item.itemsList[oldID] = replacedItemBlock;

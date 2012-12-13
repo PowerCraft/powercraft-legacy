@@ -18,7 +18,7 @@ import cpw.mods.fml.common.network.Player;
 
 public class PC_PacketHandler implements IPacketHandler
 {
-    public static final int PACKETTILEENTITY = 0, PACKETPACKETHANDLER = 1, PACKETGUI = 2;
+    public static final int PACKETTILEENTITY = 0, PACKETPACKETHANDLER = 1, PACKETGUI = 2, PACKETIDS = 3;
 
     protected static HashMap<String, PC_IPacketHandler> packetHandler = new HashMap<String, PC_IPacketHandler>();
 
@@ -44,6 +44,10 @@ public class PC_PacketHandler implements IPacketHandler
                     handleIncomingGuiPacket(input, (EntityPlayer)player);
                     break;
 
+                case PACKETIDS:
+                	handleIncomingIDPacket(input, (EntityPlayer)player);
+                    break;
+                    
                 default:
                     throw new IllegalArgumentException("Neither TE nor PacketHandler nor Gui");
             }
@@ -54,7 +58,7 @@ public class PC_PacketHandler implements IPacketHandler
         }
     }
 
-    protected void handleIncomingTEPacket(ObjectInputStream input, EntityPlayer player) throws IOException, ClassNotFoundException
+	protected void handleIncomingTEPacket(ObjectInputStream input, EntityPlayer player) throws IOException, ClassNotFoundException
     {
         int x = input.readInt();
         int y = input.readInt();
@@ -102,6 +106,9 @@ public class PC_PacketHandler implements IPacketHandler
     {
     }
 
+    protected void handleIncomingIDPacket(ObjectInputStream input, EntityPlayer player) throws ClassNotFoundException, IOException{
+	}
+    
     public static void setTileEntity(TileEntity tileEntity, Object... o)
     {
         setTileEntityArray(tileEntity, o);

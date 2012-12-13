@@ -5,6 +5,7 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
+import java.lang.reflect.Modifier;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -64,37 +65,35 @@ public class PC_ModuleLoader{
 			return;
 		}
 		PC_ClassInfo ci = new PC_ClassInfo(b);
-		boolean create = false;
-		if(PC_Utils.isClient()){
-			String[] interfaceNames = ci.getInterfaceNames();
-			if(interfaceNames!=null){
-				for(String interfaceName:ci.getInterfaceNames()){
+		String[] interfaceNames = ci.getInterfaceNames();
+		if(interfaceNames!=null && !(Modifier.isInterface(ci.getClassAccess()) || Modifier.isAbstract(ci.getClassAccess()))){
+			boolean create = false;
+			for(String interfaceName:ci.getInterfaceNames()){
+				if(PC_Utils.isClient()){
 					if(interfaceName.equals(PC_IClientModule.class.getName())){
 						create = true;
 						break;
 					}
-				}
-			}
-		}
-		if(PC_Utils.isServer()){
-			String[] interfaceNames = ci.getInterfaceNames();
-			if(interfaceNames!=null){
-				for(String interfaceName:ci.getInterfaceNames()){
+				}else{
 					if(interfaceName.equals(PC_IModule.class.getName())){
 						create = true;
 						break;
 					}
 				}
 			}
-		}
-		if(create){
-			Class<?> c = new PC_ModuleClassLoader(ci.getClassName(), b).getCreateClass();
-			try {
-				PC_Utils.registerModule((PC_IModule)c.newInstance());
-			} catch (InstantiationException e) {
-				e.printStackTrace();
-			} catch (IllegalAccessException e) {
-				e.printStackTrace();
+			if(create){
+				Class<?> c = new PC_ModuleClassLoader(ci.getClassName(), b).getCreateClass();
+				try {
+					PC_IModule module;
+					PC_Utils.registerModule(module = (PC_IModule)c.newInstance());
+					PC_Logger.info("Module "+module.getName()+" have been loaded");
+				} catch (InstantiationException e) {
+					PC_Logger.severe("Error on Loading Module "+ci.getClassName());
+					e.printStackTrace();
+				} catch (IllegalAccessException e) {
+					PC_Logger.severe("Error on Loading Module "+ci.getClassName());
+					e.printStackTrace();
+				}
 			}
 		}
 	}
