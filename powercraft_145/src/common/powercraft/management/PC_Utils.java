@@ -309,6 +309,11 @@ public class PC_Utils implements PC_IPacketHandler
                 blockOff.setBlockName(blockClass.getSimpleName());
                 blockOff.setModule(module);
                 blockOff.setTextureFile(getTerrainFile(module));
+                instance.objects.put(blockClass.getSimpleName()+".Off", blockOff);
+                mod_PowerCraft.registerBlock(blockOff, null);
+                ItemBlock itemBlock = (ItemBlock)Item.itemsList[blockOff.blockID];
+                
+                blockOff.setItemBlock(itemBlock);
             }
             else
             {
@@ -1841,19 +1846,27 @@ public class PC_Utils implements PC_IPacketHandler
 		return -1;
 	}
 	
+	public static void loadIDFromTagCompound(NBTTagCompound nbttag){
+		for(Entry<String, Object>e: objects.entrySet()){
+			setPCObjectID(e.getValue(), -1);
+		}
+		for(Entry<String, Object>e: objects.entrySet()){
+			int id;
+			 if(nbttag.hasKey(e.getKey())){
+				 id = nbttag.getInteger(e.getKey());
+			 }else{
+				 id = defaultID(e.getValue());
+			 }
+			 setPCObjectID(e.getValue(), id);
+		 }
+	}
+	
 	public static boolean loadPCObjectsIDs(File worldDirectory){
 		File file = new File(worldDirectory, "powercraft.dat");
 		if(!file.exists())
 			return false;
 		try{
-			 NBTTagCompound nbttag = CompressedStreamTools.readCompressed(new FileInputStream(file));
-			 
-			 for(Entry<String, Object>e: objects.entrySet()){
-				 if(nbttag.hasKey(e.getKey())){
-					 int id = nbttag.getInteger(e.getKey());
-					 setPCObjectID(e.getValue(), id);
-				 }
-			 }
+			loadIDFromTagCompound(CompressedStreamTools.readCompressed(new FileInputStream(file)));
 			 
         }catch (Exception e){
             e.printStackTrace();
@@ -1862,12 +1875,18 @@ public class PC_Utils implements PC_IPacketHandler
 		return true;
 	}
 	
-	public static void savePCObjectsIDs(File worldDirectory){
-        NBTTagCompound nbttag = new NBTTagCompound("PowerCraftIDs");
+	public static NBTTagCompound makeIDTagCompound(){
+		 NBTTagCompound nbttag = new NBTTagCompound("PowerCraftIDs");
 
         for(String key:objects.keySet()){
         	nbttag.setInteger(key, getPCObjectIDByName(key));
         }
+        
+        return nbttag;
+	}
+	
+	public static void savePCObjectsIDs(File worldDirectory){
+        NBTTagCompound nbttag = makeIDTagCompound();
         	
         try
         {
@@ -1890,32 +1909,40 @@ public class PC_Utils implements PC_IPacketHandler
 		}
 	}
 	
+	public static int defaultID(Object o){
+		int id = -1;
+		if(o instanceof PC_IItemInfo){
+			if(o.getClass().isAnnotationPresent(PC_Shining.class)){
+				Object[] on = getFieldsWithAnnotation(o.getClass(), PC_Shining.ON.class, o);
+				Object[] off = getFieldsWithAnnotation(o.getClass(), PC_Shining.OFF.class, o);
+				if(on!=null && on.length>0 && on[0] == o){
+					id = getConfig(((PC_IItemInfo) o).getModule()).getInt(objects.getClass().getSimpleName()+".defaultID.on", 0);
+				}else{
+					id = getConfig(((PC_IItemInfo) o).getModule()).getInt(objects.getClass().getSimpleName()+".defaultID.off", 0);
+				}
+				}else{
+				id = getConfig(((PC_IItemInfo) o).getModule()).getInt(objects.getClass().getSimpleName()+".defaultID", 0);
+			}
+		}
+		if(o instanceof PC_Item){
+			if(!isItemIDFree(id))
+				id = getFreeItemID();
+		}else if(o instanceof PC_Block){
+			if(!isBlockIDFree(id))
+				id = getFreeBlockID();
+		}else if(o instanceof PC_ItemArmor){
+			if(!isItemIDFree(id))
+				id = getFreeItemID();
+		}
+		return id;
+	}
+	
 	public static void resetPCObjectsIDs(){
 		for(Object o: objects.values()){
 			setPCObjectID(o, -1);
 		}
 		for(Object o: objects.values()){
-			int id = -1;
-			if(o instanceof PC_IItemInfo){
-				if(o.getClass().isAnnotationPresent(PC_Shining.class)){
-					Object[] on = getFieldsWithAnnotation(o.getClass(), PC_Shining.ON.class, o);
-					Object[] off = getFieldsWithAnnotation(o.getClass(), PC_Shining.OFF.class, o);
-					if(on!=null && on.length>0 && on[0] == o){
-						id = getConfig(((PC_IItemInfo) o).getModule()).getInt(objects.getClass().getSimpleName()+".defaultID.on", 0);
-					}else{
-						id = getConfig(((PC_IItemInfo) o).getModule()).getInt(objects.getClass().getSimpleName()+".defaultID.off", 0);
-					}
-					}else{
-					id = getConfig(((PC_IItemInfo) o).getModule()).getInt(objects.getClass().getSimpleName()+".defaultID", 0);
-				}
-			}
-			if(o instanceof PC_Item){
-				id = getFreeItemID();
-			}else if(o instanceof PC_Block){
-				id = getFreeBlockID();
-			}else if(o instanceof PC_ItemArmor){
-				id = getFreeItemID();
-			}
+			int id = defaultID(o);
 			setPCObjectID(o, id);
 		}
 	}

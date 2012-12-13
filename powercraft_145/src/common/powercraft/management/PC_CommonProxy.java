@@ -1,5 +1,7 @@
 package powercraft.management;
 
+import cpw.mods.fml.common.network.NetworkRegistry;
+
 public class PC_CommonProxy {
 
 	public void initUtils() {
@@ -13,6 +15,7 @@ public class PC_CommonProxy {
 	public void init() {
 		new PC_Renderer(true);
         new PC_Renderer(false);
+        NetworkRegistry.instance().registerConnectionHandler(new PC_ConnectionHandler());
 	}
 	
 }
