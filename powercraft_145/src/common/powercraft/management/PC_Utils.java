@@ -445,10 +445,12 @@ public class PC_Utils implements PC_IPacketHandler
                     if (on)
                     {
                         world.setBlockAndMetadataWithNotify(x, y, z, bon.blockID, meta);
+                        b = bon;
                     }
                     else
                     {
                         world.setBlockAndMetadataWithNotify(x, y, z, boff.blockID, meta);
+                        b = boff;
                     }
 
                     if (te != null)
@@ -1852,13 +1854,14 @@ public class PC_Utils implements PC_IPacketHandler
 		}
 		for(Entry<String, Object>e: objects.entrySet()){
 			int id;
-			 if(nbttag.hasKey(e.getKey())){
-				 id = nbttag.getInteger(e.getKey());
-			 }else{
-				 id = defaultID(e.getValue());
-			 }
-			 setPCObjectID(e.getValue(), id);
-		 }
+			if(nbttag.hasKey(e.getKey())){
+				id = nbttag.getInteger(e.getKey());
+			}else{
+				id = defaultID(e.getValue());
+			}
+			System.out.println("Change ID of "+e.getKey()+" to "+id);
+			setPCObjectID(e.getValue(), id);
+		}
 	}
 	
 	public static boolean loadPCObjectsIDs(File worldDirectory){
