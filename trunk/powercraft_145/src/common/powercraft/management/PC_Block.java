@@ -99,7 +99,7 @@ public abstract class PC_Block extends BlockContainer implements PC_IMSG
     @SideOnly(Side.CLIENT)
     public boolean shouldSideBeRendered(IBlockAccess world, int x, int y, int z, int side)
     {
-        if (side == 1 && getRenderType() == PC_Renderer.getRendererID(true) && msg(PC_Utils.MSG_ROTATION)!=null)
+        if (side == 1 && getRenderType() == PC_Renderer.getRendererID(true) && msg(PC_Utils.MSG_ROTATION, PC_Utils.getMD(world, x, y, z))!=null)
         {
             return false;
         }
@@ -132,18 +132,23 @@ public abstract class PC_Block extends BlockContainer implements PC_IMSG
 		int oldID = blockID;
 		if(PC_Utils.setPrivateValue(Block.class, this, 170, id)){
 	    	if(PC_Utils.setPrivateValue(Item.class, itemBlock, 160, id)){
-	    		if(oldID!=-1){
-	    			Block.blocksList[oldID] = replacedBlock;
-	    			Item.itemsList[oldID] = replacedItemBlock;
-	    		}
-	    		if(id!=-1){
-	    			replacedBlock = Block.blocksList[id];
-	    			replacedItemBlock = Item.itemsList[id];
-	    			Block.blocksList[id] = this;
-	    			Item.itemsList[id] = itemBlock;
+	    		if(PC_Utils.setPrivateValue(ItemBlock.class, itemBlock, 0, id)){
+		    		if(oldID!=-1){
+		    			Block.blocksList[oldID] = replacedBlock;
+		    			Item.itemsList[oldID] = replacedItemBlock;
+		    		}
+		    		if(id!=-1){
+		    			replacedBlock = Block.blocksList[id];
+		    			replacedItemBlock = Item.itemsList[id];
+		    			Block.blocksList[id] = this;
+		    			Item.itemsList[id] = itemBlock;
+		    		}else{
+		    			replacedBlock = null;
+		    			replacedItemBlock = null;
+		    		}
 	    		}else{
-	    			replacedBlock = null;
-	    			replacedItemBlock = null;
+	    			PC_Utils.setPrivateValue(Item.class, itemBlock, 160, oldID);
+	    			PC_Utils.setPrivateValue(Block.class, this, 170, oldID);
 	    		}
 	    	}else{
 	    		PC_Utils.setPrivateValue(Block.class, this, 170, oldID);
