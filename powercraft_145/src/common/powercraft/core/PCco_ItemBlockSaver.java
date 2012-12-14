@@ -12,6 +12,7 @@ import net.minecraft.src.World;
 import powercraft.management.PC_Item;
 import powercraft.management.PC_Struct3;
 import powercraft.management.PC_Utils;
+import powercraft.management.PC_Utils.GameInfo;
 import powercraft.management.PC_VecI;
 import cpw.mods.fml.common.Side;
 import cpw.mods.fml.common.asm.SideOnly;
@@ -81,7 +82,7 @@ public class PCco_ItemBlockSaver extends PC_Item {
 			Block block = Block.blocksList[placedID];
 
 			if (PC_Utils.setBID(world, pos, placedID, placedMeta)) {
-				if (PC_Utils.getBID(world, pos) == placedID) {
+				if (GameInfo.getBID(world, pos) == placedID) {
 					/** @todo onBlockPlacedBy*/
 					Block.blocksList[placedID].onBlockPlacedBy(world, x, y, z, entityplayer);
 
@@ -91,7 +92,7 @@ public class PCco_ItemBlockSaver extends PC_Item {
 					if (itemstack.hasTagCompound()) {
 						NBTTagCompound tag = itemstack.getTagCompound();
 
-						TileEntity tec = PC_Utils.getTE(world, pos);
+						TileEntity tec = GameInfo.getTE(world, pos);
 						if (tec != null) {
 							int cx = tec.xCoord;
 							int cy = tec.yCoord;

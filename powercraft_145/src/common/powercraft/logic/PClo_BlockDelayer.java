@@ -20,6 +20,8 @@ import powercraft.management.PC_Shining;
 import powercraft.management.PC_Shining.OFF;
 import powercraft.management.PC_Shining.ON;
 import powercraft.management.PC_Utils;
+import powercraft.management.PC_Utils.GameInfo;
+import powercraft.management.PC_Utils.Gres;
 import powercraft.management.PC_VecI;
 
 @PC_Shining
@@ -61,7 +63,7 @@ public class PClo_BlockDelayer extends PC_Block
     public void updateTick(World world, int x, int y, int z, Random random)
     {
         PClo_TileEntityDelayer te = getTE(world, x, y, z);
-        int rot = getRotation_static(PC_Utils.getMD(world, x, y, z));
+        int rot = getRotation_static(GameInfo.getMD(world, x, y, z));
         boolean stop = false;
         boolean reset = false;
 
@@ -116,7 +118,7 @@ public class PClo_BlockDelayer extends PC_Block
 
     @Override
    	public boolean isProvidingWeakPower(IBlockAccess world, int x, int y, int z, int s) {
-    	int meta = PC_Utils.getMD(world, x, y, z);
+    	int meta = GameInfo.getMD(world, x, y, z);
         int rotation = getRotation_static(meta);
 
         if (!isActive(world, x, y, z))
@@ -151,7 +153,7 @@ public class PClo_BlockDelayer extends PC_Block
 
     public static PClo_TileEntityDelayer getTE(IBlockAccess world, int x, int y, int z)
     {
-        TileEntity te = PC_Utils.getTE(world, x, y, z);;
+        TileEntity te = GameInfo.getTE(world, x, y, z);;
 
         if (te instanceof PClo_TileEntityDelayer)
         {
@@ -175,7 +177,7 @@ public class PClo_BlockDelayer extends PC_Block
 
     public static boolean isActive(IBlockAccess world, int x, int y, int z)
     {
-        return PC_Utils.getBID(world, x, y, z) == on.blockID;
+        return GameInfo.getBID(world, x, y, z) == on.blockID;
     }
 
     @Override
@@ -257,14 +259,14 @@ public class PClo_BlockDelayer extends PC_Block
 
         if (entityliving instanceof EntityPlayer)
         {
-            PC_Utils.openGres("Delayer", (EntityPlayer)entityliving, x, y, z);
+            Gres.openGres("Delayer", (EntityPlayer)entityliving, x, y, z);
         }
     }
 
     @Override
     public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player, int par6, float par7, float par8, float par9)
     {
-        PC_Utils.openGres("Delayer", player, x, y, z);
+        Gres.openGres("Delayer", player, x, y, z);
         return true;
     }
 
@@ -305,7 +307,7 @@ public class PClo_BlockDelayer extends PC_Block
         int type = getType(world, x, y, z);
         boolean remove = super.removeBlockByPlayer(world, player, x, y, z);
 
-        if (remove && !PC_Utils.isCreative(player))
+        if (remove && !GameInfo.isCreative(player))
         {
             dropBlockAsItem_do(world, x, y, z, new ItemStack(PClo_App.delayer, 1, type));
         }

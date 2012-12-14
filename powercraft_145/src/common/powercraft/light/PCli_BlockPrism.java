@@ -19,6 +19,7 @@ import powercraft.management.PC_Color;
 import powercraft.management.PC_IItemInfo;
 import powercraft.management.PC_Renderer;
 import powercraft.management.PC_Utils;
+import powercraft.management.PC_Utils.GameInfo;
 import powercraft.management.PC_VecI;
 
 public class PCli_BlockPrism extends PC_Block implements PC_IItemInfo {
@@ -97,11 +98,11 @@ public class PCli_BlockPrism extends PC_Block implements PC_IItemInfo {
 
 				if (isGlassPanelOnSide(world, i, j, k, angle) == false) {
 
-					PCli_TileEntityPrism teo = PC_Utils.getTE(world, i, j, k, blockID);
+					PCli_TileEntityPrism teo = GameInfo.getTE(world, i, j, k, blockID);
 					if (teo != null) {
 						teo.setPrismSide(angle, true);
 					}
-					if (!PC_Utils.isCreative(player)) {
+					if (!GameInfo.isCreative(player)) {
 						ihold.stackSize--;
 					}
 					drop = false;
@@ -114,11 +115,11 @@ public class PCli_BlockPrism extends PC_Block implements PC_IItemInfo {
 
 			if (isGlassPanelOnSide(world, i, j, k, angle)) {
 
-				PCli_TileEntityPrism teo = PC_Utils.getTE(world, i, j, k, blockID);
+				PCli_TileEntityPrism teo = GameInfo.getTE(world, i, j, k, blockID);
 				if (teo != null) {
 					teo.setPrismSide(angle, false);
 				}
-				if (!PC_Utils.isCreative(player)) {
+				if (!GameInfo.isCreative(player)) {
 					PC_Utils.dropItemStack(world, new ItemStack(Block.thinGlass, 1), new PC_VecI(i, j, k));
 				}
 
@@ -141,7 +142,7 @@ public class PCli_BlockPrism extends PC_Block implements PC_IItemInfo {
 	 */
 	public static boolean isGlassPanelOnSide(IBlockAccess iblockaccess, int x, int y, int z, int side) {
 
-		PCli_TileEntityPrism teo = PC_Utils.getTE(iblockaccess, x, y, z);
+		PCli_TileEntityPrism teo = GameInfo.getTE(iblockaccess, x, y, z);
 
 		if (teo == null) {
 			return false;
@@ -207,7 +208,7 @@ public class PCli_BlockPrism extends PC_Block implements PC_IItemInfo {
 	
 	public result onHitByBeamTracer(PC_BeamTracer beamTracer, PC_VecI cnt, PC_VecI move, PC_Color color, float strength, int distanceToMove) {
 
-		PCli_TileEntityPrism prism = PC_Utils.getTE(beamTracer.getWorld(), cnt.x, cnt.y, cnt.z);
+		PCli_TileEntityPrism prism = GameInfo.getTE(beamTracer.getWorld(), cnt.x, cnt.y, cnt.z);
 
 		int sideCount = 0;
 		int[] side = new int[10];

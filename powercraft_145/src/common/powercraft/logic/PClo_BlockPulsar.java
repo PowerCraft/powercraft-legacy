@@ -21,6 +21,7 @@ import powercraft.management.PC_Shining;
 import powercraft.management.PC_Shining.OFF;
 import powercraft.management.PC_Shining.ON;
 import powercraft.management.PC_Utils;
+import powercraft.management.PC_Utils.Gres;
 import powercraft.management.PC_VecI;
 
 @PC_Shining
@@ -106,7 +107,7 @@ public class PClo_BlockPulsar extends PC_Block implements PC_IItemInfo
 
         if (world.isRemote)
         {
-            PC_Utils.openGres("Pulsar", player, i, j, k);
+            Gres.openGres("Pulsar", player, i, j, k);
         }
 
         return true;

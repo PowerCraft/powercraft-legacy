@@ -19,6 +19,8 @@ import powercraft.management.PC_FakePlayer;
 import powercraft.management.PC_IItemInfo;
 import powercraft.management.PC_Struct2;
 import powercraft.management.PC_Utils;
+import powercraft.management.PC_Utils.GameInfo;
+import powercraft.management.PC_Utils.Gres;
 import powercraft.management.PC_VecI;
 
 public class PCma_BlockReplacer extends PC_Block implements PC_IItemInfo
@@ -80,7 +82,7 @@ public class PCma_BlockReplacer extends PC_Block implements PC_IItemInfo
             {
                 Block bhold = Block.blocksList[ihold.getItem().shiftedIndex];
             }
-            else if (ihold.getItem().shiftedIndex == PC_Utils.getPCObjectIDByName("PCco_ItemActivator"))
+            else if (ihold.getItem().shiftedIndex == GameInfo.getPCObjectIDByName("PCco_ItemActivator"))
             {
                 int l = MathHelper.floor_double(((entityplayer.rotationYaw * 4F) / 360F) + 0.5D) & 3;
 
@@ -139,7 +141,7 @@ public class PCma_BlockReplacer extends PC_Block implements PC_IItemInfo
             return true;
         }
 
-        PC_Utils.openGres("Replacer", entityplayer, i, j, k);
+        Gres.openGres("Replacer", entityplayer, i, j, k);
         return true;
     }
 
@@ -157,7 +159,7 @@ public class PCma_BlockReplacer extends PC_Block implements PC_IItemInfo
 
     private boolean replacer_canHarvestBlockAt(World world, PC_VecI pos)
     {
-        int id = PC_Utils.getMD(world, pos);
+        int id = GameInfo.getMD(world, pos);
 
         if (id == 0 || Block.blocksList[id] == null)
         {
@@ -188,7 +190,7 @@ public class PCma_BlockReplacer extends PC_Block implements PC_IItemInfo
 
         if (item.shiftedIndex == Block.lockedChest.blockID)
         {
-            return PC_Utils.getTE(world, pos) == null;
+            return GameInfo.getTE(world, pos) == null;
         }
 
         if (item instanceof ItemBlock)
@@ -265,7 +267,7 @@ public class PCma_BlockReplacer extends PC_Block implements PC_IItemInfo
         
         if (PC_Utils.setBIDNoNotify(world, pos, iblock.getBlockID(), iblock.getMetadata(itemstack.getItemDamage())))
         {
-            if (PC_Utils.getBID(world, pos) == iblock.getBlockID())
+            if (GameInfo.getBID(world, pos) == iblock.getBlockID())
             {
                 world.notifyBlockChange(pos.x, pos.y, pos.z, iblock.getBlockID());
             }
@@ -284,19 +286,19 @@ public class PCma_BlockReplacer extends PC_Block implements PC_IItemInfo
     private PC_Struct2<ItemStack, Integer> replacer_harvestBlockAt(World world, PC_VecI pos)
     {
         ItemStack loot = null;
-        int meta = PC_Utils.getMD(world, pos);
+        int meta = GameInfo.getMD(world, pos);
 
         if (!replacer_canHarvestBlockAt(world, pos))
         {
             return null;
         }
 
-        if (PC_Utils.getTE(world, pos) != null)
+        if (GameInfo.getTE(world, pos) != null)
         {
             return new PC_Struct2<ItemStack, Integer>(PC_Utils.extractAndRemoveChest(world, pos), meta);
         }
 
-        Block block = Block.blocksList[PC_Utils.getBID(world, pos)];
+        Block block = Block.blocksList[GameInfo.getBID(world, pos)];
 
         if (block == null)
         {
@@ -305,17 +307,17 @@ public class PCma_BlockReplacer extends PC_Block implements PC_IItemInfo
 
         if (PC_Block.canSilkHarvest(block))
         {
-            loot = PC_Block.createStackedBlock(block, PC_Utils.getMD(world, pos));
+            loot = PC_Block.createStackedBlock(block, GameInfo.getMD(world, pos));
         }
         else
         {
             int dropId = block.blockID;
-            int dropMeta = block.damageDropped(PC_Utils.getMD(world, pos));
+            int dropMeta = block.damageDropped(GameInfo.getMD(world, pos));
             int dropQuant = block.quantityDropped(world.rand);
 
             if (dropId <= 0)
             {
-                dropId = PC_Utils.getBID(world, pos);
+                dropId = GameInfo.getBID(world, pos);
             }
 
             if (dropQuant <= 0)

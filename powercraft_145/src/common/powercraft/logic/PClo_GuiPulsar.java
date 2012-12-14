@@ -14,7 +14,8 @@ import powercraft.management.PC_GresWindow;
 import powercraft.management.PC_IGresClient;
 import powercraft.management.PC_IGresGui;
 import powercraft.management.PC_PacketHandler;
-import powercraft.management.PC_Utils;
+import powercraft.management.PC_Utils.Converter;
+import powercraft.management.PC_Utils.Lang;
 
 public class PClo_GuiPulsar implements PC_IGresClient {
 
@@ -35,7 +36,7 @@ public class PClo_GuiPulsar implements PC_IGresClient {
 	
 	@Override
 	public void initGui(PC_IGresGui gui) {
-		PC_GresWindow w = new PC_GresWindow(PC_Utils.tr("tile.PClo_BlockPulsar.name"));
+		PC_GresWindow w = new PC_GresWindow(Lang.tr("tile.PClo_BlockPulsar.name"));
 		
 		w.setAlignH(PC_GresAlign.STRETCH);
 		PC_GresWidget hg, vg;
@@ -44,13 +45,13 @@ public class PClo_GuiPulsar implements PC_IGresClient {
 		hg = new PC_GresLayoutH().setAlignH(PC_GresAlign.CENTER);
 
 		vg = new PC_GresLayoutV().setAlignH(PC_GresAlign.LEFT);
-		vg.add(new PC_GresLabel(PC_Utils.tr("pc.gui.pulsar.delay")));
-		vg.add(editDelay = new PC_GresTextEdit(PC_Utils.doubleToString(PC_Utils.ticksToSecs(pulsar.getDelay())), 8, PC_GresInputType.UNSIGNED_FLOAT));
+		vg.add(new PC_GresLabel(Lang.tr("pc.gui.pulsar.delay")));
+		vg.add(editDelay = new PC_GresTextEdit(Converter.doubleToString(Converter.ticksToSecs(pulsar.getDelay())), 8, PC_GresInputType.UNSIGNED_FLOAT));
 		hg.add(vg);
 
 		vg = new PC_GresLayoutV().setAlignH(PC_GresAlign.LEFT);
-		vg.add(new PC_GresLabel(PC_Utils.tr("pc.gui.pulsar.hold")));
-		vg.add(editHold = new PC_GresTextEdit(PC_Utils.doubleToString(PC_Utils.ticksToSecs(pulsar.getHold())), 8, PC_GresInputType.UNSIGNED_FLOAT));
+		vg.add(new PC_GresLabel(Lang.tr("pc.gui.pulsar.hold")));
+		vg.add(editHold = new PC_GresTextEdit(Converter.doubleToString(Converter.ticksToSecs(pulsar.getHold())), 8, PC_GresInputType.UNSIGNED_FLOAT));
 		hg.add(vg);
 
 		w.add(hg);
@@ -67,13 +68,13 @@ public class PClo_GuiPulsar implements PC_IGresClient {
 		// buttons
 		hg = new PC_GresLayoutH().setAlignH(PC_GresAlign.CENTER);
 		hg.setAlignH(PC_GresAlign.CENTER);
-		hg.add(checkSilent = new PC_GresCheckBox(PC_Utils.tr("pc.gui.pulsar.silent")).check(pulsar.isSilent()));
-		hg.add(checkPaused = new PC_GresCheckBox(PC_Utils.tr("pc.gui.pulsar.paused")).check(pulsar.isPaused()));
+		hg.add(checkSilent = new PC_GresCheckBox(Lang.tr("pc.gui.pulsar.silent")).check(pulsar.isSilent()));
+		hg.add(checkPaused = new PC_GresCheckBox(Lang.tr("pc.gui.pulsar.paused")).check(pulsar.isPaused()));
 		w.add(hg);
 		hg = new PC_GresLayoutH().setAlignH(PC_GresAlign.CENTER);
 		hg.setAlignH(PC_GresAlign.JUSTIFIED);
-		hg.add(buttonCancel = new PC_GresButton(PC_Utils.tr("pc.gui.cancel")).setId(1));
-		hg.add(buttonOK = new PC_GresButton(PC_Utils.tr("pc.gui.ok")).setId(0));
+		hg.add(buttonCancel = new PC_GresButton(Lang.tr("pc.gui.cancel")).setId(1));
+		hg.add(buttonOK = new PC_GresButton(Lang.tr("pc.gui.ok")).setId(0));
 		w.add(hg);
 		
 		gui.add(w);
@@ -93,12 +94,12 @@ public class PClo_GuiPulsar implements PC_IGresClient {
 			String hold = editHold.getText();
 			txError.setText("");
 			if(!(delay.equals("")||hold.equals(""))){
-				int idelay = PC_Utils.secsToTicks(Double.parseDouble(delay));
-				int ihold = PC_Utils.secsToTicks(Double.parseDouble(hold));
+				int idelay = Converter.secsToTicks(Double.parseDouble(delay));
+				int ihold = Converter.secsToTicks(Double.parseDouble(hold));
 				if(idelay<2){
-					txError.setText(PC_Utils.tr("pc.gui.pulsar.errDelay"));
+					txError.setText(Lang.tr("pc.gui.pulsar.errDelay"));
 				}else if(ihold>=idelay||ihold<=0){
-					txError.setText(PC_Utils.tr("pc.gui.pulsar.errHold"));
+					txError.setText(Lang.tr("pc.gui.pulsar.errHold"));
 				}
 			}
 		}
@@ -112,12 +113,12 @@ public class PClo_GuiPulsar implements PC_IGresClient {
 			String hold = editHold.getText();
 			txError.setText("");
 			if(!(delay.equals("")||hold.equals(""))){
-				int idelay = PC_Utils.secsToTicks(Double.parseDouble(delay));
-				int ihold = PC_Utils.secsToTicks(Double.parseDouble(hold));
+				int idelay = Converter.secsToTicks(Double.parseDouble(delay));
+				int ihold = Converter.secsToTicks(Double.parseDouble(hold));
 				if(idelay<2){
-					txError.setText(PC_Utils.tr("pc.gui.pulsar.errDelay"));
+					txError.setText(Lang.tr("pc.gui.pulsar.errDelay"));
 				}else if(ihold>=idelay||ihold<=0){
-					txError.setText(PC_Utils.tr("pc.gui.pulsar.errHold"));
+					txError.setText(Lang.tr("pc.gui.pulsar.errHold"));
 				}else{
 					PC_PacketHandler.setTileEntity(pulsar, "silent", checkSilent.isChecked(), "paused", checkPaused.isChecked(), "delay", idelay, "hold", ihold);
 					gui.close();

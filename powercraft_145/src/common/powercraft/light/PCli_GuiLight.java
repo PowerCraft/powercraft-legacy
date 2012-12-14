@@ -14,7 +14,8 @@ import powercraft.management.PC_GresWindow;
 import powercraft.management.PC_IGresClient;
 import powercraft.management.PC_IGresGui;
 import powercraft.management.PC_PacketHandler;
-import powercraft.management.PC_Utils;
+import powercraft.management.PC_Utils.GameInfo;
+import powercraft.management.PC_Utils.Lang;
 
 public class PCli_GuiLight implements PC_IGresClient {
 
@@ -29,7 +30,7 @@ public class PCli_GuiLight implements PC_IGresClient {
 	private PC_GresButton accept, cancel;
 	
 	public PCli_GuiLight(EntityPlayer player, Object[] o){
-		light = (PCli_TileEntityLight)PC_Utils.getTE(player.worldObj, (Integer)o[0], (Integer)o[1], (Integer)o[2]);
+		light = (PCli_TileEntityLight)GameInfo.getTE(player.worldObj, (Integer)o[0], (Integer)o[1], (Integer)o[2]);
 	
 		color = this.light.getColor();
 		if(color==null) 
@@ -42,12 +43,12 @@ public class PCli_GuiLight implements PC_IGresClient {
 	
 	@Override
 	public void initGui(PC_IGresGui gui) {
-		PC_GresWindow w = (PC_GresWindow) new PC_GresWindow(PC_Utils.tr("tile.PCli_BlockLight.name"));
+		PC_GresWindow w = (PC_GresWindow) new PC_GresWindow(Lang.tr("tile.PCli_BlockLight.name"));
 		PC_GresLayoutV v = (PC_GresLayoutV)new PC_GresLayoutV().setAlignH(PC_GresAlign.STRETCH);
 		
 		PC_GresLayoutH h = (PC_GresLayoutH)new PC_GresLayoutH().setAlignH(PC_GresAlign.JUSTIFIED);
-		h.add(checkHuge = (PC_GresCheckBox) new PC_GresCheckBox(PC_Utils.tr("pc.gui.light.isHuge")).check(isHuge));
-		h.add(checkStable = (PC_GresCheckBox) new PC_GresCheckBox(PC_Utils.tr("pc.gui.light.isStable")).check(isStable));
+		h.add(checkHuge = (PC_GresCheckBox) new PC_GresCheckBox(Lang.tr("pc.gui.light.isHuge")).check(isHuge));
+		h.add(checkStable = (PC_GresCheckBox) new PC_GresCheckBox(Lang.tr("pc.gui.light.isStable")).check(isStable));
 		v.add(h);
 		
 		h = (PC_GresLayoutH)new PC_GresLayoutH().setAlignH(PC_GresAlign.STRETCH);;
@@ -56,8 +57,8 @@ public class PCli_GuiLight implements PC_IGresClient {
 		v.add(h);
 		
 		h = (PC_GresLayoutH)new PC_GresLayoutH().setAlignH(PC_GresAlign.STRETCH);;
-		h.add(accept = new PC_GresButton(PC_Utils.tr("pc.gui.ok")));
-		h.add(cancel = new PC_GresButton(PC_Utils.tr("pc.gui.cancel")));
+		h.add(accept = new PC_GresButton(Lang.tr("pc.gui.ok")));
+		h.add(cancel = new PC_GresButton(Lang.tr("pc.gui.cancel")));
 		v.add(h);
 		w.add(v);
 		gui.add(w);

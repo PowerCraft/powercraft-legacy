@@ -5,6 +5,11 @@ import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.List;
 
+import powercraft.management.PC_Utils.GameInfo;
+import powercraft.management.PC_Utils.Gres;
+import powercraft.management.PC_Utils.Lang;
+import powercraft.management.PC_Utils.ModuleLoader;
+
 import net.minecraft.src.Block;
 import net.minecraft.src.IRecipe;
 import net.minecraft.src.ItemBlock;
@@ -46,7 +51,7 @@ public class mod_PowerCraft {
 		PC_Logger.exitSection();
 		PC_Logger.enterSection("Load Modules");
 		PC_ModuleLoader.load(PC_Utils.createFile(PC_Utils.getPowerCraftFile(), "Modules"));
-		PC_ModuleLoader.load(new File(PC_Utils.getMCDirectory(), "mods"));
+		PC_ModuleLoader.load(new File(GameInfo.getMCDirectory(), "mods"));
 		try {
 			PC_ModuleLoader.load(new File(mod_PowerCraft.class.getResource("../../").toURI()));
 		} catch (URISyntaxException e) {}
@@ -65,12 +70,12 @@ public class mod_PowerCraft {
 			module.initProperties(PC_Utils.getConfig(module));
 		}
 		PC_Logger.exitSection();
-		if(PC_Utils.isClient()){
+		if(PC_Utils.GameInfo.isClient()){
 		PC_Logger.enterSection("Module Language Init");
 			for(PC_IModule module:modules){
 				List<PC_LangEntry> l = ((PC_IClientModule) module).initLanguage(new ArrayList<PC_LangEntry>());
 				if(l!=null){
-					PC_Utils.registerLanguage(module, l.toArray(new PC_LangEntry[0]));
+					Lang.registerLanguage(module, l.toArray(new PC_LangEntry[0]));
 				}
 			}
 			PC_Logger.exitSection();
@@ -79,16 +84,16 @@ public class mod_PowerCraft {
 				if(module instanceof PC_IClientModule){
 					List<String> l = ((PC_IClientModule) module).loadTextureFiles(new ArrayList<String>());
 					if(l!=null){
-						PC_Utils.registerTextureFiles(l.toArray(new String[0]));
+						ModuleLoader.registerTextureFiles(l.toArray(new String[0]));
 					}
 				}
 			}
-			PC_Utils.registerTextureFiles(PC_Utils.getPowerCraftLoaderImageDir() + "PowerCraft.png");
-			PC_Utils.registerTextureFiles(PC_Utils.getGresImgDir() + "button.png");
-			PC_Utils.registerTextureFiles(PC_Utils.getGresImgDir() + "dialog.png");
-			PC_Utils.registerTextureFiles(PC_Utils.getGresImgDir() + "frame.png");
-			PC_Utils.registerTextureFiles(PC_Utils.getGresImgDir() + "scrollbar_handle.png");
-			PC_Utils.registerTextureFiles(PC_Utils.getGresImgDir() + "widgets.png");
+			ModuleLoader.registerTextureFiles(PC_Utils.getPowerCraftLoaderImageDir() + "PowerCraft.png");
+			ModuleLoader.registerTextureFiles(PC_Utils.getGresImgDir() + "button.png");
+			ModuleLoader.registerTextureFiles(PC_Utils.getGresImgDir() + "dialog.png");
+			ModuleLoader.registerTextureFiles(PC_Utils.getGresImgDir() + "frame.png");
+			ModuleLoader.registerTextureFiles(PC_Utils.getGresImgDir() + "scrollbar_handle.png");
+			ModuleLoader.registerTextureFiles(PC_Utils.getGresImgDir() + "widgets.png");
 			PC_Logger.exitSection();
 		}
 		PC_Logger.exitSection();
@@ -121,12 +126,12 @@ public class mod_PowerCraft {
 			List<PC_Struct2<String,Class>> l = module.registerGuis(new ArrayList<PC_Struct2<String,Class>>());
 			if(l!=null){
 				for(PC_Struct2<String,Class> g:l){
-					PC_Utils.registerGres(g.a, g.b);
+					Gres.registerGres(g.a, g.b);
 				}
 			}
 		}
 		PC_Logger.exitSection();
-		if(PC_Utils.isClient()){
+		if(PC_Utils.GameInfo.isClient()){
 			PC_Logger.enterSection("Module Splashes Init");
 			for(PC_IModule module:modules){
 				if(module instanceof PC_IClientModule){
@@ -213,10 +218,10 @@ public class mod_PowerCraft {
 			}
 		}
 		PC_Logger.exitSection();
-		if(PC_Utils.isClient()){
+		if(PC_Utils.GameInfo.isClient()){
 			PC_Logger.enterSection("Module Language Saving");
 			for(PC_IModule module:modules){
-				PC_Utils.saveLanguage(module);
+				Lang.saveLanguage(module);
 			}
 			PC_Logger.exitSection();
 		}

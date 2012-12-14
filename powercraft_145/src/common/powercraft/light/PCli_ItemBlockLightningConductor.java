@@ -10,6 +10,7 @@ import powercraft.management.PC_ItemBlock;
 import powercraft.management.PC_Struct3;
 import powercraft.management.PC_TileEntity;
 import powercraft.management.PC_Utils;
+import powercraft.management.PC_Utils.GameInfo;
 
 public class PCli_ItemBlockLightningConductor extends PC_ItemBlock
 {
@@ -23,7 +24,7 @@ public class PCli_ItemBlockLightningConductor extends PC_ItemBlock
     @Override
     public boolean placeBlockAt(ItemStack stack, EntityPlayer player, World world, int x, int y, int z, int side, float hitX, float hitY, float hitZ, int metadata)
     {
-        if (PC_Utils.getBID(world, x, y + 1, z) != 0)
+        if (GameInfo.getBID(world, x, y + 1, z) != 0)
         {
             return false;
         }
@@ -48,7 +49,7 @@ public class PCli_ItemBlockLightningConductor extends PC_ItemBlock
         {
             Block block =  Block.blocksList[getBlockID()];
             block.onBlockPlacedBy(world, x, y + 1, z, player);
-            PC_TileEntity te = (PC_TileEntity)PC_Utils.getTE(world, x, y + 1, z);
+            PC_TileEntity te = (PC_TileEntity)GameInfo.getTE(world, x, y + 1, z);
 
             if (te == null)
             {

@@ -19,6 +19,7 @@ import powercraft.management.PC_FakePlayer;
 import powercraft.management.PC_InvUtils;
 import powercraft.management.PC_TileEntity;
 import powercraft.management.PC_Utils;
+import powercraft.management.PC_Utils.GameInfo;
 import powercraft.management.PC_VecI;
 
 public class PCma_TileEntityBlockBuilder extends PC_TileEntity implements IInventory {
@@ -104,7 +105,7 @@ public class PCma_TileEntityBlockBuilder extends PC_TileEntity implements IInven
 					continue;
 				}
 				if (state != 0) {
-					if (PC_Utils.isSoundEnabled()) {
+					if (GameInfo.isSoundEnabled()) {
 						worldObj.playAuxSFX(1000, xCoord, yCoord, zCoord, 0);
 					}
 				}
@@ -120,7 +121,7 @@ public class PCma_TileEntityBlockBuilder extends PC_TileEntity implements IInven
 				return;
 			}
 		} else {
-			if (PC_Utils.isSoundEnabled()) {
+			if (GameInfo.isSoundEnabled()) {
 				worldObj.playAuxSFX(1001, xCoord, yCoord, zCoord, 0);
 			}
 			return;
@@ -150,14 +151,14 @@ public class PCma_TileEntityBlockBuilder extends PC_TileEntity implements IInven
 		PC_VecI above = new PC_VecI(x + incX, y + 1, z + incZ);
 
 
-		int idFront = PC_Utils.getBID(worldObj, front);
-		int metaFront = PC_Utils.getMD(worldObj, front);
+		int idFront = GameInfo.getBID(worldObj, front);
+		int metaFront = GameInfo.getMD(worldObj, front);
 
-		int idBelow = PC_Utils.getBID(worldObj, below);
-		int metaBelow = PC_Utils.getMD(worldObj, below);
+		int idBelow = GameInfo.getBID(worldObj, below);
+		int metaBelow = GameInfo.getMD(worldObj, below);
 
-		int idAbove = PC_Utils.getBID(worldObj, above);
-		int metaAbove = PC_Utils.getMD(worldObj, above);
+		int idAbove = GameInfo.getBID(worldObj, above);
+		int metaAbove = GameInfo.getMD(worldObj, above);
 
 		int id = idFront;
 

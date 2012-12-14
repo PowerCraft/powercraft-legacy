@@ -8,7 +8,7 @@ import net.minecraft.src.IInventory;
 import net.minecraft.src.InventoryCraftResult;
 import net.minecraft.src.Slot;
 import powercraft.management.PC_GresBaseWithInventory;
-import powercraft.management.PC_Utils;
+import powercraft.management.PC_Utils.GameInfo;
 
 public class PCma_ContainerAutomaticWorkbench extends PC_GresBaseWithInventory
 {
@@ -25,7 +25,7 @@ public class PCma_ContainerAutomaticWorkbench extends PC_GresBaseWithInventory
     protected void init(Object[] o)
     {
         craftResult = new InventoryCraftResult();
-        teaw = (PCma_TileEntityAutomaticWorkbench)PC_Utils.getTE(thePlayer.worldObj, (Integer)o[0], (Integer)o[1], (Integer)o[2]);
+        teaw = (PCma_TileEntityAutomaticWorkbench)GameInfo.getTE(thePlayer.worldObj, (Integer)o[0], (Integer)o[1], (Integer)o[2]);
     }
 
     @Override

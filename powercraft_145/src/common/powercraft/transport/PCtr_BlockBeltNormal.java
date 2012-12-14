@@ -4,6 +4,7 @@ import net.minecraft.src.Entity;
 import net.minecraft.src.EntityItem;
 import net.minecraft.src.World;
 import powercraft.management.PC_Utils;
+import powercraft.management.PC_Utils.GameInfo;
 import powercraft.management.PC_VecI;
 
 public class PCtr_BlockBeltNormal extends PCtr_BlockBeltBase
@@ -38,7 +39,7 @@ public class PCtr_BlockBeltNormal extends PCtr_BlockBeltBase
             }
         }
 
-        int direction = PCtr_BeltHelper.getRotation(PC_Utils.getMD(world, pos));
+        int direction = PCtr_BeltHelper.getRotation(GameInfo.getMD(world, pos));
         PC_VecI pos_leading_to = pos.copy();
 
         switch (direction)

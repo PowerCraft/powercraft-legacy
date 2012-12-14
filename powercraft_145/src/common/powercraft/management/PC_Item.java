@@ -3,6 +3,8 @@ package powercraft.management;
 import java.util.ArrayList;
 import java.util.List;
 
+import powercraft.management.PC_Utils.ValueWriting;
+
 import cpw.mods.fml.common.Side;
 import cpw.mods.fml.common.asm.SideOnly;
 
@@ -32,7 +34,7 @@ public abstract class PC_Item extends Item implements PC_IItemInfo, PC_IMSG
     
     public void setItemID(int id){
 		int oldID = shiftedIndex;
-    	if(PC_Utils.setPrivateValue(Item.class, this, 160, id)){
+    	if(ValueWriting.setPrivateValue(Item.class, this, 160, id)){
     		if(oldID!=-1){
     			Item.itemsList[oldID] = replacedItem;
     		}

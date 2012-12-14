@@ -20,6 +20,7 @@ import powercraft.management.PC_Color;
 import powercraft.management.PC_IItemInfo;
 import powercraft.management.PC_Renderer;
 import powercraft.management.PC_Utils;
+import powercraft.management.PC_Utils.GameInfo;
 import powercraft.management.PC_VecI;
 
 public class PCli_BlockMirrow extends PC_Block implements PC_IItemInfo {
@@ -66,9 +67,9 @@ public class PCli_BlockMirrow extends PC_Block implements PC_IItemInfo {
 	public boolean onBlockActivated(World world, int i, int j, int k, EntityPlayer player, int par6, float par7, float par8, float par9) {
 		ItemStack ihold = player.getCurrentEquippedItem();
 		if (ihold != null) {
-			if (ihold.itemID == PC_Utils.getPCObjectIDByName("PCco_BlockPowerCrystal")) {
+			if (ihold.itemID == GameInfo.getPCObjectIDByName("PCco_BlockPowerCrystal")) {
 
-				PCli_TileEntityMirrow teo = PC_Utils.getTE(world, i, j, k, blockID);
+				PCli_TileEntityMirrow teo = GameInfo.getTE(world, i, j, k, blockID);
 				if (teo != null) {
 					teo.setMirrorColor(ihold.getItemDamage());
 				}
@@ -99,7 +100,7 @@ public class PCli_BlockMirrow extends PC_Block implements PC_IItemInfo {
 	 */
 	public static int getMirrorColor(IBlockAccess iblockaccess, int x, int y, int z) {
 
-		PCli_TileEntityMirrow teo = PC_Utils.getTE(iblockaccess, x, y, z);
+		PCli_TileEntityMirrow teo = GameInfo.getTE(iblockaccess, x, y, z);
 
 		if (teo == null) {
 			return 0;
@@ -246,7 +247,7 @@ public class PCli_BlockMirrow extends PC_Block implements PC_IItemInfo {
 			// vertical beam
 			if (move.x == 0 && move.z == 0) {
 	
-				int a = mirrorTo45[PC_Utils.getMD(beamTracer.getWorld(), cnt.x, cnt.y, cnt.z)];
+				int a = mirrorTo45[GameInfo.getMD(beamTracer.getWorld(), cnt.x, cnt.y, cnt.z)];
 				PC_VecI reflected = getMoveFromAngle(a).mul(-1);
 	
 				move.x = reflected.x;
@@ -254,7 +255,7 @@ public class PCli_BlockMirrow extends PC_Block implements PC_IItemInfo {
 	
 			} else {
 				float beamAngle = getAngleFromMove(move);
-				float mAngle = mirrorAngle[PC_Utils.getMD(beamTracer.getWorld(), cnt.x, cnt.y, cnt.z)];
+				float mAngle = mirrorAngle[GameInfo.getMD(beamTracer.getWorld(), cnt.x, cnt.y, cnt.z)];
 	
 				float diff = angleDiff(beamAngle, mAngle);
 	

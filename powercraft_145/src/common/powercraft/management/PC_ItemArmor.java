@@ -2,6 +2,8 @@ package powercraft.management;
 
 import java.util.List;
 
+import powercraft.management.PC_Utils.ValueWriting;
+
 import net.minecraft.src.EnumArmorMaterial;
 import net.minecraft.src.Item;
 import net.minecraft.src.ItemArmor;
@@ -21,7 +23,7 @@ public abstract class PC_ItemArmor extends ItemArmor implements PC_IItemInfo, PC
 
     public void setItemID(int id){
 		int oldID = shiftedIndex;
-    	if(PC_Utils.setPrivateValue(Item.class, this, 160, id)){
+    	if(ValueWriting.setPrivateValue(Item.class, this, 160, id)){
     		if(oldID!=-1){
     			Item.itemsList[oldID] = replacedItem;
     		}

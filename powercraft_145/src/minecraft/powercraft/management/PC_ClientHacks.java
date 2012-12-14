@@ -2,6 +2,8 @@ package powercraft.management;
 
 import java.io.File;
 
+import powercraft.management.PC_Utils.ValueWriting;
+
 import net.minecraft.client.Minecraft;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.src.AnvilSaveConverter;
@@ -16,7 +18,7 @@ public static void hackServer(){
 	
 	private static void hackMinecraftSaver(){
 		Minecraft mc = PC_ClientUtils.mc();
-		PC_Utils.setPrivateValue(Minecraft.class, mc, 42, new PC_HackedSaveConverter(new File(mc.mcDataDir, "saves")));
+		ValueWriting.setPrivateValue(Minecraft.class, mc, 42, new PC_HackedSaveConverter(new File(mc.mcDataDir, "saves")));
 	}
 	
 }

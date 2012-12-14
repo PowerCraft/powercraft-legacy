@@ -12,7 +12,7 @@ import powercraft.management.PC_ItemStack;
 import powercraft.management.PC_Property;
 import powercraft.management.PC_ShapedRecipes;
 import powercraft.management.PC_Struct2;
-import powercraft.management.PC_Utils;
+import powercraft.management.PC_Utils.ModuleLoader;
 
 public class PCtr_App implements PC_IModule
 {
@@ -54,20 +54,20 @@ public class PCtr_App implements PC_IModule
 	 @Override
 	public void initBlocks()
     {
-	        conveyorBelt = (PC_Block)PC_Utils.register(this, PCtr_BlockBeltNormal.class, PCtr_ItemBlockConveyor.class);
-	        speedyBelt = (PC_Block)PC_Utils.register(this, PCtr_BlockBeltSpeedy.class, PCtr_ItemBlockConveyor.class);
-	        detectionBelt = (PC_Block)PC_Utils.register(this, PCtr_BlockBeltDetector.class, PCtr_ItemBlockConveyor.class);
-	        breakBelt = (PC_Block)PC_Utils.register(this, PCtr_BlockBeltBreak.class, PCtr_ItemBlockConveyor.class);
-	        redirectionBelt = (PC_Block)PC_Utils.register(this, PCtr_BlockBeltRedirector.class, PCtr_ItemBlockConveyor.class, PCtr_TileEntityRedirectionBelt.class);
-	        separationBelt = (PC_Block)PC_Utils.register(this, PCtr_BlockBeltSeparator.class, PCtr_ItemBlockConveyor.class, PCtr_TileEntitySeparationBelt.class);
-	        ejectionBelt = (PC_Block)PC_Utils.register(this, PCtr_BlockBeltEjector.class, PCtr_ItemBlockConveyor.class, PCtr_TileEntityEjectionBelt.class);
-	        elevator = (PC_Block)PC_Utils.register(this, PCtr_BlockElevator.class, PCtr_ItemBlockElevator.class);
+	        conveyorBelt = (PC_Block)ModuleLoader.register(this, PCtr_BlockBeltNormal.class, PCtr_ItemBlockConveyor.class);
+	        speedyBelt = (PC_Block)ModuleLoader.register(this, PCtr_BlockBeltSpeedy.class, PCtr_ItemBlockConveyor.class);
+	        detectionBelt = (PC_Block)ModuleLoader.register(this, PCtr_BlockBeltDetector.class, PCtr_ItemBlockConveyor.class);
+	        breakBelt = (PC_Block)ModuleLoader.register(this, PCtr_BlockBeltBreak.class, PCtr_ItemBlockConveyor.class);
+	        redirectionBelt = (PC_Block)ModuleLoader.register(this, PCtr_BlockBeltRedirector.class, PCtr_ItemBlockConveyor.class, PCtr_TileEntityRedirectionBelt.class);
+	        separationBelt = (PC_Block)ModuleLoader.register(this, PCtr_BlockBeltSeparator.class, PCtr_ItemBlockConveyor.class, PCtr_TileEntitySeparationBelt.class);
+	        ejectionBelt = (PC_Block)ModuleLoader.register(this, PCtr_BlockBeltEjector.class, PCtr_ItemBlockConveyor.class, PCtr_TileEntityEjectionBelt.class);
+	        elevator = (PC_Block)ModuleLoader.register(this, PCtr_BlockElevator.class, PCtr_ItemBlockElevator.class);
 	        PCtr_BlockHackedWater.hackWater();
     }
 
 	@Override
 	public void initItems() {
-		slimeboots = (PC_ItemArmor)PC_Utils.register(this, PCtr_ItemArmorStickyBoots.class);
+		slimeboots = (PC_ItemArmor)ModuleLoader.register(this, PCtr_ItemArmorStickyBoots.class);
 		
 	}
 

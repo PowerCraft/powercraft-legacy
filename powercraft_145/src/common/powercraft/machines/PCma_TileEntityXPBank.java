@@ -9,7 +9,7 @@ import net.minecraft.src.EntityXPOrb;
 import net.minecraft.src.NBTTagCompound;
 import powercraft.management.PC_PacketHandler;
 import powercraft.management.PC_TileEntity;
-import powercraft.management.PC_Utils;
+import powercraft.management.PC_Utils.GameInfo;
 
 public class PCma_TileEntityXPBank extends PC_TileEntity
 {
@@ -235,7 +235,7 @@ public class PCma_TileEntityXPBank extends PC_TileEntity
             {
                 if (!worldObj.isRemote)
                 {
-                    givePlayerXP(PC_Utils.mcs().getConfigurationManager().getPlayerForUsername((String)o[p++]), (Integer)o[p++]);
+                    givePlayerXP(GameInfo.mcs().getConfigurationManager().getPlayerForUsername((String)o[p++]), (Integer)o[p++]);
                 }
                 else
                 {

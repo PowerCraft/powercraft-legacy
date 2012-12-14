@@ -17,6 +17,7 @@ import powercraft.management.PC_PacketHandler;
 import powercraft.management.PC_Renderer;
 import powercraft.management.PC_TileEntity;
 import powercraft.management.PC_Utils;
+import powercraft.management.PC_Utils.GameInfo;
 import powercraft.management.PC_VecI;
 
 public class PCli_TileEntityLaser extends PC_TileEntity implements PC_IBeamHandler, PC_ITileEntityRenderer
@@ -68,7 +69,7 @@ public class PCli_TileEntityLaser extends PC_TileEntity implements PC_IBeamHandl
     	if(laser==null){
 	    	laser = new PC_BeamTracer(worldObj, this);
 	    	laser.setStartCoord(getCoord());
-	    	int metadata = PC_Utils.getMD(worldObj, xCoord, yCoord, zCoord);
+	    	int metadata = GameInfo.getMD(worldObj, xCoord, yCoord, zCoord);
 	    	laser.setStartMove(metadata == 4?1:metadata == 5?-1:0, 0, metadata == 2?1:metadata == 3?-1:0);
 	    	laser.setColor(PCli_ItemLaserComposition.getColorForItemStack(itemstack));
 	    	laser.setDetectEntities(true);

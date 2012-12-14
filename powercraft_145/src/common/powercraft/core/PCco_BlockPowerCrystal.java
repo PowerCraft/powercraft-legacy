@@ -14,6 +14,7 @@ import powercraft.management.PC_MathHelper;
 import powercraft.management.PC_Property;
 import powercraft.management.PC_Renderer;
 import powercraft.management.PC_Utils;
+import powercraft.management.PC_Utils.GameInfo;
 import powercraft.management.PC_VecI;
 
 public class PCco_BlockPowerCrystal extends PC_Block
@@ -111,7 +112,7 @@ public class PCco_BlockPowerCrystal extends PC_Block
     {
         int id_under = world.getBlockId(i, j - 1, k);
 
-        if (makeSound && PC_Utils.isSoundEnabled())
+        if (makeSound && GameInfo.isSoundEnabled())
         {
             EntityPlayer player = world.getClosestPlayer(i + 0.5D, j + 0.5D, k + 0.5D, 12);
 

@@ -22,6 +22,7 @@ import powercraft.management.PC_Shining;
 import powercraft.management.PC_Shining.OFF;
 import powercraft.management.PC_Shining.ON;
 import powercraft.management.PC_Utils;
+import powercraft.management.PC_Utils.GameInfo;
 import powercraft.management.PC_VecI;
 
 @PC_Shining
@@ -86,14 +87,14 @@ public class PClo_BlockGate extends PC_Block
 
     private boolean isOutputActive(World world, int x, int y, int z)
     {
-        int rot = getRotation_static(PC_Utils.getMD(world, x, y, z));
+        int rot = getRotation_static(GameInfo.getMD(world, x, y, z));
         return PClo_GateType.getGateOutput(getType(world, x, y, z), getInp(world, x, y, z), PC_Utils.poweredFromInput(world, x, y, z, PC_Utils.LEFT, rot),
                 PC_Utils.poweredFromInput(world, x, y, z, PC_Utils.BACK, rot), PC_Utils.poweredFromInput(world, x, y, z, PC_Utils.RIGHT, rot));
     }
 
     @Override
    	public boolean isProvidingWeakPower(IBlockAccess world, int x, int y, int z, int s) {
-    	int meta = PC_Utils.getMD(world, x, y, z);
+    	int meta = GameInfo.getMD(world, x, y, z);
         int rotation = getRotation_static(meta);
 
         if (!isActive(world, x, y, z))
@@ -134,7 +135,7 @@ public class PClo_BlockGate extends PC_Block
 
     public static PClo_TileEntityGate getTE(IBlockAccess world, int x, int y, int z)
     {
-        TileEntity te = PC_Utils.getTE(world, x, y, z);;
+        TileEntity te = GameInfo.getTE(world, x, y, z);;
 
         if (te instanceof PClo_TileEntityGate)
         {
@@ -170,7 +171,7 @@ public class PClo_BlockGate extends PC_Block
 
     public static boolean isActive(IBlockAccess world, int x, int y, int z)
     {
-        return PC_Utils.getBID(world, x, y, z) == on.blockID;
+        return GameInfo.getBID(world, x, y, z) == on.blockID;
     }
 
     @Override
@@ -314,7 +315,7 @@ public class PClo_BlockGate extends PC_Block
         int type = getType(world, x, y, z);
         boolean remove = super.removeBlockByPlayer(world, player, x, y, z);
 
-        if (remove && !PC_Utils.isCreative(player))
+        if (remove && !GameInfo.isCreative(player))
         {
             dropBlockAsItem_do(world, x, y, z, new ItemStack(PClo_App.gate, 1, type));
         }

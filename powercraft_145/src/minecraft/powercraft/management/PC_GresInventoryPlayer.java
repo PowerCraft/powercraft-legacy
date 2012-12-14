@@ -1,5 +1,6 @@
 package powercraft.management;
 
+import powercraft.management.PC_Utils.Lang;
 import net.minecraft.src.Slot;
 
 
@@ -65,7 +66,7 @@ public class PC_GresInventoryPlayer extends PC_GresLayoutV {
 
 
 		canAddWidget = true;
-		PC_GresWidget label = new PC_GresLabel(PC_Utils.tr("container.inventory")).setWidgetMargin(2).setColor(textColorEnabled, 0x404040);
+		PC_GresWidget label = new PC_GresLabel(Lang.tr("container.inventory")).setWidgetMargin(2).setColor(textColorEnabled, 0x404040);
 		if (showLabel) {
 			add(label);
 		}

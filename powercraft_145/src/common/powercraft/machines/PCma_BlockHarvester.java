@@ -34,6 +34,7 @@ import powercraft.management.PC_IItemInfo;
 import powercraft.management.PC_ISpecialInventoryTextures;
 import powercraft.management.PC_InvUtils;
 import powercraft.management.PC_Utils;
+import powercraft.management.PC_Utils.GameInfo;
 import powercraft.management.PC_VecI;
 
 public class PCma_BlockHarvester extends PC_Block implements
@@ -239,8 +240,8 @@ public class PCma_BlockHarvester extends PC_Block implements
 	@Override
 	public boolean onBlockHit(PC_BeamTracer beamTracer, Block block, PC_VecI coord) {
 		World world = beamTracer.getWorld();
-		int id = PC_Utils.getBID(world, coord);
-		int meta = PC_Utils.getMD(world, coord);
+		int id = GameInfo.getBID(world, coord);
+		int meta = GameInfo.getMD(world, coord);
 
 		if (id == 49 || id == 7 || id == ENDBLOCK) {
 			return true;
@@ -249,7 +250,7 @@ public class PCma_BlockHarvester extends PC_Block implements
 
 		// sapling on grass
 		if (PCma_TreeHarvestingManager.isBlockTreeSapling(id, meta)) {
-			int underId = PC_Utils.getBID(world, coord.offset(0, -1, 0));
+			int underId = GameInfo.getBID(world, coord.offset(0, -1, 0));
 			if (underId == Block.dirt.blockID || underId == Block.grass.blockID || underId == Block.mycelium.blockID) {
 				return false;
 			}
@@ -311,7 +312,7 @@ public class PCma_BlockHarvester extends PC_Block implements
 					for (ItemStack stack : harvested) {
 
 						// play breaking sound and animation
-						if (PC_Utils.isSoundEnabled()) {
+						if (GameInfo.isSoundEnabled()) {
 							world.playAuxSFX(2001, coord.x, coord.y, coord.z, id + (meta << 12));
 						}
 
@@ -352,7 +353,7 @@ public class PCma_BlockHarvester extends PC_Block implements
 		dropQuant = Block.blocksList[id].quantityDropped(world.rand);
 
 		// play breaking sound and animation
-		if (PC_Utils.isSoundEnabled()) {
+		if (GameInfo.isSoundEnabled()) {
 			world.playAuxSFX(2001, coord.x, coord.y, coord.z, id + (meta << 12));
 		}
 
@@ -397,7 +398,7 @@ public class PCma_BlockHarvester extends PC_Block implements
 				return true;
 			}
 
-			int l = PC_Utils.getMD(world, coord.x, coord.y, coord.z) & 7;
+			int l = GameInfo.getMD(world, coord.x, coord.y, coord.z) & 7;
 
 			int iPLUS1 = -Facing.offsetsXForSide[l];
 			int kPLUS1 = -Facing.offsetsZForSide[l];
@@ -494,7 +495,7 @@ public class PCma_BlockHarvester extends PC_Block implements
 
 		entityitem.delayBeforeCanPickup = 5;
 		world.spawnEntityInWorld(entityitem);
-		if (PC_Utils.isSoundEnabled()) {
+		if (GameInfo.isSoundEnabled()) {
 			world.playAuxSFX(1000, devPos.x, devPos.y, devPos.z, 0);
 		}
 

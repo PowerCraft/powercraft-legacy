@@ -12,6 +12,8 @@ import java.util.List;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 
+import powercraft.management.PC_Utils.GameInfo;
+
 public class PC_ModuleLoader{
 
 	public static void load(File file) {
@@ -69,7 +71,7 @@ public class PC_ModuleLoader{
 		if(interfaceNames!=null && !(Modifier.isInterface(ci.getClassAccess()) || Modifier.isAbstract(ci.getClassAccess()))){
 			boolean create = false;
 			for(String interfaceName:ci.getInterfaceNames()){
-				if(PC_Utils.isClient()){
+				if(GameInfo.isClient()){
 					if(interfaceName.equals(PC_IClientModule.class.getName())){
 						create = true;
 						break;

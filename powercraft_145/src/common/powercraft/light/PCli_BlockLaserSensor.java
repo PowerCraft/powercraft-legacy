@@ -17,6 +17,7 @@ import powercraft.management.PC_Color;
 import powercraft.management.PC_IItemInfo;
 import powercraft.management.PC_Renderer;
 import powercraft.management.PC_Utils;
+import powercraft.management.PC_Utils.GameInfo;
 import powercraft.management.PC_VecI;
 
 public class PCli_BlockLaserSensor extends PC_Block implements PC_IItemInfo {
@@ -62,7 +63,7 @@ public class PCli_BlockLaserSensor extends PC_Block implements PC_IItemInfo {
 
     @Override
 	public boolean isProvidingWeakPower(IBlockAccess world, int x, int y, int z, int s) {
-    	return ((PCli_TileEntityLaser) PC_Utils.getTE(world, x, y, z)).isActive();
+    	return ((PCli_TileEntityLaser) GameInfo.getTE(world, x, y, z)).isActive();
 	}
 
 	@Override
@@ -106,7 +107,7 @@ public class PCli_BlockLaserSensor extends PC_Block implements PC_IItemInfo {
 
 	public result onHitByBeamTracer(PC_BeamTracer beamTracer, PC_VecI cnt, PC_VecI move, PC_Color color, float strength, int distanceToMove) {
 		World world = beamTracer.getWorld();
-		PCli_TileEntityLaserSensor te = PC_Utils.getTE(world, cnt.x, cnt.y, cnt.z, blockID);
+		PCli_TileEntityLaserSensor te = GameInfo.getTE(world, cnt.x, cnt.y, cnt.z, blockID);
 		if(te!=null){
 			te.hitByBeam();
 		}

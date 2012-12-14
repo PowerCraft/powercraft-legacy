@@ -17,6 +17,7 @@ import powercraft.management.PC_IItemInfo;
 import powercraft.management.PC_MathHelper;
 import powercraft.management.PC_Renderer;
 import powercraft.management.PC_Utils;
+import powercraft.management.PC_Utils.GameInfo;
 import powercraft.management.PC_VecI;
 
 public class PCli_BlockLaser extends PC_Block implements PC_IItemInfo
@@ -64,11 +65,11 @@ public class PCli_BlockLaser extends PC_Block implements PC_IItemInfo
     @Override
     public boolean onBlockActivated(World world, int i, int j, int k, EntityPlayer entityplayer, int par6, float par7, float par8, float par9)
     {
-        PCli_TileEntityLaser te = PC_Utils.getTE(world, i, j, k, blockID);
+        PCli_TileEntityLaser te = GameInfo.getTE(world, i, j, k, blockID);
 
         if (te != null && te.getItemStack()!=null)
         {
-        	if (!PC_Utils.isCreative(entityplayer))
+        	if (!GameInfo.isCreative(entityplayer))
             {
         		PC_Utils.dropItemStack(world, te.getItemStack(), new PC_VecI(i, j, k));
             }
@@ -112,7 +113,7 @@ public class PCli_BlockLaser extends PC_Block implements PC_IItemInfo
 
         world.setBlockMetadataWithNotify(i, j, k, l);
         
-        PCli_TileEntityLaser te = PC_Utils.getTE(world, i, j, k, blockID);
+        PCli_TileEntityLaser te = GameInfo.getTE(world, i, j, k, blockID);
         
         if(te!=null){
         	te.setKiller(PC_Utils.isBlock(world, new PC_VecI(i, j-1, k), "PCma_BlockRoaster"));
@@ -128,7 +129,7 @@ public class PCli_BlockLaser extends PC_Block implements PC_IItemInfo
 
     @Override
 	public boolean isProvidingWeakPower(IBlockAccess world, int x, int y, int z, int s) {
-    	return ((PCli_TileEntityLaser) PC_Utils.getTE(world, x, y, z)).isActive();
+    	return ((PCli_TileEntityLaser) GameInfo.getTE(world, x, y, z)).isActive();
 	}
 
 	@Override
@@ -139,9 +140,9 @@ public class PCli_BlockLaser extends PC_Block implements PC_IItemInfo
     @Override
     public void onBlockHarvested(World world, int x, int y, int z, int metadata, EntityPlayer player)
     {
-        if (!PC_Utils.isCreative(player))
+        if (!GameInfo.isCreative(player))
         {
-            PCli_TileEntityLaser te = PC_Utils.getTE(world, x, y, z, blockID);
+            PCli_TileEntityLaser te = GameInfo.getTE(world, x, y, z, blockID);
 
             if (te != null && te.getItemStack()!=null)
             {
@@ -159,7 +160,7 @@ public class PCli_BlockLaser extends PC_Block implements PC_IItemInfo
     
 	@Override
 	public void onNeighborBlockChange(World world, int x, int y, int z, int par5) {
-		PCli_TileEntityLaser te = PC_Utils.getTE(world, x, y, z, blockID);
+		PCli_TileEntityLaser te = GameInfo.getTE(world, x, y, z, blockID);
 	        
         if(te!=null){
         	te.setKiller(PC_Utils.isBlock(world, new PC_VecI(x, y-1, z), "PCma_BlockRoaster"));

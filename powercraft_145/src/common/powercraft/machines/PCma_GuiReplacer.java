@@ -19,6 +19,7 @@ import powercraft.management.PC_IGresClient;
 import powercraft.management.PC_IGresGui;
 import powercraft.management.PC_PacketHandler;
 import powercraft.management.PC_Utils;
+import powercraft.management.PC_Utils.Lang;
 import powercraft.management.PC_VecI;
 
 public class PCma_GuiReplacer extends PCma_ContainerReplacer implements PC_IGresClient {
@@ -38,7 +39,7 @@ public class PCma_GuiReplacer extends PCma_ContainerReplacer implements PC_IGres
 	
 	@Override
 	public void initGui(PC_IGresGui gui) {
-		PC_GresWidget w = new PC_GresWindow(PC_Utils.tr("pc.gui.blockReplacer.title")).setWidthForInventory().setAlignH(PC_GresAlign.CENTER);
+		PC_GresWidget w = new PC_GresWindow(Lang.tr("pc.gui.blockReplacer.title")).setWidthForInventory().setAlignH(PC_GresAlign.CENTER);
 
 		PC_GresWidget hg;
 		PC_GresWidget vg;
@@ -98,9 +99,9 @@ public class PCma_GuiReplacer extends PCma_ContainerReplacer implements PC_IGres
 		w.add(new PC_GresInventoryPlayer(true));
 
 		hg = new PC_GresLayoutH().setAlignH(PC_GresAlign.CENTER);
-		hg.add(checkFrame = new PC_GresCheckBox(PC_Utils.tr("pc.gui.blockReplacer.particleFrame")));
+		hg.add(checkFrame = new PC_GresCheckBox(Lang.tr("pc.gui.blockReplacer.particleFrame")));
 		checkFrame.check(teReplacer.aidEnabled);
-		hg.add(button[1] = new PC_GresButton(PC_Utils.tr("pc.gui.ok")));
+		hg.add(button[1] = new PC_GresButton(Lang.tr("pc.gui.ok")));
 		w.add(hg);
 
 		gui.add(w);
@@ -140,7 +141,7 @@ public class PCma_GuiReplacer extends PCma_ContainerReplacer implements PC_IGres
 					if (!textedit[count].getText().equals("") && !textedit[count].getText().equals("-")) {
 
 						if (Math.abs(Integer.valueOf(textedit[count].getText())) > 16) {
-							errorLabel.setText(PC_Utils.tr("pc.gui.blockReplacer.errWrongValue"));
+							errorLabel.setText(Lang.tr("pc.gui.blockReplacer.errWrongValue"));
 							button[1].enable(false);
 							return;
 						} else {
@@ -150,7 +151,7 @@ public class PCma_GuiReplacer extends PCma_ContainerReplacer implements PC_IGres
 						}
 
 					} else {
-						errorLabel.setText(PC_Utils.tr("pc.gui.blockReplacer.errWrongValue"));
+						errorLabel.setText(Lang.tr("pc.gui.blockReplacer.errWrongValue"));
 						button[1].enable(false);
 						return;
 					}
@@ -161,7 +162,7 @@ public class PCma_GuiReplacer extends PCma_ContainerReplacer implements PC_IGres
 			}
 
 			if (!valid) {
-				errorLabel.setText(PC_Utils.tr("pc.gui.blockReplacer.err3zeros"));
+				errorLabel.setText(Lang.tr("pc.gui.blockReplacer.err3zeros"));
 			}
 
 			if (valid) {

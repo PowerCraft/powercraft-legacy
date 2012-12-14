@@ -196,7 +196,7 @@ public class PC_ClientUtils extends PC_Utils {
 	@Override
 	protected void iPlaySound(double x, double y, double z, String sound, float soundVolume, float pitch){
 		World world = mc().theWorld;
-		if(PC_Utils.isSoundEnabled() && world!=null && mc().renderViewEntity!=null){
+		if(GameInfo.isSoundEnabled() && world!=null && mc().renderViewEntity!=null){
 			world.playSound(x, y, z, sound, soundVolume, pitch);
 		}
 	}
@@ -235,7 +235,7 @@ public class PC_ClientUtils extends PC_Utils {
 	
 	@Override
 	protected EnumGameType iGetGameTypeFor(EntityPlayer player){
-		return (EnumGameType)PC_Utils.getPrivateValue(PlayerControllerMP.class, mc().playerController, 11);
+		return (EnumGameType)ValueWriting.getPrivateValue(PlayerControllerMP.class, mc().playerController, 11);
 	}
 	
 	@Override

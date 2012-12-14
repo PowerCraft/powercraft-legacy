@@ -13,7 +13,8 @@ import powercraft.management.PC_Property;
 import powercraft.management.PC_ShapedRecipes;
 import powercraft.management.PC_ShapelessRecipes;
 import powercraft.management.PC_Struct2;
-import powercraft.management.PC_Utils;
+import powercraft.management.PC_Utils.GameInfo;
+import powercraft.management.PC_Utils.ModuleLoader;
 
 public class PCli_App implements PC_IModule
 {
@@ -50,18 +51,18 @@ public class PCli_App implements PC_IModule
 	@Override
 	public void initBlocks()
     {
-        light = PC_Utils.register(this, PCli_BlockLight.class, PCli_TileEntityLight.class);
-        lightningConductor = PC_Utils.register(this, PCli_BlockLightningConductor.class, PCli_ItemBlockLightningConductor.class, PCli_TileEntityLightningConductor.class);
-        laser = PC_Utils.register(this, PCli_BlockLaser.class, PCli_TileEntityLaser.class);
-        mirrow = PC_Utils.register(this, PCli_BlockMirrow.class, PCli_TileEntityMirrow.class);
-        prism = PC_Utils.register(this, PCli_BlockPrism.class, PCli_TileEntityPrism.class);
-        laserSensor = PC_Utils.register(this, PCli_BlockLaserSensor.class, PCli_TileEntityLaserSensor.class);
+        light = ModuleLoader.register(this, PCli_BlockLight.class, PCli_TileEntityLight.class);
+        lightningConductor = ModuleLoader.register(this, PCli_BlockLightningConductor.class, PCli_ItemBlockLightningConductor.class, PCli_TileEntityLightningConductor.class);
+        laser = ModuleLoader.register(this, PCli_BlockLaser.class, PCli_TileEntityLaser.class);
+        mirrow = ModuleLoader.register(this, PCli_BlockMirrow.class, PCli_TileEntityMirrow.class);
+        prism = ModuleLoader.register(this, PCli_BlockPrism.class, PCli_TileEntityPrism.class);
+        laserSensor = ModuleLoader.register(this, PCli_BlockLaserSensor.class, PCli_TileEntityLaserSensor.class);
     }
 
     @Override
     public void initItems()
     {
-    	laserComposition = PC_Utils.register(this, PCli_ItemLaserComposition.class);
+    	laserComposition = ModuleLoader.register(this, PCli_ItemLaserComposition.class);
     }
 	
 	@Override
@@ -106,19 +107,19 @@ public class PCli_App implements PC_IModule
                 	"XXX", 
                 	"XPX", 
                 	"XXX",
-                        'X', Block.glass, 'P', new PC_ItemStack(PC_Utils.getPCBlockByName("PCco_BlockPowerCrystal"), 1, 0)));
+                        'X', Block.glass, 'P', new PC_ItemStack(GameInfo.getPCBlockByName("PCco_BlockPowerCrystal"), 1, 0)));
         
         recipes.add(new PC_ShapedRecipes(new PC_ItemStack(laserComposition),
                 	"XXX", 
                 	"XPX", 
                 	"XXX",
-                        'X', Block.glass, 'P', new PC_ItemStack(PC_Utils.getPCBlockByName("PCco_BlockPowerCrystal"), 1, 1)));
+                        'X', Block.glass, 'P', new PC_ItemStack(GameInfo.getPCBlockByName("PCco_BlockPowerCrystal"), 1, 1)));
         
         recipes.add(new PC_ShapedRecipes(new PC_ItemStack(laserComposition),
                 	"XXX", 
                 	"XPX", 
                 	"XXX",
-                        'X', Block.glass, 'P', new PC_ItemStack(PC_Utils.getPCBlockByName("PCco_BlockPowerCrystal"), 1, 2)));
+                        'X', Block.glass, 'P', new PC_ItemStack(GameInfo.getPCBlockByName("PCco_BlockPowerCrystal"), 1, 2)));
         
         for(int i=2; i<10; i++){
         	Object[] o = new Object[i];

@@ -18,6 +18,7 @@ import powercraft.management.PC_IItemInfo;
 import powercraft.management.PC_ISpecialInventoryTextures;
 import powercraft.management.PC_InvUtils;
 import powercraft.management.PC_Utils;
+import powercraft.management.PC_Utils.Gres;
 import powercraft.management.PC_VecI;
 
 public class PCma_BlockBlockBuilder extends PC_Block implements PC_ISpecialInventoryTextures, PC_IItemInfo{
@@ -121,7 +122,7 @@ public class PCma_BlockBlockBuilder extends PC_Block implements PC_ISpecialInven
 			return true;
 		}
 
-		PC_Utils.openGres("BlockBuilder",  entityplayer, i, j, k);
+		Gres.openGres("BlockBuilder",  entityplayer, i, j, k);
 
 		return true;
 	}

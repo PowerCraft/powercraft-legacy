@@ -16,6 +16,7 @@ import powercraft.management.PC_IGresClient;
 import powercraft.management.PC_IGresGui;
 import powercraft.management.PC_PacketHandler;
 import powercraft.management.PC_Utils;
+import powercraft.management.PC_Utils.Lang;
 
 public class PCtr_GuiSeparationBelt extends PCtr_ContainerSeparationBelt implements PC_IGresClient {
 
@@ -29,7 +30,7 @@ public class PCtr_GuiSeparationBelt extends PCtr_ContainerSeparationBelt impleme
 
 	@Override
 	public void initGui(PC_IGresGui gui) {
-		PC_GresWindow w = new PC_GresWindow(00, 00, PC_Utils.tr("tile.PCSeperatorBelt.name"));
+		PC_GresWindow w = new PC_GresWindow(00, 00, Lang.tr("tile.PCSeperatorBelt.name"));
 		w.setWidthForInventory();
 		PC_GresLayoutH hg = new PC_GresLayoutH();
 		hg.add(new PC_GresImage(PC_Utils.getGresImgDir()+"widgets.png", 56, 66, 8, 15));
@@ -53,15 +54,15 @@ public class PCtr_GuiSeparationBelt extends PCtr_ContainerSeparationBelt impleme
 		PC_GresLayoutV vg = new PC_GresLayoutV();
 		vg.setAlignH(PC_GresAlign.LEFT);
 		vg.setMinWidth(100);
-		vg.add(new PC_GresLabel(PC_Utils.tr("pc.gui.separationBelt.group")).setWidgetMargin(0));
+		vg.add(new PC_GresLabel(Lang.tr("pc.gui.separationBelt.group")).setWidgetMargin(0));
 		vg.setWidgetMargin(0);
 
 		hg = new PC_GresLayoutH();
 		hg.setAlignH(PC_GresAlign.LEFT);
 		hg.setWidgetMargin(0);
-		hg.add(checkLogs = new PC_GresCheckBox(PC_Utils.tr("pc.gui.separationBelt.groupLogs")).check(tes.group_logs));
-		hg.add(checkPlanks = new PC_GresCheckBox(PC_Utils.tr("pc.gui.separationBelt.groupPlanks")).check(tes.group_planks));
-		hg.add(checkAll = new PC_GresCheckBox(PC_Utils.tr("pc.gui.separationBelt.groupAll")).check(tes.group_all));
+		hg.add(checkLogs = new PC_GresCheckBox(Lang.tr("pc.gui.separationBelt.groupLogs")).check(tes.group_logs));
+		hg.add(checkPlanks = new PC_GresCheckBox(Lang.tr("pc.gui.separationBelt.groupPlanks")).check(tes.group_planks));
+		hg.add(checkAll = new PC_GresCheckBox(Lang.tr("pc.gui.separationBelt.groupAll")).check(tes.group_all));
 
 		vg.add(hg);
 

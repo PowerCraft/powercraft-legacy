@@ -9,6 +9,7 @@ import powercraft.management.PC_ItemBlock;
 import powercraft.management.PC_MathHelper;
 import powercraft.management.PC_Struct3;
 import powercraft.management.PC_Utils;
+import powercraft.management.PC_Utils.Lang;
 
 public class PClo_ItemBlockSpecial extends PC_ItemBlock
 {
@@ -62,7 +63,7 @@ public class PClo_ItemBlockSpecial extends PC_ItemBlock
 
     public static String getDescriptionForSpecial(int dmg)
     {
-        return PC_Utils.tr("pc.special." + PClo_SpecialType.names[PC_MathHelper.clamp_int(dmg, 0, PClo_SpecialType.TOTAL_SPECIAL_COUNT - 1)] + ".desc");
+        return Lang.tr("pc.special." + PClo_SpecialType.names[PC_MathHelper.clamp_int(dmg, 0, PClo_SpecialType.TOTAL_SPECIAL_COUNT - 1)] + ".desc");
     }
 
 	@Override

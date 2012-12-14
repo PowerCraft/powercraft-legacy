@@ -13,7 +13,7 @@ import powercraft.management.PC_Property;
 import powercraft.management.PC_ShapedRecipes;
 import powercraft.management.PC_ShapelessRecipes;
 import powercraft.management.PC_Struct2;
-import powercraft.management.PC_Utils;
+import powercraft.management.PC_Utils.ModuleLoader;
 
 public class PCco_App implements PC_IModule {
 
@@ -48,16 +48,16 @@ public class PCco_App implements PC_IModule {
 
 	@Override
 	public void initBlocks() {
-		powerCrystal = PC_Utils.register(this, PCco_BlockPowerCrystal.class, PCco_ItemBlockPowerCrystal.class);
+		powerCrystal = ModuleLoader.register(this, PCco_BlockPowerCrystal.class, PCco_ItemBlockPowerCrystal.class);
 	}
 
 	@Override
 	public void initItems() {
-		powerDust = PC_Utils.register(this, PCco_ItemPowerDust.class);
-		activator = PC_Utils.register(this, PCco_ItemActivator.class);
-		blockSaver = PC_Utils.register(this, PCco_ItemBlockSaver.class);
-		craftingTool = PC_Utils.register(this, PCco_ItemCraftingTool.class);
-		oreSniffer = PC_Utils.register(this, PCco_ItemOreSniffer.class);
+		powerDust = ModuleLoader.register(this, PCco_ItemPowerDust.class);
+		activator = ModuleLoader.register(this, PCco_ItemActivator.class);
+		blockSaver = ModuleLoader.register(this, PCco_ItemBlockSaver.class);
+		craftingTool = ModuleLoader.register(this, PCco_ItemCraftingTool.class);
+		oreSniffer = ModuleLoader.register(this, PCco_ItemOreSniffer.class);
 	}
 
 	@Override

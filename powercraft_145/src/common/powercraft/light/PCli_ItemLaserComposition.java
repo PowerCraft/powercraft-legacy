@@ -17,6 +17,8 @@ import powercraft.management.PC_Color;
 import powercraft.management.PC_Item;
 import powercraft.management.PC_Struct3;
 import powercraft.management.PC_Utils;
+import powercraft.management.PC_Utils.GameInfo;
+import powercraft.management.PC_Utils.Lang;
 import powercraft.management.PC_VecI;
 import cpw.mods.fml.common.Side;
 import cpw.mods.fml.common.asm.SideOnly;
@@ -68,7 +70,7 @@ public class PCli_ItemLaserComposition extends PC_Item
     public boolean onItemUse(ItemStack itemstack, EntityPlayer entityplayer, World world, int i, int j, int k, int l, float par8, float par9, float par10)
     {
     	
-    	TileEntity te = PC_Utils.getTE(world, i, j, k);
+    	TileEntity te = GameInfo.getTE(world, i, j, k);
     	
     	if(te instanceof PCli_TileEntityLaser){
     		
@@ -97,17 +99,17 @@ public class PCli_ItemLaserComposition extends PC_Item
         
         if (levelKill > 0)
         {
-        	list.add(PC_Utils.tr(getItemName() + ".kill.name", ("" + levelKill)));
+        	list.add(Lang.tr(getItemName() + ".kill.name", ("" + levelKill)));
         }
 
         if (levelDistance > 0)
         {
-        	list.add(PC_Utils.tr(getItemName() + ".distance.name", ("" + levelDistance)));
+        	list.add(Lang.tr(getItemName() + ".distance.name", ("" + levelDistance)));
         }
         
         if (levelSensor > 0)
         {
-        	list.add(PC_Utils.tr(getItemName() + ".sensor.name", ("" + levelSensor)));
+        	list.add(Lang.tr(getItemName() + ".sensor.name", ("" + levelSensor)));
         }
     }
 	
@@ -118,7 +120,7 @@ public class PCli_ItemLaserComposition extends PC_Item
         int levelDistance = 0;
     	int levelSensor = 0;
         
-    	if(is != null && is.itemID == PC_Utils.getPCObjectIDByName("PCco_BlockPowerCrystal")){
+    	if(is != null && is.itemID == GameInfo.getPCObjectIDByName("PCco_BlockPowerCrystal")){
     		switch(is.getItemDamage()){
     		case 0:
     			levelDistance = 1;

@@ -9,6 +9,8 @@ import net.minecraft.src.TileEntity;
 import net.minecraft.src.World;
 import powercraft.management.PC_InvUtils;
 import powercraft.management.PC_Utils;
+import powercraft.management.PC_Utils.GameInfo;
+import powercraft.management.PC_Utils.Gres;
 import powercraft.management.PC_VecI;
 
 public class PCtr_BlockBeltSeparator extends PCtr_BlockBeltBase
@@ -29,7 +31,7 @@ public class PCtr_BlockBeltSeparator extends PCtr_BlockBeltBase
             return;
         }
         
-        if (PC_Utils.isEntityFX(entity))
+        if (GameInfo.isEntityFX(entity))
         {
             return;
         }
@@ -119,7 +121,7 @@ public class PCtr_BlockBeltSeparator extends PCtr_BlockBeltBase
                 }
             }
 
-            PC_Utils.openGres("SeperationBelt", entityplayer, i, j, k);
+            Gres.openGres("SeperationBelt", entityplayer, i, j, k);
             return true;
         }
     }

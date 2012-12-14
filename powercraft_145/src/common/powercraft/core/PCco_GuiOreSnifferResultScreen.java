@@ -19,7 +19,8 @@ import powercraft.management.PC_IGresClient;
 import powercraft.management.PC_IGresGui;
 import powercraft.management.PC_MathHelper;
 import powercraft.management.PC_SlotNoPickup;
-import powercraft.management.PC_Utils;
+import powercraft.management.PC_Utils.GameInfo;
+import powercraft.management.PC_Utils.Lang;
 import powercraft.management.PC_VecI;
 
 public class PCco_GuiOreSnifferResultScreen extends PC_GresBaseWithInventory implements PC_IGresClient {
@@ -142,7 +143,7 @@ public class PCco_GuiOreSnifferResultScreen extends PC_GresBaseWithInventory imp
 	
 	@Override
 	public void initGui(PC_IGresGui gui) {
-		PC_GresWindow w = new PC_GresWindow(PC_Utils.tr("item.PCco_ItemOreSniffer.name"));
+		PC_GresWindow w = new PC_GresWindow(Lang.tr("item.PCco_ItemOreSniffer.name"));
 		w.padding.setTo(10, 10, 0);
 		w.gapUnderTitle = 15;
 
@@ -154,7 +155,7 @@ public class PCco_GuiOreSnifferResultScreen extends PC_GresBaseWithInventory imp
 		vg = new PC_GresLayoutV();
 		vg.setAlignH(PC_GresAlign.LEFT);
 
-		vg.add(new PC_GresLabel(PC_Utils.tr("pc.sniffer.distance")));
+		vg.add(new PC_GresLabel(Lang.tr("pc.sniffer.distance")));
 
 		vg.add(slider = new PC_GresProgressBar(0x9900ff, 150));
 
@@ -183,8 +184,8 @@ public class PCco_GuiOreSnifferResultScreen extends PC_GresBaseWithInventory imp
 				
 				PC_VecI pos = startpos[x][y].offset(vector.copy().mul(distance));
 
-				int id = PC_Utils.getBID(world, pos);
-				int meta = PC_Utils.getMD(world, pos);
+				int id = GameInfo.getBID(world, pos);
+				int meta = GameInfo.getMD(world, pos);
 
 				if (id != 0 && Block.blocksList[id] != null) {
 					stack = new ItemStack(id, 1, meta);

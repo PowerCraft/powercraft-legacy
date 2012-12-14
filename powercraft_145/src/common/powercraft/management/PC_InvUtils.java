@@ -5,6 +5,8 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 
+import powercraft.management.PC_Utils.GameInfo;
+
 import net.minecraft.src.Block;
 import net.minecraft.src.EntityPlayerSP;
 import net.minecraft.src.IBlockAccess;
@@ -23,7 +25,7 @@ public class PC_InvUtils
 {
     public static IInventory getCompositeInventoryAt(IBlockAccess world, PC_VecI pos)
     {
-        TileEntity te = PC_Utils.getTE(world, pos);
+        TileEntity te = GameInfo.getTE(world, pos);
 
         if (te == null)
         {
@@ -41,28 +43,28 @@ public class PC_InvUtils
         }
 
         IInventory inv = (IInventory) te;
-        int id = PC_Utils.getBID(world, pos);
+        int id = GameInfo.getBID(world, pos);
 
         if (id == Block.chest.blockID)
         {
-            if (PC_Utils.getBID(world, pos.offset(-1, 0, 0)) == Block.chest.blockID)
+            if (GameInfo.getBID(world, pos.offset(-1, 0, 0)) == Block.chest.blockID)
             {
-                inv = new InventoryLargeChest("Large chest", (IInventory) PC_Utils.getTE(world, pos.offset(-1, 0, 0)), inv);
+                inv = new InventoryLargeChest("Large chest", (IInventory) GameInfo.getTE(world, pos.offset(-1, 0, 0)), inv);
             }
 
-            if (PC_Utils.getBID(world, pos.offset(1, 0, 0)) == Block.chest.blockID)
+            if (GameInfo.getBID(world, pos.offset(1, 0, 0)) == Block.chest.blockID)
             {
-                inv = new InventoryLargeChest("Large chest", inv, (IInventory) PC_Utils.getTE(world, pos.offset(1, 0, 0)));
+                inv = new InventoryLargeChest("Large chest", inv, (IInventory) GameInfo.getTE(world, pos.offset(1, 0, 0)));
             }
 
-            if (PC_Utils.getBID(world, pos.offset(0, 0, -1)) == Block.chest.blockID)
+            if (GameInfo.getBID(world, pos.offset(0, 0, -1)) == Block.chest.blockID)
             {
-                inv = new InventoryLargeChest("Large chest", (IInventory) PC_Utils.getTE(world, pos.offset(0, 0, -1)), inv);
+                inv = new InventoryLargeChest("Large chest", (IInventory) GameInfo.getTE(world, pos.offset(0, 0, -1)), inv);
             }
 
-            if (PC_Utils.getBID(world, pos.offset(0, 0, 1)) == Block.chest.blockID)
+            if (GameInfo.getBID(world, pos.offset(0, 0, 1)) == Block.chest.blockID)
             {
-                inv = new InventoryLargeChest("Large chest", inv, (IInventory) PC_Utils.getTE(world, pos.offset(0, 0, 1)));
+                inv = new InventoryLargeChest("Large chest", inv, (IInventory) GameInfo.getTE(world, pos.offset(0, 0, 1)));
             }
         }
 
@@ -280,11 +282,11 @@ public class PC_InvUtils
     {
         if (inventory instanceof TileEntityFurnace)
         {
-            if (PC_Utils.isSmeltable(stack))
+            if (GameInfo.isSmeltable(stack))
             {
                 return PC_InvUtils.storeItemInSlot(inventory, stack, 0);
             }
-            else if (PC_Utils.isFuel(stack))
+            else if (GameInfo.isFuel(stack))
             {
                 return PC_InvUtils.storeItemInSlot(inventory, stack, 1);
             }
@@ -466,7 +468,7 @@ public class PC_InvUtils
 
         for (int i = 0; i < inventory.getSizeInventory(); i++)
         {
-            if (inventory.getStackInSlot(i) != null && inventory.getStackInSlot(i).itemID == PC_Utils.getPCObjectIDByName("PCco_BlockPowerCrystal"))
+            if (inventory.getStackInSlot(i) != null && inventory.getStackInSlot(i).itemID == GameInfo.getPCObjectIDByName("PCco_BlockPowerCrystal"))
             {
                 foundTable[PC_MathHelper.clamp_int(inventory.getStackInSlot(i).getItemDamage(), 0, 7)] = true;
             }

@@ -21,14 +21,15 @@ import powercraft.management.PC_Block;
 import powercraft.management.PC_ISpecialAccessInventory;
 import powercraft.management.PC_InvUtils;
 import powercraft.management.PC_TileEntity;
-import powercraft.management.PC_Utils;
+import powercraft.management.PC_Utils.GameInfo;
+import powercraft.management.PC_Utils.Lang;
 
 public class PCma_TileEntityRoaster extends PC_TileEntity implements IInventory, PC_ISpecialAccessInventory
 {
     @Override
     public boolean canPlayerInsertStackTo(int slot, ItemStack stack)
     {
-        return stack != null && PC_Utils.isFuel(stack);
+        return stack != null && GameInfo.isFuel(stack);
     }
 
     @Override
@@ -126,7 +127,7 @@ public class PCma_TileEntityRoaster extends PC_TileEntity implements IInventory,
     @Override
     public String getInvName()
     {
-        return PC_Utils.tr("tile.PCmaRoaster.name") + " - " + PC_Utils.tr("pc.roaster.insertFuel");
+        return Lang.tr("tile.PCmaRoaster.name") + " - " + Lang.tr("pc.roaster.insertFuel");
     }
 
     @Override
@@ -189,12 +190,12 @@ public class PCma_TileEntityRoaster extends PC_TileEntity implements IInventory,
             return;
         }
 
-        PC_Block laserB = PC_Utils.getPCBlockByName("PCli_BlockLaser");
+        PC_Block laserB = GameInfo.getPCBlockByName("PCli_BlockLaser");
         boolean laser = false;
 
         if (laserB != null)
         {
-            laser = PC_Utils.getBID(worldObj, xCoord, yCoord + 1, zCoord) == laserB.blockID;
+            laser = GameInfo.getBID(worldObj, xCoord, yCoord + 1, zCoord) == laserB.blockID;
         }
 
         if (burnTime > 0)

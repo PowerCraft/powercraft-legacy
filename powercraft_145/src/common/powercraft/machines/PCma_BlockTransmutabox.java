@@ -14,6 +14,8 @@ import powercraft.management.PC_Block;
 import powercraft.management.PC_IItemInfo;
 import powercraft.management.PC_Renderer;
 import powercraft.management.PC_Utils;
+import powercraft.management.PC_Utils.GameInfo;
+import powercraft.management.PC_Utils.Gres;
 import powercraft.management.PC_VecI;
 
 public class PCma_BlockTransmutabox extends PC_Block implements PC_IItemInfo
@@ -29,7 +31,7 @@ public class PCma_BlockTransmutabox extends PC_Block implements PC_IItemInfo
 
     public void receivePower(World world, int x, int y, int z, float power)
     {
-        PCma_TileEntityTransmutabox te = PC_Utils.getTE(world, x, y, z, blockID);
+        PCma_TileEntityTransmutabox te = GameInfo.getTE(world, x, y, z, blockID);
 
         if (te != null && power > 200)
         {
@@ -60,7 +62,7 @@ public class PCma_BlockTransmutabox extends PC_Block implements PC_IItemInfo
             int z, EntityPlayer player, int par6, float par7,
             float par8, float par9)
     {
-        PC_Utils.openGres("Transmutabox", player, x, y, z);
+        Gres.openGres("Transmutabox", player, x, y, z);
         return true;
     }
 

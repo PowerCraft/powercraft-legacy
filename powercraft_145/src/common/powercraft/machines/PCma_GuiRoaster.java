@@ -8,7 +8,7 @@ import powercraft.management.PC_GresWidget.PC_GresAlign;
 import powercraft.management.PC_GresWindow;
 import powercraft.management.PC_IGresClient;
 import powercraft.management.PC_IGresGui;
-import powercraft.management.PC_Utils;
+import powercraft.management.PC_Utils.Lang;
 
 public class PCma_GuiRoaster extends PCma_ContainerRoaster implements
 		PC_IGresClient {
@@ -19,7 +19,7 @@ public class PCma_GuiRoaster extends PCma_ContainerRoaster implements
 
 	@Override
 	public void initGui(PC_IGresGui gui) {
-		PC_GresWidget w = new PC_GresWindow(PC_Utils.tr("tile.PCma_BlockRoaster.name") + " - " + PC_Utils.tr("pc.roaster.insertFuel")).setWidthForInventory();
+		PC_GresWidget w = new PC_GresWindow(Lang.tr("tile.PCma_BlockRoaster.name") + " - " + Lang.tr("pc.roaster.insertFuel")).setWidthForInventory();
 
 		w.setAlignH(PC_GresAlign.CENTER);
 

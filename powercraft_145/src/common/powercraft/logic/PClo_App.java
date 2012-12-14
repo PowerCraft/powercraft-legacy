@@ -11,7 +11,7 @@ import powercraft.management.PC_ItemStack;
 import powercraft.management.PC_Property;
 import powercraft.management.PC_ShapedRecipes;
 import powercraft.management.PC_Struct2;
-import powercraft.management.PC_Utils;
+import powercraft.management.PC_Utils.ModuleLoader;
 
 public class PClo_App implements PC_IModule
 {
@@ -47,12 +47,12 @@ public class PClo_App implements PC_IModule
 
 	@Override
 	public void initBlocks(){
-        pulsar = (PC_Block)PC_Utils.register(this, PClo_BlockPulsar.class, PClo_TileEntityPulsar.class);
-        gate = (PC_Block)PC_Utils.register(this, PClo_BlockGate.class, PClo_ItemBlockGate.class, PClo_TileEntityGate.class);
-        flipFlop = (PC_Block)PC_Utils.register(this, PClo_BlockFlipFlop.class, PClo_ItemBlockFlipFlop.class, PClo_TileEntityFlipFlop.class);
-        delayer = (PC_Block)PC_Utils.register(this, PClo_BlockDelayer.class, PClo_ItemBlockDelayer.class, PClo_TileEntityDelayer.class);
-        special = (PC_Block)PC_Utils.register(this, PClo_BlockSpecial.class, PClo_ItemBlockSpecial.class, PClo_TileEntitySpecial.class);
-        repeater = (PC_Block)PC_Utils.register(this, PClo_BlockRepeater.class, PClo_ItemBlockRepeater.class, PClo_TileEntityRepeater.class);
+        pulsar = (PC_Block)ModuleLoader.register(this, PClo_BlockPulsar.class, PClo_TileEntityPulsar.class);
+        gate = (PC_Block)ModuleLoader.register(this, PClo_BlockGate.class, PClo_ItemBlockGate.class, PClo_TileEntityGate.class);
+        flipFlop = (PC_Block)ModuleLoader.register(this, PClo_BlockFlipFlop.class, PClo_ItemBlockFlipFlop.class, PClo_TileEntityFlipFlop.class);
+        delayer = (PC_Block)ModuleLoader.register(this, PClo_BlockDelayer.class, PClo_ItemBlockDelayer.class, PClo_TileEntityDelayer.class);
+        special = (PC_Block)ModuleLoader.register(this, PClo_BlockSpecial.class, PClo_ItemBlockSpecial.class, PClo_TileEntitySpecial.class);
+        repeater = (PC_Block)ModuleLoader.register(this, PClo_BlockRepeater.class, PClo_ItemBlockRepeater.class, PClo_TileEntityRepeater.class);
     }
 
     @Override

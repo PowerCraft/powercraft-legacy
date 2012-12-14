@@ -3,6 +3,8 @@ package powercraft.management;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 
+import powercraft.management.PC_Utils.Gres;
+
 import net.minecraft.src.CompressedStreamTools;
 import net.minecraft.src.EntityPlayer;
 
@@ -20,7 +22,7 @@ public class PC_ClientPacketHandler extends PC_PacketHandler {
 	
 	@Override
 	protected void handleIncomingGuiPacket(ObjectInputStream input, EntityPlayer player) throws ClassNotFoundException, IOException{
-		PC_Utils.openGres("", player, new Object[]{input});
+		Gres.openGres("", player, new Object[]{input});
     }
 
 	@Override

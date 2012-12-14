@@ -6,7 +6,7 @@ import java.util.List;
 import net.minecraft.src.EntityPlayer;
 import net.minecraft.src.Slot;
 import powercraft.management.PC_GresBaseWithInventory;
-import powercraft.management.PC_Utils;
+import powercraft.management.PC_Utils.GameInfo;
 
 public class PClo_ContainerSpecial extends PC_GresBaseWithInventory
 {
@@ -21,7 +21,7 @@ public class PClo_ContainerSpecial extends PC_GresBaseWithInventory
     @Override
     protected void init(Object[] o)
     {
-        te = PC_Utils.getTE(thePlayer.worldObj, (Integer)o[0], (Integer)o[1], (Integer)o[2]);
+        te = GameInfo.getTE(thePlayer.worldObj, (Integer)o[0], (Integer)o[1], (Integer)o[2]);
     }
 
     @Override
