@@ -18,6 +18,8 @@ import powercraft.management.PC_IItemInfo;
 import powercraft.management.PC_ISpecialInventoryTextures;
 import powercraft.management.PC_InvUtils;
 import powercraft.management.PC_Utils;
+import powercraft.management.PC_Utils.GameInfo;
+import powercraft.management.PC_Utils.Gres;
 import powercraft.management.PC_VecI;
 
 public class PCma_BlockAutomaticWorkbench extends PC_Block implements PC_ISpecialInventoryTextures, PC_IItemInfo
@@ -158,7 +160,7 @@ public class PCma_BlockAutomaticWorkbench extends PC_Block implements PC_ISpecia
         if (world.isBlockIndirectlyGettingPowered(i, j, k) || world.isBlockIndirectlyGettingPowered(i, j + 1, k)
                 || world.isBlockIndirectlyGettingPowered(i, j - 1, k))
         {
-            ((PCma_TileEntityAutomaticWorkbench)PC_Utils.getTE(world, i, j, k)).doCrafting();
+            ((PCma_TileEntityAutomaticWorkbench)GameInfo.getTE(world, i, j, k)).doCrafting();
         }
     }
 
@@ -181,7 +183,7 @@ public class PCma_BlockAutomaticWorkbench extends PC_Block implements PC_ISpecia
             }
         }
 
-        PC_Utils.openGres("AutomaticWorkbench", entityplayer, i, j, k);
+        Gres.openGres("AutomaticWorkbench", entityplayer, i, j, k);
         return true;
     }
 

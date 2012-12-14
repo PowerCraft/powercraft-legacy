@@ -5,6 +5,8 @@ import java.util.EnumSet;
 import java.util.List;
 import java.util.Random;
 
+import powercraft.management.PC_Utils.GameInfo;
+
 import net.minecraft.src.AxisAlignedBB;
 import net.minecraft.src.Block;
 import net.minecraft.src.Entity;
@@ -287,7 +289,7 @@ public class PC_BeamTracer {
 			
 			cnt.add(move);
 
-			int id = PC_Utils.getBID(world, cnt);
+			int id = GameInfo.getBID(world, cnt);
 
 			Block b = Block.blocksList[id];
 			result res = result.CONTINUE;

@@ -7,6 +7,8 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.HashMap;
 
+import powercraft.management.PC_Utils.GameInfo;
+
 import net.minecraft.src.EntityPlayer;
 import net.minecraft.src.INetworkManager;
 import net.minecraft.src.Packet250CustomPayload;
@@ -118,7 +120,7 @@ public class PC_PacketHandler implements IPacketHandler
     {
         ByteArrayOutputStream data = new ByteArrayOutputStream();
         ObjectOutputStream sendData;
-        int dimension = PC_Utils.getWorldDimension(tileEntity.worldObj);
+        int dimension = GameInfo.getWorldDimension(tileEntity.worldObj);
 
         try
         {
@@ -212,7 +214,7 @@ public class PC_PacketHandler implements IPacketHandler
         {
             if (onlyDimension)
             {
-                sendToAllInDimension(PC_Utils.getWorldDimension(world), data);
+                sendToAllInDimension(GameInfo.getWorldDimension(world), data);
             }
             else
             {

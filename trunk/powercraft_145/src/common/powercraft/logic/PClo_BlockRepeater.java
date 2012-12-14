@@ -22,6 +22,7 @@ import powercraft.management.PC_Shining;
 import powercraft.management.PC_Shining.OFF;
 import powercraft.management.PC_Shining.ON;
 import powercraft.management.PC_Utils;
+import powercraft.management.PC_Utils.GameInfo;
 import powercraft.management.PC_VecI;
 
 @PC_Shining
@@ -57,7 +58,7 @@ public class PClo_BlockRepeater extends PC_Block
     @Override
     public void updateTick(World world, int x, int y, int z, Random random)
     {
-        int rot = getRotation_static(PC_Utils.getMD(world, x, y, z));
+        int rot = getRotation_static(GameInfo.getMD(world, x, y, z));
         PClo_TileEntityRepeater te = getTE(world, x, y, z);
 
         if (te.getType() == PClo_RepeaterType.CROSSING)
@@ -127,7 +128,7 @@ public class PClo_BlockRepeater extends PC_Block
 
     @Override
    	public boolean isProvidingWeakPower(IBlockAccess world, int x, int y, int z, int s) {
-    	int meta = PC_Utils.getMD(world, x, y, z);
+    	int meta = GameInfo.getMD(world, x, y, z);
         int rotation = getRotation_static(meta);
         PClo_TileEntityRepeater te = getTE(world, x, y, z);
         int type = te.getType();
@@ -325,7 +326,7 @@ public class PClo_BlockRepeater extends PC_Block
 
     public static PClo_TileEntityRepeater getTE(IBlockAccess world, int x, int y, int z)
     {
-        TileEntity te = PC_Utils.getTE(world, x, y, z);
+        TileEntity te = GameInfo.getTE(world, x, y, z);
 
         if (te instanceof PClo_TileEntityRepeater)
         {
@@ -361,7 +362,7 @@ public class PClo_BlockRepeater extends PC_Block
 
     public static boolean isActive(IBlockAccess world, int x, int y, int z)
     {
-        return PC_Utils.getBID(world, x, y, z) == on.blockID;
+        return GameInfo.getBID(world, x, y, z) == on.blockID;
     }
 
     @Override
@@ -506,7 +507,7 @@ public class PClo_BlockRepeater extends PC_Block
         int type = getType(world, x, y, z);
         boolean remove = super.removeBlockByPlayer(world, player, x, y, z);
 
-        if (remove && !PC_Utils.isCreative(player))
+        if (remove && !GameInfo.isCreative(player))
         {
             dropBlockAsItem_do(world, x, y, z, new ItemStack(PClo_App.repeater, 1, type));
         }

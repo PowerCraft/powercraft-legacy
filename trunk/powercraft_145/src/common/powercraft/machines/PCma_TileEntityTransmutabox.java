@@ -16,6 +16,7 @@ import powercraft.management.PC_InvUtils;
 import powercraft.management.PC_PacketHandler;
 import powercraft.management.PC_TileEntity;
 import powercraft.management.PC_Utils;
+import powercraft.management.PC_Utils.GameInfo;
 
 public class PCma_TileEntityTransmutabox extends PC_TileEntity implements IInventory, PC_ISpecialAccessInventory, PC_IStateReportingInventory
 {
@@ -45,7 +46,7 @@ public class PCma_TileEntityTransmutabox extends PC_TileEntity implements IInven
     {
         if (slot >= 1 && slot < 9)
         {
-            return PC_Utils.isFuel(stack);
+            return GameInfo.isFuel(stack);
         }
 
         return true;
@@ -61,7 +62,7 @@ public class PCma_TileEntityTransmutabox extends PC_TileEntity implements IInven
 
         if (slot >= 1 && slot < 9)
         {
-            return PC_Utils.isFuel(stack);
+            return GameInfo.isFuel(stack);
         }
 
         return true;

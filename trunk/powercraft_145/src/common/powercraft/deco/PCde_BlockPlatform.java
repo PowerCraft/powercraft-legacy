@@ -14,6 +14,7 @@ import net.minecraft.src.World;
 import powercraft.management.PC_Block;
 import powercraft.management.PC_Renderer;
 import powercraft.management.PC_Utils;
+import powercraft.management.PC_Utils.GameInfo;
 import powercraft.management.PC_VecI;
 
 public class PCde_BlockPlatform extends PC_Block {
@@ -99,7 +100,7 @@ public class PCde_BlockPlatform extends PC_Block {
 	}
 
 	private static boolean isFallBlock(World world, PC_VecI pos) {
-		int id = PC_Utils.getBID(world, pos);
+		int id = GameInfo.getBID(world, pos);
 		if (id == 0 || Block.blocksList[id] == null) {
 			return true;
 		}
@@ -121,7 +122,7 @@ public class PCde_BlockPlatform extends PC_Block {
 	}
 
 	private static boolean isClimbBlock(World world, PC_VecI pos) {
-		int id = PC_Utils.getBID(world, pos);
+		int id = GameInfo.getBID(world, pos);
 		if (id == 0 || Block.blocksList[id] == null) {
 			return false;
 		}

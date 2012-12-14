@@ -17,6 +17,7 @@ import powercraft.management.PC_IMSG;
 import powercraft.management.PC_IModule;
 import powercraft.management.PC_Struct2;
 import powercraft.management.PC_Utils;
+import powercraft.management.PC_Utils.GameInfo;
 
 public class PCco_ContainerCraftingTool extends PC_GresBaseWithInventory
 {
@@ -113,7 +114,7 @@ public class PCco_ContainerCraftingTool extends PC_GresBaseWithInventory
                     {
                         ItemStack is = new ItemStack(i, 1, j);
 
-                        if (PC_Utils.getRecipesForProduct(is).size() > 0)
+                        if (GameInfo.getRecipesForProduct(is).size() > 0)
                         {
                             allMcSlots.add(new PCco_SlotDirectCrafting(thePlayer, is, 0, -444, -444));
                         }
@@ -124,7 +125,7 @@ public class PCco_ContainerCraftingTool extends PC_GresBaseWithInventory
 
                 ItemStack is = new ItemStack(i);
 
-                if (PC_Utils.getRecipesForProduct(is).size() > 0)
+                if (GameInfo.getRecipesForProduct(is).size() > 0)
                 {
                     allMcSlots.add(new PCco_SlotDirectCrafting(thePlayer, is, 0, -444, -444));
                 }
@@ -147,7 +148,7 @@ public class PCco_ContainerCraftingTool extends PC_GresBaseWithInventory
     @Override
     public void retrySlotClick(int par1, int par2, boolean par3, EntityPlayer entityPlayer)
     {
-        if (PC_Utils.isCreative(entityPlayer) || PCco_SlotDirectCrafting.survivalCheating)
+        if (GameInfo.isCreative(entityPlayer) || PCco_SlotDirectCrafting.survivalCheating)
         {
             return;
         }

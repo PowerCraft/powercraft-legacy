@@ -71,6 +71,778 @@ public class PC_Utils implements PC_IPacketHandler
         PC_PacketHandler.registerPackethandler("PacketUtils", this);
     }
 
+    public static class Lang{
+
+		public static void registerLanguageForLang(PC_IModule module, String lang, PC_Struct3<String, String, String[]>... translations)
+		{
+		    PC_Utils.instance.iRegisterLanguage(module, lang, translations);
+		}
+
+		public static void registerLanguage(PC_IModule module, PC_Struct3<String, String, String[]>... translations)
+		{
+		    PC_Utils.Lang.registerLanguageForLang(module, "en_US", translations);
+		}
+		public static void loadLanguage(PC_IModule module)
+		{
+		    PC_Utils.instance.iLoadLanguage(module);
+		}
+		public static void saveLanguage(PC_IModule module)
+		{
+		    PC_Utils.instance.iSaveLanguage(module);
+		}
+		public static String tr(String identifier)
+		{
+		    return StringTranslate.getInstance().translateKey(identifier).trim();
+		}
+		public static String tr(String identifier, String... replacements)
+		{
+		    return StringTranslate.getInstance().translateKeyFormat(identifier, (Object[])replacements);
+		}
+    	
+    }
+
+    public static class ModuleLoader{
+    	
+		public static String isIDAvailable(int id, Class c)
+		{
+		    if (id < 0)
+		    {
+		        return "Out of bounds";
+		    }
+		
+		    if (id < Block.blocksList.length)
+		    {
+		        if (Block.blocksList[id] != null)
+		        {
+		            return Block.blocksList[id].getBlockName();
+		        }
+		    }
+		    else if (Block.class.isAssignableFrom(c))
+		    {
+		        return "Out of bounds";
+		    }
+		
+		    if (id < Item.itemsList.length)
+		    {
+		        if (Item.itemsList[id] != null)
+		        {
+		            return Item.itemsList[id].getItemName();
+		        }
+		
+		        return null;
+		    }
+		
+		    return "Out of bounds";
+		}
+		public static boolean isIDAvailable(int id, Class c, boolean throwError) throws Exception
+		{
+		    String name = PC_Utils.ModuleLoader.isIDAvailable(id, c);
+		
+		    if (!throwError || name == null)
+		    {
+		        return name == null;
+		    }
+		
+		    String error = "ID " + id + " for class \"" + c.getName() + "\" already used by \"" + name + "\"";
+		    PC_Logger.severe(error);
+		    throw new Exception(error);
+		}
+		public static <t>t register(PC_IModule module, Class<t> c)
+		{
+			PC_Property config = PC_Utils.getConfig(module);
+		
+		    if (PC_Block.class.isAssignableFrom(c))
+		    {
+		        return (t)ModuleLoader.register(module, (Class<PC_Block>)c, null, null);
+		    }
+		    else if (PC_Item.class.isAssignableFrom(c))
+		    {
+		        Class<PC_Item> itemClass = (Class<PC_Item>)c;
+		
+		        try
+		        {
+		        	config = config.getProperty(itemClass.getSimpleName(), null, null);
+		        	int id = config.getInt("defaultID", 0);
+		        	if(!PC_Utils.isItemIDFree(id)){
+		        		id = PC_Utils.getFreeItemID();
+		        		config.setInt("defaultID", id);
+		        	}
+		            PC_Item item = PC_Utils.createClass(itemClass, new Class[] {int.class}, new Object[] {id});
+		            PC_Utils.objects.put(itemClass.getSimpleName(), item);
+		            item.setItemName(itemClass.getSimpleName());
+		            item.setModule(module);
+		            item.setTextureFile(PC_Utils.getTerrainFile(module));
+		
+		            item.msg(PC_Utils.MSG_LOAD_FROM_CONFIG, config);
+		
+		            List<PC_Struct3<String, String, String[]>> l = (List<PC_Struct3<String, String, String[]>>)item.msg(PC_Utils.MSG_DEFAULT_NAME, new ArrayList<PC_Struct3<String, String, String[]>>());
+		            if(l!=null){
+		            	PC_Utils.Lang.registerLanguage(module, l.toArray(new PC_Struct3[0]));
+		            }
+		            return (t)item;
+		        }
+		        catch (Exception e)
+		        {
+		            e.printStackTrace();
+		        }
+		    }
+		    else if (PC_ItemArmor.class.isAssignableFrom(c))
+		    {
+		        Class<PC_ItemArmor> itemArmorClass = (Class<PC_ItemArmor>)c;
+		
+		        try
+		        {
+		        	config = config.getProperty(itemArmorClass.getSimpleName(), null, null);
+		        	int id = config.getInt("defaultID", 0);
+		        	if(!PC_Utils.isItemIDFree(id)){
+		        		id = PC_Utils.getFreeItemID();
+		        		config.setInt("defaultID", id);
+		        	}
+		            PC_ItemArmor itemArmor = PC_Utils.createClass(itemArmorClass, new Class[] {int.class}, new Object[] {id});
+		            PC_Utils.objects.put(itemArmorClass.getSimpleName(), itemArmor);
+		            itemArmor.setItemName(itemArmorClass.getSimpleName());
+		            itemArmor.setModule(module);
+		
+		            itemArmor.msg(PC_Utils.MSG_LOAD_FROM_CONFIG, config);
+		            
+		            List<PC_Struct3<String, String, String[]>> l = (List<PC_Struct3<String, String, String[]>>)itemArmor.msg(PC_Utils.MSG_DEFAULT_NAME, new ArrayList<PC_Struct3<String, String, String[]>>());
+		            if(l!=null){
+		            	PC_Utils.Lang.registerLanguage(module, l.toArray(new PC_Struct3[0]));
+		            }
+		            return (t)itemArmor;
+		        }
+		        catch (Exception e)
+		        {
+		            e.printStackTrace();
+		        }
+		    }
+		
+		    throw new IllegalArgumentException("3th parameter need to be a class witch extends PC_Block or PC_Item or PC_ItemArmor");
+		}
+		public static <t extends PC_Block>t register(PC_IModule module, Class<t> blockClass, Class c)
+		{
+		    if (PC_ItemBlock.class.isAssignableFrom(c))
+		    {
+		        return ModuleLoader.register(module, blockClass, (Class<PC_ItemBlock>)c, null);
+		    }
+		    else if (PC_TileEntity.class.isAssignableFrom(c))
+		    {
+		        return ModuleLoader.register(module, blockClass, null, (Class<PC_TileEntity>)c);
+		    }
+		
+		    throw new IllegalArgumentException("4th parameter need to be a class witch extends PC_ItemBlock or PC_TileEntity");
+		}
+		public static <t extends PC_Block>t register(PC_IModule module, Class<t> blockClass, Class <? extends PC_ItemBlock > itemBlockClass, Class <? extends PC_TileEntity > tileEntityClass)
+		{
+			PC_Property config = PC_Utils.getConfig(module);
+		
+		    try
+		    {
+		    	config = config.getProperty(blockClass.getSimpleName(), null, null);
+		    	
+		        t block;
+		        t blockOff;
+		        
+		        if (blockClass.isAnnotationPresent(PC_Shining.class))
+		        {
+		        	
+		         	int idOn = config.getInt("defaultID.on", 0);
+		         	if(!PC_Utils.isBlockIDFree(idOn)){
+		         		idOn = PC_Utils.getFreeBlockID();
+		         		config.setInt("defaultID.on", idOn);
+		         	}
+		        	
+		            block = PC_Utils.createClass(blockClass, new Class[] {int.class, boolean.class}, new Object[] {idOn, true});
+		            
+		            int idOff = config.getInt("defaultID.off", 0);
+		         	if(!PC_Utils.isBlockIDFree(idOff)){
+		         		idOff = PC_Utils.getFreeBlockID();
+		         		config.setInt("defaultID.off", idOff);
+		         	}
+		            
+		            blockOff = PC_Utils.createClass(blockClass, new Class[] {int.class, boolean.class}, new Object[] {idOff, false});
+		            ValueWriting.setFieldsWithAnnotationTo(blockClass, PC_Shining.ON.class, blockClass, block);
+		            ValueWriting.setFieldsWithAnnotationTo(blockClass, PC_Shining.OFF.class, blockClass, blockOff);
+		            blockOff.setBlockName(blockClass.getSimpleName());
+		            blockOff.setModule(module);
+		            blockOff.setTextureFile(PC_Utils.getTerrainFile(module));
+		            PC_Utils.objects.put(blockClass.getSimpleName()+".Off", blockOff);
+		            mod_PowerCraft.registerBlock(blockOff, null);
+		            ItemBlock itemBlock = (ItemBlock)Item.itemsList[blockOff.blockID];
+		            
+		            blockOff.setItemBlock(itemBlock);
+		        }
+		        else
+		        {
+		         	int id = config.getInt("defaultID", 0);
+		         	if(!PC_Utils.isBlockIDFree(id)){
+		         		id = PC_Utils.getFreeBlockID();
+		         		config.setInt("defaultID", id);
+		         	}
+		            block = PC_Utils.createClass(blockClass, new Class[] {int.class}, new Object[] {id});
+		        }
+		
+		        PC_Utils.objects.put(blockClass.getSimpleName(), block);
+		        block.setBlockName(blockClass.getSimpleName());
+		        block.setModule(module);
+		        block.setTextureFile(PC_Utils.getTerrainFile(module));
+		
+		        block.msg(PC_Utils.MSG_LOAD_FROM_CONFIG, config);
+		        
+		        mod_PowerCraft.registerBlock(block, itemBlockClass);
+		
+		        ItemBlock itemBlock = (ItemBlock)Item.itemsList[block.blockID];
+		        
+		        block.setItemBlock(itemBlock);
+		        
+		        if (itemBlockClass == null)
+		        {
+		            PC_Utils.Lang.registerLanguage(module, new PC_Struct3<String, String, String[]>(block.getBlockName(), (String)block.msg(PC_Utils.MSG_DEFAULT_NAME), null));
+		        }
+		        else
+		        {
+		            PC_ItemBlock ib = (PC_ItemBlock)itemBlock;
+		            ib.setModule(module);
+		            List<PC_Struct3<String, String, String[]>> l = (List<PC_Struct3<String, String, String[]>>)ib.msg(PC_Utils.MSG_DEFAULT_NAME, new ArrayList<PC_Struct3<String, String, String[]>>());
+		            if(l!=null){
+		            	PC_Utils.Lang.registerLanguage(module, l.toArray(new PC_Struct3[0]));
+		            }
+		        }
+		        
+		        if (tileEntityClass != null)
+		        {
+		            mod_PowerCraft.registerTileEntity(tileEntityClass);
+		            if(PC_ITileEntityRenderer.class.isAssignableFrom(tileEntityClass))
+		            	PC_Utils.instance.iTileEntitySpecialRenderer(tileEntityClass);
+		        }
+		
+		        return block;
+		    }
+		    catch (Exception e)
+		    {
+		        e.printStackTrace();
+		    }
+		
+		    return null;
+		}
+		public static void registerTextureFiles(String... textureFiles)
+		{
+		    PC_Utils.instance.iRegisterTextureFiles(textureFiles);
+		}
+    	
+    }
+    
+    public static class ValueWriting{
+
+		public static void setFieldsWithAnnotationTo(Class c, Class <? extends Annotation > annotationClass, Object obj, Object value)
+		{
+		    Field fa[] = c.getDeclaredFields();
+		
+		    for (Field f: fa)
+		    {
+		        if (f.isAnnotationPresent(annotationClass))
+		        {
+		            f.setAccessible(true);
+		
+		            try
+		            {
+		                f.set(obj, value);
+		            }
+		            catch (Exception e)
+		            {
+		                e.printStackTrace();
+		            }
+		        }
+		    }
+		}
+		public static Object[] getFieldsWithAnnotation(Class c, Class <? extends Annotation > annotationClass, Object obj)
+		{
+		    List<Object> l = new ArrayList<Object>();
+		    Field fa[] = c.getDeclaredFields();
+		
+		    for (Field f: fa)
+		    {
+		        if (f.isAnnotationPresent(annotationClass))
+		        {
+		            f.setAccessible(true);
+		
+		            try
+		            {
+		                l.add(f.get(obj));
+		            }
+		            catch (Exception e)
+		            {
+		                e.printStackTrace();
+		            }
+		        }
+		    }
+		
+		    return l.toArray(new Object[0]);
+		}
+		public static Object getPrivateValue(Class c, Object o, int i)
+		{
+		    try
+		    {
+		        Field f = c.getDeclaredFields()[i];
+		        f.setAccessible(true);
+		        return f.get(o);
+		    }
+		    catch (IllegalAccessException e)
+		    {
+		        return null;
+		    }
+		}
+		public static boolean setPrivateValue(Class c, Object o, int i, Object v)
+		{
+		    try
+		    {
+		        Field f = c.getDeclaredFields()[i];
+		        f.setAccessible(true);
+		        Field field_modifiers = Field.class.getDeclaredField("modifiers");
+		        field_modifiers.setAccessible(true);
+		        int modifier = field_modifiers.getInt(f);
+		
+		        if ((modifier & Modifier.FINAL) != 0)
+		        {
+		            field_modifiers.setInt(f, modifier & ~Modifier.FINAL);
+		        }
+		
+		        f.set(o, v);
+		
+		        if ((modifier & Modifier.FINAL) != 0)
+		        {
+		            field_modifiers.setInt(f, modifier);
+		        }
+		        
+		        return true;
+		        
+		    }
+		    catch (Exception e)
+		    {
+		        PC_Logger.severe("setPrivateValue failed with " + c + ":" + o + ":" + i);
+		        return false;
+		    }
+		}
+    	
+    }
+    
+    public static class Gres{
+
+		public static void registerGres(String name, Class gui)
+		{
+		    PC_Utils.guis.put(name, gui);
+		}
+
+		public static void registerGresArray(Object[] o)
+		{
+		    if (o == null)
+		    {
+		        return;
+		    }
+		
+		    for (int i = 0; i < o.length; i += 2)
+		    {
+		        PC_Utils.Gres.registerGres((String)o[i], (Class)o[i + 1]);
+		    }
+		}
+
+		public static void openGres(String name, EntityPlayer player, Object...o)
+		{
+		    PC_Utils.instance.iOpenGres(name, player, o);
+		}
+    	
+    }
+    
+    public static class Converter{
+
+		public static double ticksToSecs(int ticks)
+		{
+		    return ticks * 0.05D;
+		}
+
+		public static int ticksToSecsInt(int ticks)
+		{
+		    return Math.round(ticks * 0.05F);
+		}
+
+		public static int secsToTicks(double secs)
+		{
+		    return (int)(secs * 20);
+		}
+
+		public static String doubleToString(double d)
+		{
+		    return "" + d;
+		}
+    	
+    }
+    
+    public static class GameInfo{
+
+		public static boolean isClient()
+		{
+		    return PC_Utils.instance.client();
+		}
+
+		public static boolean isServer()
+		{
+		    return !PC_Utils.instance.client();
+		}
+
+		public static boolean isSoundEnabled()
+		{
+		    if (PC_Utils.GameInfo.isServer())
+		    {
+		        return false;
+		    }
+		
+		    return PC_Utils.isSoundEnabled;
+		}
+
+		public static int getWorldDimension(World worldObj)
+		{
+		    return worldObj.provider.dimensionId;
+		}
+
+		public static List<IRecipe> getRecipesForProduct(ItemStack prod)
+		{
+		    List<IRecipe> recipes = new ArrayList<IRecipe>(CraftingManager.getInstance().getRecipeList());
+		    List<IRecipe> ret = new ArrayList<IRecipe>();
+		
+		    for (IRecipe recipe: recipes)
+		    {
+		        try
+		        {
+		            if (recipe.getRecipeOutput().isItemEqual(prod) || (recipe.getRecipeOutput().itemID == prod.itemID && prod.getItemDamage() == -1))
+		            {
+		                ret.add(recipe);
+		            }
+		        }
+		        catch (NullPointerException npe)
+		        {
+		            continue;
+		        }
+		    }
+		
+		    return ret;
+		}
+
+		public static EnumGameType getGameTypeFor(EntityPlayer player)
+		{
+		    return PC_Utils.instance.iGetGameTypeFor(player);
+		}
+
+		public static boolean isCreative(EntityPlayer player)
+		{
+		    return PC_Utils.GameInfo.getGameTypeFor(player).isCreative();
+		}
+
+		public static boolean isFuel(ItemStack itemstack)
+		{
+		    if (itemstack == null)
+		    {
+		        return false;
+		    }
+		
+		    return PC_InvUtils.getFuelValue(itemstack, 1f) > 0;
+		}
+
+		public static boolean isSmeltable(ItemStack itemstack)
+		{
+		    if (itemstack == null || FurnaceRecipes.smelting().getSmeltingResult(itemstack.getItem().shiftedIndex) == null)
+		    {
+		        return false;
+		    }
+		
+		    return true;
+		}
+
+		public static <t extends TileEntity>t getTE(IBlockAccess world, int x, int y, int z)
+		{
+		    if (world != null)
+		    {
+		        TileEntity te = world.getBlockTileEntity(x, y, z);
+		
+		        try
+		        {
+		            t tet = (t)te;
+		            return tet;
+		        }
+		        catch (ClassCastException e)
+		        {
+		            return null;
+		        }
+		    }
+		
+		    return null;
+		}
+
+		public static <t extends TileEntity>t getTE(IBlockAccess world, PC_VecI vec)
+		{
+			return PC_Utils.GameInfo.getTE(world, vec.x, vec.y, vec.z);
+		}
+
+		public static <t extends TileEntity>t getTE(IBlockAccess world, int x, int y, int z, int blockID)
+		{
+		    if (world != null)
+		    {
+		        if (GameInfo.getBID(world, x, y, z) == blockID)
+		        {
+		            TileEntity te = world.getBlockTileEntity(x, y, z);
+		
+		            try
+		            {
+		                t tet = (t)te;
+		                return tet;
+		            }
+		            catch (ClassCastException e)
+		            {
+		                return null;
+		            }
+		        }
+		    }
+		
+		    return null;
+		}
+
+		public static int getBID(IBlockAccess world, int x, int y, int z)
+		{
+		    if (world != null)
+		    {
+		        return world.getBlockId(x, y, z);
+		    }
+		
+		    return 0;
+		}
+
+		public static int getBID(IBlockAccess world, PC_VecI vec)
+		{
+		    return PC_Utils.GameInfo.getBID(world, vec.x, vec.y, vec.z);
+		}
+
+		public static int getMD(IBlockAccess world, int x, int y, int z)
+		{
+		    if (world != null)
+		    {
+		        return world.getBlockMetadata(x, y, z);
+		    }
+		
+		    return 0;
+		}
+
+		public static int getMD(IBlockAccess world, PC_VecI vec)
+		{
+		    return PC_Utils.GameInfo.getMD(world, vec.x, vec.y, vec.z);
+		}
+
+		public static boolean getMD(World world, int x, int y, int z, int md)
+		{
+		    if (world != null)
+		    {
+		        return world.setBlockMetadata(x, y, z, md);
+		    }
+		
+		    return false;
+		}
+
+		public static boolean isChestEmpty(World world, int x, int y, int z, ItemStack itemStack)
+		{
+		    IInventory invAt = PC_InvUtils.getCompositeInventoryAt(world, new PC_VecI(x, y, z));
+		
+		    if (invAt != null)
+		    {
+		        if (itemStack == null || itemStack.itemID == 0)
+		        {
+		            return PC_InvUtils.isInventoryEmpty(invAt);
+		        }
+		        else
+		        {
+		            return PC_InvUtils.isInventoryEmptyOf(invAt, itemStack);
+		        }
+		    }
+		
+		    List<IInventory> list = world.getEntitiesWithinAABB(IInventory.class,
+		            AxisAlignedBB.getBoundingBox(x, y, z, x + 1, y + 1, z + 1).expand(0.6D, 0.6D, 0.6D));
+		
+		    if (list.size() >= 1)
+		    {
+		        if (itemStack == null || itemStack.itemID == 0)
+		        {
+		            return PC_InvUtils.isInventoryEmpty(list.get(0));
+		        }
+		        else
+		        {
+		            return PC_InvUtils.isInventoryEmptyOf(list.get(0), itemStack);
+		        }
+		    }
+		
+		    List<PC_IInventoryWrapper> list2 = world.getEntitiesWithinAABB(PC_IInventoryWrapper.class,
+		            AxisAlignedBB.getBoundingBox(x, y, z, x + 1, y + 1, z + 1).expand(0.6D, 0.6D, 0.6D));
+		
+		    if (list2.size() >= 1)
+		    {
+		        if (list2.get(0).getInventory() != null)
+		        {
+		            if (itemStack == null || itemStack.itemID == 0)
+		            {
+		                return PC_InvUtils.isInventoryEmpty(list2.get(0).getInventory());
+		            }
+		            else
+		            {
+		                return PC_InvUtils.isInventoryEmptyOf(list2.get(0).getInventory(), itemStack);
+		            }
+		        }
+		    }
+		
+		    return false;
+		}
+
+		public static boolean isChestFull(World world, int x, int y, int z, ItemStack itemStack)
+		{
+		    IInventory invAt = PC_InvUtils.getCompositeInventoryAt(world, new PC_VecI(x, y, z));
+		
+		    if (invAt != null)
+		    {
+		        if (itemStack == null || itemStack.itemID == 0)
+		        {
+		            return PC_InvUtils.hasInventoryNoFreeSlots(invAt);
+		        }
+		        else
+		        {
+		            return PC_InvUtils.hasInventoryPlaceFor(invAt, itemStack);
+		        }
+		    }
+		
+		    List<IInventory> list = world.getEntitiesWithinAABB(IInventory.class,
+		            AxisAlignedBB.getBoundingBox(x, y, z, x + 1, y + 1, z + 1).expand(0.6D, 0.6D, 0.6D));
+		
+		    if (list.size() >= 1)
+		    {
+		        if (itemStack == null || itemStack.itemID == 0)
+		        {
+		            return PC_InvUtils.hasInventoryNoFreeSlots(list.get(0));
+		        }
+		        else
+		        {
+		            return PC_InvUtils.hasInventoryPlaceFor(list.get(0), itemStack);
+		        }
+		    }
+		
+		    List<PC_IInventoryWrapper> list2 = world.getEntitiesWithinAABB(PC_IInventoryWrapper.class,
+		            AxisAlignedBB.getBoundingBox(x, y, z, x + 1, y + 1, z + 1).expand(0.6D, 0.6D, 0.6D));
+		
+		    if (list2.size() >= 1)
+		    {
+		        if (list2.get(0).getInventory() != null)
+		        {
+		            if (itemStack == null || itemStack.itemID == 0)
+		            {
+		                return PC_InvUtils.hasInventoryNoFreeSlots(list2.get(0).getInventory());
+		            }
+		            else
+		            {
+		                return PC_InvUtils.hasInventoryPlaceFor(list2.get(0).getInventory(), itemStack);
+		            }
+		        }
+		    }
+		
+		    return false;
+		}
+
+		public static String getMobID(TileEntityMobSpawner te){
+			return (String)PC_Utils.ValueWriting.getPrivateValue(TileEntityMobSpawner.class, te, 1);
+		}
+
+		public static File getMCDirectory()
+		{
+		    return PC_Utils.instance.iGetMCDirectory();
+		}
+
+		public static MinecraftServer mcs()
+		{
+		    return MinecraftServer.getServer();
+		}
+
+		public static boolean isEntityFX(Entity entity)
+		{
+		    return PC_Utils.instance.iIsEntityFX(entity);
+		}
+
+		public static PC_Block getPCBlockByName(String name)
+		{
+		    if (PC_Utils.objects.containsKey(name))
+		    {
+		        Object o = PC_Utils.objects.get(name);
+		
+		        if (o instanceof PC_Block)
+		        {
+		            return (PC_Block)o;
+		        }
+		    }
+		
+		    return null;
+		}
+
+		public static PC_Item getPCItemByName(String name)
+		{
+		    if (PC_Utils.objects.containsKey(name))
+		    {
+		        Object o = PC_Utils.objects.get(name);
+		
+		        if (o instanceof PC_Item)
+		        {
+		            return (PC_Item)o;
+		        }
+		    }
+		
+		    return null;
+		}
+
+		public static int getPCObjectIDByName(String name)
+		{
+		    if (PC_Utils.objects.containsKey(name))
+		    {
+		        Object o = PC_Utils.objects.get(name);
+		
+		        if (o instanceof Item)
+		        {
+		            return ((Item)o).shiftedIndex;
+		        }
+		        else if (o instanceof Block)
+		        {
+		            return ((Block)o).blockID;
+		        }
+		    }
+		
+		    return 0;
+		}
+
+		public static List<Integer> parseIntList(String list)
+		{
+		    if (list == null)
+		    {
+		        return null;
+		    }
+		
+		    String[] parts = list.split(",");
+		    ArrayList<Integer> intList = new ArrayList<Integer>();
+		
+		    for (String part : parts)
+		    {
+		        try
+		        {
+		            intList.add(Integer.parseInt(part));
+		        }
+		        catch (NumberFormatException e) {}
+		    }
+		
+		    return intList;
+		}
+	   
+   }
+    
+    
+    
     public static boolean create()
     {
         if (instance == null)
@@ -84,356 +856,38 @@ public class PC_Utils implements PC_IPacketHandler
 
     protected void iRegisterTextureFiles(String[] textureFiles) {}
 
-    public static void registerTextureFiles(String... textureFiles)
-    {
-        instance.iRegisterTextureFiles(textureFiles);
-    }
-
     protected boolean client()
     {
         return false;
-    }
-
-    public static boolean isClient()
-    {
-        return instance.client();
-    }
-
-    public static boolean isServer()
-    {
-        return !instance.client();
     }
 
     protected void iRegisterLanguage(PC_IModule module, String lang, PC_Struct3<String, String, String[]>[] translations)
     {
     }
 
-    public static void registerLanguageForLang(PC_IModule module, String lang, PC_Struct3<String, String, String[]>... translations)
-    {
-        instance.iRegisterLanguage(module, lang, translations);
-    }
-
-    public static void registerLanguage(PC_IModule module, PC_Struct3<String, String, String[]>... translations)
-    {
-        instance.registerLanguageForLang(module, "en_US", translations);
-    }
-
     protected void iLoadLanguage(PC_IModule module) {}
-
-    public static void loadLanguage(PC_IModule module)
-    {
-        instance.iLoadLanguage(module);
-    }
 
     protected void iSaveLanguage(PC_IModule module) {}
 
-    public static void saveLanguage(PC_IModule module)
-    {
-        instance.iSaveLanguage(module);
-    }
-
-    public static String tr(String identifier)
-    {
-        return StringTranslate.getInstance().translateKey(identifier).trim();
-    }
-
-    public static String tr(String identifier, String... replacements)
-    {
-        return StringTranslate.getInstance().translateKeyFormat(identifier, (Object[])replacements);
-    }
-
-    public static String isIDAvailable(int id, Class c)
-    {
-        if (id < 0)
-        {
-            return "Out of bounds";
-        }
-
-        if (id < Block.blocksList.length)
-        {
-            if (Block.blocksList[id] != null)
-            {
-                return Block.blocksList[id].getBlockName();
-            }
-        }
-        else if (Block.class.isAssignableFrom(c))
-        {
-            return "Out of bounds";
-        }
-
-        if (id < Item.itemsList.length)
-        {
-            if (Item.itemsList[id] != null)
-            {
-                return Item.itemsList[id].getItemName();
-            }
-
-            return null;
-        }
-
-        return "Out of bounds";
-    }
-
-    public static boolean isIDAvailable(int id, Class c, boolean throwError) throws Exception
-    {
-        String name = isIDAvailable(id, c);
-
-        if (!throwError || name == null)
-        {
-            return name == null;
-        }
-
-        String error = "ID " + id + " for class \"" + c.getName() + "\" already used by \"" + name + "\"";
-        PC_Logger.severe(error);
-        throw new Exception(error);
-    }
-    
-    public static <t>t register(PC_IModule module, Class<t> c)
-    {
-    	PC_Property config = getConfig(module);
-
-        if (PC_Block.class.isAssignableFrom(c))
-        {
-            return (t)register(module, (Class<PC_Block>)c, null, null);
-        }
-        else if (PC_Item.class.isAssignableFrom(c))
-        {
-            Class<PC_Item> itemClass = (Class<PC_Item>)c;
-
-            try
-            {
-            	config = config.getProperty(itemClass.getSimpleName(), null, null);
-            	int id = config.getInt("defaultID", 0);
-            	if(!isItemIDFree(id)){
-            		id = getFreeItemID();
-            		config.setInt("defaultID", id);
-            	}
-                PC_Item item = createClass(itemClass, new Class[] {int.class}, new Object[] {id});
-                instance.objects.put(itemClass.getSimpleName(), item);
-                item.setItemName(itemClass.getSimpleName());
-                item.setModule(module);
-                item.setTextureFile(getTerrainFile(module));
-
-                item.msg(PC_Utils.MSG_LOAD_FROM_CONFIG, config);
-
-                List<PC_Struct3<String, String, String[]>> l = (List<PC_Struct3<String, String, String[]>>)item.msg(MSG_DEFAULT_NAME, new ArrayList<PC_Struct3<String, String, String[]>>());
-                if(l!=null){
-                	registerLanguage(module, l.toArray(new PC_Struct3[0]));
-                }
-                return (t)item;
-            }
-            catch (Exception e)
-            {
-                e.printStackTrace();
-            }
-        }
-        else if (PC_ItemArmor.class.isAssignableFrom(c))
-        {
-            Class<PC_ItemArmor> itemArmorClass = (Class<PC_ItemArmor>)c;
-
-            try
-            {
-            	config = config.getProperty(itemArmorClass.getSimpleName(), null, null);
-            	int id = config.getInt("defaultID", 0);
-            	if(!isItemIDFree(id)){
-            		id = getFreeItemID();
-            		config.setInt("defaultID", id);
-            	}
-                PC_ItemArmor itemArmor = createClass(itemArmorClass, new Class[] {int.class}, new Object[] {id});
-                instance.objects.put(itemArmorClass.getSimpleName(), itemArmor);
-                itemArmor.setItemName(itemArmorClass.getSimpleName());
-                itemArmor.setModule(module);
-
-                itemArmor.msg(PC_Utils.MSG_LOAD_FROM_CONFIG, config);
-                
-                List<PC_Struct3<String, String, String[]>> l = (List<PC_Struct3<String, String, String[]>>)itemArmor.msg(MSG_DEFAULT_NAME, new ArrayList<PC_Struct3<String, String, String[]>>());
-                if(l!=null){
-                	registerLanguage(module, l.toArray(new PC_Struct3[0]));
-                }
-                return (t)itemArmor;
-            }
-            catch (Exception e)
-            {
-                e.printStackTrace();
-            }
-        }
-
-        throw new IllegalArgumentException("3th parameter need to be a class witch extends PC_Block or PC_Item or PC_ItemArmor");
-    }
-
-    public static <t extends PC_Block>t register(PC_IModule module, Class<t> blockClass, Class c)
-    {
-        if (PC_ItemBlock.class.isAssignableFrom(c))
-        {
-            return register(module, blockClass, (Class<PC_ItemBlock>)c, null);
-        }
-        else if (PC_TileEntity.class.isAssignableFrom(c))
-        {
-            return register(module, blockClass, null, (Class<PC_TileEntity>)c);
-        }
-
-        throw new IllegalArgumentException("4th parameter need to be a class witch extends PC_ItemBlock or PC_TileEntity");
-    }
-
-    public static <t extends PC_Block>t register(PC_IModule module, Class<t> blockClass, Class <? extends PC_ItemBlock > itemBlockClass, Class <? extends PC_TileEntity > tileEntityClass)
-    {
-    	PC_Property config = getConfig(module);
-
-        try
-        {
-        	config = config.getProperty(blockClass.getSimpleName(), null, null);
-        	
-            t block;
-            t blockOff;
-            
-            if (blockClass.isAnnotationPresent(PC_Shining.class))
-            {
-            	
-             	int idOn = config.getInt("defaultID.on", 0);
-             	if(!isBlockIDFree(idOn)){
-             		idOn = getFreeBlockID();
-             		config.setInt("defaultID.on", idOn);
-             	}
-            	
-                block = createClass(blockClass, new Class[] {int.class, boolean.class}, new Object[] {idOn, true});
-                
-                int idOff = config.getInt("defaultID.off", 0);
-             	if(!isBlockIDFree(idOff)){
-             		idOff = getFreeBlockID();
-             		config.setInt("defaultID.off", idOff);
-             	}
-                
-                blockOff = createClass(blockClass, new Class[] {int.class, boolean.class}, new Object[] {idOff, false});
-                setFieldsWithAnnotationTo(blockClass, PC_Shining.ON.class, blockClass, block);
-                setFieldsWithAnnotationTo(blockClass, PC_Shining.OFF.class, blockClass, blockOff);
-                blockOff.setBlockName(blockClass.getSimpleName());
-                blockOff.setModule(module);
-                blockOff.setTextureFile(getTerrainFile(module));
-                instance.objects.put(blockClass.getSimpleName()+".Off", blockOff);
-                mod_PowerCraft.registerBlock(blockOff, null);
-                ItemBlock itemBlock = (ItemBlock)Item.itemsList[blockOff.blockID];
-                
-                blockOff.setItemBlock(itemBlock);
-            }
-            else
-            {
-             	int id = config.getInt("defaultID", 0);
-             	if(!isBlockIDFree(id)){
-             		id = getFreeBlockID();
-             		config.setInt("defaultID", id);
-             	}
-                block = createClass(blockClass, new Class[] {int.class}, new Object[] {id});
-            }
-
-            instance.objects.put(blockClass.getSimpleName(), block);
-            block.setBlockName(blockClass.getSimpleName());
-            block.setModule(module);
-            block.setTextureFile(getTerrainFile(module));
-
-            block.msg(PC_Utils.MSG_LOAD_FROM_CONFIG, config);
-            
-            mod_PowerCraft.registerBlock(block, itemBlockClass);
-
-            ItemBlock itemBlock = (ItemBlock)Item.itemsList[block.blockID];
-            
-            block.setItemBlock(itemBlock);
-            
-            if (itemBlockClass == null)
-            {
-                registerLanguage(module, new PC_Struct3<String, String, String[]>(block.getBlockName(), (String)block.msg(MSG_DEFAULT_NAME), null));
-            }
-            else
-            {
-                PC_ItemBlock ib = (PC_ItemBlock)itemBlock;
-                ib.setModule(module);
-                List<PC_Struct3<String, String, String[]>> l = (List<PC_Struct3<String, String, String[]>>)ib.msg(MSG_DEFAULT_NAME, new ArrayList<PC_Struct3<String, String, String[]>>());
-                if(l!=null){
-                	registerLanguage(module, l.toArray(new PC_Struct3[0]));
-                }
-            }
-            
-            if (tileEntityClass != null)
-            {
-                mod_PowerCraft.registerTileEntity(tileEntityClass);
-                if(PC_ITileEntityRenderer.class.isAssignableFrom(tileEntityClass))
-                	instance.iTileEntitySpecialRenderer(tileEntityClass);
-            }
-
-            return block;
-        }
-        catch (Exception e)
-        {
-            e.printStackTrace();
-        }
-
-        return null;
-    }
-
-	protected void iTileEntitySpecialRenderer(Class <? extends TileEntity> tileEntityClass){
+    protected void iTileEntitySpecialRenderer(Class <? extends TileEntity> tileEntityClass){
 		
 	}
     
-    public static void setFieldsWithAnnotationTo(Class c, Class <? extends Annotation > annotationClass, Object obj, Object value)
-    {
-        Field fa[] = c.getDeclaredFields();
-
-        for (Field f: fa)
-        {
-            if (f.isAnnotationPresent(annotationClass))
-            {
-                f.setAccessible(true);
-
-                try
-                {
-                    f.set(obj, value);
-                }
-                catch (Exception e)
-                {
-                    e.printStackTrace();
-                }
-            }
-        }
-    }
-
-    public static Object[] getFieldsWithAnnotation(Class c, Class <? extends Annotation > annotationClass, Object obj)
-    {
-        List<Object> l = new ArrayList<Object>();
-        Field fa[] = c.getDeclaredFields();
-
-        for (Field f: fa)
-        {
-            if (f.isAnnotationPresent(annotationClass))
-            {
-                f.setAccessible(true);
-
-                try
-                {
-                    l.add(f.get(obj));
-                }
-                catch (Exception e)
-                {
-                    e.printStackTrace();
-                }
-            }
-        }
-
-        return l.toArray(new Object[0]);
-    }
-
+    
     public static void setBlockState(World world, int x, int y, int z, boolean on)
     {
-        Block b = Block.blocksList[getBID(world, x, y, z)];
+        Block b = Block.blocksList[GameInfo.getBID(world, x, y, z)];
 
         if (b instanceof PC_Block)
         {
-            int meta = getMD(world, x, y, z);
-            PC_TileEntity te = getTE(world, x, y, z);
+            int meta = GameInfo.getMD(world, x, y, z);
+            PC_TileEntity te = GameInfo.getTE(world, x, y, z);
             Class c = b.getClass();
 
             if (c.isAnnotationPresent(PC_Shining.class))
             {
-                Block bon = (Block)getFieldsWithAnnotation(c, PC_Shining.ON.class, c)[0];
-                Block boff = (Block)getFieldsWithAnnotation(c, PC_Shining.OFF.class, c)[0];
+                Block bon = (Block)ValueWriting.getFieldsWithAnnotation(c, PC_Shining.ON.class, c)[0];
+                Block boff = (Block)ValueWriting.getFieldsWithAnnotation(c, PC_Shining.OFF.class, c)[0];
 
                 if ((b == bon && !on) || (b == boff && on))
                 {
@@ -472,18 +926,8 @@ public class PC_Utils implements PC_IPacketHandler
         return c.getConstructor(param).newInstance(objects);
     }
 
-    public static boolean isSoundEnabled()
-    {
-        if (isServer())
-        {
-            return false;
-        }
-
-        return isSoundEnabled;
-    }
-
     public static void setSoundEnabled(boolean enabled){
-        if (isClient()){
+        if (GameInfo.isClient()){
         	isSoundEnabled = enabled;
         }
     }
@@ -492,31 +936,13 @@ public class PC_Utils implements PC_IPacketHandler
 
     public static void playSound(double x, double y, double z, String sound, float soundVolume, float pitch)
     {
-        if (isSoundEnabled())
+        if (GameInfo.isSoundEnabled())
         {
             instance.iPlaySound(x, y, z, sound, soundVolume, pitch);
         }
     }
 
     protected static HashMap<String, Class> guis = new HashMap<String, Class>();
-
-    public static void registerGres(String name, Class gui)
-    {
-        guis.put(name, gui);
-    }
-
-    public static void registerGresArray(Object[] o)
-    {
-        if (o == null)
-        {
-            return;
-        }
-
-        for (int i = 0; i < o.length; i += 2)
-        {
-            registerGres((String)o[i], (Class)o[i + 1]);
-        }
-    }
 
     protected void iOpenGres(String name, EntityPlayer player, Object[]o)
     {
@@ -580,118 +1006,9 @@ public class PC_Utils implements PC_IPacketHandler
         }
     }
 
-    public static void openGres(String name, EntityPlayer player, Object...o)
-    {
-        instance.iOpenGres(name, player, o);
-    }
-
-    public static int getWorldDimension(World worldObj)
-    {
-        return worldObj.provider.dimensionId;
-    }
-
-    public static Object getPrivateValue(Class c, Object o, int i)
-    {
-        try
-        {
-            Field f = c.getDeclaredFields()[i];
-            f.setAccessible(true);
-            return f.get(o);
-        }
-        catch (IllegalAccessException e)
-        {
-            return null;
-        }
-    }
-
-    public static boolean setPrivateValue(Class c, Object o, int i, Object v)
-    {
-        try
-        {
-            Field f = c.getDeclaredFields()[i];
-            f.setAccessible(true);
-            Field field_modifiers = Field.class.getDeclaredField("modifiers");
-            field_modifiers.setAccessible(true);
-            int modifier = field_modifiers.getInt(f);
-
-            if ((modifier & Modifier.FINAL) != 0)
-            {
-                field_modifiers.setInt(f, modifier & ~Modifier.FINAL);
-            }
-
-            f.set(o, v);
-
-            if ((modifier & Modifier.FINAL) != 0)
-            {
-                field_modifiers.setInt(f, modifier);
-            }
-            
-            return true;
-            
-        }
-        catch (Exception e)
-        {
-            PC_Logger.severe("setPrivateValue failed with " + c + ":" + o + ":" + i);
-            return false;
-        }
-    }
-
-    public static List<IRecipe> getRecipesForProduct(ItemStack prod)
-    {
-        List<IRecipe> recipes = new ArrayList<IRecipe>(CraftingManager.getInstance().getRecipeList());
-        List<IRecipe> ret = new ArrayList<IRecipe>();
-
-        for (IRecipe recipe: recipes)
-        {
-            try
-            {
-                if (recipe.getRecipeOutput().isItemEqual(prod) || (recipe.getRecipeOutput().itemID == prod.itemID && prod.getItemDamage() == -1))
-                {
-                    ret.add(recipe);
-                }
-            }
-            catch (NullPointerException npe)
-            {
-                continue;
-            }
-        }
-
-        return ret;
-    }
-
     protected EnumGameType iGetGameTypeFor(EntityPlayer player)
     {
         return ((EntityPlayerMP)player).theItemInWorldManager.getGameType();
-    }
-
-    public static EnumGameType getGameTypeFor(EntityPlayer player)
-    {
-        return instance.iGetGameTypeFor(player);
-    }
-
-    public static boolean isCreative(EntityPlayer player)
-    {
-        return getGameTypeFor(player).isCreative();
-    }
-
-    public static boolean isFuel(ItemStack itemstack)
-    {
-        if (itemstack == null)
-        {
-            return false;
-        }
-
-        return PC_InvUtils.getFuelValue(itemstack, 1f) > 0;
-    }
-
-    public static boolean isSmeltable(ItemStack itemstack)
-    {
-        if (itemstack == null || FurnaceRecipes.smelting().getSmeltingResult(itemstack.getItem().shiftedIndex) == null)
-        {
-            return false;
-        }
-
-        return true;
     }
 
     protected void iChatMsg(String msg, boolean clear) {}
@@ -701,116 +1018,8 @@ public class PC_Utils implements PC_IPacketHandler
         instance.iChatMsg(msg, clear);
     }
 
-    public static double ticksToSecs(int ticks)
-    {
-        return ticks * 0.05D;
-    }
-
-    public static int ticksToSecsInt(int ticks)
-    {
-        return Math.round(ticks * 0.05F);
-    }
-
-    public static int secsToTicks(double secs)
-    {
-        return (int)(secs * 20);
-    }
-
-    public static String doubleToString(double d)
-    {
-        return "" + d;
-    }
-
-    public static <t extends TileEntity>t getTE(IBlockAccess world, int x, int y, int z)
-    {
-        if (world != null)
-        {
-            TileEntity te = world.getBlockTileEntity(x, y, z);
-
-            try
-            {
-                t tet = (t)te;
-                return tet;
-            }
-            catch (ClassCastException e)
-            {
-                return null;
-            }
-        }
-
-        return null;
-    }
-
-    public static <t extends TileEntity>t getTE(IBlockAccess world, PC_VecI vec)
-    {
-    	return getTE(world, vec.x, vec.y, vec.z);
-    }
-    
-    public static <t extends TileEntity>t getTE(IBlockAccess world, int x, int y, int z, int blockID)
-    {
-        if (world != null)
-        {
-            if (getBID(world, x, y, z) == blockID)
-            {
-                TileEntity te = world.getBlockTileEntity(x, y, z);
-
-                try
-                {
-                    t tet = (t)te;
-                    return tet;
-                }
-                catch (ClassCastException e)
-                {
-                    return null;
-                }
-            }
-        }
-
-        return null;
-    }
-
-    public static int getBID(IBlockAccess world, int x, int y, int z)
-    {
-        if (world != null)
-        {
-            return world.getBlockId(x, y, z);
-        }
-
-        return 0;
-    }
-
-    public static int getBID(IBlockAccess world, PC_VecI vec)
-    {
-        return getBID(world, vec.x, vec.y, vec.z);
-    }
-    
-    public static int getMD(IBlockAccess world, int x, int y, int z)
-    {
-        if (world != null)
-        {
-            return world.getBlockMetadata(x, y, z);
-        }
-
-        return 0;
-    }
-
-    public static int getMD(IBlockAccess world, PC_VecI vec)
-    {
-        return getMD(world, vec.x, vec.y, vec.z);
-    }
-    
-    public static boolean getMD(World world, int x, int y, int z, int md)
-    {
-        if (world != null)
-        {
-            return world.setBlockMetadata(x, y, z, md);
-        }
-
-        return false;
-    }
-    
-	public static boolean setMD(World world, PC_VecI pos, int md) {
-		return getMD(world, pos.x, pos.y, pos.z, md);
+    public static boolean setMD(World world, PC_VecI pos, int md) {
+		return GameInfo.getMD(world, pos.x, pos.y, pos.z, md);
 	}
     
     protected boolean iIsPlacingReversed(EntityPlayer player)
@@ -972,127 +1181,19 @@ public class PC_Utils implements PC_IPacketHandler
         return false;
     }
 
-    public static boolean isChestEmpty(World world, int x, int y, int z, ItemStack itemStack)
-    {
-        IInventory invAt = PC_InvUtils.getCompositeInventoryAt(world, new PC_VecI(x, y, z));
-
-        if (invAt != null)
-        {
-            if (itemStack == null || itemStack.itemID == 0)
-            {
-                return PC_InvUtils.isInventoryEmpty(invAt);
-            }
-            else
-            {
-                return PC_InvUtils.isInventoryEmptyOf(invAt, itemStack);
-            }
-        }
-
-        List<IInventory> list = world.getEntitiesWithinAABB(IInventory.class,
-                AxisAlignedBB.getBoundingBox(x, y, z, x + 1, y + 1, z + 1).expand(0.6D, 0.6D, 0.6D));
-
-        if (list.size() >= 1)
-        {
-            if (itemStack == null || itemStack.itemID == 0)
-            {
-                return PC_InvUtils.isInventoryEmpty(list.get(0));
-            }
-            else
-            {
-                return PC_InvUtils.isInventoryEmptyOf(list.get(0), itemStack);
-            }
-        }
-
-        List<PC_IInventoryWrapper> list2 = world.getEntitiesWithinAABB(PC_IInventoryWrapper.class,
-                AxisAlignedBB.getBoundingBox(x, y, z, x + 1, y + 1, z + 1).expand(0.6D, 0.6D, 0.6D));
-
-        if (list2.size() >= 1)
-        {
-            if (list2.get(0).getInventory() != null)
-            {
-                if (itemStack == null || itemStack.itemID == 0)
-                {
-                    return PC_InvUtils.isInventoryEmpty(list2.get(0).getInventory());
-                }
-                else
-                {
-                    return PC_InvUtils.isInventoryEmptyOf(list2.get(0).getInventory(), itemStack);
-                }
-            }
-        }
-
-        return false;
-    }
-
-    public static boolean isChestFull(World world, int x, int y, int z, ItemStack itemStack)
-    {
-        IInventory invAt = PC_InvUtils.getCompositeInventoryAt(world, new PC_VecI(x, y, z));
-
-        if (invAt != null)
-        {
-            if (itemStack == null || itemStack.itemID == 0)
-            {
-                return PC_InvUtils.hasInventoryNoFreeSlots(invAt);
-            }
-            else
-            {
-                return PC_InvUtils.hasInventoryPlaceFor(invAt, itemStack);
-            }
-        }
-
-        List<IInventory> list = world.getEntitiesWithinAABB(IInventory.class,
-                AxisAlignedBB.getBoundingBox(x, y, z, x + 1, y + 1, z + 1).expand(0.6D, 0.6D, 0.6D));
-
-        if (list.size() >= 1)
-        {
-            if (itemStack == null || itemStack.itemID == 0)
-            {
-                return PC_InvUtils.hasInventoryNoFreeSlots(list.get(0));
-            }
-            else
-            {
-                return PC_InvUtils.hasInventoryPlaceFor(list.get(0), itemStack);
-            }
-        }
-
-        List<PC_IInventoryWrapper> list2 = world.getEntitiesWithinAABB(PC_IInventoryWrapper.class,
-                AxisAlignedBB.getBoundingBox(x, y, z, x + 1, y + 1, z + 1).expand(0.6D, 0.6D, 0.6D));
-
-        if (list2.size() >= 1)
-        {
-            if (list2.get(0).getInventory() != null)
-            {
-                if (itemStack == null || itemStack.itemID == 0)
-                {
-                    return PC_InvUtils.hasInventoryNoFreeSlots(list2.get(0).getInventory());
-                }
-                else
-                {
-                    return PC_InvUtils.hasInventoryPlaceFor(list2.get(0).getInventory(), itemStack);
-                }
-            }
-        }
-
-        return false;
-    }
-
     public static void spawnMobFromSpawner(World world, int x, int y, int z)
     {
-        TileEntityMobSpawner te = PC_Utils.getTE(world, x, y, z, Block.mobSpawner.blockID);
+        TileEntityMobSpawner te = GameInfo.getTE(world, x, y, z, Block.mobSpawner.blockID);
 
         if (te != null)
         {
-            spawnMobs(world, x, y, z, getMobID(te));
+            spawnMobs(world, x, y, z, GameInfo.getMobID(te));
         }
     }
 
-    public static String getMobID(TileEntityMobSpawner te){
-    	return (String)getPrivateValue(TileEntityMobSpawner.class, te, 1);
-    }
-    
     public static void preventSpawnerSpawning(World world, int x, int y, int z)
     {
-        TileEntityMobSpawner te = PC_Utils.getTE(world, x, y, z, Block.mobSpawner.blockID);
+        TileEntityMobSpawner te = GameInfo.getTE(world, x, y, z, Block.mobSpawner.blockID);
 
         if (te != null)
         {
@@ -1153,17 +1254,7 @@ public class PC_Utils implements PC_IPacketHandler
 
     protected File iGetMCDirectory()
     {
-        return mcs().getFile("");
-    }
-
-    public static MinecraftServer mcs()
-    {
-        return MinecraftServer.getServer();
-    }
-
-    public static File getMCDirectory()
-    {
-        return instance.iGetMCDirectory();
+        return GameInfo.mcs().getFile("");
     }
 
     public static void notifyBlockOfNeighborChange(World world, int x, int y, int z, int blockId)
@@ -1189,11 +1280,6 @@ public class PC_Utils implements PC_IPacketHandler
     protected boolean iIsEntityFX(Entity entity)
     {
         return false;
-    }
-
-    public static boolean isEntityFX(Entity entity)
-    {
-        return instance.iIsEntityFX(entity);
     }
 
     public static boolean isVersionNewer(String nVersion, String oVersion)
@@ -1320,55 +1406,6 @@ public class PC_Utils implements PC_IPacketHandler
         instance.keyReverse = watchForKey(config, "keyReverse", 29);
     }
 
-    public static PC_Block getPCBlockByName(String name)
-    {
-        if (instance.objects.containsKey(name))
-        {
-            Object o = instance.objects.get(name);
-
-            if (o instanceof PC_Block)
-            {
-                return (PC_Block)o;
-            }
-        }
-
-        return null;
-    }
-
-    public static PC_Item getPCItemByName(String name)
-    {
-        if (objects.containsKey(name))
-        {
-            Object o = objects.get(name);
-
-            if (o instanceof PC_Item)
-            {
-                return (PC_Item)o;
-            }
-        }
-
-        return null;
-    }
-
-    public static int getPCObjectIDByName(String name)
-    {
-        if (objects.containsKey(name))
-        {
-            Object o = objects.get(name);
-
-            if (o instanceof Item)
-            {
-                return ((Item)o).shiftedIndex;
-            }
-            else if (o instanceof Block)
-            {
-                return ((Block)o).blockID;
-            }
-        }
-
-        return 0;
-    }
-    
     protected static final int KEYEVENT = 0;
     protected static final int SPAWNPARTICLEONBLOCKS = 1;
 
@@ -1415,7 +1452,7 @@ public class PC_Utils implements PC_IPacketHandler
                 {
                     for (int i = 0; i < 100 * block.b; i++)
                     {
-                        Block b = Block.blocksList[getBID(player.worldObj, block.a)];
+                        Block b = Block.blocksList[GameInfo.getBID(player.worldObj, block.a)];
                         int side = rand.nextInt(6);
                         PC_VecF pos;
                         PC_VecF move;
@@ -1469,28 +1506,6 @@ public class PC_Utils implements PC_IPacketHandler
         return false;
     }
 
-    public static List<Integer> parseIntList(String list)
-    {
-        if (list == null)
-        {
-            return null;
-        }
-
-        String[] parts = list.split(",");
-        ArrayList<Integer> intList = new ArrayList<Integer>();
-
-        for (String part : parts)
-        {
-            try
-            {
-                intList.add(Integer.parseInt(part));
-            }
-            catch (NumberFormatException e) {}
-        }
-
-        return intList;
-    }
-
     public static boolean areObjectsEqual(Object a, Object b)
     {
         return a == null ? b == null : a.equals(b);
@@ -1498,7 +1513,7 @@ public class PC_Utils implements PC_IPacketHandler
 
     public static Block getBlock(World world, int x, int y, int z)
     {
-        return Block.blocksList[PC_Utils.getBID(world, x, y, z)];
+        return Block.blocksList[GameInfo.getBID(world, x, y, z)];
     }
 
     public static ItemStack extractAndRemoveChest(World world, PC_VecI pos)
@@ -1508,19 +1523,19 @@ public class PC_Utils implements PC_IPacketHandler
             return null;
         }
 
-        TileEntity tec = getTE(world, pos);
+        TileEntity tec = GameInfo.getTE(world, pos);
 
         if (tec == null)
         {
             return null;
         }
 
-        ItemStack stack = new ItemStack(getPCObjectIDByName("PCco_ItemBlockSaver"), 1, 0);
+        ItemStack stack = new ItemStack(GameInfo.getPCObjectIDByName("PCco_ItemBlockSaver"), 1, 0);
         NBTTagCompound blocktag = new NBTTagCompound();
-        getTE(world, pos).writeToNBT(blocktag);
-        int dmg = getBID(world, pos);
+        GameInfo.getTE(world, pos).writeToNBT(blocktag);
+        int dmg = GameInfo.getBID(world, pos);
         stack.setItemDamage(dmg);
-        blocktag.setInteger("BlockMeta", getMD(world, pos));
+        blocktag.setInteger("BlockMeta", GameInfo.getMD(world, pos));
         stack.setTagCompound(blocktag);
 
         if (tec instanceof IInventory)
@@ -1547,7 +1562,7 @@ public class PC_Utils implements PC_IPacketHandler
 	}
 
     public static void notifyNeighbour(World world, int x, int y, int z) {
-    	world.notifyBlocksOfNeighborChange(x, y, z, getBID(world, x, y, z));
+    	world.notifyBlocksOfNeighborChange(x, y, z, GameInfo.getBID(world, x, y, z));
 	}
     
     public static void notifyNeighbour(World world, PC_VecI pos) {
@@ -1783,9 +1798,9 @@ public class PC_Utils implements PC_IPacketHandler
     }
 
 	public static boolean isBlock(IBlockAccess world, PC_VecI pos, String...names) {
-		int blockID = getBID(world, pos.x, pos.y, pos.z);
+		int blockID = GameInfo.getBID(world, pos.x, pos.y, pos.z);
 		for(String name:names)
-			if(blockID == getPCObjectIDByName(name))
+			if(blockID == GameInfo.getPCObjectIDByName(name))
 				return true;
 		return false;
 	}
@@ -1835,7 +1850,7 @@ public class PC_Utils implements PC_IPacketHandler
 	}
 	
 	public static File getPowerCraftFile() {
-		return createFile(PC_Utils.getMCDirectory(), "PowerCraft");
+		return createFile(GameInfo.getMCDirectory(), "PowerCraft");
     }
 
 	public static int getValueNum(Class c, String n) {
@@ -1882,7 +1897,7 @@ public class PC_Utils implements PC_IPacketHandler
 		 NBTTagCompound nbttag = new NBTTagCompound("PowerCraftIDs");
 
         for(String key:objects.keySet()){
-        	nbttag.setInteger(key, getPCObjectIDByName(key));
+        	nbttag.setInteger(key, GameInfo.getPCObjectIDByName(key));
         }
         
         return nbttag;
@@ -1916,8 +1931,8 @@ public class PC_Utils implements PC_IPacketHandler
 		int id = -1;
 		if(o instanceof PC_IItemInfo){
 			if(o.getClass().isAnnotationPresent(PC_Shining.class)){
-				Object[] on = getFieldsWithAnnotation(o.getClass(), PC_Shining.ON.class, o);
-				Object[] off = getFieldsWithAnnotation(o.getClass(), PC_Shining.OFF.class, o);
+				Object[] on = ValueWriting.getFieldsWithAnnotation(o.getClass(), PC_Shining.ON.class, o);
+				Object[] off = ValueWriting.getFieldsWithAnnotation(o.getClass(), PC_Shining.OFF.class, o);
 				if(on!=null && on.length>0 && on[0] == o){
 					id = getConfig(((PC_IItemInfo) o).getModule()).getInt(objects.getClass().getSimpleName()+".defaultID.on", 0);
 				}else{
@@ -1987,7 +2002,7 @@ public class PC_Utils implements PC_IPacketHandler
 	
 	public static void registerModule(PC_IModule module){
 		PC_Property config = null;
-		File f = new File(PC_Utils.getMCDirectory(), "config/PowerCraft-"+module.getName()+".cfg");
+		File f = new File(GameInfo.getMCDirectory(), "config/PowerCraft-"+module.getName()+".cfg");
 		if(f.exists()){
 			try {
 				InputStream is = new FileInputStream(f);
@@ -2019,7 +2034,7 @@ public class PC_Utils implements PC_IPacketHandler
 	
 	public static void saveConfig(PC_IModule module) {
 		PC_Property config = getConfig(module);
-		File f = new File(PC_Utils.getMCDirectory(), "config/PowerCraft-"+module.getName()+".cfg");
+		File f = new File(GameInfo.getMCDirectory(), "config/PowerCraft-"+module.getName()+".cfg");
 		if(config!=null){
 			try {
 				OutputStream os = new FileOutputStream(f);

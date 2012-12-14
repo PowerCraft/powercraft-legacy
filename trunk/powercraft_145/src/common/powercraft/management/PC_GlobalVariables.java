@@ -9,6 +9,8 @@ import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.List;
 
+import powercraft.management.PC_Utils.GameInfo;
+
 public class PC_GlobalVariables {
 
 	public static List<String> splashes = new ArrayList<String>();
@@ -19,7 +21,7 @@ public class PC_GlobalVariables {
 	public static PC_Property config;
 	
 	public static void loadConfig(){
-		File f = new File(PC_Utils.getMCDirectory(), "config/PowerCraft.cfg");
+		File f = new File(GameInfo.getMCDirectory(), "config/PowerCraft.cfg");
 		if(f.exists()){
 			try {
 				InputStream is = new FileInputStream(f);
@@ -38,7 +40,7 @@ public class PC_GlobalVariables {
 	}
 	
 	public static void saveConfig(){
-		File f = new File(PC_Utils.getMCDirectory(), "config/PowerCraft.cfg");
+		File f = new File(GameInfo.getMCDirectory(), "config/PowerCraft.cfg");
 		if(config!=null){
 			try {
 				OutputStream os = new FileOutputStream(f);

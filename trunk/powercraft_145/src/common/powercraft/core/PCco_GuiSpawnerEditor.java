@@ -22,7 +22,7 @@ import powercraft.management.PC_GresWindow;
 import powercraft.management.PC_IGresClient;
 import powercraft.management.PC_IGresGui;
 import powercraft.management.PC_PacketHandler;
-import powercraft.management.PC_Utils;
+import powercraft.management.PC_Utils.Lang;
 
 public class PCco_GuiSpawnerEditor implements PC_IGresClient {
 
@@ -37,7 +37,7 @@ public class PCco_GuiSpawnerEditor implements PC_IGresClient {
 	
 	@Override
 	public void initGui(PC_IGresGui gui) {
-		PC_GresWidget w = new PC_GresWindow(230, 100, PC_Utils.tr("tile.mobSpawner.name")).setAlignH(PC_GresAlign.STRETCH);
+		PC_GresWidget w = new PC_GresWindow(230, 100, Lang.tr("tile.mobSpawner.name")).setAlignH(PC_GresAlign.STRETCH);
 		
 		PC_GresScrollArea sa = new PC_GresScrollArea(PC_GresScrollArea.VSCROLL);
 		sa.setSize(0, 100);
@@ -53,7 +53,7 @@ public class PCco_GuiSpawnerEditor implements PC_IGresClient {
 
 			@Override
 			public int compare(Entry<Class, String> arg0, Entry<Class, String> arg1) {
-				return PC_Utils.tr(arg0.getValue()).compareToIgnoreCase(PC_Utils.tr(arg1.getValue()));
+				return Lang.tr(arg0.getValue()).compareToIgnoreCase(Lang.tr(arg1.getValue()));
 			}
 			
 		});
@@ -61,7 +61,7 @@ public class PCco_GuiSpawnerEditor implements PC_IGresClient {
 		for(Entry<Class, String> e: se){
 			Class mob = e.getKey();
 			if((mob.getModifiers() & Modifier.ABSTRACT)==0 && EntityLiving.class.isAssignableFrom(mob) && !EntityPlayer.class.isAssignableFrom(mob)){
-				PC_GresRadioButton rb = new PC_GresRadioButton(PC_Utils.tr(e.getValue()), rg);
+				PC_GresRadioButton rb = new PC_GresRadioButton(Lang.tr(e.getValue()), rg);
 				entityIds.add(e.getValue());
 				rb.setId(entityIds.size());
 				if(e.getValue().equalsIgnoreCase(tems.getMobID()))

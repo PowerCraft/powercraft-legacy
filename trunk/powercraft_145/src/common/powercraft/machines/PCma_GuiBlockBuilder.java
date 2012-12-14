@@ -8,7 +8,7 @@ import powercraft.management.PC_GresWidget.PC_GresAlign;
 import powercraft.management.PC_GresWindow;
 import powercraft.management.PC_IGresClient;
 import powercraft.management.PC_IGresGui;
-import powercraft.management.PC_Utils;
+import powercraft.management.PC_Utils.Lang;
 
 public class PCma_GuiBlockBuilder extends PCma_ContainerBlockBuilder implements PC_IGresClient {
 
@@ -18,7 +18,7 @@ public class PCma_GuiBlockBuilder extends PCma_ContainerBlockBuilder implements 
 
 	@Override
 	public void initGui(PC_IGresGui gui) {
-		PC_GresWidget w = new PC_GresWindow(PC_Utils.tr("tile.PCma_BlockBlockBuilder.name")).setWidthForInventory();
+		PC_GresWidget w = new PC_GresWindow(Lang.tr("tile.PCma_BlockBlockBuilder.name")).setWidthForInventory();
 
 		w.setAlignH(PC_GresAlign.CENTER);
 

@@ -15,6 +15,8 @@ import net.minecraft.src.Slot;
 import powercraft.management.PC_IRecipeInputInfo;
 import powercraft.management.PC_ISlotWithBackground;
 import powercraft.management.PC_Utils;
+import powercraft.management.PC_Utils.GameInfo;
+import powercraft.management.PC_Utils.ValueWriting;
 
 public class PCco_SlotDirectCrafting extends Slot implements PC_ISlotWithBackground
 {
@@ -60,7 +62,7 @@ public class PCco_SlotDirectCrafting extends Slot implements PC_ISlotWithBackgro
         {
             ItemStack output = product.copy();
 
-            if ((PC_Utils.isCreative(thePlayer) || survivalCheating) && PC_Utils.isPlacingReversed(thePlayer))
+            if ((GameInfo.isCreative(thePlayer) || survivalCheating) && PC_Utils.isPlacingReversed(thePlayer))
             {
                 output.stackSize = output.getMaxStackSize();
             }
@@ -80,7 +82,7 @@ public class PCco_SlotDirectCrafting extends Slot implements PC_ISlotWithBackgro
         {
             ItemStack output = product.copy();
 
-            if ((PC_Utils.isCreative(thePlayer) || survivalCheating) && PC_Utils.isPlacingReversed(thePlayer))
+            if ((GameInfo.isCreative(thePlayer) || survivalCheating) && PC_Utils.isPlacingReversed(thePlayer))
             {
                 output.stackSize = output.getMaxStackSize();
             }
@@ -120,7 +122,7 @@ public class PCco_SlotDirectCrafting extends Slot implements PC_ISlotWithBackgro
             return false;
         }
 
-        if (PC_Utils.isCreative(thePlayer) || survivalCheating)
+        if (GameInfo.isCreative(thePlayer) || survivalCheating)
         {
             return true;
         }
@@ -168,7 +170,7 @@ public class PCco_SlotDirectCrafting extends Slot implements PC_ISlotWithBackgro
             return;
         }
 
-        if (PC_Utils.isCreative(thePlayer) || survivalCheating)
+        if (GameInfo.isCreative(thePlayer) || survivalCheating)
         {
             return;
         }
@@ -261,7 +263,7 @@ public class PCco_SlotDirectCrafting extends Slot implements PC_ISlotWithBackgro
             alloc = 0;
         }
 
-        if (PC_Utils.isCreative(thePlayer) || survivalCheating)
+        if (GameInfo.isCreative(thePlayer) || survivalCheating)
         {
             return true;
         }
@@ -312,7 +314,7 @@ public class PCco_SlotDirectCrafting extends Slot implements PC_ISlotWithBackgro
             alloc = 0;
         }
 
-        if (PC_Utils.isCreative(thePlayer) || survivalCheating)
+        if (GameInfo.isCreative(thePlayer) || survivalCheating)
         {
             return -1;
         }
@@ -334,7 +336,7 @@ public class PCco_SlotDirectCrafting extends Slot implements PC_ISlotWithBackgro
 
     private boolean consumePlayerItems(ItemStack stack1, int count)
     {
-        if (PC_Utils.isCreative(thePlayer) || survivalCheating)
+        if (GameInfo.isCreative(thePlayer) || survivalCheating)
         {
             return true;
         }
@@ -418,7 +420,7 @@ public class PCco_SlotDirectCrafting extends Slot implements PC_ISlotWithBackgro
 
     private boolean tryToFindMaterialsForRecipe(IRecipe irecipe)
     {
-        if (PC_Utils.isCreative(thePlayer) || survivalCheating)
+        if (GameInfo.isCreative(thePlayer) || survivalCheating)
         {
             return true;
         }
@@ -440,11 +442,11 @@ public class PCco_SlotDirectCrafting extends Slot implements PC_ISlotWithBackgro
             }
             else if (irecipe instanceof ShapedRecipes)
             {
-                tmps = (ItemStack[]) PC_Utils.getPrivateValue(ShapedRecipes.class, irecipe, 2);
+                tmps = (ItemStack[]) ValueWriting.getPrivateValue(ShapedRecipes.class, irecipe, 2);
             }
             else if (irecipe instanceof ShapelessRecipes)
             {
-                List<ItemStack> foo = ((List<ItemStack>) PC_Utils.getPrivateValue(ShapelessRecipes.class, irecipe, 1));
+                List<ItemStack> foo = ((List<ItemStack>) ValueWriting.getPrivateValue(ShapelessRecipes.class, irecipe, 1));
                 tmps = foo.toArray(new ItemStack[foo.size()]);
             }
             else

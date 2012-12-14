@@ -12,6 +12,7 @@ import net.minecraft.src.World;
 import powercraft.management.PC_ItemBlock;
 import powercraft.management.PC_Struct3;
 import powercraft.management.PC_Utils;
+import powercraft.management.PC_Utils.GameInfo;
 
 public class PCde_ItemBlockStairs extends PC_ItemBlock {
 
@@ -62,7 +63,7 @@ public class PCde_ItemBlockStairs extends PC_ItemBlock {
 
 
 		// special placing rules for Ledge
-		int bID = PC_Utils.getBID(world, i, j - 1, k);
+		int bID = GameInfo.getBID(world, i, j - 1, k);
 		
 		if (bID == PCde_App.stairs.blockID || bID == PCde_App.platform.blockID) {
 

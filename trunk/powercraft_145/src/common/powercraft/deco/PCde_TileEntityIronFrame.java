@@ -5,6 +5,7 @@ import powercraft.management.PC_ITileEntityRenderer;
 import powercraft.management.PC_Renderer;
 import powercraft.management.PC_TileEntity;
 import powercraft.management.PC_Utils;
+import powercraft.management.PC_Utils.GameInfo;
 import powercraft.management.PC_VecI;
 
 public class PCde_TileEntityIronFrame extends PC_TileEntity implements PC_ITileEntityRenderer {
@@ -38,7 +39,7 @@ public class PCde_TileEntityIronFrame extends PC_TileEntity implements PC_ITileE
 	}
 
 	private boolean needsFullFace(PC_VecI pos) {
-		int id = PC_Utils.getBID(worldObj, pos);
+		int id = GameInfo.getBID(worldObj, pos);
 		if (id == Block.torchWood.blockID) return true;
 		if (id == Block.torchRedstoneActive.blockID) return true;
 		if (id == Block.torchRedstoneIdle.blockID) return true;

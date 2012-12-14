@@ -9,6 +9,8 @@ import net.minecraft.src.World;
 import powercraft.management.PC_Item;
 import powercraft.management.PC_Struct3;
 import powercraft.management.PC_Utils;
+import powercraft.management.PC_Utils.Gres;
+import powercraft.management.PC_Utils.Lang;
 
 public class PCco_ItemOreSniffer extends PC_Item
 {
@@ -26,7 +28,7 @@ public class PCco_ItemOreSniffer extends PC_Item
     {
         if (world.isRemote)
         {
-            PC_Utils.openGres("OreSnifferResultScreen", entityplayer, i, j, k, l);
+            Gres.openGres("OreSnifferResultScreen", entityplayer, i, j, k, l);
         }
 
         itemstack.damageItem(1, entityplayer);
@@ -36,7 +38,7 @@ public class PCco_ItemOreSniffer extends PC_Item
     @Override
     public void addInformation(ItemStack itemStack, EntityPlayer player, List list, boolean b)
     {
-        list.add(PC_Utils.tr("pc.sniffer.desc"));
+        list.add(Lang.tr("pc.sniffer.desc"));
     }
 
 	@Override

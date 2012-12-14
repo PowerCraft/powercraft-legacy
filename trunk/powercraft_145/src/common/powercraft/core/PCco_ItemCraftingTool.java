@@ -9,6 +9,7 @@ import net.minecraft.src.World;
 import powercraft.management.PC_Item;
 import powercraft.management.PC_Struct3;
 import powercraft.management.PC_Utils;
+import powercraft.management.PC_Utils.Gres;
 
 public class PCco_ItemCraftingTool extends PC_Item
 {
@@ -26,7 +27,7 @@ public class PCco_ItemCraftingTool extends PC_Item
     {
         if (!world.isRemote)
         {
-            PC_Utils.openGres("CraftingTool", entityplayer);
+            Gres.openGres("CraftingTool", entityplayer);
         }
 
         return itemstack;

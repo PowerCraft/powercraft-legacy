@@ -11,6 +11,7 @@ import net.minecraft.src.World;
 import powercraft.management.PC_Block;
 import powercraft.management.PC_Renderer;
 import powercraft.management.PC_Utils;
+import powercraft.management.PC_Utils.GameInfo;
 import powercraft.management.PC_VecI;
 import cpw.mods.fml.common.Side;
 import cpw.mods.fml.common.asm.SideOnly;
@@ -94,7 +95,7 @@ public class PCli_BlockLightningConductor extends PC_Block
         PC_Renderer.tessellatorStartDrawingQuads();
         PC_Renderer.glColor3f(1.0f, 1.0f, 1.0f);
 
-        if (PC_Utils.getMD(world, x, y, z) == 0)
+        if (GameInfo.getMD(world, x, y, z) == 0)
         {
             block.setBlockBounds(0.5f - f * 5, 0.0f, 0.5f - f * 5, 0.5f + f * 5, 0.66f, 0.5f + f * 5);
             PC_Renderer.renderStandardBlock(renderer, block, x, y, z);

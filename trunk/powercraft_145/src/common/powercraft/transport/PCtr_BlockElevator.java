@@ -15,6 +15,7 @@ import net.minecraft.src.World;
 import powercraft.management.PC_Block;
 import powercraft.management.PC_MathHelper;
 import powercraft.management.PC_Utils;
+import powercraft.management.PC_Utils.GameInfo;
 import powercraft.management.PC_VecI;
 
 public class PCtr_BlockElevator extends PC_Block
@@ -64,7 +65,7 @@ public class PCtr_BlockElevator extends PC_Block
             }
         }
 
-        boolean down = (PC_Utils.getMD(world, pos) == 1);
+        boolean down = (GameInfo.getMD(world, pos) == 1);
         PCtr_BeltHelper.entityPreventDespawning(world, pos, true, entity);
         boolean halted = world.isBlockGettingPowered(i, j, k);
         double BBOOST = (entity instanceof EntityPlayer) ? BORDER_BOOST / 4.0D : BORDER_BOOST;

@@ -24,6 +24,8 @@ import powercraft.management.PC_Shining;
 import powercraft.management.PC_Shining.OFF;
 import powercraft.management.PC_Shining.ON;
 import powercraft.management.PC_Utils;
+import powercraft.management.PC_Utils.GameInfo;
+import powercraft.management.PC_Utils.Gres;
 import powercraft.management.PC_VecI;
 
 @PC_Shining
@@ -57,7 +59,7 @@ public class PCli_BlockLight extends PC_Block implements PC_IItemInfo
     @Override
     public int getBlockTexture(IBlockAccess par1iBlockAccess, int par2, int par3, int par4, int par5)
     {
-        PCli_TileEntityLight te = PC_Utils.getTE(par1iBlockAccess, par2, par3, par4);
+        PCli_TileEntityLight te = GameInfo.getTE(par1iBlockAccess, par2, par3, par4);
 
         if (te == null) return
                     super.getBlockTexture(par1iBlockAccess, par2, par3, par4, par5);
@@ -106,7 +108,7 @@ public class PCli_BlockLight extends PC_Block implements PC_IItemInfo
 	@Override
     public void onBlockPlacedBy(World world, int i, int j, int k, EntityLiving player)
     {
-        PCli_TileEntityLight tileentity = PC_Utils.getTE(world, i, j, k);
+        PCli_TileEntityLight tileentity = GameInfo.getTE(world, i, j, k);
 
         if (tileentity != null && tileentity.isStable())
         {
@@ -133,19 +135,19 @@ public class PCli_BlockLight extends PC_Block implements PC_IItemInfo
         {
             if (ihold.getItem().shiftedIndex == Item.dyePowder.shiftedIndex)
             {
-                PC_Utils.<PCli_TileEntityLight>getTE(world, i, j, k, blockID).setColor(new PC_Color(PC_Color.getHexColorForName(ItemDye.dyeColorNames[ihold.getItemDamage()])));
+                GameInfo.<PCli_TileEntityLight>getTE(world, i, j, k, blockID).setColor(new PC_Color(PC_Color.getHexColorForName(ItemDye.dyeColorNames[ihold.getItemDamage()])));
                 return true;
             }
         }
 
-        PC_Utils.openGres("Light", entityplayer, i, j, k);
+        Gres.openGres("Light", entityplayer, i, j, k);
         return true;
     }
 
     @Override
     public void onNeighborBlockChange(World world, int i, int j, int k, int l)
     {
-        PCli_TileEntityLight tileentity = PC_Utils.getTE(world, i, j, k, blockID);
+        PCli_TileEntityLight tileentity = GameInfo.getTE(world, i, j, k, blockID);
 
         if (tileentity == null || tileentity.isStable())
         {
@@ -163,7 +165,7 @@ public class PCli_BlockLight extends PC_Block implements PC_IItemInfo
     @Override
     public void updateTick(World world, int i, int j, int k, Random random)
     {
-        PCli_TileEntityLight tileentity = PC_Utils.getTE(world, i, j, k);
+        PCli_TileEntityLight tileentity = GameInfo.getTE(world, i, j, k);
 
         if (tileentity == null || tileentity.isStable())
         {
@@ -216,7 +218,7 @@ public class PCli_BlockLight extends PC_Block implements PC_IItemInfo
 
     public static void onPoweredBlockChange(World world, int x, int y, int z, boolean rs_state)
     {
-        PCli_TileEntityLight tileentity = PC_Utils.getTE(world, x, y, z);
+        PCli_TileEntityLight tileentity = GameInfo.getTE(world, x, y, z);
 
         if ((tileentity == null || tileentity.isStable()) && rs_state == false)
         {
@@ -237,7 +239,7 @@ public class PCli_BlockLight extends PC_Block implements PC_IItemInfo
     public void setBlockBoundsBasedOnState(IBlockAccess iblockaccess, int i, int j, int k)
     {
         int i1 = iblockaccess.getBlockMetadata(i, j, k);
-        PCli_TileEntityLight te = PC_Utils.getTE(iblockaccess, i, j, k);
+        PCli_TileEntityLight te = GameInfo.getTE(iblockaccess, i, j, k);
 
         if (te == null)
         {
@@ -281,7 +283,7 @@ public class PCli_BlockLight extends PC_Block implements PC_IItemInfo
 
     private PC_Color getColor(IBlockAccess w, int i, int j, int k)
     {
-        PCli_TileEntityLight tei = PC_Utils.getTE(w, i, j, k);
+        PCli_TileEntityLight tei = GameInfo.getTE(w, i, j, k);
 
         if (tei == null)
         {
@@ -306,7 +308,7 @@ public class PCli_BlockLight extends PC_Block implements PC_IItemInfo
     @Override
     public void randomDisplayTick(World world, int i, int j, int k, Random random)
     {
-        PCli_TileEntityLight tei = PC_Utils.getTE(world, i, j, k);
+        PCli_TileEntityLight tei = GameInfo.getTE(world, i, j, k);
 
         if (!tei.isActive())
         {

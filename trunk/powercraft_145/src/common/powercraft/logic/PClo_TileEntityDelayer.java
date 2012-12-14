@@ -6,6 +6,7 @@ import net.minecraft.src.NBTTagCompound;
 import net.minecraft.src.World;
 import powercraft.management.PC_TileEntity;
 import powercraft.management.PC_Utils;
+import powercraft.management.PC_Utils.GameInfo;
 
 public class PClo_TileEntityDelayer extends PC_TileEntity
 {
@@ -46,7 +47,7 @@ public class PClo_TileEntityDelayer extends PC_TileEntity
     @Override
     public void updateEntity()
     {
-        int rot = PClo_BlockDelayer.getRotation_static(PC_Utils.getMD(worldObj, xCoord, yCoord, zCoord));
+        int rot = PClo_BlockDelayer.getRotation_static(GameInfo.getMD(worldObj, xCoord, yCoord, zCoord));
         boolean stop = false;
         boolean reset = false;
 
@@ -58,7 +59,7 @@ public class PClo_TileEntityDelayer extends PC_TileEntity
 
         if (!stop || reset)
         {
-            worldObj.scheduleBlockUpdate(xCoord, yCoord, zCoord, PC_Utils.getBID(worldObj, xCoord, yCoord, zCoord), PClo_App.delayer.tickRate());
+            worldObj.scheduleBlockUpdate(xCoord, yCoord, zCoord, GameInfo.getBID(worldObj, xCoord, yCoord, zCoord), PClo_App.delayer.tickRate());
         }
     }
 

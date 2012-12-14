@@ -26,6 +26,7 @@ import powercraft.management.PC_Logger;
 import powercraft.management.PC_Struct2;
 import powercraft.management.PC_Struct3;
 import powercraft.management.PC_Utils;
+import powercraft.management.PC_Utils.GameInfo;
 import powercraft.management.PC_VecI;
 
 public class PCma_TreeHarvestingManager {
@@ -117,7 +118,7 @@ public class PCma_TreeHarvestingManager {
 	public static ItemStack[] harvestTreeAt(World world, PC_VecI treeStart) {
 
 		PC_Struct3<PC_Struct2<Integer, Integer>, PC_Struct2<Integer, Integer>, PC_Struct2<Integer, Integer>> treeData = getStructForTree(
-				PC_Utils.getBID(world, treeStart), PC_Utils.getMD(world, treeStart));
+				GameInfo.getBID(world, treeStart), GameInfo.getMD(world, treeStart));
 		ArrayList<ItemStack> harvestedStacks = new ArrayList<ItemStack>();
 
 		if (treeData != null) {
@@ -155,8 +156,8 @@ public class PCma_TreeHarvestingManager {
 		if (cnt >= MAXLOGS || pos.distanceTo(treeRootPos.x, pos.y, treeRootPos.z) > 10) {
 			return;
 		}
-		int id = PC_Utils.getBID(world, pos);
-		int meta = PC_Utils.getMD(world, pos);
+		int id = GameInfo.getBID(world, pos);
+		int meta = GameInfo.getMD(world, pos);
 
 		int wood_id = treeData.a.a;
 		int wood_meta = treeData.a.b;
@@ -188,22 +189,22 @@ public class PCma_TreeHarvestingManager {
 			PC_Utils.setBIDNoNotify(world, pos, 0, 0);
 
 			if (world.rand.nextInt(10 - ((id == wood_id && (meta == wood_meta || wood_meta == -1)) ? 8 : 0)) == 0) {
-				if (PC_Utils.isSoundEnabled()) {
+				if (GameInfo.isSoundEnabled()) {
 					world.playAuxSFX(2001, pos.x, pos.y, pos.z, id + (meta << 12));
 				}
 			}
 
 			if (cnt == 0) {
 				// if not in tree, simply stop.
-				if (PC_Utils.getBID(world, pos.offset(0, 1, 0)) != wood_id || (PC_Utils.getMD(world, pos.offset(0, 1, 0)) != wood_meta && wood_meta != -1)) {
+				if (GameInfo.getBID(world, pos.offset(0, 1, 0)) != wood_id || (GameInfo.getMD(world, pos.offset(0, 1, 0)) != wood_meta && wood_meta != -1)) {
 					PC_Utils.notifyNeighbour(world, pos);
 					return;
 				}
-				if (PC_Utils.getBID(world, pos.offset(0, 2, 0)) != wood_id || (PC_Utils.getMD(world, pos.offset(0, 2, 0)) != wood_meta && wood_meta != -1)) {
+				if (GameInfo.getBID(world, pos.offset(0, 2, 0)) != wood_id || (GameInfo.getMD(world, pos.offset(0, 2, 0)) != wood_meta && wood_meta != -1)) {
 					PC_Utils.notifyNeighbour(world, pos);
 					return;
 				}
-				if (PC_Utils.getBID(world, pos.offset(0, 3, 0)) != wood_id || (PC_Utils.getMD(world, pos.offset(0, 3, 0)) != wood_meta && wood_meta != -1)) {
+				if (GameInfo.getBID(world, pos.offset(0, 3, 0)) != wood_id || (GameInfo.getMD(world, pos.offset(0, 3, 0)) != wood_meta && wood_meta != -1)) {
 					PC_Utils.notifyNeighbour(world, pos);
 					return;
 				}
@@ -221,8 +222,8 @@ public class PCma_TreeHarvestingManager {
 				for (int y = pos.y - 1; y <= pos.y + 1; y++) {
 					for (int z = pos.z - 1; z <= pos.z + 1; z++) {
 						PC_VecI here = new PC_VecI(x, y, z);
-						int here_id = PC_Utils.getBID(world, here);
-						int here_meta = PC_Utils.getMD(world, here);
+						int here_id = GameInfo.getBID(world, here);
+						int here_meta = GameInfo.getMD(world, here);
 						if ((here_id == wood_id && ((here_meta&3) == wood_meta || wood_meta == -1))
 								|| (here_id == leaves_id && ((here_meta & 3) == leaves_meta || leaves_meta == -1))
 								|| (here_id == 127/*Cacao*/)) {
@@ -236,7 +237,7 @@ public class PCma_TreeHarvestingManager {
 			PC_Utils.notifyNeighbour(world, pos);
 			
 			// replant sapling.
-			if (PC_Utils.getBID(world, pos.offset(0, -1, 0)) == Block.dirt.blockID) {
+			if (GameInfo.getBID(world, pos.offset(0, -1, 0)) == Block.dirt.blockID) {
 				if (sapling_id > 0 && sapling_meta >= 0) {
 					PC_Utils.setBID(world, pos, sapling_id, sapling_meta);
 				}

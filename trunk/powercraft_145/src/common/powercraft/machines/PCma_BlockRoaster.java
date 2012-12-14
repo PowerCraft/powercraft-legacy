@@ -15,6 +15,7 @@ import powercraft.management.PC_Block;
 import powercraft.management.PC_IItemInfo;
 import powercraft.management.PC_InvUtils;
 import powercraft.management.PC_Utils;
+import powercraft.management.PC_Utils.Gres;
 import powercraft.management.PC_VecI;
 
 public class PCma_BlockRoaster extends PC_Block implements PC_IItemInfo
@@ -95,7 +96,7 @@ public class PCma_BlockRoaster extends PC_Block implements PC_IItemInfo
             return true;
         }
 
-        PC_Utils.openGres("Roaster", entityplayer, i, j, k);
+        Gres.openGres("Roaster", entityplayer, i, j, k);
         return true;
     }
 

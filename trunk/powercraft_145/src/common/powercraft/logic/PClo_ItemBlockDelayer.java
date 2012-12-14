@@ -9,6 +9,7 @@ import powercraft.management.PC_ItemBlock;
 import powercraft.management.PC_MathHelper;
 import powercraft.management.PC_Struct3;
 import powercraft.management.PC_Utils;
+import powercraft.management.PC_Utils.Lang;
 
 public class PClo_ItemBlockDelayer extends PC_ItemBlock
 {
@@ -62,7 +63,7 @@ public class PClo_ItemBlockDelayer extends PC_ItemBlock
 
     public static String getDescriptionForGate(int dmg)
     {
-        return PC_Utils.tr("pc.delayer." + PClo_DelayerType.names[PC_MathHelper.clamp_int(dmg, 0, PClo_DelayerType.TOTAL_DELAYER_COUNT - 1)] + ".desc");
+        return Lang.tr("pc.delayer." + PClo_DelayerType.names[PC_MathHelper.clamp_int(dmg, 0, PClo_DelayerType.TOTAL_DELAYER_COUNT - 1)] + ".desc");
     }
 
 	@Override

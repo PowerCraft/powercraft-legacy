@@ -3,6 +3,8 @@ package powercraft.management;
 import java.util.ArrayList;
 import java.util.List;
 
+import powercraft.management.PC_Utils.GameInfo;
+
 import net.minecraft.src.Block;
 import net.minecraft.src.CreativeTabs;
 import net.minecraft.src.EntityPlayer;
@@ -55,7 +57,7 @@ public abstract class PC_ItemBlock extends ItemBlock implements PC_IItemInfo, PC
         {
             Block block =  Block.blocksList[getBlockID()];
             block.onBlockPlacedBy(world, x, y, z, player);
-            PC_TileEntity te = (PC_TileEntity)PC_Utils.getTE(world, x, y, z);
+            PC_TileEntity te = (PC_TileEntity)GameInfo.getTE(world, x, y, z);
 
             if (te == null)
             {

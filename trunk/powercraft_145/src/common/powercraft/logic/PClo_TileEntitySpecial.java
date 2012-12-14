@@ -9,6 +9,7 @@ import powercraft.management.PC_ISpecialAccessInventory;
 import powercraft.management.PC_InvUtils;
 import powercraft.management.PC_TileEntity;
 import powercraft.management.PC_Utils;
+import powercraft.management.PC_Utils.GameInfo;
 
 public class PClo_TileEntitySpecial extends PC_TileEntity implements IInventory, PC_ISpecialAccessInventory
 {
@@ -30,7 +31,7 @@ public class PClo_TileEntitySpecial extends PC_TileEntity implements IInventory,
     {
         int nextUpdate = 0;
         boolean shouldState = false;
-        int rot = PClo_BlockSpecial.getRotation_static(PC_Utils.getMD(worldObj, xCoord, yCoord, zCoord));
+        int rot = PClo_BlockSpecial.getRotation_static(GameInfo.getMD(worldObj, xCoord, yCoord, zCoord));
         int xAdd = 0, zAdd = 0;
 
         if (rot == 0)
@@ -65,11 +66,11 @@ public class PClo_TileEntitySpecial extends PC_TileEntity implements IInventory,
                 break;
 
             case PClo_SpecialType.CHEST_EMPTY:
-                shouldState = PC_Utils.isChestEmpty(worldObj, xCoord + xAdd, yCoord, zCoord + zAdd, inv[0]);
+                shouldState = GameInfo.isChestEmpty(worldObj, xCoord + xAdd, yCoord, zCoord + zAdd, inv[0]);
                 break;
 
             case PClo_SpecialType.CHEST_FULL:
-                shouldState = PC_Utils.isChestFull(worldObj, xCoord + xAdd, yCoord, zCoord + zAdd, inv[0]);
+                shouldState = GameInfo.isChestFull(worldObj, xCoord + xAdd, yCoord, zCoord + zAdd, inv[0]);
                 break;
 
             case PClo_SpecialType.SPECIAL:
@@ -85,7 +86,7 @@ public class PClo_TileEntitySpecial extends PC_TileEntity implements IInventory,
 
         if (PClo_BlockSpecial.isActive(worldObj, xCoord, yCoord, zCoord) != shouldState)
         {
-            worldObj.scheduleBlockUpdate(xCoord, yCoord, zCoord, PC_Utils.getBID(worldObj, xCoord, yCoord, zCoord), PClo_App.special.tickRate());
+            worldObj.scheduleBlockUpdate(xCoord, yCoord, zCoord, GameInfo.getBID(worldObj, xCoord, yCoord, zCoord), PClo_App.special.tickRate());
         }
     }
 

@@ -13,6 +13,7 @@ import powercraft.management.PC_Item;
 import powercraft.management.PC_MathHelper;
 import powercraft.management.PC_Struct3;
 import powercraft.management.PC_Utils;
+import powercraft.management.PC_Utils.GameInfo;
 import powercraft.management.PC_VecI;
 
 public class PCco_ItemActivator extends PC_Item{
@@ -43,7 +44,7 @@ public class PCco_ItemActivator extends PC_Item{
 				pos = new PC_VecI(x, y+1, z);
 			}
 
-			if (PC_Utils.getBID(world, pos) == Block.chest.blockID && PC_Utils.getBID(world, pos.copy().add(0, -1, 0)) == Block.blockSteel.blockID) {
+			if (GameInfo.getBID(world, pos) == Block.chest.blockID && GameInfo.getBID(world, pos.copy().add(0, -1, 0)) == Block.blockSteel.blockID) {
 				break;
 			}
 

@@ -9,6 +9,7 @@ import net.minecraft.src.GuiScreen;
 import org.lwjgl.opengl.GL11;
 
 import powercraft.management.PC_GresWidget.PC_GresAlign;
+import powercraft.management.PC_Utils.Lang;
 
 public class PC_GuiUpdateNotification implements PC_IGresClient {
 
@@ -32,7 +33,7 @@ public class PC_GuiUpdateNotification implements PC_IGresClient {
 	
 	@Override
 	public void initGui(PC_IGresGui gui) {
-		PC_GresWindow w = new PC_GresWindow(240, 50, PC_Utils.tr("pc.gui.update.title"));
+		PC_GresWindow w = new PC_GresWindow(240, 50, Lang.tr("pc.gui.update.title"));
 		w.setAlignH(PC_GresAlign.STRETCH);
 		PC_GresLayoutH hg;
 
@@ -43,8 +44,8 @@ public class PC_GuiUpdateNotification implements PC_IGresClient {
 
 		hg = new PC_GresLayoutH();
 		hg.setAlignH(PC_GresAlign.CENTER);
-		hg.add(new PC_GresLabel(PC_Utils.tr("pc.gui.update.newVersionAvailable")));
-		hg.add(new PC_GresLink(PC_Utils.tr("pc.gui.update.readMore")).setId(1));
+		hg.add(new PC_GresLabel(Lang.tr("pc.gui.update.newVersionAvailable")));
+		hg.add(new PC_GresLink(Lang.tr("pc.gui.update.readMore")).setId(1));
 
 
 
@@ -87,9 +88,9 @@ public class PC_GuiUpdateNotification implements PC_IGresClient {
 
 		hg = new PC_GresLayoutH();
 		hg.setAlignH(PC_GresAlign.CENTER);
-		hg.add(checkDisable = new PC_GresCheckBox(PC_Utils.tr("pc.gui.update.doNotShowAgain")));
+		hg.add(checkDisable = new PC_GresCheckBox(Lang.tr("pc.gui.update.doNotShowAgain")));
 		hg.add(new PC_GresGap(10, 0));
-		hg.add(buttonOK = new PC_GresButton(PC_Utils.tr("pc.gui.ok")).setId(0));
+		hg.add(buttonOK = new PC_GresButton(Lang.tr("pc.gui.ok")).setId(0));
 		w.add(hg);
 
 		w.add(new PC_GresGap(0, 0));

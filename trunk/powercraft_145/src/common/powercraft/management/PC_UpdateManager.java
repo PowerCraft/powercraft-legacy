@@ -22,6 +22,9 @@ import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 import org.xml.sax.SAXParseException;
 
+import powercraft.management.PC_Utils.GameInfo;
+import powercraft.management.PC_Utils.Lang;
+
 public class PC_UpdateManager {
 
 	public static class Version implements Comparable<Version>{
@@ -124,7 +127,7 @@ public class PC_UpdateManager {
 	            PC_Logger.fine("Starting extraction of language files");
 	            ZipEntry ze = null;
 
-	            File fileP = new File(PC_Utils.getMCDirectory(), PC_Utils.getPowerCraftFile() + "/lang");
+	            File fileP = new File(GameInfo.getMCDirectory(), PC_Utils.getPowerCraftFile() + "/lang");
             	if(!fileP.exists())
             		fileP.mkdirs();
 	            
@@ -170,7 +173,7 @@ public class PC_UpdateManager {
 	            PC_Logger.fine("Language pack updated.\n\n");
 	            PC_GlobalVariables.config.setInt("modules."+module.getName()+".langVersion", langVersion);
 	            PC_GlobalVariables.saveConfig();
-	            PC_Utils.loadLanguage(module);
+	            Lang.loadLanguage(module);
 	        }
 	        catch (Exception e)
 	        {

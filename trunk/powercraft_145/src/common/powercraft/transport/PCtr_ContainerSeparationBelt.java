@@ -6,7 +6,7 @@ import java.util.List;
 import net.minecraft.src.EntityPlayer;
 import net.minecraft.src.Slot;
 import powercraft.management.PC_GresBaseWithInventory;
-import powercraft.management.PC_Utils;
+import powercraft.management.PC_Utils.GameInfo;
 
 public class PCtr_ContainerSeparationBelt extends PC_GresBaseWithInventory
 {
@@ -21,7 +21,7 @@ public class PCtr_ContainerSeparationBelt extends PC_GresBaseWithInventory
     @Override
     protected void init(Object[] o)
     {
-        tes = (PCtr_TileEntitySeparationBelt)PC_Utils.getTE(thePlayer.worldObj, (Integer)o[0], (Integer)o[1], (Integer)o[2]);
+        tes = (PCtr_TileEntitySeparationBelt)GameInfo.getTE(thePlayer.worldObj, (Integer)o[0], (Integer)o[1], (Integer)o[2]);
     }
 
     @Override

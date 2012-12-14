@@ -15,7 +15,7 @@ import powercraft.management.PC_ISpecialAccessInventory;
 import powercraft.management.PC_IStateReportingInventory;
 import powercraft.management.PC_InvUtils;
 import powercraft.management.PC_TileEntity;
-import powercraft.management.PC_Utils;
+import powercraft.management.PC_Utils.GameInfo;
 
 public class PCma_TileEntityAutomaticWorkbench extends PC_TileEntity implements IInventory, PC_IStateReportingInventory, PC_ISpecialAccessInventory
 {
@@ -523,7 +523,7 @@ public class PCma_TileEntityAutomaticWorkbench extends PC_TileEntity implements 
 
     private void makeSound()
     {
-        if (PC_Utils.isSoundEnabled())
+        if (GameInfo.isSoundEnabled())
         {
             worldObj.playAuxSFX(1000, xCoord, yCoord, zCoord, 0);
         }

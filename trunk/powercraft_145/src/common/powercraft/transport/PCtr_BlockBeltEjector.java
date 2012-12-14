@@ -10,6 +10,8 @@ import net.minecraft.src.ItemStack;
 import net.minecraft.src.TileEntity;
 import net.minecraft.src.World;
 import powercraft.management.PC_Utils;
+import powercraft.management.PC_Utils.GameInfo;
+import powercraft.management.PC_Utils.Gres;
 import powercraft.management.PC_VecI;
 
 public class PCtr_BlockBeltEjector extends PCtr_BlockBeltBase
@@ -34,7 +36,7 @@ public class PCtr_BlockBeltEjector extends PCtr_BlockBeltBase
             PCtr_BeltHelper.packItems(world, pos);
         }
 
-        int direction = PCtr_BeltHelper.getRotation(PC_Utils.getMD(world, pos));
+        int direction = PCtr_BeltHelper.getRotation(GameInfo.getMD(world, pos));
         PC_VecI pos_leading_to = pos.copy();
 
         switch (direction)
@@ -117,7 +119,7 @@ public class PCtr_BlockBeltEjector extends PCtr_BlockBeltBase
                 }
             }
 
-            PC_Utils.openGres("EjectionBelt", entityplayer, i, j, k);
+            Gres.openGres("EjectionBelt", entityplayer, i, j, k);
             return true;
         }
     }
@@ -126,7 +128,7 @@ public class PCtr_BlockBeltEjector extends PCtr_BlockBeltBase
     public void updateTick(World world, int i, int j, int k, Random random)
     {
         PC_VecI pos = new PC_VecI(i, j, k);
-        int meta = PC_Utils.getMD(world, pos);
+        int meta = GameInfo.getMD(world, pos);
 
         if (isPowered(world, pos))
         {

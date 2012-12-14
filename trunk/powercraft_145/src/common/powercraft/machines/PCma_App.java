@@ -11,7 +11,8 @@ import powercraft.management.PC_ItemStack;
 import powercraft.management.PC_Property;
 import powercraft.management.PC_ShapedRecipes;
 import powercraft.management.PC_Struct2;
-import powercraft.management.PC_Utils;
+import powercraft.management.PC_Utils.GameInfo;
+import powercraft.management.PC_Utils.ModuleLoader;
 import cpw.mods.fml.common.network.NetworkMod;
 
 //@Mod(modid = "PowerCraft-Machines", name = "PowerCraft-Machines", version = "3.5.0AlphaC", dependencies = "required-after:PowerCraft-Core")
@@ -53,18 +54,18 @@ public class PCma_App implements PC_IModule
 
 	@Override
 	public void initProperties(PC_Property config) {
-		roasterIgnoreBlockIDs = PC_Utils.parseIntList(config.getString("PCma_BlockRoaster.roasterIgnoreBlockIDs", "1"));
+		roasterIgnoreBlockIDs = GameInfo.parseIntList(config.getString("PCma_BlockRoaster.roasterIgnoreBlockIDs", "1"));
 	}
 
 	@Override
 	public void initBlocks() {
-        automaticWorkbench = PC_Utils.register(this, PCma_BlockAutomaticWorkbench.class, PCma_TileEntityAutomaticWorkbench.class);
-        roaster = PC_Utils.register(this, PCma_BlockRoaster.class, PCma_TileEntityRoaster.class);
-        replacer = PC_Utils.register(this, PCma_BlockReplacer.class, PCma_TileEntityReplacer.class);
-        transmutabox = PC_Utils.register(this, PCma_BlockTransmutabox.class, PCma_TileEntityTransmutabox.class);
-        xpBank = PC_Utils.register(this, PCma_BlockXPBank.class, PCma_TileEntityXPBank.class);
-        blockBuilder = PC_Utils.register(this, PCma_BlockBlockBuilder.class, PCma_TileEntityBlockBuilder.class);
-        harvester = PC_Utils.register(this, PCma_BlockHarvester.class);
+        automaticWorkbench = ModuleLoader.register(this, PCma_BlockAutomaticWorkbench.class, PCma_TileEntityAutomaticWorkbench.class);
+        roaster = ModuleLoader.register(this, PCma_BlockRoaster.class, PCma_TileEntityRoaster.class);
+        replacer = ModuleLoader.register(this, PCma_BlockReplacer.class, PCma_TileEntityReplacer.class);
+        transmutabox = ModuleLoader.register(this, PCma_BlockTransmutabox.class, PCma_TileEntityTransmutabox.class);
+        xpBank = ModuleLoader.register(this, PCma_BlockXPBank.class, PCma_TileEntityXPBank.class);
+        blockBuilder = ModuleLoader.register(this, PCma_BlockBlockBuilder.class, PCma_TileEntityBlockBuilder.class);
+        harvester = ModuleLoader.register(this, PCma_BlockHarvester.class);
 	}
 	
 	@Override

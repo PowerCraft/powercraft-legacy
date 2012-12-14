@@ -4,6 +4,9 @@ import net.minecraft.src.NBTTagCompound;
 import powercraft.management.PC_PacketHandler;
 import powercraft.management.PC_TileEntity;
 import powercraft.management.PC_Utils;
+import powercraft.management.PC_Utils.Converter;
+import powercraft.management.PC_Utils.GameInfo;
+import powercraft.management.PC_Utils.Lang;
 
 public class PClo_TileEntityPulsar extends PC_TileEntity
 {
@@ -72,17 +75,17 @@ public class PClo_TileEntityPulsar extends PC_TileEntity
 
     public void printDelay()
     {
-        PC_Utils.chatMsg(PC_Utils.tr("pc.pulsar.clickMsg", new String[] { delay + "", PC_Utils.ticksToSecs(delay) + "" }), true);
+        PC_Utils.chatMsg(Lang.tr("pc.pulsar.clickMsg", new String[] { delay + "", Converter.ticksToSecs(delay) + "" }), true);
     }
 
     public void printDelayTime()
     {
-        PC_Utils.chatMsg(PC_Utils.tr("pc.pulsar.clickMsgTime", new String[] { delay + "", PC_Utils.ticksToSecs(delay) + "", (delay - delayTimer) + "" }), true);
+        PC_Utils.chatMsg(Lang.tr("pc.pulsar.clickMsgTime", new String[] { delay + "", Converter.ticksToSecs(delay) + "", (delay - delayTimer) + "" }), true);
     }
 
     public boolean isActive()
     {
-        return PC_Utils.getBID(worldObj, xCoord, yCoord, zCoord) == PClo_BlockPulsar.on.blockID;
+        return GameInfo.getBID(worldObj, xCoord, yCoord, zCoord) == PClo_BlockPulsar.on.blockID;
     }
 
     @Override

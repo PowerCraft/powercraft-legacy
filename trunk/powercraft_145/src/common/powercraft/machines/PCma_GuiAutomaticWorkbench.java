@@ -15,6 +15,7 @@ import powercraft.management.PC_IGresClient;
 import powercraft.management.PC_IGresGui;
 import powercraft.management.PC_PacketHandler;
 import powercraft.management.PC_Utils;
+import powercraft.management.PC_Utils.Lang;
 
 public class PCma_GuiAutomaticWorkbench extends PCma_ContainerAutomaticWorkbench implements PC_IGresClient {
 
@@ -26,7 +27,7 @@ public class PCma_GuiAutomaticWorkbench extends PCma_ContainerAutomaticWorkbench
 
 	@Override
 	public void initGui(PC_IGresGui gui) {
-		PC_GresWindow w = new PC_GresWindow(50, 50, PC_Utils.tr("tile.PCmaAutoWorkbench.name"));
+		PC_GresWindow w = new PC_GresWindow(50, 50, Lang.tr("tile.PCmaAutoWorkbench.name"));
 
 		PC_GresWidget hg = new PC_GresLayoutH();
 		PC_GresInventory inv = new PC_GresInventory(3, 3);
@@ -57,7 +58,7 @@ public class PCma_GuiAutomaticWorkbench extends PCma_ContainerAutomaticWorkbench
 
 		w.add(hg);
 
-		w.add(checkRedstone = new PC_GresCheckBox(PC_Utils.tr("pc.gui.automaticWorkbench.redstoneActivated")));
+		w.add(checkRedstone = new PC_GresCheckBox(Lang.tr("pc.gui.automaticWorkbench.redstoneActivated")));
 		checkRedstone.check(teaw.redstoneActivated);
 		w.add(new PC_GresGap(0, 3));
 

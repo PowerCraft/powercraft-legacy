@@ -9,7 +9,7 @@ import powercraft.management.PC_GresWidget;
 import powercraft.management.PC_GresWindow;
 import powercraft.management.PC_IGresClient;
 import powercraft.management.PC_IGresGui;
-import powercraft.management.PC_Utils;
+import powercraft.management.PC_Utils.Lang;
 
 public class PClo_GuiSpecial extends PClo_ContainerSpecial implements PC_IGresClient {
 	
@@ -22,11 +22,11 @@ public class PClo_GuiSpecial extends PClo_ContainerSpecial implements PC_IGresCl
 
 	@Override
 	public void initGui(PC_IGresGui gui) {
-		PC_GresWindow w = new PC_GresWindow(PC_Utils.tr("pc.gui.special."+addString+".name"));
+		PC_GresWindow w = new PC_GresWindow(Lang.tr("pc.gui.special."+addString+".name"));
 		
 		PC_GresWidget lh = new PC_GresLayoutH();
 		
-		lh.add(new PC_GresLabel(PC_Utils.tr("pc.gui.special."+addString+".inv")));
+		lh.add(new PC_GresLabel(Lang.tr("pc.gui.special."+addString+".inv")));
 		PC_GresInventory inv = new PC_GresInventory(1, 1);
 		inv.setSlot(lSlot.get(0), 0, 0);
 		lh.add(inv);

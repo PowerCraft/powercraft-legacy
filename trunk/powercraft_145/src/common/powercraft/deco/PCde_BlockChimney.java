@@ -12,6 +12,7 @@ import net.minecraft.src.World;
 import powercraft.management.PC_Block;
 import powercraft.management.PC_Renderer;
 import powercraft.management.PC_Utils;
+import powercraft.management.PC_Utils.GameInfo;
 import powercraft.management.PC_VecI;
 
 public class PCde_BlockChimney extends PC_Block {
@@ -60,7 +61,7 @@ public class PCde_BlockChimney extends PC_Block {
 		final float px = 0.0625F;
 		float w = px * 3;
 
-		int metadata = PC_Utils.getMD(world, x, y, z);
+		int metadata = GameInfo.getMD(world, x, y, z);
 		
 		Block bl = null;
 		if (metadata == 0) bl = Block.cobblestone;

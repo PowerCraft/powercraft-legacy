@@ -17,6 +17,7 @@ import powercraft.management.PC_Block;
 import powercraft.management.PC_MathHelper;
 import powercraft.management.PC_Renderer;
 import powercraft.management.PC_Utils;
+import powercraft.management.PC_Utils.GameInfo;
 import powercraft.management.PC_VecI;
 
 public class PCde_BlockStairs extends PC_Block {
@@ -44,7 +45,7 @@ public class PCde_BlockStairs extends PC_Block {
 	public static boolean[] getFencesShownStairsAbsolute(World world, PC_VecI pos) {
 		boolean fences[] = { false, false, false, false };
 
-		int j = PC_Utils.getMD(world, pos);
+		int j = GameInfo.getMD(world, pos);
 
 		if (j == 0) {
 			fences[0] = fences[1] = true;
@@ -74,7 +75,7 @@ public class PCde_BlockStairs extends PC_Block {
 		boolean fences[] = getFencesShownStairsAbsolute(world, pos);
 		boolean rel[] = { false, false };
 
-		int j = PC_Utils.getMD(world, pos);
+		int j = GameInfo.getMD(world, pos);
 
 		if (j == 0) {
 			rel[0] = fences[0];
@@ -94,7 +95,7 @@ public class PCde_BlockStairs extends PC_Block {
 	}
 
 	private static boolean isFallBlock(World world, PC_VecI pos) {
-		int id = PC_Utils.getBID(world, pos);
+		int id = GameInfo.getBID(world, pos);
 		if (id == 0 || Block.blocksList[id] == null) {
 			return true;
 		}
@@ -116,7 +117,7 @@ public class PCde_BlockStairs extends PC_Block {
 	}
 
 	private static boolean isClimbBlock(World world, PC_VecI pos) {
-		int id = PC_Utils.getBID(world, pos);
+		int id = GameInfo.getBID(world, pos);
 		if (id == 0 || Block.blocksList[id] == null) {
 			return false;
 		}

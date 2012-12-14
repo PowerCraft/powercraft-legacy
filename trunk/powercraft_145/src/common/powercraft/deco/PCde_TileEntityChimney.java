@@ -5,6 +5,7 @@ import java.util.Random;
 import net.minecraft.src.Block;
 import powercraft.management.PC_TileEntity;
 import powercraft.management.PC_Utils;
+import powercraft.management.PC_Utils.GameInfo;
 import powercraft.management.PC_VecI;
 
 public class PCde_TileEntityChimney extends PC_TileEntity {
@@ -44,7 +45,7 @@ public class PCde_TileEntityChimney extends PC_TileEntity {
 	}
 
 	private boolean doesBlockSmoke(PC_VecI pos) {
-		int id = PC_Utils.getBID(worldObj, pos);
+		int id = GameInfo.getBID(worldObj, pos);
 		if (id == Block.stoneOvenActive.blockID) return true;
 		if (id == Block.fire.blockID) return true;
 
@@ -53,7 +54,7 @@ public class PCde_TileEntityChimney extends PC_TileEntity {
 	}
 
 	private boolean doesBlockSmokeOpenly(PC_VecI pos) {
-		int id = PC_Utils.getBID(worldObj, pos);
+		int id = GameInfo.getBID(worldObj, pos);
 		if (id == Block.fire.blockID) return true;
 
 		if (PC_Utils.hasFlag(worldObj, pos, "SMOKE")) return true;
@@ -61,11 +62,11 @@ public class PCde_TileEntityChimney extends PC_TileEntity {
 	}
 
 	private boolean isBlockLitFurnace(PC_VecI pos) {
-		return PC_Utils.getBID(worldObj, pos) == Block.stoneOvenActive.blockID;
+		return GameInfo.getBID(worldObj, pos) == Block.stoneOvenActive.blockID;
 	}
 
 	private boolean isBlockChimney(PC_VecI pos) {
-		if (PC_Utils.getBID(worldObj, pos) == PCde_App.chimney.blockID) {
+		if (GameInfo.getBID(worldObj, pos) == PCde_App.chimney.blockID) {
 			return true;
 		}
 		return false;

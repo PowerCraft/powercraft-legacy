@@ -16,6 +16,7 @@ import powercraft.management.PC_Block;
 import powercraft.management.PC_IItemInfo;
 import powercraft.management.PC_Renderer;
 import powercraft.management.PC_Utils;
+import powercraft.management.PC_Utils.Gres;
 import powercraft.management.PC_VecI;
 
 
@@ -80,7 +81,7 @@ public class PCma_BlockXPBank extends PC_Block implements PC_IItemInfo
             }
         }
 
-        PC_Utils.openGres("XPBank", entityplayer, i, j, k);
+        Gres.openGres("XPBank", entityplayer, i, j, k);
         return true;
     }
 

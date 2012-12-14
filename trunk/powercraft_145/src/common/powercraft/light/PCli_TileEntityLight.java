@@ -12,6 +12,7 @@ import powercraft.management.PC_PacketHandler;
 import powercraft.management.PC_Renderer;
 import powercraft.management.PC_TileEntity;
 import powercraft.management.PC_Utils;
+import powercraft.management.PC_Utils.GameInfo;
 
 public class PCli_TileEntityLight extends PC_TileEntity implements PC_ITileEntityRenderer
 {
@@ -80,7 +81,7 @@ public class PCli_TileEntityLight extends PC_TileEntity implements PC_ITileEntit
 
     public boolean isActive()
     {
-        return PC_Utils.getBID(worldObj, xCoord, yCoord, zCoord) == PCli_BlockLight.on.blockID;
+        return GameInfo.getBID(worldObj, xCoord, yCoord, zCoord) == PCli_BlockLight.on.blockID;
     }
 
     @Override
@@ -149,7 +150,7 @@ public class PCli_TileEntityLight extends PC_TileEntity implements PC_ITileEntit
 		else
 			PC_Renderer.glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
 
-		int meta = PC_Utils.getMD(worldObj, getCoord());
+		int meta = GameInfo.getMD(worldObj, getCoord());
 		switch (meta) {
 			case 0:
 				break;
