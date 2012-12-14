@@ -899,12 +899,10 @@ public class PC_Utils implements PC_IPacketHandler
                     if (on)
                     {
                         world.setBlockAndMetadataWithNotify(x, y, z, bon.blockID, meta);
-                        b = bon;
                     }
                     else
                     {
                         world.setBlockAndMetadataWithNotify(x, y, z, boff.blockID, meta);
-                        b = boff;
                     }
 
                     if (te != null)
@@ -914,7 +912,7 @@ public class PC_Utils implements PC_IPacketHandler
                         te.getBlockType();
                         te.lockInvalid(false);
                     }
-                    hugeUpdate(world, x, y, z, b.blockID);
+                    hugeUpdate(world, x, y, z);
                     
                 }
             }
@@ -1054,8 +1052,9 @@ public class PC_Utils implements PC_IPacketHandler
         return l;
     }
 
-    public static void hugeUpdate(World world, int x, int y, int z, int blockID)
+    public static void hugeUpdate(World world, int x, int y, int z)
     {
+    	int blockID = PC_Utils.getBID(world, x, y, z);
         notifyBlockOfNeighborChange(world, x - 2, y, z, blockID);
         notifyBlockOfNeighborChange(world, x - 1, y, z, blockID);
         notifyBlockOfNeighborChange(world, x + 1, y, z, blockID);

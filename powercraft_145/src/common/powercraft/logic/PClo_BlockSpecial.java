@@ -44,7 +44,7 @@ public class PClo_BlockSpecial extends PC_Block
         setResistance(30.0F);
         setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 0.1875F, 1.0F);
 
-        if (on)
+        if (!on)
         {
             setCreativeTab(CreativeTabs.tabRedstone);
         }
@@ -316,7 +316,7 @@ public class PClo_BlockSpecial extends PC_Block
         }
 
         world.setBlockMetadataWithNotify(x, y, z, l);
-        onNeighborBlockChange(world, x, y, z, 0);
+        PC_Utils.hugeUpdate(world, x, y, z);
     }
 
     @Override

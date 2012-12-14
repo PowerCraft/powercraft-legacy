@@ -81,7 +81,7 @@ public class PCli_TileEntityLaser extends PC_TileEntity implements PC_IBeamHandl
     	if(PCli_ItemLaserComposition.isSensor(itemstack)){
 	    	if(oldActive != active){
 	    		PC_PacketHandler.setTileEntity(this, "on", active);
-	    		PC_Utils.hugeUpdate(worldObj, xCoord, yCoord, zCoord, PCli_App.laser.blockID);
+	    		PC_Utils.hugeUpdate(worldObj, xCoord, yCoord, zCoord);
 	    	}
     	}
     }
@@ -171,7 +171,7 @@ public class PCli_TileEntityLaser extends PC_TileEntity implements PC_IBeamHandl
             }
    
         }
-        PC_Utils.hugeUpdate(worldObj, xCoord, yCoord, zCoord, PCli_App.laser.blockID);
+        PC_Utils.hugeUpdate(worldObj, xCoord, yCoord, zCoord);
 	}
 
 	@Override

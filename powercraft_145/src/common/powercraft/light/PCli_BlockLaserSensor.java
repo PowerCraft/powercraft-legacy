@@ -63,7 +63,7 @@ public class PCli_BlockLaserSensor extends PC_Block implements PC_IItemInfo {
 
     @Override
 	public boolean isProvidingWeakPower(IBlockAccess world, int x, int y, int z, int s) {
-    	return ((PCli_TileEntityLaser) GameInfo.getTE(world, x, y, z)).isActive();
+    	return ((PCli_TileEntityLaserSensor) GameInfo.getTE(world, x, y, z)).isActive();
 	}
 
 	@Override

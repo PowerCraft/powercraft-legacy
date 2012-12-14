@@ -34,7 +34,7 @@ public class PClo_TileEntityRepeater extends PC_TileEntity
     {
         PC_PacketHandler.setTileEntity(this, "state", b);
         state = b;
-        PC_Utils.hugeUpdate(worldObj, xCoord, yCoord, zCoord, worldObj.getBlockId(xCoord, yCoord, zCoord));
+        PC_Utils.hugeUpdate(worldObj, xCoord, yCoord, zCoord);
         worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
     }
 
@@ -49,7 +49,7 @@ public class PClo_TileEntityRepeater extends PC_TileEntity
         PC_PacketHandler.setTileEntity(this, "inp", inp);
         worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
         PC_Utils.notifyBlockOfNeighborChange(worldObj, xCoord, yCoord, zCoord, worldObj.getBlockId(xCoord, yCoord, zCoord));
-        PC_Utils.hugeUpdate(worldObj, xCoord, yCoord, zCoord, worldObj.getBlockId(xCoord, yCoord, zCoord));
+        PC_Utils.hugeUpdate(worldObj, xCoord, yCoord, zCoord);
     }
 
     @Override
@@ -102,7 +102,7 @@ public class PClo_TileEntityRepeater extends PC_TileEntity
 
         worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
         PC_Utils.notifyBlockOfNeighborChange(worldObj, xCoord, yCoord, zCoord, worldObj.getBlockId(xCoord, yCoord, zCoord));
-        PC_Utils.hugeUpdate(worldObj, xCoord, yCoord, zCoord, worldObj.getBlockId(xCoord, yCoord, zCoord));
+        PC_Utils.hugeUpdate(worldObj, xCoord, yCoord, zCoord);
     }
 
     @Override
