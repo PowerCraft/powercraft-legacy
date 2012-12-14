@@ -24,6 +24,7 @@ import powercraft.management.PC_Shining.ON;
 import powercraft.management.PC_Utils;
 import powercraft.management.PC_Utils.GameInfo;
 import powercraft.management.PC_Utils.Gres;
+import powercraft.management.PC_Utils.ValueWriting;
 import powercraft.management.PC_VecI;
 
 @PC_Shining
@@ -105,7 +106,7 @@ public class PClo_BlockSpecial extends PC_Block
                 break;
 
             case PClo_SpecialType.SPECIAL:
-                shouldState = PC_Utils.poweredFromInput(world, x, y, z, PC_Utils.BACK, rot);
+                shouldState = GameInfo.poweredFromInput(world, x, y, z, PC_Utils.BACK, rot);
                 TileEntity tes = GameInfo.getTE(world, x - xAdd, y, z - zAdd);
 
                 if (tes instanceof PClo_TileEntityPulsar)
@@ -123,17 +124,17 @@ public class PClo_BlockSpecial extends PC_Block
 
         if (state != shouldState)
         {
-            PC_Utils.setBlockState(world, x, y, z, shouldState);
+            ValueWriting.setBlockState(world, x, y, z, shouldState);
         }
     }
 
     private void spawnMobsFromSpawners(World world, int x, int y, int z)
     {
-        PC_Utils.spawnMobFromSpawner(world, x + 1, y, z);
-        PC_Utils.spawnMobFromSpawner(world, x - 1, y, z);
-        PC_Utils.spawnMobFromSpawner(world, x, y + 1, z);
-        PC_Utils.spawnMobFromSpawner(world, x, y, z + 1);
-        PC_Utils.spawnMobFromSpawner(world, x, y, z - 1);
+        ValueWriting.spawnMobFromSpawner(world, x + 1, y, z);
+        ValueWriting.spawnMobFromSpawner(world, x - 1, y, z);
+        ValueWriting.spawnMobFromSpawner(world, x, y + 1, z);
+        ValueWriting.spawnMobFromSpawner(world, x, y, z + 1);
+        ValueWriting.spawnMobFromSpawner(world, x, y, z - 1);
     }
 
     @Override
@@ -310,13 +311,13 @@ public class PClo_BlockSpecial extends PC_Block
         int type = getType(world, x, y, z);
         int l = ((PC_MathHelper.floor_double(((entityliving.rotationYaw * 4F) / 360F) + 0.5D) & 3) + 2) % 4;
 
-        if (entityliving instanceof EntityPlayer && PC_Utils.isPlacingReversed(((EntityPlayer)entityliving)))
+        if (entityliving instanceof EntityPlayer && GameInfo.isPlacingReversed(((EntityPlayer)entityliving)))
         {
-            l = PC_Utils.reverseSide(l);
+            l = ValueWriting.reverseSide(l);
         }
 
         world.setBlockMetadataWithNotify(x, y, z, l);
-        PC_Utils.hugeUpdate(world, x, y, z);
+        ValueWriting.hugeUpdate(world, x, y, z);
     }
 
     @Override

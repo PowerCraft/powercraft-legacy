@@ -94,7 +94,7 @@ public class PC_ClientUtils extends PC_Utils {
 	@Override
 	protected void iLoadLanguage(PC_IModule module){
 		final PC_IModule m = module;
-		File folder = new File(Minecraft.getMinecraftDir(), getPowerCraftFile() + "lang/");
+		File folder = new File(Minecraft.getMinecraftDir(), GameInfo.getPowerCraftFile() + "lang/");
 
 		String[] files = folder.list(new FilenameFilter() {
 
@@ -177,7 +177,7 @@ public class PC_ClientUtils extends PC_Utils {
 		for(Entry<String, PC_Property> langEntry:langs){
 			
 			try {
-				File f = new File(getPowerCraftFile(), "lang");
+				File f = new File(GameInfo.getPowerCraftFile(), "lang");
 				if(!f.exists())
 					f.mkdirs();
 				f = new File(f, langEntry.getKey() + "-" +  module.getName() + ".lang");
@@ -223,10 +223,10 @@ public class PC_ClientUtils extends PC_Utils {
 
 		try {
 			if(PC_GresBaseWithInventory.class.isAssignableFrom(c)){
-				mc().displayGuiScreen(new PC_GresGui((PC_GresBaseWithInventory)PC_Utils.createClass(c, new Class[]{EntityPlayer.class, Object[].class}, new Object[]{player, o})));
+				mc().displayGuiScreen(new PC_GresGui((PC_GresBaseWithInventory)ValueWriting.createClass(c, new Class[]{EntityPlayer.class, Object[].class}, new Object[]{player, o})));
 				player.openContainer.windowId = guiID;
 			}else{
-				mc().displayGuiScreen(new PC_GresGui((PC_IGresClient)PC_Utils.createClass(c, new Class[]{EntityPlayer.class, Object[].class}, new Object[]{player, o})));
+				mc().displayGuiScreen(new PC_GresGui((PC_IGresClient)ValueWriting.createClass(c, new Class[]{EntityPlayer.class, Object[].class}, new Object[]{player, o})));
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -248,7 +248,7 @@ public class PC_ClientUtils extends PC_Utils {
 	
 	@Override
 	protected boolean iIsPlacingReversed(EntityPlayer player){
-		return isKeyPressed(mc().thePlayer, "keyReverse");
+		return Communication.isKeyPressed(mc().thePlayer, "keyReverse");
 	}
 	
 	@Override

@@ -165,7 +165,7 @@ public class PCma_TileEntityBlockBuilder extends PC_TileEntity implements IInven
 		// try to put minecart
 		if (itemstack.getItem() instanceof ItemMinecart) {
 			
-			if (PC_Utils.isBlock(worldObj, front, "PCtr_BlockBelt") || Block.blocksList[id] instanceof BlockRail) {
+			if (GameInfo.isBlock(worldObj, front, "PCtr_BlockBelt") || Block.blocksList[id] instanceof BlockRail) {
 				if (!worldObj.isRemote) {
 					worldObj.spawnEntityInWorld(new EntityMinecart(worldObj, (float) x + incX + 0.5F, y + 0.5F, (float) z + incZ + 0.5F,
 							((ItemMinecart) itemstack.getItem()).minecartType));

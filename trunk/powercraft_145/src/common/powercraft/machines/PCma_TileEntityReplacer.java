@@ -12,7 +12,8 @@ import powercraft.management.PC_Color;
 import powercraft.management.PC_ISpecialAccessInventory;
 import powercraft.management.PC_InvUtils;
 import powercraft.management.PC_TileEntity;
-import powercraft.management.PC_Utils;
+import powercraft.management.PC_Utils.SaveHandler;
+import powercraft.management.PC_Utils.ValueWriting;
 import powercraft.management.PC_VecF;
 import powercraft.management.PC_VecI;
 
@@ -81,7 +82,7 @@ public class PCma_TileEntityReplacer extends PC_TileEntity implements IInventory
             double d2 = zCoord + rand.nextFloat();
             int a = rand.nextInt(3);
             int b = rand.nextInt(3);
-            PC_Utils.spawnParticle("PC_EntityLaserParticleFX", worldObj, new PC_VecF((float)d, (float)d1, (float)d2), aidcolor, new PC_VecI(), 0);
+            ValueWriting.spawnParticle("PC_EntityLaserParticleFX", worldObj, new PC_VecF((float)d, (float)d1, (float)d2), aidcolor, new PC_VecI(), 0);
 
             for (int q = 0; q < 8; q++)
             {
@@ -129,7 +130,7 @@ public class PCma_TileEntityReplacer extends PC_TileEntity implements IInventory
                         break;
                 }
 
-                PC_Utils.spawnParticle("PC_EntityLaserParticleFX", worldObj, new PC_VecF((float)d, (float)d1, (float)d2), aidcolor, new PC_VecI(), 0);
+                ValueWriting.spawnParticle("PC_EntityLaserParticleFX", worldObj, new PC_VecF((float)d, (float)d1, (float)d2), aidcolor, new PC_VecI(), 0);
             }
         }
 
@@ -219,7 +220,7 @@ public class PCma_TileEntityReplacer extends PC_TileEntity implements IInventory
             buildBlock = ItemStack.loadItemStackFromNBT(nbttagcompound1);
         }
 
-        PC_Utils.loadFromNBT(nbttagcompound, "targetPos", coordOffset);
+        SaveHandler.loadFromNBT(nbttagcompound, "targetPos", coordOffset);
         state = nbttagcompound.getBoolean("state");
         aidEnabled = nbttagcompound.getBoolean("aid");
         extraMeta = nbttagcompound.getInteger("extraMeta");
@@ -249,7 +250,7 @@ public class PCma_TileEntityReplacer extends PC_TileEntity implements IInventory
         nbttagcompound.setBoolean("state", state);
         nbttagcompound.setBoolean("aid", aidEnabled);
         nbttagcompound.setInteger("extraMeta", extraMeta);
-        PC_Utils.saveToNBT(nbttagcompound, "targetPos", coordOffset);
+        SaveHandler.saveToNBT(nbttagcompound, "targetPos", coordOffset);
     }
 
     @Override

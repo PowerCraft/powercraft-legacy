@@ -22,6 +22,7 @@ import powercraft.management.PC_Shining.OFF;
 import powercraft.management.PC_Shining.ON;
 import powercraft.management.PC_Utils;
 import powercraft.management.PC_Utils.Gres;
+import powercraft.management.PC_Utils.ValueWriting;
 import powercraft.management.PC_VecI;
 
 @PC_Shining
@@ -78,7 +79,7 @@ public class PClo_BlockPulsar extends PC_Block implements PC_IItemInfo
     public void updateTick(World world, int i, int j, int k, Random random)
     {
         world.markBlockForUpdate(i, j, k);
-        PC_Utils.hugeUpdate(world, i, j, k);
+        ValueWriting.hugeUpdate(world, i, j, k);
     }
 
     @Override

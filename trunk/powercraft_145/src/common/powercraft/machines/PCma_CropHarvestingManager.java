@@ -23,7 +23,7 @@ import org.xml.sax.SAXParseException;
 
 import powercraft.management.PC_InvUtils;
 import powercraft.management.PC_Logger;
-import powercraft.management.PC_Utils;
+import powercraft.management.PC_Utils.GameInfo;
 
 /**
  * Custom Crops manager
@@ -42,7 +42,7 @@ public class PCma_CropHarvestingManager {
 	/**
 	 * Folder with the crops xml files
 	 */
-	private static final File folder = new File(PC_Utils.getPowerCraftFile(), "/crops");
+	private static final File folder = new File(GameInfo.getPowerCraftFile(), "/crops");
 
 	private static boolean cropsLoaded = false;
 

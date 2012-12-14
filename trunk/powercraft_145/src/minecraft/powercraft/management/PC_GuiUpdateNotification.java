@@ -10,6 +10,7 @@ import org.lwjgl.opengl.GL11;
 
 import powercraft.management.PC_GresWidget.PC_GresAlign;
 import powercraft.management.PC_Utils.Lang;
+import powercraft.management.PC_Utils.ModuleInfo;
 
 public class PC_GuiUpdateNotification implements PC_IGresClient {
 
@@ -39,7 +40,7 @@ public class PC_GuiUpdateNotification implements PC_IGresClient {
 
 		hg = new PC_GresLayoutH();
 		hg.setAlignH(PC_GresAlign.CENTER);
-		hg.add(new PC_GresImage(PC_Utils.getGresImgDir() + "graphics.png", 0, 0, 195, 24));
+		hg.add(new PC_GresImage(ModuleInfo.getGresImgDir() + "graphics.png", 0, 0, 195, 24));
 		w.add(hg);
 
 		hg = new PC_GresLayoutH();

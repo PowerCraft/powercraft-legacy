@@ -19,6 +19,7 @@ import powercraft.management.PC_Struct3;
 import powercraft.management.PC_Utils;
 import powercraft.management.PC_Utils.GameInfo;
 import powercraft.management.PC_Utils.Lang;
+import powercraft.management.PC_Utils.ModuleInfo;
 import powercraft.management.PC_VecI;
 import cpw.mods.fml.common.Side;
 import cpw.mods.fml.common.asm.SideOnly;
@@ -120,7 +121,7 @@ public class PCli_ItemLaserComposition extends PC_Item
         int levelDistance = 0;
     	int levelSensor = 0;
         
-    	if(is != null && is.itemID == GameInfo.getPCObjectIDByName("PCco_BlockPowerCrystal")){
+    	if(is != null && is.itemID == ModuleInfo.getPCObjectIDByName("PCco_BlockPowerCrystal")){
     		switch(is.getItemDamage()){
     		case 0:
     			levelDistance = 1;

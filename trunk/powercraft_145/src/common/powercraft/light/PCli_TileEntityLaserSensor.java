@@ -3,7 +3,7 @@ package powercraft.light;
 import net.minecraft.src.NBTTagCompound;
 import powercraft.management.PC_PacketHandler;
 import powercraft.management.PC_TileEntity;
-import powercraft.management.PC_Utils;
+import powercraft.management.PC_Utils.ValueWriting;
 
 public class PCli_TileEntityLaserSensor extends PC_TileEntity {
 
@@ -15,7 +15,7 @@ public class PCli_TileEntityLaserSensor extends PC_TileEntity {
 		if(!active){
 			active = true;
 			PC_PacketHandler.setTileEntity(this, "active", active);
-			PC_Utils.hugeUpdate(worldObj, xCoord, yCoord, zCoord);
+			ValueWriting.hugeUpdate(worldObj, xCoord, yCoord, zCoord);
 		}
 	}
 
@@ -34,7 +34,7 @@ public class PCli_TileEntityLaserSensor extends PC_TileEntity {
     		if(--coolDown==0){
     			active = false;
     			PC_PacketHandler.setTileEntity(this, "active", active);
-    			PC_Utils.hugeUpdate(worldObj, xCoord, yCoord, zCoord);
+    			ValueWriting.hugeUpdate(worldObj, xCoord, yCoord, zCoord);
     		}
     	}
     }
@@ -70,7 +70,7 @@ public class PCli_TileEntityLaserSensor extends PC_TileEntity {
             }
    
         }
-        PC_Utils.hugeUpdate(worldObj, xCoord, yCoord, zCoord);
+        ValueWriting.hugeUpdate(worldObj, xCoord, yCoord, zCoord);
 	}
 
 	@Override

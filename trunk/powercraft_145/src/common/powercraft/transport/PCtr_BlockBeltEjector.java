@@ -12,6 +12,7 @@ import net.minecraft.src.World;
 import powercraft.management.PC_Utils;
 import powercraft.management.PC_Utils.GameInfo;
 import powercraft.management.PC_Utils.Gres;
+import powercraft.management.PC_Utils.ValueWriting;
 import powercraft.management.PC_VecI;
 
 public class PCtr_BlockBeltEjector extends PCtr_BlockBeltBase
@@ -85,7 +86,7 @@ public class PCtr_BlockBeltEjector extends PCtr_BlockBeltBase
 
     private boolean isPowered(World world, PC_VecI pos)
     {
-    	return PC_Utils.isPoweredIndirectly(world, pos) || PC_Utils.isPoweredIndirectly(world, pos.offset(0, 1, 0)) || PC_Utils.isPoweredIndirectly(world, pos.offset(0, -1, 0));
+    	return GameInfo.isPoweredIndirectly(world, pos) || GameInfo.isPoweredIndirectly(world, pos.offset(0, 1, 0)) || GameInfo.isPoweredIndirectly(world, pos.offset(0, -1, 0));
     }
 
     @Override
@@ -139,12 +140,12 @@ public class PCtr_BlockBeltEjector extends PCtr_BlockBeltBase
                     PCtr_BeltHelper.tryToDispenseItem(world, pos);
                 }
 
-                PC_Utils.setMD(world, pos, PCtr_BeltHelper.getActiveMeta(meta));
+                ValueWriting.setMD(world, pos, PCtr_BeltHelper.getActiveMeta(meta));
             }
         }
         else if (PCtr_BeltHelper.isActive(meta))
         {
-        	PC_Utils.setMD(world, pos, PCtr_BeltHelper.getPassiveMeta(meta));
+        	ValueWriting.setMD(world, pos, PCtr_BeltHelper.getPassiveMeta(meta));
         }
     }
 

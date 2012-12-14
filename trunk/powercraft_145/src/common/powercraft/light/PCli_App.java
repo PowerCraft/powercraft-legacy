@@ -13,7 +13,7 @@ import powercraft.management.PC_Property;
 import powercraft.management.PC_ShapedRecipes;
 import powercraft.management.PC_ShapelessRecipes;
 import powercraft.management.PC_Struct2;
-import powercraft.management.PC_Utils.GameInfo;
+import powercraft.management.PC_Utils.ModuleInfo;
 import powercraft.management.PC_Utils.ModuleLoader;
 
 public class PCli_App implements PC_IModule
@@ -107,19 +107,19 @@ public class PCli_App implements PC_IModule
                 	"XXX", 
                 	"XPX", 
                 	"XXX",
-                        'X', Block.glass, 'P', new PC_ItemStack(GameInfo.getPCBlockByName("PCco_BlockPowerCrystal"), 1, 0)));
+                        'X', Block.glass, 'P', new PC_ItemStack(ModuleInfo.getPCBlockByName("PCco_BlockPowerCrystal"), 1, 0)));
         
         recipes.add(new PC_ShapedRecipes(new PC_ItemStack(laserComposition),
                 	"XXX", 
                 	"XPX", 
                 	"XXX",
-                        'X', Block.glass, 'P', new PC_ItemStack(GameInfo.getPCBlockByName("PCco_BlockPowerCrystal"), 1, 1)));
+                        'X', Block.glass, 'P', new PC_ItemStack(ModuleInfo.getPCBlockByName("PCco_BlockPowerCrystal"), 1, 1)));
         
         recipes.add(new PC_ShapedRecipes(new PC_ItemStack(laserComposition),
                 	"XXX", 
                 	"XPX", 
                 	"XXX",
-                        'X', Block.glass, 'P', new PC_ItemStack(GameInfo.getPCBlockByName("PCco_BlockPowerCrystal"), 1, 2)));
+                        'X', Block.glass, 'P', new PC_ItemStack(ModuleInfo.getPCBlockByName("PCco_BlockPowerCrystal"), 1, 2)));
         
         for(int i=2; i<10; i++){
         	Object[] o = new Object[i];

@@ -10,6 +10,7 @@ import net.minecraft.src.IBlockAccess;
 import net.minecraft.src.World;
 import powercraft.management.PC_Utils;
 import powercraft.management.PC_Utils.GameInfo;
+import powercraft.management.PC_Utils.ValueWriting;
 import powercraft.management.PC_VecI;
 
 public class PCtr_BlockBeltDetector extends PCtr_BlockBeltBase
@@ -61,8 +62,8 @@ public class PCtr_BlockBeltDetector extends PCtr_BlockBeltBase
         if (isPressed != isAlreadyActive)
         {
             world.setBlockMetadataWithNotify(i, j, k, PCtr_BeltHelper.getMeta(meta, isPressed));
-            PC_Utils.hugeUpdate(world, i, j, k);
-            PC_Utils.playSound(i + 0.5D, j + 0.125D, k + 0.5D, "random.click", 0.15F, 0.5F);
+            ValueWriting.hugeUpdate(world, i, j, k);
+            ValueWriting.playSound(i + 0.5D, j + 0.125D, k + 0.5D, "random.click", 0.15F, 0.5F);
         }
 
         if (isPressed)

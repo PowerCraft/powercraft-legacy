@@ -6,7 +6,7 @@ import net.minecraft.src.NBTTagCompound;
 import net.minecraft.src.World;
 import powercraft.management.PC_PacketHandler;
 import powercraft.management.PC_TileEntity;
-import powercraft.management.PC_Utils;
+import powercraft.management.PC_Utils.ValueWriting;
 
 public class PClo_TileEntityFlipFlop extends PC_TileEntity
 {
@@ -76,7 +76,7 @@ public class PClo_TileEntityFlipFlop extends PC_TileEntity
             }
         }
 
-        PC_Utils.hugeUpdate(worldObj, xCoord, yCoord, zCoord);
+        ValueWriting.hugeUpdate(worldObj, xCoord, yCoord, zCoord);
         worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
     }
 

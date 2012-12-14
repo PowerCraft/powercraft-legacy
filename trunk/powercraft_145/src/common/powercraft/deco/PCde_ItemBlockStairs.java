@@ -79,16 +79,16 @@ public class PCde_ItemBlockStairs extends PC_ItemBlock {
 
 				if (meta == dir) {
 
-					if (!PC_Utils.isPlacingReversed(entityplayer)) {
+					if (!GameInfo.isPlacingReversed(entityplayer)) {
 						j += 1;
 					}
 
-				} else if (PC_Utils.isPlacingReversed(entityplayer)) {
+				} else if (GameInfo.isPlacingReversed(entityplayer)) {
 					j--;
 				}
 
 			} else if (bID == PCde_App.platform.blockID) {
-				if (PC_Utils.isPlacingReversed(entityplayer)) {
+				if (GameInfo.isPlacingReversed(entityplayer)) {
 					j--;
 				}
 			}

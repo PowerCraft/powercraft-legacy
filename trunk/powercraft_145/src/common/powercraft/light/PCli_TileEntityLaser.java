@@ -18,6 +18,8 @@ import powercraft.management.PC_Renderer;
 import powercraft.management.PC_TileEntity;
 import powercraft.management.PC_Utils;
 import powercraft.management.PC_Utils.GameInfo;
+import powercraft.management.PC_Utils.ModuleInfo;
+import powercraft.management.PC_Utils.ValueWriting;
 import powercraft.management.PC_VecI;
 
 public class PCli_TileEntityLaser extends PC_TileEntity implements PC_IBeamHandler, PC_ITileEntityRenderer
@@ -81,7 +83,7 @@ public class PCli_TileEntityLaser extends PC_TileEntity implements PC_IBeamHandl
     	if(PCli_ItemLaserComposition.isSensor(itemstack)){
 	    	if(oldActive != active){
 	    		PC_PacketHandler.setTileEntity(this, "on", active);
-	    		PC_Utils.hugeUpdate(worldObj, xCoord, yCoord, zCoord);
+	    		ValueWriting.hugeUpdate(worldObj, xCoord, yCoord, zCoord);
 	    	}
     	}
     }
@@ -117,7 +119,7 @@ public class PCli_TileEntityLaser extends PC_TileEntity implements PC_IBeamHandl
     private boolean isRoasterBurning(){
     	boolean isBurning = false;
 		if(isKiller){
-			Block b = PC_Utils.getBlock(worldObj, xCoord, yCoord-1, zCoord);
+			Block b = GameInfo.getBlock(worldObj, xCoord, yCoord-1, zCoord);
 			if(b instanceof PC_IMSG){
 				Object o = ((PC_IMSG)b).msg(PC_Utils.MSG_STR_MSG, worldObj, getCoord().offset(0, -1, 0), "isBurning");
 				if(o instanceof Boolean)
@@ -171,7 +173,7 @@ public class PCli_TileEntityLaser extends PC_TileEntity implements PC_IBeamHandl
             }
    
         }
-        PC_Utils.hugeUpdate(worldObj, xCoord, yCoord, zCoord);
+        ValueWriting.hugeUpdate(worldObj, xCoord, yCoord, zCoord);
 	}
 
 	@Override
@@ -207,7 +209,7 @@ public class PCli_TileEntityLaser extends PC_TileEntity implements PC_IBeamHandl
 
 		float f1 = meta2angle[getBlockMetadata()];
 
-		PC_Renderer.bindTexture(PC_Utils.getTextureDirectory(PC_Utils.getModule("Light")) + "laser.png");
+		PC_Renderer.bindTexture(PC_Utils.getTextureDirectory(ModuleInfo.getModule("Light")) + "laser.png");
 
 		PC_Renderer.glPushMatrix();
 		PC_Renderer.glRotatef(-f1, 0.0F, 1.0F, 0.0F);

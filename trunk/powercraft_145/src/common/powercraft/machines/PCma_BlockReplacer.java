@@ -21,6 +21,8 @@ import powercraft.management.PC_Struct2;
 import powercraft.management.PC_Utils;
 import powercraft.management.PC_Utils.GameInfo;
 import powercraft.management.PC_Utils.Gres;
+import powercraft.management.PC_Utils.ModuleInfo;
+import powercraft.management.PC_Utils.ValueWriting;
 import powercraft.management.PC_VecI;
 
 public class PCma_BlockReplacer extends PC_Block implements PC_IItemInfo
@@ -82,18 +84,18 @@ public class PCma_BlockReplacer extends PC_Block implements PC_IItemInfo
             {
                 Block bhold = Block.blocksList[ihold.getItem().shiftedIndex];
             }
-            else if (ihold.getItem().shiftedIndex == GameInfo.getPCObjectIDByName("PCco_ItemActivator"))
+            else if (ihold.getItem().shiftedIndex == ModuleInfo.getPCObjectIDByName("PCco_ItemActivator"))
             {
                 int l = MathHelper.floor_double(((entityplayer.rotationYaw * 4F) / 360F) + 0.5D) & 3;
 
-                if (PC_Utils.isPlacingReversed(entityplayer))
+                if (GameInfo.isPlacingReversed(entityplayer))
                 {
-                    l = PC_Utils.reverseSide(l);
+                    l = ValueWriting.reverseSide(l);
                 }
 
                 if (entityplayer.isSneaking())
                 {
-                    l = PC_Utils.isPlacingReversed(entityplayer) ? 5 : 4;
+                    l = GameInfo.isPlacingReversed(entityplayer) ? 5 : 4;
                 }
 
                 PCma_TileEntityReplacer tileentity = (PCma_TileEntityReplacer) world.getBlockTileEntity(i, j, k);
@@ -224,13 +226,13 @@ public class PCma_BlockReplacer extends PC_Block implements PC_IItemInfo
     {
         if (itemstack == null)
         {
-        	PC_Utils.setBID(world, pos, 0, 0);
+        	ValueWriting.setBID(world, pos, 0, 0);
             return true;
         }
 
         if (itemstack.itemID == Block.lockedChest.blockID)
         {
-        	PC_Utils.setBIDNoNotify(world, pos, 0, 0);
+        	ValueWriting.setBIDNoNotify(world, pos, 0, 0);
             world.removeBlockTileEntity(pos.x, pos.y, pos.z);
 
             if (!Item.itemsList[Block.lockedChest.blockID].onItemUse(itemstack, new PC_FakePlayer(world), world, pos.x, pos.y + 1, pos.z, 0, 0.0f, 0.0f, 0.0f))
@@ -242,7 +244,7 @@ public class PCma_BlockReplacer extends PC_Block implements PC_IItemInfo
 
             if (meta != -1)
             {
-            	PC_Utils.setMDNoNotify(world, pos, meta);
+            	ValueWriting.setMDNoNotify(world, pos, meta);
             }
 
             return true;
@@ -265,7 +267,7 @@ public class PCma_BlockReplacer extends PC_Block implements PC_IItemInfo
             iblock = (ItemBlock) Item.itemsList[Block.lavaMoving.blockID];
         }
         
-        if (PC_Utils.setBIDNoNotify(world, pos, iblock.getBlockID(), iblock.getMetadata(itemstack.getItemDamage())))
+        if (ValueWriting.setBIDNoNotify(world, pos, iblock.getBlockID(), iblock.getMetadata(itemstack.getItemDamage())))
         {
             if (GameInfo.getBID(world, pos) == iblock.getBlockID())
             {
@@ -274,7 +276,7 @@ public class PCma_BlockReplacer extends PC_Block implements PC_IItemInfo
 
             if (meta != -1 && !iblock.getHasSubtypes())
             {
-            	PC_Utils.setMDNoNotify(world, pos, meta);
+            	ValueWriting.setMDNoNotify(world, pos, meta);
             }
 
             itemstack.stackSize--;
@@ -295,7 +297,7 @@ public class PCma_BlockReplacer extends PC_Block implements PC_IItemInfo
 
         if (GameInfo.getTE(world, pos) != null)
         {
-            return new PC_Struct2<ItemStack, Integer>(PC_Utils.extractAndRemoveChest(world, pos), meta);
+            return new PC_Struct2<ItemStack, Integer>(ValueWriting.extractAndRemoveChest(world, pos), meta);
         }
 
         Block block = Block.blocksList[GameInfo.getBID(world, pos)];

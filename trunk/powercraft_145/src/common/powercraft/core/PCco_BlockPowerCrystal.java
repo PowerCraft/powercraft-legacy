@@ -15,6 +15,7 @@ import powercraft.management.PC_Property;
 import powercraft.management.PC_Renderer;
 import powercraft.management.PC_Utils;
 import powercraft.management.PC_Utils.GameInfo;
+import powercraft.management.PC_Utils.ValueWriting;
 import powercraft.management.PC_VecI;
 
 public class PCco_BlockPowerCrystal extends PC_Block
@@ -129,7 +130,7 @@ public class PCco_BlockPowerCrystal extends PC_Block
 
                     if (random.nextInt(distance) == 0)
                     {
-                        PC_Utils.playSound(i + 0.5D, j + 0.5D, k + 0.5D, "random.orb", 0.15F,
+                        ValueWriting.playSound(i + 0.5D, j + 0.5D, k + 0.5D, "random.orb", 0.15F,
                                 0.5F * ((random.nextFloat() - random.nextFloat()) * 0.7F + 1.8F));
                     }
                 }

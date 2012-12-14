@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Random;
 
 import powercraft.management.PC_Utils.GameInfo;
+import powercraft.management.PC_Utils.ModuleInfo;
 
 import net.minecraft.src.Block;
 import net.minecraft.src.EntityPlayerSP;
@@ -468,7 +469,7 @@ public class PC_InvUtils
 
         for (int i = 0; i < inventory.getSizeInventory(); i++)
         {
-            if (inventory.getStackInSlot(i) != null && inventory.getStackInSlot(i).itemID == GameInfo.getPCObjectIDByName("PCco_BlockPowerCrystal"))
+            if (inventory.getStackInSlot(i) != null && inventory.getStackInSlot(i).itemID == ModuleInfo.getPCObjectIDByName("PCco_BlockPowerCrystal"))
             {
                 foundTable[PC_MathHelper.clamp_int(inventory.getStackInSlot(i).getItemDamage(), 0, 7)] = true;
             }

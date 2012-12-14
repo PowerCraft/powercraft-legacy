@@ -13,6 +13,7 @@ import powercraft.management.PC_Item;
 import powercraft.management.PC_Struct3;
 import powercraft.management.PC_Utils;
 import powercraft.management.PC_Utils.GameInfo;
+import powercraft.management.PC_Utils.ValueWriting;
 import powercraft.management.PC_VecI;
 import cpw.mods.fml.common.Side;
 import cpw.mods.fml.common.asm.SideOnly;
@@ -81,7 +82,7 @@ public class PCco_ItemBlockSaver extends PC_Item {
 		if (world.canPlaceEntityOnSide(placedID, x, y, z, false, face, entityplayer)) {
 			Block block = Block.blocksList[placedID];
 
-			if (PC_Utils.setBID(world, pos, placedID, placedMeta)) {
+			if (ValueWriting.setBID(world, pos, placedID, placedMeta)) {
 				if (GameInfo.getBID(world, pos) == placedID) {
 					/** @todo onBlockPlacedBy*/
 					Block.blocksList[placedID].onBlockPlacedBy(world, x, y, z, entityplayer);

@@ -9,6 +9,8 @@ import net.minecraft.src.Gui;
 
 import org.lwjgl.opengl.GL11;
 
+import powercraft.management.PC_Utils.ModuleInfo;
+
 
 /**
  * Base class for GUI-system
@@ -25,7 +27,7 @@ public abstract class PC_GresWidget extends Gui {
 	/** Minecraft instance */
 	protected static Minecraft mc = PC_ClientUtils.mc();
 
-	protected static String imgdir = PC_Utils.getGresImgDir();
+	protected static String imgdir = ModuleInfo.getGresImgDir();
 	
 	protected enum MouseOver{
 		NON,

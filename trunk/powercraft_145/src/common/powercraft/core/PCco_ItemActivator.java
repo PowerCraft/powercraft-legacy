@@ -14,6 +14,8 @@ import powercraft.management.PC_MathHelper;
 import powercraft.management.PC_Struct3;
 import powercraft.management.PC_Utils;
 import powercraft.management.PC_Utils.GameInfo;
+import powercraft.management.PC_Utils.ModuleInfo;
+import powercraft.management.PC_Utils.ValueWriting;
 import powercraft.management.PC_VecI;
 
 public class PCco_ItemActivator extends PC_Item{
@@ -48,14 +50,14 @@ public class PCco_ItemActivator extends PC_Item{
 				break;
 			}
 
-			ItemStack stackchest = PC_Utils.extractAndRemoveChest(world, pos);
+			ItemStack stackchest = ValueWriting.extractAndRemoveChest(world, pos);
 			if (stackchest != null) {
 				PC_Utils.dropItemStack(world, stackchest, pos);
 				return true;
 			}
 		}
         
-		List<Object> objs = PC_Utils.getRgisterdObjects();
+		List<Object> objs = ModuleInfo.getRegisterdObjects();
 
         for (Object obj : objs){
         	if(obj instanceof PC_IMSG){

@@ -23,6 +23,7 @@ import powercraft.management.PC_Shining.OFF;
 import powercraft.management.PC_Shining.ON;
 import powercraft.management.PC_Utils;
 import powercraft.management.PC_Utils.GameInfo;
+import powercraft.management.PC_Utils.ValueWriting;
 import powercraft.management.PC_VecI;
 
 @PC_Shining
@@ -63,7 +64,7 @@ public class PClo_BlockGate extends PC_Block
 
         if (on != outputActive)
         {
-            PC_Utils.setBlockState(world, x, y, z, outputActive);
+            ValueWriting.setBlockState(world, x, y, z, outputActive);
         }
     }
 
@@ -88,8 +89,8 @@ public class PClo_BlockGate extends PC_Block
     private boolean isOutputActive(World world, int x, int y, int z)
     {
         int rot = getRotation_static(GameInfo.getMD(world, x, y, z));
-        return PClo_GateType.getGateOutput(getType(world, x, y, z), getInp(world, x, y, z), PC_Utils.poweredFromInput(world, x, y, z, PC_Utils.LEFT, rot),
-                PC_Utils.poweredFromInput(world, x, y, z, PC_Utils.BACK, rot), PC_Utils.poweredFromInput(world, x, y, z, PC_Utils.RIGHT, rot));
+        return PClo_GateType.getGateOutput(getType(world, x, y, z), getInp(world, x, y, z), GameInfo.poweredFromInput(world, x, y, z, PC_Utils.LEFT, rot),
+                GameInfo.poweredFromInput(world, x, y, z, PC_Utils.BACK, rot), GameInfo.poweredFromInput(world, x, y, z, PC_Utils.RIGHT, rot));
     }
 
     @Override
@@ -248,9 +249,9 @@ public class PClo_BlockGate extends PC_Block
         int type = getType(world, x, y, z);
         int l = ((PC_MathHelper.floor_double(((entityliving.rotationYaw * 4F) / 360F) + 0.5D) & 3) + 2) % 4;
 
-        if (entityliving instanceof EntityPlayer && PC_Utils.isPlacingReversed(((EntityPlayer)entityliving)))
+        if (entityliving instanceof EntityPlayer && GameInfo.isPlacingReversed(((EntityPlayer)entityliving)))
         {
-            l = PC_Utils.reverseSide(l);
+            l = ValueWriting.reverseSide(l);
         }
 
         world.setBlockMetadataWithNotify(x, y, z, l);

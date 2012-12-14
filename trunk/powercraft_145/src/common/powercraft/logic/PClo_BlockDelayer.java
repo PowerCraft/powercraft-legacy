@@ -22,6 +22,7 @@ import powercraft.management.PC_Shining.ON;
 import powercraft.management.PC_Utils;
 import powercraft.management.PC_Utils.GameInfo;
 import powercraft.management.PC_Utils.Gres;
+import powercraft.management.PC_Utils.ValueWriting;
 import powercraft.management.PC_VecI;
 
 @PC_Shining
@@ -69,11 +70,11 @@ public class PClo_BlockDelayer extends PC_Block
 
         if (te.getType() == PClo_DelayerType.FIFO)
         {
-            stop = PC_Utils.poweredFromInput(world, x, y, z, PC_Utils.RIGHT, rot);
-            reset = PC_Utils.poweredFromInput(world, x, y, z, PC_Utils.LEFT, rot);
+            stop = GameInfo.poweredFromInput(world, x, y, z, PC_Utils.RIGHT, rot);
+            reset = GameInfo.poweredFromInput(world, x, y, z, PC_Utils.LEFT, rot);
         }
 
-        boolean data = PC_Utils.poweredFromInput(world, x, y, z, PC_Utils.BACK, rot);
+        boolean data = GameInfo.poweredFromInput(world, x, y, z, PC_Utils.BACK, rot);
         boolean[] stateBuffer = te.getStateBuffer();
 
         if (!stop && !reset)
@@ -82,7 +83,7 @@ public class PClo_BlockDelayer extends PC_Block
 
             if (shouldState != isActive(world, x, y, z))
             {
-                PC_Utils.setBlockState(world, x, y, z, shouldState);
+                ValueWriting.setBlockState(world, x, y, z, shouldState);
             }
 
             for (int i = stateBuffer.length - 1; i > 0; i--)
@@ -98,7 +99,7 @@ public class PClo_BlockDelayer extends PC_Block
         {
             if (isActive(world, x, y, z))
             {
-                PC_Utils.setBlockState(world, x, y, z, false);
+                ValueWriting.setBlockState(world, x, y, z, false);
             }
 
             for (int i = 0; i < stateBuffer.length; i++)
@@ -249,9 +250,9 @@ public class PClo_BlockDelayer extends PC_Block
         int type = getType(world, x, y, z);
         int l = ((PC_MathHelper.floor_double(((entityliving.rotationYaw * 4F) / 360F) + 0.5D) & 3) + 2) % 4;
 
-        if (entityliving instanceof EntityPlayer && PC_Utils.isPlacingReversed(((EntityPlayer)entityliving)))
+        if (entityliving instanceof EntityPlayer && GameInfo.isPlacingReversed(((EntityPlayer)entityliving)))
         {
-            l = PC_Utils.reverseSide(l);
+            l = ValueWriting.reverseSide(l);
         }
 
         world.setBlockMetadataWithNotify(x, y, z, l);

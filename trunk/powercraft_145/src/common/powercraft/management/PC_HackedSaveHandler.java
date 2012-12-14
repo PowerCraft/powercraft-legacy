@@ -2,6 +2,9 @@ package powercraft.management;
 
 import java.io.File;
 
+import powercraft.management.PC_Utils.ModuleLoader;
+import powercraft.management.PC_Utils.SaveHandler;
+
 import net.minecraft.src.AnvilSaveHandler;
 import net.minecraft.src.NBTTagCompound;
 import net.minecraft.src.WorldInfo;
@@ -32,16 +35,16 @@ public class PC_HackedSaveHandler extends AnvilSaveHandler {
 	}
 
 	public void loadBlockID(){
-		if(!PC_Utils.loadPCObjectsIDs(getSaveDirectory())){
+		if(!SaveHandler.loadPCObjectsIDs(getSaveDirectory())){
 			saveBlockID();
 		}else{
-			PC_Utils.savePCObjectsIDs(getSaveDirectory());
+			ModuleLoader.savePCObjectsIDs(getSaveDirectory());
 		}
 	}
 	
 	public void saveBlockID(){
-		PC_Utils.resetPCObjectsIDs();
-		PC_Utils.savePCObjectsIDs(getSaveDirectory());
+		ModuleLoader.resetPCObjectsIDs();
+		ModuleLoader.savePCObjectsIDs(getSaveDirectory());
 	}
 	
 }

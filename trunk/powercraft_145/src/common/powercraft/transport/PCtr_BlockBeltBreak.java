@@ -5,6 +5,7 @@ import net.minecraft.src.EntityItem;
 import net.minecraft.src.EntityMinecart;
 import net.minecraft.src.World;
 import powercraft.management.PC_Utils;
+import powercraft.management.PC_Utils.GameInfo;
 import powercraft.management.PC_VecI;
 
 public class PCtr_BlockBeltBreak extends PCtr_BlockBeltBase
@@ -104,7 +105,7 @@ public class PCtr_BlockBeltBreak extends PCtr_BlockBeltBase
 
     private boolean isPowered(World world, PC_VecI pos)
     {
-    	return PC_Utils.isPoweredIndirectly(world, pos) || PC_Utils.isPoweredIndirectly(world, pos.offset(0, 1, 0)) || PC_Utils.isPoweredIndirectly(world, pos.offset(0, -1, 0));
+    	return GameInfo.isPoweredIndirectly(world, pos) || GameInfo.isPoweredIndirectly(world, pos.offset(0, 1, 0)) || GameInfo.isPoweredIndirectly(world, pos.offset(0, -1, 0));
     }
 
 	@Override

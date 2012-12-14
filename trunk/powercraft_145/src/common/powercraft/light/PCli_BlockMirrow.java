@@ -21,6 +21,7 @@ import powercraft.management.PC_IItemInfo;
 import powercraft.management.PC_Renderer;
 import powercraft.management.PC_Utils;
 import powercraft.management.PC_Utils.GameInfo;
+import powercraft.management.PC_Utils.ModuleInfo;
 import powercraft.management.PC_VecI;
 
 public class PCli_BlockMirrow extends PC_Block implements PC_IItemInfo {
@@ -67,7 +68,7 @@ public class PCli_BlockMirrow extends PC_Block implements PC_IItemInfo {
 	public boolean onBlockActivated(World world, int i, int j, int k, EntityPlayer player, int par6, float par7, float par8, float par9) {
 		ItemStack ihold = player.getCurrentEquippedItem();
 		if (ihold != null) {
-			if (ihold.itemID == GameInfo.getPCObjectIDByName("PCco_BlockPowerCrystal")) {
+			if (ihold.itemID == ModuleInfo.getPCObjectIDByName("PCco_BlockPowerCrystal")) {
 
 				PCli_TileEntityMirrow teo = GameInfo.getTE(world, i, j, k, blockID);
 				if (teo != null) {

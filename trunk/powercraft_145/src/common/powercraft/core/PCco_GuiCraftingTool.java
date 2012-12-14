@@ -26,8 +26,8 @@ import powercraft.management.PC_IModule;
 import powercraft.management.PC_InvUtils;
 import powercraft.management.PC_PacketHandler;
 import powercraft.management.PC_Struct2;
-import powercraft.management.PC_Utils.GameInfo;
 import powercraft.management.PC_Utils.Lang;
+import powercraft.management.PC_Utils.ModuleInfo;
 
 public class PCco_GuiCraftingTool extends PCco_ContainerCraftingTool implements PC_IGresClient {
 
@@ -232,7 +232,7 @@ public class PCco_GuiCraftingTool extends PCco_ContainerCraftingTool implements 
 	
 	@Override
 	public void actionPerformed(PC_GresWidget widget, PC_IGresGui gui) {
-		final int craftingTool = GameInfo.getPCObjectIDByName("PCco_ItemCraftingTool");
+		final int craftingTool = ModuleInfo.getPCObjectIDByName("PCco_ItemCraftingTool");
 		if(widget==search){
 			searchItems();
 			return;

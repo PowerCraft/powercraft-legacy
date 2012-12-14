@@ -149,7 +149,7 @@ public class PC_Utils implements PC_IPacketHandler
 		}
 		public static <t>t register(PC_IModule module, Class<t> c)
 		{
-			PC_Property config = PC_Utils.getConfig(module);
+			PC_Property config = SaveHandler.getConfig(module);
 		
 		    if (PC_Block.class.isAssignableFrom(c))
 		    {
@@ -163,11 +163,11 @@ public class PC_Utils implements PC_IPacketHandler
 		        {
 		        	config = config.getProperty(itemClass.getSimpleName(), null, null);
 		        	int id = config.getInt("defaultID", 0);
-		        	if(!PC_Utils.isItemIDFree(id)){
-		        		id = PC_Utils.getFreeItemID();
+		        	if(!ModuleLoader.isItemIDFree(id)){
+		        		id = ModuleLoader.getFreeItemID();
 		        		config.setInt("defaultID", id);
 		        	}
-		            PC_Item item = PC_Utils.createClass(itemClass, new Class[] {int.class}, new Object[] {id});
+		            PC_Item item = ValueWriting.createClass(itemClass, new Class[] {int.class}, new Object[] {id});
 		            PC_Utils.objects.put(itemClass.getSimpleName(), item);
 		            item.setItemName(itemClass.getSimpleName());
 		            item.setModule(module);
@@ -194,11 +194,11 @@ public class PC_Utils implements PC_IPacketHandler
 		        {
 		        	config = config.getProperty(itemArmorClass.getSimpleName(), null, null);
 		        	int id = config.getInt("defaultID", 0);
-		        	if(!PC_Utils.isItemIDFree(id)){
-		        		id = PC_Utils.getFreeItemID();
+		        	if(!ModuleLoader.isItemIDFree(id)){
+		        		id = ModuleLoader.getFreeItemID();
 		        		config.setInt("defaultID", id);
 		        	}
-		            PC_ItemArmor itemArmor = PC_Utils.createClass(itemArmorClass, new Class[] {int.class}, new Object[] {id});
+		            PC_ItemArmor itemArmor = ValueWriting.createClass(itemArmorClass, new Class[] {int.class}, new Object[] {id});
 		            PC_Utils.objects.put(itemArmorClass.getSimpleName(), itemArmor);
 		            itemArmor.setItemName(itemArmorClass.getSimpleName());
 		            itemArmor.setModule(module);
@@ -234,7 +234,7 @@ public class PC_Utils implements PC_IPacketHandler
 		}
 		public static <t extends PC_Block>t register(PC_IModule module, Class<t> blockClass, Class <? extends PC_ItemBlock > itemBlockClass, Class <? extends PC_TileEntity > tileEntityClass)
 		{
-			PC_Property config = PC_Utils.getConfig(module);
+			PC_Property config = SaveHandler.getConfig(module);
 		
 		    try
 		    {
@@ -247,20 +247,20 @@ public class PC_Utils implements PC_IPacketHandler
 		        {
 		        	
 		         	int idOn = config.getInt("defaultID.on", 0);
-		         	if(!PC_Utils.isBlockIDFree(idOn)){
-		         		idOn = PC_Utils.getFreeBlockID();
+		         	if(!ModuleLoader.isBlockIDFree(idOn)){
+		         		idOn = ModuleLoader.getFreeBlockID();
 		         		config.setInt("defaultID.on", idOn);
 		         	}
 		        	
-		            block = PC_Utils.createClass(blockClass, new Class[] {int.class, boolean.class}, new Object[] {idOn, true});
+		            block = ValueWriting.createClass(blockClass, new Class[] {int.class, boolean.class}, new Object[] {idOn, true});
 		            
 		            int idOff = config.getInt("defaultID.off", 0);
-		         	if(!PC_Utils.isBlockIDFree(idOff)){
-		         		idOff = PC_Utils.getFreeBlockID();
+		         	if(!ModuleLoader.isBlockIDFree(idOff)){
+		         		idOff = ModuleLoader.getFreeBlockID();
 		         		config.setInt("defaultID.off", idOff);
 		         	}
 		            
-		            blockOff = PC_Utils.createClass(blockClass, new Class[] {int.class, boolean.class}, new Object[] {idOff, false});
+		            blockOff = ValueWriting.createClass(blockClass, new Class[] {int.class, boolean.class}, new Object[] {idOff, false});
 		            ValueWriting.setFieldsWithAnnotationTo(blockClass, PC_Shining.ON.class, blockClass, block);
 		            ValueWriting.setFieldsWithAnnotationTo(blockClass, PC_Shining.OFF.class, blockClass, blockOff);
 		            blockOff.setBlockName(blockClass.getSimpleName());
@@ -275,11 +275,11 @@ public class PC_Utils implements PC_IPacketHandler
 		        else
 		        {
 		         	int id = config.getInt("defaultID", 0);
-		         	if(!PC_Utils.isBlockIDFree(id)){
-		         		id = PC_Utils.getFreeBlockID();
+		         	if(!ModuleLoader.isBlockIDFree(id)){
+		         		id = ModuleLoader.getFreeBlockID();
 		         		config.setInt("defaultID", id);
 		         	}
-		            block = PC_Utils.createClass(blockClass, new Class[] {int.class}, new Object[] {id});
+		            block = ValueWriting.createClass(blockClass, new Class[] {int.class}, new Object[] {id});
 		        }
 		
 		        PC_Utils.objects.put(blockClass.getSimpleName(), block);
@@ -328,6 +328,183 @@ public class PC_Utils implements PC_IPacketHandler
 		public static void registerTextureFiles(String... textureFiles)
 		{
 		    PC_Utils.instance.iRegisterTextureFiles(textureFiles);
+		}
+		public static int defaultID(Object o){
+			int id = -1;
+			if(o instanceof PC_IItemInfo){
+				if(o.getClass().isAnnotationPresent(PC_Shining.class)){
+					Object[] on = PC_Utils.ValueWriting.getFieldsWithAnnotation(o.getClass(), PC_Shining.ON.class, o);
+					Object[] off = PC_Utils.ValueWriting.getFieldsWithAnnotation(o.getClass(), PC_Shining.OFF.class, o);
+					if(on!=null && on.length>0 && on[0] == o){
+						id = SaveHandler.getConfig(((PC_IItemInfo) o).getModule()).getInt(PC_Utils.objects.getClass().getSimpleName()+".defaultID.on", 0);
+					}else{
+						id = SaveHandler.getConfig(((PC_IItemInfo) o).getModule()).getInt(PC_Utils.objects.getClass().getSimpleName()+".defaultID.off", 0);
+					}
+					}else{
+					id = SaveHandler.getConfig(((PC_IItemInfo) o).getModule()).getInt(PC_Utils.objects.getClass().getSimpleName()+".defaultID", 0);
+				}
+			}
+			if(o instanceof PC_Item){
+				if(!ModuleLoader.isItemIDFree(id))
+					id = ModuleLoader.getFreeItemID();
+			}else if(o instanceof PC_Block){
+				if(!ModuleLoader.isBlockIDFree(id))
+					id = ModuleLoader.getFreeBlockID();
+			}else if(o instanceof PC_ItemArmor){
+				if(!ModuleLoader.isItemIDFree(id))
+					id = ModuleLoader.getFreeItemID();
+			}
+			return id;
+		}
+		public static void resetPCObjectsIDs(){
+			for(Object o: PC_Utils.objects.values()){
+				ModuleLoader.setPCObjectID(o, -1);
+			}
+			for(Object o: PC_Utils.objects.values()){
+				int id = PC_Utils.ModuleLoader.defaultID(o);
+				ModuleLoader.setPCObjectID(o, id);
+			}
+		}
+		public static void savePCObjectsIDs(File worldDirectory){
+		    NBTTagCompound nbttag = SaveHandler.makeIDTagCompound();
+		    	
+		    try
+		    {
+		        File file = new File(worldDirectory, "powercraft.dat");
+		        CompressedStreamTools.writeCompressed(nbttag, new FileOutputStream(file));
+		    }
+		    catch (Exception e)
+		    {
+		        e.printStackTrace();
+		    }
+		}
+		static void setPCObjectID(Object o, int id){
+			if(o instanceof PC_Item){
+				((PC_Item) o).setItemID(id);
+			}else if(o instanceof PC_Block){
+				((PC_Block) o).setBlockID(id);
+			}else if(o instanceof PC_ItemArmor){
+				((PC_ItemArmor) o).setItemID(id);
+			}
+		}
+		public static int getFreeBlockID() {
+			for(int i=1; i<Block.blocksList.length; i++){
+				if(Block.blocksList[i] == null)
+					return i;
+			}
+			return -1;
+		}
+		public static int getFreeItemID() {
+			for(int i=Block.blocksList.length; i<Item.itemsList.length; i++){
+				if(Item.itemsList[i] == null)
+					return i;
+			}
+			return -1;
+		}
+		public static boolean isItemIDFree(int id){
+			if(id<=0)
+				return false;
+			return Item.itemsList[id]==null;
+		}
+		public static void registerModule(PC_IModule module){
+			PC_Property config = null;
+			File f = new File(PC_Utils.GameInfo.getMCDirectory(), "config/PowerCraft-"+module.getName()+".cfg");
+			if(f.exists()){
+				try {
+					InputStream is = new FileInputStream(f);
+					config = PC_Property.loadFromFile(is);
+				} catch (FileNotFoundException e) {
+					PC_Logger.severe("Can't find File "+f);
+				}
+			}
+			if(config==null){
+				config = new PC_Property(null);
+			}
+			PC_Utils.modules.put(module.getName(), new PC_Struct2<PC_IModule, PC_Property>(module, config));
+		}
+		public static boolean isBlockIDFree(int id){
+			if(id<=0)
+				return false;
+			return Block.blocksList[id]==null;
+		}
+		public static boolean isVersionNewer(String nVersion, String oVersion)
+		{
+		    String saVersion[], saNewVersion[];
+		    saVersion = oVersion.split("\\.");
+		    saNewVersion = nVersion.split("\\.");
+		
+		    for (int i = 0; i < saVersion.length; i++)
+		    {
+		        if (i >= saNewVersion.length)
+		        {
+		            return false;
+		        }
+		
+		        int version = 0, newVersion = 0;
+		        String sVersion = "", sNewVersion = "";
+		
+		        for (int j = 0; j < saVersion[i].length(); j++)
+		        {
+		            char c = saVersion[i].charAt(j);
+		            boolean num = true;
+		
+		            if (Character.isDigit(c) && num)
+		            {
+		                version *= 10;
+		                version += c - '0';
+		            }
+		            else
+		            {
+		                num = false;
+		                sVersion += c;
+		            }
+		        }
+		
+		        for (int j = 0; j < saNewVersion[i].length(); j++)
+		        {
+		            char c = saNewVersion[i].charAt(j);
+		            boolean num = true;
+		
+		            if (Character.isDigit(c) && num)
+		            {
+		                newVersion *= 10;
+		                newVersion += c - '0';
+		            }
+		            else
+		            {
+		                num = false;
+		                sNewVersion += c;
+		            }
+		        }
+		
+		        if (newVersion > version)
+		        {
+		            return true;
+		        }
+		        else if (newVersion < version)
+		        {
+		            return false;
+		        }
+		        else
+		        {
+		            int comp = sNewVersion.compareToIgnoreCase(sVersion);
+		
+		            if (comp > 0)
+		            {
+		                return false;
+		            }
+		            else if (comp < 0)
+		            {
+		                return true;
+		            }
+		        }
+		    }
+		
+		    return false;
+		}
+		public static int addArmor(String name)
+		{
+		    return PC_Utils.instance.iAddArmor(name);
 		}
     	
     }
@@ -421,6 +598,276 @@ public class PC_Utils implements PC_IPacketHandler
 		    {
 		        PC_Logger.severe("setPrivateValue failed with " + c + ":" + o + ":" + i);
 		        return false;
+		    }
+		}
+		public static void setBlockState(World world, int x, int y, int z, boolean on)
+		{
+		    Block b = Block.blocksList[PC_Utils.GameInfo.getBID(world, x, y, z)];
+		
+		    if (b instanceof PC_Block)
+		    {
+		        int meta = PC_Utils.GameInfo.getMD(world, x, y, z);
+		        PC_TileEntity te = PC_Utils.GameInfo.getTE(world, x, y, z);
+		        Class c = b.getClass();
+		
+		        if (c.isAnnotationPresent(PC_Shining.class))
+		        {
+		            Block bon = (Block)PC_Utils.ValueWriting.getFieldsWithAnnotation(c, PC_Shining.ON.class, c)[0];
+		            Block boff = (Block)PC_Utils.ValueWriting.getFieldsWithAnnotation(c, PC_Shining.OFF.class, c)[0];
+		
+		            if ((b == bon && !on) || (b == boff && on))
+		            {
+		                if (te != null)
+		                {
+		                    te.lockInvalid(true);
+		                }
+		
+		                if (on)
+		                {
+		                    world.setBlockAndMetadataWithNotify(x, y, z, bon.blockID, meta);
+		                }
+		                else
+		                {
+		                    world.setBlockAndMetadataWithNotify(x, y, z, boff.blockID, meta);
+		                }
+		
+		                if (te != null)
+		                {
+		                    world.setBlockTileEntity(x, y, z, te);
+		                    te.blockType = null;
+		                    te.getBlockType();
+		                    te.lockInvalid(false);
+		                }
+		                ValueWriting.hugeUpdate(world, x, y, z);
+		                
+		            }
+		        }
+		    }
+		}
+		public static void setSoundEnabled(boolean enabled){
+		    if (PC_Utils.GameInfo.isClient()){
+		    	PC_Utils.isSoundEnabled = enabled;
+		    }
+		}
+		public static boolean setMD(World world, PC_VecI pos, int md) {
+			return PC_Utils.GameInfo.getMD(world, pos.x, pos.y, pos.z, md);
+		}
+		public static <t extends TileEntity>t setTE(World world, int x, int y, int z, t createTileEntity)
+		{
+		    world.setBlockTileEntity(x, y, z, createTileEntity);
+		    return createTileEntity;
+		}
+		public static void spawnMobFromSpawner(World world, int x, int y, int z)
+		{
+		    TileEntityMobSpawner te = PC_Utils.GameInfo.getTE(world, x, y, z, Block.mobSpawner.blockID);
+		
+		    if (te != null)
+		    {
+		        ValueWriting.spawnMobs(world, x, y, z, PC_Utils.GameInfo.getMobID(te));
+		    }
+		}
+		public static void preventSpawnerSpawning(World world, int x, int y, int z)
+		{
+		    TileEntityMobSpawner te = PC_Utils.GameInfo.getTE(world, x, y, z, Block.mobSpawner.blockID);
+		
+		    if (te != null)
+		    {
+		        te.delay = 20;
+		    }
+		}
+		public static int reverseSide(int l)
+		{
+		    if (l == 0)
+		    {
+		        l = 2;
+		    }
+		    else if (l == 2)
+		    {
+		        l = 0;
+		    }
+		    else if (l == 1)
+		    {
+		        l = 3;
+		    }
+		    else if (l == 3)
+		    {
+		        l = 1;
+		    }
+		
+		    return l;
+		}
+		public static void hugeUpdate(World world, int x, int y, int z)
+		{
+			int blockID = PC_Utils.GameInfo.getBID(world, x, y, z);
+		    ValueWriting.notifyBlockOfNeighborChange(world, x - 2, y, z, blockID);
+		    ValueWriting.notifyBlockOfNeighborChange(world, x - 1, y, z, blockID);
+		    ValueWriting.notifyBlockOfNeighborChange(world, x + 1, y, z, blockID);
+		    ValueWriting.notifyBlockOfNeighborChange(world, x + 2, y, z, blockID);
+		    ValueWriting.notifyBlockOfNeighborChange(world, x, y - 2, z, blockID);
+		    ValueWriting.notifyBlockOfNeighborChange(world, x, y - 1, z, blockID);
+		    ValueWriting.notifyBlockOfNeighborChange(world, x, y + 1, z, blockID);
+		    ValueWriting.notifyBlockOfNeighborChange(world, x, y + 2, z, blockID);
+		    ValueWriting.notifyBlockOfNeighborChange(world, x, y, z - 2, blockID);
+		    ValueWriting.notifyBlockOfNeighborChange(world, x, y, z - 1, blockID);
+		    ValueWriting.notifyBlockOfNeighborChange(world, x, y, z + 1, blockID);
+		    ValueWriting.notifyBlockOfNeighborChange(world, x, y, z + 2, blockID);
+		    ValueWriting.notifyBlockOfNeighborChange(world, x - 1, y + 1, z - 1, blockID);
+		    ValueWriting.notifyBlockOfNeighborChange(world, x + 1, y + 1, z - 1, blockID);
+		    ValueWriting.notifyBlockOfNeighborChange(world, x + 1, y + 1, z + 1, blockID);
+		    ValueWriting.notifyBlockOfNeighborChange(world, x - 1, y + 1, z + 1, blockID);
+		    ValueWriting.notifyBlockOfNeighborChange(world, x + 1, y + 1, z, blockID);
+		    ValueWriting.notifyBlockOfNeighborChange(world, x - 1, y + 1, z, blockID);
+		    ValueWriting.notifyBlockOfNeighborChange(world, x, y + 1, z + 1, blockID);
+		    ValueWriting.notifyBlockOfNeighborChange(world, x, y + 1, z - 1, blockID);
+		    ValueWriting.notifyBlockOfNeighborChange(world, x - 1, y, z - 1, blockID);
+		    ValueWriting.notifyBlockOfNeighborChange(world, x + 1, y, z - 1, blockID);
+		    ValueWriting.notifyBlockOfNeighborChange(world, x + 1, y, z + 1, blockID);
+		    ValueWriting.notifyBlockOfNeighborChange(world, x - 1, y, z + 1, blockID);
+		    ValueWriting.notifyBlockOfNeighborChange(world, x - 1, y - 1, z - 1, blockID);
+		    ValueWriting.notifyBlockOfNeighborChange(world, x + 1, y - 1, z - 1, blockID);
+		    ValueWriting.notifyBlockOfNeighborChange(world, x + 1, y - 1, z + 1, blockID);
+		    ValueWriting.notifyBlockOfNeighborChange(world, x - 1, y - 1, z + 1, blockID);
+		    ValueWriting.notifyBlockOfNeighborChange(world, x + 1, y - 1, z, blockID);
+		    ValueWriting.notifyBlockOfNeighborChange(world, x - 1, y - 1, z, blockID);
+		    ValueWriting.notifyBlockOfNeighborChange(world, x, y + 1, z + 1, blockID);
+		    ValueWriting.notifyBlockOfNeighborChange(world, x, y + 1, z - 1, blockID);
+		}
+		public static void spawnMobs(World world, int x, int y, int z, String type)
+		{
+		    byte count = 5;
+		    boolean spawnParticles = world.getClosestPlayer(x + 0.5D, y + 0.5D, z + 0.5D, 16D) != null;
+		
+		    for (int q = 0; q < count; q++)
+		    {
+		        EntityLiving entityliving = (EntityLiving) EntityList.createEntityByName(type, world);
+		
+		        if (entityliving == null)
+		        {
+		            return;
+		        }
+		
+		        int c = world.getEntitiesWithinAABB(entityliving.getClass(),
+		                AxisAlignedBB.getBoundingBox(x, y, z, x + 1, y + 1, z + 1).expand(8D, 4D, 8D)).size();
+		
+		        if (c >= 6)
+		        {
+		            if (spawnParticles)
+		            {
+		                double d = world.rand.nextGaussian() * 0.02D;
+		                double d1 = world.rand.nextGaussian() * 0.02D;
+		                double d2 = world.rand.nextGaussian() * 0.02D;
+		                world.spawnParticle("smoke", x + 0.5D, y + 0.4D, z + 0.5D, d, d1, d2);
+		            }
+		
+		            return;
+		        }
+		
+		        double d3 = x + (world.rand.nextDouble() - world.rand.nextDouble()) * 3D;
+		        double d4 = (y + world.rand.nextInt(3)) - 1;
+		        double d5 = z + (world.rand.nextDouble() - world.rand.nextDouble()) * 3D;
+		        entityliving.setLocationAndAngles(d3, d4, d5, world.rand.nextFloat() * 360F, 0.0F);
+		
+		        if (world.checkIfAABBIsClear(entityliving.boundingBox)
+		                && world.getCollidingBoundingBoxes(entityliving, entityliving.boundingBox).size() == 0)
+		        {
+		            world.spawnEntityInWorld(entityliving);
+		
+		            if (spawnParticles)
+		            {
+		                world.playAuxSFX(2004, x, y, z, 0);
+		                entityliving.spawnExplosionParticle();
+		            }
+		
+		            return;
+		        }
+		    }
+		}
+		public static void setReverseKey(PC_Property config)
+		{
+		    PC_Utils.keyReverse = PC_Utils.Communication.watchForKey(config, "keyReverse", 29);
+		}
+		public static boolean setBID(World world, int x, int y, int z, int id, int meta) {
+			return world.setBlockAndMetadataWithNotify(x, y, z, id, meta);
+		}
+		public static ItemStack extractAndRemoveChest(World world, PC_VecI pos)
+		{
+		    if (PC_Utils.hasFlag(world, pos, PC_Utils.NO_HARVEST))
+		    {
+		        return null;
+		    }
+		
+		    TileEntity tec = PC_Utils.GameInfo.getTE(world, pos);
+		
+		    if (tec == null)
+		    {
+		        return null;
+		    }
+		
+		    ItemStack stack = new ItemStack(PC_Utils.ModuleInfo.getPCObjectIDByName("PCco_ItemBlockSaver"), 1, 0);
+		    NBTTagCompound blocktag = new NBTTagCompound();
+		    PC_Utils.GameInfo.getTE(world, pos).writeToNBT(blocktag);
+		    int dmg = PC_Utils.GameInfo.getBID(world, pos);
+		    stack.setItemDamage(dmg);
+		    blocktag.setInteger("BlockMeta", PC_Utils.GameInfo.getMD(world, pos));
+		    stack.setTagCompound(blocktag);
+		
+		    if (tec instanceof IInventory)
+		    {
+		        IInventory ic = (IInventory) tec;
+		
+		        for (int i = 0; i < ic.getSizeInventory(); i++)
+		        {
+		            ic.setInventorySlotContents(i, null);
+		        }
+		    }
+		
+		    tec.invalidate();
+		    ValueWriting.setBID(world, pos, 0, 0);
+		    return stack;
+		}
+		public static boolean setBID(World world, PC_VecI pos, int id, int meta) {
+			return PC_Utils.ValueWriting.setBID(world, pos.x, pos.y, pos.z, id, meta);
+		}
+		public static void notifyNeighbour(World world, int x, int y, int z) {
+			world.notifyBlocksOfNeighborChange(x, y, z, PC_Utils.GameInfo.getBID(world, x, y, z));
+		}
+		public static void notifyNeighbour(World world, PC_VecI pos) {
+			PC_Utils.ValueWriting.notifyNeighbour(world, pos.x, pos.y, pos.z);
+		}
+		public static boolean setBIDNoNotify(World world, int x, int y, int z, int id, int meta) {
+			return world.setBlockAndMetadata(x, y, z, id, meta);
+		}
+		public static boolean setBIDNoNotify(World world, PC_VecI pos, int id, int meta) {
+			return PC_Utils.ValueWriting.setBID(world, pos.x, pos.y, pos.z, id, meta);
+		}
+		public static boolean setMDNoNotify(World world, int x, int y, int z, int meta) {
+			return world.setBlockMetadata(x, y, z, meta);
+		}
+		public static boolean setMDNoNotify(World world, PC_VecI pos, int meta) {
+			return PC_Utils.ValueWriting.setMDNoNotify(world, pos.x, pos.y, pos.z, meta);
+		}
+		public static void spawnParticle(String name, Object...o)
+		{
+		    PC_Utils.instance.iSpawnParticle(name, o);
+		}
+		public static <t>t createClass(Class<t> c, Class[] param, Object[] objects) throws InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException, SecurityException
+		{
+		    return c.getConstructor(param).newInstance(objects);
+		}
+		public static void playSound(double x, double y, double z, String sound, float soundVolume, float pitch)
+		{
+		    if (PC_Utils.GameInfo.isSoundEnabled())
+		    {
+		        PC_Utils.instance.iPlaySound(x, y, z, sound, soundVolume, pitch);
+		    }
+		}
+		public static void notifyBlockOfNeighborChange(World world, int x, int y, int z, int blockId)
+		{
+		    Block block = Block.blocksList[world.getBlockId(x, y, z)];
+		
+		    if (block != null)
+		    {
+		        block.onNeighborBlockChange(world, x, y, z, blockId);
 		    }
 		}
     	
@@ -768,6 +1215,183 @@ public class PC_Utils implements PC_IPacketHandler
 		    return PC_Utils.instance.iIsEntityFX(entity);
 		}
 
+		public static List<Integer> parseIntList(String list)
+		{
+		    if (list == null)
+		    {
+		        return null;
+		    }
+		
+		    String[] parts = list.split(",");
+		    ArrayList<Integer> intList = new ArrayList<Integer>();
+		
+		    for (String part : parts)
+		    {
+		        try
+		        {
+		            intList.add(Integer.parseInt(part));
+		        }
+		        catch (NumberFormatException e) {}
+		    }
+		
+		    return intList;
+		}
+
+		public static Block getBlock(World world, PC_VecI pos) {
+			return GameInfo.getBlock(world, pos.x, pos.y, pos.z);
+		}
+
+		public static File getPowerCraftFile() {
+			return PC_Utils.createFile(PC_Utils.GameInfo.getMCDirectory(), "PowerCraft");
+		}
+
+		public static boolean isPoweredDirectly(World world, int x, int y, int z){
+			 return world.isBlockGettingPowered(x, y, z);
+		}
+
+		public static boolean isPoweredIndirectly(World world, int x, int y, int z){
+		    return world.isBlockIndirectlyGettingPowered(x, y, z);
+		}
+
+		public static boolean isPoweredIndirectly(World world, PC_VecI pos){
+		    return PC_Utils.GameInfo.isPoweredIndirectly(world, pos.x, pos.y, pos.z);
+		}
+
+		public static boolean isPoweredDirectly(World world, PC_VecI pos){
+		    return PC_Utils.GameInfo.isPoweredDirectly(world, pos.x, pos.y, pos.z);
+		}
+
+		public static boolean usingForge() {
+			return true;
+		}
+
+		public static boolean isBlock(IBlockAccess world, PC_VecI pos, String...names) {
+			int blockID = PC_Utils.GameInfo.getBID(world, pos.x, pos.y, pos.z);
+			for(String name:names)
+				if(blockID == ModuleInfo.getPCObjectIDByName(name))
+					return true;
+			return false;
+		}
+
+		public static float giveConductorValueFor(Block b)
+		{
+		    if (b == null)
+		    {
+		        return 0.0f;
+		    }
+		
+		    if (b.blockID == Block.blockSteel.blockID)
+		    {
+		        return 0.9f;
+		    }
+		
+		    if (b.blockID == Block.blockGold.blockID)
+		    {
+		        return 0.7f;
+		    }
+		
+		    return 0.0f;
+		}
+
+		public static Block getBlock(World world, int x, int y, int z)
+		{
+		    return Block.blocksList[PC_Utils.GameInfo.getBID(world, x, y, z)];
+		}
+
+		public static boolean isPlacingReversed(EntityPlayer player)
+		{
+		    return PC_Utils.instance.iIsPlacingReversed(player);
+		}
+
+		public static boolean poweredFromInput(World world, int x, int y, int z, int inp)
+		{
+		    return GameInfo.poweredFromInput(world, x, y, z, inp, 0);
+		}
+
+		public static boolean poweredFromInput(World world, int x, int y, int z, int inp, int rotation)
+		{
+		    if (world == null)
+		    {
+		        return false;
+		    }
+		
+		    if (inp == 4)
+		    {
+		        boolean isProviding = (world.isBlockIndirectlyProvidingPowerTo(x, y - 1, z, 0) || (world.getBlockId(x, y - 1, z) == Block.redstoneWire.blockID && world
+		                .getBlockMetadata(x, y - 1, z) > 0));
+		        return isProviding;
+		    }
+		
+		    if (inp == 5)
+		    {
+		        boolean isProviding = (world.isBlockIndirectlyProvidingPowerTo(x, y + 1, z, 1) || (world.getBlockId(x, y + 1, z) == Block.redstoneWire.blockID && world
+		                .getBlockMetadata(x, y + 1, z) > 0));
+		        return isProviding;
+		    }
+		
+		    int N0 = 0, N1 = 1, N2 = 2, N3 = 3;
+		
+		    if (inp == 0)
+		    {
+		        N0 = 0;
+		        N1 = 1;
+		        N2 = 2;
+		        N3 = 3;
+		    }
+		
+		    if (inp == 1)
+		    {
+		        N0 = 3;
+		        N1 = 0;
+		        N2 = 1;
+		        N3 = 2;
+		    }
+		    else if (inp == 2)
+		    {
+		        N0 = 1;
+		        N1 = 2;
+		        N2 = 3;
+		        N3 = 0;
+		    }
+		    else if (inp == 3)
+		    {
+		        N0 = 2;
+		        N1 = 3;
+		        N2 = 0;
+		        N3 = 1;
+		    }
+		
+		    if (rotation == N0)
+		    {
+		        return (world.isBlockIndirectlyProvidingPowerTo(x, y, z + 1, 3) || world.getBlockId(x, y, z + 1) == Block.redstoneWire.blockID
+		                && world.getBlockMetadata(x, y, z + 1) > 0);
+		    }
+		
+		    if (rotation == N1)
+		    {
+		        return (world.isBlockIndirectlyProvidingPowerTo(x - 1, y, z, 4) || world.getBlockId(x - 1, y, z) == Block.redstoneWire.blockID
+		                && world.getBlockMetadata(x - 1, y, z) > 0);
+		    }
+		
+		    if (rotation == N2)
+		    {
+		        return (world.isBlockIndirectlyProvidingPowerTo(x, y, z - 1, 2) || world.getBlockId(x, y, z - 1) == Block.redstoneWire.blockID
+		                && world.getBlockMetadata(x, y, z - 1) > 0);
+		    }
+		
+		    if (rotation == N3)
+		    {
+		        return (world.isBlockIndirectlyProvidingPowerTo(x + 1, y, z, 5) || world.getBlockId(x + 1, y, z) == Block.redstoneWire.blockID
+		                && world.getBlockMetadata(x + 1, y, z) > 0);
+		    }
+		
+		    return false;
+		}
+	   
+   }
+    
+    public static class ModuleInfo{
+
 		public static PC_Block getPCBlockByName(String name)
 		{
 		    if (PC_Utils.objects.containsKey(name))
@@ -817,31 +1441,144 @@ public class PC_Utils implements PC_IPacketHandler
 		    return 0;
 		}
 
-		public static List<Integer> parseIntList(String list)
-		{
-		    if (list == null)
-		    {
-		        return null;
-		    }
-		
-		    String[] parts = list.split(",");
-		    ArrayList<Integer> intList = new ArrayList<Integer>();
-		
-		    for (String part : parts)
-		    {
-		        try
-		        {
-		            intList.add(Integer.parseInt(part));
-		        }
-		        catch (NumberFormatException e) {}
-		    }
-		
-		    return intList;
+		public static PC_IModule getModule(Object o) {
+			if(o instanceof PC_IItemInfo){
+				return ((PC_IItemInfo) o).getModule();
+			}
+			return null;
 		}
-	   
-   }
+
+		public static List<PC_IModule> getModules(){
+			List<PC_IModule> list = new ArrayList<PC_IModule>();
+			for(PC_Struct2<PC_IModule, PC_Property> s:PC_Utils.modules.values()){
+				list.add(s.a);
+			}
+			return list;
+		}
+
+		public static String getPowerCraftLoaderImageDir(){
+			return "/powercraft/management/textures/";
+		}
+
+		public static PC_IModule getModule(String name){
+			if(PC_Utils.modules.containsKey(name)){
+				return PC_Utils.modules.get(name).a;
+			}
+			return null;
+		}
+
+		public static List<Object> getRegisterdObjects() {
+			return new ArrayList<Object>(PC_Utils.objects.values());
+		}
+
+		public static String getGresImgDir() {
+			return getPowerCraftLoaderImageDir() + "gres/";
+		}
+    	
+    }
     
+    public static class SaveHandler{
+
+		public static void loadFromNBT(NBTTagCompound nbttagcompound, String string, PC_INBT nbt)
+		{
+		    NBTTagCompound nbttag = nbttagcompound.getCompoundTag(string);
+		    nbt.readFromNBT(nbttag);
+		}
+
+		public static void saveToNBT(NBTTagCompound nbttagcompound, String string, PC_INBT nbt)
+		{
+		    NBTTagCompound nbttag = new NBTTagCompound();
+		    nbt.writeToNBT(nbttag);
+		    nbttagcompound.setCompoundTag(string, nbttag);
+		}
+
+		public static boolean loadPCObjectsIDs(File worldDirectory){
+			File file = new File(worldDirectory, "powercraft.dat");
+			if(!file.exists())
+				return false;
+			try{
+				SaveHandler.loadIDFromTagCompound(CompressedStreamTools.readCompressed(new FileInputStream(file)));
+				 
+		    }catch (Exception e){
+		        e.printStackTrace();
+		        return false;
+		    }
+			return true;
+		}
+
+		public static NBTTagCompound makeIDTagCompound(){
+			 NBTTagCompound nbttag = new NBTTagCompound("PowerCraftIDs");
+		
+		    for(String key:PC_Utils.objects.keySet()){
+		    	nbttag.setInteger(key, ModuleInfo.getPCObjectIDByName(key));
+		    }
+		    
+		    return nbttag;
+		}
+
+		public static void loadIDFromTagCompound(NBTTagCompound nbttag){
+			for(Entry<String, Object>e: PC_Utils.objects.entrySet()){
+				PC_Utils.ModuleLoader.setPCObjectID(e.getValue(), -1);
+			}
+			for(Entry<String, Object>e: PC_Utils.objects.entrySet()){
+				int id;
+				if(nbttag.hasKey(e.getKey())){
+					id = nbttag.getInteger(e.getKey());
+				}else{
+					id = PC_Utils.ModuleLoader.defaultID(e.getValue());
+				}
+				System.out.println("Change ID of "+e.getKey()+" to "+id);
+				PC_Utils.ModuleLoader.setPCObjectID(e.getValue(), id);
+			}
+		}
+
+		public static void saveConfig(PC_IModule module) {
+			PC_Property config = SaveHandler.getConfig(module);
+			File f = new File(PC_Utils.GameInfo.getMCDirectory(), "config/PowerCraft-"+module.getName()+".cfg");
+			if(config!=null){
+				try {
+					OutputStream os = new FileOutputStream(f);
+					config.save(os);
+				} catch (FileNotFoundException e) {
+					PC_Logger.severe("Can't find File "+f);
+				}
+			}
+		}
+
+		public static PC_Property getConfig(PC_IModule module) {
+			if(PC_Utils.modules.containsKey(module.getName())){
+				return PC_Utils.modules.get(module.getName()).b;
+			}
+			return null;
+		}
+    	
+    }
     
+    public static class Communication{
+
+		public static void chatMsg(String msg, boolean clear)
+		{
+		    PC_Utils.instance.iChatMsg(msg, clear);
+		}
+
+		public static boolean isKeyPressed(EntityPlayer player, String key)
+		{
+		    return PC_Utils.instance.iIsKeyPressed(player, key);
+		}
+
+		public static void watchForKey(String name, int key)
+		{
+		    PC_Utils.instance.iWatchForKey(name, key);
+		}
+
+		public static int watchForKey(PC_Property config, String name, int key)
+		{
+			key = config.getInt("key.name", key, new String[]{"Key for rotate placing"});
+		    PC_Utils.Communication.watchForKey(name, key);
+		    return key;
+		}
+    	
+    }
     
     public static boolean create()
     {
@@ -872,73 +1609,8 @@ public class PC_Utils implements PC_IPacketHandler
     protected void iTileEntitySpecialRenderer(Class <? extends TileEntity> tileEntityClass){
 		
 	}
-    
-    
-    public static void setBlockState(World world, int x, int y, int z, boolean on)
-    {
-        Block b = Block.blocksList[GameInfo.getBID(world, x, y, z)];
-
-        if (b instanceof PC_Block)
-        {
-            int meta = GameInfo.getMD(world, x, y, z);
-            PC_TileEntity te = GameInfo.getTE(world, x, y, z);
-            Class c = b.getClass();
-
-            if (c.isAnnotationPresent(PC_Shining.class))
-            {
-                Block bon = (Block)ValueWriting.getFieldsWithAnnotation(c, PC_Shining.ON.class, c)[0];
-                Block boff = (Block)ValueWriting.getFieldsWithAnnotation(c, PC_Shining.OFF.class, c)[0];
-
-                if ((b == bon && !on) || (b == boff && on))
-                {
-                    if (te != null)
-                    {
-                        te.lockInvalid(true);
-                    }
-
-                    if (on)
-                    {
-                        world.setBlockAndMetadataWithNotify(x, y, z, bon.blockID, meta);
-                    }
-                    else
-                    {
-                        world.setBlockAndMetadataWithNotify(x, y, z, boff.blockID, meta);
-                    }
-
-                    if (te != null)
-                    {
-                        world.setBlockTileEntity(x, y, z, te);
-                        te.blockType = null;
-                        te.getBlockType();
-                        te.lockInvalid(false);
-                    }
-                    hugeUpdate(world, x, y, z);
-                    
-                }
-            }
-        }
-    }
-
-    public static <t>t createClass(Class<t> c, Class[] param, Object[] objects) throws InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException, SecurityException
-    {
-        return c.getConstructor(param).newInstance(objects);
-    }
-
-    public static void setSoundEnabled(boolean enabled){
-        if (GameInfo.isClient()){
-        	isSoundEnabled = enabled;
-        }
-    }
-    
+        
     protected void iPlaySound(double x, double y, double z, String sound, float soundVolume, float pitch) {}
-
-    public static void playSound(double x, double y, double z, String sound, float soundVolume, float pitch)
-    {
-        if (GameInfo.isSoundEnabled())
-        {
-            instance.iPlaySound(x, y, z, sound, soundVolume, pitch);
-        }
-    }
 
     protected static HashMap<String, Class> guis = new HashMap<String, Class>();
 
@@ -991,7 +1663,7 @@ public class PC_Utils implements PC_IPacketHandler
             {
                 try
                 {
-                    PC_GresBaseWithInventory bwi = createClass((Class<PC_GresBaseWithInventory>)c, new Class[] {EntityPlayer.class, Object[].class}, new Object[] {player, o});
+                    PC_GresBaseWithInventory bwi = ValueWriting.createClass((Class<PC_GresBaseWithInventory>)c, new Class[] {EntityPlayer.class, Object[].class}, new Object[] {player, o});
                     player.openContainer = bwi;
                     player.openContainer.windowId = guiID;
                     player.openContainer.addCraftingToCrafters((EntityPlayerMP)player);
@@ -1011,244 +1683,9 @@ public class PC_Utils implements PC_IPacketHandler
 
     protected void iChatMsg(String msg, boolean clear) {}
 
-    public static void chatMsg(String msg, boolean clear)
-    {
-        instance.iChatMsg(msg, clear);
-    }
-
-    public static boolean setMD(World world, PC_VecI pos, int md) {
-		return GameInfo.getMD(world, pos.x, pos.y, pos.z, md);
-	}
-    
     protected boolean iIsPlacingReversed(EntityPlayer player)
     {
-        return isKeyPressed(player, "keyReverse");
-    }
-
-    public static boolean isPlacingReversed(EntityPlayer player)
-    {
-        return instance.iIsPlacingReversed(player);
-    }
-
-    public static int reverseSide(int l)
-    {
-        if (l == 0)
-        {
-            l = 2;
-        }
-        else if (l == 2)
-        {
-            l = 0;
-        }
-        else if (l == 1)
-        {
-            l = 3;
-        }
-        else if (l == 3)
-        {
-            l = 1;
-        }
-
-        return l;
-    }
-
-    public static void hugeUpdate(World world, int x, int y, int z)
-    {
-    	int blockID = PC_Utils.getBID(world, x, y, z);
-        notifyBlockOfNeighborChange(world, x - 2, y, z, blockID);
-        notifyBlockOfNeighborChange(world, x - 1, y, z, blockID);
-        notifyBlockOfNeighborChange(world, x + 1, y, z, blockID);
-        notifyBlockOfNeighborChange(world, x + 2, y, z, blockID);
-        notifyBlockOfNeighborChange(world, x, y - 2, z, blockID);
-        notifyBlockOfNeighborChange(world, x, y - 1, z, blockID);
-        notifyBlockOfNeighborChange(world, x, y + 1, z, blockID);
-        notifyBlockOfNeighborChange(world, x, y + 2, z, blockID);
-        notifyBlockOfNeighborChange(world, x, y, z - 2, blockID);
-        notifyBlockOfNeighborChange(world, x, y, z - 1, blockID);
-        notifyBlockOfNeighborChange(world, x, y, z + 1, blockID);
-        notifyBlockOfNeighborChange(world, x, y, z + 2, blockID);
-        notifyBlockOfNeighborChange(world, x - 1, y + 1, z - 1, blockID);
-        notifyBlockOfNeighborChange(world, x + 1, y + 1, z - 1, blockID);
-        notifyBlockOfNeighborChange(world, x + 1, y + 1, z + 1, blockID);
-        notifyBlockOfNeighborChange(world, x - 1, y + 1, z + 1, blockID);
-        notifyBlockOfNeighborChange(world, x + 1, y + 1, z, blockID);
-        notifyBlockOfNeighborChange(world, x - 1, y + 1, z, blockID);
-        notifyBlockOfNeighborChange(world, x, y + 1, z + 1, blockID);
-        notifyBlockOfNeighborChange(world, x, y + 1, z - 1, blockID);
-        notifyBlockOfNeighborChange(world, x - 1, y, z - 1, blockID);
-        notifyBlockOfNeighborChange(world, x + 1, y, z - 1, blockID);
-        notifyBlockOfNeighborChange(world, x + 1, y, z + 1, blockID);
-        notifyBlockOfNeighborChange(world, x - 1, y, z + 1, blockID);
-        notifyBlockOfNeighborChange(world, x - 1, y - 1, z - 1, blockID);
-        notifyBlockOfNeighborChange(world, x + 1, y - 1, z - 1, blockID);
-        notifyBlockOfNeighborChange(world, x + 1, y - 1, z + 1, blockID);
-        notifyBlockOfNeighborChange(world, x - 1, y - 1, z + 1, blockID);
-        notifyBlockOfNeighborChange(world, x + 1, y - 1, z, blockID);
-        notifyBlockOfNeighborChange(world, x - 1, y - 1, z, blockID);
-        notifyBlockOfNeighborChange(world, x, y + 1, z + 1, blockID);
-        notifyBlockOfNeighborChange(world, x, y + 1, z - 1, blockID);
-    }
-
-    public static <t extends TileEntity>t setTE(World world, int x, int y, int z, t createTileEntity)
-    {
-        world.setBlockTileEntity(x, y, z, createTileEntity);
-        return createTileEntity;
-    }
-
-    public static boolean poweredFromInput(World world, int x, int y, int z, int inp)
-    {
-        return poweredFromInput(world, x, y, z, inp, 0);
-    }
-
-    public static boolean poweredFromInput(World world, int x, int y, int z, int inp, int rotation)
-    {
-        if (world == null)
-        {
-            return false;
-        }
-
-        if (inp == 4)
-        {
-            boolean isProviding = (world.isBlockIndirectlyProvidingPowerTo(x, y - 1, z, 0) || (world.getBlockId(x, y - 1, z) == Block.redstoneWire.blockID && world
-                    .getBlockMetadata(x, y - 1, z) > 0));
-            return isProviding;
-        }
-
-        if (inp == 5)
-        {
-            boolean isProviding = (world.isBlockIndirectlyProvidingPowerTo(x, y + 1, z, 1) || (world.getBlockId(x, y + 1, z) == Block.redstoneWire.blockID && world
-                    .getBlockMetadata(x, y + 1, z) > 0));
-            return isProviding;
-        }
-
-        int N0 = 0, N1 = 1, N2 = 2, N3 = 3;
-
-        if (inp == 0)
-        {
-            N0 = 0;
-            N1 = 1;
-            N2 = 2;
-            N3 = 3;
-        }
-
-        if (inp == 1)
-        {
-            N0 = 3;
-            N1 = 0;
-            N2 = 1;
-            N3 = 2;
-        }
-        else if (inp == 2)
-        {
-            N0 = 1;
-            N1 = 2;
-            N2 = 3;
-            N3 = 0;
-        }
-        else if (inp == 3)
-        {
-            N0 = 2;
-            N1 = 3;
-            N2 = 0;
-            N3 = 1;
-        }
-
-        if (rotation == N0)
-        {
-            return (world.isBlockIndirectlyProvidingPowerTo(x, y, z + 1, 3) || world.getBlockId(x, y, z + 1) == Block.redstoneWire.blockID
-                    && world.getBlockMetadata(x, y, z + 1) > 0);
-        }
-
-        if (rotation == N1)
-        {
-            return (world.isBlockIndirectlyProvidingPowerTo(x - 1, y, z, 4) || world.getBlockId(x - 1, y, z) == Block.redstoneWire.blockID
-                    && world.getBlockMetadata(x - 1, y, z) > 0);
-        }
-
-        if (rotation == N2)
-        {
-            return (world.isBlockIndirectlyProvidingPowerTo(x, y, z - 1, 2) || world.getBlockId(x, y, z - 1) == Block.redstoneWire.blockID
-                    && world.getBlockMetadata(x, y, z - 1) > 0);
-        }
-
-        if (rotation == N3)
-        {
-            return (world.isBlockIndirectlyProvidingPowerTo(x + 1, y, z, 5) || world.getBlockId(x + 1, y, z) == Block.redstoneWire.blockID
-                    && world.getBlockMetadata(x + 1, y, z) > 0);
-        }
-
-        return false;
-    }
-
-    public static void spawnMobFromSpawner(World world, int x, int y, int z)
-    {
-        TileEntityMobSpawner te = GameInfo.getTE(world, x, y, z, Block.mobSpawner.blockID);
-
-        if (te != null)
-        {
-            spawnMobs(world, x, y, z, GameInfo.getMobID(te));
-        }
-    }
-
-    public static void preventSpawnerSpawning(World world, int x, int y, int z)
-    {
-        TileEntityMobSpawner te = GameInfo.getTE(world, x, y, z, Block.mobSpawner.blockID);
-
-        if (te != null)
-        {
-            te.delay = 20;
-        }
-    }
-
-    public static void spawnMobs(World world, int x, int y, int z, String type)
-    {
-        byte count = 5;
-        boolean spawnParticles = world.getClosestPlayer(x + 0.5D, y + 0.5D, z + 0.5D, 16D) != null;
-
-        for (int q = 0; q < count; q++)
-        {
-            EntityLiving entityliving = (EntityLiving) EntityList.createEntityByName(type, world);
-
-            if (entityliving == null)
-            {
-                return;
-            }
-
-            int c = world.getEntitiesWithinAABB(entityliving.getClass(),
-                    AxisAlignedBB.getBoundingBox(x, y, z, x + 1, y + 1, z + 1).expand(8D, 4D, 8D)).size();
-
-            if (c >= 6)
-            {
-                if (spawnParticles)
-                {
-                    double d = world.rand.nextGaussian() * 0.02D;
-                    double d1 = world.rand.nextGaussian() * 0.02D;
-                    double d2 = world.rand.nextGaussian() * 0.02D;
-                    world.spawnParticle("smoke", x + 0.5D, y + 0.4D, z + 0.5D, d, d1, d2);
-                }
-
-                return;
-            }
-
-            double d3 = x + (world.rand.nextDouble() - world.rand.nextDouble()) * 3D;
-            double d4 = (y + world.rand.nextInt(3)) - 1;
-            double d5 = z + (world.rand.nextDouble() - world.rand.nextDouble()) * 3D;
-            entityliving.setLocationAndAngles(d3, d4, d5, world.rand.nextFloat() * 360F, 0.0F);
-
-            if (world.checkIfAABBIsClear(entityliving.boundingBox)
-                    && world.getCollidingBoundingBoxes(entityliving, entityliving.boundingBox).size() == 0)
-            {
-                world.spawnEntityInWorld(entityliving);
-
-                if (spawnParticles)
-                {
-                    world.playAuxSFX(2004, x, y, z, 0);
-                    entityliving.spawnExplosionParticle();
-                }
-
-                return;
-            }
-        }
+        return Communication.isKeyPressed(player, "keyReverse");
     }
 
     protected File iGetMCDirectory()
@@ -1256,118 +1693,14 @@ public class PC_Utils implements PC_IPacketHandler
         return GameInfo.mcs().getFile("");
     }
 
-    public static void notifyBlockOfNeighborChange(World world, int x, int y, int z, int blockId)
-    {
-        Block block = Block.blocksList[world.getBlockId(x, y, z)];
-
-        if (block != null)
-        {
-            block.onNeighborBlockChange(world, x, y, z, blockId);
-        }
-    }
-
     protected int iAddArmor(String name)
     {
         return 0;
     }
 
-    public static int addArmor(String name)
-    {
-        return instance.iAddArmor(name);
-    }
-
     protected boolean iIsEntityFX(Entity entity)
     {
         return false;
-    }
-
-    public static boolean isVersionNewer(String nVersion, String oVersion)
-    {
-        String saVersion[], saNewVersion[];
-        saVersion = oVersion.split("\\.");
-        saNewVersion = nVersion.split("\\.");
-
-        for (int i = 0; i < saVersion.length; i++)
-        {
-            if (i >= saNewVersion.length)
-            {
-                return false;
-            }
-
-            int version = 0, newVersion = 0;
-            String sVersion = "", sNewVersion = "";
-
-            for (int j = 0; j < saVersion[i].length(); j++)
-            {
-                char c = saVersion[i].charAt(j);
-                boolean num = true;
-
-                if (Character.isDigit(c) && num)
-                {
-                    version *= 10;
-                    version += c - '0';
-                }
-                else
-                {
-                    num = false;
-                    sVersion += c;
-                }
-            }
-
-            for (int j = 0; j < saNewVersion[i].length(); j++)
-            {
-                char c = saNewVersion[i].charAt(j);
-                boolean num = true;
-
-                if (Character.isDigit(c) && num)
-                {
-                    newVersion *= 10;
-                    newVersion += c - '0';
-                }
-                else
-                {
-                    num = false;
-                    sNewVersion += c;
-                }
-            }
-
-            if (newVersion > version)
-            {
-                return true;
-            }
-            else if (newVersion < version)
-            {
-                return false;
-            }
-            else
-            {
-                int comp = sNewVersion.compareToIgnoreCase(sVersion);
-
-                if (comp > 0)
-                {
-                    return false;
-                }
-                else if (comp < 0)
-                {
-                    return true;
-                }
-            }
-        }
-
-        return false;
-    }
-
-    public static void loadFromNBT(NBTTagCompound nbttagcompound, String string, PC_INBT nbt)
-    {
-        NBTTagCompound nbttag = nbttagcompound.getCompoundTag(string);
-        nbt.readFromNBT(nbttag);
-    }
-
-    public static void saveToNBT(NBTTagCompound nbttagcompound, String string, PC_INBT nbt)
-    {
-        NBTTagCompound nbttag = new NBTTagCompound();
-        nbt.writeToNBT(nbttag);
-        nbttagcompound.setCompoundTag(string, nbttag);
     }
 
     protected boolean iIsKeyPressed(EntityPlayer player, String key)
@@ -1381,29 +1714,7 @@ public class PC_Utils implements PC_IPacketHandler
         return keyList.contains(key);
     }
 
-    public static boolean isKeyPressed(EntityPlayer player, String key)
-    {
-        return instance.iIsKeyPressed(player, key);
-    }
-
     protected void iWatchForKey(String name, int key) {}
-
-    public static void watchForKey(String name, int key)
-    {
-        instance.iWatchForKey(name, key);
-    }
-
-    public static int watchForKey(PC_Property config, String name, int key)
-    {
-    	key = config.getInt("key.name", key, new String[]{"Key for rotate placing"});
-        watchForKey(name, key);
-        return key;
-    }
-
-    public static void setReverseKey(PC_Property config)
-    {
-        instance.keyReverse = watchForKey(config, "keyReverse", 29);
-    }
 
     protected static final int KEYEVENT = 0;
     protected static final int SPAWNPARTICLEONBLOCKS = 1;
@@ -1495,7 +1806,7 @@ public class PC_Utils implements PC_IPacketHandler
                                 break;
                         }
 
-                        PC_Utils.spawnParticle("PC_EntityLaserParticleFX", player.worldObj, new PC_VecF(block.a).add(pos), new PC_Color(0.6f, 0.6f, 1.0f), move, 0);
+                        ValueWriting.spawnParticle("PC_EntityLaserParticleFX", player.worldObj, new PC_VecF(block.a).add(pos), new PC_Color(0.6f, 0.6f, 1.0f), move, 0);
                     }
                 }
 
@@ -1510,87 +1821,8 @@ public class PC_Utils implements PC_IPacketHandler
         return a == null ? b == null : a.equals(b);
     }
 
-    public static Block getBlock(World world, int x, int y, int z)
+    protected void iSpawnParticle(String name, Object[] o)
     {
-        return Block.blocksList[GameInfo.getBID(world, x, y, z)];
-    }
-
-    public static ItemStack extractAndRemoveChest(World world, PC_VecI pos)
-    {
-        if (hasFlag(world, pos, NO_HARVEST))
-        {
-            return null;
-        }
-
-        TileEntity tec = GameInfo.getTE(world, pos);
-
-        if (tec == null)
-        {
-            return null;
-        }
-
-        ItemStack stack = new ItemStack(GameInfo.getPCObjectIDByName("PCco_ItemBlockSaver"), 1, 0);
-        NBTTagCompound blocktag = new NBTTagCompound();
-        GameInfo.getTE(world, pos).writeToNBT(blocktag);
-        int dmg = GameInfo.getBID(world, pos);
-        stack.setItemDamage(dmg);
-        blocktag.setInteger("BlockMeta", GameInfo.getMD(world, pos));
-        stack.setTagCompound(blocktag);
-
-        if (tec instanceof IInventory)
-        {
-            IInventory ic = (IInventory) tec;
-
-            for (int i = 0; i < ic.getSizeInventory(); i++)
-            {
-                ic.setInventorySlotContents(i, null);
-            }
-        }
-
-        tec.invalidate();
-        setBID(world, pos, 0, 0);
-        return stack;
-    }
-
-    public static boolean setBID(World world, int x, int y, int z, int id, int meta) {
-    	return world.setBlockAndMetadataWithNotify(x, y, z, id, meta);
-	}
-    
-    public static boolean setBID(World world, PC_VecI pos, int id, int meta) {
-    	return setBID(world, pos.x, pos.y, pos.z, id, meta);
-	}
-
-    public static void notifyNeighbour(World world, int x, int y, int z) {
-    	world.notifyBlocksOfNeighborChange(x, y, z, GameInfo.getBID(world, x, y, z));
-	}
-    
-    public static void notifyNeighbour(World world, PC_VecI pos) {
-    	notifyNeighbour(world, pos.x, pos.y, pos.z);
-	}
-    
-    public static boolean setBIDNoNotify(World world, int x, int y, int z, int id, int meta) {
-    	return world.setBlockAndMetadata(x, y, z, id, meta);
-	}
-    
-    public static boolean setBIDNoNotify(World world, PC_VecI pos, int id, int meta) {
-    	return setBID(world, pos.x, pos.y, pos.z, id, meta);
-	}
-    
-    public static boolean setMDNoNotify(World world, int x, int y, int z, int meta) {
-    	return world.setBlockMetadata(x, y, z, meta);
-	}
-    
-    public static boolean setMDNoNotify(World world, PC_VecI pos, int meta) {
-    	return setMDNoNotify(world, pos.x, pos.y, pos.z, meta);
-	}
-    
-	protected void iSpawnParticle(String name, Object[] o)
-    {
-    }
-
-    public static void spawnParticle(String name, Object...o)
-    {
-        instance.iSpawnParticle(name, o);
     }
 
     public static Constructor findBestConstructor(Class c, Class[] cp)
@@ -1661,29 +1893,9 @@ public class PC_Utils implements PC_IPacketHandler
         return null;
     }
 
-    public static float giveConductorValueFor(Block b)
-    {
-        if (b == null)
-        {
-            return 0.0f;
-        }
-
-        if (b.blockID == Block.blockSteel.blockID)
-        {
-            return 0.9f;
-        }
-
-        if (b.blockID == Block.blockGold.blockID)
-        {
-            return 0.7f;
-        }
-
-        return 0.0f;
-    }
-
     private static void searchPowerReceiverConnectedTo(World world, int x, int y, int z, List<PC_Struct3<PC_VecI, PC_IMSG, Float>> receivers, List<PC_Struct2<PC_VecI, Float>> allpos, float power)
     {
-        Block b = getBlock(world, x, y, z);
+        Block b = GameInfo.getBlock(world, x, y, z);
         PC_VecI pos = new PC_VecI(x, y, z);
         PC_Struct2<PC_VecI, Float> oldStruct = null;
 
@@ -1708,7 +1920,7 @@ public class PC_Utils implements PC_IPacketHandler
             return;
         }
 
-        float value = giveConductorValueFor(b);
+        float value = GameInfo.giveConductorValueFor(b);
 
         if (value < 0.01f)
         {
@@ -1796,16 +2008,8 @@ public class PC_Utils implements PC_IPacketHandler
         }
     }
 
-	public static boolean isBlock(IBlockAccess world, PC_VecI pos, String...names) {
-		int blockID = GameInfo.getBID(world, pos.x, pos.y, pos.z);
-		for(String name:names)
-			if(blockID == GameInfo.getPCObjectIDByName(name))
-				return true;
-		return false;
-	}
-	
 	public static boolean hasFlag(World world, PC_VecI pos, String flag) {
-		Block b = getBlock(world, pos.x, pos.y, pos.z);
+		Block b = GameInfo.getBlock(world, pos.x, pos.y, pos.z);
 		if(b instanceof PC_IMSG){
 			List<String> list = (List<String>)((PC_IMSG)b).msg(MSG_BLOCK_FLAGS, world, pos, new ArrayList<String>());
 			if(list != null){
@@ -1837,21 +2041,6 @@ public class PC_Utils implements PC_IPacketHandler
 		return false;
 	}
 
-	public static Block getBlock(World world, PC_VecI pos) {
-		return getBlock(world, pos.x, pos.y, pos.z);
-	}
-
-	public static PC_IModule getModule(Object o) {
-		if(o instanceof PC_IItemInfo){
-			return ((PC_IItemInfo) o).getModule();
-		}
-		return null;
-	}
-	
-	public static File getPowerCraftFile() {
-		return createFile(GameInfo.getMCDirectory(), "PowerCraft");
-    }
-
 	public static int getValueNum(Class c, String n) {
 		Field[] fields = c.getDeclaredFields();
 		for(int i=0; i<fields.length; i++){
@@ -1862,158 +2051,11 @@ public class PC_Utils implements PC_IPacketHandler
 		return -1;
 	}
 	
-	public static void loadIDFromTagCompound(NBTTagCompound nbttag){
-		for(Entry<String, Object>e: objects.entrySet()){
-			setPCObjectID(e.getValue(), -1);
-		}
-		for(Entry<String, Object>e: objects.entrySet()){
-			int id;
-			if(nbttag.hasKey(e.getKey())){
-				id = nbttag.getInteger(e.getKey());
-			}else{
-				id = defaultID(e.getValue());
-			}
-			System.out.println("Change ID of "+e.getKey()+" to "+id);
-			setPCObjectID(e.getValue(), id);
-		}
-	}
-	
-	public static boolean loadPCObjectsIDs(File worldDirectory){
-		File file = new File(worldDirectory, "powercraft.dat");
-		if(!file.exists())
-			return false;
-		try{
-			loadIDFromTagCompound(CompressedStreamTools.readCompressed(new FileInputStream(file)));
-			 
-        }catch (Exception e){
-            e.printStackTrace();
-            return false;
-        }
-		return true;
-	}
-	
-	public static NBTTagCompound makeIDTagCompound(){
-		 NBTTagCompound nbttag = new NBTTagCompound("PowerCraftIDs");
-
-        for(String key:objects.keySet()){
-        	nbttag.setInteger(key, GameInfo.getPCObjectIDByName(key));
-        }
-        
-        return nbttag;
-	}
-	
-	public static void savePCObjectsIDs(File worldDirectory){
-        NBTTagCompound nbttag = makeIDTagCompound();
-        	
-        try
-        {
-            File file = new File(worldDirectory, "powercraft.dat");
-            CompressedStreamTools.writeCompressed(nbttag, new FileOutputStream(file));
-        }
-        catch (Exception e)
-        {
-            e.printStackTrace();
-        }
-	}
-	
-	private static void setPCObjectID(Object o, int id){
-		if(o instanceof PC_Item){
-			((PC_Item) o).setItemID(id);
-		}else if(o instanceof PC_Block){
-			((PC_Block) o).setBlockID(id);
-		}else if(o instanceof PC_ItemArmor){
-			((PC_ItemArmor) o).setItemID(id);
-		}
-	}
-	
-	public static int defaultID(Object o){
-		int id = -1;
-		if(o instanceof PC_IItemInfo){
-			if(o.getClass().isAnnotationPresent(PC_Shining.class)){
-				Object[] on = ValueWriting.getFieldsWithAnnotation(o.getClass(), PC_Shining.ON.class, o);
-				Object[] off = ValueWriting.getFieldsWithAnnotation(o.getClass(), PC_Shining.OFF.class, o);
-				if(on!=null && on.length>0 && on[0] == o){
-					id = getConfig(((PC_IItemInfo) o).getModule()).getInt(objects.getClass().getSimpleName()+".defaultID.on", 0);
-				}else{
-					id = getConfig(((PC_IItemInfo) o).getModule()).getInt(objects.getClass().getSimpleName()+".defaultID.off", 0);
-				}
-				}else{
-				id = getConfig(((PC_IItemInfo) o).getModule()).getInt(objects.getClass().getSimpleName()+".defaultID", 0);
-			}
-		}
-		if(o instanceof PC_Item){
-			if(!isItemIDFree(id))
-				id = getFreeItemID();
-		}else if(o instanceof PC_Block){
-			if(!isBlockIDFree(id))
-				id = getFreeBlockID();
-		}else if(o instanceof PC_ItemArmor){
-			if(!isItemIDFree(id))
-				id = getFreeItemID();
-		}
-		return id;
-	}
-	
-	public static void resetPCObjectsIDs(){
-		for(Object o: objects.values()){
-			setPCObjectID(o, -1);
-		}
-		for(Object o: objects.values()){
-			int id = defaultID(o);
-			setPCObjectID(o, id);
-		}
-	}
-	
-	public static int getFreeBlockID() {
-		for(int i=1; i<Block.blocksList.length; i++){
-			if(Block.blocksList[i] == null)
-				return i;
-		}
-		return -1;
-	}
-	
-	public static boolean isBlockIDFree(int id){
-		if(id<=0)
-			return false;
-		return Block.blocksList[id]==null;
-	}
-	
-	public static int getFreeItemID() {
-		for(int i=Block.blocksList.length; i<Item.itemsList.length; i++){
-			if(Item.itemsList[i] == null)
-				return i;
-		}
-		return -1;
-	}
-
-	public static boolean isItemIDFree(int id){
-		if(id<=0)
-			return false;
-		return Item.itemsList[id]==null;
-	}
-	
 	public static File createFile(File pfile, String name) {
 		File file = new File(pfile, name);
     	if(!file.exists())
     		file.mkdirs();
         return file;
-	}
-	
-	public static void registerModule(PC_IModule module){
-		PC_Property config = null;
-		File f = new File(GameInfo.getMCDirectory(), "config/PowerCraft-"+module.getName()+".cfg");
-		if(f.exists()){
-			try {
-				InputStream is = new FileInputStream(f);
-				config = PC_Property.loadFromFile(is);
-			} catch (FileNotFoundException e) {
-				PC_Logger.severe("Can't find File "+f);
-			}
-		}
-		if(config==null){
-			config = new PC_Property(null);
-		}
-		modules.put(module.getName(), new PC_Struct2<PC_IModule, PC_Property>(module, config));
 	}
 	
 	public static String getTextureDirectory(PC_IModule module){
@@ -2023,72 +2065,5 @@ public class PC_Utils implements PC_IPacketHandler
 	public static String getTerrainFile(PC_IModule module){
 		return getTextureDirectory(module) + "tiles.png";
 	}
-	
-	public static PC_Property getConfig(PC_IModule module) {
-		if(modules.containsKey(module.getName())){
-			return modules.get(module.getName()).b;
-		}
-		return null;
-	}
-	
-	public static void saveConfig(PC_IModule module) {
-		PC_Property config = getConfig(module);
-		File f = new File(GameInfo.getMCDirectory(), "config/PowerCraft-"+module.getName()+".cfg");
-		if(config!=null){
-			try {
-				OutputStream os = new FileOutputStream(f);
-				config.save(os);
-			} catch (FileNotFoundException e) {
-				PC_Logger.severe("Can't find File "+f);
-			}
-		}
-	}
-	
-	public static PC_IModule getModule(String name){
-		if(modules.containsKey(name)){
-			return modules.get(name).a;
-		}
-		return null;
-	}
-	
-	public static List<PC_IModule> getModules(){
-		List<PC_IModule> list = new ArrayList<PC_IModule>();
-		for(PC_Struct2<PC_IModule, PC_Property> s:modules.values()){
-			list.add(s.a);
-		}
-		return list;
-	}
-
-	public static String getPowerCraftLoaderImageDir(){
-		return "/powercraft/management/textures/";
-	}
-	
-	public static String getGresImgDir() {
-		return getPowerCraftLoaderImageDir() + "gres/";
-	}
-	
-	public static boolean usingForge() {
-		return true;
-	}
-	
-	public static List<Object> getRgisterdObjects() {
-		return new ArrayList<Object>(objects.values());
-	}
-	
-	public static boolean isPoweredDirectly(World world, int x, int y, int z){
-		 return world.isBlockGettingPowered(x, y, z);
-	}
-	
-	public static boolean isPoweredDirectly(World world, PC_VecI pos){
-        return isPoweredDirectly(world, pos.x, pos.y, pos.z);
-    }
-
-	public static boolean isPoweredIndirectly(World world, int x, int y, int z){
-        return world.isBlockIndirectlyGettingPowered(x, y, z);
-    }
-	
-    public static boolean isPoweredIndirectly(World world, PC_VecI pos){
-        return isPoweredIndirectly(world, pos.x, pos.y, pos.z);
-    }
 	
 }

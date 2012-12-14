@@ -24,6 +24,7 @@ import org.xml.sax.SAXParseException;
 
 import powercraft.management.PC_Utils.GameInfo;
 import powercraft.management.PC_Utils.Lang;
+import powercraft.management.PC_Utils.ModuleInfo;
 
 public class PC_UpdateManager {
 
@@ -127,7 +128,7 @@ public class PC_UpdateManager {
 	            PC_Logger.fine("Starting extraction of language files");
 	            ZipEntry ze = null;
 
-	            File fileP = new File(GameInfo.getMCDirectory(), PC_Utils.getPowerCraftFile() + "/lang");
+	            File fileP = new File(GameInfo.getMCDirectory(), GameInfo.getPowerCraftFile() + "/lang");
             	if(!fileP.exists())
             		fileP.mkdirs();
 	            
@@ -217,7 +218,7 @@ public class PC_UpdateManager {
                     String sLangVersion = element.getAttribute("langVersion");
                     String sLangLink = element.getAttribute("langLink");
                     String sInfo = element.getTextContent();
-                    PC_IModule module = PC_Utils.getModule(sModule);
+                    PC_IModule module = ModuleInfo.getModule(sModule);
 
                     if (module != null)
                     {

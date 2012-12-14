@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import powercraft.management.PC_Utils.GameInfo;
+import powercraft.management.PC_Utils.ValueWriting;
 
 import net.minecraft.src.Block;
 import net.minecraft.src.CreativeTabs;
@@ -61,7 +62,7 @@ public abstract class PC_ItemBlock extends ItemBlock implements PC_IItemInfo, PC
 
             if (te == null)
             {
-                te = (PC_TileEntity)PC_Utils.setTE(world, x, y, z, block.createTileEntity(world, metadata));
+                te = (PC_TileEntity)ValueWriting.setTE(world, x, y, z, block.createTileEntity(world, metadata));
             }
 
             if (te != null)

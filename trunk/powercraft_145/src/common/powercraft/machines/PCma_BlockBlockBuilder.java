@@ -18,7 +18,9 @@ import powercraft.management.PC_IItemInfo;
 import powercraft.management.PC_ISpecialInventoryTextures;
 import powercraft.management.PC_InvUtils;
 import powercraft.management.PC_Utils;
+import powercraft.management.PC_Utils.GameInfo;
 import powercraft.management.PC_Utils.Gres;
+import powercraft.management.PC_Utils.ValueWriting;
 import powercraft.management.PC_VecI;
 
 public class PCma_BlockBlockBuilder extends PC_Block implements PC_ISpecialInventoryTextures, PC_IItemInfo{
@@ -156,8 +158,8 @@ public class PCma_BlockBlockBuilder extends PC_Block implements PC_ISpecialInven
 	public void onBlockPlacedBy(World world, int i, int j, int k, EntityLiving entityliving) {
 		int l = MathHelper.floor_double(((entityliving.rotationYaw * 4F) / 360F) + 0.5D) & 3;
 
-		if (entityliving instanceof EntityPlayer && PC_Utils.isPlacingReversed((EntityPlayer)entityliving)) {
-			l = PC_Utils.reverseSide(l);
+		if (entityliving instanceof EntityPlayer && GameInfo.isPlacingReversed((EntityPlayer)entityliving)) {
+			l = ValueWriting.reverseSide(l);
 		}
 
 		if (l == 0) {
