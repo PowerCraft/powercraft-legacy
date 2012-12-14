@@ -122,7 +122,7 @@ public class PClo_TileEntityDelayer extends PC_TileEntity
             }
         }
 
-        PC_Utils.hugeUpdate(worldObj, xCoord, yCoord, zCoord, worldObj.getBlockId(xCoord, yCoord, zCoord));
+        PC_Utils.hugeUpdate(worldObj, xCoord, yCoord, zCoord);
         worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
     }
 

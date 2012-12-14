@@ -86,6 +86,7 @@ public class PC_ModuleLoader{
 			if(create){
 				Class<?> c = new PC_ModuleClassLoader(ci.getClassName(), b).getCreateClass();
 				try {
+					PC_Logger.info("Module "+ci.getClassName()+" have been loaded");
 					PC_IModule module;
 					PC_Utils.registerModule(module = (PC_IModule)c.newInstance());
 					PC_Logger.info("Module "+module.getName()+" have been loaded");

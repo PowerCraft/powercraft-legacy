@@ -78,7 +78,7 @@ public class PClo_BlockPulsar extends PC_Block implements PC_IItemInfo
     public void updateTick(World world, int i, int j, int k, Random random)
     {
         world.markBlockForUpdate(i, j, k);
-        PC_Utils.hugeUpdate(world, i, j, k, blockID);
+        PC_Utils.hugeUpdate(world, i, j, k);
     }
 
     @Override

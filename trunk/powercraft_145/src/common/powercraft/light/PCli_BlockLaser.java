@@ -154,7 +154,7 @@ public class PCli_BlockLaser extends PC_Block implements PC_IItemInfo
     @Override
     public void breakBlock(World world, int i, int j, int k, int par5, int par6)
     {
-        PC_Utils.hugeUpdate(world, i, j, k, blockID);
+        PC_Utils.hugeUpdate(world, i, j, k);
         super.breakBlock(world, i, j, k, par5, par6);
     }
     
