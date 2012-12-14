@@ -23,6 +23,7 @@ import powercraft.management.PC_InvUtils;
 import powercraft.management.PC_TileEntity;
 import powercraft.management.PC_Utils.GameInfo;
 import powercraft.management.PC_Utils.Lang;
+import powercraft.management.PC_Utils.ModuleInfo;
 
 public class PCma_TileEntityRoaster extends PC_TileEntity implements IInventory, PC_ISpecialAccessInventory
 {
@@ -190,7 +191,7 @@ public class PCma_TileEntityRoaster extends PC_TileEntity implements IInventory,
             return;
         }
 
-        PC_Block laserB = GameInfo.getPCBlockByName("PCli_BlockLaser");
+        PC_Block laserB = ModuleInfo.getPCBlockByName("PCli_BlockLaser");
         boolean laser = false;
 
         if (laserB != null)

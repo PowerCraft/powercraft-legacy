@@ -13,6 +13,8 @@ import powercraft.management.PC_Renderer;
 import powercraft.management.PC_TileEntity;
 import powercraft.management.PC_Utils;
 import powercraft.management.PC_Utils.GameInfo;
+import powercraft.management.PC_Utils.ModuleInfo;
+import powercraft.management.PC_Utils.SaveHandler;
 
 public class PCli_TileEntityLight extends PC_TileEntity implements PC_ITileEntityRenderer
 {
@@ -29,7 +31,7 @@ public class PCli_TileEntityLight extends PC_TileEntity implements PC_ITileEntit
     {
         super.readFromNBT(nbttagcompound);
 
-        PC_Utils.loadFromNBT(nbttagcompound, "color", color);
+        SaveHandler.loadFromNBT(nbttagcompound, "color", color);
         isStable = nbttagcompound.getBoolean("stable");
         isHuge = nbttagcompound.getBoolean("huge");
     }
@@ -39,7 +41,7 @@ public class PCli_TileEntityLight extends PC_TileEntity implements PC_ITileEntit
     {
         super.writeToNBT(nbttagcompound);
         
-        PC_Utils.saveToNBT(nbttagcompound, "color", color);
+        SaveHandler.saveToNBT(nbttagcompound, "color", color);
 
         nbttagcompound.setBoolean("stable", isStable);
         nbttagcompound.setBoolean("huge", isHuge);
@@ -139,7 +141,7 @@ public class PCli_TileEntityLight extends PC_TileEntity implements PC_ITileEntit
 
 		PC_Renderer.glTranslatef((float) x + 0.5F, (float) y + 0.5F, (float) z + 0.5F);
 		
-		PC_Renderer.bindTexture(PC_Utils.getTextureDirectory(PC_Utils.getModule("Light")) + "block_light.png");
+		PC_Renderer.bindTexture(PC_Utils.getTextureDirectory(ModuleInfo.getModule("Light")) + "block_light.png");
 
 		PC_Renderer.glPushMatrix();
 		PC_Renderer.glScalef(f, -f, -f);

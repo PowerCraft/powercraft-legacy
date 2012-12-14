@@ -10,6 +10,7 @@ import net.minecraft.src.World;
 import powercraft.management.PC_Color;
 import powercraft.management.PC_TileEntity;
 import powercraft.management.PC_Utils;
+import powercraft.management.PC_Utils.ValueWriting;
 import powercraft.management.PC_VecF;
 
 public class PCli_TileEntityLightningConductor extends PC_TileEntity
@@ -66,21 +67,21 @@ public class PCli_TileEntityLightningConductor extends PC_TileEntity
             {
                 for (int i = 0; i < 2; i++)
                 {
-                    PC_Utils.spawnParticle("PC_EntityLaserParticleFX", worldObj, new PC_VecF(getCoord())
+                    ValueWriting.spawnParticle("PC_EntityLaserParticleFX", worldObj, new PC_VecF(getCoord())
                             .offset(-0.1F + rand.nextFloat() * 1.2F, rand.nextFloat() * 0.8F - 1.0f, -0.1F + rand.nextFloat() * 1.2F), new PC_Color(
                             		0.6f, 0.6f, 1.0f), new PC_VecF(), 0);
                 }
 
                 for (int i = 0; i < 2; i++)
                 {
-                    PC_Utils.spawnParticle("PC_EntityLaserParticleFX", worldObj, new PC_VecF(getCoord())
+                    ValueWriting.spawnParticle("PC_EntityLaserParticleFX", worldObj, new PC_VecF(getCoord())
                             .offset(0.1F + rand.nextFloat() * 0.8F, rand.nextFloat() * 0.8F - 0.2f, 0.1F + rand.nextFloat() * 0.8F), new PC_Color(
                             		0.6f, 0.6f, 1.0f), new PC_VecF(), 0);
                 }
 
                 for (int i = 0; i < 2; i++)
                 {
-                    PC_Utils.spawnParticle("PC_EntityLaserParticleFX", worldObj, new PC_VecF(getCoord())
+                    ValueWriting.spawnParticle("PC_EntityLaserParticleFX", worldObj, new PC_VecF(getCoord())
                             .offset(0.2F + rand.nextFloat() * 0.6F, rand.nextFloat() * 0.9F - 0.4f, 0.2F + rand.nextFloat() * 0.6F), new PC_Color(
                                     0.6f, 0.6f, 1.0f), new PC_VecF(), 0);
                 }

@@ -8,7 +8,9 @@ import java.util.List;
 import powercraft.management.PC_Utils.GameInfo;
 import powercraft.management.PC_Utils.Gres;
 import powercraft.management.PC_Utils.Lang;
+import powercraft.management.PC_Utils.ModuleInfo;
 import powercraft.management.PC_Utils.ModuleLoader;
+import powercraft.management.PC_Utils.SaveHandler;
 
 import net.minecraft.src.Block;
 import net.minecraft.src.IRecipe;
@@ -42,7 +44,7 @@ public class mod_PowerCraft {
 	@PreInit
 	public void preInit(FMLPreInitializationEvent event) {
 		proxy.initUtils();
-		PC_Logger.init(PC_Utils.getPowerCraftFile());
+		PC_Logger.init(GameInfo.getPowerCraftFile());
 		PC_Logger.enterSection("PreInit");
 		PC_GlobalVariables.loadConfig();
 		PC_Logger.enterSection("Register Hacks");
@@ -50,7 +52,7 @@ public class mod_PowerCraft {
 		proxy.hack();
 		PC_Logger.exitSection();
 		PC_Logger.enterSection("Load Modules");
-		PC_ModuleLoader.load(PC_Utils.createFile(PC_Utils.getPowerCraftFile(), "Modules"));
+		PC_ModuleLoader.load(PC_Utils.createFile(GameInfo.getPowerCraftFile(), "Modules"));
 		PC_ModuleLoader.load(new File(GameInfo.getMCDirectory(), "mods"));
 		try {
 			PC_ModuleLoader.load(new File(mod_PowerCraft.class.getResource("../../").toURI()));
@@ -60,14 +62,14 @@ public class mod_PowerCraft {
 		PC_UpdateManager.downloadUpdateInfo(updateInfoPath);
 		PC_Logger.exitSection();
 		PC_Logger.enterSection("Module PreInit");
-		List<PC_IModule> modules = PC_Utils.getModules();
+		List<PC_IModule> modules = ModuleInfo.getModules();
 		for(PC_IModule module:modules){
 			module.preInit();
 		}
 		PC_Logger.exitSection();
 		PC_Logger.enterSection("Module Property Init");
 		for(PC_IModule module:modules){
-			module.initProperties(PC_Utils.getConfig(module));
+			module.initProperties(SaveHandler.getConfig(module));
 		}
 		PC_Logger.exitSection();
 		if(PC_Utils.GameInfo.isClient()){
@@ -88,12 +90,12 @@ public class mod_PowerCraft {
 					}
 				}
 			}
-			ModuleLoader.registerTextureFiles(PC_Utils.getPowerCraftLoaderImageDir() + "PowerCraft.png");
-			ModuleLoader.registerTextureFiles(PC_Utils.getGresImgDir() + "button.png");
-			ModuleLoader.registerTextureFiles(PC_Utils.getGresImgDir() + "dialog.png");
-			ModuleLoader.registerTextureFiles(PC_Utils.getGresImgDir() + "frame.png");
-			ModuleLoader.registerTextureFiles(PC_Utils.getGresImgDir() + "scrollbar_handle.png");
-			ModuleLoader.registerTextureFiles(PC_Utils.getGresImgDir() + "widgets.png");
+			ModuleLoader.registerTextureFiles(ModuleInfo.getPowerCraftLoaderImageDir() + "PowerCraft.png");
+			ModuleLoader.registerTextureFiles(ModuleInfo.getGresImgDir() + "button.png");
+			ModuleLoader.registerTextureFiles(ModuleInfo.getGresImgDir() + "dialog.png");
+			ModuleLoader.registerTextureFiles(ModuleInfo.getGresImgDir() + "frame.png");
+			ModuleLoader.registerTextureFiles(ModuleInfo.getGresImgDir() + "scrollbar_handle.png");
+			ModuleLoader.registerTextureFiles(ModuleInfo.getGresImgDir() + "widgets.png");
 			PC_Logger.exitSection();
 		}
 		PC_Logger.exitSection();
@@ -104,7 +106,7 @@ public class mod_PowerCraft {
 		PC_Logger.enterSection("Init");
 		GameRegistry.registerWorldGenerator(new PC_WorldGenerator());
 		GameRegistry.registerFuelHandler(new PC_FuelHandler());
-		List<PC_IModule> modules = PC_Utils.getModules();
+		List<PC_IModule> modules = ModuleInfo.getModules();
 		proxy.init();
 		PC_Logger.enterSection("Module Init");
 		for(PC_IModule module:modules){
@@ -203,7 +205,7 @@ public class mod_PowerCraft {
 	public void postInit(FMLPostInitializationEvent event) {
 		PC_Logger.enterSection("PostInit");
 		PC_Logger.enterSection("Module PostInit");
-		List<PC_IModule> modules = PC_Utils.getModules();
+		List<PC_IModule> modules = ModuleInfo.getModules();
 		for(PC_IModule module:modules){
 			module.postInit();
 		}
@@ -227,7 +229,7 @@ public class mod_PowerCraft {
 		}
 		PC_Logger.enterSection("Module Config Saving");
 		for(PC_IModule module:modules){
-			PC_Utils.saveConfig(module);
+			SaveHandler.saveConfig(module);
 		}
 		PC_GlobalVariables.saveConfig();
 		PC_Logger.exitSection();
@@ -262,7 +264,7 @@ public class mod_PowerCraft {
          mm.authorList.add("Rapus");
          mm.credits = "MightyPork, RxD, LOLerul2";
          mm.description = "";
-         mm.logoFile = PC_Utils.getPowerCraftLoaderImageDir() + "PowerCraft.png";
+         mm.logoFile = ModuleInfo.getPowerCraftLoaderImageDir() + "PowerCraft.png";
          mm.url = "http://powercrafting.net/";
     }
     

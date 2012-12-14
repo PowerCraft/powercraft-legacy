@@ -8,8 +8,8 @@ import net.minecraft.src.World;
 import powercraft.management.PC_ISpecialAccessInventory;
 import powercraft.management.PC_InvUtils;
 import powercraft.management.PC_TileEntity;
-import powercraft.management.PC_Utils;
 import powercraft.management.PC_Utils.GameInfo;
+import powercraft.management.PC_Utils.ValueWriting;
 
 public class PClo_TileEntitySpecial extends PC_TileEntity implements IInventory, PC_ISpecialAccessInventory
 {
@@ -74,11 +74,11 @@ public class PClo_TileEntitySpecial extends PC_TileEntity implements IInventory,
                 break;
 
             case PClo_SpecialType.SPECIAL:
-                PC_Utils.preventSpawnerSpawning(worldObj, xCoord + 1, yCoord, zCoord);
-                PC_Utils.preventSpawnerSpawning(worldObj, xCoord - 1, yCoord, zCoord);
-                PC_Utils.preventSpawnerSpawning(worldObj, xCoord, yCoord + 1, zCoord);
-                PC_Utils.preventSpawnerSpawning(worldObj, xCoord, yCoord, zCoord + 1);
-                PC_Utils.preventSpawnerSpawning(worldObj, xCoord, yCoord, zCoord - 1);
+                ValueWriting.preventSpawnerSpawning(worldObj, xCoord + 1, yCoord, zCoord);
+                ValueWriting.preventSpawnerSpawning(worldObj, xCoord - 1, yCoord, zCoord);
+                ValueWriting.preventSpawnerSpawning(worldObj, xCoord, yCoord + 1, zCoord);
+                ValueWriting.preventSpawnerSpawning(worldObj, xCoord, yCoord, zCoord + 1);
+                ValueWriting.preventSpawnerSpawning(worldObj, xCoord, yCoord, zCoord - 1);
 
             default:
                 return;
@@ -134,7 +134,7 @@ public class PClo_TileEntitySpecial extends PC_TileEntity implements IInventory,
             }
         }
 
-        PC_Utils.hugeUpdate(worldObj, xCoord, yCoord, zCoord);
+        ValueWriting.hugeUpdate(worldObj, xCoord, yCoord, zCoord);
         worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
     }
 

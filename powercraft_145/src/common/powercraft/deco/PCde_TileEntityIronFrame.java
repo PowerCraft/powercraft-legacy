@@ -6,6 +6,7 @@ import powercraft.management.PC_Renderer;
 import powercraft.management.PC_TileEntity;
 import powercraft.management.PC_Utils;
 import powercraft.management.PC_Utils.GameInfo;
+import powercraft.management.PC_Utils.ModuleInfo;
 import powercraft.management.PC_VecI;
 
 public class PCde_TileEntityIronFrame extends PC_TileEntity implements PC_ITileEntityRenderer {
@@ -20,7 +21,7 @@ public class PCde_TileEntityIronFrame extends PC_TileEntity implements PC_ITileE
 
 		PC_Renderer.glTranslatef((float) x + 0.5F, (float) y + 0.5F, (float) z + 0.5F);
 
-		PC_Renderer.bindTexture(PC_Utils.getTextureDirectory(PC_Utils.getModule("Deco"))+"block_deco.png");
+		PC_Renderer.bindTexture(PC_Utils.getTextureDirectory(ModuleInfo.getModule("Deco"))+"block_deco.png");
 
 		PC_Renderer.glPushMatrix();
 		PC_Renderer.glScalef(f, -f, -f);

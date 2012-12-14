@@ -6,7 +6,7 @@ import net.minecraft.src.NBTTagCompound;
 import net.minecraft.src.World;
 import powercraft.management.PC_PacketHandler;
 import powercraft.management.PC_TileEntity;
-import powercraft.management.PC_Utils;
+import powercraft.management.PC_Utils.ValueWriting;
 
 public class PClo_TileEntityGate extends PC_TileEntity
 {
@@ -34,7 +34,7 @@ public class PClo_TileEntityGate extends PC_TileEntity
         inp = PClo_GateType.rotateCornerSides(type, inp);
         PC_PacketHandler.setTileEntity(this, "inp", inp);
         worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
-        PC_Utils.notifyBlockOfNeighborChange(worldObj, xCoord, yCoord, zCoord, worldObj.getBlockId(xCoord, yCoord, zCoord));
+        ValueWriting.notifyBlockOfNeighborChange(worldObj, xCoord, yCoord, zCoord, worldObj.getBlockId(xCoord, yCoord, zCoord));
     }
 
     @Override
@@ -79,9 +79,9 @@ public class PClo_TileEntityGate extends PC_TileEntity
             }
         }
 
-        PC_Utils.hugeUpdate(worldObj, xCoord, yCoord, zCoord);
+        ValueWriting.hugeUpdate(worldObj, xCoord, yCoord, zCoord);
         worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
-        PC_Utils.notifyBlockOfNeighborChange(worldObj, xCoord, yCoord, zCoord, worldObj.getBlockId(xCoord, yCoord, zCoord));
+        ValueWriting.notifyBlockOfNeighborChange(worldObj, xCoord, yCoord, zCoord, worldObj.getBlockId(xCoord, yCoord, zCoord));
     }
 
     @Override

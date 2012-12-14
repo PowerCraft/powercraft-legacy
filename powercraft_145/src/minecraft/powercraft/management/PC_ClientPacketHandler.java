@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 
 import powercraft.management.PC_Utils.Gres;
+import powercraft.management.PC_Utils.SaveHandler;
 
 import net.minecraft.src.CompressedStreamTools;
 import net.minecraft.src.EntityPlayer;
@@ -29,7 +30,7 @@ public class PC_ClientPacketHandler extends PC_PacketHandler {
 	protected void handleIncomingIDPacket(ObjectInputStream input, EntityPlayer player) throws ClassNotFoundException, IOException{
 		System.out.println("handleIncomingIDPacket");
 		byte[] b = (byte[])input.readObject();
-		PC_Utils.loadIDFromTagCompound(CompressedStreamTools.decompress(b));
+		SaveHandler.loadIDFromTagCompound(CompressedStreamTools.decompress(b));
 	}
 	
 }

@@ -14,7 +14,6 @@ import net.minecraft.src.ShapelessRecipes;
 import net.minecraft.src.Slot;
 import powercraft.management.PC_IRecipeInputInfo;
 import powercraft.management.PC_ISlotWithBackground;
-import powercraft.management.PC_Utils;
 import powercraft.management.PC_Utils.GameInfo;
 import powercraft.management.PC_Utils.ValueWriting;
 
@@ -62,7 +61,7 @@ public class PCco_SlotDirectCrafting extends Slot implements PC_ISlotWithBackgro
         {
             ItemStack output = product.copy();
 
-            if ((GameInfo.isCreative(thePlayer) || survivalCheating) && PC_Utils.isPlacingReversed(thePlayer))
+            if ((GameInfo.isCreative(thePlayer) || survivalCheating) && GameInfo.isPlacingReversed(thePlayer))
             {
                 output.stackSize = output.getMaxStackSize();
             }
@@ -82,7 +81,7 @@ public class PCco_SlotDirectCrafting extends Slot implements PC_ISlotWithBackgro
         {
             ItemStack output = product.copy();
 
-            if ((GameInfo.isCreative(thePlayer) || survivalCheating) && PC_Utils.isPlacingReversed(thePlayer))
+            if ((GameInfo.isCreative(thePlayer) || survivalCheating) && GameInfo.isPlacingReversed(thePlayer))
             {
                 output.stackSize = output.getMaxStackSize();
             }

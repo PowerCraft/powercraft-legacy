@@ -18,6 +18,7 @@ import powercraft.management.PC_MathHelper;
 import powercraft.management.PC_Renderer;
 import powercraft.management.PC_Utils;
 import powercraft.management.PC_Utils.GameInfo;
+import powercraft.management.PC_Utils.ValueWriting;
 import powercraft.management.PC_VecI;
 
 public class PCde_BlockStairs extends PC_Block {
@@ -185,8 +186,8 @@ public class PCde_BlockStairs extends PC_Block {
 	public void onBlockPlacedBy(World world, int x, int y, int z, EntityLiving entityliving) {
 
 		int dir = ((PC_MathHelper.floor_double(((entityliving.rotationYaw * 4F) / 360F) + 0.5D) & 3) + 2) % 4;
-		if (entityliving instanceof EntityPlayer && PC_Utils.isPlacingReversed((EntityPlayer)entityliving)) {
-			dir = PC_Utils.reverseSide(dir);
+		if (entityliving instanceof EntityPlayer && GameInfo.isPlacingReversed((EntityPlayer)entityliving)) {
+			dir = ValueWriting.reverseSide(dir);
 		}
 		world.setBlockMetadataWithNotify(x, y, z, dir);
 

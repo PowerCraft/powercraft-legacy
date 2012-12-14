@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Random;
 
 import powercraft.management.PC_Utils.GameInfo;
+import powercraft.management.PC_Utils.ValueWriting;
 
 import net.minecraft.src.AxisAlignedBB;
 import net.minecraft.src.Block;
@@ -387,7 +388,7 @@ public class PC_BeamTracer {
 		if(dirChage)
 			cnt = cnt.offset(oldMove);
 		
-		PC_Utils.spawnParticle("PC_EntityLaserFX", world, cnt, move, strength, color);
+		ValueWriting.spawnParticle("PC_EntityLaserFX", world, cnt, move, strength, color);
 	}
 	
 	/**

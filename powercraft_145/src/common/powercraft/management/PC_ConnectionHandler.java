@@ -4,6 +4,8 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
 
+import powercraft.management.PC_Utils.SaveHandler;
+
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.src.CompressedStreamTools;
 import net.minecraft.src.INetworkManager;
@@ -33,7 +35,7 @@ public class PC_ConnectionHandler implements IConnectionHandler {
         {
             sendData = new ObjectOutputStream(data);
             sendData.writeInt(PC_PacketHandler.PACKETIDS);
-            sendData.writeObject(CompressedStreamTools.compress(PC_Utils.makeIDTagCompound()));
+            sendData.writeObject(CompressedStreamTools.compress(SaveHandler.makeIDTagCompound()));
             sendData.writeInt(PC_PacketHandler.PACKETIDS);
         }
         catch (IOException e)

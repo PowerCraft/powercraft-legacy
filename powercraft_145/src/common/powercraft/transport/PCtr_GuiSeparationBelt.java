@@ -15,8 +15,8 @@ import powercraft.management.PC_GresWindow;
 import powercraft.management.PC_IGresClient;
 import powercraft.management.PC_IGresGui;
 import powercraft.management.PC_PacketHandler;
-import powercraft.management.PC_Utils;
 import powercraft.management.PC_Utils.Lang;
+import powercraft.management.PC_Utils.ModuleInfo;
 
 public class PCtr_GuiSeparationBelt extends PCtr_ContainerSeparationBelt implements PC_IGresClient {
 
@@ -33,7 +33,7 @@ public class PCtr_GuiSeparationBelt extends PCtr_ContainerSeparationBelt impleme
 		PC_GresWindow w = new PC_GresWindow(00, 00, Lang.tr("tile.PCSeperatorBelt.name"));
 		w.setWidthForInventory();
 		PC_GresLayoutH hg = new PC_GresLayoutH();
-		hg.add(new PC_GresImage(PC_Utils.getGresImgDir()+"widgets.png", 56, 66, 8, 15));
+		hg.add(new PC_GresImage(ModuleInfo.getGresImgDir()+"widgets.png", 56, 66, 8, 15));
 
 		PC_GresInventory left, right;
 
@@ -48,7 +48,7 @@ public class PCtr_GuiSeparationBelt extends PCtr_ContainerSeparationBelt impleme
 				right.setSlot(lSlot.get(i), i % 3, (int) Math.floor(i / 6));
 			}
 		}
-		hg.add(new PC_GresImage(PC_Utils.getGresImgDir()+"widgets.png", 64, 66, 8, 15));
+		hg.add(new PC_GresImage(ModuleInfo.getGresImgDir()+"widgets.png", 64, 66, 8, 15));
 		w.add(hg);
 
 		PC_GresLayoutV vg = new PC_GresLayoutV();

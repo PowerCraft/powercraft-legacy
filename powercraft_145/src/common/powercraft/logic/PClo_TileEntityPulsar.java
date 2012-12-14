@@ -3,10 +3,11 @@ package powercraft.logic;
 import net.minecraft.src.NBTTagCompound;
 import powercraft.management.PC_PacketHandler;
 import powercraft.management.PC_TileEntity;
-import powercraft.management.PC_Utils;
+import powercraft.management.PC_Utils.Communication;
 import powercraft.management.PC_Utils.Converter;
 import powercraft.management.PC_Utils.GameInfo;
 import powercraft.management.PC_Utils.Lang;
+import powercraft.management.PC_Utils.ValueWriting;
 
 public class PClo_TileEntityPulsar extends PC_TileEntity
 {
@@ -75,12 +76,12 @@ public class PClo_TileEntityPulsar extends PC_TileEntity
 
     public void printDelay()
     {
-        PC_Utils.chatMsg(Lang.tr("pc.pulsar.clickMsg", new String[] { delay + "", Converter.ticksToSecs(delay) + "" }), true);
+        Communication.chatMsg(Lang.tr("pc.pulsar.clickMsg", new String[] { delay + "", Converter.ticksToSecs(delay) + "" }), true);
     }
 
     public void printDelayTime()
     {
-        PC_Utils.chatMsg(Lang.tr("pc.pulsar.clickMsgTime", new String[] { delay + "", Converter.ticksToSecs(delay) + "", (delay - delayTimer) + "" }), true);
+        Communication.chatMsg(Lang.tr("pc.pulsar.clickMsgTime", new String[] { delay + "", Converter.ticksToSecs(delay) + "", (delay - delayTimer) + "" }), true);
     }
 
     public boolean isActive()
@@ -100,7 +101,7 @@ public class PClo_TileEntityPulsar extends PC_TileEntity
 
         if (delayTimer < 0 && !isActive())
         {
-            PC_Utils.setBlockState(worldObj, xCoord, yCoord, zCoord, true);
+            ValueWriting.setBlockState(worldObj, xCoord, yCoord, zCoord, true);
             updateBlock();
             change = true;
         }
@@ -109,7 +110,7 @@ public class PClo_TileEntityPulsar extends PC_TileEntity
 
         if (delayTimer >= holdtime && isActive())
         {
-            PC_Utils.setBlockState(worldObj, xCoord, yCoord, zCoord, false);
+            ValueWriting.setBlockState(worldObj, xCoord, yCoord, zCoord, false);
             updateBlock();
             change = true;
         }
@@ -191,7 +192,7 @@ public class PClo_TileEntityPulsar extends PC_TileEntity
                 {
                     if (!silent)
                     {
-                        PC_Utils.playSound(xCoord + 0.5D, yCoord + 0.5D, zCoord + 0.5D, "random.click", 1.0F, 1.0F);
+                        ValueWriting.playSound(xCoord + 0.5D, yCoord + 0.5D, zCoord + 0.5D, "random.click", 1.0F, 1.0F);
                     }
                 }
             }

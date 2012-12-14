@@ -11,6 +11,7 @@ import powercraft.management.PC_Struct3;
 import powercraft.management.PC_TileEntity;
 import powercraft.management.PC_Utils;
 import powercraft.management.PC_Utils.GameInfo;
+import powercraft.management.PC_Utils.ValueWriting;
 
 public class PCli_ItemBlockLightningConductor extends PC_ItemBlock
 {
@@ -53,7 +54,7 @@ public class PCli_ItemBlockLightningConductor extends PC_ItemBlock
 
             if (te == null)
             {
-                te = (PC_TileEntity)PC_Utils.setTE(world, x, y + 1, z, block.createTileEntity(world, 0));
+                te = (PC_TileEntity)ValueWriting.setTE(world, x, y + 1, z, block.createTileEntity(world, 0));
             }
 
             if (te != null)

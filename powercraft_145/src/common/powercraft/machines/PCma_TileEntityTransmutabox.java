@@ -15,8 +15,8 @@ import powercraft.management.PC_IStateReportingInventory;
 import powercraft.management.PC_InvUtils;
 import powercraft.management.PC_PacketHandler;
 import powercraft.management.PC_TileEntity;
-import powercraft.management.PC_Utils;
 import powercraft.management.PC_Utils.GameInfo;
+import powercraft.management.PC_Utils.ValueWriting;
 
 public class PCma_TileEntityTransmutabox extends PC_TileEntity implements IInventory, PC_ISpecialAccessInventory, PC_IStateReportingInventory
 {
@@ -388,7 +388,7 @@ public class PCma_TileEntityTransmutabox extends PC_TileEntity implements IInven
             if (var.equals("change"))
             {
                 worldObj.createExplosion(null, xCoord + 0.5F, yCoord + 0.5F, zCoord + 0.5F, 1.7F, true);
-                PC_Utils.playSound(xCoord + 0.5F, yCoord + 0.5F, zCoord + 0.5F, "random.explode", 1.5F,
+                ValueWriting.playSound(xCoord + 0.5F, yCoord + 0.5F, zCoord + 0.5F, "random.explode", 1.5F,
                         (1.0F + (worldObj.rand.nextFloat() - worldObj.rand.nextFloat()) * 0.2F) * 0.7F);
             }
             else if (var.equals("loadTime"))

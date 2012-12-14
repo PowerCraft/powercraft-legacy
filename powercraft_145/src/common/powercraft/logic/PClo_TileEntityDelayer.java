@@ -7,6 +7,7 @@ import net.minecraft.src.World;
 import powercraft.management.PC_TileEntity;
 import powercraft.management.PC_Utils;
 import powercraft.management.PC_Utils.GameInfo;
+import powercraft.management.PC_Utils.ValueWriting;
 
 public class PClo_TileEntityDelayer extends PC_TileEntity
 {
@@ -53,8 +54,8 @@ public class PClo_TileEntityDelayer extends PC_TileEntity
 
         if (type == PClo_DelayerType.FIFO)
         {
-            stop = PC_Utils.poweredFromInput(worldObj, xCoord, yCoord, zCoord, PC_Utils.RIGHT, rot);
-            reset = PC_Utils.poweredFromInput(worldObj, xCoord, yCoord, zCoord, PC_Utils.LEFT, rot);
+            stop = GameInfo.poweredFromInput(worldObj, xCoord, yCoord, zCoord, PC_Utils.RIGHT, rot);
+            reset = GameInfo.poweredFromInput(worldObj, xCoord, yCoord, zCoord, PC_Utils.LEFT, rot);
         }
 
         if (!stop || reset)
@@ -122,7 +123,7 @@ public class PClo_TileEntityDelayer extends PC_TileEntity
             }
         }
 
-        PC_Utils.hugeUpdate(worldObj, xCoord, yCoord, zCoord);
+        ValueWriting.hugeUpdate(worldObj, xCoord, yCoord, zCoord);
         worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
     }
 

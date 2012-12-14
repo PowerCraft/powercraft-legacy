@@ -18,6 +18,7 @@ import powercraft.management.PC_MathHelper;
 import powercraft.management.PC_Renderer;
 import powercraft.management.PC_Utils;
 import powercraft.management.PC_Utils.GameInfo;
+import powercraft.management.PC_Utils.ValueWriting;
 import powercraft.management.PC_VecI;
 
 public class PCli_BlockLaser extends PC_Block implements PC_IItemInfo
@@ -86,12 +87,12 @@ public class PCli_BlockLaser extends PC_Block implements PC_IItemInfo
 
         if (entityliving instanceof EntityPlayer)
         {
-            PC_Utils.isPlacingReversed((EntityPlayer)entityliving);
+            GameInfo.isPlacingReversed((EntityPlayer)entityliving);
         }
 
         if (reverse)
         {
-            l = PC_Utils.reverseSide(l);
+            l = ValueWriting.reverseSide(l);
         }
 
         if (l == 0)
@@ -116,7 +117,7 @@ public class PCli_BlockLaser extends PC_Block implements PC_IItemInfo
         PCli_TileEntityLaser te = GameInfo.getTE(world, i, j, k, blockID);
         
         if(te!=null){
-        	te.setKiller(PC_Utils.isBlock(world, new PC_VecI(i, j-1, k), "PCma_BlockRoaster"));
+        	te.setKiller(GameInfo.isBlock(world, new PC_VecI(i, j-1, k), "PCma_BlockRoaster"));
         }
         
     }
@@ -154,7 +155,7 @@ public class PCli_BlockLaser extends PC_Block implements PC_IItemInfo
     @Override
     public void breakBlock(World world, int i, int j, int k, int par5, int par6)
     {
-        PC_Utils.hugeUpdate(world, i, j, k);
+        ValueWriting.hugeUpdate(world, i, j, k);
         super.breakBlock(world, i, j, k, par5, par6);
     }
     
@@ -163,7 +164,7 @@ public class PCli_BlockLaser extends PC_Block implements PC_IItemInfo
 		PCli_TileEntityLaser te = GameInfo.getTE(world, x, y, z, blockID);
 	        
         if(te!=null){
-        	te.setKiller(PC_Utils.isBlock(world, new PC_VecI(x, y-1, z), "PCma_BlockRoaster"));
+        	te.setKiller(GameInfo.isBlock(world, new PC_VecI(x, y-1, z), "PCma_BlockRoaster"));
         	boolean powered = world.isBlockIndirectlyGettingPowered(x, y, z);
         	te.setPowerd(powered);
         }

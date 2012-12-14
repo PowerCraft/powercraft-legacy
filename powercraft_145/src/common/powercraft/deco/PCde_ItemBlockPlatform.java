@@ -13,6 +13,7 @@ import powercraft.management.PC_ItemBlock;
 import powercraft.management.PC_Struct3;
 import powercraft.management.PC_Utils;
 import powercraft.management.PC_Utils.GameInfo;
+import powercraft.management.PC_Utils.ValueWriting;
 
 public class PCde_ItemBlockPlatform extends PC_ItemBlock {
 
@@ -70,8 +71,8 @@ public class PCde_ItemBlockPlatform extends PC_ItemBlock {
 
 			int dir = ((MathHelper.floor_double(((entityplayer.rotationYaw * 4F) / 360F) + 0.5D) & 3) + 2) % 4;
 
-			if (PC_Utils.isPlacingReversed(entityplayer)) {
-				dir = PC_Utils.reverseSide(dir);
+			if (GameInfo.isPlacingReversed(entityplayer)) {
+				dir = ValueWriting.reverseSide(dir);
 			}
 			int meta = world.getBlockMetadata(i, j - 1, k);
 
@@ -82,7 +83,7 @@ public class PCde_ItemBlockPlatform extends PC_ItemBlock {
 
 				if (meta == dir) {
 
-					if (!PC_Utils.isPlacingReversed(entityplayer)) {
+					if (!GameInfo.isPlacingReversed(entityplayer)) {
 						j ++;
 					}
 

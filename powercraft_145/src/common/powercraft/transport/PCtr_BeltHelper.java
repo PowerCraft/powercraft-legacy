@@ -22,8 +22,8 @@ import powercraft.management.PC_IInventoryWrapper;
 import powercraft.management.PC_ISpecialAccessInventory;
 import powercraft.management.PC_InvUtils;
 import powercraft.management.PC_MathHelper;
-import powercraft.management.PC_Utils;
 import powercraft.management.PC_Utils.GameInfo;
+import powercraft.management.PC_Utils.ValueWriting;
 import powercraft.management.PC_VecF;
 import powercraft.management.PC_VecI;
 
@@ -276,7 +276,7 @@ public class PCtr_BeltHelper
         {
             if (GameInfo.getBID(world, pos) == Block.cauldron.blockID && GameInfo.getMD(world, pos) < 3)
             {
-            	PC_Utils.setMD(world, pos, 3);
+            	ValueWriting.setMD(world, pos, 3);
                 entity.item.itemID = Item.bucketEmpty.shiftedIndex;
                 return true;
             }
@@ -286,7 +286,7 @@ public class PCtr_BeltHelper
         {
             if (GameInfo.getBID(world, pos) == Block.waterStill.blockID || GameInfo.getBID(world, pos) == Block.waterMoving.blockID && GameInfo.getMD(world, pos) == 0)
             {
-            	PC_Utils.setBID(world, pos, 0, 0);
+            	ValueWriting.setBID(world, pos, 0, 0);
                 entity.item.itemID = Item.bucketWater.shiftedIndex;
                 return true;
             }
@@ -297,7 +297,7 @@ public class PCtr_BeltHelper
             if (GameInfo.getBID(world, pos) == Block.cauldron.blockID && GameInfo.getBID(world, pos) > 0)
             {
                 int meta = GameInfo.getMD(world, pos);
-                PC_Utils.setMD(world, pos, meta - 1);
+                ValueWriting.setMD(world, pos, meta - 1);
                 EntityItem entity2 = new EntityItem(world, entity.posX, entity.posY, entity.posZ, new ItemStack(Item.potion.shiftedIndex, 1, 0));
                 entity2.motionX = entity.motionX;
                 entity2.motionY = entity.motionY;
@@ -450,7 +450,7 @@ public class PCtr_BeltHelper
 
     public static void soundEffectChest(World world, PC_VecI pos)
     {
-        PC_Utils.playSound(pos.x + 0.5D, pos.y + 0.5D, pos.z + 0.5D, "random.pop", (world.rand.nextFloat() + 0.7F) / 5.0F,
+        ValueWriting.playSound(pos.x + 0.5D, pos.y + 0.5D, pos.z + 0.5D, "random.pop", (world.rand.nextFloat() + 0.7F) / 5.0F,
                 0.5F + world.rand.nextFloat() * 0.3F);
     }
 
@@ -710,7 +710,7 @@ public class PCtr_BeltHelper
 
     public static void soundEffectBelt(World world, PC_VecI pos)
     {
-        PC_Utils.playSound(pos.x + 0.5D, pos.y + 0.625D, pos.z + 0.5D, "random.wood click", (world.rand.nextFloat() + 0.2F) / 10.0F,
+        ValueWriting.playSound(pos.x + 0.5D, pos.y + 0.625D, pos.z + 0.5D, "random.wood click", (world.rand.nextFloat() + 0.2F) / 10.0F,
                 1.0F + (world.rand.nextFloat() - world.rand.nextFloat()) * 0.6F);
     }
 
@@ -718,9 +718,9 @@ public class PCtr_BeltHelper
     {
         int l = PC_MathHelper.floor_double(((player.rotationYaw * 4F) / 360F) + 2.5D) & 3;
 
-        if (player instanceof EntityPlayer && PC_Utils.isPlacingReversed(((EntityPlayer)player)))
+        if (player instanceof EntityPlayer && GameInfo.isPlacingReversed(((EntityPlayer)player)))
         {
-            l = PC_Utils.reverseSide(l);
+            l = ValueWriting.reverseSide(l);
         }
 
         if (l == 2)

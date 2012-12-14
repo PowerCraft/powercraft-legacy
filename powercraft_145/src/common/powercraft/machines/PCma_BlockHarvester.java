@@ -35,6 +35,7 @@ import powercraft.management.PC_ISpecialInventoryTextures;
 import powercraft.management.PC_InvUtils;
 import powercraft.management.PC_Utils;
 import powercraft.management.PC_Utils.GameInfo;
+import powercraft.management.PC_Utils.ValueWriting;
 import powercraft.management.PC_VecI;
 
 public class PCma_BlockHarvester extends PC_Block implements
@@ -109,8 +110,8 @@ public class PCma_BlockHarvester extends PC_Block implements
 	public void onBlockPlacedBy(World world, int i, int j, int k, EntityLiving entityliving) {
 		int l = MathHelper.floor_double(((entityliving.rotationYaw * 4F) / 360F) + 0.5D) & 3;
 
-		if (entityliving instanceof EntityPlayer && PC_Utils.isPlacingReversed((EntityPlayer)entityliving)) {
-			l = PC_Utils.reverseSide(l);
+		if (entityliving instanceof EntityPlayer && GameInfo.isPlacingReversed((EntityPlayer)entityliving)) {
+			l = ValueWriting.reverseSide(l);
 		}
 
 		if (l == 0) {
@@ -477,7 +478,7 @@ public class PCma_BlockHarvester extends PC_Block implements
 		EntityItem entityitem = new EntityItem(world, dx, dy - 0.29999999999999999D, dz, itemstack);
 		double throwSpeed = world.rand.nextDouble() * 0.10000000000000001D + 0.20000000000000001D;
 		
-		Block b = PC_Utils.getBlock(world, devPos);
+		Block b = GameInfo.getBlock(world, devPos);
 		String module = null;
 		if(b instanceof PC_Block){
 			module = ((PC_Block) b).getModule().getName();

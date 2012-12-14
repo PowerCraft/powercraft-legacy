@@ -6,6 +6,7 @@ import net.minecraft.src.Block;
 import powercraft.management.PC_TileEntity;
 import powercraft.management.PC_Utils;
 import powercraft.management.PC_Utils.GameInfo;
+import powercraft.management.PC_Utils.ValueWriting;
 import powercraft.management.PC_VecI;
 
 public class PCde_TileEntityChimney extends PC_TileEntity {
@@ -39,7 +40,7 @@ public class PCde_TileEntityChimney extends PC_TileEntity {
 			double smJ = yCoord + 0.4F + rand.nextFloat() * 0.6F;
 			double smK = zCoord + rand.nextFloat() * 0.4F + 0.2F;
 
-			PC_Utils.spawnParticle("EntitySmokeFX", worldObj, smI, smJ, smK, 0.0D, 0.0D, 0.0D, 2.0F);
+			ValueWriting.spawnParticle("EntitySmokeFX", worldObj, smI, smJ, smK, 0.0D, 0.0D, 0.0D, 2.0F);
 			
 		}
 	}

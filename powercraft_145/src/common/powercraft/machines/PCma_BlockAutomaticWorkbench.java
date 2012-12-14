@@ -20,6 +20,7 @@ import powercraft.management.PC_InvUtils;
 import powercraft.management.PC_Utils;
 import powercraft.management.PC_Utils.GameInfo;
 import powercraft.management.PC_Utils.Gres;
+import powercraft.management.PC_Utils.ValueWriting;
 import powercraft.management.PC_VecI;
 
 public class PCma_BlockAutomaticWorkbench extends PC_Block implements PC_ISpecialInventoryTextures, PC_IItemInfo
@@ -53,9 +54,9 @@ public class PCma_BlockAutomaticWorkbench extends PC_Block implements PC_ISpecia
     {
         int l = MathHelper.floor_double(((entityliving.rotationYaw * 4F) / 360F) + 2.5D) & 3;
 
-        if (entityliving instanceof EntityPlayer && PC_Utils.isPlacingReversed(((EntityPlayer)entityliving)))
+        if (entityliving instanceof EntityPlayer && GameInfo.isPlacingReversed(((EntityPlayer)entityliving)))
         {
-            l = PC_Utils.reverseSide(l);
+            l = ValueWriting.reverseSide(l);
         }
 
         world.setBlockMetadataWithNotify(i, j, k, l);

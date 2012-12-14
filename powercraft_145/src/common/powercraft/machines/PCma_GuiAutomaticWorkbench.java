@@ -14,8 +14,8 @@ import powercraft.management.PC_GresWindow;
 import powercraft.management.PC_IGresClient;
 import powercraft.management.PC_IGresGui;
 import powercraft.management.PC_PacketHandler;
-import powercraft.management.PC_Utils;
 import powercraft.management.PC_Utils.Lang;
+import powercraft.management.PC_Utils.ModuleInfo;
 
 public class PCma_GuiAutomaticWorkbench extends PCma_ContainerAutomaticWorkbench implements PC_IGresClient {
 
@@ -50,7 +50,7 @@ public class PCma_GuiAutomaticWorkbench extends PCma_ContainerAutomaticWorkbench
 
 		hg1.add(inv);
 
-		hg1.add(new PC_GresImage(PC_Utils.getGresImgDir() + "widgets.png", 44, 66, 12, 11));
+		hg1.add(new PC_GresImage(ModuleInfo.getGresImgDir() + "widgets.png", 44, 66, 12, 11));
 
 		hg1.add(new PC_GresInventoryBigSlot(lSlot.get(0)));
 

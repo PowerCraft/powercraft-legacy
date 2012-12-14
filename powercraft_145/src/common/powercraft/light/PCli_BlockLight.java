@@ -26,6 +26,7 @@ import powercraft.management.PC_Shining.ON;
 import powercraft.management.PC_Utils;
 import powercraft.management.PC_Utils.GameInfo;
 import powercraft.management.PC_Utils.Gres;
+import powercraft.management.PC_Utils.ValueWriting;
 import powercraft.management.PC_VecI;
 
 @PC_Shining
@@ -225,7 +226,7 @@ public class PCli_BlockLight extends PC_Block implements PC_IItemInfo
             return;
         }
 
-        PC_Utils.setBlockState(world, x, y, z, rs_state);
+        ValueWriting.setBlockState(world, x, y, z, rs_state);
     }
 
     @Override
