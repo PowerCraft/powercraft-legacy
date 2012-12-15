@@ -20,6 +20,7 @@ import powercraft.management.PC_IItemInfo;
 import powercraft.management.PC_Renderer;
 import powercraft.management.PC_Utils;
 import powercraft.management.PC_Utils.GameInfo;
+import powercraft.management.PC_Utils.ValueWriting;
 import powercraft.management.PC_VecI;
 
 public class PCli_BlockPrism extends PC_Block implements PC_IItemInfo {
@@ -120,7 +121,7 @@ public class PCli_BlockPrism extends PC_Block implements PC_IItemInfo {
 					teo.setPrismSide(angle, false);
 				}
 				if (!GameInfo.isCreative(player)) {
-					PC_Utils.dropItemStack(world, new ItemStack(Block.thinGlass, 1), new PC_VecI(i, j, k));
+					ValueWriting.dropItemStack(world, new ItemStack(Block.thinGlass, 1), new PC_VecI(i, j, k));
 				}
 
 			}

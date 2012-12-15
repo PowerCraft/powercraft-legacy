@@ -50,6 +50,10 @@ public class PC_Utils implements PC_IPacketHandler
     protected static PC_Utils instance;
     public static final int BACK = 0, LEFT = 1, RIGHT = 2, FRONT = 3, BOTTOM = 4, TOP = 5;
 
+    protected static HashMap<String, Class> guis = new HashMap<String, Class>();
+    protected static final int KEYEVENT = 0;
+    protected static final int SPAWNPARTICLEONBLOCKS = 1;
+    
     protected static HashMap<EntityPlayer, List<String>> keyPressed = new HashMap<EntityPlayer, List<String>>();
     protected static int keyReverse;
     protected static HashMap<String, Object> objects = new HashMap<String, Object>();
@@ -171,7 +175,7 @@ public class PC_Utils implements PC_IPacketHandler
 		            PC_Utils.objects.put(itemClass.getSimpleName(), item);
 		            item.setItemName(itemClass.getSimpleName());
 		            item.setModule(module);
-		            item.setTextureFile(PC_Utils.getTerrainFile(module));
+		            item.setTextureFile(ModuleInfo.getTerrainFile(module));
 		
 		            item.msg(PC_Utils.MSG_LOAD_FROM_CONFIG, config);
 		
@@ -265,7 +269,7 @@ public class PC_Utils implements PC_IPacketHandler
 		            ValueWriting.setFieldsWithAnnotationTo(blockClass, PC_Shining.OFF.class, blockClass, blockOff);
 		            blockOff.setBlockName(blockClass.getSimpleName());
 		            blockOff.setModule(module);
-		            blockOff.setTextureFile(PC_Utils.getTerrainFile(module));
+		            blockOff.setTextureFile(ModuleInfo.getTerrainFile(module));
 		            PC_Utils.objects.put(blockClass.getSimpleName()+".Off", blockOff);
 		            mod_PowerCraft.registerBlock(blockOff, null);
 		            ItemBlock itemBlock = (ItemBlock)Item.itemsList[blockOff.blockID];
@@ -285,7 +289,7 @@ public class PC_Utils implements PC_IPacketHandler
 		        PC_Utils.objects.put(blockClass.getSimpleName(), block);
 		        block.setBlockName(blockClass.getSimpleName());
 		        block.setModule(module);
-		        block.setTextureFile(PC_Utils.getTerrainFile(module));
+		        block.setTextureFile(ModuleInfo.getTerrainFile(module));
 		
 		        block.msg(PC_Utils.MSG_LOAD_FROM_CONFIG, config);
 		        
@@ -505,6 +509,12 @@ public class PC_Utils implements PC_IPacketHandler
 		public static int addArmor(String name)
 		{
 		    return PC_Utils.instance.iAddArmor(name);
+		}
+		public static File createFile(File pfile, String name) {
+			File file = new File(pfile, name);
+			if(!file.exists())
+				file.mkdirs();
+		    return file;
 		}
     	
     }
@@ -791,7 +801,7 @@ public class PC_Utils implements PC_IPacketHandler
 		}
 		public static ItemStack extractAndRemoveChest(World world, PC_VecI pos)
 		{
-		    if (PC_Utils.hasFlag(world, pos, PC_Utils.NO_HARVEST))
+		    if (GameInfo.hasFlag(world, pos, PC_Utils.NO_HARVEST))
 		    {
 		        return null;
 		    }
@@ -868,6 +878,50 @@ public class PC_Utils implements PC_IPacketHandler
 		    if (block != null)
 		    {
 		        block.onNeighborBlockChange(world, x, y, z, blockId);
+		    }
+		}
+		public static void givePowerToBlock(World world, int x, int y, int z, float power)
+		{
+		    List<PC_Struct3<PC_VecI, PC_IMSG, Float>> powerReceivers = GameInfo.getPowerReceiverConnectedTo(world, x, y, z);
+		    float receivers = powerReceivers.size();
+		
+		    for (PC_Struct3<PC_VecI, PC_IMSG, Float> receiver: powerReceivers)
+		    {
+		        receiver.b.msg(PC_Utils.MSG_RECIVE_POWER, world, receiver.a.x, receiver.a.y, receiver.a.z, power / receivers * receiver.c);
+		    }
+		}
+		public static void dropItemStack(World world, ItemStack itemstack, PC_VecI pos)
+		{
+		    if (itemstack != null && !world.isRemote)
+		    {
+		        float f = PC_Utils.rand.nextFloat() * 0.8F + 0.1F;
+		        float f1 = PC_Utils.rand.nextFloat() * 0.8F + 0.1F;
+		        float f2 = PC_Utils.rand.nextFloat() * 0.8F + 0.1F;
+		
+		        while (itemstack.stackSize > 0)
+		        {
+		            int j = PC_Utils.rand.nextInt(21) + 10;
+		
+		            if (j > itemstack.stackSize)
+		            {
+		                j = itemstack.stackSize;
+		            }
+		
+		            itemstack.stackSize -= j;
+		            EntityItem entityitem = new EntityItem(world, pos.x + f, pos.y + f1, pos.z + f2, new ItemStack(itemstack.itemID, j,
+		                    itemstack.getItemDamage()));
+		
+		            if (itemstack.hasTagCompound())
+		            {
+		                entityitem.item.setTagCompound((NBTTagCompound) itemstack.getTagCompound().copy());
+		            }
+		
+		            float f3 = 0.05F;
+		            entityitem.motionX = (float) PC_Utils.rand.nextGaussian() * f3;
+		            entityitem.motionY = (float) PC_Utils.rand.nextGaussian() * f3 + 0.2F;
+		            entityitem.motionZ = (float) PC_Utils.rand.nextGaussian() * f3;
+		            world.spawnEntityInWorld(entityitem);
+		        }
 		    }
 		}
     	
@@ -1242,7 +1296,7 @@ public class PC_Utils implements PC_IPacketHandler
 		}
 
 		public static File getPowerCraftFile() {
-			return PC_Utils.createFile(PC_Utils.GameInfo.getMCDirectory(), "PowerCraft");
+			return ModuleLoader.createFile(PC_Utils.GameInfo.getMCDirectory(), "PowerCraft");
 		}
 
 		public static boolean isPoweredDirectly(World world, int x, int y, int z){
@@ -1387,6 +1441,108 @@ public class PC_Utils implements PC_IPacketHandler
 		
 		    return false;
 		}
+
+		static void searchPowerReceiverConnectedTo(World world, int x, int y, int z, List<PC_Struct3<PC_VecI, PC_IMSG, Float>> receivers, List<PC_Struct2<PC_VecI, Float>> allpos, float power)
+		{
+		    Block b = PC_Utils.GameInfo.getBlock(world, x, y, z);
+		    PC_VecI pos = new PC_VecI(x, y, z);
+		    PC_Struct2<PC_VecI, Float> oldStruct = null;
+		
+		    for (PC_Struct2<PC_VecI, Float> s: allpos)
+		    {
+		        if (s.a.equals(pos))
+		        {
+		            oldStruct = s;
+		            break;
+		        }
+		    }
+		
+		    if (b instanceof PC_IMSG)
+		    {
+		    	Object o = ((PC_IMSG) b).msg(PC_Utils.MSG_CAN_RECIVE_POWER, b);
+		    	if(o instanceof Boolean && ((Boolean)o) == true){
+		            if (oldStruct == null)
+		            {
+		                receivers.add(new PC_Struct3<PC_VecI, PC_IMSG, Float>(pos, (PC_IMSG)b, power));
+		            }
+		    	}
+		        return;
+		    }
+		
+		    float value = PC_Utils.GameInfo.giveConductorValueFor(b);
+		
+		    if (value < 0.01f)
+		    {
+		        return;
+		    }
+		
+		    if (oldStruct == null)
+		    {
+		        oldStruct = new PC_Struct2<PC_VecI, Float>(pos, 0.0f);
+		        allpos.add(oldStruct);
+		    }
+		
+		    if (power > oldStruct.b)
+		    {
+		        oldStruct.b = power;
+		        power *= value;
+		
+		        if (power < 0.01f)
+		        {
+		            return;
+		        }
+		
+		        searchPowerReceiverConnectedTo(world, x + 1, y, z, receivers, allpos, power);
+		        searchPowerReceiverConnectedTo(world, x - 1, y, z, receivers, allpos, power);
+		        searchPowerReceiverConnectedTo(world, x, y + 1, z, receivers, allpos, power);
+		        searchPowerReceiverConnectedTo(world, x, y - 1, z, receivers, allpos, power);
+		        searchPowerReceiverConnectedTo(world, x, y, z + 1, receivers, allpos, power);
+		        searchPowerReceiverConnectedTo(world, x, y, z - 1, receivers, allpos, power);
+		    }
+		}
+
+		public static List<PC_Struct3<PC_VecI, PC_IMSG, Float>> getPowerReceiverConnectedTo(World world, int x, int y, int z)
+		{
+		    Random rand = new Random();
+		    List<PC_Struct3<PC_VecI, PC_IMSG, Float>> receivers = new ArrayList<PC_Struct3<PC_VecI, PC_IMSG, Float>>();
+		    List<PC_Struct2<PC_VecI, Float>> blocks = new ArrayList<PC_Struct2<PC_VecI, Float>>();
+		    PC_Utils.GameInfo.searchPowerReceiverConnectedTo(world, x, y, z, receivers, blocks, 1.0f);
+		    PC_PacketHandler.sendToPacketHandler(true, world, "PacketUtils", PC_Utils.SPAWNPARTICLEONBLOCKS, blocks);
+		    return receivers;
+		}
+
+		public static boolean hasFlag(World world, PC_VecI pos, String flag) {
+			Block b = PC_Utils.GameInfo.getBlock(world, pos.x, pos.y, pos.z);
+			if(b instanceof PC_IMSG){
+				List<String> list = (List<String>)((PC_IMSG)b).msg(PC_Utils.MSG_BLOCK_FLAGS, world, pos, new ArrayList<String>());
+				if(list != null){
+					return list.contains(flag);
+				}
+			}
+			return false;
+		}
+
+		public static boolean hasFlag(ItemStack is, String flag) {
+			if(is.itemID<Block.blocksList.length){
+				Block b = Block.blocksList[is.itemID];
+				if(b instanceof PC_IMSG){
+					List<String> list = (List<String>) ((PC_IMSG)b).msg(PC_Utils.MSG_ITEM_FLAGS, is, new ArrayList<String>());
+					if(list != null){
+						return list.contains(flag);
+					}
+				}
+			}
+		
+			Item i = is.getItem();
+			if(i instanceof PC_IMSG){
+				List<String> list = (List<String>) ((PC_IMSG) i).msg(PC_Utils.MSG_ITEM_FLAGS, is, new ArrayList<String>());
+				if(list != null){
+					return list.contains(flag);
+				}
+			}
+		
+			return false;
+		}
 	   
    }
     
@@ -1473,6 +1629,14 @@ public class PC_Utils implements PC_IPacketHandler
 
 		public static String getGresImgDir() {
 			return getPowerCraftLoaderImageDir() + "gres/";
+		}
+
+		public static String getTextureDirectory(PC_IModule module){
+			return "/powercraft/" + module.getName().toLowerCase() + "/textures/";
+		}
+
+		public static String getTerrainFile(PC_IModule module){
+			return PC_Utils.ModuleInfo.getTextureDirectory(module) + "tiles.png";
 		}
     	
     }
@@ -1580,6 +1744,93 @@ public class PC_Utils implements PC_IPacketHandler
     	
     }
     
+    public static class Coding{
+
+		public static boolean areObjectsEqual(Object a, Object b)
+		{
+		    return a == null ? b == null : a.equals(b);
+		}
+
+		public static Constructor findBestConstructor(Class c, Class[] cp)
+		{
+		    Constructor[] constructors = c.getConstructors();
+		
+		    for (Constructor constructor: constructors)
+		    {
+		        Class[] cep = constructor.getParameterTypes();
+		
+		        if ((cep == null && cp == null) || (cep == null && cp.length == 0) || (cep.length == 0 && cp == null))
+		        {
+		            return constructor;
+		        }
+		
+		        if (cep.length == cp.length)
+		        {
+		            boolean ok = true;
+		
+		            for (int i = 0; i < cep.length; i++)
+		            {
+		                if (cep[i].isPrimitive())
+		                {
+		                    if (cep[i].equals(boolean.class))
+		                    {
+		                        cep[i] = Boolean.class;
+		                    }
+		                    else if (cep[i].equals(int.class))
+		                    {
+		                        cep[i] = Integer.class;
+		                    }
+		                    else if (cep[i].equals(float.class))
+		                    {
+		                        cep[i] = Float.class;
+		                    }
+		                    else if (cep[i].equals(double.class))
+		                    {
+		                        cep[i] = Double.class;
+		                    }
+		                    else if (cep[i].equals(long.class))
+		                    {
+		                        cep[i] = Long.class;
+		                    }
+		                    else if (cep[i].equals(char.class))
+		                    {
+		                        cep[i] = Integer.class;
+		                    }
+		                    else if (cep[i].equals(short.class))
+		                    {
+		                        cep[i] = Short.class;
+		                    }
+		                }
+		
+		                if (!cep[i].isAssignableFrom(cp[i]))
+		                {
+		                    ok = false;
+		                    break;
+		                }
+		            }
+		
+		            if (ok)
+		            {
+		                return constructor;
+		            }
+		        }
+		    }
+		
+		    return null;
+		}
+
+		public static int getValueNum(Class c, String n) {
+			Field[] fields = c.getDeclaredFields();
+			for(int i=0; i<fields.length; i++){
+				if(fields[i].getName().equals(n)){
+					return i;
+				}
+			}
+			return -1;
+		}
+    	
+    }
+    
     public static boolean create()
     {
         if (instance == null)
@@ -1611,8 +1862,6 @@ public class PC_Utils implements PC_IPacketHandler
 	}
         
     protected void iPlaySound(double x, double y, double z, String sound, float soundVolume, float pitch) {}
-
-    protected static HashMap<String, Class> guis = new HashMap<String, Class>();
 
     protected void iOpenGres(String name, EntityPlayer player, Object[]o)
     {
@@ -1716,9 +1965,6 @@ public class PC_Utils implements PC_IPacketHandler
 
     protected void iWatchForKey(String name, int key) {}
 
-    protected static final int KEYEVENT = 0;
-    protected static final int SPAWNPARTICLEONBLOCKS = 1;
-
     @Override
     public boolean handleIncomingPacket(EntityPlayer player, Object[] o)
     {
@@ -1816,254 +2062,8 @@ public class PC_Utils implements PC_IPacketHandler
         return false;
     }
 
-    public static boolean areObjectsEqual(Object a, Object b)
-    {
-        return a == null ? b == null : a.equals(b);
-    }
-
     protected void iSpawnParticle(String name, Object[] o)
     {
     }
-
-    public static Constructor findBestConstructor(Class c, Class[] cp)
-    {
-        Constructor[] constructors = c.getConstructors();
-
-        for (Constructor constructor: constructors)
-        {
-            Class[] cep = constructor.getParameterTypes();
-
-            if ((cep == null && cp == null) || (cep == null && cp.length == 0) || (cep.length == 0 && cp == null))
-            {
-                return constructor;
-            }
-
-            if (cep.length == cp.length)
-            {
-                boolean ok = true;
-
-                for (int i = 0; i < cep.length; i++)
-                {
-                    if (cep[i].isPrimitive())
-                    {
-                        if (cep[i].equals(boolean.class))
-                        {
-                            cep[i] = Boolean.class;
-                        }
-                        else if (cep[i].equals(int.class))
-                        {
-                            cep[i] = Integer.class;
-                        }
-                        else if (cep[i].equals(float.class))
-                        {
-                            cep[i] = Float.class;
-                        }
-                        else if (cep[i].equals(double.class))
-                        {
-                            cep[i] = Double.class;
-                        }
-                        else if (cep[i].equals(long.class))
-                        {
-                            cep[i] = Long.class;
-                        }
-                        else if (cep[i].equals(char.class))
-                        {
-                            cep[i] = Integer.class;
-                        }
-                        else if (cep[i].equals(short.class))
-                        {
-                            cep[i] = Short.class;
-                        }
-                    }
-
-                    if (!cep[i].isAssignableFrom(cp[i]))
-                    {
-                        ok = false;
-                        break;
-                    }
-                }
-
-                if (ok)
-                {
-                    return constructor;
-                }
-            }
-        }
-
-        return null;
-    }
-
-    private static void searchPowerReceiverConnectedTo(World world, int x, int y, int z, List<PC_Struct3<PC_VecI, PC_IMSG, Float>> receivers, List<PC_Struct2<PC_VecI, Float>> allpos, float power)
-    {
-        Block b = GameInfo.getBlock(world, x, y, z);
-        PC_VecI pos = new PC_VecI(x, y, z);
-        PC_Struct2<PC_VecI, Float> oldStruct = null;
-
-        for (PC_Struct2<PC_VecI, Float> s: allpos)
-        {
-            if (s.a.equals(pos))
-            {
-                oldStruct = s;
-                break;
-            }
-        }
-
-        if (b instanceof PC_IMSG)
-        {
-        	Object o = ((PC_IMSG) b).msg(PC_Utils.MSG_CAN_RECIVE_POWER, b);
-        	if(o instanceof Boolean && ((Boolean)o) == true){
-	            if (oldStruct == null)
-	            {
-	                receivers.add(new PC_Struct3<PC_VecI, PC_IMSG, Float>(pos, (PC_IMSG)b, power));
-	            }
-        	}
-            return;
-        }
-
-        float value = GameInfo.giveConductorValueFor(b);
-
-        if (value < 0.01f)
-        {
-            return;
-        }
-
-        if (oldStruct == null)
-        {
-            oldStruct = new PC_Struct2<PC_VecI, Float>(pos, 0.0f);
-            allpos.add(oldStruct);
-        }
-
-        if (power > oldStruct.b)
-        {
-            oldStruct.b = power;
-            power *= value;
-
-            if (power < 0.01f)
-            {
-                return;
-            }
-
-            searchPowerReceiverConnectedTo(world, x + 1, y, z, receivers, allpos, power);
-            searchPowerReceiverConnectedTo(world, x - 1, y, z, receivers, allpos, power);
-            searchPowerReceiverConnectedTo(world, x, y + 1, z, receivers, allpos, power);
-            searchPowerReceiverConnectedTo(world, x, y - 1, z, receivers, allpos, power);
-            searchPowerReceiverConnectedTo(world, x, y, z + 1, receivers, allpos, power);
-            searchPowerReceiverConnectedTo(world, x, y, z - 1, receivers, allpos, power);
-        }
-    }
-
-    public static List<PC_Struct3<PC_VecI, PC_IMSG, Float>> getPowerReceiverConnectedTo(World world, int x, int y, int z)
-    {
-        Random rand = new Random();
-        List<PC_Struct3<PC_VecI, PC_IMSG, Float>> receivers = new ArrayList<PC_Struct3<PC_VecI, PC_IMSG, Float>>();
-        List<PC_Struct2<PC_VecI, Float>> blocks = new ArrayList<PC_Struct2<PC_VecI, Float>>();
-        searchPowerReceiverConnectedTo(world, x, y, z, receivers, blocks, 1.0f);
-        PC_PacketHandler.sendToPacketHandler(true, world, "PacketUtils", SPAWNPARTICLEONBLOCKS, blocks);
-        return receivers;
-    }
-
-    public static void givePowerToBlock(World world, int x, int y, int z, float power)
-    {
-        List<PC_Struct3<PC_VecI, PC_IMSG, Float>> powerReceivers = getPowerReceiverConnectedTo(world, x, y, z);
-        float receivers = powerReceivers.size();
-
-        for (PC_Struct3<PC_VecI, PC_IMSG, Float> receiver: powerReceivers)
-        {
-            receiver.b.msg(PC_Utils.MSG_RECIVE_POWER, world, receiver.a.x, receiver.a.y, receiver.a.z, power / receivers * receiver.c);
-        }
-    }
-
-    public static void dropItemStack(World world, ItemStack itemstack, PC_VecI pos)
-    {
-        if (itemstack != null && !world.isRemote)
-        {
-            float f = rand.nextFloat() * 0.8F + 0.1F;
-            float f1 = rand.nextFloat() * 0.8F + 0.1F;
-            float f2 = rand.nextFloat() * 0.8F + 0.1F;
-
-            while (itemstack.stackSize > 0)
-            {
-                int j = rand.nextInt(21) + 10;
-
-                if (j > itemstack.stackSize)
-                {
-                    j = itemstack.stackSize;
-                }
-
-                itemstack.stackSize -= j;
-                EntityItem entityitem = new EntityItem(world, pos.x + f, pos.y + f1, pos.z + f2, new ItemStack(itemstack.itemID, j,
-                        itemstack.getItemDamage()));
-
-                if (itemstack.hasTagCompound())
-                {
-                    entityitem.item.setTagCompound((NBTTagCompound) itemstack.getTagCompound().copy());
-                }
-
-                float f3 = 0.05F;
-                entityitem.motionX = (float) rand.nextGaussian() * f3;
-                entityitem.motionY = (float) rand.nextGaussian() * f3 + 0.2F;
-                entityitem.motionZ = (float) rand.nextGaussian() * f3;
-                world.spawnEntityInWorld(entityitem);
-            }
-        }
-    }
-
-	public static boolean hasFlag(World world, PC_VecI pos, String flag) {
-		Block b = GameInfo.getBlock(world, pos.x, pos.y, pos.z);
-		if(b instanceof PC_IMSG){
-			List<String> list = (List<String>)((PC_IMSG)b).msg(MSG_BLOCK_FLAGS, world, pos, new ArrayList<String>());
-			if(list != null){
-				return list.contains(flag);
-			}
-		}
-		return false;
-	}
-	
-	public static boolean hasFlag(ItemStack is, String flag) {
-		if(is.itemID<Block.blocksList.length){
-			Block b = Block.blocksList[is.itemID];
-			if(b instanceof PC_IMSG){
-				List<String> list = (List<String>) ((PC_IMSG)b).msg(MSG_ITEM_FLAGS, is, new ArrayList<String>());
-				if(list != null){
-					return list.contains(flag);
-				}
-			}
-		}
-
-		Item i = is.getItem();
-		if(i instanceof PC_IMSG){
-			List<String> list = (List<String>) ((PC_IMSG) i).msg(MSG_ITEM_FLAGS, is, new ArrayList<String>());
-			if(list != null){
-				return list.contains(flag);
-			}
-		}
-
-		return false;
-	}
-
-	public static int getValueNum(Class c, String n) {
-		Field[] fields = c.getDeclaredFields();
-		for(int i=0; i<fields.length; i++){
-			if(fields[i].getName().equals(n)){
-				return i;
-			}
-		}
-		return -1;
-	}
-	
-	public static File createFile(File pfile, String name) {
-		File file = new File(pfile, name);
-    	if(!file.exists())
-    		file.mkdirs();
-        return file;
-	}
-	
-	public static String getTextureDirectory(PC_IModule module){
-		return "/powercraft/" + module.getName().toLowerCase() + "/textures/";
-	}
-
-	public static String getTerrainFile(PC_IModule module){
-		return getTextureDirectory(module) + "tiles.png";
-	}
 	
 }

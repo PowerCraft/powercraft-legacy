@@ -312,7 +312,7 @@ public class PC_ClientUtils extends PC_Utils {
 		for(int i=0; i<o.length; i++)
 			cp[i] = o[i].getClass();
 		
-		Constructor cons = findBestConstructor(c, cp);
+		Constructor cons = Coding.findBestConstructor(c, cp);
 		if(cons==null){
 			System.err.println("no best constructor for \""+name+"\"");
 			return;

@@ -52,7 +52,7 @@ public class PCco_ItemActivator extends PC_Item{
 
 			ItemStack stackchest = ValueWriting.extractAndRemoveChest(world, pos);
 			if (stackchest != null) {
-				PC_Utils.dropItemStack(world, stackchest, pos);
+				ValueWriting.dropItemStack(world, stackchest, pos);
 				return true;
 			}
 		}

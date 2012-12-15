@@ -208,7 +208,7 @@ public class PCli_ItemLaserComposition extends PC_Item
 	}
 
 	public static boolean onBlockHit(PC_BeamTracer beamTracer, Block block, PC_VecI coord, ItemStack itemstack, boolean isBurning) {
-		if(block.isOpaqueCube() && !PC_Utils.hasFlag(beamTracer.getWorld(), coord, PC_Utils.BEAMTRACER_STOP)){
+		if(block.isOpaqueCube() && !GameInfo.hasFlag(beamTracer.getWorld(), coord, PC_Utils.BEAMTRACER_STOP)){
 			return true;
 		}
 		return false;

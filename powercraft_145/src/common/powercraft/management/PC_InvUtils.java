@@ -7,6 +7,7 @@ import java.util.Random;
 
 import powercraft.management.PC_Utils.GameInfo;
 import powercraft.management.PC_Utils.ModuleInfo;
+import powercraft.management.PC_Utils.ValueWriting;
 
 import net.minecraft.src.Block;
 import net.minecraft.src.EntityPlayerSP;
@@ -590,7 +591,7 @@ public class PC_InvUtils
             for (int i = 0; i < inventory.getSizeInventory(); i++)
             {
                 ItemStack itemstack = inventory.getStackInSlot(i);
-                PC_Utils.dropItemStack(world, itemstack, pos);
+                ValueWriting.dropItemStack(world, itemstack, pos);
             }
         }
     }

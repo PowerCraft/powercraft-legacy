@@ -2,6 +2,8 @@ package powercraft.management;
 
 import java.io.Serializable;
 
+import powercraft.management.PC_Utils.Coding;
+
 public class PC_Struct2<T1, T2> implements Serializable
 {
     public T1 a;
@@ -68,7 +70,7 @@ public class PC_Struct2<T1, T2> implements Serializable
         }
 
         PC_Struct2 <? , ? > t = (PC_Struct2 <? , ? >) obj;
-        return PC_Utils.areObjectsEqual(a, t.a) && PC_Utils.areObjectsEqual(b, t.b);
+        return Coding.areObjectsEqual(a, t.a) && Coding.areObjectsEqual(b, t.b);
     }
 
     @Override

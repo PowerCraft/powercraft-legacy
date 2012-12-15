@@ -168,7 +168,7 @@ public class PCma_BlockReplacer extends PC_Block implements PC_IItemInfo
             return true;
         }
 
-        if (!PC_Utils.hasFlag(world, pos, PC_Utils.NO_HARVEST))
+        if (!GameInfo.hasFlag(world, pos, PC_Utils.NO_HARVEST))
         {
             return false;
         }
@@ -204,7 +204,7 @@ public class PCma_BlockReplacer extends PC_Block implements PC_IItemInfo
                 return false;
             }
 
-            if (PC_Utils.hasFlag(itemstack, PC_Utils.NO_BUILD))
+            if (GameInfo.hasFlag(itemstack, PC_Utils.NO_BUILD))
             {
                 return false;
             }

@@ -257,7 +257,7 @@ public class PCma_BlockHarvester extends PC_Block implements
 			}
 		}
 		
-		if(PC_Utils.hasFlag(world, coord, PC_Utils.HARVEST_STOP)){
+		if(GameInfo.hasFlag(world, coord, PC_Utils.HARVEST_STOP)){
 			return true;
 		}
 
@@ -268,7 +268,7 @@ public class PCma_BlockHarvester extends PC_Block implements
 				|| id == Block.fire.blockID || Block.blocksList[id] instanceof BlockTorch || id == Block.redstoneWire.blockID
 				|| id == Block.lever.blockID || id == Block.woodenButton.blockID || id == Block.stoneButton.blockID || Block.blocksList[id] instanceof BlockRedstoneRepeater
 				|| id == Block.pistonStickyBase.blockID || id == Block.pistonBase.blockID || id == Block.pistonExtension.blockID
-				|| id == Block.pistonMoving.blockID || Block.blocksList[id] instanceof BlockRail || PC_Utils.hasFlag(world, coord, PC_Utils.NO_HARVEST)) {
+				|| id == Block.pistonMoving.blockID || Block.blocksList[id] instanceof BlockRail || GameInfo.hasFlag(world, coord, PC_Utils.NO_HARVEST)) {
 
 			return false;
 		}

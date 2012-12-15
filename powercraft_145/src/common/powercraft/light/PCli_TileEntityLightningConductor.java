@@ -9,7 +9,6 @@ import net.minecraft.src.NBTTagCompound;
 import net.minecraft.src.World;
 import powercraft.management.PC_Color;
 import powercraft.management.PC_TileEntity;
-import powercraft.management.PC_Utils;
 import powercraft.management.PC_Utils.ValueWriting;
 import powercraft.management.PC_VecF;
 
@@ -58,7 +57,7 @@ public class PCli_TileEntityLightningConductor extends PC_TileEntity
                         worldObj.addWeatherEffect(bolt);
                     }
 
-                    PC_Utils.givePowerToBlock(worldObj, xCoord, yCoord - 2, zCoord, 1000.0f);
+                    ValueWriting.givePowerToBlock(worldObj, xCoord, yCoord - 2, zCoord, 1000.0f);
                     lightningCharge = 0;
                     lightningChargeRequired = getLightningChargeRequired();
                 }
