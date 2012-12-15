@@ -1,4 +1,7 @@
 package powercraft.management;
+
+import powercraft.management.PC_Utils.Coding;
+
 /**
  * Structure of 4 objects.
  * 
@@ -186,8 +189,8 @@ public class PC_Struct4<T1, T2, T3, T4> {
 
 		PC_Struct4<?, ?, ?, ?> t = (PC_Struct4<?, ?, ?, ?>) obj;
 
-		return PC_Utils.areObjectsEqual(a, t.a) && PC_Utils.areObjectsEqual(b, t.b) && PC_Utils.areObjectsEqual(c, t.c)
-				&& PC_Utils.areObjectsEqual(d, t.d);
+		return Coding.areObjectsEqual(a, t.a) && Coding.areObjectsEqual(b, t.b) && Coding.areObjectsEqual(c, t.c)
+				&& Coding.areObjectsEqual(d, t.d);
 
 	}
 

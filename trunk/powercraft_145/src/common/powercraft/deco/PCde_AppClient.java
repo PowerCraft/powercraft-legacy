@@ -6,14 +6,14 @@ import net.minecraft.src.IRecipe;
 import powercraft.management.PC_IClientModule;
 import powercraft.management.PC_LangEntry;
 import powercraft.management.PC_Struct2;
-import powercraft.management.PC_Utils;
+import powercraft.management.PC_Utils.ModuleInfo;
 
 public class PCde_AppClient extends PCde_App implements PC_IClientModule {
 
 	@Override
 	public List<String> loadTextureFiles(List<String> textures) {
-		textures.add(PC_Utils.getTerrainFile(this));
-		textures.add(PC_Utils.getTextureDirectory(this)+"block_deco.png");
+		textures.add(ModuleInfo.getTerrainFile(this));
+		textures.add(ModuleInfo.getTextureDirectory(this)+"block_deco.png");
 		return textures;
 	}
 

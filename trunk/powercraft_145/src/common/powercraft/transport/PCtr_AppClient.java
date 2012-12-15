@@ -5,7 +5,7 @@ import java.util.List;
 import powercraft.management.PC_IClientModule;
 import powercraft.management.PC_LangEntry;
 import powercraft.management.PC_Struct2;
-import powercraft.management.PC_Utils;
+import powercraft.management.PC_Utils.ModuleInfo;
 
 public class PCtr_AppClient extends PCtr_App implements PC_IClientModule {
 
@@ -14,7 +14,7 @@ public class PCtr_AppClient extends PCtr_App implements PC_IClientModule {
     @Override
 	public List<String> loadTextureFiles(List<String> textures)
     {
-		textures.add(PC_Utils.getTerrainFile(this));
+		textures.add(ModuleInfo.getTerrainFile(this));
 		return textures;
     }
 

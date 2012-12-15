@@ -52,7 +52,7 @@ public class mod_PowerCraft {
 		proxy.hack();
 		PC_Logger.exitSection();
 		PC_Logger.enterSection("Load Modules");
-		PC_ModuleLoader.load(PC_Utils.createFile(GameInfo.getPowerCraftFile(), "Modules"));
+		PC_ModuleLoader.load(ModuleLoader.createFile(GameInfo.getPowerCraftFile(), "Modules"));
 		PC_ModuleLoader.load(new File(GameInfo.getMCDirectory(), "mods"));
 		try {
 			PC_ModuleLoader.load(new File(mod_PowerCraft.class.getResource("../../").toURI()));

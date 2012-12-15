@@ -178,14 +178,14 @@ public class PCma_TileEntityBlockBuilder extends PC_TileEntity implements IInven
 		if (id == 49
 				|| id == 7
 				|| id == 98
-				|| (PC_Utils.hasFlag(worldObj, front, PC_Utils.HARVEST_STOP))) {
+				|| (GameInfo.hasFlag(worldObj, front, PC_Utils.HARVEST_STOP))) {
 			return -1;
 		}
 
 		// try to place front
 		if (itemstack.getItem() instanceof ItemBlock) {
 
-			if(PC_Utils.hasFlag(itemstack, PC_Utils.NO_BUILD)){
+			if(GameInfo.hasFlag(itemstack, PC_Utils.NO_BUILD)){
 				return 0;
 			}
 			

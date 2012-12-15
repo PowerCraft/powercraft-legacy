@@ -4,7 +4,6 @@ import java.util.Random;
 
 import net.minecraft.src.Block;
 import powercraft.management.PC_TileEntity;
-import powercraft.management.PC_Utils;
 import powercraft.management.PC_Utils.GameInfo;
 import powercraft.management.PC_Utils.ValueWriting;
 import powercraft.management.PC_VecI;
@@ -50,7 +49,7 @@ public class PCde_TileEntityChimney extends PC_TileEntity {
 		if (id == Block.stoneOvenActive.blockID) return true;
 		if (id == Block.fire.blockID) return true;
 
-		if (PC_Utils.hasFlag(worldObj, pos, "SMOKE")) return true;
+		if (GameInfo.hasFlag(worldObj, pos, "SMOKE")) return true;
 		return false;
 	}
 
@@ -58,7 +57,7 @@ public class PCde_TileEntityChimney extends PC_TileEntity {
 		int id = GameInfo.getBID(worldObj, pos);
 		if (id == Block.fire.blockID) return true;
 
-		if (PC_Utils.hasFlag(worldObj, pos, "SMOKE")) return true;
+		if (GameInfo.hasFlag(worldObj, pos, "SMOKE")) return true;
 		return false;
 	}
 

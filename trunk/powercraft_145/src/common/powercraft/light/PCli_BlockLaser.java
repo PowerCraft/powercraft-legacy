@@ -72,7 +72,7 @@ public class PCli_BlockLaser extends PC_Block implements PC_IItemInfo
         {
         	if (!GameInfo.isCreative(entityplayer))
             {
-        		PC_Utils.dropItemStack(world, te.getItemStack(), new PC_VecI(i, j, k));
+        		ValueWriting.dropItemStack(world, te.getItemStack(), new PC_VecI(i, j, k));
             }
             te.setItemStack(null);
         }
@@ -147,7 +147,7 @@ public class PCli_BlockLaser extends PC_Block implements PC_IItemInfo
 
             if (te != null && te.getItemStack()!=null)
             {
-                PC_Utils.dropItemStack(world, te.getItemStack(), new PC_VecI(x, y, z));
+                ValueWriting.dropItemStack(world, te.getItemStack(), new PC_VecI(x, y, z));
             }
         }
     }
