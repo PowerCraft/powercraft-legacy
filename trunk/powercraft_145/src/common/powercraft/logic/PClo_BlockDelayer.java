@@ -65,49 +65,64 @@ public class PClo_BlockDelayer extends PC_Block
     {
         PClo_TileEntityDelayer te = getTE(world, x, y, z);
         int rot = getRotation_static(GameInfo.getMD(world, x, y, z));
-        boolean stop = false;
-        boolean reset = false;
-
-        if (te.getType() == PClo_DelayerType.FIFO)
-        {
-            stop = GameInfo.poweredFromInput(world, x, y, z, PC_Utils.RIGHT, rot);
-            reset = GameInfo.poweredFromInput(world, x, y, z, PC_Utils.LEFT, rot);
-        }
-
         boolean data = GameInfo.poweredFromInput(world, x, y, z, PC_Utils.BACK, rot);
-        boolean[] stateBuffer = te.getStateBuffer();
+        
+        switch(te.getType()){
+        case PClo_DelayerType.FIFO:
+        	boolean stop = GameInfo.poweredFromInput(world, x, y, z, PC_Utils.RIGHT, rot);
+        	boolean reset = GameInfo.poweredFromInput(world, x, y, z, PC_Utils.LEFT, rot);
+       		boolean[] stateBuffer = te.getStateBuffer();
 
-        if (!stop && !reset)
-        {
-            boolean shouldState = stateBuffer[stateBuffer.length - 1];
-
-            if (shouldState != isActive(world, x, y, z))
-            {
-                ValueWriting.setBlockState(world, x, y, z, shouldState);
-            }
-
-            for (int i = stateBuffer.length - 1; i > 0; i--)
-            {
-                stateBuffer[i] = stateBuffer[i - 1];
-            }
-
-            stateBuffer[0] = data;
-            te.updateStateBuffer();
-        }
-
-        if (reset)
-        {
-            if (isActive(world, x, y, z))
-            {
-                ValueWriting.setBlockState(world, x, y, z, false);
-            }
-
-            for (int i = 0; i < stateBuffer.length; i++)
-            {
-                stateBuffer[i] = false;
-            }
-
-            te.updateStateBuffer();
+	        if (!stop && !reset)
+	        {
+	            boolean shouldState = stateBuffer[stateBuffer.length - 1];
+	
+	            if (shouldState != isActive(world, x, y, z))
+	            {
+	                ValueWriting.setBlockState(world, x, y, z, shouldState);
+	            }
+	
+	            for (int i = stateBuffer.length - 1; i > 0; i--)
+	            {
+	                stateBuffer[i] = stateBuffer[i - 1];
+	            }
+	
+	            stateBuffer[0] = data;
+	            te.updateStateBuffer();
+	        }
+	
+	        if (reset)
+	        {
+	            if (isActive(world, x, y, z))
+	            {
+	                ValueWriting.setBlockState(world, x, y, z, false);
+	            }
+	
+	            for (int i = 0; i < stateBuffer.length; i++)
+	            {
+	                stateBuffer[i] = false;
+	            }
+	
+	            te.updateStateBuffer();
+	        }
+	        break;
+        case PClo_DelayerType.HOLD:
+        	
+        	boolean should = true;
+        	
+        	if(te.decRemainingTicks()){
+        		should = false;
+        	}
+        	
+        	if(data){
+        		te.resetRemainingTicks();
+        		should = true;
+        	}
+        	
+        	if (isActive(world, x, y, z)!=should){
+        		ValueWriting.setBlockState(world, x, y, z, should);
+        	}
+        	
         }
     }
 
