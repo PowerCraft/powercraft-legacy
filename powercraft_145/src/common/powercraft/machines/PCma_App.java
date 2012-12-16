@@ -118,7 +118,11 @@ public class PCma_App implements PC_IModule
 	@Override
 	public List<PC_Struct2<String, Class>> registerGuis(
 			List<PC_Struct2<String, Class>> guis) {
-		// TODO Auto-generated method stub
-		return null;
+		guis.add(new PC_Struct2<String, Class>("AutomaticWorkbench", PCma_ContainerAutomaticWorkbench.class));
+		guis.add(new PC_Struct2<String, Class>("BlockBuilder", PCma_ContainerBlockBuilder.class));
+		guis.add(new PC_Struct2<String, Class>("Replacer", PCma_ContainerReplacer.class));
+		guis.add(new PC_Struct2<String, Class>("Roaster", PCma_ContainerRoaster.class));
+		guis.add(new PC_Struct2<String, Class>("Transmutabox", PCma_ContainerTransmutabox.class));
+		return guis;
 	}
 }

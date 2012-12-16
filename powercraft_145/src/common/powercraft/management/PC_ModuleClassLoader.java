@@ -8,6 +8,7 @@ public class PC_ModuleClassLoader extends ClassLoader {
 	private Class<?> c;
 
 	public PC_ModuleClassLoader(String name, byte[] data) {
+		setDefaultAssertionStatus(true);
 		c = registerClass(name, data);
 	}
 
@@ -26,23 +27,29 @@ public class PC_ModuleClassLoader extends ClassLoader {
 		return c;
 	}
 
+	
+	
 	@Override
-	protected synchronized Class<?> loadClass(String name, boolean resolve)
+	protected Class<?> loadClass(String name, boolean resolve)
 			throws ClassNotFoundException {
 		
 		Class<?> c = findLoadedClass(name);
 		if (c != null) {
-			if (resolve) {
+			if(resolve){
 				resolveClass(c);
 			}
 			return c;
 		}
-		c = Class.forName(name);
-		if (c != null) {
-			if (resolve) {
-				resolveClass(c);
+		ClassLoader l = this;
+		while(l!=null){
+			c = Class.forName(name, false, l);
+			if (c != null) {
+				if(resolve){
+					resolveClass(c);
+				}
+				return c;
 			}
-			return c;
+			l = l.getParent();
 		}
 		try {
 			byte[] data = null;

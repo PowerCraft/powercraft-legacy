@@ -20,6 +20,8 @@ import java.util.List;
 import java.util.Map.Entry;
 import java.util.Random;
 
+import cpw.mods.fml.common.asm.transformers.MarkerTransformer;
+
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.src.AxisAlignedBB;
 import net.minecraft.src.Block;
@@ -382,7 +384,7 @@ public class PC_Utils implements PC_IPacketHandler
 		        e.printStackTrace();
 		    }
 		}
-		static void setPCObjectID(Object o, int id){
+		public static void setPCObjectID(Object o, int id){
 			if(o instanceof PC_Item){
 				((PC_Item) o).setItemID(id);
 			}else if(o instanceof PC_Block){
@@ -392,16 +394,31 @@ public class PC_Utils implements PC_IPacketHandler
 			}
 		}
 		public static int getFreeBlockID() {
-			for(int i=1; i<Block.blocksList.length; i++){
+			for(int i=PC_GlobalVariables.blockStartIndex; i<Block.blocksList.length; i++){
+				if(Block.blocksList[i] == null)
+					return i;
+			}
+			for(int i=1; i<PC_GlobalVariables.blockStartIndex && i<Block.blocksList.length; i++){
 				if(Block.blocksList[i] == null)
 					return i;
 			}
 			return -1;
 		}
 		public static int getFreeItemID() {
-			for(int i=Block.blocksList.length; i<Item.itemsList.length; i++){
-				if(Item.itemsList[i] == null)
-					return i;
+			if(PC_GlobalVariables.itemStartIndex>Block.blocksList.length){
+				for(int i=PC_GlobalVariables.itemStartIndex; i<Item.itemsList.length; i++){
+					if(Item.itemsList[i] == null)
+						return i;
+				}
+				for(int i=Block.blocksList.length; i<PC_GlobalVariables.itemStartIndex && i<Item.itemsList.length; i++){
+					if(Item.itemsList[i] == null)
+						return i;
+				}
+			}else{
+				for(int i=Block.blocksList.length; i<Item.itemsList.length; i++){
+					if(Item.itemsList[i] == null)
+						return i;
+				}
 			}
 			return -1;
 		}
@@ -612,18 +629,18 @@ public class PC_Utils implements PC_IPacketHandler
 		}
 		public static void setBlockState(World world, int x, int y, int z, boolean on)
 		{
-		    Block b = Block.blocksList[PC_Utils.GameInfo.getBID(world, x, y, z)];
+		    Block b = Block.blocksList[GameInfo.getBID(world, x, y, z)];
 		
 		    if (b instanceof PC_Block)
 		    {
-		        int meta = PC_Utils.GameInfo.getMD(world, x, y, z);
-		        PC_TileEntity te = PC_Utils.GameInfo.getTE(world, x, y, z);
+		        int meta = GameInfo.getMD(world, x, y, z);
+		        PC_TileEntity te = GameInfo.getTE(world, x, y, z);
 		        Class c = b.getClass();
 		
 		        if (c.isAnnotationPresent(PC_Shining.class))
 		        {
-		            Block bon = (Block)PC_Utils.ValueWriting.getFieldsWithAnnotation(c, PC_Shining.ON.class, c)[0];
-		            Block boff = (Block)PC_Utils.ValueWriting.getFieldsWithAnnotation(c, PC_Shining.OFF.class, c)[0];
+		            Block bon = (Block)getFieldsWithAnnotation(c, PC_Shining.ON.class, c)[0];
+		            Block boff = (Block)getFieldsWithAnnotation(c, PC_Shining.OFF.class, c)[0];
 		
 		            if ((b == bon && !on) || (b == boff && on))
 		            {
@@ -648,7 +665,8 @@ public class PC_Utils implements PC_IPacketHandler
 		                    te.getBlockType();
 		                    te.lockInvalid(false);
 		                }
-		                ValueWriting.hugeUpdate(world, x, y, z);
+		                GameInfo.markBlockForUpdate(world, x, y, z);
+		                hugeUpdate(world, x, y, z);
 		                
 		            }
 		        }
@@ -985,6 +1003,14 @@ public class PC_Utils implements PC_IPacketHandler
 		    return PC_Utils.instance.client();
 		}
 
+		public static void markBlockForUpdate(World world, int x, int y, int z) {
+			world.markBlockForUpdate(x, y, z);
+		}
+
+		public static void markBlockForUpdate(World world, PC_VecI pos) {
+			world.markBlockForUpdate(pos.x, pos.y, pos.z);
+		}
+		
 		public static boolean isServer()
 		{
 		    return !PC_Utils.instance.client();

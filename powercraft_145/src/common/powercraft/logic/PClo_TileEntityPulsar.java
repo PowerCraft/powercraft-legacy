@@ -97,13 +97,9 @@ public class PClo_TileEntityPulsar extends PC_TileEntity
             return;
         }
 
-        boolean change = false;
-
         if (delayTimer < 0 && !isActive())
         {
             ValueWriting.setBlockState(worldObj, xCoord, yCoord, zCoord, true);
-            updateBlock();
-            change = true;
         }
 
         delayTimer++;
@@ -111,21 +107,11 @@ public class PClo_TileEntityPulsar extends PC_TileEntity
         if (delayTimer >= holdtime && isActive())
         {
             ValueWriting.setBlockState(worldObj, xCoord, yCoord, zCoord, false);
-            updateBlock();
-            change = true;
         }
 
         if (delayTimer >= delay)
         {
             delayTimer = -1;
-        }
-    }
-
-    public void updateBlock()
-    {
-        if (worldObj != null)
-        {
-            worldObj.scheduleBlockUpdate(xCoord, yCoord, zCoord, PClo_App.pulsar.blockID, 1);
         }
     }
 
