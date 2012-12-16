@@ -1,21 +1,32 @@
 package powercraft.management;
 
-import java.io.InputStream;
-import java.security.AccessControlException;
+import java.util.HashMap;
+import java.util.Map;
+
+import powercraft.management.PC_Utils.ValueWriting;
+import cpw.mods.fml.relauncher.RelaunchClassLoader;
 
 public class PC_ModuleClassLoader extends ClassLoader {
 
 	private Class<?> c;
-
+	private String className;
+	private HashMap<String, Class> loaded = new HashMap<String, Class>();
+	private static RelaunchClassLoader cl = (RelaunchClassLoader)PC_ModuleClassLoader.class.getClassLoader();
+	
 	public PC_ModuleClassLoader(String name, byte[] data) {
-		setDefaultAssertionStatus(true);
+		super(cl);
+		className = name;
 		c = registerClass(name, data);
+		Map<String, Class> m = (Map<String, Class>)ValueWriting.getPrivateValue(RelaunchClassLoader.class, cl, 5);
+		m.put(className, c);
 	}
 
 	private Class<?> registerClass(String name, byte[] data) {
 		Class<?> c = null;
 		try {
-			c = defineClass(name, data, 0, data.length, null);
+			c = defineClass(name, data, 0, data.length);
+			loaded.put(name, c);
+			resolveClass(c);
 		} catch (ClassFormatError e) {
 			e.printStackTrace();
 			throw e;
@@ -26,64 +37,20 @@ public class PC_ModuleClassLoader extends ClassLoader {
 	public Class<?> getCreateClass() {
 		return c;
 	}
+	
+	@Override
+	protected Class<?> findClass(String name) throws ClassNotFoundException {
+		return cl.findClass(name);
+	}
 
 	
 	
 	@Override
 	protected Class<?> loadClass(String name, boolean resolve)
 			throws ClassNotFoundException {
-		
-		Class<?> c = findLoadedClass(name);
-		if (c != null) {
-			if(resolve){
-				resolveClass(c);
-			}
-			return c;
-		}
-		ClassLoader l = this;
-		while(l!=null){
-			c = Class.forName(name, false, l);
-			if (c != null) {
-				if(resolve){
-					resolveClass(c);
-				}
-				return c;
-			}
-			l = l.getParent();
-		}
-		try {
-			byte[] data = null;
-			try {
-				// lesen per InputStream
-				String fileName = "";
-				fileName = name.replace('.', '/');
-				fileName = fileName + ".class";
-				InputStream is = this.getClass().getClassLoader()
-						.getResourceAsStream(fileName);
-				if (is != null) {
-					data = new byte[is.available()];
-					is.read(data);
-					is.close();
-					is = null;
-				}
-				if (data == null) {
-					throw new ClassNotFoundException(name);
-				}
-			} catch (AccessControlException e) {
-				e.printStackTrace();
-			}
-			c = registerClass(name, data);
-			data = null;
-			if (c == null) {
-				throw new ClassNotFoundException(name);
-			}
-			return c;
-		} catch (ClassNotFoundException e) {
-			System.err.println("ERROR RESOLVING CLASS: " + name);
-			throw e;
-		} catch (Exception e) {
-			e.printStackTrace();
-			throw new ClassNotFoundException("Class unknown: " + name);
-		}
+		return findClass(name);
 	}
+	
+	
+	
 }

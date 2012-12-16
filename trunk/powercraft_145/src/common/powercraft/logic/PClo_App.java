@@ -53,7 +53,7 @@ public class PClo_App implements PC_IModule
         delayer = (PC_Block)ModuleLoader.register(this, PClo_BlockDelayer.class, PClo_ItemBlockDelayer.class, PClo_TileEntityDelayer.class);
         special = (PC_Block)ModuleLoader.register(this, PClo_BlockSpecial.class, PClo_ItemBlockSpecial.class, PClo_TileEntitySpecial.class);
         repeater = (PC_Block)ModuleLoader.register(this, PClo_BlockRepeater.class, PClo_ItemBlockRepeater.class, PClo_TileEntityRepeater.class);
-    }
+	}
 
     @Override
     public void initItems(){}
