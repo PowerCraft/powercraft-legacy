@@ -133,18 +133,16 @@ public class PC_GresGui extends GuiContainer implements PC_IGresGui {
 
 		if (i == Keyboard.KEY_F11) {}
 
-		boolean consumed = false;
-
 		if (lastFocus != null && lastFocus.visible) {
 			if (lastFocus.keyTyped(c, i)) {
 				gui.actionPerformed(lastFocus, this);
-				consumed = true;
+				return;
 			}
 		}
 
-		if (!consumed && i == Keyboard.KEY_ESCAPE) {
+		if (i == Keyboard.KEY_ESCAPE || i == Keyboard.KEY_E) {
 			gui.onEscapePressed(this);
-		} else if (!consumed && i == Keyboard.KEY_RETURN) {
+		} else if (i == Keyboard.KEY_RETURN) {
 			gui.onReturnPressed(this);
 		}
 	}
