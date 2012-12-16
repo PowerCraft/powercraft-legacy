@@ -42,8 +42,6 @@ public class PC_ModuleClassLoader extends ClassLoader {
 	protected Class<?> findClass(String name) throws ClassNotFoundException {
 		return cl.findClass(name);
 	}
-
-	
 	
 	@Override
 	protected Class<?> loadClass(String name, boolean resolve)

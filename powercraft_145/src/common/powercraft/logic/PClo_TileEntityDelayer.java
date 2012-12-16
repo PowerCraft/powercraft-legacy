@@ -13,7 +13,9 @@ public class PClo_TileEntityDelayer extends PC_TileEntity
 {
     private int type = -1;
     private boolean stateBuffer[] = new boolean[20];
-
+    private int remainingTicks = 0;
+    private int ticks = 20;
+    
     public void create(ItemStack stack, EntityPlayer player, World world, int x, int y, int z, int side, float hitX, float hitY, float hitZ)
     {
         type = stack.getItemDamage();
@@ -42,9 +44,26 @@ public class PClo_TileEntityDelayer extends PC_TileEntity
     public void setDelay(int delay)
     {
         stateBuffer = new boolean[delay];
+        ticks = delay;
         //PC_PacketHandler.setTileEntity(this, "stateBuffer", stateBuffer);
     }
 
+    public void resetRemainingTicks(){
+    	remainingTicks = ticks;
+    }
+    
+    public boolean decRemainingTicks(){
+    	if(remainingTicks>0){
+	    	remainingTicks--;
+	    	if(remainingTicks==0){
+	    		remainingTicks = 0;
+	    	}else{
+	    		return false;
+	    	}
+    	}
+    	return true;
+    }
+    
     @Override
     public void updateEntity()
     {
@@ -57,7 +76,7 @@ public class PClo_TileEntityDelayer extends PC_TileEntity
             stop = GameInfo.poweredFromInput(worldObj, xCoord, yCoord, zCoord, PC_Utils.RIGHT, rot);
             reset = GameInfo.poweredFromInput(worldObj, xCoord, yCoord, zCoord, PC_Utils.LEFT, rot);
         }
-
+        
         if (!stop || reset)
         {
             worldObj.scheduleBlockUpdate(xCoord, yCoord, zCoord, GameInfo.getBID(worldObj, xCoord, yCoord, zCoord), PClo_App.delayer.tickRate());
@@ -121,6 +140,10 @@ public class PClo_TileEntityDelayer extends PC_TileEntity
             {
                 stateBuffer = (boolean[])o[p++];
             }
+            else if (var.equals("remainingTicks"))
+            {
+            	remainingTicks = (Integer)o[p++];
+            }
         }
 
         ValueWriting.hugeUpdate(worldObj, xCoord, yCoord, zCoord);
@@ -133,7 +156,8 @@ public class PClo_TileEntityDelayer extends PC_TileEntity
         return new Object[]
                 {
                     "type", type,
-                    "stateBuffer", stateBuffer
+                    "stateBuffer", stateBuffer,
+                    "remainingTicks", remainingTicks
                 };
     }
 }
