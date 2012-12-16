@@ -87,15 +87,11 @@ public class PC_ModuleLoader{
 			if(create){
 				Class<?> c = new PC_ModuleClassLoader(ci.getClassName(), b).getCreateClass();
 				try {
-					PC_Logger.info("Module "+ci.getClassName()+" have been loaded");
 					PC_IModule module;
 					ModuleLoader.registerModule(module = (PC_IModule)c.newInstance());
-					PC_Logger.info("Module "+module.getName()+" have been loaded");
-				} catch (InstantiationException e) {
-					PC_Logger.severe("Error on Loading Module "+ci.getClassName());
-					e.printStackTrace();
-				} catch (IllegalAccessException e) {
-					PC_Logger.severe("Error on Loading Module "+ci.getClassName());
+					PC_Logger.info("Module \""+module.getName()+"\" have been loaded");
+				} catch (Throwable e) {
+					PC_Logger.severe("Error on Loading Module \""+ci.getClassName()+"\"");
 					e.printStackTrace();
 				}
 			}
