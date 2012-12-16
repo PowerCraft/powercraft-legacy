@@ -4,6 +4,7 @@ import java.util.List;
 
 import powercraft.management.PC_IClientModule;
 import powercraft.management.PC_LangEntry;
+import powercraft.management.PC_Struct2;
 import powercraft.management.PC_Utils.ModuleInfo;
 
 public class PCma_AppClient extends PCma_App implements PC_IClientModule {
@@ -37,6 +38,18 @@ public class PCma_AppClient extends PCma_App implements PC_IClientModule {
 	public List<String> addSplashes(List<String> list) {
 		// TODO Auto-generated method stub
 		return null;
+	}
+
+	@Override
+	public List<PC_Struct2<String, Class>> registerGuis(
+			List<PC_Struct2<String, Class>> guis) {
+		guis.add(new PC_Struct2<String, Class>("AutomaticWorkbench", PCma_GuiAutomaticWorkbench.class));
+		guis.add(new PC_Struct2<String, Class>("BlockBuilder", PCma_GuiBlockBuilder.class));
+		guis.add(new PC_Struct2<String, Class>("Replacer", PCma_GuiReplacer.class));
+		guis.add(new PC_Struct2<String, Class>("Roaster", PCma_GuiRoaster.class));
+		guis.add(new PC_Struct2<String, Class>("Transmutabox", PCma_GuiTransmutabox.class));
+		guis.add(new PC_Struct2<String, Class>("XPBank", PCma_GuiXPBank.class));
+		return guis;
 	}
 
 }

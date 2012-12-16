@@ -17,6 +17,8 @@ public class PC_GlobalVariables {
 	public static boolean hackSplashes = true;
 	public static boolean showUpdateWindow = false;
 	public static String useUserName = "";
+	public static int blockStartIndex = 3000;
+	public static int itemStartIndex = 18000;
 	
 	public static PC_Property config;
 	

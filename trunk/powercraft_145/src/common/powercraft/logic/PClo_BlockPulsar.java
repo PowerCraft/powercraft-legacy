@@ -76,13 +76,6 @@ public class PClo_BlockPulsar extends PC_Block implements PC_IItemInfo
     }
 
     @Override
-    public void updateTick(World world, int i, int j, int k, Random random)
-    {
-        world.markBlockForUpdate(i, j, k);
-        ValueWriting.hugeUpdate(world, i, j, k);
-    }
-
-    @Override
     public boolean onBlockActivated(World world, int i, int j, int k, EntityPlayer player, int par6, float par7, float par8, float par9)
     {
         ItemStack ihold = player.getCurrentEquippedItem();
