@@ -1717,7 +1717,6 @@ public class PC_Utils implements PC_IPacketHandler
 				}else{
 					id = PC_Utils.ModuleLoader.defaultID(e.getValue());
 				}
-				System.out.println("Change ID of "+e.getKey()+" to "+id);
 				PC_Utils.ModuleLoader.setPCObjectID(e.getValue(), id);
 			}
 		}
