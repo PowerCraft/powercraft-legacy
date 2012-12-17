@@ -15,6 +15,7 @@ import powercraft.management.PC_Block;
 import powercraft.management.PC_Renderer;
 import powercraft.management.PC_Utils;
 import powercraft.management.PC_Utils.GameInfo;
+import powercraft.management.PC_Utils.ValueWriting;
 import powercraft.management.PC_VecI;
 
 public class PCde_BlockPlatform extends PC_Block {
@@ -28,7 +29,7 @@ public class PCde_BlockPlatform extends PC_Block {
 	}
 	
 	@Override
-	public TileEntity createNewTileEntity(World world) {
+	public TileEntity newTileEntity(World world, int metadata) {
 		return new PCde_TileEntityPlatform();
 	}
 
@@ -141,11 +142,11 @@ public class PCde_BlockPlatform extends PC_Block {
 	public void renderInventoryBlock(Block block, int metadata, int modelID, Object renderer) {
 		float p = 0.0625F;
 		boolean swapped = PC_Renderer.swapTerrain(block);
-		block.setBlockBounds(0, 0, 0, 1, p, 1);
+		ValueWriting.setBlockBounds(block, 0, 0, 0, 1, p, 1);
 		PC_Renderer.renderInvBoxWithTexture(renderer, block, 22);
-		block.setBlockBounds(0, 0, 1 - p, 1, 1, 1);
+		ValueWriting.setBlockBounds(block, 0, 0, 1 - p, 1, 1, 1);
 		PC_Renderer.renderInvBoxWithTexture(renderer, block, 20);
-		block.setBlockBounds(0, 0, 0, p, 1, 1);
+		ValueWriting.setBlockBounds(block, 0, 0, 0, p, 1, 1);
 		PC_Renderer.renderInvBoxWithTexture(renderer, block, 20);
 		PC_Renderer.resetTerrain(swapped);
 	}

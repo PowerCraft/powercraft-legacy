@@ -15,8 +15,6 @@ import powercraft.management.PC_Utils;
 import powercraft.management.PC_Utils.GameInfo;
 import powercraft.management.PC_Utils.ValueWriting;
 import powercraft.management.PC_VecI;
-import cpw.mods.fml.common.Side;
-import cpw.mods.fml.common.asm.SideOnly;
 
 public class PCco_ItemBlockSaver extends PC_Item {
 
@@ -145,7 +143,6 @@ public class PCco_ItemBlockSaver extends PC_Item {
 	}
 
 	@Override
-	@SideOnly(Side.CLIENT)
 	public void addInformation(ItemStack itemStack, EntityPlayer player, List list, boolean par4) {
 		Item i = Item.itemsList[itemStack.getItemDamage()];
 		ItemStack is = new ItemStack(i);

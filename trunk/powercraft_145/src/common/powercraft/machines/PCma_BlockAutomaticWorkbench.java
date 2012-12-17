@@ -189,8 +189,7 @@ public class PCma_BlockAutomaticWorkbench extends PC_Block implements PC_ISpecia
     }
 
     @Override
-    public TileEntity createNewTileEntity(World world)
-    {
+    public TileEntity newTileEntity(World world, int metadata) {
         return new PCma_TileEntityAutomaticWorkbench();
     }
     

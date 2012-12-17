@@ -13,10 +13,7 @@ import powercraft.management.PC_ShapedRecipes;
 import powercraft.management.PC_Struct2;
 import powercraft.management.PC_Utils.GameInfo;
 import powercraft.management.PC_Utils.ModuleLoader;
-import cpw.mods.fml.common.network.NetworkMod;
 
-//@Mod(modid = "PowerCraft-Machines", name = "PowerCraft-Machines", version = "3.5.0AlphaC", dependencies = "required-after:PowerCraft-Core")
-@NetworkMod(clientSideRequired = true, serverSideRequired = true)
 public class PCma_App implements PC_IModule
 {
 

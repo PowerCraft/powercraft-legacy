@@ -16,6 +16,7 @@ import powercraft.management.PC_Renderer;
 import powercraft.management.PC_Utils;
 import powercraft.management.PC_Utils.GameInfo;
 import powercraft.management.PC_Utils.Gres;
+import powercraft.management.PC_Utils.ValueWriting;
 import powercraft.management.PC_VecI;
 
 public class PCma_BlockTransmutabox extends PC_Block implements PC_IItemInfo
@@ -40,8 +41,7 @@ public class PCma_BlockTransmutabox extends PC_Block implements PC_IItemInfo
     }
 
     @Override
-    public TileEntity createNewTileEntity(World world)
-    {
+    public TileEntity newTileEntity(World world, int metadata) {
         return new PCma_TileEntityTransmutabox();
     }
 
@@ -69,25 +69,25 @@ public class PCma_BlockTransmutabox extends PC_Block implements PC_IItemInfo
     public void renderInventoryBlock(Block block, int metadata, int modelID, Object renderer)
     {
         PC_Renderer.swapTerrain(block);
-        block.setBlockBounds(0.1f, 0.1f, 0.1f, 0.9f, 0.9f, 0.9f);
+        ValueWriting.setBlockBounds(block,0.1f, 0.1f, 0.1f, 0.9f, 0.9f, 0.9f);
         PC_Renderer.renderInvBox(renderer, block, metadata);
-        block.setBlockBounds(0.0f, 0.0f, 0.0f, 0.2f, 0.2f, 0.2f);
+        ValueWriting.setBlockBounds(block,0.0f, 0.0f, 0.0f, 0.2f, 0.2f, 0.2f);
         PC_Renderer.renderInvBoxWithTexture(renderer, block, 1);
-        block.setBlockBounds(0.8f, 0.0f, 0.0f, 1.0f, 0.2f, 0.2f);
+        ValueWriting.setBlockBounds(block,0.8f, 0.0f, 0.0f, 1.0f, 0.2f, 0.2f);
         PC_Renderer.renderInvBoxWithTexture(renderer, block, 1);
-        block.setBlockBounds(0.8f, 0.8f, 0.0f, 1.0f, 1.0f, 0.2f);
+        ValueWriting.setBlockBounds(block,0.8f, 0.8f, 0.0f, 1.0f, 1.0f, 0.2f);
         PC_Renderer.renderInvBoxWithTexture(renderer, block, 1);
-        block.setBlockBounds(0.8f, 0.8f, 0.8f, 1.0f, 1.0f, 1.0f);
+        ValueWriting.setBlockBounds(block,0.8f, 0.8f, 0.8f, 1.0f, 1.0f, 1.0f);
         PC_Renderer.renderInvBoxWithTexture(renderer, block, 1);
-        block.setBlockBounds(0.0f, 0.8f, 0.8f, 0.2f, 1.0f, 1.0f);
+        ValueWriting.setBlockBounds(block,0.0f, 0.8f, 0.8f, 0.2f, 1.0f, 1.0f);
         PC_Renderer.renderInvBoxWithTexture(renderer, block, 1);
-        block.setBlockBounds(0.0f, 0.0f, 0.8f, 0.2f, 0.2f, 1.0f);
+        ValueWriting.setBlockBounds(block,0.0f, 0.0f, 0.8f, 0.2f, 0.2f, 1.0f);
         PC_Renderer.renderInvBoxWithTexture(renderer, block, 1);
-        block.setBlockBounds(0.0f, 0.8f, 0.0f, 0.2f, 1.0f, 0.2f);
+        ValueWriting.setBlockBounds(block,0.0f, 0.8f, 0.0f, 0.2f, 1.0f, 0.2f);
         PC_Renderer.renderInvBoxWithTexture(renderer, block, 1);
-        block.setBlockBounds(0.8f, 0.0f, 0.8f, 1.0f, 0.2f, 1.0f);
+        ValueWriting.setBlockBounds(block,0.8f, 0.0f, 0.8f, 1.0f, 0.2f, 1.0f);
         PC_Renderer.renderInvBoxWithTexture(renderer, block, 1);
-        block.setBlockBounds(0, 0, 0, 1, 1, 1);
+        ValueWriting.setBlockBounds(block,0, 0, 0, 1, 1, 1);
         PC_Renderer.resetTerrain(true);
     }
 
@@ -96,26 +96,26 @@ public class PCma_BlockTransmutabox extends PC_Block implements PC_IItemInfo
         PC_Renderer.tessellatorDraw();
         PC_Renderer.swapTerrain(block);
         PC_Renderer.tessellatorStartDrawingQuads();
-        block.setBlockBounds(0.1f, 0.1f, 0.1f, 0.9f, 0.9f, 0.9f);
+        ValueWriting.setBlockBounds(block,0.1f, 0.1f, 0.1f, 0.9f, 0.9f, 0.9f);
         PC_Renderer.renderStandardBlock(renderer, block, x, y, z);
-        block.setBlockBounds(0.0f, 0.0f, 0.0f, 0.2f, 0.2f, 0.2f);
+        ValueWriting.setBlockBounds(block,0.0f, 0.0f, 0.0f, 0.2f, 0.2f, 0.2f);
         block.blockIndexInTexture = 1;
         PC_Renderer.renderStandardBlock(renderer, block, x, y, z);
-        block.setBlockBounds(0.8f, 0.0f, 0.0f, 1.0f, 0.2f, 0.2f);
+        ValueWriting.setBlockBounds(block,0.8f, 0.0f, 0.0f, 1.0f, 0.2f, 0.2f);
         PC_Renderer.renderStandardBlock(renderer, block, x, y, z);
-        block.setBlockBounds(0.8f, 0.8f, 0.0f, 1.0f, 1.0f, 0.2f);
+        ValueWriting.setBlockBounds(block,0.8f, 0.8f, 0.0f, 1.0f, 1.0f, 0.2f);
         PC_Renderer.renderStandardBlock(renderer, block, x, y, z);
-        block.setBlockBounds(0.8f, 0.8f, 0.8f, 1.0f, 1.0f, 1.0f);
+        ValueWriting.setBlockBounds(block,0.8f, 0.8f, 0.8f, 1.0f, 1.0f, 1.0f);
         PC_Renderer.renderStandardBlock(renderer, block, x, y, z);
-        block.setBlockBounds(0.0f, 0.8f, 0.8f, 0.2f, 1.0f, 1.0f);
+        ValueWriting.setBlockBounds(block,0.0f, 0.8f, 0.8f, 0.2f, 1.0f, 1.0f);
         PC_Renderer.renderStandardBlock(renderer, block, x, y, z);
-        block.setBlockBounds(0.0f, 0.0f, 0.8f, 0.2f, 0.2f, 1.0f);
+        ValueWriting.setBlockBounds(block,0.0f, 0.0f, 0.8f, 0.2f, 0.2f, 1.0f);
         PC_Renderer.renderStandardBlock(renderer, block, x, y, z);
-        block.setBlockBounds(0.0f, 0.8f, 0.0f, 0.2f, 1.0f, 0.2f);
+        ValueWriting.setBlockBounds(block,0.0f, 0.8f, 0.0f, 0.2f, 1.0f, 0.2f);
         PC_Renderer.renderStandardBlock(renderer, block, x, y, z);
-        block.setBlockBounds(0.8f, 0.0f, 0.8f, 1.0f, 0.2f, 1.0f);
+        ValueWriting.setBlockBounds(block,0.8f, 0.0f, 0.8f, 1.0f, 0.2f, 1.0f);
         PC_Renderer.renderStandardBlock(renderer, block, x, y, z);
-        block.setBlockBounds(0.0f, 0.0f, 0.0f, 1.0f, 1.0f, 1.0f);
+        ValueWriting.setBlockBounds(block,0.0f, 0.0f, 0.0f, 1.0f, 1.0f, 1.0f);
         block.blockIndexInTexture = 0;
         PC_Renderer.tessellatorDraw();
         PC_Renderer.resetTerrain(true);

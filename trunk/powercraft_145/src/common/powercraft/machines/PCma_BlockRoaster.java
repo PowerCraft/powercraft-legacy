@@ -101,8 +101,7 @@ public class PCma_BlockRoaster extends PC_Block implements PC_IItemInfo
     }
 
     @Override
-    public TileEntity createNewTileEntity(World world)
-    {
+    public TileEntity newTileEntity(World world, int metadata) {
         return new PCma_TileEntityRoaster();
     }
 

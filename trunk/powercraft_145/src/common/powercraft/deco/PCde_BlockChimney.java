@@ -13,6 +13,7 @@ import powercraft.management.PC_Block;
 import powercraft.management.PC_Renderer;
 import powercraft.management.PC_Utils;
 import powercraft.management.PC_Utils.GameInfo;
+import powercraft.management.PC_Utils.ValueWriting;
 import powercraft.management.PC_VecI;
 
 public class PCde_BlockChimney extends PC_Block {
@@ -26,7 +27,7 @@ public class PCde_BlockChimney extends PC_Block {
 	}
 	
 	@Override
-	public TileEntity createNewTileEntity(World world) {
+	public TileEntity newTileEntity(World world, int metadata) {
 		return new PCde_TileEntityChimney();
 	}
 
@@ -45,15 +46,15 @@ public class PCde_BlockChimney extends PC_Block {
 		if (metadata == 2) bl = Block.stoneBrick;
 		if (bl == null) return;
 
-		bl.setBlockBounds(0, 0, 0, 1, 1, w);
+		ValueWriting.setBlockBounds(bl, 0, 0, 0, 1, 1, w);
 		PC_Renderer.renderInvBox(renderer, bl, 0);
-		bl.setBlockBounds(1 - w, 0, w, 1, 1, 1 - w);
+		ValueWriting.setBlockBounds(bl, 1 - w, 0, w, 1, 1, 1 - w);
 		PC_Renderer.renderInvBox(renderer, bl, 0);
-		bl.setBlockBounds(0, 0, 1 - w, 1, 1, 1);
+		ValueWriting.setBlockBounds(bl, 0, 0, 1 - w, 1, 1, 1);
 		PC_Renderer.renderInvBox(renderer, bl, 0);
-		bl.setBlockBounds(0, 0, w, w, 1, 1 - w);
+		ValueWriting.setBlockBounds(bl, 0, 0, w, w, 1, 1 - w);
 		PC_Renderer.renderInvBox(renderer, bl, 0);
-		bl.setBlockBounds(0, 0, 0, 1, 1, 1);
+		ValueWriting.setBlockBounds(bl, 0, 0, 0, 1, 1, 1);
 	}
 
 	public void renderWorldBlock(IBlockAccess world, int x, int y, int z, Block block, int modelId, Object renderer) {
@@ -69,19 +70,19 @@ public class PCde_BlockChimney extends PC_Block {
 		if (metadata == 2) bl = Block.stoneBrick;
 		if (bl == null) return;
 
-		bl.setBlockBounds(0, 0, 0, 1, 1, w);
+		ValueWriting.setBlockBounds(bl, 0, 0, 0, 1, 1, w);
 		PC_Renderer.renderStandardBlock(renderer, bl, x, y, z);
 
-		bl.setBlockBounds(1 - w, 0, w, 1, 1, 1 - w);
+		ValueWriting.setBlockBounds(bl, 1 - w, 0, w, 1, 1, 1 - w);
 		PC_Renderer.renderStandardBlock(renderer, bl, x, y, z);
 
-		bl.setBlockBounds(0, 0, 1 - w, 1, 1, 1);
+		ValueWriting.setBlockBounds(bl, 0, 0, 1 - w, 1, 1, 1);
 		PC_Renderer.renderStandardBlock(renderer, bl, x, y, z);
 
-		bl.setBlockBounds(0, 0, w, w, 1, 1 - w);
+		ValueWriting.setBlockBounds(bl, 0, 0, w, w, 1, 1 - w);
 		PC_Renderer.renderStandardBlock(renderer, bl, x, y, z);
 		
-		bl.setBlockBounds(0, 0, 0, 1, 1, 1);
+		ValueWriting.setBlockBounds(bl, 0, 0, 0, 1, 1, 1);
 		
 	}
 	

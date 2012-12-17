@@ -157,7 +157,8 @@ public class PClo_TileEntityDelayer extends PC_TileEntity
                 {
                     "type", type,
                     "stateBuffer", stateBuffer,
-                    "remainingTicks", remainingTicks
+                    "remainingTicks", remainingTicks,
+                    "ticks", ticks
                 };
     }
 }

@@ -21,6 +21,8 @@ public class PClo_TileEntityPulsar extends PC_TileEntity
 
     private boolean silent = false;
 
+    private boolean should = true;
+    
     public PClo_TileEntityPulsar()
     {
     }
@@ -96,17 +98,17 @@ public class PClo_TileEntityPulsar extends PC_TileEntity
         {
             return;
         }
-
+        
         if (delayTimer < 0 && !isActive())
         {
-            ValueWriting.setBlockState(worldObj, xCoord, yCoord, zCoord, true);
+        	ValueWriting.setBlockState(worldObj, xCoord, yCoord, zCoord, true);
         }
 
         delayTimer++;
 
         if (delayTimer >= holdtime && isActive())
         {
-            ValueWriting.setBlockState(worldObj, xCoord, yCoord, zCoord, false);
+        	ValueWriting.setBlockState(worldObj, xCoord, yCoord, zCoord, false);
         }
 
         if (delayTimer >= delay)
@@ -198,4 +200,8 @@ public class PClo_TileEntityPulsar extends PC_TileEntity
                     "paused", paused
                 };
     }
+
+	public boolean getShould() {
+		return should;
+	}
 }

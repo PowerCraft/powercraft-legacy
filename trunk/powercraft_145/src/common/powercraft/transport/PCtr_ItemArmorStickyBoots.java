@@ -7,8 +7,6 @@ import net.minecraft.src.ItemStack;
 import powercraft.management.PC_ItemArmor;
 import powercraft.management.PC_Struct3;
 import powercraft.management.PC_Utils;
-import cpw.mods.fml.common.Side;
-import cpw.mods.fml.common.asm.SideOnly;
 
 public class PCtr_ItemArmorStickyBoots extends PC_ItemArmor
 {
@@ -19,14 +17,12 @@ public class PCtr_ItemArmorStickyBoots extends PC_ItemArmor
     }
 
     @Override
-    @SideOnly(Side.CLIENT)
     public int getColorFromItemStack(ItemStack par1ItemStack, int par2)
     {
         return 0x99ff99;
     }
     
     @Override
-    @SideOnly(Side.CLIENT)
     public int getColor(ItemStack par1ItemStack)
     {
         return 0x99ff99;

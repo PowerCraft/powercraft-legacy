@@ -52,8 +52,7 @@ public class PClo_BlockSpecial extends PC_Block
     }
 
     @Override
-    public TileEntity createNewTileEntity(World world)
-    {
+    public TileEntity newTileEntity(World world, int metadata) {
         return new PClo_TileEntitySpecial();
     }
 

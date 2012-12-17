@@ -73,8 +73,7 @@ public class PCtr_BlockBeltEjector extends PCtr_BlockBeltBase
     }
 
     @Override
-    public TileEntity createNewTileEntity(World world)
-    {
+    public TileEntity newTileEntity(World world, int metadata) {
         return new PCtr_TileEntityEjectionBelt();
     }
 

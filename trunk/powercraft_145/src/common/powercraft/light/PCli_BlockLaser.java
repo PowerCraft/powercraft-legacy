@@ -46,8 +46,7 @@ public class PCli_BlockLaser extends PC_Block implements PC_IItemInfo
     }
 
     @Override
-    public TileEntity createNewTileEntity(World world)
-    {
+    public TileEntity newTileEntity(World world, int metadata) {
         return new PCli_TileEntityLaser();
     }
 
@@ -179,15 +178,16 @@ public class PCli_BlockLaser extends PC_Block implements PC_IItemInfo
 
 	public void renderInventoryBlock(Block block, int metadata, int modelID, Object renderer) {
 		PC_Renderer.renderInvBox(renderer, block, metadata);
-		block.setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 1.0F, 1.0F);
+		ValueWriting.setBlockBounds(block, 0.0F, 0.0F, 0.0F, 1.0F, 1.0F, 1.0F);
 
 		// cobble body
-		Block.cobblestone.setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 0.2F, 1.0F);
+		
+		ValueWriting.setBlockBounds(Block.cobblestone, 0.0F, 0.0F, 0.0F, 1.0F, 0.2F, 1.0F);
 		PC_Renderer.renderInvBox(renderer, Block.cobblestone, 0);
-		Block.cobblestone.setBlockBounds(0.4F, 0.2F, 0.4F, 0.6F, 0.3F, 0.6F);
+		ValueWriting.setBlockBounds(Block.cobblestone, 0.4F, 0.2F, 0.4F, 0.6F, 0.3F, 0.6F);
 		PC_Renderer.renderInvBox(renderer, Block.cobblestone, 0);
 		// reset
-		Block.cobblestone.setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 1.0F, 1.0F);
+		ValueWriting.setBlockBounds(Block.cobblestone, 0.0F, 0.0F, 0.0F, 1.0F, 1.0F, 1.0F);
 	}
 
 	@Override

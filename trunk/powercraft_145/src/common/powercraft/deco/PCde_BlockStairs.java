@@ -32,7 +32,7 @@ public class PCde_BlockStairs extends PC_Block {
 	}
 	
 	@Override
-	public TileEntity createNewTileEntity(World world) {
+	public TileEntity newTileEntity(World world, int metadata) {
 		return new PCde_TileEntityStairs();
 	}
 
@@ -207,15 +207,15 @@ public class PCde_BlockStairs extends PC_Block {
 		float p = 0.0625F;
 		boolean swapped = PC_Renderer.swapTerrain(block);
 
-		block.setBlockBounds(0, 0F, 0.5F, 1, p, 1);
+		ValueWriting.setBlockBounds(block, 0, 0F, 0.5F, 1, p, 1);
 		PC_Renderer.renderInvBoxWithTexture(renderer, block, 22);
 
-		block.setBlockBounds(0, 0.5F - p, 0, 1, 0.5F, 0.5F);
+		ValueWriting.setBlockBounds(block, 0, 0.5F - p, 0, 1, 0.5F, 0.5F);
 		PC_Renderer.renderInvBoxWithTexture(renderer, block, 22);
 
-		block.setBlockBounds(0, 0, 0.5F, p, 0.5F, 1);
+		ValueWriting.setBlockBounds(block, 0, 0, 0.5F, p, 0.5F, 1);
 		PC_Renderer.renderInvBoxWithTexture(renderer, block, 20);
-		block.setBlockBounds(0, 0.5F, 0, p, 0.5F + 0.5F, 0.5F);
+		ValueWriting.setBlockBounds(block, 0, 0.5F, 0, p, 0.5F + 0.5F, 0.5F);
 		PC_Renderer.renderInvBoxWithTexture(renderer, block, 20);
 
 		PC_Renderer.resetTerrain(swapped);

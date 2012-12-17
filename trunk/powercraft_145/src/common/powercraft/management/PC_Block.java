@@ -1,10 +1,5 @@
 package powercraft.management;
 
-import java.util.List;
-
-import powercraft.management.PC_Utils.GameInfo;
-import powercraft.management.PC_Utils.ValueWriting;
-
 import net.minecraft.src.Block;
 import net.minecraft.src.BlockContainer;
 import net.minecraft.src.IBlockAccess;
@@ -14,6 +9,8 @@ import net.minecraft.src.ItemStack;
 import net.minecraft.src.Material;
 import net.minecraft.src.TileEntity;
 import net.minecraft.src.World;
+import powercraft.management.PC_Utils.GameInfo;
+import powercraft.management.PC_Utils.ValueWriting;
 import cpw.mods.fml.common.Side;
 import cpw.mods.fml.common.asm.SideOnly;
 
@@ -68,10 +65,21 @@ public abstract class PC_Block extends BlockContainer implements PC_IMSG
 
     public abstract Object msg(World world, PC_VecI pos, int msg, Object...obj);
 
-    public TileEntity createNewTileEntity(World world)
-    {
-        return null;
-    }
+    public TileEntity newTileEntity(World world, int metadata){
+		return null;
+	}
+	
+	public final TileEntity createNewTileEntity(World world) {
+		return createNewTileEntity(world, 0);
+	}
+	
+	public final TileEntity createNewTileEntity(World world, int metadata) {
+		if(PC_GlobalVariables.tileEntity != null && !world.isRemote){
+			PC_GlobalVariables.tileEntity.validate();
+			return PC_GlobalVariables.tileEntity;
+		}
+		return newTileEntity(world, metadata);
+	}
 
     public void setModule(PC_IModule module){
     	this.module = module;

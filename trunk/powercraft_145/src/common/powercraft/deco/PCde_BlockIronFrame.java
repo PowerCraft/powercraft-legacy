@@ -14,6 +14,7 @@ import powercraft.management.PC_IItemInfo;
 import powercraft.management.PC_Renderer;
 import powercraft.management.PC_Utils;
 import powercraft.management.PC_VecI;
+import powercraft.management.PC_Utils.ValueWriting;
 
 public class PCde_BlockIronFrame extends PC_Block implements PC_IItemInfo {
 
@@ -26,7 +27,7 @@ public class PCde_BlockIronFrame extends PC_Block implements PC_IItemInfo {
 	}
 
 	@Override
-	public TileEntity createNewTileEntity(World world) {
+	public TileEntity newTileEntity(World world, int metadata) {
 		return new PCde_TileEntityIronFrame();
 	}
 	
@@ -47,38 +48,38 @@ public class PCde_BlockIronFrame extends PC_Block implements PC_IItemInfo {
 		float s = 0.1875F;
 
 		// pillars
-		block.setBlockBounds(0, 0, 0, s, 1, s);
+		ValueWriting.setBlockBounds(block, 0, 0, 0, s, 1, s);
 		PC_Renderer.renderInvBoxWithTexture(renderer, block, 21);
-		block.setBlockBounds(1 - s, 0, 0, 1, 1, s);
+		ValueWriting.setBlockBounds(block, 1 - s, 0, 0, 1, 1, s);
 		PC_Renderer.renderInvBoxWithTexture(renderer, block, 21);
-		block.setBlockBounds(0, 0, 1 - s, s, 1, 1);
+		ValueWriting.setBlockBounds(block, 0, 0, 1 - s, s, 1, 1);
 		PC_Renderer.renderInvBoxWithTexture(renderer, block, 21);
-		block.setBlockBounds(1 - s, 0, 1 - s, 1, 1, 1);
+		ValueWriting.setBlockBounds(block, 1 - s, 0, 1 - s, 1, 1, 1);
 		PC_Renderer.renderInvBoxWithTexture(renderer, block, 21);
 
 		// x-sticks
-		block.setBlockBounds(s, 0, 0, 1 - s, s, s);
+		ValueWriting.setBlockBounds(block, s, 0, 0, 1 - s, s, s);
 		PC_Renderer.renderInvBoxWithTexture(renderer, block, 21);
-		block.setBlockBounds(s, 0, 1 - s, 1 - s, s, 1);
+		ValueWriting.setBlockBounds(block, s, 0, 1 - s, 1 - s, s, 1);
 		PC_Renderer.renderInvBoxWithTexture(renderer, block, 21);
-		block.setBlockBounds(s, 1 - s, 0, 1 - s, 1, s);
+		ValueWriting.setBlockBounds(block, s, 1 - s, 0, 1 - s, 1, s);
 		PC_Renderer.renderInvBoxWithTexture(renderer, block, 21);
-		block.setBlockBounds(s, 1 - s, 1 - s, 1 - s, 1, 1);
+		ValueWriting.setBlockBounds(block, s, 1 - s, 1 - s, 1 - s, 1, 1);
 		PC_Renderer.renderInvBoxWithTexture(renderer, block, 21);
 
 		// z-sticks
-		block.setBlockBounds(0, 0, s, s, s, 1 - s);
+		ValueWriting.setBlockBounds(block, 0, 0, s, s, s, 1 - s);
 		PC_Renderer.renderInvBoxWithTexture(renderer, block, 21);
-		block.setBlockBounds(0, 1 - s, s, s, 1, 1 - s);
+		ValueWriting.setBlockBounds(block, 0, 1 - s, s, s, 1, 1 - s);
 		PC_Renderer.renderInvBoxWithTexture(renderer, block, 21);
 
-		block.setBlockBounds(1 - s, 0, s, 1, s, 1 - s);
+		ValueWriting.setBlockBounds(block, 1 - s, 0, s, 1, s, 1 - s);
 		PC_Renderer.renderInvBoxWithTexture(renderer, block, 21);
-		block.setBlockBounds(1 - s, 1 - s, s, 1, 1, 1 - s);
+		ValueWriting.setBlockBounds(block, 1 - s, 1 - s, s, 1, 1, 1 - s);
 		PC_Renderer.renderInvBoxWithTexture(renderer, block, 21);
 		PC_Renderer.resetTerrain(swapped);
 		
-		block.setBlockBounds(0, 0, 0, 1, 1, 1);
+		ValueWriting.setBlockBounds(block, 0, 0, 0, 1, 1, 1);
 		
 	}
 

@@ -9,6 +9,7 @@ import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.List;
 
+import net.minecraft.src.TileEntity;
 import powercraft.management.PC_Utils.GameInfo;
 
 public class PC_GlobalVariables {
@@ -18,7 +19,8 @@ public class PC_GlobalVariables {
 	public static boolean showUpdateWindow = false;
 	public static String useUserName = "";
 	public static int blockStartIndex = 3000;
-	public static int itemStartIndex = 18000;
+	public static int itemStartIndex = 17000;
+	public static TileEntity tileEntity;
 	
 	public static PC_Property config;
 	

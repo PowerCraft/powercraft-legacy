@@ -22,6 +22,7 @@ import powercraft.management.PC_Renderer;
 import powercraft.management.PC_Utils;
 import powercraft.management.PC_Utils.GameInfo;
 import powercraft.management.PC_Utils.ModuleInfo;
+import powercraft.management.PC_Utils.ValueWriting;
 import powercraft.management.PC_VecI;
 
 public class PCli_BlockMirrow extends PC_Block implements PC_IItemInfo {
@@ -38,7 +39,7 @@ public class PCli_BlockMirrow extends PC_Block implements PC_IItemInfo {
 	}
 
 	@Override
-	public TileEntity createNewTileEntity(World world) {
+	public TileEntity newTileEntity(World world, int metadata) {
 		return new PCli_TileEntityMirrow();
 	}
 	
@@ -277,13 +278,13 @@ public class PCli_BlockMirrow extends PC_Block implements PC_IItemInfo {
 	public void renderInventoryBlock(Block block, int metadata, int modelID, Object renderer) {
 		Block steel = Block.blockSteel;
 		float px = 0.0625F;
-		steel.setBlockBounds(0 * px, 6 * px, 7 * px, 15 * px, 15 * px, 9 * px);
+		ValueWriting.setBlockBounds(steel, 0 * px, 6 * px, 7 * px, 15 * px, 15 * px, 9 * px);
 		PC_Renderer.renderInvBox(renderer, steel, 0);
-		steel.setBlockBounds(3 * px, 0 * px, 7 * px, 5 * px, 6 * px, 9 * px);
+		ValueWriting.setBlockBounds(steel, 3 * px, 0 * px, 7 * px, 5 * px, 6 * px, 9 * px);
 		PC_Renderer.renderInvBox(renderer, steel, 0);
-		steel.setBlockBounds(10 * px, 0 * px, 7 * px, 12 * px, 6 * px, 9 * px);
+		ValueWriting.setBlockBounds(steel, 10 * px, 0 * px, 7 * px, 12 * px, 6 * px, 9 * px);
 		PC_Renderer.renderInvBox(renderer, steel, 0);
-		steel.setBlockBounds(0, 0, 0, 1, 1, 1);
+		ValueWriting.setBlockBounds(steel, 0, 0, 0, 1, 1, 1);
 	}
 
 	@Override

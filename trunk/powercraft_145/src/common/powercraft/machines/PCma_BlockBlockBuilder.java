@@ -150,7 +150,7 @@ public class PCma_BlockBlockBuilder extends PC_Block implements PC_ISpecialInven
 	}
 
 	@Override
-	public TileEntity createNewTileEntity(World world) {
+	public TileEntity newTileEntity(World world, int metadata) {
 		return new PCma_TileEntityBlockBuilder();
 	}
 

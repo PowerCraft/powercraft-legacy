@@ -57,8 +57,7 @@ public class PClo_BlockFlipFlop extends PC_Block
     }
 
     @Override
-    public TileEntity createNewTileEntity(World world)
-    {
+    public TileEntity newTileEntity(World world, int metadata) {
         return new PClo_TileEntityFlipFlop();
     }
 

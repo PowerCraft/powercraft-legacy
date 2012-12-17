@@ -18,6 +18,7 @@ import powercraft.management.PC_IItemInfo;
 import powercraft.management.PC_Renderer;
 import powercraft.management.PC_Utils;
 import powercraft.management.PC_Utils.GameInfo;
+import powercraft.management.PC_Utils.ValueWriting;
 import powercraft.management.PC_VecI;
 
 public class PCli_BlockLaserSensor extends PC_Block implements PC_IItemInfo {
@@ -44,8 +45,7 @@ public class PCli_BlockLaserSensor extends PC_Block implements PC_IItemInfo {
     }
 
     @Override
-    public TileEntity createNewTileEntity(World world)
-    {
+    public TileEntity newTileEntity(World world, int metadata) {
         return new PCli_TileEntityLaserSensor();
     }
     
@@ -78,31 +78,31 @@ public class PCli_BlockLaserSensor extends PC_Block implements PC_IItemInfo {
 	}
 
 	public void renderInventoryBlock(Block block, int metadata, int modelID, Object renderer) {
-		Block.ice.setBlockBounds(0.3F, 0.3F, 0.3F, 0.7F, 0.7F, 0.7F);
+		ValueWriting.setBlockBounds(Block.ice, 0.3F, 0.3F, 0.3F, 0.7F, 0.7F, 0.7F);
 		PC_Renderer.renderInvBox(renderer, Block.ice, 0);
-		Block.ice.setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 1.0F, 1.0F);
+		ValueWriting.setBlockBounds(Block.ice, 0.0F, 0.0F, 0.0F, 1.0F, 1.0F, 1.0F);
 
 		// cobble body
-		Block.cobblestone.setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 0.2F, 1.0F);
+		ValueWriting.setBlockBounds(Block.cobblestone, 0.0F, 0.0F, 0.0F, 1.0F, 0.2F, 1.0F);
 		PC_Renderer.renderInvBox(renderer, Block.cobblestone, 0);
-		Block.cobblestone.setBlockBounds(0.4F, 0.2F, 0.4F, 0.6F, 0.3F, 0.6F);
+		ValueWriting.setBlockBounds(Block.cobblestone, 0.4F, 0.2F, 0.4F, 0.6F, 0.3F, 0.6F);
 		PC_Renderer.renderInvBox(renderer, Block.cobblestone, 0);
 		// reset
-		Block.cobblestone.setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 1.0F, 1.0F);
+		ValueWriting.setBlockBounds(Block.cobblestone, 0.0F, 0.0F, 0.0F, 1.0F, 1.0F, 1.0F);
 	}
 
 	public void renderWorldBlock(IBlockAccess world, int x, int y, int z, Block block, int modelId, Object renderer) {
-		Block.ice.setBlockBounds(0.3F, 0.3F, 0.3F, 0.7F, 0.7F, 0.7F);
+		ValueWriting.setBlockBounds(Block.ice, 0.3F, 0.3F, 0.3F, 0.7F, 0.7F, 0.7F);
 		PC_Renderer.renderStandardBlock(renderer, Block.ice, x, y, z);
-		Block.ice.setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 1.0F, 1.0F);
+		ValueWriting.setBlockBounds(Block.ice, 0.0F, 0.0F, 0.0F, 1.0F, 1.0F, 1.0F);
 
 		// cobble body
-		Block.cobblestone.setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 0.2F, 1.0F);
+		ValueWriting.setBlockBounds(Block.cobblestone, 0.0F, 0.0F, 0.0F, 1.0F, 0.2F, 1.0F);
 		PC_Renderer.renderStandardBlock(renderer, Block.cobblestone, x, y, z);
-		Block.cobblestone.setBlockBounds(0.4F, 0.2F, 0.4F, 0.6F, 0.3F, 0.6F);
+		ValueWriting.setBlockBounds(Block.cobblestone, 0.4F, 0.2F, 0.4F, 0.6F, 0.3F, 0.6F);
 		PC_Renderer.renderStandardBlock(renderer, Block.cobblestone, x, y, z);
 		// reset
-		Block.cobblestone.setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 1.0F, 1.0F);
+		ValueWriting.setBlockBounds(Block.cobblestone, 0.0F, 0.0F, 0.0F, 1.0F, 1.0F, 1.0F);
 	}
 
 	public result onHitByBeamTracer(PC_BeamTracer beamTracer, PC_VecI cnt, PC_VecI move, PC_Color color, float strength, int distanceToMove) {
