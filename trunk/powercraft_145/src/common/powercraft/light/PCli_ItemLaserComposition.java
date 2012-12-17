@@ -26,7 +26,7 @@ public class PCli_ItemLaserComposition extends PC_Item
 {
     public PCli_ItemLaserComposition(int id)
     {
-    	super(id);
+    	super(id, 0, 1);
         setMaxStackSize(1);
         setHasSubtypes(true);
         setCreativeTab(CreativeTabs.tabDecorations);
@@ -51,7 +51,7 @@ public class PCli_ItemLaserComposition extends PC_Item
 	 */
 	@Override
 	public int getIconFromDamageForRenderPass(int dmg, int pass) {
-		return pass == 0 ? 0 : 1;
+		return pass == 0 ? iconIndex : iconIndexRenderPass2;
 	}
     
 	@Override
@@ -248,6 +248,7 @@ public class PCli_ItemLaserComposition extends PC_Item
 		switch(msg){
 		case PC_Utils.MSG_DEFAULT_NAME:
 			List<PC_Struct3<String, String, String[]>> names = (List<PC_Struct3<String, String, String[]>>)obj[0];
+			names.add(new PC_Struct3<String, String, String[]>(getItemName(), "Laser Composition", null));
 			names.add(new PC_Struct3<String, String, String[]>(getItemName() + ".kill", "Kill Level %s", null));
 			names.add(new PC_Struct3<String, String, String[]>( getItemName() + ".distance", "Distance Level %s", null));
 			names.add(new PC_Struct3<String, String, String[]>(getItemName() + ".sensor", "Sensor Level %s", null));;

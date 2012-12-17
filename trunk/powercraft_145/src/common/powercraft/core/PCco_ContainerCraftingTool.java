@@ -45,7 +45,7 @@ public class PCco_ContainerCraftingTool extends PC_GresBaseWithInventory
             if (i != null)
             {
                 List<ItemStack> a = new ArrayList<ItemStack>();
-
+                
                 if (i instanceof PC_IItemInfo)
                 {
                 	PC_IModule module = ((PC_IItemInfo)i).getModule();
@@ -88,6 +88,12 @@ public class PCco_ContainerCraftingTool extends PC_GresBaseWithInventory
                     {
                     	PC_IModule module = ((PC_IItemInfo)b).getModule();
                         List<ItemStack> l = ((PC_IItemInfo)b).getItemStacks(new ArrayList<ItemStack>());
+                        if(b instanceof PC_IMSG){
+                        	Object o = ((PC_IMSG) b).msg(PC_Utils.MSG_DONT_SHOW_IN_CRAFTING_TOOL);
+                        	if(o instanceof Boolean && (Boolean)o){
+                        		continue;
+                        	}
+                        }
                         List<PC_Struct2<PC_IModule, PCco_SlotDirectCrafting>> ls;
 
                         if (moduleList.containsKey(module.getName()))

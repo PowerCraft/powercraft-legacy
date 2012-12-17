@@ -11,6 +11,10 @@ public class PCco_AppClient extends PCco_App implements PC_IClientModule {
 
 	@Override
 	public List<PC_LangEntry> initLanguage(List<PC_LangEntry> lang) {
+		lang.add(new PC_LangEntry("pc.gui.ok", "OK"));
+		lang.add(new PC_LangEntry("pc.gui.cancel", "Cancel"));
+		lang.add(new PC_LangEntry("pc.gui.close", "Close"));
+		lang.add(new PC_LangEntry( "pc.gui.back", "Back"));
 		lang.add(new PC_LangEntry("pc.gui.craftingTool.title", "Crafting Tool"));
 		lang.add(new PC_LangEntry("pc.gui.craftingTool.trashAll", "Trash All"));
 		lang.add(new PC_LangEntry("pc.gui.craftingTool.search", "Search"));

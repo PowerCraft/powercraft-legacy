@@ -414,6 +414,10 @@ public class PCli_BlockLight extends PC_Block implements PC_IItemInfo
 			List<String> list = (List<String>)obj[1];
 			list.add(PC_Utils.NO_BUILD);
 			return list;
+		}case PC_Utils.MSG_DONT_SHOW_IN_CRAFTING_TOOL:{
+			if(this==off)
+				return true;
+			return false;
 		}
 		default:
 			return null;
