@@ -342,23 +342,23 @@ public class PCma_BlockReplacer extends PC_Block implements PC_IItemInfo
             return;
         }
 
-        if (!replacer_canHarvestBlockAt(te.worldObj, pos))
+        if (!replacer_canHarvestBlockAt(te.getWorldObj(), pos))
         {
             return;
         }
 
-        if (!replacer_canPlaceBlockAt(te.worldObj, te.buildBlock, pos))
+        if (!replacer_canPlaceBlockAt(te.getWorldObj(), te.buildBlock, pos))
         {
             return;
         }
 
-        PC_Struct2<ItemStack, Integer> harvested = replacer_harvestBlockAt(te.worldObj, pos);
+        PC_Struct2<ItemStack, Integer> harvested = replacer_harvestBlockAt(te.getWorldObj(), pos);
 
-        if (!replacer_placeBlockAt(te.worldObj, te.extraMeta, te.buildBlock, pos))
+        if (!replacer_placeBlockAt(te.getWorldObj(), te.extraMeta, te.buildBlock, pos))
         {
             if (harvested != null)
             {
-                replacer_placeBlockAt(te.worldObj, harvested.b, harvested.a, pos);
+                replacer_placeBlockAt(te.getWorldObj(), harvested.b, harvested.a, pos);
             }
 
             return;
@@ -419,8 +419,7 @@ public class PCma_BlockReplacer extends PC_Block implements PC_IItemInfo
     }
 
     @Override
-    public TileEntity createNewTileEntity(World world)
-    {
+    public TileEntity newTileEntity(World world, int metadata) {
         return new PCma_TileEntityReplacer();
     }
 

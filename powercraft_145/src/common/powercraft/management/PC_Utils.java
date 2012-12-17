@@ -538,6 +538,19 @@ public class PC_Utils implements PC_IPacketHandler
     
     public static class ValueWriting{
 
+    	public static int getFieldIDByName(Class c, String name){
+    		Field f[] = c.getDeclaredFields();
+    		for(int i=0; i<f.length; i++){
+    			if(f[i].getName().equals(name))
+    				return i;
+    		}
+    		return -1;
+    	}
+    	
+    	public static void setBlockBounds(Block block, double x, double y, double z, double width, double height, double depht){
+    		block.setBlockBounds((float)x, (float)y, (float)z, (float)width, (float)height, (float)depht);
+    	}
+    	
 		public static void setFieldsWithAnnotationTo(Class c, Class <? extends Annotation > annotationClass, Object obj, Object value)
 		{
 		    Field fa[] = c.getDeclaredFields();
@@ -644,26 +657,25 @@ public class PC_Utils implements PC_IPacketHandler
 		
 		            if ((b == bon && !on) || (b == boff && on))
 		            {
-		                if (te != null)
+		            	if (on)
 		                {
-		                    te.lockInvalid(true);
-		                }
-		
-		                if (on)
-		                {
-		                    world.setBlockAndMetadataWithNotify(x, y, z, bon.blockID, meta);
+		                	b = bon;
 		                }
 		                else
 		                {
-		                    world.setBlockAndMetadataWithNotify(x, y, z, boff.blockID, meta);
+		                	b = boff;
 		                }
-		
+		                
+		              
+		            	PC_GlobalVariables.tileEntity = te;
+		                
+		                world.setBlockAndMetadataWithNotify(x, y, z, b.blockID, meta);
+		                
+		                PC_GlobalVariables.tileEntity = null;
+		                
 		                if (te != null)
 		                {
-		                    world.setBlockTileEntity(x, y, z, te);
-		                    te.blockType = null;
-		                    te.getBlockType();
-		                    te.lockInvalid(false);
+		                    PC_PacketHandler.sendTileEntity(te);
 		                }
 		                GameInfo.markBlockForUpdate(world, x, y, z);
 		                hugeUpdate(world, x, y, z);

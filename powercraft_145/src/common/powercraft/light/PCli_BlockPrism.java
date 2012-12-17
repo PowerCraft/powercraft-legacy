@@ -37,7 +37,7 @@ public class PCli_BlockPrism extends PC_Block implements PC_IItemInfo {
 	}
 	
 	@Override
-	public TileEntity createNewTileEntity(World world) {
+	public TileEntity newTileEntity(World world, int metadata) {
 		return new PCli_TileEntityPrism();
 	}
 	
@@ -166,15 +166,15 @@ public class PCli_BlockPrism extends PC_Block implements PC_IItemInfo {
 		Block ice = Block.ice;
 		float px = 0.0625F;
 		PC_Renderer.bindTexture("/terrain.png");
-		ice.setBlockBounds(3 * px, 3 * px, 3 * px, 12 * px, 12 * px, 12 * px);
+		ValueWriting.setBlockBounds(ice, 3 * px, 3 * px, 3 * px, 12 * px, 12 * px, 12 * px);
 		PC_Renderer.renderInvBox(renderer, ice, 0);
-		ice.setBlockBounds(4 * px, 4 * px, 2 * px, 11 * px, 11 * px, 13 * px);
+		ValueWriting.setBlockBounds(ice, 4 * px, 4 * px, 2 * px, 11 * px, 11 * px, 13 * px);
 		PC_Renderer.renderInvBox(renderer, ice, 0);
-		ice.setBlockBounds(2 * px, 4 * px, 4 * px, 13 * px, 11 * px, 11 * px);
+		ValueWriting.setBlockBounds(ice, 2 * px, 4 * px, 4 * px, 13 * px, 11 * px, 11 * px);
 		PC_Renderer.renderInvBox(renderer, ice, 0);
-		ice.setBlockBounds(4 * px, 2 * px, 4 * px, 11 * px, 13 * px, 11 * px);
+		ValueWriting.setBlockBounds(ice, 4 * px, 2 * px, 4 * px, 11 * px, 13 * px, 11 * px);
 		PC_Renderer.renderInvBox(renderer, ice, 0);
-		ice.setBlockBounds(0, 0, 0, 1, 1, 1);
+		ValueWriting.setBlockBounds(ice, 0, 0, 0, 1, 1, 1);
 	}
 
 	/** prism redirection vector for side */

@@ -21,8 +21,6 @@ import powercraft.management.PC_Utils.GameInfo;
 import powercraft.management.PC_Utils.Lang;
 import powercraft.management.PC_Utils.ModuleInfo;
 import powercraft.management.PC_VecI;
-import cpw.mods.fml.common.Side;
-import cpw.mods.fml.common.asm.SideOnly;
 
 public class PCli_ItemLaserComposition extends PC_Item
 {
@@ -41,7 +39,6 @@ public class PCli_ItemLaserComposition extends PC_Item
     }
     
     @Override
-	@SideOnly(Side.CLIENT)
 	public boolean requiresMultipleRenderPasses() {
 		return true;
     }

@@ -89,7 +89,7 @@ public class PCma_GuiXPBank implements PC_IGresClient {
 	
 	@Override
 	public void onGuiClosed(PC_IGresGui gui) {
-		xpbank.worldObj.markBlockForUpdate(xpbank.xCoord, xpbank.yCoord, xpbank.zCoord);
+		xpbank.getWorldObj().markBlockForUpdate(xpbank.xCoord, xpbank.yCoord, xpbank.zCoord);
 	}
 
 	@Override

@@ -23,6 +23,7 @@ import powercraft.management.PC_IGresClient;
 import powercraft.management.PC_IGresGui;
 import powercraft.management.PC_PacketHandler;
 import powercraft.management.PC_Utils.Lang;
+import powercraft.management.PC_Utils.ValueWriting;
 
 public class PCco_GuiSpawnerEditor implements PC_IGresClient {
 
@@ -47,7 +48,7 @@ public class PCco_GuiSpawnerEditor implements PC_IGresClient {
 		
 		PC_GresRadioGroup rg = new PC_GresRadioGroup();
 		
-		Map<Class, String> c2s = (Map<Class, String>)EntityList.classToStringMapping;
+		Map<Class, String> c2s = (Map<Class, String>)ValueWriting.getPrivateValue(EntityList.class, EntityList.class, 1);
 		Entry<Class, String>[] se = c2s.entrySet().toArray(new Entry[0]);
 		Arrays.sort(se,  new Comparator<Entry<Class, String>>(){
 

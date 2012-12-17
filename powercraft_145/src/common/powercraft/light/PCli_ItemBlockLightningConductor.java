@@ -3,6 +3,7 @@ package powercraft.light;
 import java.util.List;
 
 import net.minecraft.src.Block;
+import net.minecraft.src.BlockContainer;
 import net.minecraft.src.EntityPlayer;
 import net.minecraft.src.ItemStack;
 import net.minecraft.src.World;
@@ -54,7 +55,9 @@ public class PCli_ItemBlockLightningConductor extends PC_ItemBlock
 
             if (te == null)
             {
-                te = (PC_TileEntity)ValueWriting.setTE(world, x, y + 1, z, block.createTileEntity(world, 0));
+            	if(block instanceof BlockContainer){
+            		te = (PC_TileEntity)ValueWriting.setTE(world, x, y + 1, z, ((BlockContainer)block).createNewTileEntity(world));
+            	}
             }
 
             if (te != null)

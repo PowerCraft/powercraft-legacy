@@ -3,6 +3,8 @@ package powercraft.logic;
 import java.util.List;
 import java.util.Random;
 
+import javax.lang.model.element.VariableElement;
+
 import net.minecraft.src.Block;
 import net.minecraft.src.CreativeTabs;
 import net.minecraft.src.EntityPlayer;
@@ -21,6 +23,7 @@ import powercraft.management.PC_Shining;
 import powercraft.management.PC_Shining.OFF;
 import powercraft.management.PC_Shining.ON;
 import powercraft.management.PC_Utils;
+import powercraft.management.PC_Utils.GameInfo;
 import powercraft.management.PC_Utils.Gres;
 import powercraft.management.PC_Utils.ValueWriting;
 import powercraft.management.PC_VecI;
@@ -48,7 +51,7 @@ public class PClo_BlockPulsar extends PC_Block implements PC_IItemInfo
     }
 
     @Override
-    public TileEntity createNewTileEntity(World world)
+    public TileEntity newTileEntity(World world, int metadata)
     {
         return new PClo_TileEntityPulsar();
     }
@@ -74,8 +77,16 @@ public class PClo_BlockPulsar extends PC_Block implements PC_IItemInfo
     {
         return false;
     }
-
+    
     @Override
+	public void updateTick(World world, int x, int y, int z, Random par5Random) {
+    	PClo_TileEntityPulsar tep = GameInfo.getTE(world, x, y, z);
+    	if(tep.getShould() != tep.isActive()){
+    		ValueWriting.setBlockState(world, x, y, z, tep.getShould());
+    	}
+	}
+
+	@Override
     public boolean onBlockActivated(World world, int i, int j, int k, EntityPlayer player, int par6, float par7, float par8, float par9)
     {
         ItemStack ihold = player.getCurrentEquippedItem();

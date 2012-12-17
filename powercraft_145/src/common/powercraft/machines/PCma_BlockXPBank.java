@@ -17,6 +17,7 @@ import powercraft.management.PC_IItemInfo;
 import powercraft.management.PC_Renderer;
 import powercraft.management.PC_Utils;
 import powercraft.management.PC_Utils.Gres;
+import powercraft.management.PC_Utils.ValueWriting;
 import powercraft.management.PC_VecI;
 
 
@@ -34,8 +35,7 @@ public class PCma_BlockXPBank extends PC_Block implements PC_IItemInfo
     }
 
     @Override
-    public TileEntity createNewTileEntity(World world)
-    {
+    public TileEntity newTileEntity(World world, int metadata) {
         return new PCma_TileEntityXPBank();
     }
 
@@ -120,18 +120,18 @@ public class PCma_BlockXPBank extends PC_Block implements PC_IItemInfo
     public void renderInventoryBlock(Block block, int metadata, int modelID, Object renderer)
     {
         PC_Renderer.renderInvBox(renderer, block, metadata);
-        block.setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 1.0F, 1.0F);
-        Block.obsidian.setBlockBounds(0.0F, 0.3F, 0.0F, 1.0F, 0.8F, 1.0F);
+        ValueWriting.setBlockBounds(block, 0.0F, 0.0F, 0.0F, 1.0F, 1.0F, 1.0F);
+        ValueWriting.setBlockBounds(Block.obsidian, 0.0F, 0.3F, 0.0F, 1.0F, 0.8F, 1.0F);
         PC_Renderer.renderInvBox(renderer, Block.obsidian, 0);
-        Block.obsidian.setBlockBounds(0.0F, 0.0F, 0.0F, 0.2F, 0.3F, 0.2F);
+        ValueWriting.setBlockBounds(Block.obsidian, 0.0F, 0.0F, 0.0F, 0.2F, 0.3F, 0.2F);
         PC_Renderer.renderInvBox(renderer, Block.obsidian, 0);
-        Block.obsidian.setBlockBounds(0.8F, 0.0F, 0.0F, 1.0F, 0.3F, 0.2F);
+        ValueWriting.setBlockBounds(Block.obsidian, 0.8F, 0.0F, 0.0F, 1.0F, 0.3F, 0.2F);
         PC_Renderer.renderInvBox(renderer, Block.obsidian, 0);
-        Block.obsidian.setBlockBounds(0.0F, 0.0F, 0.8F, 0.2F, 0.3F, 1.0F);
+        ValueWriting.setBlockBounds(Block.obsidian, 0.0F, 0.0F, 0.8F, 0.2F, 0.3F, 1.0F);
         PC_Renderer.renderInvBox(renderer, Block.obsidian, 0);
-        Block.obsidian.setBlockBounds(0.8F, 0.0F, 0.8F, 1.0F, 0.3F, 1.0F);
+        ValueWriting.setBlockBounds(Block.obsidian, 0.8F, 0.0F, 0.8F, 1.0F, 0.3F, 1.0F);
         PC_Renderer.renderInvBox(renderer, Block.obsidian, 0);
-        Block.obsidian.setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 1.0F, 1.0F);
+        ValueWriting.setBlockBounds(Block.obsidian, 0.0F, 0.0F, 0.0F, 1.0F, 1.0F, 1.0F);
     }
 
     public void renderWorldBlock(IBlockAccess world, int x, int y, int z, Block block, int modelId, Object renderer)
@@ -140,18 +140,19 @@ public class PCma_BlockXPBank extends PC_Block implements PC_IItemInfo
         int xp = ((PCma_TileEntityXPBank) world.getBlockTileEntity(x, y, z)).getXP();
         setBlockBounds(0.15F, 0.29F - 0.2F * calculateHeightMultiplier(xp), 0.15F, 0.85F, 0.71F + 0.2F * calculateHeightMultiplier(xp), 0.85F);
         PC_Renderer.renderStandardBlock(renderer, block, x, y, z);
-        block.setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 1.0F, 1.0F);
-        Block.obsidian.setBlockBounds(0.0F, 0.3F, 0.0F, 1.0F, 0.7F, 1.0F);
+        ValueWriting.setBlockBounds(block, 0.0F, 0.0F, 0.0F, 1.0F, 1.0F, 1.0F);
+        ValueWriting.setBlockBounds(Block.obsidian, 0.0F, 0.3F, 0.0F, 1.0F, 0.7F, 1.0F);
         PC_Renderer.renderStandardBlock(renderer, Block.obsidian, x, y, z);
-        Block.obsidian.setBlockBounds(0.0F, 0.0F, 0.0F, 0.15F, 0.3F, 0.15F);
+        ValueWriting.setBlockBounds(Block.obsidian, 0.0F, 0.0F, 0.0F, 0.15F, 0.3F, 0.15F);
         PC_Renderer.renderStandardBlock(renderer, Block.obsidian, x, y, z);
-        Block.obsidian.setBlockBounds(0.85F, 0.0F, 0.0F, 1.0F, 0.3F, 0.15F);
+        ValueWriting.setBlockBounds(Block.obsidian, 0.85F, 0.0F, 0.0F, 1.0F, 0.3F, 0.15F);
         PC_Renderer.renderStandardBlock(renderer, Block.obsidian, x, y, z);
-        Block.obsidian.setBlockBounds(0.0F, 0.0F, 0.85F, 0.15F, 0.3F, 1.0F);
+        ValueWriting.setBlockBounds(Block.obsidian, 0.0F, 0.0F, 0.85F, 0.15F, 0.3F, 1.0F);
         PC_Renderer.renderStandardBlock(renderer, Block.obsidian, x, y, z);
-        Block.obsidian.setBlockBounds(0.85F, 0.0F, 0.85F, 1.0F, 0.3F, 1.0F);
+        ValueWriting.setBlockBounds(Block.obsidian, 0.85F, 0.0F, 0.85F, 1.0F, 0.3F, 1.0F);
         PC_Renderer.renderStandardBlock(renderer, Block.obsidian, x, y, z);
-        Block.obsidian.setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 1.0F, 1.0F);
+        ValueWriting.setBlockBounds(Block.obsidian, 0.0F, 0.0F, 0.0F, 1.0F, 1.0F, 1.0F);
+        PC_Renderer.resetTerrain(true);
     }
 
     @Override
@@ -171,7 +172,7 @@ public class PCma_BlockXPBank extends PC_Block implements PC_IItemInfo
 			list.add(PC_Utils.NO_BUILD);
 			return list;
 		}case PC_Utils.MSG_BLOCK_FLAGS:{
-			List<String> list = (List<String>)obj[1];
+			List<String> list = (List<String>)obj[0];
 	   		list.add(PC_Utils.NO_HARVEST);
 	   		list.add(PC_Utils.NO_PICKUP);
 	   		list.add(PC_Utils.HARVEST_STOP);

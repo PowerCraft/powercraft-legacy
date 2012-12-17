@@ -15,7 +15,6 @@ import net.minecraft.src.World;
 
 public abstract class PC_TileEntity extends TileEntity
 {
-    private boolean isInvalidLocked = false;
 
     @Override
     public Packet getDescriptionPacket()
@@ -66,32 +65,4 @@ public abstract class PC_TileEntity extends TileEntity
     {
     }
 
-    public void lockInvalid(boolean validateLocked)
-    {
-        isInvalidLocked = validateLocked;
-    }
-
-    @Override
-    public final void invalidate()
-    {
-        if (!isInvalidLocked)
-        {
-            super.invalidate();
-            setValidate(true);
-        }
-    }
-
-    @Override
-    public final void validate()
-    {
-        if (!isInvalidLocked)
-        {
-            super.validate();
-            setValidate(false);
-        }
-    }
-
-    public void setValidate(boolean invalid)
-    {
-    }
 }
