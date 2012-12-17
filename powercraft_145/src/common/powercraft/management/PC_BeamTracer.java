@@ -282,7 +282,7 @@ public class PC_BeamTracer {
 				return;
 			}
 
-			if (color.isVisible() && world.isRemote){
+			if (world.isRemote){
 				
 				addLaser(world, cnt, move, strength, color);
 				

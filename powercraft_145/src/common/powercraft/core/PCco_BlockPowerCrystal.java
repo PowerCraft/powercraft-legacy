@@ -8,6 +8,8 @@ import net.minecraft.src.EntityPlayer;
 import net.minecraft.src.IBlockAccess;
 import net.minecraft.src.Material;
 import net.minecraft.src.World;
+import powercraft.management.PC_BeamTracer;
+import powercraft.management.PC_BeamTracer.result;
 import powercraft.management.PC_Block;
 import powercraft.management.PC_Color;
 import powercraft.management.PC_MathHelper;
@@ -203,13 +205,6 @@ public class PCco_BlockPowerCrystal extends PC_Block
         PC_Renderer.tessellatorStartDrawingQuads();
     }
 
-	/*@Override
-	public result onHitByBeamTracer(PC_BeamTracer beamTracer, PC_VecI cnt, PC_VecI move, PC_Color color, float strength, int distanceToMove) {
-		color.setTo(colorMultiplier(beamTracer.getWorld(), cnt.x, cnt.y, cnt.z));
-		color.setMeta(PC_Utils.getMD(beamTracer.getWorld(), cnt.x, cnt.y, cnt.z));
-		return result.CONTINUE;
-	}*/
-
 	@Override
 	public Object msg(World world, PC_VecI pos, int msg, Object... obj) {
 		switch(msg){
@@ -237,6 +232,10 @@ public class PCco_BlockPowerCrystal extends PC_Block
 					((Random)obj[0]).nextInt(16));
 		case PC_Utils.MSG_SPAWN_POINT_METADATA:
 			return ((Random)obj[0]).nextInt(8);
+		case PC_Utils.MSG_ON_HIT_BY_BEAM_TRACER:
+			PC_VecI cnt = (PC_VecI)obj[1];
+			((PC_Color)obj[3]).setTo(colorMultiplier(((PC_BeamTracer)obj[0]).getWorld(), cnt.x, cnt.y, cnt.z));
+			return result.CONTINUE;
 		default:
 			return null;
 		}

@@ -125,11 +125,6 @@ public class PC_Color extends PC_VecF {
 		return new PC_Color().setTo(hex);
 	}
 
-	public boolean isVisible() {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
 	public static Integer getHexColorForName(String text) {
 		if (namedColors.containsKey(text.toLowerCase()))
         {
