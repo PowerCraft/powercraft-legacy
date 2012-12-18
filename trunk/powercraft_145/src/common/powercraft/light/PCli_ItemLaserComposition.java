@@ -6,6 +6,7 @@ import net.minecraft.src.Block;
 import net.minecraft.src.CreativeTabs;
 import net.minecraft.src.Entity;
 import net.minecraft.src.EntityItem;
+import net.minecraft.src.EntityLiving;
 import net.minecraft.src.EntityPlayer;
 import net.minecraft.src.InventoryCrafting;
 import net.minecraft.src.ItemStack;
@@ -14,12 +15,14 @@ import net.minecraft.src.TileEntity;
 import net.minecraft.src.World;
 import powercraft.management.PC_BeamTracer;
 import powercraft.management.PC_Color;
+import powercraft.management.PC_GlobalVariables;
 import powercraft.management.PC_Item;
 import powercraft.management.PC_Struct3;
 import powercraft.management.PC_Utils;
 import powercraft.management.PC_Utils.GameInfo;
 import powercraft.management.PC_Utils.Lang;
 import powercraft.management.PC_Utils.ModuleInfo;
+import powercraft.management.PC_Utils.ValueWriting;
 import powercraft.management.PC_VecI;
 
 public class PCli_ItemLaserComposition extends PC_Item
@@ -223,10 +226,13 @@ public class PCli_ItemLaserComposition extends PC_Item
         if(isBurning)
         	levelKill *= 2;
         if(levelKill>0)
-        	if(entity instanceof EntityItem && levelKill>2){
+        	if(entity instanceof EntityItem && levelKill<3){
         		entity.setDead();
-        	}else if(!(entity instanceof EntityItem)){
+        	}else if(entity instanceof EntityLiving){
+        		ValueWriting.setPrivateValue(EntityLiving.class, entity, PC_GlobalVariables.varRecentlyHit, 60);
         		entity.attackEntityFrom(PCli_DamageSourceLaser.getDamageSource(), levelKill);
+        	}else{
+        		return false;
         	}
 		return levelKill<=4;
 	}
