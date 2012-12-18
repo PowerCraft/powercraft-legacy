@@ -13,14 +13,13 @@ import java.lang.annotation.Annotation;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map.Entry;
 import java.util.Random;
-
-import cpw.mods.fml.common.asm.transformers.MarkerTransformer;
 
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.src.AxisAlignedBB;
@@ -33,6 +32,7 @@ import net.minecraft.src.EntityList;
 import net.minecraft.src.EntityLiving;
 import net.minecraft.src.EntityPlayer;
 import net.minecraft.src.EntityPlayerMP;
+import net.minecraft.src.EntityXPOrb;
 import net.minecraft.src.EnumGameType;
 import net.minecraft.src.FurnaceRecipes;
 import net.minecraft.src.IBlockAccess;
@@ -538,7 +538,7 @@ public class PC_Utils implements PC_IPacketHandler
     
     public static class ValueWriting{
 
-    	public static int getFieldIDByName(Class c, String name){
+		public static int getFieldIDByName(Class c, String name){
     		Field f[] = c.getDeclaredFields();
     		for(int i=0; i<f.length; i++){
     			if(f[i].getName().equals(name))
@@ -546,7 +546,7 @@ public class PC_Utils implements PC_IPacketHandler
     		}
     		return -1;
     	}
-    	
+		
     	public static void setBlockBounds(Block block, double x, double y, double z, double width, double height, double depht){
     		block.setBlockBounds((float)x, (float)y, (float)z, (float)width, (float)height, (float)depht);
     	}
@@ -1580,6 +1580,19 @@ public class PC_Utils implements PC_IPacketHandler
 			}
 		
 			return false;
+		}
+
+		public static void dropXP(World world, double x, double y, double z, int xp) {
+			while (xp > 0)
+            {
+                int drop = EntityXPOrb.getXPSplit(xp);
+                xp -= drop;
+                world.spawnEntityInWorld(new EntityXPOrb(world, x, y, z, drop));
+            }
+		}
+		
+		public static void dropXP(World world, PC_VecF pos, int xp) {
+			dropXP(world, pos, xp);
 		}
 	   
    }
