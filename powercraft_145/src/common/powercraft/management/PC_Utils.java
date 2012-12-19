@@ -538,6 +538,41 @@ public class PC_Utils implements PC_IPacketHandler
     
     public static class ValueWriting{
 
+    	public static Object writeItemStack(ItemStack itemstack) {
+    		if(itemstack==null)
+    			return new Object[0];
+    		Object o[] = new Object[4];
+    		o[0] = itemstack.getItem().shiftedIndex;
+    		o[1] = itemstack.stackSize;
+    		o[2] = itemstack.getItemDamage();
+    		if(itemstack.stackTagCompound!=null){
+    			try {
+    				o[3] = CompressedStreamTools.compress(itemstack.stackTagCompound);
+    			} catch (IOException e) {
+    				e.printStackTrace();
+    			}
+    		}
+    		return o;
+    	}
+    	
+    	public static ItemStack readItemStack(Object[] o) {
+    		if(o.length!=4)
+    			return null;
+    		int shiftedIndex = (Integer)o[0];
+    		int stackSize = (Integer)o[1];
+    		int meta = (Integer)o[2];
+    		byte[] nbt = (byte[])o[3];
+    		ItemStack itemstack = new ItemStack(shiftedIndex, stackSize, meta);
+    		if(nbt!=null){
+    			try {
+    				itemstack.stackTagCompound = CompressedStreamTools.decompress(nbt);
+    			} catch (IOException e) {
+    				e.printStackTrace();
+    			}
+    		}
+    		return itemstack;
+    	}
+    	
 		public static int getFieldIDByName(Class c, String name){
     		Field f[] = c.getDeclaredFields();
     		for(int i=0; i<f.length; i++){
@@ -2115,40 +2150,5 @@ public class PC_Utils implements PC_IPacketHandler
     protected void iSpawnParticle(String name, Object[] o)
     {
     }
-
-	public static Object writeItemStack(ItemStack itemstack) {
-		if(itemstack==null)
-			return new Object[0];
-		Object o[] = new Object[4];
-		o[0] = itemstack.getItem().shiftedIndex;
-		o[1] = itemstack.stackSize;
-		o[2] = itemstack.getItemDamage();
-		if(itemstack.stackTagCompound!=null){
-			try {
-				o[3] = CompressedStreamTools.compress(itemstack.stackTagCompound);
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-		}
-		return o;
-	}
-	
-	public static ItemStack readItemStack(Object[] o) {
-		if(o.length!=4)
-			return null;
-		int shiftedIndex = (Integer)o[0];
-		int stackSize = (Integer)o[1];
-		int meta = (Integer)o[2];
-		byte[] nbt = (byte[])o[3];
-		ItemStack itemstack = new ItemStack(shiftedIndex, stackSize, meta);
-		if(nbt!=null){
-			try {
-				itemstack.stackTagCompound = CompressedStreamTools.decompress(nbt);
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-		}
-		return itemstack;
-	}
 	
 }
