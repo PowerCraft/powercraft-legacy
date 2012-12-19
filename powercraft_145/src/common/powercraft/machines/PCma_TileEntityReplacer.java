@@ -82,7 +82,7 @@ public class PCma_TileEntityReplacer extends PC_TileEntity implements IInventory
             double d2 = zCoord + rand.nextFloat();
             int a = rand.nextInt(3);
             int b = rand.nextInt(3);
-            ValueWriting.spawnParticle("PC_EntityLaserParticleFX", worldObj, new PC_VecF((float)d, (float)d1, (float)d2), aidcolor, new PC_VecI(), 0);
+            ValueWriting.spawnParticle("PC_EntityLaserParticleFX", worldObj, new PC_VecF((float)d, (float)d1, (float)d2), aidcolor, new PC_VecF(), 0);
 
             for (int q = 0; q < 8; q++)
             {
@@ -130,7 +130,7 @@ public class PCma_TileEntityReplacer extends PC_TileEntity implements IInventory
                         break;
                 }
 
-                ValueWriting.spawnParticle("PC_EntityLaserParticleFX", worldObj, new PC_VecF((float)d, (float)d1, (float)d2), aidcolor, new PC_VecI(), 0);
+                ValueWriting.spawnParticle("PC_EntityLaserParticleFX", worldObj, new PC_VecF((float)d, (float)d1, (float)d2), aidcolor, new PC_VecF(), 0);
             }
         }
 
