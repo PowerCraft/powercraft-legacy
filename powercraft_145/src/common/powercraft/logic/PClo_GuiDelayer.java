@@ -30,7 +30,7 @@ public class PClo_GuiDelayer implements PC_IGresClient {
 	
 	@Override
 	public void initGui(PC_IGresGui gui) {
-		PC_GresWindow w = new PC_GresWindow(Lang.tr("tile.PClo_BlockDelayer.name"));
+		PC_GresWindow w = new PC_GresWindow(Lang.tr("tile.PClo_BlockDelayer.delayer"+delayer.getType()+".name"));
 		
 		w.setAlignH(PC_GresAlign.STRETCH);
 		PC_GresWidget hg, vg;

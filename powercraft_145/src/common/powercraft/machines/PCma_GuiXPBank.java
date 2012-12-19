@@ -103,7 +103,9 @@ public class PCma_GuiXPBank implements PC_IGresClient {
 
 			case 10: //withdraw one level
 
-				xpbank.givePlayerXP(player, 1);
+				//xpbank.givePlayerXP(player, 1);
+				
+				xpbank.givePlayerLevel(player, 1);
 				
 				//withdrawOneLevel();
 				
@@ -122,7 +124,9 @@ public class PCma_GuiXPBank implements PC_IGresClient {
 			case 20: //deposit one level
 				
 				//depositOneLevel();
-				xpbank.givePlayerXP(player, -1);
+				//xpbank.givePlayerXP(player, -1);
+				
+				xpbank.givePlayerLevel(player, -1);
 				
 				PC_ClientUtils.mc().theWorld.playSoundAtEntity(player, "random.orb", 0.3F, 0.5F * ((rand.nextFloat() - rand.nextFloat()) * 0.7F + 1.8F));
 				break;

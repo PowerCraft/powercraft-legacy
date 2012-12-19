@@ -10,6 +10,7 @@ import powercraft.management.PC_GlobalVariables;
 import powercraft.management.PC_IModule;
 import powercraft.management.PC_Item;
 import powercraft.management.PC_ItemStack;
+import powercraft.management.PC_PacketHandler;
 import powercraft.management.PC_Property;
 import powercraft.management.PC_ShapedRecipes;
 import powercraft.management.PC_ShapelessRecipes;
@@ -39,7 +40,10 @@ public class PCco_App implements PC_IModule {
 	public void preInit() {}
 
 	@Override
-	public void init() {}
+	public void init() {
+		PC_PacketHandler.registerPackethandler("DeleteAllPlayerStacks", new PCco_DeleteAllPlayerStacks());
+		PC_PacketHandler.registerPackethandler("MobSpawner", new PCco_MobSpawnerSetter());
+	}
 
 	@Override
 	public void postInit() {}

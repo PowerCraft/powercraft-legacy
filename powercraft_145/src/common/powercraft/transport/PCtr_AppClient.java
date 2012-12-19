@@ -43,7 +43,7 @@ public class PCtr_AppClient extends PCtr_App implements PC_IClientModule {
 	
 	@Override
 	public List<PC_Struct2<String, Class>> registerGuis(List<PC_Struct2<String, Class>> guis) {
-		guis.add(new PC_Struct2<String, Class>("SeparationBelt", PCtr_GuiSeparationBelt.class));
+		guis.add(new PC_Struct2<String, Class>("SeperationBelt", PCtr_GuiSeparationBelt.class));
 		guis.add(new PC_Struct2<String, Class>("EjectionBelt", PCtr_GuiEjectionBelt.class));
 		return guis;
 	}

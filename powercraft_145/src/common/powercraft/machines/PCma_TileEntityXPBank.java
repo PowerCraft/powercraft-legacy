@@ -122,20 +122,14 @@ public class PCma_TileEntityXPBank extends PC_TileEntity
             int n = num;
             player.experienceTotal += num;
 
-            while (n > 0)
-            {
-                if (player.experience >= 1.0F)
-                {
-                    player.experienceLevel++;
-                    player.experience -= 1.0F;
-                    continue;
-                }
+            while (n > 0){
 
                 int needToFinish = (int)(player.xpBarCap() - player.xpBarCap() * player.experience);
 
                 if (n >= needToFinish)
                 {
-                    player.experience = 1.0F;
+                    player.experience = 0.0f;
+                    player.experienceLevel++;
                     n -= needToFinish;
                 }
                 else
@@ -205,6 +199,70 @@ public class PCma_TileEntityXPBank extends PC_TileEntity
         notifyChange();
     }
 
+    public void givePlayerLevel(EntityPlayer player, int num) {
+    	if (worldObj.isRemote)
+        {
+    		 PC_PacketHandler.setTileEntity(this, "givePlayerLevel", player.username, num);
+        }
+    	if (num > 0)
+        {
+            while (num > 0)
+            {
+            	num--;
+
+                int needToFinish = (int)(player.xpBarCap() - player.xpBarCap() * player.experience);
+                
+                if (xp >= needToFinish)
+                {
+                	player.experience = 0.0f;
+                	player.experienceLevel++;
+                	player.experienceTotal += needToFinish;
+                    xp -= needToFinish;
+                }
+                else
+                {
+                    player.experience += (float)xp / (float)player.xpBarCap();
+                    player.experienceTotal += xp;
+                    xp = 0;
+                }
+            }
+            
+        }
+        else
+        {
+
+            num = -num;
+            if(player.experience<=0.0f && player.experienceLevel>0){
+            	player.experience = 1.0f;
+            	player.experienceLevel--;
+            }
+            while (num > 0)
+            {
+            	num--;
+                int needToFinish = (int)(player.xpBarCap() * player.experience);
+
+                if (player.experienceLevel>0)
+                {
+                    player.experience = 1.0f;
+                    player.experienceLevel--;
+                    player.experienceTotal -= needToFinish;
+                    xp += needToFinish;
+                }
+                else
+                {
+                    player.experience = 0.0f;
+                    player.experienceLevel = 0;
+                    player.experienceTotal = 0;
+                    xp += needToFinish;
+                }
+            }
+            if(player.experience>=1.0f){
+            	player.experience = 0.0f;
+            	player.experienceLevel++;
+            }
+        }
+	}
+    
     private void notifyChange()
     {
         worldObj.notifyBlocksOfNeighborChange(xCoord, yCoord, zCoord, getBlockType().blockID);
@@ -241,6 +299,15 @@ public class PCma_TileEntityXPBank extends PC_TileEntity
                 {
                     p += 2;
                 }
+            }else if(var.equals("givePlayerLevel")){
+            	if (!worldObj.isRemote)
+                {
+            		givePlayerLevel(GameInfo.mcs().getConfigurationManager().getPlayerForUsername((String)o[p++]), (Integer)o[p++]);
+                }
+                else
+                {
+                    p += 2;
+                }
             }
         }
     }
@@ -253,4 +320,5 @@ public class PCma_TileEntityXPBank extends PC_TileEntity
                     "xp", xp
                 };
     }
+
 }

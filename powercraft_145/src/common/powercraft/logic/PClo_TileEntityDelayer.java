@@ -4,6 +4,7 @@ import net.minecraft.src.EntityPlayer;
 import net.minecraft.src.ItemStack;
 import net.minecraft.src.NBTTagCompound;
 import net.minecraft.src.World;
+import powercraft.management.PC_PacketHandler;
 import powercraft.management.PC_TileEntity;
 import powercraft.management.PC_Utils;
 import powercraft.management.PC_Utils.GameInfo;
@@ -45,7 +46,7 @@ public class PClo_TileEntityDelayer extends PC_TileEntity
     {
         stateBuffer = new boolean[delay];
         ticks = delay;
-        //PC_PacketHandler.setTileEntity(this, "stateBuffer", stateBuffer);
+        PC_PacketHandler.setTileEntity(this, "stateBuffer", stateBuffer);
     }
 
     public void resetRemainingTicks(){
@@ -136,6 +137,10 @@ public class PClo_TileEntityDelayer extends PC_TileEntity
             else if (var.equals("remainingTicks"))
             {
             	remainingTicks = (Integer)o[p++];
+            }
+            else if (var.equals("ticks"))
+            {
+            	ticks = (Integer)o[p++];
             }
         }
 
