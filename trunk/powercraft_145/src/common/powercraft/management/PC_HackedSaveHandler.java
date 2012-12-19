@@ -35,6 +35,10 @@ public class PC_HackedSaveHandler extends AnvilSaveHandler {
 	}
 
 	public void loadBlockID(){
+		if(PC_GlobalVariables.oldConsts!=null){
+			PC_GlobalVariables.consts = PC_GlobalVariables.oldConsts;
+			PC_GlobalVariables.oldConsts = null;
+		}
 		if(!SaveHandler.loadPCObjectsIDs(getSaveDirectory())){
 			saveBlockID();
 		}else{

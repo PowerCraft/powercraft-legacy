@@ -16,8 +16,14 @@ public class PC_ShapedRecipes implements IRecipe, PC_IRecipeInputInfo {
 	private int recipeHeight;
 	private PC_ItemStack[] recipeItems;
 	private PC_ItemStack recipeOutput;
-
+	private String op;
+	
 	public PC_ShapedRecipes(PC_ItemStack itemStack, Object... recipe) {
+		this(null, itemStack, recipe);
+	}
+	
+	public PC_ShapedRecipes(String op, PC_ItemStack itemStack, Object... recipe) {
+		this.op = op;
 		String recs = "";
 		int i = 0;
 		recipeOutput = itemStack;
@@ -63,11 +69,26 @@ public class PC_ShapedRecipes implements IRecipe, PC_IRecipeInputInfo {
 		}
 	}
 
+	private boolean canBeCrafted(){
+		if(op==null)
+			return true;
+		if(!PC_GlobalVariables.consts.containsKey(op))
+			return true;
+		Object o = PC_GlobalVariables.consts.get(op);
+		if(o instanceof Boolean)
+			return (Boolean)o;
+		return true;
+	}
+	
 	public ItemStack getRecipeOutput() {
+		if(!canBeCrafted())
+			return null;
 		return recipeOutput.toItemStack();
 	}
 
 	public boolean matches(InventoryCrafting inventoryCrafting, World world) {
+		if(!canBeCrafted())
+			return false;
 		for (int j = 0; j <= 3 - this.recipeWidth; j++) {
 			for (int i = 0; i <= 3 - this.recipeHeight; i++) {
 				if (this.checkMatch(inventoryCrafting, j, i, true)) {
@@ -121,6 +142,8 @@ public class PC_ShapedRecipes implements IRecipe, PC_IRecipeInputInfo {
 	}
 
 	public ItemStack getCraftingResult(InventoryCrafting inventoryCrafting) {
+		if(!canBeCrafted())
+			return null;
 		ItemStack itemStack = getRecipeOutput().copy();
 		if (itemStack.getItem() instanceof PC_Item) {
 			((PC_Item) itemStack.getItem()).doCrafting(itemStack,
@@ -130,11 +153,15 @@ public class PC_ShapedRecipes implements IRecipe, PC_IRecipeInputInfo {
 	}
 
 	public int getRecipeSize() {
+		if(!canBeCrafted())
+			return 0;
 		return this.recipeWidth * this.recipeHeight;
 	}
 
 	@Override
 	public List<ItemStack> getExpectedInput(List<ItemStack> itemStacks) {
+		if(!canBeCrafted())
+			return null;
 		for (PC_ItemStack itemStack : recipeItems) {
 			if (itemStack != null) {
 				itemStacks.add(itemStack.toItemStack());

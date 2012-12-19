@@ -36,6 +36,7 @@ public class PC_ConnectionHandler implements IConnectionHandler {
             sendData = new ObjectOutputStream(data);
             sendData.writeInt(PC_PacketHandler.PACKETIDS);
             sendData.writeObject(CompressedStreamTools.compress(SaveHandler.makeIDTagCompound()));
+            sendData.writeObject(PC_GlobalVariables.consts);
             sendData.writeInt(PC_PacketHandler.PACKETIDS);
         }
         catch (IOException e)

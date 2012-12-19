@@ -2,12 +2,12 @@ package powercraft.management;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
-
-import powercraft.management.PC_Utils.Gres;
-import powercraft.management.PC_Utils.SaveHandler;
+import java.util.HashMap;
 
 import net.minecraft.src.CompressedStreamTools;
 import net.minecraft.src.EntityPlayer;
+import powercraft.management.PC_Utils.Gres;
+import powercraft.management.PC_Utils.SaveHandler;
 
 public class PC_ClientPacketHandler extends PC_PacketHandler {
 
@@ -28,9 +28,10 @@ public class PC_ClientPacketHandler extends PC_PacketHandler {
 
 	@Override
 	protected void handleIncomingIDPacket(ObjectInputStream input, EntityPlayer player) throws ClassNotFoundException, IOException{
-		System.out.println("handleIncomingIDPacket");
 		byte[] b = (byte[])input.readObject();
 		SaveHandler.loadIDFromTagCompound(CompressedStreamTools.decompress(b));
+		PC_GlobalVariables.oldConsts = PC_GlobalVariables.consts;
+		PC_GlobalVariables.consts.putAll((HashMap<String, Object>)input.readObject());
 	}
 	
 }
