@@ -5,12 +5,14 @@ import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.List;
 
+import powercraft.management.PC_Utils.Communication;
 import powercraft.management.PC_Utils.GameInfo;
 import powercraft.management.PC_Utils.Gres;
 import powercraft.management.PC_Utils.Lang;
 import powercraft.management.PC_Utils.ModuleInfo;
 import powercraft.management.PC_Utils.ModuleLoader;
 import powercraft.management.PC_Utils.SaveHandler;
+import powercraft.management.PC_Utils.ValueWriting;
 
 import net.minecraft.src.Block;
 import net.minecraft.src.IRecipe;
@@ -71,6 +73,7 @@ public class mod_PowerCraft {
 		for(PC_IModule module:modules){
 			module.initProperties(SaveHandler.getConfig(module));
 		}
+		ValueWriting.setReverseKey(PC_GlobalVariables.config);
 		PC_Logger.exitSection();
 		if(PC_Utils.GameInfo.isClient()){
 		PC_Logger.enterSection("Module Language Init");
