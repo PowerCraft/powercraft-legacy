@@ -329,8 +329,6 @@ public class PClo_BlockGate extends PC_Block
 		case PC_Utils.MSG_LOAD_FROM_CONFIG:
 			on.setLightValue(((PC_Property)obj[0]).getInt("brightness", 15) * 0.0625F);
 			break;
-		case PC_Utils.MSG_DEFAULT_NAME:
-			return "Light";
 		case PC_Utils.MSG_BLOCK_FLAGS:{
 			List<String> list = (List<String>)obj[0];
 			list.add(PC_Utils.NO_HARVEST);

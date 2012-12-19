@@ -14,7 +14,7 @@ import powercraft.management.PC_Utils.ValueWriting;
 public class PClo_TileEntitySpecial extends PC_TileEntity implements IInventory, PC_ISpecialAccessInventory
 {
     private ItemStack inv[] = new ItemStack[1];
-    private int type = -1;
+    private int type = 0;
 
     public void create(ItemStack stack, EntityPlayer player, World world, int x, int y, int z, int side, float hitX, float hitY, float hitZ)
     {
@@ -123,14 +123,7 @@ public class PClo_TileEntitySpecial extends PC_TileEntity implements IInventory,
 
             if (var.equals("type"))
             {
-                if (type == -1)
-                {
-                    type = (Integer)o[p++];
-                }
-                else
-                {
-                    p++;
-                }
+                type = (Integer)o[p++];
             }
         }
 
