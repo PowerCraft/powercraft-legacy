@@ -30,7 +30,7 @@ public class PC_ClientPacketHandler extends PC_PacketHandler {
 	protected void handleIncomingIDPacket(ObjectInputStream input, EntityPlayer player) throws ClassNotFoundException, IOException{
 		byte[] b = (byte[])input.readObject();
 		SaveHandler.loadIDFromTagCompound(CompressedStreamTools.decompress(b));
-		PC_GlobalVariables.oldConsts = PC_GlobalVariables.consts;
+		PC_GlobalVariables.oldConsts = (HashMap<String, Object>) PC_GlobalVariables.consts.clone();
 		PC_GlobalVariables.consts.putAll((HashMap<String, Object>)input.readObject());
 	}
 	
