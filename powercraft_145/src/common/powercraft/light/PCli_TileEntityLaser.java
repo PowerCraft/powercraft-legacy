@@ -147,6 +147,7 @@ public class PCli_TileEntityLaser extends PC_TileEntity implements PC_IBeamHandl
 	public void setItemStack(ItemStack itemstack) {
 		this.itemstack = itemstack;
 		laser = null;
+		PC_PacketHandler.setTileEntity(this, "itemstack", PC_Utils.writeItemStack(itemstack));
 	}
 
 	@Override
@@ -170,6 +171,8 @@ public class PCli_TileEntityLaser extends PC_TileEntity implements PC_IBeamHandl
             	active = (Boolean)o[p++];
             }else if(var.equals("powered")){
             	powered = (Boolean)o[p++];
+            }else if(var.equals("itemstack")){
+            	itemstack = PC_Utils.readItemStack((Object[])o[p++]);
             }
    
         }
@@ -185,7 +188,8 @@ public class PCli_TileEntityLaser extends PC_TileEntity implements PC_IBeamHandl
 				"nbt", CompressedStreamTools.compress(nbt),
 				"isKiller", isKiller,
 				"on", active,
-				"powered", powered
+				"powered", powered,
+				"itemstack", PC_Utils.writeItemStack(itemstack)
 			};
 		} catch (IOException e) {
 			e.printStackTrace();

@@ -8,6 +8,7 @@ import net.minecraft.src.CreativeTabs;
 import net.minecraft.src.EntityLiving;
 import net.minecraft.src.EntityPlayer;
 import net.minecraft.src.IBlockAccess;
+import net.minecraft.src.Item;
 import net.minecraft.src.ItemStack;
 import net.minecraft.src.Material;
 import net.minecraft.src.TileEntity;
@@ -66,14 +67,15 @@ public class PCli_BlockLaser extends PC_Block implements PC_IItemInfo
     public boolean onBlockActivated(World world, int i, int j, int k, EntityPlayer entityplayer, int par6, float par7, float par8, float par9)
     {
         PCli_TileEntityLaser te = GameInfo.getTE(world, i, j, k, blockID);
-
-        if (te != null && te.getItemStack()!=null)
-        {
-        	if (!GameInfo.isCreative(entityplayer))
-            {
-        		ValueWriting.dropItemStack(world, te.getItemStack(), new PC_VecI(i, j, k));
-            }
-            te.setItemStack(null);
+        
+        if (te != null && te.getItemStack()!=null){
+        	ItemStack ihold = entityplayer.getCurrentEquippedItem();
+        	if (ihold == null || ihold.getItem().shiftedIndex == Item.stick.shiftedIndex) {
+        		if(!GameInfo.isCreative(entityplayer)){
+        			ValueWriting.dropItemStack(world, te.getItemStack(), new PC_VecI(i, j, k));
+	        	}
+        		te.setItemStack(null);
+		    }
         }
         return false;
     }
