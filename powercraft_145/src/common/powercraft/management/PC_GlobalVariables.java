@@ -7,6 +7,7 @@ import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import net.minecraft.src.TileEntity;
@@ -22,6 +23,8 @@ public class PC_GlobalVariables {
 	public static int itemStartIndex = 17000;
 	public static int varRecentlyHit = 46;
 	public static TileEntity tileEntity;
+	public static HashMap<String, Object> consts = new HashMap<String, Object>();
+	public static HashMap<String, Object> oldConsts = null;
 	
 	public static PC_Property config;
 	
