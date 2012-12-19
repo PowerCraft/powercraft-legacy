@@ -150,7 +150,7 @@ public class PC_PacketHandler implements IPacketHandler
     public static void sendTileEntity(TileEntity tileEntity)
     {
     	if(tileEntity != null){
-    		World world = tileEntity.getWorldObj();
+    		World world = tileEntity.worldObj;
     		if(world!=null){
 	    		int dimension = world.getWorldInfo().getDimension();
 	    		PacketDispatcher.sendPacketToAllInDimension(tileEntity.getDescriptionPacket(), dimension);
