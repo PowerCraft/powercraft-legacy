@@ -44,7 +44,7 @@ public class PCtr_GuiEjectionBelt implements PC_IGresClient {
 	
 	@Override
 	public void initGui(PC_IGresGui gui) {
-		PC_GresWindow w = new PC_GresWindow(Lang.tr("tile.PCEjectionBelt.name"));
+		PC_GresWindow w = new PC_GresWindow(Lang.tr("tile.PCtr_BlockBeltEjector.name"));
 		w.setAlignH(PC_GresAlign.STRETCH);
 		w.gapUnderTitle = 13;
 

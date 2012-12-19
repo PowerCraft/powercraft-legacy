@@ -134,7 +134,7 @@ public class PCtr_ItemBlockConveyor extends PC_ItemBlock
 			PC_Block b = (PC_Block)Block.blocksList[getBlockID()];
 			List<PC_Struct3<String, String, String[]>> names = (List<PC_Struct3<String, String, String[]>>)obj[0];
 			names.add(new PC_Struct3<String, String, String[]>(b.getBlockName(), (String)b.msg(PC_Utils.MSG_DEFAULT_NAME), null));
-            return names;
+			return names;
 		}
 		return null;
 	}

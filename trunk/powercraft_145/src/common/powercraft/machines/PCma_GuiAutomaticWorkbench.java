@@ -27,7 +27,7 @@ public class PCma_GuiAutomaticWorkbench extends PCma_ContainerAutomaticWorkbench
 
 	@Override
 	public void initGui(PC_IGresGui gui) {
-		PC_GresWindow w = new PC_GresWindow(50, 50, Lang.tr("tile.PCmaAutoWorkbench.name"));
+		PC_GresWindow w = new PC_GresWindow(50, 50, Lang.tr("tile.PCma_BlockAutomaticWorkbench.name"));
 
 		PC_GresWidget hg = new PC_GresLayoutH();
 		PC_GresInventory inv = new PC_GresInventory(3, 3);
