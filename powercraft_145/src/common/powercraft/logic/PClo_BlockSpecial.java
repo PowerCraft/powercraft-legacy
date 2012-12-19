@@ -45,7 +45,7 @@ public class PClo_BlockSpecial extends PC_Block
         setResistance(30.0F);
         setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 0.1875F, 1.0F);
 
-        if (!on)
+        if (on)
         {
             setCreativeTab(CreativeTabs.tabRedstone);
         }
@@ -397,8 +397,6 @@ public class PClo_BlockSpecial extends PC_Block
 		case PC_Utils.MSG_LOAD_FROM_CONFIG:
 			on.setLightValue(((PC_Property)obj[0]).getInt("brightness", 15) * 0.0625F);
 			break;
-		case PC_Utils.MSG_DEFAULT_NAME:
-			return "Light";
 		case PC_Utils.MSG_BLOCK_FLAGS:{
 			List<String> list = (List<String>)obj[0];
 			list.add(PC_Utils.NO_HARVEST);

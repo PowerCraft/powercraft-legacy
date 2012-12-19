@@ -10,9 +10,9 @@ import powercraft.management.PC_Utils.ValueWriting;
 
 public class PClo_TileEntityRepeater extends PC_TileEntity
 {
-    private int type = -1;
+    private int type = 0;
     private int state = 0;
-    private int inp = -1;
+    private int inp = 0;
 
     public void create(ItemStack stack, EntityPlayer player, World world, int x, int y, int z, int side, float hitX, float hitY, float hitZ)
     {
@@ -81,14 +81,7 @@ public class PClo_TileEntityRepeater extends PC_TileEntity
 
             if (var.equals("type"))
             {
-                if (type == -1)
-                {
-                    type = (Integer)o[p++];
-                }
-                else
-                {
-                    p++;
-                }
+            	type = (Integer)o[p++];
             }
             else if (var.equals("state"))
             {

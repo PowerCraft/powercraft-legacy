@@ -11,7 +11,7 @@ import powercraft.management.PC_Utils.ValueWriting;
 
 public class PClo_TileEntityDelayer extends PC_TileEntity
 {
-    private int type = -1;
+    private int type = 0;
     private boolean stateBuffer[] = new boolean[20];
     private int remainingTicks = 0;
     private int ticks = 20;
@@ -127,14 +127,7 @@ public class PClo_TileEntityDelayer extends PC_TileEntity
 
             if (var.equals("type"))
             {
-                if (type == -1)
-                {
-                    type = (Integer)o[p++];
-                }
-                else
-                {
-                    p++;
-                }
+                type = (Integer)o[p++];
             }
             else if (var.equals("stateBuffer"))
             {
