@@ -41,7 +41,6 @@ public class PC_BeamTracer {
 	protected World world;
 
 	private boolean canChangeColor = false;
-	private boolean particlesBidi = false;
 	private boolean canHitEntity = false;
 
 	private int maxTotalLength = 8000;
@@ -216,19 +215,6 @@ public class PC_BeamTracer {
 	 */
 	public PC_BeamTracer setColor(float r, float g, float b, int meta) {
 		origColor = new PC_Color(r, g, b);
-		return this;
-	}
-
-
-	/**
-	 * Set that the particles will "move" both forward and backward to simulate
-	 * reflected beam for sensors.
-	 * 
-	 * @param bidi
-	 * @return self
-	 */
-	public PC_BeamTracer setParticlesBidirectional(boolean bidi) {
-		particlesBidi = bidi;
 		return this;
 	}
 
