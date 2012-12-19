@@ -31,15 +31,17 @@ import powercraft.management.PC_Block;
 import powercraft.management.PC_Color;
 import powercraft.management.PC_IBeamHandler;
 import powercraft.management.PC_IItemInfo;
+import powercraft.management.PC_IPacketHandler;
 import powercraft.management.PC_ISpecialInventoryTextures;
 import powercraft.management.PC_InvUtils;
+import powercraft.management.PC_PacketHandler;
 import powercraft.management.PC_Utils;
 import powercraft.management.PC_Utils.GameInfo;
 import powercraft.management.PC_Utils.ValueWriting;
 import powercraft.management.PC_VecI;
 
 public class PCma_BlockHarvester extends PC_Block implements
-		PC_ISpecialInventoryTextures, PC_IBeamHandler, PC_IItemInfo {
+		PC_ISpecialInventoryTextures, PC_IBeamHandler, PC_IItemInfo, PC_IPacketHandler {
 
 	private static final int TXDOWN = 109, TXTOP = 155, TXSIDE = 139, TXFRONT = 107, TXBACK = 123;
 	/**
@@ -54,6 +56,7 @@ public class PCma_BlockHarvester extends PC_Block implements
 		setResistance(10.0F);
 		setStepSound(Block.soundStoneFootstep);
 		setCreativeTab(CreativeTabs.tabDecorations);
+		PC_PacketHandler.registerPackethandler("PCma_BlockHarvester", this);
 	}
 	
 	@Override
@@ -187,8 +190,8 @@ public class PCma_BlockHarvester extends PC_Block implements
 	 */
 	private void harvestBlocks(World world, int x, int y, int z, int deviceMeta) {
 
-		//if(!world.isRemote)
-		//	PC_Utils.setBlock(null, this, x, y, z, deviceMeta);
+		if(!world.isRemote)
+			PC_PacketHandler.sendToPacketHandler(true, world, "PCma_BlockHarvester", x, y, z, deviceMeta);
 		
 		deviceMeta &= 0x7;
 
@@ -204,26 +207,19 @@ public class PCma_BlockHarvester extends PC_Block implements
 		beamTracer.setStartMove(move);
 		beamTracer.setCanChangeColor(false);
 		beamTracer.setDetectEntities(true);
-		beamTracer.setParticlesBidirectional(false);
 		beamTracer.setTotalLengthLimit(8000);
 		beamTracer.setMaxLengthAfterCrystal(2000);
 		beamTracer.setStartLength(30);
 		beamTracer.setCrystalAddedLength(100);
-
-		PC_Color color = new PC_Color();
-
-		color.setTo(0.001f, 1.0f, 0.001f);
-
-		beamTracer.setColor(color);
+		beamTracer.setColor(new PC_Color(0.001f, 1.0f, 0.001f));
 
 		if (world.getBlockId(x, y - 1, z) == ENDBLOCK) {
 			beamTracer.setStartLength(1);
 			beamTracer.setMaxLengthAfterCrystal(1);
 		}
 
-		if(!world.isRemote)
-			drops.clear();
-
+		drops.clear();
+		
 		beamTracer.flash();
 
 		if (drops != null && !world.isRemote) {
@@ -538,6 +534,13 @@ public class PCma_BlockHarvester extends PC_Block implements
 		}
 		}
 		return null;
+	}
+
+	@Override
+	public boolean handleIncomingPacket(EntityPlayer player, Object[] o) {
+		if(player.worldObj.isRemote)
+			harvestBlocks(player.worldObj, (Integer)o[0], (Integer)o[1], (Integer)o[2], (Integer)o[3]);
+		return false;
 	}
    	
 }
