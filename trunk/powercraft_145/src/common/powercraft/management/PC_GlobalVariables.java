@@ -21,7 +21,7 @@ public class PC_GlobalVariables {
 	public static String useUserName = "";
 	public static int blockStartIndex = 3000;
 	public static int itemStartIndex = 17000;
-	public static int varRecentlyHit = 46;
+	public static int indexRecentlyHit = 46;
 	public static TileEntity tileEntity;
 	public static HashMap<String, Object> consts = new HashMap<String, Object>();
 	public static HashMap<String, Object> oldConsts = null;

@@ -17,6 +17,11 @@ public class PC_ItemStack
         this.meta = meta;
     }
 
+    public PC_ItemStack(ItemStack is)
+    {
+        this(is.getItem(), is.stackSize, is.getItemDamage());
+    }
+    
     public PC_ItemStack(Object o)
     {
         this(o, 1, 0);
