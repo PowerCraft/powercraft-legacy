@@ -13,6 +13,7 @@ import net.minecraft.src.NBTTagCompound;
 import powercraft.management.PC_ISpecialAccessInventory;
 import powercraft.management.PC_IStateReportingInventory;
 import powercraft.management.PC_InvUtils;
+import powercraft.management.PC_ItemStack;
 import powercraft.management.PC_PacketHandler;
 import powercraft.management.PC_TileEntity;
 import powercraft.management.PC_Utils.GameInfo;
@@ -23,7 +24,8 @@ public class PCma_TileEntityTransmutabox extends PC_TileEntity implements IInven
     private ItemStack[] itemStacks = new ItemStack[49];
     private int burnTime = 0;
     private int loadTime = 0;
-
+    private float itemRanking;
+    
     public int getLoadTime()
     {
         return loadTime;
@@ -143,6 +145,12 @@ public class PCma_TileEntityTransmutabox extends PC_TileEntity implements IInven
         onInventoryChanged();
     }
 
+    @Override
+    public void onInventoryChanged(){
+    	itemRanking = PCma_ItemRanking.getRank(new PC_ItemStack(itemStacks[0]));
+    	super.onInventoryChanged();
+    }
+    
     @Override
     public String getInvName()
     {
