@@ -44,6 +44,7 @@ public class PCma_App implements PC_IModule
 	public void init() {
         PCma_CropHarvestingManager.loadCrops();
         PCma_TreeHarvestingManager.loadTrees();
+        PCma_ItemRanking.init();
 	}
 
 	@Override

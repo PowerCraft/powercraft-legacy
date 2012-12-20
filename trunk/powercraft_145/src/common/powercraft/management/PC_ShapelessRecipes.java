@@ -17,6 +17,11 @@ public class PC_ShapelessRecipes implements IRecipe, PC_IRecipeInputInfo {
     private final List<PC_ItemStack> recipeItems;
     private String op;
     
+    public PC_ShapelessRecipes(PC_ItemStack recipeOutput, List<PC_ItemStack> recipeItems) {
+		this.recipeOutput = recipeOutput;
+		this.recipeItems = recipeItems;
+	}
+    
     public PC_ShapelessRecipes(PC_ItemStack itemStack, Object... recipe) {
 		this(null, itemStack, recipe);
 	}

@@ -13,7 +13,6 @@ import java.lang.annotation.Annotation;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -42,10 +41,14 @@ import net.minecraft.src.Item;
 import net.minecraft.src.ItemBlock;
 import net.minecraft.src.ItemStack;
 import net.minecraft.src.NBTTagCompound;
+import net.minecraft.src.ShapedRecipes;
+import net.minecraft.src.ShapelessRecipes;
 import net.minecraft.src.StringTranslate;
 import net.minecraft.src.TileEntity;
 import net.minecraft.src.TileEntityMobSpawner;
 import net.minecraft.src.World;
+import net.minecraftforge.oredict.ShapedOreRecipe;
+import net.minecraftforge.oredict.ShapelessOreRecipe;
 
 public class PC_Utils implements PC_IPacketHandler
 {
@@ -1078,6 +1081,38 @@ public class PC_Utils implements PC_IPacketHandler
 		    return worldObj.provider.dimensionId;
 		}
 
+		private static List<IRecipe> resolveForgeRecipe(IRecipe recipe){
+			Object[] o;
+			List<IRecipe> recipes = new ArrayList<IRecipe>();
+			boolean isShaped;
+			if(recipe instanceof ShapedOreRecipe){
+				o = (Object[])ValueWriting.getPrivateValue(ShapedOreRecipe.class, recipe, 3);
+				isShaped = true;
+			}else if(recipe instanceof ShapelessOreRecipe){
+				o = ((List)ValueWriting.getPrivateValue(ShapelessOreRecipe.class, recipe, 1)).toArray(new Object[0]);
+				isShaped = false;
+			}else{
+				return null;
+			}
+			List<Integer> l = new ArrayList<Integer>();
+			for(int i=0; i<o.length; i++){
+				if(o[i] instanceof ArrayList){
+					l.add(((ArrayList)o[i]).size());
+				}
+			}
+			for(int j=0; j<l.size(); j++){
+				ItemStack[] is = new ItemStack[o.length];
+				for(int i=0; i<o.length; i++){
+					if(o[i] instanceof ItemStack){
+						
+					}else if(o[i] instanceof ArrayList){
+						
+					}
+				}
+			}
+			return recipes;
+		}
+		
 		public static List<IRecipe> getRecipesForProduct(ItemStack prod)
 		{
 		    List<IRecipe> recipes = new ArrayList<IRecipe>(CraftingManager.getInstance().getRecipeList());
@@ -1089,7 +1124,12 @@ public class PC_Utils implements PC_IPacketHandler
 		        {
 		            if (recipe.getRecipeOutput().isItemEqual(prod) || (recipe.getRecipeOutput().itemID == prod.itemID && prod.getItemDamage() == -1))
 		            {
-		                ret.add(recipe);
+		            	
+		            	if(recipe instanceof ShapedOreRecipe||recipe instanceof ShapelessOreRecipe){
+		            		ret.addAll(resolveForgeRecipe(recipe));
+		            	}else{
+		            		ret.add(recipe);
+		            	}
 		            }
 		        }
 		        catch (NullPointerException npe)
@@ -1356,7 +1396,7 @@ public class PC_Utils implements PC_IPacketHandler
 		    {
 		        try
 		        {
-		            intList.add(Integer.parseInt(part));
+		            intList.add(Integer.parseInt(part.trim()));
 		        }
 		        catch (NumberFormatException e) {}
 		    }
@@ -1628,6 +1668,18 @@ public class PC_Utils implements PC_IPacketHandler
 		
 		public static void dropXP(World world, PC_VecF pos, int xp) {
 			dropXP(world, pos, xp);
+		}
+
+		public static ItemStack[] getExpectedInput(IRecipe recipe) {
+			if (recipe instanceof PC_IRecipeInputInfo){
+				return ((PC_IRecipeInputInfo) recipe).getExpectedInput(new ArrayList<ItemStack>()).toArray(new ItemStack[0]);
+            }else if (recipe instanceof ShapedRecipes){
+            	return (ItemStack[]) ValueWriting.getPrivateValue(ShapedRecipes.class, recipe, 2);
+            }else if (recipe instanceof ShapelessRecipes){
+                List<ItemStack> foo = ((List<ItemStack>) ValueWriting.getPrivateValue(ShapelessRecipes.class, recipe, 1));
+                return foo.toArray(new ItemStack[foo.size()]);
+            }
+			return null;
 		}
 	   
    }

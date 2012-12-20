@@ -4,7 +4,7 @@ import net.minecraft.src.Block;
 import net.minecraft.src.Item;
 import net.minecraft.src.ItemStack;
 
-public class PC_ItemStack
+public class PC_ItemStack implements Comparable<PC_ItemStack>
 {
     private Object o;
     private int count;
@@ -76,32 +76,29 @@ public class PC_ItemStack
         if (obj instanceof ItemStack || obj instanceof PC_ItemStack)
         {
             int otherID;
-            int otherCount;
             int otherMeta;
-
+            
             if (obj instanceof ItemStack)
             {
                 otherID = ((ItemStack)obj).itemID;
-                otherCount = ((ItemStack)obj).stackSize;
                 otherMeta = ((ItemStack)obj).getItemDamage();
             }
             else
             {
                 otherID = ((PC_ItemStack)obj).getID();
-                otherCount = ((PC_ItemStack)obj).getCount();
                 otherMeta = ((PC_ItemStack)obj).getMeta();
             }
-
+            
             if (otherID != getID())
             {
                 return false;
             }
-
+            
             if (otherMeta != meta && otherMeta != -1 && meta != -1)
             {
                 return false;
             }
-
+            
             return true;
         }
 
@@ -112,4 +109,25 @@ public class PC_ItemStack
     {
         return new PC_ItemStack(o, count, meta);
     }
+
+	@Override
+	public String toString() {
+		return "PC_ItemStack("+Item.itemsList[getID()].getItemName()+", "+count+", "+meta+")";
+	}
+
+	@Override
+	public int compareTo(PC_ItemStack o) {
+		int otherID = o.getID();
+		if(otherID==getID()){
+			 int otherMeta = o.getMeta();
+			 if(otherMeta==-1 || meta==-1)
+				 return 0;
+			 return meta-otherMeta;
+		}else{
+			return getID()-otherID;
+		}
+	}
+    
+    
+    
 }

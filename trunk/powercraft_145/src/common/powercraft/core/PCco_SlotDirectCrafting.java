@@ -433,22 +433,9 @@ public class PCco_SlotDirectCrafting extends Slot implements PC_ISlotWithBackgro
 
         try
         {
-            ItemStack[] tmps;
+            ItemStack[] tmps = GameInfo.getExpectedInput(irecipe);
 
-            if (irecipe instanceof PC_IRecipeInputInfo)
-            {
-                tmps = ((PC_IRecipeInputInfo) irecipe).getExpectedInput(new ArrayList<ItemStack>()).toArray(new ItemStack[0]);
-            }
-            else if (irecipe instanceof ShapedRecipes)
-            {
-                tmps = (ItemStack[]) ValueWriting.getPrivateValue(ShapedRecipes.class, irecipe, 2);
-            }
-            else if (irecipe instanceof ShapelessRecipes)
-            {
-                List<ItemStack> foo = ((List<ItemStack>) ValueWriting.getPrivateValue(ShapelessRecipes.class, irecipe, 1));
-                tmps = foo.toArray(new ItemStack[foo.size()]);
-            }
-            else
+            if(tmps==null)
             {
                 return false;
             }

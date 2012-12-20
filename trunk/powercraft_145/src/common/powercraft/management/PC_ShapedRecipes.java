@@ -18,6 +18,13 @@ public class PC_ShapedRecipes implements IRecipe, PC_IRecipeInputInfo {
 	private PC_ItemStack recipeOutput;
 	private String op;
 	
+	public PC_ShapedRecipes(PC_ItemStack recipeOutput, int recipeWidth, int recipeHeight, PC_ItemStack[] recipeItems) {
+		this.recipeOutput = recipeOutput;
+		this.recipeWidth = recipeWidth;
+		this.recipeHeight = recipeHeight;
+		this.recipeItems = recipeItems;
+	}
+	
 	public PC_ShapedRecipes(PC_ItemStack itemStack, Object... recipe) {
 		this(null, itemStack, recipe);
 	}
