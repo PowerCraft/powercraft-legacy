@@ -1094,20 +1094,39 @@ public class PC_Utils implements PC_IPacketHandler
 			}else{
 				return null;
 			}
-			List<Integer> l = new ArrayList<Integer>();
+			int nums = 1;
 			for(int i=0; i<o.length; i++){
 				if(o[i] instanceof ArrayList){
-					l.add(((ArrayList)o[i]).size());
+					nums *= ((ArrayList)o[i]).size();
 				}
 			}
-			for(int j=0; j<l.size(); j++){
-				ItemStack[] is = new ItemStack[o.length];
+			for(int j=0; j<nums; j++){
+				PC_ItemStack[] is = new PC_ItemStack[o.length];
+				int n = j;
+				int max = nums;
 				for(int i=0; i<o.length; i++){
 					if(o[i] instanceof ItemStack){
-						
+						is[i] = new PC_ItemStack((ItemStack)o[i]);
 					}else if(o[i] instanceof ArrayList){
-						
+						List<ItemStack> l = (List<ItemStack>)o[i];
+						int size = l.size();
+						max /= size;
+						int index = n/max;
+						n = n%max;
+						is[i] = new PC_ItemStack(l.get(index));
 					}
+				}
+				PC_ItemStack out = new PC_ItemStack(recipe.getRecipeOutput());
+				if(isShaped){
+					int width = (Integer)ValueWriting.getPrivateValue(ShapedOreRecipe.class, recipe, 4);
+					int height = (Integer)ValueWriting.getPrivateValue(ShapedOreRecipe.class, recipe, 5);
+					recipes.add(new PC_ShapedRecipes(out, width, height, is));
+				}else{
+					List<PC_ItemStack> l = new ArrayList<PC_ItemStack>();
+					for(int i=0; i<is.length; i++){
+						l.add(is[i]);
+					}
+					recipes.add(new PC_ShapelessRecipes(out, l));
 				}
 			}
 			return recipes;
