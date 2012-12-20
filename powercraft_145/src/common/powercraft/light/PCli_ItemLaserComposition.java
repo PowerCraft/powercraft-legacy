@@ -214,6 +214,18 @@ public class PCli_ItemLaserComposition extends PC_Item
 		return false;
 	}
 
+	public static boolean handleItem(int levelSensor){
+		return levelSensor == 0 || levelSensor == 1 || levelSensor == 2 || levelSensor == 4;
+	}
+	
+	public static boolean handleMob(int levelSensor){
+		return levelSensor == 0 || levelSensor == 2 || levelSensor == 3 || levelSensor == 6;
+	}
+	
+	public static boolean handlePlayer(int levelSensor){
+		return levelSensor == 0 || levelSensor == 1 || levelSensor == 3 || levelSensor == 5;
+	}
+	
 	public static boolean onEntityHit(PC_BeamTracer beamTracer, Entity entity, PC_VecI coord, ItemStack itemstack, boolean isBurning) {
 		if(itemstack==null)
 			return true;
@@ -223,18 +235,28 @@ public class PCli_ItemLaserComposition extends PC_Item
         	itemstack.setTagCompound(nbtTagCompound);
         }
         int levelKill = nbtTagCompound.getInteger("level.kill");
+        int levelSensor = nbtTagCompound.getInteger("level.sensor");
+        int levelDistance = nbtTagCompound.getInteger("level.distance");
         if(isBurning)
         	levelKill *= 2;
         if(levelKill>0)
-        	if(entity instanceof EntityItem && levelKill<3){
-        		entity.setDead();
+        	if(entity instanceof EntityItem){
+        		if(handleItem(levelSensor))
+        			entity.setDead();
+        	}else if(entity instanceof EntityPlayer){
+        		if(handleMob(levelSensor)){
+        			ValueWriting.setPrivateValue(EntityLiving.class, entity, PC_GlobalVariables.indexRecentlyHit, 60);
+            		entity.attackEntityFrom(PCli_DamageSourceLaser.getDamageSource(), levelKill);
+        		}
         	}else if(entity instanceof EntityLiving){
-        		ValueWriting.setPrivateValue(EntityLiving.class, entity, PC_GlobalVariables.varRecentlyHit, 60);
-        		entity.attackEntityFrom(PCli_DamageSourceLaser.getDamageSource(), levelKill);
+        		if(handlePlayer(levelSensor)){
+        			ValueWriting.setPrivateValue(EntityLiving.class, entity, PC_GlobalVariables.indexRecentlyHit, 60);
+            		entity.attackEntityFrom(PCli_DamageSourceLaser.getDamageSource(), levelKill);
+        		}
         	}else{
         		return false;
         	}
-		return levelKill<=4;
+		return levelDistance<=4;
 	}
 
 	public static boolean isSensor(ItemStack itemstack) {
