@@ -6,6 +6,7 @@ import java.util.List;
 import net.minecraft.src.EntityPlayer;
 import net.minecraft.src.Slot;
 import powercraft.management.PC_GresBaseWithInventory;
+import powercraft.management.PC_SlotNoPickup;
 import powercraft.management.PC_SlotSelective;
 import powercraft.management.PC_Utils.GameInfo;
 
@@ -32,7 +33,11 @@ public class PCma_ContainerTransmutabox extends PC_GresBaseWithInventory
 
         for (int i = 0; i < te.getSizeInventory(); i++)
         {
-            lSlot.add(new PC_SlotSelective(te, i, 0, 0));
+        	if(i==9||i==10){
+        		lSlot.add(new PC_SlotNoPickup(te, i));
+        	}else{
+        		lSlot.add(new PC_SlotSelective(te, i, 0, 0));
+        	}
         }
 
         slots.addAll(lSlot);

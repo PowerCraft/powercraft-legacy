@@ -14,14 +14,13 @@ import powercraft.management.PC_VecF;
 
 public class PCli_TileEntityLightningConductor extends PC_TileEntity
 {
+	
     private int lightningCharge = 0;
-
-    public int lightningChargeRequired = 0;
+    private int lightningChargeRequired = 0;
 
     private static final int FLASH_CHARGE_MIN = 8000;
-
     private static final int FLASH_CHARGE_MAX = 17000;
-    private static final int FLASH_MIN_HEIGHT = 79;
+    
     private static Random rand = new Random();
 
     @Override

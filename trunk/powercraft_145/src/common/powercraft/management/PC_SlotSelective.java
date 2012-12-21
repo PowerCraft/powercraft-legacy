@@ -25,6 +25,15 @@ public class PC_SlotSelective extends Slot implements PC_ISlotWithBackground
         return super.isItemValid(par1ItemStack);
     }
 
+    @Override
+    public int getSlotStackLimit(){
+    	if(inventory instanceof PC_IInventorySlotSize){
+    		return ((PC_IInventorySlotSize) inventory).getSlotStackLimit(realslotnumber);
+    	}else{
+    		return super.getSlotStackLimit();
+    	}
+    }
+    
     private ItemStack bgStack = null;
 
     @Override

@@ -13,5 +13,5 @@ public interface PC_ISpecialAccessInventory {
     public boolean canMachineInsertStackTo(int slot, ItemStack stack);
 
     public boolean canDispenseStackFrom(int slot);
-
+    
 }

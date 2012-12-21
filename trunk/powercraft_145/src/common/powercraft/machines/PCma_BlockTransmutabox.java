@@ -34,9 +34,9 @@ public class PCma_BlockTransmutabox extends PC_Block implements PC_IItemInfo
     {
         PCma_TileEntityTransmutabox te = GameInfo.getTE(world, x, y, z, blockID);
 
-        if (te != null && power > 200)
+        if (te != null)
         {
-            te.change((int)(power - 100) / 10);
+            te.addEnergy((int)power);
         }
     }
 

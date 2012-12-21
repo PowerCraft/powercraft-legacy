@@ -387,7 +387,7 @@ public class PCma_TileEntityRoaster extends PC_TileEntity implements IInventory,
     {
         for (int s = 0; s < getSizeInventory(); s++)
         {
-            int bt = PC_InvUtils.getFuelValue(getStackInSlot(s), 1.0D);
+            int bt = GameInfo.getFuelValue(getStackInSlot(s), 1.0D);
 
             if (bt > 0)
             {
@@ -413,7 +413,7 @@ public class PCma_TileEntityRoaster extends PC_TileEntity implements IInventory,
     {
         for (int s = 0; s < getSizeInventory(); s++)
         {
-            int bt = PC_InvUtils.getFuelValue(getStackInSlot(s), 1.0D);
+            int bt = GameInfo.getFuelValue(getStackInSlot(s), 1.0D);
 
             if (bt > 0)
             {

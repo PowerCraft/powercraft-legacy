@@ -17,6 +17,7 @@ import java.lang.reflect.Modifier;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Random;
 
@@ -45,6 +46,7 @@ import net.minecraft.src.ShapedRecipes;
 import net.minecraft.src.ShapelessRecipes;
 import net.minecraft.src.StringTranslate;
 import net.minecraft.src.TileEntity;
+import net.minecraft.src.TileEntityFurnace;
 import net.minecraft.src.TileEntityMobSpawner;
 import net.minecraft.src.World;
 import net.minecraftforge.oredict.ShapedOreRecipe;
@@ -1177,12 +1179,12 @@ public class PC_Utils implements PC_IPacketHandler
 		        return false;
 		    }
 		
-		    return PC_InvUtils.getFuelValue(itemstack, 1f) > 0;
+		    return GameInfo.getFuelValue(itemstack, 1f) > 0;
 		}
 
 		public static boolean isSmeltable(ItemStack itemstack)
 		{
-		    if (itemstack == null || FurnaceRecipes.smelting().getSmeltingResult(itemstack.getItem().shiftedIndex) == null)
+		    if (itemstack == null || FurnaceRecipes.smelting().getSmeltingResult(itemstack) == null)
 		    {
 		        return false;
 		    }
@@ -1190,6 +1192,25 @@ public class PC_Utils implements PC_IPacketHandler
 		    return true;
 		}
 
+		public static List<ItemStack> getFeedstock(ItemStack itemstack){
+			List<ItemStack> l = new ArrayList<ItemStack>();
+			if (itemstack != null){
+				Map<Integer, ItemStack> map = FurnaceRecipes.smelting().getSmeltingList();
+				for(Entry<Integer, ItemStack> e:map.entrySet()){
+					if(e.getValue().isItemEqual(itemstack)){
+						l.add(new ItemStack((int)e.getKey(), 1, 0));
+					}
+				}
+				Map<List<Integer>, ItemStack> map2 = (Map<List<Integer>, ItemStack>)ValueWriting.getPrivateValue(FurnaceRecipes.class, FurnaceRecipes.smelting(), 3);
+				for(Entry<List<Integer>, ItemStack> e:map2.entrySet()){
+					if(e.getValue().isItemEqual(itemstack)){
+						l.add(new ItemStack((int)e.getKey().get(0), 1, e.getKey().get(1)));
+					}
+				}
+			}
+			return l;
+		}
+		
 		public static <t extends TileEntity>t getTE(IBlockAccess world, int x, int y, int z)
 		{
 		    if (world != null)
@@ -1699,6 +1720,11 @@ public class PC_Utils implements PC_IPacketHandler
                 return foo.toArray(new ItemStack[foo.size()]);
             }
 			return null;
+		}
+
+		public static int getFuelValue(ItemStack itemstack, double strength)
+		{
+		    return (int)(TileEntityFurnace.getItemBurnTime(itemstack) * strength);
 		}
 	   
    }
