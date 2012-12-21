@@ -5,6 +5,7 @@ import powercraft.management.PC_GresInventory;
 import powercraft.management.PC_GresInventoryBigSlot;
 import powercraft.management.PC_GresInventoryPlayer;
 import powercraft.management.PC_GresLayoutH;
+import powercraft.management.PC_GresLayoutV;
 import powercraft.management.PC_GresProgressBar;
 import powercraft.management.PC_GresWidget;
 import powercraft.management.PC_GresWidget.PC_GresAlign;
@@ -15,7 +16,7 @@ import powercraft.management.PC_Utils.Lang;
 
 public class PCma_GuiTransmutabox extends PCma_ContainerTransmutabox implements
 		PC_IGresClient {
-
+	
 	private PC_GresProgressBar progress;
 	
 	public PCma_GuiTransmutabox(EntityPlayer player, Object[] o) {
@@ -36,14 +37,38 @@ public class PCma_GuiTransmutabox extends PCma_ContainerTransmutabox implements
 		}
 		hl.add(inv);
 		w.add(hl);
-		w.add(progress = new PC_GresProgressBar(0xFFFF0000));
-		inv = new PC_GresInventory(10, 4);
+		hl = new PC_GresLayoutH();
+		hl.setAlignH(PC_GresAlign.JUSTIFIED);
+		int inID = id++;
+		int outID = id++;
+		inv = new PC_GresInventory(3, 4);
 		for(int y=0; y<4; y++){
-			for(int x=0; x<10; x++){
+			for(int x=0; x<3; x++){
 				inv.setSlot(lSlot.get(id++), x, y);
 			}
 		}
-		w.add(inv);
+		hl.add(inv);
+		
+		PC_GresLayoutV vl = new PC_GresLayoutV();
+		PC_GresLayoutH hl1 = new PC_GresLayoutH();
+		
+		vl.add(progress = new PC_GresProgressBar(0xff0000, 100));
+		
+		hl1.add(new PC_GresInventoryBigSlot(lSlot.get(inID)));
+		hl1.add(new PC_GresInventoryBigSlot(lSlot.get(outID)));
+		
+		vl.add(hl1);
+		
+		hl.add(vl);
+		
+		inv = new PC_GresInventory(3, 4);
+		for(int y=0; y<4; y++){
+			for(int x=0; x<3; x++){
+				inv.setSlot(lSlot.get(id++), x, y);
+			}
+		}
+		hl.add(inv);
+		w.add(hl);
 		w.add(new PC_GresInventoryPlayer(true));
 		gui.add(w);
 	}
@@ -66,7 +91,7 @@ public class PCma_GuiTransmutabox extends PCma_ContainerTransmutabox implements
 
 	@Override
 	public void updateTick(PC_IGresGui gui) {
-		progress.setFraction(te.getLoadTime()/1000.0f);
+		progress.setFraction(te.getProgress());
 	}
 
 	@Override

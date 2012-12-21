@@ -459,11 +459,6 @@ public class PC_InvUtils
         return player.inventory.getTotalArmorValue();
     }
 
-    public static int getFuelValue(ItemStack itemstack, double strength)
-    {
-        return (int)(TileEntityFurnace.getItemBurnTime(itemstack) * strength);
-    }
-
     public static int countPowerCrystals(IInventory inventory)
     {
         boolean[] foundTable = { false, false, false, false, false, false, false, false };

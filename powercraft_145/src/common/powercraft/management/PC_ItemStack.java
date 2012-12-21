@@ -128,6 +128,4 @@ public class PC_ItemStack implements Comparable<PC_ItemStack>
 		}
 	}
     
-    
-    
 }
