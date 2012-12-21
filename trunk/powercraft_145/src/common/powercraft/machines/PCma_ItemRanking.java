@@ -70,7 +70,7 @@ public class PCma_ItemRanking {
 	                        	boolean bo = false;
 	                            for (int j = 0; true; j++){
 	                                ItemStack is = new ItemStack(b, 1, j);
-	                                if (GameInfo.getRecipesForProduct(is).size() > 0) {
+	                                if (GameInfo.getRecipesForProduct(is).size() > 0 || GameInfo.getFeedstock(is).size() > 0) {
 	                                	l.add(is);
 	                                	bo = false;
 	                                }else{
@@ -90,7 +90,7 @@ public class PCma_ItemRanking {
                 	boolean b = false;
                     for (int j = 0; true; j++){
                         ItemStack is = new ItemStack(item, 1, j);
-                        if (GameInfo.getRecipesForProduct(is).size() > 0) {
+                        if (GameInfo.getRecipesForProduct(is).size() > 0 || GameInfo.getFeedstock(is).size() > 0) {
                         	l.add(is);
                         	b = false;
                         }else{
@@ -104,20 +104,40 @@ public class PCma_ItemRanking {
                 	l.add(new ItemStack(item));
                 }
 				if(l!=null){
-					if(print)
-						System.out.println(item.getItemName()+":stacks:"+l.size());
 					for(ItemStack is:l){
 						PC_ItemStack pcis = new PC_ItemStack(is);
 						if(allreadyDone.contains(pcis))
 							continue;
 						List<IRecipe> recipes = GameInfo.getRecipesForProduct(is);
-						if(print)
-							System.out.println("Recipes:"+recipes.size());
+						List<ItemStack> seedstocks = GameInfo.getFeedstock(is);
+						if(seedstocks.size()!=0){
+							for(ItemStack itemstack:seedstocks){
+								PC_ItemStack pcisi = new PC_ItemStack(itemstack);
+								PC_Struct2<Float, Integer> s =ranking.get(pcisi);
+								if(s != null){
+									setRank(pcis, (int)(s.a+100));
+									anyDone = true;
+									if(!allreadyDone.contains(pcis))
+										allreadyDone.add(pcis);
+								}
+							}
+						}else{
+							if(recipes.size()==0){
+								if(print){
+									String name = Item.itemsList[pcis.getID()].getItemName();
+									if(name!=null){
+										if(name.startsWith("item.")){
+											System.out.println("reg(prop, Item."+ name.substring(5) +", \"1\");");
+										}else{
+											System.out.println("reg(prop, Block."+ name.substring(5) +", \"1\");");
+										}
+									}
+								}
+							}
+						}
 						for(IRecipe recipe:recipes){
 							ItemStack[] input = GameInfo.getExpectedInput(recipe);
 							if(input==null){
-				            	if(print)
-				            		System.out.println("Unknown Recipe:"+recipe);
 				                continue;
 				            }
 							float rank=0;
@@ -129,8 +149,6 @@ public class PCma_ItemRanking {
 								if(s != null){
 									rank += s.a;
 								}else{
-									if(print)
-										System.out.println("Can't find "+pcisi+" for "+pcis);
 									rank = -1;
 									break;
 								}
@@ -144,9 +162,6 @@ public class PCma_ItemRanking {
 							}
 						}
 					}
-				}else{
-					if(print)
-						System.out.println("Error");
 				}
 			}
 		}
