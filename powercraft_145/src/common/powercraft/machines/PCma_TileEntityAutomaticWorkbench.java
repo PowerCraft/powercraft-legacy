@@ -706,4 +706,10 @@ public class PCma_TileEntityAutomaticWorkbench extends PC_TileEntity implements 
         o[1] = redstoneActivated;
         return o;
     }
+    
+    @Override
+	public boolean canDropStackFrom(int slot) {
+		return true;
+	}
+    
 }

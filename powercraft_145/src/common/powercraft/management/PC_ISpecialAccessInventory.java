@@ -14,4 +14,6 @@ public interface PC_ISpecialAccessInventory {
 
     public boolean canDispenseStackFrom(int slot);
     
+    public boolean canDropStackFrom(int slot);
+    
 }

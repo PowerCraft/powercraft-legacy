@@ -212,6 +212,7 @@ public class PCma_ItemRanking {
 		
 		reg(prop, Block.grass, "1");
 		reg(prop, Block.dirt, "1");
+		reg(prop, Block.cobblestone, "1");
 		reg(prop, Block.stoneBrick, "1");
 		reg(prop, Block.sand, "1");
 		reg(prop, Block.gravel, "1");

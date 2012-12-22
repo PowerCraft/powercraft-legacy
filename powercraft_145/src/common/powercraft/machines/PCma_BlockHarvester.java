@@ -517,7 +517,7 @@ public class PCma_BlockHarvester extends PC_Block implements
 	}
 	
 	@Override
-	public Object msg(World world, PC_VecI pos, int msg, Object... obj) {
+	public Object msg(IBlockAccess world, PC_VecI pos, int msg, Object... obj) {
 		switch (msg){
 		case PC_Utils.MSG_DEFAULT_NAME:
 			return "Harvester";

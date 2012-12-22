@@ -3,11 +3,11 @@ package powercraft.transport;
 import net.minecraft.src.Entity;
 import net.minecraft.src.EntityItem;
 import net.minecraft.src.EntityPlayer;
+import net.minecraft.src.IBlockAccess;
 import net.minecraft.src.ItemBlock;
 import net.minecraft.src.ItemStack;
 import net.minecraft.src.TileEntity;
 import net.minecraft.src.World;
-import powercraft.management.PC_InvUtils;
 import powercraft.management.PC_Utils;
 import powercraft.management.PC_Utils.GameInfo;
 import powercraft.management.PC_Utils.Gres;
@@ -130,22 +130,9 @@ public class PCtr_BlockBeltSeparator extends PCtr_BlockBeltBase
     public TileEntity newTileEntity(World world, int metadata) {
         return new PCtr_TileEntitySeparationBelt();
     }
-
-    @Override
-    public void breakBlock(World world, int i, int j, int k, int par5, int par6)
-    {
-        PCtr_TileEntitySeparationBelt te = (PCtr_TileEntitySeparationBelt) world.getBlockTileEntity(i, j, k);
-
-        if (te != null)
-        {
-            PC_InvUtils.dropInventoryContents(te, world, te.getCoord());
-        }
-
-        super.breakBlock(world, i, j, k, par5, par6);
-    }
     
 	@Override
-	protected Object msg2(World world, PC_VecI pos, int msg, Object... obj) {
+	protected Object msg2(IBlockAccess world, PC_VecI pos, int msg, Object... obj) {
 		switch (msg){
 		case PC_Utils.MSG_DEFAULT_NAME:{
 			return "separation belt";

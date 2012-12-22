@@ -5,6 +5,7 @@ import java.util.Random;
 import net.minecraft.src.Entity;
 import net.minecraft.src.EntityItem;
 import net.minecraft.src.EntityPlayer;
+import net.minecraft.src.IBlockAccess;
 import net.minecraft.src.ItemBlock;
 import net.minecraft.src.ItemStack;
 import net.minecraft.src.TileEntity;
@@ -12,7 +13,6 @@ import net.minecraft.src.World;
 import powercraft.management.PC_Utils;
 import powercraft.management.PC_Utils.GameInfo;
 import powercraft.management.PC_Utils.Gres;
-import powercraft.management.PC_Utils.ValueWriting;
 import powercraft.management.PC_VecI;
 
 public class PCtr_BlockBeltEjector extends PCtr_BlockBeltBase
@@ -150,7 +150,7 @@ public class PCtr_BlockBeltEjector extends PCtr_BlockBeltBase
     }
 
 	@Override
-	protected Object msg2(World world, PC_VecI pos, int msg, Object... obj) {
+	protected Object msg2(IBlockAccess world, PC_VecI pos, int msg, Object... obj) {
 		switch (msg){
 		case PC_Utils.MSG_DEFAULT_NAME:{
 			return "ejection belt";

@@ -101,13 +101,13 @@ public class PCde_BlockChimney extends PC_Block {
 	}
 
 	@Override
-	public Object msg(World world, PC_VecI pos, int msg, Object... obj) {
+	public Object msg(IBlockAccess world, PC_VecI pos, int msg, Object... obj) {
 		switch(msg){
 		case PC_Utils.MSG_RENDER_INVENTORY_BLOCK:
 			renderInventoryBlock((Block)obj[0], (Integer)obj[1], (Integer)obj[2], obj[3]);
 			break;
 		case PC_Utils.MSG_RENDER_WORLD_BLOCK:
-			renderWorldBlock((IBlockAccess)obj[0], (Integer)obj[1], (Integer)obj[2], (Integer)obj[3], (Block)obj[4], (Integer)obj[5], obj[6]);
+			renderWorldBlock(world, pos.x, pos.y, pos.z, (Block)obj[0], (Integer)obj[1], obj[2]);
 			break;
 		case PC_Utils.MSG_BLOCK_FLAGS:{
 			List<String> list = (List<String>)obj[0];

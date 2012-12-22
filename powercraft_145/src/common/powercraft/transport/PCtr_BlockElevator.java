@@ -238,7 +238,7 @@ public class PCtr_BlockElevator extends PC_Block
     }
 
 	@Override
-	public Object msg(World world, PC_VecI pos, int msg, Object... obj) {
+	public Object msg(IBlockAccess world, PC_VecI pos, int msg, Object... obj) {
 		switch (msg){
 		case PC_Utils.MSG_ITEM_FLAGS:{
 			List<String> list = (List<String>)obj[1];

@@ -7,6 +7,7 @@ import net.minecraft.src.Block;
 import net.minecraft.src.CreativeTabs;
 import net.minecraft.src.EntityItem;
 import net.minecraft.src.EntityPlayer;
+import net.minecraft.src.IBlockAccess;
 import net.minecraft.src.Item;
 import net.minecraft.src.ItemBlock;
 import net.minecraft.src.ItemStack;
@@ -430,31 +431,6 @@ public class PCma_BlockReplacer extends PC_Block implements PC_IItemInfo
     }
 
     @Override
-    public void breakBlock(World world, int i, int j, int k, int par5, int par6)
-    {
-        PCma_TileEntityReplacer tileentity = (PCma_TileEntityReplacer) world.getBlockTileEntity(i, j, k);
-        Random random = new Random();
-
-        if (tileentity != null)
-        {
-            if (tileentity.buildBlock != null)
-            {
-                float f = random.nextFloat() * 0.8F + 0.1F;
-                float f1 = random.nextFloat() * 0.8F + 0.1F;
-                float f2 = random.nextFloat() * 0.8F + 0.1F;
-                EntityItem entityitem = new EntityItem(world, i + f, j + f1, k + f2, tileentity.buildBlock);
-                float f3 = 0.05F;
-                entityitem.motionX = (float) random.nextGaussian() * f3;
-                entityitem.motionY = (float) random.nextGaussian() * f3 + 0.2F;
-                entityitem.motionZ = (float) random.nextGaussian() * f3;
-                world.spawnEntityInWorld(entityitem);
-            }
-        }
-
-        super.breakBlock(world, i, j, k, par5, par6);
-    }
-
-    @Override
     public List<ItemStack> getItemStacks(List<ItemStack> arrayList)
     {
         arrayList.add(new ItemStack(this));
@@ -462,7 +438,7 @@ public class PCma_BlockReplacer extends PC_Block implements PC_IItemInfo
     }
 
 	@Override
-	public Object msg(World world, PC_VecI pos, int msg, Object... obj) {
+	public Object msg(IBlockAccess world, PC_VecI pos, int msg, Object... obj) {
 		switch (msg){
 		case PC_Utils.MSG_DEFAULT_NAME:
 			return "Replacer";

@@ -129,7 +129,7 @@ public class PCtr_BlockBeltDetector extends PCtr_BlockBeltBase
     }
 
 	@Override
-	protected Object msg2(World world, PC_VecI pos, int msg, Object... obj) {
+	protected Object msg2(IBlockAccess world, PC_VecI pos, int msg, Object... obj) {
 		switch (msg){
 		case PC_Utils.MSG_DEFAULT_NAME:{
 			return "detection belt";

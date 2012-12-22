@@ -343,4 +343,10 @@ public class PCma_TileEntityReplacer extends PC_TileEntity implements IInventory
         o[7] = aidEnabled;
         return o;
     }
+    
+    @Override
+	public boolean canDropStackFrom(int slot) {
+		return true;
+	}
+    
 }

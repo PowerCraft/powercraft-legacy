@@ -585,6 +585,10 @@ public class PC_InvUtils
         {
             for (int i = 0; i < inventory.getSizeInventory(); i++)
             {
+            	if(inventory instanceof PC_ISpecialAccessInventory){
+            		if(!((PC_ISpecialAccessInventory) inventory).canDropStackFrom(i))
+            			continue;
+            	}
                 ItemStack itemstack = inventory.getStackInSlot(i);
                 ValueWriting.dropItemStack(world, itemstack, pos);
             }

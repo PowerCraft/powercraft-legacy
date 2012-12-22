@@ -27,6 +27,12 @@ public class PCma_ContainerTransmutabox extends PC_GresBaseWithInventory
     }
 
     @Override
+    protected boolean canShiftTransfer()
+    {
+        return true;
+    }
+    
+    @Override
     protected List<Slot> getAllSlots(List<Slot> slots)
     {
         lSlot = new ArrayList<Slot>();

@@ -5,6 +5,7 @@ import net.minecraft.src.IBlockAccess;
 import net.minecraft.src.RenderBlocks;
 import net.minecraft.src.RenderEngine;
 import net.minecraft.src.Tessellator;
+import net.minecraft.src.World;
 
 import org.lwjgl.opengl.GL11;
 
@@ -42,7 +43,7 @@ public class PC_ClientRenderer extends PC_Renderer implements ISimpleBlockRender
 	public boolean renderWorldBlock(IBlockAccess world, int x, int y, int z, Block block, int modelId, RenderBlocks renderer) {
 		boolean b = false;
 		if(block instanceof PC_IMSG){
-			Object o = ((PC_IMSG) block).msg(PC_Utils.MSG_RENDER_WORLD_BLOCK, world, x, y, z, block, modelId, renderer);
+			Object o = ((PC_IMSG) block).msg(PC_Utils.MSG_RENDER_WORLD_BLOCK, world, new PC_VecI(x, y, z), block, modelId, renderer);
 			if(o instanceof Boolean)
 				b = (Boolean)o;
 		}
