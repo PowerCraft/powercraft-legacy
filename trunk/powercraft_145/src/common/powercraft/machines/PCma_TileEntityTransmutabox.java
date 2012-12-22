@@ -69,7 +69,8 @@ public class PCma_TileEntityTransmutabox extends PC_TileEntity implements IInven
             return GameInfo.isFuel(stack);
         if (slot == 9 || slot == 10)
     		return false;
-
+        if (slot >= 23)
+    		return false;
         return true;
     }
 

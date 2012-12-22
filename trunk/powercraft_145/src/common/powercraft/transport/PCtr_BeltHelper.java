@@ -1173,14 +1173,15 @@ public class PCtr_BeltHelper
 
     public static void createEntityItemOnBelt(World world, PC_VecI invPos, PC_VecI beltPos, ItemStack stack)
     {
+    	System.out.println("createEntityItemOnBelt:"+world+":"+stack+":"+beltPos+":"+invPos);
         EntityItem item = new EntityItem(world, beltPos.x + 0.5D, beltPos.y + 0.3D, beltPos.z + 0.5D, stack);
         item.motionX = 0.0D;
         item.motionY = 0.0D;
         item.motionZ = 0.0D;
-        PC_VecF vector = new PC_VecF(beltPos.offset(invPos));
+        PC_VecI vector = beltPos.offset(invPos);
         item.posX += 0.43D * vector.x;
         item.posZ += 0.43D * vector.z;
         item.delayBeforeCanPickup = 7;
-        world.spawnEntityInWorld(item);
+        System.out.println(world.spawnEntityInWorld(item));
     }
 }
