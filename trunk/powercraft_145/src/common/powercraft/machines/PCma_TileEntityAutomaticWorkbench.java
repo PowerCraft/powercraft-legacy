@@ -504,9 +504,9 @@ public class PCma_TileEntityAutomaticWorkbench extends PC_TileEntity implements 
                 break;
         }
 
-        double d = xCoord + i1 * 0.59999999999999998D + 0.5D;
+        double d = xCoord + i1 * 1.0D + 0.5D;
         double d1 = yCoord + 0.5D;
-        double d2 = zCoord + j1 * 0.59999999999999998D + 0.5D;
+        double d2 = zCoord + j1 * 1.0D + 0.5D;
         double d3 = worldObj.rand.nextDouble() * 0.02000000000000001D + 0.05000000000000001D;
         EntityItem entityitem = new EntityItem(worldObj, d, d1 - 0.29999999999999999D, d2, stack2drop.copy());
         entityitem.motionX = i1 * d3;
