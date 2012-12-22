@@ -142,7 +142,7 @@ public abstract class PC_GresBaseWithInventory extends Container
                 Slot slot = (Slot) inventorySlots.get(k);
                 ItemStack itemstack1 = slot.getStack();
 
-                if (itemstack1 != null && slot.isItemValid(itemstack) && (flag || itemstack1.stackSize < slot.inventory.getInventoryStackLimit())
+                if (itemstack1 != null && slot.isItemValid(itemstack) && (flag || itemstack1.stackSize < slot.getSlotStackLimit())
                         && itemstack1.itemID == itemstack.itemID
                         && (!itemstack.getHasSubtypes() || itemstack.getItemDamage() == itemstack1.getItemDamage()))
                 {

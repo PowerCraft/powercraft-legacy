@@ -163,7 +163,7 @@ public class PCma_BlockXPBank extends PC_Block implements PC_IItemInfo
     }
 
 	@Override
-	public Object msg(World world, PC_VecI pos, int msg, Object... obj) {
+	public Object msg(IBlockAccess world, PC_VecI pos, int msg, Object... obj) {
 		switch (msg){
 		case PC_Utils.MSG_DEFAULT_NAME:
 			return "XP Bank";

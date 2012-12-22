@@ -470,4 +470,9 @@ public class PCtr_TileEntitySeparationBelt extends PCtr_TileEntityRedirectionBel
         o[3] = group_all;
         return o;
     }
+
+	@Override
+	public boolean canDropStackFrom(int slot) {
+		return true;
+	}
 }

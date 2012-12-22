@@ -81,6 +81,11 @@ public class PCma_TileEntityTransmutabox extends PC_TileEntity implements IInven
     }
 
     @Override
+	public boolean canDropStackFrom(int slot) {
+		return slot!=9&&slot!=10;
+	}
+    
+    @Override
     public int getSizeInventory()
     {
         return 35;

@@ -3,6 +3,7 @@ package powercraft.management;
 import net.minecraft.src.Block;
 import net.minecraft.src.BlockContainer;
 import net.minecraft.src.IBlockAccess;
+import net.minecraft.src.IInventory;
 import net.minecraft.src.Item;
 import net.minecraft.src.ItemBlock;
 import net.minecraft.src.ItemStack;
@@ -39,13 +40,13 @@ public abstract class PC_Block extends BlockContainer implements PC_IMSG
     }
     
     public Object msg(int msg, Object...obj){
-    	World world = null;
+    	IBlockAccess world = null;
     	PC_VecI pos = null;
     	int i=0;
     	if(obj != null){
     		if(obj.length>=1){
-    			if(obj[0] instanceof World){
-    				world = (World)obj[0];
+    			if(obj[0] instanceof IBlockAccess){
+    				world = (IBlockAccess)obj[0];
     				i=1;
     				if(obj.length>=2){
     	    			if(obj[1] instanceof PC_VecI){
@@ -63,7 +64,7 @@ public abstract class PC_Block extends BlockContainer implements PC_IMSG
     	return msg(world, pos, msg, o);
     }
 
-    public abstract Object msg(World world, PC_VecI pos, int msg, Object...obj);
+    public abstract Object msg(IBlockAccess world, PC_VecI pos, int msg, Object...obj);
 
     public TileEntity newTileEntity(World world, int metadata){
 		return null;
@@ -167,4 +168,14 @@ public abstract class PC_Block extends BlockContainer implements PC_IMSG
 		}
 	}
     
+	public void breakBlock(World world, int x, int y, int z, int par5, int par6)
+    {
+		PC_TileEntity te = GameInfo.getTE(world, x, y, z);
+		PC_VecI pos = new PC_VecI(x, y, z);
+		IInventory inv = PC_InvUtils.getCompositeInventoryAt(world, pos);
+		if(inv!=null)
+			PC_InvUtils.dropInventoryContents(inv, world, pos);
+        super.breakBlock(world, x, y, z, par5, par6);
+    }
+	
 }

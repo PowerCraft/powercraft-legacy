@@ -262,4 +262,9 @@ public class PClo_TileEntitySpecial extends PC_TileEntity implements IInventory,
 
     @Override
     public void closeChest() {}
+
+	@Override
+	public boolean canDropStackFrom(int slot) {
+		return true;
+	}
 }

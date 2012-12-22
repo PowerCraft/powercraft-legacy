@@ -30,7 +30,7 @@ public class PCma_BlockTransmutabox extends PC_Block implements PC_IItemInfo
         setCreativeTab(CreativeTabs.tabDecorations);
     }
 
-    public void receivePower(World world, int x, int y, int z, float power)
+    public void receivePower(IBlockAccess world, int x, int y, int z, float power)
     {
         PCma_TileEntityTransmutabox te = GameInfo.getTE(world, x, y, z, blockID);
 
@@ -130,7 +130,7 @@ public class PCma_BlockTransmutabox extends PC_Block implements PC_IItemInfo
     }
 
 	@Override
-	public Object msg(World world, PC_VecI pos, int msg, Object... obj) {
+	public Object msg(IBlockAccess world, PC_VecI pos, int msg, Object... obj) {
 		switch (msg){
 		case PC_Utils.MSG_DEFAULT_NAME:
 			return "Transmutabox";
@@ -148,7 +148,7 @@ public class PCma_BlockTransmutabox extends PC_Block implements PC_IItemInfo
 			renderInventoryBlock((Block)obj[0], (Integer)obj[1], (Integer)obj[2], obj[3]);
 			return true;
 		}case PC_Utils.MSG_RENDER_WORLD_BLOCK:{
-			renderWorldBlock((IBlockAccess)obj[0], (Integer)obj[1], (Integer)obj[2], (Integer)obj[3], (Block)obj[4], (Integer)obj[5], obj[6]);
+			renderWorldBlock(world, pos.x, pos.y, pos.z, (Block)obj[0], (Integer)obj[1], obj[2]);
 			return true;
 		}case PC_Utils.MSG_CAN_RECIVE_POWER:{
 			return true;

@@ -7,6 +7,7 @@ import net.minecraft.src.Block;
 import net.minecraft.src.CreativeTabs;
 import net.minecraft.src.EntityLiving;
 import net.minecraft.src.EntityPlayer;
+import net.minecraft.src.IBlockAccess;
 import net.minecraft.src.ItemBlock;
 import net.minecraft.src.ItemStack;
 import net.minecraft.src.Material;
@@ -175,17 +176,6 @@ public class PCma_BlockBlockBuilder extends PC_Block implements PC_ISpecialInven
 		world.setBlockMetadataWithNotify(i, j, k, l);
 	}
 
-	@Override
-	public void breakBlock(World world, int i, int j, int k, int par5, int par6) {
-		PCma_TileEntityBlockBuilder teb = (PCma_TileEntityBlockBuilder) world.getBlockTileEntity(i, j, k);
-
-
-		if (teb != null) {
-			PC_InvUtils.dropInventoryContents(teb, world, teb.getCoord());
-		}
-		super.breakBlock(world, i, j, k, par5, par6);
-	}
-
 	private boolean isIndirectlyPowered(World world, int i, int j, int k) {
 		if (world.isBlockGettingPowered(i, j, k)) {
 			return true;
@@ -212,7 +202,7 @@ public class PCma_BlockBlockBuilder extends PC_Block implements PC_ISpecialInven
 	}
 
 	@Override
-	public Object msg(World world, PC_VecI pos, int msg, Object... obj) {
+	public Object msg(IBlockAccess world, PC_VecI pos, int msg, Object... obj) {
 		switch (msg){
 		case PC_Utils.MSG_DEFAULT_NAME:
 			return "Block Builder";

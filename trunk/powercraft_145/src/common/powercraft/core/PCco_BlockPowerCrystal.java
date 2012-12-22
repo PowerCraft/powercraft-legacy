@@ -206,7 +206,7 @@ public class PCco_BlockPowerCrystal extends PC_Block
     }
 
 	@Override
-	public Object msg(World world, PC_VecI pos, int msg, Object... obj) {
+	public Object msg(IBlockAccess world, PC_VecI pos, int msg, Object... obj) {
 		switch(msg){
 		case PC_Utils.MSG_LOAD_FROM_CONFIG:
 			setLightValue(((PC_Property)obj[0]).getInt("brightness", 16) * 0.0625F);
@@ -220,7 +220,7 @@ public class PCco_BlockPowerCrystal extends PC_Block
 			renderInventoryBlock((Block)obj[0], (Integer)obj[1], (Integer)obj[2], obj[3]);
 			break;
 		case PC_Utils.MSG_RENDER_WORLD_BLOCK:
-			renderWorldBlock((IBlockAccess)obj[0], (Integer)obj[1], (Integer)obj[2], (Integer)obj[3], (Block)obj[4], (Integer)obj[5], obj[6]);
+			renderWorldBlock(world, pos.x, pos.y, pos.z, (Block)obj[0], (Integer)obj[1], obj[2]);
 			break;
 		case PC_Utils.MSG_SPAWNS_IN_CHUNK:
 			return genCrystalsInChunk;

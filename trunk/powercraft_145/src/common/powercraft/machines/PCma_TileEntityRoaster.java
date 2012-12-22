@@ -531,4 +531,10 @@ public class PCma_TileEntityRoaster extends PC_TileEntity implements IInventory,
                     "noNetherrack", noNetherrack
                 };
     }
+    
+    @Override
+	public boolean canDropStackFrom(int slot) {
+		return true;
+	}
+    
 }

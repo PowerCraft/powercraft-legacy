@@ -6,6 +6,7 @@ import java.util.Set;
 
 import net.minecraft.src.Block;
 import net.minecraft.src.CreativeTabs;
+import net.minecraft.src.IBlockAccess;
 import net.minecraft.src.ItemStack;
 import net.minecraft.src.Material;
 import net.minecraft.src.World;
@@ -33,7 +34,7 @@ public class PCde_BlockRedstoneStorage extends PC_Block implements PC_IItemInfo 
 	}
 
 	@Override
-	public Object msg(World world, PC_VecI pos, int msg, Object... obj) {
+	public Object msg(IBlockAccess world, PC_VecI pos, int msg, Object... obj) {
 		switch(msg){
 		case PC_Utils.MSG_BLOCK_FLAGS:{
 			List<String> list = (List<String>)obj[0];

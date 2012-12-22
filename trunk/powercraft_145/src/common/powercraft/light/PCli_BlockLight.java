@@ -392,7 +392,7 @@ public class PCli_BlockLight extends PC_Block implements PC_IItemInfo
     }
 
 	@Override
-	public Object msg(World world, PC_VecI pos, int msg, Object... obj) {
+	public Object msg(IBlockAccess world, PC_VecI pos, int msg, Object... obj) {
 		switch(msg){
 		case PC_Utils.MSG_LOAD_FROM_CONFIG:
 			on.setLightValue(((PC_Property)obj[0]).getInt("brightness", 15) * 0.0625F);

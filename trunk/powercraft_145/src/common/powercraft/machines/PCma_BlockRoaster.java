@@ -105,19 +105,6 @@ public class PCma_BlockRoaster extends PC_Block implements PC_IItemInfo
         return new PCma_TileEntityRoaster();
     }
 
-    @Override
-    public void breakBlock(World world, int i, int j, int k, int par5, int par6)
-    {
-        PCma_TileEntityRoaster te = (PCma_TileEntityRoaster) world.getBlockTileEntity(i, j, k);
-
-        if (te != null)
-        {
-            PC_InvUtils.dropInventoryContents(te, world, te.getCoord());
-        }
-
-        super.breakBlock(world, i, j, k, par5, par6);
-    }
-
     public static boolean isIndirectlyPowered(World world, int x, int y, int z)
     {
         if (world.isBlockGettingPowered(x, y, z))
@@ -228,7 +215,7 @@ public class PCma_BlockRoaster extends PC_Block implements PC_IItemInfo
     }
 
 	@Override
-	public Object msg(World world, PC_VecI pos, int msg, Object... obj) {
+	public Object msg(IBlockAccess world, PC_VecI pos, int msg, Object... obj) {
 		switch (msg){
 		case PC_Utils.MSG_DEFAULT_NAME:
 			return "Roaster";
@@ -244,7 +231,7 @@ public class PCma_BlockRoaster extends PC_Block implements PC_IItemInfo
 	   		return list;
 		}case PC_Utils.MSG_STR_MSG:{
 			if("isBurning".equalsIgnoreCase((String) obj[0]))
-				return isBurning(world, (Integer)obj[1], (Integer)obj[2], (Integer)obj[3]);
+				return isBurning((World)world, (Integer)obj[1], (Integer)obj[2], (Integer)obj[3]);
 		}
 		}
 		return null;
