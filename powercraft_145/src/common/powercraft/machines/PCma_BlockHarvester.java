@@ -292,8 +292,6 @@ public class PCma_BlockHarvester extends PC_Block implements
 
 			PC_CropEntry cropEntry;
 			
-			System.out.println(id +":"+ meta);
-			
 			if ((cropEntry = PCma_CropHarvestingManager.getHarvestBlockCrop(id, meta))!=null) {
 
 				ItemStack[] harvested = cropEntry.getHarvestedStacks(id, meta);
@@ -466,14 +464,14 @@ public class PCma_BlockHarvester extends PC_Block implements
 		int dispIncX = -Facing.offsetsXForSide[l];
 		int dispIncZ = -Facing.offsetsZForSide[l];
 
-		double dx = devPos.x + dispIncX * 0.59999999999999998D + 0.5D;
+		double dx = devPos.x + dispIncX * 1.0D + 0.5D;
 		double dy = devPos.y + 0.5D;
-		double dz = devPos.z + dispIncZ * 0.59999999999999998D + 0.5D;
+		double dz = devPos.z + dispIncZ * 1.0D + 0.5D;
 
 		EntityItem entityitem = new EntityItem(world, dx, dy - 0.29999999999999999D, dz, itemstack);
 		double throwSpeed = world.rand.nextDouble() * 0.10000000000000001D + 0.20000000000000001D;
 		
-		Block b = GameInfo.getBlock(world, devPos);
+		Block b = GameInfo.getBlock(world, devPos.offset(dispIncX, 0, dispIncZ));
 		String module = null;
 		if(b instanceof PC_Block){
 			module = ((PC_Block) b).getModule().getName();

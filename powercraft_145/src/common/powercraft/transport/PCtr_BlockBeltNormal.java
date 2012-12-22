@@ -24,14 +24,11 @@ public class PCtr_BlockBeltNormal extends PCtr_BlockBeltBase
         {
             return;
         }
-
+        
         if (entity instanceof EntityItem)
         {
             PCtr_BeltHelper.packItems(world, pos);
-        }
 
-        if (entity instanceof EntityItem)
-        {
             PCtr_BeltHelper.doSpecialItemAction(world, pos, (EntityItem) entity);
 
             if (PCtr_BeltHelper.storeNearby(world, pos, (EntityItem) entity, false))
