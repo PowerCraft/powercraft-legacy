@@ -648,4 +648,28 @@ public class PC_InvUtils
 
         return true;
     }
+    
+    public static int insetItemTo(ItemStack itemstack, IInventory inv, int start, int end){
+    	ItemStack is = itemstack.copy();
+    	for(int i=start; i<end; i++){
+    		ItemStack isis = inv.getStackInSlot(i);
+    		if(isis == null){
+    			inv.setInventorySlotContents(i, itemstack.copy());
+    			itemstack.stackSize = 0;
+    		}else if(isis.isItemEqual(itemstack)){
+    			int maxToInsert = Math.min(isis.getMaxStackSize(), inv.getInventoryStackLimit())-isis.stackSize;
+    			if(maxToInsert>0){
+    				if(maxToInsert>itemstack.stackSize){
+    					maxToInsert = itemstack.stackSize;
+    				}
+    				isis.stackSize += maxToInsert;
+    				itemstack.stackSize -= maxToInsert;
+    			}
+    		}
+    		if(itemstack.stackSize==0)
+    			break;
+    	}
+    	return itemstack.stackSize;
+    }
+    
 }

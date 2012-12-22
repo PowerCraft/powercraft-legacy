@@ -25,6 +25,7 @@ public class PC_GlobalVariables {
 	public static TileEntity tileEntity;
 	public static HashMap<String, Object> consts = new HashMap<String, Object>();
 	public static HashMap<String, Object> oldConsts = null;
+	public static boolean idResolve;
 	
 	public static PC_Property config;
 	
@@ -44,6 +45,7 @@ public class PC_GlobalVariables {
 		
 		hackSplashes = config.getBoolean("hacks.splash", true);
 		useUserName = config.getString("hacks.userName", "");
+		idResolve = config.getBoolean("hacks.idResolve", true, "Resolve and change PowerCraft item IDs");
 		
 	}
 	
