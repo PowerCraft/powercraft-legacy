@@ -994,6 +994,7 @@ public class PC_Utils implements PC_IPacketHandler
 		            entityitem.motionX = (float) PC_Utils.rand.nextGaussian() * f3;
 		            entityitem.motionY = (float) PC_Utils.rand.nextGaussian() * f3 + 0.2F;
 		            entityitem.motionZ = (float) PC_Utils.rand.nextGaussian() * f3;
+		            entityitem.delayBeforeCanPickup = 10;
 		            world.spawnEntityInWorld(entityitem);
 		        }
 		    }
