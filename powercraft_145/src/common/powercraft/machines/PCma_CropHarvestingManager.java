@@ -54,7 +54,7 @@ public class PCma_CropHarvestingManager {
 	private static boolean cropsLoaded = false;
 
 	/** hash table of crops - ID -> entry */
-	private static Hashtable<Integer, PC_CropEntry> crops = new Hashtable<Integer, PC_CropEntry>();
+	private static List<PC_CropEntry> crops = new ArrayList<PC_CropEntry>();
 
 	/**
 	 * Start new crop entry (block)
@@ -119,7 +119,7 @@ public class PCma_CropHarvestingManager {
 		if (!new_started) {
 			PC_Logger.severe("Crop manager - endCrop - Crop entry not started!");
 		}
-		crops.put(new_id, new_entry);
+		crops.add(new_entry);
 		new_started = false;
 		new_entry = null;
 	}
@@ -137,35 +137,19 @@ public class PCma_CropHarvestingManager {
 	}
 
 	/**
-	 * Get metadata of seeds (the replanted block)
-	 * 
-	 * @param block_id block id
-	 * @return the block metadata replant meta
-	 */
-	public static int getReplantMeta(int block_id) {
-		PC_CropEntry entry = crops.get(block_id);
-
-		if (entry == null) {
-			return -1;
-		}
-
-		return entry.getReplantMetadata();
-	}
-
-	/**
 	 * Check if this block is registered as crop.
 	 * 
 	 * @param block_id block id
 	 * @return is a crop
 	 */
 	public static boolean isBlockRegisteredCrop(int block_id) {
-		PC_CropEntry entry = crops.get(block_id);
-
-		if (entry == null) {
-			return false;
+		
+		for(PC_CropEntry entry : crops){
+			if(entry.isBlockRegisteredCrop(block_id))
+				return true;
 		}
-
-		return true;
+		
+		return false;
 	}
 
 	/**
@@ -175,14 +159,15 @@ public class PCma_CropHarvestingManager {
 	 * @param block_meta block meta
 	 * @return can harvest
 	 */
-	public static boolean canHarvestBlock(int block_id, int block_meta) {
-		PC_CropEntry entry = crops.get(block_id);
+	public static PC_CropEntry getHarvestBlockCrop(int block_id, int block_meta) {
 
-		if (entry == null) {
-			return false;
+		for(PC_CropEntry entry:crops){
+			if(entry.canHarvestBlock(block_id, block_meta)){
+				return entry;
+			}
 		}
-
-		return entry.canHarvestBlock(block_id, block_meta);
+		
+		return null;
 	}
 
 	/**
@@ -193,17 +178,12 @@ public class PCma_CropHarvestingManager {
 	 * @return array of dropped stacks
 	 */
 	public static ItemStack[] getHarvestedStacks(int block_id, int block_meta) {
-		PC_CropEntry entry = crops.get(block_id);
-		if (entry == null) {
-			return null;
+		for(PC_CropEntry entry:crops){
+			if(entry.canHarvestBlock(block_id, block_meta)){
+				return entry.getHarvestedStacks(block_id, block_meta);
+			}
 		}
-
-		if (!entry.canHarvestBlock(block_id, block_meta)) {
-			// immature
-			return null;
-		}
-
-		return entry.getHarvestedStacks(block_id, block_meta);
+		return null;
 	}
 
 	/**
@@ -258,7 +238,10 @@ public class PCma_CropHarvestingManager {
 						+ "\t</crop>\n"
 						+ "\n"
 						+ "\t<crop name='Cocoa'>\n" 
-						+ "\t\t<block id='127' metaMature='12, 13, 14, 15' metaReplant='0, 1, 2, 3' />\n"
+						+ "\t\t<block id='127' metaMature='12' metaReplant='0' />\n"
+						+ "\t\t<block id='127' metaMature='13' metaReplant='1' />\n"
+						+ "\t\t<block id='127' metaMature='14' metaReplant='2' />\n"
+						+ "\t\t<block id='127' metaMature='15' metaReplant='3' />\n"
 						+ "\t\t<item id='351' meta='0' count='2' rarity='1' priority='1' /><!-- cocoa -->\n"
 						+ "\t</crop>\n"
 						+ "\n"
@@ -355,8 +338,6 @@ public class PCma_CropHarvestingManager {
 						continue croploop;
 					}
 
-					Element block = (Element) blocks.item(0);
-
 					// <item>
 					NodeList items = crop.getElementsByTagName("item");
 					if (blocks.getLength() < 1) {
@@ -365,38 +346,49 @@ public class PCma_CropHarvestingManager {
 					}
 
 					int itemCount = items.getLength();
-
-
-					// <block attrs>
-					String block_id_s = block.getAttribute("id");
-
-					if (block_id_s.equals("") || !block_id_s.matches("[0-9]+")) {
-						PC_Logger.warning("Crop manager - parseFile - Error while parsing " + file + " - bad block ID");
-						continue croploop;
+					
+					List<CropBlockIDMetaInfo> cropList = new ArrayList<CropBlockIDMetaInfo>();
+					
+					for(int j=0; j<blocks.getLength(); j++){
+					
+						CropBlockIDMetaInfo c = new CropBlockIDMetaInfo();
+						
+						Element block = (Element) blocks.item(j);
+	
+						// <block attrs>
+						String block_id_s = block.getAttribute("id");
+	
+						if (block_id_s.equals("") || !block_id_s.matches("[0-9]+")) {
+							PC_Logger.warning("Crop manager - parseFile - Error while parsing " + file + " - bad block ID");
+							continue croploop;
+						}
+	
+						c.id = Integer.parseInt(block_id_s);
+	
+						String block_meta_replant_s = block.getAttribute("metaReplant");
+	
+						if (block_meta_replant_s.equals("") || !block_meta_replant_s.matches("[-]?[0-9]+")) {
+							PC_Logger.warning("Crop manager - parseFile - Error while parsing " + file + " - bad replant meta");
+							continue croploop;
+						}
+	
+						c.meta_replant = Integer.parseInt(block_meta_replant_s);
+	
+						String block_meta_mature_s = block.getAttribute("metaMature");
+	
+						if (block_meta_mature_s.equals("") || !block_meta_mature_s.matches("[-]?[0-9]+")) {
+							PC_Logger.warning("Crop manager - parseFile - Error while parsing " + file + " - bad mature meta");
+							continue croploop;
+						}
+	
+						c.meta = Integer.parseInt(block_meta_mature_s);
+						
+						cropList.add(c);
+						
 					}
-
-					int block_id = Integer.parseInt(block_id_s);
-
-					String block_meta_replant_s = block.getAttribute("metaReplant");
-
-					if (block_meta_replant_s.equals("") || !block_meta_replant_s.matches("[-]?[0-9]+")) {
-						PC_Logger.warning("Crop manager - parseFile - Error while parsing " + file + " - bad replant meta");
-						continue croploop;
-					}
-
-					int meta_replant = Integer.parseInt(block_meta_replant_s);
-
-					String block_meta_mature_s = block.getAttribute("metaMature");
-
-					if (block_meta_mature_s.equals("") || !block_meta_mature_s.matches("[-]?[0-9]+")) {
-						PC_Logger.warning("Crop manager - parseFile - Error while parsing " + file + " - bad mature meta");
-						continue croploop;
-					}
-
-					int meta_mature = Integer.parseInt(block_meta_mature_s);
-
+					
 					// store block
-					manager.startCrop(block_id, meta_mature, meta_replant);
+					manager.startCrop(cropList);
 
 					itemloop:
 					for (int j = 0; j < itemCount; j++) {
@@ -546,7 +538,7 @@ public class PCma_CropHarvestingManager {
 	 * 
 	 * @author MightyPork
 	 */
-	private class PC_CropEntry {
+	public class PC_CropEntry {
 
 		private List<CropBlockIDMetaInfo> crop;
 
@@ -572,6 +564,15 @@ public class PCma_CropHarvestingManager {
 		 */
 		public void setBlockInfo(List<CropBlockIDMetaInfo> crop) {
 			this.crop = crop;
+		}
+
+		public boolean isBlockRegisteredCrop(int block_id) {
+			for(CropBlockIDMetaInfo c:crop){
+				if(c.id == block_id){
+					return true;
+				}
+			}
+			return false;
 		}
 
 		/**
@@ -685,8 +686,13 @@ public class PCma_CropHarvestingManager {
 		 * 
 		 * @return int (metadata), or -1 if the block should be removed
 		 */
-		public int getReplantMetadata() {
-			return metaReplant;
+		public int getReplantMetadata(int id, int meta) {
+			for(CropBlockIDMetaInfo c:crop){
+				if(c.id == id && (c.meta == meta || c.meta < 0)){
+					return c.meta_replant;
+				}
+			}
+			return -1;
 		}
 
 	}

@@ -26,6 +26,7 @@ import net.minecraft.src.ItemStack;
 import net.minecraft.src.Material;
 import net.minecraft.src.MathHelper;
 import net.minecraft.src.World;
+import powercraft.machines.PCma_CropHarvestingManager.PC_CropEntry;
 import powercraft.management.PC_BeamTracer;
 import powercraft.management.PC_Block;
 import powercraft.management.PC_Color;
@@ -300,7 +301,9 @@ public class PCma_BlockHarvester extends PC_Block implements
 		// block registered using XML
 		if (PCma_CropHarvestingManager.isBlockRegisteredCrop(id)) {
 
-			if (PCma_CropHarvestingManager.canHarvestBlock(id, meta)) {
+			PC_CropEntry cropEntry;
+			
+			if ((cropEntry = PCma_CropHarvestingManager.getHarvestBlockCrop(id, meta))!=null) {
 
 				ItemStack[] harvested = PCma_CropHarvestingManager.getHarvestedStacks(id, meta);
 
@@ -319,7 +322,7 @@ public class PCma_BlockHarvester extends PC_Block implements
 
 				}
 
-				int newMeta = PCma_CropHarvestingManager.getReplantMeta(id);
+				int newMeta = cropEntry.getReplantMetadata(id, meta);
 
 				if (newMeta == -1) {
 					world.setBlockWithNotify(coord.x, coord.y, coord.z, 0);
