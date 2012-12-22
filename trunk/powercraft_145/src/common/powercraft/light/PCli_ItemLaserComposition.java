@@ -184,14 +184,20 @@ public class PCli_ItemLaserComposition extends PC_Item
         	itemstack.setTagCompound(nbtTagCompound);
         }
         int levelKill = nbtTagCompound.getInteger("level.kill");
+        int levelSensor = nbtTagCompound.getInteger("level.sensor");
+        int levelDistance = nbtTagCompound.getInteger("level.distance");
         int maxLevel = levelKill;
+        if(maxLevel<levelSensor)
+        	maxLevel = levelSensor;
+        if(maxLevel<levelDistance)
+        	maxLevel = levelDistance;
         if(maxLevel==0){
         	return new PC_Color(1.0f, 1.0f, 1.0f);
         }
         PC_Color c = new PC_Color();
         c.x = levelKill / (float)maxLevel;
-        c.y = 0.0f;
-        c.z = 0.0f;
+        c.y = levelSensor / (float)maxLevel;
+        c.z = levelDistance / (float)maxLevel;
         return c;
     }
     
