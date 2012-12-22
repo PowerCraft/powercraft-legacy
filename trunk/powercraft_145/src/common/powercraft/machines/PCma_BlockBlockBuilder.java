@@ -211,7 +211,7 @@ public class PCma_BlockBlockBuilder extends PC_Block implements PC_ISpecialInven
 			list.add(PC_Utils.NO_BUILD);
 			return list;
 		}case PC_Utils.MSG_BLOCK_FLAGS:{
-			List<String> list = (List<String>)obj[1];
+			List<String> list = (List<String>)obj[0];
 	   		list.add(PC_Utils.NO_HARVEST);
 	   		list.add(PC_Utils.NO_PICKUP);
 	   		list.add(PC_Utils.HARVEST_STOP);
