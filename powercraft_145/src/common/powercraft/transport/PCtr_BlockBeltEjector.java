@@ -129,22 +129,23 @@ public class PCtr_BlockBeltEjector extends PCtr_BlockBeltBase
     {
         PC_VecI pos = new PC_VecI(i, j, k);
         int meta = GameInfo.getMD(world, pos);
-
+        PCtr_TileEntityEjectionBelt te = GameInfo.getTE(world, pos);
+        
         if (isPowered(world, pos))
         {
-            if (!PCtr_BeltHelper.isActive(meta))
+            if (!te.isActive)
             {
                 if (!PCtr_BeltHelper.dispenseStackFromNearbyMinecart(world, pos))
                 {
                     PCtr_BeltHelper.tryToDispenseItem(world, pos);
                 }
 
-                ValueWriting.setMD(world, pos, PCtr_BeltHelper.getActiveMeta(meta));
+                te.isActive = true;
             }
         }
-        else if (PCtr_BeltHelper.isActive(meta))
+        else if (te.isActive)
         {
-        	ValueWriting.setMD(world, pos, PCtr_BeltHelper.getPassiveMeta(meta));
+        	te.isActive = false;
         }
     }
 

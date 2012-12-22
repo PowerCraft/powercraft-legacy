@@ -324,5 +324,10 @@ public class PC_VecI implements Serializable, PC_Vec<Integer, PC_VecI>{
 		nbttag.setInteger("y", y);
 		nbttag.setInteger("z", z);
 	}
+
+	@Override
+	public String toString() {
+		return "Vec["+x+", "+y+", "+z+"]";
+	}
 	
 }

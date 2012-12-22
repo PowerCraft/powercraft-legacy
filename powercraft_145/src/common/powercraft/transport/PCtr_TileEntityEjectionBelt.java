@@ -17,6 +17,8 @@ public class PCtr_TileEntityEjectionBelt extends PC_TileEntity
 
     public int itemSelectMode = 0;
 
+	public boolean isActive = false;
+    
     public PCtr_TileEntityEjectionBelt() {}
 
     @Override
@@ -32,6 +34,7 @@ public class PCtr_TileEntityEjectionBelt extends PC_TileEntity
     public void writeToNBT(NBTTagCompound tag)
     {
         super.writeToNBT(tag);
+        tag.setBoolean("isActive", isActive);
         tag.setInteger("actionType", actionType);
         tag.setInteger("numStacks", numStacksEjected);
         tag.setInteger("numItems", numItemsEjected);
@@ -42,6 +45,7 @@ public class PCtr_TileEntityEjectionBelt extends PC_TileEntity
     public void readFromNBT(NBTTagCompound tag)
     {
         super.readFromNBT(tag);
+        isActive = tag.getBoolean("isActive");
         actionType = tag.getInteger("actionType");
         numStacksEjected = tag.getInteger("numStacks");
         numItemsEjected = tag.getInteger("numItems");
@@ -52,7 +56,7 @@ public class PCtr_TileEntityEjectionBelt extends PC_TileEntity
     public void setData(Object[] o)
     {
         int p = 0;
-
+        
         while (p < o.length)
         {
             String var = (String)o[p++];
@@ -79,15 +83,11 @@ public class PCtr_TileEntityEjectionBelt extends PC_TileEntity
     @Override
     public Object[] getData()
     {
-        Object[] o = new Object[8];
-        o[0] = "actionType";
-        o[1] = actionType;
-        o[2] = "itemSelectMode";
-        o[3] = itemSelectMode;
-        o[4] = "numStacksEjected";
-        o[5] = numStacksEjected;
-        o[6] = "numItemsEjected";
-        o[7] = numItemsEjected;
-        return o;
+        return new Object[]{
+		        "actionType", actionType,
+		        "itemSelectMode", itemSelectMode,
+		        "numStacksEjected", numStacksEjected,
+		        "numItemsEjected", numItemsEjected
+        	};
     }
 }
