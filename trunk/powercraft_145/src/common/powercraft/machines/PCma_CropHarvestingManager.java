@@ -206,7 +206,7 @@ public class PCma_CropHarvestingManager {
 						+ "<crops>\n"
 						+ "\n"
 						+ "\t<crop name='Wheat'>\n" 
-						+ "\t\t<block id='141' metaMature='7' metaReplant='0' />\n"
+						+ "\t\t<block id='59' metaMature='7' metaReplant='0' />\n"
 						+ "\t\t<item id='296' meta='0' count='1' rarity='1' priority='1' /><!-- wheat -->\n"
 						+ "\t\t<item id='295' meta='0' count='0-2' rarity='1' priority='1' /><!-- seeds -->\n"
 						+ "\t</crop>\n"
