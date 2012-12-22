@@ -368,6 +368,8 @@ public class PC_Utils implements PC_IPacketHandler
 			return id;
 		}
 		public static void resetPCObjectsIDs(){
+			if(!PC_GlobalVariables.idResolve)
+				return;
 			for(Object o: PC_Utils.objects.values()){
 				ModuleLoader.setPCObjectID(o, -1);
 			}
@@ -390,6 +392,8 @@ public class PC_Utils implements PC_IPacketHandler
 		    }
 		}
 		public static void setPCObjectID(Object o, int id){
+			if(!PC_GlobalVariables.idResolve)
+				return;
 			if(o instanceof PC_Item){
 				((PC_Item) o).setItemID(id);
 			}else if(o instanceof PC_Block){
@@ -1864,6 +1868,8 @@ public class PC_Utils implements PC_IPacketHandler
 		}
 
 		public static void loadIDFromTagCompound(NBTTagCompound nbttag){
+			if(!PC_GlobalVariables.idResolve)
+				return;
 			for(Entry<String, Object>e: PC_Utils.objects.entrySet()){
 				PC_Utils.ModuleLoader.setPCObjectID(e.getValue(), -1);
 			}

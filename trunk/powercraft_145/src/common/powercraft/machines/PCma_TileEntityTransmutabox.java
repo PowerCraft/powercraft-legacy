@@ -39,7 +39,7 @@ public class PCma_TileEntityTransmutabox extends PC_TileEntity implements IInven
     @Override
     public boolean insertStackIntoInventory(ItemStack stack)
     {
-        return false;
+        return PC_InvUtils.insetItemTo(stack, this, 11, 23)==0;
     }
 
     @Override
@@ -274,25 +274,7 @@ public class PCma_TileEntityTransmutabox extends PC_TileEntity implements IInven
     }
     
     private int sendToOutput(ItemStack is){
-    	ItemStack itemstack = is.copy();
-    	for(int i=23; i<35; i++){
-    		if(itemStacks[i] == null){
-    			itemStacks[i] = itemstack.copy();
-    			itemstack.stackSize = 0;
-    		}else if(itemStacks[i].isItemEqual(itemstack)){
-    			int maxToInsert = Math.min(itemStacks[i].getMaxStackSize(), getInventoryStackLimit())-itemStacks[i].stackSize;
-    			if(maxToInsert>0){
-    				if(maxToInsert>itemstack.stackSize){
-    					maxToInsert = itemstack.stackSize;
-    				}
-    				itemStacks[i].stackSize += maxToInsert;
-    				itemstack.stackSize -= maxToInsert;
-    			}
-    		}
-    		if(itemstack.stackSize==0)
-    			break;
-    	}
-    	return itemstack.stackSize;
+    	return PC_InvUtils.insetItemTo(is, this, 23, 35);
     }
     
     @Override
