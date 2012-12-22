@@ -399,8 +399,13 @@ public class PCma_BlockHarvester extends PC_Block implements
 			cart.posX = startCoord.x + iPLUS1 * 1.5D;
 			cart.posY = startCoord.y;
 			cart.posZ = startCoord.z + kPLUS1 * 1.5D;
-			cart.attackEntityFrom(DamageSource.generic, 1000);
-
+			for(int i=0; i<cart.getSizeInventory(); i++){
+				addToDispenseList(cart.getStackInSlot(i));
+				cart.setInventorySlotContents(i, null);
+			}
+			drops.addAll(cart.getItemsDropped());
+			cart.setDead();
+			
 		} else if (entity instanceof EntitySheep) {
 
 			EntitySheep sheep = (EntitySheep) entity;
@@ -516,7 +521,7 @@ public class PCma_BlockHarvester extends PC_Block implements
 		case PC_Utils.MSG_DEFAULT_NAME:
 			return "Harvester";
 		case PC_Utils.MSG_BLOCK_FLAGS:{
-			List<String> list = (List<String>)obj[1];
+			List<String> list = (List<String>)obj[0];
 	   		list.add(PC_Utils.NO_HARVEST);
 	   		list.add(PC_Utils.NO_PICKUP);
 	   		list.add(PC_Utils.HARVEST_STOP);
