@@ -377,14 +377,14 @@ public class PCma_BlockHarvester extends PC_Block implements
 
 		World world = beamTracer.getWorld();
 		
-		if (entity == null) return true;
+		if (entity == null) return false;
 
 		if (entity instanceof EntityMinecart) {
 
 			EntityMinecart cart = (EntityMinecart) entity;
 
 			if (cart.isDead) {
-				return true;
+				return false;
 			}
 
 			int l = GameInfo.getMD(world, coord.x, coord.y, coord.z) & 7;
@@ -401,7 +401,12 @@ public class PCma_BlockHarvester extends PC_Block implements
 				addToDispenseList(cart.getStackInSlot(i));
 				cart.setInventorySlotContents(i, null);
 			}
-			drops.addAll(cart.getItemsDropped());
+			addToDispenseList(new ItemStack(Item.minecartEmpty));
+			if(cart.minecartType==1){
+				addToDispenseList(new ItemStack(Block.chest));
+			}else if(cart.minecartType==2){
+				addToDispenseList(new ItemStack(Block.stoneOvenIdle));
+			}
 			cart.setDead();
 			
 		} else if (entity instanceof EntitySheep) {
@@ -409,7 +414,7 @@ public class PCma_BlockHarvester extends PC_Block implements
 			EntitySheep sheep = (EntitySheep) entity;
 
 			if (sheep.isDead) {
-				return true;
+				return false;
 			}
 
 			if (!sheep.getSheared()) {
@@ -423,7 +428,7 @@ public class PCma_BlockHarvester extends PC_Block implements
 			EntityMooshroom mooshroom = (EntityMooshroom) entity;
 
 			if (mooshroom.isDead) {
-				return true;
+				return false;
 			}
 
 			if (mooshroom.getGrowingAge() >= 0) {
@@ -443,9 +448,11 @@ public class PCma_BlockHarvester extends PC_Block implements
 
 			}
 
+		} else {
+			return false;
 		}
 
-		return false;
+		return true;
 	}
 
 	private void addToDispenseList(ItemStack stack) {
