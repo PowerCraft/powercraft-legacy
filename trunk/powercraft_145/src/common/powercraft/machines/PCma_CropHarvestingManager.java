@@ -171,22 +171,6 @@ public class PCma_CropHarvestingManager {
 	}
 
 	/**
-	 * Get list of stacks obtained by machine-harvesting this block.
-	 * 
-	 * @param block_id block id
-	 * @param block_meta block meta
-	 * @return array of dropped stacks
-	 */
-	public static ItemStack[] getHarvestedStacks(int block_id, int block_meta) {
-		for(PC_CropEntry entry:crops){
-			if(entry.canHarvestBlock(block_id, block_meta)){
-				return entry.getHarvestedStacks(block_id, block_meta);
-			}
-		}
-		return null;
-	}
-
-	/**
 	 * Call this method to explicitly init static fields -> list of crops from
 	 * XML files
 	 */
@@ -238,11 +222,15 @@ public class PCma_CropHarvestingManager {
 						+ "\t</crop>\n"
 						+ "\n"
 						+ "\t<crop name='Cocoa'>\n" 
+						+ "\t\t<block id='127' metaMature='8' metaReplant='0' />\n"
+						+ "\t\t<block id='127' metaMature='9' metaReplant='1' />\n"
+						+ "\t\t<block id='127' metaMature='10' metaReplant='2' />\n"
+						+ "\t\t<block id='127' metaMature='11' metaReplant='3' />\n"
 						+ "\t\t<block id='127' metaMature='12' metaReplant='0' />\n"
 						+ "\t\t<block id='127' metaMature='13' metaReplant='1' />\n"
 						+ "\t\t<block id='127' metaMature='14' metaReplant='2' />\n"
 						+ "\t\t<block id='127' metaMature='15' metaReplant='3' />\n"
-						+ "\t\t<item id='351' meta='0' count='2' rarity='1' priority='1' /><!-- cocoa -->\n"
+						+ "\t\t<item id='351' meta='3' count='2' rarity='1' priority='1' /><!-- cocoa -->\n"
 						+ "\t</crop>\n"
 						+ "\n"
 						+ "\t<crop name='Nether Wart'>\n"
@@ -333,10 +321,6 @@ public class PCma_CropHarvestingManager {
 
 					// <block>
 					NodeList blocks = crop.getElementsByTagName("block");
-					if (blocks.getLength() != 1) {
-						PC_Logger.warning("Crop manager - parseFile - Error while parsing " + file + " - invalid no. of <block>s in one <crop>");
-						continue croploop;
-					}
 
 					// <item>
 					NodeList items = crop.getElementsByTagName("item");
