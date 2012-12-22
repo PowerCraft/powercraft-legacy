@@ -15,6 +15,7 @@ import net.minecraft.src.IInventory;
 import net.minecraft.src.Item;
 import net.minecraft.src.ItemMinecart;
 import net.minecraft.src.ItemStack;
+import net.minecraft.src.MathHelper;
 import net.minecraft.src.TileEntityBrewingStand;
 import net.minecraft.src.TileEntityFurnace;
 import net.minecraft.src.World;
@@ -1173,15 +1174,14 @@ public class PCtr_BeltHelper
 
     public static void createEntityItemOnBelt(World world, PC_VecI invPos, PC_VecI beltPos, ItemStack stack)
     {
-    	System.out.println("createEntityItemOnBelt:"+world+":"+stack+":"+beltPos+":"+invPos);
         EntityItem item = new EntityItem(world, beltPos.x + 0.5D, beltPos.y + 0.3D, beltPos.z + 0.5D, stack);
         item.motionX = 0.0D;
         item.motionY = 0.0D;
         item.motionZ = 0.0D;
-        PC_VecI vector = beltPos.offset(invPos);
+        PC_VecI vector = beltPos.copy().sub(invPos);
         item.posX += 0.43D * vector.x;
         item.posZ += 0.43D * vector.z;
         item.delayBeforeCanPickup = 7;
-        System.out.println(world.spawnEntityInWorld(item));
+        world.spawnEntityInWorld(item);
     }
 }
