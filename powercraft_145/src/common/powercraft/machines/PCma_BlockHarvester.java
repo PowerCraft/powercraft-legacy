@@ -270,17 +270,6 @@ public class PCma_BlockHarvester extends PC_Block implements
 			return false;
 		}
 
-		/*if(id == Block.cocoaPlant.blockID){
-			if(((meta & 12) >> 2)<2){
-				return false;
-			}else{
-				if(!world.isRemote)
-					addToDispenseList(new ItemStack(Item.dyePowder.shiftedIndex, 2, 3));
-				world.setBlockWithNotify(coord.x, coord.y, coord.z, Block.cocoaPlant.blockID);
-				return true;
-			}
-		}*/
-
 
 
 		// tree - replace with sapling
@@ -303,9 +292,11 @@ public class PCma_BlockHarvester extends PC_Block implements
 
 			PC_CropEntry cropEntry;
 			
+			System.out.println(id +":"+ meta);
+			
 			if ((cropEntry = PCma_CropHarvestingManager.getHarvestBlockCrop(id, meta))!=null) {
 
-				ItemStack[] harvested = PCma_CropHarvestingManager.getHarvestedStacks(id, meta);
+				ItemStack[] harvested = cropEntry.getHarvestedStacks(id, meta);
 
 				if (harvested != null) {
 
