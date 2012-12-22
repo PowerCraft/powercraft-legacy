@@ -121,7 +121,7 @@ public abstract class PC_GresBaseWithInventory extends Container
             return a;
         }
 
-        return Math.min(a, slot.inventory.getInventoryStackLimit());
+        return Math.min(a, slot.getSlotStackLimit());
     }
 
     @Override

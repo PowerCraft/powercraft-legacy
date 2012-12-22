@@ -6,6 +6,7 @@ import java.io.FilenameFilter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Hashtable;
+import java.util.List;
 import java.util.Random;
 
 import javax.xml.parsers.DocumentBuilder;
@@ -32,10 +33,16 @@ import powercraft.management.PC_Utils.GameInfo;
  */
 public class PCma_CropHarvestingManager {
 
+	private static class CropBlockIDMetaInfo{
+		public int id;
+		public int meta;
+		public int meta_replant;
+	}
+	
 	/*
 	 * These are used internally for crop loading.
 	 */
-	private int new_id, new_meta_mature, new_meta_replant;
+	private List<CropBlockIDMetaInfo> new_crop;
 	private PC_CropEntry new_entry;
 	private boolean new_started = false;
 
@@ -58,19 +65,17 @@ public class PCma_CropHarvestingManager {
 	 * @param meta_replant meta to replant this crop with.<br>
 	 *            -1 = disable replanting.
 	 */
-	public void startCrop(int id, int meta_mature, int meta_replant) {
+	public void startCrop(List<CropBlockIDMetaInfo> crop) {
 
 		if (new_started) {
 			PC_Logger.severe("Crop manager - startCrop - Crop entry already started!");
 		}
 
-		new_id = id;
-		new_meta_mature = meta_mature;
-		new_meta_replant = meta_replant;
+		new_crop = crop;
 		new_started = true;
 		new_entry = new PC_CropEntry();
 
-		new_entry.setBlockInfo(new_id, new_meta_mature, new_meta_replant);
+		new_entry.setBlockInfo(new_crop);
 	}
 
 
@@ -236,9 +241,25 @@ public class PCma_CropHarvestingManager {
 						+ "-->\n\n"
 						+ "<crops>\n"
 						+ "\n"
-						+ "\t<crop name='Wheat'>\n" + "\t\t<block id='59' metaMature='7' metaReplant='0' />\n"
+						+ "\t<crop name='Wheat'>\n" 
+						+ "\t\t<block id='141' metaMature='7' metaReplant='0' />\n"
 						+ "\t\t<item id='296' meta='0' count='1' rarity='1' priority='1' /><!-- wheat -->\n"
 						+ "\t\t<item id='295' meta='0' count='0-2' rarity='1' priority='1' /><!-- seeds -->\n"
+						+ "\t</crop>\n"
+						+ "\n"
+						+ "\t<crop name='Carrot'>\n" 
+						+ "\t\t<block id='141' metaMature='7' metaReplant='0' />\n"
+						+ "\t\t<item id='391' meta='0' count='2' rarity='1' priority='1' /><!-- carrot -->\n"
+						+ "\t</crop>\n"
+						+ "\n"
+						+ "\t<crop name='Potato'>\n" 
+						+ "\t\t<block id='142' metaMature='7' metaReplant='0' />\n"
+						+ "\t\t<item id='392' meta='0' count='2' rarity='1' priority='1' /><!-- potato -->\n"
+						+ "\t</crop>\n"
+						+ "\n"
+						+ "\t<crop name='Cocoa'>\n" 
+						+ "\t\t<block id='127' metaMature='12, 13, 14, 15' metaReplant='0, 1, 2, 3' />\n"
+						+ "\t\t<item id='351' meta='0' count='2' rarity='1' priority='1' /><!-- cocoa -->\n"
 						+ "\t</crop>\n"
 						+ "\n"
 						+ "\t<crop name='Nether Wart'>\n"
@@ -527,9 +548,7 @@ public class PCma_CropHarvestingManager {
 	 */
 	private class PC_CropEntry {
 
-		private int blockID;
-		private int metaReplant;
-		private int metaMature;
+		private List<CropBlockIDMetaInfo> crop;
 
 		// each added item creates one entry in all of these lists.
 		private ArrayList<Integer> itemId = new ArrayList<Integer>();
@@ -551,10 +570,8 @@ public class PCma_CropHarvestingManager {
 		 * @param metadataMature metadata of block ready to be harvested
 		 * @param metadataReplant metadata of replanted block (the seeds block)
 		 */
-		public void setBlockInfo(int id, int metadataMature, int metadataReplant) {
-			blockID = id;
-			metaReplant = metadataReplant;
-			metaMature = metadataMature;
+		public void setBlockInfo(List<CropBlockIDMetaInfo> crop) {
+			this.crop = crop;
 		}
 
 		/**
@@ -593,7 +610,12 @@ public class PCma_CropHarvestingManager {
 		 * @return true if can harvest
 		 */
 		public boolean canHarvestBlock(int id, int meta) {
-			return id == blockID && (meta == metaMature || metaMature < 0);
+			for(CropBlockIDMetaInfo c:crop){
+				if(c.id == id && (c.meta == meta || c.meta < 0)){
+					return true;
+				}
+			}
+			return false;
 		}
 
 		/**

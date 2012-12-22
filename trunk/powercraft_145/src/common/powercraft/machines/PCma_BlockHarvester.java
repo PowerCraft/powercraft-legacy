@@ -269,16 +269,16 @@ public class PCma_BlockHarvester extends PC_Block implements
 			return false;
 		}
 
-		if(id == Block.cocoaPlant.blockID){
+		/*if(id == Block.cocoaPlant.blockID){
 			if(((meta & 12) >> 2)<2){
 				return false;
 			}else{
 				if(!world.isRemote)
-					addToDispenseList(new ItemStack(Item.dyePowder.shiftedIndex, 3, 3));
-				world.setBlockWithNotify(coord.x, coord.y, coord.z, 0);
+					addToDispenseList(new ItemStack(Item.dyePowder.shiftedIndex, 2, 3));
+				world.setBlockWithNotify(coord.x, coord.y, coord.z, Block.cocoaPlant.blockID);
 				return true;
 			}
-		}
+		}*/
 
 
 
