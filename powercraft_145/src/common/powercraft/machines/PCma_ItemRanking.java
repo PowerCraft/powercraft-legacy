@@ -186,7 +186,12 @@ public class PCma_ItemRanking {
 				load(key + e.getKey(), e.getValue());
 			}
 		}else{
-			Item item = getItem(key);
+			Item item;
+			if(key.startsWith("id.")){
+				item = Item.itemsList[Integer.parseInt(key.substring(3))];
+			}else{
+				item = getItem(key);
+			}
 			List<Integer> l = GameInfo.parseIntList(prop.getString());
 			int num=0;
 			for(Integer i:l){
@@ -198,11 +203,11 @@ public class PCma_ItemRanking {
 	}
 	
 	private static void reg(PC_Property prop, Item item, String nums){
-		prop.getString(item.getItemName(), nums);
+		prop.getString("id."+item.shiftedIndex, nums, item.getItemName());
 	}
 	
 	private static void reg(PC_Property prop, Block block, String nums){
-		prop.getString(Item.itemsList[block.blockID].getItemName(), nums);
+		prop.getString("id."+block.blockID, nums, Item.itemsList[block.blockID].getItemName());
 	}
 	
 	public static void init(){
@@ -225,78 +230,74 @@ public class PCma_ItemRanking {
 		reg(prop, Block.stoneBrick, "1");
 		reg(prop, Block.sand, "1");
 		reg(prop, Block.gravel, "1");
-		reg(prop, Block.oreGold, "1");
-		reg(prop, Block.oreIron, "1");
-		reg(prop, Block.oreCoal, "1");
+		reg(prop, Block.oreGold, "1000");
+		reg(prop, Block.oreIron, "500");
+		reg(prop, Block.oreCoal, "250");
 		reg(prop, Block.sponge, "1");
-		reg(prop, Block.oreLapis, "1");
+		reg(prop, Block.oreLapis, "500");
 		reg(prop, Block.web, "1");
-		reg(prop, Block.cobblestoneMossy, "1");
-		reg(prop, Block.obsidian, "1");
+		reg(prop, Block.cobblestoneMossy, "500");
+		reg(prop, Block.obsidian, "2000");
 		reg(prop, Block.fire, "1");
-		reg(prop, Block.mobSpawner, "1");
-		reg(prop, Block.oreDiamond, "1");
+		reg(prop, Block.mobSpawner, "4000");
+		reg(prop, Block.oreDiamond, "2000");
 		reg(prop, Block.crops, "1");
-		reg(prop, Block.oreRedstone, "1");
-		reg(prop, Block.oreRedstone, "1");
+		reg(prop, Block.oreRedstone, "250");
 		reg(prop, Block.snow, "1");
 		reg(prop, Block.ice, "1");
-		reg(prop, Block.cactus, "1");
-		reg(prop, Block.pumpkin, "1");
+		reg(prop, Block.cactus, "20");
+		reg(prop, Block.pumpkin, "100");
 		reg(prop, Block.netherrack, "1");
-		reg(prop, Block.slowSand, "1");
-		reg(prop, Block.pumpkinStem, "1");
-		reg(prop, Block.pumpkinStem, "1");
+		reg(prop, Block.slowSand, "10");
 		reg(prop, Block.vine, "1");
 		reg(prop, Block.mycelium, "1");
-		reg(prop, Block.waterlily, "1");
-		reg(prop, Block.netherBrick, "1");
-		reg(prop, Block.netherStalk, "1");
-		reg(prop, Block.brewingStand, "1");
+		reg(prop, Block.waterlily, "1000");
+		reg(prop, Block.netherBrick, "10");
+		reg(prop, Block.netherStalk, "10");
 		reg(prop, Block.cauldron, "1");
-		reg(prop, Block.whiteStone, "1");
-		reg(prop, Block.dragonEgg, "1");
-		reg(prop, Block.oreEmerald, "1");
-		reg(prop, Block.tripWire, "1");
-		reg(prop, Block.commandBlock, "1");
-		reg(prop, Block.flowerPot, "1");
+		reg(prop, Block.whiteStone, "100");
+		reg(prop, Block.dragonEgg, "100000");
+		reg(prop, Block.oreEmerald, "4000");
+		reg(prop, Block.tripWire, "100");
+		reg(prop, Block.commandBlock, "1000");
+		reg(prop, Block.flowerPot, "10");
 		reg(prop, Block.skull, "1");
-		reg(prop, Item.appleRed, "1");
-		reg(prop, Item.silk, "1");
+		reg(prop, Item.appleRed, "10");
+		reg(prop, Item.silk, "10");
 		reg(prop, Item.feather, "1");
-		reg(prop, Item.gunpowder, "1");
-		reg(prop, Item.seeds, "1");
-		reg(prop, Item.wheat, "1");
-		reg(prop, Item.flint, "1");
+		reg(prop, Item.gunpowder, "100");
+		reg(prop, Item.seeds, "10");
+		reg(prop, Item.wheat, "10");
+		reg(prop, Item.flint, "10");
 		reg(prop, Item.porkRaw, "1");
-		reg(prop, Item.bucketWater, "1");
-		reg(prop, Item.bucketLava, "1");
-		reg(prop, Item.saddle, "1");
-		reg(prop, Item.snowball, "1");
+		reg(prop, Item.bucketWater, "1000");
+		reg(prop, Item.bucketLava, "10000");
+		reg(prop, Item.saddle, "1000");
+		reg(prop, Item.snowball, "10");
 		reg(prop, Item.leather, "1");
-		reg(prop, Item.bucketMilk, "1");
+		reg(prop, Item.bucketMilk, "1000");
 		reg(prop, Item.clay, "1");
 		reg(prop, Item.reed, "1");
-		reg(prop, Item.slimeBall, "1");
-		reg(prop, Item.egg, "1");
-		reg(prop, Item.lightStoneDust, "1");
-		reg(prop, Item.fishRaw, "1");
-		reg(prop, Item.bone, "1");
-		reg(prop, Item.melon, "1");
-		reg(prop, Item.beefRaw, "1");
-		reg(prop, Item.chickenRaw, "1");
+		reg(prop, Item.slimeBall, "100");
+		reg(prop, Item.egg, "10");
+		reg(prop, Item.lightStoneDust, "100");
+		reg(prop, Item.fishRaw, "100");
+		reg(prop, Item.bone, "10");
+		reg(prop, Item.melon, "10");
+		reg(prop, Item.beefRaw, "10");
+		reg(prop, Item.chickenRaw, "10");
 		reg(prop, Item.rottenFlesh, "1");
-		reg(prop, Item.enderPearl, "1");
-		reg(prop, Item.blazeRod, "1");
-		reg(prop, Item.ghastTear, "1");
+		reg(prop, Item.enderPearl, "1000");
+		reg(prop, Item.blazeRod, "10000");
+		reg(prop, Item.ghastTear, "5000");
 		reg(prop, Item.netherStalkSeeds, "1");
-		reg(prop, Item.spiderEye, "1");
-		reg(prop, Item.expBottle, "1");
-		reg(prop, Item.writtenBook, "1");
-		reg(prop, Item.carrot, "1");
-		reg(prop, Item.potato, "1");
+		reg(prop, Item.spiderEye, "10");
+		reg(prop, Item.expBottle, "1000");
+		reg(prop, Item.writtenBook, "1000");
+		reg(prop, Item.carrot, "10");
+		reg(prop, Item.potato, "10");
 		reg(prop, Item.poisonousPotato, "1");
-		reg(prop, Item.netherStar, "1");
+		reg(prop, Item.netherStar, "100000");
 		reg(prop, Item.record13, "1");
 		reg(prop, Item.recordCat, "1");
 		reg(prop, Item.recordBlocks, "1");
