@@ -109,30 +109,15 @@ public class PCma_ItemRanking {
 						if(allreadyDone.contains(pcis))
 							continue;
 						List<IRecipe> recipes = GameInfo.getRecipesForProduct(is);
-						List<ItemStack> seedstocks = GameInfo.getFeedstock(is);
-						if(seedstocks.size()!=0){
-							for(ItemStack itemstack:seedstocks){
-								PC_ItemStack pcisi = new PC_ItemStack(itemstack);
-								PC_Struct2<Float, Integer> s =ranking.get(pcisi);
-								if(s != null){
-									setRank(pcis, (int)(s.a+100));
-									anyDone = true;
-									if(!allreadyDone.contains(pcis))
-										allreadyDone.add(pcis);
-								}
-							}
-						}else{
-							if(recipes.size()==0){
-								if(print){
-									String name = Item.itemsList[pcis.getID()].getItemName();
-									if(name!=null){
-										if(name.startsWith("item.")){
-											System.out.println("reg(prop, Item."+ name.substring(5) +", \"1\");");
-										}else{
-											System.out.println("reg(prop, Block."+ name.substring(5) +", \"1\");");
-										}
-									}
-								}
+						List<ItemStack> feedstocks = GameInfo.getFeedstock(is);
+						for(ItemStack itemstack:feedstocks){
+							PC_ItemStack pcisi = new PC_ItemStack(itemstack);
+							PC_Struct2<Float, Integer> s =ranking.get(pcisi);
+							if(s != null){
+								setRank(pcis, (int)(s.a+100));
+								anyDone = true;
+								if(!allreadyDone.contains(pcis))
+									allreadyDone.add(pcis);
 							}
 						}
 						for(IRecipe recipe:recipes){
