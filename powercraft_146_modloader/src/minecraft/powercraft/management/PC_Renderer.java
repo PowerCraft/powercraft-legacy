@@ -194,4 +194,10 @@ public class PC_Renderer extends Render
 		
 	}
     
+	protected void irenderEntityLabelAt(String label, PC_VecF realPos, int viewDistance, float yOffset, double x, double y, double z) {}
+	
+	public static void renderEntityLabelAt(String label, PC_VecF realPos, int viewDistance, float yOffset, double x, double y, double z) {
+		renderer2d.irenderEntityLabelAt(label, realPos, viewDistance, yOffset, x, y, z);
+	}
+	
 }
