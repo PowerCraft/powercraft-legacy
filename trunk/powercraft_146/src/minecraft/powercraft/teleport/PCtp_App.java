@@ -3,12 +3,17 @@ package powercraft.teleport;
 import java.util.List;
 
 import net.minecraft.item.crafting.IRecipe;
+import powercraft.management.PC_Block;
 import powercraft.management.PC_IModule;
 import powercraft.management.PC_Property;
 import powercraft.management.PC_Struct2;
+import powercraft.management.PC_Utils.ModuleLoader;
+import powercraft.net.PCnt_RadioManager;
 
 public class PCtp_App implements PC_IModule {
 
+	public static PC_Block teleporter;
+	
 	@Override
 	public String getName() {
 		return "Teleport";
@@ -23,7 +28,9 @@ public class PCtp_App implements PC_IModule {
 	public void preInit() {}
 
 	@Override
-	public void init() {}
+	public void init() {
+		ModuleLoader.regsterDataHandler("Teleporter", new PCtp_TeleporterManager());
+	}
 
 	@Override
 	public void postInit() {}
@@ -35,7 +42,7 @@ public class PCtp_App implements PC_IModule {
 
 	@Override
 	public void initBlocks() {
-		
+		teleporter = ModuleLoader.register(this, PCtp_BlockTeleporter.class, PCtp_TileEntityTeleporter.class);
 	}
 
 	@Override

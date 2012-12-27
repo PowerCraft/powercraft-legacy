@@ -9,6 +9,7 @@ import java.util.Set;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.Tessellator;
+import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.boss.EntityDragon;
@@ -44,12 +45,13 @@ import powercraft.management.PC_VecI;
 
 public class PCtp_BlockTeleporter extends PC_Block {
 
-	protected PCtp_BlockTeleporter(int id) {
+	public PCtp_BlockTeleporter(int id) {
 		super(id, 14, Material.portal);
 		setHardness(1.0F);
 		setResistance(8.0F);
 		setStepSound(Block.soundMetalFootstep);
 		setBlockBounds(0.125F, 0.0F, 0.125F, 1.0F - 0.125F, 1.0F - 0.125F, 1.0F - 0.125F);
+		setCreativeTab(CreativeTabs.tabTransport);
 	}
 	
 	@Override
@@ -283,6 +285,8 @@ public class PCtp_BlockTeleporter extends PC_Block {
 	@Override
 	public Object msg(IBlockAccess world, PC_VecI pos, int msg, Object... obj) {
 		switch(msg){
+		case PC_Utils.MSG_DEFAULT_NAME:
+			return "Teleporter";
 		case PC_Utils.MSG_LOAD_FROM_CONFIG:
 			setLightValue(((PC_Property)obj[0]).getInt("brightness", 4) * 0.0625F);
 			break;
