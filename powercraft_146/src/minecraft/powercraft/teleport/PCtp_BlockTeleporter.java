@@ -1,10 +1,7 @@
 package powercraft.teleport;
 
-import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Random;
-import java.util.Set;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
@@ -29,18 +26,13 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-import powercraft.management.PC_BeamTracer;
 import powercraft.management.PC_Block;
-import powercraft.management.PC_Color;
-import powercraft.management.PC_MathHelper;
 import powercraft.management.PC_Property;
 import powercraft.management.PC_Renderer;
-import powercraft.management.PC_TileEntity;
 import powercraft.management.PC_Utils;
-import powercraft.management.PC_BeamTracer.result;
 import powercraft.management.PC_Utils.GameInfo;
-import powercraft.management.PC_Utils.Gres;
 import powercraft.management.PC_Utils.ValueWriting;
+import powercraft.management.PC_VecF;
 import powercraft.management.PC_VecI;
 
 public class PCtp_BlockTeleporter extends PC_Block {
@@ -238,10 +230,6 @@ public class PCtp_BlockTeleporter extends PC_Block {
 			}
 		}
 		PC_Renderer.renderStandardBlock(renderer, Block.blockGold, x, y, z);
-		/*} else {
-			Block.blockSteel.setBlockBounds(0.125F, 0.0F, 0.125F, 0.875F, 0.125F, 0.875F);
-			renderblocks.renderStandardBlock(Block.blockSteel, i, j, k);
-		}*/
 
 		ValueWriting.setBlockBounds(Block.blockSteel, 0.4375F, 0.125F, 0.4375F, 1F - 0.4375F, 0.25F, 1F - 0.4375F);
 		PC_Renderer.renderStandardBlock(renderer, Block.blockSteel, x, y, z);
@@ -253,14 +241,12 @@ public class PCtp_BlockTeleporter extends PC_Block {
 		ValueWriting.setBlockBounds(Block.blockSteel, 0.0F, 0.0F, 0.0F, 1.0F, 1.0F, 1.0F);
 		ValueWriting.setBlockBounds(Block.blockGold, 0.0F, 0.0F, 0.0F, 1.0F, 1.0F, 1.0F);
 
-		if(true) {
-			ValueWriting.setBlockBounds(block, 0.1875F, 0.1875F, 0.1875F, 1.0F - 0.1875F, 1.0F - 0.1875F, 1.0F - 0.1875F);
-			PC_Renderer.renderStandardBlock(renderer, block, x, y, z);
-			ValueWriting.setBlockBounds(block, 0.125F, 0.0F, 0.125F, 1.0F - 0.125F, 1.0F - 0.125F, 1.0F - 0.125F);
-		}
-
+		ValueWriting.setBlockBounds(block, 0.1875F, 0.1875F, 0.1875F, 1.0F - 0.1875F, 1.0F - 0.1875F, 1.0F - 0.1875F);
+		PC_Renderer.renderStandardBlock(renderer, block, x, y, z);
+		ValueWriting.setBlockBounds(block, 0.125F, 0.0F, 0.125F, 1.0F - 0.125F, 1.0F - 0.125F, 1.0F - 0.125F);
+		
 		tessellator.draw();
-
+		
 		tessellator.startDrawingQuads();
 	}
 	
