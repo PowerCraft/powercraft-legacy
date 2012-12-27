@@ -1,5 +1,11 @@
 package powercraft.teleport;
 
+import java.util.ArrayList;
+import java.util.Enumeration;
+import java.util.Iterator;
+import java.util.List;
+
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -10,7 +16,8 @@ import powercraft.management.PC_TileEntity;
 public class PCtp_TileEntityTeleporter extends PC_TileEntity {
 
 	public int direction=0;
-
+	public List<EntityPlayer> playersForTeleport = new ArrayList<EntityPlayer>();
+	
 	@Override
 	public void create(ItemStack stack, EntityPlayer player, World world, int x, int y, int z, int side, float hitX, float hitY, float hitZ) {
 		if(!world.isRemote){
@@ -29,6 +36,35 @@ public class PCtp_TileEntityTeleporter extends PC_TileEntity {
 				PC_PacketHandler.setTileEntity(this, "direction", td.direction);
 			}
 		}
+	}
+	
+	@Override
+	public void updateEntity() {
+        
+		List<EntityPlayer> toRemove = new ArrayList<EntityPlayer>();
+		
+        for(EntityPlayer player:playersForTeleport){
+
+            if(player==null){
+            	toRemove.add(player);
+            }else{
+	            if (player.posX < xCoord - 1F || player.posY < yCoord - 1F || player.posZ < zCoord - 1F || player.posX > xCoord + 2F
+	                    || player.posY > yCoord + 3F || player.posZ > zCoord + 2F)
+	            {
+	            	toRemove.add(player);
+	            }
+            }
+        }
+        
+        for(EntityPlayer player:toRemove){
+        	playersForTeleport.remove(player);
+        }
+        
+	}
+
+	@Override
+	public boolean canUpdate() {
+		return true;
 	}
 
 	@Override

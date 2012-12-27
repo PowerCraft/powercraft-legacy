@@ -25,6 +25,7 @@ public class PCtp_AppClient extends PCtp_App implements PC_IClientModule {
 		lang.add(new PC_LangEntry("pc.gui.teleporter.items", "items"));
 		lang.add(new PC_LangEntry("pc.gui.teleporter.players", "players"));
 		lang.add(new PC_LangEntry("pc.gui.teleporter.sneakTrigger", "sneakTrigger"));
+		lang.add(new PC_LangEntry("pc.gui.teleporter.playerChoose", "playerChoose"));
 		lang.add(new PC_LangEntry("pc.gui.teleporter.north", "north"));
 		lang.add(new PC_LangEntry("pc.gui.teleporter.east", "east"));
 		lang.add(new PC_LangEntry("pc.gui.teleporter.south", "south"));
@@ -48,6 +49,7 @@ public class PCtp_AppClient extends PCtp_App implements PC_IClientModule {
 	public List<PC_Struct2<String, Class>> registerGuis(
 			List<PC_Struct2<String, Class>> guis) {
 		guis.add(new PC_Struct2<String, Class>("Teleporter", PCtp_GuiTeleporter.class));
+		guis.add(new PC_Struct2<String, Class>("PlayerTeleport", PCtp_GuiPlayerTeleport.class));
 		return guis;
 	}
 	

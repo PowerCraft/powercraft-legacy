@@ -31,6 +31,7 @@ import powercraft.management.PC_Property;
 import powercraft.management.PC_Renderer;
 import powercraft.management.PC_Utils;
 import powercraft.management.PC_Utils.GameInfo;
+import powercraft.management.PC_Utils.Gres;
 import powercraft.management.PC_Utils.ValueWriting;
 import powercraft.management.PC_VecF;
 import powercraft.management.PC_VecI;
@@ -65,7 +66,8 @@ public class PCtp_BlockTeleporter extends PC_Block {
 				return false;
 			}
 		}
-		PCtp_TeleporterManager.openGui(entityplayer, i, j, k);
+		if(!world.isRemote)
+			PCtp_TeleporterManager.openGui(entityplayer, i, j, k);
 		
 		return true;
 	}
@@ -172,6 +174,15 @@ public class PCtp_BlockTeleporter extends PC_Block {
 		}
 
 		if ((entity instanceof EntityPlayer) && !entity.isSneaking() && td.sneakTrigger) {
+			return;
+		}
+		
+		if ((entity instanceof EntityPlayer) && td.playerChoose) {
+			PCtp_TileEntityTeleporter te = GameInfo.getTE(world, i, j, k);
+			if(!te.playersForTeleport.contains(entity)){
+				PCtp_TeleporterManager.openTeleportGui((EntityPlayer)entity, td);
+				te.playersForTeleport.add((EntityPlayer)entity);
+			}
 			return;
 		}
 		
