@@ -244,7 +244,7 @@ public class PCtp_TeleporterManager implements PC_IDataHandler, PC_IPacketHandle
 		PCtp_TeleporterData to = getTeleporterData(td.defaultTargetDimension, td.defaultTarget);
 		if(to==null)
 			return false;
-		return teleportEntityToTarget(entity, td);
+		return teleportEntityToTarget(entity, to);
 	}
 	
 	public static List<String> getTargetNames() {
