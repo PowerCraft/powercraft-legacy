@@ -107,7 +107,8 @@ public class PCtp_TeleporterManager implements PC_IDataHandler, PC_IPacketHandle
 		String defaultTarget=null;
 		if(td.defaultTarget!=null){
 			PCtp_TeleporterData td2 = getTeleporterData(td.defaultTargetDimension, td.defaultTarget);
-			defaultTarget = td2.name;
+			if(td2 != null)
+				defaultTarget = td2.name;
 		}
 		Gres.openGres("Teleporter", entityPlayer, td, names, defaultTarget);
 	}
