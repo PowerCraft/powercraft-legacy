@@ -213,8 +213,7 @@ public class PCtp_BlockTeleporter extends PC_Block {
 
 		tessellator.startDrawingQuads();
 		
-		int dimension = GameInfo.getTE(world, x, y, z).worldObj.getWorldInfo().getDimension();
-		PCtp_TeleporterData td = PCtp_TeleporterManager.getTeleporterData(dimension, new PC_VecI(x, y, z));
+		PCtp_TileEntityTeleporter td = GameInfo.getTE(world, x, y, z);
 		
 		ValueWriting.setBlockBounds(Block.blockGold, 0.125F, 0.0F, 0.125F, 0.875F, 0.125F, 0.875F);
 		PC_Renderer.renderStandardBlock(renderer, Block.blockGold, x, y, z);

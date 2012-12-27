@@ -4,7 +4,9 @@ import java.io.Serializable;
 
 import net.minecraft.nbt.NBTTagCompound;
 import powercraft.management.PC_INBT;
+import powercraft.management.PC_PacketHandler;
 import powercraft.management.PC_VecI;
+import powercraft.management.PC_Utils.GameInfo;
 import powercraft.management.PC_Utils.SaveHandler;
 
 public class PCtp_TeleporterData implements PC_INBT, Serializable {
@@ -74,6 +76,10 @@ public class PCtp_TeleporterData implements PC_INBT, Serializable {
 		defaultTarget = td.defaultTarget;
 		defaultTargetDimension = td.defaultTargetDimension;
 		direction = td.direction;
+		PCtp_TileEntityTeleporter te = GameInfo.getTE(GameInfo.mcs().worldServerForDimension(dimension), pos);
+		te.direction = direction;
+		PC_PacketHandler.setTileEntity(te, "direction", direction);
+		
 	}
 
 }

@@ -72,14 +72,18 @@ public class PCtp_TeleporterManager implements PC_IDataHandler, PC_IPacketHandle
 			td2 = getTeleporterData(td.dimension, td.pos);
 			td2.setTo(td);
 		}else if(msg.equals("teleport")){
+			System.out.println("Teleport");
 			int entityID = (Integer)o[1];
 			PC_VecF pos = (PC_VecF)o[2];
 			Entity entity = player.worldObj.getEntityByID(entityID);
-			entity.setLocationAndAngles(pos.x, pos.y, pos.z, 0, 0);
+			if(entity!=null){
+				entity.setLocationAndAngles(pos.x, pos.y, pos.z, 0, 0);
+				entity.setVelocity(0.0f, 0.0f, 0.0f);
+			}
 		}
 		return false;
 	}
-	
+
 	public static void openGui(EntityPlayer entityPlayer, int x, int y, int z){
 		int dimension = entityPlayer.dimension;
 		openGui(entityPlayer, getTeleporterData(dimension, new PC_VecI(x, y, z)));
@@ -110,8 +114,10 @@ public class PCtp_TeleporterManager implements PC_IDataHandler, PC_IPacketHandle
 	
 	public static PCtp_TeleporterData getTeleporterData(int dimension, PC_VecI pos){
 		for(PCtp_TeleporterData td:teleoprter){
-			if(td.dimension == dimension && pos.equals(td.pos))
+			if(td.dimension == dimension && pos.equals(td.pos)){
+				needSave = true;
 				return td;
+			}
 		}
 		return null;
 	}
@@ -119,7 +125,15 @@ public class PCtp_TeleporterManager implements PC_IDataHandler, PC_IPacketHandle
 	
 
 	public static boolean teleportEntityTo(Entity entity, PCtp_TeleporterData td) {
-
+		if(td.defaultTarget == null)
+			return false;
+		PCtp_TeleporterData to = getTeleporterData(td.defaultTargetDimension, td.defaultTarget);
+		if(to==null)
+			return false;
+		entity.setLocationAndAngles(to.pos.x + 0.5, to.pos.y+0.1, to.pos.z + 0.5, 0, 0);
+		entity.setVelocity(0.0f, 0.0f, 0.0f);
+		PC_PacketHandler.sendToPacketHandler(true, entity.worldObj, "Teleporter", "teleport", entity.entityId, 
+				new PC_VecF((float)entity.posX, (float)entity.posY, (float)entity.posZ));
 		return false;
 	}
 	
