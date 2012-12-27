@@ -1,6 +1,8 @@
 package powercraft.teleport;
 
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Random;
 import java.util.Set;
 
@@ -26,10 +28,16 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+import powercraft.management.PC_BeamTracer;
 import powercraft.management.PC_Block;
+import powercraft.management.PC_Color;
+import powercraft.management.PC_MathHelper;
+import powercraft.management.PC_Property;
 import powercraft.management.PC_Renderer;
 import powercraft.management.PC_TileEntity;
 import powercraft.management.PC_Utils;
+import powercraft.management.PC_BeamTracer.result;
+import powercraft.management.PC_Utils.GameInfo;
 import powercraft.management.PC_Utils.Gres;
 import powercraft.management.PC_Utils.ValueWriting;
 import powercraft.management.PC_VecI;
@@ -93,6 +101,11 @@ public class PCtp_BlockTeleporter extends PC_Block {
 		}
 		//((PCnt_TileEntityTeleporter)world.getBlockTileEntity(i, j, k)).createData();
 	}
+	
+	@Override
+	public TileEntity newTileEntity(World world, int metadata) {
+		return new PCtp_TileEntityTeleporter();
+	}
 
 	@Override
 	public void breakBlock(World world, int i, int j, int k, int par5, int par6) {
@@ -126,6 +139,10 @@ public class PCtp_BlockTeleporter extends PC_Block {
 	@Override
 	public void onEntityCollidedWithBlock(World world, int i, int j, int k, Entity entity) {
 		
+		if (entity == null) {
+			return;
+		}
+		
 		int dimension;
 		if(entity instanceof EntityPlayer)
 			dimension = ((EntityPlayer)entity).dimension;
@@ -136,10 +153,6 @@ public class PCtp_BlockTeleporter extends PC_Block {
 		
 		if(td == null)
 			return;
-		
-		if (entity == null) {
-			return;
-		}
 		
 		if(!(entity instanceof EntityLiving || entity instanceof EntityItem || entity instanceof EntityXPOrb || entity instanceof EntityArrow))
 			return;
@@ -204,44 +217,44 @@ public class PCtp_BlockTeleporter extends PC_Block {
 
 		tessellator.startDrawingQuads();
 		
-		PCtp_TeleporterData td = null;
-		if(iblockaccess instanceof World)
-			td = PCtp_TeleporterManager.getTeleporterDataAt(((World)iblockaccess).worldInfo.getDimension(), i, j, k);
-			Block.blockGold.setBlockBounds(0.125F, 0.0F, 0.125F, 0.875F, 0.125F, 0.875F);
-			renderblocks.renderStandardBlock(Block.blockGold, i, j, k);
-			float m = 0.0625F * 6F;
-			float n = 0.0625F * 10F;
-			if(td!=null){
-				if (td.direction.equals("N")) {
-					Block.blockGold.setBlockBounds(m, 0, 0.0625F, n, 0.125F, 0.0625F * 2);
-				} else if (td.direction.equals("S")) {
-					Block.blockGold.setBlockBounds(m, 0, 1 - 0.0625F * 2, n, 0.125F, 1 - 0.0625F);
-				} else if (td.direction.equals("E")) {
-					Block.blockGold.setBlockBounds(1 - 0.0625F * 2, 0, m, 1 - 0.0625F, 0.125F, n);
-				} else if (td.direction.equals("W")) {
-					Block.blockGold.setBlockBounds(0.0625F, 0, m, 0.0625F * 2, 0.125F, n);
-				}
+		int dimension = GameInfo.getTE(world, x, y, z).worldObj.getWorldInfo().getDimension();
+		PCtp_TeleporterData td = PCtp_TeleporterManager.getTeleporterData(dimension, new PC_VecI(x, y, z));
+		
+		ValueWriting.setBlockBounds(Block.blockGold, 0.125F, 0.0F, 0.125F, 0.875F, 0.125F, 0.875F);
+		PC_Renderer.renderStandardBlock(renderer, Block.blockGold, x, y, z);
+		float m = 0.0625F * 6F;
+		float n = 0.0625F * 10F;
+		if(td!=null){
+			if (td.direction == PCtp_TeleporterData.N) {
+				ValueWriting.setBlockBounds(Block.blockGold, m, 0, 0.0625F, n, 0.125F, 0.0625F * 2);
+			} else if (td.direction == PCtp_TeleporterData.S) {
+				ValueWriting.setBlockBounds(Block.blockGold, m, 0, 1 - 0.0625F * 2, n, 0.125F, 1 - 0.0625F);
+			} else if (td.direction == PCtp_TeleporterData.E) {
+				ValueWriting.setBlockBounds(Block.blockGold, 1 - 0.0625F * 2, 0, m, 1 - 0.0625F, 0.125F, n);
+			} else if (td.direction == PCtp_TeleporterData.W) {
+				ValueWriting.setBlockBounds(Block.blockGold, 0.0625F, 0, m, 0.0625F * 2, 0.125F, n);
 			}
-			renderblocks.renderStandardBlock(Block.blockGold, i, j, k);
+		}
+		PC_Renderer.renderStandardBlock(renderer, Block.blockGold, x, y, z);
 		/*} else {
 			Block.blockSteel.setBlockBounds(0.125F, 0.0F, 0.125F, 0.875F, 0.125F, 0.875F);
 			renderblocks.renderStandardBlock(Block.blockSteel, i, j, k);
 		}*/
 
-		Block.blockSteel.setBlockBounds(0.4375F, 0.125F, 0.4375F, 1F - 0.4375F, 0.25F, 1F - 0.4375F);
-		renderblocks.renderStandardBlock(Block.blockSteel, i, j, k);
+		ValueWriting.setBlockBounds(Block.blockSteel, 0.4375F, 0.125F, 0.4375F, 1F - 0.4375F, 0.25F, 1F - 0.4375F);
+		PC_Renderer.renderStandardBlock(renderer, Block.blockSteel, x, y, z);
 
 		float centr = 0.0625F * 4;
-		Block.blockSteel.setBlockBounds(0.5F - centr, 0.5F - centr, 0.5F - centr, 0.5F + centr, 0.5F + centr, 0.5F + centr);
-		renderblocks.renderStandardBlock(Block.blockSteel, i, j, k);
+		ValueWriting.setBlockBounds(Block.blockSteel, 0.5F - centr, 0.5F - centr, 0.5F - centr, 0.5F + centr, 0.5F + centr, 0.5F + centr);
+		PC_Renderer.renderStandardBlock(renderer, Block.blockSteel, x, y, z);
 
-		Block.blockSteel.setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 1.0F, 1.0F);
-		Block.blockGold.setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 1.0F, 1.0F);
+		ValueWriting.setBlockBounds(Block.blockSteel, 0.0F, 0.0F, 0.0F, 1.0F, 1.0F, 1.0F);
+		ValueWriting.setBlockBounds(Block.blockGold, 0.0F, 0.0F, 0.0F, 1.0F, 1.0F, 1.0F);
 
 		if(true) {
-			block.setBlockBounds(0.1875F, 0.1875F, 0.1875F, 1.0F - 0.1875F, 1.0F - 0.1875F, 1.0F - 0.1875F);
-			renderblocks.renderStandardBlock(block, i, j, k);
-			block.setBlockBounds(0.125F, 0.0F, 0.125F, 1.0F - 0.125F, 1.0F - 0.125F, 1.0F - 0.125F);
+			ValueWriting.setBlockBounds(block, 0.1875F, 0.1875F, 0.1875F, 1.0F - 0.1875F, 1.0F - 0.1875F, 1.0F - 0.1875F);
+			PC_Renderer.renderStandardBlock(renderer, block, x, y, z);
+			ValueWriting.setBlockBounds(block, 0.125F, 0.0F, 0.125F, 1.0F - 0.125F, 1.0F - 0.125F, 1.0F - 0.125F);
 		}
 
 		tessellator.draw();
@@ -266,33 +279,33 @@ public class PCtp_BlockTeleporter extends PC_Block {
 		PC_Renderer.renderInvBox(renderer, block, 0);
 		ValueWriting.setBlockBounds(block, 0.125F, 0.0F, 0.125F, 1.0F - 0.125F, 1.0F - 0.125F, 1.0F - 0.125F);
 	}
-	
-	@Override
-	public Set<String> getBlockFlags(World world, PC_CoordI pos) {
-
-		Set<String> set = new HashSet<String>();
-
-		set.add("NO_HARVEST");
-		set.add("NO_PICKUP");
-		set.add("TRANSLUCENT");
-		set.add("BELT");
-		set.add("TELEPORTER");
-
-		return set;
-	}
-
-	@Override
-	public Set<String> getItemFlags(ItemStack stack) {
-		Set<String> set = new HashSet<String>();
-		set.add("NO_BUILD");
-		set.add("TELEPORTER");
-		return set;
-	}
 
 	@Override
 	public Object msg(IBlockAccess world, PC_VecI pos, int msg, Object... obj) {
-		// TODO Auto-generated method stub
-		return null;
+		switch(msg){
+		case PC_Utils.MSG_LOAD_FROM_CONFIG:
+			setLightValue(((PC_Property)obj[0]).getInt("brightness", 4) * 0.0625F);
+			break;
+		case PC_Utils.MSG_BLOCK_FLAGS:{
+			List<String> list = (List<String>)obj[0];
+			list.add(PC_Utils.NO_HARVEST);
+			list.add(PC_Utils.NO_PICKUP);
+	   		return list;
+		}case PC_Utils.MSG_ITEM_FLAGS:{
+			List<String> list = (List<String>)obj[1];
+			list.add(PC_Utils.NO_BUILD);
+			return list;
+		}case PC_Utils.MSG_RENDER_INVENTORY_BLOCK:
+			renderInventoryBlock((Block)obj[0], (Integer)obj[1], (Integer)obj[2], obj[3]);
+			break;
+		case PC_Utils.MSG_RENDER_WORLD_BLOCK:
+			renderWorldBlock(world, pos.x, pos.y, pos.z, (Block)obj[0], (Integer)obj[1], obj[2]);
+			break;
+			
+		default:
+			return null;
+		}
+		return true;
 	}
 
 }
