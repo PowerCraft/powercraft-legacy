@@ -27,6 +27,10 @@ public class PCtp_TeleporterData implements PC_INBT, Serializable {
 	
 	public PCtp_TeleporterData(){
 		name="";
+		animals = true;
+		monsters = true;
+		items = true;
+		players = true;
 	}
 	
 	@Override
