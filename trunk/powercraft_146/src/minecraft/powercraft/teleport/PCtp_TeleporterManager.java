@@ -1,17 +1,25 @@
 package powercraft.teleport;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map.Entry;
 
+import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityList;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.network.packet.Packet34EntityTeleport;
+import net.minecraft.src.ModLoader;
+import net.minecraft.world.World;
+import powercraft.management.PC_Block;
 import powercraft.management.PC_IDataHandler;
 import powercraft.management.PC_IPacketHandler;
+import powercraft.management.PC_PacketHandler;
+import powercraft.management.PC_Utils.GameInfo;
 import powercraft.management.PC_Utils.Gres;
 import powercraft.management.PC_Utils.SaveHandler;
+import powercraft.management.PC_VecF;
 import powercraft.management.PC_VecI;
 
 public class PCtp_TeleporterManager implements PC_IDataHandler, PC_IPacketHandler {
@@ -49,11 +57,26 @@ public class PCtp_TeleporterManager implements PC_IDataHandler, PC_IPacketHandle
 	
 	@Override
 	public boolean handleIncomingPacket(EntityPlayer player, Object[] o) {
-		PCtp_TeleporterData td = (PCtp_TeleporterData)o[0];
-		String target = (String)o[1];
-		td.defaultTarget = getTargetByName(target).pos;
-		PCtp_TeleporterData td2 = getTeleporterData(td.dimension, td.pos);
-		td2.setTo(td);
+		String msg = (String)o[0];
+		if(msg.equals("set")){
+			PCtp_TeleporterData td = (PCtp_TeleporterData)o[1];
+			String target = (String)o[2];
+			PCtp_TeleporterData td2 = getTargetByName(target);
+			if(td2==null){
+				td.defaultTarget = null;
+				td.defaultTargetDimension = 0;
+			}else{
+				td.defaultTarget = td2.pos;
+				td.defaultTargetDimension = td2.dimension;
+			}
+			td2 = getTeleporterData(td.dimension, td.pos);
+			td2.setTo(td);
+		}else if(msg.equals("teleport")){
+			int entityID = (Integer)o[1];
+			PC_VecF pos = (PC_VecF)o[2];
+			Entity entity = player.worldObj.getEntityByID(entityID);
+			entity.setLocationAndAngles(pos.x, pos.y, pos.z, 0, 0);
+		}
 		return false;
 	}
 	
@@ -64,7 +87,12 @@ public class PCtp_TeleporterManager implements PC_IDataHandler, PC_IPacketHandle
 	
 	public static void openGui(EntityPlayer entityPlayer, PCtp_TeleporterData td) {
 		List<String> names = getTargetNames();
-		Gres.openGres("Teleporter", entityPlayer, td, names);
+		String defaultTarget=null;
+		if(td.defaultTarget!=null){
+			PCtp_TeleporterData td2 = getTeleporterData(td.defaultTargetDimension, td.defaultTarget);
+			defaultTarget = td2.name;
+		}
+		Gres.openGres("Teleporter", entityPlayer, td, names, defaultTarget);
 	}
 	
 	public static void registerTeleporterData(int dimension, PC_VecI pos, PCtp_TeleporterData td){
@@ -77,6 +105,7 @@ public class PCtp_TeleporterManager implements PC_IDataHandler, PC_IPacketHandle
 	
 	public static void releaseTeleporterData(int dimension, PC_VecI pos){
 		teleoprter.remove(getTeleporterData(dimension, pos));
+		needSave = true;
 	}
 	
 	public static PCtp_TeleporterData getTeleporterData(int dimension, PC_VecI pos){
@@ -87,9 +116,11 @@ public class PCtp_TeleporterManager implements PC_IDataHandler, PC_IPacketHandle
 		return null;
 	}
 
-	public static void teleportEntityTo(Entity entity, PC_VecI defaultTarget) {
-		// TODO Auto-generated method stub
-		
+	
+
+	public static boolean teleportEntityTo(Entity entity, PCtp_TeleporterData td) {
+
+		return false;
 	}
 	
 	public static List<String> getTargetNames() {
