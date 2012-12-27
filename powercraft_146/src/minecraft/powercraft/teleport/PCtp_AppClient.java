@@ -19,7 +19,7 @@ public class PCtp_AppClient extends PCtp_App implements PC_IClientModule {
 		lang.add(new PC_LangEntry("pc.gui.teleporter.name", "Name:"));
 		lang.add(new PC_LangEntry("pc.gui.teleporter.target", "Target:"));
 		lang.add(new PC_LangEntry("pc.gui.teleporter.nothing", "<Nothing>"));
-		lang.add(new PC_LangEntry("pc.gui.teleporter.page1", "Property"));
+		lang.add(new PC_LangEntry("pc.gui.teleporter.page1", "Teleporter"));
 		lang.add(new PC_LangEntry("pc.gui.teleporter.animals", "animals"));
 		lang.add(new PC_LangEntry("pc.gui.teleporter.monsters", "monsters"));
 		lang.add(new PC_LangEntry("pc.gui.teleporter.items", "items"));
