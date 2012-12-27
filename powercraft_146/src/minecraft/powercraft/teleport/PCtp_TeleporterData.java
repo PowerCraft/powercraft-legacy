@@ -22,6 +22,7 @@ public class PCtp_TeleporterData implements PC_INBT, Serializable {
 	public boolean players;
 	public boolean sneakTrigger;
 	public boolean playerChoose;
+	public boolean soundEnabled;
 	public PC_VecI defaultTarget;
 	public int defaultTargetDimension;
 	public int direction;
@@ -33,6 +34,7 @@ public class PCtp_TeleporterData implements PC_INBT, Serializable {
 		items = true;
 		players = true;
 		playerChoose = true;
+		soundEnabled = true;
 	}
 	
 	@Override
@@ -47,6 +49,7 @@ public class PCtp_TeleporterData implements PC_INBT, Serializable {
 		players = nbttag.getBoolean("players");
 		sneakTrigger = nbttag.getBoolean("sneakTrigger");
 		playerChoose = nbttag.getBoolean("playerChoose");
+		soundEnabled = nbttag.getBoolean("soundEnabled");
 		if(nbttag.hasKey("defaultTarget")){
 			defaultTarget = new PC_VecI();
 			SaveHandler.loadFromNBT(nbttag, "defaultTarget", defaultTarget);
@@ -68,6 +71,7 @@ public class PCtp_TeleporterData implements PC_INBT, Serializable {
 		nbttag.setBoolean("players", players);
 		nbttag.setBoolean("sneakTrigger", sneakTrigger);
 		nbttag.setBoolean("playerChoose", playerChoose);
+		nbttag.setBoolean("soundEnabled", soundEnabled);
 		if(defaultTarget!=null)
 			SaveHandler.saveToNBT(nbttag, "defaultTarget", defaultTarget);
 		nbttag.setInteger("defaultTargetDimension", defaultTargetDimension);
@@ -83,11 +87,13 @@ public class PCtp_TeleporterData implements PC_INBT, Serializable {
 		sneakTrigger = td.sneakTrigger;
 		defaultTarget = td.defaultTarget;
 		playerChoose = td.playerChoose;
+		soundEnabled = td.soundEnabled;
 		defaultTargetDimension = td.defaultTargetDimension;
 		direction = td.direction;
 		PCtp_TileEntityTeleporter te = GameInfo.getTE(GameInfo.mcs().worldServerForDimension(dimension), pos);
 		te.direction = direction;
-		PC_PacketHandler.setTileEntity(te, "direction", direction);
+		te.soundEnabled = soundEnabled;
+		PC_PacketHandler.setTileEntity(te, "direction", direction, "soundEnabled", soundEnabled);
 		
 	}
 

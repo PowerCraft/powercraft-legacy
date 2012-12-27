@@ -77,7 +77,6 @@ public class PCtp_BlockTeleporter extends PC_Block implements PC_IItemInfo{
 	public void onBlockPlacedBy(World world, int i, int j, int k, EntityLiving entityliving) {
 		super.onBlockPlacedBy(world, i, j, k, entityliving);
 		if(!world.isRemote){
-			System.out.println("onBlockPlacedBy");
 			int dimension = 0;
 			PC_VecI pos = new PC_VecI(i, j, k);
 			if(entityliving instanceof EntityPlayer)
@@ -187,7 +186,6 @@ public class PCtp_BlockTeleporter extends PC_Block implements PC_IItemInfo{
 			return;
 		}
 		
-		System.out.println("onEntityCollidedWithBlock");
 		PCtp_TeleporterManager.teleportEntityTo(entity, td);
 
 	}
@@ -195,7 +193,9 @@ public class PCtp_BlockTeleporter extends PC_Block implements PC_IItemInfo{
 	@Override
 	public void randomDisplayTick(World world, int x, int y, int z, Random random) {
 
-		if (random.nextInt(60) == 0) {
+		PCtp_TileEntityTeleporter te = GameInfo.getTE(world, x, y, z);
+		
+		if (random.nextInt(60) == 0 && te.soundEnabled) {
 			ValueWriting.playSound(x + 0.5D, y + 0.5D, z + 0.5D, "portal.portal", 0.1F, random.nextFloat() * 0.4F + 0.8F);
 		}
 

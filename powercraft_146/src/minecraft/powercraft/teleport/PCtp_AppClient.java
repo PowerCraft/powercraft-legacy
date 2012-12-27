@@ -26,6 +26,7 @@ public class PCtp_AppClient extends PCtp_App implements PC_IClientModule {
 		lang.add(new PC_LangEntry("pc.gui.teleporter.players", "players"));
 		lang.add(new PC_LangEntry("pc.gui.teleporter.sneakTrigger", "sneakTrigger"));
 		lang.add(new PC_LangEntry("pc.gui.teleporter.playerChoose", "playerChoose"));
+		lang.add(new PC_LangEntry("pc.gui.teleporter.soundEnabled", "soundEnabled"));
 		lang.add(new PC_LangEntry("pc.gui.teleporter.north", "north"));
 		lang.add(new PC_LangEntry("pc.gui.teleporter.east", "east"));
 		lang.add(new PC_LangEntry("pc.gui.teleporter.south", "south"));
