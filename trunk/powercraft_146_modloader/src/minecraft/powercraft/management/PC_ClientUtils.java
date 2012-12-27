@@ -213,7 +213,7 @@ public class PC_ClientUtils extends PC_Utils {
 
 		try {
 			if(PC_GresBaseWithInventory.class.isAssignableFrom(c)){
-				mc().displayGuiScreen(new PC_GresGui((PC_GresBaseWithInventory)ValueWriting.createClass(c, new Class[]{EntityPlayer.class, Object[].class}, new Object[]{player, o})));
+				mc().displayGuiScreen(new PC_GresContainerGui((PC_GresBaseWithInventory)ValueWriting.createClass(c, new Class[]{EntityPlayer.class, Object[].class}, new Object[]{player, o})));
 				player.openContainer.windowId = guiID;
 			}else{
 				mc().displayGuiScreen(new PC_GresGui((PC_IGresClient)ValueWriting.createClass(c, new Class[]{EntityPlayer.class, Object[].class}, new Object[]{player, o})));
