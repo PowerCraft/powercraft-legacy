@@ -2,9 +2,9 @@ package powercraft.management;
 
 import net.minecraft.nbt.NBTTagCompound;
 
-public interface PC_INBT {
+public interface PC_INBT<t extends PC_INBT> {
 
-	public void readFromNBT(NBTTagCompound nbttag);
-	public void writeToNBT(NBTTagCompound nbttag);
+	public t readFromNBT(NBTTagCompound nbttag);
+	public NBTTagCompound writeToNBT(NBTTagCompound nbttag);
 
 }

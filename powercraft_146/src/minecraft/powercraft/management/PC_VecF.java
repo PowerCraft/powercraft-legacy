@@ -312,17 +312,19 @@ public class PC_VecF implements Serializable, PC_Vec<Float, PC_VecF> {
 	}
 
 	@Override
-	public void readFromNBT(NBTTagCompound nbttag) {
+	public PC_VecF readFromNBT(NBTTagCompound nbttag) {
 		x = nbttag.getFloat("x");
 		y = nbttag.getFloat("y");
 		z = nbttag.getFloat("z");
+		return this;
 	}
 
 	@Override
-	public void writeToNBT(NBTTagCompound nbttag) {
+	public NBTTagCompound writeToNBT(NBTTagCompound nbttag) {
 		nbttag.setFloat("x", x);
 		nbttag.setFloat("y", y);
 		nbttag.setFloat("z", z);
+		return nbttag;
 	}
 	
 }
