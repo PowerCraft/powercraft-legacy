@@ -30,6 +30,7 @@ public class PCtp_GuiTeleporter implements PC_IGresClient {
 	private PCtp_TeleporterData td;
 	private PC_GresButton ok;
 	private PC_GresTextEdit name;
+	private PC_GresTextEdit search;
 	
 	private PC_GresRadioGroup rg;
 	
@@ -41,6 +42,9 @@ public class PCtp_GuiTeleporter implements PC_IGresClient {
 	private PC_GresCheckBox playerChoose;
 	
 	private PC_GresRadioGroup dir;
+	
+	private PC_GresWidget radioBox;
+	private PC_GresWidget radioBoxScroll;
 	
 	public PCtp_GuiTeleporter(EntityPlayer player, Object[]o) {
 		this.player = player;
@@ -65,22 +69,23 @@ public class PCtp_GuiTeleporter implements PC_IGresClient {
 		
 		hg = new PC_GresLayoutH();
 		hg.add(new PC_GresLabel(Lang.tr("pc.gui.teleporter.target")));
-		PC_GresWidget sa = new PC_GresLayoutV();
-		sa.setAlignH(PC_GresAlign.LEFT);
+		hg.add(search = new PC_GresTextEdit("", 10));
+		vg.add(hg);
+		radioBox = new PC_GresLayoutV();
+		radioBox.setAlignH(PC_GresAlign.LEFT);
 		for(String name:names){
 			if(!name.equals(td.name)){
 				PC_GresRadioButton rb = new PC_GresRadioButton(name, rg);
 				if(name.equals(defaultTarget))
 					rb.check(true);
-				sa.add(rb);
+				radioBox.add(rb);
 			}
 		}
 		PC_GresRadioButton rb = new PC_GresRadioButton(Lang.tr("pc.gui.teleporter.nothing"), rg);
 		if(defaultTarget==null||defaultTarget.equals(""))
 			rb.check(true);
-		sa.add(rb);
-		hg.add(new PC_GresScrollArea(0, 100, sa, PC_GresScrollArea.VSCROLL));
-		vg.add(hg);
+		radioBox.add(rb);
+		vg.add(radioBoxScroll = new PC_GresScrollArea(0, 100, radioBox, PC_GresScrollArea.VSCROLL));
 		t.addTab(vg, new PC_GresLabel(Lang.tr("pc.gui.teleporter.page1")));
 		PC_GresWidget tab1 = vg;
 		
@@ -134,6 +139,24 @@ public class PCtp_GuiTeleporter implements PC_IGresClient {
 	public void actionPerformed(PC_GresWidget widget, PC_IGresGui gui) {
 		if(widget==name){
 			ok.enable(!names.contains(name.getText())||name.getText().equals(td.name));
+		}else if(widget==search){
+			String searchFor = widget.getText();
+			PC_GresRadioButton sel = null;
+			int num = 0;
+			for(PC_GresRadioButton rb:rg){
+				if(rb.getText().toLowerCase().contains(searchFor.toLowerCase())){
+					rb.setVisible(true);
+					sel = rb;
+					num++;
+				}else{
+					rb.setVisible(false);
+				}
+			}
+			if(num==1)
+				sel.check(true);
+			radioBox.setSize(radioBox.getSize().x, 10);
+			radioBox.calcSize();
+			radioBoxScroll.calcChildPositions();
 		}else if(widget==ok){
 			onReturnPressed(gui);
 		}

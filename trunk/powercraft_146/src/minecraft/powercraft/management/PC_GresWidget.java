@@ -111,7 +111,7 @@ public abstract class PC_GresWidget extends Gui {
 	 * @param show flag visible
 	 * @return this
 	 */
-	protected PC_GresWidget setVisible(boolean show) {
+	public PC_GresWidget setVisible(boolean show) {
 		visible = show;
 		updateVisible(show);
 		return this;
