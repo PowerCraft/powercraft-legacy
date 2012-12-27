@@ -66,16 +66,16 @@ public class PCtp_App implements PC_IModule {
 		
 		if(prismId!=0){
 			//safety check
-			prism = new PC_ItemStack(prismId,1,0);
+			prism = new PC_ItemStack(Item.itemsList[prismId]);
 		}else{
 			prism = new PC_ItemStack(Block.glass);
 		}
 		
-		recipes.add(new PC_ShapedRecipes(new PC_ItemStack(teleporter, 1, 0),
+		recipes.add(new PC_ShapedRecipes(new PC_ItemStack(teleporter),
 					" P ", 
 					"PVP", 
 					"SSS",
-						'V', new ItemStack(Item.dyePowder, 1, 5), 'P', prism, 'S', Item.ingotIron ));
+						'V', new PC_ItemStack(Item.dyePowder, 1, 5), 'P', prism, 'S', Item.ingotIron ));
 		return recipes;
 	}
 
