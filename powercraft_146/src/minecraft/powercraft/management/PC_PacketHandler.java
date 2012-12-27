@@ -9,6 +9,7 @@ import java.util.HashMap;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.network.INetworkManager;
+import net.minecraft.network.packet.Packet;
 import net.minecraft.network.packet.Packet250CustomPayload;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
@@ -254,9 +255,14 @@ public class PC_PacketHandler implements IPacketHandler
     public static void sendToAllInDimension(int dimension, ByteArrayOutputStream data)
     {
         Packet250CustomPayload packet =  new Packet250CustomPayload("PowerCraft", data.toByteArray());
-        PacketDispatcher.sendPacketToAllInDimension(packet, dimension);
+        sendToAllInDimension(dimension, packet);
     }
 
+    public static void sendToAllInDimension(int dimension, Packet packet)
+    {
+        PacketDispatcher.sendPacketToAllInDimension(packet, dimension);
+    }
+    
     public static void registerPackethandler(String name, PC_IPacketHandler packethandler)
     {
         PC_PacketHandler.packetHandler.put(name, packethandler);

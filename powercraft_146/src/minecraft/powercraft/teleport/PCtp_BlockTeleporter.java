@@ -107,6 +107,8 @@ public class PCtp_BlockTeleporter extends PC_Block {
 		world.setBlockAndMetadataWithNotify(i, j, k, 0, 0);
 		world.notifyBlocksOfNeighborChange(i, j, k, blockID);
 		
+		PCtp_TeleporterManager.releaseTeleporterData(world.getWorldInfo().getDimension(), new PC_VecI(i, j, k));
+		
 		super.breakBlock(world, i, j, k, par5, par6);
 	}
 	
@@ -133,10 +135,10 @@ public class PCtp_BlockTeleporter extends PC_Block {
 	@Override
 	public void onEntityCollidedWithBlock(World world, int i, int j, int k, Entity entity) {
 		
-		if (entity == null) {
+		if (entity == null || world.isRemote) {
 			return;
 		}
-		
+
 		int dimension;
 		if(entity instanceof EntityPlayer)
 			dimension = ((EntityPlayer)entity).dimension;
@@ -174,7 +176,7 @@ public class PCtp_BlockTeleporter extends PC_Block {
 		}
 		
 		System.out.println("onEntityCollidedWithBlock");
-		PCtp_TeleporterManager.teleportEntityTo(entity, td.defaultTarget);
+		PCtp_TeleporterManager.teleportEntityTo(entity, td);
 
 	}
 

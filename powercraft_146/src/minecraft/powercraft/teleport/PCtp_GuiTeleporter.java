@@ -24,6 +24,7 @@ public class PCtp_GuiTeleporter implements PC_IGresClient {
 
 	private EntityPlayer player;
 	private List<String> names;
+	private String defaultTarget;
 	private PCtp_TeleporterData td;
 	private PC_GresButton ok;
 	private PC_GresTextEdit name;
@@ -34,11 +35,12 @@ public class PCtp_GuiTeleporter implements PC_IGresClient {
 		this.player = player;
 		td = (PCtp_TeleporterData)o[0];
 		names = (List<String>)o[1];
+		defaultTarget = (String)o[2];
 	}
 	
 	@Override
 	public void initGui(PC_IGresGui gui) {
-		PC_GresWindow w = (new PC_GresWindow("Teleporter"));
+		PC_GresWindow w = (new PC_GresWindow(Lang.tr("tile.PCtp_BlockTeleporter.name")));
 		
 		PC_GresTab t = new PC_GresTab();
 		
@@ -56,11 +58,15 @@ public class PCtp_GuiTeleporter implements PC_IGresClient {
 		for(String name:names){
 			if(!name.equals(td.name)){
 				PC_GresRadioButton rb = new PC_GresRadioButton(name, rg);
-				if(name.equals(td.defaultTarget))
+				if(name.equals(defaultTarget))
 					rb.check(true);
 				sa.add(rb);
 			}
 		}
+		PC_GresRadioButton rb = new PC_GresRadioButton("<Nothing>", rg);
+		if(defaultTarget==null||defaultTarget.equals(""))
+			rb.check(true);
+		sa.add(rb);
 		hg.add(new PC_GresScrollArea(0, 100, sa, PC_GresScrollArea.VSCROLL));
 		vg.add(hg);
 		t.addTab(vg, new PC_GresLabel("Propertys"));
@@ -95,7 +101,7 @@ public class PCtp_GuiTeleporter implements PC_IGresClient {
 			if(rb!=null)
 				target = rb.getText();
 			td.name = name.getText();
-			PC_PacketHandler.sendToPacketHandler(player.worldObj, "Teleporter", td, target);
+			PC_PacketHandler.sendToPacketHandler(player.worldObj, "Teleporter", "set", td, target);
 			gui.close();
 		}
 	}

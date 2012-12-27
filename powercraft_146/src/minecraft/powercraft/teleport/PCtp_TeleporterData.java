@@ -20,6 +20,7 @@ public class PCtp_TeleporterData implements PC_INBT, Serializable {
 	public boolean players;
 	public boolean sneakTrigger;
 	public PC_VecI defaultTarget;
+	public int defaultTargetDimension;
 	public int direction;
 	
 	public PCtp_TeleporterData(){
@@ -29,14 +30,38 @@ public class PCtp_TeleporterData implements PC_INBT, Serializable {
 	@Override
 	public void readFromNBT(NBTTagCompound nbttag) {
 		pos = new PC_VecI();
+		name = nbttag.getString("name");
 		SaveHandler.loadFromNBT(nbttag, "pos", pos);
-		
+		dimension = nbttag.getInteger("dimension");
+		animals = nbttag.getBoolean("animals");
+		monsters = nbttag.getBoolean("monsters");
+		items = nbttag.getBoolean("items");
+		players = nbttag.getBoolean("players");
+		sneakTrigger = nbttag.getBoolean("sneakTrigger");
+		if(nbttag.hasKey("defaultTarget")){
+			defaultTarget = new PC_VecI();
+			SaveHandler.loadFromNBT(nbttag, "defaultTarget", defaultTarget);
+		}else{
+			defaultTarget = null;
+		}
+		defaultTargetDimension = nbttag.getInteger("defaultTargetDimension");
+		direction = nbttag.getInteger("direction");
 	}
 
 	@Override
 	public void writeToNBT(NBTTagCompound nbttag) {
-		// TODO Auto-generated method stub
-		
+		nbttag.setString("name", name);
+		SaveHandler.saveToNBT(nbttag, "pos", pos);
+		nbttag.setInteger("dimension", dimension);
+		nbttag.setBoolean("animals", animals);
+		nbttag.setBoolean("monsters", monsters);
+		nbttag.setBoolean("items", items);
+		nbttag.setBoolean("players", players);
+		nbttag.setBoolean("sneakTrigger", sneakTrigger);
+		if(defaultTarget!=null)
+			SaveHandler.saveToNBT(nbttag, "defaultTarget", defaultTarget);
+		nbttag.setInteger("defaultTargetDimension", defaultTargetDimension);
+		nbttag.setInteger("direction", direction);
 	}
 
 	public void setTo(PCtp_TeleporterData td) {
@@ -47,6 +72,7 @@ public class PCtp_TeleporterData implements PC_INBT, Serializable {
 		players = td.players;
 		sneakTrigger = td.sneakTrigger;
 		defaultTarget = td.defaultTarget;
+		defaultTargetDimension = td.defaultTargetDimension;
 		direction = td.direction;
 	}
 
