@@ -5,17 +5,15 @@ import java.util.List;
 
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityList;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.network.packet.Packet34EntityTeleport;
-import net.minecraft.src.ModLoader;
 import net.minecraft.world.World;
 import powercraft.management.PC_Block;
 import powercraft.management.PC_IDataHandler;
 import powercraft.management.PC_IPacketHandler;
 import powercraft.management.PC_PacketHandler;
+import powercraft.management.PC_Struct2;
 import powercraft.management.PC_Utils.GameInfo;
 import powercraft.management.PC_Utils.Gres;
 import powercraft.management.PC_Utils.SaveHandler;
@@ -78,7 +76,10 @@ public class PCtp_TeleporterManager implements PC_IDataHandler, PC_IPacketHandle
 			Entity entity = player.worldObj.getEntityByID(entityID);
 			if(entity!=null){
 				entity.setLocationAndAngles(pos.x, pos.y, pos.z, 0, 0);
-				entity.setVelocity(0.0f, 0.0f, 0.0f);
+				entity.motionX = 0;
+				entity.motionY = 0;
+				entity.motionZ = 0;
+				player.worldObj.updateEntityWithOptionalForce(entity, true);
 			}
 		}
 		return false;
@@ -122,7 +123,93 @@ public class PCtp_TeleporterManager implements PC_IDataHandler, PC_IPacketHandle
 		return null;
 	}
 
+	private static PC_VecI calculatePos(World world, PCtp_TeleporterData to){
+		int rotation;
+		int meta;
+		int good = 0;
+		PC_VecI tc = to.pos;
+		PC_VecI coords[] = { new PC_VecI(0, 0, -1), new PC_VecI(+1, 0, 0), new PC_VecI(0, 0, +1), new PC_VecI(-1, 0, 0) };
+		
+		int hig=0;
+		PC_VecI out=null;
+		
+		for (int i = 0; i < 4; i++) {
+
+			PC_VecI tmp = tc.offset(coords[i]);
+
+			good=0;
+			
+			Block b = GameInfo.getBlock(world, tmp);
+			
+			if(b instanceof PC_Block){
+				PC_Block pcb = (PC_Block)b;
+				if("Transport".equalsIgnoreCase(pcb.getModule().getName())){
+					meta = GameInfo.getMD(world, tmp);
+					rotation = 0;
+					switch (meta)
+			        {
+			            case 1:
+			            case 7:
+			            	rotation = 1;
+
+			            case 8:
+			            case 14:
+			            	rotation = 2;
+
+			            case 9:
+			            case 15:
+			            	rotation = 3;
+			        }
+					if (rotation == i) {
+						// good rotation, 3 points
+						good = 3;
+					} else if (rotation != ((i + 2) % 4)) {
+						// not reverse rotation, 2 points
+						good = 2;
+					}
+				}
+			}
+
+			if (to.direction == i) {
+				good += 1;
+			}
+
+			if(b instanceof PC_Block){
+				PC_Block pcb = (PC_Block)b;
+				if("Teleport".equalsIgnoreCase(pcb.getModule().getName())){
+					good = 0;
+				}
+			}
+
+			if(hig<good){
+				hig = good;
+				out = tmp;
+			}
+		}
+		return out;
+	}
 	
+	private static boolean teleportTo(Entity entity, PC_Struct2<PC_VecI, Integer> s){
+		if(entity instanceof EntityPlayerMP){
+            EntityPlayerMP player = (EntityPlayerMP)entity;
+
+            if (!player.playerNetServerHandler.connectionClosed)
+            {
+            	player.playerNetServerHandler.setPlayerLocation(s.a.x+0.5, s.a.y, s.a.z+0.5, s.b, 0.0F);
+            	player.fallDistance = 0.0F;
+            }
+            return true;
+		}
+
+        entity.setLocationAndAngles(s.a.x + 0.5, s.a.y + 0.1, s.a.z + 0.5, 0, 0);
+		entity.motionX = 0;
+		entity.motionY = 0;
+		entity.motionZ = 0;
+		PC_PacketHandler.sendToPacketHandler(true, entity.worldObj, "Teleporter", "teleport", entity.entityId, 
+				new PC_VecF((float)entity.posX, (float)entity.posY, (float)entity.posZ), s.b);
+		entity.worldObj.updateEntityWithOptionalForce(entity, true);
+        return true;
+    }
 
 	public static boolean teleportEntityTo(Entity entity, PCtp_TeleporterData td) {
 		if(td.defaultTarget == null)
@@ -130,11 +217,8 @@ public class PCtp_TeleporterManager implements PC_IDataHandler, PC_IPacketHandle
 		PCtp_TeleporterData to = getTeleporterData(td.defaultTargetDimension, td.defaultTarget);
 		if(to==null)
 			return false;
-		entity.setLocationAndAngles(to.pos.x + 0.5, to.pos.y+0.1, to.pos.z + 0.5, 0, 0);
-		entity.setVelocity(0.0f, 0.0f, 0.0f);
-		PC_PacketHandler.sendToPacketHandler(true, entity.worldObj, "Teleporter", "teleport", entity.entityId, 
-				new PC_VecF((float)entity.posX, (float)entity.posY, (float)entity.posZ));
-		return false;
+		PC_Struct2<PC_VecI, Integer> s = calculatePos(entity.worldObj, to);;
+		return teleportTo(entity, s);
 	}
 	
 	public static List<String> getTargetNames() {
