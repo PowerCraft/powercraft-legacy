@@ -27,7 +27,7 @@ import net.minecraft.inventory.IInventory;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import powercraft.machines.PC_EntityItem;
+import powercraft.machines.PCma_EntityItem;
 import powercraft.management.PC_ISpecialAccessInventory;
 import powercraft.management.PC_InvUtils;
 import powercraft.management.PC_VecI;
@@ -287,14 +287,14 @@ public class PCtr_TileEntitySeparationBelt extends PCtr_TileEntityRedirectionBel
             	if(!worldObj.isRemote){
 	                ItemStack rightStack = itemstack.copy();
 	                rightStack.stackSize = partRight;
-	                EntityItem entityitem2 = new PC_EntityItem(worldObj, entity.posX, entity.posY, entity.posZ, rightStack);
+	                EntityItem entityitem2 = new PCma_EntityItem(worldObj, entity.posX, entity.posY, entity.posZ, rightStack);
 	                entityitem2.motionX = entity.motionX;
 	                entityitem2.motionY = entity.motionY;
 	                entityitem2.motionZ = entity.motionZ;
 	                worldObj.spawnEntityInWorld(entityitem2);
 	                setItemDirection(entityitem2, translate[2]);
 	                entity.setDead();
-	                EntityItem entityNew = new PC_EntityItem(worldObj, entity.posX, entity.posY, entity.posZ, itemstack);
+	                EntityItem entityNew = new PCma_EntityItem(worldObj, entity.posX, entity.posY, entity.posZ, itemstack);
 	                entityNew.motionX = entity.motionX;
 	                entityNew.motionY = entity.motionY;
 	                entityNew.motionZ = entity.motionZ;
