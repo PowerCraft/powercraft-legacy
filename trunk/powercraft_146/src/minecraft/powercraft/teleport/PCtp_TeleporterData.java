@@ -33,7 +33,6 @@ public class PCtp_TeleporterData implements PC_INBT, Serializable {
 		monsters = true;
 		items = true;
 		players = true;
-		playerChoose = true;
 		soundEnabled = true;
 	}
 	
