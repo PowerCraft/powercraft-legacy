@@ -2,11 +2,17 @@ package powercraft.net;
 
 import java.util.List;
 
+import net.minecraft.block.Block;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.IRecipe;
+import net.minecraft.src.ModLoader;
 import powercraft.management.PC_Block;
 import powercraft.management.PC_IModule;
 import powercraft.management.PC_Item;
+import powercraft.management.PC_ItemStack;
 import powercraft.management.PC_Property;
+import powercraft.management.PC_ShapedRecipes;
 import powercraft.management.PC_Struct2;
 import powercraft.management.PC_Utils.ModuleLoader;
 
@@ -23,7 +29,7 @@ public class PCnt_App implements PC_IModule {
 
 	@Override
 	public String getVersion() {
-		return "1.0.0";
+		return "1.0.1";
 	}
 
 	@Override
@@ -56,8 +62,43 @@ public class PCnt_App implements PC_IModule {
 
 	@Override
 	public List<IRecipe> initRecipes(List<IRecipe> recipes) {
-		// TODO Auto-generated method stub
-		return null;
+		recipes.add(new PC_ShapedRecipes(new PC_ItemStack(sensor, 1, 1),
+					"R", 
+					"I", 
+					"S",
+						'I', Item.ingotIron, 'R', Item.redstone, 'S', Block.stone ));
+
+
+		recipes.add(new PC_ShapedRecipes(new PC_ItemStack(sensor, 1, 0),
+					"R", 
+					"I", 
+					"W",
+						'I', Item.ingotIron, 'R', Item.redstone, 'W', Block.planks ));
+
+		recipes.add(new PC_ShapedRecipes(new PC_ItemStack(sensor, 1, 2),
+					"R", 
+					"I", 
+					"O",
+						'I', Item.ingotIron, 'R', Item.redstone, 'O', Block.obsidian ));
+		
+		
+		recipes.add(new PC_ShapedRecipes(new PC_ItemStack(radio,1,0),
+					" I ", 
+					"RIR", 
+					"SSS",
+						'I', Item.ingotGold, 'R', Item.redstone, 'S', Block.stone ));
+
+		recipes.add(new PC_ShapedRecipes(new PC_ItemStack(radio,1,1),
+					" I ", 
+					"RIR", 
+					"SSS",
+						'I', Item.ingotIron, 'R', Item.redstone, 'S', Block.stone ));
+
+		recipes.add(new PC_ShapedRecipes(new PC_ItemStack(portableTx),
+					"T", 
+					"B",
+						'B', Block.stoneButton, 'T', radio ));
+		return recipes;
 	}
 
 	@Override
