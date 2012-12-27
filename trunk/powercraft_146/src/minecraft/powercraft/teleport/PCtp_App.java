@@ -2,14 +2,19 @@ package powercraft.teleport;
 
 import java.util.List;
 
+import net.minecraft.block.Block;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.IRecipe;
 import powercraft.management.PC_Block;
 import powercraft.management.PC_IModule;
+import powercraft.management.PC_ItemStack;
 import powercraft.management.PC_PacketHandler;
 import powercraft.management.PC_Property;
+import powercraft.management.PC_ShapedRecipes;
 import powercraft.management.PC_Struct2;
+import powercraft.management.PC_Utils.ModuleInfo;
 import powercraft.management.PC_Utils.ModuleLoader;
-import powercraft.net.PCnt_RadioManager;
 
 public class PCtp_App implements PC_IModule {
 
@@ -55,8 +60,23 @@ public class PCtp_App implements PC_IModule {
 
 	@Override
 	public List<IRecipe> initRecipes(List<IRecipe> recipes) {
-		// TODO Auto-generated method stub
-		return null;
+		PC_ItemStack prism;
+		
+		int prismId = ModuleInfo.getPCObjectIDByName("PCli_BlockPrism");
+		
+		if(prismId!=0){
+			//safety check
+			prism = new PC_ItemStack(prismId,1,0);
+		}else{
+			prism = new PC_ItemStack(Block.glass);
+		}
+		
+		recipes.add(new PC_ShapedRecipes(new PC_ItemStack(teleporter, 1, 0),
+					" P ", 
+					"PVP", 
+					"SSS",
+						'V', new ItemStack(Item.dyePowder, 1, 5), 'P', prism, 'S', Item.ingotIron ));
+		return recipes;
 	}
 
 	@Override
