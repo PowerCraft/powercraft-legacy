@@ -5,6 +5,7 @@ import java.io.Serializable;
 import net.minecraft.nbt.NBTTagCompound;
 import powercraft.management.PC_INBT;
 import powercraft.management.PC_VecI;
+import powercraft.management.PC_Utils.SaveHandler;
 
 public class PCtp_TeleporterData implements PC_INBT, Serializable {
 
@@ -27,7 +28,8 @@ public class PCtp_TeleporterData implements PC_INBT, Serializable {
 	
 	@Override
 	public void readFromNBT(NBTTagCompound nbttag) {
-		// TODO Auto-generated method stub
+		pos = new PC_VecI();
+		SaveHandler.loadFromNBT(nbttag, "pos", pos);
 		
 	}
 
