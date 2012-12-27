@@ -77,7 +77,6 @@ public class PCtp_TeleporterManager implements PC_IDataHandler, PC_IPacketHandle
 			if(td!=null)
 				teleportEntityToTarget(player, td);
 		}else if(msg.equals("teleport")){
-			System.out.println("Teleport");
 			int entityID = (Integer)o[1];
 			PC_VecF pos = (PC_VecF)o[2];
 			int entrot = (Integer)o[3];

@@ -40,6 +40,7 @@ public class PCtp_GuiTeleporter implements PC_IGresClient {
 	private PC_GresCheckBox players;
 	private PC_GresCheckBox sneakTrigger;
 	private PC_GresCheckBox playerChoose;
+	private PC_GresCheckBox soundEnabled;
 	
 	private PC_GresRadioGroup dir;
 	
@@ -104,6 +105,8 @@ public class PCtp_GuiTeleporter implements PC_IGresClient {
 		sneakTrigger.check(td.sneakTrigger);
 		vg.add(playerChoose = new PC_GresCheckBox(Lang.tr("pc.gui.teleporter.playerChoose")));
 		playerChoose.check(td.playerChoose);
+		vg.add(soundEnabled = new PC_GresCheckBox(Lang.tr("pc.gui.teleporter.soundEnabled")));
+		soundEnabled.check(td.soundEnabled);
 		
 		dir = new PC_GresRadioGroup();
 		rb = new PC_GresRadioButton(Lang.tr("pc.gui.teleporter.north"), dir);
@@ -183,6 +186,7 @@ public class PCtp_GuiTeleporter implements PC_IGresClient {
 			td.players = players.isChecked();
 			td.sneakTrigger = sneakTrigger.isChecked();
 			td.playerChoose = playerChoose.isChecked();
+			td.soundEnabled = soundEnabled.isChecked();
 			td.direction = this.dir.getChecked().getId();
 			PC_PacketHandler.sendToPacketHandler(player.worldObj, "Teleporter", "set", td, target);
 			gui.close();

@@ -17,6 +17,7 @@ public class PCtp_TileEntityTeleporter extends PC_TileEntity {
 
 	public int direction=0;
 	public List<EntityPlayer> playersForTeleport = new ArrayList<EntityPlayer>();
+	public boolean soundEnabled;
 	
 	@Override
 	public void create(ItemStack stack, EntityPlayer player, World world, int x, int y, int z, int side, float hitX, float hitY, float hitZ) {
@@ -74,14 +75,18 @@ public class PCtp_TileEntityTeleporter extends PC_TileEntity {
 			String var = (String)o[p++];
 			if(var.equals("direction")){
 				direction = (Integer)o[p++];
+			}else if(var.equals("soundEnabled")){
+				soundEnabled = (Boolean)o[p++];
 			}
 		}
+		worldObj.markBlockRangeForRenderUpdate(xCoord, yCoord, zCoord, xCoord, yCoord, zCoord);
 	}
 
 	@Override
 	public Object[] getData() {
 		return new Object[]{
-				"direction", direction
+				"direction", direction,
+				"soundEnabled", soundEnabled
 		};
 	}
 	
