@@ -59,7 +59,9 @@ public class PCtp_TeleporterManager implements PC_IDataHandler, PC_IPacketHandle
 		if(msg.equals("set")){
 			PCtp_TeleporterData td = (PCtp_TeleporterData)o[1];
 			String target = (String)o[2];
-			PCtp_TeleporterData td2 = getTargetByName(target);
+			PCtp_TeleporterData td2 = null;
+			if(target!=null && !target.equals(""))
+				td2 = getTargetByName(target);
 			if(td2==null){
 				td.defaultTarget = null;
 				td.defaultTargetDimension = 0;
@@ -69,6 +71,11 @@ public class PCtp_TeleporterManager implements PC_IDataHandler, PC_IPacketHandle
 			}
 			td2 = getTeleporterData(td.dimension, td.pos);
 			td2.setTo(td);
+		}else if(msg.equals("makeTelport")){
+			String target = (String)o[1];
+			PCtp_TeleporterData td = getTargetByName(target);
+			if(td!=null)
+				teleportEntityToTarget(player, td);
 		}else if(msg.equals("teleport")){
 			System.out.println("Teleport");
 			int entityID = (Integer)o[1];
@@ -217,12 +224,7 @@ public class PCtp_TeleporterManager implements PC_IDataHandler, PC_IPacketHandle
         return true;
     }
 
-	public static boolean teleportEntityTo(Entity entity, PCtp_TeleporterData td) {
-		if(td.defaultTarget == null)
-			return false;
-		PCtp_TeleporterData to = getTeleporterData(td.defaultTargetDimension, td.defaultTarget);
-		if(to==null)
-			return false;
+	public static boolean teleportEntityToTarget(Entity entity, PCtp_TeleporterData to) {
 		World world = GameInfo.mcs().worldServerForDimension(to.dimension);
 		PC_Struct2<PC_VecI, Integer> s = calculatePos(world, to);
 		if(!(entity instanceof EntityPlayerMP))
@@ -234,6 +236,15 @@ public class PCtp_TeleporterManager implements PC_IDataHandler, PC_IPacketHandle
 			if(!teleportTo(entity, s))
 				return false;
 		return true;
+	}
+	
+	public static boolean teleportEntityTo(Entity entity, PCtp_TeleporterData td) {
+		if(td.defaultTarget == null)
+			return false;
+		PCtp_TeleporterData to = getTeleporterData(td.defaultTargetDimension, td.defaultTarget);
+		if(to==null)
+			return false;
+		return teleportEntityToTarget(entity, td);
 	}
 	
 	public static List<String> getTargetNames() {
@@ -256,6 +267,13 @@ public class PCtp_TeleporterManager implements PC_IDataHandler, PC_IPacketHandle
 			}
 		}
 		return null;
+	}
+
+	public static void openTeleportGui(EntityPlayer player, PCtp_TeleporterData td) {
+		List<String> names = getTargetNames();
+		if(td.name!=null&&!td.equals(""))
+			names.remove(td.name);
+		Gres.openGres("PlayerTeleport", player, names);
 	}
 	
 }

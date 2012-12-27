@@ -21,6 +21,7 @@ public class PCtp_TeleporterData implements PC_INBT, Serializable {
 	public boolean items;
 	public boolean players;
 	public boolean sneakTrigger;
+	public boolean playerChoose;
 	public PC_VecI defaultTarget;
 	public int defaultTargetDimension;
 	public int direction;
@@ -31,6 +32,7 @@ public class PCtp_TeleporterData implements PC_INBT, Serializable {
 		monsters = true;
 		items = true;
 		players = true;
+		playerChoose = true;
 	}
 	
 	@Override
@@ -44,6 +46,7 @@ public class PCtp_TeleporterData implements PC_INBT, Serializable {
 		items = nbttag.getBoolean("items");
 		players = nbttag.getBoolean("players");
 		sneakTrigger = nbttag.getBoolean("sneakTrigger");
+		playerChoose = nbttag.getBoolean("playerChoose");
 		if(nbttag.hasKey("defaultTarget")){
 			defaultTarget = new PC_VecI();
 			SaveHandler.loadFromNBT(nbttag, "defaultTarget", defaultTarget);
@@ -64,6 +67,7 @@ public class PCtp_TeleporterData implements PC_INBT, Serializable {
 		nbttag.setBoolean("items", items);
 		nbttag.setBoolean("players", players);
 		nbttag.setBoolean("sneakTrigger", sneakTrigger);
+		nbttag.setBoolean("playerChoose", playerChoose);
 		if(defaultTarget!=null)
 			SaveHandler.saveToNBT(nbttag, "defaultTarget", defaultTarget);
 		nbttag.setInteger("defaultTargetDimension", defaultTargetDimension);
@@ -78,6 +82,7 @@ public class PCtp_TeleporterData implements PC_INBT, Serializable {
 		players = td.players;
 		sneakTrigger = td.sneakTrigger;
 		defaultTarget = td.defaultTarget;
+		playerChoose = td.playerChoose;
 		defaultTargetDimension = td.defaultTargetDimension;
 		direction = td.direction;
 		PCtp_TileEntityTeleporter te = GameInfo.getTE(GameInfo.mcs().worldServerForDimension(dimension), pos);
