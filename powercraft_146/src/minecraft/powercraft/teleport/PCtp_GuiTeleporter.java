@@ -4,6 +4,7 @@ import java.util.List;
 
 import net.minecraft.entity.player.EntityPlayer;
 import powercraft.management.PC_GresButton;
+import powercraft.management.PC_GresCheckBox;
 import powercraft.management.PC_GresLabel;
 import powercraft.management.PC_GresLayoutH;
 import powercraft.management.PC_GresLayoutV;
@@ -31,6 +32,14 @@ public class PCtp_GuiTeleporter implements PC_IGresClient {
 	
 	private PC_GresRadioGroup rg;
 	
+	private PC_GresCheckBox animals;
+	private PC_GresCheckBox monsters;
+	private PC_GresCheckBox items;
+	private PC_GresCheckBox players;
+	private PC_GresCheckBox sneakTrigger;
+	
+	private PC_GresRadioGroup dir;
+	
 	public PCtp_GuiTeleporter(EntityPlayer player, Object[]o) {
 		this.player = player;
 		td = (PCtp_TeleporterData)o[0];
@@ -46,14 +55,14 @@ public class PCtp_GuiTeleporter implements PC_IGresClient {
 		
 		PC_GresWidget vg = new PC_GresLayoutV();
 		PC_GresWidget hg = new PC_GresLayoutH();
-		hg.add(new PC_GresLabel("Name:"));
+		hg.add(new PC_GresLabel(Lang.tr("pc.gui.teleporter.name")));
 		hg.add(name = new PC_GresTextEdit(td.name, 10));
 		vg.add(hg);
 		
 		rg = new PC_GresRadioGroup();
 		
 		hg = new PC_GresLayoutH();
-		hg.add(new PC_GresLabel("Target:"));
+		hg.add(new PC_GresLabel(Lang.tr("pc.gui.teleporter.target")));
 		PC_GresWidget sa = new PC_GresLayoutV();
 		for(String name:names){
 			if(!name.equals(td.name)){
@@ -63,13 +72,46 @@ public class PCtp_GuiTeleporter implements PC_IGresClient {
 				sa.add(rb);
 			}
 		}
-		PC_GresRadioButton rb = new PC_GresRadioButton("<Nothing>", rg);
+		PC_GresRadioButton rb = new PC_GresRadioButton(Lang.tr("pc.gui.teleporter.nothing"), rg);
 		if(defaultTarget==null||defaultTarget.equals(""))
 			rb.check(true);
 		sa.add(rb);
 		hg.add(new PC_GresScrollArea(0, 100, sa, PC_GresScrollArea.VSCROLL));
 		vg.add(hg);
-		t.addTab(vg, new PC_GresLabel("Propertys"));
+		t.addTab(vg, new PC_GresLabel(Lang.tr("pc.gui.teleporter.page1")));
+		
+		vg = new PC_GresLayoutV();
+		
+		vg.add(animals = new PC_GresCheckBox(Lang.tr("pc.gui.teleporter.animals")));
+		animals.check(td.animals);
+		vg.add(monsters = new PC_GresCheckBox(Lang.tr("pc.gui.teleporter.monsters")));
+		monsters.check(td.monsters);
+		vg.add(items = new PC_GresCheckBox(Lang.tr("pc.gui.teleporter.items")));
+		items.check(td.items);
+		vg.add(players = new PC_GresCheckBox(Lang.tr("pc.gui.teleporter.players")));
+		players.check(td.players);
+		vg.add(sneakTrigger = new PC_GresCheckBox(Lang.tr("pc.gui.teleporter.sneakTrigger")));
+		sneakTrigger.check(td.sneakTrigger);
+		
+		dir = new PC_GresRadioGroup();
+		rb = new PC_GresRadioButton(Lang.tr("pc.gui.teleporter.north"), dir);
+		rb.check(td.direction == PCtp_TeleporterData.N);
+		rb.setId(PCtp_TeleporterData.N);
+		vg.add(rb);
+		rb = new PC_GresRadioButton(Lang.tr("pc.gui.teleporter.east"), dir);
+		rb.check(td.direction == PCtp_TeleporterData.E);
+		rb.setId(PCtp_TeleporterData.E);
+		vg.add(rb);
+		rb = new PC_GresRadioButton(Lang.tr("pc.gui.teleporter.south"), dir);
+		rb.check(td.direction == PCtp_TeleporterData.S);
+		rb.setId(PCtp_TeleporterData.S);
+		vg.add(rb);
+		rb = new PC_GresRadioButton(Lang.tr("pc.gui.teleporter.west"), dir);
+		rb.check(td.direction == PCtp_TeleporterData.W);
+		rb.setId(PCtp_TeleporterData.W);
+		vg.add(rb);
+		
+		t.addTab(vg, new PC_GresLabel(Lang.tr("pc.gui.teleporter.page2")));
 		
 		w.add(t);
 		w.add(ok = new PC_GresButton(Lang.tr("pc.gui.ok")));
@@ -100,7 +142,15 @@ public class PCtp_GuiTeleporter implements PC_IGresClient {
 			String target="";
 			if(rb!=null)
 				target = rb.getText();
+			if(target.equals(Lang.tr("pc.gui.teleporter.nothing")))
+				target = "";
 			td.name = name.getText();
+			td.animals = animals.isChecked();
+			td.monsters = monsters.isChecked();
+			td.items = items.isChecked();
+			td.players = players.isChecked();
+			td.sneakTrigger = sneakTrigger.isChecked();
+			td.direction = this.dir.getChecked().getId();
 			PC_PacketHandler.sendToPacketHandler(player.worldObj, "Teleporter", "set", td, target);
 			gui.close();
 		}
