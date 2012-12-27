@@ -3,6 +3,7 @@ package powercraft.teleport;
 import java.util.HashMap;
 import java.util.Map.Entry;
 
+import net.minecraft.entity.Entity;
 import net.minecraft.nbt.NBTTagCompound;
 import powercraft.management.PC_IDataHandler;
 import powercraft.management.PC_Utils.SaveHandler;
@@ -54,13 +55,50 @@ public class PCtp_TeleporterManager implements PC_IDataHandler {
 		return nbtTag;
 	}
 
-	public static void registerTeleporterData(int dimension, PC_VecI pos, PCtp_TeleporterData td){
-		
-	}
-	
 	@Override
 	public boolean needSave() {
 		return needSave;
+	}
+	
+	private static HashMap<PC_VecI, PCtp_TeleporterData> getMapForDimension(int dimension){
+		HashMap<PC_VecI, PCtp_TeleporterData> hm;
+		if(teleoprter.containsKey(dimension)){
+			hm = teleoprter.get(dimension);
+		}else{
+			teleoprter.put(dimension, hm = new HashMap<PC_VecI, PCtp_TeleporterData>());
+			needSave = true;
+		}
+		return hm;
+	}
+	
+	public static void registerTeleporterData(int dimension, PC_VecI pos, PCtp_TeleporterData td){
+		HashMap<PC_VecI, PCtp_TeleporterData> hm = getMapForDimension(dimension);
+		hm.put(pos, td);
+		needSave = true;
+	}
+	
+	public static void releaseTeleporterData(int dimension, PC_VecI pos){
+		if(!teleoprter.containsKey(dimension))
+			return;
+		HashMap<PC_VecI, PCtp_TeleporterData> hm = getMapForDimension(dimension);
+		hm.remove(pos);
+		if(hm.size()==0){
+			teleoprter.remove(dimension);
+		}
+	}
+	
+	public static PCtp_TeleporterData getTeleporterData(int dimension, PC_VecI pos){
+		if(!teleoprter.containsKey(dimension))
+			return null;
+		HashMap<PC_VecI, PCtp_TeleporterData> hm = getMapForDimension(dimension);
+		if(!hm.containsKey(pos))
+			return null;
+		return hm.get(pos);
+	}
+
+	public static void teleportEntityTo(Entity entity, PC_VecI defaultTarget) {
+		// TODO Auto-generated method stub
+		
 	}
 	
 }

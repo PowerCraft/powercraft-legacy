@@ -73,31 +73,22 @@ public class PCtp_BlockTeleporter extends PC_Block {
 		super.onBlockPlacedBy(world, i, j, k, entityliving);
 		if(!world.isRemote){
 			System.out.println("onBlockPlacedBy");
-			PCtp_TeleporterData td;
+			int dimension = 0;
+			PC_VecI pos = new PC_VecI(i, j, k);
 			if(entityliving instanceof EntityPlayer)
-				td = PCtp_TeleporterManager.getTeleporterDataAt(((EntityPlayer)entityliving).dimension, i, j, k);
+				dimension = ((EntityPlayer)entityliving).dimension;
 			else
-				td = PCtp_TeleporterManager.getTeleporterDataAt(entityliving.worldObj.getWorldInfo().getDimension(), i, j, k);
+				dimension = entityliving.worldObj.getWorldInfo().getDimension();
+			PCtp_TeleporterData td = PCtp_TeleporterManager.getTeleporterData(dimension, pos);
 			if(td==null){
 				td = new PCtp_TeleporterData();
-				td.pos.setTo(i, j, k);
-				td.setName("");
-				td.defaultTarget="";
-				if(entityliving instanceof EntityPlayer)
-					td.dimension = ((EntityPlayer)entityliving).dimension;
-				else
-					td.dimension = entityliving.worldObj.getWorldInfo().getDimension();
-				PCtp_TileEntityTeleporter tet = (PCtp_TileEntityTeleporter)world.getBlockTileEntity(i, j, k);
-				tet.dimension = td.dimension;
-				System.out.println("td.dimension:"+td.dimension);
-				PCtp_TeleporterManager.add(td);
-				PC_Utils.sendToPacketHandler(null, "TeleporterNetHandler", i, j, k, "", "", td.dimension);
+				PCtp_TeleporterManager.registerTeleporterData(dimension, pos, td);
 			}//else{
 			//	if(td.dimension!=worldObj.worldInfo.getDimension())
 			//		PC_Utils.sendToPacketHandler(PC_Utils.mc().thePlayer, "TeleporterNetHandler", 0, xCoord, yCoord, zCoord, "", "", worldObj.worldInfo.getDimension());
 			//}
 			if (entityliving instanceof EntityPlayer) {
-				PC_Utils.openGres((EntityPlayer)entityliving, PCnt_GuiTeleporter.class, i, j, k, td.dimension);
+				Gres.openGres("Teleporter", (EntityPlayer)entityliving, i, j, k, dimension);
 			}
 		}
 		//((PCnt_TileEntityTeleporter)world.getBlockTileEntity(i, j, k)).createData();
@@ -112,11 +103,6 @@ public class PCtp_BlockTeleporter extends PC_Block {
 		super.breakBlock(world, i, j, k, par5, par6);
 	}
 	
-	@Override
-	public TileEntity newTileEntity(World world, int metadata) {
-		return new PCtp_TileEntityTeleporter();
-	}
-
 	@Override
 	public boolean isOpaqueCube() {
 		return false;
@@ -140,11 +126,13 @@ public class PCtp_BlockTeleporter extends PC_Block {
 	@Override
 	public void onEntityCollidedWithBlock(World world, int i, int j, int k, Entity entity) {
 		
-		PCtp_TeleporterData td = null;
+		int dimension;
 		if(entity instanceof EntityPlayer)
-			td = PCtp_TeleporterManager.getTeleporterDataAt(((EntityPlayer)entity).dimension, i, j, k);
+			dimension = ((EntityPlayer)entity).dimension;
 		else
-			td = PCtp_TeleporterManager.getTeleporterDataAt(world.worldInfo.getDimension(), i, j, k);
+			dimension = entity.worldObj.getWorldInfo().getDimension();
+		
+		PCtp_TeleporterData td = PCtp_TeleporterManager.getTeleporterData(dimension, new PC_VecI(i, j, k));
 		
 		if(td == null)
 			return;
