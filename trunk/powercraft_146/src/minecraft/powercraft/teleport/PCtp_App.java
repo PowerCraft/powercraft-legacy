@@ -20,37 +20,26 @@ public class PCtp_App implements PC_IModule {
 	}
 
 	@Override
-	public void preInit() {
-		
-	}
+	public void preInit() {}
 
 	@Override
-	public void init() {
-		// TODO Auto-generated method stub
-		
-	}
+	public void init() {}
 
 	@Override
-	public void postInit() {
-		// TODO Auto-generated method stub
-		
-	}
+	public void postInit() {}
 
 	@Override
 	public void initProperties(PC_Property config) {
-		// TODO Auto-generated method stub
 		
 	}
 
 	@Override
 	public void initBlocks() {
-		// TODO Auto-generated method stub
 		
 	}
 
 	@Override
 	public void initItems() {
-		// TODO Auto-generated method stub
 		
 	}
 
