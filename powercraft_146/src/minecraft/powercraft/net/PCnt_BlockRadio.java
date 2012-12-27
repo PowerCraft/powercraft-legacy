@@ -202,35 +202,11 @@ public class PCnt_BlockRadio extends PC_Block {
 
 		if (ter.isTransmitter()) {
 
-			boolean on = (meta == 1);
-			boolean power = isGettingPower(world, i, j, k);
-
-			if (on && !power) {
-				world.setBlockMetadataWithNotify(i, j, k, 0);
-				ter.setTransmitterState(false);
-
-			} else if (!on && power) {
-				world.setBlockMetadataWithNotify(i, j, k, 1);
-				ter.setTransmitterState(true);
-			}
-
-		} else {
-
-			boolean on = (meta == 1);
-			boolean power = ter.active;
-
-			if (on && !power) {
-				world.setBlockMetadataWithNotify(i, j, k, 0);
-				ter.setTransmitterState(false);
-
-			} else if (!on && power) {
-				world.setBlockMetadataWithNotify(i, j, k, 1);
-				ter.setTransmitterState(true);
-			}
+			ter.setTransmitterState(isGettingPower(world, i, j, k));
+			
 		}
 
 		world.markBlockForUpdate(i, j, k);
-		world.notifyBlocksOfNeighborChange(i, j - 1, k, world.getBlockId(i, j - 1, k));
 	}
 
 	private boolean isGettingPower(World world, int i, int j, int k) {
@@ -247,8 +223,8 @@ public class PCnt_BlockRadio extends PC_Block {
 
 	@Override
 	public boolean isProvidingWeakPower(IBlockAccess iblockaccess, int i, int j, int k, int l) {
-		int meta = iblockaccess.getBlockMetadata(i, j, k);
-		if (GameInfo.<PCnt_TileEntityRadio>getTE(iblockaccess, i, j, k).isReceiver() && meta == 1) {
+		PCnt_TileEntityRadio te = GameInfo.getTE(iblockaccess, i, j, k);
+		if (te.isReceiver() && te.isActive()) {
 			return true;
 		}
 		return false;
@@ -271,12 +247,12 @@ public class PCnt_BlockRadio extends PC_Block {
 
 	@Override
 	public void randomDisplayTick(World world, int i, int j, int k, Random random) {
-		int i1 = world.getBlockMetadata(i, j, k);
-		if (i1 != 1) {
+		
+		PCnt_TileEntityRadio te = GameInfo.getTE(world, i, j, k);
+		if(!te.active)
 			return;
-		}
-
-		boolean tiny = GameInfo.<PCnt_TileEntityRadio>getTE(world, i, j, k).renderMicro;
+		
+		boolean tiny = te.renderMicro;
 
 		double x = (i + 0.5F) + (random.nextFloat() - 0.5F) * 0.20000000000000001D;
 		double y = (j + (tiny ? 0.2F : 0.9F)) + (random.nextFloat() - 0.5F) * 0.20000000000000001D;

@@ -9,6 +9,7 @@ import powercraft.management.PC_PacketHandler;
 import powercraft.management.PC_Renderer;
 import powercraft.management.PC_TileEntity;
 import powercraft.management.PC_Utils.ModuleInfo;
+import powercraft.management.PC_Utils.ValueWriting;
 import powercraft.management.PC_VecF;
 import powercraft.management.PC_VecI;
 
@@ -71,8 +72,7 @@ public class PCnt_TileEntityRadio extends PC_TileEntity implements PC_ITileEntit
 	 * Notify block change.
 	 */
 	public void updateBlock() {
-		worldObj.notifyBlocksOfNeighborChange(xCoord, yCoord, zCoord, getBlockType().blockID);
-		worldObj.notifyBlocksOfNeighborChange(xCoord, yCoord - 1, zCoord, getBlockType().blockID);
+		ValueWriting.hugeUpdate(worldObj, xCoord, yCoord, zCoord);
 		worldObj.markBlockRangeForRenderUpdate(xCoord, yCoord, zCoord, xCoord, yCoord, zCoord);
 	}
 
@@ -132,6 +132,8 @@ public class PCnt_TileEntityRadio extends PC_TileEntity implements PC_ITileEntit
 			}else if(type==0 && !worldObj.isRemote){
 				PCnt_RadioManager.transmitterOff(channel);
 			}
+			if(type==1)
+				ValueWriting.hugeUpdate(worldObj, xCoord, yCoord, zCoord);
 		}
 	}
 
