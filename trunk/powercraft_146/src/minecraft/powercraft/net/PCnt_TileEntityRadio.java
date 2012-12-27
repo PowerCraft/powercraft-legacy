@@ -165,13 +165,13 @@ public class PCnt_TileEntityRadio extends PC_TileEntity implements PC_ITileEntit
 				setChannel((String)o[p++]);
 			}else if(var.equals("active")){
 				active = !(Boolean)o[p++];
+				setTransmitterState(!active);
 			}else if(var.equals("hideLabel")){
 				this.hideLabel = (Boolean)o[p++];
 			}else if(var.equals("renderMicro")){
 				this.renderMicro = (Boolean)o[p++];
 			}
 		}
-		setTransmitterState(!active);
 	}
 
 	@Override
