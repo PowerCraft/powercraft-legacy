@@ -9,7 +9,7 @@ import powercraft.management.PC_VecI;
 import powercraft.management.PC_Utils.GameInfo;
 import powercraft.management.PC_Utils.SaveHandler;
 
-public class PCtp_TeleporterData implements PC_INBT, Serializable {
+public class PCtp_TeleporterData implements PC_INBT<PCtp_TeleporterData>, Serializable {
 
 	public static final int N=0, E=1, S=2, W=3;
 	
@@ -37,7 +37,7 @@ public class PCtp_TeleporterData implements PC_INBT, Serializable {
 	}
 	
 	@Override
-	public void readFromNBT(NBTTagCompound nbttag) {
+	public PCtp_TeleporterData readFromNBT(NBTTagCompound nbttag) {
 		pos = new PC_VecI();
 		name = nbttag.getString("name");
 		SaveHandler.loadFromNBT(nbttag, "pos", pos);
@@ -57,10 +57,11 @@ public class PCtp_TeleporterData implements PC_INBT, Serializable {
 		}
 		defaultTargetDimension = nbttag.getInteger("defaultTargetDimension");
 		direction = nbttag.getInteger("direction");
+		return this;
 	}
 
 	@Override
-	public void writeToNBT(NBTTagCompound nbttag) {
+	public NBTTagCompound writeToNBT(NBTTagCompound nbttag) {
 		nbttag.setString("name", name);
 		SaveHandler.saveToNBT(nbttag, "pos", pos);
 		nbttag.setInteger("dimension", dimension);
@@ -75,6 +76,7 @@ public class PCtp_TeleporterData implements PC_INBT, Serializable {
 			SaveHandler.saveToNBT(nbttag, "defaultTarget", defaultTarget);
 		nbttag.setInteger("defaultTargetDimension", defaultTargetDimension);
 		nbttag.setInteger("direction", direction);
+		return nbttag;
 	}
 
 	public void setTo(PCtp_TeleporterData td) {
