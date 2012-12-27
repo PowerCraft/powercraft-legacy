@@ -73,9 +73,10 @@ public class PCtp_TeleporterManager implements PC_IDataHandler, PC_IPacketHandle
 			System.out.println("Teleport");
 			int entityID = (Integer)o[1];
 			PC_VecF pos = (PC_VecF)o[2];
+			int entrot = (Integer)o[3];
 			Entity entity = player.worldObj.getEntityByID(entityID);
 			if(entity!=null){
-				entity.setLocationAndAngles(pos.x, pos.y, pos.z, 0, 0);
+				entity.setLocationAndAngles(pos.x, pos.y, pos.z, entrot, 0);
 				entity.motionX = 0;
 				entity.motionY = 0;
 				entity.motionZ = 0;
@@ -123,10 +124,11 @@ public class PCtp_TeleporterManager implements PC_IDataHandler, PC_IPacketHandle
 		return null;
 	}
 
-	private static PC_VecI calculatePos(World world, PCtp_TeleporterData to){
+	private static PC_Struct2<PC_VecI, Integer> calculatePos(World world, PCtp_TeleporterData to){
 		int rotation;
 		int meta;
 		int good = 0;
+		int entrot = 0;
 		PC_VecI tc = to.pos;
 		PC_VecI coords[] = { new PC_VecI(0, 0, -1), new PC_VecI(+1, 0, 0), new PC_VecI(0, 0, +1), new PC_VecI(-1, 0, 0) };
 		
@@ -184,9 +186,13 @@ public class PCtp_TeleporterManager implements PC_IDataHandler, PC_IPacketHandle
 			if(hig<good){
 				hig = good;
 				out = tmp;
+				entrot = i*90;
 			}
 		}
-		return out;
+		entrot += 180;
+		if(entrot>360)
+			entrot-=360;
+		return new PC_Struct2<PC_VecI, Integer>(out, entrot);
 	}
 	
 	private static boolean teleportTo(Entity entity, PC_Struct2<PC_VecI, Integer> s){
@@ -217,8 +223,17 @@ public class PCtp_TeleporterManager implements PC_IDataHandler, PC_IPacketHandle
 		PCtp_TeleporterData to = getTeleporterData(td.defaultTargetDimension, td.defaultTarget);
 		if(to==null)
 			return false;
-		PC_Struct2<PC_VecI, Integer> s = calculatePos(entity.worldObj, to);;
-		return teleportTo(entity, s);
+		World world = GameInfo.mcs().worldServerForDimension(to.dimension);
+		PC_Struct2<PC_VecI, Integer> s = calculatePos(world, to);
+		if(!(entity instanceof EntityPlayerMP))
+			if(!teleportTo(entity, s))
+				return false;
+		if(entity.dimension != to.dimension)
+			entity.travelToDimension(to.dimension);
+		if(entity instanceof EntityPlayerMP)
+			if(!teleportTo(entity, s))
+				return false;
+		return true;
 	}
 	
 	public static List<String> getTargetNames() {
