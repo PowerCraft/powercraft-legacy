@@ -27,6 +27,7 @@ import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import powercraft.management.PC_Block;
+import powercraft.management.PC_IItemInfo;
 import powercraft.management.PC_Property;
 import powercraft.management.PC_Renderer;
 import powercraft.management.PC_Utils;
@@ -36,7 +37,7 @@ import powercraft.management.PC_Utils.ValueWriting;
 import powercraft.management.PC_VecF;
 import powercraft.management.PC_VecI;
 
-public class PCtp_BlockTeleporter extends PC_Block {
+public class PCtp_BlockTeleporter extends PC_Block implements PC_IItemInfo{
 
 	public PCtp_BlockTeleporter(int id) {
 		super(id, 14, Material.portal, false);
@@ -308,6 +309,12 @@ public class PCtp_BlockTeleporter extends PC_Block {
 			return null;
 		}
 		return true;
+	}
+
+	@Override
+	public List<ItemStack> getItemStacks(List<ItemStack> arrayList) {
+		arrayList.add(new ItemStack(this));
+		return arrayList;
 	}
 
 }

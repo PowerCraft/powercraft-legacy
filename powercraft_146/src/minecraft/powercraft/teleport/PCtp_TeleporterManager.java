@@ -95,7 +95,12 @@ public class PCtp_TeleporterManager implements PC_IDataHandler, PC_IPacketHandle
 
 	public static void openGui(EntityPlayer entityPlayer, int x, int y, int z){
 		int dimension = entityPlayer.dimension;
-		openGui(entityPlayer, getTeleporterData(dimension, new PC_VecI(x, y, z)));
+		PCtp_TeleporterData td = getTeleporterData(dimension, new PC_VecI(x, y, z));
+		if(td==null){
+			td = new PCtp_TeleporterData();
+			registerTeleporterData(dimension, new PC_VecI(x, y, z), td);
+		}
+		openGui(entityPlayer, td);
 	}
 	
 	public static void openGui(EntityPlayer entityPlayer, PCtp_TeleporterData td) {
