@@ -14,6 +14,7 @@ import powercraft.management.PC_GresScrollArea;
 import powercraft.management.PC_GresTab;
 import powercraft.management.PC_GresTextEdit;
 import powercraft.management.PC_GresWidget;
+import powercraft.management.PC_GresWidget.PC_GresAlign;
 import powercraft.management.PC_GresWindow;
 import powercraft.management.PC_IGresClient;
 import powercraft.management.PC_IGresGui;
@@ -64,6 +65,7 @@ public class PCtp_GuiTeleporter implements PC_IGresClient {
 		hg = new PC_GresLayoutH();
 		hg.add(new PC_GresLabel(Lang.tr("pc.gui.teleporter.target")));
 		PC_GresWidget sa = new PC_GresLayoutV();
+		sa.setAlignH(PC_GresAlign.LEFT);
 		for(String name:names){
 			if(!name.equals(td.name)){
 				PC_GresRadioButton rb = new PC_GresRadioButton(name, rg);
@@ -79,9 +81,11 @@ public class PCtp_GuiTeleporter implements PC_IGresClient {
 		hg.add(new PC_GresScrollArea(0, 100, sa, PC_GresScrollArea.VSCROLL));
 		vg.add(hg);
 		t.addTab(vg, new PC_GresLabel(Lang.tr("pc.gui.teleporter.page1")));
+		PC_GresWidget tab1 = vg;
+		
 		
 		vg = new PC_GresLayoutV();
-		
+		vg.setAlignH(PC_GresAlign.LEFT);
 		vg.add(animals = new PC_GresCheckBox(Lang.tr("pc.gui.teleporter.animals")));
 		animals.check(td.animals);
 		vg.add(monsters = new PC_GresCheckBox(Lang.tr("pc.gui.teleporter.monsters")));
@@ -112,6 +116,8 @@ public class PCtp_GuiTeleporter implements PC_IGresClient {
 		vg.add(rb);
 		
 		t.addTab(vg, new PC_GresLabel(Lang.tr("pc.gui.teleporter.page2")));
+		
+		t.makeTabVisible(tab1);
 		
 		w.add(t);
 		w.add(ok = new PC_GresButton(Lang.tr("pc.gui.ok")));
