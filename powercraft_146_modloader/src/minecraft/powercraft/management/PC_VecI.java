@@ -312,17 +312,19 @@ public class PC_VecI implements Serializable, PC_Vec<Integer, PC_VecI>{
 	}
 	
 	@Override
-	public void readFromNBT(NBTTagCompound nbttag) {
+	public PC_VecI readFromNBT(NBTTagCompound nbttag) {
 		x = nbttag.getInteger("x");
 		y = nbttag.getInteger("y");
 		z = nbttag.getInteger("z");
+		return this;
 	}
 
 	@Override
-	public void writeToNBT(NBTTagCompound nbttag) {
+	public NBTTagCompound writeToNBT(NBTTagCompound nbttag) {
 		nbttag.setInteger("x", x);
 		nbttag.setInteger("y", y);
 		nbttag.setInteger("z", z);
+		return nbttag;
 	}
 	
 }

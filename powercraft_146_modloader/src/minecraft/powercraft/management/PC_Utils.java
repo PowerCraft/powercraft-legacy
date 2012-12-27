@@ -1785,9 +1785,9 @@ public class PC_Utils implements PC_IPacketHandler
 
 		public static void saveToNBT(NBTTagCompound nbttagcompound, String string, PC_INBT nbt)
 		{
-		    NBTTagCompound nbttag = new NBTTagCompound();
-		    nbt.writeToNBT(nbttag);
-		    nbttagcompound.setCompoundTag(string, nbttag);
+		    NBTTagCompound nbttag = nbt.writeToNBT(new NBTTagCompound());
+		    if(nbttag!=null)
+		    	nbttagcompound.setCompoundTag(string, nbttag);
 		}
 
 		public static boolean loadPCObjectsIDs(File worldDirectory){

@@ -61,7 +61,7 @@ public class mod_PowerCraft extends BaseMod {
 	
 	@Override
 	public String getVersion() {
-		return "3.5.0AlphaG";
+		return "3.5.0AlphaH";
 	}
 
 	@Override
