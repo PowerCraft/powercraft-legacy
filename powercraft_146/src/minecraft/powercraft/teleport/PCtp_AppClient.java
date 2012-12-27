@@ -5,6 +5,7 @@ import java.util.List;
 import powercraft.management.PC_IClientModule;
 import powercraft.management.PC_LangEntry;
 import powercraft.management.PC_Struct2;
+import powercraft.management.PC_Utils.ModuleInfo;
 
 public class PCtp_AppClient extends PCtp_App implements PC_IClientModule {
 
@@ -16,7 +17,6 @@ public class PCtp_AppClient extends PCtp_App implements PC_IClientModule {
 
 	@Override
 	public List<String> loadTextureFiles(List<String> textures) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
@@ -29,8 +29,8 @@ public class PCtp_AppClient extends PCtp_App implements PC_IClientModule {
 	@Override
 	public List<PC_Struct2<String, Class>> registerGuis(
 			List<PC_Struct2<String, Class>> guis) {
-		// TODO Auto-generated method stub
-		return null;
+		guis.add(new PC_Struct2<String, Class>("Teleporter", PCtp_GuiTeleporter.class));
+		return guis;
 	}
 	
 }

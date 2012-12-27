@@ -5,6 +5,7 @@ import java.util.List;
 import net.minecraft.item.crafting.IRecipe;
 import powercraft.management.PC_Block;
 import powercraft.management.PC_IModule;
+import powercraft.management.PC_PacketHandler;
 import powercraft.management.PC_Property;
 import powercraft.management.PC_Struct2;
 import powercraft.management.PC_Utils.ModuleLoader;
@@ -29,7 +30,9 @@ public class PCtp_App implements PC_IModule {
 
 	@Override
 	public void init() {
-		ModuleLoader.regsterDataHandler("Teleporter", new PCtp_TeleporterManager());
+		PCtp_TeleporterManager tm = new PCtp_TeleporterManager();
+		ModuleLoader.regsterDataHandler("Teleporter", tm);
+		PC_PacketHandler.registerPackethandler("Teleporter", tm);
 	}
 
 	@Override

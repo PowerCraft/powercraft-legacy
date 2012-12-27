@@ -46,7 +46,7 @@ import powercraft.management.PC_VecI;
 public class PCtp_BlockTeleporter extends PC_Block {
 
 	public PCtp_BlockTeleporter(int id) {
-		super(id, 14, Material.portal);
+		super(id, 14, Material.portal, false);
 		setHardness(1.0F);
 		setResistance(8.0F);
 		setStepSound(Block.soundMetalFootstep);
@@ -73,7 +73,7 @@ public class PCtp_BlockTeleporter extends PC_Block {
 				return false;
 			}
 		}
-		Gres.openGres("Teleporter", entityplayer, i, j, k, entityplayer.dimension);
+		PCtp_TeleporterManager.openGui(entityplayer, i, j, k);
 		
 		return true;
 	}
@@ -98,7 +98,7 @@ public class PCtp_BlockTeleporter extends PC_Block {
 			//		PC_Utils.sendToPacketHandler(PC_Utils.mc().thePlayer, "TeleporterNetHandler", 0, xCoord, yCoord, zCoord, "", "", worldObj.worldInfo.getDimension());
 			//}
 			if (entityliving instanceof EntityPlayer) {
-				Gres.openGres("Teleporter", (EntityPlayer)entityliving, i, j, k, dimension);
+				PCtp_TeleporterManager.openGui((EntityPlayer)entityliving, td);
 			}
 		}
 		//((PCnt_TileEntityTeleporter)world.getBlockTileEntity(i, j, k)).createData();
