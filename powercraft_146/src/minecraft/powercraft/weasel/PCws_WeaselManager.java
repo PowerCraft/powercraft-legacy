@@ -71,7 +71,7 @@ public class PCws_WeaselManager implements PC_IDataHandler, PC_IMSG {
 		for(Entry<Integer, PCws_WeaselPlugin> plugin:plugins.entrySet()){
 			int type = -1;
 			for(Entry<Integer, PCws_WeaselPluginInfo> e:pluginInfo.entrySet()){
-				if(e.getValue().getPluginClass().equals(plugin.getClass())){
+				if(e.getValue().getPluginClass().equals(plugin.getValue().getClass())){
 					type = e.getKey();
 				}
 			}

@@ -5,6 +5,7 @@ import java.util.List;
 import powercraft.management.PC_IClientModule;
 import powercraft.management.PC_LangEntry;
 import powercraft.management.PC_Struct2;
+import powercraft.management.PC_Utils.ModuleInfo;
 
 public class PCws_AppClient extends PCws_App implements PC_IClientModule {
 
@@ -15,9 +16,11 @@ public class PCws_AppClient extends PCws_App implements PC_IClientModule {
 
 	@Override
 	public List<String> loadTextureFiles(List<String> textures) {
-		return null;
+		textures.add(ModuleInfo.getTerrainFile(this));
+		textures.add(ModuleInfo.getTextureDirectory(this) + "block_chip.png");
+		return textures;
 	}
-
+	
 	@Override
 	public List<String> addSplashes(List<String> list) {
 		return null;

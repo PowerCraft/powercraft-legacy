@@ -241,6 +241,10 @@ public abstract class PCws_WeaselPlugin implements PC_INBT<PCws_WeaselPlugin>, I
 		return GameInfo.mcs().worldServerForDimension(dimension);
 	}
 
+	public float[] getBounds() {
+		return new float[] { 0, 0, 0, 1, 0.5F, 1 };
+	}
+	
 	public PC_Color getColor() {
 		PCws_WeaselNetwork network = getNetwork();
 		if(network!=null)
@@ -289,7 +293,7 @@ public abstract class PCws_WeaselPlugin implements PC_INBT<PCws_WeaselPlugin>, I
 		PC_Renderer.glPushMatrix();
 
 		PC_Renderer.glScalef(f, -f, -f);
-
+		
 		float f1 = 0;
 		PC_Renderer.glRotatef(90 * (GameInfo.getMD(getWorld(), pos) & 3), 0, 1, 0);
 		model.renderDevice();

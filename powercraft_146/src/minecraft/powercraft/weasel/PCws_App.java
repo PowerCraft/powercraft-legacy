@@ -25,7 +25,9 @@ public class PCws_App implements PC_IModule {
 	}
 
 	@Override
-	public void preInit() {}
+	public void preInit() {
+		PCws_WeaselManager.registerPluginInfo(new PCws_WeaselPluginInfoCore(), 0);
+	}
 
 	@Override
 	public void init() {
@@ -35,9 +37,7 @@ public class PCws_App implements PC_IModule {
 	}
 
 	@Override
-	public void postInit() {
-		PCws_WeaselManager.registerPluginInfo(new PCws_WeaselPluginInfoCore(), 0);
-	}
+	public void postInit() {}
 
 	@Override
 	public void initProperties(PC_Property config) {
