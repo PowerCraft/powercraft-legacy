@@ -1879,9 +1879,7 @@ public class PC_Utils implements PC_IPacketHandler
 				return false;
 			try{
 				SaveHandler.loadIDFromTagCompound(CompressedStreamTools.readCompressed(new FileInputStream(file)));
-				 
 		    }catch (Exception e){
-		        e.printStackTrace();
 		        return false;
 		    }
 			return true;
@@ -1957,6 +1955,9 @@ public class PC_Utils implements PC_IPacketHandler
 		
 		public static void loadPowerCraftData(WorldInfo worldInfo, File worldDirectory) {
 			worldDirectory = new File(worldDirectory, "powercraft");
+			for(PC_IDataHandler dh : dataHandlers.values()){
+				dh.reset();
+			}
 			if(worldDirectory.exists()){
 				File files[] = worldDirectory.listFiles();
 				for(File file:files){

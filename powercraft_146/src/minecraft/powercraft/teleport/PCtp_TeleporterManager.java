@@ -54,6 +54,11 @@ public class PCtp_TeleporterManager implements PC_IDataHandler, PC_IPacketHandle
 	}
 	
 	@Override
+	public void reset() {
+		teleoprter.clear();
+	}
+	
+	@Override
 	public boolean handleIncomingPacket(EntityPlayer player, Object[] o) {
 		String msg = (String)o[0];
 		if(msg.equals("set")){
