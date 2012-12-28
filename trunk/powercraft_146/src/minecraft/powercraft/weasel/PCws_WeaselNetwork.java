@@ -8,24 +8,33 @@ import net.minecraft.nbt.NBTTagCompound;
 import powercraft.management.PC_Color;
 import powercraft.management.PC_INBT;
 import powercraft.management.PC_Utils.SaveHandler;
+import weasel.Calc;
+import weasel.exception.WeaselRuntimeException;
+import weasel.obj.WeaselObject;
 import weasel.obj.WeaselVariableMap;
 
-public class PCws_WeaselNetwork implements Iterable<PCws_WeaselPlugin>, PC_INBT<PCws_WeaselNetwork> {
+public final class PCws_WeaselNetwork implements Iterable<PCws_WeaselPlugin>, PC_INBT<PCws_WeaselNetwork> {
 
 	private int id;
-	private String name;
+	private String name = "";
 	private PC_Color color = new PC_Color();
 	private List<Integer> members = new ArrayList<Integer>();
 	/** Local shared variable pool */
 	public WeaselVariableMap localHeap = new WeaselVariableMap();
-	private boolean needsSave = false;
+	private boolean needSave = false;
 	
 	public PCws_WeaselNetwork(){
 		id = PCws_WeaselManager.registerNetwork(this);
+		String shouldName = Calc.generateUniqueName();
+		while(PCws_WeaselManager.getNetwork(shouldName)!=null)
+			shouldName = Calc.generateUniqueName();
+		name = shouldName;
+		needSave = true;
 	}
 	
 	@Override
 	public PCws_WeaselNetwork readFromNBT(NBTTagCompound nbttag) {
+		needSave = false;
 		PCws_WeaselManager.removeNetwork(this);
 		id = nbttag.getInteger("id");
 		PCws_WeaselManager.registerNetwork(this, id);
@@ -41,7 +50,7 @@ public class PCws_WeaselNetwork implements Iterable<PCws_WeaselPlugin>, PC_INBT<
 	}
 	@Override
 	public NBTTagCompound writeToNBT(NBTTagCompound nbttag) {
-		needsSave = false;
+		needSave = false;
 		nbttag.setInteger("id", id);
 		nbttag.setString("name", name);
 		SaveHandler.saveToNBT(nbttag, "color", color);
@@ -55,7 +64,7 @@ public class PCws_WeaselNetwork implements Iterable<PCws_WeaselPlugin>, PC_INBT<
 	}
 	
 	public boolean needSave(){
-		return needsSave;
+		return needSave;
 	}
 	
 	public int getID(){
@@ -63,7 +72,10 @@ public class PCws_WeaselNetwork implements Iterable<PCws_WeaselPlugin>, PC_INBT<
 	}
 	
 	public void setName(String name) {
-		this.name = name;
+		if(PCws_WeaselManager.getNetwork(name) == null){
+			needSave = true;
+			this.name = name;
+		}
 	}
 	
 	public String getName() {
@@ -71,7 +83,8 @@ public class PCws_WeaselNetwork implements Iterable<PCws_WeaselPlugin>, PC_INBT<
 	}
 	
 	public void setColor(PC_Color color) {
-		this.color = color;
+		needSave = true;
+		this.color.setTo(color);
 	}
 	
 	public PC_Color getColor() {
@@ -82,7 +95,7 @@ public class PCws_WeaselNetwork implements Iterable<PCws_WeaselPlugin>, PC_INBT<
 		for(Integer i:members){
 			PCws_WeaselPlugin member = PCws_WeaselManager.getPlugin(i);
 			if(member!=null){
-				member.removeFormNetwork();
+				member.setNetwork(-1);
 			}
 		}
 	}
@@ -100,14 +113,18 @@ public class PCws_WeaselNetwork implements Iterable<PCws_WeaselPlugin>, PC_INBT<
 	}
 	
 	public void registerMember(PCws_WeaselPlugin member){
-		if(!members.contains(member.getID()))
+		if(!members.contains(member.getID())){
+			needSave = true;
 			members.add(member.getID());
+			member.setNetwork(id);
+		}
 	}
 	
 	public void removeMember(PCws_WeaselPlugin member){
 		int id = member.getID();
 		if(members.contains(id)){
-			member.removeFormNetwork();
+			needSave = true;
+			member.setNetwork(-1);
 			members.remove((Integer)id);
 		}
 	}
@@ -136,9 +153,46 @@ public class PCws_WeaselNetwork implements Iterable<PCws_WeaselPlugin>, PC_INBT<
 		@Override
 		public void remove() {
 			i--;
+			needSave = true;
 			members.remove(i);
 		}
 		
+	}
+	
+	
+	/**
+	 * Set a weasel variable into the global weasel bus. You should use some
+	 * prefixes in order to prevent cross-system conflicts.
+	 * 
+	 * @param name variable key - name
+	 * @param value variable value
+	 * @throws WeaselRuntimeException if you are trying to store incompatible
+	 *             variable type
+	 */
+	public void setLocalVariable(String name, WeaselObject value) throws WeaselRuntimeException {
+		localHeap.setVariableForce(name, value);
+		needSave = true;
+	}
+
+	/**
+	 * Get state of a weasel variable.
+	 * 
+	 * @param name variable name
+	 * @return variable value.
+	 */
+	public WeaselObject getLocalVariable(String name) {
+		if(localHeap.getVariable(name) == null) throw new WeaselRuntimeException("Local network does't contain variable "+name);
+		return localHeap.getVariable(name);
+	}
+
+	/**
+	 * Get if globvar exists
+	 * 
+	 * @param name variable name
+	 * @return variable value.
+	 */
+	public boolean hasLocalVariable(String name) {
+		return localHeap.getVariable(name) != null;
 	}
 	
 }
