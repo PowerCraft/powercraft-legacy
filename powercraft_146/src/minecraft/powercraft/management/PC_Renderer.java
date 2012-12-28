@@ -92,7 +92,13 @@ public class PC_Renderer
     {
         renderer2d.iRenderInvBoxWithTexture(renderer, block, tectureID);
     }
-
+    
+    protected void iRenderInvBoxWithTextures(Object renderer, Block block, int[] texture) {}
+    
+    public static void renderInvBoxWithTextures(Object renderer, Block block, int[] texture) {
+    	renderer2d.iRenderInvBoxWithTextures(renderer, block, texture);
+	}
+    
     protected void iSwapTerrain(String filename) {}
 
     public static void swapTerrain(String filename)

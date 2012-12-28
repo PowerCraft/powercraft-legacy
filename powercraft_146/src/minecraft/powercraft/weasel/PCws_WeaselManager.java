@@ -6,14 +6,14 @@ import java.util.TreeMap;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
 import powercraft.management.PC_IDataHandler;
+import powercraft.management.PC_IMSG;
+import powercraft.management.PC_Utils;
 import powercraft.management.PC_Utils.SaveHandler;
-import powercraft.management.PC_Utils.ValueWriting;
-import powercraft.management.PC_VecI;
 import weasel.exception.WeaselRuntimeException;
 import weasel.obj.WeaselObject;
 import weasel.obj.WeaselVariableMap;
 
-public class PCws_WeaselManager implements PC_IDataHandler {
+public class PCws_WeaselManager implements PC_IDataHandler, PC_IMSG {
 
 	/**
 	 * Globally shared variable pool
@@ -95,7 +95,17 @@ public class PCws_WeaselManager implements PC_IDataHandler {
 		networks.clear();
 		plugins.clear();
 	}
-
+	
+	@Override
+	public Object msg(int msg, Object... obj) {
+		switch(msg){
+		case PC_Utils.MSG_TICK_EVENT:
+			update();
+			return true;
+		}
+		return null;
+	}
+	
 	/**
 	 * Set a weasel variable into the global weasel bus. You should use some
 	 * prefixes in order to prevent cross-system conflicts.
@@ -214,7 +224,7 @@ public class PCws_WeaselManager implements PC_IDataHandler {
 		needSave = true;
 	}
 	
-	public static void registerPlugin(PCws_WeaselPluginInfo info, int id){
+	public static void registerPluginInfo(PCws_WeaselPluginInfo info, int id){
 		if(!pluginInfo.containsKey(id))
 			pluginInfo.put(id, info);
 	}
@@ -229,6 +239,12 @@ public class PCws_WeaselManager implements PC_IDataHandler {
 	
 	public static TreeMap<Integer, PCws_WeaselPluginInfo> getPluginInfoMap(){
 		return pluginInfo;
+	}
+	
+	public static void update(){
+		for(PCws_WeaselPlugin weaselPlugin:plugins.values()){
+			weaselPlugin.update();
+		}
 	}
 	
 }

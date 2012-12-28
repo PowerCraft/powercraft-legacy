@@ -4,9 +4,10 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
+import powercraft.management.PC_ITileEntityRenderer;
 import powercraft.management.PC_TileEntity;
 
-public class PCws_TileEntityWeasel extends PC_TileEntity {
+public class PCws_TileEntityWeasel extends PC_TileEntity implements PC_ITileEntityRenderer{
 
 	private int pluginID;
 
@@ -29,6 +30,11 @@ public class PCws_TileEntityWeasel extends PC_TileEntity {
 	
 	public PCws_WeaselPlugin getPlugin(){
 		return PCws_WeaselManager.getPlugin(pluginID);
+	}
+
+	@Override
+	public void renderTileEntityAt(double x, double y, double z, float rot) {
+		getPlugin().renderPluginAt(x, y, z, rot);
 	}
 	
 }

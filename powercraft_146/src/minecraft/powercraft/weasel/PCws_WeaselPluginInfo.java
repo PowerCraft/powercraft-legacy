@@ -6,7 +6,7 @@ import net.minecraft.block.Block;
 
 import powercraft.management.PC_Utils.ValueWriting;
 
-public class PCws_WeaselPluginInfo {
+public abstract class PCws_WeaselPluginInfo {
 
 	private Class<? extends PCws_WeaselPlugin> c;
 	private String defaultName;
@@ -37,8 +37,6 @@ public class PCws_WeaselPluginInfo {
 		return c.getSimpleName();
 	}
 
-	public void renderInventoryBlock(Block block, Object renderer) {
-		
-	}
+	public abstract void renderInventoryBlock(Block block, Object renderer);
 	
 }
