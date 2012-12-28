@@ -10,6 +10,7 @@ import powercraft.management.PC_INBT;
 import powercraft.management.PC_Utils.SaveHandler;
 import weasel.Calc;
 import weasel.exception.WeaselRuntimeException;
+import weasel.obj.WeaselBoolean;
 import weasel.obj.WeaselObject;
 import weasel.obj.WeaselVariableMap;
 
@@ -193,6 +194,17 @@ public final class PCws_WeaselNetwork implements Iterable<PCws_WeaselPlugin>, PC
 	 */
 	public boolean hasLocalVariable(String name) {
 		return localHeap.getVariable(name) != null;
+	}
+
+	public boolean callFunctionOnEngine(String functionName, WeaselObject... args) {
+		boolean call = false;
+		for(PCws_WeaselPlugin weaselPlugin:this){
+			if(weaselPlugin.doesProvideFunctionOnEngine(functionName)){
+				weaselPlugin.callFunctionOnEngine(functionName, args);
+				call = true;
+			}
+		}
+		return call;
 	}
 	
 }
