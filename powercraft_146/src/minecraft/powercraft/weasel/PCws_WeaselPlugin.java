@@ -241,10 +241,6 @@ public abstract class PCws_WeaselPlugin implements PC_INBT<PCws_WeaselPlugin>, I
 		return GameInfo.mcs().worldServerForDimension(dimension);
 	}
 
-	public float[] getBounds() {
-		return new float[] { 0, 0, 0, 1, 0.5F, 1 };
-	}
-	
 	public PC_Color getColor() {
 		PCws_WeaselNetwork network = getNetwork();
 		if(network!=null)
@@ -272,47 +268,5 @@ public abstract class PCws_WeaselPlugin implements PC_INBT<PCws_WeaselPlugin>, I
 	}
 	
 	public abstract void update();
-	
-	public abstract PCws_WeaselModelBase getModel();
-	
-	public void renderPluginAt(double x, double y, double z, float rot){
-
-		PCws_WeaselModelBase model = getModel();
-
-		PC_Color color = getColor();
-
-		// push 1
-		PC_Renderer.glPushMatrix();
-		float f = 1.0F;
-		
-		PC_Renderer.glTranslatef((float) x + 0.5F, ((float) y), (float) z + 0.5F);
-
-		PC_Renderer.bindTexture(ModuleInfo.getTextureDirectory(ModuleInfo.getModule("Weasel")) + "block_chip.png");
-
-		// push 2
-		PC_Renderer.glPushMatrix();
-
-		PC_Renderer.glScalef(f, -f, -f);
-		
-		float f1 = 0;
-		PC_Renderer.glRotatef(90 * (GameInfo.getMD(getWorld(), pos) & 3), 0, 1, 0);
-		model.renderDevice();
-
-		PC_Renderer.glColor4f(color.x, color.y, color.z, 1f);
-
-		model.renderColorMark();
-
-		// pop 2
-		PC_Renderer.glPopMatrix();
-
-
-
-		PC_Renderer.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-		PC_Renderer.glRotatef(-f1, 0.0F, 1.0F, 0.0F);
-		model.renderText(this);
-
-		// pop1
-		PC_Renderer.glPopMatrix();
-	}
 
 }

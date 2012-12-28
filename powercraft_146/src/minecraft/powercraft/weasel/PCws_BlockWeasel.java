@@ -46,11 +46,8 @@ public class PCws_BlockWeasel extends PC_Block {
 		setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 0.5F, 1.0F);
 		PCws_TileEntityWeasel te = GameInfo.getTE(world, x, y, z);
 		if(te!=null){
-			PCws_WeaselPlugin plugin = te.getPlugin();
-			if (plugin != null) {
-				float[] bounds = plugin.getBounds();
-				setBlockBounds(bounds[0], bounds[1], bounds[2], bounds[3], bounds[4], bounds[5]);
-			}
+			float[] bounds = te.getPluginInfo().getBounds();
+			setBlockBounds(bounds[0], bounds[1], bounds[2], bounds[3], bounds[4], bounds[5]);
 		}
 	}
 
@@ -68,8 +65,11 @@ public class PCws_BlockWeasel extends PC_Block {
 	
 	@Override
 	public void breakBlock(World world, int x, int y, int z, int par5, int par6) {
-		if(!world.isRemote)
-			PCws_WeaselManager.removePlugin(getPlugin(world, x, y, z));
+		if(!world.isRemote){
+			PCws_WeaselPlugin weaselPlugin = getPlugin(world, x, y, z);
+			if(weaselPlugin!=null)
+				PCws_WeaselManager.removePlugin(weaselPlugin);
+		}
 		super.breakBlock(world, x, y, z, par5, par6);
 	}
 
@@ -88,9 +88,12 @@ public class PCws_BlockWeasel extends PC_Block {
 	}
 
 	public static PCws_WeaselPlugin getPlugin(World world, int x, int y, int z){
+		PCws_WeaselPlugin wp = null;
 		if(world.blockExists(x, y, z))
-			return GameInfo.<PCws_TileEntityWeasel>getTE(world, x, y, z).getPlugin();
-		return PCws_WeaselManager.getPlugin(world, x, y, z);
+			wp = GameInfo.<PCws_TileEntityWeasel>getTE(world, x, y, z).getPlugin();
+		if(wp==null)
+			wp = PCws_WeaselManager.getPlugin(world, x, y, z);
+		return wp;
 	}
 	
 	public static PCws_WeaselPlugin getPlugin(World world, PC_VecI pos){
