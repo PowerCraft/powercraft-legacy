@@ -13,7 +13,9 @@ import weasel.Calc;
 import weasel.IFunctionProvider;
 import weasel.IVariableProvider;
 import weasel.WeaselEngine;
+import weasel.obj.WeaselBoolean;
 import weasel.obj.WeaselObject;
+import weasel.obj.WeaselString;
 
 public abstract class PCws_WeaselPlugin implements PC_INBT<PCws_WeaselPlugin>, IVariableProvider, IFunctionProvider {
 
@@ -148,7 +150,11 @@ public abstract class PCws_WeaselPlugin implements PC_INBT<PCws_WeaselPlugin>, I
 		return null;
 	}
 	
-	public void callFunctionOnEngine(String function, Object... args) {}
+	public boolean doesProvideFunctionOnEngine(String functionName) {
+		return false;
+	}
+	
+	public void callFunctionOnEngine(String functionName, WeaselObject... args) {}
 	
 	public void setOutport(int port, boolean state){
 		if(weaselOutport[port] != state){
@@ -160,15 +166,69 @@ public abstract class PCws_WeaselPlugin implements PC_INBT<PCws_WeaselPlugin>, I
 	
 	public void refreshInport(){
 		boolean newWeaselInport[] = PCws_BlockWeasel.getWeaselInputStates(getWorld(), pos);
+		PCws_WeaselNetwork weaselNetwork = getNetwork();
+		boolean anyChang = false;
+		boolean anyNoCall = false;
 		if(newWeaselInport!=null){
 			for(int i=0; i<6; i++){
-				weaselInport[i] = newWeaselInport[i];
+				if(weaselInport[i] != newWeaselInport[i]){
+					anyChang = true;
+					weaselInport[i] = newWeaselInport[i];
+					if(weaselNetwork!=null){
+						if(!weaselNetwork.callFunctionOnEngine("portchange."+name+"."+numToPort(i), new WeaselBoolean(weaselInport[i])))
+							anyNoCall = true;
+					}
+				}
+			}
+		}
+		if(weaselNetwork!=null && anyChang && anyNoCall){
+			if(!weaselNetwork.callFunctionOnEngine("portchange."+name)){
+				weaselNetwork.callFunctionOnEngine("portchange", new WeaselString(name));
 			}
 		}
 	}
 	
+	public boolean getOutport(int port){
+		return weaselOutport[port];
+	}
+	
 	public boolean getInport(int port){
 		return weaselInport[port];
+	}
+	
+	public static String numToPort(int num){
+		switch(num){
+		case 0:
+			return "B";
+		case 1:
+			return "L";
+		case 2:
+			return "R";
+		case 3:
+			return "F";
+		case 4:
+			return "U";
+		case 5:
+			return "D";
+		}
+		return null;
+	}
+	
+	public static int portToNum(String port){
+		if(port.equalsIgnoreCase("b") || port.equalsIgnoreCase("back")){
+			return 0;
+		}else if(port.equalsIgnoreCase("l") || port.equalsIgnoreCase("left")){
+			return 1;
+		}else if(port.equalsIgnoreCase("r") || port.equalsIgnoreCase("right")){
+			return 2;
+		}else if(port.equalsIgnoreCase("f") || port.equalsIgnoreCase("front")){
+			return 3;
+		}else if(port.equalsIgnoreCase("u") || port.equalsIgnoreCase("up") || port.equalsIgnoreCase("top")){
+			return 4;
+		}else if(port.equalsIgnoreCase("d") || port.equalsIgnoreCase("down") || port.equalsIgnoreCase("bottom")){
+			return 5;
+		}
+		return -1;
 	}
 	
 	public World getWorld(){
