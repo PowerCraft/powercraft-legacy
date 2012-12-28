@@ -4,6 +4,7 @@ import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import powercraft.management.PC_Block;
@@ -31,8 +32,44 @@ public class PCws_BlockWeasel extends PC_Block {
 	}
 	
 	@Override
+	public boolean renderAsNormalBlock() {
+		return false;
+	}
+	
+	@Override
+	public boolean isOpaqueCube() {
+		return false;
+	}
+	
+	@Override
+	public void setBlockBoundsBasedOnState(IBlockAccess world, int x, int y, int z) {
+		setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 0.5F, 1.0F);
+		PCws_TileEntityWeasel te = GameInfo.getTE(world, x, y, z);
+		if(te!=null){
+			PCws_WeaselPlugin plugin = te.getPlugin();
+			if (plugin != null) {
+				float[] bounds = plugin.getBounds();
+				setBlockBounds(bounds[0], bounds[1], bounds[2], bounds[3], bounds[4], bounds[5]);
+			}
+		}
+	}
+
+	@Override
+	public AxisAlignedBB getCollisionBoundingBoxFromPool(World world, int x, int y, int z) {
+		setBlockBoundsBasedOnState(world, x, y, z);
+		return super.getCollisionBoundingBoxFromPool(world, x, y, z);
+	}
+
+	@Override
+	public AxisAlignedBB getSelectedBoundingBoxFromPool(World world, int x, int y, int z) {
+		setBlockBoundsBasedOnState(world, x, y, z);
+		return super.getSelectedBoundingBoxFromPool(world, x, y, z);
+	}
+	
+	@Override
 	public void breakBlock(World world, int x, int y, int z, int par5, int par6) {
-		PCws_WeaselManager.removePlugin(getPlugin(world, x, y, z));
+		if(!world.isRemote)
+			PCws_WeaselManager.removePlugin(getPlugin(world, x, y, z));
 		super.breakBlock(world, x, y, z, par5, par6);
 	}
 

@@ -22,6 +22,11 @@ public class PCws_ItemBlockWeasel extends PC_ItemBlock {
 		}
 		return arrayList;
 	}
+	
+	@Override
+	public String getItemNameIS(ItemStack itemStack) {
+		return getItemName() + "." + PCws_WeaselManager.getPluginInfo(itemStack.getItemDamage()).getKey();
+	}
 
 	@Override
 	public Object msg(int msg, Object... obj) {
