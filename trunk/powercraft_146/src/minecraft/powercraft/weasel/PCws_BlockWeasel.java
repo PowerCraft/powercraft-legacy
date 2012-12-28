@@ -2,6 +2,7 @@ package powercraft.weasel;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
+import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
@@ -21,6 +22,7 @@ public class PCws_BlockWeasel extends PC_Block {
 		setRequiresSelfNotify();
 		setResistance(60.0F);
 		setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 0.1875F, 1.0F);
+		setCreativeTab(CreativeTabs.tabRedstone);
 	}
 	
 	@Override
@@ -29,13 +31,18 @@ public class PCws_BlockWeasel extends PC_Block {
 	}
 	
 	@Override
+	public void breakBlock(World world, int x, int y, int z, int par5, int par6) {
+		PCws_WeaselManager.removePlugin(getPlugin(world, x, y, z));
+		super.breakBlock(world, x, y, z, par5, par6);
+	}
+
+	@Override
 	public Object msg(IBlockAccess world, PC_VecI pos, int msg, Object... obj) {
 		switch(msg){
 		case PC_Utils.MSG_RENDER_INVENTORY_BLOCK:
 			PCws_WeaselManager.getPluginInfo((Integer)obj[1]).renderInventoryBlock((Block)obj[0], obj[3]);
 			break;
 		case PC_Utils.MSG_RENDER_WORLD_BLOCK:
-			GameInfo.<PCws_TileEntityWeasel>getTE(world, pos).getPlugin().renderWorldBlock(world, pos.x, pos.y, pos.z, (Block)obj[0], obj[2]);
 			break;
 		default:
 			return null;

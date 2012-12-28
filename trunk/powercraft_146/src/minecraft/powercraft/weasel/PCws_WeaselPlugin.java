@@ -2,12 +2,16 @@ package powercraft.weasel;
 
 import java.util.List;
 
-import net.minecraft.block.Block;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+
+import org.lwjgl.opengl.GL11;
+
+import powercraft.management.PC_Color;
 import powercraft.management.PC_INBT;
+import powercraft.management.PC_Renderer;
 import powercraft.management.PC_Utils.GameInfo;
+import powercraft.management.PC_Utils.ModuleInfo;
 import powercraft.management.PC_Utils.SaveHandler;
 import powercraft.management.PC_Utils.ValueWriting;
 import powercraft.management.PC_VecI;
@@ -237,6 +241,13 @@ public abstract class PCws_WeaselPlugin implements PC_INBT<PCws_WeaselPlugin>, I
 		return GameInfo.mcs().worldServerForDimension(dimension);
 	}
 
+	public PC_Color getColor() {
+		PCws_WeaselNetwork network = getNetwork();
+		if(network!=null)
+			return network.getColor();
+		return new PC_Color(0.3f, 0.3f, 0.3f);
+	}
+	
 	public boolean isOnPlace(World world, int x, int y, int z) {
 		int dimension = world.getWorldInfo().getDimension();
 		if(this.dimension != dimension)
@@ -255,10 +266,49 @@ public abstract class PCws_WeaselPlugin implements PC_INBT<PCws_WeaselPlugin>, I
 		pos.setTo(x, y, z);
 		return this;
 	}
-
-	public void renderWorldBlock(IBlockAccess world, int x, int y, int z, Block block, Object renderer) {
-		// TODO Auto-generated method stub
-		
-	}
 	
+	public abstract void update();
+	
+	public abstract PCws_WeaselModelBase getModel();
+	
+	public void renderPluginAt(double x, double y, double z, float rot){
+
+		PCws_WeaselModelBase model = getModel();
+
+		PC_Color color = getColor();
+
+		// push 1
+		PC_Renderer.glPushMatrix();
+		float f = 1.0F;
+		
+		PC_Renderer.glTranslatef((float) x + 0.5F, ((float) y), (float) z + 0.5F);
+
+		PC_Renderer.bindTexture(ModuleInfo.getTextureDirectory(ModuleInfo.getModule("Weasel")) + "block_chip.png");
+
+		// push 2
+		PC_Renderer.glPushMatrix();
+
+		PC_Renderer.glScalef(f, -f, -f);
+
+		float f1 = 0;
+		PC_Renderer.glRotatef(90 * (GameInfo.getMD(getWorld(), pos) & 3), 0, 1, 0);
+		model.renderDevice();
+
+		PC_Renderer.glColor4f(color.x, color.y, color.z, 1f);
+
+		model.renderColorMark();
+
+		// pop 2
+		PC_Renderer.glPopMatrix();
+
+
+
+		PC_Renderer.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
+		PC_Renderer.glRotatef(-f1, 0.0F, 1.0F, 0.0F);
+		model.renderText(this);
+
+		// pop1
+		PC_Renderer.glPopMatrix();
+	}
+
 }
