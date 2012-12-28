@@ -1,13 +1,14 @@
 package powercraft.weasel;
 
-import java.lang.reflect.InvocationTargetException;
 import java.util.Map.Entry;
 import java.util.TreeMap;
 
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.world.World;
 import powercraft.management.PC_IDataHandler;
 import powercraft.management.PC_Utils.SaveHandler;
 import powercraft.management.PC_Utils.ValueWriting;
+import powercraft.management.PC_VecI;
 import weasel.exception.WeaselRuntimeException;
 import weasel.obj.WeaselObject;
 import weasel.obj.WeaselVariableMap;
@@ -23,7 +24,7 @@ public class PCws_WeaselManager implements PC_IDataHandler {
 	
 	private static TreeMap<Integer, PCws_WeaselPlugin> plugins = new TreeMap<Integer, PCws_WeaselPlugin>();
 	
-	private static TreeMap<String, Class<? extends PCws_WeaselPlugin>> pluginTypes = new TreeMap<String, Class<? extends PCws_WeaselPlugin>>();
+	private static TreeMap<Integer, PCws_WeaselPluginInfo> pluginInfo = new TreeMap<Integer, PCws_WeaselPluginInfo>();
 	
 	private static boolean needSave=false;
 	
@@ -46,7 +47,7 @@ public class PCws_WeaselManager implements PC_IDataHandler {
 		NBTTagCompound nbtPlugins = nbtTag.getCompoundTag("plugins");
 		num = nbtPlugins.getInteger("count");
 		for(int i=0; i<num; i++){
-			PCws_WeaselPlugin network = createPlugin(nbtPlugins.getString("type["+i+"]"));
+			PCws_WeaselPlugin network = createPlugin(nbtPlugins.getInteger("type["+i+"]"));
 			SaveHandler.loadFromNBT(nbtPlugins, "value["+i+"]", network);
 		}
 	}
@@ -68,7 +69,13 @@ public class PCws_WeaselManager implements PC_IDataHandler {
 		nbtPlugins.setInteger("count", plugins.size());
 		i=0;
 		for(Entry<Integer, PCws_WeaselPlugin> plugin:plugins.entrySet()){
-			nbtPlugins.setString("type["+i+"]", plugin.getClass().getSimpleName());
+			int type = -1;
+			for(Entry<Integer, PCws_WeaselPluginInfo> e:pluginInfo.entrySet()){
+				if(e.getValue().getPluginClass().equals(plugin.getClass())){
+					type = e.getKey();
+				}
+			}
+			nbtPlugins.setInteger("type["+i+"]", type);
 			SaveHandler.saveToNBT(nbtPlugins, "value["+i+"]", plugin.getValue());
 		}
 		nbtTag.setCompoundTag("plugins", nbtPlugins);
@@ -193,23 +200,35 @@ public class PCws_WeaselManager implements PC_IDataHandler {
 		return null;
 	}
 	
+	public static PCws_WeaselPlugin getPlugin(World world, int x, int y, int z) {
+		for(PCws_WeaselPlugin weaselPlugin:plugins.values()){
+			if(weaselPlugin.isOnPlace(world, x, y, z)){
+				return weaselPlugin;
+			}
+		}
+		return null;
+	}
+	
 	public static void removePlugin(PCws_WeaselPlugin weaselPlugin) {
 		plugins.remove(weaselPlugin.getID());
 		needSave = true;
 	}
 	
-	public static void registerPlugin(Class<? extends PCws_WeaselPlugin> c){
-		if(!pluginTypes.containsKey(c.getSimpleName()))
-			pluginTypes.put(c.getSimpleName(), c);
+	public static void registerPlugin(PCws_WeaselPluginInfo info, int id){
+		if(!pluginInfo.containsKey(id))
+			pluginInfo.put(id, info);
 	}
 	
-	public static PCws_WeaselPlugin createPlugin(String type){
-		try {
-			return ValueWriting.createClass(pluginTypes.get(type), new Class[0], new Object[0]);
-		} catch (Exception e) {
-			e.printStackTrace();
-		} 
-		return null;
+	public static PCws_WeaselPlugin createPlugin(int id){
+		return pluginInfo.get(id).createPlugin();
+	}
+	
+	public static PCws_WeaselPluginInfo getPluginInfo(int id){
+		return pluginInfo.get(id);
+	}
+	
+	public static TreeMap<Integer, PCws_WeaselPluginInfo> getPluginInfoMap(){
+		return pluginInfo;
 	}
 	
 }
