@@ -165,7 +165,7 @@ public class PCws_WeaselManager implements PC_IDataHandler, PC_IMSG {
 
 	public static PCws_WeaselNetwork getNetwork(String name) {
 		for(PCws_WeaselNetwork weaselNetwork:networks.values()){
-			if(weaselNetwork.getName().equals(name)){
+			if(weaselNetwork.getName() != null && weaselNetwork.getName().equals(name)){
 				return weaselNetwork;
 			}
 		}
@@ -203,7 +203,7 @@ public class PCws_WeaselManager implements PC_IDataHandler, PC_IMSG {
 	
 	public static PCws_WeaselPlugin getPlugin(String name) {
 		for(PCws_WeaselPlugin weaselPlugin:plugins.values()){
-			if(weaselPlugin.getName().equals(name)){
+			if(weaselPlugin.getName() != null && weaselPlugin.getName().equals(name)){
 				return weaselPlugin;
 			}
 		}
