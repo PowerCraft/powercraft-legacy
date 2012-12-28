@@ -2,18 +2,22 @@ package powercraft.management;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.inventory.InventoryCrafting;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import powercraft.management.PC_Utils.ValueWriting;
+import cpw.mods.fml.common.registry.GameData;
+import cpw.mods.fml.common.registry.ItemData;
 
 public abstract class PC_Item extends Item implements PC_IItemInfo, PC_IMSG
 {
     private PC_IModule module;
     private boolean canSetTextureFile = true;
     private Item replacedItem = null;
+    private ItemData replacedItemData = null;
     protected int iconIndexRenderPass2;
     
     protected PC_Item(int id)
@@ -42,15 +46,31 @@ public abstract class PC_Item extends Item implements PC_IItemInfo, PC_IMSG
 	}
     
     public void setItemID(int id){
-		int oldID = shiftedIndex;
-    	if(ValueWriting.setPrivateValue(Item.class, this, PC_GlobalVariables.indexItemSthiftedIndex, id)){
+    	int oldID = shiftedIndex;
+		Map<Integer, ItemData> map = (Map<Integer, ItemData>)ValueWriting.getPrivateValue(GameData.class, GameData.class, 0);
+		ItemData thisItemData = map.get(oldID);
+		if(ValueWriting.setPrivateValue(Item.class, this, PC_GlobalVariables.indexItemSthiftedIndex, id)){
     		if(oldID!=-1){
+    			if(replacedItemData==null){
+    				map.remove(oldID);
+    			}else{
+    				ValueWriting.setPrivateValue(ItemData.class, replacedItemData, 3, oldID);
+    				map.put(oldID, replacedItemData);
+    			}
     			Item.itemsList[oldID] = replacedItem;
     		}
     		if(id!=-1){
+    			replacedItemData = map.get(id);
     			replacedItem = Item.itemsList[id];
+    			if(thisItemData==null){
+    				map.remove(id);
+    			}else{
+    				ValueWriting.setPrivateValue(ItemData.class, thisItemData, 3, id);
+    				map.put(id, thisItemData);
+    			}
     			Item.itemsList[id] = this;
     		}else{
+    			replacedItemData = null;
     			replacedItem = null;
     		}
     	}

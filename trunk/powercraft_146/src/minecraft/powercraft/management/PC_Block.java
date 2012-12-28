@@ -1,5 +1,7 @@
 package powercraft.management;
 
+import java.util.Map;
+
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
@@ -12,6 +14,8 @@ import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import powercraft.management.PC_Utils.GameInfo;
 import powercraft.management.PC_Utils.ValueWriting;
+import cpw.mods.fml.common.registry.GameData;
+import cpw.mods.fml.common.registry.ItemData;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
@@ -204,6 +208,7 @@ public abstract class PC_Block extends BlockContainer implements PC_IMSG
 		public boolean requiresSelfNotify = false;
 		public boolean useNeighborBrightness = false;
 		public ItemBlock itemBlock = null;
+		public ItemData itemData = null;
 		
 		public BlockInfo(){}
 		
@@ -216,6 +221,8 @@ public abstract class PC_Block extends BlockContainer implements PC_IMSG
 			requiresSelfNotify = Block.requiresSelfNotify[id];
 			useNeighborBrightness = Block.useNeighborBrightness[id];
 			itemBlock = (ItemBlock)Item.itemsList[id];
+			Map<Integer, ItemData> map = (Map<Integer, ItemData>)ValueWriting.getPrivateValue(GameData.class, GameData.class, 0);
+			itemData = map.get(id);
 		}
 		
 		public void storeToID(int id){
@@ -227,6 +234,13 @@ public abstract class PC_Block extends BlockContainer implements PC_IMSG
 			Block.requiresSelfNotify[id] = requiresSelfNotify;
 			Block.useNeighborBrightness[id] = useNeighborBrightness;
 			Item.itemsList[id] = itemBlock;
+			Map<Integer, ItemData> map = (Map<Integer, ItemData>)ValueWriting.getPrivateValue(GameData.class, GameData.class, 0);
+			if(itemData==null){
+				map.remove(id);
+			}else{
+				ValueWriting.setPrivateValue(ItemData.class, itemData, 3, id);
+				map.put(id, itemData);
+			}
 		}
 		
 	}

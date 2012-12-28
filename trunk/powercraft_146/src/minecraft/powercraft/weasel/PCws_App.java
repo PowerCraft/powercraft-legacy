@@ -6,6 +6,7 @@ import net.minecraft.item.crafting.IRecipe;
 import powercraft.management.PC_IModule;
 import powercraft.management.PC_Property;
 import powercraft.management.PC_Struct2;
+import powercraft.management.PC_Utils.ModuleLoader;
 
 public class PCws_App implements PC_IModule {
 
@@ -23,7 +24,9 @@ public class PCws_App implements PC_IModule {
 	public void preInit() {}
 
 	@Override
-	public void init() {}
+	public void init() {
+		ModuleLoader.regsterDataHandler("Weasel", new PCws_WeaselManager());
+	}
 
 	@Override
 	public void postInit() {}

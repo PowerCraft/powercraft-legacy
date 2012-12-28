@@ -90,4 +90,9 @@ public class PCnt_RadioManager implements PC_IDataHandler {
 		return ret;
 	}
 
+	@Override
+	public void reset() {
+		channels.clear();
+	}
+
 }

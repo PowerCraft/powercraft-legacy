@@ -28,9 +28,11 @@ public class PC_HackedSaveHandler extends AnvilSaveHandler {
 
 	@Override
 	public WorldInfo loadWorldInfo() {
+		System.out.println("loadWorldInfo");
 		loadBlockID();
 		WorldInfo worldInfo = super.loadWorldInfo();
 		SaveHandler.loadPowerCraftData(worldInfo, getSaveDirectory());
+		System.out.println("OK");
 		return worldInfo;
 	}
 
@@ -47,9 +49,11 @@ public class PC_HackedSaveHandler extends AnvilSaveHandler {
 			PC_GlobalVariables.oldConsts = null;
 		}
 		if(!SaveHandler.loadPCObjectsIDs(getSaveDirectory())){
+			System.out.println("Error");
 			ModuleLoader.resetPCObjectsIDs();
 			saveBlockID();
 		}else{
+			System.out.println("OK");
 			ModuleLoader.savePCObjectsIDs(getSaveDirectory());
 		}
 	}
