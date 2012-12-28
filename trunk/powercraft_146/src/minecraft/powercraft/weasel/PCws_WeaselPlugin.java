@@ -2,7 +2,9 @@ package powercraft.weasel;
 
 import java.util.List;
 
+import net.minecraft.block.Block;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import powercraft.management.PC_INBT;
 import powercraft.management.PC_Utils.GameInfo;
@@ -31,13 +33,13 @@ public abstract class PCws_WeaselPlugin implements PC_INBT<PCws_WeaselPlugin>, I
 	
 	protected PCws_WeaselPlugin(){
 		id = PCws_WeaselManager.registerPlugin(this);
+		dimension = 0;
 		networkID = -1;
 		String shouldName = Calc.generateUniqueName();
 		while(PCws_WeaselManager.getPlugin(shouldName)!=null)
 			shouldName = Calc.generateUniqueName();
 		name = shouldName;
 		needSave = true;
-		dimension = 0;
 	}
 	
 	@Override
@@ -175,15 +177,15 @@ public abstract class PCws_WeaselPlugin implements PC_INBT<PCws_WeaselPlugin>, I
 					anyChang = true;
 					weaselInport[i] = newWeaselInport[i];
 					if(weaselNetwork!=null){
-						if(!weaselNetwork.callFunctionOnEngine("portchange."+name+"."+numToPort(i), new WeaselBoolean(weaselInport[i])))
+						if(!weaselNetwork.callFunctionOnEngine("onPortChange."+name+"."+numToPort(i), new WeaselBoolean(weaselInport[i])))
 							anyNoCall = true;
 					}
 				}
 			}
 		}
 		if(weaselNetwork!=null && anyChang && anyNoCall){
-			if(!weaselNetwork.callFunctionOnEngine("portchange."+name)){
-				weaselNetwork.callFunctionOnEngine("portchange", new WeaselString(name));
+			if(!weaselNetwork.callFunctionOnEngine("onPortChange."+name)){
+				weaselNetwork.callFunctionOnEngine("onPortChange", new WeaselString(name));
 			}
 		}
 	}
@@ -233,6 +235,30 @@ public abstract class PCws_WeaselPlugin implements PC_INBT<PCws_WeaselPlugin>, I
 	
 	public World getWorld(){
 		return GameInfo.mcs().worldServerForDimension(dimension);
+	}
+
+	public boolean isOnPlace(World world, int x, int y, int z) {
+		int dimension = world.getWorldInfo().getDimension();
+		if(this.dimension != dimension)
+			return false;
+		if(pos.x!=x)
+			return false;
+		if(pos.y!=y)
+			return false;
+		if(pos.z!=z)
+			return false;
+		return true;
+	}
+	
+	public PCws_WeaselPlugin setPlace(World world, int x, int y, int z) {
+		dimension = world.getWorldInfo().getDimension();
+		pos.setTo(x, y, z);
+		return this;
+	}
+
+	public void renderWorldBlock(IBlockAccess world, int x, int y, int z, Block block, Object renderer) {
+		// TODO Auto-generated method stub
+		
 	}
 	
 }
