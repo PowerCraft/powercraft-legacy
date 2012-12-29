@@ -41,7 +41,7 @@ public class PCws_App implements PC_IModule {
 
 	@Override
 	public void initProperties(PC_Property config) {
-		
+		PCws_WeaselHighlightHelper.checkConfigFile(config);
 	}
 
 	@Override
