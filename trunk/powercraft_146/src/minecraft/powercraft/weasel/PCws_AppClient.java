@@ -21,6 +21,7 @@ public class PCws_AppClient extends PCws_App implements PC_IClientModule {
 		
 		lang.add(new PC_LangEntry("pc.gui.weasel.core.program", "Program"));
 		lang.add(new PC_LangEntry("pc.gui.weasel.core.noError", "no error"));
+		lang.add(new PC_LangEntry("pc.gui.weasel.core.running", "running"));
 		lang.add(new PC_LangEntry("pc.gui.weasel.core.launchProgram", "Launch"));
 		lang.add(new PC_LangEntry("pc.gui.weasel.core.restartProgram", "Restart"));
 		lang.add(new PC_LangEntry("pc.gui.weasel.core.stopProgram", "Stop"));
