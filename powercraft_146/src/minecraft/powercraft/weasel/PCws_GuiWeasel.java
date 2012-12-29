@@ -56,12 +56,12 @@ public abstract class PCws_GuiWeasel implements PC_IGresClient {
 	protected void makeNetworkTab(PC_GresTab tab){
 		PC_GresLayoutV lv = new PC_GresLayoutV();
 		PC_GresLayoutH lh = new PC_GresLayoutH();
-		lh.add(new PC_GresLabel("pc.gui.weasel.divice.name"));
+		lh.add(new PC_GresLabel(Lang.tr("pc.gui.weasel.divice.name")));
 		lh.add(diviceName = new PC_GresTextEdit((String)te.getData("diviceName"), 10));
 		lv.add(lh);
 		lv.add(diviceRename = new PC_GresButton(Lang.tr("pc.gui.weasel.divice.rename")));
 		lh = new PC_GresLayoutH();
-		lh.add(new PC_GresLabel("pc.gui.weasel.network.name"));
+		lh.add(new PC_GresLabel(Lang.tr("pc.gui.weasel.network.name")));
 		lh.add(networkName = new PC_GresTextEdit((String)te.getData("networkName"), 10));
 		lv.add(lh);
 		lh = new PC_GresLayoutH();
@@ -75,7 +75,7 @@ public abstract class PCws_GuiWeasel implements PC_IGresClient {
 			color = new PC_Color(0.3f, 0.3f, 0.3f);
 		lv.add(networkColor = new PC_GresColorPicker(color.getHex(), 100, 20));
 		
-		tab.addTab(lv, new PC_GresLabel("pc.gui.weasel.network.tab"));
+		tab.addTab(lv, new PC_GresLabel(Lang.tr("pc.gui.weasel.network.tab")));
 	}
 	
 	protected abstract void addTabs(PC_GresTab tab);

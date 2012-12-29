@@ -80,12 +80,20 @@ public class PC_GresTab extends PC_GresWidget {
 			s.y = minSize.y;
 		if(xSize-2>this.size.x)
 			sideButtons = true;
+		
+		if(s.x>this.size.x || s.y>this.size.y){
+			this.size.setTo(s);
+			if(getParent()!=null)
+				getParent().calcChildPositions();
+		}else{
+			this.size.setTo(s);
+		}
 		return s;
 	}
 
 	@Override
 	public void calcChildPositions() {
-		size.setTo(calcSize());
+		calcSize();
 		for(PC_GresWidget w:tab.values()){
 			w.setPosition(0, 0);
 		}
