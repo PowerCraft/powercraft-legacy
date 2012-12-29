@@ -48,7 +48,11 @@ public class PCws_GuiWeaselCore extends PCws_GuiWeasel {
 		lh.add(restartProgram = new PC_GresButton(Lang.tr("pc.gui.weasel.core.restartProgram")));
 		lh.add(stopProgram = new PC_GresButton(Lang.tr("pc.gui.weasel.core.stopProgram")));
 		
-		if(!(Boolean)te.getData("isRunning")){
+		if(te.getData("error")!=null){
+			stopProgram.enable(false);
+			programError.setText((String)te.getData("error"));
+			programError.setColor(PC_GresWidget.textColorDisabled, 0xff0000);
+		}else if(!(Boolean)te.getData("isRunning")){
 			stopProgram.enable(false);
 			programError.setColor(PC_GresWidget.textColorDisabled, 0x00aa00);
 		}else{
@@ -82,7 +86,11 @@ public class PCws_GuiWeaselCore extends PCws_GuiWeasel {
 	public void updateScreen(PC_IGresGui gui) {
 		tick++;
 		if(tick%20==0){
-			if((Boolean)te.getData("isRunning")){
+			if(te.getData("error")!=null){
+				stopProgram.enable(false);
+				programError.setText((String)te.getData("error"));
+				programError.setColor(PC_GresWidget.textColorDisabled, 0xff0000);
+			}else if((Boolean)te.getData("isRunning")){
 				stopProgram.enable(true);
 				programError.setText(Lang.tr("pc.gui.weasel.core.running"));
 				programError.setColor(PC_GresWidget.textColorDisabled, 0x000000);

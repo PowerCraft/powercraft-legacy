@@ -178,8 +178,8 @@ public class PCws_BlockWeasel extends PC_Block {
 		PCws_TileEntityWeasel te = GameInfo.getTE(world, x, y, z);
 
 		if (te != null) {
-			Boolean b = (Boolean)te.getData("hasError");
-			if (b!=null && b==true) {
+			String b = (String)te.getData("error");
+			if (b!=null) {
 				double d = (x + 0.5F) + (random.nextFloat() - 0.5F) * 0.20000000000000001D;
 				double d1 = (y + 0.5F) + (random.nextFloat() - 0.5F) * 0.20000000000000001D;
 				double d2 = (z + 0.5F) + (random.nextFloat() - 0.5F) * 0.20000000000000001D;
@@ -232,12 +232,12 @@ public class PCws_BlockWeasel extends PC_Block {
 			return null;
 		
 		return new boolean[]{
+				powered_from_input(world, pos, 4),
+				powered_from_input(world, pos, 5),
+				powered_from_input(world, pos, 3),
 				powered_from_input(world, pos, 0),
 				powered_from_input(world, pos, 1),
-				powered_from_input(world, pos, 2),
-				powered_from_input(world, pos, 3),
-				powered_from_input(world, pos, 5),
-				powered_from_input(world, pos, 4)
+				powered_from_input(world, pos, 2)
 			};
 		
 	}
