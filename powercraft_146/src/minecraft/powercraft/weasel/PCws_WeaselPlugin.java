@@ -5,20 +5,13 @@ import java.util.List;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
-
-import org.lwjgl.opengl.GL11;
-
 import powercraft.management.PC_Color;
 import powercraft.management.PC_INBT;
-import powercraft.management.PC_Renderer;
 import powercraft.management.PC_Utils.GameInfo;
-import powercraft.management.PC_Utils.ModuleInfo;
 import powercraft.management.PC_Utils.SaveHandler;
 import powercraft.management.PC_Utils.ValueWriting;
 import powercraft.management.PC_VecI;
 import weasel.Calc;
-import weasel.IFunctionProvider;
-import weasel.IVariableProvider;
 import weasel.IWeaselHardware;
 import weasel.WeaselEngine;
 import weasel.obj.WeaselBoolean;
@@ -34,6 +27,7 @@ public abstract class PCws_WeaselPlugin implements PC_INBT<PCws_WeaselPlugin>, I
 	private PC_VecI pos = new PC_VecI();
 	private boolean[] weaselOutport = { false, false, false, false, false, false };
 	private boolean[] weaselInport = { false, false, false, false, false, false };
+	private String error;
 	
 	private boolean needSave;
 	
@@ -111,9 +105,7 @@ public abstract class PCws_WeaselPlugin implements PC_INBT<PCws_WeaselPlugin>, I
 		if(PCws_WeaselManager.getPlugin(name)==null){
 			needSave = true;
 			this.name = name;
-			PCws_TileEntityWeasel te = getTE();
-			if(te!=null)
-				te.setData("diviceName", name);
+			setData("diviceName", name);
 		}
 	}
 	
@@ -121,22 +113,16 @@ public abstract class PCws_WeaselPlugin implements PC_INBT<PCws_WeaselPlugin>, I
 		PCws_WeaselNetwork oldNetwork = getNetwork();
 		if(oldNetwork!=null){
 			oldNetwork.removeMember(this);
-			PCws_TileEntityWeasel te = getTE();
-			if(te!=null){
-				te.setData("color", getColor());
-				te.setData("networkName", "");
-			}
+			setData("color", getColor());
+			setData("networkName", "");
 		}
 	}
 	
 	public void connectToNetwork(PCws_WeaselNetwork network){
 		removeFromNetwork();
 		network.registerMember(this);
-		PCws_TileEntityWeasel te = getTE();
-		if(te!=null){
-			te.setData("color", getColor());
-			te.setData("networkName", network.getName());
-		}
+		setData("color", getColor());
+		setData("networkName", network.getName());
 	}
 	
 	public void setNetwork(int networkID) {
@@ -155,7 +141,10 @@ public abstract class PCws_WeaselPlugin implements PC_INBT<PCws_WeaselPlugin>, I
 
 	@Override
 	public boolean doesProvideFunction(String functionName) {
-		return false;
+		List<String> l = getProvidedFunctionNames();
+		if(l==null)
+			return false;
+		return l.contains(functionName);
 	}
 
 	@Override
@@ -191,7 +180,6 @@ public abstract class PCws_WeaselPlugin implements PC_INBT<PCws_WeaselPlugin>, I
 		if(weaselOutport[port] != state){
 			weaselOutport[port] = state;
 			ValueWriting.hugeUpdate(getWorld(), pos.x, pos.y, pos.z);
-			
 		}
 	}
 	
@@ -230,33 +218,33 @@ public abstract class PCws_WeaselPlugin implements PC_INBT<PCws_WeaselPlugin>, I
 	public static String numToPort(int num){
 		switch(num){
 		case 0:
-			return "B";
+			return "u";
 		case 1:
-			return "L";
+			return "d";
 		case 2:
-			return "R";
+			return "f";
 		case 3:
-			return "F";
+			return "b";
 		case 4:
-			return "U";
+			return "l";
 		case 5:
-			return "D";
+			return "r";
 		}
 		return null;
 	}
 	
 	public static int portToNum(String port){
-		if(port.equalsIgnoreCase("b") || port.equalsIgnoreCase("back")){
+		if(port.equalsIgnoreCase("u") || port.equalsIgnoreCase("up") || port.equalsIgnoreCase("top")){
 			return 0;
-		}else if(port.equalsIgnoreCase("l") || port.equalsIgnoreCase("left")){
-			return 1;
-		}else if(port.equalsIgnoreCase("r") || port.equalsIgnoreCase("right")){
-			return 2;
-		}else if(port.equalsIgnoreCase("f") || port.equalsIgnoreCase("front")){
-			return 3;
-		}else if(port.equalsIgnoreCase("u") || port.equalsIgnoreCase("up") || port.equalsIgnoreCase("top")){
-			return 4;
 		}else if(port.equalsIgnoreCase("d") || port.equalsIgnoreCase("down") || port.equalsIgnoreCase("bottom")){
+			return 1;
+		}else if(port.equalsIgnoreCase("f") || port.equalsIgnoreCase("front")){
+			return 2;
+		}else if(port.equalsIgnoreCase("b") || port.equalsIgnoreCase("back")){
+			return 3;
+		}else if(port.equalsIgnoreCase("l") || port.equalsIgnoreCase("left")){
+			return 4;
+		}else if(port.equalsIgnoreCase("r") || port.equalsIgnoreCase("right")){
 			return 5;
 		}
 		return -1;
@@ -343,10 +331,32 @@ public abstract class PCws_WeaselPlugin implements PC_INBT<PCws_WeaselPlugin>, I
 	protected abstract void openPluginGui(EntityPlayer player);
 	
 	public void openGui(EntityPlayer player){
-		PCws_TileEntityWeasel tileEntityWeasel = getTE();
-		tileEntityWeasel.setData("diviceNames", PCws_WeaselManager.getAllPluginNames());
-		tileEntityWeasel.setData("networkNames", PCws_WeaselManager.getAllNetworkNames());
+		setData("diviceNames", PCws_WeaselManager.getAllPluginNames());
+		setData("networkNames", PCws_WeaselManager.getAllNetworkNames());
 		openPluginGui(player);
+	}
+	
+	protected void setError(String message) {
+		error = message;
+		setData("error", error);
+	}
+	
+	public boolean hasError(){
+		return error != null;
+	}
+	
+	public void restartDivice(){
+		error = null;
+		setData("error", null);
+		restart();
+	}
+	
+	public abstract void restart();
+	
+	protected void setData(String key, Object value){
+		PCws_TileEntityWeasel te = getTE();
+		if(te!=null)
+			te.setData(key, value);
 	}
 	
 }

@@ -24,6 +24,7 @@ public class PC_ClientProxy extends PC_CommonProxy {
 		RenderingRegistry.registerBlockHandler(new PC_ClientRenderer(true));
 		RenderingRegistry.registerBlockHandler(new PC_ClientRenderer(false));
 		TickRegistry.registerTickHandler(new PC_MainMenuHacks(), Side.CLIENT);
+		TickRegistry.registerTickHandler(new PC_TickHandler(), Side.CLIENT);
 		PC_ClientUtils.registerEnitiyFX(PC_EntityLaserParticleFX.class);
 		PC_ClientUtils.registerEnitiyFX(PC_EntityLaserFX.class);
 		PC_ClientUtils.registerEnitiyFX(EntitySmokeFX.class);
