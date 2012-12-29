@@ -1,5 +1,7 @@
 package powercraft.weasel;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map.Entry;
 import java.util.TreeMap;
 
@@ -247,6 +249,22 @@ public class PCws_WeaselManager implements PC_IDataHandler, PC_IMSG {
 		for(PCws_WeaselPlugin weaselPlugin:plugins.values()){
 			weaselPlugin.update();
 		}
+	}
+
+	public static List<String> getAllPluginNames() {
+		List<String> l = new ArrayList<String>();
+		for(PCws_WeaselPlugin weaselPlugin:plugins.values()){
+			l.add(weaselPlugin.getName());
+		}
+		return l;
+	}
+	
+	public static List<String> getAllNetworkNames() {
+		List<String> l = new ArrayList<String>();
+		for(PCws_WeaselNetwork weaselNetwork:networks.values()){
+			l.add(weaselNetwork.getName());
+		}
+		return l;
 	}
 	
 }

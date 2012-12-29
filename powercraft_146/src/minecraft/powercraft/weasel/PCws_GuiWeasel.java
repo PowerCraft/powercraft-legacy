@@ -1,5 +1,7 @@
 package powercraft.weasel;
 
+import java.util.List;
+
 import net.minecraft.entity.player.EntityPlayer;
 import powercraft.management.PC_Color;
 import powercraft.management.PC_GresButton;
@@ -14,6 +16,7 @@ import powercraft.management.PC_GresWidget.PC_GresAlign;
 import powercraft.management.PC_GresWindow;
 import powercraft.management.PC_IGresClient;
 import powercraft.management.PC_IGresGui;
+import powercraft.management.PC_PacketHandler;
 import powercraft.management.PC_Utils.GameInfo;
 import powercraft.management.PC_Utils.Lang;
 
@@ -64,6 +67,7 @@ public abstract class PCws_GuiWeasel implements PC_IGresClient {
 		lh = new PC_GresLayoutH();
 		lh.add(network1 = new PC_GresButton(Lang.tr("pc.gui.weasel.network.join")));
 		lh.add(network2 = new PC_GresButton(Lang.tr("pc.gui.weasel.network.new")));
+		network1.setId(0);
 		network2.enable(false);
 		lv.add(lh);
 		PC_Color color = (PC_Color)te.getData("color");
@@ -85,10 +89,30 @@ public abstract class PCws_GuiWeasel implements PC_IGresClient {
 			onReturnPressed(gui);
 		}else if(widget==cancel){
 			onEscapePressed(gui);
+		}else if(widget==diviceName){
+			List<String> diviceNames = (List<String>)te.getData("diviceNames");
+			diviceRename.enable(!diviceNames.contains(diviceName.getText()));
 		}else if(widget==diviceRename){
-			te.setData("diviceName", diviceName.getText());
+			PC_PacketHandler.setTileEntity(te, "msg", "diviceRename", diviceName.getText());
 		}else if(widget==networkName){
-			
+			List<String> networkNames = (List<String>)te.getData("networkNames");
+			if(networkNames.contains(networkName.getText())){
+				network1.setText(Lang.tr("pc.gui.weasel.network.join"));
+				network1.setId(0);
+				network2.enable(false);
+			}else{
+				network1.setText(Lang.tr("pc.gui.weasel.network.rename"));
+				network1.setId(1);
+				network2.enable(true);
+			}
+		}else if(widget==network1){
+			if(network1.getId()==0){
+				PC_PacketHandler.setTileEntity(te, "msg", "networkJoin", networkName.getText());
+			}else{
+				PC_PacketHandler.setTileEntity(te, "msg", "networkRename", networkName.getText());
+			}
+		}else if(widget==network2){
+			PC_PacketHandler.setTileEntity(te, "msg", "networkNew", networkName.getText());
 		}
 	}
 	

@@ -5,9 +5,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map.Entry;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
-
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -86,12 +83,22 @@ public class PCws_TileEntityWeasel extends PC_TileEntity implements PC_ITileEnti
 	@Override
 	public void setData(Object[] o) {
 		int p = 0;
-        
+		PCws_WeaselPlugin plugin = getPlugin();
         while (p < o.length)
         {
             String var = (String)o[p++];
 
-            datas.put(var, o[p++]);
+            if(var.equals("msg")){
+            	String msg = (String)o[p++];
+            	Object obj = o[p++];
+            	if(plugin!=null)
+            		plugin.getClientMsg(msg, obj);
+            }else{
+            	Object obj = o[p++];
+            	datas.put(var, obj);
+            	if(plugin!=null)
+            		plugin.reciveData(var, obj);
+            }
         }
 	}
 
