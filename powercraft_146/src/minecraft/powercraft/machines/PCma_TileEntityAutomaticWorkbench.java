@@ -434,19 +434,21 @@ public class PCma_TileEntityAutomaticWorkbench extends PC_TileEntity implements 
         {
             if (actContents[i] != null)
             {
-                if (actContents[i].getItem().hasContainerItem())
-                {
-                    setInventorySlotContents(i, new ItemStack(actContents[i].getItem().getContainerItem()));
-                }
-                else
-                {
-                    actContents[i].stackSize--;
-
-                    if (actContents[i].stackSize <= 0)
-                    {
-                        actContents[i] = null;
-                    }
-                }
+            	if(actContents[i].getItem().doesContainerItemLeaveCraftingGrid(actContents[i])){
+	                if (actContents[i].getItem().hasContainerItem())
+	                {
+	                    setInventorySlotContents(i, new ItemStack(actContents[i].getItem().getContainerItem()));
+	                }
+	                else
+	                {
+	                    actContents[i].stackSize--;
+	
+	                    if (actContents[i].stackSize <= 0)
+	                    {
+	                        actContents[i] = null;
+	                    }
+	                }
+            	}
             }
         }
     }

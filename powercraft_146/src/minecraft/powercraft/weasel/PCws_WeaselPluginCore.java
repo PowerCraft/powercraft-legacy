@@ -43,6 +43,7 @@ public class PCws_WeaselPluginCore extends PCws_WeaselPlugin {
 	
 	@Override
 	protected PCws_WeaselPlugin readPluginFromNBT(NBTTagCompound tag) {
+		weasel = new WeaselEngine(this);
 		program = tag.getString("program");
 		SaveHandler.loadFromNBT(tag, "engine", weasel);
 		sleepTimer = tag.getInteger("sleep");
