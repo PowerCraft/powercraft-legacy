@@ -242,6 +242,10 @@ public abstract class PCws_WeaselPlugin implements PC_INBT<PCws_WeaselPlugin>, I
 		return GameInfo.mcs().worldServerForDimension(dimension);
 	}
 
+	public PCws_TileEntityWeasel getTE(){
+		return GameInfo.getTE(getWorld(), pos);
+	}
+	
 	public PC_Color getColor() {
 		PCws_WeaselNetwork network = getNetwork();
 		if(network!=null)
@@ -277,4 +281,25 @@ public abstract class PCws_WeaselPlugin implements PC_INBT<PCws_WeaselPlugin>, I
 		syncWithClient();
 	}
 
+	public void getClientMsg(String msg, Object obj) {
+		
+	}
+
+	public void reciveData(String var, Object obj) {
+		
+	}
+
+	public void openGui(){
+		PCws_TileEntityWeasel tileEntityWeasel = getTE();
+		tileEntityWeasel.setData("diviceNames", PCws_WeaselManager.getAllPluginNames());
+		tileEntityWeasel.setData("networkNames", PCws_WeaselManager.getAllNetworkNames());
+		tileEntityWeasel.setData("diviceName", name);
+		PCws_WeaselNetwork netkork = getNetwork();
+		if(netkork==null)
+			tileEntityWeasel.setData("networkName", "");
+		else
+			tileEntityWeasel.setData("networkName", netkork.getName());
+		tileEntityWeasel.setData("color", getColor());
+	}
+	
 }
