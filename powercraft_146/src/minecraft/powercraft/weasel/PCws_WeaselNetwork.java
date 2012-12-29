@@ -78,6 +78,12 @@ public final class PCws_WeaselNetwork implements Iterable<PCws_WeaselPlugin>, PC
 		if(PCws_WeaselManager.getNetwork(name) == null){
 			needSave = true;
 			this.name = name;
+			for(PCws_WeaselPlugin weaselPlugin:this){
+				PCws_TileEntityWeasel te = weaselPlugin.getTE();
+				if(te!=null){
+					te.setData("networkName", name);
+				}
+			}
 		}
 	}
 	
@@ -88,6 +94,12 @@ public final class PCws_WeaselNetwork implements Iterable<PCws_WeaselPlugin>, PC
 	public void setColor(PC_Color color) {
 		needSave = true;
 		this.color.setTo(color);
+		for(PCws_WeaselPlugin weaselPlugin:this){
+			PCws_TileEntityWeasel te = weaselPlugin.getTE();
+			if(te!=null){
+				te.setData("color", color.copy());
+			}
+		}
 	}
 	
 	public PC_Color getColor() {

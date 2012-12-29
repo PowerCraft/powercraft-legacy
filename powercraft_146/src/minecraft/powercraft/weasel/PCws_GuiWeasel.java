@@ -120,6 +120,8 @@ public abstract class PCws_GuiWeasel implements PC_IGresClient {
 			}
 		}else if(widget==network2){
 			PC_PacketHandler.setTileEntity(te, "msg", "networkNew", networkName.getText());
+		}else if(widget==networkColor){
+			te.setData("color", PC_Color.fromHex(networkColor.getColor()));
 		}
 	}
 	

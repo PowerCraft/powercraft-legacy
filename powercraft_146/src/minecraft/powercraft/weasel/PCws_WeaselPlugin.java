@@ -106,14 +106,32 @@ public abstract class PCws_WeaselPlugin implements PC_INBT<PCws_WeaselPlugin>, I
 		if(PCws_WeaselManager.getPlugin(name)==null){
 			needSave = true;
 			this.name = name;
+			PCws_TileEntityWeasel te = getTE();
+			if(te!=null)
+				te.setData("diviceName", name);
+		}
+	}
+	
+	public void removeFromNetowrk(){
+		PCws_WeaselNetwork oldNetwork = getNetwork();
+		if(oldNetwork!=null){
+			oldNetwork.removeMember(this);
+			PCws_TileEntityWeasel te = getTE();
+			if(te!=null){
+				te.setData("color", getColor());
+				te.setData("networkName", "");
+			}
 		}
 	}
 	
 	public void connectToNetowrk(PCws_WeaselNetwork network){
-		PCws_WeaselNetwork oldNetwork = getNetwork();
-		if(oldNetwork!=null)
-			oldNetwork.removeMember(this);
+		removeFromNetowrk();
 		network.registerMember(this);
+		PCws_TileEntityWeasel te = getTE();
+		if(te!=null){
+			te.setData("color", getColor());
+			te.setData("networkName", network.getName());
+		}
 	}
 	
 	public void setNetwork(int networkID) {
@@ -283,6 +301,12 @@ public abstract class PCws_WeaselPlugin implements PC_INBT<PCws_WeaselPlugin>, I
 	
 	public void sync(PCws_TileEntityWeasel tileEntityWeasel) {
 		tileEntityWeasel.setData("color", getColor());
+		tileEntityWeasel.setData("diviceName", name);
+		PCws_WeaselNetwork netkork = getNetwork();
+		if(netkork==null)
+			tileEntityWeasel.setData("networkName", "");
+		else
+			tileEntityWeasel.setData("networkName", netkork.getName());
 		syncWithClient();
 	}
 
@@ -291,9 +315,7 @@ public abstract class PCws_WeaselPlugin implements PC_INBT<PCws_WeaselPlugin>, I
 			setName((String)obj);
 		}else if(msg.equalsIgnoreCase("networkJoin")){
 			if(((String) obj).equals("")){
-				PCws_WeaselNetwork oldNetwork = getNetwork();
-				if(oldNetwork!=null)
-					oldNetwork.removeMember(this);
+				removeFromNetowrk();
 			}else{
 				connectToNetowrk(PCws_WeaselManager.getNetwork((String) obj));
 			}
@@ -306,23 +328,19 @@ public abstract class PCws_WeaselPlugin implements PC_INBT<PCws_WeaselPlugin>, I
 	}
 
 	public void reciveData(String var, Object obj) {
-		
+		if(var.equalsIgnoreCase("color")){
+			PCws_WeaselNetwork network = getNetwork();
+			if(network!=null)
+				network.setColor((PC_Color)obj);
+		}
 	}
 
 	protected abstract void openPluginGui(EntityPlayer player);
 	
 	public void openGui(EntityPlayer player){
 		PCws_TileEntityWeasel tileEntityWeasel = getTE();
-		System.out.println(tileEntityWeasel);
 		tileEntityWeasel.setData("diviceNames", PCws_WeaselManager.getAllPluginNames());
 		tileEntityWeasel.setData("networkNames", PCws_WeaselManager.getAllNetworkNames());
-		tileEntityWeasel.setData("diviceName", name);
-		PCws_WeaselNetwork netkork = getNetwork();
-		if(netkork==null)
-			tileEntityWeasel.setData("networkName", "");
-		else
-			tileEntityWeasel.setData("networkName", netkork.getName());
-		tileEntityWeasel.setData("color", getColor());
 		openPluginGui(player);
 	}
 	
