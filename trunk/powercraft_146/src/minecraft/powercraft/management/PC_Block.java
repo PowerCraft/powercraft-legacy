@@ -144,6 +144,10 @@ public abstract class PC_Block extends BlockContainer implements PC_IMSG
 		thisBlock.itemBlock = itemBlock;
 	}
     
+	public ItemBlock getItemBlock() {
+		return thisBlock.itemBlock;
+	}
+	
 	public void setBlockID(int id) {
 		int oldID = blockID;
 		if(oldID==id)
