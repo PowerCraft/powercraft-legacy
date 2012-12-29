@@ -99,5 +99,9 @@ public abstract class PCws_WeaselPluginInfo {
 		// pop1
 		PC_Renderer.glPopMatrix();
 	}
+
+	public void getServerMsg(PCws_TileEntityWeasel te, String msg, Object obj) {
+		
+	}
 	
 }

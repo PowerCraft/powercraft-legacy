@@ -60,6 +60,9 @@ public abstract class PCws_WeaselPlugin implements PC_INBT<PCws_WeaselPlugin>, I
 		if(nbttag.hasKey("plugin")){
 			readPluginFromNBT(nbttag.getCompoundTag("plugin"));
 		}
+		error = null;
+		if(nbttag.hasKey("error"))
+			error = nbttag.getString("error");
 		return this;
 	}
 
@@ -78,6 +81,8 @@ public abstract class PCws_WeaselPlugin implements PC_INBT<PCws_WeaselPlugin>, I
 		NBTTagCompound nbtPlugin = writePluginToNBT(new NBTTagCompound());
 		if(nbtPlugin!=null)
 			nbttag.setCompoundTag("plugin", nbtPlugin);
+		if(error!=null)
+			nbttag.setString("error", error);
 		return nbttag;
 	}
 	
@@ -290,7 +295,7 @@ public abstract class PCws_WeaselPlugin implements PC_INBT<PCws_WeaselPlugin>, I
 	
 	public abstract void update();
 
-	public abstract void syncWithClient();
+	public abstract void syncWithClient(PCws_TileEntityWeasel tileEntityWeasel);
 	
 	public void sync(PCws_TileEntityWeasel tileEntityWeasel) {
 		tileEntityWeasel.setData("color", getColor());
@@ -300,7 +305,8 @@ public abstract class PCws_WeaselPlugin implements PC_INBT<PCws_WeaselPlugin>, I
 			tileEntityWeasel.setData("networkName", "");
 		else
 			tileEntityWeasel.setData("networkName", netkork.getName());
-		syncWithClient();
+		tileEntityWeasel.setData("error", error);
+		syncWithClient(tileEntityWeasel);
 	}
 
 	public void getClientMsg(String msg, Object obj) {

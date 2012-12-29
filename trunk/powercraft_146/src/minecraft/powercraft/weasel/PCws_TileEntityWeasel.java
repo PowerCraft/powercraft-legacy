@@ -89,12 +89,15 @@ public class PCws_TileEntityWeasel extends PC_TileEntity implements PC_ITileEnti
         while (p < o.length)
         {
             String var = (String)o[p++];
-
             if(var.equals("msg")){
             	String msg = (String)o[p++];
             	Object obj = o[p++];
             	if(plugin!=null)
             		plugin.getClientMsg(msg, obj);
+            	else if(worldObj.isRemote){
+            		getPluginInfo().getServerMsg(this, msg, obj);
+            	}
+            		
             }else{
             	Object obj = o[p++];
             	datas.put(var, obj);

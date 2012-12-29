@@ -4,16 +4,20 @@ import java.util.List;
 
 import net.minecraft.entity.player.EntityPlayer;
 import powercraft.management.PC_GresButton;
+import powercraft.management.PC_GresImage;
 import powercraft.management.PC_GresLabel;
 import powercraft.management.PC_GresLayoutH;
 import powercraft.management.PC_GresLayoutV;
+import powercraft.management.PC_GresSeparatorV;
 import powercraft.management.PC_GresTab;
 import powercraft.management.PC_GresTextEditMultiline;
 import powercraft.management.PC_GresTextEditMultiline.Keyword;
+import powercraft.management.PC_GresWidget;
+import powercraft.management.PC_GresWidget.PC_GresAlign;
+import powercraft.management.PC_IGresGui;
 import powercraft.management.PC_PacketHandler;
 import powercraft.management.PC_Utils.Lang;
-import powercraft.management.PC_GresWidget;
-import powercraft.management.PC_IGresGui;
+import powercraft.management.PC_Utils.ModuleInfo;
 import weasel.WeaselEngine;
 
 public class PCws_GuiWeaselCore extends PCws_GuiWeasel {
@@ -21,6 +25,7 @@ public class PCws_GuiWeaselCore extends PCws_GuiWeasel {
 	private PC_GresTextEditMultiline program;
 	private PC_GresLabel programError;
 	private PC_GresButton launchProgram, restartProgram, stopProgram;
+	private PC_GresWidget txRunning, txStack, txMemory, txPeripherals, txStatus, txLength;
 	private int tick;
 	
 	public PCws_GuiWeaselCore(EntityPlayer player, Object[] o) {
@@ -64,9 +69,64 @@ public class PCws_GuiWeaselCore extends PCws_GuiWeasel {
 		tab.addTab(lv, new PC_GresLabel(Lang.tr("pc.gui.weasel.core.program")));
 	}
 	
+	private void makeStatusTab(PC_GresTab tab){
+		PC_GresLayoutH mhl = new PC_GresLayoutH();
+		PC_GresLayoutV vl = new PC_GresLayoutV();
+		vl.setAlignH(PC_GresAlign.CENTER).setAlignV(PC_GresAlign.CENTER).setMinWidth(100);
+		vl.add(new PC_GresImage(ModuleInfo.getGresImgDir() + "graphics.png", 0, 24, 80, 80));
+		vl.add(new PC_GresLabel("WEASEL VM"));
+		vl.add(new PC_GresLabel("© MightyPork"));
+		mhl.add(vl);
+		mhl.add(new PC_GresSeparatorV(3, 150).setLineColor(0x666666));
+		
+		int colorLabel = 0x000000;
+		int colorValue = 0x000099;
+		
+		vl = new PC_GresLayoutV();
+		vl.setAlignH(PC_GresAlign.LEFT).setAlignV(PC_GresAlign.CENTER).setMinWidth(100);
+		PC_GresLayoutH hl = new PC_GresLayoutH();
+		hl.setAlignH(PC_GresAlign.LEFT);
+		hl.add(new PC_GresLabel(Lang.tr("pc.gui.weasel.core.runningStateLabel")).setAlignH(PC_GresAlign.RIGHT).setColor(PC_GresWidget.textColorDisabled, colorLabel).enable(false));
+		hl.add(txRunning = new PC_GresLabel("").setColor(PC_GresWidget.textColorDisabled, colorValue).enable(false));
+		vl.add(hl);
+
+		hl = new PC_GresLayoutH();
+		hl.setAlignH(PC_GresAlign.LEFT);
+		hl.add(new PC_GresLabel(Lang.tr("pc.gui.weasel.core.stackLabel")).setAlignH(PC_GresAlign.RIGHT).setColor(PC_GresWidget.textColorDisabled, colorLabel).enable(false));
+		hl.add(txLength = new PC_GresLabel("").setColor(PC_GresWidget.textColorDisabled, colorValue).enable(false));
+		vl.add(hl);
+
+		hl = new PC_GresLayoutH();
+		hl.setAlignH(PC_GresAlign.LEFT);
+		hl.add(new PC_GresLabel(Lang.tr("pc.gui.weasel.core.memoryLabel")).setAlignH(PC_GresAlign.RIGHT).setColor(PC_GresWidget.textColorDisabled, colorLabel).enable(false));
+		hl.add(txStack = new PC_GresLabel("").setColor(PC_GresWidget.textColorDisabled, colorValue).enable(false));
+		vl.add(hl);
+
+		hl = new PC_GresLayoutH();
+		hl.setAlignH(PC_GresAlign.LEFT);
+		hl.add(new PC_GresLabel(Lang.tr("pc.gui.weasel.core.peripheralsLabel")).setAlignH(PC_GresAlign.RIGHT).setColor(PC_GresWidget.textColorDisabled, colorLabel).enable(false));
+		hl.add(txMemory = new PC_GresLabel("").setColor(PC_GresWidget.textColorDisabled, colorValue).enable(false));
+		vl.add(hl);
+
+		hl = new PC_GresLayoutH();
+		hl.setAlignH(PC_GresAlign.LEFT);
+		hl.add(new PC_GresLabel(Lang.tr("pc.gui.weasel.core.programLength")).setAlignH(PC_GresAlign.RIGHT).setColor(PC_GresWidget.textColorDisabled, colorLabel).enable(false));
+		hl.add(txPeripherals = new PC_GresLabel("").setColor(PC_GresWidget.textColorDisabled, colorValue).enable(false));
+		vl.add(hl);
+
+		hl = new PC_GresLayoutH();
+		hl.setAlignH(PC_GresAlign.LEFT);
+		hl.add(new PC_GresLabel(Lang.tr("pc.gui.weasel.core.statusLabel")).setAlignH(PC_GresAlign.RIGHT).setColor(PC_GresWidget.textColorDisabled, colorLabel).enable(false));
+		hl.add(txStatus = new PC_GresLabel("").setColor(PC_GresWidget.textColorDisabled, colorValue).enable(false));
+		vl.add(hl);
+		mhl.add(vl);
+		tab.addTab(mhl, new PC_GresLabel(Lang.tr("pc.gui.weasel.core.status")));
+	}
+	
 	@Override
 	protected void addTabs(PC_GresTab tab) {
 		makeProgramTab(tab);
+		makeStatusTab(tab);
 	}
 
 	@Override

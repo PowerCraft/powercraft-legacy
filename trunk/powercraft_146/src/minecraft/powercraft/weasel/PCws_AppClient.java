@@ -26,6 +26,15 @@ public class PCws_AppClient extends PCws_App implements PC_IClientModule {
 		lang.add(new PC_LangEntry("pc.gui.weasel.core.restartProgram", "Restart"));
 		lang.add(new PC_LangEntry("pc.gui.weasel.core.stopProgram", "Stop"));
 		
+		lang.add(new PC_LangEntry("pc.gui.weasel.core.status", "Status"));
+		lang.add(new PC_LangEntry("pc.gui.weasel.core.runningStateLabel", "Program state:"));
+		lang.add(new PC_LangEntry("pc.gui.weasel.core.stackLabel", "Stack size:"));
+		lang.add(new PC_LangEntry("pc.gui.weasel.core.memoryLabel", "Memory size:"));
+		lang.add(new PC_LangEntry("pc.gui.weasel.core.statusLabel", "Status:"));
+		lang.add(new PC_LangEntry("pc.gui.weasel.core.programLength", "Program length:"));
+		lang.add(new PC_LangEntry("pc.gui.weasel.core.peripheralsLabel", "Peripherals:"));
+		lang.add(new PC_LangEntry("pc.gui.weasel.core.unitInstructions", "instructions"));
+		
 		return lang;
 	}
 
