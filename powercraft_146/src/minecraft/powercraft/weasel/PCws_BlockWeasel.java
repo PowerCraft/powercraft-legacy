@@ -3,13 +3,17 @@ package powercraft.weasel;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.entity.EntityLiving;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import powercraft.management.PC_Block;
+import powercraft.management.PC_MathHelper;
 import powercraft.management.PC_Utils;
 import powercraft.management.PC_Utils.GameInfo;
+import powercraft.management.PC_Utils.ValueWriting;
 import powercraft.management.PC_VecI;
 
 public class PCws_BlockWeasel extends PC_Block {
@@ -88,6 +92,22 @@ public class PCws_BlockWeasel extends PC_Block {
 	@Override
 	public boolean isProvidingStrongPower(IBlockAccess world, int x, int y, int z, int dir) {
 		return isProvidingWeakPower(world, x, y, z, dir);
+	}
+
+	
+	
+	@Override
+	public void onBlockPlacedBy(World world, int x, int y, int z, EntityLiving player) {
+		int l = PC_MathHelper.floor_double(((player.rotationYaw * 4F) / 360F) + 2.5D) & 3;
+
+        if (player instanceof EntityPlayer && GameInfo.isPlacingReversed(((EntityPlayer)player)))
+        {
+            l = ValueWriting.reverseSide(l);
+        }
+        
+        ValueWriting.setMD(world, x, y, z, l);
+        
+		super.onBlockPlacedBy(world, x, y, z, player);
 	}
 
 	@Override
