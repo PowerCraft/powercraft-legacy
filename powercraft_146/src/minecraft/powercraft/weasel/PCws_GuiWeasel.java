@@ -36,7 +36,7 @@ public abstract class PCws_GuiWeasel implements PC_IGresClient {
 	
 	@Override
 	public void initGui(PC_IGresGui gui) {
-		PC_GresWindow w = new PC_GresWindow(Lang.tr(PCws_App.weasel.getItemBlock().getItemName() + "." + te.getPluginInfo().getKey()));
+		PC_GresWindow w = new PC_GresWindow(Lang.tr(PCws_App.weasel.getBlockName() + "." + te.getPluginInfo().getKey()+".name"));
 		
 		PC_GresTab tab = new PC_GresTab();
 		makeNetworkTab(tab);
@@ -47,7 +47,7 @@ public abstract class PCws_GuiWeasel implements PC_IGresClient {
 		PC_GresLayoutH lh = new PC_GresLayoutH();
 		lh.setAlignH(PC_GresAlign.JUSTIFIED);
 		lh.add(ok = new PC_GresButton(Lang.tr("pc.gui.ok")));
-		lh.add(cancel = new PC_GresButton(Lang.tr("pc.gui.cnacel")));
+		lh.add(cancel = new PC_GresButton(Lang.tr("pc.gui.cancel")));
 		w.add(lh);
 		
 		gui.add(w);
