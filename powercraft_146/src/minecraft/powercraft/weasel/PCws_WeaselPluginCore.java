@@ -9,6 +9,7 @@ import powercraft.management.PC_GresTextEditMultiline.Keyword;
 import powercraft.management.PC_Struct2;
 import powercraft.management.PC_Utils.Gres;
 import weasel.WeaselEngine;
+import weasel.exception.SyntaxError;
 import weasel.obj.WeaselObject;
 
 public class PCws_WeaselPluginCore extends PCws_WeaselPlugin {
@@ -61,8 +62,7 @@ public class PCws_WeaselPluginCore extends PCws_WeaselPlugin {
 
 	@Override
 	public void update() {
-		// TODO Auto-generated method stub
-
+		weasel.run(500);
 	}
 
 	@Override
@@ -70,12 +70,31 @@ public class PCws_WeaselPluginCore extends PCws_WeaselPlugin {
 		// TODO Auto-generated method stub
 		
 	}
+	
+	@Override
+	public void getClientMsg(String msg, Object obj) {
+		if(msg.equalsIgnoreCase("launch")){
+			program = (String)obj;
+			try {
+				weasel.insertNewProgram(WeaselEngine.compileProgram(program));
+			} catch (SyntaxError e) {
+				e.printStackTrace();
+			}
+		}else if(msg.equalsIgnoreCase("restart")){
+			weasel.restartProgramClearGlobals();
+		}else if(msg.equalsIgnoreCase("stop")){
+			weasel.isProgramFinished = true;
+		}else{
+			super.getClientMsg(msg, obj);
+		}
+	}
 
 	@Override
 	protected void openPluginGui(EntityPlayer player) {
 		PCws_TileEntityWeasel te = getTE();
 		te.setData("program", program);
 		te.setData("keywords", PCws_WeaselHighlightHelper.weasel(this, weasel));
+		te.setData("isRunning", false);
 		Gres.openGres("WeaselCore", player, getPos().x, getPos().y, getPos().z);
 	}	
 	
