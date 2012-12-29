@@ -5,6 +5,7 @@ import java.util.List;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
+import powercraft.management.PC_PacketHandler;
 import powercraft.management.PC_Struct2;
 import powercraft.management.PC_Utils.Gres;
 import powercraft.management.PC_Utils.SaveHandler;
@@ -12,8 +13,10 @@ import weasel.WeaselEngine;
 import weasel.exception.SyntaxError;
 import weasel.exception.WeaselRuntimeException;
 import weasel.obj.WeaselBoolean;
+import weasel.obj.WeaselInteger;
 import weasel.obj.WeaselNull;
 import weasel.obj.WeaselObject;
+import weasel.obj.WeaselString;
 
 public class PCws_WeaselPluginCore extends PCws_WeaselPlugin {
 	
@@ -22,19 +25,21 @@ public class PCws_WeaselPluginCore extends PCws_WeaselPlugin {
 			"# update() is called when neighbor block changes.\n" +
 			"# Use variables F,L,R,B,U,D to access sides.\n" +
 			"\n\n"+
-			"function update(){\n"+
+			"function onPortChange(port){\n"+
 			"  \n"+
 			"}\n";	
 	
 	/** The Weasel Engine */
-	private WeaselEngine weasel = new WeaselEngine(this);
+	private WeaselEngine weasel;
 	private List<PC_Struct2<String, Object[]>> externalCallsWaiting = new ArrayList<PC_Struct2<String,Object[]>>();
-	private String program = default_program;
-	private int sleepTimer=0;
+	private String program;
+	private int sleepTimer;
 	private boolean stop;
 	
 	public PCws_WeaselPluginCore(){
-		connectToNetwork(new PCws_WeaselNetwork());
+		weasel = new WeaselEngine(this);
+		program = default_program;
+		sleepTimer=0;
 	}
 	
 	public PCws_WeaselPluginCore(NBTTagCompound nbttag){
@@ -91,7 +96,19 @@ public class PCws_WeaselPluginCore extends PCws_WeaselPlugin {
 	public List<String> getProvidedFunctionNames() {
 		List<String> l = new ArrayList<String>();
 		l.add("sleep");
+		l.add("bell");
 		l.add("console.print");
+		l.add("network.get");
+		l.add("network.set");
+		l.add("network.has");
+		l.add("network.isConnected");
+		l.add("network.getDiskCount");
+		l.add("global.get");
+		l.add("global.set");
+		l.add("global.has");
+		l.add("world.isDay");
+		l.add("world.isNight");
+		l.add("world.isRaining");
 		return l;
 	}
 
@@ -105,12 +122,50 @@ public class PCws_WeaselPluginCore extends PCws_WeaselPlugin {
 				sleepTimer = 1;
 			}
 			engine.requestPause();
-			return new WeaselNull();
+		}else if(functionName.equals("bell")){
+			if(getTE()!=null){
+				PC_PacketHandler.setTileEntity(getTE(), "msg", "bell", (functionName.length() * (3 + args.length)) / 24D);
+			}
 		}else if(functionName.equals("console.print")){
 			System.out.println(args[0].toString());
-			return new WeaselNull();
+		}else if(functionName.equals("network.get")){
+			if(getNetwork()!=null)
+				return getNetwork().getLocalVariable((String)args[0].get());
+		}else if(functionName.equals("network.set")){
+			if(getNetwork()!=null)
+				getNetwork().setLocalVariable((String)args[0].get(), args[1]);
+		}else if(functionName.equals("network.has")){
+			if(getNetwork()==null)
+				return new WeaselBoolean(false);
+			return new WeaselBoolean(getNetwork().getLocalVariable((String)args[0].get()) != null);
+		}else if(functionName.equals("network.isConnected")){
+			if(getNetwork()==null)
+				return new WeaselBoolean(false);
+			return new WeaselBoolean(getNetwork().getMember((String)args[0].get()));
+		}else if(functionName.equals("network.getDiskCount")){
+			if(getNetwork()==null)
+				return new WeaselInteger(0);
+			return new WeaselInteger(0);
+		}else if(functionName.equals("network.getDiskType")){
+			if(getNetwork()==null)
+				return new WeaselString("null");
+			return new WeaselString("null");
+		}else if(functionName.equals("global.get")){
+			return PCws_WeaselManager.getGlobalVariable((String)args[0].get());
+		}else if(functionName.equals("global.set")){
+			PCws_WeaselManager.setGlobalVariable((String)args[0].get(), args[1]);
+		}else if(functionName.equals("global.has")){
+			return new WeaselBoolean(PCws_WeaselManager.hasGlobalVariable((String)args[0].get()));
+		}else if(functionName.equals("world.isDay")){
+			return new WeaselBoolean(getWorld().isDaytime());	
+		}else if(functionName.equals("world.isNight")){
+			return new WeaselBoolean(!getWorld().isDaytime());	
+		}else if(functionName.equals("world.isRaining")){
+			return new WeaselBoolean(getWorld().isRaining());		
+		}else{
+			throw new WeaselRuntimeException("Invalid call of function " + functionName);
 		}
-		throw new WeaselRuntimeException("Invalid call of function " + functionName);
+		return new WeaselNull();
 	}
 
 	@Override
@@ -171,8 +226,7 @@ public class PCws_WeaselPluginCore extends PCws_WeaselPlugin {
 	}
 
 	@Override
-	public void syncWithClient() {
-		// TODO Auto-generated method stub
+	public void syncWithClient(PCws_TileEntityWeasel tileEntityWeasel) {
 		
 	}
 	
@@ -190,6 +244,7 @@ public class PCws_WeaselPluginCore extends PCws_WeaselPlugin {
 			restartDivice();
 		}else if(msg.equalsIgnoreCase("stop")){
 			stop = true;
+			setData("isRunning", false);
 		}else{
 			super.getClientMsg(msg, obj);
 		}
@@ -209,6 +264,7 @@ public class PCws_WeaselPluginCore extends PCws_WeaselPlugin {
 		externalCallsWaiting.clear();
 		sleepTimer = 0;
 		stop = false;
+		setData("isRunning", true);
 		weasel.restartProgramClearGlobals();
 	}	
 	

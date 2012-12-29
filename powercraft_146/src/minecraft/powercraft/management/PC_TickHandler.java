@@ -13,10 +13,12 @@ public class PC_TickHandler implements ITickHandler {
 
 	@Override
 	public void tickStart(EnumSet<TickType> type, Object... tickData) {
-		List<PC_IMSG> objs = ModuleInfo.getMSGObjects();
-		for (PC_IMSG obj : objs){
-        	obj.msg(PC_Utils.MSG_TICK_EVENT);
-        }
+		if(GameInfo.mcs()!=null && GameInfo.mcs().isServerRunning()){
+			List<PC_IMSG> objs = ModuleInfo.getMSGObjects();
+			for (PC_IMSG obj : objs){
+	        	obj.msg(PC_Utils.MSG_TICK_EVENT);
+	        }
+		}
 	}
 
 	@Override

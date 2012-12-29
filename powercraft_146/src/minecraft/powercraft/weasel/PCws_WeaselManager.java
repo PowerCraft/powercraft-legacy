@@ -119,7 +119,7 @@ public class PCws_WeaselManager implements PC_IDataHandler, PC_IMSG {
 	 * @throws WeaselRuntimeException if you are trying to store incompatible
 	 *             variable type
 	 */
-	public void setGlobalVariable(String name, WeaselObject value) throws WeaselRuntimeException {
+	public static void setGlobalVariable(String name, WeaselObject value) throws WeaselRuntimeException {
 		globalHeap.setVariableForce(name, value);
 		needSave = true;
 	}
@@ -130,7 +130,7 @@ public class PCws_WeaselManager implements PC_IDataHandler, PC_IMSG {
 	 * @param name variable name
 	 * @return variable value.
 	 */
-	public WeaselObject getGlobalVariable(String name) {
+	public static WeaselObject getGlobalVariable(String name) {
 		if(globalHeap.getVariable(name) == null) throw new WeaselRuntimeException("Global network does't contain variable "+name);
 		return globalHeap.getVariable(name);
 	}
@@ -141,7 +141,7 @@ public class PCws_WeaselManager implements PC_IDataHandler, PC_IMSG {
 	 * @param name variable name
 	 * @return variable value.
 	 */
-	public boolean hasGlobalVariable(String name) {
+	public static boolean hasGlobalVariable(String name) {
 		return globalHeap.getVariable(name) != null;
 	}
 	
