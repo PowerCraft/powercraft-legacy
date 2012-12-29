@@ -75,7 +75,7 @@ public abstract class PCws_GuiWeasel implements PC_IGresClient {
 			color = new PC_Color(0.3f, 0.3f, 0.3f);
 		lv.add(networkColor = new PC_GresColorPicker(color.getHex(), 100, 20));
 		
-		tab.addTab(lv, new PC_GresLabel("pc.gui.weasel.network"));
+		tab.addTab(lv, new PC_GresLabel("pc.gui.weasel.network.tab"));
 	}
 	
 	protected abstract void addTabs(PC_GresTab tab);

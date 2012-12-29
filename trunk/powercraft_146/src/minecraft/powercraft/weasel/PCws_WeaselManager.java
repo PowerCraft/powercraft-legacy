@@ -49,7 +49,7 @@ public class PCws_WeaselManager implements PC_IDataHandler, PC_IMSG {
 		NBTTagCompound nbtPlugins = nbtTag.getCompoundTag("plugins");
 		num = nbtPlugins.getInteger("count");
 		for(int i=0; i<num; i++){
-			NBTTagCompound nbtPlugin = nbtTag.getCompoundTag("value["+i+"]");
+			NBTTagCompound nbtPlugin = nbtPlugins.getCompoundTag("value["+i+"]");
 			PCws_WeaselPlugin network = createPlugin(nbtPlugins.getInteger("type["+i+"]"), nbtPlugin);
 		}
 	}

@@ -49,6 +49,7 @@ public abstract class PCws_WeaselPlugin implements PC_INBT<PCws_WeaselPlugin>, I
 	}
 	
 	protected PCws_WeaselPlugin(NBTTagCompound nbttag){
+		id = PCws_WeaselManager.registerPlugin(this);
 		readFromNBT(nbttag);
 	}
 	
