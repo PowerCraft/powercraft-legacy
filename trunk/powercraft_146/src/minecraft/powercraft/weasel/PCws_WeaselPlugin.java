@@ -18,12 +18,13 @@ import powercraft.management.PC_VecI;
 import weasel.Calc;
 import weasel.IFunctionProvider;
 import weasel.IVariableProvider;
+import weasel.IWeaselHardware;
 import weasel.WeaselEngine;
 import weasel.obj.WeaselBoolean;
 import weasel.obj.WeaselObject;
 import weasel.obj.WeaselString;
 
-public abstract class PCws_WeaselPlugin implements PC_INBT<PCws_WeaselPlugin>, IVariableProvider, IFunctionProvider {
+public abstract class PCws_WeaselPlugin implements PC_INBT<PCws_WeaselPlugin>, IWeaselHardware {
 
 	private int id;
 	private int networkID;
