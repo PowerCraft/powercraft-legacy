@@ -174,7 +174,7 @@ public class PCws_WeaselManager implements PC_IDataHandler, PC_IMSG {
 	
 	public static void removeNetwork(PCws_WeaselNetwork weaselNetwork) {
 		weaselNetwork.remove();
-		networks.remove(weaselNetwork);
+		networks.remove(weaselNetwork.getID());
 		needSave = true;
 	}
 	

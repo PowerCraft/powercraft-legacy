@@ -269,4 +269,11 @@ public abstract class PCws_WeaselPlugin implements PC_INBT<PCws_WeaselPlugin>, I
 	
 	public abstract void update();
 
+	public abstract void syncWithClient();
+	
+	public void sync(PCws_TileEntityWeasel tileEntityWeasel) {
+		tileEntityWeasel.setData("color", getColor());
+		syncWithClient();
+	}
+
 }
