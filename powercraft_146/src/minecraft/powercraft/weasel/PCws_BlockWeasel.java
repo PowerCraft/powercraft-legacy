@@ -7,6 +7,7 @@ import net.minecraft.block.material.Material;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
@@ -17,6 +18,7 @@ import powercraft.management.PC_Block;
 import powercraft.management.PC_MathHelper;
 import powercraft.management.PC_Utils;
 import powercraft.management.PC_Utils.GameInfo;
+import powercraft.management.PC_Utils.Gres;
 import powercraft.management.PC_Utils.ValueWriting;
 import powercraft.management.PC_VecI;
 
@@ -101,7 +103,24 @@ public class PCws_BlockWeasel extends PC_Block {
 	@Override
 	public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player, int par6, float par7,
 			float par8, float par9) {
-		
+		ItemStack ihold = player.getCurrentEquippedItem();
+
+        if (ihold != null)
+        {
+            if (ihold.getItem() instanceof ItemBlock)
+            {
+                if (ihold.itemID == blockID)
+                {
+                    return false;
+                }
+            }
+        }
+
+        PCws_WeaselPlugin weaselPlugin = getPlugin(world, x, y, z);
+        if(weaselPlugin!=null)
+        	weaselPlugin.openGui(player);
+        
+        return true;
 	}
 
 	@Override

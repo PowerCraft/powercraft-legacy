@@ -25,6 +25,7 @@ public class PCws_TileEntityWeasel extends PC_TileEntity implements PC_ITileEnti
 		if(!world.isRemote){
 			PCws_WeaselPlugin plugin = PCws_WeaselManager.createPlugin(type);
 			pluginID = plugin.getID();
+			plugin.setPlace(world, x, y, z);
 			plugin.sync(this);
 		}
 	}

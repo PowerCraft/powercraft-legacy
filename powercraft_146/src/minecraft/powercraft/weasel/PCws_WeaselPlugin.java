@@ -313,6 +313,7 @@ public abstract class PCws_WeaselPlugin implements PC_INBT<PCws_WeaselPlugin>, I
 	
 	public void openGui(EntityPlayer player){
 		PCws_TileEntityWeasel tileEntityWeasel = getTE();
+		System.out.println(tileEntityWeasel);
 		tileEntityWeasel.setData("diviceNames", PCws_WeaselManager.getAllPluginNames());
 		tileEntityWeasel.setData("networkNames", PCws_WeaselManager.getAllNetworkNames());
 		tileEntityWeasel.setData("diviceName", name);
