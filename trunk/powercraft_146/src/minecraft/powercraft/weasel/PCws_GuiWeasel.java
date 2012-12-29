@@ -92,6 +92,8 @@ public abstract class PCws_GuiWeasel implements PC_IGresClient {
 		}else if(widget==diviceName){
 			List<String> diviceNames = (List<String>)te.getData("diviceNames");
 			diviceRename.enable(!diviceNames.contains(diviceName.getText()));
+			if(diviceName.equals(""))
+				diviceRename.enable(false);
 		}else if(widget==diviceRename){
 			PC_PacketHandler.setTileEntity(te, "msg", "diviceRename", diviceName.getText());
 		}else if(widget==networkName){
@@ -104,6 +106,11 @@ public abstract class PCws_GuiWeasel implements PC_IGresClient {
 				network1.setText(Lang.tr("pc.gui.weasel.network.rename"));
 				network1.setId(1);
 				network2.enable(true);
+			}
+			if(networkName.getText().equals("")){
+				network2.enable(false);
+				network1.setText(Lang.tr("pc.gui.weasel.network.join"));
+				network1.setId(0);
 			}
 		}else if(widget==network1){
 			if(network1.getId()==0){
