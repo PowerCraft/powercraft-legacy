@@ -3,7 +3,9 @@ package powercraft.weasel;
 import java.util.List;
 import java.util.Map.Entry;
 
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
+import net.minecraft.world.World;
 
 import powercraft.management.PC_ItemBlock;
 import powercraft.management.PC_Struct3;
@@ -14,7 +16,7 @@ public class PCws_ItemBlockWeasel extends PC_ItemBlock {
 	public PCws_ItemBlockWeasel(int id) {
 		super(id);
 	}
-	
+
 	@Override
 	public List<ItemStack> getItemStacks(List<ItemStack> arrayList) {
 		for(Entry<Integer, PCws_WeaselPluginInfo>e:PCws_WeaselManager.getPluginInfoMap().entrySet()){

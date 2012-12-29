@@ -60,6 +60,7 @@ public final class PCws_WeaselNetwork implements Iterable<PCws_WeaselPlugin>, PC
 		int i=0;
 		for(Integer mem:members){
 			nbttag.setInteger("value["+i+"]", mem);
+			i++;
 		}
 		SaveHandler.saveToNBT(nbttag, "localHeap", localHeap);
 		return nbttag;

@@ -746,7 +746,16 @@ public class PC_Utils implements PC_IPacketHandler
 		    }
 		}
 		public static boolean setMD(World world, PC_VecI pos, int md) {
-			return PC_Utils.GameInfo.getMD(world, pos.x, pos.y, pos.z, md);
+			return setMD(world, pos.x, pos.y, pos.z, md);
+		}
+		public static boolean setMD(World world, int x, int y, int z, int md)
+		{
+		    if (world != null)
+		    {
+		        return world.setBlockMetadata(x, y, z, md);
+		    }
+		
+		    return false;
 		}
 		public static <t extends TileEntity>t setTE(World world, int x, int y, int z, t createTileEntity)
 		{
@@ -1304,16 +1313,6 @@ public class PC_Utils implements PC_IPacketHandler
 		public static int getMD(IBlockAccess world, PC_VecI vec)
 		{
 		    return PC_Utils.GameInfo.getMD(world, vec.x, vec.y, vec.z);
-		}
-
-		public static boolean getMD(World world, int x, int y, int z, int md)
-		{
-		    if (world != null)
-		    {
-		        return world.setBlockMetadata(x, y, z, md);
-		    }
-		
-		    return false;
 		}
 
 		public static boolean isChestEmpty(World world, int x, int y, int z, ItemStack itemStack)

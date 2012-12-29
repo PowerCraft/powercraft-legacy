@@ -62,6 +62,7 @@ public class PCws_WeaselManager implements PC_IDataHandler, PC_IMSG {
 		int i=0;
 		for(Entry<Integer, PCws_WeaselNetwork> network:networks.entrySet()){
 			SaveHandler.saveToNBT(nbtNetworks, "value["+i+"]", network.getValue());
+			i++;
 		}
 		nbtTag.setCompoundTag("networks", nbtNetworks);
 		
@@ -77,6 +78,7 @@ public class PCws_WeaselManager implements PC_IDataHandler, PC_IMSG {
 			}
 			nbtPlugins.setInteger("type["+i+"]", type);
 			SaveHandler.saveToNBT(nbtPlugins, "value["+i+"]", plugin.getValue());
+			i++;
 		}
 		nbtTag.setCompoundTag("plugins", nbtPlugins);
 		
