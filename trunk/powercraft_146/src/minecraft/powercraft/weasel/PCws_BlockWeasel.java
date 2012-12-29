@@ -64,6 +64,33 @@ public class PCws_BlockWeasel extends PC_Block {
 	}
 	
 	@Override
+	public void onNeighborBlockChange(World world, int x, int y, int z, int l) {
+
+		if(!world.isRemote){
+			getPlugin(world, x, y, z).refreshInport();
+		}
+		
+	}
+	
+	@Override
+	public boolean canProvidePower() {
+		return true;
+	}
+	
+	@Override
+	public boolean isProvidingWeakPower(IBlockAccess world, int x, int y, int z, int dir) {
+		PCws_WeaselPlugin weaselPlugin = GameInfo.<PCws_TileEntityWeasel>getTE(world, x, y, z).getPlugin();
+		if(weaselPlugin!=null)
+			return weaselPlugin.getOutport(dir);
+		return false;
+	}
+
+	@Override
+	public boolean isProvidingStrongPower(IBlockAccess world, int x, int y, int z, int dir) {
+		return isProvidingWeakPower(world, x, y, z, dir);
+	}
+
+	@Override
 	public void breakBlock(World world, int x, int y, int z, int par5, int par6) {
 		if(!world.isRemote){
 			PCws_WeaselPlugin weaselPlugin = getPlugin(world, x, y, z);
@@ -88,6 +115,8 @@ public class PCws_BlockWeasel extends PC_Block {
 	}
 
 	public static PCws_WeaselPlugin getPlugin(World world, int x, int y, int z){
+		if(world.isRemote)
+			return null;
 		PCws_WeaselPlugin wp = null;
 		if(world.blockExists(x, y, z))
 			wp = GameInfo.<PCws_TileEntityWeasel>getTE(world, x, y, z).getPlugin();

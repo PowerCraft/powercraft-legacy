@@ -30,6 +30,7 @@ public final class PCws_WeaselNetwork implements Iterable<PCws_WeaselPlugin>, PC
 		while(PCws_WeaselManager.getNetwork(shouldName)!=null)
 			shouldName = Calc.generateUniqueName();
 		name = shouldName;
+		color = PC_Color.randomColor();
 		needSave = true;
 	}
 	
@@ -128,6 +129,8 @@ public final class PCws_WeaselNetwork implements Iterable<PCws_WeaselPlugin>, PC
 			member.setNetwork(-1);
 			members.remove((Integer)id);
 		}
+		if(members.size()==0)
+			PCws_WeaselManager.removeNetwork(this);
 	}
 	
 	@Override

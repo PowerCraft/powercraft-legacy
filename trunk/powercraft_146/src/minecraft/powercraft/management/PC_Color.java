@@ -3,6 +3,7 @@ package powercraft.management;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Random;
 
 public class PC_Color extends PC_VecF {
 
@@ -216,6 +217,30 @@ public class PC_Color extends PC_VecF {
 			input = input.replace(entry.getKey().replace('[', '<').replace(']', '>'), entry.getValue());
 		}
 		return input;
+	}
+	
+	/**
+	 * @return new random color
+	 */
+	public static PC_Color randomColor() {
+		return new PC_Color().randomize();
+	}
+	
+	/**
+	 * Set all 3 channels to random color, tries to make bright or at least not
+	 * dark colors
+	 * 
+	 * @return this
+	 */
+	public PC_Color randomize() {
+		Random rand = new Random();
+		do {
+			x = rand.nextFloat();
+			y = rand.nextFloat();
+			z = rand.nextFloat();
+		} while (x + y + z < 0.8F);
+
+		return this;
 	}
 	
 }
