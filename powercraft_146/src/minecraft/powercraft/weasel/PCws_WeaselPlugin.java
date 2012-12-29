@@ -48,6 +48,10 @@ public abstract class PCws_WeaselPlugin implements PC_INBT<PCws_WeaselPlugin>, I
 		needSave = true;
 	}
 	
+	protected PCws_WeaselPlugin(NBTTagCompound nbttag){
+		readFromNBT(nbttag);
+	}
+	
 	@Override
 	public final PCws_WeaselPlugin readFromNBT(NBTTagCompound nbttag) {
 		needSave = false;
@@ -112,7 +116,7 @@ public abstract class PCws_WeaselPlugin implements PC_INBT<PCws_WeaselPlugin>, I
 		}
 	}
 	
-	public void removeFromNetowrk(){
+	public void removeFromNetwork(){
 		PCws_WeaselNetwork oldNetwork = getNetwork();
 		if(oldNetwork!=null){
 			oldNetwork.removeMember(this);
@@ -124,8 +128,8 @@ public abstract class PCws_WeaselPlugin implements PC_INBT<PCws_WeaselPlugin>, I
 		}
 	}
 	
-	public void connectToNetowrk(PCws_WeaselNetwork network){
-		removeFromNetowrk();
+	public void connectToNetwork(PCws_WeaselNetwork network){
+		removeFromNetwork();
 		network.registerMember(this);
 		PCws_TileEntityWeasel te = getTE();
 		if(te!=null){
@@ -315,14 +319,14 @@ public abstract class PCws_WeaselPlugin implements PC_INBT<PCws_WeaselPlugin>, I
 			setName((String)obj);
 		}else if(msg.equalsIgnoreCase("networkJoin")){
 			if(((String) obj).equals("")){
-				removeFromNetowrk();
+				removeFromNetwork();
 			}else{
-				connectToNetowrk(PCws_WeaselManager.getNetwork((String) obj));
+				connectToNetwork(PCws_WeaselManager.getNetwork((String) obj));
 			}
 		}else if(msg.equalsIgnoreCase("networkRename")){
 			getNetwork().setName((String) obj);
 		}else if(msg.equalsIgnoreCase("networkNew")){
-			connectToNetowrk(new PCws_WeaselNetwork());
+			connectToNetwork(new PCws_WeaselNetwork());
 			getNetwork().setName((String) obj);
 		}
 	}

@@ -1,6 +1,7 @@
 package powercraft.weasel;
 
 import net.minecraft.block.Block;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
 import powercraft.management.PC_Color;
 import powercraft.management.PC_Renderer;
@@ -28,6 +29,15 @@ public abstract class PCws_WeaselPluginInfo {
 		return null;
 	}
 
+	public PCws_WeaselPlugin createPlugin(NBTTagCompound nbtTag) {
+		try {
+			return ValueWriting.createClass(c, new Class[]{NBTTagCompound.class}, new Object[]{nbtTag});
+		} catch (Exception e) {
+			e.printStackTrace();
+		} 
+		return null;
+	}
+	
 	public Class<? extends PCws_WeaselPlugin> getPluginClass() {
 		return c;
 	}
@@ -46,7 +56,7 @@ public abstract class PCws_WeaselPluginInfo {
 		return new float[]{ 0, 0, 0, 1, 0.5F, 1 };
 	}
 
-public abstract PCws_WeaselModelBase getModel();
+	public abstract PCws_WeaselModelBase getModel();
 	
 	public void renderPluginAt(PCws_TileEntityWeasel te, double x, double y, double z, float rot){
 
