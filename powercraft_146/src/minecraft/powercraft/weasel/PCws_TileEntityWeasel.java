@@ -61,6 +61,10 @@ public class PCws_TileEntityWeasel extends PC_TileEntity implements PC_ITileEnti
 		return PCws_WeaselManager.getPlugin(pluginID);
 	}
 
+	public int getType(){
+		return type;
+	}
+	
 	public PCws_WeaselPluginInfo getPluginInfo(){
 		return PCws_WeaselManager.getPluginInfo(type);
 	}
