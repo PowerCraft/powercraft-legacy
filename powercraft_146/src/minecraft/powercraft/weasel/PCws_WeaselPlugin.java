@@ -2,6 +2,7 @@ package powercraft.weasel;
 
 import java.util.List;
 
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
 
@@ -272,6 +273,10 @@ public abstract class PCws_WeaselPlugin implements PC_INBT<PCws_WeaselPlugin>, I
 		return this;
 	}
 	
+	public PC_VecI getPos() {
+		return pos.copy();
+	}
+	
 	public abstract void update();
 
 	public abstract void syncWithClient();
@@ -282,14 +287,31 @@ public abstract class PCws_WeaselPlugin implements PC_INBT<PCws_WeaselPlugin>, I
 	}
 
 	public void getClientMsg(String msg, Object obj) {
-		
+		if(msg.equalsIgnoreCase("diviceRename")){
+			setName((String)obj);
+		}else if(msg.equalsIgnoreCase("networkJoin")){
+			if(((String) obj).equals("")){
+				PCws_WeaselNetwork oldNetwork = getNetwork();
+				if(oldNetwork!=null)
+					oldNetwork.removeMember(this);
+			}else{
+				connectToNetowrk(PCws_WeaselManager.getNetwork((String) obj));
+			}
+		}else if(msg.equalsIgnoreCase("networkRename")){
+			getNetwork().setName((String) obj);
+		}else if(msg.equalsIgnoreCase("networkNew")){
+			connectToNetowrk(new PCws_WeaselNetwork());
+			getNetwork().setName((String) obj);
+		}
 	}
 
 	public void reciveData(String var, Object obj) {
 		
 	}
 
-	public void openGui(){
+	protected abstract void openPluginGui(EntityPlayer player);
+	
+	public void openGui(EntityPlayer player){
 		PCws_TileEntityWeasel tileEntityWeasel = getTE();
 		tileEntityWeasel.setData("diviceNames", PCws_WeaselManager.getAllPluginNames());
 		tileEntityWeasel.setData("networkNames", PCws_WeaselManager.getAllNetworkNames());
@@ -300,6 +322,7 @@ public abstract class PCws_WeaselPlugin implements PC_INBT<PCws_WeaselPlugin>, I
 		else
 			tileEntityWeasel.setData("networkName", netkork.getName());
 		tileEntityWeasel.setData("color", getColor());
+		openPluginGui(player);
 	}
 	
 }

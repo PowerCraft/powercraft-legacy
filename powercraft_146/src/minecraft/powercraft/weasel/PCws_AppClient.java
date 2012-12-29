@@ -27,9 +27,9 @@ public class PCws_AppClient extends PCws_App implements PC_IClientModule {
 	}
 	
 	@Override
-	public List<PC_Struct2<String, Class>> registerGuis(
-			List<PC_Struct2<String, Class>> guis) {
-		return null;
+	public List<PC_Struct2<String, Class>> registerGuis(List<PC_Struct2<String, Class>> guis) {
+		guis.add(new PC_Struct2<String, Class>("WeaselCore", PCws_GuiWeaselCore.class));
+		return guis;
 	}
 
 }

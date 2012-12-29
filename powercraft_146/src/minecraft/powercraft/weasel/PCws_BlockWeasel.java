@@ -97,9 +97,13 @@ public class PCws_BlockWeasel extends PC_Block {
 	public boolean isProvidingStrongPower(IBlockAccess world, int x, int y, int z, int dir) {
 		return isProvidingWeakPower(world, x, y, z, dir);
 	}
+	
+	@Override
+	public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player, int par6, float par7,
+			float par8, float par9) {
+		
+	}
 
-	
-	
 	@Override
 	public void onBlockPlacedBy(World world, int x, int y, int z, EntityLiving player) {
 		int l = PC_MathHelper.floor_double(((player.rotationYaw * 4F) / 360F) + 2.5D) & 3;

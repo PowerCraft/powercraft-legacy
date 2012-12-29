@@ -3,7 +3,9 @@ package powercraft.weasel;
 import java.util.ArrayList;
 import java.util.List;
 
+import net.minecraft.entity.player.EntityPlayer;
 import powercraft.management.PC_Struct2;
+import powercraft.management.PC_Utils.Gres;
 import weasel.WeaselEngine;
 import weasel.obj.WeaselObject;
 
@@ -41,4 +43,9 @@ public class PCws_WeaselPluginCore extends PCws_WeaselPlugin {
 		
 	}
 
+	@Override
+	protected void openPluginGui(EntityPlayer player) {
+		Gres.openGres("WeaselCore", player, getPos().x, getPos().y, getPos().z);
+	}	
+	
 }
