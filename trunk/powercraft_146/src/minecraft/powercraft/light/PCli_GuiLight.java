@@ -51,7 +51,7 @@ public class PCli_GuiLight implements PC_IGresClient {
 		h.add(checkStable = (PC_GresCheckBox) new PC_GresCheckBox(Lang.tr("pc.gui.light.isStable")).check(isStable));
 		v.add(h);
 		
-		h = (PC_GresLayoutH)new PC_GresLayoutH().setAlignH(PC_GresAlign.STRETCH);;
+		h = (PC_GresLayoutH)new PC_GresLayoutH().setAlignH(PC_GresAlign.STRETCH);
 		h.add(colorWidget = new PC_GresColor(color));
 		h.add(colorPicker = new PC_GresColorPicker(color.getHex(), 100, 20));
 		v.add(h);
