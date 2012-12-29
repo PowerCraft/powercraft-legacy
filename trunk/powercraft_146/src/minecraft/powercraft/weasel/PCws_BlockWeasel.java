@@ -1,14 +1,18 @@
 package powercraft.weasel;
 
+import java.util.Random;
+
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+import powercraft.logic.PClo_App;
 import powercraft.management.PC_Block;
 import powercraft.management.PC_MathHelper;
 import powercraft.management.PC_Utils;
@@ -120,6 +124,48 @@ public class PCws_BlockWeasel extends PC_Block {
 		super.breakBlock(world, x, y, z, par5, par6);
 	}
 
+	@Override
+    public int idDropped(int i, Random random, int j)
+    {
+        return -1;
+    }
+
+    @Override
+    public int quantityDropped(Random random)
+    {
+        return 0;
+    }
+	
+	@Override
+    public boolean removeBlockByPlayer(World world, EntityPlayer player, int x, int y, int z)
+    {
+        int type = GameInfo.<PCws_TileEntityWeasel>getTE(world, x, y, z).getType();
+        boolean remove = super.removeBlockByPlayer(world, player, x, y, z);
+
+        if (remove && !GameInfo.isCreative(player))
+        {
+            dropBlockAsItem_do(world, x, y, z, new ItemStack(PCws_App.weasel, 1, type));
+        }
+
+        return remove;
+    }
+	
+	@Override
+	public void randomDisplayTick(World world, int x, int y, int z, Random random) {
+		PCws_TileEntityWeasel te = GameInfo.getTE(world, x, y, z);
+
+		if (te != null) {
+			Boolean b = (Boolean)te.getData("hasError");
+			if (b!=null && b==true) {
+				double d = (x + 0.5F) + (random.nextFloat() - 0.5F) * 0.20000000000000001D;
+				double d1 = (y + 0.5F) + (random.nextFloat() - 0.5F) * 0.20000000000000001D;
+				double d2 = (z + 0.5F) + (random.nextFloat() - 0.5F) * 0.20000000000000001D;
+
+				world.spawnParticle("largesmoke", d, d1, d2, 0.0D, 0.0D, 0.0D);
+			}
+		}
+	}
+	
 	@Override
 	public Object msg(IBlockAccess world, PC_VecI pos, int msg, Object... obj) {
 		switch(msg){
