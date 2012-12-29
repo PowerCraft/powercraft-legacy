@@ -48,8 +48,9 @@ public class PCws_TileEntityWeasel extends PC_TileEntity implements PC_ITileEnti
 	public void setWorldObj(World world) {
 		super.setWorldObj(world);
 		if(!world.isRemote){
-			if(pluginID!=-1)
-				getPlugin().sync(this);
+			PCws_WeaselPlugin pugin = getPlugin();
+			if(pugin!=null)
+				pugin.sync(this);
 		}
 	}
 
