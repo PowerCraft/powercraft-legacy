@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.nbt.NBTTagCompound;
 import powercraft.management.PC_Struct2;
 import powercraft.management.PC_Utils.Gres;
 import weasel.WeaselEngine;
@@ -16,7 +17,11 @@ public class PCws_WeaselPluginCore extends PCws_WeaselPlugin {
 	private List<PC_Struct2<String, Object[]>> externalCallsWaiting = new ArrayList<PC_Struct2<String,Object[]>>();
 	
 	public PCws_WeaselPluginCore(){
-		connectToNetowrk(new PCws_WeaselNetwork());
+		connectToNetwork(new PCws_WeaselNetwork());
+	}
+	
+	public PCws_WeaselPluginCore(NBTTagCompound nbttag){
+		super(nbttag);
 	}
 	
 	@Override
