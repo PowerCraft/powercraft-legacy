@@ -222,5 +222,9 @@ public final class PCws_WeaselNetwork implements Iterable<PCws_WeaselPlugin>, PC
 		}
 		return call;
 	}
+
+	public int size() {
+		return members.size();
+	}
 	
 }

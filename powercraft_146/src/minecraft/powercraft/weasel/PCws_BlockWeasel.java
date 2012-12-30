@@ -13,12 +13,10 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-import powercraft.logic.PClo_App;
 import powercraft.management.PC_Block;
 import powercraft.management.PC_MathHelper;
 import powercraft.management.PC_Utils;
 import powercraft.management.PC_Utils.GameInfo;
-import powercraft.management.PC_Utils.Gres;
 import powercraft.management.PC_Utils.ValueWriting;
 import powercraft.management.PC_VecI;
 
@@ -90,8 +88,59 @@ public class PCws_BlockWeasel extends PC_Block {
 	@Override
 	public boolean isProvidingWeakPower(IBlockAccess world, int x, int y, int z, int dir) {
 		PCws_WeaselPlugin weaselPlugin = GameInfo.<PCws_TileEntityWeasel>getTE(world, x, y, z).getPlugin();
-		if(weaselPlugin!=null)
-			return weaselPlugin.getOutport(dir);
+		if(weaselPlugin!=null){
+			
+			int meta = GameInfo.getMD(world, x, y, z);
+			int rotation = getRotation(meta);
+
+			if(dir==0){
+				return weaselPlugin.getOutport(4);
+			}else if(dir==1){
+				return weaselPlugin.getOutport(5);
+			}else{
+				if(rotation==0){
+					if(dir==2){
+						return weaselPlugin.getOutport(0);
+					}else if(dir==3){
+						return weaselPlugin.getOutport(3);
+					}else if(dir==4){
+						return weaselPlugin.getOutport(2);
+					}else{
+						return weaselPlugin.getOutport(1);
+					}
+				}else if(rotation==1){
+					if(dir==2){
+						return weaselPlugin.getOutport(2);
+					}else if(dir==3){
+						return weaselPlugin.getOutport(1);
+					}else if(dir==4){
+						return weaselPlugin.getOutport(3);
+					}else{
+						return weaselPlugin.getOutport(0);
+					}
+				}else if(rotation==2){
+					if(dir==2){
+						return weaselPlugin.getOutport(3);
+					}else if(dir==3){
+						return weaselPlugin.getOutport(0);
+					}else if(dir==4){
+						return weaselPlugin.getOutport(1);
+					}else{
+						return weaselPlugin.getOutport(2);
+					}
+				}else{
+					if(dir==2){
+						return weaselPlugin.getOutport(1);
+					}else if(dir==3){
+						return weaselPlugin.getOutport(2);
+					}else if(dir==4){
+						return weaselPlugin.getOutport(0);
+					}else{
+						return weaselPlugin.getOutport(3);
+					}
+				}
+			}
+		}
 		return false;
 	}
 
@@ -232,12 +281,12 @@ public class PCws_BlockWeasel extends PC_Block {
 			return null;
 		
 		return new boolean[]{
-				powered_from_input(world, pos, 4),
-				powered_from_input(world, pos, 5),
-				powered_from_input(world, pos, 3),
 				powered_from_input(world, pos, 0),
 				powered_from_input(world, pos, 1),
-				powered_from_input(world, pos, 2)
+				powered_from_input(world, pos, 2),
+				powered_from_input(world, pos, 3),
+				powered_from_input(world, pos, 4),
+				powered_from_input(world, pos, 5)
 			};
 		
 	}
@@ -275,8 +324,7 @@ public class PCws_BlockWeasel extends PC_Block {
 			N1 = 1;
 			N2 = 2;
 			N3 = 3;
-		}
-		if (inp == 1) {
+		}else if (inp == 1) {
 			N0 = 3;
 			N1 = 0;
 			N2 = 1;
