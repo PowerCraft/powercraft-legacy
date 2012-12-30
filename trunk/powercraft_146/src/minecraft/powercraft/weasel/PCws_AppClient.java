@@ -22,6 +22,8 @@ public class PCws_AppClient extends PCws_App implements PC_IClientModule {
 		lang.add(new PC_LangEntry("pc.gui.weasel.core.program", "Program"));
 		lang.add(new PC_LangEntry("pc.gui.weasel.core.noError", "no error"));
 		lang.add(new PC_LangEntry("pc.gui.weasel.core.running", "running"));
+		lang.add(new PC_LangEntry("pc.gui.weasel.core.crashed", "crashed"));
+		lang.add(new PC_LangEntry("pc.gui.weasel.core.stoped", "stoped"));
 		lang.add(new PC_LangEntry("pc.gui.weasel.core.launchProgram", "Launch"));
 		lang.add(new PC_LangEntry("pc.gui.weasel.core.restartProgram", "Restart"));
 		lang.add(new PC_LangEntry("pc.gui.weasel.core.stopProgram", "Stop"));
@@ -34,6 +36,7 @@ public class PCws_AppClient extends PCws_App implements PC_IClientModule {
 		lang.add(new PC_LangEntry("pc.gui.weasel.core.programLength", "Program length:"));
 		lang.add(new PC_LangEntry("pc.gui.weasel.core.peripheralsLabel", "Peripherals:"));
 		lang.add(new PC_LangEntry("pc.gui.weasel.core.unitInstructions", "instructions"));
+		lang.add(new PC_LangEntry("pc.gui.weasel.core.unitObjects", "values"));
 		
 		return lang;
 	}

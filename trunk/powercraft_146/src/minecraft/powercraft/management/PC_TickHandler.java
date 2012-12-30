@@ -5,19 +5,26 @@ import java.util.List;
 
 import powercraft.management.PC_Utils.GameInfo;
 import powercraft.management.PC_Utils.ModuleInfo;
-
 import cpw.mods.fml.common.ITickHandler;
 import cpw.mods.fml.common.TickType;
 
 public class PC_TickHandler implements ITickHandler {
 
+	private int countDown = 20;
+	
 	@Override
 	public void tickStart(EnumSet<TickType> type, Object... tickData) {
 		if(GameInfo.mcs()!=null && GameInfo.mcs().isServerRunning()){
-			List<PC_IMSG> objs = ModuleInfo.getMSGObjects();
-			for (PC_IMSG obj : objs){
-	        	obj.msg(PC_Utils.MSG_TICK_EVENT);
-	        }
+			if(countDown<=0){
+				List<PC_IMSG> objs = ModuleInfo.getMSGObjects();
+				for (PC_IMSG obj : objs){
+		        	obj.msg(PC_Utils.MSG_TICK_EVENT);
+		        }
+			}else{
+				countDown--;
+			}
+		}else{
+			countDown=20;
 		}
 	}
 

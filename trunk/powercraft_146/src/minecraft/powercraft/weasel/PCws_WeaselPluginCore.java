@@ -223,11 +223,25 @@ public class PCws_WeaselPluginCore extends PCws_WeaselPlugin {
 		}else{
 			sleepTimer--;
 		}
+		PCws_TileEntityWeasel te = getTE();
+		if(te!=null){
+			if((Integer)te.getData("stackSize") != weasel.dataStack.get().size() + weasel.systemStack.get().size())
+				te.setData("stackSize", weasel.dataStack.get().size() + weasel.systemStack.get().size());
+			if((Integer)te.getData("variableCount") != weasel.variables.get().size() + weasel.globals.get().size())
+				te.setData("variableCount", weasel.variables.get().size() + weasel.globals.get().size());
+		}
 	}
 
 	@Override
 	public void syncWithClient(PCws_TileEntityWeasel tileEntityWeasel) {
-		
+		tileEntityWeasel.setData("stackSize", weasel.dataStack.get().size() + weasel.systemStack.get().size());
+		tileEntityWeasel.setData("variableCount", weasel.variables.get().size() + weasel.globals.get().size());
+		if(getNetwork()==null){
+			tileEntityWeasel.setData("networkMemberCount", 0);
+		}else{
+			tileEntityWeasel.setData("networkMemberCount", getNetwork().size());
+		}
+		tileEntityWeasel.setData("instructionCount", weasel.instructionList.list.size());
 	}
 	
 	@Override
@@ -248,6 +262,15 @@ public class PCws_WeaselPluginCore extends PCws_WeaselPlugin {
 		}else{
 			super.getClientMsg(msg, obj);
 		}
+		PCws_TileEntityWeasel te = getTE();
+		te.setData("stackSize", weasel.dataStack.get().size() + weasel.systemStack.get().size());
+		te.setData("variableCount", weasel.variables.get().size() + weasel.globals.get().size());
+		if(getNetwork()==null){
+			te.setData("networkMemberCount", 0);
+		}else{
+			te.setData("networkMemberCount", getNetwork().size());
+		}
+		te.setData("instructionCount", weasel.instructionList.list.size());
 	}
 
 	@Override
@@ -256,6 +279,14 @@ public class PCws_WeaselPluginCore extends PCws_WeaselPlugin {
 		te.setData("program", program);
 		te.setData("keywords", PCws_WeaselHighlightHelper.weasel(this, weasel));
 		te.setData("isRunning", !stop);
+		te.setData("stackSize", weasel.dataStack.get().size() + weasel.systemStack.get().size());
+		te.setData("variableCount", weasel.variables.get().size() + weasel.globals.get().size());
+		if(getNetwork()==null){
+			te.setData("networkMemberCount", 0);
+		}else{
+			te.setData("networkMemberCount", getNetwork().size());
+		}
+		te.setData("instructionCount", weasel.instructionList.list.size());
 		Gres.openGres("WeaselCore", player, getPos().x, getPos().y, getPos().z);
 	}
 

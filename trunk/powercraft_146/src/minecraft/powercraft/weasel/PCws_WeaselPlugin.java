@@ -201,6 +201,12 @@ public abstract class PCws_WeaselPlugin implements PC_INBT<PCws_WeaselPlugin>, I
 					if(weaselNetwork!=null){
 						if(!weaselNetwork.callFunctionOnEngine("onPortChange."+name+"."+numToPort(i), new WeaselBoolean(weaselInport[i])))
 							anyNoCall = true;
+					}else{
+						if(doesProvideFunctionOnEngine("onPortChange."+name+"."+numToPort(i))){
+							callFunctionOnEngine("onPortChange."+name+"."+numToPort(i), new WeaselBoolean(weaselInport[i]));
+						}else{
+							anyNoCall = true;
+						}
 					}
 				}
 			}
@@ -208,6 +214,12 @@ public abstract class PCws_WeaselPlugin implements PC_INBT<PCws_WeaselPlugin>, I
 		if(weaselNetwork!=null && anyChang && anyNoCall){
 			if(!weaselNetwork.callFunctionOnEngine("onPortChange."+name)){
 				weaselNetwork.callFunctionOnEngine("onPortChange", new WeaselString(name));
+			}
+		}else if(anyChang && anyNoCall){
+			if(doesProvideFunctionOnEngine("onPortChange."+name)){
+				callFunctionOnEngine("onPortChange."+name);
+			}else if(doesProvideFunctionOnEngine("onPortChange")){
+				callFunctionOnEngine("onPortChange",  new WeaselString(name));
 			}
 		}
 	}
@@ -223,33 +235,33 @@ public abstract class PCws_WeaselPlugin implements PC_INBT<PCws_WeaselPlugin>, I
 	public static String numToPort(int num){
 		switch(num){
 		case 0:
-			return "u";
-		case 1:
-			return "d";
-		case 2:
-			return "f";
-		case 3:
 			return "b";
-		case 4:
+		case 1:
 			return "l";
-		case 5:
+		case 2:
 			return "r";
+		case 3:
+			return "f";
+		case 4:
+			return "u";
+		case 5:
+			return "d";
 		}
 		return null;
 	}
 	
 	public static int portToNum(String port){
-		if(port.equalsIgnoreCase("u") || port.equalsIgnoreCase("up") || port.equalsIgnoreCase("top")){
+		if(port.equalsIgnoreCase("b") || port.equalsIgnoreCase("back")){
 			return 0;
-		}else if(port.equalsIgnoreCase("d") || port.equalsIgnoreCase("down") || port.equalsIgnoreCase("bottom")){
-			return 1;
-		}else if(port.equalsIgnoreCase("f") || port.equalsIgnoreCase("front")){
-			return 2;
-		}else if(port.equalsIgnoreCase("b") || port.equalsIgnoreCase("back")){
-			return 3;
 		}else if(port.equalsIgnoreCase("l") || port.equalsIgnoreCase("left")){
-			return 4;
+			return 1;
 		}else if(port.equalsIgnoreCase("r") || port.equalsIgnoreCase("right")){
+			return 2;
+		}else if(port.equalsIgnoreCase("f") || port.equalsIgnoreCase("front")){
+			return 3;
+		}else if(port.equalsIgnoreCase("u") || port.equalsIgnoreCase("up") || port.equalsIgnoreCase("top")){
+			return 4;
+		}else if(port.equalsIgnoreCase("d") || port.equalsIgnoreCase("down") || port.equalsIgnoreCase("bottom")){
 			return 5;
 		}
 		return -1;
