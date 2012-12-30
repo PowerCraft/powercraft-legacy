@@ -110,6 +110,7 @@ public class PCws_WeaselPluginCore extends PCws_WeaselPlugin {
 				sleepTimer = 1;
 			}
 			engine.requestPause();
+			needsSave();
 		}else if(functionName.equals("bell")){
 			if(getTE()!=null){
 				PC_PacketHandler.setTileEntity(getTE(), "msg", "bell", (functionName.length() * (3 + args.length)) / 24D);
@@ -216,6 +217,7 @@ public class PCws_WeaselPluginCore extends PCws_WeaselPlugin {
 			if(te.getData("variableCount")==null || (Integer)te.getData("variableCount") != weasel.variables.get().size() + weasel.globals.get().size())
 				te.setData("variableCount", weasel.variables.get().size() + weasel.globals.get().size());
 		}
+		needsSave();
 	}
 
 	@Override
@@ -257,6 +259,7 @@ public class PCws_WeaselPluginCore extends PCws_WeaselPlugin {
 			te.setData("networkMemberCount", getNetwork().size());
 		}
 		te.setData("instructionCount", weasel.instructionList.list.size());
+		needsSave();
 	}
 
 	@Override

@@ -9,6 +9,7 @@ import powercraft.management.PC_PacketHandler;
 import powercraft.management.PC_Utils.Gres;
 import weasel.Calc;
 import weasel.WeaselEngine;
+import weasel.exception.WeaselRuntimeException;
 import weasel.obj.WeaselBoolean;
 import weasel.obj.WeaselNull;
 import weasel.obj.WeaselObject;
@@ -73,7 +74,10 @@ public class PCws_WeaselPluginTerminal extends PCws_WeaselPlugin {
 			WeaselObject o = new WeaselString(userInput.get(0));
 			userInput.remove(0);
 			return o;
+		}else{
+			throw new WeaselRuntimeException("Invalid call of function " + functionName);
 		}
+		needsSave();
 		return new WeaselNull();
 	}
 
@@ -131,6 +135,7 @@ public class PCws_WeaselPluginTerminal extends PCws_WeaselPlugin {
 			}
 		}
 		setData("text", this.text);
+		needsSave();
 	}
 
 	@Override
@@ -153,6 +158,7 @@ public class PCws_WeaselPluginTerminal extends PCws_WeaselPlugin {
 			if (userInput.size() > 16) {
 				userInput.remove(0);
 			}
+			needsSave();
 		}else{
 			super.getClientMsg(msg, obj);
 		}
