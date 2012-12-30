@@ -41,7 +41,7 @@ public class PCws_TileEntityWeasel extends PC_TileEntity implements PC_ITileEnti
 		pluginID = nbtTag.getInteger("pluginID");
 		datas.put("type", nbtTag.getInteger("type"));
 		if(nbtTag.hasKey("specialRot")){
-			setData("specialRot", nbtTag.getDouble("specialRot"));
+			datas.put("specialRot", nbtTag.getInteger("specialRot"));
 		}
 	}
 
@@ -51,7 +51,7 @@ public class PCws_TileEntityWeasel extends PC_TileEntity implements PC_ITileEnti
 		nbtTag.setInteger("pluginID", pluginID);
 		nbtTag.setInteger("type", getType());
 		if(getData("specialRot")!=null){
-			nbtTag.setDouble("specialRot", (Double)getData("specialRot"));
+			nbtTag.setInteger("specialRot", (Integer)getData("specialRot"));
 		}
 	}
 

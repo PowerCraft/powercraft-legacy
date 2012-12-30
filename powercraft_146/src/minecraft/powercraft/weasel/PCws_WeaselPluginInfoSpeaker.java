@@ -50,6 +50,4 @@ public class PCws_WeaselPluginInfoSpeaker extends PCws_WeaselPluginInfo {
 		return new float[]{ 0, 0, 0, 1, 1, 1 };
 	}
 
-	
-	
 }

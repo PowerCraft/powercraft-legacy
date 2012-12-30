@@ -476,6 +476,16 @@ public class PC_ClientRenderer extends PC_Renderer implements ISimpleBlockRender
 	}
 	
 	@Override
+	protected void iglNormal3f(float x, float y, float z) {
+		GL11.glNormal3f(x, y, z);
+	}
+
+	@Override
+	protected void iglDepthMask(boolean state) {
+		GL11.glDepthMask(state);
+	}
+	
+	@Override
 	protected void irenderEntityLabelAt(String label, PC_VecF realPos, int viewDistance, float yOffset, double x, double y, double z) {
 		RenderManager renderManager = RenderManager.instance;
 		label = label.trim();
@@ -520,6 +530,11 @@ public class PC_ClientRenderer extends PC_Renderer implements ISimpleBlockRender
 		GL11.glDisable(GL11.GL_BLEND);
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 		GL11.glPopMatrix();
+	}
+	
+	@Override
+	protected FontRenderer igetFontRenderer() {
+		return PC_ClientUtils.mc().fontRenderer;
 	}
 	
 }

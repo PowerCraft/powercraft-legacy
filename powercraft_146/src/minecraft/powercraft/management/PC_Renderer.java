@@ -1,6 +1,7 @@
 package powercraft.management;
 
 import net.minecraft.block.Block;
+import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.world.IBlockAccess;
 
 public class PC_Renderer
@@ -191,11 +192,31 @@ public class PC_Renderer
 	public static void glBlendFunc(int i, int j) {
 		renderer2d.iglBlendFunc(i, j);
 	}
+	
+	protected void iglNormal3f(float x, float y, float z) {}
 
+	public static void glNormal3f(float x, float y, float z) {
+		
+	}
+	
+	protected void iglDepthMask(boolean state) {}
+	
+	public static void glDepthMask(boolean state) {
+		
+	}
+	
 	protected void irenderEntityLabelAt(String label, PC_VecF realPos, int viewDistance, float yOffset, double x, double y, double z) {}
 	
 	public static void renderEntityLabelAt(String label, PC_VecF realPos, int viewDistance, float yOffset, double x, double y, double z) {
 		renderer2d.irenderEntityLabelAt(label, realPos, viewDistance, yOffset, x, y, z);
+	}
+
+	protected FontRenderer igetFontRenderer() {
+		return null;
+	}
+	
+	public static FontRenderer getFontRenderer() {
+		return renderer2d.igetFontRenderer();
 	}
     
 }

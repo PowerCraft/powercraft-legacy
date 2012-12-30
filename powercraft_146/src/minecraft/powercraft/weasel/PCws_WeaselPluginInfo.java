@@ -1,14 +1,14 @@
 package powercraft.weasel;
 
 import net.minecraft.block.Block;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.world.World;
+
+import org.lwjgl.opengl.GL11;
+
 import powercraft.management.PC_Color;
 import powercraft.management.PC_Renderer;
 import powercraft.management.PC_Utils.GameInfo;
 import powercraft.management.PC_Utils.ModuleInfo;
 import powercraft.management.PC_Utils.ValueWriting;
-import powercraft.management.PC_VecI;
 
 public abstract class PCws_WeaselPluginInfo {
 
@@ -72,16 +72,16 @@ public abstract class PCws_WeaselPluginInfo {
 		
 		float f1 = 0;
 		if(hasSpecialRot()){
-			f1 = (Float)te.getData("specialRot") * 360 / 16F;
+			f1 = (Integer)te.getData("specialRot") * 360 / 16F;
 			PC_Renderer.glRotatef(f1, 0.0F, 1.0F, 0.0F);
 		}else{
 			PC_Renderer.glRotatef(90 * (GameInfo.getMD(te.worldObj, te.getCoord()) & 3), 0, 1, 0);
 		}
-		model.renderDevice();
+		model.renderDevice(te);
 
 		PC_Renderer.glColor4f(color.x, color.y, color.z, 1f);
 
-		model.renderColorMark();
+		model.renderColorMark(te);
 
 		// pop 2
 		PC_Renderer.glPopMatrix();
@@ -90,8 +90,17 @@ public abstract class PCws_WeaselPluginInfo {
 
 		PC_Renderer.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 		PC_Renderer.glRotatef(-f1, 0.0F, 1.0F, 0.0F);
-		model.renderText(te);
-
+		PC_Renderer.glPushMatrix();
+		PC_Renderer.glDisable(0xb50); //GL_LIGHTING
+		PC_Renderer.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
+		PC_Renderer.glNormal3f(0.0F, 0.0F, -0.01111111f);
+		
+		model.renderText(te, PC_Renderer.getFontRenderer());
+		
+		PC_Renderer.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
+		PC_Renderer.glEnable(0xb50); //GL_LIGHTING
+		PC_Renderer.glPopMatrix();
+		
 		// pop1
 		PC_Renderer.glPopMatrix();
 	}

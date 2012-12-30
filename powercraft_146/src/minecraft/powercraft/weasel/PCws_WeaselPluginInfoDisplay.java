@@ -42,4 +42,9 @@ public class PCws_WeaselPluginInfoDisplay extends PCws_WeaselPluginInfo {
 		return model;
 	}
 
+	@Override
+	public float[] getBounds() {
+		return new float[]{ 0, 0, 0, 1, 1, 1 };
+	}
+	
 }
