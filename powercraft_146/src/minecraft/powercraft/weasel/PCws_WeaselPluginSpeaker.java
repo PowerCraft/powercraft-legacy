@@ -24,12 +24,6 @@ public class PCws_WeaselPluginSpeaker extends PCws_WeaselPlugin {
 	protected List<String> getProvidedPluginFunctionNames() {
 		List<String> list = new ArrayList<String>(0);
 
-		list.add("oink");
-		list.add("moo");
-		list.add("baa");
-		list.add("cluck");
-		list.add("woof");
-
 		list.add("sound");
 		list.add("note");
 		list.add("play");
@@ -106,31 +100,7 @@ public class PCws_WeaselPluginSpeaker extends PCws_WeaselPlugin {
 			playNote("random.orb", ((Integer) args[0].get()), volume);
 			
 		} else {
-
-			String sound = "";
-	
-			// ???([volume]);
-			if (functionName.equals("oink")) {
-				sound = "mob.pig";
-	
-			} else if (functionName.equals("moo")) {
-				sound = "mob.cow";
-	
-			} else if (functionName.equals("baa")) {
-				sound = "mob.sheep";
-	
-			} else if (functionName.equals("cluck")) {
-				sound = "mob.chicken";
-	
-			} else if (functionName.equals("woof")) {
-				sound = "mob.wolf.bark";
-	
-			} else {
-				throw new WeaselRuntimeException("Invalid function called on speaker " + getName());
-			}
-
-			play( sound, volume, (rand.nextFloat() - rand.nextFloat()) * 0.2F + 1.0F, (functionName.length() * (3 + args.length)) / 24f);
-			
+			throw new WeaselRuntimeException("Invalid function called on speaker " + getName());
 		}
 
 		return new WeaselNull();
