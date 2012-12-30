@@ -90,6 +90,10 @@ public class PCws_TileEntityWeasel extends PC_TileEntity implements PC_ITileEnti
 		PC_PacketHandler.setTileEntity(this, key, obj);
 	}
 	
+	public void setDataNoSend(String key, Object obj) {
+		datas.put(key, obj);
+	}
+	
 	@Override
 	public void renderTileEntityAt(double x, double y, double z, float rot) {
 		getPluginInfo().renderPluginAt(this, x, y, z, rot);
@@ -122,12 +126,24 @@ public class PCws_TileEntityWeasel extends PC_TileEntity implements PC_ITileEnti
 
 	@Override
 	public Object[] getData() {
-		List<Object> l = new ArrayList<Object>();
+		int i=0;
+		List<List<Object>> l = new ArrayList<List<Object>>();
+		List<Object> l1 = new ArrayList<Object>();
+		l.add(l1);
 		for(Entry<String, Object> data:datas.entrySet()){
-			l.add(data.getKey());
-			l.add(data.getValue());
+			l1.add(data.getKey());
+			l1.add(data.getValue());
+			i++;
+			if(i>200){
+				l1 = new ArrayList<Object>();
+				l.add(l1);
+				i=0;
+			}
 		}
-		return l.toArray();
+		for(i=1; i<l.size(); i++){
+			PC_PacketHandler.setTileEntity(this, l.get(i).toArray());
+		}
+		return l.get(0).toArray();
 	}
 	
 	
