@@ -53,19 +53,19 @@ public class PCde_BlockPlatform extends PC_Block {
 		boolean[] fences = getFencesShownLedge(world, new PC_VecI(x, y, z));
 
 		if (fences[0]) {
-			setBlockBounds(1 - 0.0625F, 0, 0, 1, 1.0F, 1);
+			setBlockBounds(1 - 0.0625F, 0, 0, 1, 1.5F, 1);
 			super.addCollidingBlockToList(world, x, y, z, axisalignedbb, arraylist, entity);
 		}
 		if (fences[1]) {
-			setBlockBounds(0, 0, 0, 0.0625F, 1.0F, 1);
+			setBlockBounds(0, 0, 0, 0.0625F, 1.5F, 1);
 			super.addCollidingBlockToList(world, x, y, z, axisalignedbb, arraylist, entity);
 		}
 		if (fences[2]) {
-			setBlockBounds(0, 0, 1 - 0.0625F, 1, 1.0F, 1);
+			setBlockBounds(0, 0, 1 - 0.0625F, 1, 1.5F, 1);
 			super.addCollidingBlockToList(world, x, y, z, axisalignedbb, arraylist, entity);
 		}
 		if (fences[3]) {
-			setBlockBounds(0, 0, 0, 1, 1.0F, 0.0625F);
+			setBlockBounds(0, 0, 0, 1, 1.5F, 0.0625F);
 			super.addCollidingBlockToList(world, x, y, z, axisalignedbb, arraylist, entity);
 		}
 		if (fences[4]) {
