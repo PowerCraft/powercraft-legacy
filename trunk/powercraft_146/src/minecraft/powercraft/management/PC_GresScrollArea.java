@@ -1,6 +1,5 @@
 package powercraft.management;
 
-import org.lwjgl.input.Keyboard;
 
 public class PC_GresScrollArea extends PC_GresWidget {
 

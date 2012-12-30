@@ -3,14 +3,13 @@ package powercraft.management;
 import java.util.List;
 import java.util.Map;
 
-import cpw.mods.fml.common.registry.GameData;
-import cpw.mods.fml.common.registry.ItemData;
-
 import net.minecraft.item.EnumArmorMaterial;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemArmor;
 import net.minecraft.item.ItemStack;
 import powercraft.management.PC_Utils.ValueWriting;
+import cpw.mods.fml.common.registry.GameData;
+import cpw.mods.fml.common.registry.ItemData;
 
 public abstract class PC_ItemArmor extends ItemArmor implements PC_IItemInfo, PC_IMSG
 {

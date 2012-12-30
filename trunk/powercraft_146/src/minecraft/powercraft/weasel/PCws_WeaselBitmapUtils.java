@@ -421,6 +421,14 @@ public class PCws_WeaselBitmapUtils {
 		}*/
 	}
 	
+	public static int getColor(Object obj){
+		if(obj instanceof WeaselInteger || obj instanceof Integer){
+			return Calc.toInteger(obj);
+		}else{
+			return PC_Color.getHexColorForName(Calc.toString(obj));
+		}
+	}
+	
 	/**
 	 * Interface for someone who wants to use weaselBitmapAdapter
 	 * 
@@ -436,27 +444,16 @@ public class PCws_WeaselBitmapUtils {
 		
 	}
 	
-	
 	public static class WeaselBitmapAdapter implements IWeaselHardware{
 		private WeaselBitmapProvider provider;
-		private String objName = "";
-		
-		/**
-		 * set object name. Used to create functions and variables for weasel network.
-		 * @param str
-		 */
-		public void setObjName(String str) {
-			objName = str;
-		}
 		
 		/**
 		 * Bitmap adapter
 		 * @param provider bitmap provider
 		 * @param objName name of the object
 		 */
-		public WeaselBitmapAdapter(WeaselBitmapProvider provider, String objName) {
+		public WeaselBitmapAdapter(WeaselBitmapProvider provider) {
 			this.provider = provider;
-			this.objName = objName;
 		}
 
 		private WeaselObject setGetPixel(String functionName, Object... args) {
@@ -471,7 +468,7 @@ public class PCws_WeaselBitmapUtils {
 			WeaselObject c = new WeaselInteger(provider.getBitmapPixel(x, y));
 			if (args.length == 3) {
 				//set
-				int color = PC_Color.getHexColorForName(Calc.toString(args[2]));
+				int color = getColor(args[2]);
 				provider.setBitmapPixel(x, y, color);
 			}
 			return c;
@@ -482,7 +479,7 @@ public class PCws_WeaselBitmapUtils {
 				throw new WeaselRuntimeException("Wrong argument count for function " + functionName + " (" + args.length + ", needs 3)");
 			int x = Calc.toInteger(args[0]);
 			int y = Calc.toInteger(args[1]);
-			int color = PC_Color.getHexColorForName(Calc.toString(args[2]));
+			int color = getColor(args[2]);
 			
 			PCws_WeaselBitmapUtils.setPixel(provider, x, y, color);
 		}
@@ -631,51 +628,49 @@ public class PCws_WeaselBitmapUtils {
 
 		@Override
 		public WeaselObject callProvidedFunction(WeaselEngine engine, String functionName, WeaselObject[] args) {
-			if (functionName.equals(getName())) {
-				return setGetPixel(functionName, (Object[]) args);
-			} else if (functionName.equals(getName() + ".dot") || functionName.equals(getName() + ".point") || functionName.equals(getName() + ".set")
-					|| functionName.equals(getName() + ".draw.pixel")) {
+			if (functionName.equals("dot") || functionName.equals("point") || functionName.equals("set")
+					|| functionName.equals("draw.pixel")) {
 				// name.dot(x,y,color);
 				setPixel(functionName, (Object[]) args);
 				return null;
-			} else if (functionName.equals(getName() + ".get")) {
+			} else if (functionName.equals("get")) {
 				// name.get(x,y);
 				return getPixel(functionName, (Object[]) args);
-			} else if (functionName.equals(getName() + ".rect") || functionName.equals(getName() + ".draw.rect")) {
+			} else if (functionName.equals("rect") || functionName.equals("draw.rect")) {
 				// name.rect(x,y,x2,y2,color);
 				// name.rect(x,y,x2,y2,color,frame);
 				drawRect(false, functionName, (Object[]) args);
 				return null;
-			} else if (functionName.equals(getName() + ".frame") || functionName.equals(getName() + ".draw.frame")) {
+			} else if (functionName.equals("frame") || functionName.equals("draw.frame")) {
 				// name.frame(x,y,x2,y2,frameColor);
 				drawRect(true, functionName, (Object[]) args);
 				return null;
-			} else if (functionName.equals(getName() + ".line") || functionName.equals(getName() + ".draw.line")) {
+			} else if (functionName.equals("line") || functionName.equals("draw.line")) {
 				// name.line(x,y,x2,y2,color);
 				drawLine(functionName, args);
 				return null;
-			} else if (functionName.equals(getName() + ".string") || functionName.equals(getName() + ".draw.string")) {
+			} else if (functionName.equals("string") || functionName.equals("draw.string")) {
 				// name.string(x,y,text,color);
 				drawString(functionName, args);
 				return null;
-			} else if (functionName.equals(getName() + ".fill") || functionName.equals(getName() + ".draw.fill")) {
+			} else if (functionName.equals("fill") || functionName.equals("draw.fill")) {
 				// name.string(x,y,text,color);
 				drawFill(functionName, args);
 				return null;
-			} else if (functionName.equals(getName() + ".ellipse") || functionName.equals(getName() + ".draw.ellipse")) {
+			} else if (functionName.equals("ellipse") || functionName.equals("draw.ellipse")) {
 				// name.string(x,y,text,color);
 				drawEllipse(functionName, args);
 				return null;
-			} else if (functionName.equals(getName() + ".circle") || functionName.equals(getName() + ".draw.circle")) {
+			} else if (functionName.equals("circle") || functionName.equals("draw.circle")) {
 				// name.string(x,y,text,color);
 				drawCircle(functionName, args);
 				return null;
-			} else if (functionName.equals(getName() + ".image") || functionName.equals(getName() + ".draw.image")) {
+			} else if (functionName.equals("image") || functionName.equals("draw.image")) {
 				// name.image(imgName, x,y);
 				// name.image(imgName, x,y, imageX, imageY, width, height);
 				drawImage(functionName, (Object[]) args);
 				return null;
-			}  else if (functionName.equals(getName() + ".resize")) {
+			}  else if (functionName.equals("resize")) {
 				try {
 					int w = Calc.toInteger(args[0]);
 					int h = Calc.toInteger(args[1]);
@@ -689,7 +684,7 @@ public class PCws_WeaselBitmapUtils {
 				}catch(Exception e) {
 					throw new WeaselRuntimeException(e.getMessage());
 				}
-			}  else if (functionName.equals(getName() + ".clear")) {
+			}  else if (functionName.equals("clear")) {
 				try {
 					
 					rect(provider, 0, 0, width(provider)-1, height(provider)-1, -1);
@@ -705,70 +700,60 @@ public class PCws_WeaselBitmapUtils {
 
 		@Override
 		public WeaselObject getVariable(String name) {
-			if (name.equals(getName() + ".W") || name.equals(getName() + ".w") || name.equalsIgnoreCase(getName() + ".width")) {
+			if (name.equals("W") || name.equals("w") || name.equalsIgnoreCase("width")) {
 				return new WeaselInteger(width(provider));
-			} else if (name.equals(getName() + ".H") || name.equals(getName() + ".h") || name.equalsIgnoreCase(getName() + ".height")) {
+			} else if (name.equals("H") || name.equals("h") || name.equalsIgnoreCase("height")) {
 				return new WeaselInteger(height(provider));
 			}
-			if (name.equals(getName())) return new WeaselNull();
 			return null;
 		}
 
 		@Override
 		public void setVariable(String name, Object object) {
-			if (name.equals(getName())) {
-				int clr = PC_Color.getHexColorForName(Calc.toString(object));
-				PCws_WeaselBitmapUtils.rect(provider, 0, 0, width(provider), height(provider), clr);
-			}
+			
 		}
 
 		@Override
 		public List<String> getProvidedFunctionNames() {
 			ArrayList<String> list = new ArrayList<String>(1);
-			list.add(getName());
-			list.add(getName() + ".set");
-			list.add(getName() + ".get");
-			list.add(getName() + ".draw.pixel");
-			list.add(getName() + ".draw.rect");
-			list.add(getName() + ".draw.frame");
-			list.add(getName() + ".draw.line");
-			list.add(getName() + ".draw.string");
-			list.add(getName() + ".draw.image");
-			list.add(getName() + ".draw.fill");
-			list.add(getName() + ".draw.ellipse");
-			list.add(getName() + ".draw.circle");
-			list.add(getName() + ".pixel");
-			list.add(getName() + ".point");
-			list.add(getName() + ".rect");
-			list.add(getName() + ".frame");
-			list.add(getName() + ".line");
-			list.add(getName() + ".string");
-			list.add(getName() + ".fill");
-			list.add(getName() + ".image");
-			list.add(getName() + ".ellipse");
-			list.add(getName() + ".circle");
-			list.add(getName() + ".resize");
-			list.add(getName() + ".clear");
+			list.add("set");
+			list.add("get");
+			list.add("draw.pixel");
+			list.add("draw.rect");
+			list.add("draw.frame");
+			list.add("draw.line");
+			list.add("draw.string");
+			list.add("draw.image");
+			list.add("draw.fill");
+			list.add("draw.ellipse");
+			list.add("draw.circle");
+			list.add("pixel");
+			list.add("point");
+			list.add("rect");
+			list.add("frame");
+			list.add("line");
+			list.add("string");
+			list.add("fill");
+			list.add("image");
+			list.add("ellipse");
+			list.add("circle");
+			list.add("resize");
+			list.add("clear");
 			return list;
 		}
 
 		@Override
 		public List<String> getProvidedVariableNames() {
 			List<String> list = new ArrayList<String>(1);
-			list.add(getName() + ".WIDTH");
-			list.add(getName() + ".HEIGHT");
-			list.add(getName() + ".W");
-			list.add(getName() + ".H");
-			list.add(getName() + ".w");
-			list.add(getName() + ".h");
-			list.add(getName() + ".width");
-			list.add(getName() + ".height");
-			list.add(getName());
+			list.add("WIDTH");
+			list.add("HEIGHT");
+			list.add("W");
+			list.add("H");
+			list.add("w");
+			list.add("h");
+			list.add("width");
+			list.add("height");
 			return list;
-		}
-		
-		private String getName() {
-			return objName;
 		}
 		
 	}

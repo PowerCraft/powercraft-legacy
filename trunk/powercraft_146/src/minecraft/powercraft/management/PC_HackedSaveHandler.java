@@ -3,15 +3,10 @@ package powercraft.management;
 import java.io.File;
 
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.server.MinecraftServer;
-import net.minecraft.world.WorldProvider;
 import net.minecraft.world.chunk.storage.AnvilSaveHandler;
-import net.minecraft.world.chunk.storage.IChunkLoader;
 import net.minecraft.world.storage.WorldInfo;
-import powercraft.management.PC_Utils.GameInfo;
 import powercraft.management.PC_Utils.ModuleLoader;
 import powercraft.management.PC_Utils.SaveHandler;
-import powercraft.management.PC_Utils.ValueWriting;
 
 public class PC_HackedSaveHandler extends AnvilSaveHandler {
 

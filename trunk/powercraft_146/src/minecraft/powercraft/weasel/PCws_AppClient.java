@@ -60,6 +60,7 @@ public class PCws_AppClient extends PCws_App implements PC_IClientModule {
 		guis.add(new PC_Struct2<String, Class>("WeaselCore", PCws_GuiWeaselCore.class));
 		guis.add(new PC_Struct2<String, Class>("WeaselOnlyNet", PCws_GuiWeaselOnlyNet.class));
 		guis.add(new PC_Struct2<String, Class>("WeaselTerminal", PCws_GuiWeaselTerminal.class));
+		guis.add(new PC_Struct2<String, Class>("WeaselTouchscreen", PCws_GuiWeaselTouchscreen.class));
 		return guis;
 	}
 

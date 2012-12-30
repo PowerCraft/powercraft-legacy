@@ -70,12 +70,20 @@ public class PC_ClientRenderer extends PC_Renderer implements ISimpleBlockRender
 	@Override
 	protected void iTessellatorDraw(){
 		Tessellator.instance.draw();
-	};
+	}
 	
 	@Override
 	protected void iTessellatorStartDrawingQuads(){
 		Tessellator.instance.startDrawingQuads();
-	};
+	}
+	
+	protected void iTessellatorSetColor(int r, int g, int b, int a) {
+		Tessellator.instance.setColorRGBA(r, g, b, a);
+	}
+	
+	protected void iTessellatorAddVertex(double x, double y, double z) {
+		Tessellator.instance.addVertex(x, y, z);
+	}
 	
 	private RenderEngine getRenderEngine(){
 		return PC_ClientUtils.mc().renderEngine;
@@ -85,14 +93,14 @@ public class PC_ClientRenderer extends PC_Renderer implements ISimpleBlockRender
 	protected void iBindTexture(String texture){
 		RenderEngine re = getRenderEngine();
 		re.bindTexture(re.getTexture(texture));
-	};
+	}
 	
 	@Override
 	protected void iRenderStandardBlock(Object renderer, Block block, int x, int y, int z){
 		((RenderBlocks)renderer).updateCustomBlockBounds(block);
 		((RenderBlocks)renderer).renderStandardBlock(block, x, y, z);
 		((RenderBlocks)renderer).resetCustomBlockBounds();
-	};
+	}
 
 	@Override
 	protected void iRenderInvBox(Object renderer, Block block, int metadata){

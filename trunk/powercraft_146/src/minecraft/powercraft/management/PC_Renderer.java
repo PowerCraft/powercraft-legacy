@@ -38,20 +38,32 @@ public class PC_Renderer
         return render2dId;
     }
 
-    protected void iTessellatorDraw() {};
+    protected void iTessellatorDraw() {}
 
     public static void tessellatorDraw()
     {
         renderer2d.iTessellatorDraw();
     }
 
-    protected void iTessellatorStartDrawingQuads() {};
+    protected void iTessellatorStartDrawingQuads() {}
 
     public static void tessellatorStartDrawingQuads()
     {
         renderer2d.iTessellatorStartDrawingQuads();
     }
 
+    protected void iTessellatorSetColor(int r, int g, int b, int a) {}
+    
+    public static void tessellatorSetColor(int r, int g, int b, int a) {
+    	renderer2d.iTessellatorSetColor(r, g, b, a);
+	}
+    
+    protected void iTessellatorAddVertex(double x, double y, double z) {}
+    
+    public static void tessellatorAddVertex(double x, double y, double z) {
+    	renderer2d.iTessellatorAddVertex(x, y, z);
+	}
+    
     protected void iBindTexture(String texture) {};
 
     public static void bindTexture(String texture)
