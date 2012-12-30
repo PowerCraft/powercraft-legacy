@@ -11,6 +11,7 @@ import java.util.Map.Entry;
 import java.util.Set;
 
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.multiplayer.PlayerControllerMP;
 import net.minecraft.client.particle.EntityFX;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;

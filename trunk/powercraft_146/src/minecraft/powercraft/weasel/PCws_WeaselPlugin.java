@@ -460,14 +460,17 @@ public abstract class PCws_WeaselPlugin implements PC_INBT<PCws_WeaselPlugin>, I
 		return error != null;
 	}
 	
-	public void restartDivice(){
+	public void restartDevice(){
 		for(int i=0; i<6; i++){
 			weaselOutport[i] = false;
 		}
 		ValueWriting.hugeUpdate(getWorld(), pos.x, pos.y, pos.z);
-		error = null;
-		setData("error", null);
 		restart();
+		error = null;
+		PCws_TileEntityWeasel te;
+		if((te = getTE())!=null){
+			sync(te);
+		}
 	}
 	
 	public abstract void restart();

@@ -38,7 +38,6 @@ public class PCws_WeaselPluginCore extends PCws_WeaselPlugin {
 	
 	@Override
 	protected PCws_WeaselPlugin readPluginFromNBT(NBTTagCompound tag) {
-		weasel = new WeaselEngine(this);
 		program = tag.getString("program");
 		SaveHandler.loadFromNBT(tag, "engine", weasel);
 		sleepTimer = tag.getInteger("sleep");
@@ -234,7 +233,7 @@ public class PCws_WeaselPluginCore extends PCws_WeaselPlugin {
 	@Override
 	public void getClientMsg(String msg, Object obj) {
 		if(msg.equalsIgnoreCase("launch")){
-			restartDivice();
+			restartDevice();
 			program = (String)obj;
 			try {
 				weasel.insertNewProgram(WeaselEngine.compileProgram(program));
@@ -242,7 +241,7 @@ public class PCws_WeaselPluginCore extends PCws_WeaselPlugin {
 				e.printStackTrace();
 			}
 		}else if(msg.equalsIgnoreCase("restart")){
-			restartDivice();
+			restartDevice();
 		}else if(msg.equalsIgnoreCase("stop")){
 			stop = true;
 			setData("isRunning", false);
