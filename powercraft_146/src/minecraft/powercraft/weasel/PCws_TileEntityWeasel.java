@@ -16,13 +16,13 @@ import powercraft.management.PC_TileEntity;
 public class PCws_TileEntityWeasel extends PC_TileEntity implements PC_ITileEntityRenderer{
 
 	private int pluginID = -1;
-	private int type;
 	private HashMap<String, Object> datas = new HashMap<String, Object>();
 	
 	@Override
 	public void create(ItemStack stack, EntityPlayer player, World world, int x, int y, int z, int side, float hitX, float hitY, float hitZ) {
-		type = stack.getItemDamage();
+		int type = stack.getItemDamage();
 		if(!world.isRemote){
+			setData("type", type);
 			PCws_WeaselPlugin plugin = PCws_WeaselManager.createPlugin(type);
 			pluginID = plugin.getID();
 			plugin.setPlace(world, x, y, z);
@@ -34,14 +34,14 @@ public class PCws_TileEntityWeasel extends PC_TileEntity implements PC_ITileEnti
 	public void readFromNBT(NBTTagCompound nbtTag) {
 		super.readFromNBT(nbtTag);
 		pluginID = nbtTag.getInteger("pluginID");
-		type = nbtTag.getInteger("type");
+		datas.put("type", nbtTag.getInteger("type"));
 	}
 
 	@Override
 	public void writeToNBT(NBTTagCompound nbtTag) {
 		super.writeToNBT(nbtTag);
 		nbtTag.setInteger("pluginID", pluginID);
-		nbtTag.setInteger("type", type);
+		nbtTag.setInteger("type", getType());
 	}
 
 	@Override
@@ -61,11 +61,13 @@ public class PCws_TileEntityWeasel extends PC_TileEntity implements PC_ITileEnti
 	}
 
 	public int getType(){
-		return type;
+		if(getData("type")==null)
+			return 0;
+		return (Integer)getData("type");
 	}
 	
 	public PCws_WeaselPluginInfo getPluginInfo(){
-		return PCws_WeaselManager.getPluginInfo(type);
+		return PCws_WeaselManager.getPluginInfo(getType());
 	}
 	
 	public Object getData(String key) {

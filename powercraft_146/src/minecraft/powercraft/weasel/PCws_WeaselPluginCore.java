@@ -30,21 +30,11 @@ public class PCws_WeaselPluginCore extends PCws_WeaselPlugin {
 			"}\n";	
 	
 	/** The Weasel Engine */
-	private WeaselEngine weasel;
+	private WeaselEngine weasel = new WeaselEngine(this);
 	private List<PC_Struct2<String, Object[]>> externalCallsWaiting = new ArrayList<PC_Struct2<String,Object[]>>();
-	private String program;
-	private int sleepTimer;
+	private String program = default_program;
+	private int sleepTimer = 0;
 	private boolean stop;
-	
-	public PCws_WeaselPluginCore(){
-		weasel = new WeaselEngine(this);
-		program = default_program;
-		sleepTimer=0;
-	}
-	
-	public PCws_WeaselPluginCore(NBTTagCompound nbttag){
-		super(nbttag);
-	}
 	
 	@Override
 	protected PCws_WeaselPlugin readPluginFromNBT(NBTTagCompound tag) {
@@ -90,10 +80,8 @@ public class PCws_WeaselPluginCore extends PCws_WeaselPlugin {
 		externalCallsWaiting.add(new PC_Struct2<String, Object[]>(functionName, args));
 	}
 
-	
-	
 	@Override
-	public List<String> getProvidedFunctionNames() {
+	protected List<String> getProvidedPluginFunctionNames() {
 		List<String> l = new ArrayList<String>();
 		l.add("sleep");
 		l.add("bell");
@@ -113,7 +101,8 @@ public class PCws_WeaselPluginCore extends PCws_WeaselPlugin {
 	}
 
 	@Override
-	public WeaselObject callProvidedFunction(WeaselEngine engine, String functionName, WeaselObject[] args) {
+	protected WeaselObject callProvidedPluginFunction(WeaselEngine engine,
+			String functionName, WeaselObject[] args) {
 		if(functionName.equals("sleep")){
 			if(args.length!=0){
 				sleepTimer = (Integer) args[0].get();
@@ -169,7 +158,7 @@ public class PCws_WeaselPluginCore extends PCws_WeaselPlugin {
 	}
 
 	@Override
-	public List<String> getProvidedVariableNames() {
+	protected List<String> getProvidedPluginVariableNames() {
 		List<String> l = new ArrayList<String>();
 		l.add("b");
 		l.add("back");
@@ -187,16 +176,14 @@ public class PCws_WeaselPluginCore extends PCws_WeaselPlugin {
 		l.add("bottom");
 		return l;
 	}
-	
+
 	@Override
-	public void setVariable(String name, Object value) {
+	protected void setPluginVariable(String name, Object value) {
 		setOutport(portToNum(name), ((WeaselBoolean)value).get());
 	}
 
 	@Override
-	public WeaselObject getVariable(String name) {
-		if(!getProvidedVariableNames().contains(name))
-			return null;
+	protected WeaselObject getPluginVariable(String name) {
 		return new WeaselBoolean(getInport(portToNum(name)));
 	}
 
@@ -225,9 +212,9 @@ public class PCws_WeaselPluginCore extends PCws_WeaselPlugin {
 		}
 		PCws_TileEntityWeasel te = getTE();
 		if(te!=null){
-			if((Integer)te.getData("stackSize") != weasel.dataStack.get().size() + weasel.systemStack.get().size())
+			if(te.getData("stackSize")==null || (Integer)te.getData("stackSize") != weasel.dataStack.get().size() + weasel.systemStack.get().size())
 				te.setData("stackSize", weasel.dataStack.get().size() + weasel.systemStack.get().size());
-			if((Integer)te.getData("variableCount") != weasel.variables.get().size() + weasel.globals.get().size())
+			if(te.getData("variableCount")==null || (Integer)te.getData("variableCount") != weasel.variables.get().size() + weasel.globals.get().size())
 				te.setData("variableCount", weasel.variables.get().size() + weasel.globals.get().size());
 		}
 	}
@@ -297,6 +284,6 @@ public class PCws_WeaselPluginCore extends PCws_WeaselPlugin {
 		stop = false;
 		setData("isRunning", true);
 		weasel.restartProgramClearGlobals();
-	}	
+	}
 	
 }
