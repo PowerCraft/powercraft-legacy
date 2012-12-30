@@ -1,6 +1,7 @@
 package powercraft.weasel;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import net.minecraft.entity.player.EntityPlayer;
@@ -191,7 +192,7 @@ public abstract class PCws_WeaselPlugin implements PC_INBT<PCws_WeaselPlugin>, I
 			}else if(getNetwork()!=null){
 				for(PCws_WeaselPlugin plugin:getNetwork()){
 					if(plugin.getName().equals(s[0])){
-						return callProvidedFunction(engine, s[1], args);
+						return plugin.callProvidedFunction(engine, s[1], args);
 					}
 				}
 			}

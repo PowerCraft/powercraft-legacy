@@ -61,10 +61,6 @@ public class PCws_WeaselPluginSpeaker extends PCws_WeaselPlugin {
 
 	@Override
 	protected WeaselObject callProvidedPluginFunction(WeaselEngine engine, String functionName, WeaselObject[] args) {
-		if (!functionName.startsWith(getName() + ".")) return null;
-
-		functionName = functionName.substring((getName() + ".").length());
-
 		float volume = 1.0F;
 
 		if (args.length > 0) {
@@ -108,31 +104,26 @@ public class PCws_WeaselPluginSpeaker extends PCws_WeaselPlugin {
 			// instr(tone [, volume])
 			if (args.length != 2) volume = 3;
 			playNote("random.orb", ((Integer) args[0].get()), volume);
+			
 		} else {
 
 			String sound = "";
-			boolean direct = false;
 	
 			// ???([volume]);
 			if (functionName.equals("oink")) {
 				sound = "mob.pig";
-				direct = true;
 	
 			} else if (functionName.equals("moo")) {
 				sound = "mob.cow";
-				direct = true;
 	
 			} else if (functionName.equals("baa")) {
 				sound = "mob.sheep";
-				direct = true;
 	
 			} else if (functionName.equals("cluck")) {
 				sound = "mob.chicken";
-				direct = true;
 	
 			} else if (functionName.equals("woof")) {
 				sound = "mob.wolf.bark";
-				direct = true;
 	
 			} else {
 				throw new WeaselRuntimeException("Invalid function called on speaker " + getName());

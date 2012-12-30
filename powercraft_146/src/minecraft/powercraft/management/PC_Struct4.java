@@ -1,5 +1,7 @@
 package powercraft.management;
 
+import java.io.Serializable;
+
 import powercraft.management.PC_Utils.Coding;
 
 /**
@@ -12,7 +14,7 @@ import powercraft.management.PC_Utils.Coding;
  * @param <T3> 3rd object class
  * @param <T4> 4th object class
  */
-public class PC_Struct4<T1, T2, T3, T4> {
+public class PC_Struct4<T1, T2, T3, T4> implements Serializable {
 	/**
 	 * 1st object
 	 */
