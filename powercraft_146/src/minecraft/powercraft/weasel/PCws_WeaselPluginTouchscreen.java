@@ -204,6 +204,7 @@ public class PCws_WeaselPluginTouchscreen extends PCws_WeaselPlugin implements W
 
 	@Override
 	public void setBitmapPixel(int x, int y, int color) {
+		needsSave();
 		screen[x][y] = color;
 		setData("pic["+x+"]["+y+"]", color);
 	}

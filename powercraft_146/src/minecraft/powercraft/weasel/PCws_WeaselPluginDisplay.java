@@ -73,7 +73,10 @@ public class PCws_WeaselPluginDisplay extends PCws_WeaselPlugin {
 		}else if (functionName.equals("add") || functionName.equals("append")){
 			text += Calc.toString(args[0]);
 			setData("text", text);
+		}else{
+			throw new WeaselRuntimeException("Invalid call of function " + functionName);
 		}
+		needsSave();
 		return new WeaselNull();
 	}
 
@@ -148,6 +151,7 @@ public class PCws_WeaselPluginDisplay extends PCws_WeaselPlugin {
 			}
 			setData("align", align);
 		}
+		needsSave();
 	}
 
 	@Override

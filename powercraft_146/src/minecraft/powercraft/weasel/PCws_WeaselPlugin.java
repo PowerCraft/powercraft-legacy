@@ -117,7 +117,7 @@ public abstract class PCws_WeaselPlugin implements PC_INBT<PCws_WeaselPlugin>, I
 	
 	public final void setName(String name) {
 		if(PCws_WeaselManager.getPlugin(name)==null){
-			needSave = true;
+			needsSave();
 			this.name = name;
 			setData("diviceName", name);
 		}
@@ -137,10 +137,12 @@ public abstract class PCws_WeaselPlugin implements PC_INBT<PCws_WeaselPlugin>, I
 		network.registerMember(this);
 		setData("color", getColor());
 		setData("networkName", network.getName());
+		needsSave();
 	}
 	
 	public void setNetwork(int networkID) {
 		this.networkID = networkID;
+		needsSave();
 	}
 	
 	public int getNetworkID() {
@@ -286,6 +288,7 @@ public abstract class PCws_WeaselPlugin implements PC_INBT<PCws_WeaselPlugin>, I
 		if(weaselOutport[port] != state){
 			weaselOutport[port] = state;
 			ValueWriting.hugeUpdate(getWorld(), pos.x, pos.y, pos.z);
+			needsSave();
 		}
 	}
 	
@@ -298,6 +301,7 @@ public abstract class PCws_WeaselPlugin implements PC_INBT<PCws_WeaselPlugin>, I
 			for(int i=0; i<6; i++){
 				if(weaselInport[i] != newWeaselInport[i]){
 					anyChang = true;
+					needsSave();
 					weaselInport[i] = newWeaselInport[i];
 					if(weaselNetwork!=null){
 						if(!weaselNetwork.callFunctionOnEngine("onPortChange."+name+"."+numToPort(i), new WeaselBoolean(weaselInport[i])))
@@ -399,6 +403,7 @@ public abstract class PCws_WeaselPlugin implements PC_INBT<PCws_WeaselPlugin>, I
 	public PCws_WeaselPlugin setPlace(World world, int x, int y, int z) {
 		dimension = world.getWorldInfo().getDimension();
 		pos.setTo(x, y, z);
+		needsSave();
 		return this;
 	}
 	
@@ -445,8 +450,10 @@ public abstract class PCws_WeaselPlugin implements PC_INBT<PCws_WeaselPlugin>, I
 	public void reciveData(String var, Object obj) {
 		if(var.equalsIgnoreCase("color")){
 			PCws_WeaselNetwork network = getNetwork();
-			if(network!=null)
+			if(network!=null){
 				network.setColor((PC_Color)obj);
+				needsSave();
+			}
 		}
 	}
 
@@ -461,6 +468,7 @@ public abstract class PCws_WeaselPlugin implements PC_INBT<PCws_WeaselPlugin>, I
 	protected void setError(String message) {
 		error = message;
 		setData("error", error);
+		needsSave();
 	}
 	
 	public boolean hasError(){
@@ -468,6 +476,7 @@ public abstract class PCws_WeaselPlugin implements PC_INBT<PCws_WeaselPlugin>, I
 	}
 	
 	public void restartDevice(){
+		needsSave();
 		for(int i=0; i<6; i++){
 			weaselOutport[i] = false;
 		}
