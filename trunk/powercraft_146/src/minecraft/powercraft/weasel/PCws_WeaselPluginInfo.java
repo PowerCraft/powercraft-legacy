@@ -28,15 +28,6 @@ public abstract class PCws_WeaselPluginInfo {
 		} 
 		return null;
 	}
-
-	public PCws_WeaselPlugin createPlugin(NBTTagCompound nbtTag) {
-		try {
-			return ValueWriting.createClass(c, new Class[]{NBTTagCompound.class}, new Object[]{nbtTag});
-		} catch (Exception e) {
-			e.printStackTrace();
-		} 
-		return null;
-	}
 	
 	public Class<? extends PCws_WeaselPlugin> getPluginClass() {
 		return c;

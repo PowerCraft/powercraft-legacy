@@ -1,5 +1,6 @@
 package powercraft.weasel;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import net.minecraft.entity.player.EntityPlayer;
@@ -7,6 +8,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
 import powercraft.management.PC_Color;
 import powercraft.management.PC_INBT;
+import powercraft.management.PC_PacketHandler;
 import powercraft.management.PC_Utils.GameInfo;
 import powercraft.management.PC_Utils.SaveHandler;
 import powercraft.management.PC_Utils.ValueWriting;
@@ -14,7 +16,10 @@ import powercraft.management.PC_VecI;
 import weasel.Calc;
 import weasel.IWeaselHardware;
 import weasel.WeaselEngine;
+import weasel.exception.WeaselRuntimeException;
 import weasel.obj.WeaselBoolean;
+import weasel.obj.WeaselInteger;
+import weasel.obj.WeaselNull;
 import weasel.obj.WeaselObject;
 import weasel.obj.WeaselString;
 
@@ -42,11 +47,6 @@ public abstract class PCws_WeaselPlugin implements PC_INBT<PCws_WeaselPlugin>, I
 		needSave = true;
 	}
 	
-	protected PCws_WeaselPlugin(NBTTagCompound nbttag){
-		id = PCws_WeaselManager.registerPlugin(this);
-		readFromNBT(nbttag);
-	}
-	
 	@Override
 	public final PCws_WeaselPlugin readFromNBT(NBTTagCompound nbttag) {
 		needSave = false;
@@ -63,6 +63,10 @@ public abstract class PCws_WeaselPlugin implements PC_INBT<PCws_WeaselPlugin>, I
 		error = null;
 		if(nbttag.hasKey("error"))
 			error = nbttag.getString("error");
+		for(int i=0; i<6; i++){
+			weaselOutport[i] = nbttag.getBoolean("weaselOutport["+i+"]");
+			weaselInport[i] = nbttag.getBoolean("weaselInport["+i+"]");
+		}
 		return this;
 	}
 
@@ -83,6 +87,10 @@ public abstract class PCws_WeaselPlugin implements PC_INBT<PCws_WeaselPlugin>, I
 			nbttag.setCompoundTag("plugin", nbtPlugin);
 		if(error!=null)
 			nbttag.setString("error", error);
+		for(int i=0; i<6; i++){
+			nbttag.setBoolean("weaselOutport["+i+"]", weaselOutport[i]);
+			nbttag.setBoolean("weaselInport["+i+"]", weaselInport[i]);
+		}
 		return nbttag;
 	}
 	
@@ -153,33 +161,118 @@ public abstract class PCws_WeaselPlugin implements PC_INBT<PCws_WeaselPlugin>, I
 	}
 
 	@Override
-	public WeaselObject callProvidedFunction(WeaselEngine engine, String functionName, WeaselObject[] args) {
-		return null;
-	}
-
-	@Override
 	public List<String> getProvidedFunctionNames() {
-		return null;
+		List<String> l = new ArrayList<String>();
+		l.addAll(getProvidedPluginFunctionNames());
+		if(getNetwork()!=null){
+			for(PCws_WeaselPlugin plugin:getNetwork()){
+				List<String> l2 = plugin.getProvidedPluginFunctionNames();
+				for(String s:l2){
+					l.add(plugin.name + "." + s);
+				}
+			}
+		}
+		return l;
 	}
 
+	protected abstract List<String> getProvidedPluginFunctionNames();
+	
 	@Override
-	public void setVariable(String name, Object value) {}
-
-	@Override
-	public WeaselObject getVariable(String name) {
-		return null;
+	public WeaselObject callProvidedFunction(WeaselEngine engine, String functionName, WeaselObject[] args) {
+		if(getProvidedPluginFunctionNames().contains(functionName)){
+			return callProvidedPluginFunction(engine, functionName, args);
+		}
+		String s[] = functionName.split("\\.", 2);
+		if(s.length>1){
+			if(s[0].equals(name)){
+				if(getProvidedPluginFunctionNames().contains(s[1])){
+					return callProvidedPluginFunction(engine, s[1], args);
+				}
+			}else if(getNetwork()!=null){
+				for(PCws_WeaselPlugin plugin:getNetwork()){
+					if(plugin.getName().equals(s[0])){
+						return callProvidedFunction(engine, s[1], args);
+					}
+				}
+			}
+		}
+		throw new WeaselRuntimeException("Invalid call of function " + functionName);
 	}
 
+	protected abstract WeaselObject callProvidedPluginFunction(WeaselEngine engine, String functionName, WeaselObject[] args);
+	
 	@Override
 	public List<String> getProvidedVariableNames() {
+		List<String> l = new ArrayList<String>();
+		l.addAll(getProvidedPluginVariableNames());
+		if(getNetwork()!=null){
+			for(PCws_WeaselPlugin plugin:getNetwork()){
+				List<String> l2 = plugin.getProvidedPluginVariableNames();
+				for(String s:l2){
+					l.add(plugin.name + "." + s);
+				}
+			}
+		}
+		return l;
+	}
+	
+	protected abstract List<String> getProvidedPluginVariableNames();
+	
+	@Override
+	public void setVariable(String name, Object value) {
+		if(getProvidedPluginVariableNames().contains(name)){
+			setPluginVariable(name, value);
+			return;
+		}
+		String s[] = name.split("\\.", 2);
+		if(s.length>1){
+			if(s[0].equals(this.name)){
+				if(getProvidedPluginVariableNames().contains(s[1])){
+					setPluginVariable(s[1], value);
+				}
+			}else if(getNetwork()!=null){
+				for(PCws_WeaselPlugin plugin:getNetwork()){
+					if(plugin.getName().equals(s[0])){
+						plugin.setVariable(s[1], value);
+						break;
+					}
+				}
+			}
+		}
+	}
+
+	protected abstract void setPluginVariable(String name, Object value);
+	
+	@Override
+	public WeaselObject getVariable(String name) {
+		if(getProvidedPluginVariableNames().contains(name)){
+			return getPluginVariable(name);
+		}
+		String s[] = name.split("\\.", 2);
+		if(s.length>1){
+			if(s[0].equals(this.name)){
+				if(getProvidedPluginVariableNames().contains(s[1])){
+					return getPluginVariable(s[1]);
+				}
+			}else if(getNetwork()!=null){
+				for(PCws_WeaselPlugin plugin:getNetwork()){
+					if(plugin.getName().equals(s[0])){
+						return plugin.getVariable(s[1]);
+					}
+				}
+			}
+		}
 		return null;
 	}
+	
+	protected abstract WeaselObject getPluginVariable(String name);
 	
 	public boolean doesProvideFunctionOnEngine(String functionName) {
 		return false;
 	}
 	
 	public void callFunctionOnEngine(String functionName, WeaselObject... args) {}
+	
 	
 	public void setOutport(int port, boolean state){
 		if(weaselOutport[port] != state){
@@ -331,6 +424,9 @@ public abstract class PCws_WeaselPlugin implements PC_INBT<PCws_WeaselPlugin>, I
 				connectToNetwork(PCws_WeaselManager.getNetwork((String) obj));
 			}
 		}else if(msg.equalsIgnoreCase("networkRename")){
+			if(getNetwork()==null){
+				connectToNetwork(new PCws_WeaselNetwork());
+			}
 			getNetwork().setName((String) obj);
 		}else if(msg.equalsIgnoreCase("networkNew")){
 			connectToNetwork(new PCws_WeaselNetwork());

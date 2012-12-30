@@ -13,7 +13,7 @@ public class PCws_WeaselPluginInfoCore extends PCws_WeaselPluginInfo {
 	private static Random rand = new Random();
 	
 	public PCws_WeaselPluginInfoCore() {
-		super(PCws_WeaselPluginCore.class, "Core");
+		super(PCws_WeaselPluginCore.class, "Weasel Core");
 	}
 
 	@Override
