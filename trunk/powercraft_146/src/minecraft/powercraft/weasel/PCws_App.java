@@ -28,6 +28,7 @@ public class PCws_App implements PC_IModule {
 	public void preInit() {
 		PCws_WeaselManager.registerPluginInfo(new PCws_WeaselPluginInfoCore(), 0);
 		PCws_WeaselManager.registerPluginInfo(new PCws_WeaselPluginInfoPort(), 1);
+		PCws_WeaselManager.registerPluginInfo(new PCws_WeaselPluginInfoSpeaker(), 2);
 	}
 
 	@Override
