@@ -18,6 +18,7 @@ import net.minecraft.world.World;
 import powercraft.management.PC_Block;
 import powercraft.management.PC_Color;
 import powercraft.management.PC_IItemInfo;
+import powercraft.management.PC_PacketHandler;
 import powercraft.management.PC_Property;
 import powercraft.management.PC_Renderer;
 import powercraft.management.PC_Shining;
@@ -135,8 +136,13 @@ public class PCli_BlockLight extends PC_Block implements PC_IItemInfo
         {
             if (ihold.getItem().shiftedIndex == Item.dyePowder.shiftedIndex)
             {
-                GameInfo.<PCli_TileEntityLight>getTE(world, i, j, k, blockID).setColor(new PC_Color(PC_Color.getHexColorForName(ItemDye.dyeColorNames[ihold.getItemDamage()])));
-                return true;
+            	PCli_TileEntityLight te = GameInfo.<PCli_TileEntityLight>getTE(world, i, j, k, blockID);
+                if(te!=null){
+                	Integer color = PC_Color.getHexColorForName(ItemDye.dyeColorNames[ihold.getItemDamage()]);
+                	if(color!=null)
+                		PC_PacketHandler.setTileEntity(te, "color", PC_Color.fromHex(color));
+                	return true;
+                }
             }
         }
 

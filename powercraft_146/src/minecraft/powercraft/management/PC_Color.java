@@ -32,7 +32,7 @@ public class PC_Color extends PC_VecF {
         namedColors.put("brick", 0xB22222);
         namedColors.put("darkred", 0x8B0000);
         namedColors.put("salmon", 0xFA8072);
-        namedColors.put("pink", 0xff1493);
+        namedColors.put("pink", 0xdb5b9d);
         namedColors.put("orange", 0xff4500);
         namedColors.put("gold", 0xffd700);
         namedColors.put("magenta", 0xff00ff);
@@ -42,6 +42,7 @@ public class PC_Color extends PC_VecF {
         namedColors.put("darkgreen", 0x006400);
         namedColors.put("cyan", 0x00ffff);
         namedColors.put("steel", 0x4682b4);
+        namedColors.put("lightblue", 0x78a2dd); //0094FF BAE2FF
         namedColors.put("darkblue", 0x00008b);
         namedColors.put("brown", 0x8b4513);
         namedColors.put("lightgray", 0xd3d3d3);
