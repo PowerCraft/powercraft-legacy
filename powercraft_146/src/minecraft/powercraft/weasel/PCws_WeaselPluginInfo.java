@@ -71,7 +71,12 @@ public abstract class PCws_WeaselPluginInfo {
 		PC_Renderer.glScalef(f, -f, -f);
 		
 		float f1 = 0;
-		PC_Renderer.glRotatef(90 * (GameInfo.getMD(te.worldObj, te.getCoord()) & 3), 0, 1, 0);
+		if(hasSpecialRot()){
+			f1 = (Float)te.getData("specialRot") * 360 / 16F;
+			PC_Renderer.glRotatef(f1, 0.0F, 1.0F, 0.0F);
+		}else{
+			PC_Renderer.glRotatef(90 * (GameInfo.getMD(te.worldObj, te.getCoord()) & 3), 0, 1, 0);
+		}
 		model.renderDevice();
 
 		PC_Renderer.glColor4f(color.x, color.y, color.z, 1f);
@@ -91,6 +96,10 @@ public abstract class PCws_WeaselPluginInfo {
 		PC_Renderer.glPopMatrix();
 	}
 
+	public boolean hasSpecialRot(){
+		return false;
+	}
+	
 	public void getServerMsg(PCws_TileEntityWeasel te, String msg, Object obj) {
 		
 	}
