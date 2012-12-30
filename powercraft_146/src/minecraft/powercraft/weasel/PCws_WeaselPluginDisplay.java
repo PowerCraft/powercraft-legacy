@@ -44,8 +44,6 @@ public class PCws_WeaselPluginDisplay extends PCws_WeaselPlugin {
 	@Override
 	protected List<String> getProvidedPluginFunctionNames() {
 		List<String> list = new ArrayList<String>(0);
-		list.add("reset");
-		list.add("restart");
 		list.add("cls");
 		list.add("clear");
 		list.add("matrix");
@@ -58,9 +56,7 @@ public class PCws_WeaselPluginDisplay extends PCws_WeaselPlugin {
 
 	@Override
 	protected WeaselObject callProvidedPluginFunction(WeaselEngine engine, String functionName, WeaselObject[] args) {
-		if (functionName.equals("reset") || functionName.equals("restart")){
-			restartDevice();
-		}else if (functionName.equals("cls") || functionName.equals("clear")){
+		if (functionName.equals("cls") || functionName.equals("clear")){
 			text = "";
 			setData("text", text);
 		}else if (functionName.equals("matrix") || functionName.equals("grain")) {
@@ -171,6 +167,9 @@ public class PCws_WeaselPluginDisplay extends PCws_WeaselPlugin {
 	@Override
 	public void update() {}
 
+	@Override
+	public void refreshInport(){}
+	
 	@Override
 	public void syncWithClient(PCws_TileEntityWeasel tileEntityWeasel) {
 		tileEntityWeasel.setData("bgcolor", bgcolor);

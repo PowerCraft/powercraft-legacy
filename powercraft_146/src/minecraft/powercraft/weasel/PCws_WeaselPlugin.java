@@ -165,9 +165,13 @@ public abstract class PCws_WeaselPlugin implements PC_INBT<PCws_WeaselPlugin>, I
 	public List<String> getProvidedFunctionNames() {
 		List<String> l = new ArrayList<String>();
 		l.addAll(getProvidedPluginFunctionNames());
+		l.add("reset");
+		l.add("restart");
 		if(getNetwork()!=null){
 			for(PCws_WeaselPlugin plugin:getNetwork()){
 				List<String> l2 = plugin.getProvidedPluginFunctionNames();
+				l2.add("reset");
+				l2.add("restart");
 				for(String s:l2){
 					l.add(plugin.name + "." + s);
 				}
@@ -180,7 +184,10 @@ public abstract class PCws_WeaselPlugin implements PC_INBT<PCws_WeaselPlugin>, I
 	
 	@Override
 	public WeaselObject callProvidedFunction(WeaselEngine engine, String functionName, WeaselObject[] args) {
-		if(getProvidedPluginFunctionNames().contains(functionName)){
+		if(functionName.equals("reset") || functionName.equals("restart")){
+			restartDevice();
+			return new WeaselNull();
+		}else if(getProvidedPluginFunctionNames().contains(functionName)){
 			return callProvidedPluginFunction(engine, functionName, args);
 		}
 		String s[] = functionName.split("\\.", 2);

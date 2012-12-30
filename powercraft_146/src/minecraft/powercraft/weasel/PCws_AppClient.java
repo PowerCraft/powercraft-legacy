@@ -38,6 +38,8 @@ public class PCws_AppClient extends PCws_App implements PC_IClientModule {
 		lang.add(new PC_LangEntry("pc.gui.weasel.core.unitInstructions", "instructions"));
 		lang.add(new PC_LangEntry("pc.gui.weasel.core.unitObjects", "values"));
 		
+		lang.add(new PC_LangEntry("pc.gui.weasel.terminal.terminal", "Terminal"));
+		
 		return lang;
 	}
 
@@ -57,6 +59,7 @@ public class PCws_AppClient extends PCws_App implements PC_IClientModule {
 	public List<PC_Struct2<String, Class>> registerGuis(List<PC_Struct2<String, Class>> guis) {
 		guis.add(new PC_Struct2<String, Class>("WeaselCore", PCws_GuiWeaselCore.class));
 		guis.add(new PC_Struct2<String, Class>("WeaselOnlyNet", PCws_GuiWeaselOnlyNet.class));
+		guis.add(new PC_Struct2<String, Class>("WeaselTerminal", PCws_GuiWeaselTerminal.class));
 		return guis;
 	}
 
