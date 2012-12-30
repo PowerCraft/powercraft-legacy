@@ -10,6 +10,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
 import powercraft.management.PC_ITileEntityRenderer;
+import powercraft.management.PC_MathHelper;
 import powercraft.management.PC_PacketHandler;
 import powercraft.management.PC_TileEntity;
 
@@ -21,9 +22,13 @@ public class PCws_TileEntityWeasel extends PC_TileEntity implements PC_ITileEnti
 	@Override
 	public void create(ItemStack stack, EntityPlayer player, World world, int x, int y, int z, int side, float hitX, float hitY, float hitZ) {
 		int type = stack.getItemDamage();
+		PCws_WeaselPluginInfo wpi = PCws_WeaselManager.getPluginInfo(type);
+		setData("type", type);
+		if(wpi.hasSpecialRot()){
+			setData("specialRot", PC_MathHelper.floor_double(((player.rotationYaw + 180F) * 16F) / 360F + 0.5D) & 0xf);
+		}
 		if(!world.isRemote){
-			setData("type", type);
-			PCws_WeaselPlugin plugin = PCws_WeaselManager.createPlugin(type);
+			PCws_WeaselPlugin plugin = wpi.createPlugin();
 			pluginID = plugin.getID();
 			plugin.setPlace(world, x, y, z);
 			plugin.sync(this);
@@ -35,6 +40,9 @@ public class PCws_TileEntityWeasel extends PC_TileEntity implements PC_ITileEnti
 		super.readFromNBT(nbtTag);
 		pluginID = nbtTag.getInteger("pluginID");
 		datas.put("type", nbtTag.getInteger("type"));
+		if(nbtTag.hasKey("specialRot")){
+			setData("specialRot", nbtTag.getDouble("specialRot"));
+		}
 	}
 
 	@Override
@@ -42,6 +50,9 @@ public class PCws_TileEntityWeasel extends PC_TileEntity implements PC_ITileEnti
 		super.writeToNBT(nbtTag);
 		nbtTag.setInteger("pluginID", pluginID);
 		nbtTag.setInteger("type", getType());
+		if(getData("specialRot")!=null){
+			nbtTag.setDouble("specialRot", (Double)getData("specialRot"));
+		}
 	}
 
 	@Override
