@@ -66,6 +66,11 @@ public class PC_Color extends PC_VecF {
 		this.y = y;
 		this.z = z;
 	}
+	public PC_Color(int hex){
+        x = red(hex);
+        y = green(hex);
+        z = blue(hex);
+	}
 	
 	public PC_Color(PC_Vec vec){
 		x = vec.getX().floatValue();

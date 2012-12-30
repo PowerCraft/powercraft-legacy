@@ -1,5 +1,12 @@
 package powercraft.light;
 
+import static net.minecraftforge.common.ForgeDirection.DOWN;
+import static net.minecraftforge.common.ForgeDirection.EAST;
+import static net.minecraftforge.common.ForgeDirection.NORTH;
+import static net.minecraftforge.common.ForgeDirection.SOUTH;
+import static net.minecraftforge.common.ForgeDirection.UP;
+import static net.minecraftforge.common.ForgeDirection.WEST;
+
 import java.util.List;
 import java.util.Random;
 
@@ -138,9 +145,9 @@ public class PCli_BlockLight extends PC_Block implements PC_IItemInfo
             {
             	PCli_TileEntityLight te = GameInfo.<PCli_TileEntityLight>getTE(world, i, j, k, blockID);
                 if(te!=null){
-                	Integer color = PC_Color.getHexColorForName(ItemDye.dyeColorNames[ihold.getItemDamage()]);
-                	if(color!=null)
-                		PC_PacketHandler.setTileEntity(te, "color", PC_Color.fromHex(color));
+                	Integer hex = PC_Color.getHexColorForName(ItemDye.dyeColorNames[ihold.getItemDamage()]);
+                	if(hex!=null)
+                		PC_PacketHandler.setTileEntity(te, "color", new PC_Color(hex));
                 	return true;
                 }
             }
@@ -178,8 +185,7 @@ public class PCli_BlockLight extends PC_Block implements PC_IItemInfo
             return;
         }
 
-        boolean powered = world.isBlockGettingPowered(i, j, k) || world.isBlockIndirectlyGettingPowered(i, j, k)
-                ;
+        boolean powered = world.isBlockGettingPowered(i, j, k) || world.isBlockIndirectlyGettingPowered(i, j, k);
 
         if (tileentity.isActive() != powered)
         {
