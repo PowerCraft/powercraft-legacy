@@ -364,6 +364,10 @@ public abstract class PCws_WeaselPlugin implements PC_INBT<PCws_WeaselPlugin>, I
 	}
 	
 	public void restartDivice(){
+		for(int i=0; i<6; i++){
+			weaselOutport[i] = false;
+		}
+		ValueWriting.hugeUpdate(getWorld(), pos.x, pos.y, pos.z);
 		error = null;
 		setData("error", null);
 		restart();
