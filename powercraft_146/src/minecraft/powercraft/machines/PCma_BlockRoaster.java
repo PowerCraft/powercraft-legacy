@@ -110,6 +110,8 @@ public class PCma_BlockRoaster extends PC_Block implements PC_IItemInfo
     {
     	PCma_TileEntityRoaster te = GameInfo.getTE(world, x, y, z);
     	if(world.isRemote){
+    		if(te==null)
+    			return false;
     		return te.isActive;
     	}
     	
