@@ -425,6 +425,8 @@ public class PCtr_BeltHelper
 
     public static boolean storeEntityItemAt(World world, PC_VecI inventoryPos, EntityItem entity)
     {
+    	if(world.isRemote)
+    		return false;
         IInventory inventory = PC_InvUtils.getCompositeInventoryAt(world, inventoryPos);
 
         if (inventory != null && entity != null && entity.isEntityAlive())
