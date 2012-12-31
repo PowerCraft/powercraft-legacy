@@ -245,24 +245,29 @@ public class PCli_ItemLaserComposition extends PC_Item
         int levelDistance = nbtTagCompound.getInteger("level.distance");
         if(isBurning)
         	levelKill *= 2;
+        boolean shineTrougth = levelDistance<=4;
         if(levelKill>0)
         	if(entity instanceof EntityItem){
         		if(handleItem(levelSensor))
         			entity.setDead();
+        		else
+        			shineTrougth = false;
         	}else if(entity instanceof EntityPlayer){
-        		if(handleMob(levelSensor)){
-        			ValueWriting.setPrivateValue(EntityLiving.class, entity, PC_GlobalVariables.indexRecentlyHit, 60);
-            		entity.attackEntityFrom(PCli_DamageSourceLaser.getDamageSource(), levelKill);
-        		}
-        	}else if(entity instanceof EntityLiving){
         		if(handlePlayer(levelSensor)){
         			ValueWriting.setPrivateValue(EntityLiving.class, entity, PC_GlobalVariables.indexRecentlyHit, 60);
             		entity.attackEntityFrom(PCli_DamageSourceLaser.getDamageSource(), levelKill);
-        		}
+        		}else
+        			shineTrougth = false;
+        	}else if(entity instanceof EntityLiving){
+        		if(handleMob(levelSensor)){
+        			ValueWriting.setPrivateValue(EntityLiving.class, entity, PC_GlobalVariables.indexRecentlyHit, 60);
+            		entity.attackEntityFrom(PCli_DamageSourceLaser.getDamageSource(), levelKill);
+        		}else
+        			shineTrougth = false;
         	}else{
-        		return false;
+        		shineTrougth = false;
         	}
-		return levelDistance<=4;
+		return shineTrougth;
 	}
 
 	public static boolean isSensor(ItemStack itemstack) {
