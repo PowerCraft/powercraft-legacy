@@ -50,6 +50,9 @@ public class PCma_BlockHarvester extends PC_Block implements
 	 */
 	public static final int ENDBLOCK = 98;
 	
+	/** Stacks harvested during this flash (including stacks from animals etc.) */
+	private ArrayList<ItemStack> drops = new ArrayList<ItemStack>();
+	
 	public PCma_BlockHarvester(int id) {
 		super(id, TXSIDE, Material.ground);
 		setHardness(0.7F);
@@ -176,9 +179,6 @@ public class PCma_BlockHarvester extends PC_Block implements
 			harvestBlocks(world, i, j, k, world.getBlockMetadata(i, j, k));
 		}
 	}
-
-	/** Stacks harvested during this flash (including stacks from animals etc.) */
-	private ArrayList<ItemStack> drops = new ArrayList<ItemStack>();
 
 
 	/**
