@@ -141,16 +141,16 @@ public class PCtp_TeleporterManager implements PC_IDataHandler, PC_IPacketHandle
 		return null;
 	}
 
-	private static PC_Struct2<PC_VecI, Integer> calculatePos(World world, PCtp_TeleporterData to){
+	private static PC_Struct2<PC_VecI, Integer> calculatePos(World world, PCtp_TeleporterData to, int rot){
 		int rotation;
 		int meta;
 		int good = 0;
-		int entrot = 0;
+		int entrot = rot;
 		PC_VecI tc = to.pos;
 		PC_VecI coords[] = { new PC_VecI(0, 0, -1), new PC_VecI(+1, 0, 0), new PC_VecI(0, 0, +1), new PC_VecI(-1, 0, 0) };
 		
 		int hig=0;
-		PC_VecI out=null;
+		PC_VecI out=tc.copy();
 		
 		for (int i = 0; i < 4; i++) {
 
@@ -204,11 +204,11 @@ public class PCtp_TeleporterManager implements PC_IDataHandler, PC_IPacketHandle
 				hig = good;
 				out = tmp;
 				entrot = i*90;
+				entrot += 180;
+				if(entrot>360)
+					entrot-=360;
 			}
 		}
-		entrot += 180;
-		if(entrot>360)
-			entrot-=360;
 		return new PC_Struct2<PC_VecI, Integer>(out, entrot);
 	}
 	
@@ -236,7 +236,7 @@ public class PCtp_TeleporterManager implements PC_IDataHandler, PC_IPacketHandle
 
 	public static boolean teleportEntityToTarget(Entity entity, PCtp_TeleporterData to) {
 		World world = GameInfo.mcs().worldServerForDimension(to.dimension);
-		PC_Struct2<PC_VecI, Integer> s = calculatePos(world, to);
+		PC_Struct2<PC_VecI, Integer> s = calculatePos(world, to, (int)entity.prevRotationYaw);
 		if(!(entity instanceof EntityPlayerMP))
 			if(!teleportTo(entity, s))
 				return false;
