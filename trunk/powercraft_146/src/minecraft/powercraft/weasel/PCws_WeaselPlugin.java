@@ -219,6 +219,9 @@ public abstract class PCws_WeaselPlugin implements PC_INBT<PCws_WeaselPlugin>, I
 			for(PCws_WeaselPlugin plugin:getNetwork()){
 				List<String> l2 = plugin.getProvidedPluginVariableNames();
 				for(String s:l2){
+					if(s.equals("this")){
+						l.add(plugin.name);
+					}
 					l.add(plugin.name + "." + s);
 				}
 			}
@@ -248,6 +251,11 @@ public abstract class PCws_WeaselPlugin implements PC_INBT<PCws_WeaselPlugin>, I
 					}
 				}
 			}
+		}else if(getNetwork()!=null){
+			PCws_WeaselPlugin plugin = getNetwork().getMember(name);
+			if(plugin!=null){
+				plugin.setVariable("this", value);
+			}
 		}
 	}
 
@@ -270,6 +278,11 @@ public abstract class PCws_WeaselPlugin implements PC_INBT<PCws_WeaselPlugin>, I
 						return plugin.getVariable(s[1]);
 					}
 				}
+			}
+		}else if(getNetwork()!=null){
+			PCws_WeaselPlugin plugin = getNetwork().getMember(name);
+			if(plugin!=null){
+				return plugin.getVariable("this");
 			}
 		}
 		return null;
