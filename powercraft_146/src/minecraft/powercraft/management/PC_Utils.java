@@ -1860,10 +1860,10 @@ public class PC_Utils implements PC_IPacketHandler
     
     public static class SaveHandler{
 
-		public static void loadFromNBT(NBTTagCompound nbttagcompound, String string, PC_INBT nbt)
+		public static PC_INBT loadFromNBT(NBTTagCompound nbttagcompound, String string, PC_INBT nbt)
 		{
 		    NBTTagCompound nbttag = nbttagcompound.getCompoundTag(string);
-		    nbt.readFromNBT(nbttag);
+		    return nbt.readFromNBT(nbttag);
 		}
 
 		public static void saveToNBT(NBTTagCompound nbttagcompound, String string, PC_INBT nbt)
