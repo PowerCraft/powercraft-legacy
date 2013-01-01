@@ -84,6 +84,7 @@ public class PCws_WeaselPluginTerminal extends PCws_WeaselPlugin {
 	@Override
 	protected List<String> getProvidedPluginVariableNames() {
 		List<String> list = new ArrayList<String>();
+		list.add("this");
 		list.add("text");
 		list.add("txt");
 		return list;
@@ -91,7 +92,7 @@ public class PCws_WeaselPluginTerminal extends PCws_WeaselPlugin {
 
 	@Override
 	protected void setPluginVariable(String name, Object value) {
-		if(name.equals("text")||name.equals("txt")){
+		if(name.equals("this")||name.equals("text")||name.equals("txt")){
 			text = "";
 			addText(Calc.toString(value));
 		}
@@ -99,7 +100,7 @@ public class PCws_WeaselPluginTerminal extends PCws_WeaselPlugin {
 
 	@Override
 	protected WeaselObject getPluginVariable(String name) {
-		if(name.equals("text")||name.equals("txt")){
+		if(name.equals("this")||name.equals("text")||name.equals("txt")){
 			return new WeaselString(text);
 		}
 		return null;
