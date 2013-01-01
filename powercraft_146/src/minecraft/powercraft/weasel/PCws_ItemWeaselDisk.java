@@ -27,8 +27,8 @@ public class PCws_ItemWeaselDisk extends PC_Item {
 
 	public static final int EMPTY = 0, TEXT = 1, IMAGE = 2, NUMBERLIST = 3, STRINGLIST = 4, VARMAP = 5, LIBRARY = 6;
 	
-	protected PCws_ItemWeaselDisk(int id) {
-		super(id);
+	public PCws_ItemWeaselDisk(int id) {
+		super(id, 0, 1);
 		setMaxDamage(0);
 		setMaxStackSize(1);
 		setHasSubtypes(true);
@@ -43,7 +43,7 @@ public class PCws_ItemWeaselDisk extends PC_Item {
 	@Override
 	public int getColorFromItemStack(ItemStack itemStack, int pass){
 		if (pass == 0) return 0xffffff;
-		return makeHexFromDamage(itemStack.getItemDamage());
+		return getColor(itemStack);
 	}
 	
 	@Override
@@ -57,11 +57,22 @@ public class PCws_ItemWeaselDisk extends PC_Item {
 		list.add(itemStack.getTagCompound().getString("Label"));
 	}
 	
+	/**
+	 * Get texture from damage and pass
+	 * 
+	 * @param dmg damage
+	 * @param pass pass 0-1
+	 */
+	@Override
+	public int getIconFromDamageForRenderPass(int dmg, int pass) {
+		return pass == 0 ? iconIndex : iconIndexRenderPass2;
+	}
+	
 	@Override
 	public String getItemDisplayName(ItemStack itemstack) {
 		return getTypeVerbose(itemstack);
 	}
-	
+
 	@Override
 	public Object msg(int msg, Object... obj) {
 		switch(msg){
@@ -622,6 +633,9 @@ public class PCws_ItemWeaselDisk extends PC_Item {
 			if (!stack.getTagCompound().hasKey("Label")) {
 				stack.getTagCompound().setString("Label", Lang.tr("pc.weasel.disk.new_label"));
 			}
+			if (!stack.getTagCompound().hasKey("Color")) {
+				stack.getTagCompound().setInteger("Color", 0xFFFFFF);
+			}
 			return;
 		} else {
 			stack.setTagCompound(new NBTTagCompound());
@@ -666,7 +680,8 @@ public class PCws_ItemWeaselDisk extends PC_Item {
 	 * @return color hex
 	 */
 	public static int getColor(ItemStack itemstack) {
-		return makeHexFromDamage(itemstack.getItemDamage());
+		checkTag(itemstack);
+		return itemstack.getTagCompound().getInteger("Color");
 	}
 
 	/**
@@ -676,7 +691,8 @@ public class PCws_ItemWeaselDisk extends PC_Item {
 	 * @param hexColor color hex
 	 */
 	public static void setColor(ItemStack itemstack, int hexColor) {
-		itemstack.setItemDamage(makeDamageFromHex(hexColor));
+		checkTag(itemstack);
+		itemstack.getTagCompound().setInteger("Color", hexColor);
 	}
 	
 	/**
@@ -704,34 +720,6 @@ public class PCws_ItemWeaselDisk extends PC_Item {
 				return Lang.tr("pc.weasel.disk.programLibrary");
 		}
 		return "FAILED DISK";
-	}
-
-	/**
-	 * make true hex color from damage
-	 * 
-	 * @param dmg damage
-	 * @return hex
-	 */
-	public static int makeHexFromDamage(int dmg) {
-		int color = dmg & 0xFFF;
-		int r = color >> 8 & 0xF;
-		int g = color >> 4 & 0xF;
-		int b = color & 0xF;
-		return r << 20 | g << 12 | b << 4 * 1;
-	}
-
-	/**
-	 * Convert full hex to damage (0xF0F0F0 -> 0xFFF)
-	 * 
-	 * @param hex hex color
-	 * @return damage
-	 */
-	public static int makeDamageFromHex(int hex) {
-		int color = hex & 0xF0F0F0;
-		int r = color >> 20 & 0xF;
-		int g = color >> 12 & 0xF;
-		int b = color >> 4 & 0xF;
-		return r << 8 | g << 4 | b;
 	}
 		
 }
