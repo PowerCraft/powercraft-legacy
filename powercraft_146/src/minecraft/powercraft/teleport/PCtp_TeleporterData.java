@@ -20,6 +20,7 @@ public class PCtp_TeleporterData implements PC_INBT<PCtp_TeleporterData>, Serial
 	public boolean monsters;
 	public boolean items;
 	public boolean players;
+	public boolean lasers;
 	public boolean sneakTrigger;
 	public boolean playerChoose;
 	public boolean soundEnabled;
@@ -33,6 +34,7 @@ public class PCtp_TeleporterData implements PC_INBT<PCtp_TeleporterData>, Serial
 		monsters = true;
 		items = true;
 		players = true;
+		lasers = true;
 		soundEnabled = true;
 	}
 	
@@ -46,6 +48,7 @@ public class PCtp_TeleporterData implements PC_INBT<PCtp_TeleporterData>, Serial
 		monsters = nbttag.getBoolean("monsters");
 		items = nbttag.getBoolean("items");
 		players = nbttag.getBoolean("players");
+		lasers = nbttag.getBoolean("lasers");
 		sneakTrigger = nbttag.getBoolean("sneakTrigger");
 		playerChoose = nbttag.getBoolean("playerChoose");
 		soundEnabled = nbttag.getBoolean("soundEnabled");
@@ -69,6 +72,7 @@ public class PCtp_TeleporterData implements PC_INBT<PCtp_TeleporterData>, Serial
 		nbttag.setBoolean("monsters", monsters);
 		nbttag.setBoolean("items", items);
 		nbttag.setBoolean("players", players);
+		nbttag.setBoolean("lasers", lasers);
 		nbttag.setBoolean("sneakTrigger", sneakTrigger);
 		nbttag.setBoolean("playerChoose", playerChoose);
 		nbttag.setBoolean("soundEnabled", soundEnabled);
@@ -85,6 +89,7 @@ public class PCtp_TeleporterData implements PC_INBT<PCtp_TeleporterData>, Serial
 		monsters = td.monsters;
 		items = td.items;
 		players = td.players;
+		lasers = td.lasers;
 		sneakTrigger = td.sneakTrigger;
 		defaultTarget = td.defaultTarget;
 		playerChoose = td.playerChoose;
@@ -94,7 +99,18 @@ public class PCtp_TeleporterData implements PC_INBT<PCtp_TeleporterData>, Serial
 		PCtp_TileEntityTeleporter te = GameInfo.getTE(GameInfo.mcs().worldServerForDimension(dimension), pos);
 		te.direction = direction;
 		te.soundEnabled = soundEnabled;
-		PC_PacketHandler.setTileEntity(te, "direction", direction, "soundEnabled", soundEnabled);
+		te.defaultTarget = defaultTarget;
+		PCtp_TeleporterData otherTPData=null;
+		if(defaultTarget != null)
+			otherTPData = PCtp_TeleporterManager.getTeleporterData(defaultTargetDimension, defaultTarget);
+		if(otherTPData!=null){
+			te.defaultTargetDirection = otherTPData.direction;
+		}else{
+			te.defaultTarget = null;
+			te.defaultTargetDirection = 0;
+		}
+		
+		PC_PacketHandler.setTileEntity(te, "direction", direction, "soundEnabled", soundEnabled, "defaultTarget", defaultTarget, "defaultTargetDirection", te.defaultTargetDirection);
 		
 	}
 

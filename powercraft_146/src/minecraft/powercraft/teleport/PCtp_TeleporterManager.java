@@ -22,26 +22,27 @@ import powercraft.management.PC_VecI;
 
 public class PCtp_TeleporterManager implements PC_IDataHandler, PC_IPacketHandler {
 
-	private static List<PCtp_TeleporterData> teleoprter = new ArrayList<PCtp_TeleporterData>();
+	public static PC_VecI coords[] = { new PC_VecI(0, 0, -1), new PC_VecI(+1, 0, 0), new PC_VecI(0, 0, +1), new PC_VecI(-1, 0, 0) };
+	private static List<PCtp_TeleporterData> teleporter = new ArrayList<PCtp_TeleporterData>();
 	private static boolean needSave;
 	
 	@Override
 	public void load(NBTTagCompound nbtTag) {
-		teleoprter.clear();
+		teleporter.clear();
 		int num = nbtTag.getInteger("count");
 		for(int i=0; i<num; i++){
 			PCtp_TeleporterData td = new PCtp_TeleporterData();
 			SaveHandler.loadFromNBT(nbtTag, "value["+i+"]", td);
-			teleoprter.add(td);
+			teleporter.add(td);
 		}
 	}
 
 	@Override
 	public NBTTagCompound save(NBTTagCompound nbtTag) {
 		needSave = false;
-		nbtTag.setInteger("count", teleoprter.size());
+		nbtTag.setInteger("count", teleporter.size());
 		int i=0;
-		for(PCtp_TeleporterData td:teleoprter){
+		for(PCtp_TeleporterData td:teleporter){
 			SaveHandler.saveToNBT(nbtTag, "value["+i+"]", td);
 			i++;
 		}
@@ -55,7 +56,7 @@ public class PCtp_TeleporterManager implements PC_IDataHandler, PC_IPacketHandle
 	
 	@Override
 	public void reset() {
-		teleoprter.clear();
+		teleporter.clear();
 	}
 	
 	@Override
@@ -122,17 +123,17 @@ public class PCtp_TeleporterManager implements PC_IDataHandler, PC_IPacketHandle
 		releaseTeleporterData(dimension, pos);
 		td.dimension = dimension;
 		td.pos = pos;
-		teleoprter.add(td);
+		teleporter.add(td);
 		needSave = true;
 	}
 	
 	public static void releaseTeleporterData(int dimension, PC_VecI pos){
-		teleoprter.remove(getTeleporterData(dimension, pos));
+		teleporter.remove(getTeleporterData(dimension, pos));
 		needSave = true;
 	}
 	
 	public static PCtp_TeleporterData getTeleporterData(int dimension, PC_VecI pos){
-		for(PCtp_TeleporterData td:teleoprter){
+		for(PCtp_TeleporterData td:teleporter){
 			if(td.dimension == dimension && pos.equals(td.pos)){
 				needSave = true;
 				return td;
@@ -147,7 +148,6 @@ public class PCtp_TeleporterManager implements PC_IDataHandler, PC_IPacketHandle
 		int good = 0;
 		int entrot = rot;
 		PC_VecI tc = to.pos;
-		PC_VecI coords[] = { new PC_VecI(0, 0, -1), new PC_VecI(+1, 0, 0), new PC_VecI(0, 0, +1), new PC_VecI(-1, 0, 0) };
 		
 		int hig=0;
 		PC_VecI out=tc.copy();
@@ -259,7 +259,7 @@ public class PCtp_TeleporterManager implements PC_IDataHandler, PC_IPacketHandle
 	
 	public static List<String> getTargetNames() {
 		List<String> names = new ArrayList<String>();
-		for(PCtp_TeleporterData td:teleoprter){
+		for(PCtp_TeleporterData td:teleporter){
 			if(td.name!=null && !td.name.equals(""))
 				names.add(td.name);
 		}
@@ -271,7 +271,7 @@ public class PCtp_TeleporterManager implements PC_IDataHandler, PC_IPacketHandle
 	}
 
 	public static PCtp_TeleporterData getTargetByName(String name) {
-		for(PCtp_TeleporterData td:teleoprter){
+		for(PCtp_TeleporterData td:teleporter){
 			if(name.equals(td.name)){
 				return td;
 			}
