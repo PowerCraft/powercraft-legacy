@@ -5,6 +5,7 @@ import java.util.List;
 import net.minecraft.item.crafting.IRecipe;
 import powercraft.management.PC_Block;
 import powercraft.management.PC_IModule;
+import powercraft.management.PC_Item;
 import powercraft.management.PC_Property;
 import powercraft.management.PC_Struct2;
 import powercraft.management.PC_Utils.ModuleInfo;
@@ -13,6 +14,8 @@ import powercraft.management.PC_Utils.ModuleLoader;
 public class PCws_App implements PC_IModule {
 
 	public static PC_Block weasel;
+	
+	public static PC_Item weaselDisk;
 	
 	@Override
 	public String getName() {
@@ -56,7 +59,7 @@ public class PCws_App implements PC_IModule {
 
 	@Override
 	public void initItems() {
-		
+		weaselDisk = ModuleLoader.register(this, PCws_ItemWeaselDisk.class);
 	}
 
 	@Override

@@ -5,6 +5,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.regex.Pattern;
 
+import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -31,6 +32,7 @@ public class PCws_ItemWeaselDisk extends PC_Item {
 		setMaxDamage(0);
 		setMaxStackSize(1);
 		setHasSubtypes(true);
+		setCreativeTab(CreativeTabs.tabTools);
 	}
 
 	@Override
