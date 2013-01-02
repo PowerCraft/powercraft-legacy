@@ -78,10 +78,7 @@ public class Comparative extends PostfixMathCommand {
 				res = eq(param1, param2);
 				break;
 		}
-		if (res)
-			inStack.push(new Double(1));
-		else
-			inStack.push(new Double(0));
+		inStack.push(new Boolean(res));
 	}
 
 	public boolean lt(Object param1, Object param2) throws ParseException {

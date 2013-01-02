@@ -678,7 +678,7 @@ public class PCws_GuiWeaselDiskManager extends PCws_ContainerWeaselDiskManager i
 		tick++;
 		if(tick%20==0 && check){
 			try{
-				WeaselEngine.compileProgram(libary_CodeText.getText());
+				WeaselEngine.compileLibrary(libary_CodeText.getText());
 				libary_btnCompile.enable(true);
 				if(!libary_CompiledText.equals(libary_CodeText.getText())){
 					libary_txError.setText(Lang.tr("pc.gui.weasel.diskManager.clickCompile"));
