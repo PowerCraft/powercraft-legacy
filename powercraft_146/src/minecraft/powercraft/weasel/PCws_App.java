@@ -2,13 +2,19 @@ package powercraft.weasel;
 
 import java.util.List;
 
+import net.minecraft.block.Block;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.IRecipe;
+import net.minecraft.src.ModLoader;
 import powercraft.management.PC_Block;
 import powercraft.management.PC_IModule;
 import powercraft.management.PC_IPacketHandler;
 import powercraft.management.PC_Item;
+import powercraft.management.PC_ItemStack;
 import powercraft.management.PC_PacketHandler;
 import powercraft.management.PC_Property;
+import powercraft.management.PC_ShapedRecipes;
 import powercraft.management.PC_Struct2;
 import powercraft.management.PC_Utils.ModuleInfo;
 import powercraft.management.PC_Utils.ModuleLoader;
@@ -70,7 +76,60 @@ public class PCws_App implements PC_IModule {
 
 	@Override
 	public List<IRecipe> initRecipes(List<IRecipe> recipes) {
-		return null;
+		recipes.add(new PC_ShapedRecipes(new PC_ItemStack(weasel, 1, 0),
+				"SRS", 
+				"RCR", 
+				"SRS",
+					'S', new PC_ItemStack(Block.stoneSingleSlab,1,0), 'R', Item.redstone, 'C', ModuleInfo.getPCBlockByName("PCco_BlockPowerCrystal")));
+		
+		recipes.add(new PC_ShapedRecipes(new PC_ItemStack(weasel, 1, 1),
+				"GRG", 
+				"SSS",
+					'S', new PC_ItemStack(Block.stoneSingleSlab,1,0), 'R', Item.redstone, 'G', Item.goldNugget));
+		
+		recipes.add(new PC_ShapedRecipes(new PC_ItemStack(weasel, 1, 3),
+				" G ", 
+				"NRN",
+				"SSS",
+					'S', new PC_ItemStack(Block.stoneSingleSlab,1,0), 'R', Item.redstone, 'G', Block.thinGlass, 'N', Item.goldNugget));
+		
+		recipes.add(new PC_ShapedRecipes(new PC_ItemStack(weasel, 1, 2),
+				" N ", 
+				"GRG",
+				"SSS",
+					'S', new PC_ItemStack(Block.stoneSingleSlab,1,0), 'R', Item.redstone, 'N', Block.music, 'G', Item.goldNugget));
+		
+		recipes.add(new PC_ShapedRecipes(new PC_ItemStack(weasel, 1, 5),
+				"GGG", 
+				"NRN",
+				"SSS",
+					'S', new PC_ItemStack(Block.stoneSingleSlab,1,0), 'R', Item.redstone, 'G', Block.thinGlass, 'N', Item.goldNugget));
+		
+
+		recipes.add(new PC_ShapedRecipes(new PC_ItemStack(weaselDisk, 4, 0xFFF),
+				" C ", 
+				"CIC",
+				" C ",
+					'C', Item.coal, 'I', Item.ingotIron));
+		
+		recipes.add(new PC_ShapedRecipes(new PC_ItemStack(weaselDiskManager),
+				"BBB", 
+				"SRS", 
+				"SSS",
+					'B', Block.stoneButton, 'S', new PC_ItemStack(Block.stoneSingleSlab, 1, 0), 'R', Item.redstone));
+		
+		recipes.add(new PC_ShapedRecipes(new PC_ItemStack(weasel, 1, 6),
+				"SSS", 
+				"GRG",
+				"SSS",
+					'B', Block.stoneButton, 'S', new PC_ItemStack(Block.stoneSingleSlab,1,0), 'R', Item.redstone, 'G', Item.goldNugget));
+		
+		recipes.add(new PC_ShapedRecipes(new PC_ItemStack(weasel, 1, 4),
+				"  D", 
+				"BBS", 
+				"SSS",
+					'B', Block.stoneButton, 'S', new PC_ItemStack(Block.stoneSingleSlab,1,0), 'D', new PC_ItemStack(weasel, 1, 3)));
+		return recipes;
 	}
 
 	@Override

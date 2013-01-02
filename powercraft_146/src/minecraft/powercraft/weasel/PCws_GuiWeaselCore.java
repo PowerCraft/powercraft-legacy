@@ -75,7 +75,7 @@ public class PCws_GuiWeaselCore extends PCws_GuiWeasel {
 		vl.setAlignH(PC_GresAlign.CENTER).setAlignV(PC_GresAlign.CENTER).setMinWidth(100);
 		vl.add(new PC_GresImage(ModuleInfo.getGresImgDir() + "graphics.png", 0, 24, 80, 80));
 		vl.add(new PC_GresLabel("WEASEL VM"));
-		vl.add(new PC_GresLabel("© MightyPork"));
+		vl.add(new PC_GresLabel("Â© MightyPork"));
 		mhl.add(vl);
 		mhl.add(new PC_GresSeparatorV(3, 150).setLineColor(0x666666));
 		

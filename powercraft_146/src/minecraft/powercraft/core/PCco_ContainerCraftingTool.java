@@ -38,7 +38,7 @@ public class PCco_ContainerCraftingTool extends PC_GresBaseWithInventory
     protected List<Slot> getAllSlots(List<Slot> slots)
     {
     	while(!PCco_CraftingToolLoader.isFinished()){
-    		System.out.println("l‰dt...");
+    		System.out.println("l√§dt...");
     	}
     	
         allMcSlots = new ArrayList<PCco_SlotDirectCrafting>();
