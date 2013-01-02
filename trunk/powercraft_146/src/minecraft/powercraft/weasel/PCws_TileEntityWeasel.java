@@ -209,51 +209,18 @@ public class PCws_TileEntityWeasel extends PC_TileEntity implements PC_ITileEnti
 
 	@Override
 	public ItemStack decrStackSize(int i, int j) {
-		if (inv[i] != null)
-        {
-            if (inv[i].stackSize <= j)
-            {
-                ItemStack itemstack = inv[i];
-                inv[i] = null;
-                if(getPlugin() instanceof PCws_IWeaselInventory)
-                	((PCws_IWeaselInventory)getPlugin()).setInventorySlotContents(i, null);
-                onInventoryChanged();
-                return itemstack;
-            }
-
-            ItemStack itemstack1 = inv[i].splitStack(j);
-
-            if (inv[i].stackSize == 0)
-            {
-            	inv[i] = null;
-            }
-
-            if(getPlugin() instanceof PCws_IWeaselInventory)
-            	((PCws_IWeaselInventory)getPlugin()).setInventorySlotContents(i, inv[i]);
-            
-            onInventoryChanged();
-            return itemstack1;
-        }
-        else
-        {
-            return null;
-        }
+		ItemStack is = inv[i];
+		inv[i] = null;
+		return is;
 	}
 
 	@Override
 	public ItemStack getStackInSlotOnClosing(int var1) {
-		if (inv[var1] != null)
-        {
-            ItemStack itemstack = inv[var1];
-            inv[var1] = null;
-            if(getPlugin() instanceof PCws_IWeaselInventory)
-            	((PCws_IWeaselInventory)getPlugin()).setInventorySlotContents(var1, null);
-            return itemstack;
-        }
-        else
-        {
-            return null;
-        }
+		ItemStack itemstack = inv[var1];
+		inv[var1] = null;
+		if(getPlugin() instanceof PCws_IWeaselInventory)
+			((PCws_IWeaselInventory)getPlugin()).setInventorySlotContents(var1, null);
+		return itemstack;
 	}
 
 	@Override

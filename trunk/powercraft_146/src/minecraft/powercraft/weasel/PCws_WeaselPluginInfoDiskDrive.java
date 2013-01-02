@@ -33,8 +33,14 @@ public class PCws_WeaselPluginInfoDiskDrive extends PCws_WeaselPluginInfo {
 		return model;
 	}
 	
+	@Override
 	public int inventorySize(){
 		return 8;
+	}
+	
+	@Override
+	public int inventoryStackLimit(){
+		return 1;
 	}
 	
 }

@@ -10,7 +10,7 @@ import cpw.mods.fml.common.TickType;
 
 public class PC_TickHandler implements ITickHandler {
 
-	private int countDown = 20;
+	private int countDown = 40;
 	
 	@Override
 	public void tickStart(EnumSet<TickType> type, Object... tickData) {

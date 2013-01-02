@@ -163,10 +163,7 @@ public class PCws_BlockWeaselDiskManager extends PC_Block implements PC_IPacketH
 			}else if(msg.equals("compile")){
 				PCws_ItemWeaselDisk.setLibrarySource(itemStack, (String)o[1]);
 				try {
-					List<Instruction> list = new ArrayList<Instruction>(20);
-					list.add(new InstructionEnd());
-					list.addAll(WeaselEngine.compileLibrary((String)o[1]));
-					
+					List<Instruction> list = WeaselEngine.compileLibrary((String)o[1]);
 					PCws_ItemWeaselDisk.setLibraryInstructions(itemStack, list);
 				}catch(Exception e) {
 				}
