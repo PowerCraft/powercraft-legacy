@@ -132,6 +132,7 @@ public class Calc {
 				//add variable into JEP
 				jep.addVariable(name, variableContainer.getVariable(name).get());
 			} catch (NullPointerException npe) {
+				npe.printStackTrace();
 				throw new WeaselRuntimeException("Variable \"" + name + "\" not set in this scope.");
 
 			}

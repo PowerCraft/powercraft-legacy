@@ -78,7 +78,6 @@ public class PCws_ItemWeaselDisk extends PC_Item {
 		switch(msg){
 		case PC_Utils.MSG_DEFAULT_NAME:
 			List<PC_Struct3<String, String, String[]>> names = (List<PC_Struct3<String, String, String[]>>)obj[0];
-			names.add(new PC_Struct3<String, String, String[]>("pc.weasel.disk.new_label", "disk", null));
 			names.add(new PC_Struct3<String, String, String[]>("pc.weasel.disk.empty", "Blank Weasel Disk", null));
 			names.add(new PC_Struct3<String, String, String[]>("pc.weasel.disk.text", "Weasel Text Disk", null));
 			names.add(new PC_Struct3<String, String, String[]>("pc.weasel.disk.image", "Weasel Image Disk", null));
@@ -631,7 +630,7 @@ public class PCws_ItemWeaselDisk extends PC_Item {
 				stack.getTagCompound().setInteger("Type", EMPTY);
 			}
 			if (!stack.getTagCompound().hasKey("Label")) {
-				stack.getTagCompound().setString("Label", Lang.tr("pc.weasel.disk.new_label"));
+				stack.getTagCompound().setString("Label", "disk");
 			}
 			if (!stack.getTagCompound().hasKey("Color")) {
 				stack.getTagCompound().setInteger("Color", 0xFFFFFF);

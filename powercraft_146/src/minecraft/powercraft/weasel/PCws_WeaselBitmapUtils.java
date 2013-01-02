@@ -440,6 +440,7 @@ public class PCws_WeaselBitmapUtils {
 		public int getBitmapPixel(int x, int y);
 		public void setBitmapPixel(int x, int y, int color);
 		public void resize(int w, int h);
+		public void notifyChanges();
 		public WeaselBitmapProvider getImageForName(String name);
 		
 	}
@@ -482,6 +483,7 @@ public class PCws_WeaselBitmapUtils {
 			int color = getColor(args[2]);
 			
 			PCws_WeaselBitmapUtils.setPixel(provider, x, y, color);
+			provider.notifyChanges();
 		}
 
 		private WeaselObject getPixel(String functionName, Object... args) {
@@ -528,7 +530,7 @@ public class PCws_WeaselBitmapUtils {
 			sizey = Calc.toInteger(objects[6]);
 
 			PCws_WeaselBitmapUtils.image(provider, imageData, x1, y1,startImageX,startImageY,sizex,sizey);
-			
+			provider.notifyChanges();
 		}
 
 		private void drawRect(boolean frameOnly, String functionName, Object... objects) {
@@ -548,12 +550,14 @@ public class PCws_WeaselBitmapUtils {
 			if(frameOnly) {
 				framecolor = PC_Color.getHexColorForName(Calc.toString(objects[4]));
 				PCws_WeaselBitmapUtils.frame(provider, x1, y1, x2, y2, framecolor);
+				provider.notify();
 				return;			
 			}
 			
 			if (objects.length == 5) {
 				color = PC_Color.getHexColorForName(Calc.toString(objects[4]));
 				PCws_WeaselBitmapUtils.rect(provider, x1, y1, x2, y2, color);
+				provider.notify();
 				return;
 			}
 			
@@ -561,6 +565,7 @@ public class PCws_WeaselBitmapUtils {
 				color = PC_Color.getHexColorForName(Calc.toString(objects[4]));
 				framecolor = PC_Color.getHexColorForName(Calc.toString(objects[5]));
 				PCws_WeaselBitmapUtils.rect(provider, x1, y1, x2, y2, color, framecolor);
+				provider.notify();
 				return;
 			}
 		}
@@ -575,6 +580,7 @@ public class PCws_WeaselBitmapUtils {
 			int color = PC_Color.getHexColorForName(Calc.toString(args[4]));
 			
 			PCws_WeaselBitmapUtils.line(provider, x1, y1, x2, y2, color);
+			provider.notify();
 		}
 
 		private void drawString(String functionName, WeaselObject[] args) {
@@ -586,6 +592,7 @@ public class PCws_WeaselBitmapUtils {
 			int color = PC_Color.getHexColorForName(Calc.toString(args[3]));
 
 			PCws_WeaselBitmapUtils.text(provider, x, y, s, color);
+			provider.notify();
 		}
 		
 		private void drawFill(String functionName, WeaselObject[] args) {
@@ -596,6 +603,7 @@ public class PCws_WeaselBitmapUtils {
 			int color = PC_Color.getHexColorForName(Calc.toString(args[2]));
 
 			PCws_WeaselBitmapUtils.floodFill(provider,x,y,color);			
+			provider.notify();
 		}
 		
 		private void drawEllipse(String functionName, WeaselObject[] args) {
@@ -607,7 +615,8 @@ public class PCws_WeaselBitmapUtils {
 			int h = Calc.toInteger(args[3]);
 			int color = PC_Color.getHexColorForName(Calc.toString(args[4]));
 			
-			PCws_WeaselBitmapUtils.ellipse(provider,x,y,w,h,color);			
+			PCws_WeaselBitmapUtils.ellipse(provider,x,y,w,h,color);		
+			provider.notify();
 		}
 		
 		private void drawCircle(String functionName, WeaselObject[] args) {
@@ -618,7 +627,8 @@ public class PCws_WeaselBitmapUtils {
 			int r = Calc.toInteger(args[2]);
 			int color = PC_Color.getHexColorForName(Calc.toString(args[3]));
 			
-			PCws_WeaselBitmapUtils.ellipse(provider,x,y,r,r,color);			
+			PCws_WeaselBitmapUtils.ellipse(provider,x,y,r,r,color);		
+			provider.notify();
 		}
 
 		@Override
@@ -632,6 +642,7 @@ public class PCws_WeaselBitmapUtils {
 					|| functionName.equals("draw.pixel")) {
 				// name.dot(x,y,color);
 				setPixel(functionName, (Object[]) args);
+				
 				return null;
 			} else if (functionName.equals("get")) {
 				// name.get(x,y);
@@ -679,7 +690,7 @@ public class PCws_WeaselBitmapUtils {
 					}
 					
 					provider.resize(w, h);
-
+					provider.notify();
 					return null;
 				}catch(Exception e) {
 					throw new WeaselRuntimeException(e.getMessage());
@@ -688,7 +699,7 @@ public class PCws_WeaselBitmapUtils {
 				try {
 					
 					rect(provider, 0, 0, width(provider)-1, height(provider)-1, -1);
-
+					provider.notify();
 					return null;
 				}catch(Exception e) {
 					throw new WeaselRuntimeException(e.getMessage());
