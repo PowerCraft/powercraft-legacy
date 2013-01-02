@@ -62,12 +62,22 @@ public class PC_ClientRenderer extends PC_Renderer {
 	@Override
 	protected void iTessellatorDraw(){
 		Tessellator.instance.draw();
-	};
+	}
 	
 	@Override
 	protected void iTessellatorStartDrawingQuads(){
 		Tessellator.instance.startDrawingQuads();
-	};
+	}
+	
+	@Override
+	protected void iTessellatorSetColor(int r, int g, int b, int a) {
+		Tessellator.instance.setColorRGBA(r, g, b, a);
+	}
+
+	@Override
+	protected void iTessellatorAddVertex(double x, double y, double z) {
+		Tessellator.instance.addVertex(x, y, z);
+	}
 	
 	private RenderEngine getRenderEngine(){
 		return PC_ClientUtils.mc().renderEngine;
@@ -344,6 +354,43 @@ public class PC_ClientRenderer extends PC_Renderer {
 		((RenderBlocks)renderer).resetCustomBlockBounds();
 	}
 	
+	@Override
+	protected void iRenderInvBoxWithTextures(Object renderer, Block block, int[] texture) {
+		RenderBlocks renderblocks = (RenderBlocks)renderer;
+		Tessellator tessellator = Tessellator.instance;
+		((RenderBlocks)renderer).updateCustomBlockBounds(block);
+		
+		block.setBlockBoundsForItemRender();
+		GL11.glTranslatef(-0.5F, -0.5F, -0.5F);
+		tessellator.startDrawingQuads();
+		tessellator.setNormal(0.0F, -1F, 0.0F);
+		renderblocks.renderBottomFace(block, 0.0D, 0.0D, 0.0D, texture[0]);
+		tessellator.draw();
+		tessellator.startDrawingQuads();
+		tessellator.setNormal(0.0F, 1.0F, 0.0F);
+		renderblocks.renderTopFace(block, 0.0D, 0.0D, 0.0D, texture[1]);
+		tessellator.draw();
+		tessellator.startDrawingQuads();
+		tessellator.setNormal(0.0F, 0.0F, -1F);
+		renderblocks.renderEastFace(block, 0.0D, 0.0D, 0.0D, texture[2]);
+		tessellator.draw();
+		tessellator.startDrawingQuads();
+		tessellator.setNormal(0.0F, 0.0F, 1.0F);
+		renderblocks.renderWestFace(block, 0.0D, 0.0D, 0.0D, texture[3]);
+		tessellator.draw();
+		tessellator.startDrawingQuads();
+		tessellator.setNormal(-1F, 0.0F, 0.0F);
+		renderblocks.renderNorthFace(block, 0.0D, 0.0D, 0.0D, texture[4]);
+		tessellator.draw();
+		tessellator.startDrawingQuads();
+		tessellator.setNormal(1.0F, 0.0F, 0.0F);
+		renderblocks.renderSouthFace(block, 0.0D, 0.0D, 0.0D, texture[5]);
+		tessellator.draw();
+		GL11.glTranslatef(0.5F, 0.5F, 0.5F);
+		
+		((RenderBlocks)renderer).resetCustomBlockBounds();
+	}
+	
 	/**
 	 * Use texture file as terrain.png
 	 * 
@@ -431,6 +478,16 @@ public class PC_ClientRenderer extends PC_Renderer {
 	}
 	
 	@Override
+	protected void iglNormal3f(float x, float y, float z) {
+		GL11.glNormal3f(x, y, z);
+	}
+
+	@Override
+	protected void iglDepthMask(boolean state) {
+		GL11.glDepthMask(state);
+	}
+	
+	@Override
 	protected void irenderEntityLabelAt(String label, PC_VecF realPos, int viewDistance, float yOffset, double x, double y, double z) {
 		RenderManager renderManager = RenderManager.instance;
 		label = label.trim();
@@ -475,6 +532,11 @@ public class PC_ClientRenderer extends PC_Renderer {
 		GL11.glDisable(GL11.GL_BLEND);
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 		GL11.glPopMatrix();
+	}
+
+	@Override
+	protected FontRenderer igetFontRenderer() {
+		return PC_ClientUtils.mc().fontRenderer;
 	}
 	
 }

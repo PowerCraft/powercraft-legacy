@@ -2,9 +2,9 @@ package powercraft.management;
 
 import net.minecraft.src.Block;
 import net.minecraft.src.Entity;
+import net.minecraft.src.FontRenderer;
 import net.minecraft.src.IBlockAccess;
 import net.minecraft.src.Render;
-import net.minecraft.src.RenderEngine;
 
 public class PC_Renderer extends Render
 {
@@ -54,6 +54,18 @@ public class PC_Renderer extends Render
         renderer2d.iTessellatorStartDrawingQuads();
     }
 
+    protected void iTessellatorSetColor(int r, int g, int b, int a) {}
+    
+    public static void tessellatorSetColor(int r, int g, int b, int a) {
+    	renderer2d.iTessellatorSetColor(r, g, b, a);
+	}
+    
+    protected void iTessellatorAddVertex(double x, double y, double z) {}
+    
+    public static void tessellatorAddVertex(double x, double y, double z) {
+    	renderer2d.iTessellatorAddVertex(x, y, z);
+	}
+    
     protected void iBindTexture(String texture) {};
 
     public static void bindTexture(String texture)
@@ -96,6 +108,12 @@ public class PC_Renderer extends Render
         renderer2d.iRenderInvBoxWithTexture(renderer, block, tectureID);
     }
 
+    protected void iRenderInvBoxWithTextures(Object renderer, Block block, int[] texture) {}
+    
+    public static void renderInvBoxWithTextures(Object renderer, Block block, int[] texture) {
+    	renderer2d.iRenderInvBoxWithTextures(renderer, block, texture);
+	}
+    
     protected void iSwapTerrain(String filename) {}
 
     public static void swapTerrain(String filename)
@@ -189,6 +207,18 @@ public class PC_Renderer extends Render
 		renderer2d.iglBlendFunc(i, j);
 	}
 
+	protected void iglNormal3f(float x, float y, float z) {}
+
+	public static void glNormal3f(float x, float y, float z) {
+		renderer2d.iglNormal3f(x, y, z);
+	}
+	
+	protected void iglDepthMask(boolean state) {}
+	
+	public static void glDepthMask(boolean state) {
+		renderer2d.iglDepthMask(state);
+	}
+	
 	@Override
 	public void doRender(Entity var1, double var2, double var4, double var6, float var8, float var9) {
 		
@@ -198,6 +228,14 @@ public class PC_Renderer extends Render
 	
 	public static void renderEntityLabelAt(String label, PC_VecF realPos, int viewDistance, float yOffset, double x, double y, double z) {
 		renderer2d.irenderEntityLabelAt(label, realPos, viewDistance, yOffset, x, y, z);
+	}
+
+	protected FontRenderer igetFontRenderer() {
+		return null;
+	}
+	
+	public static FontRenderer getFontRenderer() {
+		return renderer2d.igetFontRenderer();
 	}
 	
 }
