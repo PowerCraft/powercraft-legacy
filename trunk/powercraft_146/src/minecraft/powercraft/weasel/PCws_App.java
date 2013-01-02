@@ -38,6 +38,7 @@ public class PCws_App implements PC_IModule {
 		PCws_WeaselManager.registerPluginInfo(new PCws_WeaselPluginInfoDisplay(), 3);
 		PCws_WeaselManager.registerPluginInfo(new PCws_WeaselPluginInfoTerminal(), 4);
 		PCws_WeaselManager.registerPluginInfo(new PCws_WeaselPluginInfoTouchscreen(), 5);
+		PCws_WeaselManager.registerPluginInfo(new PCws_WeaselPluginInfoDiskDrive(), 6);
 	}
 
 	@Override
@@ -75,6 +76,7 @@ public class PCws_App implements PC_IModule {
 	@Override
 	public List<PC_Struct2<String, Class>> registerGuis(List<PC_Struct2<String, Class>> guis) {
 		guis.add(new PC_Struct2<String, Class>("WeaselDiskManager", PCws_ContainerWeaselDiskManager.class));
+		guis.add(new PC_Struct2<String, Class>("WeaselDiskDrive", PCws_ContainerWeaselDiskDrive.class));
 		return guis;
 	}
 
