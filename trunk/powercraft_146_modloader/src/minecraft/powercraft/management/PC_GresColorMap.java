@@ -167,7 +167,7 @@ public class PC_GresColorMap extends PC_GresWidget {
 						color = colorArray[x][y];
 					}
 					if (color != -1) {
-						posX = x * px + pos.x + posOffset.x + (border ? bdrdist : 0);
+						posX = (x + 1) * px + pos.x + posOffset.x + (border ? bdrdist : 0);
 						posY = (y + 1) * px + pos.y + posOffset.y + (border ? bdrdist : 0);
 						tessellator.setColorRGBA((color >> 16) & 0xFF, (color >> 8) & 0xFF, color & 0xFF, 255);
 						tessellator.addVertex(posX, posY, 0.0D);
@@ -197,6 +197,7 @@ public class PC_GresColorMap extends PC_GresWidget {
 	public boolean mouseClick(PC_VecI mousePos, int key) {
 		dragging = (key != -1);
 		mousePos.y -= px;
+		mousePos.x -= px;
 //		if (mousePos.x >= size.x - 2 * px) return false;
 //		if (mousePos.y >= size.y - 2 * px) return false;
 		lastMousePos = mousePos.copy();
