@@ -15,8 +15,11 @@ import weasel.lang.Instruction;
 import weasel.lang.InstructionFunction;
 import weasel.lang.InstructionLabel;
 import weasel.obj.WeaselBoolean;
+import weasel.obj.WeaselFunctionCall;
 import weasel.obj.WeaselInteger;
+import weasel.obj.WeaselNull;
 import weasel.obj.WeaselObject;
+import weasel.obj.WeaselString;
 import weasel.obj.WeaselVariableMap;
 
 
@@ -210,6 +213,16 @@ public class InstructionList implements PC_INBT {
 		// hardware functions
 		if (!external && engine.hardwareFunctionExists(functionName)) {
 			engine.callHardwareFunction(functionName, args);
+			if(engine.retval instanceof WeaselFunctionCall){
+				WeaselFunctionCall fc = (WeaselFunctionCall)engine.retval;
+				
+				if(fc.lib==null){
+					engine.instructionList.callFunction_do(false, fc.functionName, fc.args);
+				}else{
+					engine.libs.get(fc.lib).callFunction_do(false, fc.functionName, fc.args);
+				}
+				engine.runLib = fc.lib;
+			}
 			return;
 		}
 
@@ -229,6 +242,11 @@ public class InstructionList implements PC_INBT {
 			engine.systemStack.push(new WeaselBoolean(external));
 			engine.systemStack.push(new WeaselInteger(programCounter));
 			engine.systemStack.push(engine.variables);
+			if(engine.runLib==null){
+				engine.systemStack.push(new WeaselNull());
+			}else{
+				engine.systemStack.push(new WeaselString(engine.runLib));
+			}
 
 			programCounter = func.getAddress();
 			engine.variables.clear();
@@ -261,6 +279,12 @@ public class InstructionList implements PC_INBT {
 
 		engine.setReturnValue(retval);
 
+		WeaselObject o = engine.systemStack.pop();
+		if(o instanceof WeaselNull){
+			engine.runLib = null;
+		}else{
+			engine.runLib = ((WeaselString)o).string;
+		}
 		engine.variables = (WeaselVariableMap) engine.systemStack.pop();
 		programCounter = ((WeaselInteger) engine.systemStack.pop()).get();
 		boolean wasExternal = ((WeaselBoolean) engine.systemStack.pop()).get();
