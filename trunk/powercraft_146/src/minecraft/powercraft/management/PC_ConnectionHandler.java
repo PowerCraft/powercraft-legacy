@@ -24,7 +24,6 @@ public class PC_ConnectionHandler implements IConnectionHandler {
 
 	@Override
 	public String connectionReceived(NetLoginHandler netHandler, INetworkManager manager) {
-		System.out.println("connectionReceived");
 		ByteArrayOutputStream data = new ByteArrayOutputStream();
         ObjectOutputStream sendData;
 

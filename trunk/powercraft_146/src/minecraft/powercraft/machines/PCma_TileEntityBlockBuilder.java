@@ -206,13 +206,10 @@ public class PCma_TileEntityBlockBuilder extends PC_TileEntity implements IInven
 
 		// use on front block (usually bonemeal on crops)
 		if (!isEmptyBlock(idFront) && !(itemstack.getItem() instanceof ItemReed)) {
-			System.out.println("try2useItem");
 			int dmgOrig = itemstack.getItemDamage();
 			int sizeOrig = itemstack.stackSize;
 
 			if (itemstack.getItem().onItemUse(itemstack, fakeplayer, worldObj, x + incX, y, z + incZ, 1, 0.0f, 0.0f, 0.0f)) {
-
-				System.out.println("OK");
 				
 				if (itemstack.getItem() instanceof ItemMonsterPlacer) {
 					return 1;

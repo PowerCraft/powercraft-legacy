@@ -211,7 +211,6 @@ public class PCma_TileEntityReplacer extends PC_TileEntity implements IInventory
     public void readFromNBT(NBTTagCompound nbttagcompound)
     {
         super.readFromNBT(nbttagcompound);
-        System.out.println("readFromNBT");
         NBTTagList nbttaglist = nbttagcompound.getTagList("Items");
 
         if (nbttaglist.tagCount() > 0)
