@@ -99,7 +99,6 @@ public class PC_ClassInfo {
 		        	o = new int[]{is.readShort(), is.readByte()};
 		        	break;
 		        default:
-		        	System.out.println("Error");
 		        	return;
 		        }
 		        constantPool[i] = o;

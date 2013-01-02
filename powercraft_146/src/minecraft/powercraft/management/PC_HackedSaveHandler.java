@@ -42,11 +42,9 @@ public class PC_HackedSaveHandler extends AnvilSaveHandler {
 			PC_GlobalVariables.oldConsts = null;
 		}
 		if(!SaveHandler.loadPCObjectsIDs(getSaveDirectory())){
-			System.out.println("Error");
 			ModuleLoader.resetPCObjectsIDs();
 			saveBlockID();
 		}else{
-			System.out.println("OK");
 			ModuleLoader.savePCObjectsIDs(getSaveDirectory());
 		}
 	}
