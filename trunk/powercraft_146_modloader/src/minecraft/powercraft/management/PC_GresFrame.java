@@ -11,7 +11,7 @@ public class PC_GresFrame extends PC_GresWidget {
 
 
 	/** distance from borders to contents. */
-	int framePadding = 5;
+	public int framePadding = 5;
 
 	/**
 	 * frame widget H
