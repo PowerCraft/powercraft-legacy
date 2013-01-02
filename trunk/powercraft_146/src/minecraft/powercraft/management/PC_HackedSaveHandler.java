@@ -23,11 +23,9 @@ public class PC_HackedSaveHandler extends AnvilSaveHandler {
 
 	@Override
 	public WorldInfo loadWorldInfo() {
-		System.out.println("loadWorldInfo");
 		loadBlockID();
 		WorldInfo worldInfo = super.loadWorldInfo();
 		SaveHandler.loadPowerCraftData(worldInfo, getSaveDirectory());
-		System.out.println("OK");
 		return worldInfo;
 	}
 
