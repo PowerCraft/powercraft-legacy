@@ -1,7 +1,8 @@
 package powercraft.management;
 
 
-import java.util.ArrayList;
+import java.io.Serializable;
+import java.util.List;
 
 import net.minecraft.src.ChatAllowedCharacters;
 import net.minecraft.src.FontRenderer;
@@ -230,7 +231,7 @@ public class PC_GresTextEditMultiline extends PC_GresWidget {
 	 * 
 	 * @author XOR19
 	 */
-	public static class Keyword {
+	public static class Keyword implements Serializable {
 		/** the keyword */
 		public String word;
 
@@ -396,7 +397,7 @@ public class PC_GresTextEditMultiline extends PC_GresWidget {
 					if (xV + charWidth > size.x + scroll.x - 24) return;
 					if (c != '\t')
 						drawStringColor("" + c, offsetPos.x + xV - scroll.x, offsetPos.y, fg != null ? 0xff000000 | fg
-								: line[i].kw == null ? 0xff000000 | PC_GresHighlightHelper.colorDefault : line[i].kw.color);
+								: line[i].kw == null ? 0xff000000 | colorDefault : line[i].kw.color);
 				}
 				if (c == '\t')
 					xV = (xV / 10 + 1) * 10;
@@ -543,8 +544,8 @@ public class PC_GresTextEditMultiline extends PC_GresWidget {
 	private PC_VecI mouseSelectEnd = new PC_VecI(0, 0);
 	private int mousePressed = 0;
 	private PC_VecI scroll = new PC_VecI(0, 0);
-	private ArrayList<Keyword> keyWords = null;
-	public void setKeywords(ArrayList<Keyword> kw) {
+	private List<Keyword> keyWords = null;
+	public void setKeywords(List<Keyword> kw) {
 		this.keyWords = kw;
 		text.update();
 	}
@@ -558,7 +559,8 @@ public class PC_GresTextEditMultiline extends PC_GresWidget {
 
 	private TextFile text;
 	private Integer bg = null, fg = null;
-	
+	private int colorDefault;
+	private int colorBackground;
 
 	public PC_GresTextEditMultiline setBgColor(int color) {
 		bg = color;
@@ -581,14 +583,16 @@ public class PC_GresTextEditMultiline extends PC_GresWidget {
 	 * @param minWidth width
 	 * @param minHeight height
 	 */
-	public PC_GresTextEditMultiline(String text, int minWidth, int minHeight) {
+	public PC_GresTextEditMultiline(String text, int minWidth, int minHeight, int colorDefault, int colorBackground) {
 		super(minWidth > 20 ? minWidth : 20, minHeight > getFR().FONT_HEIGHT + 26 ? minHeight : getFR().FONT_HEIGHT + 26, "");
 		canAddWidget = false;
-		color[textColorEnabled] = 0xff000000 | PC_GresHighlightHelper.colorDefault;
+		this.colorDefault = colorDefault;
+		this.colorBackground = colorBackground;
+		color[textColorEnabled] = 0xff000000 | colorDefault;
 		color[textColorShadowEnabled] = 0; // 0xff383838;
-		color[textColorClicked] = 0xff000000 | PC_GresHighlightHelper.colorDefault;
-		color[textColorHover] = 0xff000000 | PC_GresHighlightHelper.colorDefault;
-		color[textColorDisabled] = 0xff000000 | PC_GresHighlightHelper.colorDefault;
+		color[textColorClicked] = 0xff000000 | colorDefault;
+		color[textColorHover] = 0xff000000 | colorDefault;
+		color[textColorDisabled] = 0xff000000 | colorDefault;
 		color[textColorShadowDisabled] = 0; // 0xff383838;
 		this.text = new TextFile(text);
 	}
@@ -601,14 +605,16 @@ public class PC_GresTextEditMultiline extends PC_GresWidget {
 	 * @param minHeight height
 	 * @param keyWords list of keywords
 	 */
-	public PC_GresTextEditMultiline(String text, int minWidth, int minHeight, ArrayList<Keyword> keyWords) {
+	public PC_GresTextEditMultiline(String text, int minWidth, int minHeight, int colorDefault, int colorBackground, List<Keyword> keyWords) {
 		super(minWidth > 20 ? minWidth : 20, minHeight > getFR().FONT_HEIGHT + 26 ? minHeight : getFR().FONT_HEIGHT + 26, "");
 		canAddWidget = false;
-		color[textColorEnabled] = 0xff000000 | PC_GresHighlightHelper.colorDefault;
+		this.colorDefault = colorDefault;
+		this.colorBackground = colorBackground;
+		color[textColorEnabled] = 0xff000000 |colorDefault;
 		color[textColorShadowEnabled] = 0; // 0xff383838;
-		color[textColorClicked] = 0xff000000 | PC_GresHighlightHelper.colorDefault;
-		color[textColorHover] = 0xff000000 | PC_GresHighlightHelper.colorDefault;
-		color[textColorDisabled] = 0xff000000 | PC_GresHighlightHelper.colorDefault;
+		color[textColorClicked] = 0xff000000 | colorDefault;
+		color[textColorHover] = 0xff000000 | colorDefault;
+		color[textColorDisabled] = 0xff000000 | colorDefault;
 		color[textColorShadowDisabled] = 0; // 0xff383838;
 		this.keyWords = keyWords;
 		this.text = new TextFile(text);
@@ -623,14 +629,16 @@ public class PC_GresTextEditMultiline extends PC_GresWidget {
 	 * @param keyWords list of keywords
 	 * @param autoAdd autoAdd function
 	 */
-	public PC_GresTextEditMultiline(String text, int minWidth, int minHeight, ArrayList<Keyword> keyWords, AutoAdd autoAdd) {
+	public PC_GresTextEditMultiline(String text, int minWidth, int minHeight, int colorDefault, int colorBackground, List<Keyword> keyWords, AutoAdd autoAdd) {
 		super(minWidth > 20 ? minWidth : 20, minHeight > getFR().FONT_HEIGHT + 26 ? minHeight : getFR().FONT_HEIGHT + 26, "");
 		canAddWidget = false;
-		color[textColorEnabled] = 0xff000000 | PC_GresHighlightHelper.colorDefault;
+		this.colorDefault = colorDefault;
+		this.colorBackground = colorBackground;
+		color[textColorEnabled] = 0xff000000 | colorDefault;
 		color[textColorShadowEnabled] = 0; // 0xff383838;
-		color[textColorClicked] = 0xff000000 | PC_GresHighlightHelper.colorDefault;
-		color[textColorHover] = 0xff000000 | PC_GresHighlightHelper.colorDefault;
-		color[textColorDisabled] = 0xff000000 | PC_GresHighlightHelper.colorDefault;
+		color[textColorClicked] = 0xff000000 | colorDefault;
+		color[textColorHover] = 0xff000000 | colorDefault;
+		color[textColorDisabled] = 0xff000000 | colorDefault;
 		color[textColorShadowDisabled] = 0; // 0xff383838;
 		this.keyWords = keyWords;
 		this.autoAdd = autoAdd;
@@ -1065,7 +1073,7 @@ public class PC_GresTextEditMultiline extends PC_GresWidget {
 		drawVerticalLine(offsetPos.x + pos.x + size.x - 1, offsetPos.y + pos.y, offsetPos.y + pos.y + size.y - 12, 0xffA0A0A0);
 
 		drawRect(offsetPos.x + pos.x + 1, offsetPos.y + pos.y + 1, offsetPos.x + pos.x + size.x - 12, offsetPos.y + pos.y + size.y - 12,
-				0xff000000 | (bg != null ? bg : PC_GresHighlightHelper.colorBackground));
+				0xff000000 | (bg != null ? bg : colorBackground));
 
 		int scrollbarBg = 0x909090;
 

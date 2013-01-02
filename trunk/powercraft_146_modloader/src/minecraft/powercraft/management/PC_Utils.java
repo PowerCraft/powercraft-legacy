@@ -76,7 +76,8 @@ public class PC_Utils implements PC_IPacketHandler
     public static final int MSG_DEFAULT_NAME=1, MSG_BLOCK_FLAGS=2, MSG_ITEM_FLAGS=3, MSG_RENDER_INVENTORY_BLOCK=4, MSG_RENDER_WORLD_BLOCK=5,
     		MSG_SPAWNS_IN_CHUNK=6, MSG_BLOCKS_ON_SPAWN_POINT=7, MSG_SPAWN_POINT=8, MSG_SPAWN_POINT_METADATA=9, MSG_LOAD_FROM_CONFIG=10,
     		MSG_ON_HIT_BY_BEAM_TRACER=11, MSG_BURN_TIME=12, MSG_RECIVE_POWER=13, MSG_CAN_RECIVE_POWER=14, MSG_ON_ACTIVATOR_USED_ON_BLOCK = 15,
-    		MSG_DONT_SHOW_IN_CRAFTING_TOOL=16, MSG_STR_MSG=17, MSG_RENDER_ITEM_HORIZONTAL=18, MSG_ROTATION=19;
+    		MSG_DONT_SHOW_IN_CRAFTING_TOOL=16, MSG_STR_MSG=17, MSG_RENDER_ITEM_HORIZONTAL=18, MSG_ROTATION=19, MSG_RATING=20, MSG_CONDUCTIVITY = 21,
+    	    MSG_TICK_EVENT = 22, MSG_LOAD_WORLD=23;
     
     protected PC_Utils(){
         PC_PacketHandler.registerPackethandler("PacketUtils", this);
@@ -742,9 +743,6 @@ public class PC_Utils implements PC_IPacketHandler
 		        }
 		    }
 		}
-		public static boolean setMD(World world, PC_VecI pos, int md) {
-			return PC_Utils.GameInfo.getMD(world, pos.x, pos.y, pos.z, md);
-		}
 		public static <t extends TileEntity>t setTE(World world, int x, int y, int z, t createTileEntity)
 		{
 		    world.setBlockTileEntity(x, y, z, createTileEntity);
@@ -932,6 +930,19 @@ public class PC_Utils implements PC_IPacketHandler
 		}
 		public static boolean setBIDNoNotify(World world, PC_VecI pos, int id, int meta) {
 			return PC_Utils.ValueWriting.setBID(world, pos.x, pos.y, pos.z, id, meta);
+		}
+		public static boolean setMD(World world, int x, int y, int z, int md)
+		{
+		    if (world != null)
+		    {
+		        return world.setBlockMetadata(x, y, z, md);
+		    }
+		
+		    return false;
+		}
+		
+		public static boolean setMD(World world, PC_VecI pos, int md) {
+			return setMD(world, pos.x, pos.y, pos.z, md);
 		}
 		public static boolean setMDNoNotify(World world, int x, int y, int z, int meta) {
 			return world.setBlockMetadata(x, y, z, meta);
@@ -1257,17 +1268,7 @@ public class PC_Utils implements PC_IPacketHandler
 		{
 		    return PC_Utils.GameInfo.getMD(world, vec.x, vec.y, vec.z);
 		}
-
-		public static boolean getMD(World world, int x, int y, int z, int md)
-		{
-		    if (world != null)
-		    {
-		        return world.setBlockMetadata(x, y, z, md);
-		    }
 		
-		    return false;
-		}
-
 		public static boolean isChestEmpty(World world, int x, int y, int z, ItemStack itemStack)
 		{
 		    IInventory invAt = PC_InvUtils.getCompositeInventoryAt(world, new PC_VecI(x, y, z));
@@ -1458,14 +1459,20 @@ public class PC_Utils implements PC_IPacketHandler
 		
 		    if (b.blockID == Block.blockSteel.blockID)
 		    {
-		        return 0.9f;
+		        return 0.8f;
 		    }
 		
 		    if (b.blockID == Block.blockGold.blockID)
 		    {
-		        return 0.7f;
+		        return 0.9f;
 		    }
 		
+		    if(b instanceof PC_IMSG){
+		    	Object o = ((PC_IMSG) b).msg(PC_Utils.MSG_CONDUCTIVITY);
+		    	if(o instanceof Float)
+		    		return (Float)o;
+		    }
+		    
 		    return 0.0f;
 		}
 
@@ -1874,6 +1881,9 @@ public class PC_Utils implements PC_IPacketHandler
     	
 		public static void loadPowerCraftData(WorldInfo worldInfo, File worldDirectory) {
 			worldDirectory = new File(worldDirectory, "powercraft");
+			for(PC_IDataHandler dh : dataHandlers.values()){
+				dh.reset();
+			}
 			if(worldDirectory.exists()){
 				File files[] = worldDirectory.listFiles();
 				for(File file:files){
@@ -1889,6 +1899,9 @@ public class PC_Utils implements PC_IPacketHandler
 						}
 					}
 				}
+			}
+			for(PC_IMSG msg : msgObjects){
+				msg.msg(MSG_LOAD_WORLD, worldInfo, worldDirectory);
 			}
 		}
 		
