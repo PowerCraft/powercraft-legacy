@@ -15,6 +15,7 @@ import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import powercraft.management.PC_Block;
 import powercraft.management.PC_IPacketHandler;
+import powercraft.management.PC_PacketHandler;
 import powercraft.management.PC_Renderer;
 import powercraft.management.PC_Utils;
 import powercraft.management.PC_Utils.Gres;
@@ -122,15 +123,15 @@ public class PCws_BlockWeaselDiskManager extends PC_Block implements PC_IPacketH
 
 	@Override
 	public boolean handleIncomingPacket(EntityPlayer player, Object[] o) {
-		ItemStack itemStack = (ItemStack)player.openContainer.getInventory().get(36);
+		ItemStack itemStack = player.openContainer.getSlot(36).getStack();
+		String msg = (String)o[0];
 		if(itemStack!=null){
-			String msg = (String)o[0];
 			if(msg.equals("setLabel")){
 				PCws_ItemWeaselDisk.setLabel(itemStack, (String)o[1]);
 			}else if(msg.equals("setColor")){
 				PCws_ItemWeaselDisk.setColor(itemStack, (Integer)o[1]);
-			}else if(msg.equals("setType")){
-				PCws_ItemWeaselDisk.setType(itemStack, (Integer)o[1]);
+			}else if(msg.equals("formatDisk")){
+				PCws_ItemWeaselDisk.formatDisk(itemStack, (Integer)o[1]);
 			}else if(msg.equals("setText")){
 				PCws_ItemWeaselDisk.setText(itemStack, (String)o[1]);
 			}else if(msg.equals("setImageSize")){
@@ -160,6 +161,7 @@ public class PCws_BlockWeaselDiskManager extends PC_Block implements PC_IPacketH
 			}else if(msg.equals("setMapVariable")){
 				PCws_ItemWeaselDisk.setMapVariable(itemStack, (String)o[1], o[2] instanceof Integer?new WeaselInteger(o[2]):new WeaselString(o[2]));
 			}else if(msg.equals("compile")){
+				PCws_ItemWeaselDisk.setLibrarySource(itemStack, (String)o[1]);
 				try {
 					List<Instruction> list = new ArrayList<Instruction>(20);
 					list.add(new InstructionEnd());
@@ -168,6 +170,17 @@ public class PCws_BlockWeaselDiskManager extends PC_Block implements PC_IPacketH
 					PCws_ItemWeaselDisk.setLibraryInstructions(itemStack, list);
 				}catch(Exception e) {
 				}
+			}else if(msg.equals("setLibrarySource")){
+				PCws_ItemWeaselDisk.setLibrarySource(itemStack, (String)o[1]);
+			}
+		}
+		if(msg.equals("clone")){
+			ItemStack itemStack1, itemStack2;
+			itemStack1 = player.openContainer.getSlot(37).getStack();
+			itemStack2 = player.openContainer.getSlot(38).getStack();
+			if(itemStack1!=null&&itemStack2!=null){
+				player.openContainer.getSlot(38).putStack(itemStack1.copy());
+				ValueWriting.playSound(player.posX, player.posY, player.posZ, "random.wood click", 1.0F, 1.0F);
 			}
 		}
 		return false;
