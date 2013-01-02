@@ -527,8 +527,7 @@ public class JEP {
 		symTab.addConstant("BEDROCK", Block.bedrock.blockID);
 		symTab.addConstant("OBSIDIAN", Block.obsidian.blockID);
 		symTab.addConstant("ENDSTONE", Block.whiteStone.blockID);
-		/** TODO stairsBrick was stairSingle?? */
-		symTab.addConstant("SLAB", Block.stairsBrick.blockID);		
+		symTab.addConstant("SLAB", Block.stoneSingleSlab.blockID);		
 		symTab.addConstant("LEAVES", Block.leaves.blockID);
 		symTab.addConstant("STONE", Block.stone.blockID);
 		symTab.addConstant("FENCE", Block.fence.blockID);
