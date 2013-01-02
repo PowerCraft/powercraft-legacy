@@ -336,9 +336,6 @@ public class WeaselEngine implements PC_INBT, IVariableProvider, IFunctionProvid
 
 		try {
 			retval = hw.callProvidedFunction(this, functionName, args);
-			if(retval instanceof WeaselFunctionCall){
-				
-			}
 		} catch (ClassCastException e) {
 			throw new WeaselRuntimeException("Invalid arguments for function " + functionName);
 		} catch (ArrayIndexOutOfBoundsException e) {
