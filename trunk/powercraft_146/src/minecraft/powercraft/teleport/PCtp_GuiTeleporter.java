@@ -38,6 +38,7 @@ public class PCtp_GuiTeleporter implements PC_IGresClient {
 	private PC_GresCheckBox monsters;
 	private PC_GresCheckBox items;
 	private PC_GresCheckBox players;
+	private PC_GresCheckBox lasers;
 	private PC_GresCheckBox sneakTrigger;
 	private PC_GresCheckBox playerChoose;
 	private PC_GresCheckBox soundEnabled;
@@ -100,6 +101,8 @@ public class PCtp_GuiTeleporter implements PC_IGresClient {
 		vg.add(items = new PC_GresCheckBox(Lang.tr("pc.gui.teleporter.items")));
 		items.check(td.items);
 		vg.add(players = new PC_GresCheckBox(Lang.tr("pc.gui.teleporter.players")));
+		players.check(td.players);
+		vg.add(players = new PC_GresCheckBox(Lang.tr("pc.gui.teleporter.lasers")));
 		players.check(td.players);
 		vg.add(sneakTrigger = new PC_GresCheckBox(Lang.tr("pc.gui.teleporter.sneakTrigger")));
 		sneakTrigger.check(td.sneakTrigger);

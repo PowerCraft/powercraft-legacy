@@ -58,9 +58,9 @@ public class PCco_GuiCraftingTool extends PCco_ContainerCraftingTool implements 
 		PC_GresLayoutV lv = new PC_GresLayoutV();
 		lv.setAlignH(PC_GresAlign.STRETCH);
 		page.slots = new ArrayList<PCco_SlotDirectCrafting>();
-		List<PC_Struct2<PC_IModule, PCco_SlotDirectCrafting>> cls = moduleList.get(name);
-		for(PC_Struct2<PC_IModule, PCco_SlotDirectCrafting> s: cls){
-			page.slots.add(s.b);
+		List<PCco_SlotDirectCrafting> cls = moduleList.get(name);
+		for(PCco_SlotDirectCrafting s: cls){
+			page.slots.add(s);
 		}
 		page.scroll = page.slots.size()>12*9;
 		lv.add(page.inv = new PC_GresInventory(12, page.scroll?8:9));
@@ -109,13 +109,13 @@ public class PCco_GuiCraftingTool extends PCco_ContainerCraftingTool implements 
 	private void searchItems(){
 		searchPage.slots.clear();
 		String searchString = search.getText().toLowerCase();
-		Collection<List<PC_Struct2<PC_IModule, PCco_SlotDirectCrafting>>> cls = moduleList.values();
-		for(List<PC_Struct2<PC_IModule, PCco_SlotDirectCrafting>> ls: cls){
-			for(PC_Struct2<PC_IModule, PCco_SlotDirectCrafting> s:ls){
-				List<String> info = (List<String>)s.b.getBackgroundStack().getTooltip(thePlayer, false);
+		Collection<List<PCco_SlotDirectCrafting>> cls = moduleList.values();
+		for(List<PCco_SlotDirectCrafting> ls: cls){
+			for(PCco_SlotDirectCrafting s:ls){
+				List<String> info = (List<String>)s.getBackgroundStack().getTooltip(thePlayer, false);
 				for(String infoString:info){
 					if (infoString.toLowerCase().contains(searchString)){
-						searchPage.slots.add(s.b);
+						searchPage.slots.add(s);
 						break;
 					}
 				}

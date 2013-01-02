@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+import net.minecraft.inventory.Slot;
 import net.minecraft.tileentity.TileEntity;
 import powercraft.management.PC_Utils.GameInfo;
 
