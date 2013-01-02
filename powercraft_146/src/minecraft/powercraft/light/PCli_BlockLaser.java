@@ -120,7 +120,7 @@ public class PCli_BlockLaser extends PC_Block implements PC_IItemInfo
         if(te!=null){
         	te.setKiller(GameInfo.isBlock(world, new PC_VecI(i, j-1, k), "PCma_BlockRoaster"));
         }
-        
+        onNeighborBlockChange(world, i, j, k, 0);
     }
 
     @Override
