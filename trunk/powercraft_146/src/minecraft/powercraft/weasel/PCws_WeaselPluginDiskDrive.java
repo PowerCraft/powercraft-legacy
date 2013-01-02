@@ -5,8 +5,12 @@ import java.util.List;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.NBTTagList;
 import powercraft.management.PC_Color;
+import powercraft.management.PC_InvUtils;
 import powercraft.management.PC_Utils.Gres;
+import powercraft.management.PC_Utils.SaveHandler;
 import powercraft.management.PC_VecI;
 import powercraft.weasel.PCws_WeaselBitmapUtils.WeaselBitmapProvider;
 import weasel.Calc;
@@ -67,6 +71,40 @@ public class PCws_WeaselPluginDiskDrive extends PCws_WeaselPlugin implements PCw
 			return new ImageEditor(disk);
 		}
 		
+	}
+	
+	@Override
+	protected PCws_WeaselPlugin readPluginFromNBT(NBTTagCompound tag) {
+		NBTTagList nbtList = tag.getTagList("inv");
+		for (int i = 0; i < nbtList.tagCount(); i++)
+        {
+            NBTTagCompound nbttagcompound1 = (NBTTagCompound) nbtList.tagAt(i);
+            int j = nbttagcompound1.getByte("Slot") & 0xff;
+
+            if (j >= 0 && j < inv.length)
+            {
+            	inv[i] = ItemStack.loadItemStackFromNBT(nbttagcompound1);
+            }
+        }
+
+		return this;
+	}
+
+	@Override
+	protected NBTTagCompound writePluginToNBT(NBTTagCompound tag) {
+		NBTTagList nbtList = new NBTTagList();
+		for (int i = 0; i < inv.length; i++)
+        {
+            if (inv[i] != null)
+            {
+                NBTTagCompound nbttagcompound1 = new NBTTagCompound();
+                nbttagcompound1.setByte("Slot", (byte) i);
+                inv[i].writeToNBT(nbttagcompound1);
+                nbtList.appendTag(nbttagcompound1);
+            }
+        }
+		tag.setTag("inv", nbtList);
+		return tag;
 	}
 	
 	@Override
