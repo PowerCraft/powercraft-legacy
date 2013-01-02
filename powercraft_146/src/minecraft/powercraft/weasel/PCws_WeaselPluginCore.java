@@ -12,6 +12,7 @@ import powercraft.management.PC_Utils.SaveHandler;
 import weasel.WeaselEngine;
 import weasel.exception.SyntaxError;
 import weasel.exception.WeaselRuntimeException;
+import weasel.lang.Instruction;
 import weasel.obj.WeaselBoolean;
 import weasel.obj.WeaselInteger;
 import weasel.obj.WeaselNull;
@@ -238,7 +239,15 @@ public class PCws_WeaselPluginCore extends PCws_WeaselPlugin {
 			restartDevice();
 			program = (String)obj;
 			try {
-				weasel.insertNewProgram(WeaselEngine.compileProgram(program));
+				List<Instruction> list = WeaselEngine.compileProgram(program);
+				/*if(getNetwork()!=null){
+					for(PCws_WeaselPlugin plugin:getNetwork()){
+						if(plugin instanceof PCws_WeaselPluginDiskDrive){
+							((PCws_WeaselPluginDiskDrive)plugin).getAllLibraryInstructions();
+						}
+					}
+				}*/
+				weasel.insertNewProgram(list);
 			} catch (SyntaxError e) {
 				e.printStackTrace();
 			}
