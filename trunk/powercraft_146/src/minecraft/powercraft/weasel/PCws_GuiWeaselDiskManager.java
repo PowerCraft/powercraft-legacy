@@ -51,6 +51,8 @@ public class PCws_GuiWeaselDiskManager extends PCws_ContainerWeaselDiskManager i
 	private PC_GresWidget main;
 	private PC_GresWidget main_copy;
 	private PC_GresWidget main_format;
+	private PC_GresInventory cpyInv1, cpyInv2;
+	private PC_GresWidget btnCopy;
 	private PC_GresInventoryBigSlot editDisk;
 	private PC_GresWidget btnEditDisk;
 	private PC_GresWidget editDiskLabel;
@@ -90,6 +92,7 @@ public class PCws_GuiWeaselDiskManager extends PCws_ContainerWeaselDiskManager i
 	private PC_GresWidget libary_btnCompile;
 	private PC_GresWidget libary_CodeText;
 	private PC_GresWidget libary_txError;
+	private String libary_CompiledText="";
 	
 	private HashMap<PC_GresWidget, Integer> btnFormat = new HashMap<PC_GresWidget, Integer>();
 	private HashMap<Integer, PC_GresWidget> editor = new HashMap<Integer, PC_GresWidget>();
@@ -108,12 +111,10 @@ public class PCws_GuiWeaselDiskManager extends PCws_ContainerWeaselDiskManager i
 		main_copy.add(new PC_GresImage(ModuleInfo.getGresImgDir() + "graphics.png", 80, 24, 112, 70));
 
 		PC_GresWidget hg = new PC_GresLayoutH().setAlignH(PC_GresAlign.CENTER).setWidgetMargin(3);
-		PC_GresInventory cpyInv1, cpyInv2;
 		hg.add(cpyInv1 = new PC_GresInventory(1, 1));
 		cpyInv1.setSlot(lSlot.get(1), 0, 0);
 
-		hg.add(new PC_GresButtonImage(ModuleInfo.getGresImgDir()  + "widgets.png", new PC_VecI(57, 12), new PC_VecI(13, 10)).setButtonPadding(3,
-				3).setId(-13));
+		hg.add(btnCopy = new PC_GresButtonImage(ModuleInfo.getGresImgDir()  + "widgets.png", new PC_VecI(57, 12), new PC_VecI(13, 10)).setButtonPadding(3, 3));
 		hg.add(cpyInv2 = new PC_GresInventory(1, 1));
 		cpyInv2.setSlot(lSlot.get(2), 0, 0);
 		main_copy.add(hg);
@@ -201,39 +202,37 @@ public class PCws_GuiWeaselDiskManager extends PCws_ContainerWeaselDiskManager i
 		vgi.setAlignV(PC_GresAlign.TOP);
 
 		// colors
-		//@formatter:off
 		PC_GresWidget vg = new PC_GresLayoutV().setAlignH(PC_GresAlign.CENTER);
-			vg.setMinWidth(80);
-			
-			PC_GresWidget frame = new PC_GresFrame().setWidgetMargin(1).setAlignV(PC_GresAlign.CENTER);
-			((PC_GresFrame)frame).framePadding = 3;
-			PC_GresWidget hg1 = new PC_GresLayoutH().setAlignH(PC_GresAlign.CENTER).setWidgetMargin(3);
-			PC_GresWidget btn;	
-			hg1.add(btn = new PC_GresButtonImage(ModuleInfo.getGresImgDir()+"widgets.png",new PC_VecI(71,11),new PC_VecI(12, 11)).setButtonPadding(2, 2).setWidgetMargin(1));
-			btnBack.add(btn);	
-			hg1.add(image_colorBulbI = (PC_GresColor) new PC_GresColor(new PC_Color(0, 0, 0)).setWidgetMargin(1));						
-					hg1.add(image_colorPickerI = new PC_GresColorPicker(0x000000, 60, 30)).setWidgetMargin(1);
-					image_colorBulbI.showAsRect = true;
-					image_colorBulbI.setMinSize(8, 30);
-					image_colorBulbI.setSize(8, 30);
-					PC_GresWidget vg2 = new PC_GresLayoutV().setAlignH(PC_GresAlign.LEFT);
-					PC_GresWidget hg2 = new PC_GresLayoutH().setAlignH(PC_GresAlign.LEFT).setWidgetMargin(0);
-							hg2.add(image_clear = new PC_GresButton(Lang.tr("pc.gui.weasel.diskManager.img.clear")).setButtonPadding(3, 3).setMinWidth(0).setWidgetMargin(1));
-							hg2.add(image_fill = new PC_GresButton(Lang.tr("pc.gui.weasel.diskManager.img.fill")).setButtonPadding(3, 3).setMinWidth(0).setWidgetMargin(1));
-						vg2.add(hg2);
-						hg2 = new PC_GresLayoutH().setAlignH(PC_GresAlign.LEFT).setWidgetMargin(0);
-							hg2.add(image_btnMinus = new PC_GresButton("-").setButtonPadding(3, 3).setWidgetMargin(1).setMinWidth(0));
-							hg2.add(image_btnPlus = new PC_GresButton("+").setButtonPadding(3, 3).setWidgetMargin(1).setMinWidth(0));						
-						vg2.add(hg2);
-					hg1.add(vg2);
-				hg1.add(image_edImgX = new PC_GresTextEdit("0", 4, PC_GresInputType.UNSIGNED_INT).setWidgetMargin(1));
-				hg1.add(image_edImgY = new PC_GresTextEdit("0", 4, PC_GresInputType.UNSIGNED_INT).setWidgetMargin(1));
-				hg1.add(image_btnImgResize = new PC_GresButton(Lang.tr("pc.gui.weasel.diskManager.resize")).setButtonPadding(4, 4).setWidgetMargin(2).setMinWidth(0));
-				frame.add(hg1);
-			vg.add(frame);
+		vg.setMinWidth(80);
+		
+		PC_GresWidget frame = new PC_GresFrame().setWidgetMargin(1).setAlignV(PC_GresAlign.CENTER);
+		((PC_GresFrame)frame).framePadding = 3;
+		PC_GresWidget hg1 = new PC_GresLayoutH().setAlignH(PC_GresAlign.CENTER).setWidgetMargin(3);
+		PC_GresWidget btn;	
+		hg1.add(btn = new PC_GresButtonImage(ModuleInfo.getGresImgDir()+"widgets.png",new PC_VecI(71,11),new PC_VecI(12, 11)).setButtonPadding(2, 2).setWidgetMargin(1));
+		btnBack.add(btn);	
+		hg1.add(image_colorBulbI = (PC_GresColor) new PC_GresColor(new PC_Color(0, 0, 0)).setWidgetMargin(1));						
+		hg1.add(image_colorPickerI = new PC_GresColorPicker(0x000000, 60, 30)).setWidgetMargin(1);
+		image_colorBulbI.showAsRect = true;
+		image_colorBulbI.setMinSize(8, 30);
+		image_colorBulbI.setSize(8, 30);
+		PC_GresWidget vg2 = new PC_GresLayoutV().setAlignH(PC_GresAlign.LEFT);
+		PC_GresWidget hg2 = new PC_GresLayoutH().setAlignH(PC_GresAlign.LEFT).setWidgetMargin(0);
+		hg2.add(image_clear = new PC_GresButton(Lang.tr("pc.gui.weasel.diskManager.img.clear")).setButtonPadding(3, 3).setMinWidth(0).setWidgetMargin(1));
+		hg2.add(image_fill = new PC_GresButton(Lang.tr("pc.gui.weasel.diskManager.img.fill")).setButtonPadding(3, 3).setMinWidth(0).setWidgetMargin(1));
+		vg2.add(hg2);
+		hg2 = new PC_GresLayoutH().setAlignH(PC_GresAlign.LEFT).setWidgetMargin(0);
+		hg2.add(image_btnMinus = new PC_GresButton("-").setButtonPadding(3, 3).setWidgetMargin(1).setMinWidth(0));
+		hg2.add(image_btnPlus = new PC_GresButton("+").setButtonPadding(3, 3).setWidgetMargin(1).setMinWidth(0));						
+		vg2.add(hg2);
+		hg1.add(vg2);
+		hg1.add(image_edImgX = new PC_GresTextEdit("0", 4, PC_GresInputType.UNSIGNED_INT).setWidgetMargin(1));
+		hg1.add(image_edImgY = new PC_GresTextEdit("0", 4, PC_GresInputType.UNSIGNED_INT).setWidgetMargin(1));
+		hg1.add(image_btnImgResize = new PC_GresButton(Lang.tr("pc.gui.weasel.diskManager.resize")).setButtonPadding(4, 4).setWidgetMargin(2).setMinWidth(0));
+		frame.add(hg1);
+		vg.add(frame);
 			
 		vgi.add(vg);
-		//@formatter:on
 
 		// map
 		vg = new PC_GresLayoutV().setAlignH(PC_GresAlign.CENTER).setMinHeight(135);
@@ -305,7 +304,7 @@ public class PCws_GuiWeaselDiskManager extends PCws_ContainerWeaselDiskManager i
 		btnBack.add(btn);
 		vg.add(libary_btnCompile = new PC_GresButtonImage(ModuleInfo.getGresImgDir()+"widgets.png",new PC_VecI(84,10),new PC_VecI(13, 12)).setButtonPadding(2, 2).setWidgetMargin(3));
 		hg.add(vg);
-		hg.add(libary_CodeText = new PC_GresTextEditMultiline("", 220, 148, PCws_WeaselHighlightHelper.colorDefault, PCws_WeaselHighlightHelper.colorBackground, PCws_WeaselHighlightHelper.weasel(null, new WeaselEngine(null)), PCws_WeaselHighlightHelper.autoAdd));
+		hg.add(libary_CodeText = new PC_GresTextEditMultiline("", 220, 175, PCws_WeaselHighlightHelper.colorDefault, PCws_WeaselHighlightHelper.colorBackground, PCws_WeaselHighlightHelper.weasel(null, new WeaselEngine(null)), PCws_WeaselHighlightHelper.autoAdd));
 		vgc.add(hg);
 		vgc.add(libary_txError = new PC_GresLabelMultiline(Lang.tr("pc.gui.weasel.diskManager.clickCompile"), 220)
 		.setMinRows(1).setMaxRows(1).enable(false).setWidgetMargin(1).setColor(PC_GresWidget.textColorDisabled, 0x000000));
@@ -350,6 +349,7 @@ public class PCws_GuiWeaselDiskManager extends PCws_ContainerWeaselDiskManager i
 		makeEditor_Image(win);
 		makeEditor_List(win);
 		makeEditor_VarMap(win);
+		makeEditor_Libary(win);
 		gui.add(win);
 		openMainPage(false);
 		main.setSize(main.getSize().x, 20);
@@ -398,6 +398,7 @@ public class PCws_GuiWeaselDiskManager extends PCws_ContainerWeaselDiskManager i
 		}else if(type==PCws_ItemWeaselDisk.LIBRARY){
 			libary_CodeText.setText(PCws_ItemWeaselDisk.getLibrarySource(itemstack));
 			check = true;
+			libary_CompiledText = "";
 		}
 	}
 	
@@ -432,6 +433,7 @@ public class PCws_GuiWeaselDiskManager extends PCws_ContainerWeaselDiskManager i
 			PC_PacketHandler.sendToPacketHandler(thePlayer.worldObj, "WeaselDiskDrive", "setListText", list_ListText.getText(), list_Separator.getText());
 		}else if(type==PCws_ItemWeaselDisk.LIBRARY){
 			PCws_ItemWeaselDisk.setLibrarySource(itemstack, libary_CodeText.getText());
+			PC_PacketHandler.sendToPacketHandler(thePlayer.worldObj, "WeaselDiskDrive", "setLibrarySource", libary_CodeText.getText());
 			check = false;
 		}
 	}
@@ -463,6 +465,14 @@ public class PCws_GuiWeaselDiskManager extends PCws_ContainerWeaselDiskManager i
 				PCws_ItemWeaselDisk.setLabel(itemstack, editDiskLabel.getText());
 				PC_PacketHandler.sendToPacketHandler(thePlayer.worldObj, "WeaselDiskDrive", "setLabel", editDiskLabel.getText());
 			}
+		}else if(widget==btnCopy){
+			ItemStack itemStack1, itemStack2;
+			itemStack1 = cpyInv1.getSlot(0, 0).getStack();
+			itemStack2 = cpyInv2.getSlot(0, 0).getStack();
+			if(itemStack1!=null&&itemStack2!=null){
+				cpyInv2.getSlot(0, 0).putStack(itemStack1.copy());
+				PC_PacketHandler.sendToPacketHandler(thePlayer.worldObj, "WeaselDiskDrive", "clone");
+			}
 		}else if(widget==diskColorPicker){
 			diskColor.setColor(diskColorPicker.getColor());
 		}else if(widget==btnDiskColor){
@@ -477,8 +487,8 @@ public class PCws_GuiWeaselDiskManager extends PCws_ContainerWeaselDiskManager i
 			}
 		}else if(btnFormat.containsKey(widget)){
 			if(itemstack!=null){
-				PCws_ItemWeaselDisk.setType(itemstack, btnFormat.get(widget));
-				PC_PacketHandler.sendToPacketHandler(thePlayer.worldObj, "WeaselDiskDrive", "setType", btnFormat.get(widget));
+				PCws_ItemWeaselDisk.formatDisk(itemstack, btnFormat.get(widget));
+				PC_PacketHandler.sendToPacketHandler(thePlayer.worldObj, "WeaselDiskDrive", "formatDisk", btnFormat.get(widget));
 				checkFormat.check(false);
 				for(PC_GresWidget w:btnFormat.keySet()){
 					w.enable(false);
@@ -636,12 +646,13 @@ public class PCws_GuiWeaselDiskManager extends PCws_ContainerWeaselDiskManager i
 			}
 			data_DataText.setText(str);
 		}else if (widget == libary_btnCompile) {
-			PCws_ItemWeaselDisk.setLibrarySource(itemstack, libary_CodeText.getText());
-			PC_PacketHandler.sendToPacketHandler(thePlayer.worldObj, "WeaselDiskDrive", "compile", libary_CodeText.getText());
+			libary_CompiledText = libary_CodeText.getText();
+			PCws_ItemWeaselDisk.setLibrarySource(itemstack, libary_CompiledText);
+			PC_PacketHandler.sendToPacketHandler(thePlayer.worldObj, "WeaselDiskDrive", "compile", libary_CompiledText);
 			libary_txError.setText(Lang.tr("pc.gui.weasel.diskManager.compiled"));
 			libary_txError.setColor(PC_GresWidget.textColorDisabled, 0x000000);
 		}else if (widget == libary_CodeText) {
-			if(libary_txError.getText().equals(Lang.tr("pc.gui.weasel.diskManager.compiled"))){
+			if(!libary_CompiledText.equals(libary_CodeText.getText())){
 				libary_txError.setText(Lang.tr("pc.gui.weasel.diskManager.clickCompile"));
 				libary_txError.setColor(PC_GresWidget.textColorDisabled, 0x000000);
 			}
@@ -666,11 +677,15 @@ public class PCws_GuiWeaselDiskManager extends PCws_ContainerWeaselDiskManager i
 	public void updateScreen(PC_IGresGui gui) {
 		tick++;
 		if(tick%20==0 && check){
-			libary_txError.setText(Lang.tr("pc.gui.weasel.diskManager.clickCompile"));
-			libary_txError.setColor(PC_GresWidget.textColorDisabled, 0x000000);
 			try{
 				WeaselEngine.compileProgram(libary_CodeText.getText());
 				libary_btnCompile.enable(true);
+				if(!libary_CompiledText.equals(libary_CodeText.getText())){
+					libary_txError.setText(Lang.tr("pc.gui.weasel.diskManager.clickCompile"));
+				}else{
+					libary_txError.setText(Lang.tr("pc.gui.weasel.diskManager.compiled"));
+				}
+				libary_txError.setColor(PC_GresWidget.textColorDisabled, 0x000000);
 			}catch(Exception e){
 				libary_txError.setText(e.getMessage());
 				libary_txError.setColor(PC_GresWidget.textColorDisabled, 0xff0000);
