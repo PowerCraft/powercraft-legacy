@@ -41,7 +41,7 @@ public class PCws_WeaselPluginInfoCore extends PCws_WeaselPluginInfo {
 		if(msg.equalsIgnoreCase("bell")){
 			ValueWriting.playSound(te.xCoord + 0.5D, te.yCoord + 0.5D, te.zCoord + 0.5D, "random.orb", 0.8F,
 					(rand.nextFloat() - rand.nextFloat()) * 0.2F + 1.0F);
-		te.worldObj.spawnParticle("note", te.xCoord + 0.5D, te.yCoord + 0.3D, te.zCoord + 0.5D, (Double)obj,
+		te.getWorldObj().spawnParticle("note", te.xCoord + 0.5D, te.yCoord + 0.3D, te.zCoord + 0.5D, (Double)obj,
 				0.0D, 0.0D);
 		}
 	}

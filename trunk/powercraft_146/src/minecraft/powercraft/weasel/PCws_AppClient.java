@@ -59,7 +59,9 @@ public class PCws_AppClient extends PCws_App implements PC_IClientModule {
 		lang.add(new PC_LangEntry("pc.gui.weasel.diskManager.clickCompile", "Click \"Compile\" to make the library executable."));
 		lang.add(new PC_LangEntry("pc.gui.weasel.diskManager.compiled", "Library was successfully compiled."));
 
-		lang.add(new PC_LangEntry("pc.gui.weasel.diskManager.compiled", "pc.gui.weasel.diskDrive.tab", "Disk Drive"));
+		lang.add(new PC_LangEntry("pc.gui.weasel.diskDrive.tab", "Disk Drive"));
+		
+		lang.add(new PC_LangEntry("pc.gui.weasel.diskManager.title", "Digital Workbench"));
 		
 		return lang;
 	}
