@@ -197,6 +197,8 @@ public class PCws_TileEntityWeasel extends PC_TileEntity implements PC_ITileEnti
 
 	@Override
 	public int getSizeInventory() {
+		if(inv==null)
+			return 0;
 		return inv.length;
 	}
 
