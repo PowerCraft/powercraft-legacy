@@ -50,7 +50,6 @@ public class PC_GresLayoutV extends PC_GresWidget {
 					parent.calcChildPositions();
 				}
 				calcChildPositions();
-				return;
 			}
 			lastmargin = w.widgetMargin;
 			ySize += csize.y + w.widgetMargin;

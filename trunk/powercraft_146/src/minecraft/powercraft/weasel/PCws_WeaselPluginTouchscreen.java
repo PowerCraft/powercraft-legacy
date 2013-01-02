@@ -215,6 +215,31 @@ public class PCws_WeaselPluginTouchscreen extends PCws_WeaselPlugin implements W
 	}
 
 	@Override
+	public void notifyChanges() {
+		PCws_TileEntityWeasel te = getTE();
+		if(te!=null){
+			int n=0;
+			List<Object> data = new ArrayList<Object>();
+			for(int j=0; j<HEIGHT; j++){
+				for(int i=0; i<WIDTH; i++){
+					if((Integer)te.getData("pic["+i+"]["+j+"]") != screen[i][j]){
+						data.add("pic["+i+"]["+j+"]");
+						data.add(screen[i][j]);
+						te.setDataNoSend("pic["+i+"]["+j+"]", screen[i][j]);
+						n++;
+						if(n>200){
+							PC_PacketHandler.setTileEntity(te, data.toArray());
+							data.clear();
+							n=0;
+						}
+					}
+				}
+			}
+			PC_PacketHandler.setTileEntity(te, data.toArray());
+		}
+	}
+	
+	@Override
 	public WeaselBitmapProvider getImageForName(String name) {
 		/*ItemStack disk = null;
 		for (PCnt_WeaselPlugin member: network.iterator()) {

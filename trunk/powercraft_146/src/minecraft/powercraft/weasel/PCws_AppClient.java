@@ -40,6 +40,26 @@ public class PCws_AppClient extends PCws_App implements PC_IClientModule {
 		
 		lang.add(new PC_LangEntry("pc.gui.weasel.terminal.terminal", "Terminal"));
 		
+		lang.add(new PC_LangEntry("pc.gui.weasel.diskManager.color", "Color:"));
+		lang.add(new PC_LangEntry("pc.gui.weasel.diskManager.label", "Disk label:"));
+		lang.add(new PC_LangEntry("pc.gui.weasel.diskManager.separator", "Entry separator:"));
+		lang.add(new PC_LangEntry("pc.gui.weasel.diskManager.resize", "Resize"));
+		lang.add(new PC_LangEntry("pc.gui.weasel.diskManager.set", "Set"));
+		lang.add(new PC_LangEntry("pc.gui.weasel.diskManager.edit", "Edit"));
+		lang.add(new PC_LangEntry("pc.gui.weasel.diskManager.img.clear", "Clear"));
+		lang.add(new PC_LangEntry("pc.gui.weasel.diskManager.img.fill", "Fill"));
+		lang.add(new PC_LangEntry("pc.gui.weasel.diskManager.disk", "Disk"));
+		lang.add(new PC_LangEntry("pc.gui.weasel.diskManager.format", "Format:"));
+		lang.add(new PC_LangEntry("pc.gui.weasel.diskManager.formatText", "Text"));
+		lang.add(new PC_LangEntry("pc.gui.weasel.diskManager.formatImage", "Image"));
+		lang.add(new PC_LangEntry("pc.gui.weasel.diskManager.formatIntegerList", "Numbers"));
+		lang.add(new PC_LangEntry("pc.gui.weasel.diskManager.formatStringList", "Strings"));
+		lang.add(new PC_LangEntry("pc.gui.weasel.diskManager.formatVariableMap", "Data"));
+		lang.add(new PC_LangEntry("pc.gui.weasel.diskManager.formatLibrary", "Library"));
+		lang.add(new PC_LangEntry("pc.gui.weasel.diskManager.clickCompile", "Click \"Compile\" to make the library executable."));
+		lang.add(new PC_LangEntry("pc.gui.weasel.diskManager.compiled", "Library was successfully compiled."));
+
+		
 		return lang;
 	}
 
@@ -61,6 +81,7 @@ public class PCws_AppClient extends PCws_App implements PC_IClientModule {
 		guis.add(new PC_Struct2<String, Class>("WeaselOnlyNet", PCws_GuiWeaselOnlyNet.class));
 		guis.add(new PC_Struct2<String, Class>("WeaselTerminal", PCws_GuiWeaselTerminal.class));
 		guis.add(new PC_Struct2<String, Class>("WeaselTouchscreen", PCws_GuiWeaselTouchscreen.class));
+		guis.add(new PC_Struct2<String, Class>("WeaselDiskManager", PCws_GuiWeaselDiskManager.class));
 		return guis;
 	}
 
