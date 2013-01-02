@@ -120,7 +120,7 @@ public class WeaselEngine implements PC_INBT, IVariableProvider, IFunctionProvid
 		
 		tag.setCompoundTag(nk_INSTRUCTION_LIST_LIBS, libTag);
 		if(runLib!=null){
-			tag.setString(nk_RETURN_VALUE, runLib);
+			tag.setString(nk_RUN_INSTRUCTION, runLib);
 		}
 		tag.setCompoundTag(nk_RETURN_VALUE, WeaselObject.saveObjectToNBT(retval, new NBTTagCompound()));
 		tag.setInteger(nk_RESTARTS_SCHEDULED, restartsScheduled);
@@ -149,8 +149,8 @@ public class WeaselEngine implements PC_INBT, IVariableProvider, IFunctionProvid
 		
 		retval = WeaselObject.loadObjectFromNBT(tag.getCompoundTag(nk_RETURN_VALUE));
 		
-		if(tag.hasKey(nk_RETURN_VALUE)){
-			runLib = tag.getString(nk_RETURN_VALUE);
+		if(tag.hasKey(nk_RUN_INSTRUCTION)){
+			runLib = tag.getString(nk_RUN_INSTRUCTION);
 		}else{
 			runLib = null;
 		}
