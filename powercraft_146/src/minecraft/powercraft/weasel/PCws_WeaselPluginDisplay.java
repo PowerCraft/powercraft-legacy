@@ -60,7 +60,7 @@ public class PCws_WeaselPluginDisplay extends PCws_WeaselPlugin {
 			text = "";
 			setData("text", text);
 		}else if (functionName.equals("matrix") || functionName.equals("grain")) {
-			text = "§knnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnn";
+			text = "Â§knnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnn";
 			text += "nnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnn";
 			bgcolor = 0x000000;
 			fgcolor = 0x00ff00;
