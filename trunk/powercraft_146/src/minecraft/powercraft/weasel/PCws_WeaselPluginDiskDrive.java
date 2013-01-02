@@ -6,12 +6,93 @@ import java.util.List;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import powercraft.management.PC_Utils.Gres;
+import powercraft.management.PC_VecI;
+import powercraft.weasel.PCws_WeaselBitmapUtils.WeaselBitmapProvider;
+import weasel.Calc;
 import weasel.WeaselEngine;
+import weasel.exception.WeaselRuntimeException;
+import weasel.obj.WeaselBoolean;
 import weasel.obj.WeaselObject;
 
 public class PCws_WeaselPluginDiskDrive extends PCws_WeaselPlugin implements PCws_IWeaselInventory {
 
 	private ItemStack inv[] = new ItemStack[8];
+	
+	private class ImageEditor implements WeaselBitmapProvider {
+		private ItemStack stack;
+		
+		public ImageEditor(ItemStack imageDisk) {
+			stack = imageDisk;
+		}
+
+		@Override
+		public PC_VecI getBitmapSize() {
+			return PCws_ItemWeaselDisk.getImageSize(stack);
+		}
+
+		@Override
+		public int getBitmapPixel(int x, int y) {
+			return PCws_ItemWeaselDisk.getImageColorAt(stack, new PC_VecI(x, y));
+		}
+
+		@Override
+		public void setBitmapPixel(int x, int y, int color) {
+			PCws_ItemWeaselDisk.setImageColorAt(stack, new PC_VecI(x, y), color);
+		}
+
+		@Override
+		public void resize(int w, int h) {
+			PCws_ItemWeaselDisk.setImageSize(stack, new PC_VecI(w, h));
+		}
+
+		@Override
+		public void notifyChanges() {}
+		
+		public WeaselBitmapProvider getImageForName(String name){
+			ItemStack disk = null;
+			if(getNetwork()!=null){
+				for (PCws_WeaselPlugin member : getNetwork()) {
+					if (member instanceof PCws_WeaselPluginDiskDrive) {
+						disk = ((PCws_WeaselPluginDiskDrive) member).getImageDisk(name);
+						if (disk != null) break;
+					}
+				}
+			}
+			if(disk == null) return null;
+			
+			return new ImageEditor(disk);
+		}
+		
+		@Override
+		public int[][] getImageForName(String name) {
+			ItemStack disk = null;
+			for (PCnt_WeaselPlugin member : network.iterator()) {
+				if (member instanceof PCnt_WeaselPluginDiskDrive) {
+					disk = ((PCnt_WeaselPluginDiskDrive) member).getImageDisk(name);
+					if (disk != null) break;
+				}
+			}
+			if(disk == null) return null;
+			
+			return PCnt_ItemWeaselDisk.getImageData(disk);
+		}
+
+		@Override
+		public int[][] getScreen() {
+			return WDT.getImageData(stack);
+		}
+
+		@Override
+		public void screenChanged(int[][] newScreen) {
+			WDT.setImageData(stack, newScreen);			
+		}
+
+		@Override
+		public void setScreen(int[][] newdata) {
+			WDT.setImageData(stack, newdata);			
+		}
+		
+	}
 	
 	@Override
 	protected List<String> getProvidedPluginFunctionNames() {
@@ -66,7 +147,191 @@ public class PCws_WeaselPluginDiskDrive extends PCws_WeaselPlugin implements PCw
 
 	@Override
 	protected WeaselObject callProvidedPluginFunction(WeaselEngine engine, String functionName, WeaselObject[] args) {
-		// TODO Auto-generated method stub
+		List<ItemStack> disks = getDisks();
+		for (int i = 0; i < disks.size(); i++) {
+			ItemStack disk = disks.get(i);
+			if (disk == null) continue;
+			
+
+			if (PCws_ItemWeaselDisk.getType(disk) == PCws_ItemWeaselDisk.IMAGE) {
+				try {
+					WeaselObject obj = new PC_BitmapUtils.WeaselBitmapAdapter(new ImageEditor(disk), (i+1)).callProvidedFunction(engine, name, args);
+					return obj;
+				}catch(IllegalAccessError e){
+					try {
+						WeaselObject obj = new PC_BitmapUtils.WeaselBitmapAdapter(new ImageEditor(disk), "img." + PCws_ItemWeaselDisk.getLabel(disk)).callProvidedFunction(engine, name, args);
+						return obj;
+					}catch(IllegalAccessError e2){
+						continue;
+					}
+				}
+					
+			}
+			
+			if (PCws_ItemWeaselDisk.getType(disk) == PCws_ItemWeaselDisk.VARMAP) {
+
+				if (functionName.equals((i+1) + ".get") || functionName.equals("map." + PCws_ItemWeaselDisk.getLabel(disk) + ".get")) {
+					WeaselObject obj = PCws_ItemWeaselDisk.getMapVariable(disk, Calc.toString(args[0]));
+					if(obj == null) throw new WeaselRuntimeException(PCws_ItemWeaselDisk.getLabel(disk)+" does not contain variable "+args[0]);
+					return obj;
+				}
+
+				if (functionName.equals((i+1) + ".clear") || functionName.equals("map." + PCws_ItemWeaselDisk.getLabel(disk) + ".clear")) {
+					PCws_ItemWeaselDisk.eraseVarMap(disk);
+					return null;
+				}
+				
+				if (functionName.equals((i+1) + ".set") || functionName.equals("map." + PCws_ItemWeaselDisk.getLabel(disk) + ".set")) {
+					PCws_ItemWeaselDisk.setMapVariable(disk, Calc.toString(args[0]), args[1]);
+					return null;
+				}
+				
+				if (functionName.equals((i+1) + ".has") || functionName.equals("map." + PCws_ItemWeaselDisk.getLabel(disk) + ".has")) {
+					return new WeaselBoolean(PCws_ItemWeaselDisk.hasMapVariable(disk, Calc.toString(args[0])));
+				}
+				
+				if (functionName.equals((i+1) + ".unset") || functionName.equals("map." + PCws_ItemWeaselDisk.getLabel(disk) + ".unset")||functionName.equals(i + ".remove") || functionName.equals("map." + PCws_ItemWeaselDisk.getLabel(disk) + ".remove")) {
+					PCws_ItemWeaselDisk.removeMapVariable(disk, Calc.toString(args[0]));
+					return null;
+				}
+				
+			}
+
+			if (PCws_ItemWeaselDisk.getType(disk) == PCws_ItemWeaselDisk.NUMBERLIST || PCws_ItemWeaselDisk.getType(disk) == PCws_ItemWeaselDisk.STRINGLIST) {
+
+				if (functionName.equals((i+1) + ".get") || functionName.equals("list." + PCws_ItemWeaselDisk.getLabel(disk) + ".get")) {
+					int index = Calc.toInteger(args[0]);
+					return PCws_ItemWeaselDisk.getListEntry(disk, index);
+				}
+				
+				if (functionName.equals((i+1) + ".add") || functionName.equals("list." + PCws_ItemWeaselDisk.getLabel(disk) + ".add")) {
+					String delim = PCws_ItemWeaselDisk.getListDelimiter(disk);
+					
+					String[] pieces = PCws_ItemWeaselDisk.getListEntries(disk);
+				
+					if(PCws_ItemWeaselDisk.getListText(disk).length()>10000) {
+						throw new WeaselRuntimeException("List "+PCws_ItemWeaselDisk.getLabel(disk)+": disk is full (10kB).");
+					}
+					
+					String s = PCws_ItemWeaselDisk.getListText(disk);
+					
+					if(s.length()>0) s +=delim;
+
+					if(pieces.length!=0 && pieces.length%10==0 && !delim.equals("\\n")) {
+						s+="\n";
+					}
+					
+					s += Calc.toString(args[0].get());
+					if(s.length()>10000) {
+						throw new WeaselRuntimeException("List "+PCws_ItemWeaselDisk.getLabel(disk)+": can't add, disk is full (10kB).");
+					}
+					PCws_ItemWeaselDisk.setListText(disk, s, delim);
+					
+					engine.requestPause();
+					return null;
+				}
+				
+				// set remove clear
+				
+				if (functionName.equals((i+1) + ".set") || functionName.equals("list." + PCws_ItemWeaselDisk.getLabel(disk) + ".set")) {
+					
+					int pos = Calc.toInteger(args[0]);
+					String obj = Calc.toString(args[1]);	
+					if(PCws_ItemWeaselDisk.getType(disk)==PCws_ItemWeaselDisk.NUMBERLIST) {						
+						obj = ""+Calc.toInteger(args[1]);
+					}
+					String delim = PCws_ItemWeaselDisk.getListDelimiter(disk);
+					
+					String[] pieces = PCws_ItemWeaselDisk.getListEntries(disk);
+					
+					if(pos < 0||pos > pieces.length) {
+						throw new WeaselRuntimeException("List "+PCws_ItemWeaselDisk.getLabel(disk)+": index "+pos+" out of bounds.");
+					}
+					if(pos == pieces.length) {
+						if(PCws_ItemWeaselDisk.getListText(disk).length()>10000) {
+							throw new WeaselRuntimeException("List "+PCws_ItemWeaselDisk.getLabel(disk)+": disk is full (10kB).");
+						}
+						
+						String s = PCws_ItemWeaselDisk.getListText(disk);
+
+						if(s.length()>0) s +=delim;
+
+						if(pieces.length!=0 && pieces.length%10==0 && !delim.equals("\\n")) {
+							s+="\n";
+						}
+						
+						s += Calc.toString(args[0].get());
+						if(s.length()>10000) {
+							throw new WeaselRuntimeException("List "+PCws_ItemWeaselDisk.getLabel(disk)+": can't add, disk is full (10kB).");
+						}
+						PCws_ItemWeaselDisk.setListText(disk, s, delim);
+					}
+					
+					
+					pieces[pos] = obj;
+
+					String all = "";
+					int n=-1;
+					for(String piece:pieces) {
+						n++;
+						if(all.length()>0) {
+							all+=delim;
+							if(n!=0 && n%10==0 && !delim.equals("\\n")) {
+								all+="\n";
+							}
+						}
+						all += piece.trim();
+					}
+					
+					PCws_ItemWeaselDisk.setListText(disk, all, delim);
+
+					engine.requestPause();
+					return null;
+				}
+
+				
+				if (functionName.equals((i+1) + ".remove") || functionName.equals("list." + PCws_ItemWeaselDisk.getLabel(disk) + ".remove")) {
+					
+					int pos = Calc.toInteger(args[0]);			
+					String delim = PCws_ItemWeaselDisk.getListDelimiter(disk);
+					
+					String[] pieces = PCws_ItemWeaselDisk.getListEntries(disk);
+					
+					if(pos < 0||pos >= pieces.length) {
+						throw new WeaselRuntimeException("List "+PCws_ItemWeaselDisk.getLabel(disk)+": index "+pos+" out of bounds.");
+					}
+					
+					String all = "";
+					int n=-1;
+					for(String piece:pieces) {
+						n++;
+						if(n == pos) continue;
+						if(all.length()>0) {
+							all+=delim;
+						}
+						all += piece.trim();
+						if(n!=0&&n%10==0&&!delim.equals("\n")) {
+							all+="\n";
+						}
+					}
+					
+					PCws_ItemWeaselDisk.setListText(disk, all, delim);
+					engine.requestPause();
+					return null;
+				}
+				
+				if (functionName.equals((i+1) + ".clear") || functionName.equals("list." + PCws_ItemWeaselDisk.getLabel(disk) + ".clear")) {					
+					String delim = PCws_ItemWeaselDisk.getListDelimiter(disk);					
+					PCws_ItemWeaselDisk.setListText(disk, "", delim);
+					engine.requestPause();
+					return null;
+				}
+				
+
+				continue;
+			}
+		}
+
 		return null;
 	}
 
