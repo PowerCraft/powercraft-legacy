@@ -93,8 +93,10 @@ public class PC_GresInventoryPlayer extends PC_GresLayoutV {
 	}
 
 	protected void visibleChanged(boolean show){
-		inv1.visibleChanged(show);
-		inv2.visibleChanged(show);
+		if(inv1!=null){
+			inv1.visibleChanged(show);
+			inv2.visibleChanged(show);
+		}
 	}
 	
 }

@@ -24,6 +24,7 @@ import powercraft.management.PC_MainMenuHacks;
 import powercraft.management.PC_ModuleLoader;
 import powercraft.management.PC_PacketHandler;
 import powercraft.management.PC_Struct2;
+import powercraft.management.PC_TickHandler;
 import powercraft.management.PC_UpdateManager;
 import powercraft.management.PC_Utils;
 import powercraft.management.PC_Utils.GameInfo;
@@ -48,6 +49,8 @@ public class mod_PowerCraft extends BaseMod {
 	private PC_MainMenuHacks mainMenuHacks = new PC_MainMenuHacks();
 	
 	private PC_ClientPacketHandler packetHandler;
+	
+	private PC_TickHandler tickHandler = new PC_TickHandler();
 	
 	private static mod_PowerCraft instance;
 	
@@ -128,6 +131,12 @@ public class mod_PowerCraft extends BaseMod {
 	@Override
 	public boolean onTickInGUI(float var1, Minecraft var2, GuiScreen var3) {
 		mainMenuHacks.tickStart();
+		return true;
+	}
+	
+	@Override
+	public boolean onTickInGame(float var1, Minecraft var2) {
+		tickHandler.tick();
 		return true;
 	}
 

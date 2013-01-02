@@ -1,6 +1,9 @@
 package powercraft.management;
 
 import java.util.HashMap;
+import java.util.Map;
+import java.util.Map.Entry;
+import java.util.Random;
 
 public class PC_Color extends PC_VecF {
 
@@ -29,7 +32,7 @@ public class PC_Color extends PC_VecF {
         namedColors.put("brick", 0xB22222);
         namedColors.put("darkred", 0x8B0000);
         namedColors.put("salmon", 0xFA8072);
-        namedColors.put("pink", 0xff1493);
+        namedColors.put("pink", 0xdb5b9d);
         namedColors.put("orange", 0xff4500);
         namedColors.put("gold", 0xffd700);
         namedColors.put("magenta", 0xff00ff);
@@ -39,6 +42,7 @@ public class PC_Color extends PC_VecF {
         namedColors.put("darkgreen", 0x006400);
         namedColors.put("cyan", 0x00ffff);
         namedColors.put("steel", 0x4682b4);
+        namedColors.put("lightblue", 0x78a2dd); //0094FF BAE2FF
         namedColors.put("darkblue", 0x00008b);
         namedColors.put("brown", 0x8b4513);
         namedColors.put("lightgray", 0xd3d3d3);
@@ -61,6 +65,11 @@ public class PC_Color extends PC_VecF {
 		this.x = x;
 		this.y = y;
 		this.z = z;
+	}
+	public PC_Color(int hex){
+        x = red(hex);
+        y = green(hex);
+        z = blue(hex);
 	}
 	
 	public PC_Color(PC_Vec vec){
@@ -132,6 +141,112 @@ public class PC_Color extends PC_VecF {
         }
 
         return null;
+	}
+
+	private static Map<String, String> magicColors = new HashMap<String, String>();
+	static {
+		magicColors.put("[black]", "§0");
+		magicColors.put("[navy]", "§1");
+		magicColors.put("[blue]", "§1");
+		magicColors.put("[dblue]", "§1");
+		magicColors.put("[darkblue]", "§1");
+		magicColors.put("[green]", "§2");
+		magicColors.put("[dgreen]", "§2");
+		magicColors.put("[darkgreen]", "§2");
+		magicColors.put("[dcyan]", "§3");
+		magicColors.put("[darkcyan]", "§3");
+		magicColors.put("[daqua]", "§3");
+		magicColors.put("[darkaqua]", "§3");
+		magicColors.put("[darkred]", "§4");
+		magicColors.put("[red]", "§4");
+		magicColors.put("[dred]", "§4");
+		magicColors.put("[purple]", "§5");
+		magicColors.put("[orange]", "§6");
+		magicColors.put("[grey]", "§7");
+		magicColors.put("[gray]", "§7");
+		magicColors.put("[dgrey]", "§8");
+		magicColors.put("[darkgrey]", "§8");
+		magicColors.put("[dgray]", "§8");
+		magicColors.put("[darkgray]", "§8");
+		magicColors.put("[indigo]", "§9");
+		magicColors.put("[lblue]", "§9");
+		magicColors.put("[lightblue]", "§9");
+		magicColors.put("[lime]", "§a");
+		magicColors.put("[limegreen]", "§a");
+		magicColors.put("[aqua]", "§b");
+		magicColors.put("[cyan]", "§b");
+		magicColors.put("[lred]", "§c");
+		magicColors.put("[lightred]", "§c");
+		magicColors.put("[pink]", "§d");
+		magicColors.put("[yellow]", "§e");
+		magicColors.put("[white]", "§f");
+		magicColors.put("[random]", "§k");
+		magicColors.put("[bold]", "§l");
+		magicColors.put("[b]", "§l");
+		magicColors.put("[s]", "§m");
+		magicColors.put("[strike]", "§m");
+		magicColors.put("[u]", "§n");
+		magicColors.put("[underline]", "§n");
+		magicColors.put("[italics]", "§o");
+		magicColors.put("[i]", "§o");
+		magicColors.put("[reset]", "§r");
+		magicColors.put("[r]", "§r");
+		magicColors.put("[#0]", "§0");
+		magicColors.put("[#1]", "§1");
+		magicColors.put("[#2]", "§2");
+		magicColors.put("[#3]", "§3");
+		magicColors.put("[#4]", "§4");
+		magicColors.put("[#5]", "§5");
+		magicColors.put("[#6]", "§6");
+		magicColors.put("[#7]", "§7");
+		magicColors.put("[#8]", "§8");
+		magicColors.put("[#9]", "§9");
+		magicColors.put("[#a]", "§a");
+		magicColors.put("[#b]", "§b");
+		magicColors.put("[#c]", "§c");
+		magicColors.put("[#d]", "§d");
+		magicColors.put("[#e]", "§e");
+		magicColors.put("[#f]", "§f");
+	}
+	
+	/**
+	 * Convert color and formatting tags in input string to chat color codes.
+	 * 
+	 * @param input string to convert
+	 * @return converted input
+	 */
+	public static String convertMagicColors(String input) {
+		input = input.replaceAll("\\[/.*?\\]", "§r");
+		input = input.replaceAll("</.*?>", "§r");
+		for (Entry<String, String> entry : magicColors.entrySet()) {
+			input = input.replace(entry.getKey(), entry.getValue());
+			input = input.replace(entry.getKey().replace('[', '<').replace(']', '>'), entry.getValue());
+		}
+		return input;
+	}
+	
+	/**
+	 * @return new random color
+	 */
+	public static PC_Color randomColor() {
+		return new PC_Color().randomize();
+	}
+	
+	/**
+	 * Set all 3 channels to random color, tries to make bright or at least not
+	 * dark colors
+	 * 
+	 * @return this
+	 */
+	public PC_Color randomize() {
+		Random rand = new Random();
+		do {
+			x = rand.nextFloat();
+			y = rand.nextFloat();
+			z = rand.nextFloat();
+		} while (x + y + z < 0.8F);
+
+		return this;
 	}
 	
 }
