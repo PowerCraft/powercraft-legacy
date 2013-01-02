@@ -1,10 +1,12 @@
 package powercraft.weasel;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
@@ -18,6 +20,9 @@ import powercraft.management.PC_Utils;
 import powercraft.management.PC_Utils.Gres;
 import powercraft.management.PC_Utils.ValueWriting;
 import powercraft.management.PC_VecI;
+import weasel.WeaselEngine;
+import weasel.lang.Instruction;
+import weasel.lang.InstructionEnd;
 import weasel.obj.WeaselInteger;
 import weasel.obj.WeaselString;
 
@@ -154,6 +159,15 @@ public class PCws_BlockWeaselDiskManager extends PC_Block implements PC_IPacketH
 				PCws_ItemWeaselDisk.removeMapVariable(itemStack, (String)o[1]);
 			}else if(msg.equals("setMapVariable")){
 				PCws_ItemWeaselDisk.setMapVariable(itemStack, (String)o[1], o[2] instanceof Integer?new WeaselInteger(o[2]):new WeaselString(o[2]));
+			}else if(msg.equals("compile")){
+				try {
+					List<Instruction> list = new ArrayList<Instruction>(20);
+					list.add(new InstructionEnd());
+					list.addAll(WeaselEngine.compileLibrary((String)o[1]));
+					
+					PCws_ItemWeaselDisk.setLibraryInstructions(itemStack, list);
+				}catch(Exception e) {
+				}
 			}
 		}
 		return false;
