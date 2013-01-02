@@ -159,7 +159,7 @@ public abstract class WeaselObject implements PC_INBT {
 	@SuppressWarnings("javadoc")
 	public static enum WeaselObjectType {
 
-		BOOLEAN, INTEGER, STRING, VARMAP, STACK, NULL;
+		BOOLEAN, INTEGER, STRING, VARMAP, STACK, NULL, FUNCTIONCALL;
 
 		private static HashMap<String, WeaselObjectType> members = new HashMap<String, WeaselObjectType>();
 

@@ -3,6 +3,8 @@ package weasel;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.TreeMap;
+import java.util.Map.Entry;
 
 import net.minecraft.nbt.NBTTagCompound;
 import powercraft.management.PC_Color;
@@ -12,6 +14,7 @@ import weasel.exception.SyntaxError;
 import weasel.exception.WeaselRuntimeException;
 import weasel.lang.Instruction;
 import weasel.obj.WeaselBoolean;
+import weasel.obj.WeaselFunctionCall;
 import weasel.obj.WeaselInteger;
 import weasel.obj.WeaselObject;
 import weasel.obj.WeaselStack;
@@ -62,9 +65,11 @@ public class WeaselEngine implements PC_INBT, IVariableProvider, IFunctionProvid
 	public WeaselStack dataStack = new WeaselStack();
 
 	/** List of all instructions in the program */
-	public InstructionList instructionList = new InstructionList(this);
+	public InstructionList instructionList;
+	public TreeMap<String, InstructionList> libs = new TreeMap<String, InstructionList>();
 
-
+	public String runLib;
+	
 	// only temporary
 	/** Flag that last instruction called requires pause */
 	private boolean pauseRequested = false;
@@ -91,6 +96,7 @@ public class WeaselEngine implements PC_INBT, IVariableProvider, IFunctionProvid
 	private static final String nk_STACK_SYSTEM = "STACK_SYSTEM";
 	private static final String nk_STACK_DATA = "STACK_DATA";
 	private static final String nk_INSTRUCTION_LIST = "INSTRUCTIONS";
+	private static final String nk_INSTRUCTION_LIST_LIBS = "LIB_INSTRUCTIONS";
 	private static final String nk_RETURN_VALUE = "RETVAL";
 	private static final String nk_IS_FINISHED = "FINISHED";
 	private static final String nk_RESTARTS_SCHEDULED = "RESTARTS_SCH";
@@ -102,6 +108,16 @@ public class WeaselEngine implements PC_INBT, IVariableProvider, IFunctionProvid
 		tag.setCompoundTag(nk_STACK_SYSTEM, WeaselObject.saveObjectToNBT(systemStack, new NBTTagCompound()));
 		tag.setCompoundTag(nk_STACK_DATA, WeaselObject.saveObjectToNBT(dataStack, new NBTTagCompound()));
 		tag.setCompoundTag(nk_INSTRUCTION_LIST, instructionList.writeToNBT(new NBTTagCompound()));
+		NBTTagCompound libTag = new NBTTagCompound();
+		
+		libTag.setInteger("count", libs.size());
+		int i=0;
+		for(Entry<String, InstructionList>e:libs.entrySet()){
+			libTag.setString("key["+i+"]", e.getKey());
+			libTag.setCompoundTag("value["+i+"]", e.getValue().writeToNBT(new NBTTagCompound()));
+		}
+		
+		tag.setCompoundTag(nk_INSTRUCTION_LIST_LIBS, libTag);
 		tag.setCompoundTag(nk_RETURN_VALUE, WeaselObject.saveObjectToNBT(retval, new NBTTagCompound()));
 		tag.setInteger(nk_RESTARTS_SCHEDULED, restartsScheduled);
 		tag.setBoolean(nk_IS_FINISHED, isProgramFinished);
@@ -115,6 +131,18 @@ public class WeaselEngine implements PC_INBT, IVariableProvider, IFunctionProvid
 		systemStack = (WeaselStack) WeaselObject.loadObjectFromNBT(tag.getCompoundTag(nk_STACK_SYSTEM));
 		dataStack = (WeaselStack) WeaselObject.loadObjectFromNBT(tag.getCompoundTag(nk_STACK_DATA));
 		instructionList = (InstructionList) new InstructionList(this).readFromNBT(tag.getCompoundTag(nk_INSTRUCTION_LIST));
+		
+		NBTTagCompound libTag = tag.getCompoundTag(nk_INSTRUCTION_LIST_LIBS);
+		
+		libs.clear();
+		
+		int num = libTag.getInteger("count");
+		for(int i=0; i<num; i++){
+			String key = libTag.getString("key["+i+"]");
+			InstructionList inst = (InstructionList) new InstructionList(this).readFromNBT(libTag.getCompoundTag("value["+i+"]"));
+			libs.put(key, inst);
+		}
+		
 		retval = WeaselObject.loadObjectFromNBT(tag.getCompoundTag(nk_RETURN_VALUE));
 		restartsScheduled = tag.getInteger(nk_RESTARTS_SCHEDULED);
 		isProgramFinished = tag.getBoolean(nk_IS_FINISHED);
@@ -152,7 +180,11 @@ public class WeaselEngine implements PC_INBT, IVariableProvider, IFunctionProvid
 
 		for (; statementsMax > 0; statementsMax--) {
 			try {
-				instructionList.executeNextInstruction();
+				if(runLib==null){
+					instructionList.executeNextInstruction();
+				}else{
+					libs.get(runLib).executeNextInstruction();
+				}
 			} catch (EndOfProgramException eope) {
 				isProgramFinished = true;
 
@@ -203,7 +235,8 @@ public class WeaselEngine implements PC_INBT, IVariableProvider, IFunctionProvid
 		retval = null;
 		externalCallRetval = null;
 		variables.clear();
-
+		libs.clear();
+		runLib = null;
 		// not globals! they are preserved!
 	}
 
@@ -213,6 +246,8 @@ public class WeaselEngine implements PC_INBT, IVariableProvider, IFunctionProvid
 	public void restartProgramClearGlobals() {
 		restartProgram();
 		globals.clear();
+		libs.clear();
+		runLib = null;
 	}
 
 	/**
@@ -225,6 +260,8 @@ public class WeaselEngine implements PC_INBT, IVariableProvider, IFunctionProvid
 		restartsScheduled = 0;
 		isProgramFinished = false;
 		pauseRequested = false;
+		libs.clear();
+		runLib = null;
 	}
 
 
@@ -239,6 +276,20 @@ public class WeaselEngine implements PC_INBT, IVariableProvider, IFunctionProvid
 		this.instructionList.addAll(instructions);
 	}
 
+	/**
+	 * Clear all variables, insert compiled program into instruction list and
+	 * get ready for it's execution.
+	 * 
+	 * @param instructions the new program
+	 */
+	public void insertNewLibary(String name, List<Instruction> instructions) {
+		if(!libs.containsKey(name)){
+			InstructionList il = new InstructionList(this);
+			il.addAll(instructions);
+			libs.put(name, il);
+		}
+	}
+	
 	/**
 	 * Compile given program to a list of instruction.
 	 * 
@@ -285,6 +336,9 @@ public class WeaselEngine implements PC_INBT, IVariableProvider, IFunctionProvid
 
 		try {
 			retval = hw.callProvidedFunction(this, functionName, args);
+			if(retval instanceof WeaselFunctionCall){
+				
+			}
 		} catch (ClassCastException e) {
 			throw new WeaselRuntimeException("Invalid arguments for function " + functionName);
 		} catch (ArrayIndexOutOfBoundsException e) {
