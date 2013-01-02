@@ -145,8 +145,10 @@ public class PCws_TileEntityWeasel extends PC_TileEntity implements PC_ITileEnti
 		List<List<Object>> l = new ArrayList<List<Object>>();
 		List<Object> l1 = new ArrayList<Object>();
 		l.add(l1);
-		l1.add("invSize");
-		l1.add(inv.length);
+		if(inv!=null){
+			l1.add("invSize");
+			l1.add(inv.length);
+		}
 		for(Entry<String, Object> data:datas.entrySet()){
 			l1.add(data.getKey());
 			l1.add(data.getValue());
