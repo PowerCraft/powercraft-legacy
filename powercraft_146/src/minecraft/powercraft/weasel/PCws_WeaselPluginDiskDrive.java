@@ -1,6 +1,7 @@
 package powercraft.weasel;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import net.minecraft.entity.player.EntityPlayer;
@@ -14,8 +15,11 @@ import powercraft.management.PC_Utils.SaveHandler;
 import powercraft.management.PC_VecI;
 import powercraft.weasel.PCws_WeaselBitmapUtils.WeaselBitmapProvider;
 import weasel.Calc;
+import weasel.InstructionList;
 import weasel.WeaselEngine;
 import weasel.exception.WeaselRuntimeException;
+import weasel.lang.Instruction;
+import weasel.lang.InstructionFunction;
 import weasel.obj.WeaselBoolean;
 import weasel.obj.WeaselInteger;
 import weasel.obj.WeaselNull;
@@ -154,7 +158,6 @@ public class PCws_WeaselPluginDiskDrive extends PCws_WeaselPlugin implements PCw
 				continue;
 			}
 		}
-
 		return list;
 	}
 
@@ -535,4 +538,35 @@ public class PCws_WeaselPluginDiskDrive extends PCws_WeaselPlugin implements PCw
 		inv[var1] = var2;
 	}
 
+	public List<Instruction> getLibaryInstructions(String name) {
+		for(int i=0; i<8; i++){
+			if(getDisk(i)!=null){
+				if(getDiskType(i)==PCws_ItemWeaselDisk.LIBRARY){
+					if(name.equals(getDiskName(i))){
+						return PCws_ItemWeaselDisk.getLibraryInstructions(getDisk(i));
+					}
+				}
+			}
+		}
+		return null;
+	}
+
+	public List<String> getAllLibaryFunctions() {
+		List<String> list = new ArrayList<String>();
+		for(int i=0; i<8; i++){
+			if(getDisk(i)!=null){
+				if(getDiskType(i)==PCws_ItemWeaselDisk.LIBRARY){
+					String libName = getDiskName(i);
+					List<Instruction> ilist = PCws_ItemWeaselDisk.getLibraryInstructions(getDisk(i));
+					for(Instruction in : ilist) {
+						if(in instanceof InstructionFunction) {
+							list.add(libName+"."+((InstructionFunction) in).getFunctionName());
+						}
+					}
+				}
+			}
+		}
+		return list;
+	}
+	
 }

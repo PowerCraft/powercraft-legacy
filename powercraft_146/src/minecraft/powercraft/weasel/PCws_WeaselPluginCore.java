@@ -9,11 +9,13 @@ import powercraft.management.PC_PacketHandler;
 import powercraft.management.PC_Struct2;
 import powercraft.management.PC_Utils.Gres;
 import powercraft.management.PC_Utils.SaveHandler;
+import weasel.Calc;
 import weasel.WeaselEngine;
 import weasel.exception.SyntaxError;
 import weasel.exception.WeaselRuntimeException;
 import weasel.lang.Instruction;
 import weasel.obj.WeaselBoolean;
+import weasel.obj.WeaselFunctionCall;
 import weasel.obj.WeaselInteger;
 import weasel.obj.WeaselNull;
 import weasel.obj.WeaselObject;
@@ -97,6 +99,18 @@ public class PCws_WeaselPluginCore extends PCws_WeaselPlugin {
 		l.add("world.isDay");
 		l.add("world.isNight");
 		l.add("world.isRaining");
+		l.add("lib.load");
+		l.add("lib.call");
+		if(getNetwork()!=null){
+			for(PCws_WeaselPlugin plugin:getNetwork()){
+				if(plugin instanceof PCws_WeaselPluginDiskDrive){
+					List<String> funcs = ((PCws_WeaselPluginDiskDrive)plugin).getAllLibaryFunctions();
+					for(String func:funcs){
+						l.add("libs."+func);
+					}
+				}
+			}
+		}
 		return l;
 	}
 
@@ -151,7 +165,32 @@ public class PCws_WeaselPluginCore extends PCws_WeaselPlugin {
 		}else if(functionName.equals("world.isNight")){
 			return new WeaselBoolean(!getWorld().isDaytime());	
 		}else if(functionName.equals("world.isRaining")){
-			return new WeaselBoolean(getWorld().isRaining());		
+			return new WeaselBoolean(getWorld().isRaining());
+		}else if(functionName.equals("lib.load")){
+			String name = Calc.toString(args[0]);
+			if(getNetwork()!=null){
+				for(PCws_WeaselPlugin plugin:getNetwork()){
+					if(plugin instanceof PCws_WeaselPluginDiskDrive){
+						List<Instruction> instructions = ((PCws_WeaselPluginDiskDrive)plugin).getLibaryInstructions(name);
+						if(instructions!=null){
+							engine.insertNewLibary(name, instructions);
+							return new WeaselNull();
+						}
+					}
+				}
+			}
+			throw new WeaselRuntimeException("Lib "+name+" can't be found");
+		}else if(functionName.equals("lib.call")){
+			String libName = Calc.toString(args[0]);
+			String funcName = Calc.toString(args[1]);
+			WeaselObject newArgs[] = new WeaselObject[args.length-2];
+			for(int i=0; i<newArgs.length; i++){
+				newArgs[i] = args[i+2];
+			}
+			return new WeaselFunctionCall(libName, funcName, newArgs);
+		}else if(functionName.startsWith("libs.")){
+			String[] s = functionName.split("\\.", 3);
+			return new WeaselFunctionCall(s[1], s[2], args);
 		}else{
 			throw new WeaselRuntimeException("Invalid call of function " + functionName);
 		}
@@ -180,7 +219,7 @@ public class PCws_WeaselPluginCore extends PCws_WeaselPlugin {
 
 	@Override
 	protected void setPluginVariable(String name, Object value) {
-		setOutport(portToNum(name), ((WeaselBoolean)value).get());
+		setOutport(portToNum(name), Calc.toBoolean(value));
 	}
 
 	@Override

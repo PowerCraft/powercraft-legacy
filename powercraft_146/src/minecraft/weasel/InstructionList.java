@@ -280,7 +280,7 @@ public class InstructionList implements PC_INBT {
 		engine.setReturnValue(retval);
 
 		WeaselObject o = engine.systemStack.pop();
-		if(o instanceof WeaselNull){
+		if(o==null){
 			engine.runLib = null;
 		}else{
 			engine.runLib = ((WeaselString)o).string;
