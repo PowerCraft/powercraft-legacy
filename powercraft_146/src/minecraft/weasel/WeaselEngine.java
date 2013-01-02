@@ -97,6 +97,7 @@ public class WeaselEngine implements PC_INBT, IVariableProvider, IFunctionProvid
 	private static final String nk_STACK_DATA = "STACK_DATA";
 	private static final String nk_INSTRUCTION_LIST = "INSTRUCTIONS";
 	private static final String nk_INSTRUCTION_LIST_LIBS = "LIB_INSTRUCTIONS";
+	private static final String nk_RUN_INSTRUCTION = "RUNINSTRUCTIONS";
 	private static final String nk_RETURN_VALUE = "RETVAL";
 	private static final String nk_IS_FINISHED = "FINISHED";
 	private static final String nk_RESTARTS_SCHEDULED = "RESTARTS_SCH";
@@ -118,6 +119,9 @@ public class WeaselEngine implements PC_INBT, IVariableProvider, IFunctionProvid
 		}
 		
 		tag.setCompoundTag(nk_INSTRUCTION_LIST_LIBS, libTag);
+		if(runLib!=null){
+			tag.setString(nk_RETURN_VALUE, runLib);
+		}
 		tag.setCompoundTag(nk_RETURN_VALUE, WeaselObject.saveObjectToNBT(retval, new NBTTagCompound()));
 		tag.setInteger(nk_RESTARTS_SCHEDULED, restartsScheduled);
 		tag.setBoolean(nk_IS_FINISHED, isProgramFinished);
@@ -144,6 +148,12 @@ public class WeaselEngine implements PC_INBT, IVariableProvider, IFunctionProvid
 		}
 		
 		retval = WeaselObject.loadObjectFromNBT(tag.getCompoundTag(nk_RETURN_VALUE));
+		
+		if(tag.hasKey(nk_RETURN_VALUE)){
+			runLib = tag.getString(nk_RETURN_VALUE);
+		}else{
+			runLib = null;
+		}
 		restartsScheduled = tag.getInteger(nk_RESTARTS_SCHEDULED);
 		isProgramFinished = tag.getBoolean(nk_IS_FINISHED);
 		return this;
