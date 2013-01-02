@@ -79,7 +79,7 @@ public class PCws_TileEntityWeasel extends PC_TileEntity implements PC_ITileEnti
 	}
 
 	public PCws_WeaselPlugin getPlugin(){
-		if(worldObj.isRemote)
+		if(worldObj == null || worldObj.isRemote)
 			return null;
 		return PCws_WeaselManager.getPlugin(pluginID);
 	}
@@ -128,6 +128,8 @@ public class PCws_TileEntityWeasel extends PC_TileEntity implements PC_ITileEnti
             		getPluginInfo().getServerMsg(this, msg, obj);
             	}
             		
+            }else if(var.equals("invSize")){
+            	inv = new ItemStack[(Integer)o[p++]];
             }else{
             	Object obj = o[p++];
             	datas.put(var, obj);
@@ -143,6 +145,8 @@ public class PCws_TileEntityWeasel extends PC_TileEntity implements PC_ITileEnti
 		List<List<Object>> l = new ArrayList<List<Object>>();
 		List<Object> l1 = new ArrayList<Object>();
 		l.add(l1);
+		l1.add("invSize");
+		l1.add(inv.length);
 		for(Entry<String, Object> data:datas.entrySet()){
 			l1.add(data.getKey());
 			l1.add(data.getValue());
@@ -207,6 +211,8 @@ public class PCws_TileEntityWeasel extends PC_TileEntity implements PC_ITileEnti
             {
                 ItemStack itemstack = inv[i];
                 inv[i] = null;
+                if(getPlugin() instanceof PCws_IWeaselInventory)
+                	((PCws_IWeaselInventory)getPlugin()).setInventorySlotContents(i, null);
                 onInventoryChanged();
                 return itemstack;
             }
@@ -249,8 +255,8 @@ public class PCws_TileEntityWeasel extends PC_TileEntity implements PC_ITileEnti
 	@Override
 	public void setInventorySlotContents(int var1, ItemStack var2) {
 		inv[var1] = var2;
-		 if(getPlugin() instanceof PCws_IWeaselInventory)
-			 ((PCws_IWeaselInventory)getPlugin()).setInventorySlotContents(var1, var2);
+		if(getPlugin() instanceof PCws_IWeaselInventory)
+			((PCws_IWeaselInventory)getPlugin()).setInventorySlotContents(var1, var2);
 	}
 
 	@Override
