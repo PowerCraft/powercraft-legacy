@@ -208,13 +208,13 @@ public class PC_Renderer
 	protected void iglNormal3f(float x, float y, float z) {}
 
 	public static void glNormal3f(float x, float y, float z) {
-		
+		renderer2d.iglNormal3f(x, y, z);
 	}
 	
 	protected void iglDepthMask(boolean state) {}
 	
 	public static void glDepthMask(boolean state) {
-		
+		renderer2d.iglDepthMask(state);
 	}
 	
 	protected void irenderEntityLabelAt(String label, PC_VecF realPos, int viewDistance, float yOffset, double x, double y, double z) {}

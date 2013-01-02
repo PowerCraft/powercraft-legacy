@@ -38,8 +38,8 @@ public class PCws_WeaselPluginInfoPort extends PCws_WeaselPluginInfo {
 	public void getServerMsg(PCws_TileEntityWeasel te, String msg, Object obj) {
 		if(msg.equalsIgnoreCase("play")){
 			PC_Struct4<String, Float, Float, Float> s = (PC_Struct4<String, Float, Float, Float>)obj;
-			te.worldObj.playSoundEffect(te.xCoord + 0.5D, te.yCoord + 0.5D, te.zCoord + 0.5D, s.a, s.b, s.c);
-			te.worldObj.spawnParticle("note", te.xCoord + 0.5D, te.yCoord + 0.5D, te.zCoord + 0.5D, s.d, 0.0D, 0.0D);
+			te.getWorldObj().playSoundEffect(te.xCoord + 0.5D, te.yCoord + 0.5D, te.zCoord + 0.5D, s.a, s.b, s.c);
+			te.getWorldObj().spawnParticle("note", te.xCoord + 0.5D, te.yCoord + 0.5D, te.zCoord + 0.5D, s.d, 0.0D, 0.0D);
 		}
 	}
 

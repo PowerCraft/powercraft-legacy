@@ -75,7 +75,7 @@ public abstract class PCws_WeaselPluginInfo {
 			f1 = (Integer)te.getData("specialRot") * 360 / 16F;
 			PC_Renderer.glRotatef(f1, 0.0F, 1.0F, 0.0F);
 		}else{
-			PC_Renderer.glRotatef(90 * (GameInfo.getMD(te.worldObj, te.getCoord()) & 3), 0, 1, 0);
+			PC_Renderer.glRotatef(90 * (GameInfo.getMD(te.getWorldObj(), te.getCoord()) & 3), 0, 1, 0);
 		}
 		model.renderDevice(te);
 
