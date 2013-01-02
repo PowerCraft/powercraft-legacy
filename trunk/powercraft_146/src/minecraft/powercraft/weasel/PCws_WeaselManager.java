@@ -224,6 +224,9 @@ public class PCws_WeaselManager implements PC_IDataHandler, PC_IMSG {
 	}
 	
 	public static void removePlugin(PCws_WeaselPlugin weaselPlugin) {
+		if(weaselPlugin.getNetwork()!=null){
+			weaselPlugin.getNetwork().removeMember(weaselPlugin);
+		}
 		plugins.remove(weaselPlugin.getID());
 		needSave = true;
 	}
