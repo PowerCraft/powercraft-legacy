@@ -22,7 +22,6 @@ public class PCws_WeaselPluginInfoCore extends PCws_WeaselPluginInfo {
 		PC_Renderer.swapTerrain(block);
 		//floor
 		ValueWriting.setBlockBounds(block, 0, 0, 0, 16 * px, 3 * px, 16 * px);
-		block.setBlockBounds(0, 0, 0, 16 * px, 3 * px, 16 * px);
 		PC_Renderer.renderInvBoxWithTextures(renderer, block, new int[] { 6, 224, 5, 5, 5, 5 });
 
 		//chip
