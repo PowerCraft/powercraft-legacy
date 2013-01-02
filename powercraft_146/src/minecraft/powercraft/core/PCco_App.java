@@ -46,6 +46,7 @@ public class PCco_App implements PC_IModule {
 		PCco_MobSpawnerSetter spawnerSetter = new PCco_MobSpawnerSetter();
 		PC_PacketHandler.registerPackethandler("MobSpawner", spawnerSetter);
 		ModuleInfo.registerMSGObject(spawnerSetter);
+		ModuleInfo.registerMSGObject(new PCco_CraftingToolLoader());
 	}
 
 	@Override
