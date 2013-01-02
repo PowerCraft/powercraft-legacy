@@ -22,7 +22,7 @@ public class PCli_AppClient extends PCli_App implements PC_IClientModule {
 	public List<PC_LangEntry> initLanguage(List<PC_LangEntry> lang) {
 		lang.add(new PC_LangEntry("pc.gui.light.isHuge", "is Huge"));
 		lang.add(new PC_LangEntry("pc.gui.light.isStable", "is Stable"));
-		lang.add(new PC_LangEntry("pc.damage.laser", "laser killed %s"));
+		lang.add(new PC_LangEntry("pc.damage.laser", "%s wanted to know his reflexivity"));
 		return lang;
 	}
 
