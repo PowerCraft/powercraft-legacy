@@ -65,7 +65,7 @@ public class WeaselEngine implements PC_INBT, IVariableProvider, IFunctionProvid
 	public WeaselStack dataStack = new WeaselStack();
 
 	/** List of all instructions in the program */
-	public InstructionList instructionList;
+	public InstructionList instructionList = new InstructionList(this);
 	public TreeMap<String, InstructionList> libs = new TreeMap<String, InstructionList>();
 
 	public String runLib;
