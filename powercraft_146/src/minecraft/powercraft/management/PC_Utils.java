@@ -1974,6 +1974,9 @@ public class PC_Utils implements PC_IPacketHandler
 					}
 				}
 			}
+			for(PC_IMSG msg : msgObjects){
+				msg.msg(MSG_LOAD_WORLD, worldInfo, worldDirectory);
+			}
 		}
     	
     }

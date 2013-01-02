@@ -59,6 +59,7 @@ public class PCws_AppClient extends PCws_App implements PC_IClientModule {
 		lang.add(new PC_LangEntry("pc.gui.weasel.diskManager.clickCompile", "Click \"Compile\" to make the library executable."));
 		lang.add(new PC_LangEntry("pc.gui.weasel.diskManager.compiled", "Library was successfully compiled."));
 
+		lang.add(new PC_LangEntry("pc.gui.weasel.diskManager.compiled", "pc.gui.weasel.diskDrive.tab", "Disk Drive"));
 		
 		return lang;
 	}
@@ -82,6 +83,7 @@ public class PCws_AppClient extends PCws_App implements PC_IClientModule {
 		guis.add(new PC_Struct2<String, Class>("WeaselTerminal", PCws_GuiWeaselTerminal.class));
 		guis.add(new PC_Struct2<String, Class>("WeaselTouchscreen", PCws_GuiWeaselTouchscreen.class));
 		guis.add(new PC_Struct2<String, Class>("WeaselDiskManager", PCws_GuiWeaselDiskManager.class));
+		guis.add(new PC_Struct2<String, Class>("WeaselDiskDrive", PCws_GuiWeaselDiskDrive.class));
 		return guis;
 	}
 

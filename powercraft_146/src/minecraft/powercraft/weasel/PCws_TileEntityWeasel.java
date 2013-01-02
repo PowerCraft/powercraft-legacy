@@ -6,23 +6,28 @@ import java.util.List;
 import java.util.Map.Entry;
 
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
+import powercraft.management.PC_ISpecialAccessInventory;
 import powercraft.management.PC_ITileEntityRenderer;
+import powercraft.management.PC_InvUtils;
 import powercraft.management.PC_MathHelper;
 import powercraft.management.PC_PacketHandler;
 import powercraft.management.PC_TileEntity;
 
-public class PCws_TileEntityWeasel extends PC_TileEntity implements PC_ITileEntityRenderer{
+public class PCws_TileEntityWeasel extends PC_TileEntity implements PC_ITileEntityRenderer, IInventory, PC_ISpecialAccessInventory{
 
 	private int pluginID = -1;
 	private HashMap<String, Object> datas = new HashMap<String, Object>();
+	private ItemStack inv[];
 	
 	@Override
 	public void create(ItemStack stack, EntityPlayer player, World world, int x, int y, int z, int side, float hitX, float hitY, float hitZ) {
 		int type = stack.getItemDamage();
 		PCws_WeaselPluginInfo wpi = PCws_WeaselManager.getPluginInfo(type);
+		inv = new ItemStack[wpi.inventorySize()];
 		setData("type", type);
 		if(wpi.hasSpecialRot()){
 			setData("specialRot", PC_MathHelper.floor_double(((player.rotationYaw + 180F) * 16F) / 360F + 0.5D) & 0xf);
@@ -43,6 +48,10 @@ public class PCws_TileEntityWeasel extends PC_TileEntity implements PC_ITileEnti
 		if(nbtTag.hasKey("specialRot")){
 			datas.put("specialRot", nbtTag.getInteger("specialRot"));
 		}
+		if(nbtTag.hasKey("invSize")){
+			inv = new ItemStack[nbtTag.getInteger("invSize")];
+			PC_InvUtils.loadInventoryFromNBT(nbtTag, "inv", this);
+		}
 	}
 
 	@Override
@@ -52,6 +61,10 @@ public class PCws_TileEntityWeasel extends PC_TileEntity implements PC_ITileEnti
 		nbtTag.setInteger("type", getType());
 		if(getData("specialRot")!=null){
 			nbtTag.setInteger("specialRot", (Integer)getData("specialRot"));
+		}
+		if(inv!=null && inv.length!=0){
+			nbtTag.setInteger("invSize", inv.length);
+			PC_InvUtils.saveInventoryToNBT(nbtTag, "inv", this);
 		}
 	}
 
@@ -144,6 +157,125 @@ public class PCws_TileEntityWeasel extends PC_TileEntity implements PC_ITileEnti
 			PC_PacketHandler.setTileEntity(this, l.get(i).toArray());
 		}
 		return l.get(0).toArray();
+	}
+
+	@Override
+	public boolean insertStackIntoInventory(ItemStack stack) {
+		return PC_InvUtils.insetItemTo(stack, this, 0, getPluginInfo().inventorySize()-1)==0;
+	}
+
+	@Override
+	public boolean needsSpecialInserter() {
+		return false;
+	}
+
+	@Override
+	public boolean canPlayerInsertStackTo(int slot, ItemStack stack) {
+		return stack.itemID==PCws_App.weaselDisk.shiftedIndex;
+	}
+
+	@Override
+	public boolean canMachineInsertStackTo(int slot, ItemStack stack) {
+		return canPlayerInsertStackTo(slot, stack);
+	}
+
+	@Override
+	public boolean canDispenseStackFrom(int slot) {
+		return true;
+	}
+
+	@Override
+	public boolean canDropStackFrom(int slot) {
+		return true;
+	}
+
+	@Override
+	public int getSizeInventory() {
+		return inv.length;
+	}
+
+	@Override
+	public ItemStack getStackInSlot(int var1) {
+		return inv[var1];
+	}
+
+	@Override
+	public ItemStack decrStackSize(int i, int j) {
+		if (inv[i] != null)
+        {
+            if (inv[i].stackSize <= j)
+            {
+                ItemStack itemstack = inv[i];
+                inv[i] = null;
+                onInventoryChanged();
+                return itemstack;
+            }
+
+            ItemStack itemstack1 = inv[i].splitStack(j);
+
+            if (inv[i].stackSize == 0)
+            {
+            	inv[i] = null;
+            }
+
+            if(getPlugin() instanceof PCws_IWeaselInventory)
+            	((PCws_IWeaselInventory)getPlugin()).setInventorySlotContents(i, inv[i]);
+            
+            onInventoryChanged();
+            return itemstack1;
+        }
+        else
+        {
+            return null;
+        }
+	}
+
+	@Override
+	public ItemStack getStackInSlotOnClosing(int var1) {
+		if (inv[var1] != null)
+        {
+            ItemStack itemstack = inv[var1];
+            inv[var1] = null;
+            if(getPlugin() instanceof PCws_IWeaselInventory)
+            	((PCws_IWeaselInventory)getPlugin()).setInventorySlotContents(var1, null);
+            return itemstack;
+        }
+        else
+        {
+            return null;
+        }
+	}
+
+	@Override
+	public void setInventorySlotContents(int var1, ItemStack var2) {
+		inv[var1] = var2;
+		 if(getPlugin() instanceof PCws_IWeaselInventory)
+			 ((PCws_IWeaselInventory)getPlugin()).setInventorySlotContents(var1, var2);
+	}
+
+	@Override
+	public String getInvName() {
+		return getClass().getSimpleName();
+	}
+
+	@Override
+	public int getInventoryStackLimit() {
+		return getPluginInfo().inventoryStackLimit();
+	}
+
+	@Override
+	public boolean isUseableByPlayer(EntityPlayer var1) {
+		return true;
+	}
+
+	@Override
+	public void openChest() {
+		
+	}
+
+	@Override
+	public void closeChest() {
+		
 	}
 	
 	

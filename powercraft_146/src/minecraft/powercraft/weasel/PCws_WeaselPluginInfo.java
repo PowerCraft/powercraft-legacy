@@ -113,4 +113,12 @@ public abstract class PCws_WeaselPluginInfo {
 		
 	}
 	
+	public int inventorySize(){
+		return 0;
+	}
+	
+	public int inventoryStackLimit(){
+		return 0;
+	}
+	
 }
