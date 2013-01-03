@@ -308,12 +308,12 @@ public abstract class PCws_WeaselPlugin implements PC_INBT<PCws_WeaselPlugin>, I
 	public void refreshInport(){
 		boolean newWeaselInport[] = PCws_BlockWeasel.getWeaselInputStates(getWorld(), pos);
 		PCws_WeaselNetwork weaselNetwork = getNetwork();
-		boolean anyChang = false;
+		boolean anyChange = false;
 		boolean anyNoCall = false;
 		if(newWeaselInport!=null){
 			for(int i=0; i<6; i++){
 				if(weaselInport[i] != newWeaselInport[i]){
-					anyChang = true;
+					anyChange = true;
 					needsSave();
 					weaselInport[i] = newWeaselInport[i];
 					if(weaselNetwork!=null){
@@ -329,15 +329,20 @@ public abstract class PCws_WeaselPlugin implements PC_INBT<PCws_WeaselPlugin>, I
 				}
 			}
 		}
-		if(weaselNetwork!=null && anyChang && anyNoCall){
+		if(weaselNetwork!=null && anyChange && anyNoCall){
 			if(!weaselNetwork.callFunctionOnEngine("onPortChange."+name)){
 				weaselNetwork.callFunctionOnEngine("onPortChange", new WeaselString(name));
 			}
-		}else if(anyChang && anyNoCall){
+		}else if(anyChange && anyNoCall){
 			if(doesProvideFunctionOnEngine("onPortChange."+name)){
 				callFunctionOnEngine("onPortChange."+name);
 			}else if(doesProvideFunctionOnEngine("onPortChange")){
 				callFunctionOnEngine("onPortChange",  new WeaselString(name));
+			}
+		}
+		if(anyChange){
+			if(doesProvideFunctionOnEngine("update")){
+				callFunctionOnEngine("update");
 			}
 		}
 	}
