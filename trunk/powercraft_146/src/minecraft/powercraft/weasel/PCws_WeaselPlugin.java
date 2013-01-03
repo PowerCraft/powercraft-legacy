@@ -119,7 +119,7 @@ public abstract class PCws_WeaselPlugin implements PC_INBT<PCws_WeaselPlugin>, I
 		if(PCws_WeaselManager.getPlugin(name)==null){
 			needsSave();
 			this.name = name;
-			setData("diviceName", name);
+			setData("deviceName", name);
 		}
 	}
 	
@@ -430,7 +430,7 @@ public abstract class PCws_WeaselPlugin implements PC_INBT<PCws_WeaselPlugin>, I
 	
 	public void sync(PCws_TileEntityWeasel tileEntityWeasel) {
 		tileEntityWeasel.setData("color", getColor());
-		tileEntityWeasel.setData("diviceName", name);
+		tileEntityWeasel.setData("deviceName", name);
 		PCws_WeaselNetwork netkork = getNetwork();
 		if(netkork==null)
 			tileEntityWeasel.setData("networkName", "");
@@ -441,7 +441,7 @@ public abstract class PCws_WeaselPlugin implements PC_INBT<PCws_WeaselPlugin>, I
 	}
 
 	public void getClientMsg(String msg, Object obj) {
-		if(msg.equalsIgnoreCase("diviceRename")){
+		if(msg.equalsIgnoreCase("deviceRename")){
 			setName((String)obj);
 		}else if(msg.equalsIgnoreCase("networkJoin")){
 			if(((String) obj).equals("")){
@@ -473,7 +473,7 @@ public abstract class PCws_WeaselPlugin implements PC_INBT<PCws_WeaselPlugin>, I
 	protected abstract void openPluginGui(EntityPlayer player);
 	
 	public void openGui(EntityPlayer player){
-		setData("diviceNames", PCws_WeaselManager.getAllPluginNames());
+		setData("deviceNames", PCws_WeaselManager.getAllPluginNames());
 		setData("networkNames", PCws_WeaselManager.getAllNetworkNames());
 		openPluginGui(player);
 	}

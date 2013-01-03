@@ -24,8 +24,8 @@ public abstract class PCws_GuiWeasel implements PC_IGresClient {
 
 	protected PCws_TileEntityWeasel te;
 	protected PC_GresWidget ok, cancel;
-	protected PC_GresTextEdit diviceName;
-	protected PC_GresWidget diviceRename;
+	protected PC_GresTextEdit deviceName;
+	protected PC_GresWidget deviceRename;
 	protected PC_GresTextEdit networkName;
 	protected PC_GresWidget network1, network2;
 	protected PC_GresColorPicker networkColor;
@@ -56,10 +56,10 @@ public abstract class PCws_GuiWeasel implements PC_IGresClient {
 	protected void makeNetworkTab(PC_GresTab tab){
 		PC_GresLayoutV lv = new PC_GresLayoutV();
 		PC_GresLayoutH lh = new PC_GresLayoutH();
-		lh.add(new PC_GresLabel(Lang.tr("pc.gui.weasel.divice.name")));
-		lh.add(diviceName = new PC_GresTextEdit((String)te.getData("diviceName"), 10));
+		lh.add(new PC_GresLabel(Lang.tr("pc.gui.weasel.device.name")));
+		lh.add(deviceName = new PC_GresTextEdit((String)te.getData("deviceName"), 10));
 		lv.add(lh);
-		lv.add(diviceRename = new PC_GresButton(Lang.tr("pc.gui.weasel.divice.rename")));
+		lv.add(deviceRename = new PC_GresButton(Lang.tr("pc.gui.weasel.device.rename")));
 		lh = new PC_GresLayoutH();
 		lh.add(new PC_GresLabel(Lang.tr("pc.gui.weasel.network.name")));
 		lh.add(networkName = new PC_GresTextEdit((String)te.getData("networkName"), 10));
@@ -89,13 +89,13 @@ public abstract class PCws_GuiWeasel implements PC_IGresClient {
 			onReturnPressed(gui);
 		}else if(widget==cancel){
 			onEscapePressed(gui);
-		}else if(widget==diviceName){
-			List<String> diviceNames = (List<String>)te.getData("diviceNames");
-			diviceRename.enable(!diviceNames.contains(diviceName.getText()));
-			if(diviceName.equals(""))
-				diviceRename.enable(false);
-		}else if(widget==diviceRename){
-			PC_PacketHandler.setTileEntity(te, "msg", "diviceRename", diviceName.getText());
+		}else if(widget==deviceName){
+			List<String> deviceNames = (List<String>)te.getData("deviceNames");
+			deviceRename.enable(!deviceNames.contains(deviceName.getText()));
+			if(deviceName.equals(""))
+				deviceRename.enable(false);
+		}else if(widget==deviceRename){
+			PC_PacketHandler.setTileEntity(te, "msg", "deviceRename", deviceName.getText());
 		}else if(widget==networkName){
 			List<String> networkNames = (List<String>)te.getData("networkNames");
 			if(networkNames.contains(networkName.getText())){

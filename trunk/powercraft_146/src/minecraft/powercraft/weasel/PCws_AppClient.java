@@ -11,8 +11,8 @@ public class PCws_AppClient extends PCws_App implements PC_IClientModule {
 
 	@Override
 	public List<PC_LangEntry> initLanguage(List<PC_LangEntry> lang) {
-		lang.add(new PC_LangEntry("pc.gui.weasel.divice.name", "divice name:"));
-		lang.add(new PC_LangEntry("pc.gui.weasel.divice.rename", "rename divice"));
+		lang.add(new PC_LangEntry("pc.gui.weasel.device.name", "device name:"));
+		lang.add(new PC_LangEntry("pc.gui.weasel.device.rename", "rename device"));
 		lang.add(new PC_LangEntry("pc.gui.weasel.network.tab", "Network"));
 		lang.add(new PC_LangEntry("pc.gui.weasel.network.name", "network name:"));
 		lang.add(new PC_LangEntry("pc.gui.weasel.network.join", "join network"));
