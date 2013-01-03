@@ -32,6 +32,15 @@ public class PCco_ItemActivator extends PC_Item{
     public boolean onItemUse(ItemStack itemstack, EntityPlayer entityplayer, World world, int x, int y, int z, int l, float par8, float par9, float par10)
     {
     	
+    	List<PC_IMSG> objs = ModuleInfo.getMSGObjects();
+
+        for (PC_IMSG obj : objs){
+        	Object o = obj.msg(PC_Utils.MSG_ON_ACTIVATOR_USED_ON_BLOCK, itemstack, entityplayer, world, new PC_VecI(x, y, z));
+        	if(o instanceof Boolean && (Boolean)o){
+        		return true;
+        	}
+        }
+    	
     	int dir = ((PC_MathHelper.floor_double(((entityplayer.rotationYaw * 4F) / 360F) + 0.5D) & 3) + 2) % 4;
 
 //		if (PC_Utils.isPlacingReversed()) {
@@ -56,15 +65,6 @@ public class PCco_ItemActivator extends PC_Item{
 				return true;
 			}
 		}
-        
-		List<PC_IMSG> objs = ModuleInfo.getMSGObjects();
-
-        for (PC_IMSG obj : objs){
-        	Object o = obj.msg(PC_Utils.MSG_ON_ACTIVATOR_USED_ON_BLOCK, itemstack, entityplayer, world, new PC_VecI(x, y, z));
-        	if(o instanceof Boolean && (Boolean)o){
-        		return true;
-        	}
-        }
 
         return false;
     }

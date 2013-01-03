@@ -25,7 +25,7 @@ public class PCma_TileEntityFishingMachine extends PC_TileEntity implements PC_I
 	private static Random rand = new Random();
 	
 	private long lastTime = System.currentTimeMillis();
-	private int fishTimer;
+	private int fishTimer = 250 + rand.nextInt(350);
 	private int burningFuel;
 	public boolean running;
 	
