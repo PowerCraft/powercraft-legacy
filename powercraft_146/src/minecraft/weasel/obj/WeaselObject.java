@@ -92,6 +92,7 @@ public abstract class WeaselObject implements PC_INBT {
 				obj.readFromNBT(tag);
 				break;
 
+			case FUNCTIONCALL:
 			case NULL:
 				// it already is 
 				// obj = null;
