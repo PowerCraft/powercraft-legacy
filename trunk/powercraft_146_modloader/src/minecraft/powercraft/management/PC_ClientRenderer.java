@@ -70,6 +70,16 @@ public class PC_ClientRenderer extends PC_Renderer {
 	}
 	
 	@Override
+	protected void iTessellatorStartDrawing(int i) {
+		Tessellator.instance.startDrawing(i);
+	}
+    
+	@Override
+    protected void iTessellatorSetColorOpaque_I(int i) {
+		Tessellator.instance.setColorOpaque_I(i);
+	}
+	
+	@Override
 	protected void iTessellatorSetColor(int r, int g, int b, int a) {
 		Tessellator.instance.setColorRGBA(r, g, b, a);
 	}
