@@ -229,6 +229,8 @@ public class PCws_WeaselPluginCore extends PCws_WeaselPlugin {
 
 	@Override
 	public void update() {
+		if(externalCallsWaiting==null)
+			externalCallsWaiting = new ArrayList<PC_Struct2<String,Object[]>>();
 		if(sleepTimer<=0){
 			if(!hasError() && !stop){
 				try{
