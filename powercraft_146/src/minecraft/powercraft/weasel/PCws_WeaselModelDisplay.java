@@ -65,7 +65,7 @@ public class PCws_WeaselModelDisplay extends PCws_WeaselModelBase {
 			align = (Integer)te.getData("align");
 
 		int i = -1;
-		int maxlines = 7;
+		int maxlines = 6;
 		int screenWidth = 76;
 
 		String[] parts = s.split("\\\\n");
