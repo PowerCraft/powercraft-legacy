@@ -24,6 +24,8 @@ public class PCma_App implements PC_IModule
     public static PC_Block xpBank;
     public static PC_Block blockBuilder;
     public static PC_Block harvester;
+    public static PC_Block fishingMachine;
+    
     
     public static List<Integer> roasterIgnoreBlockIDs;
 
@@ -65,6 +67,7 @@ public class PCma_App implements PC_IModule
         xpBank = ModuleLoader.register(this, PCma_BlockXPBank.class, PCma_TileEntityXPBank.class);
         blockBuilder = ModuleLoader.register(this, PCma_BlockBlockBuilder.class, PCma_TileEntityBlockBuilder.class);
         harvester = ModuleLoader.register(this, PCma_BlockHarvester.class);
+        fishingMachine = ModuleLoader.register(this, PCma_BlockFishingMachine.class, PCma_TileEntityFishingMachine.class);
 	}
 	
 	@Override
