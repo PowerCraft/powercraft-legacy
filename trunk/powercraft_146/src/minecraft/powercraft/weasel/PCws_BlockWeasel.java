@@ -9,6 +9,7 @@ import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.world.IBlockAccess;
@@ -16,9 +17,14 @@ import net.minecraft.world.World;
 import powercraft.management.PC_Block;
 import powercraft.management.PC_MathHelper;
 import powercraft.management.PC_Utils;
+import powercraft.management.PC_Utils.Communication;
 import powercraft.management.PC_Utils.GameInfo;
+import powercraft.management.PC_Utils.Lang;
+import powercraft.management.PC_Utils.ModuleInfo;
 import powercraft.management.PC_Utils.ValueWriting;
 import powercraft.management.PC_VecI;
+import powercraft.net.PCnt_RadioManager;
+import powercraft.net.PCnt_TileEntityRadio;
 
 public class PCws_BlockWeasel extends PC_Block {
 
@@ -154,6 +160,36 @@ public class PCws_BlockWeasel extends PC_Block {
 			float par8, float par9) {
 		ItemStack ihold = player.getCurrentEquippedItem();
 
+		PCws_WeaselPlugin weaselPlugin = getPlugin(world, x, y, z);
+		if (weaselPlugin == null) return false;
+		
+		if (ihold != null) {
+			if (ihold.getItem() instanceof ItemBlock && ihold.getItem().shiftedIndex != blockID) {
+				Block bhold = Block.blocksList[ihold.getItem().shiftedIndex];
+				return false;
+			} else if (ihold.getItem().shiftedIndex == ModuleInfo.getPCObjectIDByName("PCco_ItemActivator")) {
+
+				if (weaselPlugin.getNetwork()==null||GameInfo.isPlacingReversed(player)){
+					if (ihold.hasTagCompound()) {
+						String network = ihold.getTagCompound().getString("WeaselNetwork");
+						weaselPlugin.connectToNetwork(PCws_WeaselManager.getNetwork(network));
+						world.scheduleBlockUpdate(x, y, z, blockID, 1);
+
+						Communication.chatMsg(Lang.tr("pc.weasel.activatorSetNetwork", new String[] { network }), true);
+						world.playSoundEffect(x, y, z, "note.snare", (world.rand.nextFloat() + 0.7F) / 2.0F, 0.5F);
+					}
+				}else{
+					String network = weaselPlugin.getNetwork().getName();
+					if (!ihold.hasTagCompound()) {
+						ihold.setTagCompound(new NBTTagCompound());
+					}
+					ihold.getTagCompound().setString("WeaselNetwork", network);
+					Communication.chatMsg(Lang.tr("pc.weasel.activatorGetNetwork", new String[] { network }), true);
+				}
+				return true;
+			}
+		}
+		
         if (ihold != null)
         {
             if (ihold.getItem() instanceof ItemBlock)
@@ -165,9 +201,7 @@ public class PCws_BlockWeasel extends PC_Block {
             }
         }
 
-        PCws_WeaselPlugin weaselPlugin = getPlugin(world, x, y, z);
-        if(weaselPlugin!=null)
-        	weaselPlugin.openGui(player);
+        weaselPlugin.openGui(player);
         
         return true;
 	}
