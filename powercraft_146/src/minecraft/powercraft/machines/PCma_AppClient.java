@@ -32,6 +32,7 @@ public class PCma_AppClient extends PCma_App implements PC_IClientModule {
 	@Override
 	public List<String> loadTextureFiles(List<String> textures) {
 		textures.add(ModuleInfo.getTerrainFile(this));
+		textures.add(ModuleInfo.getTextureDirectory(this) + "fisher.png");
 		return textures;
 	}
 

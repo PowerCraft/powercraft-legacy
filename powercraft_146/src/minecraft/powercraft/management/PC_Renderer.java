@@ -52,6 +52,18 @@ public class PC_Renderer
         renderer2d.iTessellatorStartDrawingQuads();
     }
 
+    protected void iTessellatorStartDrawing(int i) {}
+    
+    public static void tessellatorStartDrawing(int i) {
+    	renderer2d.iTessellatorStartDrawing(i);
+	}
+
+    protected void iTessellatorSetColorOpaque_I(int i) {}
+    
+	public static void tessellatorSetColorOpaque_I(int i) {
+		renderer2d.iTessellatorSetColorOpaque_I(i);
+	}
+    
     protected void iTessellatorSetColor(int r, int g, int b, int a) {}
     
     public static void tessellatorSetColor(int r, int g, int b, int a) {
