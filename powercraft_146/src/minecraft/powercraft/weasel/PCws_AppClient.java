@@ -63,6 +63,9 @@ public class PCws_AppClient extends PCws_App implements PC_IClientModule {
 		
 		lang.add(new PC_LangEntry("pc.gui.weasel.diskManager.title", "Digital Workbench"));
 		
+		lang.add(new PC_LangEntry("pc.weasel.activatorGetNetwork", "Network \"%s\" assigned to activation crystal."));
+		lang.add(new PC_LangEntry("pc.weasel.activatorSetNetwork", "Device connected to network \"%s\"."));
+		
 		return lang;
 	}
 

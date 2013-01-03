@@ -21,6 +21,8 @@ public class PCnt_AppClient extends PCnt_App implements PC_IClientModule {
 		lang.add(new PC_LangEntry("pc.gui.radio.renderSmall", "Tiny"));
 		lang.add(new PC_LangEntry("pc.radioRemote.connected", "Portable transmitter connected to channel \"%s\"."));
 		lang.add(new PC_LangEntry("pc.radioRemote.desc", "Channel: %s"));
+		lang.add(new PC_LangEntry("pc.radio.activatorSetChannel", "Radio connected to channel \"%s\"."));
+		lang.add(new PC_LangEntry("pc.radio.activatorGetChannel", "Channel \"%s\" assigned to activation crystal."));
 		return lang;
 	}
 
