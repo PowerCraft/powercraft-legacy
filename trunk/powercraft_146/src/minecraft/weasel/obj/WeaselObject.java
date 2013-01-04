@@ -72,8 +72,8 @@ public abstract class WeaselObject implements PC_INBT {
 				obj.readFromNBT(tag);
 				break;
 
-			case INTEGER:
-				obj = new WeaselInteger();
+			case DOUBLE:
+				obj = new WeaselDouble();
 				obj.readFromNBT(tag);
 				break;
 
@@ -114,7 +114,7 @@ public abstract class WeaselObject implements PC_INBT {
 		if (value == null) return null;
 
 		if (value instanceof Number) {
-			return new WeaselInteger(value);
+			return new WeaselDouble(value);
 		}
 
 		if (value instanceof String) {
@@ -160,7 +160,7 @@ public abstract class WeaselObject implements PC_INBT {
 	@SuppressWarnings("javadoc")
 	public static enum WeaselObjectType {
 
-		BOOLEAN, INTEGER, STRING, VARMAP, STACK, NULL, FUNCTIONCALL;
+		BOOLEAN, DOUBLE, STRING, VARMAP, STACK, NULL, FUNCTIONCALL;
 
 		private static HashMap<String, WeaselObjectType> members = new HashMap<String, WeaselObjectType>();
 

@@ -21,7 +21,7 @@ import weasel.exception.WeaselRuntimeException;
 import weasel.lang.Instruction;
 import weasel.lang.InstructionFunction;
 import weasel.obj.WeaselBoolean;
-import weasel.obj.WeaselInteger;
+import weasel.obj.WeaselDouble;
 import weasel.obj.WeaselNull;
 import weasel.obj.WeaselObject;
 import weasel.obj.WeaselString;
@@ -265,7 +265,7 @@ public class PCws_WeaselPluginDiskDrive extends PCws_WeaselPlugin implements PCw
 					int pos = Calc.toInteger(args[0]);
 					String obj = Calc.toString(args[1]);	
 					if(PCws_ItemWeaselDisk.getType(disk)==PCws_ItemWeaselDisk.NUMBERLIST) {						
-						obj = ""+Calc.toInteger(args[1]);
+						obj = ""+Calc.toDouble(args[1]);
 					}
 					String delim = PCws_ItemWeaselDisk.getListDelimiter(disk);
 					
@@ -449,22 +449,22 @@ public class PCws_WeaselPluginDiskDrive extends PCws_WeaselPlugin implements PCw
 			if (PCws_ItemWeaselDisk.getType(disk) == PCws_ItemWeaselDisk.IMAGE) {
 				PC_VecI size = PCws_ItemWeaselDisk.getImageSize(disk);
 				// its faster this way for size
-				if (name.equals("img." + PCws_ItemWeaselDisk.getLabel(disk) + ".w")) return new WeaselInteger(size.x);
-				if (name.equals("img." + PCws_ItemWeaselDisk.getLabel(disk) + ".W")) return new WeaselInteger(size.x);
-				if (name.equals("img." + PCws_ItemWeaselDisk.getLabel(disk) + ".width")) return new WeaselInteger(size.x);
-				if (name.equals("img." + PCws_ItemWeaselDisk.getLabel(disk) + ".WIDTH")) return new WeaselInteger(size.x);
-				if (name.equals("img." + PCws_ItemWeaselDisk.getLabel(disk) + ".h")) return new WeaselInteger(size.x);
-				if (name.equals("img." + PCws_ItemWeaselDisk.getLabel(disk) + ".H")) return new WeaselInteger(size.x);
-				if (name.equals("img." + PCws_ItemWeaselDisk.getLabel(disk) + ".height")) return new WeaselInteger(size.x);
-				if (name.equals("img." + PCws_ItemWeaselDisk.getLabel(disk) + ".HEIGHT")) return new WeaselInteger(size.x);
-				if (name.equals((i + 1)+ ".w")) return new WeaselInteger(size.x);
-				if (name.equals((i + 1)+ ".W")) return new WeaselInteger(size.x);
-				if (name.equals((i + 1)+ ".width")) return new WeaselInteger(size.x);
-				if (name.equals((i + 1)+ ".WIDTH")) return new WeaselInteger(size.x);
-				if (name.equals((i + 1)+ ".h")) return new WeaselInteger(size.x);
-				if (name.equals((i + 1)+ ".H")) return new WeaselInteger(size.x);
-				if (name.equals((i + 1)+ ".height")) return new WeaselInteger(size.x);
-				if (name.equals((i + 1)+ ".HEIGHT")) return new WeaselInteger(size.x);
+				if (name.equals("img." + PCws_ItemWeaselDisk.getLabel(disk) + ".w")) return new WeaselDouble(size.x);
+				if (name.equals("img." + PCws_ItemWeaselDisk.getLabel(disk) + ".W")) return new WeaselDouble(size.x);
+				if (name.equals("img." + PCws_ItemWeaselDisk.getLabel(disk) + ".width")) return new WeaselDouble(size.x);
+				if (name.equals("img." + PCws_ItemWeaselDisk.getLabel(disk) + ".WIDTH")) return new WeaselDouble(size.x);
+				if (name.equals("img." + PCws_ItemWeaselDisk.getLabel(disk) + ".h")) return new WeaselDouble(size.x);
+				if (name.equals("img." + PCws_ItemWeaselDisk.getLabel(disk) + ".H")) return new WeaselDouble(size.x);
+				if (name.equals("img." + PCws_ItemWeaselDisk.getLabel(disk) + ".height")) return new WeaselDouble(size.x);
+				if (name.equals("img." + PCws_ItemWeaselDisk.getLabel(disk) + ".HEIGHT")) return new WeaselDouble(size.x);
+				if (name.equals((i + 1)+ ".w")) return new WeaselDouble(size.x);
+				if (name.equals((i + 1)+ ".W")) return new WeaselDouble(size.x);
+				if (name.equals((i + 1)+ ".width")) return new WeaselDouble(size.x);
+				if (name.equals((i + 1)+ ".WIDTH")) return new WeaselDouble(size.x);
+				if (name.equals((i + 1)+ ".h")) return new WeaselDouble(size.x);
+				if (name.equals((i + 1)+ ".H")) return new WeaselDouble(size.x);
+				if (name.equals((i + 1)+ ".height")) return new WeaselDouble(size.x);
+				if (name.equals((i + 1)+ ".HEIGHT")) return new WeaselDouble(size.x);
 				
 				if (name.equals((i + 1))) return new WeaselNull();
 				if (name.equals("img." + PCws_ItemWeaselDisk.getLabel(disk))) return new WeaselNull();
@@ -472,10 +472,10 @@ public class PCws_WeaselPluginDiskDrive extends PCws_WeaselPlugin implements PCw
 			}
 
 			if (PCws_ItemWeaselDisk.getType(disk) == PCws_ItemWeaselDisk.NUMBERLIST || PCws_ItemWeaselDisk.getType(disk) == PCws_ItemWeaselDisk.STRINGLIST) {
-				if (name.equals((i + 1) + ".size")) return new WeaselInteger(PCws_ItemWeaselDisk.getListLength(disk));
-				if (name.equals((i + 1) + ".length")) return new WeaselInteger(PCws_ItemWeaselDisk.getListLength(disk));
-				if (name.equals("list." + PCws_ItemWeaselDisk.getLabel(disk) + ".size")) return new WeaselInteger(PCws_ItemWeaselDisk.getListLength(disk));
-				if (name.equals("list." + PCws_ItemWeaselDisk.getLabel(disk) + ".length")) return new WeaselInteger(PCws_ItemWeaselDisk.getListLength(disk));
+				if (name.equals((i + 1) + ".size")) return new WeaselDouble(PCws_ItemWeaselDisk.getListLength(disk));
+				if (name.equals((i + 1) + ".length")) return new WeaselDouble(PCws_ItemWeaselDisk.getListLength(disk));
+				if (name.equals("list." + PCws_ItemWeaselDisk.getLabel(disk) + ".size")) return new WeaselDouble(PCws_ItemWeaselDisk.getListLength(disk));
+				if (name.equals("list." + PCws_ItemWeaselDisk.getLabel(disk) + ".length")) return new WeaselDouble(PCws_ItemWeaselDisk.getListLength(disk));
 				continue;
 			}
 		}

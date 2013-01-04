@@ -41,7 +41,7 @@ import powercraft.management.PC_Utils.ModuleInfo;
 import powercraft.management.PC_VecI;
 import powercraft.weasel.PCws_WeaselBitmapUtils.WeaselBitmapProvider;
 import weasel.WeaselEngine;
-import weasel.obj.WeaselInteger;
+import weasel.obj.WeaselDouble;
 import weasel.obj.WeaselObject;
 import weasel.obj.WeaselString;
 
@@ -623,17 +623,17 @@ public class PCws_GuiWeaselDiskManager extends PCws_ContainerWeaselDiskManager i
 		}else if(widget==data_btnDataOk){
 			String name = data_DataName.getText().trim();
 			String value = data_DataValue.getText().trim().replace("\"", "");
-			Integer i = null;
+			Double i = null;
 			
 			try {
-				i = Integer.valueOf(value);
+				i = Double.valueOf(value);
 			}catch(NumberFormatException e) {}
 			
 			if(value.length() == 0) {
 				PCws_ItemWeaselDisk.removeMapVariable(itemstack, name);
 				PC_PacketHandler.sendToPacketHandler(thePlayer.worldObj, "WeaselDiskDrive", "removeMapVariable", name);
 			}else {
-				PCws_ItemWeaselDisk.setMapVariable(itemstack, name, i==null?new WeaselString(value):new WeaselInteger(i));
+				PCws_ItemWeaselDisk.setMapVariable(itemstack, name, i==null?new WeaselString(value):new WeaselDouble(i));
 				PC_PacketHandler.sendToPacketHandler(thePlayer.worldObj, "WeaselDiskDrive", "setMapVariable", name, i==null?value:i);
 			}
 			

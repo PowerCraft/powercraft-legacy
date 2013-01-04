@@ -14,7 +14,7 @@ import java.util.Stack;
 import org.lwjgl.util.Color;
 
 import weasel.jep.ParseException;
-import weasel.obj.WeaselInteger;
+import weasel.obj.WeaselDouble;
 
 
 /**

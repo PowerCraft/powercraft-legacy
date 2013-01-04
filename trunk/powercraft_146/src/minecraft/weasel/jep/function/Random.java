@@ -47,15 +47,15 @@ public class Random extends PostfixMathCommand {
 
 			if (arg instanceof Number) {
 				if (arg instanceof Double)
-					stack.push(new Integer(rand.nextInt((int) Math.round((Double) arg))));
+					stack.push(new Double(rand.nextDouble()*((Double) arg)));
 				else if (arg instanceof Float)
-					stack.push(new Integer(rand.nextInt(Math.round((Float) arg))));
+					stack.push(new Double(rand.nextDouble()*((Float) arg)));
 				else if (arg instanceof Integer)
-					stack.push(new Integer(rand.nextInt((Integer) arg)));
+					stack.push(new Double(rand.nextInt((Integer) arg)));
 				else if (arg instanceof Long)
-					stack.push(new Integer(rand.nextInt(Math.round((Long) arg))));
+					stack.push(new Double(rand.nextInt((int)(long)(Long) arg)));
 				else if (arg instanceof Vector)
-					stack.push(((Vector) arg).get(rand.nextInt(((Vector) arg).size())));
+					stack.push(new Double((Double)((Vector) arg).get(rand.nextInt(((Vector) arg).size()))));
 				else
 					throw new ParseException("Random() can't work with " + arg.getClass().getSimpleName());
 			}
@@ -69,34 +69,34 @@ public class Random extends PostfixMathCommand {
 			if (start instanceof Number && end instanceof Number) {
 
 
-				int st;
-				int en;
+				double st;
+				double en;
 
 				if (start instanceof Double)
-					st = new Integer((int) Math.round((Double) start));
+					st = new Double((Double) start);
 				else if (start instanceof Float)
-					st = new Integer(Math.round((Float) start));
+					st = new Double((Float) start);
 				else if (start instanceof Integer)
-					st = new Integer((Integer) start);
+					st = new Double((Integer) start);
 				else if (start instanceof Long)
-					st = new Integer((Integer) start);
+					st = new Double((Long) start);
 				else
 					throw new ParseException("Random(start,end) can't work with " + start.getClass().getSimpleName());
 
-				if (end instanceof Double)
-					en = new Integer((int) Math.round((Double) end));
-				else if (end instanceof Float)
-					en = new Integer(Math.round((Float) end));
-				else if (end instanceof Integer)
-					en = new Integer((Integer) end);
-				else if (end instanceof Long)
-					en = new Integer((Integer) end);
+				if (start instanceof Double)
+					en = new Double((Double) end);
+				else if (start instanceof Float)
+					en = new Double((Float) end);
+				else if (start instanceof Integer)
+					en = new Double((Integer) end);
+				else if (start instanceof Long)
+					en = new Double((Long) end);
 				else
 					throw new ParseException("Random(start,end) can't work with " + end.getClass().getSimpleName());
 
 
 				if (st == en) {
-					stack.push(new Integer(st));
+					stack.push(new Double(st));
 					return;
 				}
 
@@ -104,7 +104,7 @@ public class Random extends PostfixMathCommand {
 					throw new ParseException("Random(start,end) can't have start > end.");
 				}
 
-				stack.push(new Integer(st + rand.nextInt((en - st + 1))));
+				stack.push(new Double(st + rand.nextDouble()*(en - st)));
 			}
 			return;
 

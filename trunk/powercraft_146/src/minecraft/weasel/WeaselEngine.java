@@ -15,7 +15,7 @@ import weasel.exception.WeaselRuntimeException;
 import weasel.lang.Instruction;
 import weasel.obj.WeaselBoolean;
 import weasel.obj.WeaselFunctionCall;
-import weasel.obj.WeaselInteger;
+import weasel.obj.WeaselDouble;
 import weasel.obj.WeaselObject;
 import weasel.obj.WeaselStack;
 import weasel.obj.WeaselString;
@@ -490,19 +490,19 @@ public class WeaselEngine implements PC_INBT, IVariableProvider, IFunctionProvid
 
 		if (functionName.equals("color")) {
 			if (args.length == 1) {
-				if (args[0] instanceof WeaselInteger) {
-					return new WeaselInteger(((Integer) args[0].get()) & 0xffffff);
+				if (args[0] instanceof WeaselDouble) {
+					return new WeaselDouble(((Integer) args[0].get()) & 0xffffff);
 				}
 				if (args[0] instanceof WeaselString) {
-					return new WeaselInteger(PC_Color.getHexColorForName((String)args[0].get()));
+					return new WeaselDouble(PC_Color.getHexColorForName((String)args[0].get()));
 				}
 
 				throw new WeaselRuntimeException("color() can't work with " + args[0].get().getClass().getSimpleName());
 			} else if (args.length == 3) {
-				if (args[0] instanceof WeaselInteger)
-					if (args[1] instanceof WeaselInteger)
-						if (args[2] instanceof WeaselInteger)
-							return new WeaselInteger(clr((Integer) args[0].get(), (Integer) args[1].get(), (Integer) args[2].get()));
+				if (args[0] instanceof WeaselDouble)
+					if (args[1] instanceof WeaselDouble)
+						if (args[2] instanceof WeaselDouble)
+							return new WeaselDouble(clr((Integer) args[0].get(), (Integer) args[1].get(), (Integer) args[2].get()));
 
 				throw new WeaselRuntimeException("Invalid arguments for color().");
 			} else {
@@ -513,8 +513,8 @@ public class WeaselEngine implements PC_INBT, IVariableProvider, IFunctionProvid
 
 		if (functionName.equals("bound")) {
 			if (args.length == 3) {
-				if (args[0] instanceof WeaselInteger) if (args[1] instanceof WeaselInteger) if (args[2] instanceof WeaselInteger) {
-					return new WeaselInteger(Math.min((Integer) args[2].get(), Math.max((Integer) args[1].get(), (Integer) args[0].get())));
+				if (args[0] instanceof WeaselDouble) if (args[1] instanceof WeaselDouble) if (args[2] instanceof WeaselDouble) {
+					return new WeaselDouble(Math.min((Integer) args[2].get(), Math.max((Integer) args[1].get(), (Integer) args[0].get())));
 				}
 
 				throw new WeaselRuntimeException("Invalid arguments for bound().");
@@ -525,7 +525,7 @@ public class WeaselEngine implements PC_INBT, IVariableProvider, IFunctionProvid
 
 		if (functionName.equals("bound_c")) {
 			if (args.length == 3) {
-				if (args[0] instanceof WeaselInteger) if (args[1] instanceof WeaselInteger) if (args[2] instanceof WeaselInteger) {
+				if (args[0] instanceof WeaselDouble) if (args[1] instanceof WeaselDouble) if (args[2] instanceof WeaselDouble) {
 					int min = (Integer) args[1].get();
 					int max = (Integer) args[2].get();
 					int val = (Integer) args[0].get();
@@ -533,7 +533,7 @@ public class WeaselEngine implements PC_INBT, IVariableProvider, IFunctionProvid
 						val = val - (max - min);
 					while (val < min)
 						val = val + (max - min);
-					return new WeaselInteger(val);
+					return new WeaselDouble(val);
 				}
 
 				throw new WeaselRuntimeException("Invalid arguments for bound().");

@@ -8,7 +8,7 @@ import weasel.exception.WeaselRuntimeException;
 import weasel.jep.JEP;
 import weasel.jep.ParseException;
 import weasel.obj.WeaselBoolean;
-import weasel.obj.WeaselInteger;
+import weasel.obj.WeaselDouble;
 import weasel.obj.WeaselObject;
 import weasel.obj.WeaselString;
 
@@ -224,7 +224,7 @@ public class Calc {
 	/**
 	 * Convert an object object to a boolean.
 	 * 
-	 * @param obj object (WeaselInteger, WeaselBoolean, integer, boolean, long,
+	 * @param obj object (WeaselDouble, WeaselBoolean, integer, boolean, long,
 	 *            float, double)
 	 * @return boolean value
 	 */
@@ -240,8 +240,8 @@ public class Calc {
 			return Math.round((Float) obj) != 0;
 		} else if (obj instanceof WeaselBoolean) {
 			return ((WeaselBoolean) obj).get();
-		} else if (obj instanceof WeaselInteger) {
-			return ((WeaselInteger) obj).get() != 0;
+		} else if (obj instanceof WeaselDouble) {
+			return ((WeaselDouble) obj).get() != 0;
 		} else if (obj instanceof Long) {
 			return ((Long) obj) != 0;
 		} else if (obj instanceof String) {
@@ -318,7 +318,7 @@ public class Calc {
 	/**
 	 * Convert an object object to an integer. Booleans are turned into 0 or 1.
 	 * 
-	 * @param obj object (WeaselInteger, WeaselBoolean, integer, boolean, long,
+	 * @param obj object (WeaselDouble, WeaselBoolean, integer, boolean, long,
 	 *            float, double)
 	 * @return integer value
 	 */
@@ -333,8 +333,8 @@ public class Calc {
 			return (int) Math.round((Double) obj);
 		} else if (obj instanceof Float) {
 			return Math.round((Float) obj);
-		} else if (obj instanceof WeaselInteger) {
-			return ((WeaselInteger) obj).get();
+		} else if (obj instanceof WeaselDouble) {
+			return (int)(double)((WeaselDouble) obj).get();
 		} else if (obj instanceof WeaselBoolean) {
 			return ((WeaselBoolean) obj).get() ? 1 : 0;
 		} else if (obj instanceof Long) {
@@ -353,11 +353,50 @@ public class Calc {
 
 	}
 
+	
+	/**
+	 * Convert an object object to a double. Booleans are turned into 0 or 1.
+	 * 
+	 * @param obj object (WeaselDouble, WeaselBoolean, integer, boolean, long,
+	 *            float, double)
+	 * @return double value
+	 */
+	public static double toDouble(Object obj) {
+		if (obj == null) return 0.0D;
+
+		if (obj instanceof Integer) {
+			return ((Integer) obj);
+		} else if (obj instanceof Boolean) {
+			return ((Boolean) obj) ? 1 : 0;
+		} else if (obj instanceof Double) {
+			return ((Double) obj);
+		} else if (obj instanceof Float) {
+			return ((Float) obj);
+		} else if (obj instanceof WeaselDouble) {
+			return ((WeaselDouble) obj).get();
+		} else if (obj instanceof WeaselBoolean) {
+			return ((WeaselBoolean) obj).get() ? 1 : 0;
+		} else if (obj instanceof Long) {
+			return ((Long) obj);
+		} else if (obj instanceof String) {
+			try {
+				return Double.parseDouble((String) obj);
+			} catch (NumberFormatException e) {}
+		} else if (obj instanceof WeaselString) {
+			try {
+				return Double.parseDouble(((WeaselString) obj).get());
+			} catch (NumberFormatException e) {}
+		}
+
+		throw new RuntimeException("Unable to convert " + obj + " to Double.");
+
+	}
+	
 	/**
 	 * Convert an object to String. For weasel objects, converts only the
 	 * wrapped value to string.
 	 * 
-	 * @param obj object (WeaselInteger, WeaselBoolean, WeaselString, integer,
+	 * @param obj object (WeaselDouble, WeaselBoolean, WeaselString, integer,
 	 *            boolean, long, float, double, string)
 	 * @return the string value
 	 */
@@ -367,7 +406,7 @@ public class Calc {
 
 		if (obj instanceof Number) {
 			double dbl = ((Number) obj).doubleValue();
-			if (dbl - Math.round(dbl) < 0.001D) {
+			if (Math.abs(dbl - Math.round(dbl)) < 0.001D) {
 				return "" + (int) Math.round(dbl);
 			} else {
 				return "" + dbl;
@@ -376,8 +415,8 @@ public class Calc {
 
 		if (obj instanceof WeaselBoolean) {
 			return ((WeaselBoolean) obj).get() ? "true" : "false";
-		} else if (obj instanceof WeaselInteger) {
-			return ((WeaselInteger) obj).get() + "";
+		} else if (obj instanceof WeaselDouble) {
+			return ((WeaselDouble) obj).get() + "";
 		} else if (obj instanceof WeaselString) {
 			return ((WeaselString) obj).get();
 		} else if (obj instanceof Boolean) {
@@ -389,7 +428,7 @@ public class Calc {
 	}
 
 	/**
-	 * Format an integer (plain or wrapped in WeaselInteger, or a boolean, or
+	 * Format an integer (plain or wrapped in WeaselDouble, or a boolean, or
 	 * long) using given radix, and output as string.
 	 * 
 	 * @param obj the integer
@@ -397,14 +436,7 @@ public class Calc {
 	 * @return the formatted integer
 	 */
 	public static String formatIntegerBase(Object obj, int base) {
-		Integer i = 0;
-		if (obj instanceof Integer) i = (Integer) obj;
-		if (obj instanceof Long) i = (Integer) obj;
-		if (obj instanceof Float) i = Math.round((Float) obj);
-		if (obj instanceof Double) i = (int) Math.round((Double) obj);
-		if (obj instanceof Boolean) i = (Boolean) obj ? 1 : 0;
-		if (obj instanceof WeaselInteger) i = ((WeaselInteger) obj).get();
-		if (obj instanceof WeaselBoolean) i = ((WeaselBoolean) obj).get() ? 1 : 0;
+		Integer i = toInteger(obj);
 
 		switch (base) {
 			case 2:

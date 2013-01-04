@@ -17,7 +17,7 @@ import weasel.Calc;
 import weasel.IWeaselHardware;
 import weasel.WeaselEngine;
 import weasel.exception.WeaselRuntimeException;
-import weasel.obj.WeaselInteger;
+import weasel.obj.WeaselDouble;
 import weasel.obj.WeaselNull;
 import weasel.obj.WeaselObject;
 
@@ -422,7 +422,7 @@ public class PCws_WeaselBitmapUtils {
 	}
 	
 	public static int getColor(Object obj){
-		if(obj instanceof WeaselInteger || obj instanceof Integer){
+		if(obj instanceof WeaselDouble || obj instanceof Double || obj instanceof Integer){
 			return Calc.toInteger(obj);
 		}else{
 			return PC_Color.getHexColorForName(Calc.toString(obj));
@@ -464,9 +464,9 @@ public class PCws_WeaselBitmapUtils {
 			int y = Calc.toInteger(args[1]);
 			if (x < 0 || x >= provider.getBitmapSize().x || y < 0 || y >= provider.getBitmapSize().y) {
 				//out of screen
-				return new WeaselInteger(-1);
+				return new WeaselDouble(-1);
 			}
-			WeaselObject c = new WeaselInteger(provider.getBitmapPixel(x, y));
+			WeaselObject c = new WeaselDouble(provider.getBitmapPixel(x, y));
 			if (args.length == 3) {
 				//set
 				int color = getColor(args[2]);
@@ -491,8 +491,8 @@ public class PCws_WeaselBitmapUtils {
 				throw new WeaselRuntimeException("Wrong argument count for function " + functionName + " (" + args.length + ", needs 2)");
 			int x = Calc.toInteger(args[0]);
 			int y = Calc.toInteger(args[1]);
-			if (x < 0 || x >= width(provider) || y < 0 || y >= height(provider)) return new WeaselInteger(-1);
-			return new WeaselInteger(provider.getBitmapPixel(x, y));
+			if (x < 0 || x >= width(provider) || y < 0 || y >= height(provider)) return new WeaselDouble(-1);
+			return new WeaselDouble(provider.getBitmapPixel(x, y));
 		}
 
 		private void drawImage(String functionName, Object... objects) {
@@ -712,9 +712,9 @@ public class PCws_WeaselBitmapUtils {
 		@Override
 		public WeaselObject getVariable(String name) {
 			if (name.equals("W") || name.equals("w") || name.equalsIgnoreCase("width")) {
-				return new WeaselInteger(width(provider));
+				return new WeaselDouble(width(provider));
 			} else if (name.equals("H") || name.equals("h") || name.equalsIgnoreCase("height")) {
-				return new WeaselInteger(height(provider));
+				return new WeaselDouble(height(provider));
 			}
 			return null;
 		}

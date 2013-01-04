@@ -19,7 +19,7 @@ import powercraft.management.PC_VecI;
 import weasel.Calc;
 import weasel.exception.WeaselRuntimeException;
 import weasel.lang.Instruction;
-import weasel.obj.WeaselInteger;
+import weasel.obj.WeaselDouble;
 import weasel.obj.WeaselObject;
 import weasel.obj.WeaselVariableMap;
 
@@ -543,10 +543,10 @@ public class PCws_ItemWeaselDisk extends PC_Item {
 
 		String str = getListEntries(itemstack)[entry];
 		if (getType(itemstack) == NUMBERLIST) {
-			return new WeaselInteger(Calc.toInteger(str));
+			return new WeaselDouble(Calc.toDouble(str));
 		}
 		if (getType(itemstack) == STRINGLIST) {
-			return new WeaselInteger(Calc.toString(str));
+			return new WeaselDouble(Calc.toString(str));
 		}
 
 		return null;

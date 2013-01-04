@@ -11,7 +11,7 @@ import powercraft.management.PC_Utils.SaveHandler;
 import weasel.Calc;
 import weasel.WeaselEngine;
 import weasel.exception.WeaselRuntimeException;
-import weasel.obj.WeaselInteger;
+import weasel.obj.WeaselDouble;
 import weasel.obj.WeaselNull;
 import weasel.obj.WeaselObject;
 import weasel.obj.WeaselString;
@@ -101,7 +101,7 @@ public class PCws_WeaselPluginDisplay extends PCws_WeaselPlugin {
 			text = Calc.toString(value);
 			setData("text", text);
 		}else if(name.equals("color")||name.equals("fg")){
-			if (value instanceof WeaselInteger || value instanceof Number) {
+			if (value instanceof WeaselDouble || value instanceof Number) {
 				fgcolor = Calc.toInteger(value);
 			} else {
 				Integer clr = PC_Color.getHexColorForName(Calc.toString(value));
@@ -113,7 +113,7 @@ public class PCws_WeaselPluginDisplay extends PCws_WeaselPlugin {
 			}
 			setData("fgcolor", fgcolor);
 		}else if(name.equals("bgcolor")||name.equals("background")||name.equals("bg")){
-			if (value instanceof WeaselInteger || value instanceof Number) {
+			if (value instanceof WeaselDouble || value instanceof Number) {
 				bgcolor = Calc.toInteger(value);
 			} else {
 				Integer clr = PC_Color.getHexColorForName(Calc.toString(value));
@@ -125,7 +125,7 @@ public class PCws_WeaselPluginDisplay extends PCws_WeaselPlugin {
 			}
 			setData("bgcolor", bgcolor);
 		}else if(name.equals("align")){
-			if (value instanceof WeaselInteger || value instanceof Number) {
+			if (value instanceof WeaselDouble || value instanceof Number) {
 
 				int al = Calc.toInteger(value);
 				if (al < 0) {
@@ -160,9 +160,9 @@ public class PCws_WeaselPluginDisplay extends PCws_WeaselPlugin {
 		if(name.equals("this")||name.equals("text")||name.equals("txt")) {
 			return new WeaselString(text);
 		}else if(name.equals("color")||name.equals("fg")){
-			return new WeaselInteger(fgcolor);
+			return new WeaselDouble(fgcolor);
 		}else if(name.equals("bgcolor")||name.equals("background")||name.equals("bg")){
-			return new WeaselInteger(fgcolor);
+			return new WeaselDouble(fgcolor);
 		}else if(name.equals("align")){
 			return new WeaselString(align == -1 ? "L" : align == 0 ? "C" : "R");
 		}

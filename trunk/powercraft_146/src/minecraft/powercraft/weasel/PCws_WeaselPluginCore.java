@@ -16,7 +16,7 @@ import weasel.exception.WeaselRuntimeException;
 import weasel.lang.Instruction;
 import weasel.obj.WeaselBoolean;
 import weasel.obj.WeaselFunctionCall;
-import weasel.obj.WeaselInteger;
+import weasel.obj.WeaselDouble;
 import weasel.obj.WeaselNull;
 import weasel.obj.WeaselObject;
 import weasel.obj.WeaselString;
@@ -148,8 +148,8 @@ public class PCws_WeaselPluginCore extends PCws_WeaselPlugin {
 			return new WeaselBoolean(getNetwork().getMember((String)args[0].get()));
 		}else if(functionName.equals("network.getDiskCount")){
 			if(getNetwork()==null)
-				return new WeaselInteger(0);
-			return new WeaselInteger(0);
+				return new WeaselDouble(0);
+			return new WeaselDouble(0);
 		}else if(functionName.equals("network.getDiskType")){
 			if(getNetwork()==null)
 				return new WeaselString("null");
