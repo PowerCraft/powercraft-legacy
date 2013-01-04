@@ -3034,7 +3034,7 @@ public class PCmo_EntityMiner extends Entity implements PC_IInventoryWrapper {
 			}
 
 			// if there is enough fuel for current operation
-			if (st.fuelDeficit == 0) {
+			if (st.fuelDeficit == 0 || worldObj.isRemote) {
 
 				// execute rotation and check if target angle is reached.
 				if (PCmo_Command.isCommandTurn(st.currentCommand)) {
@@ -3160,7 +3160,7 @@ public class PCmo_EntityMiner extends Entity implements PC_IInventoryWrapper {
 						performMiningUpdate(getCoordOnSide('c', 4), 11);
 					}
 
-					double motionAdd = (MOTION_SPEED[st.level/*TODO - 1*/] * ((fw || up) ? 1 : -1)) * 0.5D;
+					double motionAdd = (MOTION_SPEED[st.level - 1] * ((fw || up) ? 1 : -1)) * 0.5D;
 
 					if (!miningDone && (!back) && cfg.miningEnabled) {
 						performMiningUpdate(getCoordOnSide('F', 1), 0);
@@ -3271,7 +3271,7 @@ public class PCmo_EntityMiner extends Entity implements PC_IInventoryWrapper {
 		}
 
 		// speed limit.
-		double d7 = MOTION_SPEED[st.level/*TODO - 1*/];
+		double d7 = MOTION_SPEED[st.level - 1];
 		if (motionX < -d7) {
 			motionX = -d7;
 		}
@@ -3392,7 +3392,7 @@ public class PCmo_EntityMiner extends Entity implements PC_IInventoryWrapper {
 		motionZ *= 0.7D;
 
 		if(!worldObj.isRemote){
-			if(tick%1==0){
+			if(tick%25==0){
 				PC_PacketHandler.sendToPacketHandler(true, worldObj, "MinerManager", entityId, "set", posX, posY, posZ, motionX, motionY, motionZ, rotationYaw);
 			}
 		}
