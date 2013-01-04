@@ -21,6 +21,8 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Random;
 
+import cpw.mods.fml.common.registry.EntityRegistry;
+
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityList;
@@ -559,6 +561,10 @@ public class PC_Utils implements PC_IPacketHandler
 				instance.dataHandlers.put(name, dataHandler);
 		}
 		
+		public static void registerEntity(Class<? extends Entity> c, int entityID){
+			EntityRegistry.registerModEntity(c, c.getName(), entityID, mod_PowerCraft.getInstance(), 50, 5, false);
+		}
+		
     }
     
     public static class ValueWriting{
@@ -889,7 +895,7 @@ public class PC_Utils implements PC_IPacketHandler
 		}
 		public static void setReverseKey(PC_Property config)
 		{
-		    PC_Utils.keyReverse = PC_Utils.Communication.watchForKey(config, "keyReverse", 29);
+		    PC_Utils.keyReverse = PC_Utils.Communication.watchForKey(config, "keyReverse", 29, "Key for rotate placing");
 		}
 		public static boolean setBID(World world, int x, int y, int z, int id, int meta) {
 			return world.setBlockAndMetadataWithNotify(x, y, z, id, meta);
@@ -1998,10 +2004,10 @@ public class PC_Utils implements PC_IPacketHandler
 		    PC_Utils.instance.iWatchForKey(name, key);
 		}
 
-		public static int watchForKey(PC_Property config, String name, int key)
+		public static int watchForKey(PC_Property config, String name, int key, String...info)
 		{
-			key = config.getInt("key.name", key, new String[]{"Key for rotate placing"});
-		    PC_Utils.Communication.watchForKey(name, key);
+			key = config.getInt("key."+name, key, info);
+		    watchForKey(name, key);
 		    return key;
 		}
     	

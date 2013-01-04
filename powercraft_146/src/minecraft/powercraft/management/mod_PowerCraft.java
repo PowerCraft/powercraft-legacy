@@ -5,6 +5,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import net.minecraft.block.Block;
+import net.minecraft.client.renderer.entity.Render;
+import net.minecraft.entity.Entity;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.tileentity.TileEntity;
@@ -39,6 +41,16 @@ public class mod_PowerCraft {
 	public static PC_CommonProxy proxy;
 
 	private static final String updateInfoPath = "https://dl.dropbox.com/s/nrkmh98nchr7nrj/VersionInfo.xml?dl=1";
+	
+	private static mod_PowerCraft instance; 
+	
+	public static mod_PowerCraft getInstance(){
+		return instance;
+	}
+	
+	public mod_PowerCraft(){
+		instance = this;
+	}
 	
 	@PreInit
 	public void preInit(FMLPreInitializationEvent event) {

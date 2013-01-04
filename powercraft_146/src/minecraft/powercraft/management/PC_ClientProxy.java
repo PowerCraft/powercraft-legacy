@@ -1,7 +1,13 @@
 package powercraft.management;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import net.minecraft.client.particle.EntitySmokeFX;
+import net.minecraft.client.renderer.entity.Render;
+import net.minecraft.entity.Entity;
 import powercraft.management.PC_Utils.Gres;
+import powercraft.management.PC_Utils.ModuleInfo;
 import cpw.mods.fml.client.registry.RenderingRegistry;
 import cpw.mods.fml.common.network.NetworkRegistry;
 import cpw.mods.fml.common.registry.TickRegistry;
@@ -30,6 +36,20 @@ public class PC_ClientProxy extends PC_CommonProxy {
 		PC_ClientUtils.registerEnitiyFX(EntitySmokeFX.class);
 		NetworkRegistry.instance().registerConnectionHandler(new PC_ConnectionHandler());
 		Gres.registerGres("UpdateNotification", PC_GuiUpdateNotification.class);
+		
+		PC_Logger.enterSection("Register EntityRender");
+		List<PC_IModule> modules = ModuleInfo.getModules();
+		for(PC_IModule module:modules){
+			if(module instanceof PC_IEntityRender){
+				List<PC_Struct2<Class<? extends Entity>, Render>> list = ((PC_IEntityRender) module).registerEntityRender(new ArrayList<PC_Struct2<Class<? extends Entity>, Render>>());
+				if(list!=null){
+					for(PC_Struct2<Class<? extends Entity>, Render> s:list){
+						RenderingRegistry.registerEntityRenderingHandler(s.a, s.b);
+					}
+				}
+			}
+		}
+		PC_Logger.exitSection();
 	}
 	
 }

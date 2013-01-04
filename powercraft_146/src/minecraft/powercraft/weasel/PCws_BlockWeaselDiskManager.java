@@ -14,6 +14,8 @@ import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import powercraft.management.PC_Block;
+import powercraft.management.PC_IInventoryWrapper;
+import powercraft.management.PC_IItemInfo;
 import powercraft.management.PC_IPacketHandler;
 import powercraft.management.PC_PacketHandler;
 import powercraft.management.PC_Renderer;
@@ -27,7 +29,7 @@ import weasel.lang.InstructionEnd;
 import weasel.obj.WeaselDouble;
 import weasel.obj.WeaselString;
 
-public class PCws_BlockWeaselDiskManager extends PC_Block implements PC_IPacketHandler {
+public class PCws_BlockWeaselDiskManager extends PC_Block implements PC_IPacketHandler, PC_IItemInfo {
 
 	public PCws_BlockWeaselDiskManager(int id) {
 		super(id, 6, Material.ground);
@@ -181,6 +183,12 @@ public class PCws_BlockWeaselDiskManager extends PC_Block implements PC_IPacketH
 			}
 		}
 		return false;
+	}
+
+	@Override
+	public List<ItemStack> getItemStacks(List<ItemStack> arrayList) {
+		arrayList.add(new ItemStack(this));
+		return arrayList;
 	}
 
 }

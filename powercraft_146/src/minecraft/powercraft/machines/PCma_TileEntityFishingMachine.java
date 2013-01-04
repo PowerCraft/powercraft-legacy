@@ -28,6 +28,7 @@ public class PCma_TileEntityFishingMachine extends PC_TileEntity implements PC_I
 	private int fishTimer = 250 + rand.nextInt(350);
 	private int burningFuel;
 	public boolean running;
+	public int rotation;
 	
 	@Override
 	public void readFromNBT(NBTTagCompound nbtTagCompound) {
@@ -199,7 +200,9 @@ public class PCma_TileEntityFishingMachine extends PC_TileEntity implements PC_I
 	@Override
 	public void renderTileEntityAt(double x, double y, double z, float rot) {
 		long currentTime = System.currentTimeMillis();
-		int rotation = (int)((currentTime-lastTime)/1000.0f*360);
+		if(running)
+			rotation += (int)((currentTime-lastTime)/1000.0f*360);
+		lastTime = currentTime;
 		PC_Renderer.glPushMatrix();
 		PC_Renderer.glTranslatef((float) x + 0.5f, (float) y, (float) z + 0.5f);
 		float f4 = 0.75F;
