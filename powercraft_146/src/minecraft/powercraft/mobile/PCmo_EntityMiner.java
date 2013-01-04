@@ -9,7 +9,6 @@ import net.minecraft.block.BlockFluid;
 import net.minecraft.block.BlockSand;
 import net.minecraft.block.BlockTorch;
 import net.minecraft.block.material.Material;
-import net.minecraft.client.gui.inventory.GuiChest;
 import net.minecraft.client.particle.EntityFX;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.EntityItem;
@@ -22,7 +21,6 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.src.ModLoader;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.MathHelper;
@@ -50,7 +48,7 @@ import powercraft.weasel.PCws_ItemWeaselDisk;
 import weasel.Calc;
 import weasel.lang.Instruction;
 import weasel.lang.InstructionFunction;
-import weasel.obj.WeaselInteger;
+import weasel.obj.WeaselDouble;
 import weasel.obj.WeaselObject;
 
 public class PCmo_EntityMiner extends Entity implements PC_IInventoryWrapper {
@@ -82,6 +80,10 @@ public class PCmo_EntityMiner extends Entity implements PC_IInventoryWrapper {
 	protected MinerCrystalInventory xtals = new MinerCrystalInventory();
 
 	protected int playerConectedID;
+	/** cool-down timer for repeated key presses */
+	private int[] keyPressTimer = { 0, 0, 0, 0, 0, 0, 0, 0, 0 };
+	/** number of ticks before the key is accepted again */
+	private static final int CooldownTime = 8;
 	
 	/**
 	 * Create miner in world.
@@ -287,7 +289,7 @@ public class PCmo_EntityMiner extends Entity implements PC_IInventoryWrapper {
 
 	private boolean matchStackIdentifier(WeaselObject identifier, ItemStack stack) {
 		if (identifier == null || stack == null) return false;
-		if (identifier instanceof WeaselInteger) {
+		if (identifier instanceof WeaselDouble) {
 			if (stack.itemID == Calc.toInteger(identifier)) {
 				return true;
 			}
@@ -496,13 +498,6 @@ public class PCmo_EntityMiner extends Entity implements PC_IInventoryWrapper {
 
 		/** Rotation in degrees remaining to complete current rotation command */
 		private int rotationRemaining = 0;
-
-		/**
-		 * Flag that this entity is being created and inventory should not be
-		 * checked for Power Crystals.
-		 */
-		// no nbt
-		private boolean minerBeingCreated = false;
 
 		/**
 		 * The miner's level.<br>
@@ -1880,13 +1875,12 @@ public class PCmo_EntityMiner extends Entity implements PC_IInventoryWrapper {
 
 		Block block = Block.blocksList[id];
 		if (st.miningTickCounter % 8 == 0 && block != null) {
-			ModLoader.getMinecraftInstance().sndManager.playSound(block.stepSound.getBreakSound(), pos.x + 0.5F, pos.y + 0.5F, pos.z + 0.5F,
-					(block.stepSound.getVolume() + 1.0F) / 8F, block.stepSound.getPitch() * 0.5F);
+			ValueWriting.playSound(pos.x + 0.5F, pos.y + 0.5F, pos.z + 0.5F, block.stepSound.getBreakSound(), (block.stepSound.getVolume() + 1.0F) / 8F, block.stepSound.getPitch() * 0.5F);
 		}
 
 		if (block != null) {
-			ModLoader.getMinecraftInstance().effectRenderer.addBlockHitEffects(pos.x, pos.y, pos.z, block_index < 4 ? getSideFromYaw()
-					: (block_index < 6 ? 1 : 0));
+			//ModLoader.getMinecraftInstance().effectRenderer.addBlockHitEffects(pos.x, pos.y, pos.z, block_index < 4 ? getSideFromYaw()
+			//		: (block_index < 6 ? 1 : 0));
 		}
 	}
 
@@ -2862,33 +2856,59 @@ public class PCmo_EntityMiner extends Entity implements PC_IInventoryWrapper {
 	}
 	
 	private void handleKeybordInput(EntityPlayer player){
+		for (int i = 0; i <= 8; i++) {
+			if (keyPressTimer[i] > 0) {
+				keyPressTimer[i]--;
+			}
+		}
 		if (Communication.isKeyPressed(player, PCmo_App.pk_mForward)) {
-			sendCommandToMiners(PCmo_Command.FORWARD);
+			if (keyPressTimer[0] == 0) {
+				keyPressTimer[0] = CooldownTime;
+				sendCommandToMiners(PCmo_Command.FORWARD);
+			}
 			return;
 		}
 		if (Communication.isKeyPressed(player, PCmo_App.pk_mLeft)) {
-			sendCommandToMiners(PCmo_Command.LEFT);
+			if (keyPressTimer[1] == 0) {
+				keyPressTimer[1] = CooldownTime;
+				sendCommandToMiners(PCmo_Command.LEFT);
+			}
 			return;
 		}
 		if (Communication.isKeyPressed(player, PCmo_App.pk_mRight)) {
-			sendCommandToMiners(PCmo_Command.RIGHT);
+			if (keyPressTimer[2] == 0) {
+				keyPressTimer[2] = CooldownTime;
+				sendCommandToMiners(PCmo_Command.RIGHT);
+			}
 			return;
 		}
 		if (Communication.isKeyPressed(player, PCmo_App.pk_mAround)) {
-			sendSequenceToMiners("RR");
+			if (keyPressTimer[3] == 0) {
+				keyPressTimer[3] = CooldownTime;
+				sendSequenceToMiners("RR");
+			}
 			return;
 		}
 		if (Communication.isKeyPressed(player, PCmo_App.pk_mBackward)) {
-			sendCommandToMiners(PCmo_Command.BACKWARD);
+			if (keyPressTimer[4] == 0) {
+				keyPressTimer[4] = CooldownTime;
+				sendCommandToMiners(PCmo_Command.BACKWARD);
+			}
 			return;
 		}
 
 		if (Communication.isKeyPressed(player, PCmo_App.pk_mDown)) {
-			sendCommandToMiners(PCmo_Command.DOWN);
+			if (keyPressTimer[5] == 0) {
+				keyPressTimer[5] = CooldownTime;
+				sendCommandToMiners(PCmo_Command.DOWN);
+			}
 			return;
 		}
 		if (Communication.isKeyPressed(player, PCmo_App.pk_mUp)) {
-			sendCommandToMiners(PCmo_Command.UP);
+			if (keyPressTimer[6] == 0) {
+				keyPressTimer[6] = CooldownTime;
+				sendCommandToMiners(PCmo_Command.UP);
+			}
 			return;
 		}
 
@@ -2907,13 +2927,19 @@ public class PCmo_EntityMiner extends Entity implements PC_IInventoryWrapper {
 		}
 
 		if (Communication.isKeyPressed(player, PCmo_App.pk_mDeposit)) {
-			sendCommandToMiners(PCmo_Command.DEPOSIT);
+			if (keyPressTimer[7] == 0) {
+				keyPressTimer[7] = CooldownTime;
+				sendCommandToMiners(PCmo_Command.DEPOSIT);
+			}
 			return;
 		}
 
 		if (Communication.isKeyPressed(player, PCmo_App.pk_mRun)) {
-			if (sendCommandToMiners(PCmo_Command.RUN_PROGRAM)) {
-				Communication.chatMsg(Lang.tr("pc.miner.launchedAll"), true);
+			if (keyPressTimer[8] == 0) {
+				keyPressTimer[8] = CooldownTime;
+				if (sendCommandToMiners(PCmo_Command.RUN_PROGRAM)) {
+					Communication.chatMsg(Lang.tr("pc.miner.launchedAll"), true);
+				}
 			}
 			return;
 		}
@@ -2972,7 +2998,9 @@ public class PCmo_EntityMiner extends Entity implements PC_IInventoryWrapper {
 		if(playerConectedID!=0){
 			Entity e = worldObj.getEntityByID(playerConectedID);
 			if(e instanceof EntityPlayer){
-				handleKeybordInput((EntityPlayer)e);
+				if(!worldObj.isRemote){
+					handleKeybordInput((EntityPlayer)e);
+				}
 			}else{
 				playerConectedID = 0;
 			}
@@ -3431,9 +3459,12 @@ public class PCmo_EntityMiner extends Entity implements PC_IInventoryWrapper {
 
 		// set for keyboard control or open gui.
 		if (entityplayer.getCurrentEquippedItem() != null && entityplayer.getCurrentEquippedItem().itemID == ModuleInfo.getPCObjectIDByName("PCco_ItemActivator")) {
-			playerConectedID = entityplayer.entityId;
+			if(playerConectedID==0)
+				playerConectedID = entityplayer.entityId;
+			else
+				playerConectedID=0;
 		} else {
-			st.programmingGuiOpen = true;
+			//st.programmingGuiOpen = true;
 			Gres.openGres("Miner", entityplayer, entityId);
 			return true;
 		}
@@ -3476,183 +3507,26 @@ public class PCmo_EntityMiner extends Entity implements PC_IInventoryWrapper {
 	// SPAWNING AND DESPAWNING
 
 	/**
-	 * Try to spawn Miner where player clicked with activator.
-	 * 
-	 * @param itemstack stack with activator
-	 * @param entityplayer the player who clicked
-	 * @param world the world
-	 * @param position clicked position
-	 * @return success
-	 */
-	public boolean tryToSpawnMinerAt(ItemStack itemstack, EntityPlayer entityplayer, World world, PC_VecI position) {
-
-		int steel = Block.blockSteel.blockID;
-		int chest = Block.chest.blockID;
-
-		String eMinerStructure = Lang.tr("pc.miner.build.errInvalidStructure");
-		String eMinerCrystals = Lang.tr("pc.miner.build.errMissingCrystals");
-
-
-		miner_build_loop:
-		for (int yy = position.y; yy >= position.y - 1; yy--) {
-			for (int xx = position.x - 1; xx <= position.x + 1; xx++) {
-				for (int zz = position.z - 1; zz <= position.z + 1; zz++) {
-
-					PC_VecI pos = new PC_VecI(xx, yy, zz);
-
-					// is lower layer?
-					if (GameInfo.getBID(world, pos) == steel && GameInfo.getBID(world, pos.offset(1, 0, 0)) == steel && GameInfo.getBID(world, pos.offset(1, 0, 1)) == steel
-							&& GameInfo.getBID(world, pos.offset(0, 0, 1)) == steel) {
-
-						String upper = "";
-
-						int bl;
-
-						bl = GameInfo.getBID(world, pos.offset(0, 1, 0));
-						upper += (bl == steel ? "S" : (bl == chest ? "C" : "?"));
-						bl = GameInfo.getBID(world, pos.offset(1, 1, 0));
-						upper += (bl == steel ? "S" : (bl == chest ? "C" : "?"));
-						bl = GameInfo.getBID(world, pos.offset(1, 1, 1));
-						upper += (bl == steel ? "S" : (bl == chest ? "C" : "?"));
-						bl = GameInfo.getBID(world, pos.offset(0, 1, 1));
-						upper += (bl == steel ? "S" : (bl == chest ? "C" : "?"));
-
-						// valid bottom layer
-						// find direction.
-						if (upper.equals("SCCS")) {
-							if (spawnMinerAt(world, pos, 0)) {
-								itemstack.damageItem(1, entityplayer);
-							} else {
-								Communication.chatMsg(eMinerCrystals, false);
-							}
-							return true;
-						} else if (upper.equals("CCSS")) {
-							if (spawnMinerAt(world, pos, 3)) {
-								itemstack.damageItem(1, entityplayer);
-							} else {
-								Communication.chatMsg(eMinerCrystals, false);
-							}
-							return true;
-						} else if (upper.equals("CSSC")) {
-							if (spawnMinerAt(world, pos, 2)) {
-								itemstack.damageItem(1, entityplayer);
-							} else {
-								Communication.chatMsg(eMinerCrystals, false);
-							}
-							return true;
-						} else if (upper.equals("SSCC")) {
-							if (spawnMinerAt(world, pos, 1)) {
-								itemstack.damageItem(1, entityplayer);
-							} else {
-								Communication.chatMsg(eMinerCrystals, false);
-							}
-							return true;
-						}
-
-						Communication.chatMsg(eMinerStructure, false);
-
-						break miner_build_loop;
-					}
-				}
-			}
-		}
-
-		return false;
-	}
-
-
-	/**
-	 * Remove the Miner's blocks before spawning.<br>
-	 * Coordinates given is the x- z- block.
-	 * 
-	 * @param world the world
-	 * @param pos miner's X- Y- Z- block position
-	 */
-	private void removeSpawnStructure(World world, PC_VecI pos) {
-		for (int x = 0; x <= 1; x++) {
-			for (int z = 0; z <= 1; z++) {
-				for (int y = 0; y <= 1; y++) {
-					ValueWriting.setBID(world, pos.offset(x, y, z), 0, 0);
-				}
-			}
-		}
-	}
-
-
-	/**
-	 * Spawn miner at given position.<br>
-	 * Position = X- Z- block of the build.
-	 * 
-	 * @param world the world
-	 * @param pos X- Y- Z- position
-	 * @param rot miner rotation
-	 * @return success
-	 */
-	private boolean spawnMinerAt(World world, PC_VecI pos, int rot) {
-		st.minerBeingCreated = true; // disable crystal counting.
-
-		IInventory inv = null;
-
-		find_chest_loop:
-		for (int x = pos.x; x <= pos.x + 1; x++) {
-			for (int z = pos.z; z <= pos.z + 1; z++) {
-				inv = PC_InvUtils.getCompositeInventoryAt(world, new PC_VecI(x, pos.y + 1, z));
-				if (inv != null) {
-					break find_chest_loop;
-				}
-			}
-		}
-
-		if (inv == null) {
-			return false;
-		}
-
-		int cnt = PC_InvUtils.countPowerCrystals(inv);
-
-		if (cnt == 0) {
-			return false;
-		}
-
-		// move contents.
-		PC_InvUtils.moveStacks(inv, xtals);
-		PC_InvUtils.moveStacksForce(inv, cargo);
-
-		// remove blocks.
-		removeSpawnStructure(world, pos);
-
-		// update level.
-		st.minerBeingCreated = false;
-		cargo.closeChest();
-
-		setLocationAndAngles((double) pos.x + 1, pos.y, (double) pos.z + 1, (rot * 90F), 0.0F);
-		st.target = new PC_VecI(pos.x + 1, pos.y, pos.z + 1);
-		world.spawnEntityInWorld(this);
-		return true;
-	}
-
-	/**
 	 * count crystals and update level; turn to blocks if there arent any.
 	 */
 	public void updateLevel() {
-		if (!st.minerBeingCreated) {
-			PC_InvUtils.moveStacks(cargo, xtals);
+		PC_InvUtils.moveStacks(cargo, xtals);
 
-			int cnt = PC_InvUtils.countPowerCrystals(xtals);
-			if (cnt == 0) {
-				turnIntoBlocks();
-				return;
-			}
-
-			st.level = Math.min(cnt, 8);
-
-			cfg.bridgeEnabled &= (st.level >= LBRIDGE);
-			cfg.waterFillingEnabled &= (st.level >= LWATER);
-			cfg.lavaFillingEnabled &= (st.level >= LLAVA);
-			cfg.airFillingEnabled &= (st.level >= LAIR);
-			cfg.cobbleMake &= (st.level >= LCOBBLE);
-			cfg.compressBlocks &= (st.level >= LCOMPRESS);
-			cfg.torches &= (st.level >= LTORCH);
+		int cnt = PC_InvUtils.countPowerCrystals(xtals);
+		if (cnt == 0) {
+			turnIntoBlocks();
+			return;
 		}
+
+		st.level = Math.min(cnt, 8);
+
+		cfg.bridgeEnabled &= (st.level >= LBRIDGE);
+		cfg.waterFillingEnabled &= (st.level >= LWATER);
+		cfg.lavaFillingEnabled &= (st.level >= LLAVA);
+		cfg.airFillingEnabled &= (st.level >= LAIR);
+		cfg.cobbleMake &= (st.level >= LCOBBLE);
+		cfg.compressBlocks &= (st.level >= LCOMPRESS);
+		cfg.torches &= (st.level >= LTORCH);
 	}
 
 
@@ -3662,7 +3536,8 @@ public class PCmo_EntityMiner extends Entity implements PC_IInventoryWrapper {
 	 * miner is killed or "to blocks" key is pressed
 	 */
 	private void turnIntoBlocks() {
-		st.minerBeingCreated = true;
+		if(worldObj.isRemote)
+			return;
 		int xh = (int) Math.round(posX);
 		int y = (int) Math.floor(posY + 0.0001F);
 		int zh = (int) Math.round(posZ);
@@ -3704,12 +3579,6 @@ public class PCmo_EntityMiner extends Entity implements PC_IInventoryWrapper {
 		}
 
 		setDead();
-
-		// replace opened gui with chest.
-		if (st.programmingGuiOpen) {
-			ModLoader.getMinecraftInstance().thePlayer.closeScreen();
-			ModLoader.openGUI(ModLoader.getMinecraftInstance().thePlayer, new GuiChest(ModLoader.getMinecraftInstance().thePlayer.inventory, inv));
-		}
 
 	}
 
