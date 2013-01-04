@@ -85,6 +85,8 @@ public class PCmo_EntityMiner extends Entity implements PC_IInventoryWrapper {
 	/** number of ticks before the key is accepted again */
 	private static final int CooldownTime = 8;
 	
+	private int tick=0;
+	
 	/**
 	 * Create miner in world.
 	 * 
@@ -2826,11 +2828,12 @@ public class PCmo_EntityMiner extends Entity implements PC_IInventoryWrapper {
 	 */
 	public boolean sendCommandToMiners(int cmd) {
 		boolean flag = false;
-		System.out.println("try 2 Send command to miner");
 		if (canReceiveKeyboardCommand()) {
 			flag = true;
-			System.out.println("Send command to miner");
 			receiveKeyboardCommand(cmd);
+			if(!worldObj.isRemote)
+				PC_PacketHandler.sendToPacketHandler(true, worldObj, "MinerManager", entityId, "command", cmd);
+			
 		}
 		return flag;
 	}
@@ -2976,7 +2979,7 @@ public class PCmo_EntityMiner extends Entity implements PC_IInventoryWrapper {
 	@Override
 	public void onUpdate() {
 		super.onUpdate();
-
+		
 		if (fakePlayer == null && worldObj != null) fakePlayer = new PC_FakePlayer(worldObj);
 
 		/*if (TODO brain.hasError() && rand.nextInt(6) == 0) {
@@ -3388,9 +3391,12 @@ public class PCmo_EntityMiner extends Entity implements PC_IInventoryWrapper {
 		motionX *= 0.7D;
 		motionZ *= 0.7D;
 
-		if(!worldObj.isRemote)
-			PC_PacketHandler.sendToPacketHandler(true, worldObj, "MinerManager", entityId, posX, posY, posZ, motionX, motionY, motionZ, rotationYaw);
-		
+		if(!worldObj.isRemote){
+			if(tick%1==0){
+				PC_PacketHandler.sendToPacketHandler(true, worldObj, "MinerManager", entityId, "set", posX, posY, posZ, motionX, motionY, motionZ, rotationYaw);
+			}
+		}
+		tick++;
 	}
 
 	@Override
