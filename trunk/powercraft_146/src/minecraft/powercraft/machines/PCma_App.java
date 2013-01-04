@@ -5,7 +5,9 @@ import java.util.List;
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 import net.minecraft.item.crafting.IRecipe;
+import powercraft.management.PC_3DRecipeManager;
 import powercraft.management.PC_Block;
+import powercraft.management.PC_I3DRecipeHandler;
 import powercraft.management.PC_IModule;
 import powercraft.management.PC_ItemStack;
 import powercraft.management.PC_Property;
@@ -51,6 +53,36 @@ public class PCma_App implements PC_IModule
 	@Override
 	public void postInit() {
 		PCma_ItemRanking.init();
+		PC_3DRecipeManager.add3DRecipe((PC_I3DRecipeHandler)fishingMachine, 
+				new String[]{
+				"www",
+				"www",
+				"www"},
+				new String[]{
+				"www",
+				"www",
+				"www"},
+				new String[]{
+				"www",
+				"www",
+				"www"},
+				new String[]{
+				"www",
+				"www",
+				"www"}, 
+				new String[]{
+				"www",
+				"www",
+				"www"},
+				new String[]{
+				"fpf",
+				"ppp",
+				"fpf"},
+				new String[]{
+				" !c ",
+				"!cc!c",
+				" !c "},
+				'w', Block.waterMoving, Block.waterStill, 'f', Block.fence, 'p', Block.planks, 'c', Block.chest);
 	}
 
 	@Override

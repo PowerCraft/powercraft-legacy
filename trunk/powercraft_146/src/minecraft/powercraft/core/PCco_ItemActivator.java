@@ -8,6 +8,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.Direction;
 import net.minecraft.world.World;
+import powercraft.management.PC_3DRecipeManager;
 import powercraft.management.PC_IMSG;
 import powercraft.management.PC_Item;
 import powercraft.management.PC_MathHelper;
@@ -31,6 +32,8 @@ public class PCco_ItemActivator extends PC_Item{
     @Override
     public boolean onItemUse(ItemStack itemstack, EntityPlayer entityplayer, World world, int x, int y, int z, int l, float par8, float par9, float par10)
     {
+    	if(world.isRemote)
+    		return false;
     	
     	List<PC_IMSG> objs = ModuleInfo.getMSGObjects();
 
@@ -41,6 +44,9 @@ public class PCco_ItemActivator extends PC_Item{
         	}
         }
     	
+        if(PC_3DRecipeManager.searchRecipeAndDo(world, new PC_VecI(x, y, z)))
+        	return true;
+        
     	int dir = ((PC_MathHelper.floor_double(((entityplayer.rotationYaw * 4F) / 360F) + 0.5D) & 3) + 2) % 4;
 
 //		if (PC_Utils.isPlacingReversed()) {

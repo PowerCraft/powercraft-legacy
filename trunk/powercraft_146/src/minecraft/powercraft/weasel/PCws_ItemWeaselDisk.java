@@ -21,6 +21,7 @@ import weasel.exception.WeaselRuntimeException;
 import weasel.lang.Instruction;
 import weasel.obj.WeaselDouble;
 import weasel.obj.WeaselObject;
+import weasel.obj.WeaselString;
 import weasel.obj.WeaselVariableMap;
 
 public class PCws_ItemWeaselDisk extends PC_Item {
@@ -546,7 +547,7 @@ public class PCws_ItemWeaselDisk extends PC_Item {
 			return new WeaselDouble(Calc.toDouble(str));
 		}
 		if (getType(itemstack) == STRINGLIST) {
-			return new WeaselDouble(Calc.toString(str));
+			return new WeaselString(Calc.toString(str));
 		}
 
 		return null;

@@ -1,28 +1,61 @@
 package powercraft.machines;
 
+import java.util.List;
 import java.util.Random;
-
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+import powercraft.management.PC_3DRecipe;
 import powercraft.management.PC_Block;
+import powercraft.management.PC_I3DRecipeHandler;
+import powercraft.management.PC_Struct2;
 import powercraft.management.PC_Utils;
 import powercraft.management.PC_Utils.GameInfo;
 import powercraft.management.PC_Utils.ValueWriting;
 import powercraft.management.PC_VecI;
 
-public class PCma_BlockFishingMachine extends PC_Block {
+public class PCma_BlockFishingMachine extends PC_Block implements PC_I3DRecipeHandler {
 
+	private static PC_3DRecipe struct;
+	
 	public PCma_BlockFishingMachine(int id) {
 		super(id, 4, Material.wood, false);
+		struct = new PC_3DRecipe(null, 
+				new String[]{
+				"www",
+				"www",
+				"www"},
+				new String[]{
+				"www",
+				"www",
+				"www"},
+				new String[]{
+				"www",
+				"www",
+				"www"},
+				new String[]{
+				"www",
+				"www",
+				"www"}, 
+				new String[]{
+				"www",
+				"www",
+				"www"},
+				new String[]{
+				"fpf",
+				"pmp",
+				"fpf"},
+				new String[]{
+				" !c ",
+				"!cc!c",
+				" !c "},
+				'w', Block.waterMoving, Block.waterStill, 'f', Block.fence, 'p', Block.planks, 'm', this, 'c', Block.chest);
+		
 	}
 	
 	@Override
@@ -67,96 +100,8 @@ public class PCma_BlockFishingMachine extends PC_Block {
 		return false;
 	}
 	
-	private static boolean isWaterBelow(World world, PC_VecI pos){
-		int water = Block.waterStill.blockID;
-		for(int x=-1; x<=1; x++){
-			for(int y=-5; y<0; y++){
-				for(int z=-1; z<=1; z++){
-					int blockID = GameInfo.getBID(world, pos.x + x, pos.y + y, pos.z + z);
-					if(blockID != Block.waterStill.blockID && blockID != Block.waterMoving.blockID){
-						System.out.println(x+":"+y+":"+z+":"+blockID+":"+water);
-						return false;
-					}
-				}
-			}
-		}
-		return true;
-	}
-	
 	public static boolean isStructOK(World world, PC_VecI pos){
-		int fence = Block.fence.blockID;
-		int planks = Block.planks.blockID;
-		int chest = Block.chest.blockID;
-		int fishingMachine = PCma_App.fishingMachine.blockID;
-		int[][][] array = {{
-				{fence, planks, fence},
-				{planks, fishingMachine, planks},
-				{fence, planks, fence}},{
-					
-				{-1, -1, -1},
-				{-1, chest, -1},
-				{-1, -1, -1}}};
-		
-		for(int y=0; y<array.length; y++){
-			for(int z=0; z<array[y].length; z++){
-				for(int x=0; x<array[y][z].length; x++){
-					int blockID = GameInfo.getBID(world, pos.x - 1 + x, pos.y + y, pos.z - 1 + z);
-					if(blockID != array[y][z][x] && array[y][z][x] != -1){
-						return false;
-					}
-				}
-			}
-		}
-		return isWaterBelow(world, pos);
-	}
-	
-	private static boolean isStructComplete(World world, PC_VecI pos){
-		int fence = Block.fence.blockID;
-		int planks = Block.planks.blockID;
-		int chest = Block.chest.blockID;
-		int fishingMachine = PCma_App.fishingMachine.blockID;
-		int[][][] array = {{
-				{fence, planks, fence},
-				{planks, planks, planks},
-				{fence, planks, fence}},{
-					
-				{-1, -1, -1},
-				{-1, chest, -1},
-				{-1, -1, -1}}};
-		
-		for(int y=0; y<array.length; y++){
-			for(int z=0; z<array[y].length; z++){
-				for(int x=0; x<array[y][z].length; x++){
-					int blockID = GameInfo.getBID(world, pos.x - 1 + x, pos.y + y, pos.z - 1 + z);
-					if(blockID != array[y][z][x] && array[y][z][x] != -1){
-						return false;
-					}
-				}
-			}
-		}
-		for(int z=-2; z<=2; z++){
-			for(int x=-2; x<=2; x++){
-				int blockID = GameInfo.getBID(world, pos.x + x, pos.y, pos.z - z);
-				if(blockID==fishingMachine){
-					return false;
-				}
-			}
-		}
-		return isWaterBelow(world, pos);
-	}
-	
-	private boolean onActivatorUsedOnBlock(ItemStack itemstack, EntityPlayer entityplayer, World world, PC_VecI pos){
-		for(int i=-1; i<=1; i++){
-			for(int j=-1; j<=1; j++){
-				PC_VecI p = new PC_VecI(pos.x+i, pos.y, pos.z+j);
-				if(isStructComplete(world, p)){
-					int meta = GameInfo.getMD(world, p);
-					ValueWriting.setBID(world, p, blockID, meta);
-					return true;
-				}
-			}
-		}
-		return false;
+		return struct.getStructRotation(world, pos.offset(-1, -5, -1))!=-1;
 	}
 	
 	@Override
@@ -198,13 +143,37 @@ public class PCma_BlockFishingMachine extends PC_Block {
 	@Override
 	public Object msg(IBlockAccess world, PC_VecI pos, int msg, Object... obj) {
 		switch(msg){
-		case PC_Utils.MSG_DONT_SHOW_IN_CRAFTING_TOOL:
+		case PC_Utils.MSG_ITEM_FLAGS:{
+			List<String> list = (List<String>)obj[1];
+			list.add(PC_Utils.NO_BUILD);
+			return list;
+		}case PC_Utils.MSG_BLOCK_FLAGS:{
+			List<String> list = (List<String>)obj[0];
+	   		list.add(PC_Utils.NO_HARVEST);
+	   		list.add(PC_Utils.NO_PICKUP);
+	   		return list;
+		}case PC_Utils.MSG_DONT_SHOW_IN_CRAFTING_TOOL:
 			break;
-		case PC_Utils.MSG_ON_ACTIVATOR_USED_ON_BLOCK:
-			return onActivatorUsedOnBlock((ItemStack)obj[0], (EntityPlayer)obj[1], (World)obj[2], (PC_VecI)obj[3]);
 		default:
 			return null;
 		}
+		return true;
+	}
+
+	@Override
+	public boolean foundStructAt(World world, PC_Struct2<PC_VecI, Integer> structStart) {
+		PC_VecI pos = structStart.a.offset(1, 5, 1);
+		int fishingMachine = PCma_App.fishingMachine.blockID;
+		for(int z=-2; z<=2; z++){
+			for(int x=-2; x<=2; x++){
+				int blockID = GameInfo.getBID(world, pos.x + x, pos.y, pos.z - z);
+				if(blockID==fishingMachine){
+					return false;
+				}
+			}
+		}
+		int meta = GameInfo.getMD(world, pos);
+		ValueWriting.setBID(world, pos, blockID, meta);
 		return true;
 	}
 
