@@ -24,7 +24,7 @@ import powercraft.management.PC_VecI;
 import weasel.WeaselEngine;
 import weasel.lang.Instruction;
 import weasel.lang.InstructionEnd;
-import weasel.obj.WeaselInteger;
+import weasel.obj.WeaselDouble;
 import weasel.obj.WeaselString;
 
 public class PCws_BlockWeaselDiskManager extends PC_Block implements PC_IPacketHandler {
@@ -159,7 +159,7 @@ public class PCws_BlockWeaselDiskManager extends PC_Block implements PC_IPacketH
 			}else if(msg.equals("removeMapVariable")){
 				PCws_ItemWeaselDisk.removeMapVariable(itemStack, (String)o[1]);
 			}else if(msg.equals("setMapVariable")){
-				PCws_ItemWeaselDisk.setMapVariable(itemStack, (String)o[1], o[2] instanceof Integer?new WeaselInteger(o[2]):new WeaselString(o[2]));
+				PCws_ItemWeaselDisk.setMapVariable(itemStack, (String)o[1], o[2] instanceof Double?new WeaselDouble(o[2]):new WeaselString(o[2]));
 			}else if(msg.equals("compile")){
 				PCws_ItemWeaselDisk.setLibrarySource(itemStack, (String)o[1]);
 				try {

@@ -6,7 +6,7 @@ import weasel.Calc;
 import weasel.InstructionList;
 import weasel.WeaselEngine;
 import weasel.exception.WeaselRuntimeException;
-import weasel.obj.WeaselInteger;
+import weasel.obj.WeaselDouble;
 import weasel.obj.WeaselObject;
 
 
@@ -71,7 +71,7 @@ public class InstructionPush extends Instruction {
 	public void execute(WeaselEngine engine, InstructionList instructionList) throws WeaselRuntimeException {
 		WeaselObject obj = WeaselObject.getWrapperForValue(Calc.evaluate(pushedExpression, engine));
 		if (obj == null) {
-			engine.dataStack.push(new WeaselInteger(0));
+			engine.dataStack.push(new WeaselDouble(0));
 		} else {
 			engine.dataStack.push(obj);
 		}

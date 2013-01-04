@@ -12,7 +12,7 @@ import powercraft.management.PC_TileEntity;
 import powercraft.management.PC_Utils.Gres;
 import weasel.WeaselEngine;
 import weasel.exception.WeaselRuntimeException;
-import weasel.obj.WeaselInteger;
+import weasel.obj.WeaselDouble;
 import weasel.obj.WeaselNull;
 import weasel.obj.WeaselObject;
 
@@ -58,7 +58,7 @@ public class PCws_WeaselPluginSpeaker extends PCws_WeaselPlugin {
 		float volume = 1.0F;
 
 		if (args.length > 0) {
-			if (args[args.length - 1] instanceof WeaselInteger) {
+			if (args[args.length - 1] instanceof WeaselDouble) {
 				volume = ((Integer) args[args.length - 1].get()) / 10F;
 			}
 		}

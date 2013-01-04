@@ -14,7 +14,7 @@ import powercraft.weasel.PCws_WeaselBitmapUtils.WeaselBitmapAdapter;
 import powercraft.weasel.PCws_WeaselBitmapUtils.WeaselBitmapProvider;
 import weasel.WeaselEngine;
 import weasel.exception.WeaselRuntimeException;
-import weasel.obj.WeaselInteger;
+import weasel.obj.WeaselDouble;
 import weasel.obj.WeaselObject;
 import weasel.obj.WeaselString;
 
@@ -157,9 +157,9 @@ public class PCws_WeaselPluginTouchscreen extends PCws_WeaselPlugin implements W
 		if(msg.equalsIgnoreCase("event")){
 			PC_Struct4<String, PC_VecI, Integer, Integer> event = (PC_Struct4<String, PC_VecI, Integer, Integer>) obj;
 			if(getNetwork()!=null){
-				WeaselInteger mx = new WeaselInteger(event.b.x);
-				WeaselInteger my = new WeaselInteger(event.b.y);
-				WeaselInteger mk = new WeaselInteger(event.c);
+				WeaselDouble mx = new WeaselDouble(event.b.x);
+				WeaselDouble my = new WeaselDouble(event.b.y);
+				WeaselDouble mk = new WeaselDouble(event.c);
 				WeaselString k = new WeaselString("" + (char)(int)event.d);
 				if(!getNetwork().callFunctionOnEngine("touchEvent."+getName()+"."+event.a, mx, my, mk, k)){
 					WeaselString e = new WeaselString(event.a);

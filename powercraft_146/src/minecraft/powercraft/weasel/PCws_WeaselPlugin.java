@@ -19,7 +19,7 @@ import weasel.IWeaselHardware;
 import weasel.WeaselEngine;
 import weasel.exception.WeaselRuntimeException;
 import weasel.obj.WeaselBoolean;
-import weasel.obj.WeaselInteger;
+import weasel.obj.WeaselDouble;
 import weasel.obj.WeaselNull;
 import weasel.obj.WeaselObject;
 import weasel.obj.WeaselString;

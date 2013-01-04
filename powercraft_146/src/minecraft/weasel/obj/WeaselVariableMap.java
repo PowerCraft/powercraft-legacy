@@ -62,7 +62,7 @@ public class WeaselVariableMap extends WeaselObject implements IVariableProvider
 			if (value instanceof WeaselObject) {
 				set = (WeaselObject) value;
 			} else if (value instanceof Number) {
-				set = new WeaselInteger(value);
+				set = new WeaselDouble(value);
 			} else if (value instanceof String) {
 				set = new WeaselString(value);
 			} else if (value instanceof Boolean) {
