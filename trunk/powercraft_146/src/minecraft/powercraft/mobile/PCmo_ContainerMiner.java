@@ -36,4 +36,11 @@ public class PCmo_ContainerMiner extends PC_GresBaseWithInventory {
 		return slots;
 	}
 
+	@Override
+	public void onCraftGuiClosed(EntityPlayer par1EntityPlayer) {
+		super.onCraftGuiClosed(par1EntityPlayer);
+		miner.xtals.closeChest();
+		miner.cargo.closeChest();
+	}
+	
 }
