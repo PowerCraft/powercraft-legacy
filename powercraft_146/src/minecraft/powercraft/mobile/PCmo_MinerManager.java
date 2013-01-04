@@ -74,14 +74,21 @@ public class PCmo_MinerManager implements PC_I3DRecipeHandler, PC_IPacketHandler
 	@Override
 	public boolean handleIncomingPacket(EntityPlayer player, Object[] o) {
 		Entity e = player.worldObj.getEntityByID((Integer)o[0]);
-		e.posX = (Double)o[1];
-		e.posY = (Double)o[2];
-		e.posZ = (Double)o[3];
-		e.motionX = (Double)o[4];
-		e.motionY = (Double)o[5];
-		e.motionZ = (Double)o[6];
-		e.rotationYaw = (Float)o[7];
-		e.setLocationAndAngles(e.posX, e.posY, e.posZ, e.rotationYaw, 0);
+		if(e!=null){
+			String func = (String)o[1];
+			if(func.equals("set")){
+				e.posX = (Double)o[2];
+				e.posY = (Double)o[3];
+				e.posZ = (Double)o[4];
+				e.motionX = (Double)o[5];
+				e.motionY = (Double)o[6];
+				e.motionZ = (Double)o[7];
+				e.rotationYaw = (Float)o[8];
+				e.setLocationAndAngles(e.posX, e.posY, e.posZ, e.rotationYaw, 0);
+			}else if(func.equals("command")){
+				((PCmo_EntityMiner)e).receiveKeyboardCommand((Integer)o[2]);
+			}
+		}
 		return false;
 	}
 
