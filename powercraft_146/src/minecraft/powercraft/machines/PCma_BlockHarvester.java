@@ -209,7 +209,7 @@ public class PCma_BlockHarvester extends PC_Block implements
 		beamTracer.setDetectEntities(true);
 		beamTracer.setTotalLengthLimit(8000);
 		beamTracer.setMaxLengthAfterCrystal(2000);
-		beamTracer.setStartLength(30);
+		beamTracer.setStartLength(1000);
 		beamTracer.setCrystalAddedLength(100);
 		beamTracer.setColor(new PC_Color(0.001f, 1.0f, 0.001f));
 
