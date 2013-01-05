@@ -14,6 +14,7 @@ import net.minecraft.util.MathHelper;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import powercraft.management.PC_BeamTracer;
+import powercraft.management.PC_BeamTracer.BeamSettings;
 import powercraft.management.PC_BeamTracer.result;
 import powercraft.management.PC_Block;
 import powercraft.management.PC_Color;
@@ -240,16 +241,18 @@ public class PCli_BlockMirrow extends PC_Block implements PC_IItemInfo {
 
 	}
 	
-	public result onHitByBeamTracer(PC_BeamTracer beamTracer, PC_VecI cnt, PC_VecI move, PC_Color color, float strength, int distanceToMove) {
-		int mirrorColor = PCli_BlockMirrow.getMirrorColor(beamTracer.getWorld(), cnt.x, cnt.y, cnt.z);
+	public result onHitByBeamTracer(IBlockAccess world, BeamSettings bs) {
+		PC_VecI pos = bs.getPos();
+		PC_VecI move = bs.getMove();
+		int mirrorColor = PCli_BlockMirrow.getMirrorColor(world, pos.x, pos.y, pos.z);
 		PC_Color c = null;
 		if(mirrorColor>=0)
 			c = PC_Color.fromHex(PC_Color.crystal_colors[mirrorColor]);
-		if (c==null || color.equals(c)) {
+		if (c==null || bs.getColor().equals(c)) {
 			// vertical beam
 			if (move.x == 0 && move.z == 0) {
 	
-				int a = mirrorTo45[GameInfo.getMD(beamTracer.getWorld(), cnt.x, cnt.y, cnt.z)];
+				int a = mirrorTo45[GameInfo.getMD(world, pos.x, pos.y, pos.z)];
 				PC_VecI reflected = getMoveFromAngle(a).mul(-1);
 	
 				move.x = reflected.x;
@@ -257,7 +260,7 @@ public class PCli_BlockMirrow extends PC_Block implements PC_IItemInfo {
 	
 			} else {
 				float beamAngle = getAngleFromMove(move);
-				float mAngle = mirrorAngle[GameInfo.getMD(beamTracer.getWorld(), cnt.x, cnt.y, cnt.z)];
+				float mAngle = mirrorAngle[GameInfo.getMD(world, pos.x, pos.y, pos.z)];
 	
 				float diff = angleDiff(beamAngle, mAngle);
 	
@@ -314,7 +317,7 @@ public class PCli_BlockMirrow extends PC_Block implements PC_IItemInfo {
 		}case PC_Utils.MSG_DEFAULT_NAME:
 			return "Mirrow";
 		case PC_Utils.MSG_ON_HIT_BY_BEAM_TRACER:
-			return onHitByBeamTracer((PC_BeamTracer)obj[0], (PC_VecI)obj[1], (PC_VecI)obj[2], (PC_Color)obj[3], (Float)obj[4], (Integer)obj[5]);
+			return onHitByBeamTracer(world, (BeamSettings)obj[0]);
 		default:
 			return null;
 		}

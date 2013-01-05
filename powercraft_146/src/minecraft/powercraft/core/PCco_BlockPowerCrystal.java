@@ -11,6 +11,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import powercraft.management.PC_BeamTracer;
+import powercraft.management.PC_BeamTracer.BeamSettings;
 import powercraft.management.PC_BeamTracer.result;
 import powercraft.management.PC_Block;
 import powercraft.management.PC_Color;
@@ -235,8 +236,12 @@ public class PCco_BlockPowerCrystal extends PC_Block
 		case PC_Utils.MSG_SPAWN_POINT_METADATA:
 			return ((Random)obj[0]).nextInt(8);
 		case PC_Utils.MSG_ON_HIT_BY_BEAM_TRACER:
-			PC_VecI cnt = (PC_VecI)obj[1];
-			((PC_Color)obj[3]).setTo(colorMultiplier(((PC_BeamTracer)obj[0]).getWorld(), cnt.x, cnt.y, cnt.z));
+			BeamSettings bs = (BeamSettings)obj[0];
+			pos = bs.getPos();
+			bs.setColor(PC_Color.fromHex(colorMultiplier(world, pos.x, pos.y, pos.z)));
+			Object crystalAdd = bs.getData("crystalAdd");
+			if(crystalAdd instanceof Integer)
+				bs.setLength(bs.getLength()+(Integer)crystalAdd);
 			return result.CONTINUE;
 		case PC_Utils.MSG_RATING:{
 			List<Integer> l = new ArrayList<Integer>();

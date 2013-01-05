@@ -11,6 +11,7 @@ import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import powercraft.management.PC_BeamTracer;
+import powercraft.management.PC_BeamTracer.BeamSettings;
 import powercraft.management.PC_BeamTracer.result;
 import powercraft.management.PC_Block;
 import powercraft.management.PC_Color;
@@ -105,9 +106,9 @@ public class PCli_BlockLaserSensor extends PC_Block implements PC_IItemInfo {
 		ValueWriting.setBlockBounds(Block.cobblestone, 0.0F, 0.0F, 0.0F, 1.0F, 1.0F, 1.0F);
 	}
 
-	public result onHitByBeamTracer(PC_BeamTracer beamTracer, PC_VecI cnt, PC_VecI move, PC_Color color, float strength, int distanceToMove) {
-		World world = beamTracer.getWorld();
-		PCli_TileEntityLaserSensor te = GameInfo.getTE(world, cnt.x, cnt.y, cnt.z, blockID);
+	public result onHitByBeamTracer(IBlockAccess world, BeamSettings bs) {
+		PC_VecI pos = bs.getPos();
+		PCli_TileEntityLaserSensor te = GameInfo.getTE(world, pos.x, pos.y, pos.z, blockID);
 		if(te!=null){
 			te.hitByBeam();
 		}
@@ -135,7 +136,7 @@ public class PCli_BlockLaserSensor extends PC_Block implements PC_IItemInfo {
 			list.add(PC_Utils.NO_BUILD);
 			return list;
 		}case PC_Utils.MSG_ON_HIT_BY_BEAM_TRACER:
-			return onHitByBeamTracer((PC_BeamTracer)obj[0], (PC_VecI)obj[1], (PC_VecI)obj[2], (PC_Color)obj[3], (Float)obj[4], (Integer)obj[5]);
+			return onHitByBeamTracer(world, (BeamSettings)obj[0]);
 		default:
 			return null;
 		}

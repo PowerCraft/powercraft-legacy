@@ -13,6 +13,7 @@ import net.minecraft.util.MathHelper;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import powercraft.management.PC_BeamTracer;
+import powercraft.management.PC_BeamTracer.BeamSettings;
 import powercraft.management.PC_BeamTracer.result;
 import powercraft.management.PC_Block;
 import powercraft.management.PC_Color;
@@ -207,14 +208,16 @@ public class PCli_BlockPrism extends PC_Block implements PC_IItemInfo {
 		return prismMove[side];
 	}
 	
-	public result onHitByBeamTracer(PC_BeamTracer beamTracer, PC_VecI cnt, PC_VecI move, PC_Color color, float strength, int distanceToMove) {
+	public result onHitByBeamTracer(IBlockAccess world, BeamSettings bs) {
 
-		PCli_TileEntityPrism prism = GameInfo.getTE(beamTracer.getWorld(), cnt.x, cnt.y, cnt.z);
+		PC_VecI pos = bs.getPos();
+		
+		PCli_TileEntityPrism prism = GameInfo.getTE(world, pos.x, pos.y, pos.z);
 
 		int sideCount = 0;
 		int[] side = new int[10];
 
-		int thisPrismSide = getPrismSideFacingMove(move);
+		int thisPrismSide = getPrismSideFacingMove(bs.getMove());
 
 		for (int h = 0; h < 10; h++) {
 			// include only non-this & not false sides.
@@ -228,8 +231,7 @@ public class PCli_BlockPrism extends PC_Block implements PC_IItemInfo {
 
 			for (int h = 0; h < sideCount; h++) {
 				PC_VecI newMove = getPrismOutputMove(side[h]).copy();
-
-				beamTracer.forkBeam(cnt, newMove, color, strength, distanceToMove / Math.round((sideCount * 0.75F)));
+				bs.getBeamTracer().forkBeam(new BeamSettings(bs.getBeamTracer(), bs.getPos(), newMove, bs.getColor(), bs.getStrength(), bs.getLength() / Math.round(sideCount * 0.75F)));
 			}
 
 		}
@@ -268,7 +270,7 @@ public class PCli_BlockPrism extends PC_Block implements PC_IItemInfo {
 		}case PC_Utils.MSG_DEFAULT_NAME:
 			return "Prism";
 		case PC_Utils.MSG_ON_HIT_BY_BEAM_TRACER:
-			return onHitByBeamTracer((PC_BeamTracer)obj[0], (PC_VecI)obj[1], (PC_VecI)obj[2], (PC_Color)obj[3], (Float)obj[4], (Integer)obj[5]);
+			return onHitByBeamTracer(world, (BeamSettings)obj[0]);
 		default:
 			return null;
 		}
