@@ -57,7 +57,7 @@ public class PCnt_TileEntityRadio extends PC_TileEntity implements PC_ITileEntit
 
 	@Override
 	public void updateEntity() {
-		if(isReceiver()){
+		if(isReceiver() && !worldObj.isRemote){
 			boolean newstate = PCnt_RadioManager.getChannelState(channel);
 			if (active != newstate) {
 				active = newstate;

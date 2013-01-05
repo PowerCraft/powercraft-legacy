@@ -2831,8 +2831,8 @@ public class PCmo_EntityMiner extends Entity implements PC_IInventoryWrapper {
 		if (canReceiveKeyboardCommand()) {
 			flag = true;
 			receiveKeyboardCommand(cmd);
-			if(!worldObj.isRemote)
-				PC_PacketHandler.sendToPacketHandler(true, worldObj, "MinerManager", entityId, "command", cmd);
+			//if(!worldObj.isRemote)
+				//PC_PacketHandler.sendToPacketHandler(true, worldObj, "MinerManager", entityId, "command", cmd);
 			
 		}
 		return flag;
@@ -3361,7 +3361,7 @@ public class PCmo_EntityMiner extends Entity implements PC_IInventoryWrapper {
 		if (list != null && list.size() > 0) {
 			for (int j1 = 0; j1 < list.size(); j1++) {
 				Entity entity = list.get(j1);
-				if (entity instanceof EntityFX || entity instanceof EntityXPOrb) {
+				if (GameInfo.isEntityFX(entity)|| entity instanceof EntityXPOrb) {
 					continue;
 				}
 				if (entity.isDead) {
@@ -3392,7 +3392,7 @@ public class PCmo_EntityMiner extends Entity implements PC_IInventoryWrapper {
 		motionZ *= 0.7D;
 
 		if(!worldObj.isRemote){
-			if(tick%25==0){
+			if(tick%1==0){
 				PC_PacketHandler.sendToPacketHandler(true, worldObj, "MinerManager", entityId, "set", posX, posY, posZ, motionX, motionY, motionZ, rotationYaw);
 			}
 		}
