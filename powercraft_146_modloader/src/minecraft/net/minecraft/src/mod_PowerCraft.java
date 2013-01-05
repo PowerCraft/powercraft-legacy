@@ -1,9 +1,9 @@
 package net.minecraft.src;
 
 import java.io.File;
-import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Random;
 
 import net.minecraft.client.Minecraft;
@@ -17,6 +17,7 @@ import powercraft.management.PC_FuelHandler;
 import powercraft.management.PC_GlobalVariables;
 import powercraft.management.PC_GuiUpdateNotification;
 import powercraft.management.PC_IClientModule;
+import powercraft.management.PC_IEntityRender;
 import powercraft.management.PC_IModule;
 import powercraft.management.PC_LangEntry;
 import powercraft.management.PC_Logger;
@@ -154,6 +155,25 @@ public class mod_PowerCraft extends BaseMod {
 	public void clientConnect(NetClientHandler var1) {
 		PC_PacketHandler.requestIDList();
 	}
+	
+	@Override
+	public void addRenderer(Map map) {
+		if(PC_Utils.GameInfo.isClient()){
+			PC_Logger.enterSection("Register EntityRender");
+			List<PC_IModule> modules = ModuleInfo.getModules();
+			for(PC_IModule module:modules){
+				if(module instanceof PC_IEntityRender){
+					List<PC_Struct2<Class<? extends Entity>, Render>> list = ((PC_IEntityRender) module).registerEntityRender(new ArrayList<PC_Struct2<Class<? extends Entity>, Render>>());
+					if(list!=null){
+						for(PC_Struct2<Class<? extends Entity>, Render> s:list){
+							map.put(s.a, s.b);
+						}
+					}
+				}
+			}
+			PC_Logger.exitSection();
+		}
+	}
 
 	public void preInit() {
 		PC_ClientUtils.create();
@@ -186,7 +206,7 @@ public class mod_PowerCraft extends BaseMod {
 		ValueWriting.setReverseKey(PC_GlobalVariables.config);
 		PC_Logger.exitSection();
 		if(PC_Utils.GameInfo.isClient()){
-		PC_Logger.enterSection("Module Language Init");
+			PC_Logger.enterSection("Module Language Init");
 			for(PC_IModule module:modules){
 				List<PC_LangEntry> l = ((PC_IClientModule) module).initLanguage(new ArrayList<PC_LangEntry>());
 				if(l!=null){
