@@ -410,6 +410,26 @@ public class PClo_BlockSpecial extends PC_Block
 			return false;
 		case PC_Utils.MSG_ROTATION:
 			return getRotation_static((Integer)obj[0]);
+		case PC_Utils.MSG_PROVIDES_FUNCTION:{
+			List<String> l=(List)obj[1];
+			l.add("world.isDay");
+			l.add("world.isNight");
+			l.add("world.isRaining");
+			l.add("world.isThundering");
+			return l;
+		}case PC_Utils.MSG_CALL_FUNCTION:{
+			String functionName = (String)obj[0];
+			if(functionName.equals("world.isDay")){
+				return ((World)world).isDaytime();
+			}else if(functionName.equals("world.isNight")){
+				return !((World)world).isDaytime();
+			}else if(functionName.equals("world.isRaining")){
+				return ((World)world).isRaining();
+			}else if(functionName.equals("world.isThundering")){
+				return ((World)world).isThundering();
+			}
+			return null;
+		}
 		default:
 			return null;
 		}

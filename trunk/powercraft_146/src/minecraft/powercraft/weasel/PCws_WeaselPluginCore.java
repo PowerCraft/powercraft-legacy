@@ -5,9 +5,12 @@ import java.util.List;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
+import powercraft.management.PC_IMSG;
 import powercraft.management.PC_PacketHandler;
 import powercraft.management.PC_Struct2;
+import powercraft.management.PC_Utils;
 import powercraft.management.PC_Utils.Gres;
+import powercraft.management.PC_Utils.ModuleInfo;
 import powercraft.management.PC_Utils.SaveHandler;
 import weasel.Calc;
 import weasel.WeaselEngine;
@@ -96,9 +99,6 @@ public class PCws_WeaselPluginCore extends PCws_WeaselPlugin {
 		l.add("global.get");
 		l.add("global.set");
 		l.add("global.has");
-		l.add("world.isDay");
-		l.add("world.isNight");
-		l.add("world.isRaining");
 		l.add("lib.load");
 		l.add("lib.call");
 		if(getNetwork()!=null){
@@ -109,6 +109,12 @@ public class PCws_WeaselPluginCore extends PCws_WeaselPlugin {
 						l.add("libs."+func);
 					}
 				}
+			}
+		}
+		for(PC_IMSG msgObj:ModuleInfo.getMSGObjects()){
+			Object o = msgObj.msg(PC_Utils.MSG_PROVIDES_FUNCTION, this, new ArrayList<String>());
+			if(o instanceof List<?>){
+				l.addAll((List)o);
 			}
 		}
 		return l;
@@ -160,12 +166,6 @@ public class PCws_WeaselPluginCore extends PCws_WeaselPlugin {
 			PCws_WeaselManager.setGlobalVariable((String)args[0].get(), args[1]);
 		}else if(functionName.equals("global.has")){
 			return new WeaselBoolean(PCws_WeaselManager.hasGlobalVariable((String)args[0].get()));
-		}else if(functionName.equals("world.isDay")){
-			return new WeaselBoolean(getWorld().isDaytime());	
-		}else if(functionName.equals("world.isNight")){
-			return new WeaselBoolean(!getWorld().isDaytime());	
-		}else if(functionName.equals("world.isRaining")){
-			return new WeaselBoolean(getWorld().isRaining());
 		}else if(functionName.equals("lib.load")){
 			String name = Calc.toString(args[0]);
 			if(getNetwork()!=null){
@@ -192,6 +192,18 @@ public class PCws_WeaselPluginCore extends PCws_WeaselPlugin {
 			String[] s = functionName.split("\\.", 3);
 			return new WeaselFunctionCall(s[1], s[2], args);
 		}else{
+			for(PC_IMSG msgObj:ModuleInfo.getMSGObjects()){
+				Object o = msgObj.msg(PC_Utils.MSG_PROVIDES_FUNCTION, this, new ArrayList<String>());
+				if(o instanceof List<?>){
+					if(((List<?>)o).contains(functionName)){
+						List<Object> realArgs = new ArrayList<Object>();
+						for(WeaselObject obj:args){
+							realArgs.add(obj.get());
+						}
+						return WeaselObject.getWrapperForValue(msgObj.msg(PC_Utils.MSG_CALL_FUNCTION, getWorld(), functionName, realArgs));
+					}
+				}
+			}
 			throw new WeaselRuntimeException("Invalid call of function " + functionName);
 		}
 		return new WeaselNull();

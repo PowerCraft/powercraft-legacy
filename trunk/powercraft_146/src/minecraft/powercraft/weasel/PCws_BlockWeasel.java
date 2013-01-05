@@ -1,5 +1,6 @@
 package powercraft.weasel;
 
+import java.util.List;
 import java.util.Random;
 
 import net.minecraft.block.Block;
@@ -280,6 +281,11 @@ public class PCws_BlockWeasel extends PC_Block {
 			break;
 		case PC_Utils.MSG_RENDER_WORLD_BLOCK:
 			break;
+		case PC_Utils.MSG_BLOCK_FLAGS:{
+			List<String> list = (List<String>)obj[0];
+			list.add(PC_Utils.NO_HARVEST);
+			return list;
+		}
 		default:
 			return null;
 		}

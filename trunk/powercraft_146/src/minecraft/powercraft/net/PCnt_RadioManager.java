@@ -1,14 +1,17 @@
 package powercraft.net;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map.Entry;
 
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import powercraft.management.PC_IDataHandler;
+import powercraft.management.PC_IMSG;
+import powercraft.management.PC_Utils;
 import powercraft.management.PC_Utils.SaveHandler;
 
-public class PCnt_RadioManager implements PC_IDataHandler {
+public class PCnt_RadioManager implements PC_IDataHandler, PC_IMSG {
 
 	public static final String default_radio_channel = "default";
 
@@ -93,6 +96,32 @@ public class PCnt_RadioManager implements PC_IDataHandler {
 	@Override
 	public void reset() {
 		channels.clear();
+	}
+
+	@Override
+	public Object msg(int msg, Object... obj) {
+		switch(msg){
+			case PC_Utils.MSG_PROVIDES_FUNCTION:{
+				List<String> l = (List)obj[1];
+				l.add("tx");
+				l.add("rx");
+				return l;
+			}case PC_Utils.MSG_CALL_FUNCTION:{
+				String functionName = (String) obj[0];
+				if(functionName.equals("tx")){
+					if((Boolean)obj[2]){
+						transmitterOn((String)obj[1]);
+					}else{
+						transmitterOff((String)obj[1]);
+					}
+				}else if(functionName.equals("rx")){
+					return getChannelState((String)obj[1]);
+				}
+				break;
+			}default:
+				return null;
+		}
+		return true;
 	}
 
 }
