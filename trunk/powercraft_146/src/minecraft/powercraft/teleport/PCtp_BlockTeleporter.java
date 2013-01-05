@@ -34,6 +34,7 @@ import powercraft.management.PC_IItemInfo;
 import powercraft.management.PC_Property;
 import powercraft.management.PC_Renderer;
 import powercraft.management.PC_Utils;
+import powercraft.management.PC_BeamTracer.BeamSettings;
 import powercraft.management.PC_BeamTracer.result;
 import powercraft.management.PC_Utils.GameInfo;
 import powercraft.management.PC_Utils.Gres;
@@ -285,10 +286,10 @@ public class PCtp_BlockTeleporter extends PC_Block implements PC_IItemInfo{
 		ValueWriting.setBlockBounds(block, 0.125F, 0.0F, 0.125F, 1.0F - 0.125F, 1.0F - 0.125F, 1.0F - 0.125F);
 	}
 	
-	public result onHitByBeamTracer(PC_BeamTracer beamTracer, PC_VecI cnt, PC_VecI move, PC_Color color, float strength, int distanceToMove) {
-		PCtp_TileEntityTeleporter teTP = GameInfo.getTE(beamTracer.getWorld(), cnt);
+	public result onHitByBeamTracer(IBlockAccess world, BeamSettings bs) {
+		PCtp_TileEntityTeleporter teTP = GameInfo.getTE(world, bs.getPos());
 		if(teTP.defaultTarget!=null){
-			beamTracer.forkBeam(teTP.defaultTarget, PCtp_TeleporterManager.coords[teTP.defaultTargetDirection], color, strength, distanceToMove-1);
+			bs.getBeamTracer().forkBeam(new BeamSettings(bs.getBeamTracer(), teTP.defaultTarget, PCtp_TeleporterManager.coords[teTP.defaultTargetDirection], bs.getColor(), bs.getStrength(), bs.getLength()-1));
 			return result.STOP;
 		}
 		return result.CONTINUE;
@@ -318,7 +319,7 @@ public class PCtp_BlockTeleporter extends PC_Block implements PC_IItemInfo{
 			renderWorldBlock(world, pos.x, pos.y, pos.z, (Block)obj[0], (Integer)obj[1], obj[2]);
 			break;
 		case PC_Utils.MSG_ON_HIT_BY_BEAM_TRACER:
-			return onHitByBeamTracer((PC_BeamTracer)obj[0], (PC_VecI)obj[1], (PC_VecI)obj[2], (PC_Color)obj[3], (Float)obj[4], (Integer)obj[5]);
+			return onHitByBeamTracer(world, (BeamSettings)obj[0]);
 			
 		default:
 			return null;
