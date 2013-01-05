@@ -180,9 +180,11 @@ public abstract class PC_Block extends BlockContainer implements PC_IMSG
 		PC_TileEntity te = GameInfo.getTE(world, x, y, z);
 		PC_VecI pos = new PC_VecI(x, y, z);
 		IInventory inv = PC_InvUtils.getCompositeInventoryAt(world, pos);
-		if(inv!=null)
-			PC_InvUtils.dropInventoryContents(inv, world, pos);
-        super.breakBlock(world, x, y, z, par5, par6);
+		if(PC_GlobalVariables.tileEntity==null){
+			if(inv!=null)
+				PC_InvUtils.dropInventoryContents(inv, world, pos);
+			super.breakBlock(world, x, y, z, par5, par6);
+		}
     }
 	
 	@Override

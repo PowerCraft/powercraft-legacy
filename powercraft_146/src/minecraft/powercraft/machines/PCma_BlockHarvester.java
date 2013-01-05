@@ -273,6 +273,8 @@ public class PCma_BlockHarvester extends PC_Block implements
 
 		// tree - replace with sapling
 		if (PCma_TreeHarvestingManager.isBlockTreeWood(id, meta)) {
+			if(world.isRemote)
+				return true;
 			ItemStack[] output = PCma_TreeHarvestingManager.harvestTreeAt(world, coord);
 
 			if (output != null) {
@@ -293,6 +295,9 @@ public class PCma_BlockHarvester extends PC_Block implements
 			
 			if ((cropEntry = PCma_CropHarvestingManager.getHarvestBlockCrop(id, meta))!=null) {
 
+				if(world.isRemote)
+					return true;
+				
 				ItemStack[] harvested = cropEntry.getHarvestedStacks(id, meta);
 
 				if (harvested != null) {
@@ -330,6 +335,9 @@ public class PCma_BlockHarvester extends PC_Block implements
 			return false;
 		}
 
+		if(world.isRemote)
+			return true;
+		
 		// now regular block breaking
 		int dropId;
 		int dropMeta;

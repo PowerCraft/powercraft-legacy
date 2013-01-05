@@ -138,7 +138,7 @@ public class PCtr_App implements PC_IModule
 
 	@Override
 	public List<PC_Struct2<String, Class>> registerGuis(List<PC_Struct2<String, Class>> guis) {
-		guis.add(new PC_Struct2<String, Class>("SeparationBelt", PCtr_ContainerSeparationBelt.class));
+		guis.add(new PC_Struct2<String, Class>("SeperationBelt", PCtr_ContainerSeparationBelt.class));
 		return guis;
 	}
 }
