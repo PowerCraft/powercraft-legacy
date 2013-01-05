@@ -123,7 +123,8 @@ public class PCli_BlockLight extends PC_Block implements PC_IItemInfo
             return;
         }
 
-        onPoweredBlockChange(world, i, j, k, world.isBlockIndirectlyGettingPowered(i, j, k));
+        //onPoweredBlockChange(world, i, j, k, world.isBlockIndirectlyGettingPowered(i, j, k));
+        onNeighborBlockChange(world, i, j, k, 0);
     }
 
     @Override
@@ -167,7 +168,7 @@ public class PCli_BlockLight extends PC_Block implements PC_IItemInfo
             return;
         }
 
-        boolean powered = world.isBlockIndirectlyGettingPowered(i, j, k) ;
+        boolean powered = world.isBlockIndirectlyGettingPowered(i, j, k)||world.isBlockGettingPowered(i, j, k) ;
 
         if (tileentity.isActive() != powered)
         {
