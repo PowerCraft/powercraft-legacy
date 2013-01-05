@@ -378,6 +378,9 @@ public class PCma_BlockHarvester extends PC_Block implements
 
 		if (entity instanceof EntityMinecart) {
 
+			if(world.isRemote)
+				return true;
+			
 			EntityMinecart cart = (EntityMinecart) entity;
 
 			if (cart.isDead) {
@@ -408,6 +411,9 @@ public class PCma_BlockHarvester extends PC_Block implements
 			
 		} else if (entity instanceof EntitySheep) {
 
+			if(world.isRemote)
+				return true;
+			
 			EntitySheep sheep = (EntitySheep) entity;
 
 			if (sheep.isDead) {
@@ -421,6 +427,9 @@ public class PCma_BlockHarvester extends PC_Block implements
 
 		} else if (entity instanceof EntityMooshroom) {
 
+			if(world.isRemote)
+				return true;
+			
 			EntityMooshroom mooshroom = (EntityMooshroom) entity;
 
 			if (mooshroom.isDead) {
