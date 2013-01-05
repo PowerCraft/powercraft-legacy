@@ -460,7 +460,7 @@ public class PC_GresContainerGui extends GuiContainer implements PC_IGresGui {
 	}
 
 	@Override
-	protected void handleMouseClick(Slot par1Slot, int par2, int par3, int par4)
+	public void handleMouseClick(Slot par1Slot, int par2, int par3, int par4)
     {
         if (par1Slot != null)
         {
