@@ -348,6 +348,7 @@ public abstract class PCws_WeaselPlugin implements PC_INBT<PCws_WeaselPlugin>, I
 	}
 	
 	public boolean getOutport(int port){
+		System.out.println("Port:" + port);
 		return weaselOutport[port];
 	}
 	
@@ -372,6 +373,15 @@ public abstract class PCws_WeaselPlugin implements PC_INBT<PCws_WeaselPlugin>, I
 		}
 		return null;
 	}
+	
+	/*
+	 * l==0 -> up
+	 * l==1 -> down
+	 * l==2 -> z++
+	 * l==3 -> z--
+	 * l==4 -> x++
+	 * l==5 -> x--
+	 */
 	
 	public static int portToNum(String port){
 		if(port.equalsIgnoreCase("b") || port.equalsIgnoreCase("back")){
