@@ -23,10 +23,12 @@ public class PC_3DRecipe {
 		int i=0;
 		List<String[]> layer = new ArrayList<String[]>();
 		HashMap<Character, List<PC_Struct2<Block, Integer>>> map = new HashMap<Character, List<PC_Struct2<Block, Integer>>>();
+		
 		while(o[i] instanceof String[]){
 			layer.add((String[])o[i]);
 			i++;
 		}
+		
 		while(i<o.length && o[i] instanceof Character){
 			char c = (Character)o[i];
 			i++;

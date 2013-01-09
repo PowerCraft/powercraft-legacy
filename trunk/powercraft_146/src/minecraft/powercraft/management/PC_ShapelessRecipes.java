@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import powercraft.management.PC_Utils.ValueWriting;
+
 import net.minecraft.block.Block;
 import net.minecraft.inventory.InventoryCrafting;
 import net.minecraft.item.Item;
@@ -11,13 +13,13 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.world.World;
 
-public class PC_ShapelessRecipes implements IRecipe, PC_IRecipeInputInfo {
+public class PC_ShapelessRecipes implements IRecipe, PC_IRecipeInfo {
 
 	private final PC_ItemStack recipeOutput;
-    private final List<PC_ItemStack> recipeItems;
+    private final List<PC_ItemStack>[] recipeItems;
     private String op;
     
-    public PC_ShapelessRecipes(PC_ItemStack recipeOutput, List<PC_ItemStack> recipeItems) {
+    public PC_ShapelessRecipes(PC_ItemStack recipeOutput, List<PC_ItemStack>[] recipeItems) {
 		this.recipeOutput = recipeOutput;
 		this.recipeItems = recipeItems;
 	}
@@ -26,34 +28,29 @@ public class PC_ShapelessRecipes implements IRecipe, PC_IRecipeInputInfo {
 		this(null, itemStack, recipe);
 	}
     
-    public PC_ShapelessRecipes(String op, PC_ItemStack itemStack, Object...recipe)
+    public PC_ShapelessRecipes(String op, PC_ItemStack itemStack, Object...o)
     {
     	this.op = op;
-        recipeItems = new ArrayList<PC_ItemStack>();
-        int var5 = recipe.length;
-
-        recipeOutput = itemStack;
+    	recipeOutput = itemStack;
+    	
+        List<PC_ItemStack> recipeItems = new ArrayList<PC_ItemStack>();
         
-        for (Object o:recipe){
-
-            if (o instanceof PC_ItemStack)
-            {
-            	recipeItems.add(((PC_ItemStack)o).copy());
-            }
-            else if (o instanceof Item)
-            {
-            	recipeItems.add(new PC_ItemStack(o));
-            }
-            else
-            {
-                if (!(o instanceof Block))
-                {
-                    throw new RuntimeException("Invalid shapeless recipy!");
-                }
-
-                recipeItems.add(new PC_ItemStack(o));
-            }
+        for (Object obj:o){
+        	if(obj instanceof Block){
+        		recipeItems.add(new PC_ItemStack((Block)obj));
+			}else if(obj instanceof Item){
+				recipeItems.add(new PC_ItemStack((Item)obj));
+			}else if(obj instanceof ItemStack){
+				recipeItems.add(new PC_ItemStack((ItemStack)obj));
+			}else if(obj instanceof PC_ItemStack){
+				recipeItems.add((PC_ItemStack)obj);	
+			}else if(obj instanceof List){
+				recipeItems.addAll((List)obj);
+			}
         }
+        
+        this.recipeItems = recipeItems.toArray(new List[0]);
+        
     }
 
     private boolean canBeCrafted(){
@@ -74,44 +71,49 @@ public class PC_ShapelessRecipes implements IRecipe, PC_IRecipeInputInfo {
         return recipeOutput.toItemStack();
     }
 
-    public boolean matches(InventoryCrafting par1InventoryCrafting, World par2World)
+    public boolean matches(InventoryCrafting inventoryCrafting, World world)
     {
     	if(!canBeCrafted())
     		return false;
-        ArrayList items = new ArrayList(recipeItems);
+       
+    	boolean[] used = new boolean[recipeItems.length];
 
-        for (int j = 0; j < 3; j++)
-        {
-            for (int i = 0; i < 3; i++)
-            {
-                ItemStack is = par1InventoryCrafting.getStackInRowAndColumn(i, j);
-
-                if (is != null)
-                {
-                    boolean eq = false;
-                    Iterator it = items.iterator();
-
-                    while (it.hasNext())
-                    {
-                        PC_ItemStack var9 = (PC_ItemStack)it.next();
-
-                        if (var9.equals(is))
-                        {
-                        	eq = true;
-                        	items.remove(var9);
-                            break;
-                        }
-                    }
-
-                    if (!eq)
-                    {
-                        return false;
-                    }
-                }
-            }
-        }
-
-        return items.isEmpty();
+    	int craftSizeY = inventoryCrafting.getSizeInventory();
+		int craftSizeX = (Integer)ValueWriting.getPrivateValue(InventoryCrafting.class, inventoryCrafting, 1);
+		craftSizeY = craftSizeY/craftSizeX;
+		
+		for (int y = 0; y < craftSizeY; y++) {
+			for (int x = 0; x < craftSizeX; x++) {
+				ItemStack get = inventoryCrafting.getStackInRowAndColumn(x, y);
+				if(get!=null){
+					boolean ok = false;
+					for(int i=0; i<recipeItems.length; i++){
+						if(!used[i]){
+							List<PC_ItemStack> expect = recipeItems[i];
+							for(PC_ItemStack is:expect){
+								if(is.equals(get)){
+									ok = true;
+									break;
+								}
+							}
+							if(ok){
+								used[i] = true;
+								break;
+							}
+						}
+					}
+					if(!ok)
+						return false;
+				}
+			}
+		}
+		
+		for(int i=0; i<used.length; i++){
+			if(!used[i])
+				return false;
+		}
+		
+        return true;
     }
 
     public ItemStack getCraftingResult(InventoryCrafting par1InventoryCrafting)
@@ -129,23 +131,19 @@ public class PC_ShapelessRecipes implements IRecipe, PC_IRecipeInputInfo {
     {
     	if(!canBeCrafted())
     		return 0;
-        return this.recipeItems.size();
+        return recipeItems.length;
     }
 
-    @Override
-    public List<ItemStack> getExpectedInput(List<ItemStack> itemStacks)
-    {
-    	if(!canBeCrafted())
-    		return null;
-        for (int i = 0; i < recipeItems.size(); i++)
-        {
-            if (recipeItems.get(i) != null)
-            {
-                itemStacks.add(recipeItems.get(i).toItemStack());
-            }
-        }
+	@Override
+	public PC_VecI getSize() {
+    	return null;
+	}
 
-        return itemStacks;
-    }
+	@Override
+	public List<PC_ItemStack> getExpectedInputFor(int index) {
+		return recipeItems[index];
+	}
+
+   
 
 }

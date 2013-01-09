@@ -1,7 +1,10 @@
 package powercraft.management;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+
+import powercraft.management.PC_Utils.ValueWriting;
 
 import net.minecraft.block.Block;
 import net.minecraft.inventory.InventoryCrafting;
@@ -10,18 +13,16 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.world.World;
 
-public class PC_ShapedRecipes implements IRecipe, PC_IRecipeInputInfo {
+public class PC_ShapedRecipes implements IRecipe, PC_IRecipeInfo {
 
-	private int recipeWidth;
-	private int recipeHeight;
-	private PC_ItemStack[] recipeItems;
+	private PC_VecI size;
+	private List<PC_ItemStack>[][] recipeItems;
 	private PC_ItemStack recipeOutput;
 	private String op;
 	
-	public PC_ShapedRecipes(PC_ItemStack recipeOutput, int recipeWidth, int recipeHeight, PC_ItemStack[] recipeItems) {
+	public PC_ShapedRecipes(PC_ItemStack recipeOutput, PC_VecI size, List<PC_ItemStack>[][] recipeItems) {
 		this.recipeOutput = recipeOutput;
-		this.recipeWidth = recipeWidth;
-		this.recipeHeight = recipeHeight;
+		this.size = size;
 		this.recipeItems = recipeItems;
 	}
 	
@@ -29,51 +30,59 @@ public class PC_ShapedRecipes implements IRecipe, PC_IRecipeInputInfo {
 		this(null, itemStack, recipe);
 	}
 	
-	public PC_ShapedRecipes(String op, PC_ItemStack itemStack, Object... recipe) {
+	public PC_ShapedRecipes(String op, PC_ItemStack itemStack, Object... o) {
 		this.op = op;
-		String recs = "";
-		int i = 0;
 		recipeOutput = itemStack;
-		recipeWidth = 0;
-		recipeHeight = 0;
-		int length;
-
-		while (recipe[i] instanceof String) {
-			String s = (String) recipe[i++];
-			recipeHeight++;
-			recipeWidth = s.length();
-			recs = recs + s;
+		size = new PC_VecI();
+		
+		List<String> lines = new ArrayList<String>();
+		HashMap<Character, List<PC_ItemStack>> map = new HashMap<Character, List<PC_ItemStack>>();
+		
+		int i=0;
+		while(o[i] instanceof String){
+			lines.add((String)o[i]);
+			i++;
 		}
-
-		HashMap<Character, PC_ItemStack> hm;
-
-		for (hm = new HashMap<Character, PC_ItemStack>(); i < recipe.length; i += 2) {
-			Character c = (Character) recipe[i];
-			PC_ItemStack is = null;
-
-			if (recipe[i + 1] instanceof Item) {
-				is = new PC_ItemStack(recipe[i + 1]);
-			} else if (recipe[i + 1] instanceof Block) {
-				is = new PC_ItemStack(recipe[i + 1], 1, -1);
-			} else if (recipe[i + 1] instanceof PC_ItemStack) {
-				is = (PC_ItemStack) recipe[i + 1];
+		
+		while(i<o.length && o[i] instanceof Character){
+			char c = (Character)o[i];
+			i++;
+			List<PC_ItemStack> list = new ArrayList<PC_ItemStack>();
+			while(i<o.length){
+				if(o[i] instanceof Block){
+					list.add(new PC_ItemStack((Block)o[i]));
+				}else if(o[i] instanceof Item){
+					list.add(new PC_ItemStack((Item)o[i]));
+				}else if(o[i] instanceof ItemStack){
+					list.add(new PC_ItemStack((ItemStack)o[i]));
+				}else if(o[i] instanceof PC_ItemStack){
+					list.add((PC_ItemStack)o[i]);	
+				}else if(o[i] instanceof List){
+					list.addAll((List)o[i]);
+				}else{
+					break;
+				}
+				i++;
 			}
-
-			hm.put(c, is);
+			map.put(c, list);
 		}
-
-		recipeItems = new PC_ItemStack[recipeWidth
-				* recipeHeight];
-
-		for (length = 0; length < recipeWidth * recipeHeight; ++length) {
-			char c = recs.charAt(length);
-
-			if (hm.containsKey(c)) {
-				recipeItems[length] = hm.get(c).copy();
-			} else {
-				recipeItems[length] = null;
+		
+		size.y = lines.size();
+		for(String line:lines){
+			if(line.length()>size.x)
+				size.x = line.length();
+		}
+		
+		recipeItems = new List[size.x][size.y];
+		
+		for(int y=0; y<size.y; y++){
+			String line = lines.get(y);
+			for(int x=0; x<line.length(); x++){
+				char c = line.charAt(x);
+				recipeItems[x][y] = map.get(c);
 			}
 		}
+		
 	}
 
 	private boolean canBeCrafted(){
@@ -96,14 +105,24 @@ public class PC_ShapedRecipes implements IRecipe, PC_IRecipeInputInfo {
 	public boolean matches(InventoryCrafting inventoryCrafting, World world) {
 		if(!canBeCrafted())
 			return false;
-		for (int j = 0; j <= 3 - this.recipeWidth; j++) {
-			for (int i = 0; i <= 3 - this.recipeHeight; i++) {
-				if (this.checkMatch(inventoryCrafting, j, i, true)) {
-					return true;
+		int craftSizeY = inventoryCrafting.getSizeInventory();
+		int craftSizeX = (Integer)ValueWriting.getPrivateValue(InventoryCrafting.class, inventoryCrafting, 1);
+		craftSizeY = craftSizeY/craftSizeX;
+		for (int y = 0; y <= craftSizeY - size.y; y++) {
+			for (int x = 0; x <= craftSizeX - size.x; x++) {
+				boolean otherEmpty = true;
+				for (int yy = 0; yy < craftSizeY && otherEmpty; yy++) {
+					for (int xx = 0; xx <= craftSizeX && otherEmpty; xx++) {
+						if(inventoryCrafting.getStackInRowAndColumn(xx, yy)!=null){
+							if(xx<x || xx>=x+size.x || yy<y || yy>=y+size.y)
+								otherEmpty = false;
+						}
+					}
 				}
-
-				if (this.checkMatch(inventoryCrafting, j, i, false)) {
-					return true;
+				if (otherEmpty) {
+					if (checkMatch(inventoryCrafting, x, y)) {
+						return true;
+					}
 				}
 			}
 		}
@@ -111,40 +130,25 @@ public class PC_ShapedRecipes implements IRecipe, PC_IRecipeInputInfo {
 		return false;
 	}
 
-	private boolean checkMatch(InventoryCrafting inventoryCrafting,
-			int x, int y, boolean par4) {
-		for (int i = 0; i < 3; i++) {
-			for (int j = 0; j < 3; j++) {
-				int xp = i - x;
-				int yp = j - y;
-				PC_ItemStack is = null;
-
-				if (xp >= 0 && yp >= 0 && xp < this.recipeWidth
-						&& yp < this.recipeHeight) {
-					if (par4) {
-						is = this.recipeItems[this.recipeWidth - xp - 1
-								+ yp * this.recipeWidth];
-					} else {
-						is = this.recipeItems[xp + yp * this.recipeWidth];
+	private boolean checkMatch(InventoryCrafting inventoryCrafting, int x, int y) {
+		for(int j=0; j<size.y; j++){
+			for(int i=0; i<size.x; i++){
+				List<PC_ItemStack> expect = recipeItems[i][j];
+				ItemStack get = inventoryCrafting.getStackInRowAndColumn(x+i, y+j);
+				if(expect==null && get!=null){
+					return false;
+				}
+				boolean ok = false;
+				for(PC_ItemStack is:expect){
+					if(is.equals(get)){
+						ok = true;
+						break;
 					}
 				}
-
-				ItemStack var10 = inventoryCrafting.getStackInRowAndColumn(
-						i, j);
-
-				if (var10 != null || is != null) {
-					if (var10 == null && is != null || var10 != null
-							&& is == null) {
-						return false;
-					}
-
-					if (!is.equals(var10)) {
-						return false;
-					}
-				}
+				if(!ok)
+					return false;
 			}
 		}
-
 		return true;
 	}
 
@@ -162,19 +166,21 @@ public class PC_ShapedRecipes implements IRecipe, PC_IRecipeInputInfo {
 	public int getRecipeSize() {
 		if(!canBeCrafted())
 			return 0;
-		return this.recipeWidth * this.recipeHeight;
+		return size.x * size.y;
 	}
 
 	@Override
-	public List<ItemStack> getExpectedInput(List<ItemStack> itemStacks) {
+	public PC_VecI getSize() {
 		if(!canBeCrafted())
 			return null;
-		for (PC_ItemStack itemStack : recipeItems) {
-			if (itemStack != null) {
-				itemStacks.add(itemStack.toItemStack());
-			}
-		}
-		return itemStacks;
+		return size.copy();
+	}
+
+	@Override
+	public List<PC_ItemStack> getExpectedInputFor(int index) {
+		int y = index/size.x;
+		int x = index%size.x;
+		return recipeItems[x][y];
 	}
 
 }
