@@ -50,6 +50,8 @@ public class PC_GlobalVariables {
 		hackSplashes = config.getBoolean("hacks.splash", true);
 		useUserName = config.getString("hacks.userName", "");
 		idResolve = config.getBoolean("hacks.idResolve", true, "Resolve and change PowerCraft item IDs");
+		config.getBoolean("cheats.survivalCheating", false);
+		
 		if(GameInfo.isClient())
 			soundEnabled = config.getBoolean("sound.enabled", true);
 		
