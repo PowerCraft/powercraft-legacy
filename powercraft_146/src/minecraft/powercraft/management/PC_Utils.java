@@ -1739,8 +1739,8 @@ public class PC_Utils implements PC_IPacketHandler
 		}
 
 		public static ItemStack[] getExpectedInput(IRecipe recipe) {
-			if (recipe instanceof PC_IRecipeInputInfo){
-				return ((PC_IRecipeInputInfo) recipe).getExpectedInput(new ArrayList<ItemStack>()).toArray(new ItemStack[0]);
+			if (recipe instanceof PC_IRecipeInfo){
+				return ((PC_IRecipeInfo) recipe).getExpectedInput(new ArrayList<ItemStack>()).toArray(new ItemStack[0]);
             }else if (recipe instanceof ShapedRecipes){
             	return (ItemStack[]) ValueWriting.getPrivateValue(ShapedRecipes.class, recipe, 2);
             }else if (recipe instanceof ShapelessRecipes){

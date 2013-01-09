@@ -1,6 +1,10 @@
 package powercraft.management;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockContainer;
@@ -9,6 +13,7 @@ import net.minecraft.inventory.IInventory;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.crafting.FurnaceRecipes;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
@@ -204,7 +209,7 @@ public abstract class PC_Block extends BlockContainer implements PC_IMSG
 		thisBlock.lightValue = (int)(15.0F * par1);
 		return super.setLightValue(par1);
 	}
-
+	
 	public static class BlockInfo{
 		public Block block = null;
 		public boolean opaqueCubeLookup = false;
@@ -213,6 +218,7 @@ public abstract class PC_Block extends BlockContainer implements PC_IMSG
 		public int lightValue = 0;
 		public boolean requiresSelfNotify = false;
 		public boolean useNeighborBrightness = false;
+		public List<PC_Struct3<Integer, ItemStack, Float>> furnaceRecipes;
 		public ItemBlock itemBlock = null;
 		public ItemData itemData = null;
 		
@@ -226,6 +232,7 @@ public abstract class PC_Block extends BlockContainer implements PC_IMSG
 			lightValue = Block.lightValue[id];
 			requiresSelfNotify = Block.requiresSelfNotify[id];
 			useNeighborBrightness = Block.useNeighborBrightness[id];
+			
 			itemBlock = (ItemBlock)Item.itemsList[id];
 			Map<Integer, ItemData> map = (Map<Integer, ItemData>)ValueWriting.getPrivateValue(GameData.class, GameData.class, 0);
 			itemData = map.get(id);
@@ -239,6 +246,7 @@ public abstract class PC_Block extends BlockContainer implements PC_IMSG
 			Block.lightValue[id] = lightValue;
 			Block.requiresSelfNotify[id] = requiresSelfNotify;
 			Block.useNeighborBrightness[id] = useNeighborBrightness;
+			
 			Item.itemsList[id] = itemBlock;
 			Map<Integer, ItemData> map = (Map<Integer, ItemData>)ValueWriting.getPrivateValue(GameData.class, GameData.class, 0);
 			if(itemData==null){

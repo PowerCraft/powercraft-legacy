@@ -7,6 +7,7 @@ import java.util.HashMap;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.CompressedStreamTools;
 import powercraft.management.PC_Utils.Gres;
+import powercraft.management.PC_Utils.ModuleInfo;
 import powercraft.management.PC_Utils.SaveHandler;
 
 public class PC_ClientPacketHandler extends PC_PacketHandler {
@@ -32,6 +33,9 @@ public class PC_ClientPacketHandler extends PC_PacketHandler {
 		SaveHandler.loadIDFromTagCompound(CompressedStreamTools.decompress(b));
 		PC_GlobalVariables.oldConsts = (HashMap<String, Object>) PC_GlobalVariables.consts.clone();
 		PC_GlobalVariables.consts.putAll((HashMap<String, Object>)input.readObject());
+		for(PC_IMSG msg : ModuleInfo.getMSGObjects()){
+			msg.msg(PC_Utils.MSG_LOAD_WORLD);
+		}
 	}
 	
 }

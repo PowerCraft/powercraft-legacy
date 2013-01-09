@@ -5,6 +5,7 @@ import java.util.List;
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.crafting.FurnaceRecipes;
 import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.src.ModLoader;
 import powercraft.management.PC_Block;
@@ -23,8 +24,10 @@ public class PCws_App implements PC_IModule {
 
 	public static PC_Block weasel;
 	public static PC_Block weaselDiskManager;
+	public static PC_Block unobtaninium;
 	
 	public static PC_Item weaselDisk;
+	public static PC_Item ingotUnobtaninium;
 	
 	@Override
 	public String getName() {
@@ -67,11 +70,13 @@ public class PCws_App implements PC_IModule {
 		weasel = ModuleLoader.register(this, PCws_BlockWeasel.class, PCws_ItemBlockWeasel.class, PCws_TileEntityWeasel.class);
 		weaselDiskManager = ModuleLoader.register(this, PCws_BlockWeaselDiskManager.class, PCws_TileEntityWeaselDiskManager.class);
 		PC_PacketHandler.registerPackethandler("WeaselDiskDrive", (PC_IPacketHandler)weaselDiskManager);
+		unobtaninium = ModuleLoader.register(this, PCws_BlockUnobtainium.class);
 	}
 
 	@Override
 	public void initItems() {
 		weaselDisk = ModuleLoader.register(this, PCws_ItemWeaselDisk.class);
+		ingotUnobtaninium = ModuleLoader.register(this, PCws_ItemUnobtaninium.class);
 	}
 
 	@Override
@@ -129,6 +134,9 @@ public class PCws_App implements PC_IModule {
 				"BBS", 
 				"SSS",
 					'B', Block.stoneButton, 'S', new PC_ItemStack(Block.stoneSingleSlab,1,0), 'D', new PC_ItemStack(weasel, 1, 3)));
+		
+		FurnaceRecipes.smelting().addSmelting(unobtaninium.blockID, new ItemStack(ingotUnobtaninium), 1.0F);
+		
 		return recipes;
 	}
 
