@@ -137,6 +137,8 @@ public class PC_ShapedRecipes implements IRecipe, PC_IRecipeInfo {
 				ItemStack get = inventoryCrafting.getStackInRowAndColumn(x+i, y+j);
 				if(expect==null && get!=null){
 					return false;
+				}else if(expect==null || get==null){
+					continue;
 				}
 				boolean ok = false;
 				for(PC_ItemStack is:expect){
