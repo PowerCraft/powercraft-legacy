@@ -93,6 +93,11 @@ public class PC_ItemStack
         return count;
     }
 
+    public void setCount(int count)
+    {
+        this.count = count;
+    }
+    
     public int getMeta()
     {
         return meta;

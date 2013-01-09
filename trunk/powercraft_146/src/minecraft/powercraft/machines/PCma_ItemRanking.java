@@ -137,21 +137,30 @@ public class PCma_ItemRanking {
 							}
 						}
 						for(IRecipe recipe:recipes){
-							ItemStack[] input = GameInfo.getExpectedInput(recipe);
+							List<PC_ItemStack>[][] input = GameInfo.getExpectedInput(recipe, -1, -1);
 							if(input==null){
 				                continue;
 				            }
 							float rank=0;
-							for(ItemStack itemstack:input){
-								if(itemstack==null)
-									continue;
-								PC_ItemStack pcisi = new PC_ItemStack(itemstack);
-								PC_Struct3<PC_ItemStack, Float, Integer> s = get(pcisi);
-								if(s != null){
-									rank += s.b;
-								}else{
-									rank = -1;
-									break;
+							for(int x=0; x<input.length; x++){
+								for(int y=0; y<input[x].length; y++){
+									List<PC_ItemStack> list = input[x][y];
+									if(list==null || list.size()<=0)
+										continue;
+									float bestRank = -1;
+									for(PC_ItemStack pcisi:list){
+										PC_Struct3<PC_ItemStack, Float, Integer>s = get(pcisi);
+										if(s!=null) {
+											if(bestRank == -1 || bestRank>s.b)
+												bestRank = s.b;
+										}
+									}
+									if(bestRank == -1){
+										rank = -1;
+										break;
+									}else{
+										rank += bestRank;
+									}
 								}
 							}
 							if(rank>0){

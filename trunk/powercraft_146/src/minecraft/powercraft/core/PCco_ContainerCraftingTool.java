@@ -6,18 +6,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map.Entry;
 
-import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.Slot;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemBlock;
-import net.minecraft.item.ItemStack;
+import powercraft.management.PC_GlobalVariables;
 import powercraft.management.PC_GresBaseWithInventory;
-import powercraft.management.PC_IItemInfo;
-import powercraft.management.PC_IMSG;
-import powercraft.management.PC_IModule;
 import powercraft.management.PC_ItemStack;
-import powercraft.management.PC_Utils;
 import powercraft.management.PC_Utils.GameInfo;
 
 public class PCco_ContainerCraftingTool extends PC_GresBaseWithInventory
@@ -73,7 +66,7 @@ public class PCco_ContainerCraftingTool extends PC_GresBaseWithInventory
     @Override
     public void retrySlotClick(int par1, int par2, boolean par3, EntityPlayer entityPlayer)
     {
-        if (GameInfo.isCreative(entityPlayer) || PCco_SlotDirectCrafting.survivalCheating)
+        if (GameInfo.isCreative(entityPlayer) || PC_GlobalVariables.config.getBoolean("cheats.survivalCheating"))
         {
             return;
         }

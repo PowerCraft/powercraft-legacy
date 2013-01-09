@@ -1147,56 +1147,49 @@ public class PC_Utils implements PC_IPacketHandler
 		{
 		    return worldObj.provider.dimensionId;
 		}
-
-		private static List<IRecipe> resolveForgeRecipe(IRecipe recipe){
+		
+		private static IRecipe resolveForgeRecipe(IRecipe recipe){
 			Object[] o;
-			List<IRecipe> recipes = new ArrayList<IRecipe>();
 			boolean isShaped;
 			if(recipe instanceof ShapedOreRecipe){
 				o = (Object[])ValueWriting.getPrivateValue(ShapedOreRecipe.class, recipe, 3);
-				isShaped = true;
+				int width = (Integer)ValueWriting.getPrivateValue(ShapedOreRecipe.class, recipe, 4);
+				int height = (Integer)ValueWriting.getPrivateValue(ShapedOreRecipe.class, recipe, 5);
+				List<PC_ItemStack> list[][] = new List[width][height];
+				int i=0;
+				for(int y=0; y<height; y++){
+					for(int x=0; x<width; x++){
+						if(i<o.length){
+							list[x][y] = new ArrayList<PC_ItemStack>();
+							if(o[i] instanceof ItemStack){
+								list[x][y].add(new PC_ItemStack((ItemStack)o[i]));
+							}else if(o[i] instanceof List){
+								for(ItemStack is:(List<ItemStack>)o[i]){
+									list[x][y].add(new PC_ItemStack(is));
+								}
+							}
+						}
+						i++;
+					}
+				}
+				return new PC_ShapedRecipes(new PC_ItemStack(recipe.getRecipeOutput()), new PC_VecI(width, height), list);
 			}else if(recipe instanceof ShapelessOreRecipe){
 				o = ((List)ValueWriting.getPrivateValue(ShapelessOreRecipe.class, recipe, 1)).toArray(new Object[0]);
-				isShaped = false;
+				List<PC_ItemStack> list[] = new List[o.length];
+				for(int i=0; i<o.length; i++){
+					list[i] = new ArrayList<PC_ItemStack>();
+					if(o[i] instanceof ItemStack){
+						list[i].add(new PC_ItemStack((ItemStack)o[i]));
+					}else if(o[i] instanceof List){
+						for(ItemStack is:(List<ItemStack>)o[i]){
+							list[i].add(new PC_ItemStack(is));
+						}
+					}
+				}
+				return new PC_ShapelessRecipes(new PC_ItemStack(recipe.getRecipeOutput()), list);
 			}else{
 				return null;
 			}
-			int nums = 1;
-			for(int i=0; i<o.length; i++){
-				if(o[i] instanceof ArrayList){
-					nums *= ((ArrayList)o[i]).size();
-				}
-			}
-			for(int j=0; j<nums; j++){
-				PC_ItemStack[] is = new PC_ItemStack[o.length];
-				int n = j;
-				int max = nums;
-				for(int i=0; i<o.length; i++){
-					if(o[i] instanceof ItemStack){
-						is[i] = new PC_ItemStack((ItemStack)o[i]);
-					}else if(o[i] instanceof ArrayList){
-						List<ItemStack> l = (List<ItemStack>)o[i];
-						int size = l.size();
-						max /= size;
-						int index = n/max;
-						n = n%max;
-						is[i] = new PC_ItemStack(l.get(index));
-					}
-				}
-				PC_ItemStack out = new PC_ItemStack(recipe.getRecipeOutput());
-				if(isShaped){
-					int width = (Integer)ValueWriting.getPrivateValue(ShapedOreRecipe.class, recipe, 4);
-					int height = (Integer)ValueWriting.getPrivateValue(ShapedOreRecipe.class, recipe, 5);
-					recipes.add(new PC_ShapedRecipes(out, width, height, is));
-				}else{
-					List<PC_ItemStack> l = new ArrayList<PC_ItemStack>();
-					for(int i=0; i<is.length; i++){
-						l.add(is[i]);
-					}
-					recipes.add(new PC_ShapelessRecipes(out, l));
-				}
-			}
-			return recipes;
 		}
 		
 		public static List<IRecipe> getRecipesForProduct(ItemStack prod)
@@ -1212,7 +1205,7 @@ public class PC_Utils implements PC_IPacketHandler
 		            {
 		            	
 		            	if(recipe instanceof ShapedOreRecipe||recipe instanceof ShapelessOreRecipe){
-		            		ret.addAll(resolveForgeRecipe(recipe));
+		            		ret.add(resolveForgeRecipe(recipe));
 		            	}else{
 		            		ret.add(recipe);
 		            	}
@@ -1771,16 +1764,71 @@ public class PC_Utils implements PC_IPacketHandler
 			dropXP(world, pos, xp);
 		}
 
-		public static ItemStack[] getExpectedInput(IRecipe recipe) {
+		public static List<PC_ItemStack>[][] getExpectedInput(IRecipe recipe, int width, int hight) {
+			List<PC_ItemStack>[][] list = new List[width][hight];
 			if (recipe instanceof PC_IRecipeInfo){
-				//return ((PC_IRecipeInfo) recipe).getExpectedInput(new ArrayList<ItemStack>()).toArray(new ItemStack[0]);
+				PC_IRecipeInfo ri = (PC_IRecipeInfo) recipe;
+				PC_VecI size = ri.getSize();
+				if(size!=null){
+					if(width==-1)
+						width = size.x;
+					if(hight==-1)
+						hight = size.y;
+					if(size.x>width||size.y>hight)
+						return null;
+				}else{
+					return null;
+				}
+				int i=0;
+				for(int y=0; y<size.y; y++){
+					for(int x=0; x<size.x; x++){
+						if(i<ri.getRecipeSize()){
+							list[x][y] = ri.getExpectedInputFor(i);
+						}
+						i++;
+					}
+				}
             }else if (recipe instanceof ShapedRecipes){
-            	return (ItemStack[]) ValueWriting.getPrivateValue(ShapedRecipes.class, recipe, 2);
+            	int sizeX = (Integer) ValueWriting.getPrivateValue(ShapedRecipes.class, recipe, 0);
+            	int sizeY = (Integer) ValueWriting.getPrivateValue(ShapedRecipes.class, recipe, 1);
+            	ItemStack[] stacks = (ItemStack[]) ValueWriting.getPrivateValue(ShapedRecipes.class, recipe, 2);
+            	if(width==-1)
+					width = sizeX;
+				if(hight==-1)
+					hight = sizeY;
+            	if(sizeX>width||sizeY>hight)
+					return null;
+            	int i=0;
+				for(int y=0; y<sizeY; y++){
+					for(int x=0; x<sizeX; x++){
+						if(i<stacks.length){
+							list[x][y] = new ArrayList<PC_ItemStack>();
+							list[x][y].add(new PC_ItemStack(stacks[i]));
+						}
+						i++;
+					}
+				}
             }else if (recipe instanceof ShapelessRecipes){
-                List<ItemStack> foo = ((List<ItemStack>) ValueWriting.getPrivateValue(ShapelessRecipes.class, recipe, 1));
-                return foo.toArray(new ItemStack[foo.size()]);
+            	List<ItemStack> stacks = ((List<ItemStack>) ValueWriting.getPrivateValue(ShapelessRecipes.class, recipe, 1));
+            	if(width==-1)
+					width = stacks.size();
+				if(hight==-1)
+					hight = 1;
+            	if(hight*width<stacks.size())
+            		return null;
+            	int i=0;
+            	for(int y=0; y<hight; y++){
+					for(int x=0; x<width; x++){
+						if(i<stacks.size()){
+							list[x][y] = new ArrayList<PC_ItemStack>();
+							list[x][y].add(new PC_ItemStack(stacks.get(i)));
+						}
+					}
+            	}
+            }else{
+            	return null;
             }
-			return null;
+			return list;
 		}
 
 		public static int getFuelValue(ItemStack itemstack, double strength)

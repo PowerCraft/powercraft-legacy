@@ -8,5 +8,6 @@ public interface PC_IRecipeInfo {
 
 	public PC_VecI getSize();
 	public List<PC_ItemStack> getExpectedInputFor(int index);
+	public int getRecipeSize();
 	
 }
