@@ -135,8 +135,6 @@ public class PCws_App implements PC_IModule {
 				"SSS",
 					'B', Block.stoneButton, 'S', new PC_ItemStack(Block.stoneSingleSlab,1,0), 'D', new PC_ItemStack(weasel, 1, 3)));
 		
-		FurnaceRecipes.smelting().addSmelting(unobtaninium.blockID, new ItemStack(ingotUnobtaninium), 1.0F);
-		
 		return recipes;
 	}
 
