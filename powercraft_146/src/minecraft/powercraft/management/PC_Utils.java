@@ -1030,7 +1030,7 @@ public class PC_Utils implements PC_IPacketHandler
     	public static void removeSmeltingRecipes(ItemStack is){
     		FurnaceRecipes smlt = FurnaceRecipes.smelting();
     		smlt.getSmeltingList().remove(Integer.valueOf(is.itemID));
-    		int idx = ValueWriting.getFieldIDByName(FurnaceRecipes.class, "metaSmeltingList");
+    		int idx = 4; //ValueWriting.getFieldIDByName(FurnaceRecipes.class, "metaSmeltingList");
     		if(idx!=-1){
     			Object o = ValueWriting.getPrivateValue(FurnaceRecipes.class, smlt, idx);
     			if(o instanceof HashMap){
@@ -1039,7 +1039,7 @@ public class PC_Utils implements PC_IPacketHandler
     			}
     		}
     		
-    		idx = ValueWriting.getFieldIDByName(FurnaceRecipes.class, "experienceList");
+    		idx = 3; //ValueWriting.getFieldIDByName(FurnaceRecipes.class, "experienceList");
     		if(idx!=-1){
     			Object o = ValueWriting.getPrivateValue(FurnaceRecipes.class, smlt, idx);
     			if(o instanceof Map){
@@ -1048,7 +1048,7 @@ public class PC_Utils implements PC_IPacketHandler
     			}
     		}
     		
-    		idx = ValueWriting.getFieldIDByName(FurnaceRecipes.class, "metaExperience");
+    		idx = 5; //ValueWriting.getFieldIDByName(FurnaceRecipes.class, "metaExperience");
     		if(idx!=-1){
     			Object o = ValueWriting.getPrivateValue(FurnaceRecipes.class, smlt, idx);
     			if(o instanceof HashMap){
@@ -1773,7 +1773,7 @@ public class PC_Utils implements PC_IPacketHandler
 
 		public static ItemStack[] getExpectedInput(IRecipe recipe) {
 			if (recipe instanceof PC_IRecipeInfo){
-				return ((PC_IRecipeInfo) recipe).getExpectedInput(new ArrayList<ItemStack>()).toArray(new ItemStack[0]);
+				//return ((PC_IRecipeInfo) recipe).getExpectedInput(new ArrayList<ItemStack>()).toArray(new ItemStack[0]);
             }else if (recipe instanceof ShapedRecipes){
             	return (ItemStack[]) ValueWriting.getPrivateValue(ShapedRecipes.class, recipe, 2);
             }else if (recipe instanceof ShapelessRecipes){
