@@ -1030,7 +1030,7 @@ public class PC_Utils implements PC_IPacketHandler
     	public static void removeSmeltingRecipes(ItemStack is){
     		FurnaceRecipes smlt = FurnaceRecipes.smelting();
     		smlt.getSmeltingList().remove(Integer.valueOf(is.itemID));
-    		int idx = 4; //ValueWriting.getFieldIDByName(FurnaceRecipes.class, "metaSmeltingList");
+    		int idx = 3; //ValueWriting.getFieldIDByName(FurnaceRecipes.class, "metaSmeltingList");
     		if(idx!=-1){
     			Object o = ValueWriting.getPrivateValue(FurnaceRecipes.class, smlt, idx);
     			if(o instanceof HashMap){
@@ -1039,7 +1039,7 @@ public class PC_Utils implements PC_IPacketHandler
     			}
     		}
     		
-    		idx = 3; //ValueWriting.getFieldIDByName(FurnaceRecipes.class, "experienceList");
+    		idx = 2; //ValueWriting.getFieldIDByName(FurnaceRecipes.class, "experienceList");
     		if(idx!=-1){
     			Object o = ValueWriting.getPrivateValue(FurnaceRecipes.class, smlt, idx);
     			if(o instanceof Map){
@@ -1048,7 +1048,7 @@ public class PC_Utils implements PC_IPacketHandler
     			}
     		}
     		
-    		idx = 5; //ValueWriting.getFieldIDByName(FurnaceRecipes.class, "metaExperience");
+    		idx = 4; //ValueWriting.getFieldIDByName(FurnaceRecipes.class, "metaExperience");
     		if(idx!=-1){
     			Object o = ValueWriting.getPrivateValue(FurnaceRecipes.class, smlt, idx);
     			if(o instanceof HashMap){
