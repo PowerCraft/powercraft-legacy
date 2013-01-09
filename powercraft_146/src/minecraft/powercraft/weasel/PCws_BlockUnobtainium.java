@@ -2,6 +2,8 @@ package powercraft.weasel;
 
 import net.minecraft.block.material.Material;
 import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.item.ItemStack;
+import net.minecraft.item.crafting.FurnaceRecipes;
 import net.minecraft.world.IBlockAccess;
 import powercraft.management.PC_Block;
 import powercraft.management.PC_Utils;
@@ -19,6 +21,10 @@ public class PCws_BlockUnobtainium extends PC_Block {
 		switch(msg){
 		case PC_Utils.MSG_DEFAULT_NAME:
 			return "Unobtainium";
+		case PC_Utils.MSG_LOAD_WORLD:{
+			PC_Utils.ValueWriting.removeSmeltingRecipes(new ItemStack(this));
+			PC_Utils.ValueWriting.addSmeltingRecipes(new ItemStack(this), new ItemStack(PCws_App.ingotUnobtaninium), 1.0F);
+		}
 		}
 		return null;
 	}

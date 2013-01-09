@@ -15,6 +15,7 @@ import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Modifier;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -1026,7 +1027,39 @@ public class PC_Utils implements PC_IPacketHandler
 		        }
 		    }
 		}
-    	
+    	public static void removeSmeltingRecipes(ItemStack is){
+    		FurnaceRecipes smlt = FurnaceRecipes.smelting();
+    		smlt.getSmeltingList().remove(Integer.valueOf(is.itemID));
+    		int idx = ValueWriting.getFieldIDByName(FurnaceRecipes.class, "metaSmeltingList");
+    		if(idx!=-1){
+    			Object o = ValueWriting.getPrivateValue(FurnaceRecipes.class, smlt, idx);
+    			if(o instanceof HashMap){
+    				HashMap<List<Integer>, ItemStack> map = (HashMap<List<Integer>, ItemStack>)o;
+    				map.remove(Arrays.asList(Integer.valueOf(is.itemID), Integer.valueOf(is.getItemDamage())));
+    			}
+    		}
+    		
+    		idx = ValueWriting.getFieldIDByName(FurnaceRecipes.class, "experienceList");
+    		if(idx!=-1){
+    			Object o = ValueWriting.getPrivateValue(FurnaceRecipes.class, smlt, idx);
+    			if(o instanceof Map){
+    				Map map = (Map)o;
+    				map.remove(Integer.valueOf(is.itemID));
+    			}
+    		}
+    		
+    		idx = ValueWriting.getFieldIDByName(FurnaceRecipes.class, "metaExperience");
+    		if(idx!=-1){
+    			Object o = ValueWriting.getPrivateValue(FurnaceRecipes.class, smlt, idx);
+    			if(o instanceof HashMap){
+    				HashMap<List<Integer>, Float> map = (HashMap<List<Integer>, Float>)o;
+    				map.remove(Arrays.asList(Integer.valueOf(is.itemID), Integer.valueOf(is.getItemDamage())));
+    			}
+    		}
+    	}
+    	public static void addSmeltingRecipes(ItemStack isInput, ItemStack isOutput, float experience){
+    		FurnaceRecipes.smelting().addSmelting(Integer.valueOf(isInput.itemID), Integer.valueOf(isInput.getItemDamage()), isOutput, experience);
+    	}
     }
     
     public static class Gres{
