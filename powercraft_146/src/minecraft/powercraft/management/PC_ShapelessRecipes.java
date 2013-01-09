@@ -33,20 +33,22 @@ public class PC_ShapelessRecipes implements IRecipe, PC_IRecipeInfo {
     	this.op = op;
     	recipeOutput = itemStack;
     	
-        List<PC_ItemStack> recipeItems = new ArrayList<PC_ItemStack>();
+        List<List<PC_ItemStack>> recipeItems = new ArrayList<List<PC_ItemStack>>();
         
         for (Object obj:o){
+        	List<PC_ItemStack> list = new ArrayList<PC_ItemStack>();
         	if(obj instanceof Block){
-        		recipeItems.add(new PC_ItemStack((Block)obj));
+        		list.add(new PC_ItemStack((Block)obj));
 			}else if(obj instanceof Item){
-				recipeItems.add(new PC_ItemStack((Item)obj));
+				list.add(new PC_ItemStack((Item)obj));
 			}else if(obj instanceof ItemStack){
-				recipeItems.add(new PC_ItemStack((ItemStack)obj));
+				list.add(new PC_ItemStack((ItemStack)obj));
 			}else if(obj instanceof PC_ItemStack){
-				recipeItems.add((PC_ItemStack)obj);	
+				list.add((PC_ItemStack)obj);	
 			}else if(obj instanceof List){
-				recipeItems.addAll((List)obj);
+				list.addAll((List)obj);
 			}
+        	recipeItems.add(list);
         }
         
         this.recipeItems = recipeItems.toArray(new List[0]);
