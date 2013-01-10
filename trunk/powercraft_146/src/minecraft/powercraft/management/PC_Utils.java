@@ -1765,7 +1765,7 @@ public class PC_Utils implements PC_IPacketHandler
 		}
 
 		public static List<PC_ItemStack>[][] getExpectedInput(IRecipe recipe, int width, int hight) {
-			List<PC_ItemStack>[][] list = new List[width][hight];
+			List<PC_ItemStack>[][] list;
 			if (recipe instanceof PC_IRecipeInfo){
 				PC_IRecipeInfo ri = (PC_IRecipeInfo) recipe;
 				PC_VecI size = ri.getSize();
@@ -1777,8 +1777,16 @@ public class PC_Utils implements PC_IPacketHandler
 					if(size.x>width||size.y>hight)
 						return null;
 				}else{
-					return null;
+					int rsize = recipe.getRecipeSize();
+					if(width==-1)
+						width = rsize;
+					if(hight==-1)
+						hight = 1;
+					if(hight*width<rsize || rsize==0)
+	            		return null;
+					size = new PC_VecI(width, hight);
 				}
+				list = new List[width][hight];
 				int i=0;
 				for(int y=0; y<size.y; y++){
 					for(int x=0; x<size.x; x++){
@@ -1798,12 +1806,15 @@ public class PC_Utils implements PC_IPacketHandler
 					hight = sizeY;
             	if(sizeX>width||sizeY>hight)
 					return null;
+            	list = new List[width][hight];
             	int i=0;
 				for(int y=0; y<sizeY; y++){
 					for(int x=0; x<sizeX; x++){
 						if(i<stacks.length){
-							list[x][y] = new ArrayList<PC_ItemStack>();
-							list[x][y].add(new PC_ItemStack(stacks[i]));
+							if(stacks[i]!=null){
+								list[x][y] = new ArrayList<PC_ItemStack>();
+								list[x][y].add(new PC_ItemStack(stacks[i]));
+							}
 						}
 						i++;
 					}
@@ -1816,6 +1827,7 @@ public class PC_Utils implements PC_IPacketHandler
 					hight = 1;
             	if(hight*width<stacks.size())
             		return null;
+            	list = new List[width][hight];
             	int i=0;
             	for(int y=0; y<hight; y++){
 					for(int x=0; x<width; x++){

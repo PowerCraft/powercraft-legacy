@@ -15,15 +15,16 @@ import powercraft.management.PC_Utils.GameInfo;
 
 public class PCco_SlotDirectCrafting extends Slot implements PC_ISlotWithBackground {
 
+	private static int MAX_RECURSION = 50; 
 	private EntityPlayer thePlayer;
-	public ItemStack product;
+	private ItemStack product;
 	private boolean available = false;
-	
 	
 	public PCco_SlotDirectCrafting(EntityPlayer entityplayer, ItemStack product, int index, int x, int y) {
 		 super(null, index, x, y);
 		 thePlayer = entityplayer;
 	     this.product = product;
+	     updateAvailable();
 	}
 
 	@Override
@@ -50,7 +51,7 @@ public class PCco_SlotDirectCrafting extends Slot implements PC_ISlotWithBackgro
 	@Override
     public boolean isItemValid(ItemStack itemstack)
     {
-        return GameInfo.isCreative(thePlayer);
+        return false;
     }
 
     @Override
@@ -63,13 +64,16 @@ public class PCco_SlotDirectCrafting extends Slot implements PC_ISlotWithBackgro
             	if(GameInfo.isPlacingReversed(thePlayer)){
             		 output.stackSize = output.getMaxStackSize();
             	}
+            	available = true;
             }else{
             	ItemStack[] is = getPlayerInventory();
-            	int stackSize = craft(output, is);
+            	int stackSize = craft(output, is, new ArrayList<PC_ItemStack>(), 0);
             	if(stackSize>0){
             		output.stackSize = stackSize;
             		setPlayerInventory(is);
+            		updateAvailable();
             	}else{
+            		available = false;
             		return null;
             	}
             }
@@ -82,15 +86,14 @@ public class PCco_SlotDirectCrafting extends Slot implements PC_ISlotWithBackgro
 
 	@Override
     public ItemStack getStack(){
-
-        if (product != null && (GameInfo.isCreative(thePlayer) || craft(product, getPlayerInventory())>0)){
+        if (product != null && available){
             return product.copy();
         }
 
         return null;
     }
 
-    @Override
+	@Override
     public void putStack(ItemStack itemstack) {}
 
     public void setProduct(ItemStack itemstack)
@@ -106,7 +109,7 @@ public class PCco_SlotDirectCrafting extends Slot implements PC_ISlotWithBackgro
     {
         if (product == null)
         {
-            return 1;
+            return 64;
         }
 
         return product.getMaxStackSize();
@@ -116,6 +119,8 @@ public class PCco_SlotDirectCrafting extends Slot implements PC_ISlotWithBackgro
     	ItemStack[] inv = new ItemStack[thePlayer.inventory.getSizeInventory()];
     	for (int i = 0; i < thePlayer.inventory.getSizeInventory(); i++){
     		inv[i] = thePlayer.inventory.getStackInSlot(i);
+    		if(inv[i]!=null)
+    			inv[i] = inv[i].copy();
         }
     	return inv;
     }
@@ -136,6 +141,7 @@ public class PCco_SlotDirectCrafting extends Slot implements PC_ISlotWithBackgro
     }
     
     private int testItem(PC_ItemStack get, ItemStack[] is){
+    	get = get.copy();
     	for(int i=0; i<is.length; i++){
     		if(get.equals(is[i])){
     			if(get.getCount()>is[i].stackSize){
@@ -148,7 +154,7 @@ public class PCco_SlotDirectCrafting extends Slot implements PC_ISlotWithBackgro
     	return get.getCount();
     }
     
-    private int testItem(List<PC_ItemStack> get, ItemStack[] is){
+    private int testItem(List<PC_ItemStack> get, ItemStack[] is, List<PC_ItemStack> not, int rec){
     	int i=0;
     	for(PC_ItemStack stack:get){
     		if(testItem(stack, is)==0)
@@ -159,19 +165,22 @@ public class PCco_SlotDirectCrafting extends Slot implements PC_ISlotWithBackgro
     		int need = testItem(stack, is);
     		ItemStack[] isc = setTo(null, is);
     		int size = 0;
+    		List<PC_ItemStack> notc = new ArrayList<PC_ItemStack>(not);
     		while(size<need){
-				int nSize = craft(stack.toItemStack(), isc);
+				int nSize = craft(stack.toItemStack(), isc, notc, rec);
 				if(nSize==0){
 					size = 0;
 					break;
 				}
-    			size += craft(stack.toItemStack(), isc);
+    			size += craft(stack.toItemStack(), isc, notc, rec);
     		}
     		if(size>0){
     			stack = stack.copy();
     			stack.setCount(size);
     			if(storeTo(stack, isc)){
     				setTo(is, isc);
+    				not.clear();
+    				not.addAll(notc);
     				return i;
     			}
     		}
@@ -212,12 +221,20 @@ public class PCco_SlotDirectCrafting extends Slot implements PC_ISlotWithBackgro
     	}
     }
     
-    private int craft(ItemStack craft, ItemStack[] is) {
+    private int craft(ItemStack craft, ItemStack[] is, List<PC_ItemStack> not, int rec) {
 		List<IRecipe> recipes = GameInfo.getRecipesForProduct(craft);
+		if(rec>MAX_RECURSION)
+			return 0;
+		if(not.contains(new PC_ItemStack(craft)))
+			return 0;
+		not.add(new PC_ItemStack(craft));
+		rec++;
 		for(IRecipe recipe:recipes){
 			ItemStack[] isc = setTo(null, is);
 			List<PC_ItemStack>[][] inp = GameInfo.getExpectedInput(recipe, -1, -1);
 			List<List<PC_ItemStack>> input = new ArrayList<List<PC_ItemStack>>();
+			if(inp==null)
+				continue;
 			for(int x=0; x<inp.length; x++){
 				for(int y=0; y<inp[x].length; y++){
 					if(inp[x][y]!=null){
@@ -226,29 +243,33 @@ public class PCco_SlotDirectCrafting extends Slot implements PC_ISlotWithBackgro
 				}
 			}
 			
-			int[] t = new int[input.size()];
-			
-			int i=0;
+			int ret;
+			boolean con=false;
 			for(List<PC_ItemStack> l:input){
-				t[i] = testItem(l, isc);
-				if(t[i]<0){
-					i=-1;
+				ret = testItem(l, isc, not, rec);
+				if(ret<0){
+					con = true;
 					break;
 				}
-				i++;
+				takeOut(l.get(ret), isc);
 			}
-			if(i==-1)
+			if(con)
 				continue;
-			i=0;
-			for(List<PC_ItemStack> l:input){
-				takeOut(l.get(t[i]), isc);
-				i++;
-			}
 			
 			setTo(is, isc);
 			return recipe.getRecipeOutput().stackSize;
 		}
 		return 0;
 	}
+    
+    private boolean isAvailable() {
+    	if(GameInfo.isCreative(thePlayer) || PC_GlobalVariables.config.getBoolean("cheats.survivalCheating"))
+    		return true;
+		return craft(product, getPlayerInventory(), new ArrayList<PC_ItemStack>(), 0)>0;
+	}
+    
+    public void updateAvailable(){
+    	available = isAvailable();
+    }
     
 }
