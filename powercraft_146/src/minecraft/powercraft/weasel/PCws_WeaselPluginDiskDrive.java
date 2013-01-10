@@ -116,6 +116,8 @@ public class PCws_WeaselPluginDiskDrive extends PCws_WeaselPlugin implements PCw
 		List<String> list = new ArrayList<String>(8);
 		List<String> listBM = new PCws_WeaselBitmapUtils.WeaselBitmapAdapter(null).getProvidedFunctionNames();
 		
+		list.add("typeOf");
+		
 		List<ItemStack> disks = getDisks();
 		for (int i = 0; i < disks.size(); i++) {
 			ItemStack disk = disks.get(i);
@@ -163,7 +165,28 @@ public class PCws_WeaselPluginDiskDrive extends PCws_WeaselPlugin implements PCw
 
 	@Override
 	protected WeaselObject callProvidedPluginFunction(WeaselEngine engine, String functionName, WeaselObject[] args) {
+		
 		List<ItemStack> disks = getDisks();
+		
+		if(functionName.equals("typeOf")){
+			ItemStack disk=null;
+			if(args[0] instanceof WeaselDouble){
+				int num = Calc.toInteger(args[0]);
+				disk = disks.get(num-1);
+			}else{
+				String name = Calc.toString(args[0]);
+				for(ItemStack is:disks){
+					if(is!=null){
+						if(PCws_ItemWeaselDisk.getLabel(is).equals(name)){
+							disk = is;
+							break;
+						}
+					}
+				}
+			}
+			return new WeaselString(PCws_ItemWeaselDisk.getTypeString(disk));
+		}
+		
 		for (int i = 0; i < disks.size(); i++) {
 			ItemStack disk = disks.get(i);
 			if (disk == null) continue;
@@ -536,6 +559,19 @@ public class PCws_WeaselPluginDiskDrive extends PCws_WeaselPlugin implements PCw
 	@Override
 	public void setInventorySlotContents(int var1, ItemStack var2) {
 		inv[var1] = var2;
+		if(var2!=null){
+			if(getNetwork()!=null){
+				WeaselString diskName = new WeaselString(PCws_ItemWeaselDisk.getLabel(var2));
+				String diskType = PCws_ItemWeaselDisk.getTypeString(var2);
+				if(!getNetwork().callFunctionOnEngine("newDisk."+getName()+"."+diskType, diskName)){
+					WeaselString wdiskType = new WeaselString(diskType);
+					if(!getNetwork().callFunctionOnEngine("newDisk."+getName(), diskName, wdiskType)){
+						WeaselString name = new WeaselString(getName());
+						getNetwork().callFunctionOnEngine("newDisk", name, diskName, wdiskType);
+					}
+				}
+			}
+		}
 	}
 
 	public List<Instruction> getLibaryInstructions(String name) {

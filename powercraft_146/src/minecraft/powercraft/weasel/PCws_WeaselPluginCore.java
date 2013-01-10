@@ -95,12 +95,14 @@ public class PCws_WeaselPluginCore extends PCws_WeaselPlugin {
 		l.add("network.set");
 		l.add("network.has");
 		l.add("network.isConnected");
-		l.add("network.getDiskCount");
+		l.add("network.restart");
+		l.add("network.reset");
 		l.add("global.get");
 		l.add("global.set");
 		l.add("global.has");
 		l.add("lib.load");
 		l.add("lib.call");
+		l.add("lib.free");
 		if(getNetwork()!=null){
 			for(PCws_WeaselPlugin plugin:getNetwork()){
 				if(plugin instanceof PCws_WeaselPluginDiskDrive){
@@ -152,14 +154,15 @@ public class PCws_WeaselPluginCore extends PCws_WeaselPlugin {
 			if(getNetwork()==null)
 				return new WeaselBoolean(false);
 			return new WeaselBoolean(getNetwork().getMember((String)args[0].get()));
-		}else if(functionName.equals("network.getDiskCount")){
-			if(getNetwork()==null)
-				return new WeaselDouble(0);
-			return new WeaselDouble(0);
-		}else if(functionName.equals("network.getDiskType")){
-			if(getNetwork()==null)
-				return new WeaselString("null");
-			return new WeaselString("null");
+		}else if(functionName.equals("network.restart")||functionName.equals("network.reset")){
+			if(getNetwork()==null){
+				restartDevice();
+			}else{
+				for(PCws_WeaselPlugin plugin:getNetwork()){
+					plugin.restartDevice();
+				}
+			}
+			return new WeaselNull();
 		}else if(functionName.equals("global.get")){
 			return PCws_WeaselManager.getGlobalVariable((String)args[0].get());
 		}else if(functionName.equals("global.set")){
@@ -188,6 +191,10 @@ public class PCws_WeaselPluginCore extends PCws_WeaselPlugin {
 				newArgs[i] = args[i+2];
 			}
 			return new WeaselFunctionCall(libName, funcName, newArgs);
+		}else if(functionName.equals("lib.free")){
+			String libName = Calc.toString(args[0]);
+			engine.freeLibary(libName);
+			return new WeaselNull();
 		}else if(functionName.startsWith("libs.")){
 			String[] s = functionName.split("\\.", 3);
 			return new WeaselFunctionCall(s[1], s[2], args);
