@@ -33,7 +33,7 @@ public class GuiContainerCreative extends InventoryEffectRenderer
     private static InventoryBasic inventory = new InventoryBasic("tmp", 45);
 
     /** Currently selected creative inventory tab index. */
-    private static int selectedTabIndex = CreativeTabs.tabBlock.getTabIndex();
+    public static int selectedTabIndex = CreativeTabs.tabBlock.getTabIndex();
 
     /** Amount scrolled in Creative mode inventory (0 = top, 1 = bottom) */
     private float currentScroll = 0.0F;
@@ -74,7 +74,7 @@ public class GuiContainerCreative extends InventoryEffectRenderer
         }
     }
 
-    protected void handleMouseClick(Slot par1Slot, int par2, int par3, int par4)
+    public void handleMouseClick(Slot par1Slot, int par2, int par3, int par4)
     {
         this.field_74234_w = true;
         boolean var5 = par4 == 1;

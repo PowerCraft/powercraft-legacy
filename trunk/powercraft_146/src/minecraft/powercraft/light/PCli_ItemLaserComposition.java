@@ -17,6 +17,7 @@ import powercraft.management.PC_BeamTracer;
 import powercraft.management.PC_Color;
 import powercraft.management.PC_GlobalVariables;
 import powercraft.management.PC_Item;
+import powercraft.management.PC_ItemStack;
 import powercraft.management.PC_Struct3;
 import powercraft.management.PC_Utils;
 import powercraft.management.PC_Utils.GameInfo;
@@ -293,6 +294,13 @@ public class PCli_ItemLaserComposition extends PC_Item
 			names.add(new PC_Struct3<String, String, String[]>(getItemName() + ".sensor", "Sensor Level %s", null));;
             return names;
 		}
+		return null;
+	}
+	
+	public Object areItemsEqual(PC_ItemStack itemStack, int otherMeta, NBTTagCompound otherNbtTag) {
+		NBTTagCompound nbtTag = itemStack.getNBTTag();
+		if(nbtTag==null||otherNbtTag==null)
+			return true;
 		return null;
 	}
 	

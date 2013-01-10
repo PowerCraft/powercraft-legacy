@@ -127,6 +127,11 @@ public class PC_ItemStack
             
             if (otherID == getID())
             {
+            	if(o instanceof PC_Item){
+            		Object e =((PC_Item)o).areItemsEqual(this, otherMeta, otherNbtTag);
+            		if(e instanceof Boolean)
+            			return (Boolean)e;
+            	}
             	if(otherMeta == meta || otherMeta == -1 || meta == -1){
             		if(otherNbtTag==null && nbtTag==null){
             			return true;
