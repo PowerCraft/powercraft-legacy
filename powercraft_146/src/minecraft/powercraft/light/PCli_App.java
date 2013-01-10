@@ -1,10 +1,13 @@
 package powercraft.light;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.IRecipe;
+import net.minecraft.nbt.NBTTagCompound;
 import powercraft.management.PC_Block;
 import powercraft.management.PC_IModule;
 import powercraft.management.PC_Item;
@@ -97,19 +100,21 @@ public class PCli_App implements PC_IModule
 					"GG", 
 						'G', Block.glass));
         
-        recipes.add(new PC_ShapedRecipes(new PC_ItemStack(laserComposition),
+        List<ItemStack> l = laserComposition.getItemStacks(new ArrayList<ItemStack>());
+        
+        recipes.add(new PC_ShapedRecipes(new PC_ItemStack(l.get(0)),
                 	"XXX", 
                 	"XPX", 
                 	"XXX",
                         'X', Block.glass, 'P', new PC_ItemStack(ModuleInfo.getPCBlockByName("PCco_BlockPowerCrystal"), 1, 0)));
         
-        recipes.add(new PC_ShapedRecipes(new PC_ItemStack(laserComposition),
+        recipes.add(new PC_ShapedRecipes(new PC_ItemStack(l.get(1)),
                 	"XXX", 
                 	"XPX", 
                 	"XXX",
                         'X', Block.glass, 'P', new PC_ItemStack(ModuleInfo.getPCBlockByName("PCco_BlockPowerCrystal"), 1, 1)));
         
-        recipes.add(new PC_ShapedRecipes(new PC_ItemStack(laserComposition),
+        recipes.add(new PC_ShapedRecipes(new PC_ItemStack(l.get(2)),
                 	"XXX", 
                 	"XPX", 
                 	"XXX",

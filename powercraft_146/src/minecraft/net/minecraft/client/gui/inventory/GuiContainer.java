@@ -2,7 +2,9 @@ package net.minecraft.client.gui.inventory;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+
 import java.util.List;
+
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.renderer.OpenGlHelper;
@@ -14,20 +16,24 @@ import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.MathHelper;
 import org.lwjgl.input.Keyboard;
+import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
+
+import codechicken.nei.forge.GuiContainerManager;
+import codechicken.nei.forge.IContainerClientSide;
 
 @SideOnly(Side.CLIENT)
 public abstract class GuiContainer extends GuiScreen
 {
     /** Stacks renderer. Icons, stack size, health, etc... */
-    protected static RenderItem itemRenderer = new RenderItem();
+    public static RenderItem itemRenderer = new RenderItem();
 
     /** The X size of the inventory window in pixels. */
-    protected int xSize = 176;
+    public int xSize = 176;
 
     /** The Y size of the inventory window in pixels. */
-    protected int ySize = 166;
+    public int ySize = 166;
 
     /** A list of the players inventory slots. */
     public Container inventorySlots;
@@ -35,12 +41,12 @@ public abstract class GuiContainer extends GuiScreen
     /**
      * Starting X position for the Gui. Inconsistent use for Gui backgrounds.
      */
-    protected int guiLeft;
+    public int guiLeft;
 
     /**
      * Starting Y position for the Gui. Inconsistent use for Gui backgrounds.
      */
-    protected int guiTop;
+    public int guiTop;
     private Slot theSlot;
 
     /** Used when touchscreen is enabled */
@@ -58,10 +64,22 @@ public abstract class GuiContainer extends GuiScreen
     private ItemStack returningStack = null;
     private Slot field_92033_y = null;
     private long field_92032_z = 0L;
+    public GuiContainerManager manager;
 
     public GuiContainer(Container par1Container)
     {
         this.inventorySlots = par1Container;
+    }
+    
+    @Override
+    public void setWorldAndResolution(Minecraft mc, int i, int j)
+    {
+    	super.setWorldAndResolution(mc, i, j);
+    	if(mc.currentScreen == this)
+    	{
+    		manager = new GuiContainerManager(this);
+    		manager.load();
+    	}
     }
 
     /**
@@ -80,6 +98,8 @@ public abstract class GuiContainer extends GuiScreen
      */
     public void drawScreen(int par1, int par2, float par3)
     {
+    	manager.preDraw();
+        
         this.drawDefaultBackground();
         int var4 = this.guiLeft;
         int var5 = this.guiTop;
@@ -101,12 +121,13 @@ public abstract class GuiContainer extends GuiScreen
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
         int var9;
 
+		boolean objectundermouse = manager.objectUnderMouse(par1, par2);
         for (int var13 = 0; var13 < this.inventorySlots.inventorySlots.size(); ++var13)
         {
             Slot var14 = (Slot)this.inventorySlots.inventorySlots.get(var13);
             this.drawSlotInventory(var14);
 
-            if (this.isMouseOverSlot(var14, par1, par2))
+            if (this.isMouseOverSlot(var14, par1, par2) && !objectundermouse)
             {
                 this.theSlot = var14;
                 GL11.glDisable(GL11.GL_LIGHTING);
@@ -120,6 +141,11 @@ public abstract class GuiContainer extends GuiScreen
         }
 
         this.drawGuiContainerForegroundLayer(par1, par2);
+        
+        GL11.glTranslatef(-var4, -var5, 200F);
+        manager.renderObjects(par1, par2);
+        GL11.glTranslatef(var4, var5, -200F);
+
         InventoryPlayer var15 = this.mc.thePlayer.inventory;
         ItemStack var16 = this.draggedStack == null ? var15.getItemStack() : this.draggedStack;
 
@@ -154,11 +180,14 @@ public abstract class GuiContainer extends GuiScreen
             this.drawItemStack(this.returningStack, var11, var12);
         }
 
+		/*
         if (var15.getItemStack() == null && this.theSlot != null && this.theSlot.getHasStack())
         {
             ItemStack var19 = this.theSlot.getStack();
             this.drawItemStackTooltip(var19, par1 - var4 + 8, par2 - var5 + 8);
         }
+		*/
+        manager.renderToolTips(par1, par2);
 
         GL11.glPopMatrix();
         GL11.glEnable(GL11.GL_LIGHTING);
@@ -169,13 +198,23 @@ public abstract class GuiContainer extends GuiScreen
     private void drawItemStack(ItemStack par1ItemStack, int par2, int par3)
     {
         GL11.glTranslatef(0.0F, 0.0F, 32.0F);
-        this.zLevel = 200.0F;
-        itemRenderer.zLevel = 200.0F;
+        this.zLevel = 500.0F;
+        itemRenderer.zLevel = 500.0F;
         itemRenderer.renderItemAndEffectIntoGUI(this.fontRenderer, this.mc.renderEngine, par1ItemStack, par2, par3);
         itemRenderer.renderItemOverlayIntoGUI(this.fontRenderer, this.mc.renderEngine, par1ItemStack, par2, par3 - (this.draggedStack == null ? 0 : 8));
         this.zLevel = 0.0F;
         itemRenderer.zLevel = 0.0F;
     }
+
+    public List<String> handleTooltip(int mousex, int mousey, List<String> currenttip)
+    {
+    	return currenttip;
+	}
+    
+    public List<String> handleItemTooltip(ItemStack stack, int mousex, int mousey, List<String> currenttip)
+    {
+    	return currenttip;
+	}
 
     protected void drawItemStackTooltip(ItemStack par1ItemStack, int par2, int par3)
     {
@@ -340,9 +379,11 @@ public abstract class GuiContainer extends GuiScreen
 
         if (!var5)
         {
+            manager.renderSlotUnderlay(par1Slot);
             GL11.glEnable(GL11.GL_DEPTH_TEST);
             itemRenderer.renderItemAndEffectIntoGUI(this.fontRenderer, this.mc.renderEngine, var4, var2, var3);
             itemRenderer.renderItemOverlayIntoGUI(this.fontRenderer, this.mc.renderEngine, var4, var2, var3);
+            manager.renderSlotOverlay(par1Slot);
         }
 
         itemRenderer.zLevel = 0.0F;
@@ -352,7 +393,7 @@ public abstract class GuiContainer extends GuiScreen
     /**
      * Returns the slot at the given coordinates or null if there is none.
      */
-    private Slot getSlotAtPosition(int par1, int par2)
+    public Slot getSlotAtPosition(int par1, int par2)
     {
         for (int var3 = 0; var3 < this.inventorySlots.inventorySlots.size(); ++var3)
         {
@@ -375,12 +416,12 @@ public abstract class GuiContainer extends GuiScreen
         super.mouseClicked(par1, par2, par3);
         boolean var4 = par3 == this.mc.gameSettings.keyBindPickBlock.keyCode + 100;
 
-        if (par3 == 0 || par3 == 1 || var4)
+        if (!manager.mouseClicked(par1, par2, par3) && (par3 == 0 || par3 == 1 || var4))
         {
             Slot var5 = this.getSlotAtPosition(par1, par2);
             int var6 = this.guiLeft;
             int var7 = this.guiTop;
-            boolean var8 = par1 < var6 || par2 < var7 || par1 >= var6 + this.xSize || par2 >= var7 + this.ySize;
+            boolean var8 = (par1 < var6 || par2 < var7 || par1 >= var6 + this.xSize || par2 >= var7 + this.ySize) && var5 == null;
             int var9 = -1;
 
             if (var5 != null)
@@ -414,14 +455,10 @@ public abstract class GuiContainer extends GuiScreen
                         this.clickedSlot = null;
                     }
                 }
-                else if (var4)
-                {
-                    this.handleMouseClick(var5, var9, par3, 3);
-                }
                 else
                 {
-                    boolean var10 = var9 != -999 && (Keyboard.isKeyDown(42) || Keyboard.isKeyDown(54));
-                    this.handleMouseClick(var5, var9, par3, var10 ? 1 : 0);
+                    boolean var10 = (Keyboard.isKeyDown(42) || Keyboard.isKeyDown(54));
+                    manager.handleMouseClick(var5, var9, par3, var4 ? 3 : var10 ? 1 : 0);
                 }
             }
         }
@@ -532,6 +569,8 @@ public abstract class GuiContainer extends GuiScreen
                 this.clickedSlot = null;
             }
         }
+        else if(par3 >= 0)
+    		manager.mouseUp(par1, par2, par3);
     }
 
     private boolean func_92031_b(Slot par1Slot)
@@ -563,14 +602,23 @@ public abstract class GuiContainer extends GuiScreen
         return par5 >= par1 - 1 && par5 < par1 + par3 + 1 && par6 >= par2 - 1 && par6 < par2 + par4 + 1;
     }
 
-    protected void handleMouseClick(Slot par1Slot, int par2, int par3, int par4)
+    public void handleMouseClick(Slot par1Slot, int par2, int par3, int par4)
     {
         if (par1Slot != null)
         {
             par2 = par1Slot.slotNumber;
         }
-
-        this.mc.playerController.windowClick(this.inventorySlots.windowId, par2, par3, par4, this.mc.thePlayer);
+        if(par2 == -1)
+        	return;
+        
+        if(this instanceof IContainerClientSide)//send the calls directly to the container bypassing the MPController window send
+        {
+        	mc.thePlayer.openContainer.slotClick(par2, par3, par4, mc.thePlayer);
+        }
+        else
+        {
+            this.mc.playerController.windowClick(this.inventorySlots.windowId, par2, par3, par4, this.mc.thePlayer);
+        }
     }
 
     /**
@@ -578,9 +626,14 @@ public abstract class GuiContainer extends GuiScreen
      */
     protected void keyTyped(char par1, int par2)
     {
-        if (par2 == 1 || par2 == this.mc.gameSettings.keyBindInventory.keyCode)
+        if(par2 == 1)//esc
         {
             this.mc.thePlayer.closeScreen();
+            return;
+        }
+        if(manager.lastKeyTyped(par2, par1))
+        {
+        	return;
         }
 
         this.func_82319_a(par2);
@@ -588,6 +641,12 @@ public abstract class GuiContainer extends GuiScreen
         if (par2 == this.mc.gameSettings.keyBindPickBlock.keyCode && this.theSlot != null && this.theSlot.getHasStack())
         {
             this.handleMouseClick(this.theSlot, this.theSlot.slotNumber, this.ySize, 3);
+        }
+
+        if(par2 == mc.gameSettings.keyBindInventory.keyCode)
+        {
+            mc.thePlayer.closeScreen();
+            return;
         }
     }
 
@@ -633,10 +692,43 @@ public abstract class GuiContainer extends GuiScreen
     public void updateScreen()
     {
         super.updateScreen();
+    	manager.guiTick();
 
         if (!this.mc.thePlayer.isEntityAlive() || this.mc.thePlayer.isDead)
         {
             this.mc.thePlayer.closeScreen();
         }
     }
+    
+    public void handleKeyboardInput()
+    {
+        if (Keyboard.getEventKeyState())
+        {
+            if (Keyboard.getEventKey() == 87)
+            {
+                this.mc.toggleFullscreen();
+                return;
+            }
+            
+            if(manager.firstKeyTyped(Keyboard.getEventKey(), Keyboard.getEventCharacter()))
+            	return;
+
+            this.keyTyped(Keyboard.getEventCharacter(), Keyboard.getEventKey());
+        }
+    }
+    
+    public void handleMouseInput()
+    {
+    	super.handleMouseInput();
+    	int i = Mouse.getEventDWheel();
+        if(i != 0)
+        {
+        	manager.mouseWheel(i > 0 ? 1 : -1);
+        }
+    }
+    
+	public void refresh()
+	{
+		manager.refresh();
+	}
 }

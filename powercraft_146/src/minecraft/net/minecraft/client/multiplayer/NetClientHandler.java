@@ -172,7 +172,7 @@ public class NetClientHandler extends NetHandler
     private boolean disconnected = false;
 
     /** Reference to the NetworkManager object. */
-    private INetworkManager netManager;
+    public INetworkManager netManager;
     public String field_72560_a;
 
     /** Reference to the Minecraft object. */
