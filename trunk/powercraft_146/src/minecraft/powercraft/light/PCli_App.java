@@ -80,13 +80,7 @@ public class PCli_App implements PC_IModule
 					" WD", 
 					" S ", 
 					"SSS",
-						'S', Block.stone, 'W', new PC_ItemStack(Block.planks, 1, -1), 'D', Item.diamond));
-        
-		recipes.add(new PC_ShapedRecipes(new PC_ItemStack(laser, 1),
-					" WD", 
-					" S ", 
-					"SSS",
-						'S', Block.cobblestone, 'W', new PC_ItemStack(Block.planks, 1, -1), 'D', Item.diamond));
+						'S', Block.stone, Block.cobblestone, 'W', new PC_ItemStack(Block.planks, 1, -1), 'D', Item.diamond));
         
 		recipes.add(new PC_ShapedRecipes(new PC_ItemStack(laserSensor, 1),
         			"L", 

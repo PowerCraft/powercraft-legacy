@@ -67,7 +67,7 @@ public class WeaselEngine implements PC_INBT, IVariableProvider, IFunctionProvid
 	/** List of all instructions in the program */
 	public InstructionList instructionList = new InstructionList(this);
 	public TreeMap<String, InstructionList> libs = new TreeMap<String, InstructionList>();
-
+	
 	public String runLib;
 	
 	// only temporary
@@ -192,8 +192,10 @@ public class WeaselEngine implements PC_INBT, IVariableProvider, IFunctionProvid
 			try {
 				if(runLib==null){
 					instructionList.executeNextInstruction();
-				}else{
+				}else if(libs.containsKey(runLib)){
 					libs.get(runLib).executeNextInstruction();
+				}else{
+					throw new WeaselRuntimeException("Libary \""+runLib+"\" not found");
 				}
 			} catch (EndOfProgramException eope) {
 				isProgramFinished = true;
@@ -297,6 +299,12 @@ public class WeaselEngine implements PC_INBT, IVariableProvider, IFunctionProvid
 			InstructionList il = new InstructionList(this);
 			il.addAll(instructions);
 			libs.put(name, il);
+		}
+	}
+	
+	public void freeLibary(String name) {
+		if(libs.containsKey(name)){
+			libs.remove(name);
 		}
 	}
 	

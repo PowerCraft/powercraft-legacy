@@ -105,6 +105,7 @@ public class PC_ShapedRecipes implements IRecipe, PC_IRecipeInfo {
 	public boolean matches(InventoryCrafting inventoryCrafting, World world) {
 		if(!canBeCrafted())
 			return false;
+
 		int craftSizeY = inventoryCrafting.getSizeInventory();
 		int craftSizeX = (Integer)ValueWriting.getPrivateValue(InventoryCrafting.class, inventoryCrafting, 1);
 		craftSizeY = craftSizeY/craftSizeX;
@@ -137,7 +138,7 @@ public class PC_ShapedRecipes implements IRecipe, PC_IRecipeInfo {
 				ItemStack get = inventoryCrafting.getStackInRowAndColumn(x+i, y+j);
 				if(expect==null && get!=null){
 					return false;
-				}else if(expect==null || get==null){
+				}else if(expect==null && get==null){
 					continue;
 				}
 				boolean ok = false;

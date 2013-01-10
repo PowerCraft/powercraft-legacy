@@ -77,7 +77,7 @@ public class PC_ShapelessRecipes implements IRecipe, PC_IRecipeInfo {
     {
     	if(!canBeCrafted())
     		return false;
-       
+    	
     	boolean[] used = new boolean[recipeItems.length];
 
     	int craftSizeY = inventoryCrafting.getSizeInventory();

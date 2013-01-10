@@ -721,5 +721,26 @@ public class PCws_ItemWeaselDisk extends PC_Item {
 		}
 		return "FAILED DISK";
 	}
+
+	public static String getTypeString(ItemStack itemstack) {
+		checkTag(itemstack);
+		switch (itemstack.getTagCompound().getInteger("Type")) {
+			case EMPTY:
+				return "empty";
+			case TEXT:
+				return "text";
+			case IMAGE:
+				return "image";
+			case NUMBERLIST:
+				return "numberList";
+			case STRINGLIST:
+				return "stringList";
+			case VARMAP:
+				return "variableMap";
+			case LIBRARY:
+				return "programLibrary";
+		}
+		return "FAILED DISK";
+	}
 		
 }
