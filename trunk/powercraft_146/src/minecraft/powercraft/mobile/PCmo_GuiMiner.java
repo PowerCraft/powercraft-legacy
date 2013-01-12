@@ -7,10 +7,14 @@ import powercraft.management.PC_GresGap;
 import powercraft.management.PC_GresInventory;
 import powercraft.management.PC_GresInventoryBigSlot;
 import powercraft.management.PC_GresInventoryPlayer;
+import powercraft.management.PC_GresLabel;
 import powercraft.management.PC_GresLayoutH;
 import powercraft.management.PC_GresLayoutV;
+import powercraft.management.PC_GresTab;
 import powercraft.management.PC_GresWidget;
+import powercraft.management.PC_GresWindow;
 import powercraft.management.PC_GresWidget.PC_GresAlign;
+import powercraft.management.PC_Utils.Lang;
 import powercraft.management.PC_IGresClient;
 import powercraft.management.PC_IGresGui;
 import powercraft.management.PC_SlotSelective;
@@ -28,6 +32,9 @@ public class PCmo_GuiMiner extends PCmo_ContainerMiner implements PC_IGresClient
 
 	@Override
 	public void initGui(PC_IGresGui gui) {
+		PC_GresWindow w = new PC_GresWindow(Lang.tr("pc.gui.miner.title"));
+		
+		PC_GresTab tab = new PC_GresTab();
 		
 		vgCargo = new PC_GresLayoutH().setWidgetMargin(0).setAlignV(PC_GresAlign.TOP);
 		vgCargo.setAlignH(PC_GresAlign.CENTER);
@@ -75,7 +82,11 @@ public class PCmo_GuiMiner extends PCmo_ContainerMiner implements PC_IGresClient
 
 		vgCargo.add(vg);
 		
-		gui.add(vgCargo);
+		tab.addTab(vgCargo, new PC_GresLabel(Lang.tr("pc.gui.miner.cargo")));
+		
+		w.add(tab);
+		
+		gui.add(w);
 	}
 
 	@Override

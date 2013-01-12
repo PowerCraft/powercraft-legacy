@@ -69,6 +69,28 @@ public class PCmo_App implements PC_IModule {
 				"ss",
 				"cc"},
 				's', Block.blockSteel, 'c', Block.chest);
+		PC_3DRecipeManager.add3DRecipe(minerManager,
+				new String[]{
+				"oooo",
+				"oooo",
+				"oooo",
+				"oooo"},
+				new String[]{
+				"oooo",
+				"o  o",
+				"o  o",
+				"oooo"},
+				new String[]{
+				"oooo",
+				"o  o",
+				"o  o",
+				"oooo"},
+				new String[]{
+				"oooo",
+				"oooo",
+				"oooo",
+				"oooo"},
+				'o', Block.obsidian);
 	}
 
 	@Override
