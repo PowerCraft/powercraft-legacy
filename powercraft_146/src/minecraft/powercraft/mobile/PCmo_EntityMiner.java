@@ -1,5 +1,7 @@
 package powercraft.mobile;
 
+import java.io.IOException;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -11,6 +13,7 @@ import net.minecraft.block.BlockTorch;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.particle.EntityFX;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.item.EntityBoat;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.item.EntityXPOrb;
 import net.minecraft.entity.player.EntityPlayer;
@@ -20,6 +23,7 @@ import net.minecraft.inventory.InventoryBasic;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.CompressedStreamTools;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.DamageSource;
@@ -42,6 +46,7 @@ import powercraft.management.PC_Utils.Lang;
 import powercraft.management.PC_Utils.ModuleInfo;
 import powercraft.management.PC_Utils.SaveHandler;
 import powercraft.management.PC_Utils.ValueWriting;
+import powercraft.management.PC_VecF;
 import powercraft.management.PC_VecI;
 import powercraft.mobile.PCmo_Command.ParseException;
 import powercraft.weasel.PCws_ItemWeaselDisk;
@@ -171,7 +176,7 @@ public class PCmo_EntityMiner extends Entity implements PC_IInventoryWrapper {
 	public boolean attackEntityFrom(DamageSource damagesource, int i) {
 		// all but void and explosion is ignored.
 		if (damagesource != DamageSource.outOfWorld
-				&& (worldObj.isRemote || isDead || (damagesource.getSourceOfDamage() == null && damagesource != DamageSource.explosion))) {
+				&& (worldObj.isRemote || isDead || (damagesource.getSourceOfDamage() == null && damagesource != DamageSource.explosion || st.isExplosionResistent))) {
 			return true;
 		}
 		setForwardDirection(-getForwardDirection());
@@ -545,6 +550,8 @@ public class PCmo_EntityMiner extends Entity implements PC_IInventoryWrapper {
 		 * Sound is played when reaches zero, to prevent insane noise.
 		 */
 		private int miningTickCounter = 0;
+
+		public boolean isExplosionResistent;
 
 		@Override
 		public NBTTagCompound writeToNBT(NBTTagCompound tag) {
@@ -1703,7 +1710,7 @@ public class PCmo_EntityMiner extends Entity implements PC_IInventoryWrapper {
 				}
 
 			} else if (st.currentCommand == PCmo_Command.FORWARD) {
-				if (st.addFuelForCost(getStepCost())) {
+				if (worldObj.isRemote || st.addFuelForCost(getStepCost())) {
 					resetMineCounter();
 					st.bridgeDone = false;
 					if (rotationYaw == 0) {
@@ -2831,8 +2838,8 @@ public class PCmo_EntityMiner extends Entity implements PC_IInventoryWrapper {
 		if (canReceiveKeyboardCommand()) {
 			flag = true;
 			receiveKeyboardCommand(cmd);
-			//if(!worldObj.isRemote)
-				//PC_PacketHandler.sendToPacketHandler(true, worldObj, "MinerManager", entityId, "command", cmd);
+			if(!worldObj.isRemote)
+				PC_PacketHandler.sendToPacketHandler(true, worldObj, "MinerManager", entityId, "command", cmd);
 			
 		}
 		return flag;
@@ -3015,255 +3022,270 @@ public class PCmo_EntityMiner extends Entity implements PC_IInventoryWrapper {
 
 		if (!stop) {
 			if (st.fuelDeficit > 0) {
-				if (st.addFuelForCost(st.fuelDeficit)) {
-					st.fuelDeficit = 0;
-					prepareForCommandExecution();
+					if (st.addFuelForCost(st.fuelDeficit)) {
+						st.fuelDeficit = 0;
+						prepareForCommandExecution();
+					}
 				}
-			}
-
-			st.releaseAllocatedFuelIfNoLongerNeeded();
-
-			// normalize fuel deficit
-			if (st.fuelDeficit < 0) {
-				st.fuelDeficit = 0;
-			}
-
-			// if stopped and fuel deficit stays > 0
-			if (st.currentCommand == -1 && st.fuelDeficit != 0) {
-				st.fuelDeficit = 0;
-			}
-
-			// if there is enough fuel for current operation
-			if (st.fuelDeficit == 0 || worldObj.isRemote) {
-
-				// execute rotation and check if target angle is reached.
-				if (PCmo_Command.isCommandTurn(st.currentCommand)) {
-					motionX = motionZ = 0;
-					posX = st.target.x;
-					posZ = st.target.z;
-
-					if (Math.abs(st.rotationRemaining) < 3) {
-						st.currentCommand = -1;
+	
+				st.releaseAllocatedFuelIfNoLongerNeeded();
+	
+				// normalize fuel deficit
+				if (st.fuelDeficit < 0) {
+					st.fuelDeficit = 0;
+				}
+	
+				// if stopped and fuel deficit stays > 0
+				if (st.currentCommand == -1 && st.fuelDeficit != 0) {
+					st.fuelDeficit = 0;
+				}
+	
+				// if there is enough fuel for current operation
+				if (st.fuelDeficit == 0) {
+	
+					// execute rotation and check if target angle is reached.
+					if (PCmo_Command.isCommandTurn(st.currentCommand)) {
+						motionX = motionZ = 0;
 						posX = st.target.x;
 						posZ = st.target.z;
-						st.rotationRemaining = 0;
-						roundRotation();
-					} else {
-						playMotionEffect();
-						int step = MathHelper.clamp_int(st.level, 3, 7);
-						step = MathHelper.clamp_int(step, 0, Math.abs(st.rotationRemaining));
-
-						int incr = st.rotationRemaining > 0 ? step : -step;
-						rotationYaw = rotationYaw + incr;
-						if (rotationYaw < 0) {
-							rotationYaw = prevRotationYaw = 360F + rotationYaw;
-						}
-						if (rotationYaw > 360F) {
-							rotationYaw = prevRotationYaw = rotationYaw - 360F;
-						}
-
-						st.rotationRemaining -= incr;
-					}
-				}
-
-				if (st.currentCommand != -1) {
-					burriedFix(false);
-				}
-
-				// check if movement destination is reached
-				if (PCmo_Command.isCommandMove(st.currentCommand) || (st.currentCommand == PCmo_Command.UP && isMiningDone())) {
-
-					roundRotation();
-					performTorchPlacing();
-
-					// if target is reached
-					if (isMinerAtTargetPos()) {
-
-						// consume step cost from buffer
-						st.consumeAllocatedFuel(getStepCost());
-
-						// fill nearby liquids
-						fillWaterLavaAir();
-
-						// normalize position
-						if (getTargetDistanceX() > 0.03125D) {
-							posX = prevPosX = st.target.x;
-						}
-
-						if (getTargetDistanceZ() > 0.03125D) {
-							posZ = prevPosZ = st.target.z;
-						}
-
-						// decrement step counter - used for commands like 100
-						st.stepCounter--;
-						if (st.stepCounter <= 0) {
-							// out of code - will ask weasel next turn.
+	
+						if (Math.abs(st.rotationRemaining) < 3) {
 							st.currentCommand = -1;
-							if (st.commandList.length() == 0) {
-								// if no more commands, stop.
-								motionX = 0;
-								motionZ = 0;
+							posX = st.target.x;
+							posZ = st.target.z;
+							st.rotationRemaining = 0;
+							roundRotation();
+						} else {
+							playMotionEffect();
+							int step = MathHelper.clamp_int(st.level, 3, 7);
+							step = MathHelper.clamp_int(step, 0, Math.abs(st.rotationRemaining));
+	
+							int incr = st.rotationRemaining > 0 ? step : -step;
+							rotationYaw = rotationYaw + incr;
+							if (rotationYaw < 0) {
+								rotationYaw = prevRotationYaw = 360F + rotationYaw;
 							}
-							// normalize step counter
-							st.stepCounter = 0;
-						} else {
-							// prepare next target position.
-							prepareForCommandExecution();
+							if (rotationYaw > 360F) {
+								rotationYaw = prevRotationYaw = rotationYaw - 360F;
+							}
+	
+							st.rotationRemaining -= incr;
+							
+							List<Entity> list = worldObj.getEntitiesWithinAABB(Entity.class, boundingBox.expand(-0.1, -0.5, -0.1).getOffsetBoundingBox(0.0D, 1D, 0.0D));
+							for(Entity e:list){
+								if(e!=this){
+									PC_VecF rel = new PC_VecF((float)e.posX, (float)(e.posY), (float)e.posZ).sub((float)posX, (float)posY, (float)posZ);
+									double rot = Math.atan2(rel.z, rel.x);
+									double dis = rel.distanceTo(0.0f, rel.y, 0.0f);
+									rot += Math.toRadians(incr);
+									rel.x = (float) (Math.cos(rot)*dis);
+									rel.z = (float) (Math.sin(rot)*dis);
+									e.setLocationAndAngles(rel.x+posX, rel.y+posY-e.yOffset+0.00001, rel.z+posZ, e.rotationYaw+incr, e.rotationPitch);
+								}
+							}
+							
 						}
 					}
-				}
-
-				// perform movement and optional mining forwards
-				// previous command may have set waitingForFuel to step cost.
-				if (PCmo_Command.isCommandMove(st.currentCommand) || st.currentCommand == PCmo_Command.DOWN || st.currentCommand == PCmo_Command.UP) {
-
-					// round rotation to world sides.
-					roundRotation();
-
-					boolean fw = (st.currentCommand == PCmo_Command.FORWARD);
-					boolean dwn = (st.currentCommand == PCmo_Command.DOWN);
-					boolean up = (st.currentCommand == PCmo_Command.UP);
-					boolean back = (st.currentCommand == PCmo_Command.BACKWARD);
-
-					// for checks
-					int x = (int) Math.round(posX);
-					int y = (int) Math.floor(posY + 0.0002F);
-					if (isOnHalfStep()) {
-						y += 1;
+	
+					if (st.currentCommand != -1) {
+						burriedFix(false);
 					}
-					int z = (int) Math.round(posZ);
-
-					boolean bridgeOk = true;
-					if (!st.bridgeDone) {
-						bridgeOk = performBridgeBuilding();
-						if (!bridgeOk) {
-							// bridge building failed!
-
-						} else {
-							st.bridgeDone = true;
-						}
-					}
-
-					// if it cant move, stop.
-					if (isMiningInProgress() || !bridgeOk) {
-						motionX = motionZ = 0;
-					}
-
-					boolean miningDone = isMiningDone();
-
-					boolean canMove = bridgeOk && !dwn && (!up || miningDone);
-
-					if (up && !miningDone) {
-						performMiningUpdate(getCoordOnSide('c', 1), 8);
-						performMiningUpdate(getCoordOnSide('c', 2), 9);
-						performMiningUpdate(getCoordOnSide('c', 3), 10);
-						performMiningUpdate(getCoordOnSide('c', 4), 11);
-					}
-
-					double motionAdd = (MOTION_SPEED[st.level - 1] * ((fw || up) ? 1 : -1)) * 0.5D;
-
-					if (!miningDone && (!back) && cfg.miningEnabled) {
-						performMiningUpdate(getCoordOnSide('F', 1), 0);
-						performMiningUpdate(getCoordOnSide('F', 2), 1);
-						performMiningUpdate(getCoordOnSide('F', 3), 2);
-						performMiningUpdate(getCoordOnSide('F', 4), 3);
-
-						if (dwn) {
-							performMiningUpdate(getCoordOnSide('d', 1), 4);
-							performMiningUpdate(getCoordOnSide('d', 2), 5);
-						}
-
-						if (up) {
-							performMiningUpdate(getCoordOnSide('u', 1), 6);
-							performMiningUpdate(getCoordOnSide('u', 2), 7);
-						}
-					}
-
-
-					if (rotationYaw == 180) {
-						if (isLocationEmpty(st.target.setY(y)) && canMove) {
-							motionX += motionAdd;
-						}
-						motionZ = 0;
-					}
-
-					if (rotationYaw == 270) {
-						if (isLocationEmpty(st.target.setY(y)) && canMove) {
-							motionZ += motionAdd;
-						}
-						motionX = 0;
-					}
-
-					if (rotationYaw == 0) {
-						if (isLocationEmpty(st.target.setY(y)) && canMove) {
-							motionX -= motionAdd;
-						}
-						motionZ = 0;
-					}
-
-					if (rotationYaw == 90) {
-						if (isLocationEmpty(st.target.setY(y)) && canMove) {
-							motionZ -= motionAdd;
-						}
-						motionX = 0;
-					}
-
-
-					if (dwn && !isMiningInProgress()) {
-						st.currentCommand = -1;
-					}
-
-					if (up && isMiningDone() && !st.upStepLaid) {
-						switch ((int) Math.floor(rotationYaw)) {
-							case 0:
-								layHalfStep(x - 2, y, z - 1, true);
-								layHalfStep(x - 2, y, z, true);
-								break;
-
-							case 90:
-								layHalfStep(x - 1, y, z - 2, true);
-								layHalfStep(x, y, z - 2, true);
-								break;
-
-							case 180:
-								layHalfStep(x + 1, y, z - 1, true);
-								layHalfStep(x + 1, y, z, true);
-								break;
-
-							case 270:
-								layHalfStep(x - 1, y, z + 1, true);
-								layHalfStep(x, y, z + 1, true);
-								break;
-						}
-						st.upStepLaid = true;
-					}
-
-					// stop if bumped into wall
-					if ((!cfg.miningEnabled || !isMiningInProgress() || st.currentCommand == PCmo_Command.BACKWARD)
-							&& !isLocationEmpty(st.target.setY(y))) {
-
-						burriedFix(fw && cfg.miningEnabled);
-
-						if (!isLocationEmpty(st.target.setY(y))) {
-							if (!cfg.miningEnabled || st.currentCommand == PCmo_Command.BACKWARD) {
+	
+					// check if movement destination is reached
+					if (PCmo_Command.isCommandMove(st.currentCommand) || (st.currentCommand == PCmo_Command.UP && isMiningDone())) {
+	
+						roundRotation();
+						performTorchPlacing();
+	
+						// if target is reached
+						if (isMinerAtTargetPos()) {
+	
+							// consume step cost from buffer
+							st.consumeAllocatedFuel(getStepCost());
+	
+							// fill nearby liquids
+							fillWaterLavaAir();
+	
+							// normalize position
+							if (getTargetDistanceX() > 0.03125D) {
+								posX = prevPosX = st.target.x;
+							}
+	
+							if (getTargetDistanceZ() > 0.03125D) {
+								posZ = prevPosZ = st.target.z;
+							}
+	
+							// decrement step counter - used for commands like 100
+							st.stepCounter--;
+							if (st.stepCounter <= 0) {
+								// out of code - will ask weasel next turn.
 								st.currentCommand = -1;
-								resetMineCounter();
-								st.consumeAllocatedFuel(getStepCost());
-								st.target.x = (int) Math.round(posX);
-								st.target.z = (int) Math.round(posZ);
-								st.target.y = (int) Math.round(posY + 0.001F);
-
+								if (st.commandList.length() == 0) {
+									// if no more commands, stop.
+									motionX = 0;
+									motionZ = 0;
+								}
+								// normalize step counter
 								st.stepCounter = 0;
+							} else {
+								// prepare next target position.
+								prepareForCommandExecution();
 							}
+						}
+					}
+	
+					// perform movement and optional mining forwards
+					// previous command may have set waitingForFuel to step cost.
+					if (PCmo_Command.isCommandMove(st.currentCommand) || st.currentCommand == PCmo_Command.DOWN || st.currentCommand == PCmo_Command.UP) {
+	
+						// round rotation to world sides.
+						roundRotation();
+	
+						boolean fw = (st.currentCommand == PCmo_Command.FORWARD);
+						boolean dwn = (st.currentCommand == PCmo_Command.DOWN);
+						boolean up = (st.currentCommand == PCmo_Command.UP);
+						boolean back = (st.currentCommand == PCmo_Command.BACKWARD);
+	
+						// for checks
+						int x = (int) Math.round(posX);
+						int y = (int) Math.floor(posY + 0.0002F);
+						if (isOnHalfStep()) {
+							y += 1;
+						}
+						int z = (int) Math.round(posZ);
+	
+						boolean bridgeOk = true;
+						if (!st.bridgeDone) {
+							bridgeOk = performBridgeBuilding();
+							if (!bridgeOk) {
+								// bridge building failed!
+	
+							} else {
+								st.bridgeDone = true;
+							}
+						}
+	
+						// if it cant move, stop.
+						if (isMiningInProgress() || !bridgeOk) {
 							motionX = motionZ = 0;
 						}
+	
+						boolean miningDone = isMiningDone();
+	
+						boolean canMove = bridgeOk && !dwn && (!up || miningDone);
+	
+						if (up && !miningDone) {
+							performMiningUpdate(getCoordOnSide('c', 1), 8);
+							performMiningUpdate(getCoordOnSide('c', 2), 9);
+							performMiningUpdate(getCoordOnSide('c', 3), 10);
+							performMiningUpdate(getCoordOnSide('c', 4), 11);
+						}
+	
+						double motionAdd = (MOTION_SPEED[st.level - 1] * ((fw || up) ? 1 : -1)) * 0.5D;
+	
+						if (!miningDone && (!back) && cfg.miningEnabled) {
+							performMiningUpdate(getCoordOnSide('F', 1), 0);
+							performMiningUpdate(getCoordOnSide('F', 2), 1);
+							performMiningUpdate(getCoordOnSide('F', 3), 2);
+							performMiningUpdate(getCoordOnSide('F', 4), 3);
+	
+							if (dwn) {
+								performMiningUpdate(getCoordOnSide('d', 1), 4);
+								performMiningUpdate(getCoordOnSide('d', 2), 5);
+							}
+	
+							if (up) {
+								performMiningUpdate(getCoordOnSide('u', 1), 6);
+								performMiningUpdate(getCoordOnSide('u', 2), 7);
+							}
+						}
+	
+	
+						if (rotationYaw == 180) {
+							if (isLocationEmpty(st.target.setY(y)) && canMove) {
+								motionX += motionAdd;
+							}
+							motionZ = 0;
+						}
+	
+						if (rotationYaw == 270) {
+							if (isLocationEmpty(st.target.setY(y)) && canMove) {
+								motionZ += motionAdd;
+							}
+							motionX = 0;
+						}
+	
+						if (rotationYaw == 0) {
+							if (isLocationEmpty(st.target.setY(y)) && canMove) {
+								motionX -= motionAdd;
+							}
+							motionZ = 0;
+						}
+	
+						if (rotationYaw == 90) {
+							if (isLocationEmpty(st.target.setY(y)) && canMove) {
+								motionZ -= motionAdd;
+							}
+							motionX = 0;
+						}
+	
+	
+						if (dwn && !isMiningInProgress()) {
+							st.currentCommand = -1;
+						}
+	
+						if (up && isMiningDone() && !st.upStepLaid) {
+							switch ((int) Math.floor(rotationYaw)) {
+								case 0:
+									layHalfStep(x - 2, y, z - 1, true);
+									layHalfStep(x - 2, y, z, true);
+									break;
+	
+								case 90:
+									layHalfStep(x - 1, y, z - 2, true);
+									layHalfStep(x, y, z - 2, true);
+									break;
+	
+								case 180:
+									layHalfStep(x + 1, y, z - 1, true);
+									layHalfStep(x + 1, y, z, true);
+									break;
+	
+								case 270:
+									layHalfStep(x - 1, y, z + 1, true);
+									layHalfStep(x, y, z + 1, true);
+									break;
+							}
+							st.upStepLaid = true;
+						}
+	
+						// stop if bumped into wall
+						if ((!cfg.miningEnabled || !isMiningInProgress() || st.currentCommand == PCmo_Command.BACKWARD)
+								&& !isLocationEmpty(st.target.setY(y))) {
+	
+							burriedFix(fw && cfg.miningEnabled);
+	
+							if (!isLocationEmpty(st.target.setY(y))) {
+								if (!cfg.miningEnabled || st.currentCommand == PCmo_Command.BACKWARD) {
+									st.currentCommand = -1;
+									resetMineCounter();
+									st.consumeAllocatedFuel(getStepCost());
+									st.target.x = (int) Math.round(posX);
+									st.target.z = (int) Math.round(posZ);
+									st.target.y = (int) Math.round(posY + 0.001F);
+	
+									st.stepCounter = 0;
+								}
+								motionX = motionZ = 0;
+							}
+						}
+	
 					}
-
+	
 				}
-
+					
 			}
 
-		}
 
 		// FALL
 		if (!onGround) {
@@ -3300,6 +3322,7 @@ public class PCmo_EntityMiner extends Entity implements PC_IInventoryWrapper {
 				alignToBlocks();
 			}
 
+			roundRotation();
 			prepareForCommandExecution();
 
 			if (st.currentCommand != -1) {
@@ -3318,82 +3341,95 @@ public class PCmo_EntityMiner extends Entity implements PC_IInventoryWrapper {
 			playMotionEffect();
 		}
 
-		// pick up items.
-		List<EntityItem> list;
-
-		list = worldObj.getEntitiesWithinAABB(EntityItem.class, boundingBox.expand(1.5D, 0.5D, 1.5D));
-		if (list != null && list.size() > 0) {
-			for (int j1 = 0; j1 < list.size(); j1++) {
-				EntityItem entity = list.get(j1);
-				if (entity.delayBeforeCanPickup >= 6) {
-					continue;
-				}
-
-				ItemStack itemStack = entity.func_92014_d();
-				
-				int id = itemStack.itemID;
-
-				boolean xtal = id == ModuleInfo.getPCObjectIDByName("PCco_BlockPowerCrystal");
-
-				if (shouldDestroyStack(itemStack)) {
-					entity.setDead();
-					continue;
-				}
-
-				if (xtal && PC_InvUtils.addItemStackToInventory(xtals, itemStack)) {
-					entity.setDead();
-				} else if (PC_InvUtils.addItemStackToInventory(cargo, itemStack)) {
-					entity.setDead();
-				}
-
-				if (xtal) {
-					updateLevel();
-				}
-
-				if (cfg.compressBlocks) {
-					cargo.compressInv(itemStack);
+		if(!worldObj.isRemote){
+		
+			// pick up items.
+			List<EntityItem> list;
+	
+			list = worldObj.getEntitiesWithinAABB(EntityItem.class, boundingBox.expand(1.5D, 0.5D, 1.5D));
+			if (list != null && list.size() > 0) {
+				for (int j1 = 0; j1 < list.size(); j1++) {
+					EntityItem entity = list.get(j1);
+					if (entity.delayBeforeCanPickup >= 6) {
+						continue;
+					}
+	
+					ItemStack itemStack = entity.func_92014_d().copy();
+					
+					int id = itemStack.itemID;
+	
+					boolean xtal = id == ModuleInfo.getPCObjectIDByName("PCco_BlockPowerCrystal");
+	
+					if (shouldDestroyStack(itemStack)) {
+						entity.setDead();
+						continue;
+					}
+	
+					if (xtal && PC_InvUtils.addItemStackToInventory(xtals, itemStack)) {
+						entity.setDead();
+					} else if (PC_InvUtils.addItemStackToInventory(cargo, itemStack)) {
+						entity.setDead();
+					}
+	
+					if (xtal) {
+						updateLevel();
+					}
+	
+					if (cfg.compressBlocks) {
+						cargo.compressInv(itemStack);
+					}
 				}
 			}
-		}
-
-		// push items
-		list = worldObj.getEntitiesWithinAABBExcludingEntity(this, boundingBox.expand(0.2D, 0.01D, 0.2D));
-		if (list != null && list.size() > 0) {
-			for (int j1 = 0; j1 < list.size(); j1++) {
-				Entity entity = list.get(j1);
-				if (GameInfo.isEntityFX(entity)|| entity instanceof EntityXPOrb) {
-					continue;
+	
+			// push items
+			list = worldObj.getEntitiesWithinAABBExcludingEntity(this, boundingBox.expand(0.2D, 0.01D, 0.2D));
+			if (list != null && list.size() > 0) {
+				for (int j1 = 0; j1 < list.size(); j1++) {
+					Entity entity = list.get(j1);
+					if (GameInfo.isEntityFX(entity)|| entity instanceof EntityXPOrb) {
+						continue;
+					}
+					if (entity.isDead) {
+						continue;
+					}
+	
+					if (entity instanceof EntityArrow) {
+						PC_InvUtils.addItemStackToInventory(cargo, new ItemStack(Item.arrow, 1, 0));
+						entity.setDead();
+						return;
+					}
+	
+					// keep the same old velocity
+					double motionX_prev = motionX;
+					double motionY_prev = motionY;
+					double motionZ_prev = motionZ;
+	
+					entity.applyEntityCollision(this);
+	
+					motionX = motionX_prev;
+					motionY = motionY_prev;
+					motionZ = motionZ_prev;
 				}
-				if (entity.isDead) {
-					continue;
-				}
-
-				if (entity instanceof EntityArrow) {
-					PC_InvUtils.addItemStackToInventory(cargo, new ItemStack(Item.arrow, 1, 0));
-					entity.setDead();
-					return;
-				}
-
-				// keep the same old velocity
-				double motionX_prev = motionX;
-				double motionY_prev = motionY;
-				double motionZ_prev = motionZ;
-
-				entity.applyEntityCollision(this);
-
-				motionX = motionX_prev;
-				motionY = motionY_prev;
-				motionZ = motionZ_prev;
 			}
-		}
 
+		}
+		
 		moveEntity(Math.min(motionX, getTargetDistanceX()), motionY, Math.min(motionZ, getTargetDistanceZ()));
 		motionX *= 0.7D;
 		motionZ *= 0.7D;
 
 		if(!worldObj.isRemote){
-			if(tick%1==0){
-				PC_PacketHandler.sendToPacketHandler(true, worldObj, "MinerManager", entityId, "set", posX, posY, posZ, motionX, motionY, motionZ, rotationYaw);
+			if(tick%20==0){
+				NBTTagCompound tag = st.writeToNBT(new NBTTagCompound());
+				byte[] b = null;
+				try {
+					b = CompressedStreamTools.compress(tag);
+					
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				PC_PacketHandler.sendToPacketHandler(true, worldObj, "MinerManager", entityId, "set", posX, posY, posZ, motionX, motionY, motionZ, rotationYaw, b);
 			}
 		}
 		tick++;
@@ -3524,7 +3560,13 @@ public class PCmo_EntityMiner extends Entity implements PC_IInventoryWrapper {
 			return;
 		}
 
-		st.level = Math.min(cnt, 8);
+		if(!worldObj.isRemote){
+			int level = Math.min(cnt, 8);
+			if(level != st.level){
+				st.level = level;
+				PC_PacketHandler.sendToPacketHandler(true, worldObj, "MinerManager", entityId, "setLevel", st.level);
+			}
+		}
 
 		cfg.bridgeEnabled &= (st.level >= LBRIDGE);
 		cfg.waterFillingEnabled &= (st.level >= LWATER);
@@ -3534,8 +3576,6 @@ public class PCmo_EntityMiner extends Entity implements PC_IInventoryWrapper {
 		cfg.compressBlocks &= (st.level >= LCOMPRESS);
 		cfg.torches &= (st.level >= LTORCH);
 	}
-
-
 
 	/**
 	 * Despawn the miner, recreate build structure at it's position; Called when
@@ -3591,6 +3631,17 @@ public class PCmo_EntityMiner extends Entity implements PC_IInventoryWrapper {
 	@Override
 	public IInventory getInventory() {
 		return cargo;
+	}
+
+	@Override
+	public void moveEntity(double par1, double par3, double par5) {
+		super.moveEntity(par1, par3, par5);
+		List<Entity> list = worldObj.getEntitiesWithinAABB(Entity.class, boundingBox.expand(-0.1, -0.5, -0.1).getOffsetBoundingBox(0.0D, 1D, 0.0D));
+		for(Entity e:list){
+			if(e!=this){
+				e.moveEntity(par1, par3, par5);
+			}
+		}
 	}
 	
 }

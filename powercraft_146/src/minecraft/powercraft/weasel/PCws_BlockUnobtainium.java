@@ -1,11 +1,16 @@
 package powercraft.weasel;
 
+import java.util.Random;
+
 import net.minecraft.block.material.Material;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.FurnaceRecipes;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.IBlockAccess;
+import net.minecraft.world.World;
 import powercraft.management.PC_Block;
+import powercraft.management.PC_MathHelper;
 import powercraft.management.PC_Utils;
 import powercraft.management.PC_VecI;
 
@@ -16,6 +21,11 @@ public class PCws_BlockUnobtainium extends PC_Block {
 		setCreativeTab(CreativeTabs.tabBlock);
 	}
 	
+	/*@Override
+	public TileEntity newTileEntity(World world, int metadata) {
+		return new PCws_TileEntityUnobtainium();
+	}*/
+
 	@Override
 	public Object msg(IBlockAccess world, PC_VecI pos, int msg, Object... obj) {
 		switch(msg){
@@ -24,7 +34,16 @@ public class PCws_BlockUnobtainium extends PC_Block {
 		case PC_Utils.MSG_LOAD_WORLD:{
 			PC_Utils.ValueWriting.removeSmeltingRecipes(new ItemStack(this));
 			PC_Utils.ValueWriting.addSmeltingRecipes(new ItemStack(this), new ItemStack(PCws_App.ingotUnobtaninium), 1.0F);
-		}
+		}case PC_Utils.MSG_SPAWNS_IN_CHUNK:
+			return 1;
+		case PC_Utils.MSG_BLOCKS_ON_SPAWN_POINT:
+			return 40;
+		case PC_Utils.MSG_SPAWN_POINT:
+			return new PC_VecI(((Random)obj[0]).nextInt(16),
+					((Random)obj[0]).nextInt(PC_MathHelper.clamp_int(10 - 5, 1, 255)) + 5,
+					((Random)obj[0]).nextInt(16));
+		case PC_Utils.MSG_SPAWN_POINT_METADATA:
+			return 0;
 		}
 		return null;
 	}

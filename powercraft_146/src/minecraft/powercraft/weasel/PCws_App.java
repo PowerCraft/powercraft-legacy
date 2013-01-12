@@ -70,7 +70,7 @@ public class PCws_App implements PC_IModule {
 		weasel = ModuleLoader.register(this, PCws_BlockWeasel.class, PCws_ItemBlockWeasel.class, PCws_TileEntityWeasel.class);
 		weaselDiskManager = ModuleLoader.register(this, PCws_BlockWeaselDiskManager.class, PCws_TileEntityWeaselDiskManager.class);
 		PC_PacketHandler.registerPackethandler("WeaselDiskDrive", (PC_IPacketHandler)weaselDiskManager);
-		unobtaninium = ModuleLoader.register(this, PCws_BlockUnobtainium.class);
+		unobtaninium = ModuleLoader.register(this, PCws_BlockUnobtainium.class, PCws_TileEntityUnobtainium.class);
 	}
 
 	@Override
