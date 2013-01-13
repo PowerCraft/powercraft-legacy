@@ -495,10 +495,18 @@ public class PCmo_EntityMiner extends Entity implements PC_IInventoryWrapper {
 			super(Lang.tr("pc.miner.chestName"), 11 * 5);
 		}
 
+		/**
+	     * Called when an the contents of an Inventory change, usually
+	     */
+	    public void onInventoryChanged(){
+	    	super.onInventoryChanged();
+	    	PC_InvUtils.moveStacks(cargo, xtals);
+	    }
+		
 		@Override
 		public void closeChest() {
 			super.closeChest();
-			updateLevel();
+			PC_InvUtils.moveStacks(cargo, xtals);
 		}
 
 		/**
@@ -1010,7 +1018,8 @@ public class PCmo_EntityMiner extends Entity implements PC_IInventoryWrapper {
 		
 		@Override
 		public void onInventoryChanged(){
-			 updateLevel();
+			super.onInventoryChanged();
+			updateLevel();
 		}
 		
 		@Override
@@ -3389,7 +3398,6 @@ public class PCmo_EntityMiner extends Entity implements PC_IInventoryWrapper {
 	 * count crystals and update level; turn to blocks if there arent any.
 	 */
 	public void updateLevel() {
-		PC_InvUtils.moveStacks(cargo, xtals);
 
 		int cnt = PC_InvUtils.countPowerCrystals(xtals);
 		if (cnt == 0) {
