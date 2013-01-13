@@ -231,7 +231,6 @@ public class PC_InvUtils
         if (is == null)
         {
             is = new ItemStack(id, 0, itemstack.getItemDamage());
-            inv.setInventorySlotContents(targetSlot, is);
         }
 
         int canStore = size;
@@ -254,6 +253,7 @@ public class PC_InvUtils
         {
             size -= canStore;
             is.stackSize += canStore;
+            inv.setInventorySlotContents(targetSlot, is);
             return size;
         }
     }
