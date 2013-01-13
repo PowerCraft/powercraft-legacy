@@ -1,6 +1,7 @@
 package powercraft.mobile;
 
 import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
 import java.util.List;
 
 import net.minecraft.block.Block;
@@ -30,6 +31,18 @@ import powercraft.management.PC_Utils.ValueWriting;
 import powercraft.mobile.PCmo_EntityMiner.MinerStatus;
 
 public class PCmo_MinerManager implements PC_I3DRecipeHandler, PC_IPacketHandler {
+	
+	public static Class<? extends PCmo_IMinerBrain> mierBrainClass = PCmo_MinerBrain.class;
+	
+	public static PCmo_IMinerBrain createMinerBrain(PCmo_EntityMiner miner){
+		try {
+			PCmo_IMinerBrain brain = ValueWriting.createClass(mierBrainClass, new Class[]{PCmo_EntityMiner.class}, new Object[]{miner});
+			return brain;
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return new PCmo_MinerBrain(miner);
+	}
 	
 	@Override
 	public boolean foundStructAt(World world, PC_Struct2<PC_VecI, Integer> structStart) {

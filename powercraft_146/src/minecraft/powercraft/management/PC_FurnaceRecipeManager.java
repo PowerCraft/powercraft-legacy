@@ -15,11 +15,11 @@ public class PC_FurnaceRecipeManager {
 		recipes.add(recipe);
 	}
 	
-	public static PC_Struct2<List<ItemStack>, Float> getSmeltingResult(World world, PC_InventoryFurnace inv, ItemStack fuel){
+	public static PC_Struct2<List<PC_ItemStack>, Integer> getSmeltingResult(World world, InventoryCrafting inventoryCrafting, ItemStack fuel){
 		for(PC_IFurnaceRecipe recipe:recipes){
-			PC_Struct2<List<ItemStack>, Float> ret = recipe.getOutput(world, inv, fuel);
-			if(ret!=null)
-				return ret;
+			if(recipe.matches(inventoryCrafting, world, fuel)){
+				return new PC_Struct2<List<PC_ItemStack>, Integer>(recipe.getRecipeOutput(), recipe.getSmeltTime());
+			}
 		}
 		return null;
 	}
