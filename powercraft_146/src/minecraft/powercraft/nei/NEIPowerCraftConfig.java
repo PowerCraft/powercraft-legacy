@@ -85,9 +85,9 @@ public class NEIPowerCraftConfig implements IConfigureNEI, PC_IMSG {
 			
 		}
 		
-		//System.out.println("Reload NEI items");
+		System.out.println("Reload NEI items");
 		
-		//ItemList.loadItems();
+		ItemList.loadItems();
 		
 	}
 	
