@@ -94,10 +94,6 @@ public class PClo_App implements PC_IModule
                     "n",
                     "x",
                     	'n', new PC_ItemStack(gate, 1, PClo_GateType.NOT), 'x', new PC_ItemStack(gate, 1, PClo_GateType.XOR)));
-        recipes.add(new PC_ShapedRecipes(new PC_ItemStack(gate, 1, PClo_GateType.XNOR),
-                    "n",
-                    "x",
-                    	'n', new PC_ItemStack(gate, 1, PClo_GateType.NOT), 'x', new PC_ItemStack(gate, 1, PClo_GateType.XOR)));
         recipes.add(new PC_ShapedRecipes(new PC_ItemStack(flipFlop, 1, PClo_FlipFlopType.D),
                     " S ",
                     "RSR",
