@@ -10,35 +10,54 @@ import net.minecraft.block.Block;
 import net.minecraft.inventory.InventoryCrafting;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.world.World;
 
-public class PC_ShapedRecipes implements IRecipe, PC_IRecipeInfo {
+public class PC_ShapedFurnaceRecipes implements PC_IFurnaceRecipe {
 
 	private PC_VecI size;
 	private List<PC_ItemStack>[][] recipeItems;
-	private PC_ItemStack recipeOutput;
+	private List<PC_ItemStack> recipeOutput;
+	private int smeltTime;
 	private String op;
 	
-	public PC_ShapedRecipes(PC_ItemStack recipeOutput, PC_VecI size, List<PC_ItemStack>[][] recipeItems) {
-		this.recipeOutput = recipeOutput;
-		this.size = size;
-		this.recipeItems = recipeItems;
-	}
-	
-	public PC_ShapedRecipes(PC_ItemStack itemStack, Object... recipe) {
+	public PC_ShapedFurnaceRecipes(PC_ItemStack itemStack, Object... recipe) {
 		this(null, itemStack, recipe);
 	}
 	
-	public PC_ShapedRecipes(String op, PC_ItemStack itemStack, Object... o) {
+	public PC_ShapedFurnaceRecipes(String op, PC_ItemStack itemStack, Object... o) {
 		this.op = op;
-		recipeOutput = itemStack;
+		recipeOutput = new ArrayList<PC_ItemStack>();
+		recipeOutput.add(itemStack);
 		size = new PC_VecI();
+		smeltTime = 400;
 		
 		List<String> lines = new ArrayList<String>();
 		HashMap<Character, List<PC_ItemStack>> map = new HashMap<Character, List<PC_ItemStack>>();
 		
 		int i=0;
+		
+		while(true){
+			if(o[i] instanceof Block){
+				recipeOutput.add(new PC_ItemStack((Block)o[i]));
+			}else if(o[i] instanceof Item){
+				recipeOutput.add(new PC_ItemStack((Item)o[i]));
+			}else if(o[i] instanceof ItemStack){
+				recipeOutput.add(new PC_ItemStack((ItemStack)o[i]));
+			}else if(o[i] instanceof PC_ItemStack){
+				recipeOutput.add((PC_ItemStack)o[i]);	
+			}else if(o[i] instanceof List){
+				recipeOutput.addAll((List)o[i]);
+			}else{
+				break;
+			}
+			i++;
+		}
+		
+		if(o[i] instanceof Integer){
+			smeltTime = (Integer)o[i];
+			i++;
+		}
+		
 		while(o[i] instanceof String){
 			lines.add((String)o[i]);
 			i++;
@@ -84,7 +103,7 @@ public class PC_ShapedRecipes implements IRecipe, PC_IRecipeInfo {
 		}
 		
 	}
-
+	
 	@Override
 	public boolean canBeCrafted(){
 		if(op==null)
@@ -97,13 +116,22 @@ public class PC_ShapedRecipes implements IRecipe, PC_IRecipeInfo {
 		return true;
 	}
 	
-	public ItemStack getRecipeOutput() {
-		if(!canBeCrafted())
-			return null;
-		return recipeOutput.toItemStack();
+	@Override
+	public List<PC_ItemStack> getRecipeOutput() {
+		List<PC_ItemStack> out = new ArrayList<PC_ItemStack>();
+		for(PC_ItemStack is:recipeOutput){
+			out.add(is.copy());
+		}
+		return out;
 	}
 
-	public boolean matches(InventoryCrafting inventoryCrafting, World world) {
+	@Override
+	public int getSmeltTime() {
+		return smeltTime;
+	}
+
+	@Override
+	public boolean matches(InventoryCrafting inventoryCrafting, World world, ItemStack fuel) {
 		if(!canBeCrafted())
 			return false;
 
@@ -131,7 +159,7 @@ public class PC_ShapedRecipes implements IRecipe, PC_IRecipeInfo {
 
 		return false;
 	}
-
+	
 	private boolean checkMatch(InventoryCrafting inventoryCrafting, int x, int y) {
 		for(int j=0; j<size.y; j++){
 			for(int i=0; i<size.x; i++){
@@ -155,28 +183,9 @@ public class PC_ShapedRecipes implements IRecipe, PC_IRecipeInfo {
 		}
 		return true;
 	}
-
-	public ItemStack getCraftingResult(InventoryCrafting inventoryCrafting) {
-		if(!canBeCrafted())
-			return null;
-		ItemStack itemStack = getRecipeOutput().copy();
-		if (itemStack.getItem() instanceof PC_Item) {
-			((PC_Item) itemStack.getItem()).doCrafting(itemStack,
-					inventoryCrafting);
-		}
-		return itemStack;
-	}
-
-	public int getRecipeSize() {
-		if(!canBeCrafted())
-			return 0;
-		return size.x * size.y;
-	}
-
+	
 	@Override
 	public PC_VecI getSize() {
-		if(!canBeCrafted())
-			return null;
 		return size.copy();
 	}
 
@@ -185,6 +194,11 @@ public class PC_ShapedRecipes implements IRecipe, PC_IRecipeInfo {
 		int y = index/size.x;
 		int x = index%size.x;
 		return recipeItems[x][y];
+	}
+
+	@Override
+	public int getRecipeSize() {
+		return size.x * size.y;
 	}
 
 }

@@ -1,5 +1,6 @@
 package powercraft.mobile;
 
+import java.io.IOException;
 import java.util.List;
 
 import org.lwjgl.input.Keyboard;
@@ -10,10 +11,12 @@ import net.minecraft.item.crafting.IRecipe;
 import powercraft.machines.PCma_EntityItem;
 import powercraft.management.PC_3DRecipeManager;
 import powercraft.management.PC_IModule;
+import powercraft.management.PC_ModuleClassLoader;
 import powercraft.management.PC_PacketHandler;
 import powercraft.management.PC_Property;
 import powercraft.management.PC_Struct2;
 import powercraft.management.PC_Utils.Communication;
+import powercraft.management.PC_Utils.ModuleInfo;
 import powercraft.management.PC_Utils.ModuleLoader;
 
 public class PCmo_App implements PC_IModule {
@@ -48,8 +51,13 @@ public class PCmo_App implements PC_IModule {
 
 	@Override
 	public void preInit() {
-		// TODO Auto-generated method stub
-
+		if(ModuleInfo.getModule("Weasel")!=null){
+			try {
+				PCmo_MinerManager.mierBrainClass = (Class<? extends PCmo_MinerBrain>) Class.forName("powercraft.mobile.PCmo_MinerWeaselBrain");
+			} catch (ClassNotFoundException e) {
+				e.printStackTrace();
+			}
+		}
 	}
 
 	@Override

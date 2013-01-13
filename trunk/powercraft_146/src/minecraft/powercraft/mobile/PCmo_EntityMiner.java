@@ -49,10 +49,7 @@ import powercraft.management.PC_Utils.ValueWriting;
 import powercraft.management.PC_VecF;
 import powercraft.management.PC_VecI;
 import powercraft.mobile.PCmo_Command.ParseException;
-import powercraft.weasel.PCws_ItemWeaselDisk;
 import weasel.Calc;
-import weasel.lang.Instruction;
-import weasel.lang.InstructionFunction;
 import weasel.obj.WeaselDouble;
 import weasel.obj.WeaselObject;
 
@@ -67,18 +64,20 @@ public class PCmo_EntityMiner extends Entity implements PC_IInventoryWrapper {
 	public static final int LCOMPRESS = 5;
 
 	/** Fuel strength multiplier. It's also affected by level. */
-	private static final double FUEL_STRENGTH = 0.9D;
+	public static final double FUEL_STRENGTH = 0.9D;
 
 	private static final Random rand = new Random();
 
 	/** Fake player instance used for block mining */
-	private EntityPlayer fakePlayer;
+	public EntityPlayer fakePlayer;
 
 
 	/** Miner configuration */
 	protected MinerConfig cfg = new MinerConfig();
 	/** Miner status */
 	protected MinerStatus st = new MinerStatus();
+	/** Miner brain */
+	protected PCmo_IMinerBrain br = PCmo_MinerManager.createMinerBrain(this);
 	/** Cargo inventory with all items */
 	protected MinerCargoInventory cargo = new MinerCargoInventory();
 	/** Crystals inventory */
@@ -224,8 +223,7 @@ public class PCmo_EntityMiner extends Entity implements PC_IInventoryWrapper {
 	public float getShadowSize() {
 		return 1.0F;
 	}
-
-
+	
 	/**
 	 * Class containing miner settings, which can be manupulated from gui or
 	 * from the program.
@@ -293,156 +291,8 @@ public class PCmo_EntityMiner extends Entity implements PC_IInventoryWrapper {
 			return this;
 		}
 	}
-
-	private boolean matchStackIdentifier(WeaselObject identifier, ItemStack stack) {
-		if (identifier == null || stack == null) return false;
-		if (identifier instanceof WeaselDouble) {
-			if (stack.itemID == Calc.toInteger(identifier)) {
-				return true;
-			}
-		} else {
-			String str = Calc.toString(identifier);
-			int id = stack.itemID;
-			if (str.equalsIgnoreCase("ALL")) {
-				return true;
-			}
-			if (str.equalsIgnoreCase("ITEM")) {
-				if (!(stack.getItem() instanceof ItemBlock)) {
-					return true;
-				}
-			}
-			if (str.equalsIgnoreCase("BLOCK")) {
-				if (stack.getItem() instanceof ItemBlock) {
-					return true;
-				}
-			}
-			if (str.equalsIgnoreCase("BUILDING_BLOCK")) {
-				if (cargo.isBlockGoodForBuilding(stack, 3)) {
-					return true;
-				}
-			}
-			if (str.equalsIgnoreCase("FUEL")) {
-				if (GameInfo.getFuelValue(stack, FUEL_STRENGTH) > 0) {
-					return true;
-				}
-			}
-			if (str.equalsIgnoreCase("ORE")) {
-				if (id == Block.oreCoal.blockID || id == Block.oreIron.blockID || id == Block.oreGold.blockID || id == Block.oreLapis.blockID
-						|| id == Block.oreRedstone.blockID) {
-					return true;
-				}
-			}
-			if (str.equalsIgnoreCase("LAPIS")) {
-				if (id == Item.dyePowder.shiftedIndex && stack.getItemDamage() == 4) {
-					return true;
-				}
-			}
-			if (str.equalsIgnoreCase("BONEMEAL")) {
-				if (id == Item.dyePowder.shiftedIndex && stack.getItemDamage() == 15) {
-					return true;
-				}
-			}
-			if (str.equalsIgnoreCase("JUNK")) {
-				if (id == Block.gravel.blockID || id == Block.sapling.blockID || id == Block.leaves.blockID || id == Block.dirt.blockID
-						|| id == Item.seeds.shiftedIndex) {
-					return true;
-				}
-			}
-			if (str.equalsIgnoreCase("VALUABLE")) {
-				//@formatter:off
-				if (id!=0 && (id == Block.blockClay.blockID || 
-						id == Block.blockSnow.blockID ||
-						id == Block.blockLapis.blockID ||
-						id == Block.blockSteel.blockID || 
-						id == Block.blockGold.blockID || 
-						id == ModuleInfo.getPCObjectIDByName("PCde_BlockRedstoneStorage") || 
-						id == Block.slowSand.blockID || 
-						id == Block.oreIron.blockID || 
-						id == Block.oreGold.blockID || 
-						id == Block.oreDiamond.blockID || 
-						id == Block.oreLapis.blockID || 
-						id == Block.oreRedstone.blockID || 
-						id == Block.glowStone.blockID || 
-						id == Block.oreCoal.blockID || 
-						id == Item.ingotGold.shiftedIndex || 
-						id == Item.ingotIron.shiftedIndex || 
-						id == Item.goldNugget.shiftedIndex || 
-						id == Item.netherStalkSeeds.shiftedIndex || 
-						id == Item.diamond.shiftedIndex || 
-						id == Item.lightStoneDust.shiftedIndex || 
-						id == ModuleInfo.getPCObjectIDByName("PCco_BlockPowerCrystal") || 
-						id == ModuleInfo.getPCObjectIDByName("PCco_ItemPowerDust") || 
-						(id == Item.dyePowder.shiftedIndex && stack.getItemDamage() == 4) || 
-						(id == Item.dyePowder.shiftedIndex && stack.getItemDamage() == 3) || 
-						id == Block.bedrock.blockID || 
-						id == Block.obsidian.blockID)) {
-					return true;
-				}
-				//@formatter:on
-			}
-		}
-		return false;
-	}
 	
-	/**
-	 * @return list of names provided in existing libraries
-	 */
-	public List<String> getLibraryFunctionNames(){
-		List<String> list = new ArrayList<String>(8);
-		List<ItemStack> disks = getDisks();
-		for (int i = 0; i < disks.size(); i++) {
-			ItemStack disk = disks.get(i);
-			if (disk == null) continue;
-			
-			if (PCws_ItemWeaselDisk.getType(disk) == PCws_ItemWeaselDisk.LIBRARY) {
-				
-				List<Instruction> ilist = PCws_ItemWeaselDisk.getLibraryInstructions(disk);
-				
-				for(Instruction in : ilist) {
-					if(in instanceof InstructionFunction) {
-						list.add(((InstructionFunction) in).getFunctionName());
-					}
-				}
-				
-				continue;
-			}
-		}
-		return list;
-	}
-	
-	private List<ItemStack> getDisks() {
-		List<ItemStack> disks = new ArrayList<ItemStack>();
-		for (int i = 0; i < cargo.getSizeInventory(); i++) {
-			if(cargo.getStackInSlot(i) != null && cargo.getStackInSlot(i).itemID == ModuleInfo.getPCObjectIDByName("PCws_ItemWeaselDisk")) {
-				disks.add(cargo.getStackInSlot(i));
-			}
-		}
-		return disks;
-	}
-	
-
-	/**
-	 * @return list of all instructions in a library
-	 */
-	public List<Instruction> getAllLibraryInstructions(){
-		List<ItemStack> disks = getDisks();
-		List<Instruction> ilist = new ArrayList<Instruction>();
-		
-		for (int i = 0; i < disks.size(); i++) {
-			ItemStack disk = disks.get(i);
-			if (disk == null) continue;
-			
-			//TODO
-			
-			if (PCws_ItemWeaselDisk.getType(disk) == PCws_ItemWeaselDisk.LIBRARY) {
-				ilist.addAll(PCws_ItemWeaselDisk.getLibraryInstructions(disk));	
-				continue;
-			}
-		}
-		return ilist;
-	}
-	
-	private boolean canMakeCobble() {
+	public boolean canMakeCobble() {
 		return st.level >= LCOBBLE && cfg.cobbleMake&&cargo.hasItem(Item.bucketLava.shiftedIndex) && cargo
 				.hasItem(Item.bucketWater.shiftedIndex);
 	}
@@ -513,7 +363,7 @@ public class PCmo_EntityMiner extends Entity implements PC_IInventoryWrapper {
 		public int level = 1;
 
 		/** Fuel consumed from items and waiting for usage */
-		private int fuelBuffer = 0;
+		public int fuelBuffer = 0;
 		/**
 		 * Fuel allocated for current operation.<br>
 		 * This fuel is already in the buffer, but won't be consumed until the
@@ -674,7 +524,7 @@ public class PCmo_EntityMiner extends Entity implements PC_IInventoryWrapper {
 
 	}
 
-	private interface Agree {
+	public static interface Agree {
 		public boolean agree(ItemStack stack);
 	}
 
@@ -816,7 +666,7 @@ public class PCmo_EntityMiner extends Entity implements PC_IInventoryWrapper {
 		 * 
 		 * @return stack or null.
 		 */
-		private ItemStack getBlockForBuilding() {
+		public ItemStack getBlockForBuilding() {
 
 			for (int pass = 0; pass <= 1; pass++) {
 				for (int i = 0; i < getSizeInventory(); i++) {
@@ -926,7 +776,7 @@ public class PCmo_EntityMiner extends Entity implements PC_IInventoryWrapper {
 		/**
 		 * group stacks.
 		 */
-		private void order() {
+		public void order() {
 			List<ItemStack> stacks = new ArrayList<ItemStack>();
 			for (int i = 0; i < getSizeInventory(); i++) {
 				stacks.add(getStackInSlot(i));
@@ -945,7 +795,7 @@ public class PCmo_EntityMiner extends Entity implements PC_IInventoryWrapper {
 		/**
 		 * Deposit depositable blocks to nearby chest.
 		 */
-		private void depositToNearbyChest(boolean destroyInstead, Agree agr) {
+		public void depositToNearbyChest(boolean destroyInstead, Agree agr) {
 
 			int y1 = (int) Math.floor(posY + 0.0002F);
 			int x1 = (int) Math.round(posX);
@@ -1556,7 +1406,7 @@ public class PCmo_EntityMiner extends Entity implements PC_IInventoryWrapper {
 		st.rotationRemaining = 0;
 	}
 
-	private int getRotationRounded() {
+	public int getRotationRounded() {
 
 		float a = rotationYaw;
 
@@ -2105,7 +1955,7 @@ public class PCmo_EntityMiner extends Entity implements PC_IInventoryWrapper {
 	 * @param id block id
 	 * @return can break
 	 */
-	private boolean canHarvestBlockWithCurrentLevel(PC_VecI pos, int id) {
+	public boolean canHarvestBlockWithCurrentLevel(PC_VecI pos, int id) {
 		// exception - miner 8 can mine bedrock.
 		if (GameInfo.hasFlag(worldObj, pos, "HARVEST_STOP") || GameInfo.hasFlag(worldObj, pos, "NO_HARVEST")) {
 			return false;
@@ -2219,7 +2069,7 @@ public class PCmo_EntityMiner extends Entity implements PC_IInventoryWrapper {
 	/**
 	 * @return is miner standing on halfstep
 	 */
-	private boolean isOnHalfStep() {
+	public boolean isOnHalfStep() {
 		return (posY - Math.floor(posY + 0.0002)) >= 0.4D;
 	}
 
@@ -2590,7 +2440,7 @@ public class PCmo_EntityMiner extends Entity implements PC_IInventoryWrapper {
 	 * @param index index - all 1-4, only u d 1-2
 	 * @return coordinate of the block described.
 	 */
-	private PC_VecI getCoordOnSide(char side, int index) {
+	public PC_VecI getCoordOnSide(char side, int index) {
 
 		// get x,y,z integers for position.
 		int x = (int) Math.round(posX);
@@ -3581,7 +3431,7 @@ public class PCmo_EntityMiner extends Entity implements PC_IInventoryWrapper {
 	 * Despawn the miner, recreate build structure at it's position; Called when
 	 * miner is killed or "to blocks" key is pressed
 	 */
-	private void turnIntoBlocks() {
+	public void turnIntoBlocks() {
 		if(worldObj.isRemote)
 			return;
 		int xh = (int) Math.round(posX);
@@ -3642,6 +3492,146 @@ public class PCmo_EntityMiner extends Entity implements PC_IInventoryWrapper {
 				e.moveEntity(par1, par3, par5);
 			}
 		}
+	}
+	
+	
+	public static boolean matchStackIdentifier(WeaselObject identifier, ItemStack stack) {
+		if (identifier == null || stack == null) return false;
+		if (identifier instanceof WeaselDouble) {
+			if (stack.itemID == Calc.toInteger(identifier)) {
+				return true;
+			}
+		} else {
+			String str = Calc.toString(identifier);
+			int id = stack.itemID;
+			if (str.equalsIgnoreCase("ALL")) {
+				return true;
+			}
+			if (str.equalsIgnoreCase("ITEM")) {
+				if (!(stack.getItem() instanceof ItemBlock)) {
+					return true;
+				}
+			}
+			if (str.equalsIgnoreCase("BLOCK")) {
+				if (stack.getItem() instanceof ItemBlock) {
+					return true;
+				}
+			}
+			if (str.equalsIgnoreCase("BUILDING_BLOCK")) {
+				if (isBlockGoodForBuilding(stack, 3)) {
+					return true;
+				}
+			}
+			if (str.equalsIgnoreCase("FUEL")) {
+				if (GameInfo.getFuelValue(stack, PCmo_EntityMiner.FUEL_STRENGTH) > 0) {
+					return true;
+				}
+			}
+			if (str.equalsIgnoreCase("ORE")) {
+				if (id == Block.oreCoal.blockID || id == Block.oreIron.blockID || id == Block.oreGold.blockID || id == Block.oreLapis.blockID
+						|| id == Block.oreRedstone.blockID) {
+					return true;
+				}
+			}
+			if (str.equalsIgnoreCase("LAPIS")) {
+				if (id == Item.dyePowder.shiftedIndex && stack.getItemDamage() == 4) {
+					return true;
+				}
+			}
+			if (str.equalsIgnoreCase("BONEMEAL")) {
+				if (id == Item.dyePowder.shiftedIndex && stack.getItemDamage() == 15) {
+					return true;
+				}
+			}
+			if (str.equalsIgnoreCase("JUNK")) {
+				if (id == Block.gravel.blockID || id == Block.sapling.blockID || id == Block.leaves.blockID || id == Block.dirt.blockID
+						|| id == Item.seeds.shiftedIndex) {
+					return true;
+				}
+			}
+			if (str.equalsIgnoreCase("VALUABLE")) {
+				//@formatter:off
+				if (id == Block.blockClay.blockID || 
+						id == Block.blockSnow.blockID ||
+						id == Block.blockLapis.blockID ||
+						id == Block.blockSteel.blockID || 
+						id == Block.blockGold.blockID || 
+						id == Block.slowSand.blockID || 
+						id == Block.oreIron.blockID || 
+						id == Block.oreGold.blockID || 
+						id == Block.oreDiamond.blockID || 
+						id == Block.oreLapis.blockID || 
+						id == Block.oreRedstone.blockID || 
+						id == Block.glowStone.blockID || 
+						id == Block.oreCoal.blockID || 
+						id == Item.ingotGold.shiftedIndex || 
+						id == Item.ingotIron.shiftedIndex || 
+						id == Item.goldNugget.shiftedIndex || 
+						id == Item.netherStalkSeeds.shiftedIndex || 
+						id == Item.diamond.shiftedIndex || 
+						id == Item.lightStoneDust.shiftedIndex || 
+						id == ModuleInfo.getPCObjectIDByName("PCco_BlockPowerCrystal") ||
+						id == ModuleInfo.getPCObjectIDByName("PCco_ItemPowerDust") ||
+						(id == Item.dyePowder.shiftedIndex && stack.getItemDamage() == 4) || 
+						(id == Item.dyePowder.shiftedIndex && stack.getItemDamage() == 3) || 
+						id == Block.bedrock.blockID || 
+						id == Block.obsidian.blockID) {
+					return true;
+				}
+				//@formatter:on
+			}
+		}
+		return false;
+	}
+	
+	/**
+	 * Check if block is good for building.
+	 * 
+	 * @param is stack
+	 * @param pass pass; 0 = cheap, 1 = better
+	 * @return is good
+	 */
+	public static boolean isBlockGoodForBuilding(ItemStack is, int pass) {
+		if (is == null) {
+			return false;
+		}
+
+		if (!(is.getItem() instanceof ItemBlock)) {
+			return false;
+		}
+
+		int id = is.itemID;
+
+		if (id == Block.stairsBrick.blockID || id == Block.slowSand.blockID) return false;
+
+		if (GameInfo.hasFlag(is, "NO_BUILD")) {
+			return false;
+		}
+
+		if (pass >= 0) {
+			if (id == Block.dirt.blockID || id == Block.grass.blockID || id == Block.cobblestone.blockID || id == Block.netherrack.blockID)
+				return true;
+		}
+
+		if (pass >= 1) {
+			if (id == Block.planks.blockID || id == Block.stone.blockID || id == Block.sandStone.blockID || id == Block.brick.blockID
+					|| id == Block.stoneBrick.blockID || id == Block.netherBrick.blockID || id == Block.whiteStone.blockID
+					|| id == Block.cloth.blockID || id == Block.glass.blockID || id == Block.wood.blockID) return true;
+		}
+
+		if (pass >= 2) {
+			if (id == Block.oreIron.blockID || id == Block.blockClay.blockID) return true;
+		}
+
+		if (pass >= 3) {
+			if (id == Block.sand.blockID || id == Block.gravel.blockID) return false;
+			if (Block.blocksList[is.itemID].isOpaqueCube() || Block.blocksList[is.itemID].renderAsNormalBlock()) return true;
+		}
+
+		if (pass >= 4) {
+			if (Block.blocksList[is.itemID].blockMaterial.isSolid()) return true;
+		}
+		return false;
 	}
 	
 }

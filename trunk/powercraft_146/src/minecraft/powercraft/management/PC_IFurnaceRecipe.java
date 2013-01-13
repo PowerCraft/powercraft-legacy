@@ -1,13 +1,15 @@
 package powercraft.management;
 
-import java.util.ArrayList;
 import java.util.List;
 
+import net.minecraft.inventory.InventoryCrafting;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
 
-public interface PC_IFurnaceRecipe {
+public interface PC_IFurnaceRecipe extends PC_IRecipeInfo {
 
-	public PC_Struct2<List<ItemStack>, Float> getOutput(World world, PC_InventoryFurnace inv, ItemStack fuel);
+	public List<PC_ItemStack> getRecipeOutput();
+	public int getSmeltTime();
+	boolean matches(InventoryCrafting inventoryCrafting, World world, ItemStack fuel);
 	
 }
