@@ -122,11 +122,7 @@ public class PClo_App implements PC_IModule
         recipes.add(new PC_ShapedRecipes(new PC_ItemStack(special, 1, PClo_SpecialType.DAY),
                 	"G",
                     "P",
-                    	'G', Item.lightStoneDust, 'P', Block.pressurePlatePlanks));
-        recipes.add(new PC_ShapedRecipes(new PC_ItemStack(special, 1, PClo_SpecialType.DAY),
-                	"G",
-                    "P",
-                    	'G', Item.lightStoneDust, 'P', Block.pressurePlateStone));
+                    	'G', Item.lightStoneDust, 'P', Block.pressurePlatePlanks, Block.pressurePlateStone));
         recipes.add(new PC_ShapedRecipes(new PC_ItemStack(special, 1, PClo_SpecialType.NIGHT),
                     "N",
                     "G",
@@ -134,19 +130,11 @@ public class PClo_App implements PC_IModule
         recipes.add(new PC_ShapedRecipes(new PC_ItemStack(special, 1, PClo_SpecialType.RAIN),
                 	"L",
                     "P",
-                    	'L', new PC_ItemStack(Item.dyePowder, 1, 4), 'P', Block.pressurePlatePlanks));
-        recipes.add(new PC_ShapedRecipes(new PC_ItemStack(special, 1, PClo_SpecialType.RAIN),
-        			"L",
-                    "P",
-                    	'L', new PC_ItemStack(Item.dyePowder, 1, 4), 'P', Block.pressurePlateStone));
+                    	'L', new PC_ItemStack(Item.dyePowder, 1, 4), 'P', Block.pressurePlatePlanks, Block.pressurePlateStone));
         recipes.add(new PC_ShapedRecipes(new PC_ItemStack(special, 1, PClo_SpecialType.CHEST_EMPTY),
                 	"C",
                     "P",
-                    	'C', Block.chest, 'P', Block.pressurePlatePlanks));
-        recipes.add(new PC_ShapedRecipes(new PC_ItemStack(special, 1, PClo_SpecialType.CHEST_EMPTY),
-                	"C",
-                    "P",
-                    	'C', Block.chest, 'P', Block.pressurePlateStone));
+                    	'C', Block.chest, 'P', Block.pressurePlatePlanks, Block.pressurePlateStone));
         recipes.add(new PC_ShapedRecipes(new PC_ItemStack(special, 1, PClo_SpecialType.CHEST_FULL),
                 	"I",
                     "G",

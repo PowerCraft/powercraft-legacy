@@ -28,7 +28,7 @@ public class PCws_WeaselPluginCore extends PCws_WeaselPlugin {
 	
 	private static final String default_program = 
 			"# *** Weasel powered Microcontroller ***\n"+
-			"# update() is called when neighbor block changes.\n" +
+			"# onPortChange(port) is called when neighbor of port device changes.\n" +
 			"# Use variables F,L,R,B,U,D to access sides.\n" +
 			"\n\n"+
 			"function onPortChange(port){\n"+

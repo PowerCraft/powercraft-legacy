@@ -145,6 +145,10 @@ public class PCmo_MinerManager implements PC_I3DRecipeHandler, PC_IPacketHandler
 			}else if(func.equals("setLevel")){
 				miner.st.level = (Integer)o[2];
 				miner.updateLevel();
+			}else if(func.equals("setInfo")){
+				miner.setInfo((String)o[2], o[3]);
+			}else if(func.equals("doInfoSet")){
+				miner.doInfoSet((String)o[2], (Object[])o[3]);
 			}
 		}
 		return false;

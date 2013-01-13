@@ -98,12 +98,7 @@ public class PCtr_App implements PC_IModule
                 	"X", 
                 	"Y", 
                 	"Z",
-                        'X', Block.pressurePlatePlanks, 'Y', conveyorBelt, 'Z', Item.redstone));
-        recipes.add(new PC_ShapedRecipes(new PC_ItemStack(detectionBelt, 1),
-        			"X", 
-        			"Y", 
-        			"Z",
-                        'X', Block.pressurePlateStone, 'Y', conveyorBelt, 'Z', Item.redstone));
+                        'X', Block.pressurePlatePlanks, Block.pressurePlateStone, 'Y', conveyorBelt, 'Z', Item.redstone));
         recipes.add(new PC_ShapedRecipes(new PC_ItemStack(separationBelt, 1),
                 	"X", 
                 	"Y", 

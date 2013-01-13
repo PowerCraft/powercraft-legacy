@@ -62,7 +62,7 @@ public class PCde_App implements PC_IModule {
 					"XXX",
 						'X', Item.ingotIron));	
 		
-		recipes.add(new PC_ShapedRecipes(new PC_ItemStack(redstoneStorage, 1, 1),
+		recipes.add(new PC_ShapedRecipes(new PC_ItemStack(redstoneStorage, 1),
 					"XXX", 
 					"XXX", 
 					"XXX",
