@@ -95,7 +95,7 @@ public class PCli_App implements PC_IModule
 					" I",	
 						'G', Block.thinGlass, 'I', Item.ingotIron));
         
-        recipes.add(new PC_ShapedRecipes(new PC_ItemStack(prism, 1, 1),
+        recipes.add(new PC_ShapedRecipes(new PC_ItemStack(prism, 1),
 					"GG", 
 					"GG", 
 						'G', Block.glass));

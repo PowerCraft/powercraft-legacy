@@ -1,8 +1,8 @@
 package powercraft.mobile;
 
 import java.io.IOException;
-import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Random;
 
@@ -11,9 +11,7 @@ import net.minecraft.block.BlockFluid;
 import net.minecraft.block.BlockSand;
 import net.minecraft.block.BlockTorch;
 import net.minecraft.block.material.Material;
-import net.minecraft.client.particle.EntityFX;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.item.EntityBoat;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.item.EntityXPOrb;
 import net.minecraft.entity.player.EntityPlayer;
@@ -63,6 +61,17 @@ public class PCmo_EntityMiner extends Entity implements PC_IInventoryWrapper {
 	public static final int LCOBBLE = 6;
 	public static final int LCOMPRESS = 5;
 
+	public static final String keepAllFuel = "keepAllFuel";
+	public static final String torchesOnlyOnFloor = "torchesOnlyOnFloor";
+	public static final String compressBlocks = "compressBlocks";
+	public static final String miningEnabled = "miningEnabled";
+	public static final String bridgeEnabled = "bridgeEnabled";
+	public static final String lavaFillingEnabled = "lavaFillingEnabled";
+	public static final String waterFillingEnabled = "waterFillingEnabled";
+	public static final String torches = "torches";
+	public static final String cobbleMake = "cobbleMake";
+	public static final String airFillingEnabled = "airFillingEnabled";
+	
 	/** Fuel strength multiplier. It's also affected by level. */
 	public static final double FUEL_STRENGTH = 0.9D;
 
@@ -71,9 +80,6 @@ public class PCmo_EntityMiner extends Entity implements PC_IInventoryWrapper {
 	/** Fake player instance used for block mining */
 	public EntityPlayer fakePlayer;
 
-
-	/** Miner configuration */
-	protected MinerConfig cfg = new MinerConfig();
 	/** Miner status */
 	protected MinerStatus st = new MinerStatus();
 	/** Miner brain */
@@ -83,6 +89,8 @@ public class PCmo_EntityMiner extends Entity implements PC_IInventoryWrapper {
 	/** Crystals inventory */
 	protected MinerCrystalInventory xtals = new MinerCrystalInventory();
 
+	public HashMap<String, Object> info = new HashMap<String, Object>();
+	
 	protected int playerConectedID;
 	/** cool-down timer for repeated key presses */
 	private int[] keyPressTimer = { 0, 0, 0, 0, 0, 0, 0, 0, 0 };
@@ -105,6 +113,16 @@ public class PCmo_EntityMiner extends Entity implements PC_IInventoryWrapper {
 		entityCollisionReduction = 1.0F;
 		stepHeight = 0.6F;
 		isImmuneToFire = true;
+		setFlag(keepAllFuel, false);
+		setFlag(torchesOnlyOnFloor, false);
+		setFlag(compressBlocks, false);
+		setFlag(miningEnabled, false);
+		setFlag(bridgeEnabled, false);
+		setFlag(lavaFillingEnabled, false);
+		setFlag(waterFillingEnabled, false);
+		setFlag(torches, false);
+		setFlag(cobbleMake, false);
+		setFlag(airFillingEnabled, false);
 	}
 
 	/**
@@ -224,79 +242,15 @@ public class PCmo_EntityMiner extends Entity implements PC_IInventoryWrapper {
 		return 1.0F;
 	}
 	
-	/**
-	 * Class containing miner settings, which can be manupulated from gui or
-	 * from the program.
-	 * 
-	 * @author MightyPork
-	 */
-	public class MinerConfig implements PC_INBT {
-		/** Should keep all fuel when depositing? */
-		public boolean keepAllFuel = false;
-
-		/** Place torches only on floor - good for large rooms. */
-		public boolean torchesOnlyOnFloor = false;
-
-		/** Compress collected blocks to storage blocks if possible */
-		public boolean compressBlocks = false;
-
-		/** Mining enabled */
-		public boolean miningEnabled = true;
-
-		/** Bridge enabled. */
-		public boolean bridgeEnabled = false;
-
-		/** Lava filling enabled */
-		public boolean lavaFillingEnabled = false;
-
-		/** Water filling enabled */
-		public boolean waterFillingEnabled = false;
-
-		/** allow placing torches */
-		public boolean torches = false;
-
-		/** make cobble */
-		public boolean cobbleMake = false;
-
-		/** allow tunnel mode */
-		public boolean airFillingEnabled = false;
-
-		@Override
-		public NBTTagCompound writeToNBT(NBTTagCompound tag) {
-			tag.setBoolean("KeepFuel", keepAllFuel);
-			tag.setBoolean("TorchesOnFloor", torchesOnlyOnFloor);
-			tag.setBoolean("Torches", torches);
-			tag.setBoolean("AutoCompress", compressBlocks);
-			tag.setBoolean("Mining", miningEnabled);
-			tag.setBoolean("Bridge", bridgeEnabled);
-			tag.setBoolean("Lava", lavaFillingEnabled);
-			tag.setBoolean("Water", waterFillingEnabled);
-			tag.setBoolean("Air", airFillingEnabled);
-			tag.setBoolean("CobbleMaker", cobbleMake);
-			return tag;
-		}
-
-		@Override
-		public PC_INBT readFromNBT(NBTTagCompound tag) {
-			keepAllFuel = tag.getBoolean("KeepFuel");
-			torchesOnlyOnFloor = tag.getBoolean("TorchesOnFloor");
-			torches = tag.getBoolean("Torches");
-			compressBlocks = tag.getBoolean("AutoCompress");
-			miningEnabled = tag.getBoolean("Mining");
-			bridgeEnabled = tag.getBoolean("Bridge");
-			lavaFillingEnabled = tag.getBoolean("Lava");
-			waterFillingEnabled = tag.getBoolean("Water");
-			airFillingEnabled = tag.getBoolean("Air");
-			cobbleMake = tag.getBoolean("CobbleMaker");
-			return this;
-		}
-	}
-	
 	public boolean canMakeCobble() {
-		return st.level >= LCOBBLE && cfg.cobbleMake&&cargo.hasItem(Item.bucketLava.shiftedIndex) && cargo
+		return st.level >= LCOBBLE && getFlag(cobbleMake) && cargo.hasItem(Item.bucketLava.shiftedIndex) && cargo
 				.hasItem(Item.bucketWater.shiftedIndex);
 	}
 
+
+	public boolean getFlag(String key) {
+		return (Boolean)getInfo(key);
+	}
 
 	/**
 	 * Class containing internal miner data, often temporary and not important
@@ -497,7 +451,7 @@ public class PCmo_EntityMiner extends Entity implements PC_IInventoryWrapper {
 				for (int s = 0; s < cargo.getSizeInventory(); s++) {
 					ItemStack stack = cargo.getStackInSlot(s);
 					int bt = GameInfo.getFuelValue(stack, FUEL_STRENGTH);
-					if (bt > 0 && !(stack.itemID == Item.bucketLava.shiftedIndex && cfg.cobbleMake && level >= LCOBBLE)) {
+					if (bt > 0 && !(stack.itemID == Item.bucketLava.shiftedIndex && getFlag(cobbleMake) && level >= LCOBBLE)) {
 						fuelBuffer += bt;
 						if (stack.getItem().hasContainerItem()) {
 							cargo.setInventorySlotContents(s, new ItemStack(stack.getItem().getContainerItem(), 1, 0));
@@ -557,7 +511,7 @@ public class PCmo_EntityMiner extends Entity implements PC_IInventoryWrapper {
 			if (st.level < LCOMPRESS) {
 				return;
 			}
-			if (!cfg.compressBlocks) {
+			if (!getFlag(compressBlocks)) {
 				return;
 			}
 
@@ -712,7 +666,7 @@ public class PCmo_EntityMiner extends Entity implements PC_IInventoryWrapper {
 
 			int id = is.itemID;
 
-			if (id == Block.stairsBrick.blockID || id == Block.slowSand.blockID) return false;
+			if (id == Block.stoneSingleSlab.blockID || id == Block.slowSand.blockID) return false;
 
 			if (GameInfo.hasFlag(is, "NO_BUILD")) {
 				return false;
@@ -820,10 +774,10 @@ public class PCmo_EntityMiner extends Entity implements PC_IInventoryWrapper {
 										yes = stack.itemID != powerDust && stack.itemID != Block.torchWood.blockID
 												&& stack.itemID != Item.bucketEmpty.shiftedIndex && stack.itemID != Item.bucketLava.shiftedIndex
 												&& stack.itemID != Item.bucketWater.shiftedIndex
-												&& (!cfg.keepAllFuel || GameInfo.getFuelValue(stack, FUEL_STRENGTH) == 0);
+												&& (!getFlag(keepAllFuel) || GameInfo.getFuelValue(stack, FUEL_STRENGTH) == 0);
 
 									} else {
-										if (!cfg.keepAllFuel
+										if (!getFlag(keepAllFuel)
 												|| (stack.itemID != powerDust && GameInfo.getFuelValue(stack,
 														FUEL_STRENGTH) == 0)) {
 											yes = agr.agree(stack);
@@ -877,7 +831,7 @@ public class PCmo_EntityMiner extends Entity implements PC_IInventoryWrapper {
 					if (isItemGoodForHalfStep(cargo.getStackInSlot(i), pass)) {
 						ItemStack returned = cargo.decrStackSize(i, 1);
 
-						if (returned.itemID == Block.stairsBrick.blockID) {
+						if (returned.itemID == Block.stoneSingleSlab.blockID) {
 							return returned;
 						}
 
@@ -888,9 +842,9 @@ public class PCmo_EntityMiner extends Entity implements PC_IInventoryWrapper {
 				}
 			}
 
-			if (cfg.cobbleMake && st.level >= LCOBBLE) {
+			if (getFlag(cobbleMake) && st.level >= LCOBBLE) {
 				if (cargo.hasItem(Item.bucketLava.shiftedIndex) && cargo.hasItem(Item.bucketWater.shiftedIndex)) {
-					return new ItemStack(Block.stairsBrick, 1, 3);
+					return new ItemStack(Block.stoneSingleSlab, 1, 3);
 				}
 			}
 
@@ -902,30 +856,30 @@ public class PCmo_EntityMiner extends Entity implements PC_IInventoryWrapper {
 			int dmg = stack.getItemDamage();
 
 			if (id == Block.stone.blockID) {
-				return new ItemStack(Block.stairsBrick, 1, 0);
+				return new ItemStack(Block.stoneSingleSlab, 1, 0);
 			}
 
 			if (id == Block.sandStone.blockID) {
-				return new ItemStack(Block.stairsBrick, 1, 1);
+				return new ItemStack(Block.stoneSingleSlab, 1, 1);
 			}
 
 			if (id == Block.planks.blockID) {
-				return new ItemStack(Block.stairsBrick, 1, 2);
+				return new ItemStack(Block.stoneSingleSlab, 1, 2);
 			}
 
 			if (id == Block.cobblestone.blockID) {
-				return new ItemStack(Block.stairsBrick, 1, 3);
+				return new ItemStack(Block.stoneSingleSlab, 1, 3);
 			}
 
 			if (id == Block.brick.blockID) {
-				return new ItemStack(Block.stairsBrick, 1, 4);
+				return new ItemStack(Block.stoneSingleSlab, 1, 4);
 			}
 
 			if (id == Block.stoneBrick.blockID) {
-				return new ItemStack(Block.stairsBrick, 1, 5);
+				return new ItemStack(Block.stoneSingleSlab, 1, 5);
 			}
 
-			return new ItemStack(Block.stairsBrick, 1, 0);
+			return new ItemStack(Block.stoneSingleSlab, 1, 0);
 		}
 
 		/**
@@ -943,7 +897,7 @@ public class PCmo_EntityMiner extends Entity implements PC_IInventoryWrapper {
 			int id = is.itemID;
 
 			if (pass == 0) {
-				return id == Block.cobblestone.blockID || id == Block.stairsBrick.blockID;
+				return id == Block.cobblestone.blockID || id == Block.stoneSingleSlab.blockID;
 			}
 
 			if (pass == 1) {
@@ -984,7 +938,7 @@ public class PCmo_EntityMiner extends Entity implements PC_IInventoryWrapper {
 
 			if (GameInfo.getFuelValue(stack, 1) > 0) {
 				if (stack.getItem() instanceof ItemBlock) {
-					return !cfg.keepAllFuel;
+					return !getFlag(keepAllFuel);
 				} else {
 					return false;
 				}
@@ -1053,7 +1007,12 @@ public class PCmo_EntityMiner extends Entity implements PC_IInventoryWrapper {
 		public MinerCrystalInventory() {
 			super(Lang.tr("xtals"), 8);
 		}
-
+		
+		@Override
+		public void onInventoryChanged(){
+			 updateLevel();
+		}
+		
 		@Override
 		public int getInventoryStackLimit() {
 			return 1;
@@ -1242,9 +1201,9 @@ public class PCmo_EntityMiner extends Entity implements PC_IInventoryWrapper {
 		if (i == PCmo_Command.RUN_PROGRAM) {
 			resetEverything();
 			playerConectedID = 0;
-			//try {
-				//brain.launchProgram();
-			//} catch (ParseException e) {}
+			try {
+				br.launch();
+			} catch (ParseException e) {}
 		}
 		if (i == PCmo_Command.RESET) {
 			resetEverything();
@@ -1290,7 +1249,7 @@ public class PCmo_EntityMiner extends Entity implements PC_IInventoryWrapper {
 		// if there are no more commands, try to get some from weasel
 		if (st.commandList.length() <= 0 && st.currentCommand == -1) {
 			if (playerConectedID==0 && !st.pausedWeasel && !st.paused) {
-				//brain.run();
+				br.run();
 			}
 		}
 
@@ -1463,35 +1422,35 @@ public class PCmo_EntityMiner extends Entity implements PC_IInventoryWrapper {
 				return;
 			} else if (st.currentCommand == PCmo_Command.BRIDGE_ENABLE) {
 
-				cfg.bridgeEnabled = true;
+				setFlag(bridgeEnabled, true);
 				st.currentCommand = -1;
 			} else if (st.currentCommand == PCmo_Command.BRIDGE_DISABLE) {
-				cfg.bridgeEnabled = false;
+				setFlag(bridgeEnabled, false);
 				st.currentCommand = -1;
 
 			} else if (st.currentCommand == PCmo_Command.MINING_ENABLE) {
-				cfg.miningEnabled = true;
+				setFlag(miningEnabled, true);
 				st.currentCommand = -1;
 			} else if (st.currentCommand == PCmo_Command.MINING_DISABLE) {
-				cfg.miningEnabled = false;
+				setFlag(miningEnabled, false);
 				st.currentCommand = -1;
 
 			} else if (st.currentCommand == PCmo_Command.LAVA_ENABLE) {
-				cfg.lavaFillingEnabled = true;
+				setFlag(lavaFillingEnabled, true);
 				st.currentCommand = -1;
 			} else if (st.currentCommand == PCmo_Command.LAVA_DISABLE) {
-				cfg.lavaFillingEnabled = false;
+				setFlag(lavaFillingEnabled, false);
 				st.currentCommand = -1;
 
 			} else if (st.currentCommand == PCmo_Command.WATER_ENABLE) {
-				cfg.waterFillingEnabled = true;
+				setFlag(waterFillingEnabled, true);
 				st.currentCommand = -1;
 			} else if (st.currentCommand == PCmo_Command.WATER_DISABLE) {
-				cfg.waterFillingEnabled = false;
+				setFlag(waterFillingEnabled, false);
 				st.currentCommand = -1;
 
 			} else if (st.currentCommand == PCmo_Command.DOWN) {
-				if (!cfg.miningEnabled) {
+				if (!getFlag(miningEnabled)) {
 					st.currentCommand = -1;
 				} else {
 					resetMineCounter();
@@ -1500,7 +1459,7 @@ public class PCmo_EntityMiner extends Entity implements PC_IInventoryWrapper {
 				}
 
 			} else if (st.currentCommand == PCmo_Command.UP) {
-				if (!cfg.miningEnabled) {
+				if (!getFlag(miningEnabled)) {
 					st.currentCommand = -1;
 				} else {
 					if (st.addFuelForCost(getStepCost())) {
@@ -1686,6 +1645,10 @@ public class PCmo_EntityMiner extends Entity implements PC_IInventoryWrapper {
 				st.currentCommand = -1;
 			}
 		}
+	}
+
+	public void setFlag(String key, boolean flag) {
+		setInfo(key, flag);
 	}
 
 	/**
@@ -2058,7 +2021,7 @@ public class PCmo_EntityMiner extends Entity implements PC_IInventoryWrapper {
 	private boolean checkIfAir(PC_VecI pos, boolean lower) {
 		int id = GameInfo.getBID(worldObj, pos);
 
-		if (lower && id == Block.stairsBrick.blockID) {
+		if (lower && id == Block.stoneSingleSlab.blockID) {
 			return true;
 		}
 
@@ -2079,7 +2042,7 @@ public class PCmo_EntityMiner extends Entity implements PC_IInventoryWrapper {
 	 * @return false if it run out of material
 	 */
 	private boolean performBridgeBuilding() {
-		if (!cfg.bridgeEnabled) {
+		if (!getFlag(bridgeEnabled)) {
 			return true;
 		}
 
@@ -2181,7 +2144,7 @@ public class PCmo_EntityMiner extends Entity implements PC_IInventoryWrapper {
 	 */
 	private void fillWaterLavaAir() {
 
-		if (!cfg.waterFillingEnabled && !cfg.lavaFillingEnabled && !cfg.airFillingEnabled) return;
+		if (!getFlag(waterFillingEnabled) && !getFlag(lavaFillingEnabled) && !getFlag(airFillingEnabled)) return;
 
 		int y1 = (int) Math.floor(posY + 0.0002F);
 		int x1 = (int) Math.round(posX);
@@ -2255,13 +2218,13 @@ public class PCmo_EntityMiner extends Entity implements PC_IInventoryWrapper {
 							break;
 					}
 
-					if (y == y1 + 2 && cfg.airFillingEnabled && isOnHalfStep() && st.currentCommand == PCmo_Command.UP) replace = false;
-					if (y == y1 - 1 && cfg.airFillingEnabled) replace = cfg.bridgeEnabled;
+					if (y == y1 + 2 && getFlag(airFillingEnabled) && isOnHalfStep() && st.currentCommand == PCmo_Command.UP) replace = false;
+					if (y == y1 - 1 && getFlag(airFillingEnabled)) replace = getFlag(bridgeEnabled);
 
 					int id = worldObj.getBlockId(x, y, z);
-					if (((id == 8 || id == 9) && cfg.waterFillingEnabled && st.level >= LWATER)
-							|| ((id == 10 || id == 11) && cfg.lavaFillingEnabled && st.level >= LLAVA)
-							|| (id == 0 && cfg.airFillingEnabled && st.level >= LAIR)) {
+					if (((id == 8 || id == 9) && getFlag(waterFillingEnabled) && st.level >= LWATER)
+							|| ((id == 10 || id == 11) && getFlag(lavaFillingEnabled) && st.level >= LLAVA)
+							|| (id == 0 && getFlag(airFillingEnabled) && st.level >= LAIR)) {
 
 						if (id == 10 || id == 11) {
 							lavaFillBucket();
@@ -2332,7 +2295,7 @@ public class PCmo_EntityMiner extends Entity implements PC_IInventoryWrapper {
 			return;
 		}
 
-		if (!cfg.torches) return;
+		if (!getFlag(torches)) return;
 
 		int y = (int) Math.floor(posY + 0.0002F);
 		int x = (int) Math.round(posX);
@@ -2372,7 +2335,7 @@ public class PCmo_EntityMiner extends Entity implements PC_IInventoryWrapper {
 
 		Block torch = Block.torchWood;
 
-		if (!cfg.torchesOnlyOnFloor) {
+		if (!getFlag(torchesOnlyOnFloor)) {
 			if (worldObj.getBlockId(rightX, y + 1, rightZ) == 0 && torch.canPlaceBlockAt(worldObj, rightX, y + 1, rightZ)) {
 				worldObj.setBlockWithNotify(rightX, y + 1, rightZ, torch.blockID);
 				cargo.consumeItem(Block.torchWood.blockID, -1, 1);
@@ -2839,9 +2802,12 @@ public class PCmo_EntityMiner extends Entity implements PC_IInventoryWrapper {
 		
 		if (fakePlayer == null && worldObj != null) fakePlayer = new PC_FakePlayer(worldObj);
 
-		/*if (TODO brain.hasError() && rand.nextInt(6) == 0) {
+		if(!worldObj.isRemote && br.hasError()){
+			setInfo("error", br.getError());
+		}
+		if (worldObj.isRemote && getInfo("error") != null && rand.nextInt(6) == 0) {
 			worldObj.spawnParticle("largesmoke", posX, posY + 1F, posZ, 0, 0, 0);
-		}*/
+		}
 
 		// breaking animations.
 		if (getTimeSinceHit() > 0) {
@@ -3033,7 +2999,7 @@ public class PCmo_EntityMiner extends Entity implements PC_IInventoryWrapper {
 	
 						double motionAdd = (MOTION_SPEED[st.level - 1] * ((fw || up) ? 1 : -1)) * 0.5D;
 	
-						if (!miningDone && (!back) && cfg.miningEnabled) {
+						if (!miningDone && (!back) && getFlag(miningEnabled)) {
 							performMiningUpdate(getCoordOnSide('F', 1), 0);
 							performMiningUpdate(getCoordOnSide('F', 2), 1);
 							performMiningUpdate(getCoordOnSide('F', 3), 2);
@@ -3110,13 +3076,13 @@ public class PCmo_EntityMiner extends Entity implements PC_IInventoryWrapper {
 						}
 	
 						// stop if bumped into wall
-						if ((!cfg.miningEnabled || !isMiningInProgress() || st.currentCommand == PCmo_Command.BACKWARD)
+						if ((!getFlag(miningEnabled) || !isMiningInProgress() || st.currentCommand == PCmo_Command.BACKWARD)
 								&& !isLocationEmpty(st.target.setY(y))) {
 	
-							burriedFix(fw && cfg.miningEnabled);
+							burriedFix(fw && getFlag(miningEnabled));
 	
 							if (!isLocationEmpty(st.target.setY(y))) {
-								if (!cfg.miningEnabled || st.currentCommand == PCmo_Command.BACKWARD) {
+								if (!getFlag(miningEnabled) || st.currentCommand == PCmo_Command.BACKWARD) {
 									st.currentCommand = -1;
 									resetMineCounter();
 									st.consumeAllocatedFuel(getStepCost());
@@ -3225,7 +3191,7 @@ public class PCmo_EntityMiner extends Entity implements PC_IInventoryWrapper {
 						updateLevel();
 					}
 	
-					if (cfg.compressBlocks) {
+					if (getFlag(compressBlocks)) {
 						cargo.compressInv(itemStack);
 					}
 				}
@@ -3274,9 +3240,7 @@ public class PCmo_EntityMiner extends Entity implements PC_IInventoryWrapper {
 				byte[] b = null;
 				try {
 					b = CompressedStreamTools.compress(tag);
-					
 				} catch (IOException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 				PC_PacketHandler.sendToPacketHandler(true, worldObj, "MinerManager", entityId, "set", posX, posY, posZ, motionX, motionY, motionZ, rotationYaw, b);
@@ -3321,9 +3285,18 @@ public class PCmo_EntityMiner extends Entity implements PC_IInventoryWrapper {
 	@Override
 	protected void writeEntityToNBT(NBTTagCompound tag) {
 
-		SaveHandler.saveToNBT(tag, "Settings", cfg);
+		tag.setBoolean(keepAllFuel, getFlag(keepAllFuel));
+		tag.setBoolean(torchesOnlyOnFloor, getFlag(torchesOnlyOnFloor));
+		tag.setBoolean(compressBlocks, getFlag(compressBlocks));
+		tag.setBoolean(miningEnabled, getFlag(miningEnabled));
+		tag.setBoolean(bridgeEnabled, getFlag(bridgeEnabled));
+		tag.setBoolean(lavaFillingEnabled, getFlag(lavaFillingEnabled));
+		tag.setBoolean(waterFillingEnabled, getFlag(waterFillingEnabled));
+		tag.setBoolean(torches, getFlag(torches));
+		tag.setBoolean(cobbleMake, getFlag(cobbleMake));
+		tag.setBoolean(airFillingEnabled, getFlag(airFillingEnabled));
 		SaveHandler.saveToNBT(tag, "Status", st);
-		//SaveHandler.saveToNBT(tag, "Brain", brain);
+		SaveHandler.saveToNBT(tag, "Brain", br);
 
 		PC_InvUtils.saveInventoryToNBT(tag, "CargoInv", cargo);
 		PC_InvUtils.saveInventoryToNBT(tag, "XtalInv", xtals);
@@ -3332,9 +3305,18 @@ public class PCmo_EntityMiner extends Entity implements PC_IInventoryWrapper {
 	@Override
 	protected void readEntityFromNBT(NBTTagCompound tag) {
 
-		SaveHandler.loadFromNBT(tag, "Settings", cfg);
+		setFlag(keepAllFuel, tag.getBoolean(keepAllFuel));
+		setFlag(torchesOnlyOnFloor, tag.getBoolean(torchesOnlyOnFloor));
+		setFlag(compressBlocks, tag.getBoolean(compressBlocks));
+		setFlag(miningEnabled, tag.getBoolean(miningEnabled));
+		setFlag(bridgeEnabled, tag.getBoolean(bridgeEnabled));
+		setFlag(lavaFillingEnabled, tag.getBoolean(lavaFillingEnabled));
+		setFlag(waterFillingEnabled, tag.getBoolean(waterFillingEnabled));
+		setFlag(torches, tag.getBoolean(torches));
+		setFlag(cobbleMake, tag.getBoolean(cobbleMake));
+		setFlag(airFillingEnabled, tag.getBoolean(airFillingEnabled));
 		SaveHandler.loadFromNBT(tag, "Status", st);
-		//SaveHandler.loadFromNBT(tag, "Brain", brain);
+		SaveHandler.loadFromNBT(tag, "Brain", br);
 
 		PC_InvUtils.loadInventoryFromNBT(tag, "CargoInv", cargo);
 		PC_InvUtils.loadInventoryFromNBT(tag, "XtalInv", xtals);
@@ -3357,6 +3339,11 @@ public class PCmo_EntityMiner extends Entity implements PC_IInventoryWrapper {
 				playerConectedID=0;
 		} else {
 			//st.programmingGuiOpen = true;
+			setInfo("keywords", br.getKeywords());
+			setInfo("program", br.getProgram());
+			setInfo("error", br.getError());
+			setInfo("isRunning", !st.paused);
+			setInfo("script", br.getName());
 			Gres.openGres("Miner", entityplayer, entityId);
 			return true;
 		}
@@ -3418,13 +3405,13 @@ public class PCmo_EntityMiner extends Entity implements PC_IInventoryWrapper {
 			}
 		}
 
-		cfg.bridgeEnabled &= (st.level >= LBRIDGE);
-		cfg.waterFillingEnabled &= (st.level >= LWATER);
-		cfg.lavaFillingEnabled &= (st.level >= LLAVA);
-		cfg.airFillingEnabled &= (st.level >= LAIR);
-		cfg.cobbleMake &= (st.level >= LCOBBLE);
-		cfg.compressBlocks &= (st.level >= LCOMPRESS);
-		cfg.torches &= (st.level >= LTORCH);
+		setFlag(bridgeEnabled, getFlag(bridgeEnabled) & (st.level >= LBRIDGE));
+		setFlag(waterFillingEnabled, getFlag(waterFillingEnabled) & (st.level >= LWATER));
+		setFlag(lavaFillingEnabled, getFlag(lavaFillingEnabled) & (st.level >= LLAVA));
+		setFlag(airFillingEnabled, getFlag(airFillingEnabled) & (st.level >= LAIR));
+		setFlag(cobbleMake, getFlag(cobbleMake) & (st.level >= LCOBBLE));
+		setFlag(compressBlocks, getFlag(compressBlocks) & (st.level >= LCOMPRESS));
+		setFlag(torches, getFlag(torches) & (st.level >= LTORCH));
 	}
 
 	/**
@@ -3494,6 +3481,36 @@ public class PCmo_EntityMiner extends Entity implements PC_IInventoryWrapper {
 		}
 	}
 	
+	public void setInfo(String key, Object obj){
+		info.put(key, obj);
+		if(!worldObj.isRemote)
+			PC_PacketHandler.sendToPacketHandler(true, worldObj, "MinerManager", entityId, "setInfo", key, obj);
+	}
+	
+	public Object getInfo(String key){
+		return info.get(key);
+	}
+	
+	public void doInfoSet(String key, Object...obj){
+		if(worldObj.isRemote){
+			PC_PacketHandler.sendToPacketHandler(worldObj, "MinerManager", entityId, "doInfoSet", key, obj);
+		}else{
+			if(key.equalsIgnoreCase("set")){
+				setInfo((String)obj[0], obj[1]);
+			}else if(key.equalsIgnoreCase("launch")){
+				br.setProgram((String)obj[0]);
+				try {
+					br.launch();
+				} catch (ParseException e) {
+					e.printStackTrace();
+				}
+			}else if(key.equalsIgnoreCase("restart")){
+				br.restart();
+			}else if(key.equalsIgnoreCase("stop")){
+				st.halted = true;
+			}
+		}
+	}
 	
 	public static boolean matchStackIdentifier(WeaselObject identifier, ItemStack stack) {
 		if (identifier == null || stack == null) return false;
@@ -3602,7 +3619,7 @@ public class PCmo_EntityMiner extends Entity implements PC_IInventoryWrapper {
 
 		int id = is.itemID;
 
-		if (id == Block.stairsBrick.blockID || id == Block.slowSand.blockID) return false;
+		if (id == Block.stoneSingleSlab.blockID || id == Block.slowSand.blockID) return false;
 
 		if (GameInfo.hasFlag(is, "NO_BUILD")) {
 			return false;

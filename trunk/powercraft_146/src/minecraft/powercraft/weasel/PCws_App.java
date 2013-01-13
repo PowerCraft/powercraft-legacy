@@ -85,7 +85,7 @@ public class PCws_App implements PC_IModule {
 				"SRS", 
 				"RCR", 
 				"SRS",
-					'S', new PC_ItemStack(Block.stoneSingleSlab,1,0), 'R', Item.redstone, 'C', ModuleInfo.getPCBlockByName("PCco_BlockPowerCrystal")));
+					'S', new PC_ItemStack(Block.stoneSingleSlab,1,0), 'R', Item.redstone, 'C', new PC_ItemStack(ModuleInfo.getPCBlockByName("PCco_BlockPowerCrystal"),1,-1)));
 		
 		recipes.add(new PC_ShapedRecipes(new PC_ItemStack(weasel, 1, 1),
 				"GRG", 
@@ -111,7 +111,7 @@ public class PCws_App implements PC_IModule {
 					'S', new PC_ItemStack(Block.stoneSingleSlab,1,0), 'R', Item.redstone, 'G', Block.thinGlass, 'N', Item.goldNugget));
 		
 
-		recipes.add(new PC_ShapedRecipes(new PC_ItemStack(weaselDisk, 4, 0xFFF),
+		recipes.add(new PC_ShapedRecipes(new PC_ItemStack(weaselDisk, 4),
 				" C ", 
 				"CIC",
 				" C ",

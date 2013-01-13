@@ -10,11 +10,14 @@ import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import powercraft.management.PC_InvUtils;
+import powercraft.management.PC_GresTextEditMultiline.Keyword;
 import powercraft.management.PC_Utils.GameInfo;
 import powercraft.management.PC_Utils.ModuleInfo;
+import powercraft.management.PC_Utils.SaveHandler;
 import powercraft.management.PC_VecI;
 import powercraft.mobile.PCmo_Command.ParseException;
 import powercraft.mobile.PCmo_EntityMiner.Agree;
+import powercraft.weasel.PCws_WeaselHighlightHelper;
 import powercraft.weasel.PCws_WeaselManager;
 import weasel.Calc;
 import weasel.IWeaselHardware;
@@ -29,11 +32,14 @@ import weasel.obj.WeaselString;
 
 public class PCmo_MinerWeaselBrain  implements PCmo_IMinerBrain, IWeaselHardware {
 
+	private static final String default_program = 
+			"# *** Weasel powered Miner ***\n";
+	
 	private PCmo_EntityMiner miner;
 	/** weasel engine */
 	private WeaselEngine engine = new WeaselEngine(this);
 	private int sleep = 0;
-	private String program;
+	private String program = default_program;
 	private String error;
 	private static Random rand = new Random();
 	
@@ -41,6 +47,11 @@ public class PCmo_MinerWeaselBrain  implements PCmo_IMinerBrain, IWeaselHardware
 		this.miner = miner;
 	}
 
+	@Override
+	public String getName(){
+		return "Weasel";
+	}
+	
 	@Override
 	public void setProgram(String prog){
 		program = prog;
@@ -187,22 +198,22 @@ public class PCmo_MinerWeaselBrain  implements PCmo_IMinerBrain, IWeaselHardware
 
 		list.add("cap");
 		list.add("opt");
-		list.add("miner.cfg");
+		list.add("miner.getFlag(PCmo_EntityMiner");
 		list.add("can");
 		list.add("hasCap");
 		list.add("hasOpt");
 		list.add("clearOpt");
 		list.add("clearCap");
-		list.add("clearminer.cfg");
+		list.add("clearminer.getFlag(PCmo_EntityMiner");
 		list.add("resetOpt");
 		list.add("resetCap");
-		list.add("resetminer.cfg");
+		list.add("resetminer.getFlag(PCmo_EntityMiner");
 		list.add("capOn");
 		list.add("optOn");
-		list.add("miner.cfgOn");
+		list.add("miner.getFlag(PCmo_EntityMinerOn");
 		list.add("capOff");
 		list.add("optOff");
-		list.add("miner.cfgOff");
+		list.add("miner.getFlag(PCmo_EntityMinerOff");
 		return list;
 	}
 	
@@ -215,18 +226,18 @@ public class PCmo_MinerWeaselBrain  implements PCmo_IMinerBrain, IWeaselHardware
 				return null;
 			}
 
-			if (functionName.equals("clearCap") || functionName.equals("clearminer.cfg") || functionName.equals("clearOpt") || functionName.equals("resetCap")
-					|| functionName.equals("resetminer.cfg") || functionName.equals("resetOpt")) {
-				miner.cfg.airFillingEnabled = false;
-				miner.cfg.bridgeEnabled = false;
-				miner.cfg.compressBlocks = false;
-				miner.cfg.keepAllFuel = false;
-				miner.cfg.lavaFillingEnabled = false;
-				miner.cfg.miningEnabled = false;
-				miner.cfg.torches = false;
-				miner.cfg.torchesOnlyOnFloor = false;
-				miner.cfg.waterFillingEnabled = false;
-				miner.cfg.cobbleMake = false;
+			if (functionName.equals("clearCap") || functionName.equals("clearminer.getFlag(PCmo_EntityMiner") || functionName.equals("clearOpt") || functionName.equals("resetCap")
+					|| functionName.equals("resetminer.getFlag(PCmo_EntityMiner") || functionName.equals("resetOpt")) {
+				miner.setFlag(PCmo_EntityMiner.airFillingEnabled, false);
+				miner.setFlag(PCmo_EntityMiner.bridgeEnabled, false);
+				miner.setFlag(PCmo_EntityMiner.compressBlocks, false);
+				miner.setFlag(PCmo_EntityMiner.keepAllFuel, false);
+				miner.setFlag(PCmo_EntityMiner.lavaFillingEnabled, false);
+				miner.setFlag(PCmo_EntityMiner.miningEnabled, false);
+				miner.setFlag(PCmo_EntityMiner.torches, false);
+				miner.setFlag(PCmo_EntityMiner.torchesOnlyOnFloor, false);
+				miner.setFlag(PCmo_EntityMiner.waterFillingEnabled, false);
+				miner.setFlag(PCmo_EntityMiner.cobbleMake, false);
 				return null;
 			}
 
@@ -384,12 +395,12 @@ public class PCmo_MinerWeaselBrain  implements PCmo_IMinerBrain, IWeaselHardware
 				engine.requestPause();
 				return null;
 			}
-			if (functionName.equals("capOff") || functionName.equals("miner.cfgOff") || functionName.equals("optOff") || functionName.equals("capOn") || functionName.equals("miner.cfgOn")
-					|| functionName.equals("optOn") || functionName.equals("miner.cfg") || functionName.equals("opt") || functionName.equals("cap")) {
+			if (functionName.equals("capOff") || functionName.equals("miner.getFlag(PCmo_EntityMinerOff") || functionName.equals("optOff") || functionName.equals("capOn") || functionName.equals("miner.getFlag(PCmo_EntityMinerOn")
+					|| functionName.equals("optOn") || functionName.equals("miner.getFlag(PCmo_EntityMiner") || functionName.equals("opt") || functionName.equals("cap")) {
 
 				int state = -1;
-				if (functionName.equals("capOff") || functionName.equals("miner.cfgOff") || functionName.equals("optOff")) state = 0;
-				if (functionName.equals("capOn") || functionName.equals("miner.cfgOn") || functionName.equals("optOn")) state = 1;
+				if (functionName.equals("capOff") || functionName.equals("miner.getFlag(PCmo_EntityMinerOff") || functionName.equals("optOff")) state = 0;
+				if (functionName.equals("capOn") || functionName.equals("miner.getFlag(PCmo_EntityMinerOn") || functionName.equals("optOn")) state = 1;
 
 				for (int i = 0; i < (state == -1 ? 1 : args.length); i++) {
 
@@ -423,53 +434,53 @@ public class PCmo_MinerWeaselBrain  implements PCmo_IMinerBrain, IWeaselHardware
 					}
 
 					if (capname.equals("KEEP_FUEL")) {
-						if (argl == 1&&state == -1) return new WeaselBoolean(miner.cfg.keepAllFuel);
-						miner.cfg.keepAllFuel = flag;
+						if (argl == 1&&state == -1) return new WeaselBoolean(miner.getFlag(PCmo_EntityMiner.keepAllFuel));
+						miner.setFlag(PCmo_EntityMiner.keepAllFuel, flag);
 						continue;
 					}
 					if (capname.equals("COBBLE")) {
-						if (argl == 1&&state == -1) return new WeaselBoolean(miner.cfg.cobbleMake);
-						miner.cfg.cobbleMake = flag;
+						if (argl == 1&&state == -1) return new WeaselBoolean(miner.getFlag(PCmo_EntityMiner.cobbleMake));
+						miner.setFlag(PCmo_EntityMiner.cobbleMake, flag);
 						continue;
 					}
 					if (capname.equals("TORCHES")) {
-						if (argl == 1&&state == -1) return new WeaselBoolean(miner.cfg.torches);
-						miner.cfg.torches = flag;
+						if (argl == 1&&state == -1) return new WeaselBoolean(miner.getFlag(PCmo_EntityMiner.torches));
+						miner.setFlag(PCmo_EntityMiner.torches, flag);
 						continue;
 					}
 					if (capname.equals("TORCH_FLOOR")) {
-						if (argl == 1&&state == -1) return new WeaselBoolean(miner.cfg.torchesOnlyOnFloor);
-						miner.cfg.torchesOnlyOnFloor = flag;
+						if (argl == 1&&state == -1) return new WeaselBoolean(miner.getFlag(PCmo_EntityMiner.torchesOnlyOnFloor));
+						miner.setFlag(PCmo_EntityMiner.torchesOnlyOnFloor, flag);
 						continue;
 					}
 					if (capname.equals("COMPRESS")) {
-						if (argl == 1&&state == -1) return new WeaselBoolean(miner.cfg.compressBlocks);
-						miner.cfg.compressBlocks = flag;
+						if (argl == 1&&state == -1) return new WeaselBoolean(miner.getFlag(PCmo_EntityMiner.compressBlocks));
+						miner.setFlag(PCmo_EntityMiner.compressBlocks, flag);
 						continue;
 					}
 					if (capname.equals("MINING")) {
-						if (argl == 1&&state == -1) return new WeaselBoolean(miner.cfg.miningEnabled);
-						miner.cfg.miningEnabled = flag;
+						if (argl == 1&&state == -1) return new WeaselBoolean(miner.getFlag(PCmo_EntityMiner.miningEnabled));
+						miner.setFlag(PCmo_EntityMiner.miningEnabled, flag);
 						continue;
 					}
 					if (capname.equals("BRIDGE")) {						
-						if (argl == 1&&state == -1) return new WeaselBoolean(miner.cfg.bridgeEnabled);
-						miner.cfg.bridgeEnabled = flag;
+						if (argl == 1&&state == -1) return new WeaselBoolean(miner.getFlag(PCmo_EntityMiner.bridgeEnabled));
+						miner.setFlag(PCmo_EntityMiner.bridgeEnabled, flag);
 						continue;
 					}
 					if (capname.equals("LAVA")) {
-						if (argl == 1&&state == -1) return new WeaselBoolean(miner.cfg.lavaFillingEnabled);
-						miner.cfg.lavaFillingEnabled = flag;
+						if (argl == 1&&state == -1) return new WeaselBoolean(miner.getFlag(PCmo_EntityMiner.lavaFillingEnabled));
+						miner.setFlag(PCmo_EntityMiner.lavaFillingEnabled, flag);
 						continue;
 					}
 					if (capname.equals("WATER")) {
-						if (argl == 1&&state == -1) return new WeaselBoolean(miner.cfg.waterFillingEnabled);
-						miner.cfg.waterFillingEnabled = flag;
+						if (argl == 1&&state == -1) return new WeaselBoolean(miner.getFlag(PCmo_EntityMiner.waterFillingEnabled));
+						miner.setFlag(PCmo_EntityMiner.waterFillingEnabled, flag);
 						continue;
 					}
 					if (capname.equals("TUNNEL")) {
-						if (argl == 1&&state == -1) return new WeaselBoolean(miner.cfg.airFillingEnabled);
-						miner.cfg.airFillingEnabled = flag;
+						if (argl == 1&&state == -1) return new WeaselBoolean(miner.getFlag(PCmo_EntityMiner.airFillingEnabled));
+						miner.setFlag(PCmo_EntityMiner.airFillingEnabled, flag);
 						continue;
 					}
 					throw new WeaselRuntimeException(functionName + "(): Unknown option " + capname);
@@ -807,7 +818,7 @@ public class PCmo_MinerWeaselBrain  implements PCmo_IMinerBrain, IWeaselHardware
 				for (int i = 0; i < miner.cargo.getSizeInventory(); i++) {
 					ItemStack stack = miner.cargo.getStackInSlot(i);
 					if (stack == null) continue;
-					if (stack.itemID != Item.bucketLava.shiftedIndex || !miner.cfg.cobbleMake) {
+					if (stack.itemID != Item.bucketLava.shiftedIndex || !miner.getFlag(PCmo_EntityMiner.cobbleMake)) {
 						cnt += GameInfo.getFuelValue(stack, PCmo_EntityMiner.FUEL_STRENGTH) * stack.stackSize;
 					}
 				}
@@ -868,14 +879,11 @@ public class PCmo_MinerWeaselBrain  implements PCmo_IMinerBrain, IWeaselHardware
 					if (placed == null) {
 						return new WeaselBoolean(false);
 					} else {
-						placed.onBlockDestroyed(miner.worldObj, pos.x, pos.y + 1, pos.z, 0, miner.fakePlayer);
-						return new WeaselBoolean(true);
-						/** TODO right??
-						if (!placed.useItem(fakePlayer, miner.worldObj, miner.pos.x, miner.pos.y + 1, miner.pos.z, 0)) {
+						if (!placed.tryPlaceItemIntoWorld(miner.fakePlayer, miner.worldObj, pos.x, pos.y + 1, pos.z, 0, 0.0f, 0.0f, 0.0f)) {
 							PC_InvUtils.addItemStackToInventory(miner.cargo, placed);
 						} else {
 							return new WeaselBoolean(true);
-						}*/
+						}
 					}
 				}
 
@@ -886,23 +894,17 @@ public class PCmo_MinerWeaselBrain  implements PCmo_IMinerBrain, IWeaselHardware
 
 						if (stack.itemID == numid) {
 							ItemStack placed = miner.cargo.decrStackSize(i, 1);
-							placed.onBlockDestroyed(miner.worldObj, pos.x, pos.y + 1, pos.z, 0, miner.fakePlayer);
-							return new WeaselBoolean(true);
-							/** TODO right??
-							if (!placed.useItem(fakePlayer, miner.worldObj, miner.pos.x, miner.pos.y + 1, miner.pos.z, 0)) {
+							if (!placed.tryPlaceItemIntoWorld(miner.fakePlayer, miner.worldObj, pos.x, pos.y + 1, pos.z, 0, 0.0f, 0.0f, 0.0f)) {
 								PC_InvUtils.addItemStackToInventory(miner.cargo, placed);
 							} else {
 								return new WeaselBoolean(true);
-							}*/
+							}
 						}
 					}
 					
 					if(numid == Block.cobblestone.blockID && miner.canMakeCobble()) {
-						(new ItemStack(Block.cobblestone)).onBlockDestroyed(miner.worldObj, pos.x, pos.y + 1, pos.z, 0, miner.fakePlayer);
-						return new WeaselBoolean(true);
-						/** TODO right??
-						return new WeaselBoolean((new ItemStack(Block.cobblestone)).useItem(fakePlayer, miner.worldObj, miner.pos.x, miner.pos.y + 1, miner.pos.z, 0));							
-						*/
+						return new WeaselBoolean((new ItemStack(Block.cobblestone)).tryPlaceItemIntoWorld(miner.fakePlayer, 
+								miner.worldObj, pos.x, pos.y + 1, pos.z, 0, 0.0f, 0.0f, 0.0f));		
 					}
 						
 				}
@@ -972,13 +974,33 @@ public class PCmo_MinerWeaselBrain  implements PCmo_IMinerBrain, IWeaselHardware
 	}
 
 	@Override
-	public PCmo_MinerBrain readFromNBT(NBTTagCompound nbttag) {
-		return null;
+	public List<Keyword> getKeywords() {
+		return PCws_WeaselHighlightHelper.weasel(this, engine);
+	}
+	
+	@Override
+	public PCmo_IMinerBrain readFromNBT(NBTTagCompound nbttag) {
+		SaveHandler.loadFromNBT(nbttag, "engine", engine);
+		sleep = nbttag.getInteger("sleep");
+		program = nbttag.getString("program");
+		if(nbttag.hasKey("error"))
+			error = nbttag.getString("error");
+		return this;
 	}
 
 	@Override
 	public NBTTagCompound writeToNBT(NBTTagCompound nbttag) {
-		return null;
+		SaveHandler.saveToNBT(nbttag, "engine", engine);
+		nbttag.setInteger("sleep", sleep);
+		nbttag.setString("program", program);
+		if(error!=null)
+			nbttag.setString("error", error);
+		return nbttag;
+	}
+
+	@Override
+	public void compileProgram(String text) throws Exception {
+		WeaselEngine.compileProgram(text);
 	}
 	
 }
