@@ -271,7 +271,7 @@ public class PCws_WeaselPluginDiskDrive extends PCws_WeaselPlugin implements PCw
 						s+="\n";
 					}
 					
-					s += Calc.toString(args[0].get());
+					s += Calc.toString(args[0]);
 					if(s.length()>10000) {
 						throw new WeaselRuntimeException("List "+PCws_ItemWeaselDisk.getLabel(disk)+": can't add, disk is full (10kB).");
 					}
@@ -310,7 +310,7 @@ public class PCws_WeaselPluginDiskDrive extends PCws_WeaselPlugin implements PCw
 							s+="\n";
 						}
 						
-						s += Calc.toString(args[0].get());
+						s += Calc.toString(args[0]);
 						if(s.length()>10000) {
 							throw new WeaselRuntimeException("List "+PCws_ItemWeaselDisk.getLabel(disk)+": can't add, disk is full (10kB).");
 						}

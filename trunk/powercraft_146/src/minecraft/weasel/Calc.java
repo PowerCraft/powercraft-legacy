@@ -325,20 +325,14 @@ public class Calc {
 	public static int toInteger(Object obj) {
 		if (obj == null) return 0;
 
-		if (obj instanceof Integer) {
-			return ((Integer) obj);
+		if(obj instanceof Number){
+			return ((Number) obj).intValue();
 		} else if (obj instanceof Boolean) {
 			return ((Boolean) obj) ? 1 : 0;
-		} else if (obj instanceof Double) {
-			return (int) Math.round((Double) obj);
-		} else if (obj instanceof Float) {
-			return Math.round((Float) obj);
 		} else if (obj instanceof WeaselDouble) {
 			return (int)(double)((WeaselDouble) obj).get();
 		} else if (obj instanceof WeaselBoolean) {
 			return ((WeaselBoolean) obj).get() ? 1 : 0;
-		} else if (obj instanceof Long) {
-			return ((Long) obj).intValue();
 		} else if (obj instanceof String) {
 			try {
 				return Integer.parseInt((String) obj);
@@ -364,20 +358,14 @@ public class Calc {
 	public static double toDouble(Object obj) {
 		if (obj == null) return 0.0D;
 
-		if (obj instanceof Integer) {
-			return ((Integer) obj);
+		if (obj instanceof Number) {
+			return ((Number) obj).doubleValue();
 		} else if (obj instanceof Boolean) {
 			return ((Boolean) obj) ? 1 : 0;
-		} else if (obj instanceof Double) {
-			return ((Double) obj);
-		} else if (obj instanceof Float) {
-			return ((Float) obj);
 		} else if (obj instanceof WeaselDouble) {
 			return ((WeaselDouble) obj).get();
 		} else if (obj instanceof WeaselBoolean) {
 			return ((WeaselBoolean) obj).get() ? 1 : 0;
-		} else if (obj instanceof Long) {
-			return ((Long) obj);
 		} else if (obj instanceof String) {
 			try {
 				return Double.parseDouble((String) obj);
