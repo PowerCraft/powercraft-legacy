@@ -138,6 +138,13 @@ public class PCmo_MinerManager implements PC_I3DRecipeHandler, PC_IPacketHandler
 				} catch (IOException e1) {
 					e1.printStackTrace();
 				}
+				b = (byte[])o[10];
+				try {
+					NBTTagCompound tag = CompressedStreamTools.decompress(b);
+					miner.readEntityFromNBT(tag);
+				} catch (IOException e1) {
+					e1.printStackTrace();
+				}
 				miner.updateLevel();
 				e.setLocationAndAngles(e.posX, e.posY, e.posZ, e.rotationYaw, 0);
 			}else if(func.equals("command")){
