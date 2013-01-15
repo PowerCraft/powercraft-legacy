@@ -60,7 +60,7 @@ public class PCmo_RenderMiner extends Render {
 
 		modelMiner.render(entityminer, 0.0F, 0.0F, -0.1F, 0.0F, 0.0F, 0.0625F);
 
-		if (entityminer.playerConectedID!=0) {
+		if (entityminer.hasPlayer()) {
 			loadTexture(ModuleInfo.getTextureDirectory(ModuleInfo.getModule("Mobile")) + "miner_overlay_keyboard.png");
 			modelMiner.render(entityminer, 0.0F, 0.0F, -0.1F, 0.0F, 0.0F, 0.0625F);
 		}

@@ -15,6 +15,7 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.item.EntityXPOrb;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.entity.projectile.EntityArrow;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.InventoryBasic;
@@ -91,7 +92,9 @@ public class PCmo_EntityMiner extends Entity implements PC_IInventoryWrapper {
 
 	public HashMap<String, Object> info = new HashMap<String, Object>();
 	
-	protected int playerConectedID;
+	private String playerConectedID;
+	private int playerTimeout = 0;
+	
 	/** cool-down timer for repeated key presses */
 	private int[] keyPressTimer = { 0, 0, 0, 0, 0, 0, 0, 0, 0 };
 	/** number of ticks before the key is accepted again */
@@ -1194,7 +1197,7 @@ public class PCmo_EntityMiner extends Entity implements PC_IInventoryWrapper {
 	 * @return is miner ready for keyboard command
 	 */
 	public boolean canReceiveKeyboardCommand() {
-		if (st.programmingGuiOpen || playerConectedID==0/* || TODO!(st.paused || st.halted || brain.engine.isProgramFinished)*/) {
+		if (st.programmingGuiOpen || playerConectedID==null/* || TODO!(st.paused || st.halted || brain.engine.isProgramFinished)*/) {
 			return false;
 		}
 		st.commandList = st.commandList.trim();
@@ -1209,7 +1212,7 @@ public class PCmo_EntityMiner extends Entity implements PC_IInventoryWrapper {
 	public void receiveKeyboardCommand(int i) {
 		if (i == PCmo_Command.RUN_PROGRAM) {
 			resetEverything();
-			playerConectedID = 0;
+			playerConectedID = null;
 			try {
 				br.launch();
 			} catch (ParseException e) {}
@@ -1257,7 +1260,7 @@ public class PCmo_EntityMiner extends Entity implements PC_IInventoryWrapper {
 
 		// if there are no more commands, try to get some from weasel
 		if (st.commandList.length() <= 0 && st.currentCommand == -1) {
-			if (playerConectedID==0 && !st.pausedWeasel && !st.paused) {
+			if (playerConectedID==null && !st.pausedWeasel && !st.paused) {
 				br.run();
 			}
 		}
@@ -2830,14 +2833,17 @@ public class PCmo_EntityMiner extends Entity implements PC_IInventoryWrapper {
 		prevPosY = posY;
 		prevPosZ = posZ;
 
-		if(playerConectedID!=0){
-			Entity e = worldObj.getEntityByID(playerConectedID);
-			if(e instanceof EntityPlayer){
-				if(!worldObj.isRemote){
-					handleKeybordInput((EntityPlayer)e);
-				}
+		if(playerConectedID!=null && !worldObj.isRemote){
+			EntityPlayer e = GameInfo.mcs().getConfigurationManager().getPlayerForUsername(playerConectedID);
+			if(e!=null){
+				handleKeybordInput(e);
+				playerTimeout = 0;
 			}else{
-				playerConectedID = 0;
+				if(playerTimeout>40){
+					playerConectedID = null;
+				}else{
+					playerTimeout++;
+				}
 			}
 		}
 		
@@ -3143,7 +3149,7 @@ public class PCmo_EntityMiner extends Entity implements PC_IInventoryWrapper {
 			if (st.currentCommand != -1 && st.currentCommand != oldCmd) {
 				alignToBlocks();
 			}
-			if (st.currentCommand == -1 && playerConectedID==0) {
+			if (st.currentCommand == -1 && playerConectedID==null) {
 				alignToBlocks();
 			}
 
@@ -3252,7 +3258,15 @@ public class PCmo_EntityMiner extends Entity implements PC_IInventoryWrapper {
 				} catch (IOException e) {
 					e.printStackTrace();
 				}
-				PC_PacketHandler.sendToPacketHandler(true, worldObj, "MinerManager", entityId, "set", posX, posY, posZ, motionX, motionY, motionZ, rotationYaw, b);
+				NBTTagCompound tag2 = new NBTTagCompound();
+				writeEntityToNBT(tag2);
+				byte[] b2 = null;
+				try {
+					b2 = CompressedStreamTools.compress(tag2);
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+				PC_PacketHandler.sendToPacketHandler(true, worldObj, "MinerManager", entityId, "set", posX, posY, posZ, motionX, motionY, motionZ, rotationYaw, b, b2);
 			}
 		}
 		tick++;
@@ -3294,6 +3308,9 @@ public class PCmo_EntityMiner extends Entity implements PC_IInventoryWrapper {
 	@Override
 	protected void writeEntityToNBT(NBTTagCompound tag) {
 
+		if(playerConectedID!=null)
+			tag.setString("player", playerConectedID);
+		
 		tag.setBoolean(keepAllFuel, getFlag(keepAllFuel));
 		tag.setBoolean(torchesOnlyOnFloor, getFlag(torchesOnlyOnFloor));
 		tag.setBoolean(compressBlocks, getFlag(compressBlocks));
@@ -3314,6 +3331,12 @@ public class PCmo_EntityMiner extends Entity implements PC_IInventoryWrapper {
 	@Override
 	protected void readEntityFromNBT(NBTTagCompound tag) {
 
+		if(tag.hasKey("player")){
+			playerConectedID = tag.getString("player");
+		}
+		PC_InvUtils.loadInventoryFromNBT(tag, "CargoInv", cargo);
+		PC_InvUtils.loadInventoryFromNBT(tag, "XtalInv", xtals);
+		
 		setFlag(keepAllFuel, tag.getBoolean(keepAllFuel));
 		setFlag(torchesOnlyOnFloor, tag.getBoolean(torchesOnlyOnFloor));
 		setFlag(compressBlocks, tag.getBoolean(compressBlocks));
@@ -3326,10 +3349,8 @@ public class PCmo_EntityMiner extends Entity implements PC_IInventoryWrapper {
 		setFlag(airFillingEnabled, tag.getBoolean(airFillingEnabled));
 		SaveHandler.loadFromNBT(tag, "Status", st);
 		SaveHandler.loadFromNBT(tag, "Brain", br);
-
-		PC_InvUtils.loadInventoryFromNBT(tag, "CargoInv", cargo);
-		PC_InvUtils.loadInventoryFromNBT(tag, "XtalInv", xtals);
 		
+		updateLevel();
 	}
 
 	// === PLAYER INTERACTION ===
@@ -3342,10 +3363,10 @@ public class PCmo_EntityMiner extends Entity implements PC_IInventoryWrapper {
 
 		// set for keyboard control or open gui.
 		if (entityplayer.getCurrentEquippedItem() != null && entityplayer.getCurrentEquippedItem().itemID == ModuleInfo.getPCObjectIDByName("PCco_ItemActivator")) {
-			if(playerConectedID==0)
-				playerConectedID = entityplayer.entityId;
+			if(playerConectedID==null)
+				playerConectedID = entityplayer.getEntityName();
 			else
-				playerConectedID=0;
+				playerConectedID=null;
 		} else {
 			//st.programmingGuiOpen = true;
 			setInfo("keywords", br.getKeywords());
@@ -3657,6 +3678,10 @@ public class PCmo_EntityMiner extends Entity implements PC_IInventoryWrapper {
 			if (Block.blocksList[is.itemID].blockMaterial.isSolid()) return true;
 		}
 		return false;
+	}
+
+	public boolean hasPlayer() {
+		return playerConectedID!=null;
 	}
 	
 }
