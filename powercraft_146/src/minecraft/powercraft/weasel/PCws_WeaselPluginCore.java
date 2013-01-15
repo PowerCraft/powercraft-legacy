@@ -127,7 +127,7 @@ public class PCws_WeaselPluginCore extends PCws_WeaselPlugin {
 			String functionName, WeaselObject[] args) {
 		if(functionName.equals("sleep")){
 			if(args.length!=0){
-				sleepTimer = (Integer) args[0].get();
+				sleepTimer = Calc.toInteger(args[0]);
 				if (sleepTimer < 0) sleepTimer = 0;
 			}else{
 				sleepTimer = 1;
@@ -142,18 +142,18 @@ public class PCws_WeaselPluginCore extends PCws_WeaselPlugin {
 			System.out.println(args[0].toString());
 		}else if(functionName.equals("network.get")){
 			if(getNetwork()!=null)
-				return getNetwork().getLocalVariable((String)args[0].get());
+				return getNetwork().getLocalVariable(Calc.toString(args[0]));
 		}else if(functionName.equals("network.set")){
 			if(getNetwork()!=null)
-				getNetwork().setLocalVariable((String)args[0].get(), args[1]);
+				getNetwork().setLocalVariable(Calc.toString(args[0]), args[1]);
 		}else if(functionName.equals("network.has")){
 			if(getNetwork()==null)
 				return new WeaselBoolean(false);
-			return new WeaselBoolean(getNetwork().getLocalVariable((String)args[0].get()) != null);
+			return new WeaselBoolean(getNetwork().getLocalVariable(Calc.toString(args[0])) != null);
 		}else if(functionName.equals("network.isConnected")){
 			if(getNetwork()==null)
 				return new WeaselBoolean(false);
-			return new WeaselBoolean(getNetwork().getMember((String)args[0].get()));
+			return new WeaselBoolean(getNetwork().getMember(Calc.toString(args[0])));
 		}else if(functionName.equals("network.restart")||functionName.equals("network.reset")){
 			if(getNetwork()==null){
 				restartDevice();
@@ -164,11 +164,11 @@ public class PCws_WeaselPluginCore extends PCws_WeaselPlugin {
 			}
 			return new WeaselNull();
 		}else if(functionName.equals("global.get")){
-			return PCws_WeaselManager.getGlobalVariable((String)args[0].get());
+			return PCws_WeaselManager.getGlobalVariable(Calc.toString(args[0]));
 		}else if(functionName.equals("global.set")){
-			PCws_WeaselManager.setGlobalVariable((String)args[0].get(), args[1]);
+			PCws_WeaselManager.setGlobalVariable(Calc.toString(args[0]), args[1]);
 		}else if(functionName.equals("global.has")){
-			return new WeaselBoolean(PCws_WeaselManager.hasGlobalVariable((String)args[0].get()));
+			return new WeaselBoolean(PCws_WeaselManager.hasGlobalVariable(Calc.toString(args[0])));
 		}else if(functionName.equals("lib.load")){
 			String name = Calc.toString(args[0]);
 			if(getNetwork()!=null){

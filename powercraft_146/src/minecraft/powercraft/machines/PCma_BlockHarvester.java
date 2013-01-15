@@ -218,7 +218,8 @@ public class PCma_BlockHarvester extends PC_Block implements
 			beamTracer.setMaxLengthAfterCrystal(1);
 		}
 
-		drops.clear();
+		if(!world.isRemote)
+			drops.clear();
 		
 		beamTracer.flash();
 

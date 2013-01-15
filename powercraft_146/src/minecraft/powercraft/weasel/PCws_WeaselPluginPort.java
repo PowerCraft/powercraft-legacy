@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import powercraft.management.PC_Utils.Gres;
+import weasel.Calc;
 import weasel.WeaselEngine;
 import weasel.exception.WeaselRuntimeException;
 import weasel.obj.WeaselBoolean;
@@ -59,7 +60,7 @@ public class PCws_WeaselPluginPort extends PCws_WeaselPlugin {
 
 	@Override
 	protected void setPluginVariable(String name, Object value) {
-		setOutport(portToNum(name), ((WeaselBoolean)value).get());
+		setOutport(portToNum(name), Calc.toBoolean(value));
 	}
 
 	@Override

@@ -499,10 +499,10 @@ public class WeaselEngine implements PC_INBT, IVariableProvider, IFunctionProvid
 		if (functionName.equals("color")) {
 			if (args.length == 1) {
 				if (args[0] instanceof WeaselDouble) {
-					return new WeaselDouble(((Integer) args[0].get()) & 0xffffff);
+					return new WeaselDouble(Calc.toInteger(args[0]) & 0xffffff);
 				}
 				if (args[0] instanceof WeaselString) {
-					return new WeaselDouble(PC_Color.getHexColorForName((String)args[0].get()));
+					return new WeaselDouble(PC_Color.getHexColorForName(Calc.toString(args[0])));
 				}
 
 				throw new WeaselRuntimeException("color() can't work with " + args[0].get().getClass().getSimpleName());
@@ -510,7 +510,7 @@ public class WeaselEngine implements PC_INBT, IVariableProvider, IFunctionProvid
 				if (args[0] instanceof WeaselDouble)
 					if (args[1] instanceof WeaselDouble)
 						if (args[2] instanceof WeaselDouble)
-							return new WeaselDouble(clr((Integer) args[0].get(), (Integer) args[1].get(), (Integer) args[2].get()));
+							return new WeaselDouble(clr(Calc.toInteger(args[0]), Calc.toInteger(args[1]), Calc.toInteger(args[2])));
 
 				throw new WeaselRuntimeException("Invalid arguments for color().");
 			} else {
@@ -522,7 +522,7 @@ public class WeaselEngine implements PC_INBT, IVariableProvider, IFunctionProvid
 		if (functionName.equals("bound")) {
 			if (args.length == 3) {
 				if (args[0] instanceof WeaselDouble) if (args[1] instanceof WeaselDouble) if (args[2] instanceof WeaselDouble) {
-					return new WeaselDouble(Math.min((Integer) args[2].get(), Math.max((Integer) args[1].get(), (Integer) args[0].get())));
+					return new WeaselDouble(Math.min(Calc.toInteger(args[2]), Math.max(Calc.toInteger(args[1]), Calc.toInteger(args[0]))));
 				}
 
 				throw new WeaselRuntimeException("Invalid arguments for bound().");
@@ -534,9 +534,9 @@ public class WeaselEngine implements PC_INBT, IVariableProvider, IFunctionProvid
 		if (functionName.equals("bound_c")) {
 			if (args.length == 3) {
 				if (args[0] instanceof WeaselDouble) if (args[1] instanceof WeaselDouble) if (args[2] instanceof WeaselDouble) {
-					int min = (Integer) args[1].get();
-					int max = (Integer) args[2].get();
-					int val = (Integer) args[0].get();
+					int min = Calc.toInteger(args[1]);
+					int max = Calc.toInteger(args[2]);
+					int val = Calc.toInteger(args[0]);
 					while (val > max)
 						val = val - (max - min);
 					while (val < min)

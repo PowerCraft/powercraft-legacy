@@ -10,6 +10,7 @@ import powercraft.management.PC_Struct3;
 import powercraft.management.PC_Struct4;
 import powercraft.management.PC_TileEntity;
 import powercraft.management.PC_Utils.Gres;
+import weasel.Calc;
 import weasel.WeaselEngine;
 import weasel.exception.WeaselRuntimeException;
 import weasel.obj.WeaselDouble;
@@ -59,7 +60,7 @@ public class PCws_WeaselPluginSpeaker extends PCws_WeaselPlugin {
 
 		if (args.length > 0) {
 			if (args[args.length - 1] instanceof WeaselDouble) {
-				volume = ((Integer) args[args.length - 1].get()) / 10F;
+				volume = (Calc.toInteger(args[args.length - 1])) / 10F;
 			}
 		}
 
@@ -72,32 +73,32 @@ public class PCws_WeaselPluginSpeaker extends PCws_WeaselPlugin {
 		}else if (functionName.equals("note")) {
 			// note(resourceOrInstrument, tone [, volume])
 			if (args.length != 3) volume = 3;
-			playNote(((String) args[0].get()), ((Integer) args[1].get()), volume);
+			playNote(Calc.toString(args[0]), Calc.toInteger(args[1]), volume);
 		}else if (functionName.equals("snare") || functionName.equals("snaredrum") || functionName.equals("sd")) {
 			// instr(tone [, volume])
 			if (args.length != 2) volume = 3;
-			playNote("snaredrum", ((Integer) args[0].get()), volume);
+			playNote("snaredrum", Calc.toInteger(args[0]), volume);
 		}else if (functionName.equals("bass") || functionName.equals("bassdrum") || functionName.equals("drum") || functionName.equals("bs")) {
 			// instr(tone [, volume])
 			if (args.length != 2) volume = 3;
-			playNote("bassdrum", ((Integer) args[0].get()), volume);
+			playNote("bassdrum", Calc.toInteger(args[0]), volume);
 		}else if (functionName.equals("guitar") || functionName.equals("bassguitar") || functionName.equals("bg")) {
 			// instr(tone [, volume])
 			if (args.length != 2) volume = 3;
-			playNote("bassguitar", ((Integer) args[0].get()), volume);
+			playNote("bassguitar", Calc.toInteger(args[0]), volume);
 		}else if (functionName.equals("sticks") || functionName.equals("stick") || functionName.equals("clicks") || functionName.equals("click")
 				|| functionName.equals("st") || functionName.equals("cl")) {
 			// instr(tone [, volume])
 			if (args.length != 2) volume = 3;
-			playNote("sticks", ((Integer) args[0].get()), volume);
+			playNote("sticks", Calc.toInteger(args[0]), volume);
 		}else if (functionName.equals("piano") || functionName.equals("harp") || functionName.equals("p") || functionName.equals("pn")) {
 			// instr(tone [, volume])
 			if (args.length != 2) volume = 3;
-			playNote("harp", ((Integer) args[0].get()), volume);
+			playNote("harp", Calc.toInteger(args[0]), volume);
 		}else if ((functionName.equals("bell") || functionName.equals("orb"))) {
 			// instr(tone [, volume])
 			if (args.length != 2) volume = 3;
-			playNote("random.orb", ((Integer) args[0].get()), volume);
+			playNote("random.orb", Calc.toInteger(args[0]), volume);
 			
 		} else {
 			throw new WeaselRuntimeException("Invalid function called on speaker " + getName());

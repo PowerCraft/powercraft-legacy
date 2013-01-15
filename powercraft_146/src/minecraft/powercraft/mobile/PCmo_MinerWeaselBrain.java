@@ -242,7 +242,7 @@ public class PCmo_MinerWeaselBrain  implements PCmo_IMinerBrain, IWeaselHardware
 			}
 
 			if (functionName.equals("sleep")) {
-				sleep += Calc.toInteger(args[0].get());
+				sleep += Calc.toInteger(args[0]);
 				engine.requestPause();
 				return null;
 			}
@@ -257,7 +257,7 @@ public class PCmo_MinerWeaselBrain  implements PCmo_IMinerBrain, IWeaselHardware
 			if (functionName.equals("fw")) {
 				int num = 1;
 				if (args.length == 1) {
-					num = Calc.toInteger(args[0].get());
+					num = Calc.toInteger(args[0]);
 				}
 
 				// spaces are for safety - when there are two numbers next to each other.
@@ -272,7 +272,7 @@ public class PCmo_MinerWeaselBrain  implements PCmo_IMinerBrain, IWeaselHardware
 			if (functionName.equals("bw")) {
 				int num = 1;
 				if (args.length == 1) {
-					num = Calc.toInteger(args[0].get());
+					num = Calc.toInteger(args[0]);
 				}
 				num = -num;
 				// spaces are for safety - when there are two numbers next to each other.
@@ -285,7 +285,7 @@ public class PCmo_MinerWeaselBrain  implements PCmo_IMinerBrain, IWeaselHardware
 			if (functionName.equals("left")) {
 				int num = 1;
 				if (args.length == 1) {
-					num = Calc.toInteger(args[0].get());
+					num = Calc.toInteger(args[0]);
 				}
 				boolean R = num < 0;
 				if (R) num = -num;
@@ -299,7 +299,7 @@ public class PCmo_MinerWeaselBrain  implements PCmo_IMinerBrain, IWeaselHardware
 			if (functionName.equals("up")) {
 				int num = 1;
 				if (args.length == 1) {
-					num = Calc.toInteger(args[0].get());
+					num = Calc.toInteger(args[0]);
 				}
 
 				for (int i = 0; i < num; i++) {
@@ -312,7 +312,7 @@ public class PCmo_MinerWeaselBrain  implements PCmo_IMinerBrain, IWeaselHardware
 			if (functionName.equals("down")) {
 				int num = 1;
 				if (args.length == 1) {
-					num = Calc.toInteger(args[0].get());
+					num = Calc.toInteger(args[0]);
 				}
 
 				for (int i = 0; i < num; i++) {
@@ -325,7 +325,7 @@ public class PCmo_MinerWeaselBrain  implements PCmo_IMinerBrain, IWeaselHardware
 			if (functionName.equals("right")) {
 				int num = 1;
 				if (args.length == 1) {
-					num = Calc.toInteger(args[0].get());
+					num = Calc.toInteger(args[0]);
 				}
 				boolean L = num < 0;
 				if (L) num = -num;
@@ -344,7 +344,7 @@ public class PCmo_MinerWeaselBrain  implements PCmo_IMinerBrain, IWeaselHardware
 					}
 					int num = 2;
 					if (args.length == 1) {
-						num = Calc.toInteger(args[0].get());
+						num = Calc.toInteger(args[0]);
 					}
 					boolean L = num < 0;
 					if (L) num = -num;
@@ -360,10 +360,10 @@ public class PCmo_MinerWeaselBrain  implements PCmo_IMinerBrain, IWeaselHardware
 			if (functionName.equals("do")) {
 				int num = 1;
 				if (args.length == 2) {
-					num = Calc.toInteger(args[1].get());
+					num = Calc.toInteger(args[1]);
 				}
 				for (int i = 0; i < num; i++) {
-					miner.appendCode(Calc.toString(args[0].get()));
+					miner.appendCode(Calc.toString(args[0]));
 				}
 				engine.requestPause();
 				return null;
@@ -405,7 +405,7 @@ public class PCmo_MinerWeaselBrain  implements PCmo_IMinerBrain, IWeaselHardware
 				for (int i = 0; i < (state == -1 ? 1 : args.length); i++) {
 
 					if (args[i] instanceof WeaselDouble) {
-						int cap = Calc.toInteger(args[i].get());
+						int cap = Calc.toInteger(args[i]);
 						if (cap == Block.cobblestone.blockID) {
 							args[i] = new WeaselString("COBBLE");
 						} else if (cap == i) {
@@ -419,7 +419,7 @@ public class PCmo_MinerWeaselBrain  implements PCmo_IMinerBrain, IWeaselHardware
 						}
 					}
 
-					String capname = Calc.toString(args[i].get());
+					String capname = Calc.toString(args[i]);
 					int argl = args.length;
 					
 					boolean flag = false;
@@ -427,7 +427,7 @@ public class PCmo_MinerWeaselBrain  implements PCmo_IMinerBrain, IWeaselHardware
 						if(argl == 1) {
 							flag = false;
 						}else {
-							flag = Calc.toBoolean(args[1].get());
+							flag = Calc.toBoolean(args[1]);
 						}
 					}else {
 						flag = state > 0;
@@ -491,7 +491,7 @@ public class PCmo_MinerWeaselBrain  implements PCmo_IMinerBrain, IWeaselHardware
 			}
 
 			if (functionName.equals("can") || functionName.equalsIgnoreCase("hasOpt") || functionName.equalsIgnoreCase("hasCap")) {
-				String capname = (String) args[0].get();
+				String capname = Calc.toString(args[0]);
 
 				if (capname.equals("KEEP_FUEL")) {
 					return new WeaselBoolean(true);
@@ -750,13 +750,13 @@ public class PCmo_MinerWeaselBrain  implements PCmo_IMinerBrain, IWeaselHardware
 
 			if (functionName.equals("idMatch") || functionName.equals("ideq")) {
 
-				int id1 = Calc.toInteger(args[0].get());
+				int id1 = Calc.toInteger(args[0]);
 
 				WeaselObject arg = args[1];
 
 				ItemStack stack = new ItemStack(id1, 1, 0);
 
-				if (stack.itemID == 0) return new WeaselBoolean(arg instanceof WeaselDouble && (Integer) arg.get() == 0);
+				if (stack.itemID == 0) return new WeaselBoolean(arg instanceof WeaselDouble && Calc.toInteger(arg) == 0);
 
 				if (stack.getItem() == null) throw new WeaselRuntimeException(args[0] + " is not a valid block/item ID.");
 
@@ -800,17 +800,17 @@ public class PCmo_MinerWeaselBrain  implements PCmo_IMinerBrain, IWeaselHardware
 			}
 
 			if (functionName.equals("global.set")) {
-				PCws_WeaselManager.setGlobalVariable(Calc.toString(args[0].get()), args[1]);
+				PCws_WeaselManager.setGlobalVariable(Calc.toString(args[0]), args[1]);
 				return null;
 			}
 			
 			if (functionName.equals("global.has")) {
-				return new WeaselBoolean(PCws_WeaselManager.hasGlobalVariable(Calc.toString(args[0].get())));
+				return new WeaselBoolean(PCws_WeaselManager.hasGlobalVariable(Calc.toString(args[0])));
 
 			} 
 
 			if (functionName.equals("global.get")) {
-				return PCws_WeaselManager.getGlobalVariable(Calc.toString(args[0].get()));
+				return PCws_WeaselManager.getGlobalVariable(Calc.toString(args[0]));
 			}
 
 			if (functionName.equals("countFuel") || functionName.equals("fuel")) {
@@ -827,7 +827,7 @@ public class PCmo_MinerWeaselBrain  implements PCmo_IMinerBrain, IWeaselHardware
 			}
 
 			if (functionName.equals("canHarvest")) {
-				String side = Calc.toString(args[0].get());
+				String side = Calc.toString(args[0]);
 				char sid = side.charAt(0);
 				String num = side.substring(1);
 
@@ -836,7 +836,7 @@ public class PCmo_MinerWeaselBrain  implements PCmo_IMinerBrain, IWeaselHardware
 			}
 
 			if (functionName.equals("getBlock") || functionName.equals("getId") || functionName.equals("idAt") || functionName.equals("blockAt")) {
-				String side = Calc.toString(args[0].get());
+				String side = Calc.toString(args[0]);
 				char sid = side.charAt(0);
 				String num = side.substring(1);
 
@@ -849,11 +849,11 @@ public class PCmo_MinerWeaselBrain  implements PCmo_IMinerBrain, IWeaselHardware
 			}
 
 			if (functionName.equals("place") || functionName.equals("setBlock")) {
-				String side = Calc.toString(args[0].get());
+				String side = Calc.toString(args[0]);
 				char sid = side.charAt(0);
 				String num = side.substring(1);
 
-				Object id = args[1].get();
+				Object id = args[1];
 				String str = "";
 
 				int numid = -1;
