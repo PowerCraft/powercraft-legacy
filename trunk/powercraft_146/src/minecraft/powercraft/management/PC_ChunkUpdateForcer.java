@@ -20,7 +20,7 @@ public class PC_ChunkUpdateForcer implements PC_IDataHandler, PC_IMSG {
 	private static boolean needSave = false;
 	
 	public static PC_ChunkUpdateForcer getInstance() {
-		if(instance==null)
+		if(instance== null)
 			instance = new PC_ChunkUpdateForcer();
 		return instance;
 	}
