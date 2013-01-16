@@ -37,12 +37,13 @@ public class PC_BeamTracer {
 
 	private boolean canChangeColor = false;
 	private boolean canHitEntity = false;
-
+	private boolean handleBlocks = true;
+	
 	private int maxTotalLength = 8000;
 	private int start_limit = 40;
 	private int maximum_current_limit = 80;
 	private float strength = 0.2f;
-
+	
 	private HashMap<String, Object> data = new HashMap<String, Object>();
 
 	/**
@@ -83,6 +84,11 @@ public class PC_BeamTracer {
 		return this;
 	}
 
+	public PC_BeamTracer setBlockHandels(boolean b) {
+		handleBlocks = b;
+		return this;
+	}
+	
 	/**
 	 * Set starting range
 	 * 
@@ -274,7 +280,7 @@ public class PC_BeamTracer {
 			result res = result.CONTINUE;
 			if (b!=null){
 				res = result.FALLBACK;
-				if(b instanceof PC_IMSG){
+				if(b instanceof PC_IMSG && handleBlocks){
 					Object o = ((PC_IMSG) b).msg(PC_Utils.MSG_ON_HIT_BY_BEAM_TRACER, getWorld(), settings);
 					if(o instanceof result)
 						res = (result)o;
@@ -312,7 +318,7 @@ public class PC_BeamTracer {
 				boolean stop = false;
 				for(Entity entity:hitList){
 					res = result.FALLBACK;
-					if(entity instanceof PC_IMSG){
+					if(entity instanceof PC_IMSG && handleBlocks){
 						Object o = ((PC_IMSG) entity).msg(PC_Utils.MSG_ON_HIT_BY_BEAM_TRACER, getWorld(), settings);
 						if(o instanceof result)
 							res = (result)o;

@@ -242,7 +242,7 @@ public class mod_PowerCraft {
 		}
 		PC_Logger.exitSection();
 		PC_Logger.enterSection("Module Data Handlers Init");
-		ModuleLoader.regsterDataHandler("chunckUpdateForcer", PC_ChunckUpdateForcer.getInstance());
+		ModuleLoader.regsterDataHandler("chunckUpdateForcer", PC_ChunkUpdateForcer.getInstance());
 		for(PC_IModule module:modules){
 			List<PC_Struct2<String, PC_IDataHandler>> l = module.initDataHandlers(new ArrayList<PC_Struct2<String, PC_IDataHandler>>());
 			if(l!=null){
@@ -253,7 +253,7 @@ public class mod_PowerCraft {
 		}
 		PC_Logger.exitSection();
 		PC_Logger.enterSection("Module MSG Objects Init");
-		ModuleLoader.regsterDataHandler("chunckUpdateForcer", PC_ChunckUpdateForcer.getInstance());
+		ModuleLoader.regsterDataHandler("chunckUpdateForcer", PC_ChunkUpdateForcer.getInstance());
 		for(PC_IModule module:modules){
 			List<PC_IMSG> l = module.initMSGObjects(new ArrayList<PC_IMSG>());
 			if(l!=null){
