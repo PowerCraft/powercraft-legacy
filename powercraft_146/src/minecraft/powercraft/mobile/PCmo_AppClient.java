@@ -4,14 +4,12 @@ import java.util.List;
 
 import net.minecraft.client.renderer.entity.Render;
 import net.minecraft.entity.Entity;
-
 import powercraft.management.PC_IClientModule;
-import powercraft.management.PC_IEntityRender;
 import powercraft.management.PC_LangEntry;
 import powercraft.management.PC_Struct2;
 import powercraft.management.PC_Utils.ModuleInfo;
 
-public class PCmo_AppClient extends PCmo_App implements PC_IClientModule, PC_IEntityRender {
+public class PCmo_AppClient extends PCmo_App implements PC_IClientModule {
 
 	@Override
 	public List<PC_LangEntry> initLanguage(List<PC_LangEntry> lang) {

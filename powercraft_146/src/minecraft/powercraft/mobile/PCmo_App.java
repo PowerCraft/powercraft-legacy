@@ -9,8 +9,12 @@ import net.minecraft.block.Block;
 import net.minecraft.entity.EntityList;
 import net.minecraft.item.crafting.IRecipe;
 import powercraft.machines.PCma_EntityItem;
+import powercraft.management.PC_3DRecipe;
 import powercraft.management.PC_3DRecipeManager;
+import powercraft.management.PC_IDataHandler;
+import powercraft.management.PC_IMSG;
 import powercraft.management.PC_IModule;
+import powercraft.management.PC_IPacketHandler;
 import powercraft.management.PC_ModuleClassLoader;
 import powercraft.management.PC_PacketHandler;
 import powercraft.management.PC_Property;
@@ -21,7 +25,7 @@ import powercraft.management.PC_Utils.ModuleLoader;
 
 public class PCmo_App implements PC_IModule {
 
-	public static PCmo_MinerManager minerManager;
+	public static PCmo_MinerManager minerManager = new PCmo_MinerManager();
 	
 	public static final String pk_mForward = "move_forward";
 	public static final String pk_mBackward = "move_backward";
@@ -62,44 +66,11 @@ public class PCmo_App implements PC_IModule {
 
 	@Override
 	public void init() {
-		ModuleLoader.registerEntity(PCmo_EntityMiner.class, 220);
+		
 	}
 
 	@Override
-	public void postInit() {
-		minerManager = new PCmo_MinerManager();
-		PC_PacketHandler.registerPackethandler("MinerManager", minerManager);
-		PC_3DRecipeManager.add3DRecipe(minerManager,
-				new String[]{
-				"ss",
-				"ss"},
-				new String[]{
-				"ss",
-				"cc"},
-				's', Block.blockSteel, 'c', Block.chest);
-		PC_3DRecipeManager.add3DRecipe(minerManager,
-				new String[]{
-				"oooo",
-				"oooo",
-				"oooo",
-				"oooo"},
-				new String[]{
-				"oooo",
-				"o  o",
-				"o  o",
-				"oooo"},
-				new String[]{
-				"oooo",
-				"o  o",
-				"o  o",
-				"oooo"},
-				new String[]{
-				"oooo",
-				"oooo",
-				"oooo",
-				"oooo"},
-				'o', Block.obsidian);
-	}
+	public void postInit() {}
 
 	@Override
 	public void initProperties(PC_Property config) {
@@ -125,27 +96,77 @@ public class PCmo_App implements PC_IModule {
 
 	@Override
 	public void initBlocks() {
-		// TODO Auto-generated method stub
-
 	}
 
 	@Override
 	public void initItems() {
-		// TODO Auto-generated method stub
-
 	}
 
 	@Override
-	public List<IRecipe> initRecipes(List<IRecipe> recipes) {
-		// TODO Auto-generated method stub
+	public void initEntities() {
+		ModuleLoader.registerEntity(PCmo_EntityMiner.class, 220);
+	}
+	
+	@Override
+	public List<Object> initRecipes(List<Object> recipes) {
+		
+		recipes.add(new PC_3DRecipe(minerManager,
+				new String[]{
+				"ss",
+				"ss"},
+				new String[]{
+				"ss",
+				"cc"},
+				's', Block.blockSteel, 'c', Block.chest));
+		
+		recipes.add(new PC_3DRecipe(minerManager,
+				new String[]{
+				"oooo",
+				"oooo",
+				"oooo",
+				"oooo"},
+				new String[]{
+				"oooo",
+				"o  o",
+				"o  o",
+				"oooo"},
+				new String[]{
+				"oooo",
+				"o  o",
+				"o  o",
+				"oooo"},
+				new String[]{
+				"oooo",
+				"oooo",
+				"oooo",
+				"oooo"},
+				'o', Block.obsidian));
+		
+		return recipes;
+	}
+
+	@Override
+	public List<PC_Struct2<String, PC_IDataHandler>> initDataHandlers(
+			List<PC_Struct2<String, PC_IDataHandler>> dataHandlers) {
 		return null;
 	}
 
+	@Override
+	public List<PC_IMSG> initMSGObjects(List<PC_IMSG> msgObjects) {
+		return null;
+	}
+
+	@Override
+	public List<PC_Struct2<String, PC_IPacketHandler>> initPacketHandlers(
+			List<PC_Struct2<String, PC_IPacketHandler>> packetHandlers) {
+		packetHandlers.add(new PC_Struct2<String, PC_IPacketHandler>("MinerManager", minerManager));
+		return packetHandlers;
+	}
+	
 	@Override
 	public List<PC_Struct2<String, Class>> registerGuis(
 			List<PC_Struct2<String, Class>> guis) {
 		guis.add(new PC_Struct2<String, Class>("Miner", PCmo_ContainerMiner.class));
 		return guis;
 	}
-
 }

@@ -136,6 +136,11 @@ public class mod_PowerCraft {
 			module.initItems();
 		}
 		PC_Logger.exitSection();
+		PC_Logger.enterSection("Module Entity Init");
+		for(PC_IModule module:modules){
+			module.initEntities();
+		}
+		PC_Logger.exitSection();
 		PC_Logger.enterSection("Module Gui Init");
 		for(PC_IModule module:modules){
 			List<PC_Struct2<String,Class>> l = module.registerGuis(new ArrayList<PC_Struct2<String,Class>>());
@@ -220,10 +225,50 @@ public class mod_PowerCraft {
 		PC_Logger.enterSection("Module Recipes Init");
 		List<PC_IModule> modules = ModuleInfo.getModules();
 		for(PC_IModule module:modules){
-			List<IRecipe> l = module.initRecipes(new ArrayList<IRecipe>());
+			List<Object> l = module.initRecipes(new ArrayList<Object>());
 			if(l!=null){
-				for(IRecipe recipe:l){
-					GameRegistry.addRecipe(recipe);
+				for(Object recipe:l){
+					if(recipe instanceof IRecipe){
+						GameRegistry.addRecipe((IRecipe)recipe);
+					}else if(recipe instanceof PC_3DRecipe){
+						PC_3DRecipeManager.add3DRecipe((PC_3DRecipe)recipe);
+					}else if(recipe instanceof PC_IFurnaceRecipe){
+						PC_FurnaceRecipeManager.addRecipe((PC_IFurnaceRecipe)recipe);
+					}else{
+						PC_Logger.severe("Unknown recipe of type "+recipe.getClass().getSimpleName());
+					}
+				}
+			}
+		}
+		PC_Logger.exitSection();
+		PC_Logger.enterSection("Module Data Handlers Init");
+		ModuleLoader.regsterDataHandler("chunckUpdateForcer", PC_ChunckUpdateForcer.getInstance());
+		for(PC_IModule module:modules){
+			List<PC_Struct2<String, PC_IDataHandler>> l = module.initDataHandlers(new ArrayList<PC_Struct2<String, PC_IDataHandler>>());
+			if(l!=null){
+				for(PC_Struct2<String, PC_IDataHandler> dataHandler:l){
+					ModuleLoader.regsterDataHandler(dataHandler.a, dataHandler.b);
+				}
+			}
+		}
+		PC_Logger.exitSection();
+		PC_Logger.enterSection("Module MSG Objects Init");
+		ModuleLoader.regsterDataHandler("chunckUpdateForcer", PC_ChunckUpdateForcer.getInstance());
+		for(PC_IModule module:modules){
+			List<PC_IMSG> l = module.initMSGObjects(new ArrayList<PC_IMSG>());
+			if(l!=null){
+				for(PC_IMSG msgObject:l){
+					ModuleInfo.registerMSGObject(msgObject);
+				}
+			}
+		}
+		PC_Logger.exitSection();
+		PC_Logger.enterSection("Module Packet Handlers Init");
+		for(PC_IModule module:modules){
+			List<PC_Struct2<String, PC_IPacketHandler>> l = module.initPacketHandlers(new ArrayList<PC_Struct2<String, PC_IPacketHandler>>());
+			if(l!=null){
+				for(PC_Struct2<String, PC_IPacketHandler> packetHandler:l){
+					PC_PacketHandler.registerPackethandler(packetHandler.a, packetHandler.b);
 				}
 			}
 		}

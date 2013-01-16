@@ -6,7 +6,10 @@ import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 import net.minecraft.item.crafting.IRecipe;
 import powercraft.management.PC_Block;
+import powercraft.management.PC_IDataHandler;
+import powercraft.management.PC_IMSG;
 import powercraft.management.PC_IModule;
+import powercraft.management.PC_IPacketHandler;
 import powercraft.management.PC_ItemStack;
 import powercraft.management.PC_Property;
 import powercraft.management.PC_ShapedRecipes;
@@ -55,7 +58,10 @@ public class PCde_App implements PC_IModule {
 	public void initItems() {}
 
 	@Override
-	public List<IRecipe> initRecipes(List<IRecipe> recipes) {
+	public void initEntities() {}
+	
+	@Override
+	public List<Object> initRecipes(List<Object> recipes) {
 		recipes.add(new PC_ShapedRecipes(new PC_ItemStack(ironFrame, 32, 0),
 					"XXX", 
 					"X X", 
@@ -109,6 +115,23 @@ public class PCde_App implements PC_IModule {
 		return recipes;
 	}
 
+	@Override
+	public List<PC_Struct2<String, PC_IDataHandler>> initDataHandlers(
+			List<PC_Struct2<String, PC_IDataHandler>> dataHandlers) {
+		return null;
+	}
+
+	@Override
+	public List<PC_IMSG> initMSGObjects(List<PC_IMSG> msgObjects) {
+		return null;
+	}
+
+	@Override
+	public List<PC_Struct2<String, PC_IPacketHandler>> initPacketHandlers(
+			List<PC_Struct2<String, PC_IPacketHandler>> packetHandlers) {
+		return null;
+	}
+	
 	@Override
 	public List<PC_Struct2<String, Class>> registerGuis(List<PC_Struct2<String, Class>> guis) {
 		return null;

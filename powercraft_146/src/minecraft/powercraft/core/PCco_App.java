@@ -7,7 +7,10 @@ import net.minecraft.item.Item;
 import net.minecraft.item.crafting.IRecipe;
 import powercraft.management.PC_Block;
 import powercraft.management.PC_GlobalVariables;
+import powercraft.management.PC_IDataHandler;
+import powercraft.management.PC_IMSG;
 import powercraft.management.PC_IModule;
+import powercraft.management.PC_IPacketHandler;
 import powercraft.management.PC_Item;
 import powercraft.management.PC_ItemStack;
 import powercraft.management.PC_PacketHandler;
@@ -27,6 +30,8 @@ public class PCco_App implements PC_IModule {
 	public static PC_Item craftingTool;
 	public static PC_Item oreSniffer;
 	
+	public static PCco_MobSpawnerSetter spawnerSetter = new PCco_MobSpawnerSetter();
+	
 	@Override
 	public String getName() {
 		return "Core";
@@ -41,13 +46,7 @@ public class PCco_App implements PC_IModule {
 	public void preInit() {}
 
 	@Override
-	public void init() {
-		PC_PacketHandler.registerPackethandler("DeleteAllPlayerStacks", new PCco_DeleteAllPlayerStacks());
-		PCco_MobSpawnerSetter spawnerSetter = new PCco_MobSpawnerSetter();
-		PC_PacketHandler.registerPackethandler("MobSpawner", spawnerSetter);
-		ModuleInfo.registerMSGObject(spawnerSetter);
-		ModuleInfo.registerMSGObject(new PCco_CraftingToolLoader());
-	}
+	public void init() {}
 
 	@Override
 	public void postInit() {}
@@ -73,7 +72,10 @@ public class PCco_App implements PC_IModule {
 	}
 
 	@Override
-	public List<IRecipe> initRecipes(List<IRecipe> recipes) {
+	public void initEntities() {}
+	
+	@Override
+	public List<Object> initRecipes(List<Object> recipes) {
 		recipes.add(new PC_ShapedRecipes(new PC_ItemStack(craftingTool), 
 				" r ",
                 "rIr",
@@ -123,6 +125,28 @@ public class PCco_App implements PC_IModule {
 		return recipes;
 	}
 
+	@Override
+	public List<PC_Struct2<String, PC_IDataHandler>> initDataHandlers(
+			List<PC_Struct2<String, PC_IDataHandler>> dataHandlers) {
+		return null;
+	}
+	
+	@Override
+	public List<PC_IMSG> initMSGObjects(List<PC_IMSG> msgObjects) {
+		msgObjects.add(spawnerSetter);
+		msgObjects.add(new PCco_CraftingToolLoader());
+		return msgObjects;
+	}
+
+	@Override
+	public List<PC_Struct2<String, PC_IPacketHandler>> initPacketHandlers(
+			List<PC_Struct2<String, PC_IPacketHandler>> packetHandlers) {
+		packetHandlers.add(new PC_Struct2<String, PC_IPacketHandler>("DeleteAllPlayerStacks", new PCco_DeleteAllPlayerStacks()));
+		packetHandlers.add(new PC_Struct2<String, PC_IPacketHandler>("MobSpawner", spawnerSetter));
+		
+		return packetHandlers;
+	}
+	
 	@Override
 	public List<PC_Struct2<String, Class>> registerGuis(List<PC_Struct2<String, Class>> guis) {
 		guis.add(new PC_Struct2<String, Class>("CraftingTool", PCco_ContainerCraftingTool.class));
