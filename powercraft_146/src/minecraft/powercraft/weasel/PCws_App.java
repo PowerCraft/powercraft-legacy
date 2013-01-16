@@ -27,6 +27,7 @@ public class PCws_App implements PC_IModule {
 	public static PC_Block unobtaninium;
 	
 	public static PC_Item weaselDisk;
+	public static PC_Item weaselTransistor;
 	public static PC_Item ingotUnobtaninium;
 	
 	@Override
@@ -76,64 +77,71 @@ public class PCws_App implements PC_IModule {
 	@Override
 	public void initItems() {
 		weaselDisk = ModuleLoader.register(this, PCws_ItemWeaselDisk.class);
+		weaselTransistor = ModuleLoader.register(this, PCws_ItemTransistor.class);
 		ingotUnobtaninium = ModuleLoader.register(this, PCws_ItemUnobtaninium.class);
 	}
 
 	@Override
 	public List<IRecipe> initRecipes(List<IRecipe> recipes) {
+		
+		recipes.add(new PC_ShapedRecipes(new PC_ItemStack(weaselTransistor, 2),
+				"UUU",
+				"III",
+				'I', new PC_ItemStack(Item.ingotIron), 'U', new PC_ItemStack(ingotUnobtaninium)));
+		
 		recipes.add(new PC_ShapedRecipes(new PC_ItemStack(weasel, 1, 0),
-				"SRS", 
+				"TPT ", 
 				"RCR", 
-				"SRS",
-					'S', new PC_ItemStack(Block.stoneSingleSlab,1,0), 'R', Item.redstone, 'C', new PC_ItemStack(ModuleInfo.getPCBlockByName("PCco_BlockPowerCrystal"),1,-1)));
+				"SSS",
+					'S', new PC_ItemStack(Block.stoneSingleSlab,1,0), 'R', Item.redstone, 'C', new PC_ItemStack(ModuleInfo.getPCBlockByName("PCco_BlockPowerCrystal"),1,-1),
+					'T', new PC_ItemStack(weaselTransistor,1,0), 'P', new PC_ItemStack(weasel,1,1)));
 		
 		recipes.add(new PC_ShapedRecipes(new PC_ItemStack(weasel, 1, 1),
-				"GRG", 
+				"RTR", 
 				"SSS",
-					'S', new PC_ItemStack(Block.stoneSingleSlab,1,0), 'R', Item.redstone, 'G', Item.goldNugget));
-		
-		recipes.add(new PC_ShapedRecipes(new PC_ItemStack(weasel, 1, 3),
-				" G ", 
-				"NRN",
-				"SSS",
-					'S', new PC_ItemStack(Block.stoneSingleSlab,1,0), 'R', Item.redstone, 'G', Block.thinGlass, 'N', Item.goldNugget));
+					'S', new PC_ItemStack(Block.stoneSingleSlab,1,0), 'R', Item.redstone, 'T', new PC_ItemStack(weaselTransistor,1,0)));
 		
 		recipes.add(new PC_ShapedRecipes(new PC_ItemStack(weasel, 1, 2),
 				" N ", 
-				"GRG",
+				" P ",
 				"SSS",
-					'S', new PC_ItemStack(Block.stoneSingleSlab,1,0), 'R', Item.redstone, 'N', Block.music, 'G', Item.goldNugget));
+					'S', new PC_ItemStack(Block.stoneSingleSlab,1,0), 'P', new PC_ItemStack(weasel,1,1), 'N', Block.music));
+		
+		recipes.add(new PC_ShapedRecipes(new PC_ItemStack(weasel, 1, 3),
+				" G ", 
+				" P ",
+				"SSS",
+					'S', new PC_ItemStack(Block.stoneSingleSlab,1,0), 'P', new PC_ItemStack(weasel,1,1), 'G', Block.thinGlass));
+		
+		recipes.add(new PC_ShapedRecipes(new PC_ItemStack(weasel, 1, 4),
+				"  G", 
+				"BBP", 
+				"SSS",
+					'B', Block.stoneButton, 'S', new PC_ItemStack(Block.stoneSingleSlab,1,0), 'P', new PC_ItemStack(weasel,1,1), 'G', Block.thinGlass));
 		
 		recipes.add(new PC_ShapedRecipes(new PC_ItemStack(weasel, 1, 5),
 				"GGG", 
-				"NRN",
+				"TPT",
 				"SSS",
-					'S', new PC_ItemStack(Block.stoneSingleSlab,1,0), 'R', Item.redstone, 'G', Block.thinGlass, 'N', Item.goldNugget));
-		
-
-		recipes.add(new PC_ShapedRecipes(new PC_ItemStack(weaselDisk, 4),
-				" C ", 
-				"CIC",
-				" C ",
-					'C', Item.coal, 'I', Item.ingotIron));
-		
-		recipes.add(new PC_ShapedRecipes(new PC_ItemStack(weaselDiskManager),
-				"BBB", 
-				"SRS", 
-				"SSS",
-					'B', Block.stoneButton, 'S', new PC_ItemStack(Block.stoneSingleSlab, 1, 0), 'R', Item.redstone));
+					'S', new PC_ItemStack(Block.stoneSingleSlab,1,0), 'T', new PC_ItemStack(weaselTransistor,1,0), 'P', new PC_ItemStack(weasel,1,1), 'G', Block.thinGlass));
 		
 		recipes.add(new PC_ShapedRecipes(new PC_ItemStack(weasel, 1, 6),
 				"SSS", 
-				"GRG",
+				"GPG",
 				"SSS",
-					'B', Block.stoneButton, 'S', new PC_ItemStack(Block.stoneSingleSlab,1,0), 'R', Item.redstone, 'G', Item.goldNugget));
+					'B', Block.stoneButton, 'S', new PC_ItemStack(Block.stoneSingleSlab,1,0), 'P', new PC_ItemStack(weasel,1,1), 'G', Item.goldNugget));
 		
-		recipes.add(new PC_ShapedRecipes(new PC_ItemStack(weasel, 1, 4),
-				"  D", 
-				"BBS", 
+		recipes.add(new PC_ShapedRecipes(new PC_ItemStack(weaselDisk, 4),
+				" C ", 
+				"CTC",
+				" C ",
+					'C', Item.coal, 'T', new PC_ItemStack(weaselTransistor,1,0)));
+		
+		recipes.add(new PC_ShapedRecipes(new PC_ItemStack(weaselDiskManager),
+				"BBB", 
+				"STS", 
 				"SSS",
-					'B', Block.stoneButton, 'S', new PC_ItemStack(Block.stoneSingleSlab,1,0), 'D', new PC_ItemStack(weasel, 1, 3)));
+					'B', Block.stoneButton, 'S', new PC_ItemStack(Block.stoneSingleSlab, 1, 0), 'T', new PC_ItemStack(weaselTransistor,1,0)));
 		
 		return recipes;
 	}
