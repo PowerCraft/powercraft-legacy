@@ -19,7 +19,7 @@ public class PC_ChunkUpdateForcer implements PC_IDataHandler, PC_IMSG {
 	private static HashMap<Integer, HashMap<PC_VecI, Integer>> chunks = new HashMap<Integer, HashMap<PC_VecI, Integer>>();
 	private static boolean needSave = false;
 	
-	public static PC_IDataHandler getInstance() {
+	public static PC_ChunkUpdateForcer getInstance() {
 		if(instance==null)
 			instance = new PC_ChunkUpdateForcer();
 		return instance;
@@ -125,9 +125,9 @@ public class PC_ChunkUpdateForcer implements PC_IDataHandler, PC_IMSG {
 						List<PC_VecI> chunckList = new ArrayList<PC_VecI>();
 						for(Entry<PC_VecI, Integer> e2:e.getValue().entrySet()){
 							PC_VecI p = e2.getKey().copy();
-							p.x >>= 16;
+							p.x >>= 4;
 							p.y = 0;
-							p.z >>= 16;
+							p.z >>= 4;
 							int r = e2.getValue();
 							for(int i=-r; i<=r; i++){
 								for(int j=-r; j<=r; j++){
