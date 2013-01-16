@@ -26,19 +26,16 @@ public class PCma_TileEntityChunkLoader extends PC_TileEntity implements PC_IBea
 			for(int j=-1; j<=1; j++){
 				if((i==j || -i==j) && i!=0){
 					if(GameInfo.getBID(worldObj, pos.offset(i, 0, j))!=Block.glass.blockID){
-						System.out.println("no glass "+i+":"+j);
 						ValueWriting.setBID(worldObj, pos, Block.glass.blockID, 0);
 						return;
 					}
 				}else if(i!=j){
 					if(GameInfo.getBID(worldObj, pos.offset(i, 0, j))!=Block.obsidian.blockID){
-						System.out.println("no obs "+i+":"+j);
 						ValueWriting.setBID(worldObj, pos, Block.glass.blockID, 0);
 						return;
 					}
 				}
 				if(!worldObj.canBlockSeeTheSky(pos.x+i, pos.y+1, pos.z+j)){
-					System.out.println("no "+i+":"+j);
 					ValueWriting.setBID(worldObj, pos, Block.glass.blockID, 0);
 					return;
 				}
@@ -58,8 +55,9 @@ public class PCma_TileEntityChunkLoader extends PC_TileEntity implements PC_IBea
 		if(worldObj.isRemote){
 			ValueWriting.spawnParticle("PC_EntityLaserFX", worldObj, pos, new PC_VecI(0, 256, 0), 0.5f, new PC_Color(1.0f, 0.001f, 0.2f));
 			Random rand = new Random();
+			PC_Color color = new PC_Color(0.7f + rand.nextFloat()*0.3f, rand.nextFloat()*0.3f, 0.2f+rand.nextFloat()*0.3f);
 			ValueWriting.spawnParticle("PC_EntityFanFX", worldObj, new PC_VecF(getCoord()), new PC_VecF(rand.nextFloat()-0.5f, rand.nextFloat()-0.5f, rand.nextFloat()-0.5f),
-					new PC_VecF(rand.nextFloat()-0.5f, rand.nextFloat()-0.5f, rand.nextFloat()-0.5f).div(10.0f), 0.1f, new PC_Color(1.0f, 0.001f, 0.2f));
+					new PC_VecF(rand.nextFloat()-0.5f, rand.nextFloat()-0.5f, rand.nextFloat()-0.5f).div(10.0f), 0.05f + rand.nextFloat()*0.1f, color);
 		}
 		
 		tick++;
