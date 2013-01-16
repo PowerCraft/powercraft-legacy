@@ -13,4 +13,6 @@ public interface PC_IClientModule extends PC_IModule {
 	
 	public List<String> addSplashes(List<String> list);
 	
+	public List<PC_Struct2<Class<? extends Entity>, Render>> registerEntityRender(List<PC_Struct2<Class<? extends Entity>, Render>> list);
+	
 }

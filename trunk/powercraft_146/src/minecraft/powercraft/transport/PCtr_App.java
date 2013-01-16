@@ -6,7 +6,10 @@ import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 import net.minecraft.item.crafting.IRecipe;
 import powercraft.management.PC_Block;
+import powercraft.management.PC_IDataHandler;
+import powercraft.management.PC_IMSG;
 import powercraft.management.PC_IModule;
+import powercraft.management.PC_IPacketHandler;
 import powercraft.management.PC_ItemArmor;
 import powercraft.management.PC_ItemStack;
 import powercraft.management.PC_Property;
@@ -47,8 +50,6 @@ public class PCtr_App implements PC_IModule
 
 	@Override
 	public void initProperties(PC_Property config) {
-		// TODO Auto-generated method stub
-		
 	}
 
 	 @Override
@@ -72,7 +73,10 @@ public class PCtr_App implements PC_IModule
 	}
 
 	@Override
-	public List<IRecipe> initRecipes(List<IRecipe> recipes) {
+	public void initEntities() {}
+
+	@Override
+	public List<Object> initRecipes(List<Object> recipes) {
 		recipes.add(new PC_ShapedRecipes(new PC_ItemStack(conveyorBelt, 16),
                 	"XXX", 
                 	"YRY",
@@ -131,6 +135,23 @@ public class PCtr_App implements PC_IModule
 		return recipes;
 	}
 
+	@Override
+	public List<PC_Struct2<String, PC_IDataHandler>> initDataHandlers(
+			List<PC_Struct2<String, PC_IDataHandler>> dataHandlers) {
+		return null;
+	}
+
+	@Override
+	public List<PC_IMSG> initMSGObjects(List<PC_IMSG> msgObjects) {
+		return null;
+	}
+
+	@Override
+	public List<PC_Struct2<String, PC_IPacketHandler>> initPacketHandlers(
+			List<PC_Struct2<String, PC_IPacketHandler>> packetHandlers) {
+		return null;
+	}
+	
 	@Override
 	public List<PC_Struct2<String, Class>> registerGuis(List<PC_Struct2<String, Class>> guis) {
 		guis.add(new PC_Struct2<String, Class>("SeperationBelt", PCtr_ContainerSeparationBelt.class));

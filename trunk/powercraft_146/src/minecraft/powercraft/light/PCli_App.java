@@ -9,7 +9,10 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.nbt.NBTTagCompound;
 import powercraft.management.PC_Block;
+import powercraft.management.PC_IDataHandler;
+import powercraft.management.PC_IMSG;
 import powercraft.management.PC_IModule;
+import powercraft.management.PC_IPacketHandler;
 import powercraft.management.PC_Item;
 import powercraft.management.PC_ItemStack;
 import powercraft.management.PC_Property;
@@ -68,8 +71,11 @@ public class PCli_App implements PC_IModule
     	laserComposition = ModuleLoader.register(this, PCli_ItemLaserComposition.class);
     }
 	
+    @Override
+	public void initEntities() {}
+    
 	@Override
-	public List<IRecipe> initRecipes(List<IRecipe> recipes) {
+	public List<Object> initRecipes(List<Object> recipes) {
 		recipes.add(new PC_ShapelessRecipes(new PC_ItemStack(light),
                 Item.redstone, Block.glowStone));
 		
@@ -130,6 +136,23 @@ public class PCli_App implements PC_IModule
 		return recipes;
 	}
 
+	@Override
+	public List<PC_Struct2<String, PC_IDataHandler>> initDataHandlers(
+			List<PC_Struct2<String, PC_IDataHandler>> dataHandlers) {
+		return null;
+	}
+
+	@Override
+	public List<PC_IMSG> initMSGObjects(List<PC_IMSG> msgObjects) {
+		return null;
+	}
+
+	@Override
+	public List<PC_Struct2<String, PC_IPacketHandler>> initPacketHandlers(
+			List<PC_Struct2<String, PC_IPacketHandler>> packetHandlers) {
+		return null;
+	}
+	
 	@Override
 	public List<PC_Struct2<String, Class>> registerGuis(List<PC_Struct2<String, Class>> guis) {
 		return null;

@@ -9,6 +9,8 @@ import net.minecraft.item.crafting.FurnaceRecipes;
 import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.src.ModLoader;
 import powercraft.management.PC_Block;
+import powercraft.management.PC_IDataHandler;
+import powercraft.management.PC_IMSG;
 import powercraft.management.PC_IModule;
 import powercraft.management.PC_IPacketHandler;
 import powercraft.management.PC_Item;
@@ -22,6 +24,8 @@ import powercraft.management.PC_Utils.ModuleLoader;
 
 public class PCws_App implements PC_IModule {
 
+	public static PCws_WeaselManager weaselManager = new PCws_WeaselManager();
+	
 	public static PC_Block weasel;
 	public static PC_Block weaselDiskManager;
 	public static PC_Block unobtaninium;
@@ -52,11 +56,7 @@ public class PCws_App implements PC_IModule {
 	}
 
 	@Override
-	public void init() {
-		PCws_WeaselManager weaselManager = new PCws_WeaselManager();
-		ModuleInfo.registerMSGObject(weaselManager);
-		ModuleLoader.regsterDataHandler("Weasel", weaselManager);
-	}
+	public void init() {}
 
 	@Override
 	public void postInit() {}
@@ -70,7 +70,6 @@ public class PCws_App implements PC_IModule {
 	public void initBlocks() {
 		weasel = ModuleLoader.register(this, PCws_BlockWeasel.class, PCws_ItemBlockWeasel.class, PCws_TileEntityWeasel.class);
 		weaselDiskManager = ModuleLoader.register(this, PCws_BlockWeaselDiskManager.class, PCws_TileEntityWeaselDiskManager.class);
-		PC_PacketHandler.registerPackethandler("WeaselDiskDrive", (PC_IPacketHandler)weaselDiskManager);
 		unobtaninium = ModuleLoader.register(this, PCws_BlockUnobtainium.class, PCws_TileEntityUnobtainium.class);
 	}
 
@@ -82,7 +81,10 @@ public class PCws_App implements PC_IModule {
 	}
 
 	@Override
-	public List<IRecipe> initRecipes(List<IRecipe> recipes) {
+	public void initEntities() {}
+
+	@Override
+	public List<Object> initRecipes(List<Object> recipes) {
 		
 		recipes.add(new PC_ShapedRecipes(new PC_ItemStack(weaselTransistor, 2),
 				"UUU",
@@ -146,6 +148,26 @@ public class PCws_App implements PC_IModule {
 		return recipes;
 	}
 
+	@Override
+	public List<PC_Struct2<String, PC_IDataHandler>> initDataHandlers(
+			List<PC_Struct2<String, PC_IDataHandler>> dataHandlers) {
+		dataHandlers.add(new PC_Struct2<String, PC_IDataHandler>("Weasel", weaselManager));
+		return dataHandlers;
+	}
+
+	@Override
+	public List<PC_IMSG> initMSGObjects(List<PC_IMSG> msgObjects) {
+		msgObjects.add(weaselManager);
+		return msgObjects;
+	}
+
+	@Override
+	public List<PC_Struct2<String, PC_IPacketHandler>> initPacketHandlers(
+			List<PC_Struct2<String, PC_IPacketHandler>> packetHandlers) {
+		packetHandlers.add(new PC_Struct2<String, PC_IPacketHandler>("WeaselDiskDrive", (PC_IPacketHandler)weaselDiskManager));
+		return packetHandlers;
+	}
+	
 	@Override
 	public List<PC_Struct2<String, Class>> registerGuis(List<PC_Struct2<String, Class>> guis) {
 		guis.add(new PC_Struct2<String, Class>("WeaselDiskManager", PCws_ContainerWeaselDiskManager.class));

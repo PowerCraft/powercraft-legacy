@@ -2,6 +2,9 @@ package powercraft.weasel;
 
 import java.util.List;
 
+import net.minecraft.client.renderer.entity.Render;
+import net.minecraft.entity.Entity;
+
 import powercraft.management.PC_IClientModule;
 import powercraft.management.PC_LangEntry;
 import powercraft.management.PC_Struct2;
@@ -90,6 +93,12 @@ public class PCws_AppClient extends PCws_App implements PC_IClientModule {
 		guis.add(new PC_Struct2<String, Class>("WeaselDiskManager", PCws_GuiWeaselDiskManager.class));
 		guis.add(new PC_Struct2<String, Class>("WeaselDiskDrive", PCws_GuiWeaselDiskDrive.class));
 		return guis;
+	}
+
+	@Override
+	public List<PC_Struct2<Class<? extends Entity>, Render>> registerEntityRender(
+			List<PC_Struct2<Class<? extends Entity>, Render>> list) {
+		return null;
 	}
 
 }

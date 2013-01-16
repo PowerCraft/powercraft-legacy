@@ -2,6 +2,9 @@ package powercraft.teleport;
 
 import java.util.List;
 
+import net.minecraft.client.renderer.entity.Render;
+import net.minecraft.entity.Entity;
+
 import powercraft.management.PC_GresCheckBox;
 import powercraft.management.PC_GresLabel;
 import powercraft.management.PC_GresRadioButton;
@@ -53,6 +56,12 @@ public class PCtp_AppClient extends PCtp_App implements PC_IClientModule {
 		guis.add(new PC_Struct2<String, Class>("Teleporter", PCtp_GuiTeleporter.class));
 		guis.add(new PC_Struct2<String, Class>("PlayerTeleport", PCtp_GuiPlayerTeleport.class));
 		return guis;
+	}
+
+	@Override
+	public List<PC_Struct2<Class<? extends Entity>, Render>> registerEntityRender(
+			List<PC_Struct2<Class<? extends Entity>, Render>> list) {
+		return null;
 	}
 	
 }

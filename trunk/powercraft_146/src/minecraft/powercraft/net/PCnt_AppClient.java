@@ -2,6 +2,9 @@ package powercraft.net;
 
 import java.util.List;
 
+import net.minecraft.client.renderer.entity.Render;
+import net.minecraft.entity.Entity;
+
 import powercraft.management.PC_IClientModule;
 import powercraft.management.PC_LangEntry;
 import powercraft.management.PC_Struct2;
@@ -43,6 +46,12 @@ public class PCnt_AppClient extends PCnt_App implements PC_IClientModule {
 		guis.add(new PC_Struct2<String, Class>("Sensor", PCnt_GuiSensor.class));
 		guis.add(new PC_Struct2<String, Class>("Radio", PCnt_GuiRadio.class));
 		return guis;
+	}
+
+	@Override
+	public List<PC_Struct2<Class<? extends Entity>, Render>> registerEntityRender(
+			List<PC_Struct2<Class<? extends Entity>, Render>> list) {
+		return null;
 	}
 	
 }

@@ -8,7 +8,10 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.src.ModLoader;
 import powercraft.management.PC_Block;
+import powercraft.management.PC_IDataHandler;
+import powercraft.management.PC_IMSG;
 import powercraft.management.PC_IModule;
+import powercraft.management.PC_IPacketHandler;
 import powercraft.management.PC_Item;
 import powercraft.management.PC_ItemStack;
 import powercraft.management.PC_Property;
@@ -36,18 +39,13 @@ public class PCnt_App implements PC_IModule {
 	public void preInit() {}
 
 	@Override
-	public void init() {
-		ModuleLoader.regsterDataHandler("Radio", new PCnt_RadioManager());
-	}
+	public void init() {}
 
 	@Override
 	public void postInit() {}
 
 	@Override
-	public void initProperties(PC_Property config) {
-		// TODO Auto-generated method stub
-
-	}
+	public void initProperties(PC_Property config) {}
 
 	@Override
 	public void initBlocks() {
@@ -61,7 +59,10 @@ public class PCnt_App implements PC_IModule {
 	}
 
 	@Override
-	public List<IRecipe> initRecipes(List<IRecipe> recipes) {
+	public void initEntities() {}
+
+	@Override
+	public List<Object> initRecipes(List<Object> recipes) {
 		recipes.add(new PC_ShapedRecipes(new PC_ItemStack(sensor, 1, 1),
 					"R", 
 					"I", 
@@ -102,10 +103,26 @@ public class PCnt_App implements PC_IModule {
 	}
 
 	@Override
-	public List<PC_Struct2<String, Class>> registerGuis(
-			List<PC_Struct2<String, Class>> guis) {
-		// TODO Auto-generated method stub
+	public List<PC_Struct2<String, PC_IDataHandler>> initDataHandlers(
+			List<PC_Struct2<String, PC_IDataHandler>> dataHandlers) {
+		dataHandlers.add(new PC_Struct2<String, PC_IDataHandler>("Radio", new PCnt_RadioManager()));
+		return dataHandlers;
+	}
+
+	@Override
+	public List<PC_IMSG> initMSGObjects(List<PC_IMSG> msgObjects) {
 		return null;
 	}
 
+	@Override
+	public List<PC_Struct2<String, PC_IPacketHandler>> initPacketHandlers(
+			List<PC_Struct2<String, PC_IPacketHandler>> packetHandlers) {
+		return null;
+	}
+	
+	@Override
+	public List<PC_Struct2<String, Class>> registerGuis(
+			List<PC_Struct2<String, Class>> guis) {
+		return null;
+	}
 }

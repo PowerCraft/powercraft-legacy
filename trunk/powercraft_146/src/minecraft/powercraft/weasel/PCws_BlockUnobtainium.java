@@ -2,6 +2,7 @@ package powercraft.weasel;
 
 import java.util.Random;
 
+import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.ItemStack;
@@ -18,6 +19,9 @@ public class PCws_BlockUnobtainium extends PC_Block {
 
 	public PCws_BlockUnobtainium(int id) {
 		super(id, 2, Material.rock);
+		setHardness(0.7F);
+		setResistance(10.0F);
+		setStepSound(Block.soundStoneFootstep);
 		setCreativeTab(CreativeTabs.tabBlock);
 	}
 	
@@ -34,13 +38,15 @@ public class PCws_BlockUnobtainium extends PC_Block {
 		case PC_Utils.MSG_LOAD_WORLD:{
 			PC_Utils.ValueWriting.removeSmeltingRecipes(new ItemStack(this));
 			PC_Utils.ValueWriting.addSmeltingRecipes(new ItemStack(this), new ItemStack(PCws_App.ingotUnobtaninium), 1.0F);
-		}case PC_Utils.MSG_SPAWNS_IN_CHUNK:
-			return 1;
-		case PC_Utils.MSG_BLOCKS_ON_SPAWN_POINT:
+			break;
+		}case PC_Utils.MSG_SPAWNS_IN_CHUNK:{
+			Random rand = (Random)obj[0];
+			return rand.nextDouble()>0.7?1:0;
+		}case PC_Utils.MSG_BLOCKS_ON_SPAWN_POINT:
 			return 40;
 		case PC_Utils.MSG_SPAWN_POINT:
 			return new PC_VecI(((Random)obj[0]).nextInt(16),
-					((Random)obj[0]).nextInt(PC_MathHelper.clamp_int(10 - 5, 1, 255)) + 5,
+					((Random)obj[0]).nextInt(PC_MathHelper.clamp_int(30 - 5, 1, 255)) + 5,
 					((Random)obj[0]).nextInt(16));
 		case PC_Utils.MSG_SPAWN_POINT_METADATA:
 			return 0;
