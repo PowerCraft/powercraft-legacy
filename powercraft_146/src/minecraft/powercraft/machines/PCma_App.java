@@ -31,7 +31,7 @@ public class PCma_App implements PC_IModule
     public static PC_Block blockBuilder;
     public static PC_Block harvester;
     public static PC_Block fishingMachine;
-    
+    public static PC_Block chunkLoader;
     
     public static List<Integer> roasterIgnoreBlockIDs;
 
@@ -74,6 +74,7 @@ public class PCma_App implements PC_IModule
         blockBuilder = ModuleLoader.register(this, PCma_BlockBlockBuilder.class, PCma_TileEntityBlockBuilder.class);
         harvester = ModuleLoader.register(this, PCma_BlockHarvester.class);
         fishingMachine = ModuleLoader.register(this, PCma_BlockFishingMachine.class, PCma_TileEntityFishingMachine.class);
+        chunkLoader = ModuleLoader.register(this, PCma_BlockChunkLoader.class, PCma_TileEntityChunkLoader.class);
 	}
 	
 	@Override
@@ -153,6 +154,16 @@ public class PCma_App implements PC_IModule
 				" !c "},
 				'w', Block.waterMoving, Block.waterStill, 'f', Block.fence, 'p', Block.planks, 'c', Block.chest));
 		
+		recipes.add(new PC_3DRecipe((PC_I3DRecipeHandler)chunkLoader, 
+				new String[]{
+				"gog",
+				"ogo",
+				"gog"},
+				new String[]{
+				" f ",
+				"f f",
+				" f "},
+				'g', Block.glass, 'o', Block.obsidian, 'f', Block.fire));
 		
 		return recipes;
 	}

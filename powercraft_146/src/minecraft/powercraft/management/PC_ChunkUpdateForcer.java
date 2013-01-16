@@ -13,60 +13,59 @@ import net.minecraftforge.common.DimensionManager;
 import powercraft.management.PC_Utils.GameInfo;
 import powercraft.management.PC_Utils.SaveHandler;
 
-public class PC_ChunckUpdateForcer implements PC_IDataHandler, PC_IMSG {
+public class PC_ChunkUpdateForcer implements PC_IDataHandler, PC_IMSG {
 
-	private static PC_ChunckUpdateForcer instance;
-	private static HashMap<Integer, List<PC_VecI>> chuncks = new HashMap<Integer, List<PC_VecI>>();
+	private static PC_ChunkUpdateForcer instance;
+	private static HashMap<Integer, HashMap<PC_VecI, Integer>> chunks = new HashMap<Integer, HashMap<PC_VecI, Integer>>();
 	private static boolean needSave = false;
 	
 	public static PC_IDataHandler getInstance() {
 		if(instance==null)
-			instance = new PC_ChunckUpdateForcer();
+			instance = new PC_ChunkUpdateForcer();
 		return instance;
 	}
 	
-	public static void forceChunckUpdate(World world, PC_VecI pos){
+	public static void forceChunkUpdate(World world, PC_VecI pos, int radius){
 		if(world.isRemote)
 			return;
 		int dimension = world.getWorldInfo().getDimension();
-		List<PC_VecI> posList;
-		if(chuncks.containsKey(dimension))
-			posList = chuncks.get(dimension);
+		HashMap<PC_VecI, Integer> distance;
+		if(chunks.containsKey(dimension))
+			distance = chunks.get(dimension);
 		else
-			chuncks.put(dimension, posList = new ArrayList<PC_VecI>());
+			chunks.put(dimension, distance = new HashMap<PC_VecI, Integer>());
 		pos = pos.copy();
-		if(!posList.contains(pos)){
-			posList.add(pos);
-			needSave = true;
-		}
+		distance.put(pos, radius);
+		needSave = true;
 	}
 	
-	public static void stopForceChunckUpdate(World world, PC_VecI pos){
+	public static void stopForceChunkUpdate(World world, PC_VecI pos){
 		if(world.isRemote)
 			return;
 		int dimension = world.getWorldInfo().getDimension();
-		if(chuncks.containsKey(dimension)){
-			List<PC_VecI> posList = chuncks.get(dimension);
+		if(chunks.containsKey(dimension)){
+			HashMap<PC_VecI, Integer> distance = chunks.get(dimension);
 			pos = pos.copy();
-			if(posList.contains(pos)){
-				posList.remove(pos);
+			if(distance.containsKey(pos)){
+				distance.remove(pos);
 				needSave = true;
 			}
-			if(posList.size()==0){
-				chuncks.remove(dimension);
+			if(distance.size()==0){
+				chunks.remove(dimension);
 				needSave = true;
 			}
 		}
 	}
 	
-	private List<PC_VecI> loadList(NBTTagCompound nbtTag, List<PC_VecI> posList){
+	private HashMap<PC_VecI, Integer> loadList(NBTTagCompound nbtTag, HashMap<PC_VecI, Integer> distance){
 		int count = nbtTag.getInteger("count");
 		for(int i=0; i<count; i++){
 			PC_VecI pos = new PC_VecI();
-			SaveHandler.loadFromNBT(nbtTag, "value["+i+"]", pos);
-			posList.add(pos);
+			SaveHandler.loadFromNBT(nbtTag, "key"+i+"]", pos);
+			int radius = nbtTag.getInteger("value["+i+"]");
+			distance.put(pos, radius);
 		}
-		return posList;
+		return distance;
 	}
 	
 	@Override
@@ -75,16 +74,17 @@ public class PC_ChunckUpdateForcer implements PC_IDataHandler, PC_IMSG {
 		int count = nbtTag.getInteger("count");
 		for(int i=0; i<count; i++){
 			int dim = nbtTag.getInteger("key["+i+"]");
-			List<PC_VecI> posList = loadList(nbtTag.getCompoundTag("value["+i+"]"), new ArrayList<PC_VecI>());
-			chuncks.put(dim, posList);
+			HashMap<PC_VecI, Integer> distance = loadList(nbtTag.getCompoundTag("value["+i+"]"), new HashMap<PC_VecI, Integer>());
+			chunks.put(dim, distance);
 		}
 	}
 
-	private NBTTagCompound saveList(NBTTagCompound nbtTag, List<PC_VecI> posList){
-		nbtTag.setInteger("count", posList.size());
+	private NBTTagCompound saveList(NBTTagCompound nbtTag, HashMap<PC_VecI, Integer> distance){
+		nbtTag.setInteger("count", distance.size());
 		int i=0;
-		for(PC_VecI pos:posList){
-			SaveHandler.saveToNBT(nbtTag, "value["+i+"]", pos);
+		for(Entry<PC_VecI, Integer> e:distance.entrySet()){
+			SaveHandler.saveToNBT(nbtTag, "key["+i+"]", e.getKey());
+			nbtTag.setInteger("value["+i+"]", e.getValue());
 			i++;
 		}
 		return nbtTag;
@@ -93,9 +93,9 @@ public class PC_ChunckUpdateForcer implements PC_IDataHandler, PC_IMSG {
 	@Override
 	public NBTTagCompound save(NBTTagCompound nbtTag) {
 		needSave = false;
-		nbtTag.setInteger("count", chuncks.size());
+		nbtTag.setInteger("count", chunks.size());
 		int i=0;
-		for(Entry<Integer, List<PC_VecI>> e:chuncks.entrySet()){
+		for(Entry<Integer, HashMap<PC_VecI, Integer>> e:chunks.entrySet()){
 			nbtTag.setInteger("key["+i+"]", e.getKey());
 			nbtTag.setCompoundTag("value["+i+"]", saveList(new NBTTagCompound(), e.getValue()));
 			i++;
@@ -111,25 +111,31 @@ public class PC_ChunckUpdateForcer implements PC_IDataHandler, PC_IMSG {
 	@Override
 	public void reset() {
 		needSave = false;
-		chuncks.clear();
+		chunks.clear();
 	}
 
 	@Override
 	public Object msg(int msg, Object... obj) {
 		if(msg==PC_Utils.MSG_TICK_EVENT){
-			for(Entry<Integer, List<PC_VecI>> e:chuncks.entrySet()){
+			for(Entry<Integer, HashMap<PC_VecI, Integer>> e:chunks.entrySet()){
 				World world = DimensionManager.getWorld(e.getKey());
 				if(world!=null){
 					IChunkProvider chunckProvider = world.getChunkProvider();
 					if(chunckProvider!=null){
 						List<PC_VecI> chunckList = new ArrayList<PC_VecI>();
-						for(PC_VecI pos:e.getValue()){
-							PC_VecI p = pos.copy();
+						for(Entry<PC_VecI, Integer> e2:e.getValue().entrySet()){
+							PC_VecI p = e2.getKey().copy();
 							p.x >>= 16;
 							p.y = 0;
 							p.z >>= 16;
-							if(!chunckList.contains(p)){
-								chunckList.add(p);
+							int r = e2.getValue();
+							for(int i=-r; i<=r; i++){
+								for(int j=-r; j<=r; j++){
+									PC_VecI p2 = new PC_VecI(p.x+i, 0, p.z+j);
+									if(!chunckList.contains(p2)){
+										chunckList.add(p2);
+									}
+								}
 							}
 						}
 						for(PC_VecI pos:chunckList){
