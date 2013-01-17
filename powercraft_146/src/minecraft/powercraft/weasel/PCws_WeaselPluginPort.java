@@ -1,6 +1,7 @@
 package powercraft.weasel;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import powercraft.management.PC_Utils.Gres;
@@ -28,7 +29,7 @@ public class PCws_WeaselPluginPort extends PCws_WeaselPlugin {
 	public void restart() {}
 
 	@Override
-	protected List<String> getProvidedPluginFunctionNames() {
+	protected HashMap<String, HashMap> getProvidedPluginFunctionNames() {
 		return new ArrayList<String>();
 	}
 

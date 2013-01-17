@@ -2,6 +2,7 @@ package powercraft.weasel;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
 
 import net.minecraft.entity.player.EntityPlayer;
@@ -10,6 +11,7 @@ import net.minecraft.world.World;
 import powercraft.management.PC_Color;
 import powercraft.management.PC_INBT;
 import powercraft.management.PC_PacketHandler;
+import powercraft.management.PC_Struct2;
 import powercraft.management.PC_Utils.GameInfo;
 import powercraft.management.PC_Utils.SaveHandler;
 import powercraft.management.PC_Utils.ValueWriting;
@@ -157,41 +159,94 @@ public abstract class PCws_WeaselPlugin implements PC_INBT<PCws_WeaselPlugin>, I
 
 	@Override
 	public boolean doesProvideFunction(String functionName) {
-		List<String> l = getProvidedFunctionNames();
-		if(l==null)
+		String[] functionParts = functionName.split("\\.");
+		if(functionParts.length==0) return false;
+		HashMap<String,PC_Struct2<Boolean,HashMap>> hm = getProvidedFunctionNames();
+		if(hm==null)
 			return false;
-		return l.contains(functionName);
+		int deepness=0;
+		while(deepness<functionParts.length){
+			Boolean lastPart = (deepness==functionParts.length-1);
+			Boolean exists = hm.containsKey(functionParts[deepness]);
+			if(exists){
+				Object value = hm.get(functionParts[deepness]);
+				PC_Struct2<Boolean, HashMap> struct = (PC_Struct2<Boolean, HashMap>)value;
+				if(lastPart && struct.a==true){
+					return true;
+				}else if(!lastPart && struct.b!=null){
+					hm = struct.b;
+				}else{
+					break;
+				}
+			}else{
+				break;
+			}
+			deepness++;
+		}
+		return false;
 	}
 
 	@Override
-	public List<String> getProvidedFunctionNames() {
-		List<String> l = new ArrayList<String>();
-		l.addAll(getProvidedPluginFunctionNames());
-		l.add("reset");
-		l.add("restart");
+	public HashMap<String,PC_Struct2<Boolean,HashMap>> getProvidedFunctionNames() {
+		HashMap<String,PC_Struct2<Boolean,HashMap>> l = new HashMap<String,PC_Struct2<Boolean,HashMap>>();
+		l.putAll(getProvidedPluginFunctionNames());
+		if(!l.containsKey("reset")){
+			l.put("reset", new PC_Struct2(true, null));
+		}
+		if(!l.containsKey("restart")){
+			l.put("restart", new PC_Struct2(true, null));
+		}
 		if(getNetwork()!=null){
 			for(PCws_WeaselPlugin plugin:getNetwork()){
-				List<String> l2 = plugin.getProvidedPluginFunctionNames();
-				l2.add("reset");
-				l2.add("restart");
-				for(String s:l2){
-					l.add(plugin.name + "." + s);
+				HashMap<String,PC_Struct2<Boolean,HashMap>> l2 = plugin.getProvidedPluginFunctionNames();
+				if(!l2.containsKey("reset")){
+					l2.put("reset", new PC_Struct2(true, null));
 				}
+				if(!l2.containsKey("restart")){
+					l2.put("restart", new PC_Struct2(true, null));
+				}
+				l.put(plugin.name, new PC_Struct2(false, l2));
 			}
 		}
 		return l;
 	}
 
-	protected abstract List<String> getProvidedPluginFunctionNames();
+	protected abstract HashMap<String, PC_Struct2<Boolean, HashMap>> getProvidedPluginFunctionNames();
 	
 	@Override
 	public WeaselObject callProvidedFunction(WeaselEngine engine, String functionName, WeaselObject[] args) {
 		if(functionName.equals("reset") || functionName.equals("restart")){
 			restartDevice();
 			return new WeaselNull();
-		}else if(getProvidedPluginFunctionNames().contains(functionName)){
-			return callProvidedPluginFunction(engine, functionName, args);
 		}
+		
+		
+		
+		String[] functionParts = functionName.split("\\.");
+		if(functionParts.length==0) return new WeaselNull();
+		int deepness=0;
+		HashMap<String, PC_Struct2<Boolean, HashMap>> hm = getProvidedPluginFunctionNames(); 
+		while(deepness<functionParts.length){
+			Boolean lastPart = (deepness==functionParts.length-1);
+			Boolean exists = hm.containsKey(functionParts[deepness]);
+			if(exists){
+				Object value = hm.get(functionParts[deepness]);
+				PC_Struct2<Boolean, HashMap> struct = (PC_Struct2<Boolean, HashMap>)value;
+				if(lastPart && struct.a==true){
+					return callProvidedPluginFunction(engine, functionName, args);
+				}else if(!lastPart && struct.b!=null){
+					hm = struct.b;
+				}else{
+					break;
+				}
+			}else{
+				break;
+			}
+			deepness++;
+		}
+		
+		
+		
 		String s[] = functionName.split("\\.", 2);
 		if(s.length>1){
 			if(s[0].equals(name)){

@@ -1,6 +1,7 @@
 package powercraft.weasel;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import net.minecraft.entity.player.EntityPlayer;
@@ -59,7 +60,7 @@ public class PCws_WeaselPluginTouchscreen extends PCws_WeaselPlugin implements W
 	}
 	
 	@Override
-	protected List<String> getProvidedPluginFunctionNames() {
+	protected HashMap<String, HashMap> getProvidedPluginFunctionNames() {
 		List<String> list = new ArrayList<String>();
 		list.addAll(imageAdapter.getProvidedFunctionNames());
 		list.add("toDisk");
