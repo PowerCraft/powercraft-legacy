@@ -14,7 +14,7 @@ public class WeaselFunctionProvider implements IWeaselHardware {
 
 	private HashMap<String, PC_Struct2<Object, WeaselFunctionProvider>> functions = new HashMap<String, PC_Struct2<Object, WeaselFunctionProvider>>();
 	
-	public WeaselObject call(String name, WeaselObject...args) throws WeaselRuntimeException{
+	public WeaselObject call(WeaselEngine engine, String name, WeaselObject...args) throws WeaselRuntimeException{
 		String subNames[] = name.split("\\.");
 		HashMap<String, PC_Struct2<Object, WeaselFunctionProvider>> hm = functions;
 		for(int i=0; i<subNames.length-1; i++){
@@ -28,24 +28,36 @@ public class WeaselFunctionProvider implements IWeaselHardware {
 		String lastName = subNames[subNames.length-1];
 		if(hm==null || !hm.containsKey(lastName))
 			throw new WeaselRuntimeException("Function \""+name+"\" does not exist");
-		return call(hm.get(lastName).a, lastName, args);
+		return call(engine, hm.get(lastName).a, lastName, args);
 	}
 	
-	private static WeaselObject call(Object obj, String name, WeaselObject[] args) throws WeaselRuntimeException{
+	private static WeaselObject call(WeaselEngine engine, Object obj, String name, WeaselObject[] args) throws WeaselRuntimeException{
 		if(obj==null)
 			throw new WeaselRuntimeException("Function \""+name+"\" does not exist");
 		Class<?> c = obj.getClass();
-		Object[] param = new Object[args.length];
-		Class<?>[] paramClass = new Class<?>[args.length];
+		Object[] param = new Object[args.length+1];
+		Class<?>[] paramClass = new Class<?>[args.length+1];
+		param[0] = engine;
+		paramClass[0] = engine.getClass();
 		for(int i=0; i<args.length; i++){
-			param[i] = args[i].get();
-			paramClass[i] = param[i].getClass();
+			param[i+1] = args[i].get();
+			paramClass[i+1] = param[i].getClass();
 		}
 		Method m;
 		try {
 			m = c.getDeclaredMethod(name, paramClass);
 		} catch (Exception e) {
-			throw new WeaselRuntimeException("Function \""+name+"\" does not exist");
+			try {
+				param = new Object[args.length];
+				paramClass = new Class<?>[args.length];
+				for(int i=0; i<args.length; i++){
+					param[i] = args[i].get();
+					paramClass[i] = param[i].getClass();
+				}
+				m = c.getDeclaredMethod(name, paramClass);
+			} catch (Exception e1) {
+				throw new WeaselRuntimeException("Function \""+name+"\" does not exist");
+			}
 		} 
 		Object ret;
 		try {
@@ -118,7 +130,7 @@ public class WeaselFunctionProvider implements IWeaselHardware {
 
 	@Override
 	public WeaselObject callProvidedFunction(WeaselEngine engine, String functionName, WeaselObject[] args) {
-		return call(functionName, args);
+		return call(engine, functionName, args);
 	}
 
 	@Override
