@@ -1,16 +1,17 @@
 package powercraft.weasel;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 
 import net.minecraft.nbt.NBTTagCompound;
 import powercraft.management.PC_Color;
 import powercraft.management.PC_INBT;
+import powercraft.management.PC_Struct2;
 import powercraft.management.PC_Utils.SaveHandler;
 import weasel.Calc;
 import weasel.exception.WeaselRuntimeException;
-import weasel.obj.WeaselBoolean;
 import weasel.obj.WeaselObject;
 import weasel.obj.WeaselVariableMap;
 
@@ -21,7 +22,8 @@ public final class PCws_WeaselNetwork implements Iterable<PCws_WeaselPlugin>, PC
 	private PC_Color color = new PC_Color();
 	private List<Integer> members = new ArrayList<Integer>();
 	/** Local shared variable pool */
-	public WeaselVariableMap localHeap = new WeaselVariableMap();
+	private WeaselVariableMap localHeap = new WeaselVariableMap();
+	private HashMap<String, PC_Struct2<Object, HashMap>> functionMap = new HashMap<String, PC_Struct2<Object, HashMap>>();
 	private boolean needSave = false;
 	
 	public PCws_WeaselNetwork(){
