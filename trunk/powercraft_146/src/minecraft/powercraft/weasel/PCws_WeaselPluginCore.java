@@ -1,6 +1,7 @@
 package powercraft.weasel;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import net.minecraft.entity.player.EntityPlayer;
@@ -86,40 +87,84 @@ public class PCws_WeaselPluginCore extends PCws_WeaselPlugin {
 	}
 
 	@Override
-	protected List<String> getProvidedPluginFunctionNames() {
-		List<String> l = new ArrayList<String>();
-		l.add("sleep");
-		l.add("bell");
-		l.add("console.print");
-		l.add("network.get");
-		l.add("network.set");
-		l.add("network.has");
-		l.add("network.isConnected");
-		l.add("network.restart");
-		l.add("network.reset");
-		l.add("global.get");
-		l.add("global.set");
-		l.add("global.has");
-		l.add("lib.load");
-		l.add("lib.call");
-		l.add("lib.free");
+	protected HashMap<String, PC_Struct2<Boolean, HashMap>> getProvidedPluginFunctionNames() {
+		HashMap<String, PC_Struct2<Boolean, HashMap>> finalMap = new HashMap<String, PC_Struct2<Boolean, HashMap>>();
+		HashMap<String, PC_Struct2<Boolean, HashMap>> helpMap = new HashMap<String, PC_Struct2<Boolean, HashMap>>();
+		final PC_Struct2<Boolean, HashMap> finalEntry = new PC_Struct2(true, null);
+		final PC_Struct2<Boolean, HashMap> branchEntry = new PC_Struct2(false, helpMap);
+		finalMap.put("sleep", finalEntry);
+		finalMap.put("bell", finalEntry);
+		helpMap.put("print", finalEntry);
+		finalMap.put("console", branchEntry);
+		helpMap = new HashMap<String, PC_Struct2<Boolean, HashMap>>();
+		helpMap.put("get", finalEntry);
+		helpMap.put("set", finalEntry);
+		helpMap.put("has", finalEntry);
+		helpMap.put("isConnected", finalEntry);
+		helpMap.put("restart", finalEntry);
+		helpMap.put("reset", finalEntry);
+		finalMap.put("network", branchEntry);
+		helpMap = new HashMap<String, PC_Struct2<Boolean, HashMap>>();
+		helpMap.put("get", finalEntry);
+		helpMap.put("set", finalEntry);
+		helpMap.put("has", finalEntry);
+		finalMap.put("global", new PC_Struct2(false, helpMap));
+		helpMap = new HashMap<String, PC_Struct2<Boolean, HashMap>>();
+		helpMap.put("load", finalEntry);
+		helpMap.put("call", finalEntry);
+		helpMap.put("free", finalEntry);
+		finalMap.put("lib", new PC_Struct2(false, helpMap));
+		helpMap = new HashMap<String, PC_Struct2<Boolean, HashMap>>();
 		if(getNetwork()!=null){
 			for(PCws_WeaselPlugin plugin:getNetwork()){
 				if(plugin instanceof PCws_WeaselPluginDiskDrive){
 					List<String> funcs = ((PCws_WeaselPluginDiskDrive)plugin).getAllLibaryFunctions();
 					for(String func:funcs){
-						l.add("libs."+func);
+						helpMap.put(func, finalEntry);
+					}
+				}
+			}
+			finalMap.put("libs", branchEntry);
+			helpMap = new HashMap<String, PC_Struct2<Boolean, HashMap>>();
+		}
+		HashMap<String, PC_Struct2<Boolean, HashMap>> innerMap = new HashMap<String, PC_Struct2<Boolean, HashMap>>();
+		for(PC_IMSG msgObj:ModuleInfo.getMSGObjects()){
+			Object o = msgObj.msg(PC_Utils.MSG_PROVIDES_FUNCTION, this, new ArrayList<String>());
+			if(o instanceof List<?>){
+				List<String> rl = (List<String>)o;
+				String[] functionParts;
+				for(String entry:rl){
+					functionParts = entry.split("\\.");
+					if(functionParts.length==0) continue;
+					int deepness=0; 
+					innerMap=finalMap;
+					while(deepness<functionParts.length){
+						Boolean alreadyExists = innerMap.containsKey(functionParts[deepness]);
+						if(alreadyExists){
+							Object value = innerMap.get(functionParts[deepness]);
+							PC_Struct2<Boolean, HashMap> struct = (PC_Struct2<Boolean, HashMap>)value;
+							if(struct.b==null && deepness<functionParts.length-1){
+								innerMap.put(functionParts[deepness], new PC_Struct2(true, helpMap = new HashMap<String, PC_Struct2<Boolean, HashMap>>()));
+								innerMap = helpMap;
+								helpMap = new HashMap<String, PC_Struct2<Boolean, HashMap>>();
+							}else if(struct.b instanceof HashMap){
+								innerMap = ((HashMap<String, PC_Struct2<Boolean, HashMap>>)value);
+							}
+						}else{
+							if(deepness<functionParts.length-1){
+								innerMap.put(functionParts[deepness], new PC_Struct2(false, helpMap = new HashMap<String, PC_Struct2<Boolean, HashMap>>()));
+								innerMap = helpMap;
+								helpMap = new HashMap<String, PC_Struct2<Boolean, HashMap>>();
+							}else if(deepness==functionParts.length-1){
+								innerMap.put(functionParts[deepness], finalEntry);
+							}
+						}
+						deepness++;
 					}
 				}
 			}
 		}
-		for(PC_IMSG msgObj:ModuleInfo.getMSGObjects()){
-			Object o = msgObj.msg(PC_Utils.MSG_PROVIDES_FUNCTION, this, new ArrayList<String>());
-			if(o instanceof List<?>){
-				l.addAll((List)o);
-			}
-		}
-		return l;
+		return finalMap;
 	}
 
 	@Override

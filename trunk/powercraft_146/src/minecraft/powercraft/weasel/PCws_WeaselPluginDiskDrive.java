@@ -2,6 +2,7 @@ package powercraft.weasel;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
 
 import net.minecraft.entity.player.EntityPlayer;
@@ -112,7 +113,7 @@ public class PCws_WeaselPluginDiskDrive extends PCws_WeaselPlugin implements PCw
 	}
 	
 	@Override
-	protected List<String> getProvidedPluginFunctionNames() {
+	protected HashMap<String, HashMap> getProvidedPluginFunctionNames() {
 		List<String> list = new ArrayList<String>(8);
 		List<String> listBM = new PCws_WeaselBitmapUtils.WeaselBitmapAdapter(null).getProvidedFunctionNames();
 		

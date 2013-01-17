@@ -1,6 +1,7 @@
 package powercraft.weasel;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Random;
 
@@ -22,7 +23,7 @@ public class PCws_WeaselPluginSpeaker extends PCws_WeaselPlugin {
 	private static Random rand = new Random();
 	
 	@Override
-	protected List<String> getProvidedPluginFunctionNames() {
+	protected HashMap<String, HashMap> getProvidedPluginFunctionNames() {
 		List<String> list = new ArrayList<String>(0);
 
 		list.add("sound");

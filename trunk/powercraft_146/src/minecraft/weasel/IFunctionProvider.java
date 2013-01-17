@@ -1,7 +1,10 @@
 package weasel;
 
 
+import java.util.HashMap;
 import java.util.List;
+
+import powercraft.management.PC_Struct2;
 
 import weasel.obj.WeaselObject;
 
@@ -47,6 +50,6 @@ public interface IFunctionProvider {
 	 * 
 	 * @return list of available function names
 	 */
-	public List<String> getProvidedFunctionNames();
+	public HashMap<String, PC_Struct2<Boolean, HashMap>> getProvidedFunctionNames();
 
 }
