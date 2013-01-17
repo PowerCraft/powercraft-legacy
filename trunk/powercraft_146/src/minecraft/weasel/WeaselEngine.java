@@ -390,7 +390,7 @@ public class WeaselEngine implements PC_INBT, IVariableProvider, IFunctionProvid
 
 
 	@Override
-	public void setVariable(String name, Object value) {
+	public void setVariable(String name, WeaselObject value) {
 
 		if (name == null) throw new WeaselRuntimeException("Variable name cannot be null at " + name + " = " + value);
 		if (value == null) throw new WeaselRuntimeException("Variable value cannot be null at " + name + " = " + value);

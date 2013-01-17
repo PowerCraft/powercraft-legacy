@@ -970,7 +970,7 @@ public class PCmo_MinerWeaselBrain  implements PCmo_IMinerBrain, IWeaselHardware
 	}
 
 	@Override
-	public void setVariable(String name, Object object) {
+	public void setVariable(String name, WeaselObject object) {
 	}
 
 	@Override

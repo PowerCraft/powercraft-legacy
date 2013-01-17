@@ -50,7 +50,7 @@ public class WeaselVariableMap extends WeaselObject implements IVariableProvider
 	}
 
 	@Override
-	public void setVariable(String name, Object value) {
+	public void setVariable(String name, WeaselObject value) {
 
 		if (name == null) throw new WeaselRuntimeException("Variable name cannot be null at " + name + " = " + value);
 		if (value == null) throw new WeaselRuntimeException("Variable value cannot be null at " + name + " = " + value);
@@ -58,20 +58,7 @@ public class WeaselVariableMap extends WeaselObject implements IVariableProvider
 		if (map.get(name) != null) {
 			map.get(name).set(value);
 		} else {
-			WeaselObject set = null;
-			if (value instanceof WeaselObject) {
-				set = (WeaselObject) value;
-			} else if (value instanceof Number) {
-				set = new WeaselDouble(value);
-			} else if (value instanceof String) {
-				set = new WeaselString(value);
-			} else if (value instanceof Boolean) {
-				set = new WeaselBoolean(value);
-			} else {
-				throw new WeaselRuntimeException("Value " + value + " cannot be assigned to a variable.");
-			}
-
-			map.put(name, set);
+			map.put(name, value);
 		}
 
 //		if (map.get(name) != null) {
