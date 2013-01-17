@@ -230,4 +230,7 @@ public final class PCws_WeaselNetwork implements Iterable<PCws_WeaselPlugin>, PC
 		return members.size();
 	}
 	
+	public WeaselFunctionProvider getFunctionHandler(){
+		return functionMap;
+	}
 }
