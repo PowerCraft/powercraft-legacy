@@ -47,66 +47,6 @@ public class PCws_WeaselPluginTerminal extends PCws_WeaselPlugin {
 		return tag;
 	}
 	
-	@Override
-	protected HashMap<String, HashMap> getProvidedPluginFunctionNames() {
-		List<String> list = new ArrayList<String>();
-		list.add("cls");
-		list.add("clear");
-		list.add("print");
-		list.add("in");
-		list.add("out");
-		list.add("getInput");
-		list.add("hasInput");
-		return list;
-	}
-
-	@Override
-	protected WeaselObject callProvidedPluginFunction(WeaselEngine engine, String functionName, WeaselObject[] args) {
-		if (functionName.equals("cls") || functionName.equals("clear")) {
-			text = "";
-			userInput.clear();
-			setData("text", text);
-		}else if (functionName.equals("out") || functionName.equals("print")) {
-			addText(Calc.toString(args[0]) + "\n");
-		}else if (functionName.equals("hasInput")) {
-			return new WeaselBoolean(userInput.size() > 0);
-		}else if (functionName.equals("in") || functionName.equals("getInput")) {
-			if (userInput.size() == 0) return new WeaselString("");
-			WeaselObject o = new WeaselString(userInput.get(0));
-			userInput.remove(0);
-			return o;
-		}else{
-			throw new WeaselRuntimeException("Invalid call of function " + functionName);
-		}
-		needsSave();
-		return new WeaselNull();
-	}
-
-	@Override
-	protected List<String> getProvidedPluginVariableNames() {
-		List<String> list = new ArrayList<String>();
-		list.add("this");
-		list.add("text");
-		list.add("txt");
-		return list;
-	}
-
-	@Override
-	protected void setPluginVariable(String name, Object value) {
-		if(name.equals("this")||name.equals("text")||name.equals("txt")){
-			text = "";
-			addText(Calc.toString(value));
-		}
-	}
-
-	@Override
-	protected WeaselObject getPluginVariable(String name) {
-		if(name.equals("this")||name.equals("text")||name.equals("txt")){
-			return new WeaselString(text);
-		}
-		return null;
-	}
-	
 	private int countIn(String str, char c) {
 		int counter = 0;
 		for (int i = 0; i < str.length(); i++) {

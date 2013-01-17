@@ -27,46 +27,4 @@ public class PCws_WeaselPluginPort extends PCws_WeaselPlugin {
 
 	@Override
 	public void restart() {}
-
-	@Override
-	protected HashMap<String, HashMap> getProvidedPluginFunctionNames() {
-		return new ArrayList<String>();
-	}
-
-	@Override
-	protected WeaselObject callProvidedPluginFunction(WeaselEngine engine,
-			String functionName, WeaselObject[] args) {
-		throw new WeaselRuntimeException("Invalid call of function " + functionName);
-	}
-
-	@Override
-	protected List<String> getProvidedPluginVariableNames() {
-		List<String> l = new ArrayList<String>();
-		l.add("b");
-		l.add("back");
-		l.add("l");
-		l.add("left");
-		l.add("r");
-		l.add("right");
-		l.add("f");
-		l.add("front");
-		l.add("u");
-		l.add("up");
-		l.add("top");
-		l.add("d");
-		l.add("down");
-		l.add("bottom");
-		return l;
-	}
-
-	@Override
-	protected void setPluginVariable(String name, Object value) {
-		setOutport(portToNum(name), Calc.toBoolean(value));
-	}
-
-	@Override
-	protected WeaselObject getPluginVariable(String name) {
-		return new WeaselBoolean(getInport(portToNum(name)));
-	}
-
 }
