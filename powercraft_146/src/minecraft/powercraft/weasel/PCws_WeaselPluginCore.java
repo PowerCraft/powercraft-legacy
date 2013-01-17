@@ -1,30 +1,19 @@
 package powercraft.weasel;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
-import powercraft.management.PC_IMSG;
-import powercraft.management.PC_PacketHandler;
 import powercraft.management.PC_Struct2;
-import powercraft.management.PC_Utils;
 import powercraft.management.PC_Utils.Gres;
-import powercraft.management.PC_Utils.ModuleInfo;
 import powercraft.management.PC_Utils.SaveHandler;
-import weasel.Calc;
 import weasel.WeaselEngine;
 import weasel.WeaselFunctionProvider;
 import weasel.exception.SyntaxError;
 import weasel.exception.WeaselRuntimeException;
 import weasel.lang.Instruction;
-import weasel.obj.WeaselBoolean;
-import weasel.obj.WeaselFunctionCall;
-import weasel.obj.WeaselDouble;
-import weasel.obj.WeaselNull;
 import weasel.obj.WeaselObject;
-import weasel.obj.WeaselString;
 
 public class PCws_WeaselPluginCore extends PCws_WeaselPlugin {
 	
@@ -202,28 +191,34 @@ public class PCws_WeaselPluginCore extends PCws_WeaselPlugin {
 	public class CorePluginProvider extends WeaselFunctionProvider{
 		
 		@Override
-		public WeaselObject call(String name, WeaselObject... args) throws WeaselRuntimeException {
+		public WeaselObject call(WeaselEngine engine, String name, WeaselObject... args) throws WeaselRuntimeException {
 			try{
-				return super.call(name, args);
+				return super.call(engine, name, args);
 			}catch(WeaselRuntimeException e){
 				if(getNetwork()==null){
 					throw e;
 				}else{
-					return getNetwork().
+					return getNetwork().getFunctionHandler().call(engine, name, args);
 				}
 			}
 		}
 
 		@Override
 		public boolean doesProvideFunction(String name) {
-			// TODO Auto-generated method stub
-			return super.doesProvideFunction(name);
+			if(super.doesProvideFunction(name))
+				return true;
+			if(getNetwork()==null)
+				return false;
+			return getNetwork().getFunctionHandler().doesProvideFunction(name);
 		}
 
 		@Override
 		public List<String> getProvidedFunctionNames() {
-			// TODO Auto-generated method stub
-			return super.getProvidedFunctionNames();
+			List<String> list = super.getProvidedFunctionNames();
+			if(getNetwork()!=null){
+				list.addAll(getNetwork().getFunctionHandler().getProvidedFunctionNames());
+			}
+			return list;
 		}
 		
 	}
