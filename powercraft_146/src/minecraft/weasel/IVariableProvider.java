@@ -25,7 +25,7 @@ public interface IVariableProvider {
 	 * @throws WeaselRuntimeException when trying to store unsupported object
 	 *             into a variable.
 	 */
-	public void setVariable(String name, Object value);
+	public void setVariable(String name, WeaselObject value);
 
 
 	/**

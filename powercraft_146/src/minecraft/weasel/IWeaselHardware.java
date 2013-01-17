@@ -24,7 +24,7 @@ public interface IWeaselHardware extends IVariableProvider, IFunctionProvider {
 	public WeaselObject getVariable(String name);
 
 	@Override
-	public void setVariable(String name, Object object);
+	public void setVariable(String name, WeaselObject object);
 
 	@Override
 	public List<String> getProvidedFunctionNames();

@@ -215,7 +215,6 @@ public abstract class PCws_WeaselPlugin implements PC_INBT<PCws_WeaselPlugin> {
 	}
 	
 	public boolean getOutport(int port){
-		System.out.println("Port:" + port);
 		return weaselOutport[port];
 	}
 	

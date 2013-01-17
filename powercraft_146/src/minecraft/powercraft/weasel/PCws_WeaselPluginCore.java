@@ -5,6 +5,7 @@ import java.util.List;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
+import powercraft.management.PC_PacketHandler;
 import powercraft.management.PC_Struct2;
 import powercraft.management.PC_Utils.Gres;
 import powercraft.management.PC_Utils.SaveHandler;
@@ -27,12 +28,32 @@ public class PCws_WeaselPluginCore extends PCws_WeaselPlugin {
 			"}\n";	
 	
 	/** The Weasel Engine */
-	private CorePluginProvider defaultProvider = new CorePluginProvider();
-	private WeaselEngine weasel = new WeaselEngine(defaultProvider);
+	private CorePluginProvider defaultProvider;
+	private WeaselEngine weasel;
 	private List<PC_Struct2<String, Object[]>> externalCallsWaiting = new ArrayList<PC_Struct2<String,Object[]>>();
 	private String program = default_program;
 	private int sleepTimer = 0;
 	private boolean stop;
+	
+	public PCws_WeaselPluginCore(){
+		defaultProvider = new CorePluginProvider();
+		defaultProvider.registerMethod("restart", this);
+		defaultProvider.registerMethod("sleep", this);
+		defaultProvider.registerMethod("bell", this);
+		defaultProvider.registerVariable("front", this);
+		defaultProvider.registerVariable("f", "front", this);
+		weasel = new WeaselEngine(defaultProvider);
+	}
+	
+	public WeaselFunctionProvider makePluginProvider(){
+		WeaselFunctionProvider fp = new WeaselFunctionProvider();
+		fp.registerMethod("restart", this);
+		fp.registerMethod("sleep", this);
+		fp.registerMethod("bell", this);
+		fp.registerVariable("front", this);
+		fp.registerVariable("f", "front", this);
+		return fp;
+	}
 	
 	@Override
 	protected PCws_WeaselPlugin readPluginFromNBT(NBTTagCompound tag) {
@@ -131,13 +152,6 @@ public class PCws_WeaselPluginCore extends PCws_WeaselPlugin {
 			program = (String)obj;
 			try {
 				List<Instruction> list = WeaselEngine.compileProgram(program);
-				/*if(getNetwork()!=null){
-					for(PCws_WeaselPlugin plugin:getNetwork()){
-						if(plugin instanceof PCws_WeaselPluginDiskDrive){
-							((PCws_WeaselPluginDiskDrive)plugin).getAllLibraryInstructions();
-						}
-					}
-				}*/
 				weasel.insertNewProgram(list);
 			} catch (SyntaxError e) {
 				e.printStackTrace();
@@ -188,17 +202,44 @@ public class PCws_WeaselPluginCore extends PCws_WeaselPlugin {
 		weasel.restartProgramClearGlobals();
 	}
 	
+	public void sleep(WeaselEngine engine){
+		sleep(engine, 1);
+	}
+	
+	public void sleep(WeaselEngine engine, int length){
+		sleepTimer = length;
+		engine.requestPause();
+	}
+	
+	public void bell(){
+		bell(1);
+	}
+	
+	public void bell(double d){
+		if(getTE()!=null){
+			PC_PacketHandler.setTileEntity(getTE(), "msg", "bell", d);
+		}
+	}
+	
+	public void front(boolean state){
+		setOutport(3, state);
+	}
+	
+	public boolean front(){
+		return getInport(3);
+	}
+	
 	public class CorePluginProvider extends WeaselFunctionProvider{
 		
 		@Override
-		public WeaselObject call(WeaselEngine engine, String name, WeaselObject... args) throws WeaselRuntimeException {
+		public WeaselObject call(WeaselEngine engine, String name, boolean var, WeaselObject... args) throws WeaselRuntimeException {
 			try{
-				return super.call(engine, name, args);
+				return super.call(engine, name, var, args);
 			}catch(WeaselRuntimeException e){
 				if(getNetwork()==null){
 					throw e;
 				}else{
-					return getNetwork().getFunctionHandler().call(engine, name, args);
+					return getNetwork().getFunctionHandler().call(engine, name, var, args);
 				}
 			}
 		}
@@ -217,6 +258,15 @@ public class PCws_WeaselPluginCore extends PCws_WeaselPlugin {
 			List<String> list = super.getProvidedFunctionNames();
 			if(getNetwork()!=null){
 				list.addAll(getNetwork().getFunctionHandler().getProvidedFunctionNames());
+			}
+			return list;
+		}
+		
+		@Override
+		public List<String> getProvidedVariableNames() {
+			List<String> list = super.getProvidedVariableNames();
+			if(getNetwork()!=null){
+				list.addAll(getNetwork().getFunctionHandler().getProvidedVariableNames());
 			}
 			return list;
 		}

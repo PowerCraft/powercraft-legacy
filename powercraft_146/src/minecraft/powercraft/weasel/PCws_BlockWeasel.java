@@ -99,7 +99,6 @@ public class PCws_BlockWeasel extends PC_Block {
 			
 			int meta = GameInfo.getMD(world, x, y, z);
 			int rotation = getRotation(meta);
-			System.out.println("Rotation:" + rotation + "\ndir:"+dir);
 			if(dir==0){
 				return weaselPlugin.getOutport(4);
 			}else if(dir==1){

@@ -720,7 +720,7 @@ public class PCws_WeaselBitmapUtils {
 		}
 
 		@Override
-		public void setVariable(String name, Object object) {
+		public void setVariable(String name, WeaselObject object) {
 			
 		}
 
