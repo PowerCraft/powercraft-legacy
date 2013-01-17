@@ -15,6 +15,7 @@ import powercraft.management.PC_Utils.ModuleInfo;
 import powercraft.management.PC_Utils.SaveHandler;
 import weasel.Calc;
 import weasel.WeaselEngine;
+import weasel.WeaselFunctionProvider;
 import weasel.exception.SyntaxError;
 import weasel.exception.WeaselRuntimeException;
 import weasel.lang.Instruction;
@@ -37,7 +38,8 @@ public class PCws_WeaselPluginCore extends PCws_WeaselPlugin {
 			"}\n";	
 	
 	/** The Weasel Engine */
-	private WeaselEngine weasel = new WeaselEngine(this);
+	private CorePluginProvider defaultProvider = new CorePluginProvider();
+	private WeaselEngine weasel = new WeaselEngine(defaultProvider);
 	private List<PC_Struct2<String, Object[]>> externalCallsWaiting = new ArrayList<PC_Struct2<String,Object[]>>();
 	private String program = default_program;
 	private int sleepTimer = 0;
@@ -84,211 +86,6 @@ public class PCws_WeaselPluginCore extends PCws_WeaselPlugin {
 			}
 		}
 		externalCallsWaiting.add(new PC_Struct2<String, Object[]>(functionName, args));
-	}
-
-	@Override
-	protected HashMap<String, PC_Struct2<Boolean, HashMap>> getProvidedPluginFunctionNames() {
-		HashMap<String, PC_Struct2<Boolean, HashMap>> finalMap = new HashMap<String, PC_Struct2<Boolean, HashMap>>();
-		HashMap<String, PC_Struct2<Boolean, HashMap>> helpMap = new HashMap<String, PC_Struct2<Boolean, HashMap>>();
-		final PC_Struct2<Boolean, HashMap> finalEntry = new PC_Struct2(true, null);
-		final PC_Struct2<Boolean, HashMap> branchEntry = new PC_Struct2(false, helpMap);
-		finalMap.put("sleep", finalEntry);
-		finalMap.put("bell", finalEntry);
-		helpMap.put("print", finalEntry);
-		finalMap.put("console", branchEntry);
-		helpMap = new HashMap<String, PC_Struct2<Boolean, HashMap>>();
-		helpMap.put("get", finalEntry);
-		helpMap.put("set", finalEntry);
-		helpMap.put("has", finalEntry);
-		helpMap.put("isConnected", finalEntry);
-		helpMap.put("restart", finalEntry);
-		helpMap.put("reset", finalEntry);
-		finalMap.put("network", branchEntry);
-		helpMap = new HashMap<String, PC_Struct2<Boolean, HashMap>>();
-		helpMap.put("get", finalEntry);
-		helpMap.put("set", finalEntry);
-		helpMap.put("has", finalEntry);
-		finalMap.put("global", new PC_Struct2(false, helpMap));
-		helpMap = new HashMap<String, PC_Struct2<Boolean, HashMap>>();
-		helpMap.put("load", finalEntry);
-		helpMap.put("call", finalEntry);
-		helpMap.put("free", finalEntry);
-		finalMap.put("lib", new PC_Struct2(false, helpMap));
-		helpMap = new HashMap<String, PC_Struct2<Boolean, HashMap>>();
-		if(getNetwork()!=null){
-			for(PCws_WeaselPlugin plugin:getNetwork()){
-				if(plugin instanceof PCws_WeaselPluginDiskDrive){
-					List<String> funcs = ((PCws_WeaselPluginDiskDrive)plugin).getAllLibaryFunctions();
-					for(String func:funcs){
-						helpMap.put(func, finalEntry);
-					}
-				}
-			}
-			finalMap.put("libs", branchEntry);
-			helpMap = new HashMap<String, PC_Struct2<Boolean, HashMap>>();
-		}
-		HashMap<String, PC_Struct2<Boolean, HashMap>> innerMap = new HashMap<String, PC_Struct2<Boolean, HashMap>>();
-		for(PC_IMSG msgObj:ModuleInfo.getMSGObjects()){
-			Object o = msgObj.msg(PC_Utils.MSG_PROVIDES_FUNCTION, this, new ArrayList<String>());
-			if(o instanceof List<?>){
-				List<String> rl = (List<String>)o;
-				String[] functionParts;
-				for(String entry:rl){
-					functionParts = entry.split("\\.");
-					if(functionParts.length==0) continue;
-					int deepness=0; 
-					innerMap=finalMap;
-					while(deepness<functionParts.length){
-						Boolean alreadyExists = innerMap.containsKey(functionParts[deepness]);
-						if(alreadyExists){
-							Object value = innerMap.get(functionParts[deepness]);
-							PC_Struct2<Boolean, HashMap> struct = (PC_Struct2<Boolean, HashMap>)value;
-							if(struct.b==null && deepness<functionParts.length-1){
-								innerMap.put(functionParts[deepness], new PC_Struct2(true, helpMap = new HashMap<String, PC_Struct2<Boolean, HashMap>>()));
-								innerMap = helpMap;
-								helpMap = new HashMap<String, PC_Struct2<Boolean, HashMap>>();
-							}else if(struct.b instanceof HashMap){
-								innerMap = ((HashMap<String, PC_Struct2<Boolean, HashMap>>)value);
-							}
-						}else{
-							if(deepness<functionParts.length-1){
-								innerMap.put(functionParts[deepness], new PC_Struct2(false, helpMap = new HashMap<String, PC_Struct2<Boolean, HashMap>>()));
-								innerMap = helpMap;
-								helpMap = new HashMap<String, PC_Struct2<Boolean, HashMap>>();
-							}else if(deepness==functionParts.length-1){
-								innerMap.put(functionParts[deepness], finalEntry);
-							}
-						}
-						deepness++;
-					}
-				}
-			}
-		}
-		return finalMap;
-	}
-
-	@Override
-	protected WeaselObject callProvidedPluginFunction(WeaselEngine engine,
-			String functionName, WeaselObject[] args) {
-		if(functionName.equals("sleep")){
-			if(args.length!=0){
-				sleepTimer = Calc.toInteger(args[0]);
-				if (sleepTimer < 0) sleepTimer = 0;
-			}else{
-				sleepTimer = 1;
-			}
-			engine.requestPause();
-			needsSave();
-		}else if(functionName.equals("bell")){
-			if(getTE()!=null){
-				PC_PacketHandler.setTileEntity(getTE(), "msg", "bell", (functionName.length() * (3 + args.length)) / 24D);
-			}
-		}else if(functionName.equals("console.print")){
-			System.out.println(args[0].toString());
-		}else if(functionName.equals("network.get")){
-			if(getNetwork()!=null)
-				return getNetwork().getLocalVariable(Calc.toString(args[0]));
-		}else if(functionName.equals("network.set")){
-			if(getNetwork()!=null)
-				getNetwork().setLocalVariable(Calc.toString(args[0]), args[1]);
-		}else if(functionName.equals("network.has")){
-			if(getNetwork()==null)
-				return new WeaselBoolean(false);
-			return new WeaselBoolean(getNetwork().getLocalVariable(Calc.toString(args[0])) != null);
-		}else if(functionName.equals("network.isConnected")){
-			if(getNetwork()==null)
-				return new WeaselBoolean(false);
-			return new WeaselBoolean(getNetwork().getMember(Calc.toString(args[0])));
-		}else if(functionName.equals("network.restart")||functionName.equals("network.reset")){
-			if(getNetwork()==null){
-				restartDevice();
-			}else{
-				for(PCws_WeaselPlugin plugin:getNetwork()){
-					plugin.restartDevice();
-				}
-			}
-			return new WeaselNull();
-		}else if(functionName.equals("global.get")){
-			return PCws_WeaselManager.getGlobalVariable(Calc.toString(args[0]));
-		}else if(functionName.equals("global.set")){
-			PCws_WeaselManager.setGlobalVariable(Calc.toString(args[0]), args[1]);
-		}else if(functionName.equals("global.has")){
-			return new WeaselBoolean(PCws_WeaselManager.hasGlobalVariable(Calc.toString(args[0])));
-		}else if(functionName.equals("lib.load")){
-			String name = Calc.toString(args[0]);
-			if(getNetwork()!=null){
-				for(PCws_WeaselPlugin plugin:getNetwork()){
-					if(plugin instanceof PCws_WeaselPluginDiskDrive){
-						List<Instruction> instructions = ((PCws_WeaselPluginDiskDrive)plugin).getLibaryInstructions(name);
-						if(instructions!=null){
-							engine.insertNewLibary(name, instructions);
-							return new WeaselNull();
-						}
-					}
-				}
-			}
-			throw new WeaselRuntimeException("Lib "+name+" can't be found");
-		}else if(functionName.equals("lib.call")){
-			String libName = Calc.toString(args[0]);
-			String funcName = Calc.toString(args[1]);
-			WeaselObject newArgs[] = new WeaselObject[args.length-2];
-			for(int i=0; i<newArgs.length; i++){
-				newArgs[i] = args[i+2];
-			}
-			return new WeaselFunctionCall(libName, funcName, newArgs);
-		}else if(functionName.equals("lib.free")){
-			String libName = Calc.toString(args[0]);
-			engine.freeLibary(libName);
-			return new WeaselNull();
-		}else if(functionName.startsWith("libs.")){
-			String[] s = functionName.split("\\.", 3);
-			return new WeaselFunctionCall(s[1], s[2], args);
-		}else{
-			for(PC_IMSG msgObj:ModuleInfo.getMSGObjects()){
-				Object o = msgObj.msg(PC_Utils.MSG_PROVIDES_FUNCTION, this, new ArrayList<String>());
-				if(o instanceof List<?>){
-					if(((List<?>)o).contains(functionName)){
-						List<Object> realArgs = new ArrayList<Object>();
-						for(WeaselObject obj:args){
-							realArgs.add(obj.get());
-						}
-						return WeaselObject.getWrapperForValue(msgObj.msg(PC_Utils.MSG_CALL_FUNCTION, getWorld(), functionName, realArgs));
-					}
-				}
-			}
-			throw new WeaselRuntimeException("Invalid call of function " + functionName);
-		}
-		return new WeaselNull();
-	}
-
-	@Override
-	protected List<String> getProvidedPluginVariableNames() {
-		List<String> l = new ArrayList<String>();
-		l.add("b");
-		l.add("back");
-		l.add("l");
-		l.add("left");
-		l.add("r");
-		l.add("right");
-		l.add("f");
-		l.add("front");
-		l.add("u");
-		l.add("up");
-		l.add("top");
-		l.add("d");
-		l.add("down");
-		l.add("bottom");
-		return l;
-	}
-
-	@Override
-	protected void setPluginVariable(String name, Object value) {
-		setOutport(portToNum(name), Calc.toBoolean(value));
-	}
-
-	@Override
-	protected WeaselObject getPluginVariable(String name) {
-		return new WeaselBoolean(getInport(portToNum(name)));
 	}
 
 	@Override
@@ -380,7 +177,7 @@ public class PCws_WeaselPluginCore extends PCws_WeaselPlugin {
 	protected void openPluginGui(EntityPlayer player) {
 		PCws_TileEntityWeasel te = getTE();
 		te.setData("program", program);
-		te.setData("keywords", PCws_WeaselHighlightHelper.weasel(this, weasel));
+		te.setData("keywords", PCws_WeaselHighlightHelper.weasel(defaultProvider, weasel));
 		te.setData("isRunning", !stop);
 		te.setData("stackSize", weasel.dataStack.get().size() + weasel.systemStack.get().size());
 		te.setData("variableCount", weasel.variables.get().size() + weasel.globals.get().size());
@@ -400,6 +197,35 @@ public class PCws_WeaselPluginCore extends PCws_WeaselPlugin {
 		stop = false;
 		setData("isRunning", true);
 		weasel.restartProgramClearGlobals();
+	}
+	
+	public class CorePluginProvider extends WeaselFunctionProvider{
+		
+		@Override
+		public WeaselObject call(String name, WeaselObject... args) throws WeaselRuntimeException {
+			try{
+				return super.call(name, args);
+			}catch(WeaselRuntimeException e){
+				if(getNetwork()==null){
+					throw e;
+				}else{
+					return getNetwork().
+				}
+			}
+		}
+
+		@Override
+		public boolean doesProvideFunction(String name) {
+			// TODO Auto-generated method stub
+			return super.doesProvideFunction(name);
+		}
+
+		@Override
+		public List<String> getProvidedFunctionNames() {
+			// TODO Auto-generated method stub
+			return super.getProvidedFunctionNames();
+		}
+		
 	}
 	
 }

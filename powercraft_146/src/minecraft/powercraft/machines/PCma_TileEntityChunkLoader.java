@@ -53,11 +53,18 @@ public class PCma_TileEntityChunkLoader extends PC_TileEntity implements PC_IBea
 		}
 		
 		if(worldObj.isRemote){
-			ValueWriting.spawnParticle("PC_EntityLaserFX", worldObj, pos, new PC_VecI(0, 256, 0), 0.5f, new PC_Color(1.0f, 0.001f, 0.2f));
+			ValueWriting.spawnParticle("PC_EntityLaserFX", worldObj, pos, new PC_VecI(0, 50, 0), 0.5f, new PC_Color(1.0f, 0.001f, 0.2f));
+			ValueWriting.spawnParticle("PC_EntityLaserFX", worldObj, getCoord(), new PC_VecI(0, 50, 0), 0.5f, new PC_Color(1.0f, 0.001f, 0.2f));
+			
 			Random rand = new Random();
 			PC_Color color = new PC_Color(0.7f + rand.nextFloat()*0.3f, rand.nextFloat()*0.3f, 0.2f+rand.nextFloat()*0.3f);
 			ValueWriting.spawnParticle("PC_EntityFanFX", worldObj, new PC_VecF(getCoord()), new PC_VecF(rand.nextFloat()-0.5f, rand.nextFloat()-0.5f, rand.nextFloat()-0.5f),
 					new PC_VecF(rand.nextFloat()-0.5f, rand.nextFloat()-0.5f, rand.nextFloat()-0.5f).div(10.0f), 0.05f + rand.nextFloat()*0.1f, color);
+			
+			ValueWriting.spawnParticle("PC_EntityFanFX", worldObj, new PC_VecF(getCoord().offset(0, 50, 0)), new PC_VecF(rand.nextFloat()-0.5f, rand.nextFloat()-0.5f, rand.nextFloat()-0.5f).mul(20.0f),
+					new PC_VecF(rand.nextFloat()-0.5f, rand.nextFloat()-0.5f, rand.nextFloat()-0.5f), 2f + rand.nextFloat()*1f, color);
+			
+			
 		}
 		
 		tick++;
