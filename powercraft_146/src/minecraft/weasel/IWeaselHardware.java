@@ -1,10 +1,8 @@
 package weasel;
 
 
-import java.util.HashMap;
 import java.util.List;
 
-import powercraft.management.PC_Struct2;
 
 import weasel.obj.WeaselObject;
 
@@ -29,7 +27,7 @@ public interface IWeaselHardware extends IVariableProvider, IFunctionProvider {
 	public void setVariable(String name, Object object);
 
 	@Override
-	public HashMap<String, PC_Struct2<Boolean, HashMap>> getProvidedFunctionNames();
+	public List<String> getProvidedFunctionNames();
 
 	@Override
 	public List<String> getProvidedVariableNames();
