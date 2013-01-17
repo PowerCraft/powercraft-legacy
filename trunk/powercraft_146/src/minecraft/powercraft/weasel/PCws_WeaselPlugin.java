@@ -187,7 +187,7 @@ public abstract class PCws_WeaselPlugin implements PC_INBT<PCws_WeaselPlugin>, I
 	}
 
 	@Override
-	public HashMap<String,PC_Struct2<Boolean,HashMap>> getProvidedFunctionNames() {
+	public List<String> getProvidedFunctionNames() {
 		HashMap<String,PC_Struct2<Boolean,HashMap>> l = new HashMap<String,PC_Struct2<Boolean,HashMap>>();
 		l.putAll(getProvidedPluginFunctionNames());
 		if(!l.containsKey("reset")){

@@ -11,6 +11,7 @@ import powercraft.management.PC_INBT;
 import powercraft.management.PC_Struct2;
 import powercraft.management.PC_Utils.SaveHandler;
 import weasel.Calc;
+import weasel.WeaselFunctionProvider;
 import weasel.exception.WeaselRuntimeException;
 import weasel.obj.WeaselObject;
 import weasel.obj.WeaselVariableMap;
@@ -23,7 +24,7 @@ public final class PCws_WeaselNetwork implements Iterable<PCws_WeaselPlugin>, PC
 	private List<Integer> members = new ArrayList<Integer>();
 	/** Local shared variable pool */
 	private WeaselVariableMap localHeap = new WeaselVariableMap();
-	private HashMap<String, PC_Struct2<Object, HashMap>> functionMap = new HashMap<String, PC_Struct2<Object, HashMap>>();
+	private WeaselFunctionProvider functionMap = new WeaselFunctionProvider();
 	private boolean needSave = false;
 	
 	public PCws_WeaselNetwork(){
