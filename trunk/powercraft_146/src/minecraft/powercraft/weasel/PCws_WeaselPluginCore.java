@@ -10,7 +10,7 @@ import powercraft.management.PC_Struct2;
 import powercraft.management.PC_Utils.Gres;
 import powercraft.management.PC_Utils.SaveHandler;
 import weasel.WeaselEngine;
-import weasel.WeaselFunctionProvider;
+import weasel.WeaselFunctionManager;
 import weasel.exception.SyntaxError;
 import weasel.exception.WeaselRuntimeException;
 import weasel.lang.Instruction;
@@ -45,8 +45,8 @@ public class PCws_WeaselPluginCore extends PCws_WeaselPlugin {
 		weasel = new WeaselEngine(defaultProvider);
 	}
 	
-	public WeaselFunctionProvider makePluginProvider(){
-		WeaselFunctionProvider fp = new WeaselFunctionProvider();
+	public WeaselFunctionManager makePluginProvider(){
+		WeaselFunctionManager fp = new WeaselFunctionManager();
 		fp.registerMethod("restart", this);
 		fp.registerMethod("sleep", this);
 		fp.registerMethod("bell", this);
@@ -192,6 +192,8 @@ public class PCws_WeaselPluginCore extends PCws_WeaselPlugin {
 		te.setData("instructionCount", weasel.instructionList.list.size());
 		Gres.openGres("WeaselCore", player, getPos().x, getPos().y, getPos().z);
 	}
+	
+	//Weasel-Functions START
 
 	@Override
 	public void restart() {
@@ -229,7 +231,9 @@ public class PCws_WeaselPluginCore extends PCws_WeaselPlugin {
 		return getInport(3);
 	}
 	
-	public class CorePluginProvider extends WeaselFunctionProvider{
+	//Weasel-Functions END
+	
+	public class CorePluginProvider extends WeaselFunctionManager{
 		
 		@Override
 		public WeaselObject call(WeaselEngine engine, String name, boolean var, WeaselObject... args) throws WeaselRuntimeException {

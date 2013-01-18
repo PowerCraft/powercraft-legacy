@@ -11,7 +11,7 @@ import powercraft.management.PC_INBT;
 import powercraft.management.PC_Struct2;
 import powercraft.management.PC_Utils.SaveHandler;
 import weasel.Calc;
-import weasel.WeaselFunctionProvider;
+import weasel.WeaselFunctionManager;
 import weasel.exception.WeaselRuntimeException;
 import weasel.obj.WeaselObject;
 import weasel.obj.WeaselVariableMap;
@@ -24,7 +24,7 @@ public final class PCws_WeaselNetwork implements Iterable<PCws_WeaselPlugin>, PC
 	private List<Integer> members = new ArrayList<Integer>();
 	/** Local shared variable pool */
 	private WeaselVariableMap localHeap = new WeaselVariableMap();
-	private WeaselFunctionProvider functionMap = new WeaselFunctionProvider();
+	private WeaselFunctionManager functionMap = new WeaselFunctionManager();
 	private boolean needSave = false;
 	
 	public PCws_WeaselNetwork(){
@@ -135,6 +135,7 @@ public final class PCws_WeaselNetwork implements Iterable<PCws_WeaselPlugin>, PC
 			needSave = true;
 			members.add(member.getID());
 			member.setNetwork(id);
+			functionMap.registerFunctionProvider(member.getName(), member.makePluginProvider());
 		}
 	}
 	
@@ -144,6 +145,7 @@ public final class PCws_WeaselNetwork implements Iterable<PCws_WeaselPlugin>, PC
 			needSave = true;
 			member.setNetwork(-1);
 			members.remove((Integer)id);
+			functionMap.removeFunctionProvider(member.getName());
 		}
 		if(members.size()==0)
 			PCws_WeaselManager.removeNetwork(this);
@@ -230,7 +232,7 @@ public final class PCws_WeaselNetwork implements Iterable<PCws_WeaselPlugin>, PC
 		return members.size();
 	}
 	
-	public WeaselFunctionProvider getFunctionHandler(){
+	public WeaselFunctionManager getFunctionHandler(){
 		return functionMap;
 	}
 }

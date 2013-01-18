@@ -19,6 +19,7 @@ import powercraft.management.PC_VecI;
 import weasel.Calc;
 import weasel.IWeaselHardware;
 import weasel.WeaselEngine;
+import weasel.WeaselFunctionManager;
 import weasel.exception.WeaselRuntimeException;
 import weasel.obj.WeaselBoolean;
 import weasel.obj.WeaselDouble;
@@ -49,6 +50,8 @@ public abstract class PCws_WeaselPlugin implements PC_INBT<PCws_WeaselPlugin> {
 		name = shouldName;
 		needSave = true;
 	}
+	
+	public abstract WeaselFunctionManager makePluginProvider();
 	
 	@Override
 	public final PCws_WeaselPlugin readFromNBT(NBTTagCompound nbttag) {
