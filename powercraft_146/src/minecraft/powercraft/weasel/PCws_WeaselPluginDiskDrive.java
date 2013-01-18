@@ -38,7 +38,7 @@ public class PCws_WeaselPluginDiskDrive extends PCws_WeaselPlugin implements PCw
 		public ImageEditor(ItemStack imageDisk) {
 			stack = imageDisk;
 		}
-
+		
 		@Override
 		public PC_VecI getBitmapSize() {
 			return PCws_ItemWeaselDisk.getImageSize(stack);
@@ -77,6 +77,12 @@ public class PCws_WeaselPluginDiskDrive extends PCws_WeaselPlugin implements PCw
 			return new ImageEditor(disk);
 		}
 		
+	}
+	
+	@Override
+	public WeaselFunctionManager makePluginProvider() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 	
 	@Override
@@ -211,12 +217,6 @@ public class PCws_WeaselPluginDiskDrive extends PCws_WeaselPlugin implements PCw
 			}
 		}
 		return list;
-	}
-
-	@Override
-	public WeaselFunctionManager makePluginProvider() {
-		// TODO Auto-generated method stub
-		return null;
 	}
 	
 }
