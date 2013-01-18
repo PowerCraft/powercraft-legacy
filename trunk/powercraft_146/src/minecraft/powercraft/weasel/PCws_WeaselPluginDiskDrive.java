@@ -18,6 +18,7 @@ import powercraft.weasel.PCws_WeaselBitmapUtils.WeaselBitmapProvider;
 import weasel.Calc;
 import weasel.InstructionList;
 import weasel.WeaselEngine;
+import weasel.WeaselFunctionManager;
 import weasel.exception.WeaselRuntimeException;
 import weasel.lang.Instruction;
 import weasel.lang.InstructionFunction;
@@ -210,6 +211,12 @@ public class PCws_WeaselPluginDiskDrive extends PCws_WeaselPlugin implements PCw
 			}
 		}
 		return list;
+	}
+
+	@Override
+	public WeaselFunctionManager makePluginProvider() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 	
 }

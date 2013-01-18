@@ -127,12 +127,6 @@ public class PClo_BlockGate extends PC_Block
         return false;
     }
 
-    @Override
-    public int getRenderType()
-    {
-        return PC_Renderer.getRendererID(true);
-    }
-
     public static PClo_TileEntityGate getTE(IBlockAccess world, int x, int y, int z)
     {
         TileEntity te = GameInfo.getTE(world, x, y, z);;
