@@ -43,47 +43,36 @@ public class PCcp_App implements PC_IModule {
 	}
 
 	@Override
-	public void initItems() {
-		// TODO Auto-generated method stub
-
-	}
+	public void initItems() {}
 
 	@Override
-	public void initEntities() {
-		// TODO Auto-generated method stub
-
-	}
+	public void initEntities() {}
 
 	@Override
 	public List<Object> initRecipes(List<Object> recipes) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
 	public List<PC_Struct2<String, PC_IDataHandler>> initDataHandlers(
 			List<PC_Struct2<String, PC_IDataHandler>> dataHandlers) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
 	public List<PC_IMSG> initMSGObjects(List<PC_IMSG> msgObjects) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
 	public List<PC_Struct2<String, PC_IPacketHandler>> initPacketHandlers(
 			List<PC_Struct2<String, PC_IPacketHandler>> packetHandlers) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
 	public List<PC_Struct2<String, Class>> registerGuis(
 			List<PC_Struct2<String, Class>> guis) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
