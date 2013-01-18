@@ -45,6 +45,7 @@ public class PCws_WeaselPluginCore extends PCws_WeaselPlugin {
 		weasel = new WeaselEngine(defaultProvider);
 	}
 	
+	@Override
 	public WeaselFunctionManager makePluginProvider(){
 		WeaselFunctionManager fp = new WeaselFunctionManager();
 		fp.registerMethod("restart", this);

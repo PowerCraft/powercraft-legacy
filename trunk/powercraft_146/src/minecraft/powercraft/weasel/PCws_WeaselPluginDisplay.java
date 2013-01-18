@@ -11,6 +11,7 @@ import powercraft.management.PC_Utils.Gres;
 import powercraft.management.PC_Utils.SaveHandler;
 import weasel.Calc;
 import weasel.WeaselEngine;
+import weasel.WeaselFunctionManager;
 import weasel.exception.WeaselRuntimeException;
 import weasel.obj.WeaselDouble;
 import weasel.obj.WeaselNull;
@@ -23,6 +24,12 @@ public class PCws_WeaselPluginDisplay extends PCws_WeaselPlugin {
 	private int fgcolor = 0xffffff;
 	private int align = 0;
 	private String text = "";
+	
+	@Override
+	public WeaselFunctionManager makePluginProvider() {
+		// TODO Auto-generated method stub
+		return null;
+	}
 	
 	@Override
 	protected PCws_WeaselPlugin readPluginFromNBT(NBTTagCompound tag) {

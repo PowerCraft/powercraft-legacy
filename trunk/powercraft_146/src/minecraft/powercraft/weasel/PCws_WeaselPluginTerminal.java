@@ -10,6 +10,7 @@ import powercraft.management.PC_PacketHandler;
 import powercraft.management.PC_Utils.Gres;
 import weasel.Calc;
 import weasel.WeaselEngine;
+import weasel.WeaselFunctionManager;
 import weasel.exception.WeaselRuntimeException;
 import weasel.obj.WeaselBoolean;
 import weasel.obj.WeaselNull;
@@ -24,6 +25,12 @@ public class PCws_WeaselPluginTerminal extends PCws_WeaselPlugin {
 	private List<String> userInput = new ArrayList<String>();
 	
 	private long lastTime = -1;
+	
+	@Override
+	public WeaselFunctionManager makePluginProvider() {
+		// TODO Auto-generated method stub
+		return null;
+	}
 	
 	@Override
 	protected PCws_WeaselPlugin readPluginFromNBT(NBTTagCompound tag) {

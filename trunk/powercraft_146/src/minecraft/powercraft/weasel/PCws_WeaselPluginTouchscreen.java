@@ -14,6 +14,7 @@ import powercraft.management.PC_VecI;
 import powercraft.weasel.PCws_WeaselBitmapUtils.WeaselBitmapAdapter;
 import powercraft.weasel.PCws_WeaselBitmapUtils.WeaselBitmapProvider;
 import weasel.WeaselEngine;
+import weasel.WeaselFunctionManager;
 import weasel.exception.WeaselRuntimeException;
 import weasel.obj.WeaselDouble;
 import weasel.obj.WeaselObject;
@@ -37,6 +38,12 @@ public class PCws_WeaselPluginTouchscreen extends PCws_WeaselPlugin implements W
 				screen[i][j] = -1;
 			}
 		}
+	}
+	
+	@Override
+	public WeaselFunctionManager makePluginProvider() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 	
 	@Override

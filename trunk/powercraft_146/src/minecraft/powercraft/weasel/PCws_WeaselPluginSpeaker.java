@@ -13,6 +13,7 @@ import powercraft.management.PC_TileEntity;
 import powercraft.management.PC_Utils.Gres;
 import weasel.Calc;
 import weasel.WeaselEngine;
+import weasel.WeaselFunctionManager;
 import weasel.exception.WeaselRuntimeException;
 import weasel.obj.WeaselDouble;
 import weasel.obj.WeaselNull;
@@ -22,6 +23,12 @@ public class PCws_WeaselPluginSpeaker extends PCws_WeaselPlugin {
 	
 	private static Random rand = new Random();
 
+	@Override
+	public WeaselFunctionManager makePluginProvider() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	
 	private void playNote(String type, int tone, float volume) {
 		float f = (float) Math.pow(2D, (tone - 12) / 12D);
 		String s = type;
