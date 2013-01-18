@@ -26,14 +26,11 @@ public class PCcp_AppClient extends PCcp_App implements PC_IClientModule {
 
 	@Override
 	public List<String> addSplashes(List<String> list) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public List<PC_Struct2<Class<? extends Entity>, Render>> registerEntityRender(
-			List<PC_Struct2<Class<? extends Entity>, Render>> list) {
-		// TODO Auto-generated method stub
+	public List<PC_Struct2<Class<? extends Entity>, Render>> registerEntityRender(List<PC_Struct2<Class<? extends Entity>, Render>> list) {
 		return null;
 	}
 
