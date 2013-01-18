@@ -7,19 +7,21 @@ import net.minecraft.entity.Entity;
 import powercraft.management.PC_IClientModule;
 import powercraft.management.PC_LangEntry;
 import powercraft.management.PC_Struct2;
+import powercraft.management.PC_Utils.ModuleInfo;
+import powercraft.management.PC_Utils.ModuleLoader;
 
 public class PCcp_AppClient extends PCcp_App implements PC_IClientModule {
 
 	@Override
 	public List<PC_LangEntry> initLanguage(List<PC_LangEntry> lang) {
-		// TODO Auto-generated method stub
-		return null;
+		lang.add(new PC_LangEntry("pc.checkpoint.setSpawn", "Set spawnpoint to %s"));
+		return lang;
 	}
 
 	@Override
 	public List<String> loadTextureFiles(List<String> textures) {
-		// TODO Auto-generated method stub
-		return null;
+		textures.add(ModuleInfo.getTerrainFile(this));
+		return textures;
 	}
 
 	@Override

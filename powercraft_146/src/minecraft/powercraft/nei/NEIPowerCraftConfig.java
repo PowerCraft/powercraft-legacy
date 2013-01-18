@@ -66,11 +66,9 @@ public class NEIPowerCraftConfig implements IConfigureNEI, PC_IMSG {
 				}else if (obj instanceof Block){
 		        	id = ((Block)obj).blockID;
 		        	if(obj.getClass().isAnnotationPresent(PC_Shining.class)){
-		        		System.out.println("A shinig thing");
 		        		Object[] o = ValueWriting.getFieldsWithAnnotation(obj.getClass(), PC_Shining.OFF.class, obj);
 		        		for(int i=0; i<o.length; i++){
 		        			if(o[i]==obj){
-		        				System.out.println("is not shining");
 		        				msg = true;
 		        			}
 		        		}
