@@ -2,12 +2,17 @@ package powercraft.checkpoints;
 
 import java.util.List;
 
+import net.minecraft.block.Block;
+import net.minecraft.item.Item;
+
 import powercraft.management.PC_Block;
 import powercraft.management.PC_IDataHandler;
 import powercraft.management.PC_IMSG;
 import powercraft.management.PC_IModule;
 import powercraft.management.PC_IPacketHandler;
+import powercraft.management.PC_ItemStack;
 import powercraft.management.PC_Property;
+import powercraft.management.PC_ShapedRecipes;
 import powercraft.management.PC_Struct2;
 import powercraft.management.PC_Utils.ModuleLoader;
 
@@ -50,7 +55,11 @@ public class PCcp_App implements PC_IModule {
 
 	@Override
 	public List<Object> initRecipes(List<Object> recipes) {
-		return null;
+		recipes.add(new PC_ShapedRecipes(new PC_ItemStack(checkpoint), 
+				"b",
+				"e",
+				'b', Block.stoneButton, Block.woodenButton, 'e', Item.bed));
+		return recipes;
 	}
 
 	@Override

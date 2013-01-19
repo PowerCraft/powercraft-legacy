@@ -72,8 +72,7 @@ public class PCbp_App implements PC_IModule {
 
 	@Override
 	public List<PC_Struct2<String, Class>> registerGuis(List<PC_Struct2<String, Class>> guis) {
-		guis.add(new PC_Struct2<String, Class>("BackpackNormal", PCbp_ContainerBackpackNormal.class));
-		guis.add(new PC_Struct2<String, Class>("BackpackEnder", PCbp_ContainerBackpackEnder.class));
+		guis.add(new PC_Struct2<String, Class>("Backpack", PCbp_ContainerBackpack.class));
 		return guis;
 	}
 

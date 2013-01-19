@@ -9,17 +9,17 @@ import powercraft.management.PC_IGresClient;
 import powercraft.management.PC_IGresGui;
 import powercraft.management.PC_Utils.Lang;
 
-public class PCbp_GuiBackpackNormal extends PCbp_ContainerBackpackNormal
+public class PCbp_GuiBackpack extends PCbp_ContainerBackpack
 		implements PC_IGresClient {
 
-	public PCbp_GuiBackpackNormal(EntityPlayer player, Object[] o) {
+	public PCbp_GuiBackpack(EntityPlayer player, Object[] o) {
 		super(player, o);
 	}
 
 	@Override
 	public void initGui(PC_IGresGui gui) {
-		PC_GresWindow w = new PC_GresWindow(Lang.tr("pc.gui.backpack.normal"));
-		PC_GresInventory inventory = new PC_GresInventory(inv.getSize().x, inv.getSize().y);
+		PC_GresWindow w = new PC_GresWindow(Lang.tr(PCbp_App.backpack.getItemNameIS(thePlayer.getCurrentEquippedItem())));
+		PC_GresInventory inventory = new PC_GresInventory(9, 3);
 		int i=0;
 		for(int y=0; y<3; y++){
 			for(int x=0; x<9; x++){
@@ -33,9 +33,7 @@ public class PCbp_GuiBackpackNormal extends PCbp_ContainerBackpackNormal
 	}
 
 	@Override
-	public void onGuiClosed(PC_IGresGui gui) {
-		
-	}
+	public void onGuiClosed(PC_IGresGui gui) {}
 
 	@Override
 	public void actionPerformed(PC_GresWidget widget, PC_IGresGui gui) {}
@@ -59,7 +57,6 @@ public class PCbp_GuiBackpackNormal extends PCbp_ContainerBackpackNormal
 	@Override
 	public boolean drawBackground(PC_IGresGui gui, int par1, int par2,
 			float par3) {
-		// TODO Auto-generated method stub
 		return false;
 	}
 

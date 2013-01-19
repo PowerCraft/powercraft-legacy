@@ -16,7 +16,7 @@ import weasel.exception.WeaselRuntimeException;
 import weasel.lang.Instruction;
 import weasel.obj.WeaselObject;
 
-public class PCws_WeaselPluginCore extends PCws_WeaselPlugin {
+public class PCws_WeaselPluginCore extends PCws_WeaselPlugin implements PCws_IWeaselEngine {
 	
 	private static final String default_program = 
 			"# *** Weasel powered Microcontroller ***\n"+
@@ -346,6 +346,11 @@ public class PCws_WeaselPluginCore extends PCws_WeaselPlugin {
 			return list;
 		}
 		
+	}
+
+	@Override
+	public WeaselEngine getEngine() {
+		return weasel;
 	}
 	
 }
