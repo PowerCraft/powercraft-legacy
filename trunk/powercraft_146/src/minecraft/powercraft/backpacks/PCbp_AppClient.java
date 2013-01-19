@@ -1,4 +1,4 @@
-package powercraft.checkpoints;
+package powercraft.backpacks;
 
 import java.util.List;
 
@@ -9,11 +9,10 @@ import powercraft.management.PC_LangEntry;
 import powercraft.management.PC_Struct2;
 import powercraft.management.PC_Utils.ModuleInfo;
 
-public class PCcp_AppClient extends PCcp_App implements PC_IClientModule {
+public class PCbp_AppClient extends PCbp_App implements PC_IClientModule {
 
 	@Override
 	public List<PC_LangEntry> initLanguage(List<PC_LangEntry> lang) {
-		lang.add(new PC_LangEntry("pc.checkpoint.setSpawn", "Set spawnpoint to %s"));
 		return lang;
 	}
 
@@ -33,4 +32,10 @@ public class PCcp_AppClient extends PCcp_App implements PC_IClientModule {
 		return null;
 	}
 
+	@Override
+	public List<PC_Struct2<String, Class>> registerGuis(List<PC_Struct2<String, Class>> guis) {
+		guis.add(new PC_Struct2<String, Class>("BackpackNormal", PCbp_GuiBackpackNormal.class));
+		guis.add(new PC_Struct2<String, Class>("BackpackEnder", PCbp_GuiBackpackEnder.class));
+		return guis;
+	}
 }
