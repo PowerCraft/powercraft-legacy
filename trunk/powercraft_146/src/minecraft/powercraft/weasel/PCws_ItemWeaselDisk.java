@@ -16,7 +16,9 @@ import powercraft.management.PC_Utils;
 import powercraft.management.PC_Utils.Lang;
 import powercraft.management.PC_Utils.SaveHandler;
 import powercraft.management.PC_VecI;
+import powercraft.weasel.PCws_WeaselBitmapUtils.WeaselBitmapProvider;
 import weasel.Calc;
+import weasel.WeaselEngine;
 import weasel.exception.WeaselRuntimeException;
 import weasel.lang.Instruction;
 import weasel.obj.WeaselDouble;
@@ -553,6 +555,110 @@ public class PCws_ItemWeaselDisk extends PC_Item {
 		return null;
 	}
 
+	public static void setListEntry(ItemStack disk, int pos, WeaselObject weaselObject) {
+		String obj = Calc.toString(weaselObject);	
+		if(getType(disk)==NUMBERLIST) {						
+			obj = ""+Calc.toInteger(weaselObject);
+		}
+		String delim = getListDelimiter(disk);
+		
+		String[] pieces = getListEntries(disk);
+		
+		if(pos < 0||pos > pieces.length) {
+			throw new WeaselRuntimeException("List "+getLabel(disk)+": index "+pos+" out of bounds.");
+		}
+		if(pos == pieces.length) {
+			if(getListText(disk).length()>10000) {
+				throw new WeaselRuntimeException("List "+getLabel(disk)+": disk is full (10kB).");
+			}
+			
+			String s = getListText(disk);
+
+			if(s.length()>0) s +=delim;
+
+			if(pieces.length!=0 && pieces.length%10==0 && !delim.equals("\\n")) {
+				s+="\n";
+			}
+			
+			s += obj;
+			if(s.length()>10000) {
+				throw new WeaselRuntimeException("List "+getLabel(disk)+": can't add, disk is full (10kB).");
+			}
+			setListText(disk, s, delim);
+		}
+		
+		
+		pieces[pos] = obj;
+
+		String all = "";
+		int n=-1;
+		for(String piece:pieces) {
+			n++;
+			if(all.length()>0) {
+				all+=delim;
+				if(n!=0 && n%10==0 && !delim.equals("\\n")) {
+					all+="\n";
+				}
+			}
+			all += piece.trim();
+		}
+		
+		setListText(disk, all, delim);
+	}
+	
+	public static void removeListEntry(ItemStack disk, int pos) {	
+		String delim = getListDelimiter(disk);
+		
+		String[] pieces = getListEntries(disk);
+		
+		if(pos < 0||pos >= pieces.length) {
+			throw new WeaselRuntimeException("List "+getLabel(disk)+": index "+pos+" out of bounds.");
+		}
+		
+		String all = "";
+		int n=-1;
+		for(String piece:pieces) {
+			n++;
+			if(n == pos) continue;
+			if(all.length()>0) {
+				all+=delim;
+			}
+			all += piece.trim();
+			if(n!=0&&n%10==0&&!delim.equals("\n")) {
+				all+="\n";
+			}
+		}
+		
+		setListText(disk, all, delim);
+	}
+	
+	public static void addListEntry(ItemStack disk, WeaselObject weaselObject) {
+		String delim = getListDelimiter(disk);
+		
+		String[] pieces = getListEntries(disk);
+	
+		if(getListText(disk).length()>10000) {
+			throw new WeaselRuntimeException("List "+getLabel(disk)+": disk is full (10kB).");
+		}
+		
+		String s = getListText(disk);
+		
+		if(s.length()>0) s +=delim;
+
+		if(pieces.length!=0 && pieces.length%10==0 && !delim.equals("\\n")) {
+			s+="\n";
+		}
+		
+		if(weaselObject instanceof WeaselString)
+			s += Calc.toString(weaselObject);
+		else
+			s += ""+Calc.toInteger(weaselObject);
+		if(s.length()>10000) {
+			throw new WeaselRuntimeException("List "+getLabel(disk)+": can't add, disk is full (10kB).");
+		}
+		setListText(disk, s, delim);
+	}
+	
 	/**
 	 * Get list raw string with delimiter-separated entries
 	 * 
@@ -742,5 +848,143 @@ public class PCws_ItemWeaselDisk extends PC_Item {
 		}
 		return "FAILED DISK";
 	}
+	
+	public static Object handleFunction(WeaselEngine engine, PCws_WeaselPlugin plugin, ItemStack disk, String name, WeaselObject[] args) {
+		if(name.equals("getDiskType")){
+			return getType(disk);
+		}else if(name.equals("getDiskName")){
+			return getLabel(disk);
+		}else{
+			if(getType(disk)==IMAGE){
+				new PCws_WeaselBitmapUtils.WeaselBitmapAdapter(new ImageEditor(disk, plugin)).call(engine, name, false, args);
+			}else if(name.equals("get")){
+				switch (getType(disk)) {
+				case TEXT:
+					return getText(disk);
+				case NUMBERLIST:
+				case STRINGLIST:
+					return getListEntry(disk, Calc.toInteger(args[0]));
+				case VARMAP:
+					return getMapVariable(disk, Calc.toString(args[0]));
+				}
+			}else if(name.equals("set")){
+				switch (getType(disk)) {
+				case TEXT:
+					setText(disk, Calc.toString(args[0]));
+				case NUMBERLIST:
+				case STRINGLIST:
+					setListEntry(disk, Calc.toInteger(args[0]), args[1]);
+				case VARMAP:
+					setMapVariable(disk, Calc.toString(args[0]), args[1]);
+				}
+			}else if(name.equals("clear")){
+				switch (getType(disk)) {
+				case TEXT:
+					setText(disk, "");
+				case NUMBERLIST:
+				case STRINGLIST:
+					setListText(disk, "", getListDelimiter(disk));
+				case VARMAP:
+					eraseVarMap(disk);
+				}
+			}else if(name.equals("remove") || name.equals("unset")){
+				switch (getType(disk)) {
+				case TEXT:
+					setText(disk, "");
+				case NUMBERLIST:
+				case STRINGLIST:
+					removeListEntry(disk, Calc.toInteger(args[0]));
+				case VARMAP:
+					removeMapVariable(disk, Calc.toString(args[0]));
+				}
+			}else if(name.equals("add")){
+				switch (getType(disk)) {
+				case TEXT:
+					setText(disk, getText(disk) + Calc.toString(args[0]));
+				case NUMBERLIST:
+				case STRINGLIST:
+					addListEntry(disk, args[0]);
+				case VARMAP:
+					removeMapVariable(disk, Calc.toString(args[0]));
+				}
+			}else if(name.equals("has")){
+				switch (getType(disk)) {
+				case NUMBERLIST:
+				case STRINGLIST:
+					return getListEntry(disk, Calc.toInteger(args[0])) != null;
+				case VARMAP:
+					return hasMapVariable(disk, Calc.toString(args[0]));
+				}
+			}
+		}
+		return null;
+	}
+
+	private static class ImageEditor implements WeaselBitmapProvider {
+		private ItemStack stack;
+		private PCws_WeaselPlugin plugin;
 		
+		public ImageEditor(ItemStack imageDisk, PCws_WeaselPlugin plugin) {
+			stack = imageDisk;
+			this.plugin = plugin;
+		}
+		
+		@Override
+		public PC_VecI getBitmapSize() {
+			return PCws_ItemWeaselDisk.getImageSize(stack);
+		}
+
+		@Override
+		public int getBitmapPixel(int x, int y) {
+			return PCws_ItemWeaselDisk.getImageColorAt(stack, new PC_VecI(x, y));
+		}
+
+		@Override
+		public void setBitmapPixel(int x, int y, int color) {
+			PCws_ItemWeaselDisk.setImageColorAt(stack, new PC_VecI(x, y), color);
+		}
+
+		@Override
+		public void resize(int w, int h) {
+			PCws_ItemWeaselDisk.setImageSize(stack, new PC_VecI(w, h));
+		}
+
+		@Override
+		public void notifyChanges() {}
+		
+		public WeaselBitmapProvider getImageForName(String name){
+			ImageEditor ie = null;
+			if(plugin.getNetwork()!=null){
+				for (PCws_WeaselPlugin member : plugin.getNetwork()) {
+					if (member instanceof PCws_WeaselPluginDiskDrive) {
+						ItemStack disk = ((PCws_WeaselPluginDiskDrive) member).getImageDisk(name);
+						if (disk != null) {
+							ie = new ImageEditor(disk, member);
+							break;
+						}
+					}
+				}
+			}
+			if(ie == null) return null;
+			
+			return ie;
+		}
+		
+	}
+	
+	public static List<String> getAllFunctionNames(){
+		List<String> list = new ArrayList<String>();
+		list.add("getDiskType");
+		list.add("getDiskName");
+		list.add("get");
+		list.add("set");
+		list.add("clear");
+		list.add("remove");
+		list.add("unset");
+		list.add("add");
+		list.add("has");
+		list.addAll(new PCws_WeaselBitmapUtils.WeaselBitmapAdapter(null).getProvidedFunctionNames());
+		return list;
+	}
+	
 }

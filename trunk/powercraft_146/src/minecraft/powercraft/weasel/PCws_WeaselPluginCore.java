@@ -343,7 +343,6 @@ public class PCws_WeaselPluginCore extends PCws_WeaselPlugin {
 			if(getNetwork()!=null){
 				list.addAll(getNetwork().getFunctionHandler().getProvidedVariableNames());
 			}
-			System.out.println(list);
 			return list;
 		}
 		
