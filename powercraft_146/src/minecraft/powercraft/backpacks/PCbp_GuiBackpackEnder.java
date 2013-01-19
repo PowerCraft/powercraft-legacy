@@ -27,8 +27,8 @@ public class PCbp_GuiBackpackEnder extends PCbp_ContainerBackpackEnder
 				i++;
 			}
 		}
-		gui.add(inventory);
-		gui.add(new PC_GresInventoryPlayer(true));
+		w.add(inventory);
+		w.add(new PC_GresInventoryPlayer(true));
 		gui.add(w);
 	}
 
