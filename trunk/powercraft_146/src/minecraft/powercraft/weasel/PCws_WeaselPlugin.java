@@ -125,6 +125,9 @@ public abstract class PCws_WeaselPlugin implements PC_INBT<PCws_WeaselPlugin> {
 	public final void setName(String name) {
 		if(PCws_WeaselManager.getPlugin(name)==null){
 			needsSave();
+			if(getNetwork()!=null){
+				getNetwork().renameMember(this, name);
+			}
 			this.name = name;
 			setData("deviceName", name);
 		}

@@ -153,21 +153,31 @@ public class WeaselFunctionManager implements IWeaselHardware {
 		return obj;
 	}
 	
-	private static WeaselObject call(Object obj, String name, Object[] args){
-		Class<?> c = obj.getClass();
-		Method[] methods = c.getDeclaredMethods();
-		Class<?>[] expect = new Class<?>[args.length];
-		for(int i=0; i<args.length; i++){
-			expect[i] = args[i].getClass();
-		}
+	private static Method getBestMethod(Method[] methods, String name, Class<?>[] expect){
 		Method method = null;
 		for(Method m:methods){
 			if(m.getName().equals(name)){
 				method = rate(m, method, expect);
 			}
 		}
-		if(method==null)
-			throw new WeaselRuntimeException("Function \""+name+"\" does not exist");
+		return method;
+	}
+	
+	private static WeaselObject call(Object obj, String name, Object[] args){
+		Class<?> c = obj.getClass();
+		Class<?>[] expect = new Class<?>[args.length];
+		for(int i=0; i<args.length; i++){
+			expect[i] = args[i].getClass();
+		}
+		Method[] methods = c.getDeclaredMethods();
+		Method method = getBestMethod(methods, name, expect);
+		while(method==null){
+			c = c.getSuperclass();
+			if(c==null)
+				throw new WeaselRuntimeException("Function \""+name+"\" does not exist");
+			methods = c.getDeclaredMethods();
+			method = getBestMethod(methods, name, expect);
+		}
 		Object[] param = makeParam(args, method.getParameterTypes());
 		try {
 			return WeaselObject.getWrapperForValue(method.invoke(obj, param));
