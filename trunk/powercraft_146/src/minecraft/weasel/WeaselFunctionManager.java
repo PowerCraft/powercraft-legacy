@@ -121,7 +121,9 @@ public class WeaselFunctionManager implements IWeaselHardware {
 				return oldMethod;
 			}
 		}
-		int r1 = rate(oldMethod, expect);
+		int r1 = -1;
+		if(oldMethod!=null)
+			r1 = rate(oldMethod, expect);
 		int r2 = rate(newMethod, expect);
 		if(r2==-1)
 			return oldMethod;
