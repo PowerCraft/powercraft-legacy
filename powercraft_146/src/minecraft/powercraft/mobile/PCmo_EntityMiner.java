@@ -84,7 +84,7 @@ public class PCmo_EntityMiner extends Entity implements PC_IInventoryWrapper {
 	/** Miner status */
 	protected MinerStatus st = new MinerStatus();
 	/** Miner brain */
-	protected PCmo_IMinerBrain br = PCmo_MinerManager.createMinerBrain(this);
+	protected PCmo_IMinerBrain br;
 	/** Cargo inventory with all items */
 	protected MinerCargoInventory cargo = new MinerCargoInventory();
 	/** Crystals inventory */
@@ -126,6 +126,7 @@ public class PCmo_EntityMiner extends Entity implements PC_IInventoryWrapper {
 		setFlag(torches, false);
 		setFlag(cobbleMake, false);
 		setFlag(airFillingEnabled, false);
+		br = PCmo_MinerManager.createMinerBrain(this);
 	}
 
 	/**
@@ -3537,6 +3538,8 @@ public class PCmo_EntityMiner extends Entity implements PC_IInventoryWrapper {
 				br.restart();
 			}else if(key.equalsIgnoreCase("stop")){
 				st.halted = true;
+			}else if(key.equalsIgnoreCase("brainmsg")){
+				br.msg(obj);
 			}
 		}
 	}
