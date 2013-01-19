@@ -109,6 +109,13 @@ public final class PCws_WeaselNetwork implements Iterable<PCws_WeaselPlugin>, PC
 		return color;
 	}
 	
+	public void updateAll(){
+		functionMap = new WeaselFunctionManager();
+		for(PCws_WeaselPlugin member:this){
+			functionMap.registerFunctionProvider(member.getName(), member.makePluginProvider());
+		}
+	}
+	
 	public void remove() {
 		for(Integer i:members){
 			PCws_WeaselPlugin member = PCws_WeaselManager.getPlugin(i);
@@ -136,6 +143,20 @@ public final class PCws_WeaselNetwork implements Iterable<PCws_WeaselPlugin>, PC
 			members.add(member.getID());
 			member.setNetwork(id);
 			functionMap.registerFunctionProvider(member.getName(), member.makePluginProvider());
+		}
+	}
+	
+	public void updateMemberFunctionProvider(PCws_WeaselPlugin member){
+		if(members.contains(member.getID())){
+			functionMap.removeFunctionProvider(member.getName());
+			functionMap.registerFunctionProvider(member.getName(), member.makePluginProvider());
+		}
+	}
+	
+	public void renameMember(PCws_WeaselPlugin member, String newName){
+		if(members.contains(member.getID())){
+			functionMap.removeFunctionProvider(member.getName());
+			functionMap.registerFunctionProvider(newName, member.makePluginProvider());
 		}
 	}
 	

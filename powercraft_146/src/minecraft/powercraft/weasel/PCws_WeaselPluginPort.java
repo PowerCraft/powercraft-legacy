@@ -18,7 +18,6 @@ public class PCws_WeaselPluginPort extends PCws_WeaselPlugin {
 	@Override
 	public WeaselFunctionManager makePluginProvider() {
 		WeaselFunctionManager fp = new WeaselFunctionManager();
-		fp.registerMethod("restart", this);
 		fp.registerVariable("front", this);
 		fp.registerVariable("f", "front", this);
 		fp.registerVariable("back", this);

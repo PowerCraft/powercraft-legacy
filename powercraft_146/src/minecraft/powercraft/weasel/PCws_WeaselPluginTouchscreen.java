@@ -42,8 +42,10 @@ public class PCws_WeaselPluginTouchscreen extends PCws_WeaselPlugin implements W
 	
 	@Override
 	public WeaselFunctionManager makePluginProvider() {
-		// TODO Auto-generated method stub
-		return null;
+		WeaselFunctionManager fp = new WeaselFunctionManager();
+		fp.registerMethod("restart", this);
+		fp.registerMethod("reset", "restart", this);
+		return fp;
 	}
 	
 	@Override

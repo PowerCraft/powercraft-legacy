@@ -73,6 +73,8 @@ public abstract class PCws_WeaselPlugin implements PC_INBT<PCws_WeaselPlugin> {
 			weaselOutport[i] = nbttag.getBoolean("weaselOutport["+i+"]");
 			weaselInport[i] = nbttag.getBoolean("weaselInport["+i+"]");
 		}
+		if(getNetwork()!=null)
+			getNetwork().updateMemberFunctionProvider(this);
 		return this;
 	}
 

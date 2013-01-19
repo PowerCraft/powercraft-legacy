@@ -38,10 +38,23 @@ public class PCws_WeaselPluginCore extends PCws_WeaselPlugin {
 	public PCws_WeaselPluginCore(){
 		defaultProvider = new CorePluginProvider();
 		defaultProvider.registerMethod("restart", this);
+		defaultProvider.registerMethod("reset", "restart", this);
 		defaultProvider.registerMethod("sleep", this);
 		defaultProvider.registerMethod("bell", this);
 		defaultProvider.registerVariable("front", this);
 		defaultProvider.registerVariable("f", "front", this);
+		defaultProvider.registerVariable("back", this);
+		defaultProvider.registerVariable("b", "back", this);
+		defaultProvider.registerVariable("left", this);
+		defaultProvider.registerVariable("l", "left", this);
+		defaultProvider.registerVariable("right", this);
+		defaultProvider.registerVariable("r", "right", this);
+		defaultProvider.registerVariable("top", this);
+		defaultProvider.registerVariable("up", "top", this);
+		defaultProvider.registerVariable("u", "top", this);
+		defaultProvider.registerVariable("bottom", this);
+		defaultProvider.registerVariable("down", "bottom", this);
+		defaultProvider.registerVariable("d", "bottom", this);
 		weasel = new WeaselEngine(defaultProvider);
 	}
 	
@@ -49,10 +62,23 @@ public class PCws_WeaselPluginCore extends PCws_WeaselPlugin {
 	public WeaselFunctionManager makePluginProvider(){
 		WeaselFunctionManager fp = new WeaselFunctionManager();
 		fp.registerMethod("restart", this);
+		fp.registerMethod("reset", "restart", this);
 		fp.registerMethod("sleep", this);
 		fp.registerMethod("bell", this);
 		fp.registerVariable("front", this);
 		fp.registerVariable("f", "front", this);
+		fp.registerVariable("back", this);
+		fp.registerVariable("b", "back", this);
+		fp.registerVariable("left", this);
+		fp.registerVariable("l", "left", this);
+		fp.registerVariable("right", this);
+		fp.registerVariable("r", "right", this);
+		fp.registerVariable("top", this);
+		fp.registerVariable("up", "top", this);
+		fp.registerVariable("u", "top", this);
+		fp.registerVariable("bottom", this);
+		fp.registerVariable("down", "bottom", this);
+		fp.registerVariable("d", "bottom", this);
 		return fp;
 	}
 	
@@ -232,6 +258,46 @@ public class PCws_WeaselPluginCore extends PCws_WeaselPlugin {
 		return getInport(3);
 	}
 	
+	public void back(boolean state){
+		setOutport(0, state);
+	}
+	
+	public boolean back(){
+		return getInport(0);
+	}
+	
+	public void left(boolean state){
+		setOutport(1, state);
+	}
+	
+	public boolean left(){
+		return getInport(1);
+	}
+	
+	public void right(boolean state){
+		setOutport(2, state);
+	}
+	
+	public boolean right(){
+		return getInport(2);
+	}
+	
+	public void top(boolean state){
+		setOutport(4, state);
+	}
+	
+	public boolean top(){
+		return getInport(4);
+	}
+	
+	public void bottom(boolean state){
+		setOutport(5, state);
+	}
+	
+	public boolean bottom(){
+		return getInport(5);
+	}
+	
 	//Weasel-Functions END
 	
 	public class CorePluginProvider extends WeaselFunctionManager{
@@ -273,6 +339,7 @@ public class PCws_WeaselPluginCore extends PCws_WeaselPlugin {
 			if(getNetwork()!=null){
 				list.addAll(getNetwork().getFunctionHandler().getProvidedVariableNames());
 			}
+			System.out.println(list);
 			return list;
 		}
 		
