@@ -472,7 +472,7 @@ public class PCma_BlockHarvester extends PC_Block implements
 	}
 
 	private void addToDispenseList(World world, ItemStack stack) {
-		if(!world.isRemote)
+		if(!world.isRemote && stack!=null && stack.getItem()!=null && stack.stackSize!=0)
 			drops.add(stack);
 	}
 
