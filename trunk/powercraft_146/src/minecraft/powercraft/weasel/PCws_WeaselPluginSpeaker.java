@@ -207,26 +207,27 @@ public class PCws_WeaselPluginSpeaker extends PCws_WeaselPlugin {
 	public int noteToInt(String note, int octave){
 		note = note.toLowerCase();
 		switch(octave){
-			case 1:{
+			case 0:{
 				if(note.equals("f#")||note.equals("gb")) return 0;
 				if(note.equals("g")) return 1;
 				if(note.equals("g#")||note.equals("ab")) return 2;
 				if(note.equals("a")) return 3;
 				if(note.equals("a#")||note.equals("b")) return 4;
 				if(note.equals("h")) return 5;
+			}case 1:{
 				if(note.equals("c")) return 6;
 				if(note.equals("c#")||note.equals("db")) return 7;
 				if(note.equals("d")) return 8;
 				if(note.equals("d#")||note.equals("eb")) return 9;
 				if(note.equals("e")) return 10;
 				if(note.equals("f")) return 11;
-			}case 2:{
 				if(note.equals("f#")||note.equals("gb")) return 12;
 				if(note.equals("g")) return 13;
 				if(note.equals("g#")||note.equals("ab")) return 14;
 				if(note.equals("a")) return 15;
 				if(note.equals("a#")||note.equals("b")) return 16;
 				if(note.equals("h")) return 17;
+			}case 2:{
 				if(note.equals("c")) return 18;
 				if(note.equals("c#")||note.equals("db")) return 19;
 				if(note.equals("d")) return 20;
