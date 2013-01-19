@@ -9,33 +9,34 @@ import java.util.Map.Entry;
 import powercraft.management.PC_Struct2;
 import powercraft.management.PC_Struct3;
 import weasel.exception.WeaselRuntimeException;
+import weasel.obj.WeaselBoolean;
+import weasel.obj.WeaselDouble;
 import weasel.obj.WeaselObject;
+import weasel.obj.WeaselString;
 
 public class WeaselFunctionManager implements IWeaselHardware {
 
 	private HashMap<String, PC_Struct3<PC_Struct2<String , Object>, PC_Struct2<String , Object>, WeaselFunctionManager>> functions = new HashMap<String, PC_Struct3<PC_Struct2<String , Object>, PC_Struct2<String , Object>, WeaselFunctionManager>>();
 	
 	public WeaselObject call(WeaselEngine engine, String name, boolean var, WeaselObject...args) throws WeaselRuntimeException{
-		String subNames[] = name.split("\\.");
-		HashMap<String, PC_Struct3<PC_Struct2<String , Object>, PC_Struct2<String , Object>, WeaselFunctionManager>> hm = functions;
-		for(int i=0; i<subNames.length-1; i++){
-			if(hm==null || !hm.containsKey(subNames[i]))
-				throw new WeaselRuntimeException("Function \""+name+"\" does not exist");
-			WeaselFunctionManager fp = hm.get(subNames[i]).c;
-			if(fp == null)
-				throw new WeaselRuntimeException("Function \""+name+"\" does not exist");
-			hm = fp.functions;
-		}
-		String lastName = subNames[subNames.length-1];
-		if(hm==null || !hm.containsKey(lastName))
+		String subNames[] = name.split("\\.", 2);
+		if(functions==null || !functions.containsKey(subNames[0])){
 			throw new WeaselRuntimeException("Function \""+name+"\" does not exist");
-		Object o;
-		if(var){
-			o = hm.get(lastName).b;
-		}else{
-			o = hm.get(lastName).a;
 		}
-		return call(engine, o, lastName, args);
+		PC_Struct3<PC_Struct2<String , Object>, PC_Struct2<String , Object>, WeaselFunctionManager> value = functions.get(subNames[0]);
+		if(subNames.length==1){
+			Object o;
+			if(var){
+				o = value.b;
+			}else{
+				o = value.a;
+			}
+			return call(engine, o, subNames[0], args);
+		}
+		WeaselFunctionManager fp = value.c;
+		if(fp == null)
+			throw new WeaselRuntimeException("Function \""+name+"\" does not exist");
+		return fp.call(engine, subNames[1], var, args);
 	}
 	
 	private static Class<?> toWrapper(Class<?>c){
@@ -74,6 +75,31 @@ public class WeaselFunctionManager implements IWeaselHardware {
 		return c2.isAssignableFrom(c1);
 	}
 	
+	private static int rate(Method method, Class<?>[] expect){
+		Class<?>[] param = method.getParameterTypes();
+		Class<?>c = null;
+		int rate=0;
+		for(int i=0; i<expect.length; i++){
+			Class<?> ce = expect[i];
+			if(i<param.length)
+				c = param[i];
+			if(WeaselObject.class.isAssignableFrom(ce)){
+				if(c == Boolean.class){
+					if(WeaselBoolean.class.isAssignableFrom(ce))
+						rate++;
+				}else if(c == Byte.class || c == Character.class || c == Short.class || c == Integer.class || c == Long.class || c == Float.class || c == Double.class){
+					if(WeaselDouble.class.isAssignableFrom(ce))
+						rate++;
+				}else if(c == String.class){
+					if(WeaselString.class.isAssignableFrom(ce))
+						rate++;
+				}
+			}else if(!canCastTo(ce, c))
+				return -1;
+		}
+		return rate;
+	}
+	
 	private static Method rate(Method newMethod, Method oldMethod, Class<?>[] expect){
 		Class<?>[] param1 = newMethod.getParameterTypes();
 		if(param1.length>expect.length)
@@ -95,15 +121,13 @@ public class WeaselFunctionManager implements IWeaselHardware {
 				return oldMethod;
 			}
 		}
-		Class<?> c1 = null;
-		for(int i=0; i<expect.length; i++){
-			Class<?> ce = expect[i];
-			if(i<param1.length)
-				c1 = param1[i];
-			if(!canCastTo(ce, c1))
-				return oldMethod;
-		}
-		return newMethod;
+		int r1 = rate(oldMethod, expect);
+		int r2 = rate(newMethod, expect);
+		if(r2==-1)
+			return oldMethod;
+		if(r2>r1)
+			return newMethod;
+		return oldMethod;
 	}
 	
 	private static Object weaselObject2Class(Class<?> c, WeaselObject obj){
@@ -288,20 +312,18 @@ public class WeaselFunctionManager implements IWeaselHardware {
 
 	@Override
 	public boolean doesProvideFunction(String name) {
-		String subNames[] = name.split("\\.");
-		HashMap<String, PC_Struct3<PC_Struct2<String , Object>, PC_Struct2<String , Object>, WeaselFunctionManager>> hm = functions;
-		for(int i=0; i<subNames.length-1; i++){
-			if(hm==null || !hm.containsKey(subNames[i]))
-				return false;
-			WeaselFunctionManager fp = hm.get(subNames[i]).c;
-			if(fp == null)
-				return false;
-			hm = fp.functions;
-		}
-		String lastName = subNames[subNames.length-1];
-		if(hm==null || !hm.containsKey(lastName))
+		String subNames[] = name.split("\\.", 2);
+		if(functions==null || !functions.containsKey(subNames[0])){
 			return false;
-		return hm.get(lastName).a!=null;
+		}
+		PC_Struct3<PC_Struct2<String , Object>, PC_Struct2<String , Object>, WeaselFunctionManager> value = functions.get(subNames[0]);
+		if(subNames.length==1){
+			return value.a!=null;
+		}
+		WeaselFunctionManager fp = value.c;
+		if(fp == null)
+			return false;
+		return fp.doesProvideFunction(subNames[1]);
 	}
 
 	@Override
@@ -310,20 +332,18 @@ public class WeaselFunctionManager implements IWeaselHardware {
 	}
 
 	public boolean doesProvideVariable(String name) {
-		String subNames[] = name.split("\\.");
-		HashMap<String, PC_Struct3<PC_Struct2<String , Object>, PC_Struct2<String , Object>, WeaselFunctionManager>> hm = functions;
-		for(int i=0; i<subNames.length-1; i++){
-			if(hm==null || !hm.containsKey(subNames[i]))
-				return false;
-			WeaselFunctionManager fp = hm.get(subNames[i]).c;
-			if(fp == null)
-				return false;
-			hm = fp.functions;
-		}
-		String lastName = subNames[subNames.length-1];
-		if(hm==null || !hm.containsKey(lastName))
+		String subNames[] = name.split("\\.", 2);
+		if(functions==null || !functions.containsKey(subNames[0])){
 			return false;
-		return hm.get(lastName).b!=null;
+		}
+		PC_Struct3<PC_Struct2<String , Object>, PC_Struct2<String , Object>, WeaselFunctionManager> value = functions.get(subNames[0]);
+		if(subNames.length==1){
+			return value.b!=null;
+		}
+		WeaselFunctionManager fp = value.c;
+		if(fp == null)
+			return false;
+		return fp.doesProvideFunction(subNames[1]);
 	}
 	
 	@Override

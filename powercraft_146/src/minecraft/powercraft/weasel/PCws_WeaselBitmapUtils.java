@@ -16,6 +16,7 @@ import powercraft.management.PC_VecI;
 import weasel.Calc;
 import weasel.IWeaselHardware;
 import weasel.WeaselEngine;
+import weasel.WeaselFunctionManager;
 import weasel.exception.WeaselRuntimeException;
 import weasel.obj.WeaselDouble;
 import weasel.obj.WeaselNull;
@@ -445,7 +446,7 @@ public class PCws_WeaselBitmapUtils {
 		
 	}
 	
-	public static class WeaselBitmapAdapter implements IWeaselHardware{
+	public static class WeaselBitmapAdapter extends WeaselFunctionManager{
 		private WeaselBitmapProvider provider;
 		
 		/**
@@ -637,7 +638,7 @@ public class PCws_WeaselBitmapUtils {
 		}
 
 		@Override
-		public WeaselObject callProvidedFunction(WeaselEngine engine, String functionName, WeaselObject[] args) {
+		public WeaselObject call(WeaselEngine engine, String functionName, boolean var, WeaselObject... args) {
 			if (functionName.equals("dot") || functionName.equals("point") || functionName.equals("set")
 					|| functionName.equals("draw.pixel")) {
 				// name.dot(x,y,color);
@@ -704,24 +705,13 @@ public class PCws_WeaselBitmapUtils {
 				}catch(Exception e) {
 					throw new WeaselRuntimeException(e.getMessage());
 				}
+			} else if (functionName.equals("W") || functionName.equals("w") || functionName.equalsIgnoreCase("width")) {
+				return new WeaselDouble(width(provider));
+			} else if (functionName.equals("H") || functionName.equals("h") || functionName.equalsIgnoreCase("height")) {
+				return new WeaselDouble(height(provider));
 			}
 			
 			throw new IllegalAccessError();
-		}
-
-		@Override
-		public WeaselObject getVariable(String name) {
-			if (name.equals("W") || name.equals("w") || name.equalsIgnoreCase("width")) {
-				return new WeaselDouble(width(provider));
-			} else if (name.equals("H") || name.equals("h") || name.equalsIgnoreCase("height")) {
-				return new WeaselDouble(height(provider));
-			}
-			return null;
-		}
-
-		@Override
-		public void setVariable(String name, WeaselObject object) {
-			
 		}
 
 		@Override
