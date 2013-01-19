@@ -131,15 +131,19 @@ public class PCws_WeaselPluginCore extends PCws_WeaselPlugin {
 			externalCallsWaiting = new ArrayList<PC_Struct2<String,Object[]>>();
 		if(sleepTimer<=0){
 			if(!hasError() && !stop){
+				weasel.setStatementsToRun(500);
 				try{
-					if(externalCallsWaiting.size()>0) {
-						int state = weasel.callFunctionExternal(externalCallsWaiting.get(0).a, externalCallsWaiting.get(0).b);
-						
-						if(state != 0) {
-							externalCallsWaiting.remove(0);
+					while(weasel.getStatementsToRun()>0){
+						while(externalCallsWaiting.size()>0) {
+							int state = weasel.callFunctionExternal(externalCallsWaiting.get(0).a, externalCallsWaiting.get(0).b);
+							
+							if(state != 0) {
+								externalCallsWaiting.remove(0);
+							}
 						}
+						if(!weasel.run())
+							break;
 					}
-					weasel.run(500);
 				} catch (WeaselRuntimeException wre) {
 					setError(wre.getMessage());
 				} catch (Exception e) {
@@ -323,16 +327,6 @@ public class PCws_WeaselPluginCore extends PCws_WeaselPlugin {
 				return false;
 			return getNetwork().getFunctionHandler().doesProvideFunction(name);
 		}
-
-		@Override
-		public boolean doesProvideVariable(String name) {
-			if(super.doesProvideVariable(name))
-				return true;
-			if(getNetwork()==null)
-				return false;
-			return getNetwork().getFunctionHandler().doesProvideVariable(name);
-		}
-
 		
 		@Override
 		public List<String> getProvidedFunctionNames() {

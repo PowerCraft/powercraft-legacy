@@ -130,18 +130,18 @@ public class PCws_WeaselPluginDisplay extends PCws_WeaselPlugin {
 		return text;
 	}
 	
-	public void fgcolor(Object color){
-		if(color instanceof Number)
-			fgcolor = ((Number) color).intValue();
-		else if(color instanceof String){
-			Integer clr = PC_Color.getHexColorForName(Calc.toString(color));
-			if (clr == null) {
-				throw new WeaselRuntimeException("Display: " + color + " is not a valid color.");
-			} else {
-				fgcolor = clr;
-			}
-		}else
+	public void fgcolor(int color){
+		fgcolor = color;
+		setData("fgcolor", fgcolor);
+	}
+	
+	public void fgcolor(String color){
+		Integer clr = PC_Color.getHexColorForName(Calc.toString(color));
+		if (clr == null) {
 			throw new WeaselRuntimeException("Display: " + color + " is not a valid color.");
+		} else {
+			fgcolor = clr;
+		}
 		setData("fgcolor", fgcolor);
 	}
 	
@@ -149,18 +149,18 @@ public class PCws_WeaselPluginDisplay extends PCws_WeaselPlugin {
 		return fgcolor;
 	}
 	
-	public void bgcolor(Object color){
-		if(color instanceof Number)
-			bgcolor = ((Number) color).intValue();
-		else if(color instanceof String){
-			Integer clr = PC_Color.getHexColorForName(Calc.toString(color));
-			if (clr == null) {
-				throw new WeaselRuntimeException("Display: " + color + " is not a valid color.");
-			} else {
-				bgcolor = clr;
-			}
-		}else
+	public void bgcolor(int color){
+		bgcolor = color;
+		setData("bgcolor", bgcolor);
+	}
+	
+	public void bgcolor(String color){
+		Integer clr = PC_Color.getHexColorForName(Calc.toString(color));
+		if (clr == null) {
 			throw new WeaselRuntimeException("Display: " + color + " is not a valid color.");
+		} else {
+			bgcolor = clr;
+		}
 		setData("bgcolor", bgcolor);
 	}
 	
