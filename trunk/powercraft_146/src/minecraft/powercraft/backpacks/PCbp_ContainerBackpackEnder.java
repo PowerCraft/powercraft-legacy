@@ -32,5 +32,5 @@ public class PCbp_ContainerBackpackEnder extends PC_GresBaseWithInventory {
 		slots.addAll(lSlot);
 		return slots;
 	}
-
+	
 }

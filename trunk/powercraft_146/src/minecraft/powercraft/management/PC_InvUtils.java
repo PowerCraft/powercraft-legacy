@@ -545,7 +545,7 @@ public class PC_InvUtils
     public static void loadInventoryFromNBT(NBTTagCompound outerTag, String invTagName, IInventory inventory)
     {
         NBTTagList nbttaglist = outerTag.getTagList(invTagName);
-
+        
         for (int i = 0; i < nbttaglist.tagCount(); i++)
         {
             NBTTagCompound nbttagcompound1 = (NBTTagCompound) nbttaglist.tagAt(i);
