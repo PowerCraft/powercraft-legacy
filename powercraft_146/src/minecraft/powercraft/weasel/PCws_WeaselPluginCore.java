@@ -37,8 +37,8 @@ public class PCws_WeaselPluginCore extends PCws_WeaselPlugin {
 	
 	public PCws_WeaselPluginCore(){
 		defaultProvider = new CorePluginProvider();
-		defaultProvider.registerMethod("restart", this);
-		defaultProvider.registerMethod("reset", "restart", this);
+		defaultProvider.registerMethod("restart", "restartDevice", this);
+		defaultProvider.registerMethod("reset", "restartDevice", this);
 		defaultProvider.registerMethod("sleep", this);
 		defaultProvider.registerMethod("bell", this);
 		defaultProvider.registerVariable("front", this);
@@ -61,8 +61,8 @@ public class PCws_WeaselPluginCore extends PCws_WeaselPlugin {
 	@Override
 	public WeaselFunctionManager makePluginProvider(){
 		WeaselFunctionManager fp = new WeaselFunctionManager();
-		fp.registerMethod("restart", this);
-		fp.registerMethod("reset", "restart", this);
+		fp.registerMethod("restart", "restartDevice", this);
+		fp.registerMethod("reset", "restartDevice", this);
 		fp.registerMethod("sleep", this);
 		fp.registerMethod("bell", this);
 		fp.registerVariable("front", this);

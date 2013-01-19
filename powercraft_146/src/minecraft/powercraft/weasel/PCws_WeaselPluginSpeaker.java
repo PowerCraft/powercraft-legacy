@@ -26,6 +26,8 @@ public class PCws_WeaselPluginSpeaker extends PCws_WeaselPlugin {
 	@Override
 	public WeaselFunctionManager makePluginProvider() {
 		WeaselFunctionManager fp = new WeaselFunctionManager();
+		fp.registerMethod("restart", "restartDevice", this);
+		fp.registerMethod("reset", "restartDevice", this);
 		fp.registerMethod("play", this);
 		fp.registerMethod("sound", "play", this);
 		fp.registerMethod("note", this);
@@ -158,11 +160,11 @@ public class PCws_WeaselPluginSpeaker extends PCws_WeaselPlugin {
 	}
 	
 	public void bell(int tone){
-		playNote("bell", tone, 1.0f);
+		playNote("random.orb", tone, 1.0f);
 	}
 	
 	public void bell(int tone, float volume){
-		playNote("bell", tone, volume);
+		playNote("random.orb", tone, volume);
 	}
 	
 }

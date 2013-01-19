@@ -28,8 +28,8 @@ public class PCws_WeaselPluginDisplay extends PCws_WeaselPlugin {
 	@Override
 	public WeaselFunctionManager makePluginProvider() {
 		WeaselFunctionManager fp = new WeaselFunctionManager();
-		fp.registerMethod("restart", this);
-		fp.registerMethod("reset", "restart", this);
+		fp.registerMethod("restart", "restartDevice", this);
+		fp.registerMethod("reset", "restartDevice", this);
 		fp.registerMethod("clear", this);
 		fp.registerMethod("cls", "clear", this);
 		fp.registerMethod("matrix", this);
@@ -98,6 +98,7 @@ public class PCws_WeaselPluginDisplay extends PCws_WeaselPlugin {
 
 	public void clear(){
 		text = "";
+		setData("text", text);
 	}
 	
 	public void matrix(){
@@ -105,18 +106,24 @@ public class PCws_WeaselPluginDisplay extends PCws_WeaselPlugin {
 		text += "nnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnn";
 		bgcolor = 0x000000;
 		fgcolor = 0x00ff00;
+		setData("text", text);
+		setData("bgcolor", bgcolor);
+		setData("fgcolor", fgcolor);
 	}
 	
 	public void print(String text){
 		this.text += text + "\n";
+		setData("text", text);
 	}
 	
 	public void add(String text){
 		this.text += text;
+		setData("text", text);
 	}
 	
 	public void text(String text){
 		this.text = text;
+		setData("text", text);
 	}
 	
 	public String text(){
@@ -135,6 +142,7 @@ public class PCws_WeaselPluginDisplay extends PCws_WeaselPlugin {
 			}
 		}else
 			throw new WeaselRuntimeException("Display: " + color + " is not a valid color.");
+		setData("fgcolor", fgcolor);
 	}
 	
 	public int fgcolor(){
@@ -153,6 +161,7 @@ public class PCws_WeaselPluginDisplay extends PCws_WeaselPlugin {
 			}
 		}else
 			throw new WeaselRuntimeException("Display: " + color + " is not a valid color.");
+		setData("bgcolor", bgcolor);
 	}
 	
 	public int bgcolor(){
@@ -186,6 +195,7 @@ public class PCws_WeaselPluginDisplay extends PCws_WeaselPlugin {
 			}
 
 		}
+		setData("align", align);
 	}
 	
 	public String align(){

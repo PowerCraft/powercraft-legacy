@@ -29,8 +29,8 @@ public class PCws_WeaselPluginTerminal extends PCws_WeaselPlugin {
 	@Override
 	public WeaselFunctionManager makePluginProvider() {
 		WeaselFunctionManager fp = new WeaselFunctionManager();
-		fp.registerMethod("restart", this);
-		fp.registerMethod("reset", "restart", this);
+		fp.registerMethod("restart", "restartDevice", this);
+		fp.registerMethod("reset", "restartDevice", this);
 		fp.registerMethod("clear", this);
 		fp.registerMethod("cls", "clear", this);
 		fp.registerMethod("print", this);
@@ -147,6 +147,7 @@ public class PCws_WeaselPluginTerminal extends PCws_WeaselPlugin {
 	public void clear(){
 		text = "";
 		userInput.clear();
+		setData("text", text);
 	}
 	
 	public void print(String text){
