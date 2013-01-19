@@ -13,6 +13,8 @@ import powercraft.management.PC_Utils.Gres;
 
 public class PCbp_ItemBackpack extends PC_Item {
 
+	public static String idToName[] = {"normal", "ender"};
+	
 	public PCbp_ItemBackpack(int id) {
 		super(id);
 		setMaxDamage(0);
@@ -22,21 +24,14 @@ public class PCbp_ItemBackpack extends PC_Item {
 	
     @Override
 	public String getItemNameIS(ItemStack itemstack) {
-		return getItemName()+"."+itemstack.getItemDamage();
+		return getItemName()+"."+idToName[itemstack.getItemDamage()];
 	}
 
 	@Override
     public ItemStack onItemRightClick(ItemStack itemstack, World world, EntityPlayer entityplayer)
     {
         if (!world.isRemote){
-        	switch(itemstack.getItemDamage()){
-        	case 0:
-        		Gres.openGres("BackpackNormal", entityplayer);
-        		break;
-        	case 1:
-        		Gres.openGres("BackpackEnder", entityplayer);
-        		break;
-        	}
+        	Gres.openGres("Backpack", entityplayer);
         }
         return itemstack;
     }
@@ -53,11 +48,15 @@ public class PCbp_ItemBackpack extends PC_Item {
 		switch(msg){
 		case PC_Utils.MSG_DEFAULT_NAME:
 			List<PC_Struct3<String, String, String[]>> names = (List<PC_Struct3<String, String, String[]>>)obj[0];
-			names.add(new PC_Struct3<String, String, String[]>(getItemName()+".0", "Backpack", null));
-			names.add(new PC_Struct3<String, String, String[]>(getItemName()+".1", "Ender Backpack", new String[]{"The backpack which connects to the Enderchest"}));
+			names.add(new PC_Struct3<String, String, String[]>(getItemName()+"."+idToName[0], "Backpack", null));
+			names.add(new PC_Struct3<String, String, String[]>(getItemName()+"."+idToName[1], "Ender Backpack", new String[]{"The backpack which connects to the Enderchest"}));
 			return names;
 		}
 		return null;
+	}
+
+	public static boolean isEnderBackpack(ItemStack backpack) {
+		return backpack.getItemDamage()==1;
 	}
 
 }

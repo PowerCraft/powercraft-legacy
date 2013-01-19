@@ -22,6 +22,7 @@ import weasel.WeaselEngine;
 import weasel.exception.WeaselRuntimeException;
 import weasel.lang.Instruction;
 import weasel.obj.WeaselDouble;
+import weasel.obj.WeaselFunctionCall;
 import weasel.obj.WeaselObject;
 import weasel.obj.WeaselString;
 import weasel.obj.WeaselVariableMap;
@@ -914,6 +915,25 @@ public class PCws_ItemWeaselDisk extends PC_Item {
 					return getListEntry(disk, Calc.toInteger(args[0])) != null;
 				case VARMAP:
 					return hasMapVariable(disk, Calc.toString(args[0]));
+				}
+			}else if(name.equals("load")){
+				switch (getType(disk)) {
+				case LIBRARY:
+					engine.insertNewLibary(getLabel(disk), getLibraryInstructions(disk));
+				}
+			}else if(name.equals("call")){
+				switch (getType(disk)) {
+				case LIBRARY:
+					WeaselObject obj[] = new WeaselObject[args.length-1];
+					for(int i=0; i<obj.length; i++){
+						obj[i] = args[i+1];
+					}
+					return new WeaselFunctionCall(getLabel(disk), Calc.toString(args[0]), obj);
+				}
+			}else if(name.equals("free")){
+				switch (getType(disk)) {
+				case LIBRARY:
+					engine.libs.remove(getLabel(disk));
 				}
 			}
 		}

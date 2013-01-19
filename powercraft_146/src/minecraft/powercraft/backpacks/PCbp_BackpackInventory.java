@@ -12,7 +12,7 @@ import powercraft.management.PC_VecI;
 public class PCbp_BackpackInventory implements IInventory, PC_ISpecialAccessInventory {
 
 	private EntityPlayer player;
-	private PC_VecI size = new PC_VecI();
+	private PC_VecI size = new PC_VecI(9, 3);
 	private ItemStack[] is;
 	private int equipped;
 	
@@ -20,15 +20,17 @@ public class PCbp_BackpackInventory implements IInventory, PC_ISpecialAccessInve
 		this.player = player;
 		equipped = player.inventory.currentItem;
 		ItemStack backpack = player.inventory.getStackInSlot(equipped);
-		NBTTagCompound tag = backpack.getTagCompound();
-		if(tag==null){
-			backpack.setTagCompound(tag = new NBTTagCompound());
-			SaveHandler.saveToNBT(tag, "invSize", size = new PC_VecI(9, 3));
-			is = new ItemStack[size.x*size.y];
-		}else{
-			SaveHandler.loadFromNBT(tag, "invSize", size);
-			is = new ItemStack[size.x*size.y];
-			PC_InvUtils.loadInventoryFromNBT(tag, "inv", this);
+		if(!PCbp_ItemBackpack.isEnderBackpack(backpack)){
+			NBTTagCompound tag = backpack.getTagCompound();
+			if(tag==null){
+				backpack.setTagCompound(tag = new NBTTagCompound());
+				SaveHandler.saveToNBT(tag, "invSize", size);
+				is = new ItemStack[size.x*size.y];
+			}else{
+				SaveHandler.loadFromNBT(tag, "invSize", size);
+				is = new ItemStack[size.x*size.y];
+				PC_InvUtils.loadInventoryFromNBT(tag, "inv", this);
+			}
 		}
 	}
 	
@@ -38,16 +40,22 @@ public class PCbp_BackpackInventory implements IInventory, PC_ISpecialAccessInve
 	
 	@Override
 	public int getSizeInventory() {
+		if(is==null && player!=null)
+			return player.getInventoryEnderChest().getSizeInventory();
 		return is.length;
 	}
 
 	@Override
 	public ItemStack getStackInSlot(int var1) {
+		if(is==null && player!=null)
+			return player.getInventoryEnderChest().getStackInSlot(var1);
 		return is[var1];
 	}
 
 	@Override
 	public ItemStack decrStackSize(int var1, int var2) {
+		if(is==null && player!=null)
+			return player.getInventoryEnderChest().decrStackSize(var1, var2);
 		if (is[var1] != null) {
 			if (is[var1].stackSize <= var2) {
 				ItemStack itemstack = is[var1];
@@ -68,12 +76,17 @@ public class PCbp_BackpackInventory implements IInventory, PC_ISpecialAccessInve
 
 	@Override
 	public ItemStack getStackInSlotOnClosing(int var1) {
+		if(is==null && player!=null)
+			return player.getInventoryEnderChest().getStackInSlotOnClosing(var1);
 		return is[var1];
 	}
 
 	@Override
 	public void setInventorySlotContents(int var1, ItemStack var2) {
-		is[var1] = var2;
+		if(is==null && player!=null)
+			player.getInventoryEnderChest().setInventorySlotContents(var1, var2);
+		else
+			is[var1] = var2;
 	}
 
 	@Override
@@ -83,6 +96,8 @@ public class PCbp_BackpackInventory implements IInventory, PC_ISpecialAccessInve
 
 	@Override
 	public int getInventoryStackLimit() {
+		if(is==null && player!=null)
+			player.getInventoryEnderChest().getInventoryStackLimit();
 		return 64;
 	}
 
@@ -95,13 +110,20 @@ public class PCbp_BackpackInventory implements IInventory, PC_ISpecialAccessInve
 	}
 
 	@Override
-	public void openChest() {}
+	public void openChest() {
+		if(is==null && player!=null)
+			player.getInventoryEnderChest().openChest();
+	}
 
 	@Override
 	public void closeChest() {
-		ItemStack backpack = player.inventory.getStackInSlot(equipped);
-		if(backpack!=null)
-			PC_InvUtils.saveInventoryToNBT(backpack.getTagCompound(), "inv", this);
+		if(is==null && player!=null)
+			player.getInventoryEnderChest().closeChest();
+		else{
+			ItemStack backpack = player.inventory.getStackInSlot(equipped);
+			if(backpack!=null)
+				PC_InvUtils.saveInventoryToNBT(backpack.getTagCompound(), "inv", this);
+		}
 	}
 
 	@Override
