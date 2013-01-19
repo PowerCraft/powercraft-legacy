@@ -31,7 +31,7 @@ public class PCbp_ItemBackpackEnder extends PC_Item {
 		switch(msg){
 		case PC_Utils.MSG_DEFAULT_NAME:
 			List<PC_Struct3<String, String, String[]>> names = (List<PC_Struct3<String, String, String[]>>)obj[0];
-			names.add(new PC_Struct3<String, String, String[]>(getItemName(), "Ender Backpack", Arrays.asList("The backpack which connects to the Enderchest").toArray()));
+			names.add(new PC_Struct3<String, String, String[]>(getItemName(), "Ender Backpack",new String[]{"The backpack which connects to the Enderchest"}));
             return names;
 		}
 		return null;
