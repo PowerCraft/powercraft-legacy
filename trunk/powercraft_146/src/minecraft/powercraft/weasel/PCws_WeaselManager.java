@@ -52,6 +52,7 @@ public class PCws_WeaselManager implements PC_IDataHandler, PC_IMSG {
 			PCws_WeaselPlugin plugin = createPlugin(nbtPlugins.getInteger("type["+i+"]"));
 			SaveHandler.loadFromNBT(nbtPlugins, "value["+i+"]", plugin);
 		}
+		
 	}
 
 	@Override
@@ -89,7 +90,17 @@ public class PCws_WeaselManager implements PC_IDataHandler, PC_IMSG {
 
 	@Override
 	public boolean needSave() {
-		return needSave;
+		if(needSave)
+			return true;
+		for(PCws_WeaselNetwork net:networks.values()){
+			if(net.needSave())
+				return true;
+		}
+		for(PCws_WeaselPlugin plugin:plugins.values()){
+			if(plugin.needSave())
+				return true;
+		}
+		return false;
 	}
 
 	@Override

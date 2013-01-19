@@ -270,8 +270,10 @@ public class WeaselFunctionManager implements IWeaselHardware {
 	}
 	
 	public boolean removeFunctionProvider(String name){
+		if(functions.containsKey(name)){
+			functions.remove(name);
+		}
 		return true;
-		
 	}
 
 	@Override
@@ -332,7 +334,7 @@ public class WeaselFunctionManager implements IWeaselHardware {
 			if(e.getValue().b!=null)
 				list.add(key);
 			if(e.getValue().c!=null){
-				List<String> list2 = e.getValue().c.getProvidedFunctionNames();
+				List<String> list2 = e.getValue().c.getProvidedVariableNames();
 				for(String s:list2){
 					list.add(key + "."+s);
 				}

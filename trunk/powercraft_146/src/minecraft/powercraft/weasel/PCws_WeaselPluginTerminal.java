@@ -28,8 +28,20 @@ public class PCws_WeaselPluginTerminal extends PCws_WeaselPlugin {
 	
 	@Override
 	public WeaselFunctionManager makePluginProvider() {
-		// TODO Auto-generated method stub
-		return null;
+		WeaselFunctionManager fp = new WeaselFunctionManager();
+		fp.registerMethod("restart", this);
+		fp.registerMethod("reset", "restart", this);
+		fp.registerMethod("clear", this);
+		fp.registerMethod("cls", "clear", this);
+		fp.registerMethod("print", this);
+		fp.registerMethod("out", "print", this);
+		fp.registerMethod("hasInput", this);
+		fp.registerMethod("getInput", this);
+		fp.registerMethod("in", "getInput", this);
+		fp.registerMethod("this", "_this", this);
+		fp.registerVariable("text", this);
+		fp.registerVariable("txt", "text", this);
+		return fp;
 	}
 	
 	@Override
@@ -132,4 +144,41 @@ public class PCws_WeaselPluginTerminal extends PCws_WeaselPlugin {
 		userInput.clear();
 	}
 
+	public void clear(){
+		text = "";
+		userInput.clear();
+	}
+	
+	public void print(String text){
+		addText(text + "\n");
+	}
+	
+	public boolean hasInput(){
+		return userInput.size() > 0;
+	}
+	
+	public String getInput(){
+		if (userInput.size() == 0) return "";
+		String s = userInput.get(0);
+		userInput.remove(0);
+		return s;
+	}
+	
+	public String _this(){
+		return getInput();
+	}
+	
+	public void _this(String text){
+		print(text);
+	}
+	
+	public void text(String text){
+		text = "";
+		addText(text);
+	}
+	
+	public String text(){
+		return text;
+	}
+	
 }
