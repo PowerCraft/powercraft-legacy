@@ -332,32 +332,21 @@ public class WeaselFunctionManager implements IWeaselHardware {
 	public WeaselObject callProvidedFunction(WeaselEngine engine, String functionName, WeaselObject[] args) {
 		return call(engine, functionName, false, args);
 	}
-
-	public boolean doesProvideVariable(String name) {
-		String subNames[] = name.split("\\.", 2);
-		if(functions==null || !functions.containsKey(subNames[0])){
-			return false;
-		}
-		PC_Struct3<PC_Struct2<String , Object>, PC_Struct2<String , Object>, WeaselFunctionManager> value = functions.get(subNames[0]);
-		if(subNames.length==1){
-			return value.b!=null;
-		}
-		WeaselFunctionManager fp = value.c;
-		if(fp == null)
-			return false;
-		return fp.doesProvideFunction(subNames[1]);
-	}
 	
 	@Override
 	public WeaselObject getVariable(String name) {
-		if(!doesProvideVariable(name))
+		try{
+			return call(null, name, true);
+		}catch(WeaselRuntimeException e){
 			return null;
-		return call(null, name, true);
+		}
 	}
 
 	@Override
 	public void setVariable(String name, WeaselObject object) {
-		call(null, name, true, object);
+		try{
+			call(null, name, true, object);
+		}catch(WeaselRuntimeException e){}
 	}
 
 	@Override

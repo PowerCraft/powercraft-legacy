@@ -84,6 +84,8 @@ public class WeaselEngine implements PC_INBT, IVariableProvider, IFunctionProvid
 	/** Value returned form an external call of a function */
 	public WeaselObject externalCallRetval = null;
 
+	private int statementsMax;
+	
 	/**
 	 * Request pause after the current instruction is finished
 	 */
@@ -177,6 +179,14 @@ public class WeaselEngine implements PC_INBT, IVariableProvider, IFunctionProvid
 		restartsScheduled++;
 	}
 
+	public void setStatementsToRun(int statementsMax){
+		this.statementsMax = statementsMax;
+	}
+	
+	public int getStatementsToRun(){
+		return statementsMax;
+	}
+	
 	/**
 	 * Execute at most given number of statements
 	 * 
@@ -184,7 +194,7 @@ public class WeaselEngine implements PC_INBT, IVariableProvider, IFunctionProvid
 	 * @return true = all executed, false = PAUSE required
 	 * @throws WeaselRuntimeException when something goes wrong.
 	 */
-	public boolean run(int statementsMax) {
+	public boolean run() {
 
 		//if (isProgramFinished) return true;
 

@@ -97,14 +97,17 @@ public class PCmo_MinerWeaselBrain  implements PCmo_IMinerBrain, IWeaselHardware
 	@Override
 	public void run() {
 		if (!hasError()) {
+			engine.setStatementsToRun(500);
 			try {
 
 				if (sleep > 0) {
 					sleep--;
 					return;
 				}
-
-				engine.run(100);
+				while(engine.getStatementsToRun()>0){
+					if(!engine.run())
+						break;
+				}
 			} catch (WeaselRuntimeException wre) {
 				wre.printStackTrace();
 				setError(wre.getMessage());
