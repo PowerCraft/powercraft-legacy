@@ -64,7 +64,7 @@ public class WeaselDouble extends WeaselObject {
 	}
 	
 	@Override
-	public void set(Object obj) {
+	public final void set(Object obj) {
 		this.value = Calc.toDouble(obj);
 	}
 

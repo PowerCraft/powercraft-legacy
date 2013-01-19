@@ -22,7 +22,7 @@ import weasel.obj.WeaselObject;
 public class PCws_WeaselPluginSpeaker extends PCws_WeaselPlugin {
 
 	private static Random rand = new Random();
-
+	
 	@Override
 	public WeaselFunctionManager makePluginProvider() {
 		WeaselFunctionManager fp = new WeaselFunctionManager();
