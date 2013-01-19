@@ -13,8 +13,7 @@ import powercraft.management.PC_Utils.ModuleLoader;
 
 public class PCbp_App implements PC_IModule {
 
-	public static PC_Item backpackNormal;
-	public static PC_Item backpackEnder;
+	public static PC_Item backpack;
 	
 	@Override
 	public String getName() {
@@ -44,8 +43,7 @@ public class PCbp_App implements PC_IModule {
 
 	@Override
 	public void initItems() {
-		backpackNormal = ModuleLoader.register(this, PCbp_ItemBackpackNormal.class);
-		backpackEnder = ModuleLoader.register(this, PCbp_ItemBackpackEnder.class);
+		backpack = ModuleLoader.register(this, PCbp_ItemBackpack.class);
 	}
 
 	@Override
