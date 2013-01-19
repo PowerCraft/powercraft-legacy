@@ -325,6 +325,16 @@ public class PCws_WeaselPluginCore extends PCws_WeaselPlugin {
 		}
 
 		@Override
+		public boolean doesProvideVariable(String name) {
+			if(super.doesProvideVariable(name))
+				return true;
+			if(getNetwork()==null)
+				return false;
+			return getNetwork().getFunctionHandler().doesProvideVariable(name);
+		}
+
+		
+		@Override
 		public List<String> getProvidedFunctionNames() {
 			List<String> list = super.getProvidedFunctionNames();
 			if(getNetwork()!=null){

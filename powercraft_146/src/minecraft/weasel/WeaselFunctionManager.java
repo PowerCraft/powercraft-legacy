@@ -309,8 +309,27 @@ public class WeaselFunctionManager implements IWeaselHardware {
 		return call(engine, functionName, false, args);
 	}
 
+	public boolean doesProvideVariable(String name) {
+		String subNames[] = name.split("\\.");
+		HashMap<String, PC_Struct3<PC_Struct2<String , Object>, PC_Struct2<String , Object>, WeaselFunctionManager>> hm = functions;
+		for(int i=0; i<subNames.length-1; i++){
+			if(hm==null || !hm.containsKey(subNames[i]))
+				return false;
+			WeaselFunctionManager fp = hm.get(subNames[i]).c;
+			if(fp == null)
+				return false;
+			hm = fp.functions;
+		}
+		String lastName = subNames[subNames.length-1];
+		if(hm==null || !hm.containsKey(lastName))
+			return false;
+		return hm.get(lastName).b!=null;
+	}
+	
 	@Override
 	public WeaselObject getVariable(String name) {
+		if(!doesProvideVariable(name))
+			return null;
 		return call(null, name, true);
 	}
 
