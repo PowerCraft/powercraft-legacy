@@ -81,8 +81,10 @@ public class PCws_WeaselPluginDiskDrive extends PCws_WeaselPlugin implements PCw
 	
 	@Override
 	public WeaselFunctionManager makePluginProvider() {
-		// TODO Auto-generated method stub
-		return null;
+		WeaselFunctionManager fp = new WeaselFunctionManager();
+		fp.registerMethod("restart", this);
+		fp.registerMethod("reset", "restart", this);
+		return fp;
 	}
 	
 	@Override
