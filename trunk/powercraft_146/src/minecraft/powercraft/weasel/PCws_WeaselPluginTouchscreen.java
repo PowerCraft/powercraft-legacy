@@ -45,6 +45,7 @@ public class PCws_WeaselPluginTouchscreen extends PCws_WeaselPlugin implements W
 		WeaselFunctionManager fp = new WeaselFunctionManager();
 		fp.registerMethod("restart", "restartDevice", this);
 		fp.registerMethod("reset", "restartDevice", this);
+		fp.registerFunctionProvider("disp", imageAdapter);
 		return fp;
 	}
 	
