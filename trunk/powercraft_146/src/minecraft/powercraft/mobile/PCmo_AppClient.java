@@ -70,7 +70,11 @@ public class PCmo_AppClient extends PCmo_App implements PC_IClientModule {
 
 	@Override
 	public List<PC_Struct2<String, Class>> registerGuis(List<PC_Struct2<String, Class>> guis) {
-		guis.add(new PC_Struct2<String, Class>("Miner", PCmo_GuiMiner.class));
+		if(ModuleInfo.getModule("Weasel")!=null){
+			guis.add(new PC_Struct2<String, Class>("Miner", PCmo_GuiWeaselMiner.class));
+		}else{
+			guis.add(new PC_Struct2<String, Class>("Miner", PCmo_GuiMiner.class));
+		}
 		return guis;
 	}
 	

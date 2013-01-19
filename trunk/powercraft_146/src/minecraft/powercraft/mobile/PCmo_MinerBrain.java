@@ -78,5 +78,11 @@ public class PCmo_MinerBrain implements PCmo_IMinerBrain {
 	@Override
 	public void compileProgram(String text) throws Exception {
 	}
+
+	@Override
+	public void msg(Object[] obj) {
+		// TODO Auto-generated method stub
+		
+	}
 	
 }

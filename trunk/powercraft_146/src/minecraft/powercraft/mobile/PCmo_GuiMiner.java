@@ -28,23 +28,23 @@ import powercraft.weasel.PCws_WeaselHighlightHelper;
 
 public class PCmo_GuiMiner extends PCmo_ContainerMiner implements PC_IGresClient {
 
-	private PC_GresTab tab;
-	private PC_GresWidget program;
-	private PC_GresWidget programError;
-	private PC_GresWidget launchProgram;
-	private PC_GresWidget restartProgram;
-	private PC_GresWidget stopProgram;
-	private PC_GresCheckBox checkBridge;
-	private PC_GresCheckBox checkMining;
-	private PC_GresCheckBox checkLava;
-	private PC_GresCheckBox checkWater;
-	private PC_GresCheckBox checkAir;
-	private PC_GresCheckBox checkKeepFuel;
-	private PC_GresCheckBox checkTorchFloor;
-	private PC_GresCheckBox checkTorch;
-	private PC_GresCheckBox checkCompress;
-	private PC_GresCheckBox checkCobble;
-	private int tick;
+	protected PC_GresTab tab;
+	protected PC_GresWidget program;
+	protected PC_GresWidget programError;
+	protected PC_GresWidget launchProgram;
+	protected PC_GresWidget restartProgram;
+	protected PC_GresWidget stopProgram;
+	protected PC_GresCheckBox checkBridge;
+	protected PC_GresCheckBox checkMining;
+	protected PC_GresCheckBox checkLava;
+	protected PC_GresCheckBox checkWater;
+	protected PC_GresCheckBox checkAir;
+	protected PC_GresCheckBox checkKeepFuel;
+	protected PC_GresCheckBox checkTorchFloor;
+	protected PC_GresCheckBox checkTorch;
+	protected PC_GresCheckBox checkCompress;
+	protected PC_GresCheckBox checkCobble;
+	protected int tick;
 	
 	public PCmo_GuiMiner(EntityPlayer player, Object[] o) {
 		super(player, o);
@@ -178,6 +178,10 @@ public class PCmo_GuiMiner extends PCmo_ContainerMiner implements PC_IGresClient
 		
 	}
 	
+	public void makeOtherTabs(PC_GresTab tab){
+		
+	}
+	
 	@Override
 	public void initGui(PC_IGresGui gui) {
 		PC_GresWindow w = new PC_GresWindow(Lang.tr("pc.gui.miner.title"));
@@ -187,6 +191,7 @@ public class PCmo_GuiMiner extends PCmo_ContainerMiner implements PC_IGresClient
 		PC_GresWidget vgCargo = makeCargoTab(tab);
 		makeSettingsTab(tab);
 		makeProgramTab(tab);
+		makeOtherTabs(tab);
 		
 		tab.makeTabVisible(vgCargo);
 		

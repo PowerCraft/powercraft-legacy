@@ -45,6 +45,7 @@ public class PCmo_MinerWeaselBrain  implements PCmo_IMinerBrain, IWeaselHardware
 	
 	public PCmo_MinerWeaselBrain(PCmo_EntityMiner miner) {
 		this.miner = miner;
+		miner.setInfo("text", "");
 	}
 
 	@Override
@@ -104,7 +105,7 @@ public class PCmo_MinerWeaselBrain  implements PCmo_IMinerBrain, IWeaselHardware
 					sleep--;
 					return;
 				}
-				while(engine.getStatementsToRun()>0){
+				while(engine.getStatementsToRun()>0  && !engine.isProgramFinished){
 					if(!engine.run())
 						break;
 				}
@@ -1004,6 +1005,27 @@ public class PCmo_MinerWeaselBrain  implements PCmo_IMinerBrain, IWeaselHardware
 	@Override
 	public void compileProgram(String text) throws Exception {
 		WeaselEngine.compileProgram(text);
+	}
+
+	@Override
+	public void msg(Object[] obj) {
+		/*if("input".equals(obj[0])){
+			String input = (String)obj[1];
+			input = input.trim();
+			if (input.length() > 0) {
+				userInput.add(input);
+				addText("> " + input + "\n");
+				if(getNetwork()!=null){
+					if(!callFunctionOnEngine("termIn."+getName(), new WeaselString(input))){
+						callFunctionOnEngine("termIn", new WeaselString(getName()), new WeaselString(input));
+					}
+				}
+			}
+			if (userInput.size() > 16) {
+				userInput.remove(0);
+			}
+			needsSave();
+		}*/
 	}
 	
 }

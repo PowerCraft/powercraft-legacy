@@ -133,7 +133,7 @@ public class PCws_WeaselPluginCore extends PCws_WeaselPlugin implements PCws_IWe
 			if(!hasError() && !stop){
 				weasel.setStatementsToRun(500);
 				try{
-					while(weasel.getStatementsToRun()>0){
+					while(weasel.getStatementsToRun()>0 && !weasel.isProgramFinished){
 						while(externalCallsWaiting.size()>0) {
 							int state = weasel.callFunctionExternal(externalCallsWaiting.get(0).a, externalCallsWaiting.get(0).b);
 							
