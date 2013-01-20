@@ -1,23 +1,27 @@
-package powercraft.backpacks;
+package powercraft.compressor;
 
 import java.util.List;
+
+import net.minecraft.block.Block;
 
 import powercraft.management.PC_IDataHandler;
 import powercraft.management.PC_IMSG;
 import powercraft.management.PC_IModule;
 import powercraft.management.PC_IPacketHandler;
 import powercraft.management.PC_Item;
+import powercraft.management.PC_ItemStack;
 import powercraft.management.PC_Property;
+import powercraft.management.PC_ShapelessRecipes;
 import powercraft.management.PC_Struct2;
 import powercraft.management.PC_Utils.ModuleLoader;
 
-public class PCbp_App implements PC_IModule {
+public class PCcp_App implements PC_IModule {
 
-	public static PC_Item backpack;
+	public static PC_Item compressor;
 	
 	@Override
 	public String getName() {
-		return "Backpacks";
+		return "Compressor";
 	}
 
 	@Override
@@ -43,7 +47,7 @@ public class PCbp_App implements PC_IModule {
 
 	@Override
 	public void initItems() {
-		backpack = ModuleLoader.register(this, PCbp_ItemBackpack.class);
+		compressor = ModuleLoader.register(this, PCcp_ItemCompressor.class);
 	}
 
 	@Override
@@ -51,7 +55,7 @@ public class PCbp_App implements PC_IModule {
 
 	@Override
 	public List<Object> initRecipes(List<Object> recipes) {
-		return null;
+		return recipes;
 	}
 
 	@Override
@@ -65,14 +69,13 @@ public class PCbp_App implements PC_IModule {
 	}
 
 	@Override
-	public List<PC_Struct2<String, PC_IPacketHandler>> initPacketHandlers(
-			List<PC_Struct2<String, PC_IPacketHandler>> packetHandlers) {
+	public List<PC_Struct2<String, PC_IPacketHandler>> initPacketHandlers(List<PC_Struct2<String, PC_IPacketHandler>> packetHandlers) {
 		return null;
 	}
 
 	@Override
 	public List<PC_Struct2<String, Class>> registerGuis(List<PC_Struct2<String, Class>> guis) {
-		guis.add(new PC_Struct2<String, Class>("Backpack", PCbp_ContainerBackpack.class));
+		guis.add(new PC_Struct2<String, Class>("Compressor", PCcp_ContainerCompressor.class));
 		return guis;
 	}
 

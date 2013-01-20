@@ -1,4 +1,4 @@
-package powercraft.backpacks;
+package powercraft.compressor;
 
 import java.util.List;
 
@@ -9,7 +9,7 @@ import powercraft.management.PC_LangEntry;
 import powercraft.management.PC_Struct2;
 import powercraft.management.PC_Utils.ModuleInfo;
 
-public class PCbp_AppClient extends PCbp_App implements PC_IClientModule {
+public class PCcp_AppClient extends PCcp_App implements PC_IClientModule {
 
 	@Override
 	public List<PC_LangEntry> initLanguage(List<PC_LangEntry> lang) {
@@ -34,7 +34,7 @@ public class PCbp_AppClient extends PCbp_App implements PC_IClientModule {
 
 	@Override
 	public List<PC_Struct2<String, Class>> registerGuis(List<PC_Struct2<String, Class>> guis) {
-		guis.add(new PC_Struct2<String, Class>("Backpack", PCbp_GuiBackpack.class));
+		guis.add(new PC_Struct2<String, Class>("Compressor", PCcp_GuiCompressor.class));
 		return guis;
 	}
 }

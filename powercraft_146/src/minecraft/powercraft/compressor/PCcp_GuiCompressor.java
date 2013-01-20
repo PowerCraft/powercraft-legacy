@@ -1,24 +1,26 @@
-package powercraft.backpacks;
+package powercraft.compressor;
 
 import net.minecraft.entity.player.EntityPlayer;
 import powercraft.management.PC_GresInventory;
+import powercraft.management.PC_GresInventoryBigSlot;
 import powercraft.management.PC_GresInventoryPlayer;
+import powercraft.management.PC_GresLayoutH;
 import powercraft.management.PC_GresWidget;
 import powercraft.management.PC_GresWindow;
 import powercraft.management.PC_IGresClient;
 import powercraft.management.PC_IGresGui;
 import powercraft.management.PC_Utils.Lang;
 
-public class PCbp_GuiBackpack extends PCbp_ContainerBackpack
+public class PCcp_GuiCompressor extends PCcp_ContainerCompressor
 		implements PC_IGresClient {
 
-	public PCbp_GuiBackpack(EntityPlayer player, Object[] o) {
+	public PCcp_GuiCompressor(EntityPlayer player, Object[] o) {
 		super(player, o);
 	}
 
 	@Override
 	public void initGui(PC_IGresGui gui) {
-		PC_GresWindow w = new PC_GresWindow(Lang.tr(PCbp_App.backpack.getItemNameIS(thePlayer.getCurrentEquippedItem())));
+		PC_GresWindow w = new PC_GresWindow(Lang.tr(PCcp_App.compressor.getItemNameIS(thePlayer.getCurrentEquippedItem())));
 		PC_GresInventory inventory = new PC_GresInventory(9, 3);
 		int i=0;
 		for(int y=0; y<3; y++){

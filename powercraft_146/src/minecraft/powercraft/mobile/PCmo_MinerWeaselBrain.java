@@ -10,6 +10,8 @@ import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import powercraft.management.PC_InvUtils;
+import powercraft.management.PC_PacketHandler;
+import powercraft.management.PC_Struct2;
 import powercraft.management.PC_GresTextEditMultiline.Keyword;
 import powercraft.management.PC_Utils.GameInfo;
 import powercraft.management.PC_Utils.ModuleInfo;
@@ -26,6 +28,7 @@ import weasel.exception.WeaselRuntimeException;
 import weasel.lang.Instruction;
 import weasel.obj.WeaselBoolean;
 import weasel.obj.WeaselDouble;
+import weasel.obj.WeaselNull;
 import weasel.obj.WeaselObject;
 import weasel.obj.WeaselString;
 
@@ -38,10 +41,16 @@ public class PCmo_MinerWeaselBrain  implements PCmo_IMinerBrain, IWeaselHardware
 	private PCmo_EntityMiner miner;
 	/** weasel engine */
 	private WeaselEngine engine = new WeaselEngine(this);
+	private List<PC_Struct2<String, Object[]>> externalCallsWaiting = new ArrayList<PC_Struct2<String,Object[]>>();
 	private int sleep = 0;
 	private String program = default_program;
 	private String error;
+	private boolean stop=false;
 	private static Random rand = new Random();
+	/** Displayed text. "\n" is a newline. */
+	public String text = "";
+	/**  */
+	private List<String> userInput = new ArrayList<String>();
 	
 	public PCmo_MinerWeaselBrain(PCmo_EntityMiner miner) {
 		this.miner = miner;
@@ -218,6 +227,16 @@ public class PCmo_MinerWeaselBrain  implements PCmo_IMinerBrain, IWeaselHardware
 		list.add("capOff");
 		list.add("optOff");
 		list.add("miner.getFlag(PCmo_EntityMinerOff");
+		
+		list.add("term.clear");
+		list.add("term.cls");
+		list.add("term.print");
+		list.add("term.out");
+		list.add("term.hasInput");
+		list.add("term.getInput");
+		list.add("term.in");
+		list.add("term");
+		
 		return list;
 	}
 	
@@ -283,10 +302,7 @@ public class PCmo_MinerWeaselBrain  implements PCmo_IMinerBrain, IWeaselHardware
 				miner.appendCode(" " + num + " ");
 				engine.requestPause();
 				return null;
-			}
-
-
-			if (functionName.equals("left")) {
+			}else if (functionName.equals("left")) {
 				int num = 1;
 				if (args.length == 1) {
 					num = Calc.toInteger(args[0]);
@@ -298,9 +314,7 @@ public class PCmo_MinerWeaselBrain  implements PCmo_IMinerBrain, IWeaselHardware
 				}
 				engine.requestPause();
 				return null;
-			}
-
-			if (functionName.equals("up")) {
+			}else if (functionName.equals("up")) {
 				int num = 1;
 				if (args.length == 1) {
 					num = Calc.toInteger(args[0]);
@@ -311,9 +325,7 @@ public class PCmo_MinerWeaselBrain  implements PCmo_IMinerBrain, IWeaselHardware
 				}
 				engine.requestPause();
 				return null;
-			}
-
-			if (functionName.equals("down")) {
+			}else if (functionName.equals("down")) {
 				int num = 1;
 				if (args.length == 1) {
 					num = Calc.toInteger(args[0]);
@@ -324,9 +336,7 @@ public class PCmo_MinerWeaselBrain  implements PCmo_IMinerBrain, IWeaselHardware
 				}
 				engine.requestPause();
 				return null;
-			}
-
-			if (functionName.equals("right")) {
+			}else if (functionName.equals("right")) {
 				int num = 1;
 				if (args.length == 1) {
 					num = Calc.toInteger(args[0]);
@@ -383,23 +393,19 @@ public class PCmo_MinerWeaselBrain  implements PCmo_IMinerBrain, IWeaselHardware
 				miner.appendCode("N");
 				engine.requestPause();
 				return null;
-			}
-			if (functionName.equals("south")) {
+			}else if (functionName.equals("south")) {
 				miner.appendCode("S");
 				engine.requestPause();
 				return null;
-			}
-			if (functionName.equals("east")) {
+			}else if (functionName.equals("east")) {
 				miner.appendCode("E");
 				engine.requestPause();
 				return null;
-			}
-			if (functionName.equals("west")) {
+			}else if (functionName.equals("west")) {
 				miner.appendCode("W");
 				engine.requestPause();
 				return null;
-			}
-			if (functionName.equals("capOff") || functionName.equals("miner.getFlag(PCmo_EntityMinerOff") || functionName.equals("optOff") || functionName.equals("capOn") || functionName.equals("miner.getFlag(PCmo_EntityMinerOn")
+			}else if (functionName.equals("capOff") || functionName.equals("miner.getFlag(PCmo_EntityMinerOff") || functionName.equals("optOff") || functionName.equals("capOn") || functionName.equals("miner.getFlag(PCmo_EntityMinerOn")
 					|| functionName.equals("optOn") || functionName.equals("miner.getFlag(PCmo_EntityMiner") || functionName.equals("opt") || functionName.equals("cap")) {
 
 				int state = -1;
@@ -492,9 +498,7 @@ public class PCmo_MinerWeaselBrain  implements PCmo_IMinerBrain, IWeaselHardware
 
 				//what else?
 				return null;
-			}
-
-			if (functionName.equals("can") || functionName.equalsIgnoreCase("hasOpt") || functionName.equalsIgnoreCase("hasCap")) {
+			}else if (functionName.equals("can") || functionName.equalsIgnoreCase("hasOpt") || functionName.equalsIgnoreCase("hasCap")) {
 				String capname = Calc.toString(args[0]);
 
 				if (capname.equals("KEEP_FUEL")) {
@@ -525,9 +529,7 @@ public class PCmo_MinerWeaselBrain  implements PCmo_IMinerBrain, IWeaselHardware
 					return new WeaselBoolean(miner.st.level >= PCmo_EntityMiner.LCOBBLE);
 				}
 				throw new WeaselRuntimeException(functionName + "(): Unknown option " + capname);
-			}
-
-			if (functionName.equals("destroyItems") || functionName.equals("burnItems") || functionName.equals("destroy") || functionName.equals("burn") || functionName.equals("depo")
+			}else if (functionName.equals("destroyItems") || functionName.equals("burnItems") || functionName.equals("destroy") || functionName.equals("burn") || functionName.equals("depo")
 					|| functionName.equals("deminer.posit") || functionName.equals("store")) {
 
 				boolean kill = functionName.equals("destroyItems") || functionName.equals("burnItems") || functionName.equals("destroy") || functionName.equals("burn");
@@ -609,10 +611,7 @@ public class PCmo_MinerWeaselBrain  implements PCmo_IMinerBrain, IWeaselHardware
 				}
 				engine.requestPause();
 				return null;
-			}
-
-
-			if (functionName.equals("destroyKeep") || functionName.equals("burnKeep") || functionName.equals("storeKeep") || functionName.equals("depoKeep")) {
+			}else if (functionName.equals("destroyKeep") || functionName.equals("burnKeep") || functionName.equals("storeKeep") || functionName.equals("depoKeep")) {
 				final boolean kill = functionName.equals("destroyKeep") || functionName.equals("burnKeep");
 				if (args.length == 0) {
 					throw new WeaselRuntimeException("depoKeep needs at least 1 argument, 0 given.");
@@ -699,9 +698,7 @@ public class PCmo_MinerWeaselBrain  implements PCmo_IMinerBrain, IWeaselHardware
 				}
 				engine.requestPause();
 				return null;
-			}
-
-			if (functionName.equals("items") || functionName.equals("countItems")) {
+			}else if (functionName.equals("items") || functionName.equals("countItems")) {
 				int cnt = 0;
 				oo:
 				for (int i = 0; i < miner.cargo.getSizeInventory(); i++) {
@@ -724,10 +721,7 @@ public class PCmo_MinerWeaselBrain  implements PCmo_IMinerBrain, IWeaselHardware
 				}
 
 				return new WeaselDouble(cnt);
-			}
-
-
-			if (functionName.equals("stacks") || functionName.equals("countStacks")) {
+			}else if (functionName.equals("stacks") || functionName.equals("countStacks")) {
 				int cnt = 0;
 				oo:
 				for (int i = 0; i < miner.cargo.getSizeInventory(); i++) {
@@ -750,9 +744,7 @@ public class PCmo_MinerWeaselBrain  implements PCmo_IMinerBrain, IWeaselHardware
 				}
 
 				return new WeaselDouble(cnt);
-			}
-
-			if (functionName.equals("idMatch") || functionName.equals("ideq")) {
+			}else if (functionName.equals("idMatch") || functionName.equals("ideq")) {
 
 				int id1 = Calc.toInteger(args[0]);
 
@@ -765,10 +757,7 @@ public class PCmo_MinerWeaselBrain  implements PCmo_IMinerBrain, IWeaselHardware
 				if (stack.getItem() == null) throw new WeaselRuntimeException(args[0] + " is not a valid block/item ID.");
 
 				return new WeaselBoolean((PCmo_EntityMiner.matchStackIdentifier(arg, stack)));
-			}
-
-
-			if (functionName.equals("countEmpty")) {
+			}else if (functionName.equals("countEmpty")) {
 				int cnt = 0;
 				for (int i = 0; i < miner.cargo.getSizeInventory(); i++) {
 					ItemStack stack = miner.cargo.getStackInSlot(i);
@@ -776,48 +765,30 @@ public class PCmo_MinerWeaselBrain  implements PCmo_IMinerBrain, IWeaselHardware
 				}
 
 				return new WeaselDouble(cnt);
-			}
-
-			if (functionName.equals("full") || functionName.equals("isFull")) {
+			}else if (functionName.equals("full") || functionName.equals("isFull")) {
 				boolean str = args.length == 1 && Calc.toBoolean(args[0]);
 				if (str) return new WeaselBoolean(PC_InvUtils.isInventoryFull(miner.cargo));
 				return new WeaselBoolean(PC_InvUtils.hasInventoryNoFreeSlots(miner.cargo));
-			}
-
-			if (functionName.equals("empty") || functionName.equals("isEmpty")) {
+			}else if (functionName.equals("empty") || functionName.equals("isEmpty")) {
 				return new WeaselBoolean(PC_InvUtils.isInventoryEmpty(miner.cargo));
-			}
-
-			if (functionName.equals("destroyMiner")) {
+			}else if (functionName.equals("destroyMiner")) {
 				miner.turnIntoBlocks();
 				return null;
-			}
-
-			if (functionName.equals("isDay")) {
+			}else if (functionName.equals("isDay")) {
 				return new WeaselBoolean(miner.worldObj.isDaytime());
-			}
-			if (functionName.equals("idNight")) {
+			}else if (functionName.equals("idNight")) {
 				return new WeaselBoolean(!miner.worldObj.isDaytime());
-			}
-			if (functionName.equals("isRaining")) {
+			}else if (functionName.equals("isRaining")) {
 				return new WeaselBoolean(miner.worldObj.isRaining());
-			}
-
-			if (functionName.equals("global.set")) {
+			}else if (functionName.equals("global.set")) {
 				PCws_WeaselManager.setGlobalVariable(Calc.toString(args[0]), args[1]);
 				return null;
-			}
-			
-			if (functionName.equals("global.has")) {
+			}else if (functionName.equals("global.has")) {
 				return new WeaselBoolean(PCws_WeaselManager.hasGlobalVariable(Calc.toString(args[0])));
 
-			} 
-
-			if (functionName.equals("global.get")) {
+			}else if (functionName.equals("global.get")) {
 				return PCws_WeaselManager.getGlobalVariable(Calc.toString(args[0]));
-			}
-
-			if (functionName.equals("countFuel") || functionName.equals("fuel")) {
+			}else if (functionName.equals("countFuel") || functionName.equals("fuel")) {
 				int cnt = 0;
 				for (int i = 0; i < miner.cargo.getSizeInventory(); i++) {
 					ItemStack stack = miner.cargo.getStackInSlot(i);
@@ -828,31 +799,23 @@ public class PCmo_MinerWeaselBrain  implements PCmo_IMinerBrain, IWeaselHardware
 				}
 
 				return new WeaselDouble(cnt + miner.st.fuelBuffer);
-			}
-
-			if (functionName.equals("canHarvest")) {
+			}else if (functionName.equals("canHarvest")) {
 				String side = Calc.toString(args[0]);
 				char sid = side.charAt(0);
 				String num = side.substring(1);
 
 				PC_VecI pos = miner.getCoordOnSide(sid, Integer.valueOf(num));
 				return new WeaselDouble(miner.canHarvestBlockWithCurrentLevel(pos, GameInfo.getBID(miner.worldObj, pos)));
-			}
-
-			if (functionName.equals("getBlock") || functionName.equals("getId") || functionName.equals("idAt") || functionName.equals("blockAt")) {
+			}else if (functionName.equals("getBlock") || functionName.equals("getId") || functionName.equals("idAt") || functionName.equals("blockAt")) {
 				String side = Calc.toString(args[0]);
 				char sid = side.charAt(0);
 				String num = side.substring(1);
 
 				return new WeaselDouble(GameInfo.getBID(miner.worldObj, miner.getCoordOnSide(sid, Integer.valueOf(num))));
-			}
-
-			if (functionName.equals("cleanup")) {
+			}else if (functionName.equals("cleanup")) {
 				miner.cargo.order();
 				return null;
-			}
-
-			if (functionName.equals("place") || functionName.equals("setBlock")) {
+			}else if (functionName.equals("place") || functionName.equals("setBlock")) {
 				String side = Calc.toString(args[0]);
 				char sid = side.charAt(0);
 				String num = side.substring(1);
@@ -914,9 +877,33 @@ public class PCmo_MinerWeaselBrain  implements PCmo_IMinerBrain, IWeaselHardware
 				}
 
 				return new WeaselBoolean(false);
+			}else if(functionName.equals("term.clear") || functionName.equals("term.cls")){
+				text = "";
+				userInput.clear();
+				miner.setInfo("text", text);
+				return new WeaselNull();
+			}else if(functionName.equals("term.print") || functionName.equals("term.out")){
+				addText(Calc.toString(args[0]) + "\n");
+				return new WeaselNull();
+			}else if(functionName.equals("term.hasInput")){
+				return new WeaselBoolean(userInput.size() > 0);
+			}else if(functionName.equals("term.getInput") || functionName.equals("term.in")){
+				if (userInput.size() == 0) return  new WeaselString();
+				String s = userInput.get(0);
+				userInput.remove(0);
+				return new WeaselString(s);
+			}else if(functionName.equals("term")){
+				if(args.length>0){
+					addText(Calc.toString(args[0]) + "\n");
+					return new WeaselNull();
+				}else{
+					if (userInput.size() == 0) return  new WeaselString();
+					String s = userInput.get(0);
+					userInput.remove(0);
+					return new WeaselString(s);
+				}
 			}
-
-
+				
 		} catch (ParseException e) {
 			e.printStackTrace();
 			throw new WeaselRuntimeException(e.getMessage());
@@ -939,6 +926,8 @@ public class PCmo_MinerWeaselBrain  implements PCmo_IMinerBrain, IWeaselHardware
 		list.add("angle");
 		list.add("compass");
 		list.add("level");
+		list.add("term.text");
+		list.add("term.txt");
 		return list;
 	}
 	
@@ -946,28 +935,24 @@ public class PCmo_MinerWeaselBrain  implements PCmo_IMinerBrain, IWeaselHardware
 	public WeaselObject getVariable(String name) {
 		if (name.equals("miner.pos.x")) {
 			return new WeaselDouble(Math.round(miner.posX));
-		}
-		if (name.equals("level")) {
+		}else if (name.equals("level")) {
 			miner.updateLevel();
 			return new WeaselDouble(miner.st.level);
-		}
-		if (name.equals("miner.pos.y")) {
+		}else if (name.equals("miner.pos.y")) {
 			return new WeaselDouble(Math.round(miner.posY) + (miner.isOnHalfStep() ? 1 : 0));
-		}
-		if (name.equals("miner.pos.z")) {
+		}else if (name.equals("miner.pos.z")) {
 			return new WeaselDouble(Math.round(miner.posZ));
-		}
-		if (name.equals("angle") || name.equals("dir.angle")) {
+		}else if (name.equals("angle") || name.equals("dir.angle")) {
 			int rot = miner.getRotationRounded();
 			return new WeaselString(rot);
-		}
-		if (name.equals("dir") || name.equals("dir.axis") || name.equals("axis")) {
+		}else if (name.equals("dir") || name.equals("dir.axis") || name.equals("axis")) {
 			int rot = miner.getRotationRounded();
 			return new WeaselString(rot == 0 ? "x-" : rot == 90 ? "z-" : rot == 180 ? "x+" : "z+");
-		}
-		if (name.equals("dir.compass") || name.equals("compass")) {
+		}else if (name.equals("dir.compass") || name.equals("compass")) {
 			int rot = miner.getRotationRounded();
 			return new WeaselString(rot == 0 ? "W" : rot == 90 ? "N" : rot == 180 ? "E" : "S");
+		}else if (name.equals("term.text") || name.equals("term.txt")) {
+			return new WeaselString(text);
 		}
 
 		return null;
@@ -975,6 +960,10 @@ public class PCmo_MinerWeaselBrain  implements PCmo_IMinerBrain, IWeaselHardware
 
 	@Override
 	public void setVariable(String name, WeaselObject object) {
+		if (name.equals("term.text") || name.equals("term.txt")) {
+			text = "";
+			addText(text);
+		}
 	}
 
 	@Override
@@ -1007,25 +996,69 @@ public class PCmo_MinerWeaselBrain  implements PCmo_IMinerBrain, IWeaselHardware
 		WeaselEngine.compileProgram(text);
 	}
 
+	public boolean doesProvideFunctionOnEngine(String functionName) {
+		return engine.instructionList.hasFunctionForExternalCall(functionName);
+	}
+	
+	public void callFunctionOnEngine(String functionName, WeaselObject... args) {
+		if(hasError()||stop)
+			return;
+		if(sleep<=0){
+			try{
+				int state = engine.callFunctionExternal(functionName, (Object[])args);
+				if(state == -1 || state == 1) return;	
+			} catch (WeaselRuntimeException wre) {
+				setError(wre.getMessage());
+				return;	
+			} catch (Exception e) {
+				e.printStackTrace();
+				setError(e.getMessage());
+				return;	
+			}
+		}
+		externalCallsWaiting.add(new PC_Struct2<String, Object[]>(functionName, args));
+	}
+	
+	/**
+	 * Add text to the terminal, if too long remove oldest.
+	 * @param text
+	 */
+	public void addText(String text) {
+		this.text += text.replace("\\n", "\n");
+		if (countIn(this.text, '\n') > 60) {
+			while (countIn(this.text, '\n') > 60) {
+				this.text = this.text.substring(this.text.indexOf('\n') + 1);
+			}
+		}
+		miner.setInfo("text", this.text);
+	}
+	
+	private int countIn(String str, char c) {
+		int counter = 0;
+		for (int i = 0; i < str.length(); i++) {
+			if (str.charAt(i) == c) {
+				counter++;
+			}
+		}
+		return counter;
+	}
+	
 	@Override
 	public void msg(Object[] obj) {
-		/*if("input".equals(obj[0])){
+		if("input".equals(obj[0])){
 			String input = (String)obj[1];
 			input = input.trim();
 			if (input.length() > 0) {
 				userInput.add(input);
 				addText("> " + input + "\n");
-				if(getNetwork()!=null){
-					if(!callFunctionOnEngine("termIn."+getName(), new WeaselString(input))){
-						callFunctionOnEngine("termIn", new WeaselString(getName()), new WeaselString(input));
-					}
+				if(doesProvideFunctionOnEngine("termIn")){
+					callFunctionOnEngine("termIn", new WeaselString(getName()), new WeaselString(input));
 				}
 			}
 			if (userInput.size() > 16) {
 				userInput.remove(0);
 			}
-			needsSave();
-		}*/
+		}
 	}
 	
 }
