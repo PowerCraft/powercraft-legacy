@@ -220,8 +220,7 @@ public class PCli_BlockPrism extends PC_Block implements PC_IItemInfo {
 		int thisPrismSide = getPrismSideFacingMove(bs.getMove());
 
 		for (int h = 0; h < 10; h++) {
-			// include only non-this & not false sides.
-			if (prism.getPrismSide(h) && h != thisPrismSide) {
+			if (prism.getPrismSide(h)) {
 				side[sideCount] = h;
 				sideCount++;
 			}
