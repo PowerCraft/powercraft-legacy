@@ -275,6 +275,7 @@ public class PCli_BlockMirrow extends PC_Block implements PC_IItemInfo {
 				move.z = reflected.z;
 			}
 		}
+		bs.setMove(move);
 		return result.CONTINUE;
 	}
 
@@ -317,6 +318,7 @@ public class PCli_BlockMirrow extends PC_Block implements PC_IItemInfo {
 		}case PC_Utils.MSG_DEFAULT_NAME:
 			return "Mirrow";
 		case PC_Utils.MSG_ON_HIT_BY_BEAM_TRACER:
+			System.out.println("beamEvent");
 			return onHitByBeamTracer(world, (BeamSettings)obj[0]);
 		default:
 			return null;
