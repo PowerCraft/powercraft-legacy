@@ -232,22 +232,22 @@ public class PCtp_BlockTeleporter extends PC_Block implements PC_IItemInfo{
 		
 		PCtp_TileEntityTeleporter td = GameInfo.getTE(world, x, y, z);
 		
-		ValueWriting.setBlockBounds(Block.blockGold, 0.125F, 0.0F, 0.125F, 0.875F, 0.125F, 0.875F);
-		PC_Renderer.renderStandardBlock(renderer, Block.blockGold, x, y, z);
+		ValueWriting.setBlockBounds(Block.blockSteel, 0.125F, 0.0F, 0.125F, 0.875F, 0.125F, 0.875F);
+		PC_Renderer.renderStandardBlock(renderer, Block.blockSteel, x, y, z);
 		float m = 0.0625F * 6F;
 		float n = 0.0625F * 10F;
 		if(td!=null){
 			if (td.direction == PCtp_TeleporterData.N) {
-				ValueWriting.setBlockBounds(Block.blockGold, m, 0, 0.0625F, n, 0.125F, 0.0625F * 2);
+				ValueWriting.setBlockBounds(Block.blockSteel, m, 0, 0.0625F, n, 0.125F, 0.0625F * 2);
 			} else if (td.direction == PCtp_TeleporterData.S) {
-				ValueWriting.setBlockBounds(Block.blockGold, m, 0, 1 - 0.0625F * 2, n, 0.125F, 1 - 0.0625F);
+				ValueWriting.setBlockBounds(Block.blockSteel, m, 0, 1 - 0.0625F * 2, n, 0.125F, 1 - 0.0625F);
 			} else if (td.direction == PCtp_TeleporterData.E) {
-				ValueWriting.setBlockBounds(Block.blockGold, 1 - 0.0625F * 2, 0, m, 1 - 0.0625F, 0.125F, n);
+				ValueWriting.setBlockBounds(Block.blockSteel, 1 - 0.0625F * 2, 0, m, 1 - 0.0625F, 0.125F, n);
 			} else if (td.direction == PCtp_TeleporterData.W) {
-				ValueWriting.setBlockBounds(Block.blockGold, 0.0625F, 0, m, 0.0625F * 2, 0.125F, n);
+				ValueWriting.setBlockBounds(Block.blockSteel, 0.0625F, 0, m, 0.0625F * 2, 0.125F, n);
 			}
 		}
-		PC_Renderer.renderStandardBlock(renderer, Block.blockGold, x, y, z);
+		PC_Renderer.renderStandardBlock(renderer, Block.blockSteel, x, y, z);
 
 		ValueWriting.setBlockBounds(Block.blockSteel, 0.4375F, 0.125F, 0.4375F, 1F - 0.4375F, 0.25F, 1F - 0.4375F);
 		PC_Renderer.renderStandardBlock(renderer, Block.blockSteel, x, y, z);
@@ -257,7 +257,6 @@ public class PCtp_BlockTeleporter extends PC_Block implements PC_IItemInfo{
 		PC_Renderer.renderStandardBlock(renderer, Block.blockSteel, x, y, z);
 
 		ValueWriting.setBlockBounds(Block.blockSteel, 0.0F, 0.0F, 0.0F, 1.0F, 1.0F, 1.0F);
-		ValueWriting.setBlockBounds(Block.blockGold, 0.0F, 0.0F, 0.0F, 1.0F, 1.0F, 1.0F);
 
 		ValueWriting.setBlockBounds(block, 0.1875F, 0.1875F, 0.1875F, 1.0F - 0.1875F, 1.0F - 0.1875F, 1.0F - 0.1875F);
 		PC_Renderer.renderStandardBlock(renderer, block, x, y, z);
