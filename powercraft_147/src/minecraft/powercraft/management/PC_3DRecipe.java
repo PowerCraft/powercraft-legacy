@@ -33,7 +33,7 @@ public class PC_3DRecipe {
 			char c = (Character)o[i];
 			i++;
 			List<PC_Struct2<Block, Integer>> list = new ArrayList<PC_Struct2<Block, Integer>>();
-			while(i<o.length && o[i] instanceof Block){
+			while(i<o.length && (o[i] instanceof Block || o[i]==null)){
 				Block b = (Block)o[i];
 				i++;
 				Integer meta = -1;

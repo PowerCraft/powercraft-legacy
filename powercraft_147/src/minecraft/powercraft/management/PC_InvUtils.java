@@ -589,6 +589,7 @@ public class PC_InvUtils
             			continue;
             	}
                 ItemStack itemstack = inventory.getStackInSlot(i);
+                inventory.setInventorySlotContents(i, null);
                 ValueWriting.dropItemStack(world, itemstack, pos);
             }
         }

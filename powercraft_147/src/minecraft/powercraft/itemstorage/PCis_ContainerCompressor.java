@@ -10,12 +10,12 @@ import powercraft.management.PC_GresBaseWithInventory;
 import powercraft.management.PC_SlotNoPickup;
 import powercraft.management.PC_SlotSelective;
 
-public class PCcp_ContainerCompressor extends PC_GresBaseWithInventory {
+public class PCis_ContainerCompressor extends PC_GresBaseWithInventory {
 
 	protected List<Slot> lSlot;
-	protected PCcp_CompressorInventory inv;
+	protected PCis_CompressorInventory inv;
 	
-	public PCcp_ContainerCompressor(EntityPlayer player, Object[] o) {
+	public PCis_ContainerCompressor(EntityPlayer player, Object[] o) {
 		super(player, o);
 	}
 
@@ -29,7 +29,7 @@ public class PCcp_ContainerCompressor extends PC_GresBaseWithInventory {
 	@Override
 	protected List<Slot> getAllSlots(List<Slot> slots) {
 		lSlot = new ArrayList<Slot>();
-		inv = new PCcp_CompressorInventory(thePlayer);
+		inv = new PCis_CompressorInventory(thePlayer);
 		for(int i=0; i<inv.getSizeInventory(); i++){
 			lSlot.add(new PC_SlotSelective(inv, i, 0, 0));
 		}
