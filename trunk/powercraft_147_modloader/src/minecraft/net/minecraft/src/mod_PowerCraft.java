@@ -264,7 +264,7 @@ public class mod_PowerCraft extends BaseMod {
 		PC_ClientUtils.registerEnitiyFX(PC_EntityLaserParticleFX.class);
 		PC_ClientUtils.registerEnitiyFX(PC_EntityLaserFX.class);
 		PC_ClientUtils.registerEnitiyFX(PC_EntityFanFX.class);
-		PC_ClientUtils.registerEnitiyFX(EntitySmokeFX.class);
+		PC_ClientUtils.registerEnitiyFX("EntitySmokeFX", EntitySmokeFX.class);
 		List<PC_IModule> modules = ModuleInfo.getModules();
 		cr1 = new PC_ClientRenderer(true);
 		cr2 = new PC_ClientRenderer(false);
