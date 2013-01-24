@@ -1,12 +1,12 @@
-package powercraft.machines;
+package powercraft.management;
 
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
 
-public class PCma_EntityItem extends EntityItem {
+public class PC_EntityItem extends EntityItem {
 
-	public PCma_EntityItem(World world, double x, double y,
+	public PC_EntityItem(World world, double x, double y,
 			double z, ItemStack itemStack) {
 		super(world, x, y, z, itemStack);
 	}

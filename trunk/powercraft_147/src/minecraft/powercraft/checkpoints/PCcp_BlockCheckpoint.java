@@ -5,11 +5,14 @@ import java.util.List;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemStack;
 import net.minecraft.util.ChunkCoordinates;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import powercraft.management.PC_Block;
+import powercraft.management.PC_InvUtils;
 import powercraft.management.PC_Utils;
 import powercraft.management.PC_Utils.Communication;
 import powercraft.management.PC_Utils.Lang;
@@ -24,6 +27,18 @@ public class PCcp_BlockCheckpoint extends PC_Block {
         setResistance(8.0F);
         setStepSound(Block.soundMetalFootstep);
         setCreativeTab(CreativeTabs.tabTools);
+	}
+	
+	@Override
+	public void onEntityCollidedWithBlock(World world, int x, int y, int z, Entity entity) {
+		if(!world.isRemote){
+			if(entity instanceof EntityPlayer){
+				EntityPlayer player = (EntityPlayer) entity;
+				if(player.ticksExisted<=2 && PC_InvUtils.isInventoryEmpty(player.inventory)){
+					PC_InvUtils.addItemStackToInventory(player.inventory, new ItemStack(Block.grass));
+				}
+			}
+		}
 	}
 
 	@Override

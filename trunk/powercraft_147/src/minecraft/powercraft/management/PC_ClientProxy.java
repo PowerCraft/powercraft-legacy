@@ -34,7 +34,7 @@ public class PC_ClientProxy extends PC_CommonProxy {
 		PC_ClientUtils.registerEnitiyFX(PC_EntityLaserParticleFX.class);
 		PC_ClientUtils.registerEnitiyFX(PC_EntityLaserFX.class);
 		PC_ClientUtils.registerEnitiyFX(PC_EntityFanFX.class);
-		PC_ClientUtils.registerEnitiyFX(EntitySmokeFX.class);
+		PC_ClientUtils.registerEnitiyFX("EntitySmokeFX", EntitySmokeFX.class);
 		NetworkRegistry.instance().registerConnectionHandler(new PC_ConnectionHandler());
 		Gres.registerGres("UpdateNotification", PC_GuiUpdateNotification.class);
 		
