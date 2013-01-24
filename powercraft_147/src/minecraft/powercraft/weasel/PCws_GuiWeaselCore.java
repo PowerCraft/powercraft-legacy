@@ -171,7 +171,11 @@ public class PCws_GuiWeaselCore extends PCws_GuiWeasel {
 				WeaselEngine.compileProgram(program.getText());
 				launchProgram.enable(true);
 			}catch(Exception e){
-				programError.setText(e.getMessage());
+				String msg = e.getMessage();
+				if(msg.length()>40){
+					msg = msg.substring(0, 38)+"...";
+				}
+				programError.setText(msg);
 				programError.setColor(PC_GresWidget.textColorDisabled, 0xff0000);
 				launchProgram.enable(false);
 			}
