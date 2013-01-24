@@ -14,12 +14,12 @@ import powercraft.management.PC_Struct3;
 import powercraft.management.PC_Utils;
 import powercraft.management.PC_Utils.Gres;
 
-public class PCcp_ItemCompressor extends PC_Item {
+public class PCis_ItemCompressor extends PC_Item {
 	
 	public static final int NORMAL = 0, ENDERACCESS = 1;
 	public static final String id2Name[] = {"normal", "enderaccess"};
 	
-	public PCcp_ItemCompressor(int id) {
+	public PCis_ItemCompressor(int id) {
 		super(id);
 		setMaxDamage(0);
         setMaxStackSize(1);

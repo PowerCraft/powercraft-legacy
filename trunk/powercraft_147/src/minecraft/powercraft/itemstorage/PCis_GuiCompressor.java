@@ -11,16 +11,16 @@ import powercraft.management.PC_IGresClient;
 import powercraft.management.PC_IGresGui;
 import powercraft.management.PC_Utils.Lang;
 
-public class PCcp_GuiCompressor extends PCcp_ContainerCompressor
+public class PCis_GuiCompressor extends PCis_ContainerCompressor
 		implements PC_IGresClient {
 
-	public PCcp_GuiCompressor(EntityPlayer player, Object[] o) {
+	public PCis_GuiCompressor(EntityPlayer player, Object[] o) {
 		super(player, o);
 	}
 
 	@Override
 	public void initGui(PC_IGresGui gui) {
-		PC_GresWindow w = new PC_GresWindow(Lang.tr(PCcp_App.compressor.getItemNameIS(thePlayer.getCurrentEquippedItem())));
+		PC_GresWindow w = new PC_GresWindow(Lang.tr(PCis_App.compressor.getItemNameIS(thePlayer.getCurrentEquippedItem())));
 		PC_GresInventory inventory = new PC_GresInventory(9, 3);
 		int i=0;
 		for(int y=0; y<3; y++){

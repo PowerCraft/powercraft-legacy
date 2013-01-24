@@ -4,24 +4,27 @@ import java.util.List;
 
 import net.minecraft.block.Block;
 
+import powercraft.management.PC_3DRecipe;
+import powercraft.management.PC_Block;
+import powercraft.management.PC_I3DRecipeHandler;
 import powercraft.management.PC_IDataHandler;
 import powercraft.management.PC_IMSG;
 import powercraft.management.PC_IModule;
 import powercraft.management.PC_IPacketHandler;
 import powercraft.management.PC_Item;
-import powercraft.management.PC_ItemStack;
 import powercraft.management.PC_Property;
-import powercraft.management.PC_ShapelessRecipes;
 import powercraft.management.PC_Struct2;
 import powercraft.management.PC_Utils.ModuleLoader;
 
-public class PCcp_App implements PC_IModule {
+public class PCis_App implements PC_IModule {
 
+	public static PC_Block bigChest;
+	
 	public static PC_Item compressor;
 	
 	@Override
 	public String getName() {
-		return "Compressor";
+		return "Itemstorage";
 	}
 
 	@Override
@@ -43,11 +46,12 @@ public class PCcp_App implements PC_IModule {
 
 	@Override
 	public void initBlocks() {
+		bigChest = ModuleLoader.register(this, PCis_BlockBigChest.class, PCis_TileEntityBigChest.class);
     }
 
 	@Override
 	public void initItems() {
-		compressor = ModuleLoader.register(this, PCcp_ItemCompressor.class);
+		compressor = ModuleLoader.register(this, PCis_ItemCompressor.class);
 	}
 
 	@Override
@@ -55,6 +59,28 @@ public class PCcp_App implements PC_IModule {
 
 	@Override
 	public List<Object> initRecipes(List<Object> recipes) {
+		recipes.add(new PC_3DRecipe((PC_I3DRecipeHandler)bigChest, 
+				new String[]{
+				"g  g",
+				"    ",
+				"    ",
+				"g  g"},
+				new String[]{
+				"f  f",
+				"    ",
+				"    ",
+				"f  f"},
+				new String[]{
+				"f  f",
+				"    ",
+				"    ",
+				"f  f"},
+				new String[]{
+				"g  g",
+				"    ",
+				"    ",
+				"g  g"},
+				'g', Block.glass, 'f', Block.fence, ' ', null));
 		return recipes;
 	}
 
@@ -75,7 +101,7 @@ public class PCcp_App implements PC_IModule {
 
 	@Override
 	public List<PC_Struct2<String, Class>> registerGuis(List<PC_Struct2<String, Class>> guis) {
-		guis.add(new PC_Struct2<String, Class>("Compressor", PCcp_ContainerCompressor.class));
+		guis.add(new PC_Struct2<String, Class>("Compressor", PCis_ContainerCompressor.class));
 		return guis;
 	}
 

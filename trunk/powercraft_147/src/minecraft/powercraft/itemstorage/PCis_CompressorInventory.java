@@ -9,7 +9,7 @@ import powercraft.management.PC_InvUtils;
 import powercraft.management.PC_Utils.SaveHandler;
 import powercraft.management.PC_VecI;
 
-public class PCcp_CompressorInventory implements IInventory, PC_ISpecialAccessInventory {
+public class PCis_CompressorInventory implements IInventory, PC_ISpecialAccessInventory {
 
 	private EntityPlayer player;
 	private PC_VecI size = new PC_VecI(9, 3);
@@ -17,11 +17,11 @@ public class PCcp_CompressorInventory implements IInventory, PC_ISpecialAccessIn
 	private int equipped;
 	private boolean useEnderChest;
 	
-	public PCcp_CompressorInventory(EntityPlayer player){
+	public PCis_CompressorInventory(EntityPlayer player){
 		this.player = player;
 		equipped = player.inventory.currentItem;
 		ItemStack compressor = player.inventory.getStackInSlot(equipped);
-		useEnderChest = compressor.getItemDamage()==PCcp_ItemCompressor.ENDERACCESS;
+		useEnderChest = compressor.getItemDamage()==PCis_ItemCompressor.ENDERACCESS;
 		if(!useEnderChest){
 			NBTTagCompound tag = compressor.getTagCompound();
 			if(tag==null){
@@ -140,7 +140,7 @@ public class PCcp_CompressorInventory implements IInventory, PC_ISpecialAccessIn
 
 	@Override
 	public boolean canPlayerInsertStackTo(int slot, ItemStack stack) {
-		return stack.itemID != PCcp_App.compressor.itemID;
+		return stack.itemID != PCis_App.compressor.itemID;
 	}
 
 	@Override
