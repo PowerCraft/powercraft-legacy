@@ -198,7 +198,7 @@ public class PC_GresScrollArea extends PC_GresWidget {
 					hScrollSize - 1, 10), new PC_VecI(0, 0), new PC_VecI(256, 256));
 
 		if(vScroll)
-			renderTextureSliced(offsetPos.copy().add(size.x - 11, 1 + (int) vScrollPos, 0), imgdir + "gres/scrollbar_handle.png", new PC_VecI(
+			renderTextureSliced(offsetPos.copy().add(size.x - 11, 1 + (int) vScrollPos, 0), imgdir + "scrollbar_handle.png", new PC_VecI(
 					10, vScrollSize - 1), new PC_VecI(0, 0), new PC_VecI(256, 256));
 		return new PC_RectI(offsetPos.x + pos.x + 2, offsetPos.y + pos.y + 2, size.x - ((type & VSCROLL)!=0?15:4), size.y - ((type & HSCROLL)!=0?15:4));
 	}
