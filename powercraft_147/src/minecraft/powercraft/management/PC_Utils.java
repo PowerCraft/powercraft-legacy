@@ -1115,6 +1115,12 @@ public class PC_Utils implements PC_IPacketHandler
     
     public static class GameInfo{
 
+    	public static boolean isPlayerOPOrOwner(EntityPlayer player){
+    		if(mcs().getConfigurationManager().getOps().contains(player))
+    			return true;
+    		return GameInfo.mcs().getServerOwner() == player.getEntityName();
+    	}
+    	
 		public static boolean isClient()
 		{
 		    return PC_Utils.instance.client();
