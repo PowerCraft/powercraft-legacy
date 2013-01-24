@@ -8,6 +8,7 @@ import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ChunkCoordinates;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
@@ -15,6 +16,8 @@ import powercraft.management.PC_Block;
 import powercraft.management.PC_InvUtils;
 import powercraft.management.PC_Utils;
 import powercraft.management.PC_Utils.Communication;
+import powercraft.management.PC_Utils.GameInfo;
+import powercraft.management.PC_Utils.Gres;
 import powercraft.management.PC_Utils.Lang;
 import powercraft.management.PC_VecI;
 
@@ -30,12 +33,32 @@ public class PCcp_BlockCheckpoint extends PC_Block {
 	}
 	
 	@Override
+	public TileEntity newTileEntity(World world, int metadata) {
+		return new PCcp_TileEntityCheckpoint();
+	}
+
+	@Override
 	public void onEntityCollidedWithBlock(World world, int x, int y, int z, Entity entity) {
-		if(!world.isRemote){
-			if(entity instanceof EntityPlayer){
-				EntityPlayer player = (EntityPlayer) entity;
+		if(entity instanceof EntityPlayer){
+			PCcp_TileEntityCheckpoint te = GameInfo.getTE(world, x, y, z);
+			EntityPlayer player = (EntityPlayer) entity;
+			if(!world.isRemote){
 				if(player.ticksExisted<=2 && PC_InvUtils.isInventoryEmpty(player.inventory)){
-					PC_InvUtils.addItemStackToInventory(player.inventory, new ItemStack(Block.grass));
+					for(int i=0; i<te.getSizeInventory(); i++){
+						ItemStack is = te.getStackInSlot(i);
+						if(is!=null){
+							player.inventory.setInventorySlotContents(i, is.copy());
+						}
+					}
+				}
+			}
+			if(te.isCollideTriggerd()){
+				ChunkCoordinates cc = new ChunkCoordinates(x, y, z);
+				if(!player.getBedLocation().equals(cc)){
+					player.setSpawnChunk(cc, true);
+					if(world.isRemote){
+			        	Communication.chatMsg(Lang.tr("pc.checkpoint.setSpawn", new PC_VecI(x, y, z).toString()), true);
+			        }
 				}
 			}
 		}
@@ -43,11 +66,14 @@ public class PCcp_BlockCheckpoint extends PC_Block {
 
 	@Override
     public boolean onBlockActivated(World world, int i, int j, int k, EntityPlayer entityplayer, int par6, float par7, float par8, float par9){
-        if(world.isRemote){
+		if(entityplayer.isSneaking() && GameInfo.isPlayerOPOrOwner(entityplayer)){
+			Gres.openGres("Checkpoint", entityplayer, i, j, k);
+			return true;
+		}
+		if(world.isRemote){
         	Communication.chatMsg(Lang.tr("pc.checkpoint.setSpawn", new PC_VecI(i, j, k).toString()), true);
-        }else{
-        	entityplayer.setSpawnChunk(new ChunkCoordinates(i, j, k), true);
         }
+		entityplayer.setSpawnChunk(new ChunkCoordinates(i, j, k), true);
         return true;
     }
 	

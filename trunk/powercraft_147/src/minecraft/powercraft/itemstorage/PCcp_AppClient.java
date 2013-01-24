@@ -1,4 +1,4 @@
-package powercraft.checkpoints;
+package powercraft.itemstorage;
 
 import java.util.List;
 
@@ -13,9 +13,6 @@ public class PCcp_AppClient extends PCcp_App implements PC_IClientModule {
 
 	@Override
 	public List<PC_LangEntry> initLanguage(List<PC_LangEntry> lang) {
-		lang.add(new PC_LangEntry("pc.checkpoint.setSpawn", "Set spawnpoint to %s"));
-		lang.add(new PC_LangEntry("pc.gui.checkpoint.title", "Checkpoint"));
-		lang.add(new PC_LangEntry("pc.gui.checkpoint.walkingtiggerd", "Walkingtiggerd"));
 		return lang;
 	}
 
@@ -37,8 +34,7 @@ public class PCcp_AppClient extends PCcp_App implements PC_IClientModule {
 
 	@Override
 	public List<PC_Struct2<String, Class>> registerGuis(List<PC_Struct2<String, Class>> guis) {
-		guis.add(new PC_Struct2<String, Class>("Checkpoint", PCcp_GuiCheckpoint.class));
+		guis.add(new PC_Struct2<String, Class>("Compressor", PCcp_GuiCompressor.class));
 		return guis;
 	}
-	
 }
