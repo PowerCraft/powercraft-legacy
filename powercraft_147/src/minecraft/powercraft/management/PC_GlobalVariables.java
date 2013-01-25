@@ -55,6 +55,8 @@ public class PC_GlobalVariables {
 		if(GameInfo.isClient())
 			soundEnabled = config.getBoolean("sound.enabled", true);
 		
+		
+		
 	}
 	
 	public static void saveConfig(){

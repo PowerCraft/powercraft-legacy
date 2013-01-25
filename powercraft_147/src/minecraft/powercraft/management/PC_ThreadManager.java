@@ -16,10 +16,11 @@ public class PC_ThreadManager implements PC_IMSG {
 		
 	}
 	
-	public static void init(int numThreads){
+	public static void init(){
 		if(hasInit)
 			return;
 		hasInit = true;
+		int numThreads = PC_GlobalVariables.config.getInt("threads.cound", 3, "Number of thread of PowerCraft");
 		ModuleInfo.registerMSGObject(new PC_ThreadManager());
 		threads = new PC_WorkerThread[numThreads];
 		for(int i=0; i<numThreads; i++){
@@ -39,7 +40,7 @@ public class PC_ThreadManager implements PC_IMSG {
 		}
 	}
 	
-	public static PC_ThreadJob getNextJob(){
+	public static synchronized PC_ThreadJob getNextJob(){
 		PC_ThreadJob nextJob = null;
 		if(jobsFirst.size()>0){
 			nextJob = jobsFirst.get(0);
@@ -51,12 +52,12 @@ public class PC_ThreadManager implements PC_IMSG {
 		return nextJob;
 	}
 	
-	public static void addJob(PC_ThreadJob job){
+	public static synchronized void addJob(PC_ThreadJob job){
 		jobs.add(job);
 		startSleepingThread();
 	}
 	
-	public static void addJobFirst(PC_ThreadJob job) {
+	public static synchronized void addJobFirst(PC_ThreadJob job) {
 		jobsFirst.add(job);
 		startSleepingThread();
 	}
@@ -73,7 +74,9 @@ public class PC_ThreadManager implements PC_IMSG {
 				return;
 			case TIMED_WAITING:
 			case WAITING:
-				thread.notify();
+				synchronized (thread){
+					thread.notify();
+				}
 				return;
 			}
 		}

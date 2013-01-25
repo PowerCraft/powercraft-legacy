@@ -123,6 +123,7 @@ public class mod_PowerCraft{
 		PC_Logger.enterSection("Init");
 		GameRegistry.registerWorldGenerator(new PC_WorldGenerator());
 		GameRegistry.registerFuelHandler(new PC_FuelHandler());
+		PC_ThreadManager.init();
 		List<PC_IModule> modules = ModuleInfo.getModules();
 		proxy.init();
 		PC_Logger.enterSection("Module Init");
