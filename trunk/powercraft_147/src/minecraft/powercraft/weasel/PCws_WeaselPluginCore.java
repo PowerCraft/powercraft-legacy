@@ -5,8 +5,11 @@ import java.util.List;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
+import powercraft.management.PC_IThreadJob;
 import powercraft.management.PC_PacketHandler;
 import powercraft.management.PC_Struct2;
+import powercraft.management.PC_ThreadJob;
+import powercraft.management.PC_ThreadManager;
 import powercraft.management.PC_Utils.Gres;
 import powercraft.management.PC_Utils.SaveHandler;
 import weasel.WeaselEngine;
@@ -16,7 +19,7 @@ import weasel.exception.WeaselRuntimeException;
 import weasel.lang.Instruction;
 import weasel.obj.WeaselObject;
 
-public class PCws_WeaselPluginCore extends PCws_WeaselPlugin implements PCws_IWeaselEngine {
+public class PCws_WeaselPluginCore extends PCws_WeaselPlugin implements PCws_IWeaselEngine, PC_IThreadJob {
 	
 	private static final String default_program = 
 			"# *** Weasel powered Microcontroller ***\n"+
@@ -131,25 +134,7 @@ public class PCws_WeaselPluginCore extends PCws_WeaselPlugin implements PCws_IWe
 			externalCallsWaiting = new ArrayList<PC_Struct2<String,Object[]>>();
 		if(sleepTimer<=0){
 			if(!hasError() && !stop){
-				weasel.setStatementsToRun(500);
-				try{
-					while(weasel.getStatementsToRun()>0 && !weasel.isProgramFinished){
-						while(externalCallsWaiting.size()>0) {
-							int state = weasel.callFunctionExternal(externalCallsWaiting.get(0).a, externalCallsWaiting.get(0).b);
-							
-							if(state != 0) {
-								externalCallsWaiting.remove(0);
-							}
-						}
-						if(!weasel.run())
-							break;
-					}
-				} catch (WeaselRuntimeException wre) {
-					setError(wre.getMessage());
-				} catch (Exception e) {
-					e.printStackTrace();
-					setError(e.getMessage());
-				}
+				PC_ThreadManager.addJob(new PC_ThreadJob(this));
 			}
 		}else{
 			sleepTimer--;
@@ -351,6 +336,29 @@ public class PCws_WeaselPluginCore extends PCws_WeaselPlugin implements PCws_IWe
 	@Override
 	public WeaselEngine getEngine() {
 		return weasel;
+	}
+	
+	@Override
+	public void doJob() {
+		weasel.setStatementsToRun(500);
+		try{
+			while(weasel.getStatementsToRun()>0 && !weasel.isProgramFinished){
+				while(externalCallsWaiting.size()>0) {
+					int state = weasel.callFunctionExternal(externalCallsWaiting.get(0).a, externalCallsWaiting.get(0).b);
+					
+					if(state != 0) {
+						externalCallsWaiting.remove(0);
+					}
+				}
+				if(!weasel.run())
+					break;
+			}
+		} catch (WeaselRuntimeException wre) {
+			setError(wre.getMessage());
+		} catch (Exception e) {
+			e.printStackTrace();
+			setError(e.getMessage());
+		}
 	}
 	
 }
