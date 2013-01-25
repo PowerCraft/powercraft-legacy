@@ -1,14 +1,21 @@
 package powercraft.itemstorage;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.Random;
 
 import net.minecraft.block.Block;
+import net.minecraft.client.multiplayer.WorldClient;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.EntityItem;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.CompressedStreamTools;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.AxisAlignedBB;
+import net.minecraft.world.World;
+import powercraft.management.PC_3DRecipe;
 import powercraft.management.PC_Color;
 import powercraft.management.PC_IInventoryWrapper;
 import powercraft.management.PC_InvUtils;
@@ -22,11 +29,35 @@ public class PCis_TileEntityBigChest extends PC_TileEntity implements PC_IInvent
 
 	public static final int TOPBACKLEFT=0, TOPBACKRIGHT=1, TOPFRONTLEFT=2, TOPFRONTRIGHT=3, BOTTOMBACKLEFT=4, BOTTOMBACKRIGHT=5, BOTTOMFRONTLEFT=6, BOTTOMFRONTRIGHT=7;
 	
+	private static PC_3DRecipe recipe = new PC_3DRecipe(null, 
+				new String[]{
+				"g  g",
+				"    ",
+				"    ",
+				"g  g"},
+				new String[]{
+				"f  f",
+				"    ",
+				"    ",
+				"f  f"},
+				new String[]{
+				"f  f",
+				"    ",
+				"    ",
+				"f  f"},
+				new String[]{
+				"g  g",
+				"    ",
+				"    ",
+				"g  g"},
+				'g', PCis_App.bigChest, 'f', Block.fence, ' ', null);
+	
 	private int pos;
 	private PCis_BigChestInventory inv;
 	
+	
 	@Override
-	public IInventory getInventory() {
+	public PCis_BigChestInventory getInventory() {
 		if(pos==BOTTOMBACKLEFT)
 			return inv;
 		else{
@@ -54,7 +85,15 @@ public class PCis_TileEntityBigChest extends PC_TileEntity implements PC_IInvent
 	public void setPos(int pos){
 		this.pos = pos;
 		if(pos==BOTTOMBACKLEFT){
-			inv = new PCis_BigChestInventory();
+			inv = new PCis_BigChestInventory(worldObj, getCoord().offset(2), this);
+		}
+	}
+	
+	@Override
+	public void setWorldObj(World world) {
+		super.setWorldObj(world);
+		if(inv!=null){
+			inv.setPos(worldObj, getCoord().offset(2));
 		}
 	}
 
@@ -64,12 +103,10 @@ public class PCis_TileEntityBigChest extends PC_TileEntity implements PC_IInvent
 			AxisAlignedBB bb=AxisAlignedBB.getBoundingBox(xCoord, yCoord, zCoord, xCoord + 4, yCoord + 4, zCoord + 4);
 			List<EntityItem> list = worldObj.getEntitiesWithinAABB(EntityItem.class, bb);
 			for(EntityItem entity:list){
-				ItemStack is = entity.func_92014_d();
-				if(PC_InvUtils.addItemStackToInventory(inv, is)){
-					entity.setDead();
-				}else{
-					entity.func_92013_a(is);
-				}
+				inv.collectItem(entity);
+			}
+			if(recipe.getStructRotation(worldObj, getCoord())==-1){
+				breakStruct();
 			}
 		}
 		Random rand = new Random();
@@ -89,7 +126,7 @@ public class PCis_TileEntityBigChest extends PC_TileEntity implements PC_IInvent
 		super.readFromNBT(nbtTagCompound);
 		pos = nbtTagCompound.getInteger("pos");
 		if(pos==BOTTOMBACKLEFT){
-			inv = new PCis_BigChestInventory();
+			inv = new PCis_BigChestInventory(this);
 			PC_InvUtils.loadInventoryFromNBT(nbtTagCompound, "inv", inv);
 		}
 	}
@@ -120,6 +157,67 @@ public class PCis_TileEntityBigChest extends PC_TileEntity implements PC_IInvent
 			}
 		}
 
+	}
+
+	@Override
+	public void setData(Object[] o) {
+		int p = 0;
+
+        while (p < o.length)
+        {
+            String var = (String)o[p++];
+
+            if (var.equals("slotChange"))
+            {
+            	int slot = (Integer)o[p++];
+            	byte b[] = (byte[])o[p++];
+            	ItemStack is = null;
+            	if(b!=null){
+            		try {
+						is = ItemStack.loadItemStackFromNBT(CompressedStreamTools.decompress(b));
+					} catch (IOException e) {
+						e.printStackTrace();
+					}
+            	}
+            	inv.setInventorySlotContents(slot, is);
+            }else if (var.equals("pos")){
+            	setPos((Integer)o[p++]);
+            }else if (var.equals("inv")){
+            	byte b[] = (byte[])o[p++];
+            	try {
+					NBTTagCompound nbtTag = CompressedStreamTools.decompress(b);
+					PC_InvUtils.loadInventoryFromNBT(nbtTag, "inv", inv);
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+            }else if (var.equals("interact")){
+            	EntityPlayer player = (EntityPlayer)worldObj.getEntityByID((Integer)o[p++]);
+            	inv.interact(player, (Integer)o[p++]);
+            }
+        }
+	}
+
+	@Override
+	public Object[] getData() {
+		if(inv==null){
+			return new Object[]{
+					"pos", pos,
+			};
+		}
+		NBTTagCompound nbtTag = new NBTTagCompound();
+		PC_InvUtils.saveInventoryToNBT(nbtTag, "inv", inv);
+		try {
+			byte b[]= CompressedStreamTools.compress(nbtTag);
+			return new Object[]{
+					"pos", pos,
+					"inv", b
+			};
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return new Object[]{
+				"pos", pos
+		};
 	}
 	
 }
