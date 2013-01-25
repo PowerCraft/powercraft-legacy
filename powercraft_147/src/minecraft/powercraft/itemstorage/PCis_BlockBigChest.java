@@ -47,10 +47,11 @@ public class PCis_BlockBigChest extends PC_Block implements PC_I3DRecipeHandler 
 		PCis_TileEntityBigChest te = GameInfo.getTE(world, x, y, z);
 		PC_VecI pos = new PC_VecI(x, y, z);
 		IInventory inv = te.getInventory();
-		if(inv!=null)
+		if(inv!=null){
 			PC_InvUtils.dropInventoryContents(inv, world, pos);
-		for(int i=0; i<inv.getSizeInventory(); i++){
-			inv.setInventorySlotContents(i, null);
+			for(int i=0; i<inv.getSizeInventory(); i++){
+				inv.setInventorySlotContents(i, null);
+			}
 		}
 		te.breakStruct();
 		super.breakBlock(world, x, y, z, par5, par6);

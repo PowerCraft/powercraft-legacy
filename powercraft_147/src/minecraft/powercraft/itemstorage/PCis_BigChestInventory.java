@@ -1,12 +1,46 @@
 package powercraft.itemstorage;
 
+import java.io.IOException;
+import java.util.Random;
+
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.CompressedStreamTools;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.world.World;
+import powercraft.management.PC_InvUtils;
+import powercraft.management.PC_PacketHandler;
+import powercraft.management.PC_VecF;
+import powercraft.management.PC_VecI;
 
 public class PCis_BigChestInventory implements IInventory {
 
 	private ItemStack inv[] = new ItemStack[100];
+	private PCis_EntityItemInBigChest entity[] = new PCis_EntityItemInBigChest[100];
+	private World world;
+	private PC_VecI mid;
+	private PCis_TileEntityBigChest te;
+	
+	public PCis_BigChestInventory(PCis_TileEntityBigChest te) {
+		this.te = te;
+	}
+	
+	public PCis_BigChestInventory(World world, PC_VecI mid, PCis_TileEntityBigChest te){
+		this.world = world;
+		this.mid = mid;
+		this.te = te;
+	}
+
+	public void setPos(World world, PC_VecI mid){
+		this.world = world;
+		this.mid = mid;
+		for(int i=0; i<100; i++){
+			onSlotChange(i);
+		}
+	}
 	
 	@Override
 	public int getSizeInventory() {
@@ -31,6 +65,7 @@ public class PCis_BigChestInventory implements IInventory {
 			if (inv[var1].stackSize == 0) {
 				inv[var1] = null;
 			}
+			onSlotChange(var1);
 			onInventoryChanged();
 			return itemstack1;
 		} else {
@@ -46,6 +81,7 @@ public class PCis_BigChestInventory implements IInventory {
 	@Override
 	public void setInventorySlotContents(int var1, ItemStack var2) {
 		inv[var1] = var2;
+		onSlotChange(var1);
 	}
 
 	@Override
@@ -72,4 +108,64 @@ public class PCis_BigChestInventory implements IInventory {
 	@Override
 	public void closeChest() {}
 
+	private void onSlotChange(int slot){
+		if(world!=null){
+			if(world.isRemote){
+				PCis_EntityItemInBigChest e = entity[slot];
+				if(inv[slot]==null){
+					if(e!=null){
+						e.setDead();
+						entity[slot]=null;
+					}
+				}else{
+					if(e==null){
+						Random rand = new Random();
+						makeEntity(world, new PC_VecF(mid).offset(rand.nextFloat()*2-1, rand.nextFloat()*2-1, rand.nextFloat()*2-1), mid, new PC_VecF(rand.nextFloat()*2-1, rand.nextFloat()*2-1, rand.nextFloat()*2-1).mul(10.0f), slot);
+					}
+				}
+			}else{
+				if(inv[slot]==null){
+					PC_PacketHandler.setTileEntity(te, "slotChange", slot, null);
+				}else{
+					ItemStack is = inv[slot];
+					NBTTagCompound nbtTag = new NBTTagCompound();
+					is.writeToNBT(nbtTag);
+					try {
+						PC_PacketHandler.setTileEntity(te, "slotChange", slot, CompressedStreamTools.compress(nbtTag));
+					} catch (IOException e) {
+						e.printStackTrace();
+					}
+				}
+			}
+		}
+	}
+	
+	private PCis_EntityItemInBigChest makeEntity(World world, PC_VecF pos, PC_VecI mid, PC_VecF move, int slot){
+		PCis_EntityItemInBigChest e = new PCis_EntityItemInBigChest(world, pos, mid, move, slot);
+		world.spawnEntityInWorld(e);
+		entity[slot] = e;
+		return e;
+	}
+	
+	public void collectItem(EntityItem entity){
+		if(entity.isDead)
+			return;
+		ItemStack is = entity.func_92014_d();
+		if(PC_InvUtils.addItemStackToInventory(this, is)){
+			entity.setDead();
+		}else{
+			entity.func_92013_a(is);
+		}
+	}
+
+	public void interact(EntityPlayer entityPlayer, int slot) {
+		if(inv[slot]==null)
+			return;
+		PC_InvUtils.addItemStackToInventory(entityPlayer.inventory, inv[slot]);
+		if(inv[slot].stackSize==0){
+			inv[slot] = null;
+		}
+		onSlotChange(slot);
+	}
+	
 }

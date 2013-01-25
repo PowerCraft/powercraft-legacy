@@ -66,7 +66,9 @@ public class PCco_CraftingToolLoader extends Thread implements PC_IMSG{
 	
 	                    for (ItemStack is: l)
 	                    {
-	                        ls.add(new PC_ItemStack(is));
+	                    	if(is.itemID>=0){
+	                    		ls.add(new PC_ItemStack(is));
+	                    	}
 	                    }
 
                     }
