@@ -2,6 +2,9 @@ package powercraft.itemstorage;
 
 import java.util.List;
 
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
+
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
@@ -15,6 +18,7 @@ public class PCis_ItemCompressor extends PC_Item {
 	
 	public static final int NORMAL = 0, ENDERACCESS = 1, HIGHT = 2, BIG = 3;
 	public static final String id2Name[] = {"normal", "enderaccess", "hight", "big"};
+	public static final int id2Texture[] = {0, 2, 3, 1};
 	
 	public PCis_ItemCompressor(int id) {
 		super(id);
@@ -46,6 +50,11 @@ public class PCis_ItemCompressor extends PC_Item {
 		return super.getItemName() + "." + id2Name[itemStack.getItemDamage()];
 	}
 	
+	@Override
+	public int getIconFromDamage(int par1) {
+		return id2Texture[par1];
+	}
+
 	@Override
 	public Object msg(int msg, Object... obj) {
 		switch(msg){
