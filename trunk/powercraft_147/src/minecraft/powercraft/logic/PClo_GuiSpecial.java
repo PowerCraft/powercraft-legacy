@@ -28,7 +28,7 @@ public class PClo_GuiSpecial extends PClo_ContainerSpecial implements PC_IGresCl
 		
 		lh.add(new PC_GresLabel(Lang.tr("pc.gui.special."+addString+".inv")));
 		PC_GresInventory inv = new PC_GresInventory(1, 1);
-		inv.setSlot(lSlot.get(0), 0, 0);
+		inv.setSlot(0, 0, lSlot.get(0));
 		lh.add(inv);
 		
 		w.add(lh);

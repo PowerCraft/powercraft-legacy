@@ -6,7 +6,7 @@ import java.util.List;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.Slot;
 import powercraft.management.PC_GresBaseWithInventory;
-import powercraft.management.PC_SlotSelective;
+import powercraft.management.PC_Slot;
 import powercraft.management.PC_Utils.GameInfo;
 
 public class PCcp_ContainerCheckpoint extends PC_GresBaseWithInventory {
@@ -27,7 +27,7 @@ public class PCcp_ContainerCheckpoint extends PC_GresBaseWithInventory {
 	protected List<Slot> getAllSlots(List<Slot> slots) {
 		lSlot = new ArrayList<Slot>();
 		for(int i=0; i<te.getSizeInventory(); i++){
-			lSlot.add(new PC_SlotSelective(te, i, 0, 0));
+			lSlot.add(new PC_Slot(te, i));
 		}
 		slots.addAll(lSlot);
 		return slots;

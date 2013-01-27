@@ -1,14 +1,22 @@
 package powercraft.management;
 
+import java.util.List;
+
 import net.minecraft.block.Block;
 import net.minecraft.client.gui.FontRenderer;
+import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.client.renderer.RenderEngine;
+import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.entity.RenderManager;
+import net.minecraft.entity.player.InventoryPlayer;
+import net.minecraft.inventory.Slot;
+import net.minecraft.item.ItemStack;
 import net.minecraft.world.IBlockAccess;
 
 import org.lwjgl.opengl.GL11;
+import org.lwjgl.opengl.GL12;
 
 import cpw.mods.fml.client.registry.ISimpleBlockRenderingHandler;
 import cpw.mods.fml.client.registry.RenderingRegistry;
@@ -556,7 +564,5 @@ public class PC_ClientRenderer extends PC_Renderer implements ISimpleBlockRender
 	protected FontRenderer igetFontRenderer() {
 		return PC_ClientUtils.mc().fontRenderer;
 	}
-	
-	
 	
 }

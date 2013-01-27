@@ -8,20 +8,20 @@ import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.IRecipe;
 import powercraft.management.PC_GlobalVariables;
-import powercraft.management.PC_ISlotWithBackground;
 import powercraft.management.PC_ItemStack;
+import powercraft.management.PC_Slot;
 import powercraft.management.PC_Utils.GameInfo;
 
 
-public class PCco_SlotDirectCrafting extends Slot implements PC_ISlotWithBackground {
+public class PCco_SlotDirectCrafting extends PC_Slot {
 
 	private static int MAX_RECURSION = 50; 
 	private EntityPlayer thePlayer;
 	private ItemStack product;
 	private boolean available = false;
 	
-	public PCco_SlotDirectCrafting(EntityPlayer entityplayer, ItemStack product, int index, int x, int y) {
-		 super(null, index, x, y);
+	public PCco_SlotDirectCrafting(EntityPlayer entityplayer, ItemStack product, int index) {
+		 super(null, index);
 		 thePlayer = entityplayer;
 	     this.product = product;
 	     updateAvailable();
@@ -33,7 +33,7 @@ public class PCco_SlotDirectCrafting extends Slot implements PC_ISlotWithBackgro
 	}
 
 	@Override
-	public Slot setBackgroundStack(ItemStack stack) {
+	public PC_Slot setBackgroundStack(ItemStack stack) {
 		product = stack.copy();
         return this;
 	}

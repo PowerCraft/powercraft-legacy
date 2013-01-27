@@ -168,7 +168,7 @@ public class PCco_GuiOreSnifferResultScreen extends PC_GresBaseWithInventory imp
 		w.add(inv = new PC_GresInventory(3, 3));
 		for (int x = 0; x < 3; x++) {
 			for (int y = 0; y < 3; y++) {
-				inv.setSlot(slots.get(x+y*3), x, y);
+				inv.setSlot(x, y, slots.get(x+y*3));
 			}
 		}
 		//w.add(new PC_GresInventoryPlayer(true));

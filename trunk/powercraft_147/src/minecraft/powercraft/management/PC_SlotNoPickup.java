@@ -5,9 +5,7 @@ import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 
-public class PC_SlotNoPickup extends Slot implements PC_ISlotWithBackground
-{
-    public ItemStack shownStack;
+public class PC_SlotNoPickup extends PC_Slot{
 
     public PC_SlotNoPickup()
     {
@@ -56,12 +54,12 @@ public class PC_SlotNoPickup extends Slot implements PC_ISlotWithBackground
             }
             @Override
             public void closeChest() {}
-        }, 0, 0, 0);
+        }, 0);
     }
     
     public PC_SlotNoPickup(IInventory inv, int slot)
     {
-    	super(inv, slot, 0, 0);
+    	super(inv, slot);
     }
     
     @Override
@@ -73,19 +71,6 @@ public class PC_SlotNoPickup extends Slot implements PC_ISlotWithBackground
     public boolean isItemValid(ItemStack par1ItemStack)
     {
         return false;
-    }
-
-    @Override
-    public ItemStack getBackgroundStack()
-    {
-        return shownStack;
-    }
-
-    @Override
-    public Slot setBackgroundStack(ItemStack stack)
-    {
-        shownStack = stack;
-        return this;
     }
 
     @Override

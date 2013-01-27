@@ -4,7 +4,6 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import powercraft.management.PC_IInventorySlotSize;
 import powercraft.management.PC_ISpecialAccessInventory;
 import powercraft.management.PC_IStateReportingInventory;
 import powercraft.management.PC_InvUtils;
@@ -13,7 +12,7 @@ import powercraft.management.PC_PacketHandler;
 import powercraft.management.PC_TileEntity;
 import powercraft.management.PC_Utils.GameInfo;
 
-public class PCma_TileEntityTransmutabox extends PC_TileEntity implements IInventory, PC_ISpecialAccessInventory, PC_IStateReportingInventory, PC_IInventorySlotSize
+public class PCma_TileEntityTransmutabox extends PC_TileEntity implements IInventory, PC_ISpecialAccessInventory, PC_IStateReportingInventory
 {
     private ItemStack[] itemStacks = new ItemStack[35];
     private int burnTime = 0;
@@ -449,5 +448,10 @@ public class PCma_TileEntityTransmutabox extends PC_TileEntity implements IInven
                     "timeCritical", timeCritical
                 };
     }
+
+	@Override
+	public boolean canPlayerTakeStack(int slotIndex, EntityPlayer entityPlayer) {
+		return true;
+	}
     
 }

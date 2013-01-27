@@ -16,8 +16,8 @@ import powercraft.management.PC_Utils.Gres;
 
 public class PCis_ItemCompressor extends PC_Item {
 	
-	public static final int NORMAL = 0, ENDERACCESS = 1;
-	public static final String id2Name[] = {"normal", "enderaccess"};
+	public static final int NORMAL = 0, ENDERACCESS = 1, HIGHT = 2;
+	public static final String id2Name[] = {"normal", "enderaccess", "hight"};
 	
 	public PCis_ItemCompressor(int id) {
 		super(id);
@@ -34,18 +34,12 @@ public class PCis_ItemCompressor extends PC_Item {
         }
         return itemstack;
     }
-
-	public int getFunctionForItemStack(ItemStack is){
-		if(is.itemID == Block.enderChest.blockID){
-			return ENDERACCESS;
-		}
-		return NORMAL;
-	}
 	
 	@Override
 	public List<ItemStack> getItemStacks(List<ItemStack> arrayList) {
 		arrayList.add(new ItemStack(this, 1, NORMAL));
 		arrayList.add(new ItemStack(this, 1, ENDERACCESS));
+		arrayList.add(new ItemStack(this, 1, HIGHT));
 		return arrayList;
 	}
 	
@@ -53,7 +47,7 @@ public class PCis_ItemCompressor extends PC_Item {
 	public String getItemNameIS(ItemStack itemStack) {
 		return super.getItemName() + "." + id2Name[itemStack.getItemDamage()];
 	}
-
+	
 	@Override
 	public Object msg(int msg, Object... obj) {
 		switch(msg){
@@ -61,9 +55,24 @@ public class PCis_ItemCompressor extends PC_Item {
 			List<PC_Struct3<String, String, String[]>> names = (List<PC_Struct3<String, String, String[]>>)obj[0];
 			names.add(new PC_Struct3<String, String, String[]>(getItemName()+"."+id2Name[NORMAL], "Compressor", null));
 			names.add(new PC_Struct3<String, String, String[]>(getItemName()+"."+id2Name[ENDERACCESS], "Ender Compressor", null));
+			names.add(new PC_Struct3<String, String, String[]>(getItemName()+"."+id2Name[HIGHT], "Hight Compressor", null));
 			return names;
 		}
 		return null;
 	}
 
+	public static PCis_CompressorInventory getInventoryFor(EntityPlayer player){
+		ItemStack compressor = player.inventory.getCurrentItem();
+		switch(compressor.getItemDamage()){
+		case NORMAL:
+			return new PCis_NormalCompressorInventory(player);
+		case ENDERACCESS:
+			return new PCis_EnderCompressorInventory(player);
+		case HIGHT:
+			return new PCis_HightCompressorInventory(player);
+		default:
+			return null;
+		}
+	}
+	
 }

@@ -6,7 +6,7 @@ import java.util.List;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.Slot;
 import powercraft.management.PC_GresBaseWithInventory;
-import powercraft.management.PC_SlotSelective;
+import powercraft.management.PC_Slot;
 import powercraft.management.PC_Utils.GameInfo;
 
 public class PCma_ContainerBlockBuilder extends PC_GresBaseWithInventory {
@@ -29,7 +29,7 @@ public class PCma_ContainerBlockBuilder extends PC_GresBaseWithInventory {
 		for (int j = 0; j < 3; j++) {
 			for (int i = 0; i < 3; i++) {
 				if (i + j * 3 < te.getSizeInventory()) {
-					lSlot.add(new PC_SlotSelective(te, i + j * 3, 0, 0));
+					lSlot.add(new PC_Slot(te, i + j * 3));
 				}
 			}
 		}

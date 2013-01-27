@@ -26,14 +26,14 @@ public class PCcp_GuiCheckpoint extends PCcp_ContainerCheckpoint implements PC_I
 		int n=9;
 		for(int j=0; j<3; j++){
 			for(int i=0; i<9; i++){
-				inv.setSlot(lSlot.get(n), i, j);
+				inv.setSlot(i, j, lSlot.get(n));
 				n++;
 			}
 		}
 		w.add(inv);
 		inv = new PC_GresInventory(9, 1);
 		for(int i=0; i<9; i++){
-			inv.setSlot(lSlot.get(i), i, 0);
+			inv.setSlot(i, 0, lSlot.get(i));
 		}
 		w.add(inv);
 		w.add(new PC_GresInventoryPlayer(true));

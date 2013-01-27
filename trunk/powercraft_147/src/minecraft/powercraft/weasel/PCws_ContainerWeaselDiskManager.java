@@ -10,7 +10,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
 import powercraft.management.PC_GresBaseWithInventory;
 import powercraft.management.PC_ISpecialAccessInventory;
-import powercraft.management.PC_SlotSelective;
+import powercraft.management.PC_Slot;
 import powercraft.management.PC_Utils.ValueWriting;
 import powercraft.management.PC_VecI;
 
@@ -33,9 +33,9 @@ public class PCws_ContainerWeaselDiskManager extends PC_GresBaseWithInventory {
 	protected List<Slot> getAllSlots(List<Slot> slots) {
 		lSlot = new ArrayList<Slot>();
 		inventory = new WeaselDiskManagerInventory(thePlayer.worldObj, pos);
-		lSlot.add(new PC_SlotSelective(inventory, 0, 0, 0));
-		lSlot.add(new PC_SlotSelective(inventory, 1, 0, 0));
-		lSlot.add(new PC_SlotSelective(inventory, 2, 0, 0));
+		lSlot.add(new PC_Slot(inventory, 0));
+		lSlot.add(new PC_Slot(inventory, 1));
+		lSlot.add(new PC_Slot(inventory, 2));
 		slots.addAll(lSlot);
 		return slots;
 	}
@@ -154,6 +154,17 @@ public class PCws_ContainerWeaselDiskManager extends PC_GresBaseWithInventory {
 		@Override
 		public boolean canDropStackFrom(int slot) {
 			return false;
+		}
+
+		@Override
+		public int getSlotStackLimit(int slotIndex) {
+			return getInventoryStackLimit();
+		}
+
+		@Override
+		public boolean canPlayerTakeStack(int slotIndex,
+				EntityPlayer entityPlayer) {
+			return true;
 		}
 		
 	}

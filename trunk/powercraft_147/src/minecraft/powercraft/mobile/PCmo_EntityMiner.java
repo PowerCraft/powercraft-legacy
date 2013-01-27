@@ -167,7 +167,9 @@ public class PCmo_EntityMiner extends Entity implements PC_IInventoryWrapper {
 
 	@Override
 	public AxisAlignedBB getCollisionBox(Entity entity) {
-		// if (entity instanceof EntityItem || entity instanceof EntityXPOrb) { return null; }
+		if (entity instanceof EntityItem || entity instanceof EntityXPOrb) { 
+			return null; 
+		}
 		return entity.boundingBox;
 	}
 
@@ -574,7 +576,7 @@ public class PCmo_EntityMiner extends Entity implements PC_IInventoryWrapper {
 				if (stack.itemID == Item.redstone.itemID) {
 					int redstonStorage = ModuleInfo.getPCObjectIDByName("PCde_BlockRedstoneStorage");
 					if(redstonStorage!=0){
-						out = new ItemStack(redstonStorage, 1, 1);
+						out = new ItemStack(redstonStorage, 1, 0);
 						neededForOne = 9;
 						break;
 					}
@@ -1002,6 +1004,16 @@ public class PCmo_EntityMiner extends Entity implements PC_IInventoryWrapper {
 			return false;
 		}
 
+		@Override
+		public int getSlotStackLimit(int slotIndex) {
+			return getInventoryStackLimit();
+		}
+
+		@Override
+		public boolean canPlayerTakeStack(int slotIndex, EntityPlayer entityPlayer) {
+			return true;
+		}
+
 
 	}
 
@@ -1079,6 +1091,16 @@ public class PCmo_EntityMiner extends Entity implements PC_IInventoryWrapper {
 		public boolean canDropStackFrom(int slot) {
 			// TODO Auto-generated method stub
 			return false;
+		}
+		
+		@Override
+		public int getSlotStackLimit(int slotIndex) {
+			return getInventoryStackLimit();
+		}
+
+		@Override
+		public boolean canPlayerTakeStack(int slotIndex, EntityPlayer entityPlayer) {
+			return true;
 		}
 	}
 

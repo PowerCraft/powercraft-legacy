@@ -13,6 +13,7 @@ import net.minecraft.util.ChunkCoordinates;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import powercraft.management.PC_Block;
+import powercraft.management.PC_IItemInfo;
 import powercraft.management.PC_InvUtils;
 import powercraft.management.PC_Utils;
 import powercraft.management.PC_Utils.Communication;
@@ -21,7 +22,7 @@ import powercraft.management.PC_Utils.Gres;
 import powercraft.management.PC_Utils.Lang;
 import powercraft.management.PC_VecI;
 
-public class PCcp_BlockCheckpoint extends PC_Block {
+public class PCcp_BlockCheckpoint extends PC_Block implements PC_IItemInfo {
 	
 	public PCcp_BlockCheckpoint(int id) {
 		super(id, 1, Material.air);
@@ -95,6 +96,12 @@ public class PCcp_BlockCheckpoint extends PC_Block {
     public boolean isOpaqueCube(){
         return false;
     }
+    
+    @Override
+	public List<ItemStack> getItemStacks(List<ItemStack> arrayList) {
+		arrayList.add(new ItemStack(this));
+		return arrayList;
+	}
     
 	@Override
 	public Object msg(IBlockAccess world, PC_VecI pos, int msg, Object... obj) {

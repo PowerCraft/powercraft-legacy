@@ -1,5 +1,9 @@
 package powercraft.management;
 
+import java.util.List;
+
+import net.minecraft.inventory.Slot;
+
 
 
 /**
@@ -143,4 +147,5 @@ public class PC_GresLayoutV extends PC_GresWidget {
 
 	@Override
 	public void addedToWidget() {}
+
 }

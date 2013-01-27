@@ -67,11 +67,9 @@ public class PC_ThreadManager implements PC_IMSG {
 			switch(thread.getState()){
 			case BLOCKED:
 			case RUNNABLE:
-				break;
 			case NEW:
 			case TERMINATED:
-				thread.start();
-				return;
+				break;
 			case TIMED_WAITING:
 			case WAITING:
 				synchronized (thread){

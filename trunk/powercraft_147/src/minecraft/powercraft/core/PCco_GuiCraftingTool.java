@@ -11,7 +11,6 @@ import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import powercraft.management.PC_GresButton;
 import powercraft.management.PC_GresInventory;
-import powercraft.management.PC_GresInventoryBigSlot;
 import powercraft.management.PC_GresLabel;
 import powercraft.management.PC_GresLayoutH;
 import powercraft.management.PC_GresLayoutV;
@@ -22,12 +21,11 @@ import powercraft.management.PC_GresWidget.PC_GresAlign;
 import powercraft.management.PC_GresWindow;
 import powercraft.management.PC_IGresClient;
 import powercraft.management.PC_IGresGui;
-import powercraft.management.PC_IModule;
 import powercraft.management.PC_InvUtils;
 import powercraft.management.PC_PacketHandler;
-import powercraft.management.PC_Struct2;
 import powercraft.management.PC_Utils.Lang;
 import powercraft.management.PC_Utils.ModuleInfo;
+import powercraft.management.PC_VecI;
 
 public class PCco_GuiCraftingTool extends PCco_ContainerCraftingTool implements PC_IGresClient {
 
@@ -77,7 +75,8 @@ public class PCco_GuiCraftingTool extends PCco_ContainerCraftingTool implements 
 	}
 	
 	private void displayPage(Page page){
-		int maxSlots = page.inv.gridHeight*page.inv.gridWidth;
+		PC_VecI gridSize = page.inv.getGridSize();
+		int maxSlots = gridSize.x * gridSize.y;
 		if(page.scroll){
 			int maxPage = page.slots.size() / maxSlots;
 			if(page.page>=maxPage){
@@ -94,12 +93,12 @@ public class PCco_GuiCraftingTool extends PCco_ContainerCraftingTool implements 
 			}
 		}
 		int i=page.page*maxSlots;
-		for(int y=0; y<page.inv.gridHeight; y++){
-			for(int x=0; x<page.inv.gridWidth; x++){
+		for(int y=0; y<gridSize.y; y++){
+			for(int x=0; x<gridSize.x; x++){
 				if(page.slots.size()>i){
-					page.inv.setSlot(page.slots.get(i), x, y);
+					page.inv.setSlot(x, y, page.slots.get(i));
 				}else{
-					page.inv.setSlot(null, x, y);
+					page.inv.setSlot(x, y, null);
 				}
 				i++;
 			}
@@ -182,7 +181,7 @@ public class PCco_GuiCraftingTool extends PCco_ContainerCraftingTool implements 
 		lv.setAlignV(PC_GresAlign.JUSTIFIED);
 		
 		PC_GresLayoutV lv1 = new PC_GresLayoutV();
-		lv1.add(new PC_GresInventoryBigSlot(trash));
+		lv1.add(new PC_GresInventory(trash));
 		lv1.add(trashAll = new PC_GresButton(Lang.tr("pc.gui.craftingTool.trashAll")));
 		lv1.add(sort = new PC_GresButton(Lang.tr("pc.gui.craftingTool.sort")));
 		lv.add(lv1);
@@ -192,7 +191,11 @@ public class PCco_GuiCraftingTool extends PCco_ContainerCraftingTool implements 
 				.setColor(PC_GresWidget.textColorEnabled, 0x404040).setColor(PC_GresWidget.textColorHover, 0x404040);
 		lv1.add(label);
 		PC_GresInventory inv = new PC_GresInventory(9, 3);
-		inv.slots = gui.getContainer().inventoryPlayerUpper;
+		for(int x=0; x<9; x++){
+			for(int y=0; y<3; y++){
+				inv.setSlot(x, y, gui.getContainer().inventoryPlayerUpper[x][y]);
+			}
+		}
 		lv1.add(inv);
 		lv.add(lv1);
 		
@@ -206,7 +209,9 @@ public class PCco_GuiCraftingTool extends PCco_ContainerCraftingTool implements 
 		PC_GresLayoutH lh = new PC_GresLayoutH();
 		lh.setAlignH(PC_GresAlign.CENTER);
 		inv = new PC_GresInventory(9, 1);
-		inv.slots = gui.getContainer().inventoryPlayerLower;
+		for(int x=0; x<9; x++){
+			inv.setSlot(x, 0, gui.getContainer().inventoryPlayerLower[x][0]);
+		}
 		lh.add(inv);
 		w.add(lh);
 		

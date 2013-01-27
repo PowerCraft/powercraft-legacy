@@ -3,7 +3,6 @@ package powercraft.machines;
 import net.minecraft.entity.player.EntityPlayer;
 import powercraft.management.PC_GresCheckBox;
 import powercraft.management.PC_GresInventory;
-import powercraft.management.PC_GresInventoryBigSlot;
 import powercraft.management.PC_GresInventoryPlayer;
 import powercraft.management.PC_GresLayoutH;
 import powercraft.management.PC_GresLayoutV;
@@ -33,10 +32,10 @@ public class PCma_GuiTransmutabox extends PCma_ContainerTransmutabox implements
 		PC_GresWidget hl = new PC_GresLayoutH();
 		hl.setAlignH(PC_GresAlign.JUSTIFIED);
 		int id=0;
-		hl.add(new PC_GresInventoryBigSlot(lSlot.get(id++)));
+		hl.add(new PC_GresInventory(lSlot.get(id++)));
 		PC_GresInventory inv = new PC_GresInventory(8, 1);
 		for(int x=0; x<8; x++){
-			inv.setSlot(lSlot.get(id++), x, 0);
+			inv.setSlot(x, 0, lSlot.get(id++));
 		}
 		hl.add(inv);
 		w.add(hl);
@@ -47,7 +46,7 @@ public class PCma_GuiTransmutabox extends PCma_ContainerTransmutabox implements
 		inv = new PC_GresInventory(3, 4);
 		for(int y=0; y<4; y++){
 			for(int x=0; x<3; x++){
-				inv.setSlot(lSlot.get(id++), x, y);
+				inv.setSlot(x, y, lSlot.get(id++));
 			}
 		}
 		hl.add(inv);
@@ -59,8 +58,8 @@ public class PCma_GuiTransmutabox extends PCma_ContainerTransmutabox implements
 		
 		vl.add(progress = new PC_GresProgressBar(0xff0000, 100));
 		
-		hl1.add(new PC_GresInventoryBigSlot(lSlot.get(inID)));
-		hl1.add(new PC_GresInventoryBigSlot(lSlot.get(outID)));
+		hl1.add(new PC_GresInventory(lSlot.get(inID)));
+		hl1.add(new PC_GresInventory(lSlot.get(outID)));
 		
 		vl.add(hl1);
 		
@@ -69,7 +68,7 @@ public class PCma_GuiTransmutabox extends PCma_ContainerTransmutabox implements
 		inv = new PC_GresInventory(3, 4);
 		for(int y=0; y<4; y++){
 			for(int x=0; x<3; x++){
-				inv.setSlot(lSlot.get(id++), x, y);
+				inv.setSlot(x, y, lSlot.get(id++));
 			}
 		}
 		hl.add(inv);

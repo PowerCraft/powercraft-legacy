@@ -6,7 +6,7 @@ import java.util.List;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.Slot;
 import powercraft.management.PC_GresBaseWithInventory;
-import powercraft.management.PC_SlotSelective;
+import powercraft.management.PC_Slot;
 
 public class PCmo_ContainerMiner extends PC_GresBaseWithInventory {
 
@@ -27,10 +27,10 @@ public class PCmo_ContainerMiner extends PC_GresBaseWithInventory {
 	protected List<Slot> getAllSlots(List<Slot> slots) {
 		lSlot = new ArrayList<Slot>();
 		for(int i=0; i<miner.xtals.getSizeInventory(); i++){
-			lSlot.add(new PC_SlotSelective(miner.xtals, i, 0, 0));
+			lSlot.add(new PC_Slot(miner.xtals, i));
 		}
 		for(int i=0; i<miner.cargo.getSizeInventory(); i++){
-			lSlot.add(new PC_SlotSelective(miner.cargo, i, 0, 0));
+			lSlot.add(new PC_Slot(miner.cargo, i));
 		}
 		slots.addAll(lSlot);
 		return slots;

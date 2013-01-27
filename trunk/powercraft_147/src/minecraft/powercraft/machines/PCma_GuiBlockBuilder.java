@@ -26,7 +26,7 @@ public class PCma_GuiBlockBuilder extends PCma_ContainerBlockBuilder implements 
 		
 		for (int j = 0; j < 3; j++) {
 			for (int i = 0; i < 3; i++) {
-				inv.setSlot(lSlot.get(i+j*3), i, j);
+				inv.setSlot(i, j, lSlot.get(i+j*3));
 			}
 		}
 		w.add(inv);

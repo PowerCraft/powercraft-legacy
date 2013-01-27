@@ -43,9 +43,9 @@ public class PCtr_GuiSeparationBelt extends PCtr_ContainerSeparationBelt impleme
 
 		for (int i = 0; i < tes.getSizeInventory(); i++) {
 			if (i % 6 >= 3) {
-				left.setSlot(lSlot.get(i), i % 3, (int) Math.floor(i / 6));
+				left.setSlot(i % 3, (int) Math.floor(i / 6), lSlot.get(i));
 			} else {
-				right.setSlot(lSlot.get(i), i % 3, (int) Math.floor(i / 6));
+				right.setSlot(i % 3, (int) Math.floor(i / 6), lSlot.get(i));
 			}
 		}
 		hg.add(new PC_GresImage(ModuleInfo.getGresImgDir()+"widgets.png", 64, 66, 8, 15));

@@ -1,5 +1,7 @@
 package powercraft.management;
 
+import net.minecraft.inventory.Slot;
+
 
 public interface PC_IGresGui {
 
