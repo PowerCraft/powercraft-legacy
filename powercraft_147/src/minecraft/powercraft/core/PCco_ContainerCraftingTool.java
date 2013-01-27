@@ -38,7 +38,7 @@ public class PCco_ContainerCraftingTool extends PC_GresBaseWithInventory
     	
         allMcSlots = new ArrayList<PCco_SlotDirectCrafting>();
         for(PC_ItemStack is:PCco_CraftingToolLoader.getAllMcSlots()){
-        	allMcSlots.add(new PCco_SlotDirectCrafting(thePlayer, is.toItemStack(), 0, -444, -444));
+        	allMcSlots.add(new PCco_SlotDirectCrafting(thePlayer, is.toItemStack(), 0));
         }
         
         moduleList = new HashMap<String, List<PCco_SlotDirectCrafting>>();
@@ -46,7 +46,7 @@ public class PCco_ContainerCraftingTool extends PC_GresBaseWithInventory
         	List<PCco_SlotDirectCrafting> dirCraftList = new ArrayList<PCco_SlotDirectCrafting>();
         	moduleList.put(isl.getKey(), dirCraftList);
         	for(PC_ItemStack is:isl.getValue()){
-        		dirCraftList.add(new PCco_SlotDirectCrafting(thePlayer, is.toItemStack(), 0, -444, -444));
+        		dirCraftList.add(new PCco_SlotDirectCrafting(thePlayer, is.toItemStack(), 0));
         	}
         	
         }

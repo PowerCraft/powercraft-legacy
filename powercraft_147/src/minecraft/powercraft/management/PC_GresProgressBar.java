@@ -266,7 +266,7 @@ public class PC_GresProgressBar extends PC_GresWidget {
 
 		String texture = imgdir + "widgets.png";
 
-		renderTextureSliced(offsetPos, texture, size.copy().add(showLabel ? -(labelWidth + 3) : 0, 0, 0), new PC_VecI(0, 11 * 2), new PC_VecI(256, 11));
+		renderTextureSliced(offsetPos, texture, size.copy().add(showLabel ? -(labelWidth + 3) : 0, 0, 0), new PC_VecI(0, 11 * 2), new PC_VecI(256, 11), new PC_RectI(1, 1, 1, 1));
 
 		GL11.glBindTexture(GL11.GL_TEXTURE_2D, mc.renderEngine.getTexture(texture));
 

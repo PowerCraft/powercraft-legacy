@@ -713,5 +713,15 @@ public class PCma_TileEntityAutomaticWorkbench extends PC_TileEntity implements 
 	public boolean canDropStackFrom(int slot) {
 		return true;
 	}
+
+	@Override
+	public int getSlotStackLimit(int slotIndex) {
+		return getInventoryStackLimit();
+	}
+
+	@Override
+	public boolean canPlayerTakeStack(int slotIndex, EntityPlayer entityPlayer) {
+		return true;
+	}
     
 }

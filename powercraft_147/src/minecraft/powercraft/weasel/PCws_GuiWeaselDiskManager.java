@@ -21,7 +21,6 @@ import powercraft.management.PC_GresFrame;
 import powercraft.management.PC_GresGap;
 import powercraft.management.PC_GresImage;
 import powercraft.management.PC_GresInventory;
-import powercraft.management.PC_GresInventoryBigSlot;
 import powercraft.management.PC_GresInventoryPlayer;
 import powercraft.management.PC_GresLabel;
 import powercraft.management.PC_GresLabelMultiline;
@@ -53,7 +52,7 @@ public class PCws_GuiWeaselDiskManager extends PCws_ContainerWeaselDiskManager i
 	private PC_GresWidget main_format;
 	private PC_GresInventory cpyInv1, cpyInv2;
 	private PC_GresWidget btnCopy;
-	private PC_GresInventoryBigSlot editDisk;
+	private PC_GresInventory editDisk;
 	private PC_GresWidget btnEditDisk;
 	private PC_GresWidget editDiskLabel;
 	private PC_GresWidget btnEditDiskLabel;
@@ -112,11 +111,11 @@ public class PCws_GuiWeaselDiskManager extends PCws_ContainerWeaselDiskManager i
 
 		PC_GresWidget hg = new PC_GresLayoutH().setAlignH(PC_GresAlign.CENTER).setWidgetMargin(3);
 		hg.add(cpyInv1 = new PC_GresInventory(1, 1));
-		cpyInv1.setSlot(lSlot.get(1), 0, 0);
+		cpyInv1.setSlot(0, 0, lSlot.get(1));
 
 		hg.add(btnCopy = new PC_GresButtonImage(ModuleInfo.getGresImgDir()  + "widgets.png", new PC_VecI(57, 12), new PC_VecI(13, 10)).setButtonPadding(3, 3));
 		hg.add(cpyInv2 = new PC_GresInventory(1, 1));
-		cpyInv2.setSlot(lSlot.get(2), 0, 0);
+		cpyInv2.setSlot(0, 0, lSlot.get(2));
 		main_copy.add(hg);
 		main.add(main_copy);
 		
@@ -162,7 +161,7 @@ public class PCws_GuiWeaselDiskManager extends PCws_ContainerWeaselDiskManager i
 		vg = new PC_GresLayoutV().setWidgetMargin(5);
 		vg.add(new PC_GresLabel(Lang.tr("pc.gui.weasel.diskManager.disk")).setWidgetMargin(2));
 		PC_GresWidget btnEdit;
-		vg.add(editDisk = new PC_GresInventoryBigSlot(lSlot.get(0)));
+		vg.add(editDisk = new PC_GresInventory(lSlot.get(0)));
 		vg.add(btnEditDisk = new PC_GresButton(Lang.tr("pc.gui.weasel.diskManager.edit")).setButtonPadding(4, 4).setMinWidth(editDisk.getSize().x + 10)
 				.setWidgetMargin(1).setId(99));
 		btnEditDisk.enable(false);
@@ -364,7 +363,7 @@ public class PCws_GuiWeaselDiskManager extends PCws_ContainerWeaselDiskManager i
 	}
 
 	private ItemStack getEditItem(){
-		return editDisk.getSlot().getStack();
+		return editDisk.getSlot(0, 0).getStack();
 	}
 	
 	private void openEditor(ItemStack itemstack, int type){

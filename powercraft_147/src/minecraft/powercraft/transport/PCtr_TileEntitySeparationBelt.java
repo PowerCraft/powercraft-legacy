@@ -488,4 +488,14 @@ public class PCtr_TileEntitySeparationBelt extends PCtr_TileEntityRedirectionBel
 	public boolean canDropStackFrom(int slot) {
 		return true;
 	}
+
+	@Override
+	public int getSlotStackLimit(int slotIndex) {
+		return getInventoryStackLimit();
+	}
+
+	@Override
+	public boolean canPlayerTakeStack(int slotIndex, EntityPlayer entityPlayer) {
+		return true;
+	}
 }

@@ -1,5 +1,8 @@
 package powercraft.management;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import net.minecraft.inventory.Slot;
 import powercraft.management.PC_Utils.Lang;
 
@@ -28,6 +31,7 @@ public class PC_GresInventoryPlayer extends PC_GresLayoutV {
 		showLabel = labelVisible;
 		setAlignH(labelAlign);
 		setAlignV(PC_GresAlign.TOP);
+		canAddWidget = false;
 	}
 	
 	public void hideSlots() {
@@ -84,7 +88,7 @@ public class PC_GresInventoryPlayer extends PC_GresLayoutV {
 
 	@Override
 	public MouseOver mouseOver(PC_VecI mousePos) {
-		return MouseOver.THIS;
+		return MouseOver.CHILD;
 	}
 
 	@Override

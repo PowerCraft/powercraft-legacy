@@ -9,7 +9,6 @@ import powercraft.management.PC_GresButton;
 import powercraft.management.PC_GresCheckBox;
 import powercraft.management.PC_GresGap;
 import powercraft.management.PC_GresInventory;
-import powercraft.management.PC_GresInventoryBigSlot;
 import powercraft.management.PC_GresInventoryPlayer;
 import powercraft.management.PC_GresLabel;
 import powercraft.management.PC_GresLayoutH;
@@ -22,7 +21,7 @@ import powercraft.management.PC_GresWidget.PC_GresAlign;
 import powercraft.management.PC_GresWindow;
 import powercraft.management.PC_IGresClient;
 import powercraft.management.PC_IGresGui;
-import powercraft.management.PC_SlotSelective;
+import powercraft.management.PC_Slot;
 import powercraft.management.PC_Utils.Lang;
 import powercraft.weasel.PCws_WeaselHighlightHelper;
 
@@ -131,13 +130,13 @@ public class PCmo_GuiMiner extends PCmo_ContainerMiner implements PC_IGresClient
 		
 		PC_GresWidget vg = new PC_GresLayoutV().setAlignH(PC_GresAlign.CENTER).setWidgetMargin(6);
 
-		vg.add(new PC_GresInventoryBigSlot(((PC_SlotSelective)lSlot.get(0)).
+		vg.add(new PC_GresInventory(((PC_Slot)lSlot.get(0)).
 				setBackgroundStack(new ItemStack(PCco_App.powerCrystal,1,miner.xtals.getCrystalTypeForSlot(0)))));
-		vg.add(new PC_GresInventoryBigSlot(((PC_SlotSelective)lSlot.get(1)).
+		vg.add(new PC_GresInventory(((PC_Slot)lSlot.get(1)).
 				setBackgroundStack(new ItemStack(PCco_App.powerCrystal,1,miner.xtals.getCrystalTypeForSlot(1)))));
-		vg.add(new PC_GresInventoryBigSlot(((PC_SlotSelective)lSlot.get(2)).
+		vg.add(new PC_GresInventory(((PC_Slot)lSlot.get(2)).
 				setBackgroundStack(new ItemStack(PCco_App.powerCrystal,1,miner.xtals.getCrystalTypeForSlot(2)))));
-		vg.add(new PC_GresInventoryBigSlot(((PC_SlotSelective)lSlot.get(3)).
+		vg.add(new PC_GresInventory(((PC_Slot)lSlot.get(3)).
 				setBackgroundStack(new ItemStack(PCco_App.powerCrystal,1,miner.xtals.getCrystalTypeForSlot(3)))));
 
 		vgCargo.add(vg);
@@ -149,7 +148,7 @@ public class PCmo_GuiMiner extends PCmo_ContainerMiner implements PC_IGresClient
 		int n=8;
 		for(int j=0; j<5; j++){
 			for(int i=0; i<11; i++){
-				cargoInv.setSlot(lSlot.get(n), i, j);
+				cargoInv.setSlot(i, j, lSlot.get(n));
 				n++;
 			}
 		}
@@ -161,13 +160,13 @@ public class PCmo_GuiMiner extends PCmo_ContainerMiner implements PC_IGresClient
 		
 		vg = new PC_GresLayoutV().setAlignH(PC_GresAlign.CENTER).setWidgetMargin(6);
 
-		vg.add(new PC_GresInventoryBigSlot(((PC_SlotSelective)lSlot.get(7)).
+		vg.add(new PC_GresInventory(((PC_Slot)lSlot.get(7)).
 				setBackgroundStack(new ItemStack(PCco_App.powerCrystal,1,miner.xtals.getCrystalTypeForSlot(7)))));
-		vg.add(new PC_GresInventoryBigSlot(((PC_SlotSelective)lSlot.get(6)).
+		vg.add(new PC_GresInventory(((PC_Slot)lSlot.get(6)).
 				setBackgroundStack(new ItemStack(PCco_App.powerCrystal,1,miner.xtals.getCrystalTypeForSlot(6)))));
-		vg.add(new PC_GresInventoryBigSlot(((PC_SlotSelective)lSlot.get(5)).
+		vg.add(new PC_GresInventory(((PC_Slot)lSlot.get(5)).
 				setBackgroundStack(new ItemStack(PCco_App.powerCrystal,1,miner.xtals.getCrystalTypeForSlot(5)))));
-		vg.add(new PC_GresInventoryBigSlot(((PC_SlotSelective)lSlot.get(4)).
+		vg.add(new PC_GresInventory(((PC_Slot)lSlot.get(4)).
 				setBackgroundStack(new ItemStack(PCco_App.powerCrystal,1,miner.xtals.getCrystalTypeForSlot(4)))));
 
 		vgCargo.add(vg);

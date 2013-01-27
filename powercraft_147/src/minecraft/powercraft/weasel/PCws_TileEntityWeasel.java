@@ -254,6 +254,16 @@ public class PCws_TileEntityWeasel extends PC_TileEntity implements PC_ITileEnti
 	public void closeChest() {
 		
 	}
+
+	@Override
+	public int getSlotStackLimit(int slotIndex) {
+		return getInventoryStackLimit();
+	}
+
+	@Override
+	public boolean canPlayerTakeStack(int slotIndex, EntityPlayer entityPlayer) {
+		return true;
+	}
 	
 	
 	

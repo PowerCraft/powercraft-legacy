@@ -1,28 +1,33 @@
 package powercraft.management;
 
+import java.util.List;
 
+import net.minecraft.client.gui.inventory.GuiContainer;
+import net.minecraft.client.renderer.OpenGlHelper;
+import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.inventory.Slot;
+import net.minecraft.item.ItemStack;
 
 import org.lwjgl.opengl.GL11;
+import org.lwjgl.opengl.GL12;
 
-
-/**
- * Gres Inventory with a grid of slots.
- * 
- * @author MightyPork
- * @copy (c) 2012
- */
 public class PC_GresInventory extends PC_GresWidget {
 
 	/** The slots */
-	public Slot slots[][];
+	protected Slot slots[][];
 
 	/** Inventory grid width */
-	public int gridWidth = 0;
+	protected int gridWidth = 0;
 
 	/** Inventory grid height */
-	public int gridHeight = 0;
-
+	protected int gridHeight = 0;
+	
+	protected int slotWidth = 0;
+	
+	protected int slotHeight = 0;
+	
+	public int slotOverIndex=-1;
+	
 	/**
 	 * Inventory widget, with empty slot grid. To be filled using setSlot()
 	 * 
@@ -35,8 +40,29 @@ public class PC_GresInventory extends PC_GresWidget {
 		gridHeight = height;
 		gridWidth = width;
 
+		slotWidth = 18;
+		slotHeight = 18;
+		
 		canAddWidget = false;
 		slots = new Slot[gridWidth][gridHeight];
+	}
+	
+	public PC_GresInventory(int width, int height, int slotWidth, int slotHeight) {
+		super(width * slotWidth, height * slotHeight);
+
+		gridHeight = height;
+		gridWidth = width;
+
+		this.slotWidth = slotWidth;
+		this.slotHeight = slotHeight;
+		
+		canAddWidget = false;
+		slots = new Slot[gridWidth][gridHeight];
+	}
+	
+	public PC_GresInventory(Slot slot) {
+		this(1, 1, 26, 26);
+		slots[0][0] = slot;
 	}
 
 	@Override
@@ -46,16 +72,18 @@ public class PC_GresInventory extends PC_GresWidget {
 
 	@Override
 	public PC_VecI calcSize() {
-		return new PC_VecI(gridWidth * 18, gridHeight * 18);
+		return new PC_VecI(gridWidth * slotWidth, gridHeight * slotHeight);
 	}
 
+	public PC_VecI getGridSize(){
+		return new PC_VecI(gridWidth, gridHeight);
+	}
+	
 	@Override
 	public void calcChildPositions() {}
 
 	@Override
 	protected PC_RectI render(PC_VecI posOffset, PC_RectI scissorOld, double scale) {
-		String texture = imgdir + "widgets.png";
-		PC_VecI posOnScrren = getPositionOnScreen();
 		PC_VecI widgetPos = null;
 		PC_GresWidget w = this;
 
@@ -63,25 +91,47 @@ public class PC_GresInventory extends PC_GresWidget {
 			widgetPos = w.getPosition();
 			w = w.getParent();
 		}
-
-		posOnScrren.x -= widgetPos.x;
-		posOnScrren.y -= widgetPos.y;
-		GL11.glBindTexture(GL11.GL_TEXTURE_2D, mc.renderEngine.getTexture(texture));
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 		for (int x = 0; x < gridWidth; x++) {
 			for (int y = 0; y < gridHeight; y++) {
-				if (slots[x][y] != null) {
-					slots[x][y].xDisplayPosition = posOnScrren.x + x * 18 + 1;
-					slots[x][y].yDisplayPosition = posOnScrren.y + y * 18 + 1;
-				}
-				drawTexturedModalRect(pos.x + posOffset.x + x * 18, pos.y + posOffset.y + y * 18, 0, 66, 18, 18);
+				renderTextureSliced(posOffset.offset(x*slotWidth, y*slotHeight, 0), imgdir + "widgets.png", new PC_VecI(slotWidth, slotHeight), new PC_VecI(0, 66), new PC_VecI(18, 18), new PC_RectI(1, 1, 1, 1));
 			}
 		}
+		
+		RenderHelper.enableGUIStandardItemLighting();
+		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
+		GL11.glEnable(GL12.GL_RESCALE_NORMAL);
+		int k = 240;
+		int i1 = 240;
+		OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, k / 1.0F, i1 / 1.0F);
+		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
+		
+		for (int x = 0, xp = pos.x + posOffset.x + 1 + (slotWidth-18)/2; x < gridWidth; x++, xp += slotWidth) {
+			for (int y = 0, yp = pos.y + posOffset.y + 1 + (slotHeight-18)/2; y < gridHeight; y++, yp += slotHeight) {
+				if (slots[x][y] != null) {
+					Slot slot = slots[x][y];
+					drawSlotInventory(xp, yp, slot);
+		
+					if (slot.slotNumber == slotOverIndex && isMouseOver) {
+						GL11.glDisable(GL11.GL_LIGHTING);
+						GL11.glDisable(GL11.GL_DEPTH_TEST);
+						drawGradientRect(xp, yp, xp + 16, yp + 16, 0x80ffffff, 0x80ffffff);
+						GL11.glEnable(GL11.GL_LIGHTING);
+						GL11.glEnable(GL11.GL_DEPTH_TEST);
+					}
+				}
+			}
+		}
+
+		GL11.glDisable(GL12.GL_RESCALE_NORMAL);
+		RenderHelper.disableStandardItemLighting();
+		
 		return null;
 	}
 
 	@Override
 	public MouseOver mouseOver(PC_VecI mousePos) {
+		mouseMove(mousePos);
 		return MouseOver.THIS;
 	}
 
@@ -91,7 +141,15 @@ public class PC_GresInventory extends PC_GresWidget {
 	}
 
 	@Override
-	public void mouseMove(PC_VecI mousePos) {}
+	public void mouseMove(PC_VecI mousePos) {
+		isMouseOver = true;
+		Slot slot = getSlotUnderMouse(mousePos);
+		if(slot==null){
+			slotOverIndex = -1;
+		}else{
+			slotOverIndex = slot.slotNumber;
+		}
+	}
 
 	@Override
 	public void mouseWheel(int i) {}
@@ -114,12 +172,8 @@ public class PC_GresInventory extends PC_GresWidget {
 	 * @param y y position in grid
 	 * @return this
 	 */
-	public PC_GresInventory setSlot(Slot slot, int x, int y) {
+	public PC_GresInventory setSlot(int x, int y, Slot slot) {
 		if (x >= 0 && x < this.slots.length && y >= 0 && y < this.slots[x].length) {
-			if(this.slots[x][y]!=null){
-				this.slots[x][y].xDisplayPosition = -999;
-				this.slots[x][y].yDisplayPosition = -999;
-			}
 			this.slots[x][y] = slot;
 		}
 		return this;
@@ -138,18 +192,92 @@ public class PC_GresInventory extends PC_GresWidget {
 		}
 		return null;
 	}
+	
+	protected void drawSlotInventory(int x, int y, Slot slot) {
+		ItemStack itemstack = slot.getStack();
+		boolean isNull = false;
+		zLevel = 100F;
+		GuiContainer.itemRenderer.zLevel = 100F;
 
-	protected void visibleChanged(boolean show){
-		if(!show){
-			for (int x = 0; x < gridWidth; x++) {
-				for (int y = 0; y < gridHeight; y++) {
-					if (slots[x][y] != null) {
-						slots[x][y].xDisplayPosition = -999;
-						slots[x][y].yDisplayPosition = -999;
-					}
-				}
+		if(slot instanceof PC_Slot){
+			if(((PC_Slot) slot).useAlwaysBackground())
+				itemstack = null;
+		}
+		
+		if (itemstack == null) {
+			int i1 = slot.getBackgroundIconIndex();
+
+			if (i1 >= 0) {
+				GL11.glDisable(GL11.GL_LIGHTING);
+				mc.renderEngine.bindTexture(mc.renderEngine.getTexture("/gui/items.png"));
+				drawTexturedModalRect(x, y, (i1 % 16) * 16, (i1 / 16) * 16, 16, 16);
+				GL11.glEnable(GL11.GL_LIGHTING);
+				isNull = true;
 			}
 		}
+		
+		if (isNull || itemstack == null) {
+			
+			if (slot instanceof PC_Slot) {
+				PC_Slot dirslot = (PC_Slot) slot;
+				if (dirslot.getBackgroundStack() != null) {
+					GuiContainer.itemRenderer.zLevel = 99F;
+					zLevel = 99F;
+					GL11.glColor4f(1.0F, 1.0F, 1.0F, 0.2F);
+					GuiContainer.itemRenderer.renderItemAndEffectIntoGUI(fontRenderer, mc.renderEngine, dirslot.getBackgroundStack(), x, y);
+
+					if(dirslot.renderGrayWhenEmpty()) {
+						GL11.glDisable(GL11.GL_LIGHTING);
+						GL11.glDisable(GL11.GL_DEPTH_TEST);
+						drawGradientRect(x, y, x + 16, y + 16, 0xbb999999, 0xbb999999);
+						GL11.glEnable(GL11.GL_LIGHTING);
+						GL11.glEnable(GL11.GL_DEPTH_TEST);
+					}
+					
+					zLevel = 100F;
+					GuiContainer.itemRenderer.zLevel = 100F;
+				}
+
+			}
+			
+		} else {
+			GuiContainer.itemRenderer.renderItemAndEffectIntoGUI(fontRenderer, mc.renderEngine, itemstack, x, y);
+			GuiContainer.itemRenderer.renderItemOverlayIntoGUI(fontRenderer, mc.renderEngine, itemstack, x, y);
+		}
+
+		GuiContainer.itemRenderer.zLevel = 0.0F;
+		zLevel = 0.0F;
+	}
+	
+	@Override
+	public Slot getSlotUnderMouse(PC_VecI mousePos) {
+		int x = mousePos.x / slotWidth;
+		int y = mousePos.y / slotHeight;
+		if(x>=0 && y>=0 && x<slots.length && y<slots[x].length){
+			return slots[x][y];
+		}
+		return null;
+	}
+	
+	@Override
+	public List<String> getTooltip(PC_VecI mousePos) {
+		Slot slot = getSlotUnderMouse(mousePos);
+		if(slot!=null){
+			ItemStack itemstack = null;
+
+			if (slot.getHasStack()) 
+				itemstack = slot.getStack();
+
+			if (slot instanceof PC_Slot && ((PC_Slot) slot).getBackgroundStack() != null && ((PC_Slot) slot).renderTooltipWhenEmpty())
+				itemstack = ((PC_Slot) slot).getBackgroundStack();
+
+			if (itemstack != null) {
+				List<String> l = itemstack.getTooltip(mc.thePlayer, false);
+				l.set(0, (new StringBuilder()).append("\247").append(Integer.toHexString(itemstack.getRarity().rarityColor)).append(l.get(0)).append("\2477").toString());
+				return l;
+			}
+		}
+		return null;
 	}
 	
 }

@@ -25,7 +25,7 @@ public class PCma_GuiRoaster extends PCma_ContainerRoaster implements
 
 		PC_GresInventory inv = new PC_GresInventory(9, 1);
 		for (int i = 0; i < 9; i++) {
-			inv.setSlot(lSlot.get(i), i, 0);
+			inv.setSlot(i, 0, lSlot.get(i));
 		}
 		w.add(inv);
 		w.add(new PC_GresInventoryPlayer(true));

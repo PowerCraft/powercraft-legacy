@@ -10,7 +10,7 @@ import powercraft.mobile.PCmo_Command.ParseException;
 public class PCmo_MinerBrain implements PCmo_IMinerBrain {
 
 	private PCmo_EntityMiner miner;
-	private String program;
+	private String program="";
 	
 	public PCmo_MinerBrain(PCmo_EntityMiner miner){
 		this.miner = miner;
@@ -80,9 +80,6 @@ public class PCmo_MinerBrain implements PCmo_IMinerBrain {
 	}
 
 	@Override
-	public void msg(Object[] obj) {
-		// TODO Auto-generated method stub
-		
-	}
+	public void msg(Object[] obj) {}
 	
 }

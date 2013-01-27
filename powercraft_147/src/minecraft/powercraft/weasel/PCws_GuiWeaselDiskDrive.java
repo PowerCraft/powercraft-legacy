@@ -84,7 +84,7 @@ public class PCws_GuiWeaselDiskDrive extends PCws_ContainerWeaselDiskDrive
 		PC_GresInventory inv = new PC_GresInventory(4, 2);
 		for (int j = 0; j < 2; j++) {
 			for (int i = 0; i < 4; i++) {
-				inv.setSlot(lSlot.get(i+j*4), i, j);
+				inv.setSlot(i, j, lSlot.get(i+j*4));
 			}
 		}
 		lv.add(inv);

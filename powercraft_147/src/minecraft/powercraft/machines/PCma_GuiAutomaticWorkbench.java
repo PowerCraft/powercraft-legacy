@@ -6,7 +6,6 @@ import powercraft.management.PC_GresFrame;
 import powercraft.management.PC_GresGap;
 import powercraft.management.PC_GresImage;
 import powercraft.management.PC_GresInventory;
-import powercraft.management.PC_GresInventoryBigSlot;
 import powercraft.management.PC_GresInventoryPlayer;
 import powercraft.management.PC_GresLayoutH;
 import powercraft.management.PC_GresWidget;
@@ -34,7 +33,7 @@ public class PCma_GuiAutomaticWorkbench extends PCma_ContainerAutomaticWorkbench
 
 		for (int y = 0; y < 3; y++) {
 			for (int x = 0; x < 3; x++) {
-				inv.setSlot(lSlot.get(x+y*3+1), x, y);
+				inv.setSlot(x, y, lSlot.get(x+y*3+1));
 			}
 		}
 
@@ -44,7 +43,7 @@ public class PCma_GuiAutomaticWorkbench extends PCma_ContainerAutomaticWorkbench
 		inv = new PC_GresInventory(3, 3);
 		for (int y = 0; y < 3; y++) {
 			for (int x = 0; x < 3; x++) {
-				inv.setSlot(lSlot.get(x+y*3+10), x, y);
+				inv.setSlot(x, y, lSlot.get(x+y*3+10));
 			}
 		}
 
@@ -52,7 +51,7 @@ public class PCma_GuiAutomaticWorkbench extends PCma_ContainerAutomaticWorkbench
 
 		hg1.add(new PC_GresImage(ModuleInfo.getGresImgDir() + "widgets.png", 44, 66, 12, 11));
 
-		hg1.add(new PC_GresInventoryBigSlot(lSlot.get(0)));
+		hg1.add(new PC_GresInventory(lSlot.get(0)));
 
 		hg.add(hg1);
 

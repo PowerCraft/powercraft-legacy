@@ -5,7 +5,7 @@ import powercraft.management.PC_GresButton;
 import powercraft.management.PC_GresButtonImage;
 import powercraft.management.PC_GresCheckBox;
 import powercraft.management.PC_GresGap;
-import powercraft.management.PC_GresInventoryBigSlot;
+import powercraft.management.PC_GresInventory;
 import powercraft.management.PC_GresInventoryPlayer;
 import powercraft.management.PC_GresLabel;
 import powercraft.management.PC_GresLayoutH;
@@ -27,7 +27,7 @@ public class PCma_GuiReplacer extends PCma_ContainerReplacer implements PC_IGres
 	private PC_GresWidget textedit[] = new PC_GresTextEdit[3];
 	private PC_GresButton button[] = new PC_GresButton[2];
 	private PC_GresLabel errorLabel;
-	private PC_GresInventoryBigSlot slot;
+	private PC_GresInventory slot;
 
 	private boolean valid;
 
@@ -94,7 +94,7 @@ public class PCma_GuiReplacer extends PCma_ContainerReplacer implements PC_IGres
 		errorLabel.setColor(PC_GresWidget.textColorEnabled, 0x990000);
 		w.add(hg);
 
-		w.add(slot = new PC_GresInventoryBigSlot(lSlot.get(0)));
+		w.add(slot = new PC_GresInventory(lSlot.get(0)));
 
 		w.add(new PC_GresInventoryPlayer(true));
 

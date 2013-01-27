@@ -137,7 +137,7 @@ public class PC_GresTab extends PC_GresWidget {
 		
 		posOffset = posOffset.copy().add((left?0:size.x-10), tabHight/2-6, 0);
 		
-		renderTextureSliced(posOffset, imgdir + "button.png", new PC_VecI(10, 12), new PC_VecI(0, state * 50), new PC_VecI(256, 50));
+		renderTextureSliced(posOffset, imgdir + "button.png", new PC_VecI(10, 12), new PC_VecI(0, state * 50), new PC_VecI(256, 50), new PC_RectI(2, 2, 2, 3));
 
 		// and here goes the image
 		GL11.glBindTexture(GL11.GL_TEXTURE_2D, mc.renderEngine.getTexture(imgdir + "widgets.png"));

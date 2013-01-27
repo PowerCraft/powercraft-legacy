@@ -6,7 +6,7 @@ import java.util.List;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.Slot;
 import powercraft.management.PC_GresBaseWithInventory;
-import powercraft.management.PC_SlotSelective;
+import powercraft.management.PC_Slot;
 import powercraft.management.PC_Utils.GameInfo;
 
 public class PCma_ContainerRoaster extends PC_GresBaseWithInventory
@@ -34,7 +34,7 @@ public class PCma_ContainerRoaster extends PC_GresBaseWithInventory
         {
             if (i < roaster.getSizeInventory())
             {
-                lSlot.add(new PC_SlotSelective(roaster, i, 0, 0));
+                lSlot.add(new PC_Slot(roaster, i));
             }
         }
 
