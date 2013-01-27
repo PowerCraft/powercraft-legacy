@@ -7,6 +7,7 @@ import net.minecraft.src.InventoryPlayer;
 import net.minecraft.src.ItemStack;
 import net.minecraft.src.OpenGlHelper;
 import net.minecraft.src.RenderHelper;
+import net.minecraft.src.RenderItem;
 import net.minecraft.src.ScaledResolution;
 import net.minecraft.src.Slot;
 
@@ -500,4 +501,8 @@ public class PC_GresContainerGui extends GuiContainer implements PC_IGresGui {
 		return w.getTooltip(new PC_VecI(x - fpos.x, y - fpos.y));
 	}
     
+	public static RenderItem getItemRenderer(){
+		return itemRenderer;
+	}
+	
 }
