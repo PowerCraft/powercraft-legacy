@@ -34,6 +34,7 @@ import powercraft.management.PC_MainMenuHacks;
 import powercraft.management.PC_ModuleLoader;
 import powercraft.management.PC_PacketHandler;
 import powercraft.management.PC_Struct2;
+import powercraft.management.PC_ThreadManager;
 import powercraft.management.PC_TickHandler;
 import powercraft.management.PC_UpdateManager;
 import powercraft.management.PC_Utils;
@@ -265,6 +266,7 @@ public class mod_PowerCraft extends BaseMod {
 		PC_ClientUtils.registerEnitiyFX(PC_EntityLaserFX.class);
 		PC_ClientUtils.registerEnitiyFX(PC_EntityFanFX.class);
 		PC_ClientUtils.registerEnitiyFX("EntitySmokeFX", EntitySmokeFX.class);
+		PC_ThreadManager.init();
 		List<PC_IModule> modules = ModuleInfo.getModules();
 		cr1 = new PC_ClientRenderer(true);
 		cr2 = new PC_ClientRenderer(false);
