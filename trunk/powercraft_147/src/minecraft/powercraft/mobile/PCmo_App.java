@@ -50,7 +50,7 @@ public class PCmo_App implements PC_IModule {
 
 	@Override
 	public String getVersion() {
-		return "1.0.0";
+		return "1.0.1";
 	}
 
 	@Override
