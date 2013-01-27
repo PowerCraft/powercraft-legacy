@@ -133,8 +133,10 @@ public class PC_GresContainerGui extends GuiContainer implements PC_IGresGui {
 			s.yDisplayPosition = y - 999;
 		}
 		Slot s = getSlotAtPosition(x, y);
-		s.xDisplayPosition = x-8;
-		s.yDisplayPosition = y-8;
+		if(s!=null){
+			s.xDisplayPosition = x-8;
+			s.yDisplayPosition = y-8;
+		}
 	}
 	
 	protected void func_85041_a(int x, int y, int par3, long par4){
