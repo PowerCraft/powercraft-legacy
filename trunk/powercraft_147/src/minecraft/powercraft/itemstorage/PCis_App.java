@@ -12,7 +12,10 @@ import powercraft.management.PC_IMSG;
 import powercraft.management.PC_IModule;
 import powercraft.management.PC_IPacketHandler;
 import powercraft.management.PC_Item;
+import powercraft.management.PC_ItemStack;
 import powercraft.management.PC_Property;
+import powercraft.management.PC_ShapedRecipes;
+import powercraft.management.PC_ShapelessRecipes;
 import powercraft.management.PC_Struct2;
 import powercraft.management.PC_Utils.ModuleLoader;
 
@@ -81,6 +84,41 @@ public class PCis_App implements PC_IModule {
 				"    ",
 				"g  g"},
 				'g', Block.glass, 'f', Block.fence, ' ', null));
+		
+		recipes.add(new PC_ShapedRecipes(new PC_ItemStack(compressor, 1, PCis_ItemCompressor.NORMAL),
+				" l ",
+				"lcl",
+				" l ",
+				'c', Block.chest, 'l', Block.lever));
+		
+		recipes.add(new PC_ShapedRecipes(new PC_ItemStack(compressor, 1, PCis_ItemCompressor.ENDERACCESS),
+				" l ",
+				"lel",
+				" l ",
+				'e', Block.enderChest, 'l', Block.lever));
+		
+		recipes.add(new PC_ShapedRecipes(new PC_ItemStack(compressor, 1, PCis_ItemCompressor.BIG),
+				"lll",
+				"ccc",
+				"lll",
+				'c', Block.chest, 'l', Block.lever));
+		
+		recipes.add(new PC_ShapedRecipes(new PC_ItemStack(compressor, 1, PCis_ItemCompressor.BIG),
+				"ccc",
+				'c', new PC_ItemStack(compressor, 1, PCis_ItemCompressor.NORMAL)));
+		
+		recipes.add(new PC_ShapedRecipes(new PC_ItemStack(compressor, 1, PCis_ItemCompressor.HIGHT),
+				"lcl",
+				"lcl",
+				"lcl",
+				'c', Block.chest, 'l', Block.lever));
+		
+		recipes.add(new PC_ShapedRecipes(new PC_ItemStack(compressor, 1, PCis_ItemCompressor.HIGHT),
+				"c",
+				"c",
+				"c",
+				'c', new PC_ItemStack(compressor, 1, PCis_ItemCompressor.NORMAL)));
+		
 		return recipes;
 	}
 
