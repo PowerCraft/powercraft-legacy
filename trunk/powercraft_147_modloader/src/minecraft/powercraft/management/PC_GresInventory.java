@@ -135,6 +135,7 @@ public class PC_GresInventory extends PC_GresWidget {
 
 	@Override
 	public MouseOver mouseOver(PC_VecI mousePos) {
+		mouseMove(mousePos);
 		return MouseOver.THIS;
 	}
 
