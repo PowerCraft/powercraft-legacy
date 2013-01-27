@@ -2240,18 +2240,9 @@ public class PC_Utils implements PC_IPacketHandler
 
         int guiID = 0;
 
-        try
-        {
-            Field var6 = EntityPlayerMP.class.getDeclaredFields()[16];
-            var6.setAccessible(true);
-            guiID = var6.getInt(player);
-            guiID = guiID % 100 + 1;
-            var6.setInt(player, guiID);
-        }
-        catch (Exception e)
-        {
-            e.printStackTrace();
-        }
+        guiID = ((EntityPlayerMP)player).currentWindowId;
+        guiID = guiID % 100 + 1;
+        ((EntityPlayerMP)player).currentWindowId = guiID;
 
         ByteArrayOutputStream data = new ByteArrayOutputStream();
         ObjectOutputStream sendData;

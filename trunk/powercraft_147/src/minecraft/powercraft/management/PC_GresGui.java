@@ -1,13 +1,19 @@
 package powercraft.management;
 
 
+import java.util.List;
+
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.gui.ScaledResolution;
+import net.minecraft.client.renderer.OpenGlHelper;
+import net.minecraft.client.renderer.RenderHelper;
+import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Slot;
 
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.GL11;
+import org.lwjgl.opengl.GL12;
 
 
 /**
@@ -228,7 +234,7 @@ public class PC_GresGui extends GuiScreen implements PC_IGresGui {
 	 */
 	@Override
 	public void drawScreen(int par1, int par2, float par3) {
-
+		
 		gui.updateTick(this);
 
 		if(!gui.drawBackground(this, par1, par2, par3))
@@ -237,6 +243,68 @@ public class PC_GresGui extends GuiScreen implements PC_IGresGui {
 		int i = guiLeft;
 		int j = guiTop;
 		drawGuiContainerBackgroundLayer(par3, par1, par2);
+		
+		GL11.glPushMatrix();
+		GL11.glTranslatef(i, j, 0.0F);
+		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
+		GL11.glDisable(GL11.GL_LIGHTING);
+		GL11.glDisable(GL11.GL_DEPTH_TEST);
+			
+		List list = getTooltipAtPosition(par1, par2);
+		
+		if (list != null && list.size() > 0) {
+			int l1 = 0;
+
+			for (int i2 = 0; i2 < list.size(); i2++) {
+				int k2 = fontRenderer.getStringWidth((String) list.get(i2));
+
+				if (k2 > l1) {
+					l1 = k2;
+				}
+			}
+
+			int j2 = (par1 - i) + 12;
+			int l2 = par2 - j - 12;
+			int i3 = l1;
+			int j3 = 8;
+
+			if (list.size() > 1) {
+				j3 += 2 + (list.size() - 1) * 10;
+			}
+
+			zLevel = 300F;
+			int k3 = 0xf0100010;
+			drawGradientRect(j2 - 3, l2 - 4, j2 + i3 + 3, l2 - 3, k3, k3);
+			drawGradientRect(j2 - 3, l2 + j3 + 3, j2 + i3 + 3, l2 + j3 + 4, k3, k3);
+			drawGradientRect(j2 - 3, l2 - 3, j2 + i3 + 3, l2 + j3 + 3, k3, k3);
+			drawGradientRect(j2 - 4, l2 - 3, j2 - 3, l2 + j3 + 3, k3, k3);
+			drawGradientRect(j2 + i3 + 3, l2 - 3, j2 + i3 + 4, l2 + j3 + 3, k3, k3);
+			int l3 = 0x505000ff;
+			int i4 = (l3 & 0xfefefe) >> 1 | l3 & 0xff000000;
+			drawGradientRect(j2 - 3, (l2 - 3) + 1, (j2 - 3) + 1, (l2 + j3 + 3) - 1, l3, i4);
+			drawGradientRect(j2 + i3 + 2, (l2 - 3) + 1, j2 + i3 + 3, (l2 + j3 + 3) - 1, l3, i4);
+			drawGradientRect(j2 - 3, l2 - 3, j2 + i3 + 3, (l2 - 3) + 1, l3, l3);
+			drawGradientRect(j2 - 3, l2 + j3 + 2, j2 + i3 + 3, l2 + j3 + 3, i4, i4);
+
+			for (int j4 = 0; j4 < list.size(); j4++) {
+				String s = (String) list.get(j4);
+
+				fontRenderer.drawStringWithShadow(s, j2, l2, -1);
+
+				if (j4 == 0) {
+					l2 += 2;
+				}
+
+				l2 += 10;
+			}
+
+			zLevel = 0.0F;
+		}
+
+		GL11.glPopMatrix();
+
+		GL11.glEnable(GL11.GL_LIGHTING);
+		GL11.glEnable(GL11.GL_DEPTH_TEST);
 		
 	}
 
@@ -291,4 +359,11 @@ public class PC_GresGui extends GuiScreen implements PC_IGresGui {
 		return null;
 	}
 	
+	public List<String> getTooltipAtPosition(int x, int y) {
+		PC_GresWidget w = child.getWidgetUnderMouse(new PC_VecI(x, y));
+		if(w==null)
+			return null;
+		PC_VecI fpos = w.getPositionOnScreen();
+		return w.getTooltip(new PC_VecI(x - fpos.x, y - fpos.y));
+	}
 }
