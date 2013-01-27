@@ -119,8 +119,12 @@ public class PC_ClassInfo {
 			
 			is.close();
 		
-		} catch (IOException e) {
+		} catch (Throwable e) {
 			e.printStackTrace();
+			access = 0;
+			className = "";
+			superClassName = "";
+			interfaceNames = null;
 		}
 	}
 	
