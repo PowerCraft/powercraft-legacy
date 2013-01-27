@@ -1,6 +1,6 @@
 
 
-set direc="F:\Programme\7-Zip"
+set direc="C:\Programme\7-Zip"
 
 
 IF exists reobf\minecraft\powercraft goto START
