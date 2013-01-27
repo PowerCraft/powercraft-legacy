@@ -1,6 +1,8 @@
 package powercraft.management;
 
 
+import java.util.List;
+
 import net.minecraft.src.GuiScreen;
 import net.minecraft.src.ScaledResolution;
 import net.minecraft.src.Slot;
@@ -289,6 +291,14 @@ public class PC_GresGui extends GuiScreen implements PC_IGresGui {
 	@Override
 	public PC_GresBaseWithInventory getContainer() {
 		return null;
+	}
+	
+	public List<String> getTooltipAtPosition(int x, int y) {
+		PC_GresWidget w = child.getWidgetUnderMouse(new PC_VecI(x, y));
+		if(w==null)
+			return null;
+		PC_VecI fpos = w.getPositionOnScreen();
+		return w.getTooltip(new PC_VecI(x - fpos.x, y - fpos.y));
 	}
 	
 }

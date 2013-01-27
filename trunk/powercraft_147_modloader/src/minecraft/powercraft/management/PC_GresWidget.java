@@ -2,10 +2,12 @@ package powercraft.management;
 
 
 import java.util.ArrayList;
+import java.util.List;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.src.FontRenderer;
 import net.minecraft.src.Gui;
+import net.minecraft.src.Slot;
 
 import org.lwjgl.opengl.GL11;
 
@@ -878,34 +880,13 @@ public abstract class PC_GresWidget extends Gui {
 	 *            the whole huge "button" field)
 	 */
 	protected void renderTextureSliced(PC_VecI offset, String texture, PC_VecI rectSize, PC_VecI imgOffset, PC_VecI imgSize) {
-		GL11.glBindTexture(GL11.GL_TEXTURE_2D, mc.renderEngine.getTexture(texture));
-		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-		GL11.glEnable(GL11.GL_BLEND);
-		GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
-
-		int rxh1 = (int) Math.floor(rectSize.x / 2F);
-		int rxh2 = (int) Math.ceil(rectSize.x / 2F);
-		int ryh1 = (int) Math.floor(rectSize.y / 2F);
-		int ryh2 = (int) Math.ceil(rectSize.y / 2F);
-
-
-		// A
-		drawTexturedModalRect(pos.x + offset.x, pos.y + offset.y, imgOffset.x, imgOffset.y, rxh1, ryh1);
-
-		// B
-		drawTexturedModalRect(pos.x + offset.x + rxh1, pos.y + offset.y, imgOffset.x + imgSize.x - rxh2, imgOffset.y, rxh2, ryh1);
-
-		// left bottom wide
-		drawTexturedModalRect(pos.x + offset.x, pos.y + offset.y + ryh1, imgOffset.x, imgOffset.y + imgSize.y - ryh2, rxh1, ryh2);
-
-		// right bottom square
-		drawTexturedModalRect(pos.x + offset.x + rxh1, pos.y + offset.y + ryh1, imgOffset.x + imgSize.x - rxh2, imgOffset.y + imgSize.y - ryh2, rxh2,
-				ryh2);
-
-		GL11.glDisable(GL11.GL_BLEND);
-
+		renderTextureSliced_static(this, offset.offset(pos), texture, rectSize, imgOffset, imgSize, new PC_RectI(0, 0, 0, 0));
 	}
 
+	protected void renderTextureSliced(PC_VecI offset, String texture, PC_VecI rectSize, PC_VecI imgOffset, PC_VecI imgSize, PC_RectI frame) {
+		renderTextureSliced_static(this, offset.offset(pos), texture, rectSize, imgOffset, imgSize, frame);
+	}
+	
 	/**
 	 * Render texture using 9patch-like scaling method.<br>
 	 * 
@@ -917,31 +898,72 @@ public abstract class PC_GresWidget extends Gui {
 	 * @param imgSize size of the whole "scalable" region in texture file (eg.
 	 *            the whole huge "button" field)
 	 */
-	protected static void renderTextureSliced_static(Gui gui, PC_VecI startPos, String texture, PC_VecI rectSize, PC_VecI imgOffset,
-			PC_VecI imgSize) {
+	
+	protected static void renderTextureSliced_static(Gui gui, PC_VecI startPos, String texture, PC_VecI rectSize, PC_VecI imgOffset, PC_VecI imgSize){
+		renderTextureSliced_static(gui, startPos, texture, rectSize, imgOffset, imgSize, new PC_RectI(0, 0, 0, 0));
+	}
+	
+	private static void renderTextureSliced_static(Gui gui, PC_VecI startPos, PC_VecI rectSize, PC_VecI imgOffset, PC_VecI imgSize){
+		for(int x=0; x<rectSize.x; x+=imgSize.x){
+			for(int y=0; y<rectSize.y; y+=imgSize.y){
+				int sx = imgSize.x;
+				int sy = imgSize.y;
+				if(x + sx > rectSize.x){
+					sx = rectSize.x-x;
+				}
+				if(y + sy > rectSize.y){
+					sy = rectSize.y-y;
+				}
+				gui.drawTexturedModalRect(startPos.x + x, startPos.y + y, imgOffset.x, imgOffset.y, sx, sy);
+			}
+		}
+	}
+	
+	protected static void renderTextureSliced_static(Gui gui, PC_VecI startPos, String texture, PC_VecI rectSize, PC_VecI imgOffset, PC_VecI imgSize, PC_RectI frame) {
 		GL11.glBindTexture(GL11.GL_TEXTURE_2D, mc.renderEngine.getTexture(texture));
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 		GL11.glEnable(GL11.GL_BLEND);
 		GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
 
-		int rxh1 = (int) Math.floor(rectSize.x / 2F);
-		int rxh2 = (int) Math.ceil(rectSize.x / 2F);
-		int ryh1 = (int) Math.floor(rectSize.y / 2F);
-		int ryh2 = (int) Math.ceil(rectSize.y / 2F);
-
-		// A
-		gui.drawTexturedModalRect(startPos.x, startPos.y, imgOffset.x, imgOffset.y, rxh1, ryh1);
-
-		// B
-		gui.drawTexturedModalRect(startPos.x + rxh1, startPos.y, imgOffset.x + imgSize.x - rxh2, imgOffset.y, rxh2, ryh1);
-
-		// left bottom wide
-		gui.drawTexturedModalRect(startPos.x, startPos.y + ryh1, imgOffset.x, imgOffset.y + imgSize.y - ryh2, rxh1, ryh2);
-
-		// right bottom square
-		gui.drawTexturedModalRect(startPos.x + rxh1, startPos.y + ryh1, imgOffset.x + imgSize.x - rxh2, imgOffset.y + imgSize.y - ryh2, rxh2, ryh2);
-
-
+		if(frame.y>0){
+			if(frame.x>0){
+				gui.drawTexturedModalRect(startPos.x, startPos.y, imgOffset.x, imgOffset.y, frame.x, frame.y);
+			}
+			renderTextureSliced_static(gui, 
+					new PC_VecI(startPos.x + frame.x, startPos.y), new PC_VecI(rectSize.x - frame.x - frame.width, frame.y), 
+					new PC_VecI(imgOffset.x + frame.x, imgOffset.y), new PC_VecI(imgSize.x - frame.x - frame.width, imgSize.y));
+			if(frame.width>0){
+				gui.drawTexturedModalRect(startPos.x + rectSize.x - frame.width, startPos.y, imgSize.x - frame.width, imgOffset.y, frame.width, frame.y);
+			}
+		}
+		if(frame.x>0){
+			renderTextureSliced_static(gui, 
+					new PC_VecI(startPos.x, startPos.y + frame.y), new PC_VecI(frame.x, rectSize.y - frame.y - frame.height), 
+					new PC_VecI(imgOffset.x, imgOffset.y + frame.y), new PC_VecI(imgSize.x, imgSize.y - frame.y - frame.height));
+		}
+		
+		renderTextureSliced_static(gui, 
+				new PC_VecI(startPos.x + frame.x, startPos.y + frame.y), new PC_VecI(rectSize.x - frame.x - frame.width, rectSize.y - frame.y - frame.height), 
+				new PC_VecI(imgOffset.x + frame.x, imgOffset.y + frame.y), new PC_VecI(imgSize.x - frame.x - frame.width, imgSize.y - frame.y - frame.height));
+		
+		if(frame.width>0){
+			renderTextureSliced_static(gui, 
+					new PC_VecI(startPos.x + rectSize.x - frame.width, startPos.y + frame.y), new PC_VecI(frame.width, rectSize.y - frame.y - frame.height), 
+					new PC_VecI(imgOffset.x + imgSize.x - frame.width, imgOffset.y + frame.y), new PC_VecI(frame.width, imgSize.y - frame.y - frame.height));
+		}
+		
+		if(frame.height>0){
+			if(frame.x>0){
+				gui.drawTexturedModalRect(startPos.x, startPos.y + rectSize.y - frame.height, imgOffset.x, imgOffset.y + imgSize.y - frame.height, frame.x, frame.height);
+			}
+			renderTextureSliced_static(gui, 
+					new PC_VecI(startPos.x + frame.x, startPos.y + rectSize.y - frame.height), new PC_VecI(rectSize.x - frame.x - frame.width, frame.height), 
+					new PC_VecI(imgOffset.x + frame.x, imgOffset.y + imgSize.y - frame.height), new PC_VecI(imgSize.x - frame.x - frame.width, frame.height));
+			if(frame.width>0){
+				gui.drawTexturedModalRect(startPos.x + rectSize.x - frame.width, startPos.y + rectSize.y - frame.height, imgOffset.x + imgSize.x - frame.width, imgOffset.y + imgSize.y - frame.height, frame.width, frame.height);
+			}
+		}
+		
 		GL11.glDisable(GL11.GL_BLEND);
 
 	}
@@ -1017,9 +1039,18 @@ public abstract class PC_GresWidget extends Gui {
 			txC = 0xffffa0; // yellow
 		}
 	
-		renderTextureSliced_static(widget, pos, imgdir + "button.png", size, new PC_VecI(0, state * 50), new PC_VecI(256, 50));
+		renderTextureSliced_static(widget, pos, imgdir + "button.png", size, new PC_VecI(0, state * 50), new PC_VecI(256, 50), new PC_RectI(2, 2, 2, 3));
 	
 		widget.drawCenteredString(widget.getFontRenderer(), text, pos.x + size.x / 2, pos.y + (size.y - widget.getFontRenderer().FONT_HEIGHT)
 				/ 2, txC);
 	}
+	
+	public Slot getSlotUnderMouse(PC_VecI mousePos) {
+		return null;
+	}
+	
+	public List<String> getTooltip(PC_VecI mousePos) {
+		return null;
+	}
+	
 }

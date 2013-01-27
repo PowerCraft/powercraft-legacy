@@ -125,8 +125,25 @@ public class PC_GresContainerGui extends GuiContainer implements PC_IGresGui {
 		}
 	}
 
+	private void putSlotUnderMouse(int x, int y){
+		for(int i=0; i<inventorySlots.inventorySlots.size(); i++){
+			Slot s = (Slot)inventorySlots.inventorySlots.get(0);
+			s.xDisplayPosition = x - 999;
+			s.yDisplayPosition = y - 999;
+		}
+		Slot s = getSlotAtPosition(x, y);
+		s.xDisplayPosition = x-8;
+		s.yDisplayPosition = y-8;
+	}
+	
+	protected void func_85041_a(int x, int y, int par3, long par4){
+		putSlotUnderMouse(x, y);
+		super.func_85041_a(x, y, par3, par4);
+	}
+	
 	@Override
 	protected void mouseClicked(int x, int y, int button) {
+		putSlotUnderMouse(x, y);
 		super.mouseClicked(x, y, button);
 
 		PC_GresWidget newFocus = child.getWidgetUnderMouse(new PC_VecI(x, y));
@@ -181,6 +198,7 @@ public class PC_GresContainerGui extends GuiContainer implements PC_IGresGui {
 	 */
 	@Override
 	protected void mouseMovedOrUp(int x, int y, int state) {
+		putSlotUnderMouse(x, y);
 		super.mouseMovedOrUp(x, y, state);
 		
 		if (state != -1) {
@@ -252,22 +270,6 @@ public class PC_GresContainerGui extends GuiContainer implements PC_IGresGui {
 		OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, k / 1.0F, i1 / 1.0F);
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 
-		for (int l = 0; l < inventorySlots.inventorySlots.size(); l++) {
-			Slot slot1 = (Slot) inventorySlots.inventorySlots.get(l);
-			drawSlotInventory(slot1);
-
-			if (isMouseOverSlot(slot1, par1, par2)) {
-				slot = slot1;
-				GL11.glDisable(GL11.GL_LIGHTING);
-				GL11.glDisable(GL11.GL_DEPTH_TEST);
-				int j1 = slot1.xDisplayPosition;
-				int k1 = slot1.yDisplayPosition;
-				drawGradientRect(j1, k1, j1 + 16, k1 + 16, 0x80ffffff, 0x80ffffff);
-				GL11.glEnable(GL11.GL_LIGHTING);
-				GL11.glEnable(GL11.GL_DEPTH_TEST);
-			}
-		}
-
 		drawGuiContainerForegroundLayer(par1, par2);
 
 		InventoryPlayer inventoryplayer = mc.thePlayer.inventory;
@@ -287,76 +289,59 @@ public class PC_GresContainerGui extends GuiContainer implements PC_IGresGui {
 		GL11.glDisable(GL11.GL_LIGHTING);
 		GL11.glDisable(GL11.GL_DEPTH_TEST);
 
-		if (inventoryplayer.getItemStack() == null && slot != null) {
+		if (inventoryplayer.getItemStack() == null) {
+			
+			List list = getTooltipAtPosition(par1, par2);
+			
+			if (list != null && list.size() > 0) {
+				int l1 = 0;
 
-			ItemStack itemstack = null;
+				for (int i2 = 0; i2 < list.size(); i2++) {
+					int k2 = fontRenderer.getStringWidth((String) list.get(i2));
 
-			if (slot.getHasStack()) itemstack = slot.getStack();
-
-			if (slot instanceof PC_ISlotWithBackground && ((PC_ISlotWithBackground) slot).getBackgroundStack() != null && ((PC_ISlotWithBackground) slot).renderTooltipWhenEmpty())
-				itemstack = ((PC_ISlotWithBackground) slot).getBackgroundStack();
-
-			if (itemstack != null) {
-				@SuppressWarnings("rawtypes")
-				List list = itemstack.getTooltip(mc.thePlayer, false);
-
-				if (list.size() > 0) {
-					int l1 = 0;
-
-					for (int i2 = 0; i2 < list.size(); i2++) {
-						int k2 = fontRenderer.getStringWidth((String) list.get(i2));
-
-						if (k2 > l1) {
-							l1 = k2;
-						}
+					if (k2 > l1) {
+						l1 = k2;
 					}
-
-					int j2 = (par1 - i) + 12;
-					int l2 = par2 - j - 12;
-					int i3 = l1;
-					int j3 = 8;
-
-					if (list.size() > 1) {
-						j3 += 2 + (list.size() - 1) * 10;
-					}
-
-					zLevel = 300F;
-					itemRenderer.zLevel = 300F;
-					int k3 = 0xf0100010;
-					drawGradientRect(j2 - 3, l2 - 4, j2 + i3 + 3, l2 - 3, k3, k3);
-					drawGradientRect(j2 - 3, l2 + j3 + 3, j2 + i3 + 3, l2 + j3 + 4, k3, k3);
-					drawGradientRect(j2 - 3, l2 - 3, j2 + i3 + 3, l2 + j3 + 3, k3, k3);
-					drawGradientRect(j2 - 4, l2 - 3, j2 - 3, l2 + j3 + 3, k3, k3);
-					drawGradientRect(j2 + i3 + 3, l2 - 3, j2 + i3 + 4, l2 + j3 + 3, k3, k3);
-					int l3 = 0x505000ff;
-					int i4 = (l3 & 0xfefefe) >> 1 | l3 & 0xff000000;
-					drawGradientRect(j2 - 3, (l2 - 3) + 1, (j2 - 3) + 1, (l2 + j3 + 3) - 1, l3, i4);
-					drawGradientRect(j2 + i3 + 2, (l2 - 3) + 1, j2 + i3 + 3, (l2 + j3 + 3) - 1, l3, i4);
-					drawGradientRect(j2 - 3, l2 - 3, j2 + i3 + 3, (l2 - 3) + 1, l3, l3);
-					drawGradientRect(j2 - 3, l2 + j3 + 2, j2 + i3 + 3, l2 + j3 + 3, i4, i4);
-
-					for (int j4 = 0; j4 < list.size(); j4++) {
-						String s = (String) list.get(j4);
-
-						if (j4 == 0) {
-							s = (new StringBuilder()).append("\247").append(Integer.toHexString(itemstack.getRarity().rarityColor)).append(s)
-									.toString();
-						} else {
-							s = (new StringBuilder()).append("\2477").append(s).toString();
-						}
-
-						fontRenderer.drawStringWithShadow(s, j2, l2, -1);
-
-						if (j4 == 0) {
-							l2 += 2;
-						}
-
-						l2 += 10;
-					}
-
-					zLevel = 0.0F;
-					itemRenderer.zLevel = 0.0F;
 				}
+
+				int j2 = (par1 - i) + 12;
+				int l2 = par2 - j - 12;
+				int i3 = l1;
+				int j3 = 8;
+
+				if (list.size() > 1) {
+					j3 += 2 + (list.size() - 1) * 10;
+				}
+
+				zLevel = 300F;
+				itemRenderer.zLevel = 300F;
+				int k3 = 0xf0100010;
+				drawGradientRect(j2 - 3, l2 - 4, j2 + i3 + 3, l2 - 3, k3, k3);
+				drawGradientRect(j2 - 3, l2 + j3 + 3, j2 + i3 + 3, l2 + j3 + 4, k3, k3);
+				drawGradientRect(j2 - 3, l2 - 3, j2 + i3 + 3, l2 + j3 + 3, k3, k3);
+				drawGradientRect(j2 - 4, l2 - 3, j2 - 3, l2 + j3 + 3, k3, k3);
+				drawGradientRect(j2 + i3 + 3, l2 - 3, j2 + i3 + 4, l2 + j3 + 3, k3, k3);
+				int l3 = 0x505000ff;
+				int i4 = (l3 & 0xfefefe) >> 1 | l3 & 0xff000000;
+				drawGradientRect(j2 - 3, (l2 - 3) + 1, (j2 - 3) + 1, (l2 + j3 + 3) - 1, l3, i4);
+				drawGradientRect(j2 + i3 + 2, (l2 - 3) + 1, j2 + i3 + 3, (l2 + j3 + 3) - 1, l3, i4);
+				drawGradientRect(j2 - 3, l2 - 3, j2 + i3 + 3, (l2 - 3) + 1, l3, l3);
+				drawGradientRect(j2 - 3, l2 + j3 + 2, j2 + i3 + 3, l2 + j3 + 3, i4, i4);
+
+				for (int j4 = 0; j4 < list.size(); j4++) {
+					String s = (String) list.get(j4);
+
+					fontRenderer.drawStringWithShadow(s, j2, l2, -1);
+
+					if (j4 == 0) {
+						l2 += 2;
+					}
+
+					l2 += 10;
+				}
+
+				zLevel = 0.0F;
+				itemRenderer.zLevel = 0.0F;
 			}
 		}
 
@@ -405,6 +390,11 @@ public class PC_GresContainerGui extends GuiContainer implements PC_IGresGui {
 		zLevel = 100F;
 		itemRenderer.zLevel = 100F;
 
+		if(slot instanceof PC_Slot){
+			if(((PC_Slot) slot).useAlwaysBackground())
+				itemstack = null;
+		}
+		
 		if (itemstack == null) {
 			int i1 = slot.getBackgroundIconIndex();
 
@@ -419,8 +409,8 @@ public class PC_GresContainerGui extends GuiContainer implements PC_IGresGui {
 
 		if (isNull || itemstack == null) {
 			
-			if (slot instanceof PC_ISlotWithBackground) {
-				PC_ISlotWithBackground dirslot = (PC_ISlotWithBackground) slot;
+			if (slot instanceof PC_Slot) {
+				PC_Slot dirslot = (PC_Slot) slot;
 				if (dirslot.getBackgroundStack() != null) {
 					itemRenderer.zLevel = 99F;
 					zLevel = 99F;
@@ -494,4 +484,20 @@ public class PC_GresContainerGui extends GuiContainer implements PC_IGresGui {
         }
     }
 	
+	public Slot getSlotAtPosition(int x, int y) {
+		PC_GresWidget w = child.getWidgetUnderMouse(new PC_VecI(x, y));
+		if(w==null)
+			return null;
+		PC_VecI fpos = w.getPositionOnScreen();
+		return w.getSlotUnderMouse(new PC_VecI(x - fpos.x, y - fpos.y));
+	}
+	
+	public List<String> getTooltipAtPosition(int x, int y) {
+		PC_GresWidget w = child.getWidgetUnderMouse(new PC_VecI(x, y));
+		if(w==null)
+			return null;
+		PC_VecI fpos = w.getPositionOnScreen();
+		return w.getTooltip(new PC_VecI(x - fpos.x, y - fpos.y));
+	}
+    
 }
