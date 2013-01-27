@@ -1,0 +1,15 @@
+package powercraft.management;
+
+import net.minecraft.src.ItemStack;
+
+public interface PC_IInventoryBackground {
+
+	public ItemStack getBackgroundStack(int slotIndex);
+
+	public boolean renderTooltipWhenEmpty(int slotIndex);
+
+	public boolean renderGrayWhenEmpty(int slotIndex);
+	
+	public boolean useAlwaysBackground(int slotIndex);
+	
+}

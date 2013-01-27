@@ -5,8 +5,7 @@ import net.minecraft.src.IInventory;
 import net.minecraft.src.ItemStack;
 import net.minecraft.src.Slot;
 
-public class PC_SlotNoPickup extends Slot implements PC_ISlotWithBackground
-{
+public class PC_SlotNoPickup extends PC_Slot{
     public ItemStack shownStack;
 
     public PC_SlotNoPickup()
@@ -56,12 +55,12 @@ public class PC_SlotNoPickup extends Slot implements PC_ISlotWithBackground
             }
             @Override
             public void closeChest() {}
-        }, 0, 0, 0);
+        }, 0);
     }
 
     public PC_SlotNoPickup(IInventory inv, int slot)
     {
-    	super(inv, slot, 0, 0);
+    	super(inv, slot);
     }
     
     @Override
@@ -82,7 +81,7 @@ public class PC_SlotNoPickup extends Slot implements PC_ISlotWithBackground
     }
 
     @Override
-    public Slot setBackgroundStack(ItemStack stack)
+    public PC_Slot setBackgroundStack(ItemStack stack)
     {
         shownStack = stack;
         return this;
