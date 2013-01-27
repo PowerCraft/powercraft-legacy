@@ -18,7 +18,7 @@ public class PCis_GuiCompressor extends PCis_ContainerCompressor
 
 	@Override
 	public void initGui(PC_IGresGui gui) {
-		PC_GresWindow w = new PC_GresWindow(Lang.tr(PCis_App.compressor.getItemNameIS(thePlayer.getCurrentEquippedItem())));
+		PC_GresWindow w = new PC_GresWindow(Lang.tr(PCis_App.compressor.getItemNameIS(thePlayer.getCurrentEquippedItem())+".name"));
 		PC_GresInventory inventory = new PC_GresInventory(inv.getSize().x, inv.getSize().y);
 		int i=0;
 		for(int y=0; y<inv.getSize().y; y++){

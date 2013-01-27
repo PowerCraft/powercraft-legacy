@@ -1,23 +1,20 @@
 package powercraft.itemstorage;
 
-import java.util.Arrays;
 import java.util.List;
 
-import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
 import powercraft.management.PC_Item;
 import powercraft.management.PC_Struct3;
 import powercraft.management.PC_Utils;
 import powercraft.management.PC_Utils.Gres;
+import powercraft.management.PC_VecI;
 
 public class PCis_ItemCompressor extends PC_Item {
 	
-	public static final int NORMAL = 0, ENDERACCESS = 1, HIGHT = 2;
-	public static final String id2Name[] = {"normal", "enderaccess", "hight"};
+	public static final int NORMAL = 0, ENDERACCESS = 1, HIGHT = 2, BIG = 3;
+	public static final String id2Name[] = {"normal", "enderaccess", "hight", "big"};
 	
 	public PCis_ItemCompressor(int id) {
 		super(id);
@@ -40,6 +37,7 @@ public class PCis_ItemCompressor extends PC_Item {
 		arrayList.add(new ItemStack(this, 1, NORMAL));
 		arrayList.add(new ItemStack(this, 1, ENDERACCESS));
 		arrayList.add(new ItemStack(this, 1, HIGHT));
+		arrayList.add(new ItemStack(this, 1, BIG));
 		return arrayList;
 	}
 	
@@ -53,9 +51,10 @@ public class PCis_ItemCompressor extends PC_Item {
 		switch(msg){
 		case PC_Utils.MSG_DEFAULT_NAME:
 			List<PC_Struct3<String, String, String[]>> names = (List<PC_Struct3<String, String, String[]>>)obj[0];
-			names.add(new PC_Struct3<String, String, String[]>(getItemName()+"."+id2Name[NORMAL], "Compressor", null));
-			names.add(new PC_Struct3<String, String, String[]>(getItemName()+"."+id2Name[ENDERACCESS], "Ender Compressor", null));
-			names.add(new PC_Struct3<String, String, String[]>(getItemName()+"."+id2Name[HIGHT], "Hight Compressor", null));
+			names.add(new PC_Struct3<String, String, String[]>(getItemName()+"."+id2Name[NORMAL], "compressor", null));
+			names.add(new PC_Struct3<String, String, String[]>(getItemName()+"."+id2Name[ENDERACCESS], "ender compressor", null));
+			names.add(new PC_Struct3<String, String, String[]>(getItemName()+"."+id2Name[HIGHT], "high stack compressor", null));
+			names.add(new PC_Struct3<String, String, String[]>(getItemName()+"."+id2Name[BIG], "big compressor", null));
 			return names;
 		}
 		return null;
@@ -70,6 +69,8 @@ public class PCis_ItemCompressor extends PC_Item {
 			return new PCis_EnderCompressorInventory(player);
 		case HIGHT:
 			return new PCis_HightCompressorInventory(player);
+		case BIG:
+			return new PCis_NormalCompressorInventory(player, new PC_VecI(9, 6));
 		default:
 			return null;
 		}
