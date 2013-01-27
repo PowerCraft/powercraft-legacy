@@ -34,7 +34,7 @@ import cpw.mods.fml.common.network.NetworkMod.SidedPacketHandler;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.common.registry.LanguageRegistry;
 
-@Mod(modid = "PowerCraft", name = "PowerCraft", version = "3.5.0AlphaH", dependencies = "after:*")
+@Mod(modid = "PowerCraft", name = "PowerCraft", version = "3.5.0AlphaI", dependencies = "after:*")
 @NetworkMod(clientSideRequired = true, serverSideRequired = true, clientPacketHandlerSpec = @SidedPacketHandler(channels = { "PowerCraft" }, packetHandler = PC_ClientPacketHandler.class), serverPacketHandlerSpec = @SidedPacketHandler(channels = { "PowerCraft" }, packetHandler = PC_PacketHandler.class))
 public class mod_PowerCraft{
 	
