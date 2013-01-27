@@ -134,8 +134,8 @@ public class PC_GresContainerGui extends GuiContainer implements PC_IGresGui {
 		}
 		Slot s = getSlotAtPosition(x, y);
 		if(s!=null){
-			s.xDisplayPosition = x+guiLeft-8;
-			s.yDisplayPosition = y+guiTop-8;
+			s.xDisplayPosition = x-guiLeft-8;
+			s.yDisplayPosition = y-guiTop-8;
 		}
 	}
 	
