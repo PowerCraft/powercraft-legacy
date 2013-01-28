@@ -19,6 +19,7 @@ import powercraft.management.PC_MathHelper;
 import powercraft.management.PC_Property;
 import powercraft.management.PC_Renderer;
 import powercraft.management.PC_Shining;
+import powercraft.management.PC_Struct3;
 import powercraft.management.PC_Shining.OFF;
 import powercraft.management.PC_Shining.ON;
 import powercraft.management.PC_Utils;
@@ -26,6 +27,7 @@ import powercraft.management.PC_Utils.GameInfo;
 import powercraft.management.PC_Utils.Gres;
 import powercraft.management.PC_Utils.ValueWriting;
 import powercraft.management.PC_VecI;
+import powercraft.net.PCnt_RadioManager.FunctionProvider;
 
 @PC_Shining
 public class PClo_BlockSpecial extends PC_Block
@@ -390,7 +392,7 @@ public class PClo_BlockSpecial extends PC_Block
         Gres.openGres("Special", entityplayer, i, j, k);
         return true;
     }
-
+    
 	@Override
 	public Object msg(IBlockAccess world, PC_VecI pos, int msg, Object... obj) {
 		switch(msg){
@@ -410,26 +412,6 @@ public class PClo_BlockSpecial extends PC_Block
 			return false;
 		case PC_Utils.MSG_ROTATION:
 			return getRotation_static((Integer)obj[0]);
-		case PC_Utils.MSG_PROVIDES_FUNCTION:{
-			List<String> l=(List)obj[1];
-			l.add("world.isDay");
-			l.add("world.isNight");
-			l.add("world.isRaining");
-			l.add("world.isThundering");
-			return l;
-		}case PC_Utils.MSG_CALL_FUNCTION:{
-			String functionName = (String)obj[0];
-			if(functionName.equals("world.isDay")){
-				return ((World)world).isDaytime();
-			}else if(functionName.equals("world.isNight")){
-				return !((World)world).isDaytime();
-			}else if(functionName.equals("world.isRaining")){
-				return ((World)world).isRaining();
-			}else if(functionName.equals("world.isThundering")){
-				return ((World)world).isThundering();
-			}
-			return null;
-		}
 		default:
 			return null;
 		}

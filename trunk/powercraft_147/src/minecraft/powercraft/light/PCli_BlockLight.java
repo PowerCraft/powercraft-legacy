@@ -431,17 +431,6 @@ public class PCli_BlockLight extends PC_Block implements PC_IItemInfo
 			if(this==off)
 				return true;
 			return false;
-		}case PC_Utils.MSG_PROVIDES_FUNCTION:{
-			List<String> l=(List)obj[1];
-			l.add("setColor");
-			return l;
-		}case PC_Utils.MSG_CALL_FUNCTION:{
-			String functionName = (String)obj[0];
-			if(functionName.equals("setColor")){
-				
-				break;
-			}
-			return null;
 		}
 		default:
 			return null;

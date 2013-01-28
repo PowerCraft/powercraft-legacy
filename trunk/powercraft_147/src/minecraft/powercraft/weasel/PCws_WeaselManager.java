@@ -9,8 +9,11 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
 import powercraft.management.PC_IDataHandler;
 import powercraft.management.PC_IMSG;
+import powercraft.management.PC_Struct3;
 import powercraft.management.PC_Utils;
+import powercraft.management.PC_Utils.ModuleInfo;
 import powercraft.management.PC_Utils.SaveHandler;
+import weasel.WeaselFunctionManager;
 import weasel.exception.WeaselRuntimeException;
 import weasel.obj.WeaselObject;
 import weasel.obj.WeaselVariableMap;
@@ -27,6 +30,8 @@ public class PCws_WeaselManager implements PC_IDataHandler, PC_IMSG {
 	private static TreeMap<Integer, PCws_WeaselPlugin> plugins = new TreeMap<Integer, PCws_WeaselPlugin>();
 	
 	private static TreeMap<Integer, PCws_WeaselPluginInfo> pluginInfo = new TreeMap<Integer, PCws_WeaselPluginInfo>();
+	
+	private static WeaselFunctionManager globalFunctions;
 	
 	private static boolean needSave=false;
 	
@@ -260,6 +265,19 @@ public class PCws_WeaselManager implements PC_IDataHandler, PC_IMSG {
 	}
 	
 	public static void update(){
+		if(globalFunctions==null){
+			globalFunctions = new WeaselFunctionManager();
+			List<PC_IMSG> msgs = ModuleInfo.getMSGObjects();
+			for(PC_IMSG msg:msgs){
+				Object o = msg.msg(PC_Utils.MSG_GET_PROVIDET_GLOBAL_FUNCTIONS, new ArrayList<PC_Struct3<String, String, Object>>());
+				if(o instanceof List){
+					List<PC_Struct3<String, String, Object>> l = (List<PC_Struct3<String, String, Object>>)o;
+					for(PC_Struct3<String, String, Object>s:l){
+						globalFunctions.registerMethod(s.a, s.b, s.c);
+					}
+				}
+			}
+		}
 		for(PCws_WeaselPlugin weaselPlugin:plugins.values()){
 			weaselPlugin.update();
 		}
@@ -279,6 +297,10 @@ public class PCws_WeaselManager implements PC_IDataHandler, PC_IMSG {
 			l.add(weaselNetwork.getName());
 		}
 		return l;
+	}
+
+	public static WeaselFunctionManager getGlobalFunctionManager() {
+		return globalFunctions;
 	}
 	
 }

@@ -70,7 +70,8 @@ public class PC_GresInventoryPlayer extends PC_GresLayoutV {
 
 
 		canAddWidget = true;
-		PC_GresWidget label = new PC_GresLabel(Lang.tr("container.inventory")).setWidgetMargin(2).setColor(textColorEnabled, 0x404040);
+		PC_GresWidget label = new PC_GresLabel(Lang.tr("container.inventory")).setWidgetMargin(2).setColor(textColorDisabled, 0x404040);
+		label.enable(false);
 		if (showLabel) {
 			add(label);
 		}
