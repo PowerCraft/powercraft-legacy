@@ -83,7 +83,7 @@ public class PC_Utils implements PC_IPacketHandler
     		MSG_SPAWNS_IN_CHUNK=6, MSG_BLOCKS_ON_SPAWN_POINT=7, MSG_SPAWN_POINT=8, MSG_SPAWN_POINT_METADATA=9, MSG_LOAD_FROM_CONFIG=10,
     		MSG_ON_HIT_BY_BEAM_TRACER=11, MSG_BURN_TIME=12, MSG_RECIVE_POWER=13, MSG_CAN_RECIVE_POWER=14, MSG_ON_ACTIVATOR_USED_ON_BLOCK = 15,
     		MSG_DONT_SHOW_IN_CRAFTING_TOOL=16, MSG_STR_MSG=17, MSG_RENDER_ITEM_HORIZONTAL=18, MSG_ROTATION=19, MSG_RATING=20, MSG_CONDUCTIVITY = 21,
-    		MSG_TICK_EVENT = 22, MSG_LOAD_WORLD=23, MSG_PROVIDES_FUNCTION=24, MSG_CALL_FUNCTION=25;
+    		MSG_TICK_EVENT = 22, MSG_LOAD_WORLD=23, MSG_GET_PROVIDET_GLOBAL_FUNCTIONS=24;
     
     protected PC_Utils(){
         PC_PacketHandler.registerPackethandler("PacketUtils", this);
@@ -1655,7 +1655,7 @@ public class PC_Utils implements PC_IPacketHandler
 		    return false;
 		}
 
-		static void searchPowerReceiverConnectedTo(World world, int x, int y, int z, List<PC_Struct3<PC_VecI, PC_IMSG, Float>> receivers, List<PC_Struct2<PC_VecI, Float>> allpos, float power)
+		public static void searchPowerReceiverConnectedTo(World world, int x, int y, int z, List<PC_Struct3<PC_VecI, PC_IMSG, Float>> receivers, List<PC_Struct2<PC_VecI, Float>> allpos, float power)
 		{
 		    Block b = PC_Utils.GameInfo.getBlock(world, x, y, z);
 		    PC_VecI pos = new PC_VecI(x, y, z);

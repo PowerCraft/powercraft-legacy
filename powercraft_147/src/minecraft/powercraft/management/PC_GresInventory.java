@@ -277,7 +277,7 @@ public class PC_GresInventory extends PC_GresWidget {
 				return l;
 			}
 		}
-		return null;
+		return super.getTooltip(mousePos);
 	}
 	
 }

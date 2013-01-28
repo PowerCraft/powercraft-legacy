@@ -126,6 +126,8 @@ public abstract class PC_GresWidget extends Gui {
 	/** Additional widget tag (general purpose) */
 	public String tag = "";
 	
+	private String tooltip;
+	
 	/**
 	 * A widget
 	 */
@@ -239,7 +241,25 @@ public abstract class PC_GresWidget extends Gui {
 		return this;
 	}
 
+	/**
+	 * Get widget tooltip
+	 * 
+	 * @return tooltip
+	 */
+	public String getTooltip() {
+		return tooltip;
+	}
 
+	/**
+	 * Set widget tooltip
+	 * 
+	 * @param tooltip the tooltip
+	 * @return this
+	 */
+	public PC_GresWidget setTooltip(String tooltip) {
+		this.tooltip = tooltip;
+		return this;
+	}
 
 	/**
 	 * @return widget's font renderer
@@ -1041,7 +1061,12 @@ public abstract class PC_GresWidget extends Gui {
 	}
 	
 	public List<String> getTooltip(PC_VecI mousePos) {
-		return null;
+		if(tooltip==null || tooltip.equals("")){
+			return null;
+		}
+		List<String>l = new ArrayList<String>();
+		l.add(tooltip);
+		return l;
 	}
 	
 }

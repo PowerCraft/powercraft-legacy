@@ -256,9 +256,9 @@ public class WeaselFunctionManager implements IWeaselHardware {
 				return false;
 			return true;
 		}
-		if(e.c!=null)
+		if(e.c==null)
 			e.c = new WeaselFunctionManager();
-		return e.c.registerMethod(name, realName, obj);
+		return e.c.registerMethod(subNames[1], realName, obj);
 	}
 	
 	public boolean registerVariable(String name, Object obj) {
@@ -280,9 +280,9 @@ public class WeaselFunctionManager implements IWeaselHardware {
 				return false;
 			return true;
 		}
-		if(e.c!=null)
+		if(e.c==null)
 			e.c = new WeaselFunctionManager();
-		return e.c.registerVariable(name, realName, obj);
+		return e.c.registerVariable(subNames[1], realName, obj);
 	}
 	
 	public boolean registerFunctionProvider(String name, WeaselFunctionManager functionProvider){
@@ -300,9 +300,9 @@ public class WeaselFunctionManager implements IWeaselHardware {
 				return false;
 			return true;
 		}
-		if(e.c!=null)
+		if(e.c==null)
 			e.c = new WeaselFunctionManager();
-		return e.c.registerFunctionProvider(name, functionProvider);
+		return e.c.registerFunctionProvider(subNames[1], functionProvider);
 	}
 	
 	public boolean removeFunctionProvider(String name){

@@ -5,12 +5,14 @@ import java.util.List;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.world.World;
 import powercraft.management.PC_IThreadJob;
 import powercraft.management.PC_PacketHandler;
 import powercraft.management.PC_Struct2;
 import powercraft.management.PC_ThreadJob;
 import powercraft.management.PC_ThreadManager;
 import powercraft.management.PC_Utils.Gres;
+import powercraft.management.PC_Utils.ModuleInfo;
 import powercraft.management.PC_Utils.SaveHandler;
 import weasel.WeaselEngine;
 import weasel.WeaselFunctionManager;
@@ -58,6 +60,12 @@ public class PCws_WeaselPluginCore extends PCws_WeaselPlugin implements PCws_IWe
 		defaultProvider.registerVariable("bottom", this);
 		defaultProvider.registerVariable("down", "bottom", this);
 		defaultProvider.registerVariable("d", "bottom", this);
+		if(ModuleInfo.getModule("Logic")!=null){
+			defaultProvider.registerMethod("world.isDay", "isDay", this);
+			defaultProvider.registerMethod("world.isNight", "isNight", this);
+			defaultProvider.registerMethod("world.isRaining", "isRaining", this);
+			defaultProvider.registerMethod("world.isThundering", "isThundering", this);
+		}
 		weasel = new WeaselEngine(defaultProvider);
 	}
 	
@@ -287,6 +295,22 @@ public class PCws_WeaselPluginCore extends PCws_WeaselPlugin implements PCws_IWe
 		return getInport(5);
 	}
 	
+	public boolean isDay(){
+		return getWorld().isDaytime();
+	}
+	
+	public boolean isNight(){
+		return !getWorld().isDaytime();
+	}
+	
+	public boolean isRaining(){
+		return getWorld().isDaytime();
+	}
+	
+	public boolean isThundering(){
+		return getWorld().isThundering();
+	}
+	
 	//Weasel-Functions END
 	
 	public class CorePluginProvider extends WeaselFunctionManager{
@@ -296,10 +320,14 @@ public class PCws_WeaselPluginCore extends PCws_WeaselPlugin implements PCws_IWe
 			try{
 				return super.call(engine, name, var, args);
 			}catch(WeaselRuntimeException e){
-				if(getNetwork()==null){
-					throw e;
-				}else{
-					return getNetwork().getFunctionHandler().call(engine, name, var, args);
+				try{
+					return PCws_WeaselManager.getGlobalFunctionManager().call(engine, name, var, args);
+				}catch(WeaselRuntimeException e1){
+					if(getNetwork()==null){
+						throw e1;
+					}else{
+						return getNetwork().getFunctionHandler().call(engine, name, var, args);
+					}
 				}
 			}
 		}
@@ -307,6 +335,8 @@ public class PCws_WeaselPluginCore extends PCws_WeaselPlugin implements PCws_IWe
 		@Override
 		public boolean doesProvideFunction(String name) {
 			if(super.doesProvideFunction(name))
+				return true;
+			if(PCws_WeaselManager.getGlobalFunctionManager().doesProvideFunction(name))
 				return true;
 			if(getNetwork()==null)
 				return false;
@@ -316,6 +346,7 @@ public class PCws_WeaselPluginCore extends PCws_WeaselPlugin implements PCws_IWe
 		@Override
 		public List<String> getProvidedFunctionNames() {
 			List<String> list = super.getProvidedFunctionNames();
+			list.addAll(PCws_WeaselManager.getGlobalFunctionManager().getProvidedFunctionNames());
 			if(getNetwork()!=null){
 				list.addAll(getNetwork().getFunctionHandler().getProvidedFunctionNames());
 			}

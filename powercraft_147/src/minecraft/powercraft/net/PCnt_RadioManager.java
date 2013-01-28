@@ -1,15 +1,15 @@
 package powercraft.net;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map.Entry;
 
-import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import powercraft.management.PC_IDataHandler;
 import powercraft.management.PC_IMSG;
+import powercraft.management.PC_Struct3;
 import powercraft.management.PC_Utils;
-import powercraft.management.PC_Utils.SaveHandler;
 
 public class PCnt_RadioManager implements PC_IDataHandler, PC_IMSG {
 
@@ -17,6 +17,7 @@ public class PCnt_RadioManager implements PC_IDataHandler, PC_IMSG {
 
 	private static HashMap<String, Integer> channels = new HashMap<String, Integer>();
 	private static HashMap<String, Integer> remoteChannels = new HashMap<String, Integer>();
+	private static List<String> weaselChannels = new ArrayList<String>();
 	private static boolean needSave=false;
 	
 	public static void transmitterOn(String channel) {
@@ -59,18 +60,36 @@ public class PCnt_RadioManager implements PC_IDataHandler, PC_IMSG {
 		}
 	}
 	
+	public static void weaselOn(String channel) {
+		if(!weaselChannels.contains(channel)){
+			weaselChannels.add(channel);
+		}
+	}
+
+	public static void weaselOff(String channel) {
+		if(weaselChannels.contains(channel)){
+			weaselChannels.remove(channel);
+		}
+	}
+	
 	public static boolean getChannelState(String channel) {
-		return channels.containsKey(channel) || remoteChannels.containsKey(channel);
+		return weaselChannels.contains(channel) || channels.containsKey(channel) || remoteChannels.containsKey(channel);
 	}
 
 	@Override
 	public void load(NBTTagCompound nbtTag) {
 		channels.clear();
+		weaselChannels.clear();
 		int num = nbtTag.getInteger("count");
 		for(int i=0; i<num; i++){
 			String key = nbtTag.getString("key["+i+"]");
 			int value = nbtTag.getInteger("value["+i+"]");
 			channels.put(key, value);
+		}
+		num = nbtTag.getInteger("wcount");
+		for(int i=0; i<num; i++){
+			String value = nbtTag.getString("wvalue["+i+"]");
+			weaselChannels.add(value);
 		}
 	}
 
@@ -81,6 +100,12 @@ public class PCnt_RadioManager implements PC_IDataHandler, PC_IMSG {
 		for(Entry<String, Integer> e:channels.entrySet()){
 			nbtTag.setString("key["+i+"]", e.getKey());
 			nbtTag.setInteger("value["+i+"]", e.getValue());
+			i++;
+		}
+		nbtTag.setInteger("wcount", weaselChannels.size());
+		i=0;
+		for(String channel:weaselChannels){
+			nbtTag.setString("wvalue["+i+"]", channel);
 			i++;
 		}
 		return nbtTag;
@@ -96,32 +121,37 @@ public class PCnt_RadioManager implements PC_IDataHandler, PC_IMSG {
 	@Override
 	public void reset() {
 		channels.clear();
+		remoteChannels.clear();
+		weaselChannels.clear();
 	}
 
+	public static class FunctionProvider{
+		
+		public void tx(String channel, boolean state){
+			if(state){
+				weaselOn(channel);
+			}else{
+				weaselOff(channel);
+			}
+		}
+		
+		public boolean rx(String channel){
+			return getChannelState(channel);
+		}
+		
+	}
+	
 	@Override
 	public Object msg(int msg, Object... obj) {
 		switch(msg){
-			case PC_Utils.MSG_PROVIDES_FUNCTION:{
-				List<String> l = (List)obj[1];
-				l.add("tx");
-				l.add("rx");
-				return l;
-			}case PC_Utils.MSG_CALL_FUNCTION:{
-				String functionName = (String) obj[0];
-				if(functionName.equals("tx")){
-					if((Boolean)obj[2]){
-						transmitterOn((String)obj[1]);
-					}else{
-						transmitterOff((String)obj[1]);
-					}
-				}else if(functionName.equals("rx")){
-					return getChannelState((String)obj[1]);
-				}
-				break;
-			}default:
-				return null;
+		case PC_Utils.MSG_GET_PROVIDET_GLOBAL_FUNCTIONS:
+			List<PC_Struct3<String, String, Object>> l = (List<PC_Struct3<String, String, Object>>)obj[0];
+			FunctionProvider fp = new FunctionProvider();
+			l.add(new PC_Struct3<String, String, Object>("tx", "tx", fp));
+			l.add(new PC_Struct3<String, String, Object>("rx", "rx", fp));
+			return l;
 		}
-		return true;
+		return null;
 	}
 
 }
