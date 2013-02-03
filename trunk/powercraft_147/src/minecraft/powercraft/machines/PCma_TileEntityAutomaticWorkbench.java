@@ -19,6 +19,9 @@ import powercraft.management.PC_Utils.GameInfo;
 
 public class PCma_TileEntityAutomaticWorkbench extends PC_TileEntity implements IInventory, PC_IStateReportingInventory, PC_ISpecialAccessInventory
 {
+	
+	public static final String REDSTONEACTIVATED = "redstoneActivated";
+	
     private static class ContainerFake extends Container
     {
         public ContainerFake() {}
@@ -38,13 +41,23 @@ public class PCma_TileEntityAutomaticWorkbench extends PC_TileEntity implements 
 
     private static Container fakeContainer = new ContainerFake();
 
-    public boolean redstoneActivated;
+    private ItemStack actContents[] = new ItemStack[18];
+    
+    //public boolean redstoneActivated;
 
     public PCma_TileEntityAutomaticWorkbench()
     {
-        actContents = new ItemStack[18];
+        setData(REDSTONEACTIVATED, false);
     }
 
+    public boolean isRedstoneActivated(){
+    	return (Boolean)getData(REDSTONEACTIVATED);
+    }
+    
+    public void setRedstoneActivated(boolean state){
+    	setData(REDSTONEACTIVATED, state);
+    }
+    
     private InventoryCrafting getStorageAsCraftingGrid(Container container)
     {
         if (container == null)
@@ -191,11 +204,6 @@ public class PCma_TileEntityAutomaticWorkbench extends PC_TileEntity implements 
         }
 
         return true;
-    }
-
-    private boolean redstoneActivatedMode()
-    {
-        return redstoneActivated;
     }
 
     @Override
@@ -365,7 +373,7 @@ public class PCma_TileEntityAutomaticWorkbench extends PC_TileEntity implements 
     {
         reorderACT();
 
-        if (!redstoneActivatedMode())
+        if (!isRedstoneActivated())
         {
             doCrafting();
         }
@@ -401,13 +409,13 @@ public class PCma_TileEntityAutomaticWorkbench extends PC_TileEntity implements 
 
             if (currentStack != null)
             {
-                if ((forceEject && currentStack.stackSize > 0) || currentStack.stackSize >= currentStack.getMaxStackSize() || redstoneActivatedMode())
+                if ((forceEject && currentStack.stackSize > 0) || currentStack.stackSize >= currentStack.getMaxStackSize() || isRedstoneActivated())
                 {
                     dispenseItem(currentStack);
                     currentStack = null;
                     needsSound = true;
 
-                    if (redstoneActivatedMode())
+                    if (isRedstoneActivated())
                     {
                         makeSound();
                         return;
@@ -611,7 +619,6 @@ public class PCma_TileEntityAutomaticWorkbench extends PC_TileEntity implements 
     {
         super.readFromNBT(nbttagcompound);
         PC_InvUtils.loadInventoryFromNBT(nbttagcompound, "Items", this);
-        redstoneActivated = nbttagcompound.getBoolean("RedstoneActivated");
     }
 
     @Override
@@ -619,7 +626,6 @@ public class PCma_TileEntityAutomaticWorkbench extends PC_TileEntity implements 
     {
         super.writeToNBT(nbttagcompound);
         PC_InvUtils.saveInventoryToNBT(nbttagcompound, "Items", this);
-        nbttagcompound.setBoolean("RedstoneActivated", redstoneActivated);
     }
 
     @Override
@@ -627,8 +633,6 @@ public class PCma_TileEntityAutomaticWorkbench extends PC_TileEntity implements 
     {
         return 64;
     }
-
-    private ItemStack actContents[];
 
     @Override
     public boolean isUseableByPlayer(EntityPlayer entityplayer)
@@ -679,37 +683,15 @@ public class PCma_TileEntityAutomaticWorkbench extends PC_TileEntity implements 
     {
         return false;
     }
-
-    @Override
-    public void setData(Object[] o)
-    {
-        int p = 0;
-
-        while (p < o.length)
-        {
-            String var = (String)o[p++];
-
-            if (var.equals("redstoneActivated"))
-            {
-                redstoneActivated = (boolean)(Boolean) o[p++];
-            }
-            else if (var.equals("orderAndCraft"))
-            {
-                orderAndCraft();
-            }
-        }
-    }
-
-    @Override
-    public Object[] getData()
-    {
-        Object[] o = new Object[2];
-        o[0] = "redstoneActivated";
-        o[1] = redstoneActivated;
-        return o;
-    }
     
     @Override
+	protected void onCall(String key, Object value) {
+		if(key.equals("orderAndCraft")){
+			orderAndCraft();
+		}
+	}
+
+	@Override
 	public boolean canDropStackFrom(int slot) {
 		return true;
 	}

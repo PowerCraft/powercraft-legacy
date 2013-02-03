@@ -9,6 +9,7 @@ import powercraft.management.PC_GresLabel;
 import powercraft.management.PC_GresLayoutH;
 import powercraft.management.PC_GresSeparatorH;
 import powercraft.management.PC_GresWidget;
+import powercraft.management.PC_TileEntity;
 import powercraft.management.PC_GresWidget.PC_GresAlign;
 import powercraft.management.PC_GresWindow;
 import powercraft.management.PC_IGresClient;
@@ -24,7 +25,7 @@ public class PCma_GuiXPBank implements PC_IGresClient {
 	private PC_GresWidget txPlayerLevels;
 	private EntityPlayer player;
 	
-	public PCma_GuiXPBank(EntityPlayer player, Object[] o){
+	public PCma_GuiXPBank(EntityPlayer player, PC_TileEntity te, Object[] o){
 		xpbank = GameInfo.getTE(player.worldObj, (Integer)o[0], (Integer)o[1], (Integer)o[2]);
 		this.player = player;
 	}
@@ -167,6 +168,12 @@ public class PCma_GuiXPBank implements PC_IGresClient {
 	public boolean drawBackground(PC_IGresGui gui, int par1, int par2,
 			float par3) {
 		return false;
+	}
+
+	@Override
+	public void keyChange(String key, Object value) {
+		// TODO Auto-generated method stub
+		
 	}
 
 }

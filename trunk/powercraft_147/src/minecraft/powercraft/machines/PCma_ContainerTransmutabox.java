@@ -8,23 +8,20 @@ import net.minecraft.inventory.Slot;
 import powercraft.management.PC_GresBaseWithInventory;
 import powercraft.management.PC_Slot;
 import powercraft.management.PC_SlotNoPickup;
+import powercraft.management.PC_TileEntity;
 import powercraft.management.PC_Utils.GameInfo;
 
-public class PCma_ContainerTransmutabox extends PC_GresBaseWithInventory
+public class PCma_ContainerTransmutabox extends PC_GresBaseWithInventory<PCma_TileEntityTransmutabox>
 {
-    protected PCma_TileEntityTransmutabox te;
     protected List<Slot> lSlot;
 
-    public PCma_ContainerTransmutabox(EntityPlayer player, Object[] o)
+    public PCma_ContainerTransmutabox(EntityPlayer player, PC_TileEntity te, Object[] o)
     {
-        super(player, o);
+        super(player, (PCma_TileEntityTransmutabox)te, o);
     }
 
     @Override
-    protected void init(Object[] o)
-    {
-        te = GameInfo.getTE(thePlayer.worldObj, (Integer)o[0], (Integer)o[1], (Integer)o[2]);
-    }
+    protected void init(Object[] o){}
 
     @Override
     protected boolean canShiftTransfer()
@@ -37,12 +34,12 @@ public class PCma_ContainerTransmutabox extends PC_GresBaseWithInventory
     {
         lSlot = new ArrayList<Slot>();
 
-        for (int i = 0; i < te.getSizeInventory(); i++)
+        for (int i = 0; i < tileEntity.getSizeInventory(); i++)
         {
         	if(i==9||i==10){
-        		lSlot.add(new PC_SlotNoPickup(te, i));
+        		lSlot.add(new PC_SlotNoPickup(tileEntity, i));
         	}else{
-        		lSlot.add(new PC_Slot(te, i));
+        		lSlot.add(new PC_Slot(tileEntity, i));
         	}
         }
 

@@ -13,6 +13,7 @@ import net.minecraft.world.World;
 import powercraft.management.PC_Block;
 import powercraft.management.PC_IItemInfo;
 import powercraft.management.PC_Renderer;
+import powercraft.management.PC_TileEntity;
 import powercraft.management.PC_Utils;
 import powercraft.management.PC_Utils.GameInfo;
 import powercraft.management.PC_Utils.Gres;
@@ -62,7 +63,7 @@ public class PCma_BlockTransmutabox extends PC_Block implements PC_IItemInfo
             int z, EntityPlayer player, int par6, float par7,
             float par8, float par9)
     {
-        Gres.openGres("Transmutabox", player, x, y, z);
+        Gres.openGres("Transmutabox", player, GameInfo.<PC_TileEntity>getTE(world, x, y, z));
         return true;
     }
 

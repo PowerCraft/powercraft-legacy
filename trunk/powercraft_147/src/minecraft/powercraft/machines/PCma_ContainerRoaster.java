@@ -7,23 +7,20 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.Slot;
 import powercraft.management.PC_GresBaseWithInventory;
 import powercraft.management.PC_Slot;
+import powercraft.management.PC_TileEntity;
 import powercraft.management.PC_Utils.GameInfo;
 
-public class PCma_ContainerRoaster extends PC_GresBaseWithInventory
+public class PCma_ContainerRoaster extends PC_GresBaseWithInventory<PCma_TileEntityRoaster>
 {
-    protected PCma_TileEntityRoaster roaster;
     protected List<Slot> lSlot;
 
-    public PCma_ContainerRoaster(EntityPlayer player, Object[] o)
+    public PCma_ContainerRoaster(EntityPlayer player, PC_TileEntity te, Object[] o)
     {
-        super(player, o);
+        super(player, (PCma_TileEntityRoaster)te, o);
     }
 
     @Override
-    protected void init(Object[] o)
-    {
-        roaster = GameInfo.getTE(thePlayer.worldObj, (Integer)o[0], (Integer)o[1], (Integer)o[2]);
-    }
+    protected void init(Object[] o){}
 
     @Override
     protected List<Slot> getAllSlots(List<Slot> slots)
@@ -32,9 +29,9 @@ public class PCma_ContainerRoaster extends PC_GresBaseWithInventory
 
         for (int i = 0; i < 9; i++)
         {
-            if (i < roaster.getSizeInventory())
+            if (i < tileEntity.getSizeInventory())
             {
-                lSlot.add(new PC_Slot(roaster, i));
+                lSlot.add(new PC_Slot(tileEntity, i));
             }
         }
 
