@@ -72,7 +72,7 @@ public class PCli_BlockLaser extends PC_Block implements PC_IItemInfo
         	ItemStack ihold = entityplayer.getCurrentEquippedItem();
         	if (ihold == null || ihold.getItem().itemID == Item.stick.itemID) {
         		if(!GameInfo.isCreative(entityplayer)){
-        			ValueWriting.dropItemStack(world, te.getItemStack(), new PC_VecI(i, j, k));
+        			ValueWriting.dropItemStack(world, te.getItemStack().toItemStack(), new PC_VecI(i, j, k));
 	        	}
         		te.setItemStack(null);
 		    }
@@ -148,7 +148,7 @@ public class PCli_BlockLaser extends PC_Block implements PC_IItemInfo
 
             if (te != null && te.getItemStack()!=null)
             {
-                ValueWriting.dropItemStack(world, te.getItemStack(), new PC_VecI(x, y, z));
+                ValueWriting.dropItemStack(world, te.getItemStack().toItemStack(), new PC_VecI(x, y, z));
             }
         }
     }
@@ -167,7 +167,7 @@ public class PCli_BlockLaser extends PC_Block implements PC_IItemInfo
         if(te!=null){
         	te.setKiller(GameInfo.isBlock(world, new PC_VecI(x, y-1, z), "PCma_BlockRoaster"));
         	boolean powered = world.isBlockIndirectlyGettingPowered(x, y, z);
-        	te.setPowerd(powered);
+        	te.setPowered(powered);
         }
         
 	}

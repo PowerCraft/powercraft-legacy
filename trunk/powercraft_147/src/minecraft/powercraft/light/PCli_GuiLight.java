@@ -14,31 +14,21 @@ import powercraft.management.PC_GresWindow;
 import powercraft.management.PC_IGresClient;
 import powercraft.management.PC_IGresGui;
 import powercraft.management.PC_PacketHandler;
+import powercraft.management.PC_TileEntity;
 import powercraft.management.PC_Utils.GameInfo;
 import powercraft.management.PC_Utils.Lang;
 
 public class PCli_GuiLight implements PC_IGresClient {
 
 	private PCli_TileEntityLight light;
-	private PC_Color color;
-	private boolean isStable;
-	private boolean isHuge;
 	
 	private PC_GresCheckBox checkHuge, checkStable;
 	private PC_GresColor colorWidget;
 	private PC_GresColorPicker colorPicker;
 	private PC_GresButton accept, cancel;
 	
-	public PCli_GuiLight(EntityPlayer player, Object[] o){
-		light = (PCli_TileEntityLight)GameInfo.getTE(player.worldObj, (Integer)o[0], (Integer)o[1], (Integer)o[2]);
-	
-		color = this.light.getColor();
-		if(color==null) 
-			color = new PC_Color(PC_Color.getHexColorForName("white"));
-		else
-			color = color.copy();
-		isStable = this.light.isStable();
-		isHuge = this.light.isHuge();
+	public PCli_GuiLight(EntityPlayer player, PC_TileEntity te, Object[] o){
+		light = (PCli_TileEntityLight)te;
 	}
 	
 	@Override
@@ -47,13 +37,13 @@ public class PCli_GuiLight implements PC_IGresClient {
 		PC_GresLayoutV v = (PC_GresLayoutV)new PC_GresLayoutV().setAlignH(PC_GresAlign.STRETCH);
 		
 		PC_GresLayoutH h = (PC_GresLayoutH)new PC_GresLayoutH().setAlignH(PC_GresAlign.JUSTIFIED);
-		h.add(checkHuge = (PC_GresCheckBox) new PC_GresCheckBox(Lang.tr("pc.gui.light.isHuge")).check(isHuge));
-		h.add(checkStable = (PC_GresCheckBox) new PC_GresCheckBox(Lang.tr("pc.gui.light.isStable")).check(isStable));
+		h.add(checkHuge = (PC_GresCheckBox) new PC_GresCheckBox(Lang.tr("pc.gui.light.isHuge")).check(light.isHuge()));
+		h.add(checkStable = (PC_GresCheckBox) new PC_GresCheckBox(Lang.tr("pc.gui.light.isStable")).check(light.isStable()));
 		v.add(h);
 		
 		h = (PC_GresLayoutH)new PC_GresLayoutH().setAlignH(PC_GresAlign.STRETCH);
-		h.add(colorWidget = new PC_GresColor(color));
-		h.add(colorPicker = new PC_GresColorPicker(color.getHex(), 100, 20));
+		h.add(colorWidget = new PC_GresColor(light.getColor()));
+		h.add(colorPicker = new PC_GresColorPicker(light.getColor().getHex(), 100, 20));
 		v.add(h);
 		
 		h = (PC_GresLayoutH)new PC_GresLayoutH().setAlignH(PC_GresAlign.STRETCH);;
@@ -72,15 +62,9 @@ public class PCli_GuiLight implements PC_IGresClient {
 	@Override
 	public void actionPerformed(PC_GresWidget widget, PC_IGresGui gui) {
 		if(widget == colorPicker){
-			colorWidget.setColor(((PC_GresColorPicker)widget).getColor());
-			color.setTo(colorPicker.getColor());
-		}else if(widget == checkHuge){
-			isHuge = ((PC_GresCheckBox)widget).isChecked();
-		}else if(widget == checkStable){
-			isStable = ((PC_GresCheckBox)widget).isChecked();
+			colorWidget.setColor(colorPicker.getColor());
 		}else if(widget == accept){
-			PC_PacketHandler.setTileEntity(light, "color", color, "isHuge", isHuge, "isStable", isStable);
-			gui.close();
+			onReturnPressed(gui);
 		}else if (widget == cancel) {
 			gui.close();
 		}
@@ -95,7 +79,9 @@ public class PCli_GuiLight implements PC_IGresClient {
 
 	@Override
 	public void onReturnPressed(PC_IGresGui gui) {
-		PC_PacketHandler.setTileEntity(light, "color", color, "isHuge", isHuge, "isStable", isStable);
+		light.setColor(PC_Color.fromHex(colorPicker.getColor()));
+		light.setHuge(checkHuge.isChecked());
+		light.setStable(checkStable.isChecked());
 		gui.close();
 	}
 
@@ -109,5 +95,8 @@ public class PCli_GuiLight implements PC_IGresClient {
 	public boolean drawBackground(PC_IGresGui gui, int par1, int par2, float par3) {
 		return false;
 	}
+
+	@Override
+	public void keyChange(String key, Object value) {}
 
 }

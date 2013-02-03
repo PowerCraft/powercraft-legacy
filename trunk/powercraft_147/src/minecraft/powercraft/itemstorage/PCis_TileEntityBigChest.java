@@ -5,11 +5,8 @@ import java.util.List;
 import java.util.Random;
 
 import net.minecraft.block.Block;
-import net.minecraft.client.multiplayer.WorldClient;
-import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompressedStreamTools;
 import net.minecraft.nbt.NBTTagCompound;
@@ -17,8 +14,10 @@ import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.world.World;
 import powercraft.management.PC_3DRecipe;
 import powercraft.management.PC_Color;
+import powercraft.management.PC_Entry;
 import powercraft.management.PC_IInventoryWrapper;
 import powercraft.management.PC_InvUtils;
+import powercraft.management.PC_Struct2;
 import powercraft.management.PC_TileEntity;
 import powercraft.management.PC_Utils.GameInfo;
 import powercraft.management.PC_Utils.ValueWriting;
@@ -160,63 +159,57 @@ public class PCis_TileEntityBigChest extends PC_TileEntity implements PC_IInvent
 	}
 
 	@Override
-	public void setData(Object[] o) {
-		int p = 0;
-
-        while (p < o.length)
-        {
-            String var = (String)o[p++];
-
-            if (var.equals("slotChange"))
-            {
-            	int slot = (Integer)o[p++];
-            	byte b[] = (byte[])o[p++];
+	public void setData(PC_Struct2<String, Object>[] data) {
+		for(PC_Struct2<String, Object>d:data){
+            if (d.a.equals("slotChange")){
+            	PC_Struct2<Integer, byte[]>s = (PC_Struct2<Integer, byte[]>)d.b;
             	ItemStack is = null;
-            	if(b!=null){
+            	if(s.b!=null){
             		try {
-						is = ItemStack.loadItemStackFromNBT(CompressedStreamTools.decompress(b));
+						is = ItemStack.loadItemStackFromNBT(CompressedStreamTools.decompress(s.b));
 					} catch (IOException e) {
 						e.printStackTrace();
 					}
             	}
-            	inv.setInventorySlotContents(slot, is);
-            }else if (var.equals("pos")){
-            	setPos((Integer)o[p++]);
-            }else if (var.equals("inv")){
-            	byte b[] = (byte[])o[p++];
+            	inv.setInventorySlotContents(s.a, is);
+            }else if (d.a.equals("pos")){
+            	setPos((Integer)d.b);
+            }else if (d.a.equals("inv")){
+            	byte b[] = (byte[])d.b;
             	try {
 					NBTTagCompound nbtTag = CompressedStreamTools.decompress(b);
 					PC_InvUtils.loadInventoryFromNBT(nbtTag, "inv", inv);
 				} catch (IOException e) {
 					e.printStackTrace();
 				}
-            }else if (var.equals("interact")){
-            	EntityPlayer player = (EntityPlayer)worldObj.getEntityByID((Integer)o[p++]);
-            	inv.interact(player, (Integer)o[p++]);
+            }else if (d.a.equals("interact")){
+            	PC_Struct2<Integer, Integer>s = (PC_Struct2<Integer, Integer>)d.b;
+            	EntityPlayer player = (EntityPlayer)worldObj.getEntityByID(s.a);
+            	inv.interact(player, s.b);
             }
         }
 	}
 
 	@Override
-	public Object[] getData() {
+	public PC_Struct2<String, Object>[] getData() {
 		if(inv==null){
-			return new Object[]{
-					"pos", pos,
+			return new PC_Struct2[]{
+					new PC_Entry("pos", pos)
 			};
 		}
 		NBTTagCompound nbtTag = new NBTTagCompound();
 		PC_InvUtils.saveInventoryToNBT(nbtTag, "inv", inv);
 		try {
 			byte b[]= CompressedStreamTools.compress(nbtTag);
-			return new Object[]{
-					"pos", pos,
-					"inv", b
+			return new PC_Struct2[]{
+					new PC_Entry("pos", pos),
+					new PC_Entry("inv", b)
 			};
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		return new Object[]{
-				"pos", pos
+		return new PC_Struct2[]{
+				new PC_Entry("pos", pos)
 		};
 	}
 	

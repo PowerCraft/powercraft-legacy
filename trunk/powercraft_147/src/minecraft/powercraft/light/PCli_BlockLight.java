@@ -140,21 +140,22 @@ public class PCli_BlockLight extends PC_Block implements PC_IItemInfo
     {
         ItemStack ihold = entityplayer.getCurrentEquippedItem();
 
+        PCli_TileEntityLight te = GameInfo.<PCli_TileEntityLight>getTE(world, i, j, k, blockID);
+        
         if (ihold != null)
         {
             if (ihold.getItem().itemID == Item.dyePowder.itemID)
             {
-            	PCli_TileEntityLight te = GameInfo.<PCli_TileEntityLight>getTE(world, i, j, k, blockID);
                 if(te!=null){
                 	Integer hex = PC_Color.getHexColorForName(ItemDye.dyeColorNames[ihold.getItemDamage()]);
                 	if(hex!=null)
-                		PC_PacketHandler.setTileEntity(te, "color", new PC_Color(hex));
+                		te.setColor(new PC_Color(hex));
                 	return true;
                 }
             }
         }
 
-        Gres.openGres("Light", entityplayer, i, j, k);
+        Gres.openGres("Light", entityplayer, te);
         return true;
     }
 
