@@ -3,11 +3,11 @@ package powercraft.itemstorage;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
+import powercraft.management.PC_Entry;
 import powercraft.management.PC_PacketHandler;
+import powercraft.management.PC_Struct2;
 import powercraft.management.PC_Utils.GameInfo;
-import powercraft.management.PC_Utils.SaveHandler;
 import powercraft.management.PC_VecF;
 import powercraft.management.PC_VecI;
 
@@ -50,7 +50,7 @@ public class PCis_EntityItemInBigChest extends EntityItem {
 	
 	@Override
 	public boolean interact(EntityPlayer entityPlayer) {
-		PC_PacketHandler.setTileEntity(getChest(), "interact", entityPlayer.entityId, slot);
+		PC_PacketHandler.setTileEntity(getChest(), new PC_Entry("interact", new PC_Struct2<Integer, Integer>(entityPlayer.entityId, slot)));
 		getInv().interact(entityPlayer, slot);
 		return true;
 	}

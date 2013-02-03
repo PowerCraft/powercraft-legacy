@@ -8,14 +8,15 @@ import net.minecraft.inventory.Slot;
 import powercraft.management.PC_GresBaseWithInventory;
 import powercraft.management.PC_Slot;
 import powercraft.management.PC_SlotNoPickup;
+import powercraft.management.PC_TileEntity;
 
-public class PCis_ContainerCompressor extends PC_GresBaseWithInventory {
+public class PCis_ContainerCompressor extends PC_GresBaseWithInventory<PC_TileEntity> {
 
 	protected List<Slot> lSlot;
 	protected PCis_CompressorInventory inv;
 	
-	public PCis_ContainerCompressor(EntityPlayer player, Object[] o) {
-		super(player, o);
+	public PCis_ContainerCompressor(EntityPlayer player, PC_TileEntity te, Object[] o) {
+		super(player, te, o);
 	}
 
 	@Override
