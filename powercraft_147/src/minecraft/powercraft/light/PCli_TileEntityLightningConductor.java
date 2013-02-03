@@ -22,7 +22,7 @@ public class PCli_TileEntityLightningConductor extends PC_TileEntity
     private static final int FLASH_CHARGE_MAX = 17000;
     
     private static Random rand = new Random();
-
+    
     @Override
     public void create(ItemStack stack, EntityPlayer player, World world, int x, int y, int z, int side, float hitX, float hitY, float hitZ)
     {

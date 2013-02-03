@@ -22,7 +22,7 @@ public class PCis_ItemCompressor extends PC_Item {
 	public static final int id2Texture[] = {0, 2, 3, 1};
 	
 	public PCis_ItemCompressor(int id) {
-		super(id);
+		super(id, 0);
 		setMaxDamage(0);
         setMaxStackSize(1);
         setHasSubtypes(true);
@@ -33,7 +33,7 @@ public class PCis_ItemCompressor extends PC_Item {
     public ItemStack onItemRightClick(ItemStack itemstack, World world, EntityPlayer entityplayer)
     {
         if (!world.isRemote){
-        	Gres.openGres("Compressor", entityplayer);
+        	Gres.openGres("Compressor", entityplayer, null);
         }
         return itemstack;
     }

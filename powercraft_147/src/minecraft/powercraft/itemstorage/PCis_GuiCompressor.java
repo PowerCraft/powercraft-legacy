@@ -7,13 +7,14 @@ import powercraft.management.PC_GresWidget;
 import powercraft.management.PC_GresWindow;
 import powercraft.management.PC_IGresClient;
 import powercraft.management.PC_IGresGui;
+import powercraft.management.PC_TileEntity;
 import powercraft.management.PC_Utils.Lang;
 
 public class PCis_GuiCompressor extends PCis_ContainerCompressor
 		implements PC_IGresClient {
 
-	public PCis_GuiCompressor(EntityPlayer player, Object[] o) {
-		super(player, o);
+	public PCis_GuiCompressor(EntityPlayer player, PC_TileEntity te, Object[] o) {
+		super(player, te, o);
 	}
 
 	@Override
@@ -59,5 +60,8 @@ public class PCis_GuiCompressor extends PCis_ContainerCompressor
 			float par3) {
 		return false;
 	}
+
+	@Override
+	public void keyChange(String key, Object value) {}
 
 }

@@ -3,7 +3,7 @@ package powercraft.light;
 import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.model.ModelRenderer;
 
-public class PCma_ModelPrism extends ModelBase {
+public class PCli_ModelPrism extends ModelBase {
 	/** the central crystal */
 	public ModelRenderer mainCrystal;
 	/** glass panels */
@@ -12,7 +12,7 @@ public class PCma_ModelPrism extends ModelBase {
 	/**
 	 * prism
 	 */
-	public PCma_ModelPrism() {
+	public PCli_ModelPrism() {
 		mainCrystal = new ModelRenderer(this, 0, 0);
 		mainCrystal.addBox(-4, -4, -4, 8, 8, 8, 0.0F);
 		mainCrystal.addBox(-5, -3, -3, 10, 6, 6, 0.0F);

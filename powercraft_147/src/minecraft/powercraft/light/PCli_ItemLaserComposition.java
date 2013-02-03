@@ -63,7 +63,7 @@ public class PCli_ItemLaserComposition extends PC_Item
     {
 		if(pass==0)
 			return 0xFFFFFF;
-        return getColorForItemStack(itemStack).getHex();
+        return getColorForItemStack(new PC_ItemStack(itemStack)).getHex();
     }
 
 	
@@ -76,7 +76,7 @@ public class PCli_ItemLaserComposition extends PC_Item
     	
     	if(te instanceof PCli_TileEntityLaser){
     		
-    		((PCli_TileEntityLaser)te).setItemStack(itemstack.copy());
+    		((PCli_TileEntityLaser)te).setItemStack(new PC_ItemStack(itemstack));
     		
     		itemstack.stackSize = 0;
     		
@@ -173,16 +173,16 @@ public class PCli_ItemLaserComposition extends PC_Item
 		return arrayList;
 	}
 
-	public static PC_Color getColorForItemStack(ItemStack itemstack)
+	public static PC_Color getColorForItemStack(PC_ItemStack itemstack)
     {
     	if(itemstack==null){
     		return new PC_Color(1.0f, 1.0f, 1.0f);
     	}
 
-        NBTTagCompound nbtTagCompound = itemstack.getTagCompound();
+        NBTTagCompound nbtTagCompound = itemstack.getNBTTag();
         if(nbtTagCompound==null){
         	nbtTagCompound = new NBTTagCompound();
-        	itemstack.setTagCompound(nbtTagCompound);
+        	itemstack.setNBTTag(nbtTagCompound);
         }
         int levelKill = nbtTagCompound.getInteger("level.kill");
         int levelSensor = nbtTagCompound.getInteger("level.sensor");
@@ -202,19 +202,19 @@ public class PCli_ItemLaserComposition extends PC_Item
         return c;
     }
     
-	public static int getLengthLimit(ItemStack itemstack, boolean b) {
+	public static int getLengthLimit(PC_ItemStack itemstack, boolean b) {
 		if(itemstack==null)
 			return b?40:20;
-		NBTTagCompound nbtTagCompound = itemstack.getTagCompound();
+		NBTTagCompound nbtTagCompound = itemstack.getNBTTag();
 		if(nbtTagCompound==null){
 			nbtTagCompound = new NBTTagCompound();
-	        itemstack.setTagCompound(nbtTagCompound);
+	        itemstack.setNBTTag(nbtTagCompound);
 	    }
 		int levelDistance = nbtTagCompound.getInteger("level.distance");
 		return (20+levelDistance*10)*(b?2:1);
 	}
 
-	public static boolean onBlockHit(PC_BeamTracer beamTracer, Block block, PC_VecI coord, ItemStack itemstack, boolean isBurning) {
+	public static boolean onBlockHit(PC_BeamTracer beamTracer, Block block, PC_VecI coord, PC_ItemStack itemstack, boolean isBurning) {
 		if(block.isOpaqueCube() && !GameInfo.hasFlag(beamTracer.getWorld(), coord, PC_Utils.BEAMTRACER_STOP)){
 			return true;
 		}
@@ -233,13 +233,13 @@ public class PCli_ItemLaserComposition extends PC_Item
 		return levelSensor == 0 || levelSensor == 1 || levelSensor == 3 || levelSensor == 5;
 	}
 	
-	public static boolean onEntityHit(PC_BeamTracer beamTracer, Entity entity, PC_VecI coord, ItemStack itemstack, boolean isBurning) {
+	public static boolean onEntityHit(PC_BeamTracer beamTracer, Entity entity, PC_VecI coord, PC_ItemStack itemstack, boolean isBurning) {
 		if(itemstack==null)
 			return true;
-		NBTTagCompound nbtTagCompound = itemstack.getTagCompound();
+		NBTTagCompound nbtTagCompound = itemstack.getNBTTag();
         if(nbtTagCompound==null){
         	nbtTagCompound = new NBTTagCompound();
-        	itemstack.setTagCompound(nbtTagCompound);
+        	itemstack.setNBTTag(nbtTagCompound);
         }
         int levelKill = nbtTagCompound.getInteger("level.kill");
         int levelSensor = nbtTagCompound.getInteger("level.sensor");
@@ -271,13 +271,13 @@ public class PCli_ItemLaserComposition extends PC_Item
 		return shineTrough;
 	}
 
-	public static boolean isSensor(ItemStack itemstack) {
+	public static boolean isSensor(PC_ItemStack itemstack) {
 		if(itemstack==null)
 			return false;
-		NBTTagCompound nbtTagCompound = itemstack.getTagCompound();
+		NBTTagCompound nbtTagCompound = itemstack.getNBTTag();
         if(nbtTagCompound==null){
         	nbtTagCompound = new NBTTagCompound();
-        	itemstack.setTagCompound(nbtTagCompound);
+        	itemstack.setNBTTag(nbtTagCompound);
         }
         int levelSensor = nbtTagCompound.getInteger("level.sensor");
 		return levelSensor>0;

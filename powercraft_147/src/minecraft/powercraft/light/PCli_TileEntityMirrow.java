@@ -9,27 +9,20 @@ import powercraft.management.PC_Utils.ModuleInfo;
 
 public class PCli_TileEntityMirrow extends PC_TileEntity implements PC_ITileEntityRenderer {
 
-	private int mirrorColor = -1;
+	public static final String MIRRORCOLOR = "mirrorColor";
+	
 	private static PCli_ModelMirror modelMirror = new PCli_ModelMirror();
 	
+	public PCli_TileEntityMirrow(){
+    	setData(MIRRORCOLOR, -1);
+    }
+	
 	public void setMirrorColor(int mirrorColor) {
-		this.mirrorColor = mirrorColor;
+		setData(MIRRORCOLOR, mirrorColor);
 	}
 
 	public int getMirrorColor() {
-		return mirrorColor;
-	}
-
-	@Override
-	public void writeToNBT(NBTTagCompound tag) {
-		super.writeToNBT(tag);
-		tag.setInteger("optMirrorColor", 1 + mirrorColor);
-	}
-
-	@Override
-	public void readFromNBT(NBTTagCompound tag) {
-		super.readFromNBT(tag);
-		mirrorColor = tag.getInteger("optMirrorColor") - 1;
+		return (Integer)getData(MIRRORCOLOR);
 	}
 	
 	@Override
@@ -99,24 +92,6 @@ public class PCli_TileEntityMirrow extends PC_TileEntity implements PC_ITileEnti
 
 		PC_Renderer.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 		PC_Renderer.glPopMatrix();
-	}
-	
-	@Override
-	public void setData(Object[] o) {
-		int p = 0;
-		while(p<o.length){
-			String var = (String)o[p++];
-			if(var.equals("mirrorColor"))
-				mirrorColor = (Integer)o[p++];
-		}
-	}
-
-	@Override
-	public Object[] getData() {
-		return new Object[]{
-				"mirrorColor",
-				mirrorColor
-		};
 	}
 	
 }
