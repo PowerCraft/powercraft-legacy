@@ -7,23 +7,29 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
 import powercraft.management.PC_ISpecialAccessInventory;
 import powercraft.management.PC_InvUtils;
+import powercraft.management.PC_ItemStack;
 import powercraft.management.PC_TileEntity;
 import powercraft.management.PC_Utils.GameInfo;
 import powercraft.management.PC_Utils.ValueWriting;
 
 public class PClo_TileEntitySpecial extends PC_TileEntity implements IInventory, PC_ISpecialAccessInventory
 {
-    private ItemStack inv[] = new ItemStack[1];
-    private int type = 0;
+	
+	public static final String TYPE = "type";
+	
+    private ItemStack itemstack;
+    //private int type = 0;
 
-    public void create(ItemStack stack, EntityPlayer player, World world, int x, int y, int z, int side, float hitX, float hitY, float hitZ)
-    {
-        type = stack.getItemDamage();
+	public PClo_TileEntitySpecial(){
+		setData(TYPE, 0);
+    }
+	
+    public void create(ItemStack stack, EntityPlayer player, World world, int x, int y, int z, int side, float hitX, float hitY, float hitZ){
+        setData(TYPE, stack.getItemDamage());
     }
 
-    public int getType()
-    {
-        return type;
+    public int getType(){
+        return (Integer)getData(TYPE);
     }
 
     @Override
@@ -51,7 +57,7 @@ public class PClo_TileEntitySpecial extends PC_TileEntity implements IInventory,
             xAdd = 1;
         }
 
-        switch (type)
+        switch (getType())
         {
             case PClo_SpecialType.DAY:
                 shouldState = worldObj.isDaytime();
@@ -66,11 +72,11 @@ public class PClo_TileEntitySpecial extends PC_TileEntity implements IInventory,
                 break;
 
             case PClo_SpecialType.CHEST_EMPTY:
-                shouldState = GameInfo.isChestEmpty(worldObj, xCoord + xAdd, yCoord, zCoord + zAdd, inv[0]);
+                shouldState = GameInfo.isChestEmpty(worldObj, xCoord + xAdd, yCoord, zCoord + zAdd, getStackInSlot(0));
                 break;
 
             case PClo_SpecialType.CHEST_FULL:
-                shouldState = GameInfo.isChestFull(worldObj, xCoord + xAdd, yCoord, zCoord + zAdd, inv[0]);
+                shouldState = GameInfo.isChestFull(worldObj, xCoord + xAdd, yCoord, zCoord + zAdd, getStackInSlot(0));
                 break;
 
             case PClo_SpecialType.SPECIAL:
@@ -95,13 +101,12 @@ public class PClo_TileEntitySpecial extends PC_TileEntity implements IInventory,
     {
         return true;
     }
-
+    
     @Override
     public void readFromNBT(NBTTagCompound nbtTagCompound)
     {
         super.readFromNBT(nbtTagCompound);
         PC_InvUtils.loadInventoryFromNBT(nbtTagCompound, "Items", this);
-        type = nbtTagCompound.getInteger("type");
     }
 
     @Override
@@ -109,35 +114,6 @@ public class PClo_TileEntitySpecial extends PC_TileEntity implements IInventory,
     {
         super.writeToNBT(nbtTagCompound);
         PC_InvUtils.saveInventoryToNBT(nbtTagCompound, "Items", this);
-        nbtTagCompound.setInteger("type", type);
-    }
-
-    @Override
-    public void setData(Object[] o)
-    {
-        int p = 0;
-
-        while (p < o.length)
-        {
-            String var = (String)o[p++];
-
-            if (var.equals("type"))
-            {
-                type = (Integer)o[p++];
-            }
-        }
-
-        ValueWriting.hugeUpdate(worldObj, xCoord, yCoord, zCoord);
-        worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
-    }
-
-    @Override
-    public Object[] getData()
-    {
-        return new Object[]
-                {
-                    "type", type
-                };
     }
 
     @Override
@@ -173,37 +149,35 @@ public class PClo_TileEntitySpecial extends PC_TileEntity implements IInventory,
     @Override
     public int getSizeInventory()
     {
-        return inv.length;
+        return 1;
     }
 
     @Override
-    public ItemStack getStackInSlot(int i)
-    {
-        return inv[i];
+    public ItemStack getStackInSlot(int i){
+    	return itemstack;
     }
 
     @Override
-    public ItemStack decrStackSize(int i, int j)
-    {
-        if (inv[i] != null)
+    public ItemStack decrStackSize(int i, int j){
+        if (itemstack != null)
         {
-            if (inv[i].stackSize <= j)
+            if (itemstack.stackSize <= j)
             {
-                ItemStack itemstack = inv[i];
-                inv[i] = null;
+                ItemStack is = itemstack;
+                itemstack = null;
                 onInventoryChanged();
-                return itemstack;
+                return is;
             }
 
-            ItemStack itemstack1 = inv[i].splitStack(j);
+            ItemStack is = itemstack.splitStack(j);
 
-            if (inv[i].stackSize == 0)
+            if (itemstack.stackSize == 0)
             {
-                inv[i] = null;
+            	itemstack = null;
             }
-
+            
             onInventoryChanged();
-            return itemstack1;
+            return is;
         }
         else
         {
@@ -212,30 +186,22 @@ public class PClo_TileEntitySpecial extends PC_TileEntity implements IInventory,
     }
 
     @Override
-    public ItemStack getStackInSlotOnClosing(int i)
-    {
-        if (inv[i] != null)
-        {
-            ItemStack itemstack = inv[i];
-            inv[i] = null;
-            return itemstack;
-        }
-        else
-        {
-            return null;
-        }
+    public ItemStack getStackInSlotOnClosing(int i) {
+        return itemstack;
     }
 
     @Override
-    public void setInventorySlotContents(int i, ItemStack itemstack)
-    {
-        inv[i] = itemstack;
-
-        if (itemstack != null && itemstack.stackSize > getInventoryStackLimit())
-        {
-            itemstack.stackSize = getInventoryStackLimit();
-        }
-
+    public void setInventorySlotContents(int i, ItemStack itemstack) {
+    	if(itemstack==null){
+    		this.itemstack = itemstack;
+    	}else{
+	        if (itemstack.stackSize > getInventoryStackLimit())
+	        {
+	            itemstack.stackSize = getInventoryStackLimit();
+	        }
+	
+	    	this.itemstack = itemstack;
+    	}
         onInventoryChanged();
     }
 

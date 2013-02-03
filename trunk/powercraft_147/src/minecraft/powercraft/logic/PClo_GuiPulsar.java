@@ -14,6 +14,7 @@ import powercraft.management.PC_GresWindow;
 import powercraft.management.PC_IGresClient;
 import powercraft.management.PC_IGresGui;
 import powercraft.management.PC_PacketHandler;
+import powercraft.management.PC_TileEntity;
 import powercraft.management.PC_Utils.Converter;
 import powercraft.management.PC_Utils.Lang;
 
@@ -30,8 +31,8 @@ public class PClo_GuiPulsar implements PC_IGresClient {
 	
 	private boolean error = false;
 	
-	public PClo_GuiPulsar(EntityPlayer player, Object[] o){
-		pulsar = (PClo_TileEntityPulsar)player.worldObj.getBlockTileEntity((Integer)o[0], (Integer)o[1], (Integer)o[2]);
+	public PClo_GuiPulsar(EntityPlayer player, PC_TileEntity te, Object[] o){
+		pulsar = (PClo_TileEntityPulsar)te;
 	}
 	
 	@Override
@@ -120,7 +121,9 @@ public class PClo_GuiPulsar implements PC_IGresClient {
 				}else if(ihold>=idelay||ihold<=0){
 					txError.setText(Lang.tr("pc.gui.pulsar.errHold"));
 				}else{
-					PC_PacketHandler.setTileEntity(pulsar, "silent", checkSilent.isChecked(), "paused", checkPaused.isChecked(), "delay", idelay, "hold", ihold);
+					pulsar.setSilent(checkSilent.isChecked());
+					pulsar.setPaused(checkPaused.isChecked());
+					pulsar.setTimes(idelay, ihold);
 					gui.close();
 				}
 			}
@@ -146,6 +149,12 @@ public class PClo_GuiPulsar implements PC_IGresClient {
 	public boolean drawBackground(PC_IGresGui gui, int par1, int par2,
 			float par3) {
 		return false;
+	}
+
+	@Override
+	public void keyChange(String key, Object value) {
+		// TODO Auto-generated method stub
+		
 	}
 
 }

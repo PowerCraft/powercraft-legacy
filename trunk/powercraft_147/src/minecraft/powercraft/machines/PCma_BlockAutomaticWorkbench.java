@@ -18,6 +18,7 @@ import powercraft.management.PC_Block;
 import powercraft.management.PC_IItemInfo;
 import powercraft.management.PC_ISpecialInventoryTextures;
 import powercraft.management.PC_InvUtils;
+import powercraft.management.PC_TileEntity;
 import powercraft.management.PC_Utils;
 import powercraft.management.PC_Utils.GameInfo;
 import powercraft.management.PC_Utils.Gres;
@@ -185,7 +186,7 @@ public class PCma_BlockAutomaticWorkbench extends PC_Block implements PC_ISpecia
             }
         }
 
-        Gres.openGres("AutomaticWorkbench", entityplayer, i, j, k);
+        Gres.openGres("AutomaticWorkbench", entityplayer, GameInfo.<PC_TileEntity>getTE(world, i, j, k));
         return true;
     }
 

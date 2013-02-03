@@ -19,15 +19,14 @@ import powercraft.management.PC_MathHelper;
 import powercraft.management.PC_Property;
 import powercraft.management.PC_Renderer;
 import powercraft.management.PC_Shining;
-import powercraft.management.PC_Struct3;
 import powercraft.management.PC_Shining.OFF;
 import powercraft.management.PC_Shining.ON;
+import powercraft.management.PC_TileEntity;
 import powercraft.management.PC_Utils;
 import powercraft.management.PC_Utils.GameInfo;
 import powercraft.management.PC_Utils.Gres;
 import powercraft.management.PC_Utils.ValueWriting;
 import powercraft.management.PC_VecI;
-import powercraft.net.PCnt_RadioManager.FunctionProvider;
 
 @PC_Shining
 public class PClo_BlockSpecial extends PC_Block
@@ -389,7 +388,7 @@ public class PClo_BlockSpecial extends PC_Block
             }
         }
 
-        Gres.openGres("Special", entityplayer, i, j, k);
+        Gres.openGres("Special", entityplayer, GameInfo.<PC_TileEntity>getTE(world, i, j, k));
         return true;
     }
     

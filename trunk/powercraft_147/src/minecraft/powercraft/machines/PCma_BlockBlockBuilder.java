@@ -17,6 +17,7 @@ import net.minecraft.world.World;
 import powercraft.management.PC_Block;
 import powercraft.management.PC_IItemInfo;
 import powercraft.management.PC_ISpecialInventoryTextures;
+import powercraft.management.PC_TileEntity;
 import powercraft.management.PC_Utils;
 import powercraft.management.PC_Utils.GameInfo;
 import powercraft.management.PC_Utils.Gres;
@@ -124,7 +125,7 @@ public class PCma_BlockBlockBuilder extends PC_Block implements PC_ISpecialInven
 			return true;
 		}
 
-		Gres.openGres("BlockBuilder",  entityplayer, i, j, k);
+		Gres.openGres("BlockBuilder", entityplayer, GameInfo.<PC_TileEntity>getTE(world, i, j, k));
 
 		return true;
 	}

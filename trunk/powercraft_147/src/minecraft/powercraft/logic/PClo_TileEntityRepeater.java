@@ -10,102 +10,52 @@ import powercraft.management.PC_Utils.ValueWriting;
 
 public class PClo_TileEntityRepeater extends PC_TileEntity
 {
-    private int type = 0;
-    private int state = 0;
-    private int inp = 0;
+	
+	public static final String TYPE = "type", STATE = "state", INP = "inp";
+	
+    //private int type = 0;
+    //private int state = 0;
+    //private int inp = 0;
 
+	public PClo_TileEntityRepeater(){
+		setData(TYPE, 0);
+    	setData(STATE, 0);
+    	setData(INP, 0);
+    }
+	
     public void create(ItemStack stack, EntityPlayer player, World world, int x, int y, int z, int side, float hitX, float hitY, float hitZ)
     {
-        type = stack.getItemDamage();
-        inp = 0;
+    	setData(TYPE, stack.getItemDamage());
+    	setData(INP, 0);
     }
 
     public int getType()
     {
-        return type;
+        return (Integer)getData(TYPE);
     }
 
     public int getState()
     {
-        return state;
+    	 return (Integer)getData(STATE);
     }
 
     public void setState(int b)
     {
-        PC_PacketHandler.setTileEntity(this, "state", b);
-        state = b;
+    	setData(STATE, b);
         ValueWriting.hugeUpdate(worldObj, xCoord, yCoord, zCoord);
         worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
     }
 
     public int getInp()
     {
-        return inp;
+    	return (Integer)getData(INP);
     }
 
     public void change()
     {
-        inp = PClo_RepeaterType.change(type, inp);
-        PC_PacketHandler.setTileEntity(this, "inp", inp);
+        setData(INP, PClo_RepeaterType.change(getType(), getInp()));
         worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
         ValueWriting.notifyBlockOfNeighborChange(worldObj, xCoord, yCoord, zCoord, worldObj.getBlockId(xCoord, yCoord, zCoord));
         ValueWriting.hugeUpdate(worldObj, xCoord, yCoord, zCoord);
-    }
-
-    @Override
-    public void readFromNBT(NBTTagCompound nbtTagCompound)
-    {
-        super.readFromNBT(nbtTagCompound);
-        type = nbtTagCompound.getInteger("type");
-        state = nbtTagCompound.getInteger("state");
-        inp = nbtTagCompound.getInteger("inp");
-    }
-
-    @Override
-    public void writeToNBT(NBTTagCompound nbtTagCompound)
-    {
-        super.writeToNBT(nbtTagCompound);
-        nbtTagCompound.setInteger("type", type);
-        nbtTagCompound.setInteger("state", state);
-        nbtTagCompound.setInteger("inp", inp);
-    }
-
-    @Override
-    public void setData(Object[] o)
-    {
-        int p = 0;
-
-        while (p < o.length)
-        {
-            String var = (String)o[p++];
-
-            if (var.equals("type"))
-            {
-            	type = (Integer)o[p++];
-            }
-            else if (var.equals("state"))
-            {
-                state = (Integer)o[p++];
-            }
-            else if (var.equals("inp"))
-            {
-                inp = (Integer)o[p++];
-            }
-        }
-
-        worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
-        ValueWriting.notifyBlockOfNeighborChange(worldObj, xCoord, yCoord, zCoord, worldObj.getBlockId(xCoord, yCoord, zCoord));
-        ValueWriting.hugeUpdate(worldObj, xCoord, yCoord, zCoord);
-    }
-
-    @Override
-    public Object[] getData()
-    {
-        return new Object[]
-                {
-                    "type", type,
-                    "state", state,
-                    "inp", inp
-                };
     }
 }

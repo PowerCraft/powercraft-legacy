@@ -2,6 +2,7 @@ package powercraft.logic;
 
 import net.minecraft.nbt.NBTTagCompound;
 import powercraft.management.PC_PacketHandler;
+import powercraft.management.PC_Struct2;
 import powercraft.management.PC_TileEntity;
 import powercraft.management.PC_Utils.Communication;
 import powercraft.management.PC_Utils.Converter;
@@ -9,81 +10,64 @@ import powercraft.management.PC_Utils.GameInfo;
 import powercraft.management.PC_Utils.Lang;
 import powercraft.management.PC_Utils.ValueWriting;
 
-public class PClo_TileEntityPulsar extends PC_TileEntity
-{
+public class PClo_TileEntityPulsar extends PC_TileEntity{
+	
+	public static final String DELAY = "delay", HOLDTIME = "holdtime", PAUSED = "paused", SILENT = "silent";
+	
     private int delayTimer = 0;
 
-    private int delay = 10;
+    //private int delay = 10;
 
-    private int holdtime = 4;
+    //private int holdtime = 4;
 
-    private boolean paused = false;
+    //private boolean paused = false;
 
-    private boolean silent = false;
+    //private boolean silent = false;
 
     private boolean should = true;
     
-    public PClo_TileEntityPulsar()
-    {
+    public PClo_TileEntityPulsar(){
+		setData(DELAY, 10);
+    	setData(HOLDTIME, 4);
+    	setData(PAUSED, false);
+    	setData(SILENT, false);
     }
 
-    public void setTimes(int delay, int holdTime)
-    {
-        this.delay = delay;
-
-        if (this.delay < 2)
-        {
-            this.delay = 2;
+    public void setTimes(int delay, int holdTime){
+        if (delay < 2){
+        	delay = 2;
         }
 
-        this.holdtime = holdTime;
+        setData(DELAY, delay);
 
-        if (this.holdtime >= this.delay)
+        if (holdTime >= delay)
         {
-            this.holdtime = this.delay - 1;
+        	holdTime = delay - 1;
         }
+        
+        setData(HOLDTIME, holdTime);
     }
 
     @Override
-    public void writeToNBT(NBTTagCompound nbttagcompound)
-    {
+    public void writeToNBT(NBTTagCompound nbttagcompound) {
         super.writeToNBT(nbttagcompound);
         nbttagcompound.setInteger("delayTimer", delayTimer);
-        nbttagcompound.setInteger("delay", delay);
-        nbttagcompound.setInteger("holdtime", holdtime);
-        nbttagcompound.setBoolean("paused", paused);
-        nbttagcompound.setBoolean("silent", silent);
     }
 
     @Override
-    public void readFromNBT(NBTTagCompound nbttagcompound)
-    {
+    public void readFromNBT(NBTTagCompound nbttagcompound) {
         super.readFromNBT(nbttagcompound);
         delayTimer = nbttagcompound.getInteger("delayTimer");
-        delay = nbttagcompound.getInteger("delay");
-        holdtime = nbttagcompound.getInteger("holdtime");
-        paused = nbttagcompound.getBoolean("paused");
-        silent = nbttagcompound.getBoolean("silent");
-
-        if (delay < 2)
-        {
-            delay = 2;
-        }
-
-        if (holdtime < 1 || holdtime >= delay - 1)
-        {
-            holdtime = (delay > 6 ? 3 : 1);
-        }
     }
 
     public void printDelay()
     {
-        Communication.chatMsg(Lang.tr("pc.pulsar.clickMsg", new String[] { delay + "", Converter.ticksToSecs(delay) + "" }), true);
+        Communication.chatMsg(Lang.tr("pc.pulsar.clickMsg", new String[] {getDelay() + "", Converter.ticksToSecs(getDelay()) + "" }), true);
     }
 
     public void printDelayTime()
     {
-        Communication.chatMsg(Lang.tr("pc.pulsar.clickMsgTime", new String[] { delay + "", Converter.ticksToSecs(delay) + "", (delay - delayTimer) + "" }), true);
+        Communication.chatMsg(Lang.tr("pc.pulsar.clickMsgTime", new String[] {getDelay() + "", Converter.ticksToSecs(getDelay()) + "", (getDelay() - delayTimer) + "" }), true);
     }
 
     public boolean isActive()
@@ -94,7 +78,7 @@ public class PClo_TileEntityPulsar extends PC_TileEntity
     @Override
     public void updateEntity()
     {
-        if (paused || worldObj.isRemote)
+        if (isPaused() || worldObj.isRemote)
         {
             return;
         }
@@ -106,12 +90,12 @@ public class PClo_TileEntityPulsar extends PC_TileEntity
 
         delayTimer++;
 
-        if (delayTimer >= holdtime && isActive())
+        if (delayTimer >= getHold() && isActive())
         {
         	ValueWriting.setBlockState(worldObj, xCoord, yCoord, zCoord, false);
         }
 
-        if (delayTimer >= delay)
+        if (delayTimer >= getDelay())
         {
             delayTimer = -1;
         }
@@ -125,81 +109,45 @@ public class PClo_TileEntityPulsar extends PC_TileEntity
 
     public boolean isSilent()
     {
-        return silent;
+        return (Boolean)getData(SILENT);
     }
 
     public int getDelay()
     {
-        return delay;
+        return (Integer)getData(DELAY);
     }
 
     public int getHold()
     {
-        return holdtime;
+        return (Integer)getData(HOLDTIME);
     }
 
     public boolean isPaused()
     {
-        return paused;
+        return (Boolean)getData(PAUSED);
     }
 
     public void setPaused(boolean paused)
     {
-        PC_PacketHandler.setTileEntity(this, "paused", paused);
-        this.paused = paused;
+    	setData(PAUSED, paused);
     }
 
-    @Override
-    public void setData(Object[] o)
-    {
-        int p = 0;
-
-        while (p < o.length)
-        {
-            String var = (String)o[p++];
-
-            if (var.equals("hold"))
-            {
-                holdtime = (Integer)o[p++];
-            }
-            else if (var.equals("delay"))
-            {
-                delay = (Integer)o[p++];
-            }
-            else if (var.equals("silent"))
-            {
-                silent = (Boolean)o[p++];
-            }
-            else if (var.equals("paused"))
-            {
-                paused = (Boolean)o[p++];
-            }
-            else if (var.equals("change"))
-            {
-                if (worldObj.isRemote)
-                {
-                    if (!silent)
-                    {
-                        ValueWriting.playSound(xCoord + 0.5D, yCoord + 0.5D, zCoord + 0.5D, "random.click", 1.0F, 1.0F);
-                    }
-                }
-            }
-        }
-
-        worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
-    }
-
-    @Override
-    public Object[] getData()
-    {
-        return new Object[]
-                {
-                    "hold", holdtime,
-                    "delay", delay,
-                    "silent", silent,
-                    "paused", paused
-                };
-    }
+    public void setSilent(boolean silent) {
+		setData(SILENT, silent);
+	}
+    
+	@Override
+	protected void onCall(String key, Object value) {
+		if(key.equals("change")){
+			 if (worldObj.isRemote)
+             {
+                 if (!isSilent())
+                 {
+                     ValueWriting.playSound(xCoord + 0.5D, yCoord + 0.5D, zCoord + 0.5D, "random.click", 1.0F, 1.0F);
+                 }
+             }
+		}
+	}
 
 	public boolean getShould() {
 		return should;

@@ -12,24 +12,30 @@ import powercraft.management.PC_Utils.ValueWriting;
 
 public class PClo_TileEntityDelayer extends PC_TileEntity
 {
-    private int type = 0;
-    private boolean stateBuffer[] = new boolean[20];
-    private int remainingTicks = 0;
+	public static final String TYPE = "type", STATEBUFFER = "stateBuffer";
+    //private int type = 0;
+	//private boolean stateBuffer[] = new boolean[20];
+	private int remainingTicks = 0;
     private int ticks = 20;
+    
+    public PClo_TileEntityDelayer(){
+    	setData(TYPE, 0);
+    	setData(STATEBUFFER, new boolean[20]);
+    }
     
     public void create(ItemStack stack, EntityPlayer player, World world, int x, int y, int z, int side, float hitX, float hitY, float hitZ)
     {
-        type = stack.getItemDamage();
+    	setData(TYPE, stack.getItemDamage());
     }
 
     public int getType()
     {
-        return type;
+    	return (Integer)getData(TYPE);
     }
 
     public boolean[] getStateBuffer()
     {
-        return stateBuffer;
+    	return (boolean[])getData(STATEBUFFER);
     }
 
     public void updateStateBuffer()
@@ -39,14 +45,14 @@ public class PClo_TileEntityDelayer extends PC_TileEntity
 
     public int getDelay()
     {
-        return stateBuffer.length;
+        return getStateBuffer().length;
     }
 
     public void setDelay(int delay)
     {
-        stateBuffer = new boolean[delay];
-        ticks = delay;
-        PC_PacketHandler.setTileEntity(this, "stateBuffer", stateBuffer);
+    	boolean [] stateBuffer = new boolean[delay];
+    	ticks = delay;
+    	setData(STATEBUFFER, stateBuffer);
     }
 
     public void resetRemainingTicks(){
@@ -72,7 +78,7 @@ public class PClo_TileEntityDelayer extends PC_TileEntity
         boolean stop = false;
         boolean reset = false;
 
-        if (type == PClo_DelayerType.FIFO)
+        if (getType() == PClo_DelayerType.FIFO)
         {
             stop = GameInfo.poweredFromInput(worldObj, xCoord, yCoord, zCoord, PC_Utils.RIGHT, rot);
             reset = GameInfo.poweredFromInput(worldObj, xCoord, yCoord, zCoord, PC_Utils.LEFT, rot);
@@ -88,75 +94,5 @@ public class PClo_TileEntityDelayer extends PC_TileEntity
     public boolean canUpdate()
     {
         return true;
-    }
-
-    @Override
-    public void readFromNBT(NBTTagCompound nbtTagCompound)
-    {
-        super.readFromNBT(nbtTagCompound);
-        type = nbtTagCompound.getInteger("type");
-        int length = nbtTagCompound.getInteger("delay");
-        stateBuffer = new boolean[length];
-
-        for (int i = 0; i < length; i++)
-        {
-            stateBuffer[i] = nbtTagCompound.getBoolean("stateBuffer[" + i + "]");
-        }
-    }
-
-    @Override
-    public void writeToNBT(NBTTagCompound nbtTagCompound)
-    {
-        super.writeToNBT(nbtTagCompound);
-        nbtTagCompound.setInteger("type", type);
-        nbtTagCompound.setInteger("delay", stateBuffer.length);
-
-        for (int i = 0; i < stateBuffer.length; i++)
-        {
-            nbtTagCompound.setBoolean("stateBuffer[" + i + "]", stateBuffer[i]);
-        }
-    }
-
-    @Override
-    public void setData(Object[] o)
-    {
-        int p = 0;
-
-        while (p < o.length)
-        {
-            String var = (String)o[p++];
-
-            if (var.equals("type"))
-            {
-                type = (Integer)o[p++];
-            }
-            else if (var.equals("stateBuffer"))
-            {
-                stateBuffer = (boolean[])o[p++];
-            }
-            else if (var.equals("remainingTicks"))
-            {
-            	remainingTicks = (Integer)o[p++];
-            }
-            else if (var.equals("ticks"))
-            {
-            	ticks = (Integer)o[p++];
-            }
-        }
-
-        ValueWriting.hugeUpdate(worldObj, xCoord, yCoord, zCoord);
-        worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
-    }
-
-    @Override
-    public Object[] getData()
-    {
-        return new Object[]
-                {
-                    "type", type,
-                    "stateBuffer", stateBuffer,
-                    "remainingTicks", remainingTicks,
-                    "ticks", ticks
-                };
     }
 }
