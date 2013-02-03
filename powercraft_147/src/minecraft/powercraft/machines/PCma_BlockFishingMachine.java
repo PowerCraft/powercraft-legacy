@@ -106,7 +106,7 @@ public class PCma_BlockFishingMachine extends PC_Block implements PC_I3DRecipeHa
 	
 	@Override
 	public void randomDisplayTick(World world, int x, int y, int z, Random rand) {
-		if(GameInfo.<PCma_TileEntityFishingMachine>getTE(world, x, y, z).running){
+		if(GameInfo.<PCma_TileEntityFishingMachine>getTE(world, x, y, z).isRunning()){
 			// bubbles
 			for (int i = 0; i < 2; i++) {
 				double buX = x + 0.2D + rand.nextFloat() * 0.6F;

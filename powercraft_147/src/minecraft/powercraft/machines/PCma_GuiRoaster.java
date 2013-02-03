@@ -4,6 +4,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import powercraft.management.PC_GresInventory;
 import powercraft.management.PC_GresInventoryPlayer;
 import powercraft.management.PC_GresWidget;
+import powercraft.management.PC_TileEntity;
 import powercraft.management.PC_GresWidget.PC_GresAlign;
 import powercraft.management.PC_GresWindow;
 import powercraft.management.PC_IGresClient;
@@ -13,8 +14,8 @@ import powercraft.management.PC_Utils.Lang;
 public class PCma_GuiRoaster extends PCma_ContainerRoaster implements
 		PC_IGresClient {
 
-	public PCma_GuiRoaster(EntityPlayer player, Object[] o) {
-		super(player, o);
+	public PCma_GuiRoaster(EntityPlayer player, PC_TileEntity te, Object[] o) {
+		super(player, te, o);
 	}
 
 	@Override
@@ -59,5 +60,8 @@ public class PCma_GuiRoaster extends PCma_ContainerRoaster implements
 	public boolean drawBackground(PC_IGresGui gui, int par1, int par2, float par3) {
 		return false;
 	}
+
+	@Override
+	public void keyChange(String key, Object value) {}
 
 }

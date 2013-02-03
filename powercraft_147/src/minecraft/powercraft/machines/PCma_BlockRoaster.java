@@ -14,6 +14,7 @@ import net.minecraft.world.World;
 import powercraft.management.PC_Block;
 import powercraft.management.PC_IItemInfo;
 import powercraft.management.PC_PacketHandler;
+import powercraft.management.PC_TileEntity;
 import powercraft.management.PC_Utils;
 import powercraft.management.PC_Utils.GameInfo;
 import powercraft.management.PC_Utils.Gres;
@@ -97,7 +98,7 @@ public class PCma_BlockRoaster extends PC_Block implements PC_IItemInfo
             return true;
         }
 
-        Gres.openGres("Roaster", entityplayer, i, j, k);
+        Gres.openGres("Roaster", entityplayer, GameInfo.<PC_TileEntity>getTE(world, i, j, k));
         return true;
     }
 
@@ -112,7 +113,7 @@ public class PCma_BlockRoaster extends PC_Block implements PC_IItemInfo
     	if(world.isRemote){
     		if(te==null)
     			return false;
-    		return te.isActive;
+    		return te.isActive();
     	}
     	
     	boolean on=false;
@@ -137,9 +138,8 @@ public class PCma_BlockRoaster extends PC_Block implements PC_IItemInfo
         	on= true;
         }
 
-        if(on != te.isActive){
-        	te.isActive = on;
-        	PC_PacketHandler.setTileEntity(te, "isActive", on);
+        if(on != te.isActive()){
+        	te.setActive(on);
         }
         return on;
     }
@@ -148,7 +148,7 @@ public class PCma_BlockRoaster extends PC_Block implements PC_IItemInfo
     {
         try
         {
-            return ((PCma_TileEntityRoaster) world.getBlockTileEntity(x, y, z)).burnTime > 0;
+            return ((PCma_TileEntityRoaster) world.getBlockTileEntity(x, y, z)).getBurnTime() > 0;
         }
         catch (RuntimeException re)
         {
@@ -160,7 +160,7 @@ public class PCma_BlockRoaster extends PC_Block implements PC_IItemInfo
     {
         try
         {
-            return ((PCma_TileEntityRoaster) world.getBlockTileEntity(x, y, z)).netherTime > 0 && isIndirectlyPowered(world, x, y, z);
+            return ((PCma_TileEntityRoaster) world.getBlockTileEntity(x, y, z)).getNetherTime() > 0 && isIndirectlyPowered(world, x, y, z);
         }
         catch (RuntimeException re)
         {

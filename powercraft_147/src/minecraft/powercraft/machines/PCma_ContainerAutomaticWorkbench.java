@@ -8,30 +8,29 @@ import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.InventoryCraftResult;
 import net.minecraft.inventory.Slot;
 import powercraft.management.PC_GresBaseWithInventory;
+import powercraft.management.PC_TileEntity;
 import powercraft.management.PC_Utils.GameInfo;
 
-public class PCma_ContainerAutomaticWorkbench extends PC_GresBaseWithInventory
+public class PCma_ContainerAutomaticWorkbench extends PC_GresBaseWithInventory<PCma_TileEntityAutomaticWorkbench>
 {
     private IInventory craftResult;
-    protected PCma_TileEntityAutomaticWorkbench teaw;
     protected List<Slot> lSlot;
 
-    public PCma_ContainerAutomaticWorkbench(EntityPlayer player, Object[] o)
+    public PCma_ContainerAutomaticWorkbench(EntityPlayer player, PC_TileEntity te, Object[] o)
     {
-        super(player, o);
+        super(player, (PCma_TileEntityAutomaticWorkbench)te, o);
     }
 
     @Override
     protected void init(Object[] o)
     {
         craftResult = new InventoryCraftResult();
-        teaw = (PCma_TileEntityAutomaticWorkbench)GameInfo.getTE(thePlayer.worldObj, (Integer)o[0], (Integer)o[1], (Integer)o[2]);
     }
 
     @Override
     public void onCraftMatrixChanged(IInventory iinventory)
     {
-        craftResult.setInventorySlotContents(0, teaw.getRecipeProduct());
+        craftResult.setInventorySlotContents(0, tileEntity.getRecipeProduct());
     }
 
     @Override
@@ -39,13 +38,13 @@ public class PCma_ContainerAutomaticWorkbench extends PC_GresBaseWithInventory
     {
         lSlot = new ArrayList<Slot>();
         int cnt = 0;
-        lSlot.add(new PCma_SlotAutomaticWorkbenchResult(teaw, craftResult, this, 0, 0, 0));
+        lSlot.add(new PCma_SlotAutomaticWorkbenchResult(tileEntity, craftResult, this, 0, 0, 0));
 
         for (int y = 0; y < 3; y++)
         {
             for (int x = 0; x < 3; x++)
             {
-                lSlot.add(new PCma_SlotAutomaticWorkbenchInventory(teaw, this, false, cnt++, 0, 0));
+                lSlot.add(new PCma_SlotAutomaticWorkbenchInventory(tileEntity, this, false, cnt++, 0, 0));
             }
         }
 
@@ -53,7 +52,7 @@ public class PCma_ContainerAutomaticWorkbench extends PC_GresBaseWithInventory
         {
             for (int x = 0; x < 3; x++)
             {
-                lSlot.add(new PCma_SlotAutomaticWorkbenchInventory(teaw, this, true, cnt++, 0, 0));
+                lSlot.add(new PCma_SlotAutomaticWorkbenchInventory(tileEntity, this, true, cnt++, 0, 0));
             }
         }
 

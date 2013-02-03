@@ -24,8 +24,8 @@ import powercraft.management.PC_VecI;
 
 public class PCma_TileEntityBlockBuilder extends PC_TileEntity implements IInventory {
 
-	private ItemStack stacks[];
-	private Random rand;
+	private static Random rand = new Random();
+	private ItemStack stacks[] = new ItemStack[9];
 	private PC_FakePlayer fakeplayer;
 
 	/**
@@ -34,14 +34,6 @@ public class PCma_TileEntityBlockBuilder extends PC_TileEntity implements IInven
 	@Override
 	public boolean canUpdate() {
 		return false;
-	}
-
-	/**
-	 * Block Builder's TE
-	 */
-	public PCma_TileEntityBlockBuilder() {
-		stacks = new ItemStack[9];
-		rand = new Random();
 	}
 
 	@Override

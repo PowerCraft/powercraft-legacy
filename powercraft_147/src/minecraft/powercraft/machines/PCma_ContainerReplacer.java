@@ -6,29 +6,26 @@ import java.util.List;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.Slot;
 import powercraft.management.PC_GresBaseWithInventory;
+import powercraft.management.PC_TileEntity;
 import powercraft.management.PC_Utils.GameInfo;
 
-public class PCma_ContainerReplacer extends PC_GresBaseWithInventory
+public class PCma_ContainerReplacer extends PC_GresBaseWithInventory<PCma_TileEntityReplacer>
 {
     protected List<Slot> lSlot;
-    protected PCma_TileEntityReplacer teReplacer;
 
-    public PCma_ContainerReplacer(EntityPlayer player, Object[] o)
+    public PCma_ContainerReplacer(EntityPlayer player, PC_TileEntity te, Object[] o)
     {
-        super(player, o);
+        super(player, (PCma_TileEntityReplacer)te, o);
     }
 
     @Override
-    protected void init(Object[] o)
-    {
-        teReplacer = GameInfo.getTE(thePlayer.worldObj, (Integer)o[0], (Integer)o[1], (Integer)o[2]);
-    }
+    protected void init(Object[] o){}
 
     @Override
     protected List<Slot> getAllSlots(List<Slot> slots)
     {
         lSlot = new ArrayList<Slot>();
-        lSlot.add(new Slot(teReplacer, 0, 0, 0));
+        lSlot.add(new Slot(tileEntity, 0, 0, 0));
         slots.addAll(lSlot);
         return slots;
     }

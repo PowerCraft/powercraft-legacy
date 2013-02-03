@@ -13,6 +13,7 @@ import powercraft.management.PC_GresWindow;
 import powercraft.management.PC_IGresClient;
 import powercraft.management.PC_IGresGui;
 import powercraft.management.PC_PacketHandler;
+import powercraft.management.PC_TileEntity;
 import powercraft.management.PC_Utils.Lang;
 import powercraft.management.PC_Utils.ModuleInfo;
 
@@ -20,8 +21,8 @@ public class PCma_GuiAutomaticWorkbench extends PCma_ContainerAutomaticWorkbench
 
 	private PC_GresCheckBox checkRedstone;
 	
-	public PCma_GuiAutomaticWorkbench(EntityPlayer player, Object[] o) {
-		super(player, o);
+	public PCma_GuiAutomaticWorkbench(EntityPlayer player, PC_TileEntity te, Object[] o) {
+		super(player, te, o);
 	}
 
 	@Override
@@ -58,7 +59,7 @@ public class PCma_GuiAutomaticWorkbench extends PCma_ContainerAutomaticWorkbench
 		w.add(hg);
 
 		w.add(checkRedstone = new PC_GresCheckBox(Lang.tr("pc.gui.automaticWorkbench.redstoneActivated")));
-		checkRedstone.check(teaw.redstoneActivated);
+		checkRedstone.check(tileEntity.isRedstoneActivated());
 		w.add(new PC_GresGap(0, 3));
 
 		w.add(new PC_GresInventoryPlayer(true));
@@ -66,17 +67,17 @@ public class PCma_GuiAutomaticWorkbench extends PCma_ContainerAutomaticWorkbench
 
 		gui.add(w);
 
-		onCraftMatrixChanged(teaw);
+		onCraftMatrixChanged(tileEntity);
 	}
 
 	@Override
 	public void onGuiClosed(PC_IGresGui gui) {
-		PC_PacketHandler.setTileEntity(teaw, "orderAndCraft");
+		tileEntity.call("orderAndCraft", null);
 	}
 
 	@Override
 	public void actionPerformed(PC_GresWidget widget, PC_IGresGui gui) {
-		PC_PacketHandler.setTileEntity(teaw, "redstoneActivated", checkRedstone.isChecked());
+		tileEntity.setRedstoneActivated(checkRedstone.isChecked());
 	}
 
 	@Override
@@ -99,5 +100,8 @@ public class PCma_GuiAutomaticWorkbench extends PCma_ContainerAutomaticWorkbench
 	public boolean drawBackground(PC_IGresGui gui, int par1, int par2, float par3) {
 		return false;
 	}
+
+	@Override
+	public void keyChange(String key, Object value) {}
 
 }

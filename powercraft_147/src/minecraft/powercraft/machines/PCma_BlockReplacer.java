@@ -69,7 +69,7 @@ public class PCma_BlockReplacer extends PC_Block implements PC_IItemInfo
 
         if (tileentity != null)
         {
-            tileentity.aidEnabled = !tileentity.aidEnabled;
+        	tileentity.setAidEnabled(!tileentity.isAidEnabled());
         }
     }
 
@@ -78,6 +78,8 @@ public class PCma_BlockReplacer extends PC_Block implements PC_IItemInfo
     {
         ItemStack ihold = entityplayer.getCurrentEquippedItem();
 
+        PCma_TileEntityReplacer tileentity = (PCma_TileEntityReplacer) world.getBlockTileEntity(i, j, k);
+        
         if (ihold != null)
         {
             if (ihold.getItem() instanceof ItemBlock && ihold.getItem().itemID != blockID)
@@ -98,40 +100,40 @@ public class PCma_BlockReplacer extends PC_Block implements PC_IItemInfo
                     l = GameInfo.isPlacingReversed(entityplayer) ? 5 : 4;
                 }
 
-                PCma_TileEntityReplacer tileentity = (PCma_TileEntityReplacer) world.getBlockTileEntity(i, j, k);
-
                 if (tileentity != null)
                 {
+                	PC_VecI coordOffset = tileentity.getCoordOffset();
                     switch (l)
                     {
                         case 0:
-                            tileentity.coordOffset.z++;
+                            coordOffset.z++;
                             break;
 
                         case 2:
-                            tileentity.coordOffset.z--;
+                            coordOffset.z--;
                             break;
 
                         case 3:
-                            tileentity.coordOffset.x++;
+                            coordOffset.x++;
                             break;
 
                         case 1:
-                            tileentity.coordOffset.x--;
+                            coordOffset.x--;
                             break;
 
                         case 4:
-                            tileentity.coordOffset.y++;
+                            coordOffset.y++;
                             break;
 
                         case 5:
-                            tileentity.coordOffset.y--;
+                            coordOffset.y--;
                             break;
                     }
 
-                    tileentity.coordOffset.x = MathHelper.clamp_int(tileentity.coordOffset.x, -16, 16);
-                    tileentity.coordOffset.y = MathHelper.clamp_int(tileentity.coordOffset.y, -16, 16);
-                    tileentity.coordOffset.z = MathHelper.clamp_int(tileentity.coordOffset.z, -16, 16);
+                    coordOffset.x = MathHelper.clamp_int(coordOffset.x, -16, 16);
+                    coordOffset.y = MathHelper.clamp_int(coordOffset.y, -16, 16);
+                    coordOffset.z = MathHelper.clamp_int(coordOffset.z, -16, 16);
+                    tileentity.setCoordOffset(coordOffset);
                 }
 
                 return true;
@@ -143,7 +145,7 @@ public class PCma_BlockReplacer extends PC_Block implements PC_IItemInfo
             return true;
         }
 
-        Gres.openGres("Replacer", entityplayer, i, j, k);
+        Gres.openGres("Replacer", entityplayer, tileentity);
         return true;
     }
 
@@ -335,7 +337,7 @@ public class PCma_BlockReplacer extends PC_Block implements PC_IItemInfo
 
     private void swapBlocks(PCma_TileEntityReplacer te)
     {
-        PC_VecI pos = te.getCoord().offset(te.coordOffset);
+        PC_VecI pos = te.getCoord().offset(te.getCoordOffset());
 
         if (pos.equals(te.getCoord()))
         {
@@ -385,10 +387,10 @@ public class PCma_BlockReplacer extends PC_Block implements PC_IItemInfo
         {
             boolean powered = isIndirectlyPowered(world, i, j, k);
 
-            if (powered != ter.state)
+            if (powered != ter.isState())
             {
                 swapBlocks(ter);
-                ter.state = powered;
+                ter.setState(powered);
             }
         }
     }

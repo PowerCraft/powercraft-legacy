@@ -8,6 +8,7 @@ import powercraft.management.PC_GresLayoutH;
 import powercraft.management.PC_GresLayoutV;
 import powercraft.management.PC_GresProgressBar;
 import powercraft.management.PC_GresWidget;
+import powercraft.management.PC_TileEntity;
 import powercraft.management.PC_GresWidget.PC_GresAlign;
 import powercraft.management.PC_GresWindow;
 import powercraft.management.PC_IGresClient;
@@ -21,8 +22,8 @@ public class PCma_GuiTransmutabox extends PCma_ContainerTransmutabox implements
 	private PC_GresProgressBar progress;
 	private PC_GresCheckBox timeCritical;
 	
-	public PCma_GuiTransmutabox(EntityPlayer player, Object[] o) {
-		super(player, o);
+	public PCma_GuiTransmutabox(EntityPlayer player, PC_TileEntity te, Object[] o) {
+		super(player, te, o);
 	}
 
 	@Override
@@ -83,7 +84,7 @@ public class PCma_GuiTransmutabox extends PCma_ContainerTransmutabox implements
 	@Override
 	public void actionPerformed(PC_GresWidget widget, PC_IGresGui gui) {
 		if(widget==timeCritical){
-			PC_PacketHandler.setTileEntity(te, "timeCritical", timeCritical.isChecked());
+			tileEntity.setTimeCritical(timeCritical.isChecked());
 		}
 	}
 
@@ -99,7 +100,7 @@ public class PCma_GuiTransmutabox extends PCma_ContainerTransmutabox implements
 
 	@Override
 	public void updateTick(PC_IGresGui gui) {
-		progress.setFraction(te.getProgress());
+		progress.setFraction(tileEntity.getProgress());
 	}
 
 	@Override
@@ -109,6 +110,12 @@ public class PCma_GuiTransmutabox extends PCma_ContainerTransmutabox implements
 	public boolean drawBackground(PC_IGresGui gui, int par1, int par2,
 			float par3) {
 		return false;
+	}
+
+	@Override
+	public void keyChange(String key, Object value) {
+		// TODO Auto-generated method stub
+		
 	}
 
 }

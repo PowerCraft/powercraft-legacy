@@ -11,6 +11,7 @@ import powercraft.management.PC_GresLabel;
 import powercraft.management.PC_GresLayoutH;
 import powercraft.management.PC_GresLayoutV;
 import powercraft.management.PC_GresTextEdit;
+import powercraft.management.PC_TileEntity;
 import powercraft.management.PC_GresTextEdit.PC_GresInputType;
 import powercraft.management.PC_GresWidget;
 import powercraft.management.PC_GresWidget.PC_GresAlign;
@@ -33,8 +34,8 @@ public class PCma_GuiReplacer extends PCma_ContainerReplacer implements PC_IGres
 
 	private PC_GresCheckBox checkFrame;
 	
-	public PCma_GuiReplacer(EntityPlayer player, Object[] o) {
-		super(player, o);
+	public PCma_GuiReplacer(EntityPlayer player, PC_TileEntity te, Object[] o) {
+		super(player, te, o);
 	}
 	
 	@Override
@@ -50,7 +51,7 @@ public class PCma_GuiReplacer extends PCma_ContainerReplacer implements PC_IGres
 
 		hg1 = new PC_GresLayoutH().setWidgetMargin(1).setAlignV(PC_GresAlign.CENTER).setText("X");
 		hg1.add(new PC_GresLabel("X"));
-		hg1.add(textedit[0] = new PC_GresTextEdit("" + teReplacer.coordOffset.x, 3, PC_GresInputType.INT).setWidgetMargin(1));
+		hg1.add(textedit[0] = new PC_GresTextEdit("" + tileEntity.getCoordOffset().x, 3, PC_GresInputType.INT).setWidgetMargin(1));
 		vg = new PC_GresLayoutV().setWidgetMargin(1);
 		vg.add(new PC_GresButtonImage(ModuleInfo.getGresImgDir() + "widgets.png", new PC_VecI(44, 18), new PC_VecI(6, 4)).setButtonPadding(3, 3)
 				.setId(102).setWidgetMargin(0));
@@ -63,7 +64,7 @@ public class PCma_GuiReplacer extends PCma_ContainerReplacer implements PC_IGres
 
 		hg1 = new PC_GresLayoutH().setWidgetMargin(1).setAlignV(PC_GresAlign.CENTER).setText("Y");
 		hg1.add(new PC_GresLabel("Y"));
-		hg1.add(textedit[1] = new PC_GresTextEdit("" + teReplacer.coordOffset.y, 3, PC_GresInputType.INT).setWidgetMargin(1));
+		hg1.add(textedit[1] = new PC_GresTextEdit("" + tileEntity.getCoordOffset().y, 3, PC_GresInputType.INT).setWidgetMargin(1));
 		vg = new PC_GresLayoutV().setWidgetMargin(1);
 		vg.add(new PC_GresButtonImage(ModuleInfo.getGresImgDir() + "widgets.png", new PC_VecI(44, 18), new PC_VecI(6, 4)).setButtonPadding(3, 3)
 				.setId(202).setWidgetMargin(0));
@@ -76,7 +77,7 @@ public class PCma_GuiReplacer extends PCma_ContainerReplacer implements PC_IGres
 
 		hg1 = new PC_GresLayoutH().setWidgetMargin(1).setAlignV(PC_GresAlign.CENTER).setText("Z");
 		hg1.add(new PC_GresLabel("Z"));
-		hg1.add(textedit[2] = new PC_GresTextEdit("" + teReplacer.coordOffset.z, 3, PC_GresInputType.INT).setWidgetMargin(1));
+		hg1.add(textedit[2] = new PC_GresTextEdit("" + tileEntity.getCoordOffset().z, 3, PC_GresInputType.INT).setWidgetMargin(1));
 		vg = new PC_GresLayoutV().setWidgetMargin(1);
 		vg.add(new PC_GresButtonImage(ModuleInfo.getGresImgDir() + "widgets.png", new PC_VecI(44, 18), new PC_VecI(6, 4)).setButtonPadding(3, 3)
 				.setId(302).setWidgetMargin(0));
@@ -100,7 +101,7 @@ public class PCma_GuiReplacer extends PCma_ContainerReplacer implements PC_IGres
 
 		hg = new PC_GresLayoutH().setAlignH(PC_GresAlign.CENTER);
 		hg.add(checkFrame = new PC_GresCheckBox(Lang.tr("pc.gui.blockReplacer.particleFrame")));
-		checkFrame.check(teReplacer.aidEnabled);
+		checkFrame.check(tileEntity.isAidEnabled());
 		hg.add(button[1] = new PC_GresButton(Lang.tr("pc.gui.ok")));
 		w.add(hg);
 
@@ -115,9 +116,7 @@ public class PCma_GuiReplacer extends PCma_ContainerReplacer implements PC_IGres
 
 	@Override
 	public void actionPerformed(PC_GresWidget widget, PC_IGresGui gui) {
-		if (widget == slot) {
-			PC_PacketHandler.setTileEntity(teReplacer, "extraMeta", -1);
-		} else if (widget == button[0]) {
+		if (widget == button[0]) {
 
 			gui.close();
 
@@ -127,8 +126,8 @@ public class PCma_GuiReplacer extends PCma_ContainerReplacer implements PC_IGres
 			int y = Integer.parseInt(textedit[1].getText());
 			int z = Integer.parseInt(textedit[2].getText());
 
-			PC_PacketHandler.setTileEntity(teReplacer, "coordOffset", x, y, z, 
-					"aidEnabled", checkFrame.isChecked());
+			tileEntity.setCoordOffset(new PC_VecI(x, y, z));
+			tileEntity.setAidEnabled(checkFrame.isChecked());
 
 			gui.close();
 
@@ -170,8 +169,7 @@ public class PCma_GuiReplacer extends PCma_ContainerReplacer implements PC_IGres
 				int x = Integer.parseInt(textedit[0].getText());
 				int y = Integer.parseInt(textedit[1].getText());
 				int z = Integer.parseInt(textedit[2].getText());
-
-				PC_PacketHandler.setTileEntity(teReplacer, "coordOffset", x, y, z);
+				tileEntity.setCoordOffset(new PC_VecI(x, y, z));
 			}
 
 			button[1].enable(valid);
@@ -247,6 +245,7 @@ public class PCma_GuiReplacer extends PCma_ContainerReplacer implements PC_IGres
 		return false;
 	}
 
-	
+	@Override
+	public void keyChange(String key, Object value) {}
 	
 }
