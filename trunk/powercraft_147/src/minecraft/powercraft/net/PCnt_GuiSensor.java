@@ -7,12 +7,12 @@ import powercraft.management.PC_GresLayoutH;
 import powercraft.management.PC_GresLayoutV;
 import powercraft.management.PC_GresProgressBar;
 import powercraft.management.PC_GresWidget;
-import powercraft.management.PC_PacketHandler;
 import powercraft.management.PC_GresWidget.PC_GresAlign;
 import powercraft.management.PC_GresWindow;
 import powercraft.management.PC_IGresClient;
 import powercraft.management.PC_IGresGui;
-import powercraft.management.PC_Utils.GameInfo;
+import powercraft.management.PC_PacketHandler;
+import powercraft.management.PC_TileEntity;
 import powercraft.management.PC_Utils.Lang;
 
 public class PCnt_GuiSensor implements PC_IGresClient {
@@ -25,8 +25,8 @@ public class PCnt_GuiSensor implements PC_IGresClient {
 	/**
 	 * @param tes Sensor tile entity
 	 */
-	public PCnt_GuiSensor(EntityPlayer player, Object[] o) {
-		sensor = GameInfo.getTE(player.worldObj, (Integer)o[0], (Integer)o[1], (Integer)o[2]); 
+	public PCnt_GuiSensor(EntityPlayer player, PC_TileEntity te, Object[] o) {
+		sensor = (PCnt_TileEntitySensor)te; 
 	}
 	
 	@Override
@@ -54,7 +54,7 @@ public class PCnt_GuiSensor implements PC_IGresClient {
 		vg.add(slider = new PC_GresProgressBar(0x00ff00, 200));
 		slider.configureLabel("", "32", 32);
 		slider.setEditable(true);
-		slider.setFraction(sensor.range / 32F);
+		slider.setFraction(sensor.getRange() / 32F);
 		w.add(vg);
 
 		// buttons
@@ -76,8 +76,7 @@ public class PCnt_GuiSensor implements PC_IGresClient {
 	public void actionPerformed(PC_GresWidget widget, PC_IGresGui gui) {
 		if (widget.getId() == 0) {
 
-			sensor.range = Math.round(slider.getFraction() * 32);
-			PC_PacketHandler.setTileEntity(sensor, "range", sensor.range);
+			sensor.setRange(Math.round(slider.getFraction() * 32));
 			
 			gui.close();
 
@@ -107,5 +106,8 @@ public class PCnt_GuiSensor implements PC_IGresClient {
 			float par3) {
 		return false;
 	}
+
+	@Override
+	public void keyChange(String key, Object value) {}
 
 }

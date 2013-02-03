@@ -1,18 +1,27 @@
 package powercraft.management;
 
+import java.io.Externalizable;
+import java.io.IOException;
+import java.io.ObjectInput;
+import java.io.ObjectOutput;
+
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagByteArray;
+import net.minecraft.nbt.CompressedStreamTools;
 import net.minecraft.nbt.NBTTagCompound;
 
-public class PC_ItemStack
+public class PC_ItemStack implements Externalizable
 {
     private Object o;
     private int count;
     private int meta;
     private NBTTagCompound nbtTag;
+    
+    public PC_ItemStack(){
+    	
+    }
     
     public PC_ItemStack(Object o, int count, int meta)
     {
@@ -156,6 +165,31 @@ public class PC_ItemStack
 	@Override
 	public String toString() {
 		return "PC_ItemStack("+Item.itemsList[getID()].getItemName()+", "+count+", "+meta+")";
+	}
+
+	@Override
+	public void readExternal(ObjectInput inp) throws IOException, ClassNotFoundException {
+		int id = inp.readInt();
+		o = Item.itemsList[id];
+		count = inp.readInt();
+		meta = inp.readInt();
+		byte[] b = (byte[])inp.readObject();
+		if(b!=null){
+			nbtTag = CompressedStreamTools.decompress(b);
+		}
+	}
+
+	@Override
+	public void writeExternal(ObjectOutput out) throws IOException {
+		out.writeInt(getID());
+		out.writeInt(count);
+		out.writeInt(meta);
+		if(nbtTag==null){
+			out.writeObject(null);
+		}else{
+			byte[] b = CompressedStreamTools.compress(nbtTag);
+			out.writeObject(b);
+		}
 	}
     
 }

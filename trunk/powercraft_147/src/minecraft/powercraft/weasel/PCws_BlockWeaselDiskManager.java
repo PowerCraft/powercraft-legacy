@@ -1,6 +1,5 @@
 package powercraft.weasel;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import net.minecraft.block.Block;
@@ -14,18 +13,17 @@ import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import powercraft.management.PC_Block;
-import powercraft.management.PC_IInventoryWrapper;
 import powercraft.management.PC_IItemInfo;
 import powercraft.management.PC_IPacketHandler;
-import powercraft.management.PC_PacketHandler;
 import powercraft.management.PC_Renderer;
+import powercraft.management.PC_TileEntity;
 import powercraft.management.PC_Utils;
+import powercraft.management.PC_Utils.GameInfo;
 import powercraft.management.PC_Utils.Gres;
 import powercraft.management.PC_Utils.ValueWriting;
 import powercraft.management.PC_VecI;
 import weasel.WeaselEngine;
 import weasel.lang.Instruction;
-import weasel.lang.InstructionEnd;
 import weasel.obj.WeaselDouble;
 import weasel.obj.WeaselString;
 
@@ -91,7 +89,7 @@ public class PCws_BlockWeaselDiskManager extends PC_Block implements PC_IPacketH
             }
         }
 
-        Gres.openGres("WeaselDiskManager", player, x, y, z);
+        Gres.openGres("WeaselDiskManager", player, GameInfo.<PC_TileEntity>getTE(world, x, y, z));
         
         return true;
 	}

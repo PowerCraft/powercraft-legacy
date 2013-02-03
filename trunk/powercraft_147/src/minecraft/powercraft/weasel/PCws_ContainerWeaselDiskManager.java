@@ -11,17 +11,18 @@ import net.minecraft.world.World;
 import powercraft.management.PC_GresBaseWithInventory;
 import powercraft.management.PC_ISpecialAccessInventory;
 import powercraft.management.PC_Slot;
+import powercraft.management.PC_TileEntity;
 import powercraft.management.PC_Utils.ValueWriting;
 import powercraft.management.PC_VecI;
 
-public class PCws_ContainerWeaselDiskManager extends PC_GresBaseWithInventory {
+public class PCws_ContainerWeaselDiskManager extends PC_GresBaseWithInventory<PC_TileEntity> {
 	
 	protected List<Slot> lSlot;
 	protected IInventory inventory;
 	protected PC_VecI pos;
 	
-	public PCws_ContainerWeaselDiskManager(EntityPlayer player, Object[] o) {
-		super(player, o);
+	public PCws_ContainerWeaselDiskManager(EntityPlayer player, PC_TileEntity te, Object[] o) {
+		super(player, te, o);
 	}
 
 	@Override

@@ -97,9 +97,7 @@ public class PCws_WeaselPluginSpeaker extends PCws_WeaselPlugin {
 	private void play(String type, float volume, float pitch, float val) {
 		PCws_TileEntityWeasel te = getTE();
 		if (te != null) {
-			PC_PacketHandler.setTileEntity(te, "msg", "play",
-					new PC_Struct4<String, Float, Float, Float>(type, volume,
-							pitch, val));
+			te.call("play", new PC_Struct4<String, Float, Float, Float>(type, volume, pitch, val));
 		}
 	}
 
@@ -117,8 +115,7 @@ public class PCws_WeaselPluginSpeaker extends PCws_WeaselPlugin {
 
 	@Override
 	protected void openPluginGui(EntityPlayer player) {
-		Gres.openGres("WeaselOnlyNet", player, getPos().x, getPos().y,
-				getPos().z);
+		Gres.openGres("WeaselOnlyNet", player, getTE());
 	}
 
 	@Override

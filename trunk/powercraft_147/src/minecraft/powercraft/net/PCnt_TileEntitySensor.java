@@ -1,5 +1,7 @@
 package powercraft.net;
 
+import com.google.common.util.concurrent.SettableFuture;
+
 import net.minecraft.entity.EntityCreature;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.item.EntityXPOrb;
@@ -19,55 +21,48 @@ import powercraft.management.PC_Utils.Lang;
 import powercraft.management.PC_Utils.ModuleInfo;
 
 public class PCnt_TileEntitySensor extends PC_TileEntity implements PC_ITileEntityRenderer {
-	/** Flag that the sensor is active - giving power */
-	public boolean active = false;
-	/** Current range in blocks. */
-	public int range = 3;
 	
-	public int type;
+	public static final String ACTIVE = "active", RANGE = "range", TYPE = "type";
+	
+	/** Flag that the sensor is active - giving power */
+	//public boolean active = false;
+	/** Current range in blocks. */
+	//public int range = 3;
+	
+	//public int type;
 	
 	private static PCnt_ModelSensor model = new PCnt_ModelSensor();
+	
+	public PCnt_TileEntitySensor(){
+		setData(ACTIVE, false);
+		setData(RANGE, 3);
+		setData(TYPE, 0);
+	}
 	
 	@Override
 	public void create(ItemStack stack, EntityPlayer player, World world,
 			int x, int y, int z, int side, float hitX, float hitY, float hitZ) {
-		type = stack.getItemDamage();
+		setData(TYPE, stack.getItemDamage());
 	}
 
-	@Override
-	public void readFromNBT(NBTTagCompound nbttagcompound) {
-		super.readFromNBT(nbttagcompound);
-		active = nbttagcompound.getBoolean("on");
-		range = nbttagcompound.getInteger("range");
-		if (range < 1) {
-			range = 3;
-		}
-		type = nbttagcompound.getInteger("type");
+	public void setRange(int range) {
+		setData(RANGE, range);
 	}
-
-	@Override
-	public void writeToNBT(NBTTagCompound nbttagcompound) {
-		super.writeToNBT(nbttagcompound);
-		nbttagcompound.setBoolean("on", active);
-		nbttagcompound.setInteger("range", range);
-		nbttagcompound.setInteger("type", type);
-	}
-
-
+	
 	/**
 	 * show range using
 	 */
 	public void printRange() {
 		String msg = "";
 
-		if (range == 1) {
-			msg = Lang.tr("pc.sensor.range.1", new String[] { range + "" });
+		if (getRange() == 1) {
+			msg = Lang.tr("pc.sensor.range.1", new String[] { getRange() + "" });
 		}
-		if (range > 1 && range < 5) {
-			msg = Lang.tr("pc.sensor.range.2-4", new String[] { range + "" });
+		if (getRange() > 1 && getRange() < 5) {
+			msg = Lang.tr("pc.sensor.range.2-4", new String[] { getRange() + "" });
 		}
-		if (range >= 5) {
-			msg = Lang.tr("pc.sensor.range.5+", new String[] { range + "" });
+		if (getRange() >= 5) {
+			msg = Lang.tr("pc.sensor.range.5+", new String[] { getRange() + "" });
 		}
 
 		Communication.chatMsg(msg, true);
@@ -82,9 +77,11 @@ public class PCnt_TileEntitySensor extends PC_TileEntity implements PC_ITileEnti
 	public boolean canUpdate() {
 		return true;
 	}
-
+	
 	@Override
 	public void updateEntity() {
+		if(worldObj.isRemote)
+			return;
 		int count = 0;
 		AxisAlignedBB bb=AxisAlignedBB.getBoundingBox(xCoord, yCoord, zCoord, xCoord + 1, yCoord + 1, zCoord + 1).expand(getRange(), getRange(), getRange());
 		if (getGroup() == 0) {
@@ -110,8 +107,8 @@ public class PCnt_TileEntitySensor extends PC_TileEntity implements PC_ITileEnti
 					EntityPlayer.class, bb).size();
 		}
 		if (count > 0) {
-			if (!active) {
-				active = true;
+			if (!isActive()) {
+				setData(ACTIVE, true);
 				if(getBlockType()!=null){
 					worldObj.notifyBlocksOfNeighborChange(xCoord, yCoord, zCoord, getBlockType().blockID);
 					worldObj.notifyBlocksOfNeighborChange(xCoord, yCoord - 1, zCoord, getBlockType().blockID);
@@ -121,8 +118,8 @@ public class PCnt_TileEntitySensor extends PC_TileEntity implements PC_ITileEnti
 
 			}
 		} else {
-			if (active) {
-				active = false;
+			if (isActive()) {
+				setData(ACTIVE, false);
 				if(getBlockType()!=null){
 					worldObj.notifyBlocksOfNeighborChange(xCoord, yCoord, zCoord, getBlockType().blockID);
 					worldObj.notifyBlocksOfNeighborChange(xCoord, yCoord - 1, zCoord, getBlockType().blockID);
@@ -140,7 +137,7 @@ public class PCnt_TileEntitySensor extends PC_TileEntity implements PC_ITileEnti
 	 * @return group number
 	 */
 	public int getGroup() {
-		return type;
+		return (Integer)getData(TYPE);
 	}
 
 	/**
@@ -149,33 +146,13 @@ public class PCnt_TileEntitySensor extends PC_TileEntity implements PC_ITileEnti
 	 * @return range
 	 */
 	public int getRange() {
-		return range;
+		return (Integer)getData(RANGE);
 	}
 
-	@Override
-	public void setData(Object[] o) {
-		int p = 0;
-		while(p<o.length){
-			String var = (String)o[p++];
-			if(var.equals("active"))
-				active = (Boolean)o[p++];
-			else if(var.equals("range"))
-				range = (Integer)o[p++];
-			else if(var.equals("type"))
-				type = (Integer)o[p++];
-		}
-		
+	public boolean isActive() {
+		return (Boolean)getData(ACTIVE);
 	}
-
-	@Override
-	public Object[] getData() {
-		return new Object[] {
-				"active", active,
-				"range", range,
-				"type", type
-		};
-	}
-
+	
 	@Override
 	public void renderTileEntityAt(double x, double y, double z, float rot) {
 
@@ -188,7 +165,7 @@ public class PCnt_TileEntitySensor extends PC_TileEntity implements PC_ITileEnti
 
 		PC_Renderer.glPushMatrix();
 		PC_Renderer.glScalef(f, -f, -f);
-		model.setType(getGroup(), active);
+		model.setType(getGroup(), isActive());
 		model.render();
 		PC_Renderer.glPopMatrix();
 

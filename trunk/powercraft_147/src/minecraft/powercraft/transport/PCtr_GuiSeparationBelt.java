@@ -15,6 +15,7 @@ import powercraft.management.PC_GresWindow;
 import powercraft.management.PC_IGresClient;
 import powercraft.management.PC_IGresGui;
 import powercraft.management.PC_PacketHandler;
+import powercraft.management.PC_TileEntity;
 import powercraft.management.PC_Utils.Lang;
 import powercraft.management.PC_Utils.ModuleInfo;
 
@@ -24,8 +25,8 @@ public class PCtr_GuiSeparationBelt extends PCtr_ContainerSeparationBelt impleme
 	private PC_GresCheckBox checkPlanks;
 	private PC_GresCheckBox checkAll;
 
-	public PCtr_GuiSeparationBelt(EntityPlayer player, Object[] o) {
-		super(player, o);
+	public PCtr_GuiSeparationBelt(EntityPlayer player, PC_TileEntity te, Object[] o) {
+		super(player, te, o);
 	}
 
 	@Override
@@ -41,7 +42,7 @@ public class PCtr_GuiSeparationBelt extends PCtr_ContainerSeparationBelt impleme
 
 		hg.add(right = new PC_GresInventory(3, 3));
 
-		for (int i = 0; i < tes.getSizeInventory(); i++) {
+		for (int i = 0; i < tileEntity.getSizeInventory(); i++) {
 			if (i % 6 >= 3) {
 				left.setSlot(i % 3, (int) Math.floor(i / 6), lSlot.get(i));
 			} else {
@@ -60,9 +61,9 @@ public class PCtr_GuiSeparationBelt extends PCtr_ContainerSeparationBelt impleme
 		hg = new PC_GresLayoutH();
 		hg.setAlignH(PC_GresAlign.LEFT);
 		hg.setWidgetMargin(0);
-		hg.add(checkLogs = new PC_GresCheckBox(Lang.tr("pc.gui.separationBelt.groupLogs")).check(tes.group_logs));
-		hg.add(checkPlanks = new PC_GresCheckBox(Lang.tr("pc.gui.separationBelt.groupPlanks")).check(tes.group_planks));
-		hg.add(checkAll = new PC_GresCheckBox(Lang.tr("pc.gui.separationBelt.groupAll")).check(tes.group_all));
+		hg.add(checkLogs = new PC_GresCheckBox(Lang.tr("pc.gui.separationBelt.groupLogs")).check(tileEntity.isGroupLogs()));
+		hg.add(checkPlanks = new PC_GresCheckBox(Lang.tr("pc.gui.separationBelt.groupPlanks")).check(tileEntity.isGroupPlanks()));
+		hg.add(checkAll = new PC_GresCheckBox(Lang.tr("pc.gui.separationBelt.groupAll")).check(tileEntity.isGroupAll()));
 
 		vg.add(hg);
 
@@ -78,7 +79,9 @@ public class PCtr_GuiSeparationBelt extends PCtr_ContainerSeparationBelt impleme
 
 	@Override
 	public void onGuiClosed(PC_IGresGui gui) {
-		PC_PacketHandler.setTileEntity(tes, "logsPlanksAll", checkLogs.isChecked(), checkPlanks.isChecked(), checkAll.isChecked());
+		tileEntity.setGroupLogs(checkLogs.isChecked());
+		tileEntity.setGroupPlanks(checkPlanks.isChecked());
+		tileEntity.setGroupAll(checkAll.isChecked());
 	}
 
 	@Override
@@ -104,5 +107,8 @@ public class PCtr_GuiSeparationBelt extends PCtr_ContainerSeparationBelt impleme
 	public boolean drawBackground(PC_IGresGui gui, int par1, int par2, float par3) {
 		return false;
 	}
+
+	@Override
+	public void keyChange(String key, Object value) {}
 
 }

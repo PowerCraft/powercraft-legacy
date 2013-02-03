@@ -214,7 +214,7 @@ public class PCws_WeaselPluginCore extends PCws_WeaselPlugin implements PCws_IWe
 			te.setData("networkMemberCount", getNetwork().size());
 		}
 		te.setData("instructionCount", weasel.instructionList.list.size());
-		Gres.openGres("WeaselCore", player, getPos().x, getPos().y, getPos().z);
+		Gres.openGres("WeaselCore", player, getTE());
 	}
 	
 	//Weasel-Functions START
@@ -243,7 +243,7 @@ public class PCws_WeaselPluginCore extends PCws_WeaselPlugin implements PCws_IWe
 	
 	public void bell(double d){
 		if(getTE()!=null){
-			PC_PacketHandler.setTileEntity(getTE(), "msg", "bell", d);
+			getTE().call("bell", d);
 		}
 	}
 	

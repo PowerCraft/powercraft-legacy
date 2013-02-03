@@ -265,19 +265,7 @@ public class PCws_WeaselManager implements PC_IDataHandler, PC_IMSG {
 	}
 	
 	public static void update(){
-		if(globalFunctions==null){
-			globalFunctions = new WeaselFunctionManager();
-			List<PC_IMSG> msgs = ModuleInfo.getMSGObjects();
-			for(PC_IMSG msg:msgs){
-				Object o = msg.msg(PC_Utils.MSG_GET_PROVIDET_GLOBAL_FUNCTIONS, new ArrayList<PC_Struct3<String, String, Object>>());
-				if(o instanceof List){
-					List<PC_Struct3<String, String, Object>> l = (List<PC_Struct3<String, String, Object>>)o;
-					for(PC_Struct3<String, String, Object>s:l){
-						globalFunctions.registerMethod(s.a, s.b, s.c);
-					}
-				}
-			}
-		}
+		getGlobalFunctionManager();
 		for(PCws_WeaselPlugin weaselPlugin:plugins.values()){
 			weaselPlugin.update();
 		}
@@ -300,6 +288,19 @@ public class PCws_WeaselManager implements PC_IDataHandler, PC_IMSG {
 	}
 
 	public static WeaselFunctionManager getGlobalFunctionManager() {
+		if(globalFunctions==null){
+			globalFunctions = new WeaselFunctionManager();
+			List<PC_IMSG> msgs = ModuleInfo.getMSGObjects();
+			for(PC_IMSG msg:msgs){
+				Object o = msg.msg(PC_Utils.MSG_GET_PROVIDET_GLOBAL_FUNCTIONS, new ArrayList<PC_Struct3<String, String, Object>>());
+				if(o instanceof List){
+					List<PC_Struct3<String, String, Object>> l = (List<PC_Struct3<String, String, Object>>)o;
+					for(PC_Struct3<String, String, Object>s:l){
+						globalFunctions.registerMethod(s.a, s.b, s.c);
+					}
+				}
+			}
+		}
 		return globalFunctions;
 	}
 	

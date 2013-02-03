@@ -1,16 +1,14 @@
 package powercraft.teleport;
 
 import java.util.ArrayList;
-import java.util.Enumeration;
-import java.util.Iterator;
 import java.util.List;
 
-import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
+import powercraft.management.PC_Entry;
 import powercraft.management.PC_PacketHandler;
+import powercraft.management.PC_Struct2;
 import powercraft.management.PC_TileEntity;
 import powercraft.management.PC_VecI;
 
@@ -41,7 +39,7 @@ public class PCtp_TileEntityTeleporter extends PC_TileEntity {
 			}
 			
 			
-			PC_PacketHandler.setTileEntity(this, "direction", direction, "defaultTarget", defaultTarget, "defaultTargetDirection", defaultTargetDirection);
+			PC_PacketHandler.setTileEntity(this, new PC_Entry("direction", direction), new PC_Entry("defaultTarget", defaultTarget), new PC_Entry("defaultTargetDirection", defaultTargetDirection));
 		}
 	}
 	
@@ -65,7 +63,7 @@ public class PCtp_TileEntityTeleporter extends PC_TileEntity {
 						}
 					}
 				}
-				PC_PacketHandler.setTileEntity(this, "direction", direction, "defaultTarget", defaultTarget, "defaultTargetDirection", defaultTargetDirection);
+				PC_PacketHandler.setTileEntity(this, new PC_Entry("direction", direction), new PC_Entry("defaultTarget", defaultTarget), new PC_Entry("defaultTargetDirection", defaultTargetDirection));
 			}
 		}
 	}
@@ -100,33 +98,32 @@ public class PCtp_TileEntityTeleporter extends PC_TileEntity {
 	}
 
 	@Override
-	public void setData(Object[] o) {
-		int p = 0;
-		while(p<o.length){
-			String var = (String)o[p++];
+	public void setData(PC_Struct2<String, Object>[] o) {
+		for(PC_Struct2<String, Object>s:o){
+			String var = s.a;
 			if(var.equals("direction")){
-				direction = (Integer)o[p++];
+				direction = (Integer)s.b;
 			}else if(var.equals("soundEnabled")){
-				soundEnabled = (Boolean)o[p++];
+				soundEnabled = (Boolean)s.b;
 			}else if(var.equals("laserDivert")){
-				laserDivert = (Boolean)o[p++];
+				laserDivert = (Boolean)s.b;
 			}else if(var.equals("defaultTarget")){
-				defaultTarget = (PC_VecI)o[p++];
+				defaultTarget = (PC_VecI)s.b;
 			}else if(var.equals("defaultTargetDirection")){
-				defaultTargetDirection = (Integer)o[p++];
+				defaultTargetDirection = (Integer)s.b;
 			}
 		}
 		worldObj.markBlockRangeForRenderUpdate(xCoord, yCoord, zCoord, xCoord, yCoord, zCoord);
 	}
 
 	@Override
-	public Object[] getData() {
-		return new Object[]{
-				"direction", direction,
-				"soundEnabled", soundEnabled,
-				"laserDivert", laserDivert,
-				"defaultTarget", defaultTarget,
-				"defaultTargetDirection", defaultTargetDirection
+	public PC_Struct2<String, Object>[] getData() {
+		return new PC_Struct2[]{
+				new PC_Entry("direction", direction),
+				new PC_Entry("soundEnabled", soundEnabled),
+				new PC_Entry("laserDivert", laserDivert),
+				new PC_Entry("defaultTarget", defaultTarget),
+				new PC_Entry("defaultTargetDirection", defaultTargetDirection)
 		};
 	}
 	

@@ -44,4 +44,6 @@ public interface PC_IGresGui {
 	
 	public void registerAction(PC_GresWidget widget);
 	
+	public PC_TileEntity getTE();
+	
 }

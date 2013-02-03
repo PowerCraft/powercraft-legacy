@@ -5,15 +5,11 @@ import java.util.List;
 
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.gui.ScaledResolution;
-import net.minecraft.client.renderer.OpenGlHelper;
-import net.minecraft.client.renderer.RenderHelper;
-import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Slot;
 
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.GL11;
-import org.lwjgl.opengl.GL12;
 
 
 /**
@@ -22,7 +18,7 @@ import org.lwjgl.opengl.GL12;
  * @authors XOR19, Rapus95, MightyPork
  * @copy (c) 2012
  */
-public class PC_GresGui extends GuiScreen implements PC_IGresGui {
+public class PC_GresGui extends GuiScreen implements PC_IGresGui, PC_ITileEntityWatcher {
 
 	/** The wrapped GUI */
 	private PC_IGresClient gui;
@@ -35,15 +31,20 @@ public class PC_GresGui extends GuiScreen implements PC_IGresGui {
 	private int ySize = 166;
 	private int guiLeft;
 	private int guiTop;
+	private PC_TileEntity tileEntity;
+	
 	/**
 	 * Constructor for creating a gui
 	 * 
 	 * @param gui the gui
 	 */
-	public PC_GresGui(PC_IGresClient gui) {
+	public PC_GresGui(PC_TileEntity te, PC_IGresClient gui) {
 		this.gui = (PC_IGresClient)gui;
 		this.guiLeft = (this.width - this.xSize) / 2;
         this.guiTop = (this.height - this.ySize) / 2;
+        tileEntity = te;
+        if(tileEntity!=null)
+			tileEntity.addTileEntityWatcher(this);
 	}
 
 	@Override
@@ -106,6 +107,8 @@ public class PC_GresGui extends GuiScreen implements PC_IGresGui {
 	public void onGuiClosed() {
 		Keyboard.enableRepeatEvents(false);
 		gui.onGuiClosed(this);
+		if(tileEntity!=null)
+			tileEntity.removeTileEntityWatcher(this);
 		super.onGuiClosed();
 	}
 
@@ -366,4 +369,16 @@ public class PC_GresGui extends GuiScreen implements PC_IGresGui {
 		PC_VecI fpos = w.getPositionOnScreen();
 		return w.getTooltip(new PC_VecI(x - fpos.x, y - fpos.y));
 	}
+
+	@Override
+	public void keyChange(String key, Object value) {
+		child.keyChange(key, value);
+		gui.keyChange(key, value);
+	}
+
+	@Override
+	public PC_TileEntity getTE() {
+		return tileEntity;
+	}
+	
 }

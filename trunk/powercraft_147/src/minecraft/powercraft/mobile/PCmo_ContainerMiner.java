@@ -7,15 +7,16 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.Slot;
 import powercraft.management.PC_GresBaseWithInventory;
 import powercraft.management.PC_Slot;
+import powercraft.management.PC_TileEntity;
 
-public class PCmo_ContainerMiner extends PC_GresBaseWithInventory {
+public class PCmo_ContainerMiner extends PC_GresBaseWithInventory<PC_TileEntity> {
 
 	protected PCmo_EntityMiner miner;
 	protected List<Slot> lSlot;
 	
 	
-	public PCmo_ContainerMiner(EntityPlayer player, Object[] o) {
-		super(player, o);
+	public PCmo_ContainerMiner(EntityPlayer player, PC_TileEntity te, Object[] o) {
+		super(player, te, o);
 	}
 	
 	@Override

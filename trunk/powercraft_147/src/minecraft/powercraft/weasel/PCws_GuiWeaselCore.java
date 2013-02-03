@@ -11,6 +11,7 @@ import powercraft.management.PC_GresLayoutV;
 import powercraft.management.PC_GresSeparatorV;
 import powercraft.management.PC_GresTab;
 import powercraft.management.PC_GresTextEditMultiline;
+import powercraft.management.PC_TileEntity;
 import powercraft.management.PC_GresTextEditMultiline.Keyword;
 import powercraft.management.PC_GresWidget;
 import powercraft.management.PC_GresWidget.PC_GresAlign;
@@ -28,8 +29,8 @@ public class PCws_GuiWeaselCore extends PCws_GuiWeasel {
 	private PC_GresWidget txRunning, txStack, txMemory, txPeripherals, txLength;
 	private int tick;
 	
-	public PCws_GuiWeaselCore(EntityPlayer player, Object[] o) {
-		super(player, o);
+	public PCws_GuiWeaselCore(EntityPlayer player, PC_TileEntity te, Object[] o) {
+		super(player, te, o);
 	}
 
 	@Override
@@ -140,11 +141,11 @@ public class PCws_GuiWeaselCore extends PCws_GuiWeasel {
 	@Override
 	public void actionPerformed(PC_GresWidget widget, PC_IGresGui gui) {
 		if(widget==launchProgram){
-			PC_PacketHandler.setTileEntity(te, "msg", "launch", program.getText());
+			te.call("launch", program.getText());
 		}else if(widget==restartProgram){
-			PC_PacketHandler.setTileEntity(te, "msg", "restart", null);
+			te.call("restart", null);
 		}else if(widget==stopProgram){
-			PC_PacketHandler.setTileEntity(te, "msg", "stop", null);
+			te.call("stop", null);
 		}else{
 			super.actionPerformed(widget, gui);
 		}

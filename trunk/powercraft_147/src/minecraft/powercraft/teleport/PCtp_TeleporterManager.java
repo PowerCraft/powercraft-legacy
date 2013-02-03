@@ -116,7 +116,7 @@ public class PCtp_TeleporterManager implements PC_IDataHandler, PC_IPacketHandle
 			if(td2 != null)
 				defaultTarget = td2.name;
 		}
-		Gres.openGres("Teleporter", entityPlayer, td, names, defaultTarget);
+		Gres.openGres("Teleporter", entityPlayer, null, td, names, defaultTarget);
 	}
 	
 	public static void registerTeleporterData(int dimension, PC_VecI pos, PCtp_TeleporterData td){
@@ -283,7 +283,7 @@ public class PCtp_TeleporterManager implements PC_IDataHandler, PC_IPacketHandle
 		List<String> names = getTargetNames();
 		if(td.name!=null&&!td.equals(""))
 			names.remove(td.name);
-		Gres.openGres("PlayerTeleport", player, names);
+		Gres.openGres("PlayerTeleport", player, null, names);
 	}
 	
 }

@@ -10,10 +10,13 @@ import java.io.InputStream;
 import java.io.ObjectOutputStream;
 import java.io.OutputStream;
 import java.lang.annotation.Annotation;
+import java.lang.reflect.Array;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Modifier;
+import java.lang.reflect.ParameterizedType;
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -21,8 +24,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Random;
-
-import cpw.mods.fml.common.registry.EntityRegistry;
 
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
@@ -42,7 +43,15 @@ import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.item.crafting.ShapedRecipes;
 import net.minecraft.item.crafting.ShapelessRecipes;
 import net.minecraft.nbt.CompressedStreamTools;
+import net.minecraft.nbt.NBTTagByte;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.NBTTagDouble;
+import net.minecraft.nbt.NBTTagFloat;
+import net.minecraft.nbt.NBTTagInt;
+import net.minecraft.nbt.NBTTagList;
+import net.minecraft.nbt.NBTTagLong;
+import net.minecraft.nbt.NBTTagShort;
+import net.minecraft.nbt.NBTTagString;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntityFurnace;
@@ -55,6 +64,7 @@ import net.minecraft.world.World;
 import net.minecraft.world.storage.WorldInfo;
 import net.minecraftforge.oredict.ShapedOreRecipe;
 import net.minecraftforge.oredict.ShapelessOreRecipe;
+import cpw.mods.fml.common.registry.EntityRegistry;
 
 public class PC_Utils implements PC_IPacketHandler
 {
@@ -1082,9 +1092,9 @@ public class PC_Utils implements PC_IPacketHandler
 		    }
 		}
 
-		public static void openGres(String name, EntityPlayer player, Object...o)
+		public static void openGres(String name, EntityPlayer player, PC_TileEntity te, Object...o)
 		{
-		    PC_Utils.instance.iOpenGres(name, player, o);
+		    PC_Utils.instance.iOpenGres(name, player, te, o);
 		}
     	
     }
@@ -2083,7 +2093,114 @@ public class PC_Utils implements PC_IPacketHandler
 				msg.msg(MSG_LOAD_WORLD, worldInfo, worldDirectory);
 			}
 		}
+
+		public static void saveToNBT(NBTTagCompound nbtTag, String key, Object value) {
+			if(value == null){
+				return;
+			}else if(value.getClass().isArray()){
+				Object[] a = (Object[])value;
+				NBTTagCompound nbtTag2 = new NBTTagCompound();
+				int size = a.length;
+				nbtTag2.setInteger("count", size);
+				nbtTag2.setString("type", a.getClass().getName());
+				for(int i=0; i<size; i++){
+					saveToNBT(nbtTag2, "value["+i+"]", a[i]);
+				}
+				nbtTag.setCompoundTag(key, nbtTag2);
+			}else if(value instanceof List){
+				List l = (List)value;
+				NBTTagCompound nbtTag2 = new NBTTagCompound();
+				int size = l.size();
+				nbtTag2.setInteger("count", size);
+				nbtTag2.setString("type", l.getClass().getName());
+				for(int i=0; i<size; i++){
+					saveToNBT(nbtTag2, "value["+i+"]", l.get(i));
+				}
+				nbtTag.setCompoundTag(key, nbtTag2);
+			}else if(value instanceof Byte){
+				nbtTag.setByte(key, (Byte)value);
+			}else if(value instanceof Short){
+				nbtTag.setShort(key, (Short)value);
+			}else if(value instanceof Integer){
+				nbtTag.setInteger(key, (Integer)value);
+			}else if(value instanceof Long){
+				nbtTag.setLong(key, (Long)value);
+			}else if(value instanceof Float){
+				nbtTag.setFloat(key, (Float)value);
+			}else if(value instanceof Double){
+				nbtTag.setDouble(key, (Double)value);
+			}else if(value instanceof Boolean){
+				NBTTagCompound nbtTag2 = new NBTTagCompound();
+				nbtTag2.setString("type", Boolean.class.getName());
+				nbtTag2.setBoolean("value", (Boolean)value);
+				nbtTag.setCompoundTag(key, nbtTag2);
+			}else if(value instanceof String){
+				nbtTag.setString(key, (String)value);
+			}else if(value instanceof PC_INBT){
+				NBTTagCompound nbtTag2 = new NBTTagCompound();
+				nbtTag2.setString("type", value.getClass().getName());
+				SaveHandler.saveToNBT(nbtTag2, "value", (PC_INBT)value);
+				nbtTag.setCompoundTag(key, nbtTag2);
+			}else if(value instanceof ItemStack){
+				NBTTagCompound nbtTag2 = new NBTTagCompound();
+				nbtTag2.setString("type", ItemStack.class.getName());
+				((ItemStack) value).writeToNBT(nbtTag2);
+				nbtTag.setCompoundTag(key, nbtTag2);
+			}
+		}
     	
+		public static Object loadFromNBT(NBTTagCompound nbtTag, String key) {
+			Object value = nbtTag.tagMap.get(key);
+			if(value instanceof NBTTagCompound){
+				NBTTagCompound nbtTag2 = nbtTag.getCompoundTag(key);
+				try {
+					Class c = Class.forName(nbtTag2.getString("type"));
+					if(c.isArray()){
+						int size = nbtTag2.getInteger("count");
+						Object[] a = (Object[]) Array.newInstance(c, size);
+						for(int i=0; i<size; i++){
+							a[i] = loadFromNBT(nbtTag2, "value["+i+"]");
+						}
+					}else if(c == ItemStack.class){
+						return ItemStack.loadItemStackFromNBT(nbtTag2);
+					}else if(c == Boolean.class){
+						return nbtTag2.getBoolean("value");
+					}else{
+						try {
+							Object o = c.newInstance();
+							if(o instanceof List){
+								int size = nbtTag2.getInteger("count");
+								for(int i=0; i<size; i++){
+									((List)o).add(loadFromNBT(nbtTag2, "value["+i+"]"));
+								}
+							}else if(o instanceof PC_INBT){
+								loadFromNBT(nbtTag2, "value", (PC_INBT)o);
+							}
+						} catch (Exception e) {
+							e.printStackTrace();
+						}
+					}
+				} catch (ClassNotFoundException e) {
+					e.printStackTrace();
+				}
+			}else if(value instanceof NBTTagByte){
+				return ((NBTTagByte)value).data;
+			}else if(value instanceof NBTTagShort){
+				return ((NBTTagShort)value).data;
+			}else if(value instanceof NBTTagInt){
+				return ((NBTTagInt)value).data;
+			}else if(value instanceof NBTTagLong){
+				return ((NBTTagLong)value).data;
+			}else if(value instanceof NBTTagFloat){
+				return ((NBTTagFloat)value).data;
+			}else if(value instanceof NBTTagDouble){
+				return ((NBTTagDouble)value).data;
+			}else if(value instanceof NBTTagString){
+				return ((NBTTagString)value).data;
+			}
+			return null;
+		}
+		
     }
     
     public static class Communication{
@@ -2231,7 +2348,7 @@ public class PC_Utils implements PC_IPacketHandler
         
     protected void iPlaySound(double x, double y, double z, String sound, float soundVolume, float pitch) {}
 
-    protected void iOpenGres(String name, EntityPlayer player, Object[]o)
+    protected void iOpenGres(String name, EntityPlayer player, PC_TileEntity te, Object[]o)
     {
         if (!(player instanceof EntityPlayerMP))
         {
@@ -2253,6 +2370,11 @@ public class PC_Utils implements PC_IPacketHandler
             sendData.writeInt(PC_PacketHandler.PACKETGUI);
             sendData.writeObject(name);
             sendData.writeInt(guiID);
+            if(te==null){
+            	sendData.writeObject(null);
+            }else{
+            	sendData.writeObject(te.getCoord());
+            }
             sendData.writeObject(o);
             sendData.writeInt(PC_PacketHandler.PACKETGUI);
         }
@@ -2271,7 +2393,7 @@ public class PC_Utils implements PC_IPacketHandler
             {
                 try
                 {
-                    PC_GresBaseWithInventory bwi = ValueWriting.createClass((Class<PC_GresBaseWithInventory>)c, new Class[] {EntityPlayer.class, Object[].class}, new Object[] {player, o});
+                    PC_GresBaseWithInventory bwi = ValueWriting.createClass((Class<PC_GresBaseWithInventory>)c, new Class[] {EntityPlayer.class, PC_TileEntity.class, Object[].class}, new Object[] {player, te, o});
                     player.openContainer = bwi;
                     player.openContainer.windowId = guiID;
                     player.openContainer.addCraftingToCrafters((EntityPlayerMP)player);

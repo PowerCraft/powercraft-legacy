@@ -1,7 +1,7 @@
 package powercraft.management;
 
 
-public interface PC_IGresClient {
+public interface PC_IGresClient extends PC_ITileEntityWatcher {
 
 	public void initGui(PC_IGresGui gui);
 	

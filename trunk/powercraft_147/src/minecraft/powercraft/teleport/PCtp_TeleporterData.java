@@ -3,6 +3,7 @@ package powercraft.teleport;
 import java.io.Serializable;
 
 import net.minecraft.nbt.NBTTagCompound;
+import powercraft.management.PC_Entry;
 import powercraft.management.PC_INBT;
 import powercraft.management.PC_PacketHandler;
 import powercraft.management.PC_VecI;
@@ -110,7 +111,7 @@ public class PCtp_TeleporterData implements PC_INBT<PCtp_TeleporterData>, Serial
 			te.defaultTargetDirection = 0;
 		}
 		
-		PC_PacketHandler.setTileEntity(te, "direction", direction, "soundEnabled", soundEnabled, "defaultTarget", defaultTarget, "defaultTargetDirection", te.defaultTargetDirection);
+		PC_PacketHandler.setTileEntity(te, new PC_Entry("direction", direction), new PC_Entry("soundEnabled", soundEnabled), new PC_Entry("defaultTarget", defaultTarget), new PC_Entry("defaultTargetDirection", te.defaultTargetDirection));
 		
 	}
 

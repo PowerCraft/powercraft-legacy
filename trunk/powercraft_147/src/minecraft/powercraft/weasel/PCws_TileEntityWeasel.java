@@ -10,17 +10,18 @@ import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
+import powercraft.management.PC_Entry;
 import powercraft.management.PC_ISpecialAccessInventory;
 import powercraft.management.PC_ITileEntityRenderer;
 import powercraft.management.PC_InvUtils;
 import powercraft.management.PC_MathHelper;
 import powercraft.management.PC_PacketHandler;
+import powercraft.management.PC_Struct2;
 import powercraft.management.PC_TileEntity;
 
 public class PCws_TileEntityWeasel extends PC_TileEntity implements PC_ITileEntityRenderer, IInventory, PC_ISpecialAccessInventory{
 
 	private int pluginID = -1;
-	private HashMap<String, Object> datas = new HashMap<String, Object>();
 	private ItemStack inv[];
 	
 	@Override
@@ -44,10 +45,6 @@ public class PCws_TileEntityWeasel extends PC_TileEntity implements PC_ITileEnti
 	public void readFromNBT(NBTTagCompound nbtTag) {
 		super.readFromNBT(nbtTag);
 		pluginID = nbtTag.getInteger("pluginID");
-		datas.put("type", nbtTag.getInteger("type"));
-		if(nbtTag.hasKey("specialRot")){
-			datas.put("specialRot", nbtTag.getInteger("specialRot"));
-		}
 		if(nbtTag.hasKey("invSize")){
 			inv = new ItemStack[nbtTag.getInteger("invSize")];
 			PC_InvUtils.loadInventoryFromNBT(nbtTag, "inv", this);
@@ -58,10 +55,6 @@ public class PCws_TileEntityWeasel extends PC_TileEntity implements PC_ITileEnti
 	public void writeToNBT(NBTTagCompound nbtTag) {
 		super.writeToNBT(nbtTag);
 		nbtTag.setInteger("pluginID", pluginID);
-		nbtTag.setInteger("type", getType());
-		if(getData("specialRot")!=null){
-			nbtTag.setInteger("specialRot", (Integer)getData("specialRot"));
-		}
 		if(inv!=null && inv.length!=0){
 			nbtTag.setInteger("invSize", inv.length);
 			PC_InvUtils.saveInventoryToNBT(nbtTag, "inv", this);
@@ -94,75 +87,62 @@ public class PCws_TileEntityWeasel extends PC_TileEntity implements PC_ITileEnti
 		return PCws_WeaselManager.getPluginInfo(getType());
 	}
 	
-	public Object getData(String key) {
-		return datas.get(key);
-	}
-	
-	public void setData(String key, Object obj) {
-		datas.put(key, obj);
-		PC_PacketHandler.setTileEntity(this, key, obj);
-	}
-	
 	public void setDataNoSend(String key, Object obj) {
-		datas.put(key, obj);
+		map.put(key, obj);
 	}
 	
 	@Override
 	public void renderTileEntityAt(double x, double y, double z, float rot) {
 		getPluginInfo().renderPluginAt(this, x, y, z, rot);
 	}
-
+	
 	@Override
-	public void setData(Object[] o) {
-		int p = 0;
+	protected void dataChange(String key, Object value) {
 		PCws_WeaselPlugin plugin = getPlugin();
-        while (p < o.length)
-        {
-            String var = (String)o[p++];
-            if(var.equals("msg")){
-            	String msg = (String)o[p++];
-            	Object obj = o[p++];
-            	if(plugin!=null)
-            		plugin.getClientMsg(msg, obj);
-            	else if(worldObj.isRemote){
-            		getPluginInfo().getServerMsg(this, msg, obj);
-            	}
-            		
-            }else if(var.equals("invSize")){
-            	inv = new ItemStack[(Integer)o[p++]];
-            }else{
-            	Object obj = o[p++];
-            	datas.put(var, obj);
-            	if(plugin!=null)
-            		plugin.reciveData(var, obj);
-            }
-        }
+		if(key.equals("invSize")){
+			inv = new ItemStack[(Integer)value];
+		}else if(plugin!=null){
+			plugin.reciveData(key, value);
+		}
 	}
 
 	@Override
-	public Object[] getData() {
+	public void call(String key, Object value){
+    	PC_PacketHandler.setTileEntity(this, new PC_Entry("call", new PC_Entry(key, value)));
+    }
+	
+	@Override
+	protected void onCall(String key, Object value) {
+		PCws_WeaselPlugin plugin = getPlugin();
+		if(plugin!=null)
+    		plugin.getClientMsg(key, value);
+    	else if(worldObj.isRemote){
+    		getPluginInfo().getServerMsg(this, key, value);
+    	}
+	}
+
+	@Override
+	public PC_Struct2<String, Object>[] getData() {
 		int i=0;
-		List<List<Object>> l = new ArrayList<List<Object>>();
-		List<Object> l1 = new ArrayList<Object>();
+		List<List<PC_Struct2<String, Object>>> l = new ArrayList<List<PC_Struct2<String, Object>>>();
+		List<PC_Struct2<String, Object>> l1 = new ArrayList<PC_Struct2<String, Object>>();
 		l.add(l1);
 		if(inv!=null){
-			l1.add("invSize");
-			l1.add(inv.length);
+			l1.add(new PC_Entry("invSize", inv.length));
 		}
-		for(Entry<String, Object> data:datas.entrySet()){
-			l1.add(data.getKey());
-			l1.add(data.getValue());
+		for(Entry<String, Object> data:map.entrySet()){
+			l1.add(new PC_Entry(data.getKey(), data.getValue()));
 			i++;
 			if(i>200){
-				l1 = new ArrayList<Object>();
+				l1 = new ArrayList<PC_Struct2<String, Object>>();
 				l.add(l1);
 				i=0;
 			}
 		}
 		for(i=1; i<l.size(); i++){
-			PC_PacketHandler.setTileEntity(this, l.get(i).toArray());
+			PC_PacketHandler.setTileEntity(this, l.get(i).toArray(new PC_Struct2[0]));
 		}
-		return l.get(0).toArray();
+		return l.get(0).toArray(new PC_Struct2[0]);
 	}
 
 	@Override

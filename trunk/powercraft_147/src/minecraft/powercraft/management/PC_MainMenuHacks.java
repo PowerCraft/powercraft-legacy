@@ -57,7 +57,7 @@ public class PC_MainMenuHacks implements ITickHandler {
 			if(PC_GlobalVariables.hackSplashes)
 				hackSplashes((GuiMainMenu)gs);
 			if(PC_GlobalVariables.showUpdateWindow && !updateWindowShowed){
-				Gres.openGres("UpdateNotification", null, gs);
+				Gres.openGres("UpdateNotification", null, null, gs);
 				updateWindowShowed = true;
 			}
 		}

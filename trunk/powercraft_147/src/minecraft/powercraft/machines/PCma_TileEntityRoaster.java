@@ -27,7 +27,76 @@ import powercraft.management.PC_Utils.ModuleInfo;
 
 public class PCma_TileEntityRoaster extends PC_TileEntity implements IInventory, PC_ISpecialAccessInventory
 {
-    @Override
+	
+	public static final String BURNTIME = "burnTime", NETHERTIME = "netherTime", NETHERACTIONTIME = "netherActionTime", NONETHERRACK = "noNetherrack", ACTIVE = "active";
+	
+	private static Random random = new Random();
+	
+	private ItemStack roasterContents[] = new ItemStack[SIZE];
+
+    public static final int MAXSTACK = 16;
+
+    public static final int SIZE = 9;
+//
+//    public int burnTime = 0;
+//
+//    public int netherTime = 0;
+//
+//    public int netherActionTime = 100;
+//    private boolean noNetherrack = false;
+//
+//    public boolean isActive;
+    
+    public PCma_TileEntityRoaster()
+    {
+    	setData(BURNTIME, 0);
+    	setData(NETHERTIME, 0);
+    	setData(NETHERACTIONTIME, 100);
+    	setData(NONETHERRACK, false);
+    	setData(ACTIVE, false);
+    }
+	
+    public int getBurnTime() {
+		return (Integer)getData(BURNTIME);
+	}
+
+	public void setBurnTime(int burnTime) {
+		setData(BURNTIME, burnTime);
+	}
+
+	public int getNetherTime() {
+		return (Integer)getData(NETHERTIME);
+	}
+
+	public void setNetherTime(int netherTime) {
+		setData(NETHERTIME, netherTime);
+	}
+
+	public int getNetherActionTime() {
+		return (Integer)getData(NETHERACTIONTIME);
+	}
+
+	public void setNetherActionTime(int netherActionTime) {
+		setData(NETHERACTIONTIME, netherActionTime);
+	}
+
+	public boolean isNoNetherrack() {
+		return (Boolean)getData(NONETHERRACK);
+	}
+
+	public void setNoNetherrack(boolean noNetherrack) {
+		setData(NONETHERRACK, noNetherrack);
+	}
+
+	public boolean isActive() {
+		return (Boolean)getData(ACTIVE);
+	}
+
+	public void setActive(boolean isActive) {
+		setData(ACTIVE, isActive);
+	}
+
+	@Override
     public boolean canPlayerInsertStackTo(int slot, ItemStack stack)
     {
         return stack != null && GameInfo.isFuel(stack);
@@ -49,28 +118,6 @@ public class PCma_TileEntityRoaster extends PC_TileEntity implements IInventory,
     public boolean canDispenseStackFrom(int slot)
     {
         return true;
-    }
-
-    private ItemStack roasterContents[];
-    private Random random;
-
-    public static final int MAXSTACK = 16;
-
-    public static final int SIZE = 9;
-
-    public int burnTime = 0;
-
-    public int netherTime = 0;
-
-    public int netherActionTime = 100;
-    private boolean noNetherrack = false;
-
-    public boolean isActive;
-    
-    public PCma_TileEntityRoaster()
-    {
-        roasterContents = new ItemStack[SIZE];
-        random = new Random();
     }
 
     @Override
@@ -138,9 +185,6 @@ public class PCma_TileEntityRoaster extends PC_TileEntity implements IInventory,
     {
         super.readFromNBT(nbttagcompound);
         PC_InvUtils.loadInventoryFromNBT(nbttagcompound, "Items", this);
-        burnTime = nbttagcompound.getInteger("burning");
-        netherTime = nbttagcompound.getInteger("netherTime");
-        netherActionTime = nbttagcompound.getInteger("netherActionTime");
     }
 
     @Override
@@ -148,9 +192,6 @@ public class PCma_TileEntityRoaster extends PC_TileEntity implements IInventory,
     {
         super.writeToNBT(nbttagcompound);
         PC_InvUtils.saveInventoryToNBT(nbttagcompound, "Items", this);
-        nbttagcompound.setInteger("burning", burnTime);
-        nbttagcompound.setInteger("netherTime", netherTime);
-        nbttagcompound.setInteger("netherActionTime", netherActionTime);
     }
 
     @Override
@@ -176,7 +217,7 @@ public class PCma_TileEntityRoaster extends PC_TileEntity implements IInventory,
     @Override
     public void closeChest()
     {
-        noNetherrack = false;
+    	setData(NONETHERRACK, false);
     }
 
     @Override
@@ -201,12 +242,12 @@ public class PCma_TileEntityRoaster extends PC_TileEntity implements IInventory,
             laser = GameInfo.getBID(worldObj, xCoord, yCoord + 1, zCoord) == laserB.blockID;
         }
 
-        if (burnTime > 0)
+        if (getBurnTime() > 0)
         {
-            burnTime -= laser ? 4 : 2;
+            setBurnTime(getBurnTime() - (laser ? 4 : 2));
         }
 
-        if (burnTime <= 0)
+        if (getBurnTime() <= 0)
         {
             addFuelForTime(40);
         }
@@ -216,27 +257,27 @@ public class PCma_TileEntityRoaster extends PC_TileEntity implements IInventory,
             smeltItems();
         }
 
-        if (!laser && burnTime > 0)
+        if (!laser && getBurnTime() > 0)
         {
             burnCreatures();
         }
 
-        if (netherTime > 0)
+        if (getNetherTime() > 0)
         {
-            netherTime--;
+            setNetherTime(getNetherTime()-1);
         }
 
-        if (netherTime <= 0 && !noNetherrack)
+        if (getNetherTime() <= 0 && !isNoNetherrack())
         {
             addNetherrack();
         }
 
-        if (netherActionTime > 0 && netherTime > 0)
+        if (getNetherActionTime() > 0 && getNetherTime() > 0)
         {
-            netherActionTime--;
+        	setNetherActionTime(getNetherActionTime()-1);
         }
 
-        if (netherActionTime <= 0)
+        if (getNetherActionTime() <= 0)
         {
             int success = 0;
 
@@ -261,16 +302,16 @@ public class PCma_TileEntityRoaster extends PC_TileEntity implements IInventory,
 
                 if (biomegenbase instanceof BiomeGenHell)
                 {
-                    netherActionTime = 50 + random.nextInt(150);
+                	setNetherActionTime(50 + random.nextInt(150));
                 }
                 else
                 {
-                    netherActionTime = 100 + random.nextInt(200);
+                	setNetherActionTime(100 + random.nextInt(200));
                 }
             }
             else
             {
-                netherActionTime = 100 + random.nextInt(200);
+            	setNetherActionTime(100 + random.nextInt(200));
             }
         }
     }
@@ -295,7 +336,7 @@ public class PCma_TileEntityRoaster extends PC_TileEntity implements IInventory,
                 continue nextItem;
             }
 
-            if (burnTime <= getItemSmeltTime(entityitem.func_92014_d()))
+            if (getBurnTime() <= getItemSmeltTime(entityitem.func_92014_d()))
             {
                 if (!addFuelForItem(entityitem.func_92014_d()))
                 {
@@ -303,9 +344,9 @@ public class PCma_TileEntityRoaster extends PC_TileEntity implements IInventory,
                 }
             }
 
-            if (burnTime >= getItemSmeltTime(entityitem.func_92014_d()))
+            if (getBurnTime() >= getItemSmeltTime(entityitem.func_92014_d()))
             {
-                burnTime -= getItemSmeltTime(entityitem.func_92014_d());
+            	setBurnTime(getBurnTime() - getItemSmeltTime(entityitem.func_92014_d()));
                 EntityItem eitem = new EntityItem(worldObj, entityitem.posX - 0.1F + random.nextFloat() * 0.2F, entityitem.posY, entityitem.posZ
                         - 0.1F + random.nextFloat() * 0.2F, result.copy());
                 eitem.motionX = entityitem.motionX;
@@ -328,7 +369,7 @@ public class PCma_TileEntityRoaster extends PC_TileEntity implements IInventory,
 
     public void burnCreatures()
     {
-        if (burnTime <= 0)
+        if (getBurnTime() <= 0)
         {
             return;
         }
@@ -393,17 +434,17 @@ public class PCma_TileEntityRoaster extends PC_TileEntity implements IInventory,
 
             if (bt > 0)
             {
-                burnTime += bt;
+            	setBurnTime(getBurnTime()+bt);
                 decrStackSize(s, 1);
 
-                if (burnTime >= getItemSmeltTime(itemstack))
+                if (getBurnTime() >= getItemSmeltTime(itemstack))
                 {
                     return true;
                 }
             }
         }
 
-        if (burnTime >= getItemSmeltTime(itemstack))
+        if (getBurnTime() >= getItemSmeltTime(itemstack))
         {
             return true;
         }
@@ -419,17 +460,17 @@ public class PCma_TileEntityRoaster extends PC_TileEntity implements IInventory,
 
             if (bt > 0)
             {
-                burnTime += bt;
+            	setBurnTime(getBurnTime()+bt);
                 decrStackSize(s, 1);
 
-                if (burnTime >= time)
+                if (getBurnTime() >= time)
                 {
                     return true;
                 }
             }
         }
 
-        if (burnTime >= time)
+        if (getBurnTime() >= time)
         {
             return true;
         }
@@ -443,14 +484,13 @@ public class PCma_TileEntityRoaster extends PC_TileEntity implements IInventory,
         {
             if (getStackInSlot(s) != null && getStackInSlot(s).itemID == Block.netherrack.blockID)
             {
-                netherTime += 600;
+            	setNetherTime(getNetherTime()+600);
                 decrStackSize(s, 1);
-                noNetherrack = false;
+                setNoNetherrack(false);
                 return;
             }
         }
-
-        noNetherrack = true;
+        setNoNetherrack(true);
     }
 
     private ItemStack getResult(ItemStack item)
@@ -492,49 +532,6 @@ public class PCma_TileEntityRoaster extends PC_TileEntity implements IInventory,
     public boolean needsSpecialInserter()
     {
         return false;
-    }
-
-    @Override
-    public void setData(Object[] o)
-    {
-        int p = 0;
-
-        while (p < o.length)
-        {
-            String var = (String)o[p++];
-
-            if (var.equals("burnTime"))
-            {
-                burnTime = (Integer)o[p++];
-            }
-            else if (var.equals("netherTime"))
-            {
-                netherTime = (Integer)o[p++];
-            }
-            else if (var.equals("netherActionTime"))
-            {
-                netherActionTime = (Integer)o[p++];
-            }
-            else if (var.equals("noNetherrack"))
-            {
-                noNetherrack = (Boolean)o[p++];
-            }else if(var.equals("isActive")){
-            	isActive = (Boolean)o[p++];
-            }
-        }
-    }
-
-    @Override
-    public Object[] getData()
-    {
-        return new Object[]
-                {
-                    "burnTime", burnTime,
-                    "netherTime", netherTime,
-                    "netherActionTime", netherActionTime,
-                    "noNetherrack", noNetherrack,
-                    "isActive", isActive
-                };
     }
     
     @Override

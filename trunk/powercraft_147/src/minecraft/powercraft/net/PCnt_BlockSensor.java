@@ -14,9 +14,9 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-import powercraft.logic.PClo_App;
 import powercraft.management.PC_Block;
 import powercraft.management.PC_Renderer;
+import powercraft.management.PC_TileEntity;
 import powercraft.management.PC_Utils;
 import powercraft.management.PC_Utils.GameInfo;
 import powercraft.management.PC_Utils.Gres;
@@ -87,7 +87,7 @@ public class PCnt_BlockSensor extends PC_Block {
 			}
 		}
 
-		Gres.openGres("Sensor", player, i, j, k);
+		Gres.openGres("Sensor", player, GameInfo.<PC_TileEntity>getTE(world, i, j, k));
 		//PC_Utils.openGres(player, new PClo_GuiSensor((PClo_TileEntitySensor) new PC_CoordI(i, j, k).getTileEntity(world)));
 		return true;
 	}
@@ -137,7 +137,7 @@ public class PCnt_BlockSensor extends PC_Block {
 
 	@Override
 	public boolean isProvidingWeakPower(IBlockAccess world, int i, int j, int k, int l) {
-		return GameInfo.<PCnt_TileEntitySensor>getTE(world, i, j, k).active;
+		return GameInfo.<PCnt_TileEntitySensor>getTE(world, i, j, k).isActive();
 	}
 
 	@Override
@@ -147,7 +147,7 @@ public class PCnt_BlockSensor extends PC_Block {
 
 	@Override
 	public void randomDisplayTick(World world, int i, int j, int k, Random random) {
-		if (!GameInfo.<PCnt_TileEntitySensor>getTE(world, i, j, k).active) {
+		if (!GameInfo.<PCnt_TileEntitySensor>getTE(world, i, j, k).isActive()) {
 			return;
 		}
 
@@ -209,7 +209,7 @@ public class PCnt_BlockSensor extends PC_Block {
 	@Override
     public boolean removeBlockByPlayer(World world, EntityPlayer player, int x, int y, int z)
     {
-        int type = GameInfo.<PCnt_TileEntitySensor>getTE(world, x, y, z).type;
+        int type = GameInfo.<PCnt_TileEntitySensor>getTE(world, x, y, z).getGroup();
         boolean remove = super.removeBlockByPlayer(world, player, x, y, z);
 
         if (remove && !GameInfo.isCreative(player))

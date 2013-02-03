@@ -35,6 +35,7 @@ import powercraft.management.PC_GresWindow;
 import powercraft.management.PC_IGresClient;
 import powercraft.management.PC_IGresGui;
 import powercraft.management.PC_PacketHandler;
+import powercraft.management.PC_TileEntity;
 import powercraft.management.PC_Utils.Lang;
 import powercraft.management.PC_Utils.ModuleInfo;
 import powercraft.management.PC_VecI;
@@ -99,8 +100,8 @@ public class PCws_GuiWeaselDiskManager extends PCws_ContainerWeaselDiskManager i
 	private int tick;
 	private boolean check;
 	
-	public PCws_GuiWeaselDiskManager(EntityPlayer player, Object[] o) {
-		super(player, o);
+	public PCws_GuiWeaselDiskManager(EntityPlayer player, PC_TileEntity te, Object[] o) {
+		super(player, te, o);
 	}
 
 	private void makeEditor(PC_GresWindow win){
@@ -755,5 +756,8 @@ public class PCws_GuiWeaselDiskManager extends PCws_ContainerWeaselDiskManager i
 		}
 		
 	}
+
+	@Override
+	public void keyChange(String key, Object value) {}
 	
 }

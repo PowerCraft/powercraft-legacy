@@ -5,6 +5,7 @@ import powercraft.management.PC_GresButton;
 import powercraft.management.PC_GresColorMap;
 import powercraft.management.PC_GresLayoutV;
 import powercraft.management.PC_GresWidget;
+import powercraft.management.PC_TileEntity;
 import powercraft.management.PC_GresWidget.PC_GresAlign;
 import powercraft.management.PC_IGresClient;
 import powercraft.management.PC_IGresGui;
@@ -23,8 +24,8 @@ public class PCws_GuiWeaselTouchscreen implements PC_IGresClient {
 	private int screen[][] = new int[PCws_WeaselPluginTouchscreen.WIDTH][PCws_WeaselPluginTouchscreen.HEIGHT];
 	private int timer = -1;
 	
-	public PCws_GuiWeaselTouchscreen(EntityPlayer player, Object[] o){
-		te = GameInfo.getTE(player.worldObj, (Integer)o[0], (Integer)o[1], (Integer)o[2]);
+	public PCws_GuiWeaselTouchscreen(EntityPlayer player, PC_TileEntity te, Object[] o){
+		this.te = (PCws_TileEntityWeasel)te;
 	}
 	
 	@Override
@@ -59,7 +60,7 @@ public class PCws_GuiWeaselTouchscreen implements PC_IGresClient {
 			int mouseKey = colorMap.getLastMouseKey();
 			char key = colorMap.getLastKey();
 
-			PC_PacketHandler.setTileEntity(te, "msg", "event", new PC_Struct4<String, PC_VecI, Integer, Integer>(event, mouse, mouseKey, (int)key));
+			te.call("event", new PC_Struct4<String, PC_VecI, Integer, Integer>(event, mouse, mouseKey, (int)key));
 			
 			colorMap.setLastEvent("");
 		}else if(widget == close){
@@ -93,6 +94,7 @@ public class PCws_GuiWeaselTouchscreen implements PC_IGresClient {
 		return false;
 	}
 
-	
+	@Override
+	public void keyChange(String key, Object value) {}
 
 }
