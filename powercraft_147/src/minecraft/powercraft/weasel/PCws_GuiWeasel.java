@@ -17,6 +17,7 @@ import powercraft.management.PC_GresWindow;
 import powercraft.management.PC_IGresClient;
 import powercraft.management.PC_IGresGui;
 import powercraft.management.PC_PacketHandler;
+import powercraft.management.PC_TileEntity;
 import powercraft.management.PC_Utils.GameInfo;
 import powercraft.management.PC_Utils.Lang;
 
@@ -30,8 +31,8 @@ public abstract class PCws_GuiWeasel implements PC_IGresClient {
 	protected PC_GresWidget network1, network2;
 	protected PC_GresColorPicker networkColor;
 	
-	public PCws_GuiWeasel(EntityPlayer player, Object[] o){
-		te = GameInfo.getTE(player.worldObj, (Integer)o[0], (Integer)o[1], (Integer)o[2]);
+	public PCws_GuiWeasel(EntityPlayer player, PC_TileEntity te, Object[] o){
+		this.te = (PCws_TileEntityWeasel)te;
 	}
 	
 	@Override
@@ -95,7 +96,7 @@ public abstract class PCws_GuiWeasel implements PC_IGresClient {
 			if(deviceName.equals(""))
 				deviceRename.enable(false);
 		}else if(widget==deviceRename){
-			PC_PacketHandler.setTileEntity(te, "msg", "deviceRename", deviceName.getText());
+			te.call("deviceRename", deviceName.getText());
 		}else if(widget==networkName){
 			List<String> networkNames = (List<String>)te.getData("networkNames");
 			if(networkNames.contains(networkName.getText())){
@@ -114,12 +115,12 @@ public abstract class PCws_GuiWeasel implements PC_IGresClient {
 			}
 		}else if(widget==network1){
 			if(network1.getId()==0){
-				PC_PacketHandler.setTileEntity(te, "msg", "networkJoin", networkName.getText());
+				te.call("networkJoin", networkName.getText());
 			}else{
-				PC_PacketHandler.setTileEntity(te, "msg", "networkRename", networkName.getText());
+				te.call("networkRename", networkName.getText());
 			}
 		}else if(widget==network2){
-			PC_PacketHandler.setTileEntity(te, "msg", "networkNew", networkName.getText());
+			te.call("networkNew", networkName.getText());
 		}else if(widget==networkColor){
 			te.setData("color", PC_Color.fromHex(networkColor.getColor()));
 		}
@@ -142,4 +143,7 @@ public abstract class PCws_GuiWeasel implements PC_IGresClient {
 		return false;
 	}
 
+	@Override
+	public void keyChange(String key, Object value) {}
+	
 }

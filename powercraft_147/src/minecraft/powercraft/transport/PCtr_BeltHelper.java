@@ -1036,9 +1036,9 @@ public class PCtr_BeltHelper
 
         PCtr_TileEntityEjectionBelt teb = GameInfo.getTE(world, beltPos);
         List<ItemStack> stacks = new ArrayList<ItemStack>();
-        boolean modeStacks = teb.actionType == 0;
-        boolean modeItems = teb.actionType == 1;
-        boolean modeAll = teb.actionType == 2;
+        boolean modeStacks = teb.getActionType() == 0;
+        boolean modeItems = teb.getActionType() == 1;
+        boolean modeAll = teb.getActionType() == 2;
 
         if (modeAll)
         {
@@ -1064,11 +1064,11 @@ public class PCtr_BeltHelper
             return PC_InvUtils.stacksToArray(stacks);
         }
 
-        boolean random = teb.itemSelectMode == 2;
-        boolean first = teb.itemSelectMode == 0;
-        boolean last = teb.itemSelectMode == 1;
-        int numStacks = teb.numStacksEjected;
-        int numItems = teb.numItemsEjected;
+        boolean random = teb.getItemSelectMode() == 2;
+        boolean first = teb.getItemSelectMode() == 0;
+        boolean last = teb.getItemSelectMode() == 1;
+        int numStacks = teb.getNumStacksEjected();
+        int numItems = teb.getNumItemsEjected();
 
         if (modeStacks && numStacks == 0) return new ItemStack[] {};
 

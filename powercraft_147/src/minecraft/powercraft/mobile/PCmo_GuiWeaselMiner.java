@@ -1,5 +1,6 @@
 package powercraft.mobile;
 
+import net.minecraft.entity.player.EntityPlayer;
 import powercraft.management.PC_GresButton;
 import powercraft.management.PC_GresLabel;
 import powercraft.management.PC_GresLayoutH;
@@ -10,8 +11,8 @@ import powercraft.management.PC_GresTextEditMultiline;
 import powercraft.management.PC_GresWidget;
 import powercraft.management.PC_IGresGui;
 import powercraft.management.PC_PacketHandler;
+import powercraft.management.PC_TileEntity;
 import powercraft.management.PC_Utils.Lang;
-import net.minecraft.entity.player.EntityPlayer;
 
 public class PCmo_GuiWeaselMiner extends PCmo_GuiMiner {
 
@@ -19,8 +20,8 @@ public class PCmo_GuiWeaselMiner extends PCmo_GuiMiner {
 	private PC_GresTextEdit inp;
 	private PC_GresButton send;
 	
-	public PCmo_GuiWeaselMiner(EntityPlayer player, Object[] o) {
-		super(player, o);
+	public PCmo_GuiWeaselMiner(EntityPlayer player, PC_TileEntity te, Object[] o) {
+		super(player, te, o);
 	}
 
 	private void makeTerminalTab(PC_GresTab tab){

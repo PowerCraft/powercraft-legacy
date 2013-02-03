@@ -1,7 +1,6 @@
 package powercraft.management;
 
 
-import java.util.ArrayList;
 import java.util.List;
 
 import net.minecraft.client.gui.ScaledResolution;
@@ -24,7 +23,7 @@ import org.lwjgl.opengl.GL12;
  * @authors XOR19, Rapus95, MightyPork
  * @copy (c) 2012
  */
-public class PC_GresContainerGui extends GuiContainer implements PC_IGresGui {
+public class PC_GresContainerGui extends GuiContainer implements PC_IGresGui, PC_ITileEntityWatcher {
 
 	/** The wrapped GUI */
 	private PC_IGresClient gui;
@@ -33,15 +32,19 @@ public class PC_GresContainerGui extends GuiContainer implements PC_IGresGui {
 	private boolean isContainer;
 	private boolean pauseGame = false;
 	private boolean shiftTransfer = false;
+	private PC_TileEntity tileEntity;
 	
 	/**
 	 * Constructor for creating a gui
 	 * 
 	 * @param gui the gui
 	 */
-	public PC_GresContainerGui(PC_GresBaseWithInventory gui) {
+	public PC_GresContainerGui(PC_TileEntity te, PC_GresBaseWithInventory gui) {
 		super(gui);
 		this.gui = (PC_IGresClient)gui;
+		tileEntity = te;
+		if(tileEntity!=null)
+			tileEntity.addTileEntityWatcher(this);
 	}
 
 	@Override
@@ -106,6 +109,8 @@ public class PC_GresContainerGui extends GuiContainer implements PC_IGresGui {
 	public void onGuiClosed() {
 		Keyboard.enableRepeatEvents(false);
 		gui.onGuiClosed(this);
+		if(tileEntity!=null)
+			tileEntity.removeTileEntityWatcher(this);
 		super.onGuiClosed();
 	}
 
@@ -485,6 +490,17 @@ public class PC_GresContainerGui extends GuiContainer implements PC_IGresGui {
 			return null;
 		PC_VecI fpos = w.getPositionOnScreen();
 		return w.getTooltip(new PC_VecI(x - fpos.x, y - fpos.y));
+	}
+
+	@Override
+	public void keyChange(String key, Object value) {
+		child.keyChange(key, value);
+		gui.keyChange(key, value);
+	}
+
+	@Override
+	public PC_TileEntity getTE() {
+		return tileEntity;
 	}
 	
 }

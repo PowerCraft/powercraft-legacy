@@ -24,7 +24,7 @@ public class PC_ClientPacketHandler extends PC_PacketHandler {
 	
 	@Override
 	protected void handleIncomingGuiPacket(ObjectInputStream input, EntityPlayer player) throws ClassNotFoundException, IOException{
-		Gres.openGres("", player, new Object[]{input});
+		Gres.openGres("", player, null, new Object[]{input});
     }
 
 	@Override

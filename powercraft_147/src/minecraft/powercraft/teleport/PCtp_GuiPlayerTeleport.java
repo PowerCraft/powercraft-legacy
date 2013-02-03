@@ -7,7 +7,6 @@ import net.minecraft.entity.player.EntityPlayer;
 import powercraft.management.PC_GresButton;
 import powercraft.management.PC_GresLabel;
 import powercraft.management.PC_GresLayoutV;
-import powercraft.management.PC_GresRadioButton;
 import powercraft.management.PC_GresScrollArea;
 import powercraft.management.PC_GresTextEdit;
 import powercraft.management.PC_GresWidget;
@@ -15,6 +14,7 @@ import powercraft.management.PC_GresWidget.PC_GresAlign;
 import powercraft.management.PC_IGresClient;
 import powercraft.management.PC_IGresGui;
 import powercraft.management.PC_PacketHandler;
+import powercraft.management.PC_TileEntity;
 import powercraft.management.PC_Utils.Lang;
 
 public class PCtp_GuiPlayerTeleport implements PC_IGresClient {
@@ -27,7 +27,7 @@ public class PCtp_GuiPlayerTeleport implements PC_IGresClient {
 	private PC_GresWidget targetsBox;
 	private PC_GresWidget targetsBoxScroll;
 	
-	public PCtp_GuiPlayerTeleport(EntityPlayer player, Object[]o) {
+	public PCtp_GuiPlayerTeleport(EntityPlayer player, PC_TileEntity te, Object[]o) {
 		this.player = player;
 		names = (List<String>)o[0];
 	}
@@ -92,5 +92,8 @@ public class PCtp_GuiPlayerTeleport implements PC_IGresClient {
 			float par3) {
 		return false;
 	}
+
+	@Override
+	public void keyChange(String key, Object value) {}
 
 }

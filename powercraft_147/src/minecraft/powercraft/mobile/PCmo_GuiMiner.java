@@ -22,6 +22,7 @@ import powercraft.management.PC_GresWindow;
 import powercraft.management.PC_IGresClient;
 import powercraft.management.PC_IGresGui;
 import powercraft.management.PC_Slot;
+import powercraft.management.PC_TileEntity;
 import powercraft.management.PC_Utils.Lang;
 import powercraft.weasel.PCws_WeaselHighlightHelper;
 
@@ -45,8 +46,8 @@ public class PCmo_GuiMiner extends PCmo_ContainerMiner implements PC_IGresClient
 	protected PC_GresCheckBox checkCobble;
 	protected int tick;
 	
-	public PCmo_GuiMiner(EntityPlayer player, Object[] o) {
-		super(player, o);
+	public PCmo_GuiMiner(EntityPlayer player, PC_TileEntity te,  Object[] o) {
+		super(player, te, o);
 	}
 
 	private void makeProgramTab(PC_GresTab tab){
@@ -304,5 +305,8 @@ public class PCmo_GuiMiner extends PCmo_ContainerMiner implements PC_IGresClient
 			float par3) {
 		return false;
 	}
+
+	@Override
+	public void keyChange(String key, Object value) {}
 
 }

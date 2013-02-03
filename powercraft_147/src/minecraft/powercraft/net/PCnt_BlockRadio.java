@@ -117,8 +117,8 @@ public class PCnt_BlockRadio extends PC_Block {
 
 							PC_VecI pos = ter.getCoord();
 
-							ter.active = PCnt_RadioManager.getChannelState(chnl);
-							if (ter.active) {
+							ter.setActive(PCnt_RadioManager.getChannelState(chnl));
+							if (ter.isActive()) {
 								world.setBlockMetadataWithNotify(pos.x, pos.y, pos.z, 1);
 							}
 
@@ -147,7 +147,7 @@ public class PCnt_BlockRadio extends PC_Block {
 			}
 		}
 
-		Gres.openGres("Radio", entityplayer, x, y, z);
+		Gres.openGres("Radio", entityplayer, ter);
 		
 		/*int rtype = ter.isTransmitter() ? PClo_GuiRadio.TRANSMITTER : PClo_GuiRadio.RECEIVER;
 		String channel = ter.getChannel();
@@ -183,11 +183,11 @@ public class PCnt_BlockRadio extends PC_Block {
         boolean remove = super.removeBlockByPlayer(world, player, x, y, z);
 
         if (remove){
-        	if (te.isTransmitter() && te.active && !world.isRemote) {
+        	if (te.isTransmitter() && te.isActive() && !world.isRemote) {
     			PCnt_RadioManager.transmitterOff(te.getChannel());
     		}
         	 if (!GameInfo.isCreative(player)){
-        		 dropBlockAsItem_do(world, x, y, z, new ItemStack(PCnt_App.radio, 1, te.type));
+        		 dropBlockAsItem_do(world, x, y, z, new ItemStack(PCnt_App.radio, 1, te.getType()));
         	 }
         }
 
@@ -249,10 +249,10 @@ public class PCnt_BlockRadio extends PC_Block {
 	public void randomDisplayTick(World world, int i, int j, int k, Random random) {
 		
 		PCnt_TileEntityRadio te = GameInfo.getTE(world, i, j, k);
-		if(!te.active)
+		if(!te.isActive())
 			return;
 		
-		boolean tiny = te.renderMicro;
+		boolean tiny = te.isRenderMicro();
 
 		double x = (i + 0.5F) + (random.nextFloat() - 0.5F) * 0.20000000000000001D;
 		double y = (j + (tiny ? 0.2F : 0.9F)) + (random.nextFloat() - 0.5F) * 0.20000000000000001D;

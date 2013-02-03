@@ -7,16 +7,15 @@ import powercraft.management.PC_GresLabel;
 import powercraft.management.PC_GresLayoutH;
 import powercraft.management.PC_GresLayoutV;
 import powercraft.management.PC_GresTextEdit;
-import powercraft.management.PC_PacketHandler;
 import powercraft.management.PC_GresTextEdit.PC_GresInputType;
 import powercraft.management.PC_GresWidget;
 import powercraft.management.PC_GresWidget.PC_GresAlign;
 import powercraft.management.PC_GresWindow;
 import powercraft.management.PC_IGresClient;
 import powercraft.management.PC_IGresGui;
-import powercraft.management.PC_Utils.GameInfo;
+import powercraft.management.PC_PacketHandler;
+import powercraft.management.PC_TileEntity;
 import powercraft.management.PC_Utils.Lang;
-import powercraft.management.PC_VecI;
 
 public class PCnt_GuiRadio implements PC_IGresClient {
 
@@ -31,8 +30,8 @@ public class PCnt_GuiRadio implements PC_IGresClient {
 
 	private PC_GresCheckBox checkMicro;
 	
-	public PCnt_GuiRadio(EntityPlayer player, Object[] o) {
-		ter = GameInfo.getTE(player.worldObj, (Integer)o[0], (Integer)o[1], (Integer)o[2]);
+	public PCnt_GuiRadio(EntityPlayer player, PC_TileEntity te, Object[] o) {
+		ter = (PCnt_TileEntityRadio)te;
 	}
 	
 	@Override
@@ -62,10 +61,10 @@ public class PCnt_GuiRadio implements PC_IGresClient {
 
 		hg = new PC_GresLayoutH().setAlignH(PC_GresAlign.CENTER);
 		hg.add(checkLabel = new PC_GresCheckBox(Lang.tr("pc.gui.radio.showLabel")));
-		checkLabel.check(!ter.hideLabel);
+		checkLabel.check(!ter.isHideLabel());
 
 		hg.add(checkMicro = new PC_GresCheckBox(Lang.tr("pc.gui.radio.renderSmall")));
-		checkMicro.check(ter.renderMicro);
+		checkMicro.check(ter.isRenderMicro());
 		w.add(hg);
 
 		// buttons
@@ -92,9 +91,9 @@ public class PCnt_GuiRadio implements PC_IGresClient {
 
 			String newChannel = edit.getText().trim();
 
-			PC_PacketHandler.setTileEntity(ter, "channel", newChannel,
-					"renderMicro", checkMicro.isChecked(),
-					"hideLabel", !checkLabel.isChecked());
+			ter.setChannel(newChannel);
+			ter.setRenderMicro(checkMicro.isChecked());
+			ter.setHideLabel(!checkLabel.isChecked());
 
 			gui.close();
 
@@ -134,6 +133,12 @@ public class PCnt_GuiRadio implements PC_IGresClient {
 	public boolean drawBackground(PC_IGresGui gui, int par1, int par2,
 			float par3) {
 		return false;
+	}
+
+	@Override
+	public void keyChange(String key, Object value) {
+		// TODO Auto-generated method stub
+		
 	}
 
 }

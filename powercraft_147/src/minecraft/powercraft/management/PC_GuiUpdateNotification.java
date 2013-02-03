@@ -18,7 +18,7 @@ public class PC_GuiUpdateNotification implements PC_IGresClient {
 	private PC_GresWidget buttonOK;
 	private GuiScreen gs;
 	
-	public PC_GuiUpdateNotification(EntityPlayer player, Object[] o){
+	public PC_GuiUpdateNotification(EntityPlayer player, PC_TileEntity te, Object[] o){
 		gs = (GuiScreen)o[0];
 	}
 
@@ -156,5 +156,8 @@ public class PC_GuiUpdateNotification implements PC_IGresClient {
 		gs.drawScreen(-1, -1, par3);
 		return true;
 	}
+
+	@Override
+	public void keyChange(String key, Object value) {}
 	
 }

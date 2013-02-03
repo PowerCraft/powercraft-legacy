@@ -9,6 +9,7 @@ import powercraft.management.PC_GresLabel;
 import powercraft.management.PC_GresLayoutH;
 import powercraft.management.PC_GresLayoutV;
 import powercraft.management.PC_GresRadioButton;
+import powercraft.management.PC_TileEntity;
 import powercraft.management.PC_GresRadioButton.PC_GresRadioGroup;
 import powercraft.management.PC_GresScrollArea;
 import powercraft.management.PC_GresTab;
@@ -48,7 +49,7 @@ public class PCtp_GuiTeleporter implements PC_IGresClient {
 	private PC_GresWidget radioBox;
 	private PC_GresWidget radioBoxScroll;
 	
-	public PCtp_GuiTeleporter(EntityPlayer player, Object[]o) {
+	public PCtp_GuiTeleporter(EntityPlayer player, PC_TileEntity te, Object[]o) {
 		this.player = player;
 		td = (PCtp_TeleporterData)o[0];
 		names = (List<String>)o[1];
@@ -207,5 +208,8 @@ public class PCtp_GuiTeleporter implements PC_IGresClient {
 			float par3) {
 		return false;
 	}
+
+	@Override
+	public void keyChange(String key, Object value) {}
 
 }

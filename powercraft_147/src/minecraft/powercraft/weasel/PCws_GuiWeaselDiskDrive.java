@@ -14,6 +14,7 @@ import powercraft.management.PC_GresLayoutV;
 import powercraft.management.PC_GresTab;
 import powercraft.management.PC_GresTextEdit;
 import powercraft.management.PC_GresWidget;
+import powercraft.management.PC_TileEntity;
 import powercraft.management.PC_GresWidget.PC_GresAlign;
 import powercraft.management.PC_GresWindow;
 import powercraft.management.PC_IGresClient;
@@ -31,20 +32,20 @@ public class PCws_GuiWeaselDiskDrive extends PCws_ContainerWeaselDiskDrive
 	protected PC_GresWidget network1, network2;
 	protected PC_GresColorPicker networkColor;
 	
-	public PCws_GuiWeaselDiskDrive(EntityPlayer player, Object[] o) {
-		super(player, o);
+	public PCws_GuiWeaselDiskDrive(EntityPlayer player, PC_TileEntity te, Object[] o) {
+		super(player, te, o);
 	}
 
 	protected void makeNetworkTab(PC_GresTab tab){
 		PC_GresLayoutV lv = new PC_GresLayoutV();
 		PC_GresLayoutH lh = new PC_GresLayoutH();
 		lh.add(new PC_GresLabel(Lang.tr("pc.gui.weasel.device.name")));
-		lh.add(deviceName = new PC_GresTextEdit((String)te.getData("deviceName"), 10));
+		lh.add(deviceName = new PC_GresTextEdit((String)tileEntity.getData("deviceName"), 10));
 		lv.add(lh);
 		lv.add(deviceRename = new PC_GresButton(Lang.tr("pc.gui.weasel.device.rename")));
 		lh = new PC_GresLayoutH();
 		lh.add(new PC_GresLabel(Lang.tr("pc.gui.weasel.network.name")));
-		lh.add(networkName = new PC_GresTextEdit((String)te.getData("networkName"), 10));
+		lh.add(networkName = new PC_GresTextEdit((String)tileEntity.getData("networkName"), 10));
 		lv.add(lh);
 		lh = new PC_GresLayoutH();
 		lh.add(network1 = new PC_GresButton(Lang.tr("pc.gui.weasel.network.join")));
@@ -52,7 +53,7 @@ public class PCws_GuiWeaselDiskDrive extends PCws_ContainerWeaselDiskDrive
 		network1.setId(0);
 		network2.enable(false);
 		lv.add(lh);
-		PC_Color color = (PC_Color)te.getData("color");
+		PC_Color color = (PC_Color)tileEntity.getData("color");
 		if(color==null)
 			color = new PC_Color(0.3f, 0.3f, 0.3f);
 		lv.add(networkColor = new PC_GresColorPicker(color.getHex(), 100, 20));
@@ -62,7 +63,7 @@ public class PCws_GuiWeaselDiskDrive extends PCws_ContainerWeaselDiskDrive
 	
 	@Override
 	public void initGui(PC_IGresGui gui) {
-		PC_GresWindow w = new PC_GresWindow(Lang.tr(PCws_App.weasel.getBlockName() + "." + te.getPluginInfo().getKey()+".name"));
+		PC_GresWindow w = new PC_GresWindow(Lang.tr(PCws_App.weasel.getBlockName() + "." + tileEntity.getPluginInfo().getKey()+".name"));
 		
 		PC_GresTab tab = new PC_GresTab();
 		makeNetworkTab(tab);
@@ -103,14 +104,14 @@ public class PCws_GuiWeaselDiskDrive extends PCws_ContainerWeaselDiskDrive
 		}else if(widget==cancel){
 			onEscapePressed(gui);
 		}else if(widget==deviceName){
-			List<String> deviceNames = (List<String>)te.getData("deviceNames");
+			List<String> deviceNames = (List<String>)tileEntity.getData("deviceNames");
 			deviceRename.enable(!deviceNames.contains(deviceName.getText()));
 			if(deviceName.equals(""))
 				deviceRename.enable(false);
 		}else if(widget==deviceRename){
-			PC_PacketHandler.setTileEntity(te, "msg", "deviceRename", deviceName.getText());
+			tileEntity.call("deviceRename", deviceName.getText());
 		}else if(widget==networkName){
-			List<String> networkNames = (List<String>)te.getData("networkNames");
+			List<String> networkNames = (List<String>)tileEntity.getData("networkNames");
 			if(networkNames.contains(networkName.getText())){
 				network1.setText(Lang.tr("pc.gui.weasel.network.join"));
 				network1.setId(0);
@@ -127,14 +128,14 @@ public class PCws_GuiWeaselDiskDrive extends PCws_ContainerWeaselDiskDrive
 			}
 		}else if(widget==network1){
 			if(network1.getId()==0){
-				PC_PacketHandler.setTileEntity(te, "msg", "networkJoin", networkName.getText());
+				tileEntity.call("networkJoin", networkName.getText());
 			}else{
-				PC_PacketHandler.setTileEntity(te, "msg", "networkRename", networkName.getText());
+				tileEntity.call("networkRename", networkName.getText());
 			}
 		}else if(widget==network2){
-			PC_PacketHandler.setTileEntity(te, "msg", "networkNew", networkName.getText());
+			tileEntity.call("networkNew", networkName.getText());
 		}else if(widget==networkColor){
-			te.setData("color", PC_Color.fromHex(networkColor.getColor()));
+			tileEntity.setData("color", PC_Color.fromHex(networkColor.getColor()));
 		}
 	}
 
@@ -159,5 +160,8 @@ public class PCws_GuiWeaselDiskDrive extends PCws_ContainerWeaselDiskDrive
 			float par3) {
 		return false;
 	}
+
+	@Override
+	public void keyChange(String key, Object value) {}
 
 }

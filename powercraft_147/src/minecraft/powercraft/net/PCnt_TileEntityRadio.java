@@ -14,54 +14,68 @@ import powercraft.management.PC_VecF;
 import powercraft.management.PC_VecI;
 
 public class PCnt_TileEntityRadio extends PC_TileEntity implements PC_ITileEntityRenderer {
+	
+	public static final String TYPE = "type", ACTIVE = "active", HIDELABLE = "hideLabel", RENDERMICRO = "renderMicro", CHANNEL = "channel";
+	
 	/** Device channel */
-	private String channel = PCnt_RadioManager.default_radio_channel;
+	//private String channel = PCnt_RadioManager.default_radio_channel;
 	/** Device type, 0=TX, 1=RX */
-	public int type = 0; // 0=tx, 1=rx
+	//public int type = 0; // 0=tx, 1=rx
 	/** Device active flag */
-	public boolean active = false;
+	//public boolean active = false;
 	/** Hide the label */
-	public boolean hideLabel = false;
+	//public boolean hideLabel = false;
 
 
 	/** Render a smaller model */
-	public boolean renderMicro = false;
+	//public boolean renderMicro = false;
 
 	private static PCnt_ModelRadio model = new PCnt_ModelRadio();
 	
+	public PCnt_TileEntityRadio(){
+		setData(TYPE, 0);
+		setData(ACTIVE, false);
+		setData(HIDELABLE, false);
+		setData(RENDERMICRO, false);
+		setData(CHANNEL, PCnt_RadioManager.default_radio_channel);
+	}
+
 	@Override
 	public void create(ItemStack stack, EntityPlayer player, World world,
 			int x, int y, int z, int side, float hitX, float hitY, float hitZ) {
-		type = stack.getItemDamage();
+		setData(TYPE, stack.getItemDamage());
+	}
+	
+	public boolean isHideLabel() {
+		return (Boolean)getData(HIDELABLE);
 	}
 
-	@Override
-	public void writeToNBT(NBTTagCompound nbttagcompound) {
-		super.writeToNBT(nbttagcompound);
-		nbttagcompound.setString("channel", channel);
-		nbttagcompound.setInteger("type", type);
-		nbttagcompound.setBoolean("active", active);
-		nbttagcompound.setBoolean("NoLabel", hideLabel);
-		nbttagcompound.setBoolean("Micro", renderMicro);
+	public void setHideLabel(boolean hideLabel) {
+		setData(HIDELABLE, hideLabel);
 	}
 
-	@Override
-	public void readFromNBT(NBTTagCompound nbttagcompound) {
-		super.readFromNBT(nbttagcompound);
-		channel = nbttagcompound.getString("channel");
-		type = nbttagcompound.getInteger("type");
-		active = nbttagcompound.getBoolean("active");
-		hideLabel = nbttagcompound.getBoolean("NoLabel");
-		renderMicro = nbttagcompound.getBoolean("Micro");
+	public boolean isRenderMicro() {
+		return (Boolean)getData(RENDERMICRO);
+	}
+
+	public void setRenderMicro(boolean renderMicro) {
+		setData(RENDERMICRO, renderMicro);
+	}
+
+	public int getType() {
+		return (Integer)getData(TYPE);
+	}
+
+	public void setActive(boolean active) {
+		setData(ACTIVE, active);
 	}
 
 	@Override
 	public void updateEntity() {
 		if(isReceiver() && !worldObj.isRemote){
-			boolean newstate = PCnt_RadioManager.getChannelState(channel);
-			if (active != newstate) {
-				active = newstate;
-				PC_PacketHandler.setTileEntity(this, "active", active);
+			boolean newstate = PCnt_RadioManager.getChannelState(getChannel());
+			if (isActive() != newstate) {
+				setActive(newstate);
 				worldObj.scheduleBlockUpdate(xCoord, yCoord, zCoord, getBlockType().blockID, 1);
 				updateBlock();
 			}
@@ -92,31 +106,31 @@ public class PCnt_TileEntityRadio extends PC_TileEntity implements PC_ITileEntit
 	 * @param typeindex 0=gold TX, 1=iron RX
 	 */
 	public void setType(int typeindex) {
-		if(type==0 && type!=typeindex && !worldObj.isRemote){
-			PCnt_RadioManager.transmitterOff(channel);
+		if(getType()==0 && getType()!=typeindex && !worldObj.isRemote){
+			PCnt_RadioManager.transmitterOff(getChannel());
 		}
-		type = typeindex;
+		setType(typeindex);
 	}
 
 	/**
 	 * @return is this device transmitter
 	 */
 	public boolean isTransmitter() {
-		return type == 0;
+		return getType() == 0;
 	}
 
 	/**
 	 * @return is this device receiver
 	 */
 	public boolean isReceiver() {
-		return type == 1;
+		return getType() == 1;
 	}
 
 	/**
 	 * @return is the radio device active
 	 */
 	public boolean isActive() {
-		return active;
+		return (Boolean)getData(ACTIVE);
 	}
 
 	/**
@@ -125,14 +139,14 @@ public class PCnt_TileEntityRadio extends PC_TileEntity implements PC_ITileEntit
 	 * @param act is active
 	 */
 	public void setTransmitterState(boolean act) {
-		if(active != act){
-			active = act;
-			if(act && type==0 && !worldObj.isRemote){
-				PCnt_RadioManager.transmitterOn(channel);
-			}else if(type==0 && !worldObj.isRemote){
-				PCnt_RadioManager.transmitterOff(channel);
+		if(isActive() != act){
+			setActive(act);
+			if(act && getType()==0 && !worldObj.isRemote){
+				PCnt_RadioManager.transmitterOn(getChannel());
+			}else if(getType()==0 && !worldObj.isRemote){
+				PCnt_RadioManager.transmitterOff(getChannel());
 			}
-			if(type==1)
+			if(getType()==1)
 				ValueWriting.hugeUpdate(worldObj, xCoord, yCoord, zCoord);
 		}
 	}
@@ -141,48 +155,26 @@ public class PCnt_TileEntityRadio extends PC_TileEntity implements PC_ITileEntit
 	 * @return radio channel assigned to this entity
 	 */
 	public String getChannel() {
-		return channel;
+		return (String)getData(CHANNEL);
 	}
 
 	public void setChannel(String channel) {
-		if(!this.channel.equals(channel)){
+		if(!getChannel().equals(channel)){
 			if(this.isActive()&&this.isTransmitter()&&!worldObj.isRemote)
-				PCnt_RadioManager.transmitterOff(this.channel);
-			this.channel = channel;
+				PCnt_RadioManager.transmitterOff(getChannel());
+			setChannel(channel);
 			if(this.isActive()&&this.isTransmitter()&&!worldObj.isRemote)
-				PCnt_RadioManager.transmitterOn(this.channel);
-		}
-	}
-	
-	@Override
-	public void setData(Object[] o) {
-		int p = 0;
-		while(p<o.length){
-			String var = (String)o[p++];
-			if(var.equals("type")){
-				this.setType((Integer)o[p++]);
-			}else if(var.equals("channel")){
-				setChannel((String)o[p++]);
-			}else if(var.equals("active")){
-				active = !(Boolean)o[p++];
-				setTransmitterState(!active);
-			}else if(var.equals("hideLabel")){
-				this.hideLabel = (Boolean)o[p++];
-			}else if(var.equals("renderMicro")){
-				this.renderMicro = (Boolean)o[p++];
-			}
+				PCnt_RadioManager.transmitterOn(getChannel());
 		}
 	}
 
 	@Override
-	public Object[] getData() {
-		return new Object[]{
-				"type", type,
-				"channel", channel,
-				"active", active,
-				"hideLabel", hideLabel,
-				"renderMicro", renderMicro
-		};
+	protected void dataChange(String key, Object value) {
+		if(key.equals(CHANNEL)){
+			setChannel((String)value);
+		}else if(key.equals(ACTIVE)){
+			setTransmitterState((Boolean)value);
+		}
 	}
 
 	@Override
@@ -199,7 +191,7 @@ public class PCnt_TileEntityRadio extends PC_TileEntity implements PC_ITileEntit
 		PC_Renderer.glScalef(f, -f, -f);
 		model.setType(isTransmitter(), worldObj.getBlockMetadata(xCoord, yCoord, zCoord) == 1); // ter.active);
 
-		model.tiny = renderMicro;
+		model.tiny = isRenderMicro();
 
 		model.render();
 		PC_Renderer.glPopMatrix();
@@ -207,9 +199,9 @@ public class PCnt_TileEntityRadio extends PC_TileEntity implements PC_ITileEntit
 		PC_Renderer.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 		PC_Renderer.glPopMatrix();
 
-		if (!hideLabel) {
+		if (!isHideLabel()) {
 			String foo = getChannel();
-			PC_Renderer.renderEntityLabelAt(foo, new PC_VecF(xCoord, yCoord, zCoord), 8, renderMicro ? 0.5F : 1.3F, x, y, z);
+			PC_Renderer.renderEntityLabelAt(foo, new PC_VecF(xCoord, yCoord, zCoord), 8, isRenderMicro() ? 0.5F : 1.3F, x, y, z);
 		}
 	}
 }

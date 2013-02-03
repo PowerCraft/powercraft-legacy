@@ -11,6 +11,7 @@ import powercraft.management.PC_GresTextEditMultiline;
 import powercraft.management.PC_GresWidget;
 import powercraft.management.PC_IGresGui;
 import powercraft.management.PC_PacketHandler;
+import powercraft.management.PC_TileEntity;
 import powercraft.management.PC_Utils.Lang;
 
 public class PCws_GuiWeaselTerminal extends PCws_GuiWeasel {
@@ -19,8 +20,8 @@ public class PCws_GuiWeaselTerminal extends PCws_GuiWeasel {
 	private PC_GresTextEdit inp;
 	private PC_GresButton send;
 	
-	public PCws_GuiWeaselTerminal(EntityPlayer player, Object[] o) {
-		super(player, o);
+	public PCws_GuiWeaselTerminal(EntityPlayer player, PC_TileEntity te, Object[] o) {
+		super(player, te, o);
 	}
 
 	@Override
@@ -54,7 +55,7 @@ public class PCws_GuiWeaselTerminal extends PCws_GuiWeasel {
 		if(widget==send){
 			String txt = inp.getText().trim();
 			inp.setText("");
-			PC_PacketHandler.setTileEntity(te, "msg", "input", txt);
+			te.call("input", txt);
 		}else{
 			super.actionPerformed(widget, gui);
 		}

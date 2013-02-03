@@ -21,21 +21,34 @@ import powercraft.management.PC_VecI;
 
 public class PCma_TileEntityFishingMachine extends PC_TileEntity implements PC_ITileEntityRenderer {
 
+	public static final String RUNNING = "running";
+	
 	private static PCma_ModelFishingMachine model = new PCma_ModelFishingMachine();
 	private static Random rand = new Random();
 	
 	private long lastTime = System.currentTimeMillis();
 	private int fishTimer = 250 + rand.nextInt(350);
 	private int burningFuel;
-	public boolean running;
+	//public boolean running;
 	public int rotation;
+	
+	public PCma_TileEntityFishingMachine(){
+		setData(RUNNING, false);
+	}
+	
+	public boolean isRunning(){
+		return (Boolean)getData(RUNNING);
+	}
+	
+	public void setRunning(boolean state){
+		setData(RUNNING, state);
+	}
 	
 	@Override
 	public void readFromNBT(NBTTagCompound nbtTagCompound) {
 		super.readFromNBT(nbtTagCompound);
 		fishTimer = nbtTagCompound.getInteger("fishTimer");
 		burningFuel = nbtTagCompound.getInteger("burningFuel");
-		running = burningFuel > 11;
 	}
 
 	@Override
@@ -155,15 +168,13 @@ public class PCma_TileEntityFishingMachine extends PC_TileEntity implements PC_I
 		if(!PCma_BlockFishingMachine.isStructOK(worldObj, getCoord())){
 			turnIntoBlocks();
 		}
-		boolean oldRunning = running;
-		if(running = checkFuel()){
+		boolean oldRunning = isRunning();
+		setRunning(checkFuel());
+		if(isRunning()){
 			if (--fishTimer <= 0) {
 				fishTimer = 250 + rand.nextInt(350);
 				catchFish();
 			}
-		}
-		if(oldRunning != running){
-			PC_PacketHandler.setTileEntity(this, "running", running);
 		}
 	}
 
@@ -172,35 +183,10 @@ public class PCma_TileEntityFishingMachine extends PC_TileEntity implements PC_I
 		return true;
 	}
 
-	
-	
-	@Override
-	public void setData(Object[] o) {
-		int p = 0;
-
-        while (p < o.length)
-        {
-            String var = (String)o[p++];
-
-            if (var.equals("running"))
-            {
-            	running = (Boolean)o[p++];
-            }
-            
-        }
-	}
-	
-	@Override
-	public Object[] getData() {
-		return new Object[]{
-				"running", running
-		};
-	}
-
 	@Override
 	public void renderTileEntityAt(double x, double y, double z, float rot) {
 		long currentTime = System.currentTimeMillis();
-		if(running)
+		if(isRunning())
 			rotation += (int)((currentTime-lastTime)/1000.0f*360);
 		lastTime = currentTime;
 		PC_Renderer.glPushMatrix();

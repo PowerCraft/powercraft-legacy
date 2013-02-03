@@ -8,6 +8,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+import powercraft.management.PC_TileEntity;
 import powercraft.management.PC_Utils;
 import powercraft.management.PC_Utils.GameInfo;
 import powercraft.management.PC_Utils.Gres;
@@ -121,7 +122,7 @@ public class PCtr_BlockBeltSeparator extends PCtr_BlockBeltBase
                 }
             }
 
-            Gres.openGres("SeperationBelt", entityplayer, i, j, k);
+            Gres.openGres("SeperationBelt", entityplayer, GameInfo.<PC_TileEntity>getTE(world, i, j, k));
             return true;
         }
     }

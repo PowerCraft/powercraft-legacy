@@ -45,7 +45,7 @@ public class PCws_WeaselPluginPort extends PCws_WeaselPlugin {
 	
 	@Override
 	protected void openPluginGui(EntityPlayer player) {
-		Gres.openGres("WeaselOnlyNet", player, getPos().x, getPos().y, getPos().z);
+		Gres.openGres("WeaselOnlyNet", player, getTE());
 	}
 
 	@Override

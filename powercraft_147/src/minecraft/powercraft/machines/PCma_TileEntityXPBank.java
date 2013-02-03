@@ -5,41 +5,31 @@ import java.util.Random;
 
 import net.minecraft.entity.item.EntityXPOrb;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.AxisAlignedBB;
-import powercraft.management.PC_PacketHandler;
+import powercraft.management.PC_Struct2;
 import powercraft.management.PC_TileEntity;
 import powercraft.management.PC_Utils.GameInfo;
 
 public class PCma_TileEntityXPBank extends PC_TileEntity
 {
+	public static final String XP = "xp";
+	
     private Random rand = new Random();
 
-    private int xp = 0;
+    //private int xp = 0;
 
+    public PCma_TileEntityXPBank(){
+    	setData(XP, 0);
+    }
+    
     public int getXP()
     {
-        return xp;
+        return (Integer)getData(XP);
     }
 
-    public void setXP(int i)
+    public void setXP(int xp)
     {
-        xp = i;
-        PC_PacketHandler.setTileEntity(this, "xp", xp);
-    }
-
-    @Override
-    public void readFromNBT(NBTTagCompound nbttagcompound)
-    {
-        super.readFromNBT(nbttagcompound);
-        xp = nbttagcompound.getInteger("xp");
-    }
-
-    @Override
-    public void writeToNBT(NBTTagCompound nbttagcompound)
-    {
-        super.writeToNBT(nbttagcompound);
-        nbttagcompound.setInteger("xp", xp);
+    	setData(XP, xp);
     }
 
     @Override
@@ -54,6 +44,9 @@ public class PCma_TileEntityXPBank extends PC_TileEntity
         List<EntityXPOrb> hitList = worldObj.getEntitiesWithinAABB(EntityXPOrb.class,
                 AxisAlignedBB.getBoundingBox(xCoord, yCoord, zCoord, xCoord + 1, yCoord + 1, zCoord + 1).expand(0.5D, 0.5D, 0.5D));
 
+        int xp = getXP();
+        int xp2 = xp;
+        
         if (hitList.size() > 0)
         {
             Loop:
@@ -81,11 +74,18 @@ public class PCma_TileEntityXPBank extends PC_TileEntity
             }
         }
 
+        if(xp!=xp2){
+        	setXP(xp);
+        }
+        
         return;
     }
 
     public void withdrawXP(EntityPlayer player)
     {
+    	int xp = getXP();
+        int xp2 = xp;
+    	
         if (xp == 0)
         {
             return;
@@ -105,6 +105,10 @@ public class PCma_TileEntityXPBank extends PC_TileEntity
             xp = 0;
         }
 
+        if(xp!=xp2){
+        	setXP(xp);
+        }
+        
         notifyChange();
     }
 
@@ -178,6 +182,9 @@ public class PCma_TileEntityXPBank extends PC_TileEntity
 
     public void givePlayerXP(EntityPlayer player, int num)
     {
+    	int xp = getXP();
+        int xp2 = xp;
+    	
         if (num > xp)
         {
             num = xp;
@@ -185,7 +192,7 @@ public class PCma_TileEntityXPBank extends PC_TileEntity
 
         if (worldObj.isRemote)
         {
-            PC_PacketHandler.setTileEntity(this, "givePlayerXP", player.username, num);
+        	call("givePlayerXP", new PC_Struct2<String, Integer>(player.username, num));
         }
 
         num = addExperience(player, num);
@@ -196,13 +203,19 @@ public class PCma_TileEntityXPBank extends PC_TileEntity
             xp = 0;
         }
 
+        if(xp!=xp2){
+        	setXP(xp);
+        }
+        
         notifyChange();
     }
 
     public void givePlayerLevel(EntityPlayer player, int num) {
+    	int xp = getXP();
+        int xp2 = xp;
     	if (worldObj.isRemote)
         {
-    		 PC_PacketHandler.setTileEntity(this, "givePlayerLevel", player.username, num);
+    		call("givePlayerLevel", new PC_Struct2<String, Integer>(player.username, num));
         }
     	if (num > 0)
         {
@@ -261,6 +274,11 @@ public class PCma_TileEntityXPBank extends PC_TileEntity
             	player.experienceLevel++;
             }
         }
+    	
+    	 if(xp!=xp2){
+         	setXP(xp);
+         }
+    	
 	}
     
     private void notifyChange()
@@ -276,49 +294,18 @@ public class PCma_TileEntityXPBank extends PC_TileEntity
         worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
     }
 
-    @Override
-    public void setData(Object[] o)
-    {
-        int p = 0;
-
-        while (p < o.length)
-        {
-            String var = (String)o[p++];
-
-            if (var.equals("xp"))
-            {
-                xp = (Integer)o[p++];
+	@Override
+	protected void onCall(String key, Object value) {
+		if(key.equals("givePlayerXP")){
+			PC_Struct2<String, Integer> d = (PC_Struct2<String, Integer>)value;
+			if (!worldObj.isRemote){
+                givePlayerXP(GameInfo.mcs().getConfigurationManager().getPlayerForUsername(d.a), d.b);
             }
-            else if (var.equals("givePlayerXP"))
-            {
-                if (!worldObj.isRemote)
-                {
-                    givePlayerXP(GameInfo.mcs().getConfigurationManager().getPlayerForUsername((String)o[p++]), (Integer)o[p++]);
-                }
-                else
-                {
-                    p += 2;
-                }
-            }else if(var.equals("givePlayerLevel")){
-            	if (!worldObj.isRemote)
-                {
-            		givePlayerLevel(GameInfo.mcs().getConfigurationManager().getPlayerForUsername((String)o[p++]), (Integer)o[p++]);
-                }
-                else
-                {
-                    p += 2;
-                }
+		}else if(key.equals("givePlayerLevel")){
+			PC_Struct2<String, Integer> d = (PC_Struct2<String, Integer>)value;
+			if (!worldObj.isRemote){
+				givePlayerLevel(GameInfo.mcs().getConfigurationManager().getPlayerForUsername(d.a), d.b);
             }
-        }
-    }
-
-    @Override
-    public Object[] getData()
-    {
-        return new Object[]
-                {
-                    "xp", xp
-                };
-    }
-
+		}
+	}
 }

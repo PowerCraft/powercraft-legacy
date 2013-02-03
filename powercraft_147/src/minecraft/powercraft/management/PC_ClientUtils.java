@@ -196,9 +196,9 @@ public class PC_ClientUtils extends PC_Utils {
 	}
 	
 	@Override
-	protected void iOpenGres(String name, EntityPlayer player, Object[]o){
+	protected void iOpenGres(String name, EntityPlayer player, PC_TileEntity te, Object[]o){
 		if(player!=null&&!player.worldObj.isRemote){
-			super.iOpenGres(name, player, o);
+			super.iOpenGres(name, player, te, o);
 			return;
 		}
 		int guiID = 0;
@@ -206,21 +206,25 @@ public class PC_ClientUtils extends PC_Utils {
 			ObjectInputStream input = (ObjectInputStream)o[0];
 			try {
 				name = (String)input.readObject();
-				 guiID = input.readInt();
-			        o = (Object[])input.readObject();
+				guiID = input.readInt();
+				PC_VecI vec = (PC_VecI)input.readObject();
+				if(vec!=null){
+					te = GameInfo.getTE(player.worldObj, vec);
+				}
+				o = (Object[])input.readObject();
 			} catch (Exception e) {
 				e.printStackTrace();
-			} 
+			}
 		}
 
         Class c = guis.get(name);
 
 		try {
 			if(PC_GresBaseWithInventory.class.isAssignableFrom(c)){
-				mc().displayGuiScreen(new PC_GresContainerGui((PC_GresBaseWithInventory)ValueWriting.createClass(c, new Class[]{EntityPlayer.class, Object[].class}, new Object[]{player, o})));
+				mc().displayGuiScreen(new PC_GresContainerGui(te, (PC_GresBaseWithInventory)ValueWriting.createClass(c, new Class[]{EntityPlayer.class, PC_TileEntity.class, Object[].class}, new Object[]{player, te, o})));
 				player.openContainer.windowId = guiID;
 			}else{
-				mc().displayGuiScreen(new PC_GresGui((PC_IGresClient)ValueWriting.createClass(c, new Class[]{EntityPlayer.class, Object[].class}, new Object[]{player, o})));
+				mc().displayGuiScreen(new PC_GresGui(te, (PC_IGresClient)ValueWriting.createClass(c, new Class[]{EntityPlayer.class, PC_TileEntity.class, Object[].class}, new Object[]{player, te, o})));
 			}
 		} catch (Exception e) {
 			e.printStackTrace();

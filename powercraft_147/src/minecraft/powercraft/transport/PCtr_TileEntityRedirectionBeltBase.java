@@ -5,7 +5,7 @@ import java.util.Hashtable;
 import java.util.Random;
 
 import net.minecraft.entity.Entity;
-import powercraft.management.PC_PacketHandler;
+import powercraft.management.PC_Struct2;
 import powercraft.management.PC_TileEntity;
 
 public abstract class PCtr_TileEntityRedirectionBeltBase extends PC_TileEntity
@@ -67,22 +67,17 @@ public abstract class PCtr_TileEntityRedirectionBeltBase extends PC_TileEntity
     {
         redirList.put(entityID, direction);
         if(!worldObj.isRemote)
-        	PC_PacketHandler.setTileEntity(this, "newID", entityID, direction);
+        	call("newID", new PC_Struct2<Integer, Integer>(entityID, direction));
     }
     
-	@Override
-	public void setData(Object[] o) {
-		int p = 0;
-        
-        while (p < o.length)
-        {
-            String var = (String)o[p++];
-
-            if (var.equals("newID"))
-            {
-            	setItemDirection((Integer)o[p++], (Integer)o[p++]);
-            }
-        }
+    @Override
+	protected void onCall(String key, Object value) {
+		if(key.equals("newID")){
+			if(worldObj.isRemote){
+				PC_Struct2<Integer, Integer> d= (PC_Struct2<Integer, Integer>)value;
+				setItemDirection(d.a, d.b);
+			}
+		}
 	}
     
 }

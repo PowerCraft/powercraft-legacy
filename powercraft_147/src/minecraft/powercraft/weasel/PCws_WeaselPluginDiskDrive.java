@@ -99,7 +99,7 @@ public class PCws_WeaselPluginDiskDrive extends PCws_WeaselPlugin implements PCw
 
 	@Override
 	protected void openPluginGui(EntityPlayer player) {
-		Gres.openGres("WeaselDiskDrive", player, getPos().x, getPos().y, getPos().z);
+		Gres.openGres("WeaselDiskDrive", player, getTE());
 	}
 
 	@Override

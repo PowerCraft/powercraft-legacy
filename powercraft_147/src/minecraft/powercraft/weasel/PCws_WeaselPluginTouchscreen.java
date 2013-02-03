@@ -6,7 +6,9 @@ import java.util.List;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
+import powercraft.management.PC_Entry;
 import powercraft.management.PC_PacketHandler;
+import powercraft.management.PC_Struct2;
 import powercraft.management.PC_Struct4;
 import powercraft.management.PC_Utils.GameInfo;
 import powercraft.management.PC_Utils.Gres;
@@ -75,21 +77,20 @@ public class PCws_WeaselPluginTouchscreen extends PCws_WeaselPlugin implements W
 	@Override
 	public void syncWithClient(PCws_TileEntityWeasel tileEntityWeasel) {
 		int n=0;
-		List<Object> data = new ArrayList<Object>();
+		List<PC_Struct2<String, Object>> data = new ArrayList<PC_Struct2<String, Object>>();
 		for(int j=0; j<HEIGHT; j++){
 			for(int i=0; i<WIDTH; i++){
-				data.add("pic["+i+"]["+j+"]");
-				data.add(screen[i][j]);
+				data.add(new PC_Entry("pic["+i+"]["+j+"]", screen[i][j]));
 				tileEntityWeasel.setDataNoSend("pic["+i+"]["+j+"]", screen[i][j]);
 				n++;
 				if(n>200){
-					PC_PacketHandler.setTileEntity(tileEntityWeasel, data.toArray());
+					PC_PacketHandler.setTileEntity(tileEntityWeasel, data.toArray(new PC_Struct2[0]));
 					data.clear();
 					n=0;
 				}
 			}
 		}
-		PC_PacketHandler.setTileEntity(tileEntityWeasel, data.toArray());
+		PC_PacketHandler.setTileEntity(tileEntityWeasel, data.toArray(new PC_Struct2[0]));
 	}
 	
 	@Override
@@ -117,9 +118,9 @@ public class PCws_WeaselPluginTouchscreen extends PCws_WeaselPlugin implements W
 	@Override
 	protected void openPluginGui(EntityPlayer player) {
 		if(GameInfo.isPlacingReversed(player)){
-			Gres.openGres("WeaselOnlyNet", player, getPos().x, getPos().y, getPos().z);
+			Gres.openGres("WeaselOnlyNet", player, getTE());
 		}else{
-			Gres.openGres("WeaselTouchscreen", player, getPos().x, getPos().y, getPos().z);
+			Gres.openGres("WeaselTouchscreen", player, getTE());
 		}
 	}
 
@@ -159,23 +160,22 @@ public class PCws_WeaselPluginTouchscreen extends PCws_WeaselPlugin implements W
 		PCws_TileEntityWeasel te = getTE();
 		if(te!=null){
 			int n=0;
-			List<Object> data = new ArrayList<Object>();
+			List<PC_Struct2<String, Object>> data = new ArrayList<PC_Struct2<String, Object>>();
 			for(int j=0; j<HEIGHT; j++){
 				for(int i=0; i<WIDTH; i++){
 					if((Integer)te.getData("pic["+i+"]["+j+"]") != screen[i][j]){
-						data.add("pic["+i+"]["+j+"]");
-						data.add(screen[i][j]);
+						data.add(new PC_Entry("pic["+i+"]["+j+"]", screen[i][j]));
 						te.setDataNoSend("pic["+i+"]["+j+"]", screen[i][j]);
 						n++;
 						if(n>200){
-							PC_PacketHandler.setTileEntity(te, data.toArray());
+							PC_PacketHandler.setTileEntity(te, data.toArray(new PC_Struct2[0]));
 							data.clear();
 							n=0;
 						}
 					}
 				}
 			}
-			PC_PacketHandler.setTileEntity(te, data.toArray());
+			PC_PacketHandler.setTileEntity(te, data.toArray(new PC_Struct2[0]));
 		}
 	}
 	

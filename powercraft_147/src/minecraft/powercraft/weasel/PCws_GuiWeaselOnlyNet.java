@@ -3,11 +3,12 @@ package powercraft.weasel;
 import net.minecraft.entity.player.EntityPlayer;
 import powercraft.management.PC_GresTab;
 import powercraft.management.PC_IGresGui;
+import powercraft.management.PC_TileEntity;
 
 public class PCws_GuiWeaselOnlyNet extends PCws_GuiWeasel {
 
-	public PCws_GuiWeaselOnlyNet(EntityPlayer player, Object[] o) {
-		super(player, o);
+	public PCws_GuiWeaselOnlyNet(EntityPlayer player, PC_TileEntity te, Object[] o) {
+		super(player, te, o);
 	}
 
 	@Override

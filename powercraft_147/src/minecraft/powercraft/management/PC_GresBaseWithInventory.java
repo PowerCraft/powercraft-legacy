@@ -9,7 +9,7 @@ import net.minecraft.inventory.Container;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 
-public abstract class PC_GresBaseWithInventory extends Container
+public abstract class PC_GresBaseWithInventory<t extends PC_TileEntity> extends Container
 {
     public EntityPlayer thePlayer;
 
@@ -19,10 +19,14 @@ public abstract class PC_GresBaseWithInventory extends Container
 
     public Slot[][] inventoryPlayerLower = new Slot[9][1];
 
-    public PC_GresBaseWithInventory(EntityPlayer player, Object[] o)
+    protected t tileEntity;
+    
+    public PC_GresBaseWithInventory(EntityPlayer player, t te, Object[] o)
     {
         thePlayer = player;
-
+        
+        tileEntity = te;
+        
         if (thePlayer != null)
         {
             for (int i = 0; i < 9; i++)

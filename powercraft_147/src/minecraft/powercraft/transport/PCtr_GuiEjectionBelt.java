@@ -7,6 +7,7 @@ import powercraft.management.PC_GresLabel;
 import powercraft.management.PC_GresLayoutH;
 import powercraft.management.PC_GresLayoutV;
 import powercraft.management.PC_GresRadioButton;
+import powercraft.management.PC_TileEntity;
 import powercraft.management.PC_GresRadioButton.PC_GresRadioGroup;
 import powercraft.management.PC_GresSeparatorH;
 import powercraft.management.PC_GresTextEdit;
@@ -38,8 +39,8 @@ public class PCtr_GuiEjectionBelt implements PC_IGresClient {
 	private PC_GresRadioButton radioSelectLast;
 	private PC_GresRadioButton radioSelectRandom;
 	
-	public PCtr_GuiEjectionBelt(EntityPlayer player, Object[] o){
-		teb = (PCtr_TileEntityEjectionBelt)GameInfo.getTE(player.worldObj, (Integer)o[0], (Integer)o[1], (Integer)o[2]);
+	public PCtr_GuiEjectionBelt(EntityPlayer player, PC_TileEntity te, Object[] o){
+		teb = (PCtr_TileEntityEjectionBelt)te;
 	}
 	
 	@Override
@@ -66,8 +67,8 @@ public class PCtr_GuiEjectionBelt implements PC_IGresClient {
 		hg.setAlignH(PC_GresAlign.LEFT);
 		hg.add(radioModeStacks = new PC_GresRadioButton(Lang.tr("pc.gui.ejector.modeStacks"), actionMode));
 		radioModeStacks.setMinWidth(100);
-		radioModeStacks.check(teb.actionType == 0);
-		hg.add(editSlots = new PC_GresTextEdit(teb.numStacksEjected + "", 6, PC_GresInputType.UNSIGNED_INT));
+		radioModeStacks.check(teb.getActionType() == 0);
+		hg.add(editSlots = new PC_GresTextEdit(teb.getNumStacksEjected() + "", 6, PC_GresInputType.UNSIGNED_INT));
 		vg.add(hg);
 
 		hg = new PC_GresLayoutH();
@@ -75,8 +76,8 @@ public class PCtr_GuiEjectionBelt implements PC_IGresClient {
 		hg.setWidgetMargin(0);
 		hg.add(radioModeItems = new PC_GresRadioButton(Lang.tr("pc.gui.ejector.modeItems"), actionMode));
 		radioModeItems.setMinWidth(100);
-		radioModeItems.check(teb.actionType == 1);
-		hg.add(editItems = new PC_GresTextEdit(teb.numItemsEjected + "", 6, PC_GresInputType.UNSIGNED_INT));
+		radioModeItems.check(teb.getActionType() == 1);
+		hg.add(editItems = new PC_GresTextEdit(teb.getNumItemsEjected() + "", 6, PC_GresInputType.UNSIGNED_INT));
 		vg.add(hg);
 
 		hg = new PC_GresLayoutH();
@@ -84,7 +85,7 @@ public class PCtr_GuiEjectionBelt implements PC_IGresClient {
 		hg.setWidgetMargin(0);
 		hg.add(radioModeAll = new PC_GresRadioButton(Lang.tr("pc.gui.ejector.modeAll"), actionMode));
 		radioModeAll.setMinWidth(100);
-		radioModeAll.check(teb.actionType == 2);
+		radioModeAll.check(teb.getActionType() == 2);
 		vg.add(hg);
 
 		w.add(vg);
@@ -100,9 +101,9 @@ public class PCtr_GuiEjectionBelt implements PC_IGresClient {
 		vg.add(radioSelectFirst = new PC_GresRadioButton(Lang.tr("pc.gui.ejector.modeSelectFirst"), selectMode));
 		vg.add(radioSelectLast = new PC_GresRadioButton(Lang.tr("pc.gui.ejector.modeSelectLast"), selectMode));
 		vg.add(radioSelectRandom = new PC_GresRadioButton(Lang.tr("pc.gui.ejector.modeSelectRandom"), selectMode));
-		radioSelectFirst.check(teb.itemSelectMode == 0);
-		radioSelectLast.check(teb.itemSelectMode == 1);
-		radioSelectRandom.check(teb.itemSelectMode == 2);
+		radioSelectFirst.check(teb.getItemSelectMode() == 0);
+		radioSelectLast.check(teb.getItemSelectMode() == 1);
+		radioSelectRandom.check(teb.getItemSelectMode() == 2);
 
 		w.add(vg);
 
@@ -143,7 +144,7 @@ public class PCtr_GuiEjectionBelt implements PC_IGresClient {
 			actionType = 1;
 		if (radioModeAll.isChecked()) 
 			actionType = 2;
-		PC_PacketHandler.setTileEntity(teb, "actionType", actionType);
+		teb.setActionType(actionType);
 		
 		int itemSelectMode=0;
 		if (radioSelectFirst.isChecked())
@@ -152,14 +153,14 @@ public class PCtr_GuiEjectionBelt implements PC_IGresClient {
 			itemSelectMode = 1;
 		if (radioSelectRandom.isChecked()) 
 			itemSelectMode = 2;
-		PC_PacketHandler.setTileEntity(teb, "itemSelectMode", itemSelectMode);
+		teb.setItemSelectMode(itemSelectMode);
 		
 		try {
-			PC_PacketHandler.setTileEntity(teb, "numStacksEjected", Integer.parseInt(editSlots.getText()));
+			teb.setNumStacksEjected(Integer.parseInt(editSlots.getText()));
 		} catch (NumberFormatException e) {}
 
 		try {
-			PC_PacketHandler.setTileEntity(teb, "numItemsEjected", Integer.parseInt(editItems.getText()));
+			teb.setNumItemsEjected(Integer.parseInt(editItems.getText()));
 		} catch (NumberFormatException e) {}
 
 
@@ -178,5 +179,8 @@ public class PCtr_GuiEjectionBelt implements PC_IGresClient {
 	public boolean drawBackground(PC_IGresGui gui, int par1, int par2,float par3) {
 		return false;
 	}
+
+	@Override
+	public void keyChange(String key, Object value) {}
 
 }

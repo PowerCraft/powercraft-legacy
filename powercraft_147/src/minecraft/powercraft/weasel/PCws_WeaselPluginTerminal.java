@@ -83,7 +83,7 @@ public class PCws_WeaselPluginTerminal extends PCws_WeaselPlugin {
 	public void addText(String text) {
 		if(System.currentTimeMillis() - lastTime > 100){
 			if(getTE()!=null){
-				PC_PacketHandler.setTileEntity(getTE(), "msg", "play", null);
+				getTE().call("play", null);
 				lastTime = System.currentTimeMillis();
 			}
 		}
@@ -135,7 +135,7 @@ public class PCws_WeaselPluginTerminal extends PCws_WeaselPlugin {
 	
 	@Override
 	protected void openPluginGui(EntityPlayer player) {
-		Gres.openGres("WeaselTerminal", player, getPos().x, getPos().y, getPos().z);
+		Gres.openGres("WeaselTerminal", player, getTE());
 	}
 
 	@Override

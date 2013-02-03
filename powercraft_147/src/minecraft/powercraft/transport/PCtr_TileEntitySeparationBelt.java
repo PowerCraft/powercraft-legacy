@@ -29,22 +29,46 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import powercraft.management.PC_ISpecialAccessInventory;
 import powercraft.management.PC_InvUtils;
+import powercraft.management.PC_Struct2;
 import powercraft.management.PC_VecI;
 import powercraft.management.PC_EntityItem;
 
 public class PCtr_TileEntitySeparationBelt extends PCtr_TileEntityRedirectionBeltBase implements IInventory, PC_ISpecialAccessInventory
 {
-    public boolean group_logs = true;
-
-    public boolean group_planks = true;
-
-    public boolean group_all = false;
+	public static final String GROUP_LOGS = "group_logs", GROUP_PLANKS = "group_planks", GROUP_ALL = "group_all";
 
     public PCtr_TileEntitySeparationBelt()
     {
         separatorContents = new ItemStack[18];
+        setData(GROUP_LOGS, false);
+        setData(GROUP_PLANKS, false);
+        setData(GROUP_ALL, false);
+    }
+    
+    public boolean isGroupLogs(){
+    	return (Boolean)getData(GROUP_LOGS);
+    }
+    
+    public void setGroupLogs(boolean state){
+    	setData(GROUP_LOGS, state);
+    }
+    
+    public boolean isGroupPlanks(){
+    	return (Boolean)getData(GROUP_PLANKS);
+    }
+    
+    public void setGroupPlanks(boolean state){
+    	setData(GROUP_LOGS, state);
+    }
+    
+    public boolean isGroupAll(){
+    	return (Boolean)getData(GROUP_ALL);
     }
 
+    public void setGroupAll(boolean state){
+    	setData(GROUP_LOGS, state);
+    }
+    
     @Override
     public int getSizeInventory()
     {
@@ -180,8 +204,8 @@ public class PCtr_TileEntitySeparationBelt extends PCtr_TileEntityRedirectionBel
             ItemStack stack = getStackInSlot(i);
 
             if (stack != null
-                    && (stack.isItemEqual(itemstack) || (group_logs && stack.itemID == Block.wood.blockID && itemstack.itemID == Block.wood.blockID)
-                            || (group_planks && stack.itemID == Block.planks.blockID && itemstack.itemID == Block.planks.blockID) || (group_all && stack.itemID == itemstack.itemID)))
+                    && (stack.isItemEqual(itemstack) || (isGroupLogs() && stack.itemID == Block.wood.blockID && itemstack.itemID == Block.wood.blockID)
+                            || (isGroupPlanks() && stack.itemID == Block.planks.blockID && itemstack.itemID == Block.planks.blockID) || (isGroupAll() && stack.itemID == itemstack.itemID)))
             {
                 int tmpi = i % 6;
 
@@ -370,16 +394,6 @@ public class PCtr_TileEntitySeparationBelt extends PCtr_TileEntityRedirectionBel
     {
         super.readFromNBT(nbttagcompound);
         PC_InvUtils.loadInventoryFromNBT(nbttagcompound, "Items", this);
-        group_all = nbttagcompound.getBoolean("GroupAll");
-        group_logs = nbttagcompound.getBoolean("GroupLogs");
-        group_planks = nbttagcompound.getBoolean("GroupPlanks");
-
-        if (!nbttagcompound.getBoolean("mark342"))
-        {
-            group_all = false;
-            group_logs = true;
-            group_planks = true;
-        }
     }
 
     @Override
@@ -387,10 +401,6 @@ public class PCtr_TileEntitySeparationBelt extends PCtr_TileEntityRedirectionBel
     {
         super.writeToNBT(nbttagcompound);
         PC_InvUtils.saveInventoryToNBT(nbttagcompound, "Items", this);
-        nbttagcompound.setBoolean("GroupAll", group_all);
-        nbttagcompound.setBoolean("GroupLogs", group_logs);
-        nbttagcompound.setBoolean("GroupPlanks", group_planks);
-        nbttagcompound.setBoolean("mark342", true);
     }
 
     @Override
@@ -450,38 +460,6 @@ public class PCtr_TileEntitySeparationBelt extends PCtr_TileEntityRedirectionBel
     public boolean canDispenseStackFrom(int slot)
     {
         return false;
-    }
-
-    @Override
-    public void setData(Object[] o)
-    {
-        int p = 0;
-
-        while (p < o.length)
-        {
-            String var = (String)o[p++];
-
-            if (var.equals("logsPlanksAll"))
-            {
-                group_logs = (boolean)(Boolean)o[p++];
-                group_planks = (boolean)(Boolean)o[p++];
-                group_all = (boolean)(Boolean)o[p++];
-            }else if (var.equals("newID"))
-            {
-            	setItemDirection((Integer)o[p++], (Integer)o[p++]);
-            }
-        }
-    }
-
-    @Override
-    public Object[] getData()
-    {
-        Object[] o = new Object[4];
-        o[0] = "logsPlanksAll";
-        o[1] = group_logs;
-        o[2] = group_planks;
-        o[3] = group_all;
-        return o;
     }
 
 	@Override

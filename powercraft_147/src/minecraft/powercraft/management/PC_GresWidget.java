@@ -7,11 +7,11 @@ import java.util.List;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.Gui;
-import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.inventory.Slot;
 
 import org.lwjgl.opengl.GL11;
 
+import powercraft.management.PC_Utils.Lang;
 import powercraft.management.PC_Utils.ModuleInfo;
 
 
@@ -21,7 +21,7 @@ import powercraft.management.PC_Utils.ModuleInfo;
  * @authors XOR19, Rapus95, MightyPork
  * @copy (c) 2012
  */
-public abstract class PC_GresWidget extends Gui {
+public abstract class PC_GresWidget extends Gui implements PC_ITileEntityWatcher {
 
 	/** zero coord */
 	public static final PC_VecI zerosize = new PC_VecI(0, 0);
@@ -108,6 +108,8 @@ public abstract class PC_GresWidget extends Gui {
 	/** Is visible */
 	protected boolean visible = true;
 
+	protected String textLangKey = "";
+	protected String textValue = "";
 	/** Widget's label (text in title or on button or whatever) */
 	protected String text = "";
 
@@ -126,7 +128,11 @@ public abstract class PC_GresWidget extends Gui {
 	/** Additional widget tag (general purpose) */
 	public String tag = "";
 	
-	private String tooltip;
+	protected String tooltipLangKey = "";
+	protected String tooltipValue = "";
+	protected String tooltip;
+	
+	protected String tileEnityObjectKey;
 	
 	/**
 	 * A widget
@@ -140,15 +146,28 @@ public abstract class PC_GresWidget extends Gui {
 	/**
 	 * A widget
 	 * 
-	 * @param label widget's label / text
+	 * @param labelKey widget's label / text
 	 */
-	public PC_GresWidget(String label) {
-		this.text = label;
+	public PC_GresWidget(String labelKey) {
+		setTextLangKey(labelKey);
 		PC_VecI minSize = getMinSize();
 		this.size = minSize.copy();
 		this.minSize = minSize.copy();
 	}
 
+	/**
+	 * A widget
+	 * 
+	 * @param labelKey widget's label / text
+	 * @param labelValue widget's label / text
+	 */
+	public PC_GresWidget(String labelKey, String langValue) {
+		setText(labelKey, langValue);
+		PC_VecI minSize = getMinSize();
+		this.size = minSize.copy();
+		this.minSize = minSize.copy();
+	}
+	
 	/**
 	 * A widget
 	 * 
@@ -168,9 +187,21 @@ public abstract class PC_GresWidget extends Gui {
 	 * @param height widget minHeight
 	 * @param label widget label / text
 	 */
-	public PC_GresWidget(int width, int height, String label) {
+	public PC_GresWidget(int width, int height, String labelKey) {
 		this(width, height);
-		this.text = label;
+		setTextLangKey(labelKey);
+	}
+	
+	/**
+	 * A widget
+	 * 
+	 * @param width widget minWidth
+	 * @param height widget minHeight
+	 * @param label widget label / text
+	 */
+	public PC_GresWidget(int width, int height, String labelKey, String langValue) {
+		this(width, height);
+		setText(labelKey, langValue);
 	}
 	
 	/**
@@ -193,6 +224,10 @@ public abstract class PC_GresWidget extends Gui {
 	}
 	
 	protected void visibleChanged(boolean show){}
+	
+	public void setTileEnityObjectKey(String tileEnityObjectKey){
+		this.tileEnityObjectKey = tileEnityObjectKey;
+	}
 	
 	/**
 	 * @return true if is visible
@@ -261,6 +296,78 @@ public abstract class PC_GresWidget extends Gui {
 		return this;
 	}
 
+	public PC_GresWidget setTooltip(String tooltipLangKey, String tooltipValue) {
+		this.tooltipLangKey = tooltipLangKey;
+		this.tooltipValue = tooltipValue;
+		tooltip = Lang.tr(tooltipLangKey, tooltipValue);
+		return this;
+	}
+	
+	public String getTooltipLangKey() {
+		return tooltipLangKey;
+	}
+	
+	public PC_GresWidget setTooltipLangKey(String tooltipLangKey) {
+		this.tooltipLangKey = tooltipLangKey;
+		tooltip = Lang.tr(tooltipLangKey, tooltipValue);
+		return this;
+	}
+	
+	public String getTooltipValue() {
+		return tooltipValue;
+	}
+	
+	public PC_GresWidget setTooltipValue(String tooltipValue) {
+		this.tooltipValue = tooltipValue;
+		tooltip = Lang.tr(tooltipLangKey, tooltipValue);
+		return this;
+	}
+	
+	/**
+	 * @return widget's text / label
+	 */
+	public String getText() {
+		return text;
+	}
+	
+	/**
+	 * Set widget's label, resize if needed
+	 * 
+	 * @param text new text / label
+	 * @return this
+	 */
+	public PC_GresWidget setText(String text) {
+		this.text = text;
+		return this;
+	}
+
+	public PC_GresWidget setText(String textLangKey, String textValue) {
+		this.textLangKey = textLangKey;
+		this.textValue = textValue;
+		text = Lang.tr(textLangKey, textValue);
+		return this;
+	}
+	
+	public String getTextLangKey() {
+		return textLangKey;
+	}
+	
+	public PC_GresWidget setTextLangKey(String textLangKey) {
+		this.textLangKey = textLangKey;
+		text = Lang.tr(textLangKey, textValue);
+		return this;
+	}
+	
+	public String getTextValue() {
+		return textValue;
+	}
+	
+	public PC_GresWidget setTextValue(String textValue) {
+		this.textValue = textValue;
+		text = Lang.tr(textLangKey, textValue);
+		return this;
+	}
+	
 	/**
 	 * @return widget's font renderer
 	 */
@@ -340,27 +447,6 @@ public abstract class PC_GresWidget extends Gui {
 	 */
 	public PC_GresWidget setFocus(boolean focus) {
 		hasFocus = focus;
-		return this;
-	}
-
-	/**
-	 * @return widget's text / label
-	 */
-	public String getText() {
-		return text;
-	}
-
-	/**
-	 * Set widget's label, resize if needed
-	 * 
-	 * @param text new text / label
-	 * @return this
-	 */
-	public PC_GresWidget setText(String text) {
-		this.text = text;
-		if (parent != null) {
-			parent.calcChildPositions();
-		}
 		return this;
 	}
 
@@ -1068,5 +1154,16 @@ public abstract class PC_GresWidget extends Gui {
 		l.add(tooltip);
 		return l;
 	}
+	
+	public void keyChange(String key, Object value){
+		if(key.equals(tileEnityObjectKey)){
+			onObjectChange(value);
+		}
+		for(PC_GresWidget w:childs){
+			w.keyChange(key, value);
+		}
+	}
+	
+	protected void onObjectChange(Object value){}
 	
 }

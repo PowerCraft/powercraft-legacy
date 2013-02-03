@@ -7,21 +7,78 @@ import powercraft.management.PC_TileEntity;
 
 public class PCtr_TileEntityEjectionBelt extends PC_TileEntity
 {
-    protected Random rand = new Random();
+	public static final String ACTIONTYPE = "actionType", NUMSTACKSEJECTED = "numStacksEjected", NUMITEMSEJECTED = "numItemsEjected", ITEMSELECTMODE = "itemSelectMode";
+	
+    public static Random rand = new Random();
 
-    public int actionType = 0;
+    //public int actionType = 0;
 
-    public int numStacksEjected = 1;
+    //public int numStacksEjected = 1;
 
-    public int numItemsEjected = 1;
+    //public int numItemsEjected = 1;
 
-    public int itemSelectMode = 0;
+   // public int itemSelectMode = 0;
 
 	public boolean isActive = false;
     
-    public PCtr_TileEntityEjectionBelt() {}
+    public PCtr_TileEntityEjectionBelt() {
+    	setData(ACTIONTYPE, 0);
+    	setData(NUMSTACKSEJECTED, 1);
+    	setData(NUMITEMSEJECTED, 1);
+    	setData(ITEMSELECTMODE, 0);
+    }
 
-    @Override
+    
+    
+    public int getActionType() {
+		return (Integer)getData(ACTIONTYPE);
+	}
+
+
+
+	public void setActionType(int actionType) {
+		setData(ACTIONTYPE, actionType);
+	}
+
+
+
+	public int getNumStacksEjected() {
+		return (Integer)getData(NUMSTACKSEJECTED);
+	}
+
+
+
+	public void setNumStacksEjected(int numStacksEjected) {
+		setData(NUMSTACKSEJECTED, numStacksEjected);
+	}
+
+
+
+	public int getNumItemsEjected() {
+		return (Integer)getData(NUMITEMSEJECTED);
+	}
+
+
+
+	public void setNumItemsEjected(int numItemsEjected) {
+		setData(NUMITEMSEJECTED, numItemsEjected);
+	}
+
+
+
+	public int getItemSelectMode() {
+		return (Integer)getData(ITEMSELECTMODE);
+	}
+
+
+
+	public void setItemSelectMode(int itemSelectMode) {
+		setData(ITEMSELECTMODE, itemSelectMode);
+	}
+
+
+
+	@Override
     public final boolean canUpdate()
     {
         return false;
@@ -35,10 +92,6 @@ public class PCtr_TileEntityEjectionBelt extends PC_TileEntity
     {
         super.writeToNBT(tag);
         tag.setBoolean("isActive", isActive);
-        tag.setInteger("actionType", actionType);
-        tag.setInteger("numStacks", numStacksEjected);
-        tag.setInteger("numItems", numItemsEjected);
-        tag.setInteger("selectMode", itemSelectMode);
     }
 
     @Override
@@ -46,48 +99,6 @@ public class PCtr_TileEntityEjectionBelt extends PC_TileEntity
     {
         super.readFromNBT(tag);
         isActive = tag.getBoolean("isActive");
-        actionType = tag.getInteger("actionType");
-        numStacksEjected = tag.getInteger("numStacks");
-        numItemsEjected = tag.getInteger("numItems");
-        itemSelectMode = tag.getInteger("selectMode");
     }
 
-    @Override
-    public void setData(Object[] o)
-    {
-        int p = 0;
-        
-        while (p < o.length)
-        {
-            String var = (String)o[p++];
-
-            if (var.equals("actionType"))
-            {
-                actionType = (int)(Integer)o[p++];
-            }
-            else if (var.equals("itemSelectMode"))
-            {
-                itemSelectMode = (int)(Integer)o[p++];
-            }
-            else if (var.equals("numStacksEjected"))
-            {
-                numStacksEjected = (int)(Integer)o[p++];
-            }
-            else if (var.equals("numItemsEjected"))
-            {
-                numItemsEjected = (int)(Integer)o[p++];
-            }
-        }
-    }
-
-    @Override
-    public Object[] getData()
-    {
-        return new Object[]{
-		        "actionType", actionType,
-		        "itemSelectMode", itemSelectMode,
-		        "numStacksEjected", numStacksEjected,
-		        "numItemsEjected", numItemsEjected
-        	};
-    }
 }
