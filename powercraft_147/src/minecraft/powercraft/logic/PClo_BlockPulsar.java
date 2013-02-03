@@ -18,6 +18,7 @@ import powercraft.management.PC_IItemInfo;
 import powercraft.management.PC_PacketHandler;
 import powercraft.management.PC_Property;
 import powercraft.management.PC_Shining;
+import powercraft.management.PC_TileEntity;
 import powercraft.management.PC_Shining.OFF;
 import powercraft.management.PC_Shining.ON;
 import powercraft.management.PC_Utils;
@@ -110,7 +111,7 @@ public class PClo_BlockPulsar extends PC_Block implements PC_IItemInfo
 
         if (world.isRemote)
         {
-            Gres.openGres("Pulsar", player, i, j, k);
+            Gres.openGres("Pulsar", player, GameInfo.<PC_TileEntity>getTE(world, i, j, k));
         }
 
         return true;
@@ -125,7 +126,7 @@ public class PClo_BlockPulsar extends PC_Block implements PC_IItemInfo
     public static void changeDelay(World world, EntityPlayer player, int x, int y, int z, int delay)
     {
         PClo_TileEntityPulsar ent = (PClo_TileEntityPulsar) world.getBlockTileEntity(x, y, z);
-        PC_PacketHandler.setTileEntity(ent, "changeDelay", delay);
+        ent.setTimes(delay, ent.getHold());
         ent.printDelay();
     }
 

@@ -19,6 +19,7 @@ import powercraft.management.PC_Property;
 import powercraft.management.PC_Shining;
 import powercraft.management.PC_Shining.OFF;
 import powercraft.management.PC_Shining.ON;
+import powercraft.management.PC_TileEntity;
 import powercraft.management.PC_Utils;
 import powercraft.management.PC_Utils.GameInfo;
 import powercraft.management.PC_Utils.Gres;
@@ -274,14 +275,14 @@ public class PClo_BlockDelayer extends PC_Block
 
         if (entityliving instanceof EntityPlayer)
         {
-            Gres.openGres("Delayer", (EntityPlayer)entityliving, x, y, z);
+            Gres.openGres("Delayer", (EntityPlayer)entityliving, GameInfo.<PC_TileEntity>getTE(world, x, y, z));
         }
     }
 
     @Override
     public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player, int par6, float par7, float par8, float par9)
     {
-        Gres.openGres("Delayer", player, x, y, z);
+        Gres.openGres("Delayer", player, GameInfo.<PC_TileEntity>getTE(world, x, y, z));
         return true;
     }
 

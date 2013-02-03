@@ -12,6 +12,7 @@ import powercraft.management.PC_GresWidget.PC_GresAlign;
 import powercraft.management.PC_GresWindow;
 import powercraft.management.PC_IGresClient;
 import powercraft.management.PC_IGresGui;
+import powercraft.management.PC_TileEntity;
 import powercraft.management.PC_Utils.Converter;
 import powercraft.management.PC_Utils.GameInfo;
 import powercraft.management.PC_Utils.Lang;
@@ -24,8 +25,8 @@ public class PClo_GuiDelayer implements PC_IGresClient {
 	private PC_GresWidget editDelay;
 	private PC_GresWidget txError;
 	
-	public PClo_GuiDelayer(EntityPlayer player, Object[] o){
-		delayer = (PClo_TileEntityDelayer)GameInfo.getTE(player.worldObj, (Integer)o[0], (Integer)o[1], (Integer)o[2]);
+	public PClo_GuiDelayer(EntityPlayer player, PC_TileEntity te, Object[] o){
+		delayer = (PClo_TileEntityDelayer)te;
 	}
 	
 	@Override
@@ -102,6 +103,12 @@ public class PClo_GuiDelayer implements PC_IGresClient {
 	@Override
 	public boolean drawBackground(PC_IGresGui gui, int par1, int par2, float par3) {
 		return false;
+	}
+
+	@Override
+	public void keyChange(String key, Object value) {
+		// TODO Auto-generated method stub
+		
 	}
 
 }
