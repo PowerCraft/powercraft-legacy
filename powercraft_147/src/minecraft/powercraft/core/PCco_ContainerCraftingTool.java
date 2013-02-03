@@ -13,17 +13,18 @@ import net.minecraft.item.ItemStack;
 import powercraft.management.PC_GlobalVariables;
 import powercraft.management.PC_GresBaseWithInventory;
 import powercraft.management.PC_ItemStack;
+import powercraft.management.PC_TileEntity;
 import powercraft.management.PC_Utils.GameInfo;
 
-public class PCco_ContainerCraftingTool extends PC_GresBaseWithInventory
+public class PCco_ContainerCraftingTool extends PC_GresBaseWithInventory<PC_TileEntity>
 {
     protected Slot trash;
     protected List<PCco_SlotDirectCrafting> allMcSlots;
     protected HashMap<String, List<PCco_SlotDirectCrafting>> moduleList;
 
-    public PCco_ContainerCraftingTool(EntityPlayer player, Object[]o)
+    public PCco_ContainerCraftingTool(EntityPlayer player, PC_TileEntity te, Object[]o)
     {
-        super(player, o);
+        super(player, te, o);
     }
 
     @Override

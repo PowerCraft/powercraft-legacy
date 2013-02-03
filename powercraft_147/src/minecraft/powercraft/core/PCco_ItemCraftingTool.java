@@ -27,7 +27,7 @@ public class PCco_ItemCraftingTool extends PC_Item
     {
         if (!world.isRemote)
         {
-            Gres.openGres("CraftingTool", entityplayer);
+            Gres.openGres("CraftingTool", entityplayer, null);
         }
 
         return itemstack;

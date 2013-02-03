@@ -19,11 +19,12 @@ import powercraft.management.PC_IGresClient;
 import powercraft.management.PC_IGresGui;
 import powercraft.management.PC_MathHelper;
 import powercraft.management.PC_SlotNoPickup;
+import powercraft.management.PC_TileEntity;
 import powercraft.management.PC_Utils.GameInfo;
 import powercraft.management.PC_Utils.Lang;
 import powercraft.management.PC_VecI;
 
-public class PCco_GuiOreSnifferResultScreen extends PC_GresBaseWithInventory implements PC_IGresClient {
+public class PCco_GuiOreSnifferResultScreen extends PC_GresBaseWithInventory<PC_TileEntity> implements PC_IGresClient {
 
 	private PC_GresProgressBar slider;
 	private PC_GresInventory inv;
@@ -47,8 +48,8 @@ public class PCco_GuiOreSnifferResultScreen extends PC_GresBaseWithInventory imp
 		startpos[1][0] = swap;
 	}
 	
-	public PCco_GuiOreSnifferResultScreen(EntityPlayer player, Object[]o){
-		super(player, o);
+	public PCco_GuiOreSnifferResultScreen(EntityPlayer player, PC_TileEntity te, Object[]o){
+		super(player, te, o);
 		int[] offsetX = { 0, 0, 0, 0, 1, -1 };
 		int[] offsetZ = { 0, 0, 1, -1, 0, 0 };
 		int[] offsetY = { 1, -1, 0, 0, 0, 0 };
@@ -239,5 +240,8 @@ public class PCco_GuiOreSnifferResultScreen extends PC_GresBaseWithInventory imp
 		this.slots = slots;
 		return slots;
 	}
+
+	@Override
+	public void keyChange(String key, Object value) {}
 
 }

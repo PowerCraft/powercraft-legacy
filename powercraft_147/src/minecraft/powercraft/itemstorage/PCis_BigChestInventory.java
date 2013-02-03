@@ -3,7 +3,6 @@ package powercraft.itemstorage;
 import java.io.IOException;
 import java.util.Random;
 
-import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
@@ -11,8 +10,10 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompressedStreamTools;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
+import powercraft.management.PC_Entry;
 import powercraft.management.PC_InvUtils;
 import powercraft.management.PC_PacketHandler;
+import powercraft.management.PC_Struct2;
 import powercraft.management.PC_VecF;
 import powercraft.management.PC_VecI;
 
@@ -125,13 +126,13 @@ public class PCis_BigChestInventory implements IInventory {
 				}
 			}else{
 				if(inv[slot]==null){
-					PC_PacketHandler.setTileEntity(te, "slotChange", slot, null);
+					PC_PacketHandler.setTileEntity(te, new PC_Entry("slotChange", new PC_Struct2<Integer, byte[]>(slot, null)));
 				}else{
 					ItemStack is = inv[slot];
 					NBTTagCompound nbtTag = new NBTTagCompound();
 					is.writeToNBT(nbtTag);
 					try {
-						PC_PacketHandler.setTileEntity(te, "slotChange", slot, CompressedStreamTools.compress(nbtTag));
+						PC_PacketHandler.setTileEntity(te, new PC_Entry("slotChange", new PC_Struct2<Integer, byte[]>(slot, CompressedStreamTools.compress(nbtTag))));
 					} catch (IOException e) {
 						e.printStackTrace();
 					}

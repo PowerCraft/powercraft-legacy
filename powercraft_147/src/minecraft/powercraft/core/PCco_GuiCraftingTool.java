@@ -23,6 +23,7 @@ import powercraft.management.PC_IGresClient;
 import powercraft.management.PC_IGresGui;
 import powercraft.management.PC_InvUtils;
 import powercraft.management.PC_PacketHandler;
+import powercraft.management.PC_TileEntity;
 import powercraft.management.PC_Utils.Lang;
 import powercraft.management.PC_Utils.ModuleInfo;
 import powercraft.management.PC_VecI;
@@ -46,8 +47,8 @@ public class PCco_GuiCraftingTool extends PCco_ContainerCraftingTool implements 
 	private PC_GresButton trashAll;
 	private PC_GresButton sort;
 	
-	public PCco_GuiCraftingTool(EntityPlayer player, Object[] o) {
-		super(player, o);
+	public PCco_GuiCraftingTool(EntityPlayer player, PC_TileEntity te, Object[] o) {
+		super(player, te, o);
 	}
 
 	private Page addPage(String name){
@@ -325,5 +326,8 @@ public class PCco_GuiCraftingTool extends PCco_ContainerCraftingTool implements 
 	public boolean drawBackground(PC_IGresGui gui, int par1, int par2, float par3) {
 		return false;
 	}
+
+	@Override
+	public void keyChange(String key, Object value) {}
 
 }

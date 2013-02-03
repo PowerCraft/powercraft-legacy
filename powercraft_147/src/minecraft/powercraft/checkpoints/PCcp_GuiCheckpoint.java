@@ -8,14 +8,15 @@ import powercraft.management.PC_GresWidget;
 import powercraft.management.PC_GresWindow;
 import powercraft.management.PC_IGresClient;
 import powercraft.management.PC_IGresGui;
+import powercraft.management.PC_TileEntity;
 import powercraft.management.PC_Utils.Lang;
 
 public class PCcp_GuiCheckpoint extends PCcp_ContainerCheckpoint implements PC_IGresClient {
 
 	private PC_GresCheckBox cb;
 	
-	public PCcp_GuiCheckpoint(EntityPlayer player, Object[] o) {
-		super(player, o);
+	public PCcp_GuiCheckpoint(EntityPlayer player, PC_TileEntity te, Object[] o) {
+		super(player, te, o);
 	}
 
 	@Override
@@ -48,7 +49,7 @@ public class PCcp_GuiCheckpoint extends PCcp_ContainerCheckpoint implements PC_I
 	@Override
 	public void actionPerformed(PC_GresWidget widget, PC_IGresGui gui) {
 		if(widget==cb){
-			te.setCollideTriggerd(cb.isChecked());
+			tileEntity.setCollideTriggerd(cb.isChecked());
 		}
 	}
 
@@ -73,5 +74,8 @@ public class PCcp_GuiCheckpoint extends PCcp_ContainerCheckpoint implements PC_I
 			float par3) {
 		return false;
 	}
+
+	@Override
+	public void keyChange(String key, Object value) {}
 
 }

@@ -28,7 +28,7 @@ public class PCco_MobSpawnerSetter implements PC_IPacketHandler, PC_IMSG
 		case PC_Utils.MSG_ON_ACTIVATOR_USED_ON_BLOCK:
 			PC_VecI pos = (PC_VecI)obj[3];
 			if(GameInfo.getTE((World)obj[2], pos) instanceof TileEntityMobSpawner){
-				Gres.openGres("SpawnerEditor", (EntityPlayer)obj[1], pos.x, pos.y, pos.z);
+				Gres.openGres("SpawnerEditor", (EntityPlayer)obj[1], null, pos.x, pos.y, pos.z);
 				return true;
 			}
 	        return false;

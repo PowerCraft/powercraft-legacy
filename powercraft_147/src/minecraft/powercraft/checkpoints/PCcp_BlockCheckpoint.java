@@ -15,6 +15,7 @@ import net.minecraft.world.World;
 import powercraft.management.PC_Block;
 import powercraft.management.PC_IItemInfo;
 import powercraft.management.PC_InvUtils;
+import powercraft.management.PC_TileEntity;
 import powercraft.management.PC_Utils;
 import powercraft.management.PC_Utils.Communication;
 import powercraft.management.PC_Utils.GameInfo;
@@ -68,7 +69,7 @@ public class PCcp_BlockCheckpoint extends PC_Block implements PC_IItemInfo {
 	@Override
     public boolean onBlockActivated(World world, int i, int j, int k, EntityPlayer entityplayer, int par6, float par7, float par8, float par9){
 		if(entityplayer.isSneaking() && GameInfo.isPlayerOPOrOwner(entityplayer)){
-			Gres.openGres("Checkpoint", entityplayer, i, j, k);
+			Gres.openGres("Checkpoint", entityplayer, GameInfo.<PC_TileEntity>getTE(world, i, j, k));
 			return true;
 		}
 		if(world.isRemote){

@@ -28,7 +28,7 @@ public class PCco_ItemOreSniffer extends PC_Item
     {
         if (world.isRemote)
         {
-            Gres.openGres("OreSnifferResultScreen", entityplayer, i, j, k, l);
+            Gres.openGres("OreSnifferResultScreen", entityplayer, null, i, j, k, l);
         }
 
         itemstack.damageItem(1, entityplayer);
