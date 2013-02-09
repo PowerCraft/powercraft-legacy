@@ -5,8 +5,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import net.minecraft.block.Block;
-import net.minecraft.client.renderer.entity.Render;
-import net.minecraft.entity.Entity;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.tileentity.TileEntity;
@@ -20,9 +18,6 @@ import powercraft.management.PC_Utils.ValueWriting;
 import powercraft.management.moduleloader.PC_ModuleLoader;
 import powercraft.management.recipes.PC_3DRecipe;
 import powercraft.management.recipes.PC_3DRecipeManager;
-import powercraft.management.recipes.PC_FurnaceRecipeManager;
-import powercraft.management.recipes.PC_IFurnaceRecipe;
-import cpw.mods.fml.common.DummyModContainer;
 import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.Init;
@@ -242,8 +237,6 @@ public class mod_PowerCraft{
 						GameRegistry.addRecipe((IRecipe)recipe);
 					}else if(recipe instanceof PC_3DRecipe){
 						PC_3DRecipeManager.add3DRecipe((PC_3DRecipe)recipe);
-					}else if(recipe instanceof PC_IFurnaceRecipe){
-						PC_FurnaceRecipeManager.addRecipe((PC_IFurnaceRecipe)recipe);
 					}else{
 						PC_Logger.severe("Unknown recipe of type "+recipe.getClass().getSimpleName());
 					}

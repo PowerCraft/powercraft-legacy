@@ -27,7 +27,7 @@ public class PCli_App implements PC_IModule
     public static PC_Block light;
     public static PC_Block lightningConductor;
     public static PC_Block laser;
-    public static PC_Block mirrow;
+    public static PC_Block mirror;
     public static PC_Block prism;
     public static PC_Block laserSensor;
     public static PC_Item laserComposition;
@@ -60,7 +60,7 @@ public class PCli_App implements PC_IModule
         light = ModuleLoader.register(this, PCli_BlockLight.class, PCli_TileEntityLight.class);
         lightningConductor = ModuleLoader.register(this, PCli_BlockLightningConductor.class, PCli_ItemBlockLightningConductor.class, PCli_TileEntityLightningConductor.class);
         laser = ModuleLoader.register(this, PCli_BlockLaser.class, PCli_TileEntityLaser.class);
-        mirrow = ModuleLoader.register(this, PCli_BlockMirrow.class, PCli_TileEntityMirrow.class);
+        mirror = ModuleLoader.register(this, PCli_BlockMirror.class, PCli_TileEntityMirror.class);
         prism = ModuleLoader.register(this, PCli_BlockPrism.class, PCli_TileEntityPrism.class);
         laserSensor = ModuleLoader.register(this, PCli_BlockLaserSensor.class, PCli_TileEntityLaserSensor.class);
     }
@@ -96,7 +96,7 @@ public class PCli_App implements PC_IModule
         			"R", 
         				'L', new PC_ItemStack(laser, 1), 'R', Item.redstone));
         
-        recipes.add(new PC_ShapedRecipes(new PC_ItemStack(mirrow, 2, 0),
+        recipes.add(new PC_ShapedRecipes(new PC_ItemStack(mirror, 2, 0),
 					"GI", 
 					" I",	
 						'G', Block.thinGlass, 'I', Item.ingotIron));

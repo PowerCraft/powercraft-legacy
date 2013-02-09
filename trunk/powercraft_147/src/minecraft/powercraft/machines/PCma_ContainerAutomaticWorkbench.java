@@ -24,6 +24,7 @@ public class PCma_ContainerAutomaticWorkbench extends PC_GresBaseWithInventory<P
     protected void init(Object[] o)
     {
         craftResult = new InventoryCraftResult();
+        craftResult.setInventorySlotContents(0, tileEntity.getRecipeProduct());
     }
 
     @Override

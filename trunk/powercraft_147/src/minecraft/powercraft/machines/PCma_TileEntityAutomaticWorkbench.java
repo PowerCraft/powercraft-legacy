@@ -11,6 +11,8 @@ import net.minecraft.inventory.InventoryCrafting;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.CraftingManager;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.event.entity.player.PlayerDestroyItemEvent;
 import powercraft.management.PC_InvUtils;
 import powercraft.management.PC_TileEntity;
 import powercraft.management.PC_Utils.GameInfo;
@@ -444,23 +446,32 @@ public class PCma_TileEntityAutomaticWorkbench extends PC_TileEntity implements 
     {
         for (int i = 0; i < 9; i++)
         {
-            if (actContents[i] != null)
+        	if (actContents[i] != null)
             {
-            	if(actContents[i].getItem().doesContainerItemLeaveCraftingGrid(actContents[i])){
-	                if (actContents[i].getItem().hasContainerItem())
-	                {
-	                    setInventorySlotContents(i, new ItemStack(actContents[i].getItem().getContainerItem()));
-	                }
-	                else
-	                {
-	                    actContents[i].stackSize--;
-	
-	                    if (actContents[i].stackSize <= 0)
-	                    {
-	                        actContents[i] = null;
-	                    }
-	                }
-            	}
+            	actContents[i].stackSize--;
+            	
+                if (actContents[i].getItem().hasContainerItem()){
+                	ItemStack con = actContents[i].getItem().getContainerItemStack(actContents[i]);
+                	if (con.isItemStackDamageable() && con.getItemDamage() > con.getMaxDamage()){
+                		con = null;
+                	}
+                	if(con != null){
+                		if(con.getItem().doesContainerItemLeaveCraftingGrid(con)){
+                			dispenseItem(con);
+                		}else{
+                			if (actContents[i].stackSize <= 0) {
+                            	actContents[i] = con;
+                            }else{
+                            	dispenseItem(con);
+                            }
+                		}
+                	}
+                    setInventorySlotContents(i, new ItemStack(actContents[i].getItem().getContainerItem()));
+                }
+
+                if (actContents[i].stackSize <= 0) {
+                	actContents[i] = null;
+                }
             }
         }
     }
@@ -471,18 +482,29 @@ public class PCma_TileEntityAutomaticWorkbench extends PC_TileEntity implements 
         {
             if (actContents[i] != null)
             {
-                if (actContents[i].getItem().hasContainerItem())
-                {
+            	actContents[i].stackSize--;
+            	
+                if (actContents[i].getItem().hasContainerItem()){
+                	ItemStack con = actContents[i].getItem().getContainerItemStack(actContents[i]);
+                	if (con.isItemStackDamageable() && con.getItemDamage() > con.getMaxDamage()){
+                		con = null;
+                	}
+                	if(con != null){
+                		if(con.getItem().doesContainerItemLeaveCraftingGrid(con)){
+                			dispenseItem(con);
+                		}else{
+                			if (actContents[i].stackSize <= 0) {
+                            	actContents[i] = con;
+                            }else{
+                            	dispenseItem(con);
+                            }
+                		}
+                	}
                     setInventorySlotContents(i, new ItemStack(actContents[i].getItem().getContainerItem()));
                 }
-                else
-                {
-                    actContents[i].stackSize--;
 
-                    if (actContents[i].stackSize <= 0)
-                    {
-                        actContents[i] = null;
-                    }
+                if (actContents[i].stackSize <= 0) {
+                	actContents[i] = null;
                 }
             }
         }
@@ -494,7 +516,8 @@ public class PCma_TileEntityAutomaticWorkbench extends PC_TileEntity implements 
         {
             return false;
         }
-
+        if(worldObj.isRemote)
+    		return true;
         int meta = worldObj.getBlockMetadata(xCoord, yCoord, zCoord);
         int i1 = 0;
         int j1 = 0;

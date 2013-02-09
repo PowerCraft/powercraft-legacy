@@ -7,13 +7,13 @@ import powercraft.management.PC_Renderer;
 import powercraft.management.PC_TileEntity;
 import powercraft.management.PC_Utils.ModuleInfo;
 
-public class PCli_TileEntityMirrow extends PC_TileEntity implements PC_ITileEntityRenderer {
+public class PCli_TileEntityMirror extends PC_TileEntity implements PC_ITileEntityRenderer {
 
 	public static final String MIRRORCOLOR = "mirrorColor";
 	
 	private static PCli_ModelMirror modelMirror = new PCli_ModelMirror();
 	
-	public PCli_TileEntityMirrow(){
+	public PCli_TileEntityMirror(){
     	setData(MIRRORCOLOR, -1);
     }
 	

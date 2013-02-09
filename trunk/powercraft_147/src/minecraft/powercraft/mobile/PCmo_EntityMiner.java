@@ -382,6 +382,8 @@ public class PCmo_EntityMiner extends Entity implements PC_IInventoryWrapper {
 			tag.setInteger("FuelAllocated", fuelAllocated);
 			tag.setInteger("FuelDeficit", fuelDeficit);
 
+			tag.setBoolean("isExplosionResistent", isExplosionResistent);
+			
 			for (int i = 0; i < mineCounter.length; i++) {
 				tag.setInteger("mt" + i, mineCounter[i]);
 			}
@@ -408,6 +410,8 @@ public class PCmo_EntityMiner extends Entity implements PC_IInventoryWrapper {
 			fuelAllocated = tag.getInteger("FuelAllocated");
 			fuelDeficit = tag.getInteger("FuelDeficit");
 
+			isExplosionResistent = tag.getBoolean("isExplosionResistent");
+			
 			for (int i = 0; i < mineCounter.length; i++) {
 				mineCounter[i] = tag.getInteger("mt" + i);
 			}
