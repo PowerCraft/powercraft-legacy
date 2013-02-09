@@ -1,20 +1,20 @@
 package powercraft.machines;
 
 import net.minecraft.entity.player.EntityPlayer;
-import powercraft.management.PC_GresCheckBox;
-import powercraft.management.PC_GresInventory;
-import powercraft.management.PC_GresInventoryPlayer;
-import powercraft.management.PC_GresLayoutH;
-import powercraft.management.PC_GresLayoutV;
-import powercraft.management.PC_GresProgressBar;
-import powercraft.management.PC_GresWidget;
 import powercraft.management.PC_TileEntity;
-import powercraft.management.PC_GresWidget.PC_GresAlign;
-import powercraft.management.PC_GresWindow;
-import powercraft.management.PC_IGresClient;
-import powercraft.management.PC_IGresGui;
 import powercraft.management.PC_PacketHandler;
 import powercraft.management.PC_Utils.Lang;
+import powercraft.management.gres.PC_GresCheckBox;
+import powercraft.management.gres.PC_GresInventory;
+import powercraft.management.gres.PC_GresInventoryPlayer;
+import powercraft.management.gres.PC_GresLayoutH;
+import powercraft.management.gres.PC_GresLayoutV;
+import powercraft.management.gres.PC_GresProgressBar;
+import powercraft.management.gres.PC_GresWidget;
+import powercraft.management.gres.PC_GresWindow;
+import powercraft.management.gres.PC_IGresClient;
+import powercraft.management.gres.PC_IGresGui;
+import powercraft.management.gres.PC_GresWidget.PC_GresAlign;
 
 public class PCma_GuiTransmutabox extends PCma_ContainerTransmutabox implements
 		PC_IGresClient {
@@ -33,10 +33,10 @@ public class PCma_GuiTransmutabox extends PCma_ContainerTransmutabox implements
 		PC_GresWidget hl = new PC_GresLayoutH();
 		hl.setAlignH(PC_GresAlign.JUSTIFIED);
 		int id=0;
-		hl.add(new PC_GresInventory(lSlot.get(id++)));
+		hl.add(new PC_GresInventory(invSlots[id++]));
 		PC_GresInventory inv = new PC_GresInventory(8, 1);
 		for(int x=0; x<8; x++){
-			inv.setSlot(x, 0, lSlot.get(id++));
+			inv.setSlot(x, 0, invSlots[id++]);
 		}
 		hl.add(inv);
 		w.add(hl);
@@ -47,7 +47,7 @@ public class PCma_GuiTransmutabox extends PCma_ContainerTransmutabox implements
 		inv = new PC_GresInventory(3, 4);
 		for(int y=0; y<4; y++){
 			for(int x=0; x<3; x++){
-				inv.setSlot(x, y, lSlot.get(id++));
+				inv.setSlot(x, y, invSlots[id++]);
 			}
 		}
 		hl.add(inv);
@@ -59,8 +59,8 @@ public class PCma_GuiTransmutabox extends PCma_ContainerTransmutabox implements
 		
 		vl.add(progress = new PC_GresProgressBar(0xff0000, 100));
 		
-		hl1.add(new PC_GresInventory(lSlot.get(inID)));
-		hl1.add(new PC_GresInventory(lSlot.get(outID)));
+		hl1.add(new PC_GresInventory(invSlots[inID]));
+		hl1.add(new PC_GresInventory(invSlots[outID]));
 		
 		vl.add(hl1);
 		
@@ -69,7 +69,7 @@ public class PCma_GuiTransmutabox extends PCma_ContainerTransmutabox implements
 		inv = new PC_GresInventory(3, 4);
 		for(int y=0; y<4; y++){
 			for(int x=0; x<3; x++){
-				inv.setSlot(x, y, lSlot.get(id++));
+				inv.setSlot(x, y, invSlots[id++]);
 			}
 		}
 		hl.add(inv);
@@ -113,9 +113,6 @@ public class PCma_GuiTransmutabox extends PCma_ContainerTransmutabox implements
 	}
 
 	@Override
-	public void keyChange(String key, Object value) {
-		// TODO Auto-generated method stub
-		
-	}
+	public void keyChange(String key, Object value) {}
 
 }

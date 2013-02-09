@@ -18,12 +18,12 @@ import net.minecraft.tileentity.TileEntityBrewingStand;
 import net.minecraft.tileentity.TileEntityFurnace;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.world.World;
-import powercraft.management.PC_IInventoryWrapper;
-import powercraft.management.PC_ISpecialAccessInventory;
 import powercraft.management.PC_InvUtils;
 import powercraft.management.PC_MathHelper;
 import powercraft.management.PC_Utils.GameInfo;
 import powercraft.management.PC_Utils.ValueWriting;
+import powercraft.management.inventory.PC_IInventoryWrapper;
+import powercraft.management.inventory.PC_ISpecialAccessInventory;
 import powercraft.management.PC_VecI;
 
 public class PCtr_BeltHelper

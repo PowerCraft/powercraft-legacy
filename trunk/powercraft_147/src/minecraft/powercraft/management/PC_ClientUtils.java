@@ -10,6 +10,11 @@ import java.util.HashMap;
 import java.util.Map.Entry;
 import java.util.Set;
 
+import powercraft.management.gres.PC_GresBaseWithInventory;
+import powercraft.management.gres.PC_GresContainerGui;
+import powercraft.management.gres.PC_GresGui;
+import powercraft.management.gres.PC_IGresClient;
+
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.PlayerControllerMP;
 import net.minecraft.client.particle.EntityFX;

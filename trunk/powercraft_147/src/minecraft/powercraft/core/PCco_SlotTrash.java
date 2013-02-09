@@ -1,15 +1,15 @@
 package powercraft.core;
 
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
+import powercraft.management.inventory.PC_Slot;
 
 
-public class PCco_SlotTrash extends Slot {
+public class PCco_SlotTrash extends PC_Slot {
 
 	public PCco_SlotTrash()
     {
-        super(null, 0, 0, 0);
+        super(null, 0);
     }
 
     @Override

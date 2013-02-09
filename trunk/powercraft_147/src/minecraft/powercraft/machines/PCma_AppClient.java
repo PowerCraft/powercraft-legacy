@@ -54,6 +54,7 @@ public class PCma_AppClient extends PCma_App implements PC_IClientModule {
 		guis.add(new PC_Struct2<String, Class>("Roaster", PCma_GuiRoaster.class));
 		guis.add(new PC_Struct2<String, Class>("Transmutabox", PCma_GuiTransmutabox.class));
 		guis.add(new PC_Struct2<String, Class>("XPBank", PCma_GuiXPBank.class));
+		guis.add(new PC_Struct2<String, Class>("CraftingFurnace", PCma_GuiCraftingFurnace.class));
 		return guis;
 	}
 

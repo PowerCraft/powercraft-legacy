@@ -8,9 +8,23 @@ import net.minecraft.entity.player.EntityPlayer;
 
 import org.lwjgl.opengl.GL11;
 
-import powercraft.management.PC_GresWidget.PC_GresAlign;
 import powercraft.management.PC_Utils.Lang;
 import powercraft.management.PC_Utils.ModuleInfo;
+import powercraft.management.gres.PC_GresButton;
+import powercraft.management.gres.PC_GresCheckBox;
+import powercraft.management.gres.PC_GresGap;
+import powercraft.management.gres.PC_GresImage;
+import powercraft.management.gres.PC_GresLabel;
+import powercraft.management.gres.PC_GresLabelMultiline;
+import powercraft.management.gres.PC_GresLayoutH;
+import powercraft.management.gres.PC_GresLink;
+import powercraft.management.gres.PC_GresScrollArea;
+import powercraft.management.gres.PC_GresTab;
+import powercraft.management.gres.PC_GresWidget;
+import powercraft.management.gres.PC_GresWindow;
+import powercraft.management.gres.PC_IGresClient;
+import powercraft.management.gres.PC_IGresGui;
+import powercraft.management.gres.PC_GresWidget.PC_GresAlign;
 
 public class PC_GuiUpdateNotification implements PC_IGresClient {
 

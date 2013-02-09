@@ -27,11 +27,11 @@ import net.minecraft.inventory.IInventory;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import powercraft.management.PC_ISpecialAccessInventory;
 import powercraft.management.PC_InvUtils;
 import powercraft.management.PC_Struct2;
 import powercraft.management.PC_VecI;
-import powercraft.management.PC_EntityItem;
+import powercraft.management.entity.PC_EntityItem;
+import powercraft.management.inventory.PC_ISpecialAccessInventory;
 
 public class PCtr_TileEntitySeparationBelt extends PCtr_TileEntityRedirectionBeltBase implements IInventory, PC_ISpecialAccessInventory
 {

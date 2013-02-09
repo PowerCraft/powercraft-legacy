@@ -1,18 +1,18 @@
 package powercraft.weasel;
 
 import net.minecraft.entity.player.EntityPlayer;
-import powercraft.management.PC_GresButton;
-import powercraft.management.PC_GresColorMap;
-import powercraft.management.PC_GresLayoutV;
-import powercraft.management.PC_GresWidget;
 import powercraft.management.PC_TileEntity;
-import powercraft.management.PC_GresWidget.PC_GresAlign;
-import powercraft.management.PC_IGresClient;
-import powercraft.management.PC_IGresGui;
 import powercraft.management.PC_PacketHandler;
 import powercraft.management.PC_Struct4;
 import powercraft.management.PC_Utils.GameInfo;
 import powercraft.management.PC_Utils.Lang;
+import powercraft.management.gres.PC_GresButton;
+import powercraft.management.gres.PC_GresColorMap;
+import powercraft.management.gres.PC_GresLayoutV;
+import powercraft.management.gres.PC_GresWidget;
+import powercraft.management.gres.PC_IGresClient;
+import powercraft.management.gres.PC_IGresGui;
+import powercraft.management.gres.PC_GresWidget.PC_GresAlign;
 import powercraft.management.PC_VecI;
 
 

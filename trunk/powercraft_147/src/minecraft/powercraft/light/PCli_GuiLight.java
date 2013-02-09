@@ -1,22 +1,29 @@
 package powercraft.light;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
+import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemStack;
 import powercraft.management.PC_Color;
-import powercraft.management.PC_GresButton;
-import powercraft.management.PC_GresCheckBox;
-import powercraft.management.PC_GresColor;
-import powercraft.management.PC_GresColorPicker;
-import powercraft.management.PC_GresLayoutH;
-import powercraft.management.PC_GresLayoutV;
-import powercraft.management.PC_GresWidget;
-import powercraft.management.PC_GresWidget.PC_GresAlign;
-import powercraft.management.PC_GresWindow;
-import powercraft.management.PC_IGresClient;
-import powercraft.management.PC_IGresGui;
-import powercraft.management.PC_PacketHandler;
+import powercraft.management.PC_Struct2;
 import powercraft.management.PC_TileEntity;
-import powercraft.management.PC_Utils.GameInfo;
 import powercraft.management.PC_Utils.Lang;
+import powercraft.management.gres.PC_GresButton;
+import powercraft.management.gres.PC_GresCheckBox;
+import powercraft.management.gres.PC_GresColor;
+import powercraft.management.gres.PC_GresColorPicker;
+import powercraft.management.gres.PC_GresItemToggel;
+import powercraft.management.gres.PC_GresLayoutH;
+import powercraft.management.gres.PC_GresLayoutV;
+import powercraft.management.gres.PC_GresWidget;
+import powercraft.management.gres.PC_GresWidgetTab;
+import powercraft.management.gres.PC_GresWindow;
+import powercraft.management.gres.PC_IGresClient;
+import powercraft.management.gres.PC_IGresGui;
+import powercraft.management.gres.PC_GresWidget.PC_GresAlign;
 
 public class PCli_GuiLight implements PC_IGresClient {
 
@@ -34,6 +41,17 @@ public class PCli_GuiLight implements PC_IGresClient {
 	@Override
 	public void initGui(PC_IGresGui gui) {
 		PC_GresWindow w = (PC_GresWindow) new PC_GresWindow(Lang.tr("tile.PCli_BlockLight.name"));
+		PC_GresWidgetTab t;
+		w.add(t = new PC_GresWidgetTab(0x670000, "/gui/items.png", 128, 48, 16, 16));
+		
+		PC_GresItemToggel it;
+		t.add(it = new PC_GresItemToggel(1, 1));
+		List<PC_Struct2<ItemStack, List<String>>> l = new ArrayList<PC_Struct2<ItemStack, List<String>>>();
+		l.add(new PC_Struct2<ItemStack, List<String>>(new ItemStack(Block.torchRedstoneIdle), Arrays.asList("On when no Redstone")));
+		l.add(new PC_Struct2<ItemStack, List<String>>(new ItemStack(Block.torchRedstoneActive), Arrays.asList("On when Redstone")));
+		l.add(new PC_Struct2<ItemStack, List<String>>(new ItemStack(Block.lever), Arrays.asList("On when Redstone Toggle")));
+		it.setItemList(0, 0, l);
+		
 		PC_GresLayoutV v = (PC_GresLayoutV)new PC_GresLayoutV().setAlignH(PC_GresAlign.STRETCH);
 		
 		PC_GresLayoutH h = (PC_GresLayoutH)new PC_GresLayoutH().setAlignH(PC_GresAlign.JUSTIFIED);

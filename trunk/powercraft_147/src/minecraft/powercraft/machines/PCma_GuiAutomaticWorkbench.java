@@ -1,21 +1,21 @@
 package powercraft.machines;
 
 import net.minecraft.entity.player.EntityPlayer;
-import powercraft.management.PC_GresCheckBox;
-import powercraft.management.PC_GresFrame;
-import powercraft.management.PC_GresGap;
-import powercraft.management.PC_GresImage;
-import powercraft.management.PC_GresInventory;
-import powercraft.management.PC_GresInventoryPlayer;
-import powercraft.management.PC_GresLayoutH;
-import powercraft.management.PC_GresWidget;
-import powercraft.management.PC_GresWindow;
-import powercraft.management.PC_IGresClient;
-import powercraft.management.PC_IGresGui;
 import powercraft.management.PC_PacketHandler;
 import powercraft.management.PC_TileEntity;
 import powercraft.management.PC_Utils.Lang;
 import powercraft.management.PC_Utils.ModuleInfo;
+import powercraft.management.gres.PC_GresCheckBox;
+import powercraft.management.gres.PC_GresFrame;
+import powercraft.management.gres.PC_GresGap;
+import powercraft.management.gres.PC_GresImage;
+import powercraft.management.gres.PC_GresInventory;
+import powercraft.management.gres.PC_GresInventoryPlayer;
+import powercraft.management.gres.PC_GresLayoutH;
+import powercraft.management.gres.PC_GresWidget;
+import powercraft.management.gres.PC_GresWindow;
+import powercraft.management.gres.PC_IGresClient;
+import powercraft.management.gres.PC_IGresGui;
 
 public class PCma_GuiAutomaticWorkbench extends PCma_ContainerAutomaticWorkbench implements PC_IGresClient {
 
@@ -34,7 +34,7 @@ public class PCma_GuiAutomaticWorkbench extends PCma_ContainerAutomaticWorkbench
 
 		for (int y = 0; y < 3; y++) {
 			for (int x = 0; x < 3; x++) {
-				inv.setSlot(x, y, lSlot.get(x+y*3+1));
+				inv.setSlot(x, y, invSlots[x+y*3+1]);
 			}
 		}
 
@@ -44,7 +44,7 @@ public class PCma_GuiAutomaticWorkbench extends PCma_ContainerAutomaticWorkbench
 		inv = new PC_GresInventory(3, 3);
 		for (int y = 0; y < 3; y++) {
 			for (int x = 0; x < 3; x++) {
-				inv.setSlot(x, y, lSlot.get(x+y*3+10));
+				inv.setSlot(x, y, invSlots[x+y*3+10]);
 			}
 		}
 
@@ -52,7 +52,7 @@ public class PCma_GuiAutomaticWorkbench extends PCma_ContainerAutomaticWorkbench
 
 		hg1.add(new PC_GresImage(ModuleInfo.getGresImgDir() + "widgets.png", 44, 66, 12, 11));
 
-		hg1.add(new PC_GresInventory(lSlot.get(0)));
+		hg1.add(new PC_GresInventory(invSlots[0]));
 
 		hg.add(hg1);
 

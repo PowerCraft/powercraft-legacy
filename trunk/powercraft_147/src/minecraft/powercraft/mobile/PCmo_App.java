@@ -8,20 +8,20 @@ import org.lwjgl.input.Keyboard;
 import net.minecraft.block.Block;
 import net.minecraft.entity.EntityList;
 import net.minecraft.item.crafting.IRecipe;
-import powercraft.management.PC_3DRecipe;
-import powercraft.management.PC_3DRecipeManager;
 import powercraft.management.PC_IDataHandler;
 import powercraft.management.PC_IMSG;
 import powercraft.management.PC_IModule;
 import powercraft.management.PC_IPacketHandler;
-import powercraft.management.PC_ModuleClassLoader;
 import powercraft.management.PC_PacketHandler;
 import powercraft.management.PC_Property;
 import powercraft.management.PC_Struct2;
-import powercraft.management.PC_EntityItem;
 import powercraft.management.PC_Utils.Communication;
 import powercraft.management.PC_Utils.ModuleInfo;
 import powercraft.management.PC_Utils.ModuleLoader;
+import powercraft.management.entity.PC_EntityItem;
+import powercraft.management.moduleloader.PC_ModuleClassLoader;
+import powercraft.management.recipes.PC_3DRecipe;
+import powercraft.management.recipes.PC_3DRecipeManager;
 
 public class PCmo_App implements PC_IModule {
 

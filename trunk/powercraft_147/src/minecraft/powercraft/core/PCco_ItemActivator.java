@@ -8,7 +8,6 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.Direction;
 import net.minecraft.world.World;
-import powercraft.management.PC_3DRecipeManager;
 import powercraft.management.PC_IMSG;
 import powercraft.management.PC_Item;
 import powercraft.management.PC_MathHelper;
@@ -17,6 +16,7 @@ import powercraft.management.PC_Utils;
 import powercraft.management.PC_Utils.GameInfo;
 import powercraft.management.PC_Utils.ModuleInfo;
 import powercraft.management.PC_Utils.ValueWriting;
+import powercraft.management.recipes.PC_3DRecipeManager;
 import powercraft.management.PC_VecI;
 
 public class PCco_ItemActivator extends PC_Item{
@@ -44,7 +44,7 @@ public class PCco_ItemActivator extends PC_Item{
         	}
         }
     	
-        if(PC_3DRecipeManager.searchRecipeAndDo(world, new PC_VecI(x, y, z)))
+        if(PC_3DRecipeManager.searchRecipeAndDo(entityplayer, world, new PC_VecI(x, y, z)))
         	return true;
         
     	int dir = ((PC_MathHelper.floor_double(((entityplayer.rotationYaw * 4F) / 360F) + 0.5D) & 3) + 2) % 4;

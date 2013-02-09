@@ -1,9 +1,9 @@
 package powercraft.weasel;
 
 import net.minecraft.entity.player.EntityPlayer;
-import powercraft.management.PC_GresTab;
-import powercraft.management.PC_IGresGui;
 import powercraft.management.PC_TileEntity;
+import powercraft.management.gres.PC_GresTab;
+import powercraft.management.gres.PC_IGresGui;
 
 public class PCws_GuiWeaselOnlyNet extends PCws_GuiWeasel {
 

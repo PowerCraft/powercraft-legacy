@@ -2,16 +2,16 @@ package powercraft.machines;
 
 import net.minecraft.inventory.Container;
 import net.minecraft.inventory.IInventory;
-import net.minecraft.inventory.Slot;
+import powercraft.management.inventory.PC_Slot;
 
-public class PCma_SlotAutomaticWorkbenchInventory extends Slot
+public class PCma_SlotAutomaticWorkbenchInventory extends PC_Slot
 {
     private Container parentContainer;
     private boolean inrecipe = false;
 
-    public PCma_SlotAutomaticWorkbenchInventory(IInventory iinventory, Container parent, boolean inRecipe, int i, int j, int k)
+    public PCma_SlotAutomaticWorkbenchInventory(IInventory iinventory, Container parent, boolean inRecipe, int i)
     {
-        super(iinventory, i, j, k);
+        super(iinventory, i);
         this.parentContainer = parent;
         this.inrecipe = inRecipe;
     }

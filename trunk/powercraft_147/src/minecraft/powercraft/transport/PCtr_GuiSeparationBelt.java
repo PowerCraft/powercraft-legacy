@@ -1,23 +1,23 @@
 package powercraft.transport;
 
 import net.minecraft.entity.player.EntityPlayer;
-import powercraft.management.PC_GresCheckBox;
-import powercraft.management.PC_GresGap;
-import powercraft.management.PC_GresImage;
-import powercraft.management.PC_GresInventory;
-import powercraft.management.PC_GresInventoryPlayer;
-import powercraft.management.PC_GresLabel;
-import powercraft.management.PC_GresLayoutH;
-import powercraft.management.PC_GresLayoutV;
-import powercraft.management.PC_GresWidget;
-import powercraft.management.PC_GresWidget.PC_GresAlign;
-import powercraft.management.PC_GresWindow;
-import powercraft.management.PC_IGresClient;
-import powercraft.management.PC_IGresGui;
 import powercraft.management.PC_PacketHandler;
 import powercraft.management.PC_TileEntity;
 import powercraft.management.PC_Utils.Lang;
 import powercraft.management.PC_Utils.ModuleInfo;
+import powercraft.management.gres.PC_GresCheckBox;
+import powercraft.management.gres.PC_GresGap;
+import powercraft.management.gres.PC_GresImage;
+import powercraft.management.gres.PC_GresInventory;
+import powercraft.management.gres.PC_GresInventoryPlayer;
+import powercraft.management.gres.PC_GresLabel;
+import powercraft.management.gres.PC_GresLayoutH;
+import powercraft.management.gres.PC_GresLayoutV;
+import powercraft.management.gres.PC_GresWidget;
+import powercraft.management.gres.PC_GresWindow;
+import powercraft.management.gres.PC_IGresClient;
+import powercraft.management.gres.PC_IGresGui;
+import powercraft.management.gres.PC_GresWidget.PC_GresAlign;
 
 public class PCtr_GuiSeparationBelt extends PCtr_ContainerSeparationBelt implements PC_IGresClient {
 
@@ -44,9 +44,9 @@ public class PCtr_GuiSeparationBelt extends PCtr_ContainerSeparationBelt impleme
 
 		for (int i = 0; i < tileEntity.getSizeInventory(); i++) {
 			if (i % 6 >= 3) {
-				left.setSlot(i % 3, (int) Math.floor(i / 6), lSlot.get(i));
+				left.setSlot(i % 3, (int) Math.floor(i / 6), invSlots[i]);
 			} else {
-				right.setSlot(i % 3, (int) Math.floor(i / 6), lSlot.get(i));
+				right.setSlot(i % 3, (int) Math.floor(i / 6), invSlots[i]);
 			}
 		}
 		hg.add(new PC_GresImage(ModuleInfo.getGresImgDir()+"widgets.png", 64, 66, 8, 15));

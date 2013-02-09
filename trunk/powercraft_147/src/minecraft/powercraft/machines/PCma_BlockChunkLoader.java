@@ -4,17 +4,18 @@ import java.util.List;
 import java.util.Random;
 
 import net.minecraft.block.material.Material;
-import net.minecraft.entity.EntityLiving;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import powercraft.management.PC_Block;
 import powercraft.management.PC_ChunkUpdateForcer;
-import powercraft.management.PC_I3DRecipeHandler;
 import powercraft.management.PC_Struct2;
 import powercraft.management.PC_Utils;
-import powercraft.management.PC_VecI;
+import powercraft.management.PC_Utils.GameInfo;
 import powercraft.management.PC_Utils.ValueWriting;
+import powercraft.management.PC_VecI;
+import powercraft.management.recipes.PC_I3DRecipeHandler;
 
 public class PCma_BlockChunkLoader extends PC_Block implements PC_I3DRecipeHandler {
 
@@ -40,7 +41,7 @@ public class PCma_BlockChunkLoader extends PC_Block implements PC_I3DRecipeHandl
     }
 	
 	@Override
-	public boolean foundStructAt(World world, PC_Struct2<PC_VecI, Integer> structStart) {
+	public boolean foundStructAt(EntityPlayer entityplayer, World world, PC_Struct2<PC_VecI, Integer> structStart) {
 		PC_VecI mid = structStart.a.offset(1, 0, 1);
 		for(int i=-1; i<=1; i++){
 			for(int j=-1; j<=1; j++){
@@ -51,6 +52,9 @@ public class PCma_BlockChunkLoader extends PC_Block implements PC_I3DRecipeHandl
 				if(!world.canBlockSeeTheSky(mid.x+i, mid.y+h, mid.z+j))
 					return false;
 			}
+		}
+		if(!GameInfo.isPlayerOPOrOwner(entityplayer)){
+			return false;
 		}
 		ValueWriting.setBID(world, mid.offset(0, 1, 1), 0, 0);
 		ValueWriting.setBID(world, mid.offset(0, 1, -1), 0, 0);

@@ -32,12 +32,12 @@ import powercraft.management.PC_Color;
 import powercraft.management.PC_IBeamHandler;
 import powercraft.management.PC_IItemInfo;
 import powercraft.management.PC_IPacketHandler;
-import powercraft.management.PC_ISpecialInventoryTextures;
 import powercraft.management.PC_InvUtils;
 import powercraft.management.PC_PacketHandler;
 import powercraft.management.PC_Utils;
 import powercraft.management.PC_Utils.GameInfo;
 import powercraft.management.PC_Utils.ValueWriting;
+import powercraft.management.inventory.PC_ISpecialInventoryTextures;
 import powercraft.management.PC_VecI;
 
 public class PCma_BlockHarvester extends PC_Block implements

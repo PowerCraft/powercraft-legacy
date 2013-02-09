@@ -15,11 +15,11 @@ import net.minecraft.item.ItemReed;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.Facing;
-import powercraft.management.PC_FakePlayer;
 import powercraft.management.PC_InvUtils;
 import powercraft.management.PC_TileEntity;
 import powercraft.management.PC_Utils;
 import powercraft.management.PC_Utils.GameInfo;
+import powercraft.management.entity.PC_FakePlayer;
 import powercraft.management.PC_VecI;
 
 public class PCma_TileEntityBlockBuilder extends PC_TileEntity implements IInventory {

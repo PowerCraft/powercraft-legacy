@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map.Entry;
 
@@ -148,5 +149,5 @@ public abstract class PC_TileEntity extends TileEntity
 		}
 		nbtTagCompound.setCompoundTag("map", nbtTag);
 	}
-    
+	
 }

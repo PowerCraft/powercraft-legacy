@@ -1,15 +1,15 @@
 package powercraft.machines;
 
 import net.minecraft.entity.player.EntityPlayer;
-import powercraft.management.PC_GresInventory;
-import powercraft.management.PC_GresInventoryPlayer;
-import powercraft.management.PC_GresWidget;
 import powercraft.management.PC_TileEntity;
-import powercraft.management.PC_GresWidget.PC_GresAlign;
-import powercraft.management.PC_GresWindow;
-import powercraft.management.PC_IGresClient;
-import powercraft.management.PC_IGresGui;
 import powercraft.management.PC_Utils.Lang;
+import powercraft.management.gres.PC_GresInventory;
+import powercraft.management.gres.PC_GresInventoryPlayer;
+import powercraft.management.gres.PC_GresWidget;
+import powercraft.management.gres.PC_GresWindow;
+import powercraft.management.gres.PC_IGresClient;
+import powercraft.management.gres.PC_IGresGui;
+import powercraft.management.gres.PC_GresWidget.PC_GresAlign;
 
 public class PCma_GuiBlockBuilder extends PCma_ContainerBlockBuilder implements PC_IGresClient {
 
@@ -27,7 +27,7 @@ public class PCma_GuiBlockBuilder extends PCma_ContainerBlockBuilder implements 
 		
 		for (int j = 0; j < 3; j++) {
 			for (int i = 0; i < 3; i++) {
-				inv.setSlot(i, j, lSlot.get(i+j*3));
+				inv.setSlot(i, j, invSlots[i+j*3]);
 			}
 		}
 		w.add(inv);

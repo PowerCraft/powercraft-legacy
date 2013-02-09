@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import net.minecraft.nbt.NBTTagCompound;
-import powercraft.management.PC_GresTextEditMultiline.Keyword;
+import powercraft.management.gres.PC_GresTextEditMultiline.Keyword;
 import powercraft.mobile.PCmo_Command.ParseException;
 
 public class PCmo_MinerBrain implements PCmo_IMinerBrain {

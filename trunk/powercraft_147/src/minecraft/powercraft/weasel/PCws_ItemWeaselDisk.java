@@ -852,7 +852,7 @@ public class PCws_ItemWeaselDisk extends PC_Item {
 	
 	public static Object handleFunction(WeaselEngine engine, PCws_WeaselPlugin plugin, ItemStack disk, String name, WeaselObject[] args) {
 		if(name.equals("getDiskType")){
-			return getType(disk);
+			return getTypeString(disk);
 		}else if(name.equals("getDiskName")){
 			return getLabel(disk);
 		}else{

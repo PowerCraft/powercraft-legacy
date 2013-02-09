@@ -12,19 +12,19 @@ import net.minecraft.entity.EntityList;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntityMobSpawner;
-import powercraft.management.PC_GresLayoutV;
-import powercraft.management.PC_GresRadioButton;
-import powercraft.management.PC_GresRadioButton.PC_GresRadioGroup;
-import powercraft.management.PC_GresScrollArea;
-import powercraft.management.PC_GresWidget;
-import powercraft.management.PC_GresWidget.PC_GresAlign;
-import powercraft.management.PC_GresWindow;
-import powercraft.management.PC_IGresClient;
-import powercraft.management.PC_IGresGui;
 import powercraft.management.PC_PacketHandler;
 import powercraft.management.PC_TileEntity;
 import powercraft.management.PC_Utils.Lang;
 import powercraft.management.PC_Utils.ValueWriting;
+import powercraft.management.gres.PC_GresLayoutV;
+import powercraft.management.gres.PC_GresRadioButton;
+import powercraft.management.gres.PC_GresScrollArea;
+import powercraft.management.gres.PC_GresWidget;
+import powercraft.management.gres.PC_GresWindow;
+import powercraft.management.gres.PC_IGresClient;
+import powercraft.management.gres.PC_IGresGui;
+import powercraft.management.gres.PC_GresRadioButton.PC_GresRadioGroup;
+import powercraft.management.gres.PC_GresWidget.PC_GresAlign;
 
 public class PCco_GuiSpawnerEditor implements PC_IGresClient {
 
