@@ -5,20 +5,20 @@ import java.util.List;
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 import net.minecraft.item.crafting.IRecipe;
-import powercraft.management.PC_3DRecipe;
-import powercraft.management.PC_3DRecipeManager;
 import powercraft.management.PC_Block;
-import powercraft.management.PC_I3DRecipeHandler;
 import powercraft.management.PC_IDataHandler;
 import powercraft.management.PC_IMSG;
 import powercraft.management.PC_IModule;
 import powercraft.management.PC_IPacketHandler;
 import powercraft.management.PC_ItemStack;
 import powercraft.management.PC_Property;
-import powercraft.management.PC_ShapedRecipes;
 import powercraft.management.PC_Struct2;
 import powercraft.management.PC_Utils.GameInfo;
 import powercraft.management.PC_Utils.ModuleLoader;
+import powercraft.management.recipes.PC_3DRecipe;
+import powercraft.management.recipes.PC_3DRecipeManager;
+import powercraft.management.recipes.PC_I3DRecipeHandler;
+import powercraft.management.recipes.PC_ShapedRecipes;
 
 public class PCma_App implements PC_IModule
 {
@@ -32,6 +32,7 @@ public class PCma_App implements PC_IModule
     public static PC_Block harvester;
     public static PC_Block fishingMachine;
     public static PC_Block chunkLoader;
+    public static PC_Block craftinFurnace;
     
     public static List<Integer> roasterIgnoreBlockIDs;
 
@@ -75,6 +76,7 @@ public class PCma_App implements PC_IModule
         harvester = ModuleLoader.register(this, PCma_BlockHarvester.class);
         fishingMachine = ModuleLoader.register(this, PCma_BlockFishingMachine.class, PCma_TileEntityFishingMachine.class);
         chunkLoader = ModuleLoader.register(this, PCma_BlockChunkLoader.class, PCma_TileEntityChunkLoader.class);
+        craftinFurnace = ModuleLoader.register(this, PCma_BlockCraftingFurnace.class, PCma_TileEntityCraftingFurnace.class);
 	}
 	
 	@Override
@@ -193,6 +195,7 @@ public class PCma_App implements PC_IModule
 		guis.add(new PC_Struct2<String, Class>("Replacer", PCma_ContainerReplacer.class));
 		guis.add(new PC_Struct2<String, Class>("Roaster", PCma_ContainerRoaster.class));
 		guis.add(new PC_Struct2<String, Class>("Transmutabox", PCma_ContainerTransmutabox.class));
+		guis.add(new PC_Struct2<String, Class>("CraftingFurnace", PCma_ContainerCraftingFurnace.class));
 		return guis;
 	}
 }

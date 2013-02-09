@@ -4,9 +4,7 @@ import java.util.List;
 
 import net.minecraft.block.Block;
 
-import powercraft.management.PC_3DRecipe;
 import powercraft.management.PC_Block;
-import powercraft.management.PC_I3DRecipeHandler;
 import powercraft.management.PC_IDataHandler;
 import powercraft.management.PC_IMSG;
 import powercraft.management.PC_IModule;
@@ -14,10 +12,12 @@ import powercraft.management.PC_IPacketHandler;
 import powercraft.management.PC_Item;
 import powercraft.management.PC_ItemStack;
 import powercraft.management.PC_Property;
-import powercraft.management.PC_ShapedRecipes;
-import powercraft.management.PC_ShapelessRecipes;
 import powercraft.management.PC_Struct2;
 import powercraft.management.PC_Utils.ModuleLoader;
+import powercraft.management.recipes.PC_3DRecipe;
+import powercraft.management.recipes.PC_I3DRecipeHandler;
+import powercraft.management.recipes.PC_ShapedRecipes;
+import powercraft.management.recipes.PC_ShapelessRecipes;
 
 public class PCis_App implements PC_IModule {
 

@@ -4,23 +4,23 @@ import java.util.List;
 
 import net.minecraft.entity.player.EntityPlayer;
 import powercraft.management.PC_Color;
-import powercraft.management.PC_GresButton;
-import powercraft.management.PC_GresColorPicker;
-import powercraft.management.PC_GresInventory;
-import powercraft.management.PC_GresInventoryPlayer;
-import powercraft.management.PC_GresLabel;
-import powercraft.management.PC_GresLayoutH;
-import powercraft.management.PC_GresLayoutV;
-import powercraft.management.PC_GresTab;
-import powercraft.management.PC_GresTextEdit;
-import powercraft.management.PC_GresWidget;
 import powercraft.management.PC_TileEntity;
-import powercraft.management.PC_GresWidget.PC_GresAlign;
-import powercraft.management.PC_GresWindow;
-import powercraft.management.PC_IGresClient;
-import powercraft.management.PC_IGresGui;
 import powercraft.management.PC_PacketHandler;
 import powercraft.management.PC_Utils.Lang;
+import powercraft.management.gres.PC_GresButton;
+import powercraft.management.gres.PC_GresColorPicker;
+import powercraft.management.gres.PC_GresInventory;
+import powercraft.management.gres.PC_GresInventoryPlayer;
+import powercraft.management.gres.PC_GresLabel;
+import powercraft.management.gres.PC_GresLayoutH;
+import powercraft.management.gres.PC_GresLayoutV;
+import powercraft.management.gres.PC_GresTab;
+import powercraft.management.gres.PC_GresTextEdit;
+import powercraft.management.gres.PC_GresWidget;
+import powercraft.management.gres.PC_GresWindow;
+import powercraft.management.gres.PC_IGresClient;
+import powercraft.management.gres.PC_IGresGui;
+import powercraft.management.gres.PC_GresWidget.PC_GresAlign;
 
 public class PCws_GuiWeaselDiskDrive extends PCws_ContainerWeaselDiskDrive
 		implements PC_IGresClient {
@@ -85,7 +85,7 @@ public class PCws_GuiWeaselDiskDrive extends PCws_ContainerWeaselDiskDrive
 		PC_GresInventory inv = new PC_GresInventory(4, 2);
 		for (int j = 0; j < 2; j++) {
 			for (int i = 0; i < 4; i++) {
-				inv.setSlot(i, j, lSlot.get(i+j*4));
+				inv.setSlot(i, j, invSlots[i+j*4]);
 			}
 		}
 		lv.add(inv);

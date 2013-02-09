@@ -15,7 +15,6 @@ import net.minecraft.util.MathHelper;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import powercraft.management.PC_Block;
-import powercraft.management.PC_FakePlayer;
 import powercraft.management.PC_IItemInfo;
 import powercraft.management.PC_Struct2;
 import powercraft.management.PC_Utils;
@@ -23,6 +22,7 @@ import powercraft.management.PC_Utils.GameInfo;
 import powercraft.management.PC_Utils.Gres;
 import powercraft.management.PC_Utils.ModuleInfo;
 import powercraft.management.PC_Utils.ValueWriting;
+import powercraft.management.entity.PC_FakePlayer;
 import powercraft.management.PC_VecI;
 
 public class PCma_BlockReplacer extends PC_Block implements PC_IItemInfo

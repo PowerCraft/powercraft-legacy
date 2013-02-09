@@ -13,9 +13,9 @@ import powercraft.management.PC_IPacketHandler;
 import powercraft.management.PC_ItemArmor;
 import powercraft.management.PC_ItemStack;
 import powercraft.management.PC_Property;
-import powercraft.management.PC_ShapedRecipes;
 import powercraft.management.PC_Struct2;
 import powercraft.management.PC_Utils.ModuleLoader;
+import powercraft.management.recipes.PC_ShapedRecipes;
 
 public class PCtr_App implements PC_IModule
 {

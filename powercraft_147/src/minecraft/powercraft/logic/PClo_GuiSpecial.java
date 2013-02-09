@@ -1,16 +1,16 @@
 package powercraft.logic;
 
 import net.minecraft.entity.player.EntityPlayer;
-import powercraft.management.PC_GresInventory;
-import powercraft.management.PC_GresInventoryPlayer;
-import powercraft.management.PC_GresLabel;
-import powercraft.management.PC_GresLayoutH;
-import powercraft.management.PC_GresWidget;
-import powercraft.management.PC_GresWindow;
-import powercraft.management.PC_IGresClient;
-import powercraft.management.PC_IGresGui;
 import powercraft.management.PC_TileEntity;
 import powercraft.management.PC_Utils.Lang;
+import powercraft.management.gres.PC_GresInventory;
+import powercraft.management.gres.PC_GresInventoryPlayer;
+import powercraft.management.gres.PC_GresLabel;
+import powercraft.management.gres.PC_GresLayoutH;
+import powercraft.management.gres.PC_GresWidget;
+import powercraft.management.gres.PC_GresWindow;
+import powercraft.management.gres.PC_IGresClient;
+import powercraft.management.gres.PC_IGresGui;
 
 public class PClo_GuiSpecial extends PClo_ContainerSpecial implements PC_IGresClient {
 	
@@ -29,7 +29,7 @@ public class PClo_GuiSpecial extends PClo_ContainerSpecial implements PC_IGresCl
 		
 		lh.add(new PC_GresLabel(Lang.tr("pc.gui.special."+addString+".inv")));
 		PC_GresInventory inv = new PC_GresInventory(1, 1);
-		inv.setSlot(0, 0, lSlot.get(0));
+		inv.setSlot(0, 0, invSlots[0]);
 		lh.add(inv);
 		
 		w.add(lh);

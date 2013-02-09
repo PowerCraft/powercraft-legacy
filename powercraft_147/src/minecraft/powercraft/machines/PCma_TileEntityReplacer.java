@@ -9,11 +9,11 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import powercraft.management.PC_Color;
-import powercraft.management.PC_ISpecialAccessInventory;
 import powercraft.management.PC_InvUtils;
 import powercraft.management.PC_TileEntity;
 import powercraft.management.PC_Utils.SaveHandler;
 import powercraft.management.PC_Utils.ValueWriting;
+import powercraft.management.inventory.PC_ISpecialAccessInventory;
 import powercraft.management.PC_VecF;
 import powercraft.management.PC_VecI;
 

@@ -21,6 +21,9 @@ import net.minecraft.world.World;
 import powercraft.management.PC_Utils.GameInfo;
 import powercraft.management.PC_Utils.ModuleInfo;
 import powercraft.management.PC_Utils.ValueWriting;
+import powercraft.management.inventory.PC_IInventoryWrapper;
+import powercraft.management.inventory.PC_ISpecialAccessInventory;
+import powercraft.management.inventory.PC_IStateReportingInventory;
 
 public class PC_InvUtils
 {

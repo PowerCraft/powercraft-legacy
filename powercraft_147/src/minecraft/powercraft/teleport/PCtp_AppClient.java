@@ -5,15 +5,15 @@ import java.util.List;
 import net.minecraft.client.renderer.entity.Render;
 import net.minecraft.entity.Entity;
 
-import powercraft.management.PC_GresCheckBox;
-import powercraft.management.PC_GresLabel;
-import powercraft.management.PC_GresRadioButton;
 import powercraft.management.PC_IClientModule;
 import powercraft.management.PC_LangEntry;
 import powercraft.management.PC_Struct2;
-import powercraft.management.PC_GresRadioButton.PC_GresRadioGroup;
 import powercraft.management.PC_Utils.Lang;
 import powercraft.management.PC_Utils.ModuleInfo;
+import powercraft.management.gres.PC_GresCheckBox;
+import powercraft.management.gres.PC_GresLabel;
+import powercraft.management.gres.PC_GresRadioButton;
+import powercraft.management.gres.PC_GresRadioButton.PC_GresRadioGroup;
 
 public class PCtp_AppClient extends PCtp_App implements PC_IClientModule {
 

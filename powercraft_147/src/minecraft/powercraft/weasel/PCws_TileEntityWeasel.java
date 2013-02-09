@@ -11,13 +11,13 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
 import powercraft.management.PC_Entry;
-import powercraft.management.PC_ISpecialAccessInventory;
 import powercraft.management.PC_ITileEntityRenderer;
 import powercraft.management.PC_InvUtils;
 import powercraft.management.PC_MathHelper;
 import powercraft.management.PC_PacketHandler;
 import powercraft.management.PC_Struct2;
 import powercraft.management.PC_TileEntity;
+import powercraft.management.inventory.PC_ISpecialAccessInventory;
 
 public class PCws_TileEntityWeasel extends PC_TileEntity implements PC_ITileEntityRenderer, IInventory, PC_ISpecialAccessInventory{
 

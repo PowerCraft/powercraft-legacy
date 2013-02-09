@@ -8,16 +8,15 @@ import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
-import powercraft.management.PC_GresBaseWithInventory;
-import powercraft.management.PC_ISpecialAccessInventory;
-import powercraft.management.PC_Slot;
 import powercraft.management.PC_TileEntity;
 import powercraft.management.PC_Utils.ValueWriting;
+import powercraft.management.gres.PC_GresBaseWithInventory;
+import powercraft.management.inventory.PC_ISpecialAccessInventory;
+import powercraft.management.inventory.PC_Slot;
 import powercraft.management.PC_VecI;
 
 public class PCws_ContainerWeaselDiskManager extends PC_GresBaseWithInventory<PC_TileEntity> {
 	
-	protected List<Slot> lSlot;
 	protected IInventory inventory;
 	protected PC_VecI pos;
 	
@@ -31,14 +30,15 @@ public class PCws_ContainerWeaselDiskManager extends PC_GresBaseWithInventory<PC
 	}
 
 	@Override
-	protected List<Slot> getAllSlots(List<Slot> slots) {
-		lSlot = new ArrayList<Slot>();
+	protected PC_Slot[] getAllSlots() {
+		
+		invSlots = new PC_Slot[3];
 		inventory = new WeaselDiskManagerInventory(thePlayer.worldObj, pos);
-		lSlot.add(new PC_Slot(inventory, 0));
-		lSlot.add(new PC_Slot(inventory, 1));
-		lSlot.add(new PC_Slot(inventory, 2));
-		slots.addAll(lSlot);
-		return slots;
+		invSlots[0] = new PC_Slot(inventory, 0);
+		invSlots[1] = new PC_Slot(inventory, 1);
+		invSlots[2] = new PC_Slot(inventory, 2);
+		
+		return invSlots;
 	}
 
 	@Override

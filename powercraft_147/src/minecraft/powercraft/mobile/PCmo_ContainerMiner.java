@@ -5,15 +5,13 @@ import java.util.List;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.Slot;
-import powercraft.management.PC_GresBaseWithInventory;
-import powercraft.management.PC_Slot;
 import powercraft.management.PC_TileEntity;
+import powercraft.management.gres.PC_GresBaseWithInventory;
+import powercraft.management.inventory.PC_Slot;
 
 public class PCmo_ContainerMiner extends PC_GresBaseWithInventory<PC_TileEntity> {
 
 	protected PCmo_EntityMiner miner;
-	protected List<Slot> lSlot;
-	
 	
 	public PCmo_ContainerMiner(EntityPlayer player, PC_TileEntity te, Object[] o) {
 		super(player, te, o);
@@ -25,16 +23,21 @@ public class PCmo_ContainerMiner extends PC_GresBaseWithInventory<PC_TileEntity>
 	}
 
 	@Override
-	protected List<Slot> getAllSlots(List<Slot> slots) {
-		lSlot = new ArrayList<Slot>();
+	protected PC_Slot[] getAllSlots() {
+		
+		invSlots = new PC_Slot[miner.xtals.getSizeInventory()+miner.cargo.getSizeInventory()];
+		
+		int n=0;
 		for(int i=0; i<miner.xtals.getSizeInventory(); i++){
-			lSlot.add(new PC_Slot(miner.xtals, i));
+			invSlots[n] = new PC_Slot(miner.xtals, i);
+			n++;
 		}
 		for(int i=0; i<miner.cargo.getSizeInventory(); i++){
-			lSlot.add(new PC_Slot(miner.cargo, i));
+			invSlots[n] = new PC_Slot(miner.cargo, i);
+			n++;
 		}
-		slots.addAll(lSlot);
-		return slots;
+		
+		return invSlots;
 	}
 
 	@Override

@@ -1,18 +1,18 @@
 package powercraft.weasel;
 
 import net.minecraft.entity.player.EntityPlayer;
-import powercraft.management.PC_GresButton;
-import powercraft.management.PC_GresLabel;
-import powercraft.management.PC_GresLayoutH;
-import powercraft.management.PC_GresLayoutV;
-import powercraft.management.PC_GresTab;
-import powercraft.management.PC_GresTextEdit;
-import powercraft.management.PC_GresTextEditMultiline;
-import powercraft.management.PC_GresWidget;
-import powercraft.management.PC_IGresGui;
 import powercraft.management.PC_PacketHandler;
 import powercraft.management.PC_TileEntity;
 import powercraft.management.PC_Utils.Lang;
+import powercraft.management.gres.PC_GresButton;
+import powercraft.management.gres.PC_GresLabel;
+import powercraft.management.gres.PC_GresLayoutH;
+import powercraft.management.gres.PC_GresLayoutV;
+import powercraft.management.gres.PC_GresTab;
+import powercraft.management.gres.PC_GresTextEdit;
+import powercraft.management.gres.PC_GresTextEditMultiline;
+import powercraft.management.gres.PC_GresWidget;
+import powercraft.management.gres.PC_IGresGui;
 
 public class PCws_GuiWeaselTerminal extends PCws_GuiWeasel {
 

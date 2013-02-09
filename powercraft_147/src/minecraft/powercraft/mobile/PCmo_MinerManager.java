@@ -1,34 +1,25 @@
 package powercraft.mobile;
 
 import java.io.IOException;
-import java.lang.reflect.InvocationTargetException;
 import java.util.List;
 
 import net.minecraft.block.Block;
-import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.item.EntityBoat;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
-import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompressedStreamTools;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.world.World;
-import powercraft.machines.PCma_App;
-import powercraft.management.PC_ClientUtils;
-import powercraft.management.PC_I3DRecipeHandler;
-import powercraft.management.PC_IMSG;
 import powercraft.management.PC_IPacketHandler;
 import powercraft.management.PC_InvUtils;
 import powercraft.management.PC_Struct2;
-import powercraft.management.PC_Utils;
-import powercraft.management.PC_VecI;
 import powercraft.management.PC_Utils.Communication;
 import powercraft.management.PC_Utils.GameInfo;
 import powercraft.management.PC_Utils.Lang;
 import powercraft.management.PC_Utils.ValueWriting;
-import powercraft.mobile.PCmo_EntityMiner.MinerStatus;
+import powercraft.management.PC_VecI;
+import powercraft.management.recipes.PC_I3DRecipeHandler;
 
 public class PCmo_MinerManager implements PC_I3DRecipeHandler, PC_IPacketHandler {
 	
@@ -45,7 +36,7 @@ public class PCmo_MinerManager implements PC_I3DRecipeHandler, PC_IPacketHandler
 	}
 	
 	@Override
-	public boolean foundStructAt(World world, PC_Struct2<PC_VecI, Integer> structStart) {
+	public boolean foundStructAt(EntityPlayer entityplayer, World world, PC_Struct2<PC_VecI, Integer> structStart) {
 		
 		if(GameInfo.getBID(world, structStart.a)==Block.obsidian.blockID){
 			List<PCmo_EntityMiner> miner = world.getEntitiesWithinAABB(PCmo_EntityMiner.class, AxisAlignedBB.getBoundingBox(structStart.a.x+1, structStart.a.y+1, structStart.a.z+1, 

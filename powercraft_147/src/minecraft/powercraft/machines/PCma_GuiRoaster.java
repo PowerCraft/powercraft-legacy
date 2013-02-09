@@ -1,15 +1,15 @@
 package powercraft.machines;
 
 import net.minecraft.entity.player.EntityPlayer;
-import powercraft.management.PC_GresInventory;
-import powercraft.management.PC_GresInventoryPlayer;
-import powercraft.management.PC_GresWidget;
 import powercraft.management.PC_TileEntity;
-import powercraft.management.PC_GresWidget.PC_GresAlign;
-import powercraft.management.PC_GresWindow;
-import powercraft.management.PC_IGresClient;
-import powercraft.management.PC_IGresGui;
 import powercraft.management.PC_Utils.Lang;
+import powercraft.management.gres.PC_GresInventory;
+import powercraft.management.gres.PC_GresInventoryPlayer;
+import powercraft.management.gres.PC_GresWidget;
+import powercraft.management.gres.PC_GresWindow;
+import powercraft.management.gres.PC_IGresClient;
+import powercraft.management.gres.PC_IGresGui;
+import powercraft.management.gres.PC_GresWidget.PC_GresAlign;
 
 public class PCma_GuiRoaster extends PCma_ContainerRoaster implements
 		PC_IGresClient {
@@ -26,7 +26,7 @@ public class PCma_GuiRoaster extends PCma_ContainerRoaster implements
 
 		PC_GresInventory inv = new PC_GresInventory(9, 1);
 		for (int i = 0; i < 9; i++) {
-			inv.setSlot(i, 0, lSlot.get(i));
+			inv.setSlot(i, 0, invSlots[i]);
 		}
 		w.add(inv);
 		w.add(new PC_GresInventoryPlayer(true));

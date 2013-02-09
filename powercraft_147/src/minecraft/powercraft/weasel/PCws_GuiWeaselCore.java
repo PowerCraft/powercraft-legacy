@@ -3,22 +3,22 @@ package powercraft.weasel;
 import java.util.List;
 
 import net.minecraft.entity.player.EntityPlayer;
-import powercraft.management.PC_GresButton;
-import powercraft.management.PC_GresImage;
-import powercraft.management.PC_GresLabel;
-import powercraft.management.PC_GresLayoutH;
-import powercraft.management.PC_GresLayoutV;
-import powercraft.management.PC_GresSeparatorV;
-import powercraft.management.PC_GresTab;
-import powercraft.management.PC_GresTextEditMultiline;
 import powercraft.management.PC_TileEntity;
-import powercraft.management.PC_GresTextEditMultiline.Keyword;
-import powercraft.management.PC_GresWidget;
-import powercraft.management.PC_GresWidget.PC_GresAlign;
-import powercraft.management.PC_IGresGui;
 import powercraft.management.PC_PacketHandler;
 import powercraft.management.PC_Utils.Lang;
 import powercraft.management.PC_Utils.ModuleInfo;
+import powercraft.management.gres.PC_GresButton;
+import powercraft.management.gres.PC_GresImage;
+import powercraft.management.gres.PC_GresLabel;
+import powercraft.management.gres.PC_GresLayoutH;
+import powercraft.management.gres.PC_GresLayoutV;
+import powercraft.management.gres.PC_GresSeparatorV;
+import powercraft.management.gres.PC_GresTab;
+import powercraft.management.gres.PC_GresTextEditMultiline;
+import powercraft.management.gres.PC_GresWidget;
+import powercraft.management.gres.PC_IGresGui;
+import powercraft.management.gres.PC_GresTextEditMultiline.Keyword;
+import powercraft.management.gres.PC_GresWidget.PC_GresAlign;
 import weasel.WeaselEngine;
 
 public class PCws_GuiWeaselCore extends PCws_GuiWeasel {

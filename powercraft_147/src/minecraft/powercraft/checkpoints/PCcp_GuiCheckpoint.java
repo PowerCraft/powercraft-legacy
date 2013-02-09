@@ -1,15 +1,15 @@
 package powercraft.checkpoints;
 
 import net.minecraft.entity.player.EntityPlayer;
-import powercraft.management.PC_GresCheckBox;
-import powercraft.management.PC_GresInventory;
-import powercraft.management.PC_GresInventoryPlayer;
-import powercraft.management.PC_GresWidget;
-import powercraft.management.PC_GresWindow;
-import powercraft.management.PC_IGresClient;
-import powercraft.management.PC_IGresGui;
 import powercraft.management.PC_TileEntity;
 import powercraft.management.PC_Utils.Lang;
+import powercraft.management.gres.PC_GresCheckBox;
+import powercraft.management.gres.PC_GresInventory;
+import powercraft.management.gres.PC_GresInventoryPlayer;
+import powercraft.management.gres.PC_GresWidget;
+import powercraft.management.gres.PC_GresWindow;
+import powercraft.management.gres.PC_IGresClient;
+import powercraft.management.gres.PC_IGresGui;
 
 public class PCcp_GuiCheckpoint extends PCcp_ContainerCheckpoint implements PC_IGresClient {
 
@@ -27,14 +27,14 @@ public class PCcp_GuiCheckpoint extends PCcp_ContainerCheckpoint implements PC_I
 		int n=9;
 		for(int j=0; j<3; j++){
 			for(int i=0; i<9; i++){
-				inv.setSlot(i, j, lSlot.get(n));
+				inv.setSlot(i, j, invSlots[n]);
 				n++;
 			}
 		}
 		w.add(inv);
 		inv = new PC_GresInventory(9, 1);
 		for(int i=0; i<9; i++){
-			inv.setSlot(i, 0, lSlot.get(i));
+			inv.setSlot(i, 0, invSlots[i]);
 		}
 		w.add(inv);
 		w.add(new PC_GresInventoryPlayer(true));

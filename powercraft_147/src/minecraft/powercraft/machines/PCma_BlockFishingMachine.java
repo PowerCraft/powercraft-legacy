@@ -10,13 +10,13 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-import powercraft.management.PC_3DRecipe;
 import powercraft.management.PC_Block;
-import powercraft.management.PC_I3DRecipeHandler;
 import powercraft.management.PC_Struct2;
 import powercraft.management.PC_Utils;
 import powercraft.management.PC_Utils.GameInfo;
 import powercraft.management.PC_Utils.ValueWriting;
+import powercraft.management.recipes.PC_3DRecipe;
+import powercraft.management.recipes.PC_I3DRecipeHandler;
 import powercraft.management.PC_VecI;
 
 public class PCma_BlockFishingMachine extends PC_Block implements PC_I3DRecipeHandler {
@@ -161,7 +161,7 @@ public class PCma_BlockFishingMachine extends PC_Block implements PC_I3DRecipeHa
 	}
 
 	@Override
-	public boolean foundStructAt(World world, PC_Struct2<PC_VecI, Integer> structStart) {
+	public boolean foundStructAt(EntityPlayer entityplayer, World world, PC_Struct2<PC_VecI, Integer> structStart) {
 		PC_VecI pos = structStart.a.offset(1, 5, 1);
 		int fishingMachine = PCma_App.fishingMachine.blockID;
 		for(int z=-2; z<=2; z++){

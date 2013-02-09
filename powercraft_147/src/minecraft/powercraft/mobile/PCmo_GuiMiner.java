@@ -5,25 +5,25 @@ import java.util.List;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import powercraft.core.PCco_App;
-import powercraft.management.PC_GresButton;
-import powercraft.management.PC_GresCheckBox;
-import powercraft.management.PC_GresGap;
-import powercraft.management.PC_GresInventory;
-import powercraft.management.PC_GresInventoryPlayer;
-import powercraft.management.PC_GresLabel;
-import powercraft.management.PC_GresLayoutH;
-import powercraft.management.PC_GresLayoutV;
-import powercraft.management.PC_GresTab;
-import powercraft.management.PC_GresTextEditMultiline;
-import powercraft.management.PC_GresTextEditMultiline.Keyword;
-import powercraft.management.PC_GresWidget;
-import powercraft.management.PC_GresWidget.PC_GresAlign;
-import powercraft.management.PC_GresWindow;
-import powercraft.management.PC_IGresClient;
-import powercraft.management.PC_IGresGui;
-import powercraft.management.PC_Slot;
 import powercraft.management.PC_TileEntity;
 import powercraft.management.PC_Utils.Lang;
+import powercraft.management.gres.PC_GresButton;
+import powercraft.management.gres.PC_GresCheckBox;
+import powercraft.management.gres.PC_GresGap;
+import powercraft.management.gres.PC_GresInventory;
+import powercraft.management.gres.PC_GresInventoryPlayer;
+import powercraft.management.gres.PC_GresLabel;
+import powercraft.management.gres.PC_GresLayoutH;
+import powercraft.management.gres.PC_GresLayoutV;
+import powercraft.management.gres.PC_GresTab;
+import powercraft.management.gres.PC_GresTextEditMultiline;
+import powercraft.management.gres.PC_GresWidget;
+import powercraft.management.gres.PC_GresWindow;
+import powercraft.management.gres.PC_IGresClient;
+import powercraft.management.gres.PC_IGresGui;
+import powercraft.management.gres.PC_GresTextEditMultiline.Keyword;
+import powercraft.management.gres.PC_GresWidget.PC_GresAlign;
+import powercraft.management.inventory.PC_Slot;
 import powercraft.weasel.PCws_WeaselHighlightHelper;
 
 public class PCmo_GuiMiner extends PCmo_ContainerMiner implements PC_IGresClient {
@@ -131,13 +131,13 @@ public class PCmo_GuiMiner extends PCmo_ContainerMiner implements PC_IGresClient
 		
 		PC_GresWidget vg = new PC_GresLayoutV().setAlignH(PC_GresAlign.CENTER).setWidgetMargin(6);
 
-		vg.add(new PC_GresInventory(((PC_Slot)lSlot.get(0)).
+		vg.add(new PC_GresInventory(invSlots[0].
 				setBackgroundStack(new ItemStack(PCco_App.powerCrystal,1,miner.xtals.getCrystalTypeForSlot(0)))));
-		vg.add(new PC_GresInventory(((PC_Slot)lSlot.get(1)).
+		vg.add(new PC_GresInventory(invSlots[1].
 				setBackgroundStack(new ItemStack(PCco_App.powerCrystal,1,miner.xtals.getCrystalTypeForSlot(1)))));
-		vg.add(new PC_GresInventory(((PC_Slot)lSlot.get(2)).
+		vg.add(new PC_GresInventory(invSlots[2].
 				setBackgroundStack(new ItemStack(PCco_App.powerCrystal,1,miner.xtals.getCrystalTypeForSlot(2)))));
-		vg.add(new PC_GresInventory(((PC_Slot)lSlot.get(3)).
+		vg.add(new PC_GresInventory(invSlots[3].
 				setBackgroundStack(new ItemStack(PCco_App.powerCrystal,1,miner.xtals.getCrystalTypeForSlot(3)))));
 
 		vgCargo.add(vg);
@@ -149,7 +149,7 @@ public class PCmo_GuiMiner extends PCmo_ContainerMiner implements PC_IGresClient
 		int n=8;
 		for(int j=0; j<5; j++){
 			for(int i=0; i<11; i++){
-				cargoInv.setSlot(i, j, lSlot.get(n));
+				cargoInv.setSlot(i, j, invSlots[n]);
 				n++;
 			}
 		}
@@ -161,13 +161,13 @@ public class PCmo_GuiMiner extends PCmo_ContainerMiner implements PC_IGresClient
 		
 		vg = new PC_GresLayoutV().setAlignH(PC_GresAlign.CENTER).setWidgetMargin(6);
 
-		vg.add(new PC_GresInventory(((PC_Slot)lSlot.get(7)).
+		vg.add(new PC_GresInventory(invSlots[7].
 				setBackgroundStack(new ItemStack(PCco_App.powerCrystal,1,miner.xtals.getCrystalTypeForSlot(7)))));
-		vg.add(new PC_GresInventory(((PC_Slot)lSlot.get(6)).
+		vg.add(new PC_GresInventory(invSlots[6].
 				setBackgroundStack(new ItemStack(PCco_App.powerCrystal,1,miner.xtals.getCrystalTypeForSlot(6)))));
-		vg.add(new PC_GresInventory(((PC_Slot)lSlot.get(5)).
+		vg.add(new PC_GresInventory(invSlots[5].
 				setBackgroundStack(new ItemStack(PCco_App.powerCrystal,1,miner.xtals.getCrystalTypeForSlot(5)))));
-		vg.add(new PC_GresInventory(((PC_Slot)lSlot.get(4)).
+		vg.add(new PC_GresInventory(invSlots[4].
 				setBackgroundStack(new ItemStack(PCco_App.powerCrystal,1,miner.xtals.getCrystalTypeForSlot(4)))));
 
 		vgCargo.add(vg);

@@ -25,6 +25,12 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Random;
 
+import powercraft.management.gres.PC_GresBaseWithInventory;
+import powercraft.management.inventory.PC_IInventoryWrapper;
+import powercraft.management.recipes.PC_IRecipeInfo;
+import powercraft.management.recipes.PC_ShapedRecipes;
+import powercraft.management.recipes.PC_ShapelessRecipes;
+
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityList;
@@ -246,7 +252,6 @@ public class PC_Utils implements PC_IPacketHandler
 		            e.printStackTrace();
 		        }
 		    }
-		
 		    throw new IllegalArgumentException("3th parameter need to be a class witch extends PC_Block or PC_Item or PC_ItemArmor");
 		}
 		public static <t extends PC_Block>t register(PC_IModule module, Class<t> blockClass, Class c)

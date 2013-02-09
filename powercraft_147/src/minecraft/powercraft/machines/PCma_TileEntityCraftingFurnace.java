@@ -3,10 +3,10 @@ package powercraft.machines;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
-import powercraft.management.PC_ISpecialAccessInventory;
 import powercraft.management.PC_InvUtils;
 import powercraft.management.PC_TileEntity;
 import powercraft.management.PC_Utils.GameInfo;
+import powercraft.management.inventory.PC_ISpecialAccessInventory;
 
 public class PCma_TileEntityCraftingFurnace extends PC_TileEntity implements IInventory, PC_ISpecialAccessInventory {
 

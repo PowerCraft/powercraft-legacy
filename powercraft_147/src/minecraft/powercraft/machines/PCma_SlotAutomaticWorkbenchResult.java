@@ -4,19 +4,19 @@ import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.Container;
 import net.minecraft.inventory.IInventory;
-import net.minecraft.inventory.Slot;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.stats.AchievementList;
+import powercraft.management.inventory.PC_Slot;
 
-public class PCma_SlotAutomaticWorkbenchResult extends Slot
+public class PCma_SlotAutomaticWorkbenchResult extends PC_Slot
 {
     private final PCma_TileEntityAutomaticWorkbench storageInv;
     private Container parent;
 
-    public PCma_SlotAutomaticWorkbenchResult(PCma_TileEntityAutomaticWorkbench storage, IInventory result, Container parent, int i, int j, int k)
+    public PCma_SlotAutomaticWorkbenchResult(PCma_TileEntityAutomaticWorkbench storage, IInventory result, Container parent, int i)
     {
-        super(result, i, j, k);
+        super(result, i);
         storageInv = storage;
         this.parent = parent;
     }

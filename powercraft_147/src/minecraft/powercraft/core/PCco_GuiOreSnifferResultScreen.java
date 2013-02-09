@@ -7,21 +7,22 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
-import powercraft.management.PC_GresBaseWithInventory;
-import powercraft.management.PC_GresInventory;
-import powercraft.management.PC_GresLabel;
-import powercraft.management.PC_GresLayoutV;
-import powercraft.management.PC_GresProgressBar;
-import powercraft.management.PC_GresWidget;
-import powercraft.management.PC_GresWidget.PC_GresAlign;
-import powercraft.management.PC_GresWindow;
-import powercraft.management.PC_IGresClient;
-import powercraft.management.PC_IGresGui;
 import powercraft.management.PC_MathHelper;
-import powercraft.management.PC_SlotNoPickup;
 import powercraft.management.PC_TileEntity;
 import powercraft.management.PC_Utils.GameInfo;
 import powercraft.management.PC_Utils.Lang;
+import powercraft.management.gres.PC_GresBaseWithInventory;
+import powercraft.management.gres.PC_GresInventory;
+import powercraft.management.gres.PC_GresLabel;
+import powercraft.management.gres.PC_GresLayoutV;
+import powercraft.management.gres.PC_GresProgressBar;
+import powercraft.management.gres.PC_GresWidget;
+import powercraft.management.gres.PC_GresWindow;
+import powercraft.management.gres.PC_IGresClient;
+import powercraft.management.gres.PC_IGresGui;
+import powercraft.management.gres.PC_GresWidget.PC_GresAlign;
+import powercraft.management.inventory.PC_Slot;
+import powercraft.management.inventory.PC_SlotNoPickup;
 import powercraft.management.PC_VecI;
 
 public class PCco_GuiOreSnifferResultScreen extends PC_GresBaseWithInventory<PC_TileEntity> implements PC_IGresClient {
@@ -32,7 +33,6 @@ public class PCco_GuiOreSnifferResultScreen extends PC_GresBaseWithInventory<PC_
 	private PC_VecI[][] startpos;
 	private World world;
 	private PC_VecI start;
-	private List<Slot> slots;
 	
 	private static final int range = 16;
 	
@@ -169,7 +169,7 @@ public class PCco_GuiOreSnifferResultScreen extends PC_GresBaseWithInventory<PC_
 		w.add(inv = new PC_GresInventory(3, 3));
 		for (int x = 0; x < 3; x++) {
 			for (int y = 0; y < 3; y++) {
-				inv.setSlot(x, y, slots.get(x+y*3));
+				inv.setSlot(x, y, invSlots[x+y*3]);
 			}
 		}
 		//w.add(new PC_GresInventoryPlayer(true));
@@ -231,14 +231,14 @@ public class PCco_GuiOreSnifferResultScreen extends PC_GresBaseWithInventory<PC_
 	protected void init(Object[] o) {}
 	
 	@Override
-	protected List<Slot> getAllSlots(List<Slot> slots) {
+	protected PC_Slot[] getAllSlots() {
+		invSlots = new PC_Slot[9];
 		for (int x = 0; x < 3; x++) {
 			for (int y = 0; y < 3; y++) {
-				slots.add(new PC_SlotNoPickup());
+				invSlots[y*3+x] = new PC_SlotNoPickup();
 			}
 		}
-		this.slots = slots;
-		return slots;
+		return invSlots;
 	}
 
 	@Override

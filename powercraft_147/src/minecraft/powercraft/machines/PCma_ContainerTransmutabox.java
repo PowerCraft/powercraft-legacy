@@ -5,23 +5,18 @@ import java.util.List;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.Slot;
-import powercraft.management.PC_GresBaseWithInventory;
-import powercraft.management.PC_Slot;
-import powercraft.management.PC_SlotNoPickup;
 import powercraft.management.PC_TileEntity;
 import powercraft.management.PC_Utils.GameInfo;
+import powercraft.management.gres.PC_GresBaseWithInventory;
+import powercraft.management.inventory.PC_Slot;
+import powercraft.management.inventory.PC_SlotNoPickup;
 
 public class PCma_ContainerTransmutabox extends PC_GresBaseWithInventory<PCma_TileEntityTransmutabox>
 {
-    protected List<Slot> lSlot;
-
     public PCma_ContainerTransmutabox(EntityPlayer player, PC_TileEntity te, Object[] o)
     {
         super(player, (PCma_TileEntityTransmutabox)te, o);
     }
-
-    @Override
-    protected void init(Object[] o){}
 
     @Override
     protected boolean canShiftTransfer()
@@ -30,20 +25,20 @@ public class PCma_ContainerTransmutabox extends PC_GresBaseWithInventory<PCma_Ti
     }
     
     @Override
-    protected List<Slot> getAllSlots(List<Slot> slots)
+    protected PC_Slot[] getAllSlots()
     {
-        lSlot = new ArrayList<Slot>();
 
-        for (int i = 0; i < tileEntity.getSizeInventory(); i++)
+        invSlots = new PC_Slot[tileEntity.getSizeInventory()];
+        
+        for (int i = 0; i < invSlots.length; i++)
         {
         	if(i==9||i==10){
-        		lSlot.add(new PC_SlotNoPickup(tileEntity, i));
+        		invSlots[i] = new PC_SlotNoPickup(tileEntity, i);
         	}else{
-        		lSlot.add(new PC_Slot(tileEntity, i));
+        		invSlots[i] = new PC_Slot(tileEntity, i);
         	}
         }
 
-        slots.addAll(lSlot);
-        return slots;
+        return invSlots;
     }
 }

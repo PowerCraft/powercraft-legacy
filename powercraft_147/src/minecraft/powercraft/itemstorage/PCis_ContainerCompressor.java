@@ -5,14 +5,14 @@ import java.util.List;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.Slot;
-import powercraft.management.PC_GresBaseWithInventory;
-import powercraft.management.PC_Slot;
-import powercraft.management.PC_SlotNoPickup;
 import powercraft.management.PC_TileEntity;
+import powercraft.management.gres.PC_GresBaseWithInventory;
+import powercraft.management.inventory.PC_Slot;
+import powercraft.management.inventory.PC_SlotNoPickup;
 
 public class PCis_ContainerCompressor extends PC_GresBaseWithInventory<PC_TileEntity> {
 
-	protected List<Slot> lSlot;
+	protected List<PC_Slot> lSlot;
 	protected PCis_CompressorInventory inv;
 	
 	public PCis_ContainerCompressor(EntityPlayer player, PC_TileEntity te, Object[] o) {
@@ -28,14 +28,13 @@ public class PCis_ContainerCompressor extends PC_GresBaseWithInventory<PC_TileEn
 	}
 
 	@Override
-	protected List<Slot> getAllSlots(List<Slot> slots) {
-		lSlot = new ArrayList<Slot>();
+	protected PC_Slot[] getAllSlots() {
 		inv = PCis_ItemCompressor.getInventoryFor(thePlayer);
-		for(int i=0; i<inv.getSizeInventory(); i++){
-			lSlot.add(new PC_Slot(inv, i));
+		invSlots = new PC_Slot[inv.getSizeInventory()];
+		for(int i=0; i<invSlots.length; i++){
+			invSlots[i] = new PC_Slot(inv, i);
 		}
-		slots.addAll(lSlot);
-		return slots;
+		return invSlots;
 	}
 
 	@Override

@@ -11,14 +11,15 @@ import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 import powercraft.management.PC_GlobalVariables;
-import powercraft.management.PC_GresBaseWithInventory;
 import powercraft.management.PC_ItemStack;
 import powercraft.management.PC_TileEntity;
 import powercraft.management.PC_Utils.GameInfo;
+import powercraft.management.gres.PC_GresBaseWithInventory;
+import powercraft.management.inventory.PC_Slot;
 
 public class PCco_ContainerCraftingTool extends PC_GresBaseWithInventory<PC_TileEntity>
 {
-    protected Slot trash;
+    protected PC_Slot trash;
     protected List<PCco_SlotDirectCrafting> allMcSlots;
     protected HashMap<String, List<PCco_SlotDirectCrafting>> moduleList;
 
@@ -28,10 +29,7 @@ public class PCco_ContainerCraftingTool extends PC_GresBaseWithInventory<PC_Tile
     }
 
     @Override
-    protected void init(Object[] o) {}
-
-    @Override
-    protected List<Slot> getAllSlots(List<Slot> slots)
+    protected PC_Slot[] getAllSlots()
     {
     	while(!PCco_CraftingToolLoader.isFinished()){
     		System.out.println("lädt...");
@@ -51,6 +49,7 @@ public class PCco_ContainerCraftingTool extends PC_GresBaseWithInventory<PC_Tile
         	}
         	
         }
+        List<PC_Slot> slots = new ArrayList<PC_Slot>();
         slots.add(trash = new PCco_SlotTrash());
 
         Collection<List<PCco_SlotDirectCrafting>> cls = moduleList.values();
@@ -63,7 +62,7 @@ public class PCco_ContainerCraftingTool extends PC_GresBaseWithInventory<PC_Tile
         }
 
         slots.addAll(allMcSlots);
-        return slots;
+        return slots.toArray(new PC_Slot[0]);
     }
 
     @Override

@@ -4,13 +4,13 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import powercraft.management.PC_ISpecialAccessInventory;
-import powercraft.management.PC_IStateReportingInventory;
 import powercraft.management.PC_InvUtils;
 import powercraft.management.PC_ItemStack;
 import powercraft.management.PC_PacketHandler;
 import powercraft.management.PC_TileEntity;
 import powercraft.management.PC_Utils.GameInfo;
+import powercraft.management.inventory.PC_ISpecialAccessInventory;
+import powercraft.management.inventory.PC_IStateReportingInventory;
 
 public class PCma_TileEntityTransmutabox extends PC_TileEntity implements IInventory, PC_ISpecialAccessInventory, PC_IStateReportingInventory
 {

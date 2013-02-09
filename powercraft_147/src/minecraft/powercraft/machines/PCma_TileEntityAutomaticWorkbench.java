@@ -11,11 +11,11 @@ import net.minecraft.inventory.InventoryCrafting;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.CraftingManager;
 import net.minecraft.nbt.NBTTagCompound;
-import powercraft.management.PC_ISpecialAccessInventory;
-import powercraft.management.PC_IStateReportingInventory;
 import powercraft.management.PC_InvUtils;
 import powercraft.management.PC_TileEntity;
 import powercraft.management.PC_Utils.GameInfo;
+import powercraft.management.inventory.PC_ISpecialAccessInventory;
+import powercraft.management.inventory.PC_IStateReportingInventory;
 
 public class PCma_TileEntityAutomaticWorkbench extends PC_TileEntity implements IInventory, PC_IStateReportingInventory, PC_ISpecialAccessInventory
 {
@@ -211,6 +211,8 @@ public class PCma_TileEntityAutomaticWorkbench extends PC_TileEntity implements 
 
     public void reorderACT()
     {
+    	if(worldObj.isRemote)
+    		return;
         List<ItemStack> stacks = new ArrayList<ItemStack>();
 
         for (int i = 0; i < 9; i++)
@@ -371,6 +373,8 @@ public class PCma_TileEntityAutomaticWorkbench extends PC_TileEntity implements 
 
     public void orderAndCraft()
     {
+    	if(worldObj.isRemote)
+    		return;
         reorderACT();
 
         if (!isRedstoneActivated())
