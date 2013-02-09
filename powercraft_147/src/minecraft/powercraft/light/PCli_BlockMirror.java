@@ -26,9 +26,9 @@ import powercraft.management.PC_Utils.ModuleInfo;
 import powercraft.management.PC_Utils.ValueWriting;
 import powercraft.management.PC_VecI;
 
-public class PCli_BlockMirrow extends PC_Block implements PC_IItemInfo {
+public class PCli_BlockMirror extends PC_Block implements PC_IItemInfo {
 
-	public PCli_BlockMirrow(int id) {
+	public PCli_BlockMirror(int id) {
 		super(id, Material.glass);
 		float f = 0.4F;
 		float f1 = 1.0F;
@@ -41,7 +41,7 @@ public class PCli_BlockMirrow extends PC_Block implements PC_IItemInfo {
 
 	@Override
 	public TileEntity newTileEntity(World world, int metadata) {
-		return new PCli_TileEntityMirrow();
+		return new PCli_TileEntityMirror();
 	}
 	
 	@Override
@@ -72,7 +72,7 @@ public class PCli_BlockMirrow extends PC_Block implements PC_IItemInfo {
 		if (ihold != null) {
 			if (ihold.itemID == ModuleInfo.getPCObjectIDByName("PCco_BlockPowerCrystal")) {
 
-				PCli_TileEntityMirrow teo = GameInfo.getTE(world, i, j, k, blockID);
+				PCli_TileEntityMirror teo = GameInfo.getTE(world, i, j, k, blockID);
 				if (teo != null) {
 					teo.setMirrorColor(ihold.getItemDamage());
 				}
@@ -104,7 +104,7 @@ public class PCli_BlockMirrow extends PC_Block implements PC_IItemInfo {
 	 */
 	public static int getMirrorColor(IBlockAccess iblockaccess, int x, int y, int z) {
 
-		PCli_TileEntityMirrow teo = GameInfo.getTE(iblockaccess, x, y, z);
+		PCli_TileEntityMirror teo = GameInfo.getTE(iblockaccess, x, y, z);
 
 		if (teo == null) {
 			return 0;
@@ -245,7 +245,7 @@ public class PCli_BlockMirrow extends PC_Block implements PC_IItemInfo {
 	public result onHitByBeamTracer(IBlockAccess world, BeamSettings bs) {
 		PC_VecI pos = bs.getPos();
 		PC_VecI move = bs.getMove();
-		int mirrorColor = PCli_BlockMirrow.getMirrorColor(world, pos.x, pos.y, pos.z);
+		int mirrorColor = PCli_BlockMirror.getMirrorColor(world, pos.x, pos.y, pos.z);
 		PC_Color c = null;
 		if(mirrorColor>=0)
 			c = PC_Color.fromHex(PC_Color.crystal_colors[mirrorColor]);
@@ -317,7 +317,7 @@ public class PCli_BlockMirrow extends PC_Block implements PC_IItemInfo {
 			list.add(PC_Utils.NO_BUILD);
 			return list;
 		}case PC_Utils.MSG_DEFAULT_NAME:
-			return "Mirrow";
+			return "Mirror";
 		case PC_Utils.MSG_ON_HIT_BY_BEAM_TRACER:
 			return onHitByBeamTracer(world, (BeamSettings)obj[0]);
 		default:

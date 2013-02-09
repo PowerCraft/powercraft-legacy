@@ -38,6 +38,8 @@ public class NEIPowerCraftConfig implements IConfigureNEI, PC_IMSG {
 		API.registerRecipeHandler(shapelessRecipeHandler);
 		API.registerUsageHandler(shapelessRecipeHandler);
 		
+		API.registerNEIGuiHandler(new PC_NEIGuiHandler());
+		
 		registerNEIItems();
 		
 		PC_Logger.exitSection();

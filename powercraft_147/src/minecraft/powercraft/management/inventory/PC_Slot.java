@@ -11,6 +11,7 @@ public class PC_Slot extends Slot {
 	
 	public PC_Slot(IInventory inv, int slot) {
 		super(inv, slot, 0, 0);
+		slotNumber = -1;
 	}
 
 	@Override

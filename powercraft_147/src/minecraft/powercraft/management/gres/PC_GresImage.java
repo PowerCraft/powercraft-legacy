@@ -17,6 +17,10 @@ public class PC_GresImage extends PC_GresWidget {
 
 	private PC_VecI imgSize = new PC_VecI(0, 0);
 	private PC_VecI imgOffset = new PC_VecI(0, 0);
+	private PC_VecI imgSize2 = new PC_VecI(0, 0);
+	private PC_VecI imgOffset2 = new PC_VecI(0, 0);
+	private PC_VecI imgPos2 = new PC_VecI(0, 0);
+	private boolean showImage2=false;
 	private String texture;
 
 	/**
@@ -48,6 +52,21 @@ public class PC_GresImage extends PC_GresWidget {
 
 	}
 
+	public void setImg2Size(PC_VecI size){
+		showImage2 = true;
+		imgSize2 = size.copy();
+	}
+	
+	public void setImg2Offset(PC_VecI offset){
+		showImage2 = true;
+		imgOffset2 = offset.copy();
+	}
+	
+	public void setImg2Pos(PC_VecI pos) {
+		showImage2 = true;
+		imgPos2 = pos.copy();
+	}
+	
 	@Override
 	protected PC_RectI render(PC_VecI offsetPos, PC_RectI scissorOld, double scale) {
 
@@ -57,6 +76,9 @@ public class PC_GresImage extends PC_GresWidget {
 		GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
 
 		drawTexturedModalRect(pos.x + offsetPos.x, pos.y + offsetPos.y, imgOffset.x, imgOffset.y, imgSize.x, imgSize.y);
+		if(showImage2){
+			drawTexturedModalRect(pos.x + offsetPos.x + imgPos2.x, pos.y + offsetPos.y + imgPos2.y, imgOffset2.x, imgOffset2.y, imgSize2.x, imgSize2.y);
+		}
 
 		GL11.glDisable(GL11.GL_BLEND);
 
@@ -93,4 +115,5 @@ public class PC_GresImage extends PC_GresWidget {
 
 	@Override
 	public void addedToWidget() {}
+
 }

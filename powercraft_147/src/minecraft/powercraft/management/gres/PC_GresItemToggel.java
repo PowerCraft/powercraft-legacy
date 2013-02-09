@@ -82,7 +82,7 @@ public class PC_GresItemToggel extends PC_GresInventory {
 		}
 		return super.getTooltip(mousePos);
 	}
-
+	
 	public void setItemList(int i, int j, List<PC_Struct2<ItemStack, List<String>>> l) {
 		toogleList[i][j] = l;
 		index[i][j] = 0;

@@ -32,7 +32,6 @@ public class PCma_App implements PC_IModule
     public static PC_Block harvester;
     public static PC_Block fishingMachine;
     public static PC_Block chunkLoader;
-    public static PC_Block craftinFurnace;
     
     public static List<Integer> roasterIgnoreBlockIDs;
 
@@ -76,7 +75,6 @@ public class PCma_App implements PC_IModule
         harvester = ModuleLoader.register(this, PCma_BlockHarvester.class);
         fishingMachine = ModuleLoader.register(this, PCma_BlockFishingMachine.class, PCma_TileEntityFishingMachine.class);
         chunkLoader = ModuleLoader.register(this, PCma_BlockChunkLoader.class, PCma_TileEntityChunkLoader.class);
-        craftinFurnace = ModuleLoader.register(this, PCma_BlockCraftingFurnace.class, PCma_TileEntityCraftingFurnace.class);
 	}
 	
 	@Override
@@ -195,7 +193,6 @@ public class PCma_App implements PC_IModule
 		guis.add(new PC_Struct2<String, Class>("Replacer", PCma_ContainerReplacer.class));
 		guis.add(new PC_Struct2<String, Class>("Roaster", PCma_ContainerRoaster.class));
 		guis.add(new PC_Struct2<String, Class>("Transmutabox", PCma_ContainerTransmutabox.class));
-		guis.add(new PC_Struct2<String, Class>("CraftingFurnace", PCma_ContainerCraftingFurnace.class));
 		return guis;
 	}
 }

@@ -1,7 +1,14 @@
 package powercraft.machines;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
+import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemStack;
 import powercraft.management.PC_PacketHandler;
+import powercraft.management.PC_Struct2;
 import powercraft.management.PC_TileEntity;
 import powercraft.management.PC_Utils.Lang;
 import powercraft.management.PC_Utils.ModuleInfo;
@@ -11,8 +18,10 @@ import powercraft.management.gres.PC_GresGap;
 import powercraft.management.gres.PC_GresImage;
 import powercraft.management.gres.PC_GresInventory;
 import powercraft.management.gres.PC_GresInventoryPlayer;
+import powercraft.management.gres.PC_GresItemToggel;
 import powercraft.management.gres.PC_GresLayoutH;
 import powercraft.management.gres.PC_GresWidget;
+import powercraft.management.gres.PC_GresWidgetTab;
 import powercraft.management.gres.PC_GresWindow;
 import powercraft.management.gres.PC_IGresClient;
 import powercraft.management.gres.PC_IGresGui;
@@ -28,7 +37,7 @@ public class PCma_GuiAutomaticWorkbench extends PCma_ContainerAutomaticWorkbench
 	@Override
 	public void initGui(PC_IGresGui gui) {
 		PC_GresWindow w = new PC_GresWindow(50, 50, Lang.tr("tile.PCma_BlockAutomaticWorkbench.name"));
-
+		
 		PC_GresWidget hg = new PC_GresLayoutH();
 		PC_GresInventory inv = new PC_GresInventory(3, 3);
 
