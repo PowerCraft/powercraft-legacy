@@ -124,6 +124,12 @@ public class PC_Renderer
     	renderer2d.iRenderInvBoxWithTextures(renderer, block, texture);
 	}
     
+    protected void iRenderBlockByRenderType(Object renderer, Block block, int x, int y, int z) {}
+    
+    public static void renderBlockByRenderType(Object renderer, Block block, int x, int y, int z) {
+    	renderer2d.iRenderBlockByRenderType(renderer, block, x, y, z);
+	}
+    
     protected void iSwapTerrain(String filename) {}
 
     public static void swapTerrain(String filename)

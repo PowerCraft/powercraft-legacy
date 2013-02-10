@@ -1575,7 +1575,7 @@ public class PC_Utils implements PC_IPacketHandler
 		    return 0.0f;
 		}
 
-		public static Block getBlock(World world, int x, int y, int z)
+		public static Block getBlock(IBlockAccess world, int x, int y, int z)
 		{
 		    return Block.blocksList[PC_Utils.GameInfo.getBID(world, x, y, z)];
 		}
@@ -1872,6 +1872,10 @@ public class PC_Utils implements PC_IPacketHandler
 		public static ItemStack getSmeltingResult(ItemStack item) {
 			return FurnaceRecipes.smelting().getSmeltingResult(item);
 		}
+
+		public static ItemStack getContainerItemStack(ItemStack itemStack) {
+			return itemStack.getItem().getContainerItemStack(itemStack);
+		}
 	   
    }
     
@@ -2156,10 +2160,12 @@ public class PC_Utils implements PC_IPacketHandler
     	
 		public static Object loadFromNBT(NBTTagCompound nbtTag, String key) {
 			Object value = nbtTag.tagMap.get(key);
+			System.out.println(key + ":" + value);
 			if(value instanceof NBTTagCompound){
 				NBTTagCompound nbtTag2 = nbtTag.getCompoundTag(key);
 				try {
 					Class c = Class.forName(nbtTag2.getString("type"));
+					System.out.println("Load Special: "+c);
 					if(c.isArray()){
 						int size = nbtTag2.getInteger("count");
 						Object[] a = (Object[]) Array.newInstance(c, size);
@@ -2181,6 +2187,7 @@ public class PC_Utils implements PC_IPacketHandler
 							}else if(o instanceof PC_INBT){
 								loadFromNBT(nbtTag2, "value", (PC_INBT)o);
 							}
+							return o;
 						} catch (Exception e) {
 							e.printStackTrace();
 						}

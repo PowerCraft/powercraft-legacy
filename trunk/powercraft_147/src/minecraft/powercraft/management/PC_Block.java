@@ -117,15 +117,9 @@ public abstract class PC_Block extends BlockContainer implements PC_IMSG
     }
     
     @Override
-    @SideOnly(Side.CLIENT)
     public boolean shouldSideBeRendered(IBlockAccess world, int x, int y, int z, int side)
     {
-        if (side == 1 && getRenderType() == PC_Renderer.getRendererID(true) && msg(PC_Utils.MSG_ROTATION, GameInfo.getMD(world, x, y, z))!=null)
-        {
-            return false;
-        }
-
-        return super.shouldSideBeRendered(world, x, y, z, side);
+        return true;
     }
 
     public static boolean canSilkHarvest(Block block)

@@ -6,6 +6,7 @@ import java.util.List;
 
 import powercraft.management.PC_GlobalVariables;
 import powercraft.management.PC_Item;
+import powercraft.management.PC_ItemBlock;
 import powercraft.management.PC_ItemStack;
 import powercraft.management.PC_Utils;
 import powercraft.management.PC_VecI;
@@ -132,6 +133,10 @@ public class PC_ShapelessRecipes implements IRecipe, PC_IRecipeInfo {
     	if(itemStack.getItem() instanceof PC_Item){
     		((PC_Item)itemStack.getItem()).doCrafting(itemStack, par1InventoryCrafting);
     	}
+    	if (itemStack.getItem() instanceof PC_ItemBlock) {
+			((PC_ItemBlock) itemStack.getItem()).doCrafting(itemStack,
+					par1InventoryCrafting);
+		}
         return itemStack;
     }
 
@@ -151,7 +156,5 @@ public class PC_ShapelessRecipes implements IRecipe, PC_IRecipeInfo {
 	public List<PC_ItemStack> getExpectedInputFor(int index) {
 		return recipeItems[index];
 	}
-
-   
 
 }
