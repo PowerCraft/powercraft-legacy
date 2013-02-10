@@ -419,6 +419,12 @@ public class PC_ClientRenderer extends PC_Renderer implements ISimpleBlockRender
 		((RenderBlocks)renderer).unlockBlockBounds();
 	}
 	
+	@Override
+	protected void iRenderBlockByRenderType(Object renderer, Block block, int x, int y, int z) {
+		RenderBlocks renderblocks = (RenderBlocks)renderer;
+		renderblocks.renderBlockByRenderType(block, x, y, z);
+	}
+	
 	/**
 	 * Use texture file as terrain.png
 	 * 

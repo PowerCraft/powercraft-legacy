@@ -451,12 +451,12 @@ public class PCma_TileEntityAutomaticWorkbench extends PC_TileEntity implements 
             	actContents[i].stackSize--;
             	
                 if (actContents[i].getItem().hasContainerItem()){
-                	ItemStack con = actContents[i].getItem().getContainerItemStack(actContents[i]);
+                	ItemStack con = GameInfo.getContainerItemStack(actContents[i]);
                 	if (con.isItemStackDamageable() && con.getItemDamage() > con.getMaxDamage()){
                 		con = null;
                 	}
                 	if(con != null){
-                		if(con.getItem().doesContainerItemLeaveCraftingGrid(con)){
+                		if(actContents[i].getItem().doesContainerItemLeaveCraftingGrid(actContents[i])){
                 			dispenseItem(con);
                 		}else{
                 			if (actContents[i].stackSize <= 0) {
@@ -466,7 +466,6 @@ public class PCma_TileEntityAutomaticWorkbench extends PC_TileEntity implements 
                             }
                 		}
                 	}
-                    setInventorySlotContents(i, new ItemStack(actContents[i].getItem().getContainerItem()));
                 }
 
                 if (actContents[i].stackSize <= 0) {
@@ -485,12 +484,12 @@ public class PCma_TileEntityAutomaticWorkbench extends PC_TileEntity implements 
             	actContents[i].stackSize--;
             	
                 if (actContents[i].getItem().hasContainerItem()){
-                	ItemStack con = actContents[i].getItem().getContainerItemStack(actContents[i]);
+                	ItemStack con = GameInfo.getContainerItemStack(actContents[i]);
                 	if (con.isItemStackDamageable() && con.getItemDamage() > con.getMaxDamage()){
                 		con = null;
                 	}
                 	if(con != null){
-                		if(con.getItem().doesContainerItemLeaveCraftingGrid(con)){
+                		if(actContents[i].getItem().doesContainerItemLeaveCraftingGrid(actContents[i])){
                 			dispenseItem(con);
                 		}else{
                 			if (actContents[i].stackSize <= 0) {
@@ -500,7 +499,6 @@ public class PCma_TileEntityAutomaticWorkbench extends PC_TileEntity implements 
                             }
                 		}
                 	}
-                    setInventorySlotContents(i, new ItemStack(actContents[i].getItem().getContainerItem()));
                 }
 
                 if (actContents[i].stackSize <= 0) {

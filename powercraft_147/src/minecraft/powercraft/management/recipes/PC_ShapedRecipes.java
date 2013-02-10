@@ -4,19 +4,18 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-import powercraft.management.PC_GlobalVariables;
-import powercraft.management.PC_Item;
-import powercraft.management.PC_ItemStack;
-import powercraft.management.PC_Utils;
-import powercraft.management.PC_VecI;
-import powercraft.management.PC_Utils.ValueWriting;
-
 import net.minecraft.block.Block;
 import net.minecraft.inventory.InventoryCrafting;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.world.World;
+import powercraft.management.PC_GlobalVariables;
+import powercraft.management.PC_Item;
+import powercraft.management.PC_ItemBlock;
+import powercraft.management.PC_ItemStack;
+import powercraft.management.PC_Utils.ValueWriting;
+import powercraft.management.PC_VecI;
 
 public class PC_ShapedRecipes implements IRecipe, PC_IRecipeInfo {
 
@@ -167,6 +166,10 @@ public class PC_ShapedRecipes implements IRecipe, PC_IRecipeInfo {
 		ItemStack itemStack = getRecipeOutput().copy();
 		if (itemStack.getItem() instanceof PC_Item) {
 			((PC_Item) itemStack.getItem()).doCrafting(itemStack,
+					inventoryCrafting);
+		}
+		if (itemStack.getItem() instanceof PC_ItemBlock) {
+			((PC_ItemBlock) itemStack.getItem()).doCrafting(itemStack,
 					inventoryCrafting);
 		}
 		return itemStack;
