@@ -2,6 +2,8 @@ package powercraft.hologram;
 
 import java.util.List;
 
+import org.lwjgl.opengl.GL11;
+
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.RenderBlocks;
@@ -82,7 +84,6 @@ public class PChg_AppClient extends PChg_App implements PC_IClientModule {
 			}
 		}
 		PC_Renderer.tessellatorDraw();
-		RenderHelper.enableStandardItemLighting();
 		
 		for(int yy=-16; yy<16; yy++){
 			for(int xx=-16; xx<16; xx++){
@@ -112,10 +113,13 @@ public class PChg_AppClient extends PChg_App implements PC_IClientModule {
 
         for (var6 = 0; var6 < var5.size(); ++var6)
         {
+        	GL11.glPushAttrib(-1);
             var7 = (Entity)var5.get(var6);
             RenderManager.instance.renderEntity(var7, 1);
+            GL11.glPopAttrib();
         }
-		
+        RenderHelper.enableStandardItemLighting();
+        
         RenderManager.renderPosX = rpx;
 		RenderManager.renderPosY = rpy;
 		RenderManager.renderPosZ = rpz;

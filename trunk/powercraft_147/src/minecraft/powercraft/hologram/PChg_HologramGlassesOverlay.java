@@ -70,7 +70,7 @@ public class PChg_HologramGlassesOverlay implements PC_IMSG {
 		GL11.glTranslatef(0, 0, -16);
 		GL11.glRotatef(player.rotationPitch, -1.0F, 0.0F, 0.0F);
 		GL11.glRotatef(player.rotationYaw, 0, 1, 0);
-		GL11.glTranslatef(-pos.x, -pos.y, -pos.z);
+		GL11.glTranslatef(-(float)player.posX, -(float)player.posY, -(float)player.posZ);
 		
 		PC_Renderer.resetTerrain(true);
 		PC_Renderer.tessellatorStartDrawingQuads();
@@ -114,10 +114,11 @@ public class PChg_HologramGlassesOverlay implements PC_IMSG {
 
         for (var6 = 0; var6 < var5.size(); ++var6)
         {
+        	GL11.glPushAttrib(-1);
             var7 = (Entity)var5.get(var6);
             RenderManager.instance.renderEntity(var7, 1);
+            GL11.glPopAttrib();
         }
-		
         RenderManager.renderPosX = rpx;
 		RenderManager.renderPosY = rpy;
 		RenderManager.renderPosZ = rpz;
