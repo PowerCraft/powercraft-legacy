@@ -13,6 +13,7 @@ import net.minecraft.world.storage.ISaveHandler;
 import powercraft.management.PC_ClientUtils;
 import powercraft.management.PC_GlobalVariables;
 import powercraft.management.PC_Logger;
+import powercraft.management.PC_OverlayRenderer;
 import powercraft.management.PC_Utils;
 import powercraft.management.PC_Utils.Gres;
 import powercraft.management.PC_Utils.ValueWriting;
@@ -24,6 +25,7 @@ public class PC_MainMenuHacks implements ITickHandler {
 	private static GuiMainMenu lastHacked = null;
 	private static boolean updateWindowShowed = false;
 	private static boolean usernameHacked = false;
+	private static boolean ingameGuiHacked = false;
 	private static Random rand = new Random();
 	
 	/**
@@ -71,6 +73,10 @@ public class PC_MainMenuHacks implements ITickHandler {
 				PC_ClientUtils.mc().session.username = useUserName;
 			}
 			usernameHacked = true;
+		}
+		if(!ingameGuiHacked){
+			mc.ingameGUI = new PC_OverlayRenderer(mc);
+			ingameGuiHacked = true;
 		}
 		MinecraftServer mcs = mc.getIntegratedServer();
 		if(mcs!=null){
