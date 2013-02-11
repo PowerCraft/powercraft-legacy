@@ -16,6 +16,7 @@ public class PCtr_AppClient extends PCtr_App implements PC_IClientModule {
 	public List<String> loadTextureFiles(List<String> textures)
     {
 		textures.add(ModuleInfo.getTerrainFile(this));
+		textures.add(ModuleInfo.getTextureDirectory(this)+"slimeboots.png");
 		return textures;
     }
 

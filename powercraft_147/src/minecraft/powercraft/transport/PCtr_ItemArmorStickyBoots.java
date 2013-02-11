@@ -7,6 +7,7 @@ import net.minecraft.item.ItemStack;
 import powercraft.management.PC_ItemArmor;
 import powercraft.management.PC_Struct3;
 import powercraft.management.PC_Utils;
+import powercraft.management.PC_Utils.ModuleInfo;
 
 public class PCtr_ItemArmorStickyBoots extends PC_ItemArmor
 {
@@ -41,7 +42,7 @@ public class PCtr_ItemArmorStickyBoots extends PC_ItemArmor
 	
 	@Override
 	public String getArmorTextureFile(ItemStack itemstack) {
-		return "/armor/iron_1.png";
+		return ModuleInfo.getTextureDirectory(getModule())+"slimeboots.png";
 	}
 	
 }
