@@ -5,6 +5,7 @@ import java.util.List;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.client.renderer.RenderHelper;
+import net.minecraft.client.renderer.entity.RenderItem;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 
@@ -201,7 +202,8 @@ public class PC_GresInventory extends PC_GresWidget {
 		ItemStack itemstack = slot.getStack();
 		boolean isNull = false;
 		zLevel = 100F;
-		GuiContainer.itemRenderer.zLevel = 100F;
+		RenderItem itemRenderer = PC_GresContainerGui.getItemRender();
+		itemRenderer.zLevel = 100F;
 
 		if(slot instanceof PC_Slot){
 			if(((PC_Slot) slot).useAlwaysBackground())
@@ -225,10 +227,10 @@ public class PC_GresInventory extends PC_GresWidget {
 			if (slot instanceof PC_Slot) {
 				PC_Slot dirslot = (PC_Slot) slot;
 				if (dirslot.getBackgroundStack() != null) {
-					GuiContainer.itemRenderer.zLevel = 99F;
+					itemRenderer.zLevel = 99F;
 					zLevel = 99F;
 					GL11.glColor4f(1.0F, 1.0F, 1.0F, 0.2F);
-					GuiContainer.itemRenderer.renderItemAndEffectIntoGUI(fontRenderer, mc.renderEngine, dirslot.getBackgroundStack(), x, y);
+					itemRenderer.renderItemAndEffectIntoGUI(fontRenderer, mc.renderEngine, dirslot.getBackgroundStack(), x, y);
 
 					if(dirslot.renderGrayWhenEmpty()) {
 						GL11.glDisable(GL11.GL_LIGHTING);
@@ -239,17 +241,17 @@ public class PC_GresInventory extends PC_GresWidget {
 					}
 					
 					zLevel = 100F;
-					GuiContainer.itemRenderer.zLevel = 100F;
+					itemRenderer.zLevel = 100F;
 				}
 
 			}
 			
 		} else {
-			GuiContainer.itemRenderer.renderItemAndEffectIntoGUI(fontRenderer, mc.renderEngine, itemstack, x, y);
-			GuiContainer.itemRenderer.renderItemOverlayIntoGUI(fontRenderer, mc.renderEngine, itemstack, x, y);
+			itemRenderer.renderItemAndEffectIntoGUI(fontRenderer, mc.renderEngine, itemstack, x, y);
+			itemRenderer.renderItemOverlayIntoGUI(fontRenderer, mc.renderEngine, itemstack, x, y);
 		}
 
-		GuiContainer.itemRenderer.zLevel = 0.0F;
+		itemRenderer.zLevel = 0.0F;
 		zLevel = 0.0F;
 	}
 	

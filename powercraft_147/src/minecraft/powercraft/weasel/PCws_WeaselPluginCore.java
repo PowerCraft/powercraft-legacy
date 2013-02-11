@@ -2,6 +2,8 @@ package powercraft.weasel;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
@@ -34,6 +36,7 @@ public class PCws_WeaselPluginCore extends PCws_WeaselPlugin implements PCws_IWe
 	
 	/** The Weasel Engine */
 	private CorePluginProvider defaultProvider;
+	private Lock lock = new ReentrantLock();
 	private WeaselEngine weasel;
 	private List<PC_Struct2<String, Object[]>> externalCallsWaiting = new ArrayList<PC_Struct2<String,Object[]>>();
 	private String program = default_program;
@@ -96,7 +99,9 @@ public class PCws_WeaselPluginCore extends PCws_WeaselPlugin implements PCws_IWe
 	@Override
 	protected PCws_WeaselPlugin readPluginFromNBT(NBTTagCompound tag) {
 		program = tag.getString("program");
+		lock.lock();
 		SaveHandler.loadFromNBT(tag, "engine", weasel);
+		lock.unlock();
 		sleepTimer = tag.getInteger("sleep");
 		stop = tag.getBoolean("stop");
 		return this;
@@ -120,9 +125,10 @@ public class PCws_WeaselPluginCore extends PCws_WeaselPlugin implements PCws_IWe
 	public void callFunctionOnEngine(String functionName, WeaselObject... args) {
 		if(hasError()||stop)
 			return;
-		if(sleepTimer<=0){
+		if(sleepTimer<=0 && lock.tryLock()){
 			try{
 				int state = weasel.callFunctionExternal(functionName, (Object[])args);
+				lock.unlock();
 				if(state == -1 || state == 1) return;	
 			} catch (WeaselRuntimeException wre) {
 				setError(wre.getMessage());
@@ -176,7 +182,9 @@ public class PCws_WeaselPluginCore extends PCws_WeaselPlugin implements PCws_IWe
 			program = (String)obj;
 			try {
 				List<Instruction> list = WeaselEngine.compileProgram(program);
+				lock.lock();
 				weasel.insertNewProgram(list);
+				lock.unlock();
 			} catch (SyntaxError e) {
 				e.printStackTrace();
 			}
@@ -225,7 +233,9 @@ public class PCws_WeaselPluginCore extends PCws_WeaselPlugin implements PCws_IWe
 		sleepTimer = 0;
 		stop = false;
 		setData("isRunning", true);
+		lock.lock();
 		weasel.restartProgramClearGlobals();
+		lock.unlock();
 	}
 	
 	public void sleep(WeaselEngine engine){
@@ -371,6 +381,7 @@ public class PCws_WeaselPluginCore extends PCws_WeaselPlugin implements PCws_IWe
 	
 	@Override
 	public void doJob() {
+		lock.lock();
 		weasel.setStatementsToRun(500);
 		try{
 			while(weasel.getStatementsToRun()>0 && !weasel.isProgramFinished){
@@ -390,6 +401,7 @@ public class PCws_WeaselPluginCore extends PCws_WeaselPlugin implements PCws_IWe
 			e.printStackTrace();
 			setError(e.getMessage());
 		}
+		lock.unlock();
 	}
 	
 }

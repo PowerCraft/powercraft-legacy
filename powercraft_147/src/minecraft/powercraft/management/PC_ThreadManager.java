@@ -20,7 +20,7 @@ public class PC_ThreadManager implements PC_IMSG {
 		if(hasInit)
 			return;
 		hasInit = true;
-		int numThreads = 0;//PC_GlobalVariables.config.getInt("threads.cound", 3, "Number of thread of PowerCraft");
+		int numThreads = PC_GlobalVariables.config.getInt("threads.cound", 3, "Number of thread of PowerCraft");
 		ModuleInfo.registerMSGObject(new PC_ThreadManager());
 		threads = new PC_WorkerThread[numThreads];
 		for(int i=0; i<numThreads; i++){
