@@ -136,7 +136,9 @@ public class PC_ShapedRecipeHandler extends TemplateRecipeHandler {
 				CachedShapedRecipe recipe = null;
 				if(irecipe instanceof PC_ShapedRecipes)
 				{
-					recipe = new CachedShapedRecipe((PC_ShapedRecipes)irecipe);
+					if(irecipe.getRecipeOutput()!=null){
+						recipe = new CachedShapedRecipe((PC_ShapedRecipes)irecipe);
+					}
 				}
 
 				if(recipe == null)
@@ -163,7 +165,9 @@ public class PC_ShapedRecipeHandler extends TemplateRecipeHandler {
 				CachedShapedRecipe recipe = null;
 				if(irecipe instanceof PC_ShapedRecipes)
 				{
-					recipe = new CachedShapedRecipe((PC_ShapedRecipes)irecipe);
+					if(irecipe.getRecipeOutput()!=null){
+						recipe = new CachedShapedRecipe((PC_ShapedRecipes)irecipe);
+					}
 				}
 				
 				if(recipe == null)
@@ -184,7 +188,9 @@ public class PC_ShapedRecipeHandler extends TemplateRecipeHandler {
 			CachedShapedRecipe recipe = null;
 			if(irecipe instanceof PC_ShapedRecipes)
 			{
-				recipe = new CachedShapedRecipe((PC_ShapedRecipes)irecipe);
+				if(irecipe.getRecipeOutput()!=null){
+					recipe = new CachedShapedRecipe((PC_ShapedRecipes)irecipe);
+				}
 			}
 
 			if(recipe == null)

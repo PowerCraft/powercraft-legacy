@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import net.minecraft.block.Block;
+import net.minecraft.item.Item;
 import net.minecraft.world.World;
 import powercraft.management.PC_Block;
 import powercraft.management.PC_IDataHandler;
@@ -15,6 +16,7 @@ import powercraft.management.PC_ItemStack;
 import powercraft.management.PC_Property;
 import powercraft.management.PC_Struct2;
 import powercraft.management.PC_Utils.ModuleLoader;
+import powercraft.management.recipes.PC_ShapedRecipes;
 import powercraft.management.recipes.PC_ShapelessRecipes;
 
 public class PChg_App implements PC_IModule {
@@ -74,6 +76,20 @@ public class PChg_App implements PC_IModule {
 	public List<Object> initRecipes(List<Object> recipes) {
 		recipes.add(new PC_ShapelessRecipes(new PC_ItemStack(hologramBlock), new PC_ItemStack(hologramBlockEmpty), getAllAccepptedBlocksForHologramBlock()));
 		recipes.add(new PChg_HologramBackRecipe());
+		recipes.add(new PC_ShapedRecipes(new PC_ItemStack(hologramBlockEmpty), 
+				"ggg",
+				"gcg",
+				"ggg",
+				'g', Block.glass, 'c', Block.chest));
+		recipes.add(new PC_ShapedRecipes(new PC_ItemStack(hologramField), 
+				"ggg",
+				"hhh",
+				"iii",
+				'i', Item.ingotIron, 'g', Block.glass, 'h', new PC_ItemStack(hologramBlockEmpty)));
+		recipes.add(new PC_ShapedRecipes(new PC_ItemStack(hologramGlasses), 
+				"i i",
+				"ghg",
+				'i', Item.ingotIron, 'g', Block.thinGlass, 'h', new PC_ItemStack(hologramField)));
 		return recipes;
 	}
 
@@ -102,8 +118,8 @@ public class PChg_App implements PC_IModule {
 
 	public List<PC_ItemStack> getAllAccepptedBlocksForHologramBlock(){
 		List<PC_ItemStack>l = new ArrayList<PC_ItemStack>();
-		for(int i=0; i<Block.blocksList.length; i++){
-			if(Block.blocksList[i]!=null){
+		for(int i=1; i<Block.blocksList.length; i++){
+			if(Block.blocksList[i]!=null && Item.itemsList[i]!=null){
 				if(Block.blocksList[i].renderAsNormalBlock()){
 					l.add(new PC_ItemStack(Block.blocksList[i], 1, -1));
 				}

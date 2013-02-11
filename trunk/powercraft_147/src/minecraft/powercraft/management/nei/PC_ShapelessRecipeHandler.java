@@ -59,7 +59,10 @@ public class PC_ShapelessRecipeHandler extends TemplateRecipeHandler {
 						}else if(l.size()>1){
 							List<ItemStack>l2 = new ArrayList<ItemStack>();
 							for(PC_ItemStack is:l){
-								l2.add(is.toItemStack());
+								ItemStack itemStack = is.toItemStack();
+								if(itemStack.getItem()!=null){
+									l2.add(itemStack);
+								}
 							}
 							items.add(l2);
 						}
@@ -109,7 +112,7 @@ public class PC_ShapelessRecipeHandler extends TemplateRecipeHandler {
 	        
 	        public void setResult(ItemStack output)
 	        {
-	            result = new PositionedStack(output, 119, 24);
+	        	result = new PositionedStack(output, 119, 24);
 	        }	
 			
 			@Override
@@ -157,7 +160,9 @@ public class PC_ShapelessRecipeHandler extends TemplateRecipeHandler {
 					CachedShapelessRecipe recipe = null;
 					if(irecipe instanceof PC_ShapelessRecipes)
 					{
-						recipe = new CachedShapelessRecipe((PC_ShapelessRecipes)irecipe);
+						if(irecipe.getRecipeOutput()!=null){
+							recipe = new CachedShapelessRecipe((PC_ShapelessRecipes)irecipe);
+						}
 					}
 
 					if(recipe == null)
@@ -184,7 +189,9 @@ public class PC_ShapelessRecipeHandler extends TemplateRecipeHandler {
 					CachedShapelessRecipe recipe = null;
 					if(irecipe instanceof PC_ShapelessRecipes)
 					{
-						recipe = new CachedShapelessRecipe((PC_ShapelessRecipes)irecipe);
+						if(irecipe.getRecipeOutput()!=null){
+							recipe = new CachedShapelessRecipe((PC_ShapelessRecipes)irecipe);
+						}
 					}
 					
 					if(recipe == null)
@@ -205,7 +212,9 @@ public class PC_ShapelessRecipeHandler extends TemplateRecipeHandler {
 				CachedShapelessRecipe recipe = null;
 				if(irecipe instanceof PC_ShapelessRecipes)
 				{
-					recipe = new CachedShapelessRecipe((PC_ShapelessRecipes)irecipe);
+					if(irecipe.getRecipeOutput()!=null){
+						recipe = new CachedShapelessRecipe((PC_ShapelessRecipes)irecipe);
+					}
 				}
 
 				if(recipe == null)
