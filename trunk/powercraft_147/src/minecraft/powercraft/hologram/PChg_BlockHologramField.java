@@ -5,6 +5,7 @@ import java.util.Random;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
+import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
@@ -24,6 +25,10 @@ public class PChg_BlockHologramField extends PC_Block {
 
 	public PChg_BlockHologramField(int id) {
 		super(id, 0, Material.ground);
+		setHardness(0.5F);
+        setResistance(0.5F);
+        setStepSound(Block.soundGlassFootstep);
+        setCreativeTab(CreativeTabs.tabDecorations);
 	}
 	
 	@Override
@@ -167,6 +172,8 @@ public class PChg_BlockHologramField extends PC_Block {
 	@Override
 	public Object msg(IBlockAccess world, PC_VecI pos, int msg, Object... obj) {
 		switch(msg){
+		case PC_Utils.MSG_DEFAULT_NAME:
+			return "Hologram Field";
 		case PC_Utils.MSG_BLOCK_FLAGS:{
 			List<String> list = (List<String>)obj[0];
 			list.add(PC_Utils.NO_HARVEST);

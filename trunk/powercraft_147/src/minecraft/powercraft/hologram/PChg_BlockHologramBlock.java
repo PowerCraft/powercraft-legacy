@@ -149,6 +149,8 @@ public class PChg_BlockHologramBlock extends PC_Block {
 		case PC_Utils.MSG_RENDER_WORLD_BLOCK:
 			renderWorldBlock(world, pos.x, pos.y, pos.z, (Block)obj[0], (Integer)obj[1], obj[2]);
 			break;
+		case PC_Utils.MSG_DONT_SHOW_IN_CRAFTING_TOOL:
+			return true;
 		default:
 			return null;
 		}

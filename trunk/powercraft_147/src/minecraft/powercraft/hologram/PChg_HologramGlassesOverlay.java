@@ -42,7 +42,7 @@ public class PChg_HologramGlassesOverlay implements PC_IMSG {
 	private void onRenderOverlay(GuiIngame gi) {
 		EntityPlayer player = PC_ClientUtils.mc().thePlayer;
 		ItemStack helmet = player.inventory.armorItemInSlot(3);
-		if(helmet!=null && helmet.itemID == Item.helmetSteel.itemID){
+		if(helmet!=null && helmet.itemID == PChg_App.hologramGlasses.itemID){
 			drawArea(PC_ClientUtils.mc(), player);
 		}
 	}

@@ -41,6 +41,7 @@ public class PChg_AppClient extends PChg_App implements PC_IClientModule {
 	@Override
 	public List<String> loadTextureFiles(List<String> textures) {
 		textures.add(ModuleInfo.getTerrainFile(this));
+		textures.add(ModuleInfo.getTextureDirectory(this)+"glasses.png");
 		return textures;
 	}
 

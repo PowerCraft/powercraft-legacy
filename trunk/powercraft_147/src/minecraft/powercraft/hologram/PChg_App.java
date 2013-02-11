@@ -10,6 +10,7 @@ import powercraft.management.PC_IDataHandler;
 import powercraft.management.PC_IMSG;
 import powercraft.management.PC_IModule;
 import powercraft.management.PC_IPacketHandler;
+import powercraft.management.PC_ItemArmor;
 import powercraft.management.PC_ItemStack;
 import powercraft.management.PC_Property;
 import powercraft.management.PC_Struct2;
@@ -21,6 +22,7 @@ public class PChg_App implements PC_IModule {
 	public static PC_Block hologramBlockEmpty;
 	public static PC_Block hologramBlock;
 	public static PC_Block hologramField;
+	public static PC_ItemArmor hologramGlasses;
 	private static PChg_App instance;
 	
 	public static PChg_App getInstance(){
@@ -62,7 +64,7 @@ public class PChg_App implements PC_IModule {
 
 	@Override
 	public void initItems() {
-		
+		hologramGlasses = ModuleLoader.register(this, PChg_ItemArmorHologramGlasses.class);
 	}
 
 	@Override

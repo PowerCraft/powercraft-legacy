@@ -4,6 +4,7 @@ import java.util.List;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
+import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
@@ -16,6 +17,10 @@ public class PChg_BlockHologramBlockEmpty extends PC_Block {
 
 	public PChg_BlockHologramBlockEmpty(int id) {
 		super(id, 0, Material.ground);
+		setHardness(0.5F);
+        setResistance(0.5F);
+        setStepSound(Block.soundGlassFootstep);
+        setCreativeTab(CreativeTabs.tabDecorations);
 	}
 
 	@Override

@@ -38,4 +38,10 @@ public class PCtr_ItemArmorStickyBoots extends PC_ItemArmor
 		}
 		return null;
 	}
+	
+	@Override
+	public String getArmorTextureFile(ItemStack itemstack) {
+		return "/armor/iron_1.png";
+	}
+	
 }

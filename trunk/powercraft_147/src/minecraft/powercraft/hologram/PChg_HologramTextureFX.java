@@ -2,12 +2,12 @@ package powercraft.hologram;
 
 import java.util.Random;
 
+import net.minecraft.client.renderer.RenderEngine;
+import net.minecraft.client.renderer.texturefx.TextureFX;
+
 import org.lwjgl.opengl.GL11;
 
 import powercraft.management.PC_Utils.ModuleInfo;
-
-import net.minecraft.client.renderer.RenderEngine;
-import net.minecraft.client.renderer.texturefx.TextureFX;
 
 public class PChg_HologramTextureFX extends TextureFX {
 
