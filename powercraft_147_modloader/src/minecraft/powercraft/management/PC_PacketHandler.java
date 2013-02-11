@@ -91,7 +91,7 @@ public class PC_PacketHandler
         int x = input.readInt();
         int y = input.readInt();
         int z = input.readInt();
-        Object[] o = (Object[])input.readObject();
+        PC_Struct2<String, Object>[] o = (PC_Struct2<String, Object>[])input.readObject();
         TileEntity te = player.worldObj.getBlockTileEntity(x, y, z);
 
         if (te == null)
@@ -137,12 +137,12 @@ public class PC_PacketHandler
     protected void handleIncomingIDPacket(ObjectInputStream input, EntityPlayer player) throws ClassNotFoundException, IOException{
 	}
     
-    public static void setTileEntity(TileEntity tileEntity, Object... o)
+    public static void setTileEntity(TileEntity tileEntity, PC_Struct2<String, Object>... o)
     {
         setTileEntityArray(tileEntity, o);
     }
 
-    public static void setTileEntityArray(TileEntity tileEntity, Object[] o)
+    public static void setTileEntityArray(TileEntity tileEntity, PC_Struct2<String, Object>[] o)
     {
         ByteArrayOutputStream data = new ByteArrayOutputStream();
         ObjectOutputStream sendData;

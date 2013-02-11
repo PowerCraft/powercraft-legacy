@@ -8,6 +8,9 @@ import java.util.Random;
 import powercraft.management.PC_Utils.GameInfo;
 import powercraft.management.PC_Utils.ModuleInfo;
 import powercraft.management.PC_Utils.ValueWriting;
+import powercraft.management.inventory.PC_IInventoryWrapper;
+import powercraft.management.recipes.PC_ISpecialAccessInventory;
+import powercraft.management.recipes.PC_IStateReportingInventory;
 
 import net.minecraft.src.Block;
 import net.minecraft.src.EntityPlayerSP;

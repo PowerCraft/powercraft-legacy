@@ -53,4 +53,9 @@ public abstract class PC_ItemArmor extends ItemArmor implements PC_IItemInfo, PC
         arrayList.add(new ItemStack(this));
         return arrayList;
     }
+    
+    public String getArmorTextureFile(ItemStack itemstack) {
+		return null;
+	}
+    
 }

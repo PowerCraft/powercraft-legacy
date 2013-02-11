@@ -10,6 +10,7 @@ import java.io.InputStream;
 import java.io.ObjectOutputStream;
 import java.io.OutputStream;
 import java.lang.annotation.Annotation;
+import java.lang.reflect.Array;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
@@ -41,7 +42,14 @@ import net.minecraft.src.Item;
 import net.minecraft.src.ItemBlock;
 import net.minecraft.src.ItemStack;
 import net.minecraft.src.ModLoader;
+import net.minecraft.src.NBTTagByte;
 import net.minecraft.src.NBTTagCompound;
+import net.minecraft.src.NBTTagDouble;
+import net.minecraft.src.NBTTagFloat;
+import net.minecraft.src.NBTTagInt;
+import net.minecraft.src.NBTTagLong;
+import net.minecraft.src.NBTTagShort;
+import net.minecraft.src.NBTTagString;
 import net.minecraft.src.ShapedRecipes;
 import net.minecraft.src.ShapelessRecipes;
 import net.minecraft.src.StringTranslate;
@@ -51,6 +59,9 @@ import net.minecraft.src.TileEntityMobSpawner;
 import net.minecraft.src.World;
 import net.minecraft.src.WorldInfo;
 import net.minecraft.src.mod_PowerCraft;
+import powercraft.management.gres.PC_GresBaseWithInventory;
+import powercraft.management.inventory.PC_IInventoryWrapper;
+import powercraft.management.recipes.PC_IRecipeInfo;
 
 public class PC_Utils implements PC_IPacketHandler
 {
@@ -78,7 +89,7 @@ public class PC_Utils implements PC_IPacketHandler
     		MSG_SPAWNS_IN_CHUNK=6, MSG_BLOCKS_ON_SPAWN_POINT=7, MSG_SPAWN_POINT=8, MSG_SPAWN_POINT_METADATA=9, MSG_LOAD_FROM_CONFIG=10,
     		MSG_ON_HIT_BY_BEAM_TRACER=11, MSG_BURN_TIME=12, MSG_RECIVE_POWER=13, MSG_CAN_RECIVE_POWER=14, MSG_ON_ACTIVATOR_USED_ON_BLOCK = 15,
     		MSG_DONT_SHOW_IN_CRAFTING_TOOL=16, MSG_STR_MSG=17, MSG_RENDER_ITEM_HORIZONTAL=18, MSG_ROTATION=19, MSG_RATING=20, MSG_CONDUCTIVITY = 21,
-    	    MSG_TICK_EVENT = 22, MSG_LOAD_WORLD=23;
+    		MSG_TICK_EVENT = 22, MSG_LOAD_WORLD=23, MSG_GET_PROVIDET_GLOBAL_FUNCTIONS=24, MSG_RENDER_OVERLAY=25;
     
     protected PC_Utils(){
         PC_PacketHandler.registerPackethandler("PacketUtils", this);
@@ -1064,9 +1075,9 @@ public class PC_Utils implements PC_IPacketHandler
 		    }
 		}
 
-		public static void openGres(String name, EntityPlayer player, Object...o)
+		public static void openGres(String name, EntityPlayer player, PC_TileEntity te, Object...o)
 		{
-		    PC_Utils.instance.iOpenGres(name, player, o);
+		    PC_Utils.instance.iOpenGres(name, player, te, o);
 		}
     	
     }
@@ -2000,6 +2011,114 @@ public class PC_Utils implements PC_IPacketHandler
 			}
 		}
 		
+		public static void saveToNBT(NBTTagCompound nbtTag, String key, Object value) {
+			if(value == null){
+				return;
+			}else if(value.getClass().isArray()){
+				Object[] a = (Object[])value;
+				NBTTagCompound nbtTag2 = new NBTTagCompound();
+				int size = a.length;
+				nbtTag2.setInteger("count", size);
+				nbtTag2.setString("type", a.getClass().getName());
+				for(int i=0; i<size; i++){
+					saveToNBT(nbtTag2, "value["+i+"]", a[i]);
+				}
+				nbtTag.setCompoundTag(key, nbtTag2);
+			}else if(value instanceof List){
+				List l = (List)value;
+				NBTTagCompound nbtTag2 = new NBTTagCompound();
+				int size = l.size();
+				nbtTag2.setInteger("count", size);
+				nbtTag2.setString("type", l.getClass().getName());
+				for(int i=0; i<size; i++){
+					saveToNBT(nbtTag2, "value["+i+"]", l.get(i));
+				}
+				nbtTag.setCompoundTag(key, nbtTag2);
+			}else if(value instanceof Byte){
+				nbtTag.setByte(key, (Byte)value);
+			}else if(value instanceof Short){
+				nbtTag.setShort(key, (Short)value);
+			}else if(value instanceof Integer){
+				nbtTag.setInteger(key, (Integer)value);
+			}else if(value instanceof Long){
+				nbtTag.setLong(key, (Long)value);
+			}else if(value instanceof Float){
+				nbtTag.setFloat(key, (Float)value);
+			}else if(value instanceof Double){
+				nbtTag.setDouble(key, (Double)value);
+			}else if(value instanceof Boolean){
+				NBTTagCompound nbtTag2 = new NBTTagCompound();
+				nbtTag2.setString("type", Boolean.class.getName());
+				nbtTag2.setBoolean("value", (Boolean)value);
+				nbtTag.setCompoundTag(key, nbtTag2);
+			}else if(value instanceof String){
+				nbtTag.setString(key, (String)value);
+			}else if(value instanceof PC_INBT){
+				NBTTagCompound nbtTag2 = new NBTTagCompound();
+				nbtTag2.setString("type", value.getClass().getName());
+				SaveHandler.saveToNBT(nbtTag2, "value", (PC_INBT)value);
+				nbtTag.setCompoundTag(key, nbtTag2);
+			}else if(value instanceof ItemStack){
+				NBTTagCompound nbtTag2 = new NBTTagCompound();
+				nbtTag2.setString("type", ItemStack.class.getName());
+				((ItemStack) value).writeToNBT(nbtTag2);
+				nbtTag.setCompoundTag(key, nbtTag2);
+			}
+		}
+    	
+		public static Object loadFromNBT(NBTTagCompound nbtTag, String key) {
+			Object value = ValueWriting.getPrivateValue(NBTTagCompound.class, nbtTag, 0);
+			if(value instanceof NBTTagCompound){
+				NBTTagCompound nbtTag2 = nbtTag.getCompoundTag(key);
+				try {
+					Class c = Class.forName(nbtTag2.getString("type"));
+					if(c.isArray()){
+						int size = nbtTag2.getInteger("count");
+						Object[] a = (Object[]) Array.newInstance(c, size);
+						for(int i=0; i<size; i++){
+							a[i] = loadFromNBT(nbtTag2, "value["+i+"]");
+						}
+					}else if(c == ItemStack.class){
+						return ItemStack.loadItemStackFromNBT(nbtTag2);
+					}else if(c == Boolean.class){
+						return nbtTag2.getBoolean("value");
+					}else{
+						try {
+							Object o = c.newInstance();
+							if(o instanceof List){
+								int size = nbtTag2.getInteger("count");
+								for(int i=0; i<size; i++){
+									((List)o).add(loadFromNBT(nbtTag2, "value["+i+"]"));
+								}
+							}else if(o instanceof PC_INBT){
+								loadFromNBT(nbtTag2, "value", (PC_INBT)o);
+							}
+							return o;
+						} catch (Exception e) {
+							e.printStackTrace();
+						}
+					}
+				} catch (ClassNotFoundException e) {
+					e.printStackTrace();
+				}
+			}else if(value instanceof NBTTagByte){
+				return ((NBTTagByte)value).data;
+			}else if(value instanceof NBTTagShort){
+				return ((NBTTagShort)value).data;
+			}else if(value instanceof NBTTagInt){
+				return ((NBTTagInt)value).data;
+			}else if(value instanceof NBTTagLong){
+				return ((NBTTagLong)value).data;
+			}else if(value instanceof NBTTagFloat){
+				return ((NBTTagFloat)value).data;
+			}else if(value instanceof NBTTagDouble){
+				return ((NBTTagDouble)value).data;
+			}else if(value instanceof NBTTagString){
+				return ((NBTTagString)value).data;
+			}
+			return null;
+		}
+		
     }
     
     public static class Communication{
@@ -2147,7 +2266,7 @@ public class PC_Utils implements PC_IPacketHandler
         
     protected void iPlaySound(double x, double y, double z, String sound, float soundVolume, float pitch) {}
 
-    protected void iOpenGres(String name, EntityPlayer player, Object[]o)
+    protected void iOpenGres(String name, EntityPlayer player, PC_TileEntity te, Object[]o)
     {
         if (!(player instanceof EntityPlayerMP))
         {
@@ -2178,6 +2297,11 @@ public class PC_Utils implements PC_IPacketHandler
             sendData.writeInt(PC_PacketHandler.PACKETGUI);
             sendData.writeObject(name);
             sendData.writeInt(guiID);
+            if(te==null){
+            	sendData.writeObject(null);
+            }else{
+            	sendData.writeObject(te.getCoord());
+            }
             sendData.writeObject(o);
             sendData.writeInt(PC_PacketHandler.PACKETGUI);
         }
@@ -2196,7 +2320,7 @@ public class PC_Utils implements PC_IPacketHandler
             {
                 try
                 {
-                    PC_GresBaseWithInventory bwi = ValueWriting.createClass((Class<PC_GresBaseWithInventory>)c, new Class[] {EntityPlayer.class, Object[].class}, new Object[] {player, o});
+                    PC_GresBaseWithInventory bwi = ValueWriting.createClass((Class<PC_GresBaseWithInventory>)c, new Class[] {EntityPlayer.class, PC_TileEntity.class, Object[].class}, new Object[] {player, te, o});
                     player.openContainer = bwi;
                     player.openContainer.windowId = guiID;
                     player.openContainer.addCraftingToCrafters((EntityPlayerMP)player);

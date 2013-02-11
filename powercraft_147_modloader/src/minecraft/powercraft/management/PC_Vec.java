@@ -6,36 +6,36 @@ public interface PC_Vec<t extends Number, ret extends PC_Vec> extends PC_INBT {
 	public t getY();
 	public t getZ();
 	
-	public ret setX(t x);
-	public ret setY(t y);
-	public ret setZ(t z);
+	public ret setX(Number x);
+	public ret setY(Number y);
+	public ret setZ(Number z);
 	
 	public ret setTo(PC_Vec vec);
-	public ret setTo(t x, t y, t z);
+	public ret setTo(Number x, Number y, Number z);
 	
 	public ret add(PC_Vec vec);
-	public ret add(t n);
-	public ret add(t x, t y, t z);
+	public ret add(Number n);
+	public ret add(Number x, Number y, Number z);
 	
 	public ret offset(PC_Vec vec);
-	public ret offset(t n);
-	public ret offset(t x, t y, t z);
+	public ret offset(Number n);
+	public ret offset(Number x, Number y, Number z);
 	
 	public ret sub(PC_Vec vec);
-	public ret sub(t n);
-	public ret sub(t x, t y, t z);
+	public ret sub(Number n);
+	public ret sub(Number x, Number y, Number z);
 	
 	public ret mul(PC_Vec vec);
-	public ret mul(t n);
-	public ret mul(t x, t y, t z);
+	public ret mul(Number n);
+	public ret mul(Number x, Number y, Number z);
 
 	public ret div(PC_Vec vec);
-	public ret div(t n);
-	public ret div(t x, t y, t z);
+	public ret div(Number n);
+	public ret div(Number x, Number y, Number z);
 	
 	public double length();
 	public double distanceTo(PC_Vec vec);
-	public double distanceTo(t x, t y, t z);
+	public double distanceTo(Number x, Number y, Number z);
 	
 	public ret normalize();
 	
