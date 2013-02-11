@@ -50,20 +50,20 @@ public class PC_VecF implements Serializable, PC_Vec<Float, PC_VecF> {
 	}
 
 	@Override
-	public PC_VecF setX(Float x) {
-		this.x = x;
+	public PC_VecF setX(Number x) {
+		this.x = x.floatValue();
 		return this;
 	}
 
 	@Override
-	public PC_VecF setY(Float y) {
-		this.y = y;
+	public PC_VecF setY(Number y) {
+		this.y = y.floatValue();
 		return this;
 	}
 
 	@Override
-	public PC_VecF setZ(Float z) {
-		this.z = z;
+	public PC_VecF setZ(Number z) {
+		this.z = z.floatValue();
 		return this;
 	}
 
@@ -76,28 +76,28 @@ public class PC_VecF implements Serializable, PC_Vec<Float, PC_VecF> {
 	}
 
 	@Override
-	public PC_VecF setTo(Float x, Float y, Float z) {
-		this.x = x;
-		this.y = y;
-		this.z = z;
+	public PC_VecF setTo(Number x, Number y, Number z) {
+		this.x = x.floatValue();
+		this.y = y.floatValue();
+		this.z = z.floatValue();
 		return this;
 	}
 
 	@Override
 	public PC_VecF add(PC_Vec vec) {
-		return add(vec.getX().floatValue(), vec.getY().floatValue(), vec.getZ().floatValue());
+		return add(vec.getX(), vec.getY(), vec.getZ());
 	}
 
 	@Override
-	public PC_VecF add(Float n) {
+	public PC_VecF add(Number n) {
 		return add(n, n, n);
 	}
 
 	@Override
-	public PC_VecF add(Float x, Float y, Float z) {
-		this.x += x;
-		this.y += y;
-		this.z += z;
+	public PC_VecF add(Number x, Number y, Number z) {
+		this.x += x.doubleValue();
+		this.y += y.doubleValue();
+		this.z += z.doubleValue();
 		return this;
 	}
 
@@ -107,66 +107,66 @@ public class PC_VecF implements Serializable, PC_Vec<Float, PC_VecF> {
 	}
 	
 	@Override
-	public PC_VecF offset(Float n) {
+	public PC_VecF offset(Number n) {
 		return copy().add(n);
 	}
 	
 	@Override
-	public PC_VecF offset(Float x, Float y, Float z) {
+	public PC_VecF offset(Number x, Number y, Number z) {
 		return copy().add(x, y, z);
 	}
 	
 	@Override
 	public PC_VecF sub(PC_Vec vec) {
-		return sub(vec.getX().floatValue(), vec.getY().floatValue(), vec.getZ().floatValue());
+		return sub(vec.getX(), vec.getY(), vec.getZ());
 	}
 
 	@Override
-	public PC_VecF sub(Float n) {
+	public PC_VecF sub(Number n) {
 		return sub(n, n, n);
 	}
 
 	@Override
-	public PC_VecF sub(Float x, Float y, Float z) {
-		this.x -= x;
-		this.y -= y;
-		this.z -= z;
+	public PC_VecF sub(Number x, Number y, Number z) {
+		this.x -= x.doubleValue();
+		this.y -= y.doubleValue();
+		this.z -= z.doubleValue();
 		return this;
 	}
 
 	@Override
 	public PC_VecF mul(PC_Vec vec) {
-		return mul(vec.getX().floatValue(), vec.getY().floatValue(), vec.getZ().floatValue());
+		return mul(vec.getX(), vec.getY(), vec.getZ());
 	}
 
 	@Override
-	public PC_VecF mul(Float n) {
+	public PC_VecF mul(Number n) {
 		return mul(n, n, n);
 	}
 
 	@Override
-	public PC_VecF mul(Float x, Float y, Float z) {
-		this.x *= x;
-		this.y *= y;
-		this.z *= z;
+	public PC_VecF mul(Number x, Number y, Number z) {
+		this.x *= x.doubleValue();
+		this.y *= y.doubleValue();
+		this.z *= z.doubleValue();
 		return this;
 	}
 
 	@Override
 	public PC_VecF div(PC_Vec vec) {
-		return div(vec.getX().floatValue(), vec.getY().floatValue(), vec.getZ().floatValue());
+		return div(vec.getX(), vec.getY(), vec.getZ());
 	}
 
 	@Override
-	public PC_VecF div(Float n) {
+	public PC_VecF div(Number n) {
 		return div(n, n, n);
 	}
 
 	@Override
-	public PC_VecF div(Float x, Float y, Float z) {
-		this.x /= x;
-		this.y /= y;
-		this.z /= z;
+	public PC_VecF div(Number x, Number y, Number z) {
+		this.x /= x.doubleValue();
+		this.y /= y.doubleValue();
+		this.z /= z.doubleValue();
 		return this;
 	}
 
@@ -181,7 +181,7 @@ public class PC_VecF implements Serializable, PC_Vec<Float, PC_VecF> {
 	}
 	
 	@Override
-	public double distanceTo(Float x, Float y, Float z){
+	public double distanceTo(Number x, Number y, Number z){
 		return copy().sub(x, y, z).length();
 	}
 	

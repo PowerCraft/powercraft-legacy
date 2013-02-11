@@ -7,6 +7,7 @@ import net.minecraft.src.Block;
 import net.minecraft.src.BlockContainer;
 import net.minecraft.src.CreativeTabs;
 import net.minecraft.src.EntityPlayer;
+import net.minecraft.src.InventoryCrafting;
 import net.minecraft.src.ItemBlock;
 import net.minecraft.src.ItemStack;
 import net.minecraft.src.World;
@@ -150,5 +151,8 @@ public abstract class PC_ItemBlock extends ItemBlock implements PC_IItemInfo, PC
 
         return true;
     }
+
+	public void doCrafting(ItemStack itemStack, InventoryCrafting inventoryCrafting) {
+	}
     
 }

@@ -2,10 +2,7 @@ package powercraft.management;
 
 import java.io.Serializable;
 
-import net.minecraft.src.IBlockAccess;
 import net.minecraft.src.NBTTagCompound;
-import net.minecraft.src.TileEntity;
-import net.minecraft.src.World;
 
 public class PC_VecI implements Serializable, PC_Vec<Integer, PC_VecI>{
 
@@ -53,51 +50,51 @@ public class PC_VecI implements Serializable, PC_Vec<Integer, PC_VecI>{
 	}
 
 	@Override
-	public PC_VecI setX(Integer x) {
-		this.x = x;
+	public PC_VecI setX(Number x) {
+		this.x = x.intValue();
 		return this;
 	}
 
 	@Override
-	public PC_VecI setY(Integer y) {
-		this.y = y;
+	public PC_VecI setY(Number y) {
+		this.y = y.intValue();
 		return this;
 	}
 
 	@Override
-	public PC_VecI setZ(Integer z) {
-		this.z = z;
+	public PC_VecI setZ(Number z) {
+		this.z = z.intValue();
 		return this;
 	}
 
 	@Override
 	public PC_VecI setTo(PC_Vec vec) {
-		return setTo(vec.getX().intValue(), vec.getY().intValue(), vec.getZ().intValue());
+		return setTo(vec.getX(), vec.getY(), vec.getZ());
 	}
 
 	@Override
-	public PC_VecI setTo(Integer x, Integer y, Integer z) {
-		this.x = x;
-		this.y = y;
-		this.z = z;
+	public PC_VecI setTo(Number x, Number y, Number z) {
+		this.x = x.intValue();
+		this.y = y.intValue();
+		this.z = z.intValue();
 		return this;
 	}
 
 	@Override
 	public PC_VecI add(PC_Vec vec) {
-		return add(vec.getX().intValue(), vec.getY().intValue(), vec.getZ().intValue());
+		return add(vec.getX(), vec.getY(), vec.getZ());
 	}
 
 	@Override
-	public PC_VecI add(Integer n) {
+	public PC_VecI add(Number n) {
 		return add(n, n, n);
 	}
 
 	@Override
-	public PC_VecI add(Integer x, Integer y, Integer z) {
-		this.x += x;
-		this.y += y;
-		this.z += z;
+	public PC_VecI add(Number x, Number y, Number z) {
+		this.x += x.doubleValue();
+		this.y += y.doubleValue();
+		this.z += z.doubleValue();
 		return this;
 	}
 
@@ -107,66 +104,66 @@ public class PC_VecI implements Serializable, PC_Vec<Integer, PC_VecI>{
 	}
 	
 	@Override
-	public PC_VecI offset(Integer n) {
+	public PC_VecI offset(Number n) {
 		return copy().add(n);
 	}
 	
 	@Override
-	public PC_VecI offset(Integer x, Integer y, Integer z) {
+	public PC_VecI offset(Number x, Number y, Number z) {
 		return copy().add(x, y, z);
 	}
 	
 	@Override
 	public PC_VecI sub(PC_Vec vec) {
-		return sub(vec.getX().intValue(), vec.getY().intValue(), vec.getZ().intValue());
+		return sub(vec.getX(), vec.getY(), vec.getZ());
 	}
 
 	@Override
-	public PC_VecI sub(Integer n) {
+	public PC_VecI sub(Number n) {
 		return sub(n, n, n);
 	}
 
 	@Override
-	public PC_VecI sub(Integer x, Integer y, Integer z) {
-		this.x -= x;
-		this.y -= y;
-		this.z -= z;
+	public PC_VecI sub(Number x, Number y, Number z) {
+		this.x -= x.doubleValue();
+		this.y -= y.doubleValue();
+		this.z -= z.doubleValue();
 		return this;
 	}
 
 	@Override
 	public PC_VecI mul(PC_Vec vec) {
-		return mul(vec.getX().intValue(), vec.getY().intValue(), vec.getZ().intValue());
+		return mul(vec.getX(), vec.getY(), vec.getZ());
 	}
 
 	@Override
-	public PC_VecI mul(Integer n) {
+	public PC_VecI mul(Number n) {
 		return mul(n, n, n);
 	}
 
 	@Override
-	public PC_VecI mul(Integer x, Integer y, Integer z) {
-		this.x *= x;
-		this.y *= y;
-		this.z *= z;
+	public PC_VecI mul(Number x, Number y, Number z) {
+		this.x = (int)(this.x * x.doubleValue());
+		this.y = (int)(this.y * y.doubleValue());
+		this.z = (int)(this.z * z.doubleValue());
 		return this;
 	}
 
 	@Override
 	public PC_VecI div(PC_Vec vec) {
-		return div(vec.getX().intValue(), vec.getY().intValue(), vec.getZ().intValue());
+		return div(vec.getX(), vec.getY(), vec.getZ());
 	}
 
 	@Override
-	public PC_VecI div(Integer n) {
+	public PC_VecI div(Number n) {
 		return div(n, n, n);
 	}
 
 	@Override
-	public PC_VecI div(Integer x, Integer y, Integer z) {
-		this.x /= x;
-		this.y /= y;
-		this.z /= z;
+	public PC_VecI div(Number x, Number y, Number z) {
+		this.x /= x.doubleValue();
+		this.y /= y.doubleValue();
+		this.z /= z.doubleValue();
 		return this;
 	}
 
@@ -181,7 +178,7 @@ public class PC_VecI implements Serializable, PC_Vec<Integer, PC_VecI>{
 	}
 	
 	@Override
-	public double distanceTo(Integer x, Integer y, Integer z){
+	public double distanceTo(Number x, Number y, Number z){
 		return copy().sub(x, y, z).length();
 	}
 	
@@ -325,6 +322,11 @@ public class PC_VecI implements Serializable, PC_Vec<Integer, PC_VecI>{
 		nbttag.setInteger("y", y);
 		nbttag.setInteger("z", z);
 		return nbttag;
+	}
+
+	@Override
+	public String toString() {
+		return "Vec["+x+", "+y+", "+z+"]";
 	}
 	
 }

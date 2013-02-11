@@ -8,30 +8,20 @@ import java.util.Map;
 import java.util.Random;
 
 import net.minecraft.client.Minecraft;
-import powercraft.management.PC_3DRecipe;
-import powercraft.management.PC_3DRecipeManager;
 import powercraft.management.PC_ChunkUpdateForcer;
-import powercraft.management.PC_ClientHacks;
 import powercraft.management.PC_ClientPacketHandler;
 import powercraft.management.PC_ClientRenderer;
 import powercraft.management.PC_ClientUtils;
-import powercraft.management.PC_EntityFanFX;
-import powercraft.management.PC_EntityLaserFX;
-import powercraft.management.PC_EntityLaserParticleFX;
 import powercraft.management.PC_FuelHandler;
-import powercraft.management.PC_FurnaceRecipeManager;
 import powercraft.management.PC_GlobalVariables;
 import powercraft.management.PC_GuiUpdateNotification;
 import powercraft.management.PC_IClientModule;
 import powercraft.management.PC_IDataHandler;
-import powercraft.management.PC_IFurnaceRecipe;
 import powercraft.management.PC_IMSG;
 import powercraft.management.PC_IModule;
 import powercraft.management.PC_IPacketHandler;
 import powercraft.management.PC_LangEntry;
 import powercraft.management.PC_Logger;
-import powercraft.management.PC_MainMenuHacks;
-import powercraft.management.PC_ModuleLoader;
 import powercraft.management.PC_PacketHandler;
 import powercraft.management.PC_Struct2;
 import powercraft.management.PC_ThreadManager;
@@ -45,6 +35,17 @@ import powercraft.management.PC_Utils.ModuleInfo;
 import powercraft.management.PC_Utils.ModuleLoader;
 import powercraft.management.PC_Utils.SaveHandler;
 import powercraft.management.PC_Utils.ValueWriting;
+import powercraft.management.entity.PC_EntityFanFX;
+import powercraft.management.entity.PC_EntityLaserFX;
+import powercraft.management.entity.PC_EntityLaserParticleFX;
+import powercraft.management.hacks.PC_ClientHacks;
+import powercraft.management.hacks.PC_MainMenuHacks;
+import powercraft.management.hacks.PC_RenderPlayerHack;
+import powercraft.management.hacks.PC_RenderSkeletonHack;
+import powercraft.management.hacks.PC_RenderZombieHack;
+import powercraft.management.moduleloader.PC_ModuleLoader;
+import powercraft.management.recipes.PC_3DRecipe;
+import powercraft.management.recipes.PC_3DRecipeManager;
 import powercraft.management.PC_WorldGenerator;
 
 public class mod_PowerCraft extends BaseMod {
@@ -190,6 +191,9 @@ public class mod_PowerCraft extends BaseMod {
 					}
 				}
 			}
+			map.put(EntityPlayer.class, new PC_RenderPlayerHack());
+			map.put(EntitySkeleton.class, new PC_RenderSkeletonHack());
+			map.put(EntityZombie.class, new PC_RenderZombieHack());
 			PC_Logger.exitSection();
 		}
 	}
@@ -381,8 +385,6 @@ public class mod_PowerCraft extends BaseMod {
 						CraftingManager.getInstance().getRecipeList().add(recipe);
 					}else if(recipe instanceof PC_3DRecipe){
 						PC_3DRecipeManager.add3DRecipe((PC_3DRecipe)recipe);
-					}else if(recipe instanceof PC_IFurnaceRecipe){
-						PC_FurnaceRecipeManager.addRecipe((PC_IFurnaceRecipe)recipe);
 					}else{
 						PC_Logger.severe("Unknown recipe of type "+recipe.getClass().getSimpleName());
 					}
