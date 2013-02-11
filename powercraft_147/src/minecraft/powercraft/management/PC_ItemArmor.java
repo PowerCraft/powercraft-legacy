@@ -7,11 +7,12 @@ import net.minecraft.item.EnumArmorMaterial;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemArmor;
 import net.minecraft.item.ItemStack;
+import net.minecraftforge.common.IArmorTextureProvider;
 import powercraft.management.PC_Utils.ValueWriting;
 import cpw.mods.fml.common.registry.GameData;
 import cpw.mods.fml.common.registry.ItemData;
 
-public abstract class PC_ItemArmor extends ItemArmor implements PC_IItemInfo, PC_IMSG
+public abstract class PC_ItemArmor extends ItemArmor implements PC_IItemInfo, PC_IMSG, IArmorTextureProvider
 {
     public static final int HEAD = 0, TORSO = 1, LEGS = 2, FEET = 3;
 
@@ -70,4 +71,10 @@ public abstract class PC_ItemArmor extends ItemArmor implements PC_IItemInfo, PC
         arrayList.add(new ItemStack(this));
         return arrayList;
     }
+    
+    @Override
+	public String getArmorTextureFile(ItemStack itemstack) {
+		return null;
+	}
+    
 }
