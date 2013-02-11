@@ -7,6 +7,7 @@ import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.client.renderer.RenderHelper;
+import net.minecraft.client.renderer.entity.RenderItem;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
@@ -509,6 +510,10 @@ public class PC_GresContainerGui extends GuiContainer implements PC_IGresGui, PC
 	@Override
 	public PC_TileEntity getTE() {
 		return tileEntity;
+	}
+	
+	public static RenderItem getItemRender(){
+		return itemRenderer;
 	}
 	
 }
