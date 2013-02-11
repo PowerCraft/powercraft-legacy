@@ -28,6 +28,7 @@ public class PChg_AppClient extends PChg_App implements PC_IClientModule {
 	@Override
 	public void init() {
 		PC_ClientUtils.mc().renderEngine.registerTextureFX(new PChg_HologramTextureFX());
+		ModuleInfo.registerMSGObject(new PChg_HologramGlassesOverlay());
 	}
 
 	@Override

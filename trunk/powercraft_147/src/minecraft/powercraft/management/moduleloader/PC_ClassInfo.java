@@ -1,4 +1,4 @@
-package powercraft.management;
+package powercraft.management.moduleloader;
 
 import java.io.ByteArrayInputStream;
 import java.io.DataInputStream;

@@ -10,7 +10,6 @@ import java.util.Collections;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 
-import powercraft.management.PC_ClassInfo;
 import powercraft.management.PC_IClientModule;
 import powercraft.management.PC_IModule;
 import powercraft.management.PC_Logger;
