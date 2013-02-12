@@ -201,7 +201,7 @@ public class PC_GresInventory extends PC_GresWidget {
 		ItemStack itemstack = slot.getStack();
 		boolean isNull = false;
 		zLevel = 100F;
-		RenderItem itemRenderer = PC_GresContainerGui.getItemRender();
+		RenderItem itemRenderer = PC_GresContainerGui.getItemRenderer();
 		itemRenderer.zLevel = 100F;
 
 		if(slot instanceof PC_Slot){

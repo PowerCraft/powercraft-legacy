@@ -159,8 +159,6 @@ public class PC_GresContainerGui extends GuiContainer implements PC_IGresGui, PC
 	
 	@Override
 	protected void mouseClicked(int x, int y, int button) {
-		putSlotUnderMouse(x, y);
-		super.mouseClicked(x, y, button);
 
 		PC_GresWidget newFocus = child.getWidgetUnderMouse(new PC_VecI(x, y));
 		if (newFocus != null && !newFocus.visible) newFocus = null;
@@ -181,6 +179,8 @@ public class PC_GresContainerGui extends GuiContainer implements PC_IGresGui, PC
 				gui.actionPerformed(newFocus, this);
 			}
 		}
+		putSlotUnderMouse(x, y);
+		super.mouseClicked(x, y, button);
 	}
 
 	private void mouseMoved(int x, int y) {
@@ -515,24 +515,20 @@ public class PC_GresContainerGui extends GuiContainer implements PC_IGresGui, PC
 		PC_VecI fpos = w.getPositionOnScreen();
 		return w.getTooltip(new PC_VecI(x - fpos.x, y - fpos.y));
 	}
-    
-	public static RenderItem getItemRenderer(){
-		return itemRenderer;
-	}
-
-	@Override
-	public PC_TileEntity getTE() {
-		return tileEntity;
-	}
-	
-	public static RenderItem getItemRender(){
-		return itemRenderer;
-	}
 
 	@Override
 	public void keyChange(String key, Object value) {
 		child.keyChange(key, value);
 		gui.keyChange(key, value);
+	}
+	
+	@Override
+	public PC_TileEntity getTE() {
+		return tileEntity;
+	}
+	
+	public static RenderItem getItemRenderer(){
+		return itemRenderer;
 	}
 	
 }
