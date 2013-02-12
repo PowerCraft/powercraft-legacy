@@ -35,6 +35,7 @@ public class PChg_HologramGlassesOverlay implements PC_IMSG {
 	private static int glList;
 	private static int tick;
 	private static boolean update=true;
+	public static PChg_TileEntityHologramField fieldToUpdate;
 	
 	@Override
 	public Object msg(int msg, Object... obj) {
@@ -49,6 +50,11 @@ public class PChg_HologramGlassesOverlay implements PC_IMSG {
 	private void onTick() {
 		if(tick%20==0){
 			update=true;
+		}else{
+			if(PChg_TileEntityHologramField.mapToUpdate.size()>0){
+				fieldToUpdate = PChg_TileEntityHologramField.mapToUpdate.get(0);
+				PChg_TileEntityHologramField.mapToUpdate.remove(0);
+			}
 		}
 		tick++;
 	}
