@@ -9,12 +9,12 @@ import powercraft.management.PC_Struct3;
 import powercraft.management.PC_Utils;
 import powercraft.management.PC_Utils.ModuleInfo;
 
-public class PCtr_ItemArmorStickyBoots extends PC_ItemArmor
-{
-    public PCtr_ItemArmorStickyBoots(int id)
-    {
-        super(id, EnumArmorMaterial.IRON, 2, FEET);
+public class PCtr_ItemArmorStickyBoots extends PC_ItemArmor{
+    
+	public PCtr_ItemArmorStickyBoots(int id){
+        super(id, EnumArmorMaterial.IRON, FEET, false);
         setIconCoord(2, 3);
+        setArmorTextureFile(ModuleInfo.getTextureDirectory(ModuleInfo.getModule("Transport"))+"slimeboots.png");
     }
 
     @Override
@@ -38,11 +38,6 @@ public class PCtr_ItemArmorStickyBoots extends PC_ItemArmor
             return names;
 		}
 		return null;
-	}
-	
-	@Override
-	public String getArmorTextureFile(ItemStack itemstack) {
-		return ModuleInfo.getTextureDirectory(getModule())+"slimeboots.png";
 	}
 	
 }

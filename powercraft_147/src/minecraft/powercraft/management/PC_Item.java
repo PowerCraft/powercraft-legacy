@@ -19,7 +19,6 @@ public abstract class PC_Item extends Item implements PC_IItemInfo, PC_IMSG
     private boolean canSetTextureFile = true;
     private Item replacedItem = null;
     private ItemData replacedItemData = null;
-    protected int iconIndexRenderPass2;
     
     protected PC_Item(int id)
     {
@@ -28,22 +27,17 @@ public abstract class PC_Item extends Item implements PC_IItemInfo, PC_IMSG
 
     public PC_Item(int id, boolean canSetTextureFile)
     {
-        this(id, 0, 0, canSetTextureFile);
+        this(id, 0, canSetTextureFile);
     }
     
     public PC_Item(int id, int iconIndex) {
-		this(id, iconIndex, 0);
-	}
-    
-    public PC_Item(int id, int iconIndex, int iconIndexRenderPass2) {
-		this(id, iconIndex, iconIndexRenderPass2, true);
+		this(id, iconIndex, true);
 	}
 
-    public PC_Item(int id, int iconIndex, int iconIndexRenderPass2, boolean canSetTextureFile) {
+    public PC_Item(int id, int iconIndex, boolean canSetTextureFile) {
     	super(id-256);
         this.canSetTextureFile = canSetTextureFile;
         setIconIndex(iconIndex);
-        this.iconIndexRenderPass2 = iconIndexRenderPass2;
 	}
     
     public void setItemID(int id){

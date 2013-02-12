@@ -9,7 +9,7 @@ import powercraft.management.PC_Utils.ValueWriting;
 
 public class PC_ClientHacks {
 
-public static void hackServer(){
+	public static void hackClient(){
 		
 		hackMinecraftSaver();
 		

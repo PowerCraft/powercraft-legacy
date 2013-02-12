@@ -15,8 +15,8 @@ import powercraft.management.PC_Utils.ModuleInfo;
 public class PChg_ItemArmorHologramGlasses extends PC_ItemArmor {
 
 	public PChg_ItemArmorHologramGlasses(int id) {
-		super(id, EnumArmorMaterial.IRON, 0, HEAD);
-		setIconIndex(1);
+		super(id, EnumArmorMaterial.IRON, HEAD, 1);
+		setArmorTextureFile(ModuleInfo.getTextureDirectory(ModuleInfo.getModule("Hologram"))+"glasses.png");
 	}
 
 	@Override
@@ -26,9 +26,6 @@ public class PChg_ItemArmorHologramGlasses extends PC_ItemArmor {
 			List<PC_Struct3<String, String, String[]>> names = (List<PC_Struct3<String, String, String[]>>)obj[0];
 			names.add(new PC_Struct3<String, String, String[]>(getItemName(), "Hologram Glasses", null));
             return names;
-		case PC_Utils.MSG_LOAD_FROM_CONFIG:
-			setTextureFile(ModuleInfo.getTerrainFile(getModule()));
-			break;
 		}
 		return null;
 	}
@@ -36,7 +33,7 @@ public class PChg_ItemArmorHologramGlasses extends PC_ItemArmor {
 	@Override
 	public String getArmorTextureFile(ItemStack itemstack) {
 		PC_Renderer.glEnable(0xbe2);//GL_BLEND
-		return ModuleInfo.getTextureDirectory(getModule())+"glasses.png";
+		return super.getArmorTextureFile(itemstack);
 	}
 
 }

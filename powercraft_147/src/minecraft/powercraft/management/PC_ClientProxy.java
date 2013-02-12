@@ -27,7 +27,7 @@ public class PC_ClientProxy extends PC_CommonProxy {
 	
 	@Override
 	public void hack() {
-		PC_ClientHacks.hackServer();
+		PC_ClientHacks.hackClient();
 	}
 	
 	@Override

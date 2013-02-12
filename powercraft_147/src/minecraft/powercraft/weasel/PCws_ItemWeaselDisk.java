@@ -32,7 +32,7 @@ public class PCws_ItemWeaselDisk extends PC_Item {
 	public static final int EMPTY = 0, TEXT = 1, IMAGE = 2, NUMBERLIST = 3, STRINGLIST = 4, VARMAP = 5, LIBRARY = 6;
 	
 	public PCws_ItemWeaselDisk(int id) {
-		super(id, 0, 1);
+		super(id, 0);
 		setMaxDamage(0);
 		setMaxStackSize(1);
 		setHasSubtypes(true);
@@ -69,7 +69,7 @@ public class PCws_ItemWeaselDisk extends PC_Item {
 	 */
 	@Override
 	public int getIconFromDamageForRenderPass(int dmg, int pass) {
-		return pass == 0 ? iconIndex : iconIndexRenderPass2;
+		return pass == 0 ? 0 : 1;
 	}
 	
 	@Override
