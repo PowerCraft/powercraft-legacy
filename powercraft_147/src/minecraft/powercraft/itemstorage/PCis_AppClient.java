@@ -13,6 +13,9 @@ public class PCis_AppClient extends PCis_App implements PC_IClientModule {
 
 	@Override
 	public List<PC_LangEntry> initLanguage(List<PC_LangEntry> lang) {
+		lang.add(new PC_LangEntry("pc.gui.compressor.name", "name:"));
+		lang.add(new PC_LangEntry("pc.gui.compressor.takeStacks", "Fill Stacks"));
+		lang.add(new PC_LangEntry("pc.gui.compressor.putStacks", "Fill Inv Stacks"));
 		return lang;
 	}
 

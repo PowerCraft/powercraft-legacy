@@ -86,6 +86,7 @@ public class PChg_AppClient extends PChg_App implements PC_IClientModule {
 		}
 		PC_Renderer.tessellatorDraw();
 		
+		GL11.glColor3f(1.0f, 1.0f, 1.0f);
 		for(int yy=-16; yy<16; yy++){
 			for(int xx=-16; xx<16; xx++){
 				for(int zz=-16; zz<16; zz++){
@@ -93,7 +94,9 @@ public class PChg_AppClient extends PChg_App implements PC_IClientModule {
 					if(block!=null){
 						TileEntity tileEntity = cc.getBlockTileEntity(offset.x+xx, offset.y+yy, offset.z+zz);
 						if(tileEntity!=null && !(tileEntity instanceof PChg_TileEntityHologramField)){
+							GL11.glPushAttrib(-1);
 							TileEntityRenderer.instance.renderTileEntityAt(tileEntity, offset.x+xx, offset.y+yy, offset.z+zz, 1);
+							GL11.glPopAttrib();
 						}
 					}
 				}

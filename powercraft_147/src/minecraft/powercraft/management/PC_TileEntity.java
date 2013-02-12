@@ -146,6 +146,7 @@ public abstract class PC_TileEntity extends TileEntity
 		for(Entry<String, Object> e:map.entrySet()){
 			nbtTag.setString("key["+i+"]", e.getKey());
 			SaveHandler.saveToNBT(nbtTag, "value["+i+"]", e.getValue());
+			i++;
 		}
 		nbtTagCompound.setCompoundTag("map", nbtTag);
 	}

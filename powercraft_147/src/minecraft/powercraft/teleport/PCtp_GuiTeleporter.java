@@ -103,8 +103,8 @@ public class PCtp_GuiTeleporter implements PC_IGresClient {
 		items.check(td.items);
 		vg.add(players = new PC_GresCheckBox(Lang.tr("pc.gui.teleporter.players")));
 		players.check(td.players);
-		vg.add(players = new PC_GresCheckBox(Lang.tr("pc.gui.teleporter.lasers")));
-		players.check(td.players);
+		vg.add(lasers = new PC_GresCheckBox(Lang.tr("pc.gui.teleporter.lasers")));
+		lasers.check(td.lasers);
 		vg.add(sneakTrigger = new PC_GresCheckBox(Lang.tr("pc.gui.teleporter.sneakTrigger")));
 		sneakTrigger.check(td.sneakTrigger);
 		vg.add(playerChoose = new PC_GresCheckBox(Lang.tr("pc.gui.teleporter.playerChoose")));
@@ -188,6 +188,7 @@ public class PCtp_GuiTeleporter implements PC_IGresClient {
 			td.monsters = monsters.isChecked();
 			td.items = items.isChecked();
 			td.players = players.isChecked();
+			td.lasers = lasers.isChecked();
 			td.sneakTrigger = sneakTrigger.isChecked();
 			td.playerChoose = playerChoose.isChecked();
 			td.soundEnabled = soundEnabled.isChecked();
