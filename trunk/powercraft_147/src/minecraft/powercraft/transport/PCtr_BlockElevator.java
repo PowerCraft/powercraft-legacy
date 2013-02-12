@@ -66,10 +66,10 @@ public class PCtr_BlockElevator extends PC_Block
 
         boolean down = (GameInfo.getMD(world, pos) == 1);
         PCtr_BeltHelper.entityPreventDespawning(world, pos, true, entity);
-        boolean halted = world.isBlockGettingPowered(i, j, k);
+        boolean halted = world.isBlockIndirectlyGettingPowered(i, j, k);
         double BBOOST = (entity instanceof EntityPlayer) ? BORDER_BOOST / 4.0D : BORDER_BOOST;
         int id = world.getBlockId(i, j + (down ? -1 : 1), k);
-
+        
         if (Math.abs(entity.motionY) > 0.4D)
         {
             entity.motionY *= 0.3D;

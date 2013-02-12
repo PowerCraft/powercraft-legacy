@@ -11,8 +11,8 @@ public class PCis_NormalCompressorInventory extends PCis_CompressorInventory {
 
 	protected ItemStack[] is;
 	
-	protected PCis_NormalCompressorInventory(EntityPlayer player, PC_VecI size) {
-		super(player, size);
+	protected PCis_NormalCompressorInventory(EntityPlayer player, int equipment, PC_VecI size) {
+		super(player, equipment, size);
 		NBTTagCompound tag = compressor.getTagCompound();
 		if(tag==null){
 			compressor.setTagCompound(tag = new NBTTagCompound());
@@ -25,10 +25,10 @@ public class PCis_NormalCompressorInventory extends PCis_CompressorInventory {
 		}
 	}
 	
-	public PCis_NormalCompressorInventory(EntityPlayer player) {
-		this(player, new PC_VecI(9, 3));
+	public PCis_NormalCompressorInventory(EntityPlayer player, int equipment) {
+		this(player, equipment, new PC_VecI(9, 3));
 	}
-	
+
 	@Override
 	public int getSizeInventory() {
 		return is.length;

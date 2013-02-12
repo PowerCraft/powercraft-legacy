@@ -3,16 +3,25 @@ package powercraft.itemstorage;
 import net.minecraft.entity.player.EntityPlayer;
 import powercraft.management.PC_TileEntity;
 import powercraft.management.PC_Utils.Lang;
+import powercraft.management.gres.PC_GresCheckBox;
 import powercraft.management.gres.PC_GresInventory;
 import powercraft.management.gres.PC_GresInventoryPlayer;
+import powercraft.management.gres.PC_GresLabel;
+import powercraft.management.gres.PC_GresTextEdit;
 import powercraft.management.gres.PC_GresWidget;
+import powercraft.management.gres.PC_GresWidgetTab;
 import powercraft.management.gres.PC_GresWindow;
 import powercraft.management.gres.PC_IGresClient;
 import powercraft.management.gres.PC_IGresGui;
+import powercraft.management.gres.PC_GresTextEdit.PC_GresInputType;
 
 public class PCis_GuiCompressor extends PCis_ContainerCompressor
 		implements PC_IGresClient {
 
+	public PC_GresTextEdit name;
+	public PC_GresCheckBox takeStacks;
+	public PC_GresTextEdit putStacks;
+	
 	public PCis_GuiCompressor(EntityPlayer player, PC_TileEntity te, Object[] o) {
 		super(player, te, o);
 	}
@@ -20,11 +29,28 @@ public class PCis_GuiCompressor extends PCis_ContainerCompressor
 	@Override
 	public void initGui(PC_IGresGui gui) {
 		PC_GresWindow w = new PC_GresWindow(Lang.tr(PCis_App.compressor.getItemNameIS(thePlayer.getCurrentEquippedItem())+".name"));
+		
+		PC_GresWidgetTab wt = new PC_GresWidgetTab(0xBBBBBB, "/gui/items.png", 160, 48, 16, 16);
+		
+		wt.add(new PC_GresLabel("pc.gui.compressor.name"));
+		wt.add(name = new PC_GresTextEdit(PCis_ItemCompressor.getName(getItem()), 10));
+		
+		w.add(wt);
+		
+		wt = new PC_GresWidgetTab(0x684E1E, "/gui/items.png", 80, 64, 16, 16);
+		
+		wt.add(takeStacks = new PC_GresCheckBox("pc.gui.compressor.takeStacks"));
+		takeStacks.check(PCis_ItemCompressor.isTakeStacks(getItem()));
+		wt.add(new PC_GresLabel("pc.gui.compressor.putStacks"));
+		wt.add(putStacks = new PC_GresTextEdit(""+PCis_ItemCompressor.getPutStacks(getItem()), 3, PC_GresInputType.UNSIGNED_INT));
+		
+		w.add(wt);
+		
 		PC_GresInventory inventory = new PC_GresInventory(inv.getSize().x, inv.getSize().y);
 		int i=0;
 		for(int y=0; y<inv.getSize().y; y++){
 			for(int x=0; x<inv.getSize().x; x++){
-				inventory.setSlot(x, y, lSlot.get(i));
+				inventory.setSlot(x, y, invSlots[i]);
 				i++;
 			}
 		}
@@ -37,7 +63,19 @@ public class PCis_GuiCompressor extends PCis_ContainerCompressor
 	public void onGuiClosed(PC_IGresGui gui) {}
 
 	@Override
-	public void actionPerformed(PC_GresWidget widget, PC_IGresGui gui) {}
+	public void actionPerformed(PC_GresWidget widget, PC_IGresGui gui) {
+		if(widget==name){
+			PCis_ItemCompressor.setName(thePlayer, name.getText());
+		}else if(widget==takeStacks){
+			PCis_ItemCompressor.setTakeStacks(thePlayer, takeStacks.isChecked());
+		}else if(widget==putStacks){
+			if(putStacks.getText().equals("")){
+				PCis_ItemCompressor.setPutStacks(thePlayer, 0);
+			}else{
+				PCis_ItemCompressor.setPutStacks(thePlayer, Integer.parseInt(putStacks.getText()));
+			}
+		}
+	}
 
 	@Override
 	public void onEscapePressed(PC_IGresGui gui) {

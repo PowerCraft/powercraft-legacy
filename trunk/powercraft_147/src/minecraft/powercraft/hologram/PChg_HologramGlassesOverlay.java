@@ -86,6 +86,7 @@ public class PChg_HologramGlassesOverlay implements PC_IMSG {
 		}
 		PC_Renderer.tessellatorDraw();
 		
+		GL11.glColor3f(1.0f, 1.0f, 1.0f);
 		for(int yy=-8; yy<8; yy++){
 			for(int xx=-8; xx<8; xx++){
 				for(int zz=-8; zz<8; zz++){
@@ -93,7 +94,9 @@ public class PChg_HologramGlassesOverlay implements PC_IMSG {
 					if(block!=null){
 						TileEntity tileEntity = cc.getBlockTileEntity(pos.x+xx, pos.y+yy, pos.z+zz);
 						if(tileEntity!=null && !(tileEntity instanceof PChg_TileEntityHologramField)){
+							GL11.glPushAttrib(-1);
 							TileEntityRenderer.instance.renderTileEntityAt(tileEntity, pos.x+xx, pos.y+yy, pos.z+zz, 1);
+							GL11.glPopAttrib();
 						}
 					}
 				}

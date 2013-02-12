@@ -134,7 +134,8 @@ public class PCis_App implements PC_IModule {
 
 	@Override
 	public List<PC_Struct2<String, PC_IPacketHandler>> initPacketHandlers(List<PC_Struct2<String, PC_IPacketHandler>> packetHandlers) {
-		return null;
+		packetHandlers.add(new PC_Struct2<String, PC_IPacketHandler>("ItemCompressor", (PC_IPacketHandler)compressor));
+		return packetHandlers;
 	}
 
 	@Override

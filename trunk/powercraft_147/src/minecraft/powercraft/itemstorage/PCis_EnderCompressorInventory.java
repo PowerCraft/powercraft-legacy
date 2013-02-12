@@ -7,8 +7,8 @@ import powercraft.management.PC_VecI;
 
 public class PCis_EnderCompressorInventory extends PCis_CompressorInventory {
 
-	public PCis_EnderCompressorInventory(EntityPlayer player) {
-		super(player, new PC_VecI(9, 3));
+	public PCis_EnderCompressorInventory(EntityPlayer player, int equipment) {
+		super(player, equipment, new PC_VecI(9, 3));
 	}
 
 	@Override

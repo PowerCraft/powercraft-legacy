@@ -13,8 +13,8 @@ import powercraft.management.inventory.PC_Slot;
 
 public class PCis_HightCompressorInventory extends PCis_NormalCompressorInventory implements PC_IInventoryClickHandler {
 	
-	public PCis_HightCompressorInventory(EntityPlayer player) {
-		super(player, new PC_VecI(3, 3));
+	public PCis_HightCompressorInventory(EntityPlayer player, int equipment) {
+		super(player, equipment, new PC_VecI(3, 3));
 		NBTTagCompound tag = compressor.getTagCompound();
 		if(tag.hasKey("size")){
 			int[] size = tag.getIntArray("size");

@@ -12,7 +12,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompressedStreamTools;
 import net.minecraft.nbt.NBTTagCompound;
 
-public class PC_ItemStack implements Externalizable
+public class PC_ItemStack implements Externalizable, PC_INBT<PC_ItemStack>
 {
     private Object o;
     private int count;
@@ -190,6 +190,29 @@ public class PC_ItemStack implements Externalizable
 			byte[] b = CompressedStreamTools.compress(nbtTag);
 			out.writeObject(b);
 		}
+	}
+
+	@Override
+	public PC_ItemStack readFromNBT(NBTTagCompound nbttag) {
+		int id = nbttag.getInteger("id");
+		o = Item.itemsList[id];
+		count = nbttag.getInteger("count");
+		meta = nbttag.getInteger("meta");
+		if(nbttag.hasKey("nbtTag")){
+			nbtTag = nbttag.getCompoundTag("nbtTag");
+		}
+		return this;
+	}
+
+	@Override
+	public NBTTagCompound writeToNBT(NBTTagCompound nbttag) {
+		nbttag.setInteger("id", getID());
+		nbttag.setInteger("count", count);
+		nbttag.setInteger("meta", meta);
+		if(nbtTag!=null){
+			nbttag.setCompoundTag("nbtTag", nbtTag);
+		}
+		return nbttag;
 	}
     
 }

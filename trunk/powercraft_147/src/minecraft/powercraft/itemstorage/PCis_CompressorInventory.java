@@ -13,9 +13,9 @@ public abstract class PCis_CompressorInventory implements IInventory, PC_ISpecia
 	protected int equipped;
 	protected ItemStack compressor;
 	
-	public PCis_CompressorInventory(EntityPlayer player, PC_VecI size){
+	public PCis_CompressorInventory(EntityPlayer player, int equipment, PC_VecI size){
 		this.player = player;
-		equipped = player.inventory.currentItem;
+		equipped = equipment;
 		compressor = player.inventory.getStackInSlot(equipped);
 		this.size = size;
 	}
