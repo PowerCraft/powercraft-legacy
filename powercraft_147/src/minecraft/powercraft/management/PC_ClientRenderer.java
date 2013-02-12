@@ -43,11 +43,7 @@ public class PC_ClientRenderer extends PC_Renderer implements ISimpleBlockRender
 		}
 		if(!b){
 			iRenderInvBlockRotatedBox(block, metadata, modelID, renderer);
-		}/*else{
-			boolean swapped = swapTerrain(block);
-			iRenderInvBox(renderer, block, metadata);
-			resetTerrain(swapped);
-		}*/
+		}
 	}
 
 	@Override
@@ -60,8 +56,7 @@ public class PC_ClientRenderer extends PC_Renderer implements ISimpleBlockRender
 		}
 		if(!b){
 			iRenderBlockRotatedBox(world, x, y, z, block, modelId, renderer);
-		}/*else
-			iRenderBlock(world, x, y, z, block, modelId, renderer);*/
+		}
 		return true;
 	}
 
