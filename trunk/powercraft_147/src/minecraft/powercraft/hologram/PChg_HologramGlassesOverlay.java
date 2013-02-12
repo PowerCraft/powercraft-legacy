@@ -32,14 +32,28 @@ import powercraft.management.mod_PowerCraft;
 
 public class PChg_HologramGlassesOverlay implements PC_IMSG {
 
+	private static int glList;
+	private static int tick;
+	private static boolean update=true;
+	
 	@Override
 	public Object msg(int msg, Object... obj) {
 		if(msg==PC_Utils.MSG_RENDER_OVERLAY)
 			onRenderOverlay((GuiIngame)obj[0]);
+		else if(msg==PC_Utils.MSG_TICK_EVENT){
+			onTick();
+		}
 		return null;
 	}
 
-	private void onRenderOverlay(GuiIngame gi) {
+	private void onTick() {
+		if(tick%20==0){
+			update=true;
+		}
+		tick++;
+	}
+
+	private static void onRenderOverlay(GuiIngame gi) {
 		EntityPlayer player = PC_ClientUtils.mc().thePlayer;
 		ItemStack helmet = player.inventory.armorItemInSlot(3);
 		if(helmet!=null && helmet.itemID == PChg_App.hologramGlasses.itemID){
@@ -47,7 +61,7 @@ public class PChg_HologramGlassesOverlay implements PC_IMSG {
 		}
 	}
 
-	private void drawArea(Minecraft mc, EntityPlayer player){
+	private static void drawArea(Minecraft mc, EntityPlayer player){
 		ScaledResolution sr = new ScaledResolution(mc.gameSettings, mc.displayWidth, mc.displayHeight);
         int width = sr.getScaledWidth();
         int height = sr.getScaledHeight();
@@ -56,7 +70,6 @@ public class PChg_HologramGlassesOverlay implements PC_IMSG {
 		pos.y = (int)Math.round(player.posY);
 		pos.z = (int)Math.round(player.posZ);
 		ChunkCache cc = new ChunkCache(player.worldObj, pos.x-10, pos.y-10, pos.z-10, pos.x+9, pos.y+9, pos.z+9);
-		RenderBlocks renderer = new PChg_HologramRenderBlocks(cc);
 		GL11.glPushAttrib(-1);
 		int scale = 100*sr.getScaleFactor();
 		GL11.glViewport(0, mc.displayHeight-scale, scale, scale);
@@ -72,19 +85,30 @@ public class PChg_HologramGlassesOverlay implements PC_IMSG {
 		GL11.glRotatef(player.rotationYaw, 0, 1, 0);
 		GL11.glTranslatef(-(float)player.posX, -(float)player.posY, -(float)player.posZ);
 		
-		PC_Renderer.resetTerrain(true);
-		PC_Renderer.tessellatorStartDrawingQuads();
-		for(int yy=-8; yy<8; yy++){
-			for(int xx=-8; xx<8; xx++){
-				for(int zz=-8; zz<8; zz++){
-					Block block = Block.blocksList[cc.getBlockId(pos.x+xx, pos.y+yy, pos.z+zz)];
-					if(block!=null){
-						PC_Renderer.renderBlockByRenderType(renderer, block, pos.x+xx, pos.y+yy, pos.z+zz);
+		if(glList==0){
+			glList = GL11.glGenLists(1);
+		}
+		if(update){
+			GL11.glNewList(glList, GL11.GL_COMPILE_AND_EXECUTE);
+			RenderBlocks renderer = new PChg_HologramRenderBlocks(cc);
+			PC_Renderer.resetTerrain(true);
+			PC_Renderer.tessellatorStartDrawingQuads();
+			for(int yy=-8; yy<8; yy++){
+				for(int xx=-8; xx<8; xx++){
+					for(int zz=-8; zz<8; zz++){
+						Block block = Block.blocksList[cc.getBlockId(pos.x+xx, pos.y+yy, pos.z+zz)];
+						if(block!=null){
+							PC_Renderer.renderBlockByRenderType(renderer, block, pos.x+xx, pos.y+yy, pos.z+zz);
+						}
 					}
 				}
 			}
+			PC_Renderer.tessellatorDraw();
+			GL11.glEndList();
+			update = false;
+		}else{
+			GL11.glCallList(glList);
 		}
-		PC_Renderer.tessellatorDraw();
 		
 		GL11.glColor3f(1.0f, 1.0f, 1.0f);
 		for(int yy=-8; yy<8; yy++){
@@ -125,7 +149,7 @@ public class PChg_HologramGlassesOverlay implements PC_IMSG {
         RenderManager.renderPosX = rpx;
 		RenderManager.renderPosY = rpy;
 		RenderManager.renderPosZ = rpz;
-        
+		
 		GL11.glPopMatrix();
 		GL11.glMatrixMode(GL11.GL_PROJECTION);
 		GL11.glPopMatrix();
