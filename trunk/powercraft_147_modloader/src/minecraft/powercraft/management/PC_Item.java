@@ -3,6 +3,7 @@ package powercraft.management;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.CancellationException;
 
 import net.minecraft.src.CreativeTabs;
 import net.minecraft.src.InventoryCrafting;
@@ -17,10 +18,8 @@ public abstract class PC_Item extends Item implements PC_IItemInfo, PC_IMSG
 {
     private PC_IModule module;
     private boolean canSetTextureFile = true;
+    private String currentTexture = "/gui/items.png";
     private Item replacedItem = null;
-    private int itemPosInTex;
-    private int itemPosInTexPass2;
-    protected int iconIndexRenderPass2;
     
     protected PC_Item(int id)
     {
@@ -29,22 +28,17 @@ public abstract class PC_Item extends Item implements PC_IItemInfo, PC_IMSG
 
     public PC_Item(int id, boolean canSetTextureFile)
     {
-        this(id, 0, 0, canSetTextureFile);
+        this(id, 0, canSetTextureFile);
     }
     
     public PC_Item(int id, int iconIndex) {
-		this(id, iconIndex, 0);
-	}
-    
-    public PC_Item(int id, int iconIndex, int iconIndexRenderPass2) {
-		this(id, iconIndex, iconIndexRenderPass2, true);
+		this(id, iconIndex, true);
 	}
 
-    public PC_Item(int id, int iconIndex, int iconIndexRenderPass2, boolean canSetTextureFile) {
+    public PC_Item(int id, int iconIndex, boolean canSetTextureFile) {
     	super(id-256);
         this.canSetTextureFile = canSetTextureFile;
         setIconIndex(iconIndex);
-        this.itemPosInTexPass2 = iconIndexRenderPass2;
 	}
     
 	public void setItemID(int id){
@@ -88,7 +82,7 @@ public abstract class PC_Item extends Item implements PC_IItemInfo, PC_IMSG
     public Item setTextureFile(String texture)
     {
 
-    	if(canSetTextureFile){
+    	/*if(canSetTextureFile){
 			try {
 				int iconIndex = ModLoader.getUniqueSpriteIndex("/gui/items.png");
 				BufferedImage image = ModLoader.loadImage(PC_ClientUtils.mc().renderEngine, texture);
@@ -123,17 +117,19 @@ public abstract class PC_Item extends Item implements PC_IItemInfo, PC_IMSG
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
-    	}
+    	}*/
+    	
+    	if(canSetTextureFile)
+    		currentTexture = texture;
     	
         return this;
     }
 
+    public String getTextureFile(){
+    	return currentTexture;
+    }
+    
 	public void doCrafting(ItemStack itemStack, InventoryCrafting inventoryCrafting) {
-	}
-	
-	public Item setIconIndex(int iconIndex){
-		itemPosInTex = iconIndex;
-		return super.setIconIndex(0);
 	}
 	
 }

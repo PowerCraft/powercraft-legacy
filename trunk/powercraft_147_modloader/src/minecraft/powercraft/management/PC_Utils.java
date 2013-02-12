@@ -233,6 +233,7 @@ public class PC_Utils implements PC_IPacketHandler
 		            PC_Utils.objects.put(itemArmorClass.getSimpleName(), itemArmor);
 		            itemArmor.setItemName(itemArmorClass.getSimpleName());
 		            itemArmor.setModule(module);
+		            itemArmor.setTextureFile(ModuleInfo.getTerrainFile(module));
 		            
 		            itemArmor.msg(PC_Utils.MSG_LOAD_FROM_CONFIG, config);
 		            
