@@ -79,6 +79,7 @@ public class PC_GresContainerGui extends GuiContainer implements PC_IGresGui, PC
 	@Override
 	public void updateScreen() {
 		super.updateScreen();
+		child.tick();
 		if (lastFocus != null) {
 			lastFocus.updateCursorCounter();
 		}
