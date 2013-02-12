@@ -345,7 +345,7 @@ public class PC_RenderItemHack extends RenderItem {
 
         if (var6 < Block.blocksList.length && Block.blocksList[var6]!=null && RenderBlocks.renderItemIn3d(Block.blocksList[var6].getRenderType()))
         {
-            par2RenderEngine.bindTexture(par2RenderEngine.getTexture("/terrain.png"));
+            par2RenderEngine.bindTexture(par2RenderEngine.getTexture(PC_Hacks.getTextureFile(par3ItemStack, "/terrain.png")));
             Block var16 = Block.blocksList[var6];
             GL11.glPushMatrix();
             GL11.glTranslatef((float)(par4 - 2), (float)(par5 + 3), -3.0F + this.zLevel);
@@ -377,7 +377,7 @@ public class PC_RenderItemHack extends RenderItem {
             if (Item.itemsList[var6].requiresMultipleRenderPasses())
             {
                 GL11.glDisable(GL11.GL_LIGHTING);
-                par2RenderEngine.bindTexture(par2RenderEngine.getTexture("/gui/items.png"));
+                par2RenderEngine.bindTexture(par2RenderEngine.getTexture(PC_Hacks.getTextureFile(par3ItemStack, "/gui/items.png")));
 
                 for (var13 = 0; var13 <= 1; ++var13)
                 {
@@ -403,11 +403,11 @@ public class PC_RenderItemHack extends RenderItem {
 
                 if (var6 < 256)
                 {
-                    par2RenderEngine.bindTexture(par2RenderEngine.getTexture("/terrain.png"));
+                    par2RenderEngine.bindTexture(par2RenderEngine.getTexture(PC_Hacks.getTextureFile(par3ItemStack, "/terrain.png")));
                 }
                 else
                 {
-                    par2RenderEngine.bindTexture(par2RenderEngine.getTexture("/gui/items.png"));
+                    par2RenderEngine.bindTexture(par2RenderEngine.getTexture(PC_Hacks.getTextureFile(par3ItemStack, "/gui/items.png")));
                 }
 
                 var13 = Item.itemsList[var6].getColorFromItemStack(par3ItemStack, 0);

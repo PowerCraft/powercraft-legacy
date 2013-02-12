@@ -54,6 +54,7 @@ public class PC_ClientRenderer extends PC_Renderer {
 		return render3d;
 	}
 
+
 	public int getRenderId() {
 		if(render3d)
 			return render3dId;
@@ -84,7 +85,7 @@ public class PC_ClientRenderer extends PC_Renderer {
 	protected void iTessellatorSetColor(int r, int g, int b, int a) {
 		Tessellator.instance.setColorRGBA(r, g, b, a);
 	}
-
+	
 	@Override
 	protected void iTessellatorAddVertex(double x, double y, double z) {
 		Tessellator.instance.addVertex(x, y, z);
@@ -98,14 +99,14 @@ public class PC_ClientRenderer extends PC_Renderer {
 	protected void iBindTexture(String texture){
 		RenderEngine re = getRenderEngine();
 		re.bindTexture(re.getTexture(texture));
-	};
+	}
 	
 	@Override
 	protected void iRenderStandardBlock(Object renderer, Block block, int x, int y, int z){
 		((RenderBlocks)renderer).setRenderBoundsFromBlock(block);
 		((RenderBlocks)renderer).renderStandardBlock(block, x, y, z);
 		((RenderBlocks)renderer).unlockBlockBounds();
-	};
+	}
 
 	@Override
 	protected void iRenderInvBox(Object renderer, Block block, int metadata){
@@ -402,6 +403,12 @@ public class PC_ClientRenderer extends PC_Renderer {
 		((RenderBlocks)renderer).unlockBlockBounds();
 	}
 	
+	@Override
+	protected void iRenderBlockByRenderType(Object renderer, Block block, int x, int y, int z) {
+		RenderBlocks renderblocks = (RenderBlocks)renderer;
+		renderblocks.renderBlockByRenderType(block, x, y, z);
+	}
+	
 	/**
 	 * Use texture file as terrain.png
 	 * 
@@ -544,7 +551,7 @@ public class PC_ClientRenderer extends PC_Renderer {
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 		GL11.glPopMatrix();
 	}
-
+	
 	@Override
 	protected FontRenderer igetFontRenderer() {
 		return PC_ClientUtils.mc().fontRenderer;
