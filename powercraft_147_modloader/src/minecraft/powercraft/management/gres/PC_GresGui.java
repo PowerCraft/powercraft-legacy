@@ -77,6 +77,7 @@ public class PC_GresGui extends GuiScreen implements PC_IGresGui, PC_ITileEntity
 	@Override
 	public void updateScreen() {
 		super.updateScreen();
+		child.tick();
 		if (lastFocus != null) {
 			lastFocus.updateCursorCounter();
 		}
