@@ -1,20 +1,26 @@
 package powercraft.management;
 
-import net.minecraft.src.Block;
-import net.minecraft.src.Item;
-import net.minecraft.src.ItemStack;
+import java.io.Externalizable;
+import java.io.IOException;
+import java.io.ObjectInput;
+import java.io.ObjectOutput;
 
-public class PC_ItemStack implements Comparable<PC_ItemStack>
+import net.minecraft.src.Block;
+import net.minecraft.src.CompressedStreamTools;
+import net.minecraft.src.Item;
+import net.minecraft.src.ItemBlock;
+import net.minecraft.src.ItemStack;
+import net.minecraft.src.NBTTagCompound;
+
+public class PC_ItemStack implements Externalizable, PC_INBT<PC_ItemStack>
 {
     private Object o;
     private int count;
     private int meta;
-
-    public PC_ItemStack(ItemStack itemStack)
-    {
-        this.o = itemStack.getItem();
-        this.count = itemStack.stackSize;
-        this.meta = itemStack.getItemDamage();
+    private NBTTagCompound nbtTag;
+    
+    public PC_ItemStack(){
+    	
     }
     
     public PC_ItemStack(Object o, int count, int meta)
@@ -22,6 +28,20 @@ public class PC_ItemStack implements Comparable<PC_ItemStack>
         this.o = o;
         this.count = count;
         this.meta = meta;
+    }
+
+    public PC_ItemStack(ItemStack is)
+    {
+    	if(is.getItem() instanceof ItemBlock){
+    		this.o = Block.blocksList[((ItemBlock)is.getItem()).getBlockID()];
+    	}else{
+    		this.o = is.getItem();
+    	} 
+    	count = is.stackSize;
+        meta = is.getItemDamage();
+        if(is.stackTagCompound!=null){
+        	nbtTag = (NBTTagCompound)is.stackTagCompound.copy();
+        }
     }
     
     public PC_ItemStack(Object o)
@@ -36,18 +56,33 @@ public class PC_ItemStack implements Comparable<PC_ItemStack>
 
     public ItemStack toItemStack()
     {
+    	ItemStack is;
         if (o instanceof Block)
         {
-            return new ItemStack((Block)o, count, meta);
+        	is = new ItemStack((Block)o, count, meta);
         }
         else if (o instanceof Item)
         {
-            return new ItemStack((Item)o, count, meta);
+        	is = new ItemStack((Item)o, count, meta);
+        }else{
+        	 return null;
         }
 
-        return null;
+        if(nbtTag!=null){
+        	is.stackTagCompound = (NBTTagCompound)nbtTag.copy();
+        }
+        
+        return is;
     }
 
+    public void setNBTTag(NBTTagCompound nbtTag){
+    	this.nbtTag = nbtTag;
+    }
+    
+    public NBTTagCompound getNBTTag(){
+    	return nbtTag;
+    }
+    
     public int getID()
     {
         if (o instanceof Block)
@@ -67,6 +102,11 @@ public class PC_ItemStack implements Comparable<PC_ItemStack>
         return count;
     }
 
+    public void setCount(int count)
+    {
+        this.count = count;
+    }
+    
     public int getMeta()
     {
         return meta;
@@ -78,33 +118,40 @@ public class PC_ItemStack implements Comparable<PC_ItemStack>
         if (obj instanceof ItemStack || obj instanceof PC_ItemStack)
         {
             int otherID;
-            int otherCount;
             int otherMeta;
-
+            NBTTagCompound otherNbtTag;
+            
             if (obj instanceof ItemStack)
             {
                 otherID = ((ItemStack)obj).itemID;
-                otherCount = ((ItemStack)obj).stackSize;
                 otherMeta = ((ItemStack)obj).getItemDamage();
+                otherNbtTag = ((ItemStack)obj).stackTagCompound;
             }
             else
             {
                 otherID = ((PC_ItemStack)obj).getID();
-                otherCount = ((PC_ItemStack)obj).getCount();
                 otherMeta = ((PC_ItemStack)obj).getMeta();
+                otherNbtTag =  ((PC_ItemStack)obj).getNBTTag();
             }
-
-            if (otherID != getID())
+            
+            if (otherID == getID())
             {
-                return false;
+            	if(o instanceof PC_Item){
+            		Object e =((PC_Item)o).areItemsEqual(this, otherMeta, otherNbtTag);
+            		if(e instanceof Boolean)
+            			return (Boolean)e;
+            	}
+            	if(otherMeta == meta || otherMeta == -1 || meta == -1){
+            		if(otherNbtTag==null && nbtTag==null){
+            			return true;
+            		}else if(otherNbtTag!=null && nbtTag!=null){
+            			return otherNbtTag.equals(nbtTag);
+            		}
+            	}
             }
-
-            if (otherMeta != meta && otherMeta != -1 && meta != -1)
-            {
-                return false;
-            }
-
-            return true;
+            
+            return false;
+            
         }
 
         return false;
@@ -114,23 +161,58 @@ public class PC_ItemStack implements Comparable<PC_ItemStack>
     {
         return new PC_ItemStack(o, count, meta);
     }
-    
-    @Override
+
+	@Override
 	public String toString() {
 		return "PC_ItemStack("+Item.itemsList[getID()].getItemName()+", "+count+", "+meta+")";
 	}
-    
-    @Override
-	public int compareTo(PC_ItemStack o) {
-		int otherID = o.getID();
-		if(otherID==getID()){
-			 int otherMeta = o.getMeta();
-			 if(otherMeta==-1 || meta==-1)
-				 return 0;
-			 return meta-otherMeta;
-		}else{
-			return getID()-otherID;
+
+	@Override
+	public void readExternal(ObjectInput inp) throws IOException, ClassNotFoundException {
+		int id = inp.readInt();
+		o = Item.itemsList[id];
+		count = inp.readInt();
+		meta = inp.readInt();
+		byte[] b = (byte[])inp.readObject();
+		if(b!=null){
+			nbtTag = CompressedStreamTools.decompress(b);
 		}
+	}
+
+	@Override
+	public void writeExternal(ObjectOutput out) throws IOException {
+		out.writeInt(getID());
+		out.writeInt(count);
+		out.writeInt(meta);
+		if(nbtTag==null){
+			out.writeObject(null);
+		}else{
+			byte[] b = CompressedStreamTools.compress(nbtTag);
+			out.writeObject(b);
+		}
+	}
+
+	@Override
+	public PC_ItemStack readFromNBT(NBTTagCompound nbttag) {
+		int id = nbttag.getInteger("id");
+		o = Item.itemsList[id];
+		count = nbttag.getInteger("count");
+		meta = nbttag.getInteger("meta");
+		if(nbttag.hasKey("nbtTag")){
+			nbtTag = nbttag.getCompoundTag("nbtTag");
+		}
+		return this;
+	}
+
+	@Override
+	public NBTTagCompound writeToNBT(NBTTagCompound nbttag) {
+		nbttag.setInteger("id", getID());
+		nbttag.setInteger("count", count);
+		nbttag.setInteger("meta", meta);
+		if(nbtTag!=null){
+			nbttag.setCompoundTag("nbtTag", nbtTag);
+		}
+		return nbttag;
 	}
     
 }

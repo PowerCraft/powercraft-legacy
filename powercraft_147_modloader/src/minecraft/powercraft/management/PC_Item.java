@@ -11,6 +11,7 @@ import net.minecraft.src.Item;
 import net.minecraft.src.ItemStack;
 import net.minecraft.src.ModLoader;
 import net.minecraft.src.ModTextureStatic;
+import net.minecraft.src.NBTTagCompound;
 import powercraft.management.PC_Utils.ModuleInfo;
 import powercraft.management.PC_Utils.ValueWriting;
 
@@ -130,6 +131,10 @@ public abstract class PC_Item extends Item implements PC_IItemInfo, PC_IMSG
     }
     
 	public void doCrafting(ItemStack itemStack, InventoryCrafting inventoryCrafting) {
+	}
+
+	public Object areItemsEqual(PC_ItemStack pc_ItemStack, int otherMeta, NBTTagCompound otherNbtTag) {
+		return null;
 	}
 	
 }
