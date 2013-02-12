@@ -65,7 +65,7 @@ public class PChg_AppClient extends PChg_App implements PC_IClientModule {
 		offset = offset.offset(te.getCoord());
 		Minecraft mc = PC_ClientUtils.mc();
 		mc.entityRenderer.disableLightmap(0);
-		ChunkCache cc = new ChunkCache(te.worldObj, offset.x-18, offset.y-18, offset.z-18, offset.x+17, offset.y+17, offset.z+17);
+		ChunkCache cc = new ChunkCache(te.getWorldObj(), offset.x-18, offset.y-18, offset.z-18, offset.x+17, offset.y+17, offset.z+17);
 		GL11.glEnable(GL11.GL_BLEND);
 		GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
 		PC_Renderer.glPushMatrix();
@@ -123,7 +123,7 @@ public class PChg_AppClient extends PChg_App implements PC_IClientModule {
 		RenderManager.renderPosY = 0;
 		RenderManager.renderPosZ = 0;
 		
-        List var5 = te.worldObj.getEntitiesWithinAABB(Entity.class, AxisAlignedBB.getBoundingBox(offset.x-15, offset.y-15, offset.z-15, offset.x+16, offset.y+16, offset.z+16));
+        List var5 = te.getWorldObj().getEntitiesWithinAABB(Entity.class, AxisAlignedBB.getBoundingBox(offset.x-15, offset.y-15, offset.z-15, offset.x+16, offset.y+16, offset.z+16));
         int var6;
         Entity var7;
 

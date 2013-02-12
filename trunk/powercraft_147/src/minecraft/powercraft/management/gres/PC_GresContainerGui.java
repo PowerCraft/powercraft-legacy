@@ -512,7 +512,7 @@ public class PC_GresContainerGui extends GuiContainer implements PC_IGresGui, PC
 		return tileEntity;
 	}
 	
-	public static RenderItem getItemRender(){
+	public static RenderItem getItemRenderer(){
 		return itemRenderer;
 	}
 	
