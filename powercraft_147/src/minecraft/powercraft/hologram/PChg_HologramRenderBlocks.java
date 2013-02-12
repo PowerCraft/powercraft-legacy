@@ -3,6 +3,8 @@ package powercraft.hologram;
 import powercraft.management.PC_Utils;
 import powercraft.management.PC_Utils.GameInfo;
 import net.minecraft.block.Block;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.EntityRenderer;
 import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.world.IBlockAccess;

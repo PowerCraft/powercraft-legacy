@@ -1,5 +1,8 @@
 package powercraft.hologram;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import powercraft.management.PC_ITileEntityRenderer;
 import powercraft.management.PC_TileEntity;
 import powercraft.management.PC_VecI;
@@ -10,7 +13,7 @@ public class PChg_TileEntityHologramField extends PC_TileEntity implements PC_IT
 	
 	public int glList;
 	public int tick;
-	public boolean update=true;
+	public static List<PChg_TileEntityHologramField> mapToUpdate = new ArrayList<PChg_TileEntityHologramField>();
 	
 	public PChg_TileEntityHologramField(){
 		setData(OFFSETS, new PC_VecI());
@@ -34,7 +37,8 @@ public class PChg_TileEntityHologramField extends PC_TileEntity implements PC_IT
 	@Override
 	public void updateEntity() {
 		if(tick%20==0){
-			update=true;
+			if(!mapToUpdate.contains(this))
+				mapToUpdate.add(this);
 		}
 		tick++;
 	}

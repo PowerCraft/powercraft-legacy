@@ -76,7 +76,7 @@ public class PChg_AppClient extends PChg_App implements PC_IClientModule {
 		if(te.glList==0){
 			te.glList = GL11.glGenLists(1);
 		}
-		if(te.update){
+		if(te == PChg_HologramGlassesOverlay.fieldToUpdate){
 			GL11.glNewList(te.glList, GL11.GL_COMPILE_AND_EXECUTE);
 			RenderBlocks renderer = new PChg_HologramRenderBlocks(cc);
 			PC_Renderer.resetTerrain(true);
@@ -93,7 +93,7 @@ public class PChg_AppClient extends PChg_App implements PC_IClientModule {
 			}
 			PC_Renderer.tessellatorDraw();
 			GL11.glEndList();
-			te.update = false;
+			PChg_HologramGlassesOverlay.fieldToUpdate = null;
 		}else{
 			GL11.glCallList(te.glList);
 		}
