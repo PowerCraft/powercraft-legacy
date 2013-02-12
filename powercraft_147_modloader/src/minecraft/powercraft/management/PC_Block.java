@@ -121,6 +121,10 @@ public abstract class PC_Block extends BlockContainer implements PC_IMSG
         return new ItemStack(block.blockID, 1, var2);
     }
 
+    public ItemBlock getItemBlock() {
+		return thisBlock.itemBlock;
+	}
+    
 	public void setItemBlock(ItemBlock itemBlock) {
 		thisBlock.itemBlock = itemBlock;
 	}
