@@ -144,6 +144,8 @@ public class PC_PacketHandler
 
     public static void setTileEntityArray(TileEntity tileEntity, PC_Struct2<String, Object>[] o)
     {
+    	if(tileEntity.getWorldObj()==null)
+    		return;
         ByteArrayOutputStream data = new ByteArrayOutputStream();
         ObjectOutputStream sendData;
         int dimension = GameInfo.getWorldDimension(tileEntity.getWorldObj());
