@@ -6,9 +6,11 @@ import java.util.Random;
 import net.minecraft.client.Minecraft;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.src.GuiContainer;
+import net.minecraft.src.GuiIngame;
 import net.minecraft.src.GuiMainMenu;
 import net.minecraft.src.GuiScreen;
 import net.minecraft.src.ISaveHandler;
+import net.minecraft.src.RenderManager;
 import net.minecraft.src.SaveHandler;
 import net.minecraft.src.World;
 import net.minecraft.src.mod_PowerCraft;
@@ -81,6 +83,9 @@ public class PC_MainMenuHacks {
 		}
 		if(!ingameGuiHacked){
 			mc.ingameGUI = new PC_OverlayRenderer(mc);
+			ValueWriting.setPrivateValue(GuiIngame.class, PC_ClientUtils.mc().ingameGUI, 0, new PC_RenderItemHack());
+			RenderManager.instance.itemRenderer = new PC_ItemRendererHack(PC_ClientUtils.mc());
+			PC_ClientUtils.mc().entityRenderer.itemRenderer = new PC_ItemRendererHack(PC_ClientUtils.mc());
 			ingameGuiHacked = true;
 		}
 		MinecraftServer mcs = mc.getIntegratedServer();
