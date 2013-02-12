@@ -40,6 +40,7 @@ import powercraft.management.entity.PC_EntityLaserFX;
 import powercraft.management.entity.PC_EntityLaserParticleFX;
 import powercraft.management.hacks.PC_ClientHacks;
 import powercraft.management.hacks.PC_MainMenuHacks;
+import powercraft.management.hacks.PC_RenderItemHack;
 import powercraft.management.hacks.PC_RenderPlayerHack;
 import powercraft.management.hacks.PC_RenderSkeletonHack;
 import powercraft.management.hacks.PC_RenderZombieHack;
@@ -194,6 +195,7 @@ public class mod_PowerCraft extends BaseMod {
 			map.put(EntityPlayer.class, new PC_RenderPlayerHack());
 			map.put(EntitySkeleton.class, new PC_RenderSkeletonHack());
 			map.put(EntityZombie.class, new PC_RenderZombieHack());
+			map.put(EntityItem.class, new PC_RenderItemHack());
 			PC_Logger.exitSection();
 		}
 	}
