@@ -204,7 +204,7 @@ public class mod_PowerCraft extends BaseMod {
 		PC_Logger.enterSection("PreInit");
 		PC_GlobalVariables.loadConfig();
 		PC_Logger.enterSection("Register Hacks");
-		PC_ClientHacks.hackServer();
+		PC_ClientHacks.hackClient();
 		PC_Logger.exitSection();
 		PC_Logger.enterSection("Load Modules");
 		PC_ModuleLoader.load(ModuleLoader.createFile(GameInfo.getPowerCraftFile(), "Modules"));

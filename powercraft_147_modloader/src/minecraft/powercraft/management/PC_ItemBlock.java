@@ -154,5 +154,13 @@ public abstract class PC_ItemBlock extends ItemBlock implements PC_IItemInfo, PC
 
 	public void doCrafting(ItemStack itemStack, InventoryCrafting inventoryCrafting) {
 	}
+
+	public String getTextureFile() {
+		Block b = Block.blocksList[getBlockID()];
+		if(b instanceof PC_Block){
+			return ((PC_Block) b).getTextureFile();
+		}
+		return "/terrain.png";
+	}
     
 }
