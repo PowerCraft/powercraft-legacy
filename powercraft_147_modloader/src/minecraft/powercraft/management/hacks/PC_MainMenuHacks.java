@@ -83,7 +83,7 @@ public class PC_MainMenuHacks {
 		}
 		if(!ingameGuiHacked){
 			mc.ingameGUI = new PC_OverlayRenderer(mc);
-			ValueWriting.setPrivateValue(GuiIngame.class, PC_ClientUtils.mc().ingameGUI, 0, new PC_RenderItemHack());
+			ValueWriting.setPrivateValue(GuiIngame.class, mc.ingameGUI, 0, new PC_RenderItemHack());
 			RenderManager.instance.itemRenderer = new PC_ItemRendererHack(PC_ClientUtils.mc());
 			PC_ClientUtils.mc().entityRenderer.itemRenderer = new PC_ItemRendererHack(PC_ClientUtils.mc());
 			ingameGuiHacked = true;
