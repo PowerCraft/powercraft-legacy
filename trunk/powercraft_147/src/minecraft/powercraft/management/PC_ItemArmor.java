@@ -17,14 +17,29 @@ public abstract class PC_ItemArmor extends ItemArmor implements PC_IItemInfo, PC
     public static final int HEAD = 0, TORSO = 1, LEGS = 2, FEET = 3;
 
     private PC_IModule module;
+    private boolean canSetTextureFile = true;
+    private String armorTexture;
     private Item replacedItem = null;
     private ItemData replacedItemData = null;
     
-    protected PC_ItemArmor(int id, EnumArmorMaterial material, int textureID, int type)
-    {
-        super(id-256 ,material, textureID, type);
+    protected PC_ItemArmor(int id, EnumArmorMaterial material, int type){
+    	this(id, material, type, true);
     }
 
+    protected PC_ItemArmor(int id, EnumArmorMaterial material, int type, boolean canSetTextureFile){
+    	this(id, material, type, 0, canSetTextureFile);
+    }
+    
+    protected PC_ItemArmor(int id, EnumArmorMaterial material, int type, int iconIndex){
+        this(id, material, type, iconIndex, true);
+    }
+    
+    protected PC_ItemArmor(int id, EnumArmorMaterial material, int type, int iconIndex, boolean canSetTextureFile){
+        super(id-256, material, 2, type);
+        this.canSetTextureFile = canSetTextureFile;
+        setIconIndex(iconIndex);
+    }
+    
     public void setItemID(int id){
     	int oldID = itemID;
 		Map<Integer, ItemData> map = (Map<Integer, ItemData>)ValueWriting.getPrivateValue(GameData.class, GameData.class, 0);
@@ -73,8 +88,20 @@ public abstract class PC_ItemArmor extends ItemArmor implements PC_IItemInfo, PC
     }
     
     @Override
+    public Item setTextureFile(String texture){
+    	if(canSetTextureFile){
+    		super.setTextureFile(texture);
+    	}
+    	return this;
+    }
+    
+    public void setArmorTextureFile(String armorTexture) {
+		this.armorTexture = armorTexture;
+	}
+    
+    @Override
 	public String getArmorTextureFile(ItemStack itemstack) {
-		return null;
+		return armorTexture;
 	}
     
 }

@@ -30,7 +30,7 @@ public class PCli_ItemLaserComposition extends PC_Item
 {
     public PCli_ItemLaserComposition(int id)
     {
-    	super(id, 0, 1);
+    	super(id, 0);
         setMaxStackSize(1);
         setHasSubtypes(true);
         setCreativeTab(CreativeTabs.tabDecorations);
@@ -55,7 +55,7 @@ public class PCli_ItemLaserComposition extends PC_Item
 	 */
 	@Override
 	public int getIconFromDamageForRenderPass(int dmg, int pass) {
-		return pass == 0 ? iconIndex : iconIndexRenderPass2;
+		return pass == 0 ? 0 : 1;
 	}
     
 	@Override
