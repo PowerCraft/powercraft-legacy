@@ -66,25 +66,37 @@ public class PChg_AppClient extends PChg_App implements PC_IClientModule {
 		Minecraft mc = PC_ClientUtils.mc();
 		mc.entityRenderer.disableLightmap(0);
 		ChunkCache cc = new ChunkCache(te.worldObj, offset.x-18, offset.y-18, offset.z-18, offset.x+17, offset.y+17, offset.z+17);
-		RenderBlocks renderer = new PChg_HologramRenderBlocks(cc);
+		GL11.glEnable(GL11.GL_BLEND);
+		GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
 		PC_Renderer.glPushMatrix();
 		PC_Renderer.glTranslatef((float)x+0.5f, (float)y+1.5f, (float)z+0.5f);
 		PC_Renderer.glScalef(1/16.0f, 1/16.0f, 1/16.0f);
 		PC_Renderer.glTranslatef(-offset.x, -offset.y, -offset.z);
 		
-		PC_Renderer.resetTerrain(true);
-		PC_Renderer.tessellatorStartDrawingQuads();
-		for(int yy=-16; yy<16; yy++){
-			for(int xx=-16; xx<16; xx++){
-				for(int zz=-16; zz<16; zz++){
-					Block block = Block.blocksList[cc.getBlockId(offset.x+xx, offset.y+yy, offset.z+zz)];
-					if(block!=null){
-						PC_Renderer.renderBlockByRenderType(renderer, block, offset.x+xx, offset.y+yy, offset.z+zz);
+		if(te.glList==0){
+			te.glList = GL11.glGenLists(1);
+		}
+		if(te.update){
+			GL11.glNewList(te.glList, GL11.GL_COMPILE_AND_EXECUTE);
+			RenderBlocks renderer = new PChg_HologramRenderBlocks(cc);
+			PC_Renderer.resetTerrain(true);
+			PC_Renderer.tessellatorStartDrawingQuads();
+			for(int yy=-16; yy<16; yy++){
+				for(int xx=-16; xx<16; xx++){
+					for(int zz=-16; zz<16; zz++){
+						Block block = Block.blocksList[cc.getBlockId(offset.x+xx, offset.y+yy, offset.z+zz)];
+						if(block!=null){
+							PC_Renderer.renderBlockByRenderType(renderer, block, offset.x+xx, offset.y+yy, offset.z+zz);
+						}
 					}
 				}
 			}
+			PC_Renderer.tessellatorDraw();
+			GL11.glEndList();
+			te.update = false;
+		}else{
+			GL11.glCallList(te.glList);
 		}
-		PC_Renderer.tessellatorDraw();
 		
 		GL11.glColor3f(1.0f, 1.0f, 1.0f);
 		for(int yy=-16; yy<16; yy++){
@@ -123,7 +135,8 @@ public class PChg_AppClient extends PChg_App implements PC_IClientModule {
             GL11.glPopAttrib();
         }
         RenderHelper.enableStandardItemLighting();
-        
+        mc.entityRenderer.enableLightmap(0);
+        GL11.glDisable(GL11.GL_BLEND);
         RenderManager.renderPosX = rpx;
 		RenderManager.renderPosY = rpy;
 		RenderManager.renderPosZ = rpz;
