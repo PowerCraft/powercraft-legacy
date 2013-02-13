@@ -11,7 +11,10 @@ import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.InventoryLargeChest;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTBase;
+import net.minecraft.nbt.NBTTagByte;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.NBTTagInt;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntityBrewingStand;
@@ -552,7 +555,13 @@ public class PC_InvUtils
         for (int i = 0; i < nbttaglist.tagCount(); i++)
         {
             NBTTagCompound nbttagcompound1 = (NBTTagCompound) nbttaglist.tagAt(i);
-            int j = nbttagcompound1.getByte("Slot") & 0xff;
+            NBTBase nbtTag = nbttagcompound1.getTag("Slot");
+            int j = -1;
+            if(nbtTag instanceof NBTTagByte){
+            	j = ((NBTTagByte) nbtTag).data & 0xff;
+            }else if(nbtTag instanceof NBTTagInt){
+           	 	j = ((NBTTagInt) nbtTag).data;
+            }
 
             if (j >= 0 && j < inventory.getSizeInventory())
             {
@@ -570,7 +579,7 @@ public class PC_InvUtils
             if (inventory.getStackInSlot(i) != null)
             {
                 NBTTagCompound nbttagcompound1 = new NBTTagCompound();
-                nbttagcompound1.setByte("Slot", (byte) i);
+                nbttagcompound1.setInteger("Slot", i);
                 inventory.getStackInSlot(i).writeToNBT(nbttagcompound1);
                 nbttaglist.appendTag(nbttagcompound1);
             }
