@@ -16,4 +16,9 @@ public class PCcp_ContainerCheckpoint extends PC_GresBaseWithInventory<PCcp_Tile
 		super(player, GameInfo.<PCcp_TileEntityCheckpoint>getTE(player.worldObj, (Integer)o[0], (Integer)o[1], (Integer)o[2]), o);
 	}
 
+	@Override
+	protected boolean canShiftTransfer() {
+		return true;
+	}
+	
 }

@@ -16,4 +16,9 @@ public class PCma_ContainerBlockBuilder extends PC_GresBaseWithInventory<PCma_Ti
 		super(player, (PCma_TileEntityBlockBuilder)te, o);
 	}
 
+	@Override
+	protected boolean canShiftTransfer() {
+		return true;
+	}
+	
 }

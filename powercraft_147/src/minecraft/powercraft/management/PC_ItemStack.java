@@ -56,6 +56,8 @@ public class PC_ItemStack implements Externalizable, PC_INBT<PC_ItemStack>
 
     public ItemStack toItemStack()
     {
+    	if(getID()==-1)
+    		return null;
     	ItemStack is;
         if (o instanceof Block)
         {

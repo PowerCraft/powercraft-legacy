@@ -15,4 +15,10 @@ public class PClo_ContainerSpecial extends PC_GresBaseWithInventory<PClo_TileEnt
     {
         super(player, (PClo_TileEntitySpecial)te, o);
     }
+    
+    @Override
+	protected boolean canShiftTransfer() {
+		return true;
+	}
+    
 }

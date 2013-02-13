@@ -47,4 +47,9 @@ public class PCmo_ContainerMiner extends PC_GresBaseWithInventory<PC_TileEntity>
 		miner.cargo.closeChest();
 	}
 	
+	@Override
+	protected boolean canShiftTransfer() {
+		return true;
+	}
+	
 }

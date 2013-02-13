@@ -170,4 +170,9 @@ public class PCws_ContainerWeaselDiskManager extends PC_GresBaseWithInventory<PC
 		
 	}
 	
+	@Override
+	protected boolean canShiftTransfer() {
+		return true;
+	}
+	
 }

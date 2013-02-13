@@ -16,4 +16,10 @@ public class PCma_ContainerRoaster extends PC_GresBaseWithInventory<PCma_TileEnt
     {
         super(player, (PCma_TileEntityRoaster)te, o);
     }
+    
+    @Override
+	protected boolean canShiftTransfer() {
+		return true;
+	}
+    
 }
