@@ -2075,7 +2075,7 @@ public class PC_Utils implements PC_IPacketHandler
 		}
     	
 		public static Object loadFromNBT(NBTTagCompound nbtTag, String key) {
-			Object value = ValueWriting.getPrivateValue(NBTTagCompound.class, nbtTag, 0);
+			Object value = nbtTag.getTag(key);
 			if(value instanceof NBTTagCompound){
 				NBTTagCompound nbtTag2 = nbtTag.getCompoundTag(key);
 				try {

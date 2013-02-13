@@ -5,13 +5,6 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 
-import powercraft.management.PC_Utils.GameInfo;
-import powercraft.management.PC_Utils.ModuleInfo;
-import powercraft.management.PC_Utils.ValueWriting;
-import powercraft.management.inventory.PC_IInventoryWrapper;
-import powercraft.management.recipes.PC_ISpecialAccessInventory;
-import powercraft.management.recipes.PC_IStateReportingInventory;
-
 import net.minecraft.src.Block;
 import net.minecraft.src.EntityPlayerSP;
 import net.minecraft.src.IBlockAccess;
@@ -19,12 +12,21 @@ import net.minecraft.src.IInventory;
 import net.minecraft.src.InventoryLargeChest;
 import net.minecraft.src.Item;
 import net.minecraft.src.ItemStack;
+import net.minecraft.src.NBTBase;
+import net.minecraft.src.NBTTagByte;
 import net.minecraft.src.NBTTagCompound;
+import net.minecraft.src.NBTTagInt;
 import net.minecraft.src.NBTTagList;
 import net.minecraft.src.TileEntity;
 import net.minecraft.src.TileEntityBrewingStand;
 import net.minecraft.src.TileEntityFurnace;
 import net.minecraft.src.World;
+import powercraft.management.PC_Utils.GameInfo;
+import powercraft.management.PC_Utils.ModuleInfo;
+import powercraft.management.PC_Utils.ValueWriting;
+import powercraft.management.inventory.PC_IInventoryWrapper;
+import powercraft.management.recipes.PC_ISpecialAccessInventory;
+import powercraft.management.recipes.PC_IStateReportingInventory;
 
 public class PC_InvUtils
 {
@@ -558,7 +560,13 @@ public class PC_InvUtils
         for (int i = 0; i < nbttaglist.tagCount(); i++)
         {
             NBTTagCompound nbttagcompound1 = (NBTTagCompound) nbttaglist.tagAt(i);
-            int j = nbttagcompound1.getByte("Slot") & 0xff;
+            NBTBase nbtTag = nbttagcompound1.getTag("Slot");
+            int j = -1;
+            if(nbtTag instanceof NBTTagByte){
+            	j = ((NBTTagByte) nbtTag).data & 0xff;
+            }else if(nbtTag instanceof NBTTagInt){
+           	 	j = ((NBTTagInt) nbtTag).data;
+            }
 
             if (j >= 0 && j < inventory.getSizeInventory())
             {
@@ -576,7 +584,7 @@ public class PC_InvUtils
             if (inventory.getStackInSlot(i) != null)
             {
                 NBTTagCompound nbttagcompound1 = new NBTTagCompound();
-                nbttagcompound1.setByte("Slot", (byte) i);
+                nbttagcompound1.setInteger("Slot", i);
                 inventory.getStackInSlot(i).writeToNBT(nbttagcompound1);
                 nbttaglist.appendTag(nbttagcompound1);
             }
