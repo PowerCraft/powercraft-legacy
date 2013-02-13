@@ -238,6 +238,7 @@ public class mod_PowerCraft extends BaseMod {
 					Lang.registerLanguage(module, l.toArray(new PC_LangEntry[0]));
 				}
 			}
+			addStringLocalization("pc.gui.mods", "en_US", "Mods");
 			PC_Logger.exitSection();
 			PC_Logger.enterSection("Module Texture Init");
 			for(PC_IModule module:modules){
