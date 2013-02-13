@@ -243,9 +243,9 @@ public class PC_GresGui extends GuiScreen implements PC_IGresGui, PC_ITileEntity
 	 */
 	@Override
 	public void drawScreen(int par1, int par2, float par3) {
-
+		
 		gui.updateTick(this);
-
+		
 		if(!gui.drawBackground(this, par1, par2, par3))
 			drawDefaultBackground();
 		

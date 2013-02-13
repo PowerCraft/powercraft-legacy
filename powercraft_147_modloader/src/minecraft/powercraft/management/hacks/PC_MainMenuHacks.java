@@ -5,9 +5,11 @@ import java.util.Random;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.server.MinecraftServer;
+import net.minecraft.src.GameSettings;
 import net.minecraft.src.GuiContainer;
 import net.minecraft.src.GuiIngame;
 import net.minecraft.src.GuiMainMenu;
+import net.minecraft.src.GuiOptions;
 import net.minecraft.src.GuiScreen;
 import net.minecraft.src.ISaveHandler;
 import net.minecraft.src.RenderManager;
@@ -45,6 +47,7 @@ public class PC_MainMenuHacks {
 				ValueWriting.setPrivateValue(GuiMainMenu.class, gui, 2, getRandomSplash());
 			} catch (Throwable t) {}
 		}
+		lastHacked = gui;
 	}
 	
 	
@@ -56,12 +59,12 @@ public class PC_MainMenuHacks {
 	public void tickStart() {
 		Minecraft mc = PC_ClientUtils.mc();
 		GuiScreen gs = mc.currentScreen;
-		if(gs instanceof GuiMainMenu){
-			gs.drawString(PC_ClientUtils.mc().fontRenderer, "PowerCraft " + mod_PowerCraft.getInstance().getVersion(), 2 , 
-					gs.height - 10 - PC_ClientUtils.mc().fontRenderer.FONT_HEIGHT, 0xffffffff);
-		}
 		if(gs!=lastHacked){
 			if(gs instanceof GuiMainMenu){
+				if(!(gs instanceof PC_GuiMainMenuHack)){
+					mc.displayGuiScreen(new PC_GuiMainMenuHack());
+					gs = mc.currentScreen;
+				}
 				if(PC_GlobalVariables.hackSplashes)
 					hackSplashes((GuiMainMenu)gs);
 				if(PC_GlobalVariables.showUpdateWindow && !updateWindowShowed){
@@ -69,6 +72,13 @@ public class PC_MainMenuHacks {
 					updateWindowShowed = true;
 				}
 				
+			}else if(gs instanceof GuiOptions){
+				if(!(gs instanceof PC_GuiOptionsHack)){
+					GuiScreen parentScreen = (GuiScreen)ValueWriting.getPrivateValue(GuiOptions.class, gs, 1);
+					GameSettings options = (GameSettings)ValueWriting.getPrivateValue(GuiOptions.class, gs, 2);
+					mc.displayGuiScreen(new PC_GuiOptionsHack(parentScreen, options));
+					gs = mc.currentScreen;
+				}
 			}else if(gs instanceof GuiContainer){
 				ValueWriting.setPrivateValue(GuiContainer.class, gs, 0, new PC_RenderItemHack());
 			}

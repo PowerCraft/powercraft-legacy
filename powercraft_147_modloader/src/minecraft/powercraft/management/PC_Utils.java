@@ -1784,6 +1784,13 @@ public class PC_Utils implements PC_IPacketHandler
 			return FurnaceRecipes.smelting().getSmeltingResult(item.itemID);
 		}
 		
+		public static ItemStack getContainerItemStack(ItemStack itemStack) {
+			Item item = itemStack.getItem().getContainerItem();
+			if(item==null)
+				return null;
+			return new ItemStack(item, 1, 0);
+		}
+		
    }
     
     public static class ModuleInfo{

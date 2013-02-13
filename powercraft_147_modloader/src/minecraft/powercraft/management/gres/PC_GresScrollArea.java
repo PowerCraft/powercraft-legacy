@@ -81,6 +81,10 @@ public class PC_GresScrollArea extends PC_GresWidget {
 			if((type & HSCROLL)==0)
 				size.x = cSize.x + 18;
 		}
+		if(size.x<minSize.x)
+			size.x=minSize.x;
+		if(size.y<minSize.y)
+			size.y=minSize.y;
 		return size.copy();
 	}
 
