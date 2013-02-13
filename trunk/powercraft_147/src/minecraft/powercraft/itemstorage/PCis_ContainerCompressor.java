@@ -47,5 +47,10 @@ public class PCis_ContainerCompressor extends PC_GresBaseWithInventory<PC_TileEn
 		inv.closeChest();
 		super.onCraftGuiClosed(par1EntityPlayer);
 	}
+
+	@Override
+	protected boolean canShiftTransfer() {
+		return true;
+	}
 	
 }

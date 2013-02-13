@@ -62,4 +62,10 @@ public class PCma_ContainerAutomaticWorkbench extends PC_GresBaseWithInventory<P
 
         return invSlots;
     }
+    
+    @Override
+	protected boolean canShiftTransfer() {
+		return true;
+	}
+    
 }

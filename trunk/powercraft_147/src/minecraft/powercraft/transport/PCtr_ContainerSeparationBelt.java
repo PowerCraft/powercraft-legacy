@@ -15,4 +15,10 @@ public class PCtr_ContainerSeparationBelt extends PC_GresBaseWithInventory<PCtr_
     {
         super(player, (PCtr_TileEntitySeparationBelt)te, o);
     }
+    
+    @Override
+	protected boolean canShiftTransfer() {
+		return true;
+	}
+    
 }
