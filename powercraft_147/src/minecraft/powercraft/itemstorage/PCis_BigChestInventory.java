@@ -19,7 +19,7 @@ import powercraft.management.PC_VecI;
 
 public class PCis_BigChestInventory implements IInventory {
 
-	private ItemStack inv[] = new ItemStack[100];
+	private ItemStack inv[] = new ItemStack[256];
 	private PCis_EntityItemInBigChest entity[] = new PCis_EntityItemInBigChest[100];
 	private World world;
 	private PC_VecI mid;
