@@ -2718,6 +2718,8 @@ public class PCmo_EntityMiner extends Entity implements PC_IInventoryWrapper {
 	}
 	
 	private void handleKeybordInput(EntityPlayer player){
+		if(player.openContainer!=null && player.openContainer != player.inventoryContainer)
+			return;
 		for (int i = 0; i <= 8; i++) {
 			if (keyPressTimer[i] > 0) {
 				keyPressTimer[i]--;
