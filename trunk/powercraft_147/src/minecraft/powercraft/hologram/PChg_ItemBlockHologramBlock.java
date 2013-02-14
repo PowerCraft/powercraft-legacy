@@ -118,6 +118,8 @@ public class PChg_ItemBlockHologramBlock extends PC_ItemBlock {
 			names.add(new PC_Struct3<String, String, String[]>(getItemName(), "Hologramblock", null));
 			names.add(new PC_Struct3<String, String, String[]>(getItemName()+".desc", "Contains: %s", null));
 			return names;
+		case PC_Utils.MSG_DONT_SHOW_IN_CRAFTING_TOOL:
+			return true;
 		}
 		return null;
 	}

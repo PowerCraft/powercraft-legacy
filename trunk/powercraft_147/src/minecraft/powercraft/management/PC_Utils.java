@@ -2160,7 +2160,7 @@ public class PC_Utils implements PC_IPacketHandler
 		}
     	
 		public static Object loadFromNBT(NBTTagCompound nbtTag, String key) {
-			Object value = nbtTag.tagMap.get(key);
+			Object value = nbtTag.getTag(key);
 			if(value instanceof NBTTagCompound){
 				NBTTagCompound nbtTag2 = nbtTag.getCompoundTag(key);
 				try {
