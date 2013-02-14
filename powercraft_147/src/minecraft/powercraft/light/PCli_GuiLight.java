@@ -41,16 +41,6 @@ public class PCli_GuiLight implements PC_IGresClient {
 	@Override
 	public void initGui(PC_IGresGui gui) {
 		PC_GresWindow w = (PC_GresWindow) new PC_GresWindow(Lang.tr("tile.PCli_BlockLight.name"));
-		PC_GresWidgetTab t;
-		w.add(t = new PC_GresWidgetTab(0x670000, "/gui/items.png", 128, 48, 16, 16));
-		
-		PC_GresItemToggel it;
-		t.add(it = new PC_GresItemToggel(1, 1));
-		List<PC_Struct2<ItemStack, List<String>>> l = new ArrayList<PC_Struct2<ItemStack, List<String>>>();
-		l.add(new PC_Struct2<ItemStack, List<String>>(new ItemStack(Block.torchRedstoneIdle), Arrays.asList("On when no Redstone")));
-		l.add(new PC_Struct2<ItemStack, List<String>>(new ItemStack(Block.torchRedstoneActive), Arrays.asList("On when Redstone")));
-		l.add(new PC_Struct2<ItemStack, List<String>>(new ItemStack(Block.lever), Arrays.asList("On when Redstone Toggle")));
-		it.setItemList(0, 0, l);
 		
 		PC_GresLayoutV v = (PC_GresLayoutV)new PC_GresLayoutV().setAlignH(PC_GresAlign.STRETCH);
 		
