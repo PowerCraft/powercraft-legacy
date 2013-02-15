@@ -125,7 +125,7 @@ public class PC_GresGui extends GuiScreen implements PC_IGresGui, PC_ITileEntity
 
 		if (lastFocus != null && lastFocus.visible) {
 			if (lastFocus.keyTyped(c, i)) {
-				gui.actionPerformed(lastFocus, this);
+				registerAction(lastFocus);
 				return;
 			}
 		}
@@ -139,7 +139,6 @@ public class PC_GresGui extends GuiScreen implements PC_IGresGui, PC_ITileEntity
 
 	@Override
 	protected void mouseClicked(int x, int y, int button) {
-		super.mouseClicked(x, y, button);
 
 		PC_GresWidget newFocus = child.getWidgetUnderMouse(new PC_VecI(x, y));
 		if (newFocus != null && !newFocus.visible) newFocus = null;
@@ -154,12 +153,16 @@ public class PC_GresGui extends GuiScreen implements PC_IGresGui, PC_ITileEntity
 			lastFocus = newFocus;
 		}
 
+		boolean makeAction = false;
 		if (newFocus != null) {
 			PC_VecI fpos = newFocus.getPositionOnScreen();
 			if (newFocus.mouseClick(new PC_VecI(x - fpos.x, y - fpos.y), button)) {
-				gui.actionPerformed(newFocus, this);
+				makeAction = true;
 			}
 		}
+		super.mouseClicked(x, y, button);
+		if(makeAction)
+			registerAction(newFocus);
 	}
 
 	private void mouseMoved(int x, int y) {
@@ -182,7 +185,7 @@ public class PC_GresGui extends GuiScreen implements PC_IGresGui, PC_ITileEntity
 		if (lastFocus != null) {
 			PC_VecI fpos = lastFocus.getPositionOnScreen();
 			if (lastFocus.mouseClick(new PC_VecI(x - fpos.x, y - fpos.y), -1)) {
-				gui.actionPerformed(lastFocus, this);
+				registerAction(lastFocus);
 			}
 		}
 	}
