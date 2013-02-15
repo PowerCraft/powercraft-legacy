@@ -27,7 +27,7 @@ import weasel.obj.WeaselNull;
 import weasel.obj.WeaselObject;
 import weasel.obj.WeaselString;
 
-public abstract class PCws_WeaselPlugin implements PC_INBT<PCws_WeaselPlugin> {
+public abstract class PCws_WeaselPlugin implements PC_INBT<PCws_WeaselPlugin>, PCws_IWeaselNetworkDevice {
 
 	private int id;
 	private int networkID;
@@ -397,6 +397,16 @@ public abstract class PCws_WeaselPlugin implements PC_INBT<PCws_WeaselPlugin> {
 		PCws_TileEntityWeasel te = getTE();
 		if(te!=null)
 			te.setData(key, value);
+	}
+
+	@Override
+	public void setNetworkName(String name) {
+		setData("networkName", name);
+	}
+
+	@Override
+	public void setNetworkColor(PC_Color color) {
+		setData("color", color);
 	}
 	
 }

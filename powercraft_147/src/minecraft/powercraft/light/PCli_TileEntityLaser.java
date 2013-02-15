@@ -80,6 +80,7 @@ public class PCli_TileEntityLaser extends PC_TileEntity implements PC_IBeamHandl
 	    	laser.setStartMove(metadata == 4?1:metadata == 5?-1:0, 0, metadata == 2?1:metadata == 3?-1:0);
 	    	laser.setColor(PCli_ItemLaserComposition.getColorForItemStack(getItemStack()));
 	    	laser.setDetectEntities(true);
+	    	laser.setCanChangeColor(true);
     	}
     	laser.setStartLength(PCli_ItemLaserComposition.getLengthLimit(getItemStack(), isRoasterBurning()));
     	boolean oldActive = isActive();

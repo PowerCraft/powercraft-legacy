@@ -18,22 +18,19 @@ import powercraft.management.PC_VecI;
 public class PCws_ContainerWeaselDiskManager extends PC_GresBaseWithInventory<PC_TileEntity> {
 	
 	protected IInventory inventory;
-	protected PC_VecI pos;
 	
 	public PCws_ContainerWeaselDiskManager(EntityPlayer player, PC_TileEntity te, Object[] o) {
 		super(player, te, o);
 	}
 
 	@Override
-	protected void init(Object[] o) {
-		pos = new PC_VecI((Integer)o[0], (Integer)o[1], (Integer)o[2]);
-	}
+	protected void init(Object[] o) {}
 
 	@Override
 	protected PC_Slot[] getAllSlots() {
 		
 		invSlots = new PC_Slot[3];
-		inventory = new WeaselDiskManagerInventory(thePlayer.worldObj, pos);
+		inventory = new WeaselDiskManagerInventory(thePlayer.worldObj, tileEntity.getCoord());
 		invSlots[0] = new PC_Slot(inventory, 0);
 		invSlots[1] = new PC_Slot(inventory, 1);
 		invSlots[2] = new PC_Slot(inventory, 2);

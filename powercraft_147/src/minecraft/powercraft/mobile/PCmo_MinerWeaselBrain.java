@@ -9,6 +9,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import powercraft.management.PC_Color;
 import powercraft.management.PC_InvUtils;
 import powercraft.management.PC_PacketHandler;
 import powercraft.management.PC_Struct2;
@@ -19,11 +20,15 @@ import powercraft.management.gres.PC_GresTextEditMultiline.Keyword;
 import powercraft.management.PC_VecI;
 import powercraft.mobile.PCmo_Command.ParseException;
 import powercraft.mobile.PCmo_EntityMiner.Agree;
+import powercraft.weasel.PCws_IWeaselEngine;
+import powercraft.weasel.PCws_IWeaselNetworkDevice;
 import powercraft.weasel.PCws_WeaselHighlightHelper;
 import powercraft.weasel.PCws_WeaselManager;
+import powercraft.weasel.PCws_WeaselNetwork;
 import weasel.Calc;
 import weasel.IWeaselHardware;
 import weasel.WeaselEngine;
+import weasel.WeaselFunctionManager;
 import weasel.exception.WeaselRuntimeException;
 import weasel.lang.Instruction;
 import weasel.obj.WeaselBoolean;
@@ -33,14 +38,15 @@ import weasel.obj.WeaselObject;
 import weasel.obj.WeaselString;
 
 
-public class PCmo_MinerWeaselBrain  implements PCmo_IMinerBrain, IWeaselHardware {
+public class PCmo_MinerWeaselBrain  implements PCmo_IMinerBrain, PCws_IWeaselNetworkDevice, PCws_IWeaselEngine {
 
 	private static final String default_program = 
 			"# *** Weasel powered Miner ***\n";
 	
 	private PCmo_EntityMiner miner;
 	/** weasel engine */
-	private WeaselEngine engine = new WeaselEngine(this);
+	private MinerProvider functionProvider; 
+	private WeaselEngine engine;
 	private List<PC_Struct2<String, Object[]>> externalCallsWaiting = new ArrayList<PC_Struct2<String,Object[]>>();
 	private int sleep = 0;
 	private String program = default_program;
@@ -48,11 +54,19 @@ public class PCmo_MinerWeaselBrain  implements PCmo_IMinerBrain, IWeaselHardware
 	private boolean stop=false;
 	private static Random rand = new Random();
 	/** Displayed text. "\n" is a newline. */
-	public String text = "";
+	private String text = "";
+	
+	private int networkID = -1;
+	private int id;
+	
+	
 	/**  */
 	private List<String> userInput = new ArrayList<String>();
 	
 	public PCmo_MinerWeaselBrain(PCmo_EntityMiner miner) {
+		id = PCws_WeaselManager.registerPlugin(this);
+		functionProvider = new MinerProvider();
+		engine = new WeaselEngine(functionProvider);
 		this.miner = miner;
 		miner.setInfo("text", "");
 	}
@@ -125,12 +139,10 @@ public class PCmo_MinerWeaselBrain  implements PCmo_IMinerBrain, IWeaselHardware
 		}
 	}
 	
-	@Override
 	public boolean doesProvideFunction(String functionName) {
 		return getProvidedFunctionNames().contains(functionName);
 	}
 
-	@Override
 	public List<String> getProvidedFunctionNames() {
 		List<String> list = new ArrayList<String>();
 		list.add("run");
@@ -240,7 +252,6 @@ public class PCmo_MinerWeaselBrain  implements PCmo_IMinerBrain, IWeaselHardware
 		return list;
 	}
 	
-	@Override
 	public WeaselObject callProvidedFunction(WeaselEngine engine, String functionName, WeaselObject[] args) {
 		try {
 			if (functionName.equals("bell")) {
@@ -912,7 +923,6 @@ public class PCmo_MinerWeaselBrain  implements PCmo_IMinerBrain, IWeaselHardware
 		throw new WeaselRuntimeException(functionName + " not implemented or not ended properly.");
 	}
 
-	@Override
 	public List<String> getProvidedVariableNames() {
 		List<String> list = new ArrayList<String>(0);
 		list.add("miner.pos.x");
@@ -931,7 +941,6 @@ public class PCmo_MinerWeaselBrain  implements PCmo_IMinerBrain, IWeaselHardware
 		return list;
 	}
 	
-	@Override
 	public WeaselObject getVariable(String name) {
 		if (name.equals("miner.pos.x")) {
 			return new WeaselDouble(Math.round(miner.posX));
@@ -958,7 +967,6 @@ public class PCmo_MinerWeaselBrain  implements PCmo_IMinerBrain, IWeaselHardware
 		return null;
 	}
 
-	@Override
 	public void setVariable(String name, WeaselObject object) {
 		if (name.equals("term.text") || name.equals("term.txt")) {
 			text = "";
@@ -968,7 +976,7 @@ public class PCmo_MinerWeaselBrain  implements PCmo_IMinerBrain, IWeaselHardware
 
 	@Override
 	public List<Keyword> getKeywords() {
-		return PCws_WeaselHighlightHelper.weasel(this, engine);
+		return PCws_WeaselHighlightHelper.weasel(functionProvider, engine);
 	}
 	
 	@Override
@@ -1059,6 +1067,112 @@ public class PCmo_MinerWeaselBrain  implements PCmo_IMinerBrain, IWeaselHardware
 				userInput.remove(0);
 			}
 		}
+	}
+
+	@Override
+	public WeaselEngine getEngine() {
+		return engine;
+	}
+
+	@Override
+	public void setNetwork(int i) {
+		networkID = i;
+	}
+
+	@Override
+	public int getID() {
+		return id;
+	}
+
+	@Override
+	public WeaselFunctionManager makePluginProvider() {
+		WeaselFunctionManager fp = new WeaselFunctionManager();
+		return fp;
+	}
+
+	@Override
+	public void setNetworkName(String name) {
+		
+	}
+
+	@Override
+	public void setNetworkColor(PC_Color copy) {
+		
+	}
+
+	@Override
+	public PCws_WeaselNetwork getNetwork() {
+		if(networkID==-1)
+			return null;
+		return PCws_WeaselManager.getNetwork(networkID);
+	}
+	
+	public class MinerProvider extends WeaselFunctionManager{
+		
+		@Override
+		public WeaselObject call(WeaselEngine engine, String name, boolean var, WeaselObject... args) throws WeaselRuntimeException {
+			try{
+				if(var){
+					if(PCmo_MinerWeaselBrain.this.getProvidedVariableNames().contains(name)){
+						if(args.length==0){
+							return PCmo_MinerWeaselBrain.this.getVariable(name);
+						}else{
+							PCmo_MinerWeaselBrain.this.setVariable(name, args[0]);
+							return new WeaselNull();
+						}
+					}else{
+						throw new WeaselRuntimeException("Variable not found");
+					}
+				}else{
+					if(PCmo_MinerWeaselBrain.this.doesProvideFunction(name)){
+						return PCmo_MinerWeaselBrain.this.callProvidedFunction(engine, name, args);
+					}else{
+						throw new WeaselRuntimeException("Function not found");
+					}
+				}
+			}catch(WeaselRuntimeException e){
+				try{
+					return PCws_WeaselManager.getGlobalFunctionManager().call(engine, name, var, args);
+				}catch(WeaselRuntimeException e1){
+					if(getNetwork()==null){
+						throw e1;
+					}else{
+						return getNetwork().getFunctionHandler().call(engine, name, var, args);
+					}
+				}
+			}
+		}
+
+		@Override
+		public boolean doesProvideFunction(String name) {
+			if(PCmo_MinerWeaselBrain.this.doesProvideFunction(name))
+				return true;
+			if(PCws_WeaselManager.getGlobalFunctionManager().doesProvideFunction(name))
+				return true;
+			if(getNetwork()==null)
+				return false;
+			return getNetwork().getFunctionHandler().doesProvideFunction(name);
+		}
+		
+		@Override
+		public List<String> getProvidedFunctionNames() {
+			List<String> list = PCmo_MinerWeaselBrain.this.getProvidedFunctionNames();
+			list.addAll(PCws_WeaselManager.getGlobalFunctionManager().getProvidedFunctionNames());
+			if(getNetwork()!=null){
+				list.addAll(getNetwork().getFunctionHandler().getProvidedFunctionNames());
+			}
+			return list;
+		}
+		
+		@Override
+		public List<String> getProvidedVariableNames() {
+			List<String> list = PCmo_MinerWeaselBrain.this.getProvidedVariableNames();
+			if(getNetwork()!=null){
+				list.addAll(getNetwork().getFunctionHandler().getProvidedVariableNames());
+			}
+			return list;
+		}
+		
 	}
 	
 }

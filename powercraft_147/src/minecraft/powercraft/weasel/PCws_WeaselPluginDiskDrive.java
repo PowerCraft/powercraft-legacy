@@ -118,9 +118,13 @@ public class PCws_WeaselPluginDiskDrive extends PCws_WeaselPlugin implements PCw
 				}
 			}
 			if(PCws_ItemWeaselDisk.getType(inv[var1])==PCws_ItemWeaselDisk.LIBRARY){
-				for(PCws_WeaselPlugin plugin:getNetwork()){
+				String lib = PCws_ItemWeaselDisk.getLabel(inv[var1]);
+				for(PCws_IWeaselNetworkDevice plugin:getNetwork()){
 					if(plugin instanceof PCws_IWeaselEngine){
-						((PCws_IWeaselEngine) plugin).getEngine().libs.remove(diskName);
+						WeaselEngine engine = ((PCws_IWeaselEngine) plugin).getEngine();
+						if(engine.libs.containsKey(lib)){
+							engine.libs.remove(lib);
+						}
 					}
 				}
 			}

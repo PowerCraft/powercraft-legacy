@@ -1773,19 +1773,6 @@ public class PC_Utils implements PC_IPacketHandler
 			return false;
 		}
 
-		public static void dropXP(World world, double x, double y, double z, int xp) {
-			while (xp > 0)
-            {
-                int drop = EntityXPOrb.getXPSplit(xp);
-                xp -= drop;
-                world.spawnEntityInWorld(new EntityXPOrb(world, x, y, z, drop));
-            }
-		}
-		
-		public static void dropXP(World world, PC_VecF pos, int xp) {
-			dropXP(world, pos, xp);
-		}
-
 		public static List<PC_ItemStack>[][] getExpectedInput(IRecipe recipe, int width, int hight) {
 			List<PC_ItemStack>[][] list;
 			if (recipe instanceof PC_IRecipeInfo){
