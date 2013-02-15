@@ -31,8 +31,8 @@ public class PCtr_BlockBeltVerticalSeparator extends PCtr_BlockBeltBase {
             return;
         }
 
-        PCtr_TileEntityVerticalSeparationBelt tes = (PCtr_TileEntityVerticalSeparationBelt) world.getBlockTileEntity(i, j, k);
-        redir =1; //= tes.getDirection(entity);
+        PCtr_TileEntitySeparationBeltBase tes = (PCtr_TileEntitySeparationBeltBase) world.getBlockTileEntity(i, j, k);
+        redir =-1; //= tes.getDirection(entity);
         int rotation=0;
         
         PC_VecI pos_leading_to = pos.copy();

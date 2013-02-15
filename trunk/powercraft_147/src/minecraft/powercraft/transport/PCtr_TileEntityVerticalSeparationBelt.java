@@ -2,12 +2,14 @@ package powercraft.transport;
 
 import powercraft.management.PC_VecI;
 import powercraft.management.entity.PC_EntityItem;
+import powercraft.management.inventory.PC_ISpecialAccessInventory;
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.EntityItem;
+import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 
-public class PCtr_TileEntityVerticalSeparationBelt extends PCtr_TileEntitySeparationBelt {
+public class PCtr_TileEntityVerticalSeparationBelt extends PCtr_TileEntitySeparationBeltBase{
 
 	@Override
 	public int calculateItemDirection(Entity entity) {
@@ -156,5 +158,4 @@ public class PCtr_TileEntityVerticalSeparationBelt extends PCtr_TileEntitySepara
 
         return 0;
 	}
-
-}
+	}
