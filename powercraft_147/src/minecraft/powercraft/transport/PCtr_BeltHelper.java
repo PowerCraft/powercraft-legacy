@@ -613,6 +613,7 @@ public class PCtr_BeltHelper
     public static void moveEntityOnBelt(World world, PC_VecI pos, Entity entity, boolean bordersEnabled, boolean motionEnabled, int moveDirection,
             double max_horizontal_speed, double horizontal_boost)
     {
+    	int jumpModifier = (entity instanceof EntityItem || entity instanceof EntityXPOrb)?1:3;
         if (motionEnabled && world.rand.nextInt(35) == 0)
         {
             List list = world.getEntitiesWithinAABBExcludingEntity(entity,
@@ -739,7 +740,7 @@ public class PCtr_BeltHelper
             case 4:
                 if (motionY <= max_horizontal_speed && motionEnabled)
                 {
-                    entity.addVelocity(0, horizontal_boost, 0);
+                    entity.addVelocity(0, jumpModifier*horizontal_boost, 0);
                 }
 
                 if (bordersEnabled)
@@ -760,7 +761,7 @@ public class PCtr_BeltHelper
             case 5:
                 if (motionY >= -max_horizontal_speed && motionEnabled)
                 {
-                    entity.addVelocity(0, -horizontal_boost, 0);
+                    entity.addVelocity(0, -jumpModifier*horizontal_boost, 0);
                 }
 
                 if (bordersEnabled)

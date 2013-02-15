@@ -22,22 +22,17 @@ import net.minecraft.entity.passive.EntityOcelot;
 import net.minecraft.entity.passive.EntityPig;
 import net.minecraft.entity.passive.EntitySheep;
 import net.minecraft.entity.passive.EntityWolf;
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-import powercraft.management.PC_InvUtils;
 import powercraft.management.PC_Struct2;
 import powercraft.management.PC_VecI;
 import powercraft.management.entity.PC_EntityItem;
 import powercraft.management.inventory.PC_ISpecialAccessInventory;
 
-public class PCtr_TileEntitySeparationBelt extends PCtr_TileEntityRedirectionBeltBase implements IInventory, PC_ISpecialAccessInventory
+public class PCtr_TileEntitySeparationBelt extends PCtr_TileEntitySeparationBeltBase
 {
-	public static final String GROUP_LOGS = "group_logs", GROUP_PLANKS = "group_planks", GROUP_ALL = "group_all";
-
-    public PCtr_TileEntitySeparationBelt()
+	public PCtr_TileEntitySeparationBelt()
     {
         separatorContents = new ItemStack[18];
         setData(GROUP_LOGS, false);
@@ -45,42 +40,6 @@ public class PCtr_TileEntitySeparationBelt extends PCtr_TileEntityRedirectionBel
         setData(GROUP_ALL, false);
     }
     
-    public boolean isGroupLogs(){
-    	return (Boolean)getData(GROUP_LOGS);
-    }
-    
-    public void setGroupLogs(boolean state){
-    	setData(GROUP_LOGS, state);
-    }
-    
-    public boolean isGroupPlanks(){
-    	return (Boolean)getData(GROUP_PLANKS);
-    }
-    
-    public void setGroupPlanks(boolean state){
-    	setData(GROUP_LOGS, state);
-    }
-    
-    public boolean isGroupAll(){
-    	return (Boolean)getData(GROUP_ALL);
-    }
-
-    public void setGroupAll(boolean state){
-    	setData(GROUP_LOGS, state);
-    }
-    
-    @Override
-    public int getSizeInventory()
-    {
-        return 18;
-    }
-
-    @Override
-    public void openChest() {}
-
-    @Override
-    public void closeChest() {}
-
     @Override
     public int calculateItemDirection(Entity entity)
     {
@@ -234,144 +193,8 @@ public class PCtr_TileEntitySeparationBelt extends PCtr_TileEntityRedirectionBel
     }
 
     @Override
-    public ItemStack getStackInSlot(int i)
-    {
-        return separatorContents[i];
-    }
-
-    @Override
-    public ItemStack decrStackSize(int i, int j)
-    {
-        if (separatorContents[i] != null)
-        {
-            if (separatorContents[i].stackSize <= j)
-            {
-                ItemStack itemstack = separatorContents[i];
-                separatorContents[i] = null;
-                onInventoryChanged();
-                return itemstack;
-            }
-
-            ItemStack itemstack1 = separatorContents[i].splitStack(j);
-
-            if (separatorContents[i].stackSize == 0)
-            {
-                separatorContents[i] = null;
-            }
-
-            onInventoryChanged();
-            return itemstack1;
-        }
-        else
-        {
-            return null;
-        }
-    }
-
-    @Override
-    public void setInventorySlotContents(int i, ItemStack itemstack)
-    {
-        separatorContents[i] = itemstack;
-
-        if (itemstack != null && itemstack.stackSize > getInventoryStackLimit())
-        {
-            itemstack.stackSize = getInventoryStackLimit();
-        }
-
-        onInventoryChanged();
-    }
-
-    @Override
     public String getInvName()
     {
         return "Item Separator";
     }
-
-    @Override
-    public void readFromNBT(NBTTagCompound nbttagcompound)
-    {
-        super.readFromNBT(nbttagcompound);
-        PC_InvUtils.loadInventoryFromNBT(nbttagcompound, "Items", this);
-    }
-
-    @Override
-    public void writeToNBT(NBTTagCompound nbttagcompound)
-    {
-        super.writeToNBT(nbttagcompound);
-        PC_InvUtils.saveInventoryToNBT(nbttagcompound, "Items", this);
-    }
-
-    @Override
-    public int getInventoryStackLimit()
-    {
-        return 64;
-    }
-
-    private ItemStack separatorContents[];
-
-    @Override
-    public boolean isUseableByPlayer(EntityPlayer entityplayer)
-    {
-        return true;
-    }
-
-    @Override
-    public ItemStack getStackInSlotOnClosing(int par1)
-    {
-        if (separatorContents[par1] != null)
-        {
-            ItemStack itemstack = separatorContents[par1];
-            separatorContents[par1] = null;
-            return itemstack;
-        }
-        else
-        {
-            return null;
-        }
-    }
-
-    @Override
-    public boolean insertStackIntoInventory(ItemStack stack)
-    {
-        return false;
-    }
-
-    @Override
-    public boolean needsSpecialInserter()
-    {
-        return true;
-    }
-
-    @Override
-    public boolean canPlayerInsertStackTo(int slot, ItemStack stack)
-    {
-        return true;
-    }
-
-    @Override
-    public boolean canMachineInsertStackTo(int slot, ItemStack stack)
-    {
-        return false;
-    }
-
-    @Override
-    public boolean canDispenseStackFrom(int slot)
-    {
-        return false;
-    }
-
-	@Override
-	public boolean canDropStackFrom(int slot) {
-		return true;
-	}
-
-	@Override
-	public int getSlotStackLimit(int slotIndex) {
-		return getInventoryStackLimit();
-	}
-
-	@Override
-	public boolean canPlayerTakeStack(int slotIndex, EntityPlayer entityPlayer) {
-		return true;
-	}
 }
