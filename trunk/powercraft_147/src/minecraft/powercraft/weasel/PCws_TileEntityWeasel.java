@@ -74,7 +74,7 @@ public class PCws_TileEntityWeasel extends PC_TileEntity implements PC_ITileEnti
 	public PCws_WeaselPlugin getPlugin(){
 		if(worldObj == null || worldObj.isRemote)
 			return null;
-		return PCws_WeaselManager.getPlugin(pluginID);
+		return (PCws_WeaselPlugin)PCws_WeaselManager.getPlugin(pluginID);
 	}
 
 	public int getType(){

@@ -18,7 +18,7 @@ import weasel.exception.WeaselRuntimeException;
 import weasel.obj.WeaselObject;
 import weasel.obj.WeaselVariableMap;
 
-public final class PCws_WeaselNetwork implements Iterable<PCws_WeaselPlugin>, PC_INBT<PCws_WeaselNetwork> {
+public final class PCws_WeaselNetwork implements Iterable<PCws_IWeaselNetworkDevice>, PC_INBT<PCws_WeaselNetwork> {
 
 	private int id;
 	private String name = "";
@@ -83,11 +83,8 @@ public final class PCws_WeaselNetwork implements Iterable<PCws_WeaselPlugin>, PC
 		if(PCws_WeaselManager.getNetwork(name) == null){
 			needSave = true;
 			this.name = name;
-			for(PCws_WeaselPlugin weaselPlugin:this){
-				PCws_TileEntityWeasel te = weaselPlugin.getTE();
-				if(te!=null){
-					te.setData("networkName", name);
-				}
+			for(PCws_IWeaselNetworkDevice weaselPlugin:this){
+				weaselPlugin.setNetworkName(name);
 			}
 		}
 	}
@@ -99,11 +96,8 @@ public final class PCws_WeaselNetwork implements Iterable<PCws_WeaselPlugin>, PC
 	public void setColor(PC_Color color) {
 		needSave = true;
 		this.color.setTo(color);
-		for(PCws_WeaselPlugin weaselPlugin:this){
-			PCws_TileEntityWeasel te = weaselPlugin.getTE();
-			if(te!=null){
-				te.setData("color", color.copy());
-			}
+		for(PCws_IWeaselNetworkDevice weaselPlugin:this){
+			weaselPlugin.setNetworkColor(color.copy());
 		}
 	}
 	
@@ -113,23 +107,23 @@ public final class PCws_WeaselNetwork implements Iterable<PCws_WeaselPlugin>, PC
 	
 	public void updateAll(){
 		functionMap = new WeaselFunctionManager();
-		for(PCws_WeaselPlugin member:this){
+		for(PCws_IWeaselNetworkDevice member:this){
 			functionMap.registerFunctionProvider(member.getName(), member.makePluginProvider());
 		}
 	}
 	
 	public void remove() {
 		for(Integer i:members){
-			PCws_WeaselPlugin member = PCws_WeaselManager.getPlugin(i);
+			PCws_IWeaselNetworkDevice member = PCws_WeaselManager.getPlugin(i);
 			if(member!=null){
 				member.setNetwork(-1);
 			}
 		}
 	}
 	
-	public PCws_WeaselPlugin getMember(String name){
+	public PCws_IWeaselNetworkDevice getMember(String name){
 		for(Integer i:members){
-			PCws_WeaselPlugin member = PCws_WeaselManager.getPlugin(i);
+			PCws_IWeaselNetworkDevice member = PCws_WeaselManager.getPlugin(i);
 			if(member!=null){
 				if(name.equals(member.getName())){
 					return member;
@@ -139,7 +133,7 @@ public final class PCws_WeaselNetwork implements Iterable<PCws_WeaselPlugin>, PC
 		return null;
 	}
 	
-	public void registerMember(PCws_WeaselPlugin member){
+	public void registerMember(PCws_IWeaselNetworkDevice member){
 		if(!members.contains(member.getID())){
 			needSave = true;
 			members.add(member.getID());
@@ -148,21 +142,21 @@ public final class PCws_WeaselNetwork implements Iterable<PCws_WeaselPlugin>, PC
 		}
 	}
 	
-	public void updateMemberFunctionProvider(PCws_WeaselPlugin member){
+	public void updateMemberFunctionProvider(PCws_IWeaselNetworkDevice member){
 		if(members.contains(member.getID())){
 			functionMap.removeFunctionProvider(member.getName());
 			functionMap.registerFunctionProvider(member.getName(), member.makePluginProvider());
 		}
 	}
 	
-	public void renameMember(PCws_WeaselPlugin member, String newName){
+	public void renameMember(PCws_IWeaselNetworkDevice member, String newName){
 		if(members.contains(member.getID())){
 			functionMap.removeFunctionProvider(member.getName());
 			functionMap.registerFunctionProvider(newName, member.makePluginProvider());
 		}
 	}
 	
-	public void removeMember(PCws_WeaselPlugin member){
+	public void removeMember(PCws_IWeaselNetworkDevice member){
 		int id = member.getID();
 		if(members.contains(id)){
 			needSave = true;
@@ -175,11 +169,11 @@ public final class PCws_WeaselNetwork implements Iterable<PCws_WeaselPlugin>, PC
 	}
 	
 	@Override
-	public Iterator<PCws_WeaselPlugin> iterator() {
+	public Iterator<PCws_IWeaselNetworkDevice> iterator() {
 		return new WeaselNetworkIterator();
 	}
 	
-	private class WeaselNetworkIterator implements Iterator<PCws_WeaselPlugin>{
+	private class WeaselNetworkIterator implements Iterator<PCws_IWeaselNetworkDevice>{
 
 		private int i=0;
 		
@@ -189,8 +183,8 @@ public final class PCws_WeaselNetwork implements Iterable<PCws_WeaselPlugin>, PC
 		}
 
 		@Override
-		public PCws_WeaselPlugin next() {
-			PCws_WeaselPlugin wp = PCws_WeaselManager.getPlugin(members.get(i));
+		public PCws_IWeaselNetworkDevice next() {
+			PCws_IWeaselNetworkDevice wp = PCws_WeaselManager.getPlugin(members.get(i));
 			i++;
 			return wp;
 		}
@@ -242,7 +236,7 @@ public final class PCws_WeaselNetwork implements Iterable<PCws_WeaselPlugin>, PC
 
 	public boolean callFunctionOnEngine(String functionName, WeaselObject... args) {
 		boolean call = false;
-		for(PCws_WeaselPlugin weaselPlugin:this){
+		for(PCws_IWeaselNetworkDevice weaselPlugin:this){
 			if(weaselPlugin.doesProvideFunctionOnEngine(functionName)){
 				weaselPlugin.callFunctionOnEngine(functionName, args);
 				call = true;

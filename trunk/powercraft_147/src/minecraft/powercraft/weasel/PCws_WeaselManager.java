@@ -9,6 +9,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
 import powercraft.management.PC_IDataHandler;
 import powercraft.management.PC_IMSG;
+import powercraft.management.PC_INBT;
 import powercraft.management.PC_Struct3;
 import powercraft.management.PC_Utils;
 import powercraft.management.PC_Utils.ModuleInfo;
@@ -27,7 +28,7 @@ public class PCws_WeaselManager implements PC_IDataHandler, PC_IMSG {
 	
 	private static TreeMap<Integer, PCws_WeaselNetwork> networks = new TreeMap<Integer, PCws_WeaselNetwork>();
 	
-	private static TreeMap<Integer, PCws_WeaselPlugin> plugins = new TreeMap<Integer, PCws_WeaselPlugin>();
+	private static TreeMap<Integer, PCws_IWeaselNetworkDevice> plugins = new TreeMap<Integer, PCws_IWeaselNetworkDevice>();
 	
 	private static TreeMap<Integer, PCws_WeaselPluginInfo> pluginInfo = new TreeMap<Integer, PCws_WeaselPluginInfo>();
 	
@@ -75,19 +76,21 @@ public class PCws_WeaselManager implements PC_IDataHandler, PC_IMSG {
 		nbtTag.setCompoundTag("networks", nbtNetworks);
 		
 		NBTTagCompound nbtPlugins = new NBTTagCompound();
-		nbtPlugins.setInteger("count", plugins.size());
 		i=0;
-		for(Entry<Integer, PCws_WeaselPlugin> plugin:plugins.entrySet()){
-			int type = -1;
-			for(Entry<Integer, PCws_WeaselPluginInfo> e:pluginInfo.entrySet()){
-				if(e.getValue().getPluginClass().equals(plugin.getValue().getClass())){
-					type = e.getKey();
+		for(Entry<Integer, PCws_IWeaselNetworkDevice> plugin:plugins.entrySet()){
+			if(plugin.getValue() instanceof PCws_WeaselPlugin){
+				int type = -1;
+				for(Entry<Integer, PCws_WeaselPluginInfo> e:pluginInfo.entrySet()){
+					if(e.getValue().getPluginClass().equals(plugin.getValue().getClass())){
+						type = e.getKey();
+					}
 				}
+				nbtPlugins.setInteger("type["+i+"]", type);
+				SaveHandler.saveToNBT(nbtPlugins, "value["+i+"]", (PCws_WeaselPlugin)plugin.getValue());
+				i++;
 			}
-			nbtPlugins.setInteger("type["+i+"]", type);
-			SaveHandler.saveToNBT(nbtPlugins, "value["+i+"]", plugin.getValue());
-			i++;
 		}
+		nbtPlugins.setInteger("count", i);
 		nbtTag.setCompoundTag("plugins", nbtPlugins);
 		
 		return nbtTag;
@@ -101,8 +104,8 @@ public class PCws_WeaselManager implements PC_IDataHandler, PC_IMSG {
 			if(net.needSave())
 				return true;
 		}
-		for(PCws_WeaselPlugin plugin:plugins.values()){
-			if(plugin.needSave())
+		for(PCws_IWeaselNetworkDevice plugin:plugins.values()){
+			if(plugin instanceof PCws_WeaselPlugin && ((PCws_WeaselPlugin) plugin).needSave())
 				return true;
 		}
 		return false;
@@ -199,7 +202,7 @@ public class PCws_WeaselManager implements PC_IDataHandler, PC_IMSG {
 	}
 	
 	
-	public static int registerPlugin(PCws_WeaselPlugin weaselPlugin) {
+	public static int registerPlugin(PCws_IWeaselNetworkDevice weaselPlugin) {
 		if(plugins.containsValue(weaselPlugin))
 			return -1;
 		int i=1;
@@ -210,19 +213,19 @@ public class PCws_WeaselManager implements PC_IDataHandler, PC_IMSG {
 		return i;
 	}
 	
-	public static void registerPlugin(PCws_WeaselPlugin weaselPlugin, int id) {
+	public static void registerPlugin(PCws_IWeaselNetworkDevice weaselPlugin, int id) {
 		if(!(plugins.containsKey(id)||plugins.containsValue(weaselPlugin))){
 			plugins.put(id, weaselPlugin);
 			needSave = true;
 		}
 	}
 	
-	public static PCws_WeaselPlugin getPlugin(int i) {
+	public static PCws_IWeaselNetworkDevice getPlugin(int i) {
 		return plugins.get(i);
 	}
 	
-	public static PCws_WeaselPlugin getPlugin(String name) {
-		for(PCws_WeaselPlugin weaselPlugin:plugins.values()){
+	public static PCws_IWeaselNetworkDevice getPlugin(String name) {
+		for(PCws_IWeaselNetworkDevice weaselPlugin:plugins.values()){
 			if(weaselPlugin.getName() != null && weaselPlugin.getName().equals(name)){
 				return weaselPlugin;
 			}
@@ -231,15 +234,15 @@ public class PCws_WeaselManager implements PC_IDataHandler, PC_IMSG {
 	}
 	
 	public static PCws_WeaselPlugin getPlugin(World world, int x, int y, int z) {
-		for(PCws_WeaselPlugin weaselPlugin:plugins.values()){
-			if(weaselPlugin.isOnPlace(world, x, y, z)){
-				return weaselPlugin;
+		for(PCws_IWeaselNetworkDevice weaselPlugin:plugins.values()){
+			if(weaselPlugin instanceof PCws_WeaselPlugin && ((PCws_WeaselPlugin)weaselPlugin).isOnPlace(world, x, y, z)){
+				return (PCws_WeaselPlugin)weaselPlugin;
 			}
 		}
 		return null;
 	}
 	
-	public static void removePlugin(PCws_WeaselPlugin weaselPlugin) {
+	public static void removePlugin(PCws_IWeaselNetworkDevice weaselPlugin) {
 		if(weaselPlugin.getNetwork()!=null){
 			weaselPlugin.getNetwork().removeMember(weaselPlugin);
 		}
@@ -266,14 +269,15 @@ public class PCws_WeaselManager implements PC_IDataHandler, PC_IMSG {
 	
 	public static void update(){
 		getGlobalFunctionManager();
-		for(PCws_WeaselPlugin weaselPlugin:plugins.values()){
-			weaselPlugin.update();
+		for(PCws_IWeaselNetworkDevice weaselPlugin:plugins.values()){
+			if(weaselPlugin instanceof PCws_WeaselPlugin)
+				((PCws_WeaselPlugin)weaselPlugin).update();
 		}
 	}
 
 	public static List<String> getAllPluginNames() {
 		List<String> l = new ArrayList<String>();
-		for(PCws_WeaselPlugin weaselPlugin:plugins.values()){
+		for(PCws_IWeaselNetworkDevice weaselPlugin:plugins.values()){
 			l.add(weaselPlugin.getName());
 		}
 		return l;

@@ -915,6 +915,8 @@ public class PCws_ItemWeaselDisk extends PC_Item {
 					return getListEntry(disk, Calc.toInteger(args[0])) != null;
 				case VARMAP:
 					return hasMapVariable(disk, Calc.toString(args[0]));
+				case LIBRARY:
+					return engine.libs.get(getLabel(disk)).hasFunctionForExternalCall(Calc.toString(args[0]));
 				}
 			}else if(name.equals("load")){
 				switch (getType(disk)) {
@@ -975,11 +977,11 @@ public class PCws_ItemWeaselDisk extends PC_Item {
 		public WeaselBitmapProvider getImageForName(String name){
 			ImageEditor ie = null;
 			if(plugin.getNetwork()!=null){
-				for (PCws_WeaselPlugin member : plugin.getNetwork()) {
+				for (PCws_IWeaselNetworkDevice member : plugin.getNetwork()) {
 					if (member instanceof PCws_WeaselPluginDiskDrive) {
 						ItemStack disk = ((PCws_WeaselPluginDiskDrive) member).getImageDisk(name);
 						if (disk != null) {
-							ie = new ImageEditor(disk, member);
+							ie = new ImageEditor(disk, (PCws_WeaselPluginDiskDrive)member);
 							break;
 						}
 					}
@@ -1003,6 +1005,9 @@ public class PCws_ItemWeaselDisk extends PC_Item {
 		list.add("unset");
 		list.add("add");
 		list.add("has");
+		list.add("load");
+		list.add("call");
+		list.add("free");
 		list.addAll(new PCws_WeaselBitmapUtils.WeaselBitmapAdapter(null).getProvidedFunctionNames());
 		return list;
 	}
