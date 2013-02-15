@@ -17,7 +17,7 @@ public class PCmo_MinerBrain implements PCmo_IMinerBrain {
 	}
 	
 	@Override
-	public String getName(){
+	public String getScriptName(){
 		return "Easy Script";
 	}
 	

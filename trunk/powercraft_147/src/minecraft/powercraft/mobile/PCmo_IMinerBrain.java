@@ -8,7 +8,7 @@ import powercraft.mobile.PCmo_Command.ParseException;
 
 public interface PCmo_IMinerBrain extends PC_INBT<PCmo_IMinerBrain> {
 
-	public String getName();
+	public String getScriptName();
 	public void setProgram(String prog);
 	public String getProgram();
 	public void restart();

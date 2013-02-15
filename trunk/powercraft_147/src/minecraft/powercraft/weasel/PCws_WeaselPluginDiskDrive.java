@@ -108,8 +108,9 @@ public class PCws_WeaselPluginDiskDrive extends PCws_WeaselPlugin implements PCw
 	@Override
 	public void setInventorySlotContents(int var1, ItemStack var2) {
 		if(inv[var1]!=null){
-			WeaselString diskName = new WeaselString(PCws_ItemWeaselDisk.getLabel(inv[var1]));
-			String diskType = PCws_ItemWeaselDisk.getTypeString(var2);
+			String dname = PCws_ItemWeaselDisk.getLabel(inv[var1]);
+			WeaselString diskName = new WeaselString(dname);
+			String diskType = PCws_ItemWeaselDisk.getTypeString(inv[var1]);
 			if(!getNetwork().callFunctionOnEngine("freeDisk."+getName()+"."+diskType, diskName)){
 				WeaselString wdiskType = new WeaselString(diskType);
 				if(!getNetwork().callFunctionOnEngine("freeDisk."+getName(), diskName, wdiskType)){
@@ -118,12 +119,11 @@ public class PCws_WeaselPluginDiskDrive extends PCws_WeaselPlugin implements PCw
 				}
 			}
 			if(PCws_ItemWeaselDisk.getType(inv[var1])==PCws_ItemWeaselDisk.LIBRARY){
-				String lib = PCws_ItemWeaselDisk.getLabel(inv[var1]);
 				for(PCws_IWeaselNetworkDevice plugin:getNetwork()){
 					if(plugin instanceof PCws_IWeaselEngine){
 						WeaselEngine engine = ((PCws_IWeaselEngine) plugin).getEngine();
-						if(engine.libs.containsKey(lib)){
-							engine.libs.remove(lib);
+						if(engine.libs.containsKey(dname)){
+							engine.libs.remove(dname);
 						}
 					}
 				}

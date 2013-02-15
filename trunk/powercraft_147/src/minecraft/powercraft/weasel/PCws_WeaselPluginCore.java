@@ -126,18 +126,17 @@ public class PCws_WeaselPluginCore extends PCws_WeaselPlugin implements PCws_IWe
 		if(hasError()||stop)
 			return;
 		if(sleepTimer<=0 && lock.tryLock()){
+			int state = -1;
 			try{
-				int state = weasel.callFunctionExternal(functionName, (Object[])args);
-				lock.unlock();
-				if(state == -1 || state == 1) return;	
+				state = weasel.callFunctionExternal(functionName, (Object[])args);
 			} catch (WeaselRuntimeException wre) {
 				setError(wre.getMessage());
-				return;	
 			} catch (Exception e) {
 				e.printStackTrace();
 				setError(e.getMessage());
-				return;	
 			}
+			lock.unlock();
+			if(state == -1 || state == 1) return;	
 		}
 		externalCallsWaiting.add(new PC_Struct2<String, Object[]>(functionName, args));
 	}

@@ -72,7 +72,7 @@ public class PCmo_MinerWeaselBrain  implements PCmo_IMinerBrain, PCws_IWeaselNet
 	}
 
 	@Override
-	public String getName(){
+	public String getScriptName(){
 		return "Weasel";
 	}
 	
@@ -981,16 +981,23 @@ public class PCmo_MinerWeaselBrain  implements PCmo_IMinerBrain, PCws_IWeaselNet
 	
 	@Override
 	public PCmo_IMinerBrain readFromNBT(NBTTagCompound nbttag) {
+		PCws_WeaselManager.removePlugin(this);
+		id = nbttag.getInteger("id");
+		PCws_WeaselManager.registerPlugin(this, id);
+		networkID = nbttag.getInteger("networkID");
 		SaveHandler.loadFromNBT(nbttag, "engine", engine);
 		sleep = nbttag.getInteger("sleep");
 		program = nbttag.getString("program");
 		if(nbttag.hasKey("error"))
 			error = nbttag.getString("error");
+		
 		return this;
 	}
 
 	@Override
 	public NBTTagCompound writeToNBT(NBTTagCompound nbttag) {
+		nbttag.setInteger("id", id);
+		nbttag.setInteger("networkID", networkID);
 		SaveHandler.saveToNBT(nbttag, "engine", engine);
 		nbttag.setInteger("sleep", sleep);
 		nbttag.setString("program", program);
@@ -1173,6 +1180,11 @@ public class PCmo_MinerWeaselBrain  implements PCmo_IMinerBrain, PCws_IWeaselNet
 			return list;
 		}
 		
+	}
+
+	@Override
+	public String getName() {
+		return "";
 	}
 	
 }
