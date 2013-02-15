@@ -7,7 +7,9 @@ import net.minecraft.src.ItemStack;
 import net.minecraft.src.Slot;
 
 public class PC_Slot extends Slot {
-
+	
+    protected int backgroundIconIndex = -1;
+    protected String texture = "/gui/items.png";
 	private ItemStack bgStack = null;
 	
 	public PC_Slot(IInventory inv, int slot) {
@@ -92,5 +94,25 @@ public class PC_Slot extends Slot {
     public int getSlotIndex() {
 		return (Integer)ValueWriting.getPrivateValue(Slot.class, this, 0);
 	}
+    
+    public int getBackgroundIconIndex()
+    {
+        return backgroundIconIndex;
+    }
+
+    public String getBackgroundIconTexture()
+    {
+        return (texture == null ? "/gui/items.png" : texture);
+    }
+
+    public void setBackgroundIconIndex(int iconIndex)
+    {
+        backgroundIconIndex = iconIndex;
+    }
+
+    public void setBackgroundIconTexture(String textureFilename)
+    {
+        texture = textureFilename;
+    }
     
 }
