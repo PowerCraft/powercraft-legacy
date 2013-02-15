@@ -56,7 +56,7 @@ public class PCtr_BlockBeltVerticalSeparator extends PCtr_BlockBeltBase {
 
         if (entity instanceof EntityItem && PCtr_BeltHelper.storeEntityItemAt(world, pos_leading_to, (EntityItem) entity))
         {
-            return;
+        	return;
         }
         
         boolean leadsToNowhere = PCtr_BeltHelper.isBlocked(world, pos_leading_to);
@@ -65,8 +65,12 @@ public class PCtr_BlockBeltVerticalSeparator extends PCtr_BlockBeltBase {
         {
             PCtr_BeltHelper.entityPreventDespawning(world, pos, true, entity);
         }
-
+        
         leadsToNowhere = leadsToNowhere && PCtr_BeltHelper.isBeyondStorageBorder(world, rotation, pos, entity, PCtr_BeltHelper.STORAGE_BORDER_LONG);
+        
+        if (entity.onGround){
+            entity.moveEntity(0, 0.01D, 0);
+        }
         PCtr_BeltHelper.moveEntityOnBelt(world, pos, entity, true, !leadsToNowhere, rotation, PCtr_BeltHelper.MAX_HORIZONTAL_SPEED,
                 PCtr_BeltHelper.HORIZONTAL_BOOST);
 	}

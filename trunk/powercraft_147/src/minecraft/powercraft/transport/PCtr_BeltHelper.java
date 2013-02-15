@@ -739,7 +739,7 @@ public class PCtr_BeltHelper
             case 4:
                 if (motionY <= max_horizontal_speed && motionEnabled)
                 {
-                    entity.addVelocity(0, 5*horizontal_boost, 0);
+                    entity.addVelocity(0, horizontal_boost, 0);
                 }
 
                 if (bordersEnabled)
@@ -760,7 +760,7 @@ public class PCtr_BeltHelper
             case 5:
                 if (motionY >= -max_horizontal_speed && motionEnabled)
                 {
-                    entity.addVelocity(0, -5*horizontal_boost, 0);
+                    entity.addVelocity(0, -horizontal_boost, 0);
                 }
 
                 if (bordersEnabled)
