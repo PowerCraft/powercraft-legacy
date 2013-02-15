@@ -10,21 +10,20 @@ import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import powercraft.management.PC_TileEntity;
 import powercraft.management.PC_Utils;
+import powercraft.management.PC_VecI;
 import powercraft.management.PC_Utils.GameInfo;
 import powercraft.management.PC_Utils.Gres;
-import powercraft.management.PC_VecI;
 
-public class PCtr_BlockBeltSeparator extends PCtr_BlockBeltBase
-{
-    public PCtr_BlockBeltSeparator(int id)
-    {
-        super(id, 7);
-    }
+public class PCtr_BlockBeltVerticalSeparator extends PCtr_BlockBeltBase {
 
-    @Override
-    public void onEntityCollidedWithBlock(World world, int i, int j, int k, Entity entity)
-    {
-        PC_VecI pos = new PC_VecI(i, j, k);
+	public PCtr_BlockBeltVerticalSeparator(int id) {
+		super(id, 8);
+	}
+
+	@Override
+	public void onEntityCollidedWithBlock(World world, int i, int j, int k,
+			Entity entity) {
+		PC_VecI pos = new PC_VecI(i, j, k);
         int redir = 0;
 
         if (PCtr_BeltHelper.isEntityIgnored(entity))
@@ -32,31 +31,26 @@ public class PCtr_BlockBeltSeparator extends PCtr_BlockBeltBase
             return;
         }
 
-        PCtr_TileEntitySeparationBelt tes = (PCtr_TileEntitySeparationBelt) world.getBlockTileEntity(i, j, k);
-        redir = tes.getDirection(entity);
-        int rotation = PCtr_BeltHelper.getRotation(world.getBlockMetadata(i, j, k));
-        rotation += redir;
-
-        rotation=(rotation+(rotation%4))%4;
-
+        PCtr_TileEntityVerticalSeparationBelt tes = (PCtr_TileEntityVerticalSeparationBelt) world.getBlockTileEntity(i, j, k);
+        redir =1; //= tes.getDirection(entity);
+        int rotation=0;
+        
         PC_VecI pos_leading_to = pos.copy();
 
-        switch (rotation)
+        switch (redir)
         {
+            case -1:
+                pos_leading_to.y--;
+                rotation=5;
+                break;
+
             case 0:
-                pos_leading_to.z--;
-                break;
-
+            	rotation=PCtr_BeltHelper.getRotation(world.getBlockMetadata(i, j, k));
+            	break;
+            	
             case 1:
-                pos_leading_to.x++;
-                break;
-
-            case 2:
-                pos_leading_to.z++;
-                break;
-
-            case 3:
-                pos_leading_to.x--;
+                pos_leading_to.y++;
+                rotation=4;
                 break;
         }
 
@@ -75,11 +69,12 @@ public class PCtr_BlockBeltSeparator extends PCtr_BlockBeltBase
         leadsToNowhere = leadsToNowhere && PCtr_BeltHelper.isBeyondStorageBorder(world, rotation, pos, entity, PCtr_BeltHelper.STORAGE_BORDER_LONG);
         PCtr_BeltHelper.moveEntityOnBelt(world, pos, entity, true, !leadsToNowhere, rotation, PCtr_BeltHelper.MAX_HORIZONTAL_SPEED,
                 PCtr_BeltHelper.HORIZONTAL_BOOST);
-    }
+	}
 
-    @Override
-    public boolean onBlockActivated(World world, int i, int j, int k, EntityPlayer entityplayer, int par6, float par7, float par8, float par9)
-    {
+	@Override
+	public boolean onBlockActivated(World world, int i, int j, int k,
+			EntityPlayer entityplayer, int par6, float par7, float par8,
+			float par9) {
         if (PCtr_BeltHelper.blockActivated(world, i, j, k, entityplayer))
         {
             return true;
@@ -99,23 +94,25 @@ public class PCtr_BlockBeltSeparator extends PCtr_BlockBeltBase
                 }
             }
 
-            Gres.openGres("SeperationBelt", entityplayer, GameInfo.<PC_TileEntity>getTE(world, i, j, k));
+            Gres.openGres("seperationBelt", entityplayer, GameInfo.<PC_TileEntity>getTE(world, i, j, k));
             return true;
         }
-    }
-
+	}
+	
     @Override
     public TileEntity newTileEntity(World world, int metadata) {
-        return new PCtr_TileEntitySeparationBelt();
+        return new PCtr_TileEntityVerticalSeparationBelt();
     }
-    
+
 	@Override
-	protected Object msg2(IBlockAccess world, PC_VecI pos, int msg, Object... obj) {
+	protected Object msg2(IBlockAccess world, PC_VecI pos, int msg,
+			Object... obj) {
 		switch (msg){
 		case PC_Utils.MSG_DEFAULT_NAME:{
-			return "separation belt";
+			return "vertical separation belt";
 		}
 		}
 		return null;
 	}
+
 }

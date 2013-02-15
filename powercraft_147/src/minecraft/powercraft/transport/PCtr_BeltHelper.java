@@ -9,6 +9,24 @@ import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.item.EntityMinecart;
 import net.minecraft.entity.item.EntityXPOrb;
+import net.minecraft.entity.monster.EntityBlaze;
+import net.minecraft.entity.monster.EntityCreeper;
+import net.minecraft.entity.monster.EntityEnderman;
+import net.minecraft.entity.monster.EntityIronGolem;
+import net.minecraft.entity.monster.EntityMagmaCube;
+import net.minecraft.entity.monster.EntityPigZombie;
+import net.minecraft.entity.monster.EntitySkeleton;
+import net.minecraft.entity.monster.EntitySlime;
+import net.minecraft.entity.monster.EntitySnowman;
+import net.minecraft.entity.monster.EntitySpider;
+import net.minecraft.entity.monster.EntityZombie;
+import net.minecraft.entity.passive.EntityChicken;
+import net.minecraft.entity.passive.EntityCow;
+import net.minecraft.entity.passive.EntityMooshroom;
+import net.minecraft.entity.passive.EntityOcelot;
+import net.minecraft.entity.passive.EntityPig;
+import net.minecraft.entity.passive.EntitySheep;
+import net.minecraft.entity.passive.EntityWolf;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.Item;
@@ -84,6 +102,11 @@ public class PCtr_BeltHelper
             return true;
         }
 
+        if (GameInfo.isEntityFX(entity))
+        {
+            return true;
+        }
+
         if (entity.ridingEntity != null)
         {
             return true;
@@ -103,11 +126,6 @@ public class PCtr_BeltHelper
                     return true;
                 }
             }
-        }
-
-        if (GameInfo.isEntityFX(entity))
-        {
-            return true;
         }
 
         return false;
@@ -540,6 +558,21 @@ public class PCtr_BeltHelper
                 }
 
                 break;
+                
+            case 4:
+                if (entity.posY > beltPos.y + 1 - border)
+                {
+                    return false;
+                }
+
+                break;
+                
+            case 5:
+                if (entity.posY < beltPos.y + border)
+                {
+                    return false;
+                }
+                break;
         }
 
         return true;
@@ -591,7 +624,7 @@ public class PCtr_BeltHelper
             }
         }
 
-        if (entity instanceof EntityItem)
+        if (moveDirection<4 && entity instanceof EntityItem)
         {
             if (entity.motionY > 0.2F)
             {
@@ -599,7 +632,7 @@ public class PCtr_BeltHelper
             }
         }
 
-        if (entity instanceof EntityItem || entity instanceof EntityXPOrb)
+        if (moveDirection<4 && (entity instanceof EntityItem || entity instanceof EntityXPOrb))
         {
             if (entity.motionY > 0.2)
             {
@@ -612,10 +645,11 @@ public class PCtr_BeltHelper
             entity.stepHeight = 0.25F;
         }
 
-        float motionX, motionZ;
+        float motionX, motionY, motionZ;
         motionZ = PC_MathHelper.clamp_float((float) entity.motionZ, (float) - max_horizontal_speed, (float) max_horizontal_speed);
+        motionY = PC_MathHelper.clamp_float((float) entity.motionY, (float) - max_horizontal_speed, (float) max_horizontal_speed);
         motionX = PC_MathHelper.clamp_float((float) entity.motionX, (float) - max_horizontal_speed, (float) max_horizontal_speed);
-
+        
         switch (moveDirection)
         {
             case 0:
@@ -701,12 +735,160 @@ public class PCtr_BeltHelper
                 }
 
                 break;
+                
+            case 4:
+                if (motionY <= max_horizontal_speed && motionEnabled)
+                {
+                    entity.addVelocity(0, 5*horizontal_boost, 0);
+                }
+
+                if (bordersEnabled)
+                {
+                    if (entity.posY > pos.y + (1D - BORDERS))
+                    {
+                        entity.addVelocity(0, -BORDER_BOOST, 0);
+                    }
+
+                    if (entity.posY < pos.y + BORDERS)
+                    {
+                        entity.addVelocity(0, BORDER_BOOST, 0);
+                    }
+                }
+
+                break;
+
+            case 5:
+                if (motionY >= -max_horizontal_speed && motionEnabled)
+                {
+                    entity.addVelocity(0, -5*horizontal_boost, 0);
+                }
+
+                if (bordersEnabled)
+                {
+                    if (entity.posY > pos.y + BORDERS)
+                    {
+                        entity.addVelocity(0, -BORDER_BOOST, 0);
+                    }
+
+                    if (entity.posY < pos.y + (1D - BORDERS))
+                    {
+                        entity.addVelocity(0, BORDER_BOOST, 0);
+                    }
+                }
         }
 
         if (entity.riddenByEntity != null)
         {
             entity.updateRiderPosition();
         }
+    }
+    
+    public static ItemStack getItemStackForEntity(Entity entity){
+        ItemStack itemstack = null;
+
+        if (entity instanceof EntityItem)
+        {
+            itemstack = ((EntityItem) entity).func_92014_d();
+        }
+        else
+        {
+
+            if (entity instanceof EntityPig)
+            {
+                itemstack = new ItemStack(Item.porkRaw, 1, 0);
+            }
+
+            if (entity instanceof EntitySheep)
+            {
+                itemstack = new ItemStack(Block.cloth, 1, 0);
+            }
+
+            if (entity instanceof EntityCow)
+            {
+                itemstack = new ItemStack(Item.beefRaw, 1, 0);
+            }
+
+            if (entity instanceof EntityCreeper)
+            {
+                itemstack = new ItemStack(Item.gunpowder, 1, 0);
+            }
+
+            if (entity instanceof EntityZombie)
+            {
+                itemstack = new ItemStack(Item.rottenFlesh, 1, 0);
+            }
+
+            if (entity instanceof EntitySkeleton)
+            {
+                itemstack = new ItemStack(Item.bone, 1, 0);
+            }
+
+            if (entity instanceof EntitySlime)
+            {
+                itemstack = new ItemStack(Item.slimeBall, 1, 0);
+            }
+
+            if (entity instanceof EntityEnderman)
+            {
+                itemstack = new ItemStack(Item.enderPearl, 1, 0);
+            }
+
+            if (entity instanceof EntitySnowman)
+            {
+                itemstack = new ItemStack(Item.snowball, 1, 0);
+            }
+
+            if (entity instanceof EntityChicken)
+            {
+                itemstack = new ItemStack(Item.chickenRaw, 1, 0);
+            }
+
+            if (entity instanceof EntityXPOrb)
+            {
+                itemstack = new ItemStack(Item.diamond, 1, 0);
+            }
+
+            if (entity instanceof EntitySpider)
+            {
+                itemstack = new ItemStack(Item.silk, 1, 0);
+            }
+
+            if (entity instanceof EntityOcelot)
+            {
+                itemstack = new ItemStack(Item.fishRaw, 1, 0);
+            }
+
+            if (entity instanceof EntityMooshroom)
+            {
+                itemstack = new ItemStack(Block.mushroomRed, 1, 0);
+            }
+
+            if (entity instanceof EntityWolf)
+            {
+                itemstack = new ItemStack(Item.cookie, 1, 0);
+            }
+
+            if (entity instanceof EntityBlaze)
+            {
+                itemstack = new ItemStack(Item.blazePowder, 1, 0);
+            }
+
+            if (entity instanceof EntityMagmaCube)
+            {
+                itemstack = new ItemStack(Item.magmaCream, 1, 0);
+            }
+
+            if (entity instanceof EntityPigZombie)
+            {
+                itemstack = new ItemStack(Item.goldNugget, 1, 0);
+            }
+
+            if (entity instanceof EntityIronGolem)
+            {
+                itemstack = new ItemStack(Item.ingotIron, 1, 0);
+            }
+        }
+        return itemstack;
     }
 
     public static void soundEffectBelt(World world, PC_VecI pos)
