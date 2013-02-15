@@ -84,113 +84,11 @@ public class PCtr_TileEntitySeparationBelt extends PCtr_TileEntityRedirectionBel
     @Override
     public int calculateItemDirection(Entity entity)
     {
-        boolean notItem = false;
+        boolean notItem = !(entity instanceof EntityItem);
         ItemStack itemstack = null;
 
-        if (entity instanceof EntityItem)
-        {
-            itemstack = ((EntityItem) entity).func_92014_d();
-        }
-        else
-        {
-            notItem = true;
-
-            if (entity instanceof EntityPig)
-            {
-                itemstack = new ItemStack(Item.porkRaw, 1, 0);
-            }
-
-            if (entity instanceof EntitySheep)
-            {
-                itemstack = new ItemStack(Block.cloth, 1, 0);
-            }
-
-            if (entity instanceof EntityCow)
-            {
-                itemstack = new ItemStack(Item.beefRaw, 1, 0);
-            }
-
-            if (entity instanceof EntityCreeper)
-            {
-                itemstack = new ItemStack(Item.gunpowder, 1, 0);
-            }
-
-            if (entity instanceof EntityZombie)
-            {
-                itemstack = new ItemStack(Item.rottenFlesh, 1, 0);
-            }
-
-            if (entity instanceof EntitySkeleton)
-            {
-                itemstack = new ItemStack(Item.bone, 1, 0);
-            }
-
-            if (entity instanceof EntitySlime)
-            {
-                itemstack = new ItemStack(Item.slimeBall, 1, 0);
-            }
-
-            if (entity instanceof EntityEnderman)
-            {
-                itemstack = new ItemStack(Item.enderPearl, 1, 0);
-            }
-
-            if (entity instanceof EntitySnowman)
-            {
-                itemstack = new ItemStack(Item.snowball, 1, 0);
-            }
-
-            if (entity instanceof EntityChicken)
-            {
-                itemstack = new ItemStack(Item.chickenRaw, 1, 0);
-            }
-
-            if (entity instanceof EntityXPOrb)
-            {
-                itemstack = new ItemStack(Item.diamond, 1, 0);
-            }
-
-            if (entity instanceof EntitySpider)
-            {
-                itemstack = new ItemStack(Item.silk, 1, 0);
-            }
-
-            if (entity instanceof EntityOcelot)
-            {
-                itemstack = new ItemStack(Item.fishRaw, 1, 0);
-            }
-
-            if (entity instanceof EntityMooshroom)
-            {
-                itemstack = new ItemStack(Block.mushroomRed, 1, 0);
-            }
-
-            if (entity instanceof EntityWolf)
-            {
-                itemstack = new ItemStack(Item.cookie, 1, 0);
-            }
-
-            if (entity instanceof EntityBlaze)
-            {
-                itemstack = new ItemStack(Item.blazePowder, 1, 0);
-            }
-
-            if (entity instanceof EntityMagmaCube)
-            {
-                itemstack = new ItemStack(Item.magmaCream, 1, 0);
-            }
-
-            if (entity instanceof EntityPigZombie)
-            {
-                itemstack = new ItemStack(Item.goldNugget, 1, 0);
-            }
-
-            if (entity instanceof EntityIronGolem)
-            {
-                itemstack = new ItemStack(Item.ingotIron, 1, 0);
-            }
-        }
-
+        itemstack = PCtr_BeltHelper.getItemStackForEntity(entity);
+        
         if (itemstack == null)
         {
             return 0;

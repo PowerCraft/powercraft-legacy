@@ -71,10 +71,10 @@ public abstract class PC_TileEntity extends TileEntity
     			map.put(o[i].a, o[i].b);
     		}
     	}
-    	dataRecived();
+    	dataRecieved();
     }
 
-    protected void dataRecived(){}
+    protected void dataRecieved(){}
     
     protected void dataChange(String key, Object value){}
     
@@ -93,7 +93,7 @@ public abstract class PC_TileEntity extends TileEntity
     public void call(String key, Object value){
     	onCall(key, value);
     	PC_PacketHandler.setTileEntity(this, new PC_Entry("call", new PC_Entry(key, value)));
-    	dataRecived();
+    	dataRecieved();
     }
     
     public void create(ItemStack stack, EntityPlayer player, World world, int x, int y, int z, int side, float hitX, float hitY, float hitZ){
@@ -102,7 +102,7 @@ public abstract class PC_TileEntity extends TileEntity
     public void setData(String key, Object value){
     	map.put(key, value);
     	PC_PacketHandler.setTileEntity(this, new PC_Struct2<String, Object>(key, value));
-    	dataRecived();
+    	dataRecieved();
     }
     
     public Object getData(String key){
