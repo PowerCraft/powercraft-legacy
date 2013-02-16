@@ -59,6 +59,12 @@ public class PC_MainMenuHacks {
 	public void tickStart() {
 		Minecraft mc = PC_ClientUtils.mc();
 		GuiScreen gs = mc.currentScreen;
+		if(gs instanceof GuiMainMenu){
+			if(PC_GlobalVariables.showUpdateWindow && !updateWindowShowed){
+				Gres.openGres("UpdateNotification", null, null, gs);
+				updateWindowShowed = true;
+			}
+		}
 		if(gs!=lastHacked){
 			if(gs instanceof GuiMainMenu){
 				if(!(gs instanceof PC_GuiMainMenuHack)){
@@ -67,10 +73,6 @@ public class PC_MainMenuHacks {
 				}
 				if(PC_GlobalVariables.hackSplashes)
 					hackSplashes((GuiMainMenu)gs);
-				if(PC_GlobalVariables.showUpdateWindow && !updateWindowShowed){
-					Gres.openGres("UpdateNotification", null, null, gs);
-					updateWindowShowed = true;
-				}
 				
 			}else if(gs instanceof GuiOptions){
 				if(!(gs instanceof PC_GuiOptionsHack)){

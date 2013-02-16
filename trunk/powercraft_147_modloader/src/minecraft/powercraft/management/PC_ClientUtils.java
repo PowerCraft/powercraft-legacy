@@ -219,7 +219,7 @@ public class PC_ClientUtils extends PC_Utils {
 		}
 
         Class c = guis.get(name);
-
+        
 		try {
 			if(PC_GresBaseWithInventory.class.isAssignableFrom(c)){
 				mc().displayGuiScreen(new PC_GresContainerGui(te, (PC_GresBaseWithInventory)ValueWriting.createClass(c, new Class[]{EntityPlayer.class, PC_TileEntity.class, Object[].class}, new Object[]{player, te, o})));
