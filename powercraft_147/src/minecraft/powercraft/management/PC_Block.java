@@ -9,6 +9,7 @@ import java.util.Map.Entry;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
+import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
@@ -31,18 +32,15 @@ public abstract class PC_Block extends BlockContainer implements PC_IMSG
     private BlockInfo replaced = new BlockInfo();
 	private BlockInfo thisBlock;
 	
-    protected PC_Block(int id, Material material)
-    {
+    protected PC_Block(int id, Material material){
         this(id, 0, material);
     }
 
-    protected PC_Block(int id, int textureIndex, Material material)
-    {
+    protected PC_Block(int id, int textureIndex, Material material){
     	this(id, textureIndex, material, true);
     }
 
-    public PC_Block(int id, int textureIndex, Material material, boolean canSetTextureFile)
-    {
+    public PC_Block(int id, int textureIndex, Material material, boolean canSetTextureFile) {
         super(id, textureIndex, material);
         this.canSetTextureFile = canSetTextureFile;
         thisBlock = new BlockInfo(id);
@@ -256,6 +254,11 @@ public abstract class PC_Block extends BlockContainer implements PC_IMSG
 			}
 		}
 		
+	}
+
+	@Override
+	public Block setCreativeTab(CreativeTabs _default) {
+		return super.setCreativeTab(GameInfo.getCreativeTab(_default));
 	}
 	
 }

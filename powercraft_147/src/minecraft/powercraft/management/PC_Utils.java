@@ -32,6 +32,7 @@ import powercraft.management.recipes.PC_ShapedRecipes;
 import powercraft.management.recipes.PC_ShapelessRecipes;
 
 import net.minecraft.block.Block;
+import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityList;
 import net.minecraft.entity.EntityLiving;
@@ -1131,6 +1132,10 @@ public class PC_Utils implements PC_IPacketHandler
     
     public static class GameInfo{
 
+    	public static CreativeTabs getCreativeTab(CreativeTabs _default){
+    		return mod_PowerCraft.getInstance().creativeTab;
+    	}
+    	
     	public static boolean isPlayerOPOrOwner(EntityPlayer player){
     		if(mcs().getConfigurationManager().getOps().contains(player))
     			return true;
