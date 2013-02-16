@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import net.minecraft.block.Block;
+import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.tileentity.TileEntity;
@@ -43,7 +44,9 @@ public class mod_PowerCraft{
 
 	private static final String updateInfoPath = "https://dl.dropbox.com/s/nrkmh98nchr7nrj/VersionInfo.xml?dl=1";
 	
-	private static mod_PowerCraft instance; 
+	private static mod_PowerCraft instance;
+
+	public static PC_CreativeTab creativeTab; 
 	
 	public static mod_PowerCraft getInstance(){
 		return instance;
@@ -126,6 +129,7 @@ public class mod_PowerCraft{
 		PC_ThreadManager.init();
 		List<PC_IModule> modules = ModuleInfo.getModules();
 		proxy.init();
+		creativeTab = new PC_CreativeTab();
 		PC_Logger.enterSection("Module Init");
 		for(PC_IModule module:modules){
 			module.init();

@@ -4,11 +4,13 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import net.minecraft.block.Block;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.inventory.InventoryCrafting;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import powercraft.management.PC_Utils.GameInfo;
 import powercraft.management.PC_Utils.ValueWriting;
 import cpw.mods.fml.common.registry.GameData;
 import cpw.mods.fml.common.registry.ItemData;
@@ -108,6 +110,11 @@ public abstract class PC_Item extends Item implements PC_IItemInfo, PC_IMSG
 
 	public Object areItemsEqual(PC_ItemStack pc_ItemStack, int otherMeta, NBTTagCompound otherNbtTag) {
 		return null;
+	}
+	
+	@Override
+	public Item setCreativeTab(CreativeTabs _default) {
+		return super.setCreativeTab(GameInfo.getCreativeTab(_default));
 	}
 	
 }

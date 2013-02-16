@@ -3,11 +3,14 @@ package powercraft.management;
 import java.util.List;
 import java.util.Map;
 
+import net.minecraft.block.Block;
+import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.EnumArmorMaterial;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemArmor;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.IArmorTextureProvider;
+import powercraft.management.PC_Utils.GameInfo;
 import powercraft.management.PC_Utils.ValueWriting;
 import cpw.mods.fml.common.registry.GameData;
 import cpw.mods.fml.common.registry.ItemData;
@@ -102,6 +105,11 @@ public abstract class PC_ItemArmor extends ItemArmor implements PC_IItemInfo, PC
     @Override
 	public String getArmorTextureFile(ItemStack itemstack) {
 		return armorTexture;
+	}
+    
+    @Override
+	public Item setCreativeTab(CreativeTabs _default) {
+		return super.setCreativeTab(GameInfo.getCreativeTab(_default));
 	}
     
 }
