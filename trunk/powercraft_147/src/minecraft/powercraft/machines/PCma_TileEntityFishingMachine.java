@@ -102,7 +102,7 @@ public class PCma_TileEntityFishingMachine extends PC_TileEntity implements PC_I
 	private void turnIntoBlocks(){
 		PC_VecI pos = getCoord();
 		int meta = GameInfo.getMD(worldObj, pos);
-		ValueWriting.setBID(worldObj, pos, Block.planks.blockID, meta);
+		ValueWriting.setBID(worldObj, pos, Block.blockSteel.blockID, meta);
 	}
 	
 	/**

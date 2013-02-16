@@ -24,7 +24,7 @@ public class PCma_BlockFishingMachine extends PC_Block implements PC_I3DRecipeHa
 	private static PC_3DRecipe struct;
 	
 	public PCma_BlockFishingMachine(int id) {
-		super(id, 4, Material.wood, false);
+		super(id, 22, Material.iron, false);
 		struct = new PC_3DRecipe(null, 
 				new String[]{
 				"www",
@@ -63,7 +63,7 @@ public class PCma_BlockFishingMachine extends PC_Block implements PC_I3DRecipeHa
 		return new PCma_TileEntityFishingMachine();
 	}
 
-	@Override
+	/*@Override
 	public int getBlockTextureFromSideAndMetadata(int par1, int par2)
     {
         switch (par2)
@@ -77,11 +77,11 @@ public class PCma_BlockFishingMachine extends PC_Block implements PC_I3DRecipeHa
             default:
                 return 4;
         }
-    }
+    }*/
 	
 	@Override
 	public int idDropped(int par1, Random par2Random, int par3) {
-		return Block.planks.blockID;
+		return Block.blockSteel.blockID;
 	}
 
 	@Override

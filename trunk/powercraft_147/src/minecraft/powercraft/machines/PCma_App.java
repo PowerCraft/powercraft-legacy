@@ -146,13 +146,13 @@ public class PCma_App implements PC_IModule
 				"www"},
 				new String[]{
 				"fpf",
-				"ppp",
+				"pip",
 				"fpf"},
 				new String[]{
 				" !c ",
 				"!cc!c",
 				" !c "},
-				'w', Block.waterMoving, Block.waterStill, 'f', Block.fence, 'p', Block.planks, 'c', Block.chest));
+				'w', Block.waterMoving, Block.waterStill, 'f', Block.fence, 'p', Block.planks, 'c', Block.chest, 'i', Block.blockSteel));
 		
 		recipes.add(new PC_3DRecipe((PC_I3DRecipeHandler)chunkLoader, 
 				new String[]{
