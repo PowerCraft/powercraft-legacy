@@ -210,7 +210,7 @@ public class PC_UpdateManager {
                     String sLangLink = element.getAttribute("langLink");
                     String sInfo = element.getTextContent();
                     PC_IModule module = ModuleInfo.getModule(sModule);
-
+                    
                     if (module != null)
                     {
                         int langVersion = -1;
@@ -235,6 +235,7 @@ public class PC_UpdateManager {
                         }
                     }else{
                     	newModules.add(new PC_Struct2<String, String>(sModule, sInfo.trim()));
+                    	PC_GlobalVariables.showUpdateWindow = true;
                     }
                 }
             }

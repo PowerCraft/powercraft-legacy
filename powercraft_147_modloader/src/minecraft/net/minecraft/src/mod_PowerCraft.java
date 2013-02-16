@@ -305,8 +305,8 @@ public class mod_PowerCraft extends BaseMod {
 					Gres.registerGres(g.a, g.b);
 				}
 			}
-			Gres.registerGres("UpdateNotification", PC_GuiUpdateNotification.class);
 		}
+		Gres.registerGres("UpdateNotification", PC_GuiUpdateNotification.class);
 		PC_Logger.exitSection();
 		if(PC_Utils.GameInfo.isClient()){
 			PC_Logger.enterSection("Module Splashes Init");

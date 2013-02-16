@@ -33,7 +33,7 @@ public class PC_GuiUpdateNotification implements PC_IGresClient {
 	private PC_GresWidget buttonOK;
 	private GuiScreen gs;
 	
-	public PC_GuiUpdateNotification(EntityPlayer player, Object[] o){
+	public PC_GuiUpdateNotification(EntityPlayer player, PC_TileEntity te, Object[] o){
 		gs = (GuiScreen)o[0];
 	}
 
@@ -126,7 +126,6 @@ public class PC_GuiUpdateNotification implements PC_IGresClient {
 				PC_UpdateManager.ignoreALLUpdateVersion();
 			}
 
-			GL11.glDisable(GL11.GL_LIGHTING);
 			PC_ClientUtils.mc().currentScreen = gs;
 
 		} else if (widget.getId() == 1) {
@@ -141,7 +140,6 @@ public class PC_GuiUpdateNotification implements PC_IGresClient {
 
 	@Override
 	public void onEscapePressed(PC_IGresGui gui) {
-		GL11.glDisable(GL11.GL_LIGHTING);
 		PC_ClientUtils.mc().currentScreen = gs;
 	}
 
@@ -169,8 +167,6 @@ public class PC_GuiUpdateNotification implements PC_IGresClient {
 	@Override
 	public boolean drawBackground(PC_IGresGui gui, int par1, int par2, float par3) {
 		gs.drawScreen(-1, -1, par3);
-		gs.drawString(PC_ClientUtils.mc().fontRenderer, "PowerCraft " + mod_PowerCraft.getInstance().getVersion(), 2 , 
-				gs.height - 10 - PC_ClientUtils.mc().fontRenderer.FONT_HEIGHT, 0xffffffff);
 		return true;
 	}
 
