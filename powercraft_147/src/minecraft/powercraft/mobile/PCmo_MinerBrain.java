@@ -81,5 +81,11 @@ public class PCmo_MinerBrain implements PCmo_IMinerBrain {
 
 	@Override
 	public void msg(Object[] obj) {}
+
+	@Override
+	public void onOpenGui() {
+		// TODO Auto-generated method stub
+		
+	}
 	
 }

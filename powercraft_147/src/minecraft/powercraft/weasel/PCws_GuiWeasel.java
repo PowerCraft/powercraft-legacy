@@ -3,6 +3,7 @@ package powercraft.weasel;
 import java.util.List;
 
 import net.minecraft.entity.player.EntityPlayer;
+import powercraft.itemstorage.PCis_ItemCompressor;
 import powercraft.management.PC_Color;
 import powercraft.management.PC_PacketHandler;
 import powercraft.management.PC_TileEntity;
@@ -16,6 +17,7 @@ import powercraft.management.gres.PC_GresLayoutV;
 import powercraft.management.gres.PC_GresTab;
 import powercraft.management.gres.PC_GresTextEdit;
 import powercraft.management.gres.PC_GresWidget;
+import powercraft.management.gres.PC_GresWidgetTab;
 import powercraft.management.gres.PC_GresWindow;
 import powercraft.management.gres.PC_IGresClient;
 import powercraft.management.gres.PC_IGresGui;
@@ -24,7 +26,6 @@ import powercraft.management.gres.PC_GresWidget.PC_GresAlign;
 public abstract class PCws_GuiWeasel implements PC_IGresClient {
 
 	protected PCws_TileEntityWeasel te;
-	protected PC_GresWidget ok, cancel;
 	protected PC_GresTextEdit deviceName;
 	protected PC_GresWidget deviceRename;
 	protected PC_GresTextEdit networkName;
@@ -35,21 +36,23 @@ public abstract class PCws_GuiWeasel implements PC_IGresClient {
 		this.te = (PCws_TileEntityWeasel)te;
 	}
 	
+	protected boolean networkAsTab(){
+		return true;
+	}
+	
 	@Override
 	public void initGui(PC_IGresGui gui) {
 		PC_GresWindow w = new PC_GresWindow(Lang.tr(PCws_App.weasel.getBlockName() + "." + te.getPluginInfo().getKey()+".name"));
 		
-		PC_GresTab tab = new PC_GresTab();
-		makeNetworkTab(tab);
-		addTabs(tab);
-		
-		w.add(tab);
-		
-		PC_GresLayoutH lh = new PC_GresLayoutH();
-		lh.setAlignH(PC_GresAlign.JUSTIFIED);
-		lh.add(ok = new PC_GresButton(Lang.tr("pc.gui.ok")));
-		lh.add(cancel = new PC_GresButton(Lang.tr("pc.gui.cancel")));
-		w.add(lh);
+		if(networkAsTab()){
+			PC_GresTab tab = new PC_GresTab();
+			makeNetworkTab(tab);
+			addTabs(w, tab);
+			w.add(tab);
+		}else{
+			makeNetworkTab(w);
+			addTabs(w, null);
+		}
 		
 		gui.add(w);
 	}
@@ -79,18 +82,38 @@ public abstract class PCws_GuiWeasel implements PC_IGresClient {
 		tab.addTab(lv, new PC_GresLabel(Lang.tr("pc.gui.weasel.network.tab")));
 	}
 	
-	protected abstract void addTabs(PC_GresTab tab);
+	protected void makeNetworkTab(PC_GresWindow win){
+		
+		PC_GresWidgetTab wt = new PC_GresWidgetTab(0xBBBBBB, "/gui/items.png", 160, 48, 16, 16);
+		wt.add(new PC_GresLabel("pc.gui.weasel.device.name"));
+		wt.add(deviceName = new PC_GresTextEdit((String)te.getData("deviceName"), 10));
+		wt.add(deviceRename = new PC_GresButton("pc.gui.weasel.device.rename"));
+		win.add(wt);
+		
+		wt = new PC_GresWidgetTab(0x70360F, "/gui/items.png", 160, 32, 16, 16);
+		wt.add(new PC_GresLabel("pc.gui.weasel.network.name"));
+		wt.add(networkName = new PC_GresTextEdit((String)te.getData("networkName"), 10));
+		wt.add(network1 = new PC_GresButton("pc.gui.weasel.network.join"));
+		wt.add(network2 = new PC_GresButton("pc.gui.weasel.network.new"));
+		network1.setId(0);
+		network2.enable(false);
+		
+		PC_Color color = (PC_Color)te.getData("color");
+		if(color==null)
+			color = new PC_Color(0.3f, 0.3f, 0.3f);
+		wt.add(networkColor = new PC_GresColorPicker(color.getHex(), 100, 20));
+		
+		win.add(wt);
+	}
+	
+	protected abstract void addTabs(PC_GresWindow w, PC_GresTab tab);
 	
 	@Override
 	public void onGuiClosed(PC_IGresGui gui) {}
 
 	@Override
 	public void actionPerformed(PC_GresWidget widget, PC_IGresGui gui) {
-		if(widget==ok){
-			onReturnPressed(gui);
-		}else if(widget==cancel){
-			onEscapePressed(gui);
-		}else if(widget==deviceName){
+		if(widget==deviceName){
 			List<String> deviceNames = (List<String>)te.getData("deviceNames");
 			deviceRename.enable(!deviceNames.contains(deviceName.getText()));
 			if(deviceName.equals(""))
@@ -113,6 +136,7 @@ public abstract class PCws_GuiWeasel implements PC_IGresClient {
 				network1.setText(Lang.tr("pc.gui.weasel.network.join"));
 				network1.setId(0);
 			}
+			network1.getParent().calcChildPositions();
 		}else if(widget==network1){
 			if(network1.getId()==0){
 				te.call("networkJoin", networkName.getText());

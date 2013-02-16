@@ -69,6 +69,9 @@ public class PCmo_MinerWeaselBrain  implements PCmo_IMinerBrain, PCws_IWeaselNet
 		engine = new WeaselEngine(functionProvider);
 		this.miner = miner;
 		miner.setInfo("text", "");
+		miner.setInfo("color", new PC_Color(1, 1, 1));
+		miner.setInfo("deviceName", Calc.generateUniqueName());
+		miner.setInfo("networkName", "");
 	}
 
 	@Override
@@ -864,6 +867,10 @@ public class PCmo_MinerWeaselBrain  implements PCmo_IMinerBrain, PCws_IWeaselNet
 						}
 					}
 				}
+				
+				if (numid == -2) {
+					
+				}
 
 				if (numid != -2) {
 					for (int i = 0; i < miner.cargo.getSizeInventory(); i++) {
@@ -1058,6 +1065,20 @@ public class PCmo_MinerWeaselBrain  implements PCmo_IMinerBrain, PCws_IWeaselNet
 		return counter;
 	}
 	
+	public void removeFromNetwork(){
+		PCws_WeaselNetwork oldNetwork = getNetwork();
+		if(oldNetwork!=null){
+			oldNetwork.removeMember(this);
+			miner.setInfo("networkName", "");
+		}
+	}
+	
+	public void connectToNetwork(PCws_WeaselNetwork network){
+		removeFromNetwork();
+		network.registerMember(this);
+		miner.setInfo("networkName", network.getName());
+	}
+	
 	@Override
 	public void msg(Object[] obj) {
 		if("input".equals(obj[0])){
@@ -1073,6 +1094,22 @@ public class PCmo_MinerWeaselBrain  implements PCmo_IMinerBrain, PCws_IWeaselNet
 			if (userInput.size() > 16) {
 				userInput.remove(0);
 			}
+		}else if(obj[0].equals("deviceRename")){
+			miner.setInfo("deviceName", (String)obj[1]);
+		}else if(obj[0].equals("networkJoin")){
+			if(((String) obj[1]).equals("")){
+				removeFromNetwork();
+			}else{
+				connectToNetwork(PCws_WeaselManager.getNetwork((String) obj[1]));
+			}
+		}else if(obj[0].equals("networkRename")){
+			if(getNetwork()==null){
+				connectToNetwork(new PCws_WeaselNetwork());
+			}
+			getNetwork().setName((String) obj[1]);
+		}else if(obj[0].equals("networkNew")){
+			connectToNetwork(new PCws_WeaselNetwork());
+			getNetwork().setName((String) obj[1]);
 		}
 	}
 
@@ -1099,12 +1136,12 @@ public class PCmo_MinerWeaselBrain  implements PCmo_IMinerBrain, PCws_IWeaselNet
 
 	@Override
 	public void setNetworkName(String name) {
-		
+		miner.setInfo("networkName", name);
 	}
 
 	@Override
-	public void setNetworkColor(PC_Color copy) {
-		
+	public void setNetworkColor(PC_Color color) {
+		miner.setInfo("color", color);
 	}
 
 	@Override
@@ -1184,7 +1221,13 @@ public class PCmo_MinerWeaselBrain  implements PCmo_IMinerBrain, PCws_IWeaselNet
 
 	@Override
 	public String getName() {
-		return "";
+		return (String)miner.getInfo("deviceName");
+	}
+
+	@Override
+	public void onOpenGui() {
+		miner.setInfo("deviceNames", PCws_WeaselManager.getAllPluginNames());
+		miner.setInfo("networkNames", PCws_WeaselManager.getAllNetworkNames());
 	}
 	
 }

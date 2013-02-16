@@ -46,7 +46,9 @@ public class PC_GresLayoutV extends PC_GresWidget {
 			if (!w.visible) continue;
 			w.calcChildPositions();
 			PC_VecI csize = w.calcSize();
+			
 			if (csize.x > size.x || ySize + csize.y > size.y) {
+				
 				if (csize.x > size.x) {
 					size.x = csize.x;
 				}

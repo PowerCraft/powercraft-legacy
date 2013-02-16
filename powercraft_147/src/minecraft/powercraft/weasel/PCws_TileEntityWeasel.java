@@ -190,6 +190,9 @@ public class PCws_TileEntityWeasel extends PC_TileEntity implements PC_ITileEnti
 	@Override
 	public ItemStack decrStackSize(int i, int j) {
 		ItemStack is = inv[i];
+		if(is != null)
+			if(getPlugin() instanceof PCws_IWeaselInventory)
+				((PCws_IWeaselInventory)getPlugin()).setInventorySlotContents(i, null);
 		inv[i] = null;
 		return is;
 	}

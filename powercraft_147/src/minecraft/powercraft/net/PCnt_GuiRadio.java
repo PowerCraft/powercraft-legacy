@@ -45,6 +45,7 @@ public class PCnt_GuiRadio implements PC_IGresClient {
 
 		// window
 		PC_GresWindow w = new PC_GresWindow(title);
+		w.setSize(120, 0);
 		w.setAlignH(PC_GresAlign.CENTER);
 		PC_GresWidget hg;
 

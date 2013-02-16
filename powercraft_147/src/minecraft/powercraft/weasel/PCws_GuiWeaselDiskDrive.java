@@ -17,6 +17,7 @@ import powercraft.management.gres.PC_GresLayoutV;
 import powercraft.management.gres.PC_GresTab;
 import powercraft.management.gres.PC_GresTextEdit;
 import powercraft.management.gres.PC_GresWidget;
+import powercraft.management.gres.PC_GresWidgetTab;
 import powercraft.management.gres.PC_GresWindow;
 import powercraft.management.gres.PC_IGresClient;
 import powercraft.management.gres.PC_IGresGui;
@@ -25,7 +26,6 @@ import powercraft.management.gres.PC_GresWidget.PC_GresAlign;
 public class PCws_GuiWeaselDiskDrive extends PCws_ContainerWeaselDiskDrive
 		implements PC_IGresClient {
 
-	protected PC_GresWidget ok, cancel;
 	protected PC_GresTextEdit deviceName;
 	protected PC_GresWidget deviceRename;
 	protected PC_GresTextEdit networkName;
@@ -36,62 +36,46 @@ public class PCws_GuiWeaselDiskDrive extends PCws_ContainerWeaselDiskDrive
 		super(player, te, o);
 	}
 
-	protected void makeNetworkTab(PC_GresTab tab){
-		PC_GresLayoutV lv = new PC_GresLayoutV();
-		PC_GresLayoutH lh = new PC_GresLayoutH();
-		lh.add(new PC_GresLabel(Lang.tr("pc.gui.weasel.device.name")));
-		lh.add(deviceName = new PC_GresTextEdit((String)tileEntity.getData("deviceName"), 10));
-		lv.add(lh);
-		lv.add(deviceRename = new PC_GresButton(Lang.tr("pc.gui.weasel.device.rename")));
-		lh = new PC_GresLayoutH();
-		lh.add(new PC_GresLabel(Lang.tr("pc.gui.weasel.network.name")));
-		lh.add(networkName = new PC_GresTextEdit((String)tileEntity.getData("networkName"), 10));
-		lv.add(lh);
-		lh = new PC_GresLayoutH();
-		lh.add(network1 = new PC_GresButton(Lang.tr("pc.gui.weasel.network.join")));
-		lh.add(network2 = new PC_GresButton(Lang.tr("pc.gui.weasel.network.new")));
+	protected void makeNetworkTab(PC_GresWindow win){
+		
+		PC_GresWidgetTab wt = new PC_GresWidgetTab(0xBBBBBB, "/gui/items.png", 160, 48, 16, 16);
+		wt.add(new PC_GresLabel("pc.gui.weasel.device.name"));
+		wt.add(deviceName = new PC_GresTextEdit((String)tileEntity.getData("deviceName"), 10));
+		wt.add(deviceRename = new PC_GresButton("pc.gui.weasel.device.rename"));
+		win.add(wt);
+		
+		wt = new PC_GresWidgetTab(0x70360F, "/gui/items.png", 160, 32, 16, 16);
+		wt.add(new PC_GresLabel("pc.gui.weasel.network.name"));
+		wt.add(networkName = new PC_GresTextEdit((String)tileEntity.getData("networkName"), 10));
+		wt.add(network1 = new PC_GresButton("pc.gui.weasel.network.join"));
+		wt.add(network2 = new PC_GresButton("pc.gui.weasel.network.new"));
 		network1.setId(0);
 		network2.enable(false);
-		lv.add(lh);
+		
 		PC_Color color = (PC_Color)tileEntity.getData("color");
 		if(color==null)
 			color = new PC_Color(0.3f, 0.3f, 0.3f);
-		lv.add(networkColor = new PC_GresColorPicker(color.getHex(), 100, 20));
+		wt.add(networkColor = new PC_GresColorPicker(color.getHex(), 100, 20));
 		
-		tab.addTab(lv, new PC_GresLabel(Lang.tr("pc.gui.weasel.network.tab")));
+		win.add(wt);
 	}
 	
 	@Override
 	public void initGui(PC_IGresGui gui) {
 		PC_GresWindow w = new PC_GresWindow(Lang.tr(PCws_App.weasel.getBlockName() + "." + tileEntity.getPluginInfo().getKey()+".name"));
 		
-		PC_GresTab tab = new PC_GresTab();
-		makeNetworkTab(tab);
-		addTabs(tab);
-		
-		w.add(tab);
-		
-		PC_GresLayoutH lh = new PC_GresLayoutH();
-		lh.setAlignH(PC_GresAlign.JUSTIFIED);
-		lh.add(ok = new PC_GresButton(Lang.tr("pc.gui.ok")));
-		lh.add(cancel = new PC_GresButton(Lang.tr("pc.gui.cancel")));
-		w.add(lh);
-		
-		gui.add(w);
-	}
-
-	protected void addTabs(PC_GresTab tab){
-		PC_GresLayoutV lv = new PC_GresLayoutV();
+		makeNetworkTab(w);
 		PC_GresInventory inv = new PC_GresInventory(4, 2);
 		for (int j = 0; j < 2; j++) {
 			for (int i = 0; i < 4; i++) {
 				inv.setSlot(i, j, invSlots[i+j*4]);
 			}
 		}
-		lv.add(inv);
+		w.add(inv);
 
-		lv.add(new PC_GresInventoryPlayer(true));
-		tab.addTab(lv, new PC_GresLabel(Lang.tr("pc.gui.weasel.diskDrive.tab")));
+		w.add(new PC_GresInventoryPlayer(true));
+		
+		gui.add(w);
 	}
 	
 	@Override
@@ -99,11 +83,7 @@ public class PCws_GuiWeaselDiskDrive extends PCws_ContainerWeaselDiskDrive
 
 	@Override
 	public void actionPerformed(PC_GresWidget widget, PC_IGresGui gui) {
-		if(widget==ok){
-			onReturnPressed(gui);
-		}else if(widget==cancel){
-			onEscapePressed(gui);
-		}else if(widget==deviceName){
+		if(widget==deviceName){
 			List<String> deviceNames = (List<String>)tileEntity.getData("deviceNames");
 			deviceRename.enable(!deviceNames.contains(deviceName.getText()));
 			if(deviceName.equals(""))
@@ -126,6 +106,7 @@ public class PCws_GuiWeaselDiskDrive extends PCws_ContainerWeaselDiskDrive
 				network1.setText(Lang.tr("pc.gui.weasel.network.join"));
 				network1.setId(0);
 			}
+			network1.getParent().calcChildPositions();
 		}else if(widget==network1){
 			if(network1.getId()==0){
 				tileEntity.call("networkJoin", networkName.getText());
