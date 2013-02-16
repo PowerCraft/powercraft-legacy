@@ -521,6 +521,8 @@ public class PC_ClientRenderer extends PC_Renderer implements ISimpleBlockRender
 		RenderManager renderManager = RenderManager.instance;
 		label = label.trim();
 
+		if(renderManager.livingPlayer==null)
+			return;
 		float f = (float) renderManager.livingPlayer.getDistance(realPos.x + 0.5D, realPos.y + 0.5D, realPos.z + 0.5D);
 
 		if (f > viewDistance) {

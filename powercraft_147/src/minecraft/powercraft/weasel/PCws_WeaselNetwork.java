@@ -137,9 +137,9 @@ public final class PCws_WeaselNetwork implements Iterable<PCws_IWeaselNetworkDev
 		if(!members.contains(member.getID())){
 			needSave = true;
 			members.add(member.getID());
-			member.setNetwork(id);
 			functionMap.registerFunctionProvider(member.getName(), member.makePluginProvider());
 		}
+		member.setNetwork(id);
 	}
 	
 	public void updateMemberFunctionProvider(PCws_IWeaselNetworkDevice member){

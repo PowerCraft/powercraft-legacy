@@ -992,12 +992,15 @@ public class PCmo_MinerWeaselBrain  implements PCmo_IMinerBrain, PCws_IWeaselNet
 		id = nbttag.getInteger("id");
 		PCws_WeaselManager.registerPlugin(this, id);
 		networkID = nbttag.getInteger("networkID");
+		miner.setInfo("deviceName", nbttag.getString("name"));
 		SaveHandler.loadFromNBT(nbttag, "engine", engine);
 		sleep = nbttag.getInteger("sleep");
 		program = nbttag.getString("program");
 		if(nbttag.hasKey("error"))
 			error = nbttag.getString("error");
-		
+		if(getNetwork()!=null){
+			getNetwork().registerMember(this);
+		}
 		return this;
 	}
 
@@ -1005,6 +1008,7 @@ public class PCmo_MinerWeaselBrain  implements PCmo_IMinerBrain, PCws_IWeaselNet
 	public NBTTagCompound writeToNBT(NBTTagCompound nbttag) {
 		nbttag.setInteger("id", id);
 		nbttag.setInteger("networkID", networkID);
+		nbttag.setString("name", (String)miner.getInfo("deviceName"));
 		SaveHandler.saveToNBT(nbttag, "engine", engine);
 		nbttag.setInteger("sleep", sleep);
 		nbttag.setString("program", program);
@@ -1077,6 +1081,7 @@ public class PCmo_MinerWeaselBrain  implements PCmo_IMinerBrain, PCws_IWeaselNet
 		removeFromNetwork();
 		network.registerMember(this);
 		miner.setInfo("networkName", network.getName());
+		miner.setInfo("color", network.getColor());
 	}
 	
 	@Override
@@ -1095,6 +1100,9 @@ public class PCmo_MinerWeaselBrain  implements PCmo_IMinerBrain, PCws_IWeaselNet
 				userInput.remove(0);
 			}
 		}else if(obj[0].equals("deviceRename")){
+			if(getNetwork()!=null){
+				getNetwork().renameMember(this, (String)obj[1]);
+			}
 			miner.setInfo("deviceName", (String)obj[1]);
 		}else if(obj[0].equals("networkJoin")){
 			if(((String) obj[1]).equals("")){
@@ -1110,6 +1118,10 @@ public class PCmo_MinerWeaselBrain  implements PCmo_IMinerBrain, PCws_IWeaselNet
 		}else if(obj[0].equals("networkNew")){
 			connectToNetwork(new PCws_WeaselNetwork());
 			getNetwork().setName((String) obj[1]);
+		}else if(obj[0].equals("networkColor")){
+			if(getNetwork()!=null){
+				getNetwork().setColor((PC_Color)obj[1]);
+			}
 		}
 	}
 
@@ -1130,8 +1142,7 @@ public class PCmo_MinerWeaselBrain  implements PCmo_IMinerBrain, PCws_IWeaselNet
 
 	@Override
 	public WeaselFunctionManager makePluginProvider() {
-		WeaselFunctionManager fp = new WeaselFunctionManager();
-		return fp;
+		return new MinerProvider2();
 	}
 
 	@Override
@@ -1219,6 +1230,59 @@ public class PCmo_MinerWeaselBrain  implements PCmo_IMinerBrain, PCws_IWeaselNet
 		
 	}
 
+	public class MinerProvider2 extends WeaselFunctionManager{
+		
+		@Override
+		public WeaselObject call(WeaselEngine engine, String name, boolean var, WeaselObject... args) throws WeaselRuntimeException {
+			try{
+				if(var){
+					if(PCmo_MinerWeaselBrain.this.getProvidedVariableNames().contains(name)){
+						if(args.length==0){
+							return PCmo_MinerWeaselBrain.this.getVariable(name);
+						}else{
+							PCmo_MinerWeaselBrain.this.setVariable(name, args[0]);
+							return new WeaselNull();
+						}
+					}else{
+						throw new WeaselRuntimeException("Variable not found");
+					}
+				}else{
+					if(PCmo_MinerWeaselBrain.this.doesProvideFunction(name)){
+						return PCmo_MinerWeaselBrain.this.callProvidedFunction(engine, name, args);
+					}else{
+						throw new WeaselRuntimeException("Function not found");
+					}
+				}
+			}catch(WeaselRuntimeException e){
+				try{
+					return PCws_WeaselManager.getGlobalFunctionManager().call(engine, name, var, args);
+				}catch(WeaselRuntimeException e1){
+					throw e1;
+				}
+			}
+		}
+
+		@Override
+		public boolean doesProvideFunction(String name) {
+			if(PCmo_MinerWeaselBrain.this.doesProvideFunction(name))
+				return true;
+			return PCws_WeaselManager.getGlobalFunctionManager().doesProvideFunction(name);
+		}
+		
+		@Override
+		public List<String> getProvidedFunctionNames() {
+			List<String> list = PCmo_MinerWeaselBrain.this.getProvidedFunctionNames();
+			list.addAll(PCws_WeaselManager.getGlobalFunctionManager().getProvidedFunctionNames());
+			return list;
+		}
+		
+		@Override
+		public List<String> getProvidedVariableNames() {
+			return PCmo_MinerWeaselBrain.this.getProvidedVariableNames();
+		}
+		
+	}
+	
 	@Override
 	public String getName() {
 		return (String)miner.getInfo("deviceName");
@@ -1228,6 +1292,9 @@ public class PCmo_MinerWeaselBrain  implements PCmo_IMinerBrain, PCws_IWeaselNet
 	public void onOpenGui() {
 		miner.setInfo("deviceNames", PCws_WeaselManager.getAllPluginNames());
 		miner.setInfo("networkNames", PCws_WeaselManager.getAllNetworkNames());
+		if(getNetwork()!=null){
+			miner.setInfo("networkName", getNetwork().getName());
+		}
 	}
 	
 }

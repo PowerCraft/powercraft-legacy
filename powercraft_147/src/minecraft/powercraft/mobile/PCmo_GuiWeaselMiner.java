@@ -119,6 +119,7 @@ public class PCmo_GuiWeaselMiner extends PCmo_GuiMiner {
 		}else if(widget==network2){
 			miner.doInfoSet("brainmsg", "networkNew", networkName.getText());
 		}else if(widget==networkColor){
+			miner.doInfoSet("brainmsg", "networkColor", PC_Color.fromHex(networkColor.getColor()));
 			miner.setInfo("color", PC_Color.fromHex(networkColor.getColor()));
 		}else{
 			super.actionPerformed(widget, gui);

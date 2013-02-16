@@ -3363,8 +3363,9 @@ public class PCmo_EntityMiner extends Entity implements PC_IInventoryWrapper {
 		if(tag.hasKey("player")){
 			playerConectedID = tag.getString("player");
 		}
-		PC_InvUtils.loadInventoryFromNBT(tag, "CargoInv", cargo);
+		
 		PC_InvUtils.loadInventoryFromNBT(tag, "XtalInv", xtals);
+		PC_InvUtils.loadInventoryFromNBT(tag, "CargoInv", cargo);
 		
 		setFlag(keepAllFuel, tag.getBoolean(keepAllFuel));
 		setFlag(torchesOnlyOnFloor, tag.getBoolean(torchesOnlyOnFloor));
