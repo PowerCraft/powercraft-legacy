@@ -88,12 +88,12 @@ public class PC_GuiUpdateNotification implements PC_IGresClient {
 			}
 		}
 		
-		for(PC_Struct2<String, String> module: PC_UpdateManager.getNewModuels()){
+		for(PC_Struct3<String, String, String> module: PC_UpdateManager.getNewModuels()){
 			String name = "NEW "+module.a;
 			if(name.equalsIgnoreCase("Core")){
-				t.addTab(core = getTabPage(module.b), new PC_GresLabel(name));
+				t.addTab(core = getTabPage(module.c), new PC_GresLabel(name));
 			}else{
-				t.addTab(getTabPage(module.b), new PC_GresLabel(name));
+				t.addTab(getTabPage(module.c), new PC_GresLabel(name));
 			}
 		}
 		

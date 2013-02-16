@@ -177,7 +177,7 @@ public class PC_UpdateManager {
 	}
 	
 	private static List<PC_Struct2<PC_IModule, String>> updateModules = new ArrayList<PC_Struct2<PC_IModule, String>>();
-	private static List<PC_Struct2<String, String>> newModules = new ArrayList<PC_Struct2<String, String>>();
+	private static List<PC_Struct3<String, String, String>> newModules = new ArrayList<PC_Struct3<String,  String, String>>();
 	
 	private static void onUpdateInfoDownloaded(String page) {
 		PC_Logger.fine("\n\nUpdate information received from server.");
@@ -234,8 +234,10 @@ public class PC_UpdateManager {
                             new ThreadDownloadTranslations(sLangLink, module, langVersion).start();
                         }
                     }else{
-                    	newModules.add(new PC_Struct2<String, String>(sModule, sInfo.trim()));
-                    	PC_GlobalVariables.showUpdateWindow = true;
+                    	if(!sModuleVersion.equals(PC_GlobalVariables.config.getString("modules."+sModule+".lastIgnoredVersion"))){
+                    		newModules.add(new PC_Struct3<String, String, String>(sModule, sModuleVersion, sInfo.trim()));
+                    		PC_GlobalVariables.showUpdateWindow = true;
+                    	}
                     }
                 }
             }
@@ -261,7 +263,7 @@ public class PC_UpdateManager {
 		for(PC_Struct2<PC_IModule, String> e:updateModules){
 			PC_GlobalVariables.config.setString("modules."+e.a.getName()+".lastIgnoredVersion", e.b);
 		}
-		for(PC_Struct2<String, String> e:newModules){
+		for(PC_Struct3<String, String, String> e:newModules){
 			PC_GlobalVariables.config.setString("modules."+e.a+".lastIgnoredVersion", e.b);
 		}
 		PC_GlobalVariables.saveConfig();
@@ -271,8 +273,8 @@ public class PC_UpdateManager {
 		return new ArrayList<PC_Struct2<PC_IModule, String>>(updateModules);
 	}
 	
-	public static List<PC_Struct2<String, String>>  getNewModuels() {
-		return new ArrayList<PC_Struct2<String, String>>(newModules);
+	public static List<PC_Struct3<String, String, String>>  getNewModuels() {
+		return new ArrayList<PC_Struct3<String, String, String>>(newModules);
 	}
 
 	public static void downloadUpdateInfo(String url) {
