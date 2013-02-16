@@ -90,7 +90,7 @@ public class PC_GuiUpdateNotification implements PC_IGresClient {
 		
 		for(PC_Struct3<String, String, String> module: PC_UpdateManager.getNewModuels()){
 			String name = "NEW "+module.a;
-			if(name.equalsIgnoreCase("Core")){
+			if(module.a.equalsIgnoreCase("Core")){
 				t.addTab(core = getTabPage(module.c), new PC_GresLabel(name));
 			}else{
 				t.addTab(getTabPage(module.c), new PC_GresLabel(name));
