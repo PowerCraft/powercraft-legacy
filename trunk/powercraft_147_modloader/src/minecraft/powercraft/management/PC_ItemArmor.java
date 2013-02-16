@@ -2,8 +2,10 @@ package powercraft.management;
 
 import java.util.List;
 
+import powercraft.management.PC_Utils.GameInfo;
 import powercraft.management.PC_Utils.ValueWriting;
 
+import net.minecraft.src.CreativeTabs;
 import net.minecraft.src.EnumArmorMaterial;
 import net.minecraft.src.Item;
 import net.minecraft.src.ItemArmor;
@@ -89,4 +91,9 @@ public abstract class PC_ItemArmor extends ItemArmor implements PC_IItemInfo, PC
 		return currentTexture;
 	}
     
+	@Override
+	public Item setCreativeTab(CreativeTabs _default) {
+		return super.setCreativeTab(GameInfo.getCreativeTab(_default));
+	}
+	
 }

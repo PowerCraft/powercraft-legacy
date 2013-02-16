@@ -2,6 +2,7 @@ package powercraft.management;
 
 import net.minecraft.src.Block;
 import net.minecraft.src.BlockContainer;
+import net.minecraft.src.CreativeTabs;
 import net.minecraft.src.EnchantmentHelper;
 import net.minecraft.src.EntityPlayer;
 import net.minecraft.src.IBlockAccess;
@@ -301,6 +302,11 @@ public abstract class PC_Block extends BlockContainer implements PC_IMSG
 			Item.itemsList[id] = itemBlock;
 		}
 		
+	}
+	
+	@Override
+	public Block setCreativeTab(CreativeTabs _default) {
+		return super.setCreativeTab(GameInfo.getCreativeTab(_default));
 	}
 	
 }

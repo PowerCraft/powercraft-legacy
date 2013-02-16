@@ -27,6 +27,7 @@ import net.minecraft.src.AxisAlignedBB;
 import net.minecraft.src.Block;
 import net.minecraft.src.CompressedStreamTools;
 import net.minecraft.src.CraftingManager;
+import net.minecraft.src.CreativeTabs;
 import net.minecraft.src.Entity;
 import net.minecraft.src.EntityItem;
 import net.minecraft.src.EntityList;
@@ -1109,6 +1110,10 @@ public class PC_Utils implements PC_IPacketHandler
     
     public static class GameInfo{
 
+    	public static CreativeTabs getCreativeTab(CreativeTabs _default){
+    		return _default;
+    	}
+    	
     	public static boolean isPlayerOPOrOwner(EntityPlayer player){
     		if(mcs().getConfigurationManager().getOps().contains(player))
     			return true;
