@@ -3403,6 +3403,7 @@ public class PCmo_EntityMiner extends Entity implements PC_IInventoryWrapper {
 			setInfo("error", br.getError());
 			setInfo("isRunning", !st.paused);
 			setInfo("script", br.getScriptName());
+			br.onOpenGui();
 			Gres.openGres("Miner", entityplayer, null, entityId);
 			return true;
 		}

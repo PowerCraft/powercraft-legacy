@@ -87,12 +87,12 @@ public class PC_GuiUpdateNotification implements PC_IGresClient {
 			}
 		}
 		
-		for(PC_Struct2<String, String> module: PC_UpdateManager.getNewModuels()){
+		for(PC_Struct3<String, String, String> module: PC_UpdateManager.getNewModuels()){
 			String name = "NEW "+module.a;
-			if(name.equalsIgnoreCase("Core")){
-				t.addTab(core = getTabPage(module.b), new PC_GresLabel(name));
+			if(module.a.equalsIgnoreCase("Core")){
+				t.addTab(core = getTabPage(module.c), new PC_GresLabel(name));
 			}else{
-				t.addTab(getTabPage(module.b), new PC_GresLabel(name));
+				t.addTab(getTabPage(module.c), new PC_GresLabel(name));
 			}
 		}
 		
@@ -113,7 +113,7 @@ public class PC_GuiUpdateNotification implements PC_IGresClient {
 		gui.add(w);
 
 		gui.setPausesGame(true);
-
+		
 	}
 
 	@Override
@@ -125,7 +125,6 @@ public class PC_GuiUpdateNotification implements PC_IGresClient {
 				PC_UpdateManager.ignoreALLUpdateVersion();
 			}
 
-			GL11.glDisable(GL11.GL_LIGHTING);
 			PC_ClientUtils.mc().currentScreen = gs;
 
 		} else if (widget.getId() == 1) {
@@ -140,7 +139,6 @@ public class PC_GuiUpdateNotification implements PC_IGresClient {
 
 	@Override
 	public void onEscapePressed(PC_IGresGui gui) {
-		GL11.glDisable(GL11.GL_LIGHTING);
 		PC_ClientUtils.mc().currentScreen = gs;
 	}
 

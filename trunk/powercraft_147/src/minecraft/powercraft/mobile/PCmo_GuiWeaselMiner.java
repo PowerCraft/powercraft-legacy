@@ -1,10 +1,14 @@
 package powercraft.mobile;
 
+import java.util.List;
+
 import net.minecraft.entity.player.EntityPlayer;
+import powercraft.management.PC_Color;
 import powercraft.management.PC_PacketHandler;
 import powercraft.management.PC_TileEntity;
 import powercraft.management.PC_Utils.Lang;
 import powercraft.management.gres.PC_GresButton;
+import powercraft.management.gres.PC_GresColorPicker;
 import powercraft.management.gres.PC_GresLabel;
 import powercraft.management.gres.PC_GresLayoutH;
 import powercraft.management.gres.PC_GresLayoutV;
@@ -19,6 +23,11 @@ public class PCmo_GuiWeaselMiner extends PCmo_GuiMiner {
 	private PC_GresTextEditMultiline cons;
 	private PC_GresTextEdit inp;
 	private PC_GresButton send;
+	private PC_GresTextEdit deviceName;
+	private PC_GresWidget deviceRename;
+	private PC_GresTextEdit networkName;
+	private PC_GresWidget network1, network2;
+	private PC_GresColorPicker networkColor;
 	
 	public PCmo_GuiWeaselMiner(EntityPlayer player, PC_TileEntity te, Object[] o) {
 		super(player, te, o);
@@ -40,9 +49,35 @@ public class PCmo_GuiWeaselMiner extends PCmo_GuiMiner {
 		tab.addTab(lv, new PC_GresLabel(Lang.tr("pc.gui.weasel.terminal.terminal")));
 	}
 	
+	private void makeNetworkTab(PC_GresTab tab){
+		PC_GresLayoutV lv = new PC_GresLayoutV();
+		PC_GresLayoutH lh = new PC_GresLayoutH();
+		lh.add(new PC_GresLabel(Lang.tr("pc.gui.weasel.device.name")));
+		lh.add(deviceName = new PC_GresTextEdit((String)miner.getInfo("deviceName"), 10));
+		lv.add(lh);
+		lv.add(deviceRename = new PC_GresButton(Lang.tr("pc.gui.weasel.device.rename")));
+		lh = new PC_GresLayoutH();
+		lh.add(new PC_GresLabel(Lang.tr("pc.gui.weasel.network.name")));
+		lh.add(networkName = new PC_GresTextEdit((String)miner.getInfo("networkName"), 10));
+		lv.add(lh);
+		lh = new PC_GresLayoutH();
+		lh.add(network1 = new PC_GresButton(Lang.tr("pc.gui.weasel.network.join")));
+		lh.add(network2 = new PC_GresButton(Lang.tr("pc.gui.weasel.network.new")));
+		network1.setId(0);
+		network2.enable(false);
+		lv.add(lh);
+		PC_Color color = (PC_Color)miner.getInfo("color");
+		if(color==null)
+			color = new PC_Color(0.3f, 0.3f, 0.3f);
+		lv.add(networkColor = new PC_GresColorPicker(color.getHex(), 100, 20));
+		
+		tab.addTab(lv, new PC_GresLabel(Lang.tr("pc.gui.weasel.network.tab")));
+	}
+	
 	@Override
 	public void makeOtherTabs(PC_GresTab tab) {
 		makeTerminalTab(tab);
+		makeNetworkTab(tab);
 	}
 
 	@Override
@@ -50,7 +85,41 @@ public class PCmo_GuiWeaselMiner extends PCmo_GuiMiner {
 		if(widget==send){
 			String txt = inp.getText().trim();
 			inp.setText("");
-			PC_PacketHandler.sendToPacketHandler(true, miner.worldObj, "MinerManager", miner.entityId, "brainmsg", "input", txt);
+			miner.doInfoSet("brainmsg", "input", txt);
+		}else if(widget==deviceName){
+			List<String> deviceNames = (List<String>)miner.getInfo("deviceNames");
+			deviceRename.enable(!deviceNames.contains(deviceName.getText()));
+			if(deviceName.equals(""))
+				deviceRename.enable(false);
+		}else if(widget==deviceRename){
+			miner.doInfoSet("brainmsg", "deviceRename", deviceName.getText());
+		}else if(widget==networkName){
+			List<String> networkNames = (List<String>)miner.getInfo("networkNames");
+			if(networkNames.contains(networkName.getText())){
+				network1.setText(Lang.tr("pc.gui.weasel.network.join"));
+				network1.setId(0);
+				network2.enable(false);
+			}else{
+				network1.setText(Lang.tr("pc.gui.weasel.network.rename"));
+				network1.setId(1);
+				network2.enable(true);
+			}
+			if(networkName.getText().equals("")){
+				network2.enable(false);
+				network1.setText(Lang.tr("pc.gui.weasel.network.join"));
+				network1.setId(0);
+			}
+			network1.getParent().calcChildPositions();
+		}else if(widget==network1){
+			if(network1.getId()==0){
+				miner.doInfoSet("brainmsg", "networkJoin", networkName.getText());
+			}else{
+				miner.doInfoSet("brainmsg", "networkRename", networkName.getText());
+			}
+		}else if(widget==network2){
+			miner.doInfoSet("brainmsg", "networkNew", networkName.getText());
+		}else if(widget==networkColor){
+			miner.setInfo("color", PC_Color.fromHex(networkColor.getColor()));
 		}else{
 			super.actionPerformed(widget, gui);
 		}

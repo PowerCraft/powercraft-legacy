@@ -18,6 +18,7 @@ public interface PCmo_IMinerBrain extends PC_INBT<PCmo_IMinerBrain> {
 	public void run();
 	public List<Keyword> getKeywords();
 	public void compileProgram(String text) throws Exception;
+	public void onOpenGui();
 	public void msg(Object[] obj);
 	
 }

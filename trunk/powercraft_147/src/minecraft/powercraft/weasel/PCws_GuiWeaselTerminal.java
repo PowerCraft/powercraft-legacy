@@ -12,6 +12,7 @@ import powercraft.management.gres.PC_GresTab;
 import powercraft.management.gres.PC_GresTextEdit;
 import powercraft.management.gres.PC_GresTextEditMultiline;
 import powercraft.management.gres.PC_GresWidget;
+import powercraft.management.gres.PC_GresWindow;
 import powercraft.management.gres.PC_IGresGui;
 
 public class PCws_GuiWeaselTerminal extends PCws_GuiWeasel {
@@ -46,7 +47,7 @@ public class PCws_GuiWeaselTerminal extends PCws_GuiWeasel {
 	}
 	
 	@Override
-	protected void addTabs(PC_GresTab tab) {
+	protected void addTabs(PC_GresWindow w, PC_GresTab tab) {
 		makeTerminalTab(tab);
 	}
 

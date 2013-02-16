@@ -38,14 +38,14 @@ public class PC_GresWindow extends PC_GresWidget {
 	 * @param title title of the window
 	 */
 	public PC_GresWindow(String title) {
-		super(240, 0, title);
+		super(120, 0, title);
 	}
 
 	/**
 	 * Create window of width 240 and height auto, no title.
 	 */
 	public PC_GresWindow() {
-		super(240, 0, "");
+		super(120, 0, "");
 	}
 
 	/**
@@ -57,8 +57,6 @@ public class PC_GresWindow extends PC_GresWidget {
 	public PC_GresWidget setWidthForInventory() {
 		setMinWidth(176);
 		padding.setTo(7, 7, 0);
-		this.size = minSize.copy();
-		this.minSize = minSize.copy();
 		calcSize();
 		return this;
 	}
@@ -66,16 +64,16 @@ public class PC_GresWindow extends PC_GresWidget {
 	@Override
 	public PC_VecI calcSize() {
 		int textWidth = mc.fontRenderer.getStringWidth(text);
-		if (size.x < textWidth + padding.x * 2 + 12) {
-			size.x = textWidth + padding.y * 2 + 12;
+		if (size.x < textWidth + padding.x * 2 + 48) {
+			size.x = textWidth + padding.x * 2 + 48;
 		}
-		calcChildPositions();
 		if (size.x < minSize.x) {
 			size.x = minSize.x;
 		}
 		if (size.y < minSize.y) {
 			size.y = minSize.y;
 		}
+		calcChildPositions();
 		return size.copy();
 	}
 	
@@ -147,10 +145,11 @@ public class PC_GresWindow extends PC_GresWidget {
 			if (ySize + yPlus + padding.y > size.y) {
 				size.y = ySize + yPlus + padding.y;
 			}
-			if (parent != null&&size.y<600) {
+			
+			if (parent != null) {
 				parent.calcChildPositions();
 			}
-			calcChildPositions();
+			//calcChildPositions();
 			return;
 		}
 

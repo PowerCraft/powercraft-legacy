@@ -16,6 +16,7 @@ import powercraft.management.gres.PC_GresSeparatorV;
 import powercraft.management.gres.PC_GresTab;
 import powercraft.management.gres.PC_GresTextEditMultiline;
 import powercraft.management.gres.PC_GresWidget;
+import powercraft.management.gres.PC_GresWindow;
 import powercraft.management.gres.PC_IGresGui;
 import powercraft.management.gres.PC_GresTextEditMultiline.Keyword;
 import powercraft.management.gres.PC_GresWidget.PC_GresAlign;
@@ -133,7 +134,7 @@ public class PCws_GuiWeaselCore extends PCws_GuiWeasel {
 	}
 	
 	@Override
-	protected void addTabs(PC_GresTab tab) {
+	protected void addTabs(PC_GresWindow w, PC_GresTab tab) {
 		makeStatusTab(tab);
 		makeProgramTab(tab);
 	}

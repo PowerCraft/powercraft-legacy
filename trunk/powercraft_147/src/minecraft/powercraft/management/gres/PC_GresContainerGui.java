@@ -287,7 +287,6 @@ public class PC_GresContainerGui extends GuiContainer implements PC_IGresGui, PC
 
 		GL11.glDisable(GL12.GL_RESCALE_NORMAL);
 		RenderHelper.disableStandardItemLighting();
-		GL11.glDisable(GL11.GL_LIGHTING);
 		GL11.glDisable(GL11.GL_DEPTH_TEST);
 
 		if (inventoryplayer.getItemStack() == null) {
@@ -348,8 +347,6 @@ public class PC_GresContainerGui extends GuiContainer implements PC_IGresGui, PC
 
 
 		GL11.glPopMatrix();
-
-		GL11.glEnable(GL11.GL_LIGHTING);
 		GL11.glEnable(GL11.GL_DEPTH_TEST);
 	}
 
