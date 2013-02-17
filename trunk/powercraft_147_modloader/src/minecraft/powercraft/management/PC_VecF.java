@@ -6,6 +6,8 @@ import net.minecraft.src.NBTTagCompound;
 
 public class PC_VecF implements Serializable, PC_Vec<Float, PC_VecF> {
 	
+	public static final long serialVersionUID = 1745800961264333414L;
+	
 	public float x;
 	public float y;
 	public float z;
