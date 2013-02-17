@@ -39,7 +39,7 @@ public class PCco_App implements PC_IModule {
 
 	@Override
 	public String getVersion() {
-		return "1.0.3";
+		return "1.0.4";
 	}
 	
 	@Override

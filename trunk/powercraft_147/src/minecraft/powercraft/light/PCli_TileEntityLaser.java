@@ -128,6 +128,13 @@ public class PCli_TileEntityLaser extends PC_TileEntity implements PC_IBeamHandl
 	}
 
 	@Override
+	protected void dataChange(String key, Object value){
+		if(key.equals(ITEMSTACK)){
+			laser = null;
+		}
+	}
+	
+	@Override
 	public void renderTileEntityAt(double x, double y, double z, float rot) {
 		modelLaser.laserParts[0].showModel = modelLaser.laserParts[1].showModel = modelLaser.laserParts[2].showModel = modelLaser.laserParts[3].showModel = 
 				isKiller();

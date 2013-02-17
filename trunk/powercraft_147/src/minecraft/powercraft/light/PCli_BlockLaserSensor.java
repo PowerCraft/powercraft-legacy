@@ -109,7 +109,7 @@ public class PCli_BlockLaserSensor extends PC_Block implements PC_IItemInfo {
 	public result onHitByBeamTracer(IBlockAccess world, BeamSettings bs) {
 		PC_VecI pos = bs.getPos();
 		PCli_TileEntityLaserSensor te = GameInfo.getTE(world, pos.x, pos.y, pos.z, blockID);
-		if(te!=null){
+		if(te!=null && !te.getWorldObj().isRemote){
 			te.hitByBeam();
 		}
 		return result.STOP;

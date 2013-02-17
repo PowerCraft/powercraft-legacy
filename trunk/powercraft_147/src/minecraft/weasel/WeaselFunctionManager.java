@@ -9,6 +9,7 @@ import java.util.Map.Entry;
 import powercraft.management.PC_Struct2;
 import powercraft.management.PC_Struct3;
 import weasel.exception.WeaselRuntimeException;
+import weasel.exception.WeaselRuntimeExceptionFunctionNotExist;
 import weasel.obj.WeaselBoolean;
 import weasel.obj.WeaselDouble;
 import weasel.obj.WeaselObject;
@@ -21,7 +22,7 @@ public class WeaselFunctionManager implements IWeaselHardware {
 	public WeaselObject call(WeaselEngine engine, String name, boolean var, WeaselObject...args) throws WeaselRuntimeException{
 		String subNames[] = name.split("\\.", 2);
 		if(functions==null || !functions.containsKey(subNames[0])){
-			throw new WeaselRuntimeException("Function \""+name+"\" does not exist");
+			throw new WeaselRuntimeExceptionFunctionNotExist(name);
 		}
 		PC_Struct3<PC_Struct2<String , Object>, PC_Struct2<String , Object>, WeaselFunctionManager> value = functions.get(subNames[0]);
 		if(subNames.length==1){
@@ -35,7 +36,7 @@ public class WeaselFunctionManager implements IWeaselHardware {
 		}
 		WeaselFunctionManager fp = value.c;
 		if(fp == null)
-			throw new WeaselRuntimeException("Function \""+name+"\" does not exist");
+			throw new WeaselRuntimeExceptionFunctionNotExist(name);
 		return fp.call(engine, subNames[1], var, args);
 	}
 	
@@ -200,7 +201,7 @@ public class WeaselFunctionManager implements IWeaselHardware {
 		while(method==null){
 			c = c.getSuperclass();
 			if(c==null)
-				throw new WeaselRuntimeException("Function \""+name+"\" does not exist");
+				throw new WeaselRuntimeExceptionFunctionNotExist(name);
 			methods = c.getDeclaredMethods();
 			method = getBestMethod(methods, name, expect);
 		}
@@ -211,7 +212,7 @@ public class WeaselFunctionManager implements IWeaselHardware {
 			throw e;
 		} catch (Exception e) {
 			e.printStackTrace();
-			throw new WeaselRuntimeException("Function \""+name+"\" does not exist");
+			throw new WeaselRuntimeExceptionFunctionNotExist(name);
 		} 
 	}
 	
@@ -221,7 +222,7 @@ public class WeaselFunctionManager implements IWeaselHardware {
 			obj = ((PC_Struct2<String, Object>)obj).b;
 		}
 		if(obj==null)
-			throw new WeaselRuntimeException("Function \""+name+"\" does not exist");
+			throw new WeaselRuntimeExceptionFunctionNotExist(name);
 		if(engine==null){
 			return call(obj, name, (Object[])args);
 		}

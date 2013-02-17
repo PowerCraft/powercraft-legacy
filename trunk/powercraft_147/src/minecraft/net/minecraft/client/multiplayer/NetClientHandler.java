@@ -1,6 +1,7 @@
 package net.minecraft.client.multiplayer;
 
 import cpw.mods.fml.common.network.FMLNetworkHandler;
+import cpw.mods.fml.common.network.ModListRequestPacket;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import java.io.BufferedReader;
@@ -160,6 +161,8 @@ import net.minecraft.world.storage.ISaveHandler;
 import net.minecraft.world.storage.MapStorage;
 import org.lwjgl.input.Keyboard;
 
+import powercraft.management.PC_Utils.ValueWriting;
+
 import net.minecraftforge.client.ForgeHooksClient;
 import net.minecraftforge.client.event.ClientChatReceivedEvent;
 import net.minecraftforge.common.ForgeHooks;
@@ -251,7 +254,7 @@ public class NetClientHandler extends NetHandler
         String var2 = par1Packet253ServerAuthData.getServerId().trim();
         PublicKey var3 = par1Packet253ServerAuthData.getPublicKey();
         SecretKey var4 = CryptManager.createNewSharedKey();
-
+        
         if (!"-".equals(var2))
         {
             String var5 = (new BigInteger(CryptManager.getServerIdHash(var2, var3, var4))).toString(16);
