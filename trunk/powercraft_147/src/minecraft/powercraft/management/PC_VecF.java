@@ -1,10 +1,10 @@
 package powercraft.management;
 
-import java.io.Serializable;
-
 import net.minecraft.nbt.NBTTagCompound;
 
-public class PC_VecF implements Serializable, PC_Vec<Float, PC_VecF> {
+public class PC_VecF implements PC_Vec<Float, PC_VecF> {
+	
+	public static final long serialVersionUID = 1745800961264333414L;
 	
 	public float x;
 	public float y;

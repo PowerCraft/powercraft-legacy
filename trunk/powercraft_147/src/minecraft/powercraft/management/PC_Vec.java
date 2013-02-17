@@ -1,6 +1,8 @@
 package powercraft.management;
 
-public interface PC_Vec<t extends Number, ret extends PC_Vec> extends PC_INBT {
+import java.io.Serializable;
+
+public interface PC_Vec<t extends Number, ret extends PC_Vec> extends PC_INBT, Serializable {
 
 	public t getX();
 	public t getY();

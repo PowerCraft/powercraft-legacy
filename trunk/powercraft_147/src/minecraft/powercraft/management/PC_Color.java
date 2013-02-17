@@ -7,6 +7,8 @@ import java.util.Random;
 
 public class PC_Color extends PC_VecF {
 
+	public static final long serialVersionUID = 1745800961264333415L;
+	
 	private static HashMap<String, Integer> namedColors = new HashMap<String, Integer>();
 	public static final int crystal_colors[] = { 0xff9900, 0xff1111, 0x39ff11, 0x5555ff, 0xCCCCFF, 0xff33ff, 0x33ffff, 0xffff00 };
     
