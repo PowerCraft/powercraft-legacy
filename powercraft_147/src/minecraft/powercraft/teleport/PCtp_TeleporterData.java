@@ -12,6 +12,8 @@ import powercraft.management.PC_Utils.SaveHandler;
 
 public class PCtp_TeleporterData implements PC_INBT<PCtp_TeleporterData>, Serializable {
 
+	public static final long serialVersionUID = 3200035481822302060L;
+	
 	public static final int N=0, E=1, S=2, W=3;
 	
 	public String name;

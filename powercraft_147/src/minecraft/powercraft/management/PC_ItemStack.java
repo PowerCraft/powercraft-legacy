@@ -14,6 +14,9 @@ import net.minecraft.nbt.NBTTagCompound;
 
 public class PC_ItemStack implements Externalizable, PC_INBT<PC_ItemStack>
 {
+	
+	public static final long serialVersionUID = 1522073818686692550L;
+	
     private Object o;
     private int count;
     private int meta;
