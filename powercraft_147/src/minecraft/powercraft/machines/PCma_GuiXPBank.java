@@ -26,7 +26,7 @@ public class PCma_GuiXPBank implements PC_IGresClient {
 	private EntityPlayer player;
 	
 	public PCma_GuiXPBank(EntityPlayer player, PC_TileEntity te, Object[] o){
-		xpbank = GameInfo.getTE(player.worldObj, (Integer)o[0], (Integer)o[1], (Integer)o[2]);
+		xpbank = (PCma_TileEntityXPBank)te;
 		this.player = player;
 	}
 	

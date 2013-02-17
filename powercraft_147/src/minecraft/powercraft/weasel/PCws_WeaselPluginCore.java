@@ -20,6 +20,7 @@ import weasel.WeaselEngine;
 import weasel.WeaselFunctionManager;
 import weasel.exception.SyntaxError;
 import weasel.exception.WeaselRuntimeException;
+import weasel.exception.WeaselRuntimeExceptionFunctionNotExist;
 import weasel.lang.Instruction;
 import weasel.obj.WeaselObject;
 
@@ -328,10 +329,10 @@ public class PCws_WeaselPluginCore extends PCws_WeaselPlugin implements PCws_IWe
 		public WeaselObject call(WeaselEngine engine, String name, boolean var, WeaselObject... args) throws WeaselRuntimeException {
 			try{
 				return super.call(engine, name, var, args);
-			}catch(WeaselRuntimeException e){
+			}catch(WeaselRuntimeExceptionFunctionNotExist e){
 				try{
 					return PCws_WeaselManager.getGlobalFunctionManager().call(engine, name, var, args);
-				}catch(WeaselRuntimeException e1){
+				}catch(WeaselRuntimeExceptionFunctionNotExist e1){
 					if(getNetwork()==null){
 						throw e1;
 					}else{

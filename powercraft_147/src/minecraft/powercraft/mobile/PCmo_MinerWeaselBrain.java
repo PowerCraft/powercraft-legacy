@@ -30,6 +30,7 @@ import weasel.IWeaselHardware;
 import weasel.WeaselEngine;
 import weasel.WeaselFunctionManager;
 import weasel.exception.WeaselRuntimeException;
+import weasel.exception.WeaselRuntimeExceptionFunctionNotExist;
 import weasel.lang.Instruction;
 import weasel.obj.WeaselBoolean;
 import weasel.obj.WeaselDouble;
@@ -839,11 +840,11 @@ public class PCmo_MinerWeaselBrain  implements PCmo_IMinerBrain, PCws_IWeaselNet
 
 				int numid = -1;
 
-				if (id instanceof Integer) {
+				if (id instanceof WeaselDouble) {
 					numid = Calc.toInteger(id);
 				}
 
-				if (id instanceof String) {
+				if (id instanceof WeaselString) {
 					numid = -2;
 					str = Calc.toString(id);
 				}
@@ -1166,34 +1167,27 @@ public class PCmo_MinerWeaselBrain  implements PCmo_IMinerBrain, PCws_IWeaselNet
 		
 		@Override
 		public WeaselObject call(WeaselEngine engine, String name, boolean var, WeaselObject... args) throws WeaselRuntimeException {
-			try{
-				if(var){
-					if(PCmo_MinerWeaselBrain.this.getProvidedVariableNames().contains(name)){
-						if(args.length==0){
-							return PCmo_MinerWeaselBrain.this.getVariable(name);
-						}else{
-							PCmo_MinerWeaselBrain.this.setVariable(name, args[0]);
-							return new WeaselNull();
-						}
+			if(var){
+				if(PCmo_MinerWeaselBrain.this.getProvidedVariableNames().contains(name)){
+					if(args.length==0){
+						return PCmo_MinerWeaselBrain.this.getVariable(name);
 					}else{
-						throw new WeaselRuntimeException("Variable not found");
-					}
-				}else{
-					if(PCmo_MinerWeaselBrain.this.doesProvideFunction(name)){
-						return PCmo_MinerWeaselBrain.this.callProvidedFunction(engine, name, args);
-					}else{
-						throw new WeaselRuntimeException("Function not found");
+						PCmo_MinerWeaselBrain.this.setVariable(name, args[0]);
+						return new WeaselNull();
 					}
 				}
-			}catch(WeaselRuntimeException e){
-				try{
-					return PCws_WeaselManager.getGlobalFunctionManager().call(engine, name, var, args);
-				}catch(WeaselRuntimeException e1){
-					if(getNetwork()==null){
-						throw e1;
-					}else{
-						return getNetwork().getFunctionHandler().call(engine, name, var, args);
-					}
+			}else{
+				if(PCmo_MinerWeaselBrain.this.doesProvideFunction(name)){
+					return PCmo_MinerWeaselBrain.this.callProvidedFunction(engine, name, args);
+				}
+			}
+			try{
+				return PCws_WeaselManager.getGlobalFunctionManager().call(engine, name, var, args);
+			}catch(WeaselRuntimeExceptionFunctionNotExist e1){
+				if(getNetwork()==null){
+					throw e1;
+				}else{
+					return getNetwork().getFunctionHandler().call(engine, name, var, args);
 				}
 			}
 		}
@@ -1234,32 +1228,20 @@ public class PCmo_MinerWeaselBrain  implements PCmo_IMinerBrain, PCws_IWeaselNet
 		
 		@Override
 		public WeaselObject call(WeaselEngine engine, String name, boolean var, WeaselObject... args) throws WeaselRuntimeException {
-			try{
-				if(var){
-					if(PCmo_MinerWeaselBrain.this.getProvidedVariableNames().contains(name)){
-						if(args.length==0){
-							return PCmo_MinerWeaselBrain.this.getVariable(name);
-						}else{
-							PCmo_MinerWeaselBrain.this.setVariable(name, args[0]);
-							return new WeaselNull();
-						}
-					}else{
-						throw new WeaselRuntimeException("Variable not found");
+			if(var){
+				if(PCmo_MinerWeaselBrain.this.getProvidedVariableNames().contains(name)){
+					if(args.length==0){
+						return PCmo_MinerWeaselBrain.this.getVariable(name);
 					}
 				}else{
-					if(PCmo_MinerWeaselBrain.this.doesProvideFunction(name)){
-						return PCmo_MinerWeaselBrain.this.callProvidedFunction(engine, name, args);
-					}else{
-						throw new WeaselRuntimeException("Function not found");
-					}
+					throw new WeaselRuntimeExceptionFunctionNotExist(name);
 				}
-			}catch(WeaselRuntimeException e){
-				try{
-					return PCws_WeaselManager.getGlobalFunctionManager().call(engine, name, var, args);
-				}catch(WeaselRuntimeException e1){
-					throw e1;
+			}else{
+				if(PCmo_MinerWeaselBrain.this.doesProvideFunction(name)){
+					return PCmo_MinerWeaselBrain.this.callProvidedFunction(engine, name, args);
 				}
 			}
+			return PCws_WeaselManager.getGlobalFunctionManager().call(engine, name, var, args);
 		}
 
 		@Override

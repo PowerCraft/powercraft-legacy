@@ -370,7 +370,7 @@ public class WeaselEngine implements PC_INBT, IVariableProvider, IFunctionProvid
 			e.printStackTrace();
 			throw new WeaselRuntimeException("Not enough arguments for function " + functionName);
 		} catch (WeaselRuntimeException w) {
-			throw new WeaselRuntimeException(w.getMessage());
+			throw w;
 		} catch (Throwable t) {
 			t.printStackTrace();
 			throw new WeaselRuntimeException(t.getMessage());

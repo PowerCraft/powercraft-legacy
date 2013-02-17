@@ -39,7 +39,7 @@ public class PCli_App implements PC_IModule
 
 	@Override
 	public String getVersion() {
-		return "1.0.2";
+		return "1.0.3";
 	}
 
 	@Override
