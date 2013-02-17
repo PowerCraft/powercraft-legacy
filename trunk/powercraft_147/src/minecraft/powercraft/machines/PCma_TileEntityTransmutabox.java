@@ -15,7 +15,7 @@ import powercraft.management.inventory.PC_IStateReportingInventory;
 public class PCma_TileEntityTransmutabox extends PC_TileEntity implements IInventory, PC_ISpecialAccessInventory, PC_IStateReportingInventory
 {
 	
-	public static final String LOADTIME = "loadTime", NEEDLOADTIME = "needLoadTime", TIMECRITICAL = "needLoadTime";
+	public static final String LOADTIME = "loadTime", NEEDLOADTIME = "needLoadTime", TIMECRITICAL = "timeCritical";
 	
     private ItemStack[] itemStacks = new ItemStack[35];
     private int burnTime = 0;

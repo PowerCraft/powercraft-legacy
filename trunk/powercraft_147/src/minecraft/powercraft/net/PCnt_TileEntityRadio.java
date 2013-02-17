@@ -162,7 +162,7 @@ public class PCnt_TileEntityRadio extends PC_TileEntity implements PC_ITileEntit
 		if(!getChannel().equals(channel)){
 			if(this.isActive()&&this.isTransmitter()&&!worldObj.isRemote)
 				PCnt_RadioManager.transmitterOff(getChannel());
-			setChannel(channel);
+			setData(CHANNEL, channel);
 			if(this.isActive()&&this.isTransmitter()&&!worldObj.isRemote)
 				PCnt_RadioManager.transmitterOn(getChannel());
 		}
