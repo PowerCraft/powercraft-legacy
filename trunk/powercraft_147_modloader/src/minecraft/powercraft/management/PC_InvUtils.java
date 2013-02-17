@@ -692,4 +692,23 @@ public class PC_InvUtils
     	return itemstack.stackSize;
     }
     
+    public static int useFuel(IInventory inv, int start, int end, World world, PC_VecI pos){
+    	for(int i=start; i<end; i++){
+    		ItemStack is = inv.getStackInSlot(i);
+    		int fuel = GameInfo.getFuelValue(is, 1);
+    		if(fuel>0){
+    			inv.decrStackSize(i, 1);
+    			ItemStack container = GameInfo.getContainerItemStack(is);
+    			if(container!=null){
+    				insetItemTo(container, inv, start, end);
+    				if(container.stackSize>0){
+    					ValueWriting.dropItemStack(world, container, pos);
+    				}
+    			}
+    			return fuel;
+    		}
+    	}
+    	return 0;
+    }
+    
 }
