@@ -11,7 +11,7 @@ public class PChg_TileEntityHologramField extends PC_TileEntity implements PC_IT
 
 	public static final String OFFSETS = "offsets";
 	
-	public int glList;
+	public int glList = 0;
 	public int tick;
 	public static List<PChg_TileEntityHologramField> mapToUpdate = new ArrayList<PChg_TileEntityHologramField>();
 	

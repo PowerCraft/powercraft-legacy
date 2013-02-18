@@ -1869,6 +1869,10 @@ public class PC_Utils implements PC_IPacketHandler
 		public static ItemStack getContainerItemStack(ItemStack itemStack) {
 			return itemStack.getItem().getContainerItemStack(itemStack);
 		}
+
+		public static World getWorldForDimension(int dimension) {
+			return instance.iGetWorldForDimension(dimension);
+		}
 	   
    }
     
@@ -2100,13 +2104,12 @@ public class PC_Utils implements PC_IPacketHandler
 			if(value == null){
 				return;
 			}else if(value.getClass().isArray()){
-				Object[] a = (Object[])value;
 				NBTTagCompound nbtTag2 = new NBTTagCompound();
-				int size = a.length;
+				int size = Array.getLength(value);
 				nbtTag2.setInteger("count", size);
-				nbtTag2.setString("type", a.getClass().getName());
+				nbtTag2.setString("type", value.getClass().getName());
 				for(int i=0; i<size; i++){
-					saveToNBT(nbtTag2, "value["+i+"]", a[i]);
+					saveToNBT(nbtTag2, "value["+i+"]", Array.get(value, i));
 				}
 				nbtTag.setCompoundTag(key, nbtTag2);
 			}else if(value instanceof List){
@@ -2159,10 +2162,14 @@ public class PC_Utils implements PC_IPacketHandler
 					Class c = Class.forName(nbtTag2.getString("type"));
 					if(c.isArray()){
 						int size = nbtTag2.getInteger("count");
-						Object[] a = (Object[]) Array.newInstance(c, size);
-						for(int i=0; i<size; i++){
-							a[i] = loadFromNBT(nbtTag2, "value["+i+"]");
-						}
+						try {
+							Object a = c.getConstructor(int.class).newInstance(size);
+							for(int i=0; i<size; i++){
+								Array.set(a, i, loadFromNBT(nbtTag2, "value["+i+"]"));
+							}
+						} catch (Exception e) {
+							e.printStackTrace();
+						} 
 					}else if(c == ItemStack.class){
 						return ItemStack.loadItemStackFromNBT(nbtTag2);
 					}else if(c == Boolean.class){
@@ -2330,7 +2337,11 @@ public class PC_Utils implements PC_IPacketHandler
         return false;
     }
 
-    protected void iRegisterTextureFiles(String[] textureFiles) {}
+    protected World iGetWorldForDimension(int dimension) {
+		return GameInfo.mcs().worldServerForDimension(dimension);
+	}
+
+	protected void iRegisterTextureFiles(String[] textureFiles) {}
 
     protected boolean client()
     {

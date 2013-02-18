@@ -72,8 +72,11 @@ public abstract class PCws_WeaselPluginInfo {
 		
 		float f1 = 0;
 		if(hasSpecialRot()){
-			f1 = (Integer)te.getData("specialRot") * 360 / 16F;
-			PC_Renderer.glRotatef(f1, 0.0F, 1.0F, 0.0F);
+			Object o = te.getData("specialRot");
+			if(o instanceof Integer){
+				f1 = (Integer)o * 360 / 16F;
+				PC_Renderer.glRotatef(f1, 0.0F, 1.0F, 0.0F);
+			}
 		}else{
 			PC_Renderer.glRotatef(90 * (GameInfo.getMD(te.getWorldObj(), te.getCoord()) & 3), 0, 1, 0);
 		}
