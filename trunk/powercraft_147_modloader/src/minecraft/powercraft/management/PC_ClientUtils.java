@@ -20,6 +20,7 @@ import net.minecraft.src.Entity;
 import net.minecraft.src.EntityFX;
 import net.minecraft.src.EntityPlayer;
 import net.minecraft.src.EnumGameType;
+import net.minecraft.src.IntegratedServer;
 import net.minecraft.src.KeyBinding;
 import net.minecraft.src.ModLoader;
 import net.minecraft.src.PlayerControllerMP;
@@ -48,6 +49,15 @@ public class PC_ClientUtils extends PC_Utils {
 	
 	public static Minecraft mc(){
 		return Minecraft.getMinecraft();
+	}
+	
+	@Override
+	protected World iGetWorldForDimension(int dimension) {
+		IntegratedServer server = mc().getIntegratedServer();
+		if(server!=null){
+			return server.worldServerForDimension(dimension);
+		}
+		return mc().theWorld;
 	}
 	
 	@Override
