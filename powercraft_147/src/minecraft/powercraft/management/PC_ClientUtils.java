@@ -10,6 +10,7 @@ import java.util.HashMap;
 import java.util.Map.Entry;
 import java.util.Set;
 
+import powercraft.management.PC_Utils.GameInfo;
 import powercraft.management.gres.PC_GresBaseWithInventory;
 import powercraft.management.gres.PC_GresContainerGui;
 import powercraft.management.gres.PC_GresGui;
@@ -21,6 +22,7 @@ import net.minecraft.client.particle.EntityFX;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.server.integrated.IntegratedServer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.EnumGameType;
 import net.minecraft.world.World;
@@ -52,6 +54,15 @@ public class PC_ClientUtils extends PC_Utils {
 	
 	public static Minecraft mc(){
 		return Minecraft.getMinecraft();
+	}
+	
+	@Override
+	protected World iGetWorldForDimension(int dimension) {
+		IntegratedServer server = mc().getIntegratedServer();
+		if(server!=null){
+			return server.worldServerForDimension(dimension);
+		}
+		return mc().theWorld;
 	}
 	
 	@Override

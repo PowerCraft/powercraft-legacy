@@ -275,7 +275,7 @@ public abstract class PCws_WeaselPlugin implements PC_INBT<PCws_WeaselPlugin>, P
 	}
 	
 	public World getWorld(){
-		return GameInfo.mcs().worldServerForDimension(dimension);
+		return GameInfo.getWorldForDimension(dimension);
 	}
 
 	public PCws_TileEntityWeasel getTE(){

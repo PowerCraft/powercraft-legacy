@@ -3,19 +3,20 @@ package powercraft.management;
 import java.util.EnumSet;
 import java.util.List;
 
-import net.minecraft.world.World;
-import powercraft.management.PC_Utils.GameInfo;
 import powercraft.management.PC_Utils.ModuleInfo;
+
 import cpw.mods.fml.common.ITickHandler;
 import cpw.mods.fml.common.TickType;
 
-public class PC_TickHandler implements ITickHandler {
-	
+public class PC_ClientTickHandler implements ITickHandler {
+
 	@Override
 	public void tickStart(EnumSet<TickType> type, Object... tickData) {
-		List<PC_IMSG> objs = ModuleInfo.getMSGObjects();
-		for (PC_IMSG obj : objs){
-			obj.msg(PC_Utils.MSG_TICK_EVENT);
+		if(PC_ClientUtils.mc().theWorld!=null){
+			List<PC_IMSG> objs = ModuleInfo.getMSGObjects();
+			for (PC_IMSG obj : objs){
+				obj.msg(PC_Utils.MSG_TICK_EVENT);
+			}
 		}
 	}
 
@@ -24,7 +25,7 @@ public class PC_TickHandler implements ITickHandler {
 
 	@Override
 	public EnumSet<TickType> ticks() {
-		return EnumSet.of(TickType.SERVER);
+		return EnumSet.of(TickType.CLIENT);
 	}
 
 	@Override

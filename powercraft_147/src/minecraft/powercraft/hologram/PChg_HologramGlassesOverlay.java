@@ -39,9 +39,9 @@ public class PChg_HologramGlassesOverlay implements PC_IMSG {
 	
 	@Override
 	public Object msg(int msg, Object... obj) {
-		if(msg==PC_Utils.MSG_RENDER_OVERLAY)
+		if(msg==PC_Utils.MSG_RENDER_OVERLAY){
 			onRenderOverlay((GuiIngame)obj[0]);
-		else if(msg==PC_Utils.MSG_TICK_EVENT){
+		}else if(msg==PC_Utils.MSG_TICK_EVENT){
 			onTick();
 		}
 		return null;
