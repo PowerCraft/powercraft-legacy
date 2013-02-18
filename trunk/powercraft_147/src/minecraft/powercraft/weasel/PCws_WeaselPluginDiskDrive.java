@@ -111,19 +111,21 @@ public class PCws_WeaselPluginDiskDrive extends PCws_WeaselPlugin implements PCw
 			String dname = PCws_ItemWeaselDisk.getLabel(inv[var1]);
 			WeaselString diskName = new WeaselString(dname);
 			String diskType = PCws_ItemWeaselDisk.getTypeString(inv[var1]);
-			if(!getNetwork().callFunctionOnEngine("freeDisk."+getName()+"."+diskType, diskName)){
-				WeaselString wdiskType = new WeaselString(diskType);
-				if(!getNetwork().callFunctionOnEngine("freeDisk."+getName(), diskName, wdiskType)){
-					WeaselString name = new WeaselString(getName());
-					getNetwork().callFunctionOnEngine("freeDisk", name, diskName, wdiskType);
+			if(getNetwork()!=null){
+				if(!getNetwork().callFunctionOnEngine("freeDisk."+getName()+"."+diskType, diskName)){
+					WeaselString wdiskType = new WeaselString(diskType);
+					if(!getNetwork().callFunctionOnEngine("freeDisk."+getName(), diskName, wdiskType)){
+						WeaselString name = new WeaselString(getName());
+						getNetwork().callFunctionOnEngine("freeDisk", name, diskName, wdiskType);
+					}
 				}
-			}
-			if(PCws_ItemWeaselDisk.getType(inv[var1])==PCws_ItemWeaselDisk.LIBRARY){
-				for(PCws_IWeaselNetworkDevice plugin:getNetwork()){
-					if(plugin instanceof PCws_IWeaselEngine){
-						WeaselEngine engine = ((PCws_IWeaselEngine) plugin).getEngine();
-						if(engine.libs.containsKey(dname)){
-							engine.libs.remove(dname);
+				if(PCws_ItemWeaselDisk.getType(inv[var1])==PCws_ItemWeaselDisk.LIBRARY){
+					for(PCws_IWeaselNetworkDevice plugin:getNetwork()){
+						if(plugin instanceof PCws_IWeaselEngine){
+							WeaselEngine engine = ((PCws_IWeaselEngine) plugin).getEngine();
+							if(engine.libs.containsKey(dname)){
+								engine.libs.remove(dname);
+							}
 						}
 					}
 				}
