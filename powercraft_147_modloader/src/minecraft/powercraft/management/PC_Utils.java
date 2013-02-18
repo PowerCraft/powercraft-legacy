@@ -1110,6 +1110,10 @@ public class PC_Utils implements PC_IPacketHandler
     
     public static class GameInfo{
 
+    	public static World getWorldForDimension(int dimension) {
+			return instance.iGetWorldForDimension(dimension);
+		}
+    	
     	public static CreativeTabs getCreativeTab(CreativeTabs _default){
     		return _default;
     	}
@@ -2258,6 +2262,10 @@ public class PC_Utils implements PC_IPacketHandler
         return false;
     }
 
+    protected World iGetWorldForDimension(int dimension) {
+		return GameInfo.mcs().worldServerForDimension(dimension);
+	}
+    
     protected void iRegisterTextureFiles(String[] textureFiles) {}
 
     protected boolean client()
