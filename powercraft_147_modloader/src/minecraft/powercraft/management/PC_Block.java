@@ -11,10 +11,10 @@ import net.minecraft.src.Item;
 import net.minecraft.src.ItemBlock;
 import net.minecraft.src.ItemStack;
 import net.minecraft.src.Material;
-import net.minecraft.src.StatList;
 import net.minecraft.src.TileEntity;
 import net.minecraft.src.World;
 import powercraft.management.PC_Utils.GameInfo;
+import powercraft.management.PC_Utils.Inventory;
 import powercraft.management.PC_Utils.ValueWriting;
 
 public abstract class PC_Block extends BlockContainer implements PC_IMSG
@@ -210,10 +210,10 @@ public abstract class PC_Block extends BlockContainer implements PC_IMSG
     {
 		PC_TileEntity te = GameInfo.getTE(world, x, y, z);
 		PC_VecI pos = new PC_VecI(x, y, z);
-		IInventory inv = PC_InvUtils.getCompositeInventoryAt(world, pos);
+		IInventory inv = Inventory.getCompositeInventoryAt(world, pos);
 		if(PC_GlobalVariables.tileEntity==null){
 			if(inv!=null)
-				PC_InvUtils.dropInventoryContents(inv, world, pos);
+				Inventory.dropInventoryContents(inv, world, pos);
 	        super.breakBlock(world, x, y, z, par5, par6);
 		}
     }
