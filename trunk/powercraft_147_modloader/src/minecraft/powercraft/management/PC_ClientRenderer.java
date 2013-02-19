@@ -13,7 +13,7 @@ import net.minecraft.src.mod_PowerCraft;
 import org.lwjgl.opengl.GL11;
 
 import powercraft.management.PC_Utils.ValueWriting;
-import powercraft.management.recipes.PC_ISpecialInventoryTextures;
+import powercraft.management.inventory.PC_ISpecialInventoryTextures;
 
 public class PC_ClientRenderer extends PC_Renderer {
 	
