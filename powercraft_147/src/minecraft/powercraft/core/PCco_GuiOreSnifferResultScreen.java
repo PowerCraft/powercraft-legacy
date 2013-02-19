@@ -5,6 +5,7 @@ import java.util.List;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.Slot;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
 import powercraft.management.PC_MathHelper;
@@ -172,7 +173,6 @@ public class PCco_GuiOreSnifferResultScreen extends PC_GresBaseWithInventory<PC_
 				inv.setSlot(x, y, invSlots[x+y*3]);
 			}
 		}
-		//w.add(new PC_GresInventoryPlayer(true));
 		gui.add(w);
 
 		loadBlocksForDistance(0);
@@ -189,6 +189,9 @@ public class PCco_GuiOreSnifferResultScreen extends PC_GresBaseWithInventory<PC_
 				int meta = GameInfo.getMD(world, pos);
 
 				if (id != 0 && Block.blocksList[id] != null) {
+					if(id==Block.redstoneWire.blockID){
+						id = Item.redstone.itemID;
+					}
 					stack = new ItemStack(id, 1, meta);
 				}
 

@@ -19,6 +19,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import powercraft.management.PC_Utils.GameInfo;
+import powercraft.management.PC_Utils.Inventory;
 import powercraft.management.PC_Utils.ValueWriting;
 import cpw.mods.fml.common.registry.GameData;
 import cpw.mods.fml.common.registry.ItemData;
@@ -181,10 +182,10 @@ public abstract class PC_Block extends BlockContainer implements PC_IMSG
     {
 		PC_TileEntity te = GameInfo.getTE(world, x, y, z);
 		PC_VecI pos = new PC_VecI(x, y, z);
-		IInventory inv = PC_InvUtils.getCompositeInventoryAt(world, pos);
+		IInventory inv = Inventory.getCompositeInventoryAt(world, pos);
 		if(PC_GlobalVariables.tileEntity==null){
 			if(inv!=null)
-				PC_InvUtils.dropInventoryContents(inv, world, pos);
+				Inventory.dropInventoryContents(inv, world, pos);
 			super.breakBlock(world, x, y, z, par5, par6);
 		}
     }

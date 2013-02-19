@@ -4,11 +4,11 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import powercraft.management.PC_InvUtils;
 import powercraft.management.PC_ItemStack;
 import powercraft.management.PC_PacketHandler;
 import powercraft.management.PC_TileEntity;
 import powercraft.management.PC_Utils.GameInfo;
+import powercraft.management.PC_Utils.Inventory;
 import powercraft.management.inventory.PC_ISpecialAccessInventory;
 import powercraft.management.inventory.PC_IStateReportingInventory;
 
@@ -44,7 +44,7 @@ public class PCma_TileEntityTransmutabox extends PC_TileEntity implements IInven
     @Override
     public boolean insertStackIntoInventory(ItemStack stack)
     {
-        return PC_InvUtils.insetItemTo(stack, this, 11, 23)==0;
+        return Inventory.insetItemTo(stack, this, 11, 23)==0;
     }
 
     @Override
@@ -285,7 +285,7 @@ public class PCma_TileEntityTransmutabox extends PC_TileEntity implements IInven
     }
     
     private int sendToOutput(ItemStack is){
-    	return PC_InvUtils.insetItemTo(is, this, 23, 35);
+    	return Inventory.insetItemTo(is, this, 23, 35);
     }
     
     @Override
@@ -361,18 +361,8 @@ public class PCma_TileEntityTransmutabox extends PC_TileEntity implements IInven
         			}
         		}
         	}else{
-	            for (int i = 1; i < 9 && burnTime <= 0; i++)
-	            {
-	                if (itemStacks[i] != null)
-	                {
-	                    burnTime += GameInfo.getFuelValue(itemStacks[i], 1f);
-	
-	                    if (--itemStacks[i].stackSize == 0)
-	                    {
-	                        itemStacks[i] = null;
-	                    }
-	                }
-	            }
+        		
+        		burnTime += Inventory.useFuel(this, 1, 9, worldObj, getCoord());
 	
 	            if (burnTime > 0)
 	            {
@@ -410,7 +400,7 @@ public class PCma_TileEntityTransmutabox extends PC_TileEntity implements IInven
     public void readFromNBT(NBTTagCompound nbttagcompound)
     {
         super.readFromNBT(nbttagcompound);
-        PC_InvUtils.loadInventoryFromNBT(nbttagcompound, "Items", this);
+        Inventory.loadInventoryFromNBT(nbttagcompound, "Items", this);
         burnTime = nbttagcompound.getInteger("burnTime");
         finished = nbttagcompound.getBoolean("finished");
     }
@@ -419,7 +409,7 @@ public class PCma_TileEntityTransmutabox extends PC_TileEntity implements IInven
     public void writeToNBT(NBTTagCompound nbttagcompound)
     {
         super.writeToNBT(nbttagcompound);
-        PC_InvUtils.saveInventoryToNBT(nbttagcompound, "Items", this);
+        Inventory.saveInventoryToNBT(nbttagcompound, "Items", this);
         nbttagcompound.setInteger("burnTime", burnTime);
         nbttagcompound.setBoolean("finished", finished);
     }

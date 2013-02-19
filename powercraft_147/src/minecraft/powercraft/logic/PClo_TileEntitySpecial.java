@@ -5,10 +5,10 @@ import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
-import powercraft.management.PC_InvUtils;
 import powercraft.management.PC_ItemStack;
 import powercraft.management.PC_TileEntity;
 import powercraft.management.PC_Utils.GameInfo;
+import powercraft.management.PC_Utils.Inventory;
 import powercraft.management.PC_Utils.ValueWriting;
 import powercraft.management.inventory.PC_ISpecialAccessInventory;
 
@@ -106,14 +106,14 @@ public class PClo_TileEntitySpecial extends PC_TileEntity implements IInventory,
     public void readFromNBT(NBTTagCompound nbtTagCompound)
     {
         super.readFromNBT(nbtTagCompound);
-        PC_InvUtils.loadInventoryFromNBT(nbtTagCompound, "Items", this);
+        Inventory.loadInventoryFromNBT(nbtTagCompound, "Items", this);
     }
 
     @Override
     public void writeToNBT(NBTTagCompound nbtTagCompound)
     {
         super.writeToNBT(nbtTagCompound);
-        PC_InvUtils.saveInventoryToNBT(nbtTagCompound, "Items", this);
+        Inventory.saveInventoryToNBT(nbtTagCompound, "Items", this);
     }
 
     @Override

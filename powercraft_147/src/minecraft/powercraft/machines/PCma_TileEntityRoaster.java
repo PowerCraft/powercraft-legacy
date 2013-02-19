@@ -18,9 +18,9 @@ import net.minecraft.world.biome.BiomeGenBase;
 import net.minecraft.world.biome.BiomeGenHell;
 import net.minecraft.world.biome.WorldChunkManager;
 import powercraft.management.PC_Block;
-import powercraft.management.PC_InvUtils;
 import powercraft.management.PC_TileEntity;
 import powercraft.management.PC_Utils.GameInfo;
+import powercraft.management.PC_Utils.Inventory;
 import powercraft.management.PC_Utils.Lang;
 import powercraft.management.PC_Utils.ModuleInfo;
 import powercraft.management.inventory.PC_ISpecialAccessInventory;
@@ -111,7 +111,7 @@ public class PCma_TileEntityRoaster extends PC_TileEntity implements IInventory,
     @Override
     public boolean insertStackIntoInventory(ItemStack stack)
     {
-        return PC_InvUtils.addWholeItemStackToInventory(this, stack);
+        return Inventory.addWholeItemStackToInventory(this, stack);
     }
 
     @Override
@@ -184,14 +184,14 @@ public class PCma_TileEntityRoaster extends PC_TileEntity implements IInventory,
     public void readFromNBT(NBTTagCompound nbttagcompound)
     {
         super.readFromNBT(nbttagcompound);
-        PC_InvUtils.loadInventoryFromNBT(nbttagcompound, "Items", this);
+        Inventory.loadInventoryFromNBT(nbttagcompound, "Items", this);
     }
 
     @Override
     public void writeToNBT(NBTTagCompound nbttagcompound)
     {
         super.writeToNBT(nbttagcompound);
-        PC_InvUtils.saveInventoryToNBT(nbttagcompound, "Items", this);
+        Inventory.saveInventoryToNBT(nbttagcompound, "Items", this);
     }
 
     @Override
@@ -428,21 +428,13 @@ public class PCma_TileEntityRoaster extends PC_TileEntity implements IInventory,
 
     private boolean addFuelForItem(ItemStack itemstack)
     {
-        for (int s = 0; s < getSizeInventory(); s++)
-        {
-            int bt = GameInfo.getFuelValue(getStackInSlot(s), 1.0D);
-
-            if (bt > 0)
-            {
-            	setBurnTime(getBurnTime()+bt);
-                decrStackSize(s, 1);
-
-                if (getBurnTime() >= getItemSmeltTime(itemstack))
-                {
-                    return true;
-                }
-            }
-        }
+    	int bt = Inventory.useFuel(this, 0, getSizeInventory(), worldObj, getCoord());
+    	while(bt>0){
+    		setBurnTime(getBurnTime()+bt);
+    		if (getBurnTime() >= getItemSmeltTime(itemstack))
+    			return true;
+    		bt = Inventory.useFuel(this, 0, getSizeInventory(), worldObj, getCoord());
+    	}
 
         if (getBurnTime() >= getItemSmeltTime(itemstack))
         {

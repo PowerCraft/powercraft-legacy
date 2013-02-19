@@ -3,7 +3,7 @@ package powercraft.itemstorage;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import powercraft.management.PC_InvUtils;
+import powercraft.management.PC_Utils.Inventory;
 import powercraft.management.PC_Utils.SaveHandler;
 import powercraft.management.PC_VecI;
 
@@ -21,7 +21,7 @@ public class PCis_NormalCompressorInventory extends PCis_CompressorInventory {
 		}else{
 			SaveHandler.loadFromNBT(tag, "invSize", size);
 			is = new ItemStack[size.x*size.y];
-			PC_InvUtils.loadInventoryFromNBT(tag, "inv", this);
+			Inventory.loadInventoryFromNBT(tag, "inv", this);
 		}
 	}
 	
@@ -73,7 +73,7 @@ public class PCis_NormalCompressorInventory extends PCis_CompressorInventory {
 	public void closeChest() {
 		ItemStack backpack = player.inventory.getStackInSlot(equipped);
 		if(backpack!=null)
-			PC_InvUtils.saveInventoryToNBT(backpack.getTagCompound(), "inv", this);
+			Inventory.saveInventoryToNBT(backpack.getTagCompound(), "inv", this);
 	}
 
 	public ItemStack splitStack(ItemStack is, int par1)

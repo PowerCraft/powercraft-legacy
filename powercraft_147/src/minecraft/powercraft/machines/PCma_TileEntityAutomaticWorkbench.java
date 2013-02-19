@@ -13,9 +13,9 @@ import net.minecraft.item.crafting.CraftingManager;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.entity.player.PlayerDestroyItemEvent;
-import powercraft.management.PC_InvUtils;
 import powercraft.management.PC_TileEntity;
 import powercraft.management.PC_Utils.GameInfo;
+import powercraft.management.PC_Utils.Inventory;
 import powercraft.management.inventory.PC_ISpecialAccessInventory;
 import powercraft.management.inventory.PC_IStateReportingInventory;
 
@@ -643,14 +643,14 @@ public class PCma_TileEntityAutomaticWorkbench extends PC_TileEntity implements 
     public void readFromNBT(NBTTagCompound nbttagcompound)
     {
         super.readFromNBT(nbttagcompound);
-        PC_InvUtils.loadInventoryFromNBT(nbttagcompound, "Items", this);
+        Inventory.loadInventoryFromNBT(nbttagcompound, "Items", this);
     }
 
     @Override
     public void writeToNBT(NBTTagCompound nbttagcompound)
     {
         super.writeToNBT(nbttagcompound);
-        PC_InvUtils.saveInventoryToNBT(nbttagcompound, "Items", this);
+        Inventory.saveInventoryToNBT(nbttagcompound, "Items", this);
     }
 
     @Override

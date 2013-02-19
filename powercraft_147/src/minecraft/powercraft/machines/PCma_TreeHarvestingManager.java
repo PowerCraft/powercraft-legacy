@@ -21,11 +21,11 @@ import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 import org.xml.sax.SAXParseException;
 
-import powercraft.management.PC_InvUtils;
 import powercraft.management.PC_Logger;
 import powercraft.management.PC_Struct2;
 import powercraft.management.PC_Struct3;
 import powercraft.management.PC_Utils.GameInfo;
+import powercraft.management.PC_Utils.Inventory;
 import powercraft.management.PC_Utils.ValueWriting;
 import powercraft.management.PC_VecI;
 
@@ -125,7 +125,7 @@ public class PCma_TreeHarvestingManager {
 			cnt = 0;
 			chopTree(world, treeStart, treeStart, harvestedStacks, treeData);
 			if (harvestedStacks.size() > 0) {
-				return PC_InvUtils.groupStacks(PC_InvUtils.stacksToArray(harvestedStacks));
+				return Inventory.groupStacks(Inventory.stacksToArray(harvestedStacks));
 			}
 		}
 

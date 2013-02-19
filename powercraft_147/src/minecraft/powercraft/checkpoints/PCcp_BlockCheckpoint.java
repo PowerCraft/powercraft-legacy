@@ -14,12 +14,12 @@ import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import powercraft.management.PC_Block;
 import powercraft.management.PC_IItemInfo;
-import powercraft.management.PC_InvUtils;
 import powercraft.management.PC_TileEntity;
 import powercraft.management.PC_Utils;
 import powercraft.management.PC_Utils.Communication;
 import powercraft.management.PC_Utils.GameInfo;
 import powercraft.management.PC_Utils.Gres;
+import powercraft.management.PC_Utils.Inventory;
 import powercraft.management.PC_Utils.Lang;
 import powercraft.management.PC_VecI;
 
@@ -45,7 +45,7 @@ public class PCcp_BlockCheckpoint extends PC_Block implements PC_IItemInfo {
 			PCcp_TileEntityCheckpoint te = GameInfo.getTE(world, x, y, z);
 			EntityPlayer player = (EntityPlayer) entity;
 			if(!world.isRemote){
-				if(player.ticksExisted<=2 && PC_InvUtils.isInventoryEmpty(player.inventory)){
+				if(player.ticksExisted<=2 && Inventory.isInventoryEmpty(player.inventory)){
 					for(int i=0; i<te.getSizeInventory(); i++){
 						ItemStack is = te.getStackInSlot(i);
 						if(is!=null){

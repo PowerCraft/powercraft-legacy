@@ -12,11 +12,11 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
 import powercraft.management.PC_Entry;
 import powercraft.management.PC_ITileEntityRenderer;
-import powercraft.management.PC_InvUtils;
 import powercraft.management.PC_MathHelper;
 import powercraft.management.PC_PacketHandler;
 import powercraft.management.PC_Struct2;
 import powercraft.management.PC_TileEntity;
+import powercraft.management.PC_Utils.Inventory;
 import powercraft.management.inventory.PC_ISpecialAccessInventory;
 
 public class PCws_TileEntityWeasel extends PC_TileEntity implements PC_ITileEntityRenderer, IInventory, PC_ISpecialAccessInventory{
@@ -47,7 +47,7 @@ public class PCws_TileEntityWeasel extends PC_TileEntity implements PC_ITileEnti
 		pluginID = nbtTag.getInteger("pluginID");
 		if(nbtTag.hasKey("invSize")){
 			inv = new ItemStack[nbtTag.getInteger("invSize")];
-			PC_InvUtils.loadInventoryFromNBT(nbtTag, "inv", this);
+			Inventory.loadInventoryFromNBT(nbtTag, "inv", this);
 		}
 	}
 
@@ -57,7 +57,7 @@ public class PCws_TileEntityWeasel extends PC_TileEntity implements PC_ITileEnti
 		nbtTag.setInteger("pluginID", pluginID);
 		if(inv!=null && inv.length!=0){
 			nbtTag.setInteger("invSize", inv.length);
-			PC_InvUtils.saveInventoryToNBT(nbtTag, "inv", this);
+			Inventory.saveInventoryToNBT(nbtTag, "inv", this);
 		}
 	}
 
@@ -147,7 +147,7 @@ public class PCws_TileEntityWeasel extends PC_TileEntity implements PC_ITileEnti
 
 	@Override
 	public boolean insertStackIntoInventory(ItemStack stack) {
-		return PC_InvUtils.insetItemTo(stack, this, 0, getPluginInfo().inventorySize()-1)==0;
+		return Inventory.insetItemTo(stack, this, 0, getPluginInfo().inventorySize()-1)==0;
 	}
 
 	@Override
