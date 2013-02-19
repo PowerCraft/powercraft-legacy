@@ -60,6 +60,7 @@ import net.minecraft.src.TileEntityMobSpawner;
 import net.minecraft.src.World;
 import net.minecraft.src.WorldInfo;
 import net.minecraft.src.mod_PowerCraft;
+import powercraft.management.PC_Utils.MSG.MSGIterator;
 import powercraft.management.gres.PC_GresBaseWithInventory;
 import powercraft.management.inventory.PC_IInventoryWrapper;
 import powercraft.management.recipes.PC_IRecipeInfo;
@@ -199,7 +200,7 @@ public class PC_Utils implements PC_IPacketHandler
 		        		config.setInt("defaultID", id);
 		        	}
 		            PC_Item item = ValueWriting.createClass(itemClass, new Class[] {int.class}, new Object[] {id});
-		            ModuleInfo.registerMSGObject(item);
+		            MSG.registerMSGObject(item);
 		            PC_Utils.objects.put(itemClass.getSimpleName(), item);
 		            item.setItemName(itemClass.getSimpleName());
 		            item.setModule(module);
@@ -231,7 +232,7 @@ public class PC_Utils implements PC_IPacketHandler
 		        		config.setInt("defaultID", id);
 		        	}
 		            PC_ItemArmor itemArmor = ValueWriting.createClass(itemArmorClass, new Class[] {int.class}, new Object[] {id});
-		            ModuleInfo.registerMSGObject(itemArmor);
+		            MSG.registerMSGObject(itemArmor);
 		            PC_Utils.objects.put(itemArmorClass.getSimpleName(), itemArmor);
 		            itemArmor.setItemName(itemArmorClass.getSimpleName());
 		            itemArmor.setModule(module);
@@ -300,7 +301,7 @@ public class PC_Utils implements PC_IPacketHandler
 		            blockOff.setBlockName(blockClass.getSimpleName());
 		            blockOff.setModule(module);
 		            blockOff.setTextureFile(ModuleInfo.getTerrainFile(module));
-		            ModuleInfo.registerMSGObject(blockOff);
+		            MSG.registerMSGObject(blockOff);
 		            PC_Utils.objects.put(blockClass.getSimpleName()+".Off", blockOff);
 		            mod_PowerCraft.registerBlock(blockOff, null);
 		            ItemBlock itemBlock = (ItemBlock)Item.itemsList[blockOff.blockID];
@@ -317,7 +318,7 @@ public class PC_Utils implements PC_IPacketHandler
 		            block = ValueWriting.createClass(blockClass, new Class[] {int.class}, new Object[] {id});
 		        }
 		        
-		        ModuleInfo.registerMSGObject(block);
+		        MSG.registerMSGObject(block);
 		        PC_Utils.objects.put(blockClass.getSimpleName(), block);
 		        block.setBlockName(blockClass.getSimpleName());
 		        block.setModule(module);
@@ -1550,7 +1551,7 @@ public class PC_Utils implements PC_IPacketHandler
 		    return intList;
 		}
 
-		public static Block getBlock(World world, PC_VecI pos) {
+		public static Block getBlock(IBlockAccess world, PC_VecI pos) {
 			return GameInfo.getBlock(world, pos.x, pos.y, pos.z);
 		}
 
@@ -1913,14 +1914,6 @@ public class PC_Utils implements PC_IPacketHandler
 		public static String getTerrainFile(PC_IModule module){
 			return PC_Utils.ModuleInfo.getTextureDirectory(module) + "tiles.png";
 		}
-    	
-		public static List<PC_IMSG> getMSGObjects() {
-			return msgObjects;
-		}
-    	
-		public static void registerMSGObject(PC_IMSG obj){
-			msgObjects.add(obj);
-		}
 		
     }
     
@@ -2268,6 +2261,59 @@ public class PC_Utils implements PC_IPacketHandler
 			return -1;
 		}
     	
+    }
+    
+    public static class MSG{
+
+		public static List<PC_IMSG> getMSGObjects() {
+			return msgObjects;
+		}
+
+		public static void registerMSGObject(PC_IMSG obj){
+			msgObjects.add(obj);
+		}
+    	
+		public static Object callBlockMSG(IBlockAccess world, PC_VecI pos, int msg, Object...o){
+			return callBlockMSG(world, pos.x, pos.y, pos.z, msg, o);
+		}
+		
+		public static Object callBlockMSG(IBlockAccess world, int x, int y, int z, int msg, Object...o){
+			Block block = GameInfo.getBlock(world, x, y, z);
+			if(block instanceof PC_IMSG){
+				return ((PC_IMSG) block).msg(msg, o);
+			}
+			return null;
+		}
+		
+		public static List<Object> callAllMSG(int msg, Object...o){
+			List<Object> l = new ArrayList<Object>();
+			List<PC_IMSG> objs = MSG.getMSGObjects();
+	        for (PC_IMSG obj : objs){
+	        	Object ret = obj.msg(msg, o);
+	        	if(ret!=null){
+	        		l.add(ret);
+	        	}
+	        }
+	        return l;
+		}
+		
+		public static interface MSGIterator{
+			
+			public Object onRet(Object o);
+			
+		}
+		
+		public static Object callAllMSG(MSGIterator iterator, int msg, Object...o){
+			List<PC_IMSG> objs = MSG.getMSGObjects();
+	        for (PC_IMSG obj : objs){
+	        	Object ret = obj.msg(msg, o);
+	        	ret = iterator.onRet(ret);
+	        	if(ret!=null)
+	        		return ret;
+	        }
+	        return null;
+		}
+		
     }
     
     public static boolean create()
