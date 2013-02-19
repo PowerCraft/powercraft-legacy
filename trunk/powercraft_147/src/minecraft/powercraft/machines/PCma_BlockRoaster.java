@@ -107,12 +107,13 @@ public class PCma_BlockRoaster extends PC_Block implements PC_IItemInfo
         return new PCma_TileEntityRoaster();
     }
 
-    public static boolean isIndirectlyPowered(World world, int x, int y, int z)
+    public static boolean isIndirectlyPowered(IBlockAccess iBlockAccess, int x, int y, int z)
     {
-    	PCma_TileEntityRoaster te = GameInfo.getTE(world, x, y, z);
+    	PCma_TileEntityRoaster te = GameInfo.getTE(iBlockAccess, x, y, z);
+    	if(te==null)
+			return false;
+    	World world = te.getWorldObj();
     	if(world.isRemote){
-    		if(te==null)
-    			return false;
     		return te.isActive();
     	}
     	
@@ -144,11 +145,11 @@ public class PCma_BlockRoaster extends PC_Block implements PC_IItemInfo
         return on;
     }
 
-    private static boolean hasFuel(World world, int x, int y, int z)
+    private static boolean hasFuel(IBlockAccess world, int x, int y, int z)
     {
         try
         {
-            return ((PCma_TileEntityRoaster) world.getBlockTileEntity(x, y, z)).getBurnTime() > 0;
+            return GameInfo.<PCma_TileEntityRoaster>getTE(world, x, y, z).getBurnTime() > 0;
         }
         catch (RuntimeException re)
         {
@@ -168,7 +169,7 @@ public class PCma_BlockRoaster extends PC_Block implements PC_IItemInfo
         }
     }
 
-    public static boolean isBurning(World world, int x, int y, int z)
+    public static boolean isBurning(IBlockAccess world, int x, int y, int z)
     {
         return isIndirectlyPowered(world, x, y, z) && hasFuel(world, x, y, z);
     }
@@ -243,9 +244,11 @@ public class PCma_BlockRoaster extends PC_Block implements PC_IItemInfo
 	   		list.add(PC_Utils.NO_PICKUP);
 	   		list.add(PC_Utils.HARVEST_STOP);
 	   		return list;
-		}case PC_Utils.MSG_STR_MSG:{
+		}case PC_Utils.MGS_DOES_SMOKE:
+			return isBurning(world, pos.x, pos.y, pos.z);
+		case PC_Utils.MSG_STR_MSG:{
 			if("isBurning".equalsIgnoreCase((String) obj[0]))
-				return isBurning((World)world, pos.x, pos.y, pos.z);
+				return isBurning(world, pos.x, pos.y, pos.z);
 		}
 		}
 		return null;

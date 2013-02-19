@@ -127,9 +127,9 @@ public class PCws_WeaselManager implements PC_IDataHandler, PC_IMSG {
 			return true;
 		case PC_Utils.MSG_GET_PROVIDET_GLOBAL_FUNCTIONS:
 			List<PC_Struct3<String, String, Object>> l = (List<PC_Struct3<String, String, Object>>)obj[0];
-			l.add(new PC_Struct3<String, String, Object>("setGlobalVariable", "global.set", this));
-			l.add(new PC_Struct3<String, String, Object>("getGlobalVariable", "global.get", this));
-			l.add(new PC_Struct3<String, String, Object>("hasGlobalVariable", "global.has", this));
+			l.add(new PC_Struct3<String, String, Object>("global.set", "setGlobalVariable", this));
+			l.add(new PC_Struct3<String, String, Object>("global.get", "getGlobalVariable", this));
+			l.add(new PC_Struct3<String, String, Object>("global.has", "hasGlobalVariable", this));
 			return l;
 		}
 		return null;

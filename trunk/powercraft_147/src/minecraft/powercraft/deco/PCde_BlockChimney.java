@@ -85,20 +85,6 @@ public class PCde_BlockChimney extends PC_Block {
 		ValueWriting.setBlockBounds(bl, 0, 0, 0, 1, 1, 1);
 		
 	}
-	
-	public List<String> getBlockFlags(World world, PC_VecI pos, List<String> list) {
-
-		list.add(PC_Utils.NO_HARVEST);
-		list.add(PC_Utils.NO_PICKUP);
-		list.add(PC_Utils.PASSIVE);
-		list.add(PC_Utils.BEAMTRACER_STOP);
-		return list;
-	}
-
-	public List<String> getItemFlags(ItemStack stack, List<String> list) {
-		list.add(PC_Utils.NO_BUILD);
-		return list;
-	}
 
 	@Override
 	public Object msg(IBlockAccess world, PC_VecI pos, int msg, Object... obj) {

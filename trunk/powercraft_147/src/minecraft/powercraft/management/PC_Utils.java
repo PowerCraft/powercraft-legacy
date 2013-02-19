@@ -79,8 +79,7 @@ public class PC_Utils implements PC_IPacketHandler
     public static final int BACK = 0, LEFT = 1, RIGHT = 2, FRONT = 3, BOTTOM = 4, TOP = 5;
 
     protected static HashMap<String, Class> guis = new HashMap<String, Class>();
-    protected static final int KEYEVENT = 0;
-    protected static final int SPAWNPARTICLEONBLOCKS = 1;
+    protected static final int KEYEVENT = 0, SPAWNPARTICLEONBLOCKS = 1;
     
     protected static HashMap<EntityPlayer, List<String>> keyPressed = new HashMap<EntityPlayer, List<String>>();
     protected static int keyReverse;
@@ -100,7 +99,8 @@ public class PC_Utils implements PC_IPacketHandler
     		MSG_SPAWNS_IN_CHUNK=6, MSG_BLOCKS_ON_SPAWN_POINT=7, MSG_SPAWN_POINT=8, MSG_SPAWN_POINT_METADATA=9, MSG_LOAD_FROM_CONFIG=10,
     		MSG_ON_HIT_BY_BEAM_TRACER=11, MSG_BURN_TIME=12, MSG_RECIVE_POWER=13, MSG_CAN_RECIVE_POWER=14, MSG_ON_ACTIVATOR_USED_ON_BLOCK = 15,
     		MSG_DONT_SHOW_IN_CRAFTING_TOOL=16, MSG_STR_MSG=17, MSG_RENDER_ITEM_HORIZONTAL=18, MSG_ROTATION=19, MSG_RATING=20, MSG_CONDUCTIVITY = 21,
-    		MSG_TICK_EVENT = 22, MSG_LOAD_WORLD=23, MSG_GET_PROVIDET_GLOBAL_FUNCTIONS=24, MSG_RENDER_OVERLAY=25;
+    		MSG_TICK_EVENT = 22, MSG_LOAD_WORLD=23, MSG_GET_PROVIDET_GLOBAL_FUNCTIONS=24, MSG_RENDER_OVERLAY=25, MSG_OPEN_GUI_OR_PLACE_BLOCK=26,
+    		MGS_DOES_SMOKE = 27;
     
     protected PC_Utils(){
         PC_PacketHandler.registerPackethandler("PacketUtils", this);
@@ -1132,6 +1132,25 @@ public class PC_Utils implements PC_IPacketHandler
     
     public static class GameInfo{
 
+    	public static boolean shouldOpenGui(Block block, ItemStack itemStack){
+    		if(itemStack==null){
+    			return true;
+    		}
+    		if(!(itemStack.getItem() instanceof ItemBlock)){
+    			return true;
+    		}
+    		ItemBlock itemBlock = (ItemBlock)itemStack.getItem();
+    		Block iBlock = Block.blocksList[itemBlock.getBlockID()];
+    		if(iBlock instanceof PC_Block){
+    			PC_Block pcBlock = (PC_Block)iBlock;
+    			Object o = pcBlock.msg(MSG_OPEN_GUI_OR_PLACE_BLOCK, block);
+    			if(o instanceof Boolean){
+    				return (Boolean)o;
+    			}
+    		}
+            return false;
+    	}
+    	
     	public static CreativeTabs getCreativeTab(CreativeTabs _default){
     		return mod_PowerCraft.getInstance().creativeTab;
     	}
@@ -1757,8 +1776,9 @@ public class PC_Utils implements PC_IPacketHandler
 		}
 
 		public static boolean hasFlag(ItemStack is, String flag) {
-			if(is.itemID<Block.blocksList.length){
-				Block b = Block.blocksList[is.itemID];
+			Item i = is.getItem();
+			if(i instanceof ItemBlock){
+				Block b = Block.blocksList[((ItemBlock) i).getBlockID()];
 				if(b instanceof PC_IMSG){
 					List<String> list = (List<String>) ((PC_IMSG)b).msg(PC_Utils.MSG_ITEM_FLAGS, is, new ArrayList<String>());
 					if(list != null){
@@ -1766,8 +1786,6 @@ public class PC_Utils implements PC_IPacketHandler
 					}
 				}
 			}
-		
-			Item i = is.getItem();
 			if(i instanceof PC_IMSG){
 				List<String> list = (List<String>) ((PC_IMSG) i).msg(PC_Utils.MSG_ITEM_FLAGS, is, new ArrayList<String>());
 				if(list != null){

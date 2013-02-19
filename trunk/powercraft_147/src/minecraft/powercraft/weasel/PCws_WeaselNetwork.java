@@ -26,7 +26,7 @@ public final class PCws_WeaselNetwork implements Iterable<PCws_IWeaselNetworkDev
 	private List<Integer> members = new ArrayList<Integer>();
 	/** Local shared variable pool */
 	private WeaselVariableMap localHeap = new WeaselVariableMap();
-	private WeaselFunctionManager functionMap = new WeaselFunctionManager();
+	private WeaselFunctionManager functionMap = createWeaselFunctionManager();
 	private boolean needSave = false;
 	
 	public PCws_WeaselNetwork(){
@@ -106,7 +106,7 @@ public final class PCws_WeaselNetwork implements Iterable<PCws_IWeaselNetworkDev
 	}
 	
 	public void updateAll(){
-		functionMap = new WeaselFunctionManager();
+		functionMap = createWeaselFunctionManager();
 		for(PCws_IWeaselNetworkDevice member:this){
 			functionMap.registerFunctionProvider(member.getName(), member.makePluginProvider());
 		}
@@ -252,4 +252,13 @@ public final class PCws_WeaselNetwork implements Iterable<PCws_IWeaselNetworkDev
 	public WeaselFunctionManager getFunctionHandler(){
 		return functionMap;
 	}
+	
+	private WeaselFunctionManager createWeaselFunctionManager(){
+		WeaselFunctionManager wfm = new WeaselFunctionManager();
+		wfm.registerMethod("network.set", "setLocalVariable", this);
+		wfm.registerMethod("network.get", "getLocalVariable", this);
+		wfm.registerMethod("network.has", "hasLocalVariable", this);
+		return wfm;
+	}
+	
 }

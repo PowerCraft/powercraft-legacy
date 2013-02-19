@@ -3,7 +3,9 @@ package powercraft.deco;
 import java.util.Random;
 
 import net.minecraft.block.Block;
+import powercraft.management.PC_Block;
 import powercraft.management.PC_TileEntity;
+import powercraft.management.PC_Utils;
 import powercraft.management.PC_Utils.GameInfo;
 import powercraft.management.PC_Utils.ValueWriting;
 import powercraft.management.PC_VecI;
@@ -45,19 +47,15 @@ public class PCde_TileEntityChimney extends PC_TileEntity {
 	}
 
 	private boolean doesBlockSmoke(PC_VecI pos) {
-		int id = GameInfo.getBID(worldObj, pos);
-		if (id == Block.stoneOvenActive.blockID) return true;
-		if (id == Block.fire.blockID) return true;
-
-		if (GameInfo.hasFlag(worldObj, pos, "SMOKE")) return true;
-		return false;
-	}
-
-	private boolean doesBlockSmokeOpenly(PC_VecI pos) {
-		int id = GameInfo.getBID(worldObj, pos);
-		if (id == Block.fire.blockID) return true;
-
-		if (GameInfo.hasFlag(worldObj, pos, "SMOKE")) return true;
+		Block block = GameInfo.getBlock(worldObj, pos);
+		if (block == Block.stoneOvenActive) return true;
+		if (block == Block.fire) return true;
+		if (block instanceof PC_Block){
+			Object o = ((PC_Block) block).msg(PC_Utils.MGS_DOES_SMOKE, worldObj, pos);
+			if(o instanceof Boolean){
+				return (Boolean)o;
+			}
+		}
 		return false;
 	}
 
@@ -108,31 +106,31 @@ public class PCde_TileEntityChimney extends PC_TileEntity {
 					}
 
 					// smoke sources by side
-					smoke |= doesBlockSmokeOpenly(cursor.offset(-1, 0, 0));
-					smoke |= doesBlockSmokeOpenly(cursor.offset(1, 0, 0));
-					smoke |= doesBlockSmokeOpenly(cursor.offset(0, 0, -1));
-					smoke |= doesBlockSmokeOpenly(cursor.offset(0, 0, 1));
+					smoke |= doesBlockSmoke(cursor.offset(-1, 0, 0));
+					smoke |= doesBlockSmoke(cursor.offset(1, 0, 0));
+					smoke |= doesBlockSmoke(cursor.offset(0, 0, -1));
+					smoke |= doesBlockSmoke(cursor.offset(0, 0, 1));
 					if (smoke) break;
 
 					// smoke sources by corner
-					smoke |= doesBlockSmokeOpenly(cursor.offset(1, 0, -1));
-					smoke |= doesBlockSmokeOpenly(cursor.offset(-1, 0, 1));
-					smoke |= doesBlockSmokeOpenly(cursor.offset(-1, 0, -1));
-					smoke |= doesBlockSmokeOpenly(cursor.offset(1, 0, 1));
+					smoke |= doesBlockSmoke(cursor.offset(1, 0, -1));
+					smoke |= doesBlockSmoke(cursor.offset(-1, 0, 1));
+					smoke |= doesBlockSmoke(cursor.offset(-1, 0, -1));
+					smoke |= doesBlockSmoke(cursor.offset(1, 0, 1));
 					if (smoke) break;
 
 					// under by side
-					smoke |= doesBlockSmokeOpenly(cursor.offset(-1, -1, 0));
-					smoke |= doesBlockSmokeOpenly(cursor.offset(1, -1, 0));
-					smoke |= doesBlockSmokeOpenly(cursor.offset(0, -1, -1));
-					smoke |= doesBlockSmokeOpenly(cursor.offset(0, -1, 1));
+					smoke |= doesBlockSmoke(cursor.offset(-1, -1, 0));
+					smoke |= doesBlockSmoke(cursor.offset(1, -1, 0));
+					smoke |= doesBlockSmoke(cursor.offset(0, -1, -1));
+					smoke |= doesBlockSmoke(cursor.offset(0, -1, 1));
 					if (smoke) break;
 
 					//under by corner
-					smoke |= doesBlockSmokeOpenly(cursor.offset(1, -1, -1));
-					smoke |= doesBlockSmokeOpenly(cursor.offset(-1, -1, 1));
-					smoke |= doesBlockSmokeOpenly(cursor.offset(-1, -1, -1));
-					smoke |= doesBlockSmokeOpenly(cursor.offset(1, -1, 1));
+					smoke |= doesBlockSmoke(cursor.offset(1, -1, -1));
+					smoke |= doesBlockSmoke(cursor.offset(-1, -1, 1));
+					smoke |= doesBlockSmoke(cursor.offset(-1, -1, -1));
+					smoke |= doesBlockSmoke(cursor.offset(1, -1, 1));
 					if (smoke) break;
 				}
 			}
