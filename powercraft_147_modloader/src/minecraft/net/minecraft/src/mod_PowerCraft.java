@@ -31,10 +31,12 @@ import powercraft.management.PC_Utils;
 import powercraft.management.PC_Utils.GameInfo;
 import powercraft.management.PC_Utils.Gres;
 import powercraft.management.PC_Utils.Lang;
+import powercraft.management.PC_Utils.MSG;
 import powercraft.management.PC_Utils.ModuleInfo;
 import powercraft.management.PC_Utils.ModuleLoader;
 import powercraft.management.PC_Utils.SaveHandler;
 import powercraft.management.PC_Utils.ValueWriting;
+import powercraft.management.PC_WorldGenerator;
 import powercraft.management.entity.PC_EntityFanFX;
 import powercraft.management.entity.PC_EntityLaserFX;
 import powercraft.management.entity.PC_EntityLaserParticleFX;
@@ -47,7 +49,6 @@ import powercraft.management.hacks.PC_RenderZombieHack;
 import powercraft.management.moduleloader.PC_ModuleLoader;
 import powercraft.management.recipes.PC_3DRecipe;
 import powercraft.management.recipes.PC_3DRecipeManager;
-import powercraft.management.PC_WorldGenerator;
 
 public class mod_PowerCraft extends BaseMod {
 
@@ -407,12 +408,12 @@ public class mod_PowerCraft extends BaseMod {
 		}
 		PC_Logger.exitSection();
 		PC_Logger.enterSection("Module MSG Objects Init");
-		ModuleInfo.registerMSGObject(PC_ChunkUpdateForcer.getInstance());
+		MSG.registerMSGObject(PC_ChunkUpdateForcer.getInstance());
 		for(PC_IModule module:modules){
 			List<PC_IMSG> l = module.initMSGObjects(new ArrayList<PC_IMSG>());
 			if(l!=null){
 				for(PC_IMSG msgObject:l){
-					ModuleInfo.registerMSGObject(msgObject);
+					MSG.registerMSGObject(msgObject);
 				}
 			}
 		}
