@@ -36,9 +36,9 @@ import net.minecraft.tileentity.TileEntityBrewingStand;
 import net.minecraft.tileentity.TileEntityFurnace;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.world.World;
-import powercraft.management.PC_InvUtils;
 import powercraft.management.PC_MathHelper;
 import powercraft.management.PC_Utils.GameInfo;
+import powercraft.management.PC_Utils.Inventory;
 import powercraft.management.PC_Utils.ValueWriting;
 import powercraft.management.inventory.PC_IInventoryWrapper;
 import powercraft.management.inventory.PC_ISpecialAccessInventory;
@@ -423,7 +423,7 @@ public class PCtr_BeltHelper
                 {
                     ItemStack stackToStore = entity.func_92014_d();
 
-                    if (stackToStore != null && PC_InvUtils.storeItemInInventory(inventory, stackToStore))
+                    if (stackToStore != null && Inventory.storeItemInInventory(inventory, stackToStore))
                     {
                         soundEffectChest(world, beltPos);
 
@@ -445,13 +445,13 @@ public class PCtr_BeltHelper
     {
     	if(world.isRemote)
     		return false;
-        IInventory inventory = PC_InvUtils.getCompositeInventoryAt(world, inventoryPos);
+        IInventory inventory = Inventory.getCompositeInventoryAt(world, inventoryPos);
 
         if (inventory != null && entity != null && entity.isEntityAlive())
         {
             ItemStack stackToStore = entity.func_92014_d();
 
-            if (stackToStore != null && PC_InvUtils.storeItemInInventory(inventory, stackToStore))
+            if (stackToStore != null && Inventory.storeItemInInventory(inventory, stackToStore))
             {
                 soundEffectChest(world, inventoryPos);
 
@@ -1046,7 +1046,7 @@ public class PCtr_BeltHelper
 
     public static boolean dispenseFromInventoryAt(World world, PC_VecI inventoryPos, PC_VecI beltPos)
     {
-        IInventory inventory = PC_InvUtils.getCompositeInventoryAt(world, inventoryPos);
+        IInventory inventory = Inventory.getCompositeInventoryAt(world, inventoryPos);
 
         if (inventory == null)
         {
@@ -1107,7 +1107,7 @@ public class PCtr_BeltHelper
 
         if (stacks != null)
         {
-            stacks = PC_InvUtils.groupStacks(stacks);
+            stacks = Inventory.groupStacks(stacks);
 
             for (ItemStack stack : stacks)
             {
@@ -1244,7 +1244,7 @@ public class PCtr_BeltHelper
                 }
             }
 
-            return PC_InvUtils.stacksToArray(stacks);
+            return Inventory.stacksToArray(stacks);
         }
 
         boolean random = teb.getItemSelectMode() == 2;
@@ -1352,7 +1352,7 @@ public class PCtr_BeltHelper
             }
         }
 
-        return PC_InvUtils.stacksToArray(stacks);
+        return Inventory.stacksToArray(stacks);
     }
 
     public static void createEntityItemOnBelt(World world, PC_VecI invPos, PC_VecI beltPos, ItemStack stack)

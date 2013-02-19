@@ -12,10 +12,10 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.world.World;
 import powercraft.management.PC_IPacketHandler;
-import powercraft.management.PC_InvUtils;
 import powercraft.management.PC_Struct2;
 import powercraft.management.PC_Utils.Communication;
 import powercraft.management.PC_Utils.GameInfo;
+import powercraft.management.PC_Utils.Inventory;
 import powercraft.management.PC_Utils.Lang;
 import powercraft.management.PC_Utils.ValueWriting;
 import powercraft.management.PC_VecI;
@@ -68,7 +68,7 @@ public class PCmo_MinerManager implements PC_I3DRecipeHandler, PC_IPacketHandler
 		
 		for (int x = structStart.a.x; x <= structStart.a.x + 1 && inv==null; x++) {
 			for (int z = structStart.a.z; z <= structStart.a.z + 1 && inv==null; z++) {
-				inv = PC_InvUtils.getCompositeInventoryAt(world, new PC_VecI(x, structStart.a.y + 1, z));
+				inv = Inventory.getCompositeInventoryAt(world, new PC_VecI(x, structStart.a.y + 1, z));
 			}
 		}
 		
@@ -77,7 +77,7 @@ public class PCmo_MinerManager implements PC_I3DRecipeHandler, PC_IPacketHandler
 			return false;
 		}
 
-		int cnt = PC_InvUtils.countPowerCrystals(inv);
+		int cnt = Inventory.countPowerCrystals(inv);
 
 		if (cnt == 0) {
 			Communication.chatMsg(eMinerCrystals, false);
@@ -85,8 +85,8 @@ public class PCmo_MinerManager implements PC_I3DRecipeHandler, PC_IPacketHandler
 		}
 
 		// move contents.
-		PC_InvUtils.moveStacks(inv, miner.xtals);
-		PC_InvUtils.moveStacksForce(inv, miner.cargo);
+		Inventory.moveStacks(inv, miner.xtals);
+		Inventory.moveStacksForce(inv, miner.cargo);
 		
 		for(int x=0; x<2; x++){
 			for(int y=0; y<2; y++){

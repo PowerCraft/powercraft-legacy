@@ -10,10 +10,10 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import powercraft.management.PC_Block;
-import powercraft.management.PC_InvUtils;
 import powercraft.management.PC_Struct2;
 import powercraft.management.PC_Utils;
 import powercraft.management.PC_Utils.GameInfo;
+import powercraft.management.PC_Utils.Inventory;
 import powercraft.management.PC_Utils.ValueWriting;
 import powercraft.management.PC_VecI;
 import powercraft.management.recipes.PC_I3DRecipeHandler;
@@ -47,7 +47,7 @@ public class PCis_BlockBigChest extends PC_Block implements PC_I3DRecipeHandler 
 		PC_VecI pos = new PC_VecI(x, y, z);
 		IInventory inv = te.getInventory();
 		if(inv!=null && !world.isRemote){
-			PC_InvUtils.dropInventoryContents(inv, world, pos);
+			Inventory.dropInventoryContents(inv, world, pos);
 			for(int i=0; i<inv.getSizeInventory(); i++){
 				inv.setInventorySlotContents(i, null);
 			}

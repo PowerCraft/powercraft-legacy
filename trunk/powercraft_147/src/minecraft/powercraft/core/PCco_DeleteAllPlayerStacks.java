@@ -8,7 +8,7 @@ import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import powercraft.management.PC_IPacketHandler;
-import powercraft.management.PC_InvUtils;
+import powercraft.management.PC_Utils.Inventory;
 import powercraft.management.PC_Utils.ModuleInfo;
 
 public class PCco_DeleteAllPlayerStacks implements PC_IPacketHandler
@@ -57,7 +57,7 @@ public class PCco_DeleteAllPlayerStacks implements PC_IPacketHandler
                 return false;
             }
 
-            PC_InvUtils.groupStacks(stacks);
+            Inventory.groupStacks(stacks);
             List<ItemStack> sorted = new ArrayList<ItemStack>();
 
             while (stacks.size() > 0)

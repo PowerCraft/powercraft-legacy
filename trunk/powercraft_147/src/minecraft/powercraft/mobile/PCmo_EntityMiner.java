@@ -31,12 +31,12 @@ import net.minecraft.world.World;
 import powercraft.machines.PCma_CropHarvestingManager;
 import powercraft.machines.PCma_CropHarvestingManager.PC_CropEntry;
 import powercraft.management.PC_INBT;
-import powercraft.management.PC_InvUtils;
 import powercraft.management.PC_Logger;
 import powercraft.management.PC_PacketHandler;
 import powercraft.management.PC_Utils.Communication;
 import powercraft.management.PC_Utils.GameInfo;
 import powercraft.management.PC_Utils.Gres;
+import powercraft.management.PC_Utils.Inventory;
 import powercraft.management.PC_Utils.Lang;
 import powercraft.management.PC_Utils.ModuleInfo;
 import powercraft.management.PC_Utils.SaveHandler;
@@ -510,13 +510,13 @@ public class PCmo_EntityMiner extends Entity implements PC_IInventoryWrapper {
 	     */
 	    public void onInventoryChanged(){
 	    	super.onInventoryChanged();
-	    	PC_InvUtils.moveStacks(cargo, xtals);
+	    	Inventory.moveStacks(cargo, xtals);
 	    }
 		
 		@Override
 		public void closeChest() {
 			super.closeChest();
-			PC_InvUtils.moveStacks(cargo, xtals);
+			Inventory.moveStacks(cargo, xtals);
 		}
 
 		/**
@@ -615,7 +615,7 @@ public class PCmo_EntityMiner extends Entity implements PC_IInventoryWrapper {
 
 
 			while (count >= neededForOne) {
-				if (PC_InvUtils.addItemStackToInventory(this, out.copy())) {
+				if (Inventory.addItemStackToInventory(this, out.copy())) {
 					count -= neededForOne;
 				} else {
 					break;
@@ -625,7 +625,7 @@ public class PCmo_EntityMiner extends Entity implements PC_IInventoryWrapper {
 			if (count > 0) {
 				ItemStack remaining = stack.copy();
 				remaining.stackSize = count;
-				if (!PC_InvUtils.addItemStackToInventory(this, remaining)) {
+				if (!Inventory.addItemStackToInventory(this, remaining)) {
 					entityDropItem(remaining, 1);
 				}
 			}
@@ -754,10 +754,10 @@ public class PCmo_EntityMiner extends Entity implements PC_IInventoryWrapper {
 				stacks.add(getStackInSlot(i));
 				setInventorySlotContents(i, null);
 			}
-			PC_InvUtils.groupStacks(stacks);
+			Inventory.groupStacks(stacks);
 			for (ItemStack stack : stacks) {
 				if (stack != null) {
-					PC_InvUtils.addItemStackToInventory(this, stack);
+					Inventory.addItemStackToInventory(this, stack);
 				}
 			}
 		}
@@ -776,7 +776,7 @@ public class PCmo_EntityMiner extends Entity implements PC_IInventoryWrapper {
 			for (int x = x1 - 2; x <= x1 + 1; x++) {
 				for (int y = y1; y <= y1 + 1; y++) {
 					for (int z = z1 - 2; z <= z1 + 1; z++) {
-						IInventory chest = PC_InvUtils.getCompositeInventoryAt(worldObj, new PC_VecI(x, y, z));
+						IInventory chest = Inventory.getCompositeInventoryAt(worldObj, new PC_VecI(x, y, z));
 						if (chest != null || destroyInstead) {
 							// cycle through and deposit.
 							for (int i = 0; i < cargo.getSizeInventory(); i++) {
@@ -810,7 +810,7 @@ public class PCmo_EntityMiner extends Entity implements PC_IInventoryWrapper {
 										if (destroyInstead) {
 											stored = true;
 										} else {
-											stored = PC_InvUtils.addWholeItemStackToInventory(chest, stack);
+											stored = Inventory.addWholeItemStackToInventory(chest, stack);
 										}
 									}
 
@@ -854,7 +854,7 @@ public class PCmo_EntityMiner extends Entity implements PC_IInventoryWrapper {
 						}
 
 						ItemStack step = makeHalfStep(returned);
-						PC_InvUtils.addItemStackToInventory(cargo, step.copy());
+						Inventory.addItemStackToInventory(cargo, step.copy());
 						return step;
 					}
 				}
@@ -3225,9 +3225,9 @@ public class PCmo_EntityMiner extends Entity implements PC_IInventoryWrapper {
 						continue;
 					}
 	
-					if (xtal && PC_InvUtils.addItemStackToInventory(xtals, itemStack)) {
+					if (xtal && Inventory.addItemStackToInventory(xtals, itemStack)) {
 						entity.setDead();
-					} else if (PC_InvUtils.addItemStackToInventory(cargo, itemStack)) {
+					} else if (Inventory.addItemStackToInventory(cargo, itemStack)) {
 						entity.setDead();
 					}
 	
@@ -3254,7 +3254,7 @@ public class PCmo_EntityMiner extends Entity implements PC_IInventoryWrapper {
 					}
 	
 					if (entity instanceof EntityArrow) {
-						PC_InvUtils.addItemStackToInventory(cargo, new ItemStack(Item.arrow, 1, 0));
+						Inventory.addItemStackToInventory(cargo, new ItemStack(Item.arrow, 1, 0));
 						entity.setDead();
 						return;
 					}
@@ -3353,8 +3353,8 @@ public class PCmo_EntityMiner extends Entity implements PC_IInventoryWrapper {
 		SaveHandler.saveToNBT(tag, "Status", st);
 		SaveHandler.saveToNBT(tag, "Brain", br);
 
-		PC_InvUtils.saveInventoryToNBT(tag, "CargoInv", cargo);
-		PC_InvUtils.saveInventoryToNBT(tag, "XtalInv", xtals);
+		Inventory.saveInventoryToNBT(tag, "CargoInv", cargo);
+		Inventory.saveInventoryToNBT(tag, "XtalInv", xtals);
 	}
 
 	@Override
@@ -3364,8 +3364,8 @@ public class PCmo_EntityMiner extends Entity implements PC_IInventoryWrapper {
 			playerConectedID = tag.getString("player");
 		}
 		
-		PC_InvUtils.loadInventoryFromNBT(tag, "XtalInv", xtals);
-		PC_InvUtils.loadInventoryFromNBT(tag, "CargoInv", cargo);
+		Inventory.loadInventoryFromNBT(tag, "XtalInv", xtals);
+		Inventory.loadInventoryFromNBT(tag, "CargoInv", cargo);
 		
 		setFlag(keepAllFuel, tag.getBoolean(keepAllFuel));
 		setFlag(torchesOnlyOnFloor, tag.getBoolean(torchesOnlyOnFloor));
@@ -3451,7 +3451,7 @@ public class PCmo_EntityMiner extends Entity implements PC_IInventoryWrapper {
 	 */
 	public void updateLevel() {
 
-		int cnt = PC_InvUtils.countPowerCrystals(xtals);
+		int cnt = Inventory.countPowerCrystals(xtals);
 		if (cnt == 0) {
 			turnIntoBlocks();
 			return;
@@ -3505,7 +3505,7 @@ public class PCmo_EntityMiner extends Entity implements PC_IInventoryWrapper {
 		test:
 		for (int x = xl; x <= xh; x++) {
 			for (int k = zl; k <= zh; k++) {
-				inv = PC_InvUtils.getCompositeInventoryAt(worldObj, new PC_VecI(x, y + 1, k));
+				inv = Inventory.getCompositeInventoryAt(worldObj, new PC_VecI(x, y + 1, k));
 				if (inv != null) {
 					break test;
 				}
@@ -3513,9 +3513,9 @@ public class PCmo_EntityMiner extends Entity implements PC_IInventoryWrapper {
 		}
 
 		if (inv != null) {
-			PC_InvUtils.moveStacks(xtals, inv);
-			PC_InvUtils.moveStacks(cargo, inv);
-			PC_InvUtils.dropInventoryContents(cargo, worldObj, new PC_VecI((int)Math.round(posX), (int)Math.round(posY + 2.2F), (int)Math.round(posZ)));
+			Inventory.moveStacks(xtals, inv);
+			Inventory.moveStacks(cargo, inv);
+			Inventory.dropInventoryContents(cargo, worldObj, new PC_VecI((int)Math.round(posX), (int)Math.round(posY + 2.2F), (int)Math.round(posZ)));
 
 		} else {
 			PC_Logger.warning("Despawning miner - the chest blocks weren't found.");

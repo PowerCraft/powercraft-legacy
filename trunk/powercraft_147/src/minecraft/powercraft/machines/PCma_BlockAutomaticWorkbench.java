@@ -16,11 +16,11 @@ import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import powercraft.management.PC_Block;
 import powercraft.management.PC_IItemInfo;
-import powercraft.management.PC_InvUtils;
 import powercraft.management.PC_TileEntity;
 import powercraft.management.PC_Utils;
 import powercraft.management.PC_Utils.GameInfo;
 import powercraft.management.PC_Utils.Gres;
+import powercraft.management.PC_Utils.Inventory;
 import powercraft.management.PC_Utils.ValueWriting;
 import powercraft.management.inventory.PC_ISpecialInventoryTextures;
 import powercraft.management.PC_VecI;
@@ -45,7 +45,7 @@ public class PCma_BlockAutomaticWorkbench extends PC_Block implements PC_ISpecia
 
         if (tew != null)
         {
-            PC_InvUtils.dropInventoryContents(tew, world, tew.getCoord());
+            Inventory.dropInventoryContents(tew, world, tew.getCoord());
         }
 
         super.breakBlock(world, i, j, k, par5, par6);

@@ -4,7 +4,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import powercraft.management.PC_InvUtils;
+import powercraft.management.PC_Utils.Inventory;
 import powercraft.management.inventory.PC_ISpecialAccessInventory;
 
 public abstract class PCtr_TileEntitySeparationBeltBase extends
@@ -105,14 +105,14 @@ public abstract class PCtr_TileEntitySeparationBeltBase extends
     public void readFromNBT(NBTTagCompound nbttagcompound)
     {
         super.readFromNBT(nbttagcompound);
-        PC_InvUtils.loadInventoryFromNBT(nbttagcompound, "Items", this);
+        Inventory.loadInventoryFromNBT(nbttagcompound, "Items", this);
     }
 
     @Override
     public void writeToNBT(NBTTagCompound nbttagcompound)
     {
         super.writeToNBT(nbttagcompound);
-        PC_InvUtils.saveInventoryToNBT(nbttagcompound, "Items", this);
+        Inventory.saveInventoryToNBT(nbttagcompound, "Items", this);
     }
 
     @Override

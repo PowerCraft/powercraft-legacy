@@ -14,10 +14,10 @@ import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.world.World;
 import powercraft.management.PC_Color;
 import powercraft.management.PC_Entry;
-import powercraft.management.PC_InvUtils;
 import powercraft.management.PC_Struct2;
 import powercraft.management.PC_TileEntity;
 import powercraft.management.PC_Utils.GameInfo;
+import powercraft.management.PC_Utils.Inventory;
 import powercraft.management.PC_Utils.ValueWriting;
 import powercraft.management.inventory.PC_IInventoryWrapper;
 import powercraft.management.recipes.PC_3DRecipe;
@@ -126,7 +126,7 @@ public class PCis_TileEntityBigChest extends PC_TileEntity implements PC_IInvent
 		pos = nbtTagCompound.getInteger("pos");
 		if(pos==BOTTOMBACKLEFT){
 			inv = new PCis_BigChestInventory(this);
-			PC_InvUtils.loadInventoryFromNBT(nbtTagCompound, "inv", inv);
+			Inventory.loadInventoryFromNBT(nbtTagCompound, "inv", inv);
 		}
 	}
 
@@ -135,7 +135,7 @@ public class PCis_TileEntityBigChest extends PC_TileEntity implements PC_IInvent
 		super.writeToNBT(nbtTagCompound);
 		nbtTagCompound.setInteger("pos", pos);
 		if(pos==BOTTOMBACKLEFT){
-			PC_InvUtils.saveInventoryToNBT(nbtTagCompound, "inv", inv);
+			Inventory.saveInventoryToNBT(nbtTagCompound, "inv", inv);
 		}
 	}
 
@@ -178,7 +178,7 @@ public class PCis_TileEntityBigChest extends PC_TileEntity implements PC_IInvent
             	byte b[] = (byte[])d.b;
             	try {
 					NBTTagCompound nbtTag = CompressedStreamTools.decompress(b);
-					PC_InvUtils.loadInventoryFromNBT(nbtTag, "inv", inv);
+					Inventory.loadInventoryFromNBT(nbtTag, "inv", inv);
 				} catch (IOException e) {
 					e.printStackTrace();
 				}
@@ -198,7 +198,7 @@ public class PCis_TileEntityBigChest extends PC_TileEntity implements PC_IInvent
 			};
 		}
 		NBTTagCompound nbtTag = new NBTTagCompound();
-		PC_InvUtils.saveInventoryToNBT(nbtTag, "inv", inv);
+		Inventory.saveInventoryToNBT(nbtTag, "inv", inv);
 		try {
 			byte b[]= CompressedStreamTools.compress(nbtTag);
 			return new PC_Struct2[]{

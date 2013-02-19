@@ -5,7 +5,7 @@ import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import powercraft.management.PC_InvUtils;
+import powercraft.management.PC_Utils.Inventory;
 import powercraft.management.PC_VecI;
 import powercraft.management.inventory.PC_IInventoryBackground;
 import powercraft.management.inventory.PC_IInventoryClickHandler;
@@ -132,7 +132,7 @@ public class PCis_HightCompressorInventory extends PCis_NormalCompressorInventor
 				}
 			}
 			backpack.getTagCompound().setIntArray("size", size);
-			PC_InvUtils.saveInventoryToNBT(backpack.getTagCompound(), "inv", this);
+			Inventory.saveInventoryToNBT(backpack.getTagCompound(), "inv", this);
 		}
 	}
 	

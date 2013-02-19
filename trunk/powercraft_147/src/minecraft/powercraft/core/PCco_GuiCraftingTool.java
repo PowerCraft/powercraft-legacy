@@ -9,9 +9,9 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
-import powercraft.management.PC_InvUtils;
 import powercraft.management.PC_PacketHandler;
 import powercraft.management.PC_TileEntity;
+import powercraft.management.PC_Utils.Inventory;
 import powercraft.management.PC_Utils.Lang;
 import powercraft.management.PC_Utils.ModuleInfo;
 import powercraft.management.gres.PC_GresButton;
@@ -268,7 +268,7 @@ public class PCco_GuiCraftingTool extends PCco_ContainerCraftingTool implements 
 
 			if (stacks.size() == 0) return;
 
-			PC_InvUtils.groupStacks(stacks);
+			Inventory.groupStacks(stacks);
 
 			List<ItemStack> sorted = new ArrayList<ItemStack>();
 

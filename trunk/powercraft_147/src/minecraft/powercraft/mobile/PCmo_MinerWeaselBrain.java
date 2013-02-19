@@ -10,10 +10,10 @@ import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import powercraft.management.PC_Color;
-import powercraft.management.PC_InvUtils;
 import powercraft.management.PC_PacketHandler;
 import powercraft.management.PC_Struct2;
 import powercraft.management.PC_Utils.GameInfo;
+import powercraft.management.PC_Utils.Inventory;
 import powercraft.management.PC_Utils.ModuleInfo;
 import powercraft.management.PC_Utils.SaveHandler;
 import powercraft.management.gres.PC_GresTextEditMultiline.Keyword;
@@ -782,10 +782,10 @@ public class PCmo_MinerWeaselBrain  implements PCmo_IMinerBrain, PCws_IWeaselNet
 				return new WeaselDouble(cnt);
 			}else if (functionName.equals("full") || functionName.equals("isFull")) {
 				boolean str = args.length == 1 && Calc.toBoolean(args[0]);
-				if (str) return new WeaselBoolean(PC_InvUtils.isInventoryFull(miner.cargo));
-				return new WeaselBoolean(PC_InvUtils.hasInventoryNoFreeSlots(miner.cargo));
+				if (str) return new WeaselBoolean(Inventory.isInventoryFull(miner.cargo));
+				return new WeaselBoolean(Inventory.hasInventoryNoFreeSlots(miner.cargo));
 			}else if (functionName.equals("empty") || functionName.equals("isEmpty")) {
-				return new WeaselBoolean(PC_InvUtils.isInventoryEmpty(miner.cargo));
+				return new WeaselBoolean(Inventory.isInventoryEmpty(miner.cargo));
 			}else if (functionName.equals("destroyMiner")) {
 				miner.turnIntoBlocks();
 				return null;
@@ -862,7 +862,7 @@ public class PCmo_MinerWeaselBrain  implements PCmo_IMinerBrain, PCws_IWeaselNet
 						return new WeaselBoolean(false);
 					} else {
 						if (!placed.tryPlaceItemIntoWorld(miner.fakePlayer, miner.worldObj, pos.x, pos.y + 1, pos.z, 0, 0.0f, 0.0f, 0.0f)) {
-							PC_InvUtils.addItemStackToInventory(miner.cargo, placed);
+							Inventory.addItemStackToInventory(miner.cargo, placed);
 						} else {
 							return new WeaselBoolean(true);
 						}
@@ -881,7 +881,7 @@ public class PCmo_MinerWeaselBrain  implements PCmo_IMinerBrain, PCws_IWeaselNet
 						if (stack.itemID == numid) {
 							ItemStack placed = miner.cargo.decrStackSize(i, 1);
 							if (!placed.tryPlaceItemIntoWorld(miner.fakePlayer, miner.worldObj, pos.x, pos.y + 1, pos.z, 0, 0.0f, 0.0f, 0.0f)) {
-								PC_InvUtils.addItemStackToInventory(miner.cargo, placed);
+								Inventory.addItemStackToInventory(miner.cargo, placed);
 							} else {
 								return new WeaselBoolean(true);
 							}

@@ -11,9 +11,9 @@ import net.minecraft.nbt.CompressedStreamTools;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
 import powercraft.management.PC_Entry;
-import powercraft.management.PC_InvUtils;
 import powercraft.management.PC_PacketHandler;
 import powercraft.management.PC_Struct2;
+import powercraft.management.PC_Utils.Inventory;
 import powercraft.management.PC_VecF;
 import powercraft.management.PC_VecI;
 
@@ -152,7 +152,7 @@ public class PCis_BigChestInventory implements IInventory {
 		if(entity.isDead)
 			return;
 		ItemStack is = entity.func_92014_d();
-		if(PC_InvUtils.addItemStackToInventory(this, is)){
+		if(Inventory.addItemStackToInventory(this, is)){
 			entity.setDead();
 		}else{
 			entity.func_92013_a(is);
@@ -162,7 +162,7 @@ public class PCis_BigChestInventory implements IInventory {
 	public void interact(EntityPlayer entityPlayer, int slot) {
 		if(inv[slot]==null)
 			return;
-		PC_InvUtils.addItemStackToInventory(entityPlayer.inventory, inv[slot]);
+		Inventory.addItemStackToInventory(entityPlayer.inventory, inv[slot]);
 		if(inv[slot].stackSize==0){
 			inv[slot] = null;
 		}
