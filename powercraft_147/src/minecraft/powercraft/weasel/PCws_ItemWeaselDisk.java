@@ -467,7 +467,6 @@ public class PCws_ItemWeaselDisk extends PC_Item {
 	}
 
 
-
 	/**
 	 * erase varmap
 	 * 
@@ -872,41 +871,53 @@ public class PCws_ItemWeaselDisk extends PC_Item {
 				switch (getType(disk)) {
 				case TEXT:
 					setText(disk, Calc.toString(args[0]));
+					break;
 				case NUMBERLIST:
 				case STRINGLIST:
 					setListEntry(disk, Calc.toInteger(args[0]), args[1]);
+					break;
 				case VARMAP:
 					setMapVariable(disk, Calc.toString(args[0]), args[1]);
+					break;
 				}
 			}else if(name.equals("clear")){
 				switch (getType(disk)) {
 				case TEXT:
 					setText(disk, "");
+					break;
 				case NUMBERLIST:
 				case STRINGLIST:
 					setListText(disk, "", getListDelimiter(disk));
+					break;
 				case VARMAP:
 					eraseVarMap(disk);
+					break;
 				}
 			}else if(name.equals("remove") || name.equals("unset")){
 				switch (getType(disk)) {
 				case TEXT:
 					setText(disk, "");
+					break;
 				case NUMBERLIST:
 				case STRINGLIST:
 					removeListEntry(disk, Calc.toInteger(args[0]));
+					break;
 				case VARMAP:
 					removeMapVariable(disk, Calc.toString(args[0]));
+					break;
 				}
 			}else if(name.equals("add")){
 				switch (getType(disk)) {
 				case TEXT:
 					setText(disk, getText(disk) + Calc.toString(args[0]));
+					break;
 				case NUMBERLIST:
 				case STRINGLIST:
 					addListEntry(disk, args[0]);
+					break;
 				case VARMAP:
-					removeMapVariable(disk, Calc.toString(args[0]));
+					setMapVariable(disk, Calc.toString(args[0]), args[1]);
+					break;
 				}
 			}else if(name.equals("has")){
 				switch (getType(disk)) {
@@ -922,6 +933,7 @@ public class PCws_ItemWeaselDisk extends PC_Item {
 				switch (getType(disk)) {
 				case LIBRARY:
 					engine.insertNewLibary(getLabel(disk), getLibraryInstructions(disk));
+					break;
 				}
 			}else if(name.equals("call")){
 				switch (getType(disk)) {
@@ -936,6 +948,7 @@ public class PCws_ItemWeaselDisk extends PC_Item {
 				switch (getType(disk)) {
 				case LIBRARY:
 					engine.libs.remove(getLabel(disk));
+					break;
 				}
 			}
 		}

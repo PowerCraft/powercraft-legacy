@@ -153,6 +153,10 @@ public class WeaselFunctionManager implements IWeaselHardware {
 			return Calc.toDouble(obj);
 		}else if(c == String.class){
 			return Calc.toString(obj);
+		}else if(WeaselObject.class.isAssignableFrom(c)){
+			return obj;
+		}else if(c == Object.class){
+			return obj.get();
 		}
 		return null;
 	}

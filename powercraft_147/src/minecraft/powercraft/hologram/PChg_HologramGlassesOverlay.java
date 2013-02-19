@@ -1,39 +1,36 @@
 package powercraft.hologram;
 
-import java.nio.IntBuffer;
 import java.util.List;
-
-import org.lwjgl.BufferUtils;
-import org.lwjgl.opengl.GL11;
-import org.lwjgl.util.glu.GLU;
 
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiIngame;
 import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.client.renderer.RenderBlocks;
-import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.client.renderer.tileentity.TileEntityRenderer;
+import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.world.ChunkCache;
+
+import org.lwjgl.opengl.GL11;
+import org.lwjgl.util.glu.GLU;
+
 import powercraft.management.PC_ClientUtils;
 import powercraft.management.PC_IMSG;
-import powercraft.management.PC_ItemArmor;
 import powercraft.management.PC_Renderer;
 import powercraft.management.PC_Utils;
 import powercraft.management.PC_VecI;
-import powercraft.management.mod_PowerCraft;
+import powercraft.management.PC_Utils.ValueWriting;
 
 public class PChg_HologramGlassesOverlay implements PC_IMSG {
 
 	private static int glList;
-	private static int tick;
+	private static int tick=0;
 	private static boolean update=true;
 	public static PChg_TileEntityHologramField fieldToUpdate;
 	
@@ -124,9 +121,11 @@ public class PChg_HologramGlassesOverlay implements PC_IMSG {
 					if(block!=null){
 						TileEntity tileEntity = cc.getBlockTileEntity(pos.x+xx, pos.y+yy, pos.z+zz);
 						if(tileEntity!=null && !(tileEntity instanceof PChg_TileEntityHologramField)){
-							GL11.glPushAttrib(-1);
-							TileEntityRenderer.instance.renderTileEntityAt(tileEntity, pos.x+xx, pos.y+yy, pos.z+zz, 1);
-							GL11.glPopAttrib();
+							if(TileEntityRenderer.instance.getFontRenderer()!=null){
+								GL11.glPushAttrib(-1);
+								TileEntityRenderer.instance.renderTileEntityAt(tileEntity, pos.x+xx, pos.y+yy, pos.z+zz, 1);
+								GL11.glPopAttrib();
+							}
 						}
 					}
 				}
