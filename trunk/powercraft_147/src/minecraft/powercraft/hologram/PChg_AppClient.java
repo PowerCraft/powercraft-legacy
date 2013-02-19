@@ -22,6 +22,7 @@ import powercraft.management.PC_IClientModule;
 import powercraft.management.PC_LangEntry;
 import powercraft.management.PC_Renderer;
 import powercraft.management.PC_Struct2;
+import powercraft.management.PC_Utils.MSG;
 import powercraft.management.PC_Utils.ModuleInfo;
 import powercraft.management.PC_VecI;
 
@@ -30,7 +31,7 @@ public class PChg_AppClient extends PChg_App implements PC_IClientModule {
 	@Override
 	public void init() {
 		PC_ClientUtils.mc().renderEngine.registerTextureFX(new PChg_HologramTextureFX());
-		ModuleInfo.registerMSGObject(new PChg_HologramGlassesOverlay());
+		MSG.registerMSGObject(new PChg_HologramGlassesOverlay());
 	}
 
 	@Override

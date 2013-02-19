@@ -3,7 +3,7 @@ package powercraft.management;
 import java.util.EnumSet;
 import java.util.List;
 
-import powercraft.management.PC_Utils.ModuleInfo;
+import powercraft.management.PC_Utils.MSG;
 
 import cpw.mods.fml.common.ITickHandler;
 import cpw.mods.fml.common.TickType;
@@ -13,10 +13,7 @@ public class PC_ClientTickHandler implements ITickHandler {
 	@Override
 	public void tickStart(EnumSet<TickType> type, Object... tickData) {
 		if(PC_ClientUtils.mc().theWorld!=null){
-			List<PC_IMSG> objs = ModuleInfo.getMSGObjects();
-			for (PC_IMSG obj : objs){
-				obj.msg(PC_Utils.MSG_TICK_EVENT);
-			}
+			MSG.callAllMSG(PC_Utils.MSG_TICK_EVENT);
 		}
 	}
 

@@ -11,6 +11,7 @@ import powercraft.management.PC_IMSG;
 import powercraft.management.PC_Logger;
 import powercraft.management.PC_Shining;
 import powercraft.management.PC_Utils;
+import powercraft.management.PC_Utils.MSG;
 import powercraft.management.PC_Utils.ModuleLoader;
 import powercraft.management.PC_Utils.ValueWriting;
 import powercraft.management.mod_PowerCraft;
@@ -23,7 +24,7 @@ import codechicken.nei.api.ItemInfo;
 public class NEIPowerCraftConfig implements IConfigureNEI, PC_IMSG {
 
 	public NEIPowerCraftConfig(){
-		 ModuleInfo.registerMSGObject(this);
+		 MSG.registerMSGObject(this);
 	}
 	
 	@Override

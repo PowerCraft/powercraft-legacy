@@ -14,7 +14,8 @@ import powercraft.management.PC_MathHelper;
 import powercraft.management.PC_Struct3;
 import powercraft.management.PC_Utils;
 import powercraft.management.PC_Utils.GameInfo;
-import powercraft.management.PC_Utils.ModuleInfo;
+import powercraft.management.PC_Utils.MSG;
+import powercraft.management.PC_Utils.MSG.MSGIterator;
 import powercraft.management.PC_Utils.ValueWriting;
 import powercraft.management.recipes.PC_3DRecipeManager;
 import powercraft.management.PC_VecI;
@@ -35,14 +36,19 @@ public class PCco_ItemActivator extends PC_Item{
     	if(world.isRemote)
     		return false;
     	
-    	List<PC_IMSG> objs = ModuleInfo.getMSGObjects();
-
-        for (PC_IMSG obj : objs){
-        	Object o = obj.msg(PC_Utils.MSG_ON_ACTIVATOR_USED_ON_BLOCK, itemstack, entityplayer, world, new PC_VecI(x, y, z));
-        	if(o instanceof Boolean && (Boolean)o){
-        		return true;
-        	}
-        }
+    	Boolean ok = (Boolean)MSG.callAllMSG(new MSGIterator() {
+			@Override
+			public Object onRet(Object o) {
+				if(o instanceof Boolean && (Boolean)o){
+	        		return true;
+	        	}
+				return null;
+			}
+		}, PC_Utils.MSG_ON_ACTIVATOR_USED_ON_BLOCK, itemstack, entityplayer, world, new PC_VecI(x, y, z));
+    	
+    	if(ok!=null && ok){
+    		return true;
+    	}
     	
         if(PC_3DRecipeManager.searchRecipeAndDo(entityplayer, world, new PC_VecI(x, y, z)))
         	return true;

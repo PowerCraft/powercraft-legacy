@@ -12,6 +12,7 @@ import powercraft.management.PC_Renderer;
 import powercraft.management.PC_TileEntity;
 import powercraft.management.PC_Utils;
 import powercraft.management.PC_Utils.GameInfo;
+import powercraft.management.PC_Utils.MSG;
 import powercraft.management.PC_Utils.ModuleInfo;
 import powercraft.management.PC_Utils.ValueWriting;
 import powercraft.management.PC_VecI;
@@ -98,8 +99,8 @@ public class PCli_TileEntityLaser extends PC_TileEntity implements PC_IBeamHandl
     	boolean isBurning = false;
 		if(isKiller()){
 			Block b = GameInfo.getBlock(worldObj, xCoord, yCoord-1, zCoord);
-			if(b instanceof PC_IMSG){
-				Object o = ((PC_IMSG)b).msg(PC_Utils.MSG_STR_MSG, worldObj, getCoord().offset(0, -1, 0), "isBurning");
+			if(b!=null && b == ModuleInfo.getPCBlockByName("PCma_BlockRoaster")){
+				Object o = MSG.callBlockMSG(worldObj, getCoord().offset(0, -1, 0), PC_Utils.MGS_DOES_SMOKE);
 				if(o instanceof Boolean)
 					isBurning = (Boolean)o;
 			}
