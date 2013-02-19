@@ -12,7 +12,7 @@ import powercraft.management.PC_IMSG;
 import powercraft.management.PC_INBT;
 import powercraft.management.PC_Struct3;
 import powercraft.management.PC_Utils;
-import powercraft.management.PC_Utils.ModuleInfo;
+import powercraft.management.PC_Utils.MSG;
 import powercraft.management.PC_Utils.SaveHandler;
 import weasel.WeaselFunctionManager;
 import weasel.exception.WeaselRuntimeException;
@@ -300,12 +300,11 @@ public class PCws_WeaselManager implements PC_IDataHandler, PC_IMSG {
 	public static WeaselFunctionManager getGlobalFunctionManager() {
 		if(globalFunctions==null){
 			globalFunctions = new WeaselFunctionManager();
-			List<PC_IMSG> msgs = ModuleInfo.getMSGObjects();
-			for(PC_IMSG msg:msgs){
-				Object o = msg.msg(PC_Utils.MSG_GET_PROVIDET_GLOBAL_FUNCTIONS, new ArrayList<PC_Struct3<String, String, Object>>());
+			List<Object> l = MSG.callAllMSG(PC_Utils.MSG_LOAD_WORLD);
+			for(Object o:l){
 				if(o instanceof List){
-					List<PC_Struct3<String, String, Object>> l = (List<PC_Struct3<String, String, Object>>)o;
-					for(PC_Struct3<String, String, Object>s:l){
+					List<PC_Struct3<String, String, Object>> list = (List<PC_Struct3<String, String, Object>>)o;
+					for(PC_Struct3<String, String, Object>s:list){
 						globalFunctions.registerMethod(s.a, s.b, s.c);
 					}
 				}

@@ -12,6 +12,7 @@ import net.minecraft.tileentity.TileEntity;
 import powercraft.management.PC_Utils.GameInfo;
 import powercraft.management.PC_Utils.Gres;
 import powercraft.management.PC_Utils.Lang;
+import powercraft.management.PC_Utils.MSG;
 import powercraft.management.PC_Utils.ModuleInfo;
 import powercraft.management.PC_Utils.ModuleLoader;
 import powercraft.management.PC_Utils.SaveHandler;
@@ -260,12 +261,12 @@ public class mod_PowerCraft{
 		}
 		PC_Logger.exitSection();
 		PC_Logger.enterSection("Module MSG Objects Init");
-		ModuleInfo.registerMSGObject(PC_ChunkUpdateForcer.getInstance());
+		MSG.registerMSGObject(PC_ChunkUpdateForcer.getInstance());
 		for(PC_IModule module:modules){
 			List<PC_IMSG> l = module.initMSGObjects(new ArrayList<PC_IMSG>());
 			if(l!=null){
 				for(PC_IMSG msgObject:l){
-					ModuleInfo.registerMSGObject(msgObject);
+					MSG.registerMSGObject(msgObject);
 				}
 			}
 		}
