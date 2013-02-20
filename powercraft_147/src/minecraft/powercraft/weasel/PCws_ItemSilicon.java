@@ -8,9 +8,9 @@ import powercraft.management.PC_Item;
 import powercraft.management.PC_Struct3;
 import powercraft.management.PC_Utils;
 
-public class PCws_ItemUnobtaninium extends PC_Item {
+public class PCws_ItemSilicon extends PC_Item {
 
-	public PCws_ItemUnobtaninium(int id) {
+	public PCws_ItemSilicon(int id) {
 		super(id, 3);
 		setCreativeTab(CreativeTabs.tabMaterials);
 	}
@@ -20,7 +20,7 @@ public class PCws_ItemUnobtaninium extends PC_Item {
 		switch(msg){
 		case PC_Utils.MSG_DEFAULT_NAME:
 			List<PC_Struct3<String, String, String[]>> names = (List<PC_Struct3<String, String, String[]>>)obj[0];
-			names.add(new PC_Struct3<String, String, String[]>(getItemName(), "Ingot Unobtaninium", null));
+			names.add(new PC_Struct3<String, String, String[]>(getItemName(), "Ingot Silicon", null));
 			return names;
 		}
 		return null;

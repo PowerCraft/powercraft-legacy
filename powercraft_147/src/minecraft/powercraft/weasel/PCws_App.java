@@ -28,11 +28,11 @@ public class PCws_App implements PC_IModule {
 	
 	public static PC_Block weasel;
 	public static PC_Block weaselDiskManager;
-	public static PC_Block unobtaninium;
+	public static PC_Block silicon;
 	
 	public static PC_Item weaselDisk;
 	public static PC_Item weaselTransistor;
-	public static PC_Item ingotUnobtaninium;
+	public static PC_Item ingotSilicon;
 	
 	@Override
 	public String getName() {
@@ -70,14 +70,14 @@ public class PCws_App implements PC_IModule {
 	public void initBlocks() {
 		weasel = ModuleLoader.register(this, PCws_BlockWeasel.class, PCws_ItemBlockWeasel.class, PCws_TileEntityWeasel.class);
 		weaselDiskManager = ModuleLoader.register(this, PCws_BlockWeaselDiskManager.class, PCws_TileEntityWeaselDiskManager.class);
-		unobtaninium = ModuleLoader.register(this, PCws_BlockUnobtainium.class, PCws_TileEntityUnobtainium.class);
+		silicon = ModuleLoader.register(this, PCws_BlockSilicon.class);
 	}
 
 	@Override
 	public void initItems() {
 		weaselDisk = ModuleLoader.register(this, PCws_ItemWeaselDisk.class);
 		weaselTransistor = ModuleLoader.register(this, PCws_ItemTransistor.class);
-		ingotUnobtaninium = ModuleLoader.register(this, PCws_ItemUnobtaninium.class);
+		ingotSilicon = ModuleLoader.register(this, PCws_ItemSilicon.class);
 	}
 
 	@Override
@@ -89,7 +89,7 @@ public class PCws_App implements PC_IModule {
 		recipes.add(new PC_ShapedRecipes(new PC_ItemStack(weaselTransistor, 2),
 				"UUU",
 				"III",
-				'I', new PC_ItemStack(Item.ingotIron), 'U', new PC_ItemStack(ingotUnobtaninium)));
+				'I', new PC_ItemStack(Item.ingotIron), 'U', new PC_ItemStack(ingotSilicon)));
 		
 		recipes.add(new PC_ShapedRecipes(new PC_ItemStack(weasel, 1, 0),
 				"TPT ", 

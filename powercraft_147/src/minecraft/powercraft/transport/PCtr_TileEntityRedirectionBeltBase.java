@@ -5,6 +5,7 @@ import java.util.Hashtable;
 import java.util.Random;
 
 import net.minecraft.entity.Entity;
+import powercraft.management.PC_Direction;
 import powercraft.management.PC_Struct2;
 import powercraft.management.PC_TileEntity;
 
@@ -20,7 +21,7 @@ public abstract class PCtr_TileEntityRedirectionBeltBase extends PC_TileEntity
         return true;
     }
 
-    private Hashtable<Integer, Integer> redirList = new Hashtable<Integer, Integer>();
+    private Hashtable<Integer, PC_Direction> redirList = new Hashtable<Integer, PC_Direction>();
 
     @Override
     public final void updateEntity()
@@ -44,7 +45,7 @@ public abstract class PCtr_TileEntityRedirectionBeltBase extends PC_TileEntity
         }
     }
 
-    public final int getDirection(Entity entity)
+    public final PC_Direction getDirection(Entity entity)
     {
         if (redirList.containsKey(entity.entityId))
         {
@@ -56,25 +57,25 @@ public abstract class PCtr_TileEntityRedirectionBeltBase extends PC_TileEntity
         }
     }
 
-    protected abstract int calculateItemDirection(Entity entity);
+    protected abstract PC_Direction calculateItemDirection(Entity entity);
 
-    protected final void setItemDirection(Entity entity, int direction)
+    protected final void setItemDirection(Entity entity, PC_Direction direction)
     {
     	setItemDirection(entity.entityId, direction);
     }
 
-    protected final void setItemDirection(int entityID, int direction)
+    protected final void setItemDirection(int entityID, PC_Direction direction)
     {
         redirList.put(entityID, direction);
         if(!worldObj.isRemote)
-        	call("newID", new PC_Struct2<Integer, Integer>(entityID, direction));
+        	call("newID", new PC_Struct2<Integer, PC_Direction>(entityID, direction));
     }
     
     @Override
 	protected void onCall(String key, Object value) {
 		if(key.equals("newID")){
 			if(worldObj.isRemote){
-				PC_Struct2<Integer, Integer> d= (PC_Struct2<Integer, Integer>)value;
+				PC_Struct2<Integer, PC_Direction> d= (PC_Struct2<Integer, PC_Direction>)value;
 				setItemDirection(d.a, d.b);
 			}
 		}

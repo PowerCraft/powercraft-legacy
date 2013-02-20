@@ -126,7 +126,8 @@ public class PCmo_EntityMiner extends Entity implements PC_IInventoryWrapper {
 		setFlag(torches, false);
 		setFlag(cobbleMake, false);
 		setFlag(airFillingEnabled, false);
-		br = PCmo_MinerManager.createMinerBrain(this);
+		if(!world.isRemote)
+			br = PCmo_MinerManager.createMinerBrain(this);
 	}
 
 	/**
@@ -1286,7 +1287,7 @@ public class PCmo_EntityMiner extends Entity implements PC_IInventoryWrapper {
 		st.commandList = st.commandList.trim();
 
 		// if there are no more commands, try to get some from weasel
-		if (st.commandList.length() <= 0 && st.currentCommand == -1) {
+		if (st.commandList.length() <= 0 && st.currentCommand == -1 && !worldObj.isRemote) {
 			if (playerConectedID==null && !st.pausedWeasel && !st.paused) {
 				br.run();
 			}

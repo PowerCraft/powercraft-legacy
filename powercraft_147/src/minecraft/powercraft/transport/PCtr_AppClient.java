@@ -47,6 +47,7 @@ public class PCtr_AppClient extends PCtr_App implements PC_IClientModule {
 	public List<PC_Struct2<String, Class>> registerGuis(List<PC_Struct2<String, Class>> guis) {
 		guis.add(new PC_Struct2<String, Class>("SeperationBelt", PCtr_GuiSeparationBelt.class));
 		guis.add(new PC_Struct2<String, Class>("EjectionBelt", PCtr_GuiEjectionBelt.class));
+		guis.add(new PC_Struct2<String, Class>("Splitter", PCtr_GuiSplitter.class));
 		return guis;
 	}
 
