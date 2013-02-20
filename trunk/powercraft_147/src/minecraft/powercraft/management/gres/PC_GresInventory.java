@@ -50,6 +50,9 @@ public class PC_GresInventory extends PC_GresWidget {
 		
 		canAddWidget = false;
 		slots = new Slot[gridWidth][gridHeight];
+		for(int i=0; i<6; i++){
+			color[i] = 0xFFFFFF;
+		}
 	}
 	
 	public PC_GresInventory(int width, int height, int slotWidth, int slotHeight) {
@@ -63,6 +66,9 @@ public class PC_GresInventory extends PC_GresWidget {
 		
 		canAddWidget = false;
 		slots = new Slot[gridWidth][gridHeight];
+		for(int i=0; i<6; i++){
+			color[i] = 0xFFFFFF;
+		}
 	}
 	
 	public PC_GresInventory(Slot slot) {
@@ -99,7 +105,7 @@ public class PC_GresInventory extends PC_GresWidget {
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 		for (int x = 0; x < gridWidth; x++) {
 			for (int y = 0; y < gridHeight; y++) {
-				renderTextureSliced(posOffset.offset(x*slotWidth, y*slotHeight, 0), imgdir + "widgets.png", new PC_VecI(slotWidth, slotHeight), new PC_VecI(0, 66), new PC_VecI(18, 18), new PC_RectI(1, 1, 1, 1));
+				renderTextureSlicedColored(posOffset.offset(x*slotWidth, y*slotHeight, 0), imgdir + "widgets.png", new PC_VecI(slotWidth, slotHeight), new PC_VecI(0, 66), new PC_VecI(18, 18), new PC_RectI(1, 1, 1, 1));
 			}
 		}
 		

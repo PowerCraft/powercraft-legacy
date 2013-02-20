@@ -36,6 +36,7 @@ import net.minecraft.tileentity.TileEntityBrewingStand;
 import net.minecraft.tileentity.TileEntityFurnace;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.world.World;
+import powercraft.management.PC_Direction;
 import powercraft.management.PC_MathHelper;
 import powercraft.management.PC_Utils.GameInfo;
 import powercraft.management.PC_Utils.Inventory;
@@ -523,6 +524,24 @@ public class PCtr_BeltHelper
         return false;
     }
 
+    public static int getDir(PC_Direction dir){
+    	switch(dir.getMCDir()){
+    	case 0:
+			return 2;
+		case 1:
+			return 1;
+		case 2:
+			return 3;
+		case 3:
+			return 0;
+		case 4:
+			return 5;
+		case 5:
+			return 4;
+    	}
+    	return -1;
+    }
+    
     public static boolean isBeyondStorageBorder(World world, int rotation, PC_VecI beltPos, Entity entity, float border)
     {
         switch (rotation)
@@ -613,7 +632,7 @@ public class PCtr_BeltHelper
     public static void moveEntityOnBelt(World world, PC_VecI pos, Entity entity, boolean bordersEnabled, boolean motionEnabled, int moveDirection,
             double max_horizontal_speed, double horizontal_boost)
     {
-    	int jumpModifier = (entity instanceof EntityItem || entity instanceof EntityXPOrb)?1:3;
+    	int jumpModifier = (entity instanceof EntityItem || entity instanceof EntityXPOrb)?2:3;
         if (motionEnabled && world.rand.nextInt(35) == 0)
         {
             List list = world.getEntitiesWithinAABBExcludingEntity(entity,
@@ -625,19 +644,25 @@ public class PCtr_BeltHelper
             }
         }
 
-        if (moveDirection<4 && entity instanceof EntityItem)
+        if (moveDirection<4 && (entity instanceof EntityItem || entity instanceof EntityXPOrb))
         {
-            if (entity.motionY > 0.2F)
+        	if(entity instanceof EntityItem){
+	            if (entity.motionY > 0.2F)
+	            {
+	                entity.motionY /= 3F;
+	            }
+        	}
+        	if (entity.motionY > 0.2)
             {
-                entity.motionY /= 3F;
+                entity.motionY -= 0.1;
             }
         }
 
-        if (moveDirection<4 && (entity instanceof EntityItem || entity instanceof EntityXPOrb))
+        if (moveDirection>=4)
         {
-            if (entity.motionY > 0.2)
+        	if (entity.onGround)
             {
-                entity.motionY -= 0.1;
+                entity.moveEntity(0, 0.01D, 0);
             }
         }
 
@@ -650,6 +675,8 @@ public class PCtr_BeltHelper
         motionZ = PC_MathHelper.clamp_float((float) entity.motionZ, (float) - max_horizontal_speed, (float) max_horizontal_speed);
         motionY = PC_MathHelper.clamp_float((float) entity.motionY, (float) - max_horizontal_speed, (float) max_horizontal_speed);
         motionX = PC_MathHelper.clamp_float((float) entity.motionX, (float) - max_horizontal_speed, (float) max_horizontal_speed);
+        
+        double BBOOST = (entity instanceof EntityPlayer) ? BORDER_BOOST / 4.0D : BORDER_BOOST;
         
         switch (moveDirection)
         {
@@ -738,43 +765,82 @@ public class PCtr_BeltHelper
                 break;
                 
             case 4:
-                if (motionY <= max_horizontal_speed && motionEnabled)
+            	
+            	if (Math.abs(entity.motionY) > 0.4D)
                 {
-                    entity.addVelocity(0, jumpModifier*horizontal_boost, 0);
+                    entity.motionY *= 0.3D;
                 }
+
+                entity.fallDistance = 0;
+            	
+            	if (entity.motionY < (motionEnabled ? 0.2D : 0.3D)){
+                    entity.motionY = (motionEnabled ? 0.2D : 0.3D);
+                }
+                
 
                 if (bordersEnabled)
                 {
-                    if (entity.posY > pos.y + (1D - BORDERS))
+                	if (entity.posX > pos.x + (1D - BORDERS))
                     {
-                        entity.addVelocity(0, -BORDER_BOOST, 0);
+                        entity.motionX -= BBOOST;
                     }
 
-                    if (entity.posY < pos.y + BORDERS)
+                    if (entity.posX < pos.x + BORDERS)
                     {
-                        entity.addVelocity(0, BORDER_BOOST, 0);
+                        entity.motionX += BBOOST;
                     }
+
+                    if (entity.posZ > pos.z + BORDERS)
+                    {
+                        entity.motionZ -= BBOOST;
+                    }
+
+                    if (entity.posZ < pos.z + (1D - BORDERS))
+                    {
+                        entity.motionZ += BBOOST;
+                    }
+                    
+                    entity.motionZ = PC_MathHelper.clamp_float((float) entity.motionZ, (float) - (BORDER_BOOST * 1.5D), (float)(BORDER_BOOST * 1.5D));
+                    entity.motionX = PC_MathHelper.clamp_float((float) entity.motionX, (float) - (BORDER_BOOST * 1.5D), (float)(BORDER_BOOST * 1.5D));
+                    
                 }
 
                 break;
 
             case 5:
-                if (motionY >= -max_horizontal_speed && motionEnabled)
+            	
+            	if (Math.abs(entity.motionY) > 0.4D)
                 {
-                    entity.addVelocity(0, -jumpModifier*horizontal_boost, 0);
+                    entity.motionY *= 0.3D;
                 }
+
+                entity.fallDistance = 0;
 
                 if (bordersEnabled)
                 {
-                    if (entity.posY > pos.y + BORDERS)
+                	if (entity.posX > pos.x + (1D - BORDERS))
                     {
-                        entity.addVelocity(0, -BORDER_BOOST, 0);
+                        entity.motionX -= BBOOST;
                     }
 
-                    if (entity.posY < pos.y + (1D - BORDERS))
+                    if (entity.posX < pos.x + BORDERS)
                     {
-                        entity.addVelocity(0, BORDER_BOOST, 0);
+                        entity.motionX += BBOOST;
                     }
+
+                    if (entity.posZ > pos.z + BORDERS)
+                    {
+                        entity.motionZ -= BBOOST;
+                    }
+
+                    if (entity.posZ < pos.z + (1D - BORDERS))
+                    {
+                        entity.motionZ += BBOOST;
+                    }
+                    
+                    entity.motionZ = PC_MathHelper.clamp_float((float) entity.motionZ, (float) - (BORDER_BOOST * 1.5D), (float)(BORDER_BOOST * 1.5D));
+                    entity.motionX = PC_MathHelper.clamp_float((float) entity.motionX, (float) - (BORDER_BOOST * 1.5D), (float)(BORDER_BOOST * 1.5D));
+                    
                 }
         }
 
@@ -789,7 +855,7 @@ public class PCtr_BeltHelper
 
         if (entity instanceof EntityItem)
         {
-            itemstack = ((EntityItem) entity).func_92014_d();
+            itemstack = ((EntityItem) entity).func_92014_d().copy();
         }
         else
         {
@@ -1170,54 +1236,88 @@ public class PCtr_BeltHelper
         return flag;
     }
 
-    static ItemStack dispenseFromSpecialContainer(IInventory inventory)
-    {
-        if (inventory instanceof TileEntityFurnace)
-        {
+    static ItemStack[] dispenseFromSpecialContainer(IInventory inventory, PCtr_TileEntityEjectionBelt teb){
+    	
+		boolean modeStacks = teb.getActionType() == 0;
+	    boolean modeItems = teb.getActionType() == 1;
+	    boolean modeAll = teb.getActionType() == 2;
+	    boolean random = teb.getItemSelectMode() == 2;
+	    boolean first = teb.getItemSelectMode() == 0;
+	    boolean last = teb.getItemSelectMode() == 1;
+	    int numStacks = teb.getNumStacksEjected();
+	    int numItems = teb.getNumItemsEjected();
+    	
+        if (inventory instanceof TileEntityFurnace){
             ItemStack stack = inventory.getStackInSlot(2);
 
             if (stack != null && stack.stackSize > 0)
             {
-                inventory.setInventorySlotContents(2, null);
-                return stack;
+            	if(modeItems){
+            		stack = inventory.decrStackSize(2, numItems);
+            	}else{
+            		inventory.setInventorySlotContents(2, null);
+            	}
+                return new ItemStack[]{stack};
             }
 
             return null;
-        }
-
-        if (inventory instanceof TileEntityBrewingStand)
-        {
+        }else if (inventory instanceof TileEntityBrewingStand){
             if (((TileEntityBrewingStand) inventory).getBrewTime() != 0)
             {
                 return null;
             }
 
-            for (int i = 0; i < 4; i++)
-            {
-                ItemStack stack = inventory.getStackInSlot(i);
+            List<ItemStack> l = new ArrayList<ItemStack>();
+            int[] rand=null;
+            if(random){
+            	rand = new int[4];
+            	for(int i=0; i<4; i++){
+            		rand[i] = -1;
+            	}
+            	for(int i=0; i<4; i++){
+            		while(true){
+	            		int index = teb.rand.nextInt(4);
+	            		if(rand[index]==-1){
+	            			rand[index] = i;
+	            			break;
+	            		}
+            		}
+            	}
+            }
+            
+            for (int i = last ? 3 : 0; (last ? i > 0 : i < 4) && (modeStacks ? numStacks-1>=l.size() : true); i = (last ? i-1 : i+1)){
+            	int index = i;
+            	
+            	if(random){
+            		index = rand[index];
+            	}
+            	
+            	ItemStack stack = inventory.getStackInSlot(index);
 
-                if ((i < 3 && (stack != null && stack.stackSize > 0 && stack.itemID == Item.potion.itemID && stack.getItemDamage() != 0))
-                        || (i == 3 && (stack != null)))
+                if ((index < 3 && (stack != null && stack.stackSize > 0 && stack.itemID == Item.potion.itemID && stack.getItemDamage() != 0))
+                        || (index == 3 && (stack != null)))
                 {
-                    inventory.setInventorySlotContents(i, null);
-                    return stack;
+                    inventory.setInventorySlotContents(index, null);
+                   	l.add(stack);
+                   	if(modeItems){
+                   		break;
+                   	}
                 }
             }
-
-            return null;
+            
+            return l.toArray(new ItemStack[0]);
         }
 
         return null;
     }
 
-    public static ItemStack[] dispenseStuffFromInventory(World world, PC_VecI beltPos, IInventory inventory)
-    {
+    public static ItemStack[] dispenseStuffFromInventory(World world, PC_VecI beltPos, IInventory inventory){
+    	 PCtr_TileEntityEjectionBelt teb = GameInfo.getTE(world, beltPos);
         if (isSpecialContainer(inventory))
         {
-            return new ItemStack[] {dispenseFromSpecialContainer(inventory) };
+            return dispenseFromSpecialContainer(inventory, teb);
         }
 
-        PCtr_TileEntityEjectionBelt teb = GameInfo.getTE(world, beltPos);
         List<ItemStack> stacks = new ArrayList<ItemStack>();
         boolean modeStacks = teb.getActionType() == 0;
         boolean modeItems = teb.getActionType() == 1;

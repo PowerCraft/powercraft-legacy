@@ -189,7 +189,7 @@ public class PCnt_TileEntityRadio extends PC_TileEntity implements PC_ITileEntit
 
 		PC_Renderer.glPushMatrix();
 		PC_Renderer.glScalef(f, -f, -f);
-		model.setType(isTransmitter(), worldObj.getBlockMetadata(xCoord, yCoord, zCoord) == 1); // ter.active);
+		model.setType(isTransmitter(), isActive()); // ter.active);
 
 		model.tiny = isRenderMicro();
 

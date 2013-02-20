@@ -1,28 +1,38 @@
 package powercraft.transport;
 
+import java.util.List;
+
+import net.minecraft.block.Block;
+import net.minecraft.block.material.Material;
+import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+import powercraft.management.PC_Block;
 import powercraft.management.PC_Direction;
 import powercraft.management.PC_TileEntity;
 import powercraft.management.PC_Utils;
+import powercraft.management.PC_VecI;
 import powercraft.management.PC_Utils.GameInfo;
 import powercraft.management.PC_Utils.Gres;
-import powercraft.management.PC_VecI;
 
-public class PCtr_BlockBeltSeparator extends PCtr_BlockBeltBase
-{
-    public PCtr_BlockBeltSeparator(int id)
-    {
-        super(id, 7);
-    }
+public class PCtr_BlockSplitter extends PC_Block {
 
-    @Override
+	public PCtr_BlockSplitter(int id) {
+		super(id, 9, PCtr_MaterialElevator.getMaterial());
+		setHardness(0.5F);
+        setResistance(8.0F);
+        setStepSound(Block.soundMetalFootstep);
+        setCreativeTab(CreativeTabs.tabTransport);
+	}
+	
+	@Override
     public void onEntityCollidedWithBlock(World world, int i, int j, int k, Entity entity)
     {
         PC_VecI pos = new PC_VecI(i, j, k);
@@ -32,16 +42,12 @@ public class PCtr_BlockBeltSeparator extends PCtr_BlockBeltBase
             return;
         }
 
-        PCtr_TileEntitySeparationBelt tes = (PCtr_TileEntitySeparationBelt) world.getBlockTileEntity(i, j, k);
+        PCtr_TileEntitySplitter tes = (PCtr_TileEntitySplitter) world.getBlockTileEntity(i, j, k);
         PC_Direction redir = tes.getDirection(entity);
-        int rotation = PCtr_BeltHelper.getRotation(world.getBlockMetadata(i, j, k));
-        for(;rotation>0; rotation--){
-        	redir = redir.rotateLeft();
-        }
 
         PC_VecI pos_leading_to = pos.offset(redir.getDir());
 
-        rotation = PCtr_BeltHelper.getDir(redir);
+        int rotation = PCtr_BeltHelper.getDir(redir);
         
         if (entity instanceof EntityItem && PCtr_BeltHelper.storeEntityItemAt(world, pos_leading_to, (EntityItem) entity))
         {
@@ -55,6 +61,11 @@ public class PCtr_BlockBeltSeparator extends PCtr_BlockBeltBase
             PCtr_BeltHelper.entityPreventDespawning(world, pos, true, entity);
         }
 
+        if(rotation<4){
+        	entity.motionY=0;
+        	entity.onGround=true;
+        }
+        
         leadsToNowhere = leadsToNowhere && PCtr_BeltHelper.isBeyondStorageBorder(world, rotation, pos, entity, PCtr_BeltHelper.STORAGE_BORDER_LONG);
         PCtr_BeltHelper.moveEntityOnBelt(world, pos, entity, true, !leadsToNowhere, rotation, PCtr_BeltHelper.MAX_HORIZONTAL_SPEED,
                 PCtr_BeltHelper.HORIZONTAL_BOOST);
@@ -82,23 +93,58 @@ public class PCtr_BlockBeltSeparator extends PCtr_BlockBeltBase
                 }
             }
 
-            Gres.openGres("SeperationBelt", entityplayer, GameInfo.<PC_TileEntity>getTE(world, i, j, k));
+            Gres.openGres("Splitter", entityplayer, GameInfo.<PC_TileEntity>getTE(world, i, j, k));
             return true;
         }
     }
 
     @Override
-    public TileEntity newTileEntity(World world, int metadata) {
-        return new PCtr_TileEntitySeparationBelt();
+    public AxisAlignedBB getCollisionBoundingBoxFromPool(World world, int i, int j, int k) {
+        return null;
     }
     
+    @Override
+    public TileEntity newTileEntity(World world, int metadata) {
+        return new PCtr_TileEntitySplitter();
+    }
+
+    @Override
+    public boolean isOpaqueCube(){
+        return false;
+    }
+
+    @Override
+    public boolean renderAsNormalBlock(){
+        return false;
+    }
+    
+    @Override
+    public boolean shouldSideBeRendered(IBlockAccess iblockaccess, int i, int j, int k, int l){
+        return true;
+    }
+    
+    @Override
+	public int getBlockTextureFromSide(int side) {
+		return blockIndexInTexture+side;
+	}
+    
 	@Override
-	protected Object msg2(IBlockAccess world, PC_VecI pos, int msg, Object... obj) {
+	public Object msg(IBlockAccess world, PC_VecI pos, int msg, Object... obj) {
 		switch (msg){
-		case PC_Utils.MSG_DEFAULT_NAME:{
-			return "separation belt";
+		case PC_Utils.MSG_DEFAULT_NAME:
+			return "Splitter";
+		case PC_Utils.MSG_ITEM_FLAGS:{
+			List<String> list = (List<String>)obj[1];
+			list.add(PC_Utils.NO_BUILD);
+			return list;
+		}case PC_Utils.MSG_BLOCK_FLAGS:{
+			List<String> list = (List<String>)obj[0];
+	   		list.add(PC_Utils.NO_HARVEST);
+	   		list.add(PC_Utils.NO_PICKUP);
+	   		return list;
 		}
 		}
 		return null;
 	}
+
 }

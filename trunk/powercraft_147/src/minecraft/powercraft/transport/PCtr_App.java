@@ -25,9 +25,9 @@ public class PCtr_App implements PC_IModule
     public static PC_Block breakBelt;
     public static PC_Block redirectionBelt;
     public static PC_Block separationBelt;
-    public static PC_Block verticalSeparationBelt;
     public static PC_Block ejectionBelt;
     public static PC_Block elevator;
+    public static PC_Block splitter;
     public static PC_ItemArmor slimeboots;
 
    @Override
@@ -62,9 +62,9 @@ public class PCtr_App implements PC_IModule
 	        breakBelt = (PC_Block)ModuleLoader.register(this, PCtr_BlockBeltBreak.class, PCtr_ItemBlockConveyor.class);
 	        redirectionBelt = (PC_Block)ModuleLoader.register(this, PCtr_BlockBeltRedirector.class, PCtr_ItemBlockConveyor.class, PCtr_TileEntityRedirectionBelt.class);
 	        separationBelt = (PC_Block)ModuleLoader.register(this, PCtr_BlockBeltSeparator.class, PCtr_ItemBlockConveyor.class, PCtr_TileEntitySeparationBelt.class);
-	        verticalSeparationBelt = (PC_Block)ModuleLoader.register(this, PCtr_BlockBeltVerticalSeparator.class, PCtr_ItemBlockConveyor.class, PCtr_TileEntityVerticalSeparationBelt.class);
 	        ejectionBelt = (PC_Block)ModuleLoader.register(this, PCtr_BlockBeltEjector.class, PCtr_ItemBlockConveyor.class, PCtr_TileEntityEjectionBelt.class);
 	        elevator = (PC_Block)ModuleLoader.register(this, PCtr_BlockElevator.class, PCtr_ItemBlockElevator.class);
+	        splitter = (PC_Block)ModuleLoader.register(this, PCtr_BlockSplitter.class, PCtr_TileEntitySplitter.class);
 	        PCtr_BlockHackedWater.hackWater();
     }
 
@@ -157,6 +157,7 @@ public class PCtr_App implements PC_IModule
 	@Override
 	public List<PC_Struct2<String, Class>> registerGuis(List<PC_Struct2<String, Class>> guis) {
 		guis.add(new PC_Struct2<String, Class>("SeperationBelt", PCtr_ContainerSeparationBelt.class));
+		guis.add(new PC_Struct2<String, Class>("Splitter", PCtr_ContainerSplitter.class));
 		return guis;
 	}
 }

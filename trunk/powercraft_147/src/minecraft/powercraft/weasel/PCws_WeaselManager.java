@@ -36,6 +36,8 @@ public class PCws_WeaselManager implements PC_IDataHandler, PC_IMSG {
 	
 	private static boolean needSave=false;
 	
+	private static TreeMap<Integer, PCws_IWeaselNetworkDevice> plugins2Add; 
+	
 	@Override
 	public void load(NBTTagCompound nbtTag) {
 		needSave = false;
@@ -221,7 +223,11 @@ public class PCws_WeaselManager implements PC_IDataHandler, PC_IMSG {
 	
 	public static void registerPlugin(PCws_IWeaselNetworkDevice weaselPlugin, int id) {
 		if(!(plugins.containsKey(id)||plugins.containsValue(weaselPlugin))){
-			plugins.put(id, weaselPlugin);
+			if(plugins2Add==null){
+				plugins.put(id, weaselPlugin);
+			}else{
+				plugins2Add.put(id, weaselPlugin);
+			}
 			needSave = true;
 		}
 	}
@@ -275,10 +281,13 @@ public class PCws_WeaselManager implements PC_IDataHandler, PC_IMSG {
 	
 	public static void update(){
 		getGlobalFunctionManager();
+		plugins2Add = new TreeMap<Integer, PCws_IWeaselNetworkDevice>();
 		for(PCws_IWeaselNetworkDevice weaselPlugin:plugins.values()){
 			if(weaselPlugin instanceof PCws_WeaselPlugin)
 				((PCws_WeaselPlugin)weaselPlugin).update();
 		}
+		plugins.putAll(plugins2Add);
+		plugins2Add = null;
 	}
 
 	public static List<String> getAllPluginNames() {

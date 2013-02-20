@@ -180,8 +180,10 @@ public class PCws_WeaselPluginDiskDrive extends PCws_WeaselPlugin implements PCw
 	
 	public int getDiskSlot(String disk){
 		for(int i=0; i<inv.length; i++){
-			if(disk.equals(PCws_ItemWeaselDisk.getLabel(inv[i]))){
-				return i;
+			if(inv[i]!=null){
+				if(disk.equals(PCws_ItemWeaselDisk.getLabel(inv[i]))){
+					return i;
+				}
 			}
 		}
 		return -1;
@@ -232,6 +234,7 @@ public class PCws_WeaselPluginDiskDrive extends PCws_WeaselPlugin implements PCw
 					}
 					ret = PCws_ItemWeaselDisk.handleFunction(engine, PCws_WeaselPluginDiskDrive.this, disk, name, newArgs);
 				}
+				System.out.println(ret);
 				return WeaselObject.getWrapperForValue(ret);
 			}
 		}

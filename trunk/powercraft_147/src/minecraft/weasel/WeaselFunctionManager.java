@@ -216,7 +216,7 @@ public class WeaselFunctionManager implements IWeaselHardware {
 			throw e;
 		} catch (Exception e) {
 			e.printStackTrace();
-			throw new WeaselRuntimeExceptionFunctionNotExist(name);
+			throw new WeaselRuntimeException(e);
 		} 
 	}
 	

@@ -252,7 +252,7 @@ public class PCma_TileEntityRoaster extends PC_TileEntity implements IInventory,
             addFuelForTime(40);
         }
 
-        if (!laser)
+        if (!laser && !worldObj.isRemote)
         {
             smeltItems();
         }

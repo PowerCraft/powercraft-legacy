@@ -151,4 +151,8 @@ public abstract class PC_TileEntity extends TileEntity
 		nbtTagCompound.setCompoundTag("map", nbtTag);
 	}
 	
+	public World getWorldObj(){
+        return this.worldObj;
+    }
+	
 }

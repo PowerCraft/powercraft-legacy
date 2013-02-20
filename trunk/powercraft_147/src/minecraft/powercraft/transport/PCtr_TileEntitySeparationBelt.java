@@ -3,34 +3,10 @@ package powercraft.transport;
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.EntityItem;
-import net.minecraft.entity.item.EntityXPOrb;
-import net.minecraft.entity.monster.EntityBlaze;
-import net.minecraft.entity.monster.EntityCreeper;
-import net.minecraft.entity.monster.EntityEnderman;
-import net.minecraft.entity.monster.EntityIronGolem;
-import net.minecraft.entity.monster.EntityMagmaCube;
-import net.minecraft.entity.monster.EntityPigZombie;
-import net.minecraft.entity.monster.EntitySkeleton;
-import net.minecraft.entity.monster.EntitySlime;
-import net.minecraft.entity.monster.EntitySnowman;
-import net.minecraft.entity.monster.EntitySpider;
-import net.minecraft.entity.monster.EntityZombie;
-import net.minecraft.entity.passive.EntityChicken;
-import net.minecraft.entity.passive.EntityCow;
-import net.minecraft.entity.passive.EntityMooshroom;
-import net.minecraft.entity.passive.EntityOcelot;
-import net.minecraft.entity.passive.EntityPig;
-import net.minecraft.entity.passive.EntitySheep;
-import net.minecraft.entity.passive.EntityWolf;
-import net.minecraft.inventory.IInventory;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-import powercraft.management.PC_Struct2;
-import powercraft.management.PC_Utils.Inventory;
+import powercraft.management.PC_Direction;
 import powercraft.management.PC_VecI;
 import powercraft.management.entity.PC_EntityItem;
-import powercraft.management.inventory.PC_ISpecialAccessInventory;
 
 public class PCtr_TileEntitySeparationBelt extends PCtr_TileEntitySeparationBeltBase
 {
@@ -43,16 +19,15 @@ public class PCtr_TileEntitySeparationBelt extends PCtr_TileEntitySeparationBelt
     }
     
     @Override
-    public int calculateItemDirection(Entity entity)
+    public PC_Direction calculateItemDirection(Entity entity)
     {
         boolean notItem = !(entity instanceof EntityItem);
-        ItemStack itemstack = null;
 
-        itemstack = PCtr_BeltHelper.getItemStackForEntity(entity);
+        ItemStack itemstack = PCtr_BeltHelper.getItemStackForEntity(entity);
         
         if (itemstack == null)
         {
-            return 0;
+            return PC_Direction.FRONT;
         }
 
         int countLeft = 0;
@@ -82,28 +57,28 @@ public class PCtr_TileEntitySeparationBelt extends PCtr_TileEntitySeparationBelt
 
         if (countLeft == 0 && countRight == 0)
         {
-            return 0;
+            return PC_Direction.FRONT;
         }
 
         if (countLeft == 0 && countRight > 0)
         {
-            return -1;
+            return PC_Direction.RIGHT;
         }
 
         if (countLeft > 0 && countRight == 0)
         {
-            return 1;
+            return PC_Direction.LEFT;
         }
         
         if (countLeft > 0 && countRight > 0)
         {
             if (notItem)
             {
-                setItemDirection(entity, 0);
-                return 0;
+                setItemDirection(entity, PC_Direction.FRONT);
+                return PC_Direction.FRONT;
             }
 
-            int[] translate = { 1, 0, -1 };
+            PC_Direction[] translate = { PC_Direction.LEFT, PC_Direction.FRONT, PC_Direction.RIGHT };
             int meta = worldObj.getBlockMetadata(xCoord, yCoord, zCoord);
             int leftX = xCoord, leftZ = zCoord;
             int rightX = xCoord, rightZ = zCoord;
@@ -131,20 +106,20 @@ public class PCtr_TileEntitySeparationBelt extends PCtr_TileEntitySeparationBelt
                     break;
             }
 
-            translate[2] = (PCtr_BeltHelper.isTransporterAt(worldObj, new PC_VecI(leftX, yCoord, leftZ)) ? -1 : 0);
-            translate[0] = (PCtr_BeltHelper.isTransporterAt(worldObj, new PC_VecI(rightX, yCoord, rightZ)) ? 1 : 0);
+            translate[2] = (PCtr_BeltHelper.isTransporterAt(worldObj, new PC_VecI(leftX, yCoord, leftZ)) ? PC_Direction.RIGHT : PC_Direction.FRONT);
+            translate[0] = (PCtr_BeltHelper.isTransporterAt(worldObj, new PC_VecI(rightX, yCoord, rightZ)) ? PC_Direction.LEFT : PC_Direction.FRONT);
 
             if (translate[0] == translate[2])
             {
-                translate[0] = 1;
-                translate[2] = -1;
+                translate[0] = PC_Direction.LEFT;
+                translate[2] = PC_Direction.RIGHT;
             }
 
             if (itemstack.stackSize == 1)
             {
             	if(worldObj.isRemote){
-                	setItemDirection(entity, 0);
-                    return 0;
+                	setItemDirection(entity, PC_Direction.FRONT);
+                    return PC_Direction.FRONT;
                 }
                 int newredir = (1 + rand.nextInt(countLeft + countRight)) <= countLeft ? 1 : -1;
                 setItemDirection(entity,translate[1 - newredir]);
@@ -191,12 +166,6 @@ public class PCtr_TileEntitySeparationBelt extends PCtr_TileEntitySeparationBelt
             return translate[0];
         }
 
-        return 0;
-    }
-
-    @Override
-    public String getInvName()
-    {
-        return "Item Separator";
+        return PC_Direction.FRONT;
     }
 }

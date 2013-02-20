@@ -5,6 +5,7 @@ import net.minecraft.entity.item.EntityItem;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+import powercraft.management.PC_Direction;
 import powercraft.management.PC_Utils;
 import powercraft.management.PC_Utils.GameInfo;
 import powercraft.management.PC_VecI;
@@ -47,40 +48,16 @@ public class PCtr_BlockBeltRedirector extends PCtr_BlockBeltBase
         }
 
         PCtr_TileEntityRedirectionBeltBase teRedir = (PCtr_TileEntityRedirectionBeltBase) world.getBlockTileEntity(i, j, k);
-        int redir = teRedir.getDirection(entity);
-        int direction = PCtr_BeltHelper.getRotation(GameInfo.getMD(world, pos)) + redir;
-
-        if (direction == -1)
-        {
-            direction = 3;
+        PC_Direction redir = teRedir.getDirection(entity);
+        int direction = PCtr_BeltHelper.getRotation(GameInfo.getMD(world, pos));
+        for(;direction>0; direction--){
+        	redir = redir.rotateLeft();
         }
 
-        if (direction == 4)
-        {
-            direction = 0;
-        }
+        PC_VecI pos_leading_to = pos.offset(redir.getDir());
 
-        PC_VecI pos_leading_to = pos.copy();
-
-        switch (direction)
-        {
-            case 0:
-                pos_leading_to.z--;
-                break;
-
-            case 1:
-                pos_leading_to.x++;
-                break;
-
-            case 2:
-                pos_leading_to.z++;
-                break;
-
-            case 3:
-                pos_leading_to.x--;
-                break;
-        }
-
+        direction = PCtr_BeltHelper.getDir(redir);
+        
         boolean leadsToNowhere = PCtr_BeltHelper.isBlocked(world, pos_leading_to);
         leadsToNowhere = leadsToNowhere && PCtr_BeltHelper.isBeyondStorageBorder(world, direction, pos, entity, PCtr_BeltHelper.STORAGE_BORDER_LONG);
 

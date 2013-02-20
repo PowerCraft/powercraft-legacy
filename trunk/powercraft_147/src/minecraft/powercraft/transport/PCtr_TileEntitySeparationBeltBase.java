@@ -41,7 +41,7 @@ public abstract class PCtr_TileEntitySeparationBeltBase extends
 
 	@Override
 	public int getSizeInventory() {
-	    return 18;
+	    return separatorContents.length;
 	}
 
 	@Override

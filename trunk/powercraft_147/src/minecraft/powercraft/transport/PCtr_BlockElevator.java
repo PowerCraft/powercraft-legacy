@@ -42,8 +42,16 @@ public class PCtr_BlockElevator extends PC_Block
     {
         return true;
     }
-
+    
     @Override
+	public int getBlockTextureFromSide(int side) {
+		if(side==0 || side==1){
+			return 22;
+		}
+		return 23;
+	}
+
+	@Override
     public void onEntityCollidedWithBlock(World world, int i, int j, int k, Entity entity)
     {
         PC_VecI pos = new PC_VecI(i, j, k);

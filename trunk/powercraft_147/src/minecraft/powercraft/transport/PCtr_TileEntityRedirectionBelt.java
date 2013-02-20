@@ -1,6 +1,7 @@
 package powercraft.transport;
 
 import net.minecraft.entity.Entity;
+import powercraft.management.PC_Direction;
 import powercraft.management.PC_Utils.GameInfo;
 import powercraft.management.PC_VecI;
 
@@ -9,12 +10,12 @@ public class PCtr_TileEntityRedirectionBelt extends PCtr_TileEntityRedirectionBe
     public PCtr_TileEntityRedirectionBelt() {}
 
     @Override
-    protected int calculateItemDirection(Entity entity)
+    protected PC_Direction calculateItemDirection(Entity entity)
     {
         PCtr_BlockBeltRedirector block = ((PCtr_BlockBeltRedirector) PCtr_App.redirectionBelt);
         PC_VecI pos = getCoord();
         int meta = PCtr_BeltHelper.getRotation(GameInfo.getMD(worldObj, pos));
-        int redir = 0;
+        PC_Direction redir = null;
 
         if (block.isPowered(worldObj, pos))
         {
@@ -23,11 +24,11 @@ public class PCtr_TileEntityRedirectionBelt extends PCtr_TileEntityRedirectionBe
                 case 0:
                     if (PCtr_BeltHelper.isTransporterAt(worldObj, pos.offset(1, 0, 0)))
                     {
-                        redir = -1;
+                        redir = PC_Direction.LEFT;
                     }
                     else if (PCtr_BeltHelper.isTransporterAt(worldObj, pos.offset(-1, 0, 0)))
                     {
-                        redir = 1;
+                        redir = PC_Direction.RIGHT;
                     }
 
                     break;
@@ -35,11 +36,11 @@ public class PCtr_TileEntityRedirectionBelt extends PCtr_TileEntityRedirectionBe
                 case 1:
                     if (PCtr_BeltHelper.isTransporterAt(worldObj, pos.offset(0, 0, 1)))
                     {
-                        redir = -1;
+                        redir = PC_Direction.LEFT;
                     }
                     else if (PCtr_BeltHelper.isTransporterAt(worldObj, pos.offset(0, 0, -1)))
                     {
-                        redir = 1;
+                        redir = PC_Direction.RIGHT;
                     }
 
                     break;
@@ -47,11 +48,11 @@ public class PCtr_TileEntityRedirectionBelt extends PCtr_TileEntityRedirectionBe
                 case 2:
                     if (PCtr_BeltHelper.isTransporterAt(worldObj, pos.offset(-1, 0, 0)))
                     {
-                        redir = -1;
+                        redir = PC_Direction.LEFT;
                     }
                     else if (PCtr_BeltHelper.isTransporterAt(worldObj, pos.offset(1, 0, 0)))
                     {
-                        redir = 1;
+                        redir = PC_Direction.RIGHT;
                     }
 
                     break;
@@ -59,18 +60,18 @@ public class PCtr_TileEntityRedirectionBelt extends PCtr_TileEntityRedirectionBe
                 case 3:
                     if (PCtr_BeltHelper.isTransporterAt(worldObj, pos.offset(0, 0, -1)))
                     {
-                        redir = -1;
+                        redir = PC_Direction.LEFT;
                     }
                     else if (PCtr_BeltHelper.isTransporterAt(worldObj, pos.offset(0, 0, 1)))
                     {
-                        redir = 1;
+                        redir = PC_Direction.RIGHT;
                     }
 
                     break;
             }
         }
 
-        if (redir == 0)
+        if (redir == null)
         {
             switch (meta)
             {
@@ -78,7 +79,7 @@ public class PCtr_TileEntityRedirectionBelt extends PCtr_TileEntityRedirectionBe
                     if (PCtr_BeltHelper.isTransporterAt(worldObj, pos.offset(1, 0, 0)) && PCtr_BeltHelper.isTransporterAt(worldObj, pos.offset(-1, 0, 0))
                             && !PCtr_BeltHelper.isTransporterAt(worldObj, pos.offset(0, 0, -1)))
                     {
-                        redir = 1;
+                        redir = PC_Direction.RIGHT;
                     }
 
                     break;
@@ -87,7 +88,7 @@ public class PCtr_TileEntityRedirectionBelt extends PCtr_TileEntityRedirectionBe
                     if (PCtr_BeltHelper.isTransporterAt(worldObj, pos.offset(0, 0, 1)) && PCtr_BeltHelper.isTransporterAt(worldObj, pos.offset(0, 0, -1))
                             && !PCtr_BeltHelper.isTransporterAt(worldObj, pos.offset(1, 0, 0)))
                     {
-                        redir = 1;
+                        redir = PC_Direction.RIGHT;
                     }
 
                     break;
@@ -96,7 +97,7 @@ public class PCtr_TileEntityRedirectionBelt extends PCtr_TileEntityRedirectionBe
                     if (PCtr_BeltHelper.isTransporterAt(worldObj, pos.offset(-1, 0, 0)) && PCtr_BeltHelper.isTransporterAt(worldObj, pos.offset(1, 0, 0))
                             && !PCtr_BeltHelper.isTransporterAt(worldObj, pos.offset(0, 0, 1)))
                     {
-                        redir = 1;
+                        redir = PC_Direction.RIGHT;
                     }
 
                     break;
@@ -105,15 +106,18 @@ public class PCtr_TileEntityRedirectionBelt extends PCtr_TileEntityRedirectionBe
                     if (PCtr_BeltHelper.isTransporterAt(worldObj, pos.offset(0, 0, -1)) && PCtr_BeltHelper.isTransporterAt(worldObj, pos.offset(0, 0, 1))
                             && !PCtr_BeltHelper.isTransporterAt(worldObj, pos.offset(-1, 0, 0)))
                     {
-                        redir = 1;
+                        redir = PC_Direction.RIGHT;
                     }
 
                     break;
             }
         }
 
-        redir = -redir;
-        setItemDirection(entity, Integer.valueOf(redir));
+        if(redir==null){
+        	redir = PC_Direction.FRONT;
+        }
+        
+        setItemDirection(entity, redir);
         return redir;
     }
 }
