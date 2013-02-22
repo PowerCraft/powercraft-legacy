@@ -8,11 +8,11 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
 import powercraft.management.PC_ItemBlock;
-import powercraft.management.PC_Struct3;
 import powercraft.management.PC_TileEntity;
 import powercraft.management.PC_Utils;
 import powercraft.management.PC_Utils.GameInfo;
 import powercraft.management.PC_Utils.ValueWriting;
+import powercraft.management.registry.PC_LangRegistry.LangEntry;
 
 public class PCli_ItemBlockLightningConductor extends PC_ItemBlock
 {
@@ -73,8 +73,8 @@ public class PCli_ItemBlockLightningConductor extends PC_ItemBlock
 	public Object msg(int msg, Object... obj) {
 		switch(msg){
 		case PC_Utils.MSG_DEFAULT_NAME:
-			List<PC_Struct3<String, String, String[]>> names = (List<PC_Struct3<String, String, String[]>>)obj[0];
-			names.add(new PC_Struct3<String, String, String[]>(getItemName(), "Lightning Conductor", null));
+			List<LangEntry> names = (List<LangEntry>)obj[0];
+			names.add(new LangEntry(getItemName(), "Lightning Conductor"));
             return names;
 		}
 		return null;

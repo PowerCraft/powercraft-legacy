@@ -28,16 +28,18 @@ import powercraft.management.PC_IItemInfo;
 import powercraft.management.PC_PacketHandler;
 import powercraft.management.PC_Property;
 import powercraft.management.PC_Renderer;
-import powercraft.management.PC_Shining;
-import powercraft.management.PC_Shining.OFF;
-import powercraft.management.PC_Shining.ON;
 import powercraft.management.PC_Utils;
 import powercraft.management.PC_Utils.GameInfo;
 import powercraft.management.PC_Utils.Gres;
 import powercraft.management.PC_Utils.ValueWriting;
+import powercraft.management.annotation.PC_BlockInfo;
+import powercraft.management.annotation.PC_Shining;
+import powercraft.management.annotation.PC_Shining.OFF;
+import powercraft.management.annotation.PC_Shining.ON;
 import powercraft.management.PC_VecI;
 
 @PC_Shining
+@PC_BlockInfo(tileEntity=PCli_TileEntityLight.class)
 public class PCli_BlockLight extends PC_Block implements PC_IItemInfo
 {
     @ON

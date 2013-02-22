@@ -15,10 +15,9 @@ import powercraft.management.PC_ClientUtils;
 import powercraft.management.PC_Color;
 import powercraft.management.PC_ITileEntityWatcher;
 import powercraft.management.PC_RectI;
-import powercraft.management.PC_Utils;
 import powercraft.management.PC_VecI;
-import powercraft.management.PC_Utils.Lang;
-import powercraft.management.PC_Utils.ModuleInfo;
+import powercraft.management.registry.PC_LangRegistry;
+import powercraft.management.registry.PC_TextureRegistry;
 
 
 /**
@@ -36,7 +35,7 @@ public abstract class PC_GresWidget extends Gui implements PC_ITileEntityWatcher
 	/** Minecraft instance */
 	protected static Minecraft mc = PC_ClientUtils.mc();
 
-	protected static String imgdir = ModuleInfo.getGresImgDir();
+	protected static String imgdir = PC_TextureRegistry.getGresImgDir();
 	
 	protected enum MouseOver{
 		NON,
@@ -310,7 +309,7 @@ public abstract class PC_GresWidget extends Gui implements PC_ITileEntityWatcher
 	public PC_GresWidget setTooltip(String tooltipLangKey, String tooltipValue) {
 		this.tooltipLangKey = tooltipLangKey;
 		this.tooltipValue = tooltipValue;
-		tooltip = Lang.tr(tooltipLangKey, tooltipValue);
+		tooltip = PC_LangRegistry.tr(tooltipLangKey, tooltipValue);
 		return this;
 	}
 	
@@ -320,7 +319,7 @@ public abstract class PC_GresWidget extends Gui implements PC_ITileEntityWatcher
 	
 	public PC_GresWidget setTooltipLangKey(String tooltipLangKey) {
 		this.tooltipLangKey = tooltipLangKey;
-		tooltip = Lang.tr(tooltipLangKey, tooltipValue);
+		tooltip = PC_LangRegistry.tr(tooltipLangKey, tooltipValue);
 		return this;
 	}
 	
@@ -330,7 +329,7 @@ public abstract class PC_GresWidget extends Gui implements PC_ITileEntityWatcher
 	
 	public PC_GresWidget setTooltipValue(String tooltipValue) {
 		this.tooltipValue = tooltipValue;
-		tooltip = Lang.tr(tooltipLangKey, tooltipValue);
+		tooltip = PC_LangRegistry.tr(tooltipLangKey, tooltipValue);
 		return this;
 	}
 	
@@ -355,7 +354,7 @@ public abstract class PC_GresWidget extends Gui implements PC_ITileEntityWatcher
 	public PC_GresWidget setText(String textLangKey, String textValue) {
 		this.textLangKey = textLangKey;
 		this.textValue = textValue;
-		text = Lang.tr(textLangKey, textValue);
+		text = PC_LangRegistry.tr(textLangKey, textValue);
 		return this;
 	}
 	
@@ -365,7 +364,7 @@ public abstract class PC_GresWidget extends Gui implements PC_ITileEntityWatcher
 	
 	public PC_GresWidget setTextLangKey(String textLangKey) {
 		this.textLangKey = textLangKey;
-		text = Lang.tr(textLangKey, textValue);
+		text = PC_LangRegistry.tr(textLangKey, textValue);
 		return this;
 	}
 	
@@ -375,7 +374,7 @@ public abstract class PC_GresWidget extends Gui implements PC_ITileEntityWatcher
 	
 	public PC_GresWidget setTextValue(String textValue) {
 		this.textValue = textValue;
-		text = Lang.tr(textLangKey, textValue);
+		text = PC_LangRegistry.tr(textLangKey, textValue);
 		return this;
 	}
 	

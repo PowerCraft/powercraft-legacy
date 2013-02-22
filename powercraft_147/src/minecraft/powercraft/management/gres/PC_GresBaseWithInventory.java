@@ -1,20 +1,14 @@
 package powercraft.management.gres;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-
-import powercraft.management.PC_TileEntity;
-import powercraft.management.inventory.PC_IInventorySpecialSlots;
-import powercraft.management.inventory.PC_IInventoryWrapper;
-import powercraft.management.inventory.PC_Slot;
-
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Container;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
+import powercraft.management.PC_TileEntity;
+import powercraft.management.inventory.PC_IInventorySpecialSlots;
+import powercraft.management.inventory.PC_IInventoryWrapper;
+import powercraft.management.inventory.PC_Slot;
 
 public abstract class PC_GresBaseWithInventory<t extends PC_TileEntity> extends Container
 {

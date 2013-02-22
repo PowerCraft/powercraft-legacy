@@ -3,6 +3,7 @@ package powercraft.management;
 import java.util.EnumSet;
 
 import net.minecraft.client.settings.KeyBinding;
+import powercraft.management.registry.PC_RegistryClient;
 
 import com.google.common.collect.ObjectArrays;
 
@@ -22,12 +23,12 @@ public class PC_KeyHandler extends KeyHandler {
 
 	@Override
 	public void keyDown(EnumSet<TickType> types, KeyBinding kb, boolean tickEnd, boolean isRepeat) {
-		PC_ClientUtils.keyDown(kb.keyDescription);
+		PC_RegistryClient.keyEvent(kb.keyDescription, true);
 	}
 
 	@Override
 	public void keyUp(EnumSet<TickType> types, KeyBinding kb, boolean tickEnd) {
-		PC_ClientUtils.keyUp(kb.keyDescription);
+		PC_RegistryClient.keyEvent(kb.keyDescription, false);
 	}
 
 	@Override

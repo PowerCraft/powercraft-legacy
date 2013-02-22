@@ -39,9 +39,11 @@ import powercraft.management.PC_BeamTracer.result;
 import powercraft.management.PC_Utils.GameInfo;
 import powercraft.management.PC_Utils.Gres;
 import powercraft.management.PC_Utils.ValueWriting;
+import powercraft.management.annotation.PC_BlockInfo;
 import powercraft.management.PC_VecF;
 import powercraft.management.PC_VecI;
 
+@PC_BlockInfo(tileEntity=PCtp_TileEntityTeleporter.class)
 public class PCtp_BlockTeleporter extends PC_Block implements PC_IItemInfo{
 
 	public PCtp_BlockTeleporter(int id) {

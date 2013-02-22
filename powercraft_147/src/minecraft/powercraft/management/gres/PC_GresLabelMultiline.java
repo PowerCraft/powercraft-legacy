@@ -3,10 +3,9 @@ package powercraft.management.gres;
 
 import java.util.List;
 
+import net.minecraft.client.gui.FontRenderer;
 import powercraft.management.PC_RectI;
 import powercraft.management.PC_VecI;
-
-import net.minecraft.client.gui.FontRenderer;
 
 
 /**

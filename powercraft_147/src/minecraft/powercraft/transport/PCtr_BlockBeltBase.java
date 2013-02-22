@@ -13,6 +13,7 @@ import net.minecraft.world.World;
 import powercraft.management.PC_Block;
 import powercraft.management.PC_Utils;
 import powercraft.management.PC_VecI;
+import powercraft.management.annotation.PC_BlockInfo;
 
 public abstract class PCtr_BlockBeltBase extends PC_Block
 {

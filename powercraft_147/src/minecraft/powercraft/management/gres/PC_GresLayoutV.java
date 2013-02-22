@@ -1,11 +1,7 @@
 package powercraft.management.gres;
 
-import java.util.List;
-
 import powercraft.management.PC_RectI;
 import powercraft.management.PC_VecI;
-
-import net.minecraft.inventory.Slot;
 
 
 

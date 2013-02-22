@@ -3,6 +3,7 @@ package powercraft.teleport;
 import java.util.List;
 
 import net.minecraft.block.Block;
+import net.minecraft.entity.Entity;
 import net.minecraft.item.Item;
 import powercraft.management.PC_Block;
 import powercraft.management.PC_IDataHandler;
@@ -12,14 +13,16 @@ import powercraft.management.PC_IPacketHandler;
 import powercraft.management.PC_ItemStack;
 import powercraft.management.PC_Property;
 import powercraft.management.PC_Struct2;
-import powercraft.management.PC_Utils.ModuleInfo;
-import powercraft.management.PC_Utils.ModuleLoader;
+import powercraft.management.annotation.PC_FieldObject;
+import powercraft.management.recipes.PC_IRecipe;
 import powercraft.management.recipes.PC_ShapedRecipes;
+import powercraft.management.registry.PC_BlockRegistry;
 
 public class PCtp_App implements PC_IModule {
 
 	public static PCtp_TeleporterManager teleporterManager = new PCtp_TeleporterManager();
 	
+	@PC_FieldObject(clazz=PCtp_BlockTeleporter.class)
 	public static PC_Block teleporter;
 	
 	@Override
@@ -47,24 +50,18 @@ public class PCtp_App implements PC_IModule {
 	}
 
 	@Override
-	public void initBlocks() {
-		teleporter = ModuleLoader.register(this, PCtp_BlockTeleporter.class, PCtp_TileEntityTeleporter.class);
+	public List<Class<? extends Entity>> initEntities(List<Class<? extends Entity>> entities) {
+		return null;
 	}
 
 	@Override
-	public void initItems() {}
-
-	@Override
-	public void initEntities() {}
-
-	@Override
-	public List<Object> initRecipes(List<Object> recipes) {
+	public List<PC_IRecipe> initRecipes(List<PC_IRecipe> recipes) {
 		PC_ItemStack prism;
 		
-		int prismId = ModuleInfo.getPCObjectIDByName("PCli_BlockPrism");
+		Block bprism = PC_BlockRegistry.getPCBlockByName("PCli_BlockPrism");
 		
-		if(prismId!=0){
-			prism = new PC_ItemStack(Item.itemsList[prismId]);
+		if(bprism==null){
+			prism = new PC_ItemStack(bprism);
 		}else{
 			prism = new PC_ItemStack(Block.glass);
 		}

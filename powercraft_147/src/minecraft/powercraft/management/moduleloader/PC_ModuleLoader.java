@@ -13,9 +13,8 @@ import java.util.zip.ZipFile;
 import powercraft.management.PC_IClientModule;
 import powercraft.management.PC_IModule;
 import powercraft.management.PC_Logger;
-import powercraft.management.PC_Utils;
 import powercraft.management.PC_Utils.GameInfo;
-import powercraft.management.PC_Utils.ModuleLoader;
+import powercraft.management.registry.PC_ModuleRegistry;
 
 public class PC_ModuleLoader{
 	
@@ -90,7 +89,7 @@ public class PC_ModuleLoader{
 				Class<?> c = new PC_ModuleClassLoader(ci.getClassName(), b).getCreateClass();
 				try {
 					PC_IModule module;
-					ModuleLoader.registerModule(module = (PC_IModule)c.newInstance());
+					PC_ModuleRegistry.registerModule(module = (PC_IModule)c.newInstance());
 					PC_Logger.info("Module \""+module.getName()+"\" have been loaded");
 				} catch (Throwable e) {
 					PC_Logger.severe("Error on Loading Module \""+ci.getClassName()+"\"");

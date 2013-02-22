@@ -6,9 +6,9 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import powercraft.management.PC_ItemBlock;
 import powercraft.management.PC_MathHelper;
-import powercraft.management.PC_Struct3;
 import powercraft.management.PC_Utils;
 import powercraft.management.PC_Utils.Lang;
+import powercraft.management.registry.PC_LangRegistry.LangEntry;
 
 public class PClo_ItemBlockDelayer extends PC_ItemBlock
 {
@@ -69,9 +69,9 @@ public class PClo_ItemBlockDelayer extends PC_ItemBlock
 	public Object msg(int msg, Object... obj) {
 		switch(msg){
 		case PC_Utils.MSG_DEFAULT_NAME:
-			List<PC_Struct3<String, String, String[]>> names = (List<PC_Struct3<String, String, String[]>>)obj[0];
-			names.add(new PC_Struct3<String, String, String[]>(getItemName() + ".delayer0", "buffered delayer", null));
-            names.add(new PC_Struct3<String, String, String[]>(getItemName() + ".delayer1", "delayed repeater", null));
+			List<LangEntry> names = (List<LangEntry>)obj[0];
+			names.add(new LangEntry(getItemName() + ".delayer0", "buffered delayer"));
+            names.add(new LangEntry(getItemName() + ".delayer1", "delayed repeater"));
             return names;
 		}
 		return null;

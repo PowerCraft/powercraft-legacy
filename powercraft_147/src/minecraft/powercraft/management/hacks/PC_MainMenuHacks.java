@@ -14,9 +14,8 @@ import powercraft.management.PC_ClientUtils;
 import powercraft.management.PC_GlobalVariables;
 import powercraft.management.PC_Logger;
 import powercraft.management.PC_OverlayRenderer;
-import powercraft.management.PC_Utils;
-import powercraft.management.PC_Utils.Gres;
-import powercraft.management.PC_Utils.ValueWriting;
+import powercraft.management.reflect.PC_ReflectHelper;
+import powercraft.management.registry.PC_GresRegistry;
 import cpw.mods.fml.common.ITickHandler;
 import cpw.mods.fml.common.TickType;
 
@@ -42,7 +41,7 @@ public class PC_MainMenuHacks implements ITickHandler {
 		PC_Logger.finest("Hacking main menu splashes");
 		if (rand.nextInt(2) == 0) {
 			try {
-				ValueWriting.setPrivateValue(GuiMainMenu.class, gui, 2, getRandomSplash());
+				PC_ReflectHelper.setValue(GuiMainMenu.class, gui, 2, getRandomSplash());
 			} catch (Throwable t) {}
 		}
 	}
@@ -63,7 +62,7 @@ public class PC_MainMenuHacks implements ITickHandler {
 			if(PC_GlobalVariables.hackSplashes)
 				hackSplashes((GuiMainMenu)gs);
 			if(PC_GlobalVariables.showUpdateWindow && !updateWindowShowed){
-				Gres.openGres("UpdateNotification", null, null, gs);
+				PC_GresRegistry.openGres("UpdateNotification", null, null, gs);
 				updateWindowShowed = true;
 			}
 		}
@@ -80,13 +79,13 @@ public class PC_MainMenuHacks implements ITickHandler {
 		}
 		MinecraftServer mcs = mc.getIntegratedServer();
 		if(mcs!=null){
-			if(!(ValueWriting.getPrivateValue(MinecraftServer.class, mcs, 2) instanceof PC_HackedSaveConverter)){
-				File file = (File)ValueWriting.getPrivateValue(MinecraftServer.class, mcs, 4);
+			if(!(PC_ReflectHelper.getValue(MinecraftServer.class, mcs, 2) instanceof PC_HackedSaveConverter)){
+				File file = (File)PC_ReflectHelper.getValue(MinecraftServer.class, mcs, 4);
 				PC_HackedSaveConverter saveConverter = new PC_HackedSaveConverter(file); 
-				ValueWriting.setPrivateValue(MinecraftServer.class, mcs, 2, saveConverter);
+				PC_ReflectHelper.setValue(MinecraftServer.class, mcs, 2, saveConverter);
 				ISaveHandler saveHandler = saveConverter.getSaveLoader(mcs.getFolderName(), true);
 				for(World world:mcs.worldServers){
-					ValueWriting.setPrivateValue(World.class, world, 25, saveHandler);
+					PC_ReflectHelper.setValue(World.class, world, 25, saveHandler);
 				}
 			}
 		}

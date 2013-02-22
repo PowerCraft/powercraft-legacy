@@ -3,8 +3,7 @@ package powercraft.management.moduleloader;
 import java.util.HashMap;
 import java.util.Map;
 
-import powercraft.management.PC_Utils;
-import powercraft.management.PC_Utils.ValueWriting;
+import powercraft.management.reflect.PC_ReflectHelper;
 import cpw.mods.fml.relauncher.RelaunchClassLoader;
 
 public class PC_ModuleClassLoader extends ClassLoader {
@@ -18,7 +17,7 @@ public class PC_ModuleClassLoader extends ClassLoader {
 		super(cl);
 		className = name;
 		c = registerClass(name, data);
-		Map<String, Class> m = (Map<String, Class>)ValueWriting.getPrivateValue(RelaunchClassLoader.class, cl, 3);
+		Map<String, Class> m = (Map<String, Class>)PC_ReflectHelper.getValue(RelaunchClassLoader.class, cl, 3);
 		m.put(className, c);
 	}
 

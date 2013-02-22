@@ -21,8 +21,10 @@ import powercraft.management.PC_Utils.GameInfo;
 import powercraft.management.PC_Utils.Gres;
 import powercraft.management.PC_Utils.Inventory;
 import powercraft.management.PC_Utils.Lang;
+import powercraft.management.annotation.PC_BlockInfo;
 import powercraft.management.PC_VecI;
 
+@PC_BlockInfo(tileEntity=PCcp_TileEntityCheckpoint.class)
 public class PCcp_BlockCheckpoint extends PC_Block implements PC_IItemInfo {
 	
 	public PCcp_BlockCheckpoint(int id) {

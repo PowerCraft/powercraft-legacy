@@ -23,8 +23,8 @@ import org.xml.sax.SAXException;
 import org.xml.sax.SAXParseException;
 
 import powercraft.management.PC_Utils.GameInfo;
-import powercraft.management.PC_Utils.Lang;
-import powercraft.management.PC_Utils.ModuleInfo;
+import powercraft.management.registry.PC_LangRegistry;
+import powercraft.management.registry.PC_ModuleRegistry;
 
 public class PC_UpdateManager {
 
@@ -167,7 +167,7 @@ public class PC_UpdateManager {
 	            PC_Logger.fine("Language pack updated.\n\n");
 	            PC_GlobalVariables.config.setInt("modules."+module.getName()+".langVersion", langVersion);
 	            PC_GlobalVariables.saveConfig();
-	            Lang.loadLanguage(module);
+	            PC_LangRegistry.loadLanguage(module);
 	        }
 	        catch (Exception e)
 	        {
@@ -211,7 +211,7 @@ public class PC_UpdateManager {
                     String sLangVersion = element.getAttribute("langVersion");
                     String sLangLink = element.getAttribute("langLink");
                     String sInfo = element.getTextContent();
-                    PC_IModule module = ModuleInfo.getModule(sModule);
+                    PC_IModule module = PC_ModuleRegistry.getModule(sModule);
 
                     if (module != null)
                     {

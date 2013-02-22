@@ -3,7 +3,7 @@ package powercraft.management;
 import java.util.ArrayList;
 import java.util.List;
 
-import powercraft.management.PC_Utils.MSG;
+import powercraft.management.registry.PC_MSGRegistry;
 
 public class PC_ThreadManager implements PC_IMSG {
 
@@ -20,8 +20,8 @@ public class PC_ThreadManager implements PC_IMSG {
 		if(hasInit)
 			return;
 		hasInit = true;
-		int numThreads = PC_GlobalVariables.config.getInt("threads.cound", 3, "Number of thread of PowerCraft");
-		MSG.registerMSGObject(new PC_ThreadManager());
+		int numThreads = PC_GlobalVariables.config.getInt("threads.count", 3, "Number of thread of PowerCraft");
+		PC_MSGRegistry.registerMSGObject(new PC_ThreadManager());
 		threads = new PC_WorkerThread[numThreads];
 		for(int i=0; i<numThreads; i++){
 			threads[i] = new PC_WorkerThread();
@@ -82,7 +82,7 @@ public class PC_ThreadManager implements PC_IMSG {
 	
 	@Override
 	public Object msg(int msg, Object... obj) {
-		if(msg==PC_Utils.MSG_TICK_EVENT){
+		if(msg==PC_MSGRegistry.MSG_TICK_EVENT){
 			tick();
 		}
 		return null;

@@ -3,8 +3,8 @@ package powercraft.deco;
 import java.util.List;
 
 import net.minecraft.block.Block;
+import net.minecraft.entity.Entity;
 import net.minecraft.item.Item;
-import net.minecraft.item.crafting.IRecipe;
 import powercraft.management.PC_Block;
 import powercraft.management.PC_IDataHandler;
 import powercraft.management.PC_IMSG;
@@ -13,16 +13,22 @@ import powercraft.management.PC_IPacketHandler;
 import powercraft.management.PC_ItemStack;
 import powercraft.management.PC_Property;
 import powercraft.management.PC_Struct2;
-import powercraft.management.PC_Utils.ModuleLoader;
+import powercraft.management.annotation.PC_FieldObject;
+import powercraft.management.recipes.PC_IRecipe;
 import powercraft.management.recipes.PC_ShapedRecipes;
 import powercraft.management.recipes.PC_ShapelessRecipes;
 
 public class PCde_App implements PC_IModule {
 
+	@PC_FieldObject(clazz=PCde_BlockRedstoneStorage.class)
 	public static PC_Block redstoneStorage;
+	@PC_FieldObject(clazz=PCde_BlockIronFrame.class)
 	public static PC_Block ironFrame;
+	@PC_FieldObject(clazz=PCde_BlockChimney.class)
 	public static PC_Block chimney;
+	@PC_FieldObject(clazz=PCde_BlockPlatform.class)
 	public static PC_Block platform;
+	@PC_FieldObject(clazz=PCde_BlockStairs.class)
 	public static PC_Block stairs;
 
 	@Override
@@ -44,24 +50,15 @@ public class PCde_App implements PC_IModule {
 	
 	@Override
 	public void initProperties(PC_Property config) {}
-
-	@Override
-	public void initBlocks() {
-		redstoneStorage = ModuleLoader.register(this, PCde_BlockRedstoneStorage.class);
-		ironFrame = ModuleLoader.register(this, PCde_BlockIronFrame.class, PCde_TileEntityIronFrame.class);
-		chimney = ModuleLoader.register(this, PCde_BlockChimney.class, PCde_ItemBlockChimney.class, PCde_TileEntityChimney.class);
-		platform = ModuleLoader.register(this, PCde_BlockPlatform.class, PCde_ItemBlockPlatform.class, PCde_TileEntityPlatform.class);
-		stairs = ModuleLoader.register(this, PCde_BlockStairs.class, PCde_ItemBlockStairs.class, PCde_TileEntityStairs.class);
-	}
-
-	@Override
-	public void initItems() {}
-
-	@Override
-	public void initEntities() {}
 	
 	@Override
-	public List<Object> initRecipes(List<Object> recipes) {
+	public List<Class<? extends Entity>> initEntities(
+			List<Class<? extends Entity>> entities) {
+		return null;
+	}
+	
+	@Override
+	public List<PC_IRecipe> initRecipes(List<PC_IRecipe> recipes) {
 		recipes.add(new PC_ShapedRecipes(new PC_ItemStack(ironFrame, 32, 0),
 					"XXX", 
 					"X X", 

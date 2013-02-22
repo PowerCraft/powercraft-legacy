@@ -13,6 +13,7 @@ import powercraft.management.PC_Block;
 import powercraft.management.PC_IItemInfo;
 import powercraft.management.PC_Utils;
 import powercraft.management.PC_VecI;
+import powercraft.management.annotation.PC_BlockInfo;
 
 public class PCde_BlockRedstoneStorage extends PC_Block implements PC_IItemInfo {
 	private boolean wiresProvidePower = true;

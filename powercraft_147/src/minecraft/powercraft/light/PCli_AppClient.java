@@ -4,28 +4,27 @@ import java.util.List;
 
 import net.minecraft.client.renderer.entity.Render;
 import net.minecraft.entity.Entity;
-
 import powercraft.management.PC_IClientModule;
-import powercraft.management.PC_LangEntry;
 import powercraft.management.PC_Struct2;
-import powercraft.management.PC_Utils.ModuleInfo;
+import powercraft.management.registry.PC_LangRegistry.LangEntry;
+import powercraft.management.registry.PC_TextureRegistry;
 
 public class PCli_AppClient extends PCli_App implements PC_IClientModule {
 
 	@Override
     public List<String> loadTextureFiles(List<String> textures)
     {
-        textures.add(ModuleInfo.getTerrainFile(this));
-        textures.add(ModuleInfo.getTextureDirectory(this) + "block_light.png");
-        textures.add(ModuleInfo.getTextureDirectory(this) + "mirror.png");
+        textures.add(PC_TextureRegistry.getTerrainFile(this));
+        textures.add(PC_TextureRegistry.getTextureDirectory(this) + "block_light.png");
+        textures.add(PC_TextureRegistry.getTextureDirectory(this) + "mirror.png");
         return textures;
     }
 	
 	@Override
-	public List<PC_LangEntry> initLanguage(List<PC_LangEntry> lang) {
-		lang.add(new PC_LangEntry("pc.gui.light.isHuge", "is Huge"));
-		lang.add(new PC_LangEntry("pc.gui.light.isStable", "is Stable"));
-		lang.add(new PC_LangEntry("pc.damage.laser", "%s wanted to know his reflexivity"));
+	public List<LangEntry> initLanguage(List<LangEntry> lang) {
+		lang.add(new LangEntry("pc.gui.light.isHuge", "is Huge"));
+		lang.add(new LangEntry("pc.gui.light.isStable", "is Stable"));
+		lang.add(new LangEntry("pc.damage.laser", "%s wanted to know his reflexivity"));
 		return lang;
 	}
 

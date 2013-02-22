@@ -18,8 +18,10 @@ import powercraft.management.PC_Renderer;
 import powercraft.management.PC_Utils;
 import powercraft.management.PC_Utils.GameInfo;
 import powercraft.management.PC_Utils.ValueWriting;
+import powercraft.management.annotation.PC_BlockInfo;
 import powercraft.management.PC_VecI;
 
+@PC_BlockInfo(itemBlock=PCde_ItemBlockStairs.class, tileEntity=PCde_TileEntityStairs.class)
 public class PCde_BlockStairs extends PC_Block {
 
 	public PCde_BlockStairs(int id) {

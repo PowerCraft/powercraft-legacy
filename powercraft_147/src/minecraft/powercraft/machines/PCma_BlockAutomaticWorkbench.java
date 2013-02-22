@@ -22,9 +22,11 @@ import powercraft.management.PC_Utils.GameInfo;
 import powercraft.management.PC_Utils.Gres;
 import powercraft.management.PC_Utils.Inventory;
 import powercraft.management.PC_Utils.ValueWriting;
+import powercraft.management.annotation.PC_BlockInfo;
 import powercraft.management.inventory.PC_ISpecialInventoryTextures;
 import powercraft.management.PC_VecI;
 
+@PC_BlockInfo(tileEntity=PCma_TileEntityAutomaticWorkbench.class)
 public class PCma_BlockAutomaticWorkbench extends PC_Block implements PC_ISpecialInventoryTextures, PC_IItemInfo
 {
     private static final int TXDOWN = 109, TXTOP = 154, TXSIDE = 138, TXFRONT = 106, TXBACK = 122;

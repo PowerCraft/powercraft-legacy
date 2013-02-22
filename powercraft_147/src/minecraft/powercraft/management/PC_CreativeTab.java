@@ -1,10 +1,8 @@
 package powercraft.management;
 
-import powercraft.management.PC_Utils.ModuleInfo;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.ItemStack;
+import powercraft.management.registry.PC_ItemRegistry;
 
 public class PC_CreativeTab extends CreativeTabs {
 
@@ -19,7 +17,7 @@ public class PC_CreativeTab extends CreativeTabs {
 
 	@Override
 	public ItemStack getIconItemStack() {
-		return new ItemStack(ModuleInfo.getPCItemByName("PCco_ItemActivator"));
+		return new ItemStack(PC_ItemRegistry.getPCItemByName("PCco_ItemActivator"));
 	}
 	
 }

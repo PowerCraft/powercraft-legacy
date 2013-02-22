@@ -10,11 +10,11 @@ import net.minecraft.world.World;
 import powercraft.management.PC_Block;
 import powercraft.management.PC_ItemBlock;
 import powercraft.management.PC_MathHelper;
-import powercraft.management.PC_Struct3;
 import powercraft.management.PC_Utils;
 import powercraft.management.PC_Utils.GameInfo;
 import powercraft.management.PC_Utils.ValueWriting;
 import powercraft.management.PC_VecI;
+import powercraft.management.registry.PC_LangRegistry.LangEntry;
 
 public class PCtr_ItemBlockConveyor extends PC_ItemBlock
 {
@@ -132,8 +132,8 @@ public class PCtr_ItemBlockConveyor extends PC_ItemBlock
 		switch(msg){
 		case PC_Utils.MSG_DEFAULT_NAME:
 			PC_Block b = (PC_Block)Block.blocksList[getBlockID()];
-			List<PC_Struct3<String, String, String[]>> names = (List<PC_Struct3<String, String, String[]>>)obj[0];
-			names.add(new PC_Struct3<String, String, String[]>(b.getBlockName(), (String)b.msg(PC_Utils.MSG_DEFAULT_NAME), null));
+			List<LangEntry> names = (List<LangEntry>)obj[0];
+			names.add(new LangEntry(b.getBlockName(), (String)b.msg(PC_Utils.MSG_DEFAULT_NAME)));
 			return names;
 		}
 		return null;

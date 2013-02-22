@@ -4,8 +4,8 @@ import java.util.List;
 
 import net.minecraft.item.ItemStack;
 import powercraft.management.PC_ItemBlock;
-import powercraft.management.PC_Struct3;
 import powercraft.management.PC_Utils;
+import powercraft.management.registry.PC_LangRegistry.LangEntry;
 
 public class PCtr_ItemBlockElevator extends PC_ItemBlock
 {
@@ -40,9 +40,9 @@ public class PCtr_ItemBlockElevator extends PC_ItemBlock
 	public Object msg(int msg, Object... obj) {
 		switch(msg){
 		case PC_Utils.MSG_DEFAULT_NAME:
-			List<PC_Struct3<String, String, String[]>> names = (List<PC_Struct3<String, String, String[]>>)obj[0];
-			names.add(new PC_Struct3<String, String, String[]>(getItemName() + ".up", "elevator up", null));
-			names.add(new PC_Struct3<String, String, String[]>(getItemName() + ".down", "elevator down", null));
+			List<LangEntry> names = (List<LangEntry>)obj[0];
+			names.add(new LangEntry(getItemName() + ".up", "elevator up"));
+			names.add(new LangEntry(getItemName() + ".down", "elevator down"));
             return names;
 		}
 		return null;

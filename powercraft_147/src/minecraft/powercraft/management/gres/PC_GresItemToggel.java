@@ -2,12 +2,11 @@ package powercraft.management.gres;
 
 import java.util.List;
 
+import net.minecraft.inventory.Slot;
+import net.minecraft.item.ItemStack;
 import powercraft.management.PC_Struct2;
 import powercraft.management.PC_VecI;
 import powercraft.management.inventory.PC_SlotNoPickup;
-
-import net.minecraft.inventory.Slot;
-import net.minecraft.item.ItemStack;
 
 public class PC_GresItemToggel extends PC_GresInventory {
 	

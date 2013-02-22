@@ -2,7 +2,6 @@ package powercraft.management.gres;
 
 import powercraft.management.PC_TileEntity;
 import powercraft.management.PC_VecI;
-import net.minecraft.inventory.Slot;
 
 
 public interface PC_IGresGui {

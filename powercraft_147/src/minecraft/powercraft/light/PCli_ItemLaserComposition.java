@@ -18,13 +18,13 @@ import powercraft.management.PC_Color;
 import powercraft.management.PC_GlobalVariables;
 import powercraft.management.PC_Item;
 import powercraft.management.PC_ItemStack;
-import powercraft.management.PC_Struct3;
 import powercraft.management.PC_Utils;
 import powercraft.management.PC_Utils.GameInfo;
 import powercraft.management.PC_Utils.Lang;
 import powercraft.management.PC_Utils.ModuleInfo;
 import powercraft.management.PC_Utils.ValueWriting;
 import powercraft.management.PC_VecI;
+import powercraft.management.registry.PC_LangRegistry.LangEntry;
 
 public class PCli_ItemLaserComposition extends PC_Item
 {
@@ -287,11 +287,11 @@ public class PCli_ItemLaserComposition extends PC_Item
 	public Object msg(int msg, Object... obj) {
 		switch(msg){
 		case PC_Utils.MSG_DEFAULT_NAME:
-			List<PC_Struct3<String, String, String[]>> names = (List<PC_Struct3<String, String, String[]>>)obj[0];
-			names.add(new PC_Struct3<String, String, String[]>(getItemName(), "Laser Composition", null));
-			names.add(new PC_Struct3<String, String, String[]>(getItemName() + ".kill", "Kill Level %s", null));
-			names.add(new PC_Struct3<String, String, String[]>( getItemName() + ".distance", "Distance Level %s", null));
-			names.add(new PC_Struct3<String, String, String[]>(getItemName() + ".sensor", "Sensor Level %s", null));;
+			List<LangEntry> names = (List<LangEntry>)obj[0];
+			names.add(new LangEntry(getItemName(), "Laser Composition"));
+			names.add(new LangEntry(getItemName() + ".kill", "Kill Level %s"));
+			names.add(new LangEntry( getItemName() + ".distance", "Distance Level %s"));
+			names.add(new LangEntry(getItemName() + ".sensor", "Sensor Level %s"));;
             return names;
 		}
 		return null;

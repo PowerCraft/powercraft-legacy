@@ -2,27 +2,20 @@ package powercraft.hologram;
 
 import java.util.List;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
-
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.InventoryCrafting;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
-import powercraft.logic.PClo_GateType;
 import powercraft.management.PC_ItemBlock;
-import powercraft.management.PC_MathHelper;
-import powercraft.management.PC_Struct3;
 import powercraft.management.PC_TileEntity;
 import powercraft.management.PC_Utils;
 import powercraft.management.PC_Utils.GameInfo;
 import powercraft.management.PC_Utils.Lang;
-import powercraft.management.PC_Utils.ModuleInfo;
 import powercraft.management.PC_Utils.ValueWriting;
+import powercraft.management.registry.PC_LangRegistry.LangEntry;
 
 public class PChg_ItemBlockHologramBlock extends PC_ItemBlock {
 
@@ -114,9 +107,9 @@ public class PChg_ItemBlockHologramBlock extends PC_ItemBlock {
 	public Object msg(int msg, Object... obj) {
 		switch(msg){
 		case PC_Utils.MSG_DEFAULT_NAME:
-			List<PC_Struct3<String, String, String[]>> names = (List<PC_Struct3<String, String, String[]>>)obj[0];
-			names.add(new PC_Struct3<String, String, String[]>(getItemName(), "Hologramblock", null));
-			names.add(new PC_Struct3<String, String, String[]>(getItemName()+".desc", "Contains: %s", null));
+			List<LangEntry> names = (List<LangEntry>)obj[0];
+			names.add(new LangEntry(getItemName(), "Hologramblock"));
+			names.add(new LangEntry(getItemName()+".desc", "Contains: %s"));
 			return names;
 		case PC_Utils.MSG_DONT_SHOW_IN_CRAFTING_TOOL:
 			return true;

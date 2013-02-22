@@ -1,21 +1,19 @@
 package powercraft.management.nei;
 
 import java.util.List;
-
-import net.minecraft.block.Block;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemBlock;
+import java.util.TreeMap;
 
 import powercraft.management.PC_Block;
 import powercraft.management.PC_IMSG;
+import powercraft.management.PC_Item;
+import powercraft.management.PC_ItemArmor;
 import powercraft.management.PC_Logger;
-import powercraft.management.PC_Shining;
-import powercraft.management.PC_Utils;
-import powercraft.management.PC_Utils.MSG;
-import powercraft.management.PC_Utils.ModuleLoader;
-import powercraft.management.PC_Utils.ValueWriting;
 import powercraft.management.mod_PowerCraft;
-import powercraft.management.PC_Utils.ModuleInfo;
+import powercraft.management.annotation.PC_Shining;
+import powercraft.management.reflect.PC_ReflectHelper;
+import powercraft.management.registry.PC_BlockRegistry;
+import powercraft.management.registry.PC_ItemRegistry;
+import powercraft.management.registry.PC_MSGRegistry;
 import codechicken.nei.ItemList;
 import codechicken.nei.api.API;
 import codechicken.nei.api.IConfigureNEI;
@@ -24,7 +22,7 @@ import codechicken.nei.api.ItemInfo;
 public class NEIPowerCraftConfig implements IConfigureNEI, PC_IMSG {
 
 	public NEIPowerCraftConfig(){
-		 MSG.registerMSGObject(this);
+		 PC_MSGRegistry.registerMSGObject(this);
 	}
 	
 	@Override
@@ -57,34 +55,46 @@ public class NEIPowerCraftConfig implements IConfigureNEI, PC_IMSG {
 	}
 
 	private void registerNEIItems(){
-		List<Object> objs = ModuleInfo.getRegisterdObjects();
 		
-		for(Object obj:objs){
-			
-			if(obj instanceof PC_IMSG){
-				Object msg = ((PC_IMSG) obj).msg(PC_Utils.MSG_DONT_SHOW_IN_CRAFTING_TOOL);
-				int id=0;
-				if (obj instanceof Item){
-					id = ((Item)obj).itemID;
-				}else if (obj instanceof Block){
-		        	id = ((Block)obj).blockID;
-		        	if(obj.getClass().isAnnotationPresent(PC_Shining.class)){
-		        		Object[] o = ValueWriting.getFieldsWithAnnotation(obj.getClass(), PC_Shining.OFF.class, obj);
-		        		for(int i=0; i<o.length; i++){
-		        			if(o[i]==obj){
-		        				msg = true;
-		        			}
-		        		}
-		        	}
-		        }
-				if(msg instanceof Boolean && (Boolean)msg){
-					API.hideItem(id);
-				}else{
-					ItemInfo.excludeIds.remove(Integer.valueOf(id));
-				}
+		TreeMap<String, PC_Block> blocks = PC_BlockRegistry.getPCBlocks();
+		TreeMap<String, PC_Item> items = PC_ItemRegistry.getPCItems();
+		TreeMap<String, PC_ItemArmor> itemArmors = PC_ItemRegistry.getPCItemArmors();
+		
+		for(PC_Block block:blocks.values()){
+			Object o = block.msg(PC_MSGRegistry.MSG_DONT_SHOW_IN_CRAFTING_TOOL);
+	        if(block.getClass().isAnnotationPresent(PC_Shining.class)){
+	        	List<Object> fields = PC_ReflectHelper.getFieldsWithAnnotation(block.getClass(), block, PC_Shining.OFF.class);
+	        	for(Object obj:fields){
+	        		if(obj==block){
+	        			o = true;
+	        		}
+	        	}
+	        }
+			if(o instanceof Boolean && (Boolean)o){
+				API.hideItem(block.blockID);
+			}else{
+				ItemInfo.excludeIds.remove(Integer.valueOf(block.blockID));
 			}
-			
 		}
+		
+		for(PC_Item item:items.values()){
+			Object o = item.msg(PC_MSGRegistry.MSG_DONT_SHOW_IN_CRAFTING_TOOL);
+			if(o instanceof Boolean && (Boolean)o){
+				API.hideItem(item.itemID);
+			}else{
+				ItemInfo.excludeIds.remove(Integer.valueOf(item.itemID));
+			}
+		}
+		
+		for(PC_ItemArmor itemArmor:itemArmors.values()){
+			Object o = itemArmor.msg(PC_MSGRegistry.MSG_DONT_SHOW_IN_CRAFTING_TOOL);
+			if(o instanceof Boolean && (Boolean)o){
+				API.hideItem(itemArmor.itemID);
+			}else{
+				ItemInfo.excludeIds.remove(Integer.valueOf(itemArmor.itemID));
+			}
+		}
+		
 		
 		System.out.println("Reload NEI items");
 		
@@ -94,7 +104,7 @@ public class NEIPowerCraftConfig implements IConfigureNEI, PC_IMSG {
 	
 	@Override
 	public Object msg(int msg, Object... obj) {
-		if(msg==PC_Utils.MSG_LOAD_WORLD){
+		if(msg==PC_MSGRegistry.MSG_LOAD_WORLD){
 			registerNEIItems();
 		}
 		return null;

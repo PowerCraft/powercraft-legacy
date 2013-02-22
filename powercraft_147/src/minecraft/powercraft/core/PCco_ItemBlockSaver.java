@@ -10,11 +10,11 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 import powercraft.management.PC_Item;
-import powercraft.management.PC_Struct3;
 import powercraft.management.PC_Utils;
 import powercraft.management.PC_Utils.GameInfo;
 import powercraft.management.PC_Utils.ValueWriting;
 import powercraft.management.PC_VecI;
+import powercraft.management.registry.PC_LangRegistry.LangEntry;
 
 public class PCco_ItemBlockSaver extends PC_Item {
 
@@ -153,8 +153,8 @@ public class PCco_ItemBlockSaver extends PC_Item {
 	public Object msg(int msg, Object... obj) {
 		switch(msg){
 		case PC_Utils.MSG_DEFAULT_NAME:
-			List<PC_Struct3<String, String, String[]>> names = (List<PC_Struct3<String, String, String[]>>)obj[0];
-			names.add(new PC_Struct3<String, String, String[]>(getItemName(), "Block Saver", null));
+			List<LangEntry> names = (List<LangEntry>)obj[0];
+			names.add(new LangEntry(getItemName(), "Block Saver"));
             return names;
 		case PC_Utils.MSG_DONT_SHOW_IN_CRAFTING_TOOL:
 			return true;

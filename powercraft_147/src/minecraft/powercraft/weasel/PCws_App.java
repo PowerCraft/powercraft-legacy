@@ -3,11 +3,8 @@ package powercraft.weasel;
 import java.util.List;
 
 import net.minecraft.block.Block;
+import net.minecraft.entity.Entity;
 import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.crafting.FurnaceRecipes;
-import net.minecraft.item.crafting.IRecipe;
-import net.minecraft.src.ModLoader;
 import powercraft.management.PC_Block;
 import powercraft.management.PC_IDataHandler;
 import powercraft.management.PC_IMSG;
@@ -15,23 +12,28 @@ import powercraft.management.PC_IModule;
 import powercraft.management.PC_IPacketHandler;
 import powercraft.management.PC_Item;
 import powercraft.management.PC_ItemStack;
-import powercraft.management.PC_PacketHandler;
 import powercraft.management.PC_Property;
 import powercraft.management.PC_Struct2;
-import powercraft.management.PC_Utils.ModuleInfo;
-import powercraft.management.PC_Utils.ModuleLoader;
+import powercraft.management.annotation.PC_FieldObject;
+import powercraft.management.recipes.PC_IRecipe;
 import powercraft.management.recipes.PC_ShapedRecipes;
+import powercraft.management.registry.PC_BlockRegistry;
 
 public class PCws_App implements PC_IModule {
 
 	public static PCws_WeaselManager weaselManager = new PCws_WeaselManager();
 	
+	@PC_FieldObject(clazz=PCws_BlockWeasel.class)
 	public static PC_Block weasel;
+	@PC_FieldObject(clazz=PCws_BlockWeaselDiskManager.class)
 	public static PC_Block weaselDiskManager;
+	@PC_FieldObject(clazz=PCws_BlockSilicon.class)
 	public static PC_Block silicon;
-	
+	@PC_FieldObject(clazz=PCws_ItemWeaselDisk.class)
 	public static PC_Item weaselDisk;
+	@PC_FieldObject(clazz=PCws_ItemTransistor.class)
 	public static PC_Item weaselTransistor;
+	@PC_FieldObject(clazz=PCws_ItemSilicon.class)
 	public static PC_Item ingotSilicon;
 	
 	@Override
@@ -67,24 +69,12 @@ public class PCws_App implements PC_IModule {
 	}
 
 	@Override
-	public void initBlocks() {
-		weasel = ModuleLoader.register(this, PCws_BlockWeasel.class, PCws_ItemBlockWeasel.class, PCws_TileEntityWeasel.class);
-		weaselDiskManager = ModuleLoader.register(this, PCws_BlockWeaselDiskManager.class, PCws_TileEntityWeaselDiskManager.class);
-		silicon = ModuleLoader.register(this, PCws_BlockSilicon.class);
+	public List<Class<? extends Entity>> initEntities(List<Class<? extends Entity>> entities) {
+		return null;
 	}
 
 	@Override
-	public void initItems() {
-		weaselDisk = ModuleLoader.register(this, PCws_ItemWeaselDisk.class);
-		weaselTransistor = ModuleLoader.register(this, PCws_ItemTransistor.class);
-		ingotSilicon = ModuleLoader.register(this, PCws_ItemSilicon.class);
-	}
-
-	@Override
-	public void initEntities() {}
-
-	@Override
-	public List<Object> initRecipes(List<Object> recipes) {
+	public List<PC_IRecipe> initRecipes(List<PC_IRecipe> recipes) {
 		
 		recipes.add(new PC_ShapedRecipes(new PC_ItemStack(weaselTransistor, 2),
 				"UUU",
@@ -95,7 +85,7 @@ public class PCws_App implements PC_IModule {
 				"TPT ", 
 				"RCR", 
 				"SSS",
-					'S', new PC_ItemStack(Block.stoneSingleSlab,1,0), 'R', Item.redstone, 'C', new PC_ItemStack(ModuleInfo.getPCBlockByName("PCco_BlockPowerCrystal"),1,-1),
+					'S', new PC_ItemStack(Block.stoneSingleSlab,1,0), 'R', Item.redstone, 'C', new PC_ItemStack(PC_BlockRegistry.getPCBlockByName("PCco_BlockPowerCrystal"),1,-1),
 					'T', new PC_ItemStack(weaselTransistor,1,0), 'P', new PC_ItemStack(weasel,1,1)));
 		
 		recipes.add(new PC_ShapedRecipes(new PC_ItemStack(weasel, 1, 1),

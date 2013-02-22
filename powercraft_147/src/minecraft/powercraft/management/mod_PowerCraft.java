@@ -5,21 +5,31 @@ import java.util.ArrayList;
 import java.util.List;
 
 import net.minecraft.block.Block;
-import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.entity.Entity;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
-import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.tileentity.TileEntity;
 import powercraft.management.PC_Utils.GameInfo;
-import powercraft.management.PC_Utils.Gres;
-import powercraft.management.PC_Utils.Lang;
-import powercraft.management.PC_Utils.MSG;
-import powercraft.management.PC_Utils.ModuleInfo;
 import powercraft.management.PC_Utils.ModuleLoader;
 import powercraft.management.PC_Utils.SaveHandler;
-import powercraft.management.PC_Utils.ValueWriting;
+import powercraft.management.annotation.PC_FieldObject;
 import powercraft.management.moduleloader.PC_ModuleLoader;
-import powercraft.management.recipes.PC_3DRecipe;
-import powercraft.management.recipes.PC_3DRecipeManager;
+import powercraft.management.recipes.PC_IRecipe;
+import powercraft.management.reflect.PC_FieldWithAnnotation;
+import powercraft.management.reflect.PC_IFieldAnnotationIterator;
+import powercraft.management.reflect.PC_ReflectHelper;
+import powercraft.management.registry.PC_BlockRegistry;
+import powercraft.management.registry.PC_DataHandlerRegistry;
+import powercraft.management.registry.PC_EntityRegistry;
+import powercraft.management.registry.PC_GresRegistry;
+import powercraft.management.registry.PC_ItemRegistry;
+import powercraft.management.registry.PC_KeyRegistry;
+import powercraft.management.registry.PC_LangRegistry;
+import powercraft.management.registry.PC_LangRegistry.LangEntry;
+import powercraft.management.registry.PC_MSGRegistry;
+import powercraft.management.registry.PC_ModuleRegistry;
+import powercraft.management.registry.PC_RecipeRegistry;
+import powercraft.management.registry.PC_TextureRegistry;
 import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.Init;
@@ -78,23 +88,23 @@ public class mod_PowerCraft{
 		PC_UpdateManager.downloadUpdateInfo(updateInfoPath);
 		PC_Logger.exitSection();
 		PC_Logger.enterSection("Module PreInit");
-		List<PC_IModule> modules = ModuleInfo.getModules();
+		List<PC_IModule> modules = PC_ModuleRegistry.getModules();
 		for(PC_IModule module:modules){
 			module.preInit();
 		}
 		PC_Logger.exitSection();
 		PC_Logger.enterSection("Module Property Init");
 		for(PC_IModule module:modules){
-			module.initProperties(SaveHandler.getConfig(module));
+			module.initProperties(PC_ModuleRegistry.getConfig(module));
 		}
-		ValueWriting.setReverseKey(PC_GlobalVariables.config);
+		PC_KeyRegistry.setReverseKey(PC_GlobalVariables.config);
 		PC_Logger.exitSection();
 		if(PC_Utils.GameInfo.isClient()){
 			PC_Logger.enterSection("Module Language Init");
 			for(PC_IModule module:modules){
-				List<PC_LangEntry> l = ((PC_IClientModule) module).initLanguage(new ArrayList<PC_LangEntry>());
+				List<LangEntry> l = ((PC_IClientModule) module).initLanguage(new ArrayList<LangEntry>());
 				if(l!=null){
-					Lang.registerLanguage(module, l.toArray(new PC_LangEntry[0]));
+					PC_LangRegistry.registerLanguage(module, l.toArray(new LangEntry[0]));
 				}
 			}
 			PC_Logger.exitSection();
@@ -103,19 +113,19 @@ public class mod_PowerCraft{
 				if(module instanceof PC_IClientModule){
 					List<String> l = ((PC_IClientModule) module).loadTextureFiles(new ArrayList<String>());
 					if(l!=null){
-						ModuleLoader.registerTextureFiles(l.toArray(new String[0]));
+						PC_TextureRegistry.registerTextureFiles(l.toArray(new String[0]));
 					}
 				}
 			}
-			ModuleLoader.registerTextureFiles(ModuleInfo.getPowerCraftLoaderImageDir() + "PowerCraft.png");
-			ModuleLoader.registerTextureFiles(ModuleInfo.getPowerCraftLoaderImageDir() + "laser.png");
-			ModuleLoader.registerTextureFiles(ModuleInfo.getPowerCraftLoaderImageDir() + "fan.png");
+			PC_TextureRegistry.registerTextureFiles(PC_TextureRegistry.getPowerCraftLoaderImageDir() + "PowerCraft.png");
+			PC_TextureRegistry.registerTextureFiles(PC_TextureRegistry.getPowerCraftLoaderImageDir() + "laser.png");
+			PC_TextureRegistry.registerTextureFiles(PC_TextureRegistry.getPowerCraftLoaderImageDir() + "fan.png");
 			
-			ModuleLoader.registerTextureFiles(ModuleInfo.getGresImgDir() + "button.png");
-			ModuleLoader.registerTextureFiles(ModuleInfo.getGresImgDir() + "dialog.png");
-			ModuleLoader.registerTextureFiles(ModuleInfo.getGresImgDir() + "frame.png");
-			ModuleLoader.registerTextureFiles(ModuleInfo.getGresImgDir() + "scrollbar_handle.png");
-			ModuleLoader.registerTextureFiles(ModuleInfo.getGresImgDir() + "widgets.png");
+			PC_TextureRegistry.registerTextureFiles(PC_TextureRegistry.getGresImgDir() + "button.png");
+			PC_TextureRegistry.registerTextureFiles(PC_TextureRegistry.getGresImgDir() + "dialog.png");
+			PC_TextureRegistry.registerTextureFiles(PC_TextureRegistry.getGresImgDir() + "frame.png");
+			PC_TextureRegistry.registerTextureFiles(PC_TextureRegistry.getGresImgDir() + "scrollbar_handle.png");
+			PC_TextureRegistry.registerTextureFiles(PC_TextureRegistry.getGresImgDir() + "widgets.png");
 			
 			PC_Logger.exitSection();
 		}
@@ -128,7 +138,7 @@ public class mod_PowerCraft{
 		GameRegistry.registerWorldGenerator(new PC_WorldGenerator());
 		GameRegistry.registerFuelHandler(new PC_FuelHandler());
 		PC_ThreadManager.init();
-		List<PC_IModule> modules = ModuleInfo.getModules();
+		List<PC_IModule> modules = PC_ModuleRegistry.getModules();
 		proxy.init();
 		creativeTab = new PC_CreativeTab();
 		PC_Logger.enterSection("Module Init");
@@ -136,19 +146,39 @@ public class mod_PowerCraft{
 			module.init();
 		}
 		PC_Logger.exitSection();
-		PC_Logger.enterSection("Module Block Init");
+		PC_Logger.enterSection("Module Field Init");
 		for(PC_IModule module:modules){
-			module.initBlocks();
-		}
-		PC_Logger.exitSection();
-		PC_Logger.enterSection("Module Item Init");
-		for(PC_IModule module:modules){
-			module.initItems();
+			final PC_IModule m = module;
+			System.out.println(module);
+			PC_ReflectHelper.getAllFieldsWithAnnotation(module.getClass(), module, PC_FieldObject.class, new PC_IFieldAnnotationIterator<PC_FieldObject>(){
+
+				@Override
+				public boolean onFieldWithAnnotation(PC_FieldWithAnnotation<PC_FieldObject> fieldWithAnnotation) {
+					Class<?> clazz = fieldWithAnnotation.getAnnotation().clazz();
+					System.out.println(clazz);
+					if(PC_Block.class.isAssignableFrom(clazz)){
+						Object block = PC_BlockRegistry.register(m, (Class<? extends PC_Block>)clazz);
+						System.out.println(block);
+						fieldWithAnnotation.setValue(block);
+					}else if(PC_Item.class.isAssignableFrom(clazz) || PC_ItemArmor.class.isAssignableFrom(clazz)){
+						Object item = PC_ItemRegistry.register(m, (Class<? extends Item>)clazz);
+						System.out.println(item);
+						fieldWithAnnotation.setValue(item);
+					}
+					return false;
+				}
+				
+			});
 		}
 		PC_Logger.exitSection();
 		PC_Logger.enterSection("Module Entity Init");
 		for(PC_IModule module:modules){
-			module.initEntities();
+			List<Class<? extends Entity>> l = module.initEntities(new ArrayList<Class<? extends Entity>>());
+			if(l!=null){
+				for(Class<? extends Entity> entity:l){
+					PC_EntityRegistry.register(entity);
+				}
+			}
 		}
 		PC_Logger.exitSection();
 		PC_Logger.enterSection("Module Gui Init");
@@ -156,7 +186,7 @@ public class mod_PowerCraft{
 			List<PC_Struct2<String,Class>> l = module.registerGuis(new ArrayList<PC_Struct2<String,Class>>());
 			if(l!=null){
 				for(PC_Struct2<String,Class> g:l){
-					Gres.registerGres(g.a, g.b);
+					PC_GresRegistry.registerGres(g.a, g.b);
 				}
 			}
 		}
@@ -233,40 +263,36 @@ public class mod_PowerCraft{
 	public void postInit(FMLPostInitializationEvent event) {
 		PC_Logger.enterSection("PostInit");
 		PC_Logger.enterSection("Module Recipes Init");
-		List<PC_IModule> modules = ModuleInfo.getModules();
+		List<PC_IModule> modules = PC_ModuleRegistry.getModules();
 		for(PC_IModule module:modules){
-			List<Object> l = module.initRecipes(new ArrayList<Object>());
+			List<PC_IRecipe> l = module.initRecipes(new ArrayList<PC_IRecipe>());
 			if(l!=null){
 				for(Object recipe:l){
-					if(recipe instanceof IRecipe){
-						GameRegistry.addRecipe((IRecipe)recipe);
-					}else if(recipe instanceof PC_3DRecipe){
-						PC_3DRecipeManager.add3DRecipe((PC_3DRecipe)recipe);
-					}else{
-						PC_Logger.severe("Unknown recipe of type "+recipe.getClass().getSimpleName());
+					if(recipe instanceof PC_IRecipe){
+						PC_RecipeRegistry.register((PC_IRecipe)recipe);
 					}
 				}
 			}
 		}
 		PC_Logger.exitSection();
 		PC_Logger.enterSection("Module Data Handlers Init");
-		ModuleLoader.regsterDataHandler("chunckUpdateForcer", PC_ChunkUpdateForcer.getInstance());
+		PC_DataHandlerRegistry.regsterDataHandler("chunckUpdateForcer", PC_ChunkUpdateForcer.getInstance());
 		for(PC_IModule module:modules){
 			List<PC_Struct2<String, PC_IDataHandler>> l = module.initDataHandlers(new ArrayList<PC_Struct2<String, PC_IDataHandler>>());
 			if(l!=null){
 				for(PC_Struct2<String, PC_IDataHandler> dataHandler:l){
-					ModuleLoader.regsterDataHandler(dataHandler.a, dataHandler.b);
+					PC_DataHandlerRegistry.regsterDataHandler(dataHandler.a, dataHandler.b);
 				}
 			}
 		}
 		PC_Logger.exitSection();
 		PC_Logger.enterSection("Module MSG Objects Init");
-		MSG.registerMSGObject(PC_ChunkUpdateForcer.getInstance());
+		PC_MSGRegistry.registerMSGObject(PC_ChunkUpdateForcer.getInstance());
 		for(PC_IModule module:modules){
 			List<PC_IMSG> l = module.initMSGObjects(new ArrayList<PC_IMSG>());
 			if(l!=null){
 				for(PC_IMSG msgObject:l){
-					MSG.registerMSGObject(msgObject);
+					PC_MSGRegistry.registerMSGObject(msgObject);
 				}
 			}
 		}
@@ -289,7 +315,7 @@ public class mod_PowerCraft{
 		if(PC_Utils.GameInfo.isClient()){
 			PC_Logger.enterSection("Module Language Saving");
 			for(PC_IModule module:modules){
-				Lang.saveLanguage(module);
+				PC_LangRegistry.saveLanguage(module);
 			}
 			PC_Logger.exitSection();
 		}
@@ -330,7 +356,7 @@ public class mod_PowerCraft{
          mm.authorList.add("Rapus");
          mm.credits = "MightyPork, RxD, LOLerul2";
          mm.description = "";
-         mm.logoFile = ModuleInfo.getPowerCraftLoaderImageDir() + "PowerCraft.png";
+         mm.logoFile = PC_TextureRegistry.getPowerCraftLoaderImageDir() + "PowerCraft.png";
          mm.url = "http://powercrafting.net/";
     }
     

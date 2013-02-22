@@ -1,6 +1,5 @@
 package powercraft.management;
 
-import powercraft.management.PC_Utils.GameInfo;
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.client.renderer.Tessellator;

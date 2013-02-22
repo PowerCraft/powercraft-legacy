@@ -4,18 +4,17 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import net.minecraft.block.Block;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.inventory.InventoryCrafting;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import powercraft.management.PC_Utils.GameInfo;
-import powercraft.management.PC_Utils.ValueWriting;
+import powercraft.management.reflect.PC_ReflectHelper;
 import cpw.mods.fml.common.registry.GameData;
 import cpw.mods.fml.common.registry.ItemData;
 
-public abstract class PC_Item extends Item implements PC_IItemInfo, PC_IMSG
+public abstract class PC_Item extends Item implements PC_IItemInfo, PC_IMSG, PC_IIDChangeAble
 {
     private PC_IModule module;
     private boolean canSetTextureFile = true;
@@ -42,16 +41,17 @@ public abstract class PC_Item extends Item implements PC_IItemInfo, PC_IMSG
         setIconIndex(iconIndex);
 	}
     
-    public void setItemID(int id){
+    @Override
+    public void setID(int id){
     	int oldID = itemID;
-		Map<Integer, ItemData> map = (Map<Integer, ItemData>)ValueWriting.getPrivateValue(GameData.class, GameData.class, 0);
+		Map<Integer, ItemData> map = (Map<Integer, ItemData>)PC_ReflectHelper.getValue(GameData.class, GameData.class, 0);
 		ItemData thisItemData = map.get(oldID);
-		if(ValueWriting.setPrivateValue(Item.class, this, PC_GlobalVariables.indexItemSthiftedIndex, id)){
+		if(PC_ReflectHelper.setValue(Item.class, this, PC_GlobalVariables.indexItemSthiftedIndex, id)){
     		if(oldID!=-1){
     			if(replacedItemData==null){
     				map.remove(oldID);
     			}else{
-    				ValueWriting.setPrivateValue(ItemData.class, replacedItemData, 3, oldID);
+    				PC_ReflectHelper.setValue(ItemData.class, replacedItemData, 3, oldID);
     				map.put(oldID, replacedItemData);
     			}
     			Item.itemsList[oldID] = replacedItem;
@@ -62,7 +62,7 @@ public abstract class PC_Item extends Item implements PC_IItemInfo, PC_IMSG
     			if(thisItemData==null){
     				map.remove(id);
     			}else{
-    				ValueWriting.setPrivateValue(ItemData.class, thisItemData, 3, id);
+    				PC_ReflectHelper.setValue(ItemData.class, thisItemData, 3, id);
     				map.put(id, thisItemData);
     			}
     			Item.itemsList[id] = this;

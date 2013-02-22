@@ -10,9 +10,9 @@ import net.minecraft.util.Direction;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
 import powercraft.management.PC_ItemBlock;
-import powercraft.management.PC_Struct3;
 import powercraft.management.PC_Utils;
 import powercraft.management.PC_Utils.GameInfo;
+import powercraft.management.registry.PC_LangRegistry.LangEntry;
 
 public class PCde_ItemBlockStairs extends PC_ItemBlock {
 
@@ -129,8 +129,8 @@ public class PCde_ItemBlockStairs extends PC_ItemBlock {
 	public Object msg(int msg, Object... obj) {
 		switch(msg){
 		case PC_Utils.MSG_DEFAULT_NAME:
-			List<PC_Struct3<String, String, String[]>> names = (List<PC_Struct3<String, String, String[]>>)obj[0];
-			names.add(new PC_Struct3<String, String, String[]>(getItemName(), "Stairs", null));
+			List<LangEntry> names = (List<LangEntry>)obj[0];
+			names.add(new LangEntry(getItemName(), "Stairs"));
             return names;
 		}
 		return null;

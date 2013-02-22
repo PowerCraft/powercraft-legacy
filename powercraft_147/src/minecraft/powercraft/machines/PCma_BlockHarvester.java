@@ -37,6 +37,7 @@ import powercraft.management.PC_Utils;
 import powercraft.management.PC_Utils.GameInfo;
 import powercraft.management.PC_Utils.Inventory;
 import powercraft.management.PC_Utils.ValueWriting;
+import powercraft.management.annotation.PC_BlockInfo;
 import powercraft.management.inventory.PC_ISpecialInventoryTextures;
 import powercraft.management.PC_VecI;
 

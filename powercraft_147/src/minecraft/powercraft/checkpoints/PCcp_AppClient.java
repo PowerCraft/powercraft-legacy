@@ -5,23 +5,23 @@ import java.util.List;
 import net.minecraft.client.renderer.entity.Render;
 import net.minecraft.entity.Entity;
 import powercraft.management.PC_IClientModule;
-import powercraft.management.PC_LangEntry;
 import powercraft.management.PC_Struct2;
-import powercraft.management.PC_Utils.ModuleInfo;
+import powercraft.management.registry.PC_LangRegistry.LangEntry;
+import powercraft.management.registry.PC_TextureRegistry;
 
 public class PCcp_AppClient extends PCcp_App implements PC_IClientModule {
 
 	@Override
-	public List<PC_LangEntry> initLanguage(List<PC_LangEntry> lang) {
-		lang.add(new PC_LangEntry("pc.checkpoint.setSpawn", "Set spawnpoint to %s"));
-		lang.add(new PC_LangEntry("pc.gui.checkpoint.title", "Checkpoint"));
-		lang.add(new PC_LangEntry("pc.gui.checkpoint.walkingtiggerd", "Walkingtiggerd"));
+	public List<LangEntry> initLanguage(List<LangEntry> lang) {
+		lang.add(new LangEntry("pc.checkpoint.setSpawn", "Set spawnpoint to %s"));
+		lang.add(new LangEntry("pc.gui.checkpoint.title", "Checkpoint"));
+		lang.add(new LangEntry("pc.gui.checkpoint.walkingtiggerd", "Walkingtiggerd"));
 		return lang;
 	}
 
 	@Override
 	public List<String> loadTextureFiles(List<String> textures) {
-		textures.add(ModuleInfo.getTerrainFile(this));
+		textures.add(PC_TextureRegistry.getTerrainFile(this));
 		return textures;
 	}
 

@@ -18,8 +18,10 @@ import powercraft.management.PC_TileEntity;
 import powercraft.management.PC_Utils;
 import powercraft.management.PC_Utils.GameInfo;
 import powercraft.management.PC_Utils.Gres;
+import powercraft.management.annotation.PC_BlockInfo;
 import powercraft.management.PC_VecI;
 
+@PC_BlockInfo(tileEntity=PCma_TileEntityRoaster.class)
 public class PCma_BlockRoaster extends PC_Block implements PC_IItemInfo
 {
     private static final int TXDOWN = 62, TXTOP = 61, TXSIDE = 46;

@@ -2,7 +2,6 @@ package powercraft.management.gres;
 
 import java.util.List;
 
-import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.client.renderer.entity.RenderItem;

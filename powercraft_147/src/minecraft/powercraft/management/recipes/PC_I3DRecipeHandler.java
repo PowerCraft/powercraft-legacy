@@ -1,9 +1,9 @@
 package powercraft.management.recipes;
 
-import powercraft.management.PC_Struct2;
-import powercraft.management.PC_VecI;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.world.World;
+import powercraft.management.PC_Struct2;
+import powercraft.management.PC_VecI;
 
 public interface PC_I3DRecipeHandler {
 

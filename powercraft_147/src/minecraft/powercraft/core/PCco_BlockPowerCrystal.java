@@ -21,8 +21,10 @@ import powercraft.management.PC_Renderer;
 import powercraft.management.PC_Utils;
 import powercraft.management.PC_Utils.GameInfo;
 import powercraft.management.PC_Utils.ValueWriting;
+import powercraft.management.annotation.PC_BlockInfo;
 import powercraft.management.PC_VecI;
 
+@PC_BlockInfo(itemBlock=PCco_ItemBlockPowerCrystal.class)
 public class PCco_BlockPowerCrystal extends PC_Block
 {
     public static boolean makeSound;

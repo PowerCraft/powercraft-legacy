@@ -5,9 +5,9 @@ import java.util.List;
 import net.minecraft.item.EnumArmorMaterial;
 import net.minecraft.item.ItemStack;
 import powercraft.management.PC_ItemArmor;
-import powercraft.management.PC_Struct3;
 import powercraft.management.PC_Utils;
 import powercraft.management.PC_Utils.ModuleInfo;
+import powercraft.management.registry.PC_LangRegistry.LangEntry;
 
 public class PCtr_ItemArmorStickyBoots extends PC_ItemArmor{
     
@@ -33,8 +33,8 @@ public class PCtr_ItemArmorStickyBoots extends PC_ItemArmor{
 	public Object msg(int msg, Object... obj) {
 		switch(msg){
 		case PC_Utils.MSG_DEFAULT_NAME:
-			List<PC_Struct3<String, String, String[]>> names = (List<PC_Struct3<String, String, String[]>>)obj[0];
-			names.add(new PC_Struct3<String, String, String[]>(getItemName(), "Sticky Iron Boots", null));
+			List<LangEntry> names = (List<LangEntry>)obj[0];
+			names.add(new LangEntry(getItemName(), "Sticky Iron Boots"));
             return names;
 		}
 		return null;

@@ -3,8 +3,8 @@ package powercraft.transport;
 import java.util.List;
 
 import net.minecraft.block.Block;
+import net.minecraft.entity.Entity;
 import net.minecraft.item.Item;
-import net.minecraft.item.crafting.IRecipe;
 import powercraft.management.PC_Block;
 import powercraft.management.PC_IDataHandler;
 import powercraft.management.PC_IMSG;
@@ -14,20 +14,31 @@ import powercraft.management.PC_ItemArmor;
 import powercraft.management.PC_ItemStack;
 import powercraft.management.PC_Property;
 import powercraft.management.PC_Struct2;
-import powercraft.management.PC_Utils.ModuleLoader;
+import powercraft.management.annotation.PC_FieldObject;
+import powercraft.management.recipes.PC_IRecipe;
 import powercraft.management.recipes.PC_ShapedRecipes;
 
 public class PCtr_App implements PC_IModule
 {
+	@PC_FieldObject(clazz = PCtr_BlockBeltNormal.class)
     public static PC_Block conveyorBelt;
+	@PC_FieldObject(clazz = PCtr_BlockBeltSpeedy.class)
     public static PC_Block speedyBelt;
+	@PC_FieldObject(clazz = PCtr_BlockBeltDetector.class)
     public static PC_Block detectionBelt;
+	@PC_FieldObject(clazz = PCtr_BlockBeltBreak.class)
     public static PC_Block breakBelt;
+	@PC_FieldObject(clazz = PCtr_BlockBeltRedirector.class)
     public static PC_Block redirectionBelt;
+	@PC_FieldObject(clazz = PCtr_BlockBeltSeparator.class)
     public static PC_Block separationBelt;
+	@PC_FieldObject(clazz = PCtr_BlockBeltEjector.class)
     public static PC_Block ejectionBelt;
+	@PC_FieldObject(clazz = PCtr_BlockElevator.class)
     public static PC_Block elevator;
+	@PC_FieldObject(clazz = PCtr_BlockSplitter.class)
     public static PC_Block splitter;
+	@PC_FieldObject(clazz = PCtr_ItemArmorStickyBoots.class)
     public static PC_ItemArmor slimeboots;
 
    @Override
@@ -53,32 +64,13 @@ public class PCtr_App implements PC_IModule
 	public void initProperties(PC_Property config) {
 	}
 
-	 @Override
-	public void initBlocks()
-    {
-	        conveyorBelt = (PC_Block)ModuleLoader.register(this, PCtr_BlockBeltNormal.class, PCtr_ItemBlockConveyor.class);
-	        speedyBelt = (PC_Block)ModuleLoader.register(this, PCtr_BlockBeltSpeedy.class, PCtr_ItemBlockConveyor.class);
-	        detectionBelt = (PC_Block)ModuleLoader.register(this, PCtr_BlockBeltDetector.class, PCtr_ItemBlockConveyor.class);
-	        breakBelt = (PC_Block)ModuleLoader.register(this, PCtr_BlockBeltBreak.class, PCtr_ItemBlockConveyor.class);
-	        redirectionBelt = (PC_Block)ModuleLoader.register(this, PCtr_BlockBeltRedirector.class, PCtr_ItemBlockConveyor.class, PCtr_TileEntityRedirectionBelt.class);
-	        separationBelt = (PC_Block)ModuleLoader.register(this, PCtr_BlockBeltSeparator.class, PCtr_ItemBlockConveyor.class, PCtr_TileEntitySeparationBelt.class);
-	        ejectionBelt = (PC_Block)ModuleLoader.register(this, PCtr_BlockBeltEjector.class, PCtr_ItemBlockConveyor.class, PCtr_TileEntityEjectionBelt.class);
-	        elevator = (PC_Block)ModuleLoader.register(this, PCtr_BlockElevator.class, PCtr_ItemBlockElevator.class);
-	        splitter = (PC_Block)ModuleLoader.register(this, PCtr_BlockSplitter.class, PCtr_TileEntitySplitter.class);
-	        PCtr_BlockHackedWater.hackWater();
-    }
-
 	@Override
-	public void initItems() {
-		slimeboots = (PC_ItemArmor)ModuleLoader.register(this, PCtr_ItemArmorStickyBoots.class);
-		
+	public List<Class<? extends Entity>> initEntities(List<Class<? extends Entity>> entities) {
+		return null;
 	}
 
 	@Override
-	public void initEntities() {}
-
-	@Override
-	public List<Object> initRecipes(List<Object> recipes) {
+	public List<PC_IRecipe> initRecipes(List<PC_IRecipe> recipes) {
 		recipes.add(new PC_ShapedRecipes(new PC_ItemStack(conveyorBelt, 16),
                 	"XXX", 
                 	"YRY",

@@ -2,23 +2,19 @@ package powercraft.itemstorage;
 
 import java.util.List;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
-
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.inventory.InventoryCrafting;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
 import powercraft.management.PC_IPacketHandler;
 import powercraft.management.PC_Item;
 import powercraft.management.PC_PacketHandler;
-import powercraft.management.PC_Struct3;
 import powercraft.management.PC_Utils;
 import powercraft.management.PC_Utils.Gres;
 import powercraft.management.PC_VecI;
+import powercraft.management.registry.PC_LangRegistry.LangEntry;
 
 public class PCis_ItemCompressor extends PC_Item implements PC_IPacketHandler {
 	
@@ -166,11 +162,11 @@ public class PCis_ItemCompressor extends PC_Item implements PC_IPacketHandler {
 	public Object msg(int msg, Object... obj) {
 		switch(msg){
 		case PC_Utils.MSG_DEFAULT_NAME:
-			List<PC_Struct3<String, String, String[]>> names = (List<PC_Struct3<String, String, String[]>>)obj[0];
-			names.add(new PC_Struct3<String, String, String[]>(getItemName()+"."+id2Name[NORMAL], "compressor", null));
-			names.add(new PC_Struct3<String, String, String[]>(getItemName()+"."+id2Name[ENDERACCESS], "ender compressor", null));
-			names.add(new PC_Struct3<String, String, String[]>(getItemName()+"."+id2Name[HIGHT], "high stack compressor", null));
-			names.add(new PC_Struct3<String, String, String[]>(getItemName()+"."+id2Name[BIG], "big compressor", null));
+			List<LangEntry> names = (List<LangEntry>)obj[0];
+			names.add(new LangEntry(getItemName()+"."+id2Name[NORMAL], "compressor"));
+			names.add(new LangEntry(getItemName()+"."+id2Name[ENDERACCESS], "ender compressor"));
+			names.add(new LangEntry(getItemName()+"."+id2Name[HIGHT], "high stack compressor"));
+			names.add(new LangEntry(getItemName()+"."+id2Name[BIG], "big compressor"));
 			return names;
 		}
 		return null;

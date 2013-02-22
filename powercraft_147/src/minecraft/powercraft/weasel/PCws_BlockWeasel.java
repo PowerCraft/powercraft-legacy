@@ -23,10 +23,12 @@ import powercraft.management.PC_Utils.GameInfo;
 import powercraft.management.PC_Utils.Lang;
 import powercraft.management.PC_Utils.ModuleInfo;
 import powercraft.management.PC_Utils.ValueWriting;
+import powercraft.management.annotation.PC_BlockInfo;
 import powercraft.management.PC_VecI;
 import powercraft.net.PCnt_RadioManager;
 import powercraft.net.PCnt_TileEntityRadio;
 
+@PC_BlockInfo(itemBlock=PCws_ItemBlockWeasel.class, tileEntity=PCws_TileEntityWeasel.class)
 public class PCws_BlockWeasel extends PC_Block {
 
 	public PCws_BlockWeasel(int id) {

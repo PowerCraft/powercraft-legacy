@@ -15,8 +15,10 @@ import powercraft.management.PC_Block;
 import powercraft.management.PC_MathHelper;
 import powercraft.management.PC_Utils;
 import powercraft.management.PC_Utils.GameInfo;
+import powercraft.management.annotation.PC_BlockInfo;
 import powercraft.management.PC_VecI;
 
+@PC_BlockInfo(itemBlock=PCtr_ItemBlockElevator.class)
 public class PCtr_BlockElevator extends PC_Block
 {
     private static final double BORDERS = 0.25D;

@@ -1,27 +1,19 @@
 package powercraft.mobile;
 
-import java.io.IOException;
 import java.util.List;
 
-import org.lwjgl.input.Keyboard;
-
 import net.minecraft.block.Block;
-import net.minecraft.entity.EntityList;
-import net.minecraft.item.crafting.IRecipe;
+import net.minecraft.entity.Entity;
 import powercraft.management.PC_IDataHandler;
 import powercraft.management.PC_IMSG;
 import powercraft.management.PC_IModule;
 import powercraft.management.PC_IPacketHandler;
-import powercraft.management.PC_PacketHandler;
 import powercraft.management.PC_Property;
 import powercraft.management.PC_Struct2;
-import powercraft.management.PC_Utils.Communication;
-import powercraft.management.PC_Utils.ModuleInfo;
-import powercraft.management.PC_Utils.ModuleLoader;
-import powercraft.management.entity.PC_EntityItem;
-import powercraft.management.moduleloader.PC_ModuleClassLoader;
 import powercraft.management.recipes.PC_3DRecipe;
-import powercraft.management.recipes.PC_3DRecipeManager;
+import powercraft.management.recipes.PC_IRecipe;
+import powercraft.management.registry.PC_KeyRegistry;
+import powercraft.management.registry.PC_ModuleRegistry;
 
 public class PCmo_App implements PC_IModule {
 
@@ -55,7 +47,7 @@ public class PCmo_App implements PC_IModule {
 
 	@Override
 	public void preInit() {
-		if(ModuleInfo.getModule("Weasel")!=null){
+		if(PC_ModuleRegistry.getModule("Weasel")!=null){
 			try {
 				PCmo_MinerManager.mierBrainClass = (Class<? extends PCmo_MinerBrain>) Class.forName("powercraft.mobile.PCmo_MinerWeaselBrain");
 			} catch (ClassNotFoundException e) {
@@ -74,41 +66,35 @@ public class PCmo_App implements PC_IModule {
 
 	@Override
 	public void initProperties(PC_Property config) {
-		Communication.watchForKey(config, pk_mForward, 0x48); // KEY_NUMPAD8
-		Communication.watchForKey(config, pk_mBackward, 0x50); // KEY_NUMPAD2
-		Communication.watchForKey(config, pk_mLeft, 0x4b); // KEY_NUMPAD4
-		Communication.watchForKey(config, pk_mRight, 0x4d); // KEY_NUMPAD6
-		Communication.watchForKey(config, pk_mAround, 0x4c); // KEY_NUMPAD5
-		Communication.watchForKey(config, pk_mDown, 0x4a); // KEY_SUBTRACT
-		Communication.watchForKey(config, pk_mUp, 0x4e); // KEY_ADD
+		PC_KeyRegistry.watchForKey(config, pk_mForward, 0x48); // KEY_NUMPAD8
+		PC_KeyRegistry.watchForKey(config, pk_mBackward, 0x50); // KEY_NUMPAD2
+		PC_KeyRegistry.watchForKey(config, pk_mLeft, 0x4b); // KEY_NUMPAD4
+		PC_KeyRegistry.watchForKey(config, pk_mRight, 0x4d); // KEY_NUMPAD6
+		PC_KeyRegistry.watchForKey(config, pk_mAround, 0x4c); // KEY_NUMPAD5
+		PC_KeyRegistry.watchForKey(config, pk_mDown, 0x4a); // KEY_SUBTRACT
+		PC_KeyRegistry.watchForKey(config, pk_mUp, 0x4e); // KEY_ADD
 		
-		Communication.watchForKey(config, pk_mBridgeOn, 0x18); // KEY_O
-		Communication.watchForKey(config, pk_mBridgeOff, 0x19); // KEY_P
-		Communication.watchForKey(config, pk_mRun, 0x9c); // KEY_NUMPADENTER
+		PC_KeyRegistry.watchForKey(config, pk_mBridgeOn, 0x18); // KEY_O
+		PC_KeyRegistry.watchForKey(config, pk_mBridgeOff, 0x19); // KEY_P
+		PC_KeyRegistry.watchForKey(config, pk_mRun, 0x9c); // KEY_NUMPADENTER
 		
-		Communication.watchForKey(config, pk_mDeposit, 0x53); // KEY_DECIMAL
-		Communication.watchForKey(config, pk_mToBlocks, 0x4f); // KEY_NUMPAD1
-		Communication.watchForKey(config, pk_mMiningOn, 0x47); // KEY_NUMPAD7
-		Communication.watchForKey(config, pk_mMiningOff, 0x49); // KEY_NUMPAD9
+		PC_KeyRegistry.watchForKey(config, pk_mDeposit, 0x53); // KEY_DECIMAL
+		PC_KeyRegistry.watchForKey(config, pk_mToBlocks, 0x4f); // KEY_NUMPAD1
+		PC_KeyRegistry.watchForKey(config, pk_mMiningOn, 0x47); // KEY_NUMPAD7
+		PC_KeyRegistry.watchForKey(config, pk_mMiningOff, 0x49); // KEY_NUMPAD9
 
-		Communication.watchForKey(config, pk_mCancel, 0xd3); // KEY_DELETE
+		PC_KeyRegistry.watchForKey(config, pk_mCancel, 0xd3); // KEY_DELETE
 	}
 
 	@Override
-	public void initBlocks() {
-	}
-
-	@Override
-	public void initItems() {
-	}
-
-	@Override
-	public void initEntities() {
-		ModuleLoader.registerEntity(PCmo_EntityMiner.class, 220);
+	public List<Class<? extends Entity>> initEntities(
+			List<Class<? extends Entity>> entities) {
+		entities.add(PCmo_EntityMiner.class);
+		return entities;
 	}
 	
 	@Override
-	public List<Object> initRecipes(List<Object> recipes) {
+	public List<PC_IRecipe> initRecipes(List<PC_IRecipe> recipes) {
 		
 		recipes.add(new PC_3DRecipe(minerManager,
 				new String[]{

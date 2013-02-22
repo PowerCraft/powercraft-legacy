@@ -3,8 +3,8 @@ package powercraft.machines;
 import java.util.List;
 
 import net.minecraft.block.Block;
+import net.minecraft.entity.Entity;
 import net.minecraft.item.Item;
-import net.minecraft.item.crafting.IRecipe;
 import powercraft.management.PC_Block;
 import powercraft.management.PC_IDataHandler;
 import powercraft.management.PC_IMSG;
@@ -14,23 +14,32 @@ import powercraft.management.PC_ItemStack;
 import powercraft.management.PC_Property;
 import powercraft.management.PC_Struct2;
 import powercraft.management.PC_Utils.GameInfo;
-import powercraft.management.PC_Utils.ModuleLoader;
+import powercraft.management.annotation.PC_FieldObject;
 import powercraft.management.recipes.PC_3DRecipe;
-import powercraft.management.recipes.PC_3DRecipeManager;
 import powercraft.management.recipes.PC_I3DRecipeHandler;
+import powercraft.management.recipes.PC_IRecipe;
 import powercraft.management.recipes.PC_ShapedRecipes;
 
 public class PCma_App implements PC_IModule
 {
 
+	@PC_FieldObject(clazz=PCma_BlockAutomaticWorkbench.class)
     public static PC_Block automaticWorkbench;
+	@PC_FieldObject(clazz=PCma_BlockRoaster.class)
     public static PC_Block roaster;
+	@PC_FieldObject(clazz=PCma_BlockReplacer.class)
     public static PC_Block replacer;
+	@PC_FieldObject(clazz=PCma_BlockTransmutabox.class)
     public static PC_Block transmutabox;
+	@PC_FieldObject(clazz=PCma_BlockXPBank.class)
     public static PC_Block xpBank;
+	@PC_FieldObject(clazz=PCma_BlockBlockBuilder.class)
     public static PC_Block blockBuilder;
+	@PC_FieldObject(clazz=PCma_BlockHarvester.class)
     public static PC_Block harvester;
+	@PC_FieldObject(clazz=PCma_BlockFishingMachine.class)
     public static PC_Block fishingMachine;
+	@PC_FieldObject(clazz=PCma_BlockChunkLoader.class)
     public static PC_Block chunkLoader;
     
     public static List<Integer> roasterIgnoreBlockIDs;
@@ -63,28 +72,14 @@ public class PCma_App implements PC_IModule
 	public void initProperties(PC_Property config) {
 		roasterIgnoreBlockIDs = GameInfo.parseIntList(config.getString("PCma_BlockRoaster.roasterIgnoreBlockIDs", "1"));
 	}
+	
+	@Override
+	public List<Class<? extends Entity>> initEntities(List<Class<? extends Entity>> entities) {
+		return null;
+	}
 
 	@Override
-	public void initBlocks() {
-        automaticWorkbench = ModuleLoader.register(this, PCma_BlockAutomaticWorkbench.class, PCma_TileEntityAutomaticWorkbench.class);
-        roaster = ModuleLoader.register(this, PCma_BlockRoaster.class, PCma_TileEntityRoaster.class);
-        replacer = ModuleLoader.register(this, PCma_BlockReplacer.class, PCma_TileEntityReplacer.class);
-        transmutabox = ModuleLoader.register(this, PCma_BlockTransmutabox.class, PCma_TileEntityTransmutabox.class);
-        xpBank = ModuleLoader.register(this, PCma_BlockXPBank.class, PCma_TileEntityXPBank.class);
-        blockBuilder = ModuleLoader.register(this, PCma_BlockBlockBuilder.class, PCma_TileEntityBlockBuilder.class);
-        harvester = ModuleLoader.register(this, PCma_BlockHarvester.class);
-        fishingMachine = ModuleLoader.register(this, PCma_BlockFishingMachine.class, PCma_TileEntityFishingMachine.class);
-        chunkLoader = ModuleLoader.register(this, PCma_BlockChunkLoader.class, PCma_TileEntityChunkLoader.class);
-	}
-	
-	@Override
-    public void initItems() {}
-	
-	@Override
-	public void initEntities() {}
-	
-	@Override
-	public List<Object> initRecipes(List<Object> recipes) {
+	public List<PC_IRecipe> initRecipes(List<PC_IRecipe> recipes) {
 		recipes.add(new PC_ShapedRecipes(new PC_ItemStack(automaticWorkbench),
                 	"X", 
                 	"Y", 

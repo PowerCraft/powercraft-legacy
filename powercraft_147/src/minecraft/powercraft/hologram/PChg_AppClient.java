@@ -2,8 +2,6 @@ package powercraft.hologram;
 
 import java.util.List;
 
-import org.lwjgl.opengl.GL11;
-
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.RenderBlocks;
@@ -12,37 +10,43 @@ import net.minecraft.client.renderer.entity.Render;
 import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.client.renderer.tileentity.TileEntityRenderer;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityLiving;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
-import net.minecraft.util.MathHelper;
 import net.minecraft.world.ChunkCache;
+
+import org.lwjgl.opengl.GL11;
+
 import powercraft.management.PC_ClientUtils;
 import powercraft.management.PC_IClientModule;
-import powercraft.management.PC_LangEntry;
+import powercraft.management.PC_IMSG;
 import powercraft.management.PC_Renderer;
 import powercraft.management.PC_Struct2;
-import powercraft.management.PC_Utils.MSG;
-import powercraft.management.PC_Utils.ModuleInfo;
 import powercraft.management.PC_VecI;
+import powercraft.management.registry.PC_LangRegistry.LangEntry;
+import powercraft.management.registry.PC_TextureRegistry;
 
 public class PChg_AppClient extends PChg_App implements PC_IClientModule {
 	
 	@Override
 	public void init() {
 		PC_ClientUtils.mc().renderEngine.registerTextureFX(new PChg_HologramTextureFX());
-		MSG.registerMSGObject(new PChg_HologramGlassesOverlay());
+	}
+	
+	@Override
+	public List<PC_IMSG> initMSGObjects(List<PC_IMSG> msgObjects) {
+		msgObjects.add(new PChg_HologramGlassesOverlay());
+		return msgObjects;
 	}
 
 	@Override
-	public List<PC_LangEntry> initLanguage(List<PC_LangEntry> lang) {
+	public List<LangEntry> initLanguage(List<LangEntry> lang) {
 		return null;
 	}
 
 	@Override
 	public List<String> loadTextureFiles(List<String> textures) {
-		textures.add(ModuleInfo.getTerrainFile(this));
-		textures.add(ModuleInfo.getTextureDirectory(this)+"glasses.png");
+		textures.add(PC_TextureRegistry.getTerrainFile(this));
+		textures.add(PC_TextureRegistry.getTextureDirectory(this)+"glasses.png");
 		return textures;
 	}
 

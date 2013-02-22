@@ -3,7 +3,7 @@ package powercraft.itemstorage;
 import java.util.List;
 
 import net.minecraft.block.Block;
-
+import net.minecraft.entity.Entity;
 import powercraft.management.PC_Block;
 import powercraft.management.PC_IDataHandler;
 import powercraft.management.PC_IMSG;
@@ -13,16 +13,17 @@ import powercraft.management.PC_Item;
 import powercraft.management.PC_ItemStack;
 import powercraft.management.PC_Property;
 import powercraft.management.PC_Struct2;
-import powercraft.management.PC_Utils.ModuleLoader;
+import powercraft.management.annotation.PC_FieldObject;
 import powercraft.management.recipes.PC_3DRecipe;
 import powercraft.management.recipes.PC_I3DRecipeHandler;
+import powercraft.management.recipes.PC_IRecipe;
 import powercraft.management.recipes.PC_ShapedRecipes;
-import powercraft.management.recipes.PC_ShapelessRecipes;
 
 public class PCis_App implements PC_IModule {
 
+	@PC_FieldObject(clazz=PCis_BlockBigChest.class)
 	public static PC_Block bigChest;
-	
+	@PC_FieldObject(clazz=PCis_ItemCompressor.class)
 	public static PC_Item compressor;
 	
 	@Override
@@ -48,20 +49,12 @@ public class PCis_App implements PC_IModule {
 	public void initProperties(PC_Property config) {}
 
 	@Override
-	public void initBlocks() {
-		bigChest = ModuleLoader.register(this, PCis_BlockBigChest.class, PCis_TileEntityBigChest.class);
-    }
-
-	@Override
-	public void initItems() {
-		compressor = ModuleLoader.register(this, PCis_ItemCompressor.class);
+	public List<Class<? extends Entity>> initEntities(List<Class<? extends Entity>> entities) {
+		return null;
 	}
 
 	@Override
-	public void initEntities() {}
-
-	@Override
-	public List<Object> initRecipes(List<Object> recipes) {
+	public List<PC_IRecipe> initRecipes(List<PC_IRecipe> recipes) {
 		recipes.add(new PC_3DRecipe((PC_I3DRecipeHandler)bigChest, 
 				new String[]{
 				"g  g",

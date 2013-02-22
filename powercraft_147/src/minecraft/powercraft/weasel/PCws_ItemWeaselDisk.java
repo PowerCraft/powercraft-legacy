@@ -11,11 +11,11 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
 import powercraft.management.PC_Item;
-import powercraft.management.PC_Struct3;
 import powercraft.management.PC_Utils;
 import powercraft.management.PC_Utils.Lang;
 import powercraft.management.PC_Utils.SaveHandler;
 import powercraft.management.PC_VecI;
+import powercraft.management.registry.PC_LangRegistry.LangEntry;
 import powercraft.weasel.PCws_WeaselBitmapUtils.WeaselBitmapProvider;
 import weasel.Calc;
 import weasel.WeaselEngine;
@@ -81,14 +81,14 @@ public class PCws_ItemWeaselDisk extends PC_Item {
 	public Object msg(int msg, Object... obj) {
 		switch(msg){
 		case PC_Utils.MSG_DEFAULT_NAME:
-			List<PC_Struct3<String, String, String[]>> names = (List<PC_Struct3<String, String, String[]>>)obj[0];
-			names.add(new PC_Struct3<String, String, String[]>("pc.weasel.disk.empty", "Blank Weasel Disk", null));
-			names.add(new PC_Struct3<String, String, String[]>("pc.weasel.disk.text", "Weasel Text Disk", null));
-			names.add(new PC_Struct3<String, String, String[]>("pc.weasel.disk.image", "Weasel Image Disk", null));
-			names.add(new PC_Struct3<String, String, String[]>("pc.weasel.disk.numberList", "Weasel Numbers Disk", null));
-			names.add(new PC_Struct3<String, String, String[]>("pc.weasel.disk.stringList", "Weasel Strings Disk", null));
-			names.add(new PC_Struct3<String, String, String[]>("pc.weasel.disk.variableMap", "Weasel Data Disk", null));
-			names.add(new PC_Struct3<String, String, String[]>("pc.weasel.disk.programLibrary", "Weasel Library Disk", null));;
+			List<LangEntry> names = (List<LangEntry>)obj[0];
+			names.add(new LangEntry("pc.weasel.disk.empty", "Blank Weasel Disk"));
+			names.add(new LangEntry("pc.weasel.disk.text", "Weasel Text Disk"));
+			names.add(new LangEntry("pc.weasel.disk.image", "Weasel Image Disk"));
+			names.add(new LangEntry("pc.weasel.disk.numberList", "Weasel Numbers Disk"));
+			names.add(new LangEntry("pc.weasel.disk.stringList", "Weasel Strings Disk"));
+			names.add(new LangEntry("pc.weasel.disk.variableMap", "Weasel Data Disk"));
+			names.add(new LangEntry("pc.weasel.disk.programLibrary", "Weasel Library Disk"));
             return names;
 		}
 		return null;

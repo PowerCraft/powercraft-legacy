@@ -7,8 +7,8 @@ import net.minecraft.item.ItemStack;
 import powercraft.management.PC_Color;
 import powercraft.management.PC_ItemBlock;
 import powercraft.management.PC_MathHelper;
-import powercraft.management.PC_Struct3;
 import powercraft.management.PC_Utils;
+import powercraft.management.registry.PC_LangRegistry.LangEntry;
 
 public class PCco_ItemBlockPowerCrystal extends PC_ItemBlock {
 
@@ -64,15 +64,15 @@ public class PCco_ItemBlockPowerCrystal extends PC_ItemBlock {
 	public Object msg(int msg, Object... obj) {
 		switch(msg){
 		case PC_Utils.MSG_DEFAULT_NAME:
-			List<PC_Struct3<String, String, String[]>> names = (List<PC_Struct3<String, String, String[]>>)obj[0];
-			names.add(new PC_Struct3<String, String, String[]>(getItemName() + ".color0", "Orange Power Crystal", null));
-            names.add(new PC_Struct3<String, String, String[]>(getItemName() + ".color1", "Red Power Crystal", null));
-            names.add(new PC_Struct3<String, String, String[]>(getItemName() + ".color2", "Green Power Crystal", null));
-            names.add(new PC_Struct3<String, String, String[]>(getItemName() + ".color3", "Darkblue Power Crystal", null));
-            names.add(new PC_Struct3<String, String, String[]>(getItemName() + ".color4", "Lightblue Power Crystal", null));
-            names.add(new PC_Struct3<String, String, String[]>(getItemName() + ".color5", "Purple Power Crystal", null));
-            names.add(new PC_Struct3<String, String, String[]>(getItemName() + ".color6", "Cyan Power Crystal", null));
-            names.add(new PC_Struct3<String, String, String[]>(getItemName() + ".color7", "Yellow Power Crystal", null));
+			List<LangEntry> names = (List<LangEntry>)obj[0];
+			names.add(new LangEntry(getItemName() + ".color0", "Orange Power Crystal"));
+            names.add(new LangEntry(getItemName() + ".color1", "Red Power Crystal"));
+            names.add(new LangEntry(getItemName() + ".color2", "Green Power Crystal"));
+            names.add(new LangEntry(getItemName() + ".color3", "Darkblue Power Crystal"));
+            names.add(new LangEntry(getItemName() + ".color4", "Lightblue Power Crystal"));
+            names.add(new LangEntry(getItemName() + ".color5", "Purple Power Crystal"));
+            names.add(new LangEntry(getItemName() + ".color6", "Cyan Power Crystal"));
+            names.add(new LangEntry(getItemName() + ".color7", "Yellow Power Crystal"));
             return names;
 		}
 		return null;
