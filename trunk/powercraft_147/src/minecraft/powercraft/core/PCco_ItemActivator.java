@@ -18,6 +18,7 @@ import powercraft.management.PC_Utils.MSG;
 import powercraft.management.PC_Utils.MSG.MSGIterator;
 import powercraft.management.PC_Utils.ValueWriting;
 import powercraft.management.recipes.PC_3DRecipeManager;
+import powercraft.management.registry.PC_LangRegistry.LangEntry;
 import powercraft.management.PC_VecI;
 
 public class PCco_ItemActivator extends PC_Item{
@@ -85,8 +86,8 @@ public class PCco_ItemActivator extends PC_Item{
 	public Object msg(int msg, Object... obj) {
 		switch(msg){
 		case PC_Utils.MSG_DEFAULT_NAME:
-			List<PC_Struct3<String, String, String[]>> names = (List<PC_Struct3<String, String, String[]>>)obj[0];
-			names.add(new PC_Struct3<String, String, String[]>(getItemName(), "Activation Crystal", null));
+			List<LangEntry> names = (List<LangEntry>)obj[0];
+			names.add(new LangEntry(getItemName(), "Activation Crystal"));
             return names;
 		}
 		return null;

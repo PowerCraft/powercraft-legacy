@@ -1,6 +1,5 @@
 package powercraft.management;
 
-import java.util.List;
 
 public class PC_ThreadJob {
 

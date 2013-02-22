@@ -4,8 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import net.minecraft.block.Block;
+import net.minecraft.entity.Entity;
 import net.minecraft.item.Item;
-import net.minecraft.world.World;
 import powercraft.management.PC_Block;
 import powercraft.management.PC_IDataHandler;
 import powercraft.management.PC_IMSG;
@@ -17,14 +17,20 @@ import powercraft.management.PC_Property;
 import powercraft.management.PC_Struct2;
 import powercraft.management.PC_Utils.ModuleInfo;
 import powercraft.management.PC_Utils.ModuleLoader;
+import powercraft.management.annotation.PC_FieldObject;
+import powercraft.management.recipes.PC_IRecipe;
 import powercraft.management.recipes.PC_ShapedRecipes;
 import powercraft.management.recipes.PC_ShapelessRecipes;
 
 public class PChg_App implements PC_IModule {
 
+	@PC_FieldObject(clazz=PChg_BlockHologramBlockEmpty.class)
 	public static PC_Block hologramBlockEmpty;
+	@PC_FieldObject(clazz=PChg_BlockHologramBlock.class)
 	public static PC_Block hologramBlock;
+	@PC_FieldObject(clazz=PChg_BlockHologramField.class)
 	public static PC_Block hologramField;
+	@PC_FieldObject(clazz=PChg_ItemArmorHologramGlasses.class)
 	public static PC_ItemArmor hologramGlasses;
 	private static PChg_App instance;
 	
@@ -59,22 +65,12 @@ public class PChg_App implements PC_IModule {
 	public void initProperties(PC_Property config) {}
 
 	@Override
-	public void initBlocks() {
-		hologramBlockEmpty = ModuleLoader.register(this, PChg_BlockHologramBlockEmpty.class, PChg_ItemBlockHologramBlockEmpty.class);
-		hologramBlock = ModuleLoader.register(this, PChg_BlockHologramBlock.class, PChg_ItemBlockHologramBlock.class, PChg_TileEntityHologramBlock.class);
-		hologramField = ModuleLoader.register(this, PChg_BlockHologramField.class, PChg_TileEntityHologramField.class);
+	public List<Class<? extends Entity>> initEntities(List<Class<? extends Entity>> entities) {
+		return null;
 	}
 
 	@Override
-	public void initItems() {
-		hologramGlasses = ModuleLoader.register(this, PChg_ItemArmorHologramGlasses.class);
-	}
-
-	@Override
-	public void initEntities() {}
-
-	@Override
-	public List<Object> initRecipes(List<Object> recipes) {
+	public List<PC_IRecipe> initRecipes(List<PC_IRecipe> recipes) {
 		recipes.add(new PC_ShapelessRecipes(new PC_ItemStack(hologramBlock), new PC_ItemStack(hologramBlockEmpty), getAllAccepptedBlocksForHologramBlock()));
 		recipes.add(new PChg_HologramBackRecipe());
 		recipes.add(new PC_ShapedRecipes(new PC_ItemStack(hologramBlockEmpty), 

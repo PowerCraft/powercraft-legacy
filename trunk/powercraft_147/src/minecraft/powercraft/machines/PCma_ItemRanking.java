@@ -7,6 +7,7 @@ import java.io.FileOutputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.TreeMap;
 import java.util.Map.Entry;
 
 import net.minecraft.block.Block;
@@ -18,12 +19,15 @@ import powercraft.management.PC_Block;
 import powercraft.management.PC_IItemInfo;
 import powercraft.management.PC_IMSG;
 import powercraft.management.PC_Item;
+import powercraft.management.PC_ItemArmor;
 import powercraft.management.PC_ItemStack;
 import powercraft.management.PC_Property;
 import powercraft.management.PC_Struct3;
 import powercraft.management.PC_Utils;
 import powercraft.management.PC_Utils.GameInfo;
 import powercraft.management.PC_Utils.ModuleInfo;
+import powercraft.management.registry.PC_BlockRegistry;
+import powercraft.management.registry.PC_ItemRegistry;
 
 public class PCma_ItemRanking {
 	
@@ -323,24 +327,49 @@ public class PCma_ItemRanking {
 		reg(prop, Item.record11, "10000");
 		reg(prop, Item.recordWait, "10000");
 		
-		List<Object> l = ModuleInfo.getRegisterdObjects();
-		for(Object o:l){
-			List<Integer> rating = null;
-			if(o instanceof PC_IMSG){
-				rating = (List<Integer>)((PC_IMSG) o).msg(PC_Utils.MSG_RATING);
-			}
-			if(rating!=null){
+		TreeMap<String, PC_Block> blocks = PC_BlockRegistry.getPCBlocks();
+		TreeMap<String, PC_Item> items = PC_ItemRegistry.getPCItems();
+		TreeMap<String, PC_ItemArmor> itemArmors = PC_ItemRegistry.getPCItemArmors();
+		
+		for(PC_Block block:blocks.values()){
+			Object o = block.msg(PC_Utils.MSG_RATING);
+			if(o instanceof List){
+				List<Integer> rating = (List<Integer>)o;
 				String s = "";
 				for(int i=0; i<rating.size(); i++){
 					s += rating.get(i);
 					if(i<rating.size()-1)
 						s+=", ";
 				}
-				if(o instanceof Block){
-					reg(prop, (Block)o, s);
-				}else if(o instanceof Item){
-					reg(prop, (Item)o, s);
+				reg(prop, block, s);
+			}
+		}
+		
+		for(PC_Item item:items.values()){
+			Object o = item.msg(PC_Utils.MSG_RATING);
+			if(o instanceof List){
+				List<Integer> rating = (List<Integer>)o;
+				String s = "";
+				for(int i=0; i<rating.size(); i++){
+					s += rating.get(i);
+					if(i<rating.size()-1)
+						s+=", ";
 				}
+				reg(prop, item, s);
+			}
+		}
+		
+		for(PC_ItemArmor itemArmor:itemArmors.values()){
+			Object o = itemArmor.msg(PC_Utils.MSG_RATING);
+			if(o instanceof List){
+				List<Integer> rating = (List<Integer>)o;
+				String s = "";
+				for(int i=0; i<rating.size(); i++){
+					s += rating.get(i);
+					if(i<rating.size()-1)
+						s+=", ";
+				}
+				reg(prop, itemArmor, s);
 			}
 		}
 		

@@ -7,8 +7,10 @@ import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import powercraft.management.PC_Utils;
 import powercraft.management.PC_Utils.GameInfo;
+import powercraft.management.annotation.PC_BlockInfo;
 import powercraft.management.PC_VecI;
 
+@PC_BlockInfo(itemBlock=PCtr_ItemBlockConveyor.class)
 public class PCtr_BlockBeltBreak extends PCtr_BlockBeltBase
 {
     public PCtr_BlockBeltBreak(int id)

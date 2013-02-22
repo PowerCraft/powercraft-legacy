@@ -6,9 +6,9 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import powercraft.management.PC_ItemBlock;
 import powercraft.management.PC_MathHelper;
-import powercraft.management.PC_Struct3;
 import powercraft.management.PC_Utils;
 import powercraft.management.PC_Utils.Lang;
+import powercraft.management.registry.PC_LangRegistry.LangEntry;
 
 public class PClo_ItemBlockRepeater extends PC_ItemBlock
 {
@@ -69,10 +69,10 @@ public class PClo_ItemBlockRepeater extends PC_ItemBlock
 	public Object msg(int msg, Object... obj) {
 		switch(msg){
 		case PC_Utils.MSG_DEFAULT_NAME:
-			List<PC_Struct3<String, String, String[]>> names = (List<PC_Struct3<String, String, String[]>>)obj[0];
+			List<LangEntry> names = (List<LangEntry>)obj[0];
 			for (int i = 0; i < PClo_RepeaterType.TOTAL_REPEATER_COUNT; i++)
 	        {
-				names.add(new PC_Struct3<String, String, String[]>(getItemName() + ".repeater"+i, PClo_RepeaterType.names[i]+ " repeater", null));
+				names.add(new LangEntry(getItemName() + ".repeater"+i, PClo_RepeaterType.names[i]+ " repeater"));
 	        };
             return names;
 		}

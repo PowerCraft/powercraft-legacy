@@ -1,20 +1,17 @@
 package powercraft.management.recipes;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
-
-import powercraft.management.PC_Struct2;
-import powercraft.management.PC_Utils;
-import powercraft.management.PC_VecI;
-import powercraft.management.PC_Utils.GameInfo;
 
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.world.World;
+import powercraft.management.PC_Struct2;
+import powercraft.management.PC_Utils.GameInfo;
+import powercraft.management.PC_VecI;
 
-public class PC_3DRecipe {
+public class PC_3DRecipe implements PC_IRecipe {
 	
 	private PC_VecI size;
 	private PC_Struct2<Boolean, List<PC_Struct2<Block, Integer>>>[][][] array;

@@ -15,9 +15,11 @@ import powercraft.management.PC_Utils;
 import powercraft.management.PC_Utils.GameInfo;
 import powercraft.management.PC_Utils.Inventory;
 import powercraft.management.PC_Utils.ValueWriting;
+import powercraft.management.annotation.PC_BlockInfo;
 import powercraft.management.PC_VecI;
 import powercraft.management.recipes.PC_I3DRecipeHandler;
 
+@PC_BlockInfo(tileEntity=PCis_TileEntityBigChest.class)
 public class PCis_BlockBigChest extends PC_Block implements PC_I3DRecipeHandler {
 
 	public PCis_BlockBigChest(int id) {

@@ -21,6 +21,7 @@ import powercraft.management.PC_Utils;
 import powercraft.management.PC_Utils.GameInfo;
 import powercraft.management.PC_Utils.Gres;
 import powercraft.management.PC_Utils.ValueWriting;
+import powercraft.management.annotation.PC_BlockInfo;
 import powercraft.management.PC_VecI;
 
 
@@ -30,6 +31,7 @@ import powercraft.management.PC_VecI;
  * @author MightyPork
  * @copy (c) 2012
  */
+@PC_BlockInfo(itemBlock=PCnt_ItemBlockSensor.class, tileEntity=PCnt_TileEntitySensor.class)
 public class PCnt_BlockSensor extends PC_Block {
 
 	/**

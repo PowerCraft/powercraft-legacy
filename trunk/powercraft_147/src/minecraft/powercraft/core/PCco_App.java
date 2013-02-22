@@ -3,8 +3,8 @@ package powercraft.core;
 import java.util.List;
 
 import net.minecraft.block.Block;
+import net.minecraft.entity.Entity;
 import net.minecraft.item.Item;
-import net.minecraft.item.crafting.IRecipe;
 import powercraft.management.PC_Block;
 import powercraft.management.PC_GlobalVariables;
 import powercraft.management.PC_IDataHandler;
@@ -13,21 +13,26 @@ import powercraft.management.PC_IModule;
 import powercraft.management.PC_IPacketHandler;
 import powercraft.management.PC_Item;
 import powercraft.management.PC_ItemStack;
-import powercraft.management.PC_PacketHandler;
 import powercraft.management.PC_Property;
 import powercraft.management.PC_Struct2;
-import powercraft.management.PC_Utils.ModuleInfo;
-import powercraft.management.PC_Utils.ModuleLoader;
+import powercraft.management.annotation.PC_FieldObject;
+import powercraft.management.recipes.PC_IRecipe;
 import powercraft.management.recipes.PC_ShapedRecipes;
 import powercraft.management.recipes.PC_ShapelessRecipes;
 
 public class PCco_App implements PC_IModule {
 
+	@PC_FieldObject(clazz=PCco_BlockPowerCrystal.class)
 	public static PC_Block powerCrystal;
+	@PC_FieldObject(clazz=PCco_ItemPowerDust.class)
 	public static PC_Item powerDust;
+	@PC_FieldObject(clazz=PCco_ItemActivator.class)
 	public static PC_Item activator;
+	@PC_FieldObject(clazz=PCco_ItemBlockSaver.class)
 	public static PC_Item blockSaver;
+	@PC_FieldObject(clazz=PCco_ItemCraftingTool.class)
 	public static PC_Item craftingTool;
+	@PC_FieldObject(clazz=PCco_ItemOreSniffer.class)
 	public static PC_Item oreSniffer;
 	
 	public static PCco_MobSpawnerSetter spawnerSetter = new PCco_MobSpawnerSetter();
@@ -56,26 +61,15 @@ public class PCco_App implements PC_IModule {
 		PC_GlobalVariables.consts.put("recipes.recyclation", config.getBoolean("recipes.recyclation", true, "Add new recypes allowing easy material recyclation"));
 		PC_GlobalVariables.consts.put("recipes.spawner", config.getBoolean("recipes.spawner", true, "Make spawners craftable of iron and mossy cobble"));
 	}
-
-	@Override
-	public void initBlocks() {
-		powerCrystal = ModuleLoader.register(this, PCco_BlockPowerCrystal.class, PCco_ItemBlockPowerCrystal.class);
-	}
-
-	@Override
-	public void initItems() {
-		powerDust = ModuleLoader.register(this, PCco_ItemPowerDust.class);
-		activator = ModuleLoader.register(this, PCco_ItemActivator.class);
-		blockSaver = ModuleLoader.register(this, PCco_ItemBlockSaver.class);
-		craftingTool = ModuleLoader.register(this, PCco_ItemCraftingTool.class);
-		oreSniffer = ModuleLoader.register(this, PCco_ItemOreSniffer.class);
-	}
-
-	@Override
-	public void initEntities() {}
 	
 	@Override
-	public List<Object> initRecipes(List<Object> recipes) {
+	public List<Class<? extends Entity>> initEntities(
+			List<Class<? extends Entity>> entities) {
+		return null;
+	}
+	
+	@Override
+	public List<PC_IRecipe> initRecipes(List<PC_IRecipe> recipes) {
 		recipes.add(new PC_ShapedRecipes(new PC_ItemStack(craftingTool), 
 				" r ",
                 "rIr",

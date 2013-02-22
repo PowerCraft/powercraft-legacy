@@ -6,9 +6,8 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.chunk.storage.AnvilSaveHandler;
 import net.minecraft.world.storage.WorldInfo;
 import powercraft.management.PC_GlobalVariables;
-import powercraft.management.PC_Utils;
-import powercraft.management.PC_Utils.ModuleLoader;
-import powercraft.management.PC_Utils.SaveHandler;
+import powercraft.management.PC_IDResolver;
+import powercraft.management.registry.PC_DataHandlerRegistry;
 
 public class PC_HackedSaveHandler extends AnvilSaveHandler {
 
@@ -19,7 +18,7 @@ public class PC_HackedSaveHandler extends AnvilSaveHandler {
 	@Override
 	public void saveWorldInfoWithPlayer(WorldInfo par1WorldInfo, NBTTagCompound par2nbtTagCompound) {
 		saveBlockID();
-		SaveHandler.savePowerCraftData(par1WorldInfo, getSaveDirectory());
+		PC_DataHandlerRegistry.savePowerCraftData(par1WorldInfo, getSaveDirectory());
 		super.saveWorldInfoWithPlayer(par1WorldInfo, par2nbtTagCompound);
 	}
 
@@ -27,13 +26,13 @@ public class PC_HackedSaveHandler extends AnvilSaveHandler {
 	public WorldInfo loadWorldInfo() {
 		loadBlockID();
 		WorldInfo worldInfo = super.loadWorldInfo();
-		SaveHandler.loadPowerCraftData(worldInfo, getSaveDirectory());
+		PC_DataHandlerRegistry.loadPowerCraftData(worldInfo, getSaveDirectory());
 		return worldInfo;
 	}
 
 	@Override
 	public void saveWorldInfo(WorldInfo par1WorldInfo) {
-		ModuleLoader.resetPCObjectsIDs();
+		PC_IDResolver.resetPCObjectsIDs();
 		saveBlockID();
 		super.saveWorldInfo(par1WorldInfo);
 	}
@@ -43,16 +42,16 @@ public class PC_HackedSaveHandler extends AnvilSaveHandler {
 			PC_GlobalVariables.consts = PC_GlobalVariables.oldConsts;
 			PC_GlobalVariables.oldConsts = null;
 		}
-		if(!SaveHandler.loadPCObjectsIDs(getSaveDirectory())){
-			ModuleLoader.resetPCObjectsIDs();
+		if(!PC_IDResolver.loadPCObjectsIDs(getSaveDirectory())){
+			PC_IDResolver.resetPCObjectsIDs();
 			saveBlockID();
 		}else{
-			ModuleLoader.savePCObjectsIDs(getSaveDirectory());
+			PC_IDResolver.savePCObjectsIDs(getSaveDirectory());
 		}
 	}
 	
 	public void saveBlockID(){
-		ModuleLoader.savePCObjectsIDs(getSaveDirectory());
+		PC_IDResolver.savePCObjectsIDs(getSaveDirectory());
 	}
 	
 }

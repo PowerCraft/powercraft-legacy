@@ -2,10 +2,9 @@ package powercraft.management.nei;
 
 import java.util.List;
 
-import powercraft.management.gres.PC_GresContainerGui;
-
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.item.ItemStack;
+import powercraft.management.gres.PC_GresContainerGui;
 import codechicken.nei.VisiblityData;
 import codechicken.nei.api.INEIGuiHandler;
 import codechicken.nei.api.TaggedInventoryArea;

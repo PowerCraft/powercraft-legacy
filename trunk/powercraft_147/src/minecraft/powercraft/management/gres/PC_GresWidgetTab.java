@@ -4,7 +4,6 @@ import org.lwjgl.opengl.GL11;
 
 import powercraft.management.PC_RectI;
 import powercraft.management.PC_VecI;
-import powercraft.management.gres.PC_GresWidget.MouseOver;
 
 public class PC_GresWidgetTab extends PC_GresWidget {
 

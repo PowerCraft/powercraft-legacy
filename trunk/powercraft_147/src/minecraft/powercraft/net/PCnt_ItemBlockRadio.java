@@ -3,13 +3,10 @@ package powercraft.net;
 import java.util.List;
 
 import net.minecraft.block.Block;
-import net.minecraft.block.BlockContainer;
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
-import net.minecraft.world.World;
 import powercraft.management.PC_ItemBlock;
-import powercraft.management.PC_Struct3;
 import powercraft.management.PC_Utils;
+import powercraft.management.registry.PC_LangRegistry.LangEntry;
 
 public class PCnt_ItemBlockRadio extends PC_ItemBlock {
 
@@ -50,9 +47,9 @@ public class PCnt_ItemBlockRadio extends PC_ItemBlock {
 	public Object msg(int msg, Object... obj) {
 		switch(msg){
 		case PC_Utils.MSG_DEFAULT_NAME:
-			List<PC_Struct3<String, String, String[]>> names = (List<PC_Struct3<String, String, String[]>>)obj[0];
-			names.add(new PC_Struct3<String, String, String[]>(getItemName() + ".tx", "Redstone Radio Transmitter", null));
-			names.add(new PC_Struct3<String, String, String[]>(getItemName() + ".rx", "Redstone Radio Receiver", null));
+			List<LangEntry> names = (List<LangEntry>)obj[0];
+			names.add(new LangEntry(getItemName() + ".tx", "Redstone Radio Transmitter"));
+			names.add(new LangEntry(getItemName() + ".rx", "Redstone Radio Receiver"));
             return names;
 		}
 		return null;

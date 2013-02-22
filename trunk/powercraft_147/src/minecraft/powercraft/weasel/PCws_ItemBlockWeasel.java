@@ -3,13 +3,10 @@ package powercraft.weasel;
 import java.util.List;
 import java.util.Map.Entry;
 
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
-import net.minecraft.world.World;
-
 import powercraft.management.PC_ItemBlock;
-import powercraft.management.PC_Struct3;
 import powercraft.management.PC_Utils;
+import powercraft.management.registry.PC_LangRegistry.LangEntry;
 
 public class PCws_ItemBlockWeasel extends PC_ItemBlock {
 
@@ -34,9 +31,9 @@ public class PCws_ItemBlockWeasel extends PC_ItemBlock {
 	public Object msg(int msg, Object... obj) {
 		switch(msg){
 		case PC_Utils.MSG_DEFAULT_NAME:
-			List<PC_Struct3<String, String, String[]>> names = (List<PC_Struct3<String, String, String[]>>)obj[0];
+			List<LangEntry> names = (List<LangEntry>)obj[0];
 			for(Entry<Integer, PCws_WeaselPluginInfo>e:PCws_WeaselManager.getPluginInfoMap().entrySet()){
-				names.add(new PC_Struct3<String, String, String[]>(getItemName() + "." + e.getValue().getKey(), e.getValue().getDefaultName(), null));
+				names.add(new LangEntry(getItemName() + "." + e.getValue().getKey(), e.getValue().getDefaultName()));
 			}
 			return names;
 		default:

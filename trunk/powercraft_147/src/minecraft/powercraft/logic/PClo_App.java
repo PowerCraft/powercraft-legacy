@@ -3,8 +3,8 @@ package powercraft.logic;
 import java.util.List;
 
 import net.minecraft.block.Block;
+import net.minecraft.entity.Entity;
 import net.minecraft.item.Item;
-import net.minecraft.item.crafting.IRecipe;
 import powercraft.management.PC_Block;
 import powercraft.management.PC_IDataHandler;
 import powercraft.management.PC_IMSG;
@@ -13,17 +13,24 @@ import powercraft.management.PC_IPacketHandler;
 import powercraft.management.PC_ItemStack;
 import powercraft.management.PC_Property;
 import powercraft.management.PC_Struct2;
-import powercraft.management.PC_Utils.ModuleLoader;
+import powercraft.management.annotation.PC_FieldObject;
+import powercraft.management.recipes.PC_IRecipe;
 import powercraft.management.recipes.PC_ShapedRecipes;
 
 public class PClo_App implements PC_IModule
 {
 
+	@PC_FieldObject(clazz=PClo_BlockPulsar.class)
     public static PC_Block pulsar;
+	@PC_FieldObject(clazz=PClo_BlockGate.class)
     public static PC_Block gate;
+	@PC_FieldObject(clazz=PClo_BlockFlipFlop.class)
     public static PC_Block flipFlop;
+	@PC_FieldObject(clazz=PClo_BlockDelayer.class)
     public static PC_Block delayer;
+	@PC_FieldObject(clazz=PClo_BlockSpecial.class)
     public static PC_Block special;
+	@PC_FieldObject(clazz=PClo_BlockRepeater.class)
     public static PC_Block repeater;
     
 	@Override
@@ -47,25 +54,14 @@ public class PClo_App implements PC_IModule
 
 	@Override
 	public void initProperties(PC_Property config) {}
-
-	@Override
-	public void initBlocks(){
-        pulsar = (PC_Block)ModuleLoader.register(this, PClo_BlockPulsar.class, PClo_TileEntityPulsar.class);
-        gate = (PC_Block)ModuleLoader.register(this, PClo_BlockGate.class, PClo_ItemBlockGate.class, PClo_TileEntityGate.class);
-        flipFlop = (PC_Block)ModuleLoader.register(this, PClo_BlockFlipFlop.class, PClo_ItemBlockFlipFlop.class, PClo_TileEntityFlipFlop.class);
-        delayer = (PC_Block)ModuleLoader.register(this, PClo_BlockDelayer.class, PClo_ItemBlockDelayer.class, PClo_TileEntityDelayer.class);
-        special = (PC_Block)ModuleLoader.register(this, PClo_BlockSpecial.class, PClo_ItemBlockSpecial.class, PClo_TileEntitySpecial.class);
-        repeater = (PC_Block)ModuleLoader.register(this, PClo_BlockRepeater.class, PClo_ItemBlockRepeater.class, PClo_TileEntityRepeater.class);
-	}
-
-    @Override
-    public void initItems(){}
 	
     @Override
-	public void initEntities() {}
-    
+	public List<Class<? extends Entity>> initEntities(List<Class<? extends Entity>> entities) {
+		return null;
+	}
+
 	@Override
-	public List<Object> initRecipes(List<Object> recipes) {
+	public List<PC_IRecipe> initRecipes(List<PC_IRecipe> recipes) {
 		recipes.add(new PC_ShapedRecipes(new PC_ItemStack(pulsar, 1, 0),
                     " r ",
                     "ror",

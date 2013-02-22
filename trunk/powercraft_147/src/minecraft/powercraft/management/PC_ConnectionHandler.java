@@ -11,7 +11,6 @@ import net.minecraft.network.packet.NetHandler;
 import net.minecraft.network.packet.Packet1Login;
 import net.minecraft.network.packet.Packet250CustomPayload;
 import net.minecraft.server.MinecraftServer;
-import powercraft.management.PC_Utils.SaveHandler;
 import cpw.mods.fml.common.network.IConnectionHandler;
 import cpw.mods.fml.common.network.Player;
 
@@ -33,7 +32,7 @@ public class PC_ConnectionHandler implements IConnectionHandler {
         {
             sendData = new ObjectOutputStream(data);
             sendData.writeInt(PC_PacketHandler.PACKETIDS);
-            sendData.writeObject(CompressedStreamTools.compress(SaveHandler.makeIDTagCompound()));
+            sendData.writeObject(CompressedStreamTools.compress(PC_IDResolver.makeIDTagCompound()));
             sendData.writeObject(PC_GlobalVariables.consts);
             sendData.writeInt(PC_PacketHandler.PACKETIDS);
         }

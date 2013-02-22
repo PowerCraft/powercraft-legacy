@@ -1,25 +1,17 @@
 package powercraft.management;
 
-import java.util.List;
-
 import net.minecraft.block.Block;
 import net.minecraft.client.gui.FontRenderer;
-import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.client.renderer.RenderEngine;
-import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.entity.RenderManager;
-import net.minecraft.entity.player.InventoryPlayer;
-import net.minecraft.inventory.Slot;
-import net.minecraft.item.ItemStack;
 import net.minecraft.world.IBlockAccess;
 
 import org.lwjgl.opengl.GL11;
-import org.lwjgl.opengl.GL12;
 
 import powercraft.management.inventory.PC_ISpecialInventoryTextures;
-
+import powercraft.management.registry.PC_MSGRegistry;
 import cpw.mods.fml.client.registry.ISimpleBlockRenderingHandler;
 import cpw.mods.fml.client.registry.RenderingRegistry;
 
@@ -28,16 +20,16 @@ public class PC_ClientRenderer extends PC_Renderer implements ISimpleBlockRender
 	public PC_ClientRenderer(boolean render3d){
 		super(render3d);
 		if(render3d)
-			render3dId = RenderingRegistry.instance().getNextAvailableRenderId();
+			render3dId = RenderingRegistry.getNextAvailableRenderId();
 		else
-			render2dId = RenderingRegistry.instance().getNextAvailableRenderId();
+			render2dId = RenderingRegistry.getNextAvailableRenderId();
 	}
 	
 	@Override
 	public void renderInventoryBlock(Block block, int metadata, int modelID, RenderBlocks renderer) {
 		boolean b = false;
 		if(block instanceof PC_IMSG){
-			Object o = ((PC_IMSG)block).msg(PC_Utils.MSG_RENDER_INVENTORY_BLOCK, block, metadata, modelID, renderer);
+			Object o = ((PC_IMSG)block).msg(PC_MSGRegistry.MSG_RENDER_INVENTORY_BLOCK, block, metadata, modelID, renderer);
 			if(o instanceof Boolean)
 				b = (Boolean)o;
 		}
@@ -50,7 +42,7 @@ public class PC_ClientRenderer extends PC_Renderer implements ISimpleBlockRender
 	public boolean renderWorldBlock(IBlockAccess world, int x, int y, int z, Block block, int modelId, RenderBlocks renderer) {
 		boolean b = false;
 		if(block instanceof PC_IMSG){
-			Object o = ((PC_IMSG) block).msg(PC_Utils.MSG_RENDER_WORLD_BLOCK, world, new PC_VecI(x, y, z), block, modelId, renderer);
+			Object o = ((PC_IMSG) block).msg(PC_MSGRegistry.MSG_RENDER_WORLD_BLOCK, world, new PC_VecI(x, y, z), block, modelId, renderer);
 			if(o instanceof Boolean)
 				b = (Boolean)o;
 		}
@@ -178,7 +170,7 @@ public class PC_ClientRenderer extends PC_Renderer implements ISimpleBlockRender
 
 			block.setBlockBoundsBasedOnState(world, x, y, z);
 			((RenderBlocks)renderer).setRenderBoundsFromBlock(block);
-			Object o=((PC_IMSG) block).msg(PC_Utils.MSG_ROTATION, metaAt);
+			Object o=((PC_IMSG) block).msg(PC_MSGRegistry.MSG_ROTATION, metaAt);
 			if(o instanceof Integer){
 				boolean swapped = swapTerrain(block);
 				int l = (Integer)o;
@@ -246,7 +238,7 @@ public class PC_ClientRenderer extends PC_Renderer implements ISimpleBlockRender
 
 			boolean swapped = swapTerrain(block);
 
-			Object o=((PC_IMSG) block).msg(PC_Utils.MSG_RENDER_ITEM_HORIZONTAL);
+			Object o=((PC_IMSG) block).msg(PC_MSGRegistry.MSG_RENDER_ITEM_HORIZONTAL);
 			if(o instanceof Boolean){
 				boolean renderOnSide = (Boolean)o;
 	

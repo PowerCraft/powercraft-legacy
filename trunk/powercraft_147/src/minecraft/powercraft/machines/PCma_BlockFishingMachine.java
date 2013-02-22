@@ -15,10 +15,12 @@ import powercraft.management.PC_Struct2;
 import powercraft.management.PC_Utils;
 import powercraft.management.PC_Utils.GameInfo;
 import powercraft.management.PC_Utils.ValueWriting;
+import powercraft.management.annotation.PC_BlockInfo;
 import powercraft.management.recipes.PC_3DRecipe;
 import powercraft.management.recipes.PC_I3DRecipeHandler;
 import powercraft.management.PC_VecI;
 
+@PC_BlockInfo(tileEntity=PCma_TileEntityFishingMachine.class)
 public class PCma_BlockFishingMachine extends PC_Block implements PC_I3DRecipeHandler {
 
 	private static PC_3DRecipe struct;

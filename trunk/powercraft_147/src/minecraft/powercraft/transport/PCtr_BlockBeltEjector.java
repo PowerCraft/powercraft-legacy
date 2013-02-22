@@ -14,8 +14,10 @@ import powercraft.management.PC_TileEntity;
 import powercraft.management.PC_Utils;
 import powercraft.management.PC_Utils.GameInfo;
 import powercraft.management.PC_Utils.Gres;
+import powercraft.management.annotation.PC_BlockInfo;
 import powercraft.management.PC_VecI;
 
+@PC_BlockInfo(itemBlock=PCtr_ItemBlockConveyor.class, tileEntity=PCtr_TileEntityEjectionBelt.class)
 public class PCtr_BlockBeltEjector extends PCtr_BlockBeltBase
 {
     public PCtr_BlockBeltEjector(int id)

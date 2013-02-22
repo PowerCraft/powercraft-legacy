@@ -1,10 +1,7 @@
 package powercraft.management;
 
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
-import java.util.Map.Entry;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockContainer;
@@ -14,19 +11,17 @@ import net.minecraft.inventory.IInventory;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.crafting.FurnaceRecipes;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import powercraft.management.PC_Utils.GameInfo;
 import powercraft.management.PC_Utils.Inventory;
-import powercraft.management.PC_Utils.ValueWriting;
+import powercraft.management.reflect.PC_ReflectHelper;
+import powercraft.management.registry.PC_MSGRegistry;
 import cpw.mods.fml.common.registry.GameData;
 import cpw.mods.fml.common.registry.ItemData;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 
-public abstract class PC_Block extends BlockContainer implements PC_IMSG
+public abstract class PC_Block extends BlockContainer implements PC_IMSG, PC_IIDChangeAble
 {
     private boolean canSetTextureFile = true;
     private PC_IModule module;
@@ -118,7 +113,7 @@ public abstract class PC_Block extends BlockContainer implements PC_IMSG
     @Override
     public boolean shouldSideBeRendered(IBlockAccess world, int x, int y, int z, int side)
     {
-    	if (side == 1 && getRenderType() == PC_Renderer.getRendererID(true) && msg(PC_Utils.MSG_ROTATION, GameInfo.getMD(world, x, y, z))!=null)
+    	if (side == 1 && getRenderType() == PC_Renderer.getRendererID(true) && msg(PC_MSGRegistry.MSG_ROTATION, GameInfo.getMD(world, x, y, z))!=null)
         {
             return false;
         }
@@ -151,13 +146,14 @@ public abstract class PC_Block extends BlockContainer implements PC_IMSG
 		return thisBlock.itemBlock;
 	}
 	
-	public void setBlockID(int id) {
+	@Override
+	public void setID(int id) {
 		int oldID = blockID;
 		if(oldID==id)
 			return;
-		if(ValueWriting.setPrivateValue(Block.class, this, PC_GlobalVariables.indexBlockID, id)){
-	    	if(ValueWriting.setPrivateValue(Item.class, thisBlock.itemBlock, PC_GlobalVariables.indexItemSthiftedIndex, id)){
-	    		if(ValueWriting.setPrivateValue(ItemBlock.class, thisBlock.itemBlock, 0, id)){
+		if(PC_ReflectHelper.setValue(Block.class, this, PC_GlobalVariables.indexBlockID, id)){
+	    	if(PC_ReflectHelper.setValue(Item.class, thisBlock.itemBlock, PC_GlobalVariables.indexItemSthiftedIndex, id)){
+	    		if(PC_ReflectHelper.setValue(ItemBlock.class, thisBlock.itemBlock, 0, id)){
 		    		if(oldID!=-1){
 		    			replaced.storeToID(oldID);
 		    		}
@@ -169,11 +165,11 @@ public abstract class PC_Block extends BlockContainer implements PC_IMSG
 		    			replaced = null;
 		    		}
 	    		}else{
-	    			ValueWriting.setPrivateValue(Item.class, thisBlock.itemBlock, PC_GlobalVariables.indexItemSthiftedIndex, oldID);
-	    			ValueWriting.setPrivateValue(Block.class, this, PC_GlobalVariables.indexBlockID, oldID);
+	    			PC_ReflectHelper.setValue(Item.class, thisBlock.itemBlock, PC_GlobalVariables.indexItemSthiftedIndex, oldID);
+	    			PC_ReflectHelper.setValue(Block.class, this, PC_GlobalVariables.indexBlockID, oldID);
 	    		}
 	    	}else{
-	    		ValueWriting.setPrivateValue(Block.class, this, PC_GlobalVariables.indexBlockID, oldID);
+	    		PC_ReflectHelper.setValue(Block.class, this, PC_GlobalVariables.indexBlockID, oldID);
 	    	}
 		}
 	}
@@ -232,7 +228,7 @@ public abstract class PC_Block extends BlockContainer implements PC_IMSG
 			useNeighborBrightness = Block.useNeighborBrightness[id];
 			
 			itemBlock = (ItemBlock)Item.itemsList[id];
-			Map<Integer, ItemData> map = (Map<Integer, ItemData>)ValueWriting.getPrivateValue(GameData.class, GameData.class, 0);
+			Map<Integer, ItemData> map = (Map<Integer, ItemData>)PC_ReflectHelper.getValue(GameData.class, GameData.class, 0);
 			itemData = map.get(id);
 		}
 		
@@ -246,11 +242,11 @@ public abstract class PC_Block extends BlockContainer implements PC_IMSG
 			Block.useNeighborBrightness[id] = useNeighborBrightness;
 			
 			Item.itemsList[id] = itemBlock;
-			Map<Integer, ItemData> map = (Map<Integer, ItemData>)ValueWriting.getPrivateValue(GameData.class, GameData.class, 0);
+			Map<Integer, ItemData> map = (Map<Integer, ItemData>)PC_ReflectHelper.getValue(GameData.class, GameData.class, 0);
 			if(itemData==null){
 				map.remove(id);
 			}else{
-				ValueWriting.setPrivateValue(ItemData.class, itemData, 3, id);
+				PC_ReflectHelper.setValue(ItemData.class, itemData, 3, id);
 				map.put(id, itemData);
 			}
 		}

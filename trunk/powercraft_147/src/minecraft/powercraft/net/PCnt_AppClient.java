@@ -4,34 +4,33 @@ import java.util.List;
 
 import net.minecraft.client.renderer.entity.Render;
 import net.minecraft.entity.Entity;
-
 import powercraft.management.PC_IClientModule;
-import powercraft.management.PC_LangEntry;
 import powercraft.management.PC_Struct2;
-import powercraft.management.PC_Utils.ModuleInfo;
+import powercraft.management.registry.PC_LangRegistry.LangEntry;
+import powercraft.management.registry.PC_TextureRegistry;
 
 public class PCnt_AppClient extends PCnt_App implements PC_IClientModule {
 
 	@Override
-	public List<PC_LangEntry> initLanguage(List<PC_LangEntry> lang) {
-		lang.add(new PC_LangEntry("pc.gui.sensor.range", "Detection distance:"));
-		lang.add(new PC_LangEntry("pc.sensor.range.1", "Range: %s block"));
-		lang.add(new PC_LangEntry("pc.sensor.range.2-4", "Range: %s block"));
-		lang.add(new PC_LangEntry("pc.sensor.range.5+", "Range: %s block"));
-		lang.add(new PC_LangEntry("pc.gui.radio.channel", "Channel:"));
-		lang.add(new PC_LangEntry("pc.gui.radio.showLabel", "Show label"));
-		lang.add(new PC_LangEntry("pc.gui.radio.errChannel", "Invalid channel name."));
-		lang.add(new PC_LangEntry("pc.gui.radio.renderSmall", "Tiny"));
-		lang.add(new PC_LangEntry("pc.radioRemote.connected", "Portable transmitter connected to channel \"%s\"."));
-		lang.add(new PC_LangEntry("pc.radioRemote.desc", "Channel: %s"));
-		lang.add(new PC_LangEntry("pc.radio.activatorSetChannel", "Radio connected to channel \"%s\"."));
-		lang.add(new PC_LangEntry("pc.radio.activatorGetChannel", "Channel \"%s\" assigned to activation crystal."));
+	public List<LangEntry> initLanguage(List<LangEntry> lang) {
+		lang.add(new LangEntry("pc.gui.sensor.range", "Detection distance:"));
+		lang.add(new LangEntry("pc.sensor.range.1", "Range: %s block"));
+		lang.add(new LangEntry("pc.sensor.range.2-4", "Range: %s block"));
+		lang.add(new LangEntry("pc.sensor.range.5+", "Range: %s block"));
+		lang.add(new LangEntry("pc.gui.radio.channel", "Channel:"));
+		lang.add(new LangEntry("pc.gui.radio.showLabel", "Show label"));
+		lang.add(new LangEntry("pc.gui.radio.errChannel", "Invalid channel name."));
+		lang.add(new LangEntry("pc.gui.radio.renderSmall", "Tiny"));
+		lang.add(new LangEntry("pc.radioRemote.connected", "Portable transmitter connected to channel \"%s\"."));
+		lang.add(new LangEntry("pc.radioRemote.desc", "Channel: %s"));
+		lang.add(new LangEntry("pc.radio.activatorSetChannel", "Radio connected to channel \"%s\"."));
+		lang.add(new LangEntry("pc.radio.activatorGetChannel", "Channel \"%s\" assigned to activation crystal."));
 		return lang;
 	}
 
 	@Override
 	public List<String> loadTextureFiles(List<String> textures) {
-		textures.add(ModuleInfo.getTerrainFile(this));
+		textures.add(PC_TextureRegistry.getTerrainFile(this));
 		return textures;
 	}
 

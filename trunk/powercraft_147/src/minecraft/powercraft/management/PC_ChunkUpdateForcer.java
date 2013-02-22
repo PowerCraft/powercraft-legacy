@@ -6,12 +6,11 @@ import java.util.List;
 import java.util.Map.Entry;
 
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.server.MinecraftServer;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.IChunkProvider;
 import net.minecraftforge.common.DimensionManager;
-import powercraft.management.PC_Utils.GameInfo;
 import powercraft.management.PC_Utils.SaveHandler;
+import powercraft.management.registry.PC_MSGRegistry;
 
 public class PC_ChunkUpdateForcer implements PC_IDataHandler, PC_IMSG {
 
@@ -116,7 +115,7 @@ public class PC_ChunkUpdateForcer implements PC_IDataHandler, PC_IMSG {
 
 	@Override
 	public Object msg(int msg, Object... obj) {
-		if(msg==PC_Utils.MSG_TICK_EVENT){
+		if(msg==PC_MSGRegistry.MSG_TICK_EVENT){
 			for(Entry<Integer, HashMap<PC_VecI, Integer>> e:chunks.entrySet()){
 				World world = DimensionManager.getWorld(e.getKey());
 				if(world!=null){

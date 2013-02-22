@@ -14,8 +14,10 @@ import powercraft.management.PC_Renderer;
 import powercraft.management.PC_Utils;
 import powercraft.management.PC_Utils.GameInfo;
 import powercraft.management.PC_Utils.ValueWriting;
+import powercraft.management.annotation.PC_BlockInfo;
 import powercraft.management.PC_VecI;
 
+@PC_BlockInfo(itemBlock=PCde_ItemBlockChimney.class, tileEntity=PCde_TileEntityChimney.class)
 public class PCde_BlockChimney extends PC_Block {
 
 	public PCde_BlockChimney(int id) {

@@ -21,12 +21,14 @@ import powercraft.management.PC_Utils;
 import powercraft.management.PC_Utils.GameInfo;
 import powercraft.management.PC_Utils.Gres;
 import powercraft.management.PC_Utils.ValueWriting;
+import powercraft.management.annotation.PC_BlockInfo;
 import powercraft.management.PC_VecI;
 import weasel.WeaselEngine;
 import weasel.lang.Instruction;
 import weasel.obj.WeaselDouble;
 import weasel.obj.WeaselString;
 
+@PC_BlockInfo(tileEntity=PCws_TileEntityWeaselDiskManager.class)
 public class PCws_BlockWeaselDiskManager extends PC_Block implements PC_IPacketHandler, PC_IItemInfo {
 
 	public PCws_BlockWeaselDiskManager(int id) {

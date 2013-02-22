@@ -1,16 +1,7 @@
 package powercraft.management.recipes;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
-
-import powercraft.management.PC_GlobalVariables;
-import powercraft.management.PC_Item;
-import powercraft.management.PC_ItemBlock;
-import powercraft.management.PC_ItemStack;
-import powercraft.management.PC_Utils;
-import powercraft.management.PC_VecI;
-import powercraft.management.PC_Utils.ValueWriting;
 
 import net.minecraft.block.Block;
 import net.minecraft.inventory.InventoryCrafting;
@@ -18,8 +9,14 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.world.World;
+import powercraft.management.PC_GlobalVariables;
+import powercraft.management.PC_Item;
+import powercraft.management.PC_ItemBlock;
+import powercraft.management.PC_ItemStack;
+import powercraft.management.PC_VecI;
+import powercraft.management.reflect.PC_ReflectHelper;
 
-public class PC_ShapelessRecipes implements IRecipe, PC_IRecipeInfo {
+public class PC_ShapelessRecipes implements IRecipe, PC_IRecipeInfo, PC_IRecipe {
 
 	private final PC_ItemStack recipeOutput;
     private final List<PC_ItemStack>[] recipeItems;
@@ -88,7 +85,7 @@ public class PC_ShapelessRecipes implements IRecipe, PC_IRecipeInfo {
     	boolean[] used = new boolean[recipeItems.length];
 
     	int craftSizeY = inventoryCrafting.getSizeInventory();
-		int craftSizeX = (Integer)ValueWriting.getPrivateValue(InventoryCrafting.class, inventoryCrafting, 1);
+		int craftSizeX = (Integer)PC_ReflectHelper.getValue(InventoryCrafting.class, inventoryCrafting, 1);
 		craftSizeY = craftSizeY/craftSizeX;
 		
 		for (int y = 0; y < craftSizeY; y++) {

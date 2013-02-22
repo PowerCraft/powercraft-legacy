@@ -14,10 +14,10 @@ import powercraft.management.PC_GlobalVariables;
 import powercraft.management.PC_Item;
 import powercraft.management.PC_ItemBlock;
 import powercraft.management.PC_ItemStack;
-import powercraft.management.PC_Utils.ValueWriting;
 import powercraft.management.PC_VecI;
+import powercraft.management.reflect.PC_ReflectHelper;
 
-public class PC_ShapedRecipes implements IRecipe, PC_IRecipeInfo {
+public class PC_ShapedRecipes implements IRecipe, PC_IRecipeInfo, PC_IRecipe {
 
 	private PC_VecI size;
 	private List<PC_ItemStack>[][] recipeItems;
@@ -112,7 +112,7 @@ public class PC_ShapedRecipes implements IRecipe, PC_IRecipeInfo {
 			return false;
 
 		int craftSizeY = inventoryCrafting.getSizeInventory();
-		int craftSizeX = (Integer)ValueWriting.getPrivateValue(InventoryCrafting.class, inventoryCrafting, 1);
+		int craftSizeX = (Integer)PC_ReflectHelper.getValue(InventoryCrafting.class, inventoryCrafting, 1);
 		craftSizeY = craftSizeY/craftSizeX;
 		for (int y = 0; y <= craftSizeY - size.y; y++) {
 			for (int x = 0; x <= craftSizeX - size.x; x++) {

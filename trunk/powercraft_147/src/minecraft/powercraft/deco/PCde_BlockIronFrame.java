@@ -14,8 +14,10 @@ import powercraft.management.PC_IItemInfo;
 import powercraft.management.PC_Renderer;
 import powercraft.management.PC_Utils;
 import powercraft.management.PC_Utils.ValueWriting;
+import powercraft.management.annotation.PC_BlockInfo;
 import powercraft.management.PC_VecI;
 
+@PC_BlockInfo(tileEntity=PCde_TileEntityIronFrame.class)
 public class PCde_BlockIronFrame extends PC_Block implements PC_IItemInfo {
 
 	public PCde_BlockIronFrame(int id) {

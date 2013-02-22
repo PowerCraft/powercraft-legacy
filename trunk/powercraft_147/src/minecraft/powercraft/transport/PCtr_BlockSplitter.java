@@ -21,7 +21,9 @@ import powercraft.management.PC_Utils;
 import powercraft.management.PC_VecI;
 import powercraft.management.PC_Utils.GameInfo;
 import powercraft.management.PC_Utils.Gres;
+import powercraft.management.annotation.PC_BlockInfo;
 
+@PC_BlockInfo(tileEntity=PCtr_TileEntitySplitter.class)
 public class PCtr_BlockSplitter extends PC_Block {
 
 	public PCtr_BlockSplitter(int id) {

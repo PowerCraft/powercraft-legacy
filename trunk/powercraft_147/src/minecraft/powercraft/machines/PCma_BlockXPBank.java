@@ -20,9 +20,10 @@ import powercraft.management.PC_Utils;
 import powercraft.management.PC_Utils.GameInfo;
 import powercraft.management.PC_Utils.Gres;
 import powercraft.management.PC_Utils.ValueWriting;
+import powercraft.management.annotation.PC_BlockInfo;
 import powercraft.management.PC_VecI;
 
-
+@PC_BlockInfo(tileEntity=PCma_TileEntityXPBank.class)
 public class PCma_BlockXPBank extends PC_Block implements PC_IItemInfo
 {
     public PCma_BlockXPBank(int id)

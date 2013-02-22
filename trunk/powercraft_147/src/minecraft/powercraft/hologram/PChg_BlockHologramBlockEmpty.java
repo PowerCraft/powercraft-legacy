@@ -12,7 +12,9 @@ import powercraft.management.PC_Block;
 import powercraft.management.PC_Renderer;
 import powercraft.management.PC_Utils;
 import powercraft.management.PC_VecI;
+import powercraft.management.annotation.PC_BlockInfo;
 
+@PC_BlockInfo(itemBlock=PChg_ItemBlockHologramBlockEmpty.class)
 public class PChg_BlockHologramBlockEmpty extends PC_Block {
 
 	public PChg_BlockHologramBlockEmpty(int id) {

@@ -15,8 +15,10 @@ import powercraft.management.PC_Renderer;
 import powercraft.management.PC_Utils;
 import powercraft.management.PC_Utils.GameInfo;
 import powercraft.management.PC_Utils.ValueWriting;
+import powercraft.management.annotation.PC_BlockInfo;
 import powercraft.management.PC_VecI;
 
+@PC_BlockInfo(itemBlock=PCde_ItemBlockPlatform.class, tileEntity=PCde_TileEntityPlatform.class)
 public class PCde_BlockPlatform extends PC_Block {
 
 	public PCde_BlockPlatform(int id) {

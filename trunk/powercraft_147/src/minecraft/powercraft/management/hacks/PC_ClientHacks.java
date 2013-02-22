@@ -4,8 +4,7 @@ import java.io.File;
 
 import net.minecraft.client.Minecraft;
 import powercraft.management.PC_ClientUtils;
-import powercraft.management.PC_Utils;
-import powercraft.management.PC_Utils.ValueWriting;
+import powercraft.management.reflect.PC_ReflectHelper;
 
 public class PC_ClientHacks {
 
@@ -18,7 +17,7 @@ public class PC_ClientHacks {
 	private static void hackMinecraftSaver(){
 		Minecraft mc = PC_ClientUtils.mc();
 		
-		ValueWriting.setPrivateValue(Minecraft.class, mc, 42, new PC_HackedSaveConverter(new File(mc.mcDataDir, "saves")));
+		PC_ReflectHelper.setValue(Minecraft.class, mc, 42, new PC_HackedSaveConverter(new File(mc.mcDataDir, "saves")));
 	}
 	
 }

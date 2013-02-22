@@ -1,12 +1,7 @@
 package powercraft.management.gres;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import net.minecraft.inventory.Slot;
-import powercraft.management.PC_Utils;
 import powercraft.management.PC_VecI;
-import powercraft.management.PC_Utils.Lang;
 
 
 /**
@@ -72,7 +67,7 @@ public class PC_GresInventoryPlayer extends PC_GresLayoutV {
 
 
 		canAddWidget = true;
-		PC_GresWidget label = new PC_GresLabel(Lang.tr("container.inventory")).setWidgetMargin(2).setColor(textColorDisabled, 0x404040);
+		PC_GresWidget label = new PC_GresLabel("container.inventory").setWidgetMargin(2).setColor(textColorDisabled, 0x404040);
 		label.enable(false);
 		if (showLabel) {
 			add(label);

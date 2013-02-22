@@ -8,8 +8,10 @@ import net.minecraft.world.World;
 import powercraft.management.PC_Direction;
 import powercraft.management.PC_Utils;
 import powercraft.management.PC_Utils.GameInfo;
+import powercraft.management.annotation.PC_BlockInfo;
 import powercraft.management.PC_VecI;
 
+@PC_BlockInfo(itemBlock=PCtr_ItemBlockConveyor.class, tileEntity=PCtr_TileEntityRedirectionBelt.class)
 public class PCtr_BlockBeltRedirector extends PCtr_BlockBeltBase
 {
     public PCtr_BlockBeltRedirector(int id)
